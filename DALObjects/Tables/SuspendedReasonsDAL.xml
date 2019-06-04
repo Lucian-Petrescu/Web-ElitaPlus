@@ -1,0 +1,79 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+
+<!-- ********************** THIS FILE HAS BEEN GENERATED FROM TEMPLATE SQLObject.cst (4/17/2013)********************** -->
+
+<SQL>
+  <LOAD>
+    <![CDATA[	
+      SELECT  sr.suspended_reason_id,
+              sr.dealer_id,
+              d.dealer_name, 
+              sr.code,
+              sr.description,
+            --  GETITEMIDFROMLISTANDITEM('YESNO',sr.claim_allowed)             as claim_allowed_id,
+             sr.claim_allowed,
+              GETLISTITEMDESCRIPTION('YESNO',sr.claim_allowed,U.LANGUAGE_ID) as CLAIM_ALLOWED_STR,
+              sr.claim_allowed                                               ,
+              sr.created_by,
+              sr.modified_by
+      FROM elp_suspended_reason  sr
+      INNER JOIN elp_dealer        d ON d.DEALER_ID = sr.DEALER_ID
+      INNER JOIN elp_company       c ON c.COMPANY_ID = d.COMPANY_ID
+      INNER JOIN elp_user_company uc ON uc.COMPANY_ID = d.COMPANY_ID
+      INNER JOIN elp_user          u ON u.USER_ID = UC.USER_ID
+      WHERE u.NETWORK_ID = upper(:NETWORK_ID) 
+      AND sr.suspended_reason_id = :SUSPENDED_REASON_ID
+		]]>
+  </LOAD>
+  <LOAD_LIST>
+    <![CDATA[
+      select * from (
+      SELECT sr.suspended_reason_id,
+             sr.dealer_id,
+             d.dealer_name,
+             sr.code,
+             sr.description,
+           --  getitemidfromlistanditem ('YESNO', sr.claim_allowed)               AS claim_allowed_id,
+             sr.claim_allowed,
+             getlistitemdescription ('YESNO', sr.claim_allowed, u.LANGUAGE_ID)  AS claim_allowed_str,
+             sr.created_by,
+             sr.modified_by
+      FROM   elp_suspended_reason sr 
+      INNER JOIN elp_dealer        d ON d.dealer_id = sr.dealer_id
+      INNER JOIN elp_user_company uc ON uc.COMPANY_ID = d.COMPANY_ID
+      INNER JOIN elp_user          u ON u.USER_ID = UC.USER_ID
+      where u.NETWORK_ID = upper(:NETWORK_ID) 
+      --dynamic_where_clause
+      ) where rownum <= 101
+      ]]>
+  </LOAD_LIST>
+  <UPDATE>
+    <![CDATA[	
+			UPDATE elp_suspended_reason 
+      SET
+				      dealer_id = :dealer_id,
+--				      code = :code,
+				      description = :description,
+				      claim_allowed = :claim_allowed,
+				      modified_by = :modified_by
+			WHERE suspended_reason_id = :SUSPENDED_REASON_ID
+		]]>
+  </UPDATE>
+  <INSERT>
+    INSERT INTO elp_suspended_reason
+    (
+    suspended_reason_id,
+    dealer_id,
+    code,
+    description,
+    claim_allowed,
+    created_by
+    )
+    VALUES
+    (--dynamic_Inser_Values)
+  </INSERT>
+  <DELETE>
+  </DELETE>
+</SQL>
+
+

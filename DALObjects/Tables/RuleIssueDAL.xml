@@ -1,0 +1,134 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+
+<!-- ********************** THIS FILE HAS BEEN GENERATED FROM TEMPLATE SQLObject.cst (5/30/2012)********************** -->
+
+<SQL>
+  <LOAD>
+    <![CDATA[	
+			Select
+	            RI.RULE_ISSUE_ID,
+	            RI.ISSUE_ID,
+	            RI.RULE_ID,
+	            RI.EFFECTIVE,
+	            RI.EXPIRATION,
+	            I.DESCRIPTION,
+	            RI.CREATED_DATE,
+	            RI.CREATED_BY,
+	            RI.MODIFIED_DATE,
+	            RI.MODIFIED_BY
+            From
+	            ELP_RULE_ISSUE RI
+	            Inner Join
+	            ELP_ISSUE I
+	            On RI.ISSUE_ID = I.ISSUE_ID
+			    WHERE
+				    RULE_ISSUE_ID = :rule_issue_id
+		]]>
+  </LOAD>
+  <LOAD_LIST>
+    <![CDATA[
+        Select
+	        RI.RULE_ISSUE_ID,
+	        RI.ISSUE_ID,
+	        RI.RULE_ID,
+	        RI.EFFECTIVE,
+	        RI.EXPIRATION,
+	        I.DESCRIPTION,
+	        RI.CREATED_DATE,
+	        RI.CREATED_BY,
+	        RI.MODIFIED_DATE,
+	        RI.MODIFIED_BY
+        From
+	        ELP_RULE_ISSUE RI
+	        Inner Join
+	        ELP_ISSUE I
+	        On RI.ISSUE_ID = I.ISSUE_ID
+        Where
+            RULE_ID = :rule_id
+    ]]>
+  </LOAD_LIST>
+  <LOAD_RULE_LIST>
+    <![CDATA[ 
+			SELECT 
+				ER.issue_id,
+				ER.rule_id,
+				ER.effective,
+				ER.expiration,
+				ER.created_date,
+				ER.created_by,
+				ER.modified_date,
+				ER.modified_by,
+				ER.rule_issue_id,
+				RL.DESCRIPTION
+			FROM
+        elp_rule_issue ER INNER JOIN ELP_RULE RL ON ER.RULE_ID = RL.RULE_ID
+			WHERE
+				issue_id = :issue_id
+    ]]>
+  </LOAD_RULE_LIST>
+  <UPDATE>
+    <![CDATA[	
+			UPDATE elp_rule_issue SET
+				issue_id = :issue_id,
+				rule_id = :rule_id,
+				effective = :effective,
+				expiration = :expiration,
+				modified_by = :modified_by
+			WHERE
+				rule_issue_id = :rule_issue_id
+		]]>
+  </UPDATE>
+  <INSERT>
+    <![CDATA[
+      INSERT INTO elp_rule_issue
+      (
+      issue_id,
+      rule_id,
+      effective,
+      expiration,
+      created_by,
+      rule_issue_id
+      )
+      VALUES
+      (
+      :issue_id,
+      :rule_id,
+      :effective,
+      :expiration,
+      :created_by,
+      :rule_issue_id
+      )
+		]]>    
+  </INSERT>
+  <DELETE>
+    <![CDATA[
+      DELETE FROM elp_rule_issue
+      WHERE
+      rule_issue_id = :rule_issue_id
+    ]]>
+  </DELETE>
+  <IS_CHILD>
+    <![CDATA[
+      SELECT
+        rule_issue_id
+      FROM 
+        elp_rule_issue
+      WHERE
+        issue_id = :issue_id AND      
+        rule_id = :rule_id 
+    ]]>
+  </IS_CHILD>
+  <RULES_LIST>
+    <![CDATA[
+      SELECT
+        rule_id
+      FROM 
+        elp_rule_issue
+      WHERE
+        issue_id = :issue_id 
+        AND EXPIRATION > SYSDATE
+    ]]>
+  </RULES_LIST>
+</SQL>
+
+

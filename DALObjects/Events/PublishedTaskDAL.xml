@@ -1,0 +1,195 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+
+<!-- ********************** THIS FILE HAS BEEN GENERATED FROM TEMPLATE SQLObject.cst (1/4/2013)********************** -->
+
+<SQL>
+  <LOAD>
+    <![CDATA[	
+			SELECT 
+				company_group_id,
+				company_id,
+				country_id,
+				dealer_id,
+				product_code,
+				event_type_id,
+				event_date,
+				sender,
+				arguments,
+				task_id,
+				lock_date,
+				task_status_id,
+				retry_count,
+				last_attempt_date,
+				machine_name,
+				created_date,
+				created_by,
+				modified_date,
+				modified_by,
+				published_task_id,
+        coverage_type_id,
+        dealer_group_id
+			FROM elp_published_task 
+			WHERE
+				published_task_id = :published_task_id
+		]]>
+  </LOAD>
+  <LOAD_LIST>
+    <![CDATA[	
+      SELECT *
+      FROM   (SELECT elp_published_task.published_task_id,
+                 cg.description     AS company_group,
+                 Com.description    AS company,
+                 Co.description     AS country,
+                 d.dealer_name      AS dealer,
+                 elp_published_task.product_code,
+                 ct_dit.translation As coverage_type,
+                 et_dit.translation AS event_type,
+                 elp_published_task.event_date,
+                 elp_published_task.sender,
+                 ts_dit.translation AS task_status,
+                 elp_published_task.arguments,
+                 t.description      AS task,
+                 elp_published_task.lock_date,
+                 elp_published_task.retry_count,
+                 elp_published_task.last_attempt_date,
+                 elp_published_task.machine_name,
+                 ts_li.code task_status_code,
+                 elp_published_task.fail_reason,
+                 ts_dit.language_id
+        FROM     elp_published_task             
+        INNER JOIN elp_list_item                et_li   ON et_li.list_item_id = elp_published_task.event_type_id
+        INNER JOIN elp_dict_item_translation    et_dit  ON et_dit.dict_item_id = et_li.dict_item_id
+        INNER JOIN elp_list_item                ts_li   ON ts_li.list_item_id = elp_published_task.task_status_id
+        INNER JOIN elp_dict_item_translation    ts_dit  ON ts_dit.dict_item_id = ts_li.dict_item_id
+        LEFT JOIN  elp_company                  Com     ON Com.company_id = elp_published_task.company_id 
+        LEFT JOIN  elp_company_group            CG      ON cg.company_group_id = elp_published_task.company_group_id
+        LEFT JOIN  elp_country                  Co      ON Co.country_id = elp_published_task.country_id
+        LEFT JOIN  elp_task                     T       ON t.task_id = elp_published_task.task_id
+        Left JOIN  elp_dealer                   D       ON d.dealer_id = elp_published_task.dealer_id 
+        LEFT JOIN elp_list_item                ct_li   ON ct_li.list_item_id = elp_published_task.coverage_type_id
+        LEFT JOIN elp_dict_item_translation    ct_dit  ON ct_dit.dict_item_id = ct_li.dict_item_id AND ct_dit.language_id = :language_id
+        WHERE    et_dit.language_id = :language_id  --dynamic_where_clause
+        AND      ts_dit.language_id = :language_id
+        ORDER BY elp_published_task.event_date)
+        WHERE  ROWNUM <= :row_num
+    ]]>
+  </LOAD_LIST>
+  <UPDATE>
+    <![CDATA[	
+			UPDATE elp_published_task SET
+				company_group_id = :company_group_id,
+				company_id = :company_id,
+				country_id = :country_id,
+				dealer_id = :dealer_id,
+				product_code = :product_code,
+        coverage_type_id = :coverage_type_id,
+				event_type_id = :event_type_id,
+				event_date = :event_date,
+				sender = :sender,
+				arguments = :arguments,
+				task_id = :task_id,
+				lock_date = :lock_date,
+				task_status_id = :task_status_id,
+				retry_count = :retry_count,
+				last_attempt_date = :last_attempt_date,
+				machine_name = :machine_name,
+				modified_by = :modified_by,
+        dealer_group_id = :dealer_group_id
+			WHERE
+				published_task_id = :published_task_id
+		]]>
+  </UPDATE>
+  <INSERT>
+    <![CDATA[	
+    INSERT INTO elp_published_task
+    (
+    company_group_id,
+    company_id,
+    country_id,
+    dealer_id,
+    product_code,
+    coverage_type_id,
+    event_type_id,
+    event_date,
+    sender,
+    arguments,
+    task_id,
+    lock_date,
+    task_status_id,
+    retry_count,
+    last_attempt_date,
+    machine_name,
+    created_by,
+    published_task_id,
+    dealer_group_id
+    )
+    VALUES
+    (
+    :company_group_id,
+    :company_id,
+    :country_id,
+    :dealer_id,
+    :product_code,
+    :coverage_type_id,
+    :event_type_id,
+    :event_date,
+    :sender,
+    :arguments,
+    :task_id,
+    :lock_date,
+    :task_status_id,
+    :retry_count,
+    :last_attempt_date,
+    :machine_name,
+    :created_by,
+    :published_task_id,
+    :dealer_group_id
+    )
+    ]]>
+  </INSERT>
+  <DELETE>
+    <![CDATA[
+    DELETE FROM elp_published_task
+    WHERE
+    published_task_id = :published_task_id
+    ]]>
+  </DELETE>
+  <ADD_EVENT>
+    <![CDATA[ELP_EVENT.ADDEVENT]]>
+  </ADD_EVENT>
+  <GET_NEXT_TASK>
+    <![CDATA[ELP_EVENT.GETNEXTTASK]]>
+  </GET_NEXT_TASK>
+  <COMPLETE_TASK>
+    <![CDATA[ELP_EVENT.COMPLETETASK]]>
+  </COMPLETE_TASK>
+  <FAILED_TASK>
+    <![CDATA[ELP_EVENT.FAILEDTASK]]>
+  </FAILED_TASK>
+  <RESET_TASK>
+    <![CDATA[ELP_EVENT.RESETTASK]]>
+  </RESET_TASK>
+  <DELETE_TASK>
+    <![CDATA[ELP_EVENT.DELETETASK]]>
+  </DELETE_TASK>
+  <GET_OUTBOUND_EMAIL_DETAILS>
+    <![CDATA[elita.ELP_OUTBOUND_COMMUNICATION.GetMessageDetailsByTask]]>
+  </GET_OUTBOUND_EMAIL_DETAILS>
+  <CHECK_CLAIM_SLA_STATUS>
+    <![CDATA[elita.elp_claim_check_sla_status]]>
+  </CHECK_CLAIM_SLA_STATUS>
+  <UPDATE_OUTBOUND_EMAIL_STATUS>
+    <![CDATA[elita.ELP_OUTBOUND_COMMUNICATION.UpdateMessageResults]]>
+  </UPDATE_OUTBOUND_EMAIL_STATUS>
+  <UPDATE_RESEND_STATUS>
+    <![CDATA[elita.ELP_OUTBOUND_COMMUNICATION.UpdateResendResults]]>
+  </UPDATE_RESEND_STATUS>
+  <INSERT_GIFT_CARD_INFO>
+    <![CDATA[elita.elp_ws_gift_card_utility.InsertGiftCardInfo]]>
+  </INSERT_GIFT_CARD_INFO>
+  <UPDATE_GIFT_CARD_STATUS>
+    <![CDATA[elita.elp_ws_gift_card_utility.UpdateGiftCardStatus]]>
+  </UPDATE_GIFT_CARD_STATUS>
+</SQL>
+
+

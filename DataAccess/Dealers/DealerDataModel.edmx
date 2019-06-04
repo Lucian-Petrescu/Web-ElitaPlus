@@ -1,0 +1,2420 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="2.0" xmlns:edmx="http://schemas.microsoft.com/ado/2008/10/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+      <Schema Namespace="Model2.Store" Provider="Oracle.ManagedDataAccess.Client" ProviderManifestToken="11.2" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/02/edm/ssdl">
+        <EntityType Name="ELP_BRANCH">
+          <Key>
+            <PropertyRef Name="BRANCH_ID" />
+          </Key>
+          <Property Name="BRANCH_ID" Type="raw" MaxLength="16" Nullable="false" />
+          <Property Name="BRANCH_CODE" Type="varchar2" MaxLength="10" Nullable="false" />
+          <Property Name="DEALER_ID" Type="raw" MaxLength="16" Nullable="false" />
+          <Property Name="ADDRESS1" Type="varchar2" MaxLength="50" />
+          <Property Name="ADDRESS2" Type="varchar2" MaxLength="50" />
+          <Property Name="CITY" Type="varchar2" MaxLength="50" />
+          <Property Name="REGION_ID" Type="raw" MaxLength="16" />
+          <Property Name="COUNTRY_ID" Type="raw" MaxLength="16" Nullable="false" />
+          <Property Name="CREATED_DATE" Type="date" Nullable="false" />
+          <Property Name="CREATED_BY" Type="varchar2" MaxLength="30" />
+          <Property Name="MODIFIED_DATE" Type="date" />
+          <Property Name="MODIFIED_BY" Type="varchar2" MaxLength="30" />
+          <Property Name="BRANCH_NAME" Type="varchar2" MaxLength="100" Nullable="false" />
+          <Property Name="POSTAL_CODE" Type="varchar2" MaxLength="40" />
+          <Property Name="CONTACT_PHONE" Type="varchar2" MaxLength="30" />
+          <Property Name="CONTACT_EXT" Type="varchar2" MaxLength="5" />
+          <Property Name="CONTACT_FAX" Type="varchar2" MaxLength="15" />
+          <Property Name="CONTACT_EMAIL" Type="varchar2" MaxLength="50" />
+          <Property Name="MARKET" Type="varchar2" MaxLength="30" />
+          <Property Name="BANK_INFO_ID" Type="raw" MaxLength="16" />
+          <Property Name="BRANCH_TYPE_ID" Type="raw" MaxLength="16" />
+          <Property Name="STORE_MANAGER" Type="varchar2" MaxLength="50" />
+          <Property Name="MARKETING_REGION" Type="varchar2" MaxLength="50" />
+          <Property Name="ADDRESS3" Type="varchar2" MaxLength="50" />
+        </EntityType>
+        <EntityType Name="ELP_CONTRACT">
+          <Key>
+            <PropertyRef Name="CONTRACT_ID" />
+          </Key>
+          <Property Name="CONTRACT_ID" Type="raw" MaxLength="16" Nullable="false" />
+          <Property Name="DEALER_ID" Type="raw" MaxLength="16" Nullable="false" />
+          <Property Name="CONTRACT_TYPE_ID" Type="raw" MaxLength="16" Nullable="false" />
+          <Property Name="EFFECTIVE" Type="date" Nullable="false" />
+          <Property Name="EXPIRATION" Type="date" Nullable="false" />
+          <Property Name="COMMISSIONS_PERCENT" Type="number" Precision="7" Scale="4" Nullable="false" />
+          <Property Name="MARKETING_PERCENT" Type="number" Precision="7" Scale="4" Nullable="false" />
+          <Property Name="ADMIN_EXPENSE" Type="number" Precision="7" Scale="4" Nullable="false" />
+          <Property Name="PROFIT_PERCENT" Type="number" Precision="7" Scale="4" Nullable="false" />
+          <Property Name="LOSS_COST_PERCENT" Type="number" Precision="7" Scale="4" Nullable="false" />
+          <Property Name="CURRENCY_ID" Type="raw" MaxLength="16" Nullable="false" />
+          <Property Name="TYPE_OF_MARKETING_ID" Type="raw" MaxLength="16" Nullable="false" />
+          <Property Name="TYPE_OF_EQUIPMENT_ID" Type="raw" MaxLength="16" Nullable="false" />
+          <Property Name="TYPE_OF_INSURANCE_ID" Type="raw" MaxLength="16" Nullable="false" />
+          <Property Name="OLD_CERTIFICATES_AUTONUMBER_ID" Type="raw" MaxLength="16" />
+          <Property Name="MIN_REPLACEMENT_COST" Type="number" Precision="11" Scale="2" />
+          <Property Name="WARRANTY_MAX_DELAY" Type="number" Precision="4" Scale="0" Nullable="false" />
+          <Property Name="NET_COMMISSIONS_ID" Type="raw" MaxLength="16" Nullable="false" />
+          <Property Name="NET_MARKETING_ID" Type="raw" MaxLength="16" Nullable="false" />
+          <Property Name="NET_TAXES_ID" Type="raw" MaxLength="16" Nullable="false" />
+          <Property Name="DEDUCTIBLE" Type="number" Precision="11" Scale="2" />
+          <Property Name="WAITING_PERIOD" Type="number" Precision="2" Scale="0" Nullable="false" />
+          <Property Name="FUNDING_SOURCE_ID" Type="raw" MaxLength="16" Nullable="false" />
+          <Property Name="CONVERT_PRODUCT_CODE_ID" Type="raw" MaxLength="16" />
+          <Property Name="EDIT_MODEL_ID" Type="raw" MaxLength="16" Nullable="false" />
+          <Property Name="DEALER_MARKUP_ID" Type="raw" MaxLength="16" Nullable="false" />
+          <Property Name="OLD_ENDORSEMENTS_ID" Type="raw" MaxLength="16" />
+          <Property Name="AUTO_MFG_COVERAGE_ID" Type="raw" MaxLength="16" Nullable="false" />
+          <Property Name="RESTRICT_MARKUP_ID" Type="raw" MaxLength="16" Nullable="false" />
+          <Property Name="LAYOUT" Type="varchar2" MaxLength="20" />
+          <Property Name="SUSPENSE_DAYS" Type="number" Precision="4" Scale="0" />
+          <Property Name="CANCELLATION_DAYS" Type="number" Precision="4" Scale="0" />
+          <Property Name="CREATED_DATE" Type="date" Nullable="false" />
+          <Property Name="MODIFIED_DATE" Type="date" />
+          <Property Name="CREATED_BY" Type="varchar2" MaxLength="30" Nullable="false" />
+          <Property Name="MODIFIED_BY" Type="varchar2" MaxLength="30" />
+          <Property Name="COMMENT1" Type="varchar2" MaxLength="4000" />
+          <Property Name="FIXED_ESC_DURATION_FLAG" Type="raw" MaxLength="16" Nullable="false" />
+          <Property Name="POLICY" Type="varchar2" MaxLength="12" />
+          <Property Name="REPLACEMENT_POLICY_ID" Type="raw" MaxLength="16" Nullable="false" />
+          <Property Name="COINSURANCE_ID" Type="raw" MaxLength="16" Nullable="false" />
+          <Property Name="PARTICIPATION_PERCENT" Type="number" Precision="7" Scale="4" />
+          <Property Name="ID_VALIDATION_ID" Type="raw" MaxLength="16" Nullable="false" />
+          <Property Name="CLAIM_CONTROL_ID" Type="raw" MaxLength="16" Nullable="false" />
+          <Property Name="RATING_PLAN" Type="number" Precision="2" Scale="0" />
+          <Property Name="CURRENCY_CONVERSION_ID" Type="raw" MaxLength="16" />
+          <Property Name="CURRENCY_OF_COVERAGES_ID" Type="raw" MaxLength="16" />
+          <Property Name="REMAINING_MFG_DAYS" Type="number" Precision="5" Scale="0" />
+          <Property Name="ACSEL_PROD_CODE_ID" Type="raw" MaxLength="16" />
+          <Property Name="CANCELLATION_REASON_ID" Type="raw" MaxLength="16" />
+          <Property Name="FULL_REFUND_DAYS" Type="number" Precision="4" Scale="0" />
+          <Property Name="AUTO_SET_LIABILITY_ID" Type="raw" MaxLength="16" />
+          <Property Name="DEDUCTIBLE_PERCENT" Type="number" Precision="10" Scale="2" />
+          <Property Name="COVERAGE_DEDUCTIBLE_ID" Type="raw" MaxLength="16" Nullable="false" />
+          <Property Name="IGNORE_INCOMING_PREMIUM_ID" Type="raw" MaxLength="16" Nullable="false" />
+          <Property Name="REPAIR_DISCOUNT_PCT" Type="number" Precision="4" Scale="0" />
+          <Property Name="REPLACEMENT_DISCOUNT_PCT" Type="number" Precision="4" Scale="0" />
+          <Property Name="IGNORE_COVERAGE_AMT_ID" Type="raw" MaxLength="16" Nullable="false" />
+          <Property Name="BACKEND_CLAIMS_ALLOWED_ID" Type="raw" MaxLength="16" Nullable="false" />
+          <Property Name="EDIT_MFG_TERM_ID" Type="raw" MaxLength="16" Nullable="false" />
+          <Property Name="ACCT_BUSINESS_UNIT_ID" Type="raw" MaxLength="16" />
+          <Property Name="USE_DELIVERY_DATE_ID" Type="raw" MaxLength="16" />
+          <Property Name="IGNORE_WAITING_PERIOD_WSD_PSD" Type="raw" MaxLength="16" Nullable="false" />
+          <Property Name="INSTALLMENT_PAYMENT_ID" Type="raw" MaxLength="16" Nullable="false" />
+          <Property Name="DAYS_OF_FIRST_PYMT" Type="number" Precision="3" Scale="0" Nullable="false" />
+          <Property Name="DAYS_TO_SEND_LETTER" Type="number" Precision="2" Scale="0" Nullable="false" />
+          <Property Name="DAYS_TO_CANCEL_CERT" Type="number" Precision="2" Scale="0" Nullable="false" />
+          <Property Name="DEDUCT_BY_MFG_ID" Type="raw" MaxLength="16" />
+          <Property Name="PENALTY_PCT" Type="number" Precision="8" Scale="4" />
+          <Property Name="CLIP_PERCENT" Type="number" Precision="7" Scale="4" />
+          <Property Name="BASE_INSTALLMENTS" Type="raw" MaxLength="16" />
+          <Property Name="BILLING_CYCLE_FREQUENCY" Type="raw" MaxLength="16" />
+          <Property Name="MAX_INSTALLMENTS" Type="number" Precision="2" Scale="0" />
+          <Property Name="INSTALLMENTS_BASE_REDUCER" Type="number" Precision="2" Scale="0" />
+          <Property Name="IS_COMM_P_CODE_ID" Type="raw" MaxLength="16" Nullable="false" />
+          <Property Name="PAST_DUE_MONTHS_ALLOWED" Type="number" Precision="2" Scale="0" />
+          <Property Name="COLLECTION_RE_ATTEMPTS" Type="number" Precision="2" Scale="0" />
+          <Property Name="INCLUDE_FIRST_PMT" Type="raw" MaxLength="16" />
+          <Property Name="COLLECTION_CYCLE_TYPE_ID" Type="raw" MaxLength="16" />
+          <Property Name="CYCLE_DAY" Type="number" Precision="2" Scale="0" />
+          <Property Name="OFFSET_BEFORE_DUE_DATE" Type="number" Precision="2" Scale="0" />
+          <Property Name="INS_PREMIUM_FACTOR" Type="number" Precision="9" Scale="6" />
+          <Property Name="EXTEND_COVERAGE_ID" Type="raw" MaxLength="16" Nullable="false" />
+          <Property Name="EXTRA_MONS_TO_EXTEND_COVERAGE" Type="number" Precision="2" Scale="0" />
+          <Property Name="EXTRA_DAYS_TO_EXTEND_COVERAGE" Type="number" Precision="4" Scale="0" />
+          <Property Name="ALLOW_DIFFERENT_COVERAGE" Type="raw" MaxLength="16" Nullable="false" />
+          <Property Name="ALLOW_NO_EXTENDED" Type="raw" MaxLength="16" />
+          <Property Name="NUM_OF_CLAIMS" Type="number" Precision="4" Scale="0" />
+          <Property Name="CLAIM_LIMIT_BASED_ON_ID" Type="raw" MaxLength="16" />
+          <Property Name="OLD_CLAIM_LIMIT_BY_ID" Type="raw" MaxLength="16" />
+          <Property Name="DAYS_TO_REPORT_CLAIM" Type="number" Precision="3" Scale="0" />
+          <Property Name="MARKETING_PROMO_ID" Type="raw" MaxLength="16" />
+          <Property Name="CUST_ADDRESS_REQUIRED_ID" Type="raw" MaxLength="16" Nullable="false" />
+          <Property Name="FIRST_PYMT_MONTHS" Type="number" Precision="2" Scale="0" />
+          <Property Name="DEDUCTIBLE_BASED_ON_ID" Type="raw" MaxLength="16" Nullable="false" />
+          <Property Name="ALLOW_MULTIPLE_REJECTIONS_ID" Type="raw" MaxLength="16" />
+          <Property Name="PRO_RATA_METHOD_ID" Type="raw" MaxLength="16" />
+          <Property Name="OLD_CERT_AUTONUMBER_PREFIX" Type="varchar2" MaxLength="8" />
+          <Property Name="PAY_OUTSTANDING_PREMIUM_ID" Type="raw" MaxLength="16" />
+          <Property Name="ALLOW_PYMT_SKIP_MONTHS" Type="raw" MaxLength="16" />
+          <Property Name="AUTHORIZED_AMOUNT_MAX_UPDATES" Type="number" Precision="2" Scale="0" />
+          <Property Name="NUMBER_OF_DAYS_TO_REACTIVATE" Type="number" Precision="2" Scale="0" />
+          <Property Name="RECURRING_PREMIUM_ID" Type="raw" MaxLength="16" Nullable="false" />
+          <Property Name="RECURRING_WARRANTY_PERIOD" Type="number" Precision="4" Scale="0" />
+          <Property Name="BILLING_CYCLE_TYPE_ID" Type="raw" MaxLength="16" />
+          <Property Name="DAILY_RATE_BASED_ON_ID" Type="raw" MaxLength="16" />
+          <Property Name="ALLOW_BILLING_AFTER_CNCLTN" Type="raw" MaxLength="16" />
+          <Property Name="ALLOW_COLLCTN_AFTER_CNCLTN" Type="raw" MaxLength="16" />
+          <Property Name="REPLACEMENT_POLICY_CLAIM_COUNT" Type="number" Precision="2" Scale="0" />
+          <Property Name="FUTURE_DATE_ALLOW_FOR_ID" Type="raw" MaxLength="16" Nullable="false" />
+          <Property Name="ALLOW_COVERAGE_MARKUP_DTBN" Type="raw" MaxLength="16" />
+          <Property Name="NUM_OF_REPAIR_CLAIMS" Type="number" Precision="2" Scale="0" />
+          <Property Name="NUM_OF_REPLACEMENT_CLAIMS" Type="number" Precision="2" Scale="0" />
+          <Property Name="RDO_NAME" Type="varchar2" MaxLength="50" />
+          <Property Name="RDO_TAX_ID" Type="varchar2" MaxLength="15" />
+          <Property Name="RDO_PERCENT" Type="number" Precision="8" Scale="4" />
+          <Property Name="PAYMENT_PROCESSING_TYPE_ID" Type="raw" MaxLength="16" />
+          <Property Name="THIRD_PARTY_NAME" Type="varchar2" MaxLength="50" />
+          <Property Name="THIRD_PARTY_TAX_ID" Type="varchar2" MaxLength="15" />
+		  <Property Name="LINE_OF_BUSINESS_ID" Type="raw" MaxLength="16" />
+		  <Property Name="PRODUCER_ID" Type="raw" MaxLength="16" />
+        </EntityType>
+        <EntityType Name="ELP_COVERAGE">
+          <Key>
+            <PropertyRef Name="COVERAGE_ID" />
+          </Key>
+          <Property Name="COVERAGE_ID" Type="raw" MaxLength="16" Nullable="false" />
+          <Property Name="ITEM_ID" Type="raw" MaxLength="16" Nullable="false" />
+          <Property Name="PRODUCT_ITEM_ID" Type="raw" MaxLength="16" Nullable="false" />
+          <Property Name="COVERAGE_TYPE_ID" Type="raw" MaxLength="16" Nullable="false" />
+          <Property Name="CERTIFICATE_DURATION" Type="number" Precision="3" Scale="0" Nullable="false" />
+          <Property Name="COVERAGE_DURATION" Type="number" Precision="3" Scale="0" Nullable="false" />
+          <Property Name="EFFECTIVE" Type="date" Nullable="false" />
+          <Property Name="EXPIRATION" Type="date" Nullable="false" />
+          <Property Name="OFFSET_TO_START" Type="number" Precision="2" Scale="0" Nullable="false" />
+          <Property Name="OPTIONAL_ID" Type="raw" MaxLength="16" Nullable="false" />
+          <Property Name="LIABILITY_LIMIT" Type="number" Precision="8" Scale="0" />
+          <Property Name="DEDUCTIBLE" Type="number" Precision="11" Scale="2" Nullable="false" />
+          <Property Name="CREATED_DATE" Type="date" Nullable="false" />
+          <Property Name="MODIFIED_DATE" Type="date" />
+          <Property Name="CREATED_BY" Type="varchar2" MaxLength="30" Nullable="false" />
+          <Property Name="MODIFIED_BY" Type="varchar2" MaxLength="30" />
+          <Property Name="EARNING_CODE_ID" Type="raw" MaxLength="16" />
+          <Property Name="DEDUCTIBLE_PERCENT" Type="number" Precision="10" Scale="2" />
+          <Property Name="REPAIR_DISCOUNT_PCT" Type="number" Precision="4" Scale="0" />
+          <Property Name="REPLACEMENT_DISCOUNT_PCT" Type="number" Precision="4" Scale="0" />
+          <Property Name="LIABILITY_LIMIT_PERCENT" Type="number" Precision="4" Scale="0" />
+          <Property Name="IS_CLAIM_ALLOWED_ID" Type="raw" MaxLength="16" Nullable="false" />
+          <Property Name="USE_COVERAGE_START_DATE_ID" Type="raw" MaxLength="16" Nullable="false" />
+          <Property Name="METHOD_OF_REPAIR_ID" Type="raw" MaxLength="16" />
+          <Property Name="DEDUCTIBLE_BASED_ON_ID" Type="raw" MaxLength="16" Nullable="false" />
+          <Property Name="AGENT_CODE" Type="varchar2" MaxLength="15" />
+          <Property Name="OFFSET_TO_START_DAYS" Type="number" Precision="4" Scale="0" Nullable="false" />
+          <Property Name="OFFSET_METHOD_ID" Type="raw" MaxLength="16" />
+          <Property Name="MARKUP_DISTRIBUTION_PERCENT" Type="number" Precision="4" Scale="0" />
+          <Property Name="COV_LIABILITY_LIMIT" Type="number" Precision="11" Scale="2" />
+          <Property Name="COV_LIABILITY_LIMIT_PERCENT" Type="number" Precision="4" Scale="0" />
+          <Property Name="RECOVER_DEVICE_ID" Type="raw" MaxLength="16" />
+        </EntityType>
+        <EntityType Name="ELP_DEALER">
+          <Key>
+            <PropertyRef Name="DEALER_ID" />
+          </Key>
+          <Property Name="DEALER_ID" Type="raw" MaxLength="16" Nullable="false" />
+          <Property Name="DEALER" Type="varchar2" MaxLength="5" Nullable="false" />
+          <Property Name="DEALER_NAME" Type="varchar2" MaxLength="50" Nullable="false" />
+          <Property Name="TAX_ID_NUMBER" Type="varchar2" MaxLength="15" />
+          <Property Name="COMPANY_ID" Type="raw" MaxLength="16" Nullable="false" />
+          <Property Name="ADDRESS_ID" Type="raw" MaxLength="16" />
+          <Property Name="CONTACT_NAME" Type="varchar2" MaxLength="30" />
+          <Property Name="CONTACT_PHONE" Type="varchar2" MaxLength="15" />
+          <Property Name="CONTACT_EXT" Type="varchar2" MaxLength="5" />
+          <Property Name="CONTACT_FAX" Type="varchar2" MaxLength="15" />
+          <Property Name="CONTACT_EMAIL" Type="varchar2" MaxLength="50" />
+          <Property Name="LAST_CERTIFICATE_NBR" Type="number" Precision="12" Scale="0" />
+          <Property Name="RETAILER_ID" Type="raw" MaxLength="16" Nullable="false" />
+          <Property Name="CREATED_DATE" Type="date" Nullable="false" />
+          <Property Name="MODIFIED_DATE" Type="date" />
+          <Property Name="DEALER_GROUP_ID" Type="raw" MaxLength="16" />
+          <Property Name="CREATED_BY" Type="varchar2" MaxLength="30" Nullable="false" />
+          <Property Name="MODIFIED_BY" Type="varchar2" MaxLength="30" />
+          <Property Name="ACTIVE_FLAG" Type="varchar2" MaxLength="1" Nullable="false" />
+          <Property Name="SERVICE_NETWORK_ID" Type="raw" MaxLength="16" />
+          <Property Name="IBNR_FACTOR" Type="number" Precision="9" Scale="6" />
+          <Property Name="IBNR_COMPUTE_METHOD_ID" Type="raw" MaxLength="16" />
+          <Property Name="CONVERT_PRODUCT_CODE_ID" Type="raw" MaxLength="16" />
+          <Property Name="DEALER_TYPE_ID" Type="raw" MaxLength="16" Nullable="false" />
+          <Property Name="BRANCH_VALIDATION_ID" Type="raw" MaxLength="16" Nullable="false" />
+          <Property Name="BANK_INFO_ID" Type="raw" MaxLength="16" />
+          <Property Name="BUSINESS_NAME" Type="varchar2" MaxLength="50" />
+          <Property Name="STATE_TAX_ID_NUMBER" Type="varchar2" MaxLength="15" />
+          <Property Name="CITY_TAX_ID_NUMBER" Type="varchar2" MaxLength="15" />
+          <Property Name="WEB_ADDRESS" Type="varchar2" MaxLength="50" />
+          <Property Name="MAILING_ADDRESS_ID" Type="raw" MaxLength="16" />
+          <Property Name="NUMBER_OF_OTHER_LOCATIONS" Type="number" Precision="4" Scale="0" />
+          <Property Name="PRICE_MATRIX_USES_WP_ID" Type="raw" MaxLength="16" Nullable="false" />
+          <Property Name="DEDUCTIBLE_DISCOUNT" Type="number" Precision="11" Scale="2" />
+          <Property Name="INVOICE_BY_BRANCH_ID" Type="raw" MaxLength="16" Nullable="false" />
+          <Property Name="SEPARATED_CREDIT_NOTES_ID" Type="raw" MaxLength="16" Nullable="false" />
+          <Property Name="MANUAL_ENROLLMENT_ALLOWED_ID" Type="raw" MaxLength="16" Nullable="false" />
+          <Property Name="EDIT_BRANCH_ID" Type="raw" MaxLength="16" Nullable="false" />
+          <Property Name="OLITA_SEARCH" Type="raw" MaxLength="16" Nullable="false" />
+          <Property Name="DELAY_FACTOR_FLAG_ID" Type="raw" MaxLength="16" Nullable="false" />
+          <Property Name="INSTALLMENT_FACTOR_FLAG_ID" Type="raw" MaxLength="16" Nullable="false" />
+          <Property Name="STAT_IBNR_FACTOR" Type="number" Precision="9" Scale="6" />
+          <Property Name="STAT_IBNR_COMPUTE_METHOD_ID" Type="raw" MaxLength="16" />
+          <Property Name="LAE_IBNR_FACTOR" Type="number" Precision="9" Scale="6" />
+          <Property Name="LAE_IBNR_COMPUTE_METHOD_ID" Type="raw" MaxLength="16" />
+          <Property Name="REGISTRATION_PROCESS_FLAG_ID" Type="raw" MaxLength="16" Nullable="false" />
+          <Property Name="REGISTRATION_EMAIL_FROM" Type="varchar2" MaxLength="50" />
+          <Property Name="USE_WARRANTY_MASTER_ID" Type="raw" MaxLength="16" Nullable="false" />
+          <Property Name="USE_INCOMING_SALES_TAX_ID" Type="raw" MaxLength="16" Nullable="false" />
+          <Property Name="AUTO_PROCESS_FILE_ID" Type="raw" MaxLength="16" Nullable="false" />
+          <Property Name="ROUND_COMM_FLAG_ID" Type="raw" MaxLength="16" Nullable="false" />
+          <Property Name="CERT_CANCEL_BY_ID" Type="raw" MaxLength="16" Nullable="false" />
+          <Property Name="PROGRAM_NAME" Type="varchar2" MaxLength="50" />
+          <Property Name="SERVICE_LINE_PHONE" Type="varchar2" MaxLength="15" />
+          <Property Name="SERVICE_LINE_FAX" Type="varchar2" MaxLength="15" />
+          <Property Name="SERVICE_LINE_EMAIL" Type="varchar2" MaxLength="50" />
+          <Property Name="ESC_INSURANCE_LABEL" Type="varchar2" MaxLength="50" />
+          <Property Name="EXPECTED_PREMIUM_IS_WP_ID" Type="raw" MaxLength="16" Nullable="false" />
+          <Property Name="CLAIM_SYSTEM_ID" Type="raw" MaxLength="16" Nullable="false" />
+          <Property Name="ASSURANT_IS_OBLIGOR_ID" Type="raw" MaxLength="16" />
+          <Property Name="USE_INSTALLMENT_DEFN_ID" Type="raw" MaxLength="16" Nullable="false" />
+          <Property Name="MAX_MAN_WARR" Type="number" Precision="4" Scale="0" Nullable="false" />
+          <Property Name="MIGRATION_PATH_ID" Type="raw" MaxLength="16" />
+          <Property Name="USE_EQUIPMENT_ID" Type="raw" MaxLength="16" Nullable="false" />
+          <Property Name="PAY_DEDUCTIBLE_ID" Type="raw" MaxLength="16" />
+          <Property Name="CANCEL_REQUEST_FLAG_ID" Type="raw" MaxLength="16" />
+          <Property Name="BANK_INFO_MANDATORY_ID" Type="raw" MaxLength="16" Nullable="false" />
+          <Property Name="VALIDATE_SKU_ID" Type="raw" MaxLength="16" />
+          <Property Name="VALIDATE_BILLING_CYCLE_ID" Type="raw" MaxLength="16" />
+          <Property Name="MIN_MAN_WARR" Type="number" Precision="4" Scale="0" />
+          <Property Name="AUTH_AMT_BASED_ON_ID" Type="raw" MaxLength="16" />
+          <Property Name="EQUIPMENT_LIST_CODE" Type="varchar2" MaxLength="20" />
+          <Property Name="QUESTION_LIST_CODE" Type="varchar2" MaxLength="20" />
+          <Property Name="PRODUCT_BY_REGION_ID" Type="raw" MaxLength="16" />
+          <Property Name="CLAIM_VERIFICATION_NUM_LENGTH" Type="number" Precision="2" Scale="0" />
+          <Property Name="CLAIM_EXTENDED_STATUS_ENTRY_ID" Type="raw" MaxLength="16" Nullable="false" />
+          <Property Name="VALIDATE_SERIAL_NUMBER_ID" Type="raw" MaxLength="16" Nullable="false" />
+          <Property Name="ALLOW_UPDATE_CANCELLATION_ID" Type="raw" MaxLength="16" />
+          <Property Name="REJECT_AFTER_CANCELLATION_ID" Type="raw" MaxLength="16" />
+          <Property Name="ALLOW_FUTURE_CANCEL_DATE_ID" Type="raw" MaxLength="16" />
+          <Property Name="DEALER_SUPPORT_WEB_CLAIMS_ID" Type="raw" MaxLength="16" Nullable="false" />
+          <Property Name="DEDUCTIBLE_COLLECTION_ID" Type="raw" MaxLength="16" Nullable="false" />
+          <Property Name="CLAIM_STATUS_FOR_EXT_SYSTEM_ID" Type="raw" MaxLength="16" Nullable="false" />
+          <Property Name="NEW_DEVICE_SKU_REQUIRED_ID" Type="raw" MaxLength="16" />
+          <Property Name="LICENSE_TAG_VALIDATION" Type="raw" MaxLength="16" />
+          <Property Name="ENROLLFILEPREPROCESSPROC_ID" Type="raw" MaxLength="16" />
+          <Property Name="CERTNUMLOOKUPBY_ID" Type="raw" MaxLength="16" />
+          <Property Name="REPLACECLAIMDEDTOLERANCEPCT" Type="number" Precision="5" Scale="2" />
+          <Property Name="USE_CLAIM_AUTHORIZATION_ID" Type="raw" MaxLength="16" />
+          <Property Name="ALLOW_ADJUST_PYMTDATE_ID" Type="raw" MaxLength="16" />
+          <Property Name="BILLING_PROCESS_CODE_ID" Type="raw" MaxLength="16" />
+          <Property Name="BILLRESULT_EXCEPTION_DEST_ID" Type="raw" MaxLength="16" />
+          <Property Name="BILLRESULT_NOTIFICATION_EMAIL" Type="varchar2" MaxLength="250" />
+          <Property Name="INSERT_MAKE_IF_NOT_EXIST_ID" Type="raw" MaxLength="16" Nullable="false" />
+          <Property Name="CLIENT_DEALER_CODE" Type="varchar2" MaxLength="10" />
+          <Property Name="MAX_NCRECORDS" Type="number" Precision="38" Scale="0" />
+          <Property Name="FULLFILEPROCESS_ID" Type="raw" MaxLength="16" Nullable="false" />
+          <Property Name="ALLOW_PROD_CHNG_FRM_COV_EFF_ID" Type="raw" MaxLength="16" Nullable="false" />
+          <Property Name="SUSPENDED_ENROLMENTS_ALLOWED" Type="raw" MaxLength="16" />
+          <Property Name="OLD_ENDORSEMENTS_ID" Type="raw" MaxLength="16" />
+          <Property Name="CERTIFICATES_AUTONUMBER_ID" Type="raw" MaxLength="16" />
+          <Property Name="CERTIFICATES_AUTONUMBER_PREFIX" Type="varchar2" MaxLength="8" />
+          <Property Name="FILE_LOAD_NOTIFICATION_EMAIL" Type="varchar2" MaxLength="250" />
+          <Property Name="MAX_CERTNUM_LENGTH_ALLOWED" Type="number" Precision="2" Scale="0" />
+          <Property Name="AUTO_REJ_ERR_TYPE_ID" Type="raw" MaxLength="16" />
+          <Property Name="REJECTED_RECORD_RECON_ID" Type="raw" MaxLength="16" />
+          <Property Name="LAWSUIT_MANDATORY_ID" Type="raw" MaxLength="16" Nullable="false" />
+          <Property Name="AUTO_SELECT_SERVICE_CENTER" Type="raw" MaxLength="16" />
+          <Property Name="DEALER_EXTRACT_PERIOD_ID" Type="raw" MaxLength="16" />
+          <Property Name="POLICY_EVENT_NOTIFY_EMAIL" Type="varchar2" MaxLength="250" />
+          <Property Name="CLAIM_AUTO_APPROVE_ID" Type="raw" MaxLength="16" Nullable="false" />
+          <Property Name="DEF_SALVAGE_CENTER_ID" Type="raw" MaxLength="16" />
+          <Property Name="REUSE_SERIAL_NUMBER_ID" Type="raw" MaxLength="16" Nullable="false" />
+          <Property Name="REQUIRE_CUSTOMER_AML_INFO_ID" Type="raw" MaxLength="16" Nullable="false" />
+          <Property Name="AUTO_PROCESS_PYMT_FILE_ID" Type="raw" MaxLength="16" Nullable="false" />
+          <Property Name="MAX_COMMISSION_PERCENT" Type="number" Precision="7" Scale="4" />
+          <Property Name="GRACE_PERIOD_MONTHS" Type="number" Precision="38" Scale="0" />
+          <Property Name="GRACE_PERIOD_DAYS" Type="number" Precision="38" Scale="0" />
+          <Property Name="AUTO_GEN_REJ_PYMT_FILE_ID" Type="raw" MaxLength="16" />
+          <Property Name="PYMT_REJ_REC_RECON_ID" Type="raw" MaxLength="16" />
+          <Property Name="PLAN_CODE_IN_QUOTE_OUTPUT_ID" Type="raw" MaxLength="16" />
+          <Property Name="VSC_VIN_RESTRIC_ID" Type="raw" MaxLength="16" />
+        </EntityType>
+        <EntityType Name="ELP_DEALER_GROUP">
+          <Key>
+            <PropertyRef Name="DEALER_GROUP_ID" />
+          </Key>
+          <Property Name="DEALER_GROUP_ID" Type="raw" MaxLength="16" Nullable="false" />
+          <Property Name="DESCRIPTION" Type="varchar2" MaxLength="255" Nullable="false" />
+          <Property Name="CODE" Type="varchar2" MaxLength="5" Nullable="false" />
+          <Property Name="CREATED_DATE" Type="date" Nullable="false" />
+          <Property Name="MODIFIED_DATE" Type="date" />
+          <Property Name="CREATED_BY" Type="varchar2" MaxLength="30" Nullable="false" />
+          <Property Name="MODIFIED_BY" Type="varchar2" MaxLength="30" />
+          <Property Name="COMPANY_GROUP_ID" Type="raw" MaxLength="16" />
+          <Property Name="ACCTING_BY_GROUP_ID" Type="raw" MaxLength="16" Nullable="false" />
+          <Property Name="BANK_INFO_ID" Type="raw" MaxLength="16" />
+          <Property Name="USE_CLIENT_CODE_YNID" Type="raw" MaxLength="16" />
+          <Property Name="AUTO_REJ_ERR_TYPE_ID" Type="raw" MaxLength="16" />
+        </EntityType>
+        <EntityType Name="ELP_DEALER_RULE_LIST">
+          <Key>
+            <PropertyRef Name="DEALER_RULE_LIST_ID" />
+          </Key>
+          <Property Name="DEALER_RULE_LIST_ID" Type="raw" MaxLength="16" Nullable="false" />
+          <Property Name="RULE_LIST_ID" Type="raw" MaxLength="16" Nullable="false" />
+          <Property Name="DEALER_ID" Type="raw" MaxLength="16" Nullable="false" />
+          <Property Name="EFFECTIVE" Type="date" Nullable="false" />
+          <Property Name="EXPIRATION" Type="date" Nullable="false" />
+          <Property Name="CREATED_DATE" Type="date" Nullable="false" />
+          <Property Name="CREATED_BY" Type="varchar2" MaxLength="30" Nullable="false" />
+          <Property Name="MODIFIED_DATE" Type="date" />
+          <Property Name="MODIFIED_BY" Type="varchar2" MaxLength="30" />
+        </EntityType>
+        <EntityType Name="ELP_ISSUE">
+          <Key>
+            <PropertyRef Name="ISSUE_ID" />
+          </Key>
+          <Property Name="ISSUE_ID" Type="raw" MaxLength="16" Nullable="false" />
+          <Property Name="CODE" Type="varchar2" MaxLength="255" Nullable="false" />
+          <Property Name="DESCRIPTION" Type="varchar2" MaxLength="2000" Nullable="false" />
+          <Property Name="EFFECTIVE" Type="date" Nullable="false" />
+          <Property Name="EXPIRATION" Type="date" Nullable="false" />
+          <Property Name="ISSUE_TYPE_ID" Type="raw" MaxLength="16" />
+          <Property Name="CREATED_DATE" Type="date" Nullable="false" />
+          <Property Name="CREATED_BY" Type="varchar2" MaxLength="30" Nullable="false" />
+          <Property Name="MODIFIED_DATE" Type="date" />
+          <Property Name="MODIFIED_BY" Type="varchar2" MaxLength="30" />
+        </EntityType>
+        <EntityType Name="ELP_ISSUE_QUESTION">
+          <Key>
+            <PropertyRef Name="ISSUE_QUESTION_ID" />
+          </Key>
+          <Property Name="ISSUE_QUESTION_ID" Type="raw" MaxLength="16" Nullable="false" />
+          <Property Name="ISSUE_ID" Type="raw" MaxLength="16" Nullable="false" />
+          <Property Name="SOFT_QUESTION_ID" Type="raw" MaxLength="16" Nullable="false" />
+          <Property Name="DISPLAY_ORDER" Type="number" Precision="4" Scale="0" />
+          <Property Name="EFFECTIVE" Type="date" Nullable="false" />
+          <Property Name="EXPIRATION" Type="date" Nullable="false" />
+          <Property Name="CREATED_DATE" Type="date" Nullable="false" />
+          <Property Name="CREATED_BY" Type="varchar2" MaxLength="30" Nullable="false" />
+          <Property Name="MODIFIED_DATE" Type="date" />
+          <Property Name="MODIFIED_BY" Type="varchar2" MaxLength="30" />
+        </EntityType>
+        <EntityType Name="ELP_ITEM">
+          <Key>
+            <PropertyRef Name="ITEM_ID" />
+          </Key>
+          <Property Name="ITEM_ID" Type="raw" MaxLength="16" Nullable="false" />
+          <Property Name="PRODUCT_CODE_ID" Type="raw" MaxLength="16" Nullable="false" />
+          <Property Name="RISK_TYPE_ID" Type="raw" MaxLength="16" Nullable="false" />
+          <Property Name="MAX_REPLACEMENT_COST" Type="number" Precision="11" Scale="2" />
+          <Property Name="CREATED_DATE" Type="date" Nullable="false" />
+          <Property Name="MODIFIED_DATE" Type="date" />
+          <Property Name="CREATED_BY" Type="varchar2" MaxLength="30" Nullable="false" />
+          <Property Name="MODIFIED_BY" Type="varchar2" MaxLength="30" />
+          <Property Name="ITEM_NUMBER" Type="number" Precision="9" Scale="0" Nullable="false" />
+          <Property Name="OPTIONAL_ITEM" Type="raw" MaxLength="16" Nullable="false" />
+          <Property Name="OPTIONAL_ITEM_CODE" Type="varchar2" MaxLength="5" />
+        </EntityType>
+        <EntityType Name="ELP_LIST_PRICE">
+          <Key>
+            <PropertyRef Name="LIST_PRICE_ID" />
+          </Key>
+          <Property Name="LIST_PRICE_ID" Type="raw" MaxLength="16" Nullable="false" />
+          <Property Name="WARRANTY_MASTER_ID" Type="raw" MaxLength="16" Nullable="false" />
+          <Property Name="EFFECTIVE" Type="date" Nullable="false" />
+          <Property Name="EXPIRATION" Type="date" />
+          <Property Name="CREATED_DATE" Type="date" Nullable="false" />
+          <Property Name="MODIFIED_DATE" Type="date" />
+          <Property Name="CREATED_BY" Type="varchar2" MaxLength="120" Nullable="false" />
+          <Property Name="MODIFIED_BY" Type="varchar2" MaxLength="120" />
+          <Property Name="AMOUNT" Type="number" Precision="11" Scale="2" Nullable="false" />
+          <Property Name="AMOUNT_TYPE_ID" Type="raw" MaxLength="16" />
+        </EntityType>
+        <EntityType Name="ELP_PRODUCT_CODE">
+          <Key>
+            <PropertyRef Name="PRODUCT_CODE_ID" />
+          </Key>
+          <Property Name="PRODUCT_CODE_ID" Type="raw" MaxLength="16" Nullable="false" />
+          <Property Name="DEALER_ID" Type="raw" MaxLength="16" Nullable="false" />
+          <Property Name="PRODUCT_CODE" Type="varchar2" MaxLength="5" Nullable="false" />
+          <Property Name="RISK_GROUP_ID" Type="raw" MaxLength="16" Nullable="false" />
+          <Property Name="PRICE_MATRIX_ID" Type="raw" MaxLength="16" Nullable="false" />
+          <Property Name="PERCENT_OF_RETAIL" Type="number" Precision="7" Scale="4" />
+          <Property Name="CREATED_DATE" Type="date" Nullable="false" />
+          <Property Name="MODIFIED_DATE" Type="date" />
+          <Property Name="DESCRIPTION" Type="varchar2" MaxLength="255" />
+          <Property Name="METHOD_OF_REPAIR_ID" Type="raw" MaxLength="16" Nullable="false" />
+          <Property Name="TYPE_OF_EQUIPMENT_ID" Type="raw" MaxLength="16" Nullable="false" />
+          <Property Name="CREATED_BY" Type="varchar2" MaxLength="30" Nullable="false" />
+          <Property Name="MODIFIED_BY" Type="varchar2" MaxLength="30" />
+          <Property Name="USE_DEPRECIATION" Type="raw" MaxLength="16" />
+          <Property Name="BUNDLED_ITEM_ID" Type="raw" MaxLength="16" />
+          <Property Name="METHOD_OF_REPAIR_BY_PRICE_ID" Type="raw" MaxLength="16" Nullable="false" />
+          <Property Name="COMMENTS" Type="varchar2" MaxLength="4000" />
+          <Property Name="SPECIAL_SERVICE" Type="varchar2" MaxLength="160" />
+          <Property Name="BILLING_FREQUENCY_ID" Type="raw" MaxLength="16" />
+          <Property Name="NUMBER_OF_INSTALLMENTS" Type="number" Precision="3" Scale="0" />
+          <Property Name="NUM_OF_CLAIMS" Type="number" Precision="4" Scale="0" />
+          <Property Name="SPLIT_WARRANTY_ID" Type="raw" MaxLength="16" Nullable="false" />
+          <Property Name="CLAIM_WAITING_PERIOD" Type="number" Precision="2" Scale="0" />
+          <Property Name="FULL_REFUND_DAYS" Type="number" Precision="4" Scale="0" />
+          <Property Name="IGNORE_WAITING_PERIOD_WSD_PSD" Type="raw" MaxLength="16" />
+          <Property Name="PROD_LIABILITY_LIMIT" Type="number" Precision="11" Scale="2" />
+          <Property Name="PROD_LIABILITY_LIMIT_PERCENT" Type="number" Precision="4" Scale="0" />
+          <Property Name="PROD_LIABILITY_LIMIT_BASE_ID" Type="raw" MaxLength="16" />
+          <Property Name="PROD_LIABILITY_LIMIT_POLICY_ID" Type="raw" MaxLength="16" />
+          <Property Name="CLAIM_AUTO_APPROVE_PSP" Type="number" Precision="6" Scale="2" />
+          <Property Name="UPG_FINANCE_BAL_COMP_METH_ID" Type="raw" MaxLength="16" />
+          <Property Name="UPGRADE_PROGRAM_ID" Type="raw" MaxLength="16" Nullable="false" />
+          <Property Name="NUM_OF_REPAIR_CLAIMS" Type="number" Precision="2" Scale="0" />
+          <Property Name="NUM_OF_REPLACEMENT_CLAIMS" Type="number" Precision="2" Scale="0" />
+          <Property Name="ANALYSIS_CODE_1" Type="varchar2" MaxLength="15" />
+          <Property Name="ANALYSIS_CODE_2" Type="varchar2" MaxLength="15" />
+          <Property Name="ANALYSIS_CODE_3" Type="varchar2" MaxLength="15" />
+          <Property Name="ANALYSIS_CODE_4" Type="varchar2" MaxLength="15" />
+          <Property Name="ANALYSIS_CODE_5" Type="varchar2" MaxLength="15" />
+          <Property Name="ANALYSIS_CODE_6" Type="varchar2" MaxLength="15" />
+          <Property Name="ANALYSIS_CODE_7" Type="varchar2" MaxLength="15" />
+          <Property Name="ANALYSIS_CODE_8" Type="varchar2" MaxLength="15" />
+          <Property Name="ANALYSIS_CODE_9" Type="varchar2" MaxLength="15" />
+          <Property Name="ANALYSIS_CODE_10" Type="varchar2" MaxLength="15" />
+        </EntityType>
+        <EntityType Name="ELP_RULE">
+          <Key>
+            <PropertyRef Name="RULE_ID" />
+          </Key>
+          <Property Name="RULE_ID" Type="raw" MaxLength="16" Nullable="false" />
+          <Property Name="CODE" Type="varchar2" MaxLength="255" Nullable="false" />
+          <Property Name="DESCRIPTION" Type="varchar2" MaxLength="2000" Nullable="false" />
+          <Property Name="RULE_TYPE_ID" Type="raw" MaxLength="16" />
+          <Property Name="RULE_CATEGORY_ID" Type="raw" MaxLength="16" />
+          <Property Name="RULE_EXECUTION_POINT" Type="varchar2" MaxLength="255" />
+          <Property Name="RULE_DATA_SET" Type="varchar2" MaxLength="2000" />
+          <Property Name="EFFECTIVE" Type="date" Nullable="false" />
+          <Property Name="EXPIRATION" Type="date" Nullable="false" />
+          <Property Name="CREATED_DATE" Type="date" Nullable="false" />
+          <Property Name="CREATED_BY" Type="varchar2" MaxLength="30" Nullable="false" />
+          <Property Name="MODIFIED_DATE" Type="date" />
+          <Property Name="MODIFIED_BY" Type="varchar2" MaxLength="30" />
+        </EntityType>
+        <EntityType Name="ELP_RULE_ISSUE">
+          <Key>
+            <PropertyRef Name="RULE_ISSUE_ID" />
+          </Key>
+          <Property Name="RULE_ISSUE_ID" Type="raw" MaxLength="16" Nullable="false" />
+          <Property Name="RULE_ID" Type="raw" MaxLength="16" Nullable="false" />
+          <Property Name="ISSUE_ID" Type="raw" MaxLength="16" Nullable="false" />
+          <Property Name="EFFECTIVE" Type="date" Nullable="false" />
+          <Property Name="CREATED_DATE" Type="date" Nullable="false" />
+          <Property Name="CREATED_BY" Type="varchar2" MaxLength="30" Nullable="false" />
+          <Property Name="MODIFIED_DATE" Type="date" />
+          <Property Name="MODIFIED_BY" Type="varchar2" MaxLength="30" />
+          <Property Name="EXPIRATION" Type="date" Nullable="false" />
+        </EntityType>
+        <EntityType Name="ELP_RULE_LIST">
+          <Key>
+            <PropertyRef Name="RULE_LIST_ID" />
+          </Key>
+          <Property Name="RULE_LIST_ID" Type="raw" MaxLength="16" Nullable="false" />
+          <Property Name="CODE" Type="varchar2" MaxLength="255" Nullable="false" />
+          <Property Name="DESCRIPTION" Type="varchar2" MaxLength="2000" Nullable="false" />
+          <Property Name="EFFECTIVE" Type="date" Nullable="false" />
+          <Property Name="EXPIRATION" Type="date" Nullable="false" />
+          <Property Name="CREATED_DATE" Type="date" Nullable="false" />
+          <Property Name="CREATED_BY" Type="varchar2" MaxLength="30" Nullable="false" />
+          <Property Name="MODIFIED_DATE" Type="date" />
+          <Property Name="MODIFIED_BY" Type="varchar2" MaxLength="30" />
+        </EntityType>
+        <EntityType Name="ELP_RULE_LIST_DETAIL">
+          <Key>
+            <PropertyRef Name="RULE_LIST_DETAIL_ID" />
+          </Key>
+          <Property Name="RULE_LIST_DETAIL_ID" Type="raw" MaxLength="16" Nullable="false" />
+          <Property Name="RULE_LIST_ID" Type="raw" MaxLength="16" Nullable="false" />
+          <Property Name="RULE_ID" Type="raw" MaxLength="16" Nullable="false" />
+          <Property Name="EFFECTIVE" Type="date" Nullable="false" />
+          <Property Name="EXPIRATION" Type="date" Nullable="false" />
+          <Property Name="CREATED_DATE" Type="date" Nullable="false" />
+          <Property Name="CREATED_BY" Type="varchar2" MaxLength="30" Nullable="false" />
+          <Property Name="MODIFIED_DATE" Type="date" />
+          <Property Name="MODIFIED_BY" Type="varchar2" MaxLength="30" />
+        </EntityType>
+        <EntityType Name="ELP_SOFT_QUESTION">
+          <Key>
+            <PropertyRef Name="SOFT_QUESTION_ID" />
+          </Key>
+          <Property Name="SOFT_QUESTION_ID" Type="raw" MaxLength="16" Nullable="false" />
+          <Property Name="SOFT_QUESTION_GROUP_ID" Type="raw" MaxLength="16" Nullable="false" />
+          <Property Name="PARENT_ID" Type="raw" MaxLength="16" />
+          <Property Name="CHILD_ORDER" Type="number" Precision="38" Scale="0" Nullable="false" />
+          <Property Name="DESCRIPTION" Type="varchar2" MaxLength="100" />
+          <Property Name="CREATED_BY" Type="varchar2" MaxLength="30" Nullable="false" />
+          <Property Name="CREATED_DATE" Type="date" Nullable="false" />
+          <Property Name="MODIFIED_BY" Type="varchar2" MaxLength="30" />
+          <Property Name="MODIFIED_DATE" Type="date" />
+          <Property Name="CODE" Type="varchar2" MaxLength="255" />
+          <Property Name="QUESTION_TYPE_ID" Type="raw" MaxLength="16" />
+          <Property Name="IMPACTS_CLAIM_ID" Type="raw" MaxLength="16" />
+          <Property Name="ANSWER_TYPE_ID" Type="raw" MaxLength="16" />
+          <Property Name="CUSTOMER_MESSAGE" Type="varchar2" MaxLength="2000" />
+          <Property Name="ENTITY_ATTRIBUTE_ID" Type="raw" MaxLength="16" />
+          <Property Name="SEARCH_TAGS" Type="varchar2" MaxLength="255" />
+          <Property Name="EFFECTIVE" Type="date" />
+          <Property Name="EXPIRATION" Type="date" />
+        </EntityType>
+        <EntityType Name="ELP_SUSPENDED_REASON">
+          <Key>
+            <PropertyRef Name="SUSPENDED_REASON_ID" />
+          </Key>
+          <Property Name="SUSPENDED_REASON_ID" Type="raw" MaxLength="16" Nullable="false" />
+          <Property Name="DEALER_ID" Type="raw" MaxLength="16" Nullable="false" />
+          <Property Name="CODE" Type="varchar2" MaxLength="20" Nullable="false" />
+          <Property Name="DESCRIPTION" Type="varchar2" MaxLength="250" Nullable="false" />
+          <Property Name="CLAIM_ALLOWED" Type="char" MaxLength="1" Nullable="false" />
+          <Property Name="CREATED_BY" Type="varchar2" MaxLength="30" Nullable="false" />
+          <Property Name="CREATED_DATE" Type="date" Nullable="false" />
+          <Property Name="MODIFIED_BY" Type="varchar2" MaxLength="30" />
+          <Property Name="MODIFIED_DATE" Type="date" />
+        </EntityType>
+        <EntityType Name="ELP_WARRANTY_MASTER">
+          <Key>
+            <PropertyRef Name="WARRANTY_MASTER_ID" />
+          </Key>
+          <Property Name="WARRANTY_MASTER_ID" Type="raw" MaxLength="16" Nullable="false" />
+          <Property Name="DEALER_ID" Type="raw" MaxLength="16" />
+          <Property Name="SKU_NUMBER" Type="varchar2" MaxLength="18" />
+          <Property Name="SKU_DESCRIPTION" Type="varchar2" MaxLength="40" />
+          <Property Name="MANUFACTURER_ID" Type="varchar2" MaxLength="4" />
+          <Property Name="MANUFACTURER_NAME" Type="varchar2" MaxLength="30" />
+          <Property Name="WARRANTY_TYPE" Type="varchar2" MaxLength="1" />
+          <Property Name="WARRANTY_DESCRIPTION" Type="varchar2" MaxLength="40" />
+          <Property Name="MODEL_NUMBER" Type="varchar2" MaxLength="30" />
+          <Property Name="WARRANTY_DURATION_PARTS" Type="number" Precision="38" Scale="0" />
+          <Property Name="WARRANTY_DURATION_LABOR" Type="number" Precision="38" Scale="0" />
+          <Property Name="CREATED_DATE" Type="date" Nullable="false" />
+          <Property Name="MODIFIED_DATE" Type="date" />
+          <Property Name="CREATED_BY" Type="varchar2" MaxLength="30" Nullable="false" />
+          <Property Name="MODIFIED_BY" Type="varchar2" MaxLength="30" />
+          <Property Name="IS_DELETED" Type="varchar2" MaxLength="1" />
+          <Property Name="RISK_TYPE_ID" Type="raw" MaxLength="16" />
+          <Property Name="INTERNAL_MANUFACTURER_ID" Type="raw" MaxLength="16" />
+        </EntityType>
+        <Association Name="FK_BRANCH_DEALER">
+          <End Role="ELP_DEALER" Type="Self.ELP_DEALER" Multiplicity="1" />
+          <End Role="ELP_BRANCH" Type="Self.ELP_BRANCH" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ELP_DEALER">
+              <PropertyRef Name="DEALER_ID" />
+            </Principal>
+            <Dependent Role="ELP_BRANCH">
+              <PropertyRef Name="DEALER_ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_CONTRACT_DEALER">
+          <End Role="ELP_DEALER" Type="Self.ELP_DEALER" Multiplicity="1" />
+          <End Role="ELP_CONTRACT" Type="Self.ELP_CONTRACT" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ELP_DEALER">
+              <PropertyRef Name="DEALER_ID" />
+            </Principal>
+            <Dependent Role="ELP_CONTRACT">
+              <PropertyRef Name="DEALER_ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_COVERAGE_ITEM">
+          <End Role="ELP_ITEM" Type="Self.ELP_ITEM" Multiplicity="1" />
+          <End Role="ELP_COVERAGE" Type="Self.ELP_COVERAGE" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ELP_ITEM">
+              <PropertyRef Name="ITEM_ID" />
+            </Principal>
+            <Dependent Role="ELP_COVERAGE">
+              <PropertyRef Name="ITEM_ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_DEALER_DEALER_GROUP">
+          <End Role="ELP_DEALER_GROUP" Type="Self.ELP_DEALER_GROUP" Multiplicity="0..1" />
+          <End Role="ELP_DEALER" Type="Self.ELP_DEALER" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ELP_DEALER_GROUP">
+              <PropertyRef Name="DEALER_GROUP_ID" />
+            </Principal>
+            <Dependent Role="ELP_DEALER">
+              <PropertyRef Name="DEALER_GROUP_ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_DRL_ID">
+          <End Role="ELP_DEALER" Type="Self.ELP_DEALER" Multiplicity="1" />
+          <End Role="ELP_DEALER_RULE_LIST" Type="Self.ELP_DEALER_RULE_LIST" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ELP_DEALER">
+              <PropertyRef Name="DEALER_ID" />
+            </Principal>
+            <Dependent Role="ELP_DEALER_RULE_LIST">
+              <PropertyRef Name="DEALER_ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ELP_ISSUE">
+          <End Role="ELP_ISSUE" Type="Self.ELP_ISSUE" Multiplicity="1" />
+          <End Role="ELP_RULE_ISSUE" Type="Self.ELP_RULE_ISSUE" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ELP_ISSUE">
+              <PropertyRef Name="ISSUE_ID" />
+            </Principal>
+            <Dependent Role="ELP_RULE_ISSUE">
+              <PropertyRef Name="ISSUE_ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ISS_ID">
+          <End Role="ELP_ISSUE" Type="Self.ELP_ISSUE" Multiplicity="1" />
+          <End Role="ELP_ISSUE_QUESTION" Type="Self.ELP_ISSUE_QUESTION" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ELP_ISSUE">
+              <PropertyRef Name="ISSUE_ID" />
+            </Principal>
+            <Dependent Role="ELP_ISSUE_QUESTION">
+              <PropertyRef Name="ISSUE_ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ITEM_PRODUCT">
+          <End Role="ELP_PRODUCT_CODE" Type="Self.ELP_PRODUCT_CODE" Multiplicity="1" />
+          <End Role="ELP_ITEM" Type="Self.ELP_ITEM" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ELP_PRODUCT_CODE">
+              <PropertyRef Name="PRODUCT_CODE_ID" />
+            </Principal>
+            <Dependent Role="ELP_ITEM">
+              <PropertyRef Name="PRODUCT_CODE_ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_PRODUCT_DEALER">
+          <End Role="ELP_DEALER" Type="Self.ELP_DEALER" Multiplicity="1" />
+          <End Role="ELP_PRODUCT_CODE" Type="Self.ELP_PRODUCT_CODE" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ELP_DEALER">
+              <PropertyRef Name="DEALER_ID" />
+            </Principal>
+            <Dependent Role="ELP_PRODUCT_CODE">
+              <PropertyRef Name="DEALER_ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_RL_ID">
+          <End Role="ELP_RULE_LIST" Type="Self.ELP_RULE_LIST" Multiplicity="1" />
+          <End Role="ELP_DEALER_RULE_LIST" Type="Self.ELP_DEALER_RULE_LIST" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ELP_RULE_LIST">
+              <PropertyRef Name="RULE_LIST_ID" />
+            </Principal>
+            <Dependent Role="ELP_DEALER_RULE_LIST">
+              <PropertyRef Name="RULE_LIST_ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_RLD_RULE_ID">
+          <End Role="ELP_RULE" Type="Self.ELP_RULE" Multiplicity="1" />
+          <End Role="ELP_RULE_LIST_DETAIL" Type="Self.ELP_RULE_LIST_DETAIL" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ELP_RULE">
+              <PropertyRef Name="RULE_ID" />
+            </Principal>
+            <Dependent Role="ELP_RULE_LIST_DETAIL">
+              <PropertyRef Name="RULE_ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_RULELIST_ID">
+          <End Role="ELP_RULE_LIST" Type="Self.ELP_RULE_LIST" Multiplicity="1" />
+          <End Role="ELP_RULE_LIST_DETAIL" Type="Self.ELP_RULE_LIST_DETAIL" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ELP_RULE_LIST">
+              <PropertyRef Name="RULE_LIST_ID" />
+            </Principal>
+            <Dependent Role="ELP_RULE_LIST_DETAIL">
+              <PropertyRef Name="RULE_LIST_ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_SOFT_Q_ID">
+          <End Role="ELP_SOFT_QUESTION" Type="Self.ELP_SOFT_QUESTION" Multiplicity="1" />
+          <End Role="ELP_ISSUE_QUESTION" Type="Self.ELP_ISSUE_QUESTION" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ELP_SOFT_QUESTION">
+              <PropertyRef Name="SOFT_QUESTION_ID" />
+            </Principal>
+            <Dependent Role="ELP_ISSUE_QUESTION">
+              <PropertyRef Name="SOFT_QUESTION_ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_SOFT_QST_PARENT">
+          <End Role="ELP_SOFT_QUESTION" Type="Self.ELP_SOFT_QUESTION" Multiplicity="0..1" />
+          <End Role="ELP_SOFT_QUESTION1" Type="Self.ELP_SOFT_QUESTION" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ELP_SOFT_QUESTION">
+              <PropertyRef Name="SOFT_QUESTION_ID" />
+            </Principal>
+            <Dependent Role="ELP_SOFT_QUESTION1">
+              <PropertyRef Name="PARENT_ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_WARRANTY_MASTER_DEALER">
+          <End Role="ELP_DEALER" Type="Self.ELP_DEALER" Multiplicity="0..1" />
+          <End Role="ELP_WARRANTY_MASTER" Type="Self.ELP_WARRANTY_MASTER" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ELP_DEALER">
+              <PropertyRef Name="DEALER_ID" />
+            </Principal>
+            <Dependent Role="ELP_WARRANTY_MASTER">
+              <PropertyRef Name="DEALER_ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_WARRANTY_MSTR">
+          <End Role="ELP_WARRANTY_MASTER" Type="Self.ELP_WARRANTY_MASTER" Multiplicity="1" />
+          <End Role="ELP_LIST_PRICE" Type="Self.ELP_LIST_PRICE" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ELP_WARRANTY_MASTER">
+              <PropertyRef Name="WARRANTY_MASTER_ID" />
+            </Principal>
+            <Dependent Role="ELP_LIST_PRICE">
+              <PropertyRef Name="WARRANTY_MASTER_ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="Model2StoreContainer">
+          <EntitySet Name="ELP_BRANCH" EntityType="Self.ELP_BRANCH" Schema="ELITA" store:Type="Tables" />
+          <EntitySet Name="ELP_CONTRACT" EntityType="Self.ELP_CONTRACT" Schema="ELITA" store:Type="Tables" />
+          <EntitySet Name="ELP_COVERAGE" EntityType="Self.ELP_COVERAGE" Schema="ELITA" store:Type="Tables" />
+          <EntitySet Name="ELP_DEALER" EntityType="Self.ELP_DEALER" Schema="ELITA" store:Type="Tables" />
+          <EntitySet Name="ELP_DEALER_GROUP" EntityType="Self.ELP_DEALER_GROUP" Schema="ELITA" store:Type="Tables" />
+          <EntitySet Name="ELP_DEALER_RULE_LIST" EntityType="Self.ELP_DEALER_RULE_LIST" Schema="ELITA" store:Type="Tables" />
+          <EntitySet Name="ELP_ISSUE" EntityType="Self.ELP_ISSUE" Schema="ELITA" store:Type="Tables" />
+          <EntitySet Name="ELP_ISSUE_QUESTION" EntityType="Self.ELP_ISSUE_QUESTION" Schema="ELITA" store:Type="Tables" />
+          <EntitySet Name="ELP_ITEM" EntityType="Self.ELP_ITEM" Schema="ELITA" store:Type="Tables" />
+          <EntitySet Name="ELP_LIST_PRICE" EntityType="Self.ELP_LIST_PRICE" Schema="ELITA" store:Type="Tables" />
+          <EntitySet Name="ELP_PRODUCT_CODE" EntityType="Self.ELP_PRODUCT_CODE" Schema="ELITA" store:Type="Tables" />
+          <EntitySet Name="ELP_RULE" EntityType="Self.ELP_RULE" Schema="ELITA" store:Type="Tables" />
+          <EntitySet Name="ELP_RULE_ISSUE" EntityType="Self.ELP_RULE_ISSUE" Schema="ELITA" store:Type="Tables" />
+          <EntitySet Name="ELP_RULE_LIST" EntityType="Self.ELP_RULE_LIST" Schema="ELITA" store:Type="Tables" />
+          <EntitySet Name="ELP_RULE_LIST_DETAIL" EntityType="Self.ELP_RULE_LIST_DETAIL" Schema="ELITA" store:Type="Tables" />
+          <EntitySet Name="ELP_SOFT_QUESTION" EntityType="Self.ELP_SOFT_QUESTION" Schema="ELITA" store:Type="Tables" />
+          <EntitySet Name="ELP_SUSPENDED_REASON" EntityType="Self.ELP_SUSPENDED_REASON" Schema="ELITA" store:Type="Tables" />
+          <EntitySet Name="ELP_WARRANTY_MASTER" EntityType="Self.ELP_WARRANTY_MASTER" Schema="ELITA" store:Type="Tables" />
+          <AssociationSet Name="FK_BRANCH_DEALER" Association="Self.FK_BRANCH_DEALER">
+            <End Role="ELP_DEALER" EntitySet="ELP_DEALER" />
+            <End Role="ELP_BRANCH" EntitySet="ELP_BRANCH" />
+          </AssociationSet>
+          <AssociationSet Name="FK_CONTRACT_DEALER" Association="Self.FK_CONTRACT_DEALER">
+            <End Role="ELP_DEALER" EntitySet="ELP_DEALER" />
+            <End Role="ELP_CONTRACT" EntitySet="ELP_CONTRACT" />
+          </AssociationSet>
+          <AssociationSet Name="FK_COVERAGE_ITEM" Association="Self.FK_COVERAGE_ITEM">
+            <End Role="ELP_ITEM" EntitySet="ELP_ITEM" />
+            <End Role="ELP_COVERAGE" EntitySet="ELP_COVERAGE" />
+          </AssociationSet>
+          <AssociationSet Name="FK_DEALER_DEALER_GROUP" Association="Self.FK_DEALER_DEALER_GROUP">
+            <End Role="ELP_DEALER_GROUP" EntitySet="ELP_DEALER_GROUP" />
+            <End Role="ELP_DEALER" EntitySet="ELP_DEALER" />
+          </AssociationSet>
+          <AssociationSet Name="FK_DRL_ID" Association="Self.FK_DRL_ID">
+            <End Role="ELP_DEALER" EntitySet="ELP_DEALER" />
+            <End Role="ELP_DEALER_RULE_LIST" EntitySet="ELP_DEALER_RULE_LIST" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ELP_ISSUE" Association="Self.FK_ELP_ISSUE">
+            <End Role="ELP_ISSUE" EntitySet="ELP_ISSUE" />
+            <End Role="ELP_RULE_ISSUE" EntitySet="ELP_RULE_ISSUE" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ISS_ID" Association="Self.FK_ISS_ID">
+            <End Role="ELP_ISSUE" EntitySet="ELP_ISSUE" />
+            <End Role="ELP_ISSUE_QUESTION" EntitySet="ELP_ISSUE_QUESTION" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ITEM_PRODUCT" Association="Self.FK_ITEM_PRODUCT">
+            <End Role="ELP_PRODUCT_CODE" EntitySet="ELP_PRODUCT_CODE" />
+            <End Role="ELP_ITEM" EntitySet="ELP_ITEM" />
+          </AssociationSet>
+          <AssociationSet Name="FK_PRODUCT_DEALER" Association="Self.FK_PRODUCT_DEALER">
+            <End Role="ELP_DEALER" EntitySet="ELP_DEALER" />
+            <End Role="ELP_PRODUCT_CODE" EntitySet="ELP_PRODUCT_CODE" />
+          </AssociationSet>
+          <AssociationSet Name="FK_RL_ID" Association="Self.FK_RL_ID">
+            <End Role="ELP_RULE_LIST" EntitySet="ELP_RULE_LIST" />
+            <End Role="ELP_DEALER_RULE_LIST" EntitySet="ELP_DEALER_RULE_LIST" />
+          </AssociationSet>
+          <AssociationSet Name="FK_RLD_RULE_ID" Association="Self.FK_RLD_RULE_ID">
+            <End Role="ELP_RULE" EntitySet="ELP_RULE" />
+            <End Role="ELP_RULE_LIST_DETAIL" EntitySet="ELP_RULE_LIST_DETAIL" />
+          </AssociationSet>
+          <AssociationSet Name="FK_RULELIST_ID" Association="Self.FK_RULELIST_ID">
+            <End Role="ELP_RULE_LIST" EntitySet="ELP_RULE_LIST" />
+            <End Role="ELP_RULE_LIST_DETAIL" EntitySet="ELP_RULE_LIST_DETAIL" />
+          </AssociationSet>
+          <AssociationSet Name="FK_SOFT_Q_ID" Association="Self.FK_SOFT_Q_ID">
+            <End Role="ELP_SOFT_QUESTION" EntitySet="ELP_SOFT_QUESTION" />
+            <End Role="ELP_ISSUE_QUESTION" EntitySet="ELP_ISSUE_QUESTION" />
+          </AssociationSet>
+          <AssociationSet Name="FK_SOFT_QST_PARENT" Association="Self.FK_SOFT_QST_PARENT">
+            <End Role="ELP_SOFT_QUESTION" EntitySet="ELP_SOFT_QUESTION" />
+            <End Role="ELP_SOFT_QUESTION1" EntitySet="ELP_SOFT_QUESTION" />
+          </AssociationSet>
+          <AssociationSet Name="FK_WARRANTY_MASTER_DEALER" Association="Self.FK_WARRANTY_MASTER_DEALER">
+            <End Role="ELP_DEALER" EntitySet="ELP_DEALER" />
+            <End Role="ELP_WARRANTY_MASTER" EntitySet="ELP_WARRANTY_MASTER" />
+          </AssociationSet>
+          <AssociationSet Name="FK_WARRANTY_MSTR" Association="Self.FK_WARRANTY_MSTR">
+            <End Role="ELP_WARRANTY_MASTER" EntitySet="ELP_WARRANTY_MASTER" />
+            <End Role="ELP_LIST_PRICE" EntitySet="ELP_LIST_PRICE" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="Model2" Alias="Self" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2008/09/edm">
+        <EntityType Name="Dealer">
+          <Key>
+            <PropertyRef Name="DealerId" />
+          </Key>
+          <Property Name="DealerId" Type="Guid" Nullable="false" />
+          <Property Name="DealerCode" Type="String" MaxLength="5" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="DealerName" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="TAX_ID_NUMBER" Type="String" MaxLength="15" FixedLength="false" Unicode="false" />
+          <Property Name="CompanyId" Type="Guid" Nullable="false" />
+          <Property Name="AddressId" Type="Guid" />
+          <Property Name="CONTACT_NAME" Type="String" MaxLength="30" FixedLength="false" Unicode="false" />
+          <Property Name="CONTACT_PHONE" Type="String" MaxLength="15" FixedLength="false" Unicode="false" />
+          <Property Name="CONTACT_EXT" Type="String" MaxLength="5" FixedLength="false" Unicode="false" />
+          <Property Name="CONTACT_FAX" Type="String" MaxLength="15" FixedLength="false" Unicode="false" />
+          <Property Name="CONTACT_EMAIL" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="LAST_CERTIFICATE_NBR" Type="Int64" />
+          <Property Name="RETAILER_ID" Type="Guid" Nullable="false" />
+          <Property Name="CreatedDate" Type="DateTime" Nullable="false" />
+          <Property Name="ModifiedDate" Type="DateTime" />
+          <Property Name="DEALER_GROUP_ID" Type="Guid" />
+          <Property Name="CreatedBy" Type="String" MaxLength="30" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="ModifiedBy" Type="String" MaxLength="30" FixedLength="false" Unicode="false" />
+          <Property Name="ACTIVE_FLAG" Type="String" MaxLength="1" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="SERVICE_NETWORK_ID" Type="Guid" />
+          <Property Name="IBNR_FACTOR" Type="Decimal" Precision="9" Scale="6" />
+          <Property Name="IBNR_COMPUTE_METHOD_ID" Type="Guid" />
+          <Property Name="CONVERT_PRODUCT_CODE_ID" Type="Guid" />
+          <Property Name="DealerTypeId" Type="Guid" Nullable="false" />
+          <Property Name="BRANCH_VALIDATION_ID" Type="Guid" Nullable="false" />
+          <Property Name="BANK_INFO_ID" Type="Guid" />
+          <Property Name="BUSINESS_NAME" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="STATE_TAX_ID_NUMBER" Type="String" MaxLength="15" FixedLength="false" Unicode="false" />
+          <Property Name="CITY_TAX_ID_NUMBER" Type="String" MaxLength="15" FixedLength="false" Unicode="false" />
+          <Property Name="WEB_ADDRESS" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="MAILING_ADDRESS_ID" Type="Guid" />
+          <Property Name="NUMBER_OF_OTHER_LOCATIONS" Type="Int16" />
+          <Property Name="PRICE_MATRIX_USES_WP_ID" Type="Guid" Nullable="false" />
+          <Property Name="DEDUCTIBLE_DISCOUNT" Type="Decimal" Precision="11" Scale="2" />
+          <Property Name="INVOICE_BY_BRANCH_ID" Type="Guid" Nullable="false" />
+          <Property Name="SEPARATED_CREDIT_NOTES_ID" Type="Guid" Nullable="false" />
+          <Property Name="MANUAL_ENROLLMENT_ALLOWED_ID" Type="Guid" Nullable="false" />
+          <Property Name="EDIT_BRANCH_ID" Type="Guid" Nullable="false" />
+          <Property Name="OLITA_SEARCH" Type="Guid" Nullable="false" />
+          <Property Name="DELAY_FACTOR_FLAG_ID" Type="Guid" Nullable="false" />
+          <Property Name="INSTALLMENT_FACTOR_FLAG_ID" Type="Guid" Nullable="false" />
+          <Property Name="REGISTRATION_PROCESS_FLAG_ID" Type="Guid" Nullable="false" />
+          <Property Name="STAT_IBNR_FACTOR" Type="Decimal" Precision="9" Scale="6" />
+          <Property Name="STAT_IBNR_COMPUTE_METHOD_ID" Type="Guid" />
+          <Property Name="LAE_IBNR_FACTOR" Type="Decimal" Precision="9" Scale="6" />
+          <Property Name="LAE_IBNR_COMPUTE_METHOD_ID" Type="Guid" />
+          <Property Name="REGISTRATION_EMAIL_FROM" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="USE_WARRANTY_MASTER_ID" Type="Guid" Nullable="false" />
+          <Property Name="USE_INCOMING_SALES_TAX_ID" Type="Guid" Nullable="false" />
+          <Property Name="AUTO_PROCESS_FILE_ID" Type="Guid" Nullable="false" />
+          <Property Name="ROUND_COMM_FLAG_ID" Type="Guid" Nullable="false" />
+          <Property Name="CERT_CANCEL_BY_ID" Type="Guid" Nullable="false" />
+          <Property Name="PROGRAM_NAME" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="SERVICE_LINE_PHONE" Type="String" MaxLength="15" FixedLength="false" Unicode="false" />
+          <Property Name="SERVICE_LINE_FAX" Type="String" MaxLength="15" FixedLength="false" Unicode="false" />
+          <Property Name="SERVICE_LINE_EMAIL" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="ESC_INSURANCE_LABEL" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="EXPECTED_PREMIUM_IS_WP_ID" Type="Guid" Nullable="false" />
+          <Property Name="CLAIM_SYSTEM_ID" Type="Guid" Nullable="false" />
+          <Property Name="ASSURANT_IS_OBLIGOR_ID" Type="Guid" />
+          <Property Name="USE_INSTALLMENT_DEFN_ID" Type="Guid" Nullable="false" />
+          <Property Name="MAX_MAN_WARR" Type="Int16" Nullable="false" />
+          <Property Name="MIGRATION_PATH_ID" Type="Guid" />
+          <Property Name="UseEquipmentId" Type="Guid" Nullable="false" />
+          <Property Name="CANCEL_REQUEST_FLAG_ID" Type="Guid" />
+          <Property Name="PayDeductibleId" Type="Guid" />
+          <Property Name="BANK_INFO_MANDATORY_ID" Type="Guid" Nullable="false" />
+          <Property Name="ValidateSkuId" Type="Guid" />
+          <Property Name="MIN_MAN_WARR" Type="Int16" Nullable="false" />
+          <Property Name="VALIDATE_BILLING_CYCLE_ID" Type="Guid" />
+          <Property Name="AuthAmtBasedOnId" Type="Guid" />
+          <Property Name="EquipmentListCode" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+          <Property Name="QUESTION_LIST_CODE" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+          <Property Name="PRODUCT_BY_REGION_ID" Type="Guid" />
+          <Property Name="CLAIM_VERIFICATION_NUM_LENGTH" Type="Int16" />
+          <Property Name="CLAIM_EXTENDED_STATUS_ENTRY_ID" Type="Guid" Nullable="false" />
+          <Property Name="VALIDATE_SERIAL_NUMBER_ID" Type="Guid" Nullable="false" />
+          <Property Name="ALLOW_UPDATE_CANCELLATION_ID" Type="Guid" />
+          <Property Name="REJECT_AFTER_CANCELLATION_ID" Type="Guid" />
+          <Property Name="ALLOW_FUTURE_CANCEL_DATE_ID" Type="Guid" />
+          <Property Name="DealerSupportWebClaimsId" Type="Guid" Nullable="false" />
+          <Property Name="UseClaimAuthorizationId" Type="Guid" />
+          <Property Name="DeductibleCollectionId" Type="Guid" Nullable="false" />
+          <Property Name="CLAIM_STATUS_FOR_EXT_SYSTEM_ID" Type="Guid" Nullable="false" />
+          <Property Name="NEW_DEVICE_SKU_REQUIRED_ID" Type="Guid" />
+          <Property Name="LICENSE_TAG_VALIDATION" Type="Guid" />
+          <Property Name="ENROLLFILEPREPROCESSPROC_ID" Type="Guid" />
+          <Property Name="CertNumLookUpById" Type="Guid" />
+          <Property Name="REPLACECLAIMDEDTOLERANCEPCT" Type="Decimal" Precision="5" Scale="2" />
+          <Property Name="BILLING_PROCESS_CODE_ID" Type="Guid" />
+          <Property Name="BILLRESULT_EXCEPTION_DEST_ID" Type="Guid" />
+          <Property Name="BILLRESULT_NOTIFICATION_EMAIL" Type="String" MaxLength="250" FixedLength="false" Unicode="false" />
+          <Property Name="MAX_NCRECORDS" Type="Decimal" Precision="38" Scale="0" />
+          <Property Name="ALLOW_ADJUST_PYMTDATE_ID" Type="Guid" />
+          <Property Name="OLD_ENDORSEMENTS_ID" Type="Guid" />
+          <Property Name="CLIENT_DEALER_CODE" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
+          <Property Name="CERTIFICATES_AUTONUMBER_ID" Type="Guid" />
+          <Property Name="CERTIFICATES_AUTONUMBER_PREFIX" Type="String" MaxLength="8" FixedLength="false" Unicode="false" />
+          <Property Name="FILE_LOAD_NOTIFICATION_EMAIL" Type="String" MaxLength="250" FixedLength="false" Unicode="false" />
+          <Property Name="INSERT_MAKE_IF_NOT_EXIST_ID" Type="Guid" Nullable="false" />
+          <Property Name="FULLFILEPROCESS_ID" Type="Guid" Nullable="false" />
+          <Property Name="ALLOW_PROD_CHNG_FRM_COV_EFF_ID" Type="Guid" Nullable="false" />
+          <Property Name="MAX_CERTNUM_LENGTH_ALLOWED" Type="Int16" />
+          <Property Name="SUSPENDED_ENROLMENTS_ALLOWED" Type="Guid" />
+          <Property Name="AUTO_REJ_ERR_TYPE_ID" Type="Guid" />
+          <Property Name="REJECTED_RECORD_RECON_ID" Type="Guid" />
+          <Property Name="LAWSUIT_MANDATORY_ID" Type="Guid" Nullable="false" />
+          <Property Name="AUTO_SELECT_SERVICE_CENTER" Type="Guid" />
+          <Property Name="DEALER_EXTRACT_PERIOD_ID" Type="Guid" />
+          <Property Name="POLICY_EVENT_NOTIFY_EMAIL" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="CLAIM_AUTO_APPROVE_ID" Type="Guid" Nullable="false" />
+          <Property Name="DEF_SALVAGE_CENTER_ID" Type="Guid" />
+          <Property Name="REUSE_SERIAL_NUMBER_ID" Type="Guid" Nullable="false" />
+          <Property Name="REQUIRE_CUSTOMER_AML_INFO_ID" Type="Guid" Nullable="false" />
+          <Property Name="AUTO_PROCESS_PYMT_FILE_ID" Type="Guid" Nullable="false" />
+          <Property Name="GracePeriodMonths" Type="Decimal" Precision="38" Scale="0" />
+          <Property Name="GracePeriodDays" Type="Decimal" Precision="38" Scale="0" />
+          <Property Name="MAX_COMMISSION_PERCENT" Type="Decimal" Precision="7" Scale="4" />
+          <Property Name="VSC_VIN_RESTRIC_ID" Type="Guid" />
+          <Property Name="PLAN_CODE_IN_QUOTE_OUTPUT_ID" Type="Guid" />
+          <NavigationProperty Name="Products" Relationship="Model2.FK_PRODUCT_DEALER" FromRole="Dealer" ToRole="ELP_PRODUCT_CODE" />
+          <NavigationProperty Name="SuspendedReasons" Relationship="Model2.FK_SUSPENDED_REASON_DEALER" FromRole="Dealer" ToRole="ELP_SUSPENDED_REASON" />
+          <Property Name="AUTO_GEN_REJ_PYMT_FILE_ID" Type="Guid" />
+          <Property Name="PYMT_REJ_REC_RECON_ID" Type="Guid" />
+          <NavigationProperty Name="DealerRuleLists" Relationship="Model2.FK_DRL_ID" FromRole="Dealer" ToRole="ELP_DEALER_RULE_LIST" />
+          <NavigationProperty Name="WarrantyMasters" Relationship="Model2.FK_WARRANTY_MASTER_DEALER" FromRole="Dealer" ToRole="ELP_WARRANTY_MASTER" />
+          <NavigationProperty Name="Contracts" Relationship="Model2.FK_CONTRACT_DEALER" FromRole="Dealer" ToRole="ELP_CONTRACT" />
+          <NavigationProperty Name="DealerGroup" Relationship="Model2.FK_DEALER_DEALER_GROUP" FromRole="None" ToRole="DealerGroup" />
+          <NavigationProperty Name="Branches" Relationship="Model2.FK_BRANCH_DEALER" FromRole="Dealer" ToRole="ELP_BRANCH" />
+        </EntityType>
+        <EntityContainer Name="DealerContext" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="Dealers" EntityType="Model2.Dealer" />
+          <EntitySet Name="Products" EntityType="Model2.Product" />
+          <AssociationSet Name="FK_PRODUCT_DEALER" Association="Model2.FK_PRODUCT_DEALER">
+            <End Role="Dealer" EntitySet="Dealers" />
+            <End Role="ELP_PRODUCT_CODE" EntitySet="Products" />
+          </AssociationSet>
+          <EntitySet Name="SuspendedReasons" EntityType="Model2.SuspendedReason" />
+          <AssociationSet Name="FK_SUSPENDED_REASON_DEALER" Association="Model2.FK_SUSPENDED_REASON_DEALER">
+            <End Role="Dealer" EntitySet="Dealers" />
+            <End Role="ELP_SUSPENDED_REASON" EntitySet="SuspendedReasons" />
+          </AssociationSet>
+          <EntitySet Name="DealerRuleLists" EntityType="Model2.DealerRuleList" />
+          <EntitySet Name="Rules" EntityType="Model2.Rule" />
+          <EntitySet Name="RuleLists" EntityType="Model2.RuleList" />
+          <EntitySet Name="RuleListDetails" EntityType="Model2.RuleListDetail" />
+          <AssociationSet Name="FK_DRL_ID" Association="Model2.FK_DRL_ID">
+            <End Role="Dealer" EntitySet="Dealers" />
+            <End Role="ELP_DEALER_RULE_LIST" EntitySet="DealerRuleLists" />
+          </AssociationSet>
+          <AssociationSet Name="FK_RL_ID" Association="Model2.FK_RL_ID">
+            <End Role="ELP_RULE_LIST" EntitySet="RuleLists" />
+            <End Role="ELP_DEALER_RULE_LIST" EntitySet="DealerRuleLists" />
+          </AssociationSet>
+          <AssociationSet Name="FK_RLD_RULE_ID" Association="Model2.FK_RLD_RULE_ID">
+            <End Role="ELP_RULE" EntitySet="Rules" />
+            <End Role="ELP_RULE_LIST_DETAIL" EntitySet="RuleListDetails" />
+          </AssociationSet>
+          <AssociationSet Name="FK_RULELIST_ID" Association="Model2.FK_RULELIST_ID">
+            <End Role="ELP_RULE_LIST" EntitySet="RuleLists" />
+            <End Role="ELP_RULE_LIST_DETAIL" EntitySet="RuleListDetails" />
+          </AssociationSet>
+          <EntitySet Name="RuleIssues" EntityType="Model2.RuleIssue" />
+          <AssociationSet Name="FK_RULE_ID" Association="Model2.FK_RULE_ID">
+            <End Role="Rule" EntitySet="Rules" />
+            <End Role="ELP_RULE_ISSUE" EntitySet="RuleIssues" />
+          </AssociationSet>
+          <EntitySet Name="Issues" EntityType="Model2.Issue" />
+          <AssociationSet Name="FK_ISSUE_ID" Association="Model2.FK_ISSUE_ID">
+            <End Role="ELP_ISSUE" EntitySet="Issues" />
+            <End Role="RuleIssue" EntitySet="RuleIssues" />
+          </AssociationSet>
+          <EntitySet Name="ListPrices" EntityType="Model2.ListPrice" />
+          <EntitySet Name="WarrantyMasters" EntityType="Model2.WarrantyMaster" />
+          <AssociationSet Name="FK_WARRANTY_MASTER_DEALER" Association="Model2.FK_WARRANTY_MASTER_DEALER">
+            <End Role="Dealer" EntitySet="Dealers" />
+            <End Role="ELP_WARRANTY_MASTER" EntitySet="WarrantyMasters" />
+          </AssociationSet>
+          <AssociationSet Name="FK_WARRANTY_MSTR" Association="Model2.FK_WARRANTY_MSTR">
+            <End Role="ELP_WARRANTY_MASTER" EntitySet="WarrantyMasters" />
+            <End Role="ELP_LIST_PRICE" EntitySet="ListPrices" />
+          </AssociationSet>
+          <EntitySet Name="Contracts" EntityType="Model2.Contract" />
+          <AssociationSet Name="FK_CONTRACT_DEALER" Association="Model2.FK_CONTRACT_DEALER">
+            <End Role="Dealer" EntitySet="Dealers" />
+            <End Role="ELP_CONTRACT" EntitySet="Contracts" />
+          </AssociationSet>
+          <EntitySet Name="IssueQuestions" EntityType="Model2.IssueQuestion" />
+          <EntitySet Name="SoftQuestions" EntityType="Model2.SoftQuestion" />
+          <AssociationSet Name="FK_ISS_ID" Association="Model2.FK_ISS_ID">
+            <End Role="Issue" EntitySet="Issues" />
+            <End Role="ELP_ISSUE_QUESTION" EntitySet="IssueQuestions" />
+          </AssociationSet>
+          <AssociationSet Name="FK_SOFT_Q_ID" Association="Model2.FK_SOFT_Q_ID">
+            <End Role="ELP_SOFT_QUESTION" EntitySet="SoftQuestions" />
+            <End Role="ELP_ISSUE_QUESTION" EntitySet="IssueQuestions" />
+          </AssociationSet>
+          <AssociationSet Name="FK_SOFT_QST_PARENT" Association="Model2.FK_SOFT_QST_PARENT">
+            <End Role="SoftQuestion" EntitySet="SoftQuestions" />
+            <End Role="SoftQuestion1" EntitySet="SoftQuestions" />
+          </AssociationSet>
+          <EntitySet Name="Coverages" EntityType="Model2.Coverage" />
+          <EntitySet Name="Items" EntityType="Model2.Item" />
+          <AssociationSet Name="FK_COVERAGE_ITEM" Association="Model2.FK_COVERAGE_ITEM">
+            <End Role="ELP_ITEM" EntitySet="Items" />
+            <End Role="Coverage" EntitySet="Coverages" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ITEM_PRODUCT" Association="Model2.FK_ITEM_PRODUCT">
+            <End Role="Product" EntitySet="Products" />
+            <End Role="ELP_ITEM" EntitySet="Items" />
+          </AssociationSet>
+          <EntitySet Name="DealerGroups" EntityType="Model2.DealerGroup" />
+          <AssociationSet Name="FK_DEALER_DEALER_GROUP" Association="Model2.FK_DEALER_DEALER_GROUP">
+            <End Role="DealerGroup" EntitySet="DealerGroups" />
+            <End Role="None" EntitySet="Dealers" />
+          </AssociationSet>
+          <EntitySet Name="Branches" EntityType="Model2.Branch" />
+          <AssociationSet Name="FK_BRANCH_DEALER" Association="Model2.FK_BRANCH_DEALER">
+            <End Role="Dealer" EntitySet="Dealers" />
+            <End Role="ELP_BRANCH" EntitySet="Branches" />
+          </AssociationSet>
+        </EntityContainer>
+        <EntityType Name="Product">
+          <Key>
+            <PropertyRef Name="ProductId" />
+          </Key>
+          <Property Name="ProductId" Type="Guid" Nullable="false" />
+          <Property Name="DealerId" Type="Guid" Nullable="false" />
+          <Property Name="ProductCode" Type="String" Nullable="false" MaxLength="5" FixedLength="false" Unicode="false" />
+          <Property Name="RISK_GROUP_ID" Type="Guid" Nullable="false" />
+          <Property Name="PRICE_MATRIX_ID" Type="Guid" Nullable="false" />
+          <Property Name="PERCENT_OF_RETAIL" Type="Decimal" Precision="7" Scale="4" />
+          <Property Name="CreatedDate" Type="DateTime" Nullable="false" />
+          <Property Name="ModifiedDate" Type="DateTime" />
+          <Property Name="Description" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="METHOD_OF_REPAIR_ID" Type="Guid" Nullable="false" />
+          <Property Name="TYPE_OF_EQUIPMENT_ID" Type="Guid" Nullable="false" />
+          <Property Name="CreatedBy" Type="String" Nullable="false" MaxLength="30" FixedLength="false" Unicode="false" />
+          <Property Name="ModifiedBy" Type="String" MaxLength="30" FixedLength="false" Unicode="false" />
+          <Property Name="USE_DEPRECIATION" Type="Guid" />
+          <Property Name="BUNDLED_ITEM_ID" Type="Guid" />
+          <Property Name="METHOD_OF_REPAIR_BY_PRICE_ID" Type="Guid" Nullable="false" />
+          <Property Name="COMMENTS" Type="String" MaxLength="4000" FixedLength="false" Unicode="false" />
+          <Property Name="SPECIAL_SERVICE" Type="String" MaxLength="160" FixedLength="false" Unicode="false" />
+          <Property Name="BILLING_FREQUENCY_ID" Type="Guid" />
+          <Property Name="NUMBER_OF_INSTALLMENTS" Type="Int16" />
+          <Property Name="NUM_OF_CLAIMS" Type="Int16" />
+          <Property Name="SPLIT_WARRANTY_ID" Type="Guid" Nullable="false" />
+          <Property Name="CLAIM_WAITING_PERIOD" Type="Int16" />
+          <Property Name="FULL_REFUND_DAYS" Type="Int16" />
+          <Property Name="IGNORE_WAITING_PERIOD_WSD_PSD" Type="Guid" />
+          <Property Name="PROD_LIABILITY_LIMIT" Type="Decimal" Precision="11" Scale="2" />
+          <Property Name="PROD_LIABILITY_LIMIT_PERCENT" Type="Int16" />
+          <Property Name="PROD_LIABILITY_LIMIT_BASE_ID" Type="Guid" />
+          <Property Name="PROD_LIABILITY_LIMIT_POLICY_ID" Type="Guid" />
+          <Property Name="CLAIM_AUTO_APPROVE_PSP" Type="Decimal" Precision="6" Scale="2" />
+          <Property Name="UPG_FINANCE_BAL_COMP_METH_ID" Type="Guid" />
+          <Property Name="UPGRADE_PROGRAM_ID" Type="Guid" Nullable="false" />
+          <Property Name="NUM_OF_REPAIR_CLAIMS" Type="Int16" />
+          <Property Name="NUM_OF_REPLACEMENT_CLAIMS" Type="Int16" />
+          <Property Name="ANALYSIS_CODE_1" Type="String" MaxLength="15" FixedLength="false" Unicode="false" />
+          <Property Name="ANALYSIS_CODE_2" Type="String" MaxLength="15" FixedLength="false" Unicode="false" />
+          <Property Name="ANALYSIS_CODE_3" Type="String" MaxLength="15" FixedLength="false" Unicode="false" />
+          <Property Name="ANALYSIS_CODE_4" Type="String" MaxLength="15" FixedLength="false" Unicode="false" />
+          <Property Name="ANALYSIS_CODE_5" Type="String" MaxLength="15" FixedLength="false" Unicode="false" />
+          <Property Name="ANALYSIS_CODE_6" Type="String" MaxLength="15" FixedLength="false" Unicode="false" />
+          <Property Name="ANALYSIS_CODE_7" Type="String" MaxLength="15" FixedLength="false" Unicode="false" />
+          <Property Name="ANALYSIS_CODE_8" Type="String" MaxLength="15" FixedLength="false" Unicode="false" />
+          <Property Name="ANALYSIS_CODE_9" Type="String" MaxLength="15" FixedLength="false" Unicode="false" />
+          <Property Name="ANALYSIS_CODE_10" Type="String" MaxLength="15" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="Dealer" Relationship="Model2.FK_PRODUCT_DEALER" FromRole="ELP_PRODUCT_CODE" ToRole="Dealer" />
+          <NavigationProperty Name="Items" Relationship="Model2.FK_ITEM_PRODUCT" FromRole="Product" ToRole="ELP_ITEM" />
+
+        </EntityType>
+        <Association Name="FK_PRODUCT_DEALER">
+          <End Type="Model2.Dealer" Role="Dealer" Multiplicity="1" />
+          <End Type="Model2.Product" Role="ELP_PRODUCT_CODE" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Dealer">
+              <PropertyRef Name="DealerId" />
+            </Principal>
+            <Dependent Role="ELP_PRODUCT_CODE">
+              <PropertyRef Name="DealerId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityType Name="SuspendedReason">
+          <Key>
+            <PropertyRef Name="SuspendedReasonId" />
+          </Key>
+          <Property Name="SuspendedReasonId" Type="Guid" Nullable="false" />
+          <Property Name="DealerId" Type="Guid" Nullable="false" />
+          <Property Name="Code" Type="String" Nullable="false" MaxLength="20" FixedLength="false" Unicode="false" />
+          <Property Name="Description" Type="String" Nullable="false" MaxLength="250" FixedLength="false" Unicode="false" />
+          <Property Name="ClaimAllowed" Type="String" Nullable="false" MaxLength="1" FixedLength="true" Unicode="false" />
+          <Property Name="CreatedBy" Type="String" Nullable="false" MaxLength="30" FixedLength="false" Unicode="false" />
+          <Property Name="CreatedDate" Type="DateTime" Nullable="false" />
+          <Property Name="ModifiedBy" Type="String" MaxLength="30" FixedLength="false" Unicode="false" />
+          <Property Name="ModifiedDate" Type="DateTime" />
+          <NavigationProperty Name="Dealer" Relationship="Model2.FK_SUSPENDED_REASON_DEALER" FromRole="ELP_SUSPENDED_REASON" ToRole="Dealer" />
+        </EntityType>
+        <Association Name="FK_SUSPENDED_REASON_DEALER">
+          <End Type="Model2.Dealer" Role="Dealer" Multiplicity="1" />
+          <End Type="Model2.SuspendedReason" Role="ELP_SUSPENDED_REASON" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Dealer">
+              <PropertyRef Name="DealerId" />
+            </Principal>
+            <Dependent Role="ELP_SUSPENDED_REASON">
+              <PropertyRef Name="DealerId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityType Name="DealerRuleList">
+          <Key>
+            <PropertyRef Name="DealerRuleListId" />
+          </Key>
+          <Property Name="DealerRuleListId" Type="Guid" Nullable="false" />
+          <Property Name="RuleListId" Type="Guid" Nullable="false" />
+          <Property Name="DealerId" Type="Guid" Nullable="false" />
+          <Property Name="Effective" Type="DateTime" Nullable="false" />
+          <Property Name="Expiration" Type="DateTime" Nullable="false" />
+          <Property Name="CreatedDate" Type="DateTime" Nullable="false" />
+          <Property Name="CreatedBy" Type="String" Nullable="false" MaxLength="30" FixedLength="false" Unicode="false" />
+          <Property Name="ModifiedDate" Type="DateTime" />
+          <Property Name="ModifiedBy" Type="String" MaxLength="30" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="Dealer" Relationship="Model2.FK_DRL_ID" FromRole="ELP_DEALER_RULE_LIST" ToRole="Dealer" />
+          <NavigationProperty Name="RuleList" Relationship="Model2.FK_RL_ID" FromRole="ELP_DEALER_RULE_LIST" ToRole="ELP_RULE_LIST" />
+        </EntityType>
+        <EntityType Name="Rule">
+          <Key>
+            <PropertyRef Name="RuleId" />
+          </Key>
+          <Property Name="RuleId" Type="Guid" Nullable="false" />
+          <Property Name="Code" Type="String" Nullable="false" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="Description" Type="String" MaxLength="2000" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="RuleTypeId" Type="Guid" />
+          <Property Name="RuleCategoryId" Type="Guid" />
+          <Property Name="RuleExecutionPoint" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="RuleDataSet" Type="String" MaxLength="2000" FixedLength="false" Unicode="false" />
+          <Property Name="Effective" Type="DateTime" Nullable="false" />
+          <Property Name="Expiration" Type="DateTime" Nullable="false" />
+          <Property Name="CreatedDate" Type="DateTime" Nullable="false" />
+          <Property Name="CreatedBy" Type="String" Nullable="false" MaxLength="30" FixedLength="false" Unicode="false" />
+          <Property Name="ModifiedDate" Type="DateTime" />
+          <Property Name="ModifiedBy" Type="String" MaxLength="30" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="RuleListDetails" Relationship="Model2.FK_RLD_RULE_ID" FromRole="ELP_RULE" ToRole="ELP_RULE_LIST_DETAIL" />
+          <NavigationProperty Name="RuleIssues" Relationship="Model2.FK_RULE_ID" FromRole="Rule" ToRole="ELP_RULE_ISSUE" />
+        </EntityType>
+        <EntityType Name="RuleList">
+          <Key>
+            <PropertyRef Name="RuleListId" />
+          </Key>
+          <Property Name="RuleListId" Type="Guid" Nullable="false" />
+          <Property Name="Code" Type="String" Nullable="false" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="Description" Type="String" Nullable="false" MaxLength="2000" FixedLength="false" Unicode="false" />
+          <Property Name="Effective" Type="DateTime" Nullable="false" />
+          <Property Name="Expiration" Type="DateTime" Nullable="false" />
+          <Property Name="CreatedDate" Type="DateTime" Nullable="false" />
+          <Property Name="CreatedBy" Type="String" Nullable="false" MaxLength="30" FixedLength="false" Unicode="false" />
+          <Property Name="ModifiedDate" Type="DateTime" />
+          <Property Name="ModifiedBy" Type="String" MaxLength="30" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="DealerRuleLists" Relationship="Model2.FK_RL_ID" FromRole="ELP_RULE_LIST" ToRole="ELP_DEALER_RULE_LIST" />
+          <NavigationProperty Name="RuleListDetails" Relationship="Model2.FK_RULELIST_ID" FromRole="ELP_RULE_LIST" ToRole="ELP_RULE_LIST_DETAIL" />
+        </EntityType>
+        <EntityType Name="RuleListDetail">
+          <Key>
+            <PropertyRef Name="RuleListDetailId" />
+          </Key>
+          <Property Name="RuleListDetailId" Type="Guid" Nullable="false" />
+          <Property Name="RuleListId" Type="Guid" Nullable="false" />
+          <Property Name="RuleId" Type="Guid" Nullable="false" />
+          <Property Name="Effective" Type="DateTime" Nullable="false" />
+          <Property Name="Expiration" Type="DateTime" Nullable="false" />
+          <Property Name="CreatedDate" Type="DateTime" Nullable="false" />
+          <Property Name="CreatedBy" Type="String" Nullable="false" MaxLength="30" FixedLength="false" Unicode="false" />
+          <Property Name="ModifiedDate" Type="DateTime" />
+          <Property Name="ModifiedBy" Type="String" MaxLength="30" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="Rule" Relationship="Model2.FK_RLD_RULE_ID" FromRole="ELP_RULE_LIST_DETAIL" ToRole="ELP_RULE" />
+          <NavigationProperty Name="RuleList" Relationship="Model2.FK_RULELIST_ID" FromRole="ELP_RULE_LIST_DETAIL" ToRole="ELP_RULE_LIST" />
+        </EntityType>
+        <Association Name="FK_DRL_ID">
+          <End Type="Model2.Dealer" Role="Dealer" Multiplicity="1" />
+          <End Type="Model2.DealerRuleList" Role="ELP_DEALER_RULE_LIST" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Dealer">
+              <PropertyRef Name="DealerId" />
+            </Principal>
+            <Dependent Role="ELP_DEALER_RULE_LIST">
+              <PropertyRef Name="DealerId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_RL_ID">
+          <End Type="Model2.RuleList" Role="ELP_RULE_LIST" Multiplicity="1" />
+          <End Type="Model2.DealerRuleList" Role="ELP_DEALER_RULE_LIST" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ELP_RULE_LIST">
+              <PropertyRef Name="RuleListId" />
+            </Principal>
+            <Dependent Role="ELP_DEALER_RULE_LIST">
+              <PropertyRef Name="RuleListId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_RLD_RULE_ID">
+          <End Type="Model2.Rule" Role="ELP_RULE" Multiplicity="1" />
+          <End Type="Model2.RuleListDetail" Role="ELP_RULE_LIST_DETAIL" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ELP_RULE">
+              <PropertyRef Name="RuleId" />
+            </Principal>
+            <Dependent Role="ELP_RULE_LIST_DETAIL">
+              <PropertyRef Name="RuleId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_RULELIST_ID">
+          <End Type="Model2.RuleList" Role="ELP_RULE_LIST" Multiplicity="1" />
+          <End Type="Model2.RuleListDetail" Role="ELP_RULE_LIST_DETAIL" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ELP_RULE_LIST">
+              <PropertyRef Name="RuleListId" />
+            </Principal>
+            <Dependent Role="ELP_RULE_LIST_DETAIL">
+              <PropertyRef Name="RuleListId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityType Name="RuleIssue">
+          <Key>
+            <PropertyRef Name="RuleIssueId" />
+          </Key>
+          <Property Name="RuleIssueId" Type="Guid" Nullable="false" />
+          <Property Name="IssueId" Type="Guid" Nullable="false" />
+          <Property Name="RuleId" Type="Guid" Nullable="false" />
+          <Property Name="Effective" Type="DateTime" Nullable="false" />
+          <Property Name="Expiration" Type="DateTime" Nullable="false" />
+          <Property Name="CreatedDate" Type="DateTime" Nullable="false" />
+          <Property Name="CreatedBy" Type="String" Nullable="false" MaxLength="30" FixedLength="false" Unicode="false" />
+          <Property Name="ModifiedDate" Type="DateTime" />
+          <Property Name="ModifiedBy" Type="String" MaxLength="30" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="Rule" Relationship="Model2.FK_RULE_ID" FromRole="ELP_RULE_ISSUE" ToRole="Rule" />
+          <NavigationProperty Name="Issues" Relationship="Model2.FK_ISSUE_ID" FromRole="RuleIssue" ToRole="ELP_ISSUE" />
+        </EntityType>
+        <Association Name="FK_RULE_ID">
+          <End Type="Model2.Rule" Role="Rule" Multiplicity="1" />
+          <End Type="Model2.RuleIssue" Role="ELP_RULE_ISSUE" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Rule">
+              <PropertyRef Name="RuleId" />
+            </Principal>
+            <Dependent Role="ELP_RULE_ISSUE">
+              <PropertyRef Name="RuleId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityType Name="Issue">
+          <Key>
+            <PropertyRef Name="IssueId" />
+          </Key>
+          <Property Name="IssueId" Type="Guid" Nullable="false" />
+          <Property Name="Code" Type="String" Nullable="false" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="IssueTypeId" Type="Guid" />
+          <Property Name="Effective" Type="DateTime" Nullable="false" />
+          <Property Name="Expiration" Type="DateTime" Nullable="false" />
+          <Property Name="CreatedDate" Type="DateTime" Nullable="false" />
+          <Property Name="CreatedBy" Type="String" Nullable="false" MaxLength="30" FixedLength="false" Unicode="false" />
+          <Property Name="ModifiedDate" Type="DateTime" />
+          <Property Name="ModifiedBy" Type="String" MaxLength="30" FixedLength="false" Unicode="false" />
+          <Property Name="Description" Type="String" MaxLength="2000" FixedLength="false" Unicode="false" Nullable="false" />
+          <NavigationProperty Name="RuleIssue" Relationship="Model2.FK_ISSUE_ID" FromRole="ELP_ISSUE" ToRole="RuleIssue" />
+          <NavigationProperty Name="IssueQuestions" Relationship="Model2.FK_ISS_ID" FromRole="Issue" ToRole="ELP_ISSUE_QUESTION" />
+        </EntityType>
+        <Association Name="FK_ISSUE_ID">
+          <End Type="Model2.Issue" Role="ELP_ISSUE" Multiplicity="1" />
+          <End Type="Model2.RuleIssue" Role="RuleIssue" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ELP_ISSUE">
+              <PropertyRef Name="IssueId" />
+            </Principal>
+            <Dependent Role="RuleIssue">
+              <PropertyRef Name="IssueId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityType Name="ListPrice">
+          <Key>
+            <PropertyRef Name="ListPriceId" />
+          </Key>
+          <Property Name="ListPriceId" Type="Guid" Nullable="false" />
+          <Property Name="WarrantyMasterId" Type="Guid" Nullable="false" />
+          <Property Name="Effective" Type="DateTime" Nullable="false" />
+          <Property Name="Expiration" Type="DateTime" />
+          <Property Name="CreatedDate" Type="DateTime" Nullable="false" />
+          <Property Name="ModifiedDate" Type="DateTime" />
+          <Property Name="CreatedBy" Type="String" Nullable="false" MaxLength="120" FixedLength="false" Unicode="false" />
+          <Property Name="ModifiedBy" Type="String" MaxLength="120" FixedLength="false" Unicode="false" />
+          <Property Name="Amount" Type="Decimal" Nullable="false" Precision="11" Scale="2" />
+          <Property Name="AmountTypeId" Type="Guid" />
+          <NavigationProperty Name="WarrantyMaster" Relationship="Model2.FK_WARRANTY_MSTR" FromRole="ELP_LIST_PRICE" ToRole="ELP_WARRANTY_MASTER" />
+        </EntityType>
+        <EntityType Name="WarrantyMaster">
+          <Key>
+            <PropertyRef Name="WarrantyMasterId" />
+          </Key>
+          <Property Name="WarrantyMasterId" Type="Guid" Nullable="false" />
+          <Property Name="DealerId" Type="Guid" />
+          <Property Name="SkuNumber" Type="String" MaxLength="18" FixedLength="false" Unicode="false" />
+          <Property Name="SkuDescription" Type="String" MaxLength="40" FixedLength="false" Unicode="false" />
+          <Property Name="ManufacturerId" Type="String" MaxLength="4" FixedLength="false" Unicode="false" />
+          <Property Name="ManufacturerName" Type="String" MaxLength="30" FixedLength="false" Unicode="false" />
+          <Property Name="WarrantyType" Type="String" MaxLength="1" FixedLength="false" Unicode="false" />
+          <Property Name="WarrantyDescription" Type="String" MaxLength="40" FixedLength="false" Unicode="false" />
+          <Property Name="ModelNumber" Type="String" MaxLength="30" FixedLength="false" Unicode="false" />
+          <Property Name="WarrantyDurationParts" Type="Decimal" Precision="38" Scale="0" />
+          <Property Name="WarrantyDurationLabor" Type="Decimal" Precision="38" Scale="0" />
+          <Property Name="CreatedDate" Type="DateTime" Nullable="false" />
+          <Property Name="ModifiedDate" Type="DateTime" />
+          <Property Name="CreatedBy" Type="String" Nullable="false" MaxLength="30" FixedLength="false" Unicode="false" />
+          <Property Name="ModifiedBy" Type="String" MaxLength="30" FixedLength="false" Unicode="false" />
+          <Property Name="IsDeleted" Type="String" MaxLength="1" FixedLength="false" Unicode="false" />
+          <Property Name="RiskTypeId" Type="Guid" />
+          <Property Name="InternalManufacturerId" Type="Guid" />
+          <NavigationProperty Name="Dealer" Relationship="Model2.FK_WARRANTY_MASTER_DEALER" FromRole="ELP_WARRANTY_MASTER" ToRole="Dealer" />
+          <NavigationProperty Name="ListPrices" Relationship="Model2.FK_WARRANTY_MSTR" FromRole="ELP_WARRANTY_MASTER" ToRole="ELP_LIST_PRICE" />
+        </EntityType>
+        <Association Name="FK_WARRANTY_MASTER_DEALER">
+          <End Type="Model2.Dealer" Role="Dealer" Multiplicity="0..1" />
+          <End Type="Model2.WarrantyMaster" Role="ELP_WARRANTY_MASTER" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Dealer">
+              <PropertyRef Name="DealerId" />
+            </Principal>
+            <Dependent Role="ELP_WARRANTY_MASTER">
+              <PropertyRef Name="DealerId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_WARRANTY_MSTR">
+          <End Type="Model2.WarrantyMaster" Role="ELP_WARRANTY_MASTER" Multiplicity="1" />
+          <End Type="Model2.ListPrice" Role="ELP_LIST_PRICE" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ELP_WARRANTY_MASTER">
+              <PropertyRef Name="WarrantyMasterId" />
+            </Principal>
+            <Dependent Role="ELP_LIST_PRICE">
+              <PropertyRef Name="WarrantyMasterId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityType Name="Contract">
+          <Key>
+            <PropertyRef Name="ContractId" />
+          </Key>
+          <Property Name="ContractId" Type="Guid" Nullable="false" />
+          <Property Name="DealerId" Type="Guid" Nullable="false" />
+          <Property Name="ContractTypeId" Type="Guid" Nullable="false" />
+          <Property Name="Effective" Type="DateTime" Nullable="false" />
+          <Property Name="Expiration" Type="DateTime" Nullable="false" />
+          <Property Name="COMMISSIONS_PERCENT" Type="Decimal" Nullable="false" Precision="7" Scale="4" />
+          <Property Name="MARKETING_PERCENT" Type="Decimal" Nullable="false" Precision="7" Scale="4" />
+          <Property Name="ADMIN_EXPENSE" Type="Decimal" Nullable="false" Precision="7" Scale="4" />
+          <Property Name="PROFIT_PERCENT" Type="Decimal" Nullable="false" Precision="7" Scale="4" />
+          <Property Name="LOSS_COST_PERCENT" Type="Decimal" Nullable="false" Precision="7" Scale="4" />
+          <Property Name="CURRENCY_ID" Type="Guid" Nullable="false" />
+          <Property Name="TYPE_OF_MARKETING_ID" Type="Guid" Nullable="false" />
+          <Property Name="TYPE_OF_EQUIPMENT_ID" Type="Guid" Nullable="false" />
+          <Property Name="TYPE_OF_INSURANCE_ID" Type="Guid" Nullable="false" />
+          <Property Name="OLD_CERTIFICATES_AUTONUMBER_ID" Type="Guid" />
+          <Property Name="MIN_REPLACEMENT_COST" Type="Decimal" Precision="11" Scale="2" />
+          <Property Name="WARRANTY_MAX_DELAY" Type="Int16" Nullable="false" />
+          <Property Name="NET_COMMISSIONS_ID" Type="Guid" Nullable="false" />
+          <Property Name="NET_MARKETING_ID" Type="Guid" Nullable="false" />
+          <Property Name="NET_TAXES_ID" Type="Guid" Nullable="false" />
+          <Property Name="Deductible" Type="Decimal" Precision="11" Scale="2" />
+          <Property Name="WAITING_PERIOD" Type="Int16" Nullable="false" />
+          <Property Name="FUNDING_SOURCE_ID" Type="Guid" Nullable="false" />
+          <Property Name="CONVERT_PRODUCT_CODE_ID" Type="Guid" />
+          <Property Name="EDIT_MODEL_ID" Type="Guid" Nullable="false" />
+          <Property Name="DEALER_MARKUP_ID" Type="Guid" Nullable="false" />
+          <Property Name="OLD_ENDORSEMENTS_ID" Type="Guid" />
+          <Property Name="AUTO_MFG_COVERAGE_ID" Type="Guid" Nullable="false" />
+          <Property Name="RESTRICT_MARKUP_ID" Type="Guid" Nullable="false" />
+          <Property Name="LAYOUT" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+          <Property Name="SUSPENSE_DAYS" Type="Int16" />
+          <Property Name="CANCELLATION_DAYS" Type="Int16" />
+          <Property Name="CreatedDate" Type="DateTime" Nullable="false" />
+          <Property Name="ModifiedDate" Type="DateTime" />
+          <Property Name="CreatedBy" Type="String" Nullable="false" MaxLength="30" FixedLength="false" Unicode="false" />
+          <Property Name="ModifiedBy" Type="String" MaxLength="30" FixedLength="false" Unicode="false" />
+          <Property Name="COMMENT1" Type="String" MaxLength="4000" FixedLength="false" Unicode="false" />
+          <Property Name="FIXED_ESC_DURATION_FLAG" Type="Guid" Nullable="false" />
+          <Property Name="POLICY" Type="String" MaxLength="12" />
+          <Property Name="REPLACEMENT_POLICY_ID" Type="Guid" Nullable="false" />
+          <Property Name="COINSURANCE_ID" Type="Guid" Nullable="false" />
+          <Property Name="PARTICIPATION_PERCENT" Type="Decimal" Precision="7" Scale="4" />
+          <Property Name="ID_VALIDATION_ID" Type="Guid" Nullable="false" />
+          <Property Name="CLAIM_CONTROL_ID" Type="Guid" Nullable="false" />
+          <Property Name="RATING_PLAN" Type="Int16" />
+          <Property Name="CURRENCY_CONVERSION_ID" Type="Guid" />
+          <Property Name="CURRENCY_OF_COVERAGES_ID" Type="Guid" />
+          <Property Name="REMAINING_MFG_DAYS" Type="Int16" />
+          <Property Name="ACSEL_PROD_CODE_ID" Type="Guid" />
+          <Property Name="CANCELLATION_REASON_ID" Type="Guid" />
+          <Property Name="FULL_REFUND_DAYS" Type="Int16" />
+          <Property Name="AUTO_SET_LIABILITY_ID" Type="Guid" />
+          <Property Name="DEDUCTIBLE_PERCENT" Type="Decimal" Precision="10" Scale="2" />
+          <Property Name="COVERAGE_DEDUCTIBLE_ID" Type="Guid" Nullable="false" />
+          <Property Name="IGNORE_INCOMING_PREMIUM_ID" Type="Guid" Nullable="false" />
+          <Property Name="REPAIR_DISCOUNT_PCT" Type="Int16" />
+          <Property Name="REPLACEMENT_DISCOUNT_PCT" Type="Int16" />
+          <Property Name="IGNORE_COVERAGE_AMT_ID" Type="Guid" Nullable="false" />
+          <Property Name="BACKEND_CLAIMS_ALLOWED_ID" Type="Guid" Nullable="false" />
+          <Property Name="EDIT_MFG_TERM_ID" Type="Guid" Nullable="false" />
+          <Property Name="ACCT_BUSINESS_UNIT_ID" Type="Guid" />
+          <Property Name="USE_DELIVERY_DATE_ID" Type="Guid" />
+          <Property Name="IGNORE_WAITING_PERIOD_WSD_PSD" Type="Guid" Nullable="false"/>
+          <Property Name="INSTALLMENT_PAYMENT_ID" Type="Guid" Nullable="false" />
+          <Property Name="DAYS_OF_FIRST_PYMT" Type="Int16" Nullable="false" />
+          <Property Name="DAYS_TO_SEND_LETTER" Type="Int16" Nullable="false" />
+          <Property Name="DAYS_TO_CANCEL_CERT" Type="Int16" Nullable="false" />
+          <Property Name="DEDUCT_BY_MFG_ID" Type="Guid" />
+          <Property Name="PENALTY_PCT" Type="Decimal" Precision="8" Scale="4" />
+          <Property Name="CLIP_PERCENT" Type="Decimal" Precision="7" Scale="4" />
+          <Property Name="BASE_INSTALLMENTS" Type="Guid" />
+          <Property Name="BILLING_CYCLE_FREQUENCY" Type="Guid" />
+          <Property Name="MAX_INSTALLMENTS" Type="Int16" />
+          <Property Name="INSTALLMENTS_BASE_REDUCER" Type="Int16" />
+          <Property Name="IS_COMM_P_CODE_ID" Type="Guid" Nullable="false" />
+          <Property Name="PAST_DUE_MONTHS_ALLOWED" Type="Int16" />
+          <Property Name="COLLECTION_RE_ATTEMPTS" Type="Int16" />
+          <Property Name="INCLUDE_FIRST_PMT" Type="Guid" />
+          <Property Name="COLLECTION_CYCLE_TYPE_ID" Type="Guid" />
+          <Property Name="CYCLE_DAY" Type="Int16" />
+          <Property Name="OFFSET_BEFORE_DUE_DATE" Type="Int16" />
+          <Property Name="INS_PREMIUM_FACTOR" Type="Decimal" Precision="9" Scale="6" />
+          <Property Name="EXTEND_COVERAGE_ID" Type="Guid" Nullable="false"/>
+          <Property Name="EXTRA_MONS_TO_EXTEND_COVERAGE" Type="Int16" />
+          <Property Name="EXTRA_DAYS_TO_EXTEND_COVERAGE" Type="Int16" />
+          <Property Name="ALLOW_DIFFERENT_COVERAGE" Type="Guid" Nullable="false" />
+          <Property Name="ALLOW_NO_EXTENDED" Type="Guid" />
+          <Property Name="NumOfClaims" Type="Int16" />
+          <Property Name="ClaimLimitBasedOnId" Type="Guid" />
+          <Property Name="OLD_CLAIM_LIMIT_BY_ID" Type="Guid" />
+          <Property Name="DaysToReportClaim" Type="Int16" />
+          <Property Name="MARKETING_PROMO_ID" Type="Guid" />
+          <Property Name="CUST_ADDRESS_REQUIRED_ID" Type="Guid" Nullable="false" />
+          <Property Name="FIRST_PYMT_MONTHS" Type="Int16" />
+          <Property Name="DEDUCTIBLE_BASED_ON_ID" Type="Guid" Nullable="false" />
+          <Property Name="ALLOW_MULTIPLE_REJECTIONS_ID" Type="Guid" />
+          <Property Name="PRO_RATA_METHOD_ID" Type="Guid" />
+          <Property Name="OLD_CERT_AUTONUMBER_PREFIX" Type="String" MaxLength="8" FixedLength="false" Unicode="false" />
+          <Property Name="PAY_OUTSTANDING_PREMIUM_ID" Type="Guid" />
+		  <Property Name="ALLOW_PYMT_SKIP_MONTHS" Type="Guid" />
+          <Property Name="AUTHORIZED_AMOUNT_MAX_UPDATES" Type="Int16" />
+          <Property Name="NUMBER_OF_DAYS_TO_REACTIVATE" Type="Int16" />
+		  <Property Name="RECURRING_PREMIUM_ID" Type="Guid" Nullable="false" />
+          <Property Name="RECURRING_WARRANTY_PERIOD" Type="Int16" />
+          <Property Name="BILLING_CYCLE_TYPE_ID" Type="Guid" />
+          <Property Name="DAILY_RATE_BASED_ON_ID" Type="Guid" />
+          <Property Name="ALLOW_BILLING_AFTER_CNCLTN" Type="Guid" />
+          <Property Name="ALLOW_COLLCTN_AFTER_CNCLTN" Type="Guid" />
+          <Property Name="REPLACEMENT_POLICY_CLAIM_COUNT" Type="Int16" />
+          <Property Name="FUTURE_DATE_ALLOW_FOR_ID" Type="Guid" Nullable="false" />
+          <Property Name="ALLOW_COVERAGE_MARKUP_DTBN" Type="Guid" Nullable="false" />
+          <Property Name="NumOfRepairClaims" Type="Int16" />
+          <Property Name="NumOfReplacementClaims" Type="Int16" />
+          <Property Name="RdoName" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="RdoTaxId" Type="String" MaxLength="15" FixedLength="false" Unicode="false" />
+          <Property Name="RdoPercent" Type="Decimal" Precision="8" Scale="4" />
+          <Property Name="PaymentProcessingTypeId" Type="Guid" />
+          <Property Name="ThirdPartyName" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="ThirdPartyTaxId" Type="String" MaxLength="15" FixedLength="false" Unicode="false" />
+          <Property Name="LineOfBusinessId" Type="Guid" />
+		  <Property Name="ProducerId" Type="Guid" />
+          <NavigationProperty Name="Dealer" Relationship="Model2.FK_CONTRACT_DEALER" FromRole="ELP_CONTRACT" ToRole="Dealer" />
+    </EntityType>
+        <Association Name="FK_CONTRACT_DEALER">
+          <End Type="Model2.Dealer" Role="Dealer" Multiplicity="1" />
+          <End Type="Model2.Contract" Role="ELP_CONTRACT" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Dealer">
+              <PropertyRef Name="DealerId" />
+            </Principal>
+            <Dependent Role="ELP_CONTRACT">
+              <PropertyRef Name="DealerId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityType Name="IssueQuestion">
+          <Key>
+            <PropertyRef Name="IssueQuestionId" />
+          </Key>
+          <Property Name="IssueQuestionId" Type="Guid" Nullable="false" />
+          <Property Name="IssueId" Type="Guid" Nullable="false" />
+          <Property Name="SoftQuestionId" Type="Guid" Nullable="false" />
+          <Property Name="DisplayOrder" Type="Int16" />
+          <Property Name="Effective" Type="DateTime" Nullable="false" />
+          <Property Name="Expiration" Type="DateTime" Nullable="false" />
+          <Property Name="CreatedDate" Type="DateTime" Nullable="false" />
+          <Property Name="CreatedBy" Type="String" Nullable="false" MaxLength="30" FixedLength="false" Unicode="false" />
+          <Property Name="ModifiedDate" Type="DateTime" />
+          <Property Name="ModifiedBy" Type="String" MaxLength="30" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="Issue" Relationship="Model2.FK_ISS_ID" FromRole="ELP_ISSUE_QUESTION" ToRole="Issue" />
+          <NavigationProperty Name="SoftQuestion" Relationship="Model2.FK_SOFT_Q_ID" FromRole="ELP_ISSUE_QUESTION" ToRole="ELP_SOFT_QUESTION" />
+        </EntityType>
+        <EntityType Name="SoftQuestion">
+          <Key>
+            <PropertyRef Name="SoftQuestionId" />
+          </Key>
+          <Property Name="SoftQuestionId" Type="Guid" Nullable="false" />
+          <Property Name="SoftQuestionGroupId" Type="Guid" Nullable="false" />
+          <Property Name="ParentId" Type="Guid" />
+          <Property Name="ChildOrder" Type="Decimal" Nullable="false" Precision="38" Scale="0" />
+          <Property Name="Description" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="CreatedBy" Type="String" Nullable="false" MaxLength="30" FixedLength="false" Unicode="false" />
+          <Property Name="CreatedDate" Type="DateTime" Nullable="false" />
+          <Property Name="ModifiedBy" Type="String" MaxLength="30" FixedLength="false" Unicode="false" />
+          <Property Name="ModifiedDate" Type="DateTime" />
+          <Property Name="Code" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="QUESTION_TYPE_ID" Type="Guid" />
+          <Property Name="IMPACTS_CLAIM_ID" Type="Guid" />
+          <Property Name="ANSWER_TYPE_ID" Type="Guid" />
+          <Property Name="CUSTOMER_MESSAGE" Type="String" MaxLength="2000" FixedLength="false" Unicode="false" />
+          <Property Name="ENTITY_ATTRIBUTE_ID" Type="Guid" />
+          <Property Name="SEARCH_TAGS" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="Effective" Type="DateTime" />
+          <Property Name="Expiration" Type="DateTime" />
+          <NavigationProperty Name="IssueQuestions" Relationship="Model2.FK_SOFT_Q_ID" FromRole="ELP_SOFT_QUESTION" ToRole="ELP_ISSUE_QUESTION" />
+          <NavigationProperty Name="SoftQuestion1" Relationship="Model2.FK_SOFT_QST_PARENT" FromRole="SoftQuestion" ToRole="SoftQuestion1" />
+          <NavigationProperty Name="SoftQuestion2" Relationship="Model2.FK_SOFT_QST_PARENT" FromRole="SoftQuestion1" ToRole="SoftQuestion" />
+        </EntityType>
+        <Association Name="FK_ISS_ID">
+          <End Type="Model2.Issue" Role="Issue" Multiplicity="1" />
+          <End Type="Model2.IssueQuestion" Role="ELP_ISSUE_QUESTION" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Issue">
+              <PropertyRef Name="IssueId" />
+            </Principal>
+            <Dependent Role="ELP_ISSUE_QUESTION">
+              <PropertyRef Name="IssueId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_SOFT_Q_ID">
+          <End Type="Model2.SoftQuestion" Role="ELP_SOFT_QUESTION" Multiplicity="1" />
+          <End Type="Model2.IssueQuestion" Role="ELP_ISSUE_QUESTION" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ELP_SOFT_QUESTION">
+              <PropertyRef Name="SoftQuestionId" />
+            </Principal>
+            <Dependent Role="ELP_ISSUE_QUESTION">
+              <PropertyRef Name="SoftQuestionId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_SOFT_QST_PARENT">
+          <End Type="Model2.SoftQuestion" Role="SoftQuestion" Multiplicity="0..1" />
+          <End Type="Model2.SoftQuestion" Role="SoftQuestion1" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="SoftQuestion">
+              <PropertyRef Name="SoftQuestionId" />
+            </Principal>
+            <Dependent Role="SoftQuestion1">
+              <PropertyRef Name="ParentId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityType Name="Coverage">
+          <Key>
+            <PropertyRef Name="CoverageId" />
+          </Key>
+          <Property Name="CoverageId" Type="Guid" Nullable="false" />
+          <Property Name="ItemId" Type="Guid" Nullable="false" />
+          <Property Name="ProductItemId" Type="Guid" Nullable="false" />
+          <Property Name="CoverageTypeId" Type="Guid" Nullable="false" />
+          <Property Name="CertificateDuration" Type="Int16" Nullable="false" />
+          <Property Name="CoverageDuration" Type="Int16" Nullable="false" />
+          <Property Name="Effective" Type="DateTime" Nullable="false" />
+          <Property Name="Expiration" Type="DateTime" Nullable="false" />
+          <Property Name="OffsetToStart" Type="Int16" Nullable="false" />
+          <Property Name="OptionalId" Type="Guid" Nullable="false" />
+          <Property Name="LiabilityLimit" Type="Int32" />
+          <Property Name="Deductible" Type="Decimal" Nullable="false" Precision="11" Scale="2" />
+          <Property Name="CreatedDate" Type="DateTime" Nullable="false" />
+          <Property Name="ModifiedDate" Type="DateTime" />
+          <Property Name="CreatedBy" Type="String" Nullable="false" MaxLength="30" FixedLength="false" Unicode="false" />
+          <Property Name="ModifiedBy" Type="String" MaxLength="30" FixedLength="false" Unicode="false" />
+          <Property Name="EarningCodeId" Type="Guid" />
+          <Property Name="DeductiblePercent" Type="Decimal" Precision="10" Scale="2" />
+          <Property Name="RepairDiscountPct" Type="Int16" />
+          <Property Name="ReplacementDiscountPct" Type="Int16" />
+          <Property Name="LiabilityLimitPercent" Type="Int16" />
+          <Property Name="IsClaimAllowedId" Type="Guid" Nullable="false" />
+          <Property Name="UseCoverageStartDateID" Type="Guid" Nullable="false" />
+          <Property Name="MethodOfRepairId" Type="Guid" />
+          <Property Name="DeductibleBasedOnId" Type="Guid" Nullable="false" />
+          <Property Name="AgentCode" Type="String" MaxLength="15" FixedLength="false" Unicode="false" />
+          <Property Name="OffsetToStartDays" Type="Int16" Nullable="false" />
+          <Property Name="OffsetMethodId" Type="Guid" />
+          <Property Name="MarkupDistributionPercent" Type="Int16" />
+          <Property Name="CovLiabilityLimit" Type="Decimal" Precision="11" Scale="2" />
+          <Property Name="CovLiaibilityLimitPercent" Type="Int16" />
+          <Property Name="RecoverDeviceId" Type="Guid" />
+          <NavigationProperty Name="Item" Relationship="Model2.FK_COVERAGE_ITEM" FromRole="Coverage" ToRole="ELP_ITEM" />
+        </EntityType>
+        <EntityType Name="Item">
+          <Key>
+            <PropertyRef Name="ItemId" />
+          </Key>
+          <Property Name="ItemId" Type="Guid" Nullable="false" />
+          <Property Name="ProductCodeId" Type="Guid" Nullable="false" />
+          <Property Name="RiskTypeId" Type="Guid" Nullable="false" />
+          <Property Name="MaxReplacementCost" Type="Decimal" Precision="11" Scale="2" />
+          <Property Name="CreatedDate" Type="DateTime" Nullable="false" />
+          <Property Name="ModifiedDate" Type="DateTime" />
+          <Property Name="CreatedBy" Type="String" Nullable="false" MaxLength="30" FixedLength="false" Unicode="false" />
+          <Property Name="ModifiedBy" Type="String" MaxLength="30" FixedLength="false" Unicode="false" />
+          <Property Name="ItemNumber" Type="Int32" Nullable="false" />
+          <Property Name="OptionalItem" Type="Guid" Nullable="false" />
+          <Property Name="OptionalItemCode" Type="String" MaxLength="5" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="Coverages" Relationship="Model2.FK_COVERAGE_ITEM" FromRole="ELP_ITEM" ToRole="Coverage" />
+          <NavigationProperty Name="Product" Relationship="Model2.FK_ITEM_PRODUCT" FromRole="ELP_ITEM" ToRole="Product" />
+        </EntityType>
+        <Association Name="FK_COVERAGE_ITEM">
+          <End Type="Model2.Item" Role="ELP_ITEM" Multiplicity="1" />
+          <End Type="Model2.Coverage" Role="Coverage" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ELP_ITEM">
+              <PropertyRef Name="ItemId" />
+            </Principal>
+            <Dependent Role="Coverage">
+              <PropertyRef Name="ItemId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ITEM_PRODUCT">
+          <End Type="Model2.Product" Role="Product" Multiplicity="1" />
+          <End Type="Model2.Item" Role="ELP_ITEM" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Product">
+              <PropertyRef Name="ProductId" />
+            </Principal>
+            <Dependent Role="ELP_ITEM">
+              <PropertyRef Name="ProductCodeId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityType Name="DealerGroup">
+          <Key>
+            <PropertyRef Name="DealerGroupId" />
+          </Key>
+          <Property Name="DealerGroupId" Type="Guid" Nullable="false" />
+          <Property Name="Description" Type="String" Nullable="false" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="Code" Type="String" Nullable="false" MaxLength="5" FixedLength="false" Unicode="false" />
+          <Property Name="CreatedDate" Type="DateTime" Nullable="false" />
+          <Property Name="ModifiedDate" Type="DateTime" />
+          <Property Name="CreatedBy" Type="String" Nullable="false" MaxLength="30" FixedLength="false" Unicode="false" />
+          <Property Name="ModifiedBy" Type="String" MaxLength="30" FixedLength="false" Unicode="false" />
+          <Property Name="CompanyGroupId" Type="Guid" />
+          <Property Name="AccountingByGroupId" Type="Guid" Nullable="false" />
+          <Property Name="BankInfoId" Type="Guid" />
+          <Property Name="UseClientCodeYNId" Type="Guid" />
+          <Property Name="AutoRejErrTypeId" Type="Guid" />
+        </EntityType>
+        <Association Name="FK_DEALER_DEALER_GROUP">
+          <End Type="Model2.DealerGroup" Role="DealerGroup" Multiplicity="0..1" />
+          <End Type="Model2.Dealer" Role="None" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="DealerGroup">
+              <PropertyRef Name="DealerGroupId" />
+            </Principal>
+            <Dependent Role="None">
+              <PropertyRef Name="DEALER_GROUP_ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityType Name="Branch">
+          <Key>
+            <PropertyRef Name="BranchId" />
+          </Key>
+          <Property Name="BranchId" Type="Guid" Nullable="false" />
+          <Property Name="BranchCode" Type="String" Nullable="false" MaxLength="10" FixedLength="false" Unicode="false" />
+          <Property Name="DealerId" Type="Guid" Nullable="false" />
+          <Property Name="Address1" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="Address2" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="City" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="RegionId" Type="Guid" />
+          <Property Name="CountryId" Type="Guid" Nullable="false" />
+          <Property Name="CreatedDate" Type="DateTime" Nullable="false" />
+          <Property Name="CreatedBy" Type="String" MaxLength="30" FixedLength="false" Unicode="false" />
+          <Property Name="ModifiedDate" Type="DateTime" />
+          <Property Name="ModifiedBy" Type="String" MaxLength="30" FixedLength="false" Unicode="false" />
+          <Property Name="BranchName" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="PostalCode" Type="String" MaxLength="40" FixedLength="false" Unicode="false" />
+          <Property Name="ContactPhone" Type="String" MaxLength="30" FixedLength="false" Unicode="false" />
+          <Property Name="ContactExt" Type="String" MaxLength="5" FixedLength="false" Unicode="false" />
+          <Property Name="ContactFax" Type="String" MaxLength="15" FixedLength="false" Unicode="false" />
+          <Property Name="ContactEmail" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="Market" Type="String" MaxLength="30" FixedLength="false" Unicode="false" />
+          <Property Name="BankInfoId" Type="Guid" />
+          <Property Name="BranchTypeId" Type="Guid" />
+          <Property Name="StoreManager" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="MarketingRegion" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="Address3" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="Dealer" Relationship="Model2.FK_BRANCH_DEALER" FromRole="ELP_BRANCH" ToRole="Dealer" />
+        </EntityType>
+        <Association Name="FK_BRANCH_DEALER">
+          <End Type="Model2.Dealer" Role="Dealer" Multiplicity="1" />
+          <End Type="Model2.Branch" Role="ELP_BRANCH" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Dealer">
+              <PropertyRef Name="DealerId" />
+            </Principal>
+            <Dependent Role="ELP_BRANCH">
+              <PropertyRef Name="DealerId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2008/09/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="Model2StoreContainer" CdmEntityContainer="DealerContext">
+          <EntitySetMapping Name="Dealers">
+            <EntityTypeMapping TypeName="IsTypeOf(Model2.Dealer)">
+              <MappingFragment StoreEntitySet="ELP_DEALER">
+                <ScalarProperty Name="PYMT_REJ_REC_RECON_ID" ColumnName="PYMT_REJ_REC_RECON_ID" />
+                <ScalarProperty Name="AUTO_GEN_REJ_PYMT_FILE_ID" ColumnName="AUTO_GEN_REJ_PYMT_FILE_ID" />
+                <ScalarProperty Name="DealerId" ColumnName="DEALER_ID" />
+                <ScalarProperty Name="AUTO_PROCESS_PYMT_FILE_ID" ColumnName="AUTO_PROCESS_PYMT_FILE_ID" />
+                <ScalarProperty Name="REQUIRE_CUSTOMER_AML_INFO_ID" ColumnName="REQUIRE_CUSTOMER_AML_INFO_ID" />
+                <ScalarProperty Name="REUSE_SERIAL_NUMBER_ID" ColumnName="REUSE_SERIAL_NUMBER_ID" />
+                <ScalarProperty Name="DEF_SALVAGE_CENTER_ID" ColumnName="DEF_SALVAGE_CENTER_ID" />
+                <ScalarProperty Name="CLAIM_AUTO_APPROVE_ID" ColumnName="CLAIM_AUTO_APPROVE_ID" />
+                <ScalarProperty Name="POLICY_EVENT_NOTIFY_EMAIL" ColumnName="POLICY_EVENT_NOTIFY_EMAIL" />
+                <ScalarProperty Name="DEALER_EXTRACT_PERIOD_ID" ColumnName="DEALER_EXTRACT_PERIOD_ID" />
+                <ScalarProperty Name="AUTO_SELECT_SERVICE_CENTER" ColumnName="AUTO_SELECT_SERVICE_CENTER" />
+                <ScalarProperty Name="LAWSUIT_MANDATORY_ID" ColumnName="LAWSUIT_MANDATORY_ID" />
+                <ScalarProperty Name="REJECTED_RECORD_RECON_ID" ColumnName="REJECTED_RECORD_RECON_ID" />
+                <ScalarProperty Name="AUTO_REJ_ERR_TYPE_ID" ColumnName="AUTO_REJ_ERR_TYPE_ID" />
+                <ScalarProperty Name="SUSPENDED_ENROLMENTS_ALLOWED" ColumnName="SUSPENDED_ENROLMENTS_ALLOWED" />
+                <ScalarProperty Name="MAX_CERTNUM_LENGTH_ALLOWED" ColumnName="MAX_CERTNUM_LENGTH_ALLOWED" />
+                <ScalarProperty Name="ALLOW_PROD_CHNG_FRM_COV_EFF_ID" ColumnName="ALLOW_PROD_CHNG_FRM_COV_EFF_ID" />
+                <ScalarProperty Name="FULLFILEPROCESS_ID" ColumnName="FULLFILEPROCESS_ID" />
+                <ScalarProperty Name="INSERT_MAKE_IF_NOT_EXIST_ID" ColumnName="INSERT_MAKE_IF_NOT_EXIST_ID" />
+                <ScalarProperty Name="FILE_LOAD_NOTIFICATION_EMAIL" ColumnName="FILE_LOAD_NOTIFICATION_EMAIL" />
+                <ScalarProperty Name="CERTIFICATES_AUTONUMBER_PREFIX" ColumnName="CERTIFICATES_AUTONUMBER_PREFIX" />
+                <ScalarProperty Name="CERTIFICATES_AUTONUMBER_ID" ColumnName="CERTIFICATES_AUTONUMBER_ID" />
+                <ScalarProperty Name="CLIENT_DEALER_CODE" ColumnName="CLIENT_DEALER_CODE" />
+                <ScalarProperty Name="OLD_ENDORSEMENTS_ID" ColumnName="OLD_ENDORSEMENTS_ID" />
+                <ScalarProperty Name="ALLOW_ADJUST_PYMTDATE_ID" ColumnName="ALLOW_ADJUST_PYMTDATE_ID" />
+                <ScalarProperty Name="MAX_NCRECORDS" ColumnName="MAX_NCRECORDS" />
+                <ScalarProperty Name="BILLRESULT_NOTIFICATION_EMAIL" ColumnName="BILLRESULT_NOTIFICATION_EMAIL" />
+                <ScalarProperty Name="BILLRESULT_EXCEPTION_DEST_ID" ColumnName="BILLRESULT_EXCEPTION_DEST_ID" />
+                <ScalarProperty Name="BILLING_PROCESS_CODE_ID" ColumnName="BILLING_PROCESS_CODE_ID" />
+                <ScalarProperty Name="REPLACECLAIMDEDTOLERANCEPCT" ColumnName="REPLACECLAIMDEDTOLERANCEPCT" />
+                <ScalarProperty Name="CertNumLookUpById" ColumnName="CERTNUMLOOKUPBY_ID" />
+                <ScalarProperty Name="ENROLLFILEPREPROCESSPROC_ID" ColumnName="ENROLLFILEPREPROCESSPROC_ID" />
+                <ScalarProperty Name="LICENSE_TAG_VALIDATION" ColumnName="LICENSE_TAG_VALIDATION" />
+                <ScalarProperty Name="NEW_DEVICE_SKU_REQUIRED_ID" ColumnName="NEW_DEVICE_SKU_REQUIRED_ID" />
+                <ScalarProperty Name="CLAIM_STATUS_FOR_EXT_SYSTEM_ID" ColumnName="CLAIM_STATUS_FOR_EXT_SYSTEM_ID" />
+                <ScalarProperty Name="DeductibleCollectionId" ColumnName="DEDUCTIBLE_COLLECTION_ID" />
+                <ScalarProperty Name="UseClaimAuthorizationId" ColumnName="USE_CLAIM_AUTHORIZATION_ID" />
+                <ScalarProperty Name="DealerSupportWebClaimsId" ColumnName="DEALER_SUPPORT_WEB_CLAIMS_ID" />
+                <ScalarProperty Name="ALLOW_FUTURE_CANCEL_DATE_ID" ColumnName="ALLOW_FUTURE_CANCEL_DATE_ID" />
+                <ScalarProperty Name="REJECT_AFTER_CANCELLATION_ID" ColumnName="REJECT_AFTER_CANCELLATION_ID" />
+                <ScalarProperty Name="ALLOW_UPDATE_CANCELLATION_ID" ColumnName="ALLOW_UPDATE_CANCELLATION_ID" />
+                <ScalarProperty Name="VALIDATE_SERIAL_NUMBER_ID" ColumnName="VALIDATE_SERIAL_NUMBER_ID" />
+                <ScalarProperty Name="CLAIM_EXTENDED_STATUS_ENTRY_ID" ColumnName="CLAIM_EXTENDED_STATUS_ENTRY_ID" />
+                <ScalarProperty Name="CLAIM_VERIFICATION_NUM_LENGTH" ColumnName="CLAIM_VERIFICATION_NUM_LENGTH" />
+                <ScalarProperty Name="PRODUCT_BY_REGION_ID" ColumnName="PRODUCT_BY_REGION_ID" />
+                <ScalarProperty Name="QUESTION_LIST_CODE" ColumnName="QUESTION_LIST_CODE" />
+                <ScalarProperty Name="EquipmentListCode" ColumnName="EQUIPMENT_LIST_CODE" />
+                <ScalarProperty Name="AuthAmtBasedOnId" ColumnName="AUTH_AMT_BASED_ON_ID" />
+                <ScalarProperty Name="VALIDATE_BILLING_CYCLE_ID" ColumnName="VALIDATE_BILLING_CYCLE_ID" />
+                <ScalarProperty Name="MIN_MAN_WARR" ColumnName="MIN_MAN_WARR" />
+                <ScalarProperty Name="ValidateSkuId" ColumnName="VALIDATE_SKU_ID" />
+                <ScalarProperty Name="BANK_INFO_MANDATORY_ID" ColumnName="BANK_INFO_MANDATORY_ID" />
+                <ScalarProperty Name="PayDeductibleId" ColumnName="PAY_DEDUCTIBLE_ID" />
+                <ScalarProperty Name="CANCEL_REQUEST_FLAG_ID" ColumnName="CANCEL_REQUEST_FLAG_ID" />
+                <ScalarProperty Name="UseEquipmentId" ColumnName="USE_EQUIPMENT_ID" />
+                <ScalarProperty Name="MIGRATION_PATH_ID" ColumnName="MIGRATION_PATH_ID" />
+                <ScalarProperty Name="MAX_MAN_WARR" ColumnName="MAX_MAN_WARR" />
+                <ScalarProperty Name="USE_INSTALLMENT_DEFN_ID" ColumnName="USE_INSTALLMENT_DEFN_ID" />
+                <ScalarProperty Name="ASSURANT_IS_OBLIGOR_ID" ColumnName="ASSURANT_IS_OBLIGOR_ID" />
+                <ScalarProperty Name="CLAIM_SYSTEM_ID" ColumnName="CLAIM_SYSTEM_ID" />
+                <ScalarProperty Name="EXPECTED_PREMIUM_IS_WP_ID" ColumnName="EXPECTED_PREMIUM_IS_WP_ID" />
+                <ScalarProperty Name="ESC_INSURANCE_LABEL" ColumnName="ESC_INSURANCE_LABEL" />
+                <ScalarProperty Name="SERVICE_LINE_EMAIL" ColumnName="SERVICE_LINE_EMAIL" />
+                <ScalarProperty Name="SERVICE_LINE_FAX" ColumnName="SERVICE_LINE_FAX" />
+                <ScalarProperty Name="SERVICE_LINE_PHONE" ColumnName="SERVICE_LINE_PHONE" />
+                <ScalarProperty Name="PROGRAM_NAME" ColumnName="PROGRAM_NAME" />
+                <ScalarProperty Name="CERT_CANCEL_BY_ID" ColumnName="CERT_CANCEL_BY_ID" />
+                <ScalarProperty Name="ROUND_COMM_FLAG_ID" ColumnName="ROUND_COMM_FLAG_ID" />
+                <ScalarProperty Name="AUTO_PROCESS_FILE_ID" ColumnName="AUTO_PROCESS_FILE_ID" />
+                <ScalarProperty Name="USE_INCOMING_SALES_TAX_ID" ColumnName="USE_INCOMING_SALES_TAX_ID" />
+                <ScalarProperty Name="USE_WARRANTY_MASTER_ID" ColumnName="USE_WARRANTY_MASTER_ID" />
+                <ScalarProperty Name="REGISTRATION_EMAIL_FROM" ColumnName="REGISTRATION_EMAIL_FROM" />
+                <ScalarProperty Name="LAE_IBNR_COMPUTE_METHOD_ID" ColumnName="LAE_IBNR_COMPUTE_METHOD_ID" />
+                <ScalarProperty Name="LAE_IBNR_FACTOR" ColumnName="LAE_IBNR_FACTOR" />
+                <ScalarProperty Name="STAT_IBNR_COMPUTE_METHOD_ID" ColumnName="STAT_IBNR_COMPUTE_METHOD_ID" />
+                <ScalarProperty Name="STAT_IBNR_FACTOR" ColumnName="STAT_IBNR_FACTOR" />
+                <ScalarProperty Name="REGISTRATION_PROCESS_FLAG_ID" ColumnName="REGISTRATION_PROCESS_FLAG_ID" />
+                <ScalarProperty Name="INSTALLMENT_FACTOR_FLAG_ID" ColumnName="INSTALLMENT_FACTOR_FLAG_ID" />
+                <ScalarProperty Name="DELAY_FACTOR_FLAG_ID" ColumnName="DELAY_FACTOR_FLAG_ID" />
+                <ScalarProperty Name="OLITA_SEARCH" ColumnName="OLITA_SEARCH" />
+                <ScalarProperty Name="EDIT_BRANCH_ID" ColumnName="EDIT_BRANCH_ID" />
+                <ScalarProperty Name="MANUAL_ENROLLMENT_ALLOWED_ID" ColumnName="MANUAL_ENROLLMENT_ALLOWED_ID" />
+                <ScalarProperty Name="SEPARATED_CREDIT_NOTES_ID" ColumnName="SEPARATED_CREDIT_NOTES_ID" />
+                <ScalarProperty Name="INVOICE_BY_BRANCH_ID" ColumnName="INVOICE_BY_BRANCH_ID" />
+                <ScalarProperty Name="DEDUCTIBLE_DISCOUNT" ColumnName="DEDUCTIBLE_DISCOUNT" />
+                <ScalarProperty Name="PRICE_MATRIX_USES_WP_ID" ColumnName="PRICE_MATRIX_USES_WP_ID" />
+                <ScalarProperty Name="NUMBER_OF_OTHER_LOCATIONS" ColumnName="NUMBER_OF_OTHER_LOCATIONS" />
+                <ScalarProperty Name="MAILING_ADDRESS_ID" ColumnName="MAILING_ADDRESS_ID" />
+                <ScalarProperty Name="WEB_ADDRESS" ColumnName="WEB_ADDRESS" />
+                <ScalarProperty Name="CITY_TAX_ID_NUMBER" ColumnName="CITY_TAX_ID_NUMBER" />
+                <ScalarProperty Name="STATE_TAX_ID_NUMBER" ColumnName="STATE_TAX_ID_NUMBER" />
+                <ScalarProperty Name="BUSINESS_NAME" ColumnName="BUSINESS_NAME" />
+                <ScalarProperty Name="BANK_INFO_ID" ColumnName="BANK_INFO_ID" />
+                <ScalarProperty Name="BRANCH_VALIDATION_ID" ColumnName="BRANCH_VALIDATION_ID" />
+                <ScalarProperty Name="DealerTypeId" ColumnName="DEALER_TYPE_ID" />
+                <ScalarProperty Name="CONVERT_PRODUCT_CODE_ID" ColumnName="CONVERT_PRODUCT_CODE_ID" />
+                <ScalarProperty Name="IBNR_COMPUTE_METHOD_ID" ColumnName="IBNR_COMPUTE_METHOD_ID" />
+                <ScalarProperty Name="IBNR_FACTOR" ColumnName="IBNR_FACTOR" />
+                <ScalarProperty Name="SERVICE_NETWORK_ID" ColumnName="SERVICE_NETWORK_ID" />
+                <ScalarProperty Name="ACTIVE_FLAG" ColumnName="ACTIVE_FLAG" />
+                <ScalarProperty Name="ModifiedBy" ColumnName="MODIFIED_BY" />
+                <ScalarProperty Name="CreatedBy" ColumnName="CREATED_BY" />
+                <ScalarProperty Name="DEALER_GROUP_ID" ColumnName="DEALER_GROUP_ID" />
+                <ScalarProperty Name="ModifiedDate" ColumnName="MODIFIED_DATE" />
+                <ScalarProperty Name="CreatedDate" ColumnName="CREATED_DATE" />
+                <ScalarProperty Name="RETAILER_ID" ColumnName="RETAILER_ID" />
+                <ScalarProperty Name="LAST_CERTIFICATE_NBR" ColumnName="LAST_CERTIFICATE_NBR" />
+                <ScalarProperty Name="CONTACT_EMAIL" ColumnName="CONTACT_EMAIL" />
+                <ScalarProperty Name="CONTACT_FAX" ColumnName="CONTACT_FAX" />
+                <ScalarProperty Name="CONTACT_EXT" ColumnName="CONTACT_EXT" />
+                <ScalarProperty Name="CONTACT_PHONE" ColumnName="CONTACT_PHONE" />
+                <ScalarProperty Name="CONTACT_NAME" ColumnName="CONTACT_NAME" />
+                <ScalarProperty Name="AddressId" ColumnName="ADDRESS_ID" />
+                <ScalarProperty Name="CompanyId" ColumnName="COMPANY_ID" />
+                <ScalarProperty Name="TAX_ID_NUMBER" ColumnName="TAX_ID_NUMBER" />
+                <ScalarProperty Name="DealerName" ColumnName="DEALER_NAME" />
+                <ScalarProperty Name="DealerCode" ColumnName="DEALER" />
+                <ScalarProperty Name="GracePeriodMonths" ColumnName="GRACE_PERIOD_MONTHS" />
+                <ScalarProperty Name="GracePeriodDays" ColumnName="GRACE_PERIOD_DAYS" />
+                <ScalarProperty Name="MAX_COMMISSION_PERCENT" ColumnName="MAX_COMMISSION_PERCENT" />
+                <ScalarProperty Name="VSC_VIN_RESTRIC_ID" ColumnName="VSC_VIN_RESTRIC_ID" />
+                <ScalarProperty Name="PLAN_CODE_IN_QUOTE_OUTPUT_ID" ColumnName="PLAN_CODE_IN_QUOTE_OUTPUT_ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Products">
+            <EntityTypeMapping TypeName="Model2.Product">
+              <MappingFragment StoreEntitySet="ELP_PRODUCT_CODE">
+                <ScalarProperty Name="ANALYSIS_CODE_10" ColumnName="ANALYSIS_CODE_10" />
+                <ScalarProperty Name="ANALYSIS_CODE_9" ColumnName="ANALYSIS_CODE_9" />
+                <ScalarProperty Name="ANALYSIS_CODE_8" ColumnName="ANALYSIS_CODE_8" />
+                <ScalarProperty Name="ANALYSIS_CODE_7" ColumnName="ANALYSIS_CODE_7" />
+                <ScalarProperty Name="ANALYSIS_CODE_6" ColumnName="ANALYSIS_CODE_6" />
+                <ScalarProperty Name="ANALYSIS_CODE_5" ColumnName="ANALYSIS_CODE_5" />
+                <ScalarProperty Name="ANALYSIS_CODE_4" ColumnName="ANALYSIS_CODE_4" />
+                <ScalarProperty Name="ANALYSIS_CODE_3" ColumnName="ANALYSIS_CODE_3" />
+                <ScalarProperty Name="ANALYSIS_CODE_2" ColumnName="ANALYSIS_CODE_2" />
+                <ScalarProperty Name="ANALYSIS_CODE_1" ColumnName="ANALYSIS_CODE_1" />
+                <ScalarProperty Name="NUM_OF_REPLACEMENT_CLAIMS" ColumnName="NUM_OF_REPLACEMENT_CLAIMS" />
+                <ScalarProperty Name="NUM_OF_REPAIR_CLAIMS" ColumnName="NUM_OF_REPAIR_CLAIMS" />
+                <ScalarProperty Name="UPGRADE_PROGRAM_ID" ColumnName="UPGRADE_PROGRAM_ID" />
+                <ScalarProperty Name="UPG_FINANCE_BAL_COMP_METH_ID" ColumnName="UPG_FINANCE_BAL_COMP_METH_ID" />
+                <ScalarProperty Name="CLAIM_AUTO_APPROVE_PSP" ColumnName="CLAIM_AUTO_APPROVE_PSP" />
+                <ScalarProperty Name="PROD_LIABILITY_LIMIT_POLICY_ID" ColumnName="PROD_LIABILITY_LIMIT_POLICY_ID" />
+                <ScalarProperty Name="PROD_LIABILITY_LIMIT_BASE_ID" ColumnName="PROD_LIABILITY_LIMIT_BASE_ID" />
+                <ScalarProperty Name="PROD_LIABILITY_LIMIT_PERCENT" ColumnName="PROD_LIABILITY_LIMIT_PERCENT" />
+                <ScalarProperty Name="PROD_LIABILITY_LIMIT" ColumnName="PROD_LIABILITY_LIMIT" />
+                <ScalarProperty Name="IGNORE_WAITING_PERIOD_WSD_PSD" ColumnName="IGNORE_WAITING_PERIOD_WSD_PSD" />
+                <ScalarProperty Name="FULL_REFUND_DAYS" ColumnName="FULL_REFUND_DAYS" />
+                <ScalarProperty Name="CLAIM_WAITING_PERIOD" ColumnName="CLAIM_WAITING_PERIOD" />
+                <ScalarProperty Name="SPLIT_WARRANTY_ID" ColumnName="SPLIT_WARRANTY_ID" />
+                <ScalarProperty Name="NUM_OF_CLAIMS" ColumnName="NUM_OF_CLAIMS" />
+                <ScalarProperty Name="NUMBER_OF_INSTALLMENTS" ColumnName="NUMBER_OF_INSTALLMENTS" />
+                <ScalarProperty Name="BILLING_FREQUENCY_ID" ColumnName="BILLING_FREQUENCY_ID" />
+                <ScalarProperty Name="SPECIAL_SERVICE" ColumnName="SPECIAL_SERVICE" />
+                <ScalarProperty Name="COMMENTS" ColumnName="COMMENTS" />
+                <ScalarProperty Name="METHOD_OF_REPAIR_BY_PRICE_ID" ColumnName="METHOD_OF_REPAIR_BY_PRICE_ID" />
+                <ScalarProperty Name="BUNDLED_ITEM_ID" ColumnName="BUNDLED_ITEM_ID" />
+                <ScalarProperty Name="USE_DEPRECIATION" ColumnName="USE_DEPRECIATION" />
+                <ScalarProperty Name="ModifiedBy" ColumnName="MODIFIED_BY" />
+                <ScalarProperty Name="CreatedBy" ColumnName="CREATED_BY" />
+                <ScalarProperty Name="TYPE_OF_EQUIPMENT_ID" ColumnName="TYPE_OF_EQUIPMENT_ID" />
+                <ScalarProperty Name="METHOD_OF_REPAIR_ID" ColumnName="METHOD_OF_REPAIR_ID" />
+                <ScalarProperty Name="Description" ColumnName="DESCRIPTION" />
+                <ScalarProperty Name="ModifiedDate" ColumnName="MODIFIED_DATE" />
+                <ScalarProperty Name="CreatedDate" ColumnName="CREATED_DATE" />
+                <ScalarProperty Name="PERCENT_OF_RETAIL" ColumnName="PERCENT_OF_RETAIL" />
+                <ScalarProperty Name="PRICE_MATRIX_ID" ColumnName="PRICE_MATRIX_ID" />
+                <ScalarProperty Name="RISK_GROUP_ID" ColumnName="RISK_GROUP_ID" />
+                <ScalarProperty Name="ProductCode" ColumnName="PRODUCT_CODE" />
+                <ScalarProperty Name="DealerId" ColumnName="DEALER_ID" />
+                <ScalarProperty Name="ProductId" ColumnName="PRODUCT_CODE_ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="SuspendedReasons">
+            <EntityTypeMapping TypeName="Model2.SuspendedReason">
+              <MappingFragment StoreEntitySet="ELP_SUSPENDED_REASON">
+                <ScalarProperty Name="ModifiedDate" ColumnName="MODIFIED_DATE" />
+                <ScalarProperty Name="ModifiedBy" ColumnName="MODIFIED_BY" />
+                <ScalarProperty Name="CreatedDate" ColumnName="CREATED_DATE" />
+                <ScalarProperty Name="CreatedBy" ColumnName="CREATED_BY" />
+                <ScalarProperty Name="ClaimAllowed" ColumnName="CLAIM_ALLOWED" />
+                <ScalarProperty Name="Description" ColumnName="DESCRIPTION" />
+                <ScalarProperty Name="Code" ColumnName="CODE" />
+                <ScalarProperty Name="DealerId" ColumnName="DEALER_ID" />
+                <ScalarProperty Name="SuspendedReasonId" ColumnName="SUSPENDED_REASON_ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="DealerRuleLists">
+            <EntityTypeMapping TypeName="Model2.DealerRuleList">
+              <MappingFragment StoreEntitySet="ELP_DEALER_RULE_LIST">
+                <ScalarProperty Name="ModifiedBy" ColumnName="MODIFIED_BY" />
+                <ScalarProperty Name="ModifiedDate" ColumnName="MODIFIED_DATE" />
+                <ScalarProperty Name="CreatedBy" ColumnName="CREATED_BY" />
+                <ScalarProperty Name="CreatedDate" ColumnName="CREATED_DATE" />
+                <ScalarProperty Name="Expiration" ColumnName="EXPIRATION" />
+                <ScalarProperty Name="Effective" ColumnName="EFFECTIVE" />
+                <ScalarProperty Name="DealerId" ColumnName="DEALER_ID" />
+                <ScalarProperty Name="RuleListId" ColumnName="RULE_LIST_ID" />
+                <ScalarProperty Name="DealerRuleListId" ColumnName="DEALER_RULE_LIST_ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Rules">
+            <EntityTypeMapping TypeName="Model2.Rule">
+              <MappingFragment StoreEntitySet="ELP_RULE">
+                <ScalarProperty Name="ModifiedBy" ColumnName="MODIFIED_BY" />
+                <ScalarProperty Name="ModifiedDate" ColumnName="MODIFIED_DATE" />
+                <ScalarProperty Name="CreatedBy" ColumnName="CREATED_BY" />
+                <ScalarProperty Name="CreatedDate" ColumnName="CREATED_DATE" />
+                <ScalarProperty Name="Expiration" ColumnName="EXPIRATION" />
+                <ScalarProperty Name="Effective" ColumnName="EFFECTIVE" />
+                <ScalarProperty Name="RuleDataSet" ColumnName="RULE_DATA_SET" />
+                <ScalarProperty Name="RuleExecutionPoint" ColumnName="RULE_EXECUTION_POINT" />
+                <ScalarProperty Name="RuleCategoryId" ColumnName="RULE_CATEGORY_ID" />
+                <ScalarProperty Name="RuleTypeId" ColumnName="RULE_TYPE_ID" />
+                <ScalarProperty Name="Description" ColumnName="DESCRIPTION" />
+                <ScalarProperty Name="Code" ColumnName="CODE" />
+                <ScalarProperty Name="RuleId" ColumnName="RULE_ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="RuleLists">
+            <EntityTypeMapping TypeName="Model2.RuleList">
+              <MappingFragment StoreEntitySet="ELP_RULE_LIST">
+                <ScalarProperty Name="ModifiedBy" ColumnName="MODIFIED_BY" />
+                <ScalarProperty Name="ModifiedDate" ColumnName="MODIFIED_DATE" />
+                <ScalarProperty Name="CreatedBy" ColumnName="CREATED_BY" />
+                <ScalarProperty Name="CreatedDate" ColumnName="CREATED_DATE" />
+                <ScalarProperty Name="Expiration" ColumnName="EXPIRATION" />
+                <ScalarProperty Name="Effective" ColumnName="EFFECTIVE" />
+                <ScalarProperty Name="Description" ColumnName="DESCRIPTION" />
+                <ScalarProperty Name="Code" ColumnName="CODE" />
+                <ScalarProperty Name="RuleListId" ColumnName="RULE_LIST_ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="RuleListDetails">
+            <EntityTypeMapping TypeName="Model2.RuleListDetail">
+              <MappingFragment StoreEntitySet="ELP_RULE_LIST_DETAIL">
+                <ScalarProperty Name="ModifiedBy" ColumnName="MODIFIED_BY" />
+                <ScalarProperty Name="ModifiedDate" ColumnName="MODIFIED_DATE" />
+                <ScalarProperty Name="CreatedBy" ColumnName="CREATED_BY" />
+                <ScalarProperty Name="CreatedDate" ColumnName="CREATED_DATE" />
+                <ScalarProperty Name="Expiration" ColumnName="EXPIRATION" />
+                <ScalarProperty Name="Effective" ColumnName="EFFECTIVE" />
+                <ScalarProperty Name="RuleId" ColumnName="RULE_ID" />
+                <ScalarProperty Name="RuleListId" ColumnName="RULE_LIST_ID" />
+                <ScalarProperty Name="RuleListDetailId" ColumnName="RULE_LIST_DETAIL_ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="RuleIssues">
+            <EntityTypeMapping TypeName="Model2.RuleIssue">
+              <MappingFragment StoreEntitySet="ELP_RULE_ISSUE">
+                <ScalarProperty Name="ModifiedBy" ColumnName="MODIFIED_BY" />
+                <ScalarProperty Name="ModifiedDate" ColumnName="MODIFIED_DATE" />
+                <ScalarProperty Name="CreatedBy" ColumnName="CREATED_BY" />
+                <ScalarProperty Name="CreatedDate" ColumnName="CREATED_DATE" />
+                <ScalarProperty Name="Expiration" ColumnName="EXPIRATION" />
+                <ScalarProperty Name="Effective" ColumnName="EFFECTIVE" />
+                <ScalarProperty Name="RuleId" ColumnName="RULE_ID" />
+                <ScalarProperty Name="IssueId" ColumnName="ISSUE_ID" />
+                <ScalarProperty Name="RuleIssueId" ColumnName="RULE_ISSUE_ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Issues">
+            <EntityTypeMapping TypeName="Model2.Issue">
+              <MappingFragment StoreEntitySet="ELP_ISSUE">
+                <ScalarProperty Name="Description" ColumnName="DESCRIPTION" />
+                <ScalarProperty Name="ModifiedBy" ColumnName="MODIFIED_BY" />
+                <ScalarProperty Name="ModifiedDate" ColumnName="MODIFIED_DATE" />
+                <ScalarProperty Name="CreatedBy" ColumnName="CREATED_BY" />
+                <ScalarProperty Name="CreatedDate" ColumnName="CREATED_DATE" />
+                <ScalarProperty Name="Expiration" ColumnName="EXPIRATION" />
+                <ScalarProperty Name="Effective" ColumnName="EFFECTIVE" />
+                <ScalarProperty Name="IssueTypeId" ColumnName="ISSUE_TYPE_ID" />
+                <ScalarProperty Name="Code" ColumnName="CODE" />
+                <ScalarProperty Name="IssueId" ColumnName="ISSUE_ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="ListPrices">
+            <EntityTypeMapping TypeName="Model2.ListPrice">
+              <MappingFragment StoreEntitySet="ELP_LIST_PRICE">
+                <ScalarProperty Name="AmountTypeId" ColumnName="AMOUNT_TYPE_ID" />
+                <ScalarProperty Name="Amount" ColumnName="AMOUNT" />
+                <ScalarProperty Name="ModifiedBy" ColumnName="MODIFIED_BY" />
+                <ScalarProperty Name="CreatedBy" ColumnName="CREATED_BY" />
+                <ScalarProperty Name="ModifiedDate" ColumnName="MODIFIED_DATE" />
+                <ScalarProperty Name="CreatedDate" ColumnName="CREATED_DATE" />
+                <ScalarProperty Name="Expiration" ColumnName="EXPIRATION" />
+                <ScalarProperty Name="Effective" ColumnName="EFFECTIVE" />
+                <ScalarProperty Name="WarrantyMasterId" ColumnName="WARRANTY_MASTER_ID" />
+                <ScalarProperty Name="ListPriceId" ColumnName="LIST_PRICE_ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="WarrantyMasters">
+            <EntityTypeMapping TypeName="Model2.WarrantyMaster">
+              <MappingFragment StoreEntitySet="ELP_WARRANTY_MASTER">
+                <ScalarProperty Name="InternalManufacturerId" ColumnName="INTERNAL_MANUFACTURER_ID" />
+                <ScalarProperty Name="RiskTypeId" ColumnName="RISK_TYPE_ID" />
+                <ScalarProperty Name="IsDeleted" ColumnName="IS_DELETED" />
+                <ScalarProperty Name="ModifiedBy" ColumnName="MODIFIED_BY" />
+                <ScalarProperty Name="CreatedBy" ColumnName="CREATED_BY" />
+                <ScalarProperty Name="ModifiedDate" ColumnName="MODIFIED_DATE" />
+                <ScalarProperty Name="CreatedDate" ColumnName="CREATED_DATE" />
+                <ScalarProperty Name="WarrantyDurationLabor" ColumnName="WARRANTY_DURATION_LABOR" />
+                <ScalarProperty Name="WarrantyDurationParts" ColumnName="WARRANTY_DURATION_PARTS" />
+                <ScalarProperty Name="ModelNumber" ColumnName="MODEL_NUMBER" />
+                <ScalarProperty Name="WarrantyDescription" ColumnName="WARRANTY_DESCRIPTION" />
+                <ScalarProperty Name="WarrantyType" ColumnName="WARRANTY_TYPE" />
+                <ScalarProperty Name="ManufacturerName" ColumnName="MANUFACTURER_NAME" />
+                <ScalarProperty Name="ManufacturerId" ColumnName="MANUFACTURER_ID" />
+                <ScalarProperty Name="SkuDescription" ColumnName="SKU_DESCRIPTION" />
+                <ScalarProperty Name="SkuNumber" ColumnName="SKU_NUMBER" />
+                <ScalarProperty Name="DealerId" ColumnName="DEALER_ID" />
+                <ScalarProperty Name="WarrantyMasterId" ColumnName="WARRANTY_MASTER_ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Contracts">
+            <EntityTypeMapping TypeName="Model2.Contract">
+              <MappingFragment StoreEntitySet="ELP_CONTRACT">
+			    <ScalarProperty Name="ProducerId" ColumnName="PRODUCER_ID" />
+			    <ScalarProperty Name="LineOfBusinessId" ColumnName="LINE_OF_BUSINESS_ID" />
+                <ScalarProperty Name="ThirdPartyTaxId" ColumnName="THIRD_PARTY_TAX_ID" />
+                <ScalarProperty Name="ThirdPartyName" ColumnName="THIRD_PARTY_NAME" />
+                <ScalarProperty Name="PaymentProcessingTypeId" ColumnName="PAYMENT_PROCESSING_TYPE_ID" />
+                <ScalarProperty Name="RdoPercent" ColumnName="RDO_PERCENT" />
+                <ScalarProperty Name="RdoTaxId" ColumnName="RDO_TAX_ID" />
+                <ScalarProperty Name="RdoName" ColumnName="RDO_NAME" />
+                <ScalarProperty Name="NumOfReplacementClaims" ColumnName="NUM_OF_REPLACEMENT_CLAIMS" />
+                <ScalarProperty Name="NumOfRepairClaims" ColumnName="NUM_OF_REPAIR_CLAIMS" />
+                <ScalarProperty Name="ALLOW_COVERAGE_MARKUP_DTBN" ColumnName="ALLOW_COVERAGE_MARKUP_DTBN" />
+                <ScalarProperty Name="FUTURE_DATE_ALLOW_FOR_ID" ColumnName="FUTURE_DATE_ALLOW_FOR_ID" />
+                <ScalarProperty Name="REPLACEMENT_POLICY_CLAIM_COUNT" ColumnName="REPLACEMENT_POLICY_CLAIM_COUNT" />
+                <ScalarProperty Name="ALLOW_COLLCTN_AFTER_CNCLTN" ColumnName="ALLOW_COLLCTN_AFTER_CNCLTN" />
+                <ScalarProperty Name="ALLOW_BILLING_AFTER_CNCLTN" ColumnName="ALLOW_BILLING_AFTER_CNCLTN" />
+				<ScalarProperty Name="DAILY_RATE_BASED_ON_ID" ColumnName="DAILY_RATE_BASED_ON_ID" />
+                <ScalarProperty Name="BILLING_CYCLE_TYPE_ID" ColumnName="BILLING_CYCLE_TYPE_ID" />
+  		        <ScalarProperty Name="RECURRING_WARRANTY_PERIOD" ColumnName="RECURRING_WARRANTY_PERIOD" />
+                <ScalarProperty Name="RECURRING_PREMIUM_ID" ColumnName="RECURRING_PREMIUM_ID" />
+                <ScalarProperty Name="NUMBER_OF_DAYS_TO_REACTIVATE" ColumnName="NUMBER_OF_DAYS_TO_REACTIVATE" />
+    			<ScalarProperty Name="AUTHORIZED_AMOUNT_MAX_UPDATES" ColumnName="AUTHORIZED_AMOUNT_MAX_UPDATES" />
+                <ScalarProperty Name="ALLOW_PYMT_SKIP_MONTHS" ColumnName="ALLOW_PYMT_SKIP_MONTHS" />
+                <ScalarProperty Name="PAY_OUTSTANDING_PREMIUM_ID" ColumnName="PAY_OUTSTANDING_PREMIUM_ID" />
+                <ScalarProperty Name="OLD_CERT_AUTONUMBER_PREFIX" ColumnName="OLD_CERT_AUTONUMBER_PREFIX" />
+                <ScalarProperty Name="PRO_RATA_METHOD_ID" ColumnName="PRO_RATA_METHOD_ID" />
+                <ScalarProperty Name="ALLOW_MULTIPLE_REJECTIONS_ID" ColumnName="ALLOW_MULTIPLE_REJECTIONS_ID" />
+                <ScalarProperty Name="DEDUCTIBLE_BASED_ON_ID" ColumnName="DEDUCTIBLE_BASED_ON_ID" />
+                <ScalarProperty Name="FIRST_PYMT_MONTHS" ColumnName="FIRST_PYMT_MONTHS" />
+                <ScalarProperty Name="CUST_ADDRESS_REQUIRED_ID" ColumnName="CUST_ADDRESS_REQUIRED_ID" />
+                <ScalarProperty Name="MARKETING_PROMO_ID" ColumnName="MARKETING_PROMO_ID" />
+                <ScalarProperty Name="DaysToReportClaim" ColumnName="DAYS_TO_REPORT_CLAIM" />
+                <ScalarProperty Name="OLD_CLAIM_LIMIT_BY_ID" ColumnName="OLD_CLAIM_LIMIT_BY_ID" />
+                <ScalarProperty Name="ClaimLimitBasedOnId" ColumnName="CLAIM_LIMIT_BASED_ON_ID" />
+                <ScalarProperty Name="NumOfClaims" ColumnName="NUM_OF_CLAIMS" />
+                <ScalarProperty Name="ALLOW_NO_EXTENDED" ColumnName="ALLOW_NO_EXTENDED" />
+                <ScalarProperty Name="ALLOW_DIFFERENT_COVERAGE" ColumnName="ALLOW_DIFFERENT_COVERAGE" />
+                <ScalarProperty Name="EXTRA_DAYS_TO_EXTEND_COVERAGE" ColumnName="EXTRA_DAYS_TO_EXTEND_COVERAGE" />
+                <ScalarProperty Name="EXTRA_MONS_TO_EXTEND_COVERAGE" ColumnName="EXTRA_MONS_TO_EXTEND_COVERAGE" />
+                <ScalarProperty Name="EXTEND_COVERAGE_ID" ColumnName="EXTEND_COVERAGE_ID" />
+                <ScalarProperty Name="INS_PREMIUM_FACTOR" ColumnName="INS_PREMIUM_FACTOR" />
+                <ScalarProperty Name="OFFSET_BEFORE_DUE_DATE" ColumnName="OFFSET_BEFORE_DUE_DATE" />
+                <ScalarProperty Name="CYCLE_DAY" ColumnName="CYCLE_DAY" />
+                <ScalarProperty Name="COLLECTION_CYCLE_TYPE_ID" ColumnName="COLLECTION_CYCLE_TYPE_ID" />
+                <ScalarProperty Name="INCLUDE_FIRST_PMT" ColumnName="INCLUDE_FIRST_PMT" />
+                <ScalarProperty Name="COLLECTION_RE_ATTEMPTS" ColumnName="COLLECTION_RE_ATTEMPTS" />
+                <ScalarProperty Name="PAST_DUE_MONTHS_ALLOWED" ColumnName="PAST_DUE_MONTHS_ALLOWED" />
+                <ScalarProperty Name="IS_COMM_P_CODE_ID" ColumnName="IS_COMM_P_CODE_ID" />
+                <ScalarProperty Name="INSTALLMENTS_BASE_REDUCER" ColumnName="INSTALLMENTS_BASE_REDUCER" />
+                <ScalarProperty Name="MAX_INSTALLMENTS" ColumnName="MAX_INSTALLMENTS" />
+                <ScalarProperty Name="BILLING_CYCLE_FREQUENCY" ColumnName="BILLING_CYCLE_FREQUENCY" />
+                <ScalarProperty Name="BASE_INSTALLMENTS" ColumnName="BASE_INSTALLMENTS" />
+                <ScalarProperty Name="CLIP_PERCENT" ColumnName="CLIP_PERCENT" />
+                <ScalarProperty Name="PENALTY_PCT" ColumnName="PENALTY_PCT" />
+                <ScalarProperty Name="DEDUCT_BY_MFG_ID" ColumnName="DEDUCT_BY_MFG_ID" />
+                <ScalarProperty Name="DAYS_TO_CANCEL_CERT" ColumnName="DAYS_TO_CANCEL_CERT" />
+                <ScalarProperty Name="DAYS_TO_SEND_LETTER" ColumnName="DAYS_TO_SEND_LETTER" />
+                <ScalarProperty Name="DAYS_OF_FIRST_PYMT" ColumnName="DAYS_OF_FIRST_PYMT" />
+                <ScalarProperty Name="INSTALLMENT_PAYMENT_ID" ColumnName="INSTALLMENT_PAYMENT_ID" />
+                <ScalarProperty Name="IGNORE_WAITING_PERIOD_WSD_PSD" ColumnName="IGNORE_WAITING_PERIOD_WSD_PSD" />
+                <ScalarProperty Name="USE_DELIVERY_DATE_ID" ColumnName="USE_DELIVERY_DATE_ID" />
+                <ScalarProperty Name="ACCT_BUSINESS_UNIT_ID" ColumnName="ACCT_BUSINESS_UNIT_ID" />
+                <ScalarProperty Name="EDIT_MFG_TERM_ID" ColumnName="EDIT_MFG_TERM_ID" />
+                <ScalarProperty Name="BACKEND_CLAIMS_ALLOWED_ID" ColumnName="BACKEND_CLAIMS_ALLOWED_ID" />
+                <ScalarProperty Name="IGNORE_COVERAGE_AMT_ID" ColumnName="IGNORE_COVERAGE_AMT_ID" />
+                <ScalarProperty Name="REPLACEMENT_DISCOUNT_PCT" ColumnName="REPLACEMENT_DISCOUNT_PCT" />
+                <ScalarProperty Name="REPAIR_DISCOUNT_PCT" ColumnName="REPAIR_DISCOUNT_PCT" />
+                <ScalarProperty Name="IGNORE_INCOMING_PREMIUM_ID" ColumnName="IGNORE_INCOMING_PREMIUM_ID" />
+                <ScalarProperty Name="COVERAGE_DEDUCTIBLE_ID" ColumnName="COVERAGE_DEDUCTIBLE_ID" />
+                <ScalarProperty Name="DEDUCTIBLE_PERCENT" ColumnName="DEDUCTIBLE_PERCENT" />
+                <ScalarProperty Name="AUTO_SET_LIABILITY_ID" ColumnName="AUTO_SET_LIABILITY_ID" />
+                <ScalarProperty Name="FULL_REFUND_DAYS" ColumnName="FULL_REFUND_DAYS" />
+                <ScalarProperty Name="CANCELLATION_REASON_ID" ColumnName="CANCELLATION_REASON_ID" />
+                <ScalarProperty Name="ACSEL_PROD_CODE_ID" ColumnName="ACSEL_PROD_CODE_ID" />
+                <ScalarProperty Name="REMAINING_MFG_DAYS" ColumnName="REMAINING_MFG_DAYS" />
+                <ScalarProperty Name="CURRENCY_OF_COVERAGES_ID" ColumnName="CURRENCY_OF_COVERAGES_ID" />
+                <ScalarProperty Name="CURRENCY_CONVERSION_ID" ColumnName="CURRENCY_CONVERSION_ID" />
+                <ScalarProperty Name="RATING_PLAN" ColumnName="RATING_PLAN" />
+                <ScalarProperty Name="CLAIM_CONTROL_ID" ColumnName="CLAIM_CONTROL_ID" />
+                <ScalarProperty Name="ID_VALIDATION_ID" ColumnName="ID_VALIDATION_ID" />
+                <ScalarProperty Name="PARTICIPATION_PERCENT" ColumnName="PARTICIPATION_PERCENT" />
+                <ScalarProperty Name="COINSURANCE_ID" ColumnName="COINSURANCE_ID" />
+                <ScalarProperty Name="REPLACEMENT_POLICY_ID" ColumnName="REPLACEMENT_POLICY_ID" />
+                <ScalarProperty Name="POLICY" ColumnName="POLICY" />
+                <ScalarProperty Name="FIXED_ESC_DURATION_FLAG" ColumnName="FIXED_ESC_DURATION_FLAG" />
+                <ScalarProperty Name="COMMENT1" ColumnName="COMMENT1" />
+                <ScalarProperty Name="ModifiedBy" ColumnName="MODIFIED_BY" />
+                <ScalarProperty Name="CreatedBy" ColumnName="CREATED_BY" />
+                <ScalarProperty Name="ModifiedDate" ColumnName="MODIFIED_DATE" />
+                <ScalarProperty Name="CreatedDate" ColumnName="CREATED_DATE" />
+                <ScalarProperty Name="CANCELLATION_DAYS" ColumnName="CANCELLATION_DAYS" />
+                <ScalarProperty Name="SUSPENSE_DAYS" ColumnName="SUSPENSE_DAYS" />
+                <ScalarProperty Name="LAYOUT" ColumnName="LAYOUT" />
+                <ScalarProperty Name="RESTRICT_MARKUP_ID" ColumnName="RESTRICT_MARKUP_ID" />
+                <ScalarProperty Name="AUTO_MFG_COVERAGE_ID" ColumnName="AUTO_MFG_COVERAGE_ID" />
+                <ScalarProperty Name="OLD_ENDORSEMENTS_ID" ColumnName="OLD_ENDORSEMENTS_ID" />
+                <ScalarProperty Name="DEALER_MARKUP_ID" ColumnName="DEALER_MARKUP_ID" />
+                <ScalarProperty Name="EDIT_MODEL_ID" ColumnName="EDIT_MODEL_ID" />
+                <ScalarProperty Name="CONVERT_PRODUCT_CODE_ID" ColumnName="CONVERT_PRODUCT_CODE_ID" />
+                <ScalarProperty Name="FUNDING_SOURCE_ID" ColumnName="FUNDING_SOURCE_ID" />
+                <ScalarProperty Name="WAITING_PERIOD" ColumnName="WAITING_PERIOD" />
+                <ScalarProperty Name="Deductible" ColumnName="DEDUCTIBLE" />
+                <ScalarProperty Name="NET_TAXES_ID" ColumnName="NET_TAXES_ID" />
+                <ScalarProperty Name="NET_MARKETING_ID" ColumnName="NET_MARKETING_ID" />
+                <ScalarProperty Name="NET_COMMISSIONS_ID" ColumnName="NET_COMMISSIONS_ID" />
+                <ScalarProperty Name="WARRANTY_MAX_DELAY" ColumnName="WARRANTY_MAX_DELAY" />
+                <ScalarProperty Name="MIN_REPLACEMENT_COST" ColumnName="MIN_REPLACEMENT_COST" />
+                <ScalarProperty Name="OLD_CERTIFICATES_AUTONUMBER_ID" ColumnName="OLD_CERTIFICATES_AUTONUMBER_ID" />
+                <ScalarProperty Name="TYPE_OF_INSURANCE_ID" ColumnName="TYPE_OF_INSURANCE_ID" />
+                <ScalarProperty Name="TYPE_OF_EQUIPMENT_ID" ColumnName="TYPE_OF_EQUIPMENT_ID" />
+                <ScalarProperty Name="TYPE_OF_MARKETING_ID" ColumnName="TYPE_OF_MARKETING_ID" />
+                <ScalarProperty Name="CURRENCY_ID" ColumnName="CURRENCY_ID" />
+                <ScalarProperty Name="LOSS_COST_PERCENT" ColumnName="LOSS_COST_PERCENT" />
+                <ScalarProperty Name="PROFIT_PERCENT" ColumnName="PROFIT_PERCENT" />
+                <ScalarProperty Name="ADMIN_EXPENSE" ColumnName="ADMIN_EXPENSE" />
+                <ScalarProperty Name="MARKETING_PERCENT" ColumnName="MARKETING_PERCENT" />
+                <ScalarProperty Name="COMMISSIONS_PERCENT" ColumnName="COMMISSIONS_PERCENT" />
+                <ScalarProperty Name="Expiration" ColumnName="EXPIRATION" />
+                <ScalarProperty Name="Effective" ColumnName="EFFECTIVE" />
+                <ScalarProperty Name="ContractTypeId" ColumnName="CONTRACT_TYPE_ID" />
+                <ScalarProperty Name="DealerId" ColumnName="DEALER_ID" />
+                <ScalarProperty Name="ContractId" ColumnName="CONTRACT_ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="IssueQuestions">
+            <EntityTypeMapping TypeName="Model2.IssueQuestion">
+              <MappingFragment StoreEntitySet="ELP_ISSUE_QUESTION">
+                <ScalarProperty Name="ModifiedBy" ColumnName="MODIFIED_BY" />
+                <ScalarProperty Name="ModifiedDate" ColumnName="MODIFIED_DATE" />
+                <ScalarProperty Name="CreatedBy" ColumnName="CREATED_BY" />
+                <ScalarProperty Name="CreatedDate" ColumnName="CREATED_DATE" />
+                <ScalarProperty Name="Expiration" ColumnName="EXPIRATION" />
+                <ScalarProperty Name="Effective" ColumnName="EFFECTIVE" />
+                <ScalarProperty Name="DisplayOrder" ColumnName="DISPLAY_ORDER" />
+                <ScalarProperty Name="SoftQuestionId" ColumnName="SOFT_QUESTION_ID" />
+                <ScalarProperty Name="IssueId" ColumnName="ISSUE_ID" />
+                <ScalarProperty Name="IssueQuestionId" ColumnName="ISSUE_QUESTION_ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="SoftQuestions">
+            <EntityTypeMapping TypeName="Model2.SoftQuestion">
+              <MappingFragment StoreEntitySet="ELP_SOFT_QUESTION">
+                <ScalarProperty Name="Expiration" ColumnName="EXPIRATION" />
+                <ScalarProperty Name="Effective" ColumnName="EFFECTIVE" />
+                <ScalarProperty Name="SEARCH_TAGS" ColumnName="SEARCH_TAGS" />
+                <ScalarProperty Name="ENTITY_ATTRIBUTE_ID" ColumnName="ENTITY_ATTRIBUTE_ID" />
+                <ScalarProperty Name="CUSTOMER_MESSAGE" ColumnName="CUSTOMER_MESSAGE" />
+                <ScalarProperty Name="ANSWER_TYPE_ID" ColumnName="ANSWER_TYPE_ID" />
+                <ScalarProperty Name="IMPACTS_CLAIM_ID" ColumnName="IMPACTS_CLAIM_ID" />
+                <ScalarProperty Name="QUESTION_TYPE_ID" ColumnName="QUESTION_TYPE_ID" />
+                <ScalarProperty Name="Code" ColumnName="CODE" />
+                <ScalarProperty Name="ModifiedDate" ColumnName="MODIFIED_DATE" />
+                <ScalarProperty Name="ModifiedBy" ColumnName="MODIFIED_BY" />
+                <ScalarProperty Name="CreatedDate" ColumnName="CREATED_DATE" />
+                <ScalarProperty Name="CreatedBy" ColumnName="CREATED_BY" />
+                <ScalarProperty Name="Description" ColumnName="DESCRIPTION" />
+                <ScalarProperty Name="ChildOrder" ColumnName="CHILD_ORDER" />
+                <ScalarProperty Name="ParentId" ColumnName="PARENT_ID" />
+                <ScalarProperty Name="SoftQuestionGroupId" ColumnName="SOFT_QUESTION_GROUP_ID" />
+                <ScalarProperty Name="SoftQuestionId" ColumnName="SOFT_QUESTION_ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Coverages">
+            <EntityTypeMapping TypeName="Model2.Coverage">
+              <MappingFragment StoreEntitySet="ELP_COVERAGE">
+                <ScalarProperty Name="RecoverDeviceId" ColumnName="RECOVER_DEVICE_ID" />
+                <ScalarProperty Name="CovLiaibilityLimitPercent" ColumnName="COV_LIABILITY_LIMIT_PERCENT" />
+                <ScalarProperty Name="CovLiabilityLimit" ColumnName="COV_LIABILITY_LIMIT" />
+                <ScalarProperty Name="MarkupDistributionPercent" ColumnName="MARKUP_DISTRIBUTION_PERCENT" />
+                <ScalarProperty Name="OffsetMethodId" ColumnName="OFFSET_METHOD_ID" />
+                <ScalarProperty Name="OffsetToStartDays" ColumnName="OFFSET_TO_START_DAYS" />
+                <ScalarProperty Name="AgentCode" ColumnName="AGENT_CODE" />
+                <ScalarProperty Name="DeductibleBasedOnId" ColumnName="DEDUCTIBLE_BASED_ON_ID" />
+                <ScalarProperty Name="MethodOfRepairId" ColumnName="METHOD_OF_REPAIR_ID" />
+                <ScalarProperty Name="UseCoverageStartDateID" ColumnName="USE_COVERAGE_START_DATE_ID" />
+                <ScalarProperty Name="IsClaimAllowedId" ColumnName="IS_CLAIM_ALLOWED_ID" />
+                <ScalarProperty Name="LiabilityLimitPercent" ColumnName="LIABILITY_LIMIT_PERCENT" />
+                <ScalarProperty Name="ReplacementDiscountPct" ColumnName="REPLACEMENT_DISCOUNT_PCT" />
+                <ScalarProperty Name="RepairDiscountPct" ColumnName="REPAIR_DISCOUNT_PCT" />
+                <ScalarProperty Name="DeductiblePercent" ColumnName="DEDUCTIBLE_PERCENT" />
+                <ScalarProperty Name="EarningCodeId" ColumnName="EARNING_CODE_ID" />
+                <ScalarProperty Name="ModifiedBy" ColumnName="MODIFIED_BY" />
+                <ScalarProperty Name="CreatedBy" ColumnName="CREATED_BY" />
+                <ScalarProperty Name="ModifiedDate" ColumnName="MODIFIED_DATE" />
+                <ScalarProperty Name="CreatedDate" ColumnName="CREATED_DATE" />
+                <ScalarProperty Name="Deductible" ColumnName="DEDUCTIBLE" />
+                <ScalarProperty Name="LiabilityLimit" ColumnName="LIABILITY_LIMIT" />
+                <ScalarProperty Name="OptionalId" ColumnName="OPTIONAL_ID" />
+                <ScalarProperty Name="OffsetToStart" ColumnName="OFFSET_TO_START" />
+                <ScalarProperty Name="Expiration" ColumnName="EXPIRATION" />
+                <ScalarProperty Name="Effective" ColumnName="EFFECTIVE" />
+                <ScalarProperty Name="CoverageDuration" ColumnName="COVERAGE_DURATION" />
+                <ScalarProperty Name="CertificateDuration" ColumnName="CERTIFICATE_DURATION" />
+                <ScalarProperty Name="CoverageTypeId" ColumnName="COVERAGE_TYPE_ID" />
+                <ScalarProperty Name="ProductItemId" ColumnName="PRODUCT_ITEM_ID" />
+                <ScalarProperty Name="ItemId" ColumnName="ITEM_ID" />
+                <ScalarProperty Name="CoverageId" ColumnName="COVERAGE_ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Items">
+            <EntityTypeMapping TypeName="Model2.Item">
+              <MappingFragment StoreEntitySet="ELP_ITEM">
+                <ScalarProperty Name="OptionalItemCode" ColumnName="OPTIONAL_ITEM_CODE" />
+                <ScalarProperty Name="OptionalItem" ColumnName="OPTIONAL_ITEM" />
+                <ScalarProperty Name="ItemNumber" ColumnName="ITEM_NUMBER" />
+                <ScalarProperty Name="ModifiedBy" ColumnName="MODIFIED_BY" />
+                <ScalarProperty Name="CreatedBy" ColumnName="CREATED_BY" />
+                <ScalarProperty Name="ModifiedDate" ColumnName="MODIFIED_DATE" />
+                <ScalarProperty Name="CreatedDate" ColumnName="CREATED_DATE" />
+                <ScalarProperty Name="MaxReplacementCost" ColumnName="MAX_REPLACEMENT_COST" />
+                <ScalarProperty Name="RiskTypeId" ColumnName="RISK_TYPE_ID" />
+                <ScalarProperty Name="ProductCodeId" ColumnName="PRODUCT_CODE_ID" />
+                <ScalarProperty Name="ItemId" ColumnName="ITEM_ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="DealerGroups">
+            <EntityTypeMapping TypeName="Model2.DealerGroup">
+              <MappingFragment StoreEntitySet="ELP_DEALER_GROUP">
+                <ScalarProperty Name="AutoRejErrTypeId" ColumnName="AUTO_REJ_ERR_TYPE_ID" />
+                <ScalarProperty Name="UseClientCodeYNId" ColumnName="USE_CLIENT_CODE_YNID" />
+                <ScalarProperty Name="BankInfoId" ColumnName="BANK_INFO_ID" />
+                <ScalarProperty Name="AccountingByGroupId" ColumnName="ACCTING_BY_GROUP_ID" />
+                <ScalarProperty Name="CompanyGroupId" ColumnName="COMPANY_GROUP_ID" />
+                <ScalarProperty Name="ModifiedBy" ColumnName="MODIFIED_BY" />
+                <ScalarProperty Name="CreatedBy" ColumnName="CREATED_BY" />
+                <ScalarProperty Name="ModifiedDate" ColumnName="MODIFIED_DATE" />
+                <ScalarProperty Name="CreatedDate" ColumnName="CREATED_DATE" />
+                <ScalarProperty Name="Code" ColumnName="CODE" />
+                <ScalarProperty Name="Description" ColumnName="DESCRIPTION" />
+                <ScalarProperty Name="DealerGroupId" ColumnName="DEALER_GROUP_ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Branches">
+            <EntityTypeMapping TypeName="Model2.Branch">
+              <MappingFragment StoreEntitySet="ELP_BRANCH">
+                <ScalarProperty Name="Address3" ColumnName="ADDRESS3" />
+                <ScalarProperty Name="MarketingRegion" ColumnName="MARKETING_REGION" />
+                <ScalarProperty Name="StoreManager" ColumnName="STORE_MANAGER" />
+                <ScalarProperty Name="BranchTypeId" ColumnName="BRANCH_TYPE_ID" />
+                <ScalarProperty Name="BankInfoId" ColumnName="BANK_INFO_ID" />
+                <ScalarProperty Name="Market" ColumnName="MARKET" />
+                <ScalarProperty Name="ContactEmail" ColumnName="CONTACT_EMAIL" />
+                <ScalarProperty Name="ContactFax" ColumnName="CONTACT_FAX" />
+                <ScalarProperty Name="ContactExt" ColumnName="CONTACT_EXT" />
+                <ScalarProperty Name="ContactPhone" ColumnName="CONTACT_PHONE" />
+                <ScalarProperty Name="PostalCode" ColumnName="POSTAL_CODE" />
+                <ScalarProperty Name="BranchName" ColumnName="BRANCH_NAME" />
+                <ScalarProperty Name="ModifiedBy" ColumnName="MODIFIED_BY" />
+                <ScalarProperty Name="ModifiedDate" ColumnName="MODIFIED_DATE" />
+                <ScalarProperty Name="CreatedBy" ColumnName="CREATED_BY" />
+                <ScalarProperty Name="CreatedDate" ColumnName="CREATED_DATE" />
+                <ScalarProperty Name="CountryId" ColumnName="COUNTRY_ID" />
+                <ScalarProperty Name="RegionId" ColumnName="REGION_ID" />
+                <ScalarProperty Name="City" ColumnName="CITY" />
+                <ScalarProperty Name="Address2" ColumnName="ADDRESS2" />
+                <ScalarProperty Name="Address1" ColumnName="ADDRESS1" />
+                <ScalarProperty Name="DealerId" ColumnName="DEALER_ID" />
+                <ScalarProperty Name="BranchCode" ColumnName="BRANCH_CODE" />
+                <ScalarProperty Name="BranchId" ColumnName="BRANCH_ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2008/10/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="true" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="true" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>

@@ -1,0 +1,78 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+
+<SQL>
+  <LOAD>
+    <![CDATA[	
+			SELECT 
+        m.oc_message_id,
+        t.oc_template_id,
+        t.template_code,
+        t.description as template_description,
+        m.sender_reason,
+        m.created_by,
+        m.created_date
+			FROM elp_oc_message m 
+      inner join elp_oc_template t on m.oc_template_id = t.oc_template_id
+			WHERE
+				m.oc_message_id = :oc_message_id
+		]]>
+  </LOAD>
+  <LOAD_LIST></LOAD_LIST>
+  <LOAD_LIST_BY_DEALER_AND_CONDITION>
+    <![CDATA[	
+			SELECT
+        m.oc_message_id,
+        t.oc_template_id,
+        t.template_code,
+        t.description as template_description,
+        m.sender_reason,
+        ( select listagg(recipient_address,', ')
+          within group (order by created_date) cnt
+          from   elp_oc_message_recipient
+          where  oc_message_id = m.oc_message_id) as recipient_address,
+        ( select max(ocma.created_date)
+          from   elp_oc_message_recipient ocmr
+          left outer join elp_oc_message_attemps ocma
+          on ocmr.oc_message_recipient_id = ocma.oc_message_recipient_id
+          where  oc_message_id = m.oc_message_id) as last_attempted_on,
+        ( select elp_utl_lov.description(process_status_xcd, :language_id)
+          from (select ocma.process_status_xcd,
+                       ocmr.oc_message_id,
+                       ocma.created_date as date1,
+                       max(ocma.created_date) over (partition by ocma.oc_message_recipient_id) as max_date
+                from elp_oc_message_recipient ocmr
+                left outer join elp_oc_message_attemps ocma
+                on ocmr.oc_message_recipient_id = ocma.oc_message_recipient_id) dt
+          where dt.date1 = dt.max_date 
+          and   dt.oc_message_id = m.oc_message_id 
+          and   rownum = 1) as last_attempted_status,
+        ce.cert_number as certificate_number,
+        ce.cert_id,
+        cl.claim_number,
+        cl.claim_id,
+        cs.case_number,
+        cs.case_id,
+        m.created_by,
+        m.created_date
+			FROM 
+        elp_oc_message m
+        inner join elp_oc_template t on m.oc_template_id = t.oc_template_id
+        inner join elp_oc_template_group tg on t.oc_template_group_id = tg.oc_template_group_id
+        inner join elp_oc_template_group_dealer tgd on tg.oc_template_group_id = tgd.oc_template_group_id
+        inner join elp_dealer d on tgd.dealer_id = d.dealer_id
+        left outer join elp_cert ce on ce.cert_id = m.cert_id
+        left outer join elp_claim cl on cl.claim_id = m.claim_id
+        left outer join elp_case cs on cs.case_id = m.case_id
+			WHERE
+        1 = 1
+				--dynamic_where_clause_dealer
+        --dynamic_where_clause
+      ORDER BY m.created_date
+		]]>
+  </LOAD_LIST_BY_DEALER_AND_CONDITION>
+  <SEND_ADHOC_MESSAGE>ELP_OUTBOUND_COMMUNICATION.SendAdhocMessage</SEND_ADHOC_MESSAGE>
+  <UPDATE></UPDATE>
+  <INSERT></INSERT>
+  <DELETE></DELETE>
+  
+</SQL>

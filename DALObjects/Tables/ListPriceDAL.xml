@@ -1,0 +1,103 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<SQL>
+  <LOAD>
+    <![CDATA[
+    SELECT
+      list_price_id,
+      lp.warranty_master_id,
+      effective,
+      expiration,
+      lp.created_date,
+      lp.modified_date,
+      lp.created_by,
+      lp.modified_by,
+      d.dealer_id,
+      d.dealer_name,
+      d.dealer as dealer_code,
+      sku_number,
+      model_number,
+      manufacturer_name,
+      amount,
+			amount_type_id
+    FROM
+      elp_list_price lp,
+      elp_warranty_master wm,
+      elp_dealer d
+    WHERE
+      lp.warranty_master_id = wm.warranty_master_id and
+      wm.dealer_id = d.dealer_id and
+      list_price_id = :list_price_id
+    ]]>
+  </LOAD>
+  <LOAD_LIST_PRICE>
+    <![CDATA[
+        SELECT
+          list_price_id,
+          lp.warranty_master_id,
+          lp.amount,
+          effective,
+          expiration,
+          lp.created_date,
+          lp.modified_date,
+          lp.created_by,
+          lp.modified_by,
+          d.dealer_id,
+          d.dealer_name,
+          d.dealer as dealer_code,
+          sku_number,
+          model_number,
+          manufacturer_name
+        FROM
+          elp_list_price lp,
+          elp_warranty_master wm,
+          elp_dealer d
+        WHERE
+          lp.warranty_master_id = wm.warranty_master_id
+          --dynamic_where_clause
+          and wm.dealer_id = d.dealer_id
+          and getcodefromlistitem(lp.AMOUNT_TYPE_ID) = 'LPRICE'
+    ]]>
+  </LOAD_LIST_PRICE>
+  <LOAD_LIST_ALL>
+    <![CDATA[
+        SELECT
+          list_price_id,
+          lp.warranty_master_id,
+          effective,
+          expiration,
+          lp.created_date,
+          lp.modified_date,
+          lp.created_by,
+          lp.modified_by,
+          d.dealer_id,
+          d.dealer_name,
+          d.dealer as dealer_code,
+          sku_number,
+          model_number,
+          manufacturer_name,
+          amount,
+				  amount_type_id,
+          t.Translation amount_type_desc
+        FROM elp_list_price lp 
+        inner join elp_warranty_master wm on lp.warranty_master_id = wm.warranty_master_id
+        inner join elp_dealer d on wm.dealer_id = d.dealer_id
+        inner join elp_list_item li on lp.amount_type_id = li.list_item_id
+        INNER JOIN elp_dict_item_translation t ON t.DICT_ITEM_ID = li.DICT_ITEM_ID  
+        WHERE 1=1
+          and t.LANGUAGE_ID = :language_id
+          --dynamic_where_clause
+    ]]>
+  </LOAD_LIST_ALL>
+
+  <LOAD_REPAIR_AUTH_AMT>
+    <![CDATA[
+      select lp.AMOUNT
+      from  elp_list_price lp
+      inner join elp_warranty_master wm on lp.warranty_master_id = wm.warranty_master_id
+      where getcodefromlistitem(lp.amount_type_id) = 'RAAMOUNT'
+	      and wm.dealer_id = :dealer_id
+        and wm.sku_number = :sku_number
+        and to_date(:effective, 'yyyymmdd') between lp.EFFECTIVE and lp.EXPIRATION
+    ]]>
+  </LOAD_REPAIR_AUTH_AMT>
+</SQL>

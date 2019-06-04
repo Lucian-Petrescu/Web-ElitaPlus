@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8" ?> 
+<SQL>
+  <PROCESS_FILE_COV>
+    VSC_UPLOADS.coverage
+  </PROCESS_FILE_COV>
+  <PROCESS_FILE_COV_LIMIT>
+    VSC_UPLOADS.coveragelimit
+  </PROCESS_FILE_COV_LIMIT>
+  <PROCESS_FILE_COV_RATE>
+    VSC_UPLOADS.coveragerate
+  </PROCESS_FILE_COV_RATE>
+  <PROCESS_FILE_MODEL>
+    VSC_UPLOADS.model
+  </PROCESS_FILE_MODEL>
+</SQL>

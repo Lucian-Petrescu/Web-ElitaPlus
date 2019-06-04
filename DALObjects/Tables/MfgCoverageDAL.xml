@@ -1,0 +1,141 @@
+<?xml version="1.0" encoding="utf-8" ?>
+
+<!-- ********************** THIS FILE HAS BEEN GENERATED FROM TEMPLATE SQLObject.cst (3/7/2008)********************** -->
+
+<SQL>
+  <LOAD>
+    <![CDATA[	
+			SELECT 
+				COMPANY_GROUP_ID,
+				manufacturer_id,
+				model,
+				risk_type_id,
+				mfg_warranty,
+				created_date,
+				created_by,
+				modified_date,
+				modified_by,
+				mfg_coverage_id,
+        equipment_type_id,
+        equipment_id,
+        '' as equipment_type,
+        '' as equipment_description,
+        mfg_main_parts_warranty
+      FROM elp_mfg_coverage 
+			WHERE
+				mfg_coverage_id = :mfg_coverage_id
+		]]>
+  </LOAD>
+  <LOAD_LIST>
+    <![CDATA[	
+        SELECT
+            mfgc.mfg_coverage_id,
+            mfgc.company_group_Id,
+            mfr.description manufacturer,
+            mfr.manufacturer_id,
+            rt.risk_type_english,
+            rt.description,
+            rt.risk_type_id,
+            mfgc.model,
+            mfgc.mfg_warranty,
+            mfgc.equipment_type_id,
+            mfgc.equipment_id,
+            li.equipment_type,
+            e.description as equipment_description,
+            mfgc.mfg_main_parts_warranty
+       FROM elp_mfg_coverage mfgc, elp_company_group cg, elp_manufacturer mfr, elp_risk_type rt, elita.elp_equipment e,
+       	(select
+       		dit.translation as equipment_type, li.list_item_id as equipment_type_id
+       	 from
+       	 	elp_list_item li, elp_list l, elp_dict_item_translation dit
+       	 where
+       	 	dit.dict_item_id = li.dict_item_id and
+       	 	l.code = 'EQPTYPE' and
+			li.list_id = l.list_id and
+			dit.language_id = :language_id) li
+        WHERE
+            mfgc.company_group_Id = :company_group_id and
+            e.equipment_id (+) = mfgc.equipment_id and
+			      li.equipment_type_id (+) = mfgc.equipment_type_id and
+            mfr.manufacturer_id (+)= mfgc.manufacturer_id and
+            rt.risk_type_Id (+) = mfgc.risk_type_Id and
+            mfgc.company_group_Id = cg.company_group_Id
+            --dynamic_where_clause
+        ORDER BY UPPER(manufacturer)
+  		]]>
+  </LOAD_LIST>
+  <LOAD_BY_EQUIPMENT_ID>
+    <![CDATA[	
+			SELECT 
+				COMPANY_GROUP_ID,
+				manufacturer_id,
+				model,
+				risk_type_id,
+				mfg_warranty,
+				created_date,
+				created_by,
+				modified_date,
+				modified_by,
+				mfg_coverage_id,
+        equipment_type_id,
+        equipment_id,
+        '' as equipment_type,
+        '' as equipment_description,
+        mfg_main_parts_warranty
+      FROM elp_mfg_coverage 
+			WHERE
+				equipment_id = :equipment_id
+		]]>
+  </LOAD_BY_EQUIPMENT_ID>
+  <UPDATE>
+    <![CDATA[	
+			UPDATE elp_mfg_coverage SET
+				company_group_Id = :company_group_Id,
+				manufacturer_id = :manufacturer_id,
+				model = :model,
+				risk_type_id = :risk_type_id,
+				mfg_warranty = :mfg_warranty,
+				modified_by = :modified_by,
+        equipment_type_id = :equipment_type_id,
+        equipment_id = :equipment_id,
+        mfg_main_parts_warranty =:mfg_main_parts_warranty
+			WHERE
+				mfg_coverage_id = :mfg_coverage_id
+		]]>
+  </UPDATE>
+  <INSERT>
+    INSERT INTO elp_mfg_coverage
+    (
+    company_group_Id,
+    manufacturer_id,
+    model,
+    risk_type_id,
+    mfg_warranty,
+    created_by,
+    mfg_coverage_id,
+    equipment_type_id,
+    equipment_id,
+    mfg_main_parts_warranty
+    )
+    VALUES
+    (
+    :company_group_Id,
+    :manufacturer_id,
+    :model,
+    :risk_type_id,
+    :mfg_warranty,
+    :created_by,
+    :mfg_coverage_id,
+    :equipment_type_id,
+    :equipment_id,
+    :mfg_main_parts_warranty
+    )
+  </INSERT>
+  <DELETE>
+    DELETE FROM elp_mfg_coverage
+    WHERE
+    mfg_coverage_id = :mfg_coverage_id
+  </DELETE>
+</SQL>
+
+

@@ -1,0 +1,14 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+
+<!-- ********************** THIS FILE HAS BEEN GENERATED FROM TEMPLATE SQLObject v2.cst (3/13/2014)********************** -->
+
+<SQL>
+	<LOAD>elp_tbl_excl_Creason_by_role.Load</LOAD>
+	<LOAD_LIST>elp_tbl_excl_Creason_by_role.LoadList</LOAD_LIST>
+	<INSERT>elp_tbl_excl_Creason_by_role.Add</INSERT>
+	<UPDATE>elp_tbl_excl_Creason_by_role.Modify</UPDATE>
+	<UPDATE>elp_tbl_excl_Creason_by_role.Del</UPDATE>
+</SQL> 
+
+
+

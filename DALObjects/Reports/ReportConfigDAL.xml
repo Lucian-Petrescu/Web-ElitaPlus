@@ -1,0 +1,79 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+
+<!-- ********************** THIS FILE HAS BEEN GENERATED FROM TEMPLATE SQLObject.cst (5/27/2009)********************** -->
+
+<SQL>
+  <LOAD>
+    <![CDATA[	
+			SELECT 
+				company_id,
+				report_ce_name,
+				form_id,
+				large_report,
+				created_date,
+				modified_date,
+				created_by,
+				modified_by,
+				report_config_id
+			FROM elp_report_config 
+			WHERE
+				report_config_id = :report_config_id
+		]]>
+  </LOAD>
+  <LOAD_LIST>
+    <![CDATA[
+    Select rep.report_config_id, comp.code company, trans.translation report, rep.report_ce_name
+    From  elp_report_config rep,
+          elp_form form,
+          elp_dict_item_translation trans,
+          elp_company comp
+    Where 
+          form.form_id = rep.form_id AND 
+          trans.dict_item_id = form.dict_item_id AND
+          comp.company_id = rep.company_id
+          --dynamic_where_clause
+          --dynamic_in_clause
+    Order by Upper(comp.code), Upper(trans.translation), Upper(rep.report_ce_name)
+    ]]>
+  </LOAD_LIST>
+  <UPDATE>
+    <![CDATA[	
+			UPDATE elp_report_config SET
+				company_id = :company_id,
+				report_ce_name = :report_ce_name,
+				form_id = :form_id,
+				large_report = :large_report,
+				modified_by = :modified_by
+			WHERE
+				report_config_id = :report_config_id
+		]]>
+  </UPDATE>
+  <INSERT>
+    INSERT INTO elp_report_config
+    (
+    company_id,
+    report_ce_name,
+    form_id,
+    large_report,
+    created_by,
+    report_config_id
+    )
+    VALUES
+    (
+    :company_id,
+    :report_ce_name,
+    :form_id,
+    :large_report,
+    :created_by,
+    :report_config_id
+    )
+  </INSERT>
+  <DELETE>
+    DELETE FROM elp_report_config
+    WHERE
+    report_config_id = :report_config_id
+  </DELETE>
+</SQL>
+
+
+

@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!--$log$-->
+<!--$Id: OlitaGetCert.xsd, 217729+1 2014/04/14 18:04:25 co0799 $-->
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema">
+	<xs:element name="OlitaGetCertDs">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="OlitaGetCert">
+					<xs:complexType>
+						<xs:sequence>
+							<xs:element name="dealer" type="stringRequired" minOccurs="1" maxOccurs="1"></xs:element>
+							<xs:element name="cert_number" type="stringRequired" minOccurs="1" maxOccurs="1"></xs:element>
+              <xs:element name="invoice_number" type="xs:string" minOccurs="0" maxOccurs="1"></xs:element>
+						</xs:sequence>
+					</xs:complexType>
+				</xs:element>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+	<xs:simpleType name="stringRequired">
+		<xs:restriction base="xs:string">
+			<xs:minLength value="1"></xs:minLength>
+		</xs:restriction>
+	</xs:simpleType>
+</xs:schema>

@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="utf-8" ?>
+
+<!-- ********************** THIS FILE HAS BEEN GENERATED FROM TEMPLATE SQLObject.cst (8/30/2004)********************** -->
+
+<SQL>
+	<LOAD>
+		<![CDATA[	
+			SELECT 
+				description,
+				company_group_id,
+				created_date,
+				modified_date,
+				created_by,
+				modified_by,
+				manufacturer_id
+			FROM elp_manufacturer 
+			WHERE
+				manufacturer_id = :manufacturer_id
+		]]>
+	</LOAD>
+  <LOADFROMDESCANDCOMPGROUP>
+    <![CDATA[	
+			SELECT 
+				manufacturer_id,
+        description 
+			FROM elp_manufacturer 
+			WHERE
+        company_group_id = :company_group_id and
+        description = :description
+		]]>
+  </LOADFROMDESCANDCOMPGROUP>
+  <LOAD_LIST>	
+<![CDATA[	
+			SELECT 
+				manufacturer_id,
+				description
+			FROM elp_manufacturer 
+			WHERE
+				company_group_id = :company_group_id and
+				UPPER(description) LIKE UPPER(:description)
+			ORDER BY UPPER(description)
+		]]>		
+	</LOAD_LIST>
+  <LOAD_VSC_MAKES>
+    <![CDATA[	
+    SELECT DISTINCT
+    mfr.DESCRIPTION As Code , mfr.DESCRIPTION
+    FROM
+    ELP_MANUFACTURER mfr INNER JOIN ELP_VSC_MODEL mdl ON mdl.MANUFACTURER_ID = mfr.MANUFACTURER_ID
+    WHERE
+    ACTIVE_FLAG = 'Y'
+    AND mfr.COMPANY_GROUP_ID = :company_group_id
+    ORDER BY mfr.DESCRIPTION
+    ]]>
+  </LOAD_VSC_MAKES>
+  <LOAD_MAKES_FOR_WS>
+    <![CDATA[	
+SELECT DISTINCT
+			description as MANUFACTURER
+			FROM elp_manufacturer 
+			WHERE company_group_id = :company_group_id
+			ORDER BY UPPER(description)
+    ]]>
+  </LOAD_MAKES_FOR_WS>
+  <LOAD_MAKES_FOR_WS_BY_WARRANTY_MASTER>
+    <![CDATA[	
+    SELECT DISTINCT
+      m.description as MANUFACTURER,
+      wm.model_number as MODEL
+			FROM elp_manufacturer m right outer join elp_warranty_master wm on
+            m.manufacturer_id = elita.elp_utility_equipment.findmanufacturer(wm.manufacturer_name,:company_group_id)
+			WHERE wm.dealer_id = :dealer_id
+			ORDER BY UPPER(m.description), UPPER(wm.model_number)
+    ]]>
+  </LOAD_MAKES_FOR_WS_BY_WARRANTY_MASTER>  
+	<UPDATE>
+		<![CDATA[	
+			UPDATE elp_manufacturer SET
+				description = :description,
+				company_group_id = :company_group_id,
+				modified_by = :modified_by
+			WHERE
+				manufacturer_id = :manufacturer_id
+				AND NVL(modified_date,created_date) = NVL(:modified_date,created_date)
+		]]>
+	</UPDATE>
+	<INSERT>
+			INSERT INTO elp_manufacturer
+					(			
+				description, 
+				company_group_id, 
+				created_by,
+				manufacturer_id
+					)
+			VALUES
+					(			
+				:description, 
+				:company_group_id, 
+				:created_by,
+				:manufacturer_id
+					)
+	</INSERT>
+	<DELETE>
+			DELETE FROM elp_manufacturer
+			WHERE
+				manufacturer_id = :manufacturer_id
+	</DELETE>
+  <RESOLVE_MANUFACTURER>
+    select elp_utility_equipment.FindManufacturer(:p_manufacturer_name, :p_company_group_id, :p_company_group_code)
+    from dual
+  </RESOLVE_MANUFACTURER>
+</SQL> 
+
+
+

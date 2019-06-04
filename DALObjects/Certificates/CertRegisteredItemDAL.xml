@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="utf-8" ?>
+
+<!-- ********************** THIS FILE HAS BEEN GENERATED FROM TEMPLATE SQLObject.cst (5/5/2017)********************** -->
+
+<SQL>
+	<LOAD>
+		<![CDATA[	
+			SELECT 
+				cri.cert_item_id,
+        ci.cert_id,
+        c.cert_number,
+        d.dealer dealer_code,
+				cri.manufacturer_id,
+				cri.manufacturer,
+				cri.model,
+				cri.serial_number,
+				cri.item_description,
+				cri.purchased_date,
+				cri.purchase_price,
+				cri.enrollment_item,
+				cri.item_status,
+				cri.validated_by,
+				cri.validated_date,
+				cri.created_by,
+				cri.created_date,
+				cri.modified_by,
+				cri.modified_date,
+				cri.prod_item_manuf_equip_id,
+				cri.device_type_id,
+        elita.GetCodeFromListItem(cri.device_type_id) as device_type,
+  			cri.registered_item_name,
+        cri.registered_item_name as registered_item_identifier,
+				cri.cert_registered_item_id,
+        cri.registration_date,
+        case
+        when cri.item_status = 'ITEM_REGISTRATION_STATUS-I'  then
+             nvl(cri.expiration_date,nvl(cri.modified_date,cri.created_date))
+        when cri.item_status = 'ITEM_REGISTRATION_STATUS-A' then
+             null
+        end  as expiration_date,
+        cri.retail_price,
+        cri.indixid,
+        ci.expiration_date as cert_item_expiration_date,
+        cri.expiration_date as cert_reg_item_expiration_date
+			FROM elp_cert_registered_item cri
+      inner join elp_cert_item ci on cri.cert_item_id = ci.cert_item_id
+      inner join elp_cert c on c.cert_id = ci.cert_id
+      inner join elp_dealer d on d.dealer_id = c.dealer_id
+			WHERE
+				cri.cert_registered_item_id = :cert_registered_item_id
+		]]>
+	</LOAD>
+	<LOAD_LIST>		
+	</LOAD_LIST>
+ <UPDATE_REG_ITEM>
+    elita.elp_item_registration.update_registerd_item
+  </UPDATE_REG_ITEM>
+  <REG_ITEM>
+    elita.elp_item_registration.register_item
+  </REG_ITEM>
+	<DELETE>
+			DELETE FROM elp_cert_registered_item
+			WHERE
+	 	cert_registered_item_id = :cert_registered_item_id
+	</DELETE>
+  <GET_DEVICE_TYPE_DESC>
+   select elita.GetDescriptionFromListItem(:device_type_id,:language_id) device_type_desc from dual
+  </GET_DEVICE_TYPE_DESC>
+  <GET_CERT_REG_ITEM_BY_CLAIM_ID>
+    select HEXTORAW(cf.field_value) from elp_Case_fields cf ,(
+    select cs.case_id
+    from elp_claim cl, elp_case cs, elp_case_fields cf
+    where cl.claim_id = cs.claim_id
+    and cs.case_id = cf.case_id
+    and cl.claim_id = :claim_id
+    and cf.field_value = 'RegisteredItem') t
+    where cf.case_id = t.case_id
+    and cf.field_xcd = 'CASEFLD-DEVICEID'
+  </GET_CERT_REG_ITEM_BY_CLAIM_ID>
+  <GET_CERT_REG_ITEM_BY_MASTER_CLAIM_NO>
+    select HEXTORAW(cf.field_value) from elp_Case_fields cf ,(
+    select cs.case_id
+    from elp_claim cl, elp_case cs, elp_case_fields cf
+    where cl.claim_id = cs.claim_id
+    and cs.case_id = cf.case_id
+    and cl.claim_number = :claim_number
+    and cl.company_id = :company_id
+    and cf.field_value = 'RegisteredItem') t
+    where cf.case_id = t.case_id
+    and cf.field_xcd = 'CASEFLD-DEVICEID'
+  </GET_CERT_REG_ITEM_BY_MASTER_CLAIM_NO>
+</SQL> 
+
+

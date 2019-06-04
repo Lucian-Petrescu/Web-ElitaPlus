@@ -1,0 +1,71 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+
+<!-- ********************** THIS FILE HAS BEEN GENERATED FROM TEMPLATE SQLObject.cst (4/29/2015)********************** -->
+
+<SQL>
+  <LOAD>
+    <![CDATA[	
+			SELECT 
+				dealer_id,
+				claim_type_id,
+				created_date,
+				created_by,
+				modified_date,
+				modified_by,
+				dealer_claim_aprove_clmtype_id
+			FROM elp_dealer_clm_aprove_clmtype 
+			WHERE
+				dealer_claim_aprove_clmtype_id = :dealer_claim_aprove_clmtype_id
+		]]>
+  </LOAD>
+  <LOAD_BY_DEALERID_CLAIMTYPEID>
+    <![CDATA[	
+			SELECT 
+				dealer_id,
+				claim_type_id,
+				created_date,
+				created_by,
+				modified_date,
+				modified_by,
+				dealer_claim_aprove_clmtype_id
+			FROM elp_dealer_clm_aprove_clmtype 
+			WHERE dealer_id = :dealer_id
+            and claim_type_id = :claim_type_id
+		]]>
+  </LOAD_BY_DEALERID_CLAIMTYPEID>
+  <LOAD_LIST>
+  </LOAD_LIST>
+  <UPDATE>
+    <![CDATA[	
+			UPDATE elp_dealer_clm_aprove_clmtype SET
+				dealer_id = :dealer_id,
+				claim_type_id = :claim_type_id,
+				modified_by = :modified_by
+			WHERE
+				dealer_claim_aprove_clmtype_id = :dealer_claim_aprove_clmtype_id
+		]]>
+  </UPDATE>
+  <INSERT>
+    INSERT INTO elp_dealer_clm_aprove_clmtype
+    (
+    dealer_id,
+    claim_type_id,
+    created_by,
+    dealer_claim_aprove_clmtype_id
+    )
+    VALUES
+    (
+    :dealer_id,
+    :claim_type_id,
+    :created_by,
+    :dealer_claim_aprove_clmtype_id
+    )
+  </INSERT>
+  <DELETE>
+    DELETE FROM elp_dealer_clm_aprove_clmtype
+    WHERE
+    dealer_claim_aprove_clmtype_id = :dealer_claim_aprove_clmtype_id
+  </DELETE>
+</SQL>
+
+

@@ -1,0 +1,128 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+
+<!-- ********************** THIS FILE HAS BEEN GENERATED FROM TEMPLATE SQLObject.cst (5/19/2008)********************** -->
+
+<SQL>
+  <LOAD>
+    <![CDATA[	
+			SELECT 
+				dealer_id,
+				effective_date,
+				expiration_date,
+				low_number_of_payments,
+				high_number_of_payments,
+				factor,
+				created_date,
+				modified_date,
+				created_by,
+				modified_by,
+				installment_factor_id
+			FROM elp_installment_factor 
+			WHERE
+				installment_factor_id = :installment_factor_id
+		]]>
+  </LOAD>
+  <LOAD_LIST>
+    <![CDATA[	    
+    SELECT
+    f.installment_factor_id,    
+    f.dealer_id,
+    f.effective_date,
+    f.expiration_date,
+    f.low_number_of_payments,
+    f.high_number_of_payments,
+    f.factor,
+    f.created_date,
+    f.modified_date,
+    f.created_by,
+    f.modified_by
+    FROM elp_installment_factor f
+    WHERE
+    f.dealer_id = :dealer_id AND
+    f.effective_date = :effective_date AND
+    f.expiration_date = :expiration_date
+    ORDER BY f.low_number_of_payments, f.high_number_of_payments
+    ]]>
+  </LOAD_LIST>
+  <LOAD_LIST_BY_DEALER>
+    <![CDATA[	    
+    SELECT
+    f.installment_factor_id,    
+    f.dealer_id,
+    f.effective_date,
+    f.expiration_date,
+    f.low_number_of_payments,
+    f.high_number_of_payments,
+    f.factor,
+    f.created_date,
+    f.modified_date,
+    f.created_by,
+    f.modified_by
+    FROM elp_installment_factor f
+    WHERE
+    f.dealer_id = :dealer_id
+    ORDER BY f.low_number_of_payments, f.high_number_of_payments
+    ]]>
+  </LOAD_LIST_BY_DEALER>
+  <UPDATE>
+    <![CDATA[	
+			UPDATE elp_installment_factor SET
+				dealer_id = :dealer_id,
+				effective_date = :effective_date,
+				expiration_date = :expiration_date,
+				low_number_of_payments = :low_number_of_payments,
+				high_number_of_payments = :high_number_of_payments,
+				factor = :factor,
+				modified_by = :modified_by
+			WHERE
+				installment_factor_id = :installment_factor_id
+		]]>
+  </UPDATE>
+  <INSERT>
+    INSERT INTO elp_installment_factor
+    (
+    dealer_id,
+    effective_date,
+    expiration_date,
+    low_number_of_payments,
+    high_number_of_payments,
+    factor,
+    created_by,
+    installment_factor_id
+    )
+    VALUES
+    (
+    :dealer_id,
+    :effective_date,
+    :expiration_date,
+    :low_number_of_payments,
+    :high_number_of_payments,
+    :factor,
+    :created_by,
+    :installment_factor_id
+    )
+  </INSERT>
+  <DELETE>
+    DELETE FROM elp_installment_factor
+    WHERE
+    installment_factor_id = :installment_factor_id
+  </DELETE>
+  <LOAD_INSTALLMENT_FACTOR_BY_DEALER>
+    <![CDATA[	
+			SELECT unique
+				f.dealer_id,
+				f.effective_date,
+				f.expiration_date,
+		    d.dealer dealer_code,
+		    d.dealer_name        
+			FROM elp_installment_factor f,
+        elp_dealer d
+			WHERE
+        f.dealer_id = d.dealer_id
+      --dynamic_where_clause  
+      --dynamic_order_by_clause  
+    ]]>
+  </LOAD_INSTALLMENT_FACTOR_BY_DEALER>
+</SQL>
+
+

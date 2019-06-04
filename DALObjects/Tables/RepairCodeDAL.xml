@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="utf-8" ?>
+
+<!-- ********************** THIS FILE HAS BEEN GENERATED FROM TEMPLATE SQLObject.cst (9/15/2004)********************** -->
+
+<SQL>
+	<LOAD>
+		<![CDATA[	
+			SELECT 
+				short_desc,
+				description,
+				created_by,
+				created_date,
+				modified_by,
+				modified_date,
+				repair_code_id,
+				company_group_id
+			FROM elp_repair_code 
+			WHERE
+				repair_code_id = :repair_code_id
+		]]>
+	</LOAD>
+	<LOAD_LIST>
+	<![CDATA[	
+			SELECT 
+				rc.repair_code_id,
+				rc.short_desc,
+				rc.description,
+				cg.code company_group_code
+			FROM elp_repair_code rc, elp_company_group cg
+			WHERE
+				rc.company_group_id = :company_group_id
+				and rc.company_group_id = cg.company_group_id
+				and rc.short_desc LIKE :short_desc
+				and rc.description LIKE :description
+			ORDER BY UPPER(rc.short_desc)
+		]]>				
+	</LOAD_LIST>	
+	<UPDATE>
+		<![CDATA[	
+			UPDATE elp_repair_code SET
+				short_desc = :short_desc,
+				description = :description,
+				modified_by = :modified_by,
+				company_group_id = :company_group_id
+			WHERE
+				repair_code_id = :repair_code_id
+		]]>
+	</UPDATE>
+	<INSERT>
+			INSERT INTO elp_repair_code
+					(			
+				short_desc, 
+				description, 
+				created_by,
+				repair_code_id,
+				company_group_id
+					)
+			VALUES
+					(			
+				:short_desc, 
+				:description, 
+				:created_by,
+				:repair_code_id,
+				:company_group_id 
+					)
+	</INSERT>
+	<DELETE>
+			DELETE FROM elp_repair_code
+			WHERE
+				repair_code_id = :repair_code_id
+	</DELETE>
+</SQL> 
+
+

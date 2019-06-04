@@ -1,0 +1,113 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+
+<!-- ********************** THIS FILE HAS BEEN GENERATED FROM TEMPLATE SQLObject.cst (1/9/2013)********************** -->
+
+<SQL>
+  <LOAD>
+    <![CDATA[	
+			SELECT 
+				company_id,
+				dealer_id,
+				cert_number,
+				fromdate,
+				todate,
+				selection_on_created_date,
+				selection_on_modified_date,
+				selection_on_cert,
+				selection_on_cancel,
+				selection_on_billing,
+				created_date,
+				created_by,
+				modified_date,
+				modified_by,
+				selection_on_newbusiness,
+				file_header_temp_id
+			FROM elita.elp_daily_obd_file_header_temp 
+			WHERE
+				file_header_temp_id = :file_header_temp_id
+		]]>
+  </LOAD>
+
+  <LOAD_LIST>
+    <![CDATA[	
+			SELECT 
+				D.Cert_Number,
+				FromDate,
+				ToDate,
+				Selection_On_Created_Date,
+				Selection_On_Modified_Date,
+				Selection_On_Cancel,
+				Selection_On_Billing,
+				Selection_On_Newbusiness as Selection_On_New_Enrollment,
+				H.File_Header_Temp_id,
+        File_Detail_Temp_id
+			FROM ELITA.elp_daily_obd_file_header_temp H ,
+      ELITA.elp_daily_obd_file_detail_temp D 
+      where H.File_Header_Temp_Id = D.File_Header_Temp_id
+		
+		]]>
+  </LOAD_LIST>
+  <UPDATE>
+    <![CDATA[	
+			UPDATE elp_daily_obd_file_header_temp SET
+				company_id = :company_id,
+				dealer_id = :dealer_id,
+				cert_number = :cert_number,
+				fromdate = :fromdate,
+				todate = :todate,
+				selection_on_created_date = :selection_on_created_date,
+				selection_on_modified_date = :selection_on_modified_date,
+				selection_on_cert = :selection_on_cert,
+				selection_on_cancel = :selection_on_cancel,
+				selection_on_billing = :selection_on_billing,
+				selection_on_newbusiness = :selection_on_newbusiness,
+				modified_by = :modified_by
+			WHERE
+				file_header_temp_id = :file_header_temp_id
+		]]>
+  </UPDATE>
+  <INSERT>
+    INSERT INTO elp_daily_obd_file_header_temp
+    (
+    company_id,
+    dealer_id,
+    cert_number,
+    fromdate,
+    todate,
+    selection_on_created_date,
+    selection_on_modified_date,
+    selection_on_cert,
+    selection_on_cancel,
+    selection_on_billing,
+    selection_on_newbusiness,
+    created_by,
+    file_header_temp_id
+    )
+    VALUES
+    (
+    :company_id,
+    :dealer_id,
+    :cert_number,
+    :fromdate,
+    :todate,
+    :selection_on_created_date,
+    :selection_on_modified_date,
+    :selection_on_cert,
+    :selection_on_cancel,
+    :selection_on_billing,
+    :selection_on_newbusiness,
+    :created_by,
+    :file_header_temp_id
+    )
+  </INSERT>
+  <DELETE>
+    DELETE FROM elp_daily_obd_file_header_temp
+    WHERE
+    file_header_temp_id = :file_header_temp_id
+  </DELETE>
+  <Header_Records_List>
+    ELP_DAILY_OUTBOUND_FILE.ELP_CREATE_ECI_OUTBOUND_FILE
+  </Header_Records_List>
+</SQL>
+
+

@@ -1,0 +1,1 @@
+﻿<%@ ServiceHost Language="VB" Debug="true" Service="ElitaInternalWS.SNMPortal.SNMPortalWcf" CodeBehind="SNMPortalWcf.svc.vb" %>

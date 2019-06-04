@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<xs:schema id="InterfaceCoverageRate" targetNamespace="http://tempuri.org/InterfaceCoverageRate.xsd"
+	elementFormDefault="qualified" xmlns="http://tempuri.org/InterfaceCoverageRate.xsd" xmlns:mstns="http://tempuri.org/InterfaceCoverageRate.xsd"
+	xmlns:xs="http://www.w3.org/2001/XMLSchema">
+	<xs:element name="InterfaceCoverageRateDs">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="InterfaceCoverageRate">
+					<xs:complexType>
+						<xs:all>
+							<xs:element name="company_group_code" type="stringRequired" minOccurs="1" maxOccurs="1"></xs:element>
+							<xs:element name="dealer_code" type="stringRequired" minOccurs="1" maxOccurs="1" />
+							<xs:element name="dealer_group_code" type="stringRequired" minOccurs="1" maxOccurs="1" />
+							<xs:element name="deductible_type" minOccurs="1" maxOccurs="1">
+								<xs:simpleType>
+									<xs:restriction base="xs:string">
+										<xs:pattern value="$|%" />
+									</xs:restriction>
+								</xs:simpleType>
+							</xs:element>
+							<xs:element name="deductible" type="xs:decimal" minOccurs="1" maxOccurs="1" />
+							<xs:element name="reduced_deductible" type="xs:decimal" minOccurs="1" maxOccurs="1" />
+							<xs:element name="plan_code" type="stringRequired" minOccurs="1" maxOccurs="1" />
+							<xs:element name="plan_name" type="stringRequired" minOccurs="1" maxOccurs="1" />
+							<xs:element name="plan_term_months" type="xs:nonNegativeInteger" minOccurs="1" maxOccurs="1" />
+							<xs:element name="plan_term_KM-MI" type="xs:nonNegativeInteger" minOccurs="1" maxOccurs="1" />
+							<xs:element name="KM-MI_from" type="xs:nonNegativeInteger" minOccurs="1" maxOccurs="1" />
+							<xs:element name="KM-MI_to" type="xs:nonNegativeInteger" minOccurs="1" maxOccurs="1" />
+							<xs:element name="engine_manuf_Warr_months" type="xs:nonNegativeInteger" minOccurs="1" maxOccurs="1" />
+							<xs:element name="engine_manuf_Warr_KM-MI" type="xs:nonNegativeInteger" minOccurs="1" maxOccurs="1" />
+							<xs:element name="class_code" type="stringRequired" minOccurs="1" maxOccurs="1" />
+							<xs:element name="gwp" type="xs:decimal" minOccurs="1" maxOccurs="1" />
+							<xs:element name="wp" type="xs:decimal" minOccurs="1" maxOccurs="1" />
+							<xs:element name="commission_percent" type="xs:decimal" minOccurs="1" maxOccurs="1" />
+							<xs:element name="marketing_percent" type="xs:decimal" minOccurs="1" maxOccurs="1" />
+							<xs:element name="admin_expense" type="xs:decimal" minOccurs="0" maxOccurs="1" />
+							<xs:element name="profit_percent" type="xs:decimal" minOccurs="1" maxOccurs="1" />
+							<xs:element name="loss_cost_percent" type="xs:decimal" minOccurs="1" maxOccurs="1" />
+							<xs:element name="Taxes_Percent" type="xs:decimal" minOccurs="1" maxOccurs="1" />
+						</xs:all>
+					</xs:complexType>
+				</xs:element>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+	<xs:simpleType name="stringRequired">
+		<xs:restriction base="xs:string">
+			<xs:minLength value="1"></xs:minLength>
+		</xs:restriction>
+	</xs:simpleType>
+</xs:schema>

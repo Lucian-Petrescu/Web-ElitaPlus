@@ -1,0 +1,4 @@
+﻿<%@ ServiceHost Language="VB" 
+                Debug="true" 
+                Service="ElitaInternalWS.Claims.ClaimDocumentServiceV1" 
+                CodeBehind="ClaimDocumentService.svc.vb" %>

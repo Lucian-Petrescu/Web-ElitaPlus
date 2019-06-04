@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xs:schema xmlns:tns="http://schemas.datacontract.org/2004/07/Assurant.Elita.FulfillmentService.Contracts.Fulfillment" elementFormDefault="qualified" targetNamespace="http://schemas.datacontract.org/2004/07/Assurant.Elita.FulfillmentService.Contracts.Fulfillment" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+  <xs:import schemaLocation="http://localhost/ElitaFulfillmentService/FulfillmentService.svc?xsd=xsd3" namespace="http://schemas.datacontract.org/2004/07/Assurant.Elita.FulfillmentService.DataElements.Fulfillment" />
+  <xs:import schemaLocation="http://localhost/ElitaFulfillmentService/FulfillmentService.svc?xsd=xsd0" namespace="http://elita.assurant.com/Elita/FulfillmentService" />
+  <xs:complexType name="GetAuthorizationDetailsResponse">
+    <xs:complexContent mixed="false">
+      <xs:extension xmlns:q1="http://elita.assurant.com/Elita/FulfillmentService" base="q1:BaseFulfillmentResponse">
+        <xs:sequence>
+          <xs:element xmlns:q2="http://schemas.datacontract.org/2004/07/Assurant.Elita.FulfillmentService.DataElements.Fulfillment" minOccurs="0" name="Authorization" nillable="true" type="q2:Authorization" />
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:element name="GetAuthorizationDetailsResponse" nillable="true" type="tns:GetAuthorizationDetailsResponse" />
+  <xs:complexType name="GetClaimReimburseAmountResponse">
+    <xs:complexContent mixed="false">
+      <xs:extension xmlns:q3="http://elita.assurant.com/Elita/FulfillmentService" base="q3:BaseFulfillmentResponse">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="ReimbursementAmount" type="xs:decimal" />
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:element name="GetClaimReimburseAmountResponse" nillable="true" type="tns:GetClaimReimburseAmountResponse" />
+</xs:schema>

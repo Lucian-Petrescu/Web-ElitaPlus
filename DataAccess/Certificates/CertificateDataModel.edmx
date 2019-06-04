@@ -1,0 +1,1524 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="2.0" xmlns:edmx="http://schemas.microsoft.com/ado/2008/10/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+    <Schema Namespace="Model.Store" Provider="Oracle.ManagedDataAccess.Client" ProviderManifestToken="11.2" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/02/edm/ssdl">
+        <EntityType Name="ELP_BILLING_DETAIL">
+          <Key>
+            <PropertyRef Name="BILLING_DETAIL_ID" />
+          </Key>
+          <Property Name="BILLING_DETAIL_ID" Type="raw" MaxLength="16" Nullable="false" />
+          <Property Name="BILLING_HEADER_ID" Type="raw" MaxLength="16" Nullable="false" />
+          <Property Name="INSTALLMENT_NUMBER" Type="number" Precision="3" Scale="0" Nullable="false" />
+          <Property Name="BANK_OWNER_NAME" Type="varchar2" MaxLength="50" />
+          <Property Name="BILLED_AMOUNT" Type="number" Precision="11" Scale="2" />
+          <Property Name="REASON" Type="varchar2" MaxLength="200" />
+          <Property Name="CREATED_BY" Type="varchar2" MaxLength="30" Nullable="false" />
+          <Property Name="CREATED_DATE" Type="date" Nullable="false" />
+          <Property Name="MODIFIED_BY" Type="varchar2" MaxLength="30" />
+          <Property Name="MODIFIED_DATE" Type="date" />
+          <Property Name="CERT_ID" Type="raw" MaxLength="16" Nullable="false" />
+          <Property Name="PAYMENT_RUN_DATE" Type="date" Nullable="false" />
+          <Property Name="BANK_ACCT_NUMBER" Type="varchar2" MaxLength="29" />
+          <Property Name="BANK_RTN_NUMBER" Type="varchar2" MaxLength="10" />
+          <Property Name="BILLING_STATUS_ID" Type="raw" MaxLength="16" />
+          <Property Name="REJECT_CODE_ID" Type="raw" MaxLength="16" />
+          <Property Name="PAID_ID" Type="raw" MaxLength="16" />
+          <Property Name="TAX" Type="number" Precision="11" Scale="2" />
+          <Property Name="COMMISSION" Type="number" Precision="11" Scale="2" />
+          <Property Name="REJECTED_ID" Type="raw" MaxLength="16" />
+          <Property Name="NIGHTLY_PAYMENT_RUN_DATE" Type="date" />
+          <Property Name="RE_ATTEMPT_COUNT" Type="number" Precision="38" Scale="0" />
+          <Property Name="CREDIT_CARD_INFO_ID" Type="raw" MaxLength="16" />
+          <Property Name="AUTHORIZATION_NUMBER" Type="varchar2" MaxLength="20" />
+          <Property Name="MERCHANT_CODE" Type="varchar2" MaxLength="15" />
+          <Property Name="INSTALLMENT_DUE_DATE" Type="date" />
+          <Property Name="REJECT_DATE" Type="date" />
+          <Property Name="REFERENCE_RECORD" Type="varchar2" MaxLength="50" />
+          <Property Name="DATE_PAID_FOR" Type="date" />
+          <Property Name="PROCESSOR_REJECT_CODE" Type="varchar2" MaxLength="10" />
+          <Property Name="RECON_INTERFACE_RUN_DATE" Type="date" />
+        </EntityType>
+        <EntityType Name="ELP_CERT">
+          <Key>
+            <PropertyRef Name="CERT_ID" />
+          </Key>
+          <Property Name="CERT_ID" Type="raw" MaxLength="16" Nullable="false" />
+          <Property Name="DEALER_ID" Type="raw" MaxLength="16" Nullable="false" />
+          <Property Name="CERT_NUMBER" Type="varchar2" MaxLength="20" Nullable="false" />
+          <Property Name="PAYMENT_TYPE_ID" Type="raw" MaxLength="16" />
+          <Property Name="COMMISSION_BREAKDOWN_ID" Type="raw" MaxLength="16" />
+          <Property Name="FINANCE_CURRENCY_ID" Type="raw" MaxLength="16" />
+          <Property Name="PURCHASE_CURRENCY_ID" Type="raw" MaxLength="16" />
+          <Property Name="METHOD_OF_REPAIR_ID" Type="raw" MaxLength="16" Nullable="false" />
+          <Property Name="TYPE_OF_EQUIPMENT_ID" Type="raw" MaxLength="16" />
+          <Property Name="ADDRESS_ID" Type="raw" MaxLength="16" />
+          <Property Name="PRODUCT_CODE" Type="varchar2" MaxLength="5" />
+          <Property Name="STATUS_CODE" Type="varchar2" MaxLength="1" />
+          <Property Name="PRODUCT_SALES_DATE" Type="date" />
+          <Property Name="WARRANTY_SALES_DATE" Type="date" />
+          <Property Name="INVOICE_NUMBER" Type="varchar2" MaxLength="30" />
+          <Property Name="IDENTIFICATION_NUMBER" Type="varchar2" MaxLength="20" />
+          <Property Name="CUSTOMER_NAME" Type="varchar2" MaxLength="50" />
+          <Property Name="HOME_PHONE" Type="varchar2" MaxLength="20" />
+          <Property Name="WORK_PHONE" Type="varchar2" MaxLength="15" />
+          <Property Name="EMAIL" Type="varchar2" MaxLength="50" />
+          <Property Name="DEALER_BRANCH_CODE" Type="varchar2" MaxLength="10" />
+          <Property Name="SALES_REP_NUMBER" Type="varchar2" MaxLength="30" />
+          <Property Name="QUOTA_NUMBER" Type="number" Precision="2" Scale="0" />
+          <Property Name="MONTHLY_PAYMENTS" Type="number" Precision="11" Scale="2" />
+          <Property Name="FINANCED_AMOUNT" Type="number" Precision="11" Scale="2" />
+          <Property Name="DEALER_ITEM" Type="varchar2" MaxLength="10" />
+          <Property Name="SALES_PRICE" Type="number" Precision="11" Scale="2" />
+          <Property Name="INTEREST_RATE" Type="number" Precision="7" Scale="4" />
+          <Property Name="CAMPAIGN_NUMBER" Type="varchar2" MaxLength="15" />
+          <Property Name="SOURCE" Type="varchar2" MaxLength="50" />
+          <Property Name="DEALER_PRODUCT_CODE" Type="varchar2" MaxLength="20" />
+          <Property Name="DATE_PAID_FOR" Type="date" />
+          <Property Name="DATE_PAID" Type="date" />
+          <Property Name="RETAILER" Type="varchar2" MaxLength="50" />
+          <Property Name="CREATED_BY" Type="varchar2" MaxLength="30" Nullable="false" />
+          <Property Name="CREATED_DATE" Type="date" Nullable="false" />
+          <Property Name="MODIFIED_BY" Type="varchar2" MaxLength="30" />
+          <Property Name="MODIFIED_DATE" Type="date" />
+          <Property Name="COMPANY_ID" Type="raw" MaxLength="16" Nullable="false" />
+          <Property Name="SALUTATION_ID" Type="raw" MaxLength="16" />
+          <Property Name="OLD_NUMBER" Type="varchar2" MaxLength="20" />
+          <Property Name="INSURANCE_ACTIVATION_DATE" Type="date" />
+          <Property Name="DOCUMENT_AGENCY" Type="varchar2" MaxLength="15" />
+          <Property Name="DOCUMENT_ISSUE_DATE" Type="date" />
+          <Property Name="RG_NUMBER" Type="varchar2" MaxLength="20" />
+          <Property Name="ID_TYPE" Type="varchar2" MaxLength="10" />
+          <Property Name="RATING_PLAN" Type="number" Precision="2" Scale="0" />
+          <Property Name="DOCUMENT_TYPE_ID" Type="raw" MaxLength="16" />
+          <Property Name="COUNTRY_PURCHASE_ID" Type="raw" MaxLength="16" />
+          <Property Name="EXCHANGE_RATE" Type="number" Precision="15" Scale="9" />
+          <Property Name="CURRENCY_CERT_ID" Type="raw" MaxLength="16" />
+          <Property Name="PASSWORD" Type="varchar2" MaxLength="15" />
+          <Property Name="VEHICLE_YEAR" Type="number" Precision="8" Scale="0" />
+          <Property Name="MODEL_ID" Type="raw" MaxLength="16" />
+          <Property Name="ODOMETER" Type="number" Precision="8" Scale="0" />
+          <Property Name="CLASS_CODE_ID" Type="raw" MaxLength="16" />
+          <Property Name="REGISTRATION_DATE" Type="date" />
+          <Property Name="VEHICLE_LICENSE_TAG" Type="varchar2" MaxLength="120" />
+          <Property Name="VIN_LOCATOR" Type="varchar2" MaxLength="10" />
+          <Property Name="USE_DEPRECIATION" Type="raw" MaxLength="16" />
+          <Property Name="BIRTH_DATE" Type="date" />
+          <Property Name="MAILING_ADDRESS_ID" Type="raw" MaxLength="16" />
+          <Property Name="MEMBERSHIP_NUMBER" Type="varchar2" MaxLength="30" />
+          <Property Name="PRIMARY_MEMBER_NAME" Type="varchar2" MaxLength="50" />
+          <Property Name="MEMBERSHIP_TYPE_ID" Type="raw" MaxLength="16" />
+          <Property Name="VAT_NUM" Type="varchar2" MaxLength="50" />
+          <Property Name="LANGUAGE_ID" Type="raw" MaxLength="16" />
+          <Property Name="POST_PRE_PAID_ID" Type="raw" MaxLength="16" />
+          <Property Name="MARKETING_PROMO_SER" Type="varchar2" MaxLength="3" />
+          <Property Name="MARKETING_PROMO_NUM" Type="varchar2" MaxLength="6" />
+          <Property Name="SUBSCRIBER_STATUS" Type="raw" MaxLength="16" />
+          <Property Name="BILLING_PLAN" Type="varchar2" MaxLength="10" />
+          <Property Name="BILLING_CYCLE" Type="varchar2" MaxLength="10" />
+          <Property Name="SERVICE_LINE_NUMBER" Type="varchar2" MaxLength="25" />
+          <Property Name="REGION" Type="varchar2" MaxLength="25" />
+          <Property Name="SUBSCRIBER_STATUS_CHANGE_DATE" Type="date" />
+          <Property Name="LINES_ON_ACCOUNT" Type="number" Precision="5" Scale="0" />
+          <Property Name="OCCUPATION" Type="varchar2" MaxLength="80" />
+          <Property Name="POLITICALLY_EXPOSED_ID" Type="raw" MaxLength="16" />
+          <Property Name="INCOME_RANGE_ID" Type="raw" MaxLength="16" />
+          <Property Name="CESS_OFFICE" Type="varchar2" MaxLength="5" />
+          <Property Name="CESS_SALESREP" Type="varchar2" MaxLength="10" />
+          <Property Name="BUSINESSLINE" Type="varchar2" MaxLength="5" />
+          <Property Name="SALES_DEPARTMENT" Type="varchar2" MaxLength="5" />
+          <Property Name="LINKED_CERT_NUMBER" Type="varchar2" MaxLength="20" />
+          <Property Name="ADDITIONAL_INFO" Type="varchar2" MaxLength="50" />
+          <Property Name="SUSPENDED_REASON_ID" Type="raw" MaxLength="16" />
+          <Property Name="EXTERNAL_REGISTRATION_DATE" Type="date" />
+          <Property Name="FINANCING_AGENCY" Type="varchar2" MaxLength="20" />
+          <Property Name="NATIONALITYID" Type="raw" MaxLength="16" />
+          <Property Name="PLACEOFBIRTHID" Type="raw" MaxLength="16" />
+          <Property Name="GENDERID" Type="raw" MaxLength="16" />
+          <Property Name="CUIT_CUIL" Type="varchar2" MaxLength="20" />
+          <Property Name="CUSTOMERINFO_LASTCHANGE_DATE" Type="date" />
+          <Property Name="PEP_FLAGGED_DATE" Type="date" />
+          <Property Name="TERRORIST_FLAG" Type="varchar2" MaxLength="1" />
+          <Property Name="TERRORIST_FLAGGED_DATE" Type="date" />
+          <Property Name="NEW_USED" Type="varchar2" MaxLength="8" />
+          <Property Name="FINANCED_TAB_AMOUNT" Type="number" Precision="13" Scale="2" />
+          <Property Name="FINANCED_TAB_TERM" Type="number" Precision="3" Scale="0" />
+          <Property Name="FINANCED_TAB_FREQUENCY" Type="number" Precision="3" Scale="0" />
+          <Property Name="FINANCED_TAB_INST_AMOUNT" Type="number" Precision="13" Scale="2" />
+          <Property Name="MARITALSTATUSID" Type="raw" MaxLength="16" />
+          <Property Name="PROD_LIABILITY_LIMIT" Type="number" Precision="11" Scale="2" />
+          <Property Name="PROD_LIABILITY_LIMIT_BASE_ID" Type="raw" MaxLength="16" />
+          <Property Name="PROD_LIABILITY_LIMIT_POLICY_ID" Type="raw" MaxLength="16" />
+          <Property Name="FINANCE_DATE" Type="date" />
+          <Property Name="DOWN_PAYMENT" Type="number" Precision="13" Scale="2" />
+          <Property Name="ADVANCE_PAYMENT" Type="number" Precision="13" Scale="2" />
+          <Property Name="UPGRADE_FIXED_TERM" Type="number" Precision="3" Scale="0" />
+          <Property Name="PERSON_TYPE_ID" Type="raw" MaxLength="16" />
+		  <Property Name="PREVIOUS_CERT_ID" Type="raw" MaxLength="16" />
+		  <Property Name="ORIGINAL_CERT_ID" Type="raw" MaxLength="16" />
+        </EntityType>
+        <EntityType Name="ELP_CERT_CANCELLATION">
+          <Key>
+            <PropertyRef Name="CERT_CANCELLATION_ID" />
+          </Key>
+          <Property Name="CERT_CANCELLATION_ID" Type="raw" MaxLength="16" Nullable="false" />
+          <Property Name="CERT_ID" Type="raw" MaxLength="16" Nullable="false" />
+          <Property Name="CANCELLATION_REASON_ID" Type="raw" MaxLength="16" Nullable="false" />
+          <Property Name="COMMISSION_BREAKDOWN_ID" Type="raw" MaxLength="16" />
+          <Property Name="ORIGINAL_REGION_ID" Type="raw" MaxLength="16" />
+          <Property Name="REFUND_DEST_ID" Type="raw" MaxLength="16" />
+          <Property Name="CANCELLATION_DATE" Type="date" Nullable="false" />
+          <Property Name="SOURCE" Type="varchar2" MaxLength="50" />
+          <Property Name="PROCESSED_DATE" Type="date" />
+          <Property Name="GROSS_AMT_RECEIVED" Type="number" Precision="11" Scale="2" />
+          <Property Name="PREMIUM_WRITTEN" Type="number" Precision="11" Scale="2" />
+          <Property Name="ORIGINAL_PREMIUM" Type="number" Precision="11" Scale="2" />
+          <Property Name="LOSS_COST" Type="number" Precision="11" Scale="2" />
+          <Property Name="COMMISSION" Type="number" Precision="11" Scale="2" />
+          <Property Name="ADMIN_EXPENSE" Type="number" Precision="11" Scale="2" />
+          <Property Name="MARKETING_EXPENSE" Type="number" Precision="11" Scale="2" />
+          <Property Name="OTHER" Type="number" Precision="11" Scale="2" />
+          <Property Name="SALES_TAX" Type="number" Precision="11" Scale="2" />
+          <Property Name="TAX1" Type="number" Precision="11" Scale="2" />
+          <Property Name="TAX2" Type="number" Precision="11" Scale="2" />
+          <Property Name="TAX3" Type="number" Precision="11" Scale="2" />
+          <Property Name="TAX4" Type="number" Precision="11" Scale="2" />
+          <Property Name="TAX5" Type="number" Precision="11" Scale="2" />
+          <Property Name="TAX6" Type="number" Precision="11" Scale="2" />
+          <Property Name="COMPUTED_REFUND" Type="number" Precision="11" Scale="2" />
+          <Property Name="CREDIT_ISSUED_FLAG" Type="varchar2" MaxLength="1" />
+          <Property Name="CUSTOMER_PAID" Type="number" Precision="11" Scale="2" />
+          <Property Name="PRINCIPAL_PAID" Type="number" Precision="11" Scale="2" />
+          <Property Name="REFUND_AMT" Type="number" Precision="11" Scale="2" />
+          <Property Name="ASSURANT_GWP" Type="number" Precision="11" Scale="2" />
+          <Property Name="MARKUP_COMMISSION" Type="number" Precision="11" Scale="2" />
+          <Property Name="CREATED_BY" Type="varchar2" MaxLength="30" Nullable="false" />
+          <Property Name="CREATED_DATE" Type="date" Nullable="false" />
+          <Property Name="MODIFIED_BY" Type="varchar2" MaxLength="30" />
+          <Property Name="MODIFIED_DATE" Type="date" />
+          <Property Name="COMPANY_ID" Type="raw" MaxLength="16" Nullable="false" />
+          <Property Name="PAYMENT_METHOD_ID" Type="raw" MaxLength="16" />
+          <Property Name="BANK_INFO_ID" Type="raw" MaxLength="16" />
+          <Property Name="TRACKING_NUMBER" Type="varchar2" MaxLength="20" />
+          <Property Name="STATUS_ID" Type="raw" MaxLength="16" Nullable="false" />
+          <Property Name="STATUS_DATE" Type="date" Nullable="false" />
+          <Property Name="CLIP" Type="number" Precision="11" Scale="2" />
+          <Property Name="COMMISSION_VAT1" Type="number" Precision="11" Scale="2" />
+          <Property Name="COMMISSION_VAT2" Type="number" Precision="11" Scale="2" />
+          <Property Name="COMMISSION_VAT3" Type="number" Precision="11" Scale="2" />
+          <Property Name="COMMISSION_VAT4" Type="number" Precision="11" Scale="2" />
+          <Property Name="COMMISSION_VAT5" Type="number" Precision="11" Scale="2" />
+          <Property Name="COMMISSION_VAT6" Type="number" Precision="11" Scale="2" />
+          <Property Name="COMMISSION_VAT" Type="number" Precision="11" Scale="2" />
+          <Property Name="MARKUP_COMMISSION_VAT" Type="number" Precision="11" Scale="2" />
+          <Property Name="DEALER_NET" Type="number" Precision="11" Scale="2" />
+          <Property Name="DEALER_NET_TAXES" Type="number" Precision="11" Scale="2" />
+        </EntityType>
+        <EntityType Name="ELP_CERT_ENDORSE">
+          <Key>
+            <PropertyRef Name="CERT_ENDORSE_ID" />
+          </Key>
+          <Property Name="CERT_ENDORSE_ID" Type="raw" MaxLength="16" Nullable="false" />
+          <Property Name="COMPANY_ID" Type="raw" MaxLength="16" Nullable="false" />
+          <Property Name="CERT_ITEM_ID" Type="raw" MaxLength="16" Nullable="false" />
+          <Property Name="ENDORSEMENT_NUMBER" Type="number" Precision="12" Scale="0" Nullable="false" />
+          <Property Name="CUST_NAME_PRE" Type="varchar2" MaxLength="50" />
+          <Property Name="CUST_NAME_POST" Type="varchar2" MaxLength="50" />
+          <Property Name="PRODUCT_SALES_DATE_PRE" Type="date" />
+          <Property Name="PRODUCT_SALES_DATE_POST" Type="date" />
+          <Property Name="WARRANTY_SALES_DATE_PRE" Type="date" />
+          <Property Name="WARRANTY_SALES_DATE_POST" Type="date" />
+          <Property Name="CREATED_BY" Type="varchar2" MaxLength="30" Nullable="false" />
+          <Property Name="CREATED_DATE" Type="date" Nullable="false" />
+          <Property Name="MODIFIED_BY" Type="varchar2" MaxLength="30" />
+          <Property Name="MODIFIED_DATE" Type="date" />
+          <Property Name="SALES_PRICE_PRE" Type="number" Precision="11" Scale="2" />
+          <Property Name="SALES_PRICE_POST" Type="number" Precision="11" Scale="2" />
+          <Property Name="EMAIL_PRE" Type="varchar2" MaxLength="50" />
+          <Property Name="EMAIL_POST" Type="varchar2" MaxLength="50" />
+          <Property Name="HOME_PHONE_PRE" Type="varchar2" MaxLength="20" />
+          <Property Name="HOME_PHONE_POST" Type="varchar2" MaxLength="20" />
+          <Property Name="WORK_PHONE_PRE" Type="varchar2" MaxLength="15" />
+          <Property Name="WORK_PHONE_POST" Type="varchar2" MaxLength="15" />
+          <Property Name="ADDRESS_ID_PRE" Type="raw" MaxLength="16" />
+          <Property Name="ADDRESS_ID_POST" Type="raw" MaxLength="16" />
+          <Property Name="LANGUAGE_ID_PRE" Type="raw" MaxLength="16" />
+          <Property Name="LANGUAGE_ID_POST" Type="raw" MaxLength="16" />
+          <Property Name="DOCUMENT_TYPE_ID_PRE" Type="raw" MaxLength="16" />
+          <Property Name="DOCUMENT_TYPE_ID_POST" Type="raw" MaxLength="16" />
+          <Property Name="ID_TYPE_PRE" Type="varchar2" MaxLength="10" />
+          <Property Name="ID_TYPE_POST" Type="varchar2" MaxLength="10" />
+          <Property Name="DOCUMENT_AGENCY_PRE" Type="varchar2" MaxLength="15" />
+          <Property Name="DOCUMENT_AGENCY_POST" Type="varchar2" MaxLength="15" />
+          <Property Name="IDENTIFICATION_NUMBER_PRE" Type="varchar2" MaxLength="20" />
+          <Property Name="IDENTIFICATION_NUMBER_POST" Type="varchar2" MaxLength="20" />
+          <Property Name="RG_NUMBER_PRE" Type="varchar2" MaxLength="20" />
+          <Property Name="RG_NUMBER_POST" Type="varchar2" MaxLength="20" />
+          <Property Name="DOCUMENT_ISSUE_DATE_PRE" Type="date" />
+          <Property Name="DOCUMENT_ISSUE_DATE_POST" Type="date" />
+		  <Property Name="EFFECTIVE_DATE" Type="date" />
+          <Property Name="EXPIRATION_DATE" Type="date" />
+        </EntityType>
+        <EntityType Name="ELP_CERT_INSTALLMENT">
+          <Key>
+            <PropertyRef Name="CERT_INSTALLMENT_ID" />
+          </Key>
+          <Property Name="CERT_INSTALLMENT_ID" Type="raw" MaxLength="16" Nullable="false" />
+          <Property Name="BILLING_FREQUENCY_ID" Type="raw" MaxLength="16" />
+          <Property Name="BILLING_STATUS_ID" Type="raw" MaxLength="16" />
+          <Property Name="BANK_INFO_ID" Type="raw" MaxLength="16" />
+          <Property Name="NUMBER_OF_INSTALLMENTS" Type="number" Precision="3" Scale="0" />
+          <Property Name="INSTALLMENT_AMOUNT" Type="number" Precision="15" Scale="2" />
+          <Property Name="PAYMENT_DUE_DATE" Type="date" />
+          <Property Name="DATE_LETTER_SENT" Type="date" />
+          <Property Name="CREATED_BY" Type="varchar2" MaxLength="30" Nullable="false" />
+          <Property Name="CREATED_DATE" Type="date" Nullable="false" />
+          <Property Name="MODIFIED_BY" Type="varchar2" MaxLength="30" />
+          <Property Name="MODIFIED_DATE" Type="date" />
+          <Property Name="CERT_ID" Type="raw" MaxLength="16" Nullable="false" />
+          <Property Name="SEND_LETTER_ID" Type="raw" MaxLength="16" />
+          <Property Name="CANCELLATION_DUE_DATE" Type="date" />
+          <Property Name="CREDIT_CARD_INFO_ID" Type="raw" MaxLength="16" />
+          <Property Name="NEXT_BILLING_DATE" Type="date" />
+          <Property Name="CANCELLATION_CODE" Type="varchar2" MaxLength="5" />
+          <Property Name="LAST_BILLED_INSTALLMENT_NUM" Type="number" Precision="3" Scale="0" />
+          <Property Name="LAST_BILLED_DUE_DATE" Type="date" />
+          <Property Name="PAYMENT_DATE" Type="date" />
+          <Property Name="RECON_INTERFACE_RUN_DATE" Type="date" />
+          <Property Name="LAST_INSTALLMENT_START_DATE" Type="date" />
+          <Property Name="LAST_INSTALLMENT_END_DATE" Type="date" />
+          <Property Name="SMART_BUNDLE_FLAT_AMT" Type="number" Precision="15" Scale="2" />
+          <Property Name="SMART_BUNDLE_FLAT_AMT_CURRENCY" Type="raw" MaxLength="16" />
+        </EntityType>
+        <EntityType Name="ELP_CERT_ITEM">
+          <Key>
+            <PropertyRef Name="CERT_ITEM_ID" />
+          </Key>
+          <Property Name="CERT_ITEM_ID" Type="raw" MaxLength="16" Nullable="false" />
+          <Property Name="CERT_ID" Type="raw" MaxLength="16" Nullable="false" />
+          <Property Name="ITEM_NUMBER" Type="number" Precision="2" Scale="0" Nullable="false" />
+          <Property Name="RISK_TYPE_ID" Type="raw" MaxLength="16" Nullable="false" />
+          <Property Name="MANUFACTURER_ID" Type="raw" MaxLength="16" />
+          <Property Name="MAX_REPLACEMENT_COST" Type="number" Precision="11" Scale="2" />
+          <Property Name="SERIAL_NUMBER" Type="varchar2" MaxLength="30" />
+          <Property Name="MODEL" Type="varchar2" MaxLength="30" />
+          <Property Name="CREATED_BY" Type="varchar2" MaxLength="30" Nullable="false" />
+          <Property Name="CREATED_DATE" Type="date" Nullable="false" />
+          <Property Name="MODIFIED_BY" Type="varchar2" MaxLength="30" />
+          <Property Name="MODIFIED_DATE" Type="date" />
+          <Property Name="COMPANY_ID" Type="raw" MaxLength="16" Nullable="false" />
+          <Property Name="ITEM_DESCRIPTION" Type="varchar2" MaxLength="200" />
+          <Property Name="ITEM_CODE" Type="varchar2" MaxLength="10" />
+          <Property Name="ITEM_RETAIL_PRICE" Type="number" Precision="11" Scale="2" />
+          <Property Name="ITEM_REPLACE_RETURN_DATE" Type="date" />
+          <Property Name="EXTERNAL_PRODUCT_CODE" Type="varchar2" MaxLength="10" />
+          <Property Name="PRODUCT_CODE" Type="varchar2" MaxLength="5" />
+          <Property Name="OPTIONAL_ITEM_CODE" Type="varchar2" MaxLength="5" />
+          <Property Name="ORIGINAL_RETAIL_PRICE" Type="number" Precision="11" Scale="2" />
+          <Property Name="EQUIPMENT_ID" Type="raw" MaxLength="16" />
+          <Property Name="MOBILE_TYPE" Type="varchar2" MaxLength="1" />
+          <Property Name="FIRST_USE_DATE" Type="date" />
+          <Property Name="LAST_USE_DATE" Type="date" />
+          <Property Name="SIM_CARD_NUMBER" Type="varchar2" MaxLength="20" />
+          <Property Name="SKU_NUMBER" Type="varchar2" MaxLength="50" />
+          <Property Name="EFFECTIVE_DATE" Type="date" />
+          <Property Name="EXPIRATION_DATE" Type="date" />
+          <Property Name="CERT_PRODUCT_CODE" Type="varchar2" MaxLength="5" />
+          <Property Name="IMEI_NUMBER" Type="varchar2" MaxLength="30" />
+          <Property Name="IMEI_UPDATE_SOURCE" Type="varchar2" MaxLength="10" />
+        </EntityType>
+        <EntityType Name="ELP_CERT_ITEM_COVERAGE">
+          <Key>
+            <PropertyRef Name="CERT_ITEM_COVERAGE_ID" />
+          </Key>
+          <Property Name="CERT_ITEM_COVERAGE_ID" Type="raw" MaxLength="16" Nullable="false" />
+          <Property Name="CERT_ITEM_ID" Type="raw" MaxLength="16" Nullable="false" />
+          <Property Name="COVERAGE_TYPE_ID" Type="raw" MaxLength="16" Nullable="false" />
+          <Property Name="ORIGINAL_REGION_ID" Type="raw" MaxLength="16" />
+          <Property Name="BEGIN_DATE" Type="date" Nullable="false" />
+          <Property Name="END_DATE" Type="date" Nullable="false" />
+          <Property Name="LIABILITY_LIMITS" Type="number" Precision="11" Scale="2" Nullable="false" />
+          <Property Name="DEDUCTIBLE" Type="number" Precision="11" Scale="2" Nullable="false" />
+          <Property Name="GROSS_AMT_RECEIVED" Type="number" Precision="11" Scale="2" Nullable="false" />
+          <Property Name="PREMIUM_WRITTEN" Type="number" Precision="11" Scale="2" Nullable="false" />
+          <Property Name="ORIGINAL_PREMIUM" Type="number" Precision="11" Scale="2" Nullable="false" />
+          <Property Name="LOSS_COST" Type="number" Precision="11" Scale="2" Nullable="false" />
+          <Property Name="COMMISSION" Type="number" Precision="11" Scale="2" Nullable="false" />
+          <Property Name="ADMIN_EXPENSE" Type="number" Precision="11" Scale="2" Nullable="false" />
+          <Property Name="MARKETING_EXPENSE" Type="number" Precision="11" Scale="2" Nullable="false" />
+          <Property Name="OTHER" Type="number" Precision="11" Scale="2" Nullable="false" />
+          <Property Name="SALES_TAX" Type="number" Precision="11" Scale="2" Nullable="false" />
+          <Property Name="TAX1" Type="number" Precision="11" Scale="2" Nullable="false" />
+          <Property Name="TAX2" Type="number" Precision="11" Scale="2" Nullable="false" />
+          <Property Name="TAX3" Type="number" Precision="11" Scale="2" Nullable="false" />
+          <Property Name="TAX4" Type="number" Precision="11" Scale="2" Nullable="false" />
+          <Property Name="TAX5" Type="number" Precision="11" Scale="2" Nullable="false" />
+          <Property Name="TAX6" Type="number" Precision="11" Scale="2" Nullable="false" />
+          <Property Name="MTD_PAYMENTS" Type="number" Precision="11" Scale="2" Nullable="false" />
+          <Property Name="YTD_PAYMENTS" Type="number" Precision="11" Scale="2" Nullable="false" />
+          <Property Name="ASSURANT_GWP" Type="number" Precision="11" Scale="2" Nullable="false" />
+          <Property Name="MARKUP_COMMISSION" Type="number" Precision="11" Scale="2" Nullable="false" />
+          <Property Name="CREATED_BY" Type="varchar2" MaxLength="30" Nullable="false" />
+          <Property Name="CREATED_DATE" Type="date" Nullable="false" />
+          <Property Name="MODIFIED_BY" Type="varchar2" MaxLength="30" />
+          <Property Name="MODIFIED_DATE" Type="date" />
+          <Property Name="COMPANY_ID" Type="raw" MaxLength="16" Nullable="false" />
+          <Property Name="CERT_ID" Type="raw" MaxLength="16" Nullable="false" />
+          <Property Name="EARNING_CODE_ID" Type="raw" MaxLength="16" />
+          <Property Name="DEALER_DISCOUNT_AMT" Type="number" Precision="11" Scale="2" />
+          <Property Name="DEALER_DISCOUNT_PERCENT" Type="number" Precision="8" Scale="2" />
+          <Property Name="IS_CLAIM_ALLOWED" Type="raw" MaxLength="16" />
+          <Property Name="IS_DISCOUNT" Type="raw" MaxLength="16" />
+          <Property Name="COVERAGE_KM_MI" Type="number" Precision="8" Scale="0" />
+          <Property Name="DEDUCTIBLE_PERCENT" Type="number" Precision="10" Scale="2" />
+          <Property Name="REPAIR_DISCOUNT_PCT" Type="number" Precision="4" Scale="0" />
+          <Property Name="REPLACEMENT_DISCOUNT_PCT" Type="number" Precision="4" Scale="0" />
+          <Property Name="CLIP" Type="number" Precision="11" Scale="2" />
+          <Property Name="COMMISSION_VAT1" Type="number" Precision="11" Scale="2" />
+          <Property Name="COMMISSION_VAT2" Type="number" Precision="11" Scale="2" />
+          <Property Name="COMMISSION_VAT3" Type="number" Precision="11" Scale="2" />
+          <Property Name="COMMISSION_VAT4" Type="number" Precision="11" Scale="2" />
+          <Property Name="COMMISSION_VAT5" Type="number" Precision="11" Scale="2" />
+          <Property Name="COMMISSION_VAT6" Type="number" Precision="11" Scale="2" />
+          <Property Name="COMMISSION_VAT" Type="number" Precision="11" Scale="2" />
+          <Property Name="TAXES_PAID_BY_CUSTOMER" Type="number" Precision="11" Scale="2" />
+          <Property Name="MARKUP_COMMISSION_VAT" Type="number" Precision="11" Scale="2" />
+          <Property Name="METHOD_OF_REPAIR_ID" Type="raw" MaxLength="16" />
+          <Property Name="DEDUCTIBLE_BASED_ON_ID" Type="raw" MaxLength="16" Nullable="false" />
+          <Property Name="MTD_INCOMING_PAYMENTS" Type="number" Precision="11" Scale="2" />
+          <Property Name="YTD_INCOMING_PAYMENTS" Type="number" Precision="11" Scale="2" />
+          <Property Name="DEALER_NET" Type="number" Precision="11" Scale="2" />
+          <Property Name="DEALER_NET_TAXES" Type="number" Precision="11" Scale="2" />
+          <Property Name="UPFRONT_FIX_COMMISSION" Type="number" Precision="11" Scale="2" />
+          <Property Name="SEQUENCE_NUMBER" Type="number" Precision="5" Scale="0" />          
+          <Property Name="COVERAGE_LIABILITY_LIMIT" Type="number" Precision="11" Scale="2" />
+          <Property Name="NO_OF_RENEWALS" Type="number" Precision="3" Scale="0" />
+          <Property Name="RENEWAL_DATE" Type="date" />
+          <Property Name="COVERAGE_DURATION" Type="number" Precision="3" Scale="0" />
+          <Property Name="RECOVER_DEVICE_ID" Type="raw" MaxLength="16" />
+          <Property Name="DEDUCTIBLE_EXPRESSION_ID" Type="raw" MaxLength="16" />
+        </EntityType>
+        <EntityType Name="ELP_CERT_ITEM_CVG_DED">
+          <Key>
+            <PropertyRef Name="CERT_ITEM_CVG_DED_ID" />
+          </Key>
+          <Property Name="CERT_ITEM_CVG_DED_ID" Type="raw" MaxLength="16" Nullable="false" />
+          <Property Name="CERT_ITEM_COVERAGE_ID" Type="raw" MaxLength="16" Nullable="false" />
+          <Property Name="METHOD_OF_REPAIR_ID" Type="raw" MaxLength="16" Nullable="false" />
+          <Property Name="DEDUCTIBLE_BASED_ON_ID" Type="raw" MaxLength="16" Nullable="false" />
+          <Property Name="DEDUCTIBLE" Type="number" Precision="11" Scale="2" Nullable="false" />
+          <Property Name="CREATED_DATE" Type="date" Nullable="false" />
+          <Property Name="MODIFIED_DATE" Type="date" />
+          <Property Name="CREATED_BY" Type="varchar2" MaxLength="30" Nullable="false" />
+          <Property Name="MODIFIED_BY" Type="varchar2" MaxLength="30" />
+          <Property Name="DEDUCTIBLE_EXPRESSION_ID" Type="raw" MaxLength="16" />
+        </EntityType>
+        <Association Name="FK_BILLDETAIL_CERT">
+          <End Role="ELP_CERT" Type="Self.ELP_CERT" Multiplicity="1" />
+          <End Role="ELP_BILLING_DETAIL" Type="Self.ELP_BILLING_DETAIL" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ELP_CERT">
+              <PropertyRef Name="CERT_ID" />
+            </Principal>
+            <Dependent Role="ELP_BILLING_DETAIL">
+              <PropertyRef Name="CERT_ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_CERT_ENDORSE_CERT_ITEM">
+          <End Role="ELP_CERT_ITEM" Type="Self.ELP_CERT_ITEM" Multiplicity="1" />
+          <End Role="ELP_CERT_ENDORSE" Type="Self.ELP_CERT_ENDORSE" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ELP_CERT_ITEM">
+              <PropertyRef Name="CERT_ITEM_ID" />
+            </Principal>
+            <Dependent Role="ELP_CERT_ENDORSE">
+              <PropertyRef Name="CERT_ITEM_ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_CERT_ITEM_CVG_DED_ITEM_CVG">
+          <End Role="ELP_CERT_ITEM_COVERAGE" Type="Self.ELP_CERT_ITEM_COVERAGE" Multiplicity="1" />
+          <End Role="ELP_CERT_ITEM_CVG_DED" Type="Self.ELP_CERT_ITEM_CVG_DED" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ELP_CERT_ITEM_COVERAGE">
+              <PropertyRef Name="CERT_ITEM_COVERAGE_ID" />
+            </Principal>
+            <Dependent Role="ELP_CERT_ITEM_CVG_DED">
+              <PropertyRef Name="CERT_ITEM_COVERAGE_ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+      <Association Name="FK_CERTINSTMNT_CERT">
+        <End Role="ELP_CERT" Type="Self.ELP_CERT" Multiplicity="1" />
+        <End Role="ELP_CERT_INSTALLMENT" Type="Self.ELP_CERT_INSTALLMENT" Multiplicity="*" />
+        <ReferentialConstraint>
+          <Principal Role="ELP_CERT">
+            <PropertyRef Name="CERT_ID" />
+          </Principal>
+          <Dependent Role="ELP_CERT_INSTALLMENT">
+            <PropertyRef Name="CERT_ID" />
+          </Dependent>
+        </ReferentialConstraint>
+      </Association>
+        <Association Name="FK_CERTITEMCOV_CERT">
+          <End Role="ELP_CERT" Type="Self.ELP_CERT" Multiplicity="1" />
+          <End Role="ELP_CERT_ITEM_COVERAGE" Type="Self.ELP_CERT_ITEM_COVERAGE" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ELP_CERT">
+              <PropertyRef Name="CERT_ID" />
+            </Principal>
+            <Dependent Role="ELP_CERT_ITEM_COVERAGE">
+              <PropertyRef Name="CERT_ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="ModelStoreContainer">
+          <EntitySet Name="ELP_BILLING_DETAIL" EntityType="Self.ELP_BILLING_DETAIL" Schema="ELITA" store:Type="Tables" />
+          <EntitySet Name="ELP_CERT" EntityType="Self.ELP_CERT" Schema="ELITA" store:Type="Tables" />
+          <EntitySet Name="ELP_CERT_CANCELLATION" EntityType="Self.ELP_CERT_CANCELLATION" Schema="ELITA" store:Type="Tables" />
+          <EntitySet Name="ELP_CERT_ENDORSE" EntityType="Self.ELP_CERT_ENDORSE" Schema="ELITA" store:Type="Tables" />
+          <EntitySet Name="ELP_CERT_INSTALLMENT" EntityType="Self.ELP_CERT_INSTALLMENT" Schema="ELITA" store:Type="Tables" />
+          <EntitySet Name="ELP_CERT_ITEM" EntityType="Self.ELP_CERT_ITEM" Schema="ELITA" store:Type="Tables" />
+          <EntitySet Name="ELP_CERT_ITEM_COVERAGE" EntityType="Self.ELP_CERT_ITEM_COVERAGE" Schema="ELITA" store:Type="Tables" />
+          <EntitySet Name="ELP_CERT_ITEM_CVG_DED" EntityType="Self.ELP_CERT_ITEM_CVG_DED" Schema="ELITA" store:Type="Tables" />
+          <AssociationSet Name="FK_BILLDETAIL_CERT" Association="Self.FK_BILLDETAIL_CERT">
+            <End Role="ELP_CERT" EntitySet="ELP_CERT" />
+            <End Role="ELP_BILLING_DETAIL" EntitySet="ELP_BILLING_DETAIL" />
+          </AssociationSet>
+          <AssociationSet Name="FK_CERT_ENDORSE_CERT_ITEM" Association="Self.FK_CERT_ENDORSE_CERT_ITEM">
+            <End Role="ELP_CERT_ITEM" EntitySet="ELP_CERT_ITEM" />
+            <End Role="ELP_CERT_ENDORSE" EntitySet="ELP_CERT_ENDORSE" />
+          </AssociationSet>
+          <AssociationSet Name="FK_CERT_ITEM_CVG_DED_ITEM_CVG" Association="Self.FK_CERT_ITEM_CVG_DED_ITEM_CVG">
+            <End Role="ELP_CERT_ITEM_COVERAGE" EntitySet="ELP_CERT_ITEM_COVERAGE" />
+            <End Role="ELP_CERT_ITEM_CVG_DED" EntitySet="ELP_CERT_ITEM_CVG_DED" />
+          </AssociationSet>
+          <AssociationSet Name="FK_CERTINSTMNT_CERT" Association="Self.FK_CERTINSTMNT_CERT">
+            <End Role="ELP_CERT" EntitySet="ELP_CERT" />
+            <End Role="ELP_CERT_INSTALLMENT" EntitySet="ELP_CERT_INSTALLMENT" />
+          </AssociationSet>
+          <AssociationSet Name="FK_CERTITEMCOV_CERT" Association="Self.FK_CERTITEMCOV_CERT">
+            <End Role="ELP_CERT" EntitySet="ELP_CERT" />
+            <End Role="ELP_CERT_ITEM_COVERAGE" EntitySet="ELP_CERT_ITEM_COVERAGE" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema></edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="Model" Alias="Self" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2008/09/edm">
+        <EntityType Name="Certificate">
+          <Key>
+            <PropertyRef Name="CertificateId" />
+          </Key>
+          <Property Name="CertificateId" Type="Guid" Nullable="false" />
+          <Property Name="DealerId" Type="Guid" Nullable="false" />
+          <Property Name="CertificateNumber" Type="String" MaxLength="20" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="PaymentTypeId" Type="Guid" />
+          <Property Name="CommissionBreakdownId" Type="Guid" />
+          <Property Name="FinanceCurrencyId" Type="Guid" />
+          <Property Name="PURCHASE_CURRENCY_ID" Type="Guid" />
+          <Property Name="MethodOfRepairId" Type="Guid" Nullable="false" />
+          <Property Name="TypeOfEquipmentId" Type="Guid" />
+          <Property Name="AddressId" Type="Guid" />
+          <Property Name="ProductCode" Type="String" MaxLength="5" FixedLength="false" Unicode="false" />
+          <Property Name="StatusCode" Type="String" MaxLength="1" FixedLength="false" Unicode="false" />
+          <Property Name="ProductSalesDate" Type="DateTime" />
+          <Property Name="WarrantySalesDate" Type="DateTime" />
+          <Property Name="IdentificationNumber" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+          <Property Name="CustomerName" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="HomePhone" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+          <Property Name="WorkPhone" Type="String" MaxLength="15" FixedLength="false" Unicode="false" />
+          <Property Name="Email" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="DealerBranchCode" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
+          <Property Name="SalesRepNumber" Type="String" MaxLength="30" FixedLength="false" Unicode="false" />
+          <Property Name="QUOTA_NUMBER" Type="Int16" />
+          <Property Name="MonthlyPayments" Type="Decimal" Precision="11" Scale="2" />
+          <Property Name="FinancedAmount" Type="Decimal" Precision="11" Scale="2" />
+          <Property Name="SalesPrice" Type="Decimal" Precision="11" Scale="2" />
+          <Property Name="InterestRate" Type="Decimal" Precision="7" Scale="4" />
+          <Property Name="CampaignNumber" Type="String" MaxLength="15" FixedLength="false" Unicode="false" />
+          <Property Name="Source" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="DatePaidFor" Type="DateTime" />
+          <Property Name="DatePaid" Type="DateTime" />
+          <Property Name="Retailer" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="CreatedBy" Type="String" MaxLength="30" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="CreatedDate" Type="DateTime" Nullable="false" />
+          <Property Name="ModifiedBy" Type="String" MaxLength="30" FixedLength="false" Unicode="false" />
+          <Property Name="ModifiedDate" Type="DateTime" />
+          <Property Name="CompanyId" Type="Guid" Nullable="false" />
+          <Property Name="SalutationId" Type="Guid" />
+          <Property Name="OLD_NUMBER" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+          <Property Name="InsuranceActivationDate" Type="DateTime" />
+          <Property Name="DOCUMENT_AGENCY" Type="String" MaxLength="15" FixedLength="false" Unicode="false" />
+          <Property Name="DOCUMENT_ISSUE_DATE" Type="DateTime" />
+          <Property Name="RG_NUMBER" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+          <Property Name="ID_TYPE" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
+          <Property Name="RATING_PLAN" Type="Int16" />
+          <Property Name="DOCUMENT_TYPE_ID" Type="Guid" />
+          <Property Name="CountryPurchaseId" Type="Guid" />
+          <Property Name="ExchangeRate" Type="Decimal" Precision="15" Scale="9" />
+          <Property Name="CURRENCY_CERT_ID" Type="Guid" />
+          <Property Name="PASSWORD" Type="String" MaxLength="15" FixedLength="false" Unicode="false" />
+          <Property Name="VEHICLE_YEAR" Type="Int32" />
+          <Property Name="MODEL_ID" Type="Guid" />
+          <Property Name="ODOMETER" Type="Int32" />
+          <Property Name="CLASS_CODE_ID" Type="Guid" />
+          <Property Name="REGISTRATION_DATE" Type="DateTime" />
+          <Property Name="VEHICLE_LICENSE_TAG" Type="String" MaxLength="120" FixedLength="false" Unicode="false" />
+          <Property Name="VIN_LOCATOR" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
+          <Property Name="UseDepreciation" Type="Guid" />
+          <Property Name="BirthDate" Type="DateTime" />
+          <Property Name="MAILING_ADDRESS_ID" Type="Guid" />
+          <Property Name="MembershipNumber" Type="String" MaxLength="30" FixedLength="false" Unicode="false" />
+          <Property Name="PrimaryMemberName" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="MembershipTypeId" Type="Guid" />
+          <Property Name="VAT_NUM" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="LANGUAGE_ID" Type="Guid" />
+          <Property Name="PostPrePaidId" Type="Guid" />
+          <Property Name="MARKETING_PROMO_SER" Type="String" MaxLength="3" FixedLength="false" Unicode="false" />
+          <Property Name="MARKETING_PROMO_NUM" Type="String" MaxLength="6" FixedLength="false" Unicode="false" />
+          <Property Name="SubscriberStatus" Type="Guid" />
+          <Property Name="BillingPlan" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
+          <Property Name="BillingCycle" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
+          <Property Name="ServiceLineNumber" Type="String" MaxLength="25" FixedLength="false" Unicode="false" />
+          <Property Name="REGION" Type="String" MaxLength="25" FixedLength="false" Unicode="false" />
+          <Property Name="SubscriberStatusChangeDate" Type="DateTime" />
+          <Property Name="LinesOnAccount" Type="Int16" />
+          <Property Name="OCCUPATION" Type="String" MaxLength="80" FixedLength="false" Unicode="false" />
+          <Property Name="PoliticallyExposedId" Type="Guid" />
+          <Property Name="INCOME_RANGE_ID" Type="Guid" />
+          <Property Name="CESS_OFFICE" Type="String" MaxLength="5" FixedLength="false" Unicode="false" />
+          <Property Name="CESS_SALESREP" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
+          <Property Name="BusinessLine" Type="String" MaxLength="5" FixedLength="false" Unicode="false" />
+          <Property Name="SALES_DEPARTMENT" Type="String" MaxLength="5" FixedLength="false" Unicode="false" />
+          <Property Name="LinkedCertNumber" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+          <Property Name="ADDITIONAL_INFO" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="SuspendedReasonId" Type="Guid" />
+          <Property Name="FINANCING_AGENCY" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+          <Property Name="EXTERNAL_REGISTRATION_DATE" Type="DateTime" />
+          <Property Name="CUSTOMERINFO_LASTCHANGE_DATE" Type="DateTime" />
+          <Property Name="PEP_FLAGGED_DATE" Type="DateTime" />
+          <Property Name="TERRORIST_FLAGGED_DATE" Type="DateTime" />
+          <Property Name="NationalityId" Type="Guid" />
+          <Property Name="PlaceOfBirthId" Type="Guid" />
+          <Property Name="GenderId" Type="Guid" />
+          <Property Name="CuitCuil" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+          <Property Name="TerroristFlag" Type="String" MaxLength="1" FixedLength="false" Unicode="false" />
+          <Property Name="NewUsed" Type="String" MaxLength="8" FixedLength="false" Unicode="false" />
+          <Property Name="FinancedTabAmount" Type="Decimal" Precision="13" Scale="2" />
+          <Property Name="FinancedTabTerm" Type="Int16" />
+          <Property Name="FinancedTabFrequency" Type="Int16" />
+          <Property Name="FinancedTabInstAmount" Type="Decimal" Precision="13" Scale="2" />
+          <Property Name="MaritalStatusId" Type="Guid" />
+          <Property Name="ProdLiabilityLimit" Type="Decimal" Precision="11" Scale="2" />
+          <Property Name="PROD_LIABILITY_LIMIT_BASE_ID" Type="Guid" />
+          <Property Name="PROD_LIABILITY_LIMIT_POLICY_ID" Type="Guid" />
+          <Property Name="FinanceDate" Type="DateTime" />
+          <Property Name="DownPayment" Type="Decimal" Precision="13" Scale="2" />
+          <Property Name="AdvancePayment" Type="Decimal" Precision="13" Scale="2" />
+          <Property Name="UpgradeFixedTerm" Type="Int16" />
+          <Property Name="PersonTypeId" Type="Guid" />
+		  <Property Name="PreviousCertId" Type="Guid" />
+		  <Property Name="OriginalCertId" Type="Guid" />
+          <NavigationProperty Name="Item" Relationship="Self.FK_CERT_ITEM_CERT" FromRole="ELP_CERT" ToRole="ELP_CERT_ITEM" />
+          <NavigationProperty Name="ItemCoverages" Relationship="Self.FK_CERTITEMCOV_CERT" FromRole="ELP_CERT" ToRole="ELP_CERT_ITEM_COVERAGE" />
+          <Property Name="InvoiceNumber" Type="String" MaxLength="30" FixedLength="false" Unicode="false" />
+          <Property Name="DealerItem" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
+          <Property Name="DealerProductCode" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="Cancellations" Relationship="Model.FK_CERT_CANCEL_CERT" FromRole="Certificate" ToRole="ELP_CERT_CANCELLATION" />
+          <NavigationProperty Name="BillingDetails" Relationship="Model.FK_BILLDETAIL_CERT" FromRole="Certificate" ToRole="ELP_BILLING_DETAIL" />
+          <NavigationProperty Name="CertificateInstallments" Relationship="Model.FK_CERTINSTMNT_CERT" FromRole="Certificate" ToRole="ELP_CERT_INSTALLMENT" />
+        </EntityType>
+        <EntityType Name="CertificateItem">
+          <Key>
+            <PropertyRef Name="CertificateItemId" />
+          </Key>
+          <Property Name="CertificateItemId" Type="Guid" Nullable="false" />
+          <Property Name="CertificateId" Type="Guid" Nullable="false" />
+          <Property Name="ItemNumber" Type="Int16" Nullable="false" />
+          <Property Name="RiskTypeId" Type="Guid" Nullable="false" />
+          <Property Name="ManufacturerId" Type="Guid" />
+          <Property Name="MaxReplacementCost" Type="Decimal" Precision="11" Scale="2" />
+          <Property Name="SerialNumber" Type="String" MaxLength="30" FixedLength="false" Unicode="false" />
+          <Property Name="Model" Type="String" MaxLength="30" FixedLength="false" Unicode="false" />
+          <Property Name="CreatedBy" Type="String" MaxLength="30" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="CreatedDate" Type="DateTime" Nullable="false" />
+          <Property Name="ModifiedBy" Type="String" MaxLength="30" FixedLength="false" Unicode="false" />
+          <Property Name="ModifiedDate" Type="DateTime" />
+          <Property Name="CompanyId" Type="Guid" Nullable="false" />
+          <Property Name="ItemDescription" Type="String" MaxLength="200" FixedLength="false" Unicode="false" />
+          <Property Name="ItemCode" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
+          <Property Name="ItemRetailPrice" Type="Decimal" Precision="11" Scale="2" />
+          <Property Name="ItemReplaceReturnDate" Type="DateTime" />
+          <Property Name="ExternalProductCode" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
+          <Property Name="ProductCode" Type="String" MaxLength="5" FixedLength="false" Unicode="false" />
+          <Property Name="OPTIONAL_ITEM_CODE" Type="String" MaxLength="5" FixedLength="false" Unicode="false" />
+          <Property Name="OriginalRetailPrice" Type="Decimal" Precision="11" Scale="2" />
+          <Property Name="EquipmentId" Type="Guid" />
+          <Property Name="MobileType" Type="String" MaxLength="1" FixedLength="false" Unicode="false" />
+          <Property Name="FirstUseDate" Type="DateTime" />
+          <Property Name="LastUseDate" Type="DateTime" />
+          <Property Name="SimCardNumber" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+          <Property Name="SkuNumber" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="EffectiveDate" Type="DateTime" />
+          <Property Name="ExpirationDate" Type="DateTime" />
+          <Property Name="CertProductCode" Type="String" MaxLength="5" FixedLength="false" Unicode="false" />
+          <Property Name="ImeiNumber" Type="String" MaxLength="30" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="Certificate" Relationship="Self.FK_CERT_ITEM_CERT" FromRole="ELP_CERT_ITEM" ToRole="ELP_CERT" />
+          <NavigationProperty Name="ItemCoverages" Relationship="Self.FK_CERT_ITEM_COV_CERT_ITEM" FromRole="ELP_CERT_ITEM" ToRole="ELP_CERT_ITEM_COVERAGE" />
+          <Property Name="ImeiUpdateSource" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="Endorsements" Relationship="Model.FK_CERT_ENDORSE_CERT_ITEM" FromRole="CertificateItem" ToRole="ELP_CERT_ENDORSE" />
+                    
+        </EntityType>
+        <EntityType Name="CertificateItemCoverage">
+          <Key>
+            <PropertyRef Name="CertItemCoverageId" />
+          </Key>
+          <Property Name="CertItemCoverageId" Type="Guid" Nullable="false" />
+          <Property Name="CertificateItemId" Type="Guid" Nullable="false" />
+          <Property Name="CoverageTypeId" Type="Guid" Nullable="false" />
+          <Property Name="ORIGINAL_REGION_ID" Type="Guid" />
+          <Property Name="BeginDate" Type="DateTime" Nullable="false" />
+          <Property Name="EndDate" Type="DateTime" Nullable="false" />
+          <Property Name="LiabilityLimits" Type="Decimal" Precision="11" Scale="2" Nullable="false" />
+          <Property Name="Deductible" Type="Decimal" Precision="11" Scale="2" Nullable="false" />
+          <Property Name="GrossAmtReceived" Type="Decimal" Precision="11" Scale="2" Nullable="false" />
+          <Property Name="PremiumWritten" Type="Decimal" Precision="11" Scale="2" Nullable="false" />
+          <Property Name="OriginalPremium" Type="Decimal" Precision="11" Scale="2" Nullable="false" />
+          <Property Name="LossCost" Type="Decimal" Precision="11" Scale="2" Nullable="false" />
+          <Property Name="Commission" Type="Decimal" Precision="11" Scale="2" Nullable="false" />
+          <Property Name="AdminExpense" Type="Decimal" Precision="11" Scale="2" Nullable="false" />
+          <Property Name="MarketingExpense" Type="Decimal" Precision="11" Scale="2" Nullable="false" />
+          <Property Name="Other" Type="Decimal" Precision="11" Scale="2" Nullable="false" />
+          <Property Name="SalesTax" Type="Decimal" Precision="11" Scale="2" Nullable="false" />
+          <Property Name="Tax1" Type="Decimal" Precision="11" Scale="2" Nullable="false" />
+          <Property Name="Tax2" Type="Decimal" Precision="11" Scale="2" Nullable="false" />
+          <Property Name="Tax3" Type="Decimal" Precision="11" Scale="2" Nullable="false" />
+          <Property Name="Tax4" Type="Decimal" Precision="11" Scale="2" Nullable="false" />
+          <Property Name="Tax5" Type="Decimal" Precision="11" Scale="2" Nullable="false" />
+          <Property Name="Tax6" Type="Decimal" Precision="11" Scale="2" Nullable="false" />
+          <Property Name="MtdPayments" Type="Decimal" Precision="11" Scale="2" Nullable="false" />
+          <Property Name="YtdPayments" Type="Decimal" Precision="11" Scale="2" Nullable="false" />
+          <Property Name="AssurantGwp" Type="Decimal" Precision="11" Scale="2" Nullable="false" />
+          <Property Name="MarkupCommission" Type="Decimal" Precision="11" Scale="2" Nullable="false" />
+          <Property Name="CreatedBy" Type="String" MaxLength="30" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="CreatedDate" Type="DateTime" Nullable="false" />
+          <Property Name="ModifiedBy" Type="String" MaxLength="30" FixedLength="false" Unicode="false" />
+          <Property Name="ModifiedDate" Type="DateTime" />
+          <Property Name="COMPANY_ID" Type="Guid" Nullable="false" />
+          <Property Name="CertificateId" Type="Guid" Nullable="false" />
+          <Property Name="EARNING_CODE_ID" Type="Guid" />
+          <Property Name="DealerDiscountAmt" Type="Decimal" Precision="11" Scale="2" />
+          <Property Name="DealerDiscountPercent" Type="Decimal" Precision="8" Scale="2" />
+          <Property Name="IsClaimAllowed" Type="Guid" />
+          <Property Name="IsDiscount" Type="Guid" />
+          <Property Name="COVERAGE_KM_MI" Type="Int32" />
+          <Property Name="DeductiblePercent" Type="Decimal" Precision="10" Scale="2" />
+          <Property Name="RepairDiscountPCt" Type="Int16" />
+          <Property Name="ReplacementDiscountPct" Type="Int16" />
+          <Property Name="CLIP" Type="Decimal" Precision="11" Scale="2" />
+          <Property Name="COMMISSION_VAT1" Type="Decimal" Precision="11" Scale="2" />
+          <Property Name="COMMISSION_VAT2" Type="Decimal" Precision="11" Scale="2" />
+          <Property Name="COMMISSION_VAT3" Type="Decimal" Precision="11" Scale="2" />
+          <Property Name="COMMISSION_VAT4" Type="Decimal" Precision="11" Scale="2" />
+          <Property Name="COMMISSION_VAT5" Type="Decimal" Precision="11" Scale="2" />
+          <Property Name="COMMISSION_VAT6" Type="Decimal" Precision="11" Scale="2" />
+          <Property Name="COMMISSION_VAT" Type="Decimal" Precision="11" Scale="2" />
+          <Property Name="TaxesPaidByCustomer" Type="Decimal" Precision="11" Scale="2" />
+          <Property Name="MARKUP_COMMISSION_VAT" Type="Decimal" Precision="11" Scale="2" />
+          <Property Name="MethodOfRepairId" Type="Guid" />
+          <Property Name="DeductibleBasedOnId" Type="Guid" Nullable="false" />
+          <Property Name="MTD_INCOMING_PAYMENTS" Type="Decimal" Precision="11" Scale="2" />
+          <Property Name="YTD_INCOMING_PAYMENTS" Type="Decimal" Precision="11" Scale="2" />
+          <Property Name="DEALER_NET" Type="Decimal" Precision="11" Scale="2" />
+          <Property Name="DEALER_NET_TAXES" Type="Decimal" Precision="11" Scale="2" />
+          <Property Name="UPFRONT_FIX_COMMISSION" Type="Decimal" Precision="11" Scale="2" />
+          <Property Name="SEQUENCE_NUMBER" Type="Int16" />
+          <Property Name="CoverageLiabilityLimit" Type="Decimal" Precision="11" Scale="2" />
+          <Property Name="NoOfRenewals" Type="Int16" />
+          <Property Name="RenewalDate" Type="DateTime" />
+          <Property Name="CoverageDuration" Type="Int16" />
+          <Property Name="RECOVER_DEVICE_ID" Type="Guid" />
+          <NavigationProperty Name="Certificate" Relationship="Self.FK_CERTITEMCOV_CERT" FromRole="ELP_CERT_ITEM_COVERAGE" ToRole="ELP_CERT" />
+          <NavigationProperty Name="Item" Relationship="Self.FK_CERT_ITEM_COV_CERT_ITEM" FromRole="ELP_CERT_ITEM_COVERAGE" ToRole="ELP_CERT_ITEM" />          
+          <NavigationProperty Name="ItemCoverageDeductibles" Relationship="Model.FK_CERT_ITEM_CVG_DED_ITEM_CVG" FromRole="CertificateItemCoverage" ToRole="ELP_CERT_ITEM_CVG_DED" />
+          <Property Name="DeductibleExpressionId" Type="Guid" />
+        </EntityType>
+        <Association Name="FK_CERT_ITEM_CERT">
+          <End Role="ELP_CERT" Type="Model.Certificate" Multiplicity="1" />
+          <End Role="ELP_CERT_ITEM" Type="Model.CertificateItem" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ELP_CERT">
+              <PropertyRef Name="CertificateId" />
+            </Principal>
+            <Dependent Role="ELP_CERT_ITEM">
+              <PropertyRef Name="CertificateId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_CERTITEMCOV_CERT">
+          <End Role="ELP_CERT" Type="Model.Certificate" Multiplicity="1" />
+          <End Role="ELP_CERT_ITEM_COVERAGE" Type="Model.CertificateItemCoverage" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ELP_CERT">
+              <PropertyRef Name="CertificateId" />
+            </Principal>
+            <Dependent Role="ELP_CERT_ITEM_COVERAGE">
+              <PropertyRef Name="CertificateId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_CERT_ITEM_COV_CERT_ITEM">
+          <End Role="ELP_CERT_ITEM" Type="Model.CertificateItem" Multiplicity="1" />
+          <End Role="ELP_CERT_ITEM_COVERAGE" Type="Model.CertificateItemCoverage" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ELP_CERT_ITEM">
+              <PropertyRef Name="CertificateItemId" />
+            </Principal>
+            <Dependent Role="ELP_CERT_ITEM_COVERAGE">
+              <PropertyRef Name="CertificateItemId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="CertificateContext" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="Certificates" EntityType="Model.Certificate" />
+          <EntitySet Name="CertificateItems" EntityType="Model.CertificateItem" />
+          <EntitySet Name="CertificateItemCoverages" EntityType="Model.CertificateItemCoverage" />
+          <AssociationSet Name="FK_CERT_ITEM_CERT" Association="Self.FK_CERT_ITEM_CERT">
+            <End Role="ELP_CERT" EntitySet="Certificates" />
+            <End Role="ELP_CERT_ITEM" EntitySet="CertificateItems" />
+          </AssociationSet>
+          <AssociationSet Name="FK_CERTITEMCOV_CERT" Association="Self.FK_CERTITEMCOV_CERT">
+            <End Role="ELP_CERT" EntitySet="Certificates" />
+            <End Role="ELP_CERT_ITEM_COVERAGE" EntitySet="CertificateItemCoverages" />
+          </AssociationSet>
+          <AssociationSet Name="FK_CERT_ITEM_COV_CERT_ITEM" Association="Self.FK_CERT_ITEM_COV_CERT_ITEM">
+            <End Role="ELP_CERT_ITEM" EntitySet="CertificateItems" />
+            <End Role="ELP_CERT_ITEM_COVERAGE" EntitySet="CertificateItemCoverages" />
+          </AssociationSet>
+          <EntitySet Name="CertificateCancellations" EntityType="Model.CertificateCancellation" />
+          <AssociationSet Name="FK_CERT_CANCEL_CERT" Association="Model.FK_CERT_CANCEL_CERT">
+            <End Role="Certificate" EntitySet="Certificates" />
+            <End Role="ELP_CERT_CANCELLATION" EntitySet="CertificateCancellations" />
+          </AssociationSet>
+          <EntitySet Name="CertificateItemCoverageDeductibles" EntityType="Model.CertificateItemCoverageDeductible" />
+          <AssociationSet Name="FK_CERT_ITEM_CVG_DED_ITEM_CVG" Association="Model.FK_CERT_ITEM_CVG_DED_ITEM_CVG">
+            <End Role="CertificateItemCoverage" EntitySet="CertificateItemCoverages" />
+            <End Role="ELP_CERT_ITEM_CVG_DED" EntitySet="CertificateItemCoverageDeductibles" />
+          </AssociationSet>
+          <EntitySet Name="BillingDetails" EntityType="Model.BillingDetail" />
+          <AssociationSet Name="FK_BILLDETAIL_CERT" Association="Model.FK_BILLDETAIL_CERT">
+            <End Role="Certificate" EntitySet="Certificates" />
+            <End Role="ELP_BILLING_DETAIL" EntitySet="BillingDetails" />
+          </AssociationSet>
+          <EntitySet Name="CertificateEndorsements" EntityType="Model.CertificateEndorsement" />
+          <AssociationSet Name="FK_CERT_ENDORSE_CERT_ITEM" Association="Model.FK_CERT_ENDORSE_CERT_ITEM">
+            <End Role="CertificateItem" EntitySet="CertificateItems" />
+            <End Role="ELP_CERT_ENDORSE" EntitySet="CertificateEndorsements" />
+          </AssociationSet>
+          <EntitySet Name="CertificateInstallments" EntityType="Model.CertificateInstallment" />
+          <AssociationSet Name="FK_CERTINSTMNT_CERT" Association="Model.FK_CERTINSTMNT_CERT">
+            <End Role="Certificate" EntitySet="Certificates" />
+            <End Role="ELP_CERT_INSTALLMENT" EntitySet="CertificateInstallments" />
+          </AssociationSet>
+        </EntityContainer>
+        <EntityType Name="CertificateCancellation">
+          <Key>
+            <PropertyRef Name="CertCancellationId" />
+          </Key>
+          <Property Name="CertCancellationId" Type="Guid" Nullable="false" />
+          <Property Name="CertificateId" Type="Guid" Nullable="false" />
+          <Property Name="CancellationReasonId" Type="Guid" Nullable="false" />
+          <Property Name="CommissionBreakdownId" Type="Guid" />
+          <Property Name="OriginalRegionId" Type="Guid" />
+          <Property Name="RefundDestId" Type="Guid" />
+          <Property Name="CancellationDate" Type="DateTime" Nullable="false" />
+          <Property Name="Source" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="ProcessedDate" Type="DateTime" />
+          <Property Name="GrossAmtReceived" Type="Decimal" Precision="11" Scale="2" />
+          <Property Name="PremiumWritten" Type="Decimal" Precision="11" Scale="2" />
+          <Property Name="OriginalPremium" Type="Decimal" Precision="11" Scale="2" />
+          <Property Name="LossCost" Type="Decimal" Precision="11" Scale="2" />
+          <Property Name="Commission" Type="Decimal" Precision="11" Scale="2" />
+          <Property Name="AdminExpense" Type="Decimal" Precision="11" Scale="2" />
+          <Property Name="MarketingExpense" Type="Decimal" Precision="11" Scale="2" />
+          <Property Name="Other" Type="Decimal" Precision="11" Scale="2" />
+          <Property Name="SalesTax" Type="Decimal" Precision="11" Scale="2" />
+          <Property Name="Tax1" Type="Decimal" Precision="11" Scale="2" />
+          <Property Name="Tax2" Type="Decimal" Precision="11" Scale="2" />
+          <Property Name="Tax3" Type="Decimal" Precision="11" Scale="2" />
+          <Property Name="Tax4" Type="Decimal" Precision="11" Scale="2" />
+          <Property Name="Tax5" Type="Decimal" Precision="11" Scale="2" />
+          <Property Name="Tax6" Type="Decimal" Precision="11" Scale="2" />
+          <Property Name="ComputedRefund" Type="Decimal" Precision="11" Scale="2" />
+          <Property Name="CREDIT_ISSUED_FLAG" Type="String" MaxLength="1" FixedLength="false" Unicode="false" />
+          <Property Name="CUSTOMER_PAID" Type="Decimal" Precision="11" Scale="2" />
+          <Property Name="PRINCIPAL_PAID" Type="Decimal" Precision="11" Scale="2" />
+          <Property Name="REFUND_AMT" Type="Decimal" Precision="11" Scale="2" />
+          <Property Name="ASSURANT_GWP" Type="Decimal" Precision="11" Scale="2" />
+          <Property Name="MARKUP_COMMISSION" Type="Decimal" Precision="11" Scale="2" />
+          <Property Name="CreatedBy" Type="String" Nullable="false" MaxLength="30" FixedLength="false" Unicode="false" />
+          <Property Name="CreatedDate" Type="DateTime" Nullable="false" />
+          <Property Name="ModifiedBy" Type="String" MaxLength="30" FixedLength="false" Unicode="false" />
+          <Property Name="ModifiedDate" Type="DateTime" />
+          <Property Name="COMPANY_ID" Type="Guid" Nullable="false" />
+          <Property Name="PAYMENT_METHOD_ID" Type="Guid" />
+          <Property Name="BANK_INFO_ID" Type="Guid" />
+          <Property Name="TRACKING_NUMBER" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+          <Property Name="STATUS_ID" Type="Guid" Nullable="false" />
+          <Property Name="STATUS_DATE" Type="DateTime" Nullable="false" />
+          <Property Name="CLIP" Type="Decimal" Precision="11" Scale="2" />
+          <Property Name="COMMISSION_VAT1" Type="Decimal" Precision="11" Scale="2" />
+          <Property Name="COMMISSION_VAT2" Type="Decimal" Precision="11" Scale="2" />
+          <Property Name="COMMISSION_VAT3" Type="Decimal" Precision="11" Scale="2" />
+          <Property Name="COMMISSION_VAT4" Type="Decimal" Precision="11" Scale="2" />
+          <Property Name="COMMISSION_VAT5" Type="Decimal" Precision="11" Scale="2" />
+          <Property Name="COMMISSION_VAT6" Type="Decimal" Precision="11" Scale="2" />
+          <Property Name="COMMISSION_VAT" Type="Decimal" Precision="11" Scale="2" />
+          <Property Name="MARKUP_COMMISSION_VAT" Type="Decimal" Precision="11" Scale="2" />
+          <Property Name="DEALER_NET" Type="Decimal" Precision="11" Scale="2" />
+          <Property Name="DEALER_NET_TAXES" Type="Decimal" Precision="11" Scale="2" />
+          <NavigationProperty Name="Certificate" Relationship="Model.FK_CERT_CANCEL_CERT" FromRole="ELP_CERT_CANCELLATION" ToRole="Certificate" />
+        </EntityType>
+        <Association Name="FK_CERT_CANCEL_CERT">
+          <End Type="Model.Certificate" Role="Certificate" Multiplicity="1" />
+          <End Type="Model.CertificateCancellation" Role="ELP_CERT_CANCELLATION" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Certificate">
+              <PropertyRef Name="CertificateId" />
+            </Principal>
+            <Dependent Role="ELP_CERT_CANCELLATION">
+              <PropertyRef Name="CertificateId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityType Name="CertificateItemCoverageDeductible">
+          <Key>
+            <PropertyRef Name="CertItemCvgDedId" />
+          </Key>
+          <Property Name="CertItemCvgDedId" Type="Guid" Nullable="false" />
+          <Property Name="CertItemCoverageId" Type="Guid" Nullable="false" />
+          <Property Name="MethodOfRepairId" Type="Guid" Nullable="false" />
+          <Property Name="DeductibleBasedOnId" Type="Guid" Nullable="false" />
+          <Property Name="Deductible" Type="Decimal" Nullable="false" Precision="11" Scale="2" />
+          <Property Name="CreatedDate" Type="DateTime" Nullable="false" />
+          <Property Name="ModifiedDate" Type="DateTime" />
+          <Property Name="CreatedBy" Type="String" Nullable="false" MaxLength="30" FixedLength="false" Unicode="false" />
+          <Property Name="ModifiedBy" Type="String" MaxLength="30" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="ItemCoverage" Relationship="Model.FK_CERT_ITEM_CVG_DED_ITEM_CVG" FromRole="ELP_CERT_ITEM_CVG_DED" ToRole="CertificateItemCoverage" />
+          <Property Name="DeductibleExpressionId" Type="Guid" />
+        </EntityType>
+        <Association Name="FK_CERT_ITEM_CVG_DED_ITEM_CVG">
+          <End Type="Model.CertificateItemCoverage" Role="CertificateItemCoverage" Multiplicity="1" />
+          <End Type="Model.CertificateItemCoverageDeductible" Role="ELP_CERT_ITEM_CVG_DED" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="CertificateItemCoverage">
+              <PropertyRef Name="CertItemCoverageId" />
+            </Principal>
+            <Dependent Role="ELP_CERT_ITEM_CVG_DED">
+              <PropertyRef Name="CertItemCoverageId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityType Name="BillingDetail">
+          <Key>
+            <PropertyRef Name="BillingDetailId" />
+          </Key>
+          <Property Name="BillingDetailId" Type="Guid" Nullable="false" />
+          <Property Name="BillingHeaderId" Type="Guid" Nullable="false" />
+          <Property Name="InstallmentNumber" Type="Int16" Nullable="false" />
+          <Property Name="BankOwnerName" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="BilledAmount" Type="Decimal" Precision="11" Scale="2" />
+          <Property Name="Reason" Type="String" MaxLength="200" FixedLength="false" Unicode="false" />
+          <Property Name="CreatedBy" Type="String" Nullable="false" MaxLength="30" FixedLength="false" Unicode="false" />
+          <Property Name="CreatedDate" Type="DateTime" Nullable="false" />
+          <Property Name="ModifiedBy" Type="String" MaxLength="30" FixedLength="false" Unicode="false" />
+          <Property Name="ModifiedDate" Type="DateTime" />
+          <Property Name="CertId" Type="Guid" Nullable="false" />
+          <Property Name="PaymentRunDate" Type="DateTime" Nullable="false" />
+          <Property Name="BankAcctNumber" Type="String" MaxLength="29" FixedLength="false" Unicode="false" />
+          <Property Name="BankRtnNumber" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
+          <Property Name="BillingStatusId" Type="Guid" />
+          <Property Name="RejectCodeId" Type="Guid" />
+          <Property Name="PaidId" Type="Guid" />
+          <Property Name="Tax" Type="Decimal" Precision="11" Scale="2" />
+          <Property Name="Commission" Type="Decimal" Precision="11" Scale="2" />
+          <Property Name="RejectedId" Type="Guid" />
+          <Property Name="NIGHTLY_PAYMENT_RUN_DATE" Type="DateTime" />
+          <Property Name="RE_ATTEMPT_COUNT" Type="Decimal" Precision="38" Scale="0" />
+          <Property Name="CREDIT_CARD_INFO_ID" Type="Guid" />
+          <Property Name="AuthorizationNumber" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+          <Property Name="MerchantCode" Type="String" MaxLength="15" FixedLength="false" Unicode="false" />
+          <Property Name="InstallmentDueDate" Type="DateTime" />
+          <Property Name="RejectDate" Type="DateTime" />
+          <Property Name="RECON_INTERFACE_RUN_DATE" Type="DateTime" />
+          <Property Name="REFERENCE_RECORD" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="DatePaidFor" Type="DateTime" />
+          <Property Name="PROCESSOR_REJECT_CODE" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="Certificate" Relationship="Model.FK_BILLDETAIL_CERT" FromRole="ELP_BILLING_DETAIL" ToRole="Certificate" />
+        </EntityType>
+        <Association Name="FK_BILLDETAIL_CERT">
+          <End Type="Model.Certificate" Role="Certificate" Multiplicity="1" />
+          <End Type="Model.BillingDetail" Role="ELP_BILLING_DETAIL" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Certificate">
+              <PropertyRef Name="CertificateId" />
+            </Principal>
+            <Dependent Role="ELP_BILLING_DETAIL">
+              <PropertyRef Name="CertId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityType Name="CertificateEndorsement">
+          <Key>
+            <PropertyRef Name="CertEndorseId" />
+          </Key>
+          <Property Name="CertEndorseId" Type="Guid" Nullable="false" />
+          <Property Name="CompanyId" Type="Guid" Nullable="false" />
+          <Property Name="CertItemId" Type="Guid" Nullable="false" />
+          <Property Name="EndorseNumber" Type="Int64" Nullable="false" />
+          <Property Name="CustomerNamePre" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="CustomerNamePost" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="PRODUCT_SALES_DATE_PRE" Type="DateTime" />
+          <Property Name="PRODUCT_SALES_DATE_POST" Type="DateTime" />
+          <Property Name="WARRANTY_SALES_DATE_PRE" Type="DateTime" />
+          <Property Name="WARRANTY_SALES_DATE_POST" Type="DateTime" />
+          <Property Name="CreatedBy" Type="String" Nullable="false" MaxLength="30" FixedLength="false" Unicode="false" />
+          <Property Name="CreatedDate" Type="DateTime" Nullable="false" />
+          <Property Name="ModifiedBy" Type="String" MaxLength="30" FixedLength="false" Unicode="false" />
+          <Property Name="ModifiedDate" Type="DateTime" />
+          <Property Name="SALES_PRICE_PRE" Type="Decimal" Precision="11" Scale="2" />
+          <Property Name="SALES_PRICE_POST" Type="Decimal" Precision="11" Scale="2" />
+          <Property Name="EMAIL_PRE" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="EMAIL_POST" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="HOME_PHONE_PRE" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+          <Property Name="HOME_PHONE_POST" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+          <Property Name="WORK_PHONE_PRE" Type="String" MaxLength="15" FixedLength="false" Unicode="false" />
+          <Property Name="WORK_PHONE_POST" Type="String" MaxLength="15" FixedLength="false" Unicode="false" />
+          <Property Name="ADDRESS_ID_PRE" Type="Guid" />
+          <Property Name="ADDRESS_ID_POST" Type="Guid" />
+          <Property Name="LANGUAGE_ID_PRE" Type="Guid" />
+          <Property Name="LANGUAGE_ID_POST" Type="Guid" />
+          <Property Name="DOCUMENT_TYPE_ID_PRE" Type="Guid" />
+          <Property Name="DOCUMENT_TYPE_ID_POST" Type="Guid" />
+          <Property Name="ID_TYPE_PRE" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
+          <Property Name="ID_TYPE_POST" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
+          <Property Name="DOCUMENT_AGENCY_PRE" Type="String" MaxLength="15" FixedLength="false" Unicode="false" />
+          <Property Name="DOCUMENT_AGENCY_POST" Type="String" MaxLength="15" FixedLength="false" Unicode="false" />
+          <Property Name="IDENTIFICATION_NUMBER_PRE" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+          <Property Name="IDENTIFICATION_NUMBER_POST" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+          <Property Name="RG_NUMBER_PRE" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+          <Property Name="RG_NUMBER_POST" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+          <Property Name="DOCUMENT_ISSUE_DATE_PRE" Type="DateTime" />
+          <Property Name="DOCUMENT_ISSUE_DATE_POST" Type="DateTime" />
+		  <Property Name="EffectiveDate" Type="DateTime" />
+          <Property Name="ExpirationDate" Type="DateTime" />
+          <NavigationProperty Name="Item" Relationship="Model.FK_CERT_ENDORSE_CERT_ITEM" FromRole="ELP_CERT_ENDORSE" ToRole="CertificateItem" />
+        </EntityType>
+        <Association Name="FK_CERT_ENDORSE_CERT_ITEM">
+          <End Type="Model.CertificateItem" Role="CertificateItem" Multiplicity="1" />
+          <End Type="Model.CertificateEndorsement" Role="ELP_CERT_ENDORSE" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="CertificateItem">
+              <PropertyRef Name="CertificateItemId" />
+            </Principal>
+            <Dependent Role="ELP_CERT_ENDORSE">
+              <PropertyRef Name="CertItemId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityType Name="CertificateInstallment">
+          <Key>
+            <PropertyRef Name="CertInstallmentId" />
+          </Key>
+          <Property Name="CertInstallmentId" Type="Guid" Nullable="false" />
+          <Property Name="BillingFrequencyId" Type="Guid" />
+          <Property Name="BillingStatusId" Type="Guid" />
+          <Property Name="BankInfoId" Type="Guid" />
+          <Property Name="NumberOfInstallments" Type="Int16" />
+          <Property Name="InstallmentAmount" Type="Decimal" Precision="15" Scale="2" />
+          <Property Name="PaymentDueDate" Type="DateTime" />
+          <Property Name="DateLetterSent" Type="DateTime" />
+          <Property Name="CreatedBy" Type="String" Nullable="false" MaxLength="30" FixedLength="false" Unicode="false" />
+          <Property Name="CreatedDate" Type="DateTime" Nullable="false" />
+          <Property Name="ModifiedBy" Type="String" MaxLength="30" FixedLength="false" Unicode="false" />
+          <Property Name="ModifiedDate" Type="DateTime" />
+          <Property Name="CertId" Type="Guid" Nullable="false" />
+          <Property Name="SendLetterId" Type="Guid" />
+          <Property Name="CancellationDueDate" Type="DateTime" />
+          <Property Name="CreditCardInfoId" Type="Guid" />
+          <Property Name="NextBillingDate" Type="DateTime" />
+          <Property Name="CancellationCode" Type="String" MaxLength="5" FixedLength="false" Unicode="false" />
+          <Property Name="LastBilledInstallmentNum" Type="Int16" />
+          <Property Name="LastBilledDueDate" Type="DateTime" />
+          <Property Name="PaymentDate" Type="DateTime" />
+          <Property Name="ReconInterfaceRunDate" Type="DateTime" />
+          <Property Name="LastInstallmentStartDate" Type="DateTime" />
+          <Property Name="LastInstallmentEndDate" Type="DateTime" />
+          <Property Name="SmartBundleFlatAmount" Type="Decimal" Precision="15" Scale="2" />
+          <Property Name="SmartBundleFlatAmountCurrency" Type="Guid" />
+          <NavigationProperty Name="Certificate" Relationship="Model.FK_CERTINSTMNT_CERT" FromRole="ELP_CERT_INSTALLMENT" ToRole="Certificate" />
+        </EntityType>
+        <Association Name="FK_CERTINSTMNT_CERT">
+          <End Type="Model.Certificate" Role="Certificate" Multiplicity="1" />
+          <End Type="Model.CertificateInstallment" Role="ELP_CERT_INSTALLMENT" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Certificate">
+              <PropertyRef Name="CertificateId" />
+            </Principal>
+            <Dependent Role="ELP_CERT_INSTALLMENT">
+              <PropertyRef Name="CertId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2008/09/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="ModelStoreContainer" CdmEntityContainer="CertificateContext">
+          <EntitySetMapping Name="Certificates">
+            <EntityTypeMapping TypeName="Model.Certificate">
+              <MappingFragment StoreEntitySet="ELP_CERT">
+                <ScalarProperty Name="DealerProductCode" ColumnName="DEALER_PRODUCT_CODE" />
+                <ScalarProperty Name="DealerItem" ColumnName="DEALER_ITEM" />
+                <ScalarProperty Name="SalesRepNumber" ColumnName="SALES_REP_NUMBER" />
+                <ScalarProperty Name="DealerBranchCode" ColumnName="DEALER_BRANCH_CODE" />
+                <ScalarProperty Name="InvoiceNumber" ColumnName="INVOICE_NUMBER" />
+                <ScalarProperty Name="CertificateId" ColumnName="CERT_ID" />
+                <ScalarProperty Name="DealerId" ColumnName="DEALER_ID" />
+                <ScalarProperty Name="CertificateNumber" ColumnName="CERT_NUMBER" />
+                <ScalarProperty Name="PaymentTypeId" ColumnName="PAYMENT_TYPE_ID" />
+                <ScalarProperty Name="CommissionBreakdownId" ColumnName="COMMISSION_BREAKDOWN_ID" />
+                <ScalarProperty Name="FinanceCurrencyId" ColumnName="FINANCE_CURRENCY_ID" />
+                <ScalarProperty Name="PURCHASE_CURRENCY_ID" ColumnName="PURCHASE_CURRENCY_ID" />
+                <ScalarProperty Name="MethodOfRepairId" ColumnName="METHOD_OF_REPAIR_ID" />
+                <ScalarProperty Name="TypeOfEquipmentId" ColumnName="TYPE_OF_EQUIPMENT_ID" />
+                <ScalarProperty Name="AddressId" ColumnName="ADDRESS_ID" />
+                <ScalarProperty Name="ProductCode" ColumnName="PRODUCT_CODE" />
+                <ScalarProperty Name="StatusCode" ColumnName="STATUS_CODE" />
+                <ScalarProperty Name="ProductSalesDate" ColumnName="PRODUCT_SALES_DATE" />
+                <ScalarProperty Name="WarrantySalesDate" ColumnName="WARRANTY_SALES_DATE" />
+                <ScalarProperty Name="IdentificationNumber" ColumnName="IDENTIFICATION_NUMBER" />
+                <ScalarProperty Name="CustomerName" ColumnName="CUSTOMER_NAME" />
+                <ScalarProperty Name="HomePhone" ColumnName="HOME_PHONE" />
+                <ScalarProperty Name="WorkPhone" ColumnName="WORK_PHONE" />
+                <ScalarProperty Name="Email" ColumnName="EMAIL" />
+                <ScalarProperty Name="QUOTA_NUMBER" ColumnName="QUOTA_NUMBER" />
+                <ScalarProperty Name="MonthlyPayments" ColumnName="MONTHLY_PAYMENTS" />
+                <ScalarProperty Name="FinancedAmount" ColumnName="FINANCED_AMOUNT" />
+                <ScalarProperty Name="SalesPrice" ColumnName="SALES_PRICE" />
+                <ScalarProperty Name="InterestRate" ColumnName="INTEREST_RATE" />
+                <ScalarProperty Name="CampaignNumber" ColumnName="CAMPAIGN_NUMBER" />
+                <ScalarProperty Name="Source" ColumnName="SOURCE" />
+                <ScalarProperty Name="DatePaidFor" ColumnName="DATE_PAID_FOR" />
+                <ScalarProperty Name="DatePaid" ColumnName="DATE_PAID" />
+                <ScalarProperty Name="Retailer" ColumnName="RETAILER" />
+                <ScalarProperty Name="CreatedBy" ColumnName="CREATED_BY" />
+                <ScalarProperty Name="CreatedDate" ColumnName="CREATED_DATE" />
+                <ScalarProperty Name="ModifiedBy" ColumnName="MODIFIED_BY" />
+                <ScalarProperty Name="ModifiedDate" ColumnName="MODIFIED_DATE" />
+                <ScalarProperty Name="CompanyId" ColumnName="COMPANY_ID" />
+                <ScalarProperty Name="SalutationId" ColumnName="SALUTATION_ID" />
+                <ScalarProperty Name="OLD_NUMBER" ColumnName="OLD_NUMBER" />
+                <ScalarProperty Name="InsuranceActivationDate" ColumnName="INSURANCE_ACTIVATION_DATE" />
+                <ScalarProperty Name="DOCUMENT_AGENCY" ColumnName="DOCUMENT_AGENCY" />
+                <ScalarProperty Name="DOCUMENT_ISSUE_DATE" ColumnName="DOCUMENT_ISSUE_DATE" />
+                <ScalarProperty Name="RG_NUMBER" ColumnName="RG_NUMBER" />
+                <ScalarProperty Name="ID_TYPE" ColumnName="ID_TYPE" />
+                <ScalarProperty Name="RATING_PLAN" ColumnName="RATING_PLAN" />
+                <ScalarProperty Name="DOCUMENT_TYPE_ID" ColumnName="DOCUMENT_TYPE_ID" />
+                <ScalarProperty Name="CountryPurchaseId" ColumnName="COUNTRY_PURCHASE_ID" />
+                <ScalarProperty Name="ExchangeRate" ColumnName="EXCHANGE_RATE" />
+                <ScalarProperty Name="CURRENCY_CERT_ID" ColumnName="CURRENCY_CERT_ID" />
+                <ScalarProperty Name="PASSWORD" ColumnName="PASSWORD" />
+                <ScalarProperty Name="VEHICLE_YEAR" ColumnName="VEHICLE_YEAR" />
+                <ScalarProperty Name="MODEL_ID" ColumnName="MODEL_ID" />
+                <ScalarProperty Name="ODOMETER" ColumnName="ODOMETER" />
+                <ScalarProperty Name="CLASS_CODE_ID" ColumnName="CLASS_CODE_ID" />
+                <ScalarProperty Name="REGISTRATION_DATE" ColumnName="REGISTRATION_DATE" />
+                <ScalarProperty Name="VEHICLE_LICENSE_TAG" ColumnName="VEHICLE_LICENSE_TAG" />
+                <ScalarProperty Name="VIN_LOCATOR" ColumnName="VIN_LOCATOR" />
+                <ScalarProperty Name="UseDepreciation" ColumnName="USE_DEPRECIATION" />
+                <ScalarProperty Name="BirthDate" ColumnName="BIRTH_DATE" />
+                <ScalarProperty Name="MAILING_ADDRESS_ID" ColumnName="MAILING_ADDRESS_ID" />
+                <ScalarProperty Name="MembershipNumber" ColumnName="MEMBERSHIP_NUMBER" />
+                <ScalarProperty Name="PrimaryMemberName" ColumnName="PRIMARY_MEMBER_NAME" />
+                <ScalarProperty Name="MembershipTypeId" ColumnName="MEMBERSHIP_TYPE_ID" />
+                <ScalarProperty Name="VAT_NUM" ColumnName="VAT_NUM" />
+                <ScalarProperty Name="LANGUAGE_ID" ColumnName="LANGUAGE_ID" />
+                <ScalarProperty Name="PostPrePaidId" ColumnName="POST_PRE_PAID_ID" />
+                <ScalarProperty Name="MARKETING_PROMO_SER" ColumnName="MARKETING_PROMO_SER" />
+                <ScalarProperty Name="MARKETING_PROMO_NUM" ColumnName="MARKETING_PROMO_NUM" />
+                <ScalarProperty Name="SubscriberStatus" ColumnName="SUBSCRIBER_STATUS" />
+                <ScalarProperty Name="BillingPlan" ColumnName="BILLING_PLAN" />
+                <ScalarProperty Name="BillingCycle" ColumnName="BILLING_CYCLE" />
+                <ScalarProperty Name="ServiceLineNumber" ColumnName="SERVICE_LINE_NUMBER" />
+                <ScalarProperty Name="REGION" ColumnName="REGION" />
+                <ScalarProperty Name="SubscriberStatusChangeDate" ColumnName="SUBSCRIBER_STATUS_CHANGE_DATE" />
+                <ScalarProperty Name="LinesOnAccount" ColumnName="LINES_ON_ACCOUNT" />
+                <ScalarProperty Name="OCCUPATION" ColumnName="OCCUPATION" />
+                <ScalarProperty Name="PoliticallyExposedId" ColumnName="POLITICALLY_EXPOSED_ID" />
+                <ScalarProperty Name="INCOME_RANGE_ID" ColumnName="INCOME_RANGE_ID" />
+                <ScalarProperty Name="CESS_OFFICE" ColumnName="CESS_OFFICE" />
+                <ScalarProperty Name="CESS_SALESREP" ColumnName="CESS_SALESREP" />
+                <ScalarProperty Name="BusinessLine" ColumnName="BUSINESSLINE" />
+                <ScalarProperty Name="SALES_DEPARTMENT" ColumnName="SALES_DEPARTMENT" />
+                <ScalarProperty Name="LinkedCertNumber" ColumnName="LINKED_CERT_NUMBER" />
+                <ScalarProperty Name="ADDITIONAL_INFO" ColumnName="ADDITIONAL_INFO" />
+                <ScalarProperty Name="SuspendedReasonId" ColumnName="SUSPENDED_REASON_ID" />
+                <ScalarProperty Name="FINANCING_AGENCY" ColumnName="FINANCING_AGENCY" />
+                <ScalarProperty Name="EXTERNAL_REGISTRATION_DATE" ColumnName="EXTERNAL_REGISTRATION_DATE" />
+                <ScalarProperty Name="CUSTOMERINFO_LASTCHANGE_DATE" ColumnName="CUSTOMERINFO_LASTCHANGE_DATE" />
+                <ScalarProperty Name="PEP_FLAGGED_DATE" ColumnName="PEP_FLAGGED_DATE" />
+                <ScalarProperty Name="TERRORIST_FLAGGED_DATE" ColumnName="TERRORIST_FLAGGED_DATE" />
+                <ScalarProperty Name="NationalityId" ColumnName="NATIONALITYID" />
+                <ScalarProperty Name="PlaceOfBirthId" ColumnName="PLACEOFBIRTHID" />
+                <ScalarProperty Name="GenderId" ColumnName="GENDERID" />
+                <ScalarProperty Name="CuitCuil" ColumnName="CUIT_CUIL" />
+                <ScalarProperty Name="TerroristFlag" ColumnName="TERRORIST_FLAG" />
+                <ScalarProperty Name="NewUsed" ColumnName="NEW_USED" />
+                <ScalarProperty Name="FinancedTabAmount" ColumnName="FINANCED_TAB_AMOUNT" />
+                <ScalarProperty Name="FinancedTabTerm" ColumnName="FINANCED_TAB_TERM" />
+                <ScalarProperty Name="FinancedTabFrequency" ColumnName="FINANCED_TAB_FREQUENCY" />
+                <ScalarProperty Name="FinancedTabInstAmount" ColumnName="FINANCED_TAB_INST_AMOUNT" />
+                <ScalarProperty Name="MaritalStatusId" ColumnName="MARITALSTATUSID" />
+                <ScalarProperty Name="ProdLiabilityLimit" ColumnName="PROD_LIABILITY_LIMIT" />
+                <ScalarProperty Name="PROD_LIABILITY_LIMIT_BASE_ID" ColumnName="PROD_LIABILITY_LIMIT_BASE_ID" />
+                <ScalarProperty Name="PROD_LIABILITY_LIMIT_POLICY_ID" ColumnName="PROD_LIABILITY_LIMIT_POLICY_ID" />
+                <ScalarProperty Name="FinanceDate" ColumnName="FINANCE_DATE" />
+                <ScalarProperty Name="DownPayment" ColumnName="DOWN_PAYMENT" />
+                <ScalarProperty Name="AdvancePayment" ColumnName="ADVANCE_PAYMENT" />
+                <ScalarProperty Name="UpgradeFixedTerm" ColumnName="UPGRADE_FIXED_TERM" />
+                <ScalarProperty Name="PersonTypeId" ColumnName="PERSON_TYPE_ID" />
+				<ScalarProperty Name="PreviousCertId" ColumnName="PREVIOUS_CERT_ID" />
+				<ScalarProperty Name="OriginalCertId" ColumnName="ORIGINAL_CERT_ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="CertificateItems">
+            <EntityTypeMapping TypeName="Model.CertificateItem">
+              <MappingFragment StoreEntitySet="ELP_CERT_ITEM">
+                <ScalarProperty Name="ImeiUpdateSource" ColumnName="IMEI_UPDATE_SOURCE" />
+                <ScalarProperty Name="CertificateItemId" ColumnName="CERT_ITEM_ID" />
+                <ScalarProperty Name="CertificateId" ColumnName="CERT_ID" />
+                <ScalarProperty Name="ItemNumber" ColumnName="ITEM_NUMBER" />
+                <ScalarProperty Name="RiskTypeId" ColumnName="RISK_TYPE_ID" />
+                <ScalarProperty Name="ManufacturerId" ColumnName="MANUFACTURER_ID" />
+                <ScalarProperty Name="MaxReplacementCost" ColumnName="MAX_REPLACEMENT_COST" />
+                <ScalarProperty Name="SerialNumber" ColumnName="SERIAL_NUMBER" />
+                <ScalarProperty Name="Model" ColumnName="MODEL" />
+                <ScalarProperty Name="CreatedBy" ColumnName="CREATED_BY" />
+                <ScalarProperty Name="CreatedDate" ColumnName="CREATED_DATE" />
+                <ScalarProperty Name="ModifiedBy" ColumnName="MODIFIED_BY" />
+                <ScalarProperty Name="ModifiedDate" ColumnName="MODIFIED_DATE" />
+                <ScalarProperty Name="CompanyId" ColumnName="COMPANY_ID" />
+                <ScalarProperty Name="ItemDescription" ColumnName="ITEM_DESCRIPTION" />
+                <ScalarProperty Name="ItemCode" ColumnName="ITEM_CODE" />
+                <ScalarProperty Name="ItemRetailPrice" ColumnName="ITEM_RETAIL_PRICE" />
+                <ScalarProperty Name="ItemReplaceReturnDate" ColumnName="ITEM_REPLACE_RETURN_DATE" />
+                <ScalarProperty Name="ExternalProductCode" ColumnName="EXTERNAL_PRODUCT_CODE" />
+                <ScalarProperty Name="ProductCode" ColumnName="PRODUCT_CODE" />
+                <ScalarProperty Name="OPTIONAL_ITEM_CODE" ColumnName="OPTIONAL_ITEM_CODE" />
+                <ScalarProperty Name="OriginalRetailPrice" ColumnName="ORIGINAL_RETAIL_PRICE" />
+                <ScalarProperty Name="EquipmentId" ColumnName="EQUIPMENT_ID" />
+                <ScalarProperty Name="MobileType" ColumnName="MOBILE_TYPE" />
+                <ScalarProperty Name="FirstUseDate" ColumnName="FIRST_USE_DATE" />
+                <ScalarProperty Name="LastUseDate" ColumnName="LAST_USE_DATE" />
+                <ScalarProperty Name="SimCardNumber" ColumnName="SIM_CARD_NUMBER" />
+                <ScalarProperty Name="SkuNumber" ColumnName="SKU_NUMBER" />
+                <ScalarProperty Name="EffectiveDate" ColumnName="EFFECTIVE_DATE" />
+                <ScalarProperty Name="ExpirationDate" ColumnName="EXPIRATION_DATE" />
+                <ScalarProperty Name="CertProductCode" ColumnName="CERT_PRODUCT_CODE" />
+                <ScalarProperty Name="ImeiNumber" ColumnName="IMEI_NUMBER" />
+                 </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="CertificateItemCoverages">
+            <EntityTypeMapping TypeName="Model.CertificateItemCoverage">
+              <MappingFragment StoreEntitySet="ELP_CERT_ITEM_COVERAGE">
+                <ScalarProperty Name="DeductibleExpressionId" ColumnName="DEDUCTIBLE_EXPRESSION_ID" />                
+                <ScalarProperty Name="CertItemCoverageId" ColumnName="CERT_ITEM_COVERAGE_ID" />
+                <ScalarProperty Name="CertificateItemId" ColumnName="CERT_ITEM_ID" />
+                <ScalarProperty Name="CoverageTypeId" ColumnName="COVERAGE_TYPE_ID" />
+                <ScalarProperty Name="ORIGINAL_REGION_ID" ColumnName="ORIGINAL_REGION_ID" />
+                <ScalarProperty Name="BeginDate" ColumnName="BEGIN_DATE" />
+                <ScalarProperty Name="EndDate" ColumnName="END_DATE" />
+                <ScalarProperty Name="LiabilityLimits" ColumnName="LIABILITY_LIMITS" />
+                <ScalarProperty Name="Deductible" ColumnName="DEDUCTIBLE" />
+                <ScalarProperty Name="GrossAmtReceived" ColumnName="GROSS_AMT_RECEIVED" />
+                <ScalarProperty Name="PremiumWritten" ColumnName="PREMIUM_WRITTEN" />
+                <ScalarProperty Name="OriginalPremium" ColumnName="ORIGINAL_PREMIUM" />
+                <ScalarProperty Name="LossCost" ColumnName="LOSS_COST" />
+                <ScalarProperty Name="Commission" ColumnName="COMMISSION" />
+                <ScalarProperty Name="AdminExpense" ColumnName="ADMIN_EXPENSE" />
+                <ScalarProperty Name="MarketingExpense" ColumnName="MARKETING_EXPENSE" />
+                <ScalarProperty Name="Other" ColumnName="OTHER" />
+                <ScalarProperty Name="SalesTax" ColumnName="SALES_TAX" />
+                <ScalarProperty Name="Tax1" ColumnName="TAX1" />
+                <ScalarProperty Name="Tax2" ColumnName="TAX2" />
+                <ScalarProperty Name="Tax3" ColumnName="TAX3" />
+                <ScalarProperty Name="Tax4" ColumnName="TAX4" />
+                <ScalarProperty Name="Tax5" ColumnName="TAX5" />
+                <ScalarProperty Name="Tax6" ColumnName="TAX6" />
+                <ScalarProperty Name="MtdPayments" ColumnName="MTD_PAYMENTS" />
+                <ScalarProperty Name="YtdPayments" ColumnName="YTD_PAYMENTS" />
+                <ScalarProperty Name="AssurantGwp" ColumnName="ASSURANT_GWP" />
+                <ScalarProperty Name="MarkupCommission" ColumnName="MARKUP_COMMISSION" />
+                <ScalarProperty Name="CreatedBy" ColumnName="CREATED_BY" />
+                <ScalarProperty Name="CreatedDate" ColumnName="CREATED_DATE" />
+                <ScalarProperty Name="ModifiedBy" ColumnName="MODIFIED_BY" />
+                <ScalarProperty Name="ModifiedDate" ColumnName="MODIFIED_DATE" />
+                <ScalarProperty Name="COMPANY_ID" ColumnName="COMPANY_ID" />
+                <ScalarProperty Name="CertificateId" ColumnName="CERT_ID" />
+                <ScalarProperty Name="EARNING_CODE_ID" ColumnName="EARNING_CODE_ID" />
+                <ScalarProperty Name="DealerDiscountAmt" ColumnName="DEALER_DISCOUNT_AMT" />
+                <ScalarProperty Name="DealerDiscountPercent" ColumnName="DEALER_DISCOUNT_PERCENT" />
+                <ScalarProperty Name="IsClaimAllowed" ColumnName="IS_CLAIM_ALLOWED" />
+                <ScalarProperty Name="IsDiscount" ColumnName="IS_DISCOUNT" />
+                <ScalarProperty Name="COVERAGE_KM_MI" ColumnName="COVERAGE_KM_MI" />
+                <ScalarProperty Name="DeductiblePercent" ColumnName="DEDUCTIBLE_PERCENT" />
+                <ScalarProperty Name="RepairDiscountPCt" ColumnName="REPAIR_DISCOUNT_PCT" />
+                <ScalarProperty Name="ReplacementDiscountPct" ColumnName="REPLACEMENT_DISCOUNT_PCT" />
+                <ScalarProperty Name="CLIP" ColumnName="CLIP" />
+                <ScalarProperty Name="COMMISSION_VAT1" ColumnName="COMMISSION_VAT1" />
+                <ScalarProperty Name="COMMISSION_VAT2" ColumnName="COMMISSION_VAT2" />
+                <ScalarProperty Name="COMMISSION_VAT3" ColumnName="COMMISSION_VAT3" />
+                <ScalarProperty Name="COMMISSION_VAT4" ColumnName="COMMISSION_VAT4" />
+                <ScalarProperty Name="COMMISSION_VAT5" ColumnName="COMMISSION_VAT5" />
+                <ScalarProperty Name="COMMISSION_VAT6" ColumnName="COMMISSION_VAT6" />
+                <ScalarProperty Name="COMMISSION_VAT" ColumnName="COMMISSION_VAT" />
+                <ScalarProperty Name="TaxesPaidByCustomer" ColumnName="TAXES_PAID_BY_CUSTOMER" />
+                <ScalarProperty Name="MARKUP_COMMISSION_VAT" ColumnName="MARKUP_COMMISSION_VAT" />
+                <ScalarProperty Name="MethodOfRepairId" ColumnName="METHOD_OF_REPAIR_ID" />
+                <ScalarProperty Name="DeductibleBasedOnId" ColumnName="DEDUCTIBLE_BASED_ON_ID" />
+                <ScalarProperty Name="MTD_INCOMING_PAYMENTS" ColumnName="MTD_INCOMING_PAYMENTS" />
+                <ScalarProperty Name="YTD_INCOMING_PAYMENTS" ColumnName="YTD_INCOMING_PAYMENTS" />
+                <ScalarProperty Name="DEALER_NET" ColumnName="DEALER_NET" />
+                <ScalarProperty Name="DEALER_NET_TAXES" ColumnName="DEALER_NET_TAXES" />
+                <ScalarProperty Name="UPFRONT_FIX_COMMISSION" ColumnName="UPFRONT_FIX_COMMISSION" />
+                <ScalarProperty Name="SEQUENCE_NUMBER" ColumnName="SEQUENCE_NUMBER" />
+                <ScalarProperty Name="CoverageLiabilityLimit" ColumnName="COVERAGE_LIABILITY_LIMIT" />
+                <ScalarProperty Name="NoOfRenewals" ColumnName="NO_OF_RENEWALS" />
+                <ScalarProperty Name="RenewalDate" ColumnName="RENEWAL_DATE" />
+                <ScalarProperty Name="CoverageDuration" ColumnName="COVERAGE_DURATION" />
+                <ScalarProperty Name="RECOVER_DEVICE_ID" ColumnName="RECOVER_DEVICE_ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="CertificateCancellations">
+            <EntityTypeMapping TypeName="Model.CertificateCancellation">
+              <MappingFragment StoreEntitySet="ELP_CERT_CANCELLATION">
+                <ScalarProperty Name="DEALER_NET_TAXES" ColumnName="DEALER_NET_TAXES" />
+                <ScalarProperty Name="DEALER_NET" ColumnName="DEALER_NET" />
+                <ScalarProperty Name="MARKUP_COMMISSION_VAT" ColumnName="MARKUP_COMMISSION_VAT" />
+                <ScalarProperty Name="COMMISSION_VAT" ColumnName="COMMISSION_VAT" />
+                <ScalarProperty Name="COMMISSION_VAT6" ColumnName="COMMISSION_VAT6" />
+                <ScalarProperty Name="COMMISSION_VAT5" ColumnName="COMMISSION_VAT5" />
+                <ScalarProperty Name="COMMISSION_VAT4" ColumnName="COMMISSION_VAT4" />
+                <ScalarProperty Name="COMMISSION_VAT3" ColumnName="COMMISSION_VAT3" />
+                <ScalarProperty Name="COMMISSION_VAT2" ColumnName="COMMISSION_VAT2" />
+                <ScalarProperty Name="COMMISSION_VAT1" ColumnName="COMMISSION_VAT1" />
+                <ScalarProperty Name="CLIP" ColumnName="CLIP" />
+                <ScalarProperty Name="STATUS_DATE" ColumnName="STATUS_DATE" />
+                <ScalarProperty Name="STATUS_ID" ColumnName="STATUS_ID" />
+                <ScalarProperty Name="TRACKING_NUMBER" ColumnName="TRACKING_NUMBER" />
+                <ScalarProperty Name="BANK_INFO_ID" ColumnName="BANK_INFO_ID" />
+                <ScalarProperty Name="PAYMENT_METHOD_ID" ColumnName="PAYMENT_METHOD_ID" />
+                <ScalarProperty Name="COMPANY_ID" ColumnName="COMPANY_ID" />
+                <ScalarProperty Name="ModifiedDate" ColumnName="MODIFIED_DATE" />
+                <ScalarProperty Name="ModifiedBy" ColumnName="MODIFIED_BY" />
+                <ScalarProperty Name="CreatedDate" ColumnName="CREATED_DATE" />
+                <ScalarProperty Name="CreatedBy" ColumnName="CREATED_BY" />
+                <ScalarProperty Name="MARKUP_COMMISSION" ColumnName="MARKUP_COMMISSION" />
+                <ScalarProperty Name="ASSURANT_GWP" ColumnName="ASSURANT_GWP" />
+                <ScalarProperty Name="REFUND_AMT" ColumnName="REFUND_AMT" />
+                <ScalarProperty Name="PRINCIPAL_PAID" ColumnName="PRINCIPAL_PAID" />
+                <ScalarProperty Name="CUSTOMER_PAID" ColumnName="CUSTOMER_PAID" />
+                <ScalarProperty Name="CREDIT_ISSUED_FLAG" ColumnName="CREDIT_ISSUED_FLAG" />
+                <ScalarProperty Name="ComputedRefund" ColumnName="COMPUTED_REFUND" />
+                <ScalarProperty Name="Tax6" ColumnName="TAX6" />
+                <ScalarProperty Name="Tax5" ColumnName="TAX5" />
+                <ScalarProperty Name="Tax4" ColumnName="TAX4" />
+                <ScalarProperty Name="Tax3" ColumnName="TAX3" />
+                <ScalarProperty Name="Tax2" ColumnName="TAX2" />
+                <ScalarProperty Name="Tax1" ColumnName="TAX1" />
+                <ScalarProperty Name="SalesTax" ColumnName="SALES_TAX" />
+                <ScalarProperty Name="Other" ColumnName="OTHER" />
+                <ScalarProperty Name="MarketingExpense" ColumnName="MARKETING_EXPENSE" />
+                <ScalarProperty Name="AdminExpense" ColumnName="ADMIN_EXPENSE" />
+                <ScalarProperty Name="Commission" ColumnName="COMMISSION" />
+                <ScalarProperty Name="LossCost" ColumnName="LOSS_COST" />
+                <ScalarProperty Name="OriginalPremium" ColumnName="ORIGINAL_PREMIUM" />
+                <ScalarProperty Name="PremiumWritten" ColumnName="PREMIUM_WRITTEN" />
+                <ScalarProperty Name="GrossAmtReceived" ColumnName="GROSS_AMT_RECEIVED" />
+                <ScalarProperty Name="ProcessedDate" ColumnName="PROCESSED_DATE" />
+                <ScalarProperty Name="Source" ColumnName="SOURCE" />
+                <ScalarProperty Name="CancellationDate" ColumnName="CANCELLATION_DATE" />
+                <ScalarProperty Name="RefundDestId" ColumnName="REFUND_DEST_ID" />
+                <ScalarProperty Name="OriginalRegionId" ColumnName="ORIGINAL_REGION_ID" />
+                <ScalarProperty Name="CommissionBreakdownId" ColumnName="COMMISSION_BREAKDOWN_ID" />
+                <ScalarProperty Name="CancellationReasonId" ColumnName="CANCELLATION_REASON_ID" />
+                <ScalarProperty Name="CertificateId" ColumnName="CERT_ID" />
+                <ScalarProperty Name="CertCancellationId" ColumnName="CERT_CANCELLATION_ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="CertificateItemCoverageDeductibles">
+            <EntityTypeMapping TypeName="Model.CertificateItemCoverageDeductible">
+              <MappingFragment StoreEntitySet="ELP_CERT_ITEM_CVG_DED">
+                <ScalarProperty Name="DeductibleExpressionId" ColumnName="DEDUCTIBLE_EXPRESSION_ID" />
+                <ScalarProperty Name="ModifiedBy" ColumnName="MODIFIED_BY" />
+                <ScalarProperty Name="CreatedBy" ColumnName="CREATED_BY" />
+                <ScalarProperty Name="ModifiedDate" ColumnName="MODIFIED_DATE" />
+                <ScalarProperty Name="CreatedDate" ColumnName="CREATED_DATE" />
+                <ScalarProperty Name="Deductible" ColumnName="DEDUCTIBLE" />
+                <ScalarProperty Name="DeductibleBasedOnId" ColumnName="DEDUCTIBLE_BASED_ON_ID" />
+                <ScalarProperty Name="MethodOfRepairId" ColumnName="METHOD_OF_REPAIR_ID" />
+                <ScalarProperty Name="CertItemCoverageId" ColumnName="CERT_ITEM_COVERAGE_ID" />
+                <ScalarProperty Name="CertItemCvgDedId" ColumnName="CERT_ITEM_CVG_DED_ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="BillingDetails">
+            <EntityTypeMapping TypeName="Model.BillingDetail">
+              <MappingFragment StoreEntitySet="ELP_BILLING_DETAIL">
+                <ScalarProperty Name="PROCESSOR_REJECT_CODE" ColumnName="PROCESSOR_REJECT_CODE" />
+                <ScalarProperty Name="DatePaidFor" ColumnName="DATE_PAID_FOR" />
+                <ScalarProperty Name="REFERENCE_RECORD" ColumnName="REFERENCE_RECORD" />
+                <ScalarProperty Name="RECON_INTERFACE_RUN_DATE" ColumnName="RECON_INTERFACE_RUN_DATE" />
+                <ScalarProperty Name="RejectDate" ColumnName="REJECT_DATE" />
+                <ScalarProperty Name="InstallmentDueDate" ColumnName="INSTALLMENT_DUE_DATE" />
+                <ScalarProperty Name="MerchantCode" ColumnName="MERCHANT_CODE" />
+                <ScalarProperty Name="AuthorizationNumber" ColumnName="AUTHORIZATION_NUMBER" />
+                <ScalarProperty Name="CREDIT_CARD_INFO_ID" ColumnName="CREDIT_CARD_INFO_ID" />
+                <ScalarProperty Name="RE_ATTEMPT_COUNT" ColumnName="RE_ATTEMPT_COUNT" />
+                <ScalarProperty Name="NIGHTLY_PAYMENT_RUN_DATE" ColumnName="NIGHTLY_PAYMENT_RUN_DATE" />
+                <ScalarProperty Name="RejectedId" ColumnName="REJECTED_ID" />
+                <ScalarProperty Name="Commission" ColumnName="COMMISSION" />
+                <ScalarProperty Name="Tax" ColumnName="TAX" />
+                <ScalarProperty Name="PaidId" ColumnName="PAID_ID" />
+                <ScalarProperty Name="RejectCodeId" ColumnName="REJECT_CODE_ID" />
+                <ScalarProperty Name="BillingStatusId" ColumnName="BILLING_STATUS_ID" />
+                <ScalarProperty Name="BankRtnNumber" ColumnName="BANK_RTN_NUMBER" />
+                <ScalarProperty Name="BankAcctNumber" ColumnName="BANK_ACCT_NUMBER" />
+                <ScalarProperty Name="PaymentRunDate" ColumnName="PAYMENT_RUN_DATE" />
+                <ScalarProperty Name="CertId" ColumnName="CERT_ID" />
+                <ScalarProperty Name="ModifiedDate" ColumnName="MODIFIED_DATE" />
+                <ScalarProperty Name="ModifiedBy" ColumnName="MODIFIED_BY" />
+                <ScalarProperty Name="CreatedDate" ColumnName="CREATED_DATE" />
+                <ScalarProperty Name="CreatedBy" ColumnName="CREATED_BY" />
+                <ScalarProperty Name="Reason" ColumnName="REASON" />
+                <ScalarProperty Name="BilledAmount" ColumnName="BILLED_AMOUNT" />
+                <ScalarProperty Name="BankOwnerName" ColumnName="BANK_OWNER_NAME" />
+                <ScalarProperty Name="InstallmentNumber" ColumnName="INSTALLMENT_NUMBER" />
+                <ScalarProperty Name="BillingHeaderId" ColumnName="BILLING_HEADER_ID" />
+                <ScalarProperty Name="BillingDetailId" ColumnName="BILLING_DETAIL_ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="CertificateEndorsements">
+            <EntityTypeMapping TypeName="Model.CertificateEndorsement">
+              <MappingFragment StoreEntitySet="ELP_CERT_ENDORSE">
+			    <ScalarProperty Name="ExpirationDate" ColumnName="EXPIRATION_DATE" />
+                <ScalarProperty Name="EffectiveDate" ColumnName="EFFECTIVE_DATE" />
+                <ScalarProperty Name="DOCUMENT_ISSUE_DATE_POST" ColumnName="DOCUMENT_ISSUE_DATE_POST" />
+                <ScalarProperty Name="DOCUMENT_ISSUE_DATE_PRE" ColumnName="DOCUMENT_ISSUE_DATE_PRE" />
+                <ScalarProperty Name="RG_NUMBER_POST" ColumnName="RG_NUMBER_POST" />
+                <ScalarProperty Name="RG_NUMBER_PRE" ColumnName="RG_NUMBER_PRE" />
+                <ScalarProperty Name="IDENTIFICATION_NUMBER_POST" ColumnName="IDENTIFICATION_NUMBER_POST" />
+                <ScalarProperty Name="IDENTIFICATION_NUMBER_PRE" ColumnName="IDENTIFICATION_NUMBER_PRE" />
+                <ScalarProperty Name="DOCUMENT_AGENCY_POST" ColumnName="DOCUMENT_AGENCY_POST" />
+                <ScalarProperty Name="DOCUMENT_AGENCY_PRE" ColumnName="DOCUMENT_AGENCY_PRE" />
+                <ScalarProperty Name="ID_TYPE_POST" ColumnName="ID_TYPE_POST" />
+                <ScalarProperty Name="ID_TYPE_PRE" ColumnName="ID_TYPE_PRE" />
+                <ScalarProperty Name="DOCUMENT_TYPE_ID_POST" ColumnName="DOCUMENT_TYPE_ID_POST" />
+                <ScalarProperty Name="DOCUMENT_TYPE_ID_PRE" ColumnName="DOCUMENT_TYPE_ID_PRE" />
+                <ScalarProperty Name="LANGUAGE_ID_POST" ColumnName="LANGUAGE_ID_POST" />
+                <ScalarProperty Name="LANGUAGE_ID_PRE" ColumnName="LANGUAGE_ID_PRE" />
+                <ScalarProperty Name="ADDRESS_ID_POST" ColumnName="ADDRESS_ID_POST" />
+                <ScalarProperty Name="ADDRESS_ID_PRE" ColumnName="ADDRESS_ID_PRE" />
+                <ScalarProperty Name="WORK_PHONE_POST" ColumnName="WORK_PHONE_POST" />
+                <ScalarProperty Name="WORK_PHONE_PRE" ColumnName="WORK_PHONE_PRE" />
+                <ScalarProperty Name="HOME_PHONE_POST" ColumnName="HOME_PHONE_POST" />
+                <ScalarProperty Name="HOME_PHONE_PRE" ColumnName="HOME_PHONE_PRE" />
+                <ScalarProperty Name="EMAIL_POST" ColumnName="EMAIL_POST" />
+                <ScalarProperty Name="EMAIL_PRE" ColumnName="EMAIL_PRE" />
+                <ScalarProperty Name="SALES_PRICE_POST" ColumnName="SALES_PRICE_POST" />
+                <ScalarProperty Name="SALES_PRICE_PRE" ColumnName="SALES_PRICE_PRE" />
+                <ScalarProperty Name="ModifiedDate" ColumnName="MODIFIED_DATE" />
+                <ScalarProperty Name="ModifiedBy" ColumnName="MODIFIED_BY" />
+                <ScalarProperty Name="CreatedDate" ColumnName="CREATED_DATE" />
+                <ScalarProperty Name="CreatedBy" ColumnName="CREATED_BY" />
+                <ScalarProperty Name="WARRANTY_SALES_DATE_POST" ColumnName="WARRANTY_SALES_DATE_POST" />
+                <ScalarProperty Name="WARRANTY_SALES_DATE_PRE" ColumnName="WARRANTY_SALES_DATE_PRE" />
+                <ScalarProperty Name="PRODUCT_SALES_DATE_POST" ColumnName="PRODUCT_SALES_DATE_POST" />
+                <ScalarProperty Name="PRODUCT_SALES_DATE_PRE" ColumnName="PRODUCT_SALES_DATE_PRE" />
+                <ScalarProperty Name="CustomerNamePost" ColumnName="CUST_NAME_POST" />
+                <ScalarProperty Name="CustomerNamePre" ColumnName="CUST_NAME_PRE" />
+                <ScalarProperty Name="EndorseNumber" ColumnName="ENDORSEMENT_NUMBER" />
+                <ScalarProperty Name="CertItemId" ColumnName="CERT_ITEM_ID" />
+                <ScalarProperty Name="CompanyId" ColumnName="COMPANY_ID" />
+                <ScalarProperty Name="CertEndorseId" ColumnName="CERT_ENDORSE_ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="CertificateInstallments">
+            <EntityTypeMapping TypeName="Model.CertificateInstallment">
+              <MappingFragment StoreEntitySet="ELP_CERT_INSTALLMENT">
+                <ScalarProperty Name="SmartBundleFlatAmountCurrency" ColumnName="SMART_BUNDLE_FLAT_AMT_CURRENCY" />
+                <ScalarProperty Name="SmartBundleFlatAmount" ColumnName="SMART_BUNDLE_FLAT_AMT" />
+                <ScalarProperty Name="LastInstallmentEndDate" ColumnName="LAST_INSTALLMENT_END_DATE" />
+                <ScalarProperty Name="LastInstallmentStartDate" ColumnName="LAST_INSTALLMENT_START_DATE" />
+                <ScalarProperty Name="ReconInterfaceRunDate" ColumnName="RECON_INTERFACE_RUN_DATE" />
+                <ScalarProperty Name="PaymentDate" ColumnName="PAYMENT_DATE" />
+                <ScalarProperty Name="LastBilledDueDate" ColumnName="LAST_BILLED_DUE_DATE" />
+                <ScalarProperty Name="LastBilledInstallmentNum" ColumnName="LAST_BILLED_INSTALLMENT_NUM" />
+                <ScalarProperty Name="CancellationCode" ColumnName="CANCELLATION_CODE" />
+                <ScalarProperty Name="NextBillingDate" ColumnName="NEXT_BILLING_DATE" />
+                <ScalarProperty Name="CreditCardInfoId" ColumnName="CREDIT_CARD_INFO_ID" />
+                <ScalarProperty Name="CancellationDueDate" ColumnName="CANCELLATION_DUE_DATE" />
+                <ScalarProperty Name="SendLetterId" ColumnName="SEND_LETTER_ID" />
+                <ScalarProperty Name="CertId" ColumnName="CERT_ID" />
+                <ScalarProperty Name="ModifiedDate" ColumnName="MODIFIED_DATE" />
+                <ScalarProperty Name="ModifiedBy" ColumnName="MODIFIED_BY" />
+                <ScalarProperty Name="CreatedDate" ColumnName="CREATED_DATE" />
+                <ScalarProperty Name="CreatedBy" ColumnName="CREATED_BY" />
+                <ScalarProperty Name="DateLetterSent" ColumnName="DATE_LETTER_SENT" />
+                <ScalarProperty Name="PaymentDueDate" ColumnName="PAYMENT_DUE_DATE" />
+                <ScalarProperty Name="InstallmentAmount" ColumnName="INSTALLMENT_AMOUNT" />
+                <ScalarProperty Name="NumberOfInstallments" ColumnName="NUMBER_OF_INSTALLMENTS" />
+                <ScalarProperty Name="BankInfoId" ColumnName="BANK_INFO_ID" />
+                <ScalarProperty Name="BillingStatusId" ColumnName="BILLING_STATUS_ID" />
+                <ScalarProperty Name="BillingFrequencyId" ColumnName="BILLING_FREQUENCY_ID" />
+                <ScalarProperty Name="CertInstallmentId" ColumnName="CERT_INSTALLMENT_ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2008/10/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="False" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="true" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>

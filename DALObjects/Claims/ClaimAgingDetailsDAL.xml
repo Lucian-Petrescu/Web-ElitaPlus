@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8" ?>
+
+<SQL>
+  <LOAD>
+    ELP_TBL_CLAIM_STAGE.Load
+  </LOAD>
+  <LOAD_LIST>
+    ELP_TBL_CLAIM_STAGE.Loadlist
+  </LOAD_LIST>
+</SQL>

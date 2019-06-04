@@ -1,0 +1,123 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+
+<!-- ********************** THIS FILE HAS BEEN GENERATED FROM TEMPLATE SQLObject.cst (4/30/2012)********************** -->
+
+<SQL>
+  <LOAD>
+    <![CDATA[	
+			SELECT 
+				soft_question_id,
+				code,
+				description,
+				answer_order,
+				answer_value,
+				supports_claim_id,
+				score,
+				effective,
+				expiration,
+				created_date,
+				created_by,
+				modified_date,
+				modified_by,
+				answer_id,
+        list_item_id
+			FROM elp_answer 
+			WHERE
+				answer_id = :answer_id
+		]]>
+  </LOAD>
+  <LOAD_LIST>
+    <![CDATA[	
+     SELECT
+		soft_question_id,
+		code,
+		description,
+		answer_order,
+		answer_value,
+		supports_claim_id,
+		score,
+		effective,
+		expiration,
+		created_date,
+		created_by,
+		modified_date,
+		modified_by,
+		answer_id,
+    list_item_id
+    FROM ELITA.ELP_ANSWER
+    WHERE SOFT_QUESTION_ID = :soft_question_id
+    and :current_date between effective and expiration
+    ORDER BY answer_order
+  ]]>
+  </LOAD_LIST>
+  <UPDATE>
+    <![CDATA[	
+			UPDATE elp_answer SET
+				soft_question_id = :soft_question_id,
+				code = :code,
+				description = :description,
+				answer_order = :answer_order,
+				answer_value = :answer_value,
+				supports_claim_id = :supports_claim_id,
+				score = :score,
+				effective = :effective,
+				expiration = :expiration,
+				modified_by = :modified_by,
+        list_item_id = :list_item_id
+			WHERE
+				answer_id = :answer_id
+		]]>
+  </UPDATE>
+  <INSERT>
+    INSERT INTO elp_answer
+    (
+    soft_question_id,
+    code,
+    description,
+    answer_order,
+    answer_value,
+    supports_claim_id,
+    score,
+    effective,
+    expiration,
+    created_by,
+    answer_id,
+    list_item_id
+    )
+    VALUES
+    (
+    :soft_question_id,
+    :code,
+    :description,
+    :answer_order,
+    :answer_value,
+    :supports_claim_id,
+    :score,
+    :effective,
+    :expiration,
+    :created_by,
+    :answer_id,
+    :list_item_id
+    )
+  </INSERT>
+  <DELETE>
+    DELETE FROM elp_answer
+    WHERE
+    answer_id = :answer_id
+  </DELETE>
+  <GET_NEW_ANSWER_CODE>
+    select ELP_ANSWER_CODE_SEQ.nextval from dual
+  </GET_NEW_ANSWER_CODE>
+  <GET_ANSWER_CODE_BY_VALUE>
+    SELECT CODE FROM ELP_ANSWER WHERE UPPER(ANSWER_VALUE) = UPPER(:ANSWER_VALUE)
+  </GET_ANSWER_CODE_BY_VALUE>
+  <GET_ANSWER_DATA_BY_CODE>
+    SELECT SOFT_QUESTION_ID,CODE,DESCRIPTION,ANSWER_ORDER,ANSWER_VALUE,SUPPORTS_CLAIM_ID,SCORE,EFFECTIVE,
+    EXPIRATION,CREATED_DATE,CREATED_BY,MODIFIED_DATE,MODIFIED_BY,ANSWER_ID,LIST_ITEM_ID
+    FROM ELP_ANSWER
+    WHERE
+    CODE = UPPER(:ANSWER_CODE)
+  </GET_ANSWER_DATA_BY_CODE>
+</SQL>
+
+

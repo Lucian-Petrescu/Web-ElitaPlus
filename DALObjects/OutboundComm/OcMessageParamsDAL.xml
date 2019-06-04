@@ -1,0 +1,38 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+
+<SQL>
+  <LOAD>
+    <![CDATA[	
+			SELECT
+        oc_message_params_id,
+        oc_message_id,
+				param_name,
+				param_value,
+				created_by,
+				created_date,
+				modified_by,
+				modified_date
+			FROM elp_oc_message_params 
+			WHERE
+				oc_message_params_id = :oc_message_params_id
+		]]>
+  </LOAD>
+  <LOAD_LIST>
+  </LOAD_LIST>
+  <LOAD_LIST_BY_MESSAGE_ID>
+    <![CDATA[	
+			SELECT 
+        oc_message_params_id,
+				oc_message_id,
+				param_name,
+				param_value,
+				created_by,
+				created_date,
+				modified_by,
+				modified_date
+			FROM elp_oc_message_params 
+			WHERE
+				oc_message_id = :oc_message_id
+		]]>
+  </LOAD_LIST_BY_MESSAGE_ID>
+</SQL>

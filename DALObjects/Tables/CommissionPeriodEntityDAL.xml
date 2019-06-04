@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="utf-8" ?>
+
+<!-- ********************** THIS FILE HAS BEEN GENERATED FROM TEMPLATE SQLObject.cst (9/5/2007)********************** -->
+
+<SQL>
+  <LOAD>
+    <![CDATA[	
+			SELECT 
+				commission_period_id,
+				entity_id,
+				position,
+				created_by,
+				created_date,
+				modified_by,
+				modified_date,
+				commission_period_entity_id,
+        payee_type_id
+			FROM elp_commission_period_entity 
+			WHERE
+				commission_period_entity_id = :commission_period_entity_id
+		]]>
+  </LOAD>
+  <LOAD_BY_PERIOD_ID>
+    <![CDATA[	
+			SELECT 
+				max(commission_period_id) as commission_period_id,
+				entity_id,
+				position,
+				max(created_by) as created_by,
+				max(created_date) as created_date,
+				max(modified_by) as modified_by,
+				max(modified_date) as modified_date,
+				max(commission_period_entity_id) commission_period_entity_id,
+        payee_type_id
+			FROM elp_commission_period_entity 
+			WHERE
+				commission_period_id = :commission_period_id
+        GROUP BY entity_id,payee_type_id , position
+		]]>
+  </LOAD_BY_PERIOD_ID>
+  <LOAD_LIST>
+    <![CDATA[	
+    SELECT
+      cpe.commission_period_entity_id,
+      cpe.commission_period_id,
+      cpe.entity_id, position,
+      ce.entity_name, 
+      cpe.payee_type_id
+    FROM elp_commission_period_entity cpe, elp_commission_entity ce
+    WHERE cpe.entity_id = ce.entity_id
+      and cpe.commission_period_id = :commission_period_id
+    order by  cpe.position
+    ]]>
+  </LOAD_LIST>
+  <UPDATE>
+    <![CDATA[	
+			UPDATE elp_commission_period_entity SET
+				commission_period_id = :commission_period_id,
+				entity_id = :entity_id,
+				position = :position,
+				modified_by = :modified_by,
+        payee_type_id = :payee_type_id
+			WHERE
+				commission_period_entity_id = :commission_period_entity_id
+		]]>
+  </UPDATE>
+  <INSERT>
+    INSERT INTO elp_commission_period_entity
+    (
+    commission_period_id,
+    entity_id,
+    position,
+    created_by,
+    commission_period_entity_id,
+    payee_type_id
+    )
+    VALUES
+    (
+    :commission_period_id,
+    :entity_id,
+    :position,
+    :created_by,
+    :commission_period_entity_id,
+    :payee_type_id
+    )
+  </INSERT>
+  <DELETE>
+    DELETE FROM elp_commission_period_entity
+    WHERE
+    commission_period_entity_id = :commission_period_entity_id
+  </DELETE>
+</SQL>
+
+

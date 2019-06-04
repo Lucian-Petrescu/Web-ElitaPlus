@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xs:schema xmlns:tns="http://schemas.datacontract.org/2004/07/FelitaConnect" elementFormDefault="qualified" targetNamespace="http://schemas.datacontract.org/2004/07/FelitaConnect" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+  <xs:simpleType name="FileType">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="ACCOUNT" />
+      <xs:enumeration value="ADDRESS" />
+      <xs:enumeration value="ANALYSIS_CODE" />
+      <xs:enumeration value="BANK_DETAILS" />
+      <xs:enumeration value="CLIENT" />
+      <xs:enumeration value="JOURNAL" />
+      <xs:enumeration value="SUPPLIER" />
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:element name="FileType" nillable="true" type="tns:FileType" />
+</xs:schema>

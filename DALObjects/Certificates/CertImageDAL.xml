@@ -1,0 +1,101 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+
+<!-- ********************** THIS FILE HAS BEEN GENERATED FROM TEMPLATE SQLObject.cst (12/29/2016)********************** -->
+
+<SQL>
+  <LOAD>
+    <![CDATA[	
+			SELECT 
+				cert_id,
+				image_id,
+				document_type_id,
+				scan_date,
+				file_name,
+				file_size_bytes,
+				comments,
+				user_name,
+				created_by,
+				created_date,
+				modified_by,
+				modified_date,
+				cert_image_id
+			FROM elp_cert_image 
+			WHERE
+				cert_image_id = :cert_image_id
+		]]>
+  </LOAD>
+  <LOAD_LIST>
+  </LOAD_LIST>
+  <LOAD_LIST_CERT_ID>
+    <![CDATA[
+      SELECT 
+				cert_id,
+				image_id,
+				document_type_id,
+				scan_date,
+				file_name,
+				file_size_bytes,
+				comments,
+				user_name,
+				created_by,
+				created_date,
+				modified_by,
+				modified_date,
+				cert_image_id
+			FROM elp_cert_image 
+			WHERE
+				cert_id = :cert_id
+    ]]>
+  </LOAD_LIST_CERT_ID>
+  <UPDATE>
+    <![CDATA[	
+			UPDATE elp_cert_image SET
+				cert_id = :cert_id,
+				image_id = :image_id,
+				document_type_id = :document_type_id,
+				scan_date = :scan_date,
+				file_name = :file_name,
+				file_size_bytes = :file_size_bytes,
+				comments = :comments,
+				user_name = :user_name,
+				modified_by = :modified_by
+			WHERE
+				cert_image_id = :cert_image_id
+		]]>
+  </UPDATE>
+  <INSERT>
+    INSERT INTO elp_cert_image
+    (
+    cert_id,
+    image_id,
+    document_type_id,
+    scan_date,
+    file_name,
+    file_size_bytes,
+    comments,
+    user_name,
+    created_by,
+    cert_image_id
+    )
+    VALUES
+    (
+    :cert_id,
+    :image_id,
+    :document_type_id,
+    :scan_date,
+    :file_name,
+    :file_size_bytes,
+    :comments,
+    :user_name,
+    :created_by,
+    :cert_image_id
+    )
+  </INSERT>
+  <DELETE>
+    DELETE FROM elp_cert_image
+    WHERE
+    cert_image_id = :cert_image_id
+  </DELETE>
+</SQL>
+
+

@@ -1,0 +1,1 @@
+﻿<%@ ServiceHost Language="VB" Debug="true" Service="ElitaInternalWS.Generic.GenericWcf" CodeBehind="GenericWcf.svc.vb" %>

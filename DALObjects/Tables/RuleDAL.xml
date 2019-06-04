@@ -1,0 +1,142 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+
+<!-- ********************** THIS FILE HAS BEEN GENERATED FROM TEMPLATE SQLObject.cst (5/24/2012)********************** -->
+
+<SQL>
+  <LOAD>
+    <![CDATA[	
+			SELECT 
+				code,
+				description,
+				rule_type_id,
+				rule_category_id,
+				rule_execution_point,
+				rule_data_set,
+				effective,
+				expiration,
+				created_date,
+				created_by,
+				modified_date,
+				modified_by,
+				rule_id
+			FROM elp_rule 
+			WHERE
+				rule_id = :rule_id
+		]]>
+  </LOAD>
+  <LOAD_LIST>
+      <![CDATA[	
+            SELECT
+	            rule_id,
+	            nvl(description,'Unknown Description') as description
+            FROM
+	            elp_rule
+            WHERE
+                rule_id = :rule_id
+      ]]>
+  </LOAD_LIST>
+  <UPDATE>
+    <![CDATA[	
+			UPDATE elp_rule SET
+				code = :code,
+				description = :description,
+				rule_type_id = :rule_type_id,
+				rule_category_id = :rule_category_id,
+				rule_execution_point = :rule_execution_point,
+				rule_data_set = :rule_data_set,
+				effective = :effective,
+				expiration = :expiration,
+				modified_by = :modified_by
+			WHERE
+				rule_id = :rule_id
+		]]>
+  </UPDATE>
+  <INSERT>
+    INSERT INTO elp_rule
+    (
+    code,
+    description,
+    rule_type_id,
+    rule_category_id,
+    rule_execution_point,
+    rule_data_set,
+    effective,
+    expiration,
+    created_by,
+    rule_id
+    )
+    VALUES
+    (
+    :code,
+    :description,
+    :rule_type_id,
+    :rule_category_id,
+    :rule_execution_point,
+    :rule_data_set,
+    :effective,
+    :expiration,
+    :created_by,
+    :rule_id
+    )
+  </INSERT>
+  <DELETE>
+    DELETE FROM elp_rule
+    WHERE
+    rule_id = :rule_id
+  </DELETE>
+  <LOAD_SEARCH_LIST>
+      SELECT RULE_ID,ER.CODE,ER.DESCRIPTION,
+      GETDESCRIPTIONFROMLISTITEM(RULE_TYPE_ID,L.LANGUAGE_ID) RULE_TYPE,
+      GETDESCRIPTIONFROMLISTITEM(RULE_CATEGORY_ID,L.LANGUAGE_ID) RULE_CATEGORY,
+      EFFECTIVE,
+      EXPIRATION
+      FROM ELP_RULE ER, ELP_LANGUAGE L
+      WHERE ER.CODE LIKE :CODE
+      AND ER.DESCRIPTION LIKE :DESCRIPTION
+      AND L.LANGUAGE_ID = :LANG_ID
+  </LOAD_SEARCH_LIST>
+    <IsIssueAssignedtoRule>
+        <![CDATA[	
+        SELECT 
+            ISSUE_ID 
+        FROM 
+            ELP_RULE_ISSUE
+        WHERE 
+            ISSUE_ID = :issue_id
+        ]]>
+    </IsIssueAssignedtoRule>
+  <LOAD_RULES_BY_DEALER_AND_COMPANY>
+    <![CDATA[	
+    
+       (SELECT er.rule_id,er.code,er.description FROM ELP_RULE er
+      inner join Elp_Rule_List_Detail erld
+      on erld.rule_id = er.rule_id
+      inner join elp_dealer_rule_list edrl
+      on edrl.rule_list_id = erld.rule_list_id
+      inner join elp_rule_list erl
+      on edrl.rule_list_id = erl.rule_list_id
+     	and sysdate BETWEEN er.effective AND er.expiration
+			and sysdate BETWEEN erld.effective AND erld.expiration
+			and sysdate BETWEEN edrl.effective AND edrl.expiration
+			and sysdate BETWEEN erl.effective AND erl.expiration
+			and edrl.dealer_id = :dealer_id )
+      union
+      (
+      SELECT er.rule_id,er.code,er.description FROM ELP_RULE er
+      inner join Elp_Rule_List_Detail erld
+      on erld.rule_id = er.rule_id
+      inner join elp_company_rule_list ecrl
+      on ecrl.rule_list_id = erld.rule_list_id
+      inner join elp_rule_list erl
+      on ecrl.rule_list_id = erl.rule_list_id
+     	and sysdate BETWEEN er.effective AND er.expiration
+			and sysdate BETWEEN erld.effective AND erld.expiration
+			and sysdate BETWEEN ecrl.effective AND ecrl.expiration
+			and sysdate BETWEEN erl.effective AND erl.expiration
+			and ecrl.company_id = :company_id)
+  
+    ]]>
+  </LOAD_RULES_BY_DEALER_AND_COMPANY>
+</SQL>
+
+

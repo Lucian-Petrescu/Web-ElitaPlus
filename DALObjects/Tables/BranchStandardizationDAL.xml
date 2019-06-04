@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="utf-8" ?>
+
+<!-- ********************** THIS FILE HAS BEEN GENERATED FROM TEMPLATE SQLObject.cst (2/21/2008)********************** -->
+
+<SQL>
+  <LOAD>
+    <![CDATA[	
+			SELECT 
+				dealer_id,
+				dealer_branch_code,
+				branch_id,
+				created_date,
+				modified_date,
+				created_by,
+				modified_by,
+				branch_standardization_id
+			FROM elp_branch_standardization 
+			WHERE
+				branch_standardization_id = :branch_standardization_id
+		]]>
+  </LOAD>
+  <LOAD_LIST>
+    <![CDATA[
+			SELECT
+				brchstand.branch_standardization_id,
+        brchstand.branch_id,
+				brchstand.dealer_id,
+				brchstand.dealer_branch_code,
+				brch.branch_code,
+        d.dealer_name dealer_name
+			FROM
+				elp_branch_standardization brchstand,
+				elp_branch brch, elp_dealer d
+			WHERE
+				brchstand.dealer_id like :dealer_id
+				and brchstand.dealer_id  = d.dealer_id
+				and brchstand.branch_ID = brch.branch_id
+		]]>
+  </LOAD_LIST>
+  <LOAD_LIST_MULTIPLE_COMPANIES>
+    SELECT
+      brchstand.branch_standardization_id,
+      brchstand.branch_id,
+      brchstand.dealer_id,
+      brchstand.dealer_branch_code,
+      brch.branch_code,
+      c.code || ' - ' || d.dealer_name dealer_name
+    FROM
+      elp_branch_standardization brchstand,
+      elp_branch brch, elp_dealer d, elp_company c
+    WHERE
+      brchstand.dealer_id like :dealer_id
+      and brchstand.dealer_id  = d.dealer_id
+      and brchstand.branch_ID = brch.branch_id
+      and d.company_id = c.company_id
+  </LOAD_LIST_MULTIPLE_COMPANIES>
+  <UPDATE>
+    <![CDATA[	
+			UPDATE elp_branch_standardization SET
+				dealer_id = :dealer_id,
+				dealer_branch_code = :dealer_branch_code,
+				branch_id = :branch_id,
+				modified_by = :modified_by
+			WHERE
+				branch_standardization_id = :branch_standardization_id
+		]]>
+  </UPDATE>
+  <INSERT>
+    INSERT INTO elp_branch_standardization
+    (
+    dealer_id,
+    dealer_branch_code,
+    branch_id,
+    created_by,
+    branch_standardization_id
+    )
+    VALUES
+    (
+    :dealer_id,
+    :dealer_branch_code,
+    :branch_id,
+    :created_by,
+    :branch_standardization_id
+    )
+  </INSERT>
+  <DELETE>
+    DELETE FROM elp_branch_standardization
+    WHERE
+    branch_standardization_id = :branch_standardization_id
+  </DELETE>
+</SQL>
+
+

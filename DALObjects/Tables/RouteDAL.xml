@@ -1,0 +1,113 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+
+<!-- ********************** THIS FILE HAS BEEN GENERATED FROM TEMPLATE SQLObject.cst (7/16/2008)********************** -->
+
+<SQL>
+  <LOAD>
+    <![CDATA[	
+			SELECT 
+				description,
+				code,
+				service_network_id,
+				created_by,
+				created_date,
+				modified_by,
+				modified_date,
+				route_id
+			FROM elp_route 
+			WHERE
+				route_id = :route_id
+		]]>
+  </LOAD>
+  <LOAD_LIST>
+    <![CDATA[	
+			SELECT 
+				rt.route_id,
+				rt.description,
+				rt.code short_desc,
+        snw.short_desc service_network_code
+			FROM elp_route rt, elp_service_network snw
+			WHERE snw.company_group_id = :company_group_id and
+            rt.route_id like :route_id and
+            rt.service_network_id like :service_network_id and
+            rt.service_network_id = snw.service_network_id
+			--dynamic_in_clause
+			ORDER BY UPPER(description)
+		]]>
+  </LOAD_LIST>
+  <LOAD_AVAILABLE_SERVICE_CENTER_LIST>
+    select sc.service_center_id id,       
+       sc.description,       
+       sc.code     
+    from elp_service_center sc,          
+         elp_service_network_svc snsc
+    where snsc.service_center_id  = sc.service_center_id    
+      and snsc.service_network_id = :service_network_id
+      and sc.route_id is null
+    order by upper(description)
+  </LOAD_AVAILABLE_SERVICE_CENTER_LIST>
+  <LOAD_SELECTED_SERVICE_CENTER_LIST>
+   select sc.service_center_id id,       
+       sc.description,       
+       sc.code     
+    from elp_service_center sc          
+    where sc.route_id = :route_id
+    order by upper(description)
+
+  </LOAD_SELECTED_SERVICE_CENTER_LIST>
+  <UPDATE>
+    <![CDATA[	
+			UPDATE elp_route SET
+				description = :description,
+				code = :code,
+        service_network_id = :service_network_id,
+				modified_by = :modified_by
+			WHERE
+				route_id = :route_id
+		]]>
+  </UPDATE>
+  <INSERT>
+    INSERT INTO elp_route
+    (
+    description,
+    code,
+    service_network_id,
+    created_by,
+    route_id
+    )
+    VALUES
+    (
+    :description,
+    :code,
+    :service_network_id,
+    :created_by,
+    :route_id
+    )
+  </INSERT>
+  <DELETE>
+    DELETE FROM elp_route
+    WHERE
+    route_id = :route_id
+  </DELETE>
+  <LOAD_LIST_DYNAMIC>
+    <![CDATA[	
+			SELECT 
+				route_id,
+				description,
+				code
+			FROM elp_route 
+			WHERE 
+			    service_network_id = :service_network_id
+		]]>
+  </LOAD_LIST_DYNAMIC>
+  <GET_ROUTE_BY_CODE>
+    <![CDATA[	
+    select route.route_id, route.code, route.description, route.service_network_id
+    from elp_route route join elp_service_network sn on route.service_network_id = sn.service_network_id
+    where sn.company_group_id = :company_group_id
+	    and route.code = :code
+		]]>
+  </GET_ROUTE_BY_CODE>  
+</SQL>
+
+

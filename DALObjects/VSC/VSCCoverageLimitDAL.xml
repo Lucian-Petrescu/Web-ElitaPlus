@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="utf-8" ?>
+
+<!-- ********************** THIS FILE HAS BEEN GENERATED FROM TEMPLATE SQLObject.cst (6/7/2007)********************** -->
+
+<SQL>
+	<LOAD>
+		<![CDATA[	
+			SELECT 
+				coverage_km_mi,
+				coverage_months,
+				created_date,
+				created_by,
+				modified_date,
+				modified_by,
+				coverage_type_id,
+				coverage_limit_code,
+				vsc_coverage_limit_id,
+        company_group_id
+			FROM elp_vsc_coverage_limit 
+			WHERE
+				vsc_coverage_limit_id = :vsc_coverage_limit_id
+		]]>
+	</LOAD>
+	<LOAD_LIST>		
+		<![CDATA[	
+			SELECT 	VSC_COVERAGE_LIMIT_ID ,  
+					cl.COVERAGE_LIMIT_CODE, 
+					cl.COVERAGE_TYPE_ID, 
+					translation description, 
+					COVERAGE_MONTHS, 
+					COVERAGE_KM_MI   
+			FROM elp_vsc_coverage_limit cl, 
+				elp_coverage_by_company_group c,
+				elp_list_item li,
+				elp_dict_item_translation trans
+			WHERE c.company_group_id = :company_group_id
+				AND c.coverage_type_id  = list_item_id
+				and li.dict_item_id = trans.dict_item_id
+				and language_id = :language_id
+				and	cl.coverage_type_id = c.coverage_type_id
+        and cl.company_group_id = c.company_group_id
+				--dynamic_in_clause
+			    --dynamic_where_clause
+			ORDER BY cl.COVERAGE_LIMIT_CODE, UPPER(description)
+		]]>
+	</LOAD_LIST>	
+	<UPDATE>
+		<![CDATA[	
+			UPDATE elp_vsc_coverage_limit SET
+				coverage_km_mi = :coverage_km_mi,
+				coverage_months = :coverage_months,
+				coverage_type_id = :coverage_type_id,
+				coverage_limit_code = :coverage_limit_code,
+				modified_by = :modified_by,
+        company_group_id = :company_group_id
+			WHERE
+				vsc_coverage_limit_id = :vsc_coverage_limit_id
+		]]>
+	</UPDATE>
+	<INSERT>
+    INSERT INTO elp_vsc_coverage_limit
+    (
+    coverage_km_mi,
+    coverage_months,
+    coverage_type_id,
+    coverage_limit_code,
+    created_by,
+    vsc_coverage_limit_id,
+    company_group_id
+    )
+    VALUES
+    (
+    :coverage_km_mi,
+    :coverage_months,
+    :coverage_type_id,
+    :coverage_limit_code,
+    :created_by,
+    :vsc_coverage_limit_id,
+    :company_group_id
+    )
+  </INSERT>
+	<DELETE>
+			DELETE FROM elp_vsc_coverage_limit
+			WHERE
+				vsc_coverage_limit_id = :vsc_coverage_limit_id
+	</DELETE>
+
+  <GET_COVERAGE_OPT>
+    <![CDATA[
+      Select count(*) Cov_Optional
+      From ELP_VSC_COVERAGE_LIMIT CL,
+	        (
+	        Select list_item_id
+            From ELP_LIST_ITEM
+	        Where code in (
+	          	SELECT	UNIQUE i1.code
+            	FROM elita.elp_list_item i,
+            		elita.elp_vsc_coverage c, elita.elp_coverage_by_company_group g,
+            		elita.elp_list_item i1
+            	WHERE
+            		i1.list_item_id = g.coverage_type_id
+	            AND g.company_group_id = :company_group_id
+	            AND g.coverage_type_id = c.coverage_type_id
+	            AND i.list_item_id = c.add_to_plan_id
+	            AND upper(i.code)= 'Y')	          
+	          ) OCT
+      Where CL.COVERAGE_TYPE_id = OCT.list_item_id and
+       VSC_COVERAGE_LIMIT_id =  :coverage_type_id
+       and CL.company_group_id = :company_group_id
+  ]]>
+  </GET_COVERAGE_OPT>
+</SQL> 
+
+

@@ -1,0 +1,126 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+
+<!-- ********************** THIS FILE HAS BEEN GENERATED FROM TEMPLATE SQLObject.cst (5/30/2012)********************** -->
+
+<SQL>
+  <LOAD>
+    <![CDATA[	
+			SELECT 
+				issue_id,
+				issue_comment_type_id,
+				code,
+				text,
+				display_on_web,
+				created_date,
+				created_by,
+				modified_date,
+				modified_by,
+				issue_comment_id
+			FROM 
+        elp_issue_comment 
+			WHERE
+				issue_comment_id = :issue_comment_id
+		]]>
+  </LOAD>
+  <LOAD_LIST>
+    <![CDATA[	
+			SELECT 
+				issue_id,
+				issue_comment_type_id,
+				code,
+				text,
+				display_on_web,
+				created_date,
+				created_by,
+				modified_date,
+				modified_by,
+				issue_comment_id
+			FROM 
+        elp_issue_comment 
+			WHERE
+				issue_id = :issue_id
+		]]>
+  </LOAD_LIST>
+  <LOAD_COMMENT_LIST>
+    <![CDATA[	
+    SELECT
+      issue_comment_id,
+      issue_id,
+      issue_comment_type_id,
+      code,
+      text,
+      display_on_web
+    FROM 
+      elp_issue_comment
+    WHERE
+      issue_id = :issue_id
+    ]]>
+  </LOAD_COMMENT_LIST>
+  <UPDATE>
+    <![CDATA[	
+			UPDATE elp_issue_comment SET
+				issue_id = :issue_id,
+				issue_comment_type_id = :issue_comment_type_id,
+				code = :code,
+				text = :text,
+				display_on_web = :display_on_web,
+				modified_by = :modified_by
+			WHERE
+				issue_comment_id = :issue_comment_id
+		]]>
+  </UPDATE>
+  <INSERT>
+    <![CDATA[
+    INSERT INTO elp_issue_comment
+    (
+    issue_id,
+    issue_comment_type_id,
+    code,
+    text,
+    display_on_web,
+    created_by,
+    issue_comment_id
+    )
+    VALUES
+    (
+    :issue_id,
+    :issue_comment_type_id,
+    :code,
+    :text,
+    :display_on_web,
+    :created_by,
+    :issue_comment_id
+    )
+   ]]>
+  </INSERT>
+  <DELETE>
+    <![CDATA[
+    DELETE FROM elp_issue_comment
+    WHERE
+    issue_comment_id = :issue_comment_id
+    ]]>
+  </DELETE>
+  <IS_CHILD>
+    <![CDATA[
+      SELECT
+        issue_comment_id
+      FROM 
+        elp_issue_comment
+      WHERE
+        issue_comment_id = :issue_comment_id AND
+        issue_id = :issue_id 
+    ]]>
+  </IS_CHILD>
+  <GET_ISSUE_COMMENT_CODE>
+    <![CDATA[
+    SELECT 
+      CODE 
+    FROM 
+      elp_issue_comment
+    WHERE
+      issue_comment_id = :issue_comment_id
+    ]]>
+  </GET_ISSUE_COMMENT_CODE>
+</SQL>
+
+

@@ -1,0 +1,50 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema">
+  <xs:element name="TRANSACTIONDs">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element name="TRANSACTION" minOccurs="1" maxOccurs="1">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element name="TRANSACTION_HEADER" minOccurs="1" maxOccurs="1">
+                <xs:complexType>
+                  <xs:sequence>
+                    <xs:element name="TRANSACTION_ID" type="stringRequired" minOccurs="1" maxOccurs="1" />
+                    <xs:element name="FUNCTION_TYPE" type="stringRequired" minOccurs="1" maxOccurs="1" />
+                  </xs:sequence>
+                </xs:complexType>
+              </xs:element>
+              <xs:element name="TRANSACTION_DATA_RECORD" minOccurs="1" maxOccurs="25">
+                <xs:complexType>
+                  <xs:sequence>
+                    <xs:element name="ITEM_NUMBER" type="myPositiveInteger" minOccurs="1" maxOccurs="1" />
+                    <xs:element name="SERVICE_CENTER_CODE" type="stringRequired" minOccurs="1" maxOccurs="1" />
+                    <xs:element name="DESCRIPTION" type="stringRequired" minOccurs="1" maxOccurs="1" />
+                    <xs:element name="TAX_ID" type="stringRequired" minOccurs="1" maxOccurs="1" />
+                    <xs:element name="STATUS_CODE" type="stringRequired" minOccurs="1" maxOccurs="1" />
+                    <xs:element name="REVERSE_LOGISTICS" type="stringRequired" minOccurs="0" maxOccurs="1" />
+                  </xs:sequence>
+                </xs:complexType>
+              </xs:element>
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:simpleType name="stringRequired">
+    <xs:restriction base="xs:string">
+      <xs:minLength value="1"></xs:minLength>
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:simpleType name="myPositiveInteger">
+    <xs:restriction base="xs:int">
+      <xs:minInclusive value="1" />
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:simpleType name="myPositiveDecimal">
+    <xs:restriction base="xs:decimal">
+      <xs:minInclusive value="0" />
+    </xs:restriction>
+  </xs:simpleType>
+</xs:schema>

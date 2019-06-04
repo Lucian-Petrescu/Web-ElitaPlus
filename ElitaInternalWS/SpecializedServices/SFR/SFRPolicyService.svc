@@ -1,0 +1,5 @@
+﻿
+<%@ ServiceHost Language="VB" Debug="true" 
+    Service="ElitaInternalWS.SpecializedServices.SFR.SFRPolicyService" 
+    Factory="ElitaInternalWS.Core.UnityServiceHostFactory"
+    CodeBehind="SFRPolicyService.svc.vb" %>

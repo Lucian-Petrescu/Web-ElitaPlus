@@ -1,0 +1,89 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+
+<!-- ********************** THIS FILE HAS BEEN GENERATED FROM TEMPLATE SQLObject.cst (7/26/2012)********************** -->
+
+<SQL>
+	<LOAD>
+		<![CDATA[	
+			SELECT 
+				cis.claim_issue_id,
+				cis.claim_issue_status_c_id,
+				cis.comments,
+				cis.created_by,
+				cis.created_date,
+				cis.modified_by,
+				cis.modified_date,
+				cis.claim_issue_status_id,
+                eup.user_name created_by_name,
+                cis.issue_process_reason_id
+			FROM 
+                elp_claim_issue_status cis
+                inner join
+                elp_user eup on eup.network_id = cis.created_by                
+			WHERE
+				cis.claim_issue_status_id = :claim_issue_status_id
+		]]>
+	</LOAD>
+	<LOAD_LIST>
+    SELECT
+    cis.claim_issue_id,
+    cis.claim_issue_status_c_id,
+    cis.comments,
+    cis.created_by,
+    cis.created_date,
+    cis.modified_by,
+    cis.modified_date,
+    cis.claim_issue_status_id,
+    eup.user_name created_by_name,
+    cis.issue_process_reason_id
+    FROM
+    elp_claim_issue_status cis
+    inner join
+    elp_user eup on eup.network_id = cis.created_by
+    WHERE
+    claim_issue_id = :claim_issue_id
+    ORDER BY
+    modified_date desc , created_date desc
+  </LOAD_LIST>
+	<UPDATE>
+		<![CDATA[	
+			UPDATE elp_claim_issue_status SET
+				claim_issue_id = :claim_issue_id,
+				claim_issue_status_c_id = :claim_issue_status_c_id,
+				comments = :comments,
+				modified_by = :modified_by,
+               issue_process_reason_id = :issue_process_reason_id
+			WHERE
+				claim_issue_status_id = :claim_issue_status_id
+		]]>
+	</UPDATE>
+	<INSERT>
+    INSERT INTO elp_claim_issue_status
+    (
+    claim_issue_id,
+    claim_issue_status_c_id,
+    comments,
+    created_by,
+    created_date,
+    claim_issue_status_id,
+    issue_process_reason_id
+    )
+    VALUES
+    (
+    :claim_issue_id,
+    :claim_issue_status_c_id,
+    :comments,
+    :created_by,
+    :created_date,
+    :claim_issue_status_id,
+    :issue_process_reason_id
+    )
+  </INSERT>
+	<DELETE>
+		DELETE FROM elp_claim_issue_status
+		WHERE
+		claim_issue_status_id = :claim_issue_status_id
+	</DELETE>
+</SQL>
+
+

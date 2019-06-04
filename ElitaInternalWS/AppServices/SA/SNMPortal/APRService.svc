@@ -1,0 +1,2 @@
+﻿<%@ ServiceHost Language="VB" Debug="true" Service="ElitaInternalWS.AppServices.SA.APRService" 
+    Factory="ElitaInternalWS.Core.UnityServiceHostFactory" CodeBehind="APRService.svc.vb" %>

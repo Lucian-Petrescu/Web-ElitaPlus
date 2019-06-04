@@ -1,0 +1,70 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+
+<SQL>
+  <LOAD>
+    <![CDATA[	
+			SELECT 
+        payment_id, 
+        payment_date, 
+        amount, 
+        currency_code, 
+        exchange_rate, 
+        source,
+        reference, 
+        reference_id, 
+        application_mode, 
+        payment_method, 
+        distributed,
+        created_date, 
+        created_by, 
+        payment_type_xcd, 
+        payment_reject_code_xcd,
+        payment_reject_date, 
+        check_number, 
+        payment_sepa_unique_id, 
+        bank_info_id,
+        customer_name,
+        bank_name,
+        comments
+			FROM elp_ar_payments
+			WHERE
+        payment_id = :payment_id
+		]]>
+  </LOAD>
+  <LOAD_LIST_FOR_CERT>
+    <![CDATA[	
+			SELECT
+        payment_id, 
+        payment_date, 
+        amount, 
+        currency_code, 
+        exchange_rate, 
+        source,
+        reference, 
+        reference_id, 
+        application_mode, 
+        payment_method, 
+        distributed,
+        created_date, 
+        created_by, 
+        payment_type_xcd, 
+        payment_reject_code_xcd,
+        payment_reject_date, 
+        check_number, 
+        payment_sepa_unique_id, 
+        bank_info_id,
+        customer_name,
+        bank_name,
+        comments
+			FROM elp_ar_payments
+			WHERE
+				cert_id = :cert_id
+      AND reference = 'ELP_CERT'
+		]]>
+  </LOAD_LIST_FOR_CERT>
+  <ADD_CHECK_PAYMENT>elita.elp_ar_auto_payment.AddCheckPayment</ADD_CHECK_PAYMENT>
+  <ADD_REJECT_PAYMENT>elita.elp_ar_payment_processing.reject_ar_payment</ADD_REJECT_PAYMENT>
+  <UPDATE></UPDATE>
+  <INSERT></INSERT>
+  <DELETE></DELETE>
+</SQL>

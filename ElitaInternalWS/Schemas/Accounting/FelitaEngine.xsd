@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema">
+    <xs:element name="FelitaEngineDs">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name="FelitaEngine">
+                    <xs:complexType>
+                        <xs:sequence>
+                            <xs:element name="CompanyId" type="stringRequired" minOccurs="1" maxOccurs="1" />
+                            <xs:element name="AccountingEventId" type="stringOptional" minOccurs="0" maxOccurs="1" />
+                            <xs:element name="VendorFiles" type="stringRequired" minOccurs="1" maxOccurs="1" />
+                        </xs:sequence>
+                    </xs:complexType>
+                </xs:element>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+    <xs:simpleType name="stringRequired">
+        <xs:restriction base="xs:string">
+            <xs:minLength value="1">
+            </xs:minLength>
+        </xs:restriction>
+    </xs:simpleType>
+    <xs:simpleType name="stringOptional">
+        <xs:restriction base="xs:string">
+            <xs:minLength value="0">
+            </xs:minLength>
+        </xs:restriction>
+    </xs:simpleType>
+</xs:schema>

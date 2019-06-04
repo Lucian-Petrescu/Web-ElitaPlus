@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="utf-8" ?>
+
+<!-- ********************** THIS FILE HAS BEEN GENERATED FROM TEMPLATE SQLObject.cst (12/29/2005)********************** -->
+
+<SQL>
+	<LOAD>
+		<![CDATA[	
+			SELECT 
+				split_system_id,
+				filename,
+				process_flag,
+				received,
+				counted,
+				split,
+				created_by,
+				created_date,
+				modified_by,
+				modified_date,
+				splitfile_processed_id
+			FROM elp_splitfile_processed 
+			WHERE
+				splitfile_processed_id = :splitfile_processed_id
+		]]>
+	</LOAD>
+	<LOAD_LIST>
+        SELECT splitfile_processed_id,
+               filename,
+               received,
+               counted,
+               split
+        FROM elp_splitfile_processed dp
+		WHERE
+			dp.split_system_id = :split_system_id
+		ORDER BY filename desc			
+	</LOAD_LIST>
+	<LOAD_TOTAL_RECORDS_BY_FILE_LIST>
+		Select * from (select '1' type,'Header Record' FileName,1 Records from dual
+                       union
+                       select '3' type,'Trailer Record' FileName,1 Records from dual
+                       union
+                       select '2' type,Outfile_name FileName,count(*) Records from elp_split_recon_wrk
+                       where splitfile_processed_id = :splitfile_processed_id
+                       group by outfile_name
+                       union
+                       select '5' type,'Total' FileName,count(*) + 2 from elp_split_recon_wrk
+                       where splitfile_processed_id = :splitfile_processed_id) x
+                       order by type
+	 </LOAD_TOTAL_RECORDS_BY_FILE_LIST>        	
+	<UPDATE>
+		<![CDATA[	
+			UPDATE elp_splitfile_processed SET
+				split_system_id = :split_system_id,
+				filename = :filename,
+				process_flag = :process_flag,
+				received = :received,
+				counted = :counted,
+				split = :split,
+				modified_by = :modified_by
+			WHERE
+				splitfile_processed_id = :splitfile_processed_id
+				AND NVL(modified_date,created_date) = NVL(:modified_date,created_date)
+		]]>
+	</UPDATE>
+	<INSERT>
+			INSERT INTO elp_splitfile_processed
+					(			
+				split_system_id, 
+				filename, 
+				process_flag, 
+				received, 
+				counted, 
+				split, 
+				created_by,
+				splitfile_processed_id
+					)
+			VALUES
+					(			
+				:split_system_id, 
+				:filename, 
+				:process_flag, 
+				:received, 
+				:counted, 
+				:split, 
+				:created_by,
+				:splitfile_processed_id
+					)
+	</INSERT>
+	<DELETE>
+			DELETE FROM elp_splitfile_processed
+			WHERE
+				splitfile_processed_id = :splitfile_processed_id
+	</DELETE>
+	<SPLIT_FILE>
+		elp_split_premium.elp_split_export 
+	</SPLIT_FILE>
+	<DELETE_SPLIT_FILE>
+	    elp_split_premium.elp_split_delete
+	</DELETE_SPLIT_FILE>
+</SQL> 
+
+

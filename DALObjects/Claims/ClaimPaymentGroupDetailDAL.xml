@@ -1,0 +1,135 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+
+<!-- ********************** THIS FILE HAS BEEN GENERATED FROM TEMPLATE SQLObject.cst (3/27/2013)********************** -->
+
+<SQL>
+  <LOAD>
+    <![CDATA[	
+			SELECT 
+				payment_group_id,
+				claim_authorization_id,
+        exclude_deductible,
+				created_date,
+				modified_date,
+				created_by,
+				modified_by,
+				payment_group_detail_id
+			FROM elp_payment_group_detail 
+			WHERE
+				payment_group_detail_id = :payment_group_detail_id
+		]]>
+  </LOAD>
+  <LOAD_PYMNTGRP_DETAIL>
+    <![CDATA[	
+			SELECT 
+				payment_group_id,
+        payment_group_detail_id,
+				claim_authorization_id,
+        exclude_deductible,
+				created_date,
+				modified_date,
+				created_by,
+				modified_by				
+			FROM elp_payment_group_detail 
+			WHERE
+				payment_group_id = :payment_group_id
+		]]>
+  </LOAD_PYMNTGRP_DETAIL>
+  <LOAD_PAYMENT_GROUP_DETAIL>
+    <![CDATA[	
+			select mv.SERVICE_CENTER_ID,mv.SERVICE_CENTER_CODE,  mv.INVOICE_NUMBER,mv.INVOICE_DATE,mv.DUE_DATE ,
+             mv.CLAIM_NUMBER,mv.AUTHORIZATION_NUMBER, mv.CLAIM_AUTHORIZATION_ID,
+             sum(mv.RECONCILED_AMOUNT) RECONCILED_AMOUNT, count(mv.CLAIM_AUTHORIZATION_ID) count, PAYMENT_GROUP_DETAIL_ID
+      from elita.elp_invoice_extended_mv mv inner join ELP_PAYMENT_GROUP_DETAIL pgd 
+           on mv.claim_authorization_id = pgd.claim_authorization_id
+			     inner join ELP_PAYMENT_GROUP pg on pgd.payment_group_id = pg.payment_group_id
+           where pg.payment_group_id = :payment_group_id
+           AND mv.INVOICE_RECONCILIATION_ID is not null
+           AND ROWNUM < :row_num
+           group by mv.SERVICE_CENTER_ID,mv.SERVICE_CENTER_CODE,mv.CLAIM_NUMBER,mv.CLAIM_AUTHORIZATION_ID,mv.AUTHORIZATION_NUMBER,
+                    pgd.PAYMENT_GROUP_DETAIL_ID,mv.INVOICE_NUMBER,mv.INVOICE_DATE,mv.DUE_DATE                    
+		]]>
+  </LOAD_PAYMENT_GROUP_DETAIL>
+  <LOAD_CLAIM_AUTHORIZATIONS_TO_BE_PAID>
+    <![CDATA[	
+      select mv.CLAIM_AUTHORIZATION_ID,sum(mv.RECONCILED_AMOUNT) RECONCILED_AMOUNT, mv.INVOICE_ID, mv.invoice_number,
+             DECODE(pgd.EXCLUDE_DEDUCTIBLE,'Y','True','False') AS EXCLUDE_DEDUCTIBLE
+      from elp_invoice_extended_mv mv
+	 	      inner join ELP_PAYMENT_GROUP_DETAIL pgd on mv.claim_authorization_id = pgd.claim_authorization_id
+	 	      inner join elp_payment_group pg on pg.payment_group_id  = pgd.payment_group_id
+    		  and   mv.RECONCILIATION_STATUS_ID = GETITEMIDFROMLISTANDITEM('INVRECONSTAT','TP')
+          and pg.payment_group_id = :payment_group_id
+      group by  mv.CLAIM_AUTHORIZATION_ID, mv.INVOICE_ID, mv.invoice_number,pgd.EXCLUDE_DEDUCTIBLE
+		]]>
+  </LOAD_CLAIM_AUTHORIZATIONS_TO_BE_PAID>   
+  <LOAD_CLAIM_AUTH_LINE_ITEM_AMOUNTS>
+    <![CDATA[	
+    select getenglishdescfromlistitem(mv.service_class_id) SVCCLASS,
+       getenglishdescfromlistitem(mv.inv_item_service_type_id) SVCTYPE,
+       mv.line_item_number LINE_ITEM_NUMBER,
+       mv.AUTH_ITEM_AMOUNT AUTHAMOUNT,
+       mv.invoice_item_amount INVOICEAMOUNT,
+       mv.reconciled_amount RECONCILEDAMOUNT
+    from elp_invoice_extended_mv mv where claim_authorization_id = :claim_authorization_id 
+    and reconciliation_status_id is not null
+		]]>
+  </LOAD_CLAIM_AUTH_LINE_ITEM_AMOUNTS>
+  <SELECT_PAYABLES_LIST>
+    <![CDATA[	
+    select pgd.PAYMENT_GROUP_DETAIL_ID, 
+           DECODE(pgd.EXCLUDE_DEDUCTIBLE,'Y','True','False') AS EXCLUDE_DEDUCTIBLE,
+           mv.claim_authorization_id,
+           DECODE(GETCODEFROMLISTITEM(mv.CLAIM_AUTHORIZATION_STATUS_ID),'R','False','TP','True') AS SELECTED,
+           sc.DESCRIPTION,mv.CLAIM_NUMBER,mv.AUTHORIZATION_NUMBER, mv.INVOICE_NUMBER,mv.INVOICE_DATE,
+           SUM(mv.RECONCILED_AMOUNT) RECONCILED_AMOUNT, mv.DUE_DATE
+    from elp_invoice_extended_mv mv
+	 	left outer join ELP_PAYMENT_GROUP_DETAIL pgd on mv.claim_authorization_id = pgd.claim_authorization_id
+		inner join elp_service_center sc on mv.service_center_id = sc.service_center_id
+		inner join elp_claim cl on mv.claim_id = cl.claim_id
+		inner join elp_cert_item_coverage  cic on cl.cert_item_coverage_id = cic.cert_item_coverage_id
+		inner join elp_cert cert on cic.cert_id = cert.cert_id
+    and  mv.INVOICE_RECONCILIATION_ID is not null
+		and  mv.RECONCILIATION_STATUS_ID <> GETITEMIDFROMLISTANDITEM('INVRECONSTAT','PD')
+    and GETCODEFROMLISTITEM(mv.CLAIM_AUTHORIZATION_STATUS_ID) IN ('R','TP')
+    where  pgd.claim_authorization_id is null
+    and rownum <= :row_num
+    --dynamic_where_clause  
+    group by sc.DESCRIPTION,mv.CLAIM_NUMBER,mv.claim_authorization_id,pgd.PAYMENT_GROUP_DETAIL_ID,pgd.EXCLUDE_DEDUCTIBLE,
+             mv.AUTHORIZATION_NUMBER,mv.CLAIM_AUTHORIZATION_STATUS_ID,mv.INVOICE_NUMBER,mv.INVOICE_DATE,mv.DUE_DATE
+    ]]>
+  </SELECT_PAYABLES_LIST>
+  <UPDATE>
+    <![CDATA[	
+			UPDATE elp_payment_group_detail SET
+				payment_group_id = :payment_group_id,
+				claim_authorization_id = :claim_authorization_id,
+        exclude_deductible = :exclude_deductible,
+				modified_by = :modified_by
+			WHERE
+				payment_group_detail_id = :payment_group_detail_id
+		]]>
+  </UPDATE>
+  <INSERT>
+    INSERT INTO elp_payment_group_detail
+    (
+    payment_group_id,
+    claim_authorization_id,
+    exclude_deductible,
+    created_by,
+    payment_group_detail_id
+    )
+    VALUES
+    (
+    :payment_group_id,
+    :claim_authorization_id,
+    :exclude_deductible,
+    :created_by,
+    :payment_group_detail_id
+    )
+  </INSERT>
+  <DELETE>
+    DELETE FROM elp_payment_group_detail
+    WHERE
+    payment_group_detail_id = :payment_group_detail_id
+  </DELETE>
+</SQL>

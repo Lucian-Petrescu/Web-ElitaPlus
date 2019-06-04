@@ -1,0 +1,1433 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xs:schema xmlns:base="http://gsxws.apple.com/types/base" xmlns:basic="http://gsxws.apple.com/types/basic" xmlns:tns="http://gsxws.apple.com/elements/iphone" xmlns:asp="http://gsxws.apple.com/types/core/asp" xmlns:iphone="http://gsxws.apple.com/types/iphone" xmlns:global="http://gsxws.apple.com/types/global" targetNamespace="http://gsxws.apple.com/elements/iphone" version="1.0" xml:lang="en" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+  <xs:import schemaLocation="https://gsxapi.apple.com:443/gsx-ws/services/am/iphone?xsd=1" namespace="http://gsxws.apple.com/types/base" />
+  <xs:import schemaLocation="https://gsxapi.apple.com:443/gsx-ws/services/am/iphone?xsd=2" namespace="http://gsxws.apple.com/types/basic" />
+  <xs:import schemaLocation="https://gsxapi.apple.com:443/gsx-ws/services/am/iphone?xsd=5" namespace="http://gsxws.apple.com/types/global" />
+  <xs:import schemaLocation="https://gsxapi.apple.com:443/gsx-ws/services/am/iphone?xsd=3" namespace="http://gsxws.apple.com/types/core/asp" />
+  <xs:import schemaLocation="https://gsxapi.apple.com:443/gsx-ws/services/am/iphone?xsd=7" namespace="http://gsxws.apple.com/types/iphone" />
+  <xs:complexType name="iphoneWarrantyStatusRequestType">
+    <xs:sequence>
+      <xs:element minOccurs="1" name="userSession" type="global:gsxUserSessionType" />
+      <xs:element minOccurs="1" name="iphoneUnitDetail" type="iphone:iphoneUnitDetailType" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="iphoneWarrantyStatusRequestWrapper">
+    <xs:sequence>
+      <xs:element name="IPhoneWarrantyStatusRequest" type="tns:iphoneWarrantyStatusRequestType" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="iphoneWarrantyStatusResponseType">
+    <xs:sequence>
+      <xs:element minOccurs="1" name="operationId" type="xs:token" />
+      <xs:element name="iphoneWarrantyDetailInfo" type="iphone:iphoneWarrantyDetailType" />
+      <xs:element minOccurs="0" name="communicationMessage" type="xs:string" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="iphoneWarrantyStatusResponseWrapper">
+    <xs:sequence>
+      <xs:element name="IPhoneWarrantyStatusResponse" type="tns:iphoneWarrantyStatusResponseType" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="IPhoneWarrantyStatus" type="tns:iphoneWarrantyStatusRequestWrapper" />
+  <xs:element name="IPhoneWarrantyStatusResponse" type="tns:iphoneWarrantyStatusResponseWrapper" />
+  <xs:complexType name="updateIPhoneKGBSerialNumberRequestType">
+    <xs:sequence>
+      <xs:element minOccurs="1" name="userSession" type="global:gsxUserSessionType" />
+      <xs:element minOccurs="1" name="repairConfirmationNumber" type="xs:token" />
+      <xs:element minOccurs="1" name="serialNumber" type="basic:Token_18" />
+      <xs:element minOccurs="1" name="alternateDeviceId" type="basic:Token_18" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="updateIPhoneKGBSerialNumberRequestWrapper">
+    <xs:sequence>
+      <xs:element name="UpdateIPhoneKGBSerialNumberRequest" type="tns:updateIPhoneKGBSerialNumberRequestType" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="updateIPhoneKGBSerialNumberResponseType">
+    <xs:sequence>
+      <xs:element minOccurs="1" name="operationId" type="xs:token" />
+      <xs:element minOccurs="1" name="repairConfirmationNumber" type="xs:token" />
+      <xs:element minOccurs="1" name="updateStatus" type="basic:yesNoType" />
+      <xs:element minOccurs="0" name="communicationMessage" type="xs:string" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="updateIPhoneKGBSerialNumberResponseWrapper">
+    <xs:sequence>
+      <xs:element name="UpdateIPhoneKGBSerialNumberResponse" type="tns:updateIPhoneKGBSerialNumberResponseType" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="UpdateIPhoneKGBSerialNumber" type="tns:updateIPhoneKGBSerialNumberRequestWrapper" />
+  <xs:element name="UpdateIPhoneKGBSerialNumberResponse" type="tns:updateIPhoneKGBSerialNumberResponseWrapper" />
+  <xs:complexType name="iphonePartsLookupRequestType">
+    <xs:sequence>
+      <xs:element minOccurs="1" name="userSession" type="global:gsxUserSessionType" />
+      <xs:element minOccurs="1" name="lookupRequestData" type="iphone:iphonePartsLookupInfoType" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="iphonePartsLookupRequestWrapper">
+    <xs:sequence>
+      <xs:element name="IPhonePartsLookupRequest" type="tns:iphonePartsLookupRequestType" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="iphonePartsLookupResponseType">
+    <xs:sequence>
+      <xs:element minOccurs="1" name="operationId" type="xs:token" />
+      <xs:element minOccurs="1" name="parts" type="global:partsLookupResponseType" />
+      <xs:element minOccurs="0" name="communicationMessage" type="xs:string" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="iphonePartsLookupResponseWrapper">
+    <xs:sequence>
+      <xs:element name="IPhonePartsLookupResponse" type="tns:iphonePartsLookupResponseType" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="IPhonePartsLookup" type="tns:iphonePartsLookupRequestWrapper" />
+  <xs:element name="IPhonePartsLookupResponse" type="tns:iphonePartsLookupResponseWrapper" />
+  <xs:complexType name="iphoneRepairDetailsRequestType">
+    <xs:sequence>
+      <xs:element minOccurs="1" name="userSession" type="global:gsxUserSessionType" />
+      <xs:element minOccurs="1" name="repairConfirmationNumber" type="basic:Token_15" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="iphoneRepairDetailsRequestWrapper">
+    <xs:sequence>
+      <xs:element name="IPhoneRepairDetailsRequest" type="tns:iphoneRepairDetailsRequestType" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="iphoneRepairDetailsResponseType">
+    <xs:sequence>
+      <xs:element minOccurs="1" name="operationId" type="xs:token" />
+      <xs:element minOccurs="1" name="lookupResponseData" type="iphone:iphoneRepairDetailsType" />
+      <xs:element minOccurs="0" name="communicationMessage" type="xs:string" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="iphoneRepairDetailsResponseWrapper">
+    <xs:sequence>
+      <xs:element name="IPhoneRepairDetailsResponse" type="tns:iphoneRepairDetailsResponseType" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="IPhoneRepairDetails" type="tns:iphoneRepairDetailsRequestWrapper" />
+  <xs:element name="IPhoneRepairDetailsResponse" type="tns:iphoneRepairDetailsResponseWrapper" />
+  <xs:complexType name="iphoneRepairDetailsLookupRequestType">
+    <xs:sequence>
+      <xs:element minOccurs="1" name="userSession" type="global:gsxUserSessionType" />
+      <xs:element minOccurs="1" name="repairConfirmationNumber" type="basic:Token_15" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="iphoneRepairDetailsLookupRequestWrapper">
+    <xs:sequence>
+      <xs:element name="IPhoneRepairDetailsLookupRequest" type="tns:iphoneRepairDetailsLookupRequestType" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="iphoneRepairDetailsLookupResponseType">
+    <xs:sequence>
+      <xs:element minOccurs="1" name="operationId" type="xs:token" />
+      <xs:element minOccurs="1" maxOccurs="unbounded" name="lookupResponseData" type="iphone:iphoneRepairDetailsLookupResponseType" />
+      <xs:element minOccurs="0" name="communicationMessage" type="xs:string" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="iphoneRepairDetailsLookupResponseWrapper">
+    <xs:sequence>
+      <xs:element name="IPhoneRepairDetailsLookupResponse" type="tns:iphoneRepairDetailsLookupResponseType" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="IPhoneRepairDetailsLookup" type="tns:iphoneRepairDetailsLookupRequestWrapper" />
+  <xs:element name="IPhoneRepairDetailsLookupResponse" type="tns:iphoneRepairDetailsLookupResponseWrapper" />
+  <xs:complexType name="iphoneRepairLookupRequestType">
+    <xs:sequence>
+      <xs:element minOccurs="1" name="userSession" type="global:gsxUserSessionType" />
+      <xs:element minOccurs="1" name="lookupRequestData" type="iphone:iphoneRepairLookupInfoType" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="iphoneRepairLookupRequestWrapper">
+    <xs:sequence>
+      <xs:element name="IPhoneRepairLookupRequest" type="tns:iphoneRepairLookupRequestType" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="iphoneRepairLookupResponseType">
+    <xs:sequence>
+      <xs:element minOccurs="1" name="operationId" type="xs:token" />
+      <xs:element minOccurs="1" maxOccurs="unbounded" name="lookupResponseData" type="asp:repairLookupResponseType" />
+      <xs:element minOccurs="0" name="communicationMessage" type="xs:string" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="iphoneRepairLookupResponseWrapper">
+    <xs:sequence>
+      <xs:element name="IPhoneRepairLookupResponse" type="tns:iphoneRepairLookupResponseType" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="IPhoneRepairLookup" type="tns:iphoneRepairLookupRequestWrapper" />
+  <xs:element name="IPhoneRepairLookupResponse" type="tns:iphoneRepairLookupResponseWrapper" />
+  <xs:complexType name="createIPhoneMailInRepairRequestType">
+    <xs:sequence>
+      <xs:element minOccurs="1" name="userSession" type="global:gsxUserSessionType" />
+      <xs:element minOccurs="1" name="iphoneMailInRepair" type="iphone:iphoneMailInRepairType" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="createIPhoneMailInRepairRequestWrapper">
+    <xs:sequence>
+      <xs:element name="CreateIPhoneMailInRepairRequest" type="tns:createIPhoneMailInRepairRequestType" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="createIPhoneMailInRepairResponseType">
+    <xs:sequence>
+      <xs:element minOccurs="1" name="operationId" type="xs:token" />
+      <xs:element minOccurs="0" name="repairConfirmation" type="asp:mailInRepairConfirmationType" />
+      <xs:element minOccurs="0" name="communicationMessage" type="xs:string" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="createIPhoneMailInRepairResponseWrapper">
+    <xs:sequence>
+      <xs:element name="CreateIPhoneMailInRepairResponse" type="tns:createIPhoneMailInRepairResponseType" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="CreateIPhoneMailInRepairRequest" type="tns:createIPhoneMailInRepairRequestWrapper" />
+  <xs:element name="CreateIPhoneMailInRepairResponse" type="tns:createIPhoneMailInRepairResponseWrapper" />
+  <xs:complexType name="createIPhoneAPPOrderRequestType">
+    <xs:sequence>
+      <xs:element minOccurs="1" name="userSession" type="global:gsxUserSessionType" />
+      <xs:element minOccurs="1" name="orderData" type="iphone:iphoneAPPOrderRequestInfoType" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="createIPhoneAPPOrderRequestWrapper">
+    <xs:sequence>
+      <xs:element name="CreateIPhoneAPPOrderRequest" type="tns:createIPhoneAPPOrderRequestType" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="createIPhoneAPPOrderResponseType">
+    <xs:sequence>
+      <xs:element minOccurs="1" name="operationId" type="xs:token" />
+      <xs:element minOccurs="0" name="orderConfirmation" type="asp:appOrderResponseInfoType" />
+      <xs:element minOccurs="0" name="communicationMessage" type="xs:string" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="createIPhoneAPPOrderResponseWrapper">
+    <xs:sequence>
+      <xs:element name="CreateIPhoneAPPOrderResponse" type="tns:createIPhoneAPPOrderResponseType" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="CreateIPhoneAPPOrder" type="tns:createIPhoneAPPOrderRequestWrapper" />
+  <xs:element name="CreateIPhoneAPPOrderResponse" type="tns:createIPhoneAPPOrderResponseWrapper" />
+  <xs:complexType name="iphonePartsPendingReturnRequestType">
+    <xs:sequence>
+      <xs:element minOccurs="1" name="userSession" type="global:gsxUserSessionType" />
+      <xs:element minOccurs="1" name="repairData" type="iphone:iphonePartsPendingReturnRequestType" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="iphonePartsPendingReturnRequestWrapper">
+    <xs:sequence>
+      <xs:element name="IPhonePartsPendingReturnRequest" type="tns:iphonePartsPendingReturnRequestType" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="iphonePartsPendingReturnResponseType">
+    <xs:sequence>
+      <xs:element minOccurs="1" name="operationId" type="xs:token" />
+      <xs:element minOccurs="1" maxOccurs="unbounded" name="partsPendingResponse" type="asp:partsPendingReturnResponseType" />
+      <xs:element minOccurs="0" name="communicationMessage" type="xs:string" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="iphonePartsPendingReturnResponseWrapper">
+    <xs:sequence>
+      <xs:element name="IPhonePartsPendingReturnResponse" type="tns:iphonePartsPendingReturnResponseType" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="IPhonePartsPendingReturn" type="tns:iphonePartsPendingReturnRequestWrapper" />
+  <xs:element name="IPhonePartsPendingReturnResponse" type="tns:iphonePartsPendingReturnResponseWrapper" />
+  <xs:complexType name="createIPhoneCarryInRepairRequestType">
+    <xs:sequence>
+      <xs:element minOccurs="1" name="userSession" type="global:gsxUserSessionType" />
+      <xs:element minOccurs="1" name="repairData" type="iphone:createIPhoneCarryInRequestType" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="createIPhoneCarryInRepairRequestWrapper">
+    <xs:sequence>
+      <xs:element name="CreateIPhoneCarryInRepairRequest" type="tns:createIPhoneCarryInRepairRequestType" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="createIPhoneCarryInRepairResponseType">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="operationId" type="xs:token" />
+      <xs:element minOccurs="1" name="repairConfirmation" type="asp:repairConfirmationType" />
+      <xs:element minOccurs="0" name="communicationMessage" type="xs:string" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="createIPhoneCarryInRepairResponseWrapper">
+    <xs:sequence>
+      <xs:element name="CreateIPhoneCarryInRepairResponse" type="tns:createIPhoneCarryInRepairResponseType" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="CreateIPhoneCarryInRepair" type="tns:createIPhoneCarryInRepairRequestWrapper" />
+  <xs:element name="CreateIPhoneCarryInRepairResponse" type="tns:createIPhoneCarryInRepairResponseWrapper" />
+  <xs:complexType name="iphoneMarkRepairCompleteRequestType">
+    <xs:sequence>
+      <xs:element minOccurs="1" name="userSession" type="global:gsxUserSessionType" />
+      <xs:element minOccurs="1" maxOccurs="100" name="repairConfirmationNumbers" type="xs:token" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="iphoneMarkRepairCompleteRequestWrapper">
+    <xs:sequence>
+      <xs:element name="IPhoneMarkRepairCompleteRequest" type="tns:iphoneMarkRepairCompleteRequestType" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="iphoneMarkRepairCompleteResponseType">
+    <xs:sequence>
+      <xs:element minOccurs="1" name="operationId" type="xs:token" />
+      <xs:element minOccurs="0" maxOccurs="100" name="repairConfirmationNumbers" type="asp:iphoneMarkRepairCompleteConfirmationNumbers" />
+      <xs:element minOccurs="0" name="communicationMessage" type="xs:string" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="iphoneMarkRepairCompleteResponseWrapper">
+    <xs:sequence>
+      <xs:element name="IPhoneMarkRepairCompleteResponse" type="tns:iphoneMarkRepairCompleteResponseType" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="IPhoneMarkRepairComplete" type="tns:iphoneMarkRepairCompleteRequestWrapper" />
+  <xs:element name="IPhoneMarkRepairCompleteResponse" type="tns:iphoneMarkRepairCompleteResponseWrapper" />
+  <xs:complexType name="createIPhoneStockingOrderRequestType">
+    <xs:sequence>
+      <xs:element minOccurs="1" name="userSession" type="global:gsxUserSessionType" />
+      <xs:element minOccurs="1" name="orderData" type="asp:stockingOrderRequestType" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="createIPhoneStockingOrderRequestWrapper">
+    <xs:sequence>
+      <xs:element name="CreateIPhoneStockingOrderRequest" type="tns:createIPhoneStockingOrderRequestType" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="createIPhoneStockingOrderResponseType">
+    <xs:sequence>
+      <xs:element minOccurs="1" name="operationId" type="xs:token" />
+      <xs:element minOccurs="0" name="orderConfirmation" type="asp:orderResponseType" />
+      <xs:element minOccurs="0" name="communicationMessage" type="xs:string" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="createIPhoneStockingOrderResponseWrapper">
+    <xs:sequence>
+      <xs:element name="CreateIPhoneStockingOrderResponse" type="tns:createIPhoneStockingOrderResponseType" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="CreateIPhoneStockingOrder" type="tns:createIPhoneStockingOrderRequestWrapper" />
+  <xs:element name="CreateIPhoneStockingOrderResponse" type="tns:createIPhoneStockingOrderResponseWrapper" />
+  <xs:complexType name="createIPhoneSRFOrderRequestType">
+    <xs:sequence>
+      <xs:element minOccurs="1" name="userSession" type="global:gsxUserSessionType" />
+      <xs:element minOccurs="1" name="orderData" type="asp:srfOrderRequestType" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="createIPhoneSRFOrderRequestWrapper">
+    <xs:sequence>
+      <xs:element name="CreateIPhoneSRFOrderRequest" type="tns:createIPhoneSRFOrderRequestType" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="createIPhoneSRFOrderResponseType">
+    <xs:sequence>
+      <xs:element minOccurs="1" name="operationId" type="xs:token" />
+      <xs:element minOccurs="0" name="orderConfirmation" type="asp:orderResponseType" />
+      <xs:element minOccurs="0" name="communicationMessage" type="xs:string" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="createIPhoneSRFOrderResponseWrapper">
+    <xs:sequence>
+      <xs:element name="CreateIPhoneSRFOrderResponse" type="tns:createIPhoneSRFOrderResponseType" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="CreateIPhoneSRFOrder" type="tns:createIPhoneSRFOrderRequestWrapper" />
+  <xs:element name="CreateIPhoneSRFOrderResponse" type="tns:createIPhoneSRFOrderResponseWrapper" />
+  <xs:complexType name="viewPendingIPhoneAPPOrdersRequestType">
+    <xs:sequence>
+      <xs:element minOccurs="1" name="userSession" type="global:gsxUserSessionType" />
+      <xs:element minOccurs="1" name="lookupRequestData" type="asp:pendingAPPOrdersRequestType" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="viewPendingIPhoneAPPOrdersRequestWrapper">
+    <xs:sequence>
+      <xs:element name="ViewPendingIPhoneAPPOrdersRequest" type="tns:viewPendingIPhoneAPPOrdersRequestType" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="viewPendingIPhoneAPPOrdersResponseType">
+    <xs:sequence>
+      <xs:element minOccurs="1" name="operationId" type="xs:token" />
+      <xs:element minOccurs="1" maxOccurs="unbounded" name="pendingAPPOrders" type="asp:pendingAPPOrdersResponseType" />
+      <xs:element minOccurs="0" name="communicationMessage" type="xs:string" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="viewPendingIPhoneAPPOrdersResponseWrapper">
+    <xs:sequence>
+      <xs:element name="ViewPendingIPhoneAPPOrdersResponse" type="tns:viewPendingIPhoneAPPOrdersResponseType" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="ViewPendingIPhoneAPPOrders" type="tns:viewPendingIPhoneAPPOrdersRequestWrapper" />
+  <xs:element name="ViewPendingIPhoneAPPOrdersResponse" type="tns:viewPendingIPhoneAPPOrdersResponseWrapper" />
+  <xs:complexType name="iphonePartsReturnUpdateRequestType">
+    <xs:sequence>
+      <xs:element minOccurs="1" name="userSession" type="global:gsxUserSessionType" />
+      <xs:element minOccurs="1" name="repairData" type="asp:partsReturnUpdateInfoType" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="iphonePartsReturnUpdateRequestWrapper">
+    <xs:sequence>
+      <xs:element name="IPhonePartsReturnUpdateRequest" type="tns:iphonePartsReturnUpdateRequestType" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="iphonePartsReturnUpdateResponseType">
+    <xs:sequence>
+      <xs:element minOccurs="1" name="operationId" type="xs:token" />
+      <xs:element minOccurs="0" name="repairConfirmationNumber" type="basic:Token_25" />
+      <xs:element minOccurs="0" name="communicationMessage" type="xs:string" />
+      <xs:element minOccurs="0" name="outcome" type="xs:string" />
+      <xs:element minOccurs="0" maxOccurs="650" name="messages" type="xs:string" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="iphonePartsReturnUpdateResponseWrapper">
+    <xs:sequence>
+      <xs:element name="IPhonePartsReturnUpdateResponse" type="tns:iphonePartsReturnUpdateResponseType" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="IPhonePartsReturnUpdate" type="tns:iphonePartsReturnUpdateRequestWrapper" />
+  <xs:element name="IPhonePartsReturnUpdateResponse" type="tns:iphonePartsReturnUpdateResponseWrapper" />
+  <xs:complexType name="registerIPhonePartsForBulkReturnRequestType">
+    <xs:sequence>
+      <xs:element minOccurs="1" name="userSession" type="global:gsxUserSessionType" />
+      <xs:element minOccurs="1" name="bulkPartsRegistrationRequest" type="asp:bulkRegistrationRequestType" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="registerIPhonePartsForBulkReturnRequestWrapper">
+    <xs:sequence>
+      <xs:element name="RegisterIPhonePartsForBulkReturnRequest" type="tns:registerIPhonePartsForBulkReturnRequestType" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="registerIPhonePartsForBulkReturnResponseType">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="operationId" type="xs:token" />
+      <xs:element minOccurs="1" name="bulkPartsRegistrationData" type="asp:bulkRegistrationResponseType" />
+      <xs:element minOccurs="0" name="communicationMessage" type="xs:string" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="registerIPhonePartsForBulkReturnResponseWrapper">
+    <xs:sequence>
+      <xs:element name="RegisterIPhonePartsForBulkReturnResponse" type="tns:registerIPhonePartsForBulkReturnResponseType" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="RegisterIPhonePartsForBulkReturn" type="tns:registerIPhonePartsForBulkReturnRequestWrapper" />
+  <xs:element name="RegisterIPhonePartsForBulkReturnResponse" type="tns:registerIPhonePartsForBulkReturnResponseWrapper" />
+  <xs:complexType name="iphoneReturnLabelRequestType">
+    <xs:sequence>
+      <xs:element minOccurs="1" name="userSession" type="global:gsxUserSessionType" />
+      <xs:element minOccurs="0" name="dispatchId" type="xs:string" />
+      <xs:element minOccurs="0" name="returnOrderNumber" type="basic:Token_0_10" />
+      <xs:element minOccurs="1" name="partNumber" type="basic:Token_18" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="iphoneReturnLabelRequestWrapper">
+    <xs:sequence>
+      <xs:element name="IPhoneReturnLabelRequest" type="tns:iphoneReturnLabelRequestType" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="iphoneReturnLabelResponseType">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="operationId" type="xs:token" />
+      <xs:element minOccurs="1" name="returnLabelData" type="asp:returnLabelResponseType" />
+      <xs:element minOccurs="0" name="communicationMessage" type="xs:string" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="iphoneReturnLabelResponseWrapper">
+    <xs:sequence>
+      <xs:element name="IPhoneReturnLabelResponse" type="tns:iphoneReturnLabelResponseType" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="IPhoneReturnLabel" type="tns:iphoneReturnLabelRequestWrapper" />
+  <xs:element name="IPhoneReturnLabelResponse" type="tns:iphoneReturnLabelResponseWrapper" />
+  <xs:complexType name="createWholeUnitExchangeRequestType">
+    <xs:sequence>
+      <xs:element minOccurs="1" name="userSession" type="global:gsxUserSessionType" />
+      <xs:element minOccurs="1" name="repairData" type="asp:createWHUExchangeRequestType" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="createWholeUnitExchangeRequestWrapper">
+    <xs:sequence>
+      <xs:element name="CreateWholeUnitExchangeRequest" type="tns:createWholeUnitExchangeRequestType" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="createWholeUnitExchangeResponseType">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="operationId" type="xs:token" />
+      <xs:element minOccurs="1" name="repairConfirmation" type="asp:repairConfirmationType" />
+      <xs:element minOccurs="0" name="communicationMessage" type="xs:string" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="createWholeUnitExchangeResponseWrapper">
+    <xs:sequence>
+      <xs:element name="CreateWholeUnitExchangeResponse" type="tns:createWholeUnitExchangeResponseType" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="CreateWholeUnitExchange" type="tns:createWholeUnitExchangeRequestWrapper" />
+  <xs:element name="CreateWholeUnitExchangeResponse" type="tns:createWholeUnitExchangeResponseWrapper" />
+  <xs:complexType name="viewIPhoneBulkReturnProformaRequestType">
+    <xs:sequence>
+      <xs:element minOccurs="1" name="userSession" type="global:gsxUserSessionType" />
+      <xs:element minOccurs="1" name="bulkReturnId" type="basic:Token_10" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="viewIPhoneBulkReturnProformaRequestWrapper">
+    <xs:sequence>
+      <xs:element name="ViewIPhoneBulkReturnProformaRequest" type="tns:viewIPhoneBulkReturnProformaRequestType" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="viewIPhoneBulkReturnProformaResponseType">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="operationId" type="xs:token" />
+      <xs:element minOccurs="1" maxOccurs="unbounded" name="bulkReturnProformaInfo" type="asp:viewBulkReturnProformaResponseType" />
+      <xs:element minOccurs="0" name="communicationMessage" type="xs:string" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="viewIPhoneBulkReturnProformaResponseWrapper">
+    <xs:sequence>
+      <xs:element name="ViewIPhoneBulkReturnProformaResponse" type="tns:viewIPhoneBulkReturnProformaResponseType" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="ViewIPhoneBulkReturnProforma" type="tns:viewIPhoneBulkReturnProformaRequestWrapper" />
+  <xs:element name="ViewIPhoneBulkReturnProformaResponse" type="tns:viewIPhoneBulkReturnProformaResponseWrapper" />
+  <xs:complexType name="createIPhoneRepairOrReplaceRequestType">
+    <xs:sequence>
+      <xs:element minOccurs="1" name="userSession" type="global:gsxUserSessionType" />
+      <xs:element minOccurs="1" name="repairData" type="asp:repairOrReplaceRepairType" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="createIPhoneRepairOrReplaceRequestWrapper">
+    <xs:sequence>
+      <xs:element name="CreateIPhoneRepairOrReplaceRequest" type="tns:createIPhoneRepairOrReplaceRequestType" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="createIPhoneRepairOrReplaceResponseType">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="operationId" type="xs:token" />
+      <xs:element minOccurs="1" name="repairConfirmation" type="asp:repairOrReplaceRepairConfirmationType" />
+      <xs:element minOccurs="0" name="communicationMessage" type="xs:string" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="createIPhoneRepairOrReplaceResponseWrapper">
+    <xs:sequence>
+      <xs:element name="CreateIPhoneRepairOrReplaceResponse" type="tns:createIPhoneRepairOrReplaceResponseType" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="CreateIPhoneRepairOrReplace" type="tns:createIPhoneRepairOrReplaceRequestWrapper" />
+  <xs:element name="CreateIPhoneRepairOrReplaceResponse" type="tns:createIPhoneRepairOrReplaceResponseWrapper" />
+  <xs:complexType name="createIPhoneNRERepairRequestType">
+    <xs:sequence>
+      <xs:element minOccurs="1" name="userSession" type="global:gsxUserSessionType" />
+      <xs:element minOccurs="1" name="repairData" type="asp:createNRERepairRequestDataType" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="createIPhoneNRERepairRequestWrapper">
+    <xs:sequence>
+      <xs:element name="CreateIPhoneNRERepairRequest" type="tns:createIPhoneNRERepairRequestType" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="createIPhoneNRERepairResponseType">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="operationId" type="xs:token" />
+      <xs:element minOccurs="1" name="repairConfirmation" type="asp:createNRERepairConfirmationType" />
+      <xs:element minOccurs="0" name="communicationMessage" type="xs:string" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="createIPhoneNRERepairResponseWrapper">
+    <xs:sequence>
+      <xs:element name="CreateIPhoneNRERepairResponse" type="tns:createIPhoneNRERepairResponseType" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="CreateIPhoneNRERepair" type="tns:createIPhoneNRERepairRequestWrapper" />
+  <xs:element name="CreateIPhoneNRERepairResponse" type="tns:createIPhoneNRERepairResponseWrapper" />
+  <xs:complexType name="iphoneInvoiceIDLookupRequestType">
+    <xs:sequence>
+      <xs:element minOccurs="1" name="userSession" type="global:gsxUserSessionType" />
+      <xs:element minOccurs="1" name="lookupRequestData" type="asp:invoiceIDLookupRequestDataType" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="iphoneInvoiceIDLookupRequestWrapper">
+    <xs:sequence>
+      <xs:element name="IPhoneInvoiceIDLookupRequest" type="tns:iphoneInvoiceIDLookupRequestType" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="iphoneInvoiceIDLookupResponseType">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="operationId" type="xs:token" />
+      <xs:element minOccurs="1" name="lookupResponseData" type="asp:invoiceIDLookupResponseDataType" />
+      <xs:element minOccurs="0" name="communicationMessage" type="xs:string" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="iphoneInvoiceIDLookupResponseWrapper">
+    <xs:sequence>
+      <xs:element name="IPhoneInvoiceIDLookupResponse" type="tns:iphoneInvoiceIDLookupResponseType" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="IPhoneInvoiceIDLookup" type="tns:iphoneInvoiceIDLookupRequestWrapper" />
+  <xs:element name="IPhoneInvoiceIDLookupResponse" type="tns:iphoneInvoiceIDLookupResponseWrapper" />
+  <xs:complexType name="iphoneInvoiceDetailsLookupRequestType">
+    <xs:sequence>
+      <xs:element minOccurs="1" name="userSession" type="global:gsxUserSessionType" />
+      <xs:element minOccurs="1" name="lookupRequestData" type="asp:invoiceDetailsLookupRequestDataType" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="iphoneInvoiceDetailsLookupRequestWrapper">
+    <xs:sequence>
+      <xs:element name="IPhoneInvoiceDetailsLookupRequest" type="tns:iphoneInvoiceDetailsLookupRequestType" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="iphoneInvoiceDetailsLookupResponseType">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="operationId" type="xs:token" />
+      <xs:element minOccurs="1" name="lookupResponseData" type="asp:invoiceDetailsLookupResponseDataType" />
+      <xs:element minOccurs="0" name="communicationMessage" type="xs:string" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="iphoneInvoiceDetailsLookupResponseWrapper">
+    <xs:sequence>
+      <xs:element name="IPhoneInvoiceDetailsLookupResponse" type="tns:iphoneInvoiceDetailsLookupResponseType" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="IPhoneInvoiceDetailsLookup" type="tns:iphoneInvoiceDetailsLookupRequestWrapper" />
+  <xs:element name="IPhoneInvoiceDetailsLookupResponse" type="tns:iphoneInvoiceDetailsLookupResponseWrapper" />
+  <xs:complexType name="createGenEscRequestType">
+    <xs:sequence>
+      <xs:element minOccurs="1" name="userSession" type="global:gsxUserSessionType" />
+      <xs:element minOccurs="1" name="escalationRequest" type="asp:createGenEscRequestDataType" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="createGeneralEscalationRequestWrapper">
+    <xs:sequence>
+      <xs:element name="CreateGeneralEscalationRequest" type="tns:createGenEscRequestType" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="createGenEscResponseType">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="operationId" type="xs:token" />
+      <xs:element minOccurs="1" name="escalationConfirmation" type="base:baseEscCreateResponseType" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="createGeneralEscalationResponseWrapper">
+    <xs:sequence>
+      <xs:element name="CreateGeneralEscalationResponse" type="tns:createGenEscResponseType" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="CreateGeneralEscalation" type="tns:createGeneralEscalationRequestWrapper" />
+  <xs:element name="CreateGeneralEscalationResponse" type="tns:createGeneralEscalationResponseWrapper" />
+  <xs:complexType name="updateGeneralEscRequestType">
+    <xs:sequence>
+      <xs:element minOccurs="1" name="userSession" type="global:gsxUserSessionType" />
+      <xs:element minOccurs="1" name="escalationRequest" type="asp:updateGeneralEscRequestDataType" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="updateGeneralEscalationRequestWrapper">
+    <xs:sequence>
+      <xs:element name="UpdateGeneralEscalationRequest" type="tns:updateGeneralEscRequestType" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="updateGeneralEscResponseType">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="operationId" type="xs:token" />
+      <xs:element minOccurs="1" name="escalationConfirmation" type="base:baseEscUpdateStatusType" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="updateGeneralEscalationResponseWrapper">
+    <xs:sequence>
+      <xs:element name="UpdateGeneralEscalationResponse" type="tns:updateGeneralEscResponseType" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="UpdateGeneralEscalation" type="tns:updateGeneralEscalationRequestWrapper" />
+  <xs:element name="UpdateGeneralEscalationResponse" type="tns:updateGeneralEscalationResponseWrapper" />
+  <xs:complexType name="updateMailInRequoteEscRequestType">
+    <xs:sequence>
+      <xs:element minOccurs="1" name="userSession" type="global:gsxUserSessionType" />
+      <xs:element minOccurs="1" name="escalationRequest" type="asp:updateMailInRequoteEscRequestDataType" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="updateMailInRequoteEscalationRequestWrapper">
+    <xs:sequence>
+      <xs:element name="UpdateMailInRequoteEscalationRequest" type="tns:updateMailInRequoteEscRequestType" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="updateMailInRequoteEscResponseType">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="operationId" type="xs:token" />
+      <xs:element minOccurs="1" name="escalationConfirmation" type="base:baseEscUpdateStatusType" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="updateMailInRequoteEscalationResponseWrapper">
+    <xs:sequence>
+      <xs:element name="UpdateMailInRequoteEscalationResponse" type="tns:updateMailInRequoteEscResponseType" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="UpdateMailInRequoteEscalation" type="tns:updateMailInRequoteEscalationRequestWrapper" />
+  <xs:element name="UpdateMailInRequoteEscalationResponse" type="tns:updateMailInRequoteEscalationResponseWrapper" />
+  <xs:complexType name="updateWholeUnitRequoteEscRequestType">
+    <xs:sequence>
+      <xs:element minOccurs="1" name="userSession" type="global:gsxUserSessionType" />
+      <xs:element minOccurs="1" name="escalationRequest" type="asp:updateMailInRequoteEscRequestDataType" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="updateWholeUnitRequoteEscalationRequestWrapper">
+    <xs:sequence>
+      <xs:element name="UpdateWholeUnitRequoteEscalationRequest" type="tns:updateWholeUnitRequoteEscRequestType" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="updateWholeUnitRequoteEscResponseType">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="operationId" type="xs:token" />
+      <xs:element minOccurs="1" name="escalationConfirmation" type="base:baseEscUpdateStatusType" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="updateWholeUnitRequoteEscalationResponseWrapper">
+    <xs:sequence>
+      <xs:element name="UpdateWholeUnitRequoteEscalationResponse" type="tns:updateWholeUnitRequoteEscResponseType" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="UpdateWholeUnitRequoteEscalation" type="tns:updateWholeUnitRequoteEscalationRequestWrapper" />
+  <xs:element name="UpdateWholeUnitRequoteEscalationResponse" type="tns:updateWholeUnitRequoteEscalationResponseWrapper" />
+  <xs:complexType name="requoteEscSummaryLookupRequestType">
+    <xs:sequence>
+      <xs:element minOccurs="1" name="userSession" type="global:gsxUserSessionType" />
+      <xs:element minOccurs="1" name="lookupRequestData" type="asp:requoteEscSummaryLookupRequestDataType" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="requoteEscalationSummaryLookupRequestWrapper">
+    <xs:sequence>
+      <xs:element name="RequoteEscalationSummaryLookupRequest" type="tns:requoteEscSummaryLookupRequestType" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="requoteEscSummaryLookupResponseType">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="operationId" type="xs:token" />
+      <xs:element minOccurs="1" name="lookupResponseData" type="asp:requoteEscSummaryLookupResponseArrayType" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="requoteEscalationSummaryLookupResponseWrapper">
+    <xs:sequence>
+      <xs:element name="RequoteEscalationSummaryLookupResponse" type="tns:requoteEscSummaryLookupResponseType" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="RequoteEscalationSummaryLookup" type="tns:requoteEscalationSummaryLookupRequestWrapper" />
+  <xs:element name="RequoteEscalationSummaryLookupResponse" type="tns:requoteEscalationSummaryLookupResponseWrapper" />
+  <xs:complexType name="requoteEscDetailsLookupRequestDataType">
+    <xs:sequence>
+      <xs:element minOccurs="1" name="escalationId" type="xs:string" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="requoteEscDetailsLookupRequestType">
+    <xs:sequence>
+      <xs:element minOccurs="1" name="userSession" type="global:gsxUserSessionType" />
+      <xs:element minOccurs="1" name="lookupRequestData" type="tns:requoteEscDetailsLookupRequestDataType" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="requoteEscalationDetailsLookupRequestWrapper">
+    <xs:sequence>
+      <xs:element name="RequoteEscalationDetailsLookupRequest" type="tns:requoteEscDetailsLookupRequestType" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="requoteEscDetailsLookupResponseType">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="operationId" type="xs:token" />
+      <xs:element minOccurs="1" name="lookupResponseData" type="asp:requoteEscDetailsLookupResponseDataType" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="requoteEscalationDetailsLookupResponseWrapper">
+    <xs:sequence>
+      <xs:element name="RequoteEscalationDetailsLookupResponse" type="tns:requoteEscDetailsLookupResponseType" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="RequoteEscalationDetailsLookup" type="tns:requoteEscalationDetailsLookupRequestWrapper" />
+  <xs:element name="RequoteEscalationDetailsLookupResponse" type="tns:requoteEscalationDetailsLookupResponseWrapper" />
+  <xs:complexType name="generalEscLookupRequestDataType">
+    <xs:sequence>
+      <xs:element minOccurs="1" name="escalationId" type="xs:string" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="generalEscSummaryLookupRequestType">
+    <xs:sequence>
+      <xs:element minOccurs="1" name="userSession" type="global:gsxUserSessionType" />
+      <xs:element minOccurs="1" name="lookupRequestData" type="tns:generalEscLookupRequestDataType" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="generalEscalationSummaryLookupRequestWrapper">
+    <xs:sequence>
+      <xs:element name="GeneralEscalationSummaryLookupRequest" type="tns:generalEscSummaryLookupRequestType" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="generalEscSummaryLookupResponseType">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="operationId" type="xs:token" />
+      <xs:element minOccurs="1" name="lookupResponseData" type="asp:generalEscSummaryLookupResponseDataType" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="generalEscalationSummaryLookupResponseWrapper">
+    <xs:sequence>
+      <xs:element name="GeneralEscalationSummaryLookupResponse" type="tns:generalEscSummaryLookupResponseType" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="GeneralEscalationSummaryLookup" type="tns:generalEscalationSummaryLookupRequestWrapper" />
+  <xs:element name="GeneralEscalationSummaryLookupResponse" type="tns:generalEscalationSummaryLookupResponseWrapper" />
+  <xs:complexType name="generalEscDetailsLookupRequestType">
+    <xs:sequence>
+      <xs:element minOccurs="1" name="userSession" type="global:gsxUserSessionType" />
+      <xs:element minOccurs="1" name="lookupRequestData" type="tns:generalEscLookupRequestDataType" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="generalEscalationDetailsLookupRequestWrapper">
+    <xs:sequence>
+      <xs:element name="GeneralEscalationDetailsLookupRequest" type="tns:generalEscDetailsLookupRequestType" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="generalEscDetailsLookupResponseType">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="operationId" type="xs:token" />
+      <xs:element minOccurs="1" name="lookupResponseData" type="asp:generalEscDetailsLookupResponseDataType" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="generalEscalationDetailsLookupResponseWrapper">
+    <xs:sequence>
+      <xs:element name="GeneralEscalationDetailsLookupResponse" type="tns:generalEscDetailsLookupResponseType" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="GeneralEscalationDetailsLookup" type="tns:generalEscalationDetailsLookupRequestWrapper" />
+  <xs:element name="GeneralEscalationDetailsLookupResponse" type="tns:generalEscalationDetailsLookupResponseWrapper" />
+  <xs:complexType name="fetchFunctionalAreasRequestDataType">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="100" name="productModel" type="base:productModelType" />
+      <xs:element minOccurs="0" name="serialNumber" type="xs:string" />
+      <xs:element minOccurs="0" name="alternateDeviceId" type="xs:string" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="fetchFunctionalAreasRequestType">
+    <xs:sequence>
+      <xs:element minOccurs="1" name="userSession" type="global:gsxUserSessionType" />
+      <xs:element minOccurs="1" name="troubleshootRequest" type="tns:fetchFunctionalAreasRequestDataType" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="fetchFunctionalAreasRequestWrapper">
+    <xs:sequence>
+      <xs:element name="FetchFunctionalAreasRequest" type="tns:fetchFunctionalAreasRequestType" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="fetchFunctionalAreasResponseDataType">
+    <xs:sequence>
+      <xs:element minOccurs="1" maxOccurs="unbounded" name="functionalArea" type="asp:tsFunctionalAreaDataType" />
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="productModel" type="base:productModelType" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="fetchFunctionalAreasResponseType">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="operationId" type="xs:token" />
+      <xs:element minOccurs="1" name="troubleshootResponse" type="tns:fetchFunctionalAreasResponseDataType" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="fetchFunctionalAreasResponseWrapper">
+    <xs:sequence>
+      <xs:element name="FetchFunctionalAreasResponse" type="tns:fetchFunctionalAreasResponseType" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="FetchFunctionalAreas" type="tns:fetchFunctionalAreasRequestWrapper" />
+  <xs:element name="FetchFunctionalAreasResponse" type="tns:fetchFunctionalAreasResponseWrapper" />
+  <xs:complexType name="fetchIssueListRequestDataType">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="functionalAreaID" type="xs:string" />
+      <xs:element minOccurs="0" maxOccurs="100" name="productModel" type="base:productModelType" />
+      <xs:element minOccurs="0" name="serialNumber" type="xs:string" />
+      <xs:element minOccurs="0" name="alternateDeviceId" type="xs:string" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="fetchIssueListRequestType">
+    <xs:sequence>
+      <xs:element minOccurs="1" name="userSession" type="global:gsxUserSessionType" />
+      <xs:element minOccurs="1" name="troubleshootRequest" type="tns:fetchIssueListRequestDataType" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="fetchIssueListRequestWrapper">
+    <xs:sequence>
+      <xs:element name="FetchIssueListRequest" type="tns:fetchIssueListRequestType" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="fetchIssueListResponseDataType">
+    <xs:sequence>
+      <xs:element minOccurs="1" maxOccurs="unbounded" name="issue" type="base:issueType" />
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="productModel" type="base:productModelType" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="fetchIssueListResponseType">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="operationId" type="xs:token" />
+      <xs:element minOccurs="1" name="troubleshootResponse" type="tns:fetchIssueListResponseDataType" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="fetchIssueListResponseWrapper">
+    <xs:sequence>
+      <xs:element name="FetchIssueListResponse" type="tns:fetchIssueListResponseType" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="FetchIssueList" type="tns:fetchIssueListRequestWrapper" />
+  <xs:element name="FetchIssueListResponse" type="tns:fetchIssueListResponseWrapper" />
+  <xs:complexType name="fetchQuickCheckRequestDataType">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="productCategoryID" type="xs:string" />
+      <xs:element minOccurs="0" name="issueCategoryID" type="xs:string" />
+      <xs:element minOccurs="0" maxOccurs="100" name="productModel" type="base:productModelType" />
+      <xs:element minOccurs="0" name="serialNumber" type="xs:string" />
+      <xs:element minOccurs="0" name="alternateDeviceId" type="xs:string" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="fetchQuickCheckRequestType">
+    <xs:sequence>
+      <xs:element minOccurs="1" name="userSession" type="global:gsxUserSessionType" />
+      <xs:element minOccurs="1" name="troubleshootRequest" type="tns:fetchQuickCheckRequestDataType" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="fetchQuickCheckRequestWrapper">
+    <xs:sequence>
+      <xs:element name="FetchQuickCheckRequest" type="tns:fetchQuickCheckRequestType" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="fetchQuickCheckResponseType">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="operationId" type="xs:token" />
+      <xs:element minOccurs="1" name="troubleshootResponse" type="asp:tsQuickCheckResponseDataType" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="fetchQuickCheckResponseWrapper">
+    <xs:sequence>
+      <xs:element name="FetchQuickCheckResponse" type="tns:fetchQuickCheckResponseType" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="FetchQuickCheck" type="tns:fetchQuickCheckRequestWrapper" />
+  <xs:element name="FetchQuickCheckResponse" type="tns:fetchQuickCheckResponseWrapper" />
+  <xs:complexType name="fetchTSNodeRequestDataType">
+    <xs:sequence>
+      <xs:element minOccurs="1" name="issueCategoryID" type="xs:string" />
+      <xs:element minOccurs="1" name="articleID" type="xs:string" />
+      <xs:element minOccurs="1" name="nodeID" type="xs:string" />
+      <xs:element minOccurs="0" maxOccurs="100" name="productModel" type="base:productModelType" />
+      <xs:element minOccurs="0" name="serialNumber" type="xs:string" />
+      <xs:element minOccurs="0" name="alternateDeviceId" type="xs:string" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="fetchTSNodeRequestType">
+    <xs:sequence>
+      <xs:element minOccurs="1" name="userSession" type="global:gsxUserSessionType" />
+      <xs:element minOccurs="1" name="troubleshootRequest" type="tns:fetchTSNodeRequestDataType" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="fetchTSNodeRequestWrapper">
+    <xs:sequence>
+      <xs:element name="FetchTSNodeRequest" type="tns:fetchTSNodeRequestType" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="fetchTSNodeResponseType">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="operationId" type="xs:token" />
+      <xs:element minOccurs="1" name="troubleshootResponse" type="asp:fetchTSNodeResponseDataType" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="fetchTSNodeResponseWrapper">
+    <xs:sequence>
+      <xs:element name="FetchTSNodeResponse" type="tns:fetchTSNodeResponseType" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="FetchTSNode" type="tns:fetchTSNodeRequestWrapper" />
+  <xs:element name="FetchTSNodeResponse" type="tns:fetchTSNodeResponseWrapper" />
+  <xs:complexType name="updateSerialNumberRequestType">
+    <xs:sequence>
+      <xs:element minOccurs="1" name="userSession" type="global:gsxUserSessionType" />
+      <xs:element minOccurs="1" name="repairData" type="asp:updateSerialNumberRepairDataType" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="updateSerialNumberRequestWrapper">
+    <xs:sequence>
+      <xs:element name="IPhoneUpdateSerialNumberRequest" type="tns:updateSerialNumberRequestType" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="updateSerialNumberResponseType">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="operationId" type="xs:token" />
+      <xs:element minOccurs="0" name="repairConfirmation" type="asp:updateSerialNumberRepairConfirmationType" />
+      <xs:element minOccurs="0" name="communicationMessage" type="xs:string" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="updateSerialNumberResponseWrapper">
+    <xs:sequence>
+      <xs:element name="IPhoneUpdateSerialNumberResponse" type="tns:updateSerialNumberResponseType" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="IPhoneUpdateSerialNumber" type="tns:updateSerialNumberRequestWrapper" />
+  <xs:element name="IPhoneUpdateSerialNumberResponse" type="tns:updateSerialNumberResponseWrapper" />
+  <xs:complexType name="ReturnBeforeReplaceRequestType">
+    <xs:sequence>
+      <xs:element minOccurs="1" name="userSession" type="global:gsxUserSessionType" />
+      <xs:element minOccurs="1" name="repairData" type="iphone:createIPhoneCarryInReturnReplaceRequestType" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="createReturnBeforeReplaceResponseType">
+    <xs:sequence>
+      <xs:element minOccurs="1" name="operationId" type="xs:token" />
+      <xs:element minOccurs="1" name="repairConfirmation" type="asp:repairConfirmationType" />
+      <xs:element minOccurs="0" name="communicationMessage" type="xs:string" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="createIPhoneReturnReplaceRequestWrapper">
+    <xs:sequence>
+      <xs:element name="CreateIPhoneCarryInReturnBeforeReplaceRepairRequest" type="tns:ReturnBeforeReplaceRequestType" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="createIPhoneReturnReplaceResponseWrapper">
+    <xs:sequence>
+      <xs:element name="CreateIPhoneCarryInReturnReplaceRepairResponse" type="tns:createReturnBeforeReplaceResponseType" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="CreateIPhoneCarryInReturnBeforeReplace" type="tns:createIPhoneReturnReplaceRequestWrapper" />
+  <xs:element name="CreateIPhoneCarryInReturnBeforeReplaceResponse" type="tns:createIPhoneReturnReplaceResponseWrapper" />
+  <xs:complexType name="iPhoneReturnReportRequestType">
+    <xs:sequence>
+      <xs:element minOccurs="1" name="userSession" type="global:gsxUserSessionType" />
+      <xs:element minOccurs="1" name="returnRequestData" type="iphone:iphoneReturnReportingRequestType" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="iPhoneReturnReportRequestWrapper">
+    <xs:sequence>
+      <xs:element name="IPhoneReturnReportRequest" type="tns:iPhoneReturnReportRequestType" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="iPhoneReturnReportResponseType">
+    <xs:sequence>
+      <xs:element minOccurs="1" name="operationId" type="xs:token" />
+      <xs:element minOccurs="1" maxOccurs="unbounded" name="returnResponseData" type="iphone:iphoneReturnReportingResponseType" />
+      <xs:element minOccurs="0" name="communicationMessage" type="xs:string" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="iPhoneReturnReportResponseWrapper">
+    <xs:sequence>
+      <xs:element name="IPhoneReturnReportResponse" type="tns:iPhoneReturnReportResponseType" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="IPhoneReturnReport" type="tns:iPhoneReturnReportRequestWrapper" />
+  <xs:element name="IPhoneReturnReportResponse" type="tns:iPhoneReturnReportResponseWrapper" />
+  <xs:complexType name="iphoneConsignmentIncreaseOrderLookUpRequestType">
+    <xs:sequence>
+      <xs:element minOccurs="1" name="userSession" type="global:gsxUserSessionType" />
+      <xs:element minOccurs="1" name="lookUpRequestData" type="asp:consignmentIncreaseOrderLookUpRequestInfoType" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="iphoneConsignmentIncreaseOrderLookUpRequestWrapper">
+    <xs:sequence>
+      <xs:element name="IPhoneConsignmentIncreaseOrderLookUpRequest" type="tns:iphoneConsignmentIncreaseOrderLookUpRequestType" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="iphoneConsignmentIncreaseOrderLookUpResponseType">
+    <xs:sequence>
+      <xs:element minOccurs="1" name="operationId" type="xs:token" />
+      <xs:element minOccurs="1" maxOccurs="unbounded" name="lookupResponseData" type="asp:consignmentIncreaseOrderLookUpResponseInfoType" />
+      <xs:element minOccurs="0" name="communicationMessage" type="xs:string" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="iphoneConsignmentIncreaseOrderLookUpResponseWrapper">
+    <xs:sequence>
+      <xs:element name="IPhoneConsignmentIncreaseOrderLookUpResponse" type="tns:iphoneConsignmentIncreaseOrderLookUpResponseType" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="IPhoneConsignmentIncreaseOrderLookUp" type="tns:iphoneConsignmentIncreaseOrderLookUpRequestWrapper" />
+  <xs:element name="IPhoneConsignmentIncreaseOrderLookUpResponse" type="tns:iphoneConsignmentIncreaseOrderLookUpResponseWrapper" />
+  <xs:complexType name="componentCheckRequestType">
+    <xs:sequence>
+      <xs:element minOccurs="1" name="userSession" type="global:gsxUserSessionType" />
+      <xs:element minOccurs="1" name="repairData" type="asp:componentCheckRequestType" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="componentCheckResponseType">
+    <xs:sequence>
+      <xs:element minOccurs="1" name="operationId" type="xs:token" />
+      <xs:element minOccurs="1" name="componentCheckDetails" type="asp:componentCheckDetailsResponseType" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="iPhoneComponentCheckRequestWrapper">
+    <xs:sequence>
+      <xs:element name="IPhoneComponentCheckRequest" type="tns:componentCheckRequestType" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="iPhoneComponentCheckResponseWrapper">
+    <xs:sequence>
+      <xs:element name="IPhoneComponentCheckResponse" type="tns:componentCheckResponseType" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="IPhoneComponentCheck" type="tns:iPhoneComponentCheckRequestWrapper" />
+  <xs:element name="IPhoneComponentCheckResponse" type="tns:iPhoneComponentCheckResponseWrapper" />
+  <xs:complexType name="iphoneConsignmentDecreaseOrderLookUpRequestType">
+    <xs:sequence>
+      <xs:element minOccurs="1" name="userSession" type="global:gsxUserSessionType" />
+      <xs:element minOccurs="1" name="lookUpRequestData" type="asp:consignmentIncreaseOrderLookUpRequestInfoType" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="iphoneConsignmentDecreaseOrderLookUpRequestWrapper">
+    <xs:sequence>
+      <xs:element name="IPhoneConsignmentDecreaseOrderLookUpRequest" type="tns:iphoneConsignmentDecreaseOrderLookUpRequestType" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="iphoneConsignmentDecreaseOrderLookUpResponseType">
+    <xs:sequence>
+      <xs:element minOccurs="1" name="operationId" type="xs:token" />
+      <xs:element minOccurs="1" maxOccurs="unbounded" name="orderData" type="asp:consignmentDecreaseOrderLookUpResponseInfoType" />
+      <xs:element minOccurs="0" name="communicationMessage" type="xs:string" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="iphoneConsignmentDecreaseOrderLookUpResponseWrapper">
+    <xs:sequence>
+      <xs:element name="IPhoneConsignmentDecreaseOrderLookUpResponse" type="tns:iphoneConsignmentDecreaseOrderLookUpResponseType" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="IPhoneConsignmentDecreaseOrderLookUp" type="tns:iphoneConsignmentDecreaseOrderLookUpRequestWrapper" />
+  <xs:element name="IPhoneConsignmentDecreaseOrderLookUpResponse" type="tns:iphoneConsignmentDecreaseOrderLookUpResponseWrapper" />
+  <xs:complexType name="submitConsignmentIphoneDecreaseOrderRequestType">
+    <xs:sequence>
+      <xs:element minOccurs="1" name="userSession" type="global:gsxUserSessionType" />
+      <xs:element minOccurs="1" name="orderData" type="asp:submitConsignmentDecreaseOrderRequestInfoType" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="submitConsignmentIphoneDecreaseOrderRequestWrapper">
+    <xs:sequence>
+      <xs:element name="SubmitConsignmentIphoneDecreaseOrderRequest" type="tns:submitConsignmentIphoneDecreaseOrderRequestType" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="submitConsignmentIphoneDecreaseOrderResponseType">
+    <xs:sequence>
+      <xs:element minOccurs="1" name="operationId" type="xs:token" />
+      <xs:element minOccurs="1" name="orderConfirmation" type="asp:submitConsignmentDecreaseOrderResponseInfoType" />
+      <xs:element minOccurs="0" name="communicationMessage" type="xs:string" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="submitConsignmentIphoneDecreaseOrderResponseWrapper">
+    <xs:sequence>
+      <xs:element name="SubmitConsignmentIphoneDecreaseOrderResponse" type="tns:submitConsignmentIphoneDecreaseOrderResponseType" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="SubmitConsignmentIphoneDecreaseOrder" type="tns:submitConsignmentIphoneDecreaseOrderRequestWrapper" />
+  <xs:element name="SubmitConsignmentIphoneDecreaseOrderResponse" type="tns:submitConsignmentIphoneDecreaseOrderResponseWrapper" />
+  <xs:complexType name="acknowledgeIphoneConsignmentIncreaseOrderRequestType">
+    <xs:sequence>
+      <xs:element minOccurs="1" name="userSession" type="global:gsxUserSessionType" />
+      <xs:element minOccurs="1" name="orderData" type="asp:acknowledgeConsignmentIncreaseOrderRequestInfoType" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="acknowledgeIphoneConsignmentIncreaseOrderRequestWrapper">
+    <xs:sequence>
+      <xs:element name="AcknowledgeIphoneConsignmentIncreaseOrderRequest" type="tns:acknowledgeIphoneConsignmentIncreaseOrderRequestType" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="acknowledgeIphoneConsignmentIncreaseOrderResponseType">
+    <xs:sequence>
+      <xs:element minOccurs="1" name="operationId" type="xs:token" />
+      <xs:element minOccurs="1" name="acknowledgementResponse" type="asp:acknowledgeConsignmentIncreaseOrderResponseInfoType" />
+      <xs:element minOccurs="0" name="communicationMessage" type="xs:string" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="acknowledgeIphoneConsignmentIncreaseOrderResponseWrapper">
+    <xs:sequence>
+      <xs:element name="AcknowledgeIphoneConsignmentIncreaseOrderResponse" type="tns:acknowledgeIphoneConsignmentIncreaseOrderResponseType" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="AcknowledgeIphoneConsignmentIncreaseOrder" type="tns:acknowledgeIphoneConsignmentIncreaseOrderRequestWrapper" />
+  <xs:element name="AcknowledgeIphoneConsignmentIncreaseOrderResponse" type="tns:acknowledgeIphoneConsignmentIncreaseOrderResponseWrapper" />
+  <xs:complexType name="validateIPhoneFromConsignedStockRequestType">
+    <xs:sequence>
+      <xs:element minOccurs="1" name="userSession" type="global:gsxUserSessionType" />
+      <xs:element minOccurs="1" name="iphoneConsignedStockRequest" type="asp:consignedStockValidationRequestInfoType" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="validateIPhoneFromConsignedStockRequestWrapper">
+    <xs:sequence>
+      <xs:element name="ValidateIPhoneFromConsignedStockRequest" type="tns:validateIPhoneFromConsignedStockRequestType" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="validateIPhoneFromConsignedStockResponseType">
+    <xs:sequence>
+      <xs:element minOccurs="1" name="operationId" type="xs:token" />
+      <xs:element minOccurs="1" name="iphoneConsignedStockResponse" type="asp:consignedStockValidationResponseInfoType" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="validateIPhoneFromConsignedStockResponseWrapper">
+    <xs:sequence>
+      <xs:element name="ValidateIPhoneFromConsignedStockResponse" type="tns:validateIPhoneFromConsignedStockResponseType" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="ValidateIPhoneFromConsignedStock" type="tns:validateIPhoneFromConsignedStockRequestWrapper" />
+  <xs:element name="ValidateIPhoneFromConsignedStockResponse" type="tns:validateIPhoneFromConsignedStockResponseWrapper" />
+  <xs:complexType name="viewIPhoneConsignmentProformaRequestType">
+    <xs:sequence>
+      <xs:element minOccurs="1" name="userSession" type="global:gsxUserSessionType" />
+      <xs:element minOccurs="1" name="orderNumber" type="xs:string" />
+      <xs:element minOccurs="1" name="shipmentNumber" type="xs:string" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="viewIPhoneConsignmentProformaRequestWrapper">
+    <xs:sequence>
+      <xs:element name="ViewIPhoneConsignmentProformaRequest" type="tns:viewIPhoneConsignmentProformaRequestType" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="viewIPhoneConsignmentProformaResponseType">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="operationId" type="xs:token" />
+      <xs:element minOccurs="1" maxOccurs="unbounded" name="consignmentProformaInfo" type="asp:viewConsignmentProformaResponseType" />
+      <xs:element minOccurs="0" name="communicationMessage" type="xs:string" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="viewIPhoneConsignmentProformaResponseWrapper">
+    <xs:sequence>
+      <xs:element name="ViewIPhoneConsignmentProformaResponse" type="tns:viewIPhoneConsignmentProformaResponseType" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="ViewIPhoneConsignmentProforma" type="tns:viewIPhoneConsignmentProformaRequestWrapper" />
+  <xs:element name="ViewIPhoneConsignmentProformaResponse" type="tns:viewIPhoneConsignmentProformaResponseWrapper" />
+  <xs:complexType name="appleReviewPreCheckRequestType">
+    <xs:sequence>
+      <xs:element minOccurs="1" name="userSession" type="global:gsxUserSessionType" />
+      <xs:element minOccurs="1" maxOccurs="100" name="repairData" type="asp:viewAppleHoldRequestType" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="appleReviewPreCheckResponseType">
+    <xs:sequence>
+      <xs:element minOccurs="1" name="operationId" type="xs:token" />
+      <xs:element minOccurs="1" maxOccurs="100" name="appleHoldStatus" type="asp:viewAppleHoldResponseType" />
+      <xs:element minOccurs="0" name="communicationMessage" type="xs:string" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="appleReviewPreCheckRequestWrapper">
+    <xs:sequence>
+      <xs:element name="AppleReviewPreCheckRequest" type="tns:appleReviewPreCheckRequestType" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="appleReviewPreCheckResponseWrapper">
+    <xs:sequence>
+      <xs:element name="AppleReviewPreCheckResponse" type="tns:appleReviewPreCheckResponseType" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="AppleReviewPreCheckRequest" type="tns:appleReviewPreCheckRequestWrapper" />
+  <xs:element name="AppleReviewPreCheckResponse" type="tns:appleReviewPreCheckResponseWrapper" />
+  <xs:complexType name="updateIphoneRepairOrReplaceRequestType">
+    <xs:sequence>
+      <xs:element minOccurs="1" name="userSession" type="global:gsxUserSessionType" />
+      <xs:element minOccurs="1" name="repairData" type="asp:updateRepairOrReplaceRequestInfoType" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="updateIphoneRepairOrReplaceRequestWrapper">
+    <xs:sequence>
+      <xs:element name="UpdateIphoneRepairOrReplaceRequest" type="tns:updateIphoneRepairOrReplaceRequestType" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="updateIphoneRepairOrReplaceResponseType">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="operationId" type="xs:token" />
+      <xs:element minOccurs="1" name="repairConfirmation" type="asp:updateRepairOrReplaceResponseInfoType" />
+      <xs:element minOccurs="0" name="communicationMessage" type="xs:string" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="updateIphoneRepairOrReplaceResponseWrapper">
+    <xs:sequence>
+      <xs:element name="UpdateIphoneRepairOrReplaceResponse" type="tns:updateIphoneRepairOrReplaceResponseType" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="UpdateIphoneRepairOrReplaceRequest" type="tns:updateIphoneRepairOrReplaceRequestWrapper" />
+  <xs:element name="UpdateIphoneRepairOrReplaceResponse" type="tns:updateIphoneRepairOrReplaceResponseWrapper" />
+  <xs:complexType name="loanerIphoneReturnRequestType">
+    <xs:sequence>
+      <xs:element minOccurs="1" name="userSession" type="global:gsxUserSessionType" />
+      <xs:element minOccurs="1" name="loanerIphoneReturnRequestData" type="iphone:loanerIphoneReturnRequestType" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="loanerIphoneReturnRequestWrapper">
+    <xs:sequence>
+      <xs:element name="LoanerIphoneReturnRequest" type="tns:loanerIphoneReturnRequestType" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="loanerIphoneReturnResponseType">
+    <xs:sequence>
+      <xs:element minOccurs="1" name="operationId" type="xs:token" />
+      <xs:element minOccurs="1" name="loanerIphoneReturnResponseData" type="iphone:loanerIphoneReturnResponseType" />
+      <xs:element minOccurs="0" name="communicationMessage" type="xs:string" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="loanerIphoneReturnResponseWrapper">
+    <xs:sequence>
+      <xs:element name="LoanerIphoneReturnResponse" type="tns:loanerIphoneReturnResponseType" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="LoanerIphoneReturn" type="tns:loanerIphoneReturnRequestWrapper" />
+  <xs:element name="LoanerIphoneReturnResponse" type="tns:loanerIphoneReturnResponseWrapper" />
+  <xs:complexType name="repairStatusRequestType">
+    <xs:sequence>
+      <xs:element minOccurs="1" name="userSession" type="global:gsxUserSessionType" />
+      <xs:element minOccurs="1" maxOccurs="100" name="repairConfirmationNumbers" type="basic:Token_20" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="repairStatusRequestWrapper">
+    <xs:sequence>
+      <xs:element name="RepairStatusRequest" type="tns:repairStatusRequestType" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="repairStatusResponseType">
+    <xs:sequence>
+      <xs:element minOccurs="1" name="operationId" type="xs:token" />
+      <xs:element minOccurs="1" maxOccurs="100" name="repairStatus" type="iphone:repairStatusInfo" />
+      <xs:element minOccurs="0" name="communicationMessage" type="xs:string" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="repairStatusResponseWrapper">
+    <xs:sequence>
+      <xs:element name="RepairStatusResponse" type="tns:repairStatusResponseType" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="RepairStatus" type="tns:repairStatusRequestWrapper" />
+  <xs:element name="RepairStatusResponse" type="tns:repairStatusResponseWrapper" />
+  <xs:complexType name="deleteRepairRequestType">
+    <xs:sequence>
+      <xs:element minOccurs="1" name="userSession" type="global:gsxUserSessionType" />
+      <xs:element minOccurs="1" name="confirmationNumber" type="xs:string" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="deleteRepairRequestWrapper">
+    <xs:sequence>
+      <xs:element name="DeleteRepairRequest" type="tns:deleteRepairRequestType" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="deleteRepairResponseType">
+    <xs:sequence>
+      <xs:element minOccurs="1" name="operationId" type="xs:token" />
+      <xs:element minOccurs="1" name="confirmationNumber" type="xs:string" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="deleteRepairResponseWrapper">
+    <xs:sequence>
+      <xs:element name="DeleteRepairResponse" type="tns:deleteRepairResponseType" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="DeleteRepair" type="tns:deleteRepairRequestWrapper" />
+  <xs:element name="DeleteRepairResponse" type="tns:deleteRepairResponseWrapper" />
+  <xs:element name="ReportedSymptomIssue" type="tns:reportedSymptomIssueRequestWrapper" />
+  <xs:element name="ReportedSymptomIssueResponse" type="tns:reportedSymptomIssueResponseWrapper" />
+  <xs:complexType name="reportedSymptomIssueRequestType">
+    <xs:sequence>
+      <xs:element minOccurs="1" name="userSession" type="global:gsxUserSessionType" />
+      <xs:element minOccurs="1" name="requestData" type="tns:viewReportedSymptomIssueStatusRequestType" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="reportedSymptomIssueResponseType">
+    <xs:sequence>
+      <xs:element minOccurs="1" name="operationId" type="xs:token" />
+      <xs:element minOccurs="1" maxOccurs="unbounded" name="reportedSymptomIssueResponse" type="tns:viewReportedSymptomIssueResponseType" />
+      <xs:element minOccurs="0" name="communicationMessage" type="xs:string" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="reportedSymptomIssueRequestWrapper">
+    <xs:sequence>
+      <xs:element name="ReportedSymptomIssueRequest" type="tns:reportedSymptomIssueRequestType" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="reportedSymptomIssueResponseWrapper">
+    <xs:sequence>
+      <xs:element name="ReportedSymptomIssueResponse" type="tns:reportedSymptomIssueResponseType" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="viewReportedSymptomIssueStatusRequestType">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="serialNumber" type="xs:string" />
+      <xs:element minOccurs="0" name="reportedSymptomCode" type="xs:string" />
+      <xs:element minOccurs="0" name="alternateDeviceId" type="basic:Token_18" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="viewReportedSymptomIssueResponseType">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="symptoms" nillable="true" type="tns:symptoms" />
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="issues" nillable="true" type="tns:issues" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="symptoms">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="reportedSymptomCode" type="xs:string" />
+      <xs:element minOccurs="0" name="reportedSymptomDesc" type="xs:string" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="issues">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="reportedIssueCode" type="xs:string" />
+      <xs:element minOccurs="0" name="reportedIssueDesc" type="xs:string" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="registerIPhonePartsForWHUBulkReturnRequestType">
+    <xs:sequence>
+      <xs:element minOccurs="1" name="userSession" type="global:gsxUserSessionType" />
+      <xs:element minOccurs="1" name="WHUBulkPartsRegistrationRequest" type="asp:WHUBulkRegistrationRequestType" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="registerIPhonePartsForWHUBulkReturnRequestWrapper">
+    <xs:sequence>
+      <xs:element name="RegisterIPhonePartsForWHUBulkReturnRequest" type="tns:registerIPhonePartsForWHUBulkReturnRequestType" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="registerIPhonePartsForWHUBulkReturnResponseType">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="operationId" type="xs:token" />
+      <xs:element minOccurs="1" name="WHUBulkPartsRegistrationData" type="asp:WHUBulkRegistrationResponseType" />
+      <xs:element minOccurs="0" name="communicationMessage" type="xs:string" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="registerIPhonePartsForWHUBulkReturnResponseWrapper">
+    <xs:sequence>
+      <xs:element name="RegisterIPhonePartsForWHUBulkReturnResponse" type="tns:registerIPhonePartsForWHUBulkReturnResponseType" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="RegisterIPhonePartsForWHUBulkReturn" type="tns:registerIPhonePartsForWHUBulkReturnRequestWrapper" />
+  <xs:element name="RegisterIPhonePartsForWHUBulkReturnResponse" type="tns:registerIPhonePartsForWHUBulkReturnResponseWrapper" />
+  <xs:complexType name="iphoneDepotShipperLabelRequestType">
+    <xs:sequence>
+      <xs:element minOccurs="1" name="userSession" type="global:gsxUserSessionType" />
+      <xs:element minOccurs="1" name="dispatchId" type="xs:string" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="iphoneDepotShipperLabelRequestWrapper">
+    <xs:sequence>
+      <xs:element name="iPhoneDepotShipperLabelRequest" type="tns:iphoneDepotShipperLabelRequestType" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="iphoneDepotShipperLabelResponseType">
+    <xs:sequence>
+      <xs:element minOccurs="1" name="operationId" type="xs:token" />
+      <xs:element minOccurs="0" name="dispatchId" type="xs:string" />
+      <xs:element minOccurs="0" name="fileName" type="xs:string" />
+      <xs:element minOccurs="0" name="fileData" type="xs:base64Binary" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="iphoneDepotShipperLabelResponseWrapper">
+    <xs:sequence>
+      <xs:element name="iPhoneDepotShipperLabelResponse" type="tns:iphoneDepotShipperLabelResponseType" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="iPhoneDepotShipperLabelRequest" type="tns:iphoneDepotShipperLabelRequestWrapper" />
+  <xs:element name="iPhoneDepotShipperLabelResponse" type="tns:iphoneDepotShipperLabelResponseWrapper" />
+  <xs:element name="FetchQuestions" type="tns:fetchQuestionsRequestWrapper" />
+  <xs:element name="FetchQuestionsResponse" type="tns:fetchQuestionsResponseWrapper" />
+  <xs:complexType name="fetchQuestionsRequestType">
+    <xs:sequence>
+      <xs:element minOccurs="1" name="userSession" type="global:gsxUserSessionType" />
+      <xs:element minOccurs="1" name="questionsRequestData" type="asp:questionsRequestType" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="fetchQuestionsResponseType">
+    <xs:sequence>
+      <xs:element minOccurs="1" name="operationId" type="xs:token" />
+      <xs:element minOccurs="1" name="fetchQuestionsResponseData" type="asp:questionsResponseType" />
+      <xs:element minOccurs="0" name="communicationMessage" type="xs:string" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="fetchQuestionsRequestWrapper">
+    <xs:sequence>
+      <xs:element name="fetchQuestionsRequest" type="tns:fetchQuestionsRequestType" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="fetchQuestionsResponseWrapper">
+    <xs:sequence>
+      <xs:element name="fetchQuestionsResponse" type="tns:fetchQuestionsResponseType" />
+    </xs:sequence>
+  </xs:complexType>
+</xs:schema>

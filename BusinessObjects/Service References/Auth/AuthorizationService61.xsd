@@ -1,0 +1,336 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xs:schema xmlns:ser="http://schemas.microsoft.com/2003/10/Serialization/" elementFormDefault="qualified" targetNamespace="http://services.assurant.com/integration/authorization/2012/05/01/" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+  <xs:import schemaLocation="http://msp0wapfd001.cead.prd/Authorization/Entity/20120501/AuthorizationService.svc?xsd=xsd2" namespace="http://schemas.microsoft.com/2003/10/Serialization/Arrays" />
+  <xs:import schemaLocation="http://msp0wapfd001.cead.prd/Authorization/Entity/20120501/AuthorizationService.svc?xsd=xsd1" namespace="http://schemas.microsoft.com/2003/10/Serialization/" />
+  <xs:import schemaLocation="http://msp0wapfd001.cead.prd/Authorization/Entity/20120501/AuthorizationService.svc?xsd=xsd3" namespace="http://services.assurant.com/integration/faults/2012/6/12/" />
+  <xs:element name="AddUsersToGroup">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element xmlns:q1="http://schemas.microsoft.com/2003/10/Serialization/Arrays" minOccurs="0" name="userIds" nillable="true" type="q1:ArrayOfguid" />
+        <xs:element minOccurs="0" name="groupId" type="ser:guid" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="AddUsersToGroupResponse">
+    <xs:complexType>
+      <xs:sequence />
+    </xs:complexType>
+  </xs:element>
+  <xs:complexType name="AuthorizationFault">
+    <xs:complexContent mixed="false">
+      <xs:extension xmlns:q2="http://services.assurant.com/integration/faults/2012/6/12/" base="q2:FaultBaseOfException5F2dSckg">
+        <xs:sequence />
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:element xmlns:q3="http://services.assurant.com/integration/authorization/2012/05/01/" name="AuthorizationFault" nillable="true" type="q3:AuthorizationFault" />
+  <xs:element name="AddPermissionsToUser">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element xmlns:q4="http://schemas.microsoft.com/2003/10/Serialization/Arrays" minOccurs="0" name="permissionIds" nillable="true" type="q4:ArrayOfguid" />
+        <xs:element minOccurs="0" name="userId" type="ser:guid" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="AddPermissionsToUserResponse">
+    <xs:complexType>
+      <xs:sequence />
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="AddPermissionsToGroup">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element xmlns:q5="http://schemas.microsoft.com/2003/10/Serialization/Arrays" minOccurs="0" name="permissionIds" nillable="true" type="q5:ArrayOfguid" />
+        <xs:element minOccurs="0" name="groupId" type="ser:guid" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="AddPermissionsToGroupResponse">
+    <xs:complexType>
+      <xs:sequence />
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="RemoveUsersFromGroup">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element xmlns:q6="http://schemas.microsoft.com/2003/10/Serialization/Arrays" minOccurs="0" name="userIds" nillable="true" type="q6:ArrayOfguid" />
+        <xs:element minOccurs="0" name="groupId" type="ser:guid" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="RemoveUsersFromGroupResponse">
+    <xs:complexType>
+      <xs:sequence />
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="RemovePermissionsFromUser">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element xmlns:q7="http://schemas.microsoft.com/2003/10/Serialization/Arrays" minOccurs="0" name="permissionIds" nillable="true" type="q7:ArrayOfguid" />
+        <xs:element minOccurs="0" name="userId" type="ser:guid" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="RemovePermissionsFromUserResponse">
+    <xs:complexType>
+      <xs:sequence />
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="RemovePermissionsFromGroup">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element xmlns:q8="http://schemas.microsoft.com/2003/10/Serialization/Arrays" minOccurs="0" name="permissionIds" nillable="true" type="q8:ArrayOfguid" />
+        <xs:element minOccurs="0" name="groupId" type="ser:guid" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="RemovePermissionsFromGroupResponse">
+    <xs:complexType>
+      <xs:sequence />
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="CreateUser">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element xmlns:q9="http://services.assurant.com/integration/authorization/2012/05/01/" minOccurs="0" name="user" nillable="true" type="q9:User" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:complexType name="User">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="CreatedOn" type="xs:dateTime" />
+      <xs:element minOccurs="0" name="Email" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="FirstName" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="Id" type="ser:guid" />
+      <xs:element minOccurs="0" name="IsActive" type="xs:boolean" />
+      <xs:element minOccurs="0" name="LastName" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="UserId" nillable="true" type="xs:string" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element xmlns:q10="http://services.assurant.com/integration/authorization/2012/05/01/" name="User" nillable="true" type="q10:User" />
+  <xs:element name="CreateUserResponse">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element xmlns:q11="http://services.assurant.com/integration/authorization/2012/05/01/" minOccurs="0" name="CreateUserResult" nillable="true" type="q11:User" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="GetUserForServiceById">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" name="id" type="ser:guid" />
+        <xs:element minOccurs="0" name="serviceName" nillable="true" type="xs:string" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="GetUserForServiceByIdResponse">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element xmlns:q12="http://services.assurant.com/integration/authorization/2012/05/01/" minOccurs="0" name="GetUserForServiceByIdResult" nillable="true" type="q12:ExtendedUser" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:complexType name="ExtendedUser">
+    <xs:complexContent mixed="false">
+      <xs:extension xmlns:q13="http://services.assurant.com/integration/authorization/2012/05/01/" base="q13:User">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="Groups" nillable="true" type="q13:ArrayOfExtendedGroup" />
+          <xs:element minOccurs="0" name="Permissions" nillable="true" type="q13:ArrayOfPermission" />
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:element xmlns:q14="http://services.assurant.com/integration/authorization/2012/05/01/" name="ExtendedUser" nillable="true" type="q14:ExtendedUser" />
+  <xs:complexType name="ArrayOfExtendedGroup">
+    <xs:sequence>
+      <xs:element xmlns:q15="http://services.assurant.com/integration/authorization/2012/05/01/" minOccurs="0" maxOccurs="unbounded" name="ExtendedGroup" nillable="true" type="q15:ExtendedGroup" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element xmlns:q16="http://services.assurant.com/integration/authorization/2012/05/01/" name="ArrayOfExtendedGroup" nillable="true" type="q16:ArrayOfExtendedGroup" />
+  <xs:complexType name="ExtendedGroup">
+    <xs:complexContent mixed="false">
+      <xs:extension xmlns:q17="http://services.assurant.com/integration/authorization/2012/05/01/" base="q17:Group">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="Permissions" nillable="true" type="q17:ArrayOfPermission" />
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:element xmlns:q18="http://services.assurant.com/integration/authorization/2012/05/01/" name="ExtendedGroup" nillable="true" type="q18:ExtendedGroup" />
+  <xs:complexType name="Group">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="CreatedOn" type="xs:dateTime" />
+      <xs:element minOccurs="0" name="Id" type="ser:guid" />
+      <xs:element minOccurs="0" name="Name" nillable="true" type="xs:string" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element xmlns:q19="http://services.assurant.com/integration/authorization/2012/05/01/" name="Group" nillable="true" type="q19:Group" />
+  <xs:complexType name="ArrayOfPermission">
+    <xs:sequence>
+      <xs:element xmlns:q20="http://services.assurant.com/integration/authorization/2012/05/01/" minOccurs="0" maxOccurs="unbounded" name="Permission" nillable="true" type="q20:Permission" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element xmlns:q21="http://services.assurant.com/integration/authorization/2012/05/01/" name="ArrayOfPermission" nillable="true" type="q21:ArrayOfPermission" />
+  <xs:complexType name="Permission">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="Action" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="Id" type="ser:guid" />
+      <xs:element minOccurs="0" name="Resource" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="ResourceType" nillable="true" type="xs:string" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element xmlns:q22="http://services.assurant.com/integration/authorization/2012/05/01/" name="Permission" nillable="true" type="q22:Permission" />
+  <xs:element name="GetUserForServiceByKey">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" name="externalKey" nillable="true" type="xs:string" />
+        <xs:element minOccurs="0" name="serviceName" nillable="true" type="xs:string" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="GetUserForServiceByKeyResponse">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element xmlns:q23="http://services.assurant.com/integration/authorization/2012/05/01/" minOccurs="0" name="GetUserForServiceByKeyResult" nillable="true" type="q23:ExtendedUser" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="GetUsers">
+    <xs:complexType>
+      <xs:sequence />
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="GetUsersResponse">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element xmlns:q24="http://services.assurant.com/integration/authorization/2012/05/01/" minOccurs="0" name="GetUsersResult" nillable="true" type="q24:ArrayOfUser" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:complexType name="ArrayOfUser">
+    <xs:sequence>
+      <xs:element xmlns:q25="http://services.assurant.com/integration/authorization/2012/05/01/" minOccurs="0" maxOccurs="unbounded" name="User" nillable="true" type="q25:User" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element xmlns:q26="http://services.assurant.com/integration/authorization/2012/05/01/" name="ArrayOfUser" nillable="true" type="q26:ArrayOfUser" />
+  <xs:element name="FindUsers">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element xmlns:q27="http://services.assurant.com/integration/authorization/2012/05/01/" minOccurs="0" name="criteria" nillable="true" type="q27:User" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="FindUsersResponse">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element xmlns:q28="http://services.assurant.com/integration/authorization/2012/05/01/" minOccurs="0" name="FindUsersResult" nillable="true" type="q28:ArrayOfUser" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="UpdateUser">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element xmlns:q29="http://services.assurant.com/integration/authorization/2012/05/01/" minOccurs="0" name="user" nillable="true" type="q29:User" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="UpdateUserResponse">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element xmlns:q30="http://services.assurant.com/integration/authorization/2012/05/01/" minOccurs="0" name="UpdateUserResult" nillable="true" type="q30:User" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="CreateGroup">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element xmlns:q31="http://services.assurant.com/integration/authorization/2012/05/01/" minOccurs="0" name="userGroup" nillable="true" type="q31:Group" />
+        <xs:element minOccurs="0" name="serviceName" nillable="true" type="xs:string" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="CreateGroupResponse">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element xmlns:q32="http://services.assurant.com/integration/authorization/2012/05/01/" minOccurs="0" name="CreateGroupResult" nillable="true" type="q32:Group" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="GetGroup">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" name="id" type="ser:guid" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="GetGroupResponse">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element xmlns:q33="http://services.assurant.com/integration/authorization/2012/05/01/" minOccurs="0" name="GetGroupResult" nillable="true" type="q33:ExtendedGroup" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="GetGroups">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" name="serviceName" nillable="true" type="xs:string" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="GetGroupsResponse">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element xmlns:q34="http://services.assurant.com/integration/authorization/2012/05/01/" minOccurs="0" name="GetGroupsResult" nillable="true" type="q34:ArrayOfGroup" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:complexType name="ArrayOfGroup">
+    <xs:sequence>
+      <xs:element xmlns:q35="http://services.assurant.com/integration/authorization/2012/05/01/" minOccurs="0" maxOccurs="unbounded" name="Group" nillable="true" type="q35:Group" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element xmlns:q36="http://services.assurant.com/integration/authorization/2012/05/01/" name="ArrayOfGroup" nillable="true" type="q36:ArrayOfGroup" />
+  <xs:element name="UpdateGroup">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element xmlns:q37="http://services.assurant.com/integration/authorization/2012/05/01/" minOccurs="0" name="userGroup" nillable="true" type="q37:Group" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="UpdateGroupResponse">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element xmlns:q38="http://services.assurant.com/integration/authorization/2012/05/01/" minOccurs="0" name="UpdateGroupResult" nillable="true" type="q38:Group" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="FindPermissions">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" name="serviceName" nillable="true" type="xs:string" />
+        <xs:element xmlns:q39="http://services.assurant.com/integration/authorization/2012/05/01/" minOccurs="0" name="criteria" nillable="true" type="q39:Permission" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="FindPermissionsResponse">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element xmlns:q40="http://services.assurant.com/integration/authorization/2012/05/01/" minOccurs="0" name="FindPermissionsResult" nillable="true" type="q40:ArrayOfPermission" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="GetPermissions">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" name="serviceName" nillable="true" type="xs:string" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="GetPermissionsResponse">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element xmlns:q41="http://services.assurant.com/integration/authorization/2012/05/01/" minOccurs="0" name="GetPermissionsResult" nillable="true" type="q41:ArrayOfPermission" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+</xs:schema>

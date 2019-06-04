@@ -1,0 +1,19 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema">
+  <xs:element name="GetPartsDs">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element name="GetParts">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element name="Claim_ID" type="xs:string" minOccurs="0" maxOccurs="1" />
+              <xs:element name="Claim_Number" type="xs:string" minOccurs="0" maxOccurs="1" />
+              <xs:element name="Company_Code" type="xs:string" minOccurs="0" maxOccurs="1" />
+              <xs:element name="Risk_Group_Code" type="xs:string" minOccurs="0" maxOccurs="1"></xs:element>
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+</xs:schema>

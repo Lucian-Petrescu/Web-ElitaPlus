@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ReferenceGroup xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" ID="62bd3e24-9bc8-424f-b48b-30e94cad4c89" xmlns="urn:schemas-microsoft-com:xml-wcfservicemap">
+  <ClientOptions>
+    <GenerateAsynchronousMethods>false</GenerateAsynchronousMethods>
+    <EnableDataBinding>true</EnableDataBinding>
+    <ExcludedTypes />
+    <ImportXmlTypes>false</ImportXmlTypes>
+    <GenerateInternalTypes>false</GenerateInternalTypes>
+    <GenerateMessageContracts>false</GenerateMessageContracts>
+    <NamespaceMappings />
+    <CollectionMappings />
+    <GenerateSerializableTypes>true</GenerateSerializableTypes>
+    <Serializer>Auto</Serializer>
+    <UseSerializerForFaults>true</UseSerializerForFaults>
+    <ReferenceAllAssemblies>true</ReferenceAllAssemblies>
+    <ReferencedAssemblies />
+    <ReferencedDataContractTypes />
+    <ServiceContractMappings />
+  </ClientOptions>
+  <MetadataSources>
+    <MetadataSource Address="http://msp0wapfd001.cead.prd/WorkQueue/Composite/20120901/WorkQueueService.svc" Protocol="http" SourceId="1" />
+  </MetadataSources>
+  <Metadata>
+    <MetadataFile FileName="WorkQueueService81.xsd" MetadataType="Schema" ID="6bb8c9b2-b78d-4bc0-8c83-1375f58513d1" SourceId="1" SourceUrl="http://msp0wapfd001.cead.prd/WorkQueue/Composite/20120901/WorkQueueService.svc?xsd=xsd0" />
+    <MetadataFile FileName="WorkQueueService1.wsdl" MetadataType="Wsdl" ID="5c8087cc-7a87-48c5-aedc-5bc7567c5fda" SourceId="1" SourceUrl="http://msp0wapfd001.cead.prd/WorkQueue/Composite/20120901/WorkQueueService.svc?wsdl" />
+    <MetadataFile FileName="WorkQueueService82.xsd" MetadataType="Schema" ID="9bba60f4-8f39-4e2e-a20d-b8d98d79bf1f" SourceId="1" SourceUrl="http://msp0wapfd001.cead.prd/WorkQueue/Composite/20120901/WorkQueueService.svc?xsd=xsd4" />
+    <MetadataFile FileName="WorkQueueService83.xsd" MetadataType="Schema" ID="bf92805d-134a-41ff-ba10-7421b8975c64" SourceId="1" SourceUrl="http://msp0wapfd001.cead.prd/WorkQueue/Composite/20120901/WorkQueueService.svc?xsd=xsd1" />
+    <MetadataFile FileName="WorkQueueService1.disco" MetadataType="Disco" ID="e75e4161-a196-47cb-b230-fa29aea76b09" SourceId="1" SourceUrl="http://msp0wapfd001.cead.prd/WorkQueue/Composite/20120901/WorkQueueService.svc?disco" />
+    <MetadataFile FileName="WorkQueueService84.xsd" MetadataType="Schema" ID="bcb1d342-5fbb-4990-91f6-d6d53b5648a5" SourceId="1" SourceUrl="http://msp0wapfd001.cead.prd/WorkQueue/Composite/20120901/WorkQueueService.svc?xsd=xsd2" />
+    <MetadataFile FileName="WorkQueueService85.xsd" MetadataType="Schema" ID="8994c09e-a29f-47df-b6b9-ba9ebd7adc63" SourceId="1" SourceUrl="http://msp0wapfd001.cead.prd/WorkQueue/Composite/20120901/WorkQueueService.svc?xsd=xsd3" />
+    <MetadataFile FileName="WorkQueueService86.xsd" MetadataType="Schema" ID="5c986be1-3a20-4623-9dd6-8b29a0802c76" SourceId="1" SourceUrl="http://msp0wapfd001.cead.prd/WorkQueue/Composite/20120901/WorkQueueService.svc?xsd=xsd7" />
+    <MetadataFile FileName="WorkQueueService8.xsd" MetadataType="Schema" ID="019d9298-e883-4b7c-bda3-04c105dc0184" SourceId="1" SourceUrl="http://msp0wapfd001.cead.prd/WorkQueue/Composite/20120901/WorkQueueService.svc?xsd=xsd6" />
+    <MetadataFile FileName="WorkQueueService87.xsd" MetadataType="Schema" ID="87e7c02b-d751-4c79-95f1-4872621bd1e0" SourceId="1" SourceUrl="http://msp0wapfd001.cead.prd/WorkQueue/Composite/20120901/WorkQueueService.svc?xsd=xsd5" />
+  </Metadata>
+  <Extensions>
+    <ExtensionFile FileName="configuration91.svcinfo" Name="configuration91.svcinfo" />
+    <ExtensionFile FileName="configuration.svcinfo" Name="configuration.svcinfo" />
+  </Extensions>
+</ReferenceGroup>

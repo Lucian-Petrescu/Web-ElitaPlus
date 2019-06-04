@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="utf-8" ?>
+
+<!-- ********************** THIS FILE HAS BEEN GENERATED FROM TEMPLATE SQLObject.cst (10/17/2018)********************** -->
+
+<SQL>
+	<LOAD>
+		<![CDATA[	
+		SELECT    
+    el.Country_Id,
+    el.code,
+    el.description,
+    el.line_of_business_id,
+    el.In_Use,
+    el.created_by,
+    el.created_date,
+    el.modified_by,
+		el.modified_date,
+    el.country_line_of_business_id
+    FROM elp_country_line_of_business el
+  	Where country_line_of_business_id = :country_line_of_business_id
+		]]>
+	</LOAD>
+	<LOAD_LIST>
+    SELECT    
+    el.Country_Id,
+    el.code,
+    el.description,
+    el.line_of_business_id,
+    el.In_Use as IN_USE,
+    el.created_by,
+    el.created_date,
+    el.modified_by,
+		el.modified_date,
+    el.country_line_of_business_id
+    FROM elp_country_line_of_business el
+    where country_id=:country_id
+  </LOAD_LIST>	
+  
+  <CHECK_LINEOFBUSINESS_EXISTING_CONTRACT>
+    Select distinct line_of_business_id from elp_contract EC, Elp_Dealer Dealer, Elp_Company Comp
+    Where EC.Dealer_Id = Dealer.Dealer_Id and Dealer.Company_Id = Comp.Company_Id
+    and Comp.Business_Country_Id = :country_id
+    and EC.line_of_business_id is not null
+  </CHECK_LINEOFBUSINESS_EXISTING_CONTRACT>
+    
+	<UPDATE>
+		<![CDATA[	
+			UPDATE elp_country_line_of_business SET
+				country_id = :country_id,
+				code = :code,
+				description = :description,
+				line_of_business_id = :line_of_business_id,
+				in_use = :in_use,
+				modified_by = :modified_by
+			WHERE
+				country_line_of_business_id = :country_line_of_business_id
+		]]>
+	</UPDATE>
+	<INSERT>
+			INSERT INTO elp_country_line_of_business
+					(			
+				country_id, 
+				code, 
+				description, 
+				line_of_business_id, 
+				in_use, 
+				created_by,
+				country_line_of_business_id
+					)
+			VALUES
+					(			
+				:country_id, 
+				:code, 
+				:description, 
+				:line_of_business_id, 
+				:in_use, 
+				:created_by,
+				:country_line_of_business_id
+					)
+	</INSERT>
+	<DELETE>
+			DELETE FROM elp_country_line_of_business
+			WHERE
+				country_line_of_business_id = :country_line_of_business_id
+	</DELETE>
+</SQL> 
+
+

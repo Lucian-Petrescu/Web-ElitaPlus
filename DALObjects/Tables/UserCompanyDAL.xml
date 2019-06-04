@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="utf-8" ?>
+
+<!-- ********************** THIS FILE HAS BEEN GENERATED FROM TEMPLATE SQLObject.cst (5/8/2006)********************** -->
+
+<SQL>
+	<LOAD>
+		<![CDATA[	
+			SELECT 
+				user_id,
+				company_id,
+				created_date,
+				modified_date,
+				created_by,
+				modified_by,
+				user_company_id
+			FROM elp_user_company 
+			WHERE
+				user_company_id = :user_company_id
+		]]>
+	</LOAD>
+	<LOAD_LIST>		
+	</LOAD_LIST>
+	<LOAD_BY_USERID_COMPANYID>
+	   <![CDATA[	
+			SELECT 
+				user_id,
+				company_id,
+				created_date,
+				modified_date,
+				created_by,
+				modified_by,
+				user_company_id
+			FROM elp_user_company 
+			WHERE
+				user_id = :user_id
+			and	company_id = :company_id
+	  ]]>	
+	</LOAD_BY_USERID_COMPANYID>	
+	<LOAD_BY_USERID>
+	   <![CDATA[	
+			SELECT 
+				user_id,
+				company_id,
+				created_date,
+				modified_date,
+				created_by,
+				modified_by,
+				user_company_id
+			FROM elp_user_company 
+			WHERE
+				user_id = :user_id
+		]]>	
+	</LOAD_BY_USERID>	
+	<UPDATE>
+		<![CDATA[	
+			UPDATE elp_user_company SET
+				user_id = :user_id,
+				company_id = :company_id,
+				modified_by = :modified_by
+			WHERE
+				user_company_id = :user_company_id
+		]]>
+	</UPDATE>
+	<INSERT>
+			INSERT INTO elp_user_company
+					(			
+				user_id, 
+				company_id, 
+				created_by,
+				user_company_id
+					)
+			VALUES
+					(			
+				:user_id, 
+				:company_id, 
+				:created_by,
+				:user_company_id
+					)
+	</INSERT>
+	<DELETE>
+			DELETE FROM elp_user_company
+			WHERE
+				user_company_id = :user_company_id
+	</DELETE>
+	<DELETE_ALL>
+			DELETE FROM elp_user_company
+			WHERE
+				user_id = :user_id
+	</DELETE_ALL>
+</SQL> 
+
+
+

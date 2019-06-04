@@ -1,0 +1,103 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+
+<!-- ********************** THIS FILE HAS BEEN GENERATED FROM TEMPLATE SQLObject.cst (1/6/2015)********************** -->
+
+<SQL>
+  <LOAD>
+    <![CDATA[	
+			SELECT 
+				dealer_id,
+				invoice_month,
+				invoice_xml_data,
+				deleted,
+				created_date,
+				created_by,
+				modified_date,
+				modified_by,
+        invoice_html,
+        invoice_csv,
+				afa_invoice_data_id,
+        filename,
+        directory_name
+			FROM afa.elp_afa_invoice_data 
+			WHERE
+				afa_invoice_data_id = :afa_invoice_data_id
+		]]>
+  </LOAD>
+  <LOAD_ACTIVE_INVOICE>
+    <![CDATA[	
+			SELECT 
+				dealer_id,
+				invoice_month,
+				invoice_xml_data,
+				deleted,
+				created_date,
+				created_by,
+				modified_date,
+				modified_by,
+        invoice_html,
+        invoice_csv,
+				afa_invoice_data_id,
+        filename,
+        directory_name
+        
+			FROM afa.elp_afa_invoice_data 
+			WHERE
+				DELETED = 'N'
+        and dealer_id = :dealer_id
+        and INVOICE_MONTH = :invoice_month
+		]]>
+  </LOAD_ACTIVE_INVOICE>
+  <LOAD_DEALER_INVOICE_DATA>
+    select Invoice_xml_data
+    from afa.ELP_AFA_INVOICE_DATA
+    WHERE DELETED = 'N'
+    and dealer_id = :dealer_id
+    and INVOICE_MONTH = :invoice_month
+  </LOAD_DEALER_INVOICE_DATA>
+  <UPDATE>
+    <![CDATA[	
+			UPDATE afa.elp_afa_invoice_data SET
+				dealer_id = :dealer_id,
+				invoice_month = :invoice_month,
+				invoice_xml_data = :invoice_xml_data,
+				deleted = :deleted,
+        invoice_html = :invoice_html,
+        invoice_csv = :invoice_csv,
+				modified_by = :modified_by
+			WHERE
+				afa_invoice_data_id = :afa_invoice_data_id
+		]]>
+  </UPDATE>
+  <INSERT>
+    INSERT INTO afa.elp_afa_invoice_data
+    (
+    dealer_id,
+    invoice_month,
+    invoice_xml_data,
+    deleted,
+    created_by,
+    invoice_html,
+    invoice_csv,
+    afa_invoice_data_id
+    )
+    VALUES
+    (
+    :dealer_id,
+    :invoice_month,
+    :invoice_xml_data,
+    :deleted,
+    :created_by,
+    :invoice_html,
+    :invoice_csv,
+    :afa_invoice_data_id
+    )
+  </INSERT>
+  <DELETE>
+    DELETE FROM afa.elp_afa_invoice_data
+    WHERE
+    afa_invoice_data_id = :afa_invoice_data_id
+  </DELETE>
+</SQL>
+
+

@@ -1,0 +1,127 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+
+<!-- ********************** THIS FILE HAS BEEN GENERATED FROM TEMPLATE SQLObject.cst (7/13/2010)********************** -->
+
+<SQL>
+  <LOAD>
+    <![CDATA[	
+			SELECT 
+				dealerfile_processed_id,
+				record_type,
+				reject_code,
+				reject_reason,
+				tmk_loaded,
+				certificate,
+				dealercode,
+				firstname,
+				lastname,
+				salesdate,
+				campaign_number,
+				layout,
+				created_date,
+				created_by,
+				modified_date,
+				modified_by,
+				dealer_tmk_recon_wrk_id
+			FROM elp_dealer_tmk_recon_wrk 
+			WHERE
+				dealer_tmk_recon_wrk_id = :dealer_tmk_recon_wrk_id
+		]]>
+  </LOAD>
+  <LOAD_LIST>
+    <![CDATA[	
+      SELECT dtrw.dealer_tmk_recon_wrk_id,
+      dtrw.dealerfile_processed_id,
+      dtrw.record_type,
+      dtrw.reject_code,
+      dtrw.reject_reason,
+      dtrw.tmk_loaded,
+      dtrw.certificate,
+      dtrw.dealercode,
+      dtrw.firstname,
+      dtrw.lastname,
+      to_Char(dtrw.salesdate, 'dd-Mon-yyyy') salesdate,
+      dtrw.campaign_number,
+      dtrw.layout,
+      dtrw.modified_date,
+      (SELECT t.translation FROM elp_dict_item_translation t WHERE dict_item_id = (SELECT dict_item_id FROM elp_list_item WHERE list_id=(SELECT list_id FROM elp_list WHERE code = 'TMKSTATUS')
+      AND code = dtrw.tmk_loaded) AND t.language_id = :language_id) tmk_loaded_desc
+      FROM elp_dealer_tmk_recon_wrk dtrw
+      WHERE dealerfile_processed_id = :dealerfile_processed_id
+     --dynamic_where_clause
+      order by reject_reason
+]]>
+  </LOAD_LIST>
+  <UPDATE>
+    <![CDATA[	
+			UPDATE elp_dealer_tmk_recon_wrk SET
+				dealerfile_processed_id = :dealerfile_processed_id,
+				record_type = :record_type,
+				reject_code = :reject_code,
+				reject_reason = :reject_reason,
+				tmk_loaded = :tmk_loaded,
+				certificate = :certificate,
+				dealercode = :dealercode,
+				firstname = :firstname,
+				lastname = :lastname,
+				salesdate = :salesdate,
+				campaign_number = :campaign_number,
+				layout = :layout,
+				modified_by = :modified_by
+			WHERE
+				dealer_tmk_recon_wrk_id = :dealer_tmk_recon_wrk_id
+		]]>
+  </UPDATE>
+  <INSERT>
+    INSERT INTO elp_dealer_tmk_recon_wrk
+    (
+    dealerfile_processed_id,
+    record_type,
+    reject_code,
+    reject_reason,
+    tmk_loaded,
+    certificate,
+    dealercode,
+    firstname,
+    lastname,
+    salesdate,
+    campaign_number,
+    layout,
+    created_by,
+    dealer_tmk_recon_wrk_id
+    )
+    VALUES
+    (
+    :dealerfile_processed_id,
+    :record_type,
+    :reject_code,
+    :reject_reason,
+    :tmk_loaded,
+    :certificate,
+    :dealercode,
+    :firstname,
+    :lastname,
+    :salesdate,
+    :campaign_number,
+    :layout,
+    :created_by,
+    :dealer_tmk_recon_wrk_id
+    )
+  </INSERT>
+  <DELETE>
+    DELETE FROM elp_dealer_tmk_recon_wrk
+    WHERE
+    dealer_tmk_recon_wrk_id = :dealer_tmk_recon_wrk_id
+  </DELETE>
+  <VALIDATE_TMK>
+    Elp_dealer_Telemarketing.dealer_validate_TMK
+  </VALIDATE_TMK>
+  <PROCESS_TMK>
+    Elp_dealer_Telemarketing.MatchCampaignNumber_TMK
+  </PROCESS_TMK>
+  <DELETE_TMK>
+    Elp_dealer_Telemarketing.dealer_delete_TMK
+  </DELETE_TMK>
+</SQL>
+
+

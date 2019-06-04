@@ -1,0 +1,188 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<SQL>
+  
+    <!--BillPay Grid-->
+  
+  <LOAD_BILLPAY>
+    elita.elp_tbl_billing_detail.load
+  </LOAD_BILLPAY>
+  
+  <LOAD_BY_CERT_ID>
+    elita.elp_tbl_billing_detail.loadbycertid
+  </LOAD_BY_CERT_ID>
+  
+  <LOAD_BILLPAYLIST>
+    elita.elp_tbl_billing_detail.loadlist
+  </LOAD_BILLPAYLIST>
+  
+  <LOAD_BILLPAYLIST_FOR_NON_BILLING_BY_DEALER>
+    SELECT
+    bd.billing_detail_id,
+    bd.billing_header_id,
+    c.cert_number,
+    bd.installment_number,
+    (CASE
+    WHEN bd.CREDIT_CARD_INFO_ID is NULL THEN 'Bank Account'
+    WHEN bd.CREDIT_CARD_INFO_ID is NOT NULL THEN 'Credit Card'
+    END) account_type,
+    (CASE
+    WHEN bd.CREDIT_CARD_INFO_ID is NULL THEN bd.bank_owner_name
+    WHEN bd.CREDIT_CARD_INFO_ID is NOT NULL THEN (SELECT NAME_ON_CREDIT_CARD FROM ELP_CREDIT_CARD_INFO
+    WHERE CREDIT_CARD_INFO_ID = bd.CREDIT_CARD_INFO_ID)
+    END) bank_owner_name,
+    (CASE
+    WHEN bd.CREDIT_CARD_INFO_ID is NULL THEN bd.bank_acct_number
+    WHEN bd.CREDIT_CARD_INFO_ID is NOT NULL THEN (SELECT '*****' || LAST_4_DIGITS FROM ELP_CREDIT_CARD_INFO
+    WHERE CREDIT_CARD_INFO_ID = bd.CREDIT_CARD_INFO_ID)
+    END) bank_acct_number,
+    (CASE
+    WHEN bd.CREDIT_CARD_INFO_ID is NULL THEN bd.bank_rtn_number
+    WHEN bd.CREDIT_CARD_INFO_ID is NOT NULL THEN ''
+    END) bank_rtn_number,
+    bd.billed_amount,
+    GETDESCRIPTIONFROMLISTITEM(bd.billing_status_id, :language_id1) Status,
+    GETDESCRIPTIONFROMLISTITEM(bd.reject_code_id, :language_id2) Status_Description,
+    bd.reject_date
+    FROM elp_billing_detail bd, elp_cert c
+    WHERE   c.cert_id = bd.cert_id
+    and bd.billing_header_id = :billing_header_id
+  </LOAD_BILLPAYLIST_FOR_NON_BILLING_BY_DEALER>
+  
+  <LOAD_BILLHIST>
+   elita.elp_tbl_billing_detail.loadhistory
+  </LOAD_BILLHIST>
+  
+  <GET_MAX_ACTIVEINSTNO_FORCERT>
+    SELECT elita.ELP_INSTALLMENT.GetMaxActiveInstNoForCert(:cert_id) from dual
+  </GET_MAX_ACTIVEINSTNO_FORCERT>
+  
+  <GET_LATEST_REJ_INSTNO_FORCERT>
+    SELECT elita.ELP_INSTALLMENT.GetLatestRejInstNoForCert(:cert_id) from dual
+  </GET_LATEST_REJ_INSTNO_FORCERT>
+  
+  <GET_ALL_REJ_INSTNO_FORCERT>
+    elita.ELP_INSTALLMENT.GetAllRejInstNoForCert
+  </GET_ALL_REJ_INSTNO_FORCERT>
+  
+  <UPDATE>
+    <![CDATA[	
+			UPDATE elp_billing_detail SET
+				billing_header_id = :billing_header_id,
+				installment_number = :installment_number,
+				bank_owner_name = :bank_owner_name,
+				bank_acct_number = :bank_acct_number,
+				bank_rtn_number = :bank_rtn_number,
+				billed_amount = :billed_amount,
+				reason = :reason,
+        cert_id = :cert_id,
+				modified_by = :modified_by
+        billing_status_id = :billing_status_id,
+        reject_code_id= :reject_code_id, 
+        paid_id= :paid_id, 
+        tax= :tax, 
+        commission= :commission,
+        rejected_id= :rejected_id,
+				nightly_payment_run_date= nightly_payment_run_date:,
+				re_attempt_count= :re_attempt_count,
+				credit_card_info_id= :credit_card_info_id,
+				authorization_number= :authorization_number,
+				merchant_code= :merchant_code,
+				installment_due_date= :installment_due_date,
+        reject_date= :reject_date
+			WHERE
+				billing_detail_id = :billing_detail_id
+		]]>
+  </UPDATE>
+  
+  <INSERT>
+    INSERT INTO elp_billing_detail
+    (
+    billing_header_id,
+    installment_number,
+    bank_owner_name,
+    bank_acct_number,
+    bank_rtn_number,
+    billed_amount,
+    reason,
+    cert_id,
+    created_by,
+    billing_detail_id,
+    billing_status_id,
+    reject_code_id,
+    paid_id,
+    tax,
+    commission,
+    rejected_id,
+    nightly_payment_run_date,
+    re_attempt_count,
+    credit_card_info_id,
+    authorization_number,
+    merchant_code,
+    installment_due_date,
+    reject_date
+    )
+    VALUES
+    (
+    :billing_header_id,
+    :installment_number,
+    :bank_owner_name,
+    :bank_acct_number,
+    :bank_rtn_number,
+    :billed_amount,
+    :reason,
+    :cert_id,
+    :created_by,
+    :billing_detail_id,
+    :billing_status_id,
+    :reject_code_id,
+    :paid_id,
+    :tax,
+    :commission,
+    :rejected_id,
+    :nightly_payment_run_date,
+    :re_attempt_count,
+    :credit_card_info_id,
+    :authorization_number,
+    :merchant_code,
+    :installment_due_date,
+    :reject_date
+    )
+  </INSERT>
+  
+  <DELETE>
+    DELETE FROM elp_billing_detail
+    WHERE
+    billing_detail_id = :billing_detail_id
+  </DELETE>
+    
+  <BILLPAY_SUM_AND_COUNT>
+    elita.elp_tbl_billing_detail.billingsumandcount
+  </BILLPAY_SUM_AND_COUNT>
+
+  <BILLPAY_SUM_AND_COUNT_NEW>
+    elita.elp_tbl_billing_detail.getcertinstallmentdetails
+  </BILLPAY_SUM_AND_COUNT_NEW>
+  
+  <GET_LATER_BILLING_ROW>
+    select * from ELP_BILLING_DETAIL where rowid=(select max(rowid) from ELP_BILLING_DETAIL where cert_id = :cert_id)
+  </GET_LATER_BILLING_ROW>
+  
+  <BILLING_STATUS_CHANGE>
+    elita.ELP_INSTALLMENT.ChangeOfBillingStatus
+  </BILLING_STATUS_CHANGE>
+  
+  <CREATE_BILLING_HIST>
+    elita.ELP_INSTALLMENT.ChangeOfBillingStatusRejORAct
+  </CREATE_BILLING_HIST>
+    
+  <!--PayCollection Grid-->
+
+  <COLLPAY_SUM_AND_COUNT>
+   elita.elp_tbl_payment_detail.paymentsumaandcount
+  </COLLPAY_SUM_AND_COUNT>
+  
+  <LOAD_COLLPAY_HISTORY>
+   elita.elp_tbl_payment_detail.loadpaymenthistory
+  </LOAD_COLLPAY_HISTORY>
+  
+</SQL>

@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8" ?>
+
+<!-- ********************** THIS FILE HAS BEEN GENERATED FROM TEMPLATE SQLObject.cst (4/4/2008)********************** -->
+
+<SQL>
+  <LOAD>
+    <![CDATA[	
+			SELECT 
+				created_date,
+				modified_date,
+				created_by,
+				modified_by,
+				dict_item_id
+			FROM elp_dictionary_item 
+			WHERE
+				dict_item_id = :dict_item_id
+		]]>
+  </LOAD>
+  <LOAD_LIST>
+  </LOAD_LIST>
+  <LOAD_LANGUAGE_LIST>
+    select hextoraw('00000000000000000000000000000000') DICT_ITEM_TRANSLATION_ID,
+    '' TRANSLATION,
+    DESCRIPTION  ENGLISH,
+    LANGUAGE_ID
+    from ELP_LANGUAGE
+  </LOAD_LANGUAGE_LIST>
+  <UPDATE>
+    <![CDATA[	
+			UPDATE elp_dictionary_item SET
+				modified_by = :modified_by
+			WHERE
+				dict_item_id = :dict_item_id
+		]]>
+  </UPDATE>
+  <INSERT>
+    INSERT INTO elp_dictionary_item
+    (
+    created_by,
+    dict_item_id
+    )
+    VALUES
+    (
+    :created_by,
+    :dict_item_id
+    )
+  </INSERT>
+  <DELETE>
+    DELETE FROM elp_dictionary_item
+    WHERE
+    dict_item_id = :dict_item_id
+  </DELETE>
+</SQL>
+
+

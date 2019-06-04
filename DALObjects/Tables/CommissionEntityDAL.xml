@@ -1,0 +1,134 @@
+<?xml version="1.0" encoding="utf-8" ?>
+
+<!-- ********************** For Yogita THIS FILE HAS BEEN GENERATED FROM TEMPLATE SQLObject.cst (4/20/2007)********************** -->
+<SQL>
+	<LOAD>
+		<![CDATA[	
+			SELECT 
+				entity_id,
+				entity_name,
+				phone,
+				email,
+				payment_method_id,
+				bank_info_id,
+				company_group_id,
+				address1,
+				address2,
+				city,
+				region_id,
+				postal_code,
+				country_id,
+				created_by,
+				created_date,
+				modified_by,
+				modified_date,
+        display_id,
+        tax_id,
+        commission_entity_type_id
+			FROM elp_commission_entity 
+			WHERE
+				entity_id = :entity_id
+		]]>
+	</LOAD>
+	<LOAD_LIST>	
+			<![CDATA[	
+			SELECT 
+			  entity_id,
+				entity_name,
+				phone,
+				email,
+				payment_method_id,
+				bank_info_id,
+				company_group_id,
+				address1,
+				address2,
+				city,
+				region_id,
+				postal_code,
+				country_id,
+				created_by,
+				created_date,
+				modified_by,
+				modified_date,
+        GetYesNo(display_id) display_id,
+        tax_id,
+        commission_entity_type_id
+			FROM elp_commission_entity 
+			--dynamic_where_clause
+			--dynamic_order_by_clause
+		]]>	
+	</LOAD_LIST>	
+	<UPDATE>
+		<![CDATA[	
+			UPDATE elp_commission_entity SET
+				entity_name = :entity_name,
+				phone = :phone,
+				email = :email,
+				payment_method_id = :payment_method_id,
+				bank_info_id = :bank_info_id,
+				company_group_id = :company_group_id,
+				address1 = :address1,
+				address2 = :address2,
+				city = :city,
+				region_id = :region_id,
+				postal_code = :postal_code,
+				country_id = :country_id,
+				modified_by = :modified_by,
+        display_id= :display_id,
+        tax_id = :tax_id,
+        commission_entity_type_id = :commission_entity_type_id        
+			WHERE
+				entity_id = :entity_id
+		]]>
+	</UPDATE>
+	<INSERT>
+    INSERT INTO elp_commission_entity
+    (
+    entity_name,
+    phone,
+    email,
+    payment_method_id,
+    bank_info_id,
+    company_group_id,
+    address1,
+    address2,
+    city,
+    region_id,
+    postal_code,
+    country_id,
+    created_by,
+    entity_id,
+    display_id,
+    Tax_id,
+    Commission_Entity_Type_id
+    )
+    VALUES
+    (
+    :entity_name,
+    :phone,
+    :email,
+    :payment_method_id,
+    :bank_info_id,
+    :company_group_id,
+    :address1,
+    :address2,
+    :city,
+    :region_id,
+    :postal_code,
+    :country_id,
+    :created_by,
+    :entity_id,
+    :display_id,
+    :tax_id,
+    :commission_entity_type_id
+    )
+  </INSERT>
+	<DELETE>
+			DELETE FROM elp_commission_entity
+			WHERE
+				entity_id = :entity_id
+	</DELETE>
+</SQL> 
+
+
+

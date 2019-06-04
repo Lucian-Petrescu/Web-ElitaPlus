@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xs:schema xmlns:tns="http://elita.service.wsDelphosAssurant.delphos.com.br/" targetNamespace="http://elita.service.wsDelphosAssurant.delphos.com.br/" version="1.0" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+  <xs:element name="cancelamentoElita" type="tns:cancelamentoElita" />
+  <xs:element name="cancelamentoElitaResponse" type="tns:cancelamentoElitaResponse" />
+  <xs:complexType name="cancelamentoElita">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="tokenAcsel" type="xs:string" />
+      <xs:element minOccurs="0" name="codigoProduto" type="xs:string" />
+      <xs:element minOccurs="0" name="numeroApolice" type="xs:string" />
+      <xs:element minOccurs="0" name="numeroItemApolice" type="xs:string" />
+      <xs:element minOccurs="0" name="cnpj" type="xs:string" />
+      <xs:element minOccurs="0" name="codigoCliente" type="xs:string" />
+      <xs:element minOccurs="0" name="tipoIdentificacaoCliente" type="xs:string" />
+      <xs:element minOccurs="0" name="numeroIdentificacaoCliente" type="xs:string" />
+      <xs:element minOccurs="0" name="tipoCancelamento" type="xs:string" />
+      <xs:element minOccurs="0" name="dataCancelamento" type="xs:string" />
+      <xs:element minOccurs="0" name="codigoCancelamento" type="xs:string" />
+      <xs:element minOccurs="0" name="tipoPagamento" type="xs:string" />
+      <xs:element minOccurs="0" name="codigoBanco" type="xs:string" />
+      <xs:element minOccurs="0" name="numeroAgencia" type="xs:string" />
+      <xs:element minOccurs="0" name="dvAgencia" type="xs:string" />
+      <xs:element minOccurs="0" name="numeroContaCorrente" type="xs:string" />
+      <xs:element minOccurs="0" name="dvContaCorrente" type="xs:string" />
+      <xs:element minOccurs="0" name="numeroContratoCobranca" type="xs:string" />
+      <xs:element minOccurs="0" name="canalCobranca" type="xs:string" />
+      <xs:element minOccurs="0" name="valorRestituicao" type="xs:string" />
+      <xs:element minOccurs="0" name="acao" type="xs:string" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="cancelamentoElitaResponse">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="return" type="tns:retornoCancelamentoElita" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="retornoCancelamentoElita">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="descricaoErro" type="xs:string" />
+      <xs:element minOccurs="0" name="numParcelasPagas" type="xs:string" />
+      <xs:element minOccurs="0" name="retorno" type="xs:string" />
+      <xs:element minOccurs="0" name="valorRestituicao" type="xs:string" />
+    </xs:sequence>
+  </xs:complexType>
+</xs:schema>

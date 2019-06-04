@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="2.0" xmlns:edmx="http://schemas.microsoft.com/ado/2008/10/edmx">
+ <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2008/10/edmx">
+    <!-- Diagram content (shape and connector positions) -->
+    <edmx:Diagrams>
+      <Diagram DiagramId="4e77740b346e4858bc16af7a6110092f" Name="Diagram1">
+        <EntityTypeShape EntityType="Model1.DictionaryItemTranslation" Width="2.25" PointX="3.875" PointY="3.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="Model1.DictionaryItem" Width="1.5" PointX="0.75" PointY="5.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="Model1.Label" Width="1.5" PointX="3" PointY="7" IsExpanded="true" />
+        <EntityTypeShape EntityType="Model1.Language" Width="1.875" PointX="0.75" PointY="1.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="Model1.List" Width="2" PointX="2.5" PointY="10.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="Model1.ListItem" Width="2.875" PointX="5.25" PointY="7.875" IsExpanded="true" />
+        <AssociationConnector Association="Model1.FK_DICT_ITEM_TRANS_DICT_ITEM" ManuallyRouted="false" />
+        <AssociationConnector Association="Model1.FK_DICT_ITEM_TRANS_LANGUAGE" ManuallyRouted="false" />
+        <AssociationConnector Association="Model1.FK_LABEL_DICT_ITEM_ID" ManuallyRouted="false" />
+        <AssociationConnector Association="Model1.FK_LIST_DICT_ITEM_ID" ManuallyRouted="false" />
+        <AssociationConnector Association="Model1.FK_LIST_ITEM_DICT_ITEM_ID" ManuallyRouted="false" />
+        <AssociationConnector Association="Model1.FK_LIST_ITEM_LIST_ID" ManuallyRouted="false" />
+        <EntityTypeShape EntityType="Model1.Expression" Width="1.5" PointX="7.375" PointY="0.75" />
+      </Diagram>
+    </edmx:Diagrams>
+  </edmx:Designer>
+</edmx:Edmx>

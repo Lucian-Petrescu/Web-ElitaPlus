@@ -1,0 +1,35 @@
+﻿<?xml version='1.0' encoding='utf-8'?>
+<SettingsFile xmlns="http://schemas.microsoft.com/VisualStudio/2004/01/settings" CurrentProfile="(Default)" GeneratedClassNamespace="My" GeneratedClassName="MySettings" UseMySettingsClassName="true">
+  <Profiles />
+  <Settings>
+    <Setting Name="LOOKOUT_PATH" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">:\Germany Files</Value>
+    </Setting>
+    <Setting Name="STARTS_WITH" Type="System.Collections.Specialized.StringCollection" Scope="Application">
+      <Value Profile="(Default)">&lt;?xml version="1.0" encoding="utf-16"?&gt;
+&lt;ArrayOfString xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema"&gt;
+  &lt;string&gt;u&lt;/string&gt;
+  &lt;string&gt;a&lt;/string&gt;
+&lt;/ArrayOfString&gt;</Value>
+    </Setting>
+    <Setting Name="OVERRIDE_FILES" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">yes</Value>
+    </Setting>
+    <Setting Name="DRIVE_LETTER" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">c</Value>
+    </Setting>
+    <Setting Name="EXTENSION_WITH" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">trc</Value>
+    </Setting>
+    <Setting Name="RUN_INTERVAL" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">5</Value>
+    </Setting>
+    <Setting Name="WRITE_PATH" Type="System.Collections.Specialized.StringCollection" Scope="Application">
+      <Value Profile="(Default)">&lt;?xml version="1.0" encoding="utf-16"?&gt;
+&lt;ArrayOfString xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema"&gt;
+  &lt;string&gt;:\berlet&lt;/string&gt;
+  &lt;string&gt;:\ARLTComputerARLT&lt;/string&gt;
+&lt;/ArrayOfString&gt;</Value>
+    </Setting>
+  </Settings>
+</SettingsFile>

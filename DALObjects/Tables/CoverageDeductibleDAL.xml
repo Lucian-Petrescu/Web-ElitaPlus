@@ -1,0 +1,97 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<SQL>
+  <LOAD>
+    <![CDATA[
+      select
+        coverage_ded_id,
+        coverage_id,
+        method_of_repair_id,
+        deductible_based_on_id,
+        deductible,
+        created_date,
+        modified_date,
+        created_by,
+        modified_by,
+        deductible_expression_id
+      from
+        elp_coverage_ded
+      where
+        coverage_ded_id = :coverage_ded_id
+    ]]>
+  </LOAD>
+  <LOAD_LIST>
+    <![CDATA[
+      select
+        coverage_ded_id,
+        nvl(expr.expression_code, cdit.translation) as deductible_based_on,     
+        method_of_repair_id,
+        deductible_based_on_id,
+        mdit.translation as method_of_repair,
+        deductible
+      from
+        elp_coverage_ded,
+        elp_list_item cli,
+         elp_expression expr,
+        elp_list cl,
+        elp_dict_item_translation cdit,
+        elp_list_item mli,
+        elp_list ml,
+        elp_dict_item_translation mdit
+      where
+      	elp_coverage_ded.deductible_based_on_id = cli.list_item_id  and
+      	cli.list_id = cl.list_id and
+        elp_coverage_ded.deductible_expression_id = expr.expression_id(+) and
+      	cdit.dict_item_id = cli.dict_item_id and
+      	cdit.language_id = :language_id and
+      	cl.code = 'COMDEDUCTBASED' and
+      	elp_coverage_ded.method_of_repair_id = mli.list_item_id and
+      	mli.list_id = ml.list_id and
+      	mdit.dict_item_id = mli.dict_item_id and
+      	mdit.language_id = :language_id and
+      	ml.code = 'METHR' and
+        coverage_id = :coverage_id
+    ]]>
+  </LOAD_LIST>
+  <INSERT>
+    <![CDATA[
+    insert into elp_coverage_ded
+    (
+      coverage_ded_id,
+      coverage_id,
+      method_of_repair_id,
+      deductible_based_on_id,
+      deductible,
+      deductible_expression_id
+    )
+    values
+    (
+      :coverage_ded_id,
+      :coverage_id,
+      :method_of_repair_id,
+      :deductible_based_on_id,
+      :deductible,
+      :deductible_expression_id
+    )
+    ]]>
+  </INSERT>
+  <UPDATE>
+    <![CDATA[
+      update elp_coverage_ded
+      set
+        coverage_id = :coverage_id,
+        method_of_repair_id = :method_of_repair_id,
+        deductible_based_on_id = :deductible_based_on_id,
+        deductible = :deductible,
+        deductible_expression_id = :deductible_expression_id
+      where
+        coverage_ded_id = :coverage_ded_id
+    ]]>
+  </UPDATE>
+  <DELETE>
+    <![CDATA[
+      delete from elp_coverage_ded
+      where
+        coverage_ded_id = :coverage_ded_id
+    ]]>
+  </DELETE>
+</SQL>

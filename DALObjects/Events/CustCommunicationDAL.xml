@@ -1,0 +1,104 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+
+<!-- ********************** THIS FILE HAS BEEN GENERATED FROM TEMPLATE SQLObject.cst (5/10/2017)********************** -->
+
+<SQL>
+  <LOAD>
+    <![CDATA[	
+			SELECT 
+        customer_id,
+				entity_name,
+				entity_id,
+				direction,
+				communication_channel,
+				communication_format,
+				cust_contact_id,
+				communication_component,
+				component_ref_id,
+				communication_status,
+				comm_response_id,
+				comm_response_xml,
+				is_retryable,
+				retry_compo_reference,
+				created_date,
+				created_by,
+				modified_date,
+				modified_by,
+				cust_communication_id
+			FROM elita.elp_cust_communication 
+			WHERE
+				cust_communication_id = :cust_communication_id
+		]]>
+  </LOAD>
+  <LOAD_LIST>
+  </LOAD_LIST>
+  <UPDATE>
+    <![CDATA[	
+			UPDATE elita.elp_cust_communication SET
+        customer_id = :customer_id,
+				entity_name = :entity_name,
+				entity_id = :entity_id,
+				direction = :direction,
+				communication_channel = :communication_channel,
+				communication_formart = :communication_format,
+				cust_contact_id = :cust_contact_id,
+				communication_component = :communication_component,
+				component_ref_id = :component_ref_id,
+				communication_status = :communication_status,
+				comm_response_id = :comm_response_id,
+				comm_response_xml = :comm_response_xml,
+				is_retryable = :is_retryable,
+				retry_compo_reference = :retry_compo_reference,
+				modified_by = :modified_by
+			WHERE
+				cust_communication_id = :cust_communication_id
+		]]>
+  </UPDATE>
+  <INSERT>
+    INSERT INTO elita.elp_cust_communication
+    (
+    customer_id,
+    entity_name,
+    entity_id,
+    direction,
+    communication_channel,
+    communication_format,
+    cust_contact_id,
+    communication_component,
+    component_ref_id,
+    communication_status,
+    comm_response_id,
+    comm_response_xml,
+    is_retryable,
+    retry_compo_reference,
+    created_by,
+    cust_communication_id
+    )
+    VALUES
+    (
+    :customer_id,
+    :entity_name,
+    :entity_id,
+    :direction,
+    :communication_channel,
+    :communication_format,
+    :cust_contact_id,
+    :communication_component,
+    :component_ref_id,
+    :communication_status,
+    :comm_response_id,
+    :comm_response_xml,
+    :is_retryable,
+    :retry_compo_reference,
+    :created_by,
+    :cust_communication_id
+    )
+  </INSERT>
+  <DELETE>
+    DELETE FROM elita.elp_cust_communication
+    WHERE
+    cust_communication_id = :cust_communication_id
+  </DELETE>
+</SQL>
+
+

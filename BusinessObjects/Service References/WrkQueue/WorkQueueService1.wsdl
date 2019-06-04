@@ -1,0 +1,781 @@
+<?xml version="1.0" encoding="utf-8"?>
+<wsdl:definitions xmlns:wsap="http://schemas.xmlsoap.org/ws/2004/08/addressing/policy" xmlns:wsa10="http://www.w3.org/2005/08/addressing" xmlns:tns="http://services.assurant.com/integration/workqueue/composite/2012/09/01/" xmlns:msc="http://schemas.microsoft.com/ws/2005/12/wsdl/contract" xmlns:soapenc="http://schemas.xmlsoap.org/soap/encoding/" xmlns:wsx="http://schemas.xmlsoap.org/ws/2004/09/mex" xmlns:wsp="http://schemas.xmlsoap.org/ws/2004/09/policy" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:wsam="http://www.w3.org/2007/05/addressing/metadata" xmlns:wsa="http://schemas.xmlsoap.org/ws/2004/08/addressing" xmlns:wsaw="http://www.w3.org/2006/05/addressing/wsdl" xmlns:soap12="http://schemas.xmlsoap.org/wsdl/soap12/" xmlns:wsu="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-utility-1.0.xsd" xmlns:xsd="http://www.w3.org/2001/XMLSchema" name="WorkQueueService" targetNamespace="http://services.assurant.com/integration/workqueue/composite/2012/09/01/" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">
+  <wsp:Policy wsu:Id="CustomBinding_IWorkQueueService_policy">
+    <wsp:ExactlyOne>
+      <wsp:All>
+        <sp:TransportBinding xmlns:sp="http://schemas.xmlsoap.org/ws/2005/07/securitypolicy">
+          <wsp:Policy>
+            <sp:TransportToken>
+              <wsp:Policy>
+                <sp:HttpsToken RequireClientCertificate="false" />
+              </wsp:Policy>
+            </sp:TransportToken>
+            <sp:AlgorithmSuite>
+              <wsp:Policy>
+                <sp:Basic256 />
+              </wsp:Policy>
+            </sp:AlgorithmSuite>
+            <sp:Layout>
+              <wsp:Policy>
+                <sp:Strict />
+              </wsp:Policy>
+            </sp:Layout>
+            <sp:IncludeTimestamp />
+          </wsp:Policy>
+        </sp:TransportBinding>
+        <sp:SignedSupportingTokens xmlns:sp="http://schemas.xmlsoap.org/ws/2005/07/securitypolicy">
+          <wsp:Policy>
+            <sp:UsernameToken sp:IncludeToken="http://schemas.xmlsoap.org/ws/2005/07/securitypolicy/IncludeToken/AlwaysToRecipient">
+              <wsp:Policy>
+                <sp:WssUsernameToken10 />
+              </wsp:Policy>
+            </sp:UsernameToken>
+          </wsp:Policy>
+        </sp:SignedSupportingTokens>
+        <sp:Wss11 xmlns:sp="http://schemas.xmlsoap.org/ws/2005/07/securitypolicy">
+          <wsp:Policy />
+        </sp:Wss11>
+        <sp:Trust10 xmlns:sp="http://schemas.xmlsoap.org/ws/2005/07/securitypolicy">
+          <wsp:Policy>
+            <sp:MustSupportIssuedTokens />
+            <sp:RequireClientEntropy />
+            <sp:RequireServerEntropy />
+          </wsp:Policy>
+        </sp:Trust10>
+      </wsp:All>
+    </wsp:ExactlyOne>
+  </wsp:Policy>
+  <wsdl:types>
+    <xsd:schema targetNamespace="http://services.assurant.com/integration/workqueue/composite/2012/09/01/Imports">
+      <xsd:import schemaLocation="http://msp0wapfd001.cead.prd/WorkQueue/Composite/20120901/WorkQueueService.svc?xsd=xsd0" namespace="http://services.assurant.com/integration/workqueue/composite/2012/09/01/" />
+      <xsd:import schemaLocation="http://msp0wapfd001.cead.prd/WorkQueue/Composite/20120901/WorkQueueService.svc?xsd=xsd2" namespace="http://services.assurant.com/integration/workqueue/2012/05/15/" />
+      <xsd:import schemaLocation="http://msp0wapfd001.cead.prd/WorkQueue/Composite/20120901/WorkQueueService.svc?xsd=xsd3" namespace="http://services.assurant.com/integration/faults/2012/6/12/" />
+      <xsd:import schemaLocation="http://msp0wapfd001.cead.prd/WorkQueue/Composite/20120901/WorkQueueService.svc?xsd=xsd4" namespace="http://www.microsoft.com/practices/EnterpriseLibrary/2007/01/wcf/validation" />
+      <xsd:import schemaLocation="http://msp0wapfd001.cead.prd/WorkQueue/Composite/20120901/WorkQueueService.svc?xsd=xsd1" namespace="http://schemas.microsoft.com/2003/10/Serialization/" />
+      <xsd:import schemaLocation="http://msp0wapfd001.cead.prd/WorkQueue/Composite/20120901/WorkQueueService.svc?xsd=xsd5" namespace="http://schemas.datacontract.org/2004/07/Microsoft.Practices.EnterpriseLibrary.Validation.Integration.WCF" />
+      <xsd:import schemaLocation="http://msp0wapfd001.cead.prd/WorkQueue/Composite/20120901/WorkQueueService.svc?xsd=xsd6" namespace="http://schemas.datacontract.org/2004/07/System" />
+      <xsd:import schemaLocation="http://msp0wapfd001.cead.prd/WorkQueue/Composite/20120901/WorkQueueService.svc?xsd=xsd7" namespace="http://schemas.microsoft.com/2003/10/Serialization/Arrays" />
+    </xsd:schema>
+  </wsdl:types>
+  <wsdl:message name="AddWorkQueueItemRequest">
+    <wsdl:part name="parameters" element="tns:AddWorkQueueItemRequest" />
+  </wsdl:message>
+  <wsdl:message name="IWorkQueueService_AddWorkQueueItem_OutputMessage" />
+  <wsdl:message name="IWorkQueueService_AddWorkQueueItem_WorkQueueFaultFault_FaultMessage">
+    <wsdl:part xmlns:q1="http://services.assurant.com/integration/workqueue/2012/05/15/" name="detail" element="q1:WorkQueueFault" />
+  </wsdl:message>
+  <wsdl:message name="IWorkQueueService_AddWorkQueueItem_NotFoundFaultFault_FaultMessage">
+    <wsdl:part xmlns:q2="http://services.assurant.com/integration/faults/2012/6/12/" name="detail" element="q2:NotFoundFault" />
+  </wsdl:message>
+  <wsdl:message name="IWorkQueueService_AddWorkQueueItem_NotAuthorizedFaultFault_FaultMessage">
+    <wsdl:part name="detail" element="tns:NotAuthorizedFault" />
+  </wsdl:message>
+  <wsdl:message name="IWorkQueueService_AddWorkQueueItem_ValidationFaultFault_FaultMessage">
+    <wsdl:part xmlns:q3="http://www.microsoft.com/practices/EnterpriseLibrary/2007/01/wcf/validation" name="detail" element="q3:ValidationFault" />
+  </wsdl:message>
+  <wsdl:message name="CreateWorkQueueRequest">
+    <wsdl:part name="parameters" element="tns:CreateWorkQueueRequest" />
+  </wsdl:message>
+  <wsdl:message name="WorkQueueResponse">
+    <wsdl:part name="parameters" element="tns:WorkQueueResponse" />
+  </wsdl:message>
+  <wsdl:message name="IWorkQueueService_CreateWorkQueue_NotAuthorizedFaultFault_FaultMessage">
+    <wsdl:part name="detail" element="tns:NotAuthorizedFault" />
+  </wsdl:message>
+  <wsdl:message name="IWorkQueueService_CreateWorkQueue_ValidationFaultFault_FaultMessage">
+    <wsdl:part xmlns:q4="http://www.microsoft.com/practices/EnterpriseLibrary/2007/01/wcf/validation" name="detail" element="q4:ValidationFault" />
+  </wsdl:message>
+  <wsdl:message name="IWorkQueueService_CreateWorkQueue_WorkQueueFaultFault_FaultMessage">
+    <wsdl:part xmlns:q5="http://services.assurant.com/integration/workqueue/2012/05/15/" name="detail" element="q5:WorkQueueFault" />
+  </wsdl:message>
+  <wsdl:message name="IWorkQueueService_CreateWorkQueue_DuplicateWorkQueueFaultFault_FaultMessage">
+    <wsdl:part xmlns:q6="http://services.assurant.com/integration/workqueue/2012/05/15/" name="detail" element="q6:DuplicateWorkQueueFault" />
+  </wsdl:message>
+  <wsdl:message name="GetWorkQueueByNameRequest">
+    <wsdl:part name="parameters" element="tns:GetWorkQueueByNameRequest" />
+  </wsdl:message>
+  <wsdl:message name="IWorkQueueService_GetWorkQueueByName_WorkQueueFaultFault_FaultMessage">
+    <wsdl:part xmlns:q7="http://services.assurant.com/integration/workqueue/2012/05/15/" name="detail" element="q7:WorkQueueFault" />
+  </wsdl:message>
+  <wsdl:message name="IWorkQueueService_GetWorkQueueByName_ValidationFaultFault_FaultMessage">
+    <wsdl:part xmlns:q8="http://www.microsoft.com/practices/EnterpriseLibrary/2007/01/wcf/validation" name="detail" element="q8:ValidationFault" />
+  </wsdl:message>
+  <wsdl:message name="IWorkQueueService_GetWorkQueueByName_NotAuthorizedFaultFault_FaultMessage">
+    <wsdl:part name="detail" element="tns:NotAuthorizedFault" />
+  </wsdl:message>
+  <wsdl:message name="GetWorkQueueByIdRequest">
+    <wsdl:part name="parameters" element="tns:GetWorkQueueByIdRequest" />
+  </wsdl:message>
+  <wsdl:message name="IWorkQueueService_GetWorkQueueById_WorkQueueFaultFault_FaultMessage">
+    <wsdl:part xmlns:q9="http://services.assurant.com/integration/workqueue/2012/05/15/" name="detail" element="q9:WorkQueueFault" />
+  </wsdl:message>
+  <wsdl:message name="IWorkQueueService_GetWorkQueueById_ValidationFaultFault_FaultMessage">
+    <wsdl:part xmlns:q10="http://www.microsoft.com/practices/EnterpriseLibrary/2007/01/wcf/validation" name="detail" element="q10:ValidationFault" />
+  </wsdl:message>
+  <wsdl:message name="IWorkQueueService_GetWorkQueueById_NotAuthorizedFaultFault_FaultMessage">
+    <wsdl:part name="detail" element="tns:NotAuthorizedFault" />
+  </wsdl:message>
+  <wsdl:message name="UpdateWorkQueueRequest">
+    <wsdl:part name="parameters" element="tns:UpdateWorkQueueRequest" />
+  </wsdl:message>
+  <wsdl:message name="IWorkQueueService_UpdateWorkQueue_ValidationFaultFault_FaultMessage">
+    <wsdl:part xmlns:q11="http://www.microsoft.com/practices/EnterpriseLibrary/2007/01/wcf/validation" name="detail" element="q11:ValidationFault" />
+  </wsdl:message>
+  <wsdl:message name="IWorkQueueService_UpdateWorkQueue_NotAuthorizedFaultFault_FaultMessage">
+    <wsdl:part name="detail" element="tns:NotAuthorizedFault" />
+  </wsdl:message>
+  <wsdl:message name="IWorkQueueService_UpdateWorkQueue_WorkQueueFaultFault_FaultMessage">
+    <wsdl:part xmlns:q12="http://services.assurant.com/integration/workqueue/2012/05/15/" name="detail" element="q12:WorkQueueFault" />
+  </wsdl:message>
+  <wsdl:message name="RequestBase">
+    <wsdl:part name="parameters" element="tns:RequestBase" />
+  </wsdl:message>
+  <wsdl:message name="WorkQueueListResponse">
+    <wsdl:part name="parameters" element="tns:WorkQueueListResponse" />
+  </wsdl:message>
+  <wsdl:message name="IWorkQueueService_GetWorkQueues_NotAuthorizedFaultFault_FaultMessage">
+    <wsdl:part name="detail" element="tns:NotAuthorizedFault" />
+  </wsdl:message>
+  <wsdl:message name="IWorkQueueService_GetWorkQueues_WorkQueueFaultFault_FaultMessage">
+    <wsdl:part xmlns:q13="http://services.assurant.com/integration/workqueue/2012/05/15/" name="detail" element="q13:WorkQueueFault" />
+  </wsdl:message>
+  <wsdl:message name="IWorkQueueService_GetWorkQueues_ValidationFaultFault_FaultMessage">
+    <wsdl:part xmlns:q14="http://www.microsoft.com/practices/EnterpriseLibrary/2007/01/wcf/validation" name="detail" element="q14:ValidationFault" />
+  </wsdl:message>
+  <wsdl:message name="IWorkQueueService_GetEditableWorkQueuesForUser_WorkQueueFaultFault_FaultMessage">
+    <wsdl:part xmlns:q15="http://services.assurant.com/integration/workqueue/2012/05/15/" name="detail" element="q15:WorkQueueFault" />
+  </wsdl:message>
+  <wsdl:message name="IWorkQueueService_GetEditableWorkQueuesForUser_ValidationFaultFault_FaultMessage">
+    <wsdl:part xmlns:q16="http://www.microsoft.com/practices/EnterpriseLibrary/2007/01/wcf/validation" name="detail" element="q16:ValidationFault" />
+  </wsdl:message>
+  <wsdl:message name="WorkQueueItemResponse">
+    <wsdl:part name="parameters" element="tns:WorkQueueItemResponse" />
+  </wsdl:message>
+  <wsdl:message name="IWorkQueueService_GetNextWorkQueueItem_ValidationFaultFault_FaultMessage">
+    <wsdl:part xmlns:q17="http://www.microsoft.com/practices/EnterpriseLibrary/2007/01/wcf/validation" name="detail" element="q17:ValidationFault" />
+  </wsdl:message>
+  <wsdl:message name="IWorkQueueService_GetNextWorkQueueItem_NotAuthorizedFaultFault_FaultMessage">
+    <wsdl:part name="detail" element="tns:NotAuthorizedFault" />
+  </wsdl:message>
+  <wsdl:message name="IWorkQueueService_GetNextWorkQueueItem_WorkQueueFaultFault_FaultMessage">
+    <wsdl:part xmlns:q18="http://services.assurant.com/integration/workqueue/2012/05/15/" name="detail" element="q18:WorkQueueFault" />
+  </wsdl:message>
+  <wsdl:message name="ProcessWorkQueueItemRequest">
+    <wsdl:part name="parameters" element="tns:ProcessWorkQueueItemRequest" />
+  </wsdl:message>
+  <wsdl:message name="IWorkQueueService_ProcessWorkQueueItem_OutputMessage" />
+  <wsdl:message name="IWorkQueueService_ProcessWorkQueueItem_MaxItemRequeueCountExceededFaultFault_FaultMessage">
+    <wsdl:part xmlns:q19="http://services.assurant.com/integration/workqueue/2012/05/15/" name="detail" element="q19:MaxItemRequeueCountExceededFault" />
+  </wsdl:message>
+  <wsdl:message name="IWorkQueueService_ProcessWorkQueueItem_ItemNotLockedForEditFaultFault_FaultMessage">
+    <wsdl:part xmlns:q20="http://services.assurant.com/integration/workqueue/2012/05/15/" name="detail" element="q20:ItemNotLockedForEditFault" />
+  </wsdl:message>
+  <wsdl:message name="IWorkQueueService_ProcessWorkQueueItem_NotAuthorizedFaultFault_FaultMessage">
+    <wsdl:part name="detail" element="tns:NotAuthorizedFault" />
+  </wsdl:message>
+  <wsdl:message name="IWorkQueueService_ProcessWorkQueueItem_WorkQueueFaultFault_FaultMessage">
+    <wsdl:part xmlns:q21="http://services.assurant.com/integration/workqueue/2012/05/15/" name="detail" element="q21:WorkQueueFault" />
+  </wsdl:message>
+  <wsdl:message name="IWorkQueueService_ProcessWorkQueueItem_ValidationFaultFault_FaultMessage">
+    <wsdl:part xmlns:q22="http://www.microsoft.com/practices/EnterpriseLibrary/2007/01/wcf/validation" name="detail" element="q22:ValidationFault" />
+  </wsdl:message>
+  <wsdl:message name="WorkQueueTypeRequest">
+    <wsdl:part name="parameters" element="tns:WorkQueueTypeRequest" />
+  </wsdl:message>
+  <wsdl:message name="WorkQueueTypeResponse">
+    <wsdl:part name="parameters" element="tns:WorkQueueTypeResponse" />
+  </wsdl:message>
+  <wsdl:message name="IWorkQueueService_CreateWorkQueueType_NotAuthorizedFaultFault_FaultMessage">
+    <wsdl:part name="detail" element="tns:NotAuthorizedFault" />
+  </wsdl:message>
+  <wsdl:message name="IWorkQueueService_CreateWorkQueueType_ValidationFaultFault_FaultMessage">
+    <wsdl:part xmlns:q23="http://www.microsoft.com/practices/EnterpriseLibrary/2007/01/wcf/validation" name="detail" element="q23:ValidationFault" />
+  </wsdl:message>
+  <wsdl:message name="IWorkQueueService_CreateWorkQueueType_WorkQueueFaultFault_FaultMessage">
+    <wsdl:part xmlns:q24="http://services.assurant.com/integration/workqueue/2012/05/15/" name="detail" element="q24:WorkQueueFault" />
+  </wsdl:message>
+  <wsdl:message name="WorkQueueTypeListResponse">
+    <wsdl:part name="parameters" element="tns:WorkQueueTypeListResponse" />
+  </wsdl:message>
+  <wsdl:message name="IWorkQueueService_GetWorkQueueTypes_NotAuthorizedFaultFault_FaultMessage">
+    <wsdl:part name="detail" element="tns:NotAuthorizedFault" />
+  </wsdl:message>
+  <wsdl:message name="IWorkQueueService_GetWorkQueueTypes_ValidationFaultFault_FaultMessage">
+    <wsdl:part xmlns:q25="http://www.microsoft.com/practices/EnterpriseLibrary/2007/01/wcf/validation" name="detail" element="q25:ValidationFault" />
+  </wsdl:message>
+  <wsdl:message name="IWorkQueueService_GetWorkQueueTypes_WorkQueueFaultFault_FaultMessage">
+    <wsdl:part xmlns:q26="http://services.assurant.com/integration/workqueue/2012/05/15/" name="detail" element="q26:WorkQueueFault" />
+  </wsdl:message>
+  <wsdl:message name="WorkQueueItemDataTypeRequest">
+    <wsdl:part name="parameters" element="tns:WorkQueueItemDataTypeRequest" />
+  </wsdl:message>
+  <wsdl:message name="WorkQueueItemDataTypeResponse">
+    <wsdl:part name="parameters" element="tns:WorkQueueItemDataTypeResponse" />
+  </wsdl:message>
+  <wsdl:message name="IWorkQueueService_CreateWorkQueueItemDataType_NotAuthorizedFaultFault_FaultMessage">
+    <wsdl:part name="detail" element="tns:NotAuthorizedFault" />
+  </wsdl:message>
+  <wsdl:message name="IWorkQueueService_CreateWorkQueueItemDataType_ValidationFaultFault_FaultMessage">
+    <wsdl:part xmlns:q27="http://www.microsoft.com/practices/EnterpriseLibrary/2007/01/wcf/validation" name="detail" element="q27:ValidationFault" />
+  </wsdl:message>
+  <wsdl:message name="IWorkQueueService_CreateWorkQueueItemDataType_WorkQueueFaultFault_FaultMessage">
+    <wsdl:part xmlns:q28="http://services.assurant.com/integration/workqueue/2012/05/15/" name="detail" element="q28:WorkQueueFault" />
+  </wsdl:message>
+  <wsdl:message name="WorkQueueItemDataTypeListResponse">
+    <wsdl:part name="parameters" element="tns:WorkQueueItemDataTypeListResponse" />
+  </wsdl:message>
+  <wsdl:message name="IWorkQueueService_GetWorkQueueItemDataTypes_WorkQueueFaultFault_FaultMessage">
+    <wsdl:part xmlns:q29="http://services.assurant.com/integration/workqueue/2012/05/15/" name="detail" element="q29:WorkQueueFault" />
+  </wsdl:message>
+  <wsdl:message name="IWorkQueueService_GetWorkQueueItemDataTypes_NotAuthorizedFaultFault_FaultMessage">
+    <wsdl:part name="detail" element="tns:NotAuthorizedFault" />
+  </wsdl:message>
+  <wsdl:message name="IWorkQueueService_GetWorkQueueItemDataTypes_ValidationFaultFault_FaultMessage">
+    <wsdl:part xmlns:q30="http://www.microsoft.com/practices/EnterpriseLibrary/2007/01/wcf/validation" name="detail" element="q30:ValidationFault" />
+  </wsdl:message>
+  <wsdl:message name="CreateWorkQueueItemStatusReasonRequest">
+    <wsdl:part name="parameters" element="tns:CreateWorkQueueItemStatusReasonRequest" />
+  </wsdl:message>
+  <wsdl:message name="WorkQueueItemStatusReasonResponse">
+    <wsdl:part name="parameters" element="tns:WorkQueueItemStatusReasonResponse" />
+  </wsdl:message>
+  <wsdl:message name="IWorkQueueService_CreateWorkQueueItemStatusReason_WorkQueueFaultFault_FaultMessage">
+    <wsdl:part xmlns:q31="http://services.assurant.com/integration/workqueue/2012/05/15/" name="detail" element="q31:WorkQueueFault" />
+  </wsdl:message>
+  <wsdl:message name="IWorkQueueService_CreateWorkQueueItemStatusReason_ValidationFaultFault_FaultMessage">
+    <wsdl:part xmlns:q32="http://www.microsoft.com/practices/EnterpriseLibrary/2007/01/wcf/validation" name="detail" element="q32:ValidationFault" />
+  </wsdl:message>
+  <wsdl:message name="IWorkQueueService_CreateWorkQueueItemStatusReason_NotAuthorizedFaultFault_FaultMessage">
+    <wsdl:part name="detail" element="tns:NotAuthorizedFault" />
+  </wsdl:message>
+  <wsdl:message name="GetWorkQueueItemStatusReasonListRequest">
+    <wsdl:part name="parameters" element="tns:GetWorkQueueItemStatusReasonListRequest" />
+  </wsdl:message>
+  <wsdl:message name="WorkQueueItemStatusReasonListResponse">
+    <wsdl:part name="parameters" element="tns:WorkQueueItemStatusReasonListResponse" />
+  </wsdl:message>
+  <wsdl:message name="IWorkQueueService_GetWorkQueueItemStatusReasons_NotAuthorizedFaultFault_FaultMessage">
+    <wsdl:part name="detail" element="tns:NotAuthorizedFault" />
+  </wsdl:message>
+  <wsdl:message name="IWorkQueueService_GetWorkQueueItemStatusReasons_ValidationFaultFault_FaultMessage">
+    <wsdl:part xmlns:q33="http://www.microsoft.com/practices/EnterpriseLibrary/2007/01/wcf/validation" name="detail" element="q33:ValidationFault" />
+  </wsdl:message>
+  <wsdl:message name="IWorkQueueService_GetWorkQueueItemStatusReasons_WorkQueueFaultFault_FaultMessage">
+    <wsdl:part xmlns:q34="http://services.assurant.com/integration/workqueue/2012/05/15/" name="detail" element="q34:WorkQueueFault" />
+  </wsdl:message>
+  <wsdl:message name="UpdateWorkQueueItemStatusReasonRequest">
+    <wsdl:part name="parameters" element="tns:UpdateWorkQueueItemStatusReasonRequest" />
+  </wsdl:message>
+  <wsdl:message name="IWorkQueueService_UpdateWorkQueueItemStatusReason_NotAuthorizedFaultFault_FaultMessage">
+    <wsdl:part name="detail" element="tns:NotAuthorizedFault" />
+  </wsdl:message>
+  <wsdl:message name="IWorkQueueService_UpdateWorkQueueItemStatusReason_ValidationFaultFault_FaultMessage">
+    <wsdl:part xmlns:q35="http://www.microsoft.com/practices/EnterpriseLibrary/2007/01/wcf/validation" name="detail" element="q35:ValidationFault" />
+  </wsdl:message>
+  <wsdl:message name="IWorkQueueService_UpdateWorkQueueItemStatusReason_WorkQueueFaultFault_FaultMessage">
+    <wsdl:part xmlns:q36="http://services.assurant.com/integration/workqueue/2012/05/15/" name="detail" element="q36:WorkQueueFault" />
+  </wsdl:message>
+  <wsdl:message name="WorkQueueStatsRequest">
+    <wsdl:part name="parameters" element="tns:WorkQueueStatsRequest" />
+  </wsdl:message>
+  <wsdl:message name="WorkQueueStatsResponse">
+    <wsdl:part name="parameters" element="tns:WorkQueueStatsResponse" />
+  </wsdl:message>
+  <wsdl:message name="IWorkQueueService_GetWorkQueueStats_NotAuthorizedFaultFault_FaultMessage">
+    <wsdl:part name="detail" element="tns:NotAuthorizedFault" />
+  </wsdl:message>
+  <wsdl:message name="IWorkQueueService_GetWorkQueueStats_ValidationFaultFault_FaultMessage">
+    <wsdl:part xmlns:q37="http://www.microsoft.com/practices/EnterpriseLibrary/2007/01/wcf/validation" name="detail" element="q37:ValidationFault" />
+  </wsdl:message>
+  <wsdl:message name="IWorkQueueService_GetWorkQueueStats_WorkQueueFaultFault_FaultMessage">
+    <wsdl:part xmlns:q38="http://services.assurant.com/integration/workqueue/2012/05/15/" name="detail" element="q38:WorkQueueFault" />
+  </wsdl:message>
+  <wsdl:message name="WorkQueueUserStatsRequest">
+    <wsdl:part name="parameters" element="tns:WorkQueueUserStatsRequest" />
+  </wsdl:message>
+  <wsdl:message name="WorkQueueUserStatsResponse">
+    <wsdl:part name="parameters" element="tns:WorkQueueUserStatsResponse" />
+  </wsdl:message>
+  <wsdl:message name="IWorkQueueService_GetWorkQueueUserStats_NotAuthorizedFaultFault_FaultMessage">
+    <wsdl:part name="detail" element="tns:NotAuthorizedFault" />
+  </wsdl:message>
+  <wsdl:message name="IWorkQueueService_GetWorkQueueUserStats_WorkQueueFaultFault_FaultMessage">
+    <wsdl:part xmlns:q39="http://services.assurant.com/integration/workqueue/2012/05/15/" name="detail" element="q39:WorkQueueFault" />
+  </wsdl:message>
+  <wsdl:message name="IWorkQueueService_GetWorkQueueUserStats_ValidationFaultFault_FaultMessage">
+    <wsdl:part xmlns:q40="http://www.microsoft.com/practices/EnterpriseLibrary/2007/01/wcf/validation" name="detail" element="q40:ValidationFault" />
+  </wsdl:message>
+  <wsdl:portType name="IWorkQueueService">
+    <wsdl:operation name="AddWorkQueueItem">
+      <wsdl:input wsaw:Action="http://services.assurant.com/integration/workqueue/composite/2012/09/01/IWorkQueueService/AddWorkQueueItem" name="AddWorkQueueItemRequest" message="tns:AddWorkQueueItemRequest" />
+      <wsdl:output wsaw:Action="http://services.assurant.com/integration/workqueue/composite/2012/09/01/IWorkQueueService/AddWorkQueueItemResponse" message="tns:IWorkQueueService_AddWorkQueueItem_OutputMessage" />
+      <wsdl:fault wsaw:Action="http://services.assurant.com/integration/workqueue/composite/2012/09/01/IWorkQueueService/AddWorkQueueItemWorkQueueFaultFault" name="WorkQueueFaultFault" message="tns:IWorkQueueService_AddWorkQueueItem_WorkQueueFaultFault_FaultMessage" />
+      <wsdl:fault wsaw:Action="http://services.assurant.com/integration/workqueue/composite/2012/09/01/IWorkQueueService/AddWorkQueueItemNotFoundFaultFault" name="NotFoundFaultFault" message="tns:IWorkQueueService_AddWorkQueueItem_NotFoundFaultFault_FaultMessage" />
+      <wsdl:fault wsaw:Action="http://services.assurant.com/integration/workqueue/composite/2012/09/01/IWorkQueueService/AddWorkQueueItemNotAuthorizedFaultFault" name="NotAuthorizedFaultFault" message="tns:IWorkQueueService_AddWorkQueueItem_NotAuthorizedFaultFault_FaultMessage" />
+      <wsdl:fault wsaw:Action="http://services.assurant.com/integration/workqueue/composite/2012/09/01/IWorkQueueService/AddWorkQueueItemValidationFaultFault" name="ValidationFaultFault" message="tns:IWorkQueueService_AddWorkQueueItem_ValidationFaultFault_FaultMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="CreateWorkQueue">
+      <wsdl:input wsaw:Action="http://services.assurant.com/integration/workqueue/composite/2012/09/01/IWorkQueueService/CreateWorkQueue" name="CreateWorkQueueRequest" message="tns:CreateWorkQueueRequest" />
+      <wsdl:output wsaw:Action="http://services.assurant.com/integration/workqueue/composite/2012/09/01/IWorkQueueService/CreateWorkQueueResponse" name="WorkQueueResponse" message="tns:WorkQueueResponse" />
+      <wsdl:fault wsaw:Action="http://services.assurant.com/integration/workqueue/composite/2012/09/01/IWorkQueueService/CreateWorkQueueNotAuthorizedFaultFault" name="NotAuthorizedFaultFault" message="tns:IWorkQueueService_CreateWorkQueue_NotAuthorizedFaultFault_FaultMessage" />
+      <wsdl:fault wsaw:Action="http://services.assurant.com/integration/workqueue/composite/2012/09/01/IWorkQueueService/CreateWorkQueueValidationFaultFault" name="ValidationFaultFault" message="tns:IWorkQueueService_CreateWorkQueue_ValidationFaultFault_FaultMessage" />
+      <wsdl:fault wsaw:Action="http://services.assurant.com/integration/workqueue/composite/2012/09/01/IWorkQueueService/CreateWorkQueueWorkQueueFaultFault" name="WorkQueueFaultFault" message="tns:IWorkQueueService_CreateWorkQueue_WorkQueueFaultFault_FaultMessage" />
+      <wsdl:fault wsaw:Action="http://services.assurant.com/integration/workqueue/composite/2012/09/01/IWorkQueueService/CreateWorkQueueDuplicateWorkQueueFaultFault" name="DuplicateWorkQueueFaultFault" message="tns:IWorkQueueService_CreateWorkQueue_DuplicateWorkQueueFaultFault_FaultMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="GetWorkQueueByName">
+      <wsdl:input wsaw:Action="http://services.assurant.com/integration/workqueue/composite/2012/09/01/IWorkQueueService/GetWorkQueueByName" name="GetWorkQueueByNameRequest" message="tns:GetWorkQueueByNameRequest" />
+      <wsdl:output wsaw:Action="http://services.assurant.com/integration/workqueue/composite/2012/09/01/IWorkQueueService/GetWorkQueueByNameResponse" name="WorkQueueResponse" message="tns:WorkQueueResponse" />
+      <wsdl:fault wsaw:Action="http://services.assurant.com/integration/workqueue/composite/2012/09/01/IWorkQueueService/GetWorkQueueByNameWorkQueueFaultFault" name="WorkQueueFaultFault" message="tns:IWorkQueueService_GetWorkQueueByName_WorkQueueFaultFault_FaultMessage" />
+      <wsdl:fault wsaw:Action="http://services.assurant.com/integration/workqueue/composite/2012/09/01/IWorkQueueService/GetWorkQueueByNameValidationFaultFault" name="ValidationFaultFault" message="tns:IWorkQueueService_GetWorkQueueByName_ValidationFaultFault_FaultMessage" />
+      <wsdl:fault wsaw:Action="http://services.assurant.com/integration/workqueue/composite/2012/09/01/IWorkQueueService/GetWorkQueueByNameNotAuthorizedFaultFault" name="NotAuthorizedFaultFault" message="tns:IWorkQueueService_GetWorkQueueByName_NotAuthorizedFaultFault_FaultMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="GetWorkQueueById">
+      <wsdl:input wsaw:Action="http://services.assurant.com/integration/workqueue/composite/2012/09/01/IWorkQueueService/GetWorkQueueById" name="GetWorkQueueByIdRequest" message="tns:GetWorkQueueByIdRequest" />
+      <wsdl:output wsaw:Action="http://services.assurant.com/integration/workqueue/composite/2012/09/01/IWorkQueueService/GetWorkQueueByIdResponse" name="WorkQueueResponse" message="tns:WorkQueueResponse" />
+      <wsdl:fault wsaw:Action="http://services.assurant.com/integration/workqueue/composite/2012/09/01/IWorkQueueService/GetWorkQueueByIdWorkQueueFaultFault" name="WorkQueueFaultFault" message="tns:IWorkQueueService_GetWorkQueueById_WorkQueueFaultFault_FaultMessage" />
+      <wsdl:fault wsaw:Action="http://services.assurant.com/integration/workqueue/composite/2012/09/01/IWorkQueueService/GetWorkQueueByIdValidationFaultFault" name="ValidationFaultFault" message="tns:IWorkQueueService_GetWorkQueueById_ValidationFaultFault_FaultMessage" />
+      <wsdl:fault wsaw:Action="http://services.assurant.com/integration/workqueue/composite/2012/09/01/IWorkQueueService/GetWorkQueueByIdNotAuthorizedFaultFault" name="NotAuthorizedFaultFault" message="tns:IWorkQueueService_GetWorkQueueById_NotAuthorizedFaultFault_FaultMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="UpdateWorkQueue">
+      <wsdl:input wsaw:Action="http://services.assurant.com/integration/workqueue/composite/2012/09/01/IWorkQueueService/UpdateWorkQueue" name="UpdateWorkQueueRequest" message="tns:UpdateWorkQueueRequest" />
+      <wsdl:output wsaw:Action="http://services.assurant.com/integration/workqueue/composite/2012/09/01/IWorkQueueService/UpdateWorkQueueResponse" name="WorkQueueResponse" message="tns:WorkQueueResponse" />
+      <wsdl:fault wsaw:Action="http://services.assurant.com/integration/workqueue/composite/2012/09/01/IWorkQueueService/UpdateWorkQueueValidationFaultFault" name="ValidationFaultFault" message="tns:IWorkQueueService_UpdateWorkQueue_ValidationFaultFault_FaultMessage" />
+      <wsdl:fault wsaw:Action="http://services.assurant.com/integration/workqueue/composite/2012/09/01/IWorkQueueService/UpdateWorkQueueNotAuthorizedFaultFault" name="NotAuthorizedFaultFault" message="tns:IWorkQueueService_UpdateWorkQueue_NotAuthorizedFaultFault_FaultMessage" />
+      <wsdl:fault wsaw:Action="http://services.assurant.com/integration/workqueue/composite/2012/09/01/IWorkQueueService/UpdateWorkQueueWorkQueueFaultFault" name="WorkQueueFaultFault" message="tns:IWorkQueueService_UpdateWorkQueue_WorkQueueFaultFault_FaultMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="GetWorkQueues">
+      <wsdl:input wsaw:Action="http://services.assurant.com/integration/workqueue/composite/2012/09/01/IWorkQueueService/GetWorkQueues" name="RequestBase" message="tns:RequestBase" />
+      <wsdl:output wsaw:Action="http://services.assurant.com/integration/workqueue/composite/2012/09/01/IWorkQueueService/GetWorkQueuesResponse" name="WorkQueueListResponse" message="tns:WorkQueueListResponse" />
+      <wsdl:fault wsaw:Action="http://services.assurant.com/integration/workqueue/composite/2012/09/01/IWorkQueueService/GetWorkQueuesNotAuthorizedFaultFault" name="NotAuthorizedFaultFault" message="tns:IWorkQueueService_GetWorkQueues_NotAuthorizedFaultFault_FaultMessage" />
+      <wsdl:fault wsaw:Action="http://services.assurant.com/integration/workqueue/composite/2012/09/01/IWorkQueueService/GetWorkQueuesWorkQueueFaultFault" name="WorkQueueFaultFault" message="tns:IWorkQueueService_GetWorkQueues_WorkQueueFaultFault_FaultMessage" />
+      <wsdl:fault wsaw:Action="http://services.assurant.com/integration/workqueue/composite/2012/09/01/IWorkQueueService/GetWorkQueuesValidationFaultFault" name="ValidationFaultFault" message="tns:IWorkQueueService_GetWorkQueues_ValidationFaultFault_FaultMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="GetEditableWorkQueuesForUser">
+      <wsdl:input wsaw:Action="http://services.assurant.com/integration/workqueue/composite/2012/09/01/IWorkQueueService/GetEditableWorkQueuesForUser" name="RequestBase" message="tns:RequestBase" />
+      <wsdl:output wsaw:Action="http://services.assurant.com/integration/workqueue/composite/2012/09/01/IWorkQueueService/GetEditableWorkQueuesForUserResponse" name="WorkQueueListResponse" message="tns:WorkQueueListResponse" />
+      <wsdl:fault wsaw:Action="http://services.assurant.com/integration/workqueue/composite/2012/09/01/IWorkQueueService/GetEditableWorkQueuesForUserWorkQueueFaultFault" name="WorkQueueFaultFault" message="tns:IWorkQueueService_GetEditableWorkQueuesForUser_WorkQueueFaultFault_FaultMessage" />
+      <wsdl:fault wsaw:Action="http://services.assurant.com/integration/workqueue/composite/2012/09/01/IWorkQueueService/GetEditableWorkQueuesForUserValidationFaultFault" name="ValidationFaultFault" message="tns:IWorkQueueService_GetEditableWorkQueuesForUser_ValidationFaultFault_FaultMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="GetNextWorkQueueItem">
+      <wsdl:input wsaw:Action="http://services.assurant.com/integration/workqueue/composite/2012/09/01/IWorkQueueService/GetNextWorkQueueItem" name="RequestBase" message="tns:RequestBase" />
+      <wsdl:output wsaw:Action="http://services.assurant.com/integration/workqueue/composite/2012/09/01/IWorkQueueService/GetNextWorkQueueItemResponse" name="WorkQueueItemResponse" message="tns:WorkQueueItemResponse" />
+      <wsdl:fault wsaw:Action="http://services.assurant.com/integration/workqueue/composite/2012/09/01/IWorkQueueService/GetNextWorkQueueItemValidationFaultFault" name="ValidationFaultFault" message="tns:IWorkQueueService_GetNextWorkQueueItem_ValidationFaultFault_FaultMessage" />
+      <wsdl:fault wsaw:Action="http://services.assurant.com/integration/workqueue/composite/2012/09/01/IWorkQueueService/GetNextWorkQueueItemNotAuthorizedFaultFault" name="NotAuthorizedFaultFault" message="tns:IWorkQueueService_GetNextWorkQueueItem_NotAuthorizedFaultFault_FaultMessage" />
+      <wsdl:fault wsaw:Action="http://services.assurant.com/integration/workqueue/composite/2012/09/01/IWorkQueueService/GetNextWorkQueueItemWorkQueueFaultFault" name="WorkQueueFaultFault" message="tns:IWorkQueueService_GetNextWorkQueueItem_WorkQueueFaultFault_FaultMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="ProcessWorkQueueItem">
+      <wsdl:input wsaw:Action="http://services.assurant.com/integration/workqueue/composite/2012/09/01/IWorkQueueService/ProcessWorkQueueItem" name="ProcessWorkQueueItemRequest" message="tns:ProcessWorkQueueItemRequest" />
+      <wsdl:output wsaw:Action="http://services.assurant.com/integration/workqueue/composite/2012/09/01/IWorkQueueService/ProcessWorkQueueItemResponse" message="tns:IWorkQueueService_ProcessWorkQueueItem_OutputMessage" />
+      <wsdl:fault wsaw:Action="http://services.assurant.com/integration/workqueue/composite/2012/09/01/IWorkQueueService/ProcessWorkQueueItemMaxItemRequeueCountExceededFaultFault" name="MaxItemRequeueCountExceededFaultFault" message="tns:IWorkQueueService_ProcessWorkQueueItem_MaxItemRequeueCountExceededFaultFault_FaultMessage" />
+      <wsdl:fault wsaw:Action="http://services.assurant.com/integration/workqueue/composite/2012/09/01/IWorkQueueService/ProcessWorkQueueItemItemNotLockedForEditFaultFault" name="ItemNotLockedForEditFaultFault" message="tns:IWorkQueueService_ProcessWorkQueueItem_ItemNotLockedForEditFaultFault_FaultMessage" />
+      <wsdl:fault wsaw:Action="http://services.assurant.com/integration/workqueue/composite/2012/09/01/IWorkQueueService/ProcessWorkQueueItemNotAuthorizedFaultFault" name="NotAuthorizedFaultFault" message="tns:IWorkQueueService_ProcessWorkQueueItem_NotAuthorizedFaultFault_FaultMessage" />
+      <wsdl:fault wsaw:Action="http://services.assurant.com/integration/workqueue/composite/2012/09/01/IWorkQueueService/ProcessWorkQueueItemWorkQueueFaultFault" name="WorkQueueFaultFault" message="tns:IWorkQueueService_ProcessWorkQueueItem_WorkQueueFaultFault_FaultMessage" />
+      <wsdl:fault wsaw:Action="http://services.assurant.com/integration/workqueue/composite/2012/09/01/IWorkQueueService/ProcessWorkQueueItemValidationFaultFault" name="ValidationFaultFault" message="tns:IWorkQueueService_ProcessWorkQueueItem_ValidationFaultFault_FaultMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="CreateWorkQueueType">
+      <wsdl:input wsaw:Action="http://services.assurant.com/integration/workqueue/composite/2012/09/01/IWorkQueueService/CreateWorkQueueType" name="WorkQueueTypeRequest" message="tns:WorkQueueTypeRequest" />
+      <wsdl:output wsaw:Action="http://services.assurant.com/integration/workqueue/composite/2012/09/01/IWorkQueueService/CreateWorkQueueTypeResponse" name="WorkQueueTypeResponse" message="tns:WorkQueueTypeResponse" />
+      <wsdl:fault wsaw:Action="http://services.assurant.com/integration/workqueue/composite/2012/09/01/IWorkQueueService/CreateWorkQueueTypeNotAuthorizedFaultFault" name="NotAuthorizedFaultFault" message="tns:IWorkQueueService_CreateWorkQueueType_NotAuthorizedFaultFault_FaultMessage" />
+      <wsdl:fault wsaw:Action="http://services.assurant.com/integration/workqueue/composite/2012/09/01/IWorkQueueService/CreateWorkQueueTypeValidationFaultFault" name="ValidationFaultFault" message="tns:IWorkQueueService_CreateWorkQueueType_ValidationFaultFault_FaultMessage" />
+      <wsdl:fault wsaw:Action="http://services.assurant.com/integration/workqueue/composite/2012/09/01/IWorkQueueService/CreateWorkQueueTypeWorkQueueFaultFault" name="WorkQueueFaultFault" message="tns:IWorkQueueService_CreateWorkQueueType_WorkQueueFaultFault_FaultMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="GetWorkQueueTypes">
+      <wsdl:input wsaw:Action="http://services.assurant.com/integration/workqueue/composite/2012/09/01/IWorkQueueService/GetWorkQueueTypes" name="RequestBase" message="tns:RequestBase" />
+      <wsdl:output wsaw:Action="http://services.assurant.com/integration/workqueue/composite/2012/09/01/IWorkQueueService/GetWorkQueueTypesResponse" name="WorkQueueTypeListResponse" message="tns:WorkQueueTypeListResponse" />
+      <wsdl:fault wsaw:Action="http://services.assurant.com/integration/workqueue/composite/2012/09/01/IWorkQueueService/GetWorkQueueTypesNotAuthorizedFaultFault" name="NotAuthorizedFaultFault" message="tns:IWorkQueueService_GetWorkQueueTypes_NotAuthorizedFaultFault_FaultMessage" />
+      <wsdl:fault wsaw:Action="http://services.assurant.com/integration/workqueue/composite/2012/09/01/IWorkQueueService/GetWorkQueueTypesValidationFaultFault" name="ValidationFaultFault" message="tns:IWorkQueueService_GetWorkQueueTypes_ValidationFaultFault_FaultMessage" />
+      <wsdl:fault wsaw:Action="http://services.assurant.com/integration/workqueue/composite/2012/09/01/IWorkQueueService/GetWorkQueueTypesWorkQueueFaultFault" name="WorkQueueFaultFault" message="tns:IWorkQueueService_GetWorkQueueTypes_WorkQueueFaultFault_FaultMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="CreateWorkQueueItemDataType">
+      <wsdl:input wsaw:Action="http://services.assurant.com/integration/workqueue/composite/2012/09/01/IWorkQueueService/CreateWorkQueueItemDataType" name="WorkQueueItemDataTypeRequest" message="tns:WorkQueueItemDataTypeRequest" />
+      <wsdl:output wsaw:Action="http://services.assurant.com/integration/workqueue/composite/2012/09/01/IWorkQueueService/CreateWorkQueueItemDataTypeResponse" name="WorkQueueItemDataTypeResponse" message="tns:WorkQueueItemDataTypeResponse" />
+      <wsdl:fault wsaw:Action="http://services.assurant.com/integration/workqueue/composite/2012/09/01/IWorkQueueService/CreateWorkQueueItemDataTypeNotAuthorizedFaultFault" name="NotAuthorizedFaultFault" message="tns:IWorkQueueService_CreateWorkQueueItemDataType_NotAuthorizedFaultFault_FaultMessage" />
+      <wsdl:fault wsaw:Action="http://services.assurant.com/integration/workqueue/composite/2012/09/01/IWorkQueueService/CreateWorkQueueItemDataTypeValidationFaultFault" name="ValidationFaultFault" message="tns:IWorkQueueService_CreateWorkQueueItemDataType_ValidationFaultFault_FaultMessage" />
+      <wsdl:fault wsaw:Action="http://services.assurant.com/integration/workqueue/composite/2012/09/01/IWorkQueueService/CreateWorkQueueItemDataTypeWorkQueueFaultFault" name="WorkQueueFaultFault" message="tns:IWorkQueueService_CreateWorkQueueItemDataType_WorkQueueFaultFault_FaultMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="GetWorkQueueItemDataTypes">
+      <wsdl:input wsaw:Action="http://services.assurant.com/integration/workqueue/composite/2012/09/01/IWorkQueueService/GetWorkQueueItemDataTypes" name="RequestBase" message="tns:RequestBase" />
+      <wsdl:output wsaw:Action="http://services.assurant.com/integration/workqueue/composite/2012/09/01/IWorkQueueService/GetWorkQueueItemDataTypesResponse" name="WorkQueueItemDataTypeListResponse" message="tns:WorkQueueItemDataTypeListResponse" />
+      <wsdl:fault wsaw:Action="http://services.assurant.com/integration/workqueue/composite/2012/09/01/IWorkQueueService/GetWorkQueueItemDataTypesWorkQueueFaultFault" name="WorkQueueFaultFault" message="tns:IWorkQueueService_GetWorkQueueItemDataTypes_WorkQueueFaultFault_FaultMessage" />
+      <wsdl:fault wsaw:Action="http://services.assurant.com/integration/workqueue/composite/2012/09/01/IWorkQueueService/GetWorkQueueItemDataTypesNotAuthorizedFaultFault" name="NotAuthorizedFaultFault" message="tns:IWorkQueueService_GetWorkQueueItemDataTypes_NotAuthorizedFaultFault_FaultMessage" />
+      <wsdl:fault wsaw:Action="http://services.assurant.com/integration/workqueue/composite/2012/09/01/IWorkQueueService/GetWorkQueueItemDataTypesValidationFaultFault" name="ValidationFaultFault" message="tns:IWorkQueueService_GetWorkQueueItemDataTypes_ValidationFaultFault_FaultMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="CreateWorkQueueItemStatusReason">
+      <wsdl:input wsaw:Action="http://services.assurant.com/integration/workqueue/composite/2012/09/01/IWorkQueueService/CreateWorkQueueItemStatusReason" name="CreateWorkQueueItemStatusReasonRequest" message="tns:CreateWorkQueueItemStatusReasonRequest" />
+      <wsdl:output wsaw:Action="http://services.assurant.com/integration/workqueue/composite/2012/09/01/IWorkQueueService/CreateWorkQueueItemStatusReasonResponse" name="WorkQueueItemStatusReasonResponse" message="tns:WorkQueueItemStatusReasonResponse" />
+      <wsdl:fault wsaw:Action="http://services.assurant.com/integration/workqueue/composite/2012/09/01/IWorkQueueService/CreateWorkQueueItemStatusReasonWorkQueueFaultFault" name="WorkQueueFaultFault" message="tns:IWorkQueueService_CreateWorkQueueItemStatusReason_WorkQueueFaultFault_FaultMessage" />
+      <wsdl:fault wsaw:Action="http://services.assurant.com/integration/workqueue/composite/2012/09/01/IWorkQueueService/CreateWorkQueueItemStatusReasonValidationFaultFault" name="ValidationFaultFault" message="tns:IWorkQueueService_CreateWorkQueueItemStatusReason_ValidationFaultFault_FaultMessage" />
+      <wsdl:fault wsaw:Action="http://services.assurant.com/integration/workqueue/composite/2012/09/01/IWorkQueueService/CreateWorkQueueItemStatusReasonNotAuthorizedFaultFault" name="NotAuthorizedFaultFault" message="tns:IWorkQueueService_CreateWorkQueueItemStatusReason_NotAuthorizedFaultFault_FaultMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="GetWorkQueueItemStatusReasons">
+      <wsdl:input wsaw:Action="http://services.assurant.com/integration/workqueue/composite/2012/09/01/IWorkQueueService/GetWorkQueueItemStatusReasons" name="GetWorkQueueItemStatusReasonListRequest" message="tns:GetWorkQueueItemStatusReasonListRequest" />
+      <wsdl:output wsaw:Action="http://services.assurant.com/integration/workqueue/composite/2012/09/01/IWorkQueueService/GetWorkQueueItemStatusReasonsResponse" name="WorkQueueItemStatusReasonListResponse" message="tns:WorkQueueItemStatusReasonListResponse" />
+      <wsdl:fault wsaw:Action="http://services.assurant.com/integration/workqueue/composite/2012/09/01/IWorkQueueService/GetWorkQueueItemStatusReasonsNotAuthorizedFaultFault" name="NotAuthorizedFaultFault" message="tns:IWorkQueueService_GetWorkQueueItemStatusReasons_NotAuthorizedFaultFault_FaultMessage" />
+      <wsdl:fault wsaw:Action="http://services.assurant.com/integration/workqueue/composite/2012/09/01/IWorkQueueService/GetWorkQueueItemStatusReasonsValidationFaultFault" name="ValidationFaultFault" message="tns:IWorkQueueService_GetWorkQueueItemStatusReasons_ValidationFaultFault_FaultMessage" />
+      <wsdl:fault wsaw:Action="http://services.assurant.com/integration/workqueue/composite/2012/09/01/IWorkQueueService/GetWorkQueueItemStatusReasonsWorkQueueFaultFault" name="WorkQueueFaultFault" message="tns:IWorkQueueService_GetWorkQueueItemStatusReasons_WorkQueueFaultFault_FaultMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="UpdateWorkQueueItemStatusReason">
+      <wsdl:input wsaw:Action="http://services.assurant.com/integration/workqueue/composite/2012/09/01/IWorkQueueService/UpdateWorkQueueItemStatusReason" name="UpdateWorkQueueItemStatusReasonRequest" message="tns:UpdateWorkQueueItemStatusReasonRequest" />
+      <wsdl:output wsaw:Action="http://services.assurant.com/integration/workqueue/composite/2012/09/01/IWorkQueueService/UpdateWorkQueueItemStatusReasonResponse" name="WorkQueueItemStatusReasonResponse" message="tns:WorkQueueItemStatusReasonResponse" />
+      <wsdl:fault wsaw:Action="http://services.assurant.com/integration/workqueue/composite/2012/09/01/IWorkQueueService/UpdateWorkQueueItemStatusReasonNotAuthorizedFaultFault" name="NotAuthorizedFaultFault" message="tns:IWorkQueueService_UpdateWorkQueueItemStatusReason_NotAuthorizedFaultFault_FaultMessage" />
+      <wsdl:fault wsaw:Action="http://services.assurant.com/integration/workqueue/composite/2012/09/01/IWorkQueueService/UpdateWorkQueueItemStatusReasonValidationFaultFault" name="ValidationFaultFault" message="tns:IWorkQueueService_UpdateWorkQueueItemStatusReason_ValidationFaultFault_FaultMessage" />
+      <wsdl:fault wsaw:Action="http://services.assurant.com/integration/workqueue/composite/2012/09/01/IWorkQueueService/UpdateWorkQueueItemStatusReasonWorkQueueFaultFault" name="WorkQueueFaultFault" message="tns:IWorkQueueService_UpdateWorkQueueItemStatusReason_WorkQueueFaultFault_FaultMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="GetWorkQueueStats">
+      <wsdl:input wsaw:Action="http://services.assurant.com/integration/workqueue/composite/2012/09/01/IWorkQueueService/GetWorkQueueStats" name="WorkQueueStatsRequest" message="tns:WorkQueueStatsRequest" />
+      <wsdl:output wsaw:Action="http://services.assurant.com/integration/workqueue/composite/2012/09/01/IWorkQueueService/GetWorkQueueStatsResponse" name="WorkQueueStatsResponse" message="tns:WorkQueueStatsResponse" />
+      <wsdl:fault wsaw:Action="http://services.assurant.com/integration/workqueue/composite/2012/09/01/IWorkQueueService/GetWorkQueueStatsNotAuthorizedFaultFault" name="NotAuthorizedFaultFault" message="tns:IWorkQueueService_GetWorkQueueStats_NotAuthorizedFaultFault_FaultMessage" />
+      <wsdl:fault wsaw:Action="http://services.assurant.com/integration/workqueue/composite/2012/09/01/IWorkQueueService/GetWorkQueueStatsValidationFaultFault" name="ValidationFaultFault" message="tns:IWorkQueueService_GetWorkQueueStats_ValidationFaultFault_FaultMessage" />
+      <wsdl:fault wsaw:Action="http://services.assurant.com/integration/workqueue/composite/2012/09/01/IWorkQueueService/GetWorkQueueStatsWorkQueueFaultFault" name="WorkQueueFaultFault" message="tns:IWorkQueueService_GetWorkQueueStats_WorkQueueFaultFault_FaultMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="GetWorkQueueUserStats">
+      <wsdl:input wsaw:Action="http://services.assurant.com/integration/workqueue/composite/2012/09/01/IWorkQueueService/GetWorkQueueUserStats" name="WorkQueueUserStatsRequest" message="tns:WorkQueueUserStatsRequest" />
+      <wsdl:output wsaw:Action="http://services.assurant.com/integration/workqueue/composite/2012/09/01/IWorkQueueService/GetWorkQueueUserStatsResponse" name="WorkQueueUserStatsResponse" message="tns:WorkQueueUserStatsResponse" />
+      <wsdl:fault wsaw:Action="http://services.assurant.com/integration/workqueue/composite/2012/09/01/IWorkQueueService/GetWorkQueueUserStatsNotAuthorizedFaultFault" name="NotAuthorizedFaultFault" message="tns:IWorkQueueService_GetWorkQueueUserStats_NotAuthorizedFaultFault_FaultMessage" />
+      <wsdl:fault wsaw:Action="http://services.assurant.com/integration/workqueue/composite/2012/09/01/IWorkQueueService/GetWorkQueueUserStatsWorkQueueFaultFault" name="WorkQueueFaultFault" message="tns:IWorkQueueService_GetWorkQueueUserStats_WorkQueueFaultFault_FaultMessage" />
+      <wsdl:fault wsaw:Action="http://services.assurant.com/integration/workqueue/composite/2012/09/01/IWorkQueueService/GetWorkQueueUserStatsValidationFaultFault" name="ValidationFaultFault" message="tns:IWorkQueueService_GetWorkQueueUserStats_ValidationFaultFault_FaultMessage" />
+    </wsdl:operation>
+  </wsdl:portType>
+  <wsdl:binding name="CustomBinding_IWorkQueueService" type="tns:IWorkQueueService">
+    <wsp:PolicyReference URI="#CustomBinding_IWorkQueueService_policy" />
+    <soap12:binding transport="http://schemas.xmlsoap.org/soap/http" />
+    <wsdl:operation name="AddWorkQueueItem">
+      <soap12:operation soapAction="http://services.assurant.com/integration/workqueue/composite/2012/09/01/IWorkQueueService/AddWorkQueueItem" style="document" />
+      <wsdl:input name="AddWorkQueueItemRequest">
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+      <wsdl:fault name="WorkQueueFaultFault">
+        <soap12:fault use="literal" name="WorkQueueFaultFault" namespace="" />
+      </wsdl:fault>
+      <wsdl:fault name="NotFoundFaultFault">
+        <soap12:fault use="literal" name="NotFoundFaultFault" namespace="" />
+      </wsdl:fault>
+      <wsdl:fault name="NotAuthorizedFaultFault">
+        <soap12:fault use="literal" name="NotAuthorizedFaultFault" namespace="" />
+      </wsdl:fault>
+      <wsdl:fault name="ValidationFaultFault">
+        <soap12:fault use="literal" name="ValidationFaultFault" namespace="" />
+      </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="CreateWorkQueue">
+      <soap12:operation soapAction="http://services.assurant.com/integration/workqueue/composite/2012/09/01/IWorkQueueService/CreateWorkQueue" style="document" />
+      <wsdl:input name="CreateWorkQueueRequest">
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output name="WorkQueueResponse">
+        <soap12:body use="literal" />
+      </wsdl:output>
+      <wsdl:fault name="NotAuthorizedFaultFault">
+        <soap12:fault use="literal" name="NotAuthorizedFaultFault" namespace="" />
+      </wsdl:fault>
+      <wsdl:fault name="ValidationFaultFault">
+        <soap12:fault use="literal" name="ValidationFaultFault" namespace="" />
+      </wsdl:fault>
+      <wsdl:fault name="WorkQueueFaultFault">
+        <soap12:fault use="literal" name="WorkQueueFaultFault" namespace="" />
+      </wsdl:fault>
+      <wsdl:fault name="DuplicateWorkQueueFaultFault">
+        <soap12:fault use="literal" name="DuplicateWorkQueueFaultFault" namespace="" />
+      </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="GetWorkQueueByName">
+      <soap12:operation soapAction="http://services.assurant.com/integration/workqueue/composite/2012/09/01/IWorkQueueService/GetWorkQueueByName" style="document" />
+      <wsdl:input name="GetWorkQueueByNameRequest">
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output name="WorkQueueResponse">
+        <soap12:body use="literal" />
+      </wsdl:output>
+      <wsdl:fault name="WorkQueueFaultFault">
+        <soap12:fault use="literal" name="WorkQueueFaultFault" namespace="" />
+      </wsdl:fault>
+      <wsdl:fault name="ValidationFaultFault">
+        <soap12:fault use="literal" name="ValidationFaultFault" namespace="" />
+      </wsdl:fault>
+      <wsdl:fault name="NotAuthorizedFaultFault">
+        <soap12:fault use="literal" name="NotAuthorizedFaultFault" namespace="" />
+      </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="GetWorkQueueById">
+      <soap12:operation soapAction="http://services.assurant.com/integration/workqueue/composite/2012/09/01/IWorkQueueService/GetWorkQueueById" style="document" />
+      <wsdl:input name="GetWorkQueueByIdRequest">
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output name="WorkQueueResponse">
+        <soap12:body use="literal" />
+      </wsdl:output>
+      <wsdl:fault name="WorkQueueFaultFault">
+        <soap12:fault use="literal" name="WorkQueueFaultFault" namespace="" />
+      </wsdl:fault>
+      <wsdl:fault name="ValidationFaultFault">
+        <soap12:fault use="literal" name="ValidationFaultFault" namespace="" />
+      </wsdl:fault>
+      <wsdl:fault name="NotAuthorizedFaultFault">
+        <soap12:fault use="literal" name="NotAuthorizedFaultFault" namespace="" />
+      </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="UpdateWorkQueue">
+      <soap12:operation soapAction="http://services.assurant.com/integration/workqueue/composite/2012/09/01/IWorkQueueService/UpdateWorkQueue" style="document" />
+      <wsdl:input name="UpdateWorkQueueRequest">
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output name="WorkQueueResponse">
+        <soap12:body use="literal" />
+      </wsdl:output>
+      <wsdl:fault name="ValidationFaultFault">
+        <soap12:fault use="literal" name="ValidationFaultFault" namespace="" />
+      </wsdl:fault>
+      <wsdl:fault name="NotAuthorizedFaultFault">
+        <soap12:fault use="literal" name="NotAuthorizedFaultFault" namespace="" />
+      </wsdl:fault>
+      <wsdl:fault name="WorkQueueFaultFault">
+        <soap12:fault use="literal" name="WorkQueueFaultFault" namespace="" />
+      </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="GetWorkQueues">
+      <soap12:operation soapAction="http://services.assurant.com/integration/workqueue/composite/2012/09/01/IWorkQueueService/GetWorkQueues" style="document" />
+      <wsdl:input name="RequestBase">
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output name="WorkQueueListResponse">
+        <soap12:body use="literal" />
+      </wsdl:output>
+      <wsdl:fault name="NotAuthorizedFaultFault">
+        <soap12:fault use="literal" name="NotAuthorizedFaultFault" namespace="" />
+      </wsdl:fault>
+      <wsdl:fault name="WorkQueueFaultFault">
+        <soap12:fault use="literal" name="WorkQueueFaultFault" namespace="" />
+      </wsdl:fault>
+      <wsdl:fault name="ValidationFaultFault">
+        <soap12:fault use="literal" name="ValidationFaultFault" namespace="" />
+      </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="GetEditableWorkQueuesForUser">
+      <soap12:operation soapAction="http://services.assurant.com/integration/workqueue/composite/2012/09/01/IWorkQueueService/GetEditableWorkQueuesForUser" style="document" />
+      <wsdl:input name="RequestBase">
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output name="WorkQueueListResponse">
+        <soap12:body use="literal" />
+      </wsdl:output>
+      <wsdl:fault name="WorkQueueFaultFault">
+        <soap12:fault use="literal" name="WorkQueueFaultFault" namespace="" />
+      </wsdl:fault>
+      <wsdl:fault name="ValidationFaultFault">
+        <soap12:fault use="literal" name="ValidationFaultFault" namespace="" />
+      </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="GetNextWorkQueueItem">
+      <soap12:operation soapAction="http://services.assurant.com/integration/workqueue/composite/2012/09/01/IWorkQueueService/GetNextWorkQueueItem" style="document" />
+      <wsdl:input name="RequestBase">
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output name="WorkQueueItemResponse">
+        <soap12:body use="literal" />
+      </wsdl:output>
+      <wsdl:fault name="ValidationFaultFault">
+        <soap12:fault use="literal" name="ValidationFaultFault" namespace="" />
+      </wsdl:fault>
+      <wsdl:fault name="NotAuthorizedFaultFault">
+        <soap12:fault use="literal" name="NotAuthorizedFaultFault" namespace="" />
+      </wsdl:fault>
+      <wsdl:fault name="WorkQueueFaultFault">
+        <soap12:fault use="literal" name="WorkQueueFaultFault" namespace="" />
+      </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="ProcessWorkQueueItem">
+      <soap12:operation soapAction="http://services.assurant.com/integration/workqueue/composite/2012/09/01/IWorkQueueService/ProcessWorkQueueItem" style="document" />
+      <wsdl:input name="ProcessWorkQueueItemRequest">
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+      <wsdl:fault name="MaxItemRequeueCountExceededFaultFault">
+        <soap12:fault use="literal" name="MaxItemRequeueCountExceededFaultFault" namespace="" />
+      </wsdl:fault>
+      <wsdl:fault name="ItemNotLockedForEditFaultFault">
+        <soap12:fault use="literal" name="ItemNotLockedForEditFaultFault" namespace="" />
+      </wsdl:fault>
+      <wsdl:fault name="NotAuthorizedFaultFault">
+        <soap12:fault use="literal" name="NotAuthorizedFaultFault" namespace="" />
+      </wsdl:fault>
+      <wsdl:fault name="WorkQueueFaultFault">
+        <soap12:fault use="literal" name="WorkQueueFaultFault" namespace="" />
+      </wsdl:fault>
+      <wsdl:fault name="ValidationFaultFault">
+        <soap12:fault use="literal" name="ValidationFaultFault" namespace="" />
+      </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="CreateWorkQueueType">
+      <soap12:operation soapAction="http://services.assurant.com/integration/workqueue/composite/2012/09/01/IWorkQueueService/CreateWorkQueueType" style="document" />
+      <wsdl:input name="WorkQueueTypeRequest">
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output name="WorkQueueTypeResponse">
+        <soap12:body use="literal" />
+      </wsdl:output>
+      <wsdl:fault name="NotAuthorizedFaultFault">
+        <soap12:fault use="literal" name="NotAuthorizedFaultFault" namespace="" />
+      </wsdl:fault>
+      <wsdl:fault name="ValidationFaultFault">
+        <soap12:fault use="literal" name="ValidationFaultFault" namespace="" />
+      </wsdl:fault>
+      <wsdl:fault name="WorkQueueFaultFault">
+        <soap12:fault use="literal" name="WorkQueueFaultFault" namespace="" />
+      </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="GetWorkQueueTypes">
+      <soap12:operation soapAction="http://services.assurant.com/integration/workqueue/composite/2012/09/01/IWorkQueueService/GetWorkQueueTypes" style="document" />
+      <wsdl:input name="RequestBase">
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output name="WorkQueueTypeListResponse">
+        <soap12:body use="literal" />
+      </wsdl:output>
+      <wsdl:fault name="NotAuthorizedFaultFault">
+        <soap12:fault use="literal" name="NotAuthorizedFaultFault" namespace="" />
+      </wsdl:fault>
+      <wsdl:fault name="ValidationFaultFault">
+        <soap12:fault use="literal" name="ValidationFaultFault" namespace="" />
+      </wsdl:fault>
+      <wsdl:fault name="WorkQueueFaultFault">
+        <soap12:fault use="literal" name="WorkQueueFaultFault" namespace="" />
+      </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="CreateWorkQueueItemDataType">
+      <soap12:operation soapAction="http://services.assurant.com/integration/workqueue/composite/2012/09/01/IWorkQueueService/CreateWorkQueueItemDataType" style="document" />
+      <wsdl:input name="WorkQueueItemDataTypeRequest">
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output name="WorkQueueItemDataTypeResponse">
+        <soap12:body use="literal" />
+      </wsdl:output>
+      <wsdl:fault name="NotAuthorizedFaultFault">
+        <soap12:fault use="literal" name="NotAuthorizedFaultFault" namespace="" />
+      </wsdl:fault>
+      <wsdl:fault name="ValidationFaultFault">
+        <soap12:fault use="literal" name="ValidationFaultFault" namespace="" />
+      </wsdl:fault>
+      <wsdl:fault name="WorkQueueFaultFault">
+        <soap12:fault use="literal" name="WorkQueueFaultFault" namespace="" />
+      </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="GetWorkQueueItemDataTypes">
+      <soap12:operation soapAction="http://services.assurant.com/integration/workqueue/composite/2012/09/01/IWorkQueueService/GetWorkQueueItemDataTypes" style="document" />
+      <wsdl:input name="RequestBase">
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output name="WorkQueueItemDataTypeListResponse">
+        <soap12:body use="literal" />
+      </wsdl:output>
+      <wsdl:fault name="WorkQueueFaultFault">
+        <soap12:fault use="literal" name="WorkQueueFaultFault" namespace="" />
+      </wsdl:fault>
+      <wsdl:fault name="NotAuthorizedFaultFault">
+        <soap12:fault use="literal" name="NotAuthorizedFaultFault" namespace="" />
+      </wsdl:fault>
+      <wsdl:fault name="ValidationFaultFault">
+        <soap12:fault use="literal" name="ValidationFaultFault" namespace="" />
+      </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="CreateWorkQueueItemStatusReason">
+      <soap12:operation soapAction="http://services.assurant.com/integration/workqueue/composite/2012/09/01/IWorkQueueService/CreateWorkQueueItemStatusReason" style="document" />
+      <wsdl:input name="CreateWorkQueueItemStatusReasonRequest">
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output name="WorkQueueItemStatusReasonResponse">
+        <soap12:body use="literal" />
+      </wsdl:output>
+      <wsdl:fault name="WorkQueueFaultFault">
+        <soap12:fault use="literal" name="WorkQueueFaultFault" namespace="" />
+      </wsdl:fault>
+      <wsdl:fault name="ValidationFaultFault">
+        <soap12:fault use="literal" name="ValidationFaultFault" namespace="" />
+      </wsdl:fault>
+      <wsdl:fault name="NotAuthorizedFaultFault">
+        <soap12:fault use="literal" name="NotAuthorizedFaultFault" namespace="" />
+      </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="GetWorkQueueItemStatusReasons">
+      <soap12:operation soapAction="http://services.assurant.com/integration/workqueue/composite/2012/09/01/IWorkQueueService/GetWorkQueueItemStatusReasons" style="document" />
+      <wsdl:input name="GetWorkQueueItemStatusReasonListRequest">
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output name="WorkQueueItemStatusReasonListResponse">
+        <soap12:body use="literal" />
+      </wsdl:output>
+      <wsdl:fault name="NotAuthorizedFaultFault">
+        <soap12:fault use="literal" name="NotAuthorizedFaultFault" namespace="" />
+      </wsdl:fault>
+      <wsdl:fault name="ValidationFaultFault">
+        <soap12:fault use="literal" name="ValidationFaultFault" namespace="" />
+      </wsdl:fault>
+      <wsdl:fault name="WorkQueueFaultFault">
+        <soap12:fault use="literal" name="WorkQueueFaultFault" namespace="" />
+      </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="UpdateWorkQueueItemStatusReason">
+      <soap12:operation soapAction="http://services.assurant.com/integration/workqueue/composite/2012/09/01/IWorkQueueService/UpdateWorkQueueItemStatusReason" style="document" />
+      <wsdl:input name="UpdateWorkQueueItemStatusReasonRequest">
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output name="WorkQueueItemStatusReasonResponse">
+        <soap12:body use="literal" />
+      </wsdl:output>
+      <wsdl:fault name="NotAuthorizedFaultFault">
+        <soap12:fault use="literal" name="NotAuthorizedFaultFault" namespace="" />
+      </wsdl:fault>
+      <wsdl:fault name="ValidationFaultFault">
+        <soap12:fault use="literal" name="ValidationFaultFault" namespace="" />
+      </wsdl:fault>
+      <wsdl:fault name="WorkQueueFaultFault">
+        <soap12:fault use="literal" name="WorkQueueFaultFault" namespace="" />
+      </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="GetWorkQueueStats">
+      <soap12:operation soapAction="http://services.assurant.com/integration/workqueue/composite/2012/09/01/IWorkQueueService/GetWorkQueueStats" style="document" />
+      <wsdl:input name="WorkQueueStatsRequest">
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output name="WorkQueueStatsResponse">
+        <soap12:body use="literal" />
+      </wsdl:output>
+      <wsdl:fault name="NotAuthorizedFaultFault">
+        <soap12:fault use="literal" name="NotAuthorizedFaultFault" namespace="" />
+      </wsdl:fault>
+      <wsdl:fault name="ValidationFaultFault">
+        <soap12:fault use="literal" name="ValidationFaultFault" namespace="" />
+      </wsdl:fault>
+      <wsdl:fault name="WorkQueueFaultFault">
+        <soap12:fault use="literal" name="WorkQueueFaultFault" namespace="" />
+      </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="GetWorkQueueUserStats">
+      <soap12:operation soapAction="http://services.assurant.com/integration/workqueue/composite/2012/09/01/IWorkQueueService/GetWorkQueueUserStats" style="document" />
+      <wsdl:input name="WorkQueueUserStatsRequest">
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output name="WorkQueueUserStatsResponse">
+        <soap12:body use="literal" />
+      </wsdl:output>
+      <wsdl:fault name="NotAuthorizedFaultFault">
+        <soap12:fault use="literal" name="NotAuthorizedFaultFault" namespace="" />
+      </wsdl:fault>
+      <wsdl:fault name="WorkQueueFaultFault">
+        <soap12:fault use="literal" name="WorkQueueFaultFault" namespace="" />
+      </wsdl:fault>
+      <wsdl:fault name="ValidationFaultFault">
+        <soap12:fault use="literal" name="ValidationFaultFault" namespace="" />
+      </wsdl:fault>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:service name="WorkQueueService">
+    <wsdl:port name="CustomBinding_IWorkQueueService" binding="tns:CustomBinding_IWorkQueueService">
+      <soap12:address location="http://msp0wapfd001.cead.prd/WorkQueue/Composite/20120901/WorkQueueService.svc" />
+    </wsdl:port>
+  </wsdl:service>
+</wsdl:definitions>

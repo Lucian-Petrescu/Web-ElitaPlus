@@ -1,0 +1,2532 @@
+<?xml version="1.0" encoding="utf-8"?>
+<wsdl:definitions xmlns:wsoma="http://schemas.xmlsoap.org/ws/2004/09/policy/optimizedmimeserialization" xmlns:wsp="http://schemas.xmlsoap.org/ws/2004/09/policy" xmlns:mime="http://schemas.xmlsoap.org/wsdl/mime/" xmlns:iphone-rr="http://gsxws.apple.com/elements/iphone" xmlns:tns="http://gsxws.apple.com/services/iphone/am" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:global-rr="http://gsxws.apple.com/elements/global" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:http="http://schemas.xmlsoap.org/wsdl/http/" xmlns:wsu="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-utility-1.0.xsd" name="GsxWSAmIPhoneService" targetNamespace="http://gsxws.apple.com/services/iphone/am" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">
+  <wsdl:documentation>
+        Release Date: 15-May-2016 06:00 PM Pacific
+    </wsdl:documentation>
+  <wsdl:types>
+    <xs:schema>
+      <xs:import schemaLocation="https://gsxapi.apple.com:443/gsx-ws/services/am/iphone?xsd=4" namespace="http://gsxws.apple.com/elements/global" />
+      <xs:import schemaLocation="https://gsxapi.apple.com:443/gsx-ws/services/am/iphone?xsd=6" namespace="http://gsxws.apple.com/elements/iphone" />
+    </xs:schema>
+  </wsdl:types>
+  <wsdl:message name="authenticateRequestMessage">
+    <wsdl:documentation>
+            Incoming message for "Authenticate" API
+        </wsdl:documentation>
+    <wsdl:part name="parameters" element="global-rr:Authenticate" />
+  </wsdl:message>
+  <wsdl:message name="authenticateResponseMessage">
+    <wsdl:documentation>
+            Outgoing message for "Authenticate" API
+        </wsdl:documentation>
+    <wsdl:part name="parameters" element="global-rr:AuthenticateResponse" />
+  </wsdl:message>
+  <wsdl:message name="logoutRequestMessage">
+    <wsdl:documentation>
+            Incoming message for "Logout" API
+        </wsdl:documentation>
+    <wsdl:part name="parameters" element="global-rr:Logout" />
+  </wsdl:message>
+  <wsdl:message name="logoutResponseMessage">
+    <wsdl:documentation>
+            Outgoing message for Logout API
+        </wsdl:documentation>
+    <wsdl:part name="parameters" element="global-rr:LogoutResponse" />
+  </wsdl:message>
+  <wsdl:message name="iphoneWarrantyStatusRequestMessage">
+    <wsdl:documentation>
+            Incoming message for "IPhone Warranty Status" API
+        </wsdl:documentation>
+    <wsdl:part name="parameters" element="iphone-rr:IPhoneWarrantyStatus" />
+  </wsdl:message>
+  <wsdl:message name="iphoneWarrantyStatusResponseMessage">
+    <wsdl:documentation>
+            Outgoing message for "IPhone Warranty Status" API
+        </wsdl:documentation>
+    <wsdl:part name="parameters" element="iphone-rr:IPhoneWarrantyStatusResponse" />
+  </wsdl:message>
+  <wsdl:message name="comptiaCodeLookupRequestMessage">
+    <wsdl:documentation>
+            Incoming message for "CompTIA Code Lookup" API
+        </wsdl:documentation>
+    <wsdl:part name="parameters" element="global-rr:ComptiaCodeLookup" />
+  </wsdl:message>
+  <wsdl:message name="comptiaCodeLookupResponseMessage">
+    <wsdl:documentation>
+            Outgoing message for "CompTIA Code Lookup" API
+        </wsdl:documentation>
+    <wsdl:part name="parameters" element="global-rr:ComptiaCodeLookupResponse" />
+  </wsdl:message>
+  <wsdl:message name="iphoneKGBSerialNumberUpdateRequestMessage">
+    <wsdl:documentation>
+            Incoming message for "IPhone KGB Serial Number Update" API 
+        </wsdl:documentation>
+    <wsdl:part name="parameters" element="iphone-rr:UpdateIPhoneKGBSerialNumber" />
+  </wsdl:message>
+  <wsdl:message name="iphoneKGBSerialNumberUpdateResponseMessage">
+    <wsdl:documentation>
+            Outgoing message for "IPhone KGB Serial Number Update" API
+        </wsdl:documentation>
+    <wsdl:part name="parameters" element="iphone-rr:UpdateIPhoneKGBSerialNumberResponse" />
+  </wsdl:message>
+  <wsdl:message name="iphonePartsLookupRequestMessage">
+    <wsdl:documentation>
+            Incoming message for "IPhone Parts Lookup" API 
+        </wsdl:documentation>
+    <wsdl:part name="parameters" element="iphone-rr:IPhonePartsLookup" />
+  </wsdl:message>
+  <wsdl:message name="iphonePartsLookupResponseMessage">
+    <wsdl:documentation>
+            Outgoing message for "IPhone Parts Lookup" API
+        </wsdl:documentation>
+    <wsdl:part name="parameters" element="iphone-rr:IPhonePartsLookupResponse" />
+  </wsdl:message>
+  <wsdl:message name="iphoneRepairDetailsRequestMessage">
+    <wsdl:documentation>
+            Incoming message for "IPhone Repair Details" API 
+        </wsdl:documentation>
+    <wsdl:part name="parameters" element="iphone-rr:IPhoneRepairDetails" />
+  </wsdl:message>
+  <wsdl:message name="iphoneRepairDetailsResponseMessage">
+    <wsdl:documentation>
+            Outgoing message for "IPhone Repair Details" API
+        </wsdl:documentation>
+    <wsdl:part name="parameters" element="iphone-rr:IPhoneRepairDetailsResponse" />
+  </wsdl:message>
+  <wsdl:message name="iphoneRepairDetailsLookupRequestMessage">
+    <wsdl:documentation>
+            Incoming message for "IPhone Repair Details Lookup" API 
+        </wsdl:documentation>
+    <wsdl:part name="parameters" element="iphone-rr:IPhoneRepairDetailsLookup" />
+  </wsdl:message>
+  <wsdl:message name="iphoneRepairDetailsLookupResponseMessage">
+    <wsdl:documentation>
+            Outgoing message for "IPhone Repair Details Lookup" API
+        </wsdl:documentation>
+    <wsdl:part name="parameters" element="iphone-rr:IPhoneRepairDetailsLookupResponse" />
+  </wsdl:message>
+  <wsdl:message name="iphoneRepairLookupRequestMessage">
+    <wsdl:documentation>
+            Incoming message for "IPhone Repair Lookup" API 
+        </wsdl:documentation>
+    <wsdl:part name="parameters" element="iphone-rr:IPhoneRepairLookup" />
+  </wsdl:message>
+  <wsdl:message name="iphoneRepairLookupResponseMessage">
+    <wsdl:documentation>
+            Outgoing message for "IPhone Repair Lookup" API
+        </wsdl:documentation>
+    <wsdl:part name="parameters" element="iphone-rr:IPhoneRepairLookupResponse" />
+  </wsdl:message>
+  <wsdl:message name="createIPhoneAPPOrderRequestMessage">
+    <wsdl:documentation>
+            Incoming message for "Create IPhone APP Order" API 
+        </wsdl:documentation>
+    <wsdl:part name="parameters" element="iphone-rr:CreateIPhoneAPPOrder" />
+  </wsdl:message>
+  <wsdl:message name="createIPhoneAPPOrderResponseMessage">
+    <wsdl:documentation>
+            Outgoing message for "Create IPhone APP Order" API
+        </wsdl:documentation>
+    <wsdl:part name="parameters" element="iphone-rr:CreateIPhoneAPPOrderResponse" />
+  </wsdl:message>
+  <wsdl:message name="iphonePartsPendingReturnRequestMessage">
+    <wsdl:documentation>
+            Incoming message for "IPhone Parts Pending Return" API 
+        </wsdl:documentation>
+    <wsdl:part name="parameters" element="iphone-rr:IPhonePartsPendingReturn" />
+  </wsdl:message>
+  <wsdl:message name="iphonePartsPendingReturnResponseMessage">
+    <wsdl:documentation>
+            Outgoing message for "IPhone Parts Pending Return" API
+        </wsdl:documentation>
+    <wsdl:part name="parameters" element="iphone-rr:IPhonePartsPendingReturnResponse" />
+  </wsdl:message>
+  <wsdl:message name="createIPhoneCarryInRepairRequestMessage">
+    <wsdl:documentation>
+            Incoming message for "Create IPhone Carry In Repair" API 
+        </wsdl:documentation>
+    <wsdl:part name="parameters" element="iphone-rr:CreateIPhoneCarryInRepair" />
+  </wsdl:message>
+  <wsdl:message name="createIPhoneCarryInRepairResponseMessage">
+    <wsdl:documentation>
+            Outgoing message for "Create IPhone Carry In Repair" API
+        </wsdl:documentation>
+    <wsdl:part name="parameters" element="iphone-rr:CreateIPhoneCarryInRepairResponse" />
+  </wsdl:message>
+  <wsdl:message name="iphoneMarkRepairCompleteRequestMessage">
+    <wsdl:documentation>
+            Incoming message for "iPhone Mark Repair Complete" API 
+        </wsdl:documentation>
+    <wsdl:part name="parameters" element="iphone-rr:IPhoneMarkRepairComplete" />
+  </wsdl:message>
+  <wsdl:message name="iphoneMarkRepairCompleteResponseMessage">
+    <wsdl:documentation>
+            Outgoing message for "iPhone Mark Repair Complete" API
+        </wsdl:documentation>
+    <wsdl:part name="parameters" element="iphone-rr:IPhoneMarkRepairCompleteResponse" />
+  </wsdl:message>
+  <wsdl:message name="createIPhoneStockingOrderRequestMessage">
+    <wsdl:documentation>
+            Incoming message for "Create IPhone Stocking Order" API 
+        </wsdl:documentation>
+    <wsdl:part name="parameters" element="iphone-rr:CreateIPhoneStockingOrder" />
+  </wsdl:message>
+  <wsdl:message name="createIPhoneStockingOrderResponseMessage">
+    <wsdl:documentation>
+            Outgoing message for "Create IPhone Stocking Order" API
+        </wsdl:documentation>
+    <wsdl:part name="parameters" element="iphone-rr:CreateIPhoneStockingOrderResponse" />
+  </wsdl:message>
+  <wsdl:message name="createIPhoneSRFOrderRequestMessage">
+    <wsdl:documentation>
+            Incoming message for "Create IPhone SRF Order" API 
+        </wsdl:documentation>
+    <wsdl:part name="parameters" element="iphone-rr:CreateIPhoneSRFOrder" />
+  </wsdl:message>
+  <wsdl:message name="createIPhoneSRFOrderResponseMessage">
+    <wsdl:documentation>
+            Outgoing message for "Create IPhone SRF Order" API
+        </wsdl:documentation>
+    <wsdl:part name="parameters" element="iphone-rr:CreateIPhoneSRFOrderResponse" />
+  </wsdl:message>
+  <wsdl:message name="viewPendingIPhoneAPPOrdersRequestMessage">
+    <wsdl:documentation>
+            Incoming message for "View Pending IPhone APP Orders" API 
+        </wsdl:documentation>
+    <wsdl:part name="parameters" element="iphone-rr:ViewPendingIPhoneAPPOrders" />
+  </wsdl:message>
+  <wsdl:message name="viewPendingIPhoneAPPOrdersResponseMessage">
+    <wsdl:documentation>
+            Outgoing message for "View Pending IPhone APP Orders" API
+        </wsdl:documentation>
+    <wsdl:part name="parameters" element="iphone-rr:ViewPendingIPhoneAPPOrdersResponse" />
+  </wsdl:message>
+  <wsdl:message name="iphonePartsReturnUpdateRequestMessage">
+    <wsdl:documentation>
+            Incoming message for "IPhone Parts Return Update" API 
+        </wsdl:documentation>
+    <wsdl:part name="parameters" element="iphone-rr:IPhonePartsReturnUpdate" />
+  </wsdl:message>
+  <wsdl:message name="iphonePartsReturnUpdateResponseMessage">
+    <wsdl:documentation>
+            Outgoing message for "IPhone Parts Return Update" API
+        </wsdl:documentation>
+    <wsdl:part name="parameters" element="iphone-rr:IPhonePartsReturnUpdateResponse" />
+  </wsdl:message>
+  <wsdl:message name="registerIPhonePartsForBulkReturnRequestMessage">
+    <wsdl:documentation>
+            Incoming message for "Register IPhone Parts for Bulk Return" API 
+        </wsdl:documentation>
+    <wsdl:part name="parameters" element="iphone-rr:RegisterIPhonePartsForBulkReturn" />
+  </wsdl:message>
+  <wsdl:message name="registerIPhonePartsForBulkReturnResponseMessage">
+    <wsdl:documentation>
+            Outgoing message for "Register IPhone Parts for Bulk Return" API
+        </wsdl:documentation>
+    <wsdl:part name="parameters" element="iphone-rr:RegisterIPhonePartsForBulkReturnResponse" />
+  </wsdl:message>
+  <wsdl:message name="downloadIPhoneReturnLabelRequestMessage">
+    <wsdl:documentation>
+            Incoming message for "Download IPhone Return Label" API 
+        </wsdl:documentation>
+    <wsdl:part name="parameters" element="iphone-rr:IPhoneReturnLabel" />
+  </wsdl:message>
+  <wsdl:message name="downloadIPhoneReturnLabelResponseMessage">
+    <wsdl:documentation>
+            Outgoing message for "Download IPhone Return Label" API
+        </wsdl:documentation>
+    <wsdl:part name="parameters" element="iphone-rr:IPhoneReturnLabelResponse" />
+  </wsdl:message>
+  <wsdl:message name="createIPhoneWholeUnitExchangeRequestMessage">
+    <wsdl:documentation>
+            Incoming message for "Create IPhone Whole Unit Exchange" API 
+        </wsdl:documentation>
+    <wsdl:part name="parameters" element="iphone-rr:CreateWholeUnitExchange" />
+  </wsdl:message>
+  <wsdl:message name="createIPhoneWholeUnitExchangeResponseMessage">
+    <wsdl:documentation>
+            Outgoing message for "Create IPhone Whole Unit Exchange" API
+        </wsdl:documentation>
+    <wsdl:part name="parameters" element="iphone-rr:CreateWholeUnitExchangeResponse" />
+  </wsdl:message>
+  <wsdl:message name="viewIPhoneBulkReturnProformaRequestMessage">
+    <wsdl:documentation>
+            Incoming message for "View Bulk Return Proforma" API 
+        </wsdl:documentation>
+    <wsdl:part name="parameters" element="iphone-rr:ViewIPhoneBulkReturnProforma" />
+  </wsdl:message>
+  <wsdl:message name="viewIPhoneBulkReturnProformaResponseMessage">
+    <wsdl:documentation>
+            Outgoing message for "View Bulk Return Proforma" API
+        </wsdl:documentation>
+    <wsdl:part name="parameters" element="iphone-rr:ViewIPhoneBulkReturnProformaResponse" />
+  </wsdl:message>
+  <wsdl:message name="createIPhoneNRERepairRequestMessage">
+    <wsdl:documentation>
+            Incoming message for "Create iPhone NRE Repair" API 
+        </wsdl:documentation>
+    <wsdl:part name="parameters" element="iphone-rr:CreateIPhoneNRERepair" />
+  </wsdl:message>
+  <wsdl:message name="createIPhoneNRERepairResponseMessage">
+    <wsdl:documentation>
+            Outgoing message for "Create iPhone NRE Repair" API
+        </wsdl:documentation>
+    <wsdl:part name="parameters" element="iphone-rr:CreateIPhoneNRERepairResponse" />
+  </wsdl:message>
+  <wsdl:message name="iphoneInvoiceIDLookupRequestMessage">
+    <wsdl:documentation>
+            Incoming message for "iPhone Invoice ID Lookup" API 
+        </wsdl:documentation>
+    <wsdl:part name="parameters" element="iphone-rr:IPhoneInvoiceIDLookup" />
+  </wsdl:message>
+  <wsdl:message name="iphoneInvoiceIDLookupResponseMessage">
+    <wsdl:documentation>
+            Outgoing message for "iPhone Invoice ID Lookup" API
+        </wsdl:documentation>
+    <wsdl:part name="parameters" element="iphone-rr:IPhoneInvoiceIDLookupResponse" />
+  </wsdl:message>
+  <wsdl:message name="iphoneInvoiceDetailsLookupRequestMessage">
+    <wsdl:documentation>
+            Incoming message for "iPhone Invoice Details Lookup" API 
+        </wsdl:documentation>
+    <wsdl:part name="parameters" element="iphone-rr:IPhoneInvoiceDetailsLookup" />
+  </wsdl:message>
+  <wsdl:message name="iphoneInvoiceDetailsLookupResponseMessage">
+    <wsdl:documentation>
+            Outgoing message for "iPhone Invoice Details Lookup" API
+        </wsdl:documentation>
+    <wsdl:part name="parameters" element="iphone-rr:IPhoneInvoiceDetailsLookupResponse" />
+  </wsdl:message>
+  <wsdl:message name="createGenEscRequestMessage">
+    <wsdl:documentation>
+            Incoming message for "Create General Escalation" API 
+        </wsdl:documentation>
+    <wsdl:part name="parameters" element="iphone-rr:CreateGeneralEscalation" />
+  </wsdl:message>
+  <wsdl:message name="createGenEscResponseMessage">
+    <wsdl:documentation>
+            Outgoing message for "Create General Escalation" API
+        </wsdl:documentation>
+    <wsdl:part name="parameters" element="iphone-rr:CreateGeneralEscalationResponse" />
+  </wsdl:message>
+  <wsdl:message name="updateGeneralEscRequestMessage">
+    <wsdl:documentation>
+            Incoming message for "Update General Escalation" API 
+        </wsdl:documentation>
+    <wsdl:part name="parameters" element="iphone-rr:UpdateGeneralEscalation" />
+  </wsdl:message>
+  <wsdl:message name="updateGeneralEscResponseMessage">
+    <wsdl:documentation>
+            Outgoing message for "Update General Escalation" API
+        </wsdl:documentation>
+    <wsdl:part name="parameters" element="iphone-rr:UpdateGeneralEscalationResponse" />
+  </wsdl:message>
+  <wsdl:message name="updateMailInRequoteEscRequestMessage">
+    <wsdl:documentation>
+            Incoming message for "Update Mail-in Requote Escalation" API 
+        </wsdl:documentation>
+    <wsdl:part name="parameters" element="iphone-rr:UpdateMailInRequoteEscalation" />
+  </wsdl:message>
+  <wsdl:message name="updateMailInRequoteEscResponseMessage">
+    <wsdl:documentation>
+            Outgoing message for "Update Mail-in Requote Escalation" API
+        </wsdl:documentation>
+    <wsdl:part name="parameters" element="iphone-rr:UpdateMailInRequoteEscalationResponse" />
+  </wsdl:message>
+  <wsdl:message name="updateWholeUnitRequoteEscRequestMessage">
+    <wsdl:documentation>
+            Incoming message for "Update Whole Unit Requote Escalation" API 
+        </wsdl:documentation>
+    <wsdl:part name="parameters" element="iphone-rr:UpdateWholeUnitRequoteEscalation" />
+  </wsdl:message>
+  <wsdl:message name="updateWholeUnitRequoteEscResponseMessage">
+    <wsdl:documentation>
+            Outgoing message for "Update Whole Unit Requote Escalation" API
+        </wsdl:documentation>
+    <wsdl:part name="parameters" element="iphone-rr:UpdateWholeUnitRequoteEscalationResponse" />
+  </wsdl:message>
+  <wsdl:message name="requoteEscSummaryLookupRequestMessage">
+    <wsdl:documentation>
+            Incoming message for "Requote Escalation Summary Lookup" API 
+        </wsdl:documentation>
+    <wsdl:part name="parameters" element="iphone-rr:RequoteEscalationSummaryLookup" />
+  </wsdl:message>
+  <wsdl:message name="requoteEscSummaryLookupResponseMessage">
+    <wsdl:documentation>
+            Outgoing message for "Requote Escalation Summary Lookup" API
+        </wsdl:documentation>
+    <wsdl:part name="parameters" element="iphone-rr:RequoteEscalationSummaryLookupResponse" />
+  </wsdl:message>
+  <wsdl:message name="requoteEscDetailsLookupRequestMessage">
+    <wsdl:documentation>
+            Incoming message for "Requote Escalation Details Lookup" API 
+        </wsdl:documentation>
+    <wsdl:part name="parameters" element="iphone-rr:RequoteEscalationDetailsLookup" />
+  </wsdl:message>
+  <wsdl:message name="requoteEscDetailsLookupResponseMessage">
+    <wsdl:documentation>
+            Outgoing message for "Requote Escalation Details Lookup" API
+        </wsdl:documentation>
+    <wsdl:part name="parameters" element="iphone-rr:RequoteEscalationDetailsLookupResponse" />
+  </wsdl:message>
+  <wsdl:message name="generalEscSummaryLookupRequestMessage">
+    <wsdl:documentation>
+            Incoming message for "General Escalation Summary Lookup" API 
+        </wsdl:documentation>
+    <wsdl:part name="parameters" element="iphone-rr:GeneralEscalationSummaryLookup" />
+  </wsdl:message>
+  <wsdl:message name="generalEscSummaryLookupResponseMessage">
+    <wsdl:documentation>
+            Outgoing message for "General Escalation Summary Lookup" API
+        </wsdl:documentation>
+    <wsdl:part name="parameters" element="iphone-rr:GeneralEscalationSummaryLookupResponse" />
+  </wsdl:message>
+  <wsdl:message name="generalEscDetailsLookupRequestMessage">
+    <wsdl:documentation>
+            Incoming message for "General Escalation Details Lookup" API 
+        </wsdl:documentation>
+    <wsdl:part name="parameters" element="iphone-rr:GeneralEscalationDetailsLookup" />
+  </wsdl:message>
+  <wsdl:message name="generalEscDetailsLookupResponseMessage">
+    <wsdl:documentation>
+            Outgoing message for "General Escalation Details Lookup" API
+        </wsdl:documentation>
+    <wsdl:part name="parameters" element="iphone-rr:GeneralEscalationDetailsLookupResponse" />
+  </wsdl:message>
+  <wsdl:message name="fetchCommunicationArticlesRequestMessage">
+    <wsdl:documentation>
+            Incoming message for "Fetch Communication Articles" API 
+        </wsdl:documentation>
+    <wsdl:part name="parameters" element="global-rr:FetchCommunicationArticles" />
+  </wsdl:message>
+  <wsdl:message name="fetchCommunicationArticlesResponseMessage">
+    <wsdl:documentation>
+            Outgoing message for "Fetch Communication Articles" API
+        </wsdl:documentation>
+    <wsdl:part name="parameters" element="global-rr:FetchCommunicationArticlesResponse" />
+  </wsdl:message>
+  <wsdl:message name="fetchCommunicationContentRequestMessage">
+    <wsdl:documentation>
+            Incoming message for "Fetch Communication Content" API 
+        </wsdl:documentation>
+    <wsdl:part name="parameters" element="global-rr:FetchCommunicationContent" />
+  </wsdl:message>
+  <wsdl:message name="fetchCommunicationContentResponseMessage">
+    <wsdl:documentation>
+            Outgoing message for "Fetch Communication Content" API
+        </wsdl:documentation>
+    <wsdl:part name="parameters" element="global-rr:FetchCommunicationContentResponse" />
+  </wsdl:message>
+  <wsdl:message name="ackCommunicationRequestMessage">
+    <wsdl:documentation>
+            Incoming message for "Acknowledge Communication" API 
+        </wsdl:documentation>
+    <wsdl:part name="parameters" element="global-rr:AcknowledgeCommunication" />
+  </wsdl:message>
+  <wsdl:message name="ackCommunicationResponseMessage">
+    <wsdl:documentation>
+            Outgoing message for "Acknowledge Communication" API
+        </wsdl:documentation>
+    <wsdl:part name="parameters" element="global-rr:AcknowledgeCommunicationResponse" />
+  </wsdl:message>
+  <wsdl:message name="fetchFunctionalAreasRequestMessage">
+    <wsdl:documentation>
+            Incoming message for "Fetch Functional Areas" API 
+        </wsdl:documentation>
+    <wsdl:part name="parameters" element="iphone-rr:FetchFunctionalAreas" />
+  </wsdl:message>
+  <wsdl:message name="fetchFunctionalAreasResponseMessage">
+    <wsdl:documentation>
+            Outgoing message for "Fetch Functional Areas" API
+        </wsdl:documentation>
+    <wsdl:part name="parameters" element="iphone-rr:FetchFunctionalAreasResponse" />
+  </wsdl:message>
+  <wsdl:message name="fetchIssueListRequestMessage">
+    <wsdl:documentation>
+            Incoming message for "Fetch Issue List" API 
+        </wsdl:documentation>
+    <wsdl:part name="parameters" element="iphone-rr:FetchIssueList" />
+  </wsdl:message>
+  <wsdl:message name="fetchIssueListResponseMessage">
+    <wsdl:documentation>
+            Outgoing message for "Fetch Issue List" API
+        </wsdl:documentation>
+    <wsdl:part name="parameters" element="iphone-rr:FetchIssueListResponse" />
+  </wsdl:message>
+  <wsdl:message name="fetchQuickCheckRequestMessage">
+    <wsdl:documentation>
+            Incoming message for "Fetch Quick Check" API 
+        </wsdl:documentation>
+    <wsdl:part name="parameters" element="iphone-rr:FetchQuickCheck" />
+  </wsdl:message>
+  <wsdl:message name="fetchQuickCheckResponseMessage">
+    <wsdl:documentation>
+            Outgoing message for "Fetch Quick Check" API
+        </wsdl:documentation>
+    <wsdl:part name="parameters" element="iphone-rr:FetchQuickCheckResponse" />
+  </wsdl:message>
+  <wsdl:message name="fetchTSNodeRequestMessage">
+    <wsdl:documentation>
+            Incoming message for "Fetch TS Node" API 
+        </wsdl:documentation>
+    <wsdl:part name="parameters" element="iphone-rr:FetchTSNode" />
+  </wsdl:message>
+  <wsdl:message name="fetchTSNodeResponseMessage">
+    <wsdl:documentation>
+            Outgoing message for "Fetch TS Node" API
+        </wsdl:documentation>
+    <wsdl:part name="parameters" element="iphone-rr:FetchTSNodeResponse" />
+  </wsdl:message>
+  <wsdl:message name="fetchDiskImageArticleIDRequestMessage">
+    <wsdl:documentation>
+            Incoming message for "Fetch Disk Image Article ID" API 
+        </wsdl:documentation>
+    <wsdl:part name="parameters" element="global-rr:FetchDiskImageArticleID" />
+  </wsdl:message>
+  <wsdl:message name="fetchDiskImageArticleIDResponseMessage">
+    <wsdl:documentation>
+            Outgoing message for "Fetch Disk Image Article ID" API
+        </wsdl:documentation>
+    <wsdl:part name="parameters" element="global-rr:FetchDiskImageArticleIDResponse" />
+  </wsdl:message>
+  <wsdl:message name="fetchDiskImageArticleContentRequestMessage">
+    <wsdl:documentation>
+            Incoming message for "Fetch Disk Image Article Content" API 
+        </wsdl:documentation>
+    <wsdl:part name="parameters" element="global-rr:FetchDiskImageArticleContent" />
+  </wsdl:message>
+  <wsdl:message name="fetchDiskImageArticleContentResponseMessage">
+    <wsdl:documentation>
+            Outgoing message for "Fetch Disk Image Article Content" API
+        </wsdl:documentation>
+    <wsdl:part name="parameters" element="global-rr:FetchDiskImageArticleContentResponse" />
+  </wsdl:message>
+  <wsdl:message name="fetchRepairProcessArticleIDRequestMessage">
+    <wsdl:documentation>
+            Incoming message for "Fetch Repair Process Article ID" API 
+        </wsdl:documentation>
+    <wsdl:part name="parameters" element="global-rr:FetchRepairProcessArticleID" />
+  </wsdl:message>
+  <wsdl:message name="fetchRepairProcessArticleIDResponseMessage">
+    <wsdl:documentation>
+            Outgoing message for "Fetch Repair Process Article ID" API
+        </wsdl:documentation>
+    <wsdl:part name="parameters" element="global-rr:FetchRepairProcessArticleIDResponse" />
+  </wsdl:message>
+  <wsdl:message name="fetchRepairProcessArticleContentRequestMessage">
+    <wsdl:documentation>
+            Incoming message for "Fetch Repair Process Article Content" API 
+        </wsdl:documentation>
+    <wsdl:part name="parameters" element="global-rr:FetchRepairProcessArticleContent" />
+  </wsdl:message>
+  <wsdl:message name="fetchRepairProcessArticleContentResponseMessage">
+    <wsdl:documentation>
+            Outgoing message for "Fetch Repair Process Article Content" API
+        </wsdl:documentation>
+    <wsdl:part name="parameters" element="global-rr:FetchRepairProcessArticleContentResponse" />
+  </wsdl:message>
+  <wsdl:message name="fetchOperationalProcedureArticleIDRequestMessage">
+    <wsdl:documentation>
+            Incoming message for "Fetch Operational Procedure Article ID" API 
+        </wsdl:documentation>
+    <wsdl:part name="parameters" element="global-rr:FetchOperationalProcedureArticleID" />
+  </wsdl:message>
+  <wsdl:message name="fetchOperationalProcedureArticleIDResponseMessage">
+    <wsdl:documentation>
+            Outgoing message for "Fetch Operational Procedure Article ID" API
+        </wsdl:documentation>
+    <wsdl:part name="parameters" element="global-rr:FetchOperationalProcedureArticleIDResponse" />
+  </wsdl:message>
+  <wsdl:message name="fetchOperationalProcedureArticleContentRequestMessage">
+    <wsdl:documentation>
+            Incoming message for "Fetch Operational Procedure Article Content" API 
+        </wsdl:documentation>
+    <wsdl:part name="parameters" element="global-rr:FetchOperationalProcedureArticleContent" />
+  </wsdl:message>
+  <wsdl:message name="fetchOperationalProcedureArticleContentResponseMessage">
+    <wsdl:documentation>
+            Outgoing message for "Fetch Operational Procedure Article Content" API
+        </wsdl:documentation>
+    <wsdl:part name="parameters" element="global-rr:FetchOperationalProcedureArticleContentResponse" />
+  </wsdl:message>
+  <wsdl:message name="fetchTechnicalProcedureArticleIDRequestMessage">
+    <wsdl:documentation>
+            Incoming message for "Fetch Technical Procedure Article ID" API 
+        </wsdl:documentation>
+    <wsdl:part name="parameters" element="global-rr:FetchTechnicalProcedureArticleID" />
+  </wsdl:message>
+  <wsdl:message name="fetchTechnicalProcedureArticleIDResponseMessage">
+    <wsdl:documentation>
+            Outgoing message for "Fetch Technical Procedure Article ID" API
+        </wsdl:documentation>
+    <wsdl:part name="parameters" element="global-rr:FetchTechnicalProcedureArticleIDResponse" />
+  </wsdl:message>
+  <wsdl:message name="fetchTechnicalProcedureArticleContentRequestMessage">
+    <wsdl:documentation>
+            Incoming message for "Fetch Technical Procedure Article Content" API 
+        </wsdl:documentation>
+    <wsdl:part name="parameters" element="global-rr:FetchTechnicalProcedureArticleContent" />
+  </wsdl:message>
+  <wsdl:message name="fetchTechnicalProcedureArticleContentResponseMessage">
+    <wsdl:documentation>
+            Outgoing message for "Fetch Technical Procedure Article Content" API
+        </wsdl:documentation>
+    <wsdl:part name="parameters" element="global-rr:FetchTechnicalProcedureArticleContentResponse" />
+  </wsdl:message>
+  <wsdl:message name="fetchSelfHelpArticleIDRequestMessage">
+    <wsdl:documentation>
+            Incoming message for "Fetch Self Help Article ID" API 
+        </wsdl:documentation>
+    <wsdl:part name="parameters" element="global-rr:FetchSelfHelpArticleID" />
+  </wsdl:message>
+  <wsdl:message name="fetchSelfHelpArticleIDResponseMessage">
+    <wsdl:documentation>
+            Outgoing message for "Fetch Self Help Article ID" API
+        </wsdl:documentation>
+    <wsdl:part name="parameters" element="global-rr:FetchSelfHelpArticleIDResponse" />
+  </wsdl:message>
+  <wsdl:message name="fetchSelfHelpArticleContentRequestMessage">
+    <wsdl:documentation>
+            Incoming message for "Fetch Self Help Article Content" API 
+        </wsdl:documentation>
+    <wsdl:part name="parameters" element="global-rr:FetchSelfHelpArticleContent" />
+  </wsdl:message>
+  <wsdl:message name="fetchSelfHelpArticleContentResponseMessage">
+    <wsdl:documentation>
+            Outgoing message for "Fetch Self Help Article Content" API
+        </wsdl:documentation>
+    <wsdl:part name="parameters" element="global-rr:FetchSelfHelpArticleContentResponse" />
+  </wsdl:message>
+  <wsdl:message name="fetchServiceVideoArticleIDRequestMessage">
+    <wsdl:documentation>
+            Incoming message for "Fetch Service Video Article ID" API 
+        </wsdl:documentation>
+    <wsdl:part name="parameters" element="global-rr:FetchServiceVideoArticleID" />
+  </wsdl:message>
+  <wsdl:message name="fetchServiceVideoArticleIDResponseMessage">
+    <wsdl:documentation>
+            Outgoing message for "Fetch Service Video Article ID" API
+        </wsdl:documentation>
+    <wsdl:part name="parameters" element="global-rr:FetchServiceVideoArticleIDResponse" />
+  </wsdl:message>
+  <wsdl:message name="fetchServiceVideoArticleContentRequestMessage">
+    <wsdl:documentation>
+            Incoming message for "Fetch Service Video Article Content" API 
+        </wsdl:documentation>
+    <wsdl:part name="parameters" element="global-rr:FetchServiceVideoArticleContent" />
+  </wsdl:message>
+  <wsdl:message name="fetchServiceVideoArticleContentResponseMessage">
+    <wsdl:documentation>
+            Outgoing message for "Fetch Service Video Article Content" API
+        </wsdl:documentation>
+    <wsdl:part name="parameters" element="global-rr:FetchServiceVideoArticleContentResponse" />
+  </wsdl:message>
+  <wsdl:message name="fetchProductModelRequestMessage">
+    <wsdl:documentation>
+            Incoming message for "Fetch Product Model Request" API 
+        </wsdl:documentation>
+    <wsdl:part name="parameters" element="global-rr:FetchProductModel" />
+  </wsdl:message>
+  <wsdl:message name="fetchProductModelResponseMessage">
+    <wsdl:documentation>
+            Outgoing message for "Fetch Product Model" API
+        </wsdl:documentation>
+    <wsdl:part name="parameters" element="global-rr:FetchProductModelResponse" />
+  </wsdl:message>
+  <wsdl:message name="fetchImageRequestMessage">
+    <wsdl:documentation>
+            Incoming message for "Fetch Image" API 
+        </wsdl:documentation>
+    <wsdl:part name="parameters" element="global-rr:FetchImage" />
+  </wsdl:message>
+  <wsdl:message name="fetchImageResponseMessage">
+    <wsdl:documentation>
+            Outgoing message for "Fetch Image" API
+        </wsdl:documentation>
+    <wsdl:part name="parameters" element="global-rr:FetchImageResponse" />
+  </wsdl:message>
+  <wsdl:message name="createIPhoneRORRequestMessage">
+    <wsdl:documentation>
+            Incoming message for "Create iPhone Repair Or Replace" API 
+        </wsdl:documentation>
+    <wsdl:part name="parameters" element="iphone-rr:CreateIPhoneRepairOrReplace" />
+  </wsdl:message>
+  <wsdl:message name="createIPhoneRORResponseMessage">
+    <wsdl:documentation>
+            Outgoing message for "Create iPhone Repair Or Replace" API
+        </wsdl:documentation>
+    <wsdl:part name="parameters" element="iphone-rr:CreateIPhoneRepairOrReplaceResponse" />
+  </wsdl:message>
+  <wsdl:message name="iphoneUpdateSerialNumberRequestMessage">
+    <wsdl:documentation>
+            Incoming message for "iPhone Update Serial Number" API 
+        </wsdl:documentation>
+    <wsdl:part name="parameters" element="iphone-rr:IPhoneUpdateSerialNumber" />
+  </wsdl:message>
+  <wsdl:message name="iphoneUpdateSerialNumberResponseMessage">
+    <wsdl:documentation>
+            Outgoing message for "iPhone Update Serial Number" API
+        </wsdl:documentation>
+    <wsdl:part name="parameters" element="iphone-rr:IPhoneUpdateSerialNumberResponse" />
+  </wsdl:message>
+  <wsdl:message name="createIPhoneCarryInReturnBeforeReplaceRequestMessage">
+    <wsdl:documentation>
+            Incoming message for "Create IPhone Carry In Return Before Replace" API
+        </wsdl:documentation>
+    <wsdl:part name="parameters" element="iphone-rr:CreateIPhoneCarryInReturnBeforeReplace" />
+  </wsdl:message>
+  <wsdl:message name="createIPhoneCarryInReturnBeforeReplaceResponseMessage">
+    <wsdl:documentation>
+            Outgoing message for "Create IPhone Carry In Return Before Replace" API
+        </wsdl:documentation>
+    <wsdl:part name="parameters" element="iphone-rr:CreateIPhoneCarryInReturnBeforeReplaceResponse" />
+  </wsdl:message>
+  <wsdl:message name="iPhoneReturnReportRequestMessage">
+    <wsdl:documentation>
+            Incoming message for "IPhone Return Report" API 
+        </wsdl:documentation>
+    <wsdl:part name="parameters" element="iphone-rr:IPhoneReturnReport" />
+  </wsdl:message>
+  <wsdl:message name="iPhoneReturnReportResponseMessage">
+    <wsdl:documentation>
+            Outgoing message for "IPhone Return Report" API
+        </wsdl:documentation>
+    <wsdl:part name="parameters" element="iphone-rr:IPhoneReturnReportResponse" />
+  </wsdl:message>
+  <wsdl:message name="initiateIOSDiagnosticRequestMessage">
+    <wsdl:documentation>
+            Incoming message for "Initiate iOSD Diagnostic" API 
+        </wsdl:documentation>
+    <wsdl:part name="parameters" element="global-rr:InitiateIOSDiagnostic" />
+  </wsdl:message>
+  <wsdl:message name="initiateIOSDiagnosticResponseMessage">
+    <wsdl:documentation>
+            Outgoing message for "Initiate iOSD Diagnostic" API
+        </wsdl:documentation>
+    <wsdl:part name="parameters" element="global-rr:InitiateIOSDiagnosticResponse" />
+  </wsdl:message>
+  <wsdl:message name="fetchDiagnosticEventNumbersRequestMessage">
+    <wsdl:documentation>
+            Incoming message for "Fetch Diagnostic Event Numbers" API 
+        </wsdl:documentation>
+    <wsdl:part name="parameters" element="global-rr:FetchDiagnosticEventNumbers" />
+  </wsdl:message>
+  <wsdl:message name="fetchDiagnosticEventNumbersResponseMessage">
+    <wsdl:documentation>
+            Outgoing message for "Fetch Diagnostic Event Numbers" API
+        </wsdl:documentation>
+    <wsdl:part name="parameters" element="global-rr:FetchDiagnosticEventNumbersResponse" />
+  </wsdl:message>
+  <wsdl:message name="iosActivationDetailsRequestMessage">
+    <wsdl:documentation>
+            Incoming message for "iOS Activation Details" API 
+        </wsdl:documentation>
+    <wsdl:part name="parameters" element="global-rr:FetchIOSActivationDetails" />
+  </wsdl:message>
+  <wsdl:message name="iosActivationDetailsResponseMessage">
+    <wsdl:documentation>
+            Outgoing message for "iOS Activation Details" API
+        </wsdl:documentation>
+    <wsdl:part name="parameters" element="global-rr:FetchIOSActivationDetailsResponse" />
+  </wsdl:message>
+  <wsdl:message name="iphoneConsignmentIncreaseOrderLookUpRequestMessage">
+    <wsdl:documentation>
+            Incoming message for "IPhoneconsignmentIncreaseOrderLookUp" API 
+        </wsdl:documentation>
+    <wsdl:part name="parameters" element="iphone-rr:IPhoneConsignmentIncreaseOrderLookUp" />
+  </wsdl:message>
+  <wsdl:message name="iphoneConsignmentIncreaseOrderLookUpResponseMessage">
+    <wsdl:documentation>
+            Outgoing message for "IPhoneconsignmentIncreaseOrderLookUp" API
+        </wsdl:documentation>
+    <wsdl:part name="parameters" element="iphone-rr:IPhoneConsignmentIncreaseOrderLookUpResponse" />
+  </wsdl:message>
+  <wsdl:message name="iPhoneComponentCheckRequestMessage">
+    <wsdl:documentation>
+            Incoming message for "IPhone Component Check" API
+        </wsdl:documentation>
+    <wsdl:part name="parameters" element="iphone-rr:IPhoneComponentCheck" />
+  </wsdl:message>
+  <wsdl:message name="iPhoneComponentCheckResponseMessage">
+    <wsdl:documentation>
+            Outgoing message for "IPhone Component Check" API
+        </wsdl:documentation>
+    <wsdl:part name="parameters" element="iphone-rr:IPhoneComponentCheckResponse" />
+  </wsdl:message>
+  <wsdl:message name="iphoneConsignmentDecreaseOrderLookUpRequestMessage">
+    <wsdl:documentation>
+            Incoming message for "IPhoneconsignmentDecreaseOrderLookUp" API 
+        </wsdl:documentation>
+    <wsdl:part name="parameters" element="iphone-rr:IPhoneConsignmentDecreaseOrderLookUp" />
+  </wsdl:message>
+  <wsdl:message name="iphoneConsignmentDecreaseOrderLookUpResponseMessage">
+    <wsdl:documentation>
+            Outgoing message for "IPhoneconsignmentDecreaseOrderLookUp" API
+        </wsdl:documentation>
+    <wsdl:part name="parameters" element="iphone-rr:IPhoneConsignmentDecreaseOrderLookUpResponse" />
+  </wsdl:message>
+  <wsdl:message name="submitConsignmentIphoneDecreaseOrderRequestMessage">
+    <wsdl:documentation>
+            Incoming message for "Submit Consignment Iphone Decrease Orders" API 
+        </wsdl:documentation>
+    <wsdl:part name="parameters" element="iphone-rr:SubmitConsignmentIphoneDecreaseOrder" />
+  </wsdl:message>
+  <wsdl:message name="submitConsignmentIphoneDecreaseOrderResponseMessage">
+    <wsdl:documentation>
+            Outgoing message for "Submit Consignment Iphone Decrease Orders" API
+        </wsdl:documentation>
+    <wsdl:part name="parameters" element="iphone-rr:SubmitConsignmentIphoneDecreaseOrderResponse" />
+  </wsdl:message>
+  <wsdl:message name="acknowledgeIphoneConsignmentIncreaseOrdersRequestMessage">
+    <wsdl:documentation>
+            Incoming message for "Acknowledge Iphone Consignment Increase Orders" API 
+        </wsdl:documentation>
+    <wsdl:part name="parameters" element="iphone-rr:AcknowledgeIphoneConsignmentIncreaseOrder" />
+  </wsdl:message>
+  <wsdl:message name="acknowledgeIphoneConsignmentIncreaseOrdersResponseMessage">
+    <wsdl:documentation>
+            Outgoing message for "Acknowledge Iphone Consignment Increase Orders" API
+        </wsdl:documentation>
+    <wsdl:part name="parameters" element="iphone-rr:AcknowledgeIphoneConsignmentIncreaseOrderResponse" />
+  </wsdl:message>
+  <wsdl:message name="validateIPhoneFromConsignedStockRequestMessage">
+    <wsdl:documentation>
+            Incoming message for "ValidateIPhoneFromConsignedStock" API 
+        </wsdl:documentation>
+    <wsdl:part name="parameters" element="iphone-rr:ValidateIPhoneFromConsignedStock" />
+  </wsdl:message>
+  <wsdl:message name="validateIPhoneFromConsignedStockResponseMessage">
+    <wsdl:documentation>
+            Outgoing message for "ValidateIPhoneFromConsignedStock" API
+        </wsdl:documentation>
+    <wsdl:part name="parameters" element="iphone-rr:ValidateIPhoneFromConsignedStockResponse" />
+  </wsdl:message>
+  <wsdl:message name="viewIPhoneConsignmentProformaRequestMessage">
+    <wsdl:documentation>
+            Incoming message for "View Bulk Return Proforma" API 
+        </wsdl:documentation>
+    <wsdl:part name="parameters" element="iphone-rr:ViewIPhoneConsignmentProforma" />
+  </wsdl:message>
+  <wsdl:message name="viewIPhoneConsignmentProformaResponseMessage">
+    <wsdl:documentation>
+            Outgoing message for "View Bulk Return Proforma" API
+        </wsdl:documentation>
+    <wsdl:part name="parameters" element="iphone-rr:ViewIPhoneConsignmentProformaResponse" />
+  </wsdl:message>
+  <wsdl:message name="stockingOrderDetailsLookupRequestMessage">
+    <wsdl:documentation>
+            Incoming message for "Stocking Order Details Lookup" API 
+        </wsdl:documentation>
+    <wsdl:part name="parameters" element="global-rr:StockingOrderDetailsLookup" />
+  </wsdl:message>
+  <wsdl:message name="stockingOrderDetailsLookupResponseMessage">
+    <wsdl:documentation>
+            Outgoing message for "Stocking Order Details Lookup" API
+        </wsdl:documentation>
+    <wsdl:part name="parameters" element="global-rr:StockingOrderDetailsLookupResponse" />
+  </wsdl:message>
+  <wsdl:message name="loanerIphoneReturnRequestMessage">
+    <wsdl:documentation>
+            Incoming message for "Loaner Return IPhone" API
+        </wsdl:documentation>
+    <wsdl:part name="parameters" element="iphone-rr:LoanerIphoneReturn" />
+  </wsdl:message>
+  <wsdl:message name="loanerIphoneReturnResponseMessage">
+    <wsdl:documentation>
+            Outgoing message for "Loaner Return IPhone" API
+        </wsdl:documentation>
+    <wsdl:part name="parameters" element="iphone-rr:LoanerIphoneReturnResponse" />
+  </wsdl:message>
+  <wsdl:message name="stockingOrderLookupRequestMessage">
+    <wsdl:documentation>
+            Incoming message for "Stocking Order Lookup" API 
+        </wsdl:documentation>
+    <wsdl:part name="parameters" element="global-rr:StockingOrderLookupRequest" />
+  </wsdl:message>
+  <wsdl:message name="stockingOrderLookupResponseMessage">
+    <wsdl:documentation>
+            Outgoing message for "Stocking Order Lookup" API
+        </wsdl:documentation>
+    <wsdl:part name="parameters" element="global-rr:StockingOrderLookupResponse" />
+  </wsdl:message>
+  <wsdl:message name="appleReviewPreCheckRequestMessage">
+    <wsdl:documentation>
+            Incoming message for "AppleReview PreCheck Review" API 
+        </wsdl:documentation>
+    <wsdl:part name="parameters" element="iphone-rr:AppleReviewPreCheckRequest" />
+  </wsdl:message>
+  <wsdl:message name="appleReviewPreCheckResponseMessage">
+    <wsdl:documentation>
+            Outgoing message for "AppleReivew PreCheck Review" API
+        </wsdl:documentation>
+    <wsdl:part name="parameters" element="iphone-rr:AppleReviewPreCheckResponse" />
+  </wsdl:message>
+  <wsdl:message name="fetchDiagnosticConsoleURLRequestMessage">
+    <wsdl:documentation>
+            Incoming message for "Fetch Diagnostic Diagnostic Console URL" API 
+        </wsdl:documentation>
+    <wsdl:part name="parameters" element="global-rr:FetchDiagnosticConsoleURL" />
+  </wsdl:message>
+  <wsdl:message name="fetchDiagnosticConsoleURLResponseMessage">
+    <wsdl:documentation>
+            Outgoing message for "Fetch Diagnostic Diagnostic Console URL" API
+        </wsdl:documentation>
+    <wsdl:part name="parameters" element="global-rr:FetchDiagnosticConsoleURLResponse" />
+  </wsdl:message>
+  <wsdl:message name="updateIphoneRepairOrReplaceRequestMessage">
+    <wsdl:documentation>
+            Incoming message for "Update Repair or Replace" API 
+        </wsdl:documentation>
+    <wsdl:part name="parameters" element="iphone-rr:UpdateIphoneRepairOrReplaceRequest" />
+  </wsdl:message>
+  <wsdl:message name="updateIphoneRepairOrReplaceResponseMessage">
+    <wsdl:documentation>
+            Outgoing message for "Update Repair or Replace" API
+        </wsdl:documentation>
+    <wsdl:part name="parameters" element="iphone-rr:UpdateIphoneRepairOrReplaceResponse" />
+  </wsdl:message>
+  <wsdl:message name="runDiagnosticTestRequestMessage">
+    <wsdl:documentation>
+			Incoming message for “Run Diagnostic Tests” API
+		</wsdl:documentation>
+    <wsdl:part name="parameters" element="global-rr:RunDiagnosticTest" />
+  </wsdl:message>
+  <wsdl:message name="runDiagnosticTestResponseMessage">
+    <wsdl:documentation>
+			Outgoing message for “Run Diagnostic Tests” API
+		</wsdl:documentation>
+    <wsdl:part name="parameters" element="global-rr:RunDiagnosticTestResponse" />
+  </wsdl:message>
+  <wsdl:message name="fetchDiagnosticSuitesRequestMessage">
+    <wsdl:documentation>
+            Incoming message for "Fetch Diagnostic Suites" API 
+        </wsdl:documentation>
+    <wsdl:part name="parameters" element="global-rr:FetchDiagnosticSuites" />
+  </wsdl:message>
+  <wsdl:message name="fetchDiagnosticSuitesResponseMessage">
+    <wsdl:documentation>
+            Outgoing message for "Fetch Diagnostic Suites" API
+        </wsdl:documentation>
+    <wsdl:part name="parameters" element="global-rr:FetchDiagnosticSuitesResponse" />
+  </wsdl:message>
+  <wsdl:message name="beatsProductDetailsRequestMessage">
+    <wsdl:documentation>
+            Incoming message for "BeatsProductDetails" API 
+        </wsdl:documentation>
+    <wsdl:part name="parameters" element="global-rr:BeatsProductDetails" />
+  </wsdl:message>
+  <wsdl:message name="beatsProductDetailsResponseMessage">
+    <wsdl:documentation>
+            Outgoing message for "BeatsProductDetails" API
+        </wsdl:documentation>
+    <wsdl:part name="parameters" element="global-rr:BeatsProductDetailsResponse" />
+  </wsdl:message>
+  <wsdl:message name="beatsSerializerRequestMessage">
+    <wsdl:documentation>
+            Incoming message for "Beats Serializer" API 
+        </wsdl:documentation>
+    <wsdl:part name="parameters" element="global-rr:BeatsSerializerRequest" />
+  </wsdl:message>
+  <wsdl:message name="beatsSerializerResponseMessage">
+    <wsdl:documentation>
+            Outgoing message for "Beats Serializer" API
+        </wsdl:documentation>
+    <wsdl:part name="parameters" element="global-rr:BeatsSerializerResponse" />
+  </wsdl:message>
+  <wsdl:message name="fetchDiagnosticDetailsRequestMessage">
+    <wsdl:documentation>
+            Incoming message for "Fetch Diagnostic Details" API 
+        </wsdl:documentation>
+    <wsdl:part name="parameters" element="global-rr:FetchDiagnosticDetails" />
+  </wsdl:message>
+  <wsdl:message name="fetchDiagnosticDetailsResponseMessage">
+    <wsdl:documentation>
+            Outgoing message for "Fetch Diagnostic Details" API
+        </wsdl:documentation>
+    <wsdl:part name="parameters" element="global-rr:FetchDiagnosticDetailsResponse" />
+  </wsdl:message>
+  <wsdl:message name="repairStatusRequestMessage">
+    <wsdl:documentation>
+            Incoming message for "Repair Status" API 
+        </wsdl:documentation>
+    <wsdl:part name="parameters" element="iphone-rr:RepairStatus" />
+  </wsdl:message>
+  <wsdl:message name="repairStatusResponseMessage">
+    <wsdl:documentation>
+            Outgoing message for "Repair Status" API
+        </wsdl:documentation>
+    <wsdl:part name="parameters" element="iphone-rr:RepairStatusResponse" />
+  </wsdl:message>
+  <wsdl:message name="deleteRepairRequestMessage">
+    <wsdl:documentation>
+            Incoming message for "Delete Repair" API 
+        </wsdl:documentation>
+    <wsdl:part name="parameters" element="iphone-rr:DeleteRepair" />
+  </wsdl:message>
+  <wsdl:message name="deleteRepairResponseMessage">
+    <wsdl:documentation>
+            Outgoing message for "Delete Repair" API
+        </wsdl:documentation>
+    <wsdl:part name="parameters" element="iphone-rr:DeleteRepairResponse" />
+  </wsdl:message>
+  <wsdl:message name="reportedSymptomIssueRequestMessage">
+    <wsdl:documentation>
+            Incoming message for "Reported Symptom/Issue" API 
+        </wsdl:documentation>
+    <wsdl:part name="parameters" element="iphone-rr:ReportedSymptomIssue" />
+  </wsdl:message>
+  <wsdl:message name="reportedSymptomIssueResponseMessage">
+    <wsdl:documentation>
+            Outgoing message for "Reported Symptom/Issue" API
+        </wsdl:documentation>
+    <wsdl:part name="parameters" element="iphone-rr:ReportedSymptomIssueResponse" />
+  </wsdl:message>
+  <wsdl:message name="registerIPhonePartsForWHUBulkReturnRequestMessage">
+    <wsdl:documentation>
+            Incoming message for "Register IPhone Parts for WHU Bulk Return" API 
+        </wsdl:documentation>
+    <wsdl:part name="parameters" element="iphone-rr:RegisterIPhonePartsForWHUBulkReturn" />
+  </wsdl:message>
+  <wsdl:message name="registerIPhonePartsForWHUBulkReturnResponseMessage">
+    <wsdl:documentation>
+            Outgoing message for "Register IPhone Parts for WHU Bulk Return" API
+        </wsdl:documentation>
+    <wsdl:part name="parameters" element="iphone-rr:RegisterIPhonePartsForWHUBulkReturnResponse" />
+  </wsdl:message>
+  <wsdl:message name="diagnosticTestStatusRequestMessage">
+    <wsdl:documentation>
+            Incoming message for "Diagnostic Test Status Indicator" API 
+        </wsdl:documentation>
+    <wsdl:part name="parameters" element="global-rr:DiagnosticTestStatusRequest" />
+  </wsdl:message>
+  <wsdl:message name="diagnosticTestStatusResponseMessage">
+    <wsdl:documentation>
+            Outgoing message for "Diagnostic Test Status Indicator" API
+        </wsdl:documentation>
+    <wsdl:part name="parameters" element="global-rr:DiagnosticTestStatusResponse" />
+  </wsdl:message>
+  <wsdl:message name="iphoneDepotShipperLabelRequestMessage">
+    <wsdl:documentation>
+            Incoming message for "iPhone Depot Shipper Label" API 
+        </wsdl:documentation>
+    <wsdl:part name="parameters" element="iphone-rr:iPhoneDepotShipperLabelRequest" />
+  </wsdl:message>
+  <wsdl:message name="iphoneDepotShipperLabelResponseMessage">
+    <wsdl:documentation>
+            Outgoing message for "iPhone Depot Shipper Label" API
+        </wsdl:documentation>
+    <wsdl:part name="parameters" element="iphone-rr:iPhoneDepotShipperLabelResponse" />
+  </wsdl:message>
+  <wsdl:message name="customerFriendlyDiagnosticReportRequestMessage">
+    <wsdl:documentation>
+            Incoming message for "Customer-Friendly Diagnostic Report" API 
+        </wsdl:documentation>
+    <wsdl:part name="parameters" element="global-rr:FetchDiagnosticCustomerReportRequestURL" />
+  </wsdl:message>
+  <wsdl:message name="customerFriendlyDiagnosticReportResponseMessage">
+    <wsdl:documentation>
+            Outgoing message for "Customer-Friendly Diagnostic Report" API
+        </wsdl:documentation>
+    <wsdl:part name="parameters" element="global-rr:FetchDiagnosticCustomerReportResponseURL" />
+  </wsdl:message>
+  <wsdl:message name="fetchQuestionsRequestMessage">
+    <wsdl:documentation>
+            Incoming message for "FetchQuestions" API 
+        </wsdl:documentation>
+    <wsdl:part name="parameters" element="iphone-rr:FetchQuestions" />
+  </wsdl:message>
+  <wsdl:message name="fetchQuestionsResponseMessage">
+    <wsdl:documentation>
+            Outgoing message for "FetchQuestions" API
+        </wsdl:documentation>
+    <wsdl:part name="parameters" element="iphone-rr:FetchQuestionsResponse" />
+  </wsdl:message>
+  <wsdl:portType name="GsxWSAmIPhonePort">
+    <wsdl:documentation>
+            The service Port for iPhone Americas specific web service operations. 
+        </wsdl:documentation>
+    <wsdl:operation name="Authenticate">
+      <wsdl:documentation>
+                The Authenticate operation.
+            </wsdl:documentation>
+      <wsdl:input message="tns:authenticateRequestMessage" />
+      <wsdl:output message="tns:authenticateResponseMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="Logout">
+      <wsdl:documentation>
+                The Logout operation
+            </wsdl:documentation>
+      <wsdl:input message="tns:logoutRequestMessage" />
+      <wsdl:output message="tns:logoutResponseMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="IPhoneWarrantyStatus">
+      <wsdl:documentation>The IPhone Warranty Status operation.</wsdl:documentation>
+      <wsdl:input message="tns:iphoneWarrantyStatusRequestMessage" />
+      <wsdl:output message="tns:iphoneWarrantyStatusResponseMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="CompTIACodes">
+      <wsdl:documentation>The CompTIA code lookup operation.</wsdl:documentation>
+      <wsdl:input message="tns:comptiaCodeLookupRequestMessage" />
+      <wsdl:output message="tns:comptiaCodeLookupResponseMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="IPhoneKGBSerialNumberUpdate">
+      <wsdl:documentation>The IPhone KGB Serial Number Update operation.</wsdl:documentation>
+      <wsdl:input message="tns:iphoneKGBSerialNumberUpdateRequestMessage" />
+      <wsdl:output message="tns:iphoneKGBSerialNumberUpdateResponseMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="IPhonePartsLookup">
+      <wsdl:documentation>The IPhone Parts Lookup operation.</wsdl:documentation>
+      <wsdl:input message="tns:iphonePartsLookupRequestMessage" />
+      <wsdl:output message="tns:iphonePartsLookupResponseMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="IPhoneRepairDetails">
+      <wsdl:documentation>The IPhone Repair Details operation.</wsdl:documentation>
+      <wsdl:input message="tns:iphoneRepairDetailsRequestMessage" />
+      <wsdl:output message="tns:iphoneRepairDetailsResponseMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="IPhoneRepairDetailsLookup">
+      <wsdl:documentation>The IPhone Repair Details Lookup operation.</wsdl:documentation>
+      <wsdl:input message="tns:iphoneRepairDetailsLookupRequestMessage" />
+      <wsdl:output message="tns:iphoneRepairDetailsLookupResponseMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="IPhoneRepairLookup">
+      <wsdl:documentation>The IPhone Repair Lookup operation.</wsdl:documentation>
+      <wsdl:input message="tns:iphoneRepairLookupRequestMessage" />
+      <wsdl:output message="tns:iphoneRepairLookupResponseMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="IPhoneCreateAPPOrder">
+      <wsdl:documentation>The Create IPhone APP Order operation.</wsdl:documentation>
+      <wsdl:input message="tns:createIPhoneAPPOrderRequestMessage" />
+      <wsdl:output message="tns:createIPhoneAPPOrderResponseMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="IPhonePartsPendingReturn">
+      <wsdl:documentation>The IPhone Parts Pending Return operation.</wsdl:documentation>
+      <wsdl:input message="tns:iphonePartsPendingReturnRequestMessage" />
+      <wsdl:output message="tns:iphonePartsPendingReturnResponseMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="IPhoneCreateCarryInRepair">
+      <wsdl:documentation>The Create IPhone Carry In Repair operation.</wsdl:documentation>
+      <wsdl:input message="tns:createIPhoneCarryInRepairRequestMessage" />
+      <wsdl:output message="tns:createIPhoneCarryInRepairResponseMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="IPhoneMarkRepairComplete">
+      <wsdl:documentation>IPhone Mark Repair Complete operation.</wsdl:documentation>
+      <wsdl:input message="tns:iphoneMarkRepairCompleteRequestMessage" />
+      <wsdl:output message="tns:iphoneMarkRepairCompleteResponseMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="CreateIPhoneStockingOrder">
+      <wsdl:documentation>Create IPhone Stocking Order operation.</wsdl:documentation>
+      <wsdl:input message="tns:createIPhoneStockingOrderRequestMessage" />
+      <wsdl:output message="tns:createIPhoneStockingOrderResponseMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="CreateIPhoneSRFOrder">
+      <wsdl:documentation>Create IPhone SRF Order operation.</wsdl:documentation>
+      <wsdl:input message="tns:createIPhoneSRFOrderRequestMessage" />
+      <wsdl:output message="tns:createIPhoneSRFOrderResponseMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="ViewPendingIPhoneAPPOrders">
+      <wsdl:documentation>View Pending IPhone APP Orders operation.</wsdl:documentation>
+      <wsdl:input message="tns:viewPendingIPhoneAPPOrdersRequestMessage" />
+      <wsdl:output message="tns:viewPendingIPhoneAPPOrdersResponseMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="IPhonePartsReturnUpdate">
+      <wsdl:documentation>IPhone Parts Return Update operation.</wsdl:documentation>
+      <wsdl:input message="tns:iphonePartsReturnUpdateRequestMessage" />
+      <wsdl:output message="tns:iphonePartsReturnUpdateResponseMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="RegisterIPhonePartsForBulkReturn">
+      <wsdl:documentation>Register IPhone Parts for Bulk Return operation.</wsdl:documentation>
+      <wsdl:input message="tns:registerIPhonePartsForBulkReturnRequestMessage" />
+      <wsdl:output message="tns:registerIPhonePartsForBulkReturnResponseMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="IPhoneReturnLabel">
+      <wsdl:documentation>Download IPhone Return Label operation.</wsdl:documentation>
+      <wsdl:input message="tns:downloadIPhoneReturnLabelRequestMessage" />
+      <wsdl:output message="tns:downloadIPhoneReturnLabelResponseMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="CreateIPhoneWholeUnitExchange">
+      <wsdl:documentation>The Create IPhone Whole Unit Exchange operation.</wsdl:documentation>
+      <wsdl:input message="tns:createIPhoneWholeUnitExchangeRequestMessage" />
+      <wsdl:output message="tns:createIPhoneWholeUnitExchangeResponseMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="ViewIPhoneBulkReturnProforma">
+      <wsdl:documentation>The Create IPhone Whole Unit Exchange operation.</wsdl:documentation>
+      <wsdl:input message="tns:viewIPhoneBulkReturnProformaRequestMessage" />
+      <wsdl:output message="tns:viewIPhoneBulkReturnProformaResponseMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="CreateIPhoneNRERepair">
+      <wsdl:documentation>The Create iPhone NRE Repair operation.</wsdl:documentation>
+      <wsdl:input message="tns:createIPhoneNRERepairRequestMessage" />
+      <wsdl:output message="tns:createIPhoneNRERepairResponseMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="IPhoneInvoiceIDLookup">
+      <wsdl:documentation>The iPhone Invoice ID Lookup operation.</wsdl:documentation>
+      <wsdl:input message="tns:iphoneInvoiceIDLookupRequestMessage" />
+      <wsdl:output message="tns:iphoneInvoiceIDLookupResponseMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="IPhoneInvoiceDetailsLookup">
+      <wsdl:documentation>The iPhone Invoice Details Lookup operation.</wsdl:documentation>
+      <wsdl:input message="tns:iphoneInvoiceDetailsLookupRequestMessage" />
+      <wsdl:output message="tns:iphoneInvoiceDetailsLookupResponseMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="CreateGeneralEscalation">
+      <wsdl:documentation>The Create General Escalation operation.</wsdl:documentation>
+      <wsdl:input message="tns:createGenEscRequestMessage" />
+      <wsdl:output message="tns:createGenEscResponseMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="UpdateGeneralEscalation">
+      <wsdl:documentation>The Update General Escalation operation.</wsdl:documentation>
+      <wsdl:input message="tns:updateGeneralEscRequestMessage" />
+      <wsdl:output message="tns:updateGeneralEscResponseMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="UpdateMailInRequoteEscalation">
+      <wsdl:documentation>The Update Mail-in Requote Escalation operation.</wsdl:documentation>
+      <wsdl:input message="tns:updateMailInRequoteEscRequestMessage" />
+      <wsdl:output message="tns:updateMailInRequoteEscResponseMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="UpdateWholeUnitRequoteEscalation">
+      <wsdl:documentation>The Update Whole Unit Requote Escalation operation.</wsdl:documentation>
+      <wsdl:input message="tns:updateWholeUnitRequoteEscRequestMessage" />
+      <wsdl:output message="tns:updateWholeUnitRequoteEscResponseMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="RequoteEscalationSummaryLookup">
+      <wsdl:documentation>The Requote Escalation Summary Lookup operation.</wsdl:documentation>
+      <wsdl:input message="tns:requoteEscSummaryLookupRequestMessage" />
+      <wsdl:output message="tns:requoteEscSummaryLookupResponseMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="RequoteEscalationDetailsLookup">
+      <wsdl:documentation>The Requote Escalation Details Lookup operation.</wsdl:documentation>
+      <wsdl:input message="tns:requoteEscDetailsLookupRequestMessage" />
+      <wsdl:output message="tns:requoteEscDetailsLookupResponseMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="GeneralEscalationSummaryLookup">
+      <wsdl:documentation>The General Escalation Summary Lookup operation.</wsdl:documentation>
+      <wsdl:input message="tns:generalEscSummaryLookupRequestMessage" />
+      <wsdl:output message="tns:generalEscSummaryLookupResponseMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="GeneralEscalationDetailsLookup">
+      <wsdl:documentation>The General Escalation Details Lookup operation.</wsdl:documentation>
+      <wsdl:input message="tns:generalEscDetailsLookupRequestMessage" />
+      <wsdl:output message="tns:generalEscDetailsLookupResponseMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="FetchCommunicationArticles">
+      <wsdl:documentation>The Fetch Communication Articles operation.</wsdl:documentation>
+      <wsdl:input message="tns:fetchCommunicationArticlesRequestMessage" />
+      <wsdl:output message="tns:fetchCommunicationArticlesResponseMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="FetchCommunicationContent">
+      <wsdl:documentation>The Fetch Communication Content operation.</wsdl:documentation>
+      <wsdl:input message="tns:fetchCommunicationContentRequestMessage" />
+      <wsdl:output message="tns:fetchCommunicationContentResponseMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="AcknowledgeCommunication">
+      <wsdl:documentation>The Acknowledge Communication operation.</wsdl:documentation>
+      <wsdl:input message="tns:ackCommunicationRequestMessage" />
+      <wsdl:output message="tns:ackCommunicationResponseMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="FetchFunctionalAreas">
+      <wsdl:documentation>The Fetch Functional Areas operation.</wsdl:documentation>
+      <wsdl:input message="tns:fetchFunctionalAreasRequestMessage" />
+      <wsdl:output message="tns:fetchFunctionalAreasResponseMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="FetchIssueList">
+      <wsdl:documentation>The Fetch Issue List operation.</wsdl:documentation>
+      <wsdl:input message="tns:fetchIssueListRequestMessage" />
+      <wsdl:output message="tns:fetchIssueListResponseMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="FetchQuickCheck">
+      <wsdl:documentation>The Fetch Quick Check operation.</wsdl:documentation>
+      <wsdl:input message="tns:fetchQuickCheckRequestMessage" />
+      <wsdl:output message="tns:fetchQuickCheckResponseMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="FetchTSNode">
+      <wsdl:documentation>The Fetch TS Node operation.</wsdl:documentation>
+      <wsdl:input message="tns:fetchTSNodeRequestMessage" />
+      <wsdl:output message="tns:fetchTSNodeResponseMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="FetchDiskImageArticleID">
+      <wsdl:documentation>The Fetch Disk Image Article ID operation.</wsdl:documentation>
+      <wsdl:input message="tns:fetchDiskImageArticleIDRequestMessage" />
+      <wsdl:output message="tns:fetchDiskImageArticleIDResponseMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="FetchDiskImageArticleContent">
+      <wsdl:documentation>The Fetch Disk Image Article Content operation.</wsdl:documentation>
+      <wsdl:input message="tns:fetchDiskImageArticleContentRequestMessage" />
+      <wsdl:output message="tns:fetchDiskImageArticleContentResponseMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="FetchRepairProcessArticleID">
+      <wsdl:documentation>The Fetch Repair Process Article ID operation.</wsdl:documentation>
+      <wsdl:input message="tns:fetchRepairProcessArticleIDRequestMessage" />
+      <wsdl:output message="tns:fetchRepairProcessArticleIDResponseMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="FetchRepairProcessArticleContent">
+      <wsdl:documentation>The Fetch Repair Process Article Content operation.</wsdl:documentation>
+      <wsdl:input message="tns:fetchRepairProcessArticleContentRequestMessage" />
+      <wsdl:output message="tns:fetchRepairProcessArticleContentResponseMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="FetchOperationalProcedureArticleID">
+      <wsdl:documentation>The Fetch Operational Procedure Article ID operation.</wsdl:documentation>
+      <wsdl:input message="tns:fetchOperationalProcedureArticleIDRequestMessage" />
+      <wsdl:output message="tns:fetchOperationalProcedureArticleIDResponseMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="FetchOperationalProcedureArticleContent">
+      <wsdl:documentation>The Fetch Operational Procedure Article Content operation.</wsdl:documentation>
+      <wsdl:input message="tns:fetchOperationalProcedureArticleContentRequestMessage" />
+      <wsdl:output message="tns:fetchOperationalProcedureArticleContentResponseMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="FetchTechnicalProcedureArticleID">
+      <wsdl:documentation>The Fetch Technical Procedure Article ID operation.</wsdl:documentation>
+      <wsdl:input message="tns:fetchTechnicalProcedureArticleIDRequestMessage" />
+      <wsdl:output message="tns:fetchTechnicalProcedureArticleIDResponseMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="FetchTechnicalProcedureArticleContent">
+      <wsdl:documentation>The Fetch Technical Procedure Article Content operation.</wsdl:documentation>
+      <wsdl:input message="tns:fetchTechnicalProcedureArticleContentRequestMessage" />
+      <wsdl:output message="tns:fetchTechnicalProcedureArticleContentResponseMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="FetchSelfHelpArticleID">
+      <wsdl:documentation>The Fetch Self Help Article ID operation.</wsdl:documentation>
+      <wsdl:input message="tns:fetchSelfHelpArticleIDRequestMessage" />
+      <wsdl:output message="tns:fetchSelfHelpArticleIDResponseMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="FetchSelfHelpArticleContent">
+      <wsdl:documentation>The Fetch Self Help Article Content operation.</wsdl:documentation>
+      <wsdl:input message="tns:fetchSelfHelpArticleContentRequestMessage" />
+      <wsdl:output message="tns:fetchSelfHelpArticleContentResponseMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="FetchServiceVideoArticleID">
+      <wsdl:documentation>The Fetch Service Video Article ID operation.</wsdl:documentation>
+      <wsdl:input message="tns:fetchServiceVideoArticleIDRequestMessage" />
+      <wsdl:output message="tns:fetchServiceVideoArticleIDResponseMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="FetchServiceVideoArticleContent">
+      <wsdl:documentation>The Fetch Service Video Article Content operation.</wsdl:documentation>
+      <wsdl:input message="tns:fetchServiceVideoArticleContentRequestMessage" />
+      <wsdl:output message="tns:fetchServiceVideoArticleContentResponseMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="FetchProductModel">
+      <wsdl:documentation>The Fetch Product Model operation.</wsdl:documentation>
+      <wsdl:input message="tns:fetchProductModelRequestMessage" />
+      <wsdl:output message="tns:fetchProductModelResponseMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="FetchImage">
+      <wsdl:documentation>The Fetch Image operation.</wsdl:documentation>
+      <wsdl:input message="tns:fetchImageRequestMessage" />
+      <wsdl:output message="tns:fetchImageResponseMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="CreateIPhoneRepairOrReplace">
+      <wsdl:documentation>The Create iPhone Repair Or Replace operation.</wsdl:documentation>
+      <wsdl:input message="tns:createIPhoneRORRequestMessage" />
+      <wsdl:output message="tns:createIPhoneRORResponseMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="IPhoneUpdateSerialNumber">
+      <wsdl:documentation>The iPhone Update Serial Number operation.</wsdl:documentation>
+      <wsdl:input message="tns:iphoneUpdateSerialNumberRequestMessage" />
+      <wsdl:output message="tns:iphoneUpdateSerialNumberResponseMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="CreateIPhoneCarryInReturnBeforeReplaceRepair">
+      <wsdl:documentation>The Create IPhone Carry In Return Before Replace operation.</wsdl:documentation>
+      <wsdl:input message="tns:createIPhoneCarryInReturnBeforeReplaceRequestMessage" />
+      <wsdl:output message="tns:createIPhoneCarryInReturnBeforeReplaceResponseMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="IPhoneReturnReport">
+      <wsdl:documentation>The IPhone Return Report operation.</wsdl:documentation>
+      <wsdl:input message="tns:iPhoneReturnReportRequestMessage" />
+      <wsdl:output message="tns:iPhoneReturnReportResponseMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="InitiateIOSDiagnostic">
+      <wsdl:documentation>The Initiate iOSD Diagnostic operation.</wsdl:documentation>
+      <wsdl:input message="tns:initiateIOSDiagnosticRequestMessage" />
+      <wsdl:output message="tns:initiateIOSDiagnosticResponseMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="FetchDiagnosticEventNumbers">
+      <wsdl:documentation>The Fetch Diagnostic Event Numbers operation.</wsdl:documentation>
+      <wsdl:input message="tns:fetchDiagnosticEventNumbersRequestMessage" />
+      <wsdl:output message="tns:fetchDiagnosticEventNumbersResponseMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="FetchIOSActivationDetails">
+      <wsdl:documentation>The iOS Activation Details  Operation.</wsdl:documentation>
+      <wsdl:input message="tns:iosActivationDetailsRequestMessage" />
+      <wsdl:output message="tns:iosActivationDetailsResponseMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="IPhoneConsignmentIncreaseOrdersLookUp">
+      <wsdl:documentation>Consignment Increase Orders LookUp</wsdl:documentation>
+      <wsdl:input message="tns:iphoneConsignmentIncreaseOrderLookUpRequestMessage" />
+      <wsdl:output message="tns:iphoneConsignmentIncreaseOrderLookUpResponseMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="IPhoneComponentCheck">
+      <wsdl:documentation>This IPhone Component Check operation.</wsdl:documentation>
+      <wsdl:input message="tns:iPhoneComponentCheckRequestMessage" />
+      <wsdl:output message="tns:iPhoneComponentCheckResponseMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="IPhoneConsignmentDecreaseOrdersLookUp">
+      <wsdl:documentation>Consignment Decrease Orders LookUp</wsdl:documentation>
+      <wsdl:input message="tns:iphoneConsignmentDecreaseOrderLookUpRequestMessage" />
+      <wsdl:output message="tns:iphoneConsignmentDecreaseOrderLookUpResponseMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="SubmitConsignmentIphoneDecreaseOrders">
+      <wsdl:documentation>Submit Consignment Decrease Orders Operation</wsdl:documentation>
+      <wsdl:input message="tns:submitConsignmentIphoneDecreaseOrderRequestMessage" />
+      <wsdl:output message="tns:submitConsignmentIphoneDecreaseOrderResponseMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="AcknowledgeIphoneConsignmentIncreaseOrders">
+      <wsdl:documentation>Consignment Increase Order Operation</wsdl:documentation>
+      <wsdl:input message="tns:acknowledgeIphoneConsignmentIncreaseOrdersRequestMessage" />
+      <wsdl:output message="tns:acknowledgeIphoneConsignmentIncreaseOrdersResponseMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="ValidateIPhoneFromConsignedStock">
+      <wsdl:documentation>Validate IPhone From Consigned Stock</wsdl:documentation>
+      <wsdl:input message="tns:validateIPhoneFromConsignedStockRequestMessage" />
+      <wsdl:output message="tns:validateIPhoneFromConsignedStockResponseMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="ViewIPhoneConsignmentProforma">
+      <wsdl:documentation>View IPhone Consignment Proforma</wsdl:documentation>
+      <wsdl:input message="tns:viewIPhoneConsignmentProformaRequestMessage" />
+      <wsdl:output message="tns:viewIPhoneConsignmentProformaResponseMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="StockingOrderDetailsLookup">
+      <wsdl:documentation>The Stocking Order Details Lookup operation </wsdl:documentation>
+      <wsdl:input message="tns:stockingOrderDetailsLookupRequestMessage" />
+      <wsdl:output message="tns:stockingOrderDetailsLookupResponseMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="LoanerIphoneReturn">
+      <wsdl:documentation>
+                The Loaner Return IPhone operation.
+            </wsdl:documentation>
+      <wsdl:input message="tns:loanerIphoneReturnRequestMessage" />
+      <wsdl:output message="tns:loanerIphoneReturnResponseMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="StockingOrderLookup">
+      <wsdl:documentation>The Stocking Order Lookup operation.</wsdl:documentation>
+      <wsdl:input message="tns:stockingOrderLookupRequestMessage" />
+      <wsdl:output message="tns:stockingOrderLookupResponseMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="AppleReviewPreCheck">
+      <wsdl:documentation>AppleReivew PreCheck Review.</wsdl:documentation>
+      <wsdl:input message="tns:appleReviewPreCheckRequestMessage" />
+      <wsdl:output message="tns:appleReviewPreCheckResponseMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="FetchDiagnosticConsoleURL">
+      <wsdl:documentation>The Fetch Diagnostic Console URL operation.</wsdl:documentation>
+      <wsdl:input message="tns:fetchDiagnosticConsoleURLRequestMessage" />
+      <wsdl:output message="tns:fetchDiagnosticConsoleURLResponseMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="UpdateIphoneRepairOrReplace">
+      <wsdl:documentation>For Update ROR Operation.</wsdl:documentation>
+      <wsdl:input message="tns:updateIphoneRepairOrReplaceRequestMessage" />
+      <wsdl:output message="tns:updateIphoneRepairOrReplaceResponseMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="RunDiagnosticTest">
+      <wsdl:documentation>The Run Diagnostic Test operation.</wsdl:documentation>
+      <wsdl:input message="tns:runDiagnosticTestRequestMessage" />
+      <wsdl:output message="tns:runDiagnosticTestResponseMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="FetchDiagnosticSuites">
+      <wsdl:documentation>The Fetch Diagnostic Suites operation.</wsdl:documentation>
+      <wsdl:input message="tns:fetchDiagnosticSuitesRequestMessage" />
+      <wsdl:output message="tns:fetchDiagnosticSuitesResponseMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="BeatsProductDetails">
+      <wsdl:documentation>To fetch all Beats Product Details</wsdl:documentation>
+      <wsdl:input message="tns:beatsProductDetailsRequestMessage" />
+      <wsdl:output message="tns:beatsProductDetailsResponseMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="BeatsSerializer">
+      <wsdl:documentation>The Beats Serializer API</wsdl:documentation>
+      <wsdl:input message="tns:beatsSerializerRequestMessage" />
+      <wsdl:output message="tns:beatsSerializerResponseMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="FetchDiagnosticDetails">
+      <wsdl:documentation>The Fetch Diagnostic Detail operation.</wsdl:documentation>
+      <wsdl:input message="tns:fetchDiagnosticDetailsRequestMessage" />
+      <wsdl:output message="tns:fetchDiagnosticDetailsResponseMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="RepairStatus">
+      <wsdl:documentation>The Repair Status operation.</wsdl:documentation>
+      <wsdl:input message="tns:repairStatusRequestMessage" />
+      <wsdl:output message="tns:repairStatusResponseMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="DeleteRepair">
+      <wsdl:documentation>The Delete Repair operation.</wsdl:documentation>
+      <wsdl:input message="tns:deleteRepairRequestMessage" />
+      <wsdl:output message="tns:deleteRepairResponseMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="ReportedSymptomIssue">
+      <wsdl:documentation>Reported Symptom/Issue.</wsdl:documentation>
+      <wsdl:input message="tns:reportedSymptomIssueRequestMessage" />
+      <wsdl:output message="tns:reportedSymptomIssueResponseMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="RegisterIPhonePartsForWHUBulkReturn">
+      <wsdl:documentation>Register IPhone Parts for WHUBulk Return operation.</wsdl:documentation>
+      <wsdl:input message="tns:registerIPhonePartsForWHUBulkReturnRequestMessage" />
+      <wsdl:output message="tns:registerIPhonePartsForWHUBulkReturnResponseMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="DiagnosticTestStatus">
+      <wsdl:documentation>Diagnostic Test Status</wsdl:documentation>
+      <wsdl:input message="tns:diagnosticTestStatusRequestMessage" />
+      <wsdl:output message="tns:diagnosticTestStatusResponseMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="IPhoneDepotShipperLabel">
+      <wsdl:documentation>The iPhone Depot Shipper Label operation.</wsdl:documentation>
+      <wsdl:input message="tns:iphoneDepotShipperLabelRequestMessage" />
+      <wsdl:output message="tns:iphoneDepotShipperLabelResponseMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="FetchDiagnosticCustomerReportURL">
+      <wsdl:documentation>Diagnostic Customer Report URL</wsdl:documentation>
+      <wsdl:input message="tns:customerFriendlyDiagnosticReportRequestMessage" />
+      <wsdl:output message="tns:customerFriendlyDiagnosticReportResponseMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="FetchQuestions">
+      <wsdl:documentation>FetchQuestions.</wsdl:documentation>
+      <wsdl:input message="tns:fetchQuestionsRequestMessage" />
+      <wsdl:output message="tns:fetchQuestionsResponseMessage" />
+    </wsdl:operation>
+  </wsdl:portType>
+  <wsdl:binding name="GsxWSAmIPhoneBinding" type="tns:GsxWSAmIPhonePort">
+    <wsdl:documentation>
+            This defines the binding between SOAP actions to the corresponding PORT type declarations. The binding
+            style is "Document-Wrapped".
+        </wsdl:documentation>
+    <soap:binding transport="http://schemas.xmlsoap.org/soap/http" />
+    <wsdl:operation name="Authenticate">
+      <wsdl:documentation>
+                This binds the soap action "urn:authenticate" to port type "Authenticate".
+            </wsdl:documentation>
+      <soap:operation soapAction="urn:authenticate" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="Logout">
+      <wsdl:documentation>
+                This binds the soap action "urn:logout" to the port type "Logout"
+            </wsdl:documentation>
+      <soap:operation soapAction="urn:logout" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="IPhoneWarrantyStatus">
+      <wsdl:documentation>
+                This binds the soap action "urn:iphoneWarrantyStatus" to port type "IPhoneWarrantyStatus".
+            </wsdl:documentation>
+      <soap:operation soapAction="urn:iphoneWarrantyStatus" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="CompTIACodes">
+      <wsdl:documentation>
+                This binds the soap action "urn:lookupCompTIACodes" to port type "CompTIACodes".
+            </wsdl:documentation>
+      <soap:operation soapAction="urn:lookupCompTIACodes" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="IPhoneKGBSerialNumberUpdate">
+      <wsdl:documentation>
+                This binds the soap action "urn:updateIPhoneKGBSerialNumber" to port type "IPhoneKGBSerialNumberUpdate".
+            </wsdl:documentation>
+      <soap:operation soapAction="urn:updateIPhoneKGBSerialNumber" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="IPhonePartsLookup">
+      <wsdl:documentation>
+                This binds the soap action "urn:iphonePartsLookup" to port type "IPhonePartsLookup".
+            </wsdl:documentation>
+      <soap:operation soapAction="urn:iphonePartsLookup" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="IPhoneRepairDetails">
+      <wsdl:documentation>
+                This binds the soap action "urn:iphoneRepairDetails" to port type "IPhoneRepairDetails".
+            </wsdl:documentation>
+      <soap:operation soapAction="urn:iphoneRepairDetails" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="IPhoneRepairDetailsLookup">
+      <wsdl:documentation>
+                This binds the soap action "urn:iphoneRepairDetailsLookup" to port type "IPhoneRepairDetailsLookup".
+            </wsdl:documentation>
+      <soap:operation soapAction="urn:iphoneRepairDetailsLookup" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="IPhoneRepairLookup">
+      <wsdl:documentation>
+                This binds the soap action "urn:iphoneRepairLookup" to port type "IPhoneRepairLookup".
+            </wsdl:documentation>
+      <soap:operation soapAction="urn:iphoneRepairLookup" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="IPhoneCreateAPPOrder">
+      <wsdl:documentation>
+                This binds the soap action "urn:createIPhoneAPPOrder" to port type "IPhoneCreateAPPOrder".
+            </wsdl:documentation>
+      <soap:operation soapAction="urn:createIPhoneAPPOrder" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="IPhonePartsPendingReturn">
+      <wsdl:documentation>
+                This binds the soap action "urn:iphonePartsPendingReturn" to port type "IPhonePartsPendingReturn".
+            </wsdl:documentation>
+      <soap:operation soapAction="urn:iphonePartsPendingReturn" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="IPhoneCreateCarryInRepair">
+      <wsdl:documentation>
+                This binds the soap action "urn:createIPhoneCarryInRepair" to port type "IPhoneCreateCarryInRepair".
+            </wsdl:documentation>
+      <soap:operation soapAction="urn:createIPhoneCarryInRepair" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="IPhoneMarkRepairComplete">
+      <wsdl:documentation>
+                This binds the soap action "urn:iphoneMarkRepairComplete" to port type "IPhoneMarkRepairComplete".
+            </wsdl:documentation>
+      <soap:operation soapAction="urn:iphoneMarkRepairComplete" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="CreateIPhoneStockingOrder">
+      <wsdl:documentation>
+                This binds the soap action "urn:createIPhoneStockingOrder" to port type "CreateIPhoneStockingOrder".
+            </wsdl:documentation>
+      <soap:operation soapAction="urn:createIPhoneStockingOrder" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="CreateIPhoneSRFOrder">
+      <wsdl:documentation>
+                This binds the soap action "urn:createIPhoneSRFOrder" to port type "CreateIPhoneSRFOrder".
+            </wsdl:documentation>
+      <soap:operation soapAction="urn:createIPhoneSRFOrder" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="ViewPendingIPhoneAPPOrders">
+      <wsdl:documentation>
+                This binds the soap action "urn:viewPendingIPhoneAPPOrders" to port type "ViewPendingIPhoneAPPOrders".
+            </wsdl:documentation>
+      <soap:operation soapAction="urn:viewPendingIPhoneAPPOrders" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="IPhonePartsReturnUpdate">
+      <wsdl:documentation>
+                This binds the soap action "urn:iphonePartsReturnUpdate" to port type "IPhonePartsReturnUpdate".
+            </wsdl:documentation>
+      <soap:operation soapAction="urn:iphonePartsReturnUpdate" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="RegisterIPhonePartsForBulkReturn">
+      <wsdl:documentation>
+                This binds the soap action "urn:registerIPhonePartsForBulkReturn" to port type "RegisterIPhonePartsForBulkReturn".
+            </wsdl:documentation>
+      <soap:operation soapAction="urn:registerIPhonePartsForBulkReturn" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="IPhoneReturnLabel">
+      <wsdl:documentation>
+                This binds the soap action "urn:iphoneReturnLabel" to port type "IPhoneReturnLabel".
+            </wsdl:documentation>
+      <soap:operation soapAction="urn:iphoneReturnLabel" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="CreateIPhoneWholeUnitExchange">
+      <wsdl:documentation>
+                This binds the soap action "urn:createIPhoneWholeUnitExchange" to port type "CreateIPhoneWholeUnitExchange".
+            </wsdl:documentation>
+      <soap:operation soapAction="urn:createIPhoneWholeUnitExchange" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="ViewIPhoneBulkReturnProforma">
+      <wsdl:documentation>
+                This binds the soap action "urn:viewIPhoneBulkReturnProforma" to port type "ViewIPhoneBulkReturnProforma".
+            </wsdl:documentation>
+      <soap:operation soapAction="urn:viewIPhoneBulkReturnProforma" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="CreateIPhoneNRERepair">
+      <wsdl:documentation>
+                This binds the soap action "urn:createIPhoneNRERepair" to port type "createIPhoneNRERepair".
+            </wsdl:documentation>
+      <soap:operation soapAction="urn:createIPhoneNRERepair" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="IPhoneInvoiceIDLookup">
+      <wsdl:documentation>
+                This binds the soap action "urn:iphoneInvoiceIDLookup" to port type "iphoneInvoiceIDLookup".
+            </wsdl:documentation>
+      <soap:operation soapAction="urn:iphoneInvoiceIDLookup" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="IPhoneInvoiceDetailsLookup">
+      <wsdl:documentation>
+                This binds the soap action "urn:iphoneInvoiceDetailsLookup" to port type "iphoneInvoiceDetailsLookup".
+            </wsdl:documentation>
+      <soap:operation soapAction="urn:iphoneInvoiceDetailsLookup" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="CreateGeneralEscalation">
+      <wsdl:documentation>
+                This binds the soap action "urn:createGeneralEscalation" to port type "createGeneralEscalation".
+            </wsdl:documentation>
+      <soap:operation soapAction="urn:createGeneralEscalation" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="UpdateGeneralEscalation">
+      <wsdl:documentation>
+                This binds the soap action "urn:updateGeneralEscalation" to port type "updateGeneralEscalation".
+            </wsdl:documentation>
+      <soap:operation soapAction="urn:updateGeneralEscalation" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="UpdateMailInRequoteEscalation">
+      <wsdl:documentation>
+                This binds the soap action "urn:updateMailInRequoteEscalation" to port type "updateMailInRequoteEscalation".
+            </wsdl:documentation>
+      <soap:operation soapAction="urn:updateMailInRequoteEscalation" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="UpdateWholeUnitRequoteEscalation">
+      <wsdl:documentation>
+                This binds the soap action "urn:updateWholeUnitRequoteEscalation" to port type "updateWholeUnitRequoteEscalation".
+            </wsdl:documentation>
+      <soap:operation soapAction="urn:updateWholeUnitRequoteEscalation" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="RequoteEscalationSummaryLookup">
+      <wsdl:documentation>
+                This binds the soap action "urn:requoteEscalationSummaryLookup" to port type "requoteEscalationSummaryLookup".
+            </wsdl:documentation>
+      <soap:operation soapAction="urn:requoteEscalationSummaryLookup" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="RequoteEscalationDetailsLookup">
+      <wsdl:documentation>
+                This binds the soap action "urn:requoteEscalationDetailsLookup" to port type "requoteEscalationDetailsLookup".
+            </wsdl:documentation>
+      <soap:operation soapAction="urn:requoteEscalationDetailsLookup" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GeneralEscalationSummaryLookup">
+      <wsdl:documentation>
+                This binds the soap action "urn:generalEscalationSummaryLookup" to port type "generalEscalationSummaryLookup".
+            </wsdl:documentation>
+      <soap:operation soapAction="urn:generalEscalationSummaryLookup" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GeneralEscalationDetailsLookup">
+      <wsdl:documentation>
+                This binds the soap action "urn:generalEscalationDetailsLookup" to port type "generalEscalationDetailsLookup".
+            </wsdl:documentation>
+      <soap:operation soapAction="urn:generalEscalationDetailsLookup" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="FetchCommunicationArticles">
+      <wsdl:documentation>
+                This binds the soap action "urn:fetchCommunicationArticles" to port type "fetchCommunicationArticles".
+            </wsdl:documentation>
+      <soap:operation soapAction="urn:fetchCommunicationArticles" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="FetchCommunicationContent">
+      <wsdl:documentation>
+                This binds the soap action "urn:fetchCommunicationContent" to port type "fetchCommunicationContent".
+            </wsdl:documentation>
+      <soap:operation soapAction="urn:fetchCommunicationContent" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="AcknowledgeCommunication">
+      <wsdl:documentation>
+                This binds the soap action "urn:acknowledgeCommunication" to port type "acknowledgeCommunication".
+            </wsdl:documentation>
+      <soap:operation soapAction="urn:acknowledgeCommunication" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="FetchFunctionalAreas">
+      <wsdl:documentation>
+                This binds the soap action "urn:fetchFunctionalAreas" to port type "fetchFunctionalAreas".
+            </wsdl:documentation>
+      <soap:operation soapAction="urn:fetchFunctionalAreas" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="FetchIssueList">
+      <wsdl:documentation>
+                This binds the soap action "urn:fetchIssueList" to port type "fetchIssueList".
+            </wsdl:documentation>
+      <soap:operation soapAction="urn:fetchIssueList" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="FetchQuickCheck">
+      <wsdl:documentation>
+                This binds the soap action "urn:fetchQuickCheck" to port type "fetchQuickCheck".
+            </wsdl:documentation>
+      <soap:operation soapAction="urn:fetchQuickCheck" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="FetchTSNode">
+      <wsdl:documentation>
+                This binds the soap action "urn:fetchTSNode" to port type "fetchTSNode".
+            </wsdl:documentation>
+      <soap:operation soapAction="urn:fetchTSNode" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="FetchDiskImageArticleID">
+      <wsdl:documentation>
+                This binds the soap action "urn:fetchDiskImageArticleID" to port type "fetchDiskImageArticleID".
+            </wsdl:documentation>
+      <soap:operation soapAction="urn:fetchDiskImageArticleID" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="FetchDiskImageArticleContent">
+      <wsdl:documentation>
+                This binds the soap action "urn:fetchDiskImageArticleContent" to port type "fetchDiskImageArticleContent".
+            </wsdl:documentation>
+      <soap:operation soapAction="urn:fetchDiskImageArticleContent" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="FetchRepairProcessArticleID">
+      <wsdl:documentation>
+                This binds the soap action "urn:fetchRepairProcessArticleID" to port type "fetchRepairProcessArticleID".
+            </wsdl:documentation>
+      <soap:operation soapAction="urn:fetchRepairProcessArticleID" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="FetchRepairProcessArticleContent">
+      <wsdl:documentation>
+                This binds the soap action "urn:fetchRepairProcessArticleContent" to port type "fetchRepairProcessArticleContent".
+            </wsdl:documentation>
+      <soap:operation soapAction="urn:fetchRepairProcessArticleContent" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="FetchOperationalProcedureArticleID">
+      <wsdl:documentation>
+                This binds the soap action "urn:fetchOperationalProcedureArticleID" to port type "fetchOperationalProcedureArticleID".
+            </wsdl:documentation>
+      <soap:operation soapAction="urn:fetchOperationalProcedureArticleID" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="FetchOperationalProcedureArticleContent">
+      <wsdl:documentation>
+                This binds the soap action "urn:fetchOperationalProcedureArticleContent" to port type "fetchOperationalProcedureArticleContent".
+            </wsdl:documentation>
+      <soap:operation soapAction="urn:fetchOperationalProcedureArticleContent" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="FetchTechnicalProcedureArticleID">
+      <wsdl:documentation>
+                This binds the soap action "urn:fetchTechnicalProcedureArticleID" to port type "fetchTechnicalProcedureArticleID".
+            </wsdl:documentation>
+      <soap:operation soapAction="urn:fetchTechnicalProcedureArticleID" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="FetchTechnicalProcedureArticleContent">
+      <wsdl:documentation>
+                This binds the soap action "urn:fetchTechnicalProcedureArticleContent" to port type "fetchTechnicalProcedureArticleContent".
+            </wsdl:documentation>
+      <soap:operation soapAction="urn:fetchTechnicalProcedureArticleContent" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="FetchSelfHelpArticleID">
+      <wsdl:documentation>
+                This binds the soap action "urn:fetchSelfHelpArticleID" to port type "fetchSelfHelpArticleID".
+            </wsdl:documentation>
+      <soap:operation soapAction="urn:fetchSelfHelpArticleID" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="FetchSelfHelpArticleContent">
+      <wsdl:documentation>
+                This binds the soap action "urn:fetchSelfHelpArticleContent" to port type "fetchSelfHelpArticleContent".
+            </wsdl:documentation>
+      <soap:operation soapAction="urn:fetchSelfHelpArticleContent" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="FetchServiceVideoArticleID">
+      <wsdl:documentation>
+                This binds the soap action "urn:fetchServiceVideoArticleID" to port type "fetchServiceVideoArticleID".
+            </wsdl:documentation>
+      <soap:operation soapAction="urn:fetchServiceVideoArticleID" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="FetchServiceVideoArticleContent">
+      <wsdl:documentation>
+                This binds the soap action "urn:fetchServiceVideoArticleContent" to port type "fetchServiceVideoArticleContent".
+            </wsdl:documentation>
+      <soap:operation soapAction="urn:fetchServiceVideoArticleContent" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="FetchProductModel">
+      <wsdl:documentation>
+                This binds the soap action "urn:fetchProductModel" to port type "fetchProductModel".
+            </wsdl:documentation>
+      <soap:operation soapAction="urn:fetchProductModel" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="FetchImage">
+      <wsdl:documentation>
+                This binds the soap action "urn:fetchImage" to port type "fetchImage".
+            </wsdl:documentation>
+      <soap:operation soapAction="urn:fetchImage" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="CreateIPhoneRepairOrReplace">
+      <wsdl:documentation>
+                This binds the soap action "urn:createIPhoneRepairOrReplace" to port type "CreateIPhoneRepairOrReplace".
+            </wsdl:documentation>
+      <soap:operation soapAction="urn:createIPhoneRepairOrReplace" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="IPhoneUpdateSerialNumber">
+      <wsdl:documentation>
+                This binds the soap action "urn:iphoneUpdateSerialNumber" to port type "IPhoneUpdateSerialNumber".
+            </wsdl:documentation>
+      <soap:operation soapAction="urn:iphoneUpdateSerialNumber" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="CreateIPhoneCarryInReturnBeforeReplaceRepair">
+      <wsdl:documentation>
+                This binds the soap action "urn:createIPhoneCarryInReturnBeforeReplace" to port type "createIPhoneCarryInReturnBeforeReplace".
+            </wsdl:documentation>
+      <soap:operation soapAction="urn:createIPhoneCarryInReturnBeforeReplace" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="IPhoneReturnReport">
+      <wsdl:documentation>
+                This binds the soap action "urn:iPhoneReturnReport" to port type "IPhoneReturnReport".
+            </wsdl:documentation>
+      <soap:operation soapAction="urn:iPhoneReturnReport" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="InitiateIOSDiagnostic">
+      <wsdl:documentation>
+                This binds the soap action "urn:initiateIOSDiagnostic" to port type "InitiateIOSDiagnostic".
+            </wsdl:documentation>
+      <soap:operation soapAction="urn:initiateIOSDiagnostic" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="FetchDiagnosticEventNumbers">
+      <wsdl:documentation>
+                This binds the soap action "urn:fetchDiagnosticEventNumbers" to port type "FetchDiagnosticEventNumbers".
+            </wsdl:documentation>
+      <soap:operation soapAction="urn:fetchDiagnosticEventNumbers" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="FetchIOSActivationDetails">
+      <wsdl:documentation>
+                This binds the soap action "urn:fetchIOSActivationDetails" to port type "FetchIOSActivationDetails".
+            </wsdl:documentation>
+      <soap:operation soapAction="urn:fetchIOSActivationDetails" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="IPhoneConsignmentIncreaseOrdersLookUp">
+      <wsdl:documentation>
+                This binds the soap action "urn:iphoneConsignmentIncreaseOrdersLookUp" to port type "IPhoneConsignmentIncreaseOrdersLookUp".
+            </wsdl:documentation>
+      <soap:operation soapAction="urn:iphoneConsignmentIncreaseOrdersLookUp" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="IPhoneComponentCheck">
+      <wsdl:documentation>
+                This binds the soap action "urn: iPhoneComponentCheck" to port type "iPhoneComponentCheck".
+            </wsdl:documentation>
+      <soap:operation soapAction="urn:iPhoneComponentCheck" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="IPhoneConsignmentDecreaseOrdersLookUp">
+      <wsdl:documentation>
+                This binds the soap action "urn:iphoneConsignmentDecreaseOrdersLookUp" to port type "IPhoneConsignmentDecreaseOrdersLookUp".
+            </wsdl:documentation>
+      <soap:operation soapAction="urn:iphoneConsignmentDecreaseOrdersLookUp" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="SubmitConsignmentIphoneDecreaseOrders">
+      <wsdl:documentation>
+                This binds the soap action "urn:submitConsignmentIphoneDecreaseOrders" to port type "SubmitConsignmentIphoneDecreaseOrders".
+            </wsdl:documentation>
+      <soap:operation soapAction="urn:submitConsignmentIphoneDecreaseOrders" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="AcknowledgeIphoneConsignmentIncreaseOrders">
+      <wsdl:documentation>
+                This binds the soap action "urn:acknowledgeIphoneConsignmentIncreaseOrders" to port type "AcknowledgeIphoneConsignmentIncreaseOrders".
+            </wsdl:documentation>
+      <soap:operation soapAction="urn:acknowledgeIphoneConsignmentIncreaseOrders" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="ValidateIPhoneFromConsignedStock">
+      <wsdl:documentation>
+                This binds the soap action "urn:validateIPhoneFromConsignedStock" to port type "validateIPhoneFromConsignedStock".
+            </wsdl:documentation>
+      <soap:operation soapAction="urn:validateIPhoneFromConsignedStock" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="ViewIPhoneConsignmentProforma">
+      <wsdl:documentation>
+                This binds the soap action "urn:viewIPhoneConsignmentProforma" to port type "ViewIPhoneConsignmentProforma".
+            </wsdl:documentation>
+      <soap:operation soapAction="urn:viewIPhoneConsignmentProforma" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="StockingOrderDetailsLookup">
+      <wsdl:documentation>
+                This binds the soap action "urn:stockingOrderDetailsLookup" to port type "StockingOrderDetailsLookup".
+            </wsdl:documentation>
+      <soap:operation soapAction="urn:stockingOrderDetailsLookup" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="LoanerIphoneReturn">
+      <wsdl:documentation>
+                This binds the soap action "urn:loanerIphoneReturn" to port type "LoanerIphoneReturn".
+            </wsdl:documentation>
+      <soap:operation soapAction="urn:loanerIphoneReturn" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="StockingOrderLookup">
+      <wsdl:documentation>
+                This binds the soap action "urn:stockingOrderLookup" to port type "StockingOrderLookup".
+            </wsdl:documentation>
+      <soap:operation soapAction="urn:stockingOrderLookup" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="AppleReviewPreCheck">
+      <wsdl:documentation>
+                This binds the soap action "urn:appleReviewPreCheck" to port type "AppleReivewPreCheckReview".
+            </wsdl:documentation>
+      <soap:operation soapAction="urn:appleReviewPreCheck" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="FetchDiagnosticConsoleURL">
+      <wsdl:documentation>
+                This binds the soap action "urn:fetchDiagnosticConsoleURL" to port type "FetchDiagnosticConsoleURL".
+            </wsdl:documentation>
+      <soap:operation soapAction="urn:fetchDiagnosticConsoleURL" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="UpdateIphoneRepairOrReplace">
+      <wsdl:documentation>
+                This binds the soap action "urn:updateIphoneRepairOrReplace" to port type "UpdateIphoneRepairOrReplace".
+            </wsdl:documentation>
+      <soap:operation soapAction="urn:updateIphoneRepairOrReplace" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="RunDiagnosticTest">
+      <wsdl:documentation>
+        		This binds the soap action "urn:runDiagnosticTest" to port type "RunDiagnosticTest"
+        	</wsdl:documentation>
+      <soap:operation soapAction="urn:runDiagnosticTest" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="FetchDiagnosticSuites">
+      <wsdl:documentation>
+                This binds the soap action "urn:fetchDiagnosticSuites" to port type "FetchDiagnosticSuites".
+            </wsdl:documentation>
+      <soap:operation soapAction="urn:fetchDiagnosticSuites" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="BeatsProductDetails">
+      <wsdl:documentation>
+        This binds the soap action "urn:beatsProductDetails" to port type "BeatsProductDetails".
+        </wsdl:documentation>
+      <soap:operation soapAction="urn:beatsProductDetails" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="BeatsSerializer">
+      <wsdl:documentation>
+                This binds the soap action "urn:beatsSerializer" to port type "BeatsSerializer".
+            </wsdl:documentation>
+      <soap:operation soapAction="urn:beatsSerializer" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="FetchDiagnosticDetails">
+      <wsdl:documentation>
+                This binds the soap action "urn:fetchDiagnosticDetails" to port type "FetchDiagnosticDetails".
+            </wsdl:documentation>
+      <soap:operation soapAction="urn:fetchDiagnosticDetails" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="ReportedSymptomIssue">
+      <wsdl:documentation>
+                This binds the soap action "urn:reportedSymptomIssue" to port type "ReportedSymptomIssue".
+            </wsdl:documentation>
+      <soap:operation soapAction="urn:reportedSymptomIssue" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="RepairStatus">
+      <wsdl:documentation>
+                This binds the soap action "urn:repairStatus" to port type "RepairStatus".
+            </wsdl:documentation>
+      <soap:operation soapAction="urn:repairStatus" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="DeleteRepair">
+      <wsdl:documentation>
+                This binds the soap action "urn:deleteRepair" to port type "DeleteRepair".
+            </wsdl:documentation>
+      <soap:operation soapAction="urn:deleteRepair" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="RegisterIPhonePartsForWHUBulkReturn">
+      <wsdl:documentation>
+                This binds the soap action "urn:registerIPhonePartsForWHUBulkReturn" to port type "RegisterIPhonePartsForWHUBulkReturn".
+            </wsdl:documentation>
+      <soap:operation soapAction="urn:registerIPhonePartsForWHUBulkReturn" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="DiagnosticTestStatus">
+      <wsdl:documentation>
+                This binds the soap action "urn:diagnosticTestStatus" to port type "DiagnosticTestStatus".
+            </wsdl:documentation>
+      <soap:operation soapAction="urn:diagnosticTestStatus" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="IPhoneDepotShipperLabel">
+      <wsdl:documentation>
+                This binds the soap action "urn:iphoneDepotShipperLabel" to port type "IPhoneDepotShipperLabel".
+            </wsdl:documentation>
+      <soap:operation soapAction="urn:iphoneDepotShipperLabel" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="FetchDiagnosticCustomerReportURL">
+      <wsdl:documentation>
+                This binds the soap action "urn:FetchDiagnosticCustomerReportURL" to port type "FetchDiagnosticCustomerReportURL".
+            </wsdl:documentation>
+      <soap:operation soapAction="urn:fetchDiagnosticCustomerReportURL" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="FetchQuestions">
+      <wsdl:documentation>
+                This binds the soap action "urn:fetchQuestions" to port type "FetchQuestions".
+            </wsdl:documentation>
+      <soap:operation soapAction="urn:fetchQuestions" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:service name="GsxWSAmIPhoneService">
+    <wsdl:documentation>
+            This WSDL defines the GSX API operations that iPhone Carriers from Americas could leverage.
+        </wsdl:documentation>
+    <wsdl:port name="GsxWSAmIPhonePort" binding="tns:GsxWSAmIPhoneBinding">
+      <soap:address location="https://gsxapi.apple.com:443/gsx-ws/services/am/iphone" />
+    </wsdl:port>
+  </wsdl:service>
+</wsdl:definitions>

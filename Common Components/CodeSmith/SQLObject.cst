@@ -1,0 +1,170 @@
+<%@ CodeTemplate Language="C#" Inherits="CodeSmith.BaseTemplates.SqlCodeTemplate" TargetLanguage="XML" Description="Generates SELECT/INSERT/UPDATE/DELETE stored procedure based on a database table schema." %>
+<%@ Property Name="SourceTable" Type="SchemaExplorer.TableSchema" Category="Context" Description="Table that the stored procedures should be based on." %>
+<%@ Property Name="IncludeDrop" Type="System.Boolean" Default="True" Category="Options" Description="If true drop statements will be generated to drop existing stored procedures." %>
+<%@ Property Name="IncludeInsert" Type="System.Boolean" Default="True" Category="Options" Description="If true insert statements will be generated." %>
+<%@ Property Name="IncludeUpdate" Type="System.Boolean" Default="True" Category="Options" Description="If true update statements will be generated." %>
+<%@ Property Name="IncludeDelete" Type="System.Boolean" Default="True" Category="Options" Description="If true delete statements will be generated." %>
+<%@ Property Name="IncludeGet" Type="System.Boolean" Default="True" Category="Options" Description="If true get statements will be generated." %>
+<%@ Property Name="IncludeGetList" Type="System.Boolean" Default="True" Category="Options" Description="If true getlist statements will be generated." %>
+<%@ Property Name="IsolationLevel" Type="TransactionIsolationLevelEnum" Default="ReadCommitted" Category="Options" Description="Isolation level to use in generated procedures." %>
+<%@ Property Name="InsertPrefix" Type="System.String" Default="Insert" Category="Style" Description="Prefix to use for all generated INSERT stored procedures." %>
+<%@ Property Name="UpdatePrefix" Type="System.String" Default="Update" Category="Style" Description="Prefix to use for all generated UPDATE stored procedures." %>
+<%@ Property Name="DeletePrefix" Type="System.String" Default="Delete" Category="Style" Description="Prefix to use for all generated DELETE stored procedures." %>
+<%@ Property Name="SelectPrefix" Type="System.String" Default="Get" Category="Style" Description="Prefix to use for all generated SELECT stored procedures." %>
+<%@ Property Name="SelectAllSuffix" Type="System.String" Default="List" Category="Style" Description="Prefix to use for all generated SELECT stored procedures." %>
+<%@ Assembly Name="SchemaExplorer" %>
+<%@ Assembly Name="CodeSmith.BaseTemplates" %>
+<%@ Assembly Name="System.Data" %>
+<%@ Import Namespace="SchemaExplorer" %>
+<%@ Import Namespace="System.Data" %>
+<% if (SourceTable.PrimaryKey == null) throw new ApplicationException("SourceTable does not contain a primary key."); %>
+<?xml version="1.0" encoding="utf-8" ?>
+
+<!-- ********************** THIS FILE HAS BEEN GENERATED FROM TEMPLATE SQLObject.cst (<%= DateTime.Now.ToShortDateString() %>)********************** -->
+
+<SQL>
+	<LOAD>
+		<![CDATA[	
+			SELECT 
+				<% for (int i = 0; i < SourceTable.NonPrimaryKeyColumns.Count; i++) { %>
+				<%= SourceTable.NonPrimaryKeyColumns[i].Name.ToLower() %>,
+				<% } %>			
+				<%= SourceTable.PrimaryKey.MemberColumns[0].Name.ToLower() %>
+			FROM <%= SourceTable.Name.ToLower() %> 
+			WHERE
+				<%= SourceTable.PrimaryKey.MemberColumns[0].Name.ToLower() %> = :<%= SourceTable.PrimaryKey.MemberColumns[0].Name.ToLower() %>
+		]]>
+	</LOAD>
+	<LOAD_LIST>		
+	</LOAD_LIST>	
+	<UPDATE>
+		<![CDATA[	
+			UPDATE <%= SourceTable.Name.ToLower() %> SET
+				<% for (int i = 0; i < SourceTable.NonPrimaryKeyColumns.Count; i++) { %>
+				<% 
+	   			string cName = SourceTable.NonPrimaryKeyColumns[i].Name.ToUpper();
+	   			if ( !(cName == "CREATED_DATE" | cName == "MODIFIED_DATE" | cName == "CREATED_BY" | cName == "MODIFIED_BY") )
+				   {	
+				%>
+				<%= SourceTable.NonPrimaryKeyColumns[i].Name.ToLower() %> = :<%= SourceTable.NonPrimaryKeyColumns[i].Name.ToLower() %>,
+				<% } %>
+				<% } %>
+				modified_by = :modified_by
+			WHERE
+				<%= SourceTable.PrimaryKey.MemberColumns[0].Name.ToLower() %> = :<%= SourceTable.PrimaryKey.MemberColumns[0].Name.ToLower() %>
+		]]>
+	</UPDATE>
+	<INSERT>
+			INSERT INTO <%= SourceTable.Name.ToLower() %>
+					(			
+				<% for (int i = 0; i < SourceTable.NonPrimaryKeyColumns.Count; i++) { %>
+				<% 
+	   			string cName = SourceTable.NonPrimaryKeyColumns[i].Name.ToUpper();
+	   			if ( !(cName == "CREATED_DATE" | cName == "MODIFIED_DATE" | cName == "CREATED_BY" | cName == "MODIFIED_BY") )
+				   {	
+				%>
+				<%= SourceTable.NonPrimaryKeyColumns[i].Name.ToLower() %>, 
+				<% } %>
+				<% } %>
+				created_by,
+				<%= SourceTable.PrimaryKey.MemberColumns[0].Name.ToLower() %>
+					)
+			VALUES
+					(			
+				<% for (int i = 0; i < SourceTable.NonPrimaryKeyColumns.Count; i++) { %>
+				<% 
+	   			string cName = SourceTable.NonPrimaryKeyColumns[i].Name.ToUpper();
+	   			if ( !(cName == "CREATED_DATE" | cName == "MODIFIED_DATE" | cName == "CREATED_BY" | cName == "MODIFIED_BY") )
+				   {	
+				%>
+				:<%= SourceTable.NonPrimaryKeyColumns[i].Name.ToLower() %>, 
+				<% } %>
+				<% } %>
+				:created_by,
+				:<%= SourceTable.PrimaryKey.MemberColumns[0].Name.ToLower() %>
+					)
+	</INSERT>
+	<DELETE>
+			DELETE FROM <%= SourceTable.Name.ToLower() %>
+			WHERE
+				<%= SourceTable.PrimaryKey.MemberColumns[0].Name.ToLower() %> = :<%= SourceTable.PrimaryKey.MemberColumns[0].Name.ToLower() %>
+	</DELETE>
+</SQL> 
+
+
+<script runat="template">
+
+public string GetSqlParameterStatement(ColumnSchema column)
+{
+	string param = "@" + column.Name + " " + column.NativeType;
+
+	switch (column.DataType)
+	{
+		case DbType.Decimal:
+		{
+			param += "(" + column.Precision + ", " + column.Scale + ")";
+			break;
+		}
+		default:
+		{
+			if (column.Size > 0)
+			{
+				param += "(" + column.Size + ")";
+			}
+			break;
+		}
+	}
+
+	return param;
+}
+
+public enum TransactionIsolationLevelEnum
+{
+	ReadCommitted,
+	ReadUncommitted,
+	RepeatableRead,
+	Serializable
+}
+
+public string GetSetTransactionIsolationLevelStatement()
+{
+	switch (IsolationLevel)
+	{
+		case TransactionIsolationLevelEnum.ReadCommitted:
+		{
+			return "SET TRANSACTION ISOLATION LEVEL READ COMMITTED";
+		}
+		case TransactionIsolationLevelEnum.ReadUncommitted:
+		{
+			return "SET TRANSACTION ISOLATION LEVEL READ UNCOMMITTED";
+		}
+		case TransactionIsolationLevelEnum.RepeatableRead:
+		{
+			return "SET TRANSACTION ISOLATION LEVEL REPEATABLE READ";
+		}
+		case TransactionIsolationLevelEnum.Serializable:
+		{
+			return "SET TRANSACTION ISOLATION LEVEL SERIALIZABLE";
+		}
+	}
+	
+	return "SET TRANSACTION ISOLATION LEVEL READ COMMITTED";
+}
+
+public string GetTableOwner()
+{
+	return GetTableOwner(true);
+}
+
+public string GetTableOwner(bool includeDot)
+{
+	if (SourceTable.Owner.Length > 0)
+	{
+		return "[" + SourceTable.Owner + "].";
+	}
+	else
+	{
+		return "";
+	}
+}
+</script>

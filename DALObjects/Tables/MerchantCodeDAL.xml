@@ -1,0 +1,79 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+
+<!-- ********************** THIS FILE HAS BEEN GENERATED FROM TEMPLATE SQLObject.cst (7/13/2010)********************** -->
+
+<SQL>
+  <LOAD>
+    <![CDATA[	
+			SELECT 
+				company_credit_card_id,
+				dealer_id,
+				merchant_code,
+				created_by,
+				created_date,
+				modified_by,
+				modified_date,
+				merchant_code_id
+			FROM elp_merchant_code 
+			WHERE
+				merchant_code_id = :merchant_code_id
+		]]>
+  </LOAD>
+  <LOAD_LIST>
+    <![CDATA[	
+select
+      MC.MERCHANT_CODE_ID,
+      CCC.company_credit_card_id,
+      T.translation  as company_credit_card_type,
+      MC.MERCHANT_CODE
+    from ELITA.ELP_MERCHANT_CODE MC,
+    	 ELITA.elp_company_credit_card CCC,
+         ELITA.elp_credit_card_format CCF,
+	     ELITA.elp_list_item I,
+	     ELITA.elp_dict_item_translation T,
+	     ELITA.elp_language L
+    WHERE MC.COMPANY_CREDIT_CARD_ID = CCC.COMPANY_CREDIT_CARD_ID
+    and CCC.credit_card_format_id = CCF.credit_card_format_id
+    and CCF.credit_card_type_id = I.list_item_id
+	and I.dict_item_id = T.dict_item_id
+	and T.language_id = L.language_id and L.language_id = :language_id
+	and MC.dealer_id = :dealer_id
+    ]]>
+  </LOAD_LIST>  
+  <UPDATE>
+    <![CDATA[	
+			UPDATE elp_merchant_code SET
+				company_credit_card_id = :company_credit_card_id,
+				dealer_id = :dealer_id,
+				merchant_code = :merchant_code,
+				modified_by = :modified_by
+			WHERE
+				merchant_code_id = :merchant_code_id
+		]]>
+  </UPDATE>
+  <INSERT>
+    INSERT INTO elp_merchant_code
+    (
+    company_credit_card_id,
+    dealer_id,
+    merchant_code,
+    created_by,
+    merchant_code_id
+    )
+    VALUES
+    (
+    :company_credit_card_id,
+    :dealer_id,
+    :merchant_code,
+    :created_by,
+    :merchant_code_id
+    )
+  </INSERT>
+  <DELETE>
+    DELETE FROM elp_merchant_code
+    WHERE
+    merchant_code_id = :merchant_code_id
+  </DELETE>
+</SQL>
+
+

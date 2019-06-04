@@ -1,0 +1,161 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+
+<!-- ********************** THIS FILE HAS BEEN GENERATED FROM TEMPLATE SQLObject.cst (8/15/2017)********************** -->
+
+<SQL>
+  <LOAD>
+    <![CDATA[	
+			SELECT 
+				oc_template_group_id,
+				template_code,
+				description,
+				has_customized_params_xcd,
+				allow_manual_use_xcd,
+				allow_manual_resend_xcd,
+				effective_date,
+				expiration_date,
+				created_by,
+				created_date,
+				modified_by,
+				modified_date,
+				template_type_xcd,
+				sms_app_key,
+				sms_short_code,
+				sms_trigger_id,
+				oc_template_id
+			FROM elp_oc_template 
+			WHERE
+				oc_template_id = :oc_template_id
+		]]>
+  </LOAD>
+  <LOAD_LIST>
+  </LOAD_LIST>
+  <LOAD_LIST_BY_TEMPLATE_GROUP_ID>
+    <![CDATA[	
+			SELECT 
+				oc_template_group_id,
+				template_code,
+				description,
+				has_customized_params_xcd,
+				allow_manual_use_xcd,
+				allow_manual_resend_xcd,
+				effective_date,
+				expiration_date,
+				created_by,
+				created_date,
+				modified_by,
+				modified_date,
+        template_type_xcd,
+				sms_app_key,
+				sms_short_code,
+				sms_trigger_id,
+				oc_template_id
+			FROM elp_oc_template 
+			WHERE
+				oc_template_group_id = :oc_template_group_id
+		]]>
+  </LOAD_LIST_BY_TEMPLATE_GROUP_ID>
+  <LOAD_LIST_BY_DEALERS_AND_TEMPLATE_GROUP>
+    <![CDATA[	
+      select      tg.OC_TEMPLATE_GROUP_ID,
+                  tg.CODE TEMPLATE_GROUP_CODE,
+                  tg.DESCRIPTION TEMPLATE_GROUP_DESCRIPTION,
+                  t.OC_TEMPLATE_ID,
+                  t.TEMPLATE_CODE,
+                  t.DESCRIPTION TEMPLATE_DESCRIPTION,
+                  t.template_type_xcd
+      from        elp_oc_template_group tg 
+      left join   elp_oc_template t
+      on          tg.OC_TEMPLATE_GROUP_ID = t.OC_TEMPLATE_GROUP_ID
+      where       exists  (   select      *
+                              from        elp_oc_template_group_dealer tgd
+                              inner join  elp_dealer d
+                              on          tgd.DEALER_ID = d.DEALER_ID
+                              where       tgd.OC_TEMPLATE_GROUP_ID = tg.OC_TEMPLATE_GROUP_ID
+                              --dynamic_in_clause
+                              --dynamic_where_clause_dealer
+                          )
+      --dynamic_where_clause
+    ]]>
+  </LOAD_LIST_BY_DEALERS_AND_TEMPLATE_GROUP>
+  <UPDATE>
+    <![CDATA[	
+			UPDATE elp_oc_template SET
+				oc_template_group_id = :oc_template_group_id,
+				template_code = :template_code,
+				description = :description,
+				has_customized_params_xcd = :has_customized_params_xcd,
+				allow_manual_use_xcd = :allow_manual_use_xcd,
+				allow_manual_resend_xcd = :allow_manual_resend_xcd,
+				effective_date = :effective_date,
+				expiration_date = :expiration_date,
+        template_type_xcd = :template_type_xcd,
+				sms_app_key = :sms_app_key,
+				sms_short_code = :sms_short_code,
+				sms_trigger_id = :sms_trigger_id,
+				modified_by = :modified_by
+			WHERE
+				oc_template_id = :oc_template_id
+		]]>
+  </UPDATE>
+  <INSERT>
+    INSERT INTO elp_oc_template
+    (
+    oc_template_group_id,
+    template_code,
+    description,
+    has_customized_params_xcd,
+    allow_manual_use_xcd,
+    allow_manual_resend_xcd,
+    effective_date,
+    expiration_date,
+    template_type_xcd,
+    sms_app_key,
+    sms_short_code,
+    sms_trigger_id,
+    created_by,
+    oc_template_id
+    )
+    VALUES
+    (
+    :oc_template_group_id,
+    :template_code,
+    :description,
+    :has_customized_params_xcd,
+    :allow_manual_use_xcd,
+    :allow_manual_resend_xcd,
+    :effective_date,
+    :expiration_date,
+    :template_type_xcd,
+    :sms_app_key,
+    :sms_short_code,
+    :sms_trigger_id,
+    :created_by,
+    :oc_template_id
+    )
+  </INSERT>
+  <DELETE>
+    DELETE FROM elp_oc_template
+    WHERE
+    oc_template_id = :oc_template_id
+  </DELETE>
+  <GET_ASSOCIATED_MESSAGE_COUNT>
+    <![CDATA[	
+			select  count(oc_message_id) number_of_messages
+      from    elp_oc_message
+      where   oc_template_id = :oc_template_id
+		]]>
+  </GET_ASSOCIATED_MESSAGE_COUNT>
+  <GET_COUNT_BY_CODE_EXCLUDING_TEMPLATE_ID>
+    <![CDATA[	
+			select  count(oc_template_id) number_of_templates
+      from    elp_oc_template
+      where   TRIM(UPPER(template_code)) = TRIM(UPPER(:template_code))
+      and     oc_template_id <> :oc_template_id
+      and     oc_template_group_id = :oc_template_group_id
+		]]>
+  </GET_COUNT_BY_CODE_EXCLUDING_TEMPLATE_ID>
+  
+</SQL>
+
+

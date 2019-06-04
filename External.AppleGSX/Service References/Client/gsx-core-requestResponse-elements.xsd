@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xs:schema xmlns:basic="http://gsxws.apple.com/types/basic" xmlns:global="http://gsxws.apple.com/types/global" xmlns:tns="http://gsxws.apple.com/elements/core" targetNamespace="http://gsxws.apple.com/elements/core" version="1.0" xml:lang="en" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+  <xs:import schemaLocation="gsx-basic-types.xsd" namespace="http://gsxws.apple.com/types/basic" />
+  <xs:import schemaLocation="gsx-global-schema.xsd" namespace="http://gsxws.apple.com/types/global" />
+  <xs:complexType name="partsLookupRequestType">
+    <xs:sequence>
+      <xs:element minOccurs="1" name="userSession" type="global:gsxUserSessionType" />
+      <xs:element minOccurs="1" maxOccurs="unbounded" name="lookupRequestData" type="global:partsLookupInfoType" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="partsLookupRequestWrapper">
+    <xs:sequence>
+      <xs:element name="PartsLookupRequest" type="tns:partsLookupRequestType" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="partsLookupResponseType">
+    <xs:sequence>
+      <xs:element minOccurs="1" name="operationId" type="xs:token" />
+      <xs:element minOccurs="1" maxOccurs="unbounded" name="parts" type="global:partsLookupResponseType" />
+      <xs:element minOccurs="0" name="communicationMessage" type="xs:string" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="partsLookupResponseWrapper">
+    <xs:sequence>
+      <xs:element name="PartsLookupResponse" type="tns:partsLookupResponseType" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="PartsLookup" type="tns:partsLookupRequestWrapper" />
+  <xs:element name="PartsLookupResponse" type="tns:partsLookupResponseWrapper" />
+  <xs:complexType name="repairDetailsRequestType">
+    <xs:sequence>
+      <xs:element minOccurs="1" name="userSession" type="global:gsxUserSessionType" />
+      <xs:element minOccurs="1" name="dispatchId" type="basic:Token_15" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="repairDetailsRequestWrapper">
+    <xs:sequence>
+      <xs:element name="RepairDetailsRequest" type="tns:repairDetailsRequestType" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="repairDetailsResponseType">
+    <xs:sequence>
+      <xs:element minOccurs="1" name="operationId" type="xs:token" />
+      <xs:element minOccurs="1" maxOccurs="unbounded" name="lookupResponseData" type="global:repairDetailsType" />
+      <xs:element minOccurs="0" name="communicationMessage" type="xs:string" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="repairDetailsResponseWrapper">
+    <xs:sequence>
+      <xs:element name="RepairDetailsResponse" type="tns:repairDetailsResponseType" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="RepairDetails" type="tns:repairDetailsRequestWrapper" />
+  <xs:element name="RepairDetailsResponse" type="tns:repairDetailsResponseWrapper" />
+</xs:schema>

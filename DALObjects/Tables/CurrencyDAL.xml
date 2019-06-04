@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="utf-8" ?>
+
+<!-- ********************** THIS FILE HAS BEEN GENERATED FROM TEMPLATE SQLObject.cst (10/21/2004)********************** -->
+
+<SQL>
+	<LOAD>
+		<![CDATA[	
+			SELECT 
+				description,
+				code,
+				notation,
+				created_date,
+				modified_date,
+				created_by,
+				modified_by,
+				iso_code,
+				currency_id
+			FROM elp_currency 
+			WHERE
+				currency_id = :currency_id
+		]]>
+	</LOAD>
+	<LOAD_LIST>
+    <![CDATA[	
+      select currency_id,
+             code,
+             description,
+             notation,
+             iso_code
+      from elp_currency
+      --dynamic_where_clause
+      ORDER BY UPPER(description)
+    ]]>
+  </LOAD_LIST>	
+	<UPDATE>
+		<![CDATA[	
+			UPDATE elp_currency SET
+				description = :description,
+				code = :code,
+				notation = :notation,
+				iso_code = :iso_code,
+				modified_by = :modified_by
+			WHERE
+				currency_id = :currency_id
+		]]>
+	</UPDATE>
+	<INSERT>
+			INSERT INTO elp_currency
+					(			
+				description, 
+				code, 
+				notation,
+				iso_code,  
+				created_by,
+				currency_id
+					)
+			VALUES
+					(			
+				:description, 
+				:code, 
+				:notation, 
+				:iso_code, 
+				:created_by,
+				:currency_id
+					)
+	</INSERT>
+	<DELETE>
+			DELETE FROM elp_currency
+			WHERE
+				currency_id = :currency_id
+	</DELETE>
+</SQL> 
+
+

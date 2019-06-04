@@ -1,0 +1,348 @@
+<?xml version="1.0" encoding="utf-8" ?>
+
+<!-- ********************** THIS FILE HAS BEEN GENERATED FROM TEMPLATE SQLObject.cst (8/23/2004)********************** -->
+
+<SQL>
+	<LOAD>
+		<![CDATA[	
+			SELECT 
+				description,
+				code,
+				tax_id_number,
+				business_country_id,
+				phone,
+				fax,
+				email,
+				refund_tolerance_amt,
+				claim_number_format_id,
+				invoice_method_id,
+				language_id,
+				created_date,
+				modified_date,
+				created_by,
+				modified_by,
+				default_followup_days,
+				max_followup_days,
+				company_id,
+				legal_disclaimer,
+				salutation_id,
+				address1,
+				address2,
+				city,
+				region_id,
+				postal_code,
+				country_id,
+				company_group_id,
+				company_type_id,
+				upr_uses_wp_id,
+				days_to_close_claim,
+				master_claim_processing_id,
+				claim_number_offset,
+				eumember_id,
+				usezipdistrict_id,
+				auth_detail_rqrd_id,
+				acct_company_id,
+				addl_dac_id,
+        auto_process_file_id,
+        use_recoveries_id,
+        service_orders_by_dealer_id,
+        require_item_description_id,
+        clip_method_id,
+        report_commission_tax_id,
+        time_zone_name_id,
+        compute_tax_based_id,
+        billing_by_dealer_id,
+        police_rpt_for_loss_cov_id,
+        ftp_site_id,
+        req_customer_legal_info_id,
+        use_transfer_of_ownership,
+        require_agent_code as require_agent_code_id,
+        unique_certificate_numbers_id,
+        Override_WarrantyPrice_Check,
+        unique_cert_effective_date,
+        certnumlookupby_id,
+        use_pre_invoice_process_id,
+        sc_pre_inv_waiting_period,
+        cert_number_format_id
+      FROM elp_company 
+			WHERE
+				company_id = :company_id
+		]]>
+	</LOAD>
+	<LOAD_LIST>
+	<![CDATA[	
+			SELECT 
+				company_id,
+				description,
+				code
+			FROM elp_company 
+			WHERE
+				UPPER(code) LIKE UPPER(:code)
+				AND UPPER(description) LIKE UPPER(:description)
+			ORDER BY UPPER(description)	
+			]]>	
+	</LOAD_LIST>
+  <LOAD_ACCOUNTING_CLOSE_INFO_BY_COMPANY_ID>
+    <![CDATA[	
+       SELECT
+        accounting_close_info_id,
+        company_id,
+        closing_date,
+		    created_by
+      FROM elp_accounting_close_info
+      WHERE
+       company_id = :company_id
+		]]>
+  </LOAD_ACCOUNTING_CLOSE_INFO_BY_COMPANY_ID>
+  <GET_GROUP_COMPANIES>
+    SELECT company_id
+    FROM elp_company
+    WHERE COMPANY_GROUP_ID = :company_group_id
+  </GET_GROUP_COMPANIES>
+	<UPDATE>
+		<![CDATA[	
+			UPDATE elp_company SET
+				description = :description,
+				code = :code,
+				tax_id_number = :tax_id_number,
+				business_country_id = :business_country_id,
+				phone = :phone,
+				fax = :fax,
+				email = :email,
+				refund_tolerance_amt = :refund_tolerance_amt,
+				claim_number_format_id = :claim_number_format_id,
+				invoice_method_id = :invoice_method_id,
+				language_id = :language_id,
+				default_followup_days = :default_followup_days,
+				max_followup_days = :max_followup_days,
+				legal_disclaimer = :legal_disclaimer,
+				salutation_id = :salutation_id,
+				address1 = :address1,
+				address2 = :address2,
+				city = :city,
+				region_id = :region_id,
+				postal_code = :postal_code,
+				country_id = :country_id,
+				modified_by = :modified_by,
+				company_group_id = :company_group_id,
+				company_type_id= :company_type_id,
+				upr_uses_wp_id= :upr_uses_wp_id,
+				days_to_close_claim = :days_to_close_claim,
+				master_claim_processing_id = :master_claim_processing_id,
+				claim_number_offset = :claim_number_offset,
+				eumember_id = :eumember_id,
+				usezipdistrict_id = :usezipdistrict_id,
+				auth_detail_rqrd_id = :auth_detail_rqrd_id,
+				acct_company_id = :acct_company_id,
+				addl_dac_id = :addl_dac_id,
+        auto_process_file_id = :auto_process_file_id,
+        use_recoveries_id = :use_recoveries_id,
+        service_orders_by_dealer_id = :service_orders_by_dealer_id,
+        require_item_description_id = :require_item_description_id,
+        clip_method_id = :clip_method_id,
+        report_commission_tax_id = :report_commission_tax_id,
+        time_zone_name_id = :time_zone_name_id,
+        compute_tax_based_id = :compute_tax_based_id,
+        billing_by_dealer_id = :billing_by_dealer_id,
+        police_rpt_for_loss_cov_id = :police_rpt_for_loss_cov_id,
+        ftp_site_id = :ftp_site_id,
+        req_customer_legal_info_id = :req_customer_legal_info_id,
+        use_transfer_of_ownership = :use_transfer_of_ownership,
+        require_agent_code = :require_agent_code_id,
+        unique_certificate_numbers_id = :unique_certificate_numbers_id,
+        override_warrantyprice_check = :override_warrantyprice_check,
+        unique_cert_effective_date = :unique_cert_effective_date,
+        certnumlookupby_id = :certnumlookupby_id,
+        use_pre_invoice_process_id = :use_pre_invoice_process_id,
+        sc_pre_inv_waiting_period = :sc_pre_inv_waiting_period,
+        cert_number_format_id = :cert_number_format_id
+			WHERE
+				company_id = :company_id
+		]]>
+	</UPDATE>
+	<INSERT>
+    INSERT INTO elp_company
+    (
+    description,
+    code,
+    tax_id_number,
+    business_country_id,
+    phone,
+    fax,
+    email,
+    refund_tolerance_amt,
+    claim_number_format_id,
+    invoice_method_id,
+    language_id,
+    default_followup_days,
+    max_followup_days,
+    created_by,
+    company_id,
+    legal_disclaimer,
+    salutation_id,
+    address1,
+    address2,
+    city,
+    region_id,
+    postal_code,
+    country_id,
+    company_group_id,
+    company_type_id,
+    upr_uses_wp_id,
+    days_to_close_claim,
+    master_claim_processing_id,
+    claim_number_offset,
+    eumember_id,
+    usezipdistrict_id,
+    auth_detail_rqrd_id,
+    acct_company_id,
+    addl_dac_id,
+    auto_process_file_id,
+    use_recoveries_id,
+    service_orders_by_dealer_id,
+    require_item_description_id,
+    clip_method_id,
+    report_commission_tax_id,
+    time_zone_name_id,
+    compute_tax_based_id,
+    billing_by_dealer_id,
+    police_rpt_for_loss_cov_id,
+    ftp_site_id,
+    req_customer_legal_info_id,
+    use_transfer_of_ownership,
+    require_agent_code,
+    unique_certificate_numbers_id,
+    override_warrantyprice_check,
+    unique_cert_effective_date,
+    certnumlookupby_id,
+    use_pre_invoice_process_id,
+    sc_pre_inv_waiting_period,
+    cert_number_format_id
+    )
+    VALUES
+    (
+    :description,
+    :code,
+    :tax_id_number,
+    :business_country_id,
+    :phone,
+    :fax,
+    :email,
+    :refund_tolerance_amt,
+    :claim_number_format_id,
+    :invoice_method_id,
+    :language_id,
+    :default_followup_days,
+    :max_followup_days,
+    :created_by,
+    :company_id,
+    :legal_disclaimer,
+    :salutation_id,
+    :address1,
+    :address2,
+    :city,
+    :region_id,
+    :postal_code,
+    :country_id,
+    :company_group_id,
+    :company_type_id,
+    :upr_uses_wp_id,
+    :days_to_close_claim,
+    :master_claim_processing_id,
+    :claim_number_offset,
+    :eumember_id,
+    :usezipdistrict_id,
+    :auth_detail_rqrd_id,
+    :acct_company_id,
+    :addl_dac_id,
+    :auto_process_file_id,
+    :use_recoveries_id,
+    :service_orders_by_dealer_id,
+    :require_item_description_id,
+    :clip_method_id,
+    :report_commission_tax_id,
+    :time_zone_name_id,
+    :compute_tax_based_id,
+    :billing_by_dealer_id,
+    :police_rpt_for_loss_cov_id,
+    :ftp_site_id,
+    :req_customer_legal_info_id,
+    :use_transfer_of_ownership,
+    :require_agent_code_id,
+    :unique_certificate_numbers_id,
+    :override_warrantyprice_check,
+    :unique_cert_effective_date,
+    :certnumlookupby_id,
+    :use_pre_invoice_process_id,
+    :sc_pre_inv_waiting_period,
+    :cert_number_format_id
+    )
+  </INSERT>
+	<DELETE>
+			DELETE FROM elp_company
+			WHERE
+				company_id = :company_id
+	</DELETE>
+	<LOAD_AVAILABLE_COUNTRY_LIST>
+			SELECT
+				country_id,
+				description,
+				code
+			FROM elp_country
+			WHERE country_id not in (
+				SELECT country_id
+				from elp_company_country cc
+				WHERE cc.company_id = :company_id)
+			ORDER BY UPPER(description)
+	</LOAD_AVAILABLE_COUNTRY_LIST>
+	<LOAD_SELECTED_COUNTRY_LIST>
+			SELECT
+				country_id,
+				description,
+				code
+			FROM elp_country
+			WHERE country_id in (
+				SELECT country_id
+				from elp_company_country cc
+				WHERE cc.company_id = :company_id)
+			ORDER BY UPPER(description)
+		</LOAD_SELECTED_COUNTRY_LIST>
+  <GET_DEALER_WO_AGENTCODES>
+    SELECT COUNT(1) AS dealer_count FROM
+    ELP_COMPANY C INNER JOIN
+    ELP_DEALER D
+    ON C.COMPANY_ID = D.COMPANY_ID INNER JOIN
+    ELP_PRODUCT_CODE PC
+    ON PC.DEALER_ID = D.DEALER_ID INNER JOIN
+    ELP_ITEM I
+    ON I.PRODUCT_CODE_ID = PC.PRODUCT_CODE_ID INNER JOIN
+    ELP_COVERAGE CVG
+    ON CVG.ITEM_ID = I.ITEM_ID
+    WHERE C.COMPANY_ID = :company_id AND
+    CVG.AGENT_CODE IS NULL
+  </GET_DEALER_WO_AGENTCODES>
+  <CHECK_DEALER_WO_AGENTCODES>
+    SELECT REQUIRE_AGENT_CODE AS REQUIRE_AGENT_CODE_ID FROM
+    ELP_COMPANY C INNER JOIN
+    ELP_DEALER D
+    ON C.COMPANY_ID = D.COMPANY_ID
+    WHERE D.DEALER_ID = :dealer_id
+  </CHECK_DEALER_WO_AGENTCODES>
+  <GET_DEALER_FROM_COMPANY_DEALER>
+    <![CDATA[
+    select d.dealer_id as dealer_id
+    from elp_company c
+    inner join elp_dealer d on c.company_id = d.company_id
+    where c.company_id = :CompanyId
+    and d.dealer = :DealerCode
+    ]]>
+  </GET_DEALER_FROM_COMPANY_DEALER>
+
+  <CHECK_IF_COMPANY_CODE_ALREADY_EXISTS>
+    <![CDATA[
+    select Count(c.code)
+    from elp_company c
+    where c.code = :Code
+    ]]>
+  </CHECK_IF_COMPANY_CODE_ALREADY_EXISTS>
+</SQL>

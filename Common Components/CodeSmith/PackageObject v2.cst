@@ -1,0 +1,264 @@
+<%@ CodeTemplate Language="C#" Inherits="CodeSmith.BaseTemplates.SqlCodeTemplate" TargetLanguage="XML" Description="Generates SELECT/INSERT/UPDATE/DELETE stored procedure based on a database table schema." %>
+<%@ Property Name="SourceTable" Type="SchemaExplorer.TableSchema" Category="Context" Description="Table that the stored procedures should be based on." %>
+<%@ Property Name="IncludeInsert" Type="System.Boolean" Default="True" Category="Options" Description="If true insert statements will be generated." %>
+<%@ Property Name="IncludeUpdate" Type="System.Boolean" Default="True" Category="Options" Description="If true update statements will be generated." %>
+<%@ Property Name="IncludeDelete" Type="System.Boolean" Default="False" Category="Options" Description="If true delete statements will be generated." %>
+<%@ Property Name="IncludeSelect" Type="System.Boolean" Default="True" Category="Options" Description="If true get statements will be generated." %>
+<%@ Property Name="IncludeSelectAll" Type="System.Boolean" Default="True" Category="Options" Description="If true getlist statements will be generated." %>
+<%@ Property Name="InsertProcedureName" Type="System.String" Default="Add" Category="Procedure Names" Description="Name of Insert Procedure in Package." %>
+<%@ Property Name="UpdateProcedureName" Type="System.String" Default="Modify" Category="Procedure Names" Description="Name of Update Procedure in Package." %>
+<%@ Property Name="DeleteProcedureName" Type="System.String" Default="Del" Category="Procedure Names" Description="Name of Delete Procedure in Package." %>
+<%@ Property Name="SelectProcedureName" Type="System.String" Default="Load" Category="Procedure Names" Description="Name of Select/Load Procedure in Package." %>
+<%@ Property Name="SelectAllProcedureName" Type="System.String" Default="LoadList" Category="Procedure Names" Description="Name of Select All/Load List Procedure in Package." %>
+<%@ Assembly Name="SchemaExplorer" %>
+<%@ Assembly Name="CodeSmith.BaseTemplates" %>
+<%@ Assembly Name="System.Data" %>
+<%@ Import Namespace="SchemaExplorer" %>
+<%@ Import Namespace="System.Data" %>
+<% if (SourceTable.PrimaryKey == null) throw new ApplicationException("SourceTable does not contain a primary key."); %>
+create or replace package elita.<%= GetPackageName(SourceTable) %> is
+
+<% if (IncludeSelectAll) { %>
+    procedure <%= SelectAllProcedureName %>(po_ResultCursor              out    sys_refcursor);
+<% } %>
+
+<% if (IncludeSelect) { %>
+    procedure <%= SelectProcedureName %>(<%= GetParameterLine(SourceTable.PrimaryKey.MemberColumns[0].Name, SourceTable.Name, true, false) %>,
+<%= "     ".PadRight(15 + SelectProcedureName.Length, ' ') %><%= "po_ResultCursor".PadRight(35, ' ') %>out    sys_refcursor);
+<% } %>
+
+    <% if (IncludeInsert) { %>
+    procedure <%= InsertProcedureName %>(<%= GetParameterLine(SourceTable.PrimaryKey.MemberColumns[0].Name, SourceTable.Name, true, false) %>,
+<% for (int i = 0; i < SourceTable.NonPrimaryKeyColumns.Count; i++) { 
+				  if ((SourceTable.NonPrimaryKeyColumns[i].Name != "MODIFIED_DATE") && (SourceTable.NonPrimaryKeyColumns[i].Name != "MODIFIED_BY"))
+				  {%><%= ((i != 0) ? ",\r\n" : "") %><%= "     ".PadRight(15 + InsertProcedureName.Length, ' ') %><%= GetParameterLine(SourceTable.NonPrimaryKeyColumns[i].Name, SourceTable.Name, true, false) %><% }} %>);
+    <% } %>
+	
+	<% if (IncludeUpdate) { %>
+    procedure <%= UpdateProcedureName %>(<%= GetParameterLine(SourceTable.PrimaryKey.MemberColumns[0].Name, SourceTable.Name, true, false) %>,
+<% for (int i = 0; i < SourceTable.NonPrimaryKeyColumns.Count; i++) { 
+				  if ((SourceTable.NonPrimaryKeyColumns[i].Name != "CREATED_DATE") && (SourceTable.NonPrimaryKeyColumns[i].Name != "CREATED_BY"))
+				  {%><%= ((i != 0) ? ",\r\n" : "") %><%= "     ".PadRight(15 + UpdateProcedureName.Length, ' ') %><%= GetParameterLine(SourceTable.NonPrimaryKeyColumns[i].Name, SourceTable.Name, true, false) %><% }} %>);
+	<% } %>
+	
+	<% if(IncludeDelete) { %>
+    procedure <%= DeleteProcedureName %>(<%= GetParameterLine(SourceTable.PrimaryKey.MemberColumns[0].Name, SourceTable.Name, true, false) %>);
+	<% } %>
+	
+	<% if (IncludeInsert) { %>
+    procedure <%= InsertProcedureName %>(pio_<%= SourceTable.Name.ToLower().Substring(4) %>           in out <%= SourceTable.Name.ToLower() %>%rowtype);<% } %>
+
+    <% if (IncludeUpdate) { %>
+    procedure <%= UpdateProcedureName %>(pi_<%= SourceTable.Name.ToLower().Substring(4) %>         in     <%= SourceTable.Name.ToLower() %>%rowtype);<% } %>
+	
+end <%= GetPackageName(SourceTable) %>;
+
+create or replace package body elita.<%= GetPackageName(SourceTable) %> is
+<% if (IncludeSelectAll) { %>
+    procedure <%= SelectAllProcedureName %>(po_ResultCursor              out    sys_refcursor)
+    is
+    begin
+
+        open po_ResultCursor for
+        select <%= SourceTable.PrimaryKey.MemberColumns[0].Name %>
+        from <%= SourceTable.Name %>;
+
+    end;
+<% } %>
+	
+<% if (IncludeSelect) { %>
+    procedure <%= SelectProcedureName %>(<%= GetParameterLine(SourceTable.PrimaryKey.MemberColumns[0].Name, SourceTable.Name, true, false) %>,
+<%= "     ".PadRight(15 + SelectProcedureName.Length, ' ') %><%= "po_ResultCursor".PadRight(35, ' ') %>out    sys_refcursor)
+    is
+    begin
+
+        open po_ResultCursor for
+        select <%= SourceTable.PrimaryKey.MemberColumns[0].Name.ToLower() %>,
+        <% for (int i = 0; i < SourceTable.NonPrimaryKeyColumns.Count; i++) { %>
+<%= " ".PadRight(15, ' ') %><%= SourceTable.NonPrimaryKeyColumns[i].Name.ToLower() %><%= ((i < SourceTable.NonPrimaryKeyColumns.Count - 1) ? "," : "") %>
+<% } %>
+        from <%= SourceTable.Name.ToLower() %> 
+        where <%= SourceTable.PrimaryKey.MemberColumns[0].Name.ToLower() %> = <%= GetParameterName(SourceTable.PrimaryKey.MemberColumns[0].Name, true, false) %>;
+
+    end;
+<% } %>
+
+<% if (IncludeInsert) { %>
+    procedure <%= InsertProcedureName %>(<%= GetParameterLine(SourceTable.PrimaryKey.MemberColumns[0].Name, SourceTable.Name, true, false) %>,
+<% for (int i = 0; i < SourceTable.NonPrimaryKeyColumns.Count; i++) { 
+				  if ((SourceTable.NonPrimaryKeyColumns[i].Name != "MODIFIED_DATE") && (SourceTable.NonPrimaryKeyColumns[i].Name != "MODIFIED_BY"))
+				  {%><%= ((i != 0) ? ",\r\n" : "") %><%= "     ".PadRight(15 + InsertProcedureName.Length, ' ') %><%= GetParameterLine(SourceTable.NonPrimaryKeyColumns[i].Name, SourceTable.Name, true, false) %><% }} %>)
+    is
+        w_<%= SourceTable.Name.ToLower().Substring(4) %>               <%= SourceTable.Name %>%rowtype;
+    begin
+
+<%= "     ".PadRight(8, ' ') %>w_<%= SourceTable.Name.ToLower().Substring(4) %>.<%= SourceTable.PrimaryKey.MemberColumns[0].Name.ToLower().PadRight(35, ' ') %>:= <%= GetParameterName(SourceTable.PrimaryKey.MemberColumns[0].Name.ToLower(), true, false) %>;
+        <% for (int i = 0; i < SourceTable.NonPrimaryKeyColumns.Count; i++) { 
+        if ((SourceTable.NonPrimaryKeyColumns[i].Name != "MODIFIED_DATE") && (SourceTable.NonPrimaryKeyColumns[i].Name != "MODIFIED_BY"))
+        {%><%= "\r\n     ".PadRight(10, ' ') %>w_<%= SourceTable.Name.ToLower().Substring(4) %>.<%= SourceTable.NonPrimaryKeyColumns[i].Name.ToLower().PadRight(35, ' ') %>:= <%= GetParameterName(SourceTable.NonPrimaryKeyColumns[i].Name.ToLower(), true, false) %>;<% }}%>
+        
+        <%= InsertProcedureName %>(w_<%= SourceTable.Name.ToLower().Substring(4) %>);
+
+    end;<% } %>
+
+	<% if (IncludeUpdate) { %>
+    procedure <%= UpdateProcedureName %>(<%= GetParameterLine(SourceTable.PrimaryKey.MemberColumns[0].Name, SourceTable.Name, true, false) %>,
+<% for (int i = 0; i < SourceTable.NonPrimaryKeyColumns.Count; i++) { 
+				  if ((SourceTable.NonPrimaryKeyColumns[i].Name != "CREATED_DATE") && (SourceTable.NonPrimaryKeyColumns[i].Name != "CREATED_BY"))
+				  {%><%= ((i != 0) ? ",\r\n" : "") %><%= "     ".PadRight(15 + UpdateProcedureName.Length, ' ') %><%= GetParameterLine(SourceTable.NonPrimaryKeyColumns[i].Name, SourceTable.Name, true, false) %><% }} %>)
+    is
+        w_<%= SourceTable.Name.ToLower().Substring(4) %>               <%= SourceTable.Name %>%rowtype;
+    begin
+    
+<%= "     ".PadRight(8, ' ') %>w_<%= SourceTable.Name.ToLower().Substring(4) %>.<%= SourceTable.PrimaryKey.MemberColumns[0].Name.ToLower().PadRight(35, ' ') %>:= <%= GetParameterName(SourceTable.PrimaryKey.MemberColumns[0].Name.ToLower(), true, false) %>;
+        <% for (int i = 0; i < SourceTable.NonPrimaryKeyColumns.Count; i++) { 
+        if ((SourceTable.NonPrimaryKeyColumns[i].Name != "CREATED_DATE") && (SourceTable.NonPrimaryKeyColumns[i].Name != "CREATED_BY"))
+        {%><%= "\r\n     ".PadRight(10, ' ') %>w_<%= SourceTable.Name.ToLower().Substring(4) %>.<%= SourceTable.NonPrimaryKeyColumns[i].Name.ToLower().PadRight(35, ' ') %>:= <%= GetParameterName(SourceTable.NonPrimaryKeyColumns[i].Name.ToLower(), true, false) %>;<% }}%>
+        
+        <%= UpdateProcedureName %>(w_<%= SourceTable.Name.ToLower().Substring(4) %>);
+        
+    end;
+	<% } %>
+	
+	<% if(IncludeDelete) { %>
+    procedure <%= DeleteProcedureName %>(<%= GetParameterLine(SourceTable.PrimaryKey.MemberColumns[0].Name, SourceTable.Name, true, false) %>)
+    is
+    begin
+    
+        delete from <%= SourceTable.Name %>
+        where <%= SourceTable.PrimaryKey.MemberColumns[0].Name.ToLower() %> = <%= GetParameterName(SourceTable.PrimaryKey.MemberColumns[0].Name, true, false).ToLower() %>;
+    
+    end;
+	<% } %>
+	
+	<% if (IncludeInsert) { %>
+    procedure <%= InsertProcedureName %>(pio_<%= SourceTable.Name.ToLower().Substring(4) %>           in out <%= SourceTable.Name.ToLower() %>%rowtype)
+    is
+    begin
+    
+        if (pio_<%= SourceTable.Name.ToLower().Substring(4) %>.<%= SourceTable.PrimaryKey.MemberColumns[0].Name.ToLower() %> is null) then
+            elp_id(pio_<%= SourceTable.Name.ToLower().Substring(4) %>.<%= SourceTable.PrimaryKey.MemberColumns[0].Name.ToLower() %>);
+        end if;
+        
+        insert into <%= SourceTable.Name.ToLower() %>
+        (
+            <% for (int i = 0; i < SourceTable.NonPrimaryKeyColumns.Count; i++) { %>
+            <% 
+            string cName = SourceTable.NonPrimaryKeyColumns[i].Name.ToUpper();
+            if ( !(cName == "CREATED_DATE" | cName == "MODIFIED_DATE" | cName == "CREATED_BY" | cName == "MODIFIED_BY") )
+               {	
+            %>
+            <%= SourceTable.NonPrimaryKeyColumns[i].Name.ToLower() %>, 
+            <% } %>
+            <% } %>
+            created_by,
+            <%= SourceTable.PrimaryKey.MemberColumns[0].Name.ToLower() %>
+        )
+        values
+        (
+            <% for (int i = 0; i < SourceTable.NonPrimaryKeyColumns.Count; i++) { %>
+            <% 
+            string cName = SourceTable.NonPrimaryKeyColumns[i].Name.ToUpper();
+            if ( !(cName == "CREATED_DATE" | cName == "MODIFIED_DATE" | cName == "CREATED_BY" | cName == "MODIFIED_BY") )
+               {	
+            %>
+            pio_<%= SourceTable.Name.ToLower().Substring(4) %>.<%= SourceTable.NonPrimaryKeyColumns[i].Name.ToLower() %>, 
+            <% } %>
+            <% } %>
+            pio_<%= SourceTable.Name.ToLower().Substring(4) %>.created_by,
+            pio_<%= SourceTable.Name.ToLower().Substring(4) %>.<%= SourceTable.PrimaryKey.MemberColumns[0].Name.ToLower() %>
+        );
+    
+    end;
+<% } %>
+    <% if (IncludeUpdate) { %>
+    procedure <%= UpdateProcedureName %>(pi_<%= SourceTable.Name.ToLower().Substring(4) %>         in     <%= SourceTable.Name.ToLower() %>%rowtype)<% } %>
+    is
+    begin
+    
+        update <%= SourceTable.Name.ToLower() %> SET
+            <% for (int i = 0; i < SourceTable.NonPrimaryKeyColumns.Count; i++) { %>
+            <% 
+            string cName = SourceTable.NonPrimaryKeyColumns[i].Name.ToUpper();
+            if ( !(cName == "CREATED_DATE" | cName == "MODIFIED_DATE" | cName == "CREATED_BY" | cName == "MODIFIED_BY") )
+               {	
+            %>
+            <%= SourceTable.NonPrimaryKeyColumns[i].Name.ToLower() %> = pi_<%= SourceTable.Name.ToLower().Substring(4) %>.<%= SourceTable.NonPrimaryKeyColumns[i].Name.ToLower() %>,
+            <% } %>
+            <% } %>
+            modified_by = pi_<%= SourceTable.Name.ToLower().Substring(4) %>.modified_by
+        where <%= SourceTable.PrimaryKey.MemberColumns[0].Name.ToLower() %> = pi_<%= SourceTable.Name.ToLower().Substring(4) %>.<%= SourceTable.PrimaryKey.MemberColumns[0].Name.ToLower() %>;
+    
+    end;
+	
+
+end <%= GetPackageName(SourceTable) %>;
+
+
+<script runat="template">
+
+public string GetSqlParameterStatement(ColumnSchema column)
+{
+	string param = "@" + column.Name + " " + column.NativeType;
+
+	switch (column.DataType)
+	{
+		case DbType.Decimal:
+		{
+			param += "(" + column.Precision + ", " + column.Scale + ")";
+			break;
+		}
+		default:
+		{
+			if (column.Size > 0)
+			{
+				param += "(" + column.Size + ")";
+			}
+			break;
+		}
+	}
+
+	return param;
+}
+
+public string GetParameterLine(string columnName, string tableName, bool input, bool output)
+{
+	string returnValue = GetParameterName(columnName, input, output).PadRight(35, ' ');
+	
+	if (input && output) 
+	    returnValue += "in out ";
+	else
+		if (input) 
+			returnValue += "in     ";
+		else
+			returnValue += "out    ";
+		
+	
+	returnValue += tableName + "." + columnName + "%type";
+	
+	return returnValue.ToLower();
+}
+
+public string GetParameterName(string columnName, bool input, bool output)
+{
+	string parameterName = columnName;
+	if (input && output) 
+		parameterName = "pio_" + parameterName;
+	else
+		if (input) 
+			parameterName = "pi_" + parameterName;
+		else
+			parameterName = "po_" + parameterName;
+	return parameterName.ToLower();	
+}
+
+public string GetPackageName(TableSchema table)
+{
+	string tPackageName = table.Name;
+	if (table.Name.ToUpper().StartsWith("ELP_"))
+	{
+	   tPackageName = "ELP_TBL_" + table.Name.Substring(4);
+	}
+	return tPackageName.ToLower();	
+}
+</script>

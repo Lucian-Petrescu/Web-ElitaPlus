@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="2.0" xmlns:edmx="http://schemas.microsoft.com/ado/2008/10/edmx">
+ <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2008/10/edmx">
+    <!-- Diagram content (shape and connector positions) -->
+    <edmx:Diagrams>
+      <Diagram DiagramId="96997f50f4f24102b4f0b3e9c497d54b" Name="Diagram1" ZoomLevel="100">
+        <EntityTypeShape EntityType="Model2.Dealer" Width="1.5" PointX="0.75" PointY="0.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="Model2.Product" Width="1.5" PointX="3" PointY="4.125" />
+        <AssociationConnector Association="Model2.FK_PRODUCT_DEALER" />
+        <EntityTypeShape EntityType="Model2.CommissionPeriod" Width="1.5" PointX="2.625" PointY="0.75" />
+        <AssociationConnector Association="Model2.FK_COMMPERIOD_DEALER" />
+        <EntityTypeShape EntityType="Model2.CommissionBreakdown" Width="1.5" PointX="4.5" PointY="0.75" />
+        <AssociationConnector Association="Model2.FK_COMMBREAKDOWN_PERIOD" />
+        <EntityTypeShape EntityType="Model2.SuspendedReason" Width="1.5" PointX="3" PointY="0.75" />
+        <AssociationConnector Association="Model2.FK_SUSPENDED_REASON_DEALER" />
+        <EntityTypeShape EntityType="Model2.DealerRuleList" Width="1.5" PointX="5.25" PointY="0.75" />
+        <EntityTypeShape EntityType="Model2.Rule" Width="1.5" PointX="8" PointY="4.375" />
+        <EntityTypeShape EntityType="Model2.RuleList" Width="1.5" PointX="7.25" PointY="0.75" />
+        <EntityTypeShape EntityType="Model2.RuleListDetail" Width="1.5" PointX="9.25" PointY="0.875" />
+        <AssociationConnector Association="Model2.FK_DRL_ID" />
+        <AssociationConnector Association="Model2.FK_RL_ID" />
+        <AssociationConnector Association="Model2.FK_RLD_RULE_ID" />
+        <AssociationConnector Association="Model2.FK_RULELIST_ID" />
+        <EntityTypeShape EntityType="Model2.RuleIssue" Width="1.5" PointX="10" PointY="4.25" />
+        <AssociationConnector Association="Model2.FK_RULE_ID" />
+        <EntityTypeShape EntityType="Model2.Issue" Width="1.5" PointX="12.125" PointY="4.25" IsExpanded="true" />
+        <AssociationConnector Association="Model2.FK_ISSUE_ID" />
+        <EntityTypeShape EntityType="Model2.ListPrice" Width="1.875" PointX="8.875" PointY="10.25" />
+        <EntityTypeShape EntityType="Model2.WarrantyMaster" Width="2" PointX="5.75" PointY="9.375" />
+        <AssociationConnector Association="Model2.FK_WARRANTY_MASTER_DEALER" />
+        <AssociationConnector Association="Model2.FK_WARRANTY_MSTR" />
+        <EntityTypeShape EntityType="Model2.Contract" Width="2.75" PointX="3" PointY="15.875" />
+        <AssociationConnector Association="Model2.FK_CONTRACT_DEALER" />
+        <EntityTypeShape EntityType="Model2.ELP_ENTITY_ISSUE" Width="1.5" PointX="14.375" PointY="3.5" />
+        <EntityTypeShape EntityType="Model2.IssueQuestion" Width="1.5" PointX="14.375" PointY="7.5" />
+        <EntityTypeShape EntityType="Model2.SoftQuestion" Width="1.5" PointX="11.375" PointY="9.125" />
+        <AssociationConnector Association="Model2.FK_ENT_ISSUE_ID" />
+        <AssociationConnector Association="Model2.FK_ISS_ID" />
+        <AssociationConnector Association="Model2.FK_SOFT_Q_ID" />
+        <AssociationConnector Association="Model2.FK_SOFT_QST_PARENT" />
+        <EntityTypeShape EntityType="Model2.Coverage" Width="2.25" PointX="13.375" PointY="11.75" />
+        <EntityTypeShape EntityType="Model2.Item" Width="1.5" PointX="7.75" PointY="16.375" />
+        <AssociationConnector Association="Model2.FK_COVERAGE_ITEM" />
+        <AssociationConnector Association="Model2.FK_ITEM_PRODUCT" />
+        <EntityTypeShape EntityType="Model2.DealerGroup" Width="1.5" PointX="0.75" PointY="27.875" />
+        <AssociationConnector Association="Model2.FK_DEALER_DEALER_GROUP" />
+        </Diagram>
+    </edmx:Diagrams>
+  </edmx:Designer>
+</edmx:Edmx>

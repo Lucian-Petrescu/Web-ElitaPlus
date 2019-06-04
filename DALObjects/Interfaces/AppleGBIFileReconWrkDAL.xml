@@ -1,0 +1,80 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<SQL>
+  <LOAD>
+    <![CDATA[
+select
+  ben_gbiclaim_queue_id
+, reject_code
+, reject_reason
+, record_status
+, customer_id
+, ship_to_id
+, agreement_id
+, unique_identifier
+, original_serial_number
+, original_imei_number
+, new_serial_number
+, new_imei_number
+, repair_completion_date
+, claim_type
+, channel
+, incident_fee
+, notif_create_date
+, repair_completed
+, repair_completed_date
+, claim_cancelled
+, description
+, created_by
+, created_date
+, modified_by
+, modified_date
+,device_type
+from elita.elp_ben_gbiclaim_queue
+where ben_gbiclaim_queue_id = :ben_gbiclaim_queue_id
+    ]]>
+  </LOAD>
+  <UPDATE>
+    <![CDATA[
+update elita.elp_ben_gbiclaim_queue
+   set reject_code               = :reject_code,
+       reject_reason             = :reject_reason,
+       record_status             = :record_status,
+       customer_id               = :customer_id,
+       ship_to_id                = :ship_to_id,
+       agreement_id              = :agreement_id,
+       unique_identifier         = :unique_identifier,
+       original_serial_number    = :original_serial_number,
+       original_imei_number      = :original_imei_number,
+       new_serial_number         = :new_serial_number,
+       new_imei_number           = :new_imei_number,
+       repair_completion_date    = :repair_completion_date,
+       claim_type                = :claim_type,
+       channel                   = :channel,
+       incident_fee              = :incident_fee,
+       notif_create_date         = :notif_create_date,
+       repair_completed          = :repair_completed,
+       repair_completed_date     = :repair_completed_date,
+       claim_cancelled           = :claim_cancelled,
+       description               = :description,
+       modified_by               = :modified_by,
+       modified_date             = :modified_date,
+       device_type               = :device_type
+ where ben_gbiclaim_queue_id = :ben_gbiclaim_queue_id 
+    ]]>
+  </UPDATE>
+  <INSERT>
+    <![CDATA[
+    ]]>
+  </INSERT>
+  <DELETE>
+    <![CDATA[
+delete elita.elp_ben_gbiclaim_queue
+ where ben_gbiclaim_queue_id = :ben_gbiclaim_queue_id    
+    ]]>
+  </DELETE>
+  <SUMMARY>elita.elp_gbi_claim_load.LoadList</SUMMARY>
+  <DETAIL>elita.elp_gbi_claim_load.LoadDetailList</DETAIL>
+  <PROCESS_CLAIM_FILE>
+    elita.elp_gbi_claim_process.ProcessFileAsyn
+  </PROCESS_CLAIM_FILE>
+</SQL>

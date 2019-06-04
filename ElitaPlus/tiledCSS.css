@@ -1,0 +1,150 @@
+﻿#sub-title {
+            width: 100%;
+            display: table;
+        }
+        #sub-right,
+        #sub-left{
+            display: table-cell; 
+        }
+        .claimedDeviceSeparator {
+            border-width: 3px;
+        }
+
+        .standardDeviceSeparator {
+            border-width: 1px;
+        }
+
+        dataRep hr {
+            width: 100%;
+            border-color : #999;
+            border-style: solid;
+        }
+        
+        .repContainer {
+            border-left: 10px solid #0066CC;
+            border-top: 1px solid #999;
+            border-right: 1px solid #999;
+            padding: 0px;
+            margin: 0px;
+            border-bottom: 0px solid #E1E1E1;
+        }
+        table.dataRep {
+            border-left: 0px;
+            padding: 0px;
+            margin: 0px;
+            border-bottom: 0px solid #E1E1E1;
+        }
+
+            table.dataRep td {
+                padding: 4px 6px;
+                margin: 0px;
+                vertical-align: top;
+                font-size: 13px;
+                border-bottom: 0px solid #E1E1E1;
+            }
+
+                table.dataRep td.noBor {
+                    border: none;
+                }
+
+                table.dataRep td.bor {
+                    border-bottom: 1px solid #999;
+                }
+
+            table.dataRep th {
+                padding: 3px 6px;
+                margin: 0px;
+                vertical-align: top;
+                font-size: 13px;
+                color: #333;
+                text-align: left;
+                background: url('Images/dataGrdHeadBg.png') repeat-x bottom left;
+                border-right: 1px solid #CCC;
+                border-bottom: 1px solid #999;
+            }
+
+            table.dataRep td.StatActive {
+                text-align: left;
+                color: #339900;
+                font-size: 13px;
+                font-weight: bold;
+            }
+
+            table.dataRep td.StatPending {
+                text-align: left;
+                color: #CC6600;
+                font-size: 13px;
+                font-weight: bold;
+            }
+
+        table.dataGrid td.StatInactive {
+            text-align: left;
+            color: #CC0000;
+            font-size: 13px;
+            font-weight: bold;
+        }
+
+        table.dataRep td.covActive {
+            text-align: left;
+            color: #009933;
+            font-size: 13px;
+            font-weight: bold;
+        }
+
+        table.dataRep td a {
+            color: #0066CC;
+        }
+
+            table.dataRep td a:hover {
+                color: #0066CC;
+            }
+
+        table.dataRep th a {
+            color: #333;
+            text-decoration: none;
+        }
+
+        table.dataGrid th a:hover {
+            color: #0066CC;
+            text-decoration: underline;
+        }
+
+        table.dataRep tr.over {
+            background: url('Images/row_hover.png') repeat bottom left;
+        }
+
+        table.dataRep tr.out {
+            background-color: #fff;
+        }
+
+        table.dataRep tr.selected {
+            background: #CCC;
+        }
+
+        table.dataRep td select {
+            background: url('Images/inputBg.png') repeat-x;
+            border: 1px solid #999;
+            padding: 1px;
+            margin: 0px;
+            color: #333;
+        }
+
+        .normalText {
+            color: black;
+        }
+
+        .successText {
+           color: green;
+        }
+
+        .failText {
+            color: red;
+        }
+
+        .highlightText {
+            color: blue;
+        }
+
+        .boldText {
+            font-weight: bold;
+        }

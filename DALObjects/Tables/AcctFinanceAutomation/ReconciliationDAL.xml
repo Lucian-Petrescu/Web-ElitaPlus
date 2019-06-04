@@ -1,0 +1,125 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+
+<!-- ********************** THIS FILE HAS BEEN GENERATED FROM TEMPLATE SQLObject.cst (1/8/2015)********************** -->
+
+<SQL>
+  <LOAD>
+    <![CDATA[	
+			SELECT 
+				dealer_id,
+				billing_date,
+				soc_type,
+				account_status,
+				billable_count,
+				carrier_count,
+				discrepancy,
+				created_date,
+				created_by,
+				modified_date,
+				modified_by,
+				afa_enroll_recon_discrep_id
+			FROM elp_afa_enroll_recon_discrep 
+			WHERE
+				afa_enroll_recon_discrep_id = :afa_enroll_recon_discrep_id
+		]]>
+  </LOAD>
+  <LOAD_LIST>
+    --select billing_date,soc_type,account_status,billable_count,carrier_count,discrepancy from elp_afa_enroll_recon_discrep
+    --where dealer_id = :dealer_id
+    ----dynamic_where_clause
+    --and account_status = 'ACTIVE'
+    --order by billing_date,account_status asc
+  </LOAD_LIST>
+  <LOAD_PHP_RECON_DATA>
+    select billing_date,soc_type,account_status,billable_count,carrier_count,discrepancy from elp_afa_enroll_recon_discrep
+    where dealer_id = :dealer_id
+    --dynamic_where_clause
+    and nvl(account_status,'NO') = 'ACTIVE'
+    UNION ALL
+    select billing_date,soc_type,account_status,billable_count,carrier_count,discrepancy from elp_afa_enroll_recon_discrep
+    where dealer_id = :dealer_id
+    --dynamic_where_clause
+    and nvl(account_status,'NO') != 'ACTIVE'
+    order by billing_date asc,soc_type desc,account_status asc
+  </LOAD_PHP_RECON_DATA>
+  <LOAD_PHP_RECON_DATA_DISCREP_ONLY>
+    select billing_date,soc_type,account_status,billable_count,carrier_count,discrepancy from elp_afa_enroll_recon_discrep
+    where dealer_id = :dealer_id
+    --dynamic_where_clause
+    and nvl(account_status,'NO') = 'ACTIVE'
+    and discrepancy = 'Y'
+    UNION ALL
+    select billing_date,soc_type,account_status,billable_count,carrier_count,discrepancy from elp_afa_enroll_recon_discrep
+    where dealer_id = :dealer_id
+    --dynamic_where_clause
+    and nvl(account_status,'NO') != 'ACTIVE'
+    and discrepancy = 'Y'
+    order by billing_date asc,soc_type desc,account_status asc
+  </LOAD_PHP_RECON_DATA_DISCREP_ONLY>
+  <LOAD_MHP_RECON_DATA>
+    select billing_date,soc_type,account_status,billable_count,carrier_count,billable_amount,carrier_amount,discrepancy from elp_afa_enroll_recon_discrep
+    where dealer_id = :dealer_id
+    --dynamic_where_clause
+    order by billing_date asc,
+    decode(soc_type, 'NY Subscribers', 1, 'Non-NY Subscribers', 2, 5),
+    decode(account_status,'Enrolled', 1, 'Billable/Enrolled', 1,'DeEnrolled', 2,'Buyers Remorse Count',3,'Deenrolled TAC Code Adjustment',4,'DeEnrolled TAC Code Adjustment',4,'Stand Alone Enrolled',5,'Stand Alone DeEnrolled',6)
+  </LOAD_MHP_RECON_DATA>
+  <LOAD_MHP_RECON_DATA_DISCREP_ONLY>
+    select billing_date,soc_type,account_status,billable_count,carrier_count,billable_amount,carrier_amount,discrepancy from elp_afa_enroll_recon_discrep
+    where dealer_id = :dealer_id
+    --dynamic_where_clause
+    and discrepancy = 'Y'
+    order by billing_date asc,
+    decode(soc_type, 'NY Subscribers', 1, 'Non-NY Subscribers', 2, 5),
+    decode(account_status,'Enrolled', 1, 'Billable/Enrolled', 1,'DeEnrolled', 2,'Buyers Remorse Count',3,'Deenrolled TAC Code Adjustment',4,'DeEnrolled TAC Code Adjustment',4,'Stand Alone Enrolled',5,'Stand Alone DeEnrolled',6)
+  </LOAD_MHP_RECON_DATA_DISCREP_ONLY>
+   <OVERRIDE_RECON>
+    elita.elp_afa_reconcile.OverRideReconciliation
+  </OVERRIDE_RECON>
+  <UPDATE>
+    <![CDATA[	
+			UPDATE elp_afa_enroll_recon_discrep SET
+				dealer_id = :dealer_id,
+				billing_date = :billing_date,
+				soc_type = :soc_type,
+				account_status = :account_status,
+				billable_count = :billable_count,
+				carrier_count = :carrier_count,
+				discrepancy = :discrepancy,
+				modified_by = :modified_by
+			WHERE
+				afa_enroll_recon_discrep_id = :afa_enroll_recon_discrep_id
+		]]>
+  </UPDATE>
+  <INSERT>
+    INSERT INTO elp_afa_enroll_recon_discrep
+    (
+    dealer_id,
+    billing_date,
+    soc_type,
+    account_status,
+    billable_count,
+    carrier_count,
+    discrepancy,
+    created_by,
+    afa_enroll_recon_discrep_id
+    )
+    VALUES
+    (
+    :dealer_id,
+    :billing_date,
+    :soc_type,
+    :account_status,
+    :billable_count,
+    :carrier_count,
+    :discrepancy,
+    :created_by,
+    :afa_enroll_recon_discrep_id
+    )
+  </INSERT>
+  <DELETE>
+    DELETE FROM elp_afa_enroll_recon_discrep
+    WHERE
+    afa_enroll_recon_discrep_id = :afa_enroll_recon_discrep_id
+  </DELETE>
+</SQL>

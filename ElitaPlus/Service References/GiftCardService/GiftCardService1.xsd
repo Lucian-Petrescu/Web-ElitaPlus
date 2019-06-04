@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xs:schema xmlns:tns="http://schemas.datacontract.org/2004/07/Assurant.Elita.GiftCardService.Contracts" elementFormDefault="qualified" targetNamespace="http://schemas.datacontract.org/2004/07/Assurant.Elita.GiftCardService.Contracts" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+  <xs:simpleType name="EntityTypes">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="Certificate" />
+      <xs:enumeration value="Claim" />
+      <xs:enumeration value="ClaimAuthorization" />
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:element name="EntityTypes" nillable="true" type="tns:EntityTypes" />
+</xs:schema>

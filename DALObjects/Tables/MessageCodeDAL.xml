@@ -1,0 +1,87 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+
+<!-- ********************** THIS FILE HAS BEEN GENERATED FROM TEMPLATE SQLObject.cst (10/29/2008)********************** -->
+
+<SQL>
+  <LOAD>
+    <![CDATA[	
+			SELECT 
+				msg_type,
+				msg_code,
+				label_id,
+				msg_parameter_count,
+				created_by,
+				created_date,
+				modified_by,
+				modified_date,
+				msg_code_id
+			FROM elp_message_code 
+			WHERE
+				msg_code_id = :msg_code_id
+		]]>
+  </LOAD>
+  <LOAD_LIST>
+    <![CDATA[	
+    select mc.MSG_CODE_ID,	mc.MSG_TYPE	, mc.MSG_CODE, 	mc.LABEL_ID, mc.MSG_PARAMETER_COUNT	, l.UI_PROG_CODE
+    From elp_message_code mc
+    INNER JOIN ELP_LABEL l on mc.label_id = l.label_id
+    where 1=1
+    --dynamic_where_clause
+    ]]>
+  </LOAD_LIST>
+  <UPDATE> 
+    <![CDATA[	
+			UPDATE elp_message_code SET
+				msg_type = :msg_type,
+				msg_code = :msg_code,
+				label_id = :label_id,
+				msg_parameter_count = :msg_parameter_count,
+				modified_by = :modified_by
+			WHERE
+				msg_code_id = :msg_code_id
+		]]>
+  </UPDATE>
+  <INSERT>
+    INSERT INTO elp_message_code
+    (
+    msg_type,
+    msg_code,
+    label_id,
+    msg_parameter_count,
+    created_by,
+    msg_code_id
+    )
+    VALUES
+    (
+    :msg_type,
+    :msg_code,
+    :label_id,
+    :msg_parameter_count,
+    :created_by,
+    :msg_code_id
+    )
+  </INSERT>
+  <DELETE>
+    DELETE FROM elp_message_code
+    WHERE
+    msg_code_id = :msg_code_id
+  </DELETE>
+  <GET_EXISTING_MSG_CODE>
+    select mc.MSG_CODE, l.UI_PROG_CODE
+    from ELP_MESSAGE_CODE MC
+    inner join ELP_LIST_ITEM li  ON msg_type = li.LIST_ITEM_ID AND li.code = :code
+    INNER JOIN ELP_LIST l ON l.LIST_ID = li.LIST_ID AND  l.code = 'MSGTYPE'
+    LEFT OUTER join ELP_LABEL L  ON MC.LABEL_ID = L.LABEL_ID
+    where msg_code = :msg_code or ui_prog_code = :ui_prog_code
+  </GET_EXISTING_MSG_CODE>
+  <GET_ID_FROM_MSGCODE>
+    select mc.MSG_CODE_ID
+    from ELP_MESSAGE_CODE MC
+    inner join ELP_LIST_ITEM li  ON msg_type = li.LIST_ITEM_ID AND li.code = :code
+    INNER JOIN ELP_LIST l ON l.LIST_ID = li.LIST_ID AND  l.code = 'MSGTYPE'
+    LEFT OUTER join ELP_LABEL L  ON MC.LABEL_ID = L.LABEL_ID
+    where msg_code = :msg_code
+  </GET_ID_FROM_MSGCODE>
+</SQL>
+
+

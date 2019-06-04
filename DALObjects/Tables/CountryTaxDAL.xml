@@ -1,0 +1,315 @@
+<?xml version="1.0" encoding="utf-8" ?>
+
+<!-- ********************** THIS FILE HAS BEEN GENERATED FROM TEMPLATE SQLObject.cst (8/17/2007)********************** -->
+
+<SQL>
+  <LOAD>
+    <![CDATA[	
+			SELECT 
+				country_id,
+				tax_type_id,
+				effective_date,
+				expiration_date,
+				tax1_description,
+				tax1_percent_flag_id,
+				tax1_compute_method_id,
+				tax1_percent,
+				tax2_description,
+				tax2_compute_method_id,
+				tax2_percent_flag_id,
+				tax2_percent,
+				tax3_description,
+				tax3_compute_method_id,
+				tax3_percent_flag_id,
+				tax3_percent,
+				tax4_description,
+				tax4_compute_method_id,
+				tax4_percent_flag_id,
+				tax4_percent,
+				tax5_description,
+				tax5_compute_method_id,
+				tax5_percent_flag_id,
+				tax5_percent,
+				tax6_description,
+				tax6_compute_method_id,
+				tax6_percent_flag_id,
+				tax6_percent,
+				created_date,
+				modified_date,
+				created_by,
+				modified_by,
+				company_type_id,
+        product_tax_type_id,
+				country_tax_id,
+        dealer_id,
+        apply_withholding_flag
+			FROM elp_country_tax 
+			WHERE
+				country_tax_id = :country_tax_id
+		]]>
+  </LOAD>
+  <LOAD_LIST>
+    <![CDATA[	
+       SELECT COUNTRY_TAX_ID, 
+       TTAX, 
+       PRODUCT_TAX_TYPE, 
+       COMPANY_TYPE, 
+       EFFECTIVE_DATE, 
+       EXPIRATION_DATE, 
+       COUNTRY_ID, 
+       COUNTRY_NAME, 
+       TAX_CODE,
+       A.DEALER DEALER  from 
+      (SELECT ct.COUNTRY_TAX_ID COUNTRY_TAX_ID, ttdi.translation TTAX, pttdi.translation product_tax_type,
+                ctdi.translation company_type ,
+                TO_CHAR(ct.EFFECTIVE_DATE,'DD-Mon-YYYY') EFFECTIVE_DATE,
+                TO_CHAR(ct.EXPIRATION_DATE,'DD-Mon-YYYY') EXPIRATION_DATE, 
+                ct.COUNTRY_ID, 
+                co.description as country_name,
+                ttli.code TAX_CODE,
+                CASE
+                WHEN dea.dealer IS NULL THEN 
+                  (select dttdi.translation from elita.elp_list_item dttli,elita.elp_list dttl, elita.elp_dict_item_translation dttdi
+                          where dttli.list_id = dttl.list_id
+                          and dttdi.dict_item_id = dttli.dict_item_id
+                          and dttdi.language_id = :language_id
+                          and dttli.code = 'AL'
+                          and dttl.code = 'PTT')
+                ELSE dea.dealer
+                END as DEALER
+            FROM elita.elp_country_tax ct,elita.elp_country co,
+              elita.elp_list_item ttli, elita.elp_dict_item_translation ttdi,
+              elita.elp_list_item ctli, elita.elp_dict_item_translation ctdi,
+              elita.elp_list_item pttli, elita.elp_dict_item_translation pttdi,
+              elita.elp_dealer dea
+            where ct.tax_type_id = ttli.list_item_id 
+              and ttli.dict_item_id = ttdi.dict_item_id
+              and ttdi.language_id = ctdi.language_id
+              and pttli.list_item_id = ct.product_tax_type_id  
+              and pttdi.dict_item_id = pttli.dict_item_id 
+              and pttdi.language_id = ctdi.language_id
+              and ct.company_type_id = ctli.list_item_id and ctli.dict_item_id = ctdi.dict_item_id
+              and ttdi.language_id = ctdi.language_id 
+              and ctdi.language_id = :language_id
+              and ct.dealer_id = dea.dealer_id(+) 
+              and ct.country_id = co.country_id
+              --dynamic_where_clause) A,
+              (select dealer, 
+                      dealer_id 
+                      from elita.elp_dealer where --dynamic_in_clause
+               union
+               select dttdi.translation dealer, utl_raw.cast_to_raw(dttdi.translation) dealer_id from elita.elp_list_item dttli, elita.elp_dict_item_translation dttdi
+               where dttdi.dict_item_id = dttli.dict_item_id 
+               and dttdi.language_id = :language_id
+               and code = 'AL') B               
+      WHERE A.dealer = B.dealer         
+      ORDER BY COUNTRY_NAME, TTAX, COMPANY_TYPE, EFFECTIVE_DATE  desc
+    ]]>
+  </LOAD_LIST>
+  <MAX_EXPIRATION_DATE>
+    <![CDATA[
+    select max(expiration_date) expiration_date
+     from elp_country_Tax
+      WHERE COUNTRY_ID = :COUNTRY_ID
+          AND TAX_TYPE_ID = :TAX_TYPE_ID
+          AND COMPANY_TYPE_ID = :COMPANY_TYPE_ID
+          AND PRODUCT_TAX_TYPE_ID = :PRODUCT_TAX_TYPE_ID
+          --dynamic_where_clause
+    ]]>
+  </MAX_EXPIRATION_DATE>
+  <MINEFFDATE_MAXEXPDATE>
+    <![CDATA[
+    SELECT	min(effective_date) EFFECTIVE_DATE, MAX(EXPIRATION_DATE) EXPIRATION_DATE  , count(*) RECORD_COUNT
+      FROM ELP_COUNTRY_TAX
+    WHERE COUNTRY_ID = :COUNTRY_ID
+			    AND TAX_TYPE_ID = :TAX_TYPE_ID
+          AND COMPANY_TYPE_ID = :COMPANY_TYPE_ID 
+          AND PRODUCT_TAX_TYPE_ID = :PRODUCT_TAX_TYPE_ID
+          --dynamic_where_clause
+    ]]>
+  </MINEFFDATE_MAXEXPDATE>
+  <UPDATE>
+    <![CDATA[	
+			UPDATE elp_country_tax SET
+				country_id = :country_id,
+				tax_type_id = :tax_type_id,
+				effective_date = :effective_date,
+				expiration_date = :expiration_date,
+				tax1_description = :tax1_description,
+				tax1_percent_flag_id = :tax1_percent_flag_id,
+				tax1_compute_method_id = :tax1_compute_method_id,
+				tax1_percent = :tax1_percent,
+				tax2_description = :tax2_description,
+				tax2_compute_method_id = :tax2_compute_method_id,
+				tax2_percent_flag_id = :tax2_percent_flag_id,
+				tax2_percent = :tax2_percent,
+				tax3_description = :tax3_description,
+				tax3_compute_method_id = :tax3_compute_method_id,
+				tax3_percent_flag_id = :tax3_percent_flag_id,
+				tax3_percent = :tax3_percent,
+				tax4_description = :tax4_description,
+				tax4_compute_method_id = :tax4_compute_method_id,
+				tax4_percent_flag_id = :tax4_percent_flag_id,
+				tax4_percent = :tax4_percent,
+				tax5_description = :tax5_description,
+				tax5_compute_method_id = :tax5_compute_method_id,
+				tax5_percent_flag_id = :tax5_percent_flag_id,
+				tax5_percent = :tax5_percent,
+				tax6_description = :tax6_description,
+				tax6_compute_method_id = :tax6_compute_method_id,
+				tax6_percent_flag_id = :tax6_percent_flag_id,
+				tax6_percent = :tax6_percent,
+				company_type_id = :company_type_id,
+				modified_by = :modified_by,
+        product_tax_type_id = :product_tax_type_id,
+        dealer_id = :dealer_id,
+        apply_withholding_flag = :apply_withholding_flag
+			WHERE
+				country_tax_id = :country_tax_id
+		]]>
+  </UPDATE>
+  <INSERT>
+    INSERT INTO elp_country_tax
+    (
+    country_id,
+    tax_type_id,
+    effective_date,
+    expiration_date,
+    tax1_description,
+    tax1_percent_flag_id,
+    tax1_compute_method_id,
+    tax1_percent,
+    tax2_description,
+    tax2_compute_method_id,
+    tax2_percent_flag_id,
+    tax2_percent,
+    tax3_description,
+    tax3_compute_method_id,
+    tax3_percent_flag_id,
+    tax3_percent,
+    tax4_description,
+    tax4_compute_method_id,
+    tax4_percent_flag_id,
+    tax4_percent,
+    tax5_description,
+    tax5_compute_method_id,
+    tax5_percent_flag_id,
+    tax5_percent,
+    tax6_description,
+    tax6_compute_method_id,
+    tax6_percent_flag_id,
+    tax6_percent,
+    company_type_id,
+    created_by,
+    country_tax_id,
+    product_tax_type_id,
+    dealer_id,
+    apply_withholding_flag
+    )
+    VALUES
+    (
+    :country_id,
+    :tax_type_id,
+    :effective_date,
+    :expiration_date,
+    :tax1_description,
+    :tax1_percent_flag_id,
+    :tax1_compute_method_id,
+    :tax1_percent,
+    :tax2_description,
+    :tax2_compute_method_id,
+    :tax2_percent_flag_id,
+    :tax2_percent,
+    :tax3_description,
+    :tax3_compute_method_id,
+    :tax3_percent_flag_id,
+    :tax3_percent,
+    :tax4_description,
+    :tax4_compute_method_id,
+    :tax4_percent_flag_id,
+    :tax4_percent,
+    :tax5_description,
+    :tax5_compute_method_id,
+    :tax5_percent_flag_id,
+    :tax5_percent,
+    :tax6_description,
+    :tax6_compute_method_id,
+    :tax6_percent_flag_id,
+    :tax6_percent,
+    :company_type_id,
+    :created_by,
+    :country_tax_id,
+    :product_tax_type_id,
+    :dealer_id,
+    :apply_withholding_flag
+    )
+  </INSERT>
+  <DELETE>
+    DELETE FROM elp_country_tax
+    WHERE
+    country_tax_id = :country_tax_id
+  </DELETE>
+  <GET_TAX_RATE>
+    GET_TAX_RATE
+  </GET_TAX_RATE>
+
+  <GET_MANUAL_TAXES_BY_TAX_TYPE>
+     <![CDATA[
+      select case when Tax1Manual = 'Y' OR Tax2Manual = 'Y' OR Tax3Manual = 'Y' OR Tax4Manual = 'Y' OR Tax5Manual = 'Y' OR Tax6Manual = 'Y' THEN 'Y' ELSE 'N' END ManualClaimTax
+      , Tax1Manual, TAX1_DESCRIPTION
+      , Tax2Manual, TAX2_DESCRIPTION
+      , Tax3Manual, TAX3_DESCRIPTION
+      , Tax4Manual, TAX4_DESCRIPTION
+      , Tax5Manual, TAX5_DESCRIPTION
+      , Tax6Manual, TAX6_DESCRIPTION
+      from (select CASE GETCODEFROMLISTITEM(TAX1_COMPUTE_METHOD_ID) WHEN 'I' THEN 'Y' ELSE 'N' END Tax1Manual, TAX1_DESCRIPTION
+        , CASE GETCODEFROMLISTITEM(TAX2_COMPUTE_METHOD_ID) WHEN 'I' THEN 'Y' ELSE 'N' END Tax2Manual, TAX2_DESCRIPTION
+        , CASE GETCODEFROMLISTITEM(TAX3_COMPUTE_METHOD_ID) WHEN 'I' THEN 'Y' ELSE 'N' END Tax3Manual, TAX3_DESCRIPTION
+        , CASE GETCODEFROMLISTITEM(TAX4_COMPUTE_METHOD_ID) WHEN 'I' THEN 'Y' ELSE 'N' END Tax4Manual, TAX4_DESCRIPTION
+        , CASE GETCODEFROMLISTITEM(TAX5_COMPUTE_METHOD_ID) WHEN 'I' THEN 'Y' ELSE 'N' END Tax5Manual, TAX5_DESCRIPTION
+        , CASE GETCODEFROMLISTITEM(TAX6_COMPUTE_METHOD_ID) WHEN 'I' THEN 'Y' ELSE 'N' END Tax6Manual, TAX6_DESCRIPTION
+        from ELP_COUNTRY_TAX ct
+        where COUNTRY_ID = :COUNTRY_ID
+        AND EFFECTIVE_DATE <= :EFFCT_DATE
+        AND EXPIRATION_DATE >= :EFFCT_DATE
+        --dynamic_where_clause
+        and TAX_TYPE_ID in  (select li.List_Item_ID i from ELP_LIST l
+                              INNER JOIN ELP_LIST_ITEM li ON l.LIST_ID = li.LIST_ID
+                              where L.CODE = 'TTYP' and li.code = :TAX_TYPE_CODE )
+      )
+    ]]>
+  </GET_MANUAL_TAXES_BY_TAX_TYPE>
+
+  <GET_REGION_TAX_FROM_COUNTRY_TAX>
+    <![CDATA[
+     select COUNT(*) RECORD_COUNT 
+      from 
+        (select * 
+        from (select distinct CT.country_id, CT.tax_type_id,
+             CT.product_Tax_type_id,nvl(CT.dealer_id,utl_raw.cast_to_raw('ALL')) dealer_id,
+             rank() over (partition by CT.country_id, CT.tax_type_id,
+             CT.product_Tax_type_id order by CT.dealer_id) rk  
+             FROM ELP_COUNTRY_TAX CT
+                WHERE CT.COUNTRY_ID            = :COUNTRY_ID
+                  AND CT.TAX_TYPE_ID          = :TAX_TYPE_ID
+                  AND CT.PRODUCT_TAX_TYPE_ID  = :PRODUCT_TAX_TYPE_ID
+                  and (CT.dealer_id = :dealer_id or CT.dealer_id is null))
+         where rk = 1) A,
+        (select * 
+         from (select distinct R.country_id, RT.tax_type_id,
+             RT.product_Tax_type_id,nvl(RT.dealer_id,utl_raw.cast_to_raw('ALL')) dealer_id,
+             rank() over (partition by R.country_id, RT.tax_type_id,
+             RT.product_Tax_type_id order by RT.dealer_id) rk  
+             FROM ELP_REGION R, ELP_REGION_TAX RT 
+                WHERE R.REGION_ID             = RT.REGION_ID
+                  AND R.COUNTRY_ID            = :COUNTRY_ID
+                  AND RT.TAX_TYPE_ID          = :TAX_TYPE_ID
+                  AND RT.PRODUCT_TAX_TYPE_ID  = :PRODUCT_TAX_TYPE_ID
+                  and (RT.dealer_id = :dealer_id or RT.dealer_id is null))
+         where rk = 1) B
+      where A.dealer_id = B.dealer_id
+    ]]>
+  </GET_REGION_TAX_FROM_COUNTRY_TAX>
+</SQL>
+
+

@@ -1,0 +1,80 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+
+<!-- ********************** THIS FILE HAS BEEN GENERATED FROM TEMPLATE SQLObject.cst (11/12/2008)********************** -->
+
+<SQL>
+  <LOAD>
+    <![CDATA[	
+			SELECT 
+				transaction_log_header_id,
+				item_number,
+				response,
+				response_detail,
+				xml_service_center_code,
+				xml_description,
+				xml_tax_id,
+				xml_status_code,
+				modified_date,
+				modified_by,
+				created_date,
+				created_by,
+				trans_dtl_service_center_id
+			FROM elp_trans_dtl_service_center 
+			WHERE
+				trans_dtl_service_center_id = :trans_dtl_service_center_id
+		]]>
+  </LOAD>
+  <LOAD_LIST>
+  </LOAD_LIST>
+  <UPDATE>
+    <![CDATA[	
+			UPDATE elp_trans_dtl_service_center SET
+				transaction_log_header_id = :transaction_log_header_id,
+				item_number = :item_number,
+				response = :response,
+				response_detail = :response_detail,
+				xml_service_center_code = :xml_service_center_code,
+				xml_description = :xml_description,
+				xml_tax_id = :xml_tax_id,
+				xml_status_code = :xml_status_code,
+				modified_by = :modified_by
+			WHERE
+				trans_dtl_service_center_id = :trans_dtl_service_center_id
+		]]>
+  </UPDATE>
+  <INSERT>
+    INSERT INTO elp_trans_dtl_service_center
+    (
+    transaction_log_header_id,
+    item_number,
+    response,
+    response_detail,
+    xml_service_center_code,
+    xml_description,
+    xml_tax_id,
+    xml_status_code,
+    created_by,
+    trans_dtl_service_center_id
+    )
+    VALUES
+    (
+    :transaction_log_header_id,
+    :item_number,
+    :response,
+    :response_detail,
+    :xml_service_center_code,
+    :xml_description,
+    :xml_tax_id,
+    :xml_status_code,
+    :created_by,
+    :trans_dtl_service_center_id
+    )
+  </INSERT>
+  <DELETE>
+    DELETE FROM elp_trans_dtl_service_center
+    WHERE
+    trans_dtl_service_center_id = :trans_dtl_service_center_id
+  </DELETE>
+</SQL>
+
+

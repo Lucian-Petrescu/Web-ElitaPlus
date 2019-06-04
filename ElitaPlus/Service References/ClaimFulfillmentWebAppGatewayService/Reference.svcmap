@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ReferenceGroup xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" ID="51558c00-16b6-4673-91b1-87901c1bd32f" xmlns="urn:schemas-microsoft-com:xml-wcfservicemap">
+  <ClientOptions>
+    <GenerateAsynchronousMethods>false</GenerateAsynchronousMethods>
+    <GenerateTaskBasedAsynchronousMethod>true</GenerateTaskBasedAsynchronousMethod>
+    <EnableDataBinding>true</EnableDataBinding>
+    <ExcludedTypes />
+    <ImportXmlTypes>false</ImportXmlTypes>
+    <GenerateInternalTypes>false</GenerateInternalTypes>
+    <GenerateMessageContracts>false</GenerateMessageContracts>
+    <NamespaceMappings />
+    <CollectionMappings />
+    <GenerateSerializableTypes>true</GenerateSerializableTypes>
+    <Serializer>Auto</Serializer>
+    <UseSerializerForFaults>true</UseSerializerForFaults>
+    <ReferenceAllAssemblies>true</ReferenceAllAssemblies>
+    <ReferencedAssemblies />
+    <ReferencedDataContractTypes />
+    <ServiceContractMappings />
+  </ClientOptions>
+  <MetadataSources>
+    <MetadataSource Address="http://l16mia0d8386gr7.cead.prd/ElitaClaimFulfillment/WebAppGateway/gateway" Protocol="http" SourceId="1" />
+  </MetadataSources>
+  <Metadata>
+    <MetadataFile FileName="gateway1.wsdl" MetadataType="Wsdl" ID="7b8379fd-69ee-4745-b371-eddafae0fb9c" SourceId="1" SourceUrl="http://l16mia0d8386gr7.cead.prd/ElitaClaimFulfillment/WebAppGateway/gateway?wsdl=wsdl0" />
+    <MetadataFile FileName="gateway3.xsd" MetadataType="Schema" ID="2c9fd020-3e4a-48a3-befe-39ee031dcdd2" SourceId="1" SourceUrl="http://l16mia0d8386gr7.cead.prd/ElitaClaimFulfillment/WebAppGateway/gateway?xsd=xsd1" />
+    <MetadataFile FileName="WebAppGateway1.wsdl" MetadataType="Wsdl" ID="342130a7-39ed-4ef7-9fb7-befc044935be" SourceId="1" SourceUrl="http://l16mia0d8386gr7.cead.prd/ElitaClaimFulfillment/WebAppGateway/gateway" />
+    <MetadataFile FileName="gateway31.xsd" MetadataType="Schema" ID="8065b3bf-73af-496e-91ec-d91e3fea1ed7" SourceId="1" SourceUrl="http://l16mia0d8386gr7.cead.prd/ElitaClaimFulfillment/WebAppGateway/gateway?xsd=xsd2" />
+    <MetadataFile FileName="gateway32.xsd" MetadataType="Schema" ID="a7dc28d3-0bde-4d1d-9da8-ab35c753fe59" SourceId="1" SourceUrl="http://l16mia0d8386gr7.cead.prd/ElitaClaimFulfillment/WebAppGateway/gateway?xsd=xsd0" />
+    <MetadataFile FileName="gateway.xsd" MetadataType="Schema" ID="16e3779c-d0e2-4739-98c8-66a94b89532d" SourceId="1" SourceUrl="http://l16mia0d8386gr7.cead.prd/ElitaClaimFulfillment/WebAppGateway/gateway?xsd=xsd3" />
+  </Metadata>
+  <Extensions>
+    <ExtensionFile FileName="configuration91.svcinfo" Name="configuration91.svcinfo" />
+    <ExtensionFile FileName="configuration.svcinfo" Name="configuration.svcinfo" />
+  </Extensions>
+</ReferenceGroup>

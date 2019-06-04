@@ -1,0 +1,154 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+
+<!-- ********************** THIS FILE HAS BEEN GENERATED FROM TEMPLATE SQLObject.cst (2/21/2013)********************** -->
+
+<SQL>
+  <LOAD>
+    <![CDATA[	
+			SELECT 
+				service_center_id,
+				invoice_number,
+				invoice_date,
+				invoice_amount,
+				invoice_status_id,
+				source,
+				created_date,
+				created_by,
+				modified_date,
+				modified_by,
+				invoice_id,
+        due_date,
+        is_complete_id
+			FROM elp_invoice 
+			WHERE
+				invoice_id = hextoraw(:invoice_id)
+		]]>
+  </LOAD>
+  <LOAD_LIST>
+    <![CDATA[
+          select invoice_id, 
+                 invoice_number, 
+                 invoice_date, 
+                 service_center_description, 
+                 elp_dict_item_translation.translation as invoice_status,
+                 invoice_amount,
+                 elp_list_item.code invoice_status_code
+            from elp_invoice_extended_mv
+      inner join elp_company on elp_invoice_extended_mv.company_id = elp_company.company_id
+      inner join elp_list_item on elp_list_item.list_item_id = elp_invoice_extended_mv.invoice_status_id
+      inner join elp_dict_item_translation on elp_dict_item_translation.dict_item_id = elp_list_item.dict_item_id
+           where elp_invoice_extended_mv.company_id in (select company_id from elp_user_company where user_id = :user_id)
+             and elp_dict_item_translation.language_id = hextoraw(:language_id)
+             and rownum <= :row_num
+             --dynamic_where_clause
+        group by invoice_id, invoice_number, invoice_date, service_center_description, elp_dict_item_translation.translation, invoice_amount, elp_list_item.code
+    ]]>
+  </LOAD_LIST>
+  <LOAD_AUTHORIZATION_LIST>
+    <![CDATA[
+          select invoice_id, 
+                 claim_number,
+                 authorization_number,
+                 batch_number,
+	         	     elp_dict_item_translation.translation as authorization_status,
+                 sum(invoice_item_amount) as invoice_auth_amount
+            from elp_invoice_extended_mv
+      inner join elp_list_item on elp_list_item.list_item_id = elp_invoice_extended_mv.claim_authorization_status_id
+      inner join elp_dict_item_translation on elp_dict_item_translation.dict_item_id = elp_list_item.dict_item_id
+           where invoice_id = hextoraw(:invoice_id)
+             and language_id = hextoraw(:language_id)
+        group by invoice_id, claim_number, authorization_number, batch_number, elp_dict_item_translation.translation
+    ]]>
+  </LOAD_AUTHORIZATION_LIST>
+  <LOAD_AUTHORIZATION_FOR_SELECTION>
+    <![CDATA[
+      select elp_claim_authorization.claim_authorization_id,
+	         elp_claim.claim_number,
+	         elp_claim_authorization.authorization_number,
+	         elp_claim_authorization.batch_number,
+	         elp_claim_authorization.svc_reference_number,
+	         elp_cert.customer_name as cust_name,
+	         elp_claim_processing.fn_GetReserveAmount(elp_claim.claim_id, null, null) as reserve_amount,
+	         nvl(elp_claim.deductible, 0) deductible,
+	         sum(elp_claim_auth_item.amount) as INVOICE_AUTH_AMOUNT,
+	         elp_claim_authorization.repair_date,
+	         elp_claim_authorization.pick_up_date
+            from elp_claim_authorization
+      inner join elp_claim
+              on elp_claim.claim_id = elp_claim_authorization.claim_id
+      inner join elp_cert_item_coverage
+              on elp_cert_item_coverage.cert_item_coverage_id = elp_claim.cert_item_coverage_id
+      inner join elp_cert_item
+              on elp_cert_item.cert_item_id = elp_cert_item_coverage.cert_item_id
+      inner join elp_cert
+              on elp_cert.cert_id = elp_cert_item.cert_id
+      inner join elp_claim_auth_item
+              on elp_claim_auth_item.claim_authorization_id = elp_claim_authorization.claim_authorization_id
+           where elp_claim_authorization.service_center_id in (select :service_center_id from dual union select service_center_id from elp_service_center where master_center_id = :service_center_id)
+             and elp_claim_authorization.claim_authorization_status_id in (GetItemIdFromListAndItem('CLM_AUTH_STAT', 'A'), GetItemIdFromListAndItem('CLM_AUTH_STAT', 'F'), GetItemIdFromListAndItem('CLM_AUTH_STAT', 'S'))
+             and not exists (select * from elp_invoice_item where elp_claim_authorization.claim_authorization_id = claim_authorization_id)
+             and ((:batch_number1 is null) or (elp_claim_authorization.batch_number = :batch_number2))
+        group by elp_claim_authorization.claim_authorization_id,
+	             elp_claim.claim_number,
+	             elp_claim_authorization.authorization_number,
+	             elp_claim_authorization.batch_number,
+	             elp_claim_authorization.svc_reference_number,
+	             elp_cert.customer_name,
+	             elp_claim.deductible,
+	             elp_claim_authorization.repair_date,
+	             elp_claim_authorization.pick_up_date,
+               elp_claim_processing.fn_GetReserveAmount(elp_claim.claim_id, null, null)
+    ]]>
+  </LOAD_AUTHORIZATION_FOR_SELECTION>
+  <UPDATE>
+    <![CDATA[	
+			UPDATE elp_invoice SET
+				service_center_id = :service_center_id,
+				invoice_number = :invoice_number,
+				invoice_date = :invoice_date,
+				invoice_amount = :invoice_amount,
+				invoice_status_id = :invoice_status_id,
+				source = :source,
+        due_date = :due_date,
+        is_complete_id = :is_complete_id,
+				modified_by = :modified_by
+			WHERE
+				invoice_id = hextoraw(:invoice_id)
+		]]>
+  </UPDATE>
+  <INSERT>
+    INSERT INTO elp_invoice
+    (
+    service_center_id,
+    invoice_number,
+    invoice_date,
+    invoice_amount,
+    invoice_status_id,
+    source,
+    created_by,
+    invoice_id,
+    due_date,
+    is_complete_id
+    )
+    VALUES
+    (
+    :service_center_id,
+    :invoice_number,
+    :invoice_date,
+    :invoice_amount,
+    :invoice_status_id,
+    :source,
+    :created_by,
+    :invoice_id,
+    :due_date,
+    :is_complete_id
+    )
+  </INSERT>
+  <DELETE>
+    DELETE FROM elp_invoice
+    WHERE
+    invoice_id = hextoraw(:invoice_id)
+  </DELETE>
+</SQL>
+
+

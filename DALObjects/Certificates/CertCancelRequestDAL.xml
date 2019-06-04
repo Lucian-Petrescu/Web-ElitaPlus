@@ -1,0 +1,95 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+
+<!-- ********************** THIS FILE HAS BEEN GENERATED FROM TEMPLATE SQLObject.cst (9/29/2011)********************** -->
+
+<SQL>
+	<LOAD>
+		<![CDATA[	
+			SELECT 
+				cert_id,
+				cancellation_reason_id,
+				cancellation_request_date,
+				cancellation_date,
+				created_by,
+				created_date,
+				modified_by,
+				modified_date,
+				cert_cancel_request_id,
+        status,
+        getenglishdescfromlistitem(getitemidfromitemextendedcode(status)) status_description,
+        status_date,
+        Proof_of_Documentation,
+        Bank_info_id
+			FROM elp_cert_cancel_request 
+			WHERE
+				cert_cancel_request_id = :cert_cancel_request_id
+		]]>
+	</LOAD>
+  <LOAD_BY_CERT_ID>
+    <![CDATA[	
+			SELECT 
+				cert_id,
+				cancellation_reason_id,
+				cancellation_request_date,
+				cancellation_date,
+				--processed_date,
+				created_by,
+				created_date,
+				modified_by,
+				modified_date,
+				cert_cancel_request_id,
+        status,
+        getenglishdescfromlistitem(getitemidfromitemextendedcode(status)) status_description,
+        status_date,
+        Proof_of_Documentation,
+        Bank_info_id
+			FROM elp_cert_cancel_request 
+			WHERE
+				cert_id = :cert_id
+		]]>
+   </LOAD_BY_CERT_ID>
+      <LOAD_LIST>
+      </LOAD_LIST>
+	<UPDATE>
+		<![CDATA[	
+			UPDATE elp_cert_cancel_request SET
+				cert_id = :cert_id,
+				cancellation_reason_id = :cancellation_reason_id,
+				cancellation_request_date = :cancellation_request_date,
+				cancellation_date = :cancellation_date,
+				modified_by = :modified_by
+			WHERE
+				cert_cancel_request_id = :cert_cancel_request_id
+		]]>
+	</UPDATE>
+	<INSERT>
+			INSERT INTO elp_cert_cancel_request
+					(			
+				cert_id, 
+				cancellation_reason_id, 
+				cancellation_request_date, 
+				cancellation_date, 
+				created_by,
+				cert_cancel_request_id
+					)
+			VALUES
+					(			
+				:cert_id, 
+				:cancellation_reason_id, 
+				:cancellation_request_date, 
+				:cancellation_date, 
+				:created_by,
+				:cert_cancel_request_id
+					)
+	</INSERT>
+	<DELETE>
+			DELETE FROM elp_cert_cancel_request
+			WHERE
+				cert_cancel_request_id = :cert_cancel_request_id
+	</DELETE>
+  <PROCESS_CANCELLATION_REQUEST>
+      ELP_CANCELLATIONS.cancel_policy_request
+  </PROCESS_CANCELLATION_REQUEST>
+</SQL> 
+
+

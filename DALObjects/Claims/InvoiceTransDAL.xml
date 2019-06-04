@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="utf-8" ?> 
+<SQL>
+	<LOAD>
+    ELP_CLAIM_PROCESSING.GET_BATCH_INVOICES
+  </LOAD>
+    <INSERT>
+      ELP_CLAIM_PROCESSING.CREATE_BATCH_CLAIMS
+    </INSERT>
+    <UPDATE>
+      ELP_CLAIM_PROCESSING.UPDATE_BATCH_CLAIMS
+    </UPDATE>
+    <DELETE>
+        SELECT 1 FROM DUAL
+    </DELETE>
+    <LOAD_DETAIL>
+      ELP_CLAIM_PROCESSING.GET_BATCH_DETAIL
+    </LOAD_DETAIL>
+    <SAVE_BATCH_CLAIMS>
+      ELP_CLAIM_PROCESSING.SAVE_BATCH_CLAIMS
+    </SAVE_BATCH_CLAIMS>
+    <PROCESS_BATCH>
+      ELP_CLAIM_PROCESSING.PROCESS_PAYMENT_BATCH
+    </PROCESS_BATCH>
+    <DELETE_BATCH>
+      ELP_CLAIM_PROCESSING.DELETE_PAYMENT_BATCH
+    </DELETE_BATCH>
+    <SAVE_TAX_BATCH>
+      ELP_CLAIM_PROCESSING.UPDATE_TAX_BATCH_CLAIMS
+    </SAVE_TAX_BATCH>
+    <INVOICE_TAX_TYPE_DETAILS>
+      select tax1_description,
+      getcodefromlistitem(tax1_compute_method_id) tax1_compute_method,
+      tax2_description,
+      getcodefromlistitem(tax2_compute_method_id) tax2_compute_method,
+      tax3_description,
+      getcodefromlistitem(tax3_compute_method_id) tax3_compute_method,
+      tax4_description,
+      getcodefromlistitem(tax4_compute_method_id) tax4_compute_method,
+      tax5_description,
+      getcodefromlistitem(tax5_compute_method_id) tax5_compute_method,
+      tax6_description,
+      getcodefromlistitem(tax6_compute_method_id) tax6_compute_method
+      from (select ct.*,
+      rank() over (partition by country_id,company_type_id,tax_type_id,product_Tax_type_id order by dealer_id) rk
+      from elp_country_tax ct
+      where ct.country_id = :p_country_id
+      and ct.tax_type_id =  :p_tax_type_id
+      and trunc(sysdate) between trunc(ct.effective_date) and trunc(expiration_date)
+      and (dealer_id = :dealer_id or dealer_id is null)
+      ) where rk = 1
+    </INVOICE_TAX_TYPE_DETAILS>
+  <UPDATE_EXCLUDE_DEDUCTIBLE>
+    UPDATE ELP_INVOICE_TRANS_DETAIL
+    SET EXCLUDE_DEDUCTIBLE = :EXCLUDE_DEDUCTIBLE
+    WHERE INVOICE_TRANS_DETAIL_ID = :INVOICE_TRANS_DETAIL_ID
+  </UPDATE_EXCLUDE_DEDUCTIBLE>
+  <UPDATE_PAYMENT_AMOUNT>
+    update elp_invoice_trans_detail
+    set elp_invoice_trans_detail.payment_amount = case
+    when (elp_invoice_trans_detail.exclude_deductible = 'N') then
+    elp_invoice_trans_detail.reserve_amount
+    when (elp_invoice_trans_detail.exclude_deductible = 'Y') then
+    (elp_invoice_trans_detail.reserve_amount -
+    ((select elp_claim.deductible
+    from elp_claim
+    where claim_id =
+    elp_invoice_trans_detail.claim_id)))
+    else
+    elp_invoice_trans_detail.payment_amount
+    end
+    where elp_invoice_trans_detail.invoice_trans_detail_id = :INVOICE_TRANS_DETAIL_ID    
+  </UPDATE_PAYMENT_AMOUNT>
+  <CHECK_PRE_INVOICE>
+    select p.pre_invoice_status_id 
+    from elp_pre_invoice p
+    where upper(p.batch_number) = upper(:batch_number)
+  </CHECK_PRE_INVOICE>
+  <INVOICE_COMMENTS>
+    Select invoice_comments
+    from ELP_INVOICE_TRANS
+    Where invoice_trans_id = :invoice_trans_id
+    </INVOICE_COMMENTS>
+  <UPDATE_REJECT_REASON>
+    elp_claim_processing.update_invoice_reject
+  </UPDATE_REJECT_REASON>
+  <GET_BATCH_CLOSED_CLAIMS>
+    ELP_CLAIM_PROCESSING.get_batch_closed_claims
+  </GET_BATCH_CLOSED_CLAIMS>
+</SQL>	

@@ -1,0 +1,74 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+
+<!-- ********************** THIS FILE HAS BEEN GENERATED FROM TEMPLATE SQLObject.cst (5/25/2012)********************** -->
+
+<SQL>
+  <LOAD>
+    <![CDATA[	
+			SELECT 
+				rule_list_id,
+				rule_id,
+				effective,
+				expiration,
+				created_date,
+				created_by,
+				modified_date,
+				modified_by,
+				rule_list_detail_id
+			FROM elp_rule_list_detail 
+			WHERE
+				rule_list_detail_id = :rule_list_detail_id
+		]]>
+  </LOAD>
+  <LOAD_LIST>
+    SELECT RULE_LIST_DETAIL_ID, RULE_LIST_ID, RULE_ID, EFFECTIVE, EXPIRATION,
+    created_date,
+    created_by,
+    modified_date,
+    modified_by
+    FROM ELP_RULE_LIST_DETAIL WHERE
+    RULE_LIST_ID = :RULE_LIST_ID
+  </LOAD_LIST>
+  <UPDATE>
+    <![CDATA[	
+			UPDATE elp_rule_list_detail SET
+				rule_list_id = :rule_list_id,
+				rule_id = :rule_id,
+				effective = :effective,
+				expiration = :expiration,
+				modified_by = :modified_by
+			WHERE
+				rule_list_detail_id = :rule_list_detail_id
+		]]>
+  </UPDATE>
+  <INSERT>
+    INSERT INTO elp_rule_list_detail
+    (
+    rule_list_id,
+    rule_id,
+    effective,
+    expiration,
+    created_by,
+    rule_list_detail_id
+    )
+    VALUES
+    (
+    :rule_list_id,
+    :rule_id,
+    :effective,
+    :expiration,
+    :created_by,
+    :rule_list_detail_id
+    )
+  </INSERT>
+  <DELETE>
+    DELETE FROM elp_rule_list_detail
+    WHERE
+    rule_list_detail_id = :rule_list_detail_id
+  </DELETE>
+  <LOAD_RULE_LIST>
+    SELECT RULE_ID ID, CODE, DESCRIPTION FROM ELP_RULE WHERE EXPIRATION > :ACTIVE_ON
+  </LOAD_RULE_LIST>
+</SQL>
+
+

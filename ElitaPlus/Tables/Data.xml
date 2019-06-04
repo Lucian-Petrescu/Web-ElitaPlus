@@ -1,0 +1,582 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml-stylesheet type='text/xsl' href='CrossTab.xslt'?>
+<RoleCompanyStatus>
+  <Companies>
+    <Company>
+      <Id>e1cdf2a8-4f6d-4a1f-a2dc-b53ada3f79e1</Id>
+      <Code>IBR</Code>
+      <Description>Assurant Seguradora S/A</Description>
+      <Enabled>Y</Enabled>
+    </Company>
+    <Company>
+      <Id>20b65efa-ed52-e654-e034-0003ba5d2202</Id>
+      <Code>ABR</Code>
+      <Description>Assurant Services Brasil Ltda</Description>
+      <Enabled>Y</Enabled>
+    </Company>
+    <Company>
+      <Id>93cdc4be-9312-46e4-810c-3591a69f2435</Id>
+      <Code>CD01</Code>
+      <Description>Cd01</Description>
+      <Enabled>Y</Enabled>
+    </Company>
+    <Company>
+      <Id>e548a692-269b-4065-aeb9-5a7ff285968c</Id>
+      <Code>PBR</Code>
+      <Description>Protect Your Bubble Brazil</Description>
+      <Enabled>Y</Enabled>
+    </Company>
+    <Company>
+      <Id>85a986f0-3240-4c42-a6e9-597bd782c721</Id>
+      <Code>TIBR</Code>
+      <Description>Test_IBR</Description>
+      <Enabled>Y</Enabled>
+    </Company>
+    <Company>
+      <Id>b7230ae3-185a-4528-8fc9-0b8524f6e14e</Id>
+      <Code>TIBR5</Code>
+      <Description>Test_IBR5</Description>
+      <Enabled>Y</Enabled>
+    </Company>
+    <Company>
+      <Id>5ee3cbd2-fbe3-4cd5-8000-edf8579b72b4</Id>
+      <Code>TIBR6</Code>
+      <Description>Test_IBR6</Description>
+      <Enabled>Y</Enabled>
+    </Company>
+    <Company>
+      <Id>0749bb55-f1cf-435e-8122-5659d138a433</Id>
+      <Code>TBR</Code>
+      <Description>Third Party Admin</Description>
+      <Enabled>Y</Enabled>
+    </Company>
+  </Companies>
+  <Roles>
+    <Role>
+      <Id>e4604536-e9b2-8d34-e044-00144f1e8823</Id>
+      <Code>ACTUA</Code>
+      <Description>ACTUARY2</Description>
+      <Enabled>Y</Enabled>
+    </Role>
+    <Role>
+      <Id>ea8b3973-f968-4264-96a4-4dfb8ef24590</Id>
+      <Code>CRTPT</Code>
+      <Description>Certificates -&gt; Premium tab</Description>
+      <Enabled>Y</Enabled>
+    </Role>
+    <Role>
+      <Id>2cac5f34-4cb9-ed06-e044-00144f1e8823</Id>
+      <Code>CLMSP</Code>
+      <Description>Claim Support</Description>
+      <Enabled>Y</Enabled>
+    </Role>
+    <Role>
+      <Id>097099c7-c08d-153f-e034-0800208d101f</Id>
+      <Code>CLAIM</Code>
+      <Description>Claims</Description>
+      <Enabled>Y</Enabled>
+    </Role>
+    <Role>
+      <Id>097099c7-c18d-153f-e034-0800208d101f</Id>
+      <Code>CLAMM</Code>
+      <Description>Claims Manager</Description>
+      <Enabled>Y</Enabled>
+    </Role>
+    <Role>
+      <Id>43d28814-5d00-ea2d-e044-0003ba5d2202</Id>
+      <Code>COMMT</Code>
+      <Description>Comments</Description>
+      <Enabled>Y</Enabled>
+    </Role>
+    <Role>
+      <Id>895cc4d5-6506-47b9-858c-5341dfae12b6</Id>
+      <Code>CWQI</Code>
+      <Description>Create Work Queue Items</Description>
+      <Enabled>Y</Enabled>
+    </Role>
+    <Role>
+      <Id>097099c7-be8d-153f-e034-0800208d101f</Id>
+      <Code>CSR</Code>
+      <Description>CSR</Description>
+      <Enabled>Y</Enabled>
+    </Role>
+    <Role>
+      <Id>5bdd17fb-1154-0170-e034-0003ba5d2202</Id>
+      <Code>CSR2</Code>
+      <Description>CSR2</Description>
+      <Enabled>Y</Enabled>
+    </Role>
+    <Role>
+      <Id>ce380816-e0bf-4806-bc55-17137cf1aecf</Id>
+      <Code>DEA</Code>
+      <Description>Data Entry Agent</Description>
+      <Enabled>Y</Enabled>
+    </Role>
+    <Role>
+      <Id>579cd133-ce37-cf16-e044-00144f1e8823</Id>
+      <Code>ACCT</Code>
+      <Description>David2</Description>
+      <Enabled>Y</Enabled>
+    </Role>
+    <Role>
+      <Id>7c2a463f-65f6-465f-8fa4-0cb4287f7c06</Id>
+      <Code>ENDO</Code>
+      <Description>Endorsement</Description>
+      <Enabled>Y</Enabled>
+    </Role>
+    <Role>
+      <Id>fdbcf2fb-2a37-42b4-9692-3721efbf5634</Id>
+      <Code>EQUIP</Code>
+      <Description>Equipment Update</Description>
+      <Enabled>Y</Enabled>
+    </Role>
+    <Role>
+      <Id>153dab57-b0bd-2ec1-e040-0a0a310523a3</Id>
+      <Code>EXTUS</Code>
+      <Description>External User</Description>
+      <Enabled>Y</Enabled>
+    </Role>
+    <Role>
+      <Id>097099c7-c98d-153f-e034-0800208d101f</Id>
+      <Code>IHQAC</Code>
+      <Description>IHQ Actuary</Description>
+      <Enabled>Y</Enabled>
+    </Role>
+    <Role>
+      <Id>bcb1854a-ccd7-5859-e040-0a0a31052aa8</Id>
+      <Code>IHQBA</Code>
+      <Description>IHQ BA</Description>
+      <Enabled>Y</Enabled>
+    </Role>
+    <Role>
+      <Id>e16a50f7-71ac-1262-e034-080020da9df2</Id>
+      <Code>IHQSE</Code>
+      <Description>IHQ Security</Description>
+      <Enabled>Y</Enabled>
+    </Role>
+    <Role>
+      <Id>097099c7-c68d-153f-e034-0800208d101f</Id>
+      <Code>IHQSU</Code>
+      <Description>IHQ Support</Description>
+      <Enabled>Y</Enabled>
+    </Role>
+    <Role>
+      <Id>097099c7-ca8d-153f-e034-0800208d101f</Id>
+      <Code>IHQVI</Code>
+      <Description>IHQ View</Description>
+      <Enabled>Y</Enabled>
+    </Role>
+    <Role>
+      <Id>3a50a81a-7295-4ff0-be10-93c3b5196a88</Id>
+      <Code>IHQWZ</Code>
+      <Description>IHQ Wizard</Description>
+      <Enabled>Y</Enabled>
+    </Role>
+    <Role>
+      <Id>e950c9ea-2c73-4d6d-87ac-ee164cefeaef</Id>
+      <Code>ITEM</Code>
+      <Description>Item</Description>
+      <Enabled>Y</Enabled>
+    </Role>
+    <Role>
+      <Id>097099c7-c48d-153f-e034-0800208d101f</Id>
+      <Code>LOCAL</Code>
+      <Description>Local Security Admin</Description>
+      <Enabled>Y</Enabled>
+    </Role>
+    <Role>
+      <Id>cae67309-30c0-4357-a5ec-7257837e114e</Id>
+      <Code>MWQ</Code>
+      <Description>Manage Work Queue</Description>
+      <Enabled>Y</Enabled>
+    </Role>
+    <Role>
+      <Id>3fa73a0f-0344-4b9c-86f1-a1479112c6ac</Id>
+      <Code>NM002</Code>
+      <Description>NM Test 002</Description>
+      <Enabled>Y</Enabled>
+    </Role>
+    <Role>
+      <Id>63456df8-74d6-4770-a7c0-8b756d403745</Id>
+      <Code>NM003</Code>
+      <Description>NM Test 003a</Description>
+      <Enabled>Y</Enabled>
+    </Role>
+    <Role>
+      <Id>545d77d9-36ec-4848-984b-c1980770f22b</Id>
+      <Code>NM001</Code>
+      <Description>NM Test Role 001</Description>
+      <Enabled>Y</Enabled>
+    </Role>
+    <Role>
+      <Id>e75c6001-bce0-465d-90bd-d71030598688</Id>
+      <Code>NM011</Code>
+      <Description>NM11</Description>
+      <Enabled>Y</Enabled>
+    </Role>
+    <Role>
+      <Id>c03e6c22-4d8e-4556-ab28-2dfc723ac61e</Id>
+      <Code>NM012</Code>
+      <Description>NM12</Description>
+      <Enabled>Y</Enabled>
+    </Role>
+    <Role>
+      <Id>c36429de-31af-45c2-9fe7-df8cf64addb4</Id>
+      <Code>NM013</Code>
+      <Description>NM13</Description>
+      <Enabled>Y</Enabled>
+    </Role>
+    <Role>
+      <Id>d0316812-8eb6-4135-9ac0-6acaa6e72176</Id>
+      <Code>TSTB.</Code>
+      <Description>Non WorkGroup</Description>
+      <Enabled>Y</Enabled>
+    </Role>
+    <Role>
+      <Id>097099c7-c28d-153f-e034-0800208d101f</Id>
+      <Code>OFFIC</Code>
+      <Description>Office</Description>
+      <Enabled>Y</Enabled>
+    </Role>
+    <Role>
+      <Id>097099c7-c38d-153f-e034-0800208d101f</Id>
+      <Code>OFICM</Code>
+      <Description>Office Manager</Description>
+      <Enabled>Y</Enabled>
+    </Role>
+    <Role>
+      <Id>097099c7-cb8d-153f-e034-0800208d101f</Id>
+      <Code>OFNET</Code>
+      <Description>Office Network</Description>
+      <Enabled>Y</Enabled>
+    </Role>
+    <Role>
+      <Id>097099c7-cc8d-153f-e034-0800208d101f</Id>
+      <Code>OFPRE</Code>
+      <Description>Office Premiums</Description>
+      <Enabled>Y</Enabled>
+    </Role>
+    <Role>
+      <Id>097099c7-c88d-153f-e034-0800208d101f</Id>
+      <Code>OPERA</Code>
+      <Description>Operator</Description>
+      <Enabled>Y</Enabled>
+    </Role>
+    <Role>
+      <Id>eab88388-f8d5-469a-ac5b-bc5d24936a7c</Id>
+      <Code>PADMI</Code>
+      <Description>Policy Admin</Description>
+      <Enabled>Y</Enabled>
+    </Role>
+    <Role>
+      <Id>67654d12-d86c-4330-e044-0003ba5d2202</Id>
+      <Code>RPTS</Code>
+      <Description>Reports</Description>
+      <Enabled>Y</Enabled>
+    </Role>
+    <Role>
+      <Id>711ec610-3fc0-aa3f-e044-0003ba5d2202</Id>
+      <Code>SVCC</Code>
+      <Description>Service Center</Description>
+      <Enabled>Y</Enabled>
+    </Role>
+    <Role>
+      <Id>d4f5c869-2b69-4897-8a36-60310aafa834</Id>
+      <Code>SCSP</Code>
+      <Description>Service Center Support</Description>
+      <Enabled>Y</Enabled>
+    </Role>
+    <Role>
+      <Id>5b9622dd-7e23-4231-ab82-29abec5632f9</Id>
+      <Code>SCE</Code>
+      <Description>Service_Center_Edit_Access</Description>
+      <Enabled>Y</Enabled>
+    </Role>
+    <Role>
+      <Id>48551350-c16a-4086-becf-c5eb1e6d4bfb</Id>
+      <Code>SVN</Code>
+      <Description>Service_Center_No_Access</Description>
+      <Enabled>Y</Enabled>
+    </Role>
+    <Role>
+      <Id>8b0360e3-80e0-42c2-aef3-5dd10b839c3e</Id>
+      <Code>SCV</Code>
+      <Description>Service_Center_View_Access</Description>
+      <Enabled>Y</Enabled>
+    </Role>
+    <Role>
+      <Id>2b0bd451-3c38-43e3-b255-cb8b5d231ca1</Id>
+      <Code>CHKPR</Code>
+      <Description>test New Role</Description>
+      <Enabled>Y</Enabled>
+    </Role>
+    <Role>
+      <Id>9c7089ae-7568-4829-9ee3-a0bfc478e048</Id>
+      <Code>TSRL</Code>
+      <Description>Test Role</Description>
+      <Enabled>Y</Enabled>
+    </Role>
+    <Role>
+      <Id>b1fdd333-dc69-4576-a95a-76b9001da56e</Id>
+      <Code>PSRC</Code>
+      <Description>Testing Role</Description>
+      <Enabled>Y</Enabled>
+    </Role>
+    <Role>
+      <Id>ebde6da0-8da7-4873-9827-457e695f28e4</Id>
+      <Code>PSRA0</Code>
+      <Description>TestRole1</Description>
+      <Enabled>Y</Enabled>
+    </Role>
+    <Role>
+      <Id>097099c7-c58d-153f-e034-0800208d101f</Id>
+      <Code>VIEWO</Code>
+      <Description>View Only</Description>
+      <Enabled>Y</Enabled>
+    </Role>
+  </Roles>
+  <ExtendedStatuses>
+    <ExtendedStatus>
+      <Id>0129d708-69ce-473d-8252-e6dc953f3a4d</Id>
+      <Code>BAPP</Code>
+      <Description>Budget Approved</Description>
+      <Enabled>Y</Enabled>
+    </ExtendedStatus>
+    <ExtendedStatus>
+      <Id>4addf91d-8742-409b-9087-8c6f2f8b88ee</Id>
+      <Code>BREJ</Code>
+      <Description>Budget Rejected</Description>
+      <Enabled>Y</Enabled>
+    </ExtendedStatus>
+    <ExtendedStatus>
+      <Id>d84580b1-dad9-415b-a135-a4516461d311</Id>
+      <Code>CLMDND</Code>
+      <Description>Claim Denied</Description>
+      <Enabled>Y</Enabled>
+    </ExtendedStatus>
+    <ExtendedStatus>
+      <Id>48cbda86-9a21-422e-bc71-7720733f571a</Id>
+      <Code>CLMPD</Code>
+      <Description>Claim Paid</Description>
+      <Enabled>Y</Enabled>
+    </ExtendedStatus>
+    <ExtendedStatus>
+      <Id>d1024902-7b3c-4165-bc5b-b27c319e9340</Id>
+      <Code>DEDCOLL</Code>
+      <Description>Deductible Collected</Description>
+      <Enabled>Y</Enabled>
+    </ExtendedStatus>
+    <ExtendedStatus>
+      <Id>82ab9b47-da06-4421-a892-8690123ffade</Id>
+      <Code>DEDNTPAID</Code>
+      <Description>Deductible Not Paid</Description>
+      <Enabled>Y</Enabled>
+    </ExtendedStatus>
+    <ExtendedStatus>
+      <Id>5d9888a5-0ffd-49a8-b16f-d8262fb84d7e</Id>
+      <Code>DEDP</Code>
+      <Description>Deductible Paid</Description>
+      <Enabled>Y</Enabled>
+    </ExtendedStatus>
+    <ExtendedStatus>
+      <Id>5a375380-c9a7-461f-920a-ea366cf2019f</Id>
+      <Code>DEDREQ</Code>
+      <Description>Deductible Requested </Description>
+      <Enabled>Y</Enabled>
+    </ExtendedStatus>
+    <ExtendedStatus>
+      <Id>8d6398e6-46ef-4218-abd7-484333ed822d</Id>
+      <Code>DEDWAV</Code>
+      <Description>Deductible Waived</Description>
+      <Enabled>Y</Enabled>
+    </ExtendedStatus>
+    <ExtendedStatus>
+      <Id>71158d44-09cf-404b-b249-b6611c4bd672</Id>
+      <Code>DTC</Code>
+      <Description>Delivered to Customer</Description>
+      <Enabled>Y</Enabled>
+    </ExtendedStatus>
+    <ExtendedStatus>
+      <Id>a7ae2714-5b5e-41bc-a648-8449f9740288</Id>
+      <Code>DEVNRCVD</Code>
+      <Description>Device Not Received</Description>
+      <Enabled>Y</Enabled>
+    </ExtendedStatus>
+    <ExtendedStatus>
+      <Id>ee6790de-751b-4fad-9ab1-820fe289b511</Id>
+      <Code>DEVRCVD</Code>
+      <Description>Device Received </Description>
+      <Enabled>Y</Enabled>
+    </ExtendedStatus>
+    <ExtendedStatus>
+      <Id>006e133f-ac88-4b8e-9b5c-efacac88d352</Id>
+      <Code>DEVREQ</Code>
+      <Description>Device Requested</Description>
+      <Enabled>Y</Enabled>
+    </ExtendedStatus>
+    <ExtendedStatus>
+      <Id>97c44a80-1de3-4dce-abaa-f4095c10230c</Id>
+      <Code>DNGCOM</Code>
+      <Description>Diagnostic Complete</Description>
+      <Enabled>Y</Enabled>
+    </ExtendedStatus>
+    <ExtendedStatus>
+      <Id>d6025536-4f70-4562-88ff-cd189c4e3b99</Id>
+      <Code>DNGWAV</Code>
+      <Description>Diagnostic Waived</Description>
+      <Enabled>Y</Enabled>
+    </ExtendedStatus>
+    <ExtendedStatus>
+      <Id>9a3c6e1e-6cc8-4b47-86d8-2373d63604cc</Id>
+      <Code>DOCNRCVD</Code>
+      <Description>Documentation Not Received</Description>
+      <Enabled>Y</Enabled>
+    </ExtendedStatus>
+    <ExtendedStatus>
+      <Id>48a0ab52-5b7b-4e83-bd45-14ddf422d240</Id>
+      <Code>DOCRCVD</Code>
+      <Description>Documentation Received </Description>
+      <Enabled>Y</Enabled>
+    </ExtendedStatus>
+    <ExtendedStatus>
+      <Id>9b9cfabe-e7bd-443b-a80c-db92ae11ef3e</Id>
+      <Code>DOCREQ</Code>
+      <Description>Documentation Requested</Description>
+      <Enabled>Y</Enabled>
+    </ExtendedStatus>
+    <ExtendedStatus>
+      <Id>8bac2a91-64f0-4380-a4f2-56ae3c2ad842</Id>
+      <Code>DOCWAV</Code>
+      <Description>Documentation Waived</Description>
+      <Enabled>Y</Enabled>
+    </ExtendedStatus>
+    <ExtendedStatus>
+      <Id>c6635cd1-c19c-4872-a334-55d432cb296a</Id>
+      <Code>FIN</Code>
+      <Description>Finished</Description>
+      <Enabled>Y</Enabled>
+    </ExtendedStatus>
+    <ExtendedStatus>
+      <Id>c7f65f14-d515-4fbc-9937-82b0ca6560a5</Id>
+      <Code>INDNG</Code>
+      <Description>In Diagnostic</Description>
+      <Enabled>Y</Enabled>
+    </ExtendedStatus>
+    <ExtendedStatus>
+      <Id>c3e828c1-7ba4-42aa-83d1-dd25242e2db9</Id>
+      <Code>IDIAG</Code>
+      <Description>In Diagnostic</Description>
+      <Enabled>Y</Enabled>
+    </ExtendedStatus>
+    <ExtendedStatus>
+      <Id>1d6d3523-06fb-48d9-b629-471737d2e9e5</Id>
+      <Code>IP</Code>
+      <Description>Invoice Paid</Description>
+      <Enabled>N</Enabled>
+    </ExtendedStatus>
+    <ExtendedStatus>
+      <Id>ff999f82-cb01-4259-ba17-503d44c6d623</Id>
+      <Code>6</Code>
+      <Description>Invoice Received</Description>
+      <Enabled>N</Enabled>
+    </ExtendedStatus>
+    <ExtendedStatus>
+      <Id>eff2a2d6-22a9-4373-9455-024b71b5d101</Id>
+      <Code>NEW</Code>
+      <Description>New</Description>
+      <Enabled>Y</Enabled>
+    </ExtendedStatus>
+    <ExtendedStatus>
+      <Id>ce569950-12b1-4260-b846-38616b3bdb69</Id>
+      <Code>PRDRCVD</Code>
+      <Description>Product Received by Customer</Description>
+      <Enabled>Y</Enabled>
+    </ExtendedStatus>
+    <ExtendedStatus>
+      <Id>d3f8c756-4478-46f1-9a2f-76299de3d59c</Id>
+      <Code>PRDSHPC</Code>
+      <Description>Product Shipped to Customer</Description>
+      <Enabled>Y</Enabled>
+    </ExtendedStatus>
+    <ExtendedStatus>
+      <Id>269849bc-2ce7-409f-8209-24a1685e9efc</Id>
+      <Code>PRDSHPSC</Code>
+      <Description>Product Shipped to Service Center</Description>
+      <Enabled>Y</Enabled>
+    </ExtendedStatus>
+    <ExtendedStatus>
+      <Id>b6208015-2567-4784-a70f-1178d0032db7</Id>
+      <Code>REPRD</Code>
+      <Description>Repaired</Description>
+      <Enabled>Y</Enabled>
+    </ExtendedStatus>
+    <ExtendedStatus>
+      <Id>9ba17d4f-6502-4080-89b1-5a110779e427</Id>
+      <Code>WDOC</Code>
+      <Description>Waiting Documentation</Description>
+      <Enabled>Y</Enabled>
+    </ExtendedStatus>
+    <ExtendedStatus>
+      <Id>7a892f54-9429-46f1-b62b-3b58bf8ff826</Id>
+      <Code>WSP</Code>
+      <Description>Waiting for Spare Parts</Description>
+      <Enabled>Y</Enabled>
+    </ExtendedStatus>
+    <ExtendedStatus>
+      <Id>dc829b28-3448-48c2-a971-4480540a2987</Id>
+      <Code>COD</Code>
+      <Description>Waiting on Budget Approval</Description>
+      <Enabled>N</Enabled>
+    </ExtendedStatus>
+    <ExtendedStatus>
+      <Id>f6882b01-10c1-46bd-9e69-6280f3861963</Id>
+      <Code>WOPE</Code>
+      <Description>Work Order Opened</Description>
+      <Enabled>Y</Enabled>
+    </ExtendedStatus>
+  </ExtendedStatuses>
+  <Grants>
+    <Grant>
+      <CompanyId>e1cdf2a8-4f6d-4a1f-a2dc-b53ada3f79e1</CompanyId>
+      <RoleId>e4604536-e9b2-8d34-e044-00144f1e8823</RoleId>
+      <ExtendedStatusId>4addf91d-8742-409b-9087-8c6f2f8b88ee</ExtendedStatusId>
+      <Id>17ff8dec-47c6-4009-b987-6a939315e0f6</Id>
+    </Grant>
+    <Grant>
+      <CompanyId>e1cdf2a8-4f6d-4a1f-a2dc-b53ada3f79e1</CompanyId>
+      <RoleId>e4604536-e9b2-8d34-e044-00144f1e8823</RoleId>
+      <ExtendedStatusId>0129d708-69ce-473d-8252-e6dc953f3a4d</ExtendedStatusId>
+      <Id>226585a4-d2e8-44ba-8f36-4880c66a655a</Id>
+    </Grant>
+    <Grant>
+      <CompanyId>e1cdf2a8-4f6d-4a1f-a2dc-b53ada3f79e1</CompanyId>
+      <RoleId>ea8b3973-f968-4264-96a4-4dfb8ef24590</RoleId>
+      <ExtendedStatusId>0129d708-69ce-473d-8252-e6dc953f3a4d</ExtendedStatusId>
+      <Id>fea4f483-23ef-428b-8499-9a2cce1ded4c</Id>
+    </Grant>
+    <Grant>
+      <CompanyId>e1cdf2a8-4f6d-4a1f-a2dc-b53ada3f79e1</CompanyId>
+      <RoleId>e16a50f7-71ac-1262-e034-080020da9df2</RoleId>
+      <ExtendedStatusId>0129d708-69ce-473d-8252-e6dc953f3a4d</ExtendedStatusId>
+      <Id>b8770c94-2e2a-49fe-836d-77b928f47c5c</Id>
+    </Grant>
+    <Grant>
+      <CompanyId>e1cdf2a8-4f6d-4a1f-a2dc-b53ada3f79e1</CompanyId>
+      <RoleId>097099c7-c68d-153f-e034-0800208d101f</RoleId>
+      <ExtendedStatusId>0129d708-69ce-473d-8252-e6dc953f3a4d</ExtendedStatusId>
+      <Id>48f2de89-8a66-4bdc-8810-82f2e4608c22</Id>
+    </Grant>
+    <Grant>
+      <CompanyId>e1cdf2a8-4f6d-4a1f-a2dc-b53ada3f79e1</CompanyId>
+      <RoleId>097099c7-ca8d-153f-e034-0800208d101f</RoleId>
+      <ExtendedStatusId>0129d708-69ce-473d-8252-e6dc953f3a4d</ExtendedStatusId>
+      <Id>69c3ef27-e64f-472a-bef1-e9ceb53b6486</Id>
+    </Grant>
+    <Grant>
+      <CompanyId>e1cdf2a8-4f6d-4a1f-a2dc-b53ada3f79e1</CompanyId>
+      <RoleId>3a50a81a-7295-4ff0-be10-93c3b5196a88</RoleId>
+      <ExtendedStatusId>0129d708-69ce-473d-8252-e6dc953f3a4d</ExtendedStatusId>
+      <Id>2a0f3d38-55a9-44cd-882b-c07a6cc0a2b7</Id>
+    </Grant>
+  </Grants>
+</RoleCompanyStatus>

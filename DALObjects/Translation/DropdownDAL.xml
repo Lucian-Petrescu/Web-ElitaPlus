@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="utf-8" ?> 
+<!-- ********************** THIS FILE HAS BEEN GENERATED FROM TEMPLATE SQLObject.cst (2/12/2007)********************** -->
+
+<SQL>
+	<LOAD>
+		<![CDATA[	
+			SELECT 
+				maintainable_by_user,
+				dict_item_id,
+				code,
+				created_date,
+				modified_date,
+				created_by,
+				modified_by,
+				active_flag,
+				list_id
+			FROM elp_list 
+			WHERE
+				list_id = :list_id
+		]]>
+	</LOAD>
+	<LOAD_LIST_ADMIN>
+    SELECT
+    L.*, T.TRANSLATION ENGLISH_TRANSLATION, T1.TRANSLATION LANG_TRANSLATION,T1.DICT_ITEM_TRANSLATION_ID
+    FROM
+    ELP_LIST L,
+    ELP_DICT_ITEM_TRANSLATION T,
+    ELP_LANGUAGE LANG,
+    ELP_DICT_ITEM_TRANSLATION T1
+    WHERE
+    L.DICT_ITEM_ID = T.DICT_ITEM_ID
+    AND L.DICT_ITEM_ID = T1.DICT_ITEM_ID  (+)
+    AND LANG.LANGUAGE_ID = T.LANGUAGE_ID
+    AND LANG.CODE = 'EN'
+    AND T1.LANGUAGE_ID = :Language_Id
+    ORDER BY
+    UPPER(TRIM(ENGLISH_TRANSLATION))
+  </LOAD_LIST_ADMIN>
+  <LOAD_LIST_DEVICE_GROUPS>
+    select
+    li.*,
+    elp_utl_lov.description(li.List_item_id, :language_id) as english_translation
+    from elp_list l
+    join elp_list_item li  on li.list_id = l.list_id
+    and l.code = 'DEVICE_GROUPS'
+    ORDER BY
+    UPPER(TRIM(english_translation))
+  </LOAD_LIST_DEVICE_GROUPS>
+   <LOAD_LIST_TRANSLATION>
+   SELECT
+    L.CODE, T.DICT_ITEM_TRANSLATION_ID, T.LANGUAGE_ID, T.DICT_ITEM_ID, T.TRANSLATION, LANG.LANGUAGE_ID, LANG.DESCRIPTION
+   FROM
+    ELP_LIST L,
+    ELP_DICT_ITEM_TRANSLATION T,
+    ELP_LANGUAGE LANG
+   WHERE
+    L.DICT_ITEM_ID = T.DICT_ITEM_ID
+    AND LANG.LANGUAGE_ID = T.LANGUAGE_ID
+    AND L.LIST_ID = :List_Id
+   ORDER BY
+    UPPER(TRIM(DESCRIPTION))
+  </LOAD_LIST_TRANSLATION>
+  <GET_TRANSLATION>
+    SELECT TRANSLATION
+    FROM ELP_DICT_ITEM_TRANSLATION
+    WHERE DICT_ITEM_ID = :dict_item_id
+    AND  LANGUAGE_ID = :language_id
+  </GET_TRANSLATION> 
+    <UPDATE>
+		<![CDATA[	
+			UPDATE elp_list SET
+				maintainable_by_user = :maintainable_by_user,
+				dict_item_id = :dict_item_id,
+				code = :code,
+				active_flag = :active_flag,
+				modified_by = :modified_by
+			WHERE
+				list_id = :list_id
+		]]>
+	</UPDATE>
+	<INSERT>
+			INSERT INTO elp_list
+					(			
+				maintainable_by_user, 
+				dict_item_id, 
+				code, 
+				active_flag, 
+				created_by,
+				list_id
+					)
+			VALUES
+					(			
+				:maintainable_by_user, 
+				:dict_item_id, 
+				:code, 
+				:active_flag, 
+				:created_by,
+				:list_id
+					)
+	</INSERT>
+	<DELETE>
+			DELETE FROM elp_list
+			WHERE
+				list_id = :list_id
+	</DELETE>
+  <ADD_DROPDOWN>
+    ELP_TRANSLATION.LOAD_DROPDOWN
+  </ADD_DROPDOWN>
+  <UPDATE_DROPDOWN>
+    ELP_TRANSLATION.UPDATE_DROPDOWN
+  </UPDATE_DROPDOWN>
+  <UPDATE_TRANSLATION>
+    ELP_TRANSLATION.UPDATE_TRANSLATION
+  </UPDATE_TRANSLATION>
+  <DELETE_DROPDOWN>
+    ELP_TRANSLATION.DELETE_DROPDOWN
+  </DELETE_DROPDOWN>
+</SQL> 
+
+

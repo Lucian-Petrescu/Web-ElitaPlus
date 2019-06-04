@@ -1,0 +1,353 @@
+<?xml version="1.0" encoding="utf-8" ?>
+
+<!-- ********************** THIS FILE HAS BEEN GENERATED FROM TEMPLATE SQLObject.cst (12/15/2004)********************** -->
+
+<SQL>
+  <LOAD>
+    <![CDATA[	
+			SELECT 
+				company_id,
+				claim_id,
+				claim_number,
+				svc_control_number,
+				record_count,
+				customer_name,
+				dealer,
+				certificate,
+				service_center_name,
+				check_number,
+        tracking_number,
+				payment_date,
+				payee,
+				address1,
+				address2,
+				city,
+				region_desc,
+				zip,
+				payee_mailing_label,
+				tax_amount,
+				payment_amount,
+				processed,
+				authorization_number,
+				created_by,
+				created_date,
+				modified_by,
+				modified_date,
+				disbursement_id,
+				payee_option_id,
+				account_name,
+				bank_id,
+				account_number,
+				payment_method,
+				identification_number,
+				document_type,
+				country,
+				payment_reason,
+				model,
+				manufacturer,
+				dealer_name,
+				iban_number,
+				swift_code,
+				account_type,
+        acct_status,
+        status_date,
+        vendor_num_acct,
+        vendor_region_desc,
+        perception_iva,
+        perception_iibb,
+        invoice_date,
+        deductible_amount,
+        deductible_tax_amount,
+        branch_name,
+        bank_name,
+        bank_sort_code,
+        bank_lookup_code,
+        bank_sub_code,
+        claim_authorization_id,
+				bonus,
+				bonus_tax,
+				labor_amount,
+				part_amount,
+				service_amount,
+				trip_amount,
+				shipping_amount,
+				disposition_amount,
+				other_amount,
+				diagnostics_amount,
+				withholding_amount,
+        pay_to_cust_amount
+			FROM elp_disbursement 
+			WHERE
+				disbursement_id = :disbursement_id
+		]]>
+  </LOAD>
+  <LOAD_PAYEE_LIST>
+    <![CDATA[
+			SELECT payee, min(disbursement_id) disbursement_id  
+			FROM elp_disbursement
+			WHERE UPPER(svc_control_number) = :svc_control_number	
+			--dynamic_in_clause
+			GROUP BY payee 
+		]]>
+  </LOAD_PAYEE_LIST>
+
+  <GET_OTHER_UNREVERSED_PAYMENT>
+    <![CDATA[
+			 select SVC_CONTROL_NUMBER, nvl(PAYMENT_AMOUNT, 0) PAYMENT_AMOUNT, 
+              nvl(PERCEPTION_IVA, 0) PERCEPTION_IVA, nvl(PERCEPTION_IIBB, 0) PERCEPTION_IIBB
+       from
+      (select sum(PAYMENT_AMOUNT) PAYMENT_AMOUNT
+        From elp_disbursement  d
+        inner join elp_claim c on d.claim_id = c.claim_id
+        where SVC_CONTROL_NUMBER = :svc_control_number
+        and (d.SVC_CONTROL_NUMBER, c.service_center_id ) = (select d.SVC_CONTROL_NUMBER, c.service_center_id
+                  From elp_disbursement  d
+                  inner join elp_claim c on d.claim_id = c.claim_id
+                  where DISBURSEMENT_ID = :disbursement_id)
+        and d.claim_id <> :claim_id
+        ) ur right outer join
+      (select d.SVC_CONTROL_NUMBER, sum (PERCEPTION_IVA) PERCEPTION_IVA,   sum(PERCEPTION_IIBB) PERCEPTION_IIBB
+        From elp_disbursement  d
+        inner join elp_claim c on d.claim_id = c.claim_id
+        where SVC_CONTROL_NUMBER = :svc_control_number
+        and (d.SVC_CONTROL_NUMBER, c.service_center_id ) = (select d.SVC_CONTROL_NUMBER, c.service_center_id
+                From elp_disbursement  d
+                inner join elp_claim c on d.claim_id = c.claim_id
+                where DISBURSEMENT_ID = :disbursement_id)
+        group by d.SVC_CONTROL_NUMBER
+        ) tx on 1=1
+		]]>
+  </GET_OTHER_UNREVERSED_PAYMENT>
+
+  <UPDATE>
+    <![CDATA[	
+			UPDATE elp_disbursement SET
+				company_id = :company_id,
+				claim_id = :claim_id,
+				claim_number = :claim_number,
+				svc_control_number = :svc_control_number,
+				record_count = :record_count,
+				customer_name = :customer_name,
+				dealer = :dealer,
+				certificate = :certificate,
+				service_center_name = :service_center_name,
+        check_number = :check_number,
+				tracking_number = :tracking_number,
+				payment_date = :payment_date,
+				payee = :payee,
+				address1 = :address1,
+				address2 = :address2,
+				city = :city,
+				region_desc = :region_desc,
+				zip = :zip,
+				payee_mailing_label = :payee_mailing_label,
+				tax_amount = :tax_amount,
+				payment_amount = :payment_amount,
+				processed = :processed,
+				authorization_number = :authorization_number,
+				modified_by = :modified_by,
+				payee_option_id = :payee_option_id,
+				account_name = :account_name,
+				bank_id = :bank_id,
+				account_number = :account_number,
+				payment_method = :payment_method,
+				identification_number = :identification_number,
+				document_type = :document_type,
+				country = :country,
+				payment_reason = :payment_reason,
+				model = :model,
+				manufacturer = :manufacturer,
+				dealer_name = :dealer_name,
+				iban_number = :iban_number,
+				swift_code = :swift_code,
+				account_type = :account_type,
+        acct_status = :acct_status,
+        status_date = :status_date,
+        vendor_num_acct = :vendor_num_acct,
+        vendor_region_desc = :vendor_region_desc,
+        perception_iva = :perception_iva,
+        perception_iibb = :perception_iibb,
+        invoice_date = :invoice_date,
+        deductible_amount = :deductible_amount,
+        deductible_tax_amount = :deductible_tax_amount,
+        branch_name = :branch_name,
+        bank_name = :bank_name,
+        bank_sort_code = :bank_sort_code,
+        bank_lookup_code = :bank_lookup_code,
+        bank_sub_code = :bank_sub_code,
+        claim_authorization_id = :claim_authorization_id,
+				bonus = :bonus,
+				bonus_tax = :bonus_tax,
+				labor_amount = :labor_amount,
+				part_amount = :part_amount,
+				service_amount = :service_amount,
+				trip_amount = :trip_amount,
+				shipping_amount = :shipping_amount,
+				disposition_amount = :disposition_amount,
+				other_amount = :other_amount,
+				diagnostics_amount = :diagnostics_amount,
+				withholding_amount = :withholding_amount,
+        pay_to_cust_amount = :pay_to_cust_amount
+			WHERE
+				disbursement_id = :disbursement_id
+		]]>
+  </UPDATE>
+  <INSERT>
+    INSERT INTO elp_disbursement
+    (
+    company_id,
+    claim_id,
+    claim_number,
+    svc_control_number,
+    record_count,
+    customer_name,
+    dealer,
+    certificate,
+    service_center_name,
+    check_number,
+    tracking_number,
+    payment_date,
+    payee,
+    address1,
+    address2,
+    city,
+    region_desc,
+    zip,
+    payee_mailing_label,
+    tax_amount,
+    payment_amount,
+    processed,
+    authorization_number,
+    created_by,
+    disbursement_id,
+    payee_option_id,
+    account_name,
+    bank_id,
+    account_number,
+    payment_method,
+    identification_number,
+    document_type,
+    country,
+    payment_reason,
+    model,
+    manufacturer,
+    dealer_name,
+    iban_number,
+    swift_code,
+    account_type,
+    acct_status,
+    status_date,
+    vendor_num_acct,
+    vendor_region_desc,
+    perception_iva,
+    perception_iibb,
+    invoice_date,
+    deductible_amount,
+    deductible_tax_amount,
+    branch_name,
+    bank_name,
+    bank_sort_code,
+    bank_lookup_code,
+    bank_sub_code,
+    claim_authorization_id,
+    bonus,
+    bonus_tax,
+    labor_amount,
+    part_amount,
+    service_amount,
+    trip_amount,
+    shipping_amount,
+    disposition_amount,
+    other_amount,
+    diagnostics_amount,
+    withholding_amount,
+    pay_to_cust_amount
+    )
+    VALUES
+    (
+    :company_id,
+    :claim_id,
+    :claim_number,
+    :svc_control_number,
+    :record_count,
+    :customer_name,
+    :dealer,
+    :certificate,
+    :service_center_name,
+    :check_number,
+    :tracking_number,
+    :payment_date,
+    :payee,
+    :address1,
+    :address2,
+    :city,
+    :region_desc,
+    :zip,
+    :payee_mailing_label,
+    :tax_amount,
+    :payment_amount,
+    :processed,
+    :authorization_number,
+    :created_by,
+    :disbursement_id,
+    :payee_option_id,
+    :account_name,
+    :bank_id,
+    :account_number,
+    :payment_method,
+    :identification_number,
+    :document_type,
+    :country,
+    :payment_reason,
+    :model,
+    :manufacturer,
+    :dealer_name,
+    :iban_number,
+    :swift_code,
+    :account_type,
+    :acct_status,
+    :status_date,
+    :vendor_num_acct,
+    :vendor_region_desc,
+    :perception_iva,
+    :perception_iibb,
+    :invoice_date,
+    :deductible_amount,
+    :deductible_tax_amount,
+    :branch_name,
+    :bank_name,
+    :bank_sort_code,
+    :bank_lookup_code,
+    :bank_sub_code,
+    :claim_authorization_id,
+    :bonus,
+    :bonus_tax,
+    :labor_amount,
+    :part_amount,
+    :service_amount,
+    :trip_amount,
+    :shipping_amount,
+    :disposition_amount,
+    :other_amount,
+    :diagnostics_amount,
+    :withholding_amount,
+    :pay_to_cust_amount
+    )
+  </INSERT>
+  <DELETE>
+    DELETE FROM elp_disbursement
+    WHERE
+    disbursement_id = :disbursement_id
+  </DELETE>
+  <GET_DISBURSEMENT_FROM_CLAIM>
+    select disbursement_id,
+           company_id,
+           claim_number,
+           db.payment_method,
+           db.payment_amount
+    from elp_disbursement db
+    where claim_id = :claim_id
+  </GET_DISBURSEMENT_FROM_CLAIM>
+</SQL>
+
+

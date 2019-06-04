@@ -1,0 +1,80 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+
+<!-- ********************** THIS FILE HAS BEEN GENERATED FROM TEMPLATE SQLObject.cst (2/21/2013)********************** -->
+
+<SQL>
+  <LOAD>
+    <![CDATA[	
+			SELECT 
+				payment_group_number,
+				payment_group_status_id,
+				payment_group_date,
+				payment_group_total,
+				created_date,
+				modified_date,
+				created_by,
+				modified_by,
+				payment_group_id
+			FROM elp_payment_group 
+			WHERE
+				payment_group_id = :payment_group_id
+		]]>
+  </LOAD>
+  <LOAD_LIST>
+  </LOAD_LIST>
+  <LOAD_PAYMENT_GROUP>
+    <![CDATA[	
+    SELECT 
+        pymntGrp.payment_group_id,
+				pymntGrp.payment_group_number,
+				pymntGrp.payment_group_status_id payment_group_status,
+				pymntGrp.payment_group_date,
+				pymntGrp.payment_group_total
+			FROM elp_payment_group pymntGrp
+        where 1 = 1
+        and rownum <= :row_num
+        --dynamic_inner_where_clause
+        --dynamic_outer_where_clause        
+    ]]>
+  </LOAD_PAYMENT_GROUP>
+  <UPDATE>
+    <![CDATA[	
+			UPDATE elp_payment_group SET
+				payment_group_number = :payment_group_number,
+				payment_group_status_id = :payment_group_status_id,
+				payment_group_date = :payment_group_date,
+				payment_group_total = :payment_group_total,
+				modified_by = :modified_by
+			WHERE
+				payment_group_id = :payment_group_id
+		]]>
+  </UPDATE>
+  <INSERT>
+    INSERT INTO elp_payment_group
+    (
+    payment_group_number,
+    payment_group_status_id,
+    payment_group_date,
+    payment_group_total,
+    created_by,
+    payment_group_id
+    )
+    VALUES
+    (
+    :payment_group_number,
+    :payment_group_status_id,
+    :payment_group_date,
+    :payment_group_total,
+    :created_by,
+    :payment_group_id
+    )
+  </INSERT>
+  <DELETE>
+    DELETE FROM elp_payment_group
+    WHERE
+    payment_group_id = :payment_group_id
+  </DELETE>
+  <GET_NEXT_PYMNT_GRP_NUMBER_SP>
+    ELITA.GetNextPymntGroupNumber
+  </GET_NEXT_PYMNT_GRP_NUMBER_SP>
+</SQL>

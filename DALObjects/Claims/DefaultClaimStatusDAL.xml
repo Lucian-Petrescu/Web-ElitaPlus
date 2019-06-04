@@ -1,0 +1,101 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+
+<!-- ********************** THIS FILE HAS BEEN GENERATED FROM TEMPLATE SQLObject.cst (2/2/2015)********************** -->
+
+<SQL>
+  <LOAD>
+    <![CDATA[	
+			SELECT 
+				claim_status_by_group_id,
+				default_type_id,
+				method_of_repair_id,
+				created_by,
+				created_date,
+				modified_by,
+				modified_date,
+				default_claim_status_id,
+        company_group_id
+			FROM elp_default_claim_status 
+			WHERE
+				default_claim_status_id = :default_claim_status_id
+		]]>
+  </LOAD>
+  <LOAD_LIST>
+    <![CDATA[
+select DCS.default_claim_status_id,
+	   default_types.list_item_id as default_type_id,
+	   default_types.default_type,
+	   Claim_Statuses.claim_status_by_group_id,
+       Claim_Statuses.claim_status_by_group,
+	   method_of_repairs.list_item_id as method_of_repair_id,
+       method_of_repairs.method_of_repair as method_of_repair
+FROM elp_default_claim_status DCS,
+	 (Select claim_status_by_group_id, tran1.translation as claim_status_by_group
+	  from elp_claim_status_by_group CSBG
+	       join elp_list_item item1 on item1.list_item_id = CSBG.list_item_id
+     	   join elp_dict_item_translation tran1 on tran1.dict_item_id = item1.dict_item_id and tran1.language_id = :language_id1
+	  where CSBG.company_group_id = :company_group_id) Claim_Statuses,
+	  --
+	 (select li2.list_item_id, dit2.translation as default_type
+	  from   elita.elp_list l2,
+		     elp_list_item  li2,
+	         elp_dict_item_translation dit2
+	  where l2.list_id = li2.list_id
+	        and    li2.dict_item_id = dit2.dict_item_id
+	        and    l2.code = 'ECSDT'
+	        and dit2.language_id = :language_id2) default_types,
+	  --
+	 (select li3.list_item_id, dit3.translation as method_of_repair
+	  from   elita.elp_list l3,
+		     elp_list_item  li3,
+	         elp_dict_item_translation dit3
+	  where l3.list_id = li3.list_id
+	        and    li3.dict_item_id = dit3.dict_item_id
+	        and    l3.code = 'METHR'
+	        and dit3.language_id = :language_id3) method_of_repairs
+Where DCS.claim_status_by_group_id = claim_statuses.claim_status_by_group_id
+      and DCS.default_type_id = default_types.list_item_id
+      and DCS.method_of_repair_id = method_of_repairs.list_item_id (+)
+order by default_type
+		]]>
+  </LOAD_LIST>
+  <UPDATE>
+    <![CDATA[	
+			UPDATE elp_default_claim_status SET
+				claim_status_by_group_id = :claim_status_by_group_id,
+				default_type_id = :default_type_id,
+				method_of_repair_id = :method_of_repair_id,
+        company_group_id = :company_group_id,
+				modified_by = :modified_by
+			WHERE
+				default_claim_status_id = :default_claim_status_id
+		]]>
+  </UPDATE>
+  <INSERT>
+    INSERT INTO elp_default_claim_status
+    (
+    claim_status_by_group_id,
+    default_type_id,
+    method_of_repair_id,
+    created_by,
+    default_claim_status_id,
+    company_group_id
+    )
+    VALUES
+    (
+    :claim_status_by_group_id,
+    :default_type_id,
+    :method_of_repair_id,
+    :created_by,
+    :default_claim_status_id,
+    :company_group_id
+    )
+  </INSERT>
+  <DELETE>
+    DELETE FROM elp_default_claim_status
+    WHERE
+    default_claim_status_id = :default_claim_status_id
+  </DELETE>
+</SQL>
+
+

@@ -1,0 +1,139 @@
+<?xml version="1.0" encoding="utf-8" ?>
+
+<!-- ********************** THIS FILE HAS BEEN GENERATED FROM TEMPLATE SQLObject.cst (4/12/2006)********************** -->
+
+<SQL>
+  <LOAD>
+    <![CDATA[	
+			SELECT 
+				coverage_id,
+				low_price,
+				high_price,
+				gross_amt,
+				commissions_percent,
+				marketing_percent,
+				admin_expense,
+				profit_expense,
+				loss_cost_percent,
+				created_date,
+				modified_date,
+				created_by,
+				modified_by,
+				coverage_rate_id,
+        gross_amount_percent,
+        NVL(renewal_number, 0) as renewal_number
+			FROM elp_coverage_rate 
+			WHERE
+				coverage_rate_id = :coverage_rate_id
+		]]>
+  </LOAD>
+  <LOAD_LIST>
+    <![CDATA[	
+			 select	
+        COVERAGE_RATE_ID, LOW_PRICE, HIGH_PRICE, NVL(GROSS_AMT, 0) AS GROSS_AMT, NVL(COMMISSIONS_PERCENT, 0) AS COMMISSION_PERCENT,
+				NVL(MARKETING_PERCENT, 0) AS MARKETING_PERCENT, NVL(ADMIN_EXPENSE, 0) AS ADMIN_EXPENSE, NVL(PROFIT_EXPENSE, 0) AS PROFIT_EXPENSE, NVL(LOSS_COST_PERCENT, 0) AS LOSS_COST_PERCENT,
+        NVL(GROSS_AMOUNT_PERCENT, 0) AS GROSS_AMOUNT_PERCENT,
+        NVL(renewal_number, 0) AS RENEWAL_NUMBER
+				FROM	elp_coverage_rate
+				WHERE	COVERAGE_ID = :COVERAGE_ID
+				order by LOW_PRICE,RENEWAL_NUMBER
+		]]>
+  </LOAD_LIST>
+  <LOAD_COVRATE_LIST_DELETE>
+    <![CDATA[	
+			 select	
+        COVERAGE_RATE_ID, LOW_PRICE, HIGH_PRICE, NVL(GROSS_AMT, 0) AS GROSS_AMT, NVL(COMMISSIONS_PERCENT, 0) AS COMMISSION_PERCENT,
+				NVL(MARKETING_PERCENT, 0) AS MARKETING_PERCENT, NVL(ADMIN_EXPENSE, 0) AS ADMIN_EXPENSE, NVL(PROFIT_EXPENSE, 0) AS PROFIT_EXPENSE, NVL(LOSS_COST_PERCENT, 0) AS LOSS_COST_PERCENT,
+        NVL(GROSS_AMOUNT_PERCENT, 0) AS GROSS_AMOUNT_PERCENT,
+        NVL(renewal_number, 0) AS RENEWAL_NUMBER
+				FROM	elp_coverage_rate
+				WHERE	COVERAGE_ID = :COVERAGE_ID
+				order by LOW_PRICE asc,RENEWAL_NUMBER desc
+		]]>
+  </LOAD_COVRATE_LIST_DELETE>
+  <LOAD_DEALER_COVERAGE_RATES_INFO_FOR_WS>
+    <![CDATA[	
+        select rawtohex(COVERAGE_RATE_ID) as COVERAGE_RATE_ID, rawtohex(COVERAGE_ID) as COVERAGE_ID, LOW_PRICE, HIGH_PRICE, GROSS_AMT from ELITA.ELP_COVERAGE_RATE
+        WHERE COVERAGE_ID in
+        (
+          select coverage_id
+          from elita.elp_coverage
+          where item_id in
+          (
+	          select item_id  from elita.elp_item
+	          where product_code_id in
+	          (
+	          select product_code_id
+	          from elita.elp_product_code pc ,elp_dealer d
+	          where pc.dealer_id = d.dealer_id and
+	          d.dealer_id = :dealer_id)
+          )
+          and :warranty_sales_date >= effective
+          and :warranty_sales_date <= expiration
+        )
+    ]]>
+  </LOAD_DEALER_COVERAGE_RATES_INFO_FOR_WS>  
+  <UPDATE>
+    <![CDATA[	
+			UPDATE elp_coverage_rate SET
+				coverage_id = :coverage_id,
+				low_price = :low_price,
+				high_price = :high_price,
+				gross_amt = :gross_amt,
+				commissions_percent = :commissions_percent,
+				marketing_percent = :marketing_percent,
+				admin_expense = :admin_expense,
+				profit_expense = :profit_expense,
+				loss_cost_percent = :loss_cost_percent,
+				modified_by = :modified_by,
+        gross_amount_percent = :gross_amount_percent,
+        renewal_number = :renewal_number
+			WHERE
+				coverage_rate_id = :coverage_rate_id
+		]]>
+  </UPDATE>
+  <INSERT>
+    INSERT INTO elp_coverage_rate
+    (
+    coverage_id,
+    low_price,
+    high_price,
+    gross_amt,
+    commissions_percent,
+    marketing_percent,
+    admin_expense,
+    profit_expense,
+    loss_cost_percent,
+    created_by,
+    coverage_rate_id,
+    gross_amount_percent,
+    renewal_number
+    )
+    VALUES
+    (
+    :coverage_id,
+    :low_price,
+    :high_price,
+    :gross_amt,
+    :commissions_percent,
+    :marketing_percent,
+    :admin_expense,
+    :profit_expense,
+    :loss_cost_percent,
+    :created_by,
+    :coverage_rate_id,
+    :gross_amount_percent,
+    :renewal_number
+    )
+  </INSERT>
+  <DELETE>
+    DELETE FROM elp_coverage_rate
+    WHERE
+    coverage_rate_id = :coverage_rate_id
+  </DELETE>
+  <LOAD_EXPECTED_GWP>
+    ELP_EXPECTED_PREMIUM.GetExpectedGWPMain
+  </LOAD_EXPECTED_GWP>
+</SQL>
+
+

@@ -1,0 +1,46 @@
+﻿<?xml version="1.0" encoding="utf-8" ?> 
+
+<SQL>
+          <LOAD>elita.elp_tbl_dealer_reins_recon_wrk.Load</LOAD>         
+  	<LOAD_LIST>
+    SELECT
+    dp.dealerfile_processed_id,
+    drw.dealer_reins_recon_wrk_id,
+    drw.record_type,
+    drw.reject_reason,
+    drw.certificate,
+    drw.reject_code,
+    drw.reinsurance_reject_reason,
+    drw.created_by,
+    drw.created_date,
+    drw.modified_by,
+    drw.modified_date
+    
+    FROM elp_dealer_reins_recon_wrk DRW
+    inner join  ELP_DEALERFILE_PROCESSED dp
+    on dp.dealerfile_processed_id = drw.dealerfile_processed_id
+ 
+    WHERE
+    drw.dealerfile_processed_id = :dealerfile_processed_id
+    and (((:p_recordMode= 'REJ') and (reject_reason is not null) and (record_type != 'X'))
+    or  ((:p_recordMode is null) and (reject_reason is not null))
+    or  ((:p_recordMode = 'LOD') and (REINSURANCE_LOADED = 'L'))
+    or  ((:p_recordMode = 'BYP') and (REINSURANCE_LOADED = 'N') and (Record_type='X'))
+    or  ((:p_recordMode = 'VAL') and (REINSURANCE_LOADED = 'V'))
+    or  ((:p_recordMode = 'REMREJ') and (record_type != 'X')))
+  </LOAD_LIST>
+  
+  <LOAD_REJECT_LIST>			
+			SELECT   
+				certificate,
+				record_type,
+				reject_reason
+			FROM elp_dealer_reins_recon_wrk 
+			WHERE
+				dealerfile_processed_id = :dealerfile_processed_id
+				AND reject_reason IS NOT NULL
+	</LOAD_REJECT_LIST>		
+  
+          <INSERT>elita.elp_tbl_dealer_reins_recon_wrk.Add</INSERT>
+          <UPDATE>elita.elp_tbl_dealer_reins_recon_wrk.Modify</UPDATE>
+</SQL>

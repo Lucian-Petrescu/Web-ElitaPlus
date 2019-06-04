@@ -1,0 +1,116 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema">
+  <xs:element name="WSClaimInfoGVS2ElitaDs">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element name="WSClaimInfoGVS2Elita" minOccurs="1" maxOccurs="1">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element name="TRANSACTION_HEADER" minOccurs="1" maxOccurs="1">
+                <xs:complexType>
+                  <xs:sequence>
+                    <xs:element name="TRANSACTION_ID" type="stringRequired" minOccurs="1" maxOccurs="1" />
+                    <xs:element name="FUNCTION_TYPE" type="stringRequired" minOccurs="1" maxOccurs="1" />
+                  </xs:sequence>
+                </xs:complexType>
+              </xs:element>
+              <xs:element name="TRANSACTION_DATA_RECORD" minOccurs="1" maxOccurs="25">
+                <xs:complexType>
+                  <xs:sequence>
+                    <xs:element name="ITEM_NUMBER" type="myPositiveInteger" minOccurs="1" maxOccurs="1" />
+                    <xs:element name="CLAIM_NUMBER" type="stringRequired" minOccurs="1" maxOccurs="1" />
+                    <xs:element name="CERTIFICATE_NUMBER" type="xs:string" minOccurs="0" maxOccurs="1" />
+                    <xs:element name="DEALER_CODE" type="xs:string" minOccurs="0" maxOccurs="1" />
+                    <xs:element name="CONTACT_NAME" type="xs:string" minOccurs="0" maxOccurs="1" />
+                    <xs:element name="CLAIM_CALLER_NAME" type="xs:string" minOccurs="0" maxOccurs="1" />
+                    <xs:element name="SERVICE_CENTER_CODE" type="xs:string" minOccurs="0" maxOccurs="1" />
+                    <xs:element name="CAUSE_OF_LOSS_CODE" type="xs:string" minOccurs="0" maxOccurs="1" />
+                    <xs:element name="STATUS_CODE" type="xs:string" minOccurs="0" maxOccurs="1" />
+                    <xs:element name="LOSS_DATE" type="xs:dateTime" minOccurs="0" maxOccurs="1" />
+                    <xs:element name="CERT_ITEM_COVERAGE_CODE" type="xs:string" minOccurs="0" maxOccurs="1" />
+                    <xs:element name="PROBLEM_DESCRIPTION" type="xs:string" minOccurs="0" maxOccurs="1" />
+                    <xs:element name="REPAIR_ESTIMATE" type="xs:decimal" minOccurs="0" maxOccurs="1" />
+                    <xs:element name="VISIT_DATE" type="xs:dateTime" minOccurs="0" maxOccurs="1" />
+                    <xs:element name="CALLER_TAX_NUMBER" type="xs:string" minOccurs="0" maxOccurs="1" />
+                    <xs:element name="SPECIAL_INSTRUCTION" type="xs:string" minOccurs="0" maxOccurs="1" />
+                    <xs:element name="SERVICE_ORDER_NUMBER" type="xs:string" minOccurs="0" maxOccurs="1" />
+                    <xs:element name="EXTERNAL_ITEM_CODE" type="xs:string" minOccurs="0" maxOccurs="1" />
+                    <xs:element name="IN_HOME_VISIT_DATE" type="xs:dateTime" minOccurs="0" maxOccurs="1" />
+                    <xs:element name="DEFECT_REASON" type="xs:string" minOccurs="0" maxOccurs="1" />
+                    <xs:element name="TECHNICAL_REPORT" type="xs:string" minOccurs="0" maxOccurs="1" />
+                    <xs:element name="LABOR" type="xs:decimal" minOccurs="0" maxOccurs="1" />
+                    <xs:element name="TRIP_AMOUNT" type="xs:decimal" minOccurs="0" maxOccurs="1" />
+                    <xs:element name="EXPECTED_REPAIR_DATE" type="xs:dateTime" minOccurs="0" maxOccurs="1" />
+                    <xs:element name="QUOTATION_DATE" type="xs:dateTime" minOccurs="0" maxOccurs="1" />
+                    <xs:element name="REPAIR_DATE" type="xs:dateTime" minOccurs="0" maxOccurs="1" />
+                    <xs:element name="SHIPPING" type="xs:decimal" minOccurs="0" maxOccurs="1" />
+                    <xs:element name="PICKUP_DATE" type="xs:dateTime" minOccurs="0" maxOccurs="1" />
+                    <xs:element name="E_TICKET" type="xs:string" minOccurs="0" maxOccurs="1" />
+                    <xs:element name="AWB" type="xs:string" minOccurs="0" maxOccurs="1" />
+                    <xs:element name="COLLECT_DATE" type="xs:dateTime" minOccurs="0" maxOccurs="1" />
+                    <xs:element name="PARTS_LIST" minOccurs="0" maxOccurs="25">
+                      <xs:complexType>
+                        <xs:sequence>
+                          <xs:element name="ITEM_NUMBER" type="myPositiveInteger" minOccurs="1" maxOccurs="1" />
+                          <xs:element name="MFG_PART_CODE" type="stringRequired" minOccurs="1" maxOccurs="1" />
+                          <xs:element name="PART_DESCRIPTION_CODE" type="stringRequired" minOccurs="1" maxOccurs="1" />
+                          <xs:element name="PART_COST" type="myPositiveDecimal" minOccurs="1" maxOccurs="1" />
+                          <xs:element name="PART_DEFECT" type="xs:string" minOccurs="0" maxOccurs="1" />
+                          <xs:element name="PART_SOLUTION" type="xs:string" minOccurs="0" maxOccurs="1" />
+                          <xs:element name="IN_STOCK" minOccurs="1" maxOccurs="1">
+                            <xs:simpleType>
+                              <xs:restriction base="xs:string">
+                                <xs:pattern value="Y|N" />
+                              </xs:restriction>
+                            </xs:simpleType>
+                          </xs:element>
+                        </xs:sequence>
+                      </xs:complexType>
+                    </xs:element>
+                    <xs:element name="FOLLOWUP" minOccurs="0" maxOccurs="25">
+                      <xs:complexType>
+                        <xs:sequence>
+                          <xs:element name="ITEM_NUMBER" type="myPositiveInteger" minOccurs="1" maxOccurs="1" />
+                          <xs:element name="CREATE_DATE" type="xs:dateTime" minOccurs="1" maxOccurs="1" />
+                          <xs:element name="COMMENT_TYPE_CODE" type="stringRequired" minOccurs="1" maxOccurs="1" />
+                          <xs:element name="COMMENTS" type="stringRequired" minOccurs="1" maxOccurs="1" />
+                          <xs:element name="CALLER_NAME" type="stringRequired" minOccurs="1" maxOccurs="1" />
+                        </xs:sequence>
+                      </xs:complexType>
+                    </xs:element>
+                    <xs:element name="EXTENDED_CLAIM_STATUS" minOccurs="0" maxOccurs="25">
+                      <xs:complexType>
+                        <xs:sequence>
+                          <xs:element name="ITEM_NUMBER" type="myPositiveInteger" minOccurs="1" maxOccurs="1" />
+                          <xs:element name="EXTENDED_CLAIM_STATUS_CODE" type="stringRequired" minOccurs="1" maxOccurs="1" />
+                          <xs:element name="EXTENDED_CLAIM_STATUS_DATE" type="xs:dateTime" minOccurs="1" maxOccurs="1" />
+                          <xs:element name="EXTENDED_CLAIM_STATUS_COMMENT" type="xs:string" minOccurs="0" maxOccurs="1" />
+                        </xs:sequence>
+                      </xs:complexType>
+                    </xs:element>
+                  </xs:sequence>
+                </xs:complexType>
+              </xs:element>
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:simpleType name="stringRequired">
+    <xs:restriction base="xs:string">
+      <xs:minLength value="1"></xs:minLength>
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:simpleType name="myPositiveInteger">
+    <xs:restriction base="xs:int">
+      <xs:minInclusive value="1" />
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:simpleType name="myPositiveDecimal">
+    <xs:restriction base="xs:decimal">
+      <xs:minInclusive value="0" />
+    </xs:restriction>
+  </xs:simpleType>
+</xs:schema>
+

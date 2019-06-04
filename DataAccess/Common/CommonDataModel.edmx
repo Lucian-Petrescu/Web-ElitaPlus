@@ -1,0 +1,560 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="2.0" xmlns:edmx="http://schemas.microsoft.com/ado/2008/10/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+    <Schema Namespace="Model1.Store" Provider="Oracle.ManagedDataAccess.Client" ProviderManifestToken="11.2" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/02/edm/ssdl">
+        <EntityType Name="ELP_DICT_ITEM_TRANSLATION">
+          <Key>
+            <PropertyRef Name="DICT_ITEM_TRANSLATION_ID" />
+          </Key>
+          <Property Name="DICT_ITEM_TRANSLATION_ID" Type="raw" MaxLength="16" Nullable="false" />
+          <Property Name="TRANSLATION" Type="varchar2" MaxLength="255" Nullable="false" />
+          <Property Name="LANGUAGE_ID" Type="raw" MaxLength="16" Nullable="false" />
+          <Property Name="DICT_ITEM_ID" Type="raw" MaxLength="16" Nullable="false" />
+          <Property Name="CREATED_DATE" Type="date" Nullable="false" />
+          <Property Name="MODIFIED_DATE" Type="date" />
+          <Property Name="CREATED_BY" Type="varchar2" MaxLength="30" Nullable="false" />
+          <Property Name="MODIFIED_BY" Type="varchar2" MaxLength="30" />
+        </EntityType>
+        <EntityType Name="ELP_DICTIONARY_ITEM">
+          <Key>
+            <PropertyRef Name="DICT_ITEM_ID" />
+          </Key>
+          <Property Name="DICT_ITEM_ID" Type="raw" MaxLength="16" Nullable="false" />
+          <Property Name="CREATED_DATE" Type="date" Nullable="false" />
+          <Property Name="MODIFIED_DATE" Type="date" />
+          <Property Name="CREATED_BY" Type="varchar2" MaxLength="30" Nullable="false" />
+          <Property Name="MODIFIED_BY" Type="varchar2" MaxLength="30" />
+        </EntityType>
+        <EntityType Name="ELP_EXPRESSION">
+          <Key>
+            <PropertyRef Name="EXPRESSION_ID" />
+          </Key>
+          <Property Name="EXPRESSION_ID" Type="raw" MaxLength="16" Nullable="false" />
+          <Property Name="EXPRESSION_CODE" Type="varchar2" MaxLength="20" Nullable="false" />
+          <Property Name="EXPRESSION_NAME" Type="varchar2" MaxLength="100" Nullable="false" />
+          <Property Name="EXPRESSION_XML" Type="clob" Nullable="false" />
+          <Property Name="EXPRESSION_PLSQL" Type="varchar2" MaxLength="4000" Nullable="false" />
+          <Property Name="EXPRESSION_FRIENDLY_NAME" Type="varchar2" MaxLength="4000" Nullable="false" />
+          <Property Name="CREATED_DATE" Type="date" Nullable="false" />
+          <Property Name="CREATED_BY" Type="varchar2" MaxLength="30" Nullable="false" />
+          <Property Name="MODIFIED_DATE" Type="date" />
+          <Property Name="MODIFIED_BY" Type="varchar2" MaxLength="30" />
+        </EntityType>
+        <EntityType Name="ELP_LABEL">
+          <Key>
+            <PropertyRef Name="LABEL_ID" />
+          </Key>
+          <Property Name="LABEL_ID" Type="raw" MaxLength="16" Nullable="false" />
+          <Property Name="UI_PROG_CODE" Type="varchar2" MaxLength="255" Nullable="false" />
+          <Property Name="IN_USE" Type="char" MaxLength="1" Nullable="false" />
+          <Property Name="DICT_ITEM_ID" Type="raw" MaxLength="16" Nullable="false" />
+          <Property Name="CREATED_DATE" Type="date" Nullable="false" />
+          <Property Name="MODIFIED_DATE" Type="date" />
+          <Property Name="CREATED_BY" Type="varchar2" MaxLength="30" />
+          <Property Name="MODIFIED_BY" Type="varchar2" MaxLength="30" />
+        </EntityType>
+        <EntityType Name="ELP_LANGUAGE">
+          <Key>
+            <PropertyRef Name="LANGUAGE_ID" />
+          </Key>
+          <Property Name="LANGUAGE_ID" Type="raw" MaxLength="16" Nullable="false" />
+          <Property Name="DESCRIPTION" Type="varchar2" MaxLength="40" Nullable="false" />
+          <Property Name="CODE" Type="varchar2" MaxLength="5" Nullable="false" />
+          <Property Name="CREATED_DATE" Type="date" Nullable="false" />
+          <Property Name="MODIFIED_DATE" Type="date" />
+          <Property Name="CREATED_BY" Type="varchar2" MaxLength="30" Nullable="false" />
+          <Property Name="MODIFIED_BY" Type="varchar2" MaxLength="30" />
+          <Property Name="CULTURE_CODE" Type="varchar2" MaxLength="40" Nullable="false" />
+          <Property Name="ACTIVE_FLAG" Type="varchar2" MaxLength="1" Nullable="false" />
+          <Property Name="TERRITORY" Type="varchar2" MaxLength="50" />
+        </EntityType>
+        <EntityType Name="ELP_LIST">
+          <Key>
+            <PropertyRef Name="LIST_ID" />
+          </Key>
+          <Property Name="LIST_ID" Type="raw" MaxLength="16" Nullable="false" />
+          <Property Name="MAINTAINABLE_BY_USER" Type="char" MaxLength="1" Nullable="false" />
+          <Property Name="DICT_ITEM_ID" Type="raw" MaxLength="16" Nullable="false" />
+          <Property Name="CODE" Type="varchar2" MaxLength="255" Nullable="false" />
+          <Property Name="CREATED_DATE" Type="date" Nullable="false" />
+          <Property Name="MODIFIED_DATE" Type="date" />
+          <Property Name="CREATED_BY" Type="varchar2" MaxLength="30" Nullable="false" />
+          <Property Name="MODIFIED_BY" Type="varchar2" MaxLength="30" />
+          <Property Name="ACTIVE_FLAG" Type="varchar2" MaxLength="1" Nullable="false" />
+          <Property Name="EXCLUDE_BY_ROLE" Type="varchar2" MaxLength="1" Nullable="false" />
+        </EntityType>
+        <EntityType Name="ELP_LIST_ITEM">
+          <Key>
+            <PropertyRef Name="LIST_ITEM_ID" />
+          </Key>
+          <Property Name="LIST_ITEM_ID" Type="raw" MaxLength="16" Nullable="false" />
+          <Property Name="CODE" Type="varchar2" MaxLength="255" Nullable="false" />
+          <Property Name="MAINTAINABLE_BY_USER" Type="char" MaxLength="1" Nullable="false" />
+          <Property Name="DISPLAY_TO_USER" Type="char" MaxLength="1" Nullable="false" />
+          <Property Name="LIST_ID" Type="raw" MaxLength="16" Nullable="false" />
+          <Property Name="DICT_ITEM_ID" Type="raw" MaxLength="16" Nullable="false" />
+          <Property Name="CREATED_DATE" Type="date" Nullable="false" />
+          <Property Name="MODIFIED_DATE" Type="date" />
+          <Property Name="CREATED_BY" Type="varchar2" MaxLength="30" Nullable="false" />
+          <Property Name="MODIFIED_BY" Type="varchar2" MaxLength="30" />
+          <Property Name="ACTIVE_FLAG" Type="varchar2" MaxLength="1" Nullable="false" />
+          <Property Name="EXTENDED_CODE" Type="varchar2" MaxLength="4000" />
+        </EntityType>
+        <Association Name="FK_DICT_ITEM_TRANS_DICT_ITEM">
+          <End Role="ELP_DICTIONARY_ITEM" Type="Self.ELP_DICTIONARY_ITEM" Multiplicity="1" />
+          <End Role="ELP_DICT_ITEM_TRANSLATION" Type="Self.ELP_DICT_ITEM_TRANSLATION" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ELP_DICTIONARY_ITEM">
+              <PropertyRef Name="DICT_ITEM_ID" />
+            </Principal>
+            <Dependent Role="ELP_DICT_ITEM_TRANSLATION">
+              <PropertyRef Name="DICT_ITEM_ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_DICT_ITEM_TRANS_LANGUAGE">
+          <End Role="ELP_LANGUAGE" Type="Self.ELP_LANGUAGE" Multiplicity="1" />
+          <End Role="ELP_DICT_ITEM_TRANSLATION" Type="Self.ELP_DICT_ITEM_TRANSLATION" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ELP_LANGUAGE">
+              <PropertyRef Name="LANGUAGE_ID" />
+            </Principal>
+            <Dependent Role="ELP_DICT_ITEM_TRANSLATION">
+              <PropertyRef Name="LANGUAGE_ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_LABEL_DICT_ITEM_ID">
+          <End Role="ELP_DICTIONARY_ITEM" Type="Self.ELP_DICTIONARY_ITEM" Multiplicity="1" />
+          <End Role="ELP_LABEL" Type="Self.ELP_LABEL" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ELP_DICTIONARY_ITEM">
+              <PropertyRef Name="DICT_ITEM_ID" />
+            </Principal>
+            <Dependent Role="ELP_LABEL">
+              <PropertyRef Name="DICT_ITEM_ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_LIST_DICT_ITEM_ID">
+          <End Role="ELP_DICTIONARY_ITEM" Type="Self.ELP_DICTIONARY_ITEM" Multiplicity="1" />
+          <End Role="ELP_LIST" Type="Self.ELP_LIST" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ELP_DICTIONARY_ITEM">
+              <PropertyRef Name="DICT_ITEM_ID" />
+            </Principal>
+            <Dependent Role="ELP_LIST">
+              <PropertyRef Name="DICT_ITEM_ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_LIST_ITEM_DICT_ITEM_ID">
+          <End Role="ELP_DICTIONARY_ITEM" Type="Self.ELP_DICTIONARY_ITEM" Multiplicity="1" />
+          <End Role="ELP_LIST_ITEM" Type="Self.ELP_LIST_ITEM" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ELP_DICTIONARY_ITEM">
+              <PropertyRef Name="DICT_ITEM_ID" />
+            </Principal>
+            <Dependent Role="ELP_LIST_ITEM">
+              <PropertyRef Name="DICT_ITEM_ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_LIST_ITEM_LIST_ID">
+          <End Role="ELP_LIST" Type="Self.ELP_LIST" Multiplicity="1" />
+          <End Role="ELP_LIST_ITEM" Type="Self.ELP_LIST_ITEM" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ELP_LIST">
+              <PropertyRef Name="LIST_ID" />
+            </Principal>
+            <Dependent Role="ELP_LIST_ITEM">
+              <PropertyRef Name="LIST_ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="Model1StoreContainer">
+          <EntitySet Name="ELP_DICT_ITEM_TRANSLATION" EntityType="Self.ELP_DICT_ITEM_TRANSLATION" Schema="ELITA" store:Type="Tables" />
+          <EntitySet Name="ELP_DICTIONARY_ITEM" EntityType="Self.ELP_DICTIONARY_ITEM" Schema="ELITA" store:Type="Tables" />
+          <EntitySet Name="ELP_EXPRESSION" EntityType="Self.ELP_EXPRESSION" Schema="ELITA" store:Type="Tables" />
+          <EntitySet Name="ELP_LABEL" EntityType="Self.ELP_LABEL" Schema="ELITA" store:Type="Tables" />
+          <EntitySet Name="ELP_LANGUAGE" EntityType="Self.ELP_LANGUAGE" Schema="ELITA" store:Type="Tables" />
+          <EntitySet Name="ELP_LIST" EntityType="Self.ELP_LIST" Schema="ELITA" store:Type="Tables" />
+          <EntitySet Name="ELP_LIST_ITEM" EntityType="Self.ELP_LIST_ITEM" Schema="ELITA" store:Type="Tables" />
+          <AssociationSet Name="FK_DICT_ITEM_TRANS_DICT_ITEM" Association="Self.FK_DICT_ITEM_TRANS_DICT_ITEM">
+            <End Role="ELP_DICTIONARY_ITEM" EntitySet="ELP_DICTIONARY_ITEM" />
+            <End Role="ELP_DICT_ITEM_TRANSLATION" EntitySet="ELP_DICT_ITEM_TRANSLATION" />
+          </AssociationSet>
+          <AssociationSet Name="FK_DICT_ITEM_TRANS_LANGUAGE" Association="Self.FK_DICT_ITEM_TRANS_LANGUAGE">
+            <End Role="ELP_LANGUAGE" EntitySet="ELP_LANGUAGE" />
+            <End Role="ELP_DICT_ITEM_TRANSLATION" EntitySet="ELP_DICT_ITEM_TRANSLATION" />
+          </AssociationSet>
+          <AssociationSet Name="FK_LABEL_DICT_ITEM_ID" Association="Self.FK_LABEL_DICT_ITEM_ID">
+            <End Role="ELP_DICTIONARY_ITEM" EntitySet="ELP_DICTIONARY_ITEM" />
+            <End Role="ELP_LABEL" EntitySet="ELP_LABEL" />
+          </AssociationSet>
+          <AssociationSet Name="FK_LIST_DICT_ITEM_ID" Association="Self.FK_LIST_DICT_ITEM_ID">
+            <End Role="ELP_DICTIONARY_ITEM" EntitySet="ELP_DICTIONARY_ITEM" />
+            <End Role="ELP_LIST" EntitySet="ELP_LIST" />
+          </AssociationSet>
+          <AssociationSet Name="FK_LIST_ITEM_DICT_ITEM_ID" Association="Self.FK_LIST_ITEM_DICT_ITEM_ID">
+            <End Role="ELP_DICTIONARY_ITEM" EntitySet="ELP_DICTIONARY_ITEM" />
+            <End Role="ELP_LIST_ITEM" EntitySet="ELP_LIST_ITEM" />
+          </AssociationSet>
+          <AssociationSet Name="FK_LIST_ITEM_LIST_ID" Association="Self.FK_LIST_ITEM_LIST_ID">
+            <End Role="ELP_LIST" EntitySet="ELP_LIST" />
+            <End Role="ELP_LIST_ITEM" EntitySet="ELP_LIST_ITEM" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema></edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="Model1" Alias="Self" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2008/09/edm">
+        <EntityType Name="DictionaryItemTranslation">
+          <Key>
+            <PropertyRef Name="DictionaryItemTranslationId" />
+          </Key>
+          <Property Name="DictionaryItemTranslationId" Type="Guid" Nullable="false" />
+          <Property Name="Translation" Type="String" MaxLength="255" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="LanguageId" Type="Guid" Nullable="false" />
+          <Property Name="DictionaryItemId" Type="Guid" Nullable="false" />
+          <Property Name="CreatedDate" Type="DateTime" Nullable="false" />
+          <Property Name="ModifiedDate" Type="DateTime" />
+          <Property Name="CreatedBy" Type="String" MaxLength="30" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="ModifiedBy" Type="String" MaxLength="30" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="DictionaryItem" Relationship="Self.FK_DICT_ITEM_TRANS_DICT_ITEM" FromRole="ELP_DICT_ITEM_TRANSLATION" ToRole="ELP_DICTIONARY_ITEM" />
+          <NavigationProperty Name="Language" Relationship="Self.FK_DICT_ITEM_TRANS_LANGUAGE" FromRole="ELP_DICT_ITEM_TRANSLATION" ToRole="ELP_LANGUAGE" />
+        </EntityType>
+        <EntityType Name="DictionaryItem">
+          <Key>
+            <PropertyRef Name="DictionaryItemId" />
+          </Key>
+          <Property Name="DictionaryItemId" Type="Guid" Nullable="false" />
+          <Property Name="CreatedDate" Type="DateTime" Nullable="false" />
+          <Property Name="ModifiedDate" Type="DateTime" />
+          <Property Name="CreatedBy" Type="String" MaxLength="30" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="ModifiedBy" Type="String" MaxLength="30" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="Translations" Relationship="Model1.FK_DICT_ITEM_TRANS_DICT_ITEM" FromRole="ELP_DICTIONARY_ITEM" ToRole="ELP_DICT_ITEM_TRANSLATION" />
+          </EntityType>
+        <EntityType Name="Label">
+          <Key>
+            <PropertyRef Name="LabelId" />
+          </Key>
+          <Property Name="LabelId" Type="Guid" Nullable="false" />
+          <Property Name="UiProgCode" Type="String" MaxLength="255" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="InUse" Type="String" MaxLength="1" FixedLength="true" Unicode="false" Nullable="false" />
+          <Property Name="DictionaryItemId" Type="Guid" Nullable="false" />
+          <Property Name="CreatedDate" Type="DateTime" Nullable="false" />
+          <Property Name="ModifiedDate" Type="DateTime" />
+          <Property Name="CreatedBy" Type="String" MaxLength="30" FixedLength="false" Unicode="false" />
+          <Property Name="ModifiedBy" Type="String" MaxLength="30" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="DictionaryItem" Relationship="Self.FK_LABEL_DICT_ITEM_ID" FromRole="ELP_LABEL" ToRole="ELP_DICTIONARY_ITEM" />
+        </EntityType>
+        <EntityType Name="Language">
+          <Key>
+            <PropertyRef Name="LanguageId" />
+          </Key>
+          <Property Name="LanguageId" Type="Guid" Nullable="false" />
+          <Property Name="Description" Type="String" MaxLength="40" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Code" Type="String" MaxLength="5" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="CreatedDate" Type="DateTime" Nullable="false" />
+          <Property Name="ModifiedDate" Type="DateTime" />
+          <Property Name="CreatedBy" Type="String" MaxLength="30" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="ModifiedBy" Type="String" MaxLength="30" FixedLength="false" Unicode="false" />
+          <Property Name="CultureCode" Type="String" MaxLength="40" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="ActiveFlag" Type="String" MaxLength="1" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Territory" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+        </EntityType>
+        <EntityType Name="List">
+          <Key>
+            <PropertyRef Name="ListId" />
+          </Key>
+          <Property Name="ListId" Type="Guid" Nullable="false" />
+          <Property Name="MaintainableByUser" Type="String" MaxLength="1" FixedLength="true" Unicode="false" Nullable="false" />
+          <Property Name="DictionaryItemId" Type="Guid" Nullable="false" />
+          <Property Name="Code" Type="String" MaxLength="255" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="CreatedDate" Type="DateTime" Nullable="false" />
+          <Property Name="ModifiedDate" Type="DateTime" />
+          <Property Name="CreatedBy" Type="String" MaxLength="30" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="ModifiedBy" Type="String" MaxLength="30" FixedLength="false" Unicode="false" />
+          <Property Name="ActiveFlag" Type="String" MaxLength="1" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="ExcludeByRole" Type="String" MaxLength="1" FixedLength="false" Unicode="false" Nullable="false" />
+          <NavigationProperty Name="DictionaryItem" Relationship="Self.FK_LIST_DICT_ITEM_ID" FromRole="ELP_LIST" ToRole="ELP_DICTIONARY_ITEM" />
+          <NavigationProperty Name="ListItems" Relationship="Self.FK_LIST_ITEM_LIST_ID" FromRole="ELP_LIST" ToRole="ELP_LIST_ITEM" />
+        </EntityType>
+        <EntityType Name="ListItem">
+          <Key>
+            <PropertyRef Name="ListItemId" />
+          </Key>
+          <Property Name="ListItemId" Type="Guid" Nullable="false" />
+          <Property Name="Code" Type="String" MaxLength="255" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="MaintainableByUser" Type="String" MaxLength="1" FixedLength="true" Unicode="false" Nullable="false" />
+          <Property Name="DisplayToUser" Type="String" MaxLength="1" FixedLength="true" Unicode="false" Nullable="false" />
+          <Property Name="ListId" Type="Guid" Nullable="false" />
+          <Property Name="DictionaryItemId" Type="Guid" Nullable="false" />
+          <Property Name="CreatedDate" Type="DateTime" Nullable="false" />
+          <Property Name="ModifiedDate" Type="DateTime" />
+          <Property Name="CreatedBy" Type="String" MaxLength="30" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="ModifiedBy" Type="String" MaxLength="30" FixedLength="false" Unicode="false" />
+          <Property Name="ActiveFlag" Type="String" MaxLength="1" FixedLength="false" Unicode="false" Nullable="false" />
+          <NavigationProperty Name="DictionaryItem" Relationship="Self.FK_LIST_ITEM_DICT_ITEM_ID" FromRole="ELP_LIST_ITEM" ToRole="ELP_DICTIONARY_ITEM" />
+          <NavigationProperty Name="List" Relationship="Self.FK_LIST_ITEM_LIST_ID" FromRole="ELP_LIST_ITEM" ToRole="ELP_LIST" />
+          <Property Name="ExtendedCode" Type="String" MaxLength="4000" FixedLength="false" Unicode="false" />
+        </EntityType>
+        <Association Name="FK_DICT_ITEM_TRANS_DICT_ITEM">
+          <End Role="ELP_DICTIONARY_ITEM" Type="Model1.DictionaryItem" Multiplicity="1" />
+          <End Role="ELP_DICT_ITEM_TRANSLATION" Type="Model1.DictionaryItemTranslation" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ELP_DICTIONARY_ITEM">
+              <PropertyRef Name="DictionaryItemId" />
+            </Principal>
+            <Dependent Role="ELP_DICT_ITEM_TRANSLATION">
+              <PropertyRef Name="DictionaryItemId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_DICT_ITEM_TRANS_LANGUAGE">
+          <End Role="ELP_LANGUAGE" Type="Model1.Language" Multiplicity="1" />
+          <End Role="ELP_DICT_ITEM_TRANSLATION" Type="Model1.DictionaryItemTranslation" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ELP_LANGUAGE">
+              <PropertyRef Name="LanguageId" />
+            </Principal>
+            <Dependent Role="ELP_DICT_ITEM_TRANSLATION">
+              <PropertyRef Name="LanguageId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_LABEL_DICT_ITEM_ID">
+          <End Role="ELP_DICTIONARY_ITEM" Type="Model1.DictionaryItem" Multiplicity="1" />
+          <End Role="ELP_LABEL" Type="Model1.Label" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ELP_DICTIONARY_ITEM">
+              <PropertyRef Name="DictionaryItemId" />
+            </Principal>
+            <Dependent Role="ELP_LABEL">
+              <PropertyRef Name="DictionaryItemId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_LIST_DICT_ITEM_ID">
+          <End Role="ELP_DICTIONARY_ITEM" Type="Model1.DictionaryItem" Multiplicity="1" />
+          <End Role="ELP_LIST" Type="Model1.List" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ELP_DICTIONARY_ITEM">
+              <PropertyRef Name="DictionaryItemId" />
+            </Principal>
+            <Dependent Role="ELP_LIST">
+              <PropertyRef Name="DictionaryItemId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_LIST_ITEM_DICT_ITEM_ID">
+          <End Role="ELP_DICTIONARY_ITEM" Type="Model1.DictionaryItem" Multiplicity="1" />
+          <End Role="ELP_LIST_ITEM" Type="Model1.ListItem" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ELP_DICTIONARY_ITEM">
+              <PropertyRef Name="DictionaryItemId" />
+            </Principal>
+            <Dependent Role="ELP_LIST_ITEM">
+              <PropertyRef Name="DictionaryItemId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_LIST_ITEM_LIST_ID">
+          <End Role="ELP_LIST" Type="Model1.List" Multiplicity="1" />
+          <End Role="ELP_LIST_ITEM" Type="Model1.ListItem" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ELP_LIST">
+              <PropertyRef Name="ListId" />
+            </Principal>
+            <Dependent Role="ELP_LIST_ITEM">
+              <PropertyRef Name="ListId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="CommonContext" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="DictionaryItemTranslations" EntityType="Model1.DictionaryItemTranslation" />
+          <EntitySet Name="DictionaryItems" EntityType="Model1.DictionaryItem" />
+          <EntitySet Name="Labels" EntityType="Model1.Label" />
+          <EntitySet Name="Languages" EntityType="Model1.Language" />
+          <EntitySet Name="Lists" EntityType="Model1.List" />
+          <EntitySet Name="ListItems" EntityType="Model1.ListItem" />
+          <AssociationSet Name="FK_DICT_ITEM_TRANS_DICT_ITEM" Association="Self.FK_DICT_ITEM_TRANS_DICT_ITEM">
+            <End Role="ELP_DICTIONARY_ITEM" EntitySet="DictionaryItems" />
+            <End Role="ELP_DICT_ITEM_TRANSLATION" EntitySet="DictionaryItemTranslations" />
+          </AssociationSet>
+          <AssociationSet Name="FK_DICT_ITEM_TRANS_LANGUAGE" Association="Self.FK_DICT_ITEM_TRANS_LANGUAGE">
+            <End Role="ELP_LANGUAGE" EntitySet="Languages" />
+            <End Role="ELP_DICT_ITEM_TRANSLATION" EntitySet="DictionaryItemTranslations" />
+          </AssociationSet>
+          <AssociationSet Name="FK_LABEL_DICT_ITEM_ID" Association="Self.FK_LABEL_DICT_ITEM_ID">
+            <End Role="ELP_DICTIONARY_ITEM" EntitySet="DictionaryItems" />
+            <End Role="ELP_LABEL" EntitySet="Labels" />
+          </AssociationSet>
+          <AssociationSet Name="FK_LIST_DICT_ITEM_ID" Association="Self.FK_LIST_DICT_ITEM_ID">
+            <End Role="ELP_DICTIONARY_ITEM" EntitySet="DictionaryItems" />
+            <End Role="ELP_LIST" EntitySet="Lists" />
+          </AssociationSet>
+          <AssociationSet Name="FK_LIST_ITEM_DICT_ITEM_ID" Association="Self.FK_LIST_ITEM_DICT_ITEM_ID">
+            <End Role="ELP_DICTIONARY_ITEM" EntitySet="DictionaryItems" />
+            <End Role="ELP_LIST_ITEM" EntitySet="ListItems" />
+          </AssociationSet>
+          <AssociationSet Name="FK_LIST_ITEM_LIST_ID" Association="Self.FK_LIST_ITEM_LIST_ID">
+            <End Role="ELP_LIST" EntitySet="Lists" />
+            <End Role="ELP_LIST_ITEM" EntitySet="ListItems" />
+          </AssociationSet>
+          <EntitySet Name="Expressions" EntityType="Model1.Expression" />
+        </EntityContainer>
+        <EntityType Name="Expression">
+          <Key>
+            <PropertyRef Name="ExpressionId" />
+          </Key>
+          <Property Name="ExpressionId" Type="Guid" Nullable="false" />
+          <Property Name="Code" Type="String" Nullable="false" MaxLength="20" FixedLength="false" Unicode="false" />
+          <Property Name="Name" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="ExpressionXml" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="ExpressionPlSql" Type="String" Nullable="false" MaxLength="4000" FixedLength="false" Unicode="false" />
+          <Property Name="FriendlyName" Type="String" Nullable="false" MaxLength="4000" FixedLength="false" Unicode="false" />
+          <Property Name="CreatedDate" Type="DateTime" Nullable="false" />
+          <Property Name="CreatedBy" Type="String" Nullable="false" MaxLength="30" FixedLength="false" Unicode="false" />
+          <Property Name="ModifiedDate" Type="DateTime" />
+          <Property Name="ModifiedBy" Type="String" MaxLength="30" FixedLength="false" Unicode="false" />
+        </EntityType>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2008/09/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="Model1StoreContainer" CdmEntityContainer="CommonContext">
+          <EntitySetMapping Name="DictionaryItemTranslations">
+            <EntityTypeMapping TypeName="Model1.DictionaryItemTranslation">
+              <MappingFragment StoreEntitySet="ELP_DICT_ITEM_TRANSLATION">
+                <ScalarProperty Name="DictionaryItemTranslationId" ColumnName="DICT_ITEM_TRANSLATION_ID" />
+                <ScalarProperty Name="Translation" ColumnName="TRANSLATION" />
+                <ScalarProperty Name="LanguageId" ColumnName="LANGUAGE_ID" />
+                <ScalarProperty Name="DictionaryItemId" ColumnName="DICT_ITEM_ID" />
+                <ScalarProperty Name="CreatedDate" ColumnName="CREATED_DATE" />
+                <ScalarProperty Name="ModifiedDate" ColumnName="MODIFIED_DATE" />
+                <ScalarProperty Name="CreatedBy" ColumnName="CREATED_BY" />
+                <ScalarProperty Name="ModifiedBy" ColumnName="MODIFIED_BY" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="DictionaryItems">
+            <EntityTypeMapping TypeName="Model1.DictionaryItem">
+              <MappingFragment StoreEntitySet="ELP_DICTIONARY_ITEM">
+                <ScalarProperty Name="DictionaryItemId" ColumnName="DICT_ITEM_ID" />
+                <ScalarProperty Name="CreatedDate" ColumnName="CREATED_DATE" />
+                <ScalarProperty Name="ModifiedDate" ColumnName="MODIFIED_DATE" />
+                <ScalarProperty Name="CreatedBy" ColumnName="CREATED_BY" />
+                <ScalarProperty Name="ModifiedBy" ColumnName="MODIFIED_BY" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Labels">
+            <EntityTypeMapping TypeName="Model1.Label">
+              <MappingFragment StoreEntitySet="ELP_LABEL">
+                <ScalarProperty Name="LabelId" ColumnName="LABEL_ID" />
+                <ScalarProperty Name="UiProgCode" ColumnName="UI_PROG_CODE" />
+                <ScalarProperty Name="InUse" ColumnName="IN_USE" />
+                <ScalarProperty Name="DictionaryItemId" ColumnName="DICT_ITEM_ID" />
+                <ScalarProperty Name="CreatedDate" ColumnName="CREATED_DATE" />
+                <ScalarProperty Name="ModifiedDate" ColumnName="MODIFIED_DATE" />
+                <ScalarProperty Name="CreatedBy" ColumnName="CREATED_BY" />
+                <ScalarProperty Name="ModifiedBy" ColumnName="MODIFIED_BY" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Languages">
+            <EntityTypeMapping TypeName="Model1.Language">
+              <MappingFragment StoreEntitySet="ELP_LANGUAGE">
+                <ScalarProperty Name="LanguageId" ColumnName="LANGUAGE_ID" />
+                <ScalarProperty Name="Description" ColumnName="DESCRIPTION" />
+                <ScalarProperty Name="Code" ColumnName="CODE" />
+                <ScalarProperty Name="CreatedDate" ColumnName="CREATED_DATE" />
+                <ScalarProperty Name="ModifiedDate" ColumnName="MODIFIED_DATE" />
+                <ScalarProperty Name="CreatedBy" ColumnName="CREATED_BY" />
+                <ScalarProperty Name="ModifiedBy" ColumnName="MODIFIED_BY" />
+                <ScalarProperty Name="CultureCode" ColumnName="CULTURE_CODE" />
+                <ScalarProperty Name="ActiveFlag" ColumnName="ACTIVE_FLAG" />
+                <ScalarProperty Name="Territory" ColumnName="TERRITORY" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Lists">
+            <EntityTypeMapping TypeName="Model1.List">
+              <MappingFragment StoreEntitySet="ELP_LIST">
+                <ScalarProperty Name="ListId" ColumnName="LIST_ID" />
+                <ScalarProperty Name="MaintainableByUser" ColumnName="MAINTAINABLE_BY_USER" />
+                <ScalarProperty Name="DictionaryItemId" ColumnName="DICT_ITEM_ID" />
+                <ScalarProperty Name="Code" ColumnName="CODE" />
+                <ScalarProperty Name="CreatedDate" ColumnName="CREATED_DATE" />
+                <ScalarProperty Name="ModifiedDate" ColumnName="MODIFIED_DATE" />
+                <ScalarProperty Name="CreatedBy" ColumnName="CREATED_BY" />
+                <ScalarProperty Name="ModifiedBy" ColumnName="MODIFIED_BY" />
+                <ScalarProperty Name="ActiveFlag" ColumnName="ACTIVE_FLAG" />
+                <ScalarProperty Name="ExcludeByRole" ColumnName="EXCLUDE_BY_ROLE" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="ListItems">
+            <EntityTypeMapping TypeName="Model1.ListItem">
+              <MappingFragment StoreEntitySet="ELP_LIST_ITEM">
+                <ScalarProperty Name="ExtendedCode" ColumnName="EXTENDED_CODE" />
+                <ScalarProperty Name="ListItemId" ColumnName="LIST_ITEM_ID" />
+                <ScalarProperty Name="Code" ColumnName="CODE" />
+                <ScalarProperty Name="MaintainableByUser" ColumnName="MAINTAINABLE_BY_USER" />
+                <ScalarProperty Name="DisplayToUser" ColumnName="DISPLAY_TO_USER" />
+                <ScalarProperty Name="ListId" ColumnName="LIST_ID" />
+                <ScalarProperty Name="DictionaryItemId" ColumnName="DICT_ITEM_ID" />
+                <ScalarProperty Name="CreatedDate" ColumnName="CREATED_DATE" />
+                <ScalarProperty Name="ModifiedDate" ColumnName="MODIFIED_DATE" />
+                <ScalarProperty Name="CreatedBy" ColumnName="CREATED_BY" />
+                <ScalarProperty Name="ModifiedBy" ColumnName="MODIFIED_BY" />
+                <ScalarProperty Name="ActiveFlag" ColumnName="ACTIVE_FLAG" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Expressions">
+            <EntityTypeMapping TypeName="Model1.Expression">
+              <MappingFragment StoreEntitySet="ELP_EXPRESSION">
+                <ScalarProperty Name="ModifiedBy" ColumnName="MODIFIED_BY" />
+                <ScalarProperty Name="ModifiedDate" ColumnName="MODIFIED_DATE" />
+                <ScalarProperty Name="CreatedBy" ColumnName="CREATED_BY" />
+                <ScalarProperty Name="CreatedDate" ColumnName="CREATED_DATE" />
+                <ScalarProperty Name="FriendlyName" ColumnName="EXPRESSION_FRIENDLY_NAME" />
+                <ScalarProperty Name="ExpressionPlSql" ColumnName="EXPRESSION_PLSQL" />
+                <ScalarProperty Name="ExpressionXml" ColumnName="EXPRESSION_XML" />
+                <ScalarProperty Name="Name" ColumnName="EXPRESSION_NAME" />
+                <ScalarProperty Name="Code" ColumnName="EXPRESSION_CODE" />
+                <ScalarProperty Name="ExpressionId" ColumnName="EXPRESSION_ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2008/10/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="true" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="true" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>

@@ -1,0 +1,193 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+
+<!-- ********************** THIS FILE HAS BEEN GENERATED FROM TEMPLATE SQLObject.cst (5/18/2015)********************** -->
+
+<SQL>
+	<LOAD>
+		<![CDATA[	
+			SELECT 
+				report_type,
+				ftp_filename,
+				report_parameters,
+				status,
+				start_date,
+				end_date,
+				error_message,
+				user_email_address,
+				created_by,
+				created_date,
+				modified_by,
+				modified_date,
+				report_proc,
+				sourceurl,
+				report_request_id
+			FROM elp_report_requests 
+			WHERE
+				report_request_id = :report_request_id
+		]]>
+	</LOAD>
+	<LOAD_LIST>		
+	</LOAD_LIST>	
+	<UPDATE>
+		<![CDATA[	
+			UPDATE elp_report_requests SET
+				report_type = :report_type,
+				ftp_filename = :ftp_filename,
+				report_parameters = :report_parameters,
+				status = :status,
+				start_date = :start_date,
+				end_date = :end_date,
+				error_message = :error_message,
+				user_email_address = :user_email_address,
+				report_proc = :report_proc,
+				sourceurl = :sourceurl,
+				modified_by = :modified_by
+			WHERE
+				report_request_id = :report_request_id
+		]]>
+	</UPDATE>
+	<INSERT>
+			INSERT INTO elp_report_requests
+					(			
+				report_type, 
+				ftp_filename, 
+				report_parameters, 
+				status, 
+				start_date, 
+				end_date, 
+				error_message, 
+				user_email_address, 
+				report_proc, 
+				sourceurl, 
+				created_by,
+				report_request_id
+					)
+			VALUES
+					(			
+				:report_type, 
+				:ftp_filename, 
+				:report_parameters, 
+				:status, 
+				:start_date, 
+				:end_date, 
+				:error_message, 
+				:user_email_address, 
+				:report_proc, 
+				:sourceurl, 
+				:created_by,
+				:report_request_id
+					)
+	</INSERT>
+	<DELETE>
+			DELETE FROM elp_report_requests
+			WHERE
+				report_request_id = :report_request_id
+	</DELETE>
+  <CREATE_REPORT_REQUEST>
+    elita.elp_utl_report.CreateReportRequest
+  </CREATE_REPORT_REQUEST>
+
+  <CREATE_JOB>
+    elita.elp_utl_report.CreateReportJob
+  </CREATE_JOB>
+ <GET_ACCESS_COUNT_BY_USER>
+    <![CDATA[
+			SELECT count(*) access_count
+ 			FROM ELP_REPORT_REQUESTS r
+			WHERE	r.created_by = :created_by
+		]]>
+  </GET_ACCESS_COUNT_BY_USER>
+  
+   <REPORTS_BY_USER>
+    <![CDATA[
+			SELECT DISTINCT REPORT_TYPE
+ 			FROM ELP_REPORT_REQUESTS r
+			WHERE	r.created_by = :created_by
+		]]>
+  </REPORTS_BY_USER>
+    
+  <LOAD_REQUESTS_BY_USER>
+    <![CDATA[	
+			SELECT 
+				report_type,
+				ftp_filename,
+				report_parameters,
+				status,
+				start_date,
+				end_date,
+				error_message,
+				user_email_address,
+				created_by,
+				created_date,
+				modified_by,
+				modified_date,
+				report_proc,
+        sourceurl,
+				report_request_id
+			FROM elp_report_requests r 
+			WHERE
+				r.created_by = :created_by and r.report_type = :report_type
+		]]>
+  </LOAD_REQUESTS_BY_USER>
+  
+      <LOAD_REQUESTS_BY_REPORT_KEY>
+    <![CDATA[	
+			SELECT 
+				report_type,
+				ftp_filename,
+				report_parameters,
+				status,
+				start_date,
+				end_date,
+				error_message,
+				user_email_address,
+				created_by,
+				created_date,
+				modified_by,
+				modified_date,
+				report_proc,
+        sourceurl,
+				report_request_id
+			FROM elp_report_requests r 
+			WHERE
+				r.created_by = :created_by and r.report_request_id = :report_request_id
+		]]>
+  </LOAD_REQUESTS_BY_REPORT_KEY>
+  <LOAD_REQUESTS>
+    <![CDATA[	
+			SELECT 
+				report_type,
+				ftp_filename,
+				report_parameters,
+				status,
+				start_date,
+				end_date,
+				error_message,
+				user_email_address,
+				created_by,
+				created_date,
+				modified_by,
+				modified_date,
+				report_proc,
+        sourceurl,
+				report_request_id
+			FROM elp_report_requests r 
+			WHERE
+        r.report_request_id = :report_request_id and 
+				r.created_by = :created_by
+        
+		]]>
+  </LOAD_REQUESTS>
+  <CHECK_EXCHANGE_RATE>
+  elita.r_uprextract.CheckExchangerate
+  </CHECK_EXCHANGE_RATE>
+<LOAD_DEALER>
+    <![CDATA[	
+		SELECT  Dealer_ID,DEALER_NAME FROM elp_dealer 
+
+        
+		]]>
+  </LOAD_DEALER>
+</SQL>
+
+

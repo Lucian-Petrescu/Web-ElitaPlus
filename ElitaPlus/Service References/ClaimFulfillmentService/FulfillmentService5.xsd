@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xs:schema xmlns:tns="http://schemas.datacontract.org/2004/07/Assurant.Elita.FulfillmentService.DataElements.Generics" elementFormDefault="qualified" targetNamespace="http://schemas.datacontract.org/2004/07/Assurant.Elita.FulfillmentService.DataElements.Generics" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+  <xs:import schemaLocation="http://localhost/ElitaFulfillmentService/FulfillmentService.svc?xsd=xsd3" namespace="http://schemas.datacontract.org/2004/07/Assurant.Elita.FulfillmentService.DataElements.Fulfillment" />
+  <xs:complexType name="ItemPlusChildrenOfAuthorizationArrayOfSubStatusLkECJpHH">
+    <xs:annotation>
+      <xs:appinfo>
+        <GenericType Name="ItemPlusChildrenOf{0}{1}{#}" Namespace="http://schemas.datacontract.org/2004/07/Assurant.Elita.FulfillmentService.DataElements.Generics" xmlns="http://schemas.microsoft.com/2003/10/Serialization/">
+          <GenericParameter Name="Authorization" Namespace="http://schemas.datacontract.org/2004/07/Assurant.Elita.FulfillmentService.DataElements.Fulfillment" />
+          <GenericParameter Name="ArrayOfSubStatus" Namespace="http://schemas.datacontract.org/2004/07/Assurant.Elita.FulfillmentService.DataElements.Fulfillment" />
+        </GenericType>
+      </xs:appinfo>
+    </xs:annotation>
+    <xs:sequence>
+      <xs:element xmlns:q1="http://schemas.datacontract.org/2004/07/Assurant.Elita.FulfillmentService.DataElements.Fulfillment" minOccurs="0" name="Children" nillable="true" type="q1:ArrayOfSubStatus" />
+      <xs:element xmlns:q2="http://schemas.datacontract.org/2004/07/Assurant.Elita.FulfillmentService.DataElements.Fulfillment" minOccurs="0" name="Item" nillable="true" type="q2:Authorization" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="ItemPlusChildrenOfAuthorizationArrayOfSubStatusLkECJpHH" nillable="true" type="tns:ItemPlusChildrenOfAuthorizationArrayOfSubStatusLkECJpHH" />
+</xs:schema>

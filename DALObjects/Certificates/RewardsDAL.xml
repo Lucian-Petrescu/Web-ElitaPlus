@@ -1,0 +1,8 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<SQL>
+  <LOAD>elita.elp_tbl_rewards.Load</LOAD>
+  <LOAD_LIST>elita.elp_tbl_rewards.LoadList</LOAD_LIST>
+  <INSERT>elita.elp_tbl_rewards.Add</INSERT>
+  <UPDATE>elita.elp_tbl_rewards.Modify</UPDATE>
+</SQL>
+

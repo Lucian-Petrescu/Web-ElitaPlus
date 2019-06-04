@@ -1,0 +1,122 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+
+<!-- ********************** THIS FILE HAS BEEN GENERATED FROM TEMPLATE SQLObject.cst (8/29/2012)********************** -->
+
+<SQL>
+  <LOAD>
+    <![CDATA[	
+			SELECT 
+				service_center_id,
+				contact_info_id,
+				created_by,
+				modified_by,
+				created_date,
+				modified_date,
+				effective,
+				expiration,
+				vendor_contact_id
+			FROM elp_vendor_contact 
+			WHERE
+				vendor_contact_id = :vendor_contact_id
+		]]>
+  </LOAD>
+  <LOAD_LIST>
+    <![CDATA[
+    select
+      vc.service_center_id,
+			vc.contact_info_id,
+      vc.effective,
+			vc.expiration,
+			vc.vendor_contact_id,
+      cf.CONTACT_INFO_ID,
+      cf.ADDRESS_TYPE_ID,
+      cf.ADDRESS_ID,
+      cf.SALUTATION_ID ,
+      cf.NAME,
+      cf.HOME_PHONE,
+      cf.WORK_PHONE,
+      cf.EMAIL,
+      cf.CELL_PHONE,
+      cf.COMPANY,
+      cf.JOB_TITLE,
+      vc.CREATED_BY,
+      vc.MODIFIED_BY,
+      vc.CREATED_DATE,
+      vc.MODIFIED_DATE
+    from elp_contact_info cf
+      join  elp_vendor_contact vc
+      on vc.contact_info_id = cf.contact_info_id
+    where vc.service_center_id = :service_center_id
+    ]]>
+  </LOAD_LIST>
+  <UPDATE>
+    <![CDATA[	
+			UPDATE elp_vendor_contact SET
+				service_center_id = :service_center_id,
+				contact_info_id = :contact_info_id,
+				effective = :effective,
+				expiration = :expiration,
+				modified_by = :modified_by
+			WHERE
+				vendor_contact_id = :vendor_contact_id
+		]]>
+  </UPDATE>
+  <INSERT>
+    INSERT INTO elp_vendor_contact
+    (
+    service_center_id,
+    contact_info_id,
+    effective,
+    expiration,
+    created_by,
+    vendor_contact_id
+    )
+    VALUES
+    (
+    :service_center_id,
+    :contact_info_id,
+    :effective,
+    :expiration,
+    :created_by,
+    :vendor_contact_id
+    )
+  </INSERT>
+  <DELETE>
+    DELETE FROM elp_vendor_contact
+    WHERE
+    vendor_contact_id = :vendor_contact_id
+  </DELETE>
+  <LOAD_CONTACT_INFO_LIST>
+    <![CDATA[
+    Select
+	    vc.VENDOR_CONTACT_ID,
+	    vc.SERVICE_CENTER_ID,
+      ci.CONTACT_INFO_ID,
+	    ci.ADDRESS_TYPE_ID,
+	    ci.ADDRESS_ID,
+	    ci.SALUTATION_ID,
+	    ci.NAME,
+	    ci.HOME_PHONE,
+	    ci.WORK_PHONE,
+	    ci.CELL_PHONE,
+	    ci.EMAIL,
+	    ci.JOB_TITLE,
+	    ci.COMPANY,
+      vc.CREATED_BY,
+      vc.MODIFIED_BY,
+      vc.CREATED_DATE,
+      vc.MODIFIED_DATE,
+      ci.CREATED_BY,
+      ci.MODIFIED_BY,
+      ci.CREATED_DATE,
+      ci.MODIFIED_DATE
+    from
+	    elp_contact_info ci
+	    join elp_vendor_contact vc on vc.contact_info_id = ci.contact_info_id
+    where
+	    vc.contact_info_id =  :contact_info_id 
+    ]]>
+  </LOAD_CONTACT_INFO_LIST>
+</SQL>
+
+

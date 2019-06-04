@@ -1,0 +1,1 @@
+﻿<%@ ServiceHost Language="VB" Debug="true" Service="ElitaInternalWSRelay.RelayService" CodeBehind="RelayService.svc.vb" %>

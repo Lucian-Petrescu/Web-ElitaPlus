@@ -1,0 +1,74 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema">
+  <xs:element name="ElitaTransactionUpdateDs">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element name="ElitaTransactionUpdate" minOccurs="1" maxOccurs="1">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element name="TRANSACTION_HEADER" minOccurs="1" maxOccurs="1">
+                <xs:complexType>
+                  <xs:sequence>
+                    <xs:element name="TRANSACTION_ID" type="stringRequired" minOccurs="1" maxOccurs="1" />
+                    <xs:element name="ELITA_ORGINAL_TRANS_ID" type="stringRequired" minOccurs="1" maxOccurs="1" />
+                    <xs:element name="FUNCTION_TYPE" type="stringRequired" minOccurs="1" maxOccurs="1" />
+                  </xs:sequence>
+                </xs:complexType>
+              </xs:element>
+              <xs:element name="TRANSACTION_DATA_RECORD" minOccurs="1" maxOccurs="25">
+                <xs:complexType>
+                  <xs:sequence>
+                    <xs:element name="ITEM_NUMBER" type="myPositiveInteger" minOccurs="1" maxOccurs="1" />                    
+                    <xs:element name="RESULT" minOccurs="1" maxOccurs="1">
+                      <xs:simpleType>
+                        <xs:restriction base="xs:string">
+                          <xs:pattern value="OK|ERROR" />
+                        </xs:restriction>
+                      </xs:simpleType>
+                    </xs:element>
+                    <xs:element name="ERROR" minOccurs="0" maxOccurs="25">
+                      <xs:complexType>
+                        <xs:sequence>
+                          <xs:element name="CODE" type="stringRequired" minOccurs="1" maxOccurs="1" />
+                          <xs:element name="MESSAGE" type="stringRequired" minOccurs="1" maxOccurs="1" />
+                          <xs:element name="ERROR_INFO" type="stringRequired" minOccurs="1" maxOccurs="1" />
+                        </xs:sequence>
+                      </xs:complexType>
+                    </xs:element>
+                  </xs:sequence>
+                </xs:complexType>
+              </xs:element>
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:simpleType name="stringRequired">
+    <xs:restriction base="xs:string">
+      <xs:minLength value="1"></xs:minLength>
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:simpleType name="myPositiveInteger">
+    <xs:restriction base="xs:int">
+      <xs:minInclusive value="1" />
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:simpleType name="myPositiveDecimal">
+    <xs:restriction base="xs:decimal">
+      <xs:minInclusive value="0" />
+    </xs:restriction>
+  </xs:simpleType>
+</xs:schema>
+
+
+
+
+
+
+
+
+
+
+
+

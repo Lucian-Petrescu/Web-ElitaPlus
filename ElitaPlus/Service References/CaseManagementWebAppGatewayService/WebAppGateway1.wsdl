@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<wsdl:definitions xmlns:wsap="http://schemas.xmlsoap.org/ws/2004/08/addressing/policy" xmlns:wsa10="http://www.w3.org/2005/08/addressing" xmlns:tns="http://assurant.com/Elita/CaseManagement/WebAppGateway" xmlns:msc="http://schemas.microsoft.com/ws/2005/12/wsdl/contract" xmlns:soapenc="http://schemas.xmlsoap.org/soap/encoding/" xmlns:wsx="http://schemas.xmlsoap.org/ws/2004/09/mex" xmlns:wsp="http://schemas.xmlsoap.org/ws/2004/09/policy" xmlns:wsam="http://www.w3.org/2007/05/addressing/metadata" xmlns:wsa="http://schemas.xmlsoap.org/ws/2004/08/addressing" xmlns:wsaw="http://www.w3.org/2006/05/addressing/wsdl" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:soap12="http://schemas.xmlsoap.org/wsdl/soap12/" xmlns:wsu="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-utility-1.0.xsd" xmlns:xsd="http://www.w3.org/2001/XMLSchema" targetNamespace="http://assurant.com/Elita/CaseManagement/WebAppGateway" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">
+  <wsdl:types>
+    <xsd:schema targetNamespace="http://assurant.com/Elita/CaseManagement/WebAppGateway/Imports">
+      <xsd:import schemaLocation="http://localhost/ElitaCaseManagement/WebAppGateway?xsd=xsd2" namespace="http://assurant.com/Elita/CaseManagement/WebAppGateway" />
+      <xsd:import schemaLocation="http://localhost/ElitaCaseManagement/WebAppGateway?xsd=xsd0" namespace="http://schemas.microsoft.com/2003/10/Serialization/" />
+      <xsd:import schemaLocation="http://localhost/ElitaCaseManagement/WebAppGateway?xsd=xsd1" namespace="http://assurant.com/Elita/CaseManagement/WebAppGateway/Data" />
+      <xsd:import schemaLocation="http://localhost/ElitaCaseManagement/WebAppGateway?xsd=xsd3" namespace="http://elita.assurant.com/Elita/Claim/RecordingService/DataContracts" />
+      <xsd:import schemaLocation="http://localhost/ElitaCaseManagement/WebAppGateway?xsd=xsd4" namespace="http://assurant.com/Elita/CaseManagement/Core/Data" />
+    </xsd:schema>
+  </wsdl:types>
+  <wsdl:message name="WebAppGateway_CreateCase_InputMessage">
+    <wsdl:part name="parameters" element="tns:CreateCase" />
+  </wsdl:message>
+  <wsdl:message name="WebAppGateway_CreateCase_OutputMessage">
+    <wsdl:part name="parameters" element="tns:CreateCaseResponse" />
+  </wsdl:message>
+  <wsdl:message name="WebAppGateway_SaveCase_InputMessage">
+    <wsdl:part name="parameters" element="tns:SaveCase" />
+  </wsdl:message>
+  <wsdl:message name="WebAppGateway_SaveCase_OutputMessage">
+    <wsdl:part name="parameters" element="tns:SaveCaseResponse" />
+  </wsdl:message>
+  <wsdl:message name="WebAppGateway_BeginInteraction_InputMessage">
+    <wsdl:part name="parameters" element="tns:BeginInteraction" />
+  </wsdl:message>
+  <wsdl:message name="WebAppGateway_BeginInteraction_OutputMessage">
+    <wsdl:part name="parameters" element="tns:BeginInteractionResponse" />
+  </wsdl:message>
+  <wsdl:message name="WebAppGateway_Submit_InputMessage">
+    <wsdl:part name="parameters" element="tns:Submit" />
+  </wsdl:message>
+  <wsdl:message name="WebAppGateway_Submit_OutputMessage">
+    <wsdl:part name="parameters" element="tns:SubmitResponse" />
+  </wsdl:message>
+  <wsdl:portType name="WebAppGateway">
+    <wsdl:operation name="CreateCase">
+      <wsdl:input wsaw:Action="http://assurant.com/Elita/CaseManagement/WebAppGateway/WebAppGateway/CreateCase" message="tns:WebAppGateway_CreateCase_InputMessage" />
+      <wsdl:output wsaw:Action="http://assurant.com/Elita/CaseManagement/WebAppGateway/WebAppGateway/CreateCaseResponse" message="tns:WebAppGateway_CreateCase_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="SaveCase">
+      <wsdl:input wsaw:Action="http://assurant.com/Elita/CaseManagement/WebAppGateway/WebAppGateway/SaveCase" message="tns:WebAppGateway_SaveCase_InputMessage" />
+      <wsdl:output wsaw:Action="http://assurant.com/Elita/CaseManagement/WebAppGateway/WebAppGateway/SaveCaseResponse" message="tns:WebAppGateway_SaveCase_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="BeginInteraction">
+      <wsdl:input wsaw:Action="http://assurant.com/Elita/CaseManagement/WebAppGateway/WebAppGateway/BeginInteraction" message="tns:WebAppGateway_BeginInteraction_InputMessage" />
+      <wsdl:output wsaw:Action="http://assurant.com/Elita/CaseManagement/WebAppGateway/WebAppGateway/BeginInteractionResponse" message="tns:WebAppGateway_BeginInteraction_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="Submit">
+      <wsdl:input wsaw:Action="http://assurant.com/Elita/CaseManagement/WebAppGateway/WebAppGateway/Submit" message="tns:WebAppGateway_Submit_InputMessage" />
+      <wsdl:output wsaw:Action="http://assurant.com/Elita/CaseManagement/WebAppGateway/WebAppGateway/SubmitResponse" message="tns:WebAppGateway_Submit_OutputMessage" />
+    </wsdl:operation>
+  </wsdl:portType>
+</wsdl:definitions>

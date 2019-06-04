@@ -1,0 +1,19 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema">
+  <xs:element name="GetCertInfoWEPPTMXDs">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element name="GetCertInfoWEPPTMX">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element name="dealer_code" type="xs:string" minOccurs="1" maxOccurs="1"></xs:element>
+              <xs:element name="cert_number" type="xs:string" minOccurs="1" maxOccurs="1"></xs:element>
+              <xs:element name="phone_number" type="xs:string" minOccurs="1" maxOccurs="1"></xs:element>
+              <xs:element name="serial_number" type="xs:string" minOccurs="1" maxOccurs="1"></xs:element>
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+</xs:schema>

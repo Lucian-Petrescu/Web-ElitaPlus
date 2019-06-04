@@ -1,0 +1,83 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+
+<!-- ********************** THIS FILE HAS BEEN GENERATED FROM TEMPLATE SQLObject.cst (7/21/2014)********************** -->
+
+<SQL>
+  <LOAD>
+    <![CDATA[	
+			SELECT 
+				acct_event_detail_id,
+				dealer_id,
+				coverage_type_id,
+				created_date,
+				created_by,
+				modified_date,
+				modified_by,
+				acct_event_detail_incexc_id
+			FROM elp_acct_event_detail_incexc 
+			WHERE
+				acct_event_detail_incexc_id = :acct_event_detail_incexc_id
+		]]>
+  </LOAD>
+  <LOAD_LIST>
+    <![CDATA[
+      SELECT 
+				acct_event_detail_id,
+				dealer_id,
+				coverage_type_id,
+				created_date,
+				created_by,
+				modified_date,
+				modified_by,
+				acct_event_detail_incexc_id
+			FROM elp_acct_event_detail_incexc 
+			WHERE acct_event_detail_id = :acct_event_detail_id
+    ]]>
+  </LOAD_LIST>
+  <LOAD_DEALER_LIST_BY_LINE_ITEM>
+    <![CDATA[
+      select distinct d.dealer_id as ID, c.code || ' - ' || d.dealer || ' (' || d.DEALER_NAME || ')' AS DESCRIPTION
+      from ELP_ACCT_EVENT ae
+      inner join elp_company c on c.ACCT_COMPANY_ID = ae.ACCT_COMPANY_ID
+      inner join elp_Dealer d on d.company_id = c.company_id
+      where 1=1
+	      and ae.ACCT_EVENT_ID = :acct_event_id
+	      and c.company_id in (Select company_id from ELP_USER_COMPANY where user_id = :user_id)
+      order by DESCRIPTION
+    ]]>
+  </LOAD_DEALER_LIST_BY_LINE_ITEM>
+  <UPDATE>
+    <![CDATA[	
+			UPDATE elp_acct_event_detail_incexc SET
+				acct_event_detail_id = :acct_event_detail_id,
+				dealer_id = :dealer_id,
+				coverage_type_id = :coverage_type_id,
+				modified_by = :modified_by
+			WHERE
+				acct_event_detail_incexc_id = :acct_event_detail_incexc_id
+		]]>
+  </UPDATE>
+  <INSERT>
+    INSERT INTO elp_acct_event_detail_incexc
+    (
+    acct_event_detail_id,
+    dealer_id,
+    coverage_type_id,
+    created_by,
+    acct_event_detail_incexc_id
+    )
+    VALUES
+    (
+    :acct_event_detail_id,
+    :dealer_id,
+    :coverage_type_id,
+    :created_by,
+    :acct_event_detail_incexc_id
+    )
+  </INSERT>
+  <DELETE>
+    DELETE FROM elp_acct_event_detail_incexc
+    WHERE
+    acct_event_detail_incexc_id = :acct_event_detail_incexc_id
+  </DELETE>
+</SQL>

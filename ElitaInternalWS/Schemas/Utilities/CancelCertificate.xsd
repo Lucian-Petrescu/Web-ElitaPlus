@@ -1,0 +1,44 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema">
+  <xs:element name="CancelCertificateDs">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element name="CancelCertificate">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element name="DEALER_CODE" type="stringRequired" minOccurs="1" maxOccurs="1" />
+              <xs:element name="CERTIFICATE_NO" type="stringRequired" minOccurs="1" maxOccurs="1" />
+              <xs:element name="SOURCE" type="stringRequired" minOccurs="1" maxOccurs="1" />
+              <xs:element name="CANCELLATION_DATE" type="xs:dateTime" minOccurs="1" maxOccurs="1" />            
+              <xs:element name="PAYMENT_METHOD_CODE" type="xs:string" minOccurs="0" maxOccurs="1" />
+              <xs:element name="ACCOUNT_NAME" type="xs:string" minOccurs="0" maxOccurs="1" />
+              <xs:element name="BANK_ID" type="xs:string" minOccurs="0" maxOccurs="1" />
+              <xs:element name="ACCOUNT_NUMBER" type="xs:string" minOccurs="0" maxOccurs="1" />
+              <xs:element name="SWIFT_CODE" type="xs:string" minOccurs="0" maxOccurs="1" />
+              <xs:element name="IBAN_NUMBER" type="xs:string" minOccurs="0" maxOccurs="1" />
+              <xs:element name="ACCOUNT_TYPE_CODE" type="xs:string" minOccurs="0" maxOccurs="1" />
+              <xs:element name="PAYMENT_REASON_CODE" type="xs:string" minOccurs="0" maxOccurs="1" />
+              <xs:element name="INVOICE_NUMBER" type="xs:string" minOccurs="0" maxOccurs="1" />
+              <xs:element name="CANCEL_ALL_BY_INVOICE" type="xs:string" minOccurs="0" maxOccurs="1" />
+              <xs:element name="CANCELLATION_REASON_CODE" type="xs:string" minOccurs="0" maxOccurs="1" />
+              <xs:element name="REFUND_AMOUNT" type="xs:decimal" minOccurs="0" maxOccurs="1" />
+              <xs:element name="COMMENT_TYPE_CODE" type="xs:string" minOccurs="0" maxOccurs="1" />
+              <xs:element name="COMMENTS" type="xs:string" minOccurs="0" maxOccurs="1" />
+              <xs:element name="BANK_NAME" type="xs:integer" minOccurs="0" maxOccurs="1" />
+              <xs:element name="ACCOUNT_DIGIT" type="xs:integer" minOccurs="0" maxOccurs="1" />
+              <xs:element name="BRANCH_DIGIT" type="xs:integer" minOccurs="0" maxOccurs="1" />
+              <xs:element name="BRANCH_NUMBER" type="xs:integer" minOccurs="0" maxOccurs="1" />              
+              <xs:element name="ACTION" type="xs:string" minOccurs="0" maxOccurs="1" />
+              <xs:element name="INSTALLMENTS_PAID" type="xs:integer" minOccurs="0" maxOccurs="1" />
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:simpleType name="stringRequired">
+    <xs:restriction base="xs:string">
+      <xs:minLength value="1"></xs:minLength>
+    </xs:restriction>
+  </xs:simpleType>
+</xs:schema>

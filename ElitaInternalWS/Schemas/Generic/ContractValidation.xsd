@@ -1,0 +1,21 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<xs:schema id="ContractValidation" xmlns:xs="http://www.w3.org/2001/XMLSchema">    
+  <xs:element name="ContractValidationDs">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element name="ContractValidation" minOccurs="1" maxOccurs="1">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element name="UPLOAD_SESSION_ID" type="stringRequired" minOccurs="1" maxOccurs="1" />
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:simpleType name="stringRequired">
+    <xs:restriction base="xs:string">
+      <xs:minLength value="1"></xs:minLength>
+    </xs:restriction>
+  </xs:simpleType>
+</xs:schema>

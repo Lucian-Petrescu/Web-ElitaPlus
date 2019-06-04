@@ -1,0 +1,162 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+
+<!-- ********************** THIS FILE HAS BEEN GENERATED FROM TEMPLATE SQLObject.cst (5/18/2012)********************** -->
+
+<SQL>
+  <LOAD>
+    <![CDATA[	
+			SELECT 
+				customer_name,
+				document_num,
+				certificate_num,
+				amount,
+				num_of_installments,
+				name_on_card,
+				card_num,
+				card_security_code,
+				card_expiration,
+				card_type,
+				auth_status,
+				auth_num,
+				reject_code,
+				reject_msg,
+				auth_date,
+				created_date,
+				created_by,
+				modified_date,
+				modified_by,
+        dbs_company_code,
+        dbs_product_code,
+        dbs_system_code,
+        dealer_code,
+        email,
+        mobile_area_code,
+        mobile,
+        phone_area_code,
+        phone,
+        warranty_sales_date,
+        card_owner_tax_id,
+        dbs_payment_type,
+        due_date,
+        expired_date,
+				trans_ccauth_vscbrazil_id
+			FROM elp_trans_ccauth_vscbrazil 
+			WHERE
+				trans_ccauth_vscbrazil_id = :trans_ccauth_vscbrazil_id
+		]]>
+  </LOAD>
+  <LOAD_LIST>
+  </LOAD_LIST>
+  <UPDATE>
+    <![CDATA[	
+			UPDATE elp_trans_ccauth_vscbrazil SET
+				customer_name = :customer_name,
+				document_num = :document_num,
+				certificate_num = :certificate_num,
+				amount = :amount,
+				num_of_installments = :num_of_installments,
+				name_on_card = :name_on_card,
+				card_num = :card_num,
+				card_security_code = :card_security_code,
+				card_expiration = :card_expiration,
+				card_type = :card_type,
+				auth_status = :auth_status,
+				auth_num = :auth_num,
+				reject_code = :reject_code,
+				reject_msg = :reject_msg,
+				auth_date = :auth_date,
+				modified_by = :modified_by,
+        dbs_company_code = :dbs_company_code,
+        dbs_product_code = :dbs_product_code,
+        dbs_system_code = :dbs_system_code,
+        dealer_code = :dealer_code,
+        email = :email,
+        mobile_area_code = :mobile_area_code,
+        mobile = :mobile,
+        phone_area_code = :phone_area_code,
+        phone = :phone,
+        warranty_sales_date = :warranty_sales_date,
+        card_owner_tax_id = :card_owner_tax_id,
+        dbs_payment_type = :dbs_payment_type,
+        due_date = :due_date,
+        expired_date = :expired_date
+			WHERE
+				trans_ccauth_vscbrazil_id = :trans_ccauth_vscbrazil_id
+		]]>
+  </UPDATE>
+  <INSERT>
+    INSERT INTO elp_trans_ccauth_vscbrazil
+    (
+    customer_name,
+    document_num,
+    certificate_num,
+    amount,
+    num_of_installments,
+    name_on_card,
+    card_num,
+    card_security_code,
+    card_expiration,
+    card_type,
+    auth_status,
+    auth_num,
+    reject_code,
+    reject_msg,
+    auth_date,
+    created_by,
+    dbs_company_code,
+    dbs_product_code,
+    dbs_system_code,
+    dealer_code,
+    email,
+    mobile_area_code,
+    mobile,
+    phone_area_code,
+    phone,
+    warranty_sales_date,
+    card_owner_tax_id,
+    dbs_payment_type,
+    due_date,
+    expired_date,
+    trans_ccauth_vscbrazil_id
+    )
+    VALUES
+    (
+    :customer_name,
+    :document_num,
+    :certificate_num,
+    :amount,
+    :num_of_installments,
+    :name_on_card,
+    :card_num,
+    :card_security_code,
+    :card_expiration,
+    :card_type,
+    :auth_status,
+    :auth_num,
+    :reject_code,
+    :reject_msg,
+    :auth_date,
+    :created_by,
+    :dbs_company_code,
+    :dbs_product_code,
+    :dbs_system_code,
+    :dealer_code,
+    :email,
+    :mobile_area_code,
+    :mobile,
+    :phone_area_code,
+    :phone,
+    :warranty_sales_date,
+    :card_owner_tax_id,
+    :dbs_payment_type,
+    :due_date,
+    :expired_date,
+    :trans_ccauth_vscbrazil_id
+    )
+  </INSERT>
+  <DELETE>
+    DELETE FROM elp_trans_ccauth_vscbrazil
+    WHERE
+    trans_ccauth_vscbrazil_id = :trans_ccauth_vscbrazil_id
+  </DELETE>
+</SQL>

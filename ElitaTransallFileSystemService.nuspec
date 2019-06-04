@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd">
+  <metadata>
+    <id>ElitaTransallFileSystemService$ReleasePath$</id>
+    <version>$Version$</version>
+    <authors>ElitaBuildDefinition</authors>
+    <description>ElitaTransallFileSystemService$ReleasePath$</description>
+  </metadata>
+  <files>
+    <file src="Assurant.Common.Ftp.dll" target="" />
+    <file src="Assurant.Common.Localization.dll" target="" />
+    <file src="Assurant.Common.MessagePublishing.dll" target="" />
+    <file src="Assurant.Common.Types.dll" target="" />
+    <file src="Assurant.Common.Validation.dll" target="" />
+    <file src="Assurant.Common.Zip.dll" target="" />
+    <file src="Assurant.Elita.Configuration.dll" target="" />
+    <file src="Assurant.ElitaPlus.Business.dll" target="" />
+    <file src="Assurant.ElitaPlus.BusinessObjectsNew.dll" target="" />
+    <file src="Assurant.ElitaPlus.BusinessObjectsNew.XmlSerializers.dll" target="" />
+    <file src="Assurant.ElitaPlus.Common.dll" target="" />
+    <file src="Assurant.ElitaPlus.DALObjects.dll" target="" />
+    <file src="Assurant.ElitaPlus.DataAccessInterface.dll" target="" />
+    <file src="Assurant.ElitaPlus.DataEntities.dll" target="" />
+    <file src="Assurant.ElitaPlus.Security.dll" target="" />
+    <file src="ElitaTransallFileSystemService.application" target="" />
+    <file src="ElitaTransallFileSystemService.exe" target="" />
+    <file src="ElitaTransallFileSystemService.exe.config" target="" />
+    <file src="ElitaTransallFileSystemService.exe.manifest" target="" />
+    <file src="ICSharpCode.SharpZipLib.dll" target="" />
+    <file src="Ionic.Zip.dll" target="" />
+    <file src="Microsoft.Practices.ServiceLocation.dll" target="" />
+    <file src="Microsoft.Practices.Unity.Configuration.dll" target="" />
+    <file src="Microsoft.Practices.Unity.dll" target="" />
+    <file src="Oracle.ManagedDataAccess.dll" target="" />
+    <file src="RMEncryptor.dll" target="" />
+    <file src="App1.config" target="" />
+    <file src="App2.config" target="" />
+    <file src="deploy.config" target="" />
+    <file src="Settings.xml" target="" />
+  </files>
+</package>

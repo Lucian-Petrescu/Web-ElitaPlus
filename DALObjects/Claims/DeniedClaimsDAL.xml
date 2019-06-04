@@ -1,0 +1,243 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+
+<!-- ********************** THIS FILE HAS BEEN GENERATED FROM TEMPLATE SQLObject.cst (9/8/2008)********************** -->
+
+<SQL>
+  <LOAD>
+    <![CDATA[	
+			SELECT 
+        denied_claims_id,
+				claim_id,
+				customer_name,
+				address1,
+				address2,
+				city,
+				region_id,
+				postal_code,
+				manufacturer_id,
+				model,
+				denied_reason1_id,
+				condition_problem_1,
+				condition_problem_2,
+				condition_problem_3,
+				approver_id,
+				created_by,
+				created_date,
+				modified_by,
+				modified_date,
+				denied_reason2_id,
+				denied_reason3_id,
+				denied_reason4_id,
+				denied_reason5_id,
+				denied_reason6_id,
+				denied_reason7_id,
+				denied_reason8_id,
+				denied_reason9_id,
+				denied_reason10_id,
+				denied_reason11_id,
+				denied_reason12_id,
+				denied_reason13_id,
+				denied_reason14_id,
+				denied_reason15_id
+			FROM elp_denied_claims 
+			WHERE
+				denied_claims_id = :denied_claims_id
+		]]>
+  </LOAD>
+  <LOAD_LETTER_LIST>
+    SELECT DISTINCT
+    c.claim_id,
+    li.CODE ,
+    t.translation,
+    c.created_date,
+    c.denied_claims_id,
+    c.customer_name,
+    c.address1,
+    c.address2,
+    c.city,
+    c.region_id,
+    c.postal_code,
+    c.manufacturer_id,
+    c.model,
+    c.denied_reason1_id,
+    c.condition_problem_1,
+    c.condition_problem_2,
+    c.condition_problem_3,
+    c.approver_id,
+    c.created_by,
+    c.modified_by,
+    c.modified_date,
+    c.denied_reason2_id,
+    c.denied_reason3_id,
+    c.denied_reason4_id,
+    c.denied_reason5_id,
+    c.denied_reason6_id,
+    c.denied_reason7_id,
+    c.denied_reason8_id,
+    c.denied_reason9_id,
+    c.denied_reason10_id,
+    c.denied_reason11_id,
+    c.denied_reason12_id,
+    c.denied_reason13_id,
+    c.denied_reason14_id,
+    c.denied_reason15_id,
+    c.denied_claims_id
+    FROM elp_denied_claims c,elp_list_item li,elp_list l,ELP_DICT_ITEM_TRANSLATION t
+    WHERE
+    c.claim_id = :claim_id and
+    DENIED_REASON1_ID = li.list_item_id  and
+    Li.DICT_ITEM_ID = T.DICT_ITEM_ID and
+    t.language_id = :language_id
+
+  </LOAD_LETTER_LIST>
+  <LOAD_AVAILABLE_DENIED_REASONS_LIST>
+    select DISTINCT  li.code , li.list_item_id ID, t.TRANSLATION DESCRIPTION
+    from 	elp_list_item li,elp_list l,ELP_DICT_ITEM_TRANSLATION t
+    where   LI.LIST_ID = L.LIST_ID AND L.CODE = 'CLADELET' and
+    Li.DICT_ITEM_ID = T.DICT_ITEM_ID and
+    t.language_id = :language_id
+  </LOAD_AVAILABLE_DENIED_REASONS_LIST>
+  <LOAD_AUTHORIZED_APPROVER_LIST>
+    select DISTINCT  li.code , li.list_item_id ID, t.TRANSLATION DESCRIPTION
+    from 	elp_list_item li,elp_list l,ELP_DICT_ITEM_TRANSLATION t
+    where   LI.LIST_ID = L.LIST_ID AND L.CODE = 'CLADELETAUTHO' and
+    Li.DICT_ITEM_ID = T.DICT_ITEM_ID     
+  </LOAD_AUTHORIZED_APPROVER_LIST>
+  <LOAD_SELECTED_DENIED_REASONS_LIST>
+    select DISTINCT  li.code , li.list_item_id ID, t.TRANSLATION DESCRIPTION
+    from 	elp_denied_claims dc,elp_list_item li,elp_list l,ELP_DICT_ITEM_TRANSLATION t
+    where   LI.LIST_ID = L.LIST_ID AND L.CODE = 'CLADELET' and
+    Li.DICT_ITEM_ID = T.DICT_ITEM_ID and
+    t.language_id = :language_id and
+    dc.DENIED_CLAIMS_ID = :denied_claims_id and(
+    li.list_item_id = dc.DENIED_REASON1_ID or
+    li.list_item_id = dc.DENIED_REASON2_ID or
+    li.list_item_id = dc.DENIED_REASON3_ID or
+    li.list_item_id = dc.DENIED_REASON4_ID or
+    li.list_item_id = dc.DENIED_REASON5_ID or
+    li.list_item_id = dc.DENIED_REASON6_ID or
+    li.list_item_id = dc.DENIED_REASON7_ID or
+    li.list_item_id = dc.DENIED_REASON8_ID or
+    li.list_item_id = dc.DENIED_REASON9_ID or
+    li.list_item_id = dc.DENIED_REASON10_ID or
+    li.list_item_id = dc.DENIED_REASON11_ID or
+    li.list_item_id = dc.DENIED_REASON12_ID or
+    li.list_item_id = dc.DENIED_REASON13_ID or
+    li.list_item_id = dc.DENIED_REASON14_ID or
+    li.list_item_id = dc.DENIED_REASON15_ID)
+  </LOAD_SELECTED_DENIED_REASONS_LIST>
+  <LOAD_LIST>
+  </LOAD_LIST>
+  <UPDATE>
+    <![CDATA[	
+			UPDATE elp_denied_claims SET
+				claim_id = :claim_id,
+				customer_name = :customer_name,
+				address1 = :address1,
+				address2 = :address2,
+				city = :city,
+				region_id = :region_id,
+				postal_code = :postal_code,
+				manufacturer_id = :manufacturer_id,
+				model = :model,
+				denied_reason1_id = :denied_reason1_id,
+				condition_problem_1 = :condition_problem_1,
+				condition_problem_2 = :condition_problem_2,
+				condition_problem_3 = :condition_problem_3,
+				approver_id = :approver_id,
+				denied_reason2_id = :denied_reason2_id,
+				denied_reason3_id = :denied_reason3_id,
+				denied_reason4_id = :denied_reason4_id,
+				denied_reason5_id = :denied_reason5_id,
+				denied_reason6_id = :denied_reason6_id,
+				denied_reason7_id = :denied_reason7_id,
+				denied_reason8_id = :denied_reason8_id,
+				denied_reason9_id = :denied_reason9_id,
+				denied_reason10_id = :denied_reason10_id,
+				denied_reason11_id = :denied_reason11_id,
+				denied_reason12_id = :denied_reason12_id,
+				denied_reason13_id = :denied_reason13_id,
+				denied_reason14_id = :denied_reason14_id,
+				denied_reason15_id = :denied_reason15_id,
+				modified_by = :modified_by
+			WHERE
+				denied_claims_id = :denied_claims_id
+		]]>
+  </UPDATE>
+  <INSERT>
+    INSERT INTO elp_denied_claims
+    (
+    claim_id,
+    customer_name,
+    address1,
+    address2,
+    city,
+    region_id,
+    postal_code,
+    manufacturer_id,
+    model,
+    denied_reason1_id,
+    condition_problem_1,
+    condition_problem_2,
+    condition_problem_3,
+    approver_id,
+    denied_reason2_id,
+    denied_reason3_id,
+    denied_reason4_id,
+    denied_reason5_id,
+    denied_reason6_id,
+    denied_reason7_id,
+    denied_reason8_id,
+    denied_reason9_id,
+    denied_reason10_id,
+    denied_reason11_id,
+    denied_reason12_id,
+    denied_reason13_id,
+    denied_reason14_id,
+    denied_reason15_id,
+    created_by,
+    denied_claims_id
+    )
+    VALUES
+    (
+    :claim_id,
+    :customer_name,
+    :address1,
+    :address2,
+    :city,
+    :region_id,
+    :postal_code,
+    :manufacturer_id,
+    :model,
+    :denied_reason1_id,
+    :condition_problem_1,
+    :condition_problem_2,
+    :condition_problem_3,
+    :approver_id,
+    :denied_reason2_id,
+    :denied_reason3_id,
+    :denied_reason4_id,
+    :denied_reason5_id,
+    :denied_reason6_id,
+    :denied_reason7_id,
+    :denied_reason8_id,
+    :denied_reason9_id,
+    :denied_reason10_id,
+    :denied_reason11_id,
+    :denied_reason12_id,
+    :denied_reason13_id,
+    :denied_reason14_id,
+    :denied_reason15_id,
+    :created_by,
+    :denied_claims_id
+    )
+  </INSERT>
+  <DELETE>
+    DELETE FROM elp_denied_claims
+    WHERE
+    denied_claims_id = :denied_claims_id
+  </DELETE>
+</SQL>
+
+
+

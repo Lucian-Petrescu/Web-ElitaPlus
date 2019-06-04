@@ -1,0 +1,661 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+
+<!-- ********************** THIS FILE HAS BEEN GENERATED FROM TEMPLATE SQLObject.cst (7/29/2008)********************** -->
+
+<SQL>
+  <LOAD>
+    <![CDATA[	
+			SELECT 
+				pickup_type,
+				created_by,
+				created_date,
+				modified_by,
+				modified_date,
+				picklist_number,
+				route_id,
+				header_status_id,
+				header_id
+			FROM elp_pickup_list_header 
+			WHERE
+				header_id = :header_id
+		]]>
+  </LOAD>
+  <LOAD_LIST>
+  </LOAD_LIST>
+  <UPDATE>
+    <![CDATA[	
+			UPDATE elp_pickup_list_header SET
+				pickup_type = :pickup_type,
+				picklist_number = :picklist_number,
+				route_id = :route_id,
+				header_status_id = :header_status_id,
+				modified_by = :modified_by
+			WHERE
+				header_id = :header_id
+		]]>
+  </UPDATE>
+  <INSERT>
+    INSERT INTO elp_pickup_list_header
+    (
+    pickup_type,
+    picklist_number,
+    route_id,
+    header_status_id,
+    created_by,
+    header_id
+    )
+    VALUES
+    (
+    :pickup_type,
+    :picklist_number,
+    :route_id,
+    :header_status_id,
+    :created_by,
+    :header_id
+    )
+  </INSERT>
+  <DELETE>
+    DELETE FROM elp_pickup_list_header
+    WHERE
+    header_id = :header_id
+  </DELETE>
+  <CLAIM_LOGISTICS_NEW_OPEN_CLAIM>
+    <![CDATA[
+  select	header.picklist_number,
+		  claim.claim_number,
+		  GetCodeFromListItem(coverage.coverage_type_id) as cert_item_coverage_code,
+		  store.code as store_code,
+		  nvl(sa.address1,'') || ' ' ||
+		  nvl(sa.address2,'') || ' ' ||
+		  nvl(sa.city,'')  || ' ' ||
+		  nvl(sa.postal_code,'') || ' ' ||
+		  nvl(region.description,'') || ' ' ||
+		  nvl(country.description,'') as store_address,
+		  claim.claims_adjuster as authorizer,
+		  manufacturer.description as item_manufacturer,
+		  item.model as item_model,
+		  item.serial_number as item_serial_number,
+		  item.item_description,
+		  claim.problem_description,
+		  claim.special_instruction,
+		  sc.code as service_center_code,
+		  nvl(sa1.address1,'') || ' ' ||
+		  nvl(sa1.address2,'') || ' ' ||
+		  nvl(sa1.city,'')  || ' ' ||
+		  nvl(sa1.postal_code,'') || ' ' ||
+		  nvl(region1.description,'') || ' ' ||
+		  nvl(country1.description,'') as service_center_address,
+		  sc.contact_name as service_center_contact_name,
+		  sc.phone1 as service_center_phone,
+		  claim.loss_date,
+		  claim.visit_date,
+		  GetCodeFromListItem(claim.cause_of_loss_id) as cause_of_loss,
+		  rt.description as risk_type,
+		  GetCodeFromListItem(claim.method_of_repair_id) as method_of_repair,
+		  claim.authorized_amount
+  from ELP_ROUTE route
+	  join ELP_PICKUP_LIST_HEADER header on route.route_id = header.route_id
+	  join ELP_PICKUP_LIST_DETAIL detail on header.header_id = detail.header_id
+	  join ELP_CLAIM claim on claim.claim_id = detail.claim_id
+	  join ELP_CERT_ITEM_COVERAGE coverage on coverage.cert_item_coverage_id = claim.cert_item_coverage_id
+	  join ELP_SERVICE_CENTER store on store.service_center_id = claim.store_service_center_id
+	  join ELP_ADDRESS sa on sa.address_id = store.address_id
+	  join ELP_REGION region on sa.region_id = region.region_id
+	  join ELP_COUNTRY country on country.country_id = sa.country_id
+	  join ELP_CERT_ITEM item on item.cert_item_id = coverage.cert_item_id
+	  left join ELP_MANUFACTURER manufacturer on item.manufacturer_id = manufacturer.manufacturer_id
+	  join ELP_SERVICE_CENTER sc on sc.service_center_id = claim.service_center_id
+	  join ELP_ADDRESS sa1 on sa1.address_id = sc.address_id
+	  join ELP_REGION region1 on sa1.region_id = region1.region_id
+	  join ELP_COUNTRY country1 on country1.country_id = sa1.country_id
+	  join ELP_RISK_TYPE rt on claim.original_risk_type_id = rt.risk_type_id
+  where header.pickup_type = 'STSC' and header.header_status = 'A'
+  --dynamic_where_clause
+  AND ROWNUM < :row_num
+  order by header.picklist_number, store.code, sc.code
+  ]]>
+  </CLAIM_LOGISTICS_NEW_OPEN_CLAIM>
+  <CLAIM_LOGISTICS_NEW_OPEN_CLAIM_PICKLIST>
+    <![CDATA[
+  select unique header.route_id, header.picklist_number
+  from ELP_ROUTE route
+	  join ELP_PICKUP_LIST_HEADER header on route.route_id = header.route_id
+	  join ELP_SERVICE_NETWORK sn on sn.service_network_id = route.service_network_id
+	  join ELP_COMPANY company on company.company_group_id = sn.company_group_id
+	  join ELP_LIST_ITEM item on item.list_item_id = header.header_status_id
+	  join ELP_LIST lst on lst.list_id = item.list_id and lst.code = 'PLHS'    
+  where header.pickup_type = 'STSC' and (item.code = 'A' or (item.code = 'C' and to_char(sysdate,'MMDDYY') = to_char(header.modified_date,'MMDDYY') ))
+	  --dynamic_where_clause
+  AND ROWNUM < :row_num
+  ]]>
+  </CLAIM_LOGISTICS_NEW_OPEN_CLAIM_PICKLIST>
+  <CLAIM_LOGISTICS_NEW_OPEN_CLAIM_STORE>
+    <![CDATA[
+  select
+		  unique
+      header.route_id,
+		  store.service_center_id as store_service_center_id,
+		  store.description as store_name,
+		  store.code as store_code,
+		  nvl(sa.address1,'') || ' ' ||
+		  nvl(sa.address2,'') || ' ' ||
+		  nvl(sa.city,'')  || ' ' ||
+		  nvl(sa.postal_code,'') || ' ' ||
+		  nvl(region.description,'') || ' ' ||
+		  nvl(country.description,'') as store_address,
+		  store.contact_name as store_authorizer
+  from ELP_ROUTE route
+	  join ELP_PICKUP_LIST_HEADER header on route.route_id = header.route_id
+	  join ELP_PICKUP_LIST_DETAIL detail on header.header_id = detail.header_id
+	  join ELP_CLAIM claim on claim.claim_id = detail.claim_id
+	  join ELP_SERVICE_CENTER store on store.service_center_id = claim.store_service_center_id
+	  join ELP_ADDRESS sa on sa.address_id = store.address_id
+	  left join ELP_REGION region on sa.region_id = region.region_id
+	  join ELP_COUNTRY country on country.country_id = sa.country_id
+	  join ELP_SERVICE_NETWORK sn on sn.service_network_id = route.service_network_id
+	  join ELP_COMPANY company on company.company_group_id = sn.company_group_id
+	  join ELP_LIST_ITEM item on item.list_item_id = header.header_status_id
+	  join ELP_LIST lst on lst.list_id = item.list_id and lst.code = 'PLHS'
+  where header.pickup_type = 'STSC' and (item.code = 'A' or (item.code = 'C' and to_char(sysdate,'MMDDYY') = to_char(header.modified_date,'MMDDYY') ))
+	  --dynamic_where_clause
+  AND ROWNUM < :row_num
+  ]]>
+  </CLAIM_LOGISTICS_NEW_OPEN_CLAIM_STORE>
+  <CLAIM_LOGISTICS_NEW_OPEN_CLAIM_SC>
+    <![CDATA[
+  select
+		  unique
+		  sc.service_center_id,
+		  claim.store_service_center_id,
+		  sc.description as service_center_name,
+		  sc.code as service_center_code,
+		  nvl(sa1.address1,'') || ' ' ||
+		  nvl(sa1.address2,'') || ' ' ||
+		  nvl(sa1.city,'')  || ' ' ||
+		  nvl(sa1.postal_code,'') || ' ' ||
+		  nvl(region1.description,'') || ' ' ||
+		  nvl(country1.description,'') as service_center_address,
+		  sc.contact_name as service_center_contact_name,
+		  sc.phone1 as service_center_phone
+  from ELP_ROUTE route
+	  join ELP_PICKUP_LIST_HEADER header on route.route_id = header.route_id
+	  join ELP_PICKUP_LIST_DETAIL detail on header.header_id = detail.header_id
+	  join ELP_CLAIM claim on claim.claim_id = detail.claim_id
+	  join ELP_SERVICE_CENTER sc on sc.service_center_id = claim.service_center_id
+	  join ELP_ADDRESS sa1 on sa1.address_id = sc.address_id
+	  left join ELP_REGION region1 on sa1.region_id = region1.region_id
+	  join ELP_COUNTRY country1 on country1.country_id = sa1.country_id
+    join ELP_SERVICE_NETWORK sn on sn.service_network_id = route.service_network_id
+	  join ELP_COMPANY company on company.company_group_id = sn.company_group_id
+	  join ELP_LIST_ITEM item on item.list_item_id = header.header_status_id
+	  join ELP_LIST lst on lst.list_id = item.list_id and lst.code = 'PLHS'
+  where header.pickup_type = 'STSC' and (item.code = 'A' or (item.code = 'C' and to_char(sysdate,'MMDDYY') = to_char(header.modified_date,'MMDDYY') ))
+	  --dynamic_where_clause
+  AND ROWNUM < :row_num
+  ]]>
+  </CLAIM_LOGISTICS_NEW_OPEN_CLAIM_SC>
+  <CLAIM_LOGISTICS_NEW_OPEN_CLAIM_DETAIL>
+    <![CDATA[
+  select
+      unique 
+		  sc.service_center_id,
+      claim.store_service_center_id,
+		  claim.claim_number,
+		  GetCodeFromListItem(coverage.coverage_type_id) as cert_item_coverage_code,
+		  manufacturer.description as item_manufacturer,
+		  item.model as item_model,
+		  item.serial_number as item_serial_number,
+		  item.item_description,
+		  claim.problem_description,
+		  claim.special_instruction,
+		  claim.loss_date,
+		  claim.visit_date,
+		  GetCodeFromListItem(claim.cause_of_loss_id) as cause_of_loss,
+		  GetCodeFromListItem(claim.method_of_repair_id) as method_of_repair,
+		  claim.authorized_amount,
+      claim.authorization_number as BBY_Claim_Number
+  from ELP_ROUTE route
+	  join ELP_PICKUP_LIST_HEADER header on route.route_id = header.route_id
+	  join ELP_PICKUP_LIST_DETAIL detail on header.header_id = detail.header_id
+	  join ELP_CLAIM claim on claim.claim_id = detail.claim_id
+	  join ELP_CERT_ITEM_COVERAGE coverage on coverage.cert_item_coverage_id = claim.cert_item_coverage_id
+	  join ELP_SERVICE_CENTER store on store.service_center_id = claim.store_service_center_id
+	  join ELP_CERT_ITEM item on item.cert_item_id = coverage.cert_item_id
+	  left join ELP_MANUFACTURER manufacturer on item.manufacturer_id = manufacturer.manufacturer_id
+	  join ELP_SERVICE_CENTER sc on sc.service_center_id = claim.service_center_id
+    join ELP_SERVICE_NETWORK sn on sn.service_network_id = route.service_network_id
+	  join ELP_COMPANY company on company.company_group_id = sn.company_group_id
+	  join ELP_LIST_ITEM item1 on item1.list_item_id = header.header_status_id
+	  join ELP_LIST lst on lst.list_id = item1.list_id and lst.code = 'PLHS'
+  where header.pickup_type = 'STSC' and (item1.code = 'A' or (item1.code = 'C' and to_char(sysdate,'MMDDYY') = to_char(header.modified_date,'MMDDYY') ))
+	  --dynamic_where_clause    
+  AND ROWNUM < :row_num
+  ]]>  
+  </CLAIM_LOGISTICS_NEW_OPEN_CLAIM_DETAIL>
+  <UPDATE_PICK_LIST_STATUS_TO_IN_PICK>
+    ELP_CLAIM_LOGISTICS.UPDATEPICKLISTSTATUS
+  </UPDATE_PICK_LIST_STATUS_TO_IN_PICK>
+  <UPDATE_PICK_LIST_STATUS_TO_RECEIVED>
+    ELP_CLAIM_LOGISTICS.UpdatePickListStatus_Received
+  </UPDATE_PICK_LIST_STATUS_TO_RECEIVED>
+  <GET_CLAIM_ID_BY_CODE>
+    <![CDATA[
+    select claim.claim_id
+    from elp_claim claim
+	    join elp_cert_item_coverage coverage on claim.cert_item_coverage_id = coverage.cert_item_coverage_id
+	    join elp_list_item item on item.list_item_id = coverage.coverage_type_id
+    where 1=1
+    --dynamic_where_clause
+	    and claim.claim_number = :claim_number
+	    and item.code = :code
+		]]>
+  </GET_CLAIM_ID_BY_CODE>
+  <CLAIM_LOGISTICS_READY_FROM_SC_PICKLIST>
+    <![CDATA[
+  select unique header.route_id, header.picklist_number
+  from ELP_ROUTE route
+	  join ELP_PICKUP_LIST_HEADER header on route.route_id = header.route_id
+	  join ELP_SERVICE_NETWORK sn on sn.service_network_id = route.service_network_id
+	  join ELP_COMPANY company on company.company_group_id = sn.company_group_id
+	  join ELP_LIST_ITEM item on item.list_item_id = header.header_status_id
+	  join ELP_LIST lst on lst.list_id = item.list_id and lst.code = 'PLHS'    
+  where header.pickup_type = 'SCTS' and (item.code = 'A' or (item.code = 'C' and to_char(sysdate,'MMDDYY') = to_char(header.modified_date,'MMDDYY') ))
+	  --dynamic_where_clause
+  AND ROWNUM < :row_num
+  ]]>
+  </CLAIM_LOGISTICS_READY_FROM_SC_PICKLIST>
+  <CLAIM_LOGISTICS_READY_FROM_SC_STORE>
+    <![CDATA[
+  select
+		  unique
+      header.route_id,
+		  store.service_center_id as store_service_center_id,
+		  store.description as store_name,
+		  store.code as store_code,
+		  nvl(sa.address1,'') || ' ' ||
+		  nvl(sa.address2,'') || ' ' ||
+		  nvl(sa.city,'')  || ' ' ||
+		  nvl(sa.postal_code,'') || ' ' ||
+		  nvl(region.description,'') || ' ' ||
+		  nvl(country.description,'') as store_address,
+		  store.contact_name as store_authorizer
+  from ELP_ROUTE route
+	  join ELP_PICKUP_LIST_HEADER header on route.route_id = header.route_id
+	  join ELP_PICKUP_LIST_DETAIL detail on header.header_id = detail.header_id
+	  join ELP_CLAIM claim on claim.claim_id = detail.claim_id
+	  join ELP_SERVICE_CENTER store on store.service_center_id = claim.store_service_center_id
+	  join ELP_ADDRESS sa on sa.address_id = store.address_id
+	  left join ELP_REGION region on sa.region_id = region.region_id
+	  join ELP_COUNTRY country on country.country_id = sa.country_id
+	  join ELP_SERVICE_NETWORK sn on sn.service_network_id = route.service_network_id
+	  join ELP_COMPANY company on company.company_group_id = sn.company_group_id
+	  join ELP_LIST_ITEM item on item.list_item_id = header.header_status_id
+	  join ELP_LIST lst on lst.list_id = item.list_id and lst.code = 'PLHS'
+  where header.pickup_type = 'SCTS' and (item.code = 'A' or (item.code = 'C' and to_char(sysdate,'MMDDYY') = to_char(header.modified_date,'MMDDYY') ))
+	  --dynamic_where_clause
+  AND ROWNUM < :row_num
+  ]]>
+  </CLAIM_LOGISTICS_READY_FROM_SC_STORE>
+  <CLAIM_LOGISTICS_READY_FROM_SC_SC>
+    <![CDATA[
+  select
+		  unique
+		  sc.service_center_id,
+		  claim.store_service_center_id,
+		  sc.description as service_center_name,
+		  sc.code as service_center_code,
+		  nvl(sa1.address1,'') || ' ' ||
+		  nvl(sa1.address2,'') || ' ' ||
+		  nvl(sa1.city,'')  || ' ' ||
+		  nvl(sa1.postal_code,'') || ' ' ||
+		  nvl(region1.description,'') || ' ' ||
+		  nvl(country1.description,'') as service_center_address,
+		  sc.contact_name as service_center_contact_name,
+		  sc.phone1 as service_center_phone
+  from ELP_ROUTE route
+	  join ELP_PICKUP_LIST_HEADER header on route.route_id = header.route_id
+	  join ELP_PICKUP_LIST_DETAIL detail on header.header_id = detail.header_id
+	  join ELP_CLAIM claim on claim.claim_id = detail.claim_id
+	  join ELP_SERVICE_CENTER sc on sc.service_center_id = claim.service_center_id
+	  join ELP_ADDRESS sa1 on sa1.address_id = sc.address_id
+	  left join ELP_REGION region1 on sa1.region_id = region1.region_id
+	  join ELP_COUNTRY country1 on country1.country_id = sa1.country_id
+    join ELP_SERVICE_NETWORK sn on sn.service_network_id = route.service_network_id
+	  join ELP_COMPANY company on company.company_group_id = sn.company_group_id
+	  join ELP_LIST_ITEM item on item.list_item_id = header.header_status_id
+	  join ELP_LIST lst on lst.list_id = item.list_id and lst.code = 'PLHS'
+  where header.pickup_type = 'SCTS' and (item.code = 'A' or (item.code = 'C' and to_char(sysdate,'MMDDYY') = to_char(header.modified_date,'MMDDYY') ))
+	  --dynamic_where_clause
+  AND ROWNUM < :row_num
+  ]]>
+  </CLAIM_LOGISTICS_READY_FROM_SC_SC>
+  <CLAIM_LOGISTICS_READY_FROM_SC_DETAIL>
+    <![CDATA[
+  select 
+      unique
+		  sc.service_center_id,
+      claim.store_service_center_id,
+		  claim.claim_number,
+		  GetCodeFromListItem(coverage.coverage_type_id) as cert_item_coverage_code,
+		  manufacturer.description as item_manufacturer,
+		  item.model as item_model,
+		  item.serial_number as item_serial_number,
+		  item.item_description,
+		  claim.problem_description,
+		  claim.special_instruction,
+		  claim.loss_date,
+		  claim.visit_date,
+		  GetCodeFromListItem(claim.cause_of_loss_id) as cause_of_loss,
+		  GetCodeFromListItem(claim.method_of_repair_id) as method_of_repair,
+		  claim.authorized_amount,
+     whoPayItem.code as who_pay_code,
+     whoPayTran.translation as who_pay_description,
+     claim.authorization_number as BBY_Claim_Number
+from ELP_ROUTE route
+	  join ELP_PICKUP_LIST_HEADER header on route.route_id = header.route_id
+	  join ELP_PICKUP_LIST_DETAIL detail on header.header_id = detail.header_id
+	  join ELP_CLAIM claim on claim.claim_id = detail.claim_id
+	  join ELP_CERT_ITEM_COVERAGE coverage on coverage.cert_item_coverage_id = claim.cert_item_coverage_id
+	  join ELP_SERVICE_CENTER store on store.service_center_id = claim.store_service_center_id
+	  join ELP_CERT_ITEM item on item.cert_item_id = coverage.cert_item_id
+	  left join ELP_MANUFACTURER manufacturer on item.manufacturer_id = manufacturer.manufacturer_id
+	  join ELP_SERVICE_CENTER sc on sc.service_center_id = claim.service_center_id
+    join ELP_SERVICE_NETWORK sn on sn.service_network_id = route.service_network_id
+	  join ELP_COMPANY company on company.company_group_id = sn.company_group_id
+	  join ELP_LIST_ITEM item1 on item1.list_item_id = header.header_status_id
+	  join ELP_LIST lst on lst.list_id = item1.list_id and lst.code = 'PLHS'
+    join elp_list_item whoPayItem on claim.who_pays_id = whoPayItem.list_item_id
+    join elp_dict_item_translation whoPayTran on whoPayTran.dict_item_id = whoPayItem.dict_item_id and whoPayTran.language_id = :language_id
+where header.pickup_type = 'SCTS' and (item1.code = 'A' or (item1.code = 'C' and to_char(sysdate,'MMDDYY') = to_char(header.modified_date,'MMDDYY') ))
+	  --dynamic_where_clause    
+  AND ROWNUM < :row_num
+  ]]>
+  </CLAIM_LOGISTICS_READY_FROM_SC_DETAIL>
+  <CLAIM_LOGISTICS_GET_CLAIM_INFO>
+    <![CDATA[ ELP_CLAIM_LOGISTICS.GET_CLAIM_INFO  ]]>
+  </CLAIM_LOGISTICS_GET_CLAIM_INFO>  
+  <CLAIM_LOGISTICS_GET_CLAIM_STATUS_HISTORY>
+  <![CDATA[
+  select claim.claim_id,
+		  claim.claim_number,
+		  item.code as status_code,
+		  tran.translation as status_description,
+		  status.status_date,
+		  status.comments,
+		  status.external_user_name
+  from elp_claim_status status
+	  join elp_claim claim on claim.claim_id = status.claim_id
+	  join elp_claim_status_by_group sgroup on sgroup.claim_status_by_group_id = status.claim_status_by_group_id
+	  join elp_list_item item on item.list_item_id = sgroup.list_item_id
+	  join ELP_DICT_ITEM_TRANSLATION tran on tran.dict_item_id = item.dict_item_id
+	  join elp_language lang on lang.language_id = tran.language_id
+  where 1=1
+	  --dynamic_where_clause    
+    AND ROWNUM < :row_num    
+  order by status.status_date desc     
+  ]]>
+   </CLAIM_LOGISTICS_GET_CLAIM_STATUS_HISTORY>
+  <CLAIM_LOGISTICS_CLAIM_PICKLIST>
+    <![CDATA[
+  select header.route_id, header.picklist_number, header.created_date as picklist_date,
+      sum(case when nvl(cstatus.code, '') in ('REPRD') then 1 else 0 end) as items_repaired,
+  	  nvl(ELP_Claim_Logistics.GetPendingItemCount(header.header_id),0) as items_pending,
+      sum(case when nvl(cstatus.code, '') in ('RBS') then 1 else 0 end) as items_delivered
+  from ELP_ROUTE route
+	  join ELP_SERVICE_NETWORK sn on sn.service_network_id = route.service_network_id
+	  join ELP_COMPANY company on company.company_group_id = sn.company_group_id
+
+      join elp_pickup_list_header header on route.route_id = header.route_id
+      join elp_pickup_list_detail detail on header.header_id = detail.header_id
+      join (
+      			select unique detail1.header_id, cs1.claim_id, cs1.claim_status_by_group_id
+      			from elp_pickup_list_header header1
+      				join elp_pickup_list_detail detail1 on header1.header_id = detail1.header_id
+      				join elp_claim_status cs1 on cs1.claim_id = detail1.claim_id
+      		) status  on status.header_id = detail.header_id and status.claim_id = detail.claim_id
+      join elp_claim_status_by_group sgroup on status.claim_status_by_group_id = sgroup.claim_status_by_group_id and sgroup.company_group_id = company.company_group_id
+      join elp_list_item cstatus on cstatus.list_item_id = sgroup.list_item_id
+  where 1=1
+    --dynamic_where_clause
+    AND ROWNUM < :row_num
+  group by header.route_id, header.picklist_number, header.created_date, nvl(ELP_Claim_Logistics.GetPendingItemCount(header.header_id),0)
+  ]]>
+  </CLAIM_LOGISTICS_CLAIM_PICKLIST>
+  <CLAIM_LOGISTICS_CLAIM_STORE>
+    <![CDATA[
+  select
+		  unique
+      header.route_id,
+		  store.service_center_id as store_service_center_id,
+		  store.description as store_name,
+		  store.code as store_code,
+		  nvl(sa.address1,'') || ' ' ||
+		  nvl(sa.address2,'') || ' ' ||
+		  nvl(sa.city,'')  || ' ' ||
+		  nvl(sa.postal_code,'') || ' ' ||
+		  nvl(region.description,'') || ' ' ||
+		  nvl(country.description,'') as store_address,
+		  store.contact_name as store_authorizer
+  from ELP_ROUTE route
+	  join ELP_PICKUP_LIST_HEADER header on route.route_id = header.route_id
+	  join ELP_PICKUP_LIST_DETAIL detail on header.header_id = detail.header_id
+	  join ELP_CLAIM claim on claim.claim_id = detail.claim_id
+	  join ELP_SERVICE_CENTER store on store.service_center_id = claim.store_service_center_id
+	  join ELP_ADDRESS sa on sa.address_id = store.address_id
+	  left join ELP_REGION region on sa.region_id = region.region_id
+	  join ELP_COUNTRY country on country.country_id = sa.country_id
+	  join ELP_SERVICE_NETWORK sn on sn.service_network_id = route.service_network_id
+	  join ELP_COMPANY company on company.company_group_id = sn.company_group_id
+  where 1=1
+	  --dynamic_where_clause
+  AND ROWNUM < :row_num
+  ]]>
+  </CLAIM_LOGISTICS_CLAIM_STORE>
+  <CLAIM_LOGISTICS_CLAIM_SERVICE_CENTER>
+    <![CDATA[
+  select
+		  unique
+		  sc.service_center_id,
+		  claim.store_service_center_id,
+		  sc.description as service_center_name,
+		  sc.code as service_center_code,
+		  nvl(sa1.address1,'') || ' ' ||
+		  nvl(sa1.address2,'') || ' ' ||
+		  nvl(sa1.city,'')  || ' ' ||
+		  nvl(sa1.postal_code,'') || ' ' ||
+		  nvl(region1.description,'') || ' ' ||
+		  nvl(country1.description,'') as service_center_address,
+		  sc.contact_name as service_center_contact_name,
+		  sc.phone1 as service_center_phone
+  from ELP_ROUTE route
+	  join ELP_PICKUP_LIST_HEADER header on route.route_id = header.route_id
+	  join ELP_PICKUP_LIST_DETAIL detail on header.header_id = detail.header_id
+	  join ELP_CLAIM claim on claim.claim_id = detail.claim_id
+	  join ELP_SERVICE_CENTER sc on sc.service_center_id = claim.service_center_id
+	  join ELP_ADDRESS sa1 on sa1.address_id = sc.address_id
+	  left join ELP_REGION region1 on sa1.region_id = region1.region_id
+	  join ELP_COUNTRY country1 on country1.country_id = sa1.country_id
+    join ELP_SERVICE_NETWORK sn on sn.service_network_id = route.service_network_id
+	  join ELP_COMPANY company on company.company_group_id = sn.company_group_id
+  where 1=1
+	  --dynamic_where_clause
+  AND ROWNUM < :row_num
+  ]]>
+  </CLAIM_LOGISTICS_CLAIM_SERVICE_CENTER>
+  <CLAIM_LOGISTICS_CLAIM_DETAIL>
+    <![CDATA[
+  select
+      unique
+		  sc.service_center_id,
+      claim.store_service_center_id,
+		  claim.claim_number,
+		  itemCoverage.code as cert_item_coverage_code,
+		  manufacturer.description as item_manufacturer,
+		  item.model as item_model,
+		  item.serial_number as item_serial_number,
+		  item.item_description,
+		  claim.problem_description,
+		  claim.special_instruction,
+		  claim.loss_date,
+		  claim.visit_date,
+		  GetCodeFromListItem(claim.cause_of_loss_id) as cause_of_loss,
+		  GetCodeFromListItem(claim.method_of_repair_id) as method_of_repair,
+		  claim.authorized_amount,
+		  litem1.code as claim_status,
+      header.pickup_type,
+		  tran.translation as status_description,
+      notification.code as notification_type,
+      tranNotification.translation as notification_type_description,
+      tranCoverage.translation as cert_item_coverage_description,
+      claim.authorization_number as BBY_Claim_Number
+  from ELP_ROUTE route
+	  join ELP_PICKUP_LIST_HEADER header on route.route_id = header.route_id
+	  join ELP_PICKUP_LIST_DETAIL detail on header.header_id = detail.header_id
+	  join ELP_CLAIM claim on claim.claim_id = detail.claim_id
+	  join ELP_CERT_ITEM_COVERAGE coverage on coverage.cert_item_coverage_id = claim.cert_item_coverage_id
+	  join ELP_SERVICE_CENTER store on store.service_center_id = claim.store_service_center_id
+	  join ELP_CERT_ITEM item on item.cert_item_id = coverage.cert_item_id
+	  left join ELP_MANUFACTURER manufacturer on item.manufacturer_id = manufacturer.manufacturer_id
+	  join ELP_SERVICE_CENTER sc on sc.service_center_id = claim.service_center_id
+      join ELP_SERVICE_NETWORK sn on sn.service_network_id = route.service_network_id
+	  join ELP_COMPANY company on company.company_group_id = sn.company_group_id
+    join (
+                            select claim_id, max(status_date) as status_date
+                            from elp_claim_status
+                            group by claim_id
+                    ) lstatus on claim.claim_id = lstatus.claim_id
+    join elp_claim_status cs on cs.claim_id = lstatus.claim_id and cs.status_date = lstatus.status_date
+    join elp_claim_status_by_group sg on sg.claim_status_by_group_id = cs.claim_status_by_group_id
+    join elp_list_item litem1 on litem1.list_item_id = sg.list_item_id
+    join elp_dict_item_translation tran on litem1.dict_item_id = tran.dict_item_id and tran.language_id = :language_id
+    left join elp_list_item notification on notification.list_item_id = claim.notification_type_id
+    left join elp_dict_item_translation tranNotification on notification.dict_item_id = tranNotification.dict_item_id and tranNotification.language_id = :language_id
+    left join elp_list_item itemCoverage on itemCoverage.list_item_id = coverage.coverage_type_id
+    left join elp_dict_item_translation tranCoverage on itemCoverage.dict_item_id = tranCoverage.dict_item_id and tranCoverage.language_id = :language_id    
+  where 1=1
+	  --dynamic_where_clause
+    AND ROWNUM < :row_num
+  ]]>
+  </CLAIM_LOGISTICS_CLAIM_DETAIL>
+  <CLAIM_LOGISTICS_PICKLIST_BY_DATE_RANGE>
+    <![CDATA[
+  select header.picklist_number, header.created_date as shipping_date, tran.translation as picklist_status,
+      sum(case when nvl(cstatus.code, '') in ('DASC') then 1 else 0 end) as items_dispatched,
+      sum(case when nvl(cstatus.code, '') in ('REPRD') then 1 else 0 end) as items_repaired,
+  	  nvl(ELP_Claim_Logistics.GetPendingItemCount(header.header_id),0) as items_pending,
+      sum(case when nvl(cstatus.code, '') in ('RBS') then 1 else 0 end) as items_delivered
+  from elp_pickup_list_header header
+      join elp_pickup_list_detail detail on header.header_id = detail.header_id
+      join elp_list_item item on item.list_item_id = header.header_status_id
+      join elp_dict_item_translation tran on tran.dict_item_id = item.dict_item_id
+      join elp_language lang on lang.language_id = tran.language_id
+      join (
+      			select unique detail1.header_id, cs1.claim_id, cs1.claim_status_by_group_id
+      			from elp_pickup_list_header header1
+      				join elp_pickup_list_detail detail1 on header1.header_id = detail1.header_id
+      				join elp_claim_status cs1 on cs1.claim_id = detail1.claim_id
+      		) status  on status.claim_id = detail.claim_id and status.header_id = detail.header_id
+      join elp_claim_status_by_group sgroup on status.claim_status_by_group_id = sgroup.claim_status_by_group_id
+      join elp_list_item cstatus on cstatus.list_item_id = sgroup.list_item_id
+  where lang.language_id = :language_id
+	    and sgroup.company_group_id = :company_group_id
+	    and header.created_date between :start_date and :end_date
+  group by header.picklist_number, header.created_date, tran.translation, nvl(ELP_Claim_Logistics.GetPendingItemCount(header.header_id),0)
+  order by header.created_date
+  ]]>
+</CLAIM_LOGISTICS_PICKLIST_BY_DATE_RANGE>
+  <CLAIM_LOGISTICS_GET_CLAIMS_BY_DATE_RANGE>
+    <![CDATA[
+  select unique
+          claim.claim_id,
+          claim.claim_number,
+          itemCoverage.code as cert_item_coverage_code,
+          manufacturer.description as item_manufacturer,
+          item.model as item_model,
+          item.serial_number as item_serial_number,
+          item.item_description,
+          claim.problem_description,
+          claim.special_instruction,
+          claim.loss_date,
+          claim.visit_date,
+          GetCodeFromListItem(claim.cause_of_loss_id) as cause_of_loss,
+          GetCodeFromListItem(claim.method_of_repair_id) as method_of_repair,
+          claim.authorized_amount,
+      claim.liability_limit,
+      '|REPLACE_VALUE|' as assurant_pay_amount,
+      claim.deductible,
+      sc.description service_center_name,
+      litem1.code as claim_status,
+      detail.is_exception as is_in_exception,
+      resc.code as resolution_status_code,
+      header.picklist_number,
+      receivedBySC.created_date as date_received_by_sc,
+      claim.repair_date,
+      claim.pick_up_date,
+      sentoStore.created_date as date_sent_to_store,
+      lstatus.status_date as date_last_status,
+      claim.loss_date as date_reported,
+      notification.code as notification_type,
+      tran.translation as status_description,
+      tranNotification.translation as notification_type_description,
+      tranCoverage.translation as cert_item_coverage_description,
+      claim.authorization_number as BBY_Claim_Number
+  from
+          ELP_CLAIM claim
+          join ELP_CERT_ITEM_COVERAGE coverage on coverage.cert_item_coverage_id = claim.cert_item_coverage_id
+          join ELP_CERT_ITEM item on item.cert_item_id = coverage.cert_item_id
+          left join ELP_MANUFACTURER manufacturer on item.manufacturer_id = manufacturer.manufacturer_id
+          join ELP_SERVICE_CENTER sc on (sc.service_center_id = claim.service_center_id or sc.service_center_id = claim.STORE_SERVICE_CENTER_ID)
+          join elp_pickup_list_detail detail on claim.claim_id = detail.claim_id
+          join elp_pickup_list_header header on header.header_id = detail.header_id
+          join (
+                                  select claim_id, max(status_date) as status_date
+                                  from elp_claim_status
+                                  group by claim_id
+                          ) lstatus on claim.claim_id = lstatus.claim_id
+          join elp_claim_status cs on cs.claim_id = lstatus.claim_id and cs.status_date = lstatus.status_date
+          join elp_claim_status_by_group sg on sg.claim_status_by_group_id = cs.claim_status_by_group_id
+          join elp_list_item litem1 on litem1.list_item_id = sg.list_item_id
+          join elp_dict_item_translation tran on litem1.dict_item_id = tran.dict_item_id and tran.language_id = :language_id
+          left join (
+                                          select cs1.claim_id, max(cs1.created_date) as created_date
+                                          from elp_claim_status cs1
+                                                  join elp_claim_status_by_group sg1 on cs1.claim_status_by_group_id =  sg1.claim_status_by_group_id
+                                                  join elp_list_item litem1 on litem1.list_item_id = sg1.list_item_id
+                                          where litem1.code = 'DASC'
+                                          group by cs1.claim_id
+                                          ) receivedBySC on claim.claim_id = receivedBySC.claim_id
+
+          left join (
+                                          select cs1.claim_id, max(cs1.created_date) as created_date
+                                          from elp_claim_status cs1
+                                                  join elp_claim_status_by_group sg1 on cs1.claim_status_by_group_id =  sg1.claim_status_by_group_id
+                                                  join elp_list_item litem1 on litem1.list_item_id = sg1.list_item_id
+                                          where litem1.code = 'RBS'
+                                          group by cs1.claim_id
+                                          ) sentoStore on claim.claim_id = sentoStore.claim_id
+          left join elp_list_item notification on notification.list_item_id = claim.notification_type_id
+          left join elp_dict_item_translation tranNotification on notification.dict_item_id = tranNotification.dict_item_id and tranNotification.language_id = :language_id
+          left join elp_list_item itemCoverage on itemCoverage.list_item_id = coverage.coverage_type_id
+          left join elp_dict_item_translation tranCoverage on itemCoverage.dict_item_id = tranCoverage.dict_item_id and tranCoverage.language_id = :language_id
+          left join elp_claim_status res on res.claim_id = lstatus.claim_id
+                and res.claim_status_id in ELP_Claim_Logistics.GetMostRecentResolutionID(claim.claim_id, 'NRCVD:NRBS')
+          left join elp_claim_status_by_group resg on resg.claim_status_by_group_id = res.claim_status_by_group_id
+          left join elp_list_item resc on resc.list_item_id = resg.list_item_id
+  where header.created_date in
+          (
+                  select max(header1.created_date)
+                  from elp_pickup_list_detail detail1 join elp_pickup_list_header header1 on header1.header_id = detail1.header_id
+                  where detail1.claim_id = claim.claim_id
+          )
+        and claim.created_date between :start_date and :end_date 
+        and (sc.service_center_id = claim.service_center_id or sc.service_center_id = claim.STORE_SERVICE_CENTER_ID )
+        and sc.service_center_id = :service_center_id
+          --dynamic_where_clause
+  ]]>
+  </CLAIM_LOGISTICS_GET_CLAIMS_BY_DATE_RANGE>
+
+
+</SQL>
+
+

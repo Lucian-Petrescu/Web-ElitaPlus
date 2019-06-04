@@ -1,0 +1,238 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>
+    </ProductVersion>
+    <SchemaVersion>
+    </SchemaVersion>
+    <ProjectGuid>{96DCFF91-3C92-47B2-8FA2-B1E85BCD6745}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <RootNamespace>BusinessObjects.Test</RootNamespace>
+    <AssemblyName>BusinessObjects.Test</AssemblyName>
+    <FileAlignment>512</FileAlignment>
+    <MyType>Windows</MyType>
+    <TargetFrameworkVersion>v4.6.2</TargetFrameworkVersion>
+    <ProjectTypeGuids>{3AC096D0-A1C2-E12C-1390-A8335801FDAB};{F184B08F-C81C-45F6-A57F-5ABD9991F28F}</ProjectTypeGuids>
+    <ReferencePath>$(DevEnvDir)PublicAssemblies\</ReferencePath>
+    <SccProjectName>SAK</SccProjectName>
+    <SccLocalPath>SAK</SccLocalPath>
+    <SccAuxPath>SAK</SccAuxPath>
+    <SccProvider>SAK</SccProvider>
+    <TargetFrameworkProfile />
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <DefineDebug>true</DefineDebug>
+    <DefineTrace>true</DefineTrace>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DocumentationFile>BusinessObjects.Test.xml</DocumentationFile>
+    <NoWarn>42016,41999,42017,42018,42019,42032,42036,42020,42021,42022</NoWarn>
+    <Prefer32Bit>false</Prefer32Bit>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <DefineDebug>false</DefineDebug>
+    <DefineTrace>true</DefineTrace>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DocumentationFile>BusinessObjects.Test.xml</DocumentationFile>
+    <NoWarn>42016,41999,42017,42018,42019,42032,42036,42020,42021,42022</NoWarn>
+    <Prefer32Bit>false</Prefer32Bit>
+  </PropertyGroup>
+  <PropertyGroup>
+    <OptionExplicit>On</OptionExplicit>
+  </PropertyGroup>
+  <PropertyGroup>
+    <OptionCompare>Binary</OptionCompare>
+  </PropertyGroup>
+  <PropertyGroup>
+    <OptionStrict>Off</OptionStrict>
+  </PropertyGroup>
+  <PropertyGroup>
+    <OptionInfer>On</OptionInfer>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Assurant.Common.MessagePublishing, Version=2.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Elita.Common.MessagePublishing.2.0.0\lib\net462\Assurant.Common.MessagePublishing.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Assurant.Common.Types, Version=2.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Elita.Assurant.Common.Types.2.0.0\lib\net462\Assurant.Common.Types.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Assurant.Elita.Base.DataAccess, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Assurant.Elita.Base.DataAccess.5.0.2\lib\net462\Assurant.Elita.Base.DataAccess.dll</HintPath>
+    </Reference>
+    <Reference Include="Assurant.Elita.CommonConfiguration, Version=2.1.5.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Assurant.Elita.CommonConfiguration.2.1.5\lib\net46\Assurant.Elita.CommonConfiguration.dll</HintPath>
+    </Reference>
+    <Reference Include="Assurant.Elita.Configuration, Version=4.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\Assurant.Elita.Configuration.4.0.2\lib\net462\Assurant.Elita.Configuration.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="EntityFramework, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\EntityFramework.5.0.0\lib\net45\EntityFramework.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="JetBrains.Annotations, Version=11.1.0.0, Culture=neutral, PublicKeyToken=1010a0d8d6380325, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\JetBrains.Annotations.11.1.0\lib\net20\JetBrains.Annotations.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Microsoft.VisualStudio.QualityTools.UnitTestFramework, Version=10.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <SpecificVersion>True</SpecificVersion>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="Moq">
+      <HintPath>..\packages\Moq.4.2.1510.2205\lib\net40\Moq.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Oracle.ManagedDataAccess, Version=4.122.1.0, Culture=neutral, PublicKeyToken=89b483f429c47342, processorArchitecture=MSIL">
+      <HintPath>..\packages\Oracle.ManagedDataAccess.12.2.1100\lib\net40\Oracle.ManagedDataAccess.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.ComponentModel.DataAnnotations" />
+    <Reference Include="System.configuration" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="System.Data.Entity" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Runtime.Serialization" />
+    <Reference Include="System.Transactions" />
+    <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Xml" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="UIAutomationTypes" />
+    <Reference Include="WindowsBase" />
+  </ItemGroup>
+  <ItemGroup>
+    <Import Include="System" />
+    <Import Include="System.Collections" />
+    <Import Include="System.Collections.Generic" />
+    <Import Include="System.Data" />
+    <Import Include="System.Diagnostics" />
+    <Import Include="System.Linq" />
+    <Import Include="System.Xml.Linq" />
+    <Import Include="Microsoft.VisualBasic" />
+    <Import Include="Microsoft.VisualStudio.TestTools.UnitTesting" />
+  </ItemGroup>
+  <ItemGroup>
+    <CodeAnalysisDependentAssemblyPaths Condition=" '$(VS100COMNTOOLS)' != '' " Include="$(VS100COMNTOOLS)..\IDE\PrivateAssemblies">
+      <Visible>False</Visible>
+    </CodeAnalysisDependentAssemblyPaths>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Claims\AutoBalancingTest.vb" />
+    <Compile Include="Claims\ClaimAuthorizationTest.vb" />
+    <Compile Include="Claims\InvoiceTest.vb" />
+    <None Include="App.config">
+      <SubType>Designer</SubType>
+    </None>
+    <Compile Include="My Project\AssemblyInfo.vb" />
+    <Compile Include="Tables\PriceListDetailTest.vb" />
+    <Compile Include="Tables\PriceListTest.vb" />
+    <Compile Include="Tables\ServiceCenterTest.vb" />
+    <Compile Include="Tables\VendorQuantityTest.vb" />
+    <Compile Include="TestUtility.vb" />
+    <None Include="packages.config">
+      <SubType>Designer</SubType>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\BusinessObjects\BusinessObjects.vbproj">
+      <Project>{24af00ef-6626-4d29-befb-f899c2a85aad}</Project>
+      <Name>BusinessObjects</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Common\Common.vbproj">
+      <Project>{54bb47a8-3dd9-41a7-b4a3-62869af3fcf1}</Project>
+      <Name>Common</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\DALObjects\DALObjects.vbproj">
+      <Project>{d327817b-902a-4113-9336-4b53c560d50e}</Project>
+      <Name>DALObjects</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Claims\AutoBalancingTestData\TestCase01.xml" />
+    <Content Include="Claims\AutoBalancingTestData\TestCase02.xml" />
+    <Content Include="Claims\AutoBalancingTestData\TestCase03.xml" />
+    <Content Include="Claims\AutoBalancingTestData\TestCase04.xml" />
+    <Content Include="Claims\AutoBalancingTestData\TestCase05.xml" />
+    <Content Include="Claims\AutoBalancingTestData\TestCase06.xml" />
+    <Content Include="Claims\AutoBalancingTestData\TestCase07.xml" />
+    <Content Include="Claims\AutoBalancingTestData\TestCase08.xml" />
+    <Content Include="Claims\AutoBalancingTestData\TestCase09.xml" />
+    <Content Include="Claims\AutoBalancingTestData\TestCase10.xml" />
+    <Content Include="Claims\AutoBalancingTestData\TestCase11.xml" />
+    <Content Include="Claims\AutoBalancingTestData\TestCase12.xml" />
+    <Content Include="Claims\AutoBalancingTestData\TestCase13.xml" />
+    <Content Include="Claims\AutoBalancingTestData\TestCase14.xml" />
+    <Content Include="Claims\AutoBalancingTestData\TestCase15.xml" />
+    <Content Include="Claims\AutoBalancingTestData\TestCase16.xml" />
+    <Content Include="Claims\AutoBalancingTestData\TestCase17.xml" />
+    <Content Include="Claims\AutoBalancingTestData\TestCase18.xml" />
+    <Content Include="Claims\AutoBalancingTestData\TestCase19.xml" />
+    <Content Include="Claims\AutoBalancingTestData\TestCase20.xml" />
+    <Content Include="Claims\AutoBalancingTestData\TestCase21.xml" />
+    <Content Include="Claims\AutoBalancingTestData\TestCase22.xml" />
+    <Content Include="Claims\AutoBalancingTestData\TestCase23.xml">
+      <SubType>Designer</SubType>
+    </Content>
+    <Content Include="Claims\AutoBalancingTestData\TestCase24.xml" />
+    <Content Include="Claims\AutoBalancingTestData\TestCase25.xml" />
+    <Content Include="Claims\AutoBalancingTestData\TestCase26.xml" />
+    <Content Include="Claims\AutoBalancingTestData\TestCase27.xml" />
+    <Content Include="Claims\AutoBalancingTestData\TestCase28.xml" />
+    <Content Include="Claims\AutoBalancingTestData\TestCase29.xml" />
+    <Content Include="Claims\AutoBalancingTestData\TestCase30.xml" />
+    <Content Include="Claims\AutoBalancingTestData\TestCase31.xml" />
+    <Content Include="Claims\AutoBalancingTestData\TestCase32.xml" />
+    <Content Include="Claims\AutoBalancingTestData\TestCase33.xml" />
+    <Content Include="Claims\AutoBalancingTestData\TestCase34.xml" />
+    <Content Include="Claims\AutoBalancingTestData\TestCase35.xml" />
+    <Content Include="Claims\AutoBalancingTestData\TestCase36.xml" />
+    <Content Include="Claims\AutoBalancingTestData\TestCase37.xml" />
+    <Content Include="Claims\AutoBalancingTestData\TestCase38.xml" />
+    <Content Include="Claims\AutoBalancingTestData\TestCase39.xml" />
+    <Content Include="Claims\AutoBalancingTestData\TestCase40.xml" />
+    <Content Include="Claims\AutoBalancingTestData\TestCase41.xml" />
+    <Content Include="Claims\AutoBalancingTestData\TestCase42.xml" />
+    <Content Include="Claims\AutoBalancingTestData\TestCase43.xml" />
+    <Content Include="Claims\AutoBalancingTestData\TestCase44.xml" />
+    <Content Include="Claims\AutoBalancingTestData\TestCase45.xml" />
+    <Content Include="Claims\AutoBalancingTestData\TestCase46.xml" />
+    <Content Include="Claims\AutoBalancingTestData\TestCase47.xml" />
+    <Content Include="Claims\AutoBalancingTestData\TestCase48.xml" />
+    <Content Include="Claims\AutoBalancingTestData\TestCase49.xml" />
+    <Content Include="Claims\AutoBalancingTestData\TestCase50.xml" />
+    <Content Include="Claims\AutoBalancingTestData\TestCase51.xml" />
+    <Content Include="Claims\AutoBalancingTestData\TestCase52.xml" />
+    <Content Include="Claims\AutoBalancingTestData\TestCase53.xml" />
+    <Content Include="Claims\AutoBalancingTestData\TestCase54.xml" />
+    <Content Include="Claims\AutoBalancingTestData\TestCase55.xml" />
+    <Content Include="Claims\AutoBalancingTestData\TestCase56.xml" />
+    <Content Include="Claims\AutoBalancingTestData\TestCase57.xml" />
+    <Content Include="Claims\AutoBalancingTestData\TestCase58.xml" />
+    <Content Include="Claims\AutoBalancingTestData\TestCase59.xml" />
+    <Content Include="Claims\AutoBalancingTestData\TestCase60.xml" />
+    <Content Include="Claims\AutoBalancingTestData\TestCase61.xml" />
+    <Content Include="Claims\AutoBalancingTestData\TestSchema.xml">
+      <SubType>Designer</SubType>
+    </Content>
+  </ItemGroup>
+  <Import Project="$(MSBuildBinPath)\Microsoft.VisualBasic.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

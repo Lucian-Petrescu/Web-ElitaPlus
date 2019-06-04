@@ -1,0 +1,255 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+
+<!-- ********************** THIS FILE HAS BEEN GENERATED FROM TEMPLATE SQLObject.cst (2/22/2013)********************** -->
+
+<SQL>
+  <LOAD>
+    <![CDATA[	
+select invoice_recon_wrk_id,
+       claimload_file_processed_id,
+       record_type,
+       reject_code,
+       reject_reason,
+       loaded,
+       company_code,
+       company_id,
+       invoice_number,
+       invoice_date,
+       invoice_id,
+       repair_date,
+       attributes,
+       claim_number,
+       claim_id,
+       authorization_number,
+       authorization_id,
+       line_item_number,
+       vendor_sku,
+       vendor_sku_description,
+       service_center_id,
+       service_center_code,
+       service_class_id,
+       service_type_id,
+       amount,
+       due_date,
+       entire_record,
+       created_by,
+       created_date,
+       modified_by,
+       modified_date,
+       service_level,
+       service_level_id
+  from elp_invoice_recon_wrk
+			where invoice_recon_wrk_id = hextoraw(:invoice_recon_wrk_id)
+		]]>
+  </LOAD>
+  <LOAD_LIST>
+    <![CDATA[	
+SELECT rw.INVOICE_RECON_WRK_ID,
+       rw.CLAIMLOAD_FILE_PROCESSED_ID,
+       rw.RECORD_TYPE,
+       rw.REJECT_CODE,
+       rw.REJECT_REASON,
+       rw.LOADED,
+       rw.COMPANY_CODE,
+       rw.COMPANY_ID,
+       rw.INVOICE_NUMBER,
+       rw.INVOICE_DATE,
+       rw.INVOICE_ID,
+       rw.REPAIR_DATE,
+       rw.ATTRIBUTES,
+       rw.CLAIM_NUMBER,
+       rw.CLAIM_ID,
+       rw.AUTHORIZATION_NUMBER,
+       rw.AUTHORIZATION_ID,
+       rw.LINE_ITEM_NUMBER,
+       rw.vendor_SKU,
+       rw.vendor_SKU_DESCRIPTION,
+       rw.SERVICE_CENTER_ID,
+       rw.SERVICE_CENTER_CODE,
+       rw.SERVICE_CLASS_ID,
+       rw.SERVICE_TYPE_ID,
+       rw.AMOUNT,
+       rw.DUE_DATE,
+       rw.ENTIRE_RECORD,
+       rw.CREATED_BY,
+       rw.CREATED_DATE,
+       rw.MODIFIED_BY,
+       rw.MODIFIED_DATE,
+       rw.SERVICE_LEVEL,
+       rw.SERVICE_LEVEL_ID,
+       mc.MSG_PARAMETER_COUNT,
+        (SELECT TRANSLATION FROM ELP_LABEL innerL
+        Inner join elp_dict_item_translation innert on innert.DICT_ITEM_ID = innerl.DICT_ITEM_ID
+      and innert.LANGUAGE_ID = :language_id
+    WHERE innerL.ui_prog_code = l.ui_prog_code
+ ) Translated_MSG 
+  FROM elp_invoice_recon_wrk rw
+  left outer join (select MSG_CODE, LABEL_ID, MSG_PARAMETER_COUNT
+                     From elp_message_code
+                    inner join ELP_LIST_ITEM li
+                       ON msg_type = li.LIST_ITEM_ID
+                      AND li.code = 'VLREJECT'
+                    INNER JOIN ELP_LIST l
+                       ON l.LIST_ID = li.LIST_ID
+                      AND l.code = 'MSGTYPE') mc
+    on mc.MSG_CODE = rw.reject_code
+  left outer join elp_label l
+    on l.label_id = mc.label_id
+ WHERE rw.claimload_file_processed_id = hextoraw(:claimload_file_processed_id)
+   and reject_reason IS NOT NULL
+		]]>
+  </LOAD_LIST>
+  <LOAD_BY_CLAIM_LOAD_FILE_PROCESSED_ID>
+    <![CDATA[ 
+    SELECT rw.INVOICE_RECON_WRK_ID,
+       rw.CLAIMLOAD_FILE_PROCESSED_ID,
+       rw.RECORD_TYPE,
+       rw.REJECT_CODE,
+       rw.REJECT_REASON,
+       rw.LOADED,
+       rw.COMPANY_CODE,
+       rw.COMPANY_ID,
+       rw.INVOICE_NUMBER,
+       rw.INVOICE_DATE,
+       rw.INVOICE_ID,
+       rw.REPAIR_DATE,
+       rw.ATTRIBUTES,
+       rw.CLAIM_NUMBER,
+       rw.CLAIM_ID,
+       rw.AUTHORIZATION_NUMBER,
+       rw.AUTHORIZATION_ID,
+       rw.LINE_ITEM_NUMBER,
+       rw.vendor_SKU,
+       rw.vendor_SKU_DESCRIPTION,
+       rw.SERVICE_CENTER_ID,
+       rw.SERVICE_CENTER_CODE,
+       rw.SERVICE_CLASS_ID,
+       rw.SERVICE_TYPE_ID,
+       rw.AMOUNT,
+       rw.DUE_DATE,
+       rw.ENTIRE_RECORD,
+       rw.CREATED_BY,
+       rw.CREATED_DATE,
+       rw.MODIFIED_BY,
+       rw.MODIFIED_DATE,
+       rw.SERVICE_LEVEL,
+       rw.SERVICE_LEVEL_ID
+    from 
+      elp_invoice_recon_wrk rw
+    where 
+      rw.claimload_file_processed_id = hextoraw(:claimload_file_processed_id)
+      order by rw.INVOICE_NUMBER, rw.AUTHORIZATION_ID
+    ]]>
+  </LOAD_BY_CLAIM_LOAD_FILE_PROCESSED_ID>
+  <UPDATE>
+    <![CDATA[	
+			UPDATE elp_invoice_recon_wrk SET
+				claimload_file_processed_id = :claimload_file_processed_id,
+				record_type = :record_type,
+				reject_code = :reject_code,
+				reject_reason = :reject_reason,
+				loaded = :loaded,
+				company_code = :company_code,
+				company_id = :company_id,
+				invoice_number = :invoice_number,
+				invoice_date = :invoice_date,
+				invoice_id = :invoice_id,
+				repair_date = :repair_date,
+				attributes = :attributes,
+				claim_number = :claim_number,
+				claim_id = :claim_id,
+				authorization_number = :authorization_number,
+				authorization_id = :authorization_id,
+				line_item_number = :line_item_number,
+				vendor_sku = :vendor_sku,
+				vendor_sku_description = :vendor_sku_description,
+				service_center_id = :service_center_id,
+				service_center_code = :service_center_code,
+				service_class_id = :service_class_id,
+				service_type_id = :service_type_id,
+				amount = :amount,
+				due_date = :due_date,
+				entire_record = :entire_record,
+				modified_by = :modified_by,
+        service_level = :service_level,
+        service_level_id = :service_level_id
+			WHERE
+				invoice_recon_wrk_id = :invoice_recon_wrk_id
+		]]>
+  </UPDATE>
+  <INSERT>
+    INSERT INTO elp_invoice_recon_wrk
+    (
+    claimload_file_processed_id,
+    record_type,
+    reject_code,
+    reject_reason,
+    loaded,
+    company_code,
+    company_id,
+    invoice_number,
+    invoice_date,
+    invoice_id,
+    repair_date,
+    attributes,
+    claim_number,
+    claim_id,
+    authorization_number,
+    authorization_id,
+    line_item_number,
+    vendor_sku,
+    vendor_sku_description,
+    service_center_id,
+    service_center_code,
+    service_class_id,
+    service_type_id,
+    amount,
+    due_date,
+    entire_record,
+    created_by,
+    invoice_recon_wrk_id,
+    service_level,
+    service_level_id
+    )
+    VALUES
+    (
+    :claimload_file_processed_id,
+    :record_type,
+    :reject_code,
+    :reject_reason,
+    :loaded,
+    :company_code,
+    :company_id,
+    :invoice_number,
+    :invoice_date,
+    :invoice_id,
+    :repair_date,
+    :attributes,
+    :claim_number,
+    :claim_id,
+    :authorization_number,
+    :authorization_id,
+    :line_item_number,
+    :vendor_sku,
+    :vendor_sku_description,
+    :service_center_id,
+    :service_center_code,
+    :service_class_id,
+    :service_type_id,
+    :amount,
+    :due_date,
+    :entire_record,
+    :created_by,
+    :invoice_recon_wrk_id,
+    :service_level,
+    :service_level_id
+    )
+  </INSERT>
+  <DELETE>
+    DELETE FROM elp_invoice_recon_wrk
+    WHERE
+    invoice_recon_wrk_id = :invoice_recon_wrk_id
+  </DELETE>
+</SQL>
+
+

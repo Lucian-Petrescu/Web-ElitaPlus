@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ReferenceGroup xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" ID="9e57531f-ac2c-47e0-8aa8-af403bd67378" xmlns="urn:schemas-microsoft-com:xml-wcfservicemap">
+  <ClientOptions>
+    <GenerateAsynchronousMethods>false</GenerateAsynchronousMethods>
+    <EnableDataBinding>true</EnableDataBinding>
+    <ExcludedTypes />
+    <ImportXmlTypes>false</ImportXmlTypes>
+    <GenerateInternalTypes>false</GenerateInternalTypes>
+    <GenerateMessageContracts>false</GenerateMessageContracts>
+    <NamespaceMappings />
+    <CollectionMappings />
+    <GenerateSerializableTypes>true</GenerateSerializableTypes>
+    <Serializer>Auto</Serializer>
+    <UseSerializerForFaults>true</UseSerializerForFaults>
+    <ReferenceAllAssemblies>true</ReferenceAllAssemblies>
+    <ReferencedAssemblies />
+    <ReferencedDataContractTypes />
+    <ServiceContractMappings />
+  </ClientOptions>
+  <MetadataSources>
+    <MetadataSource Address="https://gsxapi.apple.com/wsdl/laAsp/gsx-laAsp.wsdl" Protocol="http" SourceId="1" />
+  </MetadataSources>
+  <Metadata>
+    <MetadataFile FileName="gsx-core-requestResponse-elements.xsd" MetadataType="Schema" ID="a59b970c-3711-45d0-ade5-b01c1a1ddf41" SourceId="1" SourceUrl="https://gsxapi.apple.com/wsdl/laAsp/gsx-core-requestResponse-elements.xsd" />
+    <MetadataFile FileName="gsx-basic-types.xsd" MetadataType="Schema" ID="dfa2e120-baec-45d8-9ca8-6155d3ea83b3" SourceId="1" SourceUrl="https://gsxapi.apple.com/wsdl/laAsp/gsx-basic-types.xsd" />
+    <MetadataFile FileName="gsx-base-types.xsd" MetadataType="Schema" ID="7498409a-c4fb-465c-8630-49a1e92b403a" SourceId="1" SourceUrl="https://gsxapi.apple.com/wsdl/laAsp/gsx-base-types.xsd" />
+    <MetadataFile FileName="gsx-global-requestResponse-elements.xsd" MetadataType="Schema" ID="943c8766-d2a3-44c2-ac5a-993568abf622" SourceId="1" SourceUrl="https://gsxapi.apple.com/wsdl/laAsp/gsx-global-requestResponse-elements.xsd" />
+    <MetadataFile FileName="gsx-coreAsp-requestResponse-elements.xsd" MetadataType="Schema" ID="cf1159d5-450b-4c9f-90e0-854d834a60cd" SourceId="1" SourceUrl="https://gsxapi.apple.com/wsdl/laAsp/gsx-coreAsp-requestResponse-elements.xsd" />
+    <MetadataFile FileName="gsx-coreAsp-schema.xsd" MetadataType="Schema" ID="39c93d67-886a-47ad-a334-79f8504e987c" SourceId="1" SourceUrl="https://gsxapi.apple.com/wsdl/laAsp/gsx-coreAsp-schema.xsd" />
+    <MetadataFile FileName="gsx-laAsp-requestResponse.xsd" MetadataType="Schema" ID="09047d5f-5469-4a21-922f-ee136842353a" SourceId="1" SourceUrl="https://gsxapi.apple.com/wsdl/laAsp/gsx-laAsp-requestResponse.xsd" />
+    <MetadataFile FileName="GsxWSLaAspService.wsdl" MetadataType="Wsdl" ID="e418f8b9-9e24-4ac3-b03f-9c16038b265f" SourceId="1" SourceUrl="https://gsxapi.apple.com/wsdl/laAsp/gsx-laAsp.wsdl" />
+    <MetadataFile FileName="gsx-global-schema.xsd" MetadataType="Schema" ID="dc1e14f5-f918-460b-a509-12f856bcd0c2" SourceId="1" SourceUrl="https://gsxapi.apple.com/wsdl/laAsp/gsx-global-schema.xsd" />
+  </Metadata>
+  <Extensions>
+    <ExtensionFile FileName="configuration91.svcinfo" Name="configuration91.svcinfo" />
+    <ExtensionFile FileName="configuration.svcinfo" Name="configuration.svcinfo" />
+  </Extensions>
+</ReferenceGroup>

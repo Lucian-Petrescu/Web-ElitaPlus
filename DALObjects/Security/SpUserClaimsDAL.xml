@@ -1,0 +1,81 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+
+<!-- ********************** THIS FILE HAS BEEN GENERATED FROM TEMPLATE SQLObject.cst (3/13/2017)********************** -->
+
+<SQL>
+  <LOAD>
+    <![CDATA[	
+			SELECT 
+				user_id,
+				sp_claim_type_id,
+				sp_claim_value,
+				effective_date,
+				expiration_date,
+				created_by,
+				created_date,
+				modified_by,
+				modified_date,
+				sp_user_claims_id
+			FROM elp_sp_user_claims 
+			WHERE
+				sp_user_claims_id = :sp_user_claims_id
+		]]>
+  </LOAD>
+  <LOAD_LIST>
+  </LOAD_LIST>
+  <LOAD_SP_USER_CLAIMS>
+    <![CDATA[	
+			SELECT 
+        uc.sp_user_claims_id,
+				uc.sp_claim_type_id,
+				uc.sp_claim_value,
+				uc.effective_date,
+				uc.expiration_date
+			FROM elp_sp_user_claims uc
+			WHERE
+				uc.user_id = :user_id
+		]]>
+  </LOAD_SP_USER_CLAIMS>
+  <UPDATE>
+    <![CDATA[	
+			UPDATE elp_sp_user_claims SET
+				user_id = :user_id,
+				sp_claim_type_id = :sp_claim_type_id,
+				sp_claim_value = :sp_claim_value,
+				effective_date = :effective_date,
+				expiration_date = :expiration_date,
+				modified_by = :modified_by
+			WHERE
+				sp_user_claims_id = :sp_user_claims_id
+		]]>
+  </UPDATE>
+  <INSERT>
+    INSERT INTO elp_sp_user_claims
+    (
+    user_id,
+    sp_claim_type_id,
+    sp_claim_value,
+    effective_date,
+    expiration_date,
+    created_by,
+    sp_user_claims_id
+    )
+    VALUES
+    (
+    :user_id,
+    :sp_claim_type_id,
+    :sp_claim_value,
+    :effective_date,
+    :expiration_date,
+    :created_by,
+    :sp_user_claims_id
+    )
+  </INSERT>
+  <DELETE>
+    DELETE FROM elp_sp_user_claims
+    WHERE
+    sp_user_claims_id = :sp_user_claims_id
+  </DELETE>
+</SQL>
+
+

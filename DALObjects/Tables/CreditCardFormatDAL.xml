@@ -1,0 +1,85 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+
+<!-- ********************** THIS FILE HAS BEEN GENERATED FROM TEMPLATE SQLObject.cst (4/7/2010)********************** -->
+
+<SQL>
+  <LOAD>
+    <![CDATA[	
+			SELECT 
+				credit_card_type_id,
+        regular_expression_id,
+				created_by,
+				created_date,
+				modified_by,
+				modified_date,
+				credit_card_format_id
+			FROM elp_credit_card_format 
+			WHERE
+				credit_card_format_id = :credit_card_format_id
+		]]>
+  </LOAD>
+  <LOAD_BY_CODE>
+    <![CDATA[	
+    select
+    credit_card_format_id,
+    CCF.credit_card_type_id,
+    T.translation  as Credit_Card_Type,
+    CCF.regular_expression_id,
+    re.format
+    from ELITA.elp_credit_card_format CCF
+    join elita.elp_regular_expression re on CCF.regular_expression_id = re.regular_expression_id
+    join ELITA.elp_list_item I on CCF.credit_card_type_id = I.list_item_id and I.Code = :credit_card_type_code
+    join ELITA.elp_dict_item_translation T on I.dict_item_id = T.dict_item_id
+    join ELITA.elp_language L on T.language_id = L.language_id and L.language_id = :language_id
+    ]]>
+  </LOAD_BY_CODE>
+  <LOAD_LIST>
+    <![CDATA[	
+    select
+      credit_card_format_id,
+      CCF.credit_card_type_id,
+      T.translation  as Credit_Card_Type,
+      CCF.regular_expression_id,
+      re.format
+    from ELITA.elp_credit_card_format CCF
+    join elita.elp_regular_expression re on CCF.regular_expression_id = re.regular_expression_id    
+	  join ELITA.elp_list_item I on CCF.credit_card_type_id = I.list_item_id
+	  join ELITA.elp_dict_item_translation T on I.dict_item_id = T.dict_item_id
+	  join ELITA.elp_language L on T.language_id = L.language_id and L.language_id = :language_id
+    --dynamic_where_clause
+    ]]>    
+  </LOAD_LIST>
+    <UPDATE>
+    <![CDATA[	
+			UPDATE elp_credit_card_format SET
+				credit_card_type_id = :credit_card_type_id,
+        regular_expression_id = :regular_expression_id,
+				modified_by = :modified_by
+			WHERE
+				credit_card_format_id = :credit_card_format_id
+		]]>
+  </UPDATE>
+  <INSERT>
+    INSERT INTO elp_credit_card_format
+    (
+    credit_card_type_id,
+    regular_expression_id,
+    created_by,
+    credit_card_format_id
+    )
+    VALUES
+    (
+    :credit_card_type_id,
+    :regular_expression_id,
+    :created_by,
+    :credit_card_format_id
+    )
+  </INSERT>
+  <DELETE>
+    DELETE FROM elp_credit_card_format
+    WHERE
+    credit_card_format_id = :credit_card_format_id
+  </DELETE>
+</SQL>
+
+

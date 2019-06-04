@@ -1,0 +1,154 @@
+<?xml version="1.0" encoding="utf-8" ?>
+
+<!-- ********************** THIS FILE HAS BEEN GENERATED FROM TEMPLATE SQLObject.cst (11/6/2006)********************** -->
+
+<SQL>
+	<LOAD>
+		<![CDATA[	
+			SELECT 
+				payment_type_id,
+        description,
+        code,
+				collection_method_id,
+				payment_instrument_id,
+				company_group_id,
+				created_date,
+				modified_date,
+				created_by,
+				modified_by
+			FROM elp_payment_type 
+			WHERE
+				payment_type_id = :payment_type_id
+		]]>
+	</LOAD>
+	<LOAD_LIST>
+	<![CDATA[	
+			SELECT
+				payment_type_id,
+				(select li.code || ' - ' || t.Translation
+                  from ELP_LIST_ITEM li
+                  inner join elp_dict_item_translation t on t.DICT_ITEM_ID = li.DICT_ITEM_ID
+      		 	  where li.List_Item_ID = PT.collection_method_id
+             	  and t.LANGUAGE_ID = :language_id1) collection_method,
+				COLLECTION_METHOD_ID,
+				(select li.code || ' - ' || t.Translation
+                  from ELP_LIST_ITEM li
+                  inner join elp_dict_item_translation t on t.DICT_ITEM_ID = li.DICT_ITEM_ID
+      		 	  where li.List_Item_ID = PT.payment_instrument_id
+             	  and t.LANGUAGE_ID = :language_id) payment_instrument,
+        PAYMENT_INSTRUMENT_ID,
+        company_group_id
+			FROM elp_payment_type PT
+			WHERE
+				company_group_id = :company_group_id
+		]]>		
+	</LOAD_LIST>
+  <LOAD_LIST_FOR_QOUTE_ENGINE>
+    <![CDATA[	
+			SELECT 
+				payment_type_id,
+				description,
+				code,
+				company_group_id,
+				created_date,
+				modified_date,
+				created_by,
+				modified_by
+			FROM elp_payment_type 
+			WHERE
+				company_group_id = :company_group_id
+		]]>
+  </LOAD_LIST_FOR_QOUTE_ENGINE>
+	<UPDATE>
+		<![CDATA[	
+			UPDATE elp_payment_type SET
+				description = :description,
+				code = :code,
+        collection_method_id = :collection_method_id,
+				payment_instrument_id = :payment_instrument_id,
+				company_group_id = :company_group_id,
+				modified_by = :modified_by
+			WHERE
+				payment_type_id = :payment_type_id
+		]]>
+	</UPDATE>
+	<INSERT>
+    INSERT INTO elp_payment_type
+    (
+    description,
+    code,
+    collection_method_id,
+    payment_instrument_id,
+    company_group_id,
+    created_by,
+    payment_type_id
+    )
+    VALUES
+    (
+    :description,
+    :code,
+    :collection_method_id,
+    :payment_instrument_id,
+    :company_group_id,
+    :created_by,
+    :payment_type_id
+    )
+  </INSERT>
+	<DELETE>
+			DELETE FROM elp_payment_type
+			WHERE
+				payment_type_id = :payment_type_id
+	</DELETE>
+  <LOAD_COLLECTION_METHODS_LIST_FOR_VSC_QOUTE>
+    <![CDATA[	
+			SELECT collection_method_id,
+				   li.code AS collection_method_code,
+           t.Translation AS collection_method
+			FROM elp_payment_type PT, ELP_LIST_ITEM li, elp_dict_item_translation t
+ 		    WHERE t.DICT_ITEM_ID = li.DICT_ITEM_ID
+      		and t.LANGUAGE_ID = :language_id
+			    and company_group_id = :company_group_id
+			    and li.List_Item_ID = PT.collection_method_id
+      ORDER BY li.code
+		]]>
+  </LOAD_COLLECTION_METHODS_LIST_FOR_VSC_QOUTE>
+  <LOAD_PAYMENT_INSTRUMENTS_LIST_FOR_VSC_QOUTE>
+    <![CDATA[	
+			SELECT collection_method_id,
+				   li.code AS payment_instrument_code,
+           t.Translation AS payment_instrument
+			FROM elp_payment_type PT, ELP_LIST_ITEM li, elp_dict_item_translation t
+ 		    WHERE t.DICT_ITEM_ID = li.DICT_ITEM_ID
+      		and t.LANGUAGE_ID = :language_id
+			    and company_group_id = :company_group_id
+			    and li.List_Item_ID = PT.payment_instrument_id
+      ORDER BY li.code
+		]]>
+  </LOAD_PAYMENT_INSTRUMENTS_LIST_FOR_VSC_QOUTE>
+  <LOAD_PAYMENT_TYPES_LIST_FOR_VSC_QOUTE>
+      <![CDATA[	
+        SELECT collections.collection_method_code,
+        collections.collection_method,
+        instruments.payment_instrument_code,
+        instruments.payment_instrument
+
+        FROM elp_payment_type PT,
+        (select li.List_Item_ID, li.code as collection_method_code, t.Translation as collection_method
+        from ELP_LIST_ITEM li
+        inner join elp_dict_item_translation t on t.DICT_ITEM_ID = li.DICT_ITEM_ID
+        where t.LANGUAGE_ID = :language_id1) collections ,
+        (select li.List_Item_ID , li.code AS payment_instrument_code, t.Translation AS payment_instrument
+        from ELP_LIST_ITEM li
+        inner join elp_dict_item_translation t on t.DICT_ITEM_ID = li.DICT_ITEM_ID
+        where t.LANGUAGE_ID = :language_id2) instruments
+        WHERE
+        company_group_id = :company_group_id
+        and collections.List_Item_ID = PT.collection_method_id
+        and instruments.List_Item_ID = PT.payment_instrument_id
+        ORDER BY  collections.collection_method_code, instruments.payment_instrument_code
+      ]]>
+</LOAD_PAYMENT_TYPES_LIST_FOR_VSC_QOUTE>
+</SQL> 
+
+
+

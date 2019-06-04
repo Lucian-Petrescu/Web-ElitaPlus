@@ -1,0 +1,101 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+
+<!-- ********************** THIS FILE HAS BEEN GENERATED FROM TEMPLATE SQLObject.cst (6/7/2012)********************** -->
+
+<SQL>
+    <LOAD>
+        <![CDATA[	
+			SELECT
+	            PR.RULE_PROCESS_ID,
+	            PR.RULE_ID,
+	            PR.PROCESS_ID,
+	            PR.EFFECTIVE,
+	            PR.EXPIRATION,
+	            PR.PROCESS_ORDER,
+	            P.DESCRIPTION,
+	            PR.CREATED_DATE,
+	            PR.CREATED_BY,
+	            PR.MODIFIED_DATE,
+	            PR.MODIFIED_BY
+            FROM
+	            ELP_PROCESS_RULE PR
+                Inner Join
+                ELP_PROCESS P On PR.PROCESS_ID = P.PROCESS_ID
+			WHERE
+				RULE_PROCESS_ID = :rule_process_id
+		]]>
+    </LOAD>
+    <LOAD_LIST>
+        <![CDATA[	
+			SELECT
+	            PR.RULE_PROCESS_ID,
+	            PR.RULE_ID,
+	            PR.PROCESS_ID,
+	            PR.EFFECTIVE,
+	            PR.EXPIRATION,
+	            PR.PROCESS_ORDER,
+	            P.DESCRIPTION,
+	            PR.CREATED_DATE,
+	            PR.CREATED_BY,
+	            PR.MODIFIED_DATE,
+	            PR.MODIFIED_BY
+            FROM
+	            ELP_PROCESS_RULE PR
+                Inner Join
+                ELP_PROCESS P On PR.PROCESS_ID = P.PROCESS_ID
+			WHERE
+				RULE_ID = :rule_id
+		]]>
+    </LOAD_LIST>
+    <UPDATE>
+        <![CDATA[	
+			UPDATE elp_process_rule SET
+				rule_id = :rule_id,
+				process_id = :process_id,
+				effective = :effective,
+				expiration = :expiration,
+				process_order = :process_order,
+				modified_by = :modified_by
+			WHERE
+				rule_process_id = :rule_process_id
+		]]>
+    </UPDATE>
+    <INSERT>
+        INSERT INTO elp_process_rule
+        (
+        rule_id,
+        process_id,
+        effective,
+        expiration,
+        process_order,
+        created_by,
+        rule_process_id
+        )
+        VALUES
+        (
+        :rule_id,
+        :process_id,
+        :effective,
+        :expiration,
+        :process_order,
+        :created_by,
+        :rule_process_id
+        )
+    </INSERT>
+    <DELETE>
+        DELETE FROM elp_process_rule
+        WHERE
+        rule_process_id = :rule_process_id
+    </DELETE>
+    <IS_CHILD>
+        <![CDATA[
+      SELECT
+        rule_process_id
+      FROM 
+        elp_process_rule
+      WHERE
+        rule_process_id = :rule_process_id AND
+        process_id = :process_id 
+    ]]>
+    </IS_CHILD>
+</SQL>

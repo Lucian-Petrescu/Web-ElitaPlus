@@ -1,0 +1,145 @@
+<?xml version="1.0" encoding="utf-8" ?>
+
+<!-- ********************** THIS FILE HAS BEEN GENERATED FROM TEMPLATE SQLObject.cst (4/10/2007)********************** -->
+
+<SQL>
+	<LOAD>
+		<![CDATA[	
+			SELECT 
+				company_group_id,
+				coverage_type_id,
+				created_by,
+				created_date,
+				modified_by,
+				modified_date,
+				coverage_by_company_group_id
+			FROM elp_coverage_by_company_group 
+			WHERE
+				coverage_by_company_group_id = :coverage_by_company_group_id
+		]]>
+	</LOAD>
+	<LOAD_LIST>
+		select distinct company_group_id, translation description, code
+			from	elp_coverage_by_company_group, elp_list_item li, elp_dict_item_translation trans
+			where	company_group_id = :company_group_id
+			        and coverage_type_id = list_item_id
+					and li.dict_item_id = trans.dict_item_id
+					and language_id = :language_id
+			order by upper(translation)		
+	</LOAD_LIST>
+	<LOAD_ALL_COV_COMP_GRP>
+	    <![CDATA[	
+			SELECT 
+				company_group_id,
+				coverage_type_id,
+				created_by,
+				created_date,
+				modified_by,
+				modified_date,
+				coverage_by_company_group_id
+			FROM elp_coverage_by_company_group 
+			WHERE
+				company_group_id = :company_group_id		
+		]]>
+	</LOAD_ALL_COV_COMP_GRP>		
+	<UPDATE>
+		<![CDATA[	
+			UPDATE elp_coverage_by_company_group SET
+				company_group_id = :company_group_id,
+				coverage_type_id = :coverage_type_id,
+				modified_by = :modified_by
+			WHERE
+				coverage_by_company_group_id = :coverage_by_company_group_id
+		]]>
+	</UPDATE>
+	<INSERT>
+			INSERT INTO elp_coverage_by_company_group
+					(			
+				company_group_id, 
+				coverage_type_id, 
+				created_by,
+				coverage_by_company_group_id
+					)
+			VALUES
+					(			
+				:company_group_id, 
+				:coverage_type_id, 
+				:created_by,
+				:coverage_by_company_group_id
+					)
+	</INSERT>
+	<DELETE>
+			DELETE FROM elp_coverage_by_company_group
+			WHERE
+				coverage_by_company_group_id = :coverage_by_company_group_id
+	</DELETE>
+	<GET_AVAILABLE_COVERAGE_TYPE>
+	<![CDATA[
+		SELECT
+			LI.list_item_id id,
+            LI.code code,
+			D.translation description
+		FROM
+			ELITA.ELP_LIST L,
+			ELITA.ELP_LIST_ITEM LI,
+			ELITA.ELP_DICT_ITEM_TRANSLATION D
+		WHERE
+			L.list_id = LI.list_id
+		and L.code = 'CTYP'
+		and LI.dict_item_id = D.dict_item_id
+		and language_id = :language_id
+		and LI.list_item_id not in
+				(
+				select c.coverage_type_id list_item_id
+				from elp_coverage_by_company_group c
+				where c.company_group_id = :company_group_id
+				)
+		ORDER BY UPPER(description)
+	]]>
+	</GET_AVAILABLE_COVERAGE_TYPE>
+	<GET_SELECTED_COVERAGE_TYPE>
+	<![CDATA[
+	    select distinct LI.list_item_id id,
+                translation description, code
+		from elp_coverage_by_company_group c,
+			elp_list_item li,
+			elp_dict_item_translation trans
+		where	c.company_group_id = :company_group_id
+			and c.coverage_type_id  = list_item_id
+			and li.dict_item_id = trans.dict_item_id
+			and language_id = :language_id
+		order by upper(description)
+	]]>
+	</GET_SELECTED_COVERAGE_TYPE>
+	<COVERAGE_TYPES>
+			SELECT 
+				LI.list_item_id id, rawtohex(D.language_id) language_id, LI.code code, D.translation description
+			FROM 
+				ELITA.ELP_LIST L, ELITA.ELP_LIST_ITEM LI, ELITA.ELP_DICT_ITEM_TRANSLATION D
+			WHERE 
+				L.list_id = LI.list_id
+				and L.code = 'CTYP'
+				and LI.dict_item_id = D.dict_item_id
+				and LI.list_item_id not in
+				(
+				select c.coverage_by_company_group_id id
+				from elp_coverage_loss c
+				where c.company_group_id = :company_group_id
+				)
+			ORDER BY UPPER(description)
+		</COVERAGE_TYPES>
+		<GET_USED_COMPANY_GROUP>		
+		<![CDATA[	
+			SELECT
+				company_group_id
+			FROM
+				elp_company_group
+			WHERE COMPANY_GROUP_ID not in
+                    (select COMPANY_GROUP_ID
+                     from ELP_COVERAGE_BY_COMPANY_GROUP)
+			order by code
+		]]>	
+		</GET_USED_COMPANY_GROUP>	
+</SQL> 
+
+

@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ReferenceGroup xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" ID="dc63c529-92d3-445e-a623-eabf625ba647" xmlns="urn:schemas-microsoft-com:xml-wcfservicemap">
+  <ClientOptions>
+    <GenerateAsynchronousMethods>false</GenerateAsynchronousMethods>
+    <EnableDataBinding>true</EnableDataBinding>
+    <ExcludedTypes />
+    <ImportXmlTypes>false</ImportXmlTypes>
+    <GenerateInternalTypes>false</GenerateInternalTypes>
+    <GenerateMessageContracts>false</GenerateMessageContracts>
+    <NamespaceMappings />
+    <CollectionMappings />
+    <GenerateSerializableTypes>true</GenerateSerializableTypes>
+    <Serializer>Auto</Serializer>
+    <ReferenceAllAssemblies>true</ReferenceAllAssemblies>
+    <ReferencedAssemblies />
+    <ReferencedDataContractTypes />
+    <ServiceContractMappings />
+  </ClientOptions>
+  <MetadataSources>
+    <MetadataSource Address="http://localhost/ElitaInternalWS/Galaxy/GalaxyWcf.svc" Protocol="http" SourceId="1" />
+  </MetadataSources>
+  <Metadata>
+    <MetadataFile FileName="GalaxyWcf.wsdl" MetadataType="Wsdl" ID="5fcf9bd3-bae7-4f86-91d1-b762349d4898" SourceId="1" SourceUrl="http://localhost/ElitaInternalWS/Galaxy/GalaxyWcf.svc?wsdl" />
+    <MetadataFile FileName="GalaxyWcf.disco" MetadataType="Disco" ID="e998ae52-0f84-49c1-a31f-fb1a7a955845" SourceId="1" SourceUrl="http://localhost/ElitaInternalWS/Galaxy/GalaxyWcf.svc?disco" />
+    <MetadataFile FileName="GalaxyWcf.xsd" MetadataType="Schema" ID="9550f36a-0d84-4458-97d8-608c13d40f6a" SourceId="1" SourceUrl="http://localhost/ElitaInternalWS/Galaxy/GalaxyWcf.svc?xsd=xsd1" />
+    <MetadataFile FileName="GalaxyWcf1.xsd" MetadataType="Schema" ID="759b1eb7-b57f-466a-8c28-9ae329c74acd" SourceId="1" SourceUrl="http://localhost/ElitaInternalWS/Galaxy/GalaxyWcf.svc?xsd=xsd0" />
+  </Metadata>
+  <Extensions>
+    <ExtensionFile FileName="configuration.svcinfo" Name="configuration.svcinfo" />
+  </Extensions>
+</ReferenceGroup>

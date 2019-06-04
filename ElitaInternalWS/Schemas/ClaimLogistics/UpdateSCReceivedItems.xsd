@@ -1,0 +1,29 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema">
+  <xs:element name="UpdateSCReceivedItemsDs">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element name="UpdateSCReceivedItems">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element name="PICK_LIST_NUMBER" type="stringRequired" minOccurs="1" maxOccurs="1" />
+              <xs:element name="SERVICE_CENTER_CODE" type="stringRequired" minOccurs="1" maxOccurs="1" />
+              <xs:element name="CLAIMS" minOccurs="0" maxOccurs="unbounded">
+                <xs:complexType>
+                  <xs:sequence>
+                    <xs:element name="CLAIM_NUMBER" type="xs:string" minOccurs="0" maxOccurs="1" />
+                  </xs:sequence>
+                </xs:complexType>
+              </xs:element>
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:simpleType name="stringRequired">
+    <xs:restriction base="xs:string">
+      <xs:minLength value="1"></xs:minLength>
+    </xs:restriction>
+  </xs:simpleType>
+</xs:schema>

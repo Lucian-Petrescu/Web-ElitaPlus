@@ -1,0 +1,72 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+
+<!-- ********************** THIS FILE HAS BEEN GENERATED FROM TEMPLATE SQLObject.cst (1/15/2015)********************** -->
+
+<SQL>
+  <LOAD>
+    <![CDATA[	
+			SELECT 
+				dealer_id,
+				code,
+				description,
+				product_type,
+				created_date,
+				created_by,
+				modified_date,
+				modified_by,
+				afa_product_id
+			FROM elp_afa_product 
+			WHERE
+				afa_product_id = :afa_product_id
+		]]>
+  </LOAD>
+  <LOAD_LIST>
+    select p.afa_product_id,p.dealer_id,p.code,p.description,p.product_type
+    from ELP_AFA_PRODUCT p, elp_dealer d
+    where p.dealer_id = d.dealer_id
+    and p.dealer_id = :dealer_id
+    --dynamic_where_clause
+  </LOAD_LIST>
+  <UPDATE>
+    <![CDATA[	
+			UPDATE elp_afa_product SET
+				dealer_id = :dealer_id,
+				code = :code,
+				description = :description,
+				product_type = :product_type,
+				modified_by = :modified_by
+			WHERE
+				afa_product_id = :afa_product_id
+		]]>
+  </UPDATE>
+  <INSERT>
+    INSERT INTO elp_afa_product
+    (
+    dealer_id,
+    code,
+    description,
+    product_type,
+    created_by,
+    afa_product_id
+    )
+    VALUES
+    (
+    :dealer_id,
+    :code,
+    :description,
+    :product_type,
+    :created_by,
+    :afa_product_id
+    )
+  </INSERT>
+  <DELETE>
+    DELETE FROM elp_afa_product
+    WHERE
+    afa_product_id = :afa_product_id
+  </DELETE>
+  <GET_DUPLICATE_PRODUCT_COUNT>
+    <![CDATA[
+    select count(*) from elp_afa_product where dealer_id = :dealer_id and upper(code) =:CODE and afa_product_id <> :afa_product_id
+    ]]>
+  </GET_DUPLICATE_PRODUCT_COUNT>
+</SQL>

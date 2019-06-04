@@ -1,0 +1,252 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+
+<!-- ********************** THIS FILE HAS BEEN GENERATED FROM TEMPLATE SQLObject.cst (11/11/2004)********************** -->
+
+<SQL>
+  <LOAD>
+    <![CDATA[	
+			SELECT 
+				soft_question_group_id,
+				parent_id,
+				child_order,
+				description,
+				created_by,
+				created_date,
+				modified_by,
+				modified_date,
+				soft_question_id
+			FROM elp_soft_question 
+			WHERE
+				soft_question_id = :soft_question_id
+        and QUESTION_TYPE_ID = (select Getitemidfromlistanditem('QTYP','DIAG') FROM DUAL)
+		]]>
+  </LOAD>
+  <LOAD_LIST>
+    <![CDATA[	
+			SELECT 
+				soft_question_id,
+				soft_question_group_id,
+				parent_id,
+				child_order,
+				nvl(description,'Unknown Description') as description
+			FROM elp_soft_question 
+			WHERE
+				soft_question_group_id = :soft_question_group_id
+        and QUESTION_TYPE_ID = (select Getitemidfromlistanditem('QTYP','DIAG') FROM DUAL)
+		]]>
+  </LOAD_LIST>
+  <LOAD_ALL_LIST>
+    <![CDATA[	
+			SELECT 
+				soft_question_id,
+				SG.soft_question_group_id,
+				parent_id,
+				child_order,
+				nvl(SG.description,'Unknown Description') as description
+				from ELP_SOFT_QUESTION SQ,ELP_SOFT_QUESTION_GROUP SG
+				where company_group_id = :company_group_id      
+				and SQ.SOFT_QUESTION_GROUP_ID  =  SG.SOFT_QUESTION_GROUP_ID
+        and SQ.QUESTION_TYPE_ID = (select Getitemidfromlistanditem('QTYP','DIAG') FROM DUAL)
+		]]>
+  </LOAD_ALL_LIST>
+  <LOAD_GROUPS>
+    <![CDATA[	
+			select SOFT_QUESTION_ID,eg.SOFT_QUESTION_GROUP_ID,eg.DESCRIPTION
+      , (Select count(*) from ELP_SOFT_QUESTION where PARENT_ID = eq.SOFT_QUESTION_ID) ChildrenCount
+			from ELP_SOFT_QUESTION eq, ELP_SOFT_QUESTION_GROUP eg
+			where eq.SOFT_QUESTION_GROUP_ID    = eg.SOFT_QUESTION_GROUP_ID
+			and company_group_id = :company_group_id      
+			and PARENT_ID  is NULL and eq.QUESTION_TYPE_ID = (select Getitemidfromlistanditem('QTYP','DIAG') FROM DUAL)
+			order by DESCRIPTION
+		]]>
+  </LOAD_GROUPS>
+  <LOAD_GROUP_FOR_RISKTYPE>
+    <![CDATA[	
+			select distinct SOFT_QUESTION_ID,eg.SOFT_QUESTION_GROUP_ID,eg.DESCRIPTION
+      ,(Select count(*) from ELP_SOFT_QUESTION where PARENT_ID = eq.SOFT_QUESTION_ID) ChildrenCount
+			from ELP_SOFT_QUESTION eq, ELP_SOFT_QUESTION_GROUP eg, elp_risk_type rt
+			where eq.SOFT_QUESTION_GROUP_ID    = eg.SOFT_QUESTION_GROUP_ID
+			and rt.SOFT_QUESTION_GROUP_ID = eq.SOFT_QUESTION_GROUP_ID
+			and eg.company_group_id = :company_group_id  
+			and risk_type_id = :risk_type_id
+			and PARENT_ID  is NULL and eq.QUESTION_TYPE_ID = (select Getitemidfromlistanditem('QTYP','DIAG') FROM DUAL)
+			order by DESCRIPTION
+		]]>
+  </LOAD_GROUP_FOR_RISKTYPE>
+  <LOAD_AVAIL_GROUPS>
+    <![CDATA[	
+			select SOFT_QUESTION_GROUP_ID,DESCRIPTION
+			from ELP_SOFT_QUESTION_GROUP
+			where SOFT_QUESTION_GROUP_ID NOT IN
+			(select distinct SOFT_QUESTION_GROUP_ID from ELP_SOFT_QUESTION)
+			and company_group_id = :company_group_id 
+			order by DESCRIPTION
+		]]>
+  </LOAD_AVAIL_GROUPS>
+  <LOAD_CHILDREN>
+    <![CDATA[	
+		   select SOFT_QUESTION_ID,
+                  SOFT_QUESTION_GROUP_ID,
+                  PARENT_ID,
+                  CHILD_ORDER,
+                  nvl(DESCRIPTION,'Unknown Description') as DESCRIPTION,
+                  CREATED_BY,
+                  CREATED_DATE,
+                  MODIFIED_BY,
+                  MODIFIED_DATE
+                  ,(Select count(*) from ELP_SOFT_QUESTION where PARENT_ID = sq.SOFT_QUESTION_ID) ChildrenCount
+			from ELP_SOFT_QUESTION sq
+			where PARENT_ID = :parent_id and sq.QUESTION_TYPE_ID = (select Getitemidfromlistanditem('QTYP','DIAG') FROM DUAL)
+			order by CHILD_ORDER
+			
+		]]>
+  </LOAD_CHILDREN>
+  <LOAD_MAX_CHILD_ORDER>
+    <![CDATA[	
+			select MAX(CHILD_ORDER) as CHILD_ORDER  
+			from ELP_SOFT_QUESTION
+			where PARENT_ID = :parent_id and QUESTION_TYPE_ID = (select Getitemidfromlistanditem('QTYP','DIAG') FROM DUAL)
+			order by CHILD_ORDER
+		]]>
+  </LOAD_MAX_CHILD_ORDER>
+  <LOAD_SOFTQUESTIONID>
+    <![CDATA[	
+			select *
+			from ELP_SOFT_QUESTION
+			where CHILD_ORDER = :child_order and 
+			      PARENT_ID = :parent_id and QUESTION_TYPE_ID = (select Getitemidfromlistanditem('QTYP','DIAG') FROM DUAL)
+			 
+		]]>
+  </LOAD_SOFTQUESTIONID>
+  <UPDATE>
+    <![CDATA[	
+			UPDATE elp_soft_question SET
+				soft_question_group_id = :soft_question_group_id,
+				parent_id = :parent_id,
+				child_order = :child_order,
+				description = :description,
+				modified_by = :modified_by
+			WHERE
+				soft_question_id = :soft_question_id
+		]]>
+  </UPDATE>
+  <INSERT>
+    INSERT INTO elp_soft_question
+    (
+    soft_question_group_id,
+    parent_id,
+    child_order,
+    description,
+    created_by,
+    soft_question_id,
+    QUESTION_TYPE_ID
+    )
+    VALUES
+    (
+    :soft_question_group_id,
+    :parent_id,
+    :child_order,
+    :description,
+    :created_by,
+    :soft_question_id,
+    (select Getitemidfromlistanditem('QTYP','DIAG') FROM DUAL)
+    )
+  </INSERT>
+  <DELETE>
+    DELETE FROM elp_soft_question
+    WHERE
+    soft_question_id = :soft_question_id
+  </DELETE>
+  <LOAD_Reorder_GROUPS>
+    <![CDATA[	
+			select SOFT_QUESTION_GROUP_ID, DESCRIPTION
+			from ELP_SOFT_QUESTION_GROUP
+			where SOFT_QUESTION_GROUP_ID IN
+			(select distinct SOFT_QUESTION_GROUP_ID from ELP_SOFT_QUESTION)
+			and company_group_id = :company_group_id      
+			order by DESCRIPTION
+		]]>
+  </LOAD_Reorder_GROUPS>
+  <LOAD_Reorder_Question>
+    <![CDATA[	
+			select SOFT_QUESTION_ID, SOFT_QUESTION_GROUP_ID, PARENT_ID, CHILD_ORDER, DESCRIPTION
+			from ELP_SOFT_QUESTION
+			where SOFT_QUESTION_GROUP_ID = :SoftQuestionGroupId 
+      and QUESTION_TYPE_ID = (select Getitemidfromlistanditem('QTYP','DIAG') FROM DUAL)
+			order by SOFT_QUESTION_ID   asc
+		]]>
+  </LOAD_Reorder_Question>
+  <LOAD_LAST_ROW>
+    <![CDATA[	
+			select SOFT_QUESTION_ID, SOFT_QUESTION_GROUP_ID, PARENT_ID, CHILD_ORDER, DESCRIPTION
+			from ELP_SOFT_QUESTION
+			where SOFT_QUESTION_GROUP_ID = :SoftQuestionGroupId
+			AND PARENT_ID=:PARENT_ID
+			AND	CHILD_ORDER=:CHILD_ORDER
+			AND	DESCRIPTION=:DESCRIPTION
+      and QUESTION_TYPE_ID = (select Getitemidfromlistanditem('QTYP','DIAG') FROM DUAL)
+			order by SOFT_QUESTION_ID   asc
+		]]>
+  </LOAD_LAST_ROW>
+  <LOAD_Select_Null_ParentID>
+    <![CDATA[	
+			select SOFT_QUESTION_ID, SOFT_QUESTION_GROUP_ID, PARENT_ID, CHILD_ORDER, DESCRIPTION
+			from ELP_SOFT_QUESTION
+			where SOFT_QUESTION_GROUP_ID = :SoftQuestionGroupId 
+			and PARENT_ID is NULL and QUESTION_TYPE_ID = (select Getitemidfromlistanditem('QTYP','DIAG') FROM DUAL)
+			order by SOFT_QUESTION_ID   asc
+		]]>
+  </LOAD_Select_Null_ParentID>
+  <LOAD_Reorder_Question2>
+    <![CDATA[	
+			select SOFT_QUESTION_ID, SOFT_QUESTION_GROUP_ID, PARENT_ID, CHILD_ORDER, DESCRIPTION
+			from ELP_SOFT_QUESTION
+			where PARENT_ID = :SoftQuestionId and QUESTION_TYPE_ID = (select Getitemidfromlistanditem('QTYP','DIAG') FROM DUAL)
+			order by SOFT_QUESTION_ID   asc 
+		]]>
+  </LOAD_Reorder_Question2>
+  <LOAD_Reorder_Question3>
+    <![CDATA[	
+			select SOFT_QUESTION_ID, SOFT_QUESTION_GROUP_ID, PARENT_ID, CHILD_ORDER, DESCRIPTION
+			from ELP_SOFT_QUESTION
+			where SOFT_QUESTION_GROUP_ID = :SOFT_QUESTION_GROUP_ID
+			and PARENT_ID is not null and QUESTION_TYPE_ID = (select Getitemidfromlistanditem('QTYP','DIAG') FROM DUAL)
+			order by SOFT_QUESTION_ID   asc 
+		]]>
+  </LOAD_Reorder_Question3>
+  <Delete_ReOrder>
+    DELETE from elp_soft_question
+    WHERE
+    SOFT_QUESTION_GROUP_ID = :SOFT_QUESTION_GROUP_ID
+    and PARENT_ID is not null
+  </Delete_ReOrder>
+  <INSERT_ReOrder>
+    INSERT INTO elp_soft_question
+    (
+    SOFT_QUESTION_GROUP_ID,
+    PARENT_ID,
+    CHILD_ORDER,
+    DESCRIPTION,
+    QUESTION_TYPE_ID
+    )
+    VALUES
+    (
+    :soft_question_group_id,
+    :parent_id,
+    :child_order,
+    :description,
+    (select Getitemidfromlistanditem('QTYP','DIAG') FROM DUAL)
+    )
+  </INSERT_ReOrder>
+  <Update_ReOrder>
+    UPDATE elp_soft_question
+    set
+    created_by = :created_by,
+    soft_question_group_id = SYSTEM.DBNULL,
+    parent_id = :parent_id,
+    child_order = :child_order,
+    description = :description
+  </Update_ReOrder>
+</SQL>
+
+

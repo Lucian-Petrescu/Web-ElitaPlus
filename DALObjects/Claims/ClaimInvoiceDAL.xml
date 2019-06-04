@@ -1,0 +1,270 @@
+<?xml version="1.0" encoding="utf-8" ?>
+
+<!-- ********************** THIS FILE HAS BEEN GENERATED FROM TEMPLATE SQLObject.cst (12/15/2004)********************** -->
+
+<SQL>
+	<LOAD>
+		<![CDATA[	
+			SELECT 
+				company_id,
+				claim_id,
+				repair_code_id,
+				claim_number,
+				svc_control_number,
+				record_count,
+				batch_number,
+				cause_of_loss_id,
+				repair_date,
+				repair_estimate,
+				labor_amt,
+				labor_tax,
+				part_amount,
+				part_tax,
+				service_charge,
+				trip_amount,
+				other_amount,
+				other_explanation,
+				iva_amount,
+				amount,
+				disbursement_id,
+				reject_reason,
+				authorization_number,
+				source,
+				created_by,
+				created_date,
+				modified_by,
+				modified_date,
+				claim_invoice_id,
+        shipping_amount,
+        region_id,
+        invoice_date,
+        deductible_amount,
+        deductible_tax_amount,
+        claim_authorization_id,
+				bonus,
+				bonus_tax,
+				disposition_amount,
+				diagnostics_amount,
+				withholding_amount,
+        total_tax_amount,
+        pay_to_cust_amount
+			FROM elp_claim_invoice 
+			WHERE
+				claim_invoice_id = :claim_invoice_id       
+		]]>
+	</LOAD>
+	<LOAD_LIST_DYNAMIC>		
+		<![CDATA[	
+			select
+				inv.claim_invoice_id,
+				inv.svc_control_number as INVMB,
+				payee as PAYEE,
+				inv.claim_number as CLNM,
+				inv.created_date as DTCR,
+				amount as INAMT,
+        inv.authorization_number
+			from elp_claim_invoice inv,elp_disbursement dis
+			where inv.disbursement_id = dis.disbursement_id
+      and EXISTS(Select 1 from elp_claim c where c.claim_id = inv.claim_id)
+		]]>
+	</LOAD_LIST_DYNAMIC>
+	<LOAD_PAYMENTS_LIST_DYNAMIC>		
+		<![CDATA[	
+			Select * from ( select
+				inv.claim_invoice_id,
+				inv.svc_control_number as INVMB,
+				dis.payee as PAYEE,
+				inv.claim_number as CLNM,
+				inv.created_date as DTCR,
+				inv.amount as INAMT,
+				inv.CREATED_BY as PAID_BY,
+        inv.record_count,
+        inv.batch_number        
+			from elp_claim_invoice inv,elp_disbursement dis, ELP_CLAIM CLM
+			where inv.disbursement_id = dis.disbursement_id
+			AND inv.CLAIM_ID = CLM.CLAIM_ID
+			AND inv.company_id = :company_id
+      AND EXISTS(Select 1 from elp_claim c where c.claim_id = inv.claim_id)
+		]]>
+	</LOAD_PAYMENTS_LIST_DYNAMIC>	
+	<UPDATE>
+		<![CDATA[	
+			UPDATE elp_claim_invoice SET
+				company_id = :company_id,
+				claim_id = :claim_id,
+				repair_code_id = :repair_code_id,
+				claim_number = :claim_number,
+				svc_control_number = :svc_control_number,
+				record_count = :record_count,
+				batch_number = :batch_number,
+				cause_of_loss_id = :cause_of_loss_id,
+				repair_date = :repair_date,
+				repair_estimate = :repair_estimate,
+				labor_amt = :labor_amt,
+				labor_tax = :labor_tax,
+				part_amount = :part_amount,
+				part_tax = :part_tax,
+				service_charge = :service_charge,
+				trip_amount = :trip_amount,
+				other_amount = :other_amount,
+				other_explanation = :other_explanation,
+				iva_amount = :iva_amount,
+				amount = :amount,
+				disbursement_id = :disbursement_id,
+				reject_reason = :reject_reason,
+				authorization_number = :authorization_number,
+				source = :source,
+				modified_by = :modified_by,
+        shipping_amount = :shipping_amount,
+        region_id = :region_id,
+        invoice_date = :invoice_date,
+        deductible_amount = :deductible_amount,
+        deductible_tax_amount = :deductible_tax_amount,
+        claim_authorization_id = :claim_authorization_id,
+				bonus = :bonus,
+				bonus_tax = :bonus_tax,
+				disposition_amount = :disposition_amount,
+				diagnostics_amount = :diagnostics_amount,
+				withholding_amount = :withholding_amount,
+        total_tax_amount = :total_tax_amount,
+        pay_to_cust_amount = :pay_to_cust_amount
+			WHERE
+				claim_invoice_id = :claim_invoice_id
+		]]>
+	</UPDATE>
+	<INSERT>
+    INSERT INTO elp_claim_invoice
+    (
+    company_id,
+    claim_id,
+    repair_code_id,
+    claim_number,
+    svc_control_number,
+    record_count,
+    batch_number,
+    cause_of_loss_id,
+    repair_date,
+    repair_estimate,
+    labor_amt,
+    labor_tax,
+    part_amount,
+    part_tax,
+    service_charge,
+    trip_amount,
+    other_amount,
+    other_explanation,
+    iva_amount,
+    amount,
+    disbursement_id,
+    reject_reason,
+    authorization_number,
+    source,
+    created_by,
+    claim_invoice_id,
+    shipping_amount,
+    region_id,
+    invoice_date,
+    deductible_amount,
+    deductible_tax_amount,
+    claim_authorization_id,
+    bonus,
+    bonus_tax,
+    disposition_amount,
+    diagnostics_amount,
+    withholding_amount,
+    total_tax_amount,
+    pay_to_cust_amount
+    )
+    VALUES
+    (
+    :company_id,
+    :claim_id,
+    :repair_code_id,
+    :claim_number,
+    :svc_control_number,
+    :record_count,
+    :batch_number,
+    :cause_of_loss_id,
+    :repair_date,
+    :repair_estimate,
+    :labor_amt,
+    :labor_tax,
+    :part_amount,
+    :part_tax,
+    :service_charge,
+    :trip_amount,
+    :other_amount,
+    :other_explanation,
+    :iva_amount,
+    :amount,
+    :disbursement_id,
+    :reject_reason,
+    :authorization_number,
+    :source,
+    :created_by,
+    :claim_invoice_id,
+    :shipping_amount,
+    :region_id,
+    :invoice_date,
+    :deductible_amount,
+    :deductible_tax_amount,
+    :claim_authorization_id,
+    :bonus,
+    :bonus_tax,
+    :disposition_amount,
+    :diagnostics_amount,
+    :withholding_amount,
+    :total_tax_amount,
+    :pay_to_cust_amount
+    )
+  </INSERT>
+	<DELETE>
+			DELETE FROM elp_claim_invoice
+			WHERE
+				claim_invoice_id = :claim_invoice_id
+	</DELETE>
+	<GET_SUM_OF_INVOICES>
+    SELECT SUM(AMOUNT), COUNT(*), SUM(NVL(DEDUCTIBLE_AMOUNT, 0))
+    FROM elp_claim_invoice
+    WHERE claim_id = :claim_id
+    AND company_id = :company_id
+  </GET_SUM_OF_INVOICES>
+	<GET_TAX_RATE>
+		GET_TAX_RATE
+	</GET_TAX_RATE>
+  <GET_CLAIM_TAX_RATES>
+    ELITA.elp_utl_tax.GET_CLAIM_TAX_RATES
+  </GET_CLAIM_TAX_RATES>
+  <GET_MANUAL_TAX>
+    select 	*
+    from (select ct.*,
+    rank() over (partition by country_id,company_type_id,tax_type_id,product_Tax_type_id order by dealer_id) rk
+    from	ELP_COUNTRY_TAX ct
+    where	COUNTRY_ID = :COUNTRY_ID
+    and   	TAX_TYPE_ID = :TAX_TYPE_ID
+    and		(:p_sales_date between EFFECTIVE_DATE AND EXPIRATION_DATE)
+    and (dealer_id = :dealer_id or dealer_id is null)
+    ) where rk = 1
+  </GET_MANUAL_TAX>
+  <GET_REPLACEMENT_TAX_TYPE>
+    ELP_CLAIM_PROCESSING.Get_Replacement_TaxType
+  </GET_REPLACEMENT_TAX_TYPE>
+  <LOAD_BY_CLAIM_AUTH_ID>
+    <![CDATA[
+			SELECT
+        CLAIM_INVOICE_ID,
+        claim_authorization_id,
+        invoice_date,
+        created_date,
+		    created_by,
+		    modified_date,
+		    modified_by
+      FROM    elp_claim_invoice
+		  WHERE
+        claim_id = :claim_id
+		    AND claim_authorization_id = :claim_authorization_id
+    ]]>
+  </LOAD_BY_CLAIM_AUTH_ID>
+</SQL> 
+
+

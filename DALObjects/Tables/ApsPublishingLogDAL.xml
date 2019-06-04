@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="utf-8" ?>
+
+<!-- ********************** THIS FILE HAS BEEN GENERATED FROM TEMPLATE SQLObject.cst (10/9/2013)********************** -->
+
+<SQL>
+	<LOAD>
+		<![CDATA[	
+			SELECT 
+				header,
+				type,
+				code,
+				machine_name,
+				application_name,
+				user_name,
+				extended_content,
+				generation_date_time,
+				recorded_date_time,
+				extended_content2,
+				id
+			FROM aps_publishing_log 
+			WHERE
+				id = :id
+		]]>
+	</LOAD>
+	<LOAD_LIST_APS_ORACLE>
+    <![CDATA[		
+			SELECT 
+				id,
+				header,
+        type,
+        code,
+        machine_name,
+        application_name,
+        user_name,
+        extended_content,
+        generation_date_time,
+        extended_content2
+			FROM
+				--dynamic_from_clause
+			--dynamic_where_clause	
+			order by generation_date_time desc
+		]]>
+  </LOAD_LIST_APS_ORACLE>
+	<UPDATE>
+		<![CDATA[	
+			UPDATE aps_publishing_log SET
+				header = :header,
+				type = :type,
+				code = :code,
+				machine_name = :machine_name,
+				application_name = :application_name,
+				user_name = :user_name,
+				extended_content = :extended_content,
+				generation_date_time = :generation_date_time,
+				recorded_date_time = :recorded_date_time,
+				extended_content2 = :extended_content2,
+				modified_by = :modified_by
+			WHERE
+				id = :id
+		]]>
+	</UPDATE>
+	<INSERT>
+			INSERT INTO aps_publishing_log
+					(			
+				header, 
+				type, 
+				code, 
+				machine_name, 
+				application_name, 
+				user_name, 
+				extended_content, 
+				generation_date_time, 
+				recorded_date_time, 
+				extended_content2, 
+				created_by,
+				id
+					)
+			VALUES
+					(			
+				:header, 
+				:type, 
+				:code, 
+				:machine_name, 
+				:application_name, 
+				:user_name, 
+				:extended_content, 
+				:generation_date_time, 
+				:recorded_date_time, 
+				:extended_content2, 
+				:created_by,
+				:id
+					)
+	</INSERT>
+	<DELETE>
+			DELETE FROM aps_publishing_log
+			WHERE
+				id = :id
+	</DELETE>
+</SQL> 
+
+

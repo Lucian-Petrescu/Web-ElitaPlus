@@ -1,0 +1,72 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+
+<!-- ********************** THIS FILE HAS BEEN GENERATED FROM TEMPLATE SQLObject.cst (5/29/2012)********************** -->
+<SQL>
+  <LOAD>
+    <![CDATA[	
+			SELECT
+				rule_list_id,
+				c.company_id,
+				effective,
+				expiration,
+				crl.created_date,
+				crl.created_by,
+				crl.modified_date,
+				crl.modified_by,
+				company_rule_list_id, 
+        c.description DESCRIPTION
+			FROM ELP_COMPANY_RULE_LIST crl INNER JOIN ELP_COMPANY c ON crl.company_id = c.company_id
+      WHERE company_rule_list_id = :company_rule_list_id
+		]]>
+  </LOAD>
+  <LOAD_LIST>
+    SELECT company_rule_list_id, RULE_LIST_ID, c.company_id, EFFECTIVE, EXPIRATION, c.description description ,
+    crl.created_date,
+    crl.created_by,
+    crl.modified_date,
+    crl.modified_by
+    FROM ELP_COMPANY_RULE_LIST crl INNER JOIN ELP_COMPANY C ON crl.company_id=c.company_id
+    WHERE RULE_LIST_ID = :RULE_LIST_ID
+  </LOAD_LIST>
+  <UPDATE>
+    <![CDATA[	
+			UPDATE ELP_COMPANY_RULE_LIST SET
+				rule_list_id = :rule_list_id,
+				company_id = :company_id,
+				effective = :effective,
+				expiration = :expiration,
+				modified_by = :modified_by
+			WHERE
+				company_rule_list_id = :company_rule_list_id
+		]]>
+  </UPDATE>
+  <INSERT>
+    INSERT INTO ELP_COMPANY_RULE_LIST
+    (
+    rule_list_id,
+    company_id,
+    effective,
+    expiration,
+    created_by,
+    company_rule_list_id
+    )
+    VALUES
+    (
+    :rule_list_id,
+    :company_id,
+    :effective,
+    :expiration,
+    :created_by,
+    :company_rule_list_id
+    )
+  </INSERT>
+  <DELETE>
+    DELETE FROM ELP_COMPANY_RULE_LIST
+    WHERE
+    company_rule_list_id = :company_rule_list_id
+  </DELETE>
+  <LOAD_COMPANY_LIST>
+    SELECT
+    COMPANY_ID ID, DESCRIPTION DESCRIPTION FROM ELP_COMPANY
+  </LOAD_COMPANY_LIST>
+</SQL>

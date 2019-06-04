@@ -1,0 +1,569 @@
+<?xml version="1.0" encoding="utf-8" ?>
+
+<!-- ********************** THIS FILE HAS BEEN GENERATED FROM TEMPLATE SQLObject.cst (8/3/2006)********************** -->
+
+<SQL>
+  <LOAD>
+    <![CDATA[	
+			SELECT 
+				dealer_id,
+				product_code,
+				risk_group_id,
+				price_matrix_id,
+				percent_of_retail,
+				created_date,
+				modified_date,
+				description,
+				method_of_repair_id,
+				type_of_equipment_id,
+				created_by,
+				modified_by,
+				product_code_id,
+        use_depreciation,
+        bundled_item_id,
+        method_of_repair_by_price_id, 
+        comments, 
+        special_service,
+        number_of_installments,
+        billing_frequency_id,
+        num_of_claims,
+        split_warranty_id,
+        claim_waiting_period,
+        full_refund_days,
+        ignore_waiting_period_wsd_psd,
+        prod_liability_limit_base_id,
+        prod_liability_limit_policy_id,
+        nvl(prod_liability_limit,0) As prod_liability_limit,
+        prod_liability_limit_percent,
+        claim_auto_approve_psp,
+        upg_finance_bal_comp_meth_id,
+        upgrade_program_id,
+        num_of_repair_claims,
+        num_of_replacement_claims,
+        Analysis_Code_1,
+        Analysis_Code_2,
+        Analysis_Code_3,
+        Analysis_Code_4,
+        Analysis_Code_5,
+        Analysis_Code_6,
+        Analysis_Code_7,
+        Analysis_Code_8,
+        Analysis_Code_9,
+        Analysis_Code_10,
+        is_reinsured_id,
+        upg_finance_info_require_id,
+        upgrade_term_uom_id,
+        upgrade_term_from,
+        upgrade_term_to,
+        upgrade_fixed_term,
+        Installment_Repricable_id,
+        inuseflag,
+        billing_criteria_id, 
+        cnl_dependency_id,
+        post_pre_paid_id,
+        cnl_lumpsum_billing_id,
+        (select case when count(*) > 0 then 'T' else 'F' end from elp_product_code_parent pcp where pcp.product_code_id = :product_code_id) as is_parent_product,
+        product_equipment_validation,
+        upgrade_fee,
+        allow_registered_items,
+        max_age_of_registered_item,
+        max_registrations_allowed,
+        list_for_device_group,
+        getcodefromlistid(list_for_device_group) as list_for_device_group_code,
+        initial_question_set,
+        update_replace_reg_items_id,
+        registered_items_limit,
+        prod_limit_applicable_to_xcd,       
+        claim_limit_per_reg_item,
+        Cancellation_Within_Term_xcd,
+        Expiration_Notification_days,
+        fulfillment_reim_threshold,
+        benefit_eligible_xcd,
+        benefit_eligible_action_xcd,
+        claim_profile_code,
+        calc_cvg_end_date_based_on_xcd,
+        liability_limit_per_incident
+			FROM elp_product_code 
+			WHERE
+				product_code_id = :product_code_id
+		]]>
+  </LOAD>
+  <LOAD_BY_DEALER_PRODUCT>
+    <![CDATA[	
+			SELECT 
+				dealer_id,
+				product_code,
+				risk_group_id,
+				price_matrix_id,
+				percent_of_retail,
+				created_date,
+				modified_date,
+				description,
+				method_of_repair_id,
+				type_of_equipment_id,
+				created_by,
+				modified_by,
+				product_code_id,
+        use_depreciation,
+        bundled_item_id,
+        method_of_repair_by_price_id, 
+        comments, 
+        special_service,
+        number_of_installments,
+        billing_frequency_id,
+        num_of_claims,
+        split_warranty_id,
+        claim_waiting_period,
+        full_refund_days,
+        ignore_waiting_period_wsd_psd,
+        prod_liability_limit_base_id,
+        prod_liability_limit_policy_id,
+        nvl(prod_liability_limit,0) As prod_liability_limit,
+        prod_liability_limit_percent,
+        claim_auto_approve_psp,
+        upg_finance_bal_comp_meth_id,
+        upgrade_program_id,
+        num_of_repair_claims,
+        num_of_replacement_claims,
+        Analysis_Code_1,
+        Analysis_Code_2,
+        Analysis_Code_3,
+        Analysis_Code_4,
+        Analysis_Code_5,
+        Analysis_Code_6,
+        Analysis_Code_7,
+        Analysis_Code_8,
+        Analysis_Code_9,
+        Analysis_Code_10,
+        is_reinsured_id,
+        upg_finance_info_require_id,
+        upgrade_term_uom_id,
+        upgrade_term_from,
+        upgrade_term_to,
+        upgrade_fixed_term,
+        Installment_Repricable_id,
+        inuseflag,
+        billing_criteria_id ,
+        cnl_dependency_id,
+        post_pre_paid_id,
+        cnl_lumpsum_billing_id,
+        upgrade_fee,
+        allow_registered_items,
+        max_age_of_registered_item,
+        max_registrations_allowed,
+        list_for_device_group,
+        initial_question_set,
+        update_replace_reg_items_id,
+        registered_items_limit,
+        prod_limit_applicable_to_xcd,
+        claim_limit_per_reg_item,
+        Cancellation_Within_Term_xcd,
+        Expiration_Notification_days,
+        fulfillment_reim_threshold,
+        benefit_eligible_xcd,
+        benefit_eligible_action_xcd,
+        claim_profile_code,
+        calc_cvg_end_date_based_on_xcd,
+        liability_limit_per_incident
+			FROM elp_product_code
+			WHERE
+				dealer_id = :dealer_id AND
+        product_code = :product_code
+		]]>
+  </LOAD_BY_DEALER_PRODUCT>
+  <LOAD_LIST>
+    <![CDATA[		
+			select
+			PRODUCT_CODE_ID, C.CODE || ' - ' || dealer_name DEALER_NAME, PRODUCT_CODE, TRANSLATION RISK_GROUP, pc.DESCRIPTION, pc.use_depreciation
+			from 	elp_product_code pc,
+					elp_dealer edealer,
+					elp_list_item li, elp_dict_item_translation trans, elp_company c
+			where	li.DICT_ITEM_ID = trans.DICT_ITEM_ID
+					and RISK_GROUP_ID = list_item_id
+					and c.company_id = edealer.company_id
+					and	pc.DEALER_ID = edealer.DEALER_ID
+					--dynamic_in_clause
+					--dynamic_where_clause
+					and trans.LANGUAGE_ID = :language_id
+			order by UPPER(DEALER_NAME), UPPER(PRODUCT_CODE), UPPER(RISK_GROUP)
+			]]>
+  </LOAD_LIST>
+  <LOAD_LIST_BY_DEALER>
+    <![CDATA[	
+      	select PRODUCT_CODE_ID, PRODUCT_CODE, TRANSLATION RISK_GROUP, pc.DESCRIPTION, GetYesNo(BUNDLED_ITEM_ID)BUNDLED_ITEM
+	      from 	elp_product_code pc
+	      inner join elp_list_item li on RISK_GROUP_ID = list_item_id
+	      inner join elp_dict_item_translation trans on li.DICT_ITEM_ID = trans.DICT_ITEM_ID
+	      where pc.DEALER_ID = :dealer_id
+			      and trans.LANGUAGE_ID = :language_id
+			  --dynamic_where_clause
+    ]]>
+  </LOAD_LIST_BY_DEALER>
+  <LOAD_LIST_BY_DEALER_FILTERING>
+    <![CDATA[	
+    select PRODUCT_CODE_ID, PRODUCT_CODE, TRANSLATION RISK_GROUP, pc.DESCRIPTION, GetYesNo(BUNDLED_ITEM_ID)BUNDLED_ITEM
+    from 	elp_product_code pc
+    inner join elp_list_item li on RISK_GROUP_ID = list_item_id
+    inner join elp_dict_item_translation trans on li.DICT_ITEM_ID = trans.DICT_ITEM_ID
+    where pc.DEALER_ID = :dealer_id
+    and trans.LANGUAGE_ID = :language_id
+    and not exists (Select pcd.product_code_id
+                                  from  elp_product_code_detail pcd
+                                  where pcd.product_code_id = pc.product_code_id)
+    ]]>
+  </LOAD_LIST_BY_DEALER_FILTERING>
+  <LOAD_LIST_BY_DEALER_FOR_WS_WITH_CONVERSION>
+    <![CDATA[	
+        select distinct pc.description  product_code_description,
+				        pc.product_code ,
+				        cov.certificate_duration ,
+				        elita.getyesno(pc.bundled_item_id) bundled_flag,
+                pc.percent_of_retail,
+                pc.number_of_installments,
+                pconv.external_prod_code external_product_code,
+                cov.coverage_duration
+        from ELITA.ELP_PRODUCT_CODE pc,
+          ELITA.ELP_ITEM itm,ELITA.ELP_COVERAGE cov,
+          elita.elp_product_conversion pconv
+        where pc.dealer_id = :dealer_id
+           and pconv.dealer_id = pc.dealer_id
+           and pconv.product_code_id = pc.product_code_id
+           and pc.product_code_id =itm.product_code_id
+           and itm.item_id = cov.item_id
+           and :warranty_sales_date between cov.effective and cov.expiration
+        --dynamic_where_clause
+        --dynamic_order_by_clause
+    ]]>
+  </LOAD_LIST_BY_DEALER_FOR_WS_WITH_CONVERSION>
+  <LOAD_LIST_BY_DEALER_FOR_WS>
+    <![CDATA[	
+        select distinct pc.description  product_code_description,
+				        pc.product_code ,
+				        cov.certificate_duration ,
+				        elita.getyesno(pc.bundled_item_id) bundled_flag,
+                pc.percent_of_retail,
+                pc.number_of_installments, 
+                LI.code as billing_frequency,
+                cov.coverage_duration
+        from ELITA.ELP_PRODUCT_CODE pc,
+          ELITA.ELP_ITEM itm,ELITA.ELP_COVERAGE cov, ELITA.ELP_LIST_ITEM LI
+        where pc.dealer_id = :dealer_id
+           and pc.product_code_id =itm.product_code_id
+           and itm.item_id = cov.item_id
+           and :warranty_sales_date between cov.effective and cov.expiration
+           and LI.LIST_ITEM_ID (+) = pc.BILLING_FREQUENCY_ID
+           --dynamic_where_clause
+        --dynamic_order_by_clause
+    ]]>
+  </LOAD_LIST_BY_DEALER_FOR_WS>
+  <LOAD_DEALER_PRODUCTS_INFO_FOR_WS>
+    <![CDATA[	
+	select  p.product_code,
+		      i.item_number,
+		      getcodefromlistitem(c.coverage_type_id) as coverage_type_code,
+	          c.certificate_duration,
+	          c.coverage_duration,
+	          c.effective as effective_date,
+	          c. expiration as expiration_date,
+	          getcodefromlistitem(c.is_claim_allowed_id) as is_claim_allowed_code,
+	          cr.low_price,
+	          cr.high_price,
+	          cr.gross_amt
+      from elita.elp_product_code p ,elp_dealer d, elp_item i, elp_coverage c, elp_coverage_rate cr
+      where p.dealer_id = d.dealer_id and
+      d.dealer_id = :dealer_id and
+      p.product_code_id = i.product_code_id and
+      i.item_id = c.item_id and
+      c.coverage_id = cr.coverage_id 
+    ]]>
+  </LOAD_DEALER_PRODUCTS_INFO_FOR_WS>
+  <LOAD_DEALER_PRODUCTS_INFO_FOR_WS_WITH_CONVERSION>
+    <![CDATA[	
+	select  p.product_code,
+		      i.item_number,
+		      getcodefromlistitem(c.coverage_type_id) as coverage_type_code,
+	          c.certificate_duration,
+	          c.coverage_duration,
+	          c.effective as effective_date,
+	          c. expiration as expiration_date,
+	          getcodefromlistitem(c.is_claim_allowed_id) as is_claim_allowed_code,
+	          cr.low_price,
+	          cr.high_price,
+	          cr.gross_amt
+      from elita.elp_product_code p ,elp_dealer d, elp_item i, elp_coverage c, elp_coverage_rate cr
+      where p.dealer_id = d.dealer_id and
+      d.dealer_id = :dealer_id and
+      p.product_code_id = i.product_code_id and
+      i.item_id = c.item_id and
+      c.coverage_id = cr.coverage_id 
+    ]]>
+  </LOAD_DEALER_PRODUCTS_INFO_FOR_WS_WITH_CONVERSION>
+  <LOAD_PRODUCT_CODE_IDS>
+    <![CDATA[	
+			SELECT 
+				product_code_id
+			FROM elp_product_code 
+			WHERE
+				dealer_id = :dealer_id
+		]]>
+  </LOAD_PRODUCT_CODE_IDS>
+  <GET_PRODUCT_CODE_ID>
+    SELECT
+    product_code_id,
+    upg_finance_bal_comp_meth_id
+    FROM elp_product_code
+    WHERE
+    dealer_id = :dealer_id
+    and product_code = :product_code
+
+  </GET_PRODUCT_CODE_ID>
+
+  <UPDATE>
+    <![CDATA[	
+			UPDATE elp_product_code SET
+				dealer_id = :dealer_id,
+				product_code = :product_code,
+				risk_group_id = :risk_group_id,
+				price_matrix_id = :price_matrix_id,
+				percent_of_retail = :percent_of_retail,
+				description = :description,
+				method_of_repair_id = :method_of_repair_id,
+				type_of_equipment_id = :type_of_equipment_id,
+				modified_by = :modified_by,
+        use_depreciation = :use_depreciation,
+        bundled_item_id = :bundled_item_id,
+        method_of_repair_by_price_id = :method_of_repair_by_price_id, 
+        comments = :comments, 
+        special_service = :special_service,
+        number_of_installments = :number_of_installments,
+        billing_frequency_id = :billing_frequency_id,
+        num_of_claims = :num_of_claims,
+        split_warranty_id = :split_warranty_id,
+        claim_waiting_period = :claim_waiting_period,
+        full_refund_days = :full_refund_days,
+        ignore_waiting_period_wsd_psd = :ignore_waiting_period_wsd_psd,
+        prod_liability_limit_base_id = :prod_liability_limit_base_id,
+        prod_liability_limit_policy_id = :prod_liability_limit_policy_id,
+        prod_liability_limit = nvl(:prod_liability_limit,0),
+        prod_liability_limit_percent = :prod_liability_limit_percent,
+        claim_auto_approve_psp = :claim_auto_approve_psp,
+        upg_finance_bal_comp_meth_id = :upg_finance_bal_comp_meth_id,
+        upgrade_program_id =:upgrade_program_id,
+        num_of_repair_claims = :num_of_repair_claims,
+        num_of_replacement_claims = :num_of_replacement_claims,
+        Analysis_Code_1 = :Analysis_Code_1,
+        Analysis_Code_2 = :Analysis_Code_2,
+        Analysis_Code_3 = :Analysis_Code_3,
+        Analysis_Code_4 = :Analysis_Code_4,
+        Analysis_Code_5 = :Analysis_Code_5,
+        Analysis_Code_6 = :Analysis_Code_6,
+        Analysis_Code_7 = :Analysis_Code_7,
+        Analysis_Code_8 = :Analysis_Code_8,
+        Analysis_Code_9 = :Analysis_Code_9,
+        Analysis_Code_10 = :Analysis_Code_10,
+        is_reinsured_id = :is_reinsured_id,
+        upg_finance_info_require_id = :upg_finance_info_require_id,
+        upgrade_term_uom_id = :upgrade_term_uom_id,
+        upgrade_term_from = :upgrade_term_from,
+        upgrade_term_to = :upgrade_term_to,
+        upgrade_fixed_term = :upgrade_fixed_term,
+        Installment_Repricable_id = :Installment_Repricable_id,
+        inuseflag = :inuseflag,
+        billing_criteria_id = :billing_criteria_id,
+        cnl_dependency_id = :cnl_dependency_id,
+        post_pre_paid_id = :post_pre_paid_id,
+        cnl_lumpsum_billing_id = :cnl_lumpsum_billing_id,
+        product_equipment_validation = :product_equipment_validation,
+        upgrade_fee = :upgrade_fee,
+        allow_registered_items = :allow_registered_items,
+        max_age_of_registered_item = :max_age_of_registered_item,
+        max_registrations_allowed = :max_registrations_allowed,
+        list_for_device_group = :list_for_device_group,
+        initial_question_set = :initial_question_set,
+        update_replace_reg_items_id = :update_replace_reg_items_id,
+        registered_items_limit = :registered_items_limit,
+        prod_limit_applicable_to_xcd = :prod_limit_applicable_to_xcd,
+        claim_limit_per_reg_item =:claim_limit_per_reg_item,
+        Cancellation_Within_Term_xcd = :Cancellation_Within_Term_xcd,
+        Expiration_Notification_days = :Expiration_Notification_days,
+        fulfillment_reim_threshold = :fulfillment_reim_threshold,
+        benefit_eligible_xcd = :benefit_eligible_xcd,
+        benefit_eligible_action_xcd = :benefit_eligible_action_xcd,
+        claim_profile_code  = :claim_profile_code,
+        calc_cvg_end_date_based_on_xcd =:calc_cvg_end_date_based_on_xcd,
+        liability_limit_per_incident = :liability_limit_per_incident
+			WHERE
+				product_code_id = :product_code_id
+		]]>
+  </UPDATE>
+  <INSERT>
+    INSERT INTO elp_product_code
+    (
+    dealer_id,
+    product_code,
+    risk_group_id,
+    price_matrix_id,
+    percent_of_retail,
+    description,
+    method_of_repair_id,
+    type_of_equipment_id,
+    created_by,
+    product_code_id,
+    use_depreciation,
+    bundled_item_id,
+    method_of_repair_by_price_id,
+    comments,
+    special_service,
+    number_of_installments,
+    billing_frequency_id,
+    num_of_claims,
+    split_warranty_id,
+    claim_waiting_period,
+    full_refund_days,
+    ignore_waiting_period_wsd_psd,
+    prod_liability_limit_base_id,
+    prod_liability_limit_policy_id,
+    prod_liability_limit,
+    prod_liability_limit_percent,
+    claim_auto_approve_psp,
+    upg_finance_bal_comp_meth_id,
+    upgrade_program_id,
+    num_of_repair_claims,
+    num_of_replacement_claims,
+    Analysis_Code_1,
+    Analysis_Code_2,
+    Analysis_Code_3,
+    Analysis_Code_4,
+    Analysis_Code_5,
+    Analysis_Code_6,
+    Analysis_Code_7,
+    Analysis_Code_8,
+    Analysis_Code_9,
+    Analysis_Code_10,
+    is_reinsured_id,
+    upg_finance_info_require_id,
+    upgrade_term_uom_id,
+    upgrade_term_from,
+    upgrade_term_to,
+    upgrade_fixed_term,
+    Installment_Repricable_id,
+    inuseflag,
+    billing_criteria_id,
+    cnl_dependency_id,
+    post_pre_paid_id,
+    cnl_lumpsum_billing_id,
+    product_equipment_validation,
+    upgrade_fee,
+    allow_registered_items,
+    max_age_of_registered_item,
+    max_registrations_allowed,
+    list_for_device_group,
+    initial_question_set,
+    update_replace_reg_items_id,
+    registered_items_limit,
+    prod_limit_applicable_to_xcd,
+    claim_limit_per_reg_item,
+    Cancellation_Within_Term_xcd,
+    Expiration_Notification_days,
+    fulfillment_reim_threshold,
+    benefit_eligible_xcd,
+    benefit_eligible_action_xcd,
+    claim_profile_code,
+    calc_cvg_end_date_based_on_xcd,
+    liability_limit_per_incident
+    )
+    VALUES
+    (
+    :dealer_id,
+    :product_code,
+    :risk_group_id,
+    :price_matrix_id,
+    :percent_of_retail,
+    :description,
+    :method_of_repair_id,
+    :type_of_equipment_id,
+    :created_by,
+    :product_code_id,
+    :use_depreciation,
+    :bundled_item_id,
+    :method_of_repair_by_price_id,
+    :comments,
+    :special_service,
+    :number_of_installments,
+    :billing_frequency_id,
+    :num_of_claims,
+    :split_warranty_id,
+    :claim_waiting_period,
+    :full_refund_days,
+    :ignore_waiting_period_wsd_psd,
+    :prod_liability_limit_base_id,
+    :prod_liability_limit_policy_id,
+    nvl(:prod_liability_limit,0),
+    :prod_liability_limit_percent,
+    :claim_auto_approve_psp,
+    :upg_finance_bal_comp_meth_id,
+    :upgrade_program_id,
+    :num_of_repair_claims,
+    :num_of_replacement_claims,
+    :Analysis_Code_1,
+    :Analysis_Code_2,
+    :Analysis_Code_3,
+    :Analysis_Code_4,
+    :Analysis_Code_5,
+    :Analysis_Code_6,
+    :Analysis_Code_7,
+    :Analysis_Code_8,
+    :Analysis_Code_9,
+    :Analysis_Code_10,
+    :is_reinsured_id,
+    :upg_finance_info_require_id,
+    :upgrade_term_uom_id,
+    :upgrade_term_from,
+    :upgrade_term_to,
+    :upgrade_fixed_term,
+    :Installment_Repricable_id,
+    :inuseflag,
+    :billing_criteria_id,
+    :cnl_dependency_id,
+    :post_pre_paid_id,
+    :cnl_lumpsum_billing_id,
+    :product_equipment_validation,
+    :upgrade_fee,
+    :allow_registered_items,
+    :max_age_of_registered_item,
+    :max_registrations_allowed,
+    :list_for_device_group,
+    :initial_question_set,
+    :update_replace_reg_items_id,
+    :registered_items_limit,
+    :prod_limit_applicable_to_xcd,
+    :claim_limit_per_reg_item,
+    :Cancellation_Within_Term_xcd,
+    :Expiration_Notification_days,
+    :fulfillment_reim_threshold,
+    :benefit_eligible_xcd,
+    :benefit_eligible_action_xcd,
+    :claim_profile_code,
+    :calc_cvg_end_date_based_on_xcd,
+    :liability_limit_per_incident
+    )
+  </INSERT>
+  <DELETE>
+    DELETE FROM elp_product_code
+    WHERE
+    product_code_id = :product_code_id
+  </DELETE>
+  <METHOD_OF_REPAIR_BY_PRICE_RECORDS>
+    SELECT count(*)
+    FROM elp_prod_repair_price
+    WHERE product_code_id = :product_code_id
+  </METHOD_OF_REPAIR_BY_PRICE_RECORDS>
+  <UPDATE_COVERAGE_LIABILITY>
+    elita.elp_coverage_load.updatecoverageliability
+  </UPDATE_COVERAGE_LIABILITY>
+  <GET_COVERAGE_REINSURANCE>
+    elita.elp_copy_prod_attrvals
+  </GET_COVERAGE_REINSURANCE>
+</SQL>
+
+

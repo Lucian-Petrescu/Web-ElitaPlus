@@ -1,0 +1,84 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+
+<!-- ********************** THIS FILE HAS BEEN GENERATED FROM TEMPLATE SQLObject.cst (12/20/2012)********************** -->
+
+<SQL>
+  <LOAD>
+    <![CDATA[	
+			SELECT 
+				code,
+				description,
+				retry_count,
+				retry_delay_seconds,
+				timeout_seconds,
+				task_parameters,
+				created_date,
+				created_by,
+				modified_date,
+				modified_by,
+				task_id
+			FROM elp_task 
+			WHERE
+				task_id = :task_id
+		]]>
+  </LOAD>
+  <LOAD_LIST>
+    <![CDATA[
+      select task_id,
+        code,
+        description,
+        retry_count,
+        retry_delay_seconds,
+        timeout_seconds,
+        task_parameters
+      FROM elp_task t
+      where 1=1
+        --dynamic_where_clause
+    ]]>
+  </LOAD_LIST>
+  <UPDATE>
+    <![CDATA[	
+			UPDATE elp_task SET
+				code = :code,
+				description = :description,
+				retry_count = :retry_count,
+				retry_delay_seconds = :retry_delay_seconds,
+				timeout_seconds = :timeout_seconds,
+				task_parameters = :task_parameters,
+				modified_by = :modified_by
+			WHERE
+				task_id = :task_id
+		]]>
+  </UPDATE>
+  <INSERT>
+    INSERT INTO elp_task
+    (
+    code,
+    description,
+    retry_count,
+    retry_delay_seconds,
+    timeout_seconds,
+    task_parameters,
+    created_by,
+    task_id
+    )
+    VALUES
+    (
+    :code,
+    :description,
+    :retry_count,
+    :retry_delay_seconds,
+    :timeout_seconds,
+    :task_parameters,
+    :created_by,
+    :task_id
+    )
+  </INSERT>
+  <DELETE>
+    DELETE FROM elp_task
+    WHERE
+    task_id = :task_id
+  </DELETE>
+</SQL>
+
+

@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8" ?>
+
+<!-- ********************** THIS FILE HAS BEEN GENERATED FROM TEMPLATE SQLObject.cst (4/19/2007)********************** -->
+
+<SQL>
+	<LOAD>
+		<![CDATA[	
+			SELECT 
+				code,
+				created_by,
+				created_date,
+				modified_by,
+				modified_date,
+				acct_file_type_id
+			FROM elp_acct_file_type 
+			WHERE
+				acct_file_type_id = :acct_file_type_id
+		]]>
+	</LOAD>
+	<LOAD_LIST>		
+	</LOAD_LIST>	
+	<UPDATE>
+		<![CDATA[	
+			UPDATE elp_acct_file_type SET
+				code = :code,
+				modified_by = :modified_by
+			WHERE
+				acct_file_type_id = :acct_file_type_id
+		]]>
+	</UPDATE>
+	<INSERT>
+			INSERT INTO elp_acct_file_type
+					(			
+				code, 
+				created_by,
+				acct_file_type_id
+					)
+			VALUES
+					(			
+				:code, 
+				:created_by,
+				:acct_file_type_id
+					)
+	</INSERT>
+	<DELETE>
+			DELETE FROM elp_acct_file_type
+			WHERE
+				acct_file_type_id = :acct_file_type_id
+	</DELETE>
+</SQL> 
+
+

@@ -1,0 +1,139 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+
+<!-- ********************** THIS FILE HAS BEEN GENERATED FROM TEMPLATE SQLObject.cst (1/20/2016)********************** -->
+
+<SQL>
+  <LOAD>
+    <![CDATA[	
+			SELECT 
+				service_center_id,
+				dealer_id,
+				product_code_id,
+				bonus_compute_method_id,
+				bonus_amount_period_month,
+				sc_replacement_pct,
+				sc_avg_tat,
+				pecoramount,
+				priority,
+				created_date,
+				modified_date,
+				created_by,
+				modified_by,
+				effective,
+				expiration,
+				claim_bonus_settings_id
+			FROM elp_claim_bonus_settings 
+			WHERE
+				claim_bonus_settings_id = :claim_bonus_settings_id
+		]]>
+  </LOAD>
+  <LOAD_LIST>
+
+    SELECT distinct
+    cbs.claim_bonus_settings_id,
+    sc.description as Service_center ,
+    d.dealer_name as dealer,
+    pc.product_code as product,
+    dit.translation as compute_bonus_method,
+    cbs.sc_avg_tat,
+    cbs.pecoramount,
+		cbs.priority,
+    cbs.sc_replacement_pct,
+    cbs.bonus_amount_period_month,
+    cbs.effective,
+    cbs.expiration
+    
+    FROM elp_claim_bonus_settings cbs
+
+    left join elp_dealer d on cbs.dealer_id = d.dealer_id
+    left join elp_service_center sc on cbs.service_center_id = sc.service_center_id
+    left join elp_product_code pc on cbs.product_code_id = pc.product_code_id
+    left join elp_list_item li on  cbs.bonus_compute_method_id = li.list_item_id
+    left join elp_dict_item_translation dit on  li.dict_item_id = dit.dict_item_id
+
+    where
+    1=1
+    --dynamic_where_clause
+
+  </LOAD_LIST>
+  <UPDATE>
+    <![CDATA[	
+			UPDATE elp_claim_bonus_settings SET
+				service_center_id = :service_center_id,
+				dealer_id = :dealer_id,
+				product_code_id = :product_code_id,
+				bonus_compute_method_id = :bonus_compute_method_id,
+				bonus_amount_period_month = :bonus_amount_period_month,
+				sc_replacement_pct = :sc_replacement_pct,
+				sc_avg_tat = :sc_avg_tat,
+				pecoramount = :pecoramount,
+				priority = :priority,
+				effective = :effective,
+				expiration = :expiration,
+				modified_by = :modified_by
+			WHERE
+				claim_bonus_settings_id = :claim_bonus_settings_id
+		]]>
+  </UPDATE>
+  <INSERT>
+    INSERT INTO elp_claim_bonus_settings
+    (
+    service_center_id,
+    dealer_id,
+    product_code_id,
+    bonus_compute_method_id,
+    bonus_amount_period_month,
+    sc_replacement_pct,
+    sc_avg_tat,
+    pecoramount,
+    priority,
+    effective,
+    expiration,
+    created_by,
+    claim_bonus_settings_id
+    )
+    VALUES
+    (
+    :service_center_id,
+    :dealer_id,
+    :product_code_id,
+    :bonus_compute_method_id,
+    :bonus_amount_period_month,
+    :sc_replacement_pct,
+    :sc_avg_tat,
+    :pecoramount,
+    :priority,
+    :effective,
+    :expiration,
+    :created_by,
+    :claim_bonus_settings_id
+    )
+  </INSERT>
+  <DELETE>
+    <![CDATA[	
+			UPDATE elp_claim_bonus_settings SET
+			expiration = sysdate		
+			WHERE
+				claim_bonus_settings_id = :claim_bonus_settings_id
+		]]> 
+  </DELETE>
+
+  <BONUS_SETTINGS_COUNT>
+
+ <![CDATA[	
+ 
+    select count(*) from elp_claim_bonus_settings
+    where nvl(dealer_id,'00000000000000000000000000000000') = nvl(:dealer_id,'00000000000000000000000000000000') and
+    nvl(service_center_id,'00000000000000000000000000000000') =nvl(:service_center_id,'00000000000000000000000000000000')  and
+   nvl(product_code_id, '00000000000000000000000000000000')= nvl(:product_code_id,'00000000000000000000000000000000') and
+    expiration > sysdate and
+    claim_bonus_settings_id <> :claim_bonus_settings_id
+	]]>
+
+  </BONUS_SETTINGS_COUNT>
+
+</SQL>
+
+
+
+

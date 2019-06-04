@@ -1,0 +1,75 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+
+<!-- ********************** THIS FILE HAS BEEN GENERATED FROM TEMPLATE SQLObject.cst (2/12/2013)********************** -->
+
+<SQL>
+  <LOAD>
+    <![CDATA[	
+			SELECT 
+        invoice_group_id,
+				invoice_group_number,
+				created_by,
+				created_date,
+				modified_by,
+				modified_date,
+				invoice_group_status_id
+				FROM elp_invoice_group 
+			WHERE
+				invoice_group_id = :invoice_group_id
+		]]>
+  </LOAD>
+  <LOAD_LIST>
+    <![CDATA[	
+  
+   select distinct invgrp.invoice_group_id,invoice_group_number,sc.description Service_Center_Name, invgrp.created_date, invgrp.created_by
+    from elp_invoice_group invgrp ,elp_invoice_group_detail invgrpdetail,elp_invoice_reconciliation invrecon,
+    elp_invoice_item invitem ,elp_invoice inv, elp_service_center sc,elp_claim_authorization clauth,elp_claim cl,elp_cert_item_coverage cic,elp_cert C
+    where invgrp.invoice_group_id = invgrpdetail.invoice_group_id (+)
+    and invgrpdetail.invoice_reconciliation_id = invrecon.invoice_reconciliation_id (+)
+    and invrecon.invoice_item_id = invitem.invoice_item_id (+)
+    and invitem.invoice_id = inv.invoice_id (+)
+    and inv.service_center_id  = sc.service_center_id (+)
+    and invitem.claim_authorization_id = clauth.claim_authorization_id (+)
+    and clauth.claim_id = cl.claim_id (+)
+    and cl.cert_item_coverage_id = cic.cert_item_coverage_id (+)
+    and cic.cert_id = c.cert_id (+)
+    and invoice_group_number is not null
+    --dynamic_where_clause
+    order by invoice_group_number 
+   
+    ]]>
+  </LOAD_LIST>
+  <UPDATE>
+    <![CDATA[	
+			UPDATE elp_invoice_group SET
+				invoice_group_number = :invoice_group_number,
+				invoice_group_status_id = :invoice_group_status_id,
+				modified_by = :modified_by
+			WHERE
+				invoice_group_id = :invoice_group_id
+		]]>
+  </UPDATE>
+  <INSERT>
+    INSERT INTO elp_invoice_group
+    (
+    invoice_group_number,
+    invoice_group_status_id,
+    created_by,
+    invoice_group_id
+    )
+    VALUES
+    (
+    :invoice_group_number,
+    :invoice_group_status_id,
+    :created_by,
+    :invoice_group_id
+    )
+  </INSERT>
+  <DELETE>
+    DELETE FROM elp_invoice_group
+    WHERE
+    invoice_group_id = :invoice_group_id
+  </DELETE>
+</SQL>
+
+

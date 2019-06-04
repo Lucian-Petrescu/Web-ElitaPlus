@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xs:schema xmlns="http://Assurant.Integration.Wireless.VendorIntegration.UpdateProduct.Common.Schemas.UpdateProductRequest" xmlns:b="http://schemas.microsoft.com/BizTalk/2003" xmlns:ns0="https://Assurant.Integration.Wireless.VendorIntegration.Common.VendorIntegration_Property" targetNamespace="http://Assurant.Integration.Wireless.VendorIntegration.UpdateProduct.Common.Schemas.UpdateProductRequest" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+  <xs:annotation>
+    <xs:appinfo />
+  </xs:annotation>
+  <xs:element name="UpdateProductRequest">
+    <xs:annotation>
+      <xs:appinfo />
+    </xs:annotation>
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element name="UserAuthorization">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element name="UserId" type="xs:string" />
+              <xs:element name="Password" type="xs:string" />
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+        <xs:element name="SubscriberInfo">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element name="SubscriberId" type="xs:string" />
+              <xs:element name="FirstName" type="xs:string" />
+              <xs:element name="LastName" type="xs:string" />
+              <xs:element minOccurs="0" name="Street" type="xs:string" />
+              <xs:element minOccurs="0" name="PostalCode" type="xs:string" />
+              <xs:element minOccurs="0" name="Region" type="xs:string" />
+              <xs:element name="RequestedPassword" type="xs:string" />
+              <xs:element name="PreferredLanguage" type="xs:string" />
+              <xs:element name="EmailAddress" type="xs:string" />
+              <xs:element name="OldPhoneNumber" type="xs:string" />
+              <xs:element name="PhoneNumber" type="xs:string" />
+              <xs:element name="CountryCode" type="xs:string" />
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+        <xs:element name="ProductInfo">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element minOccurs="0" name="VendorName">
+                <xs:simpleType>
+                  <xs:restriction base="xs:string">
+                    <xs:enumeration value="Kaspersky" />
+                    <xs:enumeration value="AVG" />
+                    <xs:enumeration value="McAfee" />
+                  </xs:restriction>
+                </xs:simpleType>
+              </xs:element>
+              <xs:element minOccurs="0" name="ProductId" type="xs:string" />
+              <xs:element name="ProductType">
+                <xs:simpleType>
+                  <xs:restriction base="xs:string">
+                    <xs:enumeration value="Antivirus" />
+                  </xs:restriction>
+                </xs:simpleType>
+              </xs:element>
+              <xs:element minOccurs="0" name="StartDatetime" type="xs:dateTime" />
+              <xs:element minOccurs="0" name="EndDatetime" type="xs:dateTime" />
+              <xs:element name="ActivationCode" type="xs:string" />
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+        <xs:element name="DeviceInfo">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element name="MEId" type="xs:string" />
+              <xs:element minOccurs="0" name="DeviceType" type="xs:string" />
+              <xs:element minOccurs="0" name="Make" type="xs:string" />
+              <xs:element minOccurs="0" name="Model" type="xs:string" />
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+        <xs:element name="Carrier">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element name="CarrierName" type="xs:string" />
+              <xs:element name="CarrierId" type="xs:string" />
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+        <xs:element name="Transaction">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element name="TransactionId" type="xs:string" />
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+</xs:schema>

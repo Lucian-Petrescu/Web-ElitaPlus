@@ -1,0 +1,169 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+
+<!-- ********************** THIS FILE HAS BEEN GENERATED FROM TEMPLATE SQLObject.cst (2/1/2010)********************** -->
+
+<SQL>
+  <LOAD>
+    <![CDATA[	
+			SELECT 
+				comm_p_code_id,
+				payee_type_id,
+				entity_id,
+				is_comm_fixed_id,
+				commission_amount,				
+				markup_amount,
+				created_by,
+				modified_by,
+				created_date,
+				modified_date,
+				comm_p_code_entity_id,
+        comm_schedule_id,
+        number_of_days_clawback,  
+        branch_id
+			FROM elp_comm_p_code_entity 
+			WHERE
+				comm_p_code_entity_id = :comm_p_code_entity_id
+		]]>
+  </LOAD>
+  <FIND>
+    <![CDATA[	
+			SELECT 
+				Count(*) As entityRecords
+			FROM elp_comm_p_code_entity 
+			WHERE
+				comm_p_code_entity_id = :comm_p_code_entity_id
+		]]>
+  </FIND>
+  <LOAD_BY_PERIOD_ID>
+    <![CDATA[	
+			SELECT 
+        comm_p_code_entity_id,
+        comm_p_code_id,
+        payee_type_id,
+				entity_id,
+				is_comm_fixed_id,
+				commission_amount,				
+				markup_amount,
+        created_by,
+				created_date,
+				modified_by,
+				modified_date,
+        comm_schedule_id,
+        number_of_days_clawback,
+        branch_id
+			FROM elp_comm_p_code_entity
+			WHERE
+				comm_p_code_id = :comm_p_code_id
+		]]>
+  </LOAD_BY_PERIOD_ID>
+  <LOAD_LIST>
+    <![CDATA[	
+    SELECT   
+        pce.comm_p_code_entity_id,
+				pce.comm_p_code_id,
+				lipy.list_item_id payee_type_id,
+				transpy.translation  payee_type,
+        nvl(ce.entity_id, '') entity_id,
+				nvl(ce.entity_name, '') entity,
+        licf.list_item_id is_comm_fixed_id,
+        licf.code  is_comm_fixed_code,
+				transcf.translation	 is_comm_fixed,
+				pce.commission_amount,        
+				pce.markup_amount,
+        pce.comm_schedule_id,
+        pce.number_of_days_clawback,
+        pce.branch_id
+     FROM elp_comm_p_code_entity pce,
+          elp_commission_entity ce,
+				elp_list_item lipy,
+				elp_dict_item_translation transpy,
+				elp_list_item licf,
+				elp_dict_item_translation transcf				
+			WHERE
+				pce.comm_p_code_id = :comm_p_code_id   		  AND
+				ce.entity_id(+) = pce.entity_id				      AND
+        lipy.list_item_id = pce.payee_type_id  		  AND
+				transpy.dict_item_id = lipy.dict_item_id    AND
+				transpy.language_id = :language_id			    AND
+				licf.list_item_id = pce.is_comm_fixed_id  	AND
+				transcf.dict_item_id = licf.dict_item_id    AND
+				transcf.language_id = :language_id 				
+    ]]>
+  </LOAD_LIST>
+  <LOAD_ENTITIES>
+    <![CDATA[	
+			SELECT 
+				comm_p_code_id,
+				payee_type_id,
+				entity_id,
+				is_comm_fixed_id,
+				commission_amount,				
+				markup_amount,
+				created_by,
+				modified_by,
+				created_date,
+				modified_date,
+				comm_p_code_entity_id,
+        comm_schedule_id,
+        number_of_days_clawback,
+        branch_id
+			FROM elp_comm_p_code_entity pce
+      WHERE
+				pce.comm_p_code_id = :comm_p_code_id   		  
+		]]>
+  </LOAD_ENTITIES>
+  <UPDATE>
+    <![CDATA[	
+			UPDATE elp_comm_p_code_entity SET
+				comm_p_code_id = :comm_p_code_id,
+				payee_type_id = :payee_type_id,
+				entity_id = :entity_id,
+				is_comm_fixed_id = :is_comm_fixed_id,
+				commission_amount = :commission_amount,	        
+				markup_amount = :markup_amount,
+				modified_by = :modified_by,
+        comm_schedule_id = :comm_schedule_id,
+        number_of_days_clawback=:number_of_days_clawback,
+        branch_id=:branch_id
+			WHERE
+				comm_p_code_entity_id = :comm_p_code_entity_id
+		]]>
+  </UPDATE>
+  <INSERT>
+    INSERT INTO elp_comm_p_code_entity
+    (
+    comm_p_code_id,
+    payee_type_id,
+    entity_id,
+    is_comm_fixed_id,
+    commission_amount,
+    markup_amount,
+    created_by,
+    comm_p_code_entity_id,
+    comm_schedule_id,
+    number_of_days_clawback,
+    branch_id
+    )
+    VALUES
+    (
+    :comm_p_code_id,
+    :payee_type_id,
+    :entity_id,
+    :is_comm_fixed_id,
+    :commission_amount,
+    :markup_amount,
+    :created_by,
+    :comm_p_code_entity_id,
+    :comm_schedule_id,
+    :number_of_days_clawback,
+    :branch_id
+    )
+  </INSERT>
+  <DELETE>
+    DELETE FROM elp_comm_p_code_entity
+    WHERE
+    comm_p_code_entity_id = :comm_p_code_entity_id
+  </DELETE>
+</SQL>
+
+

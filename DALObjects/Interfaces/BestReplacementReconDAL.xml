@@ -1,0 +1,166 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+
+<!-- ********************** THIS FILE HAS BEEN GENERATED FROM TEMPLATE 
+
+SQLObject.cst (10/13/2004)********************** -->
+
+<SQL>
+  <LOAD>
+    <![CDATA[	
+			SELECT 
+        best_replacement_recon_wrk_id,
+				file_processed_id,
+        load_status,
+        record_type,
+        manufacturer,
+        model,
+        replacement_manufacturer,
+        replacement_model,
+        priority,				
+				reject_reason,
+        reject_code,
+        reject_msg_parms,        
+				created_by,
+        created_date,
+        modified_by,
+        modified_date
+			FROM elp_best_replacement_recon_wrk 
+			WHERE
+				best_replacement_recon_wrk_id = 
+
+:best_replacement_recon_wrk_id
+		]]>
+  </LOAD>
+  <LOAD_LIST>
+    SELECT
+    BRW.best_replacement_recon_wrk_id,
+    BRW.file_processed_id,
+    BRW.load_status,
+    BRW.record_type,
+    BRW.manufacturer,
+    BRW.model,
+    BRW.replacement_manufacturer,
+    BRW.replacement_model,
+    BRW.priority,
+    BRW.reject_reason,
+    BRW.reject_code,
+    BRW.reject_msg_parms,
+    BRW.created_by,
+    BRW.created_date,
+    BRW.modified_by,
+    BRW.modified_date,
+    mc.MSG_PARAMETER_COUNT,
+    (SELECT TRANSLATION FROM ELP_LABEL innerL
+    Inner join elp_dict_item_translation innert on innert.DICT_ITEM_ID =
+
+    innerl.DICT_ITEM_ID
+    and innert.LANGUAGE_ID = :language_id
+    WHERE innerL.ui_prog_code = l.ui_prog_code
+    ) Translated_MSG
+    FROM elp_best_replacement_recon_wrk BRW
+    left outer join (select MSG_CODE, LABEL_ID, MSG_PARAMETER_COUNT
+    From elp_message_code
+    inner join ELP_LIST_ITEM li  ON msg_type = li.LIST_ITEM_ID AND li.code =
+
+    'DLREJECT'
+    INNER JOIN ELP_LIST l ON l.LIST_ID = li.LIST_ID AND  l.code = 'MSGTYPE'
+    ) mc on mc.MSG_CODE = BRW.reject_code
+    left outer join elp_label l on l.label_id = mc.label_id
+    WHERE file_processed_id = :file_processed_id
+    AND reject_reason IS NOT NULL
+  </LOAD_LIST>
+  <LOAD_REJECT_LIST>
+    SELECT
+    record_type,
+    reject_reason
+    FROM elp_best_replacement_recon_wrk
+    WHERE
+    file_processed_id = :file_processed_id
+    AND reject_reason IS NOT NULL
+  </LOAD_REJECT_LIST>
+  <UPDATE>
+    <![CDATA[	
+			UPDATE elp_best_replacement_recon_wrk SET
+				 
+
+best_replacement_recon_wrk_id=:best_replacement_recon_wrk_id,
+				file_processed_id=:file_processed_id,
+        load_status=:load_status,
+        record_type=:record_type,
+        manufacturer=:manufacturer,
+        model=:model,
+        replacement_manufacturer=:replacement_manufacturer,
+        replacement_model=:replacement_model,
+        priority=:priority,				
+				reject_reason=:reject_reason,
+        reject_code=:reject_code,
+        reject_msg_parms=:reject_msg_parms,        
+				created_by=:created_by,
+        created_date=:created_date,
+        modified_by=:modified_by,
+        modified_date=:modified_date
+			WHERE
+				best_replacement_recon_wrk_id = 
+
+:best_replacement_recon_wrk_id
+				AND NVL(modified_date,created_date) = NVL
+
+(:modified_date,created_date)
+		]]>
+  </UPDATE>
+  <INSERT>
+    INSERT INTO elp_best_replacement_recon_wrk
+    (
+    best_replacement_recon_wrk_id,
+    file_processed_id,
+    load_status,
+    record_type,
+    manufacturer,
+    model,
+    replacement_manufacturer,
+    replacement_model,
+    priority,
+    reject_reason,
+    reject_code,
+    reject_msg_parms,
+    created_by,
+    created_date,
+    modified_by,
+    modified_date
+    )
+    VALUES
+    (
+    :best_replacement_recon_wrk_id,
+    :file_processed_id,
+    :load_status,
+    :record_type,
+    :manufacturer,
+    :model,
+    :replacement_manufacturer,
+    :replacement_model,
+    :priority,
+    :reject_reason,
+    :reject_code,
+    :reject_msg_parms,
+    :created_by,
+    :created_date,
+    :modified_by,
+    :modified_date
+    )
+  </INSERT>
+  <DELETE>
+    DELETE FROM elp_best_replacement_recon_wrk
+    WHERE
+    best_replacement_recon_wrk_id = :best_replacement_recon_wrk_id
+  </DELETE>
+  <VALIDATE_FILE>
+    ELP_EQUIPMENT_LOAD.Validate_Best_Replacement
+  </VALIDATE_FILE>
+  <PROCESS_FILE>
+    ELP_EQUIPMENT_LOAD.Load_Best_Replacement
+  </PROCESS_FILE>
+  <DELETE_FILE>
+    ELP_EQUIPMENT_LOAD.Delete_Best_Replacement
+  </DELETE_FILE>
+</SQL>
+

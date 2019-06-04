@@ -1,0 +1,4 @@
+﻿<%@ ServiceHost Language="VB" Debug="true" 
+    Service="ElitaInternalWS.FVSTMobileApplicationService" 
+    Factory="ElitaInternalWS.Core.UnityServiceHostFactory"
+    CodeBehind="FVSTMobileApplicationService.svc.vb" %>

@@ -1,0 +1,109 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+
+<!-- ********************** THIS FILE HAS BEEN GENERATED FROM TEMPLATE SQLObject.cst (7/26/2012)********************** -->
+
+<SQL>
+  <LOAD>
+    <![CDATA[	
+	select ei.entity_issue_id entity_issue_id,ei.entity,ei.entity_id,ei.issue_id,ei.workqueue_item_created_id, i.code issue_code,i.description issue_description,
+        es.claim_issue_status_c_id status_id ,NVL(es.code,'OPEN')status_code,ei.created_date created_date ,eu.user_name created_by_name ,
+        ei.created_by,es.created_date processed_date ,eup.user_name processed_by,ei.modified_by,ei.modified_date, ei.entity_issue_data from elp_entity_issue ei
+        inner join elp_issue i
+        on i.issue_id = ei.issue_id
+        left join
+        (select claim_issue_id,claim_issue_status_c_id,created_date,created_by,code from
+			(select ecis.claim_issue_id,ecis.claim_issue_status_c_id,eli.code,ecis.comments,ecis.created_date,ecis.created_by,
+          			rank() over(PARTITION BY ecis.claim_issue_id order by ecis.created_date desc ) code_rank
+          			from elp_claim_issue_status ecis
+          			inner join elp_list_item eli on ecis.claim_issue_status_c_id = eli.list_item_id
+          			where claim_issue_status_id not in
+          			(select claim_issue_status_id from elp_claim_issue_status ecis
+						inner join elp_list_item eli
+					    	on ecis.claim_issue_status_c_id = eli.list_item_id
+							where eli.code = 'OPEN' AND ECIS.ISSUE_PROCESS_REASON_ID IS NULL)
+					 )
+          			where code_rank = 1) es
+        on es.claim_issue_id = ei.entity_issue_id
+		  left join elp_user eu
+			on eu.network_id = ei.created_by
+		 left join elp_user eup
+		 	on eup.network_id = es.created_by
+  where 
+ 	ei.entity_issue_id = :entity_issue_id               
+		]]>
+  </LOAD>
+  <LOAD_LIST>
+    <![CDATA[
+				select ei.entity_issue_id entity_issue_id,ei.entity,ei.entity_id,ei.issue_id,ei.workqueue_item_created_id, i.code issue_code,i.description issue_description,
+        es.claim_issue_status_c_id status_id ,NVL(es.code,'OPEN')status_code,ei.created_date created_date ,eu.user_name created_by_name ,
+        ei.created_by,es.created_date processed_date ,eup.user_name processed_by,ei.modified_by,ei.modified_date from elp_entity_issue ei
+        inner join elp_issue i
+        on i.issue_id = ei.issue_id
+        left join
+        (select claim_issue_id,claim_issue_status_c_id,created_date,created_by,code from
+			(select ecis.claim_issue_id,ecis.claim_issue_status_c_id,eli.code,ecis.comments,ecis.created_date,ecis.created_by,
+          			rank() over(PARTITION BY ecis.claim_issue_id order by ecis.created_date desc ) code_rank
+          			from elp_claim_issue_status ecis
+          			inner join elp_list_item eli on ecis.claim_issue_status_c_id = eli.list_item_id
+          			where claim_issue_status_id not in
+          			(select claim_issue_status_id from elp_claim_issue_status ecis
+						inner join elp_list_item eli
+					    	on ecis.claim_issue_status_c_id = eli.list_item_id
+							where eli.code = 'OPEN' AND ECIS.ISSUE_PROCESS_REASON_ID IS NULL)
+					 )
+          			where code_rank = 1) es
+        on es.claim_issue_id = ei.entity_issue_id
+		  left join elp_user eu
+			on eu.network_id = ei.created_by
+		 left join elp_user eup
+		 	on eup.network_id = es.created_by
+        where ei.entity_id = :entity_id
+			]]>
+  </LOAD_LIST>
+  <UPDATE>
+    <![CDATA[	
+			UPDATE elp_entity_issue SET
+				entity = :entity,
+				entity_id = :entity_id,
+				issue_id = :issue_id,
+				modified_by = :modified_by,
+        workqueue_item_created_id = :workqueue_item_created_id
+			WHERE
+				entity_issue_id = :entity_issue_id
+		]]>
+  </UPDATE>
+  <INSERT>
+    INSERT INTO elp_entity_issue
+    (
+    entity,
+    entity_id,
+    issue_id,
+    created_by,
+    entity_issue_id,
+    created_date,
+    workqueue_item_created_id
+    )
+    VALUES
+    (
+    :entity,
+    :entity_id,
+    :issue_id,
+    :created_by,
+    :entity_issue_id,
+    :created_date,
+    :workqueue_item_created_id
+    )
+  </INSERT>
+  <DELETE>
+    DELETE FROM elp_entity_issue
+    WHERE
+    entity_issue_id = :entity_issue_id
+  </DELETE>
+  <GetClaimIssueListByIssueType>
+    <![CDATA[	
+    elita.elp_tbl_entity_issue.LoadIssueListByIssueType
+   ]]>                         
+  </GetClaimIssueListByIssueType>
+</SQL>
+
+

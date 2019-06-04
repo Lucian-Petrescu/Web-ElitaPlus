@@ -1,0 +1,1 @@
+﻿<%@ ServiceHost Language="VB" Debug="true" Service="ElitaInternalWS.Olita.OlitaWcf" CodeBehind="OlitaWcf.svc.vb" %>

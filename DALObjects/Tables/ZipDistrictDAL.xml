@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="utf-8" ?>
+
+<!-- ********************** THIS FILE HAS BEEN GENERATED FROM TEMPLATE SQLObject.cst (10/22/2004)********************** -->
+
+<SQL>
+	<LOAD>
+		<![CDATA[	
+			SELECT 
+				country_id,
+				short_desc,
+				description,
+				created_by,
+				created_date,
+				modified_by,
+				modified_date,
+				zip_district_id
+			FROM elp_zip_district 
+			WHERE
+				zip_district_id = :zip_district_id
+		]]>
+	</LOAD>
+	<LOAD_LIST>		
+		<![CDATA[	
+			SELECT
+				z.zip_district_id,
+				c.description country_description,
+				z.short_desc,
+				z.description
+			FROM elp_zip_district z,
+			     elp_country c
+			WHERE
+				z.country_id = c.country_id
+				--dynamic_where_clause
+		]]>
+	</LOAD_LIST>	
+	<UPDATE>
+		<![CDATA[	
+			UPDATE elp_zip_district SET
+				country_id = :country_id,
+				short_desc = :short_desc,
+				description = :description,
+				modified_by = :modified_by
+			WHERE
+				zip_district_id = :zip_district_id
+		]]>
+	</UPDATE>
+	<INSERT>
+			INSERT INTO elp_zip_district
+					(			
+				country_id, 
+				short_desc, 
+				description, 
+				created_by,
+				zip_district_id
+					)
+			VALUES
+					(			
+				:country_id, 
+				:short_desc, 
+				:description, 
+				:created_by,
+				:zip_district_id
+					)
+	</INSERT>
+	<DELETE>
+			DELETE FROM elp_zip_district
+			WHERE
+				zip_district_id = :zip_district_id
+	</DELETE>
+	<BATCH_INSERT>
+		ELP_Claims.ZDAndDetail_Batch_Insert
+	</BATCH_INSERT>
+	<BATCH_DELETE>
+		ELP_Claims.ZDAndDetail_Batch_Delete
+	</BATCH_DELETE>
+	
+</SQL> 
+
+
+

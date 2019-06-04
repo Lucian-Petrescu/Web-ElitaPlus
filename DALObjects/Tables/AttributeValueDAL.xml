@@ -1,0 +1,112 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<SQL>
+  <LOAD>
+    <![CDATA[
+      SELECT 
+        ATTRIBUTE_VALUE_ID,
+        ATTRIBUTE_ID,
+        ATTRIBUTE_VALUE,
+        REFERENCE_ID,
+        CREATED_DATE,
+        MODIFIED_DATE,
+        CREATED_BY,
+        MODIFIED_BY
+      FROM
+        ELP_ATTRIBUTE_VALUE
+      WHERE
+        ATTRIBUTE_VALUE_ID = :attribute_value_id
+    ]]>
+  </LOAD>
+  <LOAD_LIST>
+    <![CDATA[
+      elp_utl_attribute.LoadAttributeValueList
+    ]]>
+  </LOAD_LIST>
+  <INSERT>
+    <![CDATA[
+      elp_utl_attribute.AddAttributeValue
+    ]]>
+  </INSERT>
+  <UPDATE>
+    <![CDATA[
+      elp_utl_attribute.ModifyAttributeValue
+    ]]>
+  </UPDATE>
+  <DELETE>
+    <![CDATA[
+      elp_utl_attribute.DeleteAttributeValue
+    ]]>
+  </DELETE>
+  <LOAD_AVAILABLE_ATRIBUTES_BY_TABLE_NAME_REFERENCE_ID>
+    <![CDATA[
+    SELECT
+	    ATTRIBUTE_ID,
+	    TRANSLATION AS ATTRIBUTE_NAME
+    FROM
+	    ELP_ATTRIBUTE,
+	    ELP_LABEL,
+	    ELP_DICT_ITEM_TRANSLATION
+    WHERE
+	    ELP_LABEL.UI_PROG_CODE = ELP_ATTRIBUTE.UI_PROG_CODE AND
+	    ELP_LABEL.DICT_ITEM_ID = ELP_DICT_ITEM_TRANSLATION.DICT_ITEM_ID AND
+	    TABLE_NAME = :table_name AND
+	    ATTRIBUTE_ID NOT IN (SELECT ATTRIBUTE_ID FROM ELP_ATTRIBUTE_VALUE WHERE REFERENCE_ID = :reference_id) AND
+	    ELP_DICT_ITEM_TRANSLATION.LANGUAGE_ID = :language_id
+    ]]>
+  </LOAD_AVAILABLE_ATRIBUTES_BY_TABLE_NAME_REFERENCE_ID>
+  <LOAD_AVAILABLE_ATRIBUTES_BY_SERVICE_CENTER_ID>
+    <![CDATA[>
+      SELECT
+        AV.ATTRIBUTE_VALUE_ID,
+        AV.ATTRIBUTE_ID,
+        AV.ATTRIBUTE_VALUE,
+        AV.REFERENCE_ID,
+        DIT.TRANSLATION AS ATTRIBUTE_NAME,
+        AV.CREATED_DATE,
+        AV.MODIFIED_DATE,
+        AV.CREATED_BY,
+        AV.MODIFIED_BY
+      FROM
+        ELITA.ELP_ATTRIBUTE_VALUE AV,
+        ELP_ATTRIBUTE A,
+        ELP_LABEL L,
+        ELP_DICT_ITEM_TRANSLATION DIT
+      WHERE
+        L.UI_PROG_CODE = A.UI_PROG_CODE AND
+        DIT.DICT_ITEM_ID = L.DICT_ITEM_ID AND
+        A.ATTRIBUTE_ID = AV.ATTRIBUTE_ID AND
+        AV.REFERENCE_ID = :reference_id AND
+        DIT.LANGUAGE_ID = :language_id    
+    ]]>
+  </LOAD_AVAILABLE_ATRIBUTES_BY_SERVICE_CENTER_ID>
+  <LOAD_SERVICE_CENTER_ATTRIBUTE_LIST>
+    <![CDATA[
+      select
+        a.ATTRIBUTE_ID,
+        a.DATA_TYPE_ID,
+        a.CREATED_DATE,
+        a.MODIFIED_DATE,
+        a.CREATED_BY,
+        a.MODIFIED_BY,
+        a.UI_PROG_CODE,
+        a.UI_PROG_CODE AS ATTRIBUTE_NAME,
+        --DIT.TRANSLATION AS ATTRIBUTE_NAME,
+        a.TABLE_NAME,
+        av.ATTRIBUTE_VALUE_ID,
+        av.ATTRIBUTE_VALUE,
+        av.ATTRIBUTE_ID,
+        av.ATTRIBUTE_VALUE as DESCRIPTION,
+        av.REFERENCE_ID
+      from elp_attribute a
+      join elp_attribute_value av on a.attribute_id = av.attribute_id--,
+        --ELP_LABEL L,
+        --ELP_DICT_ITEM_TRANSLATION DIT
+      WHERE
+        --L.UI_PROG_CODE = A.UI_PROG_CODE AND
+        -- DIT.DICT_ITEM_ID = L.DICT_ITEM_ID AND
+        --A.ATTRIBUTE_ID = AV.ATTRIBUTE_ID AND
+        AV.REFERENCE_ID = :REFERENCE_ID --AND
+        --DIT.LANGUAGE_ID = :LANGUAGE_ID
+    ]]>
+  </LOAD_SERVICE_CENTER_ATTRIBUTE_LIST>
+  </SQL>

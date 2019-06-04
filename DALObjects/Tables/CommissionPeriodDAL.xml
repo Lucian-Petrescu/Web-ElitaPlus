@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="utf-8" ?>
+
+<!-- ********************** THIS FILE HAS BEEN GENERATED FROM TEMPLATE SQLObject.cst (11/18/2004)********************** -->
+
+<SQL>
+	<LOAD>
+		<![CDATA[	
+			SELECT 
+				dealer_id,
+				effective_date,
+				expiration_date,
+				created_by,
+				created_date,
+				modified_by,
+				modified_date,
+				commission_period_id,
+        compute_method_id
+			FROM elp_commission_period 
+			WHERE
+				commission_period_id = :commission_period_id
+		]]>
+	</LOAD>
+	<LOAD_LIST>
+    SELECT 	cp.commission_period_id, d.dealer_name,
+    cp.effective_date effective, cp.expiration_date expiration, cp.compute_method_id, c.code company_code
+    FROM elp_dealer d , elp_commission_period cp, elp_company c
+    WHERE	D.company_id = c.company_id
+    AND d.dealer_id like :dealer_id
+    AND cp.dealer_id = d.dealer_id
+    --dynamic_in_clause
+    ORDER BY dealer_name, effective desc, expiration
+  </LOAD_LIST>
+  <LOAD_COMMPRD_LIST>
+    SELECT 	cp.comm_p_code_id, d.dealer_name, p.product_code,
+    cp.effective_date effective, cp.expiration_date expiration, c.code company_code
+    FROM elp_dealer d , elp_comm_p_code cp, elp_product_code p, elp_company c
+    WHERE D.company_id = c.company_id
+    AND p.product_code_id = cp.product_code_id
+    AND p.dealer_id = d.dealer_id
+    AND d.dealer_id like :dealer_id
+    AND p.product_code_id like :product_code_id
+    AND d.dealer_id in
+    (select distinct dealer_id from elp_contract
+    where IS_COMM_P_CODE_ID = GETYESNOID('Y'))
+    --dynamic_in_clause
+    ORDER BY dealer_name,product_code, effective desc, expiration
+  </LOAD_COMMPRD_LIST>
+  <MAX_EXPIRATION>
+		select commission_period_id, to_char(EXPIRATION_DATE, 'DD-Mon-YYYY') EXPIRATION, sq.EXPIRATION_COUNT
+				from elp_commission_period,
+					(select Max(EXPIRATION_DATE) MAX_EXPIRATION, Count(*) EXPIRATION_COUNT  
+						from elp_commission_period
+						where	dealer_ID = :dealer_ID0
+							 ) sq
+				where	dealer_ID = :dealer_ID1
+					and EXPIRATION_date = MAX_EXPIRATION
+	</MAX_EXPIRATION>	
+	<UPDATE>
+		<![CDATA[	
+			UPDATE elp_commission_period SET
+				dealer_id = :dealer_id,
+				effective_date = :effective_date,
+				expiration_date = :expiration_date,
+				modified_by = :modified_by,
+        compute_method_id = :compute_method_id
+			WHERE
+				commission_period_id = :commission_period_id
+		]]>
+	</UPDATE>
+	<INSERT>
+    INSERT INTO elp_commission_period
+    (
+    dealer_id,
+    effective_date,
+    expiration_date,
+    created_by,
+    commission_period_id,
+    compute_method_id
+    )
+    VALUES
+    (
+    :dealer_id,
+    :effective_date,
+    :expiration_date,
+    :created_by,
+    :commission_period_id,
+    :compute_method_id
+    )
+  </INSERT>
+	<DELETE>
+			DELETE FROM elp_commission_period
+			WHERE
+				commission_period_id = :commission_period_id
+	</DELETE>
+</SQL> 
+
+
+ 

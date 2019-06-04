@@ -1,0 +1,106 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<xs:schema id="Expression"
+    targetNamespace="http://Assurant.com/Elita/2016/Expression.xsd"
+    elementFormDefault="qualified"
+    xmlns="http://Assurant.com/Elita/2016/Expression.xsd"
+    xmlns:mstns="http://Assurant.com/Elita/2016/Expression.xsd"
+    xmlns:xs="http://www.w3.org/2001/XMLSchema">
+
+  <xs:element name="Expression"
+              type="BaseExpression" />
+
+  <xs:simpleType name="OperationType">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="Minimum" />
+      <xs:enumeration value="Maximum" />
+      <xs:enumeration value="Percentage" />
+      <xs:enumeration value="Average" />
+      <xs:enumeration value="Total" />
+    </xs:restriction>
+  </xs:simpleType>
+
+  <xs:complexType name="BaseExpression"
+                  abstract="true">
+    <xs:sequence>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="SwitchCaseExpression">
+    <xs:sequence>
+      <xs:element type="xs:string"
+                  name="CaseValue"
+                  minOccurs="1" maxOccurs="1"/>
+      <xs:element type="BaseExpression"
+                  name="Expression"
+                  minOccurs="1" maxOccurs="1"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="SwitchExpression">
+    <xs:complexContent>
+      <xs:extension base="BaseExpression">
+        <xs:sequence>
+          <xs:element type="xs:string"
+                      name="VariableName"
+                      minOccurs="1"
+                      maxOccurs="1"/>
+          <xs:element type="SwitchCaseExpression"
+                      name="Case"
+                      minOccurs="1"
+                      maxOccurs="unbounded" />
+          <xs:element type="BaseExpression"
+                      name="Otherwise"
+                      minOccurs="1"
+                      maxOccurs="1" />
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+
+  <xs:complexType name="VariableToken">
+    <xs:complexContent>
+      <xs:extension base="BaseExpression">
+        <xs:sequence>
+          <xs:element type="xs:string"
+                      name="VariableName"
+                      minOccurs="1"
+                      maxOccurs="1"/>
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+
+  <xs:complexType name="ComplexExpression">
+    <xs:complexContent>
+      <xs:extension base="BaseExpression">
+        <xs:sequence>
+          <xs:element type="OperationType"
+                      name="Operation"
+                      minOccurs="1"
+                      maxOccurs="1"/>
+          <xs:element type="BaseExpression"
+                      name="Expression"
+                      maxOccurs="unbounded"
+                      minOccurs="2"/>
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+
+  </xs:complexType>
+
+  <xs:complexType name="ConstantToken">
+    <xs:complexContent>
+      <xs:extension base="BaseExpression">
+        <xs:sequence>
+          <xs:element type="xs:decimal"
+                      name="Value"
+                      minOccurs="1"
+                      maxOccurs="1"/>
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+
+
+
+</xs:schema>

@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="utf-8" ?>
+
+<!-- ********************** THIS FILE HAS BEEN GENERATED FROM TEMPLATE SQLObject.cst (3/14/2007)********************** -->
+
+<SQL>
+	<LOAD>
+		<![CDATA[	
+			SELECT 
+				class_code,
+				active,
+        company_group_id,    
+				created_by,
+				created_date,
+				modified_by,
+				modified_date,
+				class_code_id
+			FROM elp_vsc_class_code 
+			WHERE
+				class_code_id =:class_code_id
+		]]>
+	</LOAD>
+	<LOAD_LIST>	
+	<![CDATA[	
+			SELECT 
+        class_code_id,
+				class_code,
+				active,
+			  GetYesNo(ACTIVE) description,
+        Company_group_id   
+			FROM elp_vsc_class_code 
+			WHERE Company_group_id = :company_group_id
+			--dynamic_where_clause
+			ORDER BY class_code
+				
+		]]>	
+	</LOAD_LIST>	
+	<UPDATE>
+		<![CDATA[	
+			UPDATE elp_vsc_class_code SET
+				class_code = :class_code,
+				active = :active,
+				modified_by = :modified_by
+			WHERE
+				class_code_id = :class_code_id
+		]]>
+	</UPDATE>
+	<INSERT>
+	<![CDATA[
+			INSERT INTO elp_vsc_class_code
+					(
+				Company_group_id,			
+				class_code, 
+				active, 
+				created_by,
+				class_code_id
+					)
+			VALUES
+					(	
+				:company_group_id		,
+				:class_code, 
+				:active, 
+				:created_by,
+				:class_code_id
+					)
+		]]>
+	</INSERT>
+	
+	<DELETE>
+		<![CDATA[
+			DELETE FROM elp_vsc_class_code
+			WHERE
+				class_code_id = :class_code_id
+		]]>
+	</DELETE>
+</SQL> 
+
+

@@ -1,0 +1,548 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">x86</Platform>
+    <ProductVersion>9.0.30729</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{982A5D52-6A4B-4665-87FB-FD79E4F71660}</ProjectGuid>
+    <OutputType>WinExe</OutputType>
+    <StartupObject>ElitaHarvesterService.ElitaHarvesterService</StartupObject>
+    <RootNamespace>ElitaHarvesterService</RootNamespace>
+    <AssemblyName>ElitaHarvesterService</AssemblyName>
+    <FileAlignment>512</FileAlignment>
+    <MyType>Console</MyType>
+    <TargetFrameworkVersion>v4.6.2</TargetFrameworkVersion>
+    <SccProjectName>SAK</SccProjectName>
+    <SccLocalPath>SAK</SccLocalPath>
+    <SccAuxPath>SAK</SccAuxPath>
+    <SccProvider>SAK</SccProvider>
+    <TargetFrameworkProfile />
+    <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..\</SolutionDir>
+    <RestorePackages>true</RestorePackages>
+    <PublishUrl>publish\</PublishUrl>
+    <Install>true</Install>
+    <InstallFrom>Disk</InstallFrom>
+    <UpdateEnabled>false</UpdateEnabled>
+    <UpdateMode>Foreground</UpdateMode>
+    <UpdateInterval>7</UpdateInterval>
+    <UpdateIntervalUnits>Days</UpdateIntervalUnits>
+    <UpdatePeriodically>false</UpdatePeriodically>
+    <UpdateRequired>false</UpdateRequired>
+    <MapFileExtensions>true</MapFileExtensions>
+    <ApplicationRevision>0</ApplicationRevision>
+    <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
+    <IsWebBootstrapper>false</IsWebBootstrapper>
+    <UseApplicationTrust>false</UseApplicationTrust>
+    <BootstrapperEnabled>true</BootstrapperEnabled>
+  </PropertyGroup>
+  <PropertyGroup>
+    <OptionExplicit>On</OptionExplicit>
+  </PropertyGroup>
+  <PropertyGroup>
+    <OptionCompare>Binary</OptionCompare>
+  </PropertyGroup>
+  <PropertyGroup>
+    <OptionStrict>Off</OptionStrict>
+  </PropertyGroup>
+  <PropertyGroup>
+    <OptionInfer>On</OptionInfer>
+  </PropertyGroup>
+  <PropertyGroup>
+    <ApplicationManifest>My Project\app.manifest</ApplicationManifest>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|AnyCPU'">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <DefineTrace>true</DefineTrace>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineDebug>true</DefineDebug>
+    <Prefer32Bit>false</Prefer32Bit>
+    <UseVSHostingProcess>false</UseVSHostingProcess>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|AnyCPU'">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <OutputPath>bin\Release\</OutputPath>
+    <DebugType>None</DebugType>
+    <DefineDebug>false</DefineDebug>
+    <DefineTrace>true</DefineTrace>
+    <Optimize>true</Optimize>
+    <Prefer32Bit>false</Prefer32Bit>
+  </PropertyGroup>
+  <PropertyGroup Condition="$(TeamBuildOutDir) != '' ">
+    <OutputPath>$(TeamBuildOutDir)\$(SolutionName)\$(MSBuildProjectName)\$(Configuration)</OutputPath>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Assurant.Common.Ftp, Version=2.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\BusinessObjects\bin\Assurant.Common.Ftp.dll</HintPath>
+    </Reference>
+    <Reference Include="Assurant.Common.MessagePublishing, Version=2.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Elita.Common.MessagePublishing.2.0.0\lib\net462\Assurant.Common.MessagePublishing.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Assurant.Common.Types, Version=2.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Elita.Assurant.Common.Types.2.0.0\lib\net462\Assurant.Common.Types.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Assurant.Elita.Configuration, Version=4.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\Assurant.Elita.Configuration.4.0.2\lib\net462\Assurant.Elita.Configuration.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Assurant.Elita.WorkerFramework, Version=2.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Assurant.Elita.WorkerFramework.2.0.0\lib\net462\Assurant.Elita.WorkerFramework.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Assurant.ElitaPlus.External.Darty">
+      <HintPath>..\External.Darty\bin\Debug\Assurant.ElitaPlus.External.Darty.dll</HintPath>
+    </Reference>
+    <Reference Include="Assurant.ElitaPlus.External.Falabella, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\External.Falabella\bin\Debug\Assurant.ElitaPlus.External.Falabella.dll</HintPath>
+    </Reference>
+    <Reference Include="JetBrains.Annotations, Version=11.1.0.0, Culture=neutral, PublicKeyToken=1010a0d8d6380325, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\JetBrains.Annotations.11.1.0\lib\net20\JetBrains.Annotations.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Newtonsoft.Json, Version=10.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\packages\Newtonsoft.Json.10.0.3\lib\net45\Newtonsoft.Json.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Oracle.ManagedDataAccess, Version=4.122.1.0, Culture=neutral, PublicKeyToken=89b483f429c47342, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\Oracle.ManagedDataAccess.12.2.1100\lib\net40\Oracle.ManagedDataAccess.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="RestSharp, Version=105.2.3.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\RestSharp.105.2.3\lib\net46\RestSharp.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.configuration" />
+    <Reference Include="System.Configuration.Install" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Deployment" />
+    <Reference Include="System.IO.Compression, Version=4.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\40-System.IO.Compression.1.0.0.2\lib\net40-client\System.IO.Compression.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.IO.Compression.FileSystem, Version=4.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\40-System.IO.Compression.FileSystem.1.0.0.2\lib\net40-client\System.IO.Compression.FileSystem.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.Runtime.Serialization" />
+    <Reference Include="System.ServiceModel" />
+    <Reference Include="System.ServiceProcess" />
+    <Reference Include="System.Shim">
+      <HintPath>..\packages\System.Shim.1.0.0.1\lib\net40-client\System.Shim.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.Web.Extensions" />
+    <Reference Include="System.Xml" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+  </ItemGroup>
+  <ItemGroup>
+    <Import Include="Microsoft.VisualBasic" />
+    <Import Include="System" />
+    <Import Include="System.Collections" />
+    <Import Include="System.Collections.Generic" />
+    <Import Include="System.Data" />
+    <Import Include="System.Diagnostics" />
+    <Import Include="System.Linq" />
+    <Import Include="System.Xml.Linq" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="LoggerAdapter.vb" />
+    <Compile Include="Service References\ASMMacStore\Reference.vb">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </Compile>
+    <Compile Include="Service References\AssurantMexicoService\Reference.vb">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </Compile>
+    <Compile Include="Service References\MexicoIShopService\Reference.vb">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </Compile>
+    <Compile Include="Service References\OutboundCommunication\Reference.vb">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </Compile>
+    <Compile Include="Tasks\AcselXToElitaClaimFileLoadTask.vb" />
+    <Compile Include="Tasks\AppleCareIntegration\AppleCareEnrollItemUpdateTask.vb" />
+    <Compile Include="Tasks\CustCommunication\FalabellaSLAMonitoringTask.vb" />
+    <Compile Include="Tasks\CustCommunication\ReSendClaimGiftCardEMailTask.vb" />
+    <Compile Include="Tasks\CustCommunication\ReSendEnrollRewardTask.vb" />
+    <Compile Include="Tasks\CustCommunication\ReSendOutboundEmailTask.vb" />
+    <Compile Include="Tasks\CustCommunication\ReSendWelcomeEmailTask.vb" />
+    <Compile Include="Tasks\CustCommunication\SendCancelRequestTask.vb" />
+    <Compile Include="Tasks\CustCommunication\SendEnrollRewardTask.vb" />
+    <Compile Include="Tasks\CustCommunication\SendOutboundEmailTask.vb" />
+    <Compile Include="Tasks\FalabellaIntegration\FalabellaIntegration.vb" />
+    <Compile Include="Tasks\InvMgmtFileLoadTask.vb" />
+    <Compile Include="Tasks\NotifyDigitalServiceTask.vb" />
+    <Compile Include="Tasks\RepairLogisticAuthorizationFileLoadTask.vb" />
+    <Compile Include="Tasks\SendAMLEmailTask\SendAMLEmailTask.vb" />
+    <Compile Include="Tasks\CustCommunication\SendWelcomeEmailTask.vb" />
+    <Compile Include="Tasks\CustCommunication\SendClaimGiftCardEMailTask.vb" />
+    <Compile Include="Tasks\UpdateASMImei\UpdateMexicoImeiTask.vb" />
+    <Compile Include="Tasks\VendorAuthorizationFileLoadTask.vb" />
+    <Compile Include="Config\ThreadConfigElement.vb" />
+    <Compile Include="Config\ThreadEnvironmentConfigElement.vb" />
+    <Compile Include="Config\HarvestersCollection.vb" />
+    <Compile Include="Config\HarvesterSection.vb" />
+    <Compile Include="Config\IThreadConfig.vb" />
+    <Compile Include="Config\IThreadEnvironmentConfig.vb" />
+    <Compile Include="Service References\Antivirus.ActivateProduct\Reference.vb">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </Compile>
+    <Compile Include="Service References\Antivirus.CancelProduct\Reference.vb">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </Compile>
+    <Compile Include="Service References\Antivirus.UpdateProduct\Reference.vb">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </Compile>
+    <Compile Include="Tasks\ActivateProductTask.vb" />
+    <Compile Include="Tasks\AntivirusProductTaskBase.vb" />
+    <Compile Include="Tasks\CancelProductTask.vb" />
+    <Compile Include="Tasks\FileLoadTaskBase.vb" />
+    <Compile Include="Tasks\InvoiceFileLoadTask.vb" />
+    <Compile Include="Tasks\ITask.vb" />
+    <Compile Include="Tasks\ReActivateProductTask.vb" />
+    <Compile Include="Tasks\TaskBase.vb" />
+    <Compile Include="Tasks\TaskFactory.vb" />
+    <Compile Include="Tasks\TaskManager.vb" />
+    <Compile Include="Tasks\UpdateProductTask.vb" />
+    <Compile Include="Thread\EnvironmentThread.vb" />
+    <Compile Include="My Project\Application.Designer.vb">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Application.myapp</DependentUpon>
+    </Compile>
+    <Compile Include="ElitaHarvesterService.vb">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="ElitaHarvesterService.Designer.vb">
+      <DependentUpon>ElitaHarvesterService.vb</DependentUpon>
+    </Compile>
+    <Compile Include="My Project\AssemblyInfo.vb" />
+    <Compile Include="My Project\Resources.Designer.vb">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
+    <Compile Include="My Project\Settings.Designer.vb">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Settings.settings</DependentUpon>
+      <DesignTimeSharedInput>True</DesignTimeSharedInput>
+    </Compile>
+    <Compile Include="ProjectInstaller.Designer.vb">
+      <DependentUpon>ProjectInstaller.vb</DependentUpon>
+    </Compile>
+    <Compile Include="ProjectInstaller.vb">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Thread\ThreadBase.vb" />
+    <Compile Include="Thread\ThreadingManager.vb" />
+    <Compile Include="Workers\DocumentUpload\DocumentUploadWorker.vb" />
+    <Compile Include="Workers\DocumentUpload\DocumentUploadWorkerConfig.vb" />
+    <Compile Include="Workers\DocumentUpload\NameParsers\DartyDocNameParser.vb" />
+    <Compile Include="Workers\DocumentUpload\NameParsers\DocumentNameParser.vb" />
+    <Compile Include="Workers\DocumentUpload\NameParsers\FileNameData.vb" />
+    <Compile Include="Workers\DocumentUpload\NameParsers\MsgDocNameParser.vb" />
+    <Compile Include="Workers\DocumentUpload\NameParsers\SfrDocNameParser.vb" />
+    <Compile Include="Workers\DocumentUpload\NameParsers\OutFileData.vb" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="My Project\Resources.resx">
+      <Generator>VbMyResourcesResXFileCodeGenerator</Generator>
+      <CustomToolNamespace>My.Resources</CustomToolNamespace>
+      <SubType>Designer</SubType>
+      <LastGenOutput>Resources1.Designer.vb</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ProjectInstaller.resx">
+      <DependentUpon>ProjectInstaller.vb</DependentUpon>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Service References\ASMMacStore\ElitaHarvesterService.ASMMacStore.Resultado.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\ASMMacStore\Reference.svcmap">
+      <Generator>WCF Proxy Generator</Generator>
+      <LastGenOutput>Reference.vb</LastGenOutput>
+    </None>
+    <None Include="Service References\ASMMacStore\configuration.svcinfo" />
+    <None Include="Service References\ASMMacStore\configuration91.svcinfo" />
+    <None Include="Service References\ASMMacStore\Service.disco" />
+    <None Include="Service References\ASMMacStore\Service.wsdl" />
+    <None Include="Service References\AssurantMexicoService\ElitaHarvesterService.AssurantMexicoService.ServiceResultBase.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\AssurantMexicoService\Reference.svcmap">
+      <Generator>WCF Proxy Generator</Generator>
+      <LastGenOutput>Reference.vb</LastGenOutput>
+    </None>
+    <None Include="Service References\AssurantMexicoService\configuration.svcinfo" />
+    <None Include="Service References\AssurantMexicoService\configuration91.svcinfo" />
+    <None Include="Service References\AssurantMexicoService\AppleCareService.wsdl" />
+    <None Include="Service References\MexicoIShopService\ElitaHarvesterService.MexicoIShopService.ActualizaDatosOutput.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\MexicoIShopService\ElitaHarvesterService.MexicoIShopService.ActualizaDatosResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\MexicoIShopService\Reference.svcmap">
+      <Generator>WCF Proxy Generator</Generator>
+      <LastGenOutput>Reference.vb</LastGenOutput>
+    </None>
+    <None Include="Service References\MexicoIShopService\configuration.svcinfo" />
+    <None Include="Service References\MexicoIShopService\configuration91.svcinfo" />
+    <None Include="Service References\MexicoIShopService\SwitchUpApple.wsdl" />
+    <None Include="Service References\OutboundCommunication\ElitaHarvesterService.OutboundCommunication.CommunicationDetail.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\OutboundCommunication\ElitaHarvesterService.OutboundCommunication.CommunicationInfo.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\OutboundCommunication\ElitaHarvesterService.OutboundCommunication.ExactTargetInfo.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\OutboundCommunication\ElitaHarvesterService.OutboundCommunication.ExactTargetResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\OutboundCommunication\ElitaHarvesterService.OutboundCommunication.SmsAuthorizationStatus.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\OutboundCommunication\Reference.svcmap">
+      <Generator>WCF Proxy Generator</Generator>
+      <LastGenOutput>Reference.vb</LastGenOutput>
+    </None>
+    <None Include="Service References\OutboundCommunication\configuration.svcinfo" />
+    <None Include="Service References\OutboundCommunication\configuration91.svcinfo" />
+    <None Include="Service References\OutboundCommunication\Communication.disco" />
+    <EmbeddedResource Include="Tasks\SendAMLEmailTask\EmailInfo.xslt" />
+    <None Include="App.config">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      <SubType>Designer</SubType>
+    </None>
+    <Content Include="deploy.config">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      <SubType>Designer</SubType>
+    </Content>
+    <None Include="My Project\app.manifest" />
+    <None Include="My Project\Application.myapp">
+      <Generator>MyApplicationCodeGenerator</Generator>
+      <LastGenOutput>Application1.Designer.vb</LastGenOutput>
+    </None>
+    <None Include="My Project\Settings.settings">
+      <Generator>SettingsSingleFileGenerator</Generator>
+      <CustomToolNamespace>My</CustomToolNamespace>
+      <LastGenOutput>Settings.Designer.vb</LastGenOutput>
+    </None>
+    <None Include="packages.config">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Service References\Antivirus.ActivateProduct\ActivateProductService.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Service References\Antivirus.ActivateProduct\ActivateProductService1.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Service References\Antivirus.ActivateProduct\BizTalkServiceInstance.wsdl" />
+    <None Include="Service References\Antivirus.ActivateProduct\ElitaHarvesterService.Antivirus.ActivateProduct.ActivateProductResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\Antivirus.CancelProduct\BizTalkServiceInstance1.wsdl" />
+    <None Include="Service References\Antivirus.CancelProduct\CancelProduct2.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Service References\Antivirus.CancelProduct\CancelProduct21.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Service References\Antivirus.CancelProduct\ElitaHarvesterService.Antivirus.CancelProduct.CancelProductResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\Antivirus.UpdateProduct\BizTalkServiceInstance.wsdl" />
+    <None Include="Service References\Antivirus.UpdateProduct\ElitaHarvesterService.Antivirus.UpdateProduct.UpdateProductResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\Antivirus.UpdateProduct\UpdateProduct.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Service References\Antivirus.UpdateProduct\UpdateProduct1.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Service References\OutboundCommunication\Communication.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Service References\OutboundCommunication\Communication1.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Service References\OutboundCommunication\Communication2.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Service References\OutboundCommunication\Communication3.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Service References\OutboundCommunication\Communication4.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Service References\OutboundCommunication\Communication5.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Service References\OutboundCommunication\Communication6.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Service References\OutboundCommunication\CommunicationService.wsdl" />
+    <None Include="Tasks\Tasks.cd" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\BusinessObjects\BusinessObjects.vbproj">
+      <Project>{24AF00EF-6626-4D29-BEFB-F899C2A85AAD}</Project>
+      <Name>BusinessObjects</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Common\Common.vbproj">
+      <Project>{54BB47A8-3DD9-41A7-B4A3-62869AF3FCF1}</Project>
+      <Name>Common</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\DALObjects\DALObjects.vbproj">
+      <Project>{D327817B-902A-4113-9336-4B53C560D50E}</Project>
+      <Name>DALObjects</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\ElitaInternalWS\ElitaInternalWS.vbproj">
+      <Project>{7985ABEF-1C5C-4EC5-B178-3D1D374A910B}</Project>
+      <Name>ElitaInternalWS</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\External.AppleCare\External.AppleCare.csproj">
+      <Project>{8EA47869-D032-44F3-BA37-22D25A026563}</Project>
+      <Name>External.AppleCare</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\External.Darty\External.Darty.vbproj">
+      <Project>{EA94D1D8-AC5A-4898-9457-A7FE5B0F71F2}</Project>
+      <Name>External.Darty</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\External.Falabella\External.Falabella.csproj">
+      <Project>{AE9A065D-21CA-4DF2-8F5E-2DD740F1760C}</Project>
+      <Name>External.Falabella</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\External.Interfaces\External.Interfaces.vbproj">
+      <Project>{B4BC4B0C-F901-4558-8DE1-58100E997036}</Project>
+      <Name>External.Interfaces</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Security\Security.vbproj">
+      <Project>{3e2ec759-6ae6-4db3-9400-cc6d389a960a}</Project>
+      <Name>Security</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <WCFMetadata Include="Service References\" />
+  </ItemGroup>
+  <ItemGroup>
+    <WCFMetadataStorage Include="Service References\Antivirus.ActivateProduct\" />
+    <WCFMetadataStorage Include="Service References\Antivirus.CancelProduct\" />
+    <WCFMetadataStorage Include="Service References\Antivirus.UpdateProduct\" />
+    <WCFMetadataStorage Include="Service References\ASMMacStore\" />
+    <WCFMetadataStorage Include="Service References\AssurantMexicoService\" />
+    <WCFMetadataStorage Include="Service References\MexicoIShopService\" />
+    <WCFMetadataStorage Include="Service References\OutboundCommunication\" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Service References\Antivirus.ActivateProduct\configuration91.svcinfo" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Service References\Antivirus.ActivateProduct\configuration.svcinfo" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Service References\Antivirus.ActivateProduct\Reference.svcmap">
+      <Generator>WCF Proxy Generator</Generator>
+      <LastGenOutput>Reference.vb</LastGenOutput>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Service References\Antivirus.UpdateProduct\configuration91.svcinfo" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Service References\Antivirus.UpdateProduct\configuration.svcinfo" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Service References\Antivirus.UpdateProduct\Reference.svcmap">
+      <Generator>WCF Proxy Generator</Generator>
+      <LastGenOutput>Reference.vb</LastGenOutput>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Service References\Antivirus.CancelProduct\configuration91.svcinfo" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Service References\Antivirus.CancelProduct\configuration.svcinfo" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Service References\Antivirus.CancelProduct\Reference.svcmap">
+      <Generator>WCF Proxy Generator</Generator>
+      <LastGenOutput>Reference.vb</LastGenOutput>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Service References\Antivirus.ActivateProduct\ActivateProductService.disco" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Service References\Antivirus.CancelProduct\CancelProduct1.disco" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Service References\Antivirus.UpdateProduct\UpdateProduct.disco" />
+  </ItemGroup>
+  <ItemGroup>
+    <BootstrapperPackage Include=".NETFramework,Version=v4.0">
+      <Visible>False</Visible>
+      <ProductName>Microsoft .NET Framework 4 %28x86 and x64%29</ProductName>
+      <Install>true</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Net.Client.3.5">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 3.5 SP1 Client Profile</ProductName>
+      <Install>false</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Net.Framework.3.5.SP1">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 3.5 SP1</ProductName>
+      <Install>false</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Windows.Installer.3.1">
+      <Visible>False</Visible>
+      <ProductName>Windows Installer 3.1</ProductName>
+      <Install>true</Install>
+    </BootstrapperPackage>
+  </ItemGroup>
+  <ItemGroup />
+  <Import Project="$(MSBuildToolsPath)\Microsoft.VisualBasic.targets" />
+  <Import Project="$(SolutionDir)\.nuget\NuGet.targets" Condition="Exists('$(SolutionDir)\.nuget\NuGet.targets')" />
+  <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
+    <PropertyGroup>
+      <ErrorText>This project references NuGet package(s) that are missing on this computer. Enable NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>
+    </PropertyGroup>
+    <Error Condition="!Exists('$(SolutionDir)\.nuget\NuGet.targets')" Text="$([System.String]::Format('$(ErrorText)', '$(SolutionDir)\.nuget\NuGet.targets'))" />
+  </Target>
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

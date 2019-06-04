@@ -1,0 +1,12 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+
+<!-- ********************** THIS FILE HAS BEEN GENERATED FROM TEMPLATE SQLObject v2.cst (11/8/2013)********************** -->
+
+<SQL>
+  <LOAD>elp_tbl_ar_invoice_interface.Load</LOAD>
+  <LOAD_LIST>elp_tbl_ar_invoice_interface.LoadList</LOAD_LIST>
+  <LOAD_REJECT_LIST>elp_tbl_ar_invoice_interface.Modify</LOAD_REJECT_LIST>
+  <UPDATE>elp_tbl_ar_invoice_interface.Modify</UPDATE>
+  <UPDATE_HEADER_COUNT>elp_tbl_ar_invoice_interface.UpdateHeaderCount</UPDATE_HEADER_COUNT>
+ 
+</SQL>

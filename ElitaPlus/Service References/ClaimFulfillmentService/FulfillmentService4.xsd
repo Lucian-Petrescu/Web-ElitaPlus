@@ -1,0 +1,131 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xs:schema xmlns:tns="http://schemas.datacontract.org/2004/07/Assurant.Elita.FulfillmentService.Contracts.Fulfillment.Inventory" elementFormDefault="qualified" targetNamespace="http://schemas.datacontract.org/2004/07/Assurant.Elita.FulfillmentService.Contracts.Fulfillment.Inventory" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+  <xs:import schemaLocation="http://localhost/ElitaFulfillmentService/FulfillmentService.svc?xsd=xsd3" namespace="http://schemas.datacontract.org/2004/07/Assurant.Elita.FulfillmentService.DataElements.Fulfillment" />
+  <xs:import schemaLocation="http://localhost/ElitaFulfillmentService/FulfillmentService.svc?xsd=xsd0" namespace="http://elita.assurant.com/Elita/FulfillmentService" />
+  <xs:complexType name="CheckInventoryRequest">
+    <xs:sequence>
+      <xs:element name="DealerCode" nillable="true" type="xs:string">
+        <xs:annotation>
+          <xs:appinfo>
+            <DefaultValue EmitDefaultValue="false" xmlns="http://schemas.microsoft.com/2003/10/Serialization/" />
+          </xs:appinfo>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="ItemCode" nillable="true" type="xs:string">
+        <xs:annotation>
+          <xs:appinfo>
+            <DefaultValue EmitDefaultValue="false" xmlns="http://schemas.microsoft.com/2003/10/Serialization/" />
+          </xs:appinfo>
+        </xs:annotation>
+      </xs:element>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="CheckInventoryRequest" nillable="true" type="tns:CheckInventoryRequest" />
+  <xs:complexType name="ItemInventoryResponse">
+    <xs:complexContent mixed="false">
+      <xs:extension xmlns:q1="http://elita.assurant.com/Elita/FulfillmentService" base="q1:BaseFulfillmentResponse">
+        <xs:sequence>
+          <xs:element xmlns:q2="http://schemas.datacontract.org/2004/07/Assurant.Elita.FulfillmentService.DataElements.Fulfillment" minOccurs="0" name="Item" nillable="true" type="q2:ItemInventory">
+            <xs:annotation>
+              <xs:appinfo>
+                <DefaultValue EmitDefaultValue="false" xmlns="http://schemas.microsoft.com/2003/10/Serialization/" />
+              </xs:appinfo>
+            </xs:annotation>
+          </xs:element>
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:element name="ItemInventoryResponse" nillable="true" type="tns:ItemInventoryResponse" />
+  <xs:complexType name="CheckInventoryListRequest">
+    <xs:sequence>
+      <xs:element name="DealerCode" nillable="true" type="xs:string">
+        <xs:annotation>
+          <xs:appinfo>
+            <DefaultValue EmitDefaultValue="false" xmlns="http://schemas.microsoft.com/2003/10/Serialization/" />
+          </xs:appinfo>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="Make" nillable="true" type="xs:string" />
+      <xs:element name="Model" nillable="true" type="xs:string" />
+      <xs:element name="Memory" nillable="true" type="xs:string" />
+      <xs:element name="Color" nillable="true" type="xs:string" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="CheckInventoryListRequest" nillable="true" type="tns:CheckInventoryListRequest" />
+  <xs:complexType name="ItemInventoryListResponse">
+    <xs:complexContent mixed="false">
+      <xs:extension xmlns:q3="http://elita.assurant.com/Elita/FulfillmentService" base="q3:BaseFulfillmentResponse">
+        <xs:sequence>
+          <xs:element xmlns:q4="http://schemas.datacontract.org/2004/07/Assurant.Elita.FulfillmentService.DataElements.Fulfillment" minOccurs="0" name="ItemsInventories" nillable="true" type="q4:ArrayOfItemInventory">
+            <xs:annotation>
+              <xs:appinfo>
+                <DefaultValue EmitDefaultValue="false" xmlns="http://schemas.microsoft.com/2003/10/Serialization/" />
+              </xs:appinfo>
+            </xs:annotation>
+          </xs:element>
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:element name="ItemInventoryListResponse" nillable="true" type="tns:ItemInventoryListResponse" />
+  <xs:complexType name="SearchSKURequest">
+    <xs:sequence>
+      <xs:element name="DealerCode" nillable="true" type="xs:string">
+        <xs:annotation>
+          <xs:appinfo>
+            <DefaultValue EmitDefaultValue="false" xmlns="http://schemas.microsoft.com/2003/10/Serialization/" />
+          </xs:appinfo>
+        </xs:annotation>
+      </xs:element>
+      <xs:element minOccurs="0" name="Make" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="Model" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="Memory" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="Color" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="SearchLimit" nillable="true" type="xs:string" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="SearchSKURequest" nillable="true" type="tns:SearchSKURequest" />
+  <xs:complexType name="SearchSKUResponse">
+    <xs:complexContent mixed="false">
+      <xs:extension xmlns:q5="http://elita.assurant.com/Elita/FulfillmentService" base="q5:BaseFulfillmentResponse">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="SearchLimit" type="xs:int" />
+          <xs:element minOccurs="0" name="TotalFound" type="xs:int" />
+          <xs:element xmlns:q6="http://schemas.datacontract.org/2004/07/Assurant.Elita.FulfillmentService.DataElements.Fulfillment" minOccurs="0" name="Items" nillable="true" type="q6:ArrayOfItemSKU">
+            <xs:annotation>
+              <xs:appinfo>
+                <DefaultValue EmitDefaultValue="false" xmlns="http://schemas.microsoft.com/2003/10/Serialization/" />
+              </xs:appinfo>
+            </xs:annotation>
+          </xs:element>
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:element name="SearchSKUResponse" nillable="true" type="tns:SearchSKUResponse" />
+  <xs:complexType name="SearchVendorInventoryResponse">
+    <xs:complexContent mixed="false">
+      <xs:extension xmlns:q7="http://elita.assurant.com/Elita/FulfillmentService" base="q7:BaseFulfillmentResponse">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="DealerCode" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="ServiceCenterCode" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="TotalRecordsFound" type="xs:int" />
+          <xs:element xmlns:q8="http://schemas.datacontract.org/2004/07/Assurant.Elita.FulfillmentService.DataElements.Fulfillment" minOccurs="0" name="VendorInventoryList" nillable="true" type="q8:ArrayOfVendorInventory" />
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:element name="SearchVendorInventoryResponse" nillable="true" type="tns:SearchVendorInventoryResponse" />
+  <xs:complexType name="CheckVendorInventoryAndBestReplacementResponse">
+    <xs:complexContent mixed="false">
+      <xs:extension xmlns:q9="http://elita.assurant.com/Elita/FulfillmentService" base="q9:BaseFulfillmentResponse">
+        <xs:sequence>
+          <xs:element xmlns:q10="http://schemas.datacontract.org/2004/07/Assurant.Elita.FulfillmentService.DataElements.Fulfillment" minOccurs="0" name="DeviceInventory" nillable="true" type="q10:VendorInventory" />
+          <xs:element xmlns:q11="http://schemas.datacontract.org/2004/07/Assurant.Elita.FulfillmentService.DataElements.Fulfillment" minOccurs="0" name="VendorInventoryList" nillable="true" type="q11:ArrayOfBestReplacementInventory" />
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:element name="CheckVendorInventoryAndBestReplacementResponse" nillable="true" type="tns:CheckVendorInventoryAndBestReplacementResponse" />
+</xs:schema>

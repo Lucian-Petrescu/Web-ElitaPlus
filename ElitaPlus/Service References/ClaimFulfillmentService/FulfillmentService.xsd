@@ -1,0 +1,282 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xs:schema xmlns:ser="http://schemas.microsoft.com/2003/10/Serialization/" xmlns:tns="http://schemas.datacontract.org/2004/07/Assurant.Elita.FulfillmentService.DataElements.Fulfillment" elementFormDefault="qualified" targetNamespace="http://schemas.datacontract.org/2004/07/Assurant.Elita.FulfillmentService.DataElements.Fulfillment" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+  <xs:import schemaLocation="http://localhost/ElitaFulfillmentService/FulfillmentService.svc?xsd=xsd1" namespace="http://schemas.microsoft.com/2003/10/Serialization/" />
+  <xs:import schemaLocation="http://localhost/ElitaFulfillmentService/FulfillmentService.svc?xsd=xsd7" namespace="http://schemas.datacontract.org/2004/07/Assurant.Elita.FulfillmentService.DataElements" />
+  <xs:import schemaLocation="http://localhost/ElitaFulfillmentService/FulfillmentService.svc?xsd=xsd8" namespace="http://schemas.datacontract.org/2004/07/Assurant.Elita.FulfillmentService.DataElements.Generics" />
+  <xs:complexType name="ErrorDetailsType">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="ErrorCode" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="ErrorMessage" nillable="true" type="xs:string" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="ErrorDetailsType" nillable="true" type="tns:ErrorDetailsType" />
+  <xs:complexType name="ItemInventory">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="ItemCode" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="ReplacementCost" type="xs:decimal" />
+      <xs:element minOccurs="0" name="ShippingFromDescription" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="ShippingFromName" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="StockQuantity" type="xs:int" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="ItemInventory" nillable="true" type="tns:ItemInventory" />
+  <xs:complexType name="ArrayOfItemInventory">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="ItemInventory" nillable="true" type="tns:ItemInventory" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="ArrayOfItemInventory" nillable="true" type="tns:ArrayOfItemInventory" />
+  <xs:complexType name="ArrayOfItemSKU">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="ItemSKU" nillable="true" type="tns:ItemSKU" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="ArrayOfItemSKU" nillable="true" type="tns:ArrayOfItemSKU" />
+  <xs:complexType name="ItemSKU">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="Color" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="ItemCode" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="Make" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="Memory" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="Model" nillable="true" type="xs:string" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="ItemSKU" nillable="true" type="tns:ItemSKU" />
+  <xs:complexType name="OrderInfo">
+    <xs:complexContent mixed="false">
+      <xs:extension base="tns:BaseOrder">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="OperationInstruction" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="OperationInstructionReason" nillable="true" type="xs:string" />
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:element name="OrderInfo" nillable="true" type="tns:OrderInfo" />
+  <xs:complexType name="BaseOrder">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="AuthorizationNumber" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="CertificateNumber" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="ClaimNumber" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="ExternalOrderNumber" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="MaximumLiabilityLimit" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="MaximumRepairLimit" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="OrderNumber" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="OrderStatus" nillable="true" type="xs:string" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="BaseOrder" nillable="true" type="tns:BaseOrder" />
+  <xs:complexType name="ArrayOfAuthDetailOptions">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="AuthDetailOptions" type="tns:AuthDetailOptions" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="ArrayOfAuthDetailOptions" nillable="true" type="tns:ArrayOfAuthDetailOptions" />
+  <xs:simpleType name="AuthDetailOptions">
+    <xs:list>
+      <xs:simpleType>
+        <xs:restriction base="xs:string">
+          <xs:enumeration value="None">
+            <xs:annotation>
+              <xs:appinfo>
+                <EnumerationValue xmlns="http://schemas.microsoft.com/2003/10/Serialization/">0</EnumerationValue>
+              </xs:appinfo>
+            </xs:annotation>
+          </xs:enumeration>
+          <xs:enumeration value="Issues">
+            <xs:annotation>
+              <xs:appinfo>
+                <EnumerationValue xmlns="http://schemas.microsoft.com/2003/10/Serialization/">1</EnumerationValue>
+              </xs:appinfo>
+            </xs:annotation>
+          </xs:enumeration>
+          <xs:enumeration value="History">
+            <xs:annotation>
+              <xs:appinfo>
+                <EnumerationValue xmlns="http://schemas.microsoft.com/2003/10/Serialization/">2</EnumerationValue>
+              </xs:appinfo>
+            </xs:annotation>
+          </xs:enumeration>
+          <xs:enumeration value="HistoryFlat">
+            <xs:annotation>
+              <xs:appinfo>
+                <EnumerationValue xmlns="http://schemas.microsoft.com/2003/10/Serialization/">4</EnumerationValue>
+              </xs:appinfo>
+            </xs:annotation>
+          </xs:enumeration>
+        </xs:restriction>
+      </xs:simpleType>
+    </xs:list>
+  </xs:simpleType>
+  <xs:element name="AuthDetailOptions" nillable="true" type="tns:AuthDetailOptions" />
+  <xs:complexType name="Authorization">
+    <xs:complexContent mixed="false">
+      <xs:extension xmlns:q1="http://schemas.datacontract.org/2004/07/Assurant.Elita.FulfillmentService.DataElements" base="q1:BaseDataElement">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="AuthorizationId" nillable="true" type="ser:guid" />
+          <xs:element minOccurs="0" name="AuthorizationNumber" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="AuthorizedAmount" type="xs:decimal" />
+          <xs:element minOccurs="0" name="CashPaymentMethodCode" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="ClaimAuthorizationId" type="ser:guid" />
+          <xs:element minOccurs="0" name="ClaimId" type="ser:guid" />
+          <xs:element minOccurs="0" name="ClaimNumber" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="CompanyCode" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="CompanyId" type="ser:guid" />
+          <xs:element minOccurs="0" name="FulfillmentTypeCode" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="HasPendingFulfillmentIssue" type="xs:boolean" />
+          <xs:element minOccurs="0" name="Issues" nillable="true" type="tns:ArrayOfIssue" />
+          <xs:element minOccurs="0" name="ServiceCenterCode" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="ServiceCenterId" type="ser:guid" />
+          <xs:element minOccurs="0" name="ServiceCenterReferenceNum" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="Status" nillable="true" type="tns:Status" />
+          <xs:element minOccurs="0" name="StatusHistory" nillable="true" type="tns:ArrayOfAuthorizationState" />
+          <xs:element minOccurs="0" name="StatusHistoryFlat" nillable="true" type="tns:ArrayOfAuthorizationInfo" />
+          <xs:element minOccurs="0" name="SubStatus" nillable="true" type="tns:SubStatus" />
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:element name="Authorization" nillable="true" type="tns:Authorization" />
+  <xs:complexType name="ArrayOfIssue">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="Issue" nillable="true" type="tns:Issue" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="ArrayOfIssue" nillable="true" type="tns:ArrayOfIssue" />
+  <xs:complexType name="Issue">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="Actions" nillable="true" type="tns:ArrayOfIssueAction" />
+      <xs:element minOccurs="0" name="Code" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="Description" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="EntityId" type="ser:guid" />
+      <xs:element minOccurs="0" name="EntityIssueId" type="ser:guid" />
+      <xs:element minOccurs="0" name="IssueAuthorization" nillable="true" type="tns:Authorization" />
+      <xs:element minOccurs="0" name="IssueData" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="IssueId" type="ser:guid" />
+      <xs:element minOccurs="0" name="Status" nillable="true" type="tns:Status" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="Issue" nillable="true" type="tns:Issue" />
+  <xs:complexType name="ArrayOfIssueAction">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="IssueAction" nillable="true" type="tns:IssueAction" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="ArrayOfIssueAction" nillable="true" type="tns:ArrayOfIssueAction" />
+  <xs:complexType name="IssueAction">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="Code" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="Description" nillable="true" type="xs:string" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="IssueAction" nillable="true" type="tns:IssueAction" />
+  <xs:complexType name="Status">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="Code" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="Comments" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="Date" nillable="true" type="xs:dateTime" />
+      <xs:element minOccurs="0" name="Description" nillable="true" type="xs:string" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="Status" nillable="true" type="tns:Status" />
+  <xs:complexType name="ArrayOfAuthorizationState">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="AuthorizationState" nillable="true" type="tns:AuthorizationState" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="ArrayOfAuthorizationState" nillable="true" type="tns:ArrayOfAuthorizationState" />
+  <xs:complexType name="AuthorizationState">
+    <xs:complexContent mixed="false">
+      <xs:extension xmlns:q2="http://schemas.datacontract.org/2004/07/Assurant.Elita.FulfillmentService.DataElements.Generics" base="q2:ItemPlusChildrenOfAuthorizationArrayOfSubStatusLkECJpHH">
+        <xs:sequence />
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:element name="AuthorizationState" nillable="true" type="tns:AuthorizationState" />
+  <xs:complexType name="ArrayOfSubStatus">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="SubStatus" nillable="true" type="tns:SubStatus" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="ArrayOfSubStatus" nillable="true" type="tns:ArrayOfSubStatus" />
+  <xs:complexType name="SubStatus">
+    <xs:complexContent mixed="false">
+      <xs:extension base="tns:Status">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="Reasons" nillable="true" type="tns:ArrayOfReason" />
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:element name="SubStatus" nillable="true" type="tns:SubStatus" />
+  <xs:complexType name="ArrayOfReason">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="Reason" nillable="true" type="tns:Reason" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="ArrayOfReason" nillable="true" type="tns:ArrayOfReason" />
+  <xs:complexType name="Reason">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="Code" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="Description" nillable="true" type="xs:string" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="Reason" nillable="true" type="tns:Reason" />
+  <xs:complexType name="ArrayOfAuthorizationInfo">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="AuthorizationInfo" nillable="true" type="tns:AuthorizationInfo" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="ArrayOfAuthorizationInfo" nillable="true" type="tns:ArrayOfAuthorizationInfo" />
+  <xs:complexType name="AuthorizationInfo">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="AuthorizationId" nillable="true" type="ser:guid" />
+      <xs:element minOccurs="0" name="AuthorizationNumber" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="StatusCode" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="StatusDate" nillable="true" type="xs:dateTime" />
+      <xs:element minOccurs="0" name="StatusDescription" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="SubStatusCode" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="SubStatusDate" nillable="true" type="xs:dateTime" />
+      <xs:element minOccurs="0" name="SubStatusDescription" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="SubStatusReasons" nillable="true" type="tns:ArrayOfReason" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="AuthorizationInfo" nillable="true" type="tns:AuthorizationInfo" />
+  <xs:complexType name="ArrayOfVendorInventory">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="VendorInventory" nillable="true" type="tns:VendorInventory" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="ArrayOfVendorInventory" nillable="true" type="tns:ArrayOfVendorInventory" />
+  <xs:complexType name="VendorInventory">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="Color" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="EquipmentDescription" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="EquipmentId" nillable="true" type="ser:guid" />
+      <xs:element minOccurs="0" name="InventoryId" nillable="true" type="ser:guid" />
+      <xs:element minOccurs="0" name="InventoryQuantity" type="xs:int" />
+      <xs:element minOccurs="0" name="Make" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="Memory" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="Model" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="VendorSku" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="VendorSkuDescription" nillable="true" type="xs:string" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="VendorInventory" nillable="true" type="tns:VendorInventory" />
+  <xs:complexType name="ArrayOfBestReplacementInventory">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="BestReplacementInventory" nillable="true" type="tns:BestReplacementInventory" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="ArrayOfBestReplacementInventory" nillable="true" type="tns:ArrayOfBestReplacementInventory" />
+  <xs:complexType name="BestReplacementInventory">
+    <xs:complexContent mixed="false">
+      <xs:extension base="tns:VendorInventory">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="Priority" type="xs:int" />
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:element name="BestReplacementInventory" nillable="true" type="tns:BestReplacementInventory" />
+</xs:schema>

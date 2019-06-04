@@ -1,0 +1,187 @@
+<?xml version="1.0" encoding="utf-8" ?>
+
+<!-- ********************** THIS FILE HAS BEEN GENERATED FROM TEMPLATE SQLObject.cst (4/11/2007)********************** -->
+
+<SQL>
+	<LOAD>
+		<![CDATA[	
+			SELECT 
+				certificate_number,
+				address1,
+				city,
+				region,
+				postal_code,
+				home_phone,
+				model_year,
+				model,
+				manufacturer,
+				engine_version,
+				vehicle_license_tag,
+				odometer,
+				vin,
+				purchase_price,
+				purchase_date,
+				in_service_date,
+				plan_code,
+				deductible,
+				term_months,
+				term_km_mi,
+				dealer_code,
+				agent_number,
+				warranty_sale_date,
+				created_by,
+				created_date,
+				modified_by,
+				modified_date,
+				plan_amount,
+				document_type,
+				identity_document_no,
+				rg_no,
+				id_type,
+				document_issue_date,
+				document_agency,
+				enrollment_id,
+        birth_date,
+        Delivery_Date
+			FROM elp_vsc_enrollment 
+			WHERE
+				enrollment_id = :enrollment_id
+		]]>
+	</LOAD>
+	<LOAD_LIST>		
+	</LOAD_LIST>	
+	<UPDATE>
+		<![CDATA[	
+			UPDATE elp_vsc_enrollment SET
+				certificate_number = :certificate_number,
+				address1 = :address1,
+				city = :city,
+				region = :region,
+				postal_code = :postal_code,
+				home_phone = :home_phone,
+				model_year = :model_year,
+				model = :model,
+				manufacturer = :manufacturer,
+				engine_version = :engine_version,
+				vehicle_license_tag = :vehicle_license_tag,
+				odometer = :odometer,
+				vin = :vin,
+				purchase_price = :purchase_price,
+				purchase_date = :purchase_date,
+				in_service_date = :in_service_date,
+				plan_code = :plan_code,
+				deductible = :deductible,
+				term_months = :term_months,
+				term_km_mi = :term_km_mi,
+				dealer_code = :dealer_code,
+				agent_number = :agent_number,
+				warranty_sale_date = :warranty_sale_date,
+				plan_amount = :plan_amount,
+				document_type = :document_type,
+				identity_document_no = :identity_document_no,
+				rg_no = :rg_no,
+				id_type = :id_type,
+				document_issue_date = :document_issue_date,
+				document_agency = :document_agency,
+				modified_by = :modified_by,
+        birth_date = :birth_date,
+        Delivery_Date = :Delivery_Date
+			WHERE
+				enrollment_id = :enrollment_id
+		]]>
+	</UPDATE>
+	<INSERT>
+    INSERT INTO elp_vsc_enrollment
+    (
+    certificate_number,
+    address1,
+    city,
+    region,
+    postal_code,
+    home_phone,
+    model_year,
+    model,
+    manufacturer,
+    engine_version,
+    vehicle_license_tag,
+    odometer,
+    vin,
+    purchase_price,
+    purchase_date,
+    in_service_date,
+    plan_code,
+    deductible,
+    term_months,
+    term_km_mi,
+    dealer_code,
+    agent_number,
+    warranty_sale_date,
+    plan_amount,
+    document_type,
+    identity_document_no,
+    rg_no,
+    id_type,
+    document_issue_date,
+    document_agency,
+    created_by,
+    enrollment_id,
+    birth_date, Delivery_Date
+    )
+    VALUES
+    (
+    :certificate_number,
+    :address1,
+    :city,
+    :region,
+    :postal_code,
+    :home_phone,
+    :model_year,
+    :model,
+    :manufacturer,
+    :engine_version,
+    :vehicle_license_tag,
+    :odometer,
+    :vin,
+    :purchase_price,
+    :purchase_date,
+    :in_service_date,
+    :plan_code,
+    :deductible,
+    :term_months,
+    :term_km_mi,
+    :dealer_code,
+    :agent_number,
+    :warranty_sale_date,
+    :plan_amount,
+    :document_type,
+    :identity_document_no,
+    :rg_no,
+    :id_type,
+    :document_issue_date,
+    :document_agency,
+    :created_by,
+    :enrollment_id,
+    :birth_date,
+    :Delivery_Date
+    )
+  </INSERT>
+	<DELETE>
+			DELETE FROM elp_vsc_enrollment
+			WHERE
+				enrollment_id = :enrollment_id
+	</DELETE>
+	<ENROLL>
+		VSC_ENROLLMENT.ENROLL
+	</ENROLL>	
+	<CERTIFICATE>
+		VSC_ENROLLMENT.CERTIFICATE
+	</CERTIFICATE>
+  <FLUSHENROLL>
+    VSC_ENROLLMENT.FLUSHENROLL
+  </FLUSHENROLL>
+  <AddManufacturerCoverage>
+    elita.VSC_CLAIMS.AddManufacturerCoverage
+  </AddManufacturerCoverage>
+</SQL> 
+
+

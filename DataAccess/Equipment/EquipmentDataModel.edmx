@@ -1,0 +1,378 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="2.0" xmlns:edmx="http://schemas.microsoft.com/ado/2008/10/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+    <Schema Namespace="Model7.Store" Provider="Oracle.ManagedDataAccess.Client" ProviderManifestToken="11.2" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/02/edm/ssdl">
+        <EntityType Name="ELP_EQUIPMENT">
+          <Key>
+            <PropertyRef Name="EQUIPMENT_ID" />
+          </Key>
+          <Property Name="EQUIPMENT_ID" Type="raw" MaxLength="16" Nullable="false" />
+          <Property Name="DESCRIPTION" Type="varchar2" MaxLength="40" Nullable="false" />
+          <Property Name="MODEL" Type="varchar2" MaxLength="30" />
+          <Property Name="MASTER_EQUIPMENT_ID" Type="raw" MaxLength="16" />
+          <Property Name="REPAIRABLE_ID" Type="raw" MaxLength="16" Nullable="false" />
+          <Property Name="MANUFACTURER_ID" Type="raw" MaxLength="16" Nullable="false" />
+          <Property Name="EQUIPMENT_CLASS_ID" Type="raw" MaxLength="16" Nullable="false" />
+          <Property Name="EQUIPMENT_TYPE_ID" Type="raw" MaxLength="16" Nullable="false" />
+          <Property Name="CREATED_DATE" Type="date" Nullable="false" />
+          <Property Name="MODIFIED_DATE" Type="date" />
+          <Property Name="CREATED_BY" Type="varchar2" MaxLength="120" Nullable="false" />
+          <Property Name="MODIFIED_BY" Type="varchar2" MaxLength="120" />
+          <Property Name="EFFECTIVE" Type="date" />
+          <Property Name="EXPIRATION" Type="date" />
+          <Property Name="IS_MASTER_EQUIPMENT" Type="raw" MaxLength="16" Nullable="false" />
+        </EntityType>
+        <EntityType Name="ELP_EQUIPMENT_LIST">
+          <Key>
+            <PropertyRef Name="EQUIPMENT_LIST_ID" />
+          </Key>
+          <Property Name="EQUIPMENT_LIST_ID" Type="raw" MaxLength="16" Nullable="false" />
+          <Property Name="CODE" Type="varchar2" MaxLength="30" Nullable="false" />
+          <Property Name="DESCRIPTION" Type="varchar2" MaxLength="500" Nullable="false" />
+          <Property Name="COMMENTS" Type="varchar2" MaxLength="4000" />
+          <Property Name="EFFECTIVE" Type="date" Nullable="false" />
+          <Property Name="EXPIRATION" Type="date" Nullable="false" />
+          <Property Name="CREATED_DATE" Type="date" Nullable="false" />
+          <Property Name="CREATED_BY" Type="varchar2" MaxLength="30" Nullable="false" />
+          <Property Name="MODIFIED_DATE" Type="date" />
+          <Property Name="MODIFIED_BY" Type="varchar2" MaxLength="30" />
+        </EntityType>
+        <EntityType Name="ELP_EQUIPMENT_LIST_DETAIL">
+          <Key>
+            <PropertyRef Name="EQUIPMENT_LIST_DETAIL_ID" />
+          </Key>
+          <Property Name="EQUIPMENT_LIST_DETAIL_ID" Type="raw" MaxLength="16" Nullable="false" />
+          <Property Name="EQUIPMENT_ID" Type="raw" MaxLength="16" Nullable="false" />
+          <Property Name="EQUIPMENT_LIST_ID" Type="raw" MaxLength="16" />
+          <Property Name="EFFECTIVE" Type="date" />
+          <Property Name="EXPIRATION" Type="date" />
+          <Property Name="CREATED_DATE" Type="date" Nullable="false" />
+          <Property Name="CREATED_BY" Type="varchar2" MaxLength="30" Nullable="false" />
+          <Property Name="MODIFIED_DATE" Type="date" />
+          <Property Name="MODIFIED_BY" Type="varchar2" MaxLength="30" />
+        </EntityType>
+        <EntityType Name="ELP_MANUFACTURER">
+          <Key>
+            <PropertyRef Name="MANUFACTURER_ID" />
+          </Key>
+          <Property Name="MANUFACTURER_ID" Type="raw" MaxLength="16" Nullable="false" />
+          <Property Name="DESCRIPTION" Type="varchar2" MaxLength="255" Nullable="false" />
+          <Property Name="CREATED_DATE" Type="date" Nullable="false" />
+          <Property Name="MODIFIED_DATE" Type="date" />
+          <Property Name="CREATED_BY" Type="varchar2" MaxLength="30" Nullable="false" />
+          <Property Name="MODIFIED_BY" Type="varchar2" MaxLength="30" />
+          <Property Name="ACTIVE_FLAG" Type="varchar2" MaxLength="1" Nullable="false" />
+          <Property Name="COMPANY_GROUP_ID" Type="raw" MaxLength="16" Nullable="false" />
+        </EntityType>
+        <Association Name="FK_ELP_EQUIP_DETAIL_EQUIP">
+          <End Role="ELP_EQUIPMENT" Type="Self.ELP_EQUIPMENT" Multiplicity="1" />
+          <End Role="ELP_EQUIPMENT_LIST_DETAIL" Type="Self.ELP_EQUIPMENT_LIST_DETAIL" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ELP_EQUIPMENT">
+              <PropertyRef Name="EQUIPMENT_ID" />
+            </Principal>
+            <Dependent Role="ELP_EQUIPMENT_LIST_DETAIL">
+              <PropertyRef Name="EQUIPMENT_ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ELP_EQUIP_DETAIL_LIST">
+          <End Role="ELP_EQUIPMENT_LIST" Type="Self.ELP_EQUIPMENT_LIST" Multiplicity="0..1" />
+          <End Role="ELP_EQUIPMENT_LIST_DETAIL" Type="Self.ELP_EQUIPMENT_LIST_DETAIL" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ELP_EQUIPMENT_LIST">
+              <PropertyRef Name="EQUIPMENT_LIST_ID" />
+            </Principal>
+            <Dependent Role="ELP_EQUIPMENT_LIST_DETAIL">
+              <PropertyRef Name="EQUIPMENT_LIST_ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_MANUFACTURER">
+          <End Role="ELP_MANUFACTURER" Type="Self.ELP_MANUFACTURER" Multiplicity="1" />
+          <End Role="ELP_EQUIPMENT" Type="Self.ELP_EQUIPMENT" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ELP_MANUFACTURER">
+              <PropertyRef Name="MANUFACTURER_ID" />
+            </Principal>
+            <Dependent Role="ELP_EQUIPMENT">
+              <PropertyRef Name="MANUFACTURER_ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_MASTER_MODEL">
+          <End Role="ELP_EQUIPMENT" Type="Self.ELP_EQUIPMENT" Multiplicity="0..1" />
+          <End Role="ELP_EQUIPMENT1" Type="Self.ELP_EQUIPMENT" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ELP_EQUIPMENT">
+              <PropertyRef Name="EQUIPMENT_ID" />
+            </Principal>
+            <Dependent Role="ELP_EQUIPMENT1">
+              <PropertyRef Name="MASTER_EQUIPMENT_ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="Model7StoreContainer">
+          <EntitySet Name="ELP_EQUIPMENT" EntityType="Self.ELP_EQUIPMENT" Schema="ELITA" store:Type="Tables" />
+          <EntitySet Name="ELP_EQUIPMENT_LIST" EntityType="Self.ELP_EQUIPMENT_LIST" Schema="ELITA" store:Type="Tables" />
+          <EntitySet Name="ELP_EQUIPMENT_LIST_DETAIL" EntityType="Self.ELP_EQUIPMENT_LIST_DETAIL" Schema="ELITA" store:Type="Tables" />
+          <EntitySet Name="ELP_MANUFACTURER" EntityType="Self.ELP_MANUFACTURER" Schema="ELITA" store:Type="Tables" />
+          <AssociationSet Name="FK_ELP_EQUIP_DETAIL_EQUIP" Association="Self.FK_ELP_EQUIP_DETAIL_EQUIP">
+            <End Role="ELP_EQUIPMENT" EntitySet="ELP_EQUIPMENT" />
+            <End Role="ELP_EQUIPMENT_LIST_DETAIL" EntitySet="ELP_EQUIPMENT_LIST_DETAIL" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ELP_EQUIP_DETAIL_LIST" Association="Self.FK_ELP_EQUIP_DETAIL_LIST">
+            <End Role="ELP_EQUIPMENT_LIST" EntitySet="ELP_EQUIPMENT_LIST" />
+            <End Role="ELP_EQUIPMENT_LIST_DETAIL" EntitySet="ELP_EQUIPMENT_LIST_DETAIL" />
+          </AssociationSet>
+          <AssociationSet Name="FK_MANUFACTURER" Association="Self.FK_MANUFACTURER">
+            <End Role="ELP_MANUFACTURER" EntitySet="ELP_MANUFACTURER" />
+            <End Role="ELP_EQUIPMENT" EntitySet="ELP_EQUIPMENT" />
+          </AssociationSet>
+          <AssociationSet Name="FK_MASTER_MODEL" Association="Self.FK_MASTER_MODEL">
+            <End Role="ELP_EQUIPMENT" EntitySet="ELP_EQUIPMENT" />
+            <End Role="ELP_EQUIPMENT1" EntitySet="ELP_EQUIPMENT" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema></edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="Model7" Alias="Self" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2008/09/edm">
+        <EntityContainer Name="Entities7" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="Equipments" EntityType="Model7.Equipment" />
+          <AssociationSet Name="FK_MASTER_MODEL" Association="Model7.FK_MASTER_MODEL">
+            <End Role="ELP_EQUIPMENT" EntitySet="Equipments" />
+            <End Role="ELP_EQUIPMENT1" EntitySet="Equipments" />
+          </AssociationSet>
+          <EntitySet Name="EquipmentLists" EntityType="Model7.EquipmentList" />
+          <EntitySet Name="EquipmentListDetails" EntityType="Model7.EquipmentListDetail" />
+          <EntitySet Name="ELP_MANUFACTURER" EntityType="Model7.ELP_MANUFACTURER" />
+          <AssociationSet Name="FK_ELP_EQUIP_DETAIL_EQUIP" Association="Model7.FK_ELP_EQUIP_DETAIL_EQUIP">
+            <End Role="Equipment" EntitySet="Equipments" />
+            <End Role="ELP_EQUIPMENT_LIST_DETAIL" EntitySet="EquipmentListDetails" />
+          </AssociationSet>
+          <AssociationSet Name="FK_MANUFACTURER" Association="Model7.FK_MANUFACTURER">
+            <End Role="ELP_MANUFACTURER" EntitySet="ELP_MANUFACTURER" />
+            <End Role="Equipment" EntitySet="Equipments" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ELP_EQUIP_DETAIL_LIST" Association="Model7.FK_ELP_EQUIP_DETAIL_LIST">
+            <End Role="ELP_EQUIPMENT_LIST" EntitySet="EquipmentLists" />
+            <End Role="ELP_EQUIPMENT_LIST_DETAIL" EntitySet="EquipmentListDetails" />
+          </AssociationSet>
+        </EntityContainer>
+        <EntityType Name="Equipment">
+          <Key>
+            <PropertyRef Name="EquipmentId" />
+          </Key>
+          <Property Name="EquipmentId" Type="Guid" Nullable="false" />
+          <Property Name="Description" Type="String" Nullable="false" MaxLength="40" FixedLength="false" Unicode="false" />
+          <Property Name="Model" Type="String" MaxLength="30" FixedLength="false" Unicode="false" />
+          <Property Name="MasterEquipmentId" Type="Guid" />
+          <Property Name="REPAIRABLE_ID" Type="Guid" Nullable="false" />
+          <Property Name="ManufacturerId" Type="Guid" Nullable="false" />
+          <Property Name="EquipmentClassId" Type="Guid" Nullable="false" />
+          <Property Name="EquipmentTypeId" Type="Guid" Nullable="false" />
+          <Property Name="CreatedDate" Type="DateTime" Nullable="false" />
+          <Property Name="ModifiedDate" Type="DateTime" />
+          <Property Name="CreatedBy" Type="String" Nullable="false" MaxLength="120" FixedLength="false" Unicode="false" />
+          <Property Name="ModifiedBy" Type="String" MaxLength="120" FixedLength="false" Unicode="false" />
+          <Property Name="Effective" Type="DateTime" />
+          <Property Name="Expiration" Type="DateTime" />
+          <Property Name="IsMasterEquipment" Type="Guid" Nullable="false" />
+          <NavigationProperty Name="Equipments" Relationship="Model7.FK_MASTER_MODEL" FromRole="ELP_EQUIPMENT" ToRole="ELP_EQUIPMENT1" />
+          <NavigationProperty Name="EquipmentListDetails" Relationship="Model7.FK_ELP_EQUIP_DETAIL_EQUIP" FromRole="Equipment" ToRole="ELP_EQUIPMENT_LIST_DETAIL" />
+          <NavigationProperty Name="Manufacturer" Relationship="Model7.FK_MANUFACTURER" FromRole="Equipment" ToRole="ELP_MANUFACTURER" />
+        </EntityType>
+        <Association Name="FK_MASTER_MODEL">
+          <End Type="Model7.Equipment" Role="ELP_EQUIPMENT" Multiplicity="0..1" />
+          <End Type="Model7.Equipment" Role="ELP_EQUIPMENT1" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ELP_EQUIPMENT">
+              <PropertyRef Name="EquipmentId" />
+            </Principal>
+            <Dependent Role="ELP_EQUIPMENT1">
+              <PropertyRef Name="MasterEquipmentId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityType Name="EquipmentList">
+          <Key>
+            <PropertyRef Name="EquipmentListId" />
+          </Key>
+          <Property Name="EquipmentListId" Type="Guid" Nullable="false" />
+          <Property Name="Code" Type="String" Nullable="false" MaxLength="30" FixedLength="false" Unicode="false" />
+          <Property Name="Description" Type="String" Nullable="false" MaxLength="500" FixedLength="false" Unicode="false" />
+          <Property Name="Comments" Type="String" MaxLength="4000" FixedLength="false" Unicode="false" />
+          <Property Name="Effective" Type="DateTime" Nullable="false" />
+          <Property Name="Expiration" Type="DateTime" Nullable="false" />
+          <Property Name="CreatedDate" Type="DateTime" Nullable="false" />
+          <Property Name="CreatedBy" Type="String" Nullable="false" MaxLength="30" FixedLength="false" Unicode="false" />
+          <Property Name="ModifiedDate" Type="DateTime" />
+          <Property Name="ModifiedBy" Type="String" MaxLength="30" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="EquipmentListDetails" Relationship="Model7.FK_ELP_EQUIP_DETAIL_LIST" FromRole="ELP_EQUIPMENT_LIST" ToRole="ELP_EQUIPMENT_LIST_DETAIL" />
+        </EntityType>
+        <EntityType Name="EquipmentListDetail">
+          <Key>
+            <PropertyRef Name="EquipmentListDetailId" />
+          </Key>
+          <Property Name="EquipmentListDetailId" Type="Guid" Nullable="false" />
+          <Property Name="EquipmentId" Type="Guid" Nullable="false" />
+          <Property Name="EquipmentListId" Type="Guid" />
+          <Property Name="Effective" Type="DateTime" />
+          <Property Name="Expiration" Type="DateTime" />
+          <Property Name="CreatedDate" Type="DateTime" Nullable="false" />
+          <Property Name="CreatedBy" Type="String" Nullable="false" MaxLength="30" FixedLength="false" Unicode="false" />
+          <Property Name="ModifiedDate" Type="DateTime" />
+          <Property Name="ModifiedBy" Type="String" MaxLength="30" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="Equipment" Relationship="Model7.FK_ELP_EQUIP_DETAIL_EQUIP" FromRole="ELP_EQUIPMENT_LIST_DETAIL" ToRole="Equipment" />
+          <NavigationProperty Name="EquipmentList" Relationship="Model7.FK_ELP_EQUIP_DETAIL_LIST" FromRole="ELP_EQUIPMENT_LIST_DETAIL" ToRole="ELP_EQUIPMENT_LIST" />
+        </EntityType>
+        <EntityType Name="ELP_MANUFACTURER">
+          <Key>
+            <PropertyRef Name="MANUFACTURER_ID" />
+          </Key>
+          <Property Name="MANUFACTURER_ID" Type="Guid" Nullable="false" />
+          <Property Name="DESCRIPTION" Type="String" Nullable="false" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="CREATED_DATE" Type="DateTime" Nullable="false" />
+          <Property Name="MODIFIED_DATE" Type="DateTime" />
+          <Property Name="CREATED_BY" Type="String" Nullable="false" MaxLength="30" FixedLength="false" Unicode="false" />
+          <Property Name="MODIFIED_BY" Type="String" MaxLength="30" FixedLength="false" Unicode="false" />
+          <Property Name="ACTIVE_FLAG" Type="String" Nullable="false" MaxLength="1" FixedLength="false" Unicode="false" />
+          <Property Name="COMPANY_GROUP_ID" Type="Guid" Nullable="false" />
+          <NavigationProperty Name="ELP_EQUIPMENT" Relationship="Model7.FK_MANUFACTURER" FromRole="ELP_MANUFACTURER" ToRole="Equipment" />
+        </EntityType>
+        <Association Name="FK_ELP_EQUIP_DETAIL_EQUIP">
+          <End Type="Model7.Equipment" Role="Equipment" Multiplicity="1" />
+          <End Type="Model7.EquipmentListDetail" Role="ELP_EQUIPMENT_LIST_DETAIL" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Equipment">
+              <PropertyRef Name="EquipmentId" />
+            </Principal>
+            <Dependent Role="ELP_EQUIPMENT_LIST_DETAIL">
+              <PropertyRef Name="EquipmentId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_MANUFACTURER">
+          <End Type="Model7.ELP_MANUFACTURER" Role="ELP_MANUFACTURER" Multiplicity="1" />
+          <End Type="Model7.Equipment" Role="Equipment" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ELP_MANUFACTURER">
+              <PropertyRef Name="MANUFACTURER_ID" />
+            </Principal>
+            <Dependent Role="Equipment">
+              <PropertyRef Name="ManufacturerId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ELP_EQUIP_DETAIL_LIST">
+          <End Type="Model7.EquipmentList" Role="ELP_EQUIPMENT_LIST" Multiplicity="0..1" />
+          <End Type="Model7.EquipmentListDetail" Role="ELP_EQUIPMENT_LIST_DETAIL" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ELP_EQUIPMENT_LIST">
+              <PropertyRef Name="EquipmentListId" />
+            </Principal>
+            <Dependent Role="ELP_EQUIPMENT_LIST_DETAIL">
+              <PropertyRef Name="EquipmentListId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2008/09/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="Model7StoreContainer" CdmEntityContainer="Entities7">
+          <EntitySetMapping Name="Equipments">
+            <EntityTypeMapping TypeName="Model7.Equipment">
+              <MappingFragment StoreEntitySet="ELP_EQUIPMENT">
+                <ScalarProperty Name="IsMasterEquipment" ColumnName="IS_MASTER_EQUIPMENT" />
+                <ScalarProperty Name="Expiration" ColumnName="EXPIRATION" />
+                <ScalarProperty Name="Effective" ColumnName="EFFECTIVE" />
+                <ScalarProperty Name="ModifiedBy" ColumnName="MODIFIED_BY" />
+                <ScalarProperty Name="CreatedBy" ColumnName="CREATED_BY" />
+                <ScalarProperty Name="ModifiedDate" ColumnName="MODIFIED_DATE" />
+                <ScalarProperty Name="CreatedDate" ColumnName="CREATED_DATE" />
+                <ScalarProperty Name="EquipmentTypeId" ColumnName="EQUIPMENT_TYPE_ID" />
+                <ScalarProperty Name="EquipmentClassId" ColumnName="EQUIPMENT_CLASS_ID" />
+                <ScalarProperty Name="ManufacturerId" ColumnName="MANUFACTURER_ID" />
+                <ScalarProperty Name="REPAIRABLE_ID" ColumnName="REPAIRABLE_ID" />
+                <ScalarProperty Name="MasterEquipmentId" ColumnName="MASTER_EQUIPMENT_ID" />
+                <ScalarProperty Name="Model" ColumnName="MODEL" />
+                <ScalarProperty Name="Description" ColumnName="DESCRIPTION" />
+                <ScalarProperty Name="EquipmentId" ColumnName="EQUIPMENT_ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="EquipmentLists">
+            <EntityTypeMapping TypeName="Model7.EquipmentList">
+              <MappingFragment StoreEntitySet="ELP_EQUIPMENT_LIST">
+                <ScalarProperty Name="ModifiedBy" ColumnName="MODIFIED_BY" />
+                <ScalarProperty Name="ModifiedDate" ColumnName="MODIFIED_DATE" />
+                <ScalarProperty Name="CreatedBy" ColumnName="CREATED_BY" />
+                <ScalarProperty Name="CreatedDate" ColumnName="CREATED_DATE" />
+                <ScalarProperty Name="Expiration" ColumnName="EXPIRATION" />
+                <ScalarProperty Name="Effective" ColumnName="EFFECTIVE" />
+                <ScalarProperty Name="Comments" ColumnName="COMMENTS" />
+                <ScalarProperty Name="Description" ColumnName="DESCRIPTION" />
+                <ScalarProperty Name="Code" ColumnName="CODE" />
+                <ScalarProperty Name="EquipmentListId" ColumnName="EQUIPMENT_LIST_ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="EquipmentListDetails">
+            <EntityTypeMapping TypeName="Model7.EquipmentListDetail">
+              <MappingFragment StoreEntitySet="ELP_EQUIPMENT_LIST_DETAIL">
+                <ScalarProperty Name="ModifiedBy" ColumnName="MODIFIED_BY" />
+                <ScalarProperty Name="ModifiedDate" ColumnName="MODIFIED_DATE" />
+                <ScalarProperty Name="CreatedBy" ColumnName="CREATED_BY" />
+                <ScalarProperty Name="CreatedDate" ColumnName="CREATED_DATE" />
+                <ScalarProperty Name="Expiration" ColumnName="EXPIRATION" />
+                <ScalarProperty Name="Effective" ColumnName="EFFECTIVE" />
+                <ScalarProperty Name="EquipmentListId" ColumnName="EQUIPMENT_LIST_ID" />
+                <ScalarProperty Name="EquipmentId" ColumnName="EQUIPMENT_ID" />
+                <ScalarProperty Name="EquipmentListDetailId" ColumnName="EQUIPMENT_LIST_DETAIL_ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="ELP_MANUFACTURER">
+            <EntityTypeMapping TypeName="Model7.ELP_MANUFACTURER">
+              <MappingFragment StoreEntitySet="ELP_MANUFACTURER">
+                <ScalarProperty Name="COMPANY_GROUP_ID" ColumnName="COMPANY_GROUP_ID" />
+                <ScalarProperty Name="ACTIVE_FLAG" ColumnName="ACTIVE_FLAG" />
+                <ScalarProperty Name="MODIFIED_BY" ColumnName="MODIFIED_BY" />
+                <ScalarProperty Name="CREATED_BY" ColumnName="CREATED_BY" />
+                <ScalarProperty Name="MODIFIED_DATE" ColumnName="MODIFIED_DATE" />
+                <ScalarProperty Name="CREATED_DATE" ColumnName="CREATED_DATE" />
+                <ScalarProperty Name="DESCRIPTION" ColumnName="DESCRIPTION" />
+                <ScalarProperty Name="MANUFACTURER_ID" ColumnName="MANUFACTURER_ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2008/10/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="true" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="true" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>

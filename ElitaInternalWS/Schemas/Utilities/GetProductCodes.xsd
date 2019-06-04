@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema">
+  <xs:element name="GetProductCodesDs">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element name="GetProductCodes">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element name="Dealer_Code" type="stringRequired" minOccurs="1" maxOccurs="1"></xs:element>
+              <xs:element name="Warr_Sales_Date" type="xs:dateTime" minOccurs="1" maxOccurs="1"></xs:element>
+              <xs:element name="Sort_By"  minOccurs="1" maxOccurs="1">
+                  <xs:simpleType>
+                    <xs:restriction base="xs:int">
+                      <xs:totalDigits fixed="true" value="1"></xs:totalDigits>
+                      <xs:minInclusive value="1" />
+                      <xs:maxInclusive value="7" />
+                    </xs:restriction>
+                  </xs:simpleType>
+              </xs:element>
+              <xs:element name="Asc_Desc_Order" minOccurs="1" maxOccurs="1">
+                  <xs:simpleType>
+                    <xs:restriction base="xs:string">
+                      <xs:pattern value="ASC|DESC" />
+                    </xs:restriction>
+                  </xs:simpleType>
+              </xs:element>
+              <xs:element name="Product_Class_Code" type="xs:string" minOccurs="0" maxOccurs="1"></xs:element>
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:simpleType name="stringRequired">
+    <xs:restriction base="xs:string">
+      <xs:minLength value="1"></xs:minLength>
+    </xs:restriction>
+  </xs:simpleType>
+</xs:schema>

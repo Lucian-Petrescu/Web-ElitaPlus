@@ -1,0 +1,136 @@
+<?xml version="1.0" encoding="utf-8" ?> 
+<SQL>
+
+	<LOAD>
+		<![CDATA[	
+			SELECT 
+				role_id,
+				form_id,
+				modified_date,
+				created_date,
+				control_name,
+				created_by,
+				modified_by,
+				permission_type,
+				auth_ctrl_id
+			FROM elp_role_auth_ctrl_exclusion 
+			WHERE
+				auth_ctrl_id = :auth_ctrl_id
+		]]>
+	</LOAD>
+	<LOAD_FORM_ROLE_CONTROL>
+		<![CDATA[	
+			SELECT 
+				role_id,
+				form_id,
+				modified_date,
+				created_date,
+				control_name,
+				created_by,
+				modified_by,
+				permission_type,
+				auth_ctrl_id
+			FROM elp_role_auth_ctrl_exclusion 
+			WHERE
+				form_id = :form_id
+			and role_id = :role_id
+			and control_name = :control_name
+		]]>
+	</LOAD_FORM_ROLE_CONTROL>
+	<LOAD_LIST>		
+	</LOAD_LIST>	
+	<UPDATE>
+		<![CDATA[	
+			UPDATE elp_role_auth_ctrl_exclusion SET
+				role_id = :role_id,
+				form_id = :form_id,
+				control_name = :control_name,
+				permission_type = :permission_type,
+				modified_by = :modified_by
+			WHERE
+				auth_ctrl_id = :auth_ctrl_id
+		]]>
+	</UPDATE>
+	<INSERT>
+    INSERT INTO elp_role_auth_ctrl_exclusion
+    (
+    role_id,
+    form_id,
+    control_name,
+    permission_type,
+    created_by,
+    auth_ctrl_id
+    )
+    VALUES
+    (
+    :role_id,
+    :form_id,
+    :control_name,
+    :permission_type,
+    :created_by,
+    :auth_ctrl_id
+    )
+  </INSERT>
+	<DELETE>
+			DELETE FROM elp_role_auth_ctrl_exclusion
+			WHERE
+				auth_ctrl_id = :auth_ctrl_id
+	</DELETE>
+	<GET_TABS_FORMS>
+    select	tabs.TAB_ID TAB_ID, NVL(dict_tab.TRANSLATION,tabs.CODE) TAB_NAME,
+    forms.FORM_ID, NVL(dict_form.TRANSLATION, forms.CODE) FORM_NAME,
+    TAB_ICON_IMG, forms.CODE FORM_CODE, tabs.CODE TAB_CODE
+    from	elp_tab tabs,
+    elp_form forms,
+    elp_dict_item_translation dict_tab,
+    elp_dict_item_translation dict_form
+    where	tabs.TAB_ID = forms.TAB_ID
+    and tabs.DICT_ITEM_ID = dict_tab.DICT_ITEM_ID
+    and dict_tab.LANGUAGE_ID = :LANGUAGE_ID
+    and	forms.DICT_ITEM_ID = dict_form.DICT_ITEM_ID
+    and dict_form.LANGUAGE_ID = dict_tab.LANGUAGE_ID
+    order by Upper(TAB_NAME), Upper(FORM_NAME), tabs.TAB_ID, forms.FORM_ID
+  </GET_TABS_FORMS>
+	<GET_CONTROL_PERMISSIONS>
+				select 	Upper('#ControlName') CONTROL_ID, '#ControlName' CONTROL_NAME,
+						roles.ROLE_ID ROLE_ID, Upper(roles.DESCRIPTION) ROLE_DESC, 'N' PERMISSION
+				from 	elp_role_auth_ctrl_exclusion race,
+						elp_role roles
+				where race.FORM_ID = '#FormId' and race.CONTROL_NAME = '#ControlName' and race.ROLE_ID = roles.ROLE_ID
+			Union
+					select 	Upper('#ControlName') CONTROL_ID, '#ControlName' CONTROL_NAME,
+							roles.ROLE_ID ROLE_ID, Upper(roles.DESCRIPTION) ROLE_DESC, 'V' PERMISSION
+					from  	elp_role roles
+				Minus
+					select 	Upper('#ControlName') CONTROL_ID, '#ControlName' CONTROL_NAME,
+ 							roles.ROLE_ID ROLE_ID, Upper(roles.DESCRIPTION) ROLE_DESC, 'V' PERMISSION
+ 					from 	elp_role_auth_ctrl_exclusion race,
+  							elp_role roles
+							where race.FORM_ID = '#FormId' and race.CONTROL_NAME = '#ControlName' and race.ROLE_ID = roles.ROLE_ID
+			order by ROLE_DESC
+	</GET_CONTROL_PERMISSIONS>
+  <GET_CONTROL_PERMISSIONS_All_Roles>
+    select '#FormCode' FORM_CODE, (SELECT FORM_ID FROM ELP_FORM WHERE CODE =  '#FormCode') FORM_ID
+    ,'#ControlName' CONTROL_NAME, ar.ROLE_ID, ar.ROLE_CODE, ar.ROLE_NAME, ar.PERMISSION_TYPE FORM_PERMISSION
+    , nvl(fp.PERMISSION_TYPE, ar.PERMISSION_TYPE) CTL_PERMISSION
+    , nvl(ExistingCtrlEx, 0) ExistingCtrlEx
+    from
+    (select R.ROLE_ID, R.CODE ROLE_CODE, r.Description ROLE_NAME, nvl(fi.PERMISSION_TYPE, 'I')PERMISSION_TYPE
+    from ELP_ROLE r
+    left outer join  (
+    SELECT ROLE_ID, i.PERMISSION_TYPE
+    FROM ELP_ROLE_AUTH_FORM_INCLUSION i
+    INNER join ELP_FORM f on f.FORM_ID = i.FORM_ID
+    WHERE f.CODE = '#FormCode'
+    )fi on r.ROLE_ID = fi.ROLE_ID
+    ) ar left join
+    (select R.CODE ROLE_CODE,  nvl(PERMISSION_TYPE, 'I')PERMISSION_TYPE, 1 ExistingCtrlEx
+    from ELP_ROLE_AUTH_CTRL_EXCLUSION ex
+    inner join ELP_ROLE  r on r.ROLE_ID = ex.ROLE_ID
+    inner join ELP_FORM f on f.FORM_ID = ex.FORM_ID
+    WHERE f.CODE = '#FormCode'
+    AND ex.CONTROL_NAME = '#ControlName'
+    )fp on ar.ROLE_CODE = fp.ROLE_CODE
+    ORDER BY  ROLE_NAME
+  </GET_CONTROL_PERMISSIONS_All_Roles>
+</SQL>

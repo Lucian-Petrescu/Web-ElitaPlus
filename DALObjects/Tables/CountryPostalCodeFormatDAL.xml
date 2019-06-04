@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="utf-8" ?>
+
+<!-- ********************** THIS FILE HAS BEEN GENERATED FROM TEMPLATE SQLObject.cst (9/24/2004)********************** -->
+
+<SQL>
+	<LOAD>
+		<![CDATA[	
+			SELECT 
+				country_id,
+				postal_code_format_id,
+				created_by,
+				created_date,
+				modified_by,
+				modified_date,
+				country_postal_format_id
+			FROM elp_country_postal_format 
+			WHERE
+				country_postal_format_id = :country_postal_format_id
+		]]>
+	</LOAD>
+	<LOAD_LIST>		
+<![CDATA[	
+			SELECT 
+				country_id,
+				postal_code_format_id,
+				created_by,
+				country_postal_format_id
+			FROM elp_country_postal_format 
+			WHERE
+				country_id = :country_id
+		]]>	
+		</LOAD_LIST>	
+<LOAD_FORMAT_LIST>		
+<![CDATA[	
+			SELECT
+				ex.format,
+				epf.locator_start_position,
+				epf.locator_length,
+				epf.reformat_file_input_flag,
+        epf.comuna_enabled
+			FROM elp_postal_code_format epf, elp_country_postal_format ecpf, elp_regular_expression ex 
+			WHERE epf.postal_code_format_id = ecpf.postal_code_format_id
+        AND epf.regular_expression_id = ex.regular_expression_id 
+			  AND ecpf.country_id = :country_id
+		]]>	
+		</LOAD_FORMAT_LIST>			
+	<UPDATE>
+		<![CDATA[	
+			UPDATE elp_country_postal_format SET
+				country_id = :country_id,
+				postal_code_format_id = :postal_code_format_id,
+				modified_by = :modified_by
+			WHERE
+				country_postal_format_id = :country_postal_format_id
+		]]>
+	</UPDATE>
+	<INSERT>
+			INSERT INTO elp_country_postal_format
+					(			
+				country_id, 
+				postal_code_format_id, 
+				created_by,
+				country_postal_format_id
+					)
+			VALUES
+					(			
+				:country_id, 
+				:postal_code_format_id, 
+				:created_by,
+				:country_postal_format_id
+					)
+	</INSERT>
+	<DELETE>
+			DELETE FROM elp_country_postal_format
+			WHERE
+				country_postal_format_id = :country_postal_format_id
+	</DELETE>
+</SQL> 
+
+
+

@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8" ?>
+
+<!-- ********************** THIS FILE HAS BEEN GENERATED FROM TEMPLATE SQLObject.cst (4/11/2007)********************** -->
+
+<SQL>
+	<LOAD>
+		<![CDATA[	
+			SELECT 
+				company_id,
+				liability_limit,
+				term_km_mi,
+				term_months,
+				created_date,
+				created_by,
+				modified_date,
+				modified_by,
+				vsc_liability_limit_id
+			FROM elp_vsc_liability_limit 
+			WHERE
+				vsc_liability_limit_id = :vsc_liability_limit_id
+		]]>
+	</LOAD>
+	<LOAD_LIST>		
+	</LOAD_LIST>	
+	<UPDATE>
+		<![CDATA[	
+			UPDATE elp_vsc_liability_limit SET
+				company_id = :company_id,
+				liability_limit = :liability_limit,
+				term_km_mi = :term_km_mi,
+				term_months = :term_months,
+				modified_by = :modified_by
+			WHERE
+				vsc_liability_limit_id = :vsc_liability_limit_id
+		]]>
+	</UPDATE>
+	<INSERT>
+			INSERT INTO elp_vsc_liability_limit
+					(			
+				company_id, 
+				liability_limit, 
+				term_km_mi, 
+				term_months, 
+				created_by,
+				vsc_liability_limit_id
+					)
+			VALUES
+					(			
+				:company_id, 
+				:liability_limit, 
+				:term_km_mi, 
+				:term_months, 
+				:created_by,
+				:vsc_liability_limit_id
+					)
+	</INSERT>
+	<DELETE>
+			DELETE FROM elp_vsc_liability_limit
+			WHERE
+				vsc_liability_limit_id = :vsc_liability_limit_id
+	</DELETE>
+</SQL> 
+
+

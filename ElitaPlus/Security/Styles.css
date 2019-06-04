@@ -1,0 +1,92 @@
+/* Style Sheet for the Elita+ System */
+
+BODY
+{
+    FONT-FAMILY: Verdana, Helvetica, sans-serif;
+    FONT-SIZE: 11px;
+}
+  
+TABLE
+{
+	font-family: Verdana, Helvetica, sans-serif;
+	font-size: 11px;
+	
+}
+
+HOMETITLETEXT
+{
+	font-family: Verdana, Helvetica, sans-serif;
+	font-size: 14px;
+	font-weight:bold;
+}
+
+BUTTON
+{
+	text-decoration:none;
+	font-family:  Verdana, Helvetica, sans-serif; 
+	font-size:10px; 
+	border:  solid 1px #999999; 
+	background-color: #cccccc;
+}
+
+A
+{
+	color: #000000;
+	text-decoration: none;
+}
+
+A:hover
+{
+	color:  navy;
+	text-decoration: none;
+}
+
+
+
+INPUT
+{	
+	text-decoration:none; 
+	font-family:verdana, Helvetica, sans-serif; 
+	font-size:10px; 
+}
+
+INPUT.FLATTEXT
+{	
+	text-decoration:none; 
+	font-family:verdana; 
+	font-size:10px; 
+}
+
+INPUT.FLATTEXTBOX
+{	
+	border: 1px solid #cccccc;
+	text-decoration:none; 
+	font-family:verdana; 
+	font-size:10px; 
+}
+
+INPUT.FLATBUTTON
+{
+	BORDER-RIGHT: #999999 1px solid;
+	BORDER-TOP: #999999 1px solid; 
+	FONT-SIZE: 10px; 
+	BORDER-LEFT: #999999 1px solid; 
+	BORDER-BOTTOM: #999999 1px solid; 
+	FONT-FAMILY: verdana; 
+	TEXT-DECORATION: none;	
+	background-color: #dee3e7;
+}
+
+SELECT
+{
+	border: 1px solid #cccccc;
+	text-decoration:none; 
+	font-family:verdana; 
+	font-size:10px; 
+}
+.ButtonLinkDisabledLink
+{
+	text-decoration:none;
+	color:Red;
+	font-size:xx-large;
+}

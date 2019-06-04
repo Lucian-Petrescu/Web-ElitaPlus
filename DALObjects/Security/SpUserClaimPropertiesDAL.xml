@@ -1,0 +1,68 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+
+<!-- ********************** THIS FILE HAS BEEN GENERATED FROM TEMPLATE SQLObject.cst (3/13/2017)********************** -->
+
+<SQL>
+  <LOAD>
+    <![CDATA[	
+			SELECT 
+				sp_user_claims_id,
+				property_name,
+				property_value,
+				effective_date,
+				expiration_date,
+				created_by,
+				created_date,
+				modified_by,
+				modified_date,
+				sp_user_claim_properties_id
+			FROM elp_sp_user_claim_properties 
+			WHERE
+				sp_user_claim_properties_id = :sp_user_claim_properties_id
+		]]>
+  </LOAD>
+  <LOAD_LIST>
+  </LOAD_LIST>
+  <UPDATE>
+    <![CDATA[	
+			UPDATE elp_sp_user_claim_properties SET
+				sp_user_claims_id = :sp_user_claims_id,
+				property_name = :property_name,
+				property_value = :property_value,
+				effective_date = :effective_date,
+				expiration_date = :expiration_date,
+				modified_by = :modified_by
+			WHERE
+				sp_user_claim_properties_id = :sp_user_claim_properties_id
+		]]>
+  </UPDATE>
+  <INSERT>
+    INSERT INTO elp_sp_user_claim_properties
+    (
+    sp_user_claims_id,
+    property_name,
+    property_value,
+    effective_date,
+    expiration_date,
+    created_by,
+    sp_user_claim_properties_id
+    )
+    VALUES
+    (
+    :sp_user_claims_id,
+    :property_name,
+    :property_value,
+    :effective_date,
+    :expiration_date,
+    :created_by,
+    :sp_user_claim_properties_id
+    )
+  </INSERT>
+  <DELETE>
+    DELETE FROM elp_sp_user_claim_properties
+    WHERE
+    sp_user_claim_properties_id = :sp_user_claim_properties_id
+  </DELETE>
+</SQL>
+
+

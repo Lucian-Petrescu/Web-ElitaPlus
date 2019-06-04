@@ -1,0 +1,130 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+
+<!-- ********************** THIS FILE HAS BEEN GENERATED FROM TEMPLATE SQLObject.cst (1/9/2015)********************** -->
+
+<SQL>
+  <LOAD>
+    <![CDATA[	
+			SELECT 
+				dealer_id,
+				acct_amt_src_field_type_id,
+				entity_by_region,
+        entity_by_region_coverage_type,
+        reconcil_with_invoice,
+        use_formula_for_clip,
+				created_date,
+				created_by,
+				modified_date,
+				modified_by,
+				acct_amt_src_id
+			FROM elp_afa_acct_amt_src 
+			WHERE
+				acct_amt_src_id = :acct_amt_src_id
+		]]>
+  </LOAD>
+  <LOAD_LIST_BY_DEALER_MAPPED>
+    <![CDATA[
+      select ACCT_AMT_SRC_ID, ACCT_AMT_SRC_FIELD_TYPE_ID
+        , GetDescriptionFromListItem(AmtSrc.ACCT_AMT_SRC_FIELD_TYPE_ID, l.language_id) AmountSource
+        , AmtSrc.ENTITY_BY_REGION
+        , AmtSrc.entity_by_region_coverage_type
+        , GetDescriptionFromListItem(getitemidfromlistanditem('CTYP', AmtSrc.entity_by_region_coverage_type), l.language_id) EBR_COVType_Desc
+        , AmtSrc.reconcil_with_invoice
+        , AmtSrc.use_formula_for_clip
+        , GETTRANSLATION(decode(AmtSrc.reconcil_with_invoice, 'D', 'RECONCILE_AS_DEBIT', 'C', 'RECONCILE_AS_CREDIT', 'B', 'RECONCILE_AS_BOTH', 'NO'), null, l.language_id) as reconcil_with_invoice_desc
+        ,(select max(LISTAGG(Operation || ' ' || GetDescriptionFromListItem(INV_RATE_BUCKET_ID, l.language_id) || '('
+        	|| GetDescriptionFromListItem(getitemidfromlistanditem('CNTFIELDEPRISM', COUNT_FIELD_TO_USE), l.language_id)
+        	|| ')', ' ') WITHIN GROUP (ORDER BY AFA_PRODUCT_ID, LOSS_TYPE))
+	        from ELP_AFA_ACCT_AMT_SRC_MAPPING
+	        where ACCT_AMT_SRC_ID = amtsrc.ACCT_AMT_SRC_ID
+		        and AFA_PRODUCT_ID is null
+		        and LOSS_TYPE is null
+	        group by ACCT_AMT_SRC_ID, AFA_PRODUCT_ID, LOSS_TYPE
+	        )  as GenericMapping
+        , (select LISTAGG(code, ',') WITHIN GROUP (ORDER BY code) AS ProductList
+	        from (
+		        select distinct ACCT_AMT_SRC_ID, code
+		        from ELP_AFA_ACCT_AMT_SRC_MAPPING m
+		        inner join ELP_AFA_PRODUCT p on m.AFA_PRODUCT_ID = p.AFA_PRODUCT_ID
+	        )
+	        where ACCT_AMT_SRC_ID = amtsrc.ACCT_AMT_SRC_ID
+	        group by ACCT_AMT_SRC_ID
+        ) as ProductMapped
+      from elita.ELP_AFA_ACCT_AMT_SRC AmtSrc
+      inner join elp_language l on 1=1 and l.language_id = :language_id
+      WHERE dealer_id = :dealer_id
+      order by upper(AmountSource)            
+    ]]>
+  </LOAD_LIST_BY_DEALER_MAPPED>
+  <LOAD_LIST_BY_DEALER_NOT_MAPPED>
+    <![CDATA[
+      select distinct actevd.FIELD_TYPE_ID
+	      , GetDescriptionFromListItem(FIELD_TYPE_ID, :language_id) AmountSource
+      from   elp_company           co
+      inner join elp_Dealer d on d.company_id = co.company_id
+      inner join elp_acct_event actev on co.acct_company_id = actev.acct_company_id
+      inner join elp_acct_event_detail actevd on actev.acct_event_id = actevd.acct_event_id
+      where d.dealer_id = :dealer_id
+        and FIELD_TYPE_ID <> NVL(getitemidfromlistanditem('ACCTFIELDTYP', 'PREM_RECONCILDIFFEPRISM'), hextoraw('1')) -- Reconciliation diff amount source not mapping needed
+        and FIELD_TYPE_ID <> NVL(getitemidfromlistanditem('ACCTFIELDTYP', 'PREM_MDFEPRISM'), hextoraw('1')) -- MDF amount source not mapping needed
+        and FIELD_TYPE_ID <> NVL(getitemidfromlistanditem('ACCTFIELDTYP', 'PREM_CESSLOSSEPRISM'), hextoraw('1')) -- cession loss no mapping needed
+        and not exists(select null from elita.ELP_AFA_ACCT_AMT_SRC where ACCT_AMT_SRC_FIELD_TYPE_ID = actevd.FIELD_TYPE_ID and dealer_id = d.dealer_id)
+      order by upper(AmountSource)
+    ]]>
+  </LOAD_LIST_BY_DEALER_NOT_MAPPED>
+  
+  <CheckDuplicateCLIPFormula>
+    <![CDATA[	
+			SELECT *
+			FROM elp_afa_acct_amt_src 
+			WHERE
+				dealer_id = :dealer_id
+        and acct_amt_src_field_type_id <> :acct_amt_src_field_type_id
+        and use_formula_for_clip = 'Y'
+		]]>
+  </CheckDuplicateCLIPFormula>
+  
+  <UPDATE>
+    <![CDATA[	
+			UPDATE elp_afa_acct_amt_src SET
+				dealer_id = :dealer_id,
+				acct_amt_src_field_type_id = :acct_amt_src_field_type_id,
+				entity_by_region = :entity_by_region,
+        entity_by_region_coverage_type = :entity_by_region_coverage_type,
+        reconcil_with_invoice = :reconcil_with_invoice,
+        use_formula_for_clip = :use_formula_for_clip,
+				modified_by = :modified_by
+			WHERE
+				acct_amt_src_id = :acct_amt_src_id        
+		]]>
+  </UPDATE>
+  <INSERT>
+    INSERT INTO elp_afa_acct_amt_src
+    (
+    dealer_id,
+    acct_amt_src_field_type_id,
+    entity_by_region,
+    entity_by_region_coverage_type,
+    reconcil_with_invoice,
+    use_formula_for_clip,
+    created_by,
+    acct_amt_src_id
+    )
+    VALUES
+    (
+    :dealer_id,
+    :acct_amt_src_field_type_id,
+    :entity_by_region,
+    :entity_by_region_coverage_type,
+    :reconcil_with_invoice,
+    :use_formula_for_clip,
+    :created_by,
+    :acct_amt_src_id
+    )
+  </INSERT>
+  <DELETE>
+    DELETE FROM elp_afa_acct_amt_src
+    WHERE
+    acct_amt_src_id = :acct_amt_src_id
+  </DELETE>
+</SQL>

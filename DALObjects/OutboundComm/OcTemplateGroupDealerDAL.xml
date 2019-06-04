@@ -1,0 +1,79 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+
+<!-- ********************** THIS FILE HAS BEEN GENERATED FROM TEMPLATE SQLObject.cst (8/15/2017)********************** -->
+
+<SQL>
+  <LOAD>
+    <![CDATA[	
+			SELECT 
+				oc_template_group_id,
+				dealer_id,
+				created_by,
+				created_date,
+				modified_by,
+				modified_date,
+				oc_template_group_dealer_id
+			FROM elp_oc_template_group_dealer 
+			WHERE
+				oc_template_group_dealer_id = :oc_template_group_dealer_id
+		]]>
+  </LOAD>
+  <LOAD_LIST>
+  </LOAD_LIST>
+  <LOAD_LIST_BY_TEMPLATE_GROUP_ID>
+    <![CDATA[	
+			SELECT 
+				oc_template_group_id,
+				dealer_id,
+				created_by,
+				created_date,
+				modified_by,
+				modified_date,
+				oc_template_group_dealer_id
+			FROM elp_oc_template_group_dealer 
+			WHERE
+				oc_template_group_id = :oc_template_group_id
+		]]>
+  </LOAD_LIST_BY_TEMPLATE_GROUP_ID>
+  <GET_ASSOCIATED_TEMPLATE_GROUP_COUNT>
+    <![CDATA[	
+			select  count(oc_template_group_id) number_of_template_groups
+      from    elp_oc_template_group_dealer
+      where   dealer_id = :dealer_id
+      and     oc_template_group_id <> :oc_template_group_id
+		]]>
+  </GET_ASSOCIATED_TEMPLATE_GROUP_COUNT>
+  <UPDATE>
+    <![CDATA[	
+			UPDATE elp_oc_template_group_dealer SET
+				oc_template_group_id = :oc_template_group_id,
+				dealer_id = :dealer_id,
+				modified_by = :modified_by
+			WHERE
+				oc_template_group_dealer_id = :oc_template_group_dealer_id
+		]]>
+  </UPDATE>
+  <INSERT>
+    INSERT INTO elp_oc_template_group_dealer
+    (
+    oc_template_group_id,
+    dealer_id,
+    created_by,
+    oc_template_group_dealer_id
+    )
+    VALUES
+    (
+    :oc_template_group_id,
+    :dealer_id,
+    :created_by,
+    :oc_template_group_dealer_id
+    )
+  </INSERT>
+  <DELETE>
+    DELETE FROM elp_oc_template_group_dealer
+    WHERE
+    oc_template_group_dealer_id = :oc_template_group_dealer_id
+  </DELETE>
+</SQL>
+
+

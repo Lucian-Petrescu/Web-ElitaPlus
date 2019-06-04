@@ -1,0 +1,76 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+
+<!-- ********************** THIS FILE HAS BEEN GENERATED FROM TEMPLATE SQLObject.cst (11/12/2008)********************** -->
+
+<SQL>
+  <LOAD>
+    <![CDATA[	
+			SELECT 
+				trans_dtl_clm_updte_2elita_id,
+				xml_mfg_part_code,
+				xml_part_description_code,
+				xml_part_cost,
+				xml_part_defect,
+				xml_part_solution,
+				xml_in_stock,
+				modified_date,
+				modified_by,
+				created_date,
+				created_by,
+				trans_dtl_part_id
+			FROM elp_trans_dtl_part 
+			WHERE
+				trans_dtl_part_id = :trans_dtl_part_id
+		]]>
+  </LOAD>
+  <LOAD_LIST>
+  </LOAD_LIST>
+  <UPDATE>
+    <![CDATA[	
+			UPDATE elp_trans_dtl_part SET
+				trans_dtl_clm_updte_2elita_id = :trans_dtl_clm_updte_2elita_id,
+				xml_mfg_part_code = :xml_mfg_part_code,
+				xml_part_description_code = :xml_part_description_code,
+				xml_part_cost = :xml_part_cost,
+				xml_part_defect = :xml_part_defect,
+				xml_part_solution = :xml_part_solution,
+				xml_in_stock = :xml_in_stock,
+				modified_by = :modified_by
+			WHERE
+				trans_dtl_part_id = :trans_dtl_part_id
+		]]>
+  </UPDATE>
+  <INSERT>
+    INSERT INTO elp_trans_dtl_part
+    (
+    trans_dtl_clm_updte_2elita_id,
+    xml_mfg_part_code,
+    xml_part_description_code,
+    xml_part_cost,
+    xml_part_defect,
+    xml_part_solution,
+    xml_in_stock,
+    created_by,
+    trans_dtl_part_id
+    )
+    VALUES
+    (
+    :trans_dtl_clm_updte_2elita_id,
+    :xml_mfg_part_code,
+    :xml_part_description_code,
+    :xml_part_cost,
+    :xml_part_defect,
+    :xml_part_solution,
+    :xml_in_stock,
+    :created_by,
+    :trans_dtl_part_id
+    )
+  </INSERT>
+  <DELETE>
+    DELETE FROM elp_trans_dtl_part
+    WHERE
+    trans_dtl_part_id = :trans_dtl_part_id
+  </DELETE>
+</SQL>
+
+

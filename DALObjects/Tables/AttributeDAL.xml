@@ -1,0 +1,21 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<SQL>
+  <LOAD>
+    <![CDATA[elp_utl_attribute.LoadAttribute]]>
+  </LOAD>
+  <LOAD_ATTRIBUTE_LIST>
+    <![CDATA[elp_utl_attribute.LoadAttributeList]]>
+  </LOAD_ATTRIBUTE_LIST>
+  <LOAD_TABLES>
+    <![CDATA[elp_utl_attribute.LoadTables]]>
+  </LOAD_TABLES>
+  <INSERT>
+    <![CDATA[elp_utl_attribute.AddAttribute]]>
+  </INSERT>
+  <UPDATE>
+    <![CDATA[elp_utl_attribute.ModifyAttribute]]>
+  </UPDATE>
+  <DELETE>
+    <![CDATA[elp_utl_attribute.DeleteAttribute]]>
+  </DELETE>
+</SQL>

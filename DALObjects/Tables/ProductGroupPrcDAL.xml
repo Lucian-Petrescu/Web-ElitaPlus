@@ -1,0 +1,122 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+
+<!-- ********************** THIS FILE HAS BEEN GENERATED FROM TEMPLATE SQLObject.cst (9/17/2008)********************** -->
+
+<SQL>
+  <LOAD>
+    <![CDATA[	
+			SELECT 
+				PRODUCT_GROUP_DETAIL_ID, 
+        PRODUCT_GROUP_ID, 
+        PRODUCT_CODE_ID, 
+        CREATED_DATE, 
+        MODIFIED_DATE, 
+        CREATED_BY, 
+        MODIFIED_BY
+			FROM elp_product_group_detail 
+			WHERE
+				product_group_detail_id = :product_group_detail_id
+		]]>
+  </LOAD>
+  <LOAD_LIST>
+    <![CDATA[		
+		    SELECT
+          pgd.PRODUCT_GROUP_ID,
+				  pgd.PRODUCT_CODE_ID,
+				  pgd.CREATED_BY,
+				  pgd.CREATED_DATE,
+				  pgd.MODIFIED_BY,
+				  pgd.MODIFIED_DATE,
+				  pc.DESCRIPTION,
+				  pgd.PRODUCT_GROUP_DETAIL_ID 
+			FROM
+				elp_product_group_detail pgd, elp_product_code pc 
+			WHERE
+				pgd.PRODUCT_CODE_ID  = pc.PRODUCT_CODE_ID
+			AND	pgd.PRODUCT_GROUP_ID = :PRODUCT_GROUP_ID
+		]]>
+  </LOAD_LIST>
+
+  <LOAD_PRODUCT_GROUP_LIST>
+    <![CDATA[		
+		    SELECT
+	        pgd.product_group_id,
+				  pgd.product_code_id,
+				  pgd.created_by,
+				  pgd.created_date,
+				  pgd.modified_by,
+				  pgd.modified_date,
+				  pg.product_group_name,
+				  pgd.product_group_detail_id
+			FROM
+				elp_product_group_detail pgd, elp_product_group pg 
+			WHERE
+				pgd.product_group_id  = pg.product_group_id
+			AND	pgd.product_code_id = :product_code_id
+		]]>
+  </LOAD_PRODUCT_GROUP_LIST>
+  <LOAD_GROUP_PRODUCT_CODE_IDs>
+    <![CDATA[		
+		    SELECT
+	            product_code_id 
+			FROM
+				elp_product_group_detail 
+			WHERE
+				product_group_id  = :product_group_id
+		]]>
+  </LOAD_GROUP_PRODUCT_CODE_IDs>
+  <LOAD_ALL_GROUP_PRODUCT_CODE_IDs>
+    <![CDATA[		
+		    SELECT
+	            pgd.product_code_id
+			FROM
+				elp_product_group pg, elp_product_group_detail pgd 
+			WHERE
+				pg.product_group_id  = pgd.product_group_id
+			and	pg.dealer_id = :dealer_id
+		]]>
+  </LOAD_ALL_GROUP_PRODUCT_CODE_IDs>
+  <LOAD_BY_PRODUCTGROUPID_PRODUCTCODEID>
+    <![CDATA[
+    SELECT 
+    PRODUCT_GROUP_DETAIL_ID, 
+    PRODUCT_GROUP_ID, 
+    PRODUCT_CODE_ID, 
+    CREATED_DATE, 
+    MODIFIED_DATE, 
+    CREATED_BY, 
+    MODIFIED_BY
+    FROM ELP_PRODUCT_GROUP_DETAIL
+    WHERE PRODUCT_GROUP_ID = :PRODUCT_GROUP_ID
+    AND PRODUCT_CODE_ID = :PRODUCT_CODE_ID
+    ]]>
+  </LOAD_BY_PRODUCTGROUPID_PRODUCTCODEID>
+  <UPDATE>
+    <![CDATA[	
+			UPDATE elp_product_group_detail SET
+				product_code_id = :product_code_id,
+				modified_by = :modified_by
+			WHERE
+				product_group_detail_id = :product_group_detail_id
+
+		]]>
+  </UPDATE>
+  <INSERT>
+    INSERT INTO elp_product_group_detail
+    (
+    product_group_id,
+    product_code_id
+    )
+    VALUES
+    (
+    :product_group_id,
+    :product_code_id
+    )
+  </INSERT>
+  <DELETE>
+    DELETE FROM elp_product_group_detail
+    WHERE
+    product_group_detail_id = :product_group_detail_id
+
+  </DELETE>
+</SQL>

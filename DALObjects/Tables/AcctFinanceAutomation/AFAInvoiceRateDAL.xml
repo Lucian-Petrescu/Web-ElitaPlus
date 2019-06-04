@@ -1,0 +1,200 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+
+<!-- ********************** THIS FILE HAS BEEN GENERATED FROM TEMPLATE SQLObject.cst (1/20/2015)********************** -->
+
+<SQL>
+  <LOAD>
+    <![CDATA[	
+			SELECT 
+				afa_product_id,
+				insurance_code,
+				tier,
+				loss_type,
+				retail_amt,
+				premium_amt,
+				comm_amt,
+				admin_amt,
+				ancillary_amt,
+				other_amt,
+				effective_date,
+				expiration_date,
+				created_date,
+				created_by,
+				modified_date,
+				modified_by,
+				afa_invoice_rate_id,
+        regulatory_state
+			FROM elp_afa_invoice_rate 
+			WHERE
+				afa_invoice_rate_id = :afa_invoice_rate_id
+		]]>
+  </LOAD>
+  <LOAD_LIST>
+  </LOAD_LIST>
+  <INV_LOAD_LIST>
+    select afa_invoice_rate_id,afa_product_id,insurance_code,tier,loss_type,retail_amt,premium_amt,comm_amt,
+    admin_amt,ancillary_amt,other_amt,effective_date,expiration_date,regulatory_state
+    from elp_afa_invoice_rate
+    where afa_product_id = :afa_product_id
+    order by effective_date, insurance_code, tier, regulatory_state
+  </INV_LOAD_LIST>
+  <UPDATE>
+    <![CDATA[	
+			UPDATE elp_afa_invoice_rate SET
+				afa_product_id = :afa_product_id,
+				insurance_code = :insurance_code,
+				tier = :tier,
+				loss_type = :loss_type,
+				retail_amt = :retail_amt,
+				premium_amt = :premium_amt,
+				comm_amt = :comm_amt,
+				admin_amt = :admin_amt,
+				ancillary_amt = :ancillary_amt,
+				other_amt = :other_amt,
+				effective_date = :effective_date,
+				expiration_date = :expiration_date,
+				modified_by = :modified_by,
+        regulatory_state = :regulatory_state
+			WHERE
+				afa_invoice_rate_id = :afa_invoice_rate_id
+		]]>
+  </UPDATE>
+  <INSERT>
+    INSERT INTO elp_afa_invoice_rate
+    (
+    afa_product_id,
+    insurance_code,
+    tier,
+    loss_type,
+    retail_amt,
+    premium_amt,
+    comm_amt,
+    admin_amt,
+    ancillary_amt,
+    other_amt,
+    effective_date,
+    expiration_date,
+    created_by,
+    afa_invoice_rate_id,
+    regulatory_state
+    )
+    VALUES
+    (
+    :afa_product_id,
+    :insurance_code,
+    :tier,
+    :loss_type,
+    :retail_amt,
+    :premium_amt,
+    :comm_amt,
+    :admin_amt,
+    :ancillary_amt,
+    :other_amt,
+    :effective_date,
+    :expiration_date,
+    :created_by,
+    :afa_invoice_rate_id,
+    :regulatory_state
+    )
+  </INSERT>
+  <DELETE>
+    DELETE FROM elp_afa_invoice_rate
+    WHERE
+    afa_invoice_rate_id = :afa_invoice_rate_id
+  </DELETE>
+  <GET_DUPLIC_RATE_DEFINITN>
+    <![CDATA[
+    select max(c) from
+    (
+    select count(*) c from elp_afa_invoice_rate inv, elp_afa_product prd, elp_dealer d
+    where inv.afa_product_id = :afa_product_id 
+    and inv.afa_product_id = prd.afa_product_id
+    and prd.dealer_id = d.dealer_id
+    and (d.dealer = 'TPHP' or d.dealer = 'TMHP')
+    and upper(inv.loss_type) =:loss_type 
+    and upper(inv.tier) =:tier
+    and upper(inv.regulatory_state) =:regulatory_state
+    --dynamic_where_clause
+    and inv.afa_invoice_rate_id <> :afa_invoice_rate_id
+    union all
+    select count(*) c from elp_afa_invoice_rate inv, elp_afa_product prd, elp_dealer d
+    where inv.afa_product_id = :afa_product_id 
+    and inv.afa_product_id = prd.afa_product_id
+    and prd.dealer_id = d.dealer_id
+    and d.dealer <> 'TPHP'
+    and d.dealer <> 'TMHP'
+    and upper(inv.loss_type) =:loss_type 
+    and upper(inv.insurance_code) =:insurance_code 
+    and upper(inv.regulatory_state) =:regulatory_state
+    --dynamic_where_clause
+    and inv.afa_invoice_rate_id <> :afa_invoice_rate_id
+    )
+    ]]>
+  </GET_DUPLIC_RATE_DEFINITN>
+  <LOAD_MIN_EFFECTIVE_MAX_EXPIRATION>
+    <![CDATA[
+    select max(min_efective) min_efective, max(max_expiration)  max_expiration
+    from
+    (
+    SELECT
+    MIN(effective_date) min_efective, MAX(expiration_date) max_expiration
+    FROM
+    elita.elp_afa_invoice_rate inv, elp_afa_product prd, elp_dealer d
+    where inv.afa_product_id = :afa_product_id
+    and inv.afa_product_id = prd.afa_product_id
+    and prd.dealer_id = d.dealer_id
+    and (d.dealer = 'TPHP' or d.dealer = 'TMHP')
+    and upper(inv.loss_type) =:loss_type
+    and upper(nvl(inv.tier,'-')) = nvl(:tier,'-')
+    and upper(nvl(inv.regulatory_state,'-')) = nvl(:regulatory_state,'-')
+    union all
+    SELECT
+    MIN(effective_date) min_efective, MAX(expiration_date) max_expiration
+    FROM
+    elita.elp_afa_invoice_rate inv, elp_afa_product prd, elp_dealer d
+    where inv.afa_product_id = :afa_product_id
+    and inv.afa_product_id = prd.afa_product_id
+    and prd.dealer_id = d.dealer_id
+    and d.dealer <> 'TPHP'
+    and d.dealer <> 'TMHP'
+    and upper(inv.loss_type) =:loss_type
+    and upper(nvl(inv.tier,'-')) = nvl(:tier,'-')
+    and upper(nvl(inv.insurance_code,'-')) = nvl(:insurance_code,'-')
+    and upper(nvl(inv.regulatory_state,'-')) = nvl(:regulatory_state,'-')
+    )
+    ]]>
+  </LOAD_MIN_EFFECTIVE_MAX_EXPIRATION>
+  <LOAD_RATES_WITH_SAME_DEFINITION>
+    <![CDATA[
+    select effective_date min_efective, expiration_date max_expiration
+    from
+    (
+       select effective_date, expiration_date
+       FROM
+       elita.elp_afa_invoice_rate inv, elp_afa_product prd, elp_dealer d
+       where inv.afa_product_id = :afa_product_id
+       and inv.afa_product_id = prd.afa_product_id
+       and inv.afa_invoice_rate_id != :afa_invoice_rate_id
+       and prd.dealer_id = d.dealer_id
+       and (d.dealer = 'TPHP' or d.dealer = 'TMHP')
+       and upper(inv.loss_type) =:loss_type
+       and upper(nvl(inv.tier,'-')) = nvl(:tier,'-')
+       and upper(nvl(inv.regulatory_state,'-')) = nvl(:regulatory_state,'-')
+       union all
+       select effective_date, expiration_date
+       FROM
+       elita.elp_afa_invoice_rate inv, elp_afa_product prd, elp_dealer d
+       where inv.afa_product_id = :afa_product_id
+       and inv.afa_product_id = prd.afa_product_id
+       and inv.afa_invoice_rate_id != :afa_invoice_rate_id
+       and prd.dealer_id = d.dealer_id
+       and d.dealer <> 'TPHP'
+       and d.dealer <> 'TMHP'
+       and upper(inv.loss_type) =:loss_type
+       and upper(nvl(inv.tier,'-')) = nvl(:tier,'-')
+       and upper(nvl(inv.insurance_code,'-')) = nvl(:insurance_code,'-')
+       and upper(nvl(inv.regulatory_state,'-')) = nvl(:regulatory_state,'-')
+      ) order by max_expiration desc
+    ]]>
+  </LOAD_RATES_WITH_SAME_DEFINITION>
+</SQL>

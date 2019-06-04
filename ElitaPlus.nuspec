@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd">
+  <metadata>
+    <id>ElitaPlus$Region$$ReleasePath$</id>
+    <version>$Version$</version>
+    <authors>ElitaBuildDefinition</authors>
+    <description>Elita Plus Web Application</description>    
+  </metadata>
+</package>

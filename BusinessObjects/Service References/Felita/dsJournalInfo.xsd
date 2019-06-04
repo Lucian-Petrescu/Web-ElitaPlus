@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xs:schema xmlns:msdata="urn:schemas-microsoft-com:xml-msdata" xmlns:mstns="http://tempuri.org/dsJournalInfo.xsd" xmlns="http://tempuri.org/dsJournalInfo.xsd" attributeFormDefault="qualified" elementFormDefault="qualified" targetNamespace="http://tempuri.org/dsJournalInfo.xsd" id="dsJournalInfo" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+  <xs:element msdata:IsDataSet="true" msdata:UseCurrentLocale="true" name="dsJournalInfo">
+    <xs:complexType>
+      <xs:choice minOccurs="0" maxOccurs="unbounded">
+        <xs:element name="JournalInfo">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element minOccurs="0" name="BatchId" type="xs:string" />
+              <xs:element minOccurs="0" name="Processed" type="xs:boolean" />
+              <xs:element minOccurs="0" name="DebitAmount" type="xs:decimal" />
+              <xs:element minOccurs="0" name="CreditAmount" type="xs:decimal" />
+              <xs:element minOccurs="0" name="TransactionTotal" type="xs:int" />
+              <xs:element minOccurs="0" name="DateProcessed" type="xs:dateTime" />
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+      </xs:choice>
+    </xs:complexType>
+  </xs:element>
+</xs:schema>

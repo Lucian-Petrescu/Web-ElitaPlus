@@ -1,0 +1,5 @@
+﻿<%@ ServiceHost Language="VB"
+     Debug="true" 
+    Service="ElitaInternalWS.ClarMaxValueService" 
+    Factory="ElitaInternalWS.Core.UnityServiceHostFactory"
+    CodeBehind="ClarMaxValueService.svc.vb" %>

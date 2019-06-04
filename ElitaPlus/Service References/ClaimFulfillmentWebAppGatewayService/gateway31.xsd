@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xs:schema xmlns:ser="http://schemas.microsoft.com/2003/10/Serialization/" xmlns:tns="http://assurant.com/Elita/ClaimFulfillment/WebAppGateway/Data" elementFormDefault="qualified" targetNamespace="http://assurant.com/Elita/ClaimFulfillment/WebAppGateway/Data" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+  <xs:import schemaLocation="http://l16mia0d8386gr7.cead.prd/ElitaClaimFulfillment/WebAppGateway/gateway?xsd=xsd1" namespace="http://schemas.microsoft.com/2003/10/Serialization/" />
+  <xs:complexType name="GetDeliverySlotsRequest">
+    <xs:sequence>
+      <xs:element name="ServiceCenterCode" nillable="true" type="xs:string" />
+      <xs:element name="CountryCode" nillable="true" type="xs:string" />
+      <xs:element name="DeliveryAddress" nillable="true" type="tns:Address" />
+      <xs:element minOccurs="0" name="CourierCode" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="CourierProductCode" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="LookupDate" nillable="true" type="xs:dateTime" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="GetDeliverySlotsRequest" nillable="true" type="tns:GetDeliverySlotsRequest" />
+  <xs:complexType name="Address">
+    <xs:sequence>
+      <xs:element name="CountryCode" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="Address1" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="Address2" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="Address3" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="City" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="StateCode" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="PostalCode" nillable="true" type="xs:string" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="Address" nillable="true" type="tns:Address" />
+  <xs:complexType name="GetDeliverySlotsResponse">
+    <xs:sequence>
+      <xs:element name="DeliveryEstimates" nillable="true" type="tns:ArrayOfDeliveryEstimate" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="GetDeliverySlotsResponse" nillable="true" type="tns:GetDeliverySlotsResponse" />
+  <xs:complexType name="ArrayOfDeliveryEstimate">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="DeliveryEstimate" nillable="true" type="tns:DeliveryEstimate" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="ArrayOfDeliveryEstimate" nillable="true" type="tns:ArrayOfDeliveryEstimate" />
+  <xs:complexType name="DeliveryEstimate">
+    <xs:sequence>
+      <xs:element name="Behavior" nillable="true" type="tns:PresentationBehavior" />
+      <xs:element minOccurs="0" name="CourierCode" nillable="true" type="xs:string">
+        <xs:annotation>
+          <xs:appinfo>
+            <DefaultValue EmitDefaultValue="false" xmlns="http://schemas.microsoft.com/2003/10/Serialization/" />
+          </xs:appinfo>
+        </xs:annotation>
+      </xs:element>
+      <xs:element minOccurs="0" name="CourierProductCode" nillable="true" type="xs:string">
+        <xs:annotation>
+          <xs:appinfo>
+            <DefaultValue EmitDefaultValue="false" xmlns="http://schemas.microsoft.com/2003/10/Serialization/" />
+          </xs:appinfo>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="AvailableDeliveryDays" nillable="true" type="tns:ArrayOfDeliveryDay" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="DeliveryEstimate" nillable="true" type="tns:DeliveryEstimate" />
+  <xs:complexType name="PresentationBehavior">
+    <xs:sequence>
+      <xs:element name="SelectionAllowed" type="xs:boolean" />
+      <xs:element name="UseDeliverySlot" type="xs:boolean" />
+      <xs:element name="AllowSelectionAfterLastDeliveryDate" type="xs:boolean" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="PresentationBehavior" nillable="true" type="tns:PresentationBehavior" />
+  <xs:complexType name="ArrayOfDeliveryDay">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="DeliveryDay" nillable="true" type="tns:DeliveryDay" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="ArrayOfDeliveryDay" nillable="true" type="tns:ArrayOfDeliveryDay" />
+  <xs:complexType name="DeliveryDay">
+    <xs:sequence>
+      <xs:element name="DeliveryDate" type="xs:dateTime" />
+      <xs:element minOccurs="0" name="DeliverySlots" nillable="true" type="tns:ArrayOfDeliverySlot">
+        <xs:annotation>
+          <xs:appinfo>
+            <DefaultValue EmitDefaultValue="false" xmlns="http://schemas.microsoft.com/2003/10/Serialization/" />
+          </xs:appinfo>
+        </xs:annotation>
+      </xs:element>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="DeliveryDay" nillable="true" type="tns:DeliveryDay" />
+  <xs:complexType name="ArrayOfDeliverySlot">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="DeliverySlot" nillable="true" type="tns:DeliverySlot" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="ArrayOfDeliverySlot" nillable="true" type="tns:ArrayOfDeliverySlot" />
+  <xs:complexType name="DeliverySlot">
+    <xs:sequence>
+      <xs:element name="BeginTime" type="ser:duration" />
+      <xs:element name="EndTime" type="ser:duration" />
+      <xs:element name="Description" nillable="true" type="xs:string" />
+      <xs:element name="Group" nillable="true" type="xs:string" />
+      <xs:element name="Sequence" type="xs:int" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="DeliverySlot" nillable="true" type="tns:DeliverySlot" />
+  <xs:complexType name="CustomerDecisionRequest">
+    <xs:sequence>
+      <xs:element name="CompanyCode" nillable="true" type="xs:string" />
+      <xs:element name="AuthorizationNumber" nillable="true" type="xs:string" />
+      <xs:element name="CustomerDecision" nillable="true" type="xs:string" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="CustomerDecisionRequest" nillable="true" type="tns:CustomerDecisionRequest" />
+  <xs:complexType name="CustomerDecisionResponse">
+    <xs:sequence>
+      <xs:element name="CompanyCode" nillable="true" type="xs:string" />
+      <xs:element name="AuthorizationNumber" nillable="true" type="xs:string" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="CustomerDecisionResponse" nillable="true" type="tns:CustomerDecisionResponse" />
+</xs:schema>

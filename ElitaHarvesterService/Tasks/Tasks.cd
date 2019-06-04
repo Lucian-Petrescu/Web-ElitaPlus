@@ -1,0 +1,83 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1">
+  <Class Name="ElitaHarvesterService.ActivateProductTask">
+    <Position X="3.75" Y="10.25" Width="2" />
+    <Compartments>
+      <Compartment Name="Fields" Collapsed="true" />
+    </Compartments>
+    <TypeIdentifier>
+      <HashCode>BAEABAASUAUAACQQAACIAAAIAAAAAAAAAAIAAAAAAgA=</HashCode>
+      <FileName>Tasks\ActivateProductTask.vb</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="ElitaHarvesterService.CancelProductTask">
+    <Position X="9.25" Y="10.25" Width="2" />
+    <Compartments>
+      <Compartment Name="Fields" Collapsed="true" />
+    </Compartments>
+    <TypeIdentifier>
+      <HashCode>BAEABAASAAEAAARQAACIAAAIAAAAAAAAAAIIAQAAAgA=</HashCode>
+      <FileName>Tasks\CancelProductTask.vb</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="ElitaHarvesterService.AntivirusProductTaskBase">
+    <Position X="7.75" Y="5.25" Width="2.25" />
+    <Compartments>
+      <Compartment Name="Fields" Collapsed="true" />
+    </Compartments>
+    <TypeIdentifier>
+      <HashCode>ICQDQBESwAAAAAAAQMgAQkAAQAgACIADASIAAAAAIAA=</HashCode>
+      <FileName>Tasks\AntivirusProductTaskBase.vb</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="ElitaHarvesterService.UpdateProductTask">
+    <Position X="6.5" Y="10.25" Width="2" />
+    <Compartments>
+      <Compartment Name="Fields" Collapsed="true" />
+    </Compartments>
+    <TypeIdentifier>
+      <HashCode>BAEABAASAAEAAAQQAACIQAAIAAAAECAAAAIAAAIAAgA=</HashCode>
+      <FileName>Tasks\UpdateProductTask.vb</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="ElitaHarvesterService.TaskBase">
+    <Position X="8" Y="1.75" Width="1.75" />
+    <Compartments>
+      <Compartment Name="Fields" Collapsed="true" />
+    </Compartments>
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAQAAAwCBgABAAAAAAAAAADAAAAAAgAAABQ=</HashCode>
+      <FileName>Tasks\TaskBase.vb</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="ElitaHarvesterService.ReActivateProductTask">
+    <Position X="12" Y="10.25" Width="1.75" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAQAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Tasks\ReActivateProductTask.vb</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="ElitaHarvesterService.FileLoadTaskBase">
+    <Position X="3.5" Y="5.5" Width="1.75" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Tasks\FileLoadTaskBase.vb</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="ElitaHarvesterService.ClaimAuthorizationFileLoadTask">
+    <Position X="3.25" Y="7.5" Width="3" />
+    <TypeIdentifier>
+      <HashCode>IAAAAAAAAAAAAAQAAAAAAAAAQAAAAAAAAAAAAAAQAQA=</HashCode>
+      <FileName>Tasks\ClaimAuthorizationFileLoadTask.vb</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Interface Name="ElitaHarvesterService.ITask">
+    <Position X="10.5" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAgAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Tasks\ITask.vb</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Font Name="Tahoma" Size="8.25" />
+</ClassDiagram>

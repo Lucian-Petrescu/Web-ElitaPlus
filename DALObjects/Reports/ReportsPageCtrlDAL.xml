@@ -1,0 +1,95 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+
+<!-- ********************** THIS FILE HAS BEEN GENERATED FROM TEMPLATE SQLObject.cst (8/9/2010)********************** -->
+
+<SQL>
+	<LOAD>
+		<![CDATA[	
+			SELECT 
+				report_name,
+				period_generated,
+				last_pagenum,
+				created_date,
+				created_by,
+				modified_date,
+				modified_by,
+				status,
+				company_id,
+				pagectrl_id
+			FROM elp_reports_pagectrl 
+			WHERE
+				pagectrl_id = :pagectrl_id
+		]]>
+	</LOAD>
+	<LOAD_LIST>		
+	</LOAD_LIST>	
+	<UPDATE>
+		<![CDATA[	
+			UPDATE elp_reports_pagectrl SET
+				report_name = :report_name,
+				period_generated = :period_generated,
+				last_pagenum = :last_pagenum,
+				status = :status,
+				company_id = :company_id,
+				modified_by = :modified_by
+			WHERE
+				pagectrl_id = :pagectrl_id
+		]]>
+	</UPDATE>
+	<INSERT>
+			INSERT INTO elp_reports_pagectrl
+					(			
+				report_name, 
+				period_generated, 
+				last_pagenum, 
+				status, 
+				company_id, 
+				created_by,
+				pagectrl_id
+					)
+			VALUES
+					(			
+				:report_name, 
+				:period_generated, 
+				:last_pagenum, 
+				:status, 
+				:company_id, 
+				:created_by,
+				:pagectrl_id
+					)
+	</INSERT>
+	<DELETE>
+			DELETE FROM elp_reports_pagectrl
+			WHERE
+				pagectrl_id = :pagectrl_id
+	</DELETE>
+  <REPORT_RUNDATE_PAGENUM>
+    Elp_ReportPageCtrl.GetDateAndPageNumber
+  </REPORT_RUNDATE_PAGENUM>
+  <RUNNING_PERIOD>
+    select * from Elp_Reports_PageCtrl where Report_Name = :report_name and company_id = :CompanyId
+    and status = 'Running'
+  </RUNNING_PERIOD>
+  <REPORT_STATUS_FOR_A_PERIOD>
+    select status from Elp_Reports_PageCtrl where Report_Name = :report_name and
+    PERIOD_GENERATED = :ReportPeriod and company_id = :CompanyId
+  </REPORT_STATUS_FOR_A_PERIOD>
+  <REPORT_ACCOUNTING_START_DATE>
+    <![CDATA[	
+    SELECT TO_CHAR((MAX(closing_date) + 1),'YYYYMMDD') As begin_date
+    FROM ELITA.ELP_ACCOUNTING_CLOSE_INFO ACT, ELITA.ELP_COMPANY COMP
+    WHERE ACT.COMPANY_ID = COMP.COMPANY_ID AND
+    ACT.COMPANY_ID = :CompanyId AND
+    ACT.CLOSING_DATE < :ClosingDate
+    ]]>
+  </REPORT_ACCOUNTING_START_DATE>
+  <REPORT_ACCOUNTING_CLOSE_DATE>
+    <![CDATA[	
+    SELECT TO_CHAR(MIN(closing_date), 'YYYYMMDD') As closing_date
+    FROM ELITA.ELP_ACCOUNTING_CLOSE_INFO ACT, ELITA.ELP_COMPANY COMP
+    WHERE ACT.COMPANY_ID = COMP.COMPANY_ID AND
+    ACT.COMPANY_ID = :CompanyId AND
+    ACT.CLOSING_DATE > :BeginDate
+    ]]>
+  </REPORT_ACCOUNTING_CLOSE_DATE>
+</SQL> 

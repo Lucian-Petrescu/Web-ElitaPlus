@@ -1,0 +1,483 @@
+﻿<%@ Master Language="VB" AutoEventWireup="false" CodeBehind="content_Report.master.vb"
+    Inherits="Assurant.ElitaPlus.ElitaPlusWebApp.content_Report" %>
+
+<%@ Register TagPrefix="uc1" TagName="ErrorController" Src="~/Common/ErrorController.ascx" %>
+<%@ Register TagPrefix="uc2" TagName="ReportCeInputControl" Src="~/Reports/ReportCeInputControl.ascx" %>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head id="Head1" runat="server">
+    <meta http-equiv="X-UA-Compatible" content="IE=11" />
+    <!-- default script and stylesheet included dynamically in the base master to ensure location -->
+    <script language="JavaScript" src="../Navigation/Scripts/ReportCeMainScripts.js"></script>
+</head>
+<body leftmargin="0" topmargin="0" onload="changeScrollbarColor();resizeForm();"
+    onresize="resizeForm();">
+    <form id="Form1" method="post" runat="server">
+    <asj:ScriptManager ID="ScriptManager1" runat="server" EnablePartialRendering="true"
+        EnablePageMethods="true">
+    </asj:ScriptManager>
+    <table class="TABLETITLE" cellspacing="0" cellpadding="0" border="0">
+        <tr>
+            <td style="vertical-align: top;">
+                <table width="100%" border="0">
+                    <tr>
+                        <td height="20" align="left">
+                            <asp:Label CssClass="TITLELABEL" ID="TABLABEL" runat="server"></asp:Label>:
+                            <asp:Label CssClass="TITLELABELTEXT" ID="TITLELABEL" runat="server"></asp:Label>
+                        </td>
+                        <td align="right" height="20">
+                            <strong>*</strong>
+                            <asp:Label ID="Label3" runat="server">INDICATES_REQUIRED_FIELDS</asp:Label>
+                        </td>
+                    </tr>
+                </table>
+            </td>
+        </tr>
+    </table>
+    <table class="TABLEOUTER" id="moTableOuter" cellspacing="0" cellpadding="8" rules="none"
+        border="0">
+        <tr>
+            <td valign="top" align="center">
+                <table class="TABLEMAIN_MASTER" id="tblMain" cellpadding="6" rules="cols" align="center"
+                    border="0">
+                    <tr>
+                        <td style="vertical-align: top;">
+                            <table id="tblSearch" width="100%" align="center">
+                                <tr>
+                                    <td>
+                                        <table cellspacing="2" cellpadding="8" width="100%" border="0" 
+                                            style="border-right: #999999 1px solid; border-top: #999999 1px solid;
+                                            border-left: #999999 1px solid; border-bottom: #999999 1px solid;">
+                                            <tr>
+                                                <td align="center" colspan="3">
+                                                    <uc1:ErrorController ID="ErrorCtrl" runat="server"></uc1:ErrorController>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td align="center" colspan="3">
+                                                    <uc2:ReportCeInputControl ID="moReportCeInputControl" runat="server"></uc2:ReportCeInputControl>
+                                                </td>
+                                            </tr>
+                                        </table>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td align="center" colspan="3">
+                                        <asp:ContentPlaceHolder ID="ContentPanelMainContentBody" runat="server">
+                                        </asp:ContentPlaceHolder>
+                                    </td>
+                                </tr>
+                            </table>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td align="left" style="vertical-align: bottom">
+                            <hr style="width: 100%; height: 1px" size="1" />
+                            <asp:ContentPlaceHolder ID="ContentPanelButtons" runat="server">
+                            </asp:ContentPlaceHolder>
+                        </td>
+                    </tr>
+                </table>
+            </td>
+        </tr>
+    </table>
+    <script language="javascript" type="text/javascript">
+
+        function resizeForm() {
+
+            var h = parent.document.getElementById("Navigation_Content").clientHeight; //find the height of the iFrame client area
+            if (!document.getElementById('moTableOuter')) {
+                return;
+            } else {
+                //document.getElementById('moTableOuter').height = window.screen.availHeight - 180;
+                document.getElementById('moTableOuter').height = h - 60; 
+            }
+
+            if (!document.getElementById('tblMain')) {
+                return;
+            } else {
+                //document.getElementById('tblMain').height = window.screen.availHeight - 185;
+                document.getElementById('tblMain').height = h - 60;
+            }
+        }
+
+        var rolectlid;
+        var cborolectlid;
+
+        function restoreClientOptions() {
+
+        }
+
+        function toggleAllRolesSelection(isSingleRole) {
+            //debugger;
+            if (isSingleRole) {
+                alert(rolectlid);
+                document.getElementById(rolectlid).checked = false;
+            }
+            else {
+                document.getElementById(cborolectlid).selectedIndex = -1;
+            }
+
+        }
+
+        function toggleAllTabsSelection(isSingleTab, lblName) {
+            //debugger;
+            if (isSingleTab) {
+                document.forms[0].rtabs.checked = false;
+            }
+            else {
+                document.forms[0].cboTab.selectedIndex = -1;
+            }
+
+            if (lblName != '') {
+                document.all.item(lblName).style.color = '';
+            }
+        }
+
+        function toggleAllDealersSelection(isSingleDealer, lblName) {
+            //debugger;
+            if (isSingleDealer) {
+                document.forms[0].rdealer.checked = false;
+            }
+            else {
+                document.forms[0].cboDealer.selectedIndex = -1;
+            }
+
+            if (lblName != '') {
+                document.all.item(lblName).style.color = '';
+            }
+        }
+
+        function toggleAllProductsSelection(isSingleProduct) {
+            //debugger;
+            if (isSingleProduct) {
+                document.forms[0].rbProduct.checked = false;
+            }
+            else {
+                document.forms[0].cboProduct.selectedIndex = -1;
+            }
+        }
+
+        function toggleDetailSelection(isDetail) {
+            //debugger;
+            if (!isDetail) {
+                document.forms[0].RadiobuttonDetail.checked = false;
+            }
+            else {
+                document.forms[0].RadiobuttonTotalsOnly.checked = false;
+            }
+        }
+        function toggleAddedSoldSelection(isAdded) {
+            //debugger;
+            if (!isAdded) {
+                document.forms[0].RadiobuttonSold.checked = false;
+            }
+            else {
+                document.forms[0].RadiobuttonDateAdded.checked = false;
+            }
+        }
+
+        function toggleReportFormatViewSelection(isView) {
+            //debugger;
+            if (isView) {
+                document.getElementById(PDFControl).checked = false;
+                document.getElementById(TXTControl).checked = false;
+            }
+
+        }
+        function toggleReportFormatPDFSelection(isPDF) {
+            //debugger;
+            if (isPDF) {
+                document.getElementById(VIEWControl).checked = false;
+                document.getElementById(TXTControl).checked = false;
+            }
+
+        }
+        function toggleReportFormatTXTSelection(isTXT) {
+            //debugger;
+            if (isTXT) {
+                document.getElementById(VIEWControl).checked = false;
+                document.getElementById(PDFControl).checked = false;
+            }
+
+        }
+
+        var jTimerId
+        function SetProgressTimeOut() {
+            restoreClientOptions();
+            showProgressFrame(document.title, 'ReportCeProgressForm.aspx');
+            jTimerId = setInterval("VerifyProgressTimeOut()", 8000);
+        }
+       
+
+        function VerifyProgressTimeOut() {
+            //	alert("Verify");
+            if (document.getElementById(StatusControl).value != "") {
+                //alert(document.getElementById('<%#moReportCeInputControl.ReportControlViewer.ClientID%>').value); // =  viewername ;
+                //	closeProgressFrame();
+                //	clearInterval(jTimerId);
+
+                //	alertdocument.getElementById('<%#moReportCeInputControl.ReportControlStatus.ClientID%>').value);
+                if (document.getElementById(StatusControl).value != "SUCCESS") {
+                    var btn = document.getElementById(ControlErrorHidden);
+                    btn.click();
+                }
+                else {
+                    if (document.getElementById(FtpControl).value != "") {
+                        // Ftp
+                        alert("Ftp Date & Destination: " + document.getElementById(FtpControl).value);
+                    }
+                    document.getElementById(StatusControl).value = "";
+
+                    if (document.getElementById(ViewerControl).value == "IFRAME") {
+                        if (document.getElementById(ActionControl).value != "SCHEDULE") {
+                            showReportViewerFrame("ReportCeOpenWindowForm.aspx?file=pdf.pdf");
+                        }
+                        SetCloseTimerVariable('True');
+                    }
+                    else {
+                        closeReportViewerFrame();
+                    }
+                }
+                document.getElementById(ProgressVisibleControl).value = "False"
+                //closeProgressFrame();
+            }
+            CloseReportTimer();
+        }
+
+        function CloseReportTimer() {
+            if (document.getElementById(ProgressVisibleControl).value == "False") {
+                if (document.getElementById(CloseTimerControl).value == "True") {
+                    closeProgressFrame();
+                    document.getElementById(CloseTimerControl).value = "False";
+                }
+            }
+        }
+
+        function SetCloseTimerVariable(status) {
+            document.getElementById(CloseTimerControl).value = status;
+        }
+
+
+        function EnableReportCe() {
+            //alert("TestProgress")
+            var btn = document.getElementById(ControlViewHidden);
+            btn.click();
+
+        }
+
+        function ShowReportCeContainer() {
+            document.all.item('iframe1').style.display = '';
+            document.all.item('iframe1').style.visibility = 'visible';
+            document.all.item('iframe1').src = "ReportCeBaseForm.aspx";
+        }
+
+        function HideReportCeContainer() {
+            document.all.item('iframe1').style.display = 'none';
+            document.all.item('iframe1').style.visibility = 'hidden'
+            document.all.item('iframe1').src = "";
+        }
+
+        function CloseProgressBarParent(transMsg, viewerName, errorMsg, rptAction, rptFtp) {
+
+            //alert("TestProgress2");
+            document.getElementById(StatusControl).value = transMsg;
+            document.getElementById(ViewerControl).value = viewerName;
+            document.getElementById(ControlErrMsg).value = errorMsg;
+            document.getElementById(ActionControl).value = rptAction;
+            document.getElementById(FtpControl).value = rptFtp;
+            //If (viewerName = Reports.ReportCeBase.RptViewer.GetName(GetType(Reports.ReportCeBase.RptViewer), Reports.ReportCeBase.RptViewer.WINDOWOPEN))
+            //{
+            //   buttonClick();
+            //}                        
+        }
+
+        function SendReportError(transMsg, errorMsg) {
+            document.getElementById(StatusControl).value = transMsg;
+            document.getElementById(ControlErrMsg).value = errorMsg;
+        }
+
+        /* By Abdullah Alkhwlani
+        * This function "ToggleSingleDropDownSelection" is replacing the individual functions for each form.
+        * This function is used to toggle the selection between Radio Button control used for "All Selection" and 
+        * a single dropdown control that is used for "single Selection". 
+        * Function arguments:
+        * -------------------
+        * 1- ctlDropDown        -->  drop down
+        * 2- ctlRadioButton     --> "All Selection" radio button
+        * 3- isSingleSelection  --> True if radio button checked false otherwise
+        *
+        * Function Use Examples:
+        * ----------------------
+        * 1- From Radio button control:
+        *     onclick="ToggleSingleDropDownSelection('cboDealer', 'rdealer',false);"
+        *
+        * 2- From drop down control:
+        *     onchange="ToggleSingleDropDownSelection('cboDealer', 'rdealer', true);"
+        *
+        */
+        function ToggleSingleDropDownSelection(ctlDropDown, ctlRadioButton, isSingleSelection) {
+            var objDropDown = document.getElementById(ctlDropDown); 		//  DropDown control
+            var objRadioButton = document.getElementById(ctlRadioButton);   // Radio button control
+
+            if (isSingleSelection) {
+                if (objDropDown.selectedIndex == 0) {
+                    objRadioButton.checked = true;
+                }
+                else {
+                    objRadioButton.checked = false;
+                }
+            }
+            else {
+                objDropDown.selectedIndex = -1;
+            }
+        }
+
+        function ToggleSingleTextBoxSelection(ctlTextBox, ctlRadioButton, isSingleSelection) {
+
+            var objTextBox = document.getElementById(ctlTextBox); 		//  TextBox control
+            var objRadioButton = document.getElementById(ctlRadioButton);   // Radio button control
+
+            if (isSingleSelection) {
+                objRadioButton.checked = false;
+            }
+            else {
+                objTextBox.value = "";
+            }
+        }
+
+        function ToggleDoubleDropDownSelection(ctlDropDown1, ctlDropDown2, ctlRadioButton, isSingleSelection) {
+            var objDropDown1 = document.getElementById(ctlDropDown1); 		//  DropDown control 1
+            var objDropDown2 = document.getElementById(ctlDropDown2); 		//  DropDown control 2
+            var objRadioButton = document.getElementById(ctlRadioButton); 	// Radio button control
+
+            if (isSingleSelection) {
+                objRadioButton.checked = false;
+            }
+            else {
+                objDropDown1.selectedIndex = -1;
+                objDropDown2.selectedIndex = -1;
+            }
+        }
+
+        /* By Abdullah Alkhwlani
+        * This function "ToggleDualDropDownsSelection" is replacing the individual functions for each form.
+        * This function is used to toggle the selection between Radio Button control used for "All Selection" and 
+        * dual dropdowns controls "By Code" and "By Description" that is used for "single Selection". 
+        * Function arguments:
+        * -------------------
+        * 1- ctlCodeDropDown    --> "By Code" drop down
+        * 2- ctlDecDropDown     --> "By Description" drop down
+        * 3- ctlRadioButton     --> "All Selection" radio button
+        * 4- isSingleSelection  --> True if radio button checked false otherwise
+        * 5- change_Dec_Or_Code --> Value "D" will assigned "By Code" value to "By Description".
+        *		 					 Value "C" will assigned "By Description" value to "By Code". 
+        * Function Use Examples:
+        * ----------------------
+        * 1- From Radio button control:
+        *     onclick="ToggleDualDropDownsSelection('cboServiceCentersCode', 'cboServiceCentersDec', 'rServiceCenters', false,'');"
+        *
+        * 2- From "By Code" control:
+        *     onchange="ToggleDualDropDownsSelection('cboServiceCentersCode', 'cboServiceCentersDec', 'rServiceCenters', true,'D');"
+        *
+        * 3- From "By Description" control:
+        *     onchange="ToggleDualDropDownsSelection('cboServiceCentersCode', 'cboServiceCentersDec', 'rServiceCenters', true,'C');"
+        *
+        */
+        function ToggleDualDropDownsSelection(ctlCodeDropDown, ctlDecDropDown, ctlRadioButton, isSingleSelection, change_Dec_Or_Code) {
+            var objCodeDropDown = document.getElementById(ctlCodeDropDown); // "By Code" DropDown control
+            var objDecDropDown = document.getElementById(ctlDecDropDown);   // "By Description" DropDown control 
+            var objRadioButton = document.getElementById(ctlRadioButton);   // Radio button control
+
+            if (isSingleSelection) {
+                objRadioButton.checked = false;
+                //Select Code or Dec drop down
+                if (change_Dec_Or_Code == 'C') {
+                    objCodeDropDown.value = objDecDropDown.options[objDecDropDown.selectedIndex].value;
+                }
+                else {
+                    objDecDropDown.value = objCodeDropDown.options[objCodeDropDown.selectedIndex].value;
+                }
+            }
+            else {
+                objCodeDropDown.selectedIndex = -1;
+                objDecDropDown.selectedIndex = -1;
+            }
+        }
+
+        /* By Prakash Guduru
+        /* This function is used in reports only with option to run for different currencies configured at Country and Dealers in all companies configured for that country
+        /*Select All Dealers (OR) or A Single Dealer (OR) or Only Dealers With -----these 3 controls are mutually exclusive
+        */
+        function TogglelDropDownsSelectionsForCurrencyReports(ctlCodeDropDown, ctlDecDropDown, ctlDealerCurrency, ctlRadioButton, isSingleSelection, change_Dec_Or_Code) {
+            var objCodeDropDown = document.getElementById(ctlCodeDropDown); // "By Code" DropDown control
+            var objDecDropDown = document.getElementById(ctlDecDropDown);   // "By Description" DropDown control 
+            var objRadioButton = document.getElementById(ctlRadioButton);   // Radio button control
+            var objDealerCurrDropDown = document.getElementById(ctlDealerCurrency);   // "Or by Dealers with" DropDown control
+
+            if (isSingleSelection) {
+
+                objRadioButton.checked = false;
+                //Select Code or Dec drop down
+                if (change_Dec_Or_Code == 'C') {
+                    objCodeDropDown.value = objDecDropDown.options[objDecDropDown.selectedIndex].value;
+                }
+                else {
+                    objDecDropDown.value = objCodeDropDown.options[objCodeDropDown.selectedIndex].value;
+                }
+            }
+            else {
+
+                objCodeDropDown.selectedIndex = 0;
+                objDecDropDown.selectedIndex = 0;
+                objDealerCurrDropDown.selectedIndex = -1;
+            }
+        }
+
+        /* By Abdullah Alkhwlani
+        * This function "SetDualDropDownsValue" is replacing the individual functions for each form.
+        * This function is used to set the value of one dropdowns controls by the value of the selected one. 
+        * Function arguments:
+        * -------------------
+        * 1- ctlCodeDropDown    --> "By Code" drop down
+        * 2- ctlDecDropDown     --> "By Description" drop down
+        * 3- change_Dec_Or_Code --> Value "D" will assigned "By Code" value to "By Description".
+        *		 					 Value "C" will assigned "By Description" value to "By Code". 
+        * Function Use Examples:
+        * ----------------------
+        * 1- From "By Code" control:
+        *     onchange="SetDualDropDownsValue('cboServiceCentersCode', 'cboServiceCentersDec', 'D');"
+        *
+        * 2- From "By Description" control:
+        *     onchange="SetDualDropDownsValue('cboServiceCentersCode', 'cboServiceCentersDec', 'C');"
+        *
+        */
+        function SetDualDropDownsValue(ctlCodeDropDown, ctlDecDropDown, change_Dec_Or_Code) {
+            var objCodeDropDown = document.getElementById(ctlCodeDropDown); // "By Code" DropDown control
+            var objDecDropDown = document.getElementById(ctlDecDropDown);   // "By Description" DropDown control 
+
+            //Select Code or Dec drop down
+            if (change_Dec_Or_Code == 'C') {
+                objCodeDropDown.value = objDecDropDown.options[objDecDropDown.selectedIndex].value;
+            }
+            else {
+                objDecDropDown.value = objCodeDropDown.options[objCodeDropDown.selectedIndex].value;
+            }
+        }
+        function toggleRadioButtonSelection(ctlRadioBtn1, ctlRadioBtn2, isSelected) {
+            //debugger;
+            var objctlRadioBtn1 = document.getElementById(ctlRadioBtn1); 		//  DropDown control
+            var objctlRadioBtn2 = document.getElementById(ctlRadioBtn2);
+
+            if (!isSelected) {
+                objctlRadioBtn2.checked = false;
+            }
+            else {
+                objctlRadioBtn1.checked = false;
+            }
+        }
+        
+    </script>
+    </form>
+</body>
+</html>

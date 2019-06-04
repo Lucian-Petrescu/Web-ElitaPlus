@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="utf-8" ?>
+
+<!-- ********************** THIS FILE HAS BEEN GENERATED FROM TEMPLATE SQLObject.cst (4/4/2008)********************** -->
+
+<SQL>
+	<LOAD>
+		<![CDATA[	
+			SELECT 
+				ui_prog_code,
+				in_use,
+				dict_item_id,
+				created_date,
+				modified_date,
+				created_by,
+				modified_by,
+				label_id
+			FROM elp_label 
+			WHERE
+				label_id = :label_id
+		]]>
+	</LOAD>
+  <LOAD_USING_DICT_ITEM_ID>
+    <![CDATA[
+         SELECT
+            ui_prog_code,
+            in_use,
+            dict_item_id,
+            created_date,
+            modified_date,
+            created_by,
+            modified_by,
+            label_id
+            FROM elp_label
+        WHERE
+            dict_item_id = :dict_item_id
+    ]]>
+  </LOAD_USING_DICT_ITEM_ID>
+	<LOAD_LIST>
+    
+  </LOAD_LIST>
+  <LOAD_UI_PROG_CODE_LIST>
+    SELECT L.DICT_ITEM_ID, UI_PROG_CODE, TRANS.TRANSLATION ENGLISH
+    FROM ELP_LABEL L,ELP_DICT_ITEM_TRANSLATION TRANS
+    WHERE L.DICT_ITEM_ID = TRANS.DICT_ITEM_ID
+    AND TRANS.LANGUAGE_ID = :LANGUAGE_ID
+    --dynamic_where_clause
+    --dynamic_order_by_clause
+  </LOAD_UI_PROG_CODE_LIST>
+	<UPDATE>
+		<![CDATA[	
+			UPDATE elp_label SET
+				ui_prog_code = :ui_prog_code,
+				in_use = :in_use,
+				dict_item_id = :dict_item_id,
+				modified_by = :modified_by
+			WHERE
+				label_id = :label_id
+		]]>
+	</UPDATE>
+	<INSERT>
+    INSERT INTO elp_label
+    (
+    ui_prog_code,
+    in_use,
+    dict_item_id,
+    created_by,
+    label_id
+    )
+    VALUES
+    (
+    :ui_prog_code,
+    :in_use,
+    :dict_item_id,
+    :created_by,
+    :label_id
+    )
+  </INSERT>
+	<DELETE>
+    DELETE FROM elp_label
+    WHERE
+    label_id = :label_id
+  </DELETE>
+</SQL> 
+
+

@@ -1,0 +1,2 @@
+﻿<%@ ServiceHost Language="VB" Debug="true" Service="ElitaInternalWS.ServiceOrderDocument.ServiceOrderDocumentService"
+     Factory="ElitaInternalWS.Core.UnityServiceHostFactory" CodeBehind="ServiceOrderDocumentService.svc.vb" %>

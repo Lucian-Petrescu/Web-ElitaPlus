@@ -1,0 +1,614 @@
+<?xml version="1.0" encoding="utf-8" ?>
+
+<!-- ********************** THIS FILE HAS BEEN GENERATED FROM TEMPLATE SQLObject.cst (4/19/2007)********************** -->
+
+<SQL>
+	<LOAD>
+		<![CDATA[	
+			SELECT 
+				acct_company_id,
+				service_center_id,
+				dealer_id,
+        dealer_group_id,
+				account_code,
+				address_lookup_code,
+				address_sequence_number,
+				address_status,
+				account_type,
+				balance_type,
+				conversion_code_control,
+				account_analysis_1,
+				account_analysis_2,
+				account_analysis_3,
+				account_analysis_4,
+				account_analysis_5,
+				account_analysis_6,
+				account_analysis_7,
+				account_analysis_8,
+				account_analysis_9,
+				account_analysis_10,
+				account_analysis_code_1,
+				account_analysis_code_2,
+				account_analysis_code_3,
+				account_analysis_code_4,
+				account_analysis_code_5,
+				account_analysis_code_6,
+				account_analysis_code_7,
+				account_analysis_code_8,
+				account_analysis_code_9,
+				account_analysis_code_10,
+				report_conversion_control,
+				data_access_group_code,
+				default_currency_code,
+				account_status,
+				suppress_revaluation,
+				pay_as_paid_account_type,
+				supplier_lookup_code,
+				payment_method,
+				supplier_status,
+				supplier_analysis_code_1,
+				supplier_analysis_code_2,
+				supplier_analysis_code_3,
+				supplier_analysis_code_4,
+				supplier_analysis_code_5,
+				supplier_analysis_code_6,
+				supplier_analysis_code_7,
+				supplier_analysis_code_8,
+				supplier_analysis_code_9,
+				supplier_analysis_code_10,
+				modified_date,
+				modified_by,
+				created_date,
+				created_by,
+        branch_id,
+        account_analysis_a_1,
+				account_analysis_a_2,
+				account_analysis_a_3,
+				account_analysis_a_4,
+				account_analysis_a_5,
+				account_analysis_a_6,
+				account_analysis_a_7,
+				account_analysis_a_8,
+				account_analysis_a_9,
+				account_analysis_a_10,
+        payment_terms_id,
+				user_area,
+        description,
+        commission_entity_id,
+        default_bank_sub_code,
+				acct_settings_id
+			FROM elp_acct_settings 
+			WHERE
+				acct_settings_id = :acct_settings_id
+		]]>
+            </LOAD>
+            <LOAD_LIST>
+                <![CDATA[	
+			SELECT 
+				acct_company_id,
+				service_center_id,
+				dealer_id,
+        dealer_group_id,
+				account_code,
+				address_lookup_code,
+				address_sequence_number,
+				address_status,
+				account_type,
+				balance_type,
+				conversion_code_control,
+				account_analysis_1,
+				account_analysis_2,
+				account_analysis_3,
+				account_analysis_4,
+				account_analysis_5,
+				account_analysis_6,
+				account_analysis_7,
+				account_analysis_8,
+				account_analysis_9,
+				account_analysis_10,
+				account_analysis_code_1,
+				account_analysis_code_2,
+				account_analysis_code_3,
+				account_analysis_code_4,
+				account_analysis_code_5,
+				account_analysis_code_6,
+				account_analysis_code_7,
+				account_analysis_code_8,
+				account_analysis_code_9,
+				account_analysis_code_10,
+				report_conversion_control,
+				data_access_group_code,
+				default_currency_code,
+				account_status,
+				suppress_revaluation,
+				pay_as_paid_account_type,
+				supplier_lookup_code,
+				payment_method,
+				supplier_status,
+				supplier_analysis_code_1,
+				supplier_analysis_code_2,
+				supplier_analysis_code_3,
+				supplier_analysis_code_4,
+				supplier_analysis_code_5,
+				supplier_analysis_code_6,
+				supplier_analysis_code_7,
+				supplier_analysis_code_8,
+				supplier_analysis_code_9,
+				supplier_analysis_code_10,
+				modified_date,
+				modified_by,
+				created_date,
+				created_by,
+                branch_id,
+                account_analysis_a_1,
+				account_analysis_a_2,
+				account_analysis_a_3,
+				account_analysis_a_4,
+				account_analysis_a_5,
+				account_analysis_a_6,
+				account_analysis_a_7,
+				account_analysis_a_8,
+				account_analysis_a_9,
+				account_analysis_a_10,
+        payment_terms_id,
+        user_area,
+        description,
+        commission_entity_id,
+        default_bank_sub_code,
+				acct_settings_id
+			FROM elp_acct_settings 
+			WHERE
+				ACCT_COMPANY_ID = :acct_company_id
+				--dynamic_where_clause
+			 and rownum <= :row_num
+		]]>
+            </LOAD_LIST>
+            <LOAD_DEALER_SETTINGS>
+                <![CDATA[	
+      select acct_settings_id, dealer_id , dealer, dealer_name from (
+			Select MAX(elp_acct_settings.acct_settings_id)acct_settings_id,
+				elp_dealer.dealer_id,
+				elp_dealer.dealer,
+				elp_dealer.dealer_name
+		    from elp_dealer, elp_acct_settings
+			where elp_acct_settings.dealer_id = elp_dealer.dealer_id
+          AND elp_acct_settings.branch_id is null   
+				--dynamic_where_clause
+      GROUP BY elp_dealer.dealer_id,
+				elp_dealer.dealer,
+				elp_dealer.dealer_name
+				--dynamic_order_by_clause
+      )where rownum < :row_num
+		]]>
+            </LOAD_DEALER_SETTINGS>
+  <LOAD_DEALER_GROUP_SETTINGS>
+    <![CDATA[	
+      select acct_settings_id,  dealer_Group_id, CODE, DESCRIPTION from (
+      Select max(elp_acct_settings.acct_settings_id) acct_settings_id,
+				elp_dealer_group.dealer_Group_id,
+				elp_dealer_group.CODE,
+				elp_dealer_group.DESCRIPTION
+		    from elp_dealer_group, elp_acct_settings
+			 where elp_acct_settings.dealer_group_id = elp_dealer_group.dealer_group_id
+          AND elp_dealer_group.COMPANY_GROUP_ID = :company_group_id
+       --dynamic_where_clause
+       group by elp_dealer_group.dealer_Group_id, elp_dealer_group.CODE, elp_dealer_group.DESCRIPTION
+       --dynamic_order_by_clause
+       )where rownum < :row_num
+    ]]>
+    </LOAD_DEALER_GROUP_SETTINGS>
+  <LOAD_COMMISSION_ENTITY_SETTINGS>
+    <![CDATA[
+      select acct_settings_id,  ENTITY_ID, ENTITY_NAME from (
+      Select max(a.acct_settings_id) acct_settings_id,
+				c.ENTITY_ID,
+				c.ENTITY_NAME
+		    from  elp_acct_settings a
+		    inner join ELP_COMMISSION_ENTITY c on a.COMMISSION_ENTITY_ID = c.ENTITY_ID
+      where c.COMPANY_GROUP_ID = :company_group_id
+        --dynamic_where_clause
+      group by c.ENTITY_ID, c.ENTITY_NAME
+        --dynamic_order_by_clause
+       )where rownum < :row_num
+    ]]>
+  </LOAD_COMMISSION_ENTITY_SETTINGS>
+  <LOAD_SERVICE_CENTER_SETTINGS>
+                <![CDATA[	
+      select acct_settings_id, service_center_id, code, description, status_code from (                
+			Select max(elp_acct_settings.acct_settings_id) acct_settings_id,
+				elp_service_center.service_center_id,
+				elp_service_center.code,
+				elp_service_center.description,
+				elp_service_center.status_code
+		    from elp_service_center,elp_acct_settings
+			 where elp_acct_settings.service_center_id = elp_service_center.service_center_id
+			 --dynamic_where_clause
+       group by	elp_service_center.service_center_id, elp_service_center.code, elp_service_center.description, elp_service_center.status_code
+       --dynamic_order_by_clause
+       ) where rownum < :row_num
+		]]>
+  </LOAD_SERVICE_CENTER_SETTINGS>
+  <LOAD_BRANCH_SETTINGS>
+    <![CDATA[
+      select acct_settings_id,  branch_id, dealer_name, branch_code, branch_name from (
+			Select max(elp_acct_settings.acct_settings_id) acct_settings_id,
+				elp_branch.branch_id,
+				elp_dealer.dealer_name,
+				elp_branch.branch_code,
+        elp_branch.branch_name
+		    from elp_dealer, elp_acct_settings, elp_branch
+			 where elp_branch.branch_id = elp_acct_settings.branch_id
+			    AND elp_acct_settings.dealer_id = elp_dealer.dealer_id
+				--dynamic_where_clause
+        group by elp_branch.branch_id,elp_dealer.dealer_name,elp_branch.branch_code,elp_branch.branch_name
+				--dynamic_order_by_clause
+       ) where rownum < :row_num
+		]]>
+  </LOAD_BRANCH_SETTINGS>
+            <GET_DEALER_ACCT_SETTINGS>
+                <![CDATA[	
+			Select 
+				elp_dealer.dealer_id,
+				elp_dealer.dealer,
+				elp_dealer.dealer_name,
+				elp_dealer.active_flag
+		    from elp_dealer 
+		    WHERE elp_dealer.dealer_id not in 
+		    (select distinct elp_acct_settings.dealer_id 
+		    from elp_acct_settings where elp_acct_settings.dealer_id is not null
+            AND elp_acct_settings.branch_id is null)  
+			--dynamic_where_clause
+			--dynamic_order_by_clause
+		]]>
+            </GET_DEALER_ACCT_SETTINGS>
+            <GET_SERVICE_CENTER_ACCT_SETTINGS>
+                <![CDATA[	
+			Select 
+				elp_service_center.service_center_id,
+				elp_service_center.code,
+				elp_service_center.description,
+				elp_service_center.status_code
+		    from elp_service_center
+		    WHERE elp_service_center.service_center_id not in 
+		    (select distinct elp_acct_settings.service_center_id 
+		    from elp_acct_settings where elp_acct_settings.service_center_id is not null)
+			 --dynamic_where_clause
+			 --dynamic_order_by_clause
+		]]>
+            </GET_SERVICE_CENTER_ACCT_SETTINGS>
+  
+  <GET_DEALER_GROUP_ACCT_SETTINGS>
+    <![CDATA[	      
+      Select dealer_group_id, description, code
+      from elp_dealer_group
+      WHERE ACCTING_BY_GROUP_ID = GetYesNOID('Y')
+        and company_group_id = :company_group_id
+        and DEALER_GROUP_ID not in (select distinct DEALER_GROUP_ID from elp_acct_settings where DEALER_GROUP_ID is not null)
+      --dynamic_where_clause
+			--dynamic_order_by_clause
+    ]]>
+  </GET_DEALER_GROUP_ACCT_SETTINGS>
+
+  <GET_COMMISION_ENTITY_FOR_ACCT_SETTINGS>
+    <![CDATA[
+      Select ENTITY_ID, ENTITY_NAME
+      from ELP_COMMISSION_ENTITY
+      WHERE company_group_id = :company_group_id
+	      and ENTITY_ID not in (select distinct COMMISSION_ENTITY_ID from elp_acct_settings where COMMISSION_ENTITY_ID is not null)
+      --dynamic_where_clause
+      --dynamic_order_by_clause
+    ]]>
+  </GET_COMMISION_ENTITY_FOR_ACCT_SETTINGS>
+  
+  <GET_DEALER_BRANCH>
+    <![CDATA[	
+			Select 
+				elp_dealer.dealer_id,
+				elp_dealer.dealer,
+				elp_dealer.dealer_name
+		    from elp_dealer, elp_list, elp_list_item 
+		    WHERE 
+            elp_list.code = 'YESNO'
+        AND elp_list_item.list_id = elp_list.list_id
+        AND elp_list_item.code = 'Y' 
+        AND elp_dealer.invoice_by_branch_id = elp_list_item.list_item_id
+			--dynamic_where_clause
+			--dynamic_order_by_clause
+		]]>
+  </GET_DEALER_BRANCH>
+  <GET_BRANCH_ACCT_SETTINGS>
+    <![CDATA[	
+			Select
+				elp_branch.branch_id,
+				elp_branch.branch_code,
+				elp_branch.branch_name
+      from elp_branch
+		  WHERE
+		  		elp_branch.dealer_id = :dealer_id
+			AND elp_branch.branch_id not in
+		    	(select distinct elp_acct_settings.branch_id
+		     	from elp_acct_settings
+         		where elp_acct_settings.dealer_id = :dealer_id
+                 AND elp_acct_settings.branch_id is not null)
+          ORDER BY upper(elp_branch.branch_name)
+		]]>
+  </GET_BRANCH_ACCT_SETTINGS>
+  
+  <GET_SERVICE_CENTERS_BY_ACCOUNTING_COMPANIES>
+    <![CDATA[	
+			select distinct service_center_ID
+      From elp_acct_settings
+      where service_center_ID is not null
+			 --dynamic_where_clause
+       
+		]]>
+  </GET_SERVICE_CENTERS_BY_ACCOUNTING_COMPANIES>
+ 
+  <GET_SERVICE_CENTERS_BY_Countries>
+    <![CDATA[	
+			SELECT s.service_center_id id,  rawtohex(s.country_id) country_id, s.code, s.description
+      FROM ELITA.ELP_SERVICE_CENTER s, elp_acct_settings a
+      WHERE s.service_center_id = a.service_center_id
+          and s.STATUS_CODE ='A'
+          --dynamic_where_clause
+      ORDER BY UPPER(description)
+		]]>
+  </GET_SERVICE_CENTERS_BY_Countries>
+
+    <GET_VENDOR_BY_CODE>
+        <![CDATA[
+            SELECT ELP_ACCT_SETTINGS.ACCT_SETTINGS_ID
+                FROM ELP_ACCT_SETTINGS,
+                     ELP_SERVICE_CENTER,
+                     ELP_DEALER,
+                     ELP_BRANCH,
+                     ELP_DEALER_GROUP,
+                     ELP_COMMISSION_ENTITY
+              WHERE
+  					ELP_SERVICE_CENTER.SERVICE_CENTER_ID (+) =   ELP_ACCT_SETTINGS.SERVICE_CENTER_ID
+                AND ELP_DEALER.DEALER_ID (+) = ELP_ACCT_SETTINGS.DEALER_ID
+                AND ELP_BRANCH.BRANCH_ID  (+) = ELP_ACCT_SETTINGS.BRANCH_ID
+                AND ELP_DEALER_GROUP.DEALER_GROUP_ID  (+) = ELP_ACCT_SETTINGS.DEALER_GROUP_ID
+                AND ELP_COMMISSION_ENTITY.ENTITY_ID  (+) = ELP_ACCT_SETTINGS.COMMISSION_ENTITY_ID
+                --dynamic_where_clause
+        ]]>
+    </GET_VENDOR_BY_CODE>
+
+  <GET_COUNTERPART_BY_ID>
+    <![CDATA[
+      select ACCT_SETTINGS_ID
+      from ELP_ACCT_SETTINGS
+      where rownum = 1
+        and (nvl(dealer_id, '0'), nvl(branch_id, '0'), nvl(SERVICE_CENTER_ID, '0'), nvl(DEALER_GROUP_ID, '0'),
+        nvl(COMMISSION_ENTITY_ID, '0'), ACCOUNT_TYPE)
+        = (select nvl(dealer_id, '0'), nvl(branch_id, '0'),nvl(SERVICE_CENTER_ID, '0'), nvl(DEALER_GROUP_ID, '0'),
+            nvl(COMMISSION_ENTITY_ID, '0'), decode(ACCOUNT_TYPE, '1', '0', '0', '1')
+            from ELP_ACCT_SETTINGS where ACCT_SETTINGS_ID= :acct_settings_id)
+    ]]>
+  </GET_COUNTERPART_BY_ID>
+    <UPDATE>
+    <![CDATA[	
+			UPDATE elp_acct_settings SET
+				acct_company_id = :acct_company_id,
+				service_center_id = :service_center_id,
+				dealer_id = :dealer_id,
+        dealer_group_id = :dealer_group_id,
+				account_code = :account_code,
+				address_lookup_code = :address_lookup_code,
+				address_sequence_number = :address_sequence_number,
+				address_status = :address_status,
+				account_type = :account_type,
+				balance_type = :balance_type,
+				conversion_code_control = :conversion_code_control,
+				account_analysis_1 = :account_analysis_1,
+				account_analysis_2 = :account_analysis_2,
+				account_analysis_3 = :account_analysis_3,
+				account_analysis_4 = :account_analysis_4,
+				account_analysis_5 = :account_analysis_5,
+				account_analysis_6 = :account_analysis_6,
+				account_analysis_7 = :account_analysis_7,
+				account_analysis_8 = :account_analysis_8,
+				account_analysis_9 = :account_analysis_9,
+				account_analysis_10 = :account_analysis_10,
+				account_analysis_code_1 = :account_analysis_code_1,
+				account_analysis_code_2 = :account_analysis_code_2,
+				account_analysis_code_3 = :account_analysis_code_3,
+				account_analysis_code_4 = :account_analysis_code_4,
+				account_analysis_code_5 = :account_analysis_code_5,
+				account_analysis_code_6 = :account_analysis_code_6,
+				account_analysis_code_7 = :account_analysis_code_7,
+				account_analysis_code_8 = :account_analysis_code_8,
+				account_analysis_code_9 = :account_analysis_code_9,
+				account_analysis_code_10 = :account_analysis_code_10,
+				report_conversion_control = :report_conversion_control,
+				data_access_group_code = :data_access_group_code,
+				default_currency_code = :default_currency_code,
+				account_status = :account_status,
+				suppress_revaluation = :suppress_revaluation,
+				pay_as_paid_account_type = :pay_as_paid_account_type,
+				supplier_lookup_code = :supplier_lookup_code,
+				payment_method = :payment_method,
+				supplier_status = :supplier_status,
+				supplier_analysis_code_1 = :supplier_analysis_code_1,
+				supplier_analysis_code_2 = :supplier_analysis_code_2,
+				supplier_analysis_code_3 = :supplier_analysis_code_3,
+				supplier_analysis_code_4 = :supplier_analysis_code_4,
+				supplier_analysis_code_5 = :supplier_analysis_code_5,
+				supplier_analysis_code_6 = :supplier_analysis_code_6,
+				supplier_analysis_code_7 = :supplier_analysis_code_7,
+				supplier_analysis_code_8 = :supplier_analysis_code_8,
+				supplier_analysis_code_9 = :supplier_analysis_code_9,
+				supplier_analysis_code_10 = :supplier_analysis_code_10,
+        branch_id = :branch_id,
+        account_analysis_a_1 = :account_analysis_a_1,
+				account_analysis_a_2 = :account_analysis_a_2,
+				account_analysis_a_3 = :account_analysis_a_3,
+				account_analysis_a_4 = :account_analysis_a_4,
+				account_analysis_a_5 = :account_analysis_a_5,
+				account_analysis_a_6 = :account_analysis_a_6,
+				account_analysis_a_7 = :account_analysis_a_7,
+				account_analysis_a_8 = :account_analysis_a_8,
+				account_analysis_a_9 = :account_analysis_a_9,
+				account_analysis_a_10 = :account_analysis_a_10,
+        payment_terms_id = :payment_terms_id,
+        user_area = :user_area,
+        description = :description,
+        commission_entity_id = :commission_entity_id,
+        default_bank_sub_code = :default_bank_sub_code,
+				modified_by = :modified_by
+			WHERE
+				acct_settings_id = :acct_settings_id
+		]]>
+            </UPDATE>
+            <INSERT>
+              INSERT INTO elp_acct_settings
+              (
+              acct_company_id,
+              service_center_id,
+              dealer_id,
+              dealer_group_id,
+              account_code,
+              address_lookup_code,
+              address_sequence_number,
+              address_status,
+              account_type,
+              balance_type,
+              conversion_code_control,
+              account_analysis_1,
+              account_analysis_2,
+              account_analysis_3,
+              account_analysis_4,
+              account_analysis_5,
+              account_analysis_6,
+              account_analysis_7,
+              account_analysis_8,
+              account_analysis_9,
+              account_analysis_10,
+              account_analysis_code_1,
+              account_analysis_code_2,
+              account_analysis_code_3,
+              account_analysis_code_4,
+              account_analysis_code_5,
+              account_analysis_code_6,
+              account_analysis_code_7,
+              account_analysis_code_8,
+              account_analysis_code_9,
+              account_analysis_code_10,
+              report_conversion_control,
+              data_access_group_code,
+              default_currency_code,
+              account_status,
+              suppress_revaluation,
+              pay_as_paid_account_type,
+              supplier_lookup_code,
+              payment_method,
+              supplier_status,
+              supplier_analysis_code_1,
+              supplier_analysis_code_2,
+              supplier_analysis_code_3,
+              supplier_analysis_code_4,
+              supplier_analysis_code_5,
+              supplier_analysis_code_6,
+              supplier_analysis_code_7,
+              supplier_analysis_code_8,
+              supplier_analysis_code_9,
+              supplier_analysis_code_10,
+              branch_id,
+              account_analysis_a_1,
+              account_analysis_a_2,
+              account_analysis_a_3,
+              account_analysis_a_4,
+              account_analysis_a_5,
+              account_analysis_a_6,
+              account_analysis_a_7,
+              account_analysis_a_8,
+              account_analysis_a_9,
+              account_analysis_a_10,
+              payment_terms_id,
+              user_area,
+              description,
+              commission_entity_id,
+              default_bank_sub_code,
+              created_by,
+              acct_settings_id
+              )
+              VALUES
+              (
+              :acct_company_id,
+              :service_center_id,
+              :dealer_id,
+              :dealer_group_id,
+              :account_code,
+              :address_lookup_code,
+              :address_sequence_number,
+              :address_status,
+              :account_type,
+              :balance_type,
+              :conversion_code_control,
+              :account_analysis_1,
+              :account_analysis_2,
+              :account_analysis_3,
+              :account_analysis_4,
+              :account_analysis_5,
+              :account_analysis_6,
+              :account_analysis_7,
+              :account_analysis_8,
+              :account_analysis_9,
+              :account_analysis_10,
+              :account_analysis_code_1,
+              :account_analysis_code_2,
+              :account_analysis_code_3,
+              :account_analysis_code_4,
+              :account_analysis_code_5,
+              :account_analysis_code_6,
+              :account_analysis_code_7,
+              :account_analysis_code_8,
+              :account_analysis_code_9,
+              :account_analysis_code_10,
+              :report_conversion_control,
+              :data_access_group_code,
+              :default_currency_code,
+              :account_status,
+              :suppress_revaluation,
+              :pay_as_paid_account_type,
+              :supplier_lookup_code,
+              :payment_method,
+              :supplier_status,
+              :supplier_analysis_code_1,
+              :supplier_analysis_code_2,
+              :supplier_analysis_code_3,
+              :supplier_analysis_code_4,
+              :supplier_analysis_code_5,
+              :supplier_analysis_code_6,
+              :supplier_analysis_code_7,
+              :supplier_analysis_code_8,
+              :supplier_analysis_code_9,
+              :supplier_analysis_code_10,
+              :branch_id,
+              :account_analysis_a_1,
+              :account_analysis_a_2,
+              :account_analysis_a_3,
+              :account_analysis_a_4,
+              :account_analysis_a_5,
+              :account_analysis_a_6,
+              :account_analysis_a_7,
+              :account_analysis_a_8,
+              :account_analysis_a_9,
+              :account_analysis_a_10,
+              :payment_terms_id,
+              :user_area,
+              :description,
+              :commission_entity_id,
+              :default_bank_sub_code,
+              :created_by,
+              :acct_settings_id
+              )
+            </INSERT>
+	<DELETE>
+			DELETE FROM elp_acct_settings
+			WHERE
+				acct_settings_id = :acct_settings_id
+	</DELETE>
+</SQL> 
+
+

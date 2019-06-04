@@ -1,0 +1,111 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+
+<!-- ********************** THIS FILE HAS BEEN GENERATED FROM TEMPLATE SQLObject.cst (10/15/2012)********************** -->
+
+<SQL>
+  <LOAD>
+    <![CDATA[	
+			SELECT 
+				elp_entity_schedule.entity,
+				elp_entity_schedule.entity_id,
+				elp_entity_schedule.schedule_id,
+				elp_entity_schedule.effective,
+				elp_entity_schedule.expiration,
+				elp_entity_schedule.created_date,
+				elp_entity_schedule.created_by,
+				elp_entity_schedule.modified_date,
+				elp_entity_schedule.modified_by,
+				elp_entity_schedule.entity_schedule_id,
+        elp_schedule.code,
+        elp_schedule.description
+			FROM elp_entity_schedule inner join elp_schedule on elp_schedule.schedule_id = elp_entity_schedule.schedule_id
+			WHERE
+				elp_entity_schedule.entity_schedule_id = :entity_schedule_id
+		]]>
+  </LOAD>
+  <LOAD_LIST>
+    <![CDATA[
+			SELECT 
+				elp_entity_schedule.entity,
+				elp_entity_schedule.entity_id,
+				elp_entity_schedule.schedule_id,
+				elp_entity_schedule.effective,
+				elp_entity_schedule.expiration,
+				elp_entity_schedule.created_date,
+				elp_entity_schedule.created_by,
+				elp_entity_schedule.modified_date,
+				elp_entity_schedule.modified_by,
+				elp_entity_schedule.entity_schedule_id,
+        elp_schedule.code,
+        elp_schedule.description
+			FROM elp_entity_schedule inner join elp_schedule on elp_schedule.schedule_id = elp_entity_schedule.schedule_id
+			WHERE
+				elp_entity_schedule.entity_id = :entity_id and
+        elp_entity_schedule.entity = :entity
+    ]]>
+  </LOAD_LIST>
+  <LOAD_LIST_BY_SCHEDULE_ID>
+    <![CDATA[
+			SELECT 
+				elp_entity_schedule.entity,
+				elp_entity_schedule.entity_id,
+				elp_entity_schedule.schedule_id,
+				elp_entity_schedule.effective,
+				elp_entity_schedule.expiration,
+				elp_entity_schedule.created_date,
+				elp_entity_schedule.created_by,
+				elp_entity_schedule.modified_date,
+				elp_entity_schedule.modified_by,
+				elp_entity_schedule.entity_schedule_id,
+        elp_schedule.code,
+        elp_schedule.description
+			FROM elp_entity_schedule inner join elp_schedule on elp_schedule.schedule_id = elp_entity_schedule.schedule_id
+			WHERE
+				elp_entity_schedule.schedule_id = :schedule_id and
+        elp_entity_schedule.expiration > :UtcSysDate and
+        ((:entity is null) or (elp_entity_schedule.entity = :entity))
+    ]]>
+  </LOAD_LIST_BY_SCHEDULE_ID>
+  <UPDATE>
+    <![CDATA[	
+			UPDATE elp_entity_schedule SET
+				entity = :entity,
+				entity_id = :entity_id,
+				schedule_id = :schedule_id,
+				effective = :effective,
+				expiration = :expiration,
+				modified_by = :modified_by
+			WHERE
+				entity_schedule_id = :entity_schedule_id
+		]]>
+  </UPDATE>
+  <INSERT>
+    INSERT INTO elp_entity_schedule
+    (
+    entity,
+    entity_id,
+    schedule_id,
+    effective,
+    expiration,
+    created_by,
+    entity_schedule_id
+    )
+    VALUES
+    (
+    :entity,
+    :entity_id,
+    :schedule_id,
+    :effective,
+    :expiration,
+    :created_by,
+    :entity_schedule_id
+    )
+  </INSERT>
+  <DELETE>
+    DELETE FROM elp_entity_schedule
+    WHERE
+    entity_schedule_id = :entity_schedule_id
+  </DELETE>
+</SQL>
+
+

@@ -1,0 +1,96 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+
+<!-- ********************** THIS FILE HAS BEEN GENERATED FROM TEMPLATE SQLObject.cst (9/5/2008)********************** -->
+
+<SQL>
+  <LOAD>
+    <![CDATA[	
+			SELECT 
+				ui_prog_code,
+				english_translation,
+				created_date,
+				modified_date,
+				created_by,
+				modified_by,
+				approved,
+				dict_item_id,
+				imported,
+				msg_code,
+				msg_type,
+				msg_parameter_count,
+			  new_dict_item_id
+			FROM elp_new_dictionary_item 
+			WHERE
+				new_dict_item_id = :new_dict_item_id
+		]]>
+  </LOAD>
+  <LOAD_LIST>
+    select new_dict_item_id,
+      ui_prog_code,
+      english_translation,
+      approved,
+      dict_item_id,
+      imported,
+      created_date,
+      modified_date,
+      created_by,
+      modified_by,
+      msg_code,
+      msg_type,
+      msg_parameter_count
+    from elp_new_dictionary_item
+
+  </LOAD_LIST>
+  <UPDATE>
+    <![CDATA[	
+			UPDATE elp_new_dictionary_item SET
+				ui_prog_code = :ui_prog_code,
+				english_translation = :english_translation,
+				approved = :approved,
+				dict_item_id = :dict_item_id,
+				imported = :imported,
+				modified_by = :modified_by
+			WHERE
+				new_dict_item_id = :new_dict_item_id
+		]]>
+  </UPDATE>
+  <INSERT>
+    INSERT INTO elp_new_dictionary_item
+    (
+    ui_prog_code,
+    english_translation,
+    approved,
+    dict_item_id,
+    imported,
+    created_by,
+    msg_code,
+    msg_type,
+    msg_parameter_count,
+    new_dict_item_id
+    )
+    VALUES
+    (
+    :ui_prog_code,
+    :english_translation,
+    :approved,
+    :dict_item_id,
+    :imported,
+    :created_by,
+    :msg_code,
+    :msg_type,
+    :msg_parameter_count,
+    :new_dict_item_id
+    )
+  </INSERT>
+  <DELETE>
+    DELETE FROM elp_new_dictionary_item
+    WHERE
+    new_dict_item_id = :new_dict_item_id
+  </DELETE>
+  <DELETE_ALL>
+    DELETE  FROM ELP_NEW_DICTIONARY_ITEM
+  </DELETE_ALL>
+</SQL>
+
+
+

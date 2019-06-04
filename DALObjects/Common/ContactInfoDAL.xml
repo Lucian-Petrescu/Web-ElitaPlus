@@ -1,0 +1,143 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+
+<!-- ********************** THIS FILE HAS BEEN GENERATED FROM TEMPLATE SQLObject.cst (11/2/2011)********************** -->
+
+<SQL>
+  <LOAD>
+    <![CDATA[	
+			SELECT 
+				address_type_id,
+				address_id,
+				salutation_id,
+				name,
+				home_phone,
+				work_phone,
+				email,
+				created_by,
+				created_date,
+				modified_by,
+				modified_date,
+        company,
+				job_title,
+				cell_phone,
+				contact_info_id,
+				first_name,
+				last_name
+			FROM elp_contact_info 
+			WHERE
+				contact_info_id = :contact_info_id
+		]]>
+  </LOAD>
+  <LOAD_LIST>
+    <![CDATA[
+      Select
+	      vc.VENDOR_CONTACT_ID,
+	      vc.SERVICE_CENTER_ID,
+        ci.CONTACT_INFO_ID,
+	      ci.ADDRESS_TYPE_ID,
+	      ci.ADDRESS_ID,
+	      ci.SALUTATION_ID,
+	      ci.NAME,
+	      ci.HOME_PHONE,
+	      ci.WORK_PHONE,
+	      ci.CELL_PHONE,
+	      ci.EMAIL,
+	      ci.JOB_TITLE,
+	      ci.COMPANY,
+        ci.CREATED_BY,
+        ci.MODIFIED_BY,
+        ci.CREATED_DATE,
+        ci.MODIFIED_DATE,
+		ci.first_name,
+		ci.last_name
+      from
+	      elp_contact_info ci
+	      join elp_vendor_contact vc on vc.contact_info_id = ci.contact_info_id
+      where
+	      vc.service_center_id =  :service_center_id
+    ]]>
+  </LOAD_LIST>
+  <UPDATE>
+    <![CDATA[	
+			UPDATE elp_contact_info SET
+				address_type_id = :address_type_id,
+				address_id = :address_id,
+				salutation_id = :salutation_id,
+				name = :name,
+				home_phone = :home_phone,
+				work_phone = :work_phone,
+				email = :email,
+				cell_phone = :cell_phone,
+        company = :company,
+				job_title = :job_title,   
+				modified_by = :modified_by,
+				first_name = :first_name,
+				last_name = :last_name
+			WHERE
+				contact_info_id = :contact_info_id
+		]]>
+  </UPDATE>
+  <INSERT>
+	  INSERT INTO elp_contact_info
+	  (
+	  address_type_id,
+	  address_id,
+	  salutation_id,
+	  name,
+	  home_phone,
+	  work_phone,
+	  email,
+	  cell_phone,
+	  company,
+	  job_title,
+	  created_by,
+	  contact_info_id,
+	  first_name,
+	  last_name
+	  )
+	  VALUES
+	  (
+	  :address_type_id,
+	  :address_id,
+	  :salutation_id,
+	  :name,
+	  :home_phone,
+	  :work_phone,
+	  :email,
+	  :cell_phone,
+	  :company,
+	  :job_title,
+	  :created_by,
+	  :contact_info_id,
+	  :first_name,
+	  :last_name
+	  )
+  </INSERT>
+  <DELETE>
+    DELETE FROM elp_contact_info
+    WHERE
+    contact_info_id = :contact_info_id
+  </DELETE>
+  <LOAD_ADDRESS_LIST>
+    <![CDATA[
+    select 
+	    ADDRESS_ID,
+	    ADDRESS1,
+	    ADDRESS2,
+	    CITY,
+	    REGION_ID,
+	    POSTAL_CODE,
+	    COUNTRY_ID,
+	    CREATED_DATE,
+	    MODIFIED_DATE,
+	    CREATED_BY,
+	    MODIFIED_BY,
+	    ZIP_LOCATOR,
+	    ADDRESS3,
+    from  elp_address
+    where address_id = :address_id
+    ]]>
+  </LOAD_ADDRESS_LIST>
+</SQL>
+
+

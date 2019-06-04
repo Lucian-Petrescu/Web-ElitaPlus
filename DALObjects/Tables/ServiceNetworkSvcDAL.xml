@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="utf-8" ?>
+
+<!-- ********************** THIS FILE HAS BEEN GENERATED FROM TEMPLATE SQLObject.cst (8/17/2006)********************** -->
+
+<SQL>
+	<LOAD>
+		<![CDATA[	
+			SELECT 
+				service_network_id,
+				service_center_id,
+				created_by,
+				created_date,
+				modified_by,
+				modified_date,
+				service_network_svc_id
+			FROM elp_service_network_svc 
+			WHERE
+				service_network_svc_id = :service_network_svc_id
+
+		]]>
+	</LOAD>
+	<LOAD_LIST>
+	    <![CDATA[		
+		    SELECT
+	            snsc.Service_network_id,
+				snsc.service_center_id,
+				snsc.created_by,
+				snsc.created_date,
+				snsc.modified_by,
+				snsc.modified_date,
+				sc.description,
+				snsc.Service_network_svc_id
+			FROM
+				elp_service_network_svc snsc, elp_service_center sc
+			WHERE
+				snsc.service_center_id  = sc.service_center_id
+			AND	snsc.Service_network_id = :Service_network_sc_id
+		]]>		
+	</LOAD_LIST>
+	
+	<LOAD_NETWORK_LIST>
+	<![CDATA[		
+		    SELECT
+	            snsc.Service_network_id,
+				snsc.service_center_id,
+				snsc.created_by,
+				snsc.created_date,
+				snsc.modified_by,
+				snsc.modified_date,
+				sn.description,
+				snsc.Service_network_svc_id
+			FROM
+				elp_service_network_svc snsc, elp_service_network sn
+			WHERE
+				snsc.Service_network_id  = sn.Service_network_id
+			AND	snsc.service_center_id = :service_center_id
+		]]>		
+	</LOAD_NETWORK_LIST>
+	<LOAD_NETWORK_SERVICE_CENTER_IDs>
+	   <![CDATA[		
+		    SELECT  
+	             service_center_id
+			FROM
+				elp_service_network_svc  
+			WHERE
+				 service_network_id  = :service_network_id
+       
+		]]>		
+	</LOAD_NETWORK_SERVICE_CENTER_IDs>
+	<LOAD_ALL_NETWORK_SERVICE_CENTER_IDs>
+	   <![CDATA[		
+		    SELECT 
+	            snsc.service_center_id
+			FROM
+				elp_service_network sn, elp_service_network_svc snsc
+			WHERE
+				sn.service_network_id  = snsc.service_network_id
+			and	sn.company_group_id = :company_group_id
+   
+		]]>		  
+	</LOAD_ALL_NETWORK_SERVICE_CENTER_IDs>	
+	<UPDATE>
+		<![CDATA[	
+			UPDATE elp_service_network_svc SET
+				service_network_id = :service_network_id,
+				service_center_id = :service_center_id,
+				modified_by = :modified_by
+			WHERE
+				service_network_svc_id = :service_network_svc_id
+
+		]]>
+	</UPDATE>
+	<INSERT>
+			INSERT INTO elp_service_network_svc
+					(			
+				service_network_id, 
+				service_center_id, 
+				created_by,
+				service_network_svc_id
+					)
+			VALUES
+					(			
+				:service_network_id, 
+				:service_center_id, 
+				:created_by,
+				:service_network_svc_id
+					)
+	</INSERT>
+	<DELETE>
+			DELETE FROM elp_service_network_svc
+			WHERE
+				service_network_svc_id = :service_network_svc_id
+
+	</DELETE>
+	</SQL> 

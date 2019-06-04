@@ -1,0 +1,97 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+
+<!-- ********************** THIS FILE HAS BEEN GENERATED FROM TEMPLATE SQLObject.cst (2/10/2012)********************** -->
+
+<SQL>
+	<LOAD>
+		<![CDATA[	
+			SELECT 
+                billing_cycle_id,
+				dealer_id,
+				billing_cycle_code,
+				start_day,
+				end_day,
+				created_date,
+				modified_date,
+				created_by,
+				modified_by,
+        billing_run_date_offset_days,
+        date_of_payment_option_id,
+        date_of_payment_offset_days,
+        number_of_digits_roundoff_id
+			FROM elp_billing_cycle 
+			WHERE
+				billing_cycle_id = :billing_cycle_id
+		]]>
+	</LOAD>
+	<LOAD_LIST>
+    <![CDATA[	
+			SELECT 
+                billing_cycle_id,
+				elp_dealer.dealer_name,
+				billing_cycle_code,
+				start_day,
+				end_day,
+                billing_run_date_offset_days
+			FROM elp_billing_cycle, elp_dealer, elp_company
+        
+			WHERE
+        --dynamic_in_clause
+        and elp_billing_cycle.dealer_id = elp_dealer.dealer_id 
+        and elp_dealer.company_id = elp_company.company_id
+				--dynamic_where_clause
+        --dynamic_order_by_clause
+		]]>
+  </LOAD_LIST>	
+	<UPDATE>
+		<![CDATA[	
+			UPDATE elp_billing_cycle SET
+				dealer_id = :dealer_id,
+				billing_cycle_code = :billing_cycle_code,
+				start_day = :start_day,
+				end_day = :end_day,
+        billing_run_date_offset_days = :billing_run_date_offset_days,
+        date_of_payment_option_id = :date_of_payment_option_id,
+        date_of_payment_offset_days = :date_of_payment_offset_days,
+        number_of_digits_roundoff_id = :number_of_digits_roundoff_id,
+				modified_by = :modified_by
+			WHERE
+				billing_cycle_id = :billing_cycle_id
+		]]>
+	</UPDATE>
+	<INSERT>
+        INSERT INTO elp_billing_cycle
+        (
+        billing_cycle_id,
+        dealer_id,
+        billing_cycle_code,
+        start_day,
+        end_day,
+        billing_run_date_offset_days,
+        date_of_payment_option_id,
+        date_of_payment_offset_days,
+        number_of_digits_roundoff_id,
+        created_by
+        )
+        VALUES
+        (
+        :billing_cycle_id,
+        :dealer_id,
+        :billing_cycle_code,
+        :start_day,
+        :end_day,
+        :billing_run_date_offset_days,
+        :date_of_payment_option_id,
+        :date_of_payment_offset_days,
+        :number_of_digits_roundoff_id,
+        :created_by
+        )
+    </INSERT>
+	<DELETE>
+			DELETE FROM elp_billing_cycle
+			WHERE
+				billing_cycle_id = :billing_cycle_id
+	</DELETE>
+</SQL> 
+
+

@@ -1,0 +1,206 @@
+<?xml version="1.0" encoding="utf-8" ?>
+
+<!-- ********************** THIS FILE HAS BEEN GENERATED FROM TEMPLATE SQLObject.cst (9/16/2004)********************** -->
+
+<SQL>
+	<LOAD>
+		<![CDATA[	
+			SELECT 
+				description,
+				code,
+				language_id,
+				primary_currency_id,
+				secondary_currency_id,
+				created_date,
+				modified_date,
+				created_by,
+				modified_by,
+				mail_addr_format,
+				bank_id_length,
+				bank_acct_length,
+				country_id,
+        european_country_id,
+        validate_bank_info_id,
+        tax_by_product_type_id,
+				default_sc_for_denied_claims,
+				contact_info_req_fields,
+        address_req_fields,
+        use_bank_list_id,
+        REQUIRE_BYTE_CONVERSION as require_byte_conversion_id,
+        Last_Regulatory_Extract_Date,
+        Regulatory_Reporting_ID,
+        Notify_Group_Email,
+        credit_scoring_pct, 
+        abnormal_clm_frq_no, 
+        cert_count_susp_op,
+        default_sc_id,
+       allow_force_address_xcd,
+        address_confidence_threshold,
+       use_address_validation_xcd,
+       iso_code,
+       allow_forgotten,
+       full_name_format_xcd
+			FROM ELITA.ELP_COUNTRY_V 
+			WHERE
+				country_id = :country_id
+		]]>
+	</LOAD>
+	<LOAD_LIST>
+		<![CDATA[	
+			SELECT 
+				country_id,
+				description,
+				code
+			FROM elp_country 
+			WHERE
+				UPPER(code) LIKE UPPER(:code)
+				AND UPPER(description) LIKE UPPER(:description)
+			ORDER BY UPPER(description)
+		]]>
+	</LOAD_LIST>
+	<LOAD_COUNTRY_LIST>
+		<![CDATA[	
+			SELECT distinct
+				country_id
+			FROM elp_company_country
+			WHERE
+				--dynamic_where_clause
+		]]>
+	</LOAD_COUNTRY_LIST>
+	<LOAD_COUNTRY_LIST_FOR_WS>
+		<![CDATA[	
+			SELECT country_id,Code,description
+			FROM elp_country
+			WHERE
+				--dynamic_where_clause
+		]]>
+	</LOAD_COUNTRY_LIST_FOR_WS>
+	<UPDATE>
+		<![CDATA[	
+			UPDATE ELITA.ELP_COUNTRY_V  SET
+				description = :description,
+				code = :code,
+				language_id = :language_id,
+				primary_currency_id = :primary_currency_id,
+				secondary_currency_id = :secondary_currency_id,
+				mail_addr_format = :mail_addr_format,
+				bank_id_length = :bank_id_length,
+				bank_acct_length = :bank_acct_length,
+				modified_by = :modified_by,
+        european_country_id = :european_country_id,
+        validate_bank_info_id = :validate_bank_info_id,
+        tax_by_product_type_id = :tax_by_product_type_id,
+				default_sc_for_denied_claims = :default_sc_for_denied_claims,
+        contact_info_req_fields = :contact_info_req_fields,
+        address_req_fields = :address_req_fields,
+        use_bank_list_id = :use_bank_list_id,
+        require_byte_conversion = :require_byte_conversion_id,
+        Last_Regulatory_Extract_Date = :Last_Regulatory_Extract_Date,
+        Regulatory_Reporting_ID = :Regulatory_Reporting_ID,
+        Notify_Group_Email = :Notify_Group_Email,
+        credit_scoring_pct = :credit_scoring_pct, 
+        abnormal_clm_frq_no = :abnormal_clm_frq_no, 
+        cert_count_susp_op = :cert_count_susp_op,
+        default_sc_id = :default_sc_id,
+        allow_force_address_xcd = :allow_force_address_xcd,
+        address_confidence_threshold = :address_confidence_threshold,
+        use_address_validation_xcd = :use_address_validation_xcd,
+        iso_code = :iso_code,
+        allow_forgotten = :allow_forgotten,
+        full_name_format_xcd = :full_name_format_xcd
+			WHERE
+				country_id = :country_id
+		]]>
+	</UPDATE>
+	<INSERT>
+    INSERT INTO ELITA.ELP_COUNTRY_V
+    (
+    description,
+    code,
+    language_id,
+    primary_currency_id,
+    secondary_currency_id,
+    mail_addr_format,
+    bank_id_length,
+    bank_acct_length,
+    created_by,
+    country_id,
+    european_country_id,
+    validate_bank_info_id,
+    tax_by_product_type_id,
+    default_sc_for_denied_claims,
+    contact_info_req_fields,
+    address_req_fields,
+    use_bank_list_id,
+    require_byte_conversion,
+    Last_Regulatory_Extract_Date,
+    Regulatory_Reporting_ID,
+    Notify_Group_Email,
+    credit_scoring_pct,
+    abnormal_clm_frq_no,
+    cert_count_susp_op,
+    default_sc_id,
+    allow_force_address_xcd,
+    address_confidence_threshold,
+    use_address_validation_xcd,
+    iso_code,
+    allow_forgotten,
+    full_name_format_xcd
+    )
+    VALUES
+    (
+    :description,
+    :code,
+    :language_id,
+    :primary_currency_id,
+    :secondary_currency_id,
+    :mail_addr_format,
+    :bank_id_length,
+    :bank_acct_length,
+    :created_by,
+    :country_id,
+    :european_country_id,
+    :validate_bank_info_id,
+    :tax_by_product_type_id,
+    :default_sc_for_denied_claims,
+    :contact_info_req_fields,
+    :address_req_fields,
+    :use_bank_list_id,
+    :require_byte_conversion_id,
+    :Last_Regulatory_Extract_Date,
+    :Regulatory_Reporting_ID,
+    :Notify_Group_Email,
+    :credit_scoring_pct,
+    :abnormal_clm_frq_no,
+    :cert_count_susp_op,
+    :default_sc_id,
+    :allow_force_address_xcd,
+    :address_confidence_threshold,
+    :use_address_validation_xcd,
+    :iso_code,
+    :allow_forgotten,
+    :full_name_format_xcd
+    )
+  </INSERT>
+	<DELETE>
+		DELETE FROM ELITA.ELP_COUNTRY_V
+		WHERE
+		country_id = :country_id
+	</DELETE>
+    <LOAD_COUNTRY_COMUNAS>
+		<![CDATA[	
+			SELECT pcf.*
+			FROM elp_country c, elp_country_postal_format cpf, elp_postal_code_format pcf
+			WHERE cpf.postal_code_format_id = pcf.postal_code_format_id
+			and c.country_id = cpf.country_id
+			and c.country_id =:country_id
+		]]>
+	</LOAD_COUNTRY_COMUNAS>
+  <GET_BYTE_FLAG>
+    <![CDATA[	
+			SELECT REQUIRE_BYTE_CONVERSION AS require_byte_conversion_id FROM elp_country c WHERE c.country_id =:country_id
+		]]>
+  </GET_BYTE_FLAG>
+</SQL>
+
+

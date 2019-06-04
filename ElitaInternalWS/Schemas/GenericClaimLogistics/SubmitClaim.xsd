@@ -1,0 +1,51 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+ <xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema">  
+  <xs:element name="SubmitClaimDs">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element name="SubmitClaim">
+          <xs:complexType>
+            <xs:sequence minOccurs="1" maxOccurs="1">
+              <xs:element name="CustomerIdentifier" type="xs:string" minOccurs="1" maxOccurs="1"></xs:element>
+              <xs:element name="IdentifierType" type="xs:string" minOccurs="1" maxOccurs="1"></xs:element>
+              <xs:element name="DealerCode" type="xs:string" minOccurs="1" maxOccurs="1" />
+              <xs:element name="ContactName" type="xs:string" minOccurs="1" maxOccurs="1" />
+              <xs:element name="CustomerAuthentication" type="xs:string" minOccurs="1" maxOccurs="1" />
+              <xs:element name="CustomerAuthenticationType" type="xs:string" minOccurs="1" maxOccurs="1" />
+              <xs:element name="CallerName" type="xs:string" minOccurs="1" maxOccurs="1" />
+              <xs:element name="SerialNumber" type="xs:string" minOccurs="0" maxOccurs="1"></xs:element>
+              <xs:element name="Make" type="xs:string" minOccurs="1" maxOccurs="1"></xs:element>
+              <xs:element name="Model" type="xs:string" minOccurs="1" maxOccurs="1"></xs:element>
+              <xs:element name="CauseOfLossCode" type="xs:string" minOccurs="0" maxOccurs="1" />
+              <xs:element name="DateOfLoss" type="xs:dateTime" minOccurs="1" maxOccurs="1" />
+              <xs:element name="CoverageCode" type="xs:string" minOccurs="1" maxOccurs="1" />
+              <xs:element name="ServiceCenterCode" type="xs:string" minOccurs="0" maxOccurs="1" />
+              <xs:element name="ProblemDescription" type="xs:string" minOccurs="1" maxOccurs="1" />
+              <xs:element name="RepairEstimate" type="xs:decimal" minOccurs="0" maxOccurs="1" />
+              <xs:element name="VisitDate" type="xs:dateTime" minOccurs="0" maxOccurs="1" />
+              <xs:element name="CallerTaxNumber" type="xs:string" minOccurs="0" maxOccurs="1" />
+              <xs:element name="SpecialInstruction" type="xs:string" minOccurs="0" maxOccurs="1" />
+              <xs:element name="InvoiceDate" type="xs:dateTime" minOccurs="0" maxOccurs="1" />
+              <xs:element name="PaymentMethod" type="xs:string" minOccurs="0" maxOccurs="1" />
+              <xs:element name="ShippingInfo" minOccurs="0" maxOccurs="1">
+                <xs:complexType>
+                  <xs:sequence>
+                    <xs:element name="AttentionTo" type="xs:string" minOccurs="0" maxOccurs="1" />
+                    <xs:element name="ContactNumber" type="xs:string" minOccurs="0" maxOccurs="1" />
+                    <xs:element name="EmailAddress" type="xs:string" minOccurs="0" maxOccurs="1" />
+                    <xs:element name="address1" type="xs:string" minOccurs="0" maxOccurs="1" />
+                    <xs:element name="address2" type="xs:string" minOccurs="0" maxOccurs="1" />
+                    <xs:element name="City" type="xs:string" minOccurs="0" maxOccurs="1" />
+                    <xs:element name="RegionCode" type="xs:string" minOccurs="0" maxOccurs="1" />
+                    <xs:element name="PostalCode" type="xs:string" minOccurs="0" maxOccurs="1" />
+                    <xs:element name="CountryCode" type="xs:string" minOccurs="1" maxOccurs="1" />
+                  </xs:sequence>
+                </xs:complexType>
+              </xs:element>
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+ </xs:schema>

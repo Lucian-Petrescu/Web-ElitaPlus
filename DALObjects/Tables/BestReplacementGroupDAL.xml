@@ -1,0 +1,75 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<SQL>
+  <LOAD>
+    <![CDATA[	
+			SELECT 
+				migration_path_id,
+				company_group_id,
+				code,
+				description,
+				created_by,
+				modified_by,
+				created_date,
+				modified_date
+			FROM 
+        elp_migration_path
+			WHERE
+				migration_path_id = :migration_path_id
+		]]>
+  </LOAD>
+  <LOAD_LIST>
+    <![CDATA[	
+			SELECT 
+			  migration_path_id,
+				company_group_id,
+				code,
+				description,
+				created_by,
+				modified_by,
+				created_date,
+				modified_date
+			FROM 
+        elp_migration_path
+      WHERE 
+			--dynamic_where_clause
+			--dynamic_order_by_clause
+		]]>
+  </LOAD_LIST>
+  <UPDATE>
+    <![CDATA[	
+			UPDATE 
+        elp_migration_path 
+      SET
+				company_group_id = :company_group_id,
+				code = :code,
+				description = :description
+			WHERE
+				migration_path_id = :migration_path_id
+		]]>
+  </UPDATE>
+  <INSERT>
+    <![CDATA[	
+    INSERT INTO 
+      elp_migration_path 
+    (
+      migration_path_id,
+      company_group_id,
+      code,
+      description
+    )
+    VALUES
+    (
+      :migration_path_id,
+      :company_group_id,
+      :code,
+      :description    
+    )
+    ]]>
+  </INSERT>
+  <DELETE>
+    <![CDATA[	
+    DELETE FROM elp_migration_path
+    WHERE migration_path_id = :migration_path_id
+    ]]>
+  </DELETE>
+</SQL>

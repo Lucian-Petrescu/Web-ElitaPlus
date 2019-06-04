@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="utf-8" ?>
+
+<!-- ********************** THIS FILE HAS BEEN GENERATED FROM TEMPLATE SQLObject.cst (11/19/2004)********************** -->
+
+<SQL>
+  <LOAD>
+    <![CDATA[	
+    select billing_plan_id, dealer_group_id, dealer_id, code, description,
+    created_date,
+		modified_date,
+		created_by,
+		modified_by
+    from elp_billing_plan
+    where billing_plan_id = :billing_plan_id
+    	]]>
+  </LOAD>
+  <LOAD_LIST>
+    <![CDATA[			
+SELECT bp.billing_plan_id,
+       d.dealer_id,
+       d.dealer dealer_code,
+       d.dealer_name,
+       g.dealer_group_id dealer_group_id,
+       g.code         dealer_group_code,
+       g.description  dealer_group,
+       bp.code billing_plan_code,
+       bp.description billing_plan       
+  FROM elp_dealer_group g, elp_billing_plan bp, elp_dealer d
+ WHERE
+--dynamic_in_clause
+ and bp.dealer_group_id = g.dealer_group_id(+)
+ and bp.dealer_id = d.dealer_id(+)
+--dynamic_where_clause
+--dynamic_order_by_clause
+			]]>
+  </LOAD_LIST>
+  <DELETE>
+    DELETE FROM elp_billing_plan
+    WHERE
+    billing_plan_id = :billing_plan_id
+  </DELETE>
+  <INSERT>
+    INSERT INTO elp_billing_plan
+    (
+    billing_plan_id,
+    dealer_group_id,
+    dealer_id,
+    code,
+    description
+    )
+    VALUES
+    (
+    :billing_plan_id,
+    :dealer_group_id,
+    :dealer_id,
+    :code,
+    :description  
+    )
+  </INSERT>
+  <UPDATE>
+    <![CDATA[
+		   UPDATE elp_billing_plan SET	
+				billing_plan_id=:billing_plan_id,
+        dealer_group_id=:dealer_group_id,
+        dealer_id=:dealer_id,
+        code=:code,
+        description=:description
+			WHERE
+				billing_plan_id = :billing_plan_id
+		]]>
+  </UPDATE>
+</SQL>
+
+
+

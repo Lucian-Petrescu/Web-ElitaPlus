@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="utf-8" ?>
+
+<!-- ********************** THIS FILE HAS BEEN GENERATED FROM TEMPLATE SQLObject.cst (7/4/2017)********************** -->
+
+<SQL>
+	<LOAD>
+		<![CDATA[	
+			SELECT 
+				case_question_set_id,
+				dcm_answer_id,
+				answer_text,
+				answer_date,
+				answer_number,
+				interaction_id,
+				delete_flag_xcd,
+				created_by,
+				created_date,
+				modified_by,
+				modified_date,
+				dcm_question_id,
+				case_question_answer_id
+			FROM elp_case_question_answer 
+			WHERE
+				case_question_answer_id = :case_question_answer_id
+		]]>
+	</LOAD>
+	<LOAD_LIST>		
+	</LOAD_LIST>
+  <LOAD_CASE_QUESTION_ANSWER_LIST>
+    <![CDATA[elp_case_utility.LoadCaseQuesAnswerList]]>
+  </LOAD_CASE_QUESTION_ANSWER_LIST>
+  <LOAD_CLAIM_CASE_QUESTION_ANSWER_LIST>
+    <![CDATA[elp_case_utility.LoadClaimCaseQuesAnswerList]]>
+  </LOAD_CLAIM_CASE_QUESTION_ANSWER_LIST>
+	<UPDATE>
+		<![CDATA[	
+			UPDATE elp_case_question_answer SET
+				case_question_set_id = :case_question_set_id,
+				dcm_answer_id = :dcm_answer_id,
+				answer_text = :answer_text,
+				answer_date = :answer_date,
+				answer_number = :answer_number,
+				interaction_id = :interaction_id,
+				delete_flag_xcd = :delete_flag_xcd,
+				dcm_question_id = :dcm_question_id,
+				modified_by = :modified_by
+			WHERE
+				case_question_answer_id = :case_question_answer_id
+		]]>
+	</UPDATE>
+	<INSERT>
+			INSERT INTO elp_case_question_answer
+					(			
+				case_question_set_id, 
+				dcm_answer_id, 
+				answer_text, 
+				answer_date, 
+				answer_number, 
+				interaction_id, 
+				delete_flag_xcd, 
+				dcm_question_id, 
+				created_by,
+				case_question_answer_id
+					)
+			VALUES
+					(			
+				:case_question_set_id, 
+				:dcm_answer_id, 
+				:answer_text, 
+				:answer_date, 
+				:answer_number, 
+				:interaction_id, 
+				:delete_flag_xcd, 
+				:dcm_question_id, 
+				:created_by,
+				:case_question_answer_id
+					)
+	</INSERT>
+	<DELETE>
+			DELETE FROM elp_case_question_answer
+			WHERE
+				case_question_answer_id = :case_question_answer_id
+	</DELETE>
+</SQL> 
+
+

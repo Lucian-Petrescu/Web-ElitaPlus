@@ -1,0 +1,73 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+
+<!-- ********************** THIS FILE HAS BEEN GENERATED FROM TEMPLATE SQLObject.cst (4/2/2014)********************** -->
+
+<SQL>
+  <LOAD>
+    <![CDATA[	
+			SELECT 
+				cancellation_reason_id,
+				role_id,
+				created_date,
+				created_by,
+				modified_date,
+				modified_by,
+				exclude_cancreason_role_id
+			FROM elp_exclude_cancreason_by_role 
+			WHERE
+				exclude_cancreason_role_id = :exclude_cancreason_role_id
+		]]>
+  </LOAD>
+  <LOAD_LIST>
+  </LOAD_LIST>
+  <LOAD_LIST_FOR_CANC_REASON>
+    select exclude_cancreason_role_id,
+    ecr.cancellation_reason_id,
+    ecr.role_id,
+    cr.code Canc_Code,
+    cr.description Canc_Desc,
+    r.code Role_Code,
+    r.description Role_Desc,
+    ecr.created_by ,
+    ecr.created_date,
+    ecr.modified_by,
+    ecr.modified_date
+    from elp_exclude_cancreason_by_role ecr, elp_role r, elp_cancellation_reason cr
+    where ecr.cancellation_reason_id = cr.cancellation_id
+    and ecr.role_id = r.role_id
+    and cr.cancellation_id = :cancellation_reason_id
+  </LOAD_LIST_FOR_CANC_REASON>
+  <UPDATE>
+    <![CDATA[	
+			UPDATE elp_exclude_cancreason_by_role SET
+				cancellation_reason_id = :cancellation_reason_id,
+				role_id = :role_id,
+				modified_by = :modified_by
+			WHERE
+				exclude_cancreason_role_id = :exclude_cancreason_role_id
+		]]>
+  </UPDATE>
+  <INSERT>
+    INSERT INTO elp_exclude_cancreason_by_role
+    (
+    cancellation_reason_id,
+    role_id,
+    created_by,
+    exclude_cancreason_role_id
+    )
+    VALUES
+    (
+    :cancellation_reason_id,
+    :role_id,
+    :created_by,
+    :exclude_cancreason_role_id
+    )
+  </INSERT>
+  <DELETE>
+    DELETE FROM elp_exclude_cancreason_by_role
+    WHERE
+    exclude_cancreason_role_id = :exclude_cancreason_role_id
+  </DELETE>
+</SQL>
+
+

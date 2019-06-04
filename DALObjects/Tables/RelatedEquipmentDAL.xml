@@ -1,0 +1,93 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+
+<!-- ********************** THIS FILE HAS BEEN GENERATED FROM TEMPLATE SQLObject.cst (3/8/2012)********************** -->
+
+<SQL>
+  <LOAD>
+    <![CDATA[	
+    SELECT
+	    ERE.EQUIPMENT_ID,
+	    ERE.CHILD_EQUIPMENT_ID,
+	    ERE.IS_IN_OEM_BOX_ID,
+	    ERE.IS_COVERED_ID,
+	    ERE.RELATED_EQUIPMENT_ID,
+	    EQ.DESCRIPTION,
+	    EQ.MODEL,
+	    EQ.MANUFACTURER_ID,
+	    EQ.EQUIPMENT_TYPE_ID,
+      ERE.CREATED_DATE CREATED_DATE,
+      ERE.CREATED_BY CREATED_BY,
+      ERE.MODIFIED_DATE MODIFIED_DATE,
+      ERE.MODIFIED_BY MODIFIED_BY
+    FROM ELP_RELATED_EQUIPMENT ERE
+    INNER JOIN ELP_EQUIPMENT EQ ON ERE.CHILD_EQUIPMENT_ID = EQ.EQUIPMENT_ID
+    WHERE
+    RELATED_EQUIPMENT_ID = :RELATED_EQUIPMENT_ID
+		]]>
+  </LOAD>
+  <LOAD_LIST>
+    SELECT
+    ERE.EQUIPMENT_ID,
+    ERE.CHILD_EQUIPMENT_ID,
+    ERE.IS_IN_OEM_BOX_ID,
+    ERE.IS_COVERED_ID,
+    ERE.RELATED_EQUIPMENT_ID,
+    EQ.DESCRIPTION,
+    EQ.MODEL,
+    EQ.MANUFACTURER_ID,
+    EQ.EQUIPMENT_TYPE_ID,
+    ERE.CREATED_DATE CREATED_DATE,
+    ERE.CREATED_BY CREATED_BY,
+    ERE.MODIFIED_DATE MODIFIED_DATE,
+    ERE.MODIFIED_BY MODIFIED_BY
+    FROM ELP_RELATED_EQUIPMENT ERE
+    INNER JOIN ELP_EQUIPMENT EQ ON ERE.CHILD_EQUIPMENT_ID = EQ.EQUIPMENT_ID
+    WHERE
+    ERE.EQUIPMENT_ID = :EQUIPMENT_ID
+  </LOAD_LIST>
+  <UPDATE>
+    <![CDATA[	
+			UPDATE elp_related_equipment SET
+				equipment_id = :equipment_id,
+				child_equipment_id = :child_equipment_id,
+				is_in_oem_box_id = :is_in_oem_box_id,
+				is_covered_id = :is_covered_id,
+				modified_by = :modified_by
+			WHERE
+				related_equipment_id = :related_equipment_id
+		]]>
+  </UPDATE>
+  <INSERT>
+    INSERT INTO elp_related_equipment
+    (
+    equipment_id,
+    child_equipment_id,
+    is_in_oem_box_id,
+    is_covered_id,
+    created_by,
+    related_equipment_id
+    )
+    VALUES
+    (
+    :equipment_id,
+    :child_equipment_id,
+    :is_in_oem_box_id,
+    :is_covered_id,
+    :created_by,
+    :related_equipment_id
+    )
+  </INSERT>
+  <DELETE>
+    DELETE FROM elp_related_equipment
+    WHERE
+    related_equipment_id = :related_equipment_id
+  </DELETE>
+  <GETRELATEDEQUIPMENT>
+    SELECT CHILD_EQUIPMENT_ID ID, EQ.DESCRIPTION DESCRIPTION
+    FROM ELP_RELATED_EQUIPMENT ERE INNER JOIN ELP_EQUIPMENT EQ
+    ON EQ.EQUIPMENT_ID = ERE.EQUIPMENT_ID
+    WHERE ERE.EQUIPMENT_ID = :EQUIPMENT_ID
+  </GETRELATEDEQUIPMENT>
+</SQL>
+
+

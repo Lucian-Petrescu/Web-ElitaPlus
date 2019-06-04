@@ -1,0 +1,163 @@
+<?xml version="1.0" encoding="utf-8" ?>
+
+<!-- ********************** THIS FILE HAS BEEN GENERATED FROM TEMPLATE SQLObject.cst (5/5/2017)********************** -->
+
+<SQL>
+	<LOAD>
+		<![CDATA[	
+			SELECT 
+				cert_registered_item_id,
+				cert_item_id,
+				manufacturer_id,
+				prod_item_manuf_equip_id,
+				manufacturer,
+				model,
+				serial_number,
+				item_description,
+				retail_price,
+				purchased_date,
+				purchase_price,
+				enrollment_item,
+				item_status,
+				validated_by,
+				validated_date,
+				created_by,
+				created_date,
+				modified_by,
+				modified_date,
+				hist_created_by,
+				hist_created_date,
+				hist_modified_by,
+				hist_modified_date,
+				device_type_id,
+				registered_item_name,
+				elp_cert_registered_item_hist
+			FROM elp_cert_registered_item_hist 
+			WHERE
+				elp_cert_registered_item_hist = :elp_cert_registered_item_hist
+		]]>
+	</LOAD>
+	<LOAD_LIST>		
+	</LOAD_LIST>	
+   <LOAD_HISTORY>
+     <![CDATA[	
+     select crih.cert_registered_item_id,
+     crih.cert_registered_item_hist_id,
+     crih.serial_number,
+     crih.item_description,
+     crih.retail_price,
+     crih.purchased_date,
+     crih.purchase_price,
+     (case crih.manufacturer_id when null then crih.manufacturer else (select m.description from elp_manufacturer m where m.manufacturer_id=crih.manufacturer_id) end) make ,
+     crih.model,
+     elita.GetDescriptionFromItemextcode(crih.item_status,:language_id) item_status,
+     crih.registered_item_name,
+     elita.GetDescriptionFromListItem(crih.device_type_id,:language_id) device_type,
+     crih.hist_modified_date,
+     crih.modified_date,
+     crih.registration_date,
+     crih.retail_price,
+     crih.indixid,
+     case
+     when crih.item_status = 'ITEM_REGISTRATION_STATUS-I'  then
+          nvl(crih.expiration_date,nvl(crih.modified_date,crih.created_date))
+     when crih.item_status = 'ITEM_REGISTRATION_STATUS-A' then
+          null
+     end  as expiration_date 
+     from elp_cert_registered_item_hist crih
+     inner join elita.elp_cert_item ci on ci.cert_item_id = crih.cert_item_id
+     where crih.cert_registered_item_id=:cert_registered_item_id
+     order by crih.modified_date desc
+     ]]>
+   </LOAD_HISTORY>
+	<UPDATE>
+		<![CDATA[	
+			UPDATE elp_cert_registered_item_hist SET
+				cert_registered_item_id = :cert_registered_item_id,
+				cert_item_id = :cert_item_id,
+				manufacturer_id = :manufacturer_id,
+				prod_item_manuf_equip_id = :prod_item_manuf_equip_id,
+				manufacturer = :manufacturer,
+				model = :model,
+				serial_number = :serial_number,
+				item_description = :item_description,
+				retail_price = :retail_price,
+				purchased_date = :purchased_date,
+				purchase_price = :purchase_price,
+				enrollment_item = :enrollment_item,
+				item_status = :item_status,
+				validated_by = :validated_by,
+				validated_date = :validated_date,
+				hist_created_by = :hist_created_by,
+				hist_created_date = :hist_created_date,
+				hist_modified_by = :hist_modified_by,
+				hist_modified_date = :hist_modified_date,
+				device_type_id = :device_type_id,
+				registered_item_name = :registered_item_name,
+				modified_by = :modified_by
+			WHERE
+				elp_cert_registered_item_hist = :elp_cert_registered_item_hist
+		]]>
+	</UPDATE>
+	<INSERT>
+			INSERT INTO elp_cert_registered_item_hist
+					(			
+				cert_registered_item_id, 
+				cert_item_id, 
+				manufacturer_id, 
+				prod_item_manuf_equip_id, 
+				manufacturer, 
+				model, 
+				serial_number, 
+				item_description, 
+				retail_price, 
+				purchased_date, 
+				purchase_price, 
+				enrollment_item, 
+				item_status, 
+				validated_by, 
+				validated_date, 
+				hist_created_by, 
+				hist_created_date, 
+				hist_modified_by, 
+				hist_modified_date, 
+				device_type_id, 
+				registered_item_name, 
+				created_by,
+				elp_cert_registered_item_hist
+					)
+			VALUES
+					(			
+				:cert_registered_item_id, 
+				:cert_item_id, 
+				:manufacturer_id, 
+				:prod_item_manuf_equip_id, 
+				:manufacturer, 
+				:model, 
+				:serial_number, 
+				:item_description, 
+				:retail_price, 
+				:purchased_date, 
+				:purchase_price, 
+				:enrollment_item, 
+				:item_status, 
+				:validated_by, 
+				:validated_date, 
+				:hist_created_by, 
+				:hist_created_date, 
+				:hist_modified_by, 
+				:hist_modified_date, 
+				:device_type_id, 
+				:registered_item_name, 
+				:created_by,
+				:elp_cert_registered_item_hist
+					)
+	</INSERT>
+	<DELETE>
+			DELETE FROM elp_cert_registered_item_hist
+			WHERE
+				elp_cert_registered_item_hist = :elp_cert_registered_item_hist
+	</DELETE>
+</SQL> 
+
+

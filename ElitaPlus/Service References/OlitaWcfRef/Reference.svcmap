@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ReferenceGroup xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" ID="fc673ea7-e84d-495e-a0bd-949facec40f5" xmlns="urn:schemas-microsoft-com:xml-wcfservicemap">
+  <ClientOptions>
+    <GenerateAsynchronousMethods>false</GenerateAsynchronousMethods>
+    <EnableDataBinding>true</EnableDataBinding>
+    <ExcludedTypes />
+    <ImportXmlTypes>false</ImportXmlTypes>
+    <GenerateInternalTypes>false</GenerateInternalTypes>
+    <GenerateMessageContracts>false</GenerateMessageContracts>
+    <NamespaceMappings />
+    <CollectionMappings />
+    <GenerateSerializableTypes>true</GenerateSerializableTypes>
+    <Serializer>Auto</Serializer>
+    <ReferenceAllAssemblies>true</ReferenceAllAssemblies>
+    <ReferencedAssemblies />
+    <ReferencedDataContractTypes />
+    <ServiceContractMappings />
+  </ClientOptions>
+  <MetadataSources>
+    <MetadataSource Address="http://localhost/ElitaInternalWS/Olita/OlitaWcf.svc" Protocol="http" SourceId="1" />
+  </MetadataSources>
+  <Metadata>
+    <MetadataFile FileName="OlitaWcf.wsdl" MetadataType="Wsdl" ID="74bfec15-cfbf-4475-ba7d-bcb7b6ce28b8" SourceId="1" SourceUrl="http://localhost/ElitaInternalWS/Olita/OlitaWcf.svc?wsdl" />
+    <MetadataFile FileName="OlitaWcf.xsd" MetadataType="Schema" ID="83b35d22-0928-46d0-87f2-f7d363da237e" SourceId="1" SourceUrl="http://localhost/ElitaInternalWS/Olita/OlitaWcf.svc?xsd=xsd0" />
+    <MetadataFile FileName="OlitaWcf.disco" MetadataType="Disco" ID="92d689ff-7ed9-41f1-96f9-56497062e66d" SourceId="1" SourceUrl="http://localhost/ElitaInternalWS/Olita/OlitaWcf.svc?disco" />
+    <MetadataFile FileName="OlitaWcf1.xsd" MetadataType="Schema" ID="55530a72-b082-4330-bd10-4fee40aebc6c" SourceId="1" SourceUrl="http://localhost/ElitaInternalWS/Olita/OlitaWcf.svc?xsd=xsd1" />
+  </Metadata>
+  <Extensions>
+    <ExtensionFile FileName="configuration.svcinfo" Name="configuration.svcinfo" />
+  </Extensions>
+</ReferenceGroup>

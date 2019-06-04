@@ -1,0 +1,245 @@
+<?xml version="1.0" encoding="utf-8" ?>
+
+<!-- ********************** THIS FILE HAS BEEN GENERATED FROM TEMPLATE SQLObject.cst (4/19/2007)********************** -->
+
+<SQL>
+	<LOAD>
+		<![CDATA[	
+		SELECT 
+				acct_event_id,
+				debit_credit,
+				account_code,
+				use_payee_settings,
+				analysis_code_1,
+				analysis_code_2,
+				analysis_code_3,
+				analysis_code_4,
+				analysis_code_5,
+				analysis_code_6,
+				analysis_code_7,
+				analysis_code_8,
+				analysis_code_9,
+				analysis_code_10,
+				modified_date,
+				modified_by,
+				created_date,
+				created_by,
+				field_type_id,
+				calculation,
+				acct_event_detail_id,
+				allocation_marker,
+        acct_business_unit_id,
+				journal_type,
+        account_type,
+        description,
+        journal_id_suffix,
+        business_entity_id,
+        analysis_src_1_id, 
+        analysis_src_2_id, 
+        analysis_src_3_id, 
+        analysis_src_4_id, 
+        analysis_src_5_id, 
+        analysis_src_6_id, 
+        analysis_src_7_id, 
+        analysis_src_8_id, 
+        analysis_src_9_id, 
+        analysis_src_10_id,
+        include_exclude_ind,
+        description_src_id
+			FROM elp_acct_event_detail 
+			WHERE
+				acct_event_detail_id = :acct_event_detail_id
+
+		]]>
+	</LOAD>
+	<LOAD_LIST>	
+		<![CDATA[	
+SELECT
+				acct_event_id,
+				debit_credit,
+				account_code,
+				use_payee_settings,
+				analysis_code_1,
+				analysis_code_2,
+				analysis_code_3,
+				analysis_code_4,
+				analysis_code_5,
+				analysis_code_6,
+				analysis_code_7,
+				analysis_code_8,
+				analysis_code_9,
+				analysis_code_10,
+				aed.modified_date,
+				aed.modified_by,
+				aed.created_date,
+				aed.created_by,
+				field_type_id,
+				dit.translation as field_type,
+				calculation,
+				acct_event_detail_id,
+				allocation_marker,
+        bu.acct_business_unit_id,
+				journal_type,
+        account_type,
+				business_unit,
+        description,
+       journal_id_suffix,
+       business_entity_id,
+       analysis_src_1_id, 
+        analysis_src_2_id, 
+        analysis_src_3_id, 
+        analysis_src_4_id, 
+        analysis_src_5_id, 
+        analysis_src_6_id, 
+        analysis_src_7_id, 
+        analysis_src_8_id, 
+        analysis_src_9_id, 
+        analysis_src_10_id,
+        include_exclude_ind,
+        description_src_id
+			FROM elp_acct_event_detail aed,
+           elp_list_item li,
+          elp_dictionary_item di,
+          elp_dict_item_translation dit,
+          elp_acct_business_unit bu
+			WHERE aed.field_type_id = li.list_item_id
+			and li.dict_item_id = di.dict_item_id
+			and dit.dict_item_id = di.dict_item_id
+      and bu.acct_business_unit_id = aed.acct_business_unit_id
+			--dynamic_where_clause 
+      ORDER BY aed.acct_business_unit_id desc,account_code desc,debit_credit desc, field_type_id desc
+		]]>	
+	</LOAD_LIST>	
+	<UPDATE>
+		<![CDATA[	
+			UPDATE elp_acct_event_detail SET
+				acct_event_id = :acct_event_id,
+				debit_credit = :debit_credit,
+				account_code = :account_code,
+				use_payee_settings = :use_payee_settings,
+				analysis_code_1 = :analysis_code_1,
+				analysis_code_2 = :analysis_code_2,
+				analysis_code_3 = :analysis_code_3,
+				analysis_code_4 = :analysis_code_4,
+				analysis_code_5 = :analysis_code_5,
+				analysis_code_6 = :analysis_code_6,
+				analysis_code_7 = :analysis_code_7,
+				analysis_code_8 = :analysis_code_8,
+				analysis_code_9 = :analysis_code_9,
+				analysis_code_10 = :analysis_code_10,
+				field_type_id = :field_type_id,
+				calculation = :calculation,
+				modified_by = :modified_by,
+				allocation_marker = :allocation_marker,
+        acct_business_unit_id = :acct_business_unit_id,
+				journal_type = :journal_type,
+        account_type = :account_type,
+        description = :description,
+        journal_id_suffix = :journal_id_suffix,
+        business_entity_id = :business_entity_id,
+        analysis_src_1_id = :analysis_src_1_id, 
+        analysis_src_2_id = :analysis_src_2_id, 
+        analysis_src_3_id = :analysis_src_3_id, 
+        analysis_src_4_id = :analysis_src_4_id, 
+        analysis_src_5_id = :analysis_src_5_id, 
+        analysis_src_6_id = :analysis_src_6_id, 
+        analysis_src_7_id = :analysis_src_7_id, 
+        analysis_src_8_id = :analysis_src_8_id, 
+        analysis_src_9_id = :analysis_src_9_id, 
+        analysis_src_10_id = :analysis_src_10_id,
+        include_exclude_ind = :include_exclude_ind,
+        description_src_id = :description_src_id
+			WHERE
+				acct_event_detail_id = :acct_event_detail_id
+		]]>
+	</UPDATE>
+	<INSERT>
+    INSERT INTO elp_acct_event_detail
+    (
+    acct_event_id,
+    debit_credit,
+    account_code,
+    use_payee_settings,
+    analysis_code_1,
+    analysis_code_2,
+    analysis_code_3,
+    analysis_code_4,
+    analysis_code_5,
+    analysis_code_6,
+    analysis_code_7,
+    analysis_code_8,
+    analysis_code_9,
+    analysis_code_10,
+    field_type_id,
+    calculation,
+    created_by,
+    acct_event_detail_id,
+    allocation_marker,
+    acct_business_unit_id,
+    journal_type,
+    account_type,
+    description,
+    journal_id_suffix,
+    business_entity_id,
+    analysis_src_1_id,
+    analysis_src_2_id,
+    analysis_src_3_id,
+    analysis_src_4_id,
+    analysis_src_5_id,
+    analysis_src_6_id,
+    analysis_src_7_id,
+    analysis_src_8_id,
+    analysis_src_9_id,
+    analysis_src_10_id,
+    include_exclude_ind,
+    description_src_id
+    )
+    VALUES
+    (
+    :acct_event_id,
+    :debit_credit,
+    :account_code,
+    :use_payee_settings,
+    :analysis_code_1,
+    :analysis_code_2,
+    :analysis_code_3,
+    :analysis_code_4,
+    :analysis_code_5,
+    :analysis_code_6,
+    :analysis_code_7,
+    :analysis_code_8,
+    :analysis_code_9,
+    :analysis_code_10,
+    :field_type_id,
+    :calculation,
+    :created_by,
+    :acct_event_detail_id,
+    :allocation_marker,
+    :acct_business_unit_id,
+    :journal_type,
+    :account_type,
+    :description,
+    :journal_id_suffix,
+    :business_entity_id,
+    :analysis_src_1_id,
+    :analysis_src_2_id,
+    :analysis_src_3_id,
+    :analysis_src_4_id,
+    :analysis_src_5_id,
+    :analysis_src_6_id,
+    :analysis_src_7_id,
+    :analysis_src_8_id,
+    :analysis_src_9_id,
+    :analysis_src_10_id,
+    :include_exclude_ind,
+    :description_src_id
+    )
+  </INSERT>
+	<DELETE>
+			DELETE FROM elp_acct_event_detail
+			WHERE
+				acct_event_detail_id = :acct_event_detail_id
+	</DELETE>
+</SQL> 
+
+

@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8" ?> 
+<SQL>
+	<LOAD>
+		<![CDATA[	
+			SELECT
+		        ELP_CLAIMFILE_PROCESSED.claimfile_processed_id,
+		        ELP_CLAIMFILE_PROCESSED.FILENAME,
+		        ELP_SPLIT_SYSTEM.INTERFACE_CODE,
+		        DECODE(ELP_SPLIT_SYSTEM.INTERFACE_CODE,'001','N','002','C','003','O') AS claim_action,
+				0 AS process_order,
+				reject_reason,
+				claim_loaded,
+				dealer_code,
+				certificate,
+				certificate_sales_date,
+				authorization_number,
+				authorization_creation_date,
+				authorization_code,
+				problem_description,
+				product_code,
+				additional_product_code,
+				manufacturer,
+				model,
+				serial_number,
+				service_center_code,
+				amount,
+				do_not_process,
+				date_claim_closed,
+				status_code,
+				claim_number,
+				replacement_date,
+				ELP_CLAIMFILE_PROCESSED.created_by,
+				ELP_CLAIMFILE_PROCESSED.created_date,
+				ELP_CLAIMFILE_PROCESSED.modified_by,
+				ELP_CLAIMFILE_PROCESSED.modified_date,
+				claim_recon_wrk_id
+			FROM elp_claim_recon_wrk
+			INNER JOIN ELP_CLAIMFILE_PROCESSED ON elp_claim_recon_wrk.claimfile_processed_id = ELP_CLAIMFILE_PROCESSED.claimfile_processed_id
+			INNER JOIN ELP_SPLIT_SYSTEM ON ELP_CLAIMFILE_PROCESSED.SPLIT_SYSTEM_ID  = ELP_SPLIT_SYSTEM.SPLIT_SYSTEM_ID
+			WHERE
+				elp_claim_recon_wrk.claim_recon_wrk_id = :claim_recon_wrk_id
+		]]>
+	</LOAD>
+	<LOAD_LIST>	
+		ELP_CLAIM_SUSPENSE.LOADLIST		
+	</LOAD_LIST>				
+	<PROCESS>
+	    ELP_CLAIM_SUSPENSE.PROCESS		
+	</PROCESS>
+</SQL> 

@@ -1,0 +1,4 @@
+﻿<%@ ServiceHost Language="VB" Debug="true" 
+    Service="ElitaInternalWS.SpecializedServices.Timb.CertificateClaimService" 
+    Factory="ElitaInternalWS.Core.UnityServiceHostFactory"
+    CodeBehind="CertificateClaimService.svc.vb" %>

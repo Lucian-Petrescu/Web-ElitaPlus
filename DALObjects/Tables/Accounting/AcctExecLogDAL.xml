@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="utf-8" ?>
+
+<!-- ********************** THIS FILE HAS BEEN GENERATED FROM TEMPLATE SQLObject.cst (3/6/2008)********************** -->
+
+<SQL> 
+    <LOAD>
+        <![CDATA[	
+			SELECT 
+				company_id,
+				acct_event_id,
+				last_run_date,
+				created_date,
+				modified_date,
+				created_by,
+				modified_by,
+				previous_run_date,
+				status,
+				acct_exec_log_id
+			FROM elp_acct_exec_log 
+			WHERE
+				acct_exec_log_id = :acct_exec_log_id
+		]]>
+    </LOAD>
+    
+    <LOAD_LIST> 
+    </LOAD_LIST>
+    <UPDATE>
+        <![CDATA[	
+			UPDATE elp_acct_exec_log SET
+				company_id = :company_id,
+				acct_event_id = :acct_event_id,
+				last_run_date = :last_run_date,
+				previous_run_date = :previous_run_date,
+				status = :status,
+				modified_by = :modified_by
+			WHERE
+				acct_exec_log_id = :acct_exec_log_id 
+		]]>
+    </UPDATE>
+    <INSERT>
+        INSERT INTO elp_acct_exec_log
+        (
+        company_id,
+        acct_event_id,
+        last_run_date,
+        previous_run_date,
+        status,
+        created_by,
+        acct_exec_log_id
+        )
+        VALUES
+        (
+        :company_id,
+        :acct_event_id,
+        :last_run_date,
+        :previous_run_date,
+        :status,
+        :created_by,
+        :acct_exec_log_id
+        )
+    </INSERT>
+    <DELETE>
+        DELETE FROM elp_acct_exec_log
+        WHERE
+        acct_exec_log_id = :acct_exec_log_id
+    </DELETE>
+    <GET_EVENT>
+        <![CDATA[	
+			SELECT 
+				acct_exec_log_id
+			FROM elp_acct_exec_log 
+			WHERE
+				rownum = 1
+              --dynamic_where_clause
+		]]>
+    </GET_EVENT>
+    </SQL>
+
+
+    

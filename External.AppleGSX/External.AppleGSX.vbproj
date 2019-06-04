@@ -1,0 +1,1007 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="14.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{E50C26BE-FE9E-48AC-A9D1-6915E1F44CBA}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <RootNamespace>Assurant.ElitaPlus.External.AppleGSX</RootNamespace>
+    <AssemblyName>Assurant.ElitaPlus.External.AppleGSX</AssemblyName>
+    <FileAlignment>512</FileAlignment>
+    <MyType>Windows</MyType>
+    <TargetFrameworkVersion>v4.6.2</TargetFrameworkVersion>
+    <SccProjectName>SAK</SccProjectName>
+    <SccLocalPath>SAK</SccLocalPath>
+    <SccAuxPath>SAK</SccAuxPath>
+    <SccProvider>SAK</SccProvider>
+    <TargetFrameworkProfile />
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <DefineDebug>true</DefineDebug>
+    <DefineTrace>true</DefineTrace>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DocumentationFile>Assurant.ElitaPlus.External.AppleGSX.xml</DocumentationFile>
+    <NoWarn>42016,41999,42017,42018,42019,42032,42036,42020,42021,42022</NoWarn>
+    <Prefer32Bit>false</Prefer32Bit>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <DefineDebug>false</DefineDebug>
+    <DefineTrace>true</DefineTrace>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DocumentationFile>Assurant.ElitaPlus.External.AppleGSX.xml</DocumentationFile>
+    <NoWarn>42016,41999,42017,42018,42019,42032,42036,42020,42021,42022</NoWarn>
+    <Prefer32Bit>false</Prefer32Bit>
+  </PropertyGroup>
+  <PropertyGroup>
+    <OptionExplicit>On</OptionExplicit>
+  </PropertyGroup>
+  <PropertyGroup>
+    <OptionCompare>Binary</OptionCompare>
+  </PropertyGroup>
+  <PropertyGroup>
+    <OptionStrict>Off</OptionStrict>
+  </PropertyGroup>
+  <PropertyGroup>
+    <OptionInfer>On</OptionInfer>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Runtime.Serialization" />
+    <Reference Include="System.ServiceModel" />
+    <Reference Include="System.Xml" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="System.Net.Http" />
+  </ItemGroup>
+  <ItemGroup>
+    <Import Include="Microsoft.VisualBasic" />
+    <Import Include="System" />
+    <Import Include="System.Collections" />
+    <Import Include="System.Collections.Generic" />
+    <Import Include="System.Data" />
+    <Import Include="System.Diagnostics" />
+    <Import Include="System.Linq" />
+    <Import Include="System.Xml.Linq" />
+    <Import Include="System.Threading.Tasks" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="AppleGSXMockServiceManager.vb" />
+    <Compile Include="AppleGSXServiceManager.vb" />
+    <Compile Include="AppleGSXServiceManager_Production.vb" />
+    <Compile Include="My Project\AssemblyInfo.vb" />
+    <Compile Include="My Project\Application.Designer.vb">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Application.myapp</DependentUpon>
+    </Compile>
+    <Compile Include="My Project\Resources.Designer.vb">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
+    <Compile Include="My Project\Settings.Designer.vb">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Settings.settings</DependentUpon>
+      <DesignTimeSharedInput>True</DesignTimeSharedInput>
+    </Compile>
+    <Compile Include="Service References\Client.Production\Reference.vb">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </Compile>
+    <Compile Include="Service References\Client\Reference.vb">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="My Project\Resources.resx">
+      <Generator>VbMyResourcesResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.vb</LastGenOutput>
+      <CustomToolNamespace>My.Resources</CustomToolNamespace>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="app.config">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="My Project\Application.myapp">
+      <Generator>MyApplicationCodeGenerator</Generator>
+      <LastGenOutput>Application.Designer.vb</LastGenOutput>
+    </None>
+    <None Include="My Project\Settings.settings">
+      <Generator>SettingsSingleFileGenerator</Generator>
+      <CustomToolNamespace>My</CustomToolNamespace>
+      <LastGenOutput>Settings.Designer.vb</LastGenOutput>
+    </None>
+    <None Include="Service References\Client.Production\Assurant.ElitaPlus.External.AppleGSX.Client.Production.ackCommunicationResponseType.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\Client.Production\Assurant.ElitaPlus.External.AppleGSX.Client.Production.AcknowledgeCommunicationResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\Client.Production\Assurant.ElitaPlus.External.AppleGSX.Client.Production.acknowledgeIphoneConsignmentIncreaseOrderResponseType.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\Client.Production\Assurant.ElitaPlus.External.AppleGSX.Client.Production.AcknowledgeIphoneConsignmentIncreaseOrdersResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\Client.Production\Assurant.ElitaPlus.External.AppleGSX.Client.Production.AppleReviewPreCheckResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\Client.Production\Assurant.ElitaPlus.External.AppleGSX.Client.Production.appleReviewPreCheckResponseType.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\Client.Production\Assurant.ElitaPlus.External.AppleGSX.Client.Production.AuthenticateResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\Client.Production\Assurant.ElitaPlus.External.AppleGSX.Client.Production.authenticateResponseType.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\Client.Production\Assurant.ElitaPlus.External.AppleGSX.Client.Production.BeatsProductDetailsResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\Client.Production\Assurant.ElitaPlus.External.AppleGSX.Client.Production.beatsProductDetailsResponseType.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\Client.Production\Assurant.ElitaPlus.External.AppleGSX.Client.Production.BeatsSerializerResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\Client.Production\Assurant.ElitaPlus.External.AppleGSX.Client.Production.beatsSerializerResponseType.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\Client.Production\Assurant.ElitaPlus.External.AppleGSX.Client.Production.componentCheckResponseType.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\Client.Production\Assurant.ElitaPlus.External.AppleGSX.Client.Production.comptiaCodeLookupResponseType.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\Client.Production\Assurant.ElitaPlus.External.AppleGSX.Client.Production.CompTIACodesResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\Client.Production\Assurant.ElitaPlus.External.AppleGSX.Client.Production.CreateGeneralEscalationResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\Client.Production\Assurant.ElitaPlus.External.AppleGSX.Client.Production.createGenEscResponseType.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\Client.Production\Assurant.ElitaPlus.External.AppleGSX.Client.Production.createIPhoneAPPOrderResponseType.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\Client.Production\Assurant.ElitaPlus.External.AppleGSX.Client.Production.createIPhoneCarryInRepairResponseType.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\Client.Production\Assurant.ElitaPlus.External.AppleGSX.Client.Production.CreateIPhoneCarryInReturnBeforeReplaceRepairResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\Client.Production\Assurant.ElitaPlus.External.AppleGSX.Client.Production.CreateIPhoneNRERepairResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\Client.Production\Assurant.ElitaPlus.External.AppleGSX.Client.Production.createIPhoneNRERepairResponseType.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\Client.Production\Assurant.ElitaPlus.External.AppleGSX.Client.Production.CreateIPhoneRepairOrReplaceResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\Client.Production\Assurant.ElitaPlus.External.AppleGSX.Client.Production.createIPhoneRepairOrReplaceResponseType.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\Client.Production\Assurant.ElitaPlus.External.AppleGSX.Client.Production.CreateIPhoneSRFOrderResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\Client.Production\Assurant.ElitaPlus.External.AppleGSX.Client.Production.createIPhoneSRFOrderResponseType.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\Client.Production\Assurant.ElitaPlus.External.AppleGSX.Client.Production.CreateIPhoneStockingOrderResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\Client.Production\Assurant.ElitaPlus.External.AppleGSX.Client.Production.createIPhoneStockingOrderResponseType.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\Client.Production\Assurant.ElitaPlus.External.AppleGSX.Client.Production.CreateIPhoneWholeUnitExchangeResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\Client.Production\Assurant.ElitaPlus.External.AppleGSX.Client.Production.createReturnBeforeReplaceResponseType.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\Client.Production\Assurant.ElitaPlus.External.AppleGSX.Client.Production.createWholeUnitExchangeResponseType.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\Client.Production\Assurant.ElitaPlus.External.AppleGSX.Client.Production.customerReportResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\Client.Production\Assurant.ElitaPlus.External.AppleGSX.Client.Production.DeleteRepairResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\Client.Production\Assurant.ElitaPlus.External.AppleGSX.Client.Production.deleteRepairResponseType.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\Client.Production\Assurant.ElitaPlus.External.AppleGSX.Client.Production.DiagnosticTestStatusResponse1.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\Client.Production\Assurant.ElitaPlus.External.AppleGSX.Client.Production.diagnosticTestStatusResponseType.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\Client.Production\Assurant.ElitaPlus.External.AppleGSX.Client.Production.FetchCommunicationArticlesResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\Client.Production\Assurant.ElitaPlus.External.AppleGSX.Client.Production.fetchCommunicationArticlesResponseType.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\Client.Production\Assurant.ElitaPlus.External.AppleGSX.Client.Production.FetchCommunicationContentResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\Client.Production\Assurant.ElitaPlus.External.AppleGSX.Client.Production.fetchCommunicationContentResponseType.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\Client.Production\Assurant.ElitaPlus.External.AppleGSX.Client.Production.FetchDiagnosticConsoleURLResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\Client.Production\Assurant.ElitaPlus.External.AppleGSX.Client.Production.fetchDiagnosticConsoleURLResponseType.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\Client.Production\Assurant.ElitaPlus.External.AppleGSX.Client.Production.FetchDiagnosticCustomerReportURLResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\Client.Production\Assurant.ElitaPlus.External.AppleGSX.Client.Production.FetchDiagnosticDetailsResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\Client.Production\Assurant.ElitaPlus.External.AppleGSX.Client.Production.fetchDiagnosticDetailsResponseDataType.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\Client.Production\Assurant.ElitaPlus.External.AppleGSX.Client.Production.FetchDiagnosticEventNumbersResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\Client.Production\Assurant.ElitaPlus.External.AppleGSX.Client.Production.fetchDiagnosticEventNumbersResponseType.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\Client.Production\Assurant.ElitaPlus.External.AppleGSX.Client.Production.FetchDiagnosticSuitesResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\Client.Production\Assurant.ElitaPlus.External.AppleGSX.Client.Production.fetchDiagnosticSuitesResponseType.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\Client.Production\Assurant.ElitaPlus.External.AppleGSX.Client.Production.FetchDiskImageArticleContentResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\Client.Production\Assurant.ElitaPlus.External.AppleGSX.Client.Production.fetchDiskImageArticleContentResponseType.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\Client.Production\Assurant.ElitaPlus.External.AppleGSX.Client.Production.FetchDiskImageArticleIDResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\Client.Production\Assurant.ElitaPlus.External.AppleGSX.Client.Production.fetchDiskImageArticleIDResponseType.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\Client.Production\Assurant.ElitaPlus.External.AppleGSX.Client.Production.FetchFunctionalAreasResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\Client.Production\Assurant.ElitaPlus.External.AppleGSX.Client.Production.fetchFunctionalAreasResponseType.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\Client.Production\Assurant.ElitaPlus.External.AppleGSX.Client.Production.FetchImageResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\Client.Production\Assurant.ElitaPlus.External.AppleGSX.Client.Production.fetchImageResponseType.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\Client.Production\Assurant.ElitaPlus.External.AppleGSX.Client.Production.FetchIOSActivationDetailsResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\Client.Production\Assurant.ElitaPlus.External.AppleGSX.Client.Production.fetchIOSActivationDetailsResponseType.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\Client.Production\Assurant.ElitaPlus.External.AppleGSX.Client.Production.FetchIssueListResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\Client.Production\Assurant.ElitaPlus.External.AppleGSX.Client.Production.fetchIssueListResponseType.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\Client.Production\Assurant.ElitaPlus.External.AppleGSX.Client.Production.FetchOperationalProcedureArticleContentResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\Client.Production\Assurant.ElitaPlus.External.AppleGSX.Client.Production.fetchOperationalProcedureArticleContentResponseType.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\Client.Production\Assurant.ElitaPlus.External.AppleGSX.Client.Production.FetchOperationalProcedureArticleIDResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\Client.Production\Assurant.ElitaPlus.External.AppleGSX.Client.Production.fetchOperationalProcedureArticleIDResponseType.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\Client.Production\Assurant.ElitaPlus.External.AppleGSX.Client.Production.FetchProductModelResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\Client.Production\Assurant.ElitaPlus.External.AppleGSX.Client.Production.fetchProductModelResponseType.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\Client.Production\Assurant.ElitaPlus.External.AppleGSX.Client.Production.FetchQuestionsResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\Client.Production\Assurant.ElitaPlus.External.AppleGSX.Client.Production.fetchQuestionsResponseType.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\Client.Production\Assurant.ElitaPlus.External.AppleGSX.Client.Production.FetchQuickCheckResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\Client.Production\Assurant.ElitaPlus.External.AppleGSX.Client.Production.fetchQuickCheckResponseType.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\Client.Production\Assurant.ElitaPlus.External.AppleGSX.Client.Production.FetchRepairProcessArticleContentResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\Client.Production\Assurant.ElitaPlus.External.AppleGSX.Client.Production.fetchRepairProcessArticleContentResponseType.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\Client.Production\Assurant.ElitaPlus.External.AppleGSX.Client.Production.FetchRepairProcessArticleIDResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\Client.Production\Assurant.ElitaPlus.External.AppleGSX.Client.Production.fetchRepairProcessArticleIDResponseType.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\Client.Production\Assurant.ElitaPlus.External.AppleGSX.Client.Production.FetchSelfHelpArticleContentResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\Client.Production\Assurant.ElitaPlus.External.AppleGSX.Client.Production.fetchSelfHelpArticleContentResponseType.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\Client.Production\Assurant.ElitaPlus.External.AppleGSX.Client.Production.FetchSelfHelpArticleIDResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\Client.Production\Assurant.ElitaPlus.External.AppleGSX.Client.Production.fetchSelfHelpArticleIDResponseType.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\Client.Production\Assurant.ElitaPlus.External.AppleGSX.Client.Production.FetchServiceVideoArticleContentResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\Client.Production\Assurant.ElitaPlus.External.AppleGSX.Client.Production.fetchServiceVideoArticleContentResponseType.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\Client.Production\Assurant.ElitaPlus.External.AppleGSX.Client.Production.FetchServiceVideoArticleIDResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\Client.Production\Assurant.ElitaPlus.External.AppleGSX.Client.Production.fetchServiceVideoArticleIDResponseType.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\Client.Production\Assurant.ElitaPlus.External.AppleGSX.Client.Production.FetchTechnicalProcedureArticleContentResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\Client.Production\Assurant.ElitaPlus.External.AppleGSX.Client.Production.fetchTechnicalProcedureArticleContentResponseType.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\Client.Production\Assurant.ElitaPlus.External.AppleGSX.Client.Production.FetchTechnicalProcedureArticleIDResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\Client.Production\Assurant.ElitaPlus.External.AppleGSX.Client.Production.fetchTechnicalProcedureArticleIDResponseType.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\Client.Production\Assurant.ElitaPlus.External.AppleGSX.Client.Production.FetchTSNodeResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\Client.Production\Assurant.ElitaPlus.External.AppleGSX.Client.Production.fetchTSNodeResponseType.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\Client.Production\Assurant.ElitaPlus.External.AppleGSX.Client.Production.GeneralEscalationDetailsLookupResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\Client.Production\Assurant.ElitaPlus.External.AppleGSX.Client.Production.GeneralEscalationSummaryLookupResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\Client.Production\Assurant.ElitaPlus.External.AppleGSX.Client.Production.generalEscDetailsLookupResponseType.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\Client.Production\Assurant.ElitaPlus.External.AppleGSX.Client.Production.generalEscSummaryLookupResponseType.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\Client.Production\Assurant.ElitaPlus.External.AppleGSX.Client.Production.InitiateIOSDiagnosticResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\Client.Production\Assurant.ElitaPlus.External.AppleGSX.Client.Production.initiateIOSDiagnosticResponseType.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\Client.Production\Assurant.ElitaPlus.External.AppleGSX.Client.Production.IPhoneComponentCheckResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\Client.Production\Assurant.ElitaPlus.External.AppleGSX.Client.Production.iphoneConsignmentDecreaseOrderLookUpResponseType.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\Client.Production\Assurant.ElitaPlus.External.AppleGSX.Client.Production.IPhoneConsignmentDecreaseOrdersLookUpResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\Client.Production\Assurant.ElitaPlus.External.AppleGSX.Client.Production.iphoneConsignmentIncreaseOrderLookUpResponseType.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\Client.Production\Assurant.ElitaPlus.External.AppleGSX.Client.Production.IPhoneConsignmentIncreaseOrdersLookUpResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\Client.Production\Assurant.ElitaPlus.External.AppleGSX.Client.Production.IPhoneCreateAPPOrderResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\Client.Production\Assurant.ElitaPlus.External.AppleGSX.Client.Production.IPhoneCreateCarryInRepairResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\Client.Production\Assurant.ElitaPlus.External.AppleGSX.Client.Production.IPhoneDepotShipperLabelResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\Client.Production\Assurant.ElitaPlus.External.AppleGSX.Client.Production.iphoneDepotShipperLabelResponseType.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\Client.Production\Assurant.ElitaPlus.External.AppleGSX.Client.Production.IPhoneInvoiceDetailsLookupResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\Client.Production\Assurant.ElitaPlus.External.AppleGSX.Client.Production.iphoneInvoiceDetailsLookupResponseType.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\Client.Production\Assurant.ElitaPlus.External.AppleGSX.Client.Production.IPhoneInvoiceIDLookupResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\Client.Production\Assurant.ElitaPlus.External.AppleGSX.Client.Production.iphoneInvoiceIDLookupResponseType.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\Client.Production\Assurant.ElitaPlus.External.AppleGSX.Client.Production.IPhoneKGBSerialNumberUpdateResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\Client.Production\Assurant.ElitaPlus.External.AppleGSX.Client.Production.IPhoneMarkRepairCompleteResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\Client.Production\Assurant.ElitaPlus.External.AppleGSX.Client.Production.iphoneMarkRepairCompleteResponseType.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\Client.Production\Assurant.ElitaPlus.External.AppleGSX.Client.Production.IPhonePartsLookupResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\Client.Production\Assurant.ElitaPlus.External.AppleGSX.Client.Production.iphonePartsLookupResponseType.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\Client.Production\Assurant.ElitaPlus.External.AppleGSX.Client.Production.IPhonePartsPendingReturnResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\Client.Production\Assurant.ElitaPlus.External.AppleGSX.Client.Production.iphonePartsPendingReturnResponseType.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\Client.Production\Assurant.ElitaPlus.External.AppleGSX.Client.Production.IPhonePartsReturnUpdateResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\Client.Production\Assurant.ElitaPlus.External.AppleGSX.Client.Production.iphonePartsReturnUpdateResponseType.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\Client.Production\Assurant.ElitaPlus.External.AppleGSX.Client.Production.IPhoneRepairDetailsLookupResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\Client.Production\Assurant.ElitaPlus.External.AppleGSX.Client.Production.iphoneRepairDetailsLookupResponseType.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\Client.Production\Assurant.ElitaPlus.External.AppleGSX.Client.Production.IPhoneRepairDetailsResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\Client.Production\Assurant.ElitaPlus.External.AppleGSX.Client.Production.iphoneRepairDetailsResponseType.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\Client.Production\Assurant.ElitaPlus.External.AppleGSX.Client.Production.IPhoneRepairLookupResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\Client.Production\Assurant.ElitaPlus.External.AppleGSX.Client.Production.iphoneRepairLookupResponseType.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\Client.Production\Assurant.ElitaPlus.External.AppleGSX.Client.Production.IPhoneReturnLabelResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\Client.Production\Assurant.ElitaPlus.External.AppleGSX.Client.Production.iphoneReturnLabelResponseType.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\Client.Production\Assurant.ElitaPlus.External.AppleGSX.Client.Production.IPhoneReturnReportResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\Client.Production\Assurant.ElitaPlus.External.AppleGSX.Client.Production.iPhoneReturnReportResponseType.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\Client.Production\Assurant.ElitaPlus.External.AppleGSX.Client.Production.IPhoneUpdateSerialNumberResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\Client.Production\Assurant.ElitaPlus.External.AppleGSX.Client.Production.IPhoneWarrantyStatusResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\Client.Production\Assurant.ElitaPlus.External.AppleGSX.Client.Production.iphoneWarrantyStatusResponseType.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\Client.Production\Assurant.ElitaPlus.External.AppleGSX.Client.Production.LoanerIphoneReturnResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\Client.Production\Assurant.ElitaPlus.External.AppleGSX.Client.Production.loanerIphoneReturnResponseType.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\Client.Production\Assurant.ElitaPlus.External.AppleGSX.Client.Production.LogoutResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\Client.Production\Assurant.ElitaPlus.External.AppleGSX.Client.Production.logoutResponseType.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\Client.Production\Assurant.ElitaPlus.External.AppleGSX.Client.Production.RegisterIPhonePartsForBulkReturnResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\Client.Production\Assurant.ElitaPlus.External.AppleGSX.Client.Production.registerIPhonePartsForBulkReturnResponseType.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\Client.Production\Assurant.ElitaPlus.External.AppleGSX.Client.Production.RegisterIPhonePartsForWHUBulkReturnResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\Client.Production\Assurant.ElitaPlus.External.AppleGSX.Client.Production.registerIPhonePartsForWHUBulkReturnResponseType.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\Client.Production\Assurant.ElitaPlus.External.AppleGSX.Client.Production.RepairStatusResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\Client.Production\Assurant.ElitaPlus.External.AppleGSX.Client.Production.repairStatusResponseType.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\Client.Production\Assurant.ElitaPlus.External.AppleGSX.Client.Production.ReportedSymptomIssueResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\Client.Production\Assurant.ElitaPlus.External.AppleGSX.Client.Production.reportedSymptomIssueResponseType.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\Client.Production\Assurant.ElitaPlus.External.AppleGSX.Client.Production.RequoteEscalationDetailsLookupResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\Client.Production\Assurant.ElitaPlus.External.AppleGSX.Client.Production.RequoteEscalationSummaryLookupResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\Client.Production\Assurant.ElitaPlus.External.AppleGSX.Client.Production.requoteEscDetailsLookupResponseType.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\Client.Production\Assurant.ElitaPlus.External.AppleGSX.Client.Production.requoteEscSummaryLookupResponseType.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\Client.Production\Assurant.ElitaPlus.External.AppleGSX.Client.Production.RunDiagnosticTestResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\Client.Production\Assurant.ElitaPlus.External.AppleGSX.Client.Production.runDiagnosticTestResponseDataType.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\Client.Production\Assurant.ElitaPlus.External.AppleGSX.Client.Production.StockingOrderDetailsLookupResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\Client.Production\Assurant.ElitaPlus.External.AppleGSX.Client.Production.stockingOrderDetailsLookupResponseType.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\Client.Production\Assurant.ElitaPlus.External.AppleGSX.Client.Production.StockingOrderLookupResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\Client.Production\Assurant.ElitaPlus.External.AppleGSX.Client.Production.stockingOrderLookupResponseType.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\Client.Production\Assurant.ElitaPlus.External.AppleGSX.Client.Production.submitConsignmentIphoneDecreaseOrderResponseType.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\Client.Production\Assurant.ElitaPlus.External.AppleGSX.Client.Production.SubmitConsignmentIphoneDecreaseOrdersResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\Client.Production\Assurant.ElitaPlus.External.AppleGSX.Client.Production.UpdateGeneralEscalationResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\Client.Production\Assurant.ElitaPlus.External.AppleGSX.Client.Production.updateGeneralEscResponseType.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\Client.Production\Assurant.ElitaPlus.External.AppleGSX.Client.Production.updateIPhoneKGBSerialNumberResponseType.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\Client.Production\Assurant.ElitaPlus.External.AppleGSX.Client.Production.UpdateIphoneRepairOrReplaceResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\Client.Production\Assurant.ElitaPlus.External.AppleGSX.Client.Production.updateIphoneRepairOrReplaceResponseType.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\Client.Production\Assurant.ElitaPlus.External.AppleGSX.Client.Production.UpdateMailInRequoteEscalationResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\Client.Production\Assurant.ElitaPlus.External.AppleGSX.Client.Production.updateMailInRequoteEscResponseType.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\Client.Production\Assurant.ElitaPlus.External.AppleGSX.Client.Production.updateSerialNumberResponseType.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\Client.Production\Assurant.ElitaPlus.External.AppleGSX.Client.Production.UpdateWholeUnitRequoteEscalationResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\Client.Production\Assurant.ElitaPlus.External.AppleGSX.Client.Production.updateWholeUnitRequoteEscResponseType.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\Client.Production\Assurant.ElitaPlus.External.AppleGSX.Client.Production.ValidateIPhoneFromConsignedStockResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\Client.Production\Assurant.ElitaPlus.External.AppleGSX.Client.Production.validateIPhoneFromConsignedStockResponseType.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\Client.Production\Assurant.ElitaPlus.External.AppleGSX.Client.Production.ViewIPhoneBulkReturnProformaResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\Client.Production\Assurant.ElitaPlus.External.AppleGSX.Client.Production.viewIPhoneBulkReturnProformaResponseType.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\Client.Production\Assurant.ElitaPlus.External.AppleGSX.Client.Production.ViewIPhoneConsignmentProformaResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\Client.Production\Assurant.ElitaPlus.External.AppleGSX.Client.Production.viewIPhoneConsignmentProformaResponseType.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\Client.Production\Assurant.ElitaPlus.External.AppleGSX.Client.Production.ViewPendingIPhoneAPPOrdersResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\Client.Production\Assurant.ElitaPlus.External.AppleGSX.Client.Production.viewPendingIPhoneAPPOrdersResponseType.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\Client.Production\GsxWSAmIPhoneService.wsdl" />
+    <None Include="Service References\Client.Production\iphone.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Service References\Client.Production\iphone1.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Service References\Client.Production\iphone2.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Service References\Client.Production\iphone3.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Service References\Client.Production\iphone4.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Service References\Client.Production\iphone5.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Service References\Client.Production\iphone6.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Service References\Client\Assurant.ElitaPlus.External.AppleGSX.Client.ackCommunicationResponseType.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\Client\Assurant.ElitaPlus.External.AppleGSX.Client.acknowledgeConsignmentIncreaseOrderResponseType.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\Client\Assurant.ElitaPlus.External.AppleGSX.Client.appleReviewPreCheckResponseType.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\Client\Assurant.ElitaPlus.External.AppleGSX.Client.authenticateResponseType.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\Client\Assurant.ElitaPlus.External.AppleGSX.Client.beatsProductDetailsResponseType.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\Client\Assurant.ElitaPlus.External.AppleGSX.Client.beatsSerializerResponseType.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\Client\Assurant.ElitaPlus.External.AppleGSX.Client.carryInReturnReplaceResponseType.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\Client\Assurant.ElitaPlus.External.AppleGSX.Client.componentCheckResponseType.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\Client\Assurant.ElitaPlus.External.AppleGSX.Client.comptiaCodeLookupResponseType.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\Client\Assurant.ElitaPlus.External.AppleGSX.Client.consignmentDecreaseOrderLookUpResponseType.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\Client\Assurant.ElitaPlus.External.AppleGSX.Client.consignmentIncreaseOrderLookUpResponseType.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\Client\Assurant.ElitaPlus.External.AppleGSX.Client.createAPPOrderResponseType.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\Client\Assurant.ElitaPlus.External.AppleGSX.Client.createCarryInResponseType.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\Client\Assurant.ElitaPlus.External.AppleGSX.Client.createCNDRepairResponseType.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\Client\Assurant.ElitaPlus.External.AppleGSX.Client.createDSDOnsiteRepairResponseType.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\Client\Assurant.ElitaPlus.External.AppleGSX.Client.createGenEscResponseType.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\Client\Assurant.ElitaPlus.External.AppleGSX.Client.createIndirectOnsiteRepairResponseType.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\Client\Assurant.ElitaPlus.External.AppleGSX.Client.createMailInRepairResponseType.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\Client\Assurant.ElitaPlus.External.AppleGSX.Client.createRepairOrReplaceResponseType.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\Client\Assurant.ElitaPlus.External.AppleGSX.Client.createSRFOrderResponseType.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\Client\Assurant.ElitaPlus.External.AppleGSX.Client.createStockingOrderResponseType.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\Client\Assurant.ElitaPlus.External.AppleGSX.Client.createWholeUnitExchangeResponseType.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\Client\Assurant.ElitaPlus.External.AppleGSX.Client.deleteRepairResponseType.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\Client\Assurant.ElitaPlus.External.AppleGSX.Client.fetchCommunicationArticlesResponseType.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\Client\Assurant.ElitaPlus.External.AppleGSX.Client.fetchCommunicationContentResponseType.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\Client\Assurant.ElitaPlus.External.AppleGSX.Client.fetchDiagnosticConsoleURLResponseType.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\Client\Assurant.ElitaPlus.External.AppleGSX.Client.fetchDiagnosticDetailsResponseDataType.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\Client\Assurant.ElitaPlus.External.AppleGSX.Client.fetchDiagnosticEventNumbersResponseType.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\Client\Assurant.ElitaPlus.External.AppleGSX.Client.fetchDiagnosticSuitesResponseType.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\Client\Assurant.ElitaPlus.External.AppleGSX.Client.fetchDiskImageArticleContentResponseType.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\Client\Assurant.ElitaPlus.External.AppleGSX.Client.fetchDiskImageArticleIDResponseType.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\Client\Assurant.ElitaPlus.External.AppleGSX.Client.fetchFunctionalAreasResponseType.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\Client\Assurant.ElitaPlus.External.AppleGSX.Client.fetchImageResponseType.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\Client\Assurant.ElitaPlus.External.AppleGSX.Client.fetchIOSActivationDetailsResponseType.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\Client\Assurant.ElitaPlus.External.AppleGSX.Client.fetchIssueListResponseType.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\Client\Assurant.ElitaPlus.External.AppleGSX.Client.fetchOperationalProcedureArticleContentResponseType.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\Client\Assurant.ElitaPlus.External.AppleGSX.Client.fetchOperationalProcedureArticleIDResponseType.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\Client\Assurant.ElitaPlus.External.AppleGSX.Client.fetchProductModelResponseType.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\Client\Assurant.ElitaPlus.External.AppleGSX.Client.fetchQuickCheckResponseType.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\Client\Assurant.ElitaPlus.External.AppleGSX.Client.fetchRepairProcessArticleContentResponseType.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\Client\Assurant.ElitaPlus.External.AppleGSX.Client.fetchRepairProcessArticleIDResponseType.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\Client\Assurant.ElitaPlus.External.AppleGSX.Client.fetchSelfHelpArticleContentResponseType.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\Client\Assurant.ElitaPlus.External.AppleGSX.Client.fetchSelfHelpArticleIDResponseType.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\Client\Assurant.ElitaPlus.External.AppleGSX.Client.fetchServiceVideoArticleContentResponseType.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\Client\Assurant.ElitaPlus.External.AppleGSX.Client.fetchServiceVideoArticleIDResponseType.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\Client\Assurant.ElitaPlus.External.AppleGSX.Client.fetchTechnicalProcedureArticleContentResponseType.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\Client\Assurant.ElitaPlus.External.AppleGSX.Client.fetchTechnicalProcedureArticleIDResponseType.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\Client\Assurant.ElitaPlus.External.AppleGSX.Client.fetchTSNodeResponseType.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\Client\Assurant.ElitaPlus.External.AppleGSX.Client.generalEscDetailsLookupResponseType.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\Client\Assurant.ElitaPlus.External.AppleGSX.Client.generalEscSummaryLookupResponseType.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\Client\Assurant.ElitaPlus.External.AppleGSX.Client.initiateIOSDiagnosticResponseType.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\Client\Assurant.ElitaPlus.External.AppleGSX.Client.invoiceDetailsLookupResponseType.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\Client\Assurant.ElitaPlus.External.AppleGSX.Client.invoiceIDLookupResponseType.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\Client\Assurant.ElitaPlus.External.AppleGSX.Client.kbbPendingReturnReportResponseType.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\Client\Assurant.ElitaPlus.External.AppleGSX.Client.loanerReturnResponseType.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\Client\Assurant.ElitaPlus.External.AppleGSX.Client.logoutResponseType.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\Client\Assurant.ElitaPlus.External.AppleGSX.Client.markRepairCompleteResponseType.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\Client\Assurant.ElitaPlus.External.AppleGSX.Client.newOnsiteDispatchesResponseType.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\Client\Assurant.ElitaPlus.External.AppleGSX.Client.onsiteDispatchDetailResponseType.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\Client\Assurant.ElitaPlus.External.AppleGSX.Client.partsLookupResponseType.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\Client\Assurant.ElitaPlus.External.AppleGSX.Client.partsPendingReturnResponseType.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\Client\Assurant.ElitaPlus.External.AppleGSX.Client.partsReturnUpdateResponseType.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\Client\Assurant.ElitaPlus.External.AppleGSX.Client.registerPartsForBulkReturnResponseType.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\Client\Assurant.ElitaPlus.External.AppleGSX.Client.repairDetailsLookupResponseType.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\Client\Assurant.ElitaPlus.External.AppleGSX.Client.repairDetailsResponseType.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\Client\Assurant.ElitaPlus.External.AppleGSX.Client.repairLookupResponseType.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\Client\Assurant.ElitaPlus.External.AppleGSX.Client.repairStatusResponseType.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\Client\Assurant.ElitaPlus.External.AppleGSX.Client.reportedSymptomIssueResponseType.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\Client\Assurant.ElitaPlus.External.AppleGSX.Client.requoteEscDetailsLookupResponseType.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\Client\Assurant.ElitaPlus.External.AppleGSX.Client.requoteEscSummaryLookupResponseType.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\Client\Assurant.ElitaPlus.External.AppleGSX.Client.returnLabelResponseType.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\Client\Assurant.ElitaPlus.External.AppleGSX.Client.returnReportResponseType.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\Client\Assurant.ElitaPlus.External.AppleGSX.Client.runDiagnosticTestResponseDataType.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\Client\Assurant.ElitaPlus.External.AppleGSX.Client.stockingOrderDetailsLookupResponseType.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\Client\Assurant.ElitaPlus.External.AppleGSX.Client.stockingOrderLookupResponseType.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\Client\Assurant.ElitaPlus.External.AppleGSX.Client.submitConsignmentDecreaseOrderResponseType.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\Client\Assurant.ElitaPlus.External.AppleGSX.Client.submitWarrantyClaimsExceptionResponseType.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\Client\Assurant.ElitaPlus.External.AppleGSX.Client.updateCarryInResponseType.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\Client\Assurant.ElitaPlus.External.AppleGSX.Client.updateCarryInReturnReplaceResponseType.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\Client\Assurant.ElitaPlus.External.AppleGSX.Client.updateDSDOnsiteRepairResponseType.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\Client\Assurant.ElitaPlus.External.AppleGSX.Client.updateGeneralEscResponseType.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\Client\Assurant.ElitaPlus.External.AppleGSX.Client.updateMailInRequoteEscResponseType.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\Client\Assurant.ElitaPlus.External.AppleGSX.Client.updateRepairOrReplaceResponseType.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\Client\Assurant.ElitaPlus.External.AppleGSX.Client.updateSerialNumberResponseType.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\Client\Assurant.ElitaPlus.External.AppleGSX.Client.updateWholeUnitRequoteEscResponseType.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\Client\Assurant.ElitaPlus.External.AppleGSX.Client.uploadKGBICMSTaxVoucherResponseType.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\Client\Assurant.ElitaPlus.External.AppleGSX.Client.validateFromConsignedStockResponseType.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\Client\Assurant.ElitaPlus.External.AppleGSX.Client.viewBulkReturnProformaResponseType.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\Client\Assurant.ElitaPlus.External.AppleGSX.Client.viewConsignmentProformaResponseType.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\Client\Assurant.ElitaPlus.External.AppleGSX.Client.viewPendingAPPOrdersResponseType.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\Client\Assurant.ElitaPlus.External.AppleGSX.Client.warrantyStatusResponseType.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\Client\gsx-base-types.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Service References\Client\gsx-basic-types.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Service References\Client\gsx-core-requestResponse-elements.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Service References\Client\gsx-coreAsp-requestResponse-elements.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Service References\Client\gsx-coreAsp-schema.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Service References\Client\gsx-global-requestResponse-elements.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Service References\Client\gsx-global-schema.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Service References\Client\gsx-laAsp-requestResponse.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Service References\Client\GsxWSLaAspService.wsdl" />
+  </ItemGroup>
+  <ItemGroup>
+    <WCFMetadata Include="Service References\" />
+  </ItemGroup>
+  <ItemGroup>
+    <WCFMetadataStorage Include="Service References\Client.Production\" />
+    <WCFMetadataStorage Include="Service References\Client\" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Service References\Client\configuration91.svcinfo" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Service References\Client\configuration.svcinfo" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Service References\Client\Reference.svcmap">
+      <Generator>WCF Proxy Generator</Generator>
+      <LastGenOutput>Reference.vb</LastGenOutput>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\External.Interfaces\External.Interfaces.vbproj">
+      <Project>{b4bc4b0c-f901-4558-8de1-58100e997036}</Project>
+      <Name>External.Interfaces</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Service References\Client.Production\configuration91.svcinfo" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Service References\Client.Production\configuration.svcinfo" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Service References\Client.Production\Reference.svcmap">
+      <Generator>WCF Proxy Generator</Generator>
+      <LastGenOutput>Reference.vb</LastGenOutput>
+    </None>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.VisualBasic.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

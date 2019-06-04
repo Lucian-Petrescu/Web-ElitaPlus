@@ -1,0 +1,2 @@
+﻿<%@ ServiceHost Language="VB" Debug="true" Service="ElitaInternalWS.SpecializedServices.Abag.EscService"
+     Factory="ElitaInternalWS.Core.UnityServiceHostFactory"   CodeBehind="EscService.svc.vb" %>

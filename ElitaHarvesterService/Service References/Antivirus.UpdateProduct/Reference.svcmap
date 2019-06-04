@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ReferenceGroup xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" ID="48432475-9ec4-4f52-82fa-e9ff424a75c6" xmlns="urn:schemas-microsoft-com:xml-wcfservicemap">
+  <ClientOptions>
+    <GenerateAsynchronousMethods>false</GenerateAsynchronousMethods>
+    <EnableDataBinding>true</EnableDataBinding>
+    <ExcludedTypes />
+    <ImportXmlTypes>false</ImportXmlTypes>
+    <GenerateInternalTypes>false</GenerateInternalTypes>
+    <GenerateMessageContracts>false</GenerateMessageContracts>
+    <NamespaceMappings />
+    <CollectionMappings />
+    <GenerateSerializableTypes>true</GenerateSerializableTypes>
+    <Serializer>Auto</Serializer>
+    <UseSerializerForFaults>true</UseSerializerForFaults>
+    <ReferenceAllAssemblies>true</ReferenceAllAssemblies>
+    <ReferencedAssemblies />
+    <ReferencedDataContractTypes />
+    <ServiceContractMappings />
+  </ClientOptions>
+  <MetadataSources>
+    <MetadataSource Address="http://intra.btsmod.assurant.com/Assurant.Integration.Wireless.VendorIntegration.UpdateProduct/UpdateProduct.svc" Protocol="http" SourceId="1" />
+  </MetadataSources>
+  <Metadata>
+    <MetadataFile FileName="UpdateProduct.xsd" MetadataType="Schema" ID="1e63431f-2af1-4439-81f5-cb69d05c080c" SourceId="1" SourceUrl="http://mia0wbtsm001.ad.assurant.com/Assurant.Integration.Wireless.VendorIntegration.UpdateProduct/UpdateProduct.svc?xsd=xsd3" />
+    <MetadataFile FileName="UpdateProduct.disco" MetadataType="Disco" ID="0b675af4-c976-4025-b2c8-04883fa174b3" SourceId="1" SourceUrl="http://mia0wbtsm001.ad.assurant.com/Assurant.Integration.Wireless.VendorIntegration.UpdateProduct/UpdateProduct.svc?disco" />
+    <MetadataFile FileName="BizTalkServiceInstance.wsdl" MetadataType="Wsdl" ID="ed485473-ea3a-40c4-8159-c8280f95a3af" SourceId="1" SourceUrl="http://mia0wbtsm001.ad.assurant.com/Assurant.Integration.Wireless.VendorIntegration.UpdateProduct/UpdateProduct.svc?wsdl" />
+    <MetadataFile FileName="UpdateProduct1.xsd" MetadataType="Schema" ID="3eb5e877-ad51-49f7-a8ef-fb3147319728" SourceId="1" SourceUrl="http://mia0wbtsm001.ad.assurant.com/Assurant.Integration.Wireless.VendorIntegration.UpdateProduct/UpdateProduct.svc?xsd=xsd2" />
+  </Metadata>
+  <Extensions>
+    <ExtensionFile FileName="configuration91.svcinfo" Name="configuration91.svcinfo" />
+    <ExtensionFile FileName="configuration.svcinfo" Name="configuration.svcinfo" />
+  </Extensions>
+</ReferenceGroup>

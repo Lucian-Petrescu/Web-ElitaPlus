@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="utf-8" ?>
+
+<!-- ********************** THIS FILE HAS BEEN GENERATED FROM TEMPLATE SQLObject.cst (12/29/2006)********************** -->
+
+<SQL>
+	<LOAD>
+		<![CDATA[	
+			SELECT 
+				code,
+				maintainable_by_user,
+				display_to_user,
+				list_id,
+				dict_item_id,
+				created_date,
+				modified_date,
+				created_by,
+				modified_by,
+				active_flag,
+				list_item_id
+			FROM elp_list_item 
+			WHERE
+				list_item_id = :list_item_id
+		]]>
+	</LOAD>
+	<LOAD_LIST>		
+	</LOAD_LIST>	
+	<UPDATE>
+		<![CDATA[	
+			UPDATE elp_list_item SET
+				code = :code,
+				maintainable_by_user = :maintainable_by_user,
+				display_to_user = :display_to_user,
+				list_id = :list_id,
+				dict_item_id = :dict_item_id,
+				active_flag = :active_flag,
+				modified_by = :modified_by
+			WHERE
+				list_item_id = :list_item_id
+		]]>
+	</UPDATE>
+	<INSERT>
+			INSERT INTO elp_list_item
+					(			
+				code, 
+				maintainable_by_user, 
+				display_to_user, 
+				list_id, 
+				dict_item_id, 
+				active_flag, 
+				created_by,
+				list_item_id
+					)
+			VALUES
+					(			
+				:code, 
+				:maintainable_by_user, 
+				:display_to_user, 
+				:list_id, 
+				:dict_item_id, 
+				:active_flag, 
+				:created_by,
+				:list_item_id
+					)
+	</INSERT>
+	<DELETE>
+			DELETE FROM elp_list_item
+			WHERE
+				list_item_id = :list_item_id
+	</DELETE>
+</SQL> 
+
+
+

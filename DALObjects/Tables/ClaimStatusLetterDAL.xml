@@ -1,0 +1,120 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+
+<!-- ********************** THIS FILE HAS BEEN GENERATED FROM TEMPLATE SQLObject.cst (9/24/2008)********************** -->
+
+<SQL>
+  <LOAD>
+    <![CDATA[	
+			SELECT 
+				claim_status_by_group_id,
+				dealer_id,
+				letter_type,
+				number_of_days,
+				email_subject,
+				email_text,
+				email_from,
+				use_service_center_email,
+				email_to,
+				is_active,
+				created_date,
+				modified_date,
+				created_by,
+				modified_by,
+        use_claim_status,
+        notification_type_id,
+				status_letter_id,
+        group_owner_id
+			FROM elp_claim_status_letter 
+			WHERE
+				status_letter_id = :status_letter_id
+		]]>
+  </LOAD>
+  <LOAD_LIST>
+    <![CDATA[		
+			select distinct sl.status_letter_id, dealer dealer_code, c.code || ' - ' || dealer_name dealer_name, sl.number_of_days, sl.letter_type, tran.translation as status_description
+			from 	elp_claim_status_letter sl,
+					elp_dealer edealer,
+					elp_company c,
+					elp_list_item item,
+					elp_dict_item_translation tran,
+					elp_claim_status_by_group sgroup
+			where	c.company_id = edealer.company_id
+					and	sl.dealer_id = edealer.dealer_id
+          and ((item.list_item_id = sl.group_owner_id)
+					 or  (sgroup.claim_status_by_group_id = sl.claim_status_by_group_id and item.list_item_id = sgroup.list_item_id)
+					    )
+					--and ((sgroup.claim_status_by_group_id = sl.claim_status_by_group_id) or (sl.claim_status_by_group_id is null and sl.group_owner_id is not null))
+					--and item.list_item_id = sgroup.list_item_id
+					and item.dict_item_id = tran.dict_item_id
+          --dynamic_in_clause
+					--dynamic_where_clause
+			order by upper(dealer_name), upper(dealer), tran.translation, sl.letter_type, sl.number_of_days
+    ]]>
+  </LOAD_LIST>
+  <UPDATE>
+    <![CDATA[	
+			UPDATE elp_claim_status_letter SET
+				claim_status_by_group_id = :claim_status_by_group_id,
+				dealer_id = :dealer_id,
+				letter_type = :letter_type,
+				number_of_days = :number_of_days,
+				email_subject = :email_subject,
+				email_text = :email_text,
+				email_from = :email_from,
+				use_service_center_email = :use_service_center_email,
+				email_to = :email_to,
+				is_active = :is_active,
+				modified_by = :modified_by,
+        use_claim_status = :use_claim_status,
+        notification_type_id = :notification_type_id,
+        group_owner_id = :group_owner_id
+			WHERE
+				status_letter_id = :status_letter_id
+		]]>
+  </UPDATE>
+  <INSERT>
+    INSERT INTO elp_claim_status_letter
+    (
+    claim_status_by_group_id,
+    dealer_id,
+    letter_type,
+    number_of_days,
+    email_subject,
+    email_text,
+    email_from,
+    use_service_center_email,
+    email_to,
+    is_active,
+    created_by,
+    use_claim_status,
+    notification_type_id,
+    status_letter_id,
+    group_owner_id
+    )
+    VALUES
+    (
+    :claim_status_by_group_id,
+    :dealer_id,
+    :letter_type,
+    :number_of_days,
+    :email_subject,
+    :email_text,
+    :email_from,
+    :use_service_center_email,
+    :email_to,
+    :is_active,
+    :created_by,
+    :use_claim_status,
+    :notification_type_id,
+    :status_letter_id,
+    :group_owner_id
+    )
+  </INSERT>
+  <DELETE>
+    DELETE FROM elp_claim_status_letter
+    WHERE
+    status_letter_id = :status_letter_id
+  </DELETE>
+</SQL>
+
+

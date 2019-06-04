@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ReferenceGroup xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" ID="70174788-46ad-42c3-9da2-5618a0efd7c0" xmlns="urn:schemas-microsoft-com:xml-wcfservicemap">
+  <ClientOptions>
+    <GenerateAsynchronousMethods>true</GenerateAsynchronousMethods>
+    <EnableDataBinding>true</EnableDataBinding>
+    <ExcludedTypes />
+    <ImportXmlTypes>false</ImportXmlTypes>
+    <GenerateInternalTypes>false</GenerateInternalTypes>
+    <GenerateMessageContracts>true</GenerateMessageContracts>
+    <NamespaceMappings />
+    <CollectionMappings>
+      <CollectionMapping TypeName="System.Collections.Generic.List`1" Category="List" />
+    </CollectionMappings>
+    <GenerateSerializableTypes>true</GenerateSerializableTypes>
+    <Serializer>Auto</Serializer>
+    <ReferenceAllAssemblies>true</ReferenceAllAssemblies>
+    <ReferencedAssemblies />
+    <ReferencedDataContractTypes />
+    <ServiceContractMappings />
+  </ClientOptions>
+  <MetadataSources>
+    <MetadataSource Address="net.tcp://msp0wbatm010.cead.prd:9001/mex" Protocol="mex" SourceId="1" />
+  </MetadataSources>
+  <Metadata>
+    <MetadataFile FileName="dev.assurantcorp.com.wsdl" MetadataType="Wsdl" ID="22f1f7fd-e88e-4910-b57d-f2f79a8a2df1" SourceId="1" SourceUrl="net.tcp://msp0wbatm010.cead.prd:9001/mex" />
+    <MetadataFile FileName="service.wsdl" MetadataType="Wsdl" ID="ad924a10-71fe-4b7c-9db4-17d7f0379847" SourceId="1" SourceUrl="net.tcp://msp0wbatm010.cead.prd:9001/mex" />
+    <MetadataFile FileName="dev.assurantcorp.com.xsd" MetadataType="Schema" ID="7e76639b-fac5-4585-873a-3846cee2dee6" SourceId="1" SourceUrl="net.tcp://msp0wbatm010.cead.prd:9001/mex" />
+    <MetadataFile FileName="service.xsd" MetadataType="Schema" ID="3b995ece-0957-4f6e-abef-52632101eb0f" SourceId="1" SourceUrl="net.tcp://msp0wbatm010.cead.prd:9001/mex" />
+    <MetadataFile FileName="Message1.xsd" MetadataType="Schema" ID="d99ea8e5-4836-49b7-b4b9-0e11920529a2" SourceId="1" SourceUrl="net.tcp://msp0wbatm010.cead.prd:9001/mex" />
+  </Metadata>
+  <Extensions>
+    <ExtensionFile FileName="configuration.svcinfo" Name="configuration.svcinfo" />
+    <ExtensionFile FileName="configuration91.svcinfo" Name="configuration91.svcinfo" />
+  </Extensions>
+</ReferenceGroup>

@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ReferenceGroup xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" ID="2f59d044-9871-493e-86e0-d6355f2def79" xmlns="urn:schemas-microsoft-com:xml-wcfservicemap">
+  <ClientOptions>
+    <GenerateAsynchronousMethods>false</GenerateAsynchronousMethods>
+    <EnableDataBinding>true</EnableDataBinding>
+    <ExcludedTypes />
+    <ImportXmlTypes>false</ImportXmlTypes>
+    <GenerateInternalTypes>false</GenerateInternalTypes>
+    <GenerateMessageContracts>false</GenerateMessageContracts>
+    <NamespaceMappings />
+    <CollectionMappings />
+    <GenerateSerializableTypes>true</GenerateSerializableTypes>
+    <Serializer>Auto</Serializer>
+    <ReferenceAllAssemblies>true</ReferenceAllAssemblies>
+    <ReferencedAssemblies />
+    <ReferencedDataContractTypes />
+    <ServiceContractMappings />
+  </ClientOptions>
+  <MetadataSources>
+    <MetadataSource Address="https://localhost/ElitaInternalWS/Test/WcfTest.svc" Protocol="http" SourceId="1" />
+  </MetadataSources>
+  <Metadata>
+    <MetadataFile FileName="WcfTest.xsd" MetadataType="Schema" ID="ef41331c-fc5f-4121-a31e-729bc11f5bea" SourceId="1" SourceUrl="https://localhost/ElitaInternalWS/Test/WcfTest.svc?xsd=xsd1" />
+    <MetadataFile FileName="WcfTest1.xsd" MetadataType="Schema" ID="d90863da-e64b-4505-abf2-1684674a07d5" SourceId="1" SourceUrl="https://localhost/ElitaInternalWS/Test/WcfTest.svc?xsd=xsd0" />
+    <MetadataFile FileName="WcfTest.disco" MetadataType="Disco" ID="60a226f0-8d74-4b4a-a21b-3ce48213e620" SourceId="1" SourceUrl="https://localhost/ElitaInternalWS/Test/WcfTest.svc?disco" />
+    <MetadataFile FileName="WcfTest.wsdl" MetadataType="Wsdl" ID="2cc61ad7-0360-4f7d-8ec1-308879a7323d" SourceId="1" SourceUrl="https://localhost/ElitaInternalWS/Test/WcfTest.svc?wsdl" />
+    <MetadataFile FileName="WcfTest1.wsdl" MetadataType="Wsdl" ID="7371aaf1-4d8c-409f-a011-cebfd5263363" SourceId="1" SourceUrl="https://localhost/ElitaInternalWS/Test/WcfTest.svc?wsdl=wsdl0" />
+  </Metadata>
+  <Extensions>
+    <ExtensionFile FileName="configuration.svcinfo" Name="configuration.svcinfo" />
+  </Extensions>
+</ReferenceGroup>

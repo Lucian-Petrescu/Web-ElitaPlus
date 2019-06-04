@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="utf-8" ?>
+
+<!-- ********************** THIS FILE HAS BEEN GENERATED FROM TEMPLATE SQLObject.cst (5/25/2017)********************** -->
+
+<SQL>
+	<LOAD>
+		<![CDATA[	
+			SELECT
+        coverage_conseq_damage_id,
+				coverage_id,
+				conseq_damage_type_xcd,
+				liability_limit_base_xcd,
+				liability_limit_per_incident,
+				liability_limit_cumulative,
+				effective,
+				expiration,
+				created_date,
+				created_by,
+				modified_date,
+				modified_by,
+        fulfilment_method_xcd
+			FROM elp_coverage_conseq_damage 
+			WHERE
+				coverage_conseq_damage_id = :coverage_conseq_damage_id
+		]]>
+	</LOAD>
+	<LOAD_LIST>
+    SELECT
+    coverage_conseq_damage_id,
+    coverage_id,
+    conseq_damage_type_xcd,
+    elita.GetDescriptionFromItemextcode(conseq_damage_type_xcd,:language_id) conseq_damage_type_desc,
+    liability_limit_base_xcd,
+    elita.GetDescriptionFromItemextcode(liability_limit_base_xcd,:language_id) liability_limit_base_desc,
+    liability_limit_per_incident,
+    liability_limit_cumulative,
+    fulfilment_method_xcd,
+    elita.GetDescriptionFromItemextcode(fulfilment_method_xcd,:language_id)fulfilment_method_desc,
+    to_char(effective,'DD-Mon-YYYY') effective_format,
+    to_char(expiration,'DD-Mon-YYYY') expiration_format,
+    effective,
+    expiration,
+    created_date,
+    created_by,
+    modified_date,
+    modified_by
+    FROM elp_coverage_conseq_damage
+    WHERE
+    coverage_id = :coverage_id
+    order by effective
+  </LOAD_LIST>	
+	<UPDATE>
+		<![CDATA[	
+			UPDATE elp_coverage_conseq_damage SET
+				coverage_id = :coverage_id,
+				conseq_damage_type_xcd = :conseq_damage_type_xcd,
+				liability_limit_base_xcd = :liability_limit_base_xcd,
+				liability_limit_per_incident = :liability_limit_per_incident,
+				liability_limit_cumulative = :liability_limit_cumulative,
+				effective = :effective,
+				expiration = :expiration,
+        fulfilment_method_xcd= :fulfilment_method_xcd,
+				modified_by = :modified_by
+			WHERE
+				coverage_conseq_damage_id = :coverage_conseq_damage_id
+		]]>
+	</UPDATE>
+	<INSERT>
+    INSERT INTO elp_coverage_conseq_damage
+    (
+    coverage_conseq_damage_id,
+    coverage_id,
+    conseq_damage_type_xcd,
+    liability_limit_base_xcd,
+    liability_limit_per_incident,
+    liability_limit_cumulative,
+    effective,
+    expiration,
+    created_by,
+    fulfilment_method_xcd
+    )
+    VALUES
+    (
+    :coverage_conseq_damage_id,
+    :coverage_id,
+    :conseq_damage_type_xcd,
+    :liability_limit_base_xcd,
+    :liability_limit_per_incident,
+    :liability_limit_cumulative,
+    :effective,
+    :expiration,
+    :created_by,
+    :fulfilment_method_xcd
+    )
+  </INSERT>
+	<DELETE>
+			DELETE FROM elp_coverage_conseq_damage
+			WHERE
+				coverage_conseq_damage_id = :coverage_conseq_damage_id
+	</DELETE>
+</SQL> 
+
+

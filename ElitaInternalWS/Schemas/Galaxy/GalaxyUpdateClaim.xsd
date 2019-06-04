@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema">
+  <xs:element name="GalaxyUpdateClaimDs">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element name="GalaxyUpdateClaim">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element name="CLAIM_NUMBER" type="stringRequired" minOccurs="1" maxOccurs="1" />
+              <xs:element name="UNIT_NUMBER" type="myPositiveInteger" minOccurs="1" maxOccurs="1" />
+              <xs:element name="CAUSE_OF_LOSS_CODE" type="stringRequired" minOccurs="1" maxOccurs="1" />
+              <xs:element name="LOSS_DATE" type="xs:dateTime" minOccurs="1" maxOccurs="1" />
+              <xs:element name="COVERAGES" minOccurs="1" maxOccurs="unbounded">
+                <xs:complexType>
+                  <xs:sequence>
+                    <xs:element name="CERT_ITEM_COVERAGE_CODE" type="stringRequired" minOccurs="1" maxOccurs="1" />
+                    <xs:element name="ASSURANT_PAY_AMOUNT" type="myPositiveDecimal" minOccurs="1" maxOccurs="1" />
+                    <xs:element name="DEDUCTIBLE" type="myPositiveDecimal" minOccurs="1" maxOccurs="1" />      
+                  </xs:sequence>
+                </xs:complexType>
+              </xs:element>
+              <xs:element name="STATUS_CODE" type="xs:string" minOccurs="0" maxOccurs="1" />
+              <xs:element name="SERVICE_CENTER_CODE" type="xs:string" minOccurs="0" maxOccurs="1" />
+              <xs:element name="REASON_CLOSED_CODE" type="xs:string" minOccurs="0" maxOccurs="1" />
+              <xs:element name="PROBLEM_DESCRIPTION" type="xs:string" minOccurs="0" maxOccurs="1" />
+              <xs:element name="SPECIAL_INSTRUCTION" type="xs:string" minOccurs="0" maxOccurs="1" />
+              <xs:element name="LIABILITY_LIMIT" type="xs:decimal" minOccurs="0" maxOccurs="1" />             
+              <xs:element name="VISIT_DATE" type="xs:dateTime" minOccurs="0" maxOccurs="1" />
+			  <xs:element name="INVOICE_DATE" type="xs:dateTime" minOccurs="0" maxOccurs="1" />
+              <xs:element name="CURRENT_ODOMETER" type="myPositiveInteger" minOccurs="0" maxOccurs="1" />
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:simpleType name="stringRequired">
+    <xs:restriction base="xs:string">
+      <xs:minLength value="1"></xs:minLength>
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:simpleType name="myPositiveInteger">
+    <xs:restriction base="xs:int">
+      <xs:minInclusive value="0" />
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:simpleType name="myPositiveDecimal">
+    <xs:restriction base="xs:decimal">
+      <xs:minInclusive value="0" />
+    </xs:restriction>
+  </xs:simpleType>
+</xs:schema>

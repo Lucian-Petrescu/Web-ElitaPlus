@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="utf-8" ?>
+
+<!-- ********************** THIS FILE HAS BEEN GENERATED FROM TEMPLATE SQLObject.cst (12/14/2005)********************** -->
+
+<SQL>
+	<LOAD>
+		<![CDATA[	
+			SELECT 
+				company_id,
+				system_code,
+				description,
+				layout,
+				interface_code,
+				created_by,
+				created_date,
+				modified_by,
+				modified_date,
+				split_system_id
+			FROM elp_split_system 
+			WHERE
+				split_system_id = :split_system_id
+		]]>
+	</LOAD>
+	<LOAD_LIST>		
+	</LOAD_LIST>	
+	<UPDATE>
+		<![CDATA[	
+			UPDATE elp_split_system SET
+				company_id = :company_id,
+				system_code = :system_code,
+				description = :description,
+				layout = :layout,
+				interface_code = :interface_code,
+				modified_by = :modified_by
+			WHERE
+				split_system_id = :split_system_id
+				AND NVL(modified_date,created_date) = NVL(:modified_date,created_date)
+		]]>
+	</UPDATE>
+	<INSERT>
+			INSERT INTO elp_split_system
+					(			
+				company_id, 
+				system_code, 
+				description, 
+				layout, 
+				interface_code, 
+				created_by,
+				split_system_id
+					)
+			VALUES
+					(			
+				:company_id, 
+				:system_code, 
+				:description, 
+				:layout, 
+				:interface_code, 
+				:created_by,
+				:split_system_id
+					)
+	</INSERT>
+	<DELETE>
+			DELETE FROM elp_split_system
+			WHERE
+				split_system_id = :split_system_id
+	</DELETE>
+</SQL> 
+
+

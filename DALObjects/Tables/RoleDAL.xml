@@ -1,0 +1,83 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+
+<!-- ********************** THIS FILE HAS BEEN GENERATED FROM TEMPLATE SQLObject.cst (3/13/2009)********************** -->
+
+<SQL>
+  <LOAD>
+    <![CDATA[	
+			SELECT 
+				code,
+				description,
+				ihq_only,
+				created_date,
+				modified_date,
+				created_by,
+				modified_by,
+				role_id,
+        role_provider_id
+			FROM elp_role 
+			WHERE role_id = :role_id
+		]]>
+  </LOAD>
+  <LOAD_LIST>
+    <![CDATA[	
+			select role_id,
+             code, 
+             description,
+             ihq_only,
+             role_provider_id,
+             role_id id,				    
+             code||' - '||description code_and_description 
+      from ELP_ROLE
+			--dynamic_where_clause
+			ORDER BY UPPER(description)
+		]]>
+  </LOAD_LIST>
+  <LOAD_ROLES_LIST>
+    <![CDATA[	
+			select role_id id,
+             code, 
+             description,
+      from ELP_ROLE
+			--dynamic_where_clause
+			ORDER BY UPPER(description)
+		]]>
+  </LOAD_ROLES_LIST>
+  <UPDATE>
+    <![CDATA[	
+			UPDATE elp_role SET
+				code = :code,
+				description = :description,
+				ihq_only = :ihq_only,
+				modified_by = :modified_by,
+        role_provider_id = :role_provider_id
+			WHERE	role_id = :role_id
+		]]>
+  </UPDATE>
+  <INSERT>
+    INSERT INTO elp_role
+    (
+    code,
+    description,
+    ihq_only,
+    created_by,
+    role_id,
+    role_provider_id
+    )
+    VALUES
+    (
+    :code,
+    :description,
+    :ihq_only,
+    :created_by,
+    :role_id,
+    :role_provider_id
+    )
+  </INSERT>
+  <DELETE>
+    DELETE FROM elp_role
+    WHERE role_id = :role_id
+  </DELETE>
+</SQL>
+
+

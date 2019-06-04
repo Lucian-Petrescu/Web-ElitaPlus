@@ -1,0 +1,302 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1" MembersFormat="NameAndType">
+  <Class Name="Assurant.ElitaPlus.BusinessObjectsNew.Claim">
+    <Position X="3.25" Y="10.75" Width="2.75" />
+    <Compartments>
+      <Compartment Name="Fields" Collapsed="true" />
+      <Compartment Name="Methods" Collapsed="true" />
+    </Compartments>
+    <NestedTypes>
+      <Class Name="Assurant.ElitaPlus.BusinessObjectsNew.Claim.ValidDateOfLoss" Collapsed="true">
+        <TypeIdentifier>
+          <NewMemberFileName>Claims\Claim.vb</NewMemberFileName>
+        </TypeIdentifier>
+      </Class>
+      <Class Name="Assurant.ElitaPlus.BusinessObjectsNew.Claim.ValidRepairDate" Collapsed="true">
+        <TypeIdentifier>
+          <NewMemberFileName>Claims\Claim.vb</NewMemberFileName>
+        </TypeIdentifier>
+      </Class>
+      <Class Name="Assurant.ElitaPlus.BusinessObjectsNew.Claim.ClaimsForBatchProcessDV" Collapsed="true">
+        <TypeIdentifier>
+          <NewMemberFileName>Claims\Claim.vb</NewMemberFileName>
+        </TypeIdentifier>
+      </Class>
+      <Class Name="Assurant.ElitaPlus.BusinessObjectsNew.Claim.ClaimAdjusterSearchDV" Collapsed="true">
+        <TypeIdentifier>
+          <NewMemberFileName>Claims\Claim.vb</NewMemberFileName>
+        </TypeIdentifier>
+      </Class>
+      <Class Name="Assurant.ElitaPlus.BusinessObjectsNew.Claim.ValidFollowupDate" Collapsed="true">
+        <TypeIdentifier>
+          <NewMemberFileName>Claims\Claim.vb</NewMemberFileName>
+        </TypeIdentifier>
+      </Class>
+      <Class Name="Assurant.ElitaPlus.BusinessObjectsNew.Claim.ValidReportedDate" Collapsed="true">
+        <TypeIdentifier>
+          <NewMemberFileName>Claims\Claim.vb</NewMemberFileName>
+        </TypeIdentifier>
+      </Class>
+      <Class Name="Assurant.ElitaPlus.BusinessObjectsNew.Claim.ClaimIssuesView" Collapsed="true">
+        <TypeIdentifier>
+          <NewMemberFileName>Claims\Claim.vb</NewMemberFileName>
+        </TypeIdentifier>
+      </Class>
+      <Class Name="Assurant.ElitaPlus.BusinessObjectsNew.Claim.PendingReviewPaymentClaimSearchDV" Collapsed="true">
+        <TypeIdentifier>
+          <NewMemberFileName>Claims\Claim.vb</NewMemberFileName>
+        </TypeIdentifier>
+      </Class>
+      <Class Name="Assurant.ElitaPlus.BusinessObjectsNew.Claim.ValidNewDeviceSKU" Collapsed="true">
+        <TypeIdentifier>
+          <NewMemberFileName>Claims\Claim.vb</NewMemberFileName>
+        </TypeIdentifier>
+      </Class>
+      <Class Name="Assurant.ElitaPlus.BusinessObjectsNew.Claim.ClaimRedoDV" Collapsed="true">
+        <TypeIdentifier>
+          <NewMemberFileName>Claims\Claim.vb</NewMemberFileName>
+        </TypeIdentifier>
+      </Class>
+      <Class Name="Assurant.ElitaPlus.BusinessObjectsNew.Claim.ValidAuthorizedAmount" Collapsed="true">
+        <TypeIdentifier>
+          <NewMemberFileName>Claims\Claim.vb</NewMemberFileName>
+        </TypeIdentifier>
+      </Class>
+      <Class Name="Assurant.ElitaPlus.BusinessObjectsNew.Claim.PendingApprovalClaimSearchDV" Collapsed="true">
+        <TypeIdentifier>
+          <NewMemberFileName>Claims\Claim.vb</NewMemberFileName>
+        </TypeIdentifier>
+      </Class>
+      <Class Name="Assurant.ElitaPlus.BusinessObjectsNew.Claim.ClaimFollowUpSearchDV" Collapsed="true">
+        <TypeIdentifier>
+          <NewMemberFileName>Claims\Claim.vb</NewMemberFileName>
+        </TypeIdentifier>
+      </Class>
+      <Class Name="Assurant.ElitaPlus.BusinessObjectsNew.Claim.PendingClaimSearchDV" Collapsed="true">
+        <TypeIdentifier>
+          <NewMemberFileName>Claims\Claim.vb</NewMemberFileName>
+        </TypeIdentifier>
+      </Class>
+      <Class Name="Assurant.ElitaPlus.BusinessObjectsNew.Claim.ValidAuthAmountEdit" Collapsed="true">
+        <TypeIdentifier>
+          <NewMemberFileName>Claims\Claim.vb</NewMemberFileName>
+        </TypeIdentifier>
+      </Class>
+      <Class Name="Assurant.ElitaPlus.BusinessObjectsNew.Claim.ClaimSearchDV" Collapsed="true">
+        <TypeIdentifier>
+          <NewMemberFileName>Claims\Claim.vb</NewMemberFileName>
+        </TypeIdentifier>
+      </Class>
+      <Class Name="Assurant.ElitaPlus.BusinessObjectsNew.Claim.ValidVisitDate" Collapsed="true">
+        <TypeIdentifier>
+          <NewMemberFileName>Claims\Claim.vb</NewMemberFileName>
+        </TypeIdentifier>
+      </Class>
+      <Class Name="Assurant.ElitaPlus.BusinessObjectsNew.Claim.MaterClaimDV" Collapsed="true">
+        <TypeIdentifier>
+          <NewMemberFileName>Claims\Claim.vb</NewMemberFileName>
+        </TypeIdentifier>
+      </Class>
+      <Class Name="Assurant.ElitaPlus.BusinessObjectsNew.Claim.ValidLoanerReturnedDate" Collapsed="true">
+        <TypeIdentifier>
+          <NewMemberFileName>Claims\Claim.vb</NewMemberFileName>
+        </TypeIdentifier>
+      </Class>
+      <Class Name="Assurant.ElitaPlus.BusinessObjectsNew.Claim.ValidPickUpDate" Collapsed="true">
+        <TypeIdentifier>
+          <NewMemberFileName>Claims\Claim.vb</NewMemberFileName>
+        </TypeIdentifier>
+      </Class>
+      <Class Name="Assurant.ElitaPlus.BusinessObjectsNew.Claim.ClaimImagesView" Collapsed="true">
+        <TypeIdentifier>
+          <NewMemberFileName>Claims\Claim.vb</NewMemberFileName>
+        </TypeIdentifier>
+      </Class>
+    </NestedTypes>
+    <TypeIdentifier>
+      <HashCode>6y3/ja3L/yCYZbava2fvDynN/r/Q/n2IPW8me8vvmH8=</HashCode>
+      <FileName>Claims\Claim.vb</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Assurant.ElitaPlus.BusinessObjectsNew.ClaimBase">
+    <Position X="9.25" Y="1" Width="3" />
+    <Compartments>
+      <Compartment Name="Fields" Collapsed="true" />
+      <Compartment Name="Methods" Collapsed="true" />
+    </Compartments>
+    <NestedTypes>
+      <Class Name="Assurant.ElitaPlus.BusinessObjectsNew.ClaimBase.ValueMandatoryConditionally" Collapsed="true">
+        <TypeIdentifier>
+          <NewMemberFileName>Claims\ClaimBase.vb</NewMemberFileName>
+        </TypeIdentifier>
+      </Class>
+      <Class Name="Assurant.ElitaPlus.BusinessObjectsNew.ClaimBase.CPF_TaxNumberValidation" Collapsed="true">
+        <TypeIdentifier>
+          <NewMemberFileName>Claims\ClaimBase.vb</NewMemberFileName>
+        </TypeIdentifier>
+      </Class>
+      <Class Name="Assurant.ElitaPlus.BusinessObjectsNew.ClaimBase.ValidReasonClosed" Collapsed="true">
+        <TypeIdentifier>
+          <NewMemberFileName>Claims\ClaimBase.vb</NewMemberFileName>
+        </TypeIdentifier>
+      </Class>
+      <Class Name="Assurant.ElitaPlus.BusinessObjectsNew.ClaimBase.ClaimEquipmentSelectionView" Collapsed="true">
+        <TypeIdentifier>
+          <NewMemberFileName>Claims\ClaimBase.vb</NewMemberFileName>
+        </TypeIdentifier>
+      </Class>
+    </NestedTypes>
+    <TypeIdentifier>
+      <HashCode>eJAKAACEAEKCAADIEEAgTUmAQCKARAIAYCAIBEEggPY=</HashCode>
+      <FileName>Claims\ClaimBase.vb</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Property Name="Status" />
+      <Property Name="ClaimAuthorizationType" />
+      <Property Name="Company" />
+      <Property Name="Dealer" />
+      <Property Name="Certificate" />
+      <Property Name="CertificateItem" />
+      <Property Name="CertificateItemCoverage" />
+    </ShowAsAssociation>
+  </Class>
+  <Class Name="Assurant.ElitaPlus.BusinessObjectsNew.ClaimFacade">
+    <Position X="17.25" Y="0.5" Width="2.75" />
+    <TypeIdentifier>
+      <HashCode>AAAEAAAAAAAAAAAAAAAIAAAAAAAIAAAAQAAAAAACAAA=</HashCode>
+      <FileName>Claims\ClaimFacade.vb</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Assurant.ElitaPlus.BusinessObjectsNew.MultiAuthClaim">
+    <Position X="9.25" Y="10.5" Width="2" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAEAAAAAAAAA=</HashCode>
+      <FileName>Claims\MultiAuthClaim.vb</FileName>
+    </TypeIdentifier>
+    <ShowAsCollectionAssociation>
+      <Property Name="ClaimAuthorizationChildren" />
+    </ShowAsCollectionAssociation>
+  </Class>
+  <Class Name="Assurant.ElitaPlus.BusinessObjectsNew.Dealer" Collapsed="true">
+    <Position X="5.25" Y="7" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>QxomgqZJDCvAk3NBCFE8AdmKQryPHwKOIt1zemk+AnU=</HashCode>
+      <FileName>Tables\Dealer.vb</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Assurant.ElitaPlus.BusinessObjectsNew.CertItem" Collapsed="true">
+    <Position X="5.25" Y="3" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>CABCoICBAlIAAQATAEAMiAGAYElSApSGIggFgEAAMQI=</HashCode>
+      <FileName>Certificates\CertItem.vb</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Assurant.ElitaPlus.BusinessObjectsNew.CertItemCoverage" Collapsed="true">
+    <Position X="5.25" Y="5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>BAACgoAQAEMCAYrIEiDYz4ggECAAFACBQGAkgQgCICA=</HashCode>
+      <FileName>Certificates\CertItemCoverage.vb</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Assurant.ElitaPlus.BusinessObjectsNew.Certificate" Collapsed="true">
+    <Position X="14.5" Y="3" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>36GvxddU66Nrp6V92mHlNemzU+Z5nYCy+1iFRg4QsPU=</HashCode>
+      <FileName>Certificates\Certificate.vb</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="Assurant.ElitaPlus.BusinessObjectsNew.Company" Collapsed="true">
+    <Position X="14.5" Y="5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>yCTOmIgQgGBii4AYKQAkABIoEgoQBBsECKADLgAQgAA=</HashCode>
+      <FileName>Tables\Company.vb</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Assurant.ElitaPlus.BusinessObjectsNew.ClaimAuthorization">
+    <Position X="14.75" Y="10" Width="2.5" />
+    <TypeIdentifier>
+      <HashCode>AYCGoIJAggAAIQDEBgEAAAAMAAkAEQAAACIAAACiBAA=</HashCode>
+      <FileName>Claims\ClaimAuthorization.vb</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Property Name="Claim" />
+      <Property Name="ServiceCenter" />
+    </ShowAsAssociation>
+    <ShowAsCollectionAssociation>
+      <Property Name="ClaimAuthorizationItemChildren" />
+    </ShowAsCollectionAssociation>
+  </Class>
+  <Class Name="Assurant.ElitaPlus.BusinessObjectsNew.ClaimAuthItem">
+    <Position X="21.25" Y="10.25" Width="2.25" />
+    <TypeIdentifier>
+      <HashCode>AAACgIAAAAAAAQAAAAIAAASAACAAAABAEACAAAAQAIA=</HashCode>
+      <FileName>Claims\ClaimAuthItem.vb</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Property Name="ClaimAuthorization" />
+    </ShowAsAssociation>
+  </Class>
+  <Class Name="Assurant.ElitaPlus.BusinessObjectsNew.Invoice">
+    <Position X="15" Y="17.25" Width="2.25" />
+    <TypeIdentifier>
+      <HashCode>AAACgIAAAgAAAQAAAgABAAAAAAEAGACAAAAAAACABAA=</HashCode>
+      <FileName>Claims\Invoice.vb</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Property Name="ServiceCenter" />
+    </ShowAsAssociation>
+    <ShowAsCollectionAssociation>
+      <Property Name="InvoiceItemChildren" />
+    </ShowAsCollectionAssociation>
+  </Class>
+  <Class Name="Assurant.ElitaPlus.BusinessObjectsNew.InvoiceItem">
+    <Position X="20.25" Y="17.25" Width="2.25" />
+    <TypeIdentifier>
+      <HashCode>AQACoIAAAAAAAQAAACIABASAACAAAABAEACAAAAQBYA=</HashCode>
+      <FileName>Claims\InvoiceItem.vb</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Property Name="Invoice" />
+      <Property Name="ClaimAuthorization" />
+    </ShowAsAssociation>
+  </Class>
+  <Class Name="Assurant.ElitaPlus.BusinessObjectsNew.InvoiceReconciliation">
+    <Position X="25" Y="14.5" Width="2.5" />
+    <TypeIdentifier>
+      <HashCode>AABCgIAAAAACAQgEAAAAAAAAABAAAACAAAAQAAAAAAg=</HashCode>
+      <FileName>Claims\InvoiceReconciliation.vb</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Property Name="ClaimAuthorizationItem" />
+      <Property Name="InvoiceItem" />
+    </ShowAsAssociation>
+  </Class>
+  <Class Name="Assurant.ElitaPlus.BusinessObjectsNew.ServiceCenter" Collapsed="true">
+    <Position X="11.75" Y="16.5" Width="1.5" />
+    <Compartments>
+      <Compartment Name="Fields" Collapsed="true" />
+      <Compartment Name="Methods" Collapsed="true" />
+      <Compartment Name="Properties" Collapsed="true" />
+    </Compartments>
+    <TypeIdentifier>
+      <HashCode>Shj2gfEEvDT03fnljTglSyap0sIwtEzuI8A/69PFc0M=</HashCode>
+      <FileName>Tables\ServiceCenter.vb</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Enum Name="Assurant.ElitaPlus.BusinessObjectsNew.BasicClaimStatus">
+    <Position X="6" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAIAAAAAAAAgAAAAIAGAAAA=</HashCode>
+      <FileName>Claims\ClaimBase.vb</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Enum Name="Assurant.ElitaPlus.BusinessObjectsNew.ClaimAuthorizationType">
+    <Position X="14.5" Y="6.75" Width="2.25" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAEAAAAACAAAAAAAAAAAAAAAEAAAA=</HashCode>
+      <FileName>Claims\ClaimBase.vb</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Font Name="Tahoma" Size="8.25" />
+</ClassDiagram>

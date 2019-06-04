@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="utf-8" ?>
+
+<!-- ********************** THIS FILE HAS BEEN GENERATED FROM TEMPLATE SQLObject.cst (12/21/2006)********************** -->
+
+<SQL>
+	<LOAD>
+		<![CDATA[	
+			SELECT 
+				effective,
+				expiration,
+				created_by,
+				created_date,
+				modified_by,
+				modified_date,
+				earning_code_id,
+				earning_pattern_id,
+        earning_pattern_starts_on_id
+			FROM elp_earning_pattern 
+			WHERE
+				earning_pattern_id = :earning_pattern_id
+		]]>
+	</LOAD>
+	<LOAD_LIST>
+		<![CDATA[	
+			SELECT
+				EARNING_PATTERN_ID, DESCRIPTION, CODE,
+				EFFECTIVE, EXPIRATION, earning_pattern_starts_on_id
+			FROM elp_earning_code inner join elp_earning_pattern
+			ON elp_earning_code.earning_code_id= elp_earning_pattern.earning_code_id
+			WHERE
+				COMPANY_GROUP_ID = :COMPANY_GROUP_ID
+   				--dynamic_where_clause
+			ORDER BY CODE, EFFECTIVE, EXPIRATION
+		]]>
+	</LOAD_LIST>	
+	<LOAD_DATES>
+		<![CDATA[	
+			SELECT
+				EARNING_PATTERN_ID, EFFECTIVE, EXPIRATION
+			FROM ELP_EARNING_PATTERN 
+			WHERE
+				EARNING_CODE_ID = :EARNING_CODE_ID
+			AND EARNING_PATTERN_ID != :EARNING_PATTERN_ID
+			ORDER BY EFFECTIVE, EXPIRATION
+		]]>
+	</LOAD_DATES>
+	<UPDATE>
+		<![CDATA[	
+			UPDATE elp_earning_pattern SET
+				effective = :effective,
+				expiration = :expiration,
+				earning_code_id = :earning_code_id,
+				modified_by = :modified_by,
+        earning_pattern_starts_on_id = :earning_pattern_starts_on_id
+			WHERE
+				earning_pattern_id = :earning_pattern_id
+		]]>		
+	</UPDATE>
+	<INSERT>
+    INSERT INTO elp_earning_pattern
+    (
+    effective,
+    expiration,
+    earning_code_id,
+    created_by,
+    earning_pattern_id,
+    earning_pattern_starts_on_id
+    )
+    VALUES
+    (
+    :effective,
+    :expiration,
+    :earning_code_id,
+    :created_by,
+    :earning_pattern_id,
+    :earning_pattern_starts_on_id
+    )
+  </INSERT>
+	<DELETE>
+			DELETE FROM elp_earning_pattern
+			WHERE
+				earning_pattern_id = :earning_pattern_id
+	</DELETE>
+</SQL> 
+
+

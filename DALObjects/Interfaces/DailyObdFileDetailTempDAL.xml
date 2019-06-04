@@ -1,0 +1,105 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+
+<!-- ********************** THIS FILE HAS BEEN GENERATED FROM TEMPLATE SQLObject.cst (1/31/2013)********************** -->
+
+<SQL>
+  <LOAD>
+    <![CDATA[	
+			SELECT 
+        company_id,
+        dealer_id,
+				cert_id,
+				cert_number,
+				cert_created_date,
+				record_type,
+				created_date,
+				created_by,
+        rec_cancel,
+				rec_new_business,
+				rec_billing,
+				file_detail_id,
+        billing_detail_id
+			FROM elp_daily_obd_file_detail_temp 
+			<!--WHERE
+				file_detail_temp_id = :file_detail_temp_id-->
+		]]>
+  </LOAD>
+  <LOAD_LIST>
+    <![CDATA[ 	
+		SELECT
+        c.company_id,
+        c.dealer_id,
+        t.cert_id,
+				t.cert_number,
+				cert_created_date,
+				record_type,
+				t.created_date,
+				t.created_by,
+        rec_cancel,
+				rec_new_business,
+				rec_billing,
+				file_detail_temp_id,
+        0 as file_Detail_id,
+        billing_detail_id
+
+			FROM ELITA.elp_daily_obd_file_detail_temp t,elp_cert c
+			where t.cert_id = c.cert_id
+      
+		
+		
+  ]]>
+
+  </LOAD_LIST>
+  <UPDATE>
+    <![CDATA[	
+			UPDATE elp_daily_obd_file_detail_temp SET
+				cert_id = :cert_id,
+				cert_number = :cert_number,
+				cert_created_date = :cert_created_date,
+				record_type = :record_type,
+				rec_cancel = :rec_cancel,
+				rec_new_business = :rec_new_business,
+				rec_billing = :rec_billing,
+				modified_by = :modified_by
+			<!--WHERE
+				file_detail_temp_id = :file_detail_temp_id-->
+		]]>
+  </UPDATE>
+  <INSERT>
+    INSERT INTO elp_daily_obd_file_detail_temp
+    (
+    cert_id,
+    cert_number,
+    cert_created_date,
+    record_type,
+    rec_cancel,
+    rec_new_business,
+    rec_billing,
+    created_by,
+    file_detail_temp_id,
+    billing_detail_id
+    )
+    VALUES
+    (
+    :cert_id,
+    :cert_number,
+    :cert_created_date,
+    :record_type,
+    :rec_cancel,
+    :rec_new_business,
+    :rec_billing,
+    :created_by,
+    :file_detail_temp_id,
+    :billing_detail_id
+    )
+  </INSERT>
+  <DELETE>
+    DELETE FROM elp_daily_obd_file_detail_temp
+    WHERE
+    file_detail_temp_id = :file_detail_temp_id
+  </DELETE>
+  <Detail_Records_List>ELP_DAILY_OUTBOUND_FILE.ELP_CREATE_ECI_OUTBOUND_FILE</Detail_Records_List>
+
+</SQL>
+
+

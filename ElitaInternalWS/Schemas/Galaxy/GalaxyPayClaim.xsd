@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema">
+  <xs:element name="GalaxyPayClaimDs">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element name="GalaxyPayClaim">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element name="CERTIFICATE_NUMBER" type="stringRequired" minOccurs="1" maxOccurs="1" />
+              <xs:element name="DEALER_CODE" type="stringRequired" minOccurs="1" maxOccurs="1" />
+              <xs:element name="CLAIM_NUMBER" type="stringRequired" minOccurs="1" maxOccurs="1" />
+              <xs:element name="UNIT_NUMBER" type="myPositiveInteger" minOccurs="1" maxOccurs="1" />
+              <xs:element name="SVC_CONTROL_NUMBER" type="stringRequired" minOccurs="1" maxOccurs="1" />
+              <xs:element name="COVERAGES" minOccurs="1" maxOccurs="unbounded">
+                <xs:complexType>
+                  <xs:sequence>
+                    <xs:element name="CERT_ITEM_COVERAGE_CODE" type="stringRequired" minOccurs="1" maxOccurs="1" />
+                    <xs:element name="AMOUNT" type="xs:decimal" minOccurs="1" maxOccurs="1" />
+                    <xs:element name="IVA_AMOUNT" type="xs:decimal" minOccurs="0" maxOccurs="1" />
+                    <xs:element name="REPAIR_DATE" type="xs:dateTime" minOccurs="1" maxOccurs="1" />
+                  </xs:sequence>
+                </xs:complexType>
+              </xs:element>
+              <xs:element name="AUTHORIZATION_NUMBER" type="xs:string" minOccurs="0" maxOccurs="1" />
+              <xs:element name="PAYEE_CODE" type="stringRequired" minOccurs="1" maxOccurs="1" />
+              <xs:element name="CTC_ADDRESS1" type="xs:string" minOccurs="0" maxOccurs="1" />
+              <xs:element name="CTC_ADDRESS2" type="xs:string" minOccurs="0" maxOccurs="1" />
+              <xs:element name="CTC_CITY" type="xs:string" minOccurs="0" maxOccurs="1" />
+              <xs:element name="CTC_REGION_CODE" type="xs:string" minOccurs="0" maxOccurs="1" />
+              <xs:element name="CTC_POSTAL_CODE" type="xs:string" minOccurs="0" maxOccurs="1" />
+              <xs:element name="DISBURSEMENT_COUNTRY_CODE" type="xs:string" minOccurs="0" maxOccurs="1" />
+              <xs:element name="ACCOUNT_NAME" type="xs:string" minOccurs="0" maxOccurs="1" />
+              <xs:element name="BANK_ID" type="xs:string" minOccurs="0" maxOccurs="1" />
+              <xs:element name="ACCOUNT_NUMBER" type="xs:string" minOccurs="0" maxOccurs="1" />
+              <xs:element name="PAYMENT_METHOD" type="stringRequired" minOccurs="0" maxOccurs="1" />
+              <xs:element name="IDENTITY_DOCUMENT_NO" type="stringRequired" minOccurs="0" maxOccurs="1" />
+              <xs:element name="DOCUMENT_TYPE" type="stringRequired" minOccurs="0" maxOccurs="1" />
+              <xs:element name="IBAN_NUMBER" type="xs:string" minOccurs="0" maxOccurs="1" />
+              <xs:element name="SWIFT_CODE" type="xs:string" minOccurs="0" maxOccurs="1" />
+              <xs:element name="ACCOUNT_TYPE" type="xs:string" minOccurs="0" maxOccurs="1" />
+              <xs:element name="PAYEE_OTHER_NAME" type="stringRequired" minOccurs="0" maxOccurs="1" />
+			  <xs:element name="INVOICE_DATE" type="xs:dateTime" minOccurs="0" maxOccurs="1" />
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:simpleType name="stringRequired">
+    <xs:restriction base="xs:string">
+      <xs:minLength value="1"></xs:minLength>
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:simpleType name="myPositiveDecimal">
+    <xs:restriction base="xs:decimal">
+      <xs:minInclusive value="0" />
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:simpleType name="myPositiveInteger">
+    <xs:restriction base="xs:int">
+      <xs:minInclusive value="0" />
+    </xs:restriction>
+  </xs:simpleType>
+</xs:schema>

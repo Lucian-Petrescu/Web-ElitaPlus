@@ -1,0 +1,122 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+
+<!-- ********************** THIS FILE HAS BEEN GENERATED FROM TEMPLATE SQLObject.cst (8/4/2008)********************** -->
+
+<SQL>
+  <LOAD>
+    <![CDATA[	
+			SELECT 
+				dealer_id,
+				sku_number,
+				sku_description,
+				manufacturer_id,
+				manufacturer_name,
+				warranty_type,
+				warranty_description,
+				model_number,
+				warranty_duration_parts,
+				warranty_duration_labor,
+				created_date,
+				modified_date,
+				created_by,
+				modified_by,
+				is_deleted,
+				risk_type_id,
+				warranty_master_id
+			FROM elp_warranty_master 
+			WHERE
+				warranty_master_id = :warranty_master_id
+		]]>
+  </LOAD>
+  <LOAD_LIST>
+    <![CDATA[		
+			select
+			WARRANTY_MASTER_ID, dealer dealer_code, C.CODE || ' - ' || dealer_name DEALER_NAME, SKU_NUMBER,
+			SKU_DESCRIPTION, MANUFACTURER_ID, MANUFACTURER_NAME, case WARRANTY_TYPE when '0' then 'PRP'when '1' then 'PSP' when '2' then 'MFG' end WARRANTY_TYPE,
+			WARRANTY_DESCRIPTION, MODEL_NUMBER, WARRANTY_DURATION_PARTS, WARRANTY_DURATION_LABOR,
+			wm.CREATED_DATE, wm.MODIFIED_DATE, wm.CREATED_BY,wm.MODIFIED_BY, IS_DELETED, r.description risk_type
+			from 	elita.elp_warranty_master wm
+      left outer join	elp_dealer edealer on wm.DEALER_ID = edealer.DEALER_ID
+      left outer join	elp_company c on c.company_id = edealer.company_id
+      left outer join  elp_risk_type  r on r.RISK_TYPE_ID = wm.RISK_TYPE_ID
+			where	1=1
+          and wm.sku_number like :sku_number
+          and upper(nvl(wm.manufacturer_name,'%')) like upper(:manufacturer_name)
+          and upper(nvl(wm.model_number,'%')) like upper(:model_number)
+          --dynamic_in_clause
+					--dynamic_where_clause
+			order by UPPER(DEALER_NAME), UPPER(dealer)
+			]]>
+  </LOAD_LIST>
+  <UPDATE>
+    <![CDATA[	
+			UPDATE elp_warranty_master SET
+				dealer_id = :dealer_id,
+				sku_number = :sku_number,
+				sku_description = :sku_description,
+				manufacturer_id = :manufacturer_id,
+				manufacturer_name = :manufacturer_name,
+				warranty_type = :warranty_type,
+				warranty_description = :warranty_description,
+				model_number = :model_number,
+				warranty_duration_parts = :warranty_duration_parts,
+				warranty_duration_labor = :warranty_duration_labor,
+				is_deleted = :is_deleted,
+				risk_type_id = :risk_type_id,
+				modified_by = :modified_by
+			WHERE
+				warranty_master_id = :warranty_master_id
+		]]>
+  </UPDATE>
+  <INSERT>
+    INSERT INTO elp_warranty_master
+    (
+    dealer_id,
+    sku_number,
+    sku_description,
+    manufacturer_id,
+    manufacturer_name,
+    warranty_type,
+    warranty_description,
+    model_number,
+    warranty_duration_parts,
+    warranty_duration_labor,
+    is_deleted,
+    risk_type_id,
+    created_by,
+    warranty_master_id
+    )
+    VALUES
+    (
+    :dealer_id,
+    :sku_number,
+    :sku_description,
+    :manufacturer_id,
+    :manufacturer_name,
+    :warranty_type,
+    :warranty_description,
+    :model_number,
+    :warranty_duration_parts,
+    :warranty_duration_labor,
+    :is_deleted,
+    :risk_type_id,
+    :created_by,
+    :warranty_master_id
+    )
+  </INSERT>
+  <DELETE>
+    DELETE FROM elp_warranty_master
+    WHERE
+    warranty_master_id = :warranty_master_id
+  </DELETE>
+  <WS_GET_MAKE_MODEL_FROM_WARRANTY_MASTER_FOR_DEALER>
+    <![CDATA[
+    select Manufacturer_Name, Model_Number, Internal_manufacturer_id
+    from elp_warranty_master
+    where sku_number= :sku_number
+    and dealer_id = :dealer_id
+		]]>
+  </WS_GET_MAKE_MODEL_FROM_WARRANTY_MASTER_FOR_DEALER>
+</SQL>
+
+

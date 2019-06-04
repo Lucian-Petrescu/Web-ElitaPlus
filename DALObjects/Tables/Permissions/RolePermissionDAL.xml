@@ -1,0 +1,62 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<SQL>
+  <LOAD>
+    <![CDATA[	
+			SELECT 
+				role_permission_id,
+				role_id,
+				permission_id,
+				created_date,
+				created_by,
+				modified_date,
+				modified_by
+			FROM elp_role_permission 
+			WHERE
+				role_permission_id = :role_permission_id
+		]]>
+  </LOAD>
+  <LOAD_LIST>
+    <![CDATA[	
+      SELECT
+				role_permission_id,
+				role_id,
+				permission_id,
+				created_date,
+				created_by,
+				modified_date,
+				modified_by
+      FROM elp_role_permission
+      WHERE role_id = :role_id
+  ]]>
+  </LOAD_LIST>
+  <UPDATE>
+    update elp_role_permission
+    set role_id = :role_id,
+        permission_id = :permission_id,
+        modified_date = :modified_date,
+        modified_by = :modified_by
+    where role_permission_id = :role_permission_id
+  </UPDATE>
+  <INSERT>
+    INSERT INTO elp_role_permission
+    (
+    role_permission_id,
+    role_id,
+    permission_id,
+    created_date,
+    created_by
+    )
+    VALUES
+    (
+    :role_permission_id,
+    :role_id,
+    :permission_id,
+    :created_date,
+    :created_by
+    )
+  </INSERT>
+  <DELETE>
+    DELETE FROM elp_role_permission
+    WHERE role_permission_id = :role_permission_id
+  </DELETE>
+</SQL>

@@ -1,0 +1,174 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+
+<!-- ********************** THIS FILE HAS BEEN GENERATED FROM TEMPLATE SQLObject.cst (4/6/2013)********************** -->
+
+<SQL>
+  <LOAD>
+    <![CDATA[	
+			SELECT 
+				invoice_group_id,
+				invoice_reconciliation_id,
+				created_by,
+				created_date,
+				modified_by,
+				modified_date,
+				invoice_group_detail_id
+			FROM elp_invoice_group_detail 
+			WHERE
+				invoice_group_detail_id = :invoice_group_detail_id
+		]]>
+  </LOAD>
+  <LOAD_LIST>
+    <![CDATA[	
+       select  
+       invmv.invoice_id ,
+       invmv.service_center_description, 
+       invmv.invoice_number,
+       invmv.invoice_amount,
+       sum(invmv.invoice_item_amount) line_item_amount,
+       invmv.invoice_date,
+       getdescriptionfromlistitem(invmv.invoice_status_id,:language_id) invoice_status
+    
+      from elp_invoice_group_detail invgrpdetail, elp_invoice_extended_mv invmv
+      where invgrpdetail.invoice_reconciliation_id = invmv.invoice_reconciliation_id
+      and invgrpdetail.invoice_group_id = :invoice_group_id
+   
+      group by invmv.invoice_id,
+       invmv.service_center_description, 
+       invmv.invoice_number,
+       invmv.invoice_amount,
+       invmv.invoice_date,
+     invmv.invoice_status_id    
+    
+     
+       ]]>
+  </LOAD_LIST>
+  <LOAD_INVOICE_RECONCILIATION_RECORDS>
+    <![CDATA[	
+    select Unique i.invoice_id,
+    sc.description Service_center_description,
+    i.invoice_number,
+    i.invoice_amount,
+    i.invoice_date,
+    getdescriptionfromlistitem(i.invoice_status_id,:language_id) invoice_status 
+    
+   from
+elp_invoice i,
+elp_invoice_item ii,
+elp_claim_authorization clauth,
+elp_invoice_reconciliation ir,
+elp_service_center sc,
+elp_claim cl
+
+
+where
+
+i.invoice_id =  ii.invoice_id
+
+and ii.claim_authorization_id = clauth.claim_authorization_id and
+ii.invoice_item_id = ir.invoice_item_id and
+i.service_center_id = sc.service_center_id
+and clauth.claim_id = cl.claim_id
+and getcodefromlistitem(claim_authorization_status_id)='R'
+and ir.invoice_reconciliation_id not in (select invoice_reconciliation_id from elp_invoice_group_detail invgrpdetail,elp_invoice_group invgrp 
+                                          where invgrpdetail.invoice_group_id = invgrp.invoice_group_id)
+
+    --dynamic_where_clause
+     ]]>
+  </LOAD_INVOICE_RECONCILIATION_RECORDS>
+  <LOAD_LINE_ITEM_RECORDS>
+    <![CDATA[	
+      SELECT unique invmv.invoice_item_id , 
+     invmv.INV_ITEM_SERVICE_CLASS_CODE LINE_ITEM_TYPE, 
+     getdescriptionfromlistitem(invmv.INV_ITEM_SERVICE_TYPE_ID,:language_id) LINE_ITEM_DESCRIPTION,
+    invmv.invoice_item_amount line_item_amount ,
+    invmv.claim_number,
+    invmv.authorization_number,
+    invmv.vendor_sku,
+    invmv.vendor_sku_description,
+    invmv.CLAIM_AUTHORIZATION_ID 
+  from   elp_invoice_extended_mv  invmv
+  where
+     invmv.invoice_id = :invoice_id   
+   and invmv.invoice_reconciliation_id is not null
+    	]]>
+  </LOAD_LINE_ITEM_RECORDS>
+  <GET_STANDARD_LINE_ITEMS>
+    <![CDATA[	
+    select
+     service_class_id ,
+     SERVICE_TYPE_ID
+    from
+    elp_service_class_type
+    where 
+    getcodefromlistitem(is_standard_id) ='Y'
+   ]]>
+  </GET_STANDARD_LINE_ITEMS>
+  <GET_CLAIM_AUTH_NUMBERS>
+    <![CDATA[	
+     select distinct invoice_number,clauth.claim_authorization_id,clauth.claim_id,clauth.authorization_number,cl.claim_number
+    from elp_invoice i , elp_invoice_item ii,elp_claim_authorization  clauth,elp_claim cl,elp_service_center sc
+    where
+    i.invoice_id = ii.invoice_id 
+    and ii.claim_authorization_id = clauth.claim_authorization_id and
+    clauth.claim_id = cl.claim_id and
+    i.service_center_id = sc.service_center_id
+   and (getcodefromlistitem(claim_authorization_status_id)='F' or getcodefromlistitem(claim_authorization_status_id)='A')
+    and sc.code =  :code   
+   
+]]>
+  </GET_CLAIM_AUTH_NUMBERS>
+  <GET_MAX_LINE_ITEM_NUMBER>
+    <![CDATA[	
+    select max(line_item_number) line_item_number from elp_invoice_item
+    where invoice_id=:invoice_id
+]]>
+  </GET_MAX_LINE_ITEM_NUMBER>
+  <GET_INVOICE_RECON_ID>
+    <![CDATA[	
+    select invmv.invoice_reconciliation_id, invgrpdetail.invoice_group_detail_id 
+    from elp_invoice_extended_mv invmv, elp_invoice_group_detail invgrpdetail
+where  invmv.invoice_reconciliation_id = invgrpdetail.invoice_reconciliation_id (+) and
+invoice_id = :invoice_id
+and invmv.invoice_reconciliation_id is not null 
+]]>
+  </GET_INVOICE_RECON_ID>
+  <UPDATE>
+    <![CDATA[	
+			UPDATE elp_invoice_group_detail SET
+				invoice_group_id = :invoice_group_id,
+				invoice_reconciliation_id = :invoice_reconciliation_id,
+				modified_by = :modified_by
+			WHERE
+				invoice_group_detail_id = :invoice_group_detail_id
+		]]>
+  </UPDATE>
+  <INSERT>
+    INSERT INTO elp_invoice_group_detail
+    (
+    invoice_group_id,
+    invoice_reconciliation_id,
+    created_by,
+    invoice_group_detail_id
+    )
+    VALUES
+    (
+    :invoice_group_id,
+    :invoice_reconciliation_id,
+    :created_by,
+    :invoice_group_detail_id
+    )
+  </INSERT>
+  <DELETE>
+    DELETE FROM elp_invoice_group_detail
+    WHERE
+    invoice_group_detail_id = :invoice_group_detail_id
+  </DELETE>
+  <GET_INVOICE_GROUP_NUMBER>
+    <![CDATA[
+      Elita.GetNextInvoiceGroupNumber
+    ]]>
+  </GET_INVOICE_GROUP_NUMBER>
+</SQL>
+
+

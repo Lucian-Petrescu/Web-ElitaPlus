@@ -1,0 +1,97 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+
+<!-- ********************** THIS FILE HAS BEEN GENERATED FROM TEMPLATE SQLObject.cst (5/26/2009)********************** -->
+
+<SQL>
+  <LOAD>
+    <![CDATA[	
+			SELECT 
+				serv_center_mor_id,
+				service_center_id,
+        service_warranty_days,
+				created_by,
+				created_date,
+				modified_by,
+				modified_date,
+				serv_center_meth_repair_id
+			FROM elp_serv_center_meth_repair 
+			WHERE
+				serv_center_meth_repair_id = :serv_center_meth_repair_id
+		]]>
+  </LOAD>
+  <LOAD_LIST>
+    <![CDATA[	
+    select
+    SCMR.SERV_CENTER_MOR_ID,
+    SCMR.SERVICE_CENTER_ID,
+    SCMR.SERV_CENTER_METH_REPAIR_ID,
+    SCMR.SERVICE_WARRANTY_DAYS,
+    SCMR.CREATED_BY,
+    SCMR.CREATED_DATE,
+    SCMR.MODIFIED_BY,
+    SCMR.MODIFIED_DATE
+    from
+    ELP_SERV_CENTER_METH_REPAIR SCMR,
+    ELP_LIST l,
+    ELP_LIST_ITEM li
+    WHERE
+    l.CODE = 'METHR'
+    AND  l.LIST_ID = li.LIST_ID
+    AND SCMR.SERVICE_CENTER_ID = :service_center_id
+    		]]>
+  </LOAD_LIST>
+  
+  <GET_SELECTED_LIST_MOR>
+    <![CDATA[	
+    select
+    SCMR.SERV_CENTER_MOR_ID,
+    SCMR.SERVICE_CENTER_ID,
+    SCMR.SERV_CENTER_METH_REPAIR_ID,
+    SCMR.SERVICE_WARRANTY_DAYS,
+    SCMR.CREATED_BY,
+    SCMR.CREATED_DATE,
+    SCMR.MODIFIED_BY,
+    SCMR.MODIFIED_DATE
+    from
+    ELP_SERV_CENTER_METH_REPAIR SCMR
+    WHERE
+    SCMR.SERVICE_CENTER_ID = :service_center_id
+    		]]>
+  </GET_SELECTED_LIST_MOR>
+  <UPDATE>
+    <![CDATA[	
+			UPDATE elp_serv_center_meth_repair SET
+				serv_center_mor_id = :serv_center_mor_id,
+				service_center_id = :service_center_id,
+        service_warranty_days = :service_warranty_days,
+				modified_by = :modified_by
+			WHERE
+				serv_center_meth_repair_id = :serv_center_meth_repair_id
+		]]>
+  </UPDATE>
+  <INSERT>
+    INSERT INTO elp_serv_center_meth_repair
+    (
+    serv_center_mor_id,
+    service_center_id,
+    created_by,
+    serv_center_meth_repair_id,
+    service_warranty_days
+    )
+    VALUES
+    (
+    :serv_center_mor_id,
+    :service_center_id,
+    :created_by,
+    :serv_center_meth_repair_id,
+    :service_warranty_days
+    )
+  </INSERT>
+  <DELETE>
+    DELETE FROM elp_serv_center_meth_repair
+    WHERE
+    serv_center_meth_repair_id = :serv_center_meth_repair_id
+  </DELETE>
+</SQL>
+
+

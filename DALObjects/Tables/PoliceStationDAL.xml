@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="utf-8" ?>
+
+<!-- ********************** THIS FILE HAS BEEN GENERATED FROM TEMPLATE SQLObject.cst (2/27/2007)********************** -->
+
+<SQL>
+	<LOAD>
+		<![CDATA[	
+			SELECT 
+				country_id,
+				police_station_code,
+				police_station_name,
+				address1,
+				address2,
+        address3,
+				city,
+				region_id,
+				postal_code,
+				created_by,
+				created_date,
+				modified_by,
+				modified_date,
+				police_station_id
+			FROM elp_police_station 
+			WHERE
+				police_station_id = :police_station_id
+		]]>
+	</LOAD>
+	<LOAD_LIST>		
+			<![CDATA[	
+			SELECT 
+				police_station_id,
+				police_station_code,
+				police_station_name,
+				address1,
+				address2,
+        address3,
+				city,
+				region_id,
+				postal_code,
+				created_by,
+				created_date,
+				modified_by,
+				modified_date,
+				country_id
+			FROM elp_police_station 
+			--dynamic_where_clause
+			--dynamic_order_by_clause
+		]]>
+	</LOAD_LIST>	
+	<UPDATE>
+		<![CDATA[	
+			UPDATE elp_police_station SET
+				country_id = :country_id,
+				police_station_code = :police_station_code,
+				police_station_name = :police_station_name,
+				address1 = :address1,
+				address2 = :address2,
+        address3 = :address3,
+				city = :city,
+				region_id = :region_id,
+				postal_code = :postal_code,
+				modified_by = :modified_by
+			WHERE
+				police_station_id = :police_station_id
+		]]>
+	</UPDATE>
+	<INSERT>
+    INSERT INTO elp_police_station
+    (
+    country_id,
+    police_station_code,
+    police_station_name,
+    address1,
+    address2,
+    address3,
+    city,
+    region_id,
+    postal_code,
+    created_by,
+    police_station_id
+    )
+    VALUES
+    (
+    :country_id,
+    :police_station_code,
+    :police_station_name,
+    :address1,
+    :address2,
+    :address3,
+    :city,
+    :region_id,
+    :postal_code,
+    :created_by,
+    :police_station_id
+    )
+  </INSERT>
+	<DELETE>
+			DELETE FROM elp_police_station
+			WHERE
+				police_station_id = :police_station_id
+	</DELETE>
+</SQL> 
+
+

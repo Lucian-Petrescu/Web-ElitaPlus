@@ -1,0 +1,49 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<SQL>
+  <LOAD_LIST>
+    <![CDATA[	
+   SELECT   deact.TRANS_TMX_DEACTIVATE_ID,
+			     (SELECT CASE WHEN (Select trunc(response_date) from ELP_TRANS_TMX_DEACTIVATE where attempt=
+			     					(SELECT MAX(attempt) from ELP_TRANS_TMX_DEACTIVATE where cert_id=deact.cert_id) AND cert_id=deact.cert_id ) is null  THEN 'N'
+                             WHEN (Select trunc(response_date) from ELP_TRANS_TMX_DEACTIVATE where attempt=
+                             		(SELECT MAX(attempt) from ELP_TRANS_TMX_DEACTIVATE where cert_id=deact.cert_id) AND cert_id=deact.cert_id ) is not null THEN 'Y'
+                        			END AS Status FROM DUAL) as show_checkbox,
+			GETDESCRIPTIONFROMLISTITEM(deact.TRANS_TYPE_ID,:language_id)  as Trans_Type,
+      to_Char(deact.TRANS_SCHEDULED_DATE,'DD-Mon-YYYY') as TRANS_SCHEDULED_DATE,
+			cert.CERT_NUMBER AS CERT_NUMBER,
+			deact.ATTEMPT,
+			deact.MOBILE_NUMBER,
+			deact.SUPPLEMENTARY_SERVICE_CODE,
+			deact.COMMERCIAL_SERVICE_CODE,
+			deact.ERROR_CODE,
+			deact.ERROR_MSG,
+			deact.RESPONSE_XML,
+			to_Char(deact.RESPONSE_DATE,'DD-Mon-YYYY') as RESPONSE_DATE,
+			deact.HIDE,
+			deact.CREATED_DATE,
+			deact.CREATED_BY,
+			deact.MODIFIED_DATE,
+			deact.MODIFIED_BY
+     FROM ELP_TRANS_TMX_DEACTIVATE deact
+     inner join (select max(ATTEMPT) as attempt, cert_id FROM ELP_TRANS_TMX_DEACTIVATE where trunc(response_date) is not null group by cert_id ) bb
+		         on deact.cert_id = bb.cert_id and deact.attempt = bb.attempt
+     inner join ELP_CERT cert on deact.cert_id = cert.cert_id
+     where (deact.hide is null or deact.hide <> 'Y')
+     AND  (error_code <> '0')
+     and   rownum < :row_num
+     --dynamic_where_clause
+]]>    
+  </LOAD_LIST>
+  <RESEND_OR_HIDE_TRANSACTION>
+    <![CDATA[	
+    ELP_CERTIFICATE.Resend_Or_Hide_Trans
+    ]]>
+  </RESEND_OR_HIDE_TRANSACTION>
+  <PROCESS_RECORDS>
+    <![CDATA[	
+    ELP_CERTIFICATE.Process_Records
+    ]]>
+  </PROCESS_RECORDS>
+</SQL>
+
+

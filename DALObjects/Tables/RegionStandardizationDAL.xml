@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="utf-8" ?>
+
+<!-- ********************** THIS FILE HAS BEEN GENERATED FROM TEMPLATE SQLObject.cst (2/17/2005)********************** -->
+
+<SQL>
+	<LOAD>
+		<![CDATA[	
+			SELECT 
+				description,
+				region_id,
+				created_date,
+				modified_date,
+				created_by,
+				modified_by,
+				country_id,
+				region_standardization_id
+			FROM elp_region_standardization 
+			WHERE
+				region_standardization_id = :region_standardization_id
+		]]>
+	</LOAD>
+	<LOAD_LIST>
+			<![CDATA[
+			SELECT 
+				rgnstand.region_standardization_id, 
+				rgnstand.country_id,
+				rgnstand.description,
+				rgn.description as region_description,
+				c.description as country_name
+			FROM   
+				elp_region_standardization rgnstand, 
+				elp_region rgn, elp_country c
+			WHERE  
+				rgnstand.country_id = :country_id
+				and rgnstand.country_id  = c.country_id
+				and rgnstand.REGION_ID = rgn.REGION_ID	
+		]]>		
+	</LOAD_LIST>
+	<LOAD_LIST_FOR_USER_COUNTRIES>		
+		<![CDATA[
+			SELECT 
+				rgnstand.region_standardization_id, 
+				rgnstand.country_id,
+				rgnstand.description,
+				rgn.description as region_description,
+				c.description as country_name
+			FROM   
+				elp_region_standardization rgnstand, 
+				elp_region rgn, elp_country c
+			WHERE  
+				--dynamic_in_clause
+				And rgnstand.country_id  = c.country_id
+				And rgnstand.REGION_ID = rgn.REGION_ID
+		]]>	
+	</LOAD_LIST_FOR_USER_COUNTRIES>			
+	<UPDATE>
+		<![CDATA[	
+			UPDATE elp_region_standardization SET
+				description = :description,
+				region_id = :region_id,
+				country_id = :country_id,
+				modified_by = :modified_by
+			WHERE
+				region_standardization_id = :region_standardization_id
+		]]>
+	</UPDATE>
+	<INSERT>
+			INSERT INTO elp_region_standardization
+					(			
+				description, 
+				region_id, 
+				country_id, 
+				created_by,
+				region_standardization_id
+					)
+			VALUES
+					(			
+				:description, 
+				:region_id, 
+				:country_id, 
+				:created_by,
+				:region_standardization_id
+					)
+	</INSERT>
+	<DELETE>
+			DELETE FROM elp_region_standardization
+			WHERE
+				region_standardization_id = :region_standardization_id
+	</DELETE>
+</SQL> 
+
+
+

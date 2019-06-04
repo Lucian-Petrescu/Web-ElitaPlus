@@ -1,0 +1,83 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1">
+  <Class Name="ElitaInternalWS.GetCertificateRequest">
+    <Position X="1.5" Y="1" Width="2" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAgAAAABAAAAA=</HashCode>
+      <FileName>Contracts\DataContracts\Certificate\GetCertificateRequest.vb</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Property Name="CertificateSearch" />
+    </ShowAsAssociation>
+  </Class>
+  <Class Name="ElitaInternalWS.CertificateLookup">
+    <Position X="5.5" Y="1" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAACAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Contracts\DataContracts\Certificate\CertificateLookup.vb</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="ElitaInternalWS.CertificateAccountNumberLookup">
+    <Position X="3.25" Y="2.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAACAAAAAAAAAAAAAAAEAAAAAIAAAAAAAACA=</HashCode>
+      <FileName>Contracts\DataContracts\Certificate\CertificateAccountNumberLookup.vb</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="ElitaInternalWS.CertificateNumberLookup">
+    <Position X="5.5" Y="2.5" Width="3.25" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAIAAAAAAAAAACA=</HashCode>
+      <FileName>Contracts\DataContracts\Certificate\CertificateNumberLookup.vb</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="ElitaInternalWS.CertificateSerialTaxLookup">
+    <Position X="5.75" Y="4.5" Width="2.75" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAACAAAAAAAAAAAAAAAEAAAAAAAAAAAAAgAA=</HashCode>
+      <FileName>Contracts\DataContracts\Certificate\CertificateSerialTaxLookup.vb</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="ElitaInternalWS.GetCertificateResponse">
+    <Position X="11.75" Y="1" Width="2" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAEAAAAA=</HashCode>
+      <FileName>Contracts\DataContracts\Certificate\GetCertificateResponse.vb</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Property Name="Certificate" />
+    </ShowAsAssociation>
+  </Class>
+  <Class Name="ElitaInternalWS.CertificateInfo">
+    <Position X="12.5" Y="3" Width="2" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAQAAAAAAAAAACgAAAAABAAAIAoAAAAAAAIAA=</HashCode>
+      <FileName>Contracts\DataContracts\Certificate\CertificateInfo.vb</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Property Name="Finance" />
+    </ShowAsAssociation>
+  </Class>
+  <Class Name="ElitaInternalWS.ItemInfo">
+    <Position X="10.25" Y="5.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAgAAAAAAAAACAIAAAAAAACgAAAAAAAAAAgAAAAAAAA=</HashCode>
+      <FileName>Contracts\DataContracts\Certificate\Iteminfo.vb</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="ElitaInternalWS.FinanceInfo">
+    <Position X="16.5" Y="3" Width="2.25" />
+    <TypeIdentifier>
+      <HashCode>AAIAAAEAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Contracts\DataContracts\Certificate\FinanceInfo.vb</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Enum Name="ElitaInternalWS.CertificateDetailTypes" Collapsed="true">
+    <Position X="9" Y="1" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAACAAAAACAAAAAAAAAAIAAAAAAAAAAAAAAEAAAA=</HashCode>
+      <FileName>Contracts\DataContracts\Certificate\CertificateDetailTypes.vb</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Font Name="Segoe UI" Size="9" />
+</ClassDiagram>

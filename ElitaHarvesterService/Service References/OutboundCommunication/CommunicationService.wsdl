@@ -1,0 +1,504 @@
+<?xml version="1.0" encoding="utf-8"?>
+<wsdl:definitions xmlns:wsap="http://schemas.xmlsoap.org/ws/2004/08/addressing/policy" xmlns:wsa10="http://www.w3.org/2005/08/addressing" xmlns:tns="http://services.assurant.com/ssi/OutboundCommunication/2016/05/24/" xmlns:msc="http://schemas.microsoft.com/ws/2005/12/wsdl/contract" xmlns:soapenc="http://schemas.xmlsoap.org/soap/encoding/" xmlns:wsx="http://schemas.xmlsoap.org/ws/2004/09/mex" xmlns:wsp="http://schemas.xmlsoap.org/ws/2004/09/policy" xmlns:wsam="http://www.w3.org/2007/05/addressing/metadata" xmlns:wsa="http://schemas.xmlsoap.org/ws/2004/08/addressing" xmlns:soap12="http://schemas.xmlsoap.org/wsdl/soap12/" xmlns:wsaw="http://www.w3.org/2006/05/addressing/wsdl" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:wsu="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-utility-1.0.xsd" xmlns:xsd="http://www.w3.org/2001/XMLSchema" name="CommunicationService" targetNamespace="http://services.assurant.com/ssi/OutboundCommunication/2016/05/24/" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">
+  <wsp:Policy wsu:Id="CustomBinding_ICommunication_policy">
+    <wsp:ExactlyOne>
+      <wsp:All>
+        <wsoma:OptimizedMimeSerialization xmlns:wsoma="http://schemas.xmlsoap.org/ws/2004/09/policy/optimizedmimeserialization" />
+        <sp:TransportBinding xmlns:sp="http://schemas.xmlsoap.org/ws/2005/07/securitypolicy">
+          <wsp:Policy>
+            <sp:TransportToken>
+              <wsp:Policy>
+                <sp:HttpsToken RequireClientCertificate="false" />
+              </wsp:Policy>
+            </sp:TransportToken>
+            <sp:AlgorithmSuite>
+              <wsp:Policy>
+                <sp:Basic256 />
+              </wsp:Policy>
+            </sp:AlgorithmSuite>
+            <sp:Layout>
+              <wsp:Policy>
+                <sp:Strict />
+              </wsp:Policy>
+            </sp:Layout>
+            <sp:IncludeTimestamp />
+          </wsp:Policy>
+        </sp:TransportBinding>
+        <sp:SignedSupportingTokens xmlns:sp="http://schemas.xmlsoap.org/ws/2005/07/securitypolicy">
+          <wsp:Policy>
+            <sp:UsernameToken sp:IncludeToken="http://schemas.xmlsoap.org/ws/2005/07/securitypolicy/IncludeToken/AlwaysToRecipient">
+              <wsp:Policy>
+                <sp:WssUsernameToken10 />
+              </wsp:Policy>
+            </sp:UsernameToken>
+          </wsp:Policy>
+        </sp:SignedSupportingTokens>
+        <sp:Wss11 xmlns:sp="http://schemas.xmlsoap.org/ws/2005/07/securitypolicy">
+          <wsp:Policy />
+        </sp:Wss11>
+        <sp:Trust10 xmlns:sp="http://schemas.xmlsoap.org/ws/2005/07/securitypolicy">
+          <wsp:Policy>
+            <sp:MustSupportIssuedTokens />
+            <sp:RequireClientEntropy />
+            <sp:RequireServerEntropy />
+          </wsp:Policy>
+        </sp:Trust10>
+      </wsp:All>
+    </wsp:ExactlyOne>
+  </wsp:Policy>
+  <wsp:Policy wsu:Id="CustomBinding_ICommunication1_policy">
+    <wsp:ExactlyOne>
+      <wsp:All>
+        <sp:TransportBinding xmlns:sp="http://schemas.xmlsoap.org/ws/2005/07/securitypolicy">
+          <wsp:Policy>
+            <sp:TransportToken>
+              <wsp:Policy>
+                <sp:HttpsToken RequireClientCertificate="false" />
+              </wsp:Policy>
+            </sp:TransportToken>
+            <sp:AlgorithmSuite>
+              <wsp:Policy>
+                <sp:Basic256 />
+              </wsp:Policy>
+            </sp:AlgorithmSuite>
+            <sp:Layout>
+              <wsp:Policy>
+                <sp:Strict />
+              </wsp:Policy>
+            </sp:Layout>
+          </wsp:Policy>
+        </sp:TransportBinding>
+        <sp:SignedSupportingTokens xmlns:sp="http://schemas.xmlsoap.org/ws/2005/07/securitypolicy">
+          <wsp:Policy>
+            <sp:UsernameToken sp:IncludeToken="http://schemas.xmlsoap.org/ws/2005/07/securitypolicy/IncludeToken/AlwaysToRecipient">
+              <wsp:Policy>
+                <sp:WssUsernameToken10 />
+              </wsp:Policy>
+            </sp:UsernameToken>
+          </wsp:Policy>
+        </sp:SignedSupportingTokens>
+        <sp:Wss11 xmlns:sp="http://schemas.xmlsoap.org/ws/2005/07/securitypolicy">
+          <wsp:Policy />
+        </sp:Wss11>
+        <sp:Trust10 xmlns:sp="http://schemas.xmlsoap.org/ws/2005/07/securitypolicy">
+          <wsp:Policy>
+            <sp:MustSupportIssuedTokens />
+            <sp:RequireClientEntropy />
+            <sp:RequireServerEntropy />
+          </wsp:Policy>
+        </sp:Trust10>
+      </wsp:All>
+    </wsp:ExactlyOne>
+  </wsp:Policy>
+  <wsdl:types>
+    <xsd:schema targetNamespace="http://services.assurant.com/ssi/OutboundCommunication/2016/05/24/Imports">
+      <xsd:import schemaLocation="http://intra.apf-int.assurant.com/OutboundCommunication.Services/v6/Communication.svc?xsd=xsd0" namespace="http://services.assurant.com/ssi/OutboundCommunication/2016/05/24/" />
+      <xsd:import schemaLocation="http://intra.apf-int.assurant.com/OutboundCommunication.Services/v6/Communication.svc?xsd=xsd4" namespace="http://www.microsoft.com/practices/EnterpriseLibrary/2007/01/wcf/validation" />
+      <xsd:import schemaLocation="http://intra.apf-int.assurant.com/OutboundCommunication.Services/v6/Communication.svc?xsd=xsd1" namespace="http://schemas.microsoft.com/2003/10/Serialization/" />
+      <xsd:import schemaLocation="http://intra.apf-int.assurant.com/OutboundCommunication.Services/v6/Communication.svc?xsd=xsd2" namespace="http://schemas.datacontract.org/2004/07/Assurant.Integration.OutboundCommunication.Contracts" />
+      <xsd:import schemaLocation="http://intra.apf-int.assurant.com/OutboundCommunication.Services/v6/Communication.svc?xsd=xsd3" namespace="http://schemas.microsoft.com/2003/10/Serialization/Arrays" />
+      <xsd:import schemaLocation="http://intra.apf-int.assurant.com/OutboundCommunication.Services/v6/Communication.svc?xsd=xsd5" namespace="http://schemas.datacontract.org/2004/07/Microsoft.Practices.EnterpriseLibrary.Validation.Integration.WCF" />
+      <xsd:import schemaLocation="http://intra.apf-int.assurant.com/OutboundCommunication.Services/v6/Communication.svc?xsd=xsd6" namespace="http://schemas.datacontract.org/2004/07/Assurant.Integration.OutboundCommunication.Contracts.Faults" />
+    </xsd:schema>
+  </wsdl:types>
+  <wsdl:message name="ICommunication_Send_InputMessage">
+    <wsdl:part name="parameters" element="tns:Send" />
+  </wsdl:message>
+  <wsdl:message name="ICommunication_Send_OutputMessage">
+    <wsdl:part name="parameters" element="tns:SendResponse" />
+  </wsdl:message>
+  <wsdl:message name="ICommunication_Send_ValidationFaultFault_FaultMessage">
+    <wsdl:part xmlns:q1="http://www.microsoft.com/practices/EnterpriseLibrary/2007/01/wcf/validation" name="detail" element="q1:ValidationFault" />
+  </wsdl:message>
+  <wsdl:message name="ICommunication_Send_NotFoundFaultFault_FaultMessage">
+    <wsdl:part name="detail" element="tns:NotFoundFault" />
+  </wsdl:message>
+  <wsdl:message name="ICommunication_Send_CommunicationPipelineFaultFault_FaultMessage">
+    <wsdl:part name="detail" element="tns:CommunicationPipelineFault" />
+  </wsdl:message>
+  <wsdl:message name="ICommunication_Find_InputMessage">
+    <wsdl:part name="parameters" element="tns:Find" />
+  </wsdl:message>
+  <wsdl:message name="ICommunication_Find_OutputMessage">
+    <wsdl:part name="parameters" element="tns:FindResponse" />
+  </wsdl:message>
+  <wsdl:message name="ICommunication_Find_NotFoundFaultFault_FaultMessage">
+    <wsdl:part name="detail" element="tns:NotFoundFault" />
+  </wsdl:message>
+  <wsdl:message name="ICommunication_Find_ValidationFaultFault_FaultMessage">
+    <wsdl:part xmlns:q2="http://www.microsoft.com/practices/EnterpriseLibrary/2007/01/wcf/validation" name="detail" element="q2:ValidationFault" />
+  </wsdl:message>
+  <wsdl:message name="ICommunication_Get_InputMessage">
+    <wsdl:part name="parameters" element="tns:Get" />
+  </wsdl:message>
+  <wsdl:message name="ICommunication_Get_OutputMessage">
+    <wsdl:part name="parameters" element="tns:GetResponse" />
+  </wsdl:message>
+  <wsdl:message name="ICommunication_Get_ValidationFaultFault_FaultMessage">
+    <wsdl:part xmlns:q3="http://www.microsoft.com/practices/EnterpriseLibrary/2007/01/wcf/validation" name="detail" element="q3:ValidationFault" />
+  </wsdl:message>
+  <wsdl:message name="ICommunication_Get_NotFoundFaultFault_FaultMessage">
+    <wsdl:part name="detail" element="tns:NotFoundFault" />
+  </wsdl:message>
+  <wsdl:message name="ICommunication_SendNotification_InputMessage">
+    <wsdl:part name="parameters" element="tns:SendNotification" />
+  </wsdl:message>
+  <wsdl:message name="ICommunication_SendNotification_OutputMessage">
+    <wsdl:part name="parameters" element="tns:SendNotificationResponse" />
+  </wsdl:message>
+  <wsdl:message name="ICommunication_SendNotification_ValidationFaultFault_FaultMessage">
+    <wsdl:part xmlns:q4="http://www.microsoft.com/practices/EnterpriseLibrary/2007/01/wcf/validation" name="detail" element="q4:ValidationFault" />
+  </wsdl:message>
+  <wsdl:message name="ICommunication_RetrieveSmsAuthorizationStatuses_InputMessage">
+    <wsdl:part name="parameters" element="tns:RetrieveSmsAuthorizationStatuses" />
+  </wsdl:message>
+  <wsdl:message name="ICommunication_RetrieveSmsAuthorizationStatuses_OutputMessage">
+    <wsdl:part name="parameters" element="tns:RetrieveSmsAuthorizationStatusesResponse" />
+  </wsdl:message>
+  <wsdl:message name="ICommunication_RetrieveSmsAuthorizationStatuses_ValidationFaultFault_FaultMessage">
+    <wsdl:part xmlns:q5="http://www.microsoft.com/practices/EnterpriseLibrary/2007/01/wcf/validation" name="detail" element="q5:ValidationFault" />
+  </wsdl:message>
+  <wsdl:message name="ICommunication_SendSmsAuthorizationMessage_InputMessage">
+    <wsdl:part name="parameters" element="tns:SendSmsAuthorizationMessage" />
+  </wsdl:message>
+  <wsdl:message name="ICommunication_SendSmsAuthorizationMessage_OutputMessage">
+    <wsdl:part name="parameters" element="tns:SendSmsAuthorizationMessageResponse" />
+  </wsdl:message>
+  <wsdl:message name="ICommunication_SendSmsAuthorizationMessage_ValidationFaultFault_FaultMessage">
+    <wsdl:part xmlns:q6="http://www.microsoft.com/practices/EnterpriseLibrary/2007/01/wcf/validation" name="detail" element="q6:ValidationFault" />
+  </wsdl:message>
+  <wsdl:message name="ICommunication_SendExactTarget_InputMessage">
+    <wsdl:part name="parameters" element="tns:SendExactTarget" />
+  </wsdl:message>
+  <wsdl:message name="ICommunication_SendExactTarget_OutputMessage">
+    <wsdl:part name="parameters" element="tns:SendExactTargetResponse" />
+  </wsdl:message>
+  <wsdl:message name="ICommunication_SendExactTarget_ValidationFaultFault_FaultMessage">
+    <wsdl:part xmlns:q7="http://www.microsoft.com/practices/EnterpriseLibrary/2007/01/wcf/validation" name="detail" element="q7:ValidationFault" />
+  </wsdl:message>
+  <wsdl:message name="ICommunication_ResendExactTargetById_InputMessage">
+    <wsdl:part name="parameters" element="tns:ResendExactTargetById" />
+  </wsdl:message>
+  <wsdl:message name="ICommunication_ResendExactTargetById_OutputMessage">
+    <wsdl:part name="parameters" element="tns:ResendExactTargetByIdResponse" />
+  </wsdl:message>
+  <wsdl:message name="ICommunication_ResendExactTargetById_ValidationFaultFault_FaultMessage">
+    <wsdl:part xmlns:q8="http://www.microsoft.com/practices/EnterpriseLibrary/2007/01/wcf/validation" name="detail" element="q8:ValidationFault" />
+  </wsdl:message>
+  <wsdl:message name="ICommunication_GetExactTargetById_InputMessage">
+    <wsdl:part name="parameters" element="tns:GetExactTargetById" />
+  </wsdl:message>
+  <wsdl:message name="ICommunication_GetExactTargetById_OutputMessage">
+    <wsdl:part name="parameters" element="tns:GetExactTargetByIdResponse" />
+  </wsdl:message>
+  <wsdl:message name="ICommunication_GetExactTargetById_ValidationFaultFault_FaultMessage">
+    <wsdl:part xmlns:q9="http://www.microsoft.com/practices/EnterpriseLibrary/2007/01/wcf/validation" name="detail" element="q9:ValidationFault" />
+  </wsdl:message>
+  <wsdl:portType name="ICommunication">
+    <wsdl:operation name="Send">
+      <wsdl:input wsaw:Action="http://services.assurant.com/ssi/OutboundCommunication/2016/05/24/ICommunication/Send" message="tns:ICommunication_Send_InputMessage" />
+      <wsdl:output wsaw:Action="http://services.assurant.com/ssi/OutboundCommunication/2016/05/24/ICommunication/SendResponse" message="tns:ICommunication_Send_OutputMessage" />
+      <wsdl:fault wsaw:Action="http://services.assurant.com/ssi/OutboundCommunication/2016/05/24/ICommunication/SendValidationFaultFault" name="ValidationFaultFault" message="tns:ICommunication_Send_ValidationFaultFault_FaultMessage" />
+      <wsdl:fault wsaw:Action="http://services.assurant.com/ssi/OutboundCommunication/2016/05/24/ICommunication/SendNotFoundFaultFault" name="NotFoundFaultFault" message="tns:ICommunication_Send_NotFoundFaultFault_FaultMessage" />
+      <wsdl:fault wsaw:Action="http://services.assurant.com/ssi/OutboundCommunication/2016/05/24/ICommunication/SendCommunicationPipelineFaultFault" name="CommunicationPipelineFaultFault" message="tns:ICommunication_Send_CommunicationPipelineFaultFault_FaultMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="Find">
+      <wsdl:input wsaw:Action="http://services.assurant.com/ssi/OutboundCommunication/2016/05/24/ICommunication/Find" message="tns:ICommunication_Find_InputMessage" />
+      <wsdl:output wsaw:Action="http://services.assurant.com/ssi/OutboundCommunication/2016/05/24/ICommunication/FindResponse" message="tns:ICommunication_Find_OutputMessage" />
+      <wsdl:fault wsaw:Action="http://services.assurant.com/ssi/OutboundCommunication/2016/05/24/ICommunication/FindNotFoundFaultFault" name="NotFoundFaultFault" message="tns:ICommunication_Find_NotFoundFaultFault_FaultMessage" />
+      <wsdl:fault wsaw:Action="http://services.assurant.com/ssi/OutboundCommunication/2016/05/24/ICommunication/FindValidationFaultFault" name="ValidationFaultFault" message="tns:ICommunication_Find_ValidationFaultFault_FaultMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="Get">
+      <wsdl:input wsaw:Action="http://services.assurant.com/ssi/OutboundCommunication/2016/05/24/ICommunication/Get" message="tns:ICommunication_Get_InputMessage" />
+      <wsdl:output wsaw:Action="http://services.assurant.com/ssi/OutboundCommunication/2016/05/24/ICommunication/GetResponse" message="tns:ICommunication_Get_OutputMessage" />
+      <wsdl:fault wsaw:Action="http://services.assurant.com/ssi/OutboundCommunication/2016/05/24/ICommunication/GetValidationFaultFault" name="ValidationFaultFault" message="tns:ICommunication_Get_ValidationFaultFault_FaultMessage" />
+      <wsdl:fault wsaw:Action="http://services.assurant.com/ssi/OutboundCommunication/2016/05/24/ICommunication/GetNotFoundFaultFault" name="NotFoundFaultFault" message="tns:ICommunication_Get_NotFoundFaultFault_FaultMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="SendNotification">
+      <wsdl:input wsaw:Action="http://services.assurant.com/ssi/OutboundCommunication/2016/05/24/ICommunication/SendNotification" message="tns:ICommunication_SendNotification_InputMessage" />
+      <wsdl:output wsaw:Action="http://services.assurant.com/ssi/OutboundCommunication/2016/05/24/ICommunication/SendNotificationResponse" message="tns:ICommunication_SendNotification_OutputMessage" />
+      <wsdl:fault wsaw:Action="http://services.assurant.com/ssi/OutboundCommunication/2016/05/24/ICommunication/SendNotificationValidationFaultFault" name="ValidationFaultFault" message="tns:ICommunication_SendNotification_ValidationFaultFault_FaultMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="RetrieveSmsAuthorizationStatuses">
+      <wsdl:input wsaw:Action="http://services.assurant.com/ssi/OutboundCommunication/2016/05/24/ICommunication/RetrieveSmsAuthorizationStatuses" message="tns:ICommunication_RetrieveSmsAuthorizationStatuses_InputMessage" />
+      <wsdl:output wsaw:Action="http://services.assurant.com/ssi/OutboundCommunication/2016/05/24/ICommunication/RetrieveSmsAuthorizationStatusesResponse" message="tns:ICommunication_RetrieveSmsAuthorizationStatuses_OutputMessage" />
+      <wsdl:fault wsaw:Action="http://services.assurant.com/ssi/OutboundCommunication/2016/05/24/ICommunication/RetrieveSmsAuthorizationStatusesValidationFaultFault" name="ValidationFaultFault" message="tns:ICommunication_RetrieveSmsAuthorizationStatuses_ValidationFaultFault_FaultMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="SendSmsAuthorizationMessage">
+      <wsdl:input wsaw:Action="http://services.assurant.com/ssi/OutboundCommunication/2016/05/24/ICommunication/SendSmsAuthorizationMessage" message="tns:ICommunication_SendSmsAuthorizationMessage_InputMessage" />
+      <wsdl:output wsaw:Action="http://services.assurant.com/ssi/OutboundCommunication/2016/05/24/ICommunication/SendSmsAuthorizationMessageResponse" message="tns:ICommunication_SendSmsAuthorizationMessage_OutputMessage" />
+      <wsdl:fault wsaw:Action="http://services.assurant.com/ssi/OutboundCommunication/2016/05/24/ICommunication/SendSmsAuthorizationMessageValidationFaultFault" name="ValidationFaultFault" message="tns:ICommunication_SendSmsAuthorizationMessage_ValidationFaultFault_FaultMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="SendExactTarget">
+      <wsdl:input wsaw:Action="http://services.assurant.com/ssi/OutboundCommunication/2016/05/24/ICommunication/SendExactTarget" message="tns:ICommunication_SendExactTarget_InputMessage" />
+      <wsdl:output wsaw:Action="http://services.assurant.com/ssi/OutboundCommunication/2016/05/24/ICommunication/SendExactTargetResponse" message="tns:ICommunication_SendExactTarget_OutputMessage" />
+      <wsdl:fault wsaw:Action="http://services.assurant.com/ssi/OutboundCommunication/2016/05/24/ICommunication/SendExactTargetValidationFaultFault" name="ValidationFaultFault" message="tns:ICommunication_SendExactTarget_ValidationFaultFault_FaultMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="ResendExactTargetById">
+      <wsdl:input wsaw:Action="http://services.assurant.com/ssi/OutboundCommunication/2016/05/24/ICommunication/ResendExactTargetById" message="tns:ICommunication_ResendExactTargetById_InputMessage" />
+      <wsdl:output wsaw:Action="http://services.assurant.com/ssi/OutboundCommunication/2016/05/24/ICommunication/ResendExactTargetByIdResponse" message="tns:ICommunication_ResendExactTargetById_OutputMessage" />
+      <wsdl:fault wsaw:Action="http://services.assurant.com/ssi/OutboundCommunication/2016/05/24/ICommunication/ResendExactTargetByIdValidationFaultFault" name="ValidationFaultFault" message="tns:ICommunication_ResendExactTargetById_ValidationFaultFault_FaultMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="GetExactTargetById">
+      <wsdl:input wsaw:Action="http://services.assurant.com/ssi/OutboundCommunication/2016/05/24/ICommunication/GetExactTargetById" message="tns:ICommunication_GetExactTargetById_InputMessage" />
+      <wsdl:output wsaw:Action="http://services.assurant.com/ssi/OutboundCommunication/2016/05/24/ICommunication/GetExactTargetByIdResponse" message="tns:ICommunication_GetExactTargetById_OutputMessage" />
+      <wsdl:fault wsaw:Action="http://services.assurant.com/ssi/OutboundCommunication/2016/05/24/ICommunication/GetExactTargetByIdValidationFaultFault" name="ValidationFaultFault" message="tns:ICommunication_GetExactTargetById_ValidationFaultFault_FaultMessage" />
+    </wsdl:operation>
+  </wsdl:portType>
+  <wsdl:binding name="CustomBinding_ICommunication" type="tns:ICommunication">
+    <wsp:PolicyReference URI="#CustomBinding_ICommunication_policy" />
+    <soap12:binding transport="http://schemas.xmlsoap.org/soap/http" />
+    <wsdl:operation name="Send">
+      <soap12:operation soapAction="http://services.assurant.com/ssi/OutboundCommunication/2016/05/24/ICommunication/Send" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+      <wsdl:fault name="ValidationFaultFault">
+        <soap12:fault use="literal" name="ValidationFaultFault" namespace="" />
+      </wsdl:fault>
+      <wsdl:fault name="NotFoundFaultFault">
+        <soap12:fault use="literal" name="NotFoundFaultFault" namespace="" />
+      </wsdl:fault>
+      <wsdl:fault name="CommunicationPipelineFaultFault">
+        <soap12:fault use="literal" name="CommunicationPipelineFaultFault" namespace="" />
+      </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="Find">
+      <soap12:operation soapAction="http://services.assurant.com/ssi/OutboundCommunication/2016/05/24/ICommunication/Find" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+      <wsdl:fault name="NotFoundFaultFault">
+        <soap12:fault use="literal" name="NotFoundFaultFault" namespace="" />
+      </wsdl:fault>
+      <wsdl:fault name="ValidationFaultFault">
+        <soap12:fault use="literal" name="ValidationFaultFault" namespace="" />
+      </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="Get">
+      <soap12:operation soapAction="http://services.assurant.com/ssi/OutboundCommunication/2016/05/24/ICommunication/Get" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+      <wsdl:fault name="ValidationFaultFault">
+        <soap12:fault use="literal" name="ValidationFaultFault" namespace="" />
+      </wsdl:fault>
+      <wsdl:fault name="NotFoundFaultFault">
+        <soap12:fault use="literal" name="NotFoundFaultFault" namespace="" />
+      </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="SendNotification">
+      <soap12:operation soapAction="http://services.assurant.com/ssi/OutboundCommunication/2016/05/24/ICommunication/SendNotification" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+      <wsdl:fault name="ValidationFaultFault">
+        <soap12:fault use="literal" name="ValidationFaultFault" namespace="" />
+      </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="RetrieveSmsAuthorizationStatuses">
+      <soap12:operation soapAction="http://services.assurant.com/ssi/OutboundCommunication/2016/05/24/ICommunication/RetrieveSmsAuthorizationStatuses" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+      <wsdl:fault name="ValidationFaultFault">
+        <soap12:fault use="literal" name="ValidationFaultFault" namespace="" />
+      </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="SendSmsAuthorizationMessage">
+      <soap12:operation soapAction="http://services.assurant.com/ssi/OutboundCommunication/2016/05/24/ICommunication/SendSmsAuthorizationMessage" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+      <wsdl:fault name="ValidationFaultFault">
+        <soap12:fault use="literal" name="ValidationFaultFault" namespace="" />
+      </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="SendExactTarget">
+      <soap12:operation soapAction="http://services.assurant.com/ssi/OutboundCommunication/2016/05/24/ICommunication/SendExactTarget" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+      <wsdl:fault name="ValidationFaultFault">
+        <soap12:fault use="literal" name="ValidationFaultFault" namespace="" />
+      </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="ResendExactTargetById">
+      <soap12:operation soapAction="http://services.assurant.com/ssi/OutboundCommunication/2016/05/24/ICommunication/ResendExactTargetById" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+      <wsdl:fault name="ValidationFaultFault">
+        <soap12:fault use="literal" name="ValidationFaultFault" namespace="" />
+      </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="GetExactTargetById">
+      <soap12:operation soapAction="http://services.assurant.com/ssi/OutboundCommunication/2016/05/24/ICommunication/GetExactTargetById" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+      <wsdl:fault name="ValidationFaultFault">
+        <soap12:fault use="literal" name="ValidationFaultFault" namespace="" />
+      </wsdl:fault>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:binding name="CustomBinding_ICommunication1" type="tns:ICommunication">
+    <wsp:PolicyReference URI="#CustomBinding_ICommunication1_policy" />
+    <soap:binding transport="http://schemas.xmlsoap.org/soap/http" />
+    <wsdl:operation name="Send">
+      <soap:operation soapAction="http://services.assurant.com/ssi/OutboundCommunication/2016/05/24/ICommunication/Send" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+      <wsdl:fault name="ValidationFaultFault">
+        <soap:fault use="literal" name="ValidationFaultFault" namespace="" />
+      </wsdl:fault>
+      <wsdl:fault name="NotFoundFaultFault">
+        <soap:fault use="literal" name="NotFoundFaultFault" namespace="" />
+      </wsdl:fault>
+      <wsdl:fault name="CommunicationPipelineFaultFault">
+        <soap:fault use="literal" name="CommunicationPipelineFaultFault" namespace="" />
+      </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="Find">
+      <soap:operation soapAction="http://services.assurant.com/ssi/OutboundCommunication/2016/05/24/ICommunication/Find" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+      <wsdl:fault name="NotFoundFaultFault">
+        <soap:fault use="literal" name="NotFoundFaultFault" namespace="" />
+      </wsdl:fault>
+      <wsdl:fault name="ValidationFaultFault">
+        <soap:fault use="literal" name="ValidationFaultFault" namespace="" />
+      </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="Get">
+      <soap:operation soapAction="http://services.assurant.com/ssi/OutboundCommunication/2016/05/24/ICommunication/Get" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+      <wsdl:fault name="ValidationFaultFault">
+        <soap:fault use="literal" name="ValidationFaultFault" namespace="" />
+      </wsdl:fault>
+      <wsdl:fault name="NotFoundFaultFault">
+        <soap:fault use="literal" name="NotFoundFaultFault" namespace="" />
+      </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="SendNotification">
+      <soap:operation soapAction="http://services.assurant.com/ssi/OutboundCommunication/2016/05/24/ICommunication/SendNotification" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+      <wsdl:fault name="ValidationFaultFault">
+        <soap:fault use="literal" name="ValidationFaultFault" namespace="" />
+      </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="RetrieveSmsAuthorizationStatuses">
+      <soap:operation soapAction="http://services.assurant.com/ssi/OutboundCommunication/2016/05/24/ICommunication/RetrieveSmsAuthorizationStatuses" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+      <wsdl:fault name="ValidationFaultFault">
+        <soap:fault use="literal" name="ValidationFaultFault" namespace="" />
+      </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="SendSmsAuthorizationMessage">
+      <soap:operation soapAction="http://services.assurant.com/ssi/OutboundCommunication/2016/05/24/ICommunication/SendSmsAuthorizationMessage" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+      <wsdl:fault name="ValidationFaultFault">
+        <soap:fault use="literal" name="ValidationFaultFault" namespace="" />
+      </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="SendExactTarget">
+      <soap:operation soapAction="http://services.assurant.com/ssi/OutboundCommunication/2016/05/24/ICommunication/SendExactTarget" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+      <wsdl:fault name="ValidationFaultFault">
+        <soap:fault use="literal" name="ValidationFaultFault" namespace="" />
+      </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="ResendExactTargetById">
+      <soap:operation soapAction="http://services.assurant.com/ssi/OutboundCommunication/2016/05/24/ICommunication/ResendExactTargetById" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+      <wsdl:fault name="ValidationFaultFault">
+        <soap:fault use="literal" name="ValidationFaultFault" namespace="" />
+      </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="GetExactTargetById">
+      <soap:operation soapAction="http://services.assurant.com/ssi/OutboundCommunication/2016/05/24/ICommunication/GetExactTargetById" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+      <wsdl:fault name="ValidationFaultFault">
+        <soap:fault use="literal" name="ValidationFaultFault" namespace="" />
+      </wsdl:fault>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:service name="CommunicationService">
+    <wsdl:port name="CustomBinding_ICommunication" binding="tns:CustomBinding_ICommunication">
+      <soap12:address location="http://intra.apf-int.assurant.com/OutboundCommunication.Services/v6/Communication.svc" />
+    </wsdl:port>
+    <wsdl:port name="CustomBinding_ICommunication1" binding="tns:CustomBinding_ICommunication1">
+      <soap:address location="http://intra.apf-int.assurant.com/OutboundCommunication.Services/v6/Communication.svc/soap11" />
+    </wsdl:port>
+  </wsdl:service>
+</wsdl:definitions>

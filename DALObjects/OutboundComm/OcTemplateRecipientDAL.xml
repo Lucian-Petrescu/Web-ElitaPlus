@@ -1,0 +1,79 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+
+<!-- ********************** THIS FILE HAS BEEN GENERATED FROM TEMPLATE SQLObject.cst (8/15/2017)********************** -->
+
+<SQL>
+  <LOAD>
+    <![CDATA[	
+			SELECT 
+				oc_template_id,
+				recipient_source_field_xcd,
+        '' as recipient_address,
+				description,
+				created_by,
+				created_date,
+				modified_by,
+				modified_date,
+				oc_template_recipient_id
+			FROM elp_oc_template_recipient 
+			WHERE
+				oc_template_recipient_id = :oc_template_recipient_id
+		]]>
+  </LOAD>
+  <LOAD_LIST>
+  </LOAD_LIST>
+  <LOAD_LIST_BY_TEMPLATE_ID>
+    <![CDATA[	
+			SELECT
+        oc_template_recipient_id,
+				oc_template_id,
+				recipient_source_field_xcd,
+        elp_utl_lov.description(recipient_source_field_xcd, :language_id) recipient_source_field_desc,
+        '' as recipient_address,
+				description,
+				created_by,
+				created_date,
+				modified_by,
+				modified_date
+			FROM elp_oc_template_recipient 
+			WHERE
+				oc_template_id = :oc_template_id
+		]]>
+  </LOAD_LIST_BY_TEMPLATE_ID>
+  <UPDATE>
+    <![CDATA[	
+			UPDATE elp_oc_template_recipient SET
+				oc_template_id = :oc_template_id,
+				recipient_source_field_xcd = :recipient_source_field_xcd,
+				description = :description,
+				modified_by = :modified_by
+			WHERE
+				oc_template_recipient_id = :oc_template_recipient_id
+		]]>
+  </UPDATE>
+  <INSERT>
+    INSERT INTO elp_oc_template_recipient
+    (
+    oc_template_id,
+    recipient_source_field_xcd,
+    description,
+    created_by,
+    oc_template_recipient_id
+    )
+    VALUES
+    (
+    :oc_template_id,
+    :recipient_source_field_xcd,
+    :description,
+    :created_by,
+    :oc_template_recipient_id
+    )
+  </INSERT>
+  <DELETE>
+    DELETE FROM elp_oc_template_recipient
+    WHERE
+    oc_template_recipient_id = :oc_template_recipient_id
+  </DELETE>
+</SQL>
+
+

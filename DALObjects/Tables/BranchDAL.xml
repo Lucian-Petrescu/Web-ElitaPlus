@@ -1,0 +1,194 @@
+<?xml version="1.0" encoding="utf-8" ?>
+
+<!-- ********************** THIS FILE HAS BEEN GENERATED FROM TEMPLATE SQLObject.cst (3/19/2007)********************** -->
+
+<SQL>
+	<LOAD>
+		<![CDATA[	
+			SELECT 
+				branch_code,
+				dealer_id,
+				address1,
+				address2,
+        address3,
+				city,
+				region_id,
+				country_id,
+				created_date,
+				created_by,
+				modified_date,
+				modified_by,
+				branch_name,
+				branch_id,
+				postal_code,
+			  contact_phone,
+				contact_ext,
+				contact_fax,
+				contact_email,
+        market,
+				bank_info_id,
+				branch_type_id,
+				store_manager,
+				marketing_region,
+        open_date,
+        close_date
+			FROM elp_branch 
+			WHERE
+				branch_id = :branch_id
+		]]>
+	</LOAD>
+	
+	<LOAD_LIST>	
+	<![CDATA[	
+			SELECT 
+			    branch_id,
+				branch_code,
+				branch_name,
+				dealer_id,
+				address1,
+				address2,
+        address3,
+				city,
+				region_id,
+				country_id,
+				created_date,
+				created_by,
+				modified_date,
+				modified_by,
+				postal_code,
+				contact_phone,
+				contact_ext,
+				contact_fax,
+				contact_email,
+        bank_info_id,
+        market,
+        branch_type_id,
+				store_manager,
+				marketing_region, 
+        open_date,
+        close_date
+			FROM elp_branch 
+			--dynamic_where_clause
+			--dynamic_order_by_clause
+		]]>
+	</LOAD_LIST>
+  <LOAD_LIST_BY_DEALER>
+    <![CDATA[	
+			SELECT 
+			  branch_id,
+				branch_code,
+				branch_name
+			FROM elp_branch 
+			WHERE
+				dealer_id = :dealer_id
+      ORDER BY branch_name
+		]]>
+  </LOAD_LIST_BY_DEALER>
+  <LOAD_LIST_BY_DEALER_FOR_WS_BS_TABLE>
+    <![CDATA[	
+			SELECT
+        b.branch_id,
+			  bs.dealer_branch_code,
+				b.branch_code,
+				b.branch_name
+			FROM elp_branch b, elp_branch_standardization bs
+			WHERE
+				b.dealer_id = :dealer_id
+				and b.branch_id = bs.branch_id
+      ORDER BY branch_name
+		]]>
+  </LOAD_LIST_BY_DEALER_FOR_WS_BS_TABLE>
+  <UPDATE>
+		<![CDATA[	
+			UPDATE elp_branch SET
+				branch_code = :branch_code,
+				dealer_id = :dealer_id,
+				address1 = :address1,
+				address2 = :address2,
+        address3 = :address3,
+				city = :city,
+				region_id = :region_id,
+				country_id = :country_id,
+				branch_name = :branch_name,
+				modified_by = :modified_by,
+				postal_code = :postal_code,
+				contact_phone = :contact_phone,
+				contact_ext = :contact_ext,
+				contact_fax = :contact_fax,
+				contact_email = :contact_email,
+        bank_info_id = :bank_info_id,
+        market = :market,
+				branch_type_id = :branch_type_id,
+				store_manager = :store_manager,
+				marketing_region = :marketing_region,
+        open_date =:open_date,
+        close_date =:close_date
+			WHERE
+				branch_id = :branch_id
+		]]>
+	</UPDATE>
+	
+	<INSERT>
+    INSERT INTO elp_branch
+    (
+    branch_code,
+    dealer_id,
+    address1,
+    address2,
+    address3,
+    city,
+    region_id,
+    country_id,
+    branch_name,
+    created_by,
+    branch_id,
+    postal_code,
+    contact_phone,
+    contact_ext,
+    contact_fax,
+    contact_email,
+    bank_info_id,
+    market,
+    branch_type_id,
+    store_manager,
+    marketing_region,
+    open_date,
+    close_date
+    )
+    VALUES
+    (
+    :branch_code,
+    :dealer_id,
+    :address1,
+    :address2,
+    :address3,
+    :city,
+    :region_id,
+    :country_id,
+    :branch_name,
+    :created_by,
+    :branch_id,
+    :postal_code,
+    :contact_phone,
+    :contact_ext,
+    :contact_fax,
+    :contact_email,
+    :bank_info_id,
+    :market,
+    :branch_type_id,
+    :store_manager,
+    :marketing_region,
+    :open_date,
+    :close_date
+    )
+  </INSERT>
+	
+	<DELETE>
+			DELETE FROM elp_branch
+			WHERE
+				branch_id = :branch_id
+	</DELETE>
+</SQL> 
+
+
+

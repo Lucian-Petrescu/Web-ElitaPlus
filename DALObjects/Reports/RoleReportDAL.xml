@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8" ?> 
+
+<SQL>
+
+<GET_MENUS_SELECT>
+			select  roles.DESCRIPTION "Security Role", NVL(dict_tab.TRANSLATION,tabs.CODE) "Tab Name", NVL(dict_form.TRANSLATION, forms.CODE) "Menu Item", roleForms.PERMISSION_TYPE "Permission"
+				from	ELP_ROLE roles,
+						ELP_ROLE_AUTH_FORM_INCLUSION roleForms,
+						elp_form forms,
+						elp_tab tabs,
+						elp_dict_item_translation dict_tab,
+						elp_dict_item_translation dict_form
+				where roles.ROLE_ID = roleForms.ROLE_ID
+						and   roleForms.FORM_ID = forms.FORM_ID
+						and	  forms.TAB_ID = tabs.TAB_ID
+						and   tabs.DICT_ITEM_ID = dict_tab.DICT_ITEM_ID
+						and   dict_tab.LANGUAGE_ID = :LANGUAGE_ID
+						and	  forms.DICT_ITEM_ID = dict_form.DICT_ITEM_ID
+						and   dict_form.LANGUAGE_ID = :LANGUAGE_ID
+</GET_MENUS_SELECT>
+<GET_MENUS_ORDER>
+			order by Upper(roles.DESCRIPTION), Upper("Tab Name"), Upper("Menu Item"), Upper(roleForms.PERMISSION_TYPE)
+</GET_MENUS_ORDER>
+<GET_ROLEID_NAME>and   roles.ROLE_ID in</GET_ROLEID_NAME>
+<GET_TABID_NAME>and   tabs.TAB_ID in</GET_TABID_NAME>
+<GET_TABS_SELECT>
+			select DISTINCT RAWTOHEX(tabs.TAB_ID) TAB_ID, NVL(dict.TRANSLATION, tabs.CODE) TAB_NAME
+				from	ELP_ROLE_AUTH_FORM_INCLUSION roleForms,
+						elp_form forms,
+						elp_tab tabs,
+						elp_dict_item_translation dict
+				where   roleForms.FORM_ID = forms.FORM_ID
+						and	  forms.TAB_ID = tabs.TAB_ID
+						and tabs.DICT_ITEM_ID = dict.DICT_ITEM_ID
+						and dict.LANGUAGE_ID = :LANGUAGE_ID
+						and roleForms.ROLE_ID in
+</GET_TABS_SELECT>
+<GET_TABS_ORDER>
+			order by Upper(TAB_NAME), tabs.TAB_ID
+</GET_TABS_ORDER>
+
+</SQL>

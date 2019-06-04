@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ReferenceGroup xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" ID="f3581d12-ec46-4fbd-b6a0-50d5c228b8cc" xmlns="urn:schemas-microsoft-com:xml-wcfservicemap">
+  <ClientOptions>
+    <GenerateAsynchronousMethods>false</GenerateAsynchronousMethods>
+    <GenerateTaskBasedAsynchronousMethod>true</GenerateTaskBasedAsynchronousMethod>
+    <EnableDataBinding>true</EnableDataBinding>
+    <ExcludedTypes />
+    <ImportXmlTypes>false</ImportXmlTypes>
+    <GenerateInternalTypes>false</GenerateInternalTypes>
+    <GenerateMessageContracts>false</GenerateMessageContracts>
+    <NamespaceMappings />
+    <CollectionMappings />
+    <GenerateSerializableTypes>true</GenerateSerializableTypes>
+    <Serializer>Auto</Serializer>
+    <UseSerializerForFaults>true</UseSerializerForFaults>
+    <ReferenceAllAssemblies>true</ReferenceAllAssemblies>
+    <ReferencedAssemblies />
+    <ReferencedDataContractTypes />
+    <ServiceContractMappings />
+  </ClientOptions>
+  <MetadataSources>
+    <MetadataSource Address="http://localhost/ElitaClaimService/GiftCardService.svc" Protocol="http" SourceId="1" />
+  </MetadataSources>
+  <Metadata>
+    <MetadataFile FileName="GiftCardService.disco" MetadataType="Disco" ID="ab06a923-ea4a-412f-a62e-b2fef6c342d1" SourceId="1" SourceUrl="http://localhost/ElitaClaimService/GiftCardService.svc?disco" />
+    <MetadataFile FileName="GiftCardService.wsdl" MetadataType="Wsdl" ID="431d7082-f5d7-4085-8cb9-48bc3d1c66d5" SourceId="1" SourceUrl="http://localhost/ElitaClaimService/GiftCardService.svc?wsdl" />
+    <MetadataFile FileName="GiftCardService1.wsdl" MetadataType="Wsdl" ID="eefe68df-e852-4f0f-9e69-0097debb2391" SourceId="1" SourceUrl="http://localhost/ElitaClaimService/GiftCardService.svc?wsdl=wsdl0" />
+    <MetadataFile FileName="GiftCardService.xsd" MetadataType="Schema" ID="5d713328-f932-47ed-9080-8c651787ccf0" SourceId="1" SourceUrl="http://localhost/ElitaClaimService/GiftCardService.svc?xsd=xsd1" />
+    <MetadataFile FileName="GiftCardService1.xsd" MetadataType="Schema" ID="e45d513c-23c6-4f6e-a490-6570347c3243" SourceId="1" SourceUrl="http://localhost/ElitaClaimService/GiftCardService.svc?xsd=xsd3" />
+    <MetadataFile FileName="GiftCardService2.xsd" MetadataType="Schema" ID="843f7103-5cd4-47fc-93a1-fa0c693a2569" SourceId="1" SourceUrl="http://localhost/ElitaClaimService/GiftCardService.svc?xsd=xsd2" />
+    <MetadataFile FileName="GiftCardService3.xsd" MetadataType="Schema" ID="d68b4bd9-316a-4216-b4f3-718d9c5c3213" SourceId="1" SourceUrl="http://localhost/ElitaClaimService/GiftCardService.svc?xsd=xsd0" />
+  </Metadata>
+  <Extensions>
+    <ExtensionFile FileName="configuration91.svcinfo" Name="configuration91.svcinfo" />
+    <ExtensionFile FileName="configuration.svcinfo" Name="configuration.svcinfo" />
+  </Extensions>
+</ReferenceGroup>

@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="utf-8" ?>
+
+<!-- ********************** THIS FILE HAS BEEN GENERATED FROM TEMPLATE SQLObject.cst (11/15/2017)********************** -->
+
+<SQL>
+	<LOAD>
+		<![CDATA[	
+			SELECT 
+				case_id,
+				claim_id,
+				conseq_damage_xcd,
+				coverage_conseq_damage_id,
+				status_xcd,
+				requested_amount,
+				approved_amount,
+				created_by,
+				created_date,
+				modified_by,
+				modified_date,
+				case_conseq_damage_id
+			FROM elp_case_conseq_damage 
+			WHERE
+				case_conseq_damage_id = :case_conseq_damage_id
+		]]>
+	</LOAD>
+	<LOAD_LIST>		
+	</LOAD_LIST>	
+  <LOAD_CONSEQUENTIAL_DAMAGE>	
+    		<![CDATA[	
+			SELECT 
+				case_id,
+				claim_id,
+				getdescriptionfromitemextcode(conseq_damage_xcd, :langid) as conseq_damage,
+				coverage_conseq_damage_id,
+				getdescriptionfromitemextcode(status_xcd, :langid) as status,
+        status_xcd,
+				requested_amount,
+				approved_amount,
+				created_by,
+				created_date,
+				modified_by,
+				modified_date,
+				case_conseq_damage_id
+			FROM elp_case_conseq_damage 
+			WHERE
+				 claim_id = :claim_id
+      order by created_date desc   
+		]]>
+	</LOAD_CONSEQUENTIAL_DAMAGE>	
+	<UPDATE>
+		<![CDATA[	
+			UPDATE elp_case_conseq_damage SET
+				case_id = :case_id,
+				claim_id = :claim_id,
+				conseq_damage_xcd = :conseq_damage_xcd,
+				coverage_conseq_damage_id = :coverage_conseq_damage_id,
+				status_xcd = :status_xcd,
+				requested_amount = :requested_amount,
+				approved_amount = :approved_amount,
+				modified_by = :modified_by
+			WHERE
+				case_conseq_damage_id = :case_conseq_damage_id
+		]]>
+	</UPDATE>
+	<INSERT>
+			INSERT INTO elp_case_conseq_damage
+					(			
+				case_id, 
+				claim_id, 
+				conseq_damage_xcd, 
+				coverage_conseq_damage_id, 
+				status_xcd, 
+				requested_amount, 
+				approved_amount, 
+				created_by,
+				case_conseq_damage_id
+					)
+			VALUES
+					(			
+				:case_id, 
+				:claim_id, 
+				:conseq_damage_xcd, 
+				:coverage_conseq_damage_id, 
+				:status_xcd, 
+				:requested_amount, 
+				:approved_amount, 
+				:created_by,
+				:case_conseq_damage_id
+					)
+	</INSERT>
+	<DELETE>
+			DELETE FROM elp_case_conseq_damage
+			WHERE
+				case_conseq_damage_id = :case_conseq_damage_id
+	</DELETE>
+</SQL> 
+
+

@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="utf-8" ?>
+
+<!-- ********************** THIS FILE HAS BEEN GENERATED FROM TEMPLATE SQLObject.cst (10/31/2006)********************** -->
+
+<SQL>
+	<LOAD>
+		<![CDATA[	
+			SELECT 
+				credit_card_number,
+				authorization_number,
+				processing_fee,
+				total_charge,
+				country_id,
+				address1,
+				address2,
+				city,
+				region_id,
+				postal_code,
+				created_by,
+				created_date,
+				modified_by,
+				modified_date,
+				shipping_info_id
+			FROM elp_shipping_info 
+			WHERE
+				shipping_info_id = :shipping_info_id
+		]]>
+	</LOAD>
+	<LOAD_LIST>		
+	</LOAD_LIST>	
+	<UPDATE>
+		<![CDATA[	
+			UPDATE elp_shipping_info SET
+				credit_card_number = :credit_card_number,
+				authorization_number = :authorization_number,
+				processing_fee = :processing_fee,
+				total_charge = :total_charge,
+				country_id = :country_id,
+				address1 = :address1,
+				address2 = :address2,
+				city = :city,
+				region_id = :region_id,
+				postal_code = :postal_code,
+				modified_by = :modified_by
+			WHERE
+				shipping_info_id = :shipping_info_id
+		]]>
+	</UPDATE>
+	<INSERT>
+			INSERT INTO elp_shipping_info
+					(			
+				credit_card_number, 
+				authorization_number, 
+				processing_fee, 
+				total_charge, 
+				country_id, 
+				address1, 
+				address2, 
+				city, 
+				region_id, 
+				postal_code, 
+				created_by,
+				shipping_info_id
+					)
+			VALUES
+					(			
+				:credit_card_number, 
+				:authorization_number, 
+				:processing_fee, 
+				:total_charge, 
+				:country_id, 
+				:address1, 
+				:address2, 
+				:city, 
+				:region_id, 
+				:postal_code, 
+				:created_by,
+				:shipping_info_id
+					)
+	</INSERT>
+	<DELETE>
+			DELETE FROM elp_shipping_info
+			WHERE
+				shipping_info_id = :shipping_info_id
+	</DELETE>
+</SQL> 
+
+

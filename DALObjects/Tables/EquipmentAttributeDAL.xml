@@ -1,0 +1,19 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<SQL>
+  <LOAD>
+    <![CDATA[
+      SELECT 
+        EQUIPMENT_ATTRIBUTE_ID,
+        EQUIPMENT_ID,
+        ATTRIBUTE_ID,
+        VALUE,
+        EFFECTIVE,
+        EXPIRATION
+      FROM
+        ELP_EQUIPMENT_ATTRIBUTE
+      WHERE
+        EQUIPMENT_ATTRIBUTE_ID = :equipment_attribute_id
+    ]]>
+  </LOAD>
+  
+</SQL>

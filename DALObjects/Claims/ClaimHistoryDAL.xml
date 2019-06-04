@@ -1,0 +1,257 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+
+<!-- ********************** THIS FILE HAS BEEN GENERATED FROM TEMPLATE SQLObject.cst (9/12/2008)********************** -->
+
+<SQL>
+  <LOAD>
+    <![CDATA[	
+			SELECT 
+				claim_id,
+				status_code_old,
+				status_code_new,
+				authorized_amount_old,
+				authorized_amount_new,
+				claim_closed_date_old,
+				claim_closed_date_new,
+				repair_date_old,
+				repair_date_new,
+				claim_modified_date_new,
+				claim_modified_by_new,
+				claim_modified_date_old,
+				claim_modified_by_old,
+				created_date,
+				created_by,
+				modified_date,
+				modified_by,
+				liability_limit_old,
+				liability_limit_new,
+				cert_item_coverage_id_old,
+				cert_item_coverage_id_new,
+				deductible_new,
+				deductible_old,
+        batch_number_new,
+        batch_number_old,
+        is_lawsuit_id_old, 
+        is_lawsuit_id_new,
+				claim_history_id        
+			FROM elp_claim_history 
+			WHERE
+				claim_history_id = :claim_history_id
+		]]>
+  </LOAD>
+  <LOAD_LIST>
+    SELECT
+    claim_id,
+    status_code_old,
+    status_code_new,
+    authorized_amount_old,
+    authorized_amount_new,
+    claim_closed_date_old,
+    claim_closed_date_new,
+    repair_date_old,
+    repair_date_new,
+    claim_modified_date_new,
+    claim_modified_by_new,
+    claim_modified_date_old,
+    claim_modified_by_old,
+    created_date,
+    created_by,
+    modified_date,
+    modified_by,
+    liability_limit_old,
+    liability_limit_new,
+    cert_item_coverage_id_old,
+    cert_item_coverage_id_new,
+    deductible_new,
+    deductible_old,
+    batch_number_new,
+    batch_number_old,
+    is_lawsuit_id_old,
+    is_lawsuit_id_new,
+    claim_history_id
+    FROM elp_claim_history
+    WHERE
+    claim_id = :claim_id
+  </LOAD_LIST>
+  <UPDATE>
+    <![CDATA[	
+			UPDATE elp_claim_history SET
+				claim_id = :claim_id,
+				status_code_old = :status_code_old,
+				status_code_new = :status_code_new,
+				authorized_amount_old = :authorized_amount_old,
+				authorized_amount_new = :authorized_amount_new,
+				claim_closed_date_old = :claim_closed_date_old,
+				claim_closed_date_new = :claim_closed_date_new,
+				repair_date_old = :repair_date_old,
+				repair_date_new = :repair_date_new,
+				claim_modified_date_new = :claim_modified_date_new,
+				claim_modified_by_new = :claim_modified_by_new,
+				claim_modified_date_old = :claim_modified_date_old,
+				claim_modified_by_old = :claim_modified_by_old,
+				liability_limit_old = :liability_limit_old,
+				liability_limit_new = :liability_limit_new,
+				cert_item_coverage_id_old = :cert_item_coverage_id_old,
+				cert_item_coverage_id_new = :cert_item_coverage_id_new,
+				deductible_new = :deductible_new,
+				deductible_old = :deductible_old,
+        batch_number_new = :batch_number_new,
+        batch_number_old = :batch_number_old,
+				modified_by = :modified_by,
+        is_lawsuit_id_old = :is_lawsuit_id_old, 
+        is_lawsuit_id_new = :is_lawsuit_id_new
+			WHERE
+				claim_history_id = :claim_history_id
+		]]>
+  </UPDATE>
+  <INSERT>
+    INSERT INTO elp_claim_history
+    (
+    claim_id,
+    status_code_old,
+    status_code_new,
+    authorized_amount_old,
+    authorized_amount_new,
+    claim_closed_date_old,
+    claim_closed_date_new,
+    repair_date_old,
+    repair_date_new,
+    claim_modified_date_new,
+    claim_modified_by_new,
+    claim_modified_date_old,
+    claim_modified_by_old,
+    liability_limit_old,
+    liability_limit_new,
+    cert_item_coverage_id_old,
+    cert_item_coverage_id_new,
+    deductible_new,
+    deductible_old,
+    created_by,
+    batch_number_new,
+    batch_number_old,
+    is_lawsuit_id_old,
+    is_lawsuit_id_new,
+    claim_history_id
+    )
+    VALUES
+    (
+    :claim_id,
+    :status_code_old,
+    :status_code_new,
+    :authorized_amount_old,
+    :authorized_amount_new,
+    :claim_closed_date_old,
+    :claim_closed_date_new,
+    :repair_date_old,
+    :repair_date_new,
+    :claim_modified_date_new,
+    :claim_modified_by_new,
+    :claim_modified_date_old,
+    :claim_modified_by_old,
+    :liability_limit_old,
+    :liability_limit_new,
+    :cert_item_coverage_id_old,
+    :cert_item_coverage_id_new,
+    :deductible_new,
+    :deductible_old,
+    :created_by,
+    :batch_number_new,
+    :batch_number_old,
+    :is_lawsuit_id_old,
+    :is_lawsuit_id_new,
+    :claim_history_id
+    )
+  </INSERT>
+  <DELETE>
+    DELETE FROM elp_claim_history
+    WHERE
+    claim_history_id = :claim_history_id
+  </DELETE>
+  <CLAIM_HISTORY_DETAILS>
+    <![CDATA[	
+         SELECT 
+          SC.CLAIM_HISTORY_ID,
+          C.CLAIM_NUMBER,
+          SC.STATUS_CODE_OLD,
+          SC.STATUS_CODE_NEW,
+          SC.AUTHORIZED_AMOUNT_OLD,
+          SC.AUTHORIZED_AMOUNT_NEW,
+          SC.CLAIM_CLOSED_DATE_OLD,
+          SC.CLAIM_CLOSED_DATE_NEW,
+          SC.REPAIR_DATE_OLD,
+          SC.REPAIR_DATE_NEW,
+          SC.CREATED_DATE,
+          SC.CREATED_BY,
+          SC.MODIFIED_DATE,
+          SC.MODIFIED_BY,
+          SC.LIABILITY_LIMIT_OLD,
+          SC.LIABILITY_LIMIT_NEW,
+          SC.CERT_ITEM_COVERAGE_ID_OLD,
+          SC.CERT_ITEM_COVERAGE_ID_NEW,
+          (SELECT
+            t.translation   FROM
+            elp_cert_item_coverage cic,
+            elp_dict_item_translation t,
+	          elp_language lang,
+	          elp_cert c,
+	          elp_cert_item ci,
+            elp_list_item i,
+            elp_list l
+	         WHERE cic.cert_item_coverage_id = SC.CERT_ITEM_COVERAGE_ID_OLD  
+              AND c.cert_id = ci.cert_id
+	            AND ci.cert_item_id = cic.cert_item_id
+				      AND	i.dict_item_id = t.dict_item_id
+
+				      AND t.language_id = lang.language_id
+				      AND lang.language_id = :p_language_id
+				      AND l.code = 'CTYP'
+				      AND i.list_item_id = cic.coverage_type_id
+		          )DESCRIPTION_OLD,
+    (SELECT
+            t.translation   FROM
+            elp_cert_item_coverage cic,
+            elp_dict_item_translation t,
+	          elp_language lang,
+	          elp_cert d,
+	          elp_cert_item ci,
+            elp_list_item i,
+            elp_list l
+	         WHERE cic.cert_item_coverage_id = SC.CERT_ITEM_COVERAGE_ID_NEW 
+              AND d.cert_id = ci.cert_id
+	            AND ci.cert_item_id = cic.cert_item_id
+				      AND	i.dict_item_id = t.dict_item_id
+
+				      AND t.language_id = lang.language_id
+				      AND lang.language_id = :language_id
+				      AND l.code = 'CTYP'
+				      AND i.list_item_id = cic.coverage_type_id
+		          )DESCRIPTION_NEW,
+
+          SC.CLAIM_MODIFIED_DATE_NEW,
+          SC.CLAIM_MODIFIED_DATE_OLD,
+          SC.CLAIM_MODIFIED_BY_NEW,
+          SC.CLAIM_MODIFIED_BY_OLD,
+          SC.DEDUCTIBLE_NEW,
+          SC.DEDUCTIBLE_OLD,
+          SC.BATCH_NUMBER_OLD,
+          SC.BATCH_NUMBER_NEW,
+          ELITA.GetYesNo(SC.IS_LAWSUIT_ID_OLD) IS_LAWSUIT_ID_OLD,
+          ELITA.GetYesNo(SC.IS_LAWSUIT_ID_NEW) IS_LAWSUIT_ID_NEW,
+          (select svcc.description
+          from elp_service_center svcc
+         where svcc.service_center_id = SC.Service_Center_Id_Old) Service_Center_Old,
+       (select svcc.description
+          from elp_service_center svcc
+         where svcc.service_center_id = SC.Service_Center_Id_New) Service_Center_New    
+        FROM
+				 	ELP_CLAIM C 
+				 	INNER JOIN  ELP_CLAIM_HISTORY SC  ON C.CLAIM_ID =  SC.CLAIM_ID
+				WHERE   
+          C.CLAIM_ID = :p_claim_id 
+          order by SC.CREATED_DATE desc
+           
+		]]>
+  </CLAIM_HISTORY_DETAILS>
+</SQL>
+
+

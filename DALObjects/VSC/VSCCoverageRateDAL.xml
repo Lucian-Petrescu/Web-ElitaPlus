@@ -1,0 +1,156 @@
+<?xml version="1.0" encoding="utf-8" ?>
+
+<!-- ********************** THIS FILE HAS BEEN GENERATED FROM TEMPLATE SQLObject.cst (4/11/2007)********************** -->
+
+<SQL>
+	<LOAD>
+		<![CDATA[	
+			SELECT 
+				vsc_rate_version_id,
+				vsc_coverage_id,
+				class_code_id,
+				odometer_low_range,
+				odometer_high_range,
+				deductible,
+				discounted_deductible_amt,
+				discounted_deductible_pcnt,
+				term_months,
+				term_km_mi,
+				commissions_percent,
+				marketing_percent,
+				admin_expense,
+				profit_expense,
+				loss_cost_percent,
+				created_date,
+				created_by,
+				modified_date,
+				modified_by,
+				wp,
+				taxes_percent,
+				gwp,
+				engine_manuf_warr_months,
+				engine_manuf_warr_km_mi,
+				vsc_coverage_rate_id,
+        vehicle_purchase_price_from,
+        vehicle_purchase_price_to,
+        allowed_events,
+        max_insured_amount
+			FROM elp_vsc_coverage_rate 
+			WHERE
+				vsc_coverage_rate_id = :vsc_coverage_rate_id
+		]]>
+	</LOAD>
+	<LOAD_LIST>
+    <![CDATA[
+      select cc.CLASS_CODE, ODOMETER_LOW_RANGE, ODOMETER_HIGH_RANGE, DEDUCTIBLE
+        , TERM_MONTHS, GWP, WP, ENGINE_MANUF_WARR_MONTHS,ENGINE_MANUF_WARR_KM_MI, COMMISSIONS_PERCENT
+        , MARKETING_PERCENT, ADMIN_EXPENSE, PROFIT_EXPENSE, LOSS_COST_PERCENT, VEHICLE_PURCHASE_PRICE_FROM, VEHICLE_PURCHASE_PRICE_TO,ALLOWED_EVENTS,MAX_INSURED_AMOUNT
+      From ELP_VSC_COVERAGE_RATE cr, ELP_VSC_CLASS_CODE cc, ELP_VSC_COVERAGE vc
+      where cr.CLASS_CODE_ID = cc.CLASS_CODE_ID
+      	and cr.VSC_RATE_VERSION_ID = :VSC_RATE_VERSION_ID
+        and cr.VSC_COVERAGE_ID = vc.VSC_COVERAGE_ID
+        and vc.VSC_PLAN_ID = :VSC_PLAN_ID
+        --dynamic_where_clause
+      order by CLASS_CODE, TERM_MONTHS, DEDUCTIBLE, ODOMETER_LOW_RANGE, ENGINE_MANUF_WARR_MONTHS,VEHICLE_PURCHASE_PRICE_FROM,ALLOWED_EVENTS,MAX_INSURED_AMOUNT    
+    ]]>
+  </LOAD_LIST>	
+	<UPDATE>
+		<![CDATA[	
+			UPDATE elp_vsc_coverage_rate SET
+				vsc_rate_version_id = :vsc_rate_version_id,
+				vsc_coverage_id = :vsc_coverage_id,
+				class_code_id = :class_code_id,
+				odometer_low_range = :odometer_low_range,
+				odometer_high_range = :odometer_high_range,
+				deductible = :deductible,
+				discounted_deductible_amt = :discounted_deductible_amt,
+				discounted_deductible_pcnt = :discounted_deductible_pcnt,
+				term_months = :term_months,
+				term_km_mi = :term_km_mi,
+				commissions_percent = :commissions_percent,
+				marketing_percent = :marketing_percent,
+				admin_expense = :admin_expense,
+				profit_expense = :profit_expense,
+				loss_cost_percent = :loss_cost_percent,
+				wp = :wp,
+				taxes_percent = :taxes_percent,
+				gwp = :gwp,
+				engine_manuf_warr_months = :engine_manuf_warr_months,
+				engine_manuf_warr_km_mi = :engine_manuf_warr_km_mi,
+				modified_by = :modified_by,
+        vehicle_purchase_price_from = :vehicle_purchase_price_from,
+        vehicle_purchase_price_to = :vehicle_purchase_price_to,
+        allowed_events =:allowed_events,
+        max_insured_amount = :max_insured_amount
+			WHERE
+				vsc_coverage_rate_id = :vsc_coverage_rate_id
+		]]>
+	</UPDATE>
+	<INSERT>
+    INSERT INTO elp_vsc_coverage_rate
+    (
+    vsc_rate_version_id,
+    vsc_coverage_id,
+    class_code_id,
+    odometer_low_range,
+    odometer_high_range,
+    deductible,
+    discounted_deductible_amt,
+    discounted_deductible_pcnt,
+    term_months,
+    term_km_mi,
+    commissions_percent,
+    marketing_percent,
+    admin_expense,
+    profit_expense,
+    loss_cost_percent,
+    wp,
+    taxes_percent,
+    gwp,
+    engine_manuf_warr_months,
+    engine_manuf_warr_km_mi,
+    created_by,
+    vsc_coverage_rate_id,
+    vehicle_purchase_price_from,
+    vehicle_purchase_price_to,
+    allowed_events,
+    max_insured_amount
+    )
+    VALUES
+    (
+    :vsc_rate_version_id,
+    :vsc_coverage_id,
+    :class_code_id,
+    :odometer_low_range,
+    :odometer_high_range,
+    :deductible,
+    :discounted_deductible_amt,
+    :discounted_deductible_pcnt,
+    :term_months,
+    :term_km_mi,
+    :commissions_percent,
+    :marketing_percent,
+    :admin_expense,
+    :profit_expense,
+    :loss_cost_percent,
+    :wp,
+    :taxes_percent,
+    :gwp,
+    :engine_manuf_warr_months,
+    :engine_manuf_warr_km_mi,
+    :created_by,
+    :vsc_coverage_rate_id,
+    :vehicle_purchase_price_from,
+    :vehicle_purchase_price_to,
+    :allowed_events,
+    :max_insured_amount
+    )
+  </INSERT>
+	<DELETE>
+			DELETE FROM elp_vsc_coverage_rate
+			WHERE
+				vsc_coverage_rate_id = :vsc_coverage_rate_id
+	</DELETE>
+</SQL> 
+
+

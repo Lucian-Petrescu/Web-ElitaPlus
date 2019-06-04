@@ -1,0 +1,179 @@
+<?xml version="1.0" encoding="utf-8" ?>
+
+<!-- ********************** THIS FILE HAS BEEN GENERATED FROM TEMPLATE SQLObject.cst (2/17/2015)********************** -->
+
+<SQL>
+	<LOAD>
+		<![CDATA[	
+			SELECT 
+				pre_invoice_creation_date,
+				sc_display_date,
+				batch_number,
+				pre_invoice_status_id,
+				total_amount,
+				total_claims,
+				company_id,
+				created_date,
+				created_by,
+				modified_date,
+				modified_by,
+				pre_invoice_id
+			FROM elp_pre_invoice 
+			WHERE
+				pre_invoice_id = :pre_invoice_id
+		]]>
+	</LOAD>
+	<LOAD_LIST>
+    <![CDATA[	
+    SELECT
+    pre_invoice_creation_date,
+    sc_display_date,
+    batch_number,
+    pre_invoice_status_id,
+    total_amount,
+    total_claims,
+    company_id,
+    created_date,
+    created_by,
+    modified_date,
+    modified_by,
+    pre_invoice_id
+    FROM elp_pre_invoice
+    ]]>
+  </LOAD_LIST>	
+	<UPDATE>
+		<![CDATA[	
+			UPDATE elp_pre_invoice SET
+				pre_invoice_creation_date = :pre_invoice_creation_date,
+				sc_display_date = :sc_display_date,
+				batch_number = :batch_number,
+				pre_invoice_status_id = :pre_invoice_status_id,
+				total_amount = :total_amount,
+				total_claims = :total_claims,
+				company_id = :company_id,
+				modified_by = :modified_by
+			WHERE
+				pre_invoice_id = :pre_invoice_id
+		]]>
+	</UPDATE>
+	<INSERT>
+			INSERT INTO elp_pre_invoice
+					(			
+				pre_invoice_creation_date, 
+				sc_display_date, 
+				batch_number, 
+				pre_invoice_status_id, 
+				total_amount, 
+				total_claims, 
+				company_id, 
+				created_by,
+				pre_invoice_id
+					)
+			VALUES
+					(			
+				:pre_invoice_creation_date, 
+				:sc_display_date, 
+				:batch_number, 
+				:pre_invoice_status_id, 
+				:total_amount, 
+				:total_claims, 
+				:company_id, 
+				:created_by,
+				:pre_invoice_id
+					)
+	</INSERT>
+	<DELETE>
+			DELETE FROM elp_pre_invoice
+			WHERE
+				pre_invoice_id = :pre_invoice_id
+	</DELETE>
+  <GENERATE_PRE_INVOICE>
+    <![CDATA[
+    ELP_PRE_INVOICE_PROCESS.Generate_Pre_Invoice
+     ]]>
+  </GENERATE_PRE_INVOICE>
+  <PRE_INVOICE>
+    <![CDATA[
+    select pi.pre_invoice_id, pi.batch_number,to_char(pi.sc_display_date,'DD-MON-YYYY') display_date, getenglishdescfromlistitem(pi.pre_invoice_status_id) status,
+    to_char(pi.pre_invoice_creation_date,'DD-MON-YY') created_date,count(pid.claim_id) claims_count,
+    sum(cl.authorized_amount) as total_auth_Amount,
+    sum(nvl(cl.bonus, 0) + nvl(cl.bonus_tax,0)) as bonus_Amount,
+    sum(cl.authorized_amount + nvl(cl.bonus, 0) + nvl(cl.bonus_tax, 0) - nvl(cl.deductible, 0)) as total_Amount,
+    cl.deductible as deductible
+    from elp_pre_invoice pi, elp_pre_invoice_details pid, elp_claim cl
+    where pi.pre_invoice_id = pid.pre_invoice_id
+    and pid.claim_id = cl.claim_id
+    and pi.pre_invoice_creation_date is not null
+    --dynamic_where_clause
+    group by pi.batch_number, pi.sc_display_date, pi.pre_invoice_creation_date, pi.pre_invoice_status_id, pi.pre_invoice_id,cl.deductible 
+    ]]>
+  </PRE_INVOICE>
+  <GET_PRE_INVOICE_LIST>
+    <![CDATA[
+    select distinct pi.batch_number batch_number,
+    to_char(pi.sc_display_date,'mm/dd/yyyy') preinvoice_date
+    from elp_pre_invoice pi
+    inner join elp_pre_invoice_details pid on pi.pre_invoice_id = pid.pre_invoice_id
+    inner join elp_claim c on pid.claim_id = c.claim_id
+    inner join elp_service_center sc on c.service_center_id = sc.service_center_id
+    where getcodefromlistitem(pi.pre_invoice_status_id) = 'A' 
+    and sc.service_center_id in (select service_center_id
+                                 from 
+                                 ((select service_center_id
+                                from elp_service_center sc1
+                                where sc1.pay_master = 'Y'
+                                and (sc1.master_center_id,sc1.country_id) in  (select service_center_id, country_id
+                                                                                from elp_service_center sc
+                                                                                where sc.service_center_id = sc.master_center_id
+                                                                                and sc.service_center_id = (select service_center_id
+                                                                                                            from elp_company c 
+                                                                                                            inner join elp_service_center sc on sc.country_id = c.country_id
+                                                                                                            and c.code = :company_code
+                                                                                                            and sc.code = :service_center_code)))
+                                 union                                               
+                                (select service_center_id
+                                from elp_service_center sc2
+                                where (sc2.service_center_id,sc2.country_id) in  (select service_center_id, country_id
+                                                                                from elp_service_center sc
+                                                                                where (sc.master_center_id Is NULL Or sc.service_center_id <> sc.master_center_id)
+                                                                                and sc.service_center_id = (select service_center_id
+                                                                                                            from elp_company c 
+                                                                                                            inner join elp_service_center sc on sc.country_id = c.country_id
+                                                                                                            and c.code = :company_code
+                                                                                                            and sc.code = :service_center_code)))))
+    --dynamic_where_clause
+    ]]>
+  </GET_PRE_INVOICE_LIST>
+  <GET_TOTAL_AMOUNT>
+    <![CDATA[
+    select sum(nvl(cl.authorized_amount, 0) + nvl(cl.bonus, 0) + nvl(cl.bonus_tax, 0)) as total_Amount
+    from elp_pre_invoice pi, elp_pre_invoice_details pid, elp_claim cl
+    where pi.pre_invoice_id = pid.pre_invoice_id
+    and pid.claim_id = cl.claim_id
+    and pi.pre_invoice_creation_date is not null
+    and pi.batch_number = :batch_number
+    ]]>
+  </GET_TOTAL_AMOUNT>
+  <GET_TOTAL_BONUS_AMOUNT>
+    <![CDATA[
+    select sum(nvl(cl.bonus, 0) + nvl(cl.bonus_tax, 0)) as total_bonus_Amount
+    from elp_pre_invoice pi, elp_pre_invoice_details pid, elp_claim cl
+    where pi.pre_invoice_id = pid.pre_invoice_id
+    and pid.claim_id = cl.claim_id
+    and pi.pre_invoice_creation_date is not null
+    and pi.batch_number = :batch_number
+    ]]>
+  </GET_TOTAL_BONUS_AMOUNT>
+  <GET_TOTAL_BONUS_AND_AMOUNT>
+    <![CDATA[
+    select sum(nvl(cl.authorized_amount, 0) + nvl(cl.bonus, 0) + nvl(cl.bonus_tax, 0)) as total_Amount, sum(nvl(cl.bonus, 0) + nvl(cl.bonus_tax, 0)) as total_bonus_Amount
+    from elp_pre_invoice pi, elp_pre_invoice_details pid, elp_claim cl
+    where pi.pre_invoice_id = pid.pre_invoice_id
+    and pid.claim_id = cl.claim_id
+    and pi.pre_invoice_creation_date is not null
+    and pi.batch_number = :batch_number
+    ]]>
+  </GET_TOTAL_BONUS_AND_AMOUNT>
+</SQL> 
+
+

@@ -1,0 +1,109 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+
+<!-- ********************** THIS FILE HAS BEEN GENERATED FROM TEMPLATE SQLObject.cst (6/6/2008)********************** -->
+
+<SQL>
+  <LOAD>
+    <![CDATA[	
+			SELECT 
+				dealer_id,
+				letter_type,
+				number_of_days,
+        email_subject,
+				email_text,
+				created_date,
+				modified_date,
+				created_by,
+				modified_by,
+				email_from,
+				email_to,
+				attachment_file_name,
+        registration_letter_id
+			FROM elp_registration_letter 
+			WHERE
+				registration_letter_id = :registration_letter_id
+		]]>
+  </LOAD>
+  <LOAD_LIST>
+    <![CDATA[		
+			select
+			REGISTRATION_LETTER_ID, dealer dealer_code, C.CODE || ' - ' || dealer_name DEALER_NAME, NUMBER_OF_DAYS, LETTER_TYPE
+			from 	elp_registration_letter rl,
+					elp_dealer edealer,
+					elp_company c
+			where	c.company_id = edealer.company_id
+					and	rl.DEALER_ID = edealer.DEALER_ID
+          --dynamic_in_clause
+					--dynamic_where_clause
+			order by UPPER(DEALER_NAME), UPPER(dealer), NUMBER_OF_DAYS
+			]]>
+  </LOAD_LIST>
+  <UPDATE>
+    <![CDATA[	
+			UPDATE elp_registration_letter SET
+				dealer_id = :dealer_id,
+				letter_type = :letter_type,
+				number_of_days = :number_of_days,
+        email_subject = :email_subject,
+				email_text = :email_text,
+				email_from = :email_from,
+				email_to = :email_to,
+				attachment_file_name = :attachment_file_name,
+				modified_by = :modified_by
+			WHERE
+				registration_letter_id = :registration_letter_id
+		]]>
+  </UPDATE>
+  <INSERT>
+    INSERT INTO elp_registration_letter
+    (
+    dealer_id,
+    letter_type,
+    number_of_days,
+    email_subject,
+    email_text,
+    email_from,
+    email_to,
+    attachment_file_name,
+    created_by,
+    registration_letter_id
+    )
+    VALUES
+    (
+    :dealer_id,
+    :letter_type,
+    :number_of_days,
+    :email_subject,
+    :email_text,
+    :email_from,
+    :email_to,
+    :attachment_file_name,
+    :created_by,
+    :registration_letter_id
+    )
+  </INSERT>
+  <DELETE>
+    DELETE FROM elp_registration_letter
+    WHERE
+    registration_letter_id = :registration_letter_id
+  </DELETE>
+  <LOAD_MAX_DAY>
+    SELECT * from
+    (	SELECT
+    registration_letter_id,
+    number_of_days
+    FROM
+    elp_registration_letter
+    WHERE
+    dealer_id =  :dealer_id
+    ORDER BY number_of_days DESC )
+    where rownum = 1
+  </LOAD_MAX_DAY>
+  <ADD_ATTACHMENT>
+    UPDATE elp_registration_letter SET attachment_file_data = :attachment_file_data WHERE registration_letter_id = :registration_letter_id
+  </ADD_ATTACHMENT>
+  
+</SQL>
+
+
+

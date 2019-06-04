@@ -1,0 +1,2474 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!-- ********************** THIS FILE HAS BEEN GENERATED FROM TEMPLATE SQLObject.cst (11/2/2004)********************** -->
+<SQL>
+  <LOAD>
+    <![CDATA[	
+			SELECT
+        cview.cert_id cert_id,
+				cview.cert_number certificate_number,
+				cview.claim_number,
+				cview.cust_name,
+				cview.claims_adjuster,
+				cview.status_code,
+				cview.contact_name,
+				cview.caller_name,
+				cview.problem_description,
+				cview.special_instruction,
+				cview.authorized_amount,
+				cview.liability_limit,
+				cview.deductible,
+				trunc(cview.repair_date) repair_date,
+				trunc(cview.loss_date) loss_date,
+				trunc(cview.invoice_process_date) invoice_process_date,
+				trunc(cview.claim_closed_date) claim_closed_date,
+				trunc(cview.loaner_returned_date) loaner_returned_date,
+				trunc(cview.followup_date) followup_date,
+				cview.authorization_number,
+				cview.source,
+				cview.created_by,
+				cview.created_date,
+				cview.modified_by,
+				cview.modified_date,
+				cview.dealer_code dealer_code,
+				cview.dealer_name, dealer_name,
+				cview.service_center_id,
+				cview.original_risk_type_id,
+				cview.loaner_center_id,
+				cview.cert_item_coverage_id,
+				cview.claim_activity_id,
+				cview.repair_code_id,
+				cview.reason_closed_id,
+				cview.cause_of_loss_id,
+				cview.method_of_repair_id,
+				cview.repair_estimate,
+				cview.claim_group_id,
+				cview.claim_id,
+				cicov.coverage_type_id,
+				rt.description risk_type,
+				rc.description repair_code,
+				sc.description service_center,
+				lc.description loaner_center,
+				cview.company_id,
+				nvl(usrcreator.user_name, cview.created_by) user_name,
+				nvl(usroperator.user_name, cview.modified_by) last_operator_name,
+				nvl(usrclmadj.user_name, cview.claims_adjuster) claims_adjuster_name,
+				rc.short_desc repair_short_desc,
+				trunc(cview.visit_date) visit_date,
+				trunc(cview.pick_up_date) pick_up_date,
+				cview.contact_salutation_id,
+				cview.caller_salutation_id,
+				cview.master_claim_number,
+				cview.caller_tax_number,
+				cview.spare_parts,
+				cview.shipping_info_id,
+        cview.deductible_percent,
+        cview.deductible_by_percent_id,
+				cview.discount_amount,
+				cview.discount_percent,
+        cview.policy_number,
+        cview.denied_reason_id,
+        cview.claim_statuses_count,
+        cview.mgr_auth_amount_flag,
+        cview.store_service_center_id, 
+        cview.notification_type_id, 
+        cview.who_pays_id,
+        cview.defect_reason,
+        cview.technical_report,
+        cview.expected_repair_date,
+        cview.batch_number,
+        sc.integrated_with_id,
+        cview.claim_is_special_service_id,
+				cview.reported_date,
+        cview.invoice_date,
+        cview.reverse_logistics_id,
+        cview.salvage_amount,
+        cview.fraudulent,
+        cview.complaint,
+        cview.contact_info_id,
+        cview.new_device_sku,
+        cview.ded_coll_method_id,
+        cview.ded_coll_cc_auth_code,
+        cview.claim_auth_type_id,
+        cview.cust_work_phone mobile_number,
+        cview.is_locked,
+        cview.locked_by,
+        cview.locked_on,
+        cview.is_lawsuit_id,
+		    cview.pos as point_of_sale,
+		    cview.deductible_collected,
+		    cview.dealer_reference,
+        cview.current_odometer,
+        cview.tracking_number,
+        c.use_pre_invoice_process_id UsePreInvoice,
+        cview.device_reception_date,
+        nvl(cview.bonus, 0) bonus,
+        nvl(cview.bonus_tax, 0) bonus_tax,
+        cview.device_type,
+        elp_utl_parentchild_rel.is_claim_child(cview.claim_id) is_claim_child,
+        nvl(cview.current_retail_price,0) current_retail_price,
+        elita.get_claim_case_denied_reasons(cview.claim_id) denied_reasons,
+        cview.device_activation_date,
+		    cview.employee_number,
+        cview.fulfilment_method_xcd,
+        cview.bank_info_id,
+        cview.account_number,
+        ri.Purchase_Price,
+        ri.IndixId,
+        cview.is_claim_readonly,
+        (select rem_auth_number from elp_claim where claim_id ='FA5EB640425B54E6E0340003BA5D2202') rem_auth_number
+			FROM elita.elp_claim_extended_v cview,
+				 elp_cert_item_coverage cicov,
+				 elp_risk_type rt,
+				 elp_repair_code rc,
+				 elp_service_center sc,
+				 elp_service_center lc,
+				 elp_user usrcreator,
+				 elp_user usroperator,
+				 elp_user usrclmadj,
+         (
+              select distinct 
+                          indixId, 
+                          Purchase_Price,
+                          cert_item_id
+              from  elp_cert_registered_item 
+              where
+                    cert_registered_item_id  = hextoraw(elp_ws_claim.getcasefieldvalue(:claim_id, 'CASEFLD-DEVICEID'))
+                    and rownum = 1
+         ) ri,
+         elp_company c
+			WHERE
+				cview.claim_id = :claim_id
+			AND cicov.cert_item_coverage_id = cview.cert_item_coverage_id
+			AND	rt.risk_type_id(+) = cview.original_risk_type_id
+			AND rc.repair_code_id(+) = cview.repair_code_id
+			AND	sc.service_center_id(+) = cview.service_center_id
+			AND	lc.service_center_id(+) = cview.loaner_center_id
+			AND usrcreator.network_id(+) = cview.created_by
+			AND usroperator.network_id(+) = cview.modified_by
+			AND usrclmadj.network_id(+) = cview.claims_adjuster
+      AND ri.cert_item_id(+) = cicov.cert_item_id
+      and cview.company_id = c.company_id
+		]]>
+  </LOAD>
+  <LOAD_CLAIM_NUMBER>
+    <![CDATA[	
+			SELECT
+				cview.cert_id cert_id,
+				cview.cert_number certificate_number,
+				cview.claim_number,
+				cview.cust_name,
+				cview.claims_adjuster,
+				cview.status_code,
+				cview.contact_name,
+				cview.caller_name,
+				cview.problem_description,
+				cview.special_instruction,
+				cview.authorized_amount,
+				cview.liability_limit,
+				cview.deductible,
+				trunc(cview.repair_date) repair_date,
+				trunc(cview.loss_date) loss_date,
+				trunc(cview.invoice_process_date) invoice_process_date,
+				trunc(cview.claim_closed_date) claim_closed_date,
+				trunc(cview.loaner_returned_date) loaner_returned_date,
+				trunc(cview.followup_date) followup_date,
+				cview.authorization_number,
+				cview.source,
+				cview.created_by,
+				cview.created_date,
+				cview.modified_by,
+				cview.modified_date,
+				cview.dealer_code dealer_code,
+				cview.dealer_name, dealer_name,
+				cview.service_center_id,
+				cview.original_risk_type_id,
+				cview.loaner_center_id,
+				cview.cert_item_coverage_id,
+				cview.claim_activity_id,
+				cview.repair_code_id,
+				cview.reason_closed_id,
+				cview.cause_of_loss_id,
+				cview.method_of_repair_id,
+				cview.repair_estimate,
+				cview.claim_group_id,
+				cview.claim_id,
+				cicov.coverage_type_id,
+				rt.description risk_type,
+				rc.description repair_code,
+				sc.description service_center,
+				lc.description loaner_center,
+				cview.company_id,
+				nvl(usrcreator.user_name, cview.created_by) user_name,
+				nvl(usroperator.user_name, cview.modified_by) last_operator_name,
+				nvl(usrclmadj.user_name, cview.claims_adjuster) claims_adjuster_name,
+				rc.short_desc repair_short_desc,
+				trunc(cview.visit_date) visit_date,
+				trunc(cview.pick_up_date) pick_up_date,
+				cview.contact_salutation_id,
+				cview.caller_salutation_id,
+				cview.master_claim_number,
+				cview.caller_tax_number,
+				cview.spare_parts,
+				cview.shipping_info_id,
+				cview.discount_amount,
+				cview.discount_percent,
+        cview.policy_number,
+        cview.DENIED_REASON_ID,
+        cview.mgr_auth_amount_flag,
+        cview.store_service_center_id, 
+        cview.notification_type_id, 
+        cview.who_pays_id,
+        cview.batch_number,
+        cview.claim_is_special_service_id,
+        cview.invoice_date,
+        cview.reverse_logistics_id,
+        cview.contact_info_id,
+        cview.new_device_sku,
+        cview.ded_coll_method_id,
+        cview.ded_coll_cc_auth_code,
+        cview.claim_auth_type_id,
+        cview.is_locked,
+        cview.locked_by,
+        cview.locked_on,
+        cview.is_lawsuit_id,
+		    cview.pos as point_of_sale,
+		    cview.deductible_collected,
+		    cview.dealer_reference,
+        cview.current_odometer,
+        nvl(cview.bonus, 0) bonus,
+        nvl(cview.bonus_tax, 0) bonus_tax,
+        elp_utl_parentchild_rel.is_claim_child(cview.claim_id) is_claim_child,
+        elita.get_claim_case_denied_reasons(cview.claim_id) denied_reasons,
+        cview.device_activation_date,
+		    cview.employee_number,
+        cview.fulfilment_method_xcd,
+        cview.bank_info_id,
+        cview.account_number,
+        cview.is_claim_readonly,
+        (select rem_auth_number from elp_claim where claim_id ='FA5EB640425B54E6E0340003BA5D2202') rem_auth_number
+			FROM elita.elp_claim_extended_v cview,
+				 elp_cert_item_coverage cicov,
+				 elp_risk_type rt,
+				 elp_repair_code rc,
+				 elp_service_center sc,
+				 elp_service_center lc,
+				 elp_user usrcreator,
+				 elp_user usroperator,
+				 elp_user usrclmadj
+			WHERE
+				cview.claim_number = :claim_number
+			AND cview.company_id = :company_id
+			AND cicov.cert_item_coverage_id = cview.cert_item_coverage_id
+			AND	rt.risk_type_id(+) = cview.original_risk_type_id
+			AND rc.repair_code_id(+) = cview.repair_code_id
+			AND	sc.service_center_id(+) = cview.service_center_id
+			AND	lc.service_center_id(+) = cview.loaner_center_id
+			AND usrcreator.network_id(+) = cview.created_by
+			AND usroperator.network_id(+) = cview.modified_by
+			AND usrclmadj.network_id(+) = cview.claims_adjuster
+		]]>
+  </LOAD_CLAIM_NUMBER>
+  <LOAD_LIST_DYNAMIC>
+    <![CDATA[
+			SELECT
+					c.claim_id,
+					c.claim_number clnum,
+					c.status_code status_code,
+					c.cust_name custn,
+					c.service_center_id,
+					c.authorization_number,
+					c.authorized_amount auth,
+					sc.code service_center_code,
+					sc.description svcna,
+				  cl.created_date,
+					c.cert_number certn,
+					D.dealer dlrcd,
+          dg.code DEALER_GROUP_CODE,
+          cert.product_code,
+          cl.claim_auth_type_id,
+          cl.tracking_number,
+          cla.authorization_number authn,
+          getenglishdescfromlistitem(cla.claim_authorization_status_id) auth_status,
+          c.dealer_id
+				FROM
+					elita.elp_claim_extended_mv c 
+          inner join elp_dealer d on c.dealer_id = d.dealer_id
+          left outer join elp_dealer_group dg on d.dealer_group_id = dg.dealer_group_id
+          inner join elp_cert cert on c.cert_id = cert.cert_id
+          inner join elp_claim cl on c.claim_id = cl.claim_id
+          left outer join elp_claim_authorization cla on cl.claim_id = cla.claim_id 
+          left outer join elp_service_center sc on sc.service_center_id= nvl(cla.service_center_id, c.service_center_id)
+			  WHERE
+          1=1
+					--dynamic_where_clause
+					 AND ROWNUM < :row_num
+					--dynamic_order_by_clause
+		]]>
+  </LOAD_LIST_DYNAMIC>
+  <GET_FRAUD_CLAIM_EXT>
+      ELITA.ELP_CLAIMS.GetFraudulentClaimExtensions
+  </GET_FRAUD_CLAIM_EXT>
+  <GET_DEALER_DRP_TRADE_IN_QUOTE_FLAG>
+    <![CDATA[
+    Select av.Attribute_Value
+    From   Elp_Attribute a, Elp_Attribute_Value av,Elp_Dealer d
+    Where  a.Attribute_Id = av.Attribute_Id
+    And    d.Dealer_Id = av.Reference_Id
+    And    a.Table_Name = 'ELP_DEALER'
+    And    a.Ui_Prog_Code = 'PRC_CLM_DRP_CHECK_TRADE_IN'
+    And    av.Attribute_Value='Y'
+  	AND    d.dealer= :dealer
+    ]]>
+  </GET_DEALER_DRP_TRADE_IN_QUOTE_FLAG>
+  <LOAD_LIST_FOR_IMAGE_INDEXING>
+    <![CDATA[
+			SELECT
+					c.claim_id,
+					c.claim_number clnum,
+					c.status_code,
+					c.cust_name custn,
+					c.service_center_id,
+					c.authorization_number authn,
+					c.authorized_amount auth,
+					sc.code service_center_code,
+					sc.description svcna,
+          c.dealer_id,
+					dg.code dealer_group_code          
+				FROM
+					elita.elp_claim_extended_mv c,
+					elp_service_center sc,
+					elp_dealer d,
+					elp_dealer_group dg
+					WHERE
+					c.service_center_id = sc.service_center_id
+ 					AND c.dealer_id = d.dealer_id
+					AND d.dealer_group_id = dg.dealer_group_id(+)
+					--dynamic_where_clause
+					 AND ROWNUM < :row_num
+					--dynamic_order_by_clause
+		]]>
+  </LOAD_LIST_FOR_IMAGE_INDEXING>
+  <LOAD_CLAIM_ADJUSTER_LIST>
+    elita.elp_claim_adj_inbox_search.GET_Claim_Adjuster_List
+  </LOAD_CLAIM_ADJUSTER_LIST>
+  <GET_CLAIMS_BY_COMMENT_TYPE>
+    <![CDATA[
+			SELECT claim_id,clnum,authn,clstatoption,custn,cmtypsrch,clcmts,dealer_id,dealer_group_code
+      FROM
+      (SELECT
+					cv.claim_id,
+	        cv.claim_number clnum,
+          cv.authorization_number authn,
+	        cv.status_code clstatoption,
+	        cv.cust_name custn,
+          cv.dealer_id,
+	        dg.code dealer_group_code,
+          getdescriptionfromlistitem(cm.comment_type_id,:language_id) cmtypsrch,
+          rank() over (partition by cv.claim_id order by cm.created_date desc) rank_number,
+          cm.comments clcmts
+			FROM
+					elita.elp_claim_extended_mv cv,
+	        elita.elp_comment cm,
+	        elita.elp_dealer d,
+	        elita.elp_dealer_group dg
+		   WHERE cv.claim_id = cm.claim_id 
+			   AND cv.dealer_id = d.dealer_id
+				 AND d.dealer_group_id = dg.dealer_group_id(+)
+					--dynamic_where_clause          
+          --dynamic_order_by_clause
+      ) where rank_number = 1
+      AND ROWNUM < :row_num
+		]]>
+  </GET_CLAIMS_BY_COMMENT_TYPE>
+  <LOAD_MASTER_CLAIM_LIST>
+    <![CDATA[
+            SELECT unique cl.claim_id,
+                  cl.master_claim_number,
+                  cl.claim_number,
+                  cl.cust_name customer_name,
+                  NVL(sq.total_paid, 0) total_paid,
+                  NVL(cl.authorized_amount, 0) authorized_amount,
+                  cl.claim_id,
+                  cl.cert_id,
+                  cl.dealer_id,
+                  dg.code dealer_group_code
+            FROM elp_claim_extended_mv cl,
+            	   elp_dealer d,
+				         elp_dealer_group dg,
+                (SELECT d.claim_id, SUM(d.PAYMENT_AMOUNT + nvl(d.bonus, 0) + nvl(d.bonus_tax, 0)) total_paid
+                 FROM 	ELP_DISBURSEMENT d
+                 GROUP BY d.claim_id
+                 ORDER BY d.claim_id) sq
+           WHERE cl.claim_id = sq.claim_id(+)
+             --dynamic_where_clause
+	 			   AND cl.dealer_id = d.dealer_id
+			     AND d.dealer_group_id = dg.dealer_group_id(+)
+           AND ROWNUM < :row_num
+           ORDER BY cl.master_claim_number, cl.claim_number DESC   
+		]]>
+  </LOAD_MASTER_CLAIM_LIST>
+  <LOAD_MASTER_CLAIM_DETAIL>
+    <![CDATA[
+            SELECT
+              cl.master_claim_number,
+              cert.cert_number,
+				      dealer.dealer_name,
+	            Sum(NVL(sq.total_paid, 0)) total_paid,
+	            Sum(NVL(cl.authorized_amount, 0)) authorized_amount
+            FROM
+	            elp_claim cl, elp_cert cert, elp_cert_item item, elp_cert_item_coverage  item_coverage, elp_dealer dealer,
+	            ( 	SELECT 	d.claim_id, SUM(d.PAYMENT_AMOUNT + nvl(d.bonus, 0) + nvl(d.bonus_tax, 0)) total_paid
+		            FROM 	ELP_DISBURSEMENT d
+	 	            GROUP BY d.claim_id
+	 	            ORDER BY d.claim_id
+	            ) sq
+            WHERE
+	            cl.claim_id = sq.claim_id(+)
+	            AND	cl.cert_item_coverage_id = item_coverage.cert_item_coverage_id
+	            AND item_coverage.cert_item_id = item.cert_item_id
+	            AND item.cert_id = cert.cert_id
+              AND dealer.dealer_id = cert.dealer_id
+              --dynamic_where_clause 
+	            AND ROWNUM < :row_num
+      GROUP BY cl.master_claim_number, cert.cert_number, dealer.dealer_name
+      ]]>
+  </LOAD_MASTER_CLAIM_DETAIL>
+  <LOAD_MASTER_CLAIM_DETAIL_LIST>
+    <![CDATA[
+      SELECT unique cl.claim_id,
+              cl.claim_number,
+              cl.status_code status,
+              NVL(cl.authorized_amount, 0) authorized_amount,
+              id.svc_control_number invoice_number,
+              id.payee,
+              cl.created_date date_created,
+              NVL(id.PAYMENT_AMOUNT, 0) + nvl(id.bonus, 0) + nvl(id.bonus_tax, 0) amount_paid,
+              --NVL(sq.total_paid, 0) amount_paid,
+              cl.claim_id,
+              cert.cert_id,
+              id.claim_invoice_id
+    FROM elp_claim cl, elp_cert cert,
+      elp_cert_item item, elp_cert_item_coverage  item_coverage,
+      elp_dealer dealer,
+      (select invoice.claim_invoice_id, invoice.claim_id, d.payment_amount, d.bonus, d.bonus_tax, d.payee, invoice.svc_control_number
+       from elp_claim_invoice invoice join ELP_DISBURSEMENT d on invoice.disbursement_id = d.disbursement_id
+      ) id
+ WHERE cl.claim_id = id.claim_id(+)
+   AND cl.cert_item_coverage_id = item_coverage.cert_item_coverage_id
+   AND item_coverage.cert_item_id = item.cert_item_id
+   AND item.cert_id = cert.cert_id
+   AND dealer.dealer_id = cert.dealer_id
+   AND cl.claim_id = id.claim_id(+)
+   --AND invoice.disbursement_id = d.disbursement_id
+        --dynamic_where_clause
+	      AND ROWNUM < :row_num
+        ORDER BY cl.claim_number DESC
+      ]]>
+  </LOAD_MASTER_CLAIM_DETAIL_LIST>
+  <LOAD_TOTAL_PAID>
+    <![CDATA[
+			select NVL(sum(d.payment_amount + nvl(d.deductible_amount, 0) + nvl(d.bonus, 0) + nvl(d.bonus_tax, 0)), 0) total_paid,
+             count(*) disbursement_count
+ 			from   elp_disbursement d
+			where  d.claim_id = :claim_id
+		]]>
+  </LOAD_TOTAL_PAID>
+  <LOAD_TOTAL_PAID_FOR_CERT>
+    <![CDATA[
+      select nvl(sum(nvl(d.PAYMENT_AMOUNT, 0) + nvl(d.bonus, 0) + nvl(d.bonus_tax, 0)), 0) total_paid
+      from ELP_DISBURSEMENT d,
+            elita.elp_claim_extended_mv cview
+      where d.claim_id = cview.claim_id
+      and   cview.cert_id = :cert_id 	
+		]]>
+  </LOAD_TOTAL_PAID_FOR_CERT>
+  <LOAD_ACTIVE_CLAIMS_LIST>
+    <![CDATA[
+         SELECT	unique
+		        x.claim_id,
+		        x.clnum,
+		        x.status_code,
+		        x.custn,
+		        x.service_center_id,
+		        x.authn,
+		        x.auth,
+		        x.service_center_code,
+		        x.svcna,
+		        x.dealer_id,
+		        x.dealer_group_code,
+            x.dlrcd,
+            x.dealer_name
+        FROM
+        (
+			        SELECT	unique
+					        c.claim_id,
+					        c.claim_number clnum,
+					        c.status_code,
+					        c.cust_name custn,
+					        c.service_center_id,
+					        c.authorization_number authn,
+					        c.authorized_amount auth,
+					        sc.code service_center_code,
+					        sc.description svcna,
+                  c.dealer_id,
+					        dg.code dealer_group_code,
+                  d.dealer dlrcd,
+                  d.dealer_name
+			        FROM
+					        elita.elp_claim_extended_mv c,
+					        elp_service_center sc,
+                  elp_dealer d,
+					        elp_dealer_group dg,
+                  elp_claim cl
+			        WHERE  (sc.integrated_with_id is null or getcodefromlistitem(sc.integrated_with_id) <> 'GVS')
+					        AND c.status_code = 'A'
+					        AND c.service_center_id = sc.service_center_id
+					        AND c.dealer_id = d.dealer_id
+					        AND d.dealer_group_id = dg.dealer_group_id(+)
+                  AND elp_utl_parentchild_rel.is_claim_child(c.claim_id) = 'N'
+                  and cl.claim_id = c.claim_id and elp_utl_lov.code(cl.claim_auth_type_id) = 'S' --single auth only
+					        --dynamic_where_clause
+			        UNION
+			        SELECT	unique
+					        c.claim_id,
+					        c.claim_number clnum,
+					        c.status_code,
+					        c.cust_name custn,
+					        c.service_center_id,
+					        c.authorization_number authn,
+					        c.authorized_amount auth,
+					        sc.code service_center_code,
+					        sc.description svcna,
+                  c.dealer_id,
+					        dg.code dealer_group_code,
+                  d.dealer dlrcd,
+                  d.dealer_name
+			        FROM
+					        elita.elp_claim_extended_mv c,
+					        elp_service_center sc,
+                  elp_dealer d,
+					        elp_dealer_group dg,
+                  elp_claim cl
+			        WHERE  (sc.integrated_with_id is not null and getcodefromlistitem(sc.integrated_with_id) = 'GVS')
+					        AND c.status_code = 'A'
+					        AND c.service_center_id = sc.service_center_id
+		        	    AND c.extended_status_code = 'WDOC'
+						      AND c.dealer_id = d.dealer_id
+					        AND d.dealer_group_id = dg.dealer_group_id(+)
+                  AND elp_utl_parentchild_rel.is_claim_child(c.claim_id) = 'N'
+                  and cl.claim_id = c.claim_id and elp_utl_lov.code(cl.claim_auth_type_id) = 'S' --single auth only
+				        --dynamic_where_clause
+
+        ) x
+        WHERE ROWNUM < :row_num
+        --dynamic_order_by_clause
+  ]]>
+  </LOAD_ACTIVE_CLAIMS_LIST>
+  <LOAD_PENDING_CLAIM_LIST>
+    <![CDATA[
+			SELECT
+						CMV.claim_id,
+						CMV.claim_number,
+						CMV.created_date,
+						CMV.cert_number certificate_number,
+						D.dealer dealer_code,
+            cert.product_code,
+            CMV.authorized_amount
+				FROM
+						elita.elp_claim_extended_mv CMV,
+            elp_dealer D,
+            elp_cert cert
+				WHERE CMV.status_code = 'P'
+				  AND CMV.dealer_id = D.dealer_id
+          and cmv.cert_id = cert.cert_id
+					--dynamic_where_clause
+					AND ROWNUM < :row_num
+					ORDER BY created_date
+		]]>
+  </LOAD_PENDING_CLAIM_LIST>
+  <LOAD_PENDING_APPROVAL_CLAIM_LIST>
+    <![CDATA[
+        select	unique
+  		        x.claim_id,
+	  	        x.claim_number,
+	  	        x.cust_name,
+	  	        x.description,
+	  	        x.status_date
+        from
+        (
+                select	unique
+		                mv.claim_id,
+		                mv.claim_number,
+		                mv.cust_name,
+		                sc.description,
+		                cs.status_date
+                from 	elp_claim_extended_mv mv,
+		                elp_service_center sc,
+		                elp_claim_status cs
+                where 	
+                    	mv.status_code = 'A' and
+		                mv.extended_status_code = 'COD' and
+		                sc.service_center_id = mv.service_center_id and
+		                cs.claim_status_id = mv.claim_status_id
+                --dynamic_where_clause
+        ) x
+        where ROWNUM < :row_num
+        order by x.status_date desc
+  ]]>
+  </LOAD_PENDING_APPROVAL_CLAIM_LIST>
+  <LOAD_PENDING_REVIEW_PAYMENT_CLAIM_LIST>
+    <![CDATA[
+      select claim_id,
+             service_center_description,
+             country_description,
+             claim_number,
+             serial_number,
+             claim_status_code,
+             extended_status_description,
+             extended_status_id,
+             status_date,
+             manufacturer_description,
+             model,
+             claimed_sku,
+             replaced_sku,
+             coverage_type,
+             claim_created_date,
+             repair_date
+      from (
+          select cl.claim_id,
+                 cl.service_center_description,
+                 c.description country_description,
+                 cl.claim_number,
+    	         ceq.serial_number,
+    	         cl.status_code claim_status_code,
+    	         cs.extended_status_description,
+    	         cs.extended_status_id,
+    	         cs.status_date,
+    	         ceq.manufacturer_description,
+    	         ceq.model,
+    	         ceq.sku claimed_sku,
+    	         cl.sku replaced_sku,
+    	         ctdit.translation coverage_type,
+    	         cl.created_date claim_created_date,
+    	         cl.repair_date,
+               cs.claim_status_by_group_id,
+    	         dense_rank() over (partition by cl.claim_id order by cs.status_date desc) rank
+          from (select cl.claim_id,
+                       cl.service_center_id,
+                       cl.claim_number,
+                       cl.status_code,
+                       cl.cert_item_coverage_id, -- Need to Display Coverage Type on Screen
+                       cl.created_date,
+                       sc.description as service_center_description,
+                       sc.country_id,
+                       cl.repair_date,
+                       rep.SKU
+                from elp_claim                     cl
+                inner join elp_service_center      sc on cl.service_center_id = sc.service_center_id
+                left outer join  elp_replacement_part reppart  on cl.claim_id = reppart.claim_id
+                left outer join  (select * from ELP_CLAIM_EQUIPMENT where CLAIM_EQUIPMENT_TYPE_ID=elita.GETITEMIDFROMLISTANDITEM('CLAIM_EQUIP_TYPE','R')) rep on Cl.claim_id =rep.Claim_id
+                where cl.claim_auth_type_id = hextoraw(:SINGLE_AUTH_ID) -- GetItemIdFromListAndItem('CLM_AUTH_TYP','S')
+                  and cl.company_id in (select company_id from elp_user_company where user_id = hextoraw(:USER_ID1))
+                  and ((:SERVICE_LEVEL_CODE1 is null) or (cl.service_level_code = :SERVICE_LEVEL_CODE2))
+                  and ((:STATUS_CODE1 is null) or (cl.status_code = :STATUS_CODE2))
+                  and ((:CLAIM_NUMBER1 is null) or (cl.claim_number like :CLAIM_NUMBER2))
+                  and ((:SERVICE_CENTER_ID1 is null) or (sc.service_center_id = hextoraw(:SERVICE_CENTER_ID2)))
+                  and ((:ORIGINAL_RISK_TYPE_ID1 is null) or (cl.original_risk_type_id = hextoraw(:ORIGINAL_RISK_TYPE_ID2))
+                  and ((:REPLACEMENT_PART_SKU1 is null) or (reppart.sku_number like :REPLACEMENT_PART_SKU2))
+                  and ((:REPLACED_SKU1 is null) or (rep.sku like :REPLACED_SKU2))
+                  and ((:DEVICE_TYPE1 is null) or (rep.device_type_id = hextoraw(:DEVICE_TYPE2))))
+                union all
+                select cl.claim_id,
+                       ca.service_center_id,
+                       cl.claim_number,
+                       cl.status_code,
+                       cl.cert_item_coverage_id, -- Need to Display Coverage Type on Screen
+                       cl.created_date,
+                       sc.description as service_center_description,
+                       sc.country_id,
+                       ca.repair_date,
+                       rep.SKU
+                from elp_claim                     cl
+                inner join elp_claim_authorization ca on ca.claim_id = cl.claim_id
+                inner join elp_service_center      sc on ca.service_center_id = sc.service_center_id
+                left outer join  elp_replacement_part reppart  on cl.claim_id = reppart.claim_id
+                left outer join  (select * from ELP_CLAIM_EQUIPMENT where CLAIM_EQUIPMENT_TYPE_ID=elita.GETITEMIDFROMLISTANDITEM('CLAIM_EQUIP_TYPE','R')) rep on Cl.claim_id =rep.Claim_id
+                where cl.claim_auth_type_id = hextoraw(:MULTIPLE_AUTH_ID) -- GetItemIdFromListAndItem('CLM_AUTH_TYP','M')
+                  and ca.claim_authorization_status_id <> hextoraw(:AUTH_VOID_ID) -- GetItemIdFromListAndItem('CLM_AUTH_STAT', 'V')
+                  and company_id in (select company_id from elp_user_company where user_id = hextoraw(:USER_ID2))
+                  and ((:SERVICE_LEVEL_ID1 is null) or (ca.service_level_id = hextoraw(:SERVICE_LEVEL_ID2)))
+                  and ((:STATUS_CODE3 is null) or (cl.status_code = :STATUS_CODE4))
+                  and ((:CLAIM_NUMBER3 is null) or (cl.claim_number like :CLAIM_NUMBER4))
+                  and ((:SERVICE_CENTER_ID3 is null) or (sc.service_center_id = hextoraw(:SERVICE_CENTER_ID4)))
+                  and ((:ORIGINAL_RISK_TYPE_ID3 is null) or (cl.original_risk_type_id = hextoraw(:ORIGINAL_RISK_TYPE_ID4)))
+                  and ((:REPLACEMENT_PART_SKU3 is null) or (reppart.SKU_NUMBER like :REPLACEMENT_PART_SKU4))
+                  and ((:REPLACED_SKU3 is null) or (rep.SKU like :REPLACED_SKU4))
+                  and ((:DEVICE_TYPE3 is null) or (rep.DEVICE_TYPE_ID = hextoraw(:DEVICE_TYPE4)))) cl
+          inner join elp_country                  c     on c.country_id = cl.country_id
+          inner join elp_cert_item_coverage       cic   on cic.cert_item_coverage_id = cl.cert_item_coverage_id
+          inner join elp_list_item                ctli  on ctli.list_item_id = cic.coverage_type_id
+          inner join elp_dict_item_translation    ctdit on ctdit.dict_item_id = ctli.dict_item_id
+          inner join elp_cert                     ct    on ct.cert_id = cic.cert_id
+          left outer join (select dit.translation extended_status_description,
+                                  cs.claim_id,
+                                  cs.status_date,
+                                  csg.list_item_id extended_status_id,
+                                  csg.claim_status_by_group_id
+                           from elp_claim_status cs
+                           inner join elp_claim_status_by_group csg on csg.claim_status_by_group_id = cs.claim_status_by_group_id
+                           inner join elp_list_item li on li.list_item_id = csg.list_item_id
+                           inner join elp_dict_item_translation dit on dit.dict_item_id = li.dict_item_id
+                           where dit.language_id = hextoraw(:LANGUAGE_ID1)
+                          ) cs on cs.claim_id = cl.claim_id
+          left outer join (select m.description as manufacturer_description,
+                                  ce.model,
+                                  ce.serial_number,
+                                  ce.claim_id,
+                                  ce.sku,
+                                  m.manufacturer_id
+                           from elp_claim_equipment ce
+                           inner join elp_manufacturer m on ce.manufacturer_id = m.manufacturer_id
+                           where ce.claim_equipment_type_id = hextoraw(:EQUIPMENT_TYPE_CLAIMED_ID) -- GetItemIdFromListAndItem('CLAIM_EQUIP_TYPE', 'C')
+                          ) ceq on ceq.claim_id = cl.claim_id
+          where ((:CLAIMED_MANUFACTURER_ID is null) or (ceq.manufacturer_id = hextoraw(:CLAIMED_MANUFACTURER_ID)))
+            and ctdit.language_id = hextoraw(:LANGUAGE_ID2)
+            and ((:COUNTRY_ID1 is null) or (c.country_id = hextoraw(:COUNTRY_ID2)))
+            and ((:COVERAGE_TYPE_ID1 is null) or (cic.coverage_type_id = hextoraw(:COVERAGE_TYPE_ID2)))
+            and ((:CERT_NUMBER1 is null) or (ct.cert_number like :CERT_NUMBER2))
+            and ((:SERIAL_NUMBER1 is null) or (ceq.serial_number like :SERIAL_NUMBER2))
+            and ((:CLAIMED_SKU1 is null) or (ceq.sku like :CLAIMED_SKU2))
+            and ((:CLAIMED_MODEL1 is null) or (ceq.model like :CLAIMED_MODEL2))
+            --dynamic_where_clause
+      )
+      where rank = 1
+        and rownum < :row_num
+        and ((:EXTENDED_STATUS_ID1 is null) or (claim_status_by_group_id = hextoraw(:EXTENDED_STATUS_ID2)))
+      order by country_description, service_center_description, claim_number
+
+    ]]>
+  </LOAD_PENDING_REVIEW_PAYMENT_CLAIM_LIST>
+  <LOAD_LIST>
+    <![CDATA[
+			SELECT
+				c.claim_id,
+				c.claim_number,
+				c.status_code,
+				c.cust_name,
+				c.service_center_id,
+				c.authorization_number,
+				c.authorized_amount,
+				sc.code service_center_code,
+				sc.description service_center_name
+			FROM
+				elita.elp_claim_extended_mv c,
+				elp_service_center sc
+			WHERE
+				c.claim_number LIKE :claim_number
+			AND	c.cust_name LIKE :customer_name
+			AND c.authorized_amount LIKE :authorized_amount
+			AND c.service_center_id = sc.service_center_id
+			AND sc.company_id = :company_id
+			AND c.service_center_id LIKE :service_center_id
+			AND ROWNUM < 101
+			ORDER BY c.claim_number
+		]]>
+  </LOAD_LIST>
+  <LOAD_LIST_AUTH_NUM>
+    <![CDATA[
+			SELECT
+				c.claim_id,
+				c.claim_number,
+				c.status_code,
+				c.cust_name,
+				c.service_center_id,
+				c.authorization_number,
+				c.authorized_amount,
+				sc.code service_center_code,
+				sc.description service_center_name
+			FROM
+				elita.elp_claim_extended_mv c,
+				elp_service_center sc
+			WHERE
+				c.claim_number LIKE :claim_number
+			AND	c.cust_name LIKE :cust_name
+			AND c.authorization_number LIKE :authorization_number
+			AND c.authorized_amount LIKE :authorized_amount
+			AND c.service_center_id = sc.service_center_id
+			AND sc.company_id = :company_id
+			AND c.service_center_id LIKE :service_center_id
+			AND ROWNUM < 101
+			ORDER BY c.claim_number
+		]]>
+  </LOAD_LIST_AUTH_NUM>
+  <LOAD_LIST_FOLLOW_UP>
+    <![CDATA[
+      SELECT
+          claim_id,
+          cfdnr,
+          cfcty,
+          cfdat,
+          cfexst,
+          cfexstId,
+          cfsvn,
+          cfcln,
+          cfcom,
+          cfadj,
+          cfcnm,
+          cfdcd,
+          cfstcd,
+          cfowr,
+          cfowrId,
+          cfclmTAT,
+          cfscTAT,
+          round((trunc(sysdate) - trunc(status_date))) cfnoatv,
+          Num_of_Reminders,
+          Last_Reminder_Send_Date
+          from ( with tmp as (select cv.claim_id
+                              ,getdescriptionfromlistitem (cl.denied_reason_id, :language_id) cfdnr
+                              ,getdescriptionfromlistitem (cm.comment_type_id, :language_id)  cfcty
+                              ,trunc (cv.followup_date)                                       cfdat
+                              ,elita.getlatestextendedclaimstatus (cv.claim_id, :language_id) cfexst
+                              ,elita.getlatestextendedclaimstatusid (cv.claim_id)             cfexstid
+                              ,sc.description                                                 cfsvn
+                              ,cv.claim_number                                                cfcln
+                              ,elita.getlatestclaimcomment (cv.claim_id)                      cfcom
+                              ,usrclmadj.user_name                                            cfadj
+                              ,cv.cust_name                                                   cfcnm
+                              ,rank () over (partition by cl.claim_id order by cm.created_date desc) rank_number
+                              ,d.dealer                                                       cfdcd
+                              ,cv.status_code                                                 cfstcd
+                              ,elita.getdescriptionfromlistitem (elita.getlatestextendedclaimownerid (cv.claim_id), :language_id)     cfowr
+                              ,elita.getlatestextendedclaimownerid (cv.claim_id)              cfowrid
+                              ,elita.elp_claims.getclaimtat (cv.claim_id)                     cfclmtat
+                              ,elita.elp_claims.getservicecentertat (cv.claim_id)             cfsctat
+                        from elp_claim_extended_mv  cv
+                            ,elp_claim              cl
+                            ,elp_comment            cm
+                            ,elp_dealer             d
+                            ,elp_service_center     sc
+                            ,elp_address            a
+                            ,elp_user               usrclmadj
+                        where sc.service_center_id = cv.service_center_id
+                        and   d.dealer_id = cv.dealer_id
+                        and   sc.address_id = a.address_id
+                        and   cv.claim_id = cl.claim_id
+                        and   cl.claim_id = cm.claim_id(+)
+                        and   cv.claims_adjuster = usrclmadj.network_id(+)
+                       
+                        --dynamic_where_clause
+                        
+                       )
+        ,status as (select *
+                    from ( select cs.claim_id
+                                  ,cs.status_date
+                                  ,cs.num_of_reminders
+                                  ,cs.last_reminder_send_date
+                                  ,rank () over (partition by cs.claim_id order by cs.created_date desc) as st_rank
+                            from tmp  t
+                            left join elp_claim_status       cs on cs.claim_id = t.claim_id
+                            where t.rank_number = 1
+                          )
+                     where st_rank = 1
+                    )
+        select t.*
+              ,cs.status_date
+              ,cs.num_of_reminders
+              ,cs.last_reminder_send_date
+        from tmp t
+        left join status cs on cs.claim_id = t.claim_id
+        --dynamic3_where_clause3
+        --dynamic_order_by_clause
+       )
+ where rank_number = 1 AND ROWNUM < :row_num
+ --dynamic_where_clause2
+		]]>
+  </LOAD_LIST_FOLLOW_UP>
+  <LOAD_ACTIVE_CLAIMS_FOR_ENDORSE_WITH_MANUF>
+    <![CDATA[
+		SELECT 	cl.status_code,
+				trunc(cl.invoice_process_DATE) invoice_process_DATE,
+				cl.CREATED_DATE
+		FROM 	(SELECT cl.STATUS_code,
+						cl.INVOICE_process_date,
+						cl.created_DATE
+			      FROM 	elp_CLAIM cl,
+			    		elp_cert_item_coverage pic,
+			    		elp_cert_item pi
+			      WHERE 	cl.cert_item_coverage_id = pic.cert_item_coverage_id
+		          AND    pic.cert_item_id = pi.cert_item_id
+		          AND 	pi.cert_item_id = :Certitemid) cl
+		WHERE  (created_date < :BeginDate)
+		or ((created_date) Between :BeginDate AND  :EndDate)
+		AND (Not (STATUS_CODE)= 'C') OR (INVOICE_process_date = null)
+		ORDER BY INVOICE_process_date DESC, created_date DESC
+		]]>
+  </LOAD_ACTIVE_CLAIMS_FOR_ENDORSE_WITH_MANUF>
+  <LOAD_ACTIVE_CLAIMS_FOR_ENDORSE_WITH_NO_MANUF>
+    <![CDATA[
+	
+	    SELECT 	cl.status_code,
+				trunc(cl.invoice_process_DATE) invoice_process_DATE,
+				cl.CREATED_DATE
+		FROM 	(SELECT cl.STATUS_code,
+						cl.INVOICE_process_date,
+						cl.created_DATE
+			      FROM 	elp_CLAIM cl,
+			    		elp_cert_item_coverage pic,
+			    		elp_cert_item pi
+			      WHERE 	cl.cert_item_coverage_id = pic.cert_item_coverage_id
+		          AND    pic.cert_item_id = pi.cert_item_id
+		          AND 	pi.cert_item_id = :cert_item_id) cl
+		WHERE  (Not (created_date) Between :begin_date and  :end_date)
+		AND (Not (STATUS_CODE)= 'C') OR (Not (INVOICE_process_date) = null)
+		ORDER BY INVOICE_process_date DESC, created_date DESC
+         ]]>
+  </LOAD_ACTIVE_CLAIMS_FOR_ENDORSE_WITH_NO_MANUF>
+  <LOAD_ACTIVE_CLAIMS_FOR_ENDORSE_BY_COVERAGE>
+    <![CDATA[
+	    SELECT 	cl.status_code,
+				trunc(cl.invoice_process_DATE) invoice_process_DATE,
+				cl.CREATED_DATE
+		FROM 	(SELECT cl.STATUS_code,
+						cl.INVOICE_process_date,
+						cl.created_DATE
+			      FROM 	elp_CLAIM cl,
+			    		elp_cert_item_coverage pic
+			      WHERE pic.cert_item_coverage_id = :cert_item_coverage_id
+		          AND 	pic.cert_item_coverage_id = cl.cert_item_coverage_id) cl
+		WHERE  (Not (created_date) Between :begin_date and :end_date)
+		AND (Not (STATUS_CODE)= 'C') OR (Not (INVOICE_process_date) = null)
+		ORDER BY INVOICE_process_date DESC, created_date DESC
+         ]]>
+  </LOAD_ACTIVE_CLAIMS_FOR_ENDORSE_BY_COVERAGE>
+  <LOAD_MASTER_CLAIMS_SAME_COVERAGE>
+    SELECT 	cl.claim_number, cl.loss_date, cl.master_claim_number, sc.description, cl.Claim_id
+    FROM elp_CLAIM cl,
+    elp_service_center sc,
+    elp_claim_Extended_mv mv
+    WHERE cl.service_center_id = sc.service_center_id
+    AND cl.claim_id = mv.claim_id
+    AND cl.cert_item_coverage_id = :cert_item_coverage_id
+    ORDER BY master_claim_number, claim_number
+  </LOAD_MASTER_CLAIMS_SAME_COVERAGE>
+
+  <LOAD_MASTER_CLAIMS_DIFFERENT_COVERAGE>
+    SELECT 	cl.claim_number, cl.loss_date, cl.master_claim_number, sc.description, cl.Claim_id
+    FROM elp_CLAIM cl,
+    elp_service_center sc,
+    elp_claim_Extended_mv mv
+    WHERE cl.service_center_id = sc.service_center_id
+    AND cl.claim_id = mv.claim_id
+    AND mv.cert_id = (select distinct cert_id from elp_cert_item_coverage where cert_item_coverage_id = :cert_item_coverage_id)
+    ORDER BY master_claim_number, claim_number
+  </LOAD_MASTER_CLAIMS_DIFFERENT_COVERAGE>
+
+  <LOAD_MASTER_CLAIMS_BY_ALLDATEOFLOSS>
+    SELECT 	cl.claim_number, cl.loss_date, cl.master_claim_number, sc.description, cl.Claim_id
+    FROM elp_CLAIM cl,
+    elp_service_center sc,
+    elp_claim_Extended_mv mv
+    WHERE cl.service_center_id = sc.service_center_id
+    AND cl.claim_id = mv.claim_id
+    AND cl.cert_item_coverage_id = :cert_item_coverage_id
+    AND cl.status_code = 'A' 
+    ANd cl.repair_date is null
+    ORDER BY master_claim_number, claim_number
+  </LOAD_MASTER_CLAIMS_BY_ALLDATEOFLOSS>
+
+  <LOAD_MASTER_CLAIMS_BY_SAMEDATEOFLOSS>
+    SELECT 	cl.claim_number, cl.loss_date, cl.master_claim_number, sc.description, cl.Claim_id
+    FROM elp_CLAIM cl,
+    elp_service_center sc,
+    elp_claim_Extended_mv mv
+    WHERE cl.service_center_id = sc.service_center_id
+    AND cl.claim_id = mv.claim_id
+    AND cl.cert_item_coverage_id = :cert_item_coverage_id
+    AND cl.status_code = 'A'
+    AND cl.loss_date = :loss_date
+    AND cl.repair_date is null
+    ORDER BY master_claim_number, claim_number
+  </LOAD_MASTER_CLAIMS_BY_SAMEDATEOFLOSS>
+
+  <GET_REPAIRED_MASTER_CLAIMS_FOR_SAMEDATEOFLOSS>
+    SELECT 	cl.claim_number, cl.loss_date, cl.master_claim_number, sc.description, cl.Claim_id
+    FROM elp_CLAIM cl,
+    elp_service_center sc,
+    elp_claim_Extended_mv mv
+    WHERE cl.service_center_id = sc.service_center_id
+    AND cl.claim_id = mv.claim_id
+    AND cl.cert_item_coverage_id = :cert_item_coverage_id
+    AND cl.status_code = 'A'
+    AND cl.loss_date = :loss_date
+    AND cl.repair_date is not null
+    ORDER BY master_claim_number, claim_number
+  </GET_REPAIRED_MASTER_CLAIMS_FOR_SAMEDATEOFLOSS>
+
+  <LOAD_REDO_CLAIMS>
+    <![CDATA[
+	    Select  elp_claim.claim_id,
+		          elp_claim.claim_number,
+              elp_list_item.code,
+		          to_char(elp_claim.pick_up_date,'MM/dd/YYYY')  as pick_up_date,
+              elp_claim.master_claim_number
+    from elp_list_item, elp_claim, elp_cert_item_coverage, elp_cert, elp_cert_item,ELP_SERVICE_CENTER
+    where elp_claim.cert_item_coverage_id=elp_cert_item_coverage.cert_item_coverage_id
+    and ELP_SERVICE_CENTER.service_center_id(+) = elp_claim.store_service_center_id
+    and list_item_id = who_pays_id
+    and elp_cert.cert_id = elp_cert_item.cert_id
+    and elp_cert_item.CERT_ITEM_ID = elp_cert_item_coverage.cert_item_id
+    and	(elp_claim.CLAIM_ACTIVITY_ID is null or elp_claim.CLAIM_ACTIVITY_ID not in (select  li.list_item_id
+								from 	elp_list_item li,elp_list l
+								where   LI.LIST_ID = L.LIST_ID and L.CODE = 'CLACT'
+								and (li.code = 'TBREP' or li.code = 'PREP' or li.code = 'R'
+     									or li.code = 'TBRP')))
+    and ((trunc(to_date(:created_date,'MM/dd/YYYY') - pick_up_date)) <= to_number(nvl(ELP_SERVICE_CENTER.SERVICE_WARRANTY_DAYS,'90')))               
+    and elp_cert_item_coverage.CERT_ITEM_COVERAGE_ID = :cert_item_coverage_id
+    and elp_claim.claim_id != :redo_claim_id
+    order by elp_claim.claim_number
+         ]]>
+  </LOAD_REDO_CLAIMS>
+  <REDO_CLAIMS_NUMBER>
+    <![CDATA[
+	    Select  count(*)
+    from elp_list_item, elp_claim, elp_cert_item_coverage, elp_cert, elp_cert_item,ELP_SERVICE_CENTER
+    where elp_claim.cert_item_coverage_id=elp_cert_item_coverage.cert_item_coverage_id
+    and ELP_SERVICE_CENTER.service_center_id(+) = elp_claim.store_service_center_id
+    and list_item_id = who_pays_id
+    and elp_cert.cert_id = elp_cert_item.cert_id
+    and elp_cert_item.CERT_ITEM_ID = elp_cert_item_coverage.cert_item_id
+    and	(elp_claim.CLAIM_ACTIVITY_ID is null or elp_claim.CLAIM_ACTIVITY_ID not in (select  li.list_item_id
+								from 	elp_list_item li,elp_list l
+								where   LI.LIST_ID = L.LIST_ID and L.CODE = 'CLACT'
+								and (li.code = 'TBREP' or li.code = 'PREP' or li.code = 'R'
+     									or li.code = 'TBRP')))
+    and ((trunc(to_date(:created_date,'MM/dd/YYYY') - pick_up_date)) <= to_number(nvl(ELP_SERVICE_CENTER.SERVICE_WARRANTY_DAYS,'90')))               
+    and elp_cert_item_coverage.CERT_ITEM_COVERAGE_ID = :cert_item_coverage_id
+    and elp_claim.claim_id != :redo_claim_id
+    order by elp_claim.claim_number
+         ]]>
+  </REDO_CLAIMS_NUMBER>
+  <IS_CLAIM_ACTIVE>
+        <![CDATA[
+	    Select  count(*)
+    from elp_claim
+    where claim_id = :claim_id
+    and status_code in ('A','P')
+         ]]>
+    </IS_CLAIM_ACTIVE>
+    <IS_CLAIM_AUTH_NUMBER_EXISTS>
+        <![CDATA[
+    select count(*) from elp_claim where authorization_number = :authorization_number and company_id =
+    (select company_id from elp_claim where claim_id = :claim_id)
+         ]]>
+    </IS_CLAIM_AUTH_NUMBER_EXISTS>
+  <UPDATE>
+    <![CDATA[	
+			UPDATE elp_claim SET
+				cert_item_coverage_id = :cert_item_coverage_id,
+				original_risk_type_id = :original_risk_type_id,
+				claim_activity_id = :claim_activity_id,
+				service_center_id = :service_center_id,
+				reason_closed_id = :reason_closed_id,
+				repair_code_id = :repair_code_id,
+				loaner_center_id = :loaner_center_id,
+				cause_of_loss_id = :cause_of_loss_id,
+				method_of_repair_id = :method_of_repair_id,
+				claim_number = :claim_number,
+				status_code = :status_code,
+				contact_name = :contact_name,
+				caller_name = :caller_name,
+				problem_description = :problem_description,
+				special_instruction = :special_instruction,
+				authorized_amount = :authorized_amount,
+				liability_limit = :liability_limit,
+				deductible = :deductible,
+				claims_adjuster = :claims_adjuster,
+				repair_date = :repair_date,
+				loss_date = :loss_date,
+				invoice_process_date = :invoice_process_date,
+				claim_closed_date = :claim_closed_date,
+				loaner_returned_date = :loaner_returned_date,
+				followup_date = :followup_date,
+				authorization_number = :authorization_number,
+				source = :source,
+				modified_by = :modified_by,
+				visit_date = :visit_date,
+				pick_up_date = :pick_up_date,
+				contact_salutation_id = :contact_salutation_id,
+				caller_salutation_id = :caller_salutation_id,
+				master_claim_number = :master_claim_number,
+				caller_tax_number = :caller_tax_number,
+				spare_parts = :spare_parts,
+				shipping_info_id = :shipping_info_id,
+        deductible_percent = :deductible_percent,
+        deductible_by_percent_id = :deductible_by_percent_id,
+				discount_amount = :discount_amount,
+				discount_percent = :discount_percent,
+        policy_number = :policy_number,
+        denied_reason_id = :denied_reason_id,
+        store_service_center_id = :store_service_center_id,
+        notification_type_id = :notification_type_id,
+        who_pays_id = :who_pays_id,
+        defect_reason = :defect_reason,
+        technical_report = :technical_report,
+        expected_repair_date = :expected_repair_date,
+        batch_number = :batch_number,
+        claim_is_special_service_id = :claim_is_special_service_id,
+        invoice_date = :invoice_date,
+        reverse_logistics_id = :reverse_logistics_id,
+        salvage_amount = :salvage_amount,
+        fraudulent = :fraudulent,
+        complaint = :complaint,
+        contact_info_id = :contact_info_id,
+        new_device_sku = :new_device_sku,
+        ded_coll_method_id = :ded_coll_method_id,
+        ded_coll_cc_auth_code = :ded_coll_cc_auth_code,
+        claim_auth_type_id = :claim_auth_type_id,
+        is_locked = :is_locked,
+        locked_by = :locked_by,
+        locked_on = :locked_on,
+        is_lawsuit_id = :is_lawsuit_id,
+        pos = :point_of_sale,
+        device_reception_date = :device_reception_date,
+        current_odometer = :current_odometer,
+        bonus = :bonus,
+        bonus_tax = :bonus_tax,
+        tracking_number = :tracking_number,
+     -- reported_date = :reported_date,
+        REG_ITEM_CURRENT_RETAIL_PRICE = :current_retail_price,
+        device_activation_date = :device_activation_date,
+		    employee_number = :employee_number,
+        fulfilment_method_xcd = :fulfilment_method_xcd,
+        bank_info_id = :bank_info_id
+			WHERE
+				claim_id = :claim_id
+				AND NVL(modified_date,created_date) = NVL(:modified_date,created_date)
+		]]>
+  </UPDATE>
+  <INSERT>
+    INSERT INTO elp_claim
+    (
+    cert_item_coverage_id,
+    original_risk_type_id,
+    claim_activity_id,
+    service_center_id,
+    reason_closed_id,
+    repair_code_id,
+    loaner_center_id,
+    cause_of_loss_id,
+    method_of_repair_id,
+    claim_number,
+    status_code,
+    contact_name,
+    caller_name,
+    problem_description,
+    special_instruction,
+    authorized_amount,
+    liability_limit,
+    deductible,
+    claims_adjuster,
+    repair_date,
+    loss_date,
+    invoice_process_date,
+    claim_closed_date,
+    loaner_returned_date,
+    followup_date,
+    authorization_number,
+    source,
+    repair_estimate,
+    claim_group_id,
+    company_id,
+    created_by,
+    claim_id,
+    visit_date,
+    pick_up_date,
+    contact_salutation_id,
+    caller_salutation_id,
+    master_claim_number,
+    caller_tax_number,
+    spare_parts,
+    shipping_info_id,
+    deductible_percent,
+    deductible_by_percent_id,
+    discount_amount,
+    discount_percent,
+    policy_number,
+    denied_reason_id,
+    store_service_center_id,
+    notification_type_id,
+    who_pays_id,
+    defect_reason,
+    technical_report,
+    expected_repair_date,
+    batch_number,
+    claim_is_special_service_id,
+    invoice_date,
+    reverse_logistics_id,
+    fraudulent,
+    complaint,
+    contact_info_id,
+    reported_date,
+    new_device_sku,
+    ded_coll_method_id,
+    ded_coll_cc_auth_code,
+    claim_auth_type_id ,
+    is_locked,
+    locked_by,
+    locked_on,
+    is_lawsuit_id,
+    current_odometer,
+    device_reception_date,
+    bonus,
+    bonus_tax,
+    tracking_number,
+    REG_ITEM_CURRENT_RETAIL_PRICE,
+    device_activation_date,
+		employee_number
+    )
+    VALUES
+    (
+    :cert_item_coverage_id,
+    :original_risk_type_id,
+    :claim_activity_id,
+    :service_center_id,
+    :reason_closed_id,
+    :repair_code_id,
+    :loaner_center_id,
+    :cause_of_loss_id,
+    :method_of_repair_id,
+    :claim_number,
+    :status_code,
+    :contact_name,
+    :caller_name,
+    :problem_description,
+    :special_instruction,
+    :authorized_amount,
+    :liability_limit,
+    :deductible,
+    :claims_adjuster,
+    :repair_date,
+    :loss_date,
+    :invoice_process_date,
+    :claim_closed_date,
+    :loaner_returned_date,
+    :followup_date,
+    :authorization_number,
+    :source,
+    :repair_estimate,
+    :claim_group_id,
+    :company_id,
+    :created_by,
+    :claim_id,
+    :visit_date,
+    :pick_up_date,
+    :contact_salutation_id,
+    :caller_salutation_id,
+    :master_claim_number,
+    :caller_tax_number,
+    :spare_parts,
+    :shipping_info_id,
+    :deductible_percent,
+    :deductible_by_percent_id,
+    :discount_amount,
+    :discount_percent,
+    :policy_number,
+    :denied_reason_id,
+    :store_service_center_id,
+    :notification_type_id,
+    :who_pays_id,
+    :defect_reason,
+    :technical_report,
+    :expected_repair_date,
+    :batch_number,
+    :claim_is_special_service_id,
+    :invoice_date,
+    :reverse_logistics_id ,
+    :fraudulent,
+    :complaint,
+    :contact_info_id,
+    :reported_date,
+    :new_device_sku,
+    :ded_coll_method_id,
+    :ded_coll_cc_auth_code,
+    :claim_auth_type_id,
+    :is_locked,
+    :locked_by,
+    :locked_on,
+    :is_lawsuit_id,
+    :current_odometer,
+    :device_reception_date,
+    :bonus,
+    :bonus_tax,
+    :tracking_number,
+    :current_retail_price,
+    :device_activation_date,
+		:employee_number
+    )
+  </INSERT>
+  <DELETE>
+    DELETE FROM elp_claim
+    WHERE
+    claim_id = :claim_id
+  </DELETE>
+  <GET_NEXT_CLAIM_NUMBER_SP>
+    elp_claims.next_claim_number
+  </GET_NEXT_CLAIM_NUMBER_SP>
+  <GET_CLAIM_NUMBER_INFO_SP>
+    elp_claims.Get_Claim_Number_Info
+  </GET_CLAIM_NUMBER_INFO_SP>
+  <LOAD_NonRework_LIST_DYNAMIC>
+    <![CDATA[
+			SELECT DISTINCT
+					c.claim_id,
+					c.claim_number clnum,
+					c.status_code,
+					c.cust_name custn,
+					c.service_center_id,
+					c.authorization_number authn,
+					c.authorized_amount auth,
+					sc.code service_center_code,
+					sc.description svcna
+				FROM
+					elita.elp_claim_extended_mv c,
+					elp_service_center sc,
+					ELP_CLAIM_INVOICE cli
+					WHERE
+						c.status_code not in ('P', 'D')
+                  --c.status_code <> 'P'
+					AND	(c.CLAIM_ACTIVITY_ID is null or c.CLAIM_ACTIVITY_ID <> (select  li.list_item_id
+								from 	elp_list_item li,elp_list l
+								where   LI.LIST_ID = L.LIST_ID AND L.CODE = 'CLACT'
+										and li.code = 'REWRK'
+								AND ROWNUM = 1 ))
+					AND c.service_center_id = sc.service_center_id
+					AND c.claim_id = cli.claim_id
+					--dynamic_where_clause
+				    AND ROWNUM < :row_num
+            AND exists(Select 1 from elp_claim c where c.claim_id = cli.claim_id)
+            AND elp_utl_parentchild_rel.is_claim_child(c.claim_id) = 'N'
+			       --dynamic_order_by_clause
+		]]>
+  </LOAD_NonRework_LIST_DYNAMIC>
+  <GET_CLAIMS_FOR_BATCH>
+    elp_claim_processing.get_available_claims
+  </GET_CLAIMS_FOR_BATCH>
+  <GET_DEDUCTIBLE>
+    Select elp_claims.getDeductible(:Cert_Item_Cov_Id,:Service_Center_Id) from dual
+  </GET_DEDUCTIBLE>
+  <GET_ORIGINAL_LIABILITY_AMOUNT>
+    <![CDATA[
+   SELECT liability_limit_old 
+   FROM   elp_claim_history
+   WHERE  claim_id =:claim_id
+   and    claim_modified_date_old=(select MIN(claim_modified_date_old) from elp_claim_history WHERE claim_id =:claim_id)
+   	]]>
+  </GET_ORIGINAL_LIABILITY_AMOUNT>
+  <HANDLE_REPLACED_ITEMS>
+    elp_claims.handle_replaced_items
+  </HANDLE_REPLACED_ITEMS>
+  <CALCULATE_LIABILITY_LIMIT>
+    elp_claims.calculate_liability_limit
+  </CALCULATE_LIABILITY_LIMIT>
+  <APPROVE_OR_REJECT_CLAIMS>
+    elp_claims.ApproveOrRejectClaims
+  </APPROVE_OR_REJECT_CLAIMS>
+  <GET_DEPRECIATION_SCHEDULE>
+    <![CDATA[
+    select depreciation_scd_relation_id as depreciation_id,
+           low_month,
+           high_month,
+           nvl(amount, 0) amount,
+           nvl(percent, 0) percent
+      from elp_depreciation_scd_relation dsr
+     inner join elp_depreciation_scd_details dsd on dsd.depreciation_schedule_id = dsr.depreciation_schedule_id
+     where dsr.table_reference_id = :p_contract_id
+       and dsr.table_reference = :p_table_reference
+       and dsr.depreciation_sch_usage_xcd = :p_depreciation_sch_usage_xcd
+       and sysdate between effective_date and expiration_date
+    ]]>
+  </GET_DEPRECIATION_SCHEDULE>
+  <GET_CLAIM_ID>
+    <![CDATA[
+			SELECT
+					claim_id
+				FROM
+					elita.elp_claim_extended_mv 
+					WHERE 1=1  
+					--dynamic_where_clause
+					 AND ROWNUM < :row_num
+					--dynamic_order_by_clause
+		]]>
+  </GET_CLAIM_ID>
+  <GET_CASE_ID>
+    <![CDATA[
+			select case_id 
+      from elp_case 
+      where company_id = get_company_id(:company) 
+      and case_number = :case_number
+		]]>
+  </GET_CASE_ID>
+  <DELETE_CLAIM_GROUP>
+    elp_claims.Delete_Claim_Group
+  </DELETE_CLAIM_GROUP>
+  <LOAD_CLAIMS_BY_MASTER_CLAIM_NUMBER>
+    <![CDATA[
+    SELECT 	cl.claim_number, cl.master_claim_number, cl.claim_id
+    FROM elp_CLAIM cl
+    WHERE 1=1
+    --dynamic_where_clause
+    AND ROWNUM < :row_num
+    ]]>
+  </LOAD_CLAIMS_BY_MASTER_CLAIM_NUMBER>
+
+  <GetPreviousYearReplacements>
+    Elp_tbl_claim_limit.get_claim_limit
+  </GetPreviousYearReplacements>
+  <GetFirstLossDate>
+    Elp_tbl_claim_limit.get_first_date
+  </GetFirstLossDate>
+  <OPEN_MOBILE_GET_CLAIM_NUMBER>
+    <![CDATA[
+          select * from
+          (select cl.claim_number
+          from elp_claim cl,
+          elp_cert c,
+          elp_cert_item ci,
+          elp_cert_item_coverage cic
+          where
+          c.cert_id = ci.cert_id and
+          c.cert_id = cic.cert_id and
+          cic.cert_item_coverage_id = cl.cert_item_coverage_id and
+          upper(ci.serial_number) = :p_serial_number and
+          cl.status_code = 'A'
+          --dynamic_where_clause
+          order by cl.CREATED_DATE desc)
+          where rownum =1
+      ]]>
+  </OPEN_MOBILE_GET_CLAIM_NUMBER>
+  <CLAIM_LOGISTICS_NEW_OPEN_CLAIM>
+    <![CDATA[
+  select	header.picklist_number,
+		  claim.claim_number,
+		  GetCodeFromListItem(coverage.coverage_type_id) as cert_item_coverage_code,
+		  store.code as store_code,
+		  nvl(sa.address1,'') || ' ' ||
+		  nvl(sa.address2,'') || ' ' ||
+		  nvl(sa.city,'')  || ' ' ||
+		  nvl(sa.postal_code,'') || ' ' ||
+		  nvl(region.description,'') || ' ' ||
+		  nvl(country.description,'') as store_address,
+		  claim.claims_adjuster as authorizer,
+		  manufacturer.description as item_manufacturer,
+		  item.model as item_model,
+		  item.serial_number as item_serial_number,
+		  item.item_description,
+		  claim.problem_description,
+		  claim.special_instruction,
+		  sc.code as service_center_code,
+		  nvl(sa1.address1,'') || ' ' ||
+		  nvl(sa1.address2,'') || ' ' ||
+		  nvl(sa1.city,'')  || ' ' ||
+		  nvl(sa1.postal_code,'') || ' ' ||
+		  nvl(region1.description,'') || ' ' ||
+		  nvl(country1.description,'') as service_center_address,
+		  sc.contact_name as service_center_contact_name,
+		  sc.phone1 as service_center_phone,
+		  claim.loss_date,
+		  claim.visit_date,
+		  GetCodeFromListItem(claim.cause_of_loss_id) as cause_of_loss,
+		  rt.description as risk_type,
+		  GetCodeFromListItem(claim.method_of_repair_id) as method_of_repair,
+		  claim.authorized_amount
+  from ELP_ROUTE route
+	  join ELP_PICKUP_LIST_HEADER header on route.route_id = header.route_id
+	  join ELP_PICKUP_LIST_DETAIL detail on header.header_id = detail.header_id
+	  join ELP_CLAIM claim on claim.claim_id = detail.claim_id
+	  join ELP_CERT_ITEM_COVERAGE coverage on coverage.cert_item_coverage_id = claim.cert_item_coverage_id
+	  join ELP_SERVICE_CENTER store on store.service_center_id = claim.store_service_center_id
+	  join ELP_ADDRESS sa on sa.address_id = store.address_id
+	  join ELP_REGION region on sa.region_id = region.region_id
+	  join ELP_COUNTRY country on country.country_id = sa.country_id
+	  join ELP_CERT_ITEM item on item.cert_item_id = coverage.cert_item_id
+	  join ELP_MANUFACTURER manufacturer on item.manufacturer_id = manufacturer.manufacturer_id
+	  join ELP_SERVICE_CENTER sc on sc.service_center_id = claim.service_center_id
+	  join ELP_ADDRESS sa1 on sa1.address_id = sc.address_id
+	  join ELP_REGION region1 on sa1.region_id = region1.region_id
+	  join ELP_COUNTRY country1 on country1.country_id = sa1.country_id
+	  join ELP_RISK_TYPE rt on claim.original_risk_type_id = rt.risk_type_id
+  where header.pickup_type = 'STSC' and header.header_status = 'A'
+  --dynamic_where_clause
+  AND ROWNUM < :row_num
+  order by header.picklist_number, store.code, sc.code
+  ]]>
+  </CLAIM_LOGISTICS_NEW_OPEN_CLAIM>
+  <CLAIM_LOGISTICS_NEW_OPEN_CLAIM_PICKLIST>
+    <![CDATA[
+  select unique header.route_id, header.picklist_number
+  from ELP_ROUTE route
+	  join ELP_PICKUP_LIST_HEADER header on route.route_id = header.route_id
+	  join ELP_SERVICE_NETWORK sn on sn.service_network_id = route.service_network_id
+	  join ELP_COMPANY company on company.company_group_id = sn.company_group_id
+	  join ELP_LIST_ITEM item on item.list_item_id = header.header_status_id
+	  join ELP_LIST lst on lst.list_id = item.list_id and lst.code = 'PLHS'    
+  where header.pickup_type = 'STSC' and (item.code = 'A' or (item.code = 'C' and to_char(sysdate,'MMDDYY') = to_char(header.modified_date,'MMDDYY') ))
+	  --dynamic_where_clause
+  AND ROWNUM < :row_num
+  ]]>
+  </CLAIM_LOGISTICS_NEW_OPEN_CLAIM_PICKLIST>
+  <CLAIM_LOGISTICS_NEW_OPEN_CLAIM_STORE>
+    <![CDATA[
+  select
+		  unique
+      header.route_id,
+		  store.service_center_id as store_service_center_id,
+		  store.code as store_code,
+		  nvl(sa.address1,'') || ' ' ||
+		  nvl(sa.address2,'') || ' ' ||
+		  nvl(sa.city,'')  || ' ' ||
+		  nvl(sa.postal_code,'') || ' ' ||
+		  nvl(region.description,'') || ' ' ||
+		  nvl(country.description,'') as store_address,
+		  store.contact_name as store_authorizer
+  from ELP_ROUTE route
+	  join ELP_PICKUP_LIST_HEADER header on route.route_id = header.route_id
+	  join ELP_PICKUP_LIST_DETAIL detail on header.header_id = detail.header_id
+	  join ELP_CLAIM claim on claim.claim_id = detail.claim_id
+	  join ELP_SERVICE_CENTER store on store.service_center_id = claim.store_service_center_id
+	  join ELP_ADDRESS sa on sa.address_id = store.address_id
+	  left join ELP_REGION region on sa.region_id = region.region_id
+	  join ELP_COUNTRY country on country.country_id = sa.country_id
+	  join ELP_SERVICE_NETWORK sn on sn.service_network_id = route.service_network_id
+	  join ELP_COMPANY company on company.company_group_id = sn.company_group_id
+	  join ELP_LIST_ITEM item on item.list_item_id = header.header_status_id
+	  join ELP_LIST lst on lst.list_id = item.list_id and lst.code = 'PLHS'    
+  where header.pickup_type = 'STSC' and (item.code = 'A' or (item.code = 'C' and to_char(sysdate,'MMDDYY') = to_char(header.modified_date,'MMDDYY') ))
+	  --dynamic_where_clause
+  AND ROWNUM < :row_num
+  ]]>
+  </CLAIM_LOGISTICS_NEW_OPEN_CLAIM_STORE>
+  <CLAIM_LOGISTICS_NEW_OPEN_CLAIM_SC>
+    <![CDATA[
+  select
+		  unique
+		  sc.service_center_id,
+		  claim.store_service_center_id,
+		  sc.code as service_center_code,
+		  nvl(sa1.address1,'') || ' ' ||
+		  nvl(sa1.address2,'') || ' ' ||
+		  nvl(sa1.city,'')  || ' ' ||
+		  nvl(sa1.postal_code,'') || ' ' ||
+		  nvl(region1.description,'') || ' ' ||
+		  nvl(country1.description,'') as service_center_address,
+		  sc.contact_name as service_center_contact_name,
+		  sc.phone1 as service_center_phone
+  from ELP_ROUTE route
+	  join ELP_PICKUP_LIST_HEADER header on route.route_id = header.route_id
+	  join ELP_PICKUP_LIST_DETAIL detail on header.header_id = detail.header_id
+	  join ELP_CLAIM claim on claim.claim_id = detail.claim_id
+	  join ELP_SERVICE_CENTER sc on sc.service_center_id = claim.service_center_id
+	  join ELP_ADDRESS sa1 on sa1.address_id = sc.address_id
+	  left join ELP_REGION region1 on sa1.region_id = region1.region_id
+	  join ELP_COUNTRY country1 on country1.country_id = sa1.country_id
+    join ELP_SERVICE_NETWORK sn on sn.service_network_id = route.service_network_id
+	  join ELP_COMPANY company on company.company_group_id = sn.company_group_id
+	  join ELP_LIST_ITEM item on item.list_item_id = header.header_status_id
+	  join ELP_LIST lst on lst.list_id = item.list_id and lst.code = 'PLHS'    
+  where header.pickup_type = 'STSC' and (item.code = 'A' or (item.code = 'C' and to_char(sysdate,'MMDDYY') = to_char(header.modified_date,'MMDDYY') ))
+	  --dynamic_where_clause
+  AND ROWNUM < :row_num
+  ]]>
+  </CLAIM_LOGISTICS_NEW_OPEN_CLAIM_SC>
+  <CLAIM_LOGISTICS_NEW_OPEN_CLAIM_DETAIL>
+    <![CDATA[
+  select
+		  sc.service_center_id,
+      claim.store_service_center_id,
+		  claim.claim_number,
+		  GetCodeFromListItem(coverage.coverage_type_id) as cert_item_coverage_code,
+		  manufacturer.description as item_manufacturer,
+		  item.model as item_model,
+		  item.serial_number as item_serial_number,
+		  item.item_description,
+		  claim.problem_description,
+		  claim.special_instruction,
+		  claim.loss_date,
+		  claim.visit_date,
+		  GetCodeFromListItem(claim.cause_of_loss_id) as cause_of_loss,
+		  rt.description as risk_type,
+		  GetCodeFromListItem(claim.method_of_repair_id) as method_of_repair,
+		  claim.authorized_amount
+  from ELP_ROUTE route
+	  join ELP_PICKUP_LIST_HEADER header on route.route_id = header.route_id
+	  join ELP_PICKUP_LIST_DETAIL detail on header.header_id = detail.header_id
+	  join ELP_CLAIM claim on claim.claim_id = detail.claim_id
+	  join ELP_CERT_ITEM_COVERAGE coverage on coverage.cert_item_coverage_id = claim.cert_item_coverage_id
+	  join ELP_SERVICE_CENTER store on store.service_center_id = claim.store_service_center_id
+	  join ELP_CERT_ITEM item on item.cert_item_id = coverage.cert_item_id
+	  join ELP_MANUFACTURER manufacturer on item.manufacturer_id = manufacturer.manufacturer_id
+	  join ELP_SERVICE_CENTER sc on sc.service_center_id = claim.service_center_id
+	  join ELP_RISK_TYPE rt on claim.original_risk_type_id = rt.risk_type_id
+    join ELP_SERVICE_NETWORK sn on sn.service_network_id = route.service_network_id
+	  join ELP_COMPANY company on company.company_group_id = sn.company_group_id
+	  join ELP_LIST_ITEM item1 on item1.list_item_id = header.header_status_id
+	  join ELP_LIST lst on lst.list_id = item1.list_id and lst.code = 'PLHS'
+  where header.pickup_type = 'STSC' and (item1.code = 'A' or (item1.code = 'C' and to_char(sysdate,'MMDDYY') = to_char(header.modified_date,'MMDDYY') ))
+	  --dynamic_where_clause
+  AND ROWNUM < :row_num
+  ]]>
+  </CLAIM_LOGISTICS_NEW_OPEN_CLAIM_DETAIL>
+  <CLAIM_LOGISTICS_ACTIVE_CLAIMS_FOR_SVC>
+    <![CDATA[
+  select claim.claim_number,
+		 manufacturer.description as item_manufacturer,
+		 ci.model as item_model,
+		 Claim_Status_List.description as claim_status,
+		 ci.item_description,
+		 claim.problem_description,
+		 ci.serial_number as item_serial_number,
+		 claim.authorized_amount,
+		 MOR_List.description as method_of_repair,
+		 '' AS responsible_party,
+     GetCodeFromListItem(cic.coverage_type_id) as cert_item_coverage_code,
+     whoPayItem.code as who_pay_code,
+     whoPayTran.translation as who_pay_description,
+     claim.authorization_number as BBY_Claim_Number
+  from  ELP_CLAIM claim,
+  		  ELP_MANUFACTURER manufacturer,
+		    ELP_CERT_ITEM ci,
+	    	ELP_CERT_ITEM_COVERAGE cic,
+		    ELP_SERVICE_CENTER svc,
+		    ELP_CLAIM_STATUS_BY_GROUP CSBG,
+		    ELP_LIST_ITEM whoPayItem,
+		    ELP_DICT_ITEM_TRANSLATION whoPayTran,        
+		    (SELECT LI.list_item_id id,
+            		LI.code code,
+            		D.translation description
+            FROM    ELITA.ELP_LIST L,
+            		ELITA.ELP_LIST_ITEM LI,
+            		ELITA.ELP_DICT_ITEM_TRANSLATION D
+            WHERE   L.list_id = LI.list_id
+		            and L.code = 'CLMSTAT'
+		            and LI.dict_item_id = D.dict_item_id
+					and D.LANGUAGE_ID = :language_id) Claim_Status_List,
+		    (SELECT LI.list_item_id id,
+            		LI.code code,
+            		D.translation description
+            FROM    ELITA.ELP_LIST L,
+            		ELITA.ELP_LIST_ITEM LI,
+            		ELITA.ELP_DICT_ITEM_TRANSLATION D
+            WHERE   L.list_id = LI.list_id
+		            and L.code = 'METHR'
+		            and LI.dict_item_id = D.dict_item_id
+					and D.language_id = :language_id) MOR_List
+	where
+		  claim.service_center_id = svc.service_center_id
+  		and CSBG.CLAIM_STATUS_BY_GROUP_ID = ELP_Claim_Logistics.GetMaxExtClaimStatusID(claim.claim_id,'Y')
+  		and Claim_Status_List.id = CSBG.LIST_ITEM_ID
+      and claim.CERT_ITEM_COVERAGE_ID = cic.CERT_ITEM_COVERAGE_ID
+      and cic.cert_item_id = ci.cert_item_id
+      and ci.manufacturer_id = manufacturer.manufacturer_id
+      and MOR_List.id = claim.METHOD_OF_REPAIR_ID
+		  and claim.STATUS_CODE <> 'C'
+		  and svc.SERVICE_CENTER_ID = :service_center_id
+	    and claim.who_pays_id = whoPayItem.list_item_id
+	    and whoPayItem.dict_item_id = whoPayTran.dict_item_id
+	    and whoPayTran.language_id = :language_id       
+      and ROWNUM < :row_num
+ 		--dynamic_where_clause
+		--dynamic_order_by_clause
+  ]]>
+  </CLAIM_LOGISTICS_ACTIVE_CLAIMS_FOR_SVC>
+  
+  <NEW_GENERIC_CLAIM_LOGISTICS_ACTIVE_CLAIMS_FOR_SVC>
+    <![CDATA[
+with
+service_center as (select c.service_center_id, decode(c.master_center_id,null,m.description,c.description) description
+                        from elp_service_center m
+                        left join elp_service_center c on (c.master_center_id = m.service_center_id and c.pay_master = 'Y')
+                                                       or (c.service_center_id = m.service_center_id)
+                        where  m.service_center_id = :service_center_id),
+mandatory_Q as (
+select '' || (cmv.claim_id) || '' claim_id,
+                 cmv.claim_number,
+                 cmv.status_code claim_status,     
+                 cmv.authorization_number,
+                 cmv.created_date,      
+                 cert.cert_number,
+                 cert.customer_name,
+                 cmv.authorized_amount,
+                 cmv.visit_date,
+                 cmv.repair_date,
+                 cmv.method_of_repair_id,
+                 cmv.claim_type_id, 
+                 cert.work_phone,
+                 cert.home_phone,
+                 claim.loss_date,
+                 (SELECT nvl(sum(d.PAYMENT_AMOUNT + nvl(d.bonus, 0) + nvl(d.bonus_tax, 0) + NVL(d.deductible_amount, 0)),0) 
+ 			            FROM ELP_DISBURSEMENT d
+			            WHERE 	d.claim_id = claim.claim_id) as claim_paid_amount,
+                 claim.batch_number,
+                 ci.serial_number,
+                 ci.model,
+                 sc.description,
+                 pc.description product_description,
+                 mnf.description item_manufacturer_description,
+                 comp.code comp_code,
+                 claim.max_claim_status list_item_id,
+                 (claim.bonus + claim.bonus_tax) bonus_total,
+                 COUNT(cmv.claim_id) OVER (ORDER BY 1) as COUNT,
+                 --ROW_NUMBER()  OVER (ORDER BY cmv.visit_date ASC) As number_of_row,
+                 --dynamic_row_number
+          from elp_claim_extended_mv cmv 
+          inner join service_center sc on sc.service_center_id = cmv.service_center_id
+                 --dynamic_cmv_where_clause
+          inner join elp_cert cert on cert.cert_id = cmv.cert_id
+          inner join elp_company comp on cert.company_id = comp.company_id and comp.company_id = cmv.company_id
+          inner join (select c.*, getlatestextendedclaimstatusid(c.claim_id) max_claim_status 
+                      from elp_claim c) claim on claim.claim_id = cmv.claim_id
+                                             and claim.max_claim_status is not null
+          left outer join elp_cert_item_coverage cic on cic.cert_item_coverage_id = cmv.cert_item_coverage_id and cert.cert_id = cic.cert_id
+          left outer join elp_cert_item ci on ci.cert_item_id = cic.cert_item_id
+          left outer join elp_manufacturer mnf on mnf.manufacturer_id  = ci.manufacturer_id  
+          left outer join elp_product_code pc  on pc.product_code = cert.product_code and pc.dealer_id = cert.dealer_id
+          where 1=1
+                --dynamic_where_clause
+)
+select mandatory_Q.claim_id,
+      mandatory_Q.claim_number,
+      mandatory_Q.claim_status,
+      mandatory_Q.authorization_number,
+      mandatory_Q.created_date as claim_created_date,
+      mandatory_Q.cert_number as certificate_number,
+      mandatory_Q.product_description as product_description,
+      mandatory_Q.model as item_model,
+      mandatory_Q.item_manufacturer_description as item_manufacturer_description,
+      mandatory_Q.customer_name,
+      getdescriptionfromlistitem(mandatory_Q.list_item_id, :language_id) claim_extended_status,
+      mandatory_Q.authorized_amount,
+      mandatory_Q.description as service_center_description,
+      mandatory_Q.visit_date,
+      mandatory_Q.repair_date,
+      getdescriptionfromlistitem(mandatory_Q.method_of_repair_id, :language_id) method_of_repair,
+      getdescriptionfromlistitem(claim_type_id, :language_id) claim_type_description,
+      getdescriptionfromlistitem(getlatestextendedclaimownerid(mandatory_Q.claim_id), :language_id) extended_status_owner,
+      mandatory_Q.batch_number as batch_number,
+      mandatory_Q.serial_number as serial_number,
+      mandatory_Q.work_phone as work_phone,
+      elita.elp_claims.getClaimTAT(mandatory_Q.claim_id) as Claim_TAT,
+      elita.elp_claims.getServiceCenterTAT(mandatory_Q.claim_id) sc_turn_around_time,
+      mandatory_Q.home_phone as home_phone,
+      mandatory_Q.loss_date as loss_date,
+      mandatory_Q.claim_paid_amount as claim_paid_amount,
+      mandatory_Q.bonus_total,
+      mandatory_Q.COUNT COUNT
+from mandatory_Q
+where number_of_row between :low_limit and :high_limit
+      ]]>
+  </NEW_GENERIC_CLAIM_LOGISTICS_ACTIVE_CLAIMS_FOR_SVC>
+    <GENERIC_CLAIM_LOGISTICS_ACTIVE_CLAIMS_BASED_ON_CERT_OR_CLAIM_NUMBER>
+        <![CDATA[
+with
+mandatory_Q as (
+select '' || (cmv.claim_id) || '' claim_id,
+                 cmv.claim_number,
+                 cmv.status_code claim_status,     
+                 cmv.authorization_number,
+                 cmv.created_date,      
+                 cert.cert_number,
+                 cert.customer_name,
+                 cmv.authorized_amount,
+                 cmv.visit_date,
+                 cmv.repair_date,
+                 cmv.method_of_repair_id,
+                 cmv.claim_type_id, 
+                 cert.work_phone,
+                 cert.home_phone,
+                 claim.loss_date,
+                 (SELECT nvl(sum(d.PAYMENT_AMOUNT + nvl(d.bonus, 0) + nvl(d.bonus_tax, 0) + NVL(d.deductible_amount, 0)),0) 
+ 			            FROM ELP_DISBURSEMENT d
+			            WHERE 	d.claim_id = claim.claim_id) as claim_paid_amount,
+                 claim.batch_number,
+                 ci.serial_number,
+                 ci.model,
+                 sc.description,
+                 pc.description product_description,
+                 mnf.description item_manufacturer_description,
+                 comp.code comp_code,
+                 claim.max_claim_status list_item_id,
+                 --ROW_NUMBER()  OVER (ORDER BY cmv.visit_date ASC) As number_of_row,
+                 --COUNT(cmv.claim_id) OVER (ORDER BY cmv.visit_date ASC) as COUNT
+                 --dynamic_count_number
+                 --dynamic_row_number
+          from elp_company comp 
+          inner join elp_cert cert on cert.company_id = comp.company_id
+          --dynamic_cert_where_clause   
+          inner join elp_claim_extended_mv cmv on cmv.cert_id = cert.cert_id
+          --dynamic_cmv_where_clause
+          inner join elp_service_center sc on sc.service_center_id = cmv.service_center_id
+          inner join (select c.*, getlatestextendedclaimstatusid(c.claim_id) max_claim_status 
+                      from elp_claim c) claim on claim.claim_id = cmv.claim_id
+                                             and claim.max_claim_status is not null
+          left outer join elp_cert_item_coverage cic on cic.cert_item_coverage_id = cmv.cert_item_coverage_id and cert.cert_id = cic.cert_id
+          left outer join elp_cert_item ci on ci.cert_item_id = cic.cert_item_id
+          left outer join elp_manufacturer mnf on mnf.manufacturer_id  = ci.manufacturer_id  
+          left outer join elp_product_code pc  on pc.product_code = cert.product_code and pc.dealer_id = cert.dealer_id
+          where 1=1
+                --dynamic_where_clause
+)
+select mandatory_Q.claim_id,
+      mandatory_Q.claim_number,
+      mandatory_Q.claim_status,
+      mandatory_Q.authorization_number,
+      mandatory_Q.created_date as claim_created_date,
+      mandatory_Q.cert_number as certificate_number,
+      mandatory_Q.product_description as product_description,
+      mandatory_Q.model as item_model,
+      mandatory_Q.item_manufacturer_description as item_manufacturer_description,
+      mandatory_Q.customer_name,
+      getdescriptionfromlistitem(mandatory_Q.list_item_id, :language_id) claim_extended_status,
+      mandatory_Q.authorized_amount,
+      mandatory_Q.description as service_center_description,
+      mandatory_Q.visit_date,
+      mandatory_Q.repair_date,
+      getdescriptionfromlistitem(mandatory_Q.method_of_repair_id, :language_id) method_of_repair,
+      getdescriptionfromlistitem(claim_type_id, :language_id) claim_type_description,
+      getdescriptionfromlistitem(getlatestextendedclaimownerid(mandatory_Q.claim_id), :language_id) extended_status_owner,
+      mandatory_Q.batch_number as batch_number,
+      mandatory_Q.serial_number as serial_number,
+      mandatory_Q.work_phone as work_phone,
+      elita.elp_claims.getServiceCenterTAT(mandatory_Q.claim_id) sc_turn_around_time,
+      mandatory_Q.home_phone as home_phone,
+      mandatory_Q.loss_date as loss_date,
+      mandatory_Q.claim_paid_amount as claim_paid_amount,
+      mandatory_Q.COUNT COUNT
+from mandatory_Q
+where number_of_row between :low_limit and :high_limit
+      ]]>
+    </GENERIC_CLAIM_LOGISTICS_ACTIVE_CLAIMS_BASED_ON_CERT_OR_CLAIM_NUMBER>
+  <GENERIC_CLAIM_LOGISTICS_ACTIVE_CLAIMS_FOR_SVC>
+    <![CDATA[
+Select * from (
+    select
+      '' || (cmv.claim_id) || '' claim_id,
+      cmv.claim_number,
+      cmv.status_code as claim_status,
+      cmv.authorization_number,
+      cmv.created_date as claim_created_date,
+      cert.cert_number as certificate_number,
+      pc.description as product_description,
+      ci.model as item_model,
+      manufacturer.description as item_manufacturer_description,
+      cert.customer_name,
+      elita.getdescriptionfromlistitem(max_claim_status.list_item_id, :language_id) as claim_extended_status,
+      cmv.authorized_amount,
+      svc.description as service_center_description,
+      cmv.visit_date,
+      cmv.repair_date,
+      MOR_List.description as method_of_repair,
+      elita.getdescriptionfromlistitem(cmv.claim_type_id, :language_id) as claim_type_description,
+      elita.getdescriptionfromlistitem(max_claim_status.owner_id, :language_id) as extended_status_owner,
+      claim.batch_number as batch_number,
+      ci.serial_number as serial_number,
+      cert.work_phone as work_phone,
+      elita.elp_claims.getServiceCenterTAT(cmv.claim_id) sc_turn_around_time,
+      --dynamic_row_number
+    from elp_claim_extended_mv cmv,
+ 		     elp_manufacturer manufacturer,
+ 		     elp_cert cert,
+	       elp_cert_item ci,
+         elp_cert_item_coverage cic,
+	       elp_service_center svc,
+	       elp_product_code pc,
+         (SELECT LI.list_item_id id, LI.code code, D.translation description
+              FROM    ELITA.ELP_LIST L, ELITA.ELP_LIST_ITEM LI, ELITA.ELP_DICT_ITEM_TRANSLATION D
+              WHERE   L.list_id = LI.list_id and L.code = 'METHR' and LI.dict_item_id = D.dict_item_id and D.language_id = :language_id
+         )mor_list,
+		     (SELECT DISTINCT s.claim_id, g.list_item_id, g.owner_id, g.claim_status_by_group_id
+		      FROM 	elp_claim_status s,	elp_claim_status_by_group g
+    		  WHERE g.company_group_id = :company_group_id  AND
+				        s.claim_status_by_group_id = g.claim_status_by_group_id AND
+				        s.STATUS_DATE = ( SELECT MAX(cs.STATUS_DATE)
+								                  FROM elp_claim_status cs, elp_claim_status_by_group gi
+								                  WHERE cs.claim_id = s.claim_id and
+									                cs.claim_status_by_group_id = gi.claim_status_by_group_id
+    								            )
+		     ) max_claim_status,
+         elp_company company,
+         elp_claim claim
+	where  cmv.service_center_id = svc.service_center_id        
+ 	      and cmv.claim_id = max_claim_status.claim_id --(+)
+        and cmv.cert_item_coverage_id = cic.cert_item_coverage_id
+        and cic.cert_item_id = ci.cert_item_id
+        and cert.cert_id = cic.cert_id
+        and ci.manufacturer_id = manufacturer.manufacturer_id
+        and mor_list.id = cmv.method_of_repair_id
+	    and svc.service_center_id = :service_center_id
+	    and cert.dealer_id = pc.dealer_id
+	    and pc.product_code = cert.product_code
+      and cmv.company_id = company.company_id
+      and cmv.claim_id = claim.claim_id
+        --dynamic_where_clause
+)
+ where number_of_row > :low_limit AND number_of_row <= :high_limit        
+  ]]>
+  </GENERIC_CLAIM_LOGISTICS_ACTIVE_CLAIMS_FOR_SVC>
+  
+  <GENERIC_CLAIM_LOGISTICS_ACTIVE_CLAIMS_FOR_SVC_ALL>
+    <![CDATA[
+Select * from (
+    select
+      '' || (cmv.claim_id) || '' claim_id,
+      cmv.claim_number,
+      cmv.status_code as claim_status,
+      cmv.authorization_number,
+      cmv.created_date as claim_created_date,
+      cert.cert_number as certificate_number,
+      pc.description as product_description,
+      ci.model as item_model,
+      manufacturer.description as item_manufacturer_description,
+      cert.customer_name,
+      elita.getdescriptionfromlistitem(max_claim_status.list_item_id, :language_id) as claim_extended_status,
+      cmv.authorized_amount,
+      svc.description as service_center_description,
+      cmv.visit_date,
+      cmv.repair_date,
+      MOR_List.description as method_of_repair,
+      elita.getdescriptionfromlistitem(cmv.claim_type_id, :language_id) as claim_type_description,
+      elita.getdescriptionfromlistitem(max_claim_status.owner_id, :language_id) as extended_status_owner,
+      claim.batch_number as batch_number,
+      ci.serial_number as serial_number,
+      cert.work_phone as work_phone,
+      elita.elp_claims.getServiceCenterTAT(cmv.claim_id) sc_turn_around_time,
+      --dynamic_row_number
+    from elp_claim_extended_mv cmv,
+ 		     elp_manufacturer manufacturer,
+ 		     elp_cert cert,
+	       elp_cert_item ci,
+         elp_cert_item_coverage cic,
+	       elp_service_center svc,
+	       elp_product_code pc,
+         (SELECT LI.list_item_id id, LI.code code, D.translation description
+              FROM    ELITA.ELP_LIST L, ELITA.ELP_LIST_ITEM LI, ELITA.ELP_DICT_ITEM_TRANSLATION D
+              WHERE   L.list_id = LI.list_id and L.code = 'METHR' and LI.dict_item_id = D.dict_item_id and D.language_id = :language_id
+         )mor_list,
+		     (SELECT DISTINCT s.claim_id, g.list_item_id, g.owner_id, g.claim_status_by_group_id
+		      FROM 	elp_claim_status s,	elp_claim_status_by_group g
+    		  WHERE g.company_group_id = :company_group_id  AND
+				        s.claim_status_by_group_id = g.claim_status_by_group_id AND
+				        s.STATUS_DATE = ( SELECT MAX(cs.STATUS_DATE)
+								                  FROM elp_claim_status cs, elp_claim_status_by_group gi
+								                  WHERE cs.claim_id = s.claim_id and
+									                cs.claim_status_by_group_id = gi.claim_status_by_group_id
+    								            )
+		     ) max_claim_status,
+         elp_company company,
+         elp_claim claim
+	where  cmv.service_center_id = svc.service_center_id        
+ 	      and cmv.claim_id = max_claim_status.claim_id --(+)
+        and cmv.cert_item_coverage_id = cic.cert_item_coverage_id
+        and cic.cert_item_id = ci.cert_item_id
+        and cert.cert_id = cic.cert_id
+        and ci.manufacturer_id = manufacturer.manufacturer_id
+        and mor_list.id = cmv.method_of_repair_id
+	    and svc.service_center_id in (select service_center_id 
+                                    from elp_service_center sc1
+                                   where (sc1.master_center_id,sc1.country_id) in (select service_center_id, country_id
+                                                                                   from elp_service_center sc
+                                                                                  where sc.service_center_id = sc.master_center_id
+                                                                                   and sc.service_center_id = :service_center_id
+                                                                                   and pay_master = 'Y'))
+	    and cert.dealer_id = pc.dealer_id
+	    and pc.product_code = cert.product_code
+      and cmv.company_id = company.company_id
+      and cmv.claim_id = claim.claim_id
+        --dynamic_where_clause
+)
+ where number_of_row > :low_limit AND number_of_row <= :high_limit        
+  ]]>
+  </GENERIC_CLAIM_LOGISTICS_ACTIVE_CLAIMS_FOR_SVC_ALL>
+  
+  <GENERIC_CLAIM_LOGISTICS_ACTIVE_CLAIMS_FOR_SVC_COUNT>
+    <![CDATA[
+SELECT COUNT (*) AS COUNT
+  FROM elp_claim_extended_mv cmv,
+	        (SELECT DISTINCT s.claim_id,	g.list_item_id, g.owner_id, g.claim_status_by_group_id
+		      FROM 	elp_claim_status s,
+				 	elp_claim_status_by_group g
+    		  WHERE
+              g.company_group_id = :company_group_id AND
+				      s.claim_status_by_group_id = g.claim_status_by_group_id AND
+				      s.STATUS_DATE = ( SELECT MAX(cs.STATUS_DATE)
+								                FROM
+									              elp_claim_status cs,
+								 	              elp_claim_status_by_group gi
+								                WHERE cs.claim_id = s.claim_id and
+									              cs.claim_status_by_group_id = gi.claim_status_by_group_id
+    								          )
+		          ) max_claim_status,
+         elp_claim claim,
+         elp_cert cert,
+         elp_cert_item ci,
+         elp_cert_item_coverage cic,
+         elp_company company
+ WHERE cmv.claim_id = max_claim_status.claim_id --(+)
+       and cmv.claim_id = claim.claim_id
+       and cmv.cert_id = cert.cert_id
+       and cmv.cert_item_coverage_id = cic.cert_item_coverage_id
+       and cic.cert_item_id = ci.cert_item_id
+       and cmv.company_id = company.company_id
+       and cmv.service_center_id = :service_center_id
+         --dynamic_where_clause     
+  ]]>
+  </GENERIC_CLAIM_LOGISTICS_ACTIVE_CLAIMS_FOR_SVC_COUNT>
+  
+    <GENERIC_CLAIM_LOGISTICS_ACTIVE_CLAIMS_FOR_SVC_COUNT_ALL>
+    <![CDATA[
+SELECT COUNT (*) AS COUNT
+  FROM elp_claim_extended_mv cmv,
+	        (SELECT DISTINCT s.claim_id,	g.list_item_id, g.owner_id, g.claim_status_by_group_id
+		      FROM 	elp_claim_status s,
+				 	elp_claim_status_by_group g
+    		  WHERE
+              g.company_group_id = :company_group_id AND
+				      s.claim_status_by_group_id = g.claim_status_by_group_id AND
+				      s.STATUS_DATE = ( SELECT MAX(cs.STATUS_DATE)
+								                FROM
+									              elp_claim_status cs,
+								 	              elp_claim_status_by_group gi
+								                WHERE cs.claim_id = s.claim_id and
+									              cs.claim_status_by_group_id = gi.claim_status_by_group_id
+    								          )
+		          ) max_claim_status,
+         elp_claim claim,
+         elp_cert cert,
+         elp_cert_item ci,
+         elp_cert_item_coverage cic,
+         elp_company company
+ WHERE    cmv.claim_id = claim.claim_id
+          and cmv.claim_id = max_claim_status.claim_id --(+)
+       and cmv.cert_item_coverage_id = cic.cert_item_coverage_id
+       and cic.cert_item_id = ci.cert_item_id
+       and cmv.cert_id = cert.cert_id
+       and cmv.company_id = company.company_id
+         and cmv.service_center_id in (select service_center_id 
+                                    from elp_service_center sc1
+                                   where (sc1.master_center_id,sc1.country_id) in (select service_center_id, country_id
+                                                                                   from elp_service_center sc
+                                                                                  where sc.service_center_id = sc.master_center_id
+                                                                                   and sc.service_center_id = :service_center_id
+                                                                                   and pay_master = 'Y'))
+       --dynamic_where_clause     
+  ]]>
+  </GENERIC_CLAIM_LOGISTICS_ACTIVE_CLAIMS_FOR_SVC_COUNT_ALL>
+  
+  <CLAIM_LOSSDATES_COMPARE_TO_NEW_LOSSDATE_SPL_SVC>
+    <![CDATA[  
+    select count(*) claim_count
+    from elp_claim c, elp_cert cert, elp_Cert_item_coverage ci_cov, elp_cert_item ci
+    where c.CERT_ITEM_COVERAGE_ID = ci_cov.CERT_ITEM_COVERAGE_ID
+    and ci_cov.cert_item_id = ci.cert_item_id
+    and ci.cert_id = cert.cert_id
+    and getcodefromlistitem(CLAIM_IS_SPECIAL_SERVICE_ID) = 'Y'
+    --and abs(months_between( c.loss_date, to_date(:loss_date,'mm/dd/yyyy'))) <= 12
+    --dynamic_where_clause
+    and c.status_code <> 'D'
+    and cert.cert_id = :cert_id  
+    ]]>
+  </CLAIM_LOSSDATES_COMPARE_TO_NEW_LOSSDATE_SPL_SVC>
+  <LOAD_CLAIM_DETAIL_BY_CLAIM_NUMBER_AND_DEALER>
+    <![CDATA[
+    SELECT 	cl.*
+    FROM elp_CLAIM cl, elp_Claim_extended_mv mv
+    WHERE cl.claim_id = mv.claim_id
+    and cl.claim_number = :claim_number
+    and mv.dealer_id = :dealer_id
+    ]]>
+  </LOAD_CLAIM_DETAIL_BY_CLAIM_NUMBER_AND_DEALER>
+  <LOAD_CLAIM_DETAIL_FOR_WS>
+    <![CDATA[
+SELECT * FROM (    
+SELECT
+   		 '' || (c.claim_id) || '' as claim_id,
+       c.claim_id as claimid,
+       getcodefromlistitem(cic.coverage_type_id) as coverage_type,
+         c.claim_number,
+         c.authorization_number,
+         mor_list.description as method_of_repair,
+         c.created_date,
+         c.problem_description,
+         c.visit_date,
+         c.repair_date,
+         cert.cert_number as certificate_number,
+         pc.description as product_description,
+         ci.model as item_model,
+         cic.begin_date as coverage_start_date,
+         cic.end_date as coverage_end_date,
+         elita.getclaimcountforcertificate(cert.cert_id,'N','Y','Y') as non_replacement_claims_count, 
+         elita.getclaimtotauthamtforcert(cert.cert_id,'Y','Y','Y') as claims_total_auth_amt,    
+         cert.sales_price as product_sales_price,
+         cert.customer_name,
+         a.address1 as address1,
+         a.address2 as address2,
+         a.address3 as address3,
+         a.city,
+         r.description as province,
+         cert.home_phone,
+         cert.work_phone,
+         cert.email,
+         cad.labor_amount,
+         cad.other_amount,
+         cad.other_explanation,
+         cad.service_charge as service_charge_amount,
+         cad.trip_amount,
+         cad.shipping_amount,
+         c.authorized_amount,
+         c.original_risk_type_id,
+         getcodefromlistitem(cmv.CLAIM_TYPE_ID) as claim_type_code,
+         m.description as Item_Manufacturer_Description,
+         sc.iva_responsible_flag as iva_responsible,
+         cert.identification_number tax_id,
+         a.postal_code zip_code,
+         ci.serial_number,
+         c.status_code,
+         (select dealer from elp_dealer where dealer_id = cert.dealer_id) dealer_code,
+         cert.dealer_branch_code
+    FROM elp_CLAIM c,elp_claim_extended_mv cmv,
+    	 elp_claim_auth_detail cad,
+    	 elp_cert cert,
+       elp_Cert_item_coverage cic,
+    	 elp_cert_item ci,
+    	 elp_product_code pc,
+	     elp_address a,
+	     elp_region r,
+	     (SELECT LI.list_item_id id, LI.code code, D.translation description
+          FROM    ELITA.ELP_LIST L, ELITA.ELP_LIST_ITEM LI, ELITA.ELP_DICT_ITEM_TRANSLATION D
+          WHERE   L.list_id = LI.list_id and L.code = 'METHR' and LI.dict_item_id = D.dict_item_id and D.language_id = :language_id
+         )mor_list,
+       elp_manufacturer m,
+       elp_service_center sc
+    WHERE c.claim_id = cmv.claim_id
+    and c.claim_id = cad.claim_id(+) 
+    and  c.method_of_repair_id = mor_list.id 
+    and c.cert_item_coverage_id = cic.cert_item_coverage_id
+    and cic.cert_item_id = ci.cert_item_id
+    and ci.cert_id = cert.cert_id
+    and cert.address_id = a.address_id(+)
+    and a.region_id = r.region_id(+)
+    and cert.dealer_id = pc.dealer_id
+    and pc.product_code = cert.product_code
+    and ci.manufacturer_id = m.manufacturer_id
+    and c.service_center_id = sc.service_center_id
+    --dynamic_where_clause
+    order by c.created_date desc
+    )
+     where rownum =1
+    ]]>
+  </LOAD_CLAIM_DETAIL_FOR_WS>
+  <INSERT_ACTIVE_SESSION>
+    INSERT INTO ELP_CLAIM_ACTIVE_SESSIONS
+    (
+    PROCESS_ID,
+    DESCRIPTION,
+    ACTIVE,
+    CREATED_BY,
+    CREATED_DATE,
+    MODIFIED_BY,
+    MODIFIED_DATE
+    )
+    VALUES
+    (
+    :PROCESS_ID,
+    :DESCRIPTION,
+    :ACTIVE,
+    :CREATED_BY,
+    :CREATED_DATE,
+    :MODIFIED_BY,
+    :MODIFIED_DATE
+    )
+  </INSERT_ACTIVE_SESSION>
+  <DELETE_ACTIVE_SESSION>
+    DELETE FROM ELP_CLAIM_ACTIVE_SESSIONS
+    WHERE
+    PROCESS_ID = :PROCESS_ID
+  </DELETE_ACTIVE_SESSION>
+  <CLAIM_CHECK_SESSION>
+    ELP_CLAIM_CHECK_SESSION
+  </CLAIM_CHECK_SESSION>
+  <ALL_CERT_CLAIMS>
+    select c.* from elp_claim_extended_mv mv, elp_claim c
+    where mv.claim_id = c.claim_id
+    and mv.cert_id = :cert_id
+  </ALL_CERT_CLAIMS>
+
+  <GENERIC_CLAIM_LOGISTICS_ACTIVE_CLAIMS_FOR_SVC>
+    <![CDATA[
+select claim.claim_number,
+		 manufacturer.description as item_manufacturer,
+		 ci.model as item_model,
+		 ci.item_description,
+		 claim.problem_description,
+		 ci.serial_number as item_serial_number,
+		 claim.authorized_amount,
+		 MOR_List.description as method_of_repair,
+     GetCodeFromListItem(cic.coverage_type_id) as cert_item_coverage_code,
+     whoPayItem.code as who_pay_code,
+     whoPayTran.translation as who_pay_description,
+     claim.authorization_number
+  from  ELP_CLAIM claim,
+  		ELP_MANUFACTURER manufacturer,
+		ELP_CERT_ITEM ci,
+	    ELP_CERT_ITEM_COVERAGE cic,
+		ELP_SERVICE_CENTER svc,
+		ELP_LIST_ITEM whoPayItem,
+		ELP_DICT_ITEM_TRANSLATION whoPayTran,
+	    (SELECT LI.list_item_id id,
+           		LI.code code,
+           		D.translation description
+           FROM    ELITA.ELP_LIST L,
+           		ELITA.ELP_LIST_ITEM LI,
+           		ELITA.ELP_DICT_ITEM_TRANSLATION D
+           WHERE   L.list_id = LI.list_id
+	            and L.code = 'METHR'
+	            and LI.dict_item_id = D.dict_item_id
+				and D.language_id = :language_id) MOR_List
+	where
+	  claim.service_center_id = svc.service_center_id
+      and claim.CERT_ITEM_COVERAGE_ID = cic.CERT_ITEM_COVERAGE_ID
+      and cic.cert_item_id = ci.cert_item_id
+      and ci.manufacturer_id = manufacturer.manufacturer_id
+      and MOR_List.id = claim.METHOD_OF_REPAIR_ID
+		  and claim.STATUS_CODE <> 'C'
+		  and svc.SERVICE_CENTER_ID = :service_center_id
+	    and claim.who_pays_id = whoPayItem.list_item_id
+	    and whoPayItem.dict_item_id = whoPayTran.dict_item_id
+	    and whoPayTran.language_id = :language_id 
+      and ROWNUM < :row_num
+ 		--dynamic_where_clause
+		--dynamic_order_by_clause
+  ]]>
+  </GENERIC_CLAIM_LOGISTICS_ACTIVE_CLAIMS_FOR_SVC>
+  <CLAIM_LOCK>
+    <![CDATA[
+      Elita.ELP_Claims.Lock_claim
+     ]]>
+  </CLAIM_LOCK>
+  <CLAIM_UNLOCK>
+    <![CDATA[
+		  Elita.ELP_Claims.UnLock_claim
+      ]]>
+  </CLAIM_UNLOCK>
+  <WS_GetClaimStatusInfo>
+    Elita.ELP_Claim_Logistics.GetClaimStatusInfo
+  </WS_GetClaimStatusInfo>
+  <WS_SubmitClaimPreValidate>
+    Elita.ELP_Claim_Logistics.WebSubmitClaimPreValidate
+  </WS_SubmitClaimPreValidate>
+  <SEARCH_CLAIM_INFO>
+    <![CDATA[
+      Elita.ELP_Claims.Search_claim
+    ]]>
+  </SEARCH_CLAIM_INFO>
+  <GET_RESERVE_AMOUNT>
+    <![CDATA[
+    select elp_claim_processing.fn_GetReserveAmount(:claim_id, null, null) from dual
+    ]]>
+  </GET_RESERVE_AMOUNT>
+  <WS_GetClaimIDWithCertAndDealer>
+    select claim_id, cl.status_code
+    from elp_claim cl, elp_cert_item_coverage cic, elp_cert_item ci, elp_Cert c
+    where cl.cert_item_coverage_id = cic.cert_item_coverage_id
+    and cic.cert_item_id = ci.cert_item_id
+    and ci.cert_id = c.cert_id
+    and c.dealer_id= :dealer_id and c.cert_id= :cert_id
+    and cl.claim_number = :claim_number
+    and cl.status_code ='A'
+  </WS_GetClaimIDWithCertAndDealer>
+  <PROBLEM_DESCRIPTION>
+	  Select Problem_Description From ELP_CLAIM
+	  Where Claim_Id = :claim_id
+  </PROBLEM_DESCRIPTION>
+  <TECHNICAL_REPORT>
+	  Select Technical_Report From ELP_CLAIM
+	  Where Claim_Id = :claim_id
+  </TECHNICAL_REPORT>
+  <EXTENDED_STATUS_COMMENT>
+	  Select Comments From (Select Comments, Claim_Id,
+	  row_number() over (partition by  Claim_Id
+	  Order by Status_Date DESC) as rn
+	  From ELP_CLAIM_STATUS) CS,ELP_CLAIM C
+	  Where CS.CLAIM_ID = C.CLAIM_ID
+	  AND RN = 1
+	  AND C.Claim_Id = :claim_id
+  </EXTENDED_STATUS_COMMENT>
+  <TOTAL_CLAIM_PAYMENT>
+    SELECT SUM(Elp_Disbursement.Payment_Amount + nvl(bonus, 0) + nvl(bonus_tax, 0))
+    FROM Elp_Disbursement
+    WHERE CLAIM_ID = p_claim_id;
+  </TOTAL_CLAIM_PAYMENT>
+  <CERT_COVERAGES_ELIGIBILITY_FOR_CANCEL>
+    SELECT elp_claims.CheckCertcoveragesliabilities(:cert_id,:cert_item_coverage_id,:lossDate) from dual
+  </CERT_COVERAGES_ELIGIBILITY_FOR_CANCEL>
+  <PRODUCT_REMAIN_LIABILITY_LIMIT>
+    SELECT nvl(elp_claims.CalcProdRemainLiabilityLimit(:cert_id,:lossDate),0) from dual
+  </PRODUCT_REMAIN_LIABILITY_LIMIT>
+  <COVERAGE_REMAIN_LIABILITY_LIMIT>
+    SELECT nvl(elp_claims.CalcRemainCovLiabilityLimit(:cert_item_coverage_id,:lossDate),0) from dual
+  </COVERAGE_REMAIN_LIABILITY_LIMIT>
+  <WS_CLAIMS_GET_CLAIMS>
+    select     cl.claim_id            as claim_id,
+    cm.code                as company_code,
+    cl.claim_number        as claim_number,
+    c.cert_number          as cert_number,
+    d.dealer               as dealer_code,
+    cl.status_code         as claim_status,
+    cl.repair_date         as claim_fullfillment_date,
+    cl.problem_description as problem_description,
+    es.created_date        as created_date,
+    es.extended_status     as extended_status,
+    case when getcodefromlistitem(Cic.Coverage_Type_Id) in ('T','T1','T2') then 'Theft'
+    when getcodefromlistitem(Cic.Coverage_Type_Id) in ('A','AR','ARP') then 'Accidental'
+    when getcodefromlistitem(Cic.Coverage_Type_Id) = 'B' then 'MechanicalBreakdown'
+    when getcodefromlistitem(Cic.Coverage_Type_Id) = 'M' then 'Manufacturer'
+    when getcodefromlistitem(Cic.Coverage_Type_Id) = 'UPG' then 'Upgrade'
+    else 'Other'
+    end as Coverage_Type
+    from       elp_claim_equipment    ce
+    inner join elp_claim              cl  on ce.claim_id               = cl.claim_id
+    inner join elp_cert_item_coverage cic on cl.cert_item_coverage_id  = cic.cert_item_coverage_id
+    inner join elp_cert_item          ci  on cic.cert_item_id          = ci.cert_item_id
+    inner join elp_cert               c   on c.cert_id                 = ci.cert_id
+    inner join elp_dealer             d   on d.dealer_id               = c.dealer_id
+    inner join elp_company            cm  on cm.company_id             = d.company_id
+    inner join elp_country            cu  on cu.country_id             = cm.country_id
+    left join  ( select     getcodefromlistitem(csg.list_item_id) extended_status, cs.claim_id, cs.created_date
+    from       elp_claim_status          cs
+    inner join elp_claim_status_by_group csg on cs.claim_status_by_group_id = csg.claim_status_by_group_id
+    )                      es  on es.claim_id = cl.claim_id
+    where      d.dealer = nvl(:dealer_code, d.dealer)
+    and        cm.code = nvl(:company_code, cm.code)
+    and        cu.code = nvl(:country_code,cu.code)
+    and        ce.claim_equipment_type_id = getitemidfromlistanditem('CLAIM_EQUIP_TYPE', 'C')
+    and        ce.serial_number = :serial_number
+    and        (
+    exists ( select     *
+    from       elp_user_role  ur
+    inner join elp_role       r  on ur.role_id = r.role_id
+    where      ur.user_id = :user_id
+    and        r.ihq_only = 'Y')
+    or
+    exists ( select *
+    from   elp_user_company_assigned uca
+    where  uca.user_id = :user_id
+    and    c.company_id = uca.company_id)
+    )
+  </WS_CLAIMS_GET_CLAIMS>
+  <WS_CLAIMS_GET_CLAIMS_BY_IMEI_NUMBER>
+    elita.elp_tbl_claim.get_claims_by_imei
+  </WS_CLAIMS_GET_CLAIMS_BY_IMEI_NUMBER>
+  <CHECK_CLAIM_PAYMENT_IN_PROGRESS>
+    <![CDATA[
+		  select case 
+       when count(1) > 0 then 1
+       else 0
+       end return_val
+        from elp_claim c
+        inner join elp_claim_extended_mv ce on c.claim_id = ce.claim_id
+        inner join elp_company comp on comp.company_id = c.company_id
+        inner join elp_dealer d on d.dealer_id = ce.dealer_id
+        where c.claim_id = :claim_id
+        and getcodefromlistitem(d.claim_extended_status_entry_id) = 'FLEX'
+        and (((getcodefromlistitem(GetLatestExtendedClaimStatusId(c.claim_id)), c.method_of_repair_id) = (select getcodefromlistitem(csg.list_item_id), dcs.method_of_repair_id
+                                                                                from elp_default_claim_status dcs
+                                                                                inner join elp_claim_status_by_group csg on dcs.claim_status_by_group_id = csg.claim_status_by_group_id
+                                                                                where getcodefromlistitem(dcs.default_type_id) = 'CPIA'
+                                                                                and csg.company_group_id= :company_group_id
+                                                                                and c.method_of_repair_id = dcs.method_of_repair_id))
+               or getcodefromlistitem(GetLatestExtendedClaimStatusId(c.claim_id)) = (select getcodefromlistitem(csg.list_item_id)
+                                                                                from elp_default_claim_status dcs
+                                                                                inner join elp_claim_status_by_group csg on dcs.claim_status_by_group_id = csg.claim_status_by_group_id
+                                                                                where getcodefromlistitem(dcs.default_type_id) = 'CPIA'
+                                                                                and csg.company_group_id=:company_group_id
+                                                                                and dcs.method_of_repair_id is null))
+        and c.batch_number is not null 
+      ]]>
+  </CHECK_CLAIM_PAYMENT_IN_PROGRESS>
+  <CHLMobileSCPortal_GetCertClaimInfo>
+    elita.elp_spsvc_CHLMobileSCPortal.GetCertClaimInfo
+  </CHLMobileSCPortal_GetCertClaimInfo>
+  <GVS_TRANSACTION_CREATION>
+    elp_gvs_transaction.gvs_transaction_creation
+  </GVS_TRANSACTION_CREATION>
+  <GET_SVC_WARRANTY_COUNT_BY_CERTIFICATE>
+    SELECT elita.elp_claims.getsvcwarrantyclaimscount(:cert_id,:dealer_id) from dual
+  </GET_SVC_WARRANTY_COUNT_BY_CERTIFICATE>
+  <WAIVE_EXISTING_ISSUES>
+    elita.elp_claims.waive_existing_issues 
+  </WAIVE_EXISTING_ISSUES>
+  <LOOKUP_UFI_LIST>
+    <![CDATA[
+		  select u.tax_id tax_id,u.first_name first_name,u.last_name last_name,u.begin_date begin_date,u.end_date end_date
+ 			from   elp_ufi_list u
+			where  country_id = :country_id
+      and tax_id =:tax_id
+      and sysdate >= begin_date and sysdate <= end_date
+		]]>
+  </LOOKUP_UFI_LIST>
+  <GET_PAYMENTS_FOR_CERT>
+    Select count(*) 
+    from elp_cert_payment
+    where cert_id = :cert_id
+  </GET_PAYMENTS_FOR_CERT>
+
+  <GET_LATEST_EXTENDED_STATUS>
+    select ELITA.GetLatestExtendedClaimStatus(:claim_id,:language_id) extended_status from dual
+  </GET_LATEST_EXTENDED_STATUS>
+
+  <GET_REGISTERED_ITEM_INDIXID>
+    select distinct indixId from elp_cert_registered_item where
+    REGISTERED_ITEM_NAME in
+    (select distinct field_value
+    from elp_case_fields cf, elp_Case c
+    where field_xcd='CASEFLD-DEVICEID'
+    and cf.case_id= c.case_id
+    and c.claim_id = :claimId)
+    and rownum = 1
+  </GET_REGISTERED_ITEM_INDIXID>
+
+  <LOAD_LIST_BY_ISSUE>
+    elita.elp_tbl_entity_issue.SearchClaimsByIssue
+  </LOAD_LIST_BY_ISSUE>
+  
+
+  <IS_CONSEQUENTIAL_DAMAGE_ALLOWED>
+    <![CDATA[
+        select count(1)
+          from elp_product_code                  p
+         inner join elp_item                     i on i.product_code_id = p.product_code_id
+         inner join elp_coverage               cvg on cvg.item_id = i.item_id
+         inner join elp_coverage_conseq_damage ccd on ccd.coverage_id = cvg.coverage_id
+         where p.product_code_id = :product_code_id
+         ]]>
+  </IS_CONSEQUENTIAL_DAMAGE_ALLOWED>
+  <GET_COUNTRY_CODE_OVERWRITE>
+      elita.elp_claims.GetCountryCodeOverwrite
+  </GET_COUNTRY_CODE_OVERWRITE>
+  
+  <WS_SNMPORTAL_SA_CLAIMREPORT>
+    elita.elp_ws_SNMPortalSA_ClaimReport.GetClaimCharterReport
+  </WS_SNMPORTAL_SA_CLAIMREPORT>
+  <WS_SNMPORTAL_SA_CLAIMREPORT_GET_NEXT_PAGE>
+    elita.elp_ws_SNMPortalSA_ClaimReport.GetNextPageClaimCharterReport
+  </WS_SNMPORTAL_SA_CLAIMREPORT_GET_NEXT_PAGE>
+
+  <PreviousInProgressClaimCount>
+    <![CDATA[
+      select count(*) as claim_count
+      from elp_claim cl
+      join elp_cert_item_coverage			cic on cic.cert_item_coverage_id = cl.cert_item_coverage_id
+      where cic.cert_id = (select cert_id from elita.elp_claim_extended_v cl where cl.claim_id = :claim_id)
+        and cl.claim_id <>  :claim_id
+        and cl.created_date < (select created_date from elita.elp_claim_extended_v cl where cl.claim_id = :claim_id)
+        and cl.STATUS_CODE in ('A', 'P')
+    ]]>
+  </PreviousInProgressClaimCount>
+</SQL>

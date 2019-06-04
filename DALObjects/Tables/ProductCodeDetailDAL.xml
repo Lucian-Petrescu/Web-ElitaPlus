@@ -1,0 +1,99 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<SQL>
+  <LOAD>
+    <![CDATA[
+    Select product_code_detail_id,
+           product_code_parent_id,
+           product_code_id,
+           effective,
+           expiration,
+           created_by,
+           created_date,
+           modified_by,
+           modified_date
+    From elp_product_code_detail
+    where product_code_detail_id =:product_code_detail_id
+    ]]>
+  </LOAD>
+  <LOAD_LIST>
+    <![CDATA[
+    Select RAWTOHEX(aa.product_code_parent_id) product_code_parent_id,
+           aa.product_code_detail_id,
+           bb.product_code child_product_code,
+           aa.effective,
+           aa.expiration,
+           dd.dealer_id,
+           dd.dealer dealer_code,
+           comp.code company_code,
+           comp.company_id
+    from elp_product_code_detail aa, 
+         elp_product_code bb,
+         elp_dealer dd,
+         elp_company comp
+    where aa.product_code_id=bb.product_code_id
+    and bb.dealer_id=dd.dealer_id
+    and dd.company_id=comp.company_id
+    and bb.Product_code_id in (Select pcd.product_code_id
+                           from elp_product_code_parent pcp, elp_product_code_detail pcd,elp_dealer d,elp_product_code pc
+                           where pcp.product_code_parent_id =pcd.product_code_parent_id
+                           and pc.dealer_id = d.dealer_id
+                           and pc.product_code_id=pcp.product_code_id 
+                           and pcp.product_code_id= :product_code_id
+                           and d.dealer_id=:dealer_id )   
+ ]]>
+  </LOAD_LIST>
+  <ChildListByParentID>
+    Select comp.code,
+           comp.company_id,
+           dr.dealer,
+           dr.dealer_id,
+           product_code,
+           dc.product_code_id,
+           dc.effective,
+           dc.expiration,
+           dc.product_code_detail_id,
+           dc.product_code_parent_id,
+           dc.created_by,
+           dc.created_date,
+           dc.modified_by,
+           dc.modified_date
+    from elp_product_code_detail dc,
+         elp_product_code dt,
+         elp_dealer dr,
+         elp_company comp
+    where dc.product_code_parent_id=:product_code_parent_id
+    and dc.product_code_id = dt.product_code_id
+    and dt.dealer_id=dr.dealer_id
+    and dr.company_id=comp.company_id
+  </ChildListByParentID>
+  <UPDATE>
+    <![CDATA[	
+			UPDATE elp_product_code_detail SET
+         product_code_parent_id =:product_code_parent_id,
+				 product_code_id = :product_code_id,
+         effective = :effective,
+         expiration = :expiration,
+         modified_by = :modified_by,
+			WHERE
+				product_code_detail_id = :product_code_detail_id
+		]]>
+  </UPDATE>
+  <INSERT>
+    INSERT INTO elp_product_code_detail
+    (
+    product_code_parent_id,
+    product_code_id,
+    effective,
+    expiration,
+    created_by
+    )
+    VALUES
+    (
+    :product_code_parent_id,
+    :product_code_id,
+    :effective,
+    :expiration,
+    :created_by
+    )
+  </INSERT>
+</SQL>

@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="2.0" xmlns:edmx="http://schemas.microsoft.com/ado/2008/10/edmx">
+ <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2008/10/edmx">
+    <!-- Diagram content (shape and connector positions) -->
+    <edmx:Diagrams>
+      <Diagram DiagramId="1b559eaa11bd49fab097a577c8fe3a90" Name="Diagram1" ZoomLevel="100">
+        <EntityTypeShape EntityType="Model.Certificate" Width="2.125" PointX="0.75" PointY="2" IsExpanded="true" />
+        <EntityTypeShape EntityType="Model.CertificateItem" Width="2.25" PointX="3.625" PointY="4" IsExpanded="true" />
+        <EntityTypeShape EntityType="Model.CertificateItemCoverage" Width="2.25" PointX="6.375" PointY="3.875" IsExpanded="true" />
+        <AssociationConnector Association="Model.FK_CERT_ITEM_CERT" ManuallyRouted="false" />
+        <AssociationConnector Association="Model.FK_CERTITEMCOV_CERT" ManuallyRouted="false" />
+        <AssociationConnector Association="Model.FK_CERT_ITEM_COV_CERT_ITEM" ManuallyRouted="false" />
+        <EntityTypeShape EntityType="Model.CertificateCancellation" Width="1.5" PointX="3.625" PointY="14" />
+        <AssociationConnector Association="Model.FK_CERT_CANCEL_CERT" />
+        <EntityTypeShape EntityType="Model.CertificateItemCoverageDeductible" Width="2.125" PointX="9.125" PointY="3.875" />
+        <AssociationConnector Association="Model.FK_CERT_ITEM_CVG_DED_ITEM_CVG" />
+        <EntityTypeShape EntityType="Model.BillingDetail" Width="2.125" PointX="11.875" PointY="3.125" IsExpanded="true" />
+        <AssociationConnector Association="Model.FK_BILLDETAIL_CERT" />
+        <EntityTypeShape EntityType="Model.CertificateEndorsement" Width="2.375" PointX="6.625" PointY="19.625" />
+        <AssociationConnector Association="Model.FK_CERT_ENDORSE_CERT_ITEM" />
+      </Diagram>
+    </edmx:Diagrams>
+  </edmx:Designer>
+</edmx:Edmx>

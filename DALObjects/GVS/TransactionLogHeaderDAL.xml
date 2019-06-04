@@ -1,0 +1,255 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+
+<!-- ********************** THIS FILE HAS BEEN GENERATED FROM TEMPLATE SQLObject.cst (11/12/2008)********************** -->
+
+<SQL>
+  <LOAD>
+    <![CDATA[	
+			SELECT 
+				company_group_id,
+				function_type_id,
+				transaction_xml,
+				transaction_processed_date,
+				transaction_status_id,
+				modified_date,
+				modified_by,
+				created_date,
+				created_by,
+				transaction_log_header_id,
+        original_trans_log_hdr_id,
+        gvs_original_trans_no,
+        key_id,
+        hide,
+        resend,
+        out_trans_gvs_response
+			FROM elp_transaction_log_header 
+			WHERE
+				transaction_log_header_id = :transaction_log_header_id
+		]]>
+  </LOAD>
+  <LOAD_LIST>
+    <![CDATA[	
+    SELECT  transaction_log_header_id,
+            substr(originator, length(originator), 1) as show_checkbox,
+            claim_number,
+            transaction_date,
+            customer_name,
+            service_center_code,
+            authorization_number,
+            error_code,
+            substr(originator, 1, length(originator) - 1) as originator,
+            hide,
+            resend,
+            function_type
+     FROM ELP_TRANS_DTL_XML 
+     WHERE company_group_id = :company_group_id
+     and (hide is null or hide <> 'Y')
+     and   rownum < :row_num
+     --dynamic_where_clause
+]]>    
+  </LOAD_LIST>
+  <UPDATE>
+    <![CDATA[	
+			UPDATE elp_transaction_log_header SET
+				company_group_id = :COMPANY_GROUP_ID,
+				function_type_id = :function_type_id,
+				transaction_xml = :transaction_xml,
+				transaction_processed_date = :transaction_processed_date,
+				transaction_status_id = :transaction_status_id,
+				modified_by = :modified_by,
+        original_trans_log_hdr_id = :original_trans_log_hdr_id,
+        gvs_original_trans_no = :gvs_original_trans_no,
+        key_id = :key_id,
+        hide = :hide,
+        resend = :resend,
+        out_trans_gvs_response = :out_trans_gvs_response
+			WHERE
+				transaction_log_header_id = :transaction_log_header_id
+		]]>
+  </UPDATE>
+  <INSERT>
+    INSERT INTO elp_transaction_log_header
+    (
+    company_group_id,
+    function_type_id,
+    transaction_xml,
+    transaction_processed_date,
+    transaction_status_id,
+    created_by,
+    transaction_log_header_id,
+    original_trans_log_hdr_id,
+    gvs_original_trans_no,
+    key_id,
+    hide,
+    resend
+    )
+    VALUES
+    (
+    :company_group_id,
+    :function_type_id,
+    :transaction_xml,
+    :transaction_processed_date,
+    :transaction_status_id,
+    :created_by,
+    :transaction_log_header_id,
+    :original_trans_log_hdr_id,
+    :gvs_original_trans_no,
+    :key_id,
+    :hide,
+    :resend
+    )
+  </INSERT>
+  <DELETE>
+    DELETE FROM elp_transaction_log_header
+    WHERE
+    transaction_log_header_id = :transaction_log_header_id
+  </DELETE>
+  <IS_TRANSACTION_EXIST>
+    <![CDATA[	
+    select count(*) as count from Elita.ELP_TRANSACTION_LOG_HEADER
+    where gvs_original_trans_no = :gvs_original_trans_no
+		]]>    
+  </IS_TRANSACTION_EXIST>
+  <EXCEPTION_HEADER>
+    <![CDATA[	
+    ELP_GVS_TRANSACTION.GET_TRANSACTION_LIST_NEW
+    ]]>
+  </EXCEPTION_HEADER>
+  <LAST_SUCCESSFUL_TRANSMISSION_TIME>
+    <![CDATA[	
+      select max(x.transmission_date)
+      from (
+      select
+	      (case when (i.code='1' or i.code='2' or i.code='3' or i.code='4') then h.in_process_start_date
+		      else h.created_date
+	      end) transmission_date
+	      from elp_transaction_log_header h
+	      join elp_list_item i on h.function_type_id=i.list_item_id 
+          --replace_company_group_id
+      where (i.code in ('1','2','3','4')
+	        and out_trans_gvs_response is not null
+	        and ((instr(upper(out_trans_gvs_response), '<ERROR_CODE>') > 0 or instr(upper(out_trans_gvs_response), '&lt;ERROR_CODE&gt;') > 0)
+	        or (instr(upper(out_trans_gvs_response), '<RESULT>') > 0 or instr(upper(out_trans_gvs_response), '&lt;RESULT&gt;') > 0)))
+	      OR (i.code in ('5','6','7','8'))
+      ) x
+		]]>
+  </LAST_SUCCESSFUL_TRANSMISSION_TIME>
+  <LAST_SUCCESSFUL_TRANSMISSION_TIME_BY_TYPE>
+    <![CDATA[	
+       select x.transmission_date, System
+      from (
+      select
+	      max(h.in_process_start_date) transmission_date,
+	      'Elita' System
+	      from elp_transaction_log_header h
+	      join elp_list_item i on h.function_type_id=i.list_item_id
+          --replace_company_group_id
+      where ( out_trans_gvs_response is not null
+	        and ((instr(upper(out_trans_gvs_response), '<ERROR_CODE>') > 0 or instr(upper(out_trans_gvs_response), '&lt;ERROR_CODE&gt;') > 0)
+	        or (instr(upper(out_trans_gvs_response), '<RESULT>') > 0 or instr(upper(out_trans_gvs_response), '&lt;RESULT&gt;') > 0)))
+            and i.code in  ('1','2','3','4')
+     		and h.created_date > sysdate - 5
+     UNION
+      select
+	      max(h.created_date) transmission_date,
+	      'GVS' System
+	      from elp_transaction_log_header h
+	      join elp_list_item i on h.function_type_id=i.list_item_id
+          --replace_company_group_id
+      where i.code in  ('5','6','7','8')
+            and h.created_date > sysdate - 5
+      ) x
+
+
+		]]>
+  </LAST_SUCCESSFUL_TRANSMISSION_TIME_BY_TYPE>
+  <TRANSACTION_STATUS>
+    <![CDATA[	
+    select
+       transaction_log_header_id,
+       extractValue(Column_Value, '//ITEM_NUMBER') AS item_number,
+       nvl(GetListItemDescription('CLMSTAT',extractValue(Column_Value, '//EXTENDED_CLAIM_STATUS_CODE') ,--dynamic_language_id), extractValue(Column_Value, '//EXTENDED_CLAIM_STATUS_CODE')) AS extended_status_code,
+       to_date(replace(substr(extractValue(Column_Value, '//EXTENDED_CLAIM_STATUS_DATE'),1,19), 'T', ' '), 'yyyy-mm-dd HH24:MI:SS') AS extended_status_date,
+       extractValue(Column_Value, '//EXTENDED_CLAIM_STATUS_COMMENT') AS extended_status_comment
+    from elp_transaction_log_header, table(XMLSequence(EXTRACT(xmltype(transaction_xml),'//ElitaClaim/TRANSACTION_DATA_RECORD/EXTENDED_CLAIM_STATUS')))
+    where rownum < :row_num --dynamic_where_clause
+    union all
+    select
+       transaction_log_header_id,
+       extractValue(Column_Value, '//ITEM_NUMBER') AS item_number,
+       nvl(GetListItemDescription('CLMSTAT',extractValue(Column_Value, '//EXTENDED_CLAIM_STATUS_CODE') ,--dynamic_language_id), extractValue(Column_Value, '//EXTENDED_CLAIM_STATUS_CODE')) AS extended_status_code,
+       to_date(replace(substr(extractValue(Column_Value, '//EXTENDED_CLAIM_STATUS_DATE'),1,19), 'T', ' '), 'yyyy-mm-dd HH24:MI:SS') AS extended_status_date,
+       extractValue(Column_Value, '//EXTENDED_CLAIM_STATUS_COMMENT') AS extended_status_comment
+    from elp_transaction_log_header, table(XMLSequence(EXTRACT(xmltype(transaction_xml),'//GVSClaim/TRANSACTION_DATA_RECORD/EXTENDED_CLAIM_STATUS')))
+    where rownum < :row_num --dynamic_where_clause    
+		]]>    
+  </TRANSACTION_STATUS>
+  <TRANSACTION_PART>
+    <![CDATA[	
+    select
+          transaction_log_header_id,
+          extractValue(Column_Value, '//ITEM_NUMBER') AS item_number,
+          extractValue(Column_Value, '//PART_CODE') AS part_code,
+          extractValue(Column_Value, '//PART_COST') AS part_cost,
+          extractValue(Column_Value, '//PART_DEFECT') AS part_defect,
+          extractValue(Column_Value, '//IN_STOCK') AS in_stock
+    from elp_transaction_log_header, table(XMLSequence(EXTRACT(xmltype(transaction_xml),'//ElitaClaim/TRANSACTION_DATA_RECORD/PARTS_LIST')))
+    where rownum < :row_num --dynamic_where_clause
+    union all
+    select
+          transaction_log_header_id,
+          extractValue(Column_Value, '//ITEM_NUMBER') AS item_number,
+          extractValue(Column_Value, '//PART_CODE') AS part_code,
+          extractValue(Column_Value, '//PART_COST') AS part_cost,
+          extractValue(Column_Value, '//PART_DEFECT') AS part_defect,
+          extractValue(Column_Value, '//IN_STOCK') AS in_stock
+    from elp_transaction_log_header, table(XMLSequence(EXTRACT(xmltype(transaction_xml),'//GVSClaim/TRANSACTION_DATA_RECORD/PARTS_LIST')))
+    where rownum < :row_num --dynamic_where_clause    
+		]]>
+  </TRANSACTION_PART>
+  <TRANSACTION_FOLLOWUP>
+    <![CDATA[	
+    select
+          transaction_log_header_id,
+          extractValue(Column_Value, '//ITEM_NUMBER') AS item_number,
+          to_date(replace(substr(extractValue(Column_Value, '//CREATE_DATE'),1,19), 'T', ' '), 'yyyy-mm-dd HH24:MI:SS') AS comment_created_date,
+          nvl(GetListItemDescription('COMMT',extractValue(Column_Value, '//COMMENT_TYPE_CODE') ,--dynamic_language_id), extractValue(Column_Value, '//COMMENT_TYPE_CODE')) AS comment_type_code,          
+          extractValue(Column_Value, '//COMMENTS') AS comments,
+          extractValue(Column_Value, '//CALLER_NAME') AS caller_name
+    from elp_transaction_log_header, table(XMLSequence(EXTRACT(xmltype(transaction_xml),'//ElitaClaim/TRANSACTION_DATA_RECORD/FOLLOWUP')))
+    where rownum < :row_num --dynamic_where_clause
+    union all
+    select
+          transaction_log_header_id,
+          extractValue(Column_Value, '//ITEM_NUMBER') AS item_number,
+          to_date(replace(substr(extractValue(Column_Value, '//CREATE_DATE'),1,19), 'T', ' '), 'yyyy-mm-dd HH24:MI:SS') AS comment_created_date,
+          nvl(GetListItemDescription('COMMT',extractValue(Column_Value, '//COMMENT_TYPE_CODE') ,--dynamic_language_id), extractValue(Column_Value, '//COMMENT_TYPE_CODE')) AS comment_type_code,          
+          extractValue(Column_Value, '//COMMENTS') AS comments,
+          extractValue(Column_Value, '//CALLER_NAME') AS caller_name
+    from elp_transaction_log_header, table(XMLSequence(EXTRACT(xmltype(transaction_xml),'//GVSClaim/TRANSACTION_DATA_RECORD/FOLLOWUP')))
+    where rownum < :row_num --dynamic_where_clause    
+		]]>
+  </TRANSACTION_FOLLOWUP>
+  <TRANSACTION_DATA>
+    <![CDATA[	
+    ELP_GVS_TRANSACTION.GET_TRANSACTION_DETAIL
+    ]]>    
+  </TRANSACTION_DATA>
+  <RESEND_OR_HIDE_TRANSACTION>
+    <![CDATA[	
+    ELP_GVS_TRANSACTION.Resend_Or_Hide_Trans
+    ]]>
+  </RESEND_OR_HIDE_TRANSACTION>
+  <PROCESS_RECORDS>
+    <![CDATA[	
+    ELP_GVS_TRANSACTION.Process_Records
+    ]]>
+  </PROCESS_RECORDS>
+  <UPDATE_COMUNA>
+    <![CDATA[	
+    ELITA.ELP_GVS_TRANSACTION.UpdateComuna
+    ]]>
+  </UPDATE_COMUNA>
+</SQL>
+
+

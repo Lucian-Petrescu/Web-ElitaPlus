@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="utf-8" ?>
+
+<!-- ********************** THIS FILE HAS BEEN GENERATED FROM TEMPLATE SQLObject.cst (10/31/2006)********************** -->
+
+<SQL>
+	<LOAD>
+		<![CDATA[	
+			SELECT 
+				dealer_id,
+				currency1_id,
+				currency2_id,
+				effective_date,
+				currency1_rate,
+				currency2_rate,
+				created_by,
+				created_date,
+				modified_by,
+				modified_date,
+				currency_conversion_id
+			FROM elp_currency_conversion 
+			WHERE
+				currency_conversion_id = :currency_conversion_id
+		]]>
+	</LOAD>
+	<LOAD_LIST>	
+	    <![CDATA[	
+	    	 SELECT
+	    	    cv.currency_conversion_id,		
+                d.dealer dealer_code,
+	    	    d.DEALER_NAME,
+	    	    cv.effective_date,
+	    	    cv.dealer_id
+ 			FROM elp_currency_conversion cv,
+				 elp_dealer d
+			WHERE
+			    d.dealer_id = cv.dealer_id
+				and cv.dealer_id = :dealer_id
+		 ]]>			
+	</LOAD_LIST>	
+	<UPDATE>
+		<![CDATA[	
+			UPDATE elp_currency_conversion SET
+				dealer_id = :dealer_id,
+				currency1_id = :currency1_id,
+				currency2_id = :currency2_id,
+				effective_date = :effective_date,
+				currency1_rate = :currency1_rate,
+				currency2_rate = :currency2_rate,
+				modified_by = :modified_by
+			WHERE
+				currency_conversion_id = :currency_conversion_id
+		]]>
+	</UPDATE>
+	<INSERT>
+			INSERT INTO elp_currency_conversion
+					(			
+				dealer_id, 
+				currency1_id, 
+				currency2_id, 
+				effective_date, 
+				currency1_rate, 
+				currency2_rate, 
+				created_by,
+				currency_conversion_id
+					)
+			VALUES
+					(			
+				:dealer_id, 
+				:currency1_id, 
+				:currency2_id, 
+				:effective_date, 
+				:currency1_rate, 
+				:currency2_rate, 
+				:created_by,
+				:currency_conversion_id
+					)
+	</INSERT>
+	<DELETE>
+			DELETE FROM elp_currency_conversion
+			WHERE
+				currency_conversion_id = :currency_conversion_id
+	</DELETE>
+	<INSERT_NEW_RATES>
+		 elp_currency_utility.Populate
+	</INSERT_NEW_RATES>
+	<DELETE_RATES>
+		 elp_currency_utility.DeleteRAtes
+	</DELETE_RATES>
+	<FIND_MAX_DATE>
+		select max(effective_date) effective_date
+		from elp_currency_conversion
+		where dealer_id = :dealer_id
+		  and currency1_id = :currency1_id	
+		  and currency2_id = :currency2_id	
+	</FIND_MAX_DATE>
+	<GET_LAST_RATE>
+		select max(currency_conversion_id) currency_conversion_id
+		from elp_currency_conversion
+		where dealer_id = :dealer_id
+		  and currency1_id = :currency1_id	
+		  and currency2_id = :currency2_id
+	</GET_LAST_RATE>
+</SQL> 
+
+
+

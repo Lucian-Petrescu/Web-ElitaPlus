@@ -1,0 +1,129 @@
+<?xml version="1.0" encoding="utf-8" ?>
+
+<!-- ********************** THIS FILE HAS BEEN GENERATED FROM TEMPLATE SQLObject.cst (1/3/2013)********************** -->
+
+<SQL>
+	<LOAD>
+		<![CDATA[	
+			SELECT 
+				tax_id,
+				dealer_id,
+				contact_info_id,
+				created_date,
+				created_by,
+				modified_date,
+				modified_by,
+				registration_id
+			FROM elp_customer_registration 
+			WHERE
+				registration_id = :registration_id
+		]]>
+	</LOAD>
+	<LOAD_LIST>
+		<![CDATA[
+		SELECT
+				d.dealer,
+				ci.email,
+				cr.TAX_ID,
+				ci.name,
+				ci.first_name,
+				ci.last_name,
+				a.ADDRESS1,
+				a.ADDRESS2,
+				a.city,
+				r.description "REGION_DESC",
+				a.POSTAL_CODE,
+				ci.CELL_PHONE,
+				c.code "COUNTRY_CODE"
+			FROM 
+					elp_customer_registration cr,
+					elp_dealer d,
+					elp_contact_info ci,
+					elp_address a,
+					elp_region r,
+					elp_country c
+			WHERE
+					cr.dealer_id			=	d.dealer_id
+			and		cr.contact_info_id 		= 	ci.contact_info_id
+			and     ci.address_id			=	a.address_id
+			and		a.country_id			=	c.country_id
+			and		a.region_id				=	r.region_id (+)
+			and		upper(ci.email)			=	upper(:emailId)
+			and		ci.address_type_id		=	:addressTypeId
+			and		cr.dealer_id			=	:dealerId
+		]]>
+	</LOAD_LIST>
+	<GET_REGISTRATION_FROM_EMAIL>
+		<![CDATA[
+		SELECT				
+				cr.registration_id
+			FROM 
+					elp_customer_registration cr,
+					elp_dealer d,
+					elp_contact_info ci,
+					elp_address a,
+					elp_region r,
+					elp_country c
+			WHERE
+					cr.dealer_id			=	d.dealer_id
+			and		cr.contact_info_id 		= 	ci.contact_info_id
+			and     ci.address_id			=	a.address_id
+			and		a.country_id			=	c.country_id
+			and		a.region_id				=	r.region_id (+)
+			and		upper(ci.email)			=	upper(:emailId)
+			and		ci.address_type_id		=	:addressTypeId
+			and		cr.dealer_id			=	:dealerId
+			and		rownum					=	1
+		]]>
+	</GET_REGISTRATION_FROM_EMAIL>	
+	<CHECK_EMAIL>
+		<![CDATA[	
+			SELECT
+				count(*) "cnt"
+			FROM
+					elp_customer_registration cr,
+					elp_contact_info ci
+			WHERE
+					cr.contact_info_id 		= 	ci.contact_info_id
+			and		upper(ci.email)			=	upper(:emailId)
+			and		ci.address_type_id		=	:addressTypeId
+			and		cr.dealer_id			=	:dealerId
+		]]>
+	</CHECK_EMAIL>
+	<UPDATE>
+		<![CDATA[	
+			UPDATE elp_customer_registration SET
+				tax_id = :tax_id,
+				dealer_id = :dealer_id,
+				contact_info_id = :contact_info_id,
+				modified_by = :modified_by
+			WHERE
+				registration_id = :registration_id
+		]]>
+	</UPDATE>
+	<INSERT>
+			INSERT INTO elp_customer_registration
+					(			
+				tax_id, 
+				dealer_id, 
+				contact_info_id, 
+				created_by,
+				registration_id
+					)
+			VALUES
+					(			
+				:tax_id, 
+				:dealer_id, 
+				:contact_info_id, 
+				:created_by,
+				:registration_id
+					)
+	</INSERT>
+	<DELETE>
+			DELETE FROM elp_customer_registration
+			WHERE
+				registration_id = :registration_id
+	</DELETE>
+</SQL> 
+
+

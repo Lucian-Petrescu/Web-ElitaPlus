@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ReferenceGroup xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" ID="0e399198-4055-4063-815b-372cc98daa50" xmlns="urn:schemas-microsoft-com:xml-wcfservicemap">
+  <ClientOptions>
+    <GenerateAsynchronousMethods>false</GenerateAsynchronousMethods>
+    <GenerateTaskBasedAsynchronousMethod>true</GenerateTaskBasedAsynchronousMethod>
+    <EnableDataBinding>true</EnableDataBinding>
+    <ExcludedTypes />
+    <ImportXmlTypes>false</ImportXmlTypes>
+    <GenerateInternalTypes>false</GenerateInternalTypes>
+    <GenerateMessageContracts>false</GenerateMessageContracts>
+    <NamespaceMappings />
+    <CollectionMappings />
+    <GenerateSerializableTypes>true</GenerateSerializableTypes>
+    <Serializer>Auto</Serializer>
+    <UseSerializerForFaults>true</UseSerializerForFaults>
+    <ReferenceAllAssemblies>true</ReferenceAllAssemblies>
+    <ReferencedAssemblies />
+    <ReferencedDataContractTypes />
+    <ServiceContractMappings />
+  </ClientOptions>
+  <MetadataSources>
+    <MetadataSource Address="http://intra.apf-int.assurant.com/OutboundCommunication.Services/v6/Communication.svc" Protocol="http" SourceId="1" />
+  </MetadataSources>
+  <Metadata>
+    <MetadataFile FileName="CommunicationService.wsdl" MetadataType="Wsdl" ID="0eade4ac-7e46-4108-bcae-4f1d17d2aa26" SourceId="1" SourceUrl="http://intra.apf-int.assurant.com/OutboundCommunication.Services/v6/Communication.svc?wsdl" />
+    <MetadataFile FileName="Communication.xsd" MetadataType="Schema" ID="8ad4772a-b5a0-46cf-8b8c-f6dbf1371f12" SourceId="1" SourceUrl="http://intra.apf-int.assurant.com/OutboundCommunication.Services/v6/Communication.svc?xsd=xsd4" />
+    <MetadataFile FileName="Communication1.xsd" MetadataType="Schema" ID="bac64364-4a88-427c-abf7-6b7e75e5e0d9" SourceId="1" SourceUrl="http://intra.apf-int.assurant.com/OutboundCommunication.Services/v6/Communication.svc?xsd=xsd5" />
+    <MetadataFile FileName="Communication2.xsd" MetadataType="Schema" ID="29689f0f-b2d3-4fe3-a57b-e8acca14fbf5" SourceId="1" SourceUrl="http://intra.apf-int.assurant.com/OutboundCommunication.Services/v6/Communication.svc?xsd=xsd6" />
+    <MetadataFile FileName="Communication3.xsd" MetadataType="Schema" ID="a552aa9d-1ce5-4312-9744-1db6187fee18" SourceId="1" SourceUrl="http://intra.apf-int.assurant.com/OutboundCommunication.Services/v6/Communication.svc?xsd=xsd1" />
+    <MetadataFile FileName="Communication4.xsd" MetadataType="Schema" ID="c4221f07-0d03-4232-9837-7d7ba2a924c2" SourceId="1" SourceUrl="http://intra.apf-int.assurant.com/OutboundCommunication.Services/v6/Communication.svc?xsd=xsd0" />
+    <MetadataFile FileName="Communication5.xsd" MetadataType="Schema" ID="610f325b-5bfb-48f9-bc04-0ebb0910d6df" SourceId="1" SourceUrl="http://intra.apf-int.assurant.com/OutboundCommunication.Services/v6/Communication.svc?xsd=xsd3" />
+    <MetadataFile FileName="Communication.disco" MetadataType="Disco" ID="a108b4d0-3cd4-4162-a6cb-91d409dfdbe8" SourceId="1" SourceUrl="http://intra.apf-int.assurant.com/OutboundCommunication.Services/v6/Communication.svc?disco" />
+    <MetadataFile FileName="Communication6.xsd" MetadataType="Schema" ID="04fd10bd-e8ea-4a85-a438-fcc279854afe" SourceId="1" SourceUrl="http://intra.apf-int.assurant.com/OutboundCommunication.Services/v6/Communication.svc?xsd=xsd2" />
+  </Metadata>
+  <Extensions>
+    <ExtensionFile FileName="configuration91.svcinfo" Name="configuration91.svcinfo" />
+    <ExtensionFile FileName="configuration.svcinfo" Name="configuration.svcinfo" />
+  </Extensions>
+</ReferenceGroup>

@@ -1,0 +1,241 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xs:schema xmlns:ser="http://schemas.microsoft.com/2003/10/Serialization/" xmlns:tns="http://services.assurant.com/integration/workqueue/2012/05/15/" elementFormDefault="qualified" targetNamespace="http://services.assurant.com/integration/workqueue/2012/05/15/" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+  <xs:import schemaLocation="http://msp0wapfd001.cead.prd/WorkQueue/Composite/20120901/WorkQueueService.svc?xsd=xsd1" namespace="http://schemas.microsoft.com/2003/10/Serialization/" />
+  <xs:import schemaLocation="http://msp0wapfd001.cead.prd/WorkQueue/Composite/20120901/WorkQueueService.svc?xsd=xsd3" namespace="http://services.assurant.com/integration/faults/2012/6/12/" />
+  <xs:import schemaLocation="http://msp0wapfd001.cead.prd/WorkQueue/Composite/20120901/WorkQueueService.svc?xsd=xsd6" namespace="http://schemas.datacontract.org/2004/07/System" />
+  <xs:complexType name="WorkQueueItem">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="DueDate" nillable="true" type="xs:dateTime" />
+      <xs:element minOccurs="0" name="EndDate" nillable="true" type="xs:dateTime" />
+      <xs:element minOccurs="0" name="Id" type="ser:guid" />
+      <xs:element minOccurs="0" name="ModifiedBy" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="RequeueCount" type="xs:int" />
+      <xs:element minOccurs="0" name="StartDate" nillable="true" type="xs:dateTime" />
+      <xs:element minOccurs="0" name="WorkQueueId" type="ser:guid" />
+      <xs:element minOccurs="0" name="WorkQueueItemDataList" nillable="true" type="tns:ArrayOfWorkQueueItemData" />
+      <xs:element minOccurs="0" name="WorkQueueItemStatusReasonId" type="ser:guid" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="WorkQueueItem" nillable="true" type="tns:WorkQueueItem" />
+  <xs:complexType name="ArrayOfWorkQueueItemData">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="WorkQueueItemData" nillable="true" type="tns:WorkQueueItemData" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="ArrayOfWorkQueueItemData" nillable="true" type="tns:ArrayOfWorkQueueItemData" />
+  <xs:complexType name="WorkQueueItemData">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="CreatedBy" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="CreatedOn" type="xs:dateTime" />
+      <xs:element minOccurs="0" name="Id" type="ser:guid" />
+      <xs:element minOccurs="0" name="IsActive" type="xs:boolean" />
+      <xs:element minOccurs="0" name="UpdatedBy" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="UpdatedOn" nillable="true" type="xs:dateTime" />
+      <xs:element minOccurs="0" name="Value" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="WorkQueueDataTypeId" type="ser:guid" />
+      <xs:element minOccurs="0" name="WorkQueueItemId" type="ser:guid" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="WorkQueueItemData" nillable="true" type="tns:WorkQueueItemData" />
+  <xs:complexType name="WorkQueueFault">
+    <xs:complexContent mixed="false">
+      <xs:extension xmlns:q1="http://services.assurant.com/integration/faults/2012/6/12/" base="q1:FaultBaseOfException5F2dSckg">
+        <xs:sequence />
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:element name="WorkQueueFault" nillable="true" type="tns:WorkQueueFault" />
+  <xs:complexType name="WorkQueue">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="ActiveOn" type="xs:dateTime" />
+      <xs:element minOccurs="0" name="Id" type="ser:guid" />
+      <xs:element minOccurs="0" name="InActiveOn" nillable="true" type="xs:dateTime" />
+      <xs:element minOccurs="0" name="LockableDataTypeId" type="ser:guid" />
+      <xs:element minOccurs="0" name="MaxRequeue" type="xs:int" />
+      <xs:element minOccurs="0" name="MetadataList" nillable="true" type="tns:ArrayOfWorkQueueMetadata" />
+      <xs:element minOccurs="0" name="ModifiedBy" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="Name" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="RequeueItemDelayMinutes" type="xs:int" />
+      <xs:element minOccurs="0" name="Schedule" nillable="true" type="tns:ArrayOfTimeSlot" />
+      <xs:element minOccurs="0" name="StartItemDelayMinutes" type="xs:int" />
+      <xs:element minOccurs="0" name="TimeToCompleteMinutes" type="xs:int" />
+      <xs:element minOccurs="0" name="TimeZoneCode" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="WorkQueueTypeId" nillable="true" type="ser:guid" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="WorkQueue" nillable="true" type="tns:WorkQueue" />
+  <xs:complexType name="ArrayOfWorkQueueMetadata">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="WorkQueueMetadata" nillable="true" type="tns:WorkQueueMetadata" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="ArrayOfWorkQueueMetadata" nillable="true" type="tns:ArrayOfWorkQueueMetadata" />
+  <xs:complexType name="WorkQueueMetadata">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="CreatedBy" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="CreatedOn" type="xs:dateTime" />
+      <xs:element minOccurs="0" name="Id" type="ser:guid" />
+      <xs:element minOccurs="0" name="Name" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="UpdatedBy" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="UpdatedOn" nillable="true" type="xs:dateTime" />
+      <xs:element minOccurs="0" name="Value" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="WorkQueueId" type="ser:guid" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="WorkQueueMetadata" nillable="true" type="tns:WorkQueueMetadata" />
+  <xs:complexType name="ArrayOfTimeSlot">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="TimeSlot" nillable="true" type="tns:TimeSlot" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="ArrayOfTimeSlot" nillable="true" type="tns:ArrayOfTimeSlot" />
+  <xs:complexType name="TimeSlot">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="ActivateOn" type="xs:dateTime" />
+      <xs:element minOccurs="0" name="CreatedBy" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="CreatedOn" type="xs:dateTime" />
+      <xs:element xmlns:q2="http://schemas.datacontract.org/2004/07/System" minOccurs="0" name="Day" type="q2:DayOfWeek" />
+      <xs:element minOccurs="0" name="DeactivateOn" nillable="true" type="xs:dateTime" />
+      <xs:element minOccurs="0" name="EndTime" type="ser:duration" />
+      <xs:element minOccurs="0" name="Id" type="ser:guid" />
+      <xs:element minOccurs="0" name="StartTime" type="ser:duration" />
+      <xs:element minOccurs="0" name="UpdatedBy" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="UpdatedOn" nillable="true" type="xs:dateTime" />
+      <xs:element minOccurs="0" name="WorkQueueId" type="ser:guid" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="TimeSlot" nillable="true" type="tns:TimeSlot" />
+  <xs:complexType name="DuplicateWorkQueueFault">
+    <xs:complexContent mixed="false">
+      <xs:extension xmlns:q3="http://services.assurant.com/integration/faults/2012/6/12/" base="q3:FaultBaseOfException5F2dSckg">
+        <xs:sequence />
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:element name="DuplicateWorkQueueFault" nillable="true" type="tns:DuplicateWorkQueueFault" />
+  <xs:complexType name="ArrayOfWorkQueue">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="WorkQueue" nillable="true" type="tns:WorkQueue" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="ArrayOfWorkQueue" nillable="true" type="tns:ArrayOfWorkQueue" />
+  <xs:complexType name="MaxItemRequeueCountExceededFault">
+    <xs:sequence />
+  </xs:complexType>
+  <xs:element name="MaxItemRequeueCountExceededFault" nillable="true" type="tns:MaxItemRequeueCountExceededFault" />
+  <xs:complexType name="ItemNotLockedForEditFault">
+    <xs:complexContent mixed="false">
+      <xs:extension xmlns:q4="http://services.assurant.com/integration/faults/2012/6/12/" base="q4:FaultBaseOfException5F2dSckg">
+        <xs:sequence />
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:element name="ItemNotLockedForEditFault" nillable="true" type="tns:ItemNotLockedForEditFault" />
+  <xs:complexType name="WorkQueueType">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="CreatedBy" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="CreatedOn" type="xs:dateTime" />
+      <xs:element minOccurs="0" name="Id" type="ser:guid" />
+      <xs:element minOccurs="0" name="Name" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="UpdatedBy" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="UpdatedOn" nillable="true" type="xs:dateTime" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="WorkQueueType" nillable="true" type="tns:WorkQueueType" />
+  <xs:complexType name="ArrayOfWorkQueueType">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="WorkQueueType" nillable="true" type="tns:WorkQueueType" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="ArrayOfWorkQueueType" nillable="true" type="tns:ArrayOfWorkQueueType" />
+  <xs:complexType name="WorkQueueItemDataType">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="CreatedBy" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="CreatedOn" type="xs:dateTime" />
+      <xs:element minOccurs="0" name="Id" type="ser:guid" />
+      <xs:element minOccurs="0" name="Name" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="UpdatedBy" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="UpdatedOn" nillable="true" type="xs:dateTime" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="WorkQueueItemDataType" nillable="true" type="tns:WorkQueueItemDataType" />
+  <xs:complexType name="ArrayOfWorkQueueItemDataType">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="WorkQueueItemDataType" nillable="true" type="tns:WorkQueueItemDataType" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="ArrayOfWorkQueueItemDataType" nillable="true" type="tns:ArrayOfWorkQueueItemDataType" />
+  <xs:complexType name="WorkQueueItemStatusReason">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="CreatedBy" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="CreatedOn" type="xs:dateTime" />
+      <xs:element minOccurs="0" name="Id" type="ser:guid" />
+      <xs:element minOccurs="0" name="IsActive" type="xs:boolean" />
+      <xs:element minOccurs="0" name="Reason" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="Status" type="tns:StatusType" />
+      <xs:element minOccurs="0" name="UpdatedBy" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="UpdatedOn" nillable="true" type="xs:dateTime" />
+      <xs:element minOccurs="0" name="WorkQueueId" type="ser:guid" />
+      <xs:element minOccurs="0" name="WorkQueueTypeId" type="ser:guid" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="WorkQueueItemStatusReason" nillable="true" type="tns:WorkQueueItemStatusReason" />
+  <xs:simpleType name="StatusType">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="Requeue" />
+      <xs:enumeration value="Completed" />
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:element name="StatusType" nillable="true" type="tns:StatusType" />
+  <xs:simpleType name="StatusReasonOwnerType">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="Queue" />
+      <xs:enumeration value="QueueType" />
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:element name="StatusReasonOwnerType" nillable="true" type="tns:StatusReasonOwnerType" />
+  <xs:complexType name="ArrayOfWorkQueueItemStatusReason">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="WorkQueueItemStatusReason" nillable="true" type="tns:WorkQueueItemStatusReason" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="ArrayOfWorkQueueItemStatusReason" nillable="true" type="tns:ArrayOfWorkQueueItemStatusReason" />
+  <xs:complexType name="ArrayOfWorkQueueStats">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="WorkQueueStats" nillable="true" type="tns:WorkQueueStats" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="ArrayOfWorkQueueStats" nillable="true" type="tns:ArrayOfWorkQueueStats" />
+  <xs:complexType name="WorkQueueStats">
+    <xs:complexContent mixed="false">
+      <xs:extension base="tns:WorkQueue">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="ActiveUsers" type="xs:int" />
+          <xs:element minOccurs="0" name="AvailableItems" type="xs:int" />
+          <xs:element minOccurs="0" name="ItemsBeingWorked" type="xs:int" />
+          <xs:element minOccurs="0" name="OldestItemDatetime" type="xs:dateTime" />
+          <xs:element minOccurs="0" name="TotalAvailableUsers" type="xs:int" />
+          <xs:element minOccurs="0" name="TotalItems" type="xs:int" />
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:element name="WorkQueueStats" nillable="true" type="tns:WorkQueueStats" />
+  <xs:complexType name="ArrayOfWorkQueueUserStats">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="WorkQueueUserStats" nillable="true" type="tns:WorkQueueUserStats" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="ArrayOfWorkQueueUserStats" nillable="true" type="tns:ArrayOfWorkQueueUserStats" />
+  <xs:complexType name="WorkQueueUserStats">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="ActivityStatus" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="ItemsAccessed" type="xs:int" />
+      <xs:element minOccurs="0" name="ItemsProcessed" type="xs:int" />
+      <xs:element minOccurs="0" name="ItemsRequeued" type="xs:int" />
+      <xs:element minOccurs="0" name="UserId" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="UserName" nillable="true" type="xs:string" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="WorkQueueUserStats" nillable="true" type="tns:WorkQueueUserStats" />
+</xs:schema>

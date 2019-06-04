@@ -1,0 +1,146 @@
+<?xml version="1.0" encoding="utf-8" ?>
+
+<!-- ********************** THIS FILE HAS BEEN GENERATED FROM TEMPLATE SQLObject.cst (11/11/2004)********************** -->
+
+<SQL>
+	<LOAD>
+		<![CDATA[	
+			SELECT 
+				soft_question_group_id,
+				parent_id,
+				child_order,
+				description,
+				created_by,
+				created_date,
+				modified_by,
+				modified_date,
+				code,
+				question_type_id,
+				impacts_claim_id,
+				answer_type_id,
+				customer_message,
+				entity_attribute_id,
+				search_tags,
+				effective,
+				expiration,
+				soft_question_id
+			FROM elp_soft_question 
+			WHERE
+				soft_question_id = :soft_question_id
+        AND QUESTION_TYPE_ID != (SELECT Getitemidfromlistanditem('QTYP','DIAG') FROM DUAL)
+		]]>
+	</LOAD>
+	<LOAD_LIST>		
+		<![CDATA[	
+			SELECT 
+				soft_question_id,
+				soft_question_group_id,
+				parent_id,
+				child_order,
+				nvl(description,'Unknown Description') as description
+			FROM elp_soft_question 
+			WHERE
+				soft_question_group_id = :soft_question_group_id
+        AND QUESTION_TYPE_ID != (SELECT Getitemidfromlistanditem('QTYP','DIAG') FROM DUAL)
+		]]>
+	</LOAD_LIST>	
+	<UPDATE>
+		<![CDATA[	
+			UPDATE elp_soft_question SET
+				soft_question_group_id = :soft_question_group_id,
+				parent_id = :parent_id,
+				child_order = :child_order,
+				description = :description,
+				code = :code,
+				question_type_id = :question_type_id,
+				impacts_claim_id = :impacts_claim_id,
+				answer_type_id = :answer_type_id,
+				customer_message = :customer_message,
+				entity_attribute_id = :entity_attribute_id,
+				search_tags = :search_tags,
+				effective = :effective,
+				expiration = :expiration,
+				modified_by = :modified_by
+			WHERE
+				soft_question_id = :soft_question_id
+		]]>
+	</UPDATE>
+	<INSERT>
+      INSERT INTO elp_soft_question
+      (
+      soft_question_group_id,
+      parent_id,
+      child_order,
+      description,
+      code,
+      question_type_id,
+      impacts_claim_id,
+      answer_type_id,
+      customer_message,
+      entity_attribute_id,
+      search_tags,
+      effective,
+      expiration,
+      created_by,
+      soft_question_id
+      )
+      VALUES
+      (
+      :soft_question_group_id,
+      :parent_id,
+      :child_order,
+      :description,
+      :code,
+      :question_type_id,
+      :impacts_claim_id,
+      :answer_type_id,
+      :customer_message,
+      :entity_attribute_id,
+      :search_tags,
+      :effective,
+      :expiration,
+      :created_by,
+      :soft_question_id
+      )
+  </INSERT>
+	<DELETE>
+			DELETE FROM elp_soft_question
+			WHERE
+				soft_question_id = :soft_question_id
+	</DELETE>
+  <LOAD_QUESTION_LIST>
+        <![CDATA[
+        SELECT Distinct
+            q.SOFT_QUESTION_ID,
+            q.CODE,
+            q.DESCRIPTION,
+            --q.SEARCH_TAGS,
+            GETDESCRIPTIONFROMLISTITEM(q.QUESTION_TYPE_ID, l.LANGUAGE_ID) QUESTION_TYPE,            
+            to_Char(q.EFFECTIVE,'DD-Mon-YYYY HH24:MI:SS') AS EFFECTIVE,
+            to_Char(q.EXPIRATION,'DD-Mon-YYYY HH24:MI:SS') AS EXPIRATION
+        from
+            ELP_LANGUAGE l,
+            ELP_SOFT_QUESTION q
+            LEFT OUTER JOIN
+            ELP_ISSUE_QUESTION iq ON q.SOFT_QUESTION_ID = iq.SOFT_QUESTION_ID        
+            INNER JOIN
+            ELP_LIST_ITEM li On q.QUESTION_TYPE_ID = li.LIST_ITEM_ID
+        WHERE
+            l.LANGUAGE_ID = :languageId            
+            and li.CODE <> 'DIAG'
+        ]]>
+    </LOAD_QUESTION_LIST>
+  <IsQuestionAssignedtoIssue>
+    SELECT ISSUE_QUESTION_ID FROM ELP_ISSUE_QUESTION
+    WHERE SOFT_QUESTION_ID = :SOFT_QUESTION_ID
+  </IsQuestionAssignedtoIssue>
+  <GetListItembyCode>
+    select
+    lst.list_id, lst.code List_code, lstitem.code List_Item_code , lstitem.list_item_id
+    from elp_list lst inner join elp_list_item lstitem
+    on lst.list_id = lstitem.list_id
+    and lstitem.code = :item_code and lst.list_id = :list_id
+  </GetListItembyCode>
+</SQL> 
+
+

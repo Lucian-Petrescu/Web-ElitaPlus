@@ -1,0 +1,35 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<SQL>
+  <Question>
+    <![CDATA[	
+    SELECT SOFT_QUESTION_ID FROM ELP_SOFT_QUESTION
+    WHERE CODE = :cODE AND
+    trunc(EFFECTIVE,'DDD') = :Effective
+    AND SOFT_QUESTION_ID != :entity_Id
+    ]]>
+  </Question>
+  <Answer>
+    <![CDATA[	
+		SELECT ANSWER_ID FROM ELP_ANSWER
+    WHERE CODE = :cODE AND
+    trunc(EFFECTIVE,'DDD') = :Effective
+    AND ANSWER_ID != :entity_Id
+    ]]>
+  </Answer>
+  <Rule>
+    <![CDATA[	
+		SELECT RULE_ID FROM ELP_RULE
+    WHERE CODE = :cODE AND
+    trunc(EFFECTIVE,'DDD') = :Effective
+    AND RULE_ID != :entity_Id
+    ]]>
+  </Rule>
+	<PriceList>
+		<![CDATA[	
+	SELECT PRICE_LIST_ID FROM ELP_PRICE_LIST
+    WHERE CODE = :CODE AND
+    TRUNC(EFFECTIVE,'DDD') = :EFFECTIVE
+    AND PRICE_LIST_ID !=  :entity_Id
+    ]]>
+	</PriceList>
+</SQL>

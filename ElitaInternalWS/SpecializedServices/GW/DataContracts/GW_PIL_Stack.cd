@@ -1,0 +1,42 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1">
+  <Class Name="ElitaInternalWS.SpecializedServices.GW.DealerInfo">
+    <Position X="0.75" Y="1" Width="2.5" />
+    <TypeIdentifier>
+      <HashCode>AAAEAAAAAAAAAAAAAAAAAAAAAAAAAEAAAAAABAAAAAQ=</HashCode>
+      <FileName>SpecializedServices\GW\DataContracts\GetCertificateInfoResponse.vb</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Property Name="Company" />
+    </ShowAsAssociation>
+  </Class>
+  <Class Name="ElitaInternalWS.SpecializedServices.GW.GetCertificateInfoResponse">
+    <Position X="4.5" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AKIgQ0MH/HRGib6IiwLca8kycEvCJiIJ4RqkEEjA6WA=</HashCode>
+      <FileName>SpecializedServices\GW\DataContracts\GetCertificateInfoResponse.vb</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Property Name="Dealer" />
+    </ShowAsAssociation>
+    <ShowAsCollectionAssociation>
+      <Property Name="Items" />
+    </ShowAsCollectionAssociation>
+  </Class>
+  <Class Name="ElitaInternalWS.SpecializedServices.GW.CompanyInfo">
+    <Position X="1" Y="3.25" Width="2.25" />
+    <TypeIdentifier>
+      <HashCode>AAAAQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAQAAAAAAA=</HashCode>
+      <FileName>SpecializedServices\GW\DataContracts\CompanyInfo.vb</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="ElitaInternalWS.SpecializedServices.GW.CertificateItemInfo">
+    <Position X="8" Y="0.5" Width="2.25" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAACAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>SpecializedServices\GW\DataContracts\CertificateItemInfo.vb</FileName>
+      <NewMemberFileName>SpecializedServices\GW\DataContracts\CompanyInfo.vb</NewMemberFileName>
+    </TypeIdentifier>
+  </Class>
+  <Font Name="Segoe UI" Size="9" />
+</ClassDiagram>

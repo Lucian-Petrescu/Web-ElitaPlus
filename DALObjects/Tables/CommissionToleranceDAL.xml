@@ -1,0 +1,140 @@
+<?xml version="1.0" encoding="utf-8" ?>
+
+<!-- ********************** THIS FILE HAS BEEN GENERATED FROM TEMPLATE SQLObject.cst (6/12/2007)********************** -->
+
+<SQL>
+  <LOAD>
+    <![CDATA[	
+			SELECT 
+				commission_period_id,
+				allowed_markup_pct,
+				tolerance,
+				created_by,
+				created_date,
+				modified_by,
+				modified_date,
+				commission_tolerance_id
+			FROM elp_commission_tolerance 
+			WHERE
+				commission_tolerance_id = :commission_tolerance_id
+		]]>
+  </LOAD>
+  <LOAD_LIST>
+    <![CDATA[	
+    select parent.commission_tolerance_id,
+           parent.commission_period_id,
+           parent.allowed_markup_pct,
+           parent.tolerance,
+           mp1 markup_percent1,
+           mp2 markup_percent2,
+           mp3 markup_percent3,
+           mp4 markup_percent4,
+           mp5 markup_percent5,
+           cp1 commission_percent1,
+           cp2 commission_percent2,
+           cp3 commission_percent3,
+           cp4 commission_percent4,
+           cp5 commission_percent5
+    from
+           (select
+              commission_tolerance_id,
+              commission_period_id,
+              allowed_markup_pct,
+              tolerance
+            from
+              elp_commission_tolerance
+            where
+              commission_period_id = :commission_period_id) parent,
+            (select asscom1.Ctid COMMISSION_TOLERANCE_ID, mp1, cp1,mp2, cp2, mp3, cp3, mp4, cp4, mp5, cp5
+            from
+              (select COMMISSION_TOLERANCE_ID ctid,
+                   markup_percent mp1,
+                   commission_percent cp1,
+                   position p1
+               from ELP_ASSOCIATE_COMMISSIONS
+               where position = 1) asscom1,
+              (select COMMISSION_TOLERANCE_ID ctid,
+                    markup_percent mp2,
+                    commission_percent cp2,
+                    position p2
+               from ELP_ASSOCIATE_COMMISSIONS
+               where position = 2) asscom2,
+              (select COMMISSION_TOLERANCE_ID ctid,
+                   markup_percent mp3,
+                   commission_percent cp3,
+                   position p3
+              from ELP_ASSOCIATE_COMMISSIONS
+              where position = 3) asscom3,
+             (select COMMISSION_TOLERANCE_ID ctid,
+                    markup_percent mp4,
+                    commission_percent cp4,
+                    position p4
+              from ELP_ASSOCIATE_COMMISSIONS
+              where position = 4) asscom4,
+             (select COMMISSION_TOLERANCE_ID ctid,
+                    markup_percent mp5,
+                    commission_percent cp5,
+                    position p5
+              from ELP_ASSOCIATE_COMMISSIONS
+              where position = 5) asscom5
+          where asscom1.ctid = asscom2.ctid
+          and   asscom1.ctid = asscom3.ctid
+          and   asscom1.ctid = asscom4.ctid
+          and   asscom1.ctid = asscom5.ctid) child
+    where child.commission_tolerance_id = parent.commission_tolerance_id
+    order by parent.allowed_markup_pct
+    ]]>
+  </LOAD_LIST>
+  <LOAD_MARKUP_LIST>
+    select * from elp_commission_tolerance
+    where commission_period_id = :commission_period_id
+      and allowed_markup_pct = :allowed_markup_pct
+  </LOAD_MARKUP_LIST>
+  <LOAD_ALL_PERIOD_TOLERANCES>
+    select commission_tolerance_id,
+    commission_period_id,
+    allowed_markup_pct,
+    tolerance
+    from elp_commission_tolerance
+    where commission_period_id = :commission_period_id
+  </LOAD_ALL_PERIOD_TOLERANCES>
+  <UPDATE>
+    <![CDATA[	
+			UPDATE elp_commission_tolerance SET
+				commission_period_id = :commission_period_id,
+				allowed_markup_pct = :allowed_markup_pct,
+				tolerance = :tolerance,
+				modified_by = :modified_by
+			WHERE
+				commission_tolerance_id = :commission_tolerance_id
+		]]>
+  </UPDATE>
+  <INSERT>
+    INSERT INTO elp_commission_tolerance
+    (
+    commission_period_id,
+    allowed_markup_pct,
+    tolerance,
+    created_by,
+    commission_tolerance_id
+    )
+    VALUES
+    (
+    :commission_period_id,
+    :allowed_markup_pct,
+    :tolerance,
+    :created_by,
+    :commission_tolerance_id
+    )
+  </INSERT>
+  <DELETE>
+    DELETE FROM elp_commission_tolerance
+    WHERE
+    commission_tolerance_id = :commission_tolerance_id
+  </DELETE>
+</SQL>
+
+
+
+
+

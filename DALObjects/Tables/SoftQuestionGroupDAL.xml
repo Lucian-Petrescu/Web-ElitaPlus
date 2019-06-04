@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8" ?>
+
+<!-- ********************** THIS FILE HAS BEEN GENERATED FROM TEMPLATE SQLObject.cst (11/11/2004)********************** -->
+
+<SQL>
+	<LOAD>
+		<![CDATA[	
+			SELECT 
+				description,
+				created_by,
+				created_date,
+				modified_by,
+				modified_date,
+				company_group_id,
+				soft_question_group_id
+			FROM elp_soft_question_group 
+			WHERE
+				soft_question_group_id = :soft_question_group_id
+		]]>
+	</LOAD>
+	<LOAD_LIST>		
+<![CDATA[	
+			SELECT 
+				soft_question_group_id,
+				description
+			FROM elp_soft_question_group 
+			WHERE
+				 UPPER(description) LIKE UPPER(:description)
+				 AND company_group_id = :company_group_id 
+		]]>	</LOAD_LIST>	
+	<UPDATE>
+		<![CDATA[	
+			UPDATE elp_soft_question_group SET
+				description = :description,
+				modified_by = :modified_by,
+				company_group_id = :company_group_id
+			WHERE
+				soft_question_group_id = :soft_question_group_id
+		]]>
+	</UPDATE>
+	<INSERT>
+			INSERT INTO elp_soft_question_group
+					(			
+				description, 
+				created_by,
+				company_group_id,
+				soft_question_group_id
+					)
+			VALUES
+					(			
+				:description, 
+				:created_by,
+				:company_group_id,
+				:soft_question_group_id
+					)
+	</INSERT>
+	<DELETE>
+			DELETE FROM elp_soft_question_group
+			WHERE
+				soft_question_group_id = :soft_question_group_id
+	</DELETE>
+</SQL> 
+
+
+

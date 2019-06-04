@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema targetNamespace="http://Assurant.Integration.Elita.Schemas.FCIPortal.RequestBody.UpdateSubscriberStatusRequest" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns="http://Assurant.Integration.Elita.Schemas.FCIPortal.RequestBody.UpdateSubscriberStatusRequest" xmlns:b="http://schemas.microsoft.com/BizTalk/2003">
+  <xs:element name="UpdateSubscriberStatusDs">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element name="UpdateSubscriberStatus">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element name="DEALER_CODE" type="xs:string"/>
+              <xs:element name="CERT_NUMBER" type="xs:string"/>
+              <xs:element name="SUBSCRIBER_STATUS" type="xs:string"/>
+              <xs:element name="STATUS_CHANGE_DATE" type="xs:dateTime"/>
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+</xs:schema>

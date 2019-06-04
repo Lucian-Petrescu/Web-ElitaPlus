@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="utf-8" ?>
+
+<!-- ********************** THIS FILE HAS BEEN GENERATED FROM TEMPLATE SQLObject.cst (5/11/2005)********************** -->
+
+<SQL>
+	<LOAD>
+		<![CDATA[	
+			SELECT 
+				company_id,
+				claim_id,
+				coverage_type_id,
+				company_key,
+				claim_number,
+				amount_of_loss,
+				date_of_loss,
+				date_invoice_paid,
+				period_in_months,
+				coverage_type,
+				accounting_date,
+				accounting_mmyyyy,
+				accounting_mmyyyy_paid,
+				created_by,
+				created_date,
+				modified_by,
+				modified_date,
+				ibnr_loss_paid_id
+			FROM elp_ibnr_loss_paid 
+			WHERE
+				ibnr_loss_paid_id = :ibnr_loss_paid_id
+		]]>
+	</LOAD>
+	<LOAD_DATES>
+		<![CDATA[
+			SELECT 
+				DISTINCT elp_ibnr_loss_paid.accounting_date id,
+				to_Char(elp_ibnr_loss_paid.accounting_date,'YYYYMMDD') code,
+				to_Char(elp_ibnr_loss_paid.accounting_date,'MM/DD/YYYY') description
+			FROM 
+				elp_ibnr_loss_paid
+			WHERE 
+				elp_ibnr_loss_paid.company_id = :company_id
+			ORDER BY 
+				elp_ibnr_loss_paid.accounting_date desc		
+		]]>	
+	</LOAD_DATES>	
+	<UPDATE>
+		<![CDATA[	
+			UPDATE elp_ibnr_loss_paid SET
+				company_id = :company_id,
+				claim_id = :claim_id,
+				coverage_type_id = :coverage_type_id,
+				company_key = :company_key,
+				claim_number = :claim_number,
+				amount_of_loss = :amount_of_loss,
+				date_of_loss = :date_of_loss,
+				date_invoice_paid = :date_invoice_paid,
+				period_in_months = :period_in_months,
+				coverage_type = :coverage_type,
+				accounting_date = :accounting_date,
+				accounting_mmyyyy = :accounting_mmyyyy,
+				accounting_mmyyyy_paid = :accounting_mmyyyy_paid,
+				modified_by = :modified_by
+			WHERE
+				ibnr_loss_paid_id = :ibnr_loss_paid_id
+		]]>
+	</UPDATE>
+	<INSERT>
+			INSERT INTO elp_ibnr_loss_paid
+					(			
+				company_id, 
+				claim_id, 
+				coverage_type_id, 
+				company_key, 
+				claim_number, 
+				amount_of_loss, 
+				date_of_loss, 
+				date_invoice_paid, 
+				period_in_months, 
+				coverage_type, 
+				accounting_date, 
+				accounting_mmyyyy, 
+				accounting_mmyyyy_paid, 
+				created_by,
+				ibnr_loss_paid_id
+					)
+			VALUES
+					(			
+				:company_id, 
+				:claim_id, 
+				:coverage_type_id, 
+				:company_key, 
+				:claim_number, 
+				:amount_of_loss, 
+				:date_of_loss, 
+				:date_invoice_paid, 
+				:period_in_months, 
+				:coverage_type, 
+				:accounting_date, 
+				:accounting_mmyyyy, 
+				:accounting_mmyyyy_paid, 
+				:created_by,
+				:ibnr_loss_paid_id
+					)
+	</INSERT>
+	<DELETE>
+			DELETE FROM elp_ibnr_loss_paid
+			WHERE
+				ibnr_loss_paid_id = :ibnr_loss_paid_id
+	</DELETE>
+</SQL> 
+
+

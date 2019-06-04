@@ -1,0 +1,102 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+
+<!-- ********************** THIS FILE HAS BEEN GENERATED FROM TEMPLATE SQLObject.cst (3/14/2017)********************** -->
+
+<SQL>
+  <LOAD>
+    <![CDATA[	
+			SELECT 
+				audit_date,
+				log_source,
+				audit_security_type_code,
+				client_ip_address,
+				ip_address_chain,
+				x509_certificate,
+				user_name,
+				request_url,
+				action_name,
+				created_by,
+				created_date,
+				modified_by,
+				modified_date,
+				audit_security_log_id
+			FROM elp_audit_security_logs 
+			WHERE
+				audit_security_log_id = :audit_security_log_id
+		]]>
+  </LOAD>
+  <LOAD_LIST>
+      <![CDATA[		
+      SELECT
+        --ASL.AUDIT_SECURITY_LOG_ID id,
+        ASL.AUDIT_DATE,
+        Elita.Getdescriptionfromitemextcode(ASL.LOG_SOURCE, :language_id) as LOG_SOURCE,       
+        Elita.Getdescriptionfromitemextcode(ASL.AUDIT_SECURITY_TYPE_CODE, :language_id1) as AUDIT_SECURITY_TYPE_CODE,
+        ASL.CLIENT_IP_ADDRESS,
+        ASL.IP_ADDRESS_CHAIN,
+        ASL.X509_CERTIFICATE,
+        ASL.USER_NAME,
+        ASL.REQUEST_URL,
+        ASL.ACTION_NAME
+      FROM ELP_AUDIT_SECURITY_LOGS ASL
+      Where
+      --dynamic_where_clause
+      order by AUDIT_DATE, LOG_SOURCE, AUDIT_SECURITY_TYPE_CODE, CLIENT_IP_ADDRESS, USER_NAME desc
+
+		]]>
+  </LOAD_LIST>
+  <UPDATE>
+    <![CDATA[	
+			UPDATE elp_audit_security_logs SET
+				audit_date = :audit_date,
+				log_source = :log_source,
+				audit_security_type_code = :audit_security_type_code,
+				client_ip_address = :client_ip_address,
+				ip_address_chain = :ip_address_chain,
+				x509_certificate = :x509_certificate,
+				user_name = :user_name,
+				request_url = :request_url,
+				action_name = :action_name,
+				modified_by = :modified_by
+			WHERE
+				audit_security_log_id = :audit_security_log_id
+		]]>
+  </UPDATE>
+  <INSERT>
+    INSERT INTO elp_audit_security_logs
+    (
+    audit_date,
+    log_source,
+    audit_security_type_code,
+    client_ip_address,
+    ip_address_chain,
+    x509_certificate,
+    user_name,
+    request_url,
+    action_name,
+    created_by,
+    audit_security_log_id
+    )
+    VALUES
+    (
+    :audit_date,
+    :log_source,
+    :audit_security_type_code,
+    :client_ip_address,
+    :ip_address_chain,
+    :x509_certificate,
+    :user_name,
+    :request_url,
+    :action_name,
+    :created_by,
+    :audit_security_log_id
+    )
+  </INSERT>
+  <DELETE>
+    DELETE FROM elp_audit_security_logs
+    WHERE
+    audit_security_log_id = :audit_security_log_id
+  </DELETE>
+</SQL>
+
+

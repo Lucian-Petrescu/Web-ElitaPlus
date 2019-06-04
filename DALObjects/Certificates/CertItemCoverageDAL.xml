@@ -1,0 +1,571 @@
+<?xml version="1.0" encoding="utf-8" ?>
+
+<!-- ********************** THIS FILE HAS BEEN GENERATED FROM TEMPLATE SQLObject.cst (10/13/2004)********************** -->
+
+<SQL>
+  <LOAD>
+    <![CDATA[	
+			SELECT 
+				cic.cert_item_id,
+				cic.coverage_type_id,
+				cic.original_region_id,
+				cic.begin_date,
+				cic.end_date,
+				cic.liability_limits,
+				cic.deductible,
+        cic.deductible_percent,    
+				cic.gross_amt_received,
+				cic.premium_written,
+				cic.original_premium,
+				cic.loss_cost,
+				cic.commission,
+				cic.admin_expense,
+				cic.marketing_expense,
+				cic.other,
+				cic.sales_tax,
+				cic.tax1,
+				cic.tax2,
+				cic.tax3,
+				cic.tax4,
+				cic.tax5,
+				cic.tax6,
+				cic.mtd_payments,
+				cic.ytd_payments,
+				cic.assurant_gwp,
+				cic.markup_commission,
+				cic.markup_commission_vat,
+				cic.created_by,
+				cic.created_date,
+				cic.modified_by,
+				cic.modified_date,
+				cic.cert_item_coverage_id,
+				cic.cert_id,
+				cic.dealer_discount_amt,
+				cic.dealer_discount_percent,
+				cic.is_claim_allowed,
+				cic.is_discount,
+				cic.repair_discount_pct,
+				cic.replacement_discount_pct,
+        cic.company_id,
+        cic.method_of_repair_id,
+        cic.deductible_based_on_id,
+        cic.Coverage_Duration,
+        cic.Renewal_Date,
+        cic.No_of_Renewals,
+        nvl(cic.coverage_liability_limit,0) as coverage_liability_limit,
+        CASE when nvl(cic.coverage_liability_limit,0) > 0 then elp_claims.CalcRemainCovLiabilityLimit(cic.cert_item_coverage_id,null)
+         else null
+        END as Cov_Remain_Liability_Limit,
+        cic.reinsurance_status_id,
+        cic.reinsurance_reject_reason,
+        cic.deductible_expression_id
+			FROM elp_cert_item_coverage cic
+			WHERE
+				cert_item_coverage_id = :cert_item_coverage_id
+		]]>
+  </LOAD>
+  <LOAD_LIST>
+    SELECT 	cic.cert_item_coverage_id,
+    rawtohex(cic.cert_item_coverage_id) cert_item_coverage_id_hex,
+    rt.description risk_type_description,
+    cic.begin_date,
+    cic.end_date,
+    t.translation coverage_type_description,
+    cic.liability_limits,
+    cic.deductible,
+    cic.repair_discount_pct,
+    cic.deductible_percent,
+    cic.replacement_discount_pct,
+    cic.method_of_repair_id,
+    cic.deductible_based_on_id,
+    cic.sequence_number as sequence,
+    ci.cert_item_id,
+    i.code as CoverageCode,
+    cic.Coverage_Duration,
+    cic.Renewal_Date,
+    cic.No_of_Renewals,
+    cic.deductible_expression_id
+    FROM 		elp_cert c,
+    elp_cert_item ci,
+    elp_cert_item_coverage cic,
+    elp_risk_type rt,
+    elp_list l,
+    elp_list_item i,
+    elp_dict_item_translation t,
+    elp_language lang
+    WHERE
+    c.cert_id = :cert_id
+    AND c.cert_id = ci.cert_id
+    AND ci.cert_item_id = cic.cert_item_id
+    AND ci.risk_type_id = rt.risk_type_id
+    AND i.list_id = l.list_id
+    AND	i.dict_item_id = t.dict_item_id
+    AND t.language_id = lang.language_id
+    AND lang.language_id = :language_id
+    AND l.code = 'CTYP'
+    AND i.list_item_id = cic.coverage_type_id
+    order by cic.sequence_number, getenglishdescfromlistitem(coverage_type_id)
+    
+  </LOAD_LIST>
+  <LOAD_COV_PRD_SPLIT_WARR>
+    SELECT 	cic.cert_item_coverage_id,
+    rt.description risk_type_description,
+    cic.begin_date,
+    cic.end_date,
+    t.translation coverage_type_description,
+    cic.liability_limits,
+    cic.deductible,
+    cic.repair_discount_pct,
+    cic.deductible_percent,
+    cic.replacement_discount_pct,
+    cic.method_of_repair_id,
+    cic.deductible_based_on_id,
+    cic.deductible_expression_id
+    FROM elp_cert c,
+    elp_cert_item ci,
+    elp_cert_item_coverage cic,
+    elp_product_code pc,
+    elp_risk_type rt,
+    elp_list l,
+    elp_list_item i,
+    elp_dict_item_translation t,
+    elp_language lang
+    WHERE
+    c.cert_id = :cert_id
+    AND c.product_code = pc.product_code
+    AND c.dealer_id = pc.dealer_id
+    AND elita.GetYesNo(pc.split_warranty_id)='Y'
+    AND c.cert_id = ci.cert_id
+    AND ci.cert_item_id = cic.cert_item_id
+    AND ci.risk_type_id = rt.risk_type_id
+    AND i.list_id = l.list_id
+    AND	i.dict_item_id = t.dict_item_id
+    AND t.language_id = lang.language_id
+    AND lang.language_id = :language_id
+    AND l.code = 'CTYP'
+    AND i.list_item_id = cic.coverage_type_id
+    order by risk_type_description, i.code
+  </LOAD_COV_PRD_SPLIT_WARR>
+  <LOAD_ELIGIBLE_COVERAGES>
+    SELECT 	cic.cert_item_coverage_id,
+    rt.description risk_type_description,
+    cic.begin_date,
+    cic.end_date,
+    t.translation coverage_type_description,
+    cic.liability_limits,
+    cic.deductible,
+    cic.repair_discount_pct,
+    cic.deductible_percent,
+    cic.replacement_discount_pct,
+    cic.method_of_repair_id,
+    cic.deductible_based_on_id,
+    cic.sequence_number as sequence
+    FROM 		elp_cert c,
+    elp_cert_item ci,
+    elp_cert_item_coverage cic,
+    elp_risk_type rt,
+    elp_list l,
+    elp_list_item i,
+    elp_dict_item_translation t,
+    elp_language lang
+    WHERE
+    c.cert_id = :cert_id
+    AND c.cert_id = ci.cert_id
+    AND ci.cert_item_id = cic.cert_item_id
+    AND ci.risk_type_id = rt.risk_type_id
+    AND i.list_id = l.list_id
+    AND	i.dict_item_id = t.dict_item_id
+    AND t.language_id = lang.language_id
+    AND lang.language_id = :language_id
+    AND l.code = 'CTYP'
+    AND i.list_item_id = cic.coverage_type_id
+    AND :loss_date BETWEEN cic.begin_date AND cic.end_date
+    order by risk_type_description, i.code
+  </LOAD_ELIGIBLE_COVERAGES>
+  <LOAD_LIST_MAIN_ITEM>
+    SELECT 	cic.cert_item_coverage_id,
+    rt.description risk_type_description,
+    cic.begin_date,
+    cic.end_date,
+    t.translation coverage_type_description,
+    cic.liability_limits,
+    cic.deductible,
+    cic.repair_discount_pct,
+    cic.deductible_percent,
+    cic.replacement_discount_pct,
+    cic.method_of_repair_id,
+    cic.deductible_based_on_id
+    FROM 		elp_cert c,
+    elp_cert_item ci,
+    elp_cert_item_coverage cic,
+    elp_risk_type rt,
+    elp_list l,
+    elp_list_item i,
+    elp_dict_item_translation t,
+    elp_language lang
+    WHERE
+    c.cert_id = :cert_id
+    AND c.cert_id = ci.cert_id
+    AND ci.cert_item_id = cic.cert_item_id
+    AND ci.item_number = 1
+    AND ci.risk_type_id = rt.risk_type_id
+    AND i.list_id = l.list_id
+    AND	i.dict_item_id = t.dict_item_id
+    AND t.language_id = lang.language_id
+    AND lang.language_id = :language_id
+    AND l.code = 'CTYP'
+    AND i.list_item_id = cic.coverage_type_id
+    order by risk_type_description, i.code
+  </LOAD_LIST_MAIN_ITEM>
+  <!--<GET_TOTALS>
+		SELECT
+			cert_item_id,
+			sum(gross_amt_received) as total_gross_amt_received,
+			sum(premium_written) as total_premium_written,
+			sum(original_premium) as total_original_premium,
+			sum(loss_cost) as total_loss_cost,
+			sum(commission) as total_comission,
+			sum(admin_expense) as total_admin_expense,
+			sum(marketing_expense) as total_marketing_expense,
+			sum(other) as total_other,
+			sum(sales_tax) as total_sales_tax,
+			sum(mtd_payments) as total_mtd_payments,
+			sum(ytd_payments) as total_ytd_payments
+		FROM ELITA.ELP_CERT_ITEM_COVERAGE
+		WHERE cert_item_id = :cert_item_id
+		GROUP BY CERT_ITEM_ID
+	</GET_TOTALS>
+	-->
+  <UPDATE>
+    <![CDATA[	
+			UPDATE elp_cert_item_coverage SET
+				cert_item_id = :cert_item_id,
+				coverage_type_id = :coverage_type_id,
+				original_region_id = :original_region_id,
+				begin_date = :begin_date,
+				end_date = :end_date,
+				liability_limits = :liability_limits,
+				deductible = :deductible,
+        deductible_percent = :deductible_percent,    
+				gross_amt_received = :gross_amt_received,
+				premium_written = :premium_written,
+				original_premium = :original_premium,
+				loss_cost = :loss_cost,
+				commission = :commission,
+				admin_expense = :admin_expense,
+				marketing_expense = :marketing_expense,
+				other = :other,
+				sales_tax = :sales_tax,
+				tax1 = :tax1,
+				tax2 = :tax2,
+				tax3 = :tax3,
+				tax4 = :tax4,
+				tax5 = :tax5,
+				tax6 = :tax6,
+				mtd_payments = :mtd_payments,
+				ytd_payments = :ytd_payments,
+				assurant_gwp = :assurant_gwp,
+				markup_commission = :markup_commission,
+				modified_by = :modified_by,
+				cert_id = :cert_id,
+				replacement_discount_pct = :replacement_discount_pct,
+				markup_commission_vat = :markup_commission_vat,
+        company_id = :company_id,
+        method_of_repair_id = :method_of_repair_id,
+        deductible_based_on_id = :deductible_based_on_id
+			WHERE
+				cert_item_coverage_id = :cert_item_coverage_id
+		]]>
+  </UPDATE>
+  <INSERT>
+    INSERT INTO elp_cert_item_coverage
+    (
+    cert_item_id,
+    coverage_type_id,
+    original_region_id,
+    begin_date,
+    end_date,
+    liability_limits,
+    deductible,
+    deductible_percent,
+    gross_amt_received,
+    premium_written,
+    original_premium,
+    loss_cost,
+    commission,
+    admin_expense,
+    marketing_expense,
+    other,
+    sales_tax,
+    tax1,
+    tax2,
+    tax3,
+    tax4,
+    tax5,
+    tax6,
+    mtd_payments,
+    ytd_payments,
+    assurant_gwp,
+    markup_commission,
+    created_by,
+    cert_item_coverage_id,
+    cert_id,
+    repair_discount_pct,
+    replacement_discount_pct,
+    markup_commission_vat,
+    company_id,
+    method_of_repair_id,
+    deductible_based_on_id
+    )
+    VALUES
+    (
+    :cert_item_id,
+    :coverage_type_id,
+    :original_region_id,
+    :begin_date,
+    :end_date,
+    :liability_limits,
+    :deductible,
+    :deductible_percent,
+    :gross_amt_received,
+    :premium_written,
+    :original_premium,
+    :loss_cost,
+    :commission,
+    :admin_expense,
+    :marketing_expense,
+    :other,
+    :sales_tax,
+    :tax1,
+    :tax2,
+    :tax3,
+    :tax4,
+    :tax5,
+    :tax6,
+    :mtd_payments,
+    :ytd_payments,
+    :assurant_gwp,
+    :markup_commission,
+    :created_by,
+    :cert_item_coverage_id,
+    :cert_id,
+    :repair_discount_pct,
+    :replacement_discount_pct,
+    :markup_commission_vat,
+    :company_id,
+    :method_of_repair_id,
+    :deductible_based_on_id
+    )
+  </INSERT>
+  <DELETE>
+    DELETE FROM elp_cert_item_coverage
+    WHERE
+    cert_item_coverage_id = :cert_item_coverage_id
+  </DELETE>
+  <CLAIMS>
+    <![CDATA[
+			SELECT 
+				claim_id
+			FROM 
+				elp_claim
+			WHERE 
+				cert_item_coverage_id = :cert_item_coverage_id
+				AND status_code <> 'C'
+		]]>
+  </CLAIMS>
+  <GET_CLAIM_WAITING_PERIOD>
+    elp_claims.Get_Claim_Waiting_Period
+  </GET_CLAIM_WAITING_PERIOD>
+  <ALL_CLAIMS>
+    <![CDATA[
+			SELECT 
+				claim_id
+			FROM 
+				elp_claim
+			WHERE 
+				cert_item_coverage_id = :cert_item_coverage_id
+		]]>
+  </ALL_CLAIMS>
+  <LOAD_LIST_FOR_CERTIFICATE>
+    <![CDATA[	
+			SELECT 
+				cert_item_id,
+				coverage_type_id,
+				original_region_id,
+				begin_date,
+				end_date,
+				liability_limits,
+				deductible,
+        deductible_percent,    
+				gross_amt_received,
+				premium_written,
+				original_premium,
+				loss_cost,
+				commission,
+				admin_expense,
+				marketing_expense,
+				other,
+				sales_tax,
+				tax1,
+				tax2,
+				tax3,
+				tax4,
+				tax5,
+				tax6,
+				mtd_payments,
+				ytd_payments,
+				assurant_gwp,
+				markup_commission,
+				created_by,
+				created_date,
+				modified_by,
+				modified_date,
+				cert_item_coverage_id,
+				cert_id,
+				repair_discount_pct,
+				replacement_discount_pct,
+				markup_commission_vat,
+        company_id,
+        method_of_repair_id,
+        deductible_based_on_id
+			FROM elp_cert_item_coverage 
+			WHERE
+				cert_id = :cert_id
+		]]>
+  </LOAD_LIST_FOR_CERTIFICATE>
+  <LOAD_LIST_FOR_GALAXY_CERTIFICATE>
+    <![CDATA[
+          select getcodefromlistitem(cic.coverage_type_id) as coverage_type_code,
+             dit.translation as coverage_name,
+             begin_date,
+             end_date,
+             liability_limits,
+             deductible,
+             deductible_percent,
+             loss_cost,
+             cic.created_by,
+             cic.created_date,
+             cic.modified_by,
+             cic.modified_date,
+             dealer_discount_amt,
+             dealer_discount_percent,
+             getyesno(is_claim_allowed) as is_claim_allowed,
+             getyesno(is_discount) as is_discount,
+             cic.coverage_km_mi as term_km_mi,
+             cl.COVERAGE_KM_MI as mfg_km_mi,
+             cl.COVERAGE_MONTHS as mfg_months
+          from elp_cert_item_coverage cic
+          inner join elp_cert c on c.cert_id = cic.cert_id
+          inner join elp_vsc_model m on c.model_id = m.model_id
+          inner join elp_vsc_coverage_limit cl on cl.coverage_type_id = cic.coverage_type_id and m.COVERAGE_LIMIT_CODE = cl.COVERAGE_LIMIT_CODE
+          inner join elp_company com on com.company_group_id = cl.company_group_id and com.company_id = c.company_id
+          inner join elp_list_item li on li.list_item_id = cic.coverage_type_id
+          inner join elp_dict_item_translation dit on li.dict_item_id = dit.dict_item_id
+          inner join elp_language l on l.language_id = dit.language_id and l.language_id = com.language_id
+          where c.cert_id= hextoraw(:cert_id)
+			    and c.company_id = hextoraw(:company_id)
+		]]>
+  </LOAD_LIST_FOR_GALAXY_CERTIFICATE>
+  <LOAD_LIST_FOR_GALAXY_CLAIM>
+    <![CDATA[	
+			select
+				getcodefromlistitem(coverage_type_id) as coverage_type_code,
+				begin_date,
+				end_date,
+				liability_limits,
+				deductible,
+				deductible_percent,
+				loss_cost,
+				created_by,
+				created_date,
+				modified_by,
+				modified_date,
+				dealer_discount_amt,
+				dealer_discount_percent,
+				getyesno(is_claim_allowed) as is_claim_allowed,
+				getyesno(is_discount) as is_discount,
+        cert_item_coverage_id,
+        coverage_km_mi
+			from elp_cert_item_coverage
+			where  cert_id= hextoraw(:cert_id)
+					and company_id = hextoraw(:company_id)
+		]]>
+  </LOAD_LIST_FOR_GALAXY_CLAIM>
+  <LOAD_LIST_FOR_GALAXY_CLAIM_UPDATE>
+    <![CDATA[	
+			select
+				getcodefromlistitem(i.coverage_type_id) as coverage_type_code,
+				i.begin_date,
+				i.end_date,
+				i.liability_limits,
+				i.deductible,
+				i.deductible_percent,
+				i.loss_cost,
+				i.created_by,
+				i.created_date,
+				i.modified_by,
+				i.modified_date,
+				i.dealer_discount_amt,
+				i.dealer_discount_percent,
+				getyesno(i.is_claim_allowed) as is_claim_allowed,
+				getyesno(i.is_discount) as is_discount,
+        i.cert_item_coverage_id,
+        t.customer_name,
+        n.company_id   
+			from elp_cert_item_coverage i, elp_cert_item n, elp_cert t
+			where t.cert_id = n.cert_id 
+				and  n.cert_item_id = i.cert_item_id
+				and n.cert_id in
+			(
+				select m.cert_id
+				from elp_cert_item_coverage j, elp_claim c, elp_cert_item m
+				where   m.cert_item_id = j.cert_item_id
+					and j.cert_item_coverage_id = c.cert_item_coverage_id
+					and c.master_claim_number = :master_claim_number
+					and c.company_id = hextoraw(:company_id)
+				)
+		]]>
+  </LOAD_LIST_FOR_GALAXY_CLAIM_UPDATE>
+  <LOAD_CLAIM_COVERAGE_TYPE>
+    <![CDATA[	
+	SELECT 	cic.cert_item_coverage_id,
+					rt.description risk_type_description, 
+					cic.begin_date, 
+					cic.end_date,
+					t.translation coverage_type_description,
+          cic.coverage_type_id coverage_type_id,
+          i.code coverage_type_code          
+	FROM 		elp_cert c, 
+					elp_cert_item ci, 
+					elp_cert_item_coverage cic, 
+					elp_risk_type rt,
+					elp_list l,
+					elp_list_item i,
+					elp_dict_item_translation t,
+					elp_language lang          
+	WHERE 
+					c.cert_id = :cert_id
+				AND c.cert_id = ci.cert_id
+				AND ci.cert_item_id = cic.cert_item_id        
+				AND ci.risk_type_id = rt.risk_type_id
+				AND i.list_id = l.list_id
+				AND	i.dict_item_id = t.dict_item_id
+				AND t.language_id = lang.language_id
+				AND lang.language_id = :language_id
+				AND l.code = 'CTYP'
+				AND i.list_item_id = cic.coverage_type_id
+				AND cic.cert_item_coverage_id <> :cert_item_coverage_id
+				AND :loss_date between cic.begin_date and cic.end_date
+        AND Not (:claim_status in ('D', 'C'))
+				AND :invoice_process_date = 'Null'
+        AND nvl(GetCodeFromListItem(cic.is_claim_allowed),'Y') = 'Y'
+				order by risk_type_description, i.code 
+    ]]>
+  </LOAD_CLAIM_COVERAGE_TYPE>
+  <LOAD_COVERAGE_CURRENT_PRODUCT_CODE>
+    elita.elp_tbl_certificate.get_cert_coverage    
+  </LOAD_COVERAGE_CURRENT_PRODUCT_CODE>
+
+</SQL>
+
+

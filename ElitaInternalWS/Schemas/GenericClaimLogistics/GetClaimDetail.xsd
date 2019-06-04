@@ -1,0 +1,32 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema">
+  <xs:element name="GetClaimDetailDs">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element name="GetClaimDetail">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element name="Claim_ID" type="xs:string" minOccurs="0" maxOccurs="1" />
+              <xs:element name="Claim_Number" type="xs:string" minOccurs="0" maxOccurs="1" />
+              <xs:element name="Company_Code" type="xs:string" minOccurs="0" maxOccurs="1" />
+              <xs:element name="For_SVC_Use" minOccurs="1" maxOccurs="1">
+                <xs:simpleType>
+                  <xs:restriction base="xs:string">
+                    <xs:pattern value="Y|N" />
+                  </xs:restriction>
+                </xs:simpleType>
+              </xs:element>
+              <xs:element name="Include_Part_Descriptions" minOccurs="0" maxOccurs="1">
+                <xs:simpleType>
+                  <xs:restriction base="xs:string">
+                    <xs:pattern value="Y|N" />
+                  </xs:restriction>
+                </xs:simpleType>
+              </xs:element>              
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+</xs:schema>

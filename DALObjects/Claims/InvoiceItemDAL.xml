@@ -1,0 +1,109 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+
+<!-- ********************** THIS FILE HAS BEEN GENERATED FROM TEMPLATE SQLObject.cst (2/21/2013)********************** -->
+
+<SQL>
+  <LOAD>
+    <![CDATA[	
+			SELECT 
+				invoice_id,
+				claim_authorization_id,
+				line_item_number,
+				vendor_sku,
+				vendor_sku_description,
+				amount,
+				adjustment_reason_id,
+				service_class_id,
+				service_type_id,
+				service_level_id,
+				created_date,
+				created_by,
+				modified_date,
+				modified_by,
+				invoice_item_id
+			FROM elp_invoice_item 
+			WHERE
+				invoice_item_id = hextoraw(:invoice_item_id)
+		]]>
+  </LOAD>
+  <LOAD_LIST>
+    <![CDATA[	
+			SELECT 
+				invoice_id,
+				claim_authorization_id,
+				line_item_number,
+				vendor_sku,
+				vendor_sku_description,
+				amount,
+				adjustment_reason_id,
+				service_class_id,
+				service_type_id,
+				service_level_id,
+				created_date,
+				created_by,
+				modified_date,
+				modified_by,
+				invoice_item_id
+			FROM elp_invoice_item 
+			WHERE
+				invoice_id = hextoraw(:invoice_id)
+		]]>
+  </LOAD_LIST>
+  <UPDATE>
+    <![CDATA[	
+			UPDATE elp_invoice_item SET
+				invoice_id = :invoice_id,
+				claim_authorization_id = :claim_authorization_id,
+				line_item_number = :line_item_number,
+				vendor_sku = :vendor_sku,
+				vendor_sku_description = :vendor_sku_description,
+				amount = :amount,
+				adjustment_reason_id = :adjustment_reason_id,
+				service_class_id = :service_class_id,
+				service_type_id = :service_type_id,
+				service_level_id = :service_level_id,
+				modified_by = :modified_by
+			WHERE
+				invoice_item_id = hextoraw(:invoice_item_id)
+		]]>
+  </UPDATE>
+  <INSERT>
+    INSERT INTO elp_invoice_item
+    (
+    invoice_id,
+    claim_authorization_id,
+    line_item_number,
+    vendor_sku,
+    vendor_sku_description,
+    amount,
+    adjustment_reason_id,
+    service_class_id,
+    service_type_id,
+    service_level_id,
+    created_by,
+    invoice_item_id
+    )
+    VALUES
+    (
+    :invoice_id,
+    :claim_authorization_id,
+    :line_item_number,
+    :vendor_sku,
+    :vendor_sku_description,
+    :amount,
+    :adjustment_reason_id,
+    :service_class_id,
+    :service_type_id,
+    :service_level_id,
+    :created_by,
+    :invoice_item_id
+    )
+  </INSERT>
+  <DELETE>
+    DELETE FROM elp_invoice_item
+    WHERE
+    invoice_item_id = hextoraw(:invoice_item_id)
+  </DELETE>
+</SQL>
+
+

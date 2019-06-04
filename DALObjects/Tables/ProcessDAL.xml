@@ -1,0 +1,74 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+
+<!-- ********************** THIS FILE HAS BEEN GENERATED FROM TEMPLATE SQLObject.cst (6/1/2012)********************** -->
+
+<SQL>
+    <LOAD>
+        <![CDATA[	
+			SELECT 
+				code,
+				description,
+				effective,
+				expiration,
+				created_date,
+				created_by,
+				modified_date,
+				modified_by,
+				process_id
+			FROM elp_process 
+			WHERE
+				process_id = :process_id
+		]]>
+    </LOAD>
+    <LOAD_LIST>
+        <![CDATA[	
+      SELECT
+        PROCESS_ID,
+        CODE,
+        DESCRIPTION,    
+		to_Char(EFFECTIVE,'DD-Mon-YYYY HH24:MI:SS') AS EFFECTIVE,
+        to_Char(EXPIRATION,'DD-Mon-YYYY HH24:MI:SS') AS EXPIRATION
+	  FROM
+        elp_Process        
+      ORDER BY 
+        Code, Expiration  
+		]]>
+    </LOAD_LIST>
+    <UPDATE>
+        <![CDATA[	
+			UPDATE elp_process SET
+				code = :code,
+				description = :description,
+				effective = :effective,
+				expiration = :expiration,
+				modified_by = :modified_by
+			WHERE
+				process_id = :process_id
+		]]>
+    </UPDATE>
+    <INSERT>
+        INSERT INTO elp_process
+        (
+        code,
+        description,
+        effective,
+        expiration,
+        created_by,
+        process_id
+        )
+        VALUES
+        (
+        :code,
+        :description,
+        :effective,
+        :expiration,
+        :created_by,
+        :process_id
+        )
+    </INSERT>
+    <DELETE>
+        DELETE FROM elp_process
+        WHERE
+        process_id = :process_id
+    </DELETE>
+</SQL>

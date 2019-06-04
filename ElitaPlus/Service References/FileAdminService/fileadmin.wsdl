@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="utf-8"?>
+<wsdl:definitions xmlns:wsap="http://schemas.xmlsoap.org/ws/2004/08/addressing/policy" xmlns:wsa10="http://www.w3.org/2005/08/addressing" xmlns:tns="http://assurant.com/Elita/OrderGateway" xmlns:msc="http://schemas.microsoft.com/ws/2005/12/wsdl/contract" xmlns:soapenc="http://schemas.xmlsoap.org/soap/encoding/" xmlns:wsx="http://schemas.xmlsoap.org/ws/2004/09/mex" xmlns:wsp="http://schemas.xmlsoap.org/ws/2004/09/policy" xmlns:wsam="http://www.w3.org/2007/05/addressing/metadata" xmlns:wsa="http://schemas.xmlsoap.org/ws/2004/08/addressing" xmlns:wsaw="http://www.w3.org/2006/05/addressing/wsdl" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:soap12="http://schemas.xmlsoap.org/wsdl/soap12/" xmlns:wsu="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-utility-1.0.xsd" xmlns:xsd="http://www.w3.org/2001/XMLSchema" targetNamespace="http://assurant.com/Elita/OrderGateway" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">
+  <wsdl:types>
+    <xsd:schema targetNamespace="http://assurant.com/Elita/OrderGateway/Imports">
+      <xsd:import schemaLocation="http://sf-au-southeast-mod.assurant.com/ElitaClaimFulfillment/modl-p1/WebAppGateway/fileadmin?xsd=xsd0" namespace="http://assurant.com/Elita/OrderGateway" />
+      <xsd:import schemaLocation="http://sf-au-southeast-mod.assurant.com/ElitaClaimFulfillment/modl-p1/WebAppGateway/fileadmin?xsd=xsd1" namespace="http://schemas.microsoft.com/2003/10/Serialization/" />
+      <xsd:import schemaLocation="http://sf-au-southeast-mod.assurant.com/ElitaClaimFulfillment/modl-p1/WebAppGateway/fileadmin?xsd=xsd2" namespace="http://assurant.com/Elita/OrderGateway/Data" />
+      <xsd:import schemaLocation="http://sf-au-southeast-mod.assurant.com/ElitaClaimFulfillment/modl-p1/WebAppGateway/fileadmin?xsd=xsd3" namespace="http://schemas.datacontract.org/2004/07/Assurant.Elita.ClaimFulfillment.OrderGateway.FileIngress" />
+      <xsd:import schemaLocation="http://sf-au-southeast-mod.assurant.com/ElitaClaimFulfillment/modl-p1/WebAppGateway/fileadmin?xsd=xsd4" namespace="http://schemas.datacontract.org/2004/07/Assurant.Elita.ClaimFulfillment.OrderGateway.FileIngress.Types" />
+      <xsd:import schemaLocation="http://sf-au-southeast-mod.assurant.com/ElitaClaimFulfillment/modl-p1/WebAppGateway/fileadmin?xsd=xsd5" namespace="http://schemas.datacontract.org/2004/07/Assurant.Elita.ClaimFulfillment.OrderGateway.FileIngress.DataFiles" />
+      <xsd:import schemaLocation="http://sf-au-southeast-mod.assurant.com/ElitaClaimFulfillment/modl-p1/WebAppGateway/fileadmin?xsd=xsd6" namespace="http://schemas.microsoft.com/2003/10/Serialization/Arrays" />
+      <xsd:import schemaLocation="http://sf-au-southeast-mod.assurant.com/ElitaClaimFulfillment/modl-p1/WebAppGateway/fileadmin?xsd=xsd7" namespace="http://schemas.datacontract.org/2004/07/FluentValidation.Results" />
+      <xsd:import schemaLocation="http://sf-au-southeast-mod.assurant.com/ElitaClaimFulfillment/modl-p1/WebAppGateway/fileadmin?xsd=xsd8" namespace="http://schemas.datacontract.org/2004/07/FluentValidation" />
+    </xsd:schema>
+  </wsdl:types>
+  <wsdl:message name="FileAdmin_GetFiles_InputMessage">
+    <wsdl:part name="parameters" element="tns:GetFiles" />
+  </wsdl:message>
+  <wsdl:message name="FileAdmin_GetFiles_OutputMessage">
+    <wsdl:part name="parameters" element="tns:GetFilesResponse" />
+  </wsdl:message>
+  <wsdl:message name="FileAdmin_GetFileRecords_InputMessage">
+    <wsdl:part name="parameters" element="tns:GetFileRecords" />
+  </wsdl:message>
+  <wsdl:message name="FileAdmin_GetFileRecords_OutputMessage">
+    <wsdl:part name="parameters" element="tns:GetFileRecordsResponse" />
+  </wsdl:message>
+  <wsdl:message name="FileAdmin_SaveRecords_InputMessage">
+    <wsdl:part name="parameters" element="tns:SaveRecords" />
+  </wsdl:message>
+  <wsdl:message name="FileAdmin_SaveRecords_OutputMessage">
+    <wsdl:part name="parameters" element="tns:SaveRecordsResponse" />
+  </wsdl:message>
+  <wsdl:message name="FileAdmin_ValidateFiles_InputMessage">
+    <wsdl:part name="parameters" element="tns:ValidateFiles" />
+  </wsdl:message>
+  <wsdl:message name="FileAdmin_ValidateFiles_OutputMessage">
+    <wsdl:part name="parameters" element="tns:ValidateFilesResponse" />
+  </wsdl:message>
+  <wsdl:message name="FileAdmin_QueueFiles_InputMessage">
+    <wsdl:part name="parameters" element="tns:QueueFiles" />
+  </wsdl:message>
+  <wsdl:message name="FileAdmin_QueueFiles_OutputMessage">
+    <wsdl:part name="parameters" element="tns:QueueFilesResponse" />
+  </wsdl:message>
+  <wsdl:message name="FileAdmin_ProcessFiles_InputMessage">
+    <wsdl:part name="parameters" element="tns:ProcessFiles" />
+  </wsdl:message>
+  <wsdl:message name="FileAdmin_ProcessFiles_OutputMessage">
+    <wsdl:part name="parameters" element="tns:ProcessFilesResponse" />
+  </wsdl:message>
+  <wsdl:portType name="FileAdmin">
+    <wsdl:operation name="GetFiles">
+      <wsdl:input wsaw:Action="http://assurant.com/Elita/OrderGateway/FileAdmin/GetFiles" message="tns:FileAdmin_GetFiles_InputMessage" />
+      <wsdl:output wsaw:Action="http://assurant.com/Elita/OrderGateway/FileAdmin/GetFilesResponse" message="tns:FileAdmin_GetFiles_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="GetFileRecords">
+      <wsdl:input wsaw:Action="http://assurant.com/Elita/OrderGateway/FileAdmin/GetFileRecords" message="tns:FileAdmin_GetFileRecords_InputMessage" />
+      <wsdl:output wsaw:Action="http://assurant.com/Elita/OrderGateway/FileAdmin/GetFileRecordsResponse" message="tns:FileAdmin_GetFileRecords_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="SaveRecords">
+      <wsdl:input wsaw:Action="http://assurant.com/Elita/OrderGateway/FileAdmin/SaveRecords" message="tns:FileAdmin_SaveRecords_InputMessage" />
+      <wsdl:output wsaw:Action="http://assurant.com/Elita/OrderGateway/FileAdmin/SaveRecordsResponse" message="tns:FileAdmin_SaveRecords_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="ValidateFiles">
+      <wsdl:input wsaw:Action="http://assurant.com/Elita/OrderGateway/FileAdmin/ValidateFiles" message="tns:FileAdmin_ValidateFiles_InputMessage" />
+      <wsdl:output wsaw:Action="http://assurant.com/Elita/OrderGateway/FileAdmin/ValidateFilesResponse" message="tns:FileAdmin_ValidateFiles_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="QueueFiles">
+      <wsdl:input wsaw:Action="http://assurant.com/Elita/OrderGateway/FileAdmin/QueueFiles" message="tns:FileAdmin_QueueFiles_InputMessage" />
+      <wsdl:output wsaw:Action="http://assurant.com/Elita/OrderGateway/FileAdmin/QueueFilesResponse" message="tns:FileAdmin_QueueFiles_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="ProcessFiles">
+      <wsdl:input wsaw:Action="http://assurant.com/Elita/OrderGateway/FileAdmin/ProcessFiles" message="tns:FileAdmin_ProcessFiles_InputMessage" />
+      <wsdl:output wsaw:Action="http://assurant.com/Elita/OrderGateway/FileAdmin/ProcessFilesResponse" message="tns:FileAdmin_ProcessFiles_OutputMessage" />
+    </wsdl:operation>
+  </wsdl:portType>
+</wsdl:definitions>

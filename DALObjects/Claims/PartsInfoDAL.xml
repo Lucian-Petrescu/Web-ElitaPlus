@@ -1,0 +1,127 @@
+<?xml version="1.0" encoding="utf-8" ?>
+
+<!-- ********************** THIS FILE HAS BEEN GENERATED FROM TEMPLATE SQLObject.cst (1/18/2005)********************** -->
+
+<SQL>
+  <LOAD>
+    <![CDATA[	
+			SELECT 
+				claim_id,
+				parts_description_id,
+				cost,
+				created_by,
+				created_date,
+				modified_by,
+				modified_date,
+				parts_info_id,
+        in_stock_id
+			FROM elp_parts_info 
+			WHERE
+				parts_info_id = :parts_info_id
+		]]>
+  </LOAD>
+  <LOAD_LIST>
+    <![CDATA[	
+				SELECT
+				parts_info_id,
+				parts.description,
+				tran.translation as in_stock_description,
+				cost,
+				info.claim_id,
+				info.parts_description_id,
+				info.in_stock_id,
+        parts.code,
+        item.code as in_stock_code
+			FROM elp_parts_info info,
+				 elp_parts_description parts,
+				 elp_list_item item,
+				 elp_dict_item_translation tran
+			WHERE
+				info.parts_description_id = parts.parts_description_id
+			AND info.in_stock_id = item.list_item_id(+)
+			AND item.dict_item_id = tran.dict_item_id(+)
+			AND tran.language_id(+) = :language_id
+			AND info.claim_id = :claim_id
+		]]>
+  </LOAD_LIST>
+  <LOAD_AVAIL_LIST>
+    <![CDATA[	
+			SELECT DISTINCT
+							parts_description_id as id,
+							description
+			FROM elp_parts_description
+			WHERE risk_group_id = :risk_group_id
+			AND company_group_id = :company_group_id
+			AND parts_description_id
+			NOT in
+			(
+				SELECT DISTINCT parts_description_id
+				FROM ELP_PARTS_INFO
+				WHERE claim_id = :claim_id
+			)
+		]]>
+  </LOAD_AVAIL_LIST>
+  <LOAD_AVAIL_LIST_WITH_PART>
+    <![CDATA[	
+			SELECT DISTINCT
+							parts_description_id as id,
+							description
+			FROM elp_parts_description
+			WHERE risk_group_id = :risk_group_id
+      AND company_group_id = :company_group_id
+			AND (
+					(
+						parts_description_id
+							NOT in
+							(
+								SELECT DISTINCT parts_description_id
+								FROM ELP_PARTS_INFO
+								WHERE claim_id = :claim_id
+							)
+					)
+				OR
+					parts_description_id = :parts_description_id
+				)
+		]]>
+  </LOAD_AVAIL_LIST_WITH_PART>
+  <UPDATE>
+    <![CDATA[	
+			UPDATE elp_parts_info SET
+				claim_id = :claim_id,
+				parts_description_id = :parts_description_id,
+				cost = :cost,
+				modified_by = :modified_by,
+        in_stock_id = :in_stock_id
+			WHERE
+				parts_info_id = :parts_info_id
+		]]>
+  </UPDATE>
+  <INSERT>
+    INSERT INTO elp_parts_info
+    (
+    claim_id,
+    parts_description_id,
+    cost,
+    created_by,
+    parts_info_id,
+    in_stock_id
+    )
+    VALUES
+    (
+    :claim_id,
+    :parts_description_id,
+    :cost,
+    :created_by,
+    :parts_info_id,
+    :in_stock_id
+    )
+  </INSERT>
+  <DELETE>
+    DELETE FROM elp_parts_info
+    WHERE
+    parts_info_id = :parts_info_id
+  </DELETE>
+</SQL>
+
+
+

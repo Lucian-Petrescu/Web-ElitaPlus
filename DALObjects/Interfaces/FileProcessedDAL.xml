@@ -1,0 +1,95 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<SQL>
+  <LOAD>
+    <![CDATA[
+    select
+      file_processed_id,
+      file_type,
+      company_group_id,
+      company_id,
+      dealer_id,
+      reference_id,
+      file_name,
+      received,
+      counted,
+      rejected,
+      validated,
+      bypassed,
+      loaded,
+      layout,
+      created_by,
+      created_date,
+      modified_by,
+      modified_date,
+      country_id
+    from
+       elp_file_processed
+    where
+      file_processed_id = :file_processed_id
+    ]]>
+  </LOAD>
+  <LOAD_LIST>
+    <![CDATA[
+    select
+      x.file_processed_id,
+      x.file_type,
+      x.company_group_id,
+      x.company_id,
+      x.dealer_id,
+      x.reference_id,
+      x.file_name,
+      x.received,
+      x.counted,
+      x.rejected,
+      x.validated,
+      x.bypassed,
+      x.loaded,
+      x.layout,
+      x.created_by,
+      x.created_date,
+      x.modified_by,
+      x.modified_date,
+      x.country_id,
+      x.status,
+      x.status || decode(x.error_message, null, null, ' : ' || x.error_message) || decode(x.description, null, null, ' : ' || x.description) status_desc
+      from 
+          (select
+            fp.file_processed_id,
+            fp.file_type,
+            fp.company_group_id,
+            fp.company_id,
+            fp.dealer_id,
+            fp.reference_id,
+            fp.file_name,
+            fp.received,
+            fp.counted,
+            fp.rejected,
+            fp.validated,
+            fp.bypassed,
+            fp.loaded,
+            fp.layout,
+            fp.created_by,
+            fp.created_date,
+            fp.modified_by,
+            fp.modified_date,
+            fp.country_id,
+            isw.status,
+            isw.error_message,
+            isw.description,
+            row_number() over (partition by fp.file_processed_id order by nvl(isw.modified_date, isw.created_date) desc) rk
+          from
+            elp_file_processed fp
+            left outer join elp_interface_status_wrk     isw on isw.file_id = fp.file_processed_id
+          where
+            (:company_group_id is null or fp.company_group_id = :company_group_id) and
+            (:company_id is null or fp.company_id = :company_id) and
+            (:dealer_id is null or fp.dealer_id = :dealer_id) and
+            (:country_id is null or fp.country_id = :country_id) and
+            fp.reference_id = :reference_id and
+            fp.file_type = :file_type
+          ) x
+      where x.rk = 1
+      order by x.created_date desc, x.file_name desc
+    ]]>
+  </LOAD_LIST>
+</SQL>

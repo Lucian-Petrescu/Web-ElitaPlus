@@ -1,0 +1,121 @@
+<?xml version="1.0" encoding="utf-8" ?>
+
+<!-- ********************** THIS FILE HAS BEEN GENERATED FROM TEMPLATE SQLObject.cst (8/13/2004)********************** -->
+
+<SQL>
+	<LOAD>
+		<![CDATA[	
+			SELECT 
+				description,
+				code,
+				company_id,
+				refund_compute_method_id,
+				refund_destination_id,
+				input_amt_req_id,
+				created_date,
+				modified_date,
+				created_by,
+				modified_by,
+				cancellation_id,
+				display_code_id,
+        def_refund_payment_method_id,
+        benefit_cancel_reason_code,
+        is_lawful
+			FROM elp_cancellation_reason 
+			WHERE
+				cancellation_id = :cancellation_id
+		]]>
+	</LOAD>
+	<LOAD_LIST>	
+	<![CDATA[	
+			SELECT 
+				cr.cancellation_id,
+				cr.description,
+				cr.code,
+				c.code company_code
+			FROM elp_cancellation_reason cr,
+				 elp_company c
+			WHERE
+				cr.company_id = c.company_id and
+				UPPER(cr.code) LIKE UPPER(:code) and 
+				UPPER(cr.description) LIKE UPPER(:description)
+				--dynamic_in_clause
+			ORDER BY UPPER(cr.description)
+		]]>	
+	</LOAD_LIST>	
+	<UPDATE>
+		<![CDATA[	
+			UPDATE elp_cancellation_reason SET
+				description = :description,
+				code = :code,
+				company_id = :company_id,
+				refund_compute_method_id = :refund_compute_method_id,
+				refund_destination_id = :refund_destination_id,
+				input_amt_req_id = :input_amt_req_id,
+				modified_by = :modified_by,
+				display_code_id = :display_code_id,
+        def_refund_payment_method_id = :def_refund_payment_method_id,
+        benefit_cancel_reason_code = :benefit_cancel_reason_code,
+        is_lawful = :is_lawful
+			WHERE
+				cancellation_id = :cancellation_id
+		]]>
+	</UPDATE>
+	<INSERT>
+    INSERT INTO elp_cancellation_reason
+    (
+    description,
+    code,
+    company_id,
+    refund_compute_method_id,
+    refund_destination_id,
+    input_amt_req_id,
+    created_by,
+    cancellation_id,
+    display_code_id,
+    def_refund_payment_method_id,
+    benefit_cancel_reason_code,
+    is_lawful
+    )
+    VALUES
+    (
+    :description,
+    :code,
+    :company_id,
+    :refund_compute_method_id,
+    :refund_destination_id,
+    :input_amt_req_id,
+    :created_by,
+    :cancellation_id,
+    :display_code_id,
+    :def_refund_payment_method_id,
+	  :benefit_cancel_reason_code,
+    :is_lawful
+    )
+  </INSERT>
+	<DELETE>
+			DELETE FROM elp_cancellation_reason
+			WHERE
+				cancellation_id = :cancellation_id
+	</DELETE>
+<LOAD_CANC_REASONS_LIST_BY_ROLE_EXCLUSION>	
+	<![CDATA[	
+    select distinct cancellation_id id,
+                    rawtohex(company_id) company_id,
+                    cr.code,
+                    (cr.code || ' - ' || cr.description) description
+    from   elita.elp_cancellation_reason cr,
+           (select ur.role_id
+            from   elp_user_role ur
+            where  user_id = :user_id) user_role
+    where  cr.company_id = :company_id
+           and getyesno(cr.display_code_id) = 'Y'
+           and (cr.cancellation_id, user_role.role_id) not in
+           (select ecr.cancellation_reason_id,
+                       ecr.role_id
+                from   elp_exclude_cancreason_by_role ecr)
+
+		]]>	
+	</LOAD_CANC_REASONS_LIST_BY_ROLE_EXCLUSION>	
+</SQL> 
+

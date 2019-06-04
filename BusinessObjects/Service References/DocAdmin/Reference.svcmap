@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ReferenceGroup xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" ID="fa8d33a1-0ae8-457e-8320-4b958bfdfe58" xmlns="urn:schemas-microsoft-com:xml-wcfservicemap">
+  <ClientOptions>
+    <GenerateAsynchronousMethods>false</GenerateAsynchronousMethods>
+    <EnableDataBinding>true</EnableDataBinding>
+    <ExcludedTypes />
+    <ImportXmlTypes>false</ImportXmlTypes>
+    <GenerateInternalTypes>false</GenerateInternalTypes>
+    <GenerateMessageContracts>false</GenerateMessageContracts>
+    <NamespaceMappings />
+    <CollectionMappings />
+    <GenerateSerializableTypes>true</GenerateSerializableTypes>
+    <Serializer>Auto</Serializer>
+    <UseSerializerForFaults>true</UseSerializerForFaults>
+    <ReferenceAllAssemblies>true</ReferenceAllAssemblies>
+    <ReferencedAssemblies />
+    <ReferencedDataContractTypes />
+    <ServiceContractMappings />
+  </ClientOptions>
+  <MetadataSources>
+    <MetadataSource Address="http://msp0wapfd001.cead.prd/Document/Entity/20120620/DocumentAdminService.svc" Protocol="http" SourceId="1" />
+  </MetadataSources>
+  <Metadata>
+    <MetadataFile FileName="DocumentAdminService6.xsd" MetadataType="Schema" ID="c7c9ae9e-5298-43cc-ad8a-039ae1008d2d" SourceId="1" SourceUrl="http://msp0wapfd001.cead.prd/Document/Entity/20120620/DocumentAdminService.svc?xsd=xsd1" />
+    <MetadataFile FileName="DocumentAdminService1.disco" MetadataType="Disco" ID="58348414-1a36-4075-b594-44513f502518" SourceId="1" SourceUrl="http://msp0wapfd001.cead.prd/Document/Entity/20120620/DocumentAdminService.svc?disco" />
+    <MetadataFile FileName="DocumentAdminService62.xsd" MetadataType="Schema" ID="8decc2ee-92f5-4250-bcba-d2ac3a395bf6" SourceId="1" SourceUrl="http://msp0wapfd001.cead.prd/Document/Entity/20120620/DocumentAdminService.svc?xsd=xsd2" />
+    <MetadataFile FileName="DocumentAdminService63.xsd" MetadataType="Schema" ID="f50827aa-69a8-473f-b6ad-c6e2af695d53" SourceId="1" SourceUrl="http://msp0wapfd001.cead.prd/Document/Entity/20120620/DocumentAdminService.svc?xsd=xsd4" />
+    <MetadataFile FileName="DocumentAdminService64.xsd" MetadataType="Schema" ID="f68963c8-de65-46a0-81f9-9209dde95a89" SourceId="1" SourceUrl="http://msp0wapfd001.cead.prd/Document/Entity/20120620/DocumentAdminService.svc?xsd=xsd3" />
+    <MetadataFile FileName="DocumentAdminService65.xsd" MetadataType="Schema" ID="891995f2-35b3-4529-b620-ac1c65aaac34" SourceId="1" SourceUrl="http://msp0wapfd001.cead.prd/Document/Entity/20120620/DocumentAdminService.svc?xsd=xsd0" />
+    <MetadataFile FileName="DocumentAdminService1.wsdl" MetadataType="Wsdl" ID="811b5524-ed3a-451e-8638-b0d381401f61" SourceId="1" SourceUrl="http://msp0wapfd001.cead.prd/Document/Entity/20120620/DocumentAdminService.svc?wsdl" />
+  </Metadata>
+  <Extensions>
+    <ExtensionFile FileName="configuration91.svcinfo" Name="configuration91.svcinfo" />
+    <ExtensionFile FileName="configuration.svcinfo" Name="configuration.svcinfo" />
+  </Extensions>
+</ReferenceGroup>

@@ -1,0 +1,310 @@
+<?xml version="1.0" encoding="utf-8" ?>
+
+<!-- ********************** THIS FILE HAS BEEN GENERATED FROM TEMPLATE SQLObject.cst (11/8/2004)********************** -->
+
+<SQL>
+	<LOAD>
+		<![CDATA[	
+			SELECT 
+				cert_id,
+				item_number,
+				risk_type_id,
+				manufacturer_id,
+				max_replacement_cost,
+				serial_number,
+				model,
+				ci.created_by,
+        ci.created_date,
+        ci.modified_by,
+        ci.modified_date,
+				company_id,
+				ci.cert_item_id,
+        item_description,
+				item_code, 
+				item_retail_price, 
+				item_replace_return_date,
+        product_code,
+        equipment_id,
+        mobile_type,
+        first_use_date,
+        last_use_date,
+        sim_card_number,
+        sku_number,
+        original_retail_price,
+        effective_date,
+        expiration_date,
+        cert_product_code,
+        IMEI_number,
+        allowed_events,
+        max_insured_amount,
+        imei_update_source,
+        getdescriptionfromitemextcode(bc.benefit_status_xcd) benefit_status,
+       bc.ineligibility_reason
+			FROM elp_cert_item ci left join elita.Elp_Cert_Item_Benefit_Check bc on bc.cert_item_id = ci.cert_item_id
+			WHERE
+				ci.cert_item_id = :cert_item_id
+		]]>
+	</LOAD>
+  <LOAD_MFG_DEDUCTIBLE>
+    <![CDATA[	
+      SELECT
+		    mc.deductible
+		    FROM elp_contract c,
+		    elp_deduct_by_mfg mc,
+		    elp_cert_item ci
+		    
+		    WHERE
+		    ci.cert_item_id = :cert_item_id
+		    AND c.contract_id = :contract_id
+		    AND mc.dealer_id = c.dealer_id
+		    AND mc.manufacturer_id = ci.manufacturer_id AND mc.model = ci.model
+    ]]>
+  </LOAD_MFG_DEDUCTIBLE>
+	<LOAD_BY_CERT_ID>
+		<![CDATA[	
+			select ci.cert_item_id,
+       rt.description           risk_type,
+       rt.risk_type_english     risk_type_code,
+       ci.item_description      item_desc,
+       mn.description           make,
+       ci.model                 model,
+       ci.original_retail_price original_retail_price,
+       ci.mobile_type           mobile_type,
+       ci.first_use_date        first_use_date,
+       ci.last_use_date         last_use_date,
+       ci.sim_card_number       sim_card_number,
+       ci.item_number           item_number,
+       ci.effective_date        effective_date,
+       ci.expiration_date       expiration_date,
+       ci.cert_product_code     cert_prod_code,
+       ci.serial_number         serial_number,
+       ci.IMEI_number           IMEI_number,
+       ci.allowed_events        allowed_events,
+       ci.max_insured_amount    max_insured_amount,
+       ci.imei_update_source    imei_update_source,
+       getdescriptionfromitemextcode(bc.benefit_status_xcd) benefit_status,
+       bc.ineligibility_reason
+      from elp_cert cert inner join elp_cert_item    ci           on cert.cert_id = ci.cert_id
+                          inner join elp_risk_type    rt           on ci.risk_type_id = rt.risk_type_id
+                          left join elp_manufacturer   mn            on ci.manufacturer_id = mn.manufacturer_id
+                          left join Elp_Cert_Item_Benefit_Check bc on bc.cert_item_id = ci.cert_item_id
+      where cert.cert_id = :cert_id
+		]]>
+	</LOAD_BY_CERT_ID>
+  <LOAD_REG_ITEMS_BY_CERT_ID>
+    <![CDATA[	
+    select cri.cert_registered_item_id,
+    cri.cert_item_id,
+    (case when cri.manufacturer_id is null then cri.manufacturer else m.description end) as make,
+    cri.model,
+    cri.serial_number,
+    cri.item_description as item_desc,
+    cri.purchased_date,
+    cri.purchase_price,
+    cri.enrollment_item,
+    elita.ELP_UTL_LOV.Description(cri.item_status) item_status,
+    cri.validated_by,
+    cri.validated_date,
+    cri.prod_item_manuf_equip_id,
+    elita.GetDescriptionFromListItem(device_type_id,:language_id) device_type,
+    cri.registered_item_name,
+    cri.registration_date,
+    cri.retail_price,
+    case
+       when cri.item_status = 'ITEM_REGISTRATION_STATUS-I'  then
+            nvl(cri.expiration_date,nvl(cri.modified_date,cri.created_date))
+       when cri.item_status = 'ITEM_REGISTRATION_STATUS-A' then
+            null
+       end  as expiration_date   
+    from elp_cert c
+    inner join elp_cert_item ci on   c.cert_id = ci.cert_id
+    inner join elita.elp_cert_registered_item cri on ci.cert_item_id = cri.cert_item_id
+    left outer join elp_manufacturer m on cri.manufacturer_id = m.manufacturer_id
+    where c.cert_id = :cert_id
+    order by cri.registered_item_name
+		]]>
+  </LOAD_REG_ITEMS_BY_CERT_ID>
+	<LOAD_LIST>		
+	</LOAD_LIST>	
+	<UPDATE>
+		<![CDATA[	
+			UPDATE elp_cert_item SET
+				cert_id = :cert_id,
+				item_number = :item_number,
+				risk_type_id = :risk_type_id,
+				manufacturer_id = :manufacturer_id,
+				max_replacement_cost = :max_replacement_cost,
+				serial_number = :serial_number,
+				model = :model,
+				company_id = :company_id,
+				modified_by = :modified_by,
+				item_description = :item_description,
+				item_code = :item_code, 
+				item_retail_price = :item_retail_price,
+        product_code = :product_code,
+        cert_product_code = :cert_product_code,
+				item_replace_return_date = :item_replace_return_date,
+        equipment_id = :equipment_id,
+        mobile_type = :mobile_type,
+        first_use_date = :first_use_date,
+        last_use_date = :last_use_date,
+        sim_card_number = :sim_card_number,
+        sku_number = :sku_number,
+        original_retail_price = :original_retail_price,
+        IMEI_number = :IMEI_number,
+        allowed_events = :allowed_events,
+        max_insured_amount = :max_insured_amount,
+        imei_update_source = :imei_update_source
+			WHERE
+				cert_item_id = :cert_item_id
+		]]>
+	</UPDATE>
+	<INSERT>
+    INSERT INTO elp_cert_item
+    (
+    cert_id,
+    item_number,
+    risk_type_id,
+    manufacturer_id,
+    max_replacement_cost,
+    serial_number,
+    model,
+    company_id,
+    created_by,
+    cert_item_id,
+    item_description,
+    item_code,
+    item_retail_price,
+    item_replace_return_date,
+    product_code,
+    cert_product_code,
+    equipment_id,
+    sku_number,
+    original_retail_price,
+    IMEI_number,
+    allowed_events,
+    max_insured_amount,
+    imei_update_source
+    )
+    VALUES
+    (
+    :cert_id,
+    :item_number,
+    :risk_type_id,
+    :manufacturer_id,
+    :max_replacement_cost,
+    :serial_number,
+    :model,
+    :company_id,
+    :created_by,
+    :cert_item_id,
+    :item_description,
+    :item_code,
+    :item_retail_price,
+    :item_replace_return_date,
+    :product_code,
+    :cert_product_code,
+    :equipment_id,
+    :sku_number,
+    :original_retail_price,
+    :IMEI_number,
+    :allowed_events,
+    :max_insured_amount,
+    :imei_update_source
+    )
+  </INSERT>
+	<DELETE>
+			DELETE FROM elp_cert_item
+			WHERE
+				cert_item_id = :cert_item_id
+	</DELETE>
+  <LOAD_LIST_BY_CERT_IDS>
+    <![CDATA[	
+			select
+			    c.cert_id,
+          c.cert_number,  
+          ci.cert_item_id
+			from elp_cert c,
+				elp_cert_item ci
+			where
+        c.cert_id  = ci.cert_id
+				--dynamic_in_clause
+		]]>
+  </LOAD_LIST_BY_CERT_IDS>
+  <GET_MAX_ITEM_NUMBER>
+    <![CDATA[	
+			select
+			   max(ci.item_number) item_number
+			from elp_cert c,
+				elp_cert_item ci
+			where c.cert_id  = ci.cert_id
+      and  c.cert_id = :cert_id
+		]]>
+  </GET_MAX_ITEM_NUMBER>
+  <LOAD_LIST_FOR_CERTIFICATE>
+    <![CDATA[	
+			SELECT		
+        cert_id,
+				item_number,
+				risk_type_id,
+				manufacturer_id,
+				max_replacement_cost,
+				serial_number,
+				model,
+				created_by,
+				created_date,
+				modified_by,
+				modified_date,
+				company_id,
+				cert_item_id,item_description,
+				item_code, 
+				item_retail_price, 
+				item_replace_return_date,
+        product_code,
+        equipment_id,
+        mobile_type,
+        first_use_date,
+        last_use_date,
+        sim_card_number,
+        sku_number,
+        original_retail_price,
+        Cert_product_code,
+        effective_date,
+        expiration_date,
+        IMEI_number,
+        allowed_events,
+        max_insured_amount,
+        imei_update_source
+			FROM elp_cert_item 
+			WHERE
+				cert_id = :cert_id
+		]]>
+  </LOAD_LIST_FOR_CERTIFICATE>
+  <VALIDATE_VIN_NUMBER>
+    elita.elp_tbl_certificate.get_VINEntries
+  </VALIDATE_VIN_NUMBER>
+  <IS_SERIAL_NUMBER_UNIQUE>
+    IS_SERIALNUMBER_UNIQUE
+  </IS_SERIAL_NUMBER_UNIQUE>
+  <LoadSKUs>
+    select sku_number
+    from elp_warranty_master
+    inner join elp_equipment
+    on elp_equipment.manufacturer_id = elp_warranty_master.internal_manufacturer_id
+    and GetTextForComparison(elp_equipment.model) = GetTextForComparison(elp_warranty_master.model_number)
+    inner join elp_equipment_list_detail
+    on elp_equipment_list_detail.equipment_id = elp_equipment.equipment_id
+    inner join elp_equipment_list
+    on elp_equipment_list.equipment_list_id = elp_equipment_list_detail.equipment_list_id
+    inner join elp_dealer
+    on elp_dealer.dealer_id = elp_warranty_master.dealer_id
+    and elp_dealer.equipment_list_code = elp_equipment_list.code
+    where elp_warranty_master.dealer_id = hextoraw(:p_dealer_id)
+    and elp_equipment.equipment_id = hextoraw(:p_equipmentId)
+  </LoadSKUs>
+  <PROCESS_APPLECARE_ITEM_ENROLL>
+    <![CDATA[elita.elp_applecare.ProcessCertItemEnrollment]]>
+  </PROCESS_APPLECARE_ITEM_ENROLL>
+</SQL> 
+
+

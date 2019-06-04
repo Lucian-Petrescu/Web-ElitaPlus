@@ -1,0 +1,124 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+
+<!-- ********************** THIS FILE HAS BEEN GENERATED FROM TEMPLATE SQLObject.cst (10/30/2008)********************** -->
+
+<SQL>
+  <LOAD>
+    <![CDATA[	
+			SELECT 
+				billing_frequency_id,
+				billing_status_id,
+				bank_info_id,
+				number_of_installments,
+				installment_amount,
+				payment_due_date,
+				date_letter_sent,
+				created_by,
+				created_date,
+				modified_by,
+				modified_date,
+				cert_id,
+        send_letter_id,
+        cancellation_due_date,
+        credit_card_info_id,
+				cert_installment_id,
+        credit_card_info_id,
+		next_billing_date
+			FROM elp_cert_installment 
+			WHERE
+				cert_installment_id = :cert_installment_id
+		]]>
+  </LOAD>
+  <LOAD_BY_CERT_ID>
+    <![CDATA[	
+			SELECT 
+				billing_frequency_id,
+				billing_status_id,
+				bank_info_id,
+				number_of_installments,
+				nvl(installment_amount,0) As installment_amount,
+				payment_due_date,
+				date_letter_sent,
+				created_by,
+				created_date,
+				modified_by,
+				modified_date,
+				cert_id,
+        send_letter_id,
+        cancellation_due_date,
+        credit_card_info_id,
+				cert_installment_id,
+				next_billing_date
+			FROM elita.elp_cert_installment 
+			WHERE
+				cert_id = :cert_id
+		]]>
+  </LOAD_BY_CERT_ID>
+  <LOAD_LIST>
+  </LOAD_LIST>
+  <UPDATE>
+    <![CDATA[	
+			UPDATE elita.elp_cert_installment SET
+				billing_frequency_id = :billing_frequency_id,
+				billing_status_id = :billing_status_id,
+				bank_info_id = :bank_info_id,
+				number_of_installments = :number_of_installments,
+				installment_amount = :installment_amount,
+				payment_due_date = :payment_due_date,
+				date_letter_sent = :date_letter_sent,
+				cert_id = :cert_id,
+        send_letter_id = :send_letter_id,
+        credit_card_info_id = :credit_card_info_id,
+				modified_by = :modified_by,
+        cancellation_due_date = :cancellation_due_date,
+		next_billing_date = :next_billing_date
+			WHERE
+				cert_installment_id = :cert_installment_id
+		]]>
+  </UPDATE>
+  <INSERT>
+	  INSERT INTO elita.elp_cert_installment
+	  (
+	  billing_frequency_id,
+	  billing_status_id,
+	  bank_info_id,
+	  number_of_installments,
+	  installment_amount,
+	  payment_due_date,
+	  date_letter_sent,
+	  cert_id,
+	  created_by,
+	  send_letter_id,
+	  cancellation_due_date,
+	  credit_card_info_id,
+	  cert_installment_id,
+	  next_billing_date
+	  )
+	  VALUES
+	  (
+	  :billing_frequency_id,
+	  :billing_status_id,
+	  :bank_info_id,
+	  :number_of_installments,
+	  :installment_amount,
+	  :payment_due_date,
+	  :date_letter_sent,
+	  :cert_id,
+	  :created_by,
+	  :send_letter_id,
+	  :cancellation_due_date,
+	  :credit_card_info_id,
+	  :cert_installment_id,
+	  :next_billing_date
+	  )
+  </INSERT>
+  <DELETE>
+    DELETE FROM elp_cert_installment
+    WHERE
+    cert_installment_id = :cert_installment_id
+  </DELETE>
+  
+</SQL>
+
+
+

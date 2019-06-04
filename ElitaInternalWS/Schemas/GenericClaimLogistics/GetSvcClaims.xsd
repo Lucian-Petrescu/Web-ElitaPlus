@@ -1,0 +1,70 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema">
+  <xs:element name="GetSvcClaimsDs">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element name="GetSvcClaims">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element name="Service_Center_Code" type="xs:string" minOccurs="0" maxOccurs="1" />              
+              <xs:element name="Claim_Status" type="xs:string" minOccurs="0" maxOccurs="1" />
+              <xs:element name="Claim_Type" type="xs:string" minOccurs="0" maxOccurs="1" />
+              <xs:element name="Method_Of_Repair" type="xs:string" minOccurs="0" maxOccurs="1" />
+              <xs:element name="Sort_By" minOccurs="1" maxOccurs="1" >
+                <xs:simpleType>
+                  <xs:restriction base="myPositiveInteger">
+                    <xs:minInclusive value="1" />
+                    <xs:maxInclusive value="22" />
+                  </xs:restriction>
+                </xs:simpleType>
+              </xs:element>
+              <xs:element name="Sort_Order" minOccurs="1" maxOccurs="1" >
+                <xs:simpleType>
+                  <xs:restriction base="myPositiveInteger">
+                    <xs:totalDigits fixed="true" value="1"></xs:totalDigits>
+                    <xs:minInclusive value="1" />
+                    <xs:maxInclusive value="2" />
+                  </xs:restriction>
+                </xs:simpleType>
+              </xs:element>
+              <xs:element name="Page_Size" minOccurs="1" maxOccurs="1"  >
+                <xs:simpleType>
+                  <xs:restriction base="myPositiveInteger">
+                    <xs:minInclusive value="1" />
+                    <xs:maxInclusive value="500" />
+                  </xs:restriction>
+                </xs:simpleType>
+              </xs:element>
+              <xs:element name="Page_Number" type="xs:int" minOccurs="1" maxOccurs="1" />
+              <xs:element name="Claim_Number" type="xs:string" minOccurs="0" maxOccurs="1" />
+              <xs:element name="Authorization_Number" type="xs:string" minOccurs="0" maxOccurs="1" />
+              <xs:element name="Certificate_Number" type="xs:string" minOccurs="0" maxOccurs="1" />
+              <xs:element name="Customer_Name" type="xs:string" minOccurs="0" maxOccurs="1" />
+              <xs:element name="From_Claim_Created_Date" type="xs:dateTime" minOccurs="0" maxOccurs="1" />
+              <xs:element name="To_Claim_Created_Date" type="xs:dateTime" minOccurs="0" maxOccurs="1" />
+              <xs:element name="From_Visit_Date" type="xs:dateTime" minOccurs="0" maxOccurs="1" />
+              <xs:element name="To_Visit_Date" type="xs:dateTime" minOccurs="0" maxOccurs="1" />
+              <xs:element name="Claim_Extended_Status_Owner_Code" type="xs:string" minOccurs="0" maxOccurs="1" />
+              <xs:element name="Claim_Extended_Status_Code" type="xs:string" minOccurs="0" maxOccurs="1" />
+              <xs:element name="Turn_Around_Time_Range_Code" type="xs:string" minOccurs="0" maxOccurs="1" />
+              <xs:element name="Batch_Number" type="xs:string" minOccurs="0" maxOccurs="1" />
+              <xs:element name="Serial_Number" type="xs:string" minOccurs="0" maxOccurs="1" />
+              <xs:element name="Work_Phone" type="xs:string" minOccurs="0" maxOccurs="1" />
+              <xs:element name="Company_Code" type="xs:string" minOccurs="0" maxOccurs="1" />
+              <xs:element name="Home_Phone" type="xs:string" minOccurs="0" maxOccurs="1" />
+              <xs:element name="Loss_Date" type="xs:dateTime" minOccurs="0" maxOccurs="1" />
+              <xs:element name="Claim_Paid_Amount" type="xs:string" minOccurs="0" maxOccurs="1" />
+              <xs:element name="Bonus_Total" type="xs:string" minOccurs="0" maxOccurs="1" />
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:simpleType name="myPositiveInteger">
+    <xs:restriction base="xs:int">
+      <xs:minInclusive value="0" />
+    </xs:restriction>
+  </xs:simpleType>
+</xs:schema>
+

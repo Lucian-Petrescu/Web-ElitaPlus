@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="utf-8"?>
+<wsdl:definitions xmlns:wsap="http://schemas.xmlsoap.org/ws/2004/08/addressing/policy" xmlns:wsa10="http://www.w3.org/2005/08/addressing" xmlns:tns="http://elita.assurant.com/Elita/ClaimService" xmlns:msc="http://schemas.microsoft.com/ws/2005/12/wsdl/contract" xmlns:soapenc="http://schemas.xmlsoap.org/soap/encoding/" xmlns:wsx="http://schemas.xmlsoap.org/ws/2004/09/mex" xmlns:wsp="http://schemas.xmlsoap.org/ws/2004/09/policy" xmlns:wsam="http://www.w3.org/2007/05/addressing/metadata" xmlns:wsa="http://schemas.xmlsoap.org/ws/2004/08/addressing" xmlns:wsaw="http://www.w3.org/2006/05/addressing/wsdl" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:soap12="http://schemas.xmlsoap.org/wsdl/soap12/" xmlns:wsu="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-utility-1.0.xsd" xmlns:xsd="http://www.w3.org/2001/XMLSchema" targetNamespace="http://elita.assurant.com/Elita/ClaimService" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">
+  <wsdl:types>
+    <xsd:schema targetNamespace="http://elita.assurant.com/Elita/ClaimService/Imports">
+      <xsd:import schemaLocation="http://localhost/ElitaClaimService/ClaimService.svc?xsd=xsd1" namespace="http://elita.assurant.com/Elita/ClaimService" />
+      <xsd:import schemaLocation="http://localhost/ElitaClaimService/ClaimService.svc?xsd=xsd3" namespace="http://elita.assurant.com/Elita/ClaimService/Faults" />
+      <xsd:import schemaLocation="http://localhost/ElitaClaimService/ClaimService.svc?xsd=xsd4" namespace="http://assurant.com/Elita/ServiceIntegration/Faults" />
+      <xsd:import schemaLocation="http://localhost/ElitaClaimService/ClaimService.svc?xsd=xsd0" namespace="http://schemas.microsoft.com/2003/10/Serialization/" />
+      <xsd:import schemaLocation="http://localhost/ElitaClaimService/ClaimService.svc?xsd=xsd2" namespace="http://elita.assurant.com/Elita/Claim/RecordingService/DataContracts" />
+      <xsd:import schemaLocation="http://localhost/ElitaClaimService/ClaimService.svc?xsd=xsd5" namespace="http://elita.assurant.com/Elita/ClaimService/Data" />
+      <xsd:import schemaLocation="http://localhost/ElitaClaimService/ClaimService.svc?xsd=xsd6" namespace="http://schemas.microsoft.com/2003/10/Serialization/Arrays" />
+    </xsd:schema>
+  </wsdl:types>
+  <wsdl:message name="IClaimService_Search_InputMessage">
+    <wsdl:part name="parameters" element="tns:Search" />
+  </wsdl:message>
+  <wsdl:message name="IClaimService_Search_OutputMessage">
+    <wsdl:part name="parameters" element="tns:SearchResponse" />
+  </wsdl:message>
+  <wsdl:message name="IClaimService_Search_ClaimNotFoundFaultFault_FaultMessage">
+    <wsdl:part xmlns:q1="http://elita.assurant.com/Elita/ClaimService/Faults" name="detail" element="q1:ClaimNotFoundFault" />
+  </wsdl:message>
+  <wsdl:message name="IClaimService_Search_ValidationFaultFault_FaultMessage">
+    <wsdl:part xmlns:q2="http://assurant.com/Elita/ServiceIntegration/Faults" name="detail" element="q2:ValidationFault" />
+  </wsdl:message>
+  <wsdl:message name="IClaimService_GetDetails_InputMessage">
+    <wsdl:part name="parameters" element="tns:GetDetails" />
+  </wsdl:message>
+  <wsdl:message name="IClaimService_GetDetails_OutputMessage">
+    <wsdl:part name="parameters" element="tns:GetDetailsResponse" />
+  </wsdl:message>
+  <wsdl:message name="IClaimService_GetDetails_ClaimNotFoundFaultFault_FaultMessage">
+    <wsdl:part xmlns:q3="http://elita.assurant.com/Elita/ClaimService/Faults" name="detail" element="q3:ClaimNotFoundFault" />
+  </wsdl:message>
+  <wsdl:message name="IClaimService_GetDetails_ValidationFaultFault_FaultMessage">
+    <wsdl:part xmlns:q4="http://assurant.com/Elita/ServiceIntegration/Faults" name="detail" element="q4:ValidationFault" />
+  </wsdl:message>
+  <wsdl:message name="IClaimService_ReadCase_InputMessage">
+    <wsdl:part name="parameters" element="tns:ReadCase" />
+  </wsdl:message>
+  <wsdl:message name="IClaimService_ReadCase_OutputMessage">
+    <wsdl:part name="parameters" element="tns:ReadCaseResponse" />
+  </wsdl:message>
+  <wsdl:message name="IClaimService_ReadCase_ValidationFaultFault_FaultMessage">
+    <wsdl:part xmlns:q5="http://assurant.com/Elita/ServiceIntegration/Faults" name="detail" element="q5:ValidationFault" />
+  </wsdl:message>
+  <wsdl:message name="IClaimService_NewClaimEntitled_InputMessage">
+    <wsdl:part name="parameters" element="tns:NewClaimEntitled" />
+  </wsdl:message>
+  <wsdl:message name="IClaimService_NewClaimEntitled_OutputMessage">
+    <wsdl:part name="parameters" element="tns:NewClaimEntitledResponse" />
+  </wsdl:message>
+  <wsdl:message name="IClaimService_NewClaimEntitled_ValidationFaultFault_FaultMessage">
+    <wsdl:part xmlns:q6="http://assurant.com/Elita/ServiceIntegration/Faults" name="detail" element="q6:ValidationFault" />
+  </wsdl:message>
+  <wsdl:portType name="IClaimService">
+    <wsdl:operation name="Search">
+      <wsdl:input wsaw:Action="http://elita.assurant.com/Elita/ClaimService/IClaimService/Search" message="tns:IClaimService_Search_InputMessage" />
+      <wsdl:output wsaw:Action="http://elita.assurant.com/Elita/ClaimService/IClaimService/SearchResponse" message="tns:IClaimService_Search_OutputMessage" />
+      <wsdl:fault wsaw:Action="http://elita.assurant.com/Elita/ClaimService/IClaimService/SearchClaimNotFoundFaultFault" name="ClaimNotFoundFaultFault" message="tns:IClaimService_Search_ClaimNotFoundFaultFault_FaultMessage" />
+      <wsdl:fault wsaw:Action="http://elita.assurant.com/Elita/ClaimService/IClaimService/SearchValidationFaultFault" name="ValidationFaultFault" message="tns:IClaimService_Search_ValidationFaultFault_FaultMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="GetDetails">
+      <wsdl:input wsaw:Action="http://elita.assurant.com/Elita/ClaimService/IClaimService/GetDetails" message="tns:IClaimService_GetDetails_InputMessage" />
+      <wsdl:output wsaw:Action="http://elita.assurant.com/Elita/ClaimService/IClaimService/GetDetailsResponse" message="tns:IClaimService_GetDetails_OutputMessage" />
+      <wsdl:fault wsaw:Action="http://elita.assurant.com/Elita/ClaimService/IClaimService/GetDetailsClaimNotFoundFaultFault" name="ClaimNotFoundFaultFault" message="tns:IClaimService_GetDetails_ClaimNotFoundFaultFault_FaultMessage" />
+      <wsdl:fault wsaw:Action="http://elita.assurant.com/Elita/ClaimService/IClaimService/GetDetailsValidationFaultFault" name="ValidationFaultFault" message="tns:IClaimService_GetDetails_ValidationFaultFault_FaultMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="ReadCase">
+      <wsdl:input wsaw:Action="http://elita.assurant.com/Elita/ClaimService/IClaimService/ReadCase" message="tns:IClaimService_ReadCase_InputMessage" />
+      <wsdl:output wsaw:Action="http://elita.assurant.com/Elita/ClaimService/IClaimService/ReadCaseResponse" message="tns:IClaimService_ReadCase_OutputMessage" />
+      <wsdl:fault wsaw:Action="http://elita.assurant.com/Elita/ClaimService/IClaimService/ReadCaseValidationFaultFault" name="ValidationFaultFault" message="tns:IClaimService_ReadCase_ValidationFaultFault_FaultMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="NewClaimEntitled">
+      <wsdl:input wsaw:Action="http://elita.assurant.com/Elita/ClaimService/IClaimService/NewClaimEntitled" message="tns:IClaimService_NewClaimEntitled_InputMessage" />
+      <wsdl:output wsaw:Action="http://elita.assurant.com/Elita/ClaimService/IClaimService/NewClaimEntitledResponse" message="tns:IClaimService_NewClaimEntitled_OutputMessage" />
+      <wsdl:fault wsaw:Action="http://elita.assurant.com/Elita/ClaimService/IClaimService/NewClaimEntitledValidationFaultFault" name="ValidationFaultFault" message="tns:IClaimService_NewClaimEntitled_ValidationFaultFault_FaultMessage" />
+    </wsdl:operation>
+  </wsdl:portType>
+</wsdl:definitions>

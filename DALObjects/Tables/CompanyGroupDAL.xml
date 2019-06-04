@@ -1,0 +1,151 @@
+<?xml version="1.0" encoding="utf-8" ?>
+
+<!-- ********************** THIS FILE HAS BEEN GENERATED FROM TEMPLATE SQLObject.cst (5/8/2006)********************** -->
+
+<SQL>
+  <LOAD>
+    <![CDATA[	
+			SELECT 
+			claim_fast_approval_id,
+				description,
+				code,
+				created_date,
+				modified_date,
+				created_by,
+				modified_by,
+				claim_numbering_by_id,
+				acct_by_company,
+				invoice_numbering_by_id,
+        ftp_site_id,
+				company_group_id,
+        invoice_group_numbering_by_id,
+        authorization_numbering_by_id,
+        payment_group_numbering_by_id,
+        years_to_inactive_usedvehicles,
+        inactive_newvehicles_based_on,
+        use_comm_entity_type_id,
+        case_numbering_by_xcd,
+        interaction_numbering_by_xcd
+			FROM elp_company_group 
+			WHERE
+				company_group_id = :company_group_id
+		]]>
+  </LOAD>
+  <LOAD_LIST>
+    <![CDATA[	
+      SELECT 
+        cg.company_group_id,
+        cg.description,
+        cg.code,
+        cg.claim_numbering_by_id,
+        nvl(t.translation, ' ') claim_numbering_description,
+        cg.invoice_numbering_by_id,
+        nvl(t2.translation, ' ') invoice_numbering_description,
+        nvl(f.description, ' ') ftp_site,
+        years_to_inactive_usedvehicles,
+        nvl(t3.translation, ' ') inactive_newvehicles_desc,
+        use_comm_entity_type_id
+      FROM elp_company_group cg
+      left outer join elp_list_item i on i.list_item_id = cg.claim_numbering_by_id
+      left outer join elp_dict_item_translation t on i.dict_item_id = t.dict_item_id AND t.language_id = :language_id
+      left outer join elp_list_item i2 on i2.list_item_id = cg.invoice_numbering_by_id
+      left outer join elp_dict_item_translation t2 on i2.dict_item_id = t2.dict_item_id AND t2.language_id = :language_id
+      left outer join elp_list_item i3 on i3.list_item_id = cg.inactive_newvehicles_based_on
+      left outer join elp_dict_item_translation t3 on i3.dict_item_id = t3.dict_item_id AND t3.language_id = :language_id
+      left outer join elp_ftp_site f on cg.ftp_site_id = f.ftp_site_id
+      WHERE
+        cg.code LIKE :code 
+        and UPPER(cg.description) LIKE :description
+      ORDER BY UPPER(description)
+		]]>
+  </LOAD_LIST>
+  <LOAD_LIST_OF_CHIDRES_COVERAGE_TYPE>
+    <![CDATA[	
+			select distinct cg.company_group_id,
+                cg.description,
+                cg.code
+			from 
+				 ELP_COMPANY_GROUP cg, 
+				 ELP_COVERAGE_BY_COMPANY_GROUP ctcg
+			where 
+			     cg.company_group_id  = ctcg.company_group_id
+			 and cg.code LIKE :code
+			 and UPPER(cg.description) LIKE :description 
+			 ORDER BY UPPER(description)
+		]]>
+  </LOAD_LIST_OF_CHIDRES_COVERAGE_TYPE>
+  <UPDATE>
+    <![CDATA[	
+			UPDATE elp_company_group SET
+				description = :description,
+				code = :code,
+				claim_numbering_by_id = :claim_numbering_by_id,
+				acct_by_company = :acct_by_company,
+				invoice_numbering_by_id = :invoice_numbering_by_id,
+				ftp_site_id = :ftp_site_id,
+				modified_by = :modified_by,
+        invoice_group_numbering_by_id =:invoice_group_numbering_by_id,
+        authorization_numbering_by_id =:authorization_numbering_by_id,
+        payment_group_numbering_by_id=:payment_group_numbering_by_id,
+        years_to_inactive_usedvehicles = :years_to_inactive_usedvehicles,
+        inactive_newvehicles_based_on = :inactive_newvehicles_based_on,
+		    claim_fast_approval_id =:claim_fast_approval_id,
+        use_comm_entity_type_id = :use_comm_entity_type_id,
+        case_numbering_by_xcd = :case_numbering_by_xcd,
+        interaction_numbering_by_xcd = :interaction_numbering_by_xcd
+			WHERE
+        company_group_id = :company_group_id
+		]]>
+  </UPDATE>
+  <INSERT>
+    INSERT INTO elp_company_group
+    (
+    description,
+    code,
+    claim_numbering_by_id,
+    acct_by_company,
+    invoice_numbering_by_id,
+    ftp_site_id,
+    created_by,
+    company_group_id,
+    invoice_group_numbering_by_id,
+    authorization_numbering_by_id,
+    payment_group_numbering_by_id,
+    years_to_inactive_usedvehicles,
+    inactive_newvehicles_based_on,
+    claim_fast_approval_id,
+    use_comm_entity_type_id,
+    case_numbering_by_xcd,
+    interaction_numbering_by_xcd
+    )
+    VALUES
+    (
+    :description,
+    :code,
+    :claim_numbering_by_id,
+    :acct_by_company,
+    :invoice_numbering_by_id,
+    :ftp_site_id,
+    :created_by,
+    :company_group_id,
+
+    :invoice_group_numbering_by_id,
+    :authorization_numbering_by_id,
+    :payment_group_numbering_by_id,
+    :years_to_inactive_usedvehicles,
+    :inactive_newvehicles_based_on,
+    :claim_fast_approval_id,
+    :use_comm_entity_type_id,
+    :case_numbering_by_xcd,
+    :interaction_numbering_by_xcd
+    )
+  </INSERT>
+  <DELETE>
+    DELETE FROM elp_company_group
+    WHERE
+    company_group_id = :company_group_id
+  </DELETE>
+</SQL>
+
+
+

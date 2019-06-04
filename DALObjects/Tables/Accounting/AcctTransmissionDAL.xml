@@ -1,0 +1,275 @@
+<?xml version="1.0" encoding="utf-8" ?>
+
+<!-- ********************** THIS FILE HAS BEEN GENERATED FROM TEMPLATE SQLObject.cst (4/19/2007)********************** -->
+
+<SQL>
+	<LOAD>
+		<![CDATA[	
+			SELECT 
+				file_name,
+				file_text_compressed,
+        '' As file_text,
+				transmission_date,
+				transmission_received,
+				transmission_count,
+        company_id,
+        debit_amount,
+        credit_amount,
+        reject_reason,
+				modified_date,
+				modified_by,
+				created_date,
+				created_by,
+        file_type_flag,
+		    file_sub_type_flag,
+		    num_transactions_sent,
+		    debit_amount_received,
+		    credit_amount_received,
+		    num_transactions_received,
+		    date_received,
+		    reject_reason_detail,
+        batch_number_id,
+				acct_transmission_id,
+        status_id,
+        journal_type
+			FROM elp_acct_transmission 
+			WHERE
+				acct_transmission_id = :acct_transmission_id
+		]]>
+	</LOAD>
+  <LOAD_WITHOUT_TEXT>
+    <![CDATA[	
+			SELECT 
+				file_name,
+        '' As file_text_compressed,
+        '' As file_text,
+				transmission_date,
+				transmission_received,
+				transmission_count,
+        company_id,
+        debit_amount,
+        credit_amount,
+        reject_reason,
+				modified_date,
+				modified_by,
+				created_date,
+				created_by,
+        file_type_flag,
+        file_sub_type_flag,
+		    num_transactions_sent,
+		    debit_amount_received,
+		    credit_amount_received,
+		    num_transactions_received,
+		    date_received,
+		    reject_reason_detail,
+        batch_number_id,
+				acct_transmission_id,
+        status_id,
+        journal_type
+      FROM elp_acct_transmission 
+			WHERE
+				acct_transmission_id = :acct_transmission_id
+		]]>
+  </LOAD_WITHOUT_TEXT>
+	<LOAD_LIST>
+      <![CDATA[	
+        select
+        file_name,
+				transmission_date,
+				transmission_received,
+				transmission_count,
+        company_id,
+        debit_amount,
+        credit_amount,
+        reject_reason,
+				elp_acct_transmission.modified_date,
+				elp_acct_transmission.modified_by,
+				elp_acct_transmission.created_date,
+				elp_acct_transmission.created_by,
+        file_type_flag,
+        file_sub_type_flag,
+		    num_transactions_sent,
+		    debit_amount_received,
+		    credit_amount_received,
+		    num_transactions_received,
+		    date_received,
+		    reject_reason_detail,
+        batch_number_id,
+				acct_transmission_id,
+        status_id,
+        journal_type,
+        ELP_DICT_ITEM_TRANSLATION.translation AS status,
+        ELP_LIST_ITEM.CODE AS status_code
+			FROM 
+          elp_acct_transmission,
+          ELP_LIST_ITEM,
+		      ELP_DICT_ITEM_TRANSLATION
+      where 
+        elp_acct_transmission.status_id = ELP_LIST_ITEM.list_item_id
+	    and ELP_LIST_ITEM.dict_item_id = ELP_DICT_ITEM_TRANSLATION.dict_item_id
+	    and ELP_DICT_ITEM_TRANSLATION.language_id = :language_id  
+			--dynamic_where_clause
+			--dynamic_order_by_clause
+      ]]>
+	</LOAD_LIST>
+  <LOAD_TRANSMISSION_LIST>
+    <![CDATA[	
+        select
+        file_name,
+				transmission_date,
+				transmission_received,
+				transmission_count,
+        company_id,
+        debit_amount,
+        credit_amount,
+        reject_reason,
+				elp_acct_transmission.modified_date,
+				elp_acct_transmission.modified_by,
+				elp_acct_transmission.created_date,
+				elp_acct_transmission.created_by,
+        file_type_flag,
+        file_sub_type_flag,
+		    num_transactions_sent,
+		    debit_amount_received,
+		    credit_amount_received,
+		    num_transactions_received,
+		    date_received,
+		    reject_reason_detail,
+        batch_number_id,
+				acct_transmission_id,
+        status_id,
+        journal_type
+			FROM 
+        elp_acct_transmission
+      where 
+        elp_acct_transmission.company_id = :company_id
+        And elp_acct_transmission.file_name = :file_name
+        And elp_acct_transmission.acct_transmission_id = :acct_transmission_id
+			  --dynamic_order_by_clause
+      ]]>
+  </LOAD_TRANSMISSION_LIST>
+  <LOAD_UNCOMPRESSED_LIST>
+    <![CDATA[	
+        SELECT * 
+        FROM (Select 
+                    acct_transmission_id,
+                    File_Text,
+                    file_name,
+                    file_type_flag,
+                    file_sub_type_flag,
+				            created_date
+              From 
+                    Elp_Acct_Transmission 
+              Where 
+                    (File_Text_Compressed IS NULL Or dbms_lob.getlength(File_Text_Compressed) = 0)
+              Order by 
+                    created_date desc) 
+        WHERE rownum <= :row_count
+      ]]>
+  </LOAD_UNCOMPRESSED_LIST>
+  <UPDATE_COMPRESSED_XML>
+    <![CDATA[	
+			UPDATE Elp_Acct_Transmission SET
+				file_text_compressed = :ptext1,
+        journal_type = :ptext2,
+        modified_by = :ptext3
+			WHERE
+				acct_transmission_id = :pid
+		]]>
+  </UPDATE_COMPRESSED_XML>
+  <TRANSMISSIONSTOMIGRATE>
+    <![CDATA[	
+        SELECT 
+              COUNT(acct_transmission_id) AS ROWCOUNT 
+        FROM 
+              Elp_Acct_Transmission 
+        WHERE
+              (File_Text_Compressed IS NULL Or dbms_lob.getlength(File_Text_Compressed) = 0)
+      ]]>
+  </TRANSMISSIONSTOMIGRATE>
+	<UPDATE>
+		<![CDATA[	
+			UPDATE elp_acct_transmission SET
+				file_name = :file_name,
+				transmission_date = :transmission_date,
+				transmission_received = :transmission_received,
+				transmission_count = :transmission_count,
+        company_id = :company_id,
+				debit_amount = :debit_amount,
+        credit_amount = :credit_amount,
+        reject_reason = :reject_reason,
+        modified_by = :modified_by,
+        file_type_flag = :file_type_flag,
+        file_sub_type_flag = :file_sub_type_flag,
+		    num_transactions_sent = :num_transactions_sent,
+		    debit_amount_received = :debit_amount_received,
+		    credit_amount_received = :credit_amount_received,
+		    num_transactions_received = :num_transactions_received,
+		    date_received = :date_received,
+		    reject_reason_detail =:reject_reason_detail,
+        batch_number_id = :batch_number_id,
+        status_id = :status_id,
+        journal_type = :journal_type
+			WHERE
+				acct_transmission_id = :acct_transmission_id
+		]]>
+	</UPDATE>
+	<INSERT>
+    INSERT INTO elp_acct_transmission
+    (
+    file_name,
+    file_text_compressed,
+    transmission_date,
+    transmission_count,
+    debit_amount,
+    credit_amount,
+    reject_reason,
+    company_id,
+    created_by,
+    file_type_flag,
+    file_sub_type_flag,
+    num_transactions_sent,
+    debit_amount_received,
+    credit_amount_received,
+    num_transactions_received,
+    date_received,
+    reject_reason_detail,
+    batch_number_id,
+    acct_transmission_id,
+    status_id,
+    journal_type
+    )
+    VALUES
+    (
+    :file_name,
+    :file_text_compressed,
+    :transmission_date,
+    :transmission_count,
+    :debit_amount,
+    :credit_amount,
+    :reject_reason,
+    :company_id,
+    :created_by,
+    :file_type_flag,
+    :file_sub_type_flag,
+    :num_transactions_sent,
+    :debit_amount_received,
+    :credit_amount_received,
+    :num_transactions_received,
+    :date_received,
+    :reject_reason_detail,
+    :batch_number_id,
+    :acct_transmission_id,
+    :status_id,
+    :journal_type
+    )
+  </INSERT>
+	<DELETE>
+			Update ELP_ACCT_TRANSMISSION
+        SET status_id = :status_id
+			WHERE
+				acct_transmission_id = :acct_transmission_id
+	</DELETE>
+</SQL> 
+
+

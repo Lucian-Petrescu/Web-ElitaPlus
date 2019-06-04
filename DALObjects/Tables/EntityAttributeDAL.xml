@@ -1,0 +1,64 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+
+<!-- ********************** THIS FILE HAS BEEN GENERATED FROM TEMPLATE SQLObject.cst (9/5/2012)********************** -->
+
+<SQL>
+  <LOAD>
+    <![CDATA[	
+			SELECT 
+				entity,
+				attribute,
+				effective,
+				expiration,
+				created_date,
+				created_by,
+				modified_date,
+				modified_by,
+				entity_attribute_id
+			FROM elp_entity_attribute 
+			WHERE
+				entity_attribute_id = :entity_attribute_id
+		]]>
+  </LOAD>
+  <LOAD_LIST>
+  </LOAD_LIST>
+  <UPDATE>
+    <![CDATA[	
+			UPDATE elp_entity_attribute SET
+				entity = :entity,
+				attribute = :attribute,
+				effective = :effective,
+				expiration = :expiration,
+				modified_by = :modified_by
+			WHERE
+				entity_attribute_id = :entity_attribute_id
+		]]>
+  </UPDATE>
+  <INSERT>
+    INSERT INTO elp_entity_attribute
+    (
+    entity,
+    attribute,
+    effective,
+    expiration,
+    created_by,
+    entity_attribute_id
+    )
+    VALUES
+    (
+    :entity,
+    :attribute,
+    :effective,
+    :expiration,
+    :created_by,
+    :entity_attribute_id
+    )
+  </INSERT>
+  <DELETE>
+    DELETE FROM elp_entity_attribute
+    WHERE
+    entity_attribute_id = :entity_attribute_id
+  </DELETE>
+</SQL>
+
+

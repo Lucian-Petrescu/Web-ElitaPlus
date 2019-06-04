@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xs:schema xmlns:tns="http://tempuri.org/" elementFormDefault="qualified" targetNamespace="http://tempuri.org/" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+  <xs:import schemaLocation="http://homolog.conectaservicos.com.br/assurant/auto/svc/cobranca/ServicoCobrancaAssurant.svc?xsd=xsd2" namespace="http://schemas.datacontract.org/2004/07/ServicoCobrancaAssurant" />
+  <xs:element name="ContratarPorCartaoDeCreditoAVista">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" name="token" nillable="true" type="xs:string" />
+        <xs:element minOccurs="0" name="campanha" nillable="true" type="xs:string" />
+        <xs:element minOccurs="0" name="nomeCliente" nillable="true" type="xs:string" />
+        <xs:element minOccurs="0" name="numeroCpfCnpj" nillable="true" type="xs:string" />
+        <xs:element minOccurs="0" name="codCertificado" nillable="true" type="xs:string" />
+        <xs:element minOccurs="0" name="nomeCartao" nillable="true" type="xs:string" />
+        <xs:element minOccurs="0" name="valorPremio" type="xs:decimal" />
+        <xs:element minOccurs="0" name="numeroCartao" nillable="true" type="xs:string" />
+        <xs:element minOccurs="0" name="cvvCartao" nillable="true" type="xs:string" />
+        <xs:element minOccurs="0" name="vencimentoCartao" nillable="true" type="xs:string" />
+        <xs:element minOccurs="0" name="numeroOperadora" nillable="true" type="xs:string" />
+        <xs:element minOccurs="0" name="numeroContratoCobranca" nillable="true" type="xs:string" />
+        <xs:element minOccurs="0" name="acao" nillable="true" type="xs:string" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="ContratarPorCartaoDeCreditoAVistaResponse">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element xmlns:q1="http://schemas.datacontract.org/2004/07/ServicoCobrancaAssurant" minOccurs="0" name="ContratarPorCartaoDeCreditoAVistaResult" nillable="true" type="q1:RetornoContratacao" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="ContratarPorCartaoDeCreditoParcelado">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" name="token" nillable="true" type="xs:string" />
+        <xs:element minOccurs="0" name="campanha" nillable="true" type="xs:string" />
+        <xs:element minOccurs="0" name="nomeCliente" nillable="true" type="xs:string" />
+        <xs:element minOccurs="0" name="numeroCpfCnpj" nillable="true" type="xs:string" />
+        <xs:element minOccurs="0" name="codCertificado" nillable="true" type="xs:string" />
+        <xs:element minOccurs="0" name="nomeCartao" nillable="true" type="xs:string" />
+        <xs:element minOccurs="0" name="valorPremio" type="xs:decimal" />
+        <xs:element minOccurs="0" name="numeroCartao" nillable="true" type="xs:string" />
+        <xs:element minOccurs="0" name="cvvCartao" nillable="true" type="xs:string" />
+        <xs:element minOccurs="0" name="vencimentoCartao" nillable="true" type="xs:string" />
+        <xs:element minOccurs="0" name="numeroOperadora" nillable="true" type="xs:string" />
+        <xs:element minOccurs="0" name="numeroDeParcelas" nillable="true" type="xs:string" />
+        <xs:element minOccurs="0" name="numeroContratoCobranca" nillable="true" type="xs:string" />
+        <xs:element minOccurs="0" name="acao" nillable="true" type="xs:string" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="ContratarPorCartaoDeCreditoParceladoResponse">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element xmlns:q2="http://schemas.datacontract.org/2004/07/ServicoCobrancaAssurant" minOccurs="0" name="ContratarPorCartaoDeCreditoParceladoResult" nillable="true" type="q2:RetornoContratacao" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="CancelarContrato">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" name="token" nillable="true" type="xs:string" />
+        <xs:element minOccurs="0" name="numeroContratoCobranca" nillable="true" type="xs:string" />
+        <xs:element minOccurs="0" name="valor" nillable="true" type="xs:string" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="CancelarContratoResponse">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element xmlns:q3="http://schemas.datacontract.org/2004/07/ServicoCobrancaAssurant" minOccurs="0" name="CancelarContratoResult" nillable="true" type="q3:RetornoContratacao" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="AnularContrato">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" name="token" nillable="true" type="xs:string" />
+        <xs:element minOccurs="0" name="numeroContratoCobranca" nillable="true" type="xs:string" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="AnularContratoResponse">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element xmlns:q4="http://schemas.datacontract.org/2004/07/ServicoCobrancaAssurant" minOccurs="0" name="AnularContratoResult" nillable="true" type="q4:RetornoContratacao" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+</xs:schema>

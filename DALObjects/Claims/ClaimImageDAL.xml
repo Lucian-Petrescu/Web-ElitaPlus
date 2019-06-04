@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="utf-8" ?>
+
+<!-- ********************** THIS FILE HAS BEEN GENERATED FROM TEMPLATE SQLObject.cst (10/8/2012)********************** -->
+
+<SQL>
+  <LOAD>
+    <![CDATA[	
+			SELECT 
+				claim_id,
+				image_id,
+				document_type_id,
+				image_status_id,
+				scan_date,
+        created_date,
+				created_by,
+				modified_date,
+				modified_by,
+        claim_image_id,
+        file_name,
+        file_size_bytes,
+        comments,
+        user_name,
+        is_local_repository
+			FROM elp_claim_image 
+			WHERE
+				claim_image_id = :claim_image_id
+		]]>
+  </LOAD>
+  <LOAD_LIST>
+  </LOAD_LIST>
+  <LOAD_LIST_CLAIM_ID>
+    <![CDATA[
+      SELECT 
+        CLAIM_IMAGE_ID,
+        CLAIM_ID,
+        IMAGE_ID,
+        DOCUMENT_TYPE_ID,
+        IMAGE_STATUS_ID,
+        SCAN_DATE,
+        created_date,
+				created_by,
+				modified_date,
+				modified_by,
+        file_name,
+        file_size_bytes,
+        comments,
+        user_name,
+        is_local_repository
+      FROM 
+        ELP_CLAIM_IMAGE 
+      WHERE 
+        CLAIM_ID =:CLAIM_ID
+    ]]>
+  </LOAD_LIST_CLAIM_ID>
+  <UPDATE>
+    <![CDATA[	
+			UPDATE elp_claim_image SET
+				claim_id = :claim_id,
+				image_id = :image_id,
+				document_type_id = :document_type_id,
+        image_status_id = :image_status_id,
+				scan_date =:scan_date,
+        modified_by = :modified_by,
+        file_name = :file_name,
+        comments = :comments,
+        is_local_repository = :is_local_repository
+			WHERE
+				claim_image_id = :claim_image_id
+		]]>
+  </UPDATE>
+  <INSERT>
+    INSERT INTO elp_claim_image
+    (
+    claim_id,
+    image_id,
+    document_type_id,
+    image_status_id,
+    scan_date,
+    created_by,
+    claim_image_id,
+    file_name,
+    file_size_bytes,
+    comments,
+    user_name,
+    is_local_repository
+    )
+    VALUES
+    (
+    :claim_id,
+    :image_id,
+    :document_type_id,
+    :image_status_id,
+    :scan_date,
+    :created_by,
+    :claim_image_id,
+    :file_name,
+    :file_size_bytes,
+    :comments,
+    :user_name,
+    :is_local_repository
+    )
+  </INSERT>
+  <DELETE>
+    DELETE FROM elp_claim_image
+    WHERE
+    claim_image_id = :claim_image_id
+  </DELETE>
+</SQL>
+
+

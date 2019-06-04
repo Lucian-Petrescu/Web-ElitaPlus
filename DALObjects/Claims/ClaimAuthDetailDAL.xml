@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="utf-8" ?>
+
+<!-- ********************** THIS FILE HAS BEEN GENERATED FROM TEMPLATE SQLObject.cst (7/23/2007)********************** -->
+
+<SQL>
+  <LOAD>
+    <![CDATA[	
+			SELECT 
+				claim_id,
+				labor_amount,
+				part_amount,
+				service_charge,
+				trip_amount,
+				other_amount,
+				other_explanation,
+				created_date,
+				created_by,
+				modified_date,
+				modified_by,
+				disposition_amount,
+				diagnostics_amount,
+				claim_auth_detail_id,
+        shipping_amount,
+        total_tax_amount
+			FROM elp_claim_auth_detail
+			WHERE
+				claim_auth_detail_id = :claim_auth_detail_id
+		]]>
+  </LOAD>
+  <LOAD_BY_CLAIM_ID>
+    <![CDATA[	
+			SELECT 
+				claim_id,
+				labor_amount,
+				part_amount,
+				service_charge,
+				trip_amount,
+				other_amount,
+				other_explanation,
+				created_date,
+				created_by,
+				modified_date,
+				modified_by,
+				disposition_amount,
+				diagnostics_amount,
+				claim_auth_detail_id,
+        shipping_amount,
+        total_tax_amount
+			FROM elp_claim_auth_detail 
+			WHERE
+				claim_id = :claim_id
+		]]>
+  </LOAD_BY_CLAIM_ID>
+  <LOAD_LIST>
+  </LOAD_LIST>
+  <UPDATE>
+    <![CDATA[	
+			UPDATE elp_claim_auth_detail SET
+				claim_id = :claim_id,
+				labor_amount = :labor_amount,
+				part_amount = :part_amount,
+				service_charge = :service_charge,
+				trip_amount = :trip_amount,
+				other_amount = :other_amount,
+				other_explanation = :other_explanation,
+				modified_by = :modified_by,
+        shipping_amount = :shipping_amount,        
+				disposition_amount = :disposition_amount,
+				diagnostics_amount = :diagnostics_amount,
+        total_tax_amount = :total_tax_amount
+			WHERE
+				claim_auth_detail_id = :claim_auth_detail_id
+		]]>
+  </UPDATE>
+  <INSERT>
+    INSERT INTO elp_claim_auth_detail
+    (
+    claim_id,
+    labor_amount,
+    part_amount,
+    service_charge,
+    trip_amount,
+    other_amount,
+    other_explanation,
+    created_by,
+    claim_auth_detail_id,
+    shipping_amount,
+    disposition_amount,
+    diagnostics_amount,
+    total_tax_amount
+    )
+    VALUES
+    (
+    :claim_id,
+    :labor_amount,
+    :part_amount,
+    :service_charge,
+    :trip_amount,
+    :other_amount,
+    :other_explanation,
+    :created_by,
+    :claim_auth_detail_id,
+    :shipping_amount,
+    :disposition_amount,
+    :diagnostics_amount,
+    :total_tax_amount
+    )
+  </INSERT>
+  <DELETE>
+    DELETE FROM elp_claim_auth_detail
+    WHERE
+    claim_auth_detail_id = :claim_auth_detail_id
+  </DELETE>
+
+</SQL>
+
+

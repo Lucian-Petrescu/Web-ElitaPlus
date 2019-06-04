@@ -1,0 +1,108 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+
+<!-- ********************** THIS FILE HAS BEEN GENERATED FROM TEMPLATE SQLObject.cst (6/22/2010)********************** -->
+
+<SQL>
+  <LOAD>
+    <![CDATA[	
+			SELECT 
+				coverage_type_id,
+				business_entity_id,
+				acct_business_unit_id,
+				region_id,
+				created_by,
+				created_date,
+				modified_by,
+				modified_date,
+				acct_cov_entity_id,
+        ACCT_COV_TYPE_CODE 
+			FROM elp_acct_cov_entity 
+			WHERE
+				acct_cov_entity_id = :acct_cov_entity_id
+		]]>
+  </LOAD>
+  <LOAD_LIST>
+    select
+    elp_acct_cov_entity.acct_cov_entity_id,
+    elp_acct_cov_entity.coverage_type_id,
+    ditCT.translation coverage_type,
+    elp_acct_cov_entity.business_entity_id,
+    ditBE.translation business_entity,
+    elp_acct_cov_entity.acct_business_unit_id,
+    elp_acct_cov_entity.ACCT_COV_TYPE_CODE,
+    elp_acct_business_unit.business_unit,
+    elp_acct_cov_entity.region_id,
+    elp_acct_cov_entity.created_by,
+    elp_acct_cov_entity.created_date,
+    elp_acct_cov_entity.modified_by,
+    elp_acct_cov_entity.modified_date,
+    elp_acct_business_unit.business_unit
+    from elp_acct_cov_entity,
+    elp_acct_business_unit,
+    elp_acct_company,
+    elp_list_item liCT,
+    elp_dict_item_translation ditCT,
+    elp_list_item liBE,
+    elp_dict_item_translation ditBE
+    where
+    (
+    (
+    getcodefromlistitem(elp_acct_company.cov_entity_by_region) = 'Y'
+    )
+    OR
+    (
+    getcodefromlistitem(elp_acct_company.cov_entity_by_region) = 'N' AND elp_acct_cov_entity.region_id IS NULL
+    )
+    )
+    and elp_acct_company.acct_company_id = elp_acct_business_unit.acct_company_id
+    and elp_acct_business_unit.acct_business_unit_id = elp_acct_cov_entity.acct_business_unit_id
+    and liCT.list_item_id =  elp_acct_cov_entity.coverage_type_id
+    and ditCT.dict_item_id = liCT.dict_item_id
+    and liBE.list_item_id =  elp_acct_cov_entity.business_entity_id
+    and ditBE.dict_item_id = liBE.dict_item_id
+    and ditCT.language_id = ditBE.language_id
+    --dynamic_where_clause
+  </LOAD_LIST>
+  <UPDATE>
+    <![CDATA[	
+			UPDATE elp_acct_cov_entity SET
+				coverage_type_id = :coverage_type_id,
+				business_entity_id = :business_entity_id,
+				acct_business_unit_id = :acct_business_unit_id,
+				region_id = :region_id,
+				modified_by = :modified_by,
+        ACCT_COV_TYPE_CODE = :ACCT_COV_TYPE_CODE
+			WHERE
+				acct_cov_entity_id = :acct_cov_entity_id
+		]]>
+  </UPDATE>
+  <INSERT>
+    INSERT INTO elp_acct_cov_entity
+    (
+    coverage_type_id,
+    business_entity_id,
+    acct_business_unit_id,
+    region_id,
+    created_by,
+    ACCT_COV_TYPE_CODE,
+    acct_cov_entity_id
+    )
+    VALUES
+    (
+    :coverage_type_id,
+    :business_entity_id,
+    :acct_business_unit_id,
+    :region_id,
+    :created_by,
+    :ACCT_COV_TYPE_CODE,
+    :acct_cov_entity_id
+    )
+  </INSERT>
+  <DELETE>
+    DELETE FROM elp_acct_cov_entity
+    WHERE
+    acct_cov_entity_id = :acct_cov_entity_id
+  </DELETE>
+</SQL>
+
+

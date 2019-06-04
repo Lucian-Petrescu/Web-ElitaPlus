@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="utf-8" ?>
+
+<!-- ********************** THIS FILE HAS BEEN GENERATED FROM TEMPLATE SQLObject.cst (12/11/2006)********************** -->
+
+<SQL>
+	<LOAD>
+		<![CDATA[	
+			SELECT 
+				earning_pattern_id,
+				earning_term,
+				earning_percent,
+				created_by,
+				created_date,
+				modified_by,
+				modified_date,
+				earning_percent_id
+			FROM elp_earning_percent 
+			WHERE
+				earning_percent_id = :earning_percent_id
+		]]>
+	</LOAD>
+	<LOAD_LIST>		
+			<![CDATA[	
+				select	EARNING_PERCENT_ID, EARNING_TERM, EARNING_PERCENT
+				from	elp_earning_percent
+				where	EARNING_PATTERN_ID = :EARNING_PATTERN_ID
+				order by earning_term
+		]]>
+	</LOAD_LIST>	
+	<TERM_COUNT>
+		<![CDATA[	
+			SELECT count(*) TermCount
+			FROM elp_earning_percent
+			WHERE earning_pattern_id = :EARNING_PATTERN_ID
+			  AND earning_term <= :EARNING_TERM
+			  AND earning_percent_id != :EARNING_PERCENT_ID
+		]]>
+	</TERM_COUNT>
+	<TERM_PERCENT>
+		<![CDATA[	
+			SELECT earning_percent
+			FROM elp_earning_percent
+			WHERE earning_pattern_id = :EARNING_PATTERN_ID
+			  AND earning_term = :EARNING_TERM
+		]]>
+	</TERM_PERCENT>
+	<UPDATE>
+		<![CDATA[	
+			UPDATE elp_earning_percent SET
+				earning_pattern_id = :earning_pattern_id,
+				earning_term = :earning_term,
+				earning_percent = :earning_percent,
+				modified_by = :modified_by
+			WHERE
+				earning_percent_id = :earning_percent_id
+		]]>
+	</UPDATE>
+	<INSERT>
+			INSERT INTO elp_earning_percent
+					(			
+				earning_pattern_id, 
+				earning_term, 
+				earning_percent, 
+				created_by,
+				earning_percent_id
+					)
+			VALUES
+					(			
+				:earning_pattern_id, 
+				:earning_term, 
+				:earning_percent, 
+				:created_by,
+				:earning_percent_id
+					)
+	</INSERT>
+	<DELETE>
+			DELETE FROM elp_earning_percent
+			WHERE
+				earning_percent_id = :earning_percent_id
+	</DELETE>
+</SQL> 
+
+
+

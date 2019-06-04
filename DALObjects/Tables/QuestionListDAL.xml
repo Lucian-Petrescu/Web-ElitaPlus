@@ -1,0 +1,179 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+
+<!-- ********************** THIS FILE HAS BEEN GENERATED FROM TEMPLATE SQLObject.cst (4/26/2012)********************** -->
+
+<SQL>
+	<LOAD>
+		<![CDATA[	
+			SELECT 
+				question_list_id as question_list_id,
+				code,
+				description,
+				effective,
+				expiration,
+				created_date,
+				created_by,
+				modified_date,
+				modified_by
+			FROM 
+			Elita.elp_question_list 
+			WHERE
+				question_list_id = :question_list_id
+		]]>
+	</LOAD>
+	<LOAD_LIST>
+		<![CDATA[	
+	  SELECT 
+        QUESTION_LIST_ID AS QUESTION_LIST_ID,
+        CODE,
+        DESCRIPTION,
+        to_Char(EFFECTIVE,'DD-Mon-YYYY HH24:MI:SS') AS EFFECTIVE,
+            to_Char(EXPIRATION,'DD-Mon-YYYY HH24:MI:SS') AS EXPIRATION
+      FROM 
+      Elita.ELP_QUESTION_LIST  
+	  WHERE   rownum < '101' AND
+	  created_date <> SYSDATE 
+        --dynamic_where_clause 
+      ORDER BY 
+        Code, Expiration   
+			]]>
+	</LOAD_LIST>
+	<GET_GROUP_COMPANIES>
+		<![CDATA[	
+     SELECT 
+        company_id
+     FROM 
+        elp_company
+     WHERE 
+        COMPANY_GROUP_ID = :company_group_id
+    	]]>
+	</GET_GROUP_COMPANIES>
+
+	<UPDATE>
+		<![CDATA[	
+			UPDATE elp_question_list 
+			SET
+				code = :code,
+				description = :description,
+				effective = :effective,
+				expiration = :expiration,
+				modified_by = :modified_by
+			WHERE
+				question_list_id = :question_list_id
+		]]>
+	</UPDATE>
+	<INSERT>
+		<![CDATA[	
+		INSERT INTO elp_question_list
+		(
+		code,
+		description,
+		effective,
+		expiration,
+		created_by,
+		question_list_id
+		)
+		VALUES
+		(
+		:code,
+		:description,
+		:effective,
+		:expiration,
+		:created_by,
+		:question_list_id
+		)
+		]]>
+	</INSERT>
+	<DELETE>
+		<![CDATA[	  
+      UPDATE 
+        ELP_QUESTION_LIST
+      SET 
+        EXPIRATION = SYSDATE
+      WHERE 
+        QUESTION_LIST_ID = :QUESTION_LIST_ID
+		]]>
+
+	</DELETE>
+  <IS_LIST_ASSIGNED_TO_DEALER>
+    <![CDATA[
+      SELECT 
+        DEALER_ID 
+      FROM 
+        ELITA.ELP_DEALER 
+      WHERE 
+        ((SELECT EFFECTIVE FROM ELP_EQUIPMENT_LIST WHERE EQUIPMENT_LIST_ID = :EQUIPMENT_LIST_ID) <= SYSDATE)  
+    ]]>
+  </IS_LIST_ASSIGNED_TO_DEALER>
+  <CHECK_OVERLAP>
+    <![CDATA[
+      SELECT * 
+      FROM 
+        ELITA.ELP_QUESTION_LIST
+      WHERE   
+        rownum < '101'
+        AND QUESTION_LIST_ID <> :QUESTION_LIST_ID
+        --dynamic_where_clause
+    ]]>
+  </CHECK_OVERLAP>
+  <CHECK_LIST_OVERLAP_TO_EXPIRE>
+    <![CDATA[
+     SELECT * 
+      FROM 
+        ELP_QUESTION_LIST
+      WHERE   
+        rownum < '101'
+        AND QUESTION_LIST_ID <> :QUESTION_LIST_ID
+        --dynamic_where_clause
+    ]]>
+  </CHECK_LIST_OVERLAP_TO_EXPIRE>
+  <CHECK_OVERLAP_DURATION>
+    <![CDATA[
+    SELECT * 
+    FROM 
+      ELP_QUESTION_LIST
+    WHERE   
+      rownum < '101'
+      AND QUESTION_LIST_ID <> :QUESTION_LIST_ID 
+      --dynamic_where_clause
+    ]]>
+  </CHECK_OVERLAP_DURATION>
+  <EXPIRE_LIST>
+    <![CDATA[
+    UPDATE 
+      ELP_QUESTION_LIST 
+    SET 
+      EXPIRATION = :EXPIRATION  
+    WHERE 
+      QUESTION_LIST_ID = :QUESTION_LIST_ID  
+    ]]>
+  </EXPIRE_LIST>
+  <EXPIRE_QUESTION>
+    <![CDATA[
+      UPDATE 
+        ELP_QUESTION_LIST
+      SET 
+        --dynamic_field_selector
+      WHERE 
+        QUESTION_LIST_ID = :QUESTION_LIST_ID 
+        --dynamic_where_clause
+    ]]>
+  </EXPIRE_QUESTION>
+	<CURRENT_TIME_STAMP>
+		<![CDATA[
+      SELECT SYSDATE FROM DUAL
+    ]]>
+	</CURRENT_TIME_STAMP>
+  <DROPDOWN_ID>
+    <![CDATA[
+    select list_id from elp_list where code = :code
+    ]]>
+  </DROPDOWN_ID>
+  <DROPDOWN_ITEM_ID>
+    <![CDATA[
+    select list_item_id from elp_list_item  where code =:code and list_id=:list_id
+    ]]>
+  </DROPDOWN_ITEM_ID>
+</SQL>
+
+

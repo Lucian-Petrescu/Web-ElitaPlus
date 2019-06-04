@@ -1,0 +1,143 @@
+<?xml version="1.0" encoding="utf-8" ?>
+
+<!-- ********************** THIS FILE HAS BEEN GENERATED FROM TEMPLATE SQLObject.cst (4/16/2015)********************** -->
+
+<SQL>
+	<LOAD>
+		<![CDATA[	
+			SELECT 
+				company_id,
+				dealer_id,
+        close_rule_based_on_id,
+				claim_status_by_group_id,
+				time_period,
+				reason_closed_id,
+				active_flag,
+				created_date,
+				created_by,
+				modified_date,
+				modified_by,
+				claim_close_rule_id,
+        parent_claim_close_rule_id
+			FROM elp_claim_close_rules 
+			WHERE
+				claim_close_rule_id = :claim_close_rule_id
+		]]>
+	</LOAD>
+	<LOAD_LIST>		
+	</LOAD_LIST>	
+	<UPDATE>
+		<![CDATA[	
+			UPDATE elp_claim_close_rules SET
+				company_id = :company_id,
+				dealer_id = :dealer_id,
+        close_rule_based_on_id = :close_rule_based_on_id,
+				claim_status_by_group_id = :claim_status_by_group_id,
+				time_period = :time_period,
+				reason_closed_id = :reason_closed_id,
+				active_flag = :active_flag,
+				modified_by = :modified_by,
+        parent_claim_close_rule_id = :parent_claim_close_rule_id
+			WHERE
+				claim_close_rule_id = :claim_close_rule_id
+		]]>
+	</UPDATE>
+	<INSERT>
+    INSERT INTO elp_claim_close_rules
+    (
+    company_id,
+    dealer_id,
+    close_rule_based_on_id,
+    claim_status_by_group_id,
+    time_period,
+    reason_closed_id,
+    active_flag,
+    created_by,
+    claim_close_rule_id,
+    parent_claim_close_rule_id
+    )
+    VALUES
+    (
+    :company_id,
+    :dealer_id,
+    :close_rule_based_on_id,
+    :claim_status_by_group_id,
+    :time_period,
+    :reason_closed_id,
+    :active_flag,
+    :created_by,
+    :claim_close_rule_id,
+    :parent_claim_close_rule_id
+    )
+  </INSERT>
+	<DELETE>
+			DELETE FROM elp_claim_close_rules
+			WHERE
+				claim_close_rule_id = :claim_close_rule_id
+	</DELETE>
+  <LOAD_CLAIM_CLOSE_RULES>
+     <![CDATA[
+      select  ccr.claim_close_rule_id,
+              ccr.company_id, 
+              comp.code company_code, 
+              ccr.dealer_id, 
+              ccr.close_rule_based_on_id,
+              d.dealer,
+              csg.claim_status_By_group_id,
+              getenglishdescfromlistitem(csg.list_item_id) claim_status_by_group,
+              ccr.time_period,
+              ccr.reason_closed_id,
+              getenglishdescfromlistitem(ccr.reason_closed_id) reason_closed,
+              ccr.active_flag
+      from    elp_company comp inner join elp_claim_close_rules ccr on ccr.company_id = comp.company_id
+              left join elp_dealer d on ccr.dealer_id =d.dealer_id
+              inner join elp_claim_status_by_group csg on csg.claim_status_by_group_id = ccr.claim_status_by_group_id
+              
+      where  ccr.active_flag = 'Y'
+             --li.list_id = (Select list_id from elp_list where code ='RESCL')
+       --dynamic_where_clause
+      ]]>
+  </LOAD_CLAIM_CLOSE_RULES>
+
+  <VALIDATE_DEALER_CLAIM_CLOSE_RULES>
+    <![CDATA[	
+			Select count (*) 
+      From elp_claim_close_rules ccr
+      Where ccr.company_id = :companyId
+      And   ccr.dealer_id = :dealerId
+      And   ccr.claim_status_by_group_id = :claimStatusByGroupId
+      And   ccr.close_rule_based_on_id = :closeRuleBasedOnId
+      And   ccr.active_flag = 'Y'
+		]]>
+  </VALIDATE_DEALER_CLAIM_CLOSE_RULES>
+
+  <VALIDATE_COMPANY_CLAIM_CLOSE_RULES>
+    <![CDATA[	
+			Select count (*) 
+      From elp_claim_close_rules ccr
+      Where ccr.company_id = :companyId
+      And   ccr.claim_status_by_group_id = :claimStatusByGroupId
+      And   ccr.close_rule_based_on_id = :closeRuleBasedOnId
+      And   ccr.active_flag = 'Y'
+      And   ccr.dealer_id Is Null
+		]]>
+  </VALIDATE_COMPANY_CLAIM_CLOSE_RULES>
+  
+  <LOAD_CLAIM_CLOSE_RULES_BY_COMPANY>
+   Elita.Elp_Claim_Logistics.GetClaimCloseRulesByCompany
+  </LOAD_CLAIM_CLOSE_RULES_BY_COMPANY>
+  <LOAD_CLAIM_CLOSE_RULES_BY_DEALER>
+    Elita.Elp_Claim_Logistics.GetClaimCloseRulesByDealer
+  </LOAD_CLAIM_CLOSE_RULES_BY_DEALER>
+  <UPDATE_CLAIM_RULE_IN_ACTIVE>
+    Elita.Elp_Claim_Logistics.UpdateClaimCloseRuleStatus
+  </UPDATE_CLAIM_RULE_IN_ACTIVE>
+  <COPY_CLAIM_CLOSE_RULES_To_NEW_COMPANY>
+    Elita.Elp_Claim_Logistics.CopyClaimCloseRulesToNewComp
+  </COPY_CLAIM_CLOSE_RULES_To_NEW_COMPANY>
+  <COPY_CLAIM_CLOSE_RULES_To_NEW_DEALER>
+    Elita.Elp_Claim_Logistics.CopyClaimCloseRulesToNewDlr
+  </COPY_CLAIM_CLOSE_RULES_To_NEW_DEALER>
+</SQL> 
+
+

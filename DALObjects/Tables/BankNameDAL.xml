@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="utf-8" ?>
+
+<!-- ********************** THIS FILE HAS BEEN GENERATED FROM TEMPLATE SQLObject.cst (3/19/2007)********************** -->
+
+<SQL>
+	<LOAD>
+		<![CDATA[	
+      select bank_id,
+             code,
+             description,
+             country_id,
+             created_by,
+             created_date,
+             modified_by,
+             modified_date
+      from   elp_bank
+      where  bank_id = :bank_id
+		]]>
+	</LOAD>	
+	<LOAD_LIST>	
+	<![CDATA[	
+			select bank_id,
+             code,
+             description,
+             country_id,
+             created_by,
+             created_date,
+             modified_by,
+             modified_date
+      from   elp_bank
+			--dynamic_where_clause
+			--dynamic_order_by_clause
+		]]>
+	</LOAD_LIST>
+  <LOAD_BANK_NAME_BY_COUNTRY>
+    <![CDATA[	
+			select  DISTINCT 
+              description,
+              bank_id ID
+      from    elp_bank
+			where   country_id = :country_id
+      order by description
+		]]>
+  </LOAD_BANK_NAME_BY_COUNTRY>
+  <UPDATE>
+		<![CDATA[	
+      update elp_bank
+      set    bank_id     = :bank_id,
+             code        = :code,
+             description = :description,
+             country_id  = :country_id
+      where  bank_id = :bank_id			
+		]]>
+	</UPDATE>	
+	<INSERT>
+    <![CDATA[	
+      insert into elp_bank
+      (code,
+      description,
+      country_id)
+      values
+      (:code,
+      :description,
+      :country_id)
+    ]]>
+  </INSERT>	
+	<DELETE>
+    <![CDATA[	
+      DELETE FROM elp_bank
+      WHERE
+      bank_id = :bank_id
+    ]]>
+  </DELETE>
+</SQL> 
+
+
+

@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="utf-8" ?>
+
+<!-- ********************** THIS FILE HAS BEEN GENERATED FROM TEMPLATE SQLObject.cst (9/17/2004)********************** -->
+
+<SQL>
+	<LOAD>
+		<![CDATA[	
+			SELECT 
+				dealer_id,
+				manufacturer_id,
+				description,
+				created_by,
+				created_date,
+				modified_by,
+				modified_date,
+				mfg_model_id
+			FROM elp_mfg_model 
+			WHERE
+				mfg_model_id = :mfg_model_id
+		]]>
+	</LOAD>
+	<LOAD_LIST>
+		<![CDATA[	
+			SELECT 
+				mdl.mfg_model_id,
+				mdl.description,
+				mdl.dealer_id,
+				mdl.manufacturer_id,
+				dlr.dealer_name dealer_name,
+				mfr.description manufacturer_name
+			FROM elp_mfg_model mdl, elp_dealer dlr, elp_manufacturer mfr, elp_company c, elp_company_group cg
+			WHERE
+				mdl.dealer_id LIKE :dealerId and
+				mdl.manufacturer_id LIKE :manufacturerId and
+				dlr.dealer_id = mdl.dealer_id and
+				mfr.manufacturer_id = mdl.manufacturer_id and
+				UPPER(mdl.description) LIKE :description and
+				mfr.company_group_Id = cg.company_group_id and
+				mfr.company_group_id = :company_group_id and
+				c.company_Id = dlr.company_id
+			ORDER BY UPPER(dealer_name), UPPER(manufacturer_name), UPPER(mdl.description)
+		]]>					
+	</LOAD_LIST>	
+	<UPDATE>
+		<![CDATA[	
+			UPDATE elp_mfg_model SET
+				dealer_id = :dealer_id,
+				manufacturer_id = :manufacturer_id,
+				description = :description,
+				modified_by = :modified_by
+			WHERE
+				mfg_model_id = :mfg_model_id
+		]]>
+	</UPDATE>
+	<INSERT>
+			INSERT INTO elp_mfg_model
+					(			
+				dealer_id, 
+				manufacturer_id, 
+				description, 
+				created_by,
+				mfg_model_id
+					)
+			VALUES
+					(			
+				:dealer_id, 
+				:manufacturer_id, 
+				:description, 
+				:created_by,
+				:mfg_model_id
+					)
+	</INSERT>
+	<DELETE>
+			DELETE FROM elp_mfg_model
+			WHERE
+				mfg_model_id = :mfg_model_id
+	</DELETE>
+  <WS_GETMAKEMODELFORDEALER>
+    select *
+    from elp_mfg_model
+    where elp_mfg_model.manufacturer_id = :manufacturer_id
+    and elp_mfg_model.dealer_id = :dealer_id
+    and ((upper(trim(elp_mfg_model.description)) = upper(trim(:description))) or
+    (upper(trim(elp_mfg_model.description)) = 'ANY'))
+  </WS_GETMAKEMODELFORDEALER>
+</SQL> 
+
+

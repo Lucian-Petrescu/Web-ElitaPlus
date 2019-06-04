@@ -1,0 +1,220 @@
+<?xml version="1.0" encoding="utf-8" ?>
+
+<!-- ********************** THIS FILE HAS BEEN GENERATED FROM TEMPLATE SQLObject.cst (12/20/2006)********************** -->
+
+<SQL>
+	<LOAD>
+		<![CDATA[	
+			SELECT 
+				company_group_id,
+				coverage_type_id,
+				cause_of_loss_id,
+				created_by,
+				created_date,
+				modified_by,
+				modified_date,
+				default_flag,
+				coverage_loss_id,
+        active   
+			FROM elp_coverage_loss 
+			WHERE
+				coverage_loss_id = :coverage_loss_id
+		]]>
+	</LOAD>
+	<LOAD_LIST>	
+		select distinct coverage_type_id, translation description, code
+			from	elp_coverage_loss, elp_list_item li, elp_dict_item_translation trans
+			where	company_group_id = :company_group_id
+			        and coverage_type_id like :coverage_type_id
+			        and coverage_type_id = list_item_id
+					and li.dict_item_id = trans.dict_item_id
+					and language_id = :language_id
+			order by upper(description)
+	</LOAD_LIST>
+	<LOAD_ALL_COV_LOSS>
+	    <![CDATA[	
+			SELECT 
+				company_group_id,
+				coverage_type_id,
+				cause_of_loss_id,
+				created_by,
+				created_date,
+				modified_by,
+				modified_date,
+				default_flag,
+				coverage_loss_id,
+        active   
+			FROM elp_coverage_loss 
+			WHERE
+				coverage_type_id = :coverage_type_id
+		    and company_group_id = :company_group_id		
+		]]>
+	</LOAD_ALL_COV_LOSS>	
+	<UPDATE>
+		<![CDATA[	
+			UPDATE elp_coverage_loss SET
+				company_group_id = :company_group_id,
+				coverage_type_id = :coverage_type_id,
+				cause_of_loss_id = :cause_of_loss_id,
+				default_flag = :default_flag,
+				modified_by = :modified_by,
+        active = :active            
+			WHERE
+				coverage_loss_id = :coverage_loss_id
+		]]>
+	</UPDATE>
+	<INSERT>
+    INSERT INTO elp_coverage_loss
+    (
+    company_group_id,
+    coverage_type_id,
+    cause_of_loss_id,
+    created_by,
+    default_flag,
+    coverage_loss_id,
+    active
+    )
+    VALUES
+    (
+    :company_group_id,
+    :coverage_type_id,
+    :cause_of_loss_id,
+    :created_by,
+    :default_flag,
+    :coverage_loss_id,
+    :active
+    )
+  </INSERT>
+	<DELETE>
+			DELETE FROM elp_coverage_loss
+			WHERE
+				coverage_loss_id = :coverage_loss_id
+	</DELETE>
+	<GET_AVAILABLE_CAUSES_OF_LOSS>
+	<![CDATA[
+		SELECT
+			LI.list_item_id id,
+            LI.code code,
+			D.translation description
+		FROM
+			ELITA.ELP_LIST L,
+			ELITA.ELP_LIST_ITEM LI,
+			ELITA.ELP_DICT_ITEM_TRANSLATION D
+		WHERE
+			L.list_id = LI.list_id
+		and L.code = 'CAUSE'
+		and LI.dict_item_id = D.dict_item_id
+		and language_id = :language_id
+		and LI.list_item_id not in
+				(
+				select c.cause_of_loss_id list_item_id
+				from elp_coverage_loss c
+				where c.company_group_id = :company_group_id
+				  and c.coverage_type_id = :coverage_type_id
+          and c.active is null    
+				)
+		ORDER BY UPPER(description)
+	]]>
+	</GET_AVAILABLE_CAUSES_OF_LOSS>
+	<GET_SELECTED_CAUSES_OF_LOSS>
+	<![CDATA[
+	    select distinct LI.list_item_id id,
+                translation description, code
+		from elp_coverage_loss c,
+			elp_list_item li,
+			elp_dict_item_translation trans
+		where	c.company_group_id = :company_group_id
+			and c.coverage_type_id = :coverage_type_id
+			and c.cause_of_loss_id  = list_item_id
+			and li.dict_item_id = trans.dict_item_id
+			and language_id = :language_id
+      and c.active is null   
+		order by upper(description)
+	]]>
+	</GET_SELECTED_CAUSES_OF_LOSS>
+  <LOAD_NOT_AVALABLE>
+    select * from ELP_COVERAGE_LOSS
+    where cause_of_loss_id = :cause_of_loss_id
+    and coverage_type_id = :coverage_type_id
+    and company_group_id = :company_group_id
+    and active is not null
+  </LOAD_NOT_AVALABLE>
+  <COVERAGE_TYPES>
+			SELECT 
+				LI.list_item_id id, rawtohex(D.language_id) language_id, LI.code code, D.translation description
+			FROM 
+				ELITA.ELP_LIST L, ELITA.ELP_LIST_ITEM LI, ELITA.ELP_DICT_ITEM_TRANSLATION D
+			WHERE 
+				L.list_id = LI.list_id
+				and L.code = 'CTYP'
+				and LI.dict_item_id = D.dict_item_id
+				and LI.list_item_id not in
+				(
+				select c.cause_of_loss_id id
+				from elp_coverage_loss c
+				where c.company_group_id = :company_group_id
+				  and c.coverage_type_id = :coverage_type_id
+				)
+			ORDER BY UPPER(description)
+		</COVERAGE_TYPES>
+		<GET_CAUSE_OF_LOSS_IN_USE>		
+		<![CDATA[	
+			SELECT cl.claim_number
+			FROM elp_claim cl
+			WHERE
+				--dynamic_in_clause_1
+				--dynamic_in_clause_2
+        and c.active is null      
+				and rownum < 2
+		]]>	
+		</GET_CAUSE_OF_LOSS_IN_USE>
+  <LOAD_COVLOSS_FROM_COV_AND_CAUSE_OF_LOSS>
+    select * from ELP_COVERAGE_LOSS
+    where cause_of_loss_id = :cause_of_loss_id
+    and coverage_type_id = :coverage_type_id
+    and company_group_id = :company_group_id    
+  </LOAD_COVLOSS_FROM_COV_AND_CAUSE_OF_LOSS>
+  <LOAD_CAUSE_OF_LOSS_BY_COVERAGE>
+    SELECT distinct
+    LI.list_item_id id, rawtohex(D.language_id) language_id, LI.code code, D.translation description
+    FROM
+    ELITA.ELP_LIST_ITEM LI, ELITA.ELP_DICT_ITEM_TRANSLATION D,
+    ELP_COVERAGE_LOSS cl
+    WHERE
+    LI.dict_item_id = D.dict_item_id
+    and cl.cause_of_loss_id = LI.list_item_id
+    and cl.coverage_type_id = :coverage_type_id
+    and cl.company_group_id = :company_group_id
+    and D.language_id = :language_id
+    ORDER BY UPPER(description)
+  </LOAD_CAUSE_OF_LOSS_BY_COVERAGE>
+
+  <LOAD_DEFAULT_CAUSE_OF_LOSS_BY_COVERAGE>
+    SELECT distinct
+    LI.list_item_id id, rawtohex(D.language_id) language_id, LI.code code, D.translation description
+    FROM
+    ELITA.ELP_LIST_ITEM LI, ELITA.ELP_DICT_ITEM_TRANSLATION D,
+    ELP_COVERAGE_LOSS cl
+    WHERE
+    LI.dict_item_id = D.dict_item_id
+    and cl.cause_of_loss_id = LI.list_item_id
+    and cl.coverage_type_id = :coverage_type_id
+    and cl.company_group_id = :company_group_id
+    and D.language_id = :language_id
+    and cl.DEFAULT_FLAG = 'Y'
+    ORDER BY UPPER(description)
+  </LOAD_DEFAULT_CAUSE_OF_LOSS_BY_COVERAGE>
+  <GetCoverageLossForSpecialService>
+    SELECT
+    ECL.COVERAGE_LOSS_ID ID, ECL.CAUSE_OF_LOSS_ID CAUSE_OF_LOSS_ID, ECL.COVERAGE_TYPE_ID COVERAGE_TYPE_ID,
+    ECL.COMPANY_GROUP_ID COMPANY_GROUP_ID,ESS.CODE, ESS.PRICE_GROUP_FIELD_ID PRICE_GROUP_FIELD_ID, ESS.AVAILABLE_FOR_SERV_CENTER_ID
+    FROM ELP_SPECIAL_SERVICE ESS
+    INNER JOIN ELP_COVERAGE_LOSS ECL ON ESS.COVERAGE_LOSS_ID = ECL.COVERAGE_LOSS_ID
+    WHERE
+    ESS.DEALER_ID = :DEALER_ID AND
+    ESS.CODE = :CODE AND
+    ECL.COMPANY_GROUP_ID = :COMPANY_GROUP_ID
+  </GetCoverageLossForSpecialService>
+</SQL> 
+
+

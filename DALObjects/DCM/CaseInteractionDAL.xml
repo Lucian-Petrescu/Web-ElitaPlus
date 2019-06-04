@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="utf-8" ?>
+
+<!-- ********************** THIS FILE HAS BEEN GENERATED FROM TEMPLATE SQLObject.cst (7/1/2017)********************** -->
+
+<SQL>
+	<LOAD>
+		<![CDATA[	
+			SELECT 
+				case_id,
+				interaction_number,
+				interaction_purpose_xcd,
+				channel_xcd,
+				caller_id,
+				interaction_date,
+				is_caller_authenticated_xcd,
+				caller_authenction_method_xcd,
+				culture_code,
+				created_by,
+				created_date,
+				modified_by,
+				modified_date,
+				case_interaction_id
+			FROM elp_case_interaction 
+			WHERE
+				case_interaction_id = :case_interaction_id
+		]]>
+	</LOAD>
+	<LOAD_CASE_INTERACTION_LIST>
+    <![CDATA[elp_case_utility.LoadCaseInteractionList]]>
+	</LOAD_CASE_INTERACTION_LIST>	
+	<UPDATE>
+		<![CDATA[	
+			UPDATE elp_case_interaction SET
+				case_id = :case_id,
+				interaction_number = :interaction_number,
+				interaction_purpose_xcd = :interaction_purpose_xcd,
+				channel_xcd = :channel_xcd,
+				caller_id = :caller_id,
+				interaction_date = :interaction_date,
+				is_caller_authenticated_xcd = :is_caller_authenticated_xcd,
+				caller_authenction_method_xcd = :caller_authenction_method_xcd,
+				culture_code = :culture_code,
+				modified_by = :modified_by
+			WHERE
+				case_interaction_id = :case_interaction_id
+		]]>
+	</UPDATE>
+	<INSERT>
+			INSERT INTO elp_case_interaction
+					(			
+				case_id, 
+				interaction_number, 
+				interaction_purpose_xcd, 
+				channel_xcd, 
+				caller_id, 
+				interaction_date, 
+				is_caller_authenticated_xcd, 
+				caller_authenction_method_xcd, 
+				culture_code, 
+				created_by,
+				case_interaction_id
+					)
+			VALUES
+					(			
+				:case_id, 
+				:interaction_number, 
+				:interaction_purpose_xcd, 
+				:channel_xcd, 
+				:caller_id, 
+				:interaction_date, 
+				:is_caller_authenticated_xcd, 
+				:caller_authenction_method_xcd, 
+				:culture_code, 
+				:created_by,
+				:case_interaction_id
+					)
+	</INSERT>
+	<DELETE>
+			DELETE FROM elp_case_interaction
+			WHERE
+				case_interaction_id = :case_interaction_id
+	</DELETE>
+</SQL> 
+
+

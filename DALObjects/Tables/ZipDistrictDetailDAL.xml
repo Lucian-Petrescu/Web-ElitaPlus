@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="utf-8" ?>
+
+<!-- ********************** THIS FILE HAS BEEN GENERATED FROM TEMPLATE SQLObject.cst (10/22/2004)********************** -->
+
+<SQL>
+	<LOAD>
+		<![CDATA[	
+			SELECT 
+				zip_district_id,
+				zip_code,
+				created_by,
+				created_date,
+				modified_by,
+				modified_date,
+				zip_district_detail_id
+			FROM elp_zip_district_detail 
+			WHERE
+				zip_district_detail_id = :zip_district_detail_id
+		]]>
+	</LOAD>
+	<LOAD_LIST>		
+		<![CDATA[	
+			SELECT
+				zip_district_id,
+				zip_code,
+				created_by,
+				created_date,
+				modified_by,
+				modified_date,
+				zip_district_detail_id
+			FROM elp_zip_district_detail
+			WHERE
+				zip_district_id = :zip_district_id
+		]]>
+	</LOAD_LIST>	
+	<LOAD_NEGATIVE_LIST>		
+		<![CDATA[	
+			SELECT
+				zdd.zip_code
+			FROM elp_zip_district_detail zdd, elp_zip_district zd
+			WHERE
+				zdd.zip_district_id = zd.zip_district_id
+			AND	zd.country_id = :country_id
+			AND	zdd.zip_district_id <> :zip_district_id
+		]]>
+	</LOAD_NEGATIVE_LIST>	
+	<UPDATE>
+		<![CDATA[	
+			UPDATE elp_zip_district_detail SET
+				zip_district_id = :zip_district_id,
+				zip_code = :zip_code,
+				modified_by = :modified_by
+			WHERE
+				zip_district_detail_id = :zip_district_detail_id
+		]]>
+	</UPDATE>
+	<INSERT>		
+			INSERT INTO elp_zip_district_detail
+					(			
+				zip_district_id, 
+				zip_code, 
+				created_by,
+				zip_district_detail_id
+					)
+			VALUES
+					(			
+				:zip_district_id, 
+				:zip_code, 
+				:created_by,
+				:zip_district_detail_id
+					)
+	</INSERT>
+	<DELETE>
+			DELETE FROM elp_zip_district_detail
+			WHERE
+				zip_district_detail_id = :zip_district_detail_id
+	</DELETE>
+</SQL> 
+
+

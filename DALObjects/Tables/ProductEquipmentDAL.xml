@@ -1,0 +1,149 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+
+<SQL>
+  <LOAD>
+    <![CDATA[	
+              Select pe.prod_item_manuf_equip_id as prod_item_manuf_equip_id,
+                     pe.product_code_id as product_code_id,
+                     pe.item_id as item_id,
+                     pe.manufacturer_id as manufacturer_id,
+                     m.description as EQUIPMENT_MAKE,
+                     pe.equipment_id as equipment_id,
+                     e.model       as EQUIPMENT_MODEL,
+                     trunc(pe.effective_date_product_equip)            as effective_date_product_equip,
+                     trunc(pe.expiration_date_product_equip)           as expiration_date_product_equip,
+                     trunc(nvl(pe.modified_date ,pe.created_date))     as create_date_product_equip,
+                     pe.device_type_id,
+                     pe.method_of_repair_xcd,
+                     pe.created_by,
+                     pe.created_date,
+                     pe.modified_by,
+                     pe.modified_date,
+                     pe.config_purpose_xcd
+                from elp_prd_item_manuf_equipment pe
+               inner join elp_manufacturer m   on pe.manufacturer_id = m.manufacturer_id
+               inner join elp_equipment e      on pe.equipment_id = e.equipment_id
+               where prod_item_manuf_equip_id = :prod_item_manuf_equip_id
+    ]]>
+  </LOAD>
+  <LOAD_LIST>
+    <![CDATA[	
+              Select pe.prod_item_manuf_equip_id as prod_item_manuf_equip_id,
+                     m.description as EQUIPMENT_MAKE,
+                     e.model       as EQUIPMENT_MODEL,
+                     trunc(pe.effective_date_product_equip)            as effective_date_product_equip,
+                     trunc(pe.expiration_date_product_equip)           as expiration_date_product_equip,
+                     trunc(nvl(pe.modified_date ,pe.created_date))     as create_date_product_equip,
+                     pe.device_type_id,
+                     pe.product_code_id,
+                     pe.item_id,
+                     pe.manufacturer_id,
+                     pe.equipment_id,
+                     pe.method_of_repair_xcd,
+                     pe.created_by,
+                     pe.created_date,
+                     pe.modified_by,
+                     pe.modified_date,
+                     pe.config_purpose_xcd
+                from elp_prd_item_manuf_equipment pe
+               inner join elp_product_code pc  on pc.product_code_id = pe.product_code_id
+               left outer join elp_manufacturer m   on pe.manufacturer_id = m.manufacturer_id
+               left outer join elp_equipment e      on pe.equipment_id = e.equipment_id
+               where pe.product_code_id = :product_code_id
+               and   pe.config_purpose_xcd is null
+               --dynamic_where_clause
+               order by m.description, e.model , trunc(pe.effective_date_product_equip)
+		]]>
+  </LOAD_LIST>
+  <LOAD_BENEFITS_LIST>
+    <![CDATA[	
+              Select pe.prod_item_manuf_equip_id as prod_item_manuf_equip_id,
+                     case when m.description is null then
+                        e.description
+                     else
+                        m.description
+                     end           as EQUIPMENT_MAKE,
+                     e.model       as EQUIPMENT_MODEL,
+                     trunc(pe.effective_date_product_equip)            as effective_date_product_equip,
+                     trunc(pe.expiration_date_product_equip)           as expiration_date_product_equip,
+                     trunc(nvl(pe.modified_date ,pe.created_date))     as create_date_product_equip,
+                     pe.device_type_id,
+                     pe.product_code_id,
+                     pe.item_id,
+                     pe.manufacturer_id,
+                     pe.equipment_id,
+                     pe.method_of_repair_xcd,
+                     pe.created_by,
+                     pe.created_date,
+                     pe.modified_by,
+                     pe.modified_date,
+                     pe.config_purpose_xcd
+               from elp_prd_item_manuf_equipment pe
+               inner join elp_equipment e           on e.equipment_id     = pe.equipment_id
+               left outer join elp_manufacturer m   on m.manufacturer_id  = e.manufacturer_id 
+               inner join elp_product_code pc       on pc.product_code_id = pe.product_code_id
+               where pe.product_code_id = :product_code_id
+               and   pe.config_purpose_xcd = 'PRDITEMCONFIGPURPOSE-BENEF'
+               --dynamic_where_clause
+               order by m.description, e.model , trunc(pe.effective_date_product_equip)
+		]]>    
+  </LOAD_BENEFITS_LIST>
+  <LOAD_PROD_MANU_EQUIP_LIST>
+    <![CDATA[	
+              Select trunc(pe.effective_date_product_equip)            as effective_date_product_equip,
+                     trunc(pe.expiration_date_product_equip)           as expiration_date_product_equip
+                from elp_prd_item_manuf_equipment pe
+               where pe.product_code_id = :product_code_id
+                 and pe.manufacturer_id = :manufacturer_id
+                 and pe.equipment_id    = :equipment_id
+               order by trunc(pe.effective_date_product_equip)
+		]]>
+  </LOAD_PROD_MANU_EQUIP_LIST>
+  <UPDATE>
+    <![CDATA[	
+			UPDATE elp_prd_item_manuf_equipment SET
+				expiration_date_product_equip = :expiration_date_product_equip,
+        method_of_repair_xcd  = :method_of_repair_xcd,
+				modified_by = :modified_by
+			WHERE
+				prod_item_manuf_equip_id = :prod_item_manuf_equip_id
+		]]>
+  </UPDATE>
+  <INSERT>
+    INSERT INTO elp_prd_item_manuf_equipment
+    (
+    product_code_id,
+    item_id,
+    manufacturer_id,
+    equipment_id,
+    effective_date_product_equip,
+    expiration_date_product_equip,
+    device_type_id,
+    method_of_repair_xcd,
+    created_by,
+    prod_item_manuf_equip_id,
+    config_purpose_xcd
+    )
+    VALUES
+    (
+    :product_code_id,
+    :item_id,
+    :manufacturer_id,
+    :equipment_id,
+    :effective_date_product_equip,
+    :expiration_date_product_equip,
+    :device_type_id,
+    :method_of_repair_xcd,
+    :created_by,
+    :prod_item_manuf_equip_id,
+    :config_purpose_xcd
+    )
+  </INSERT>
+  <DELETE>
+    DELETE FROM elp_prd_item_manuf_equipment
+    WHERE
+    prod_item_manuf_equip_id = :prod_item_manuf_equip_id
+  </DELETE>
+ </SQL>
+
+

@@ -1,0 +1,46 @@
+
+.dd2 {POSITION: relative; TEXT-ALIGN: left; width:inherit !important; }
+.ddOutOfVision{ display:none;} 
+.dd2 .ddTitle {
+	TEXT-INDENT: 0px; BACKGROUND:#FFF; OVERFLOW: hidden; CURSOR: default;  margin-top:0px; border:1px solid #CCC; padding:0px 0px 2px 3px;
+}
+.dd2 .ddTitle SPAN.arrow {
+	POSITION: relative; WIDTH: 17px; DISPLAY: inline-block; background:url(../images/icon-arrow.gif) no-repeat 0px 0px; FLOAT: right; HEIGHT: 16px;
+	top:1px; cursor:pointer; right:0px; border:0px solid red
+}
+.dd2 .ddTitle SPAN.ddTitleText {
+	font-family:"Trebuchet MS", Arial, Helvetica, sans-serif; COLOR: #333; FONT-SIZE: 11px; OVERFLOW: hidden; border:0px solid red;
+}
+.dd2 .ddTitle SPAN.ddTitleText IMG {
+	TEXT-ALIGN: left; PADDING-BOTTOM: 3px; PADDING-LEFT: 0px; PADDING-RIGHT: 2px; PADDING-TOP:2px
+}
+.dd2 .ddTitle IMG.selected {
+	PADDING-BOTTOM: 0px; PADDING-LEFT: 0px; PADDING-RIGHT: 2px; VERTICAL-ALIGN: top; PADDING-TOP: 0px
+}
+.dd2 .ddChild {
+	BORDER-BOTTOM: #c3c3c3 1px solid; POSITION: absolute; BORDER-LEFT: #c3c3c3 1px solid; OVERFLOW-X: hidden !important; BACKGROUND-COLOR: #ffffff; MARGIN: 0px; WIDTH: auto; DISPLAY: none; FONT-SIZE: 11px; OVERFLOW:auto !important; BORDER-TOP: #c3c3c3 1px; BORDER-RIGHT: #c3c3c3 1px solid; 
+}
+.dd2 .ddChild .opta A {
+	PADDING-LEFT: 10px
+}
+.dd2 .ddChild .opta A:visited {
+	PADDING-LEFT: 10px
+}
+.dd2 .ddChild A {
+	PADDING-BOTTOM: 3px; PADDING-LEFT: 3px; PADDING-RIGHT: 0px; DISPLAY: block; WHITE-SPACE: nowrap; COLOR: #000; OVERFLOW: hidden; CURSOR: pointer; TEXT-DECORATION: none; PADDING-TOP: 3px
+}
+.dd2 .ddChild A:hover {
+	BACKGROUND-COLOR: #FF9900;
+}
+.dd2 .ddChild A IMG {
+	PADDING-BOTTOM: 0px; BORDER-RIGHT-WIDTH: 0px; PADDING-LEFT: 0px; PADDING-RIGHT: 2px; BORDER-TOP-WIDTH: 0px; BORDER-BOTTOM-WIDTH: 0px; VERTICAL-ALIGN: middle; BORDER-LEFT-WIDTH: 0px; PADDING-TOP: 0px
+}
+.dd2 .ddChild A.selected {
+	BACKGROUND-COLOR: #FF9900
+}
+.dd2 .borderTop {
+	BORDER-TOP: #c3c3c3 1px solid
+}
+.dd2 .noBorderTop {
+	BORDER-TOP: 0px
+}

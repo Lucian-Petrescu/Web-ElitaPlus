@@ -1,0 +1,177 @@
+<?xml version="1.0" encoding="utf-8" ?>
+
+<!-- ********************** THIS FILE HAS BEEN GENERATED FROM TEMPLATE SQLObject.cst (11/16/2007)********************** -->
+
+<SQL>
+  <LOAD>
+    <![CDATA[	
+			SELECT 
+				company_id,
+				dealer_id,
+				branch_id,
+				invoice_number,
+				credit_note_number,
+				previous_invoice_date,
+				new_total_cert,
+				new_gross_amt_recvd,
+				new_premium_written,
+				new_commission,
+				new_tax1,
+				new_tax2,
+				new_tax3,
+				new_tax4,
+				new_tax5,
+				new_tax6,
+				new_premium_total,
+				cancel_total_cert,
+				cancel_gross_amt_recvd,
+				cancel_premium_written,
+				cancel_commission,
+				cancel_tax1,
+				cancel_tax2,
+				cancel_tax3,
+				cancel_tax4,
+				cancel_tax5,
+				cancel_tax6,
+				cancel_premium_total,
+				created_by,
+				created_date,
+				modified_by,
+				modified_date,
+				acct_prem_invoice_id
+			FROM elp_acct_prem_invoice 
+			WHERE
+				acct_prem_invoice_id = :acct_prem_invoice_id
+		]]>
+  </LOAD>
+  <LOAD_LIST>
+    <![CDATA[	
+    select ACCT_PREM_INVOICE_ID, c.CODE CompanyCode, c.description COMPANY, 
+	    d.Dealer DealerCode, d.Dealer_name,
+	    b.Branch_Code, b.Branch_Name,
+	    i.Invoice_Number, i.Credit_Note_Number, 
+	    i.PREVIOUS_INVOICE_DATE, i.CREATED_DATE,
+	    i.NEW_TOTAL_CERT, i.NEW_PREMIUM_TOTAL, 
+	    i.CANCEL_TOTAL_CERT, i.CANCEL_PREMIUM_TOTAL
+    from elp_acct_prem_invoice i
+    inner join elp_company c on i.company_id = c.company_id
+    inner join elp_dealer d on i.dealer_id = d.dealer_id
+    left outer join elp_branch b on i.Branch_id = b.branch_id
+    where 
+      --dynamic_where_clause
+    ORDER BY COMPANY, Dealer_name, Branch_Name, i.CREATED_DATE desc
+    ]]>
+  </LOAD_LIST>
+  <UPDATE>
+    <![CDATA[	
+			UPDATE elp_acct_prem_invoice SET
+				company_id = :company_id,
+				dealer_id = :dealer_id,
+				branch_id = :branch_id,
+				invoice_number = :invoice_number,
+				credit_note_number = :credit_note_number,
+				previous_invoice_date = :previous_invoice_date,
+				new_total_cert = :new_total_cert,
+				new_gross_amt_recvd = :new_gross_amt_recvd,
+				new_premium_written = :new_premium_written,
+				new_commission = :new_commission,
+				new_tax1 = :new_tax1,
+				new_tax2 = :new_tax2,
+				new_tax3 = :new_tax3,
+				new_tax4 = :new_tax4,
+				new_tax5 = :new_tax5,
+				new_tax6 = :new_tax6,
+				new_premium_total = :new_premium_total,
+				cancel_total_cert = :cancel_total_cert,
+				cancel_gross_amt_recvd = :cancel_gross_amt_recvd,
+				cancel_premium_written = :cancel_premium_written,
+				cancel_commission = :cancel_commission,
+				cancel_tax1 = :cancel_tax1,
+				cancel_tax2 = :cancel_tax2,
+				cancel_tax3 = :cancel_tax3,
+				cancel_tax4 = :cancel_tax4,
+				cancel_tax5 = :cancel_tax5,
+				cancel_tax6 = :cancel_tax6,
+				cancel_premium_total = :cancel_premium_total,
+				modified_by = :modified_by
+			WHERE
+				acct_prem_invoice_id = :acct_prem_invoice_id
+		]]>
+  </UPDATE>
+  <INSERT>
+    INSERT INTO elp_acct_prem_invoice
+    (
+    company_id,
+    dealer_id,
+    branch_id,
+    invoice_number,
+    credit_note_number,
+    previous_invoice_date,
+    new_total_cert,
+    new_gross_amt_recvd,
+    new_premium_written,
+    new_commission,
+    new_tax1,
+    new_tax2,
+    new_tax3,
+    new_tax4,
+    new_tax5,
+    new_tax6,
+    new_premium_total,
+    cancel_total_cert,
+    cancel_gross_amt_recvd,
+    cancel_premium_written,
+    cancel_commission,
+    cancel_tax1,
+    cancel_tax2,
+    cancel_tax3,
+    cancel_tax4,
+    cancel_tax5,
+    cancel_tax6,
+    cancel_premium_total,
+    created_by,
+    acct_prem_invoice_id
+    )
+    VALUES
+    (
+    :company_id,
+    :dealer_id,
+    :branch_id,
+    :invoice_number,
+    :credit_note_number,
+    :previous_invoice_date,
+    :new_total_cert,
+    :new_gross_amt_recvd,
+    :new_premium_written,
+    :new_commission,
+    :new_tax1,
+    :new_tax2,
+    :new_tax3,
+    :new_tax4,
+    :new_tax5,
+    :new_tax6,
+    :new_premium_total,
+    :cancel_total_cert,
+    :cancel_gross_amt_recvd,
+    :cancel_premium_written,
+    :cancel_commission,
+    :cancel_tax1,
+    :cancel_tax2,
+    :cancel_tax3,
+    :cancel_tax4,
+    :cancel_tax5,
+    :cancel_tax6,
+    :cancel_premium_total,
+    :created_by,
+    :acct_prem_invoice_id
+    )
+  </INSERT>
+  <DELETE>
+    DELETE FROM elp_acct_prem_invoice
+    WHERE
+    acct_prem_invoice_id = :acct_prem_invoice_id
+  </DELETE>
+  <CREATE_INVOICE>
+    ELP_ACCT_INVOICING.CREATEINVOICE
+  </CREATE_INVOICE>
+</SQL>

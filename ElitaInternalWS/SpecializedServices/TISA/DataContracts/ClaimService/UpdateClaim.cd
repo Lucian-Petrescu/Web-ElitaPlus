@@ -1,0 +1,78 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1">
+  <Class Name="ElitaInternalWS.SpecializedServices.Tisa.UpdateClaimRequest">
+    <Position X="8.5" Y="2" Width="2.25" />
+    <TypeIdentifier>
+      <HashCode>AAAABAAAAAAAAAAAAAAABAAAAAAAAAAAAAAwAAAIAAA=</HashCode>
+      <FileName>SpecializedServices\TISA\DataContracts\ClaimService\UpdateClaimRequest.vb</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Property Name="UpdateAction" />
+    </ShowAsAssociation>
+    <ShowAsCollectionAssociation>
+      <Property Name="ExtendedStatuses" />
+    </ShowAsCollectionAssociation>
+  </Class>
+  <Class Name="ElitaInternalWS.SpecializedServices.Tisa.ExtendedStatus">
+    <Position X="5.25" Y="2.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAABAAAAAAAAAgAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>SpecializedServices\TISA\DataContracts\ClaimService\UpdateClaimRequest.vb</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="ElitaInternalWS.SpecializedServices.Tisa.DenyClaimRequest">
+    <Position X="5.75" Y="4.5" Width="2" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAEAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>SpecializedServices\TISA\DataContracts\ClaimService\DenyClaimRequest.vb</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="ElitaInternalWS.SpecializedServices.Tisa.UpdateRepairableClaimRequest">
+    <Position X="8.5" Y="4.5" Width="2.5" />
+    <TypeIdentifier>
+      <HashCode>AQAAAAAAAAAAAACAAgAACQAgAAAAgAAAAAAAAAAAAAA=</HashCode>
+      <FileName>SpecializedServices\TISA\DataContracts\ClaimService\UpdateRepairableClaimRequest.vb</FileName>
+      <NewMemberFileName>SpecializedServices\TISA\DataContracts\ClaimService\DiagnosticRepairedRequest.vb</NewMemberFileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="ElitaInternalWS.SpecializedServices.Tisa.UpdateIrrepairableClaimRequest">
+    <Position X="8.5" Y="7.5" Width="2.5" />
+    <TypeIdentifier>
+      <HashCode>AAgAAAAAAACAAAIAAAAAAAAAAAEAAAAAAAgAAAAAAAA=</HashCode>
+      <FileName>SpecializedServices\TISA\DataContracts\ClaimService\UpdateIrrepairableClaimRequest.vb</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Property Name="LossType" />
+      <Property Name="Condition" />
+    </ShowAsAssociation>
+  </Class>
+  <Interface Name="ElitaInternalWS.SpecializedServices.Tisa.IClaimService">
+    <Position X="4.25" Y="6.5" Width="3" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAQAAAEAAAAAIAAAAAAAAAQAAAAACAAA=</HashCode>
+      <FileName>SpecializedServices\TISA\IClaimService.vb</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Enum Name="ElitaInternalWS.SpecializedServices.Tisa.UpdateActionType">
+    <Position X="12" Y="1.5" Width="2" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAIAAgAAAAQgAAAAAAQAAQAUAAAAAAAAEAAAAA=</HashCode>
+      <FileName>SpecializedServices\TISA\DataContracts\ClaimService\UpdateClaimRequest.vb</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Enum Name="ElitaInternalWS.SpecializedServices.Tisa.DeviceConditionEnum">
+    <Position X="12.5" Y="7.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAACAAAAAAAAAEAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>SpecializedServices\TISA\DataContracts\ClaimService\UpdateIrrepairableClaimRequest.vb</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Enum Name="ElitaInternalWS.SpecializedServices.Tisa.LossTypeEnum">
+    <Position X="11.75" Y="9.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAABAAAAAAAAAAAAAQAAAAAAAAAAAAA=</HashCode>
+      <FileName>SpecializedServices\TISA\DataContracts\ClaimService\UpdateIrrepairableClaimRequest.vb</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Font Name="Segoe UI" Size="9" />
+</ClassDiagram>

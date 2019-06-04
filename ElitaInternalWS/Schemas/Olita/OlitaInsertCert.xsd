@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema">
+  <xs:element name="OlitaInsertCertDs">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element name="OlitaInsertCert">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element name="RECORD_TYPE" type="xs:string" minOccurs="0" maxOccurs="1"/>
+              <xs:element name="COMPANY_CODE" type="stringRequired" minOccurs="1" maxOccurs="1" />
+              <xs:element name="DEALER_CODE" type="stringRequired" minOccurs="1" maxOccurs="1" />
+              <xs:element name="CERT_NUMBER" type="xs:string" minOccurs="0" maxOccurs="1" />
+              <xs:element name="PRODUCT_CODE" type="stringRequired" minOccurs="1" maxOccurs="1" />
+              <xs:element name="CERT_DURATION" type="myPositiveInteger" minOccurs="1" maxOccurs="1" />
+              <xs:element name="MANUFACTURER_DURATION" type="myPositiveInteger" minOccurs="1" maxOccurs="1" />
+              <xs:element name="WARRANTY_SALES_DATE" type="xs:dateTime" minOccurs="1" maxOccurs="1" />
+              <xs:element name="PRODUCT_SALES_DATE" type="xs:dateTime" minOccurs="1" maxOccurs="1" />
+              <xs:element name="WARRANTY_PRICE" type="myPositiveDecimal" minOccurs="1" maxOccurs="1" />
+              <xs:element name="PRODUCT_RETAIL_PRICE" type="myPositiveDecimal" minOccurs="1" maxOccurs="1" />
+              <xs:element name="INVOICE_NUMBER" type="xs:string" minOccurs="0" maxOccurs="1" />
+              <xs:element name="BRANCH_CODE" type="xs:string" minOccurs="0" maxOccurs="1" />
+              <xs:element name="SALES_REP_NUMBER" type="xs:string" minOccurs="0" maxOccurs="1" />
+              <xs:element name="MAKE" type="xs:string" minOccurs="0" maxOccurs="1" />
+              <xs:element name="MODEL" type="xs:string" minOccurs="0" maxOccurs="1" />
+              <xs:element name="SERIAL_NUMBER" type="xs:string" minOccurs="0" maxOccurs="1" />
+              <xs:element name="ITEM_CODE" type="xs:string" minOccurs="0" maxOccurs="1" />
+              <xs:element name="ITEM_DESCRIPTION" type="xs:string" minOccurs="0" maxOccurs="1" />
+              <xs:element name="SALUTATION" type="xs:string" minOccurs="0" maxOccurs="1" />
+              <xs:element name="CUSTOMER_NAME" type="xs:string" minOccurs="0" maxOccurs="1" />
+              <xs:element name="CUSTOMER_TAX_ID" type="xs:string" minOccurs="0" maxOccurs="1" />
+              <xs:element name="CUSTOMER_HOME_PHONE" type="xs:string" minOccurs="0" maxOccurs="1" />
+              <xs:element name="CUSTOMER_WORK_PHONE" type="xs:string" minOccurs="0" maxOccurs="1" />
+              <xs:element name="CUSTOMER_EMAIL" type="xs:string" minOccurs="0" maxOccurs="1" />
+              <xs:element name="CUSTOMER_ADDRESS1" type="xs:string" minOccurs="0" maxOccurs="1" />
+              <xs:element name="CUSTOMER_ADDRESS2" type="xs:string" minOccurs="0" maxOccurs="1" />
+              <xs:element name="CUSTOMER_CITY" type="xs:string" minOccurs="0" maxOccurs="1" />
+              <xs:element name="CUSTOMER_STATE" type="xs:string" minOccurs="0" maxOccurs="1" />
+              <xs:element name="CUSTOMER_ZIP" type="xs:string" minOccurs="0" maxOccurs="1" />
+              <xs:element name="CUSTOMER_COUNTRY_ISO_CODE" type="xs:string" minOccurs="0" maxOccurs="1" />
+              <xs:element name="PURCHASE_COUNTRY_ISO_CODE" type="xs:string" minOccurs="0" maxOccurs="1" />
+              <xs:element name="CURRENCY_ISO_CODE" type="xs:string" minOccurs="0" maxOccurs="1" />
+              <xs:element name="BUNDLED_ITEMS" minOccurs="0" maxOccurs="10">
+                <xs:complexType>
+                  <xs:sequence>
+                    <xs:element name="MAKE" type="stringRequired" minOccurs="0" maxOccurs="1" />
+                    <xs:element name="MODEL" type="stringRequired" minOccurs="0" maxOccurs="1" />
+                    <xs:element name="SERIAL_NUMBER" type="stringRequired" minOccurs="0" maxOccurs="1" />
+                    <xs:element name="DESCRIPTION" type="stringRequired" minOccurs="0" maxOccurs="1" />
+                    <xs:element name="PRICE" type="myPositiveDecimal" minOccurs="0" maxOccurs="1" />
+                    <xs:element name="MFG_WARRANTY" type="myPositiveInteger" minOccurs="0" maxOccurs="1" />
+                    <xs:element name="PRODUCT_CODE" type="stringRequired" minOccurs="0" maxOccurs="1" />
+                  </xs:sequence>
+                </xs:complexType>
+              </xs:element>
+              <xs:element name="PAYMENT_TYPE" type="xs:string" minOccurs="0" maxOccurs="1" />              
+              <xs:element name="BILLING_FREQUENCY" type="myPositiveInteger" minOccurs="0" maxOccurs="1" />
+              <xs:element name="NUMBER_OF_INSTALLMENTS" type="myPositiveInteger" minOccurs="0" maxOccurs="1" />
+              <xs:element name="INSTALLMENT_AMOUNT" type="myPositiveDecimal" minOccurs="0" maxOccurs="1" />
+              <xs:element name="BANK_RTN_NUMBER" type="xs:string" minOccurs="0" maxOccurs="1" />
+              <xs:element name="BANK_ACCOUNT_NUMBER" type="xs:string" minOccurs="0" maxOccurs="1" />
+              <xs:element name="BANK_ACCT_OWNER_NAME" type="xs:string" minOccurs="0" maxOccurs="1" />
+              <xs:element name="MEMBERSHIP_NUMBER" minOccurs="0" maxOccurs="1">
+                <xs:simpleType>
+                  <xs:restriction base="xs:string">
+                    <xs:minLength value="1"/>
+                    <xs:maxLength value="30"/>
+                  </xs:restriction>
+                </xs:simpleType>
+              </xs:element>              
+              <xs:element name="ADDITIONAL_CERT_QUANTITY" type="myPositiveInteger" minOccurs="0" maxOccurs="1" />
+              <xs:element name="ADDITIONAL_CERT_NUMBER" minOccurs="0" maxOccurs="unbounded">
+                <xs:simpleType>
+                  <xs:restriction base="xs:string">
+                    <xs:minLength value="1"/>
+                    <xs:maxLength value="20"/>
+                  </xs:restriction>
+                </xs:simpleType>
+              </xs:element>
+              <xs:element name="SKU" type="xs:string" minOccurs="0" maxOccurs="1" />
+              <xs:element name="SUBSCRIBER_STATUS" type="xs:string" minOccurs="0" maxOccurs="1" />
+              <xs:element name="POST_PRE_PAID" type="xs:string" minOccurs="0" maxOccurs="1" />
+              <xs:element name="BILLING_PLAN" type="xs:string" minOccurs="0" maxOccurs="1" />
+              <xs:element name="BILLING_CYCLE" type="xs:string" minOccurs="0" maxOccurs="1" />
+              <xs:element name="MEMBERSHIP_TYPE" type="xs:string" minOccurs="0" maxOccurs="1" />
+              <xs:element name="MARKETING_PROMO_SER" type="xs:string" minOccurs="0" maxOccurs="1"/>
+              <xs:element name="MARKETING_PROMO_NUM" type="xs:string" minOccurs="0" maxOccurs="1"/>
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:simpleType name="stringRequired">
+    <xs:restriction base="xs:string">
+      <xs:minLength value="1"></xs:minLength>
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:simpleType name="myPositiveInteger">
+    <xs:restriction base="xs:int">
+      <xs:minInclusive value="0" />
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:simpleType name="myPositiveDecimal">
+    <xs:restriction base="xs:decimal">
+      <xs:minInclusive value="0" />
+    </xs:restriction>
+  </xs:simpleType>  
+</xs:schema>
+
+

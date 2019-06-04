@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="utf-8" ?>
+
+<!-- ********************** THIS FILE HAS BEEN GENERATED FROM TEMPLATE SQLObject.cst (3/14/2007)********************** -->
+
+<SQL>
+	<LOAD>
+		<![CDATA[	
+			SELECT 
+				quote_number,
+				manufacturer_id,
+				vsc_model_id,
+				dealer_id,
+				model_year,
+				vsc_class_code_id,
+				vin,
+				odometer,
+				vehicle_license_tag,
+				engine_version,
+				new_used,
+				in_service_date,
+				created_by,
+				created_date,
+				modified_by,
+				modified_date,
+				quote_id
+			FROM elp_vsc_quote 
+			WHERE
+				quote_id = :
+		]]>
+	</LOAD>
+	<LOAD_LIST>		
+	</LOAD_LIST>	
+	<UPDATE>
+		<![CDATA[	
+			UPDATE elp_vsc_quote SET
+				quote_number = :quote_number,
+				manufacturer_id = :manufacturer_id,
+				vsc_model_id = :vsc_model_id,
+				dealer_id = :dealer_id,
+				model_year = :model_year,
+				vsc_class_code_id = :vsc_class_code_id,
+				vin = :vin,
+				odometer = :odometer,
+				vehicle_license_tag = :vehicle_license_tag,
+				engine_version = :engine_version,
+				new_used = :new_used,
+				in_service_date = :in_service_date,
+				modified_by = :modified_by
+			WHERE
+				quote_id = :quote_id
+		]]>
+	</UPDATE>
+	<INSERT>
+			INSERT INTO elp_vsc_quote
+					(			
+				quote_number,
+				manufacturer_id, 
+				vsc_model_id,
+				dealer_id, 
+				model_year, 
+				vsc_class_code_id, 
+				vin, 
+				odometer,
+				vehicle_license_tag,
+				engine_version, 
+				new_used_id, 
+				in_service_date, 
+				created_by,
+				quote_id
+					)
+			VALUES
+					(			
+				:quote_number,
+				:manufacturer_id, 
+				:vsc_model_id, 
+				:dealer_id,
+				:model_year, 
+				:vsc_class_code_id, 
+				:vin, 
+				:odometer,
+				:vehicle_license_tag,
+				:engine_version, 
+				:new_used_id, 
+				:in_service_date, 
+				:created_by,
+				:quote_id
+					)
+	</INSERT>
+	<DELETE>
+			DELETE FROM elp_vsc_quote
+			WHERE
+				quote_id = :quote_id
+	</DELETE>
+	<GET_VSC_QUOTE>
+		VSC_QUOTE_ENGINE.GET_VSC_QUOTE_INFO
+	</GET_VSC_QUOTE>
+	<GET_VSC_QUOTE_ITEM>
+		VSC_QUOTE_ENGINE.GET_VSC_QUOTE_ITEMS
+	</GET_VSC_QUOTE_ITEM>
+</SQL> 
+
+

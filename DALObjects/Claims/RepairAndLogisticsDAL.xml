@@ -1,0 +1,123 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<SQL>
+  <LOAD>
+    <![CDATA[	
+	     SELECT 
+         cl.claim_id id,
+         c.customer_name,
+         getdescriptionfromlistitem(cic.coverage_type_id,:language_id1) coverage_type,
+         c.product_code,
+         cl.CLAIM_NUMBER,
+         cl.STATUS_CODE claim_status,
+         cl.REPORTED_DATE date_of_claim,
+         cl.POS,
+         sc.description service_center,
+         (select description from elp_manufacturer where elp_manufacturer.manufacturer_id= ce.manufacturer_id) as claimed_device_manufacturer,
+         ce.model claimed_device_model,
+         ce.sku claimed_device_sku,
+         ce.serial_number claimed_device_serial_number,
+         ce.imei_number claimed_device_imei_number,
+         cl.problem_description,
+         cl.device_reception_date,
+         getdescriptionfromlistitem(r.device_type_id,:language_id2) replacement_type ,
+         (select description from elp_manufacturer where elp_manufacturer.manufacturer_id= r.manufacturer_id) as replaced_device_manufacturer,
+         r.model replaced_device_model,
+         r.serial_number replaced_device_serial_number,
+         r.imei_number replaced_device_imei_number,
+         r.sku replaced_device_sku,
+         cad.labor_amount,
+         cad.part_amount,
+         cad.service_charge,
+         cad.shipping_amount,
+         nvl((Select lp.AMOUNT
+              From ELP_LIST_PRICE lp Inner Join ELP_WARRANTY_MASTER wm On lp.warranty_master_id = wm.warranty_master_id
+              Where wm.dealer_id = d.dealer_id
+                    And lp.Amount_Type_Id = (Getitemidfromlistanditem('LPAMOUNTTYPE','RAAMOUNT'))
+                    And wm.sku_number = ce.sku
+                    And cl.REPORTED_DATE between lp.EFFECTIVE and lp.EXPIRATION), cl.authorized_amount) As authorized_amount,
+         getdescriptionfromlistitem( getitemidfromlistanditem(cl.service_level_code,'SVC_LVL'),:language_id3) as service_level,
+         cl.problem_found,
+         cl.verification_number,
+         co.code company,
+         d.claim_verification_num_length,
+         d.use_claim_authorization_id
+    FROM ELP_CLAIM              cl,
+         ELP_CERT_ITEM_COVERAGE cic,
+         ELP_CERT               c,
+         ELP_CLAIM_EQUIPMENT    ce,
+         (select * from ELP_CLAIM_EQUIPMENT where CLAIM_EQUIPMENT_TYPE_ID=elita.GETITEMIDFROMLISTANDITEM('CLAIM_EQUIP_TYPE','R')) r,
+         ELP_CLAIM_AUTH_DETAIL  cad,
+         ELP_SERVICE_CENTER     sc,
+         ELP_DEALER             d,
+         ELP_COMPANY            co
+    where cl.CERT_ITEM_COVERAGE_ID = cic.CERT_ITEM_COVERAGE_ID
+         and cic.CERT_ID = c.CERT_ID
+         and ce.CLAIM_ID(+) = cl.CLAIM_ID
+         and sc.service_center_id (+) = cl.service_center_id
+         and r.claim_id(+) = cl.claim_id
+         and cad.claim_id (+) = cl.claim_id
+         and c.dealer_id = d.dealer_id
+         and co.company_id = cl.company_id
+         and cl.claim_id = :claim_id
+		]]>
+  </LOAD>
+  <LOAD_LIST_DYNAMIC>
+    <![CDATA[
+			SELECT
+					cview.claim_id,
+					cview.claim_number clnum, 
+					cview.status_code,
+					cview.cust_name as custnm,
+          c.identification_number as taxid,
+					cview.cust_work_phone as cellnum,
+          ce.serial_number sernum,
+          case when sc.description is null then sc1.description else sc.description end as service_center,
+          cview.authorization_number as authnum,
+          ca.authorization_number as authorization_number,
+          ca.claim_authorization_id as claim_authorization_id	,
+          ca.claim_authorization_status_id as claim_authorization_status_id,
+          cview.dealer_id,
+          dg.code dealer_group_code
+				FROM
+					elita.elp_claim_extended_v cview,
+					elp_service_center sc,
+          elp_claim_equipment ce,
+          elp_cert c,
+          elp_claim_authorization ca,
+          elp_service_center sc1,
+    		  elp_dealer d,
+		      elp_dealer_group dg
+  			WHERE
+					cview.status_code <> 'P'
+          AND cview.service_center_id = sc.service_center_id(+)
+          AND ce.claim_id(+)= cview.claim_id
+          AND (ce.claim_id is null or (ce.claim_id is not null and getcodefromlistitem(ce.claim_equipment_type_id) = 'C'))
+          AND cview.cert_id = c.cert_id
+          AND ca.Claim_id(+)= cview.claim_id
+          AND sc1.service_center_id(+)= ca.service_center_id
+    		  AND cview.dealer_id = d.dealer_id
+		      AND d.dealer_group_id = dg.dealer_group_id(+)
+					--dynamic_where_clause
+					 AND ROWNUM < :row_num
+           AND elp_utl_parentchild_rel.is_claim_child(cview.claim_id) = 'N'
+					--dynamic_order_by_clause
+		]]>
+  </LOAD_LIST_DYNAMIC>
+  <REPLACEMENT_PARTS>
+    select rp.replacement_part_id , rp.sku_number replaced_parts_sku, rp.description replaced_parts_desc
+    from elp_replacement_part rp
+    where rp.claim_id = :claim_id
+  </REPLACEMENT_PARTS>
+  <SERVICE_CENTERS>
+    select ca.authorization_number, sc.description as Service_center, ca.created_date as Authorization_Date
+    from elp_claim_authorization ca
+    inner join elp_service_center sc
+    on ca.service_center_id = sc.service_center_id
+    where ca.claim_id = :claim_id
+  </SERVICE_CENTERS>
+  <UPDATE_VERIFICATION_NUMBER>
+    UPDATE ELP_CLAIM
+    SET VERIFICATION_NUMBER = :VERIFICATION_NUMBER
+    WHERE CLAIM_ID = :CLAIM_ID
+  </UPDATE_VERIFICATION_NUMBER>
+</SQL>

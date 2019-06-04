@@ -1,0 +1,1 @@
+﻿<%@ ServiceHost Language="VB" Debug="true" Service="ElitaInternalWS.Galaxy.GalaxyWcf" CodeBehind="GalaxyWcf.svc.vb" %>

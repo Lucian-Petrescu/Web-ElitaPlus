@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="utf-8" ?>
+
+<!-- ********************** THIS FILE HAS BEEN GENERATED FROM TEMPLATE SQLObject.cst (4/4/2008)********************** -->
+
+<SQL>
+  <LOAD>
+    <![CDATA[	
+			SELECT 
+				translation,
+				language_id,
+				dict_item_id,
+				created_date,
+				modified_date,
+				created_by,
+				modified_by,
+				dict_item_translation_id
+			FROM elp_dict_item_translation 
+			WHERE
+				dict_item_translation_id = :dict_item_translation_id
+		]]>
+  </LOAD>
+  <LOAD_LIST>
+    <![CDATA[	
+      SELECT   DICT_ITEM_TRANSLATION_ID, TRANSLATION, ENGLISH 
+      FROM
+        (SELECT TRANSLATION, DICT_ITEM_TRANSLATION_ID, DICT_ITEM_ID
+          FROM ELP_DICT_ITEM_TRANSLATION
+          WHERE LANGUAGE_ID = :LANGUAGE_ID) CompanyLanguage,
+        (SELECT TRANSLATION ENGLISH, DICT_ITEM_ID
+          FROM ELP_DICT_ITEM_TRANSLATION
+          WHERE LANGUAGE_ID = :LANGUAGE_ID) EnglishLanguage
+      WHERE  CompanyLanguage.DICT_ITEM_ID  = EnglishLanguage.DICT_ITEM_ID
+      --dynamic_where_clause
+      --dynamic_order_by_clause
+      ]]>
+  </LOAD_LIST>
+  <LOAD_TRANS_LIST>
+    select  DICT.DICT_ITEM_TRANSLATION_ID,TRANSLATION, E.DESCRIPTION ENGLISH, L.UI_PROG_CODE
+    FROM 	ELP_LABEL L,ELP_DICT_ITEM_TRANSLATION DICT,ELP_LANGUAGE E
+    WHERE 	DICT.DICT_ITEM_ID = :DICT_ITEM_ID
+    AND		L.DICT_ITEM_ID = DICT.DICT_ITEM_ID
+    AND		DICT.LANGUAGE_ID = E.LANGUAGE_ID
+  </LOAD_TRANS_LIST>
+  <UPDATE>
+    <![CDATA[	
+			UPDATE elp_dict_item_translation SET
+				translation = :translation,
+        modified_by = :modified_by
+			WHERE
+				dict_item_translation_id = :dict_item_translation_id
+		]]>
+  </UPDATE>
+  <INSERT>
+    INSERT INTO elp_dict_item_translation
+    (
+    translation,
+    language_id,
+    dict_item_id,
+    created_by,
+    dict_item_translation_id
+    )
+    VALUES
+    (
+    :translation,
+    :language_id,
+    :dict_item_id,
+    :created_by,
+    :dict_item_translation_id
+    )
+  </INSERT>
+  <DELETE>
+    DELETE FROM elp_dict_item_translation
+    WHERE
+    dict_item_translation_id = :dict_item_translation_id
+  </DELETE>
+</SQL>
+
+

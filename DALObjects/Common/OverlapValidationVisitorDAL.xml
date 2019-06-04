@@ -1,0 +1,42 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<!-- ********************** THIS FILE HAS BEEN GENERATED FROM TEMPLATE SQLObject.cst (3/19/2007)********************** -->
+
+<SQL>
+  <Question>
+    <![CDATA[	
+    SELECT SOFT_QUESTION_ID, EFFECTIVE, EXPIRATION FROM ELP_SOFT_QUESTION
+    WHERE SOFT_QUESTION_ID != :id
+    AND CODE = :CODE AND (EXPIRATION > :Effective AND EFFECTIVE < :Expiration)
+    AND QUESTION_TYPE_ID != (SELECT Getitemidfromlistanditem('QTYP','DIAG') FROM DUAL)
+    ]]>
+  </Question>
+  <Answer>
+    <![CDATA[	
+    SELECT ANSWER_ID, EFFECTIVE, EXPIRATION FROM ELP_ANSWER
+    WHERE ANSWER_ID != :id
+    AND CODE = :CODE AND (EXPIRATION > :Effective AND EFFECTIVE < :Expiration)
+    ]]>
+  </Answer>
+  <Rule>
+    <![CDATA[	
+    SELECT RULE_ID, EFFECTIVE, EXPIRATION FROM ELP_RULE
+    WHERE RULE_ID != :ID
+    AND CODE = :CODE AND (EXPIRATION > :EFFECTIVE AND EFFECTIVE < :EXPIRATION)
+    ]]>
+  </Rule>
+  <RuleList>
+    <![CDATA[	
+    SELECT RULE_LIST_ID, EFFECTIVE, EXPIRATION FROM ELP_RULE_LIST
+    WHERE RULE_LIST_ID != :ID
+    AND CODE = :CODE AND (EXPIRATION > :EFFECTIVE AND EFFECTIVE < :EXPIRATION) 
+    ]]>
+  </RuleList>
+<PriceList>
+	<![CDATA[	
+	SELECT price_list_id, effective, expiration	FROM elp_price_list
+	WHERE price_list_id != :ID
+	AND CODE = :CODE AND (EXPIRATION > :EFFECTIVE AND EFFECTIVE < :EXPIRATION) 
+	]]>
+</PriceList>
+</SQL>
+

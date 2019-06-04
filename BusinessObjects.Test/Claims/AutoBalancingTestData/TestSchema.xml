@@ -1,0 +1,217 @@
+<?xml version="1.0" standalone="yes"?>
+<xs:schema id="NewDataSet" xmlns="" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata" xmlns:msprop="urn:schemas-microsoft-com:xml-msprop">
+  <xs:element name="NewDataSet" msdata:IsDataSet="true" msdata:Locale="">
+    <xs:complexType>
+      <xs:choice minOccurs="0" maxOccurs="unbounded">
+        <xs:element name="ELP_CLAIM" msprop:BaseTable.4="ELP_REPAIR_CODE" msprop:BaseTable.5="ELP_SERVICE_CENTER" msprop:BaseTable.3="ELP_RISK_TYPE" msprop:BaseTable.0="ELP_CLAIM_EXTENDED_V" msprop:BaseSchema="ELITA" msprop:BaseTable.1="elp_claim_extended_v" msprop:BaseTable.2="ELP_CERT_ITEM_COVERAGE">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element name="CERT_ID" msprop:BaseColumn="CERT_ID" msprop:OraDbType="120" type="xs:base64Binary" minOccurs="0" />
+              <xs:element name="CERTIFICATE_NUMBER" msprop:BaseColumn="CERT_NUMBER" msprop:OraDbType="126" type="xs:string" minOccurs="0" />
+              <xs:element name="CLAIM_NUMBER" msprop:BaseColumn="CLAIM_NUMBER" msprop:OraDbType="126" type="xs:string" minOccurs="0" />
+              <xs:element name="CUST_NAME" msprop:BaseColumn="CUST_NAME" msprop:OraDbType="126" type="xs:string" minOccurs="0" />
+              <xs:element name="CLAIMS_ADJUSTER" msprop:BaseColumn="CLAIMS_ADJUSTER" msprop:OraDbType="126" type="xs:string" minOccurs="0" />
+              <xs:element name="STATUS_CODE" msprop:BaseColumn="STATUS_CODE" msprop:OraDbType="126" type="xs:string" minOccurs="0" />
+              <xs:element name="CONTACT_NAME" msprop:BaseColumn="CONTACT_NAME" msprop:OraDbType="126" type="xs:string" minOccurs="0" />
+              <xs:element name="CALLER_NAME" msprop:BaseColumn="CALLER_NAME" msprop:OraDbType="126" type="xs:string" minOccurs="0" />
+              <xs:element name="PROBLEM_DESCRIPTION" msprop:BaseColumn="PROBLEM_DESCRIPTION" msprop:OraDbType="126" type="xs:string" minOccurs="0" />
+              <xs:element name="SPECIAL_INSTRUCTION" msprop:BaseColumn="SPECIAL_INSTRUCTION" msprop:OraDbType="126" type="xs:string" minOccurs="0" />
+              <xs:element name="AUTHORIZED_AMOUNT" msprop:BaseColumn="AUTHORIZED_AMOUNT" msprop:OraDbType="108" type="xs:double" minOccurs="0" />
+              <xs:element name="LIABILITY_LIMIT" msprop:BaseColumn="LIABILITY_LIMIT" msprop:OraDbType="108" type="xs:double" minOccurs="0" />
+              <xs:element name="DEDUCTIBLE" msprop:BaseColumn="DEDUCTIBLE" msprop:OraDbType="108" type="xs:double" minOccurs="0" />
+              <xs:element name="REPAIR_DATE" msprop:OraDbType="106" type="xs:dateTime" minOccurs="0" />
+              <xs:element name="LOSS_DATE" msprop:OraDbType="106" type="xs:dateTime" minOccurs="0" />
+              <xs:element name="INVOICE_PROCESS_DATE" msprop:OraDbType="106" type="xs:dateTime" minOccurs="0" />
+              <xs:element name="CLAIM_CLOSED_DATE" msprop:OraDbType="106" type="xs:dateTime" minOccurs="0" />
+              <xs:element name="LOANER_RETURNED_DATE" msprop:OraDbType="106" type="xs:dateTime" minOccurs="0" />
+              <xs:element name="FOLLOWUP_DATE" msprop:OraDbType="106" type="xs:dateTime" minOccurs="0" />
+              <xs:element name="AUTHORIZATION_NUMBER" msprop:BaseColumn="AUTHORIZATION_NUMBER" msprop:OraDbType="126" type="xs:string" minOccurs="0" />
+              <xs:element name="SOURCE" msprop:BaseColumn="SOURCE" msprop:OraDbType="126" type="xs:string" minOccurs="0" />
+              <xs:element name="CREATED_BY" msprop:BaseColumn="CREATED_BY" msprop:OraDbType="126" type="xs:string" minOccurs="0" />
+              <xs:element name="CREATED_DATE" msprop:BaseColumn="CREATED_DATE" msprop:OraDbType="106" type="xs:dateTime" minOccurs="0" />
+              <xs:element name="MODIFIED_BY" msprop:BaseColumn="MODIFIED_BY" msprop:OraDbType="126" type="xs:string" minOccurs="0" />
+              <xs:element name="MODIFIED_DATE" msprop:BaseColumn="MODIFIED_DATE" msprop:OraDbType="106" type="xs:dateTime" minOccurs="0" />
+              <xs:element name="DEALER_CODE" msprop:BaseColumn="DEALER_CODE" msprop:OraDbType="126" type="xs:string" minOccurs="0" />
+              <xs:element name="DEALER_NAME" msprop:BaseColumn="DEALER_NAME" msprop:OraDbType="126" type="xs:string" minOccurs="0" />
+              <xs:element name="DEALER_NAME1" msprop:BaseColumn="DEALER_NAME" msprop:OraDbType="126" type="xs:string" minOccurs="0" />
+              <xs:element name="SERVICE_CENTER_ID" msprop:BaseColumn="SERVICE_CENTER_ID" msprop:OraDbType="120" type="xs:base64Binary" minOccurs="0" />
+              <xs:element name="ORIGINAL_RISK_TYPE_ID" msprop:BaseColumn="ORIGINAL_RISK_TYPE_ID" msprop:OraDbType="120" type="xs:base64Binary" minOccurs="0" />
+              <xs:element name="LOANER_CENTER_ID" msprop:BaseColumn="LOANER_CENTER_ID" msprop:OraDbType="120" type="xs:base64Binary" minOccurs="0" />
+              <xs:element name="CERT_ITEM_COVERAGE_ID" msprop:BaseColumn="CERT_ITEM_COVERAGE_ID" msprop:OraDbType="120" type="xs:base64Binary" minOccurs="0" />
+              <xs:element name="CLAIM_ACTIVITY_ID" msprop:BaseColumn="CLAIM_ACTIVITY_ID" msprop:OraDbType="120" type="xs:base64Binary" minOccurs="0" />
+              <xs:element name="REPAIR_CODE_ID" msprop:BaseColumn="REPAIR_CODE_ID" msprop:OraDbType="120" type="xs:base64Binary" minOccurs="0" />
+              <xs:element name="REASON_CLOSED_ID" msprop:BaseColumn="REASON_CLOSED_ID" msprop:OraDbType="120" type="xs:base64Binary" minOccurs="0" />
+              <xs:element name="CAUSE_OF_LOSS_ID" msprop:BaseColumn="CAUSE_OF_LOSS_ID" msprop:OraDbType="120" type="xs:base64Binary" minOccurs="0" />
+              <xs:element name="METHOD_OF_REPAIR_ID" msprop:BaseColumn="METHOD_OF_REPAIR_ID" msprop:OraDbType="120" type="xs:base64Binary" minOccurs="0" />
+              <xs:element name="REPAIR_ESTIMATE" msprop:BaseColumn="REPAIR_ESTIMATE" msprop:OraDbType="108" type="xs:double" minOccurs="0" />
+              <xs:element name="CLAIM_GROUP_ID" msprop:BaseColumn="CLAIM_GROUP_ID" msprop:OraDbType="120" type="xs:base64Binary" minOccurs="0" />
+              <xs:element name="CLAIM_ID" msprop:BaseColumn="CLAIM_ID" msprop:OraDbType="120" type="xs:base64Binary" minOccurs="0" />
+              <xs:element name="COVERAGE_TYPE_ID" msprop:BaseColumn="COVERAGE_TYPE_ID" msprop:OraDbType="120" type="xs:base64Binary" minOccurs="0" />
+              <xs:element name="RISK_TYPE" msprop:BaseColumn="DESCRIPTION" msprop:OraDbType="126" type="xs:string" minOccurs="0" />
+              <xs:element name="REPAIR_CODE" msprop:BaseColumn="DESCRIPTION" msprop:OraDbType="126" type="xs:string" minOccurs="0" />
+              <xs:element name="SERVICE_CENTER" msprop:BaseColumn="DESCRIPTION" msprop:OraDbType="126" type="xs:string" minOccurs="0" />
+              <xs:element name="LOANER_CENTER" msprop:BaseColumn="DESCRIPTION" msprop:OraDbType="126" type="xs:string" minOccurs="0" />
+              <xs:element name="COMPANY_ID" msprop:BaseColumn="COMPANY_ID" msprop:OraDbType="120" type="xs:base64Binary" minOccurs="0" />
+              <xs:element name="USER_NAME" msprop:OraDbType="126" type="xs:string" minOccurs="0" />
+              <xs:element name="LAST_OPERATOR_NAME" msprop:OraDbType="126" type="xs:string" minOccurs="0" />
+              <xs:element name="CLAIMS_ADJUSTER_NAME" msprop:OraDbType="126" type="xs:string" minOccurs="0" />
+              <xs:element name="REPAIR_SHORT_DESC" msprop:BaseColumn="SHORT_DESC" msprop:OraDbType="126" type="xs:string" minOccurs="0" />
+              <xs:element name="VISIT_DATE" msprop:OraDbType="106" type="xs:dateTime" minOccurs="0" />
+              <xs:element name="PICK_UP_DATE" msprop:OraDbType="106" type="xs:dateTime" minOccurs="0" />
+              <xs:element name="CONTACT_SALUTATION_ID" msprop:BaseColumn="CONTACT_SALUTATION_ID" msprop:OraDbType="120" type="xs:base64Binary" minOccurs="0" />
+              <xs:element name="CALLER_SALUTATION_ID" msprop:BaseColumn="CALLER_SALUTATION_ID" msprop:OraDbType="120" type="xs:base64Binary" minOccurs="0" />
+              <xs:element name="MASTER_CLAIM_NUMBER" msprop:BaseColumn="MASTER_CLAIM_NUMBER" msprop:OraDbType="126" type="xs:string" minOccurs="0" />
+              <xs:element name="CALLER_TAX_NUMBER" msprop:BaseColumn="CALLER_TAX_NUMBER" msprop:OraDbType="126" type="xs:string" minOccurs="0" />
+              <xs:element name="SPARE_PARTS" msprop:BaseColumn="SPARE_PARTS" msprop:OraDbType="126" type="xs:string" minOccurs="0" />
+              <xs:element name="SHIPPING_INFO_ID" msprop:BaseColumn="SHIPPING_INFO_ID" msprop:OraDbType="120" type="xs:base64Binary" minOccurs="0" />
+              <xs:element name="DEDUCTIBLE_PERCENT" msprop:BaseColumn="DEDUCTIBLE_PERCENT" msprop:OraDbType="108" type="xs:double" minOccurs="0" />
+              <xs:element name="DEDUCTIBLE_BY_PERCENT_ID" msprop:BaseColumn="DEDUCTIBLE_BY_PERCENT_ID" msprop:OraDbType="120" type="xs:base64Binary" minOccurs="0" />
+              <xs:element name="DISCOUNT_AMOUNT" msprop:BaseColumn="DISCOUNT_AMOUNT" msprop:OraDbType="108" type="xs:double" minOccurs="0" />
+              <xs:element name="DISCOUNT_PERCENT" msprop:BaseColumn="DISCOUNT_PERCENT" msprop:OraDbType="111" type="xs:short" minOccurs="0" />
+              <xs:element name="POLICY_NUMBER" msprop:BaseColumn="POLICY_NUMBER" msprop:OraDbType="126" type="xs:string" minOccurs="0" />
+              <xs:element name="DENIED_REASON_ID" msprop:BaseColumn="DENIED_REASON_ID" msprop:OraDbType="120" type="xs:base64Binary" minOccurs="0" />
+              <xs:element name="CLAIM_STATUSES_COUNT" msprop:BaseColumn="CLAIM_STATUSES_COUNT" msprop:OraDbType="107" type="xs:decimal" minOccurs="0" />
+              <xs:element name="MGR_AUTH_AMOUNT_FLAG" msprop:BaseColumn="MGR_AUTH_AMOUNT_FLAG" msprop:OraDbType="104" type="xs:string" minOccurs="0" />
+              <xs:element name="STORE_SERVICE_CENTER_ID" msprop:BaseColumn="STORE_SERVICE_CENTER_ID" msprop:OraDbType="120" type="xs:base64Binary" minOccurs="0" />
+              <xs:element name="NOTIFICATION_TYPE_ID" msprop:BaseColumn="NOTIFICATION_TYPE_ID" msprop:OraDbType="120" type="xs:base64Binary" minOccurs="0" />
+              <xs:element name="WHO_PAYS_ID" msprop:BaseColumn="WHO_PAYS_ID" msprop:OraDbType="120" type="xs:base64Binary" minOccurs="0" />
+              <xs:element name="DEFECT_REASON" msprop:BaseColumn="DEFECT_REASON" msprop:OraDbType="126" type="xs:string" minOccurs="0" />
+              <xs:element name="TECHNICAL_REPORT" msprop:BaseColumn="TECHNICAL_REPORT" msprop:OraDbType="126" type="xs:string" minOccurs="0" />
+              <xs:element name="EXPECTED_REPAIR_DATE" msprop:BaseColumn="EXPECTED_REPAIR_DATE" msprop:OraDbType="106" type="xs:dateTime" minOccurs="0" />
+              <xs:element name="BATCH_NUMBER" msprop:BaseColumn="BATCH_NUMBER" msprop:OraDbType="126" type="xs:string" minOccurs="0" />
+              <xs:element name="INTEGRATED_WITH_ID" msprop:BaseColumn="INTEGRATED_WITH_ID" msprop:OraDbType="120" type="xs:base64Binary" minOccurs="0" />
+              <xs:element name="CLAIM_IS_SPECIAL_SERVICE_ID" msprop:BaseColumn="CLAIM_IS_SPECIAL_SERVICE_ID" msprop:OraDbType="120" type="xs:base64Binary" minOccurs="0" />
+              <xs:element name="REPORTED_DATE" msprop:BaseColumn="REPORTED_DATE" msprop:OraDbType="106" type="xs:dateTime" minOccurs="0" />
+              <xs:element name="INVOICE_DATE" msprop:BaseColumn="INVOICE_DATE" msprop:OraDbType="106" type="xs:dateTime" minOccurs="0" />
+              <xs:element name="REVERSE_LOGISTICS_ID" msprop:BaseColumn="REVERSE_LOGISTICS_ID" msprop:OraDbType="120" type="xs:base64Binary" minOccurs="0" />
+              <xs:element name="SALVAGE_AMOUNT" msprop:BaseColumn="SALVAGE_AMOUNT" msprop:OraDbType="108" type="xs:double" minOccurs="0" />
+              <xs:element name="FRAUDULENT" msprop:BaseColumn="FRAUDULENT" msprop:OraDbType="120" type="xs:base64Binary" minOccurs="0" />
+              <xs:element name="COMPLAINT" msprop:BaseColumn="COMPLAINT" msprop:OraDbType="120" type="xs:base64Binary" minOccurs="0" />
+              <xs:element name="CONTACT_INFO_ID" msprop:BaseColumn="CONTACT_INFO_ID" msprop:OraDbType="120" type="xs:base64Binary" minOccurs="0" />
+              <xs:element name="NEW_DEVICE_SKU" msprop:BaseColumn="NEW_DEVICE_SKU" msprop:OraDbType="126" type="xs:string" minOccurs="0" />
+              <xs:element name="DED_COLL_METHOD_ID" msprop:BaseColumn="DED_COLL_METHOD_ID" msprop:OraDbType="120" type="xs:base64Binary" minOccurs="0" />
+              <xs:element name="DED_COLL_CC_AUTH_CODE" msprop:BaseColumn="DED_COLL_CC_AUTH_CODE" msprop:OraDbType="126" type="xs:string" minOccurs="0" />
+              <xs:element name="CLAIM_AUTH_TYPE_ID" msprop:BaseColumn="CLAIM_AUTH_TYPE_ID" msprop:OraDbType="120" type="xs:base64Binary" minOccurs="0" />
+              <xs:element name="MOBILE_NUMBER" msprop:BaseColumn="CUST_WORK_PHONE" msprop:OraDbType="126" type="xs:string" minOccurs="0" />
+              <xs:element name="IS_LOCKED" msprop:BaseColumn="IS_LOCKED" msprop:OraDbType="104" type="xs:string" minOccurs="0" />
+              <xs:element name="LOCKED_BY" msprop:BaseColumn="LOCKED_BY" msprop:OraDbType="120" type="xs:base64Binary" minOccurs="0" />
+              <xs:element name="LOCKED_ON" msprop:BaseColumn="LOCKED_ON" msprop:OraDbType="106" type="xs:dateTime" minOccurs="0" />
+              <xs:element name="IS_LAWSUIT_ID" msprop:BaseColumn="IS_LAWSUIT_ID" msprop:OraDbType="120" type="xs:base64Binary" minOccurs="0" />
+              <xs:element name="_SYSTEM_CHILDREN_COLLECTIONClaimAuthorizationList" type="xs:string" minOccurs="0" />
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+        <xs:element name="ELP_CLAIM_AUTHORIZATION" msprop:BaseTable.0="ELP_CLAIM_AUTHORIZATION">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element name="CLAIM_AUTHORIZATION_ID" msprop:BaseColumn="CLAIM_AUTHORIZATION_ID" msprop:OraDbType="120" type="xs:base64Binary" minOccurs="0" />
+              <xs:element name="CLAIM_ID" msprop:BaseColumn="CLAIM_ID" msprop:OraDbType="120" type="xs:base64Binary" minOccurs="0" />
+              <xs:element name="AUTHORIZATION_NUMBER" msprop:BaseColumn="AUTHORIZATION_NUMBER" msprop:OraDbType="126" type="xs:string" minOccurs="0" />
+              <xs:element name="SERVICE_CENTER_ID" msprop:BaseColumn="SERVICE_CENTER_ID" msprop:OraDbType="120" type="xs:base64Binary" minOccurs="0" />
+              <xs:element name="SERVICE_LEVEL_ID" msprop:BaseColumn="SERVICE_LEVEL_ID" msprop:OraDbType="120" type="xs:base64Binary" minOccurs="0" />
+              <xs:element name="CLAIM_AUTHORIZATION_STATUS_ID" msprop:BaseColumn="CLAIM_AUTHORIZATION_STATUS_ID" msprop:OraDbType="120" type="xs:base64Binary" minOccurs="0" />
+              <xs:element name="SPECIAL_INSTRUCTION" msprop:BaseColumn="SPECIAL_INSTRUCTION" msprop:OraDbType="126" type="xs:string" minOccurs="0" />
+              <xs:element name="VISIT_DATE" msprop:BaseColumn="VISIT_DATE" msprop:OraDbType="106" type="xs:dateTime" minOccurs="0" />
+              <xs:element name="DEVICE_RECEPTION_DATE" msprop:BaseColumn="DEVICE_RECEPTION_DATE" msprop:OraDbType="106" type="xs:dateTime" minOccurs="0" />
+              <xs:element name="EXPECTED_REPAIR_DATE" msprop:BaseColumn="EXPECTED_REPAIR_DATE" msprop:OraDbType="106" type="xs:dateTime" minOccurs="0" />
+              <xs:element name="REPAIR_DATE" msprop:BaseColumn="REPAIR_DATE" msprop:OraDbType="106" type="xs:dateTime" minOccurs="0" />
+              <xs:element name="PICK_UP_DATE" msprop:BaseColumn="PICK_UP_DATE" msprop:OraDbType="106" type="xs:dateTime" minOccurs="0" />
+              <xs:element name="DELIVERY_DATE" msprop:BaseColumn="DELIVERY_DATE" msprop:OraDbType="106" type="xs:dateTime" minOccurs="0" />
+              <xs:element name="WHO_PAYS_ID" msprop:BaseColumn="WHO_PAYS_ID" msprop:OraDbType="120" type="xs:base64Binary" minOccurs="0" />
+              <xs:element name="DEFECT_REASON" msprop:BaseColumn="DEFECT_REASON" msprop:OraDbType="126" type="xs:string" minOccurs="0" />
+              <xs:element name="TECHNICAL_REPORT" msprop:BaseColumn="TECHNICAL_REPORT" msprop:OraDbType="126" type="xs:string" minOccurs="0" />
+              <xs:element name="BATCH_NUMBER" msprop:BaseColumn="BATCH_NUMBER" msprop:OraDbType="126" type="xs:string" minOccurs="0" />
+              <xs:element name="REM_AUTH_NUMBER" msprop:BaseColumn="REM_AUTH_NUMBER" msprop:OraDbType="126" type="xs:string" minOccurs="0" />
+              <xs:element name="EXTERNAL_CREATED_DATE" msprop:BaseColumn="EXTERNAL_CREATED_DATE" msprop:OraDbType="106" type="xs:dateTime" minOccurs="0" />
+              <xs:element name="IS_SPECIAL_SERVICE_ID" msprop:BaseColumn="IS_SPECIAL_SERVICE_ID" msprop:OraDbType="120" type="xs:base64Binary" minOccurs="0" />
+              <xs:element name="PROBLEM_FOUND" msprop:BaseColumn="PROBLEM_FOUND" msprop:OraDbType="126" type="xs:string" minOccurs="0" />
+              <xs:element name="SOURCE" msprop:BaseColumn="SOURCE" msprop:OraDbType="126" type="xs:string" minOccurs="0" />
+              <xs:element name="REVERSE_LOGISTICS_ID" msprop:BaseColumn="REVERSE_LOGISTICS_ID" msprop:OraDbType="120" type="xs:base64Binary" minOccurs="0" />
+              <xs:element name="CONTAINS_DEDUCTIBLE_ID" msprop:BaseColumn="CONTAINS_DEDUCTIBLE_ID" msprop:OraDbType="120" type="xs:base64Binary" minOccurs="0" />
+              <xs:element name="CREATED_BY" msprop:BaseColumn="CREATED_BY" msprop:OraDbType="126" type="xs:string" minOccurs="0" />
+              <xs:element name="CREATED_DATE" msprop:BaseColumn="CREATED_DATE" msprop:OraDbType="106" type="xs:dateTime" minOccurs="0" />
+              <xs:element name="MODIFIED_BY" msprop:BaseColumn="MODIFIED_BY" msprop:OraDbType="126" type="xs:string" minOccurs="0" />
+              <xs:element name="MODIFIED_DATE" msprop:BaseColumn="MODIFIED_DATE" msprop:OraDbType="106" type="xs:dateTime" minOccurs="0" />
+              <xs:element name="_SYSTEM_CHILDREN_COLLECTIONClaimAuthorizationItemList" type="xs:string" minOccurs="0" />
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+        <xs:element name="ELP_INVOICE" msprop:BaseTable.0="ELP_INVOICE">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element name="SERVICE_CENTER_ID" msprop:BaseColumn="SERVICE_CENTER_ID" msprop:OraDbType="120" type="xs:base64Binary" minOccurs="0" />
+              <xs:element name="INVOICE_NUMBER" msprop:BaseColumn="INVOICE_NUMBER" msprop:OraDbType="126" type="xs:string" minOccurs="0" />
+              <xs:element name="INVOICE_DATE" msprop:BaseColumn="INVOICE_DATE" msprop:OraDbType="106" type="xs:dateTime" minOccurs="0" />
+              <xs:element name="INVOICE_AMOUNT" msprop:BaseColumn="INVOICE_AMOUNT" msprop:OraDbType="108" type="xs:double" minOccurs="0" />
+              <xs:element name="INVOICE_STATUS_ID" msprop:BaseColumn="INVOICE_STATUS_ID" msprop:OraDbType="120" type="xs:base64Binary" minOccurs="0" />
+              <xs:element name="SOURCE" msprop:BaseColumn="SOURCE" msprop:OraDbType="126" type="xs:string" minOccurs="0" />
+              <xs:element name="CREATED_DATE" msprop:BaseColumn="CREATED_DATE" msprop:OraDbType="106" type="xs:dateTime" minOccurs="0" />
+              <xs:element name="CREATED_BY" msprop:BaseColumn="CREATED_BY" msprop:OraDbType="126" type="xs:string" minOccurs="0" />
+              <xs:element name="MODIFIED_DATE" msprop:BaseColumn="MODIFIED_DATE" msprop:OraDbType="106" type="xs:dateTime" minOccurs="0" />
+              <xs:element name="MODIFIED_BY" msprop:BaseColumn="MODIFIED_BY" msprop:OraDbType="126" type="xs:string" minOccurs="0" />
+              <xs:element name="INVOICE_ID" msprop:BaseColumn="INVOICE_ID" msprop:OraDbType="120" type="xs:base64Binary" minOccurs="0" />
+              <xs:element name="DUE_DATE" msprop:BaseColumn="DUE_DATE" msprop:OraDbType="106" type="xs:dateTime" minOccurs="0" />
+              <xs:element name="IS_COMPLETE_ID" msprop:BaseColumn="IS_COMPLETE_ID" msprop:OraDbType="120" type="xs:base64Binary" minOccurs="0" />
+              <xs:element name="_SYSTEM_CHILDREN_COLLECTIONInvoiceItemList" type="xs:string" minOccurs="0" />
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+        <xs:element name="ELP_INVOICE_ITEM" msprop:BaseTable.0="ELP_INVOICE_ITEM">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element name="INVOICE_ID" msprop:BaseColumn="INVOICE_ID" msprop:OraDbType="120" type="xs:base64Binary" minOccurs="0" />
+              <xs:element name="CLAIM_AUTHORIZATION_ID" msprop:BaseColumn="CLAIM_AUTHORIZATION_ID" msprop:OraDbType="120" type="xs:base64Binary" minOccurs="0" />
+              <xs:element name="LINE_ITEM_NUMBER" msprop:BaseColumn="LINE_ITEM_NUMBER" msprop:OraDbType="111" type="xs:short" minOccurs="0" />
+              <xs:element name="VENDOR_SKU" msprop:BaseColumn="VENDOR_SKU" msprop:OraDbType="126" type="xs:string" minOccurs="0" />
+              <xs:element name="VENDOR_SKU_DESCRIPTION" msprop:BaseColumn="VENDOR_SKU_DESCRIPTION" msprop:OraDbType="126" type="xs:string" minOccurs="0" />
+              <xs:element name="AMOUNT" msprop:BaseColumn="AMOUNT" msprop:OraDbType="108" type="xs:double" minOccurs="0" />
+              <xs:element name="ADJUSTMENT_REASON_ID" msprop:BaseColumn="ADJUSTMENT_REASON_ID" msprop:OraDbType="120" type="xs:base64Binary" minOccurs="0" />
+              <xs:element name="SERVICE_CLASS_ID" msprop:BaseColumn="SERVICE_CLASS_ID" msprop:OraDbType="120" type="xs:base64Binary" minOccurs="0" />
+              <xs:element name="SERVICE_TYPE_ID" msprop:BaseColumn="SERVICE_TYPE_ID" msprop:OraDbType="120" type="xs:base64Binary" minOccurs="0" />
+              <xs:element name="SERVICE_LEVEL_ID" msprop:BaseColumn="SERVICE_LEVEL_ID" msprop:OraDbType="120" type="xs:base64Binary" minOccurs="0" />
+              <xs:element name="CREATED_DATE" msprop:BaseColumn="CREATED_DATE" msprop:OraDbType="106" type="xs:dateTime" minOccurs="0" />
+              <xs:element name="CREATED_BY" msprop:BaseColumn="CREATED_BY" msprop:OraDbType="126" type="xs:string" minOccurs="0" />
+              <xs:element name="MODIFIED_DATE" msprop:BaseColumn="MODIFIED_DATE" msprop:OraDbType="106" type="xs:dateTime" minOccurs="0" />
+              <xs:element name="MODIFIED_BY" msprop:BaseColumn="MODIFIED_BY" msprop:OraDbType="126" type="xs:string" minOccurs="0" />
+              <xs:element name="INVOICE_ITEM_ID" msprop:BaseColumn="INVOICE_ITEM_ID" msprop:OraDbType="120" type="xs:base64Binary" minOccurs="0" />
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+        <xs:element name="ELP_INVOICE_RECONCILIATION" msprop:BaseTable.0="ELP_INVOICE_RECONCILIATION">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element name="CLAIM_AUTH_ITEM_ID" msprop:OraDbType="120" msprop:BaseColumn="CLAIM_AUTH_ITEM_ID" type="xs:base64Binary" minOccurs="0" />
+              <xs:element name="INVOICE_ITEM_ID" msprop:OraDbType="120" msprop:BaseColumn="INVOICE_ITEM_ID" type="xs:base64Binary" minOccurs="0" />
+              <xs:element name="RECONCILIATION_STATUS_ID" msprop:OraDbType="120" msprop:BaseColumn="RECONCILIATION_STATUS_ID" type="xs:base64Binary" minOccurs="0" />
+              <xs:element name="RECONCILED_AMOUNT" msprop:OraDbType="108" msprop:BaseColumn="RECONCILED_AMOUNT" type="xs:double" minOccurs="0" />
+              <xs:element name="CREATED_DATE" msprop:OraDbType="106" msprop:BaseColumn="CREATED_DATE" type="xs:dateTime" minOccurs="0" />
+              <xs:element name="CREATED_BY" msprop:OraDbType="126" msprop:BaseColumn="CREATED_BY" type="xs:string" minOccurs="0" />
+              <xs:element name="MODIFIED_DATE" msprop:OraDbType="106" msprop:BaseColumn="MODIFIED_DATE" type="xs:dateTime" minOccurs="0" />
+              <xs:element name="MODIFIED_BY" msprop:OraDbType="126" msprop:BaseColumn="MODIFIED_BY" type="xs:string" minOccurs="0" />
+              <xs:element name="INVOICE_RECONCILIATION_ID" msprop:OraDbType="120" msprop:BaseColumn="INVOICE_RECONCILIATION_ID" type="xs:base64Binary" minOccurs="0" />
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+        <xs:element name="ELP_CLAIM_AUTH_ITEM" msprop:BaseTable.0="ELP_CLAIM_AUTH_ITEM">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element name="CLAIM_AUTH_ITEM_ID" msprop:BaseColumn="CLAIM_AUTH_ITEM_ID" msprop:OraDbType="120" type="xs:base64Binary" minOccurs="0" />
+              <xs:element name="CLAIM_AUTHORIZATION_ID" msprop:BaseColumn="CLAIM_AUTHORIZATION_ID" msprop:OraDbType="120" type="xs:base64Binary" minOccurs="0" />
+              <xs:element name="SERVICE_CLASS_ID" msprop:BaseColumn="SERVICE_CLASS_ID" msprop:OraDbType="120" type="xs:base64Binary" minOccurs="0" />
+              <xs:element name="SERVICE_TYPE_ID" msprop:BaseColumn="SERVICE_TYPE_ID" msprop:OraDbType="120" type="xs:base64Binary" minOccurs="0" />
+              <xs:element name="LINE_ITEM_NUMBER" msprop:BaseColumn="LINE_ITEM_NUMBER" msprop:OraDbType="111" type="xs:short" minOccurs="0" />
+              <xs:element name="VENDOR_SKU" msprop:BaseColumn="VENDOR_SKU" msprop:OraDbType="126" type="xs:string" minOccurs="0" />
+              <xs:element name="VENDOR_SKU_DESCRIPTION" msprop:BaseColumn="VENDOR_SKU_DESCRIPTION" msprop:OraDbType="126" type="xs:string" minOccurs="0" />
+              <xs:element name="AMOUNT" msprop:BaseColumn="AMOUNT" msprop:OraDbType="108" type="xs:double" minOccurs="0" />
+              <xs:element name="ADJUSTMENT_REASON_ID" msprop:BaseColumn="ADJUSTMENT_REASON_ID" msprop:OraDbType="120" type="xs:base64Binary" minOccurs="0" />
+              <xs:element name="CREATED_DATE" msprop:BaseColumn="CREATED_DATE" msprop:OraDbType="106" type="xs:dateTime" minOccurs="0" />
+              <xs:element name="CREATED_BY" msprop:BaseColumn="CREATED_BY" msprop:OraDbType="126" type="xs:string" minOccurs="0" />
+              <xs:element name="MODIFIED_DATE" msprop:BaseColumn="MODIFIED_DATE" msprop:OraDbType="106" type="xs:dateTime" minOccurs="0" />
+              <xs:element name="MODIFIED_BY" msprop:BaseColumn="MODIFIED_BY" msprop:OraDbType="126" type="xs:string" minOccurs="0" />
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+      </xs:choice>
+    </xs:complexType>
+  </xs:element>
+</xs:schema>

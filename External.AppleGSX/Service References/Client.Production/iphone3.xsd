@@ -1,0 +1,1094 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xs:schema xmlns:basic="http://gsxws.apple.com/types/basic" xmlns:global="http://gsxws.apple.com/types/global" xmlns:tns="http://gsxws.apple.com/elements/global" xmlns:base="http://gsxws.apple.com/types/base" targetNamespace="http://gsxws.apple.com/elements/global" version="1.0" xml:lang="en" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+  <xs:import schemaLocation="https://gsxapi.apple.com:443/gsx-ws/services/am/iphone?xsd=2" namespace="http://gsxws.apple.com/types/basic" />
+  <xs:import schemaLocation="https://gsxapi.apple.com:443/gsx-ws/services/am/iphone?xsd=1" namespace="http://gsxws.apple.com/types/base" />
+  <xs:import schemaLocation="https://gsxapi.apple.com:443/gsx-ws/services/am/iphone?xsd=5" namespace="http://gsxws.apple.com/types/global" />
+  <xs:complexType name="authenticateRequestType">
+    <xs:sequence>
+      <xs:element minOccurs="1" name="userId" type="xs:token" />
+      <xs:element minOccurs="1" name="password" type="xs:token" />
+      <xs:element minOccurs="1" name="languageCode" type="basic:Token_2" />
+      <xs:element minOccurs="1" name="userTimeZone" type="xs:token" />
+      <xs:element minOccurs="1" name="serviceAccountNo" type="xs:token" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="authenticateRequestWrapperType">
+    <xs:sequence>
+      <xs:element minOccurs="1" name="AuthenticateRequest" type="tns:authenticateRequestType" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="authenticateResponseType">
+    <xs:sequence>
+      <xs:element minOccurs="1" name="userSessionId" type="xs:token" />
+      <xs:element minOccurs="1" name="operationId" type="xs:token" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="authenticateResponseWrapper">
+    <xs:sequence>
+      <xs:element name="AuthenticateResponse" type="tns:authenticateResponseType" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="Authenticate" type="tns:authenticateRequestWrapperType" />
+  <xs:element name="AuthenticateResponse" type="tns:authenticateResponseWrapper" />
+  <xs:complexType name="logoutRequestType">
+    <xs:sequence>
+      <xs:element minOccurs="1" name="userSession" type="global:gsxUserSessionType" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="logoutRequestWrapper">
+    <xs:sequence>
+      <xs:element name="LogoutRequest" type="tns:logoutRequestType" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="logoutResponseType">
+    <xs:sequence>
+      <xs:element minOccurs="1" name="operationId" type="xs:token" />
+      <xs:element minOccurs="1" name="logoutMessage" type="xs:string" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="logoutResponseWrapper">
+    <xs:sequence>
+      <xs:element name="LogoutResponse" type="tns:logoutResponseType" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="Logout" type="tns:logoutRequestWrapper" />
+  <xs:element name="LogoutResponse" type="tns:logoutResponseWrapper" />
+  <xs:complexType name="gsxHelpRequestType">
+    <xs:sequence>
+      <xs:element minOccurs="1" name="userSession" type="global:gsxUserSessionType" />
+      <xs:element minOccurs="1" name="helpRequestData" type="global:gsxHelpRequestType" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="gsxHelpRequestWrapper">
+    <xs:sequence>
+      <xs:element name="GsxHelpRequest" type="tns:gsxHelpRequestType" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="gsxHelpResponseType">
+    <xs:sequence>
+      <xs:element minOccurs="1" name="operationId" type="xs:token" />
+      <xs:element minOccurs="1" name="helpResponse" type="xs:string" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="gsxHelpResponseWrapper">
+    <xs:sequence>
+      <xs:element name="GsxHelpResponse" type="tns:gsxHelpResponseType" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="GsxHelp" type="tns:gsxHelpRequestWrapper" />
+  <xs:element name="GsxHelpResponse" type="tns:gsxHelpResponseWrapper" />
+  <xs:complexType name="warrantyStatusRequestType">
+    <xs:sequence>
+      <xs:element minOccurs="1" name="userSession" type="global:gsxUserSessionType" />
+      <xs:element minOccurs="1" name="unitDetail" type="global:unitDetailType" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="warrantyStatusRequestWrapper">
+    <xs:sequence>
+      <xs:element name="WarrantyStatusRequest" type="tns:warrantyStatusRequestType" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="warrantyStatusResponseType">
+    <xs:sequence>
+      <xs:element minOccurs="1" name="operationId" type="xs:token" />
+      <xs:element name="warrantyDetailInfo" type="global:warrantyDetailType" />
+      <xs:element minOccurs="0" name="communicationMessage" type="xs:string" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="warrantyStatusResponseWrapper">
+    <xs:sequence>
+      <xs:element name="WarrantyStatusResponse" type="tns:warrantyStatusResponseType" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="WarrantyStatus" type="tns:warrantyStatusRequestWrapper" />
+  <xs:element name="WarrantyStatusResponse" type="tns:warrantyStatusResponseWrapper" />
+  <xs:complexType name="comptiaCodeLookupRequestType">
+    <xs:sequence>
+      <xs:element minOccurs="1" name="userSession" type="global:gsxUserSessionType" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="comptiaCodeLookupRequestWrapper">
+    <xs:sequence>
+      <xs:element name="ComptiaCodeLookupRequest" type="tns:comptiaCodeLookupRequestType" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="comptiaCodeLookupResponseType">
+    <xs:sequence>
+      <xs:element minOccurs="1" name="operationId" type="xs:token" />
+      <xs:element minOccurs="1" name="comptiaInfo" type="global:comptiaInfoType" />
+      <xs:element minOccurs="0" name="communicationMessage" type="xs:string" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="comptiaCodeLookupResponseWrapper">
+    <xs:sequence>
+      <xs:element name="ComptiaCodeLookupResponse" type="tns:comptiaCodeLookupResponseType" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="ComptiaCodeLookup" type="tns:comptiaCodeLookupRequestWrapper" />
+  <xs:element name="ComptiaCodeLookupResponse" type="tns:comptiaCodeLookupResponseWrapper" />
+  <xs:complexType name="initiateIOSDiagnosticRequestType">
+    <xs:sequence>
+      <xs:element minOccurs="1" name="userSession" type="global:gsxUserSessionType" />
+      <xs:element minOccurs="1" name="initiateRequestData" type="global:initiateIOSDiagnosticRequestDataType" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="initiateIOSDiagnosticRequestWrapper">
+    <xs:sequence>
+      <xs:element name="InitiateIOSDiagnosticRequest" type="tns:initiateIOSDiagnosticRequestType" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="initiateIOSDiagnosticResponseDataType">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="ticketNumber" type="basic:String_15" />
+      <xs:element minOccurs="0" name="communicationMessage" type="xs:string" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="initiateIOSDiagnosticResponseType">
+    <xs:sequence>
+      <xs:element minOccurs="1" name="operationId" type="xs:token" />
+      <xs:element minOccurs="1" name="initiateResponseData" type="tns:initiateIOSDiagnosticResponseDataType" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="initiateIOSDiagnosticResponseWrapper">
+    <xs:sequence>
+      <xs:element name="InitiateIOSDiagnosticResponse" type="tns:initiateIOSDiagnosticResponseType" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="InitiateIOSDiagnostic" type="tns:initiateIOSDiagnosticRequestWrapper" />
+  <xs:element name="InitiateIOSDiagnosticResponse" type="tns:initiateIOSDiagnosticResponseWrapper" />
+  <xs:complexType name="fetchDiagnosticEventNumbersRequestType">
+    <xs:sequence>
+      <xs:element minOccurs="1" name="userSession" type="global:gsxUserSessionType" />
+      <xs:element minOccurs="1" name="lookupRequestData" type="global:fetchDiagnosticEventNumbersRequestDataType" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="fetchDiagnosticEventNumbersRequestWrapper">
+    <xs:sequence>
+      <xs:element name="FetchDiagnosticEventNumbersRequest" type="tns:fetchDiagnosticEventNumbersRequestType" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="fetchDiagnosticEventNumbersResponseDataType">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="diagnosticEventNumbers" type="global:diagnosticEventNumbersType" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="fetchDiagnosticEventNumbersResponseType">
+    <xs:sequence>
+      <xs:element minOccurs="1" name="operationId" type="xs:token" />
+      <xs:element minOccurs="1" name="lookupResponseData" type="tns:fetchDiagnosticEventNumbersResponseDataType" />
+      <xs:element minOccurs="0" name="communicationMessage" type="xs:string" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="fetchDiagnosticEventNumbersResponseWrapper">
+    <xs:sequence>
+      <xs:element name="FetchDiagnosticEventNumbersResponse" type="tns:fetchDiagnosticEventNumbersResponseType" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="FetchDiagnosticEventNumbers" type="tns:fetchDiagnosticEventNumbersRequestWrapper" />
+  <xs:element name="FetchDiagnosticEventNumbersResponse" type="tns:fetchDiagnosticEventNumbersResponseWrapper" />
+  <xs:complexType name="fetchProductModelRequestDataType">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="serialNumber" type="xs:string" />
+      <xs:element minOccurs="0" name="alternateDeviceId" type="xs:string" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="fetchProductModelRequestType">
+    <xs:sequence>
+      <xs:element minOccurs="1" name="userSession" type="global:gsxUserSessionType" />
+      <xs:element minOccurs="1" name="productModelRequest" type="tns:fetchProductModelRequestDataType" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="fetchProductModelRequestWrapper">
+    <xs:sequence>
+      <xs:element name="FetchProductModelRequest" type="tns:fetchProductModelRequestType" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="fetchProductModelResponseType">
+    <xs:sequence>
+      <xs:element minOccurs="1" name="operationId" type="xs:token" />
+      <xs:element minOccurs="1" maxOccurs="unbounded" name="productModelResponse" type="base:productModelType" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="fetchProductModelResponseWrapper">
+    <xs:sequence>
+      <xs:element name="FetchProductModelResponse" type="tns:fetchProductModelResponseType" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="FetchProductModel" type="tns:fetchProductModelRequestWrapper" />
+  <xs:element name="FetchProductModelResponse" type="tns:fetchProductModelResponseWrapper" />
+  <xs:complexType name="fetchCommunicationArticlesRequestType">
+    <xs:sequence>
+      <xs:element minOccurs="1" name="userSession" type="global:gsxUserSessionType" />
+      <xs:element minOccurs="1" name="lookupRequestData" type="global:fetchCommunicationArticleRequestDataType" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="fetchCommunicationArticlesRequestWrapper">
+    <xs:sequence>
+      <xs:element name="FetchCommunicationArticlesRequest" type="tns:fetchCommunicationArticlesRequestType" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="fetchCommunicationArticlesResponseType">
+    <xs:sequence>
+      <xs:element minOccurs="1" name="operationId" type="xs:token" />
+      <xs:element minOccurs="1" maxOccurs="unbounded" name="communicationMessage" type="global:communicationMessageType" />
+      <xs:element minOccurs="1" maxOccurs="unbounded" name="functionalRole" type="xs:string" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="fetchCommunicationArticlesResponseWrapper">
+    <xs:sequence>
+      <xs:element name="FetchCommunicationArticlesResponse" type="tns:fetchCommunicationArticlesResponseType" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="FetchCommunicationArticles" type="tns:fetchCommunicationArticlesRequestWrapper" />
+  <xs:element name="FetchCommunicationArticlesResponse" type="tns:fetchCommunicationArticlesResponseWrapper" />
+  <xs:complexType name="fetchCommunicationContentRequestDataType">
+    <xs:sequence>
+      <xs:element minOccurs="1" name="articleID" type="xs:string" />
+      <xs:element minOccurs="0" name="languageCode" type="xs:string" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="fetchCommunicationContentRequestType">
+    <xs:sequence>
+      <xs:element minOccurs="1" name="userSession" type="global:gsxUserSessionType" />
+      <xs:element minOccurs="1" name="lookupRequestData" type="tns:fetchCommunicationContentRequestDataType" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="fetchCommunicationContentRequestWrapper">
+    <xs:sequence>
+      <xs:element name="FetchCommunicationContentRequest" type="tns:fetchCommunicationContentRequestType" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="fetchCommunicationContentResponseType">
+    <xs:sequence>
+      <xs:element minOccurs="1" name="operationId" type="xs:token" />
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="communicationMessage" type="global:communicationArticleContentDataType" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="fetchCommunicationContentResponseWrapper">
+    <xs:sequence>
+      <xs:element name="FetchCommunicationContentResponse" type="tns:fetchCommunicationContentResponseType" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="FetchCommunicationContent" type="tns:fetchCommunicationContentRequestWrapper" />
+  <xs:element name="FetchCommunicationContentResponse" type="tns:fetchCommunicationContentResponseWrapper" />
+  <xs:complexType name="ackCommunicationRequestDataType">
+    <xs:sequence>
+      <xs:element minOccurs="1" maxOccurs="100" name="acknowledgement" type="global:communicationAcknowledgementDataType" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="ackCommunicationRequestType">
+    <xs:sequence>
+      <xs:element minOccurs="1" name="userSession" type="global:gsxUserSessionType" />
+      <xs:element minOccurs="1" name="communicationRequest" type="tns:ackCommunicationRequestDataType" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="acknowledgeCommunicationRequestWrapper">
+    <xs:sequence>
+      <xs:element name="AcknowledgeCommunicationRequest" type="tns:ackCommunicationRequestType" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="ackCommunicationResponseDataType">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="acknowledgementStatus" type="global:communicationAcknowledgementStatusDataType" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="ackCommunicationResponseType">
+    <xs:sequence>
+      <xs:element minOccurs="1" name="operationId" type="xs:token" />
+      <xs:element minOccurs="1" name="communicationResponse" type="tns:ackCommunicationResponseDataType" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="acknowledgeCommunicationResponseWrapper">
+    <xs:sequence>
+      <xs:element name="AcknowledgeCommunicationResponse" type="tns:ackCommunicationResponseType" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="AcknowledgeCommunication" type="tns:acknowledgeCommunicationRequestWrapper" />
+  <xs:element name="AcknowledgeCommunicationResponse" type="tns:acknowledgeCommunicationResponseWrapper" />
+  <xs:complexType name="fetchDiskImageArticleIDRequestDataType">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="100" name="productModel" type="base:productModelType" />
+      <xs:element minOccurs="0" name="serialNumber" type="xs:string" />
+      <xs:element minOccurs="0" name="alternateDeviceId" type="xs:string" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="fetchDiskImageArticleIDRequestType">
+    <xs:sequence>
+      <xs:element minOccurs="1" name="userSession" type="global:gsxUserSessionType" />
+      <xs:element minOccurs="1" name="contentRequest" type="tns:fetchDiskImageArticleIDRequestDataType" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="fetchDiskImageArticleIDRequestWrapper">
+    <xs:sequence>
+      <xs:element name="FetchDiskImageArticleIDRequest" type="tns:fetchDiskImageArticleIDRequestType" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="fetchDiskImageArticleIDResponseDataType">
+    <xs:sequence>
+      <xs:element minOccurs="1" maxOccurs="unbounded" name="articleSummary" type="base:articleSummaryType" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="fetchDiskImageArticleIDResponseType">
+    <xs:sequence>
+      <xs:element minOccurs="1" name="operationId" type="xs:token" />
+      <xs:element minOccurs="1" name="contentResponse" type="tns:fetchDiskImageArticleIDResponseDataType" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="fetchDiskImageArticleIDResponseWrapper">
+    <xs:sequence>
+      <xs:element name="FetchDiskImageArticleIDResponse" type="tns:fetchDiskImageArticleIDResponseType" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="FetchDiskImageArticleID" type="tns:fetchDiskImageArticleIDRequestWrapper" />
+  <xs:element name="FetchDiskImageArticleIDResponse" type="tns:fetchDiskImageArticleIDResponseWrapper" />
+  <xs:complexType name="fetchDiskImageArticleContentRequestType">
+    <xs:sequence>
+      <xs:element minOccurs="1" name="userSession" type="global:gsxUserSessionType" />
+      <xs:element minOccurs="1" name="contentRequest" type="base:articleIDType" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="fetchDiskImageArticleContentRequestWrapper">
+    <xs:sequence>
+      <xs:element name="FetchDiskImageArticleContentRequest" type="tns:fetchDiskImageArticleContentRequestType" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="fetchDiskImageArticleContentResponseType">
+    <xs:sequence>
+      <xs:element minOccurs="1" name="operationId" type="xs:token" />
+      <xs:element minOccurs="1" name="contentResponse" type="global:fetchDiskImageArticleContentResponseDataType" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="fetchDiskImageArticleContentResponseWrapper">
+    <xs:sequence>
+      <xs:element name="FetchDiskImageArticleContentResponse" type="tns:fetchDiskImageArticleContentResponseType" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="FetchDiskImageArticleContent" type="tns:fetchDiskImageArticleContentRequestWrapper" />
+  <xs:element name="FetchDiskImageArticleContentResponse" type="tns:fetchDiskImageArticleContentResponseWrapper" />
+  <xs:complexType name="fetchRepairProcessArticleIDRequestDataType">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="commodityType" type="xs:string" />
+      <xs:element minOccurs="0" maxOccurs="100" name="productModel" type="base:productModelType" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="fetchRepairProcessArticleIDRequestType">
+    <xs:sequence>
+      <xs:element minOccurs="1" name="userSession" type="global:gsxUserSessionType" />
+      <xs:element minOccurs="1" name="contentRequest" type="tns:fetchRepairProcessArticleIDRequestDataType" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="fetchRepairProcessArticleIDRequestWrapper">
+    <xs:sequence>
+      <xs:element name="FetchRepairProcessArticleIDRequest" type="tns:fetchRepairProcessArticleIDRequestType" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="fetchRepairProcessArticleIDResponseDataType">
+    <xs:sequence>
+      <xs:element minOccurs="1" maxOccurs="unbounded" name="articleSummary" type="base:articleSummaryType" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="fetchRepairProcessArticleIDResponseType">
+    <xs:sequence>
+      <xs:element minOccurs="1" name="operationId" type="xs:token" />
+      <xs:element minOccurs="1" name="contentResponse" type="tns:fetchRepairProcessArticleIDResponseDataType" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="fetchRepairProcessArticleIDResponseWrapper">
+    <xs:sequence>
+      <xs:element name="FetchRepairProcessArticleIDResponse" type="tns:fetchRepairProcessArticleIDResponseType" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="FetchRepairProcessArticleID" type="tns:fetchRepairProcessArticleIDRequestWrapper" />
+  <xs:element name="FetchRepairProcessArticleIDResponse" type="tns:fetchRepairProcessArticleIDResponseWrapper" />
+  <xs:complexType name="fetchRepairProcessArticleContentRequestType">
+    <xs:sequence>
+      <xs:element minOccurs="1" name="userSession" type="global:gsxUserSessionType" />
+      <xs:element minOccurs="1" name="contentRequest" type="base:fetchArticleContentRequestDataType" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="fetchRepairProcessArticleContentRequestWrapper">
+    <xs:sequence>
+      <xs:element name="FetchRepairProcessArticleContentRequest" type="tns:fetchRepairProcessArticleContentRequestType" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="fetchRepairProcessArticleContentResponseType">
+    <xs:sequence>
+      <xs:element minOccurs="1" name="operationId" type="xs:token" />
+      <xs:element minOccurs="1" name="contentResponse" type="global:fetchRepairProcessArticleContentResponseDataType" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="fetchRepairProcessArticleContentResponseWrapper">
+    <xs:sequence>
+      <xs:element name="FetchRepairProcessArticleContentResponse" type="tns:fetchRepairProcessArticleContentResponseType" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="FetchRepairProcessArticleContent" type="tns:fetchRepairProcessArticleContentRequestWrapper" />
+  <xs:element name="FetchRepairProcessArticleContentResponse" type="tns:fetchRepairProcessArticleContentResponseWrapper" />
+  <xs:complexType name="fetchOperationalProcedureArticleIDRequestType">
+    <xs:sequence>
+      <xs:element minOccurs="1" name="userSession" type="global:gsxUserSessionType" />
+      <xs:element minOccurs="1" name="contentRequest" type="global:fetchOPArticleIDRequestDataType" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="fetchOperationalProcedureArticleIDRequestWrapper">
+    <xs:sequence>
+      <xs:element name="FetchOperationalProcedureArticleIDRequest" type="tns:fetchOperationalProcedureArticleIDRequestType" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="fetchOperationalProcedureArticleIDResponseDataType">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="articleSummary" type="base:articleSummaryType" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="fetchOperationalProcedureArticleIDResponseType">
+    <xs:sequence>
+      <xs:element minOccurs="1" name="operationId" type="xs:token" />
+      <xs:element minOccurs="1" name="contentResponse" type="tns:fetchOperationalProcedureArticleIDResponseDataType" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="fetchOperationalProcedureArticleIDResponseWrapper">
+    <xs:sequence>
+      <xs:element name="FetchOperationalProcedureArticleIDResponse" type="tns:fetchOperationalProcedureArticleIDResponseType" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="FetchOperationalProcedureArticleID" type="tns:fetchOperationalProcedureArticleIDRequestWrapper" />
+  <xs:element name="FetchOperationalProcedureArticleIDResponse" type="tns:fetchOperationalProcedureArticleIDResponseWrapper" />
+  <xs:complexType name="fetchOperationalProcedureArticleContentRequestType">
+    <xs:sequence>
+      <xs:element minOccurs="1" name="userSession" type="global:gsxUserSessionType" />
+      <xs:element minOccurs="1" name="contentRequest" type="base:fetchArticleContentRequestDataType" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="fetchOperationalProcedureArticleContentRequestWrapper">
+    <xs:sequence>
+      <xs:element name="FetchOperationalProcedureArticleContentRequest" type="tns:fetchOperationalProcedureArticleContentRequestType" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="fetchOperationalProcedureArticleContentResponseType">
+    <xs:sequence>
+      <xs:element minOccurs="1" name="operationId" type="xs:token" />
+      <xs:element minOccurs="1" name="contentResponse" type="global:fetchOPArticleContentResponseDataType" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="fetchOperationalProcedureArticleContentResponseWrapper">
+    <xs:sequence>
+      <xs:element name="FetchOperationalProcedureArticleContentResponse" type="tns:fetchOperationalProcedureArticleContentResponseType" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="FetchOperationalProcedureArticleContent" type="tns:fetchOperationalProcedureArticleContentRequestWrapper" />
+  <xs:element name="FetchOperationalProcedureArticleContentResponse" type="tns:fetchOperationalProcedureArticleContentResponseWrapper" />
+  <xs:complexType name="fetchTechnicalProcedureArticleIDRequestType">
+    <xs:sequence>
+      <xs:element minOccurs="1" name="userSession" type="global:gsxUserSessionType" />
+      <xs:element minOccurs="1" name="contentRequest" type="global:fetchTPArticleIDRequestDataType" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="fetchTechnicalProcedureArticleIDRequestWrapper">
+    <xs:sequence>
+      <xs:element name="FetchTechnicalProcedureArticleIDRequest" type="tns:fetchTechnicalProcedureArticleIDRequestType" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="fetchTechnicalProcedureArticleIDResponseDataType">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="articleSummary" type="base:articleSummaryType" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="fetchTechnicalProcedureArticleIDResponseType">
+    <xs:sequence>
+      <xs:element minOccurs="1" name="operationId" type="xs:token" />
+      <xs:element minOccurs="1" name="contentResponse" type="tns:fetchTechnicalProcedureArticleIDResponseDataType" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="fetchTechnicalProcedureArticleIDResponseWrapper">
+    <xs:sequence>
+      <xs:element name="FetchTechnicalProcedureArticleIDResponse" type="tns:fetchTechnicalProcedureArticleIDResponseType" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="FetchTechnicalProcedureArticleID" type="tns:fetchTechnicalProcedureArticleIDRequestWrapper" />
+  <xs:element name="FetchTechnicalProcedureArticleIDResponse" type="tns:fetchTechnicalProcedureArticleIDResponseWrapper" />
+  <xs:complexType name="fetchTPArticleContentRequestDataType">
+    <xs:sequence>
+      <xs:element minOccurs="1" name="articleID" type="xs:string" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="fetchTechnicalProcedureArticleContentRequestType">
+    <xs:sequence>
+      <xs:element minOccurs="1" name="userSession" type="global:gsxUserSessionType" />
+      <xs:element minOccurs="1" name="contentRequest" type="tns:fetchTPArticleContentRequestDataType" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="fetchTechnicalProcedureArticleContentRequestWrapper">
+    <xs:sequence>
+      <xs:element name="FetchTechnicalProcedureArticleContentRequest" type="tns:fetchTechnicalProcedureArticleContentRequestType" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="fetchTPArticleContentResponseDataType">
+    <xs:sequence>
+      <xs:element minOccurs="1" name="articleContent" type="xs:string" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="fetchTechnicalProcedureArticleContentResponseType">
+    <xs:sequence>
+      <xs:element minOccurs="1" name="operationId" type="xs:token" />
+      <xs:element minOccurs="1" name="contentResponse" type="tns:fetchTPArticleContentResponseDataType" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="fetchTechnicalProcedureArticleContentResponseWrapper">
+    <xs:sequence>
+      <xs:element name="FetchTechnicalProcedureArticleContentResponse" type="tns:fetchTechnicalProcedureArticleContentResponseType" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="FetchTechnicalProcedureArticleContent" type="tns:fetchTechnicalProcedureArticleContentRequestWrapper" />
+  <xs:element name="FetchTechnicalProcedureArticleContentResponse" type="tns:fetchTechnicalProcedureArticleContentResponseWrapper" />
+  <xs:complexType name="fetchSelfHelpArticleIDRequestType">
+    <xs:sequence>
+      <xs:element minOccurs="1" name="userSession" type="global:gsxUserSessionType" />
+      <xs:element minOccurs="1" name="contentRequest" type="global:fetchSelfHelpArticleIDRequestDataType" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="fetchSelfHelpArticleIDRequestWrapper">
+    <xs:sequence>
+      <xs:element name="FetchSelfHelpArticleIDRequest" type="tns:fetchSelfHelpArticleIDRequestType" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="fetchSelfHelpArticleIDResponseDataType">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="articleSummary" type="base:articleSummaryType" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="fetchSelfHelpArticleIDResponseType">
+    <xs:sequence>
+      <xs:element minOccurs="1" name="operationId" type="xs:token" />
+      <xs:element minOccurs="1" name="contentResponse" type="tns:fetchSelfHelpArticleIDResponseDataType" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="fetchSelfHelpArticleIDResponseWrapper">
+    <xs:sequence>
+      <xs:element name="FetchSelfHelpArticleIDResponse" type="tns:fetchSelfHelpArticleIDResponseType" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="FetchSelfHelpArticleID" type="tns:fetchSelfHelpArticleIDRequestWrapper" />
+  <xs:element name="FetchSelfHelpArticleIDResponse" type="tns:fetchSelfHelpArticleIDResponseWrapper" />
+  <xs:complexType name="fetchSelfHelpArticleContentRequestType">
+    <xs:sequence>
+      <xs:element minOccurs="1" name="userSession" type="global:gsxUserSessionType" />
+      <xs:element minOccurs="1" name="contentRequest" type="base:fetchArticleContentRequestDataType" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="fetchSelfHelpArticleContentRequestWrapper">
+    <xs:sequence>
+      <xs:element name="FetchSelfHelpArticleContentRequest" type="tns:fetchSelfHelpArticleContentRequestType" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="fetchSelfHelpArticleContentResponseType">
+    <xs:sequence>
+      <xs:element minOccurs="1" name="operationId" type="xs:token" />
+      <xs:element minOccurs="1" name="contentResponse" type="global:fetchSelfHelpArticleContentResponseDataType" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="fetchSelfHelpArticleContentResponseWrapper">
+    <xs:sequence>
+      <xs:element name="FetchSelfHelpArticleContentResponse" type="tns:fetchSelfHelpArticleContentResponseType" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="FetchSelfHelpArticleContent" type="tns:fetchSelfHelpArticleContentRequestWrapper" />
+  <xs:element name="FetchSelfHelpArticleContentResponse" type="tns:fetchSelfHelpArticleContentResponseWrapper" />
+  <xs:complexType name="fetchServiceVideoArticleIDRequestType">
+    <xs:sequence>
+      <xs:element minOccurs="1" name="userSession" type="global:gsxUserSessionType" />
+      <xs:element minOccurs="1" name="contentRequest" type="global:fetchServiceVideoArticleIDRequestDataType" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="fetchServiceVideoArticleIDRequestWrapper">
+    <xs:sequence>
+      <xs:element name="FetchServiceVideoArticleIDRequest" type="tns:fetchServiceVideoArticleIDRequestType" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="fetchServiceVideoArticleIDResponseDataType">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="articleSummary" type="base:articleSummaryType" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="fetchServiceVideoArticleIDResponseType">
+    <xs:sequence>
+      <xs:element minOccurs="1" name="operationId" type="xs:token" />
+      <xs:element minOccurs="1" name="contentResponse" type="tns:fetchServiceVideoArticleIDResponseDataType" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="fetchServiceVideoArticleIDResponseWrapper">
+    <xs:sequence>
+      <xs:element name="FetchServiceVideoArticleIDResponse" type="tns:fetchServiceVideoArticleIDResponseType" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="FetchServiceVideoArticleID" type="tns:fetchServiceVideoArticleIDRequestWrapper" />
+  <xs:element name="FetchServiceVideoArticleIDResponse" type="tns:fetchServiceVideoArticleIDResponseWrapper" />
+  <xs:complexType name="fetchServiceVideoArticleContentRequestType">
+    <xs:sequence>
+      <xs:element minOccurs="1" name="userSession" type="global:gsxUserSessionType" />
+      <xs:element minOccurs="1" name="contentRequest" type="base:fetchArticleContentRequestDataType" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="fetchServiceVideoArticleContentRequestWrapper">
+    <xs:sequence>
+      <xs:element name="FetchServiceVideoArticleContentRequest" type="tns:fetchServiceVideoArticleContentRequestType" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="fetchServiceVideoArticleContentResponseType">
+    <xs:sequence>
+      <xs:element minOccurs="1" name="operationId" type="xs:token" />
+      <xs:element minOccurs="1" name="contentResponse" type="global:fetchServiceVideoArticleContentResponseDataType" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="fetchServiceVideoArticleContentResponseWrapper">
+    <xs:sequence>
+      <xs:element name="FetchServiceVideoArticleContentResponse" type="tns:fetchServiceVideoArticleContentResponseType" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="FetchServiceVideoArticleContent" type="tns:fetchServiceVideoArticleContentRequestWrapper" />
+  <xs:element name="FetchServiceVideoArticleContentResponse" type="tns:fetchServiceVideoArticleContentResponseWrapper" />
+  <xs:complexType name="fetchImageRequestDataType">
+    <xs:sequence>
+      <xs:element minOccurs="1" name="imageUrl" type="xs:string" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="fetchImageRequestType">
+    <xs:sequence>
+      <xs:element minOccurs="1" name="userSession" type="global:gsxUserSessionType" />
+      <xs:element minOccurs="1" name="imageRequest" type="tns:fetchImageRequestDataType" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="fetchImageRequestWrapper">
+    <xs:sequence>
+      <xs:element name="FetchImageRequest" type="tns:fetchImageRequestType" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="fetchImageResponseDataType">
+    <xs:sequence>
+      <xs:element minOccurs="1" name="imageName" type="xs:string" />
+      <xs:element minOccurs="1" name="imageFile" type="xs:base64Binary" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="fetchImageResponseType">
+    <xs:sequence>
+      <xs:element minOccurs="1" name="operationId" type="xs:token" />
+      <xs:element minOccurs="1" name="contentResponse" type="tns:fetchImageResponseDataType" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="fetchImageResponseWrapper">
+    <xs:sequence>
+      <xs:element name="FetchImageResponse" type="tns:fetchImageResponseType" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="FetchImage" type="tns:fetchImageRequestWrapper" />
+  <xs:element name="FetchImageResponse" type="tns:fetchImageResponseWrapper" />
+  <xs:complexType name="fetchIOSActivationDetailsRequestType">
+    <xs:sequence>
+      <xs:element minOccurs="1" name="userSession" type="global:gsxUserSessionType" />
+      <xs:element minOccurs="0" name="serialNumber" type="xs:string" />
+      <xs:element minOccurs="0" name="alternateDeviceId" type="xs:string" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="fetchIOSActivationDetailsResponseType">
+    <xs:sequence>
+      <xs:element minOccurs="1" name="operationId" type="xs:token" />
+      <xs:element name="activationDetailsInfo" type="global:iosActivationDetailType" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="fetchIOSActivationDetailsRequestWrapper">
+    <xs:sequence>
+      <xs:element name="FetchIOSActivationDetailsRequest" type="tns:fetchIOSActivationDetailsRequestType" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="fetchIOSActivationDetailsResponseWrapper">
+    <xs:sequence>
+      <xs:element name="FetchIOSActivationDetailsResponse" type="tns:fetchIOSActivationDetailsResponseType" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="FetchIOSActivationDetails" type="tns:fetchIOSActivationDetailsRequestWrapper" />
+  <xs:element name="FetchIOSActivationDetailsResponse" type="tns:fetchIOSActivationDetailsResponseWrapper" />
+  <xs:complexType name="stockingOrderLookupRequestType">
+    <xs:sequence>
+      <xs:element minOccurs="1" name="userSession" type="global:gsxUserSessionType" />
+      <xs:element minOccurs="1" name="lookupRequestData" type="global:stockingOrderLookupInfoType" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="stockingOrderLookupRequestWrapper">
+    <xs:sequence>
+      <xs:element name="StockingOrderLookupRequest" type="tns:stockingOrderLookupRequestType" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="stockingOrderLookupResponseType">
+    <xs:sequence>
+      <xs:element minOccurs="1" name="operationId" type="xs:token" />
+      <xs:element minOccurs="1" maxOccurs="unbounded" name="lookupResponseData" type="global:stockingOrderLookupResponseType" />
+      <xs:element minOccurs="0" name="communicationMessage" type="xs:string" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="stockingOrderLookupResponseWrapper">
+    <xs:sequence>
+      <xs:element name="StockingOrderLookupResponse" type="tns:stockingOrderLookupResponseType" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="StockingOrderLookupRequest" type="tns:stockingOrderLookupRequestWrapper" />
+  <xs:element name="StockingOrderLookupResponse" type="tns:stockingOrderLookupResponseWrapper" />
+  <xs:complexType name="stockingOrderDetailsLookupRequestType">
+    <xs:sequence>
+      <xs:element minOccurs="1" name="userSession" type="global:gsxUserSessionType" />
+      <xs:element minOccurs="1" name="orderConfirmationNumber" type="xs:token" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="stockingOrderDetailsLookupResponseType">
+    <xs:sequence>
+      <xs:element minOccurs="1" name="operationId" type="xs:token" />
+      <xs:element minOccurs="0" name="orderDetails" type="global:stockingOrderDetailsLookupResponseType" />
+      <xs:element minOccurs="0" name="communicationMessage" type="xs:string" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="stockingOrderDetailsLookupRequestWrapper">
+    <xs:sequence>
+      <xs:element name="StockingOrderDetailsLookupRequest" type="tns:stockingOrderDetailsLookupRequestType" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="stockingOrderDetailsLookupResponseWrapper">
+    <xs:sequence>
+      <xs:element name="StockingOrderDetailsLookupResponse" type="tns:stockingOrderDetailsLookupResponseType" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="StockingOrderDetailsLookup" type="tns:stockingOrderDetailsLookupRequestWrapper" />
+  <xs:element name="StockingOrderDetailsLookupResponse" type="tns:stockingOrderDetailsLookupResponseWrapper" />
+  <xs:complexType name="fetchDiagnosticConsoleURLRequestType">
+    <xs:sequence>
+      <xs:element minOccurs="1" name="userSession" type="global:gsxUserSessionType" />
+      <xs:element name="fetchDCURLRequestData" type="tns:fetchDCURLRequestDataType" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="fetchDCURLRequestDataType">
+    <xs:sequence>
+      <xs:element minOccurs="1" name="shipTo" type="xs:string" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="fetchDiagnosticConsoleURLRequestWrapper">
+    <xs:sequence>
+      <xs:element name="FetchDiagnosticConsoleURLRequest" type="tns:fetchDiagnosticConsoleURLRequestType" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="fetchDiagnosticConsoleURLResponseDataType">
+    <xs:sequence>
+      <xs:element minOccurs="1" name="diagnosticConsoleURL" type="xs:string" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="fetchDiagnosticConsoleURLResponseType">
+    <xs:sequence>
+      <xs:element minOccurs="1" name="operationId" type="xs:token" />
+      <xs:element minOccurs="1" name="fetchDCURLResponseData" type="tns:fetchDiagnosticConsoleURLResponseDataType" />
+      <xs:element minOccurs="0" name="communicationMessage" type="xs:string" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="fetchDiagnosticConsoleURLResponseWrapper">
+    <xs:sequence>
+      <xs:element name="FetchDiagnosticConsoleURLResponseData" type="tns:fetchDiagnosticConsoleURLResponseType" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="FetchDiagnosticConsoleURL" type="tns:fetchDiagnosticConsoleURLRequestWrapper" />
+  <xs:element name="FetchDiagnosticConsoleURLResponse" type="tns:fetchDiagnosticConsoleURLResponseWrapper" />
+  <xs:element name="RunDiagnosticTest" type="tns:runDiagnosticTestRequestWrapper" />
+  <xs:element name="RunDiagnosticTestResponse" type="tns:runDiagnosticTestResponseWrapper" />
+  <xs:complexType name="runDiagnosticTestRequestWrapper">
+    <xs:sequence>
+      <xs:element name="RunDiagnosticTestRequestData" type="tns:runDiagnosticTestRequestDataType" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="runDiagnosticTestResponseWrapper">
+    <xs:sequence>
+      <xs:element name="RunDiagnosticTestResponseData" type="tns:runDiagnosticTestResponseDataType" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="runDiagnosticTestResponseDataType">
+    <xs:sequence>
+      <xs:element minOccurs="1" name="operationId" type="xs:string" />
+      <xs:element name="diagnosticTestResponseData" type="tns:diagnosticTestResponseDataType" />
+      <xs:element minOccurs="1" name="communicationMessage" type="xs:string" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="diagnosticTestResponseDataType">
+    <xs:sequence>
+      <xs:element minOccurs="1" name="responseMessage" type="xs:string" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="runDiagnosticTestRequestDataType">
+    <xs:sequence>
+      <xs:element minOccurs="1" name="userSession" type="global:gsxUserSessionType" />
+      <xs:element name="diagnosticTestRequestData" type="tns:diagnosticTestRequestDataType" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="diagnosticTestRequestDataType">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="serialNumber" type="basic:String_18" />
+      <xs:element minOccurs="0" name="alternateDeviceId" type="basic:String_18" />
+      <xs:element minOccurs="1" name="shipTo" type="basic:String_10" />
+      <xs:element minOccurs="1" name="diagnosticSuiteId" type="basic:String_1_40" />
+      <xs:element minOccurs="0" name="symptom" type="basic:String_1500" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="fetchDiagnosticSuitesRequestType">
+    <xs:sequence>
+      <xs:element minOccurs="1" name="userSession" type="global:gsxUserSessionType" />
+      <xs:element minOccurs="1" name="diagnosticSuitesRequestData" type="tns:fetchDiagnosticRequestData" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="fetchDiagnosticRequestData">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="serialNumber" type="basic:String_18" />
+      <xs:element minOccurs="0" name="alternateDeviceId" type="basic:String_18" />
+      <xs:element minOccurs="1" name="shipTo" type="basic:String_10" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="fetchDiagnosticSuitesRequestWrapper">
+    <xs:sequence>
+      <xs:element name="FetchDiagnosticSuitesRequestData" type="tns:fetchDiagnosticSuitesRequestType" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="fetchDiagnosticSuitesResponseType">
+    <xs:sequence>
+      <xs:element minOccurs="1" name="operationId" type="xs:token" />
+      <xs:element minOccurs="0" name="diagnosticSuitesResponseData" type="global:diagnosticSuitesResponseType" />
+      <xs:element minOccurs="0" name="communicationMessage" type="xs:string" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="fetchDiagnosticSuitesResponseWrapper">
+    <xs:sequence>
+      <xs:element name="FetchDiagnosticSuitesResponseData" type="tns:fetchDiagnosticSuitesResponseType" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="FetchDiagnosticSuites" type="tns:fetchDiagnosticSuitesRequestWrapper" />
+  <xs:element name="FetchDiagnosticSuitesResponse" type="tns:fetchDiagnosticSuitesResponseWrapper" />
+  <xs:element name="FetchDiagnosticDetails" type="tns:fetchDiagnosticDetailsRequestWrapper" />
+  <xs:element name="FetchDiagnosticDetailsResponse" type="tns:fetchDiagnosticDetailsResponseWrapper" />
+  <xs:complexType name="fetchDiagnosticDetailsRequestWrapper">
+    <xs:sequence>
+      <xs:element name="FetchDiagnosticDetailsRequestData" type="tns:fetchDiagnosticDetailsRequestDataType" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="fetchDiagnosticDetailsResponseWrapper">
+    <xs:sequence>
+      <xs:element name="FetchDiagnosticDetailsResponseData" type="tns:fetchDiagnosticDetailsResponseDataType" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="fetchDiagnosticDetailsRequestDataType">
+    <xs:sequence>
+      <xs:element minOccurs="1" name="userSession" type="global:gsxUserSessionType" />
+      <xs:element name="diagnosticDetailsRequestData" type="tns:diagnosticDetailsRequestDataType" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="diagnosticDetailsRequestDataType">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="serialNumber" type="basic:String_18" />
+      <xs:element minOccurs="0" name="alternateDeviceId" type="basic:String_18" />
+      <xs:element minOccurs="0" name="repairConfirmationNumber" type="basic:String_15" />
+      <xs:element minOccurs="0" name="diagnosticEventNumber" type="basic:String_40" />
+      <xs:element minOccurs="1" name="shipTo" type="basic:String_10" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="fetchDiagnosticDetailsResponseDataType">
+    <xs:sequence>
+      <xs:element minOccurs="1" name="operationId" type="xs:string" />
+      <xs:element name="diagnosticDetailsResponseData" type="tns:diagnosticDetailsResponseDataType" />
+      <xs:element minOccurs="1" name="communicationMessage" type="xs:string" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="diagnosticDetailsResponseDataType">
+    <xs:sequence>
+      <xs:element name="diagnosticTestContext" type="tns:diagnosticTestContextDataType" />
+      <xs:element minOccurs="0" name="diagnosticTestResults" type="tns:diagnosticTestResultsData" />
+      <xs:element name="deviceProfileData" type="tns:deviceProfileDataDataType" />
+      <xs:element name="diagnosticsHelpData" type="tns:diagnosisDataType" />
+      <xs:element minOccurs="0" name="serviceRestrictions" type="xs:string" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="diagnosticTestContextDataType">
+    <xs:sequence>
+      <xs:element minOccurs="1" maxOccurs="unbounded" name="testContext" type="tns:testContextDataType" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="testContextDataType">
+    <xs:sequence>
+      <xs:element minOccurs="1" name="key" type="xs:string" />
+      <xs:element minOccurs="0" name="value" type="xs:string" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="diagnosticTestResultsData">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="testResultsData" type="tns:diagnosticTestResultsDataType" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="diagnosticTestResultsDataType">
+    <xs:sequence>
+      <xs:element minOccurs="1" name="testName" type="basic:String_50" />
+      <xs:element minOccurs="0" name="testStatus" type="basic:String_100" />
+      <xs:element minOccurs="0" name="moduleName" type="basic:String_100" />
+      <xs:element minOccurs="0" name="moduleLocation" type="basic:String_100" />
+      <xs:element minOccurs="0" name="detailedResults" type="tns:detailedResultsDataType" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="detailedResultsDataType">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="resultData" type="tns:resultDataType" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="resultDataType">
+    <xs:sequence>
+      <xs:element minOccurs="1" name="key" type="xs:string" />
+      <xs:element minOccurs="0" name="value" type="xs:string" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="deviceProfileDataDataType">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="profileType" type="basic:String_40" />
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="deviceProfile" type="tns:deviceProfileDataType" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="deviceProfileDataType">
+    <xs:sequence>
+      <xs:element minOccurs="1" name="key" type="xs:string" />
+      <xs:element minOccurs="0" name="value" type="xs:string" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="diagnosisDataType">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="diagnosis" type="tns:diagnosisType" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="diagnosisType">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="issueType" type="basic:String_50" />
+      <xs:element minOccurs="0" name="helpDocText" type="basic:String_2000" />
+      <xs:element minOccurs="0" name="articleLink" type="basic:String_200" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="beatsProductDetailsRequestType">
+    <xs:sequence>
+      <xs:element minOccurs="1" name="userSession" type="global:gsxUserSessionType" />
+      <xs:element minOccurs="1" name="beatsProductRequestData" type="global:beatsProductRequestDataType" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="beatsProductDetailsResponseType">
+    <xs:sequence>
+      <xs:element minOccurs="1" name="operationId" type="xs:token" />
+      <xs:element minOccurs="0" name="beatsProductDetails" type="global:beatsProductDetailsResponseType" />
+      <xs:element minOccurs="0" name="communicationMessage" type="xs:string" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="beatsProductDetailsRequestWrapper">
+    <xs:sequence>
+      <xs:element name="BeatsProductDetailsRequest" type="tns:beatsProductDetailsRequestType" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="beatsProductDetailsResponseWrapper">
+    <xs:sequence>
+      <xs:element name="BeatsProductDetailsResponse" type="tns:beatsProductDetailsResponseType" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="BeatsProductDetails" type="tns:beatsProductDetailsRequestWrapper" />
+  <xs:element name="BeatsProductDetailsResponse" type="tns:beatsProductDetailsResponseWrapper" />
+  <xs:complexType name="beatsSerializerRequestType">
+    <xs:sequence>
+      <xs:element minOccurs="1" name="userSession" type="global:gsxUserSessionType" />
+      <xs:element minOccurs="1" name="beatsSerializerRequestData" type="global:beatsSerializerRequestInfoType" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="beatsSerializerResponseType">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="operationId" type="xs:token" />
+      <xs:element name="serialNumber" type="xs:string" />
+      <xs:element name="beatsSerialNumber" type="xs:string" />
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="multipleMatchProducts" type="global:multipleMatchProductsResponseType" />
+      <xs:element minOccurs="0" name="communicationMessage" type="xs:string" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="BeatsSerializerRequestWrapper">
+    <xs:sequence>
+      <xs:element name="BeatsSerializerRequest" type="tns:beatsSerializerRequestType" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="BeatsSerializerResponseWrapper">
+    <xs:sequence>
+      <xs:element name="BeatsSerializerResponse" type="tns:beatsSerializerResponseType" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="BeatsSerializerRequest" type="tns:BeatsSerializerRequestWrapper" />
+  <xs:element name="BeatsSerializerResponse" type="tns:BeatsSerializerResponseWrapper" />
+  <xs:element name="DiagnosticTestStatusRequest" type="tns:DiagnosticTestStatusRequestWrapper" />
+  <xs:element name="DiagnosticTestStatusResponse" type="tns:DiagnosticTestStatusResponseWrapper" />
+  <xs:complexType name="DiagnosticTestStatusRequestWrapper">
+    <xs:sequence>
+      <xs:element name="DiagnosticTestStatusRequest" type="tns:diagnosticTestStatusRequestType" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="DiagnosticTestStatusResponseWrapper">
+    <xs:sequence>
+      <xs:element name="DiagnosticTestStatusResponse" type="tns:diagnosticTestStatusResponseType" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="diagnosticTestStatusResponseType">
+    <xs:sequence>
+      <xs:element minOccurs="1" name="operationId" type="xs:string" />
+      <xs:element name="diagnosticTestStatusResponseData" type="tns:diagnosticTestStatusResponse" />
+      <xs:element minOccurs="0" name="communicationMessage" type="xs:string" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="diagnosticTestStatusResponse">
+    <xs:sequence>
+      <xs:element minOccurs="1" name="diagnosticSuiteName" type="basic:String_100" />
+      <xs:element minOccurs="1" name="diagnosticSuiteStatus" type="basic:String_40" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="diagnosticTestStatusRequestType">
+    <xs:sequence>
+      <xs:element minOccurs="1" name="userSession" type="global:gsxUserSessionType" />
+      <xs:element name="diagnosticTestStatusRequestData" type="tns:diagnosticTestStatusRequest" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="diagnosticTestStatusRequest">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="serialNumber" type="basic:String_18" />
+      <xs:element minOccurs="0" name="alternateDeviceId" type="basic:String_18" />
+      <xs:element minOccurs="1" name="shipTo" type="basic:String_10" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="FetchDiagnosticCustomerReportRequestURL" type="tns:CustomerReportRequestWrapper" />
+  <xs:element name="FetchDiagnosticCustomerReportResponseURL" type="tns:CustomerReportResponseWrapper" />
+  <xs:complexType name="CustomerReportRequestWrapper">
+    <xs:sequence>
+      <xs:element name="FetchDiagnosticCustomerReportRequest" type="tns:customerReportRequestDataType" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="CustomerReportResponseWrapper">
+    <xs:sequence>
+      <xs:element name="FetchDiagnosticCustomerReportResponse" type="tns:customerReportResponse" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="customerReportResponse">
+    <xs:sequence>
+      <xs:element minOccurs="1" name="operationId" type="xs:string" />
+      <xs:element name="customerReportResponseData" type="tns:diagnosticCustomerReportResponseDataType" />
+      <xs:element minOccurs="0" name="communicationMessage" type="xs:string" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="diagnosticCustomerReportResponseDataType">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="customerReportURL" type="basic:String_4000" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="customerReportRequestDataType">
+    <xs:sequence>
+      <xs:element minOccurs="1" name="userSession" type="global:gsxUserSessionType" />
+      <xs:element name="customerReportRequestData" type="tns:customerReportRequest" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="customerReportRequest">
+    <xs:sequence>
+      <xs:element minOccurs="1" name="diagnosticEventNumber" type="basic:String_1_40" />
+      <xs:element minOccurs="1" name="shipTo" type="basic:String_10" />
+    </xs:sequence>
+  </xs:complexType>
+</xs:schema>

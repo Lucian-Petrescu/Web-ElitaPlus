@@ -1,0 +1,82 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+
+<!-- ********************** THIS FILE HAS BEEN GENERATED FROM TEMPLATE SQLObject.cst (3/7/2008)********************** -->
+
+<SQL>
+  <LOAD>
+    <![CDATA[	
+			SELECT 
+				manufacturer_id,
+				model,
+				created_date,
+				created_by,
+				modified_date,
+				modified_by,
+        company_group_id
+			FROM elp_mfg_coverage
+      
+			WHERE
+				mfg_coverage_id = :mfg_coverage_id 
+		]]>
+  </LOAD>
+  <LOAD_LIST>
+    <![CDATA[	
+        SELECT
+            mfgc.mfg_coverage_id,
+            mfr.description manufacturer,
+            mfr.manufacturer_id,
+            mfgc.model,
+            mfgc.risk_type_id,
+            mfgc.mfg_warranty
+        FROM elp_mfg_coverage mfgc,  elp_manufacturer mfr
+        WHERE
+            mfr.company_group_Id = :company_group_id and
+            mfr.manufacturer_id = mfgc.manufacturer_id  
+ 
+            --dynamic_where_clause
+        ORDER BY UPPER(manufacturer)
+  		]]>
+  </LOAD_LIST>
+  <UPDATE>
+    <![CDATA[	
+			UPDATE elp_mfg_coverage SET
+				manufacturer_id = :manufacturer_id,
+				model = :model,
+				modified_by = :modified_by,
+        risk_type_id = :risk_type_id,
+        mfg_warranty = :mfg_warranty,
+        company_group_id = :company_group_id
+			WHERE
+				mfg_coverage_id = :mfg_coverage_id 
+		]]>
+  </UPDATE>
+  <INSERT>
+    INSERT INTO elp_mfg_coverage
+    (
+    manufacturer_id,
+    model,
+    created_by,
+    deduct_by_mfg_id,
+    risk_type_id,
+    mfg_warranty
+    )
+    VALUES
+    (
+    :manufacturer_id,
+    :model,
+    :created_by,
+    :deduct_by_mfg_id,
+    :risk_type_id,
+    :mfg_warranty
+    )
+  </INSERT>
+  <DELETE>
+    DELETE FROM elp_mfg_coverage
+    WHERE
+    mfg_coverage_id = :mfg_coverage_id
+  </DELETE>
+</SQL>
+
+
+
+

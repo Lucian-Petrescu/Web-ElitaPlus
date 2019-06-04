@@ -1,0 +1,229 @@
+<?xml version="1.0" encoding="utf-8"?>
+<wsdl:definitions xmlns:wsap="http://schemas.xmlsoap.org/ws/2004/08/addressing/policy" xmlns:wsa10="http://www.w3.org/2005/08/addressing" xmlns:tns="http://services.assurant.com/ssi/document/2012/6/20/" xmlns:msc="http://schemas.microsoft.com/ws/2005/12/wsdl/contract" xmlns:soapenc="http://schemas.xmlsoap.org/soap/encoding/" xmlns:wsx="http://schemas.xmlsoap.org/ws/2004/09/mex" xmlns:wsp="http://schemas.xmlsoap.org/ws/2004/09/policy" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:wsam="http://www.w3.org/2007/05/addressing/metadata" xmlns:wsa="http://schemas.xmlsoap.org/ws/2004/08/addressing" xmlns:wsaw="http://www.w3.org/2006/05/addressing/wsdl" xmlns:soap12="http://schemas.xmlsoap.org/wsdl/soap12/" xmlns:wsu="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-utility-1.0.xsd" xmlns:xsd="http://www.w3.org/2001/XMLSchema" name="DocumentService" targetNamespace="http://services.assurant.com/ssi/document/2012/6/20/" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">
+  <wsp:Policy wsu:Id="CustomBinding_IDocument_policy">
+    <wsp:ExactlyOne>
+      <wsp:All>
+        <wsoma:OptimizedMimeSerialization xmlns:wsoma="http://schemas.xmlsoap.org/ws/2004/09/policy/optimizedmimeserialization" />
+        <sp:TransportBinding xmlns:sp="http://schemas.xmlsoap.org/ws/2005/07/securitypolicy">
+          <wsp:Policy>
+            <sp:TransportToken>
+              <wsp:Policy>
+                <sp:HttpsToken RequireClientCertificate="false" />
+              </wsp:Policy>
+            </sp:TransportToken>
+            <sp:AlgorithmSuite>
+              <wsp:Policy>
+                <sp:Basic256 />
+              </wsp:Policy>
+            </sp:AlgorithmSuite>
+            <sp:Layout>
+              <wsp:Policy>
+                <sp:Strict />
+              </wsp:Policy>
+            </sp:Layout>
+            <sp:IncludeTimestamp />
+          </wsp:Policy>
+        </sp:TransportBinding>
+        <sp:SignedSupportingTokens xmlns:sp="http://schemas.xmlsoap.org/ws/2005/07/securitypolicy">
+          <wsp:Policy>
+            <sp:UsernameToken sp:IncludeToken="http://schemas.xmlsoap.org/ws/2005/07/securitypolicy/IncludeToken/AlwaysToRecipient">
+              <wsp:Policy>
+                <sp:WssUsernameToken10 />
+              </wsp:Policy>
+            </sp:UsernameToken>
+          </wsp:Policy>
+        </sp:SignedSupportingTokens>
+        <sp:Wss11 xmlns:sp="http://schemas.xmlsoap.org/ws/2005/07/securitypolicy">
+          <wsp:Policy />
+        </sp:Wss11>
+        <sp:Trust10 xmlns:sp="http://schemas.xmlsoap.org/ws/2005/07/securitypolicy">
+          <wsp:Policy>
+            <sp:MustSupportIssuedTokens />
+            <sp:RequireClientEntropy />
+            <sp:RequireServerEntropy />
+          </wsp:Policy>
+        </sp:Trust10>
+      </wsp:All>
+    </wsp:ExactlyOne>
+  </wsp:Policy>
+  <wsdl:types>
+    <xsd:schema targetNamespace="http://services.assurant.com/ssi/document/2012/6/20/Imports">
+      <xsd:import schemaLocation="http://msp0wapfd001.cead.prd/Document/Entity/20120620/DocumentService.svc?xsd=xsd0" namespace="http://services.assurant.com/ssi/document/2012/6/20/" />
+      <xsd:import schemaLocation="http://msp0wapfd001.cead.prd/Document/Entity/20120620/DocumentService.svc?xsd=xsd2" namespace="http://services.assurant.com/integration/faults/2012/6/12/" />
+      <xsd:import schemaLocation="http://msp0wapfd001.cead.prd/Document/Entity/20120620/DocumentService.svc?xsd=xsd3" namespace="http://www.microsoft.com/practices/EnterpriseLibrary/2007/01/wcf/validation" />
+      <xsd:import schemaLocation="http://msp0wapfd001.cead.prd/Document/Entity/20120620/DocumentService.svc?xsd=xsd1" namespace="http://schemas.microsoft.com/2003/10/Serialization/" />
+      <xsd:import schemaLocation="http://msp0wapfd001.cead.prd/Document/Entity/20120620/DocumentService.svc?xsd=xsd4" namespace="http://schemas.datacontract.org/2004/07/Microsoft.Practices.EnterpriseLibrary.Validation.Integration.WCF" />
+    </xsd:schema>
+  </wsdl:types>
+  <wsdl:message name="IDocument_Upload_InputMessage">
+    <wsdl:part name="parameters" element="tns:Upload" />
+  </wsdl:message>
+  <wsdl:message name="IDocument_Upload_OutputMessage">
+    <wsdl:part name="parameters" element="tns:UploadResponse" />
+  </wsdl:message>
+  <wsdl:message name="IDocument_Upload_NotFoundFaultFault_FaultMessage">
+    <wsdl:part xmlns:q1="http://services.assurant.com/integration/faults/2012/6/12/" name="detail" element="q1:NotFoundFault" />
+  </wsdl:message>
+  <wsdl:message name="IDocument_Upload_DocumentFaultFault_FaultMessage">
+    <wsdl:part name="detail" element="tns:DocumentFault" />
+  </wsdl:message>
+  <wsdl:message name="IDocument_Upload_ValidationFaultFault_FaultMessage">
+    <wsdl:part xmlns:q2="http://www.microsoft.com/practices/EnterpriseLibrary/2007/01/wcf/validation" name="detail" element="q2:ValidationFault" />
+  </wsdl:message>
+  <wsdl:message name="IDocument_Download_InputMessage">
+    <wsdl:part name="parameters" element="tns:Download" />
+  </wsdl:message>
+  <wsdl:message name="IDocument_Download_OutputMessage">
+    <wsdl:part name="parameters" element="tns:DownloadResponse" />
+  </wsdl:message>
+  <wsdl:message name="IDocument_Download_ValidationFaultFault_FaultMessage">
+    <wsdl:part xmlns:q3="http://www.microsoft.com/practices/EnterpriseLibrary/2007/01/wcf/validation" name="detail" element="q3:ValidationFault" />
+  </wsdl:message>
+  <wsdl:message name="IDocument_Download_NotFoundFaultFault_FaultMessage">
+    <wsdl:part xmlns:q4="http://services.assurant.com/integration/faults/2012/6/12/" name="detail" element="q4:NotFoundFault" />
+  </wsdl:message>
+  <wsdl:message name="IDocument_Download_DocumentFaultFault_FaultMessage">
+    <wsdl:part name="detail" element="tns:DocumentFault" />
+  </wsdl:message>
+  <wsdl:message name="IDocument_Find_InputMessage">
+    <wsdl:part name="parameters" element="tns:Find" />
+  </wsdl:message>
+  <wsdl:message name="IDocument_Find_OutputMessage">
+    <wsdl:part name="parameters" element="tns:FindResponse" />
+  </wsdl:message>
+  <wsdl:message name="IDocument_Find_ValidationFaultFault_FaultMessage">
+    <wsdl:part xmlns:q5="http://www.microsoft.com/practices/EnterpriseLibrary/2007/01/wcf/validation" name="detail" element="q5:ValidationFault" />
+  </wsdl:message>
+  <wsdl:message name="IDocument_Find_NotFoundFaultFault_FaultMessage">
+    <wsdl:part xmlns:q6="http://services.assurant.com/integration/faults/2012/6/12/" name="detail" element="q6:NotFoundFault" />
+  </wsdl:message>
+  <wsdl:message name="IDocument_Find_DocumentFaultFault_FaultMessage">
+    <wsdl:part name="detail" element="tns:DocumentFault" />
+  </wsdl:message>
+  <wsdl:message name="IDocument_Update_InputMessage">
+    <wsdl:part name="parameters" element="tns:Update" />
+  </wsdl:message>
+  <wsdl:message name="IDocument_Update_OutputMessage">
+    <wsdl:part name="parameters" element="tns:UpdateResponse" />
+  </wsdl:message>
+  <wsdl:message name="IDocument_Update_NotFoundFaultFault_FaultMessage">
+    <wsdl:part xmlns:q7="http://services.assurant.com/integration/faults/2012/6/12/" name="detail" element="q7:NotFoundFault" />
+  </wsdl:message>
+  <wsdl:message name="IDocument_Update_ValidationFaultFault_FaultMessage">
+    <wsdl:part xmlns:q8="http://www.microsoft.com/practices/EnterpriseLibrary/2007/01/wcf/validation" name="detail" element="q8:ValidationFault" />
+  </wsdl:message>
+  <wsdl:message name="IDocument_Update_DocumentFaultFault_FaultMessage">
+    <wsdl:part name="detail" element="tns:DocumentFault" />
+  </wsdl:message>
+  <wsdl:portType name="IDocument">
+    <wsdl:operation name="Upload">
+      <wsdl:input wsaw:Action="http://services.assurant.com/ssi/document/2012/6/20/IDocument/Upload" message="tns:IDocument_Upload_InputMessage" />
+      <wsdl:output wsaw:Action="http://services.assurant.com/ssi/document/2012/6/20/IDocument/UploadResponse" message="tns:IDocument_Upload_OutputMessage" />
+      <wsdl:fault wsaw:Action="http://services.assurant.com/ssi/document/2012/6/20/IDocument/UploadNotFoundFaultFault" name="NotFoundFaultFault" message="tns:IDocument_Upload_NotFoundFaultFault_FaultMessage" />
+      <wsdl:fault wsaw:Action="http://services.assurant.com/ssi/document/2012/6/20/IDocument/UploadDocumentFaultFault" name="DocumentFaultFault" message="tns:IDocument_Upload_DocumentFaultFault_FaultMessage" />
+      <wsdl:fault wsaw:Action="http://services.assurant.com/ssi/document/2012/6/20/IDocument/UploadValidationFaultFault" name="ValidationFaultFault" message="tns:IDocument_Upload_ValidationFaultFault_FaultMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="Download">
+      <wsdl:input wsaw:Action="http://services.assurant.com/ssi/document/2012/6/20/IDocument/Download" message="tns:IDocument_Download_InputMessage" />
+      <wsdl:output wsaw:Action="http://services.assurant.com/ssi/document/2012/6/20/IDocument/DownloadResponse" message="tns:IDocument_Download_OutputMessage" />
+      <wsdl:fault wsaw:Action="http://services.assurant.com/ssi/document/2012/6/20/IDocument/DownloadValidationFaultFault" name="ValidationFaultFault" message="tns:IDocument_Download_ValidationFaultFault_FaultMessage" />
+      <wsdl:fault wsaw:Action="http://services.assurant.com/ssi/document/2012/6/20/IDocument/DownloadNotFoundFaultFault" name="NotFoundFaultFault" message="tns:IDocument_Download_NotFoundFaultFault_FaultMessage" />
+      <wsdl:fault wsaw:Action="http://services.assurant.com/ssi/document/2012/6/20/IDocument/DownloadDocumentFaultFault" name="DocumentFaultFault" message="tns:IDocument_Download_DocumentFaultFault_FaultMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="Find">
+      <wsdl:input wsaw:Action="http://services.assurant.com/ssi/document/2012/6/20/IDocument/Find" message="tns:IDocument_Find_InputMessage" />
+      <wsdl:output wsaw:Action="http://services.assurant.com/ssi/document/2012/6/20/IDocument/FindResponse" message="tns:IDocument_Find_OutputMessage" />
+      <wsdl:fault wsaw:Action="http://services.assurant.com/ssi/document/2012/6/20/IDocument/FindValidationFaultFault" name="ValidationFaultFault" message="tns:IDocument_Find_ValidationFaultFault_FaultMessage" />
+      <wsdl:fault wsaw:Action="http://services.assurant.com/ssi/document/2012/6/20/IDocument/FindNotFoundFaultFault" name="NotFoundFaultFault" message="tns:IDocument_Find_NotFoundFaultFault_FaultMessage" />
+      <wsdl:fault wsaw:Action="http://services.assurant.com/ssi/document/2012/6/20/IDocument/FindDocumentFaultFault" name="DocumentFaultFault" message="tns:IDocument_Find_DocumentFaultFault_FaultMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="Update">
+      <wsdl:input wsaw:Action="http://services.assurant.com/ssi/document/2012/6/20/IDocument/Update" message="tns:IDocument_Update_InputMessage" />
+      <wsdl:output wsaw:Action="http://services.assurant.com/ssi/document/2012/6/20/IDocument/UpdateResponse" message="tns:IDocument_Update_OutputMessage" />
+      <wsdl:fault wsaw:Action="http://services.assurant.com/ssi/document/2012/6/20/IDocument/UpdateNotFoundFaultFault" name="NotFoundFaultFault" message="tns:IDocument_Update_NotFoundFaultFault_FaultMessage" />
+      <wsdl:fault wsaw:Action="http://services.assurant.com/ssi/document/2012/6/20/IDocument/UpdateValidationFaultFault" name="ValidationFaultFault" message="tns:IDocument_Update_ValidationFaultFault_FaultMessage" />
+      <wsdl:fault wsaw:Action="http://services.assurant.com/ssi/document/2012/6/20/IDocument/UpdateDocumentFaultFault" name="DocumentFaultFault" message="tns:IDocument_Update_DocumentFaultFault_FaultMessage" />
+    </wsdl:operation>
+  </wsdl:portType>
+  <wsdl:binding name="CustomBinding_IDocument" type="tns:IDocument">
+    <wsp:PolicyReference URI="#CustomBinding_IDocument_policy" />
+    <soap12:binding transport="http://schemas.xmlsoap.org/soap/http" />
+    <wsdl:operation name="Upload">
+      <soap12:operation soapAction="http://services.assurant.com/ssi/document/2012/6/20/IDocument/Upload" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+      <wsdl:fault name="NotFoundFaultFault">
+        <soap12:fault use="literal" name="NotFoundFaultFault" namespace="" />
+      </wsdl:fault>
+      <wsdl:fault name="DocumentFaultFault">
+        <soap12:fault use="literal" name="DocumentFaultFault" namespace="" />
+      </wsdl:fault>
+      <wsdl:fault name="ValidationFaultFault">
+        <soap12:fault use="literal" name="ValidationFaultFault" namespace="" />
+      </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="Download">
+      <soap12:operation soapAction="http://services.assurant.com/ssi/document/2012/6/20/IDocument/Download" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+      <wsdl:fault name="ValidationFaultFault">
+        <soap12:fault use="literal" name="ValidationFaultFault" namespace="" />
+      </wsdl:fault>
+      <wsdl:fault name="NotFoundFaultFault">
+        <soap12:fault use="literal" name="NotFoundFaultFault" namespace="" />
+      </wsdl:fault>
+      <wsdl:fault name="DocumentFaultFault">
+        <soap12:fault use="literal" name="DocumentFaultFault" namespace="" />
+      </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="Find">
+      <soap12:operation soapAction="http://services.assurant.com/ssi/document/2012/6/20/IDocument/Find" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+      <wsdl:fault name="ValidationFaultFault">
+        <soap12:fault use="literal" name="ValidationFaultFault" namespace="" />
+      </wsdl:fault>
+      <wsdl:fault name="NotFoundFaultFault">
+        <soap12:fault use="literal" name="NotFoundFaultFault" namespace="" />
+      </wsdl:fault>
+      <wsdl:fault name="DocumentFaultFault">
+        <soap12:fault use="literal" name="DocumentFaultFault" namespace="" />
+      </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="Update">
+      <soap12:operation soapAction="http://services.assurant.com/ssi/document/2012/6/20/IDocument/Update" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+      <wsdl:fault name="NotFoundFaultFault">
+        <soap12:fault use="literal" name="NotFoundFaultFault" namespace="" />
+      </wsdl:fault>
+      <wsdl:fault name="ValidationFaultFault">
+        <soap12:fault use="literal" name="ValidationFaultFault" namespace="" />
+      </wsdl:fault>
+      <wsdl:fault name="DocumentFaultFault">
+        <soap12:fault use="literal" name="DocumentFaultFault" namespace="" />
+      </wsdl:fault>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:service name="DocumentService">
+    <wsdl:port name="CustomBinding_IDocument" binding="tns:CustomBinding_IDocument">
+      <soap12:address location="http://msp0wapfd001.cead.prd/Document/Entity/20120620/DocumentService.svc" />
+    </wsdl:port>
+  </wsdl:service>
+</wsdl:definitions>

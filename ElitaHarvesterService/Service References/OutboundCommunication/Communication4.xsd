@@ -1,0 +1,363 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xs:schema xmlns:ser="http://schemas.microsoft.com/2003/10/Serialization/" elementFormDefault="qualified" targetNamespace="http://services.assurant.com/ssi/OutboundCommunication/2016/05/24/" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+  <xs:import schemaLocation="http://intra.apf-int.assurant.com/OutboundCommunication.Services/v6/Communication.svc?xsd=xsd2" namespace="http://schemas.datacontract.org/2004/07/Assurant.Integration.OutboundCommunication.Contracts" />
+  <xs:import schemaLocation="http://intra.apf-int.assurant.com/OutboundCommunication.Services/v6/Communication.svc?xsd=xsd3" namespace="http://schemas.microsoft.com/2003/10/Serialization/Arrays" />
+  <xs:import schemaLocation="http://intra.apf-int.assurant.com/OutboundCommunication.Services/v6/Communication.svc?xsd=xsd1" namespace="http://schemas.microsoft.com/2003/10/Serialization/" />
+  <xs:import schemaLocation="http://intra.apf-int.assurant.com/OutboundCommunication.Services/v6/Communication.svc?xsd=xsd6" namespace="http://schemas.datacontract.org/2004/07/Assurant.Integration.OutboundCommunication.Contracts.Faults" />
+  <xs:element name="Send">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element xmlns:q1="http://services.assurant.com/ssi/OutboundCommunication/2016/05/24/" minOccurs="0" name="communication" nillable="true" type="q1:Communication" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:complexType name="Communication">
+    <xs:complexContent mixed="false">
+      <xs:extension xmlns:q2="http://services.assurant.com/ssi/OutboundCommunication/2016/05/24/" base="q2:CommunicationBase">
+        <xs:sequence />
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:element xmlns:q3="http://services.assurant.com/ssi/OutboundCommunication/2016/05/24/" name="Communication" nillable="true" type="q3:Communication" />
+  <xs:complexType name="CommunicationBase">
+    <xs:sequence>
+      <xs:element xmlns:q4="http://schemas.datacontract.org/2004/07/Assurant.Integration.OutboundCommunication.Contracts" minOccurs="0" name="Attributes" nillable="true" type="q4:ArrayOfNameValue" />
+      <xs:element xmlns:q5="http://services.assurant.com/ssi/OutboundCommunication/2016/05/24/" minOccurs="0" name="Email" nillable="true" type="q5:Email" />
+      <xs:element xmlns:q6="http://services.assurant.com/ssi/OutboundCommunication/2016/05/24/" minOccurs="0" name="FaxNumbers" nillable="true" type="q6:ArrayOfFax" />
+      <xs:element minOccurs="0" name="RepositoryKey" nillable="true" type="xs:string" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element xmlns:q7="http://services.assurant.com/ssi/OutboundCommunication/2016/05/24/" name="CommunicationBase" nillable="true" type="q7:CommunicationBase" />
+  <xs:complexType name="Email">
+    <xs:sequence>
+      <xs:element xmlns:q8="http://schemas.microsoft.com/2003/10/Serialization/Arrays" minOccurs="0" name="Addresses" nillable="true" type="q8:ArrayOfstring" />
+      <xs:element xmlns:q9="http://services.assurant.com/ssi/OutboundCommunication/2016/05/24/" minOccurs="0" name="Attachments" nillable="true" type="q9:ArrayOfFileAttachment" />
+      <xs:element xmlns:q10="http://schemas.microsoft.com/2003/10/Serialization/Arrays" minOccurs="0" name="BccAddresses" nillable="true" type="q10:ArrayOfstring" />
+      <xs:element xmlns:q11="http://schemas.microsoft.com/2003/10/Serialization/Arrays" minOccurs="0" name="CcAddresses" nillable="true" type="q11:ArrayOfstring" />
+      <xs:element minOccurs="0" name="From" nillable="true" type="xs:string" />
+      <xs:element xmlns:q12="http://schemas.microsoft.com/2003/10/Serialization/Arrays" minOccurs="0" name="ReplyToList" nillable="true" type="q12:ArrayOfstring" />
+      <xs:element minOccurs="0" name="Subject" nillable="true" type="xs:string" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element xmlns:q13="http://services.assurant.com/ssi/OutboundCommunication/2016/05/24/" name="Email" nillable="true" type="q13:Email" />
+  <xs:complexType name="ArrayOfFileAttachment">
+    <xs:sequence>
+      <xs:element xmlns:q14="http://services.assurant.com/ssi/OutboundCommunication/2016/05/24/" minOccurs="0" maxOccurs="unbounded" name="FileAttachment" nillable="true" type="q14:FileAttachment" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element xmlns:q15="http://services.assurant.com/ssi/OutboundCommunication/2016/05/24/" name="ArrayOfFileAttachment" nillable="true" type="q15:ArrayOfFileAttachment" />
+  <xs:complexType name="FileAttachment">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="Data" nillable="true" type="xs:base64Binary" />
+      <xs:element minOccurs="0" name="FileName" nillable="true" type="xs:string" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element xmlns:q16="http://services.assurant.com/ssi/OutboundCommunication/2016/05/24/" name="FileAttachment" nillable="true" type="q16:FileAttachment" />
+  <xs:complexType name="ArrayOfFax">
+    <xs:sequence>
+      <xs:element xmlns:q17="http://services.assurant.com/ssi/OutboundCommunication/2016/05/24/" minOccurs="0" maxOccurs="unbounded" name="Fax" nillable="true" type="q17:Fax" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element xmlns:q18="http://services.assurant.com/ssi/OutboundCommunication/2016/05/24/" name="ArrayOfFax" nillable="true" type="q18:ArrayOfFax" />
+  <xs:complexType name="Fax">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="ErrorMessage" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="FaxId" type="ser:guid" />
+      <xs:element minOccurs="0" name="Number" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="Recipient" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="Status" nillable="true" type="xs:string" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element xmlns:q19="http://services.assurant.com/ssi/OutboundCommunication/2016/05/24/" name="Fax" nillable="true" type="q19:Fax" />
+  <xs:complexType name="FreeFormCommunication">
+    <xs:complexContent mixed="false">
+      <xs:extension xmlns:q20="http://services.assurant.com/ssi/OutboundCommunication/2016/05/24/" base="q20:Communication">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="Message" nillable="true" type="xs:string" />
+          <xs:element xmlns:q21="http://schemas.microsoft.com/2003/10/Serialization/Arrays" minOccurs="0" name="SmsNumbers" nillable="true" type="q21:ArrayOfstring" />
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:element xmlns:q22="http://services.assurant.com/ssi/OutboundCommunication/2016/05/24/" name="FreeFormCommunication" nillable="true" type="q22:FreeFormCommunication" />
+  <xs:complexType name="XPressionCommunication">
+    <xs:complexContent mixed="false">
+      <xs:extension xmlns:q23="http://services.assurant.com/ssi/OutboundCommunication/2016/05/24/" base="q23:Communication">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="Addresses" nillable="true" type="q23:ArrayOfAddress" />
+          <xs:element minOccurs="0" name="DocumentData" nillable="true" type="xs:base64Binary" />
+          <xs:element minOccurs="0" name="Output" type="q23:XpressionOutput" />
+          <xs:element minOccurs="0" name="TemplateName" nillable="true" type="xs:string" />
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:element xmlns:q24="http://services.assurant.com/ssi/OutboundCommunication/2016/05/24/" name="XPressionCommunication" nillable="true" type="q24:XPressionCommunication" />
+  <xs:complexType name="ArrayOfAddress">
+    <xs:sequence>
+      <xs:element xmlns:q25="http://services.assurant.com/ssi/OutboundCommunication/2016/05/24/" minOccurs="0" maxOccurs="unbounded" name="Address" nillable="true" type="q25:Address" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element xmlns:q26="http://services.assurant.com/ssi/OutboundCommunication/2016/05/24/" name="ArrayOfAddress" nillable="true" type="q26:ArrayOfAddress" />
+  <xs:complexType name="Address">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="Address1" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="Address2" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="City" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="Country" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="PostalCode" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="State" nillable="true" type="xs:string" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element xmlns:q27="http://services.assurant.com/ssi/OutboundCommunication/2016/05/24/" name="Address" nillable="true" type="q27:Address" />
+  <xs:simpleType name="XpressionOutput">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="Pdf" />
+      <xs:enumeration value="Html" />
+      <xs:enumeration value="QrCodePdf" />
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:element xmlns:q28="http://services.assurant.com/ssi/OutboundCommunication/2016/05/24/" name="XpressionOutput" nillable="true" type="q28:XpressionOutput" />
+  <xs:element name="SendResponse">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element xmlns:q29="http://services.assurant.com/ssi/OutboundCommunication/2016/05/24/" minOccurs="0" name="SendResult" nillable="true" type="q29:CommunicationInfo" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:complexType name="CommunicationInfo">
+    <xs:complexContent mixed="false">
+      <xs:extension xmlns:q30="http://services.assurant.com/ssi/OutboundCommunication/2016/05/24/" base="q30:CommunicationBase">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="Addresses" nillable="true" type="q30:ArrayOfAddress" />
+          <xs:element minOccurs="0" name="Id" type="ser:guid" />
+          <xs:element xmlns:q31="http://schemas.microsoft.com/2003/10/Serialization/Arrays" minOccurs="0" name="SmsNumbers" nillable="true" type="q31:ArrayOfstring" />
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:element xmlns:q32="http://services.assurant.com/ssi/OutboundCommunication/2016/05/24/" name="CommunicationInfo" nillable="true" type="q32:CommunicationInfo" />
+  <xs:complexType name="NotFoundFault">
+    <xs:complexContent mixed="false">
+      <xs:extension xmlns:q33="http://schemas.datacontract.org/2004/07/Assurant.Integration.OutboundCommunication.Contracts.Faults" base="q33:FaultBase">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="RequestKey" nillable="true" type="xs:string" />
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:element xmlns:q34="http://services.assurant.com/ssi/OutboundCommunication/2016/05/24/" name="NotFoundFault" nillable="true" type="q34:NotFoundFault" />
+  <xs:complexType name="CommunicationPipelineFault">
+    <xs:complexContent mixed="false">
+      <xs:extension xmlns:q35="http://schemas.datacontract.org/2004/07/Assurant.Integration.OutboundCommunication.Contracts.Faults" base="q35:FaultBase">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="ComponentType" nillable="true" type="xs:string" />
+          <xs:element xmlns:q36="http://services.assurant.com/ssi/OutboundCommunication/2016/05/24/" minOccurs="0" name="InnerException" nillable="true" type="q36:ExceptionDetail" />
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:element xmlns:q37="http://services.assurant.com/ssi/OutboundCommunication/2016/05/24/" name="CommunicationPipelineFault" nillable="true" type="q37:CommunicationPipelineFault" />
+  <xs:complexType name="ExceptionDetail">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="HelpLink" nillable="true" type="xs:string" />
+      <xs:element xmlns:q38="http://services.assurant.com/ssi/OutboundCommunication/2016/05/24/" minOccurs="0" name="InnerException" nillable="true" type="q38:ExceptionDetail" />
+      <xs:element minOccurs="0" name="Message" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="StackTrace" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="Type" nillable="true" type="xs:string" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element xmlns:q39="http://services.assurant.com/ssi/OutboundCommunication/2016/05/24/" name="ExceptionDetail" nillable="true" type="q39:ExceptionDetail" />
+  <xs:element name="Find">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element xmlns:q40="http://services.assurant.com/ssi/OutboundCommunication/2016/05/24/" minOccurs="0" name="criteria" nillable="true" type="q40:FindRequest" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:complexType name="FindRequest">
+    <xs:sequence>
+      <xs:element xmlns:q41="http://services.assurant.com/ssi/OutboundCommunication/2016/05/24/" minOccurs="0" name="Address" nillable="true" type="q41:Address" />
+      <xs:element xmlns:q42="http://schemas.datacontract.org/2004/07/Assurant.Integration.OutboundCommunication.Contracts" minOccurs="0" name="Attributes" nillable="true" type="q42:ArrayOfNameValue" />
+      <xs:element xmlns:q43="http://schemas.microsoft.com/2003/10/Serialization/Arrays" minOccurs="0" name="EmailAddresses" nillable="true" type="q43:ArrayOfstring" />
+      <xs:element xmlns:q44="http://schemas.microsoft.com/2003/10/Serialization/Arrays" minOccurs="0" name="FaxNumbers" nillable="true" type="q44:ArrayOfstring" />
+      <xs:element minOccurs="0" name="SentOnOrAfter" nillable="true" type="xs:dateTime" />
+      <xs:element minOccurs="0" name="SentOnOrBefore" nillable="true" type="xs:dateTime" />
+      <xs:element xmlns:q45="http://schemas.microsoft.com/2003/10/Serialization/Arrays" minOccurs="0" name="SmsNumbers" nillable="true" type="q45:ArrayOfstring" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element xmlns:q46="http://services.assurant.com/ssi/OutboundCommunication/2016/05/24/" name="FindRequest" nillable="true" type="q46:FindRequest" />
+  <xs:element name="FindResponse">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element xmlns:q47="http://services.assurant.com/ssi/OutboundCommunication/2016/05/24/" minOccurs="0" name="FindResult" nillable="true" type="q47:ArrayOfCommunicationInfo" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:complexType name="ArrayOfCommunicationInfo">
+    <xs:sequence>
+      <xs:element xmlns:q48="http://services.assurant.com/ssi/OutboundCommunication/2016/05/24/" minOccurs="0" maxOccurs="unbounded" name="CommunicationInfo" nillable="true" type="q48:CommunicationInfo" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element xmlns:q49="http://services.assurant.com/ssi/OutboundCommunication/2016/05/24/" name="ArrayOfCommunicationInfo" nillable="true" type="q49:ArrayOfCommunicationInfo" />
+  <xs:element name="Get">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" name="communicationId" type="ser:guid" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="GetResponse">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element xmlns:q50="http://services.assurant.com/ssi/OutboundCommunication/2016/05/24/" minOccurs="0" name="GetResult" nillable="true" type="q50:CommunicationDetail" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:complexType name="CommunicationDetail">
+    <xs:complexContent mixed="false">
+      <xs:extension xmlns:q51="http://services.assurant.com/ssi/OutboundCommunication/2016/05/24/" base="q51:CommunicationInfo">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="FileData" nillable="true" type="xs:base64Binary" />
+          <xs:element minOccurs="0" name="FileName" nillable="true" type="xs:string" />
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:element xmlns:q52="http://services.assurant.com/ssi/OutboundCommunication/2016/05/24/" name="CommunicationDetail" nillable="true" type="q52:CommunicationDetail" />
+  <xs:element name="SendNotification">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element xmlns:q53="http://services.assurant.com/ssi/OutboundCommunication/2016/05/24/" minOccurs="0" name="notification" nillable="true" type="q53:Notification" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:complexType name="Notification">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="AppChannel" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="Badge" type="xs:int" />
+      <xs:element minOccurs="0" name="CustomProperty" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="DeviceId" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="NotificationMessage" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="UriKey" nillable="true" type="xs:string" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element xmlns:q54="http://services.assurant.com/ssi/OutboundCommunication/2016/05/24/" name="Notification" nillable="true" type="q54:Notification" />
+  <xs:element name="SendNotificationResponse">
+    <xs:complexType>
+      <xs:sequence />
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="RetrieveSmsAuthorizationStatuses">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element xmlns:q55="http://schemas.microsoft.com/2003/10/Serialization/Arrays" minOccurs="0" name="smsNumbers" nillable="true" type="q55:ArrayOfstring" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="RetrieveSmsAuthorizationStatusesResponse">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element xmlns:q56="http://services.assurant.com/ssi/OutboundCommunication/2016/05/24/" minOccurs="0" name="RetrieveSmsAuthorizationStatusesResult" nillable="true" type="q56:ArrayOfSmsAuthorizationStatus" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:complexType name="ArrayOfSmsAuthorizationStatus">
+    <xs:sequence>
+      <xs:element xmlns:q57="http://services.assurant.com/ssi/OutboundCommunication/2016/05/24/" minOccurs="0" maxOccurs="unbounded" name="SmsAuthorizationStatus" nillable="true" type="q57:SmsAuthorizationStatus" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element xmlns:q58="http://services.assurant.com/ssi/OutboundCommunication/2016/05/24/" name="ArrayOfSmsAuthorizationStatus" nillable="true" type="q58:ArrayOfSmsAuthorizationStatus" />
+  <xs:complexType name="SmsAuthorizationStatus">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="SmsAuthorized" nillable="true" type="xs:boolean" />
+      <xs:element minOccurs="0" name="SmsNumber" nillable="true" type="xs:string" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element xmlns:q59="http://services.assurant.com/ssi/OutboundCommunication/2016/05/24/" name="SmsAuthorizationStatus" nillable="true" type="q59:SmsAuthorizationStatus" />
+  <xs:element name="SendSmsAuthorizationMessage">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element xmlns:q60="http://services.assurant.com/ssi/OutboundCommunication/2016/05/24/" minOccurs="0" name="request" nillable="true" type="q60:SmsAuthorizationRequest" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:complexType name="SmsAuthorizationRequest">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="AcceptResponseMessage" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="AuthorizationMessage" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="DeclineResponseMessage" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="InvalidResponseMessage" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="RepositoryKey" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="SmsNumber" nillable="true" type="xs:string" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element xmlns:q61="http://services.assurant.com/ssi/OutboundCommunication/2016/05/24/" name="SmsAuthorizationRequest" nillable="true" type="q61:SmsAuthorizationRequest" />
+  <xs:element name="SendSmsAuthorizationMessageResponse">
+    <xs:complexType>
+      <xs:sequence />
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="SendExactTarget">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element xmlns:q62="http://services.assurant.com/ssi/OutboundCommunication/2016/05/24/" minOccurs="0" name="request" nillable="true" type="q62:ExactTargetRequest" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:complexType name="ExactTargetRequest">
+    <xs:sequence>
+      <xs:element xmlns:q63="http://schemas.datacontract.org/2004/07/Assurant.Integration.OutboundCommunication.Contracts" minOccurs="0" name="Attributes" nillable="true" type="q63:ArrayOfNameValue" />
+      <xs:element minOccurs="0" name="Email" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="ExactTargetPassword" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="ExactTargetUserName" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="FromEmail" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="FromName" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="TriggerKey" nillable="true" type="xs:string" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element xmlns:q64="http://services.assurant.com/ssi/OutboundCommunication/2016/05/24/" name="ExactTargetRequest" nillable="true" type="q64:ExactTargetRequest" />
+  <xs:element name="SendExactTargetResponse">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element xmlns:q65="http://services.assurant.com/ssi/OutboundCommunication/2016/05/24/" minOccurs="0" name="SendExactTargetResult" nillable="true" type="q65:ExactTargetResponse" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:complexType name="ExactTargetResponse">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="Id" type="ser:guid" />
+      <xs:element minOccurs="0" name="SendStatus" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="SendSuccessful" type="xs:boolean" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element xmlns:q66="http://services.assurant.com/ssi/OutboundCommunication/2016/05/24/" name="ExactTargetResponse" nillable="true" type="q66:ExactTargetResponse" />
+  <xs:element name="ResendExactTargetById">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" name="exactTargetId" type="ser:guid" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="ResendExactTargetByIdResponse">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element xmlns:q67="http://services.assurant.com/ssi/OutboundCommunication/2016/05/24/" minOccurs="0" name="ResendExactTargetByIdResult" nillable="true" type="q67:ExactTargetResponse" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="GetExactTargetById">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" name="id" type="ser:guid" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="GetExactTargetByIdResponse">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element xmlns:q68="http://schemas.datacontract.org/2004/07/Assurant.Integration.OutboundCommunication.Contracts" minOccurs="0" name="GetExactTargetByIdResult" nillable="true" type="q68:ExactTargetInfo" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+</xs:schema>

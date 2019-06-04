@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="utf-8" ?>
+
+<!-- ********************** THIS FILE HAS BEEN GENERATED FROM TEMPLATE SQLObject.cst (8/28/2007)********************** -->
+
+<SQL>
+  <LOAD>
+    <![CDATA[	
+			SELECT 
+				company_group_id,
+				nonbusiness_date,
+				created_by,
+				created_date,
+				modified_by,
+				modified_date,
+				nonbusiness_calendar_id
+			FROM elp_nonbusiness_calendar 
+			WHERE
+				nonbusiness_calendar_id = :nonbusiness_calendar_id
+		]]>
+  </LOAD>
+  <LOAD_LIST>
+    <![CDATA[	
+			SELECT 
+				company_group_id,
+				nonbusiness_date,
+				created_by,
+				created_date,
+				modified_by,
+				modified_date,
+				nonbusiness_calendar_id
+			FROM elp_nonbusiness_calendar 
+			WHERE
+				company_group_id = :company_group_id
+      ORDER BY nonbusiness_date DESC
+		]]>    
+  </LOAD_LIST>
+  <UPDATE>
+    <![CDATA[	
+			UPDATE elp_nonbusiness_calendar SET
+				company_group_id = :company_group_id,
+				nonbusiness_date = :nonbusiness_date,
+				modified_by = :modified_by
+			WHERE
+				nonbusiness_calendar_id = :nonbusiness_calendar_id
+		]]>
+  </UPDATE>
+  <INSERT>
+    INSERT INTO elp_nonbusiness_calendar
+    (
+    company_group_id,
+    nonbusiness_date,
+    created_by,
+    nonbusiness_calendar_id
+    )
+    VALUES
+    (
+    :company_group_id,
+    :nonbusiness_date,
+    :created_by,
+    :nonbusiness_calendar_id
+    )
+  </INSERT>
+  <DELETE>
+    DELETE FROM elp_nonbusiness_calendar
+    WHERE
+    nonbusiness_calendar_id = :nonbusiness_calendar_id
+  </DELETE>
+  <GetNonBusinessDaysCount>
+    <![CDATA[	
+    SELECT count(*) As NonBusiness_Day_Count
+    FROM ELP_NonBusiness_Calendar
+    WHERE Company_Group_ID = :company_group_id
+    AND NonBusiness_Date > sysdate
+    AND NonBusiness_Date <= (sysdate + :default_followup)
+		]]>    
+  </GetNonBusinessDaysCount>
+  <GetSameBusinessDaysCount>
+    <![CDATA[	
+    SELECT count(*) As SameBusiness_Date_Count
+    FROM ELP_NonBusiness_Calendar
+    WHERE Company_Group_ID = :company_group_id
+    AND NonBusiness_Date = :nonbusiness_date
+		]]>
+  </GetSameBusinessDaysCount>
+  <GET_NEXT_BUSINESS_DATE>
+    Select ELP_NonBusinessDays_Calendar.GetNextBusinessDate(:company_group_id,:default_followup) from dual
+  </GET_NEXT_BUSINESS_DATE>
+  <GetNonBusinessDateByCompanyGroupCode>
+    <![CDATA[	
+      select nbc.NONBUSINESS_DATE
+      from ELP_NONBUSINESS_CALENDAR nbc
+      inner join ELP_COMPANY_GROUP  cg on nbc.COMPANY_GROUP_ID = cg.COMPANY_GROUP_ID
+      where cg.code = :company_group_code
+        and NONBUSINESS_DATE >= :start_date
+        and NONBUSINESS_DATE <= :end_date
+      order by NONBUSINESS_DATE
+    ]]>
+  </GetNonBusinessDateByCompanyGroupCode>>
+</SQL>
+
+
+

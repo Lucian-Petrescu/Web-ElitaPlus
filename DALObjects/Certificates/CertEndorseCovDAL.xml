@@ -1,0 +1,123 @@
+<?xml version="1.0" encoding="utf-8" ?>
+
+<!-- ********************** THIS FILE HAS BEEN GENERATED FROM TEMPLATE SQLObject.cst (9/16/2005)********************** -->
+
+<SQL>
+	<LOAD>
+		<![CDATA[	
+			SELECT 
+				cert_endorse_id,
+				coverage_type_id,
+				begin_date_pre,
+				begin_date_post,
+				end_date_pre,
+				end_date_post,
+				created_by,
+				created_date,
+				modified_by,
+				modified_date,
+				cert_endorse_cov_id
+			FROM elp_cert_endorse_cov 
+			WHERE
+				cert_endorse_cov_id = :cert_endorse_cov_id
+		]]>
+	</LOAD>
+	<LOAD_LIST>	
+		<![CDATA[	
+			SELECT 
+				cert_endorse_id,
+				coverage_type_id,
+				begin_date_pre,
+				begin_date_post,
+				end_date_pre,
+				end_date_post,
+				created_by,
+				created_date,
+				modified_by,
+				modified_date,
+				cert_endorse_cov_id
+			FROM elp_cert_endorse_cov 
+			WHERE
+				cert_endorse_id = :cert_endorse_id
+		]]>	
+	</LOAD_LIST>
+	<LOAD_LIST_FOR_ENDORSEMENT>
+	        SELECT
+	            t.translation coverage_type_description,
+	            cec.begin_date_pre,
+				cec.begin_date_post,
+				cec.end_date_pre,
+				cec.end_date_post,
+				DateDiff(cec.begin_date_pre, cec.end_date_pre + 1, 'm') AS term_pre,
+				DateDiff(cec.begin_date_post, cec.end_date_post + 1, 'm') AS term_post
+			FROM elp_cert_endorse_cov cec,
+				elp_list l,
+				elp_list_item i,
+				elp_dict_item_translation t,
+				elp_language lang
+			WHERE cec.cert_endorse_id = :cert_endorse_id
+			AND i.list_id = l.list_id
+			AND	i.dict_item_id = t.dict_item_id
+			AND t.language_id = lang.language_id
+			AND lang.language_id = :language_id
+			AND l.code = 'CTYP'
+			AND i.list_item_id = cec.coverage_type_id
+	</LOAD_LIST_FOR_ENDORSEMENT>	
+	<UPDATE>
+		<![CDATA[	
+			UPDATE elp_cert_endorse_cov SET
+				cert_endorse_id = :cert_endorse_id,
+				coverage_type_id = :coverage_type_id,
+				begin_date_pre = :begin_date_pre,
+				begin_date_post = :begin_date_post,
+				end_date_pre = :end_date_pre,
+				end_date_post = :end_date_post,
+				modified_by = :modified_by
+			WHERE
+				cert_endorse_cov_id = :cert_endorse_cov_id
+		]]>
+	</UPDATE>
+	<INSERT>
+			INSERT INTO elp_cert_endorse_cov
+					(			
+				cert_endorse_id, 
+				coverage_type_id, 
+				begin_date_pre, 
+				begin_date_post, 
+				end_date_pre, 
+				end_date_post, 
+				created_by,
+				cert_endorse_cov_id
+					)
+			VALUES
+					(			
+				:cert_endorse_id, 
+				:coverage_type_id, 
+				:begin_date_pre, 
+				:begin_date_post, 
+				:end_date_pre, 
+				:end_date_post, 
+				:created_by,
+				:cert_endorse_cov_id
+					)
+	</INSERT>
+	<DELETE>
+			DELETE FROM elp_cert_endorse_cov
+			WHERE
+				cert_endorse_cov_id = :cert_endorse_cov_id
+	</DELETE>
+  <IS_CERT_ENDORSABLE>
+    <![CDATA[	
+  SELECT count(*) claim_count
+  FROM elp_cert_item i, elp_cert_item_coverage v, elp_claim m
+  WHERE   i.cert_id = :cert_id
+    and v.cert_item_id = i.cert_item_id
+	  and v.cert_item_coverage_id = m.cert_item_coverage_id
+	  and m.status_code <> 'C'
+	  and not (m.loss_date between :begin_date_post and :end_date_post)		
+     ]]>
+  </IS_CERT_ENDORSABLE>
+</SQL>
+
+
+

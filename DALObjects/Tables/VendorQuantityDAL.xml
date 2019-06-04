@@ -1,0 +1,106 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+
+<!-- ********************** THIS FILE HAS BEEN GENERATED FROM TEMPLATE SQLObject.cst (8/27/2012)********************** -->
+
+<SQL>
+  <LOAD>
+    <![CDATA[	
+			SELECT 
+				reference_id,
+				table_name,
+				vendor_sku,
+				vendor_sku_description,
+				quantity,
+				created_by,
+				modified_by,
+				created_date,
+				modified_date,
+				vendor_quantity_id,
+        price_list_detail_id
+			FROM elp_vendor_quantity 
+			WHERE
+				vendor_quantity_id = :vendor_quantity_id
+		]]>
+  </LOAD>
+  <LOAD_LIST>
+  </LOAD_LIST>
+  <UPDATE>
+    <![CDATA[	
+			UPDATE elp_vendor_quantity SET
+				reference_id = :reference_id,
+				table_name = :table_name,
+				vendor_sku = :vendor_sku,
+				vendor_sku_description = :vendor_sku_description,
+				quantity = :quantity,				
+				modified_by = :modified_by
+			WHERE
+				vendor_quantity_id = :vendor_quantity_id
+		]]>
+  </UPDATE>
+  <INSERT>
+    <![CDATA[	
+		INSERT INTO elp_vendor_quantity
+		(
+		reference_id,
+		table_name,
+		vendor_sku,
+		vendor_sku_description,
+		quantity,
+		created_by,
+		vendor_quantity_id,
+    price_list_detail_id
+		)
+		VALUES
+		(
+		:reference_id,
+		:table_name,
+		:vendor_sku,
+		:vendor_sku_description,
+		:quantity,
+		:created_by,
+		:vendor_quantity_id,
+    :price_list_detail_id
+		)
+		]]>
+	</INSERT>
+  <INSERT_QUANTITY_FOR_SERVICE_CENTER>
+    <![CDATA[	
+      INSERT INTO elp_vendor_quantity
+      (
+        VENDOR_QUANTITY_ID,
+        REFERENCE_ID,
+        TABLE_NAME,
+        VENDOR_SKU,
+        VENDOR_SKU_DESCRIPTION,
+        QUANTITY,
+        CREATED_BY,
+        CREATED_DATE,
+        PRICE_LIST_DETAIL_ID
+      )
+      values
+      (
+        :VENDOR_QUANTITY_ID,
+        :REFERENCE_ID,
+        :TABLE_NAME,
+        :VENDOR_SKU,
+        :VENDOR_SKU_DESCRIPTION,
+        :QUANTITY,
+        :CREATED_BY,
+        :CREATED_DATE,
+        :PRICE_LIST_DETAIL_ID
+      )
+    ]]>
+  </INSERT_QUANTITY_FOR_SERVICE_CENTER>
+  <DELETE>
+		<![CDATA[
+		DELETE FROM elp_vendor_quantity
+		WHERE
+		vendor_quantity_id = :vendor_quantity_id
+		]]>
+  </DELETE>
+  <LOAD_SERVICE_CENTER_QUANTITY_LIST>
+    <![CDATA[elita.ELP_PRICE_LIST_UTILITY.Load_Service_Center_Quantity]]>
+  </LOAD_SERVICE_CENTER_QUANTITY_LIST>
+</SQL>
+
+

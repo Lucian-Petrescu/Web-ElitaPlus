@@ -1,0 +1,46 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<Expression xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+            xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+            xmlns="http://Assurant.com/Elita/2016/Expression.xsd"
+            xsi:type="SwitchExpression">
+  <VariableName>LossType</VariableName>
+  <Case>
+    <CaseValue>T</CaseValue>
+    <Expression xsi:type="ComplexExpression">
+      <Operation>Percentage</Operation>
+      <Expression xsi:type="ConstantToken">
+        <Value>50</Value>
+      </Expression>
+      <Expression xsi:type="VariableToken">
+        <VariableName>DeductibleBasePrice</VariableName>
+      </Expression>
+    </Expression>
+  </Case>
+  <Case>
+    <CaseValue>P</CaseValue>
+    <Expression xsi:type="ComplexExpression">
+      <Operation>Minimum</Operation>
+      <Expression xsi:type="ComplexExpression">
+        <Operation>Percentage</Operation>
+        <Expression xsi:type="ConstantToken">
+          <Value>30</Value>
+        </Expression>
+        <Expression xsi:type="VariableToken">
+          <VariableName>AuthorizedAmount</VariableName>
+        </Expression>
+      </Expression>
+      <Expression xsi:type="ComplexExpression">
+        <Operation>Percentage</Operation>
+        <Expression xsi:type="ConstantToken">
+          <Value>10</Value>
+        </Expression>
+        <Expression xsi:type="VariableToken">
+          <VariableName>DeductibleBasePrice</VariableName>
+        </Expression>
+      </Expression>
+    </Expression>
+  </Case>
+  <Otherwise xsi:type="ConstantToken">
+    <Value>0</Value>
+  </Otherwise>
+</Expression>

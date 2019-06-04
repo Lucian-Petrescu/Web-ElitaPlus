@@ -1,0 +1,85 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+
+<SQL>
+  <LOAD>
+    <![CDATA[	
+			SELECT 
+				stage_end_id,
+				stage_id,
+        end_status_id,
+				created_date,
+				created_by,
+				modified_date,
+				modified_by
+			FROM 
+        elp_stage_end 
+			WHERE
+				stage_end_id = :stage_end_id
+		]]>
+  </LOAD>
+  <LOAD_LIST>
+    <![CDATA[	
+			SELECT 
+				se.stage_end_id,
+				se.stage_id,
+				se.end_status_id,
+        GetDescriptionFromListItem(csg.list_item_id, :language_id) AS END_STATUS_DESC,
+        se.created_date,
+				se.created_by,
+				se.modified_date,
+				se.modified_by
+			FROM 
+        elp_stage_end se,
+        elp_claim_status_by_group csg 
+			WHERE
+        se.end_status_id = csg.claim_status_by_group_id 
+				AND se.stage_id = :stage_id
+		]]>
+  </LOAD_LIST>
+  <UPDATE>
+    <![CDATA[
+      elp_tbl_stage_end.modify
+		]]>
+  </UPDATE>
+  <INSERT>
+    <![CDATA[
+      elp_tbl_stage_end.add
+		]]>
+  </INSERT>
+  <DELETE>
+    <![CDATA[
+      elp_tbl_stage_end.del
+		]]>
+  </DELETE>
+  <SEARCH_CLAIM_STAGE_SELECTED>
+    <![CDATA[
+      SELECT 
+        EIQL.issue_question_id ID, 
+        EI.description || ' - ' || ESQ.description DESCRIPTION
+      FROM 
+        ELP_ISSUE_QUESTION_LIST EIQL
+      INNER JOIN ELP_ISSUE_QUESTION EIQ ON
+      EIQL.issue_question_id = EIQ.issue_question_id
+      INNER JOIN ELP_ISSUE EI ON
+      EIQ.issue_id = EI.issue_id
+      INNER JOIN ELP_SOFT_QUESTION ESQ
+      ON EIQ.soft_question_id = ESQ.soft_question_id 
+      WHERE  
+        EIQL.question_list_id = :question_list_id
+        AND (SELECT SYSDATE FROM DUAL) BETWEEN EIQL.EFFECTIVE AND EIQL.EXPIRATION
+      ORDER BY 
+        EIQL.display_order
+		]]>
+  </SEARCH_CLAIM_STAGE_SELECTED>
+  <IS_CHILD>
+    <![CDATA[
+      SELECT
+        issue_question_list_id
+      FROM 
+        elita.elp_issue_question_list
+      WHERE
+        issue_question_id = :issue_question_id AND
+        question_list_id = :question_list_id 
+    ]]>
+  </IS_CHILD>
+</SQL>

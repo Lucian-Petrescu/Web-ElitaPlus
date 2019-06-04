@@ -1,0 +1,755 @@
+/* Style Sheet for the Elita+ System */
+
+BODY
+{
+	font-family: Verdana,Arial, Helvetica, Verdana, Helvetica, sans-serif;
+	font-size: 11px;
+	background-repeat: no-repeat;
+}
+
+TABLE
+{
+	font-size: 11px;
+	background-repeat: no-repeat;
+}
+.popupMenu
+{
+	position: absolute;
+	background-color: #C0C0C0;
+	height: auto;
+	width: 163px;
+	border: thin none #C0C0C0;
+	overflow: auto;
+	float: left;
+	
+}
+.popupHover
+{
+	background-repeat:repeat-x;
+	background-position:left top;
+	background-color:#F5F7F8;
+	
+}
+.FLATBUTTON2
+{
+	border-right: #999999 1px solid;
+	border-top: #999999 1px solid;
+	border-left: #999999 1px solid;
+	border-bottom: #999999 1px solid;
+	text-decoration: none;
+	background-color: #dee3e7;
+	font-weight: normal;
+	height: 20px;
+	background-repeat: no-repeat;
+	cursor: hand;
+	width:auto;
+	empty-cells: hide; 
+}
+.FLATBUTTON2HOVER
+{
+	border-right: #999999 1px solid;
+	border-top: #999999 1px solid;
+	border-left: #999999 1px solid;
+	border-bottom: #999999 1px solid;
+	text-decoration: none;
+	color:#F0F8FF;  
+	background-color:Gray;
+	font-weight: normal;
+	height: 20px;
+	background-repeat: no-repeat;
+	cursor: hand;
+	width:auto;
+	empty-cells: hide; 	
+}
+
+/* DATA GRID STUFF */
+
+.DATAGRID
+{
+	background-color: #DEE3E7;
+	border: solid 1px #999999;
+}
+
+.DATAGRID TD, TH
+{
+	border: 1px solid #999; /*   white-space: nowrap; */
+}
+
+.DATAGRID TR.ROW TD
+{
+	background-color: #fff;
+	text-align: center;
+}
+.DATAGRID TR.ALTROW TD
+{
+	background-color: #F1F1F1;
+	text-align: center;
+}
+.DATAGRID TR.EDITROW TD
+{
+	background-color: #F0F8FF; /*  This is the Hex for Alice Blue! */
+	white-space: nowrap;
+	text-align: center;
+}
+
+.DATAGRID TR.EDITROW_WRAP TD
+{
+	background-color: #F0F8FF;
+	text-align:center;
+	white-space:normal;
+
+}
+
+.DATAGRID TR.SELECTED TD
+{
+	background-color: #B0C4DE; /* This is the Hex for LightSteelBlue! */
+	white-space: nowrap;
+	text-align: center;
+}
+
+.DATAGRID TR.HEADER TH
+{
+	/*color:#12135B;*/
+	color: #000000;
+	font-weight: normal;
+}
+
+.DATAGRID TR.PAGER TD
+{
+	color: #444488; /*  This is the Hex for LavenderBlush! */
+	background-color: #DEE3E7;
+	border: none;
+}
+
+.DATAGRID_NOWRAP TD
+{
+	border: 1px solid #999;
+	white-space: nowrap;
+}
+
+.GRD_PAGER.SELECTED_PAGE
+{
+	font-size: 13px;
+	color: #3333BB;
+	border: none;
+}
+
+.SORTARROW
+{
+	margin-left: 5px;
+}
+/* END DATA GRID STUFF */
+
+.HOMETITLETEXT
+{
+	font-size: 14px;
+	font-weight: bold;
+}
+
+BUTTON
+{
+	text-decoration: none;
+	border: solid 1px #999999;
+	background-color: #cccccc;
+}
+
+A
+{
+	color: #000000;
+	text-decoration: none;
+}
+
+A:hover
+{
+	color: navy;
+	text-decoration: none;
+}
+
+TEXTAREA
+{
+	text-decoration: none;
+	font-family: Verdana,Arial, Helvetica, Verdana, Helvetica, sans-serif;
+	font-size: 11px;
+}
+
+LABEL
+{
+	text-decoration: none;
+	font-family: Verdana,Arial, Helvetica, Verdana, Helvetica, sans-serif;
+	font-size: 11px;
+	vertical-align: baseline;
+}
+
+.StdTextOtherCtls
+{
+	text-decoration: none;
+	font-family: Verdana,Arial, Helvetica, Verdana, Helvetica, sans-serif;
+	font-size: 11px;
+}
+
+INPUT
+{
+	text-decoration: none;
+	font-family: Verdana,Arial, Helvetica, Verdana, Helvetica, sans-serif;
+	font-size: 11px;
+}
+
+
+INPUT.FLATTEXT
+{
+	text-decoration: none;
+}
+
+INPUT.FLATTEXTBOX
+{
+	border: 1px solid #999999; /*cccccc*/
+	text-decoration: none;
+	background-color: white;
+}
+
+INPUT.FLATTEXTBOX_CURRENCY
+{
+	border: 1px solid #999999; /*cccccc*/
+	text-decoration: none;
+	background-color: white;
+	text-align: right;
+}
+
+INPUT.FLATNUMERICTEXTBOX
+{
+	border: 1px solid #999999; /*cccccc*/
+	text-decoration: none;
+	background-color: white;
+	text-align: right;
+}
+
+.FLATTEXTBOX_TAB
+{
+	border: 1px solid #999999;
+	text-decoration: none;
+}
+
+.HYPERLINK
+{
+	border: 1px none #999999;
+	text-decoration: underline;
+	color: #0000FF;
+}
+
+INPUT.FLATBUTTON
+{
+	border-right: #999999 1px solid;
+	border-top: #999999 1px solid;
+	border-left: #999999 1px solid;
+	border-bottom: #999999 1px solid;
+	text-decoration: none;
+	background-color: #dee3e7;
+	font-weight: normal;
+	height: 20px;
+	background-repeat: no-repeat;
+	cursor: hand;
+}
+
+
+
+.HOMEFLATBUTTON
+{
+	border-right: #999999 1px solid;
+	border-top: #999999 1px solid;
+	border-left: #999999 1px solid;
+	border-bottom: #999999 1px solid;
+	text-decoration: none;
+}
+
+SELECT
+{
+	border: 1px solid #cccccc;
+	text-decoration: none;
+	font-family: Verdana,Arial, Helvetica, Verdana, Helvetica, sans-serif;
+	font-size: 11px;
+}
+
+.ButtonLinkDisabledLink
+{
+	text-decoration: none;
+	color: Red;
+	font-size: xx-large;
+}
+
+.footer
+{
+	font-weight: normal;
+	font-size: 10px;
+	color: #333333;
+	text-decoration: none;
+}
+
+.TABLETITLE
+{
+	border-right: black 1px solid;
+	border-top: black 1px solid;
+	margin: 5px;
+	border-left: black 1px solid;
+	border-bottom: black 1px solid;
+	width: 98%;
+	background-color: #d5d6e4;
+}
+
+.TITLELABEL
+{
+	font-weight: normal;
+	font-size: 12px;
+}
+
+.TITLELABELTEXT
+{
+	font-weight: normal;
+	color: #12135B;
+	font-size: 12px;
+}
+
+.TABLEOUTER
+{
+	border: black 1px solid;
+	margin: 5px;
+	width: 98%;
+	background-color: #d5d6e4;
+	padding: 7px;
+	vertical-align: top;
+}
+
+.TABLEOUTER TD
+{
+	vertical-align: top;
+}
+.TABLEMAIN
+{
+    border: #999999 1px solid;
+    width: 100%;
+    vertical-align: top;
+}
+
+.TABLEMAIN TD
+{
+	vertical-align: top;
+}
+
+.TABLEMAIN TD.CenteredTD
+{
+	text-align: center;
+}
+
+.TABLEMAIN TD.Header
+{
+	font-weight:normal;
+	font-size:13px;
+}
+
+.TABLEMAIN TD.LABELCOLUMN
+{
+	text-align: right;
+	width: 1%;
+	white-space: nowrap;
+	padding-right: 10px;
+}
+
+.TABLEMAIN TD.BLANKROW
+{
+	height: 10px;
+}
+
+.TABLEMAIN TD.BORDERED
+{
+	text-align: center;
+	border: 1px solid #999;
+	padding-top: 5px;
+	padding-bottom: 5px;
+}
+
+.TABLESEARCH
+{
+	width: 98%;
+	background-color: #f1f1f1;
+	border: #999999 1px solid;
+	height: 76px;
+}
+
+
+/* LAYOUT CLASSES */
+
+.TABLEMAIN_MASTER
+{
+    border: #999999 1px solid;
+    width: 100%;
+    vertical-align: top;
+    background-color:#fef9ea;
+}
+
+.TABLEMAIN_MASTER TD
+{
+	text-align: left;
+	vertical-align: bottom;
+}
+
+.TABLEMAIN_MASTER TD.CenteredTD
+{
+	text-align: center;
+}
+
+.TABLEMAIN_MASTER TD.Header
+{
+	font-weight:normal;
+	font-size:12px;
+}
+
+.TABLEMAIN_MASTER TD.LABELCOLUMN
+{
+	text-align: right;
+	width: 1%;
+	white-space: nowrap;
+	padding-right: 10px;
+	vertical-align: middle;
+}
+
+.TABLEMAIN_MASTER TD.BLANKROW
+{
+	height: 10px;
+}
+
+.TABLEMAIN_MASTER TD.BORDERED
+{
+	text-align: center;
+	border: 1px solid #999;
+	padding-top: 5px;
+	padding-bottom: 5px;
+}
+
+
+#BUTTONDIV
+{
+	/*position: absolute;*/
+	position: relative;
+	padding-bottom: 5px;
+	height: 25;
+	bottom: 1px; /*bottom: 10px;*/ /*  top:90%; */
+}
+
+/*END LAYOUT CLASSES */
+
+/* BEGIN TABS */
+
+
+.TABS
+{
+	border-top: none;
+	margin:5px;
+}
+
+/*
+.TABS .ajax__tab_header
+{
+	font-weight: normal;
+	background-color: #f1f1f1;
+	margin-right: 5px;
+}
+*/
+
+.TABS .ajax__tab_header
+{
+	font-weight: normal;
+	margin-right: 5px;
+}
+
+
+.TABS .ajax__tab_tab
+{
+	padding-top: 2px;
+	padding-bottom: 0px;
+	padding-left: 7px;
+	padding-right: 7px;
+	height: 15px;
+}
+
+.TABS .ajax__tab_inner
+{
+	border: none;
+}
+
+.TABS .ajax__tab_outer
+{
+	border: solid 1px #000000;
+}
+
+
+.TABS .ajax__tab_hover
+{
+	background: #faecc2;
+}
+
+
+.TABS .ajax__tab_body
+{
+	padding-top: 10px;
+	padding-bottom: 10px;
+	background-color: #d5d6e4;
+	border: solid 1px #000000;
+	border-top: none;
+}
+
+.TABS .ajax__tab_active
+{
+	border: solid 1px black;
+	border-bottom: none;
+	background-color: #d5d6e4;
+	padding-bottom: 0px;
+	padding-top: 2px;
+	padding-left: 7px;
+	padding-right: 7px;
+}
+
+.TABS .ajax__tab_active .ajax__tab_body
+{
+	padding-top: 10px;
+	padding-bottom: 10px;
+	background-color: #d5d6e4;
+	border: solid 1px #000000;
+	border-top: none;
+	border-bottom: none;
+}
+
+.TABS .ajax__tab_active .ajax__tab_inner
+{
+	background-color: #d5d6e4;
+	border: none;
+}
+.TABS .ajax__tab_active .ajax__tab_outer
+{
+	background-color: #d5d6e4;
+	border: none;
+}
+
+.TABS .ajax__tab_active .ajax__tab_hover
+{
+	background: #faecc2;
+}
+
+
+.TABS .ajax__tab_panel
+{ height:95%}
+
+/* END TABS */
+
+
+/*button specific classes */
+.BUTTONSTYLE_BACK
+{
+	background-image: url(Navigation/images/icons/back_icon.gif);
+	width: 130px;
+}
+
+.BUTTONSTYLE_SAVE
+{
+	background-image: url(Navigation/images/icons/save_icon.gif);
+	width: 130px;
+}
+
+.BUTTONSTYLE_NEW
+{
+	background-image: url(Navigation/images/icons/add_icon.gif);
+	width: 130px;
+}
+.BUTTONSTYLE_UNDO
+{
+	background-image: url(Navigation/images/icons/cancel_icon.gif);
+	width: 130px;
+}
+.BUTTONSTYLE_SEARCH
+{
+	background-image: url(Navigation/images/icons/search_icon.gif);
+	width: 130px;
+}
+.BUTTONSTYLE_CLEAR
+{
+	background-image: url(Navigation/images/icons/clear_icon.gif);
+	width: 130px;
+}
+.LONGTEXTIMGBUTTON
+{
+	padding-left: 18px;
+	text-align: left;
+}
+
+/*END button specific classes */
+
+/* Ajax classes */
+
+.autocomplete_completionListElement
+{
+	visibility: hidden;
+	margin: 0px !important;
+	background-color: #FFF;
+	color: windowtext;
+	border: buttonshadow;
+	border-width: 1px;
+	border-style: solid;
+	cursor: 'default';
+	overflow: auto;
+	height: 200px;
+	text-align: left;
+	list-style-type: none;
+}
+
+/* End Ajax classes */
+
+/* Text layout*/
+TD.TD_LABEL
+{
+	text-align: right;
+	white-space: nowrap;
+	vertical-align: middle;
+}
+/* End Text layout*/
+
+/* Side Menu Navigation */
+
+.SideNav
+{
+	font-size: 13px;
+	width: 100%;
+}
+.SideNav td
+{
+	margin: 0;
+	padding: 0;
+	border-bottom: 1px solid white;
+	width: 100%;
+	white-space: nowrap;
+	height: 20px;
+}
+.SideNav a
+{
+	padding: 0 0 0 12px;
+	color: #2a2a2a;
+	display: block;
+	text-decoration: none !important;
+	width: 100%;
+	height: auto;
+}
+.SideNav a:hover
+{
+	color: #0000FF;
+	background-color: #DCDCDC;
+}
+/* END Side Menu Navigation */
+
+/* TOP Menu Navigation */
+
+/*  OLD OLD MENU 
+.TopMenu
+{
+	color:#000066;
+	}
+
+.TopMenu td
+{
+	 color:#fff;
+	 }
+
+.TopMenuSelected
+{
+	font-weight:bold;
+	color:#fff;
+	background-color:#669999;
+	}
+.TopMenuFooter
+{
+	 background-color:#fff;
+	 }
+	
+  */
+
+/*  This was the last MENU */
+/* Menu CSS Moved - REQ 860 */
+/*
+.MenuLink
+{
+	background: #999999 url(navigation/images/tab_middle_back4.gif) repeat;
+	font-family: Verdana,Arial, Helvetica, Verdana, Helvetica, sans-serif;
+	font-size: 12px;
+}
+.TopMenuLink
+{
+	border: none;
+	border-left: solid 1px #fff;
+	padding-left: 4px;
+	margin-right: 10px;
+}
+.SubMenuLink
+{
+	border: none;
+	background: #999999 url(navigation/images/tab_middle_back4.gif) repeat;
+}
+
+/*  this style also modified for enabling / disabling in the navigation_menu.ascx file */
+/*
+.SubMenuLink A
+{
+	color: #fff;
+}
+*/
+/*  this style also modified for enabling / disabling in the navigation_menu.ascx file */
+/*
+.SubMenuLink A:Hover
+{
+	color: #fff;
+}
+
+.SubMenuLink2
+{
+	margin-left: -10;
+	margin-top: 5px;
+}
+.SubMenuStyle
+{
+	border: #ededed ridge 1px;
+}
+
+.MenuItemStyle
+{
+	background: #999999 url(navigation/images/tab_middle_back4.gif) repeat;
+	border-bottom: 1px solid #fff;
+	font-size: 11px;
+	padding-top: 5px;
+	padding-bottom: 4px;
+	padding-left: 3px;
+	padding-right: 8px;
+}
+
+.MenuStyleHover
+{
+	border-bottom: 1px inset #333;
+	background-color:#cdcdcd;
+	background-image:none;
+}
+*/
+
+/*Modal Popup*/
+
+.modalBackground {
+	background-color:Gray;
+	filter:alpha(opacity=70);
+	opacity:0.7;
+}
+
+.modalPopup {
+	background-color:#ffffdd;
+	border-width:3px;
+	border-style:solid;
+	border-color:Gray;
+	padding:3px;
+	width:250px;
+}
+
+.modalPopup p {
+    padding: 5px;
+}

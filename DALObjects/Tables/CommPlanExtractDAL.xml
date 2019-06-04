@@ -1,0 +1,156 @@
+<?xml version="1.0" encoding="utf-8" ?>
+
+<!-- ********************** THIS FILE HAS BEEN GENERATED FROM TEMPLATE SQLObject.cst (2/26/2018)********************** -->
+
+<SQL>
+	<LOAD>
+		<![CDATA[	
+			SELECT 
+				commission_plan_id,
+				comm_extract_package_id,
+				sequence_number,
+				effective_date,
+				expiration_date,
+				comm_title_xcd,
+				cycle_frequency_xcd,
+				cycle_cut_off_day,
+				cycle_run_day,
+				amount_source_xcd,
+				commission_percentage,
+				commission_amount,
+				created_by,
+				created_date,
+				modified_by,
+				modified_date,
+				cycle_cut_off_source_xcd,
+				code,
+				description,
+				comm_at_rate_xcd,
+				comm_plan_extract_id
+			FROM elita.elp_comm_plan_extract 
+			WHERE
+				comm_plan_extract_id = :comm_plan_extract_id
+		]]>
+	</LOAD>
+	<LOAD_LIST>
+    <![CDATA[	  
+    select
+    cpe.comm_plan_extract_id,
+    cpe.commission_plan_id,
+    cpe.comm_extract_package_id as extract_type_id,
+    epl.code                as extract_type,
+    cpe.sequence_number,
+    cpe.effective_date ,
+    cpe.expiration_date,
+    cpe.comm_title_xcd,
+    es.cycle_frequency_xcd,
+    es.cycle_cut_off_date,
+    es.cycle_run_date,
+    cpe.amount_source_xcd,
+    cpe.commission_percentage,
+    cpe.commission_amount,
+    cpe.created_by,
+    cpe.created_date,
+    cpe.modified_by,
+    cpe.modified_date,
+    es.cycle_cut_off_source_xcd,
+    cpe.code,
+    cpe.description,
+    comm_at_rate_xcd
+    from elita.elp_comm_plan_extract cpe
+    join elita.elp_comm_extract_package_list epl on epl.comm_extract_package_id = cpe.comm_extract_package_id
+    left join elita.elp_comm_plan_extract_schedule es on es.comm_plan_extract_id = cpe.comm_plan_extract_id
+    where cpe.commission_plan_id = :commission_plan_id
+    and (es.cycle_run_date is null or
+         (es.cycle_run_date) = (select cycle_run_date
+    from
+    (select cycle_run_date
+    from ELITA.elp_comm_plan_extract_schedule es
+    where cycle_run_date > sysdate
+    and comm_plan_extract_id = es.comm_plan_extract_id
+    order by es.cycle_run_date asc)
+    where rownum =1)) 
+    		]]>
+  </LOAD_LIST>	
+	<UPDATE>
+		<![CDATA[	
+			UPDATE elita.elp_comm_plan_extract SET
+				commission_plan_id = :commission_plan_id,
+				comm_extract_package_id = :comm_extract_package_id,
+				sequence_number = :sequence_number,
+				effective_date = :effective_date,
+				expiration_date = :expiration_date,
+				comm_title_xcd = :comm_title_xcd,
+				cycle_frequency_xcd = :cycle_frequency_xcd,
+				cycle_cut_off_day = :cycle_cut_off_day,
+				cycle_run_day = :cycle_run_day,
+				amount_source_xcd = :amount_source_xcd,
+				commission_percentage = :commission_percentage,
+				commission_amount = :commission_amount,
+				cycle_cut_off_source_xcd = :cycle_cut_off_source_xcd,
+				code = :code,
+				description = :description,
+				comm_at_rate_xcd = :comm_at_rate_xcd,
+				modified_by = :modified_by
+			WHERE
+				comm_plan_extract_id = :comm_plan_extract_id
+		]]>
+	</UPDATE>
+	<INSERT>
+    INSERT INTO elita.elp_comm_plan_extract
+    (
+    commission_plan_id,
+    comm_extract_package_id,
+    sequence_number,
+    effective_date,
+    expiration_date,
+    comm_title_xcd,
+    cycle_frequency_xcd,
+    cycle_cut_off_day,
+    cycle_run_day,
+    amount_source_xcd,
+    commission_percentage,
+    commission_amount,
+    cycle_cut_off_source_xcd,
+    code,
+    description,
+    comm_at_rate_xcd,
+    created_by,
+    comm_plan_extract_id
+    )
+    VALUES
+    (
+    :commission_plan_id,
+    :comm_extract_package_id ,
+    :sequence_number,
+    :effective_date,
+    :expiration_date,
+    :comm_title_xcd,
+    :cycle_frequency_xcd,
+    :cycle_cut_off_day,
+    :cycle_run_day,
+    :amount_source_xcd,
+    :commission_percentage,
+    :commission_amount,
+    :cycle_cut_off_source_xcd,
+    :code,
+    :description,
+    :comm_at_rate_xcd,
+    :created_by,
+    :comm_plan_extract_id
+    )
+  </INSERT>
+	<DELETE>
+			DELETE FROM elita.elp_comm_plan_extract
+			WHERE
+				comm_plan_extract_id = :comm_plan_extract_id
+	</DELETE>
+<CODE_UNIQUE>
+  select count(cpe.code) 
+  from elita.elp_comm_plan_extract cpe
+  where commission_plan_id = :commission_plan_id
+  and cpe.code = :code
+</CODE_UNIQUE>
+</SQL> 
+
+

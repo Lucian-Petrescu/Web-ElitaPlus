@@ -1,0 +1,33 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+
+<!-- ********************** THIS FILE HAS BEEN GENERATED FROM TEMPLATE SQLObject.cst (12/20/2012)********************** -->
+
+<SQL>
+  <LOAD>
+    <![CDATA[	
+      elp_event.LoadEventConfig
+		]]>
+  </LOAD>
+  <LOAD_LIST>
+    <![CDATA[	
+      elp_event.LoadEventConfigList
+    ]]>
+  </LOAD_LIST>
+  <UPDATE>
+    <![CDATA[	
+      elp_event.ModifyEventConfig
+		]]>
+  </UPDATE>
+  <INSERT>
+    <![CDATA[	
+      elp_event.AddEventConfig
+		]]>
+  </INSERT>
+  <DELETE>
+    <![CDATA[	
+      elp_event.DeleteEventConfig
+		]]>
+  </DELETE>
+</SQL>
+
+

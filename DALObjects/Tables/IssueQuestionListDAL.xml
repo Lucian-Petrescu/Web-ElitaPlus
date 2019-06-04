@@ -1,0 +1,182 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+
+<!-- ********************** THIS FILE HAS BEEN GENERATED FROM TEMPLATE SQLObject.cst (4/27/2012)********************** -->
+
+<SQL>
+  <LOAD>
+    <![CDATA[	
+			SELECT 
+				question_list_id,
+				issue_question_id,
+        display_order,
+				effective,
+				expiration,
+				created_date,
+				created_by,
+				modified_date,
+				modified_by,
+				issue_question_list_id
+			FROM 
+        elp_issue_question_list 
+			WHERE
+				issue_question_list_id = :issue_question_list_id
+		]]>
+  </LOAD>
+  <LOAD_LIST>
+    <![CDATA[	
+			SELECT 
+				question_list_id,
+				issue_question_id,
+				display_order,
+        effective,
+				expiration,
+				created_date,
+				created_by,
+				modified_date,
+				modified_by,
+				issue_question_list_id
+			FROM 
+        elp_issue_question_list 
+			WHERE
+				question_list_id = :question_list_id
+		]]>
+  </LOAD_LIST>
+  <UPDATE>
+    <![CDATA[	
+			UPDATE elp_issue_question_list SET
+				question_list_id = :question_list_id,
+				issue_question_id = :issue_question_id,
+        display_order = :display_order,
+				effective = :effective,
+				expiration = :expiration,
+				modified_by = :modified_by
+			WHERE
+				issue_question_list_id = :issue_question_list_id
+		]]>
+  </UPDATE>
+  <INSERT>
+    <![CDATA[
+    INSERT INTO elp_issue_question_list
+    (
+    question_list_id,
+    issue_question_id,
+    display_order,
+    effective,
+    expiration,
+    created_by,
+    issue_question_list_id
+    )
+    VALUES
+    (
+    :question_list_id,
+    :issue_question_id,
+    :display_order,
+    :effective,
+    :expiration,
+    :created_by,
+    :issue_question_list_id
+    )
+		]]>    
+  </INSERT>
+  <DELETE>
+  <![CDATA[
+    DELETE FROM elp_issue_question_list
+    WHERE
+    issue_question_list_id = :issue_question_list_id
+		]]>    
+  </DELETE>
+  <GetSelectedDealerList>
+  <![CDATA[   
+    SELECT
+      LTRIM(RTRIM(DEALER_NAME)) DESCRIPTION,
+      DEALER_ID ID
+    FROM 
+      ELP_DEALER      
+		]]>
+  </GetSelectedDealerList>
+  <SEARCH_Question_List_Selected>
+    <![CDATA[
+      SELECT 
+        EIQL.issue_question_id ID, 
+        EI.description || ' - ' || ESQ.description DESCRIPTION
+      FROM 
+        ELP_ISSUE_QUESTION_LIST EIQL
+      INNER JOIN ELP_ISSUE_QUESTION EIQ ON
+      EIQL.issue_question_id = EIQ.issue_question_id
+      INNER JOIN ELP_ISSUE EI ON
+      EIQ.issue_id = EI.issue_id
+      INNER JOIN ELP_SOFT_QUESTION ESQ
+      ON EIQ.soft_question_id = ESQ.soft_question_id 
+      WHERE  
+        EIQL.question_list_id = :question_list_id
+        AND (SELECT SYSDATE FROM DUAL) BETWEEN EIQL.EFFECTIVE AND EIQL.EXPIRATION
+      ORDER BY 
+        EIQL.display_order
+		]]>
+  </SEARCH_Question_List_Selected>
+  <ISSUE_QUESTION_EXPIRATION>
+    <![CDATA[
+      SELECT
+        EXPIRATION
+      FROM
+        ELITA.ELP_ISSUE_QUESTION  
+      WHERE 
+        ISSUE_QUESTION_ID=:ISSUE_QUESTION_ID
+    ]]>
+  </ISSUE_QUESTION_EXPIRATION>
+  <QUESTION_LIST>
+    <![CDATA[
+      SELECT 
+        ISSUE_QUESTION_ID 
+      FROM 
+        ELITA.ELP_ISSUE_QUESTION_LIST 
+      WHERE 
+        QUESTION_LIST_ID=:QUESTION_LIST_ID
+        AND EXPIRATION > SYSDATE
+    ]]>
+  </QUESTION_LIST>
+  <QUESTION_IN_LIST>
+    <![CDATA[
+      SELECT 
+        SOFT_QUESTION_ID 
+      FROM 
+        ELITA.ELP_ISSUE_QUESTION 
+      WHERE 
+        ISSUE_ID=:ISSUE_ID
+        AND EXPIRATION > SYSDATE
+    ]]>
+  </QUESTION_IN_LIST>
+  <DEALER_LIST>
+    <![CDATA[
+      SELECT
+	      DEALER_ID ID
+      FROM
+	      ELITA.ELP_DEALER
+      WHERE
+	      QUESTION_LIST_CODE = :QUESTION_LIST_CODE
+    ]]>   
+  </DEALER_LIST>
+  <IS_CHILD>
+    <![CDATA[
+      SELECT
+        issue_question_list_id
+      FROM 
+        elita.elp_issue_question_list
+      WHERE
+        issue_question_id = :issue_question_id AND
+        question_list_id = :question_list_id 
+    ]]>
+  </IS_CHILD>
+  <SAVE_DEALER_LIST>
+    <![CDATA[
+      UPDATE
+        ELITA.ELP_DEALER
+      SET 
+        QUESTION_LIST_CODE=:QUESTION_LIST_CODE
+      WHERE
+        DEALER_ID = :DEALER_ID
+    ]]>
+  </SAVE_DEALER_LIST>
+</SQL>
+
+

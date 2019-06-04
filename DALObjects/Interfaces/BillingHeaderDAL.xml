@@ -1,0 +1,132 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+
+<!-- ********************** THIS FILE HAS BEEN GENERATED FROM TEMPLATE SQLObject.cst (10/20/2008)********************** -->
+
+<SQL>
+  <LOAD>
+    <![CDATA[	
+			SELECT 
+        billing_header_id,
+				dealer_id,
+				date_file_sent,
+				filename,
+				total_billed_amt,
+				status,
+				created_by,
+				created_date,
+				modified_by,
+				modified_date,
+				reference_number,
+        display_to_user
+        FROM elp_billing_header 
+			WHERE
+				billing_header_id = :billing_header_id
+		]]>
+  </LOAD>
+  <LOAD_LIST>
+    SELECT
+    bh.billing_header_id,
+    bh.dealer_id,
+    d.dealer,
+    d.dealer_name,
+    d.company_id,
+    bh.date_file_sent,
+    bh.filename,
+    bh.total_billed_amt,
+    bh.status,
+    bh.created_by,
+    bh.created_date,
+    bh.modified_by,
+    bh.modified_date,
+    bh.reference_number,
+    bh.display_to_user
+    FROM elp_billing_header bh, elp_dealer d
+    WHERE bh.dealer_id = d.dealer_id
+    --dynamic_where_clause
+  </LOAD_LIST>
+  <LOAD_LIST_BY_COMPANY>
+    SELECT
+    bh.billing_header_id,
+    bh.date_file_sent,
+    bh.DATE_FILE_RECEIVED,
+    bh.filename,
+    bh.total_billed_amt,
+    bh.status,
+    bh.created_by,
+    bh.created_date,
+    bh.modified_by,
+    bh.modified_date,
+    bh.reference_number,
+    'BH' as source
+    FROM elp_billing_header bh, elp_dealer d
+    WHERE bh.dealer_id = d.dealer_id
+    --dynamic_where_clause
+    UNION ALL
+    SELECT
+    bhr.billing_header_rej_id as billing_header_id,
+    bhr.date_file_sent,
+    bhr.DATE_FILE_RECEIVED,
+    bhr.filename,
+    bhr.total_billed_amt,
+    bhr.status,
+    bhr.created_by,
+    bhr.created_date,
+    bhr.modified_by,
+    bhr.modified_date,
+    bhr.reference_number,
+    'BHR' as source
+    FROM elp_billing_header_rejects bhr, elp_company c
+    WHERE bhr.company_id = c.company_id
+    --dynamic_A_where_clause
+  </LOAD_LIST_BY_COMPANY>
+  <UPDATE>
+    <![CDATA[	
+			UPDATE elp_billing_header SET
+				dealer_id = :dealer_id,
+				date_file_sent = :date_file_sent,
+				filename = :filename,
+				total_billed_amt = :total_billed_amt,
+				status = :status,
+				modified_by = :modified_by,
+				reference_number = :reference_number,
+        display_to_user =:display_to_user
+      	WHERE
+				billing_header_id = :billing_header_id
+		]]>
+  </UPDATE>
+  <INSERT>
+    INSERT INTO elp_billing_header
+    (
+    dealer_id,
+    date_file_sent,
+    filename,
+    total_billed_amt,
+    status,
+    created_by,
+    billing_header_id,
+    reference_number,
+    display_to_user
+
+    )
+    VALUES
+    (
+    :dealer_id,
+    :date_file_sent,
+    :filename,
+    :total_billed_amt,
+    :status,
+    :created_by,
+    :billing_header_id,
+    :reference_number,
+    :display_to_user
+
+    )
+  </INSERT>
+  <DELETE>
+    DELETE FROM elp_billing_header
+    WHERE
+    billing_header_id = :billing_header_id
+  </DELETE>
+</SQL>
+
+

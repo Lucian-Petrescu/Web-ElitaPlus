@@ -1,0 +1,46 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<SQL>
+  <LOAD>
+    <![CDATA[	
+			SELECT 
+				oc_message_attemps_id,
+				oc_message_recipient_id,
+				process_status_xcd,
+				process_comments,
+				err_message,
+				created_by,
+				created_date,
+				modified_by,
+				modified_date
+			FROM elp_oc_message_attemps
+			WHERE
+				oc_message_attemps_id = :oc_message_attemps_id
+		]]>
+  </LOAD>
+  <LOAD_LIST></LOAD_LIST>
+  <LOAD_LIST_BY_MESSAGE_ID>
+    <![CDATA[	
+			SELECT
+        ma.oc_message_attemps_id,
+        m.oc_message_id,
+        r.oc_message_recipient_id,
+        r.recipient_address,
+        r.description as recipient_description,
+        ma.process_status_xcd,
+        elp_utl_lov.description(ma.process_status_xcd, :language_id) as process_status_description,        
+        REPLACE(REPLACE(REPLACE(NVL(ma.process_comments, '$$') || '$$' || NVL(ma.err_message, '$$'), '$$$$$$'), '$$$$'), '$$', ' - ') as err_message,
+        ma.created_by as MESSAGE_ATTEMPTED_BY,
+        ma.created_date as MESSAGE_ATTEMPTED_ON,
+        ma.modified_by,
+        ma.modified_date
+			FROM elp_oc_message m 
+      INNER JOIN elp_oc_message_recipient r ON r.oc_message_id = m.oc_message_id
+      LEFT OUTER JOIN elp_oc_message_attemps ma ON r.oc_message_recipient_id = ma.oc_message_recipient_id
+			WHERE
+        m.oc_message_id = :oc_message_id
+		]]>
+  </LOAD_LIST_BY_MESSAGE_ID>
+  <ADD_MESSAGE_ATTEMPT>
+      ELP_OUTBOUND_COMMUNICATION.ResendExistingMessage
+  </ADD_MESSAGE_ATTEMPT>
+</SQL>

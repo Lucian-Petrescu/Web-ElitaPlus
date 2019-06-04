@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="utf-8" ?>
+
+<!-- ********************** THIS FILE HAS BEEN GENERATED FROM TEMPLATE SQLObject.cst (8/15/2006)********************** -->
+
+<SQL>
+	<LOAD>
+		<![CDATA[	
+			SELECT 
+				company_group_id,
+				short_desc,
+				description,
+				created_by,
+				created_date,
+				modified_by,
+				modified_date,
+				service_network_id
+			FROM elp_service_network 
+			WHERE
+				service_network_id = :service_network_id
+		]]>
+	</LOAD>
+	<LOAD_LIST>	
+		<![CDATA[	
+			SELECT 
+				service_network_id,
+				description,
+				short_desc
+			FROM elp_service_network
+			WHERE
+			    company_group_id = :company_group_id
+				--dynamic_where_clause 
+			ORDER BY UPPER(description)
+		]]>		
+	</LOAD_LIST>	
+	<UPDATE>
+		<![CDATA[	
+			UPDATE elp_service_network SET
+				company_group_id = :company_group_id,
+				short_desc = :short_desc,
+				description = :description,
+				modified_by = :modified_by
+			WHERE
+				service_network_id = :service_network_id
+		]]>
+	</UPDATE>
+	<INSERT>
+			INSERT INTO elp_service_network
+					(			
+				company_group_id, 
+				short_desc, 
+				description, 
+				created_by,
+				service_network_id
+					)
+			VALUES
+					(			
+				:company_group_id, 
+				:short_desc, 
+				:description, 
+				:created_by,
+				:service_network_id
+				        )
+	</INSERT>
+	<DELETE>
+			DELETE FROM elp_service_network
+			WHERE
+				service_network_id = :service_network_id
+	</DELETE>
+	<LOAD_SERVICE_CENTERS>
+	   <![CDATA[
+	       SELECT
+				sc.service_center_id id,
+				sc.code,
+				sc.description
+			FROM
+				elp_service_center sc
+			WHERE --dynamic_where_clause 
+			ORDER BY UPPER(sc.description)
+	   ]]>	
+	</LOAD_SERVICE_CENTERS>
+	</SQL> 
+
+

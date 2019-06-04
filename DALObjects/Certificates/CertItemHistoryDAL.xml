@@ -1,0 +1,166 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+
+<!-- ********************** THIS FILE HAS BEEN GENERATED FROM TEMPLATE SQLObject.cst (10/11/2010)********************** -->
+
+<SQL>
+  <LOAD>
+    <![CDATA[	
+			SELECT 
+				cert_item_id,
+				cert_id,
+				item_number,
+				risk_type_id,
+				manufacturer_id,
+				max_replacement_cost,
+				serial_number,
+				model,
+				item_created_by,
+				item_created_date,
+				item_modified_by,
+				item_modified_date,
+				company_id,
+				item_description,
+				item_code,
+				item_retail_price,
+				item_replace_return_date,
+				external_product_code,
+				product_code,
+				created_by,
+				created_date,
+				modified_by,
+				modified_date,
+				cert_item_hist_id
+			FROM elp_cert_item_history 
+			WHERE
+				cert_item_hist_id = :cert_item_hist_id
+		]]>
+  </LOAD>
+  <LOAD_HISTORY>
+    select cih.cert_item_hist_id,
+    cih.cert_item_id,
+    cih.cert_id,
+    cih.serial_number || '' as serial_number,
+    cih.imei_number || '' as imei_number,
+    cih.model || ''         as model,
+    cih.manufacturer_id,
+    cih.created_date,
+    m.description || ''  as manufacturer,
+    cih.sku_number || '' as sku_number,
+    rt.description || '' as risk_type,
+    cih.item_modified_date
+    from      elp_cert_item_history   cih
+    left Join elp_manufacturer        m   on  m.manufacturer_id = cih.manufacturer_id
+    left join elp_risk_type           rt  on rt.risk_type_id = cih.risk_type_id
+    Inner Join (select cert_item_id,
+    Min(created_date) as created_date
+    from  elp_cert_item_history
+    where cert_id      = :cert_id
+    and cert_item_id = :cert_item_id
+    and  (serial_number is not null or model is not null or manufacturer_id is not null)
+    group by cert_item_id
+    ,Item_Number
+    ,Risk_Type_Id
+    ,Manufacturer_Id
+    ,Max_Replacement_Cost
+    ,Serial_Number
+    ,Model
+    ,Product_Code
+    ,Item_Description
+    ,Item_Code
+    ,Item_Retail_Price
+    ,Item_Replace_Return_Date
+    ,External_Product_Code
+    ,Mobile_Type
+    ,First_Use_Date
+    ,Last_Use_Date
+    ,Sim_Card_Number
+    ,Sku_Number
+    ,Cert_Product_Code) T  ON t.cert_item_id = cih.cert_item_id
+    and t.created_date = cih.created_date
+    order by cih.created_date desc
+  </LOAD_HISTORY>
+  <UPDATE>
+    <![CDATA[	
+			UPDATE elp_cert_item_history SET
+				cert_item_id = :cert_item_id,
+				cert_id = :cert_id,
+				item_number = :item_number,
+				risk_type_id = :risk_type_id,
+				manufacturer_id = :manufacturer_id,
+				max_replacement_cost = :max_replacement_cost,
+				serial_number = :serial_number,
+				model = :model,
+				item_created_by = :item_created_by,
+				item_created_date = :item_created_date,
+				item_modified_by = :item_modified_by,
+				item_modified_date = :item_modified_date,
+				company_id = :company_id,
+				item_description = :item_description,
+				item_code = :item_code,
+				item_retail_price = :item_retail_price,
+				item_replace_return_date = :item_replace_return_date,
+				external_product_code = :external_product_code,
+				product_code = :product_code,
+				modified_by = :modified_by
+			WHERE
+				cert_item_hist_id = :cert_item_hist_id
+		]]>
+  </UPDATE>
+  <INSERT>
+    INSERT INTO elp_cert_item_history
+    (
+    cert_item_id,
+    cert_id,
+    item_number,
+    risk_type_id,
+    manufacturer_id,
+    max_replacement_cost,
+    serial_number,
+    model,
+    item_created_by,
+    item_created_date,
+    item_modified_by,
+    item_modified_date,
+    company_id,
+    item_description,
+    item_code,
+    item_retail_price,
+    item_replace_return_date,
+    external_product_code,
+    product_code,
+    created_by,
+    cert_item_hist_id
+    )
+    VALUES
+    (
+    :cert_item_id,
+    :cert_id,
+    :item_number,
+    :risk_type_id,
+    :manufacturer_id,
+    :max_replacement_cost,
+    :serial_number,
+    :model,
+    :item_created_by,
+    :item_created_date,
+    :item_modified_by,
+    :item_modified_date,
+    :company_id,
+    :item_description,
+    :item_code,
+    :item_retail_price,
+    :item_replace_return_date,
+    :external_product_code,
+    :product_code,
+    :created_by,
+    :cert_item_hist_id
+    )
+  </INSERT>
+  <DELETE>
+    DELETE FROM elp_cert_item_history
+    WHERE
+    cert_item_hist_id = :cert_item_hist_id
+  </DELETE>
+</SQL>
+
+

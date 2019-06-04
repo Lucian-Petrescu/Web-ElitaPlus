@@ -1,0 +1,83 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+
+<!-- ********************** THIS FILE HAS BEEN GENERATED FROM TEMPLATE SQLObject.cst (9/24/2009)********************** -->
+
+<SQL>
+  <LOAD>
+    <![CDATA[	
+			SELECT 
+				webservice_id,
+				function_name,
+				on_line_id,
+				off_line_message,
+				created_by,
+				created_date,
+				modified_by,
+				modified_date,
+        last_operation_date,
+				ws_function_id
+			FROM elp_ws_functions 
+			WHERE
+				ws_function_id = :ws_function_id
+		]]>
+  </LOAD>
+  <LOAD_LIST>
+    SELECT
+    ws_function_id,
+    function_name,
+    on_line_id,
+    GetCodeFromListItem(on_line_id) on_line,
+    off_line_message,
+    case
+    when last_operation_date is null
+    then null
+    else
+    (select USER_NAME from ELP_USER where NETWORK_ID = f.modified_by)
+    end as last_change_by,
+    last_operation_date,
+    webservice_id
+    FROM elp_ws_functions f
+    WHERE webservice_id = :webservice_id
+    order by function_name
+  </LOAD_LIST>
+  <UPDATE>
+    <![CDATA[	
+			UPDATE elp_ws_functions SET
+				webservice_id = :webservice_id,
+				function_name = :function_name,
+				on_line_id = :on_line_id,
+				off_line_message = :off_line_message,
+				modified_by = :modified_by,
+        last_operation_date = :last_operation_date
+			WHERE
+				ws_function_id = :ws_function_id
+		]]>
+  </UPDATE>
+  <INSERT>
+    INSERT INTO elp_ws_functions
+    (
+    webservice_id,
+    function_name,
+    on_line_id,
+    off_line_message,
+    created_by,
+    ws_function_id,
+    last_operation_date
+    )
+    VALUES
+    (
+    :webservice_id,
+    :function_name,
+    :on_line_id,
+    :off_line_message,
+    :created_by,
+    :ws_function_id,
+    :last_operation_date
+    )
+  </INSERT>
+  <DELETE>
+    DELETE FROM elp_ws_functions
+    WHERE
+    ws_function_id = :ws_function_id
+  </DELETE>
+</SQL>

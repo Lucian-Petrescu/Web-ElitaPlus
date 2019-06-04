@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xs:schema xmlns:ser="http://schemas.microsoft.com/2003/10/Serialization/" xmlns:tns="http://elita.assurant.com/Elita/GiftCardService/DataContracts" elementFormDefault="qualified" targetNamespace="http://elita.assurant.com/Elita/GiftCardService/DataContracts" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+  <xs:import schemaLocation="http://localhost/ElitaClaimService/GiftCardService.svc?xsd=xsd3" namespace="http://schemas.datacontract.org/2004/07/Assurant.Elita.GiftCardService.Contracts" />
+  <xs:import schemaLocation="http://localhost/ElitaClaimService/GiftCardService.svc?xsd=xsd0" namespace="http://schemas.microsoft.com/2003/10/Serialization/" />
+  <xs:complexType name="BaseReference">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="CompanyCode" nillable="true" type="xs:string" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="BaseReference" nillable="true" type="tns:BaseReference" />
+  <xs:complexType name="CertificateReference">
+    <xs:complexContent mixed="false">
+      <xs:extension base="tns:BaseReference">
+        <xs:sequence>
+          <xs:element name="DealerCode" nillable="true" type="xs:string" />
+          <xs:element name="CertificateNumber" nillable="true" type="xs:string" />
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:element name="CertificateReference" nillable="true" type="tns:CertificateReference" />
+  <xs:complexType name="ClaimReference">
+    <xs:complexContent mixed="false">
+      <xs:extension base="tns:BaseReference">
+        <xs:sequence>
+          <xs:element name="ClaimNumber" nillable="true" type="xs:string" />
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:element name="ClaimReference" nillable="true" type="tns:ClaimReference" />
+  <xs:complexType name="ClaimAuthorizationReference">
+    <xs:complexContent mixed="false">
+      <xs:extension base="tns:BaseReference">
+        <xs:sequence>
+          <xs:element name="ClaimNumber" nillable="true" type="xs:string" />
+          <xs:element name="AuthorizationNumber" nillable="true" type="xs:string" />
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:element name="ClaimAuthorizationReference" nillable="true" type="tns:ClaimAuthorizationReference" />
+  <xs:complexType name="GiftCardRequest">
+    <xs:sequence>
+      <xs:element xmlns:q1="http://schemas.datacontract.org/2004/07/Assurant.Elita.GiftCardService.Contracts" name="ReferenceType" type="q1:EntityTypes" />
+      <xs:element name="Reference" nillable="true" type="tns:BaseReference" />
+      <xs:element name="Amount" type="xs:decimal" />
+      <xs:element name="PurposeCode" nillable="true" type="xs:string" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="GiftCardRequest" nillable="true" type="tns:GiftCardRequest" />
+  <xs:complexType name="GiftCardResponse">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="GiftCardId" type="ser:guid" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="GiftCardResponse" nillable="true" type="tns:GiftCardResponse" />
+</xs:schema>

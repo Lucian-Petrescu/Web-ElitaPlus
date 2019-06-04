@@ -1,0 +1,240 @@
+<?xml version="1.0" encoding="utf-8" ?>
+
+<!-- ********************** THIS FILE HAS BEEN GENERATED FROM TEMPLATE SQLObject.cst (10/13/2004)********************** -->
+
+<SQL>
+	<LOAD>
+		<![CDATA[	
+			SELECT
+				pgd.price_group_id,
+				pgd.risk_type_id,
+        rt.description risk_type_desc,
+				pgd.effective_date,
+				pgd.home_price,
+				pgd.carry_in_price,
+				pgd.cleaning_price,
+				pgd.hourly_rate,
+				pgd.estimate_price,
+				pgd.created_by,
+				pgd.created_date,
+				pgd.modified_by,
+				pgd.modified_date,
+				pgd.price_group_detail_id,
+				pgd.replacement_price,
+        pgd.price_band_range_from,
+        pgd.price_band_range_to,
+        pgd.send_in_price, 
+        pgd.pick_up_price,
+        pgd.replacement_tax_type,
+        pgd.discounted_price
+			FROM
+				elp_price_group_detail_old pgd,  elp_risk_type rt
+			WHERE
+				pgd.risk_type_id = rt.risk_type_id
+			AND	price_group_detail_id = :price_group_detail_id
+		]]>
+	</LOAD>
+	<LOAD_LIST>		
+		<![CDATA[	
+			SELECT
+				pgd.price_group_id,
+				pgd.risk_type_id,
+        rt.description risk_type_desc,
+				pgd.effective_date,
+				pgd.home_price,
+				pgd.carry_in_price,
+				pgd.cleaning_price,
+				pgd.hourly_rate,
+				pgd.estimate_price,
+				pgd.created_by,
+				pgd.created_date,
+				pgd.modified_by,
+				pgd.modified_date,
+				pgd.price_group_detail_id,
+				pgd.replacement_price,
+        pgd.price_band_range_from,
+        pgd.price_band_range_to,
+        pgd.send_in_price, 
+        pgd.pick_up_price,
+        pgd.replacement_tax_type,
+        pgd.discounted_price
+			FROM
+				elp_price_group_detail_old pgd,  elp_risk_type rt
+			WHERE
+				pgd.risk_type_id = rt.risk_type_id
+			AND	pgd.price_group_id = :price_group_id			
+		]]>
+	</LOAD_LIST>
+  <LOAD_PRICEBAND_LIST>
+    <![CDATA[	
+			SELECT
+        pgd.price_group_detail_id,
+				pgd.price_band_range_from,
+        pgd.price_band_range_to,         
+        pgd.replacement_price,
+				pgd.price_group_id,
+				pgd.risk_type_id,
+        rt.description risk_type_desc,
+				pgd.effective_date,
+				pgd.home_price,
+				pgd.carry_in_price,
+				pgd.cleaning_price,
+				pgd.hourly_rate,
+				pgd.estimate_price,
+				pgd.created_by,
+				pgd.created_date,
+				pgd.modified_by,
+				pgd.modified_date,
+        pgd.send_in_price, 
+        pgd.pick_up_price,
+        pgd.replacement_tax_type,
+        pgd.discounted_price
+			FROM
+				elp_price_group_detail_old pgd,  elp_risk_type rt
+			WHERE rt.risk_type_id    =  pgd.risk_type_id 	
+			AND	pgd.price_group_id = :price_group_id
+			AND	pgd.risk_type_id   = :risk_type_id
+      AND pgd.effective_date  = :effective_date
+		]]>
+  </LOAD_PRICEBAND_LIST>
+  <LOAD_RISKTYPE_COMPANYGROUP_LIST>
+    <![CDATA[	
+    SELECT
+    pgd.price_group_id,
+    pgd.risk_type_id,
+    rt.description risk_type_desc,
+    pgd.effective_date,
+    pgd.home_price,
+    pgd.carry_in_price,
+    pgd.cleaning_price,
+    pgd.hourly_rate,
+    pgd.estimate_price,
+    pgd.created_by,
+    pgd.created_date,
+    pgd.modified_by,
+    pgd.modified_date,
+    pgd.price_group_detail_id,
+    pgd.replacement_price,
+    pgd.price_band_range_from,
+    pgd.price_band_range_to,
+    pgd.send_in_price, 
+    pgd.pick_up_price,
+    pgd.replacement_tax_type,
+    pgd.discounted_price
+    FROM
+    elp_price_group_detail_old pgd,  elp_risk_type rt
+    WHERE
+    pgd.risk_type_id = rt.risk_type_id
+    AND	pgd.price_group_id = :price_group_id
+    AND rt.company_group_id = :company_group_id
+]]>
+  </LOAD_RISKTYPE_COMPANYGROUP_LIST>
+  <LOAD_RISKTYPE_LIST>		
+		<![CDATA[	
+			SELECT
+				pgd.price_group_id,
+				pgd.risk_type_id,
+        rt.description risk_type_desc,
+				pgd.effective_date,
+				pgd.home_price,
+				pgd.carry_in_price,
+				pgd.cleaning_price,
+				pgd.hourly_rate,
+				pgd.estimate_price,
+				pgd.created_by,
+				pgd.created_date,
+				pgd.modified_by,
+				pgd.modified_date,
+				pgd.price_group_detail_id,
+				pgd.replacement_price,
+        pgd.price_band_range_from,
+        pgd.price_band_range_to,
+        pgd.send_in_price, 
+        pgd.pick_up_price,
+        pgd.replacement_tax_type,
+        pgd.discounted_price
+			FROM
+				elp_price_group_detail_old pgd,  elp_risk_type rt
+			WHERE
+				pgd.price_group_id = :price_group_id
+			AND	pgd.risk_type_id   = :risk_type_id
+			AND	rt.risk_type_id    =  pgd.risk_type_id
+      AND pgd.effective_date=(SELECT max(effective_date) FROM elp_price_group_detail_old
+                              WHERE  price_group_id = :price_group_id AND risk_type_id = :risk_type_id
+                              AND    effective_date <sysdate)         
+		]]>
+	</LOAD_RISKTYPE_LIST>	
+	<UPDATE>
+		<![CDATA[	
+			UPDATE elp_price_group_detail_old SET
+				price_group_id = :price_group_id,
+				risk_type_id = :risk_type_id,
+				effective_date = :effective_date,
+				home_price = :home_price,
+				carry_in_price = :carry_in_price,
+				cleaning_price = :cleaning_price,
+				hourly_rate = :hourly_rate,
+				estimate_price = :estimate_price,
+				modified_by = :modified_by,
+				replacement_price = :replacement_price,
+        price_band_range_from = :price_band_range_from,
+        price_band_range_to = :price_band_range_to,
+        send_in_price = :send_in_price,         
+        pick_up_price = :pick_up_price,
+        replacement_tax_type = :replacement_tax_type,
+        discounted_price = :discounted_price
+			WHERE
+				price_group_detail_id = :price_group_detail_id
+		]]>
+	</UPDATE>
+	<INSERT>
+    INSERT INTO elp_price_group_detail_old
+    (
+    price_group_id,
+    risk_type_id,
+    effective_date,
+    home_price,
+    carry_in_price,
+    cleaning_price,
+    hourly_rate,
+    estimate_price,
+    created_by,
+    price_group_detail_id,
+    replacement_price,
+    price_band_range_from,
+    price_band_range_to,
+    send_in_price,
+    pick_up_price,
+    replacement_tax_type,
+    discounted_price
+    )
+    VALUES
+    (
+    :price_group_id,
+    :risk_type_id,
+    :effective_date,
+    :home_price,
+    :carry_in_price,
+    :cleaning_price,
+    :hourly_rate,
+    :estimate_price,
+    :created_by,
+    :price_group_detail_id,
+    :replacement_price,
+    :price_band_range_from,
+    :price_band_range_to,
+    :send_in_price,
+    :pick_up_price,
+    :replacement_tax_type,
+    :discounted_price
+    )
+  </INSERT>
+	<DELETE>
+    DELETE FROM elp_price_group_detail_old
+    WHERE
+    price_group_detail_id = :price_group_detail_id
+  </DELETE>
+</SQL> 
+
+
+

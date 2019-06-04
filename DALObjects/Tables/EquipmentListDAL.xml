@@ -1,0 +1,200 @@
+<?xml version="1.0" encoding="utf-8" ?>
+
+<SQL>
+	<LOAD>
+		<![CDATA[	
+		  SELECT 
+        EQUIPMENT_LIST_ID AS EQUIPMENT_LIST_ID,
+        CODE,
+        DESCRIPTION,
+        COMMENTS,
+        EFFECTIVE,
+        EXPIRATION,
+        CREATED_DATE,
+        MODIFIED_DATE,
+        CREATED_BY,
+        MODIFIED_BY
+      FROM 
+        Elita.ELP_EQUIPMENT_LIST 
+      WHERE 
+        EQUIPMENT_LIST_ID = :EQUIPMENT_LIST_ID
+		]]>
+	</LOAD>
+	<LOAD_LIST>
+	<![CDATA[	
+			SELECT 
+        EQUIPMENT_LIST_ID AS EQUIPMENT_LIST_ID,
+        CODE,
+        DESCRIPTION,
+        COMMENTS,
+        to_Char(EFFECTIVE,'DD-Mon-YYYY HH24:MI:SS') AS EFFECTIVE,
+        to_Char(EXPIRATION,'DD-Mon-YYYY HH24:MI:SS') AS EXPIRATION
+      FROM 
+        Elita.ELP_EQUIPMENT_LIST 
+      WHERE   rownum < '101' 
+        --dynamic_where_clause 
+      ORDER BY 
+        Code, Expiration   
+			]]>	
+	</LOAD_LIST>
+  <LOAD_EQ_LIST>
+    <![CDATA[	
+		  SELECT 
+        EQUIPMENT_LIST_ID AS EQUIPMENT_LIST_ID,
+        CODE,
+        DESCRIPTION,
+        COMMENTS,
+        EFFECTIVE,
+        EXPIRATION,
+        CREATED_DATE,
+        MODIFIED_DATE,
+        CREATED_BY,
+        MODIFIED_BY
+      FROM 
+        Elita.ELP_EQUIPMENT_LIST 
+      WHERE 
+        EQUIPMENT_LIST_ID = :EQUIPMENT_LIST_ID
+		]]>
+  </LOAD_EQ_LIST>
+  <GET_GROUP_COMPANIES>
+    <![CDATA[	
+     SELECT 
+        company_id
+     FROM 
+        elp_company
+     WHERE 
+        COMPANY_GROUP_ID = :company_group_id
+    	]]>
+  </GET_GROUP_COMPANIES>
+  <UPDATE>
+    <![CDATA[	
+			UPDATE 
+        elp_equipment_list 
+      SET
+        description = :description,
+        comments = :comments,
+        effective = :effective,
+				expiration = :expiration
+			WHERE
+				equipment_list_id = :equipment_list_id
+		]]>
+  </UPDATE>
+  <INSERT>
+    <![CDATA[	
+      INSERT INTO elp_equipment_list
+      (
+        code,
+        description,
+        comments,
+        effective,
+        expiration,
+        created_by,
+        equipment_list_id
+      )
+      VALUES
+      (
+        :code,
+        :description,
+        :comments,
+        :effective,
+        :expiration,
+        :created_by,
+        :equipment_list_id
+      )
+		]]>    
+  </INSERT>
+  <DELETE>
+    <![CDATA[	  
+      UPDATE 
+        ELP_EQUIPMENT_LIST
+      SET 
+        EXPIRATION = SYSDATE
+      WHERE 
+        EQUIPMENT_LIST_ID = :EQUIPMENT_LIST_ID
+		]]>
+  </DELETE>
+  <IS_LIST_ASSIGNED_TO_DEALER>
+    <![CDATA[
+      SELECT 
+        DEALER_ID 
+      FROM 
+        ELITA.ELP_DEALER 
+      WHERE 
+        ((SELECT EFFECTIVE FROM ELP_EQUIPMENT_LIST WHERE EQUIPMENT_LIST_ID = :EQUIPMENT_LIST_ID) <= SYSDATE)  
+    ]]>
+  </IS_LIST_ASSIGNED_TO_DEALER>
+  <CHECK_OVERLAP>
+    <![CDATA[
+      SELECT * 
+      FROM 
+        ELP_EQUIPMENT_LIST
+      WHERE   
+        rownum < '101'
+        AND EQUIPMENT_LIST_ID <> :EQUIPMENT_LIST_ID
+        --dynamic_where_clause
+    ]]>
+  </CHECK_OVERLAP>
+  <CHECK_LIST_OVERLAP_TO_EXPIRE>
+    <![CDATA[
+     SELECT * 
+      FROM 
+        ELP_EQUIPMENT_LIST
+      WHERE   
+        rownum < '101'
+        AND EQUIPMENT_LIST_ID <> :EQUIPMENT_LIST_ID
+        --dynamic_where_clause
+    ]]>
+  </CHECK_LIST_OVERLAP_TO_EXPIRE>
+  <CHECK_OVERLAP_DURATION>
+    <![CDATA[
+    SELECT * 
+    FROM 
+      ELP_EQUIPMENT_LIST
+    WHERE   
+      rownum < '101'
+      AND EQUIPMENT_LIST_ID <> :EQUIPMENT_LIST_ID 
+      --dynamic_where_clause
+    ]]>
+  </CHECK_OVERLAP_DURATION>
+  <EXPIRE_LIST>
+    <![CDATA[
+    UPDATE 
+      ELP_EQUIPMENT_LIST 
+    SET 
+      EXPIRATION = :EXPIRATION  
+    WHERE 
+      EQUIPMENT_LIST_ID = :EQUIPMENT_LIST_ID  
+    ]]>
+  </EXPIRE_LIST>
+  <GetSelectedEquipmentList>
+    <![CDATA[
+    SELECT
+      EQ.EQUIPMENT_ID ID, 
+      EQ.DESCRIPTION DESCRIPTION
+    FROM 
+      ELP_EQUIPMENT_LIST EEL INNER JOIN ELP_EQUIPMENT_LIST_DETAIL EELD
+      ON EEL.EQUIPMENT_LIST_ID = EELD.EQUIPMENT_LIST_ID INNER JOIN ELP_EQUIPMENT EQ ON EELD.EQUIPMENT_ID = EQ.EQUIPMENT_ID
+    WHERE 
+      EEL.EQUIPMENT_LIST_ID = :EQUIPMENT_LIST_ID 
+      AND (SELECT SYSDATE FROM DUAL) BETWEEN EELD.EFFECTIVE AND EELD.EXPIRATION
+     ]]>
+  </GetSelectedEquipmentList>
+  <EXPIRE_EQUIPMENTS>
+    <![CDATA[
+      UPDATE 
+        ELP_EQUIPMENT_LIST_DETAIL 
+      SET 
+        --dynamic_field_selector
+      WHERE 
+        EQUIPMENT_LIST_ID = :EQUIPMENT_LIST_ID 
+        --dynamic_where_clause
+    ]]>
+  </EXPIRE_EQUIPMENTS>
+  <CURRENT_TIME_STAMP>
+    <![CDATA[
+      SELECT SYSDATE FROM DUAL
+    ]]>
+  </CURRENT_TIME_STAMP>
+</SQL> 
+
+

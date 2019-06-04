@@ -1,0 +1,185 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<SQL>
+  <LOAD>
+    <![CDATA[
+      SELECT 
+        ben_product_code_id, 
+        dealer_id, 
+        vendor_id, 
+        ben_product_code,
+        description,
+        currency_iso_code, 
+        price_uom,
+        net_price, 
+        tax_type_xcd, 
+        durationinmonth, 
+        effective_date, 
+        expiration_date, 
+        vendor_billable_part_num, 
+        daystoexpireafterendday, 
+        created_date, 
+        modified_date, 
+        created_by, 
+        modified_by 
+      FROM
+        ELP_BEN_PRODUCT_CODE
+      WHERE
+        ben_product_code_id = :ben_product_code_id
+    ]]>
+  </LOAD>
+  <LOAD_LIST>
+    <![CDATA[		
+			select
+			  pc.ben_product_code_id, 
+        c.code || ' - ' || dealer_name dealer_name, 
+        pc.ben_product_code, 
+        pc.description,
+        sc.description as vendor_name,
+        pc.effective_date, 
+        pc.expiration_date,
+        pc.vendor_billable_part_num
+        
+			from 	elp_ben_product_code pc
+       join elp_dealer edealer    on (pc.dealer_id = edealer.dealer_id)
+       join elp_company c         on (c.company_id = edealer.company_id)
+       join elp_service_center sc on (sc.service_center_id = pc.vendor_id)
+			where	
+          1 = 1
+					--dynamic_in_clause
+					--dynamic_where_clause
+			order by upper(dealer_name), upper(ben_product_code)
+			]]>
+  </LOAD_LIST>
+  <LOAD_BY_DEALER_PRODUCT>
+    <![CDATA[	
+      SELECT 
+        ben_product_code_id, 
+        dealer_id, 
+        vendor_id, 
+        ben_product_code,
+        currency_iso_code, 
+        price_uom,
+        net_price, 
+        tax_type_xcd, 
+        durationinmonth, 
+        effective_date, 
+        expiration_date, 
+        vendor_billable_part_num, 
+        daystoexpireafterendday, 
+        created_date, 
+        modified_date, 
+        created_by, 
+        modified_by 
+      FROM
+        ELP_BEN_PRODUCT_CODE
+      WHERE
+        dealer_id = :dealer_id AND
+        product_code = :product_code
+     ]]>
+  </LOAD_BY_DEALER_PRODUCT>
+  <LOAD_BY_UNIQUE_KEY>
+    <![CDATA[	
+      SELECT 
+        ben_product_code_id, 
+        dealer_id, 
+        vendor_id, 
+        ben_product_code,
+        currency_iso_code, 
+        price_uom,
+        net_price, 
+        tax_type_xcd, 
+        durationinmonth, 
+        effective_date, 
+        expiration_date, 
+        vendor_billable_part_num, 
+        daystoexpireafterendday, 
+        created_date, 
+        modified_date, 
+        created_by, 
+        modified_by 
+      FROM
+        ELP_BEN_PRODUCT_CODE
+      WHERE
+        dealer_id = :dealer_id AND
+        ben_product_code = :ben_product_code AND
+        vendor_billable_part_num = :vendor_billable_part_num AND
+        ben_product_code_id <> :ben_product_code_id
+     ]]>
+  </LOAD_BY_UNIQUE_KEY>
+  <INSERT>
+    <![CDATA[
+    INSERT INTO ELP_BEN_PRODUCT_CODE
+      (
+        ben_product_code_id, 
+        dealer_id, 
+        vendor_id, 
+        ben_product_code,
+        description,
+        currency_iso_code, 
+        price_uom,
+        net_price, 
+        tax_type_xcd, 
+        durationinmonth, 
+        effective_date, 
+        expiration_date, 
+        vendor_billable_part_num, 
+        daystoexpireafterendday, 
+        created_date, 
+        created_by
+      )
+    VALUES
+      (
+        :ben_product_code_id, 
+        :dealer_id, 
+        :vendor_id, 
+        :ben_product_code,
+        :description,
+        :currency_iso_code, 
+        :price_uom,
+        :net_price, 
+        :tax_type_xcd, 
+        :durationinmonth, 
+        :effective_date, 
+        :expiration_date, 
+        :vendor_billable_part_num, 
+        :daystoexpireafterendday, 
+        :created_date, 
+        :created_by
+      )
+    
+    ]]>
+  </INSERT>
+  <UPDATE>
+    <![CDATA[
+      UPDATE ELP_BEN_PRODUCT_CODE
+         SET 
+             dealer_id = :dealer_id,
+             vendor_id = :vendor_id,
+             ben_product_code = :ben_product_code,
+             description = :description,
+             currency_iso_code = :currency_iso_code,
+             price_uom = :price_uom,
+             net_price = :net_price,
+             tax_type_xcd = :tax_type_xcd,
+             durationinmonth = :durationinmonth,
+             effective_date = :effective_date,
+             expiration_date = :expiration_date,
+             vendor_billable_part_num = :vendor_billable_part_num,
+             daystoexpireafterendday = :daystoexpireafterendday, 
+             modified_date = :modified_date, 
+             modified_by = :modified_by
+             
+       WHERE 
+          ben_product_code_id = :ben_product_code_id    
+    ]]>
+  </UPDATE>
+  <DELETE>
+    <![CDATA[	
+    DELETE
+      ELP_BEN_PRODUCT_CODE
+    WHERE
+      ben_product_code_id = :ben_product_code_id
+    ]]>
+  </DELETE>
+  
+</SQL>

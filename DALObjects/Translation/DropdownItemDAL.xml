@@ -1,0 +1,122 @@
+<?xml version="1.0" encoding="utf-8" ?>
+
+<!-- ********************** THIS FILE HAS BEEN GENERATED FROM TEMPLATE SQLObject.cst (2/12/2007)********************** -->
+
+<SQL>
+	<LOAD>
+		<![CDATA[	
+			SELECT 
+				code,
+				maintainable_by_user,
+				display_to_user,
+				list_id,
+				dict_item_id,
+				created_date,
+				modified_date,
+				created_by,
+				modified_by,
+				active_flag,
+				list_item_id
+			FROM elp_list_item 
+			WHERE
+				list_item_id = :list_item_id
+		]]>
+	</LOAD>
+  <LOAD_LIST_ITEMS_ADMIN>
+    SELECT
+    LI.*, T.TRANSLATION ENGLISH_TRANSLATION, T1.TRANSLATION LANG_TRANSLATION,T1.DICT_ITEM_TRANSLATION_ID
+    FROM
+    ELP_LIST_ITEM LI,
+    ELP_DICT_ITEM_TRANSLATION T,
+    ELP_LANGUAGE LANG,
+    ELP_DICT_ITEM_TRANSLATION T1
+    WHERE
+    LI.DICT_ITEM_ID = T.DICT_ITEM_ID
+    AND LI.DICT_ITEM_ID = T1.DICT_ITEM_ID  (+)
+    AND LANG.LANGUAGE_ID = T.LANGUAGE_ID
+    AND LANG.CODE = 'EN'
+    AND T1.LANGUAGE_ID = :Language_Id
+    AND LI.LIST_ID = :List_Id
+    ORDER BY
+    UPPER(TRIM(ENGLISH_TRANSLATION))
+  </LOAD_LIST_ITEMS_ADMIN>
+  <LOAD_LIST_ITEMS_DEVICE>
+    select
+    LI.*,
+    elp_utl_lov.description(li.List_item_id,:Language_Id) as english_translation
+    from elp_list l
+    join elp_list_item li  on li.list_id = l.list_id
+    and l.code =:code
+    ORDER BY
+    UPPER(TRIM(english_translation))
+  </LOAD_LIST_ITEMS_DEVICE>
+  <LOAD_LIST_ITEM_TRANSLATION>
+    SELECT
+    L.CODE, T.DICT_ITEM_TRANSLATION_ID, T.LANGUAGE_ID, T.DICT_ITEM_ID, T.TRANSLATION, LANG.LANGUAGE_ID, LANG.DESCRIPTION
+    FROM
+    ELP_LIST_ITEM L,
+    ELP_DICT_ITEM_TRANSLATION T,
+    ELP_LANGUAGE LANG
+    WHERE
+    L.DICT_ITEM_ID = T.DICT_ITEM_ID
+    AND LANG.LANGUAGE_ID = T.LANGUAGE_ID
+    AND L.LIST_ITEM_ID = :List_Item_Id
+    ORDER BY
+    UPPER(TRIM(DESCRIPTION))
+  </LOAD_LIST_ITEM_TRANSLATION>
+  <ADD_DROPDOWN_ITEM>
+    ELP_TRANSLATION.LOAD_DROPDOWN_ITEM
+  </ADD_DROPDOWN_ITEM>
+  <UPDATE_DROPDOWN_ITEM>
+    ELP_TRANSLATION.UPDATE_DROPDOWN_ITEM
+  </UPDATE_DROPDOWN_ITEM>
+  <DELETE_DROPDOWN_ITEM>
+    ELP_TRANSLATION.DELETE_DROPDOWN_ITEM
+  </DELETE_DROPDOWN_ITEM>
+  <UPDATE>
+		<![CDATA[	
+			UPDATE elp_list_item SET
+				code = :code,
+				maintainable_by_user = :maintainable_by_user,
+				display_to_user = :display_to_user,
+				list_id = :list_id,
+				dict_item_id = :dict_item_id,
+				active_flag = :active_flag,
+				modified_by = :modified_by
+			WHERE
+				list_item_id = :list_item_id
+		]]>
+	</UPDATE>
+	<INSERT>
+			INSERT INTO elp_list_item
+					(			
+				code, 
+				maintainable_by_user, 
+				display_to_user, 
+				list_id, 
+				dict_item_id, 
+				active_flag, 
+				created_by,
+				list_item_id
+					)
+			VALUES
+					(			
+				:code, 
+				:maintainable_by_user, 
+				:display_to_user, 
+				:list_id, 
+				:dict_item_id, 
+				:active_flag, 
+				:created_by,
+				:list_item_id
+					)
+	</INSERT>
+	<DELETE>
+			DELETE FROM elp_list_item
+			WHERE
+				list_item_id = :list_item_id
+	</DELETE>
+</SQL> 
+
+
+

@@ -1,0 +1,646 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="2.0" xmlns:edmx="http://schemas.microsoft.com/ado/2008/10/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+    <Schema Namespace="Model6.Store" Provider="Oracle.ManagedDataAccess.Client" ProviderManifestToken="11.2" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/02/edm/ssdl">
+        <EntityType Name="ELP_CLAIM_STATUS_BY_GROUP">
+          <Key>
+            <PropertyRef Name="CLAIM_STATUS_BY_GROUP_ID" />
+          </Key>
+          <Property Name="CLAIM_STATUS_BY_GROUP_ID" Type="raw" MaxLength="16" Nullable="false" />
+          <Property Name="COMPANY_GROUP_ID" Type="raw" MaxLength="16" />
+          <Property Name="DEALER_ID" Type="raw" MaxLength="16" />
+          <Property Name="LIST_ITEM_ID" Type="raw" MaxLength="16" Nullable="false" />
+          <Property Name="STATUS_ORDER" Type="number" Precision="38" Scale="0" Nullable="false" />
+          <Property Name="CREATED_BY" Type="varchar2" MaxLength="30" Nullable="false" />
+          <Property Name="CREATED_DATE" Type="date" Nullable="false" />
+          <Property Name="MODIFIED_BY" Type="varchar2" MaxLength="30" />
+          <Property Name="MODIFIED_DATE" Type="date" />
+          <Property Name="OWNER_ID" Type="raw" MaxLength="16" />
+          <Property Name="SKIPPING_ALLOWED_ID" Type="raw" MaxLength="16" Nullable="false" />
+          <Property Name="ACTIVE_ID" Type="raw" MaxLength="16" Nullable="false" />
+          <Property Name="GROUP_NUMBER" Type="number" Precision="2" Scale="0" />
+        </EntityType>
+        <EntityType Name="ELP_COMPANY_GROUP">
+          <Key>
+            <PropertyRef Name="COMPANY_GROUP_ID" />
+          </Key>
+          <Property Name="COMPANY_GROUP_ID" Type="raw" MaxLength="16" Nullable="false" />
+          <Property Name="DESCRIPTION" Type="varchar2" MaxLength="50" Nullable="false" />
+          <Property Name="CODE" Type="varchar2" MaxLength="5" Nullable="false" />
+          <Property Name="CREATED_DATE" Type="date" Nullable="false" />
+          <Property Name="MODIFIED_DATE" Type="date" />
+          <Property Name="CREATED_BY" Type="varchar2" MaxLength="30" Nullable="false" />
+          <Property Name="MODIFIED_BY" Type="varchar2" MaxLength="30" />
+          <Property Name="CLAIM_NUMBERING_BY_ID" Type="raw" MaxLength="16" Nullable="false" />
+          <Property Name="ACCT_BY_COMPANY" Type="varchar2" MaxLength="1" />
+          <Property Name="INVOICE_NUMBERING_BY_ID" Type="raw" MaxLength="16" Nullable="false" />
+          <Property Name="FTP_SITE_ID" Type="raw" MaxLength="16" />
+          <Property Name="INVOICE_GROUP_NUMBERING_BY_ID" Type="raw" MaxLength="16" Nullable="false" />
+          <Property Name="PAYMENT_GROUP_NUMBERING_BY_ID" Type="raw" MaxLength="16" Nullable="false" />
+          <Property Name="YEARS_TO_INACTIVE_USEDVEHICLES" Type="number" Precision="4" Scale="0" />
+          <Property Name="INACTIVE_NEWVEHICLES_BASED_ON" Type="raw" MaxLength="16" />
+          <Property Name="AUTHORIZATION_NUMBERING_BY_ID" Type="raw" MaxLength="16" Nullable="false" />
+          <Property Name="CLAIM_FAST_APPROVAL_ID" Type="raw" MaxLength="16" Nullable="false" />
+        </EntityType>
+        <EntityType Name="ELP_COVERAGE_LOSS">
+          <Key>
+            <PropertyRef Name="COVERAGE_LOSS_ID" />
+          </Key>
+          <Property Name="COVERAGE_LOSS_ID" Type="raw" MaxLength="16" Nullable="false" />
+          <Property Name="COMPANY_GROUP_ID" Type="raw" MaxLength="16" Nullable="false" />
+          <Property Name="COVERAGE_TYPE_ID" Type="raw" MaxLength="16" Nullable="false" />
+          <Property Name="CAUSE_OF_LOSS_ID" Type="raw" MaxLength="16" Nullable="false" />
+          <Property Name="CREATED_BY" Type="varchar2" MaxLength="30" Nullable="false" />
+          <Property Name="CREATED_DATE" Type="date" Nullable="false" />
+          <Property Name="MODIFIED_BY" Type="varchar2" MaxLength="30" />
+          <Property Name="MODIFIED_DATE" Type="date" />
+          <Property Name="DEFAULT_FLAG" Type="char" MaxLength="1" />
+          <Property Name="ACTIVE" Type="char" MaxLength="1" />
+        </EntityType>
+        <EntityType Name="ELP_DEFAULT_CLAIM_STATUS">
+          <Key>
+            <PropertyRef Name="DEFAULT_CLAIM_STATUS_ID" />
+          </Key>
+          <Property Name="DEFAULT_CLAIM_STATUS_ID" Type="raw" MaxLength="16" Nullable="false" />
+          <Property Name="CLAIM_STATUS_BY_GROUP_ID" Type="raw" MaxLength="16" Nullable="false" />
+          <Property Name="DEFAULT_TYPE_ID" Type="raw" MaxLength="16" Nullable="false" />
+          <Property Name="METHOD_OF_REPAIR_ID" Type="raw" MaxLength="16" />
+          <Property Name="CREATED_BY" Type="varchar2" MaxLength="30" Nullable="false" />
+          <Property Name="CREATED_DATE" Type="date" Nullable="false" />
+          <Property Name="MODIFIED_BY" Type="varchar2" MaxLength="30" />
+          <Property Name="MODIFIED_DATE" Type="date" />
+          <Property Name="COMPANY_GROUP_ID" Type="raw" MaxLength="16" Nullable="false" />
+        </EntityType>
+        <EntityType Name="ELP_MANUFACTURER">
+          <Key>
+            <PropertyRef Name="MANUFACTURER_ID" />
+          </Key>
+          <Property Name="MANUFACTURER_ID" Type="raw" MaxLength="16" Nullable="false" />
+          <Property Name="DESCRIPTION" Type="varchar2" MaxLength="255" Nullable="false" />
+          <Property Name="CREATED_DATE" Type="date" Nullable="false" />
+          <Property Name="MODIFIED_DATE" Type="date" />
+          <Property Name="CREATED_BY" Type="varchar2" MaxLength="30" Nullable="false" />
+          <Property Name="MODIFIED_BY" Type="varchar2" MaxLength="30" />
+          <Property Name="ACTIVE_FLAG" Type="varchar2" MaxLength="1" Nullable="false" />
+          <Property Name="COMPANY_GROUP_ID" Type="raw" MaxLength="16" Nullable="false" />
+        </EntityType>
+        <EntityType Name="ELP_PAYMENT_TYPE">
+          <Key>
+            <PropertyRef Name="PAYMENT_TYPE_ID" />
+          </Key>
+          <Property Name="PAYMENT_TYPE_ID" Type="raw" MaxLength="16" Nullable="false" />
+          <Property Name="DESCRIPTION" Type="varchar2" MaxLength="50" Nullable="false" />
+          <Property Name="CODE" Type="varchar2" MaxLength="10" Nullable="false" />
+          <Property Name="CREATED_DATE" Type="date" Nullable="false" />
+          <Property Name="MODIFIED_DATE" Type="date" />
+          <Property Name="CREATED_BY" Type="varchar2" MaxLength="30" Nullable="false" />
+          <Property Name="MODIFIED_BY" Type="varchar2" MaxLength="30" />
+          <Property Name="COMPANY_GROUP_ID" Type="raw" MaxLength="16" Nullable="false" />
+          <Property Name="PAYMENT_INSTRUMENT_ID" Type="raw" MaxLength="16" />
+          <Property Name="COLLECTION_METHOD_ID" Type="raw" MaxLength="16" />
+        </EntityType>
+        <EntityType Name="ELP_RISK_TYPE">
+          <Key>
+            <PropertyRef Name="RISK_TYPE_ID" />
+          </Key>
+          <Property Name="RISK_TYPE_ID" Type="raw" MaxLength="16" Nullable="false" />
+          <Property Name="DESCRIPTION" Type="varchar2" MaxLength="60" Nullable="false" />
+          <Property Name="RISK_TYPE_ENGLISH" Type="varchar2" MaxLength="60" Nullable="false" />
+          <Property Name="RISK_GROUP_ID" Type="raw" MaxLength="16" Nullable="false" />
+          <Property Name="CREATED_DATE" Type="date" Nullable="false" />
+          <Property Name="MODIFIED_DATE" Type="date" />
+          <Property Name="CREATED_BY" Type="varchar2" MaxLength="30" Nullable="false" />
+          <Property Name="MODIFIED_BY" Type="varchar2" MaxLength="30" />
+          <Property Name="ACTIVE_FLAG" Type="varchar2" MaxLength="1" Nullable="false" />
+          <Property Name="SOFT_QUESTION_GROUP_ID" Type="raw" MaxLength="16" />
+          <Property Name="COMPANY_GROUP_ID" Type="raw" MaxLength="16" Nullable="false" />
+          <Property Name="PRODUCT_TAX_TYPE_ID" Type="raw" MaxLength="16" />
+        </EntityType>
+        <Association Name="FK_CLAIM_STATUS_CMPGRP_ID">
+          <End Role="ELP_COMPANY_GROUP" Type="Self.ELP_COMPANY_GROUP" Multiplicity="0..1" />
+          <End Role="ELP_CLAIM_STATUS_BY_GROUP" Type="Self.ELP_CLAIM_STATUS_BY_GROUP" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ELP_COMPANY_GROUP">
+              <PropertyRef Name="COMPANY_GROUP_ID" />
+            </Principal>
+            <Dependent Role="ELP_CLAIM_STATUS_BY_GROUP">
+              <PropertyRef Name="COMPANY_GROUP_ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_COMP_GRP_ID">
+          <End Role="ELP_COMPANY_GROUP" Type="Self.ELP_COMPANY_GROUP" Multiplicity="1" />
+          <End Role="ELP_PAYMENT_TYPE" Type="Self.ELP_PAYMENT_TYPE" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ELP_COMPANY_GROUP">
+              <PropertyRef Name="COMPANY_GROUP_ID" />
+            </Principal>
+            <Dependent Role="ELP_PAYMENT_TYPE">
+              <PropertyRef Name="COMPANY_GROUP_ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_COVLOSS_COMPGRP">
+          <End Role="ELP_COMPANY_GROUP" Type="Self.ELP_COMPANY_GROUP" Multiplicity="1" />
+          <End Role="ELP_COVERAGE_LOSS" Type="Self.ELP_COVERAGE_LOSS" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ELP_COMPANY_GROUP">
+              <PropertyRef Name="COMPANY_GROUP_ID" />
+            </Principal>
+            <Dependent Role="ELP_COVERAGE_LOSS">
+              <PropertyRef Name="COMPANY_GROUP_ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_D_CLAIM_STATUS_BY_GROUP_ID">
+          <End Role="ELP_CLAIM_STATUS_BY_GROUP" Type="Self.ELP_CLAIM_STATUS_BY_GROUP" Multiplicity="1" />
+          <End Role="ELP_DEFAULT_CLAIM_STATUS" Type="Self.ELP_DEFAULT_CLAIM_STATUS" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ELP_CLAIM_STATUS_BY_GROUP">
+              <PropertyRef Name="CLAIM_STATUS_BY_GROUP_ID" />
+            </Principal>
+            <Dependent Role="ELP_DEFAULT_CLAIM_STATUS">
+              <PropertyRef Name="CLAIM_STATUS_BY_GROUP_ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_DCS_COMPANY_GROUP_ID">
+          <End Role="ELP_COMPANY_GROUP" Type="Self.ELP_COMPANY_GROUP" Multiplicity="1" />
+          <End Role="ELP_DEFAULT_CLAIM_STATUS" Type="Self.ELP_DEFAULT_CLAIM_STATUS" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ELP_COMPANY_GROUP">
+              <PropertyRef Name="COMPANY_GROUP_ID" />
+            </Principal>
+            <Dependent Role="ELP_DEFAULT_CLAIM_STATUS">
+              <PropertyRef Name="COMPANY_GROUP_ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_MANUFACTURER_COMPANY_GROUP">
+          <End Role="ELP_COMPANY_GROUP" Type="Self.ELP_COMPANY_GROUP" Multiplicity="1" />
+          <End Role="ELP_MANUFACTURER" Type="Self.ELP_MANUFACTURER" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ELP_COMPANY_GROUP">
+              <PropertyRef Name="COMPANY_GROUP_ID" />
+            </Principal>
+            <Dependent Role="ELP_MANUFACTURER">
+              <PropertyRef Name="COMPANY_GROUP_ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_RISK_TYPE_COMPANY_GROUP">
+          <End Role="ELP_COMPANY_GROUP" Type="Self.ELP_COMPANY_GROUP" Multiplicity="1" />
+          <End Role="ELP_RISK_TYPE" Type="Self.ELP_RISK_TYPE" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ELP_COMPANY_GROUP">
+              <PropertyRef Name="COMPANY_GROUP_ID" />
+            </Principal>
+            <Dependent Role="ELP_RISK_TYPE">
+              <PropertyRef Name="COMPANY_GROUP_ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="Model6StoreContainer">
+          <EntitySet Name="ELP_CLAIM_STATUS_BY_GROUP" EntityType="Self.ELP_CLAIM_STATUS_BY_GROUP" Schema="ELITA" store:Type="Tables" />
+          <EntitySet Name="ELP_COMPANY_GROUP" EntityType="Self.ELP_COMPANY_GROUP" Schema="ELITA" store:Type="Tables" />
+          <EntitySet Name="ELP_COVERAGE_LOSS" EntityType="Self.ELP_COVERAGE_LOSS" Schema="ELITA" store:Type="Tables" />
+          <EntitySet Name="ELP_DEFAULT_CLAIM_STATUS" EntityType="Self.ELP_DEFAULT_CLAIM_STATUS" Schema="ELITA" store:Type="Tables" />
+          <EntitySet Name="ELP_MANUFACTURER" EntityType="Self.ELP_MANUFACTURER" Schema="ELITA" store:Type="Tables" />
+          <EntitySet Name="ELP_PAYMENT_TYPE" EntityType="Self.ELP_PAYMENT_TYPE" Schema="ELITA" store:Type="Tables" />
+          <EntitySet Name="ELP_RISK_TYPE" EntityType="Self.ELP_RISK_TYPE" Schema="ELITA" store:Type="Tables" />
+          <AssociationSet Name="FK_CLAIM_STATUS_CMPGRP_ID" Association="Self.FK_CLAIM_STATUS_CMPGRP_ID">
+            <End Role="ELP_COMPANY_GROUP" EntitySet="ELP_COMPANY_GROUP" />
+            <End Role="ELP_CLAIM_STATUS_BY_GROUP" EntitySet="ELP_CLAIM_STATUS_BY_GROUP" />
+          </AssociationSet>
+          <AssociationSet Name="FK_COMP_GRP_ID" Association="Self.FK_COMP_GRP_ID">
+            <End Role="ELP_COMPANY_GROUP" EntitySet="ELP_COMPANY_GROUP" />
+            <End Role="ELP_PAYMENT_TYPE" EntitySet="ELP_PAYMENT_TYPE" />
+          </AssociationSet>
+          <AssociationSet Name="FK_COVLOSS_COMPGRP" Association="Self.FK_COVLOSS_COMPGRP">
+            <End Role="ELP_COMPANY_GROUP" EntitySet="ELP_COMPANY_GROUP" />
+            <End Role="ELP_COVERAGE_LOSS" EntitySet="ELP_COVERAGE_LOSS" />
+          </AssociationSet>
+          <AssociationSet Name="FK_D_CLAIM_STATUS_BY_GROUP_ID" Association="Self.FK_D_CLAIM_STATUS_BY_GROUP_ID">
+            <End Role="ELP_CLAIM_STATUS_BY_GROUP" EntitySet="ELP_CLAIM_STATUS_BY_GROUP" />
+            <End Role="ELP_DEFAULT_CLAIM_STATUS" EntitySet="ELP_DEFAULT_CLAIM_STATUS" />
+          </AssociationSet>
+          <AssociationSet Name="FK_DCS_COMPANY_GROUP_ID" Association="Self.FK_DCS_COMPANY_GROUP_ID">
+            <End Role="ELP_COMPANY_GROUP" EntitySet="ELP_COMPANY_GROUP" />
+            <End Role="ELP_DEFAULT_CLAIM_STATUS" EntitySet="ELP_DEFAULT_CLAIM_STATUS" />
+          </AssociationSet>
+          <AssociationSet Name="FK_MANUFACTURER_COMPANY_GROUP" Association="Self.FK_MANUFACTURER_COMPANY_GROUP">
+            <End Role="ELP_COMPANY_GROUP" EntitySet="ELP_COMPANY_GROUP" />
+            <End Role="ELP_MANUFACTURER" EntitySet="ELP_MANUFACTURER" />
+          </AssociationSet>
+          <AssociationSet Name="FK_RISK_TYPE_COMPANY_GROUP" Association="Self.FK_RISK_TYPE_COMPANY_GROUP">
+            <End Role="ELP_COMPANY_GROUP" EntitySet="ELP_COMPANY_GROUP" />
+            <End Role="ELP_RISK_TYPE" EntitySet="ELP_RISK_TYPE" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema></edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="Model6" Alias="Self" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2008/09/edm">
+        <EntityType Name="CompanyGroup">
+          <Key>
+            <PropertyRef Name="CompanyGroupId" />
+          </Key>
+          <Property Name="CompanyGroupId" Type="Guid" Nullable="false" />
+          <Property Name="Description" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Code" Type="String" MaxLength="5" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="CreatedDate" Type="DateTime" Nullable="false" />
+          <Property Name="ModifiedDate" Type="DateTime" />
+          <Property Name="CreatedBy" Type="String" MaxLength="30" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="ModifiedBy" Type="String" MaxLength="30" FixedLength="false" Unicode="false" />
+          <Property Name="CLAIM_NUMBERING_BY_ID" Type="Guid" Nullable="false" />
+          <Property Name="ACCT_BY_COMPANY" Type="String" MaxLength="1" FixedLength="false" Unicode="false" />
+          <Property Name="INVOICE_NUMBERING_BY_ID" Type="Guid" Nullable="false" />
+          <Property Name="FTP_SITE_ID" Type="Guid" />
+          <Property Name="INVOICE_GROUP_NUMBERING_BY_ID" Type="Guid" Nullable="false" />
+          <Property Name="PAYMENT_GROUP_NUMBERING_BY_ID" Type="Guid" Nullable="false" />
+          <Property Name="YEARS_TO_INACTIVE_USEDVEHICLES" Type="Int16" />
+          <Property Name="INACTIVE_NEWVEHICLES_BASED_ON" Type="Guid" />
+          <Property Name="AUTHORIZATION_NUMBERING_BY_ID" Type="Guid" Nullable="false" />
+          <Property Name="CLAIM_FAST_APPROVAL_ID" Type="Guid" Nullable="false" />
+          <NavigationProperty Name="RiskTypes" Relationship="Model6.FK_RISK_TYPE_COMPANY_GROUP" FromRole="CompanyGroup" ToRole="ELP_RISK_TYPE" />
+          <NavigationProperty Name="Manufacturers" Relationship="Model6.FK_MANUFACTURER_COMPANY_GROUP" FromRole="CompanyGroup" ToRole="ELP_MANUFACTURER" />
+          <NavigationProperty Name="PaymentTypes" Relationship="Model6.FK_COMP_GRP_ID" FromRole="CompanyGroup" ToRole="ELP_PAYMENT_TYPE" />
+          <NavigationProperty Name="CoverageLosses" Relationship="Model6.FK_COVLOSS_COMPGRP" FromRole="CompanyGroup" ToRole="ELP_COVERAGE_LOSS" />
+          <NavigationProperty Name="ClaimStatusByGroups" Relationship="Model6.FK_CLAIM_STATUS_CMPGRP_ID" FromRole="CompanyGroup" ToRole="ELP_CLAIM_STATUS_BY_GROUP" />
+          <NavigationProperty Name="DefaultClaimStatuses" Relationship="Model6.FK_DCS_COMPANY_GROUP_ID" FromRole="CompanyGroup" ToRole="ELP_DEFAULT_CLAIM_STATUS" />
+        </EntityType>
+        <EntityContainer Name="Entities5" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="CompanyGroups" EntityType="Model6.CompanyGroup" />
+          <EntitySet Name="RiskTypes1" EntityType="Model6.RiskType" />
+          <AssociationSet Name="FK_RISK_TYPE_COMPANY_GROUP" Association="Model6.FK_RISK_TYPE_COMPANY_GROUP">
+            <End Role="CompanyGroup" EntitySet="CompanyGroups" />
+            <End Role="ELP_RISK_TYPE" EntitySet="RiskTypes1" />
+          </AssociationSet>
+          <EntitySet Name="Manufacturers" EntityType="Model6.Manufacturer" />
+          <AssociationSet Name="FK_MANUFACTURER_COMPANY_GROUP" Association="Model6.FK_MANUFACTURER_COMPANY_GROUP">
+            <End Role="CompanyGroup" EntitySet="CompanyGroups" />
+            <End Role="ELP_MANUFACTURER" EntitySet="Manufacturers" />
+          </AssociationSet>
+          <EntitySet Name="PaymentTypes" EntityType="Model6.PaymentType" />
+          <AssociationSet Name="FK_COMP_GRP_ID" Association="Model6.FK_COMP_GRP_ID">
+            <End Role="CompanyGroup" EntitySet="CompanyGroups" />
+            <End Role="ELP_PAYMENT_TYPE" EntitySet="PaymentTypes" />
+          </AssociationSet>
+          <EntitySet Name="CoverageLosses" EntityType="Model6.CoverageLoss" />
+          <AssociationSet Name="FK_COVLOSS_COMPGRP" Association="Model6.FK_COVLOSS_COMPGRP">
+            <End Role="CompanyGroup" EntitySet="CompanyGroups" />
+            <End Role="ELP_COVERAGE_LOSS" EntitySet="CoverageLosses" />
+          </AssociationSet>
+          <EntitySet Name="ClaimStatusByGroups" EntityType="Model6.ClaimStatusByGroup" />
+          <AssociationSet Name="FK_CLAIM_STATUS_CMPGRP_ID" Association="Model6.FK_CLAIM_STATUS_CMPGRP_ID">
+            <End Role="CompanyGroup" EntitySet="CompanyGroups" />
+            <End Role="ELP_CLAIM_STATUS_BY_GROUP" EntitySet="ClaimStatusByGroups" />
+          </AssociationSet>
+          <EntitySet Name="DefaultClaimStatus" EntityType="Model6.DefaultClaimStatus" />
+          <AssociationSet Name="FK_D_CLAIM_STATUS_BY_GROUP_ID" Association="Model6.FK_D_CLAIM_STATUS_BY_GROUP_ID">
+            <End Role="ClaimStatusByGroup" EntitySet="ClaimStatusByGroups" />
+            <End Role="ELP_DEFAULT_CLAIM_STATUS" EntitySet="DefaultClaimStatus" />
+          </AssociationSet>
+          <AssociationSet Name="FK_DCS_COMPANY_GROUP_ID" Association="Model6.FK_DCS_COMPANY_GROUP_ID">
+            <End Role="CompanyGroup" EntitySet="CompanyGroups" />
+            <End Role="ELP_DEFAULT_CLAIM_STATUS" EntitySet="DefaultClaimStatus" />
+          </AssociationSet>
+        </EntityContainer>
+        <EntityType Name="RiskType">
+          <Key>
+            <PropertyRef Name="RiskTypeId" />
+          </Key>
+          <Property Name="RiskTypeId" Type="Guid" Nullable="false" />
+          <Property Name="Description" Type="String" Nullable="false" MaxLength="60" FixedLength="false" Unicode="false" />
+          <Property Name="RiskTypeEnglish" Type="String" Nullable="false" MaxLength="60" FixedLength="false" Unicode="false" />
+          <Property Name="RISK_GROUP_ID" Type="Guid" Nullable="false" />
+          <Property Name="CreatedDate" Type="DateTime" Nullable="false" />
+          <Property Name="ModifiedDate" Type="DateTime" />
+          <Property Name="CreatedBy" Type="String" Nullable="false" MaxLength="30" FixedLength="false" Unicode="false" />
+          <Property Name="ModifiedBy" Type="String" MaxLength="30" FixedLength="false" Unicode="false" />
+          <Property Name="ACTIVE_FLAG" Type="String" Nullable="false" MaxLength="1" FixedLength="false" Unicode="false" />
+          <Property Name="SOFT_QUESTION_GROUP_ID" Type="Guid" />
+          <Property Name="CompanyGroupId" Type="Guid" Nullable="false" />
+          <Property Name="PRODUCT_TAX_TYPE_ID" Type="Guid" />
+          <NavigationProperty Name="CompanyGroup" Relationship="Model6.FK_RISK_TYPE_COMPANY_GROUP" FromRole="ELP_RISK_TYPE" ToRole="CompanyGroup" />
+        </EntityType>
+        <Association Name="FK_RISK_TYPE_COMPANY_GROUP">
+          <End Type="Model6.CompanyGroup" Role="CompanyGroup" Multiplicity="1" />
+          <End Type="Model6.RiskType" Role="ELP_RISK_TYPE" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="CompanyGroup">
+              <PropertyRef Name="CompanyGroupId" />
+            </Principal>
+            <Dependent Role="ELP_RISK_TYPE">
+              <PropertyRef Name="CompanyGroupId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityType Name="Manufacturer">
+          <Key>
+            <PropertyRef Name="ManufacturerId" />
+          </Key>
+          <Property Name="ManufacturerId" Type="Guid" Nullable="false" />
+          <Property Name="Description" Type="String" Nullable="false" MaxLength="255" FixedLength="false" Unicode="false" />
+          <Property Name="CreatedDate" Type="DateTime" Nullable="false" />
+          <Property Name="ModifiedDate" Type="DateTime" />
+          <Property Name="CreatedBy" Type="String" Nullable="false" MaxLength="30" FixedLength="false" Unicode="false" />
+          <Property Name="ModifiedBy" Type="String" MaxLength="30" FixedLength="false" Unicode="false" />
+          <Property Name="ACTIVE_FLAG" Type="String" Nullable="false" MaxLength="1" FixedLength="false" Unicode="false" />
+          <Property Name="CompanyGroupId" Type="Guid" Nullable="false" />
+          <NavigationProperty Name="CompanyGroup" Relationship="Model6.FK_MANUFACTURER_COMPANY_GROUP" FromRole="ELP_MANUFACTURER" ToRole="CompanyGroup" />
+        </EntityType>
+        <Association Name="FK_MANUFACTURER_COMPANY_GROUP">
+          <End Type="Model6.CompanyGroup" Role="CompanyGroup" Multiplicity="1" />
+          <End Type="Model6.Manufacturer" Role="ELP_MANUFACTURER" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="CompanyGroup">
+              <PropertyRef Name="CompanyGroupId" />
+            </Principal>
+            <Dependent Role="ELP_MANUFACTURER">
+              <PropertyRef Name="CompanyGroupId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityType Name="PaymentType">
+          <Key>
+            <PropertyRef Name="PaymentTypeId" />
+          </Key>
+          <Property Name="PaymentTypeId" Type="Guid" Nullable="false" />
+          <Property Name="Description" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="Code" Type="String" Nullable="false" MaxLength="10" FixedLength="false" Unicode="false" />
+          <Property Name="CreatedDate" Type="DateTime" Nullable="false" />
+          <Property Name="ModifiedDate" Type="DateTime" />
+          <Property Name="CreatedBy" Type="String" Nullable="false" MaxLength="30" FixedLength="false" Unicode="false" />
+          <Property Name="ModifiedBy" Type="String" MaxLength="30" FixedLength="false" Unicode="false" />
+          <Property Name="CompanyGroupId" Type="Guid" Nullable="false" />
+          <Property Name="PaymentInstrumentId" Type="Guid" />
+          <Property Name="CollectionMethodId" Type="Guid" />
+          <NavigationProperty Name="CompanyGroup" Relationship="Model6.FK_COMP_GRP_ID" FromRole="ELP_PAYMENT_TYPE" ToRole="CompanyGroup" />
+        </EntityType>
+        <Association Name="FK_COMP_GRP_ID">
+          <End Type="Model6.CompanyGroup" Role="CompanyGroup" Multiplicity="1" />
+          <End Type="Model6.PaymentType" Role="ELP_PAYMENT_TYPE" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="CompanyGroup">
+              <PropertyRef Name="CompanyGroupId" />
+            </Principal>
+            <Dependent Role="ELP_PAYMENT_TYPE">
+              <PropertyRef Name="CompanyGroupId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityType Name="CoverageLoss">
+          <Key>
+            <PropertyRef Name="CoverageLossId" />
+          </Key>
+          <Property Name="CoverageLossId" Type="Guid" Nullable="false" />
+          <Property Name="CompanyGroupId" Type="Guid" Nullable="false" />
+          <Property Name="CoverageTypeId" Type="Guid" Nullable="false" />
+          <Property Name="CauseOfLossId" Type="Guid" Nullable="false" />
+          <Property Name="CreatedBy" Type="String" Nullable="false" MaxLength="30" FixedLength="false" Unicode="false" />
+          <Property Name="CreatedDate" Type="DateTime" Nullable="false" />
+          <Property Name="ModifiedBy" Type="String" MaxLength="30" FixedLength="false" Unicode="false" />
+          <Property Name="ModifiedDate" Type="DateTime" />
+          <Property Name="DefaultFlag" Type="String" MaxLength="1" FixedLength="true" Unicode="false" />
+          <Property Name="Active" Type="String" MaxLength="1" FixedLength="true" Unicode="false" />
+          <NavigationProperty Name="ELP_COMPANY_GROUP" Relationship="Model6.FK_COVLOSS_COMPGRP" FromRole="ELP_COVERAGE_LOSS" ToRole="CompanyGroup" />
+        </EntityType>
+        <Association Name="FK_COVLOSS_COMPGRP">
+          <End Type="Model6.CompanyGroup" Role="CompanyGroup" Multiplicity="1" />
+          <End Type="Model6.CoverageLoss" Role="ELP_COVERAGE_LOSS" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="CompanyGroup">
+              <PropertyRef Name="CompanyGroupId" />
+            </Principal>
+            <Dependent Role="ELP_COVERAGE_LOSS">
+              <PropertyRef Name="CompanyGroupId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityType Name="ClaimStatusByGroup">
+          <Key>
+            <PropertyRef Name="ClaimStatusByGroupId" />
+          </Key>
+          <Property Name="ClaimStatusByGroupId" Type="Guid" Nullable="false" />
+          <Property Name="CompanyGroupId" Type="Guid" />
+          <Property Name="DealerId" Type="Guid" />
+          <Property Name="ListItemId" Type="Guid" Nullable="false" />
+          <Property Name="StatusOrder" Type="Decimal" Nullable="false" Precision="38" Scale="0" />
+          <Property Name="CreatedBy" Type="String" Nullable="false" MaxLength="30" FixedLength="false" Unicode="false" />
+          <Property Name="CreatedDate" Type="DateTime" Nullable="false" />
+          <Property Name="ModifiedBy" Type="String" MaxLength="30" FixedLength="false" Unicode="false" />
+          <Property Name="ModifiedDate" Type="DateTime" />
+          <Property Name="OwnerId" Type="Guid" />
+          <Property Name="SkippingAllowedId" Type="Guid" Nullable="false" />
+          <Property Name="ActiveId" Type="Guid" Nullable="false" />
+          <Property Name="GroupNumber" Type="Int16" />
+          <NavigationProperty Name="CompanyGroup" Relationship="Model6.FK_CLAIM_STATUS_CMPGRP_ID" FromRole="ELP_CLAIM_STATUS_BY_GROUP" ToRole="CompanyGroup" />
+          <NavigationProperty Name="DefaultClaimStatuses" Relationship="Model6.FK_D_CLAIM_STATUS_BY_GROUP_ID" FromRole="ClaimStatusByGroup" ToRole="ELP_DEFAULT_CLAIM_STATUS" />
+        </EntityType>
+        <Association Name="FK_CLAIM_STATUS_CMPGRP_ID">
+          <End Type="Model6.CompanyGroup" Role="CompanyGroup" Multiplicity="0..1" />
+          <End Type="Model6.ClaimStatusByGroup" Role="ELP_CLAIM_STATUS_BY_GROUP" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="CompanyGroup">
+              <PropertyRef Name="CompanyGroupId" />
+            </Principal>
+            <Dependent Role="ELP_CLAIM_STATUS_BY_GROUP">
+              <PropertyRef Name="CompanyGroupId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityType Name="DefaultClaimStatus">
+          <Key>
+            <PropertyRef Name="DefaultClaimStatusId" />
+          </Key>
+          <Property Name="DefaultClaimStatusId" Type="Guid" Nullable="false" />
+          <Property Name="ClaimStatusByGroupId" Type="Guid" Nullable="false" />
+          <Property Name="DefaultTypeId" Type="Guid" Nullable="false" />
+          <Property Name="MethodOfRepairId" Type="Guid" />
+          <Property Name="CreatedBy" Type="String" Nullable="false" MaxLength="30" FixedLength="false" Unicode="false" />
+          <Property Name="CreatedDate" Type="DateTime" Nullable="false" />
+          <Property Name="ModifiedBy" Type="String" MaxLength="30" FixedLength="false" Unicode="false" />
+          <Property Name="ModifiedDate" Type="DateTime" />
+          <Property Name="CompanyGroupId" Type="Guid" Nullable="false" />
+          <NavigationProperty Name="ClaimStatusByGroup" Relationship="Model6.FK_D_CLAIM_STATUS_BY_GROUP_ID" FromRole="ELP_DEFAULT_CLAIM_STATUS" ToRole="ClaimStatusByGroup" />
+          <NavigationProperty Name="CompanyGroup" Relationship="Model6.FK_DCS_COMPANY_GROUP_ID" FromRole="ELP_DEFAULT_CLAIM_STATUS" ToRole="CompanyGroup" />
+        </EntityType>
+        <Association Name="FK_D_CLAIM_STATUS_BY_GROUP_ID">
+          <End Type="Model6.ClaimStatusByGroup" Role="ClaimStatusByGroup" Multiplicity="1" />
+          <End Type="Model6.DefaultClaimStatus" Role="ELP_DEFAULT_CLAIM_STATUS" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ClaimStatusByGroup">
+              <PropertyRef Name="ClaimStatusByGroupId" />
+            </Principal>
+            <Dependent Role="ELP_DEFAULT_CLAIM_STATUS">
+              <PropertyRef Name="ClaimStatusByGroupId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_DCS_COMPANY_GROUP_ID">
+          <End Type="Model6.CompanyGroup" Role="CompanyGroup" Multiplicity="1" />
+          <End Type="Model6.DefaultClaimStatus" Role="ELP_DEFAULT_CLAIM_STATUS" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="CompanyGroup">
+              <PropertyRef Name="CompanyGroupId" />
+            </Principal>
+            <Dependent Role="ELP_DEFAULT_CLAIM_STATUS">
+              <PropertyRef Name="CompanyGroupId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2008/09/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="Model6StoreContainer" CdmEntityContainer="Entities5">
+          <EntitySetMapping Name="CompanyGroups">
+            <EntityTypeMapping TypeName="Model6.CompanyGroup">
+              <MappingFragment StoreEntitySet="ELP_COMPANY_GROUP">
+                <ScalarProperty Name="CompanyGroupId" ColumnName="COMPANY_GROUP_ID" />
+                <ScalarProperty Name="Description" ColumnName="DESCRIPTION" />
+                <ScalarProperty Name="Code" ColumnName="CODE" />
+                <ScalarProperty Name="CreatedDate" ColumnName="CREATED_DATE" />
+                <ScalarProperty Name="ModifiedDate" ColumnName="MODIFIED_DATE" />
+                <ScalarProperty Name="CreatedBy" ColumnName="CREATED_BY" />
+                <ScalarProperty Name="ModifiedBy" ColumnName="MODIFIED_BY" />
+                <ScalarProperty Name="CLAIM_NUMBERING_BY_ID" ColumnName="CLAIM_NUMBERING_BY_ID" />
+                <ScalarProperty Name="ACCT_BY_COMPANY" ColumnName="ACCT_BY_COMPANY" />
+                <ScalarProperty Name="INVOICE_NUMBERING_BY_ID" ColumnName="INVOICE_NUMBERING_BY_ID" />
+                <ScalarProperty Name="FTP_SITE_ID" ColumnName="FTP_SITE_ID" />
+                <ScalarProperty Name="INVOICE_GROUP_NUMBERING_BY_ID" ColumnName="INVOICE_GROUP_NUMBERING_BY_ID" />
+                <ScalarProperty Name="PAYMENT_GROUP_NUMBERING_BY_ID" ColumnName="PAYMENT_GROUP_NUMBERING_BY_ID" />
+                <ScalarProperty Name="YEARS_TO_INACTIVE_USEDVEHICLES" ColumnName="YEARS_TO_INACTIVE_USEDVEHICLES" />
+                <ScalarProperty Name="INACTIVE_NEWVEHICLES_BASED_ON" ColumnName="INACTIVE_NEWVEHICLES_BASED_ON" />
+                <ScalarProperty Name="AUTHORIZATION_NUMBERING_BY_ID" ColumnName="AUTHORIZATION_NUMBERING_BY_ID" />
+                <ScalarProperty Name="CLAIM_FAST_APPROVAL_ID" ColumnName="CLAIM_FAST_APPROVAL_ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="RiskTypes1">
+            <EntityTypeMapping TypeName="Model6.RiskType">
+              <MappingFragment StoreEntitySet="ELP_RISK_TYPE">
+                <ScalarProperty Name="PRODUCT_TAX_TYPE_ID" ColumnName="PRODUCT_TAX_TYPE_ID" />
+                <ScalarProperty Name="CompanyGroupId" ColumnName="COMPANY_GROUP_ID" />
+                <ScalarProperty Name="SOFT_QUESTION_GROUP_ID" ColumnName="SOFT_QUESTION_GROUP_ID" />
+                <ScalarProperty Name="ACTIVE_FLAG" ColumnName="ACTIVE_FLAG" />
+                <ScalarProperty Name="ModifiedBy" ColumnName="MODIFIED_BY" />
+                <ScalarProperty Name="CreatedBy" ColumnName="CREATED_BY" />
+                <ScalarProperty Name="ModifiedDate" ColumnName="MODIFIED_DATE" />
+                <ScalarProperty Name="CreatedDate" ColumnName="CREATED_DATE" />
+                <ScalarProperty Name="RISK_GROUP_ID" ColumnName="RISK_GROUP_ID" />
+                <ScalarProperty Name="RiskTypeEnglish" ColumnName="RISK_TYPE_ENGLISH" />
+                <ScalarProperty Name="Description" ColumnName="DESCRIPTION" />
+                <ScalarProperty Name="RiskTypeId" ColumnName="RISK_TYPE_ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Manufacturers">
+            <EntityTypeMapping TypeName="Model6.Manufacturer">
+              <MappingFragment StoreEntitySet="ELP_MANUFACTURER">
+                <ScalarProperty Name="CompanyGroupId" ColumnName="COMPANY_GROUP_ID" />
+                <ScalarProperty Name="ACTIVE_FLAG" ColumnName="ACTIVE_FLAG" />
+                <ScalarProperty Name="ModifiedBy" ColumnName="MODIFIED_BY" />
+                <ScalarProperty Name="CreatedBy" ColumnName="CREATED_BY" />
+                <ScalarProperty Name="ModifiedDate" ColumnName="MODIFIED_DATE" />
+                <ScalarProperty Name="CreatedDate" ColumnName="CREATED_DATE" />
+                <ScalarProperty Name="Description" ColumnName="DESCRIPTION" />
+                <ScalarProperty Name="ManufacturerId" ColumnName="MANUFACTURER_ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="PaymentTypes">
+            <EntityTypeMapping TypeName="Model6.PaymentType">
+              <MappingFragment StoreEntitySet="ELP_PAYMENT_TYPE">
+                <ScalarProperty Name="CollectionMethodId" ColumnName="COLLECTION_METHOD_ID" />
+                <ScalarProperty Name="PaymentInstrumentId" ColumnName="PAYMENT_INSTRUMENT_ID" />
+                <ScalarProperty Name="CompanyGroupId" ColumnName="COMPANY_GROUP_ID" />
+                <ScalarProperty Name="ModifiedBy" ColumnName="MODIFIED_BY" />
+                <ScalarProperty Name="CreatedBy" ColumnName="CREATED_BY" />
+                <ScalarProperty Name="ModifiedDate" ColumnName="MODIFIED_DATE" />
+                <ScalarProperty Name="CreatedDate" ColumnName="CREATED_DATE" />
+                <ScalarProperty Name="Code" ColumnName="CODE" />
+                <ScalarProperty Name="Description" ColumnName="DESCRIPTION" />
+                <ScalarProperty Name="PaymentTypeId" ColumnName="PAYMENT_TYPE_ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="CoverageLosses">
+            <EntityTypeMapping TypeName="Model6.CoverageLoss">
+              <MappingFragment StoreEntitySet="ELP_COVERAGE_LOSS">
+                <ScalarProperty Name="Active" ColumnName="ACTIVE" />
+                <ScalarProperty Name="DefaultFlag" ColumnName="DEFAULT_FLAG" />
+                <ScalarProperty Name="ModifiedDate" ColumnName="MODIFIED_DATE" />
+                <ScalarProperty Name="ModifiedBy" ColumnName="MODIFIED_BY" />
+                <ScalarProperty Name="CreatedDate" ColumnName="CREATED_DATE" />
+                <ScalarProperty Name="CreatedBy" ColumnName="CREATED_BY" />
+                <ScalarProperty Name="CauseOfLossId" ColumnName="CAUSE_OF_LOSS_ID" />
+                <ScalarProperty Name="CoverageTypeId" ColumnName="COVERAGE_TYPE_ID" />
+                <ScalarProperty Name="CompanyGroupId" ColumnName="COMPANY_GROUP_ID" />
+                <ScalarProperty Name="CoverageLossId" ColumnName="COVERAGE_LOSS_ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="ClaimStatusByGroups">
+            <EntityTypeMapping TypeName="Model6.ClaimStatusByGroup">
+              <MappingFragment StoreEntitySet="ELP_CLAIM_STATUS_BY_GROUP">
+                <ScalarProperty Name="GroupNumber" ColumnName="GROUP_NUMBER" />
+                <ScalarProperty Name="ActiveId" ColumnName="ACTIVE_ID" />
+                <ScalarProperty Name="SkippingAllowedId" ColumnName="SKIPPING_ALLOWED_ID" />
+                <ScalarProperty Name="OwnerId" ColumnName="OWNER_ID" />
+                <ScalarProperty Name="ModifiedDate" ColumnName="MODIFIED_DATE" />
+                <ScalarProperty Name="ModifiedBy" ColumnName="MODIFIED_BY" />
+                <ScalarProperty Name="CreatedDate" ColumnName="CREATED_DATE" />
+                <ScalarProperty Name="CreatedBy" ColumnName="CREATED_BY" />
+                <ScalarProperty Name="StatusOrder" ColumnName="STATUS_ORDER" />
+                <ScalarProperty Name="ListItemId" ColumnName="LIST_ITEM_ID" />
+                <ScalarProperty Name="DealerId" ColumnName="DEALER_ID" />
+                <ScalarProperty Name="CompanyGroupId" ColumnName="COMPANY_GROUP_ID" />
+                <ScalarProperty Name="ClaimStatusByGroupId" ColumnName="CLAIM_STATUS_BY_GROUP_ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="DefaultClaimStatus">
+            <EntityTypeMapping TypeName="Model6.DefaultClaimStatus">
+              <MappingFragment StoreEntitySet="ELP_DEFAULT_CLAIM_STATUS">
+                <ScalarProperty Name="CompanyGroupId" ColumnName="COMPANY_GROUP_ID" />
+                <ScalarProperty Name="ModifiedDate" ColumnName="MODIFIED_DATE" />
+                <ScalarProperty Name="ModifiedBy" ColumnName="MODIFIED_BY" />
+                <ScalarProperty Name="CreatedDate" ColumnName="CREATED_DATE" />
+                <ScalarProperty Name="CreatedBy" ColumnName="CREATED_BY" />
+                <ScalarProperty Name="MethodOfRepairId" ColumnName="METHOD_OF_REPAIR_ID" />
+                <ScalarProperty Name="DefaultTypeId" ColumnName="DEFAULT_TYPE_ID" />
+                <ScalarProperty Name="ClaimStatusByGroupId" ColumnName="CLAIM_STATUS_BY_GROUP_ID" />
+                <ScalarProperty Name="DefaultClaimStatusId" ColumnName="DEFAULT_CLAIM_STATUS_ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2008/10/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="true" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="true" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>

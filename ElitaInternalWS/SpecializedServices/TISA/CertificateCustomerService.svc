@@ -1,0 +1,4 @@
+﻿<%@ ServiceHost Language="VB" Debug="true" 
+    Service="ElitaInternalWS.SpecializedServices.Tisa.CertificateCustomerService" 
+    Factory="ElitaInternalWS.Core.UnityServiceHostFactory"
+    CodeBehind="CertificateCustomerService.svc.vb" %>

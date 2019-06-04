@@ -1,0 +1,109 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+
+<!-- ********************** THIS FILE HAS BEEN GENERATED FROM TEMPLATE SQLObject.cst (1/12/2018)********************** -->
+
+<SQL>
+  <LOAD>
+    <![CDATA[          
+      SELECT 
+        claim_auth_item_id,
+        claim_authorization_id,
+        service_class_id,
+        service_type_id,
+        line_item_number,
+        vendor_sku,
+        vendor_sku_description,
+        amount,
+        adjustment_reason_id,
+        created_date,
+        created_by,
+        modified_date,
+        modified_by,
+        po_adjustment_reason_id,
+        adj_line_item_number,
+        0 as is_deleted
+      FROM elp_claim_auth_item 
+      WHERE
+        claim_auth_item_id = :claim_auth_item_id
+                                ]]>
+  </LOAD>
+  <LOAD_LIST>
+    <![CDATA[	
+			SELECT 
+				claim_auth_item_id,
+        claim_authorization_id,
+				service_class_id,
+				service_type_id,
+				line_item_number,
+				vendor_sku,
+				vendor_sku_description,
+				amount,
+				adjustment_reason_id,
+				created_date,
+				created_by,
+				modified_date,
+				modified_by,
+        po_adjustment_reason_id,
+        adj_line_item_number,
+        0 as is_deleted
+			FROM elp_claim_auth_item 
+			WHERE
+				claim_authorization_id = :claim_authorization_id
+		]]>
+  </LOAD_LIST>
+  <UPDATE>
+    <![CDATA[          
+      UPDATE elp_claim_auth_item SET
+        claim_authorization_id = :claim_authorization_id,
+        service_class_id = :service_class_id,
+        service_type_id = :service_type_id,
+        line_item_number = :line_item_number,
+        vendor_sku = :vendor_sku,
+        vendor_sku_description = :vendor_sku_description,
+        amount = :amount,
+        adjustment_reason_id = :adjustment_reason_id,
+        po_adjustment_reason_id = :po_adjustment_reason_id,
+        adj_line_item_number = :adj_line_item_number,
+        modified_by = :modified_by
+      WHERE
+        claim_auth_item_id = :claim_auth_item_id
+    ]]>
+  </UPDATE>
+  <INSERT>
+    INSERT INTO elp_claim_auth_item
+    (
+    claim_auth_item_id,
+    claim_authorization_id,
+    service_class_id,
+    service_type_id,
+    line_item_number,
+    vendor_sku,
+    vendor_sku_description,
+    amount,
+    adjustment_reason_id,
+    po_adjustment_reason_id,
+    adj_line_item_number,
+    created_by
+    )
+    VALUES
+    (
+    :claim_auth_item_id,
+    :claim_authorization_id,
+    :service_class_id,
+    :service_type_id,
+    :line_item_number,
+    :vendor_sku,
+    :vendor_sku_description,
+    :amount,
+    :adjustment_reason_id,
+    :po_adjustment_reason_id,
+    :adj_line_item_number,
+    :created_by
+    )
+  </INSERT>
+  <DELETE>
+    DELETE FROM elp_claim_auth_item
+    WHERE
+    claim_auth_item_id = :claim_auth_item_id
+  </DELETE>
+</SQL>

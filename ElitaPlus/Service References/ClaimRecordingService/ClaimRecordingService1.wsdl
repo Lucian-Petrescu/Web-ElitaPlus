@@ -1,0 +1,1891 @@
+<?xml version="1.0" encoding="utf-8"?>
+<wsdl:definitions xmlns:wsap="http://schemas.xmlsoap.org/ws/2004/08/addressing/policy" xmlns:wsa10="http://www.w3.org/2005/08/addressing" xmlns:tns="http://elita.assurant.com/Elita/Claim/RecordingService" xmlns:msc="http://schemas.microsoft.com/ws/2005/12/wsdl/contract" xmlns:soapenc="http://schemas.xmlsoap.org/soap/encoding/" xmlns:wsx="http://schemas.xmlsoap.org/ws/2004/09/mex" xmlns:wsp="http://schemas.xmlsoap.org/ws/2004/09/policy" xmlns:wsam="http://www.w3.org/2007/05/addressing/metadata" xmlns:wsa="http://schemas.xmlsoap.org/ws/2004/08/addressing" xmlns:wsaw="http://www.w3.org/2006/05/addressing/wsdl" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:soap12="http://schemas.xmlsoap.org/wsdl/soap12/" xmlns:wsu="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-utility-1.0.xsd" xmlns:xsd="http://www.w3.org/2001/XMLSchema" name="ClaimRecordingService" targetNamespace="http://elita.assurant.com/Elita/Claim/RecordingService" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">
+  <wsp:Policy wsu:Id="CustomBinding_IClaimRecordingService_policy">
+    <wsp:ExactlyOne>
+      <wsp:All>
+        <sp:TransportBinding xmlns:sp="http://schemas.xmlsoap.org/ws/2005/07/securitypolicy">
+          <wsp:Policy>
+            <sp:TransportToken>
+              <wsp:Policy>
+                <sp:HttpsToken RequireClientCertificate="false" />
+              </wsp:Policy>
+            </sp:TransportToken>
+            <sp:AlgorithmSuite>
+              <wsp:Policy>
+                <sp:Basic256 />
+              </wsp:Policy>
+            </sp:AlgorithmSuite>
+            <sp:Layout>
+              <wsp:Policy>
+                <sp:Strict />
+              </wsp:Policy>
+            </sp:Layout>
+            <sp:IncludeTimestamp />
+          </wsp:Policy>
+        </sp:TransportBinding>
+        <sp:SignedSupportingTokens xmlns:sp="http://schemas.xmlsoap.org/ws/2005/07/securitypolicy">
+          <wsp:Policy>
+            <sp:UsernameToken sp:IncludeToken="http://schemas.xmlsoap.org/ws/2005/07/securitypolicy/IncludeToken/AlwaysToRecipient">
+              <wsp:Policy>
+                <sp:WssUsernameToken10 />
+              </wsp:Policy>
+            </sp:UsernameToken>
+          </wsp:Policy>
+        </sp:SignedSupportingTokens>
+        <sp:Wss11 xmlns:sp="http://schemas.xmlsoap.org/ws/2005/07/securitypolicy">
+          <wsp:Policy />
+        </sp:Wss11>
+        <sp:Trust10 xmlns:sp="http://schemas.xmlsoap.org/ws/2005/07/securitypolicy">
+          <wsp:Policy>
+            <sp:MustSupportIssuedTokens />
+            <sp:RequireClientEntropy />
+            <sp:RequireServerEntropy />
+          </wsp:Policy>
+        </sp:Trust10>
+      </wsp:All>
+    </wsp:ExactlyOne>
+  </wsp:Policy>
+  <wsdl:types>
+    <xs:schema xmlns:tns="http://schemas.microsoft.com/2003/10/Serialization/" attributeFormDefault="qualified" elementFormDefault="qualified" targetNamespace="http://schemas.microsoft.com/2003/10/Serialization/" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+      <xs:element name="anyType" nillable="true" type="xs:anyType" />
+      <xs:element name="anyURI" nillable="true" type="xs:anyURI" />
+      <xs:element name="base64Binary" nillable="true" type="xs:base64Binary" />
+      <xs:element name="boolean" nillable="true" type="xs:boolean" />
+      <xs:element name="byte" nillable="true" type="xs:byte" />
+      <xs:element name="dateTime" nillable="true" type="xs:dateTime" />
+      <xs:element name="decimal" nillable="true" type="xs:decimal" />
+      <xs:element name="double" nillable="true" type="xs:double" />
+      <xs:element name="float" nillable="true" type="xs:float" />
+      <xs:element name="int" nillable="true" type="xs:int" />
+      <xs:element name="long" nillable="true" type="xs:long" />
+      <xs:element name="QName" nillable="true" type="xs:QName" />
+      <xs:element name="short" nillable="true" type="xs:short" />
+      <xs:element name="string" nillable="true" type="xs:string" />
+      <xs:element name="unsignedByte" nillable="true" type="xs:unsignedByte" />
+      <xs:element name="unsignedInt" nillable="true" type="xs:unsignedInt" />
+      <xs:element name="unsignedLong" nillable="true" type="xs:unsignedLong" />
+      <xs:element name="unsignedShort" nillable="true" type="xs:unsignedShort" />
+      <xs:element name="char" nillable="true" type="tns:char" />
+      <xs:simpleType name="char">
+        <xs:restriction base="xs:int" />
+      </xs:simpleType>
+      <xs:element name="duration" nillable="true" type="tns:duration" />
+      <xs:simpleType name="duration">
+        <xs:restriction base="xs:duration">
+          <xs:pattern value="\-?P(\d*D)?(T(\d*H)?(\d*M)?(\d*(\.\d*)?S)?)?" />
+          <xs:minInclusive value="-P10675199DT2H48M5.4775808S" />
+          <xs:maxInclusive value="P10675199DT2H48M5.4775807S" />
+        </xs:restriction>
+      </xs:simpleType>
+      <xs:element name="guid" nillable="true" type="tns:guid" />
+      <xs:simpleType name="guid">
+        <xs:restriction base="xs:string">
+          <xs:pattern value="[\da-fA-F]{8}-[\da-fA-F]{4}-[\da-fA-F]{4}-[\da-fA-F]{4}-[\da-fA-F]{12}" />
+        </xs:restriction>
+      </xs:simpleType>
+      <xs:attribute name="FactoryType" type="xs:QName" />
+      <xs:attribute name="Id" type="xs:ID" />
+      <xs:attribute name="Ref" type="xs:IDREF" />
+    </xs:schema>
+    <xs:schema xmlns:ser="http://schemas.microsoft.com/2003/10/Serialization/" xmlns:tns="http://elita.assurant.com/Elita/Claim/RecordingService/DataContracts" elementFormDefault="qualified" targetNamespace="http://elita.assurant.com/Elita/Claim/RecordingService/DataContracts" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+      <xs:import namespace="http://schemas.microsoft.com/2003/10/Serialization/" />
+      <xs:import namespace="http://schemas.datacontract.org/2004/07/Assurant.Elita.ClaimService.Contracts.Recording.Shared.ClaimRecordingResponse" />
+      <xs:import namespace="http://assurant.com/Elita/ClaimFulfillment/Shared/Data" />
+      <xs:import namespace="http://schemas.microsoft.com/2003/10/Serialization/Arrays" />
+      <xs:complexType name="PhoneCaller">
+        <xs:complexContent mixed="false">
+          <xs:extension base="tns:BaseCaller">
+            <xs:sequence>
+              <xs:element minOccurs="0" name="PhoneNumber" nillable="true" type="xs:string" />
+            </xs:sequence>
+          </xs:extension>
+        </xs:complexContent>
+      </xs:complexType>
+      <xs:element name="PhoneCaller" nillable="true" type="tns:PhoneCaller" />
+      <xs:complexType name="BaseCaller">
+        <xs:sequence>
+          <xs:element name="FirstName" nillable="true" type="xs:string" />
+          <xs:element name="LastName" nillable="true" type="xs:string" />
+          <xs:element name="RelationshipTypeCode" nillable="true" type="xs:string" />
+          <xs:element name="ChannelCode" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="EmailAddress" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="CultureCode" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="IsAuthenticated" type="xs:boolean" />
+        </xs:sequence>
+      </xs:complexType>
+      <xs:element name="BaseCaller" nillable="true" type="tns:BaseCaller" />
+      <xs:complexType name="WebCaller">
+        <xs:complexContent mixed="false">
+          <xs:extension base="tns:BaseCaller">
+            <xs:sequence>
+              <xs:element minOccurs="0" name="ClientIpAddress" nillable="true" type="xs:string" />
+            </xs:sequence>
+          </xs:extension>
+        </xs:complexContent>
+      </xs:complexType>
+      <xs:element name="WebCaller" nillable="true" type="tns:WebCaller" />
+      <xs:complexType name="ClaimReference">
+        <xs:complexContent mixed="false">
+          <xs:extension base="tns:BaseReference">
+            <xs:sequence>
+              <xs:element name="ClaimNumber" nillable="true" type="xs:string" />
+            </xs:sequence>
+          </xs:extension>
+        </xs:complexContent>
+      </xs:complexType>
+      <xs:element name="ClaimReference" nillable="true" type="tns:ClaimReference" />
+      <xs:complexType name="BaseReference">
+        <xs:sequence>
+          <xs:element name="CompanyCode" nillable="true" type="xs:string" />
+        </xs:sequence>
+      </xs:complexType>
+      <xs:element name="BaseReference" nillable="true" type="tns:BaseReference" />
+      <xs:complexType name="CertificateReference">
+        <xs:complexContent mixed="false">
+          <xs:extension base="tns:BaseReference">
+            <xs:sequence>
+              <xs:element name="DealerCode" nillable="true" type="xs:string" />
+              <xs:element name="CertificateNumber" nillable="true" type="xs:string" />
+            </xs:sequence>
+          </xs:extension>
+        </xs:complexContent>
+      </xs:complexType>
+      <xs:element name="CertificateReference" nillable="true" type="tns:CertificateReference" />
+      <xs:complexType name="PropertyReference">
+        <xs:complexContent mixed="false">
+          <xs:extension base="tns:BaseReference">
+            <xs:sequence>
+              <xs:element name="Properties" nillable="true" type="tns:ArrayOfPropertyReferenceInfo" />
+            </xs:sequence>
+          </xs:extension>
+        </xs:complexContent>
+      </xs:complexType>
+      <xs:element name="PropertyReference" nillable="true" type="tns:PropertyReference" />
+      <xs:complexType name="ArrayOfPropertyReferenceInfo">
+        <xs:sequence>
+          <xs:element minOccurs="0" maxOccurs="unbounded" name="PropertyReferenceInfo" nillable="true" type="tns:PropertyReferenceInfo" />
+        </xs:sequence>
+      </xs:complexType>
+      <xs:element name="ArrayOfPropertyReferenceInfo" nillable="true" type="tns:ArrayOfPropertyReferenceInfo" />
+      <xs:complexType name="PropertyReferenceInfo">
+        <xs:sequence>
+          <xs:element name="Name" nillable="true" type="xs:string" />
+          <xs:element name="Value" nillable="true" type="xs:string" />
+        </xs:sequence>
+      </xs:complexType>
+      <xs:element name="PropertyReferenceInfo" nillable="true" type="tns:PropertyReferenceInfo" />
+      <xs:complexType name="NoReference">
+        <xs:complexContent mixed="false">
+          <xs:extension base="tns:BaseReference">
+            <xs:sequence />
+          </xs:extension>
+        </xs:complexContent>
+      </xs:complexType>
+      <xs:element name="NoReference" nillable="true" type="tns:NoReference" />
+      <xs:complexType name="DeviceVerificationResponse">
+        <xs:complexContent mixed="false">
+          <xs:extension base="tns:BaseClaimRecordingResponse">
+            <xs:sequence>
+              <xs:element minOccurs="0" name="EnrolledDevice" nillable="true" type="tns:DeviceInfo" />
+              <xs:element minOccurs="0" name="ClaimedDevice" nillable="true" type="tns:DeviceInfo" />
+            </xs:sequence>
+          </xs:extension>
+        </xs:complexContent>
+      </xs:complexType>
+      <xs:element name="DeviceVerificationResponse" nillable="true" type="tns:DeviceVerificationResponse" />
+      <xs:complexType name="BaseClaimRecordingResponse">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="CompanyCode" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="CaseNumber" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="InteractionNumber" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="ClaimNumber" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="ClaimRecordingMessages" nillable="true" type="tns:ArrayOfClaimRecordingMessage" />
+          <xs:element minOccurs="0" name="Fields" nillable="true" type="tns:ArrayOfField" />
+          <xs:element minOccurs="0" name="CustomerInfo" nillable="true" type="tns:CustomerInfo" />
+        </xs:sequence>
+      </xs:complexType>
+      <xs:element name="BaseClaimRecordingResponse" nillable="true" type="tns:BaseClaimRecordingResponse" />
+      <xs:complexType name="ArrayOfClaimRecordingMessage">
+        <xs:sequence>
+          <xs:element minOccurs="0" maxOccurs="unbounded" name="ClaimRecordingMessage" nillable="true" type="tns:ClaimRecordingMessage" />
+        </xs:sequence>
+      </xs:complexType>
+      <xs:element name="ArrayOfClaimRecordingMessage" nillable="true" type="tns:ArrayOfClaimRecordingMessage" />
+      <xs:complexType name="ClaimRecordingMessage">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="MessageText" nillable="true" type="xs:string" />
+        </xs:sequence>
+      </xs:complexType>
+      <xs:element name="ClaimRecordingMessage" nillable="true" type="tns:ClaimRecordingMessage" />
+      <xs:complexType name="ArrayOfField">
+        <xs:sequence>
+          <xs:element minOccurs="0" maxOccurs="unbounded" name="Field" nillable="true" type="tns:Field" />
+        </xs:sequence>
+      </xs:complexType>
+      <xs:element name="ArrayOfField" nillable="true" type="tns:ArrayOfField" />
+      <xs:complexType name="Field">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="Name" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="Value" nillable="true" type="xs:string" />
+        </xs:sequence>
+      </xs:complexType>
+      <xs:element name="Field" nillable="true" type="tns:Field" />
+      <xs:complexType name="CustomerInfo">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="CustomerName" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="EmailAddress" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="HomePhone" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="WorkPhone" nillable="true" type="xs:string" />
+        </xs:sequence>
+      </xs:complexType>
+      <xs:element name="CustomerInfo" nillable="true" type="tns:CustomerInfo" />
+      <xs:complexType name="DeviceInfo">
+        <xs:complexContent mixed="false">
+          <xs:extension base="tns:EquipmentInfo">
+            <xs:sequence>
+              <xs:element minOccurs="0" name="ImeiNumber" nillable="true" type="xs:string" />
+              <xs:element minOccurs="0" name="SerialNumber" nillable="true" type="xs:string" />
+              <xs:element minOccurs="0" name="RegisteredItemName" nillable="true" type="xs:string" />
+              <xs:element minOccurs="0" name="PurchasePrice" nillable="true" type="xs:decimal" />
+              <xs:element minOccurs="0" name="PurchasedDate" nillable="true" type="xs:dateTime" />
+              <xs:element minOccurs="0" name="DeviceType" nillable="true" type="xs:string" />
+              <xs:element minOccurs="0" name="ExpirationDate" nillable="true" type="xs:dateTime" />
+              <xs:element minOccurs="0" name="RiskTypeCode" nillable="true" type="xs:string" />
+            </xs:sequence>
+          </xs:extension>
+        </xs:complexContent>
+      </xs:complexType>
+      <xs:element name="DeviceInfo" nillable="true" type="tns:DeviceInfo" />
+      <xs:complexType name="EquipmentInfo">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="Manufacturer" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="Model" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="Capacity" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="Color" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="Carrier" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="Description" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="ModelFamily" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="ManufacturerIdentifier" nillable="true" type="xs:string" />
+        </xs:sequence>
+      </xs:complexType>
+      <xs:element name="EquipmentInfo" nillable="true" type="tns:EquipmentInfo" />
+      <xs:complexType name="AddressInfo">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="Address1" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="Address2" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="Address3" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="City" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="State" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="Country" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="PostalCode" nillable="true" type="xs:string" />
+        </xs:sequence>
+      </xs:complexType>
+      <xs:element name="AddressInfo" nillable="true" type="tns:AddressInfo" />
+      <xs:complexType name="ArrayOfAddressInfo">
+        <xs:sequence>
+          <xs:element minOccurs="0" maxOccurs="unbounded" name="AddressInfo" nillable="true" type="tns:AddressInfo" />
+        </xs:sequence>
+      </xs:complexType>
+      <xs:element name="ArrayOfAddressInfo" nillable="true" type="tns:ArrayOfAddressInfo" />
+      <xs:complexType name="DecisionResponse">
+        <xs:complexContent mixed="false">
+          <xs:extension base="tns:BaseClaimRecordingResponse">
+            <xs:sequence>
+              <xs:element minOccurs="0" name="Message" nillable="true" type="xs:string" />
+              <xs:element minOccurs="0" name="Actions" nillable="true" type="tns:ArrayOfCustomerActionResponse" />
+              <xs:element minOccurs="0" name="DecisionType" type="tns:DecisionTypes" />
+            </xs:sequence>
+          </xs:extension>
+        </xs:complexContent>
+      </xs:complexType>
+      <xs:element name="DecisionResponse" nillable="true" type="tns:DecisionResponse" />
+      <xs:complexType name="ArrayOfCustomerActionResponse">
+        <xs:sequence>
+          <xs:element minOccurs="0" maxOccurs="unbounded" name="CustomerActionResponse" nillable="true" type="tns:CustomerActionResponse" />
+        </xs:sequence>
+      </xs:complexType>
+      <xs:element name="ArrayOfCustomerActionResponse" nillable="true" type="tns:ArrayOfCustomerActionResponse" />
+      <xs:complexType name="CustomerActionResponse">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="ActionCode" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="ActionDescription" nillable="true" type="xs:string" />
+        </xs:sequence>
+      </xs:complexType>
+      <xs:element name="CustomerActionResponse" nillable="true" type="tns:CustomerActionResponse" />
+      <xs:simpleType name="DecisionTypes">
+        <xs:restriction base="xs:string">
+          <xs:enumeration value="Denied" />
+          <xs:enumeration value="Approved" />
+          <xs:enumeration value="Pending" />
+          <xs:enumeration value="Refer" />
+          <xs:enumeration value="Retained" />
+          <xs:enumeration value="Accepted" />
+        </xs:restriction>
+      </xs:simpleType>
+      <xs:element name="DecisionTypes" nillable="true" type="tns:DecisionTypes" />
+      <xs:complexType name="QuestionResponse">
+        <xs:complexContent mixed="false">
+          <xs:extension base="tns:BaseClaimRecordingResponse">
+            <xs:sequence>
+              <xs:element minOccurs="0" name="QuestionSetCode" nillable="true" type="xs:string" />
+              <xs:element minOccurs="0" name="Version" type="xs:int" />
+              <xs:element minOccurs="0" name="SequenceNumber" type="xs:int" />
+              <xs:element minOccurs="0" name="Questions" nillable="true" type="tns:ArrayOfQuestion" />
+              <xs:element minOccurs="0" name="Parameters" nillable="true" type="tns:ArrayOfQuestionSetParameter" />
+            </xs:sequence>
+          </xs:extension>
+        </xs:complexContent>
+      </xs:complexType>
+      <xs:element name="QuestionResponse" nillable="true" type="tns:QuestionResponse" />
+      <xs:complexType name="ArrayOfQuestion">
+        <xs:sequence>
+          <xs:element minOccurs="0" maxOccurs="unbounded" name="Question" nillable="true" type="tns:Question" />
+        </xs:sequence>
+      </xs:complexType>
+      <xs:element name="ArrayOfQuestion" nillable="true" type="tns:ArrayOfQuestion" />
+      <xs:complexType name="Question">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="Code" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="Text" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="AnswerType" type="tns:AnswerType" />
+          <xs:element minOccurs="0" name="Mandatory" type="xs:boolean" />
+          <xs:element minOccurs="0" name="Scale" nillable="true" type="xs:int" />
+          <xs:element minOccurs="0" name="Precision" nillable="true" type="xs:int" />
+          <xs:element minOccurs="0" name="Length" nillable="true" type="xs:int" />
+          <xs:element minOccurs="0" name="SequenceNumber" type="xs:int" />
+          <xs:element minOccurs="0" name="Answer" nillable="true" type="tns:BaseAnswer" />
+          <xs:element minOccurs="0" name="PreConditions" nillable="true" type="tns:ArrayOfPreCondition" />
+          <xs:element minOccurs="0" name="Applicable" nillable="true" type="xs:boolean" />
+          <xs:element minOccurs="0" name="ReEvaulateOnChange" nillable="true" type="xs:boolean" />
+          <xs:element minOccurs="0" name="ChannelDisabled" nillable="true" type="xs:boolean" />
+        </xs:sequence>
+      </xs:complexType>
+      <xs:element name="Question" nillable="true" type="tns:Question" />
+      <xs:simpleType name="AnswerType">
+        <xs:restriction base="xs:string">
+          <xs:enumeration value="Choice" />
+          <xs:enumeration value="Date" />
+          <xs:enumeration value="Text" />
+          <xs:enumeration value="ListOfValues" />
+          <xs:enumeration value="Number" />
+          <xs:enumeration value="Boolean" />
+          <xs:enumeration value="Content" />
+          <xs:enumeration value="LegalConsent" />
+        </xs:restriction>
+      </xs:simpleType>
+      <xs:element name="AnswerType" nillable="true" type="tns:AnswerType" />
+      <xs:complexType name="BaseAnswer">
+        <xs:sequence />
+      </xs:complexType>
+      <xs:element name="BaseAnswer" nillable="true" type="tns:BaseAnswer" />
+      <xs:complexType name="ArrayOfPreCondition">
+        <xs:sequence>
+          <xs:element minOccurs="0" maxOccurs="unbounded" name="PreCondition" nillable="true" type="tns:PreCondition" />
+        </xs:sequence>
+      </xs:complexType>
+      <xs:element name="ArrayOfPreCondition" nillable="true" type="tns:ArrayOfPreCondition" />
+      <xs:complexType name="PreCondition">
+        <xs:sequence>
+          <xs:element name="PreConditionType" type="tns:PreConditionTypes" />
+          <xs:element minOccurs="0" name="QuestionCode" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="AnswerCode" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="ParameterCode" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="ParameterValue" nillable="true" type="xs:string" />
+        </xs:sequence>
+      </xs:complexType>
+      <xs:element name="PreCondition" nillable="true" type="tns:PreCondition" />
+      <xs:simpleType name="PreConditionTypes">
+        <xs:restriction base="xs:string">
+          <xs:enumeration value="Equal" />
+          <xs:enumeration value="NotEqual" />
+          <xs:enumeration value="PreviousQuestionsComplete" />
+        </xs:restriction>
+      </xs:simpleType>
+      <xs:element name="PreConditionTypes" nillable="true" type="tns:PreConditionTypes" />
+      <xs:complexType name="ArrayOfQuestionSetParameter">
+        <xs:sequence>
+          <xs:element minOccurs="0" maxOccurs="unbounded" name="QuestionSetParameter" nillable="true" type="tns:QuestionSetParameter" />
+        </xs:sequence>
+      </xs:complexType>
+      <xs:element name="ArrayOfQuestionSetParameter" nillable="true" type="tns:ArrayOfQuestionSetParameter" />
+      <xs:complexType name="QuestionSetParameter">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="ParameterCode" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="ParameterValue" nillable="true" type="xs:string" />
+        </xs:sequence>
+      </xs:complexType>
+      <xs:element name="QuestionSetParameter" nillable="true" type="tns:QuestionSetParameter" />
+      <xs:complexType name="ItemSelectionResponse">
+        <xs:complexContent mixed="false">
+          <xs:extension base="tns:BaseClaimRecordingResponse">
+            <xs:sequence>
+              <xs:element minOccurs="0" name="RegisteredItems" nillable="true" type="tns:ArrayOfDeviceInfo" />
+            </xs:sequence>
+          </xs:extension>
+        </xs:complexContent>
+      </xs:complexType>
+      <xs:element name="ItemSelectionResponse" nillable="true" type="tns:ItemSelectionResponse" />
+      <xs:complexType name="ArrayOfDeviceInfo">
+        <xs:sequence>
+          <xs:element minOccurs="0" maxOccurs="unbounded" name="DeviceInfo" nillable="true" type="tns:DeviceInfo" />
+        </xs:sequence>
+      </xs:complexType>
+      <xs:element name="ArrayOfDeviceInfo" nillable="true" type="tns:ArrayOfDeviceInfo" />
+      <xs:complexType name="BestReplacementResponse">
+        <xs:complexContent mixed="false">
+          <xs:extension base="tns:BaseClaimRecordingResponse">
+            <xs:sequence>
+              <xs:element name="OriginalDevice" nillable="true" type="tns:BestReplacementDeviceInfo" />
+              <xs:element name="BestReplacementOptins" nillable="true" type="tns:ArrayOfBestReplacementDeviceInfo" />
+            </xs:sequence>
+          </xs:extension>
+        </xs:complexContent>
+      </xs:complexType>
+      <xs:element name="BestReplacementResponse" nillable="true" type="tns:BestReplacementResponse" />
+      <xs:complexType name="BestReplacementDeviceInfo">
+        <xs:complexContent mixed="false">
+          <xs:extension base="tns:EquipmentInfo">
+            <xs:sequence>
+              <xs:element minOccurs="0" name="VendorSku" nillable="true" type="xs:string" />
+              <xs:element minOccurs="0" name="Priority" type="xs:int" />
+              <xs:element minOccurs="0" name="InventoryQuantity" nillable="true" type="xs:int" />
+              <xs:element minOccurs="0" name="EquipmentId" nillable="true" type="ser:guid" />
+              <xs:element minOccurs="0" name="InventoryId" nillable="true" type="ser:guid" />
+              <xs:element minOccurs="0" name="ServiceCenterCode" nillable="true" type="xs:string" />
+              <xs:element minOccurs="0" name="CountryCode" nillable="true" type="xs:string" />
+              <xs:element minOccurs="0" name="ClaimedDevice" type="xs:boolean" />
+            </xs:sequence>
+          </xs:extension>
+        </xs:complexContent>
+      </xs:complexType>
+      <xs:element name="BestReplacementDeviceInfo" nillable="true" type="tns:BestReplacementDeviceInfo" />
+      <xs:complexType name="ArrayOfBestReplacementDeviceInfo">
+        <xs:sequence>
+          <xs:element minOccurs="0" maxOccurs="unbounded" name="BestReplacementDeviceInfo" nillable="true" type="tns:BestReplacementDeviceInfo" />
+        </xs:sequence>
+      </xs:complexType>
+      <xs:element name="ArrayOfBestReplacementDeviceInfo" nillable="true" type="tns:ArrayOfBestReplacementDeviceInfo" />
+      <xs:complexType name="TroubleShootingResponse">
+        <xs:complexContent mixed="false">
+          <xs:extension base="tns:BaseClaimRecordingResponse">
+            <xs:sequence>
+              <xs:element name="ImeiNumber" nillable="true" type="xs:string" />
+              <xs:element xmlns:q1="http://schemas.datacontract.org/2004/07/Assurant.Elita.ClaimService.Contracts.Recording.Shared.ClaimRecordingResponse" name="TroubleShootingOption" type="q1:TroubleShootingOptionFlag" />
+            </xs:sequence>
+          </xs:extension>
+        </xs:complexContent>
+      </xs:complexType>
+      <xs:element name="TroubleShootingResponse" nillable="true" type="tns:TroubleShootingResponse" />
+      <xs:complexType name="CallerAuthenticationResponse">
+        <xs:complexContent mixed="false">
+          <xs:extension base="tns:BaseClaimRecordingResponse">
+            <xs:sequence>
+              <xs:element minOccurs="0" name="Questions" nillable="true" type="tns:ArrayOfQuestion" />
+            </xs:sequence>
+          </xs:extension>
+        </xs:complexContent>
+      </xs:complexType>
+      <xs:element name="CallerAuthenticationResponse" nillable="true" type="tns:CallerAuthenticationResponse" />
+      <xs:complexType name="LogisticStagesResponse">
+        <xs:complexContent mixed="false">
+          <xs:extension base="tns:BaseClaimRecordingResponse">
+            <xs:sequence>
+              <xs:element xmlns:q2="http://assurant.com/Elita/ClaimFulfillment/Shared/Data" name="Stages" nillable="true" type="q2:ArrayOfLogisticStage" />
+            </xs:sequence>
+          </xs:extension>
+        </xs:complexContent>
+      </xs:complexType>
+      <xs:element name="LogisticStagesResponse" nillable="true" type="tns:LogisticStagesResponse" />
+      <xs:complexType name="DateAnswer">
+        <xs:complexContent mixed="false">
+          <xs:extension base="tns:BaseAnswer">
+            <xs:sequence>
+              <xs:element minOccurs="0" name="Answer" nillable="true" type="xs:dateTime" />
+            </xs:sequence>
+          </xs:extension>
+        </xs:complexContent>
+      </xs:complexType>
+      <xs:element name="DateAnswer" nillable="true" type="tns:DateAnswer" />
+      <xs:complexType name="TextAnswer">
+        <xs:complexContent mixed="false">
+          <xs:extension base="tns:BaseAnswer">
+            <xs:sequence>
+              <xs:element minOccurs="0" name="Answer" nillable="true" type="xs:string" />
+            </xs:sequence>
+          </xs:extension>
+        </xs:complexContent>
+      </xs:complexType>
+      <xs:element name="TextAnswer" nillable="true" type="tns:TextAnswer" />
+      <xs:complexType name="NumberAnswer">
+        <xs:complexContent mixed="false">
+          <xs:extension base="tns:BaseAnswer">
+            <xs:sequence>
+              <xs:element minOccurs="0" name="Answer" nillable="true" type="xs:decimal" />
+            </xs:sequence>
+          </xs:extension>
+        </xs:complexContent>
+      </xs:complexType>
+      <xs:element name="NumberAnswer" nillable="true" type="tns:NumberAnswer" />
+      <xs:complexType name="ListOfValuesAnswer">
+        <xs:complexContent mixed="false">
+          <xs:extension base="tns:BaseAnswer">
+            <xs:sequence>
+              <xs:element minOccurs="0" name="Answers" nillable="true" type="tns:ArrayOfAnswerValue" />
+              <xs:element minOccurs="0" name="Answer" nillable="true" type="tns:AnswerValue" />
+            </xs:sequence>
+          </xs:extension>
+        </xs:complexContent>
+      </xs:complexType>
+      <xs:element name="ListOfValuesAnswer" nillable="true" type="tns:ListOfValuesAnswer" />
+      <xs:complexType name="ArrayOfAnswerValue">
+        <xs:sequence>
+          <xs:element minOccurs="0" maxOccurs="unbounded" name="AnswerValue" nillable="true" type="tns:AnswerValue" />
+        </xs:sequence>
+      </xs:complexType>
+      <xs:element name="ArrayOfAnswerValue" nillable="true" type="tns:ArrayOfAnswerValue" />
+      <xs:complexType name="AnswerValue">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="Code" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="Text" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="SequenceNumber" type="xs:int" />
+        </xs:sequence>
+      </xs:complexType>
+      <xs:element name="AnswerValue" nillable="true" type="tns:AnswerValue" />
+      <xs:complexType name="ChoiceAnswer">
+        <xs:complexContent mixed="false">
+          <xs:extension base="tns:BaseAnswer">
+            <xs:sequence>
+              <xs:element minOccurs="0" name="Answers" nillable="true" type="tns:ArrayOfAnswerValue" />
+              <xs:element minOccurs="0" name="Answer" nillable="true" type="tns:AnswerValue" />
+            </xs:sequence>
+          </xs:extension>
+        </xs:complexContent>
+      </xs:complexType>
+      <xs:element name="ChoiceAnswer" nillable="true" type="tns:ChoiceAnswer" />
+      <xs:complexType name="BooleanAnswer">
+        <xs:complexContent mixed="false">
+          <xs:extension base="tns:BaseAnswer">
+            <xs:sequence>
+              <xs:element minOccurs="0" name="Answer" nillable="true" type="xs:boolean" />
+            </xs:sequence>
+          </xs:extension>
+        </xs:complexContent>
+      </xs:complexType>
+      <xs:element name="BooleanAnswer" nillable="true" type="tns:BooleanAnswer" />
+      <xs:complexType name="ContentAnswer">
+        <xs:complexContent mixed="false">
+          <xs:extension base="tns:BaseAnswer">
+            <xs:sequence />
+          </xs:extension>
+        </xs:complexContent>
+      </xs:complexType>
+      <xs:element name="ContentAnswer" nillable="true" type="tns:ContentAnswer" />
+      <xs:complexType name="LegalConsentAnswer">
+        <xs:complexContent mixed="false">
+          <xs:extension base="tns:BaseAnswer">
+            <xs:sequence>
+              <xs:element minOccurs="0" name="Answer" nillable="true" type="xs:boolean" />
+            </xs:sequence>
+          </xs:extension>
+        </xs:complexContent>
+      </xs:complexType>
+      <xs:element name="LegalConsentAnswer" nillable="true" type="tns:LegalConsentAnswer" />
+      <xs:complexType name="DeviceSelectionRequest">
+        <xs:complexContent mixed="false">
+          <xs:extension base="tns:BaseClaimRecordingRequest">
+            <xs:sequence>
+              <xs:element minOccurs="0" name="ClaimedDevice" nillable="true" type="tns:DeviceInfo" />
+            </xs:sequence>
+          </xs:extension>
+        </xs:complexContent>
+      </xs:complexType>
+      <xs:element name="DeviceSelectionRequest" nillable="true" type="tns:DeviceSelectionRequest" />
+      <xs:complexType name="BaseClaimRecordingRequest">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="CompanyCode" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="CaseNumber" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="InteractionNumber" nillable="true" type="xs:string" />
+        </xs:sequence>
+      </xs:complexType>
+      <xs:element name="BaseClaimRecordingRequest" nillable="true" type="tns:BaseClaimRecordingRequest" />
+      <xs:complexType name="QuestionRequest">
+        <xs:complexContent mixed="false">
+          <xs:extension base="tns:BaseClaimRecordingRequest">
+            <xs:sequence>
+              <xs:element minOccurs="0" name="QuestionSetCode" nillable="true" type="xs:string" />
+              <xs:element minOccurs="0" name="Version" type="xs:int" />
+              <xs:element minOccurs="0" name="Questions" nillable="true" type="tns:ArrayOfQuestion" />
+              <xs:element minOccurs="0" name="Parameters" nillable="true" type="tns:ArrayOfQuestionSetParameter" />
+            </xs:sequence>
+          </xs:extension>
+        </xs:complexContent>
+      </xs:complexType>
+      <xs:element name="QuestionRequest" nillable="true" type="tns:QuestionRequest" />
+      <xs:complexType name="ShippingAddressRequest">
+        <xs:complexContent mixed="false">
+          <xs:extension base="tns:BaseClaimRecordingRequest">
+            <xs:sequence>
+              <xs:element minOccurs="0" name="ShippingAddress" nillable="true" type="tns:AddressInfo" />
+              <xs:element minOccurs="0" name="DesiredDeliveryDate" nillable="true" type="xs:dateTime" />
+              <xs:element minOccurs="0" name="DesiredDeliveryTimeSlot" nillable="true" type="xs:string" />
+            </xs:sequence>
+          </xs:extension>
+        </xs:complexContent>
+      </xs:complexType>
+      <xs:element name="ShippingAddressRequest" nillable="true" type="tns:ShippingAddressRequest" />
+      <xs:complexType name="CloseCaseRecordingRequest">
+        <xs:complexContent mixed="false">
+          <xs:extension base="tns:BaseClaimRecordingRequest">
+            <xs:sequence>
+              <xs:element minOccurs="0" name="ReasonCode" nillable="true" type="xs:string" />
+            </xs:sequence>
+          </xs:extension>
+        </xs:complexContent>
+      </xs:complexType>
+      <xs:element name="CloseCaseRecordingRequest" nillable="true" type="tns:CloseCaseRecordingRequest" />
+      <xs:complexType name="BestReplacementSelectionRequest">
+        <xs:complexContent mixed="false">
+          <xs:extension base="tns:BaseClaimRecordingRequest">
+            <xs:sequence>
+              <xs:element name="IsBestReplacementDeviceSelected" type="xs:boolean" />
+              <xs:element name="ReplacementDevice" nillable="true" type="tns:BestReplacementDeviceInfo" />
+            </xs:sequence>
+          </xs:extension>
+        </xs:complexContent>
+      </xs:complexType>
+      <xs:element name="BestReplacementSelectionRequest" nillable="true" type="tns:BestReplacementSelectionRequest" />
+      <xs:complexType name="TroubleShootingRequest">
+        <xs:complexContent mixed="false">
+          <xs:extension base="tns:BaseClaimRecordingRequest">
+            <xs:sequence>
+              <xs:element minOccurs="0" name="IssueResolved" type="tns:TroubleShootingResolutionFlag" />
+            </xs:sequence>
+          </xs:extension>
+        </xs:complexContent>
+      </xs:complexType>
+      <xs:element name="TroubleShootingRequest" nillable="true" type="tns:TroubleShootingRequest" />
+      <xs:simpleType name="TroubleShootingResolutionFlag">
+        <xs:restriction base="xs:string">
+          <xs:enumeration value="Yes" />
+          <xs:enumeration value="No" />
+          <xs:enumeration value="Skipped" />
+        </xs:restriction>
+      </xs:simpleType>
+      <xs:element name="TroubleShootingResolutionFlag" nillable="true" type="tns:TroubleShootingResolutionFlag" />
+      <xs:complexType name="CallerAuthenticationRequest">
+        <xs:complexContent mixed="false">
+          <xs:extension base="tns:BaseClaimRecordingRequest">
+            <xs:sequence>
+              <xs:element minOccurs="0" name="Questions" nillable="true" type="tns:ArrayOfQuestion" />
+            </xs:sequence>
+          </xs:extension>
+        </xs:complexContent>
+      </xs:complexType>
+      <xs:element name="CallerAuthenticationRequest" nillable="true" type="tns:CallerAuthenticationRequest" />
+      <xs:complexType name="FulfillmentOptionsRequest">
+        <xs:complexContent mixed="false">
+          <xs:extension base="tns:BaseClaimRecordingRequest">
+            <xs:sequence>
+              <xs:element name="OptionCode" nillable="true" type="xs:string" />
+              <xs:element minOccurs="0" name="QuestionSetCode" nillable="true" type="xs:string" />
+              <xs:element minOccurs="0" name="QuestionVersion" type="xs:int" />
+              <xs:element minOccurs="0" name="Questions" nillable="true" type="tns:ArrayOfQuestion" />
+            </xs:sequence>
+          </xs:extension>
+        </xs:complexContent>
+      </xs:complexType>
+      <xs:element name="FulfillmentOptionsRequest" nillable="true" type="tns:FulfillmentOptionsRequest" />
+      <xs:complexType name="CreateCaseRequest">
+        <xs:sequence>
+          <xs:element name="Reference" nillable="true" type="tns:BaseReference" />
+          <xs:element name="Caller" nillable="true" type="tns:BaseCaller" />
+          <xs:element minOccurs="0" name="PurposeCode" nillable="true" type="xs:string" />
+        </xs:sequence>
+      </xs:complexType>
+      <xs:element name="CreateCaseRequest" nillable="true" type="tns:CreateCaseRequest" />
+      <xs:complexType name="BeginInteractionRequest">
+        <xs:sequence>
+          <xs:element name="CompanyCode" nillable="true" type="xs:string" />
+          <xs:element name="CaseNumber" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="Caller" nillable="true" type="tns:BaseCaller" />
+          <xs:element minOccurs="0" name="PurposeCode" nillable="true" type="xs:string" />
+        </xs:sequence>
+      </xs:complexType>
+      <xs:element name="BeginInteractionRequest" nillable="true" type="tns:BeginInteractionRequest" />
+      <xs:complexType name="GetClaimSummaryRequest">
+        <xs:sequence>
+          <xs:element name="CompanyCode" nillable="true" type="xs:string" />
+          <xs:element name="CaseNumber" nillable="true" type="xs:string" />
+        </xs:sequence>
+      </xs:complexType>
+      <xs:element name="GetClaimSummaryRequest" nillable="true" type="tns:GetClaimSummaryRequest" />
+      <xs:complexType name="GetClaimSummaryResponse">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="CaseNumber" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="CompanyCode" nillable="true" type="xs:string" />
+          <xs:element xmlns:q3="http://schemas.microsoft.com/2003/10/Serialization/Arrays" minOccurs="0" name="QuestionSets" nillable="true" type="q3:ArrayOfKeyValueOfstringArrayOfQuestionKjP37BP8" />
+        </xs:sequence>
+      </xs:complexType>
+      <xs:element name="GetClaimSummaryResponse" nillable="true" type="tns:GetClaimSummaryResponse" />
+      <xs:complexType name="GetDurationRequest">
+        <xs:sequence>
+          <xs:element name="CountryCode" nillable="true" type="xs:string" />
+          <xs:element name="CourierCode" nillable="true" type="xs:string" />
+          <xs:element name="DestinationZipCode" nillable="true" type="xs:string" />
+          <xs:element name="SourceZipCode" nillable="true" type="xs:string" />
+        </xs:sequence>
+      </xs:complexType>
+      <xs:element name="GetDurationRequest" nillable="true" type="tns:GetDurationRequest" />
+      <xs:complexType name="ArrayOfGetDurationResponse">
+        <xs:sequence>
+          <xs:element minOccurs="0" maxOccurs="unbounded" name="GetDurationResponse" nillable="true" type="tns:GetDurationResponse" />
+        </xs:sequence>
+      </xs:complexType>
+      <xs:element name="ArrayOfGetDurationResponse" nillable="true" type="tns:ArrayOfGetDurationResponse" />
+      <xs:complexType name="GetDurationResponse">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="CourierCode" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="ProductCode" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="ProductDescription" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="SourceZipCode" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="DestinationZipCode" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="DurationDays" type="xs:int" />
+        </xs:sequence>
+      </xs:complexType>
+      <xs:element name="GetDurationResponse" nillable="true" type="tns:GetDurationResponse" />
+    </xs:schema>
+    <xs:schema xmlns:tns="http://elita.assurant.com/Elita/ClaimService" elementFormDefault="qualified" targetNamespace="http://elita.assurant.com/Elita/ClaimService" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+      <xs:import namespace="http://elita.assurant.com/Elita/Claim/RecordingService/DataContracts" />
+      <xs:complexType name="ShippingAddressResponse">
+        <xs:complexContent mixed="false">
+          <xs:extension xmlns:q1="http://elita.assurant.com/Elita/Claim/RecordingService/DataContracts" base="q1:BaseClaimRecordingResponse">
+            <xs:sequence>
+              <xs:element minOccurs="0" name="PolicyAddress" nillable="true" type="q1:AddressInfo" />
+              <xs:element minOccurs="0" name="ShippingAddress" nillable="true" type="q1:AddressInfo" />
+              <xs:element minOccurs="0" name="SuggestedAddresses" nillable="true" type="q1:ArrayOfAddressInfo" />
+              <xs:element minOccurs="0" name="AllowDeliveryDateSelection" type="xs:boolean" />
+            </xs:sequence>
+          </xs:extension>
+        </xs:complexContent>
+      </xs:complexType>
+      <xs:element name="ShippingAddressResponse" nillable="true" type="tns:ShippingAddressResponse" />
+    </xs:schema>
+    <xs:schema xmlns:tns="http://schemas.datacontract.org/2004/07/Assurant.Elita.ClaimService.Contracts.Recording.Shared.ClaimRecordingResponse" elementFormDefault="qualified" targetNamespace="http://schemas.datacontract.org/2004/07/Assurant.Elita.ClaimService.Contracts.Recording.Shared.ClaimRecordingResponse" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+      <xs:import namespace="http://elita.assurant.com/Elita/Claim/RecordingService/DataContracts" />
+      <xs:complexType name="ActionResponse">
+        <xs:complexContent mixed="false">
+          <xs:extension xmlns:q1="http://elita.assurant.com/Elita/Claim/RecordingService/DataContracts" base="q1:BaseClaimRecordingResponse">
+            <xs:sequence>
+              <xs:element minOccurs="0" name="Actions" nillable="true" type="q1:ArrayOfCustomerActionResponse" />
+            </xs:sequence>
+          </xs:extension>
+        </xs:complexContent>
+      </xs:complexType>
+      <xs:element name="ActionResponse" nillable="true" type="tns:ActionResponse" />
+      <xs:simpleType name="TroubleShootingOptionFlag">
+        <xs:restriction base="xs:string">
+          <xs:enumeration value="Troubleshootingoptional" />
+          <xs:enumeration value="Troubleshootingmandatory" />
+        </xs:restriction>
+      </xs:simpleType>
+      <xs:element name="TroubleShootingOptionFlag" nillable="true" type="tns:TroubleShootingOptionFlag" />
+    </xs:schema>
+    <xs:schema xmlns:tns="http://assurant.com/Elita/ClaimFulfillment" elementFormDefault="qualified" targetNamespace="http://assurant.com/Elita/ClaimFulfillment" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+      <xs:import namespace="http://assurant.com/Elita/ClaimFulfillment/Shared/Data" />
+      <xs:import namespace="http://schemas.microsoft.com/2003/10/Serialization/Arrays" />
+      <xs:import namespace="http://elita.assurant.com/Elita/Claim/RecordingService/DataContracts" />
+      <xs:complexType name="FulfillmentOptionsResponse">
+        <xs:complexContent mixed="false">
+          <xs:extension xmlns:q1="http://elita.assurant.com/Elita/Claim/RecordingService/DataContracts" base="q1:BaseClaimRecordingResponse">
+            <xs:sequence>
+              <xs:element xmlns:q2="http://assurant.com/Elita/ClaimFulfillment/Shared/Data" name="Options" nillable="true" type="q2:ArrayOfFulfillmentOption" />
+              <xs:element xmlns:q3="http://schemas.microsoft.com/2003/10/Serialization/Arrays" minOccurs="0" name="QuestionsByStage" nillable="true" type="q3:ArrayOfKeyValueOfstringArrayOfQuestionKjP37BP8" />
+            </xs:sequence>
+          </xs:extension>
+        </xs:complexContent>
+      </xs:complexType>
+      <xs:element name="FulfillmentOptionsResponse" nillable="true" type="tns:FulfillmentOptionsResponse" />
+      <xs:complexType name="LogisticStagesRequest">
+        <xs:complexContent mixed="false">
+          <xs:extension xmlns:q4="http://elita.assurant.com/Elita/Claim/RecordingService/DataContracts" base="q4:BaseClaimRecordingRequest">
+            <xs:sequence>
+              <xs:element xmlns:q5="http://assurant.com/Elita/ClaimFulfillment/Shared/Data" name="Stages" nillable="true" type="q5:ArrayOfLogisticStage" />
+              <xs:element minOccurs="0" name="QuestionSetCode" nillable="true" type="xs:string" />
+              <xs:element minOccurs="0" name="QuestionVersion" type="xs:int" />
+              <xs:element minOccurs="0" name="Questions" nillable="true" type="q4:ArrayOfQuestion" />
+            </xs:sequence>
+          </xs:extension>
+        </xs:complexContent>
+      </xs:complexType>
+      <xs:element name="LogisticStagesRequest" nillable="true" type="tns:LogisticStagesRequest" />
+    </xs:schema>
+    <xs:schema xmlns:tns="http://assurant.com/Elita/ClaimFulfillment/Shared/Data" elementFormDefault="qualified" targetNamespace="http://assurant.com/Elita/ClaimFulfillment/Shared/Data" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+      <xs:import namespace="http://elita.assurant.com/Elita/Claim/RecordingService/DataContracts" />
+      <xs:complexType name="ArrayOfFulfillmentOption">
+        <xs:sequence>
+          <xs:element minOccurs="0" maxOccurs="unbounded" name="FulfillmentOption" nillable="true" type="tns:FulfillmentOption" />
+        </xs:sequence>
+      </xs:complexType>
+      <xs:element name="ArrayOfFulfillmentOption" nillable="true" type="tns:ArrayOfFulfillmentOption" />
+      <xs:complexType name="FulfillmentOption">
+        <xs:sequence>
+          <xs:element name="Code" nillable="true" type="xs:string" />
+          <xs:element name="Name" nillable="true" type="xs:string" />
+          <xs:element name="Description" nillable="true" type="xs:string" />
+          <xs:element name="Order" type="xs:int" />
+          <xs:element name="Selected" type="xs:boolean" />
+          <xs:element minOccurs="0" name="Prices" nillable="true" type="tns:ArrayOfFulfillmentOptionPrice">
+            <xs:annotation>
+              <xs:appinfo>
+                <DefaultValue EmitDefaultValue="false" xmlns="http://schemas.microsoft.com/2003/10/Serialization/" />
+              </xs:appinfo>
+            </xs:annotation>
+          </xs:element>
+          <xs:element minOccurs="0" name="QuestionSetCode" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="StandardCode" nillable="true" type="xs:string" />
+        </xs:sequence>
+      </xs:complexType>
+      <xs:element name="FulfillmentOption" nillable="true" type="tns:FulfillmentOption" />
+      <xs:complexType name="ArrayOfFulfillmentOptionPrice">
+        <xs:sequence>
+          <xs:element minOccurs="0" maxOccurs="unbounded" name="FulfillmentOptionPrice" nillable="true" type="tns:FulfillmentOptionPrice" />
+        </xs:sequence>
+      </xs:complexType>
+      <xs:element name="ArrayOfFulfillmentOptionPrice" nillable="true" type="tns:ArrayOfFulfillmentOptionPrice" />
+      <xs:complexType name="FulfillmentOptionPrice">
+        <xs:sequence>
+          <xs:element name="ServiceClassCode" nillable="true" type="xs:string" />
+          <xs:element name="ServiceTypeCode" nillable="true" type="xs:string" />
+          <xs:element name="NetPrice" nillable="true" type="xs:decimal" />
+        </xs:sequence>
+      </xs:complexType>
+      <xs:element name="FulfillmentOptionPrice" nillable="true" type="tns:FulfillmentOptionPrice" />
+      <xs:complexType name="ArrayOfLogisticStage">
+        <xs:sequence>
+          <xs:element minOccurs="0" maxOccurs="unbounded" name="LogisticStage" nillable="true" type="tns:LogisticStage" />
+        </xs:sequence>
+      </xs:complexType>
+      <xs:element name="ArrayOfLogisticStage" nillable="true" type="tns:ArrayOfLogisticStage" />
+      <xs:complexType name="LogisticStage">
+        <xs:sequence>
+          <xs:element name="Code" nillable="true" type="xs:string" />
+          <xs:element name="Name" nillable="true" type="xs:string" />
+          <xs:element name="Description" nillable="true" type="xs:string" />
+          <xs:element name="Order" type="xs:int" />
+          <xs:element name="Options" nillable="true" type="tns:ArrayOfLogisticOption" />
+        </xs:sequence>
+      </xs:complexType>
+      <xs:element name="LogisticStage" nillable="true" type="tns:LogisticStage" />
+      <xs:complexType name="ArrayOfLogisticOption">
+        <xs:sequence>
+          <xs:element minOccurs="0" maxOccurs="unbounded" name="LogisticOption" nillable="true" type="tns:LogisticOption" />
+        </xs:sequence>
+      </xs:complexType>
+      <xs:element name="ArrayOfLogisticOption" nillable="true" type="tns:ArrayOfLogisticOption" />
+      <xs:complexType name="LogisticOption">
+        <xs:sequence>
+          <xs:element name="Code" nillable="true" type="xs:string" />
+          <xs:element name="Name" nillable="true" type="xs:string" />
+          <xs:element name="Description" nillable="true" type="xs:string" />
+          <xs:element name="Order" type="xs:int" />
+          <xs:element name="Selected" type="xs:boolean" />
+          <xs:element name="Type" type="tns:LogisticOptionType" />
+          <xs:element minOccurs="0" name="LogisticOptionInfo" nillable="true" type="tns:LogisticOptionInfoBase" />
+          <xs:element xmlns:q1="http://elita.assurant.com/Elita/Claim/RecordingService/DataContracts" minOccurs="0" name="Questions" nillable="true" type="q1:ArrayOfQuestion" />
+          <xs:element minOccurs="0" name="DeliveryOptions" nillable="true" type="tns:DeliveryOptions" />
+          <xs:element minOccurs="0" name="QuestionSetCode" nillable="true" type="xs:string" />
+        </xs:sequence>
+      </xs:complexType>
+      <xs:element name="LogisticOption" nillable="true" type="tns:LogisticOption" />
+      <xs:simpleType name="LogisticOptionType">
+        <xs:restriction base="xs:string">
+          <xs:enumeration value="CustomerAddress" />
+          <xs:enumeration value="DealerBranchAddress" />
+          <xs:enumeration value="ElectronicDelivery" />
+          <xs:enumeration value="Unspecified" />
+        </xs:restriction>
+      </xs:simpleType>
+      <xs:element name="LogisticOptionType" nillable="true" type="tns:LogisticOptionType" />
+      <xs:complexType name="LogisticOptionInfoBase">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="EstimatedDeliveryDate" nillable="true" type="xs:dateTime" />
+          <xs:element minOccurs="0" name="EstimatedChangedDeliveryDate" nillable="true" type="xs:dateTime" />
+        </xs:sequence>
+      </xs:complexType>
+      <xs:element name="LogisticOptionInfoBase" nillable="true" type="tns:LogisticOptionInfoBase" />
+      <xs:complexType name="LogisticOptionInfoCustomerAddress">
+        <xs:complexContent mixed="false">
+          <xs:extension base="tns:LogisticOptionInfoBase">
+            <xs:sequence>
+              <xs:element name="Address" nillable="true" type="tns:Address" />
+            </xs:sequence>
+          </xs:extension>
+        </xs:complexContent>
+      </xs:complexType>
+      <xs:element name="LogisticOptionInfoCustomerAddress" nillable="true" type="tns:LogisticOptionInfoCustomerAddress" />
+      <xs:complexType name="Address">
+        <xs:sequence>
+          <xs:element name="Address1" nillable="true" type="xs:string" />
+          <xs:element name="Address2" nillable="true" type="xs:string" />
+          <xs:element name="Address3" nillable="true" type="xs:string" />
+          <xs:element name="City" nillable="true" type="xs:string" />
+          <xs:element name="State" nillable="true" type="xs:string" />
+          <xs:element name="Country" nillable="true" type="xs:string" />
+          <xs:element name="PostalCode" nillable="true" type="xs:string" />
+        </xs:sequence>
+      </xs:complexType>
+      <xs:element name="Address" nillable="true" type="tns:Address" />
+      <xs:complexType name="LogisticOptionInfoDealerBranchAddress">
+        <xs:complexContent mixed="false">
+          <xs:extension base="tns:LogisticOptionInfoBase">
+            <xs:sequence>
+              <xs:element name="Address" nillable="true" type="tns:Address" />
+              <xs:element name="BranchCode" nillable="true" type="xs:string" />
+            </xs:sequence>
+          </xs:extension>
+        </xs:complexContent>
+      </xs:complexType>
+      <xs:element name="LogisticOptionInfoDealerBranchAddress" nillable="true" type="tns:LogisticOptionInfoDealerBranchAddress" />
+      <xs:complexType name="LogisticOptionInfoElectronicDelivery">
+        <xs:complexContent mixed="false">
+          <xs:extension base="tns:LogisticOptionInfoBase">
+            <xs:sequence />
+          </xs:extension>
+        </xs:complexContent>
+      </xs:complexType>
+      <xs:element name="LogisticOptionInfoElectronicDelivery" nillable="true" type="tns:LogisticOptionInfoElectronicDelivery" />
+      <xs:complexType name="LogisticOptionInfoUnspecified">
+        <xs:complexContent mixed="false">
+          <xs:extension base="tns:LogisticOptionInfoBase">
+            <xs:sequence />
+          </xs:extension>
+        </xs:complexContent>
+      </xs:complexType>
+      <xs:element name="LogisticOptionInfoUnspecified" nillable="true" type="tns:LogisticOptionInfoUnspecified" />
+      <xs:complexType name="DeliveryOptions">
+        <xs:sequence>
+          <xs:element name="CourierCode" nillable="true" type="xs:string" />
+          <xs:element name="CourierProductCode" nillable="true" type="xs:string" />
+          <xs:element name="DisplayEstimatedDeliveryDate" type="xs:boolean" />
+          <xs:element minOccurs="0" name="AllowChangeEstimatedDeliveryDate" nillable="true" type="xs:boolean" />
+          <xs:element minOccurs="0" name="EstimateDeliveryDateChangeWindow" nillable="true" type="xs:int" />
+        </xs:sequence>
+      </xs:complexType>
+      <xs:element name="DeliveryOptions" nillable="true" type="tns:DeliveryOptions" />
+    </xs:schema>
+    <xs:schema xmlns:tns="http://schemas.microsoft.com/2003/10/Serialization/Arrays" elementFormDefault="qualified" targetNamespace="http://schemas.microsoft.com/2003/10/Serialization/Arrays" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+      <xs:import namespace="http://elita.assurant.com/Elita/Claim/RecordingService/DataContracts" />
+      <xs:complexType name="ArrayOfKeyValueOfstringArrayOfQuestionKjP37BP8">
+        <xs:annotation>
+          <xs:appinfo>
+            <IsDictionary xmlns="http://schemas.microsoft.com/2003/10/Serialization/">true</IsDictionary>
+          </xs:appinfo>
+        </xs:annotation>
+        <xs:sequence>
+          <xs:element minOccurs="0" maxOccurs="unbounded" name="KeyValueOfstringArrayOfQuestionKjP37BP8">
+            <xs:complexType>
+              <xs:sequence>
+                <xs:element name="Key" nillable="true" type="xs:string" />
+                <xs:element xmlns:q1="http://elita.assurant.com/Elita/Claim/RecordingService/DataContracts" name="Value" nillable="true" type="q1:ArrayOfQuestion" />
+              </xs:sequence>
+            </xs:complexType>
+          </xs:element>
+        </xs:sequence>
+      </xs:complexType>
+      <xs:element name="ArrayOfKeyValueOfstringArrayOfQuestionKjP37BP8" nillable="true" type="tns:ArrayOfKeyValueOfstringArrayOfQuestionKjP37BP8" />
+    </xs:schema>
+    <xs:schema elementFormDefault="qualified" targetNamespace="http://elita.assurant.com/Elita/Claim/RecordingService" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+      <xs:import namespace="http://elita.assurant.com/Elita/Claim/RecordingService/DataContracts" />
+      <xs:import namespace="http://schemas.microsoft.com/2003/10/Serialization/" />
+      <xs:import namespace="http://schemas.datacontract.org/2004/07/Assurant.Elita.ClaimService.BusinessRulesEngineInterface.Contracts" />
+      <xs:element name="BeginClaim">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element xmlns:q1="http://elita.assurant.com/Elita/Claim/RecordingService/DataContracts" minOccurs="0" name="request" nillable="true" type="q1:CreateCaseRequest" />
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="BeginClaimResponse">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element xmlns:q2="http://elita.assurant.com/Elita/Claim/RecordingService/DataContracts" minOccurs="0" name="BeginClaimResult" nillable="true" type="q2:BaseClaimRecordingResponse" />
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="BeginInteraction">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element xmlns:q3="http://elita.assurant.com/Elita/Claim/RecordingService/DataContracts" minOccurs="0" name="request" nillable="true" type="q3:BeginInteractionRequest" />
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="BeginInteractionResponse">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element xmlns:q4="http://elita.assurant.com/Elita/Claim/RecordingService/DataContracts" minOccurs="0" name="BeginInteractionResult" nillable="true" type="q4:BaseClaimRecordingResponse" />
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="Submit">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element xmlns:q5="http://elita.assurant.com/Elita/Claim/RecordingService/DataContracts" minOccurs="0" name="request" nillable="true" type="q5:BaseClaimRecordingRequest" />
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="SubmitResponse">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element xmlns:q6="http://elita.assurant.com/Elita/Claim/RecordingService/DataContracts" minOccurs="0" name="SubmitResult" nillable="true" type="q6:BaseClaimRecordingResponse" />
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="Save">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element xmlns:q7="http://elita.assurant.com/Elita/Claim/RecordingService/DataContracts" minOccurs="0" name="request" nillable="true" type="q7:BaseClaimRecordingRequest" />
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="SaveResponse">
+        <xs:complexType>
+          <xs:sequence />
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="GetClaimSummary">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element xmlns:q8="http://elita.assurant.com/Elita/Claim/RecordingService/DataContracts" minOccurs="0" name="request" nillable="true" type="q8:GetClaimSummaryRequest" />
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="GetClaimSummaryResponse">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element xmlns:q9="http://elita.assurant.com/Elita/Claim/RecordingService/DataContracts" minOccurs="0" name="GetClaimSummaryResult" nillable="true" type="q9:GetClaimSummaryResponse" />
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="ReEvaluateQuestions">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element xmlns:q10="http://elita.assurant.com/Elita/Claim/RecordingService/DataContracts" minOccurs="0" name="question" nillable="true" type="q10:ArrayOfQuestion" />
+            <xs:element xmlns:q11="http://elita.assurant.com/Elita/Claim/RecordingService/DataContracts" minOccurs="0" name="parameters" nillable="true" type="q11:ArrayOfQuestionSetParameter" />
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="ReEvaluateQuestionsResponse">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element xmlns:q12="http://elita.assurant.com/Elita/Claim/RecordingService/DataContracts" minOccurs="0" name="ReEvaluateQuestionsResult" nillable="true" type="q12:ArrayOfQuestion" />
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="UpdateCaseAction">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element minOccurs="0" name="caseNumber" nillable="true" type="xs:string" />
+            <xs:element minOccurs="0" name="companyCode" nillable="true" type="xs:string" />
+            <xs:element minOccurs="0" name="actionCode" nillable="true" type="xs:string" />
+            <xs:element minOccurs="0" name="actionStatus" nillable="true" type="xs:string" />
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="UpdateCaseActionResponse">
+        <xs:complexType>
+          <xs:sequence />
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="GetPolicySummaryInfo">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element xmlns:q13="http://schemas.microsoft.com/2003/10/Serialization/" minOccurs="0" name="claimId" type="q13:guid" />
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="GetPolicySummaryInfoResponse">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element xmlns:q14="http://schemas.datacontract.org/2004/07/Assurant.Elita.ClaimService.BusinessRulesEngineInterface.Contracts" minOccurs="0" name="GetPolicySummaryInfoResult" nillable="true" type="q14:PolicyInfo" />
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="GetCourierDurations">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element xmlns:q15="http://elita.assurant.com/Elita/Claim/RecordingService/DataContracts" minOccurs="0" name="request" nillable="true" type="q15:GetDurationRequest" />
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="GetCourierDurationsResponse">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element xmlns:q16="http://elita.assurant.com/Elita/Claim/RecordingService/DataContracts" minOccurs="0" name="GetCourierDurationsResult" nillable="true" type="q16:ArrayOfGetDurationResponse" />
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+    </xs:schema>
+    <xs:schema xmlns:tns="http://elita.assurant.com/Elita/ClaimService/Faults" elementFormDefault="qualified" targetNamespace="http://elita.assurant.com/Elita/ClaimService/Faults" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+      <xs:complexType name="InvalidPolicyNumberFault">
+        <xs:complexContent mixed="false">
+          <xs:extension base="tns:BaseFault">
+            <xs:sequence />
+          </xs:extension>
+        </xs:complexContent>
+      </xs:complexType>
+      <xs:element name="InvalidPolicyNumberFault" nillable="true" type="tns:InvalidPolicyNumberFault" />
+      <xs:complexType name="BaseFault">
+        <xs:sequence>
+          <xs:element name="FaultCode" nillable="true" type="xs:string" />
+          <xs:element name="FaultMessage" nillable="true" type="xs:string" />
+        </xs:sequence>
+      </xs:complexType>
+      <xs:element name="BaseFault" nillable="true" type="tns:BaseFault" />
+      <xs:complexType name="InvalidCompanyCodeFault">
+        <xs:complexContent mixed="false">
+          <xs:extension base="tns:BaseFault">
+            <xs:sequence />
+          </xs:extension>
+        </xs:complexContent>
+      </xs:complexType>
+      <xs:element name="InvalidCompanyCodeFault" nillable="true" type="tns:InvalidCompanyCodeFault" />
+      <xs:complexType name="InvalidDealerCodeFault">
+        <xs:complexContent mixed="false">
+          <xs:extension base="tns:BaseFault">
+            <xs:sequence />
+          </xs:extension>
+        </xs:complexContent>
+      </xs:complexType>
+      <xs:element name="InvalidDealerCodeFault" nillable="true" type="tns:InvalidDealerCodeFault" />
+      <xs:complexType name="InvalidClaimNumberFault">
+        <xs:sequence />
+      </xs:complexType>
+      <xs:element name="InvalidClaimNumberFault" nillable="true" type="tns:InvalidClaimNumberFault" />
+      <xs:complexType name="InvalidPurposeCodeFault">
+        <xs:complexContent mixed="false">
+          <xs:extension base="tns:BaseFault">
+            <xs:sequence />
+          </xs:extension>
+        </xs:complexContent>
+      </xs:complexType>
+      <xs:element name="InvalidPurposeCodeFault" nillable="true" type="tns:InvalidPurposeCodeFault" />
+      <xs:complexType name="InvalidChannelFault">
+        <xs:complexContent mixed="false">
+          <xs:extension base="tns:BaseFault">
+            <xs:sequence />
+          </xs:extension>
+        </xs:complexContent>
+      </xs:complexType>
+      <xs:element name="InvalidChannelFault" nillable="true" type="tns:InvalidChannelFault" />
+      <xs:complexType name="InvalidCultureCodeFault">
+        <xs:complexContent mixed="false">
+          <xs:extension base="tns:BaseFault">
+            <xs:sequence />
+          </xs:extension>
+        </xs:complexContent>
+      </xs:complexType>
+      <xs:element name="InvalidCultureCodeFault" nillable="true" type="tns:InvalidCultureCodeFault" />
+      <xs:complexType name="InvalidRelationshipTypeCodeFault">
+        <xs:complexContent mixed="false">
+          <xs:extension base="tns:BaseFault">
+            <xs:sequence />
+          </xs:extension>
+        </xs:complexContent>
+      </xs:complexType>
+      <xs:element name="InvalidRelationshipTypeCodeFault" nillable="true" type="tns:InvalidRelationshipTypeCodeFault" />
+      <xs:complexType name="InvalidCaseNumberFault">
+        <xs:complexContent mixed="false">
+          <xs:extension base="tns:BaseFault">
+            <xs:sequence />
+          </xs:extension>
+        </xs:complexContent>
+      </xs:complexType>
+      <xs:element name="InvalidCaseNumberFault" nillable="true" type="tns:InvalidCaseNumberFault" />
+      <xs:complexType name="QuestionSetCodeNotFoundFault">
+        <xs:complexContent mixed="false">
+          <xs:extension base="tns:BaseFault">
+            <xs:sequence />
+          </xs:extension>
+        </xs:complexContent>
+      </xs:complexType>
+      <xs:element name="QuestionSetCodeNotFoundFault" nillable="true" type="tns:QuestionSetCodeNotFoundFault" />
+      <xs:complexType name="RegisteredItemsNotFoundFault">
+        <xs:complexContent mixed="false">
+          <xs:extension base="tns:BaseFault">
+            <xs:sequence />
+          </xs:extension>
+        </xs:complexContent>
+      </xs:complexType>
+      <xs:element name="RegisteredItemsNotFoundFault" nillable="true" type="tns:RegisteredItemsNotFoundFault" />
+      <xs:complexType name="ManufacturerNotFoundFault">
+        <xs:complexContent mixed="false">
+          <xs:extension base="tns:BaseFault">
+            <xs:sequence />
+          </xs:extension>
+        </xs:complexContent>
+      </xs:complexType>
+      <xs:element name="ManufacturerNotFoundFault" nillable="true" type="tns:ManufacturerNotFoundFault" />
+      <xs:complexType name="PolicyCancelRequestDeniedFault">
+        <xs:complexContent mixed="false">
+          <xs:extension base="tns:BaseFault">
+            <xs:sequence />
+          </xs:extension>
+        </xs:complexContent>
+      </xs:complexType>
+      <xs:element name="PolicyCancelRequestDeniedFault" nillable="true" type="tns:PolicyCancelRequestDeniedFault" />
+      <xs:complexType name="FulfillmentServiceFault">
+        <xs:complexContent mixed="false">
+          <xs:extension base="tns:BaseFault">
+            <xs:sequence />
+          </xs:extension>
+        </xs:complexContent>
+      </xs:complexType>
+      <xs:element name="FulfillmentServiceFault" nillable="true" type="tns:FulfillmentServiceFault" />
+      <xs:complexType name="TranslationNotFoundFault">
+        <xs:complexContent mixed="false">
+          <xs:extension base="tns:BaseFault">
+            <xs:sequence />
+          </xs:extension>
+        </xs:complexContent>
+      </xs:complexType>
+      <xs:element name="TranslationNotFoundFault" nillable="true" type="tns:TranslationNotFoundFault" />
+    </xs:schema>
+    <xs:schema xmlns:tns="http://assurant.com/Elita/ServiceIntegration/Faults" elementFormDefault="qualified" targetNamespace="http://assurant.com/Elita/ServiceIntegration/Faults" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+      <xs:complexType name="ValidationFault">
+        <xs:sequence>
+          <xs:element name="Items" nillable="true" type="tns:ArrayOfValidationFaultItem" />
+        </xs:sequence>
+      </xs:complexType>
+      <xs:element name="ValidationFault" nillable="true" type="tns:ValidationFault" />
+      <xs:complexType name="ArrayOfValidationFaultItem">
+        <xs:sequence>
+          <xs:element minOccurs="0" maxOccurs="unbounded" name="ValidationFaultItem" nillable="true" type="tns:ValidationFaultItem" />
+        </xs:sequence>
+      </xs:complexType>
+      <xs:element name="ArrayOfValidationFaultItem" nillable="true" type="tns:ArrayOfValidationFaultItem" />
+      <xs:complexType name="ValidationFaultItem">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="MemberName" nillable="true" type="xs:string" />
+          <xs:element name="Message" nillable="true" type="xs:string" />
+        </xs:sequence>
+      </xs:complexType>
+      <xs:element name="ValidationFaultItem" nillable="true" type="tns:ValidationFaultItem" />
+    </xs:schema>
+    <xs:schema xmlns:ser="http://schemas.microsoft.com/2003/10/Serialization/" xmlns:tns="http://schemas.datacontract.org/2004/07/Assurant.Elita.ClaimService.BusinessRulesEngineInterface.Contracts" elementFormDefault="qualified" targetNamespace="http://schemas.datacontract.org/2004/07/Assurant.Elita.ClaimService.BusinessRulesEngineInterface.Contracts" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+      <xs:import namespace="http://schemas.microsoft.com/2003/10/Serialization/" />
+      <xs:complexType name="PolicyInfo">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="ClaimSummary" nillable="true" type="tns:ArrayOfClaimInfo" />
+          <xs:element minOccurs="0" name="ClaimWaitingPeriod" type="xs:int" />
+          <xs:element minOccurs="0" name="ContractSigned" type="xs:boolean" />
+          <xs:element minOccurs="0" name="CoverageSummary" nillable="true" type="tns:ArrayOfCertificateItemCoverage" />
+          <xs:element minOccurs="0" name="NumberOfClaimsAllowed" type="xs:int" />
+          <xs:element minOccurs="0" name="NumberOfRepairClaimsAllowed" type="xs:int" />
+          <xs:element minOccurs="0" name="NumberOfReplacementClaimsAllowed" type="xs:int" />
+          <xs:element minOccurs="0" name="PaymentAmountDue" nillable="true" type="xs:decimal" />
+          <xs:element minOccurs="0" name="PolicyId" type="ser:guid" />
+          <xs:element minOccurs="0" name="PolicyLiabilityLimit" nillable="true" type="xs:decimal" />
+          <xs:element minOccurs="0" name="ProductClaimLimit" nillable="true" type="xs:int" />
+          <xs:element minOccurs="0" name="ProductClaimLimitPerDevice" nillable="true" type="xs:int" />
+          <xs:element minOccurs="0" name="ProductCode" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="ProductLiabilityApplicableTo" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="ProductLiabilityLimitBasedOn" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="ProductSalesDate" type="xs:dateTime" />
+          <xs:element minOccurs="0" name="StatusCode" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="SubsriberStatus" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="WarrantySalesDate" type="xs:dateTime" />
+        </xs:sequence>
+      </xs:complexType>
+      <xs:element name="PolicyInfo" nillable="true" type="tns:PolicyInfo" />
+      <xs:complexType name="ArrayOfClaimInfo">
+        <xs:sequence>
+          <xs:element minOccurs="0" maxOccurs="unbounded" name="ClaimInfo" nillable="true" type="tns:ClaimInfo" />
+        </xs:sequence>
+      </xs:complexType>
+      <xs:element name="ArrayOfClaimInfo" nillable="true" type="tns:ArrayOfClaimInfo" />
+      <xs:complexType name="ClaimInfo">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="AauthorizedAmountSpecified" type="xs:boolean" />
+          <xs:element minOccurs="0" name="AuthorizationNumber" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="AuthorizedAmount" type="xs:decimal" />
+          <xs:element minOccurs="0" name="CallerName" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="CallerRelationshipTypeCode" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="CauseOfLoss" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="CertificateNumber" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="ClaimAuthTypeCode" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="ClaimClosedDate" nillable="true" type="xs:dateTime" />
+          <xs:element minOccurs="0" name="ClaimConsequentialDamages" nillable="true" type="tns:ArrayOfClaimConsequentialDamage" />
+          <xs:element minOccurs="0" name="ClaimEquipment" nillable="true" type="tns:ClaimEquipment" />
+          <xs:element minOccurs="0" name="ClaimId" type="ser:guid" />
+          <xs:element minOccurs="0" name="ClaimNumber" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="ClosedReasonCode" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="ContactName" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="Coverage" nillable="true" type="tns:CertificateItemCoverage" />
+          <xs:element minOccurs="0" name="CoverageTypeCode" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="DateOfLoss" type="xs:dateTime" />
+          <xs:element minOccurs="0" name="DateOfReporting" type="xs:dateTime" />
+          <xs:element minOccurs="0" name="Deductible" nillable="true" type="xs:decimal" />
+          <xs:element minOccurs="0" name="DeductibleSpecified" type="xs:boolean" />
+          <xs:element minOccurs="0" name="DeniedReasonCode" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="ExtendedStatusCode" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="FollowUpDate" type="xs:dateTime" />
+          <xs:element minOccurs="0" name="FulfillmentOptionCode" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="Issues" nillable="true" type="tns:ArrayOfIssue" />
+          <xs:element minOccurs="0" name="MasterClaimNumber" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="MethodOfRepair" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="MgrAuthAmountFlag" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="PaymentAmount" type="xs:decimal" />
+          <xs:element minOccurs="0" name="PaymentAmountSpecified" type="xs:boolean" />
+          <xs:element minOccurs="0" name="PaymentAmountWithoutConseqDamage" type="xs:decimal" />
+          <xs:element minOccurs="0" name="ProblemDescription" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="ReportedDate" type="xs:dateTime" />
+          <xs:element minOccurs="0" name="RiskType" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="ServiceCenterCode" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="StatusCode" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="WhoPaysCode" nillable="true" type="xs:string" />
+        </xs:sequence>
+      </xs:complexType>
+      <xs:element name="ClaimInfo" nillable="true" type="tns:ClaimInfo" />
+      <xs:complexType name="ArrayOfClaimConsequentialDamage">
+        <xs:sequence>
+          <xs:element minOccurs="0" maxOccurs="unbounded" name="ClaimConsequentialDamage" nillable="true" type="tns:ClaimConsequentialDamage" />
+        </xs:sequence>
+      </xs:complexType>
+      <xs:element name="ArrayOfClaimConsequentialDamage" nillable="true" type="tns:ArrayOfClaimConsequentialDamage" />
+      <xs:complexType name="ClaimConsequentialDamage">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="ApprovedAmount" type="xs:decimal" />
+          <xs:element minOccurs="0" name="CaseConsequentialDamageId" type="ser:guid" />
+          <xs:element minOccurs="0" name="ClaimId" nillable="true" type="ser:guid" />
+          <xs:element minOccurs="0" name="ConsequentialDamageCode" type="tns:ConsequentialDamageTypes" />
+          <xs:element minOccurs="0" name="CoverageConsequentialDamageId" nillable="true" type="ser:guid" />
+          <xs:element minOccurs="0" name="RequestedAmount" type="xs:decimal" />
+          <xs:element minOccurs="0" name="Status" type="tns:ConsequentialDamageStatuses" />
+        </xs:sequence>
+      </xs:complexType>
+      <xs:element name="ClaimConsequentialDamage" nillable="true" type="tns:ClaimConsequentialDamage" />
+      <xs:simpleType name="ConsequentialDamageTypes">
+        <xs:restriction base="xs:string">
+          <xs:enumeration value="UnauthorizedCalls" />
+          <xs:enumeration value="Accessories" />
+        </xs:restriction>
+      </xs:simpleType>
+      <xs:element name="ConsequentialDamageTypes" nillable="true" type="tns:ConsequentialDamageTypes" />
+      <xs:simpleType name="ConsequentialDamageStatuses">
+        <xs:restriction base="xs:string">
+          <xs:enumeration value="Requested" />
+          <xs:enumeration value="Approved" />
+          <xs:enumeration value="Denied" />
+          <xs:enumeration value="Fulfilled" />
+        </xs:restriction>
+      </xs:simpleType>
+      <xs:element name="ConsequentialDamageStatuses" nillable="true" type="tns:ConsequentialDamageStatuses" />
+      <xs:complexType name="ClaimEquipment">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="ClaimEquipmentTypeCode" type="tns:ClaimEquipmentTypes" />
+          <xs:element minOccurs="0" name="ClaimedEquipment" nillable="true" type="tns:Item" />
+        </xs:sequence>
+      </xs:complexType>
+      <xs:element name="ClaimEquipment" nillable="true" type="tns:ClaimEquipment" />
+      <xs:simpleType name="ClaimEquipmentTypes">
+        <xs:restriction base="xs:string">
+          <xs:enumeration value="Claimed" />
+          <xs:enumeration value="Enrolled" />
+          <xs:enumeration value="R" />
+        </xs:restriction>
+      </xs:simpleType>
+      <xs:element name="ClaimEquipmentTypes" nillable="true" type="tns:ClaimEquipmentTypes" />
+      <xs:complexType name="Item">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="Capacity" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="Carrier" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="Color" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="DeviceStatus" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="DeviceType" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="EnrollmentItem" type="xs:boolean" />
+          <xs:element minOccurs="0" name="ImeiNumber" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="IndixId" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="Manufacturer" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="Model" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="PurchasePrice" nillable="true" type="xs:decimal" />
+          <xs:element minOccurs="0" name="PurchasedDate" nillable="true" type="xs:dateTime" />
+          <xs:element minOccurs="0" name="RegisteredName" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="RegistrationDate" nillable="true" type="xs:dateTime" />
+          <xs:element minOccurs="0" name="SerialNumber" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="SkuNumber" nillable="true" type="xs:string" />
+        </xs:sequence>
+      </xs:complexType>
+      <xs:element name="Item" nillable="true" type="tns:Item" />
+      <xs:complexType name="CertificateItemCoverage">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="BeginDate" type="xs:dateTime" />
+          <xs:element minOccurs="0" name="ConsequentialDamageEffectiveDate" nillable="true" type="xs:dateTime" />
+          <xs:element minOccurs="0" name="ConsequentialDamageExpirationDate" nillable="true" type="xs:dateTime" />
+          <xs:element minOccurs="0" name="ConsequentialDamageType" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="CoverageClaimLimit" nillable="true" type="xs:int" />
+          <xs:element minOccurs="0" name="CoverageConsequentialDamageId" nillable="true" type="ser:guid" />
+          <xs:element minOccurs="0" name="CoverageDeductibles" nillable="true" type="tns:ArrayOfCertificateItemCoverageDeductible" />
+          <xs:element minOccurs="0" name="CoverageLiabilityLimit" nillable="true" type="xs:decimal" />
+          <xs:element minOccurs="0" name="CoverageTypeCode" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="EndDate" type="xs:dateTime" />
+          <xs:element minOccurs="0" name="GrossAmountReceived" nillable="true" type="xs:decimal" />
+          <xs:element minOccurs="0" name="IsClaimAllowed" type="xs:boolean" />
+          <xs:element minOccurs="0" name="LiabilityLimitCumulative" nillable="true" type="xs:decimal" />
+          <xs:element minOccurs="0" name="LiabilityLimitPerIncident" nillable="true" type="xs:decimal" />
+          <xs:element minOccurs="0" name="MethodOfRepair" nillable="true" type="xs:string" />
+        </xs:sequence>
+      </xs:complexType>
+      <xs:element name="CertificateItemCoverage" nillable="true" type="tns:CertificateItemCoverage" />
+      <xs:complexType name="ArrayOfCertificateItemCoverageDeductible">
+        <xs:sequence>
+          <xs:element minOccurs="0" maxOccurs="unbounded" name="CertificateItemCoverageDeductible" nillable="true" type="tns:CertificateItemCoverageDeductible" />
+        </xs:sequence>
+      </xs:complexType>
+      <xs:element name="ArrayOfCertificateItemCoverageDeductible" nillable="true" type="tns:ArrayOfCertificateItemCoverageDeductible" />
+      <xs:complexType name="CertificateItemCoverageDeductible">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="DeductiblExpressionId" type="ser:guid" />
+          <xs:element minOccurs="0" name="Deductible" type="xs:decimal" />
+          <xs:element minOccurs="0" name="DeductibleBasedOnCode" nillable="true" type="xs:string" />
+        </xs:sequence>
+      </xs:complexType>
+      <xs:element name="CertificateItemCoverageDeductible" nillable="true" type="tns:CertificateItemCoverageDeductible" />
+      <xs:complexType name="ArrayOfIssue">
+        <xs:sequence>
+          <xs:element minOccurs="0" maxOccurs="unbounded" name="Issue" nillable="true" type="tns:Issue" />
+        </xs:sequence>
+      </xs:complexType>
+      <xs:element name="ArrayOfIssue" nillable="true" type="tns:ArrayOfIssue" />
+      <xs:complexType name="Issue">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="Code" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="Status" nillable="true" type="xs:string" />
+        </xs:sequence>
+      </xs:complexType>
+      <xs:element name="Issue" nillable="true" type="tns:Issue" />
+      <xs:complexType name="ArrayOfCertificateItemCoverage">
+        <xs:sequence>
+          <xs:element minOccurs="0" maxOccurs="unbounded" name="CertificateItemCoverage" nillable="true" type="tns:CertificateItemCoverage" />
+        </xs:sequence>
+      </xs:complexType>
+      <xs:element name="ArrayOfCertificateItemCoverage" nillable="true" type="tns:ArrayOfCertificateItemCoverage" />
+    </xs:schema>
+  </wsdl:types>
+  <wsdl:message name="IClaimRecordingService_BeginClaim_InputMessage">
+    <wsdl:part name="parameters" element="tns:BeginClaim" />
+  </wsdl:message>
+  <wsdl:message name="IClaimRecordingService_BeginClaim_OutputMessage">
+    <wsdl:part name="parameters" element="tns:BeginClaimResponse" />
+  </wsdl:message>
+  <wsdl:message name="IClaimRecordingService_BeginClaim_InvalidPolicyNumberFaultFault_FaultMessage">
+    <wsdl:part xmlns:q1="http://elita.assurant.com/Elita/ClaimService/Faults" name="detail" element="q1:InvalidPolicyNumberFault" />
+  </wsdl:message>
+  <wsdl:message name="IClaimRecordingService_BeginClaim_InvalidCompanyCodeFaultFault_FaultMessage">
+    <wsdl:part xmlns:q2="http://elita.assurant.com/Elita/ClaimService/Faults" name="detail" element="q2:InvalidCompanyCodeFault" />
+  </wsdl:message>
+  <wsdl:message name="IClaimRecordingService_BeginClaim_InvalidDealerCodeFaultFault_FaultMessage">
+    <wsdl:part xmlns:q3="http://elita.assurant.com/Elita/ClaimService/Faults" name="detail" element="q3:InvalidDealerCodeFault" />
+  </wsdl:message>
+  <wsdl:message name="IClaimRecordingService_BeginClaim_InvalidClaimNumberFaultFault_FaultMessage">
+    <wsdl:part xmlns:q4="http://elita.assurant.com/Elita/ClaimService/Faults" name="detail" element="q4:InvalidClaimNumberFault" />
+  </wsdl:message>
+  <wsdl:message name="IClaimRecordingService_BeginClaim_InvalidPurposeCodeFaultFault_FaultMessage">
+    <wsdl:part xmlns:q5="http://elita.assurant.com/Elita/ClaimService/Faults" name="detail" element="q5:InvalidPurposeCodeFault" />
+  </wsdl:message>
+  <wsdl:message name="IClaimRecordingService_BeginClaim_InvalidChannelFaultFault_FaultMessage">
+    <wsdl:part xmlns:q6="http://elita.assurant.com/Elita/ClaimService/Faults" name="detail" element="q6:InvalidChannelFault" />
+  </wsdl:message>
+  <wsdl:message name="IClaimRecordingService_BeginClaim_InvalidCultureCodeFaultFault_FaultMessage">
+    <wsdl:part xmlns:q7="http://elita.assurant.com/Elita/ClaimService/Faults" name="detail" element="q7:InvalidCultureCodeFault" />
+  </wsdl:message>
+  <wsdl:message name="IClaimRecordingService_BeginClaim_InvalidRelationshipTypeCodeFaultFault_FaultMessage">
+    <wsdl:part xmlns:q8="http://elita.assurant.com/Elita/ClaimService/Faults" name="detail" element="q8:InvalidRelationshipTypeCodeFault" />
+  </wsdl:message>
+  <wsdl:message name="IClaimRecordingService_BeginClaim_ValidationFaultFault_FaultMessage">
+    <wsdl:part xmlns:q9="http://assurant.com/Elita/ServiceIntegration/Faults" name="detail" element="q9:ValidationFault" />
+  </wsdl:message>
+  <wsdl:message name="IClaimRecordingService_BeginInteraction_InputMessage">
+    <wsdl:part name="parameters" element="tns:BeginInteraction" />
+  </wsdl:message>
+  <wsdl:message name="IClaimRecordingService_BeginInteraction_OutputMessage">
+    <wsdl:part name="parameters" element="tns:BeginInteractionResponse" />
+  </wsdl:message>
+  <wsdl:message name="IClaimRecordingService_BeginInteraction_InvalidCompanyCodeFaultFault_FaultMessage">
+    <wsdl:part xmlns:q10="http://elita.assurant.com/Elita/ClaimService/Faults" name="detail" element="q10:InvalidCompanyCodeFault" />
+  </wsdl:message>
+  <wsdl:message name="IClaimRecordingService_BeginInteraction_InvalidCaseNumberFaultFault_FaultMessage">
+    <wsdl:part xmlns:q11="http://elita.assurant.com/Elita/ClaimService/Faults" name="detail" element="q11:InvalidCaseNumberFault" />
+  </wsdl:message>
+  <wsdl:message name="IClaimRecordingService_BeginInteraction_InvalidPurposeCodeFaultFault_FaultMessage">
+    <wsdl:part xmlns:q12="http://elita.assurant.com/Elita/ClaimService/Faults" name="detail" element="q12:InvalidPurposeCodeFault" />
+  </wsdl:message>
+  <wsdl:message name="IClaimRecordingService_BeginInteraction_InvalidChannelFaultFault_FaultMessage">
+    <wsdl:part xmlns:q13="http://elita.assurant.com/Elita/ClaimService/Faults" name="detail" element="q13:InvalidChannelFault" />
+  </wsdl:message>
+  <wsdl:message name="IClaimRecordingService_BeginInteraction_InvalidCultureCodeFaultFault_FaultMessage">
+    <wsdl:part xmlns:q14="http://elita.assurant.com/Elita/ClaimService/Faults" name="detail" element="q14:InvalidCultureCodeFault" />
+  </wsdl:message>
+  <wsdl:message name="IClaimRecordingService_BeginInteraction_InvalidRelationshipTypeCodeFaultFault_FaultMessage">
+    <wsdl:part xmlns:q15="http://elita.assurant.com/Elita/ClaimService/Faults" name="detail" element="q15:InvalidRelationshipTypeCodeFault" />
+  </wsdl:message>
+  <wsdl:message name="IClaimRecordingService_BeginInteraction_QuestionSetCodeNotFoundFaultFault_FaultMessage">
+    <wsdl:part xmlns:q16="http://elita.assurant.com/Elita/ClaimService/Faults" name="detail" element="q16:QuestionSetCodeNotFoundFault" />
+  </wsdl:message>
+  <wsdl:message name="IClaimRecordingService_BeginInteraction_ValidationFaultFault_FaultMessage">
+    <wsdl:part xmlns:q17="http://assurant.com/Elita/ServiceIntegration/Faults" name="detail" element="q17:ValidationFault" />
+  </wsdl:message>
+  <wsdl:message name="IClaimRecordingService_Submit_InputMessage">
+    <wsdl:part name="parameters" element="tns:Submit" />
+  </wsdl:message>
+  <wsdl:message name="IClaimRecordingService_Submit_OutputMessage">
+    <wsdl:part name="parameters" element="tns:SubmitResponse" />
+  </wsdl:message>
+  <wsdl:message name="IClaimRecordingService_Submit_InvalidCompanyCodeFaultFault_FaultMessage">
+    <wsdl:part xmlns:q18="http://elita.assurant.com/Elita/ClaimService/Faults" name="detail" element="q18:InvalidCompanyCodeFault" />
+  </wsdl:message>
+  <wsdl:message name="IClaimRecordingService_Submit_InvalidCaseNumberFaultFault_FaultMessage">
+    <wsdl:part xmlns:q19="http://elita.assurant.com/Elita/ClaimService/Faults" name="detail" element="q19:InvalidCaseNumberFault" />
+  </wsdl:message>
+  <wsdl:message name="IClaimRecordingService_Submit_InvalidRegisteredItemsFaultFault_FaultMessage">
+    <wsdl:part xmlns:q20="http://elita.assurant.com/Elita/ClaimService/Faults" name="detail" element="q20:RegisteredItemsNotFoundFault" />
+  </wsdl:message>
+  <wsdl:message name="IClaimRecordingService_Submit_ManufacturerNotFoundFaultFault_FaultMessage">
+    <wsdl:part xmlns:q21="http://elita.assurant.com/Elita/ClaimService/Faults" name="detail" element="q21:ManufacturerNotFoundFault" />
+  </wsdl:message>
+  <wsdl:message name="IClaimRecordingService_Submit_PolicyCancelRequestDeniedFaultFault_FaultMessage">
+    <wsdl:part xmlns:q22="http://elita.assurant.com/Elita/ClaimService/Faults" name="detail" element="q22:PolicyCancelRequestDeniedFault" />
+  </wsdl:message>
+  <wsdl:message name="IClaimRecordingService_Submit_FulfillmentServiceFaultFault_FaultMessage">
+    <wsdl:part xmlns:q23="http://elita.assurant.com/Elita/ClaimService/Faults" name="detail" element="q23:FulfillmentServiceFault" />
+  </wsdl:message>
+  <wsdl:message name="IClaimRecordingService_Submit_TranslationNotFoundFaultFault_FaultMessage">
+    <wsdl:part xmlns:q24="http://elita.assurant.com/Elita/ClaimService/Faults" name="detail" element="q24:TranslationNotFoundFault" />
+  </wsdl:message>
+  <wsdl:message name="IClaimRecordingService_Submit_ValidationFaultFault_FaultMessage">
+    <wsdl:part xmlns:q25="http://assurant.com/Elita/ServiceIntegration/Faults" name="detail" element="q25:ValidationFault" />
+  </wsdl:message>
+  <wsdl:message name="IClaimRecordingService_Save_InputMessage">
+    <wsdl:part name="parameters" element="tns:Save" />
+  </wsdl:message>
+  <wsdl:message name="IClaimRecordingService_Save_OutputMessage">
+    <wsdl:part name="parameters" element="tns:SaveResponse" />
+  </wsdl:message>
+  <wsdl:message name="IClaimRecordingService_Save_ValidationFaultFault_FaultMessage">
+    <wsdl:part xmlns:q26="http://assurant.com/Elita/ServiceIntegration/Faults" name="detail" element="q26:ValidationFault" />
+  </wsdl:message>
+  <wsdl:message name="IClaimRecordingService_GetClaimSummary_InputMessage">
+    <wsdl:part name="parameters" element="tns:GetClaimSummary" />
+  </wsdl:message>
+  <wsdl:message name="IClaimRecordingService_GetClaimSummary_OutputMessage">
+    <wsdl:part name="parameters" element="tns:GetClaimSummaryResponse" />
+  </wsdl:message>
+  <wsdl:message name="IClaimRecordingService_GetClaimSummary_ValidationFaultFault_FaultMessage">
+    <wsdl:part xmlns:q27="http://assurant.com/Elita/ServiceIntegration/Faults" name="detail" element="q27:ValidationFault" />
+  </wsdl:message>
+  <wsdl:message name="IClaimRecordingService_ReEvaluateQuestions_InputMessage">
+    <wsdl:part name="parameters" element="tns:ReEvaluateQuestions" />
+  </wsdl:message>
+  <wsdl:message name="IClaimRecordingService_ReEvaluateQuestions_OutputMessage">
+    <wsdl:part name="parameters" element="tns:ReEvaluateQuestionsResponse" />
+  </wsdl:message>
+  <wsdl:message name="IClaimRecordingService_ReEvaluateQuestions_ValidationFaultFault_FaultMessage">
+    <wsdl:part xmlns:q28="http://assurant.com/Elita/ServiceIntegration/Faults" name="detail" element="q28:ValidationFault" />
+  </wsdl:message>
+  <wsdl:message name="IClaimRecordingService_UpdateCaseAction_InputMessage">
+    <wsdl:part name="parameters" element="tns:UpdateCaseAction" />
+  </wsdl:message>
+  <wsdl:message name="IClaimRecordingService_UpdateCaseAction_OutputMessage">
+    <wsdl:part name="parameters" element="tns:UpdateCaseActionResponse" />
+  </wsdl:message>
+  <wsdl:message name="IClaimRecordingService_UpdateCaseAction_ValidationFaultFault_FaultMessage">
+    <wsdl:part xmlns:q29="http://assurant.com/Elita/ServiceIntegration/Faults" name="detail" element="q29:ValidationFault" />
+  </wsdl:message>
+  <wsdl:message name="IClaimRecordingService_GetPolicySummaryInfo_InputMessage">
+    <wsdl:part name="parameters" element="tns:GetPolicySummaryInfo" />
+  </wsdl:message>
+  <wsdl:message name="IClaimRecordingService_GetPolicySummaryInfo_OutputMessage">
+    <wsdl:part name="parameters" element="tns:GetPolicySummaryInfoResponse" />
+  </wsdl:message>
+  <wsdl:message name="IClaimRecordingService_GetCourierDurations_InputMessage">
+    <wsdl:part name="parameters" element="tns:GetCourierDurations" />
+  </wsdl:message>
+  <wsdl:message name="IClaimRecordingService_GetCourierDurations_OutputMessage">
+    <wsdl:part name="parameters" element="tns:GetCourierDurationsResponse" />
+  </wsdl:message>
+  <wsdl:portType name="IClaimRecordingService">
+    <wsdl:operation name="BeginClaim">
+      <wsdl:input wsaw:Action="http://elita.assurant.com/Elita/Claim/RecordingService/IClaimRecordingService/BeginClaim" message="tns:IClaimRecordingService_BeginClaim_InputMessage" />
+      <wsdl:output wsaw:Action="http://elita.assurant.com/Elita/Claim/RecordingService/IClaimRecordingService/BeginClaimResponse" message="tns:IClaimRecordingService_BeginClaim_OutputMessage" />
+      <wsdl:fault wsaw:Action="http://elita.assurant.com/Elita/Claim/RecordingService/IClaimRecordingService/BeginClaimInvalidPolicyNumberFaultFault" name="InvalidPolicyNumberFaultFault" message="tns:IClaimRecordingService_BeginClaim_InvalidPolicyNumberFaultFault_FaultMessage" />
+      <wsdl:fault wsaw:Action="http://elita.assurant.com/Elita/Claim/RecordingService/IClaimRecordingService/BeginClaimInvalidCompanyCodeFaultFault" name="InvalidCompanyCodeFaultFault" message="tns:IClaimRecordingService_BeginClaim_InvalidCompanyCodeFaultFault_FaultMessage" />
+      <wsdl:fault wsaw:Action="http://elita.assurant.com/Elita/Claim/RecordingService/IClaimRecordingService/BeginClaimInvalidDealerCodeFaultFault" name="InvalidDealerCodeFaultFault" message="tns:IClaimRecordingService_BeginClaim_InvalidDealerCodeFaultFault_FaultMessage" />
+      <wsdl:fault wsaw:Action="http://elita.assurant.com/Elita/Claim/RecordingService/IClaimRecordingService/BeginClaimInvalidClaimNumberFaultFault" name="InvalidClaimNumberFaultFault" message="tns:IClaimRecordingService_BeginClaim_InvalidClaimNumberFaultFault_FaultMessage" />
+      <wsdl:fault wsaw:Action="http://elita.assurant.com/Elita/Claim/RecordingService/IClaimRecordingService/BeginClaimInvalidPurposeCodeFaultFault" name="InvalidPurposeCodeFaultFault" message="tns:IClaimRecordingService_BeginClaim_InvalidPurposeCodeFaultFault_FaultMessage" />
+      <wsdl:fault wsaw:Action="http://elita.assurant.com/Elita/Claim/RecordingService/IClaimRecordingService/BeginClaimInvalidChannelFaultFault" name="InvalidChannelFaultFault" message="tns:IClaimRecordingService_BeginClaim_InvalidChannelFaultFault_FaultMessage" />
+      <wsdl:fault wsaw:Action="http://elita.assurant.com/Elita/Claim/RecordingService/IClaimRecordingService/BeginClaimInvalidCultureCodeFaultFault" name="InvalidCultureCodeFaultFault" message="tns:IClaimRecordingService_BeginClaim_InvalidCultureCodeFaultFault_FaultMessage" />
+      <wsdl:fault wsaw:Action="http://elita.assurant.com/Elita/Claim/RecordingService/IClaimRecordingService/BeginClaimInvalidRelationshipTypeCodeFaultFault" name="InvalidRelationshipTypeCodeFaultFault" message="tns:IClaimRecordingService_BeginClaim_InvalidRelationshipTypeCodeFaultFault_FaultMessage" />
+      <wsdl:fault wsaw:Action="http://elita.assurant.com/Elita/Claim/RecordingService/IClaimRecordingService/BeginClaimValidationFaultFault" name="ValidationFaultFault" message="tns:IClaimRecordingService_BeginClaim_ValidationFaultFault_FaultMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="BeginInteraction">
+      <wsdl:input wsaw:Action="http://elita.assurant.com/Elita/Claim/RecordingService/IClaimRecordingService/BeginInteraction" message="tns:IClaimRecordingService_BeginInteraction_InputMessage" />
+      <wsdl:output wsaw:Action="http://elita.assurant.com/Elita/Claim/RecordingService/IClaimRecordingService/BeginInteractionResponse" message="tns:IClaimRecordingService_BeginInteraction_OutputMessage" />
+      <wsdl:fault wsaw:Action="http://elita.assurant.com/Elita/Claim/RecordingService/IClaimRecordingService/BeginInteractionInvalidCompanyCodeFaultFault" name="InvalidCompanyCodeFaultFault" message="tns:IClaimRecordingService_BeginInteraction_InvalidCompanyCodeFaultFault_FaultMessage" />
+      <wsdl:fault wsaw:Action="http://elita.assurant.com/Elita/Claim/RecordingService/IClaimRecordingService/BeginInteractionInvalidCaseNumberFaultFault" name="InvalidCaseNumberFaultFault" message="tns:IClaimRecordingService_BeginInteraction_InvalidCaseNumberFaultFault_FaultMessage" />
+      <wsdl:fault wsaw:Action="http://elita.assurant.com/Elita/Claim/RecordingService/IClaimRecordingService/BeginInteractionInvalidPurposeCodeFaultFault" name="InvalidPurposeCodeFaultFault" message="tns:IClaimRecordingService_BeginInteraction_InvalidPurposeCodeFaultFault_FaultMessage" />
+      <wsdl:fault wsaw:Action="http://elita.assurant.com/Elita/Claim/RecordingService/IClaimRecordingService/BeginInteractionInvalidChannelFaultFault" name="InvalidChannelFaultFault" message="tns:IClaimRecordingService_BeginInteraction_InvalidChannelFaultFault_FaultMessage" />
+      <wsdl:fault wsaw:Action="http://elita.assurant.com/Elita/Claim/RecordingService/IClaimRecordingService/BeginInteractionInvalidCultureCodeFaultFault" name="InvalidCultureCodeFaultFault" message="tns:IClaimRecordingService_BeginInteraction_InvalidCultureCodeFaultFault_FaultMessage" />
+      <wsdl:fault wsaw:Action="http://elita.assurant.com/Elita/Claim/RecordingService/IClaimRecordingService/BeginInteractionInvalidRelationshipTypeCodeFaultFault" name="InvalidRelationshipTypeCodeFaultFault" message="tns:IClaimRecordingService_BeginInteraction_InvalidRelationshipTypeCodeFaultFault_FaultMessage" />
+      <wsdl:fault wsaw:Action="http://elita.assurant.com/Elita/Claim/RecordingService/IClaimRecordingService/BeginInteractionQuestionSetCodeNotFoundFaultFault" name="QuestionSetCodeNotFoundFaultFault" message="tns:IClaimRecordingService_BeginInteraction_QuestionSetCodeNotFoundFaultFault_FaultMessage" />
+      <wsdl:fault wsaw:Action="http://elita.assurant.com/Elita/Claim/RecordingService/IClaimRecordingService/BeginInteractionValidationFaultFault" name="ValidationFaultFault" message="tns:IClaimRecordingService_BeginInteraction_ValidationFaultFault_FaultMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="Submit">
+      <wsdl:input wsaw:Action="http://elita.assurant.com/Elita/Claim/RecordingService/IClaimRecordingService/Submit" message="tns:IClaimRecordingService_Submit_InputMessage" />
+      <wsdl:output wsaw:Action="http://elita.assurant.com/Elita/Claim/RecordingService/IClaimRecordingService/SubmitResponse" message="tns:IClaimRecordingService_Submit_OutputMessage" />
+      <wsdl:fault wsaw:Action="http://elita.assurant.com/Elita/Claim/RecordingService/IClaimRecordingService/SubmitInvalidCompanyCodeFaultFault" name="InvalidCompanyCodeFaultFault" message="tns:IClaimRecordingService_Submit_InvalidCompanyCodeFaultFault_FaultMessage" />
+      <wsdl:fault wsaw:Action="http://elita.assurant.com/Elita/Claim/RecordingService/IClaimRecordingService/SubmitInvalidCaseNumberFaultFault" name="InvalidCaseNumberFaultFault" message="tns:IClaimRecordingService_Submit_InvalidCaseNumberFaultFault_FaultMessage" />
+      <wsdl:fault wsaw:Action="http://elita.assurant.com/Elita/Claim/RecordingService/IClaimRecordingService/SubmitInvalidRegisteredItemsFaultFault" name="InvalidRegisteredItemsFaultFault" message="tns:IClaimRecordingService_Submit_InvalidRegisteredItemsFaultFault_FaultMessage" />
+      <wsdl:fault wsaw:Action="http://elita.assurant.com/Elita/Claim/RecordingService/IClaimRecordingService/SubmitManufacturerNotFoundFaultFault" name="ManufacturerNotFoundFaultFault" message="tns:IClaimRecordingService_Submit_ManufacturerNotFoundFaultFault_FaultMessage" />
+      <wsdl:fault wsaw:Action="http://elita.assurant.com/Elita/Claim/RecordingService/IClaimRecordingService/SubmitPolicyCancelRequestDeniedFaultFault" name="PolicyCancelRequestDeniedFaultFault" message="tns:IClaimRecordingService_Submit_PolicyCancelRequestDeniedFaultFault_FaultMessage" />
+      <wsdl:fault wsaw:Action="http://elita.assurant.com/Elita/Claim/RecordingService/IClaimRecordingService/SubmitFulfillmentServiceFaultFault" name="FulfillmentServiceFaultFault" message="tns:IClaimRecordingService_Submit_FulfillmentServiceFaultFault_FaultMessage" />
+      <wsdl:fault wsaw:Action="http://elita.assurant.com/Elita/Claim/RecordingService/IClaimRecordingService/SubmitTranslationNotFoundFaultFault" name="TranslationNotFoundFaultFault" message="tns:IClaimRecordingService_Submit_TranslationNotFoundFaultFault_FaultMessage" />
+      <wsdl:fault wsaw:Action="http://elita.assurant.com/Elita/Claim/RecordingService/IClaimRecordingService/SubmitValidationFaultFault" name="ValidationFaultFault" message="tns:IClaimRecordingService_Submit_ValidationFaultFault_FaultMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="Save">
+      <wsdl:input wsaw:Action="http://elita.assurant.com/Elita/Claim/RecordingService/IClaimRecordingService/Save" message="tns:IClaimRecordingService_Save_InputMessage" />
+      <wsdl:output wsaw:Action="http://elita.assurant.com/Elita/Claim/RecordingService/IClaimRecordingService/SaveResponse" message="tns:IClaimRecordingService_Save_OutputMessage" />
+      <wsdl:fault wsaw:Action="http://elita.assurant.com/Elita/Claim/RecordingService/IClaimRecordingService/SaveValidationFaultFault" name="ValidationFaultFault" message="tns:IClaimRecordingService_Save_ValidationFaultFault_FaultMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="GetClaimSummary">
+      <wsdl:input wsaw:Action="http://elita.assurant.com/Elita/Claim/RecordingService/IClaimRecordingService/GetClaimSummary" message="tns:IClaimRecordingService_GetClaimSummary_InputMessage" />
+      <wsdl:output wsaw:Action="http://elita.assurant.com/Elita/Claim/RecordingService/IClaimRecordingService/GetClaimSummaryResponse" message="tns:IClaimRecordingService_GetClaimSummary_OutputMessage" />
+      <wsdl:fault wsaw:Action="http://elita.assurant.com/Elita/Claim/RecordingService/IClaimRecordingService/GetClaimSummaryValidationFaultFault" name="ValidationFaultFault" message="tns:IClaimRecordingService_GetClaimSummary_ValidationFaultFault_FaultMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="ReEvaluateQuestions">
+      <wsdl:input wsaw:Action="http://elita.assurant.com/Elita/Claim/RecordingService/IClaimRecordingService/ReEvaluateQuestions" message="tns:IClaimRecordingService_ReEvaluateQuestions_InputMessage" />
+      <wsdl:output wsaw:Action="http://elita.assurant.com/Elita/Claim/RecordingService/IClaimRecordingService/ReEvaluateQuestionsResponse" message="tns:IClaimRecordingService_ReEvaluateQuestions_OutputMessage" />
+      <wsdl:fault wsaw:Action="http://elita.assurant.com/Elita/Claim/RecordingService/IClaimRecordingService/ReEvaluateQuestionsValidationFaultFault" name="ValidationFaultFault" message="tns:IClaimRecordingService_ReEvaluateQuestions_ValidationFaultFault_FaultMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="UpdateCaseAction">
+      <wsdl:input wsaw:Action="http://elita.assurant.com/Elita/Claim/RecordingService/IClaimRecordingService/UpdateCaseAction" message="tns:IClaimRecordingService_UpdateCaseAction_InputMessage" />
+      <wsdl:output wsaw:Action="http://elita.assurant.com/Elita/Claim/RecordingService/IClaimRecordingService/UpdateCaseActionResponse" message="tns:IClaimRecordingService_UpdateCaseAction_OutputMessage" />
+      <wsdl:fault wsaw:Action="http://elita.assurant.com/Elita/Claim/RecordingService/IClaimRecordingService/UpdateCaseActionValidationFaultFault" name="ValidationFaultFault" message="tns:IClaimRecordingService_UpdateCaseAction_ValidationFaultFault_FaultMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="GetPolicySummaryInfo">
+      <wsdl:input wsaw:Action="http://elita.assurant.com/Elita/Claim/RecordingService/IClaimRecordingService/GetPolicySummaryInfo" message="tns:IClaimRecordingService_GetPolicySummaryInfo_InputMessage" />
+      <wsdl:output wsaw:Action="http://elita.assurant.com/Elita/Claim/RecordingService/IClaimRecordingService/GetPolicySummaryInfoResponse" message="tns:IClaimRecordingService_GetPolicySummaryInfo_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="GetCourierDurations">
+      <wsdl:input wsaw:Action="http://elita.assurant.com/Elita/Claim/RecordingService/IClaimRecordingService/GetCourierDurations" message="tns:IClaimRecordingService_GetCourierDurations_InputMessage" />
+      <wsdl:output wsaw:Action="http://elita.assurant.com/Elita/Claim/RecordingService/IClaimRecordingService/GetCourierDurationsResponse" message="tns:IClaimRecordingService_GetCourierDurations_OutputMessage" />
+    </wsdl:operation>
+  </wsdl:portType>
+  <wsdl:binding name="CustomBinding_IClaimRecordingService" type="tns:IClaimRecordingService">
+    <wsp:PolicyReference URI="#CustomBinding_IClaimRecordingService_policy" />
+    <soap:binding transport="http://schemas.xmlsoap.org/soap/http" />
+    <wsdl:operation name="BeginClaim">
+      <soap:operation soapAction="http://elita.assurant.com/Elita/Claim/RecordingService/IClaimRecordingService/BeginClaim" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+      <wsdl:fault name="InvalidPolicyNumberFaultFault">
+        <soap:fault use="literal" name="InvalidPolicyNumberFaultFault" namespace="" />
+        <soap:fault use="literal" name="InvalidPolicyNumberFaultFault" namespace="" />
+      </wsdl:fault>
+      <wsdl:fault name="InvalidCompanyCodeFaultFault">
+        <soap:fault use="literal" name="InvalidCompanyCodeFaultFault" namespace="" />
+        <soap:fault use="literal" name="InvalidCompanyCodeFaultFault" namespace="" />
+      </wsdl:fault>
+      <wsdl:fault name="InvalidDealerCodeFaultFault">
+        <soap:fault use="literal" name="InvalidDealerCodeFaultFault" namespace="" />
+        <soap:fault use="literal" name="InvalidDealerCodeFaultFault" namespace="" />
+      </wsdl:fault>
+      <wsdl:fault name="InvalidClaimNumberFaultFault">
+        <soap:fault use="literal" name="InvalidClaimNumberFaultFault" namespace="" />
+        <soap:fault use="literal" name="InvalidClaimNumberFaultFault" namespace="" />
+      </wsdl:fault>
+      <wsdl:fault name="InvalidPurposeCodeFaultFault">
+        <soap:fault use="literal" name="InvalidPurposeCodeFaultFault" namespace="" />
+        <soap:fault use="literal" name="InvalidPurposeCodeFaultFault" namespace="" />
+      </wsdl:fault>
+      <wsdl:fault name="InvalidChannelFaultFault">
+        <soap:fault use="literal" name="InvalidChannelFaultFault" namespace="" />
+        <soap:fault use="literal" name="InvalidChannelFaultFault" namespace="" />
+      </wsdl:fault>
+      <wsdl:fault name="InvalidCultureCodeFaultFault">
+        <soap:fault use="literal" name="InvalidCultureCodeFaultFault" namespace="" />
+        <soap:fault use="literal" name="InvalidCultureCodeFaultFault" namespace="" />
+      </wsdl:fault>
+      <wsdl:fault name="InvalidRelationshipTypeCodeFaultFault">
+        <soap:fault use="literal" name="InvalidRelationshipTypeCodeFaultFault" namespace="" />
+        <soap:fault use="literal" name="InvalidRelationshipTypeCodeFaultFault" namespace="" />
+      </wsdl:fault>
+      <wsdl:fault name="ValidationFaultFault">
+        <soap:fault use="literal" name="ValidationFaultFault" namespace="" />
+        <soap:fault use="literal" name="ValidationFaultFault" namespace="" />
+      </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="BeginInteraction">
+      <soap:operation soapAction="http://elita.assurant.com/Elita/Claim/RecordingService/IClaimRecordingService/BeginInteraction" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+      <wsdl:fault name="InvalidCompanyCodeFaultFault">
+        <soap:fault use="literal" name="InvalidCompanyCodeFaultFault" namespace="" />
+        <soap:fault use="literal" name="InvalidCompanyCodeFaultFault" namespace="" />
+      </wsdl:fault>
+      <wsdl:fault name="InvalidCaseNumberFaultFault">
+        <soap:fault use="literal" name="InvalidCaseNumberFaultFault" namespace="" />
+        <soap:fault use="literal" name="InvalidCaseNumberFaultFault" namespace="" />
+      </wsdl:fault>
+      <wsdl:fault name="InvalidPurposeCodeFaultFault">
+        <soap:fault use="literal" name="InvalidPurposeCodeFaultFault" namespace="" />
+        <soap:fault use="literal" name="InvalidPurposeCodeFaultFault" namespace="" />
+      </wsdl:fault>
+      <wsdl:fault name="InvalidChannelFaultFault">
+        <soap:fault use="literal" name="InvalidChannelFaultFault" namespace="" />
+        <soap:fault use="literal" name="InvalidChannelFaultFault" namespace="" />
+      </wsdl:fault>
+      <wsdl:fault name="InvalidCultureCodeFaultFault">
+        <soap:fault use="literal" name="InvalidCultureCodeFaultFault" namespace="" />
+        <soap:fault use="literal" name="InvalidCultureCodeFaultFault" namespace="" />
+      </wsdl:fault>
+      <wsdl:fault name="InvalidRelationshipTypeCodeFaultFault">
+        <soap:fault use="literal" name="InvalidRelationshipTypeCodeFaultFault" namespace="" />
+        <soap:fault use="literal" name="InvalidRelationshipTypeCodeFaultFault" namespace="" />
+      </wsdl:fault>
+      <wsdl:fault name="QuestionSetCodeNotFoundFaultFault">
+        <soap:fault use="literal" name="QuestionSetCodeNotFoundFaultFault" namespace="" />
+        <soap:fault use="literal" name="QuestionSetCodeNotFoundFaultFault" namespace="" />
+      </wsdl:fault>
+      <wsdl:fault name="ValidationFaultFault">
+        <soap:fault use="literal" name="ValidationFaultFault" namespace="" />
+        <soap:fault use="literal" name="ValidationFaultFault" namespace="" />
+      </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="Submit">
+      <soap:operation soapAction="http://elita.assurant.com/Elita/Claim/RecordingService/IClaimRecordingService/Submit" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+      <wsdl:fault name="InvalidCompanyCodeFaultFault">
+        <soap:fault use="literal" name="InvalidCompanyCodeFaultFault" namespace="" />
+        <soap:fault use="literal" name="InvalidCompanyCodeFaultFault" namespace="" />
+      </wsdl:fault>
+      <wsdl:fault name="InvalidCaseNumberFaultFault">
+        <soap:fault use="literal" name="InvalidCaseNumberFaultFault" namespace="" />
+        <soap:fault use="literal" name="InvalidCaseNumberFaultFault" namespace="" />
+      </wsdl:fault>
+      <wsdl:fault name="InvalidRegisteredItemsFaultFault">
+        <soap:fault use="literal" name="InvalidRegisteredItemsFaultFault" namespace="" />
+        <soap:fault use="literal" name="InvalidRegisteredItemsFaultFault" namespace="" />
+      </wsdl:fault>
+      <wsdl:fault name="ManufacturerNotFoundFaultFault">
+        <soap:fault use="literal" name="ManufacturerNotFoundFaultFault" namespace="" />
+        <soap:fault use="literal" name="ManufacturerNotFoundFaultFault" namespace="" />
+      </wsdl:fault>
+      <wsdl:fault name="PolicyCancelRequestDeniedFaultFault">
+        <soap:fault use="literal" name="PolicyCancelRequestDeniedFaultFault" namespace="" />
+        <soap:fault use="literal" name="PolicyCancelRequestDeniedFaultFault" namespace="" />
+      </wsdl:fault>
+      <wsdl:fault name="FulfillmentServiceFaultFault">
+        <soap:fault use="literal" name="FulfillmentServiceFaultFault" namespace="" />
+        <soap:fault use="literal" name="FulfillmentServiceFaultFault" namespace="" />
+      </wsdl:fault>
+      <wsdl:fault name="TranslationNotFoundFaultFault">
+        <soap:fault use="literal" name="TranslationNotFoundFaultFault" namespace="" />
+        <soap:fault use="literal" name="TranslationNotFoundFaultFault" namespace="" />
+      </wsdl:fault>
+      <wsdl:fault name="ValidationFaultFault">
+        <soap:fault use="literal" name="ValidationFaultFault" namespace="" />
+        <soap:fault use="literal" name="ValidationFaultFault" namespace="" />
+      </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="Save">
+      <soap:operation soapAction="http://elita.assurant.com/Elita/Claim/RecordingService/IClaimRecordingService/Save" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+      <wsdl:fault name="ValidationFaultFault">
+        <soap:fault use="literal" name="ValidationFaultFault" namespace="" />
+        <soap:fault use="literal" name="ValidationFaultFault" namespace="" />
+      </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="GetClaimSummary">
+      <soap:operation soapAction="http://elita.assurant.com/Elita/Claim/RecordingService/IClaimRecordingService/GetClaimSummary" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+      <wsdl:fault name="ValidationFaultFault">
+        <soap:fault use="literal" name="ValidationFaultFault" namespace="" />
+        <soap:fault use="literal" name="ValidationFaultFault" namespace="" />
+      </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="ReEvaluateQuestions">
+      <soap:operation soapAction="http://elita.assurant.com/Elita/Claim/RecordingService/IClaimRecordingService/ReEvaluateQuestions" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+      <wsdl:fault name="ValidationFaultFault">
+        <soap:fault use="literal" name="ValidationFaultFault" namespace="" />
+        <soap:fault use="literal" name="ValidationFaultFault" namespace="" />
+      </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="UpdateCaseAction">
+      <soap:operation soapAction="http://elita.assurant.com/Elita/Claim/RecordingService/IClaimRecordingService/UpdateCaseAction" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+      <wsdl:fault name="ValidationFaultFault">
+        <soap:fault use="literal" name="ValidationFaultFault" namespace="" />
+        <soap:fault use="literal" name="ValidationFaultFault" namespace="" />
+      </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="GetPolicySummaryInfo">
+      <soap:operation soapAction="http://elita.assurant.com/Elita/Claim/RecordingService/IClaimRecordingService/GetPolicySummaryInfo" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetCourierDurations">
+      <soap:operation soapAction="http://elita.assurant.com/Elita/Claim/RecordingService/IClaimRecordingService/GetCourierDurations" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:service name="ClaimRecordingService">
+    <wsdl:port name="CustomBinding_IClaimRecordingService" binding="tns:CustomBinding_IClaimRecordingService">
+      <soap:address location="http://elitaplus-api-modl.p1.assurant.com/ElitaClaimService1/ClaimRecordingService.svc" />
+    </wsdl:port>
+    <wsdl:port name="CustomBinding_IClaimRecordingService1" binding="tns:CustomBinding_IClaimRecordingService">
+      <soap:address location="http://elitaplus-api-modl.p1.assurant.com/ElitaClaimService1/ClaimRecordingService.svc/Secure" />
+    </wsdl:port>
+  </wsdl:service>
+</wsdl:definitions>

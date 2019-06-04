@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema">
+	<xs:element name="VSCQuoteDs">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="VSCQuote">
+					<xs:complexType>
+						<xs:sequence>
+							<xs:element name="Make" type="stringRequired" minOccurs="0" maxOccurs="1"></xs:element>
+							<xs:element name="Year" minOccurs="1" maxOccurs="1">
+								<xs:simpleType>
+									<xs:restriction base="myPositiveInteger">
+										<xs:totalDigits fixed="true" value="4"></xs:totalDigits>
+										<xs:minInclusive value="1940" />
+										<xs:maxInclusive value="2100" />
+									</xs:restriction>
+								</xs:simpleType>
+							</xs:element>
+							<xs:element name="Model" type="stringRequired" minOccurs="0" maxOccurs="1" />
+							<xs:element name="Engine_Version" type="stringRequired" minOccurs="0" maxOccurs="1" />
+							<xs:element name="VIN" type="xs:string" minOccurs="0" maxOccurs="1" />
+							<xs:element name="Mileage" type="myPositiveInteger" minOccurs="1" maxOccurs="1" />
+							<xs:element name="New_Used" minOccurs="1" maxOccurs="1">
+								<xs:simpleType>
+									<xs:restriction base="xs:string">
+										<xs:pattern value="NEW|USED" />
+									</xs:restriction>
+								</xs:simpleType>
+							</xs:element>
+							<xs:element name="In_Service_Date" type="xs:date" minOccurs="1" maxOccurs="1" />
+							<xs:element name="Dealer_Code" type="xs:string" minOccurs="1" maxOccurs="1" />
+              <xs:element name="Warranty_Date" type="xs:date" minOccurs="1" maxOccurs="1" />              
+              <xs:element name="Vehicle_License_Tag" type="xs:string" minOccurs="0" maxOccurs="1" />
+							<xs:element name="Optional" minOccurs="0" maxOccurs="unbounded">
+								<xs:complexType>
+									<xs:sequence>
+										<xs:element name="Optional_Code" type="stringRequired" minOccurs="1" maxOccurs="1" />
+									</xs:sequence>
+								</xs:complexType>
+							</xs:element>
+              <xs:element name="External_Car_Code" type="xs:string" minOccurs="0" maxOccurs="1" />
+              <xs:element name="Vehicle_Value" type="xs:decimal" minOccurs="0" maxOccurs="1" />
+						</xs:sequence>
+					</xs:complexType>
+				</xs:element>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+	<xs:simpleType name="stringRequired">
+		<xs:restriction base="xs:string">
+			<xs:minLength value="1"></xs:minLength>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="myPositiveInteger">
+		<xs:restriction base="xs:int">
+			<xs:minInclusive value="0" />
+		</xs:restriction>
+	</xs:simpleType>
+</xs:schema>

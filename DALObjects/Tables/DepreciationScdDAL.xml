@@ -1,0 +1,72 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+
+<!-- ********************** THIS FILE HAS BEEN GENERATED FROM TEMPLATE SQLObject.cst (10/1/2017)********************** -->
+
+<SQL>
+  <LOAD>
+    <![CDATA[	
+			SELECT 
+				company_id,
+				code,
+				description,
+				active_xcd,
+				created_by,
+				created_date,
+				modified_by,
+				modified_date,
+				depreciation_schedule_id
+			FROM elp_depreciation_scd 
+			WHERE
+				depreciation_schedule_id = :depreciation_schedule_id
+		]]>
+  </LOAD>
+  <LOAD_LIST>
+    <![CDATA[	
+			SELECT 
+             depreciation_schedule_id as depreciation_schedule_id,
+             code        as code,
+             description as description,
+             getdescriptionfromitemextcode(active_xcd, :langId)  as active,
+             active_xcd as active_xcd
+        FROM elp_depreciation_scd dep
+        WHERE company_id = :company_id
+		]]>
+  </LOAD_LIST>
+  <UPDATE>
+    <![CDATA[	
+			UPDATE elp_depreciation_scd SET
+				company_id = :company_id,
+				code = :code,
+				description = :description,
+				active_xcd = :active_xcd,
+				modified_by = :modified_by
+			WHERE
+				depreciation_schedule_id = :depreciation_schedule_id
+		]]>
+  </UPDATE>
+  <INSERT>
+    INSERT INTO elp_depreciation_scd
+    (
+    company_id,
+    code,
+    description,
+    active_xcd,
+    created_by,
+    depreciation_schedule_id
+    )
+    VALUES
+    (
+    :company_id,
+    :code,
+    :description,
+    :active_xcd,
+    :created_by,
+    :depreciation_schedule_id
+    )
+  </INSERT>
+  <DELETE>
+    DELETE FROM elp_depreciation_scd
+    WHERE
+    depreciation_schedule_id = :depreciation_schedule_id
+  </DELETE>
+</SQL>

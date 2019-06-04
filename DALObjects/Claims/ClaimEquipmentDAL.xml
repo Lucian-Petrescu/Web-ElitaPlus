@@ -1,0 +1,196 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<SQL>
+  <LOAD>
+    <![CDATA[	
+    SELECT
+      CLAIM_EQUIPMENT_ID,
+      CLAIM_EQUIPMENT_DATE,
+      CLAIM_ID,
+      MANUFACTURER_ID,
+      MODEL,
+      COLOR,
+      MEMORY,
+      EQUIPMENT_ID,
+      CLAIM_EQUIPMENT_TYPE_ID,
+      PRIORITY,
+      CREATED_DATE,
+      MODIFIED_DATE,
+      CREATED_BY,
+      MODIFIED_BY,
+      SKU,
+      PRICE,
+      SERIAL_NUMBER,
+      IMEI_NUMBER,
+      COMMENTS,
+      DEVICE_TYPE_ID,
+      CLAIM_AUTHORIZATION_ID,
+      SHIPPINGFROMNAME,
+      SHIPPINGFROMDESCRIPTION
+    FROM
+      ELP_CLAIM_EQUIPMENT
+    WHERE
+      CLAIM_EQUIPMENT_ID = :CLAIM_EQUIPMENT_ID
+    ]]>
+  </LOAD>
+  <LOAD_LIST>
+    <![CDATA[
+    SELECT
+      CLAIM_EQUIPMENT_ID,
+      CLAIM_EQUIPMENT_DATE,
+      CLAIM_ID,
+      MANUFACTURER_ID,
+      MODEL,
+      COLOR,
+      MEMORY,
+      EQUIPMENT_ID,
+      CLAIM_EQUIPMENT_TYPE_ID,
+      PRIORITY,
+      CREATED_DATE,
+      MODIFIED_DATE,
+      CREATED_BY,
+      MODIFIED_BY,
+      SKU,
+      PRICE,
+      SERIAL_NUMBER,
+      IMEI_NUMBER,
+      COMMENTS,
+      DEVICE_TYPE_ID,
+      CLAIM_AUTHORIZATION_ID,
+      SHIPPINGFROMNAME,
+      SHIPPINGFROMDESCRIPTION
+    FROM
+      ELP_CLAIM_EQUIPMENT
+    WHERE
+      CLAIM_ID = :CLAIM_ID
+    ]]>
+  </LOAD_LIST>
+  <INSERT>
+    <![CDATA[
+    INSERT INTO ELP_CLAIM_EQUIPMENT
+    (
+      CLAIM_EQUIPMENT_ID,
+      CLAIM_EQUIPMENT_DATE,
+      CLAIM_ID,
+      MANUFACTURER_ID,
+      MODEL,
+      COLOR,
+      MEMORY,
+      EQUIPMENT_ID,
+      CLAIM_EQUIPMENT_TYPE_ID,
+      PRIORITY,
+      SKU,
+      PRICE,
+      SERIAL_NUMBER,
+      IMEI_NUMBER,
+      COMMENTS,
+      DEVICE_TYPE_ID,
+      CLAIM_AUTHORIZATION_ID,
+      SHIPPINGFROMNAME,
+      SHIPPINGFROMDESCRIPTION
+    )
+    VALUES
+    (
+      :CLAIM_EQUIPMENT_ID,
+      :CLAIM_EQUIPMENT_DATE,
+      :CLAIM_ID,
+      :MANUFACTURER_ID,
+      :MODEL,
+      :COLOR,
+      :MEMORY,
+      :EQUIPMENT_ID,
+      :CLAIM_EQUIPMENT_TYPE_ID,
+      :PRIORITY,
+      :SKU,
+      :PRICE,
+      :SERIAL_NUMBER,
+      :IMEI_NUMBER,
+      :COMMENTS,
+      :DEVICE_TYPE_ID,
+      :CLAIM_AUTHORIZATION_ID,
+      :SHIPPINGFROMNAME,
+      :SHIPPINGFROMDESCRIPTION
+    )
+    ]]>
+  </INSERT>
+  <UPDATE>
+    <![CDATA[
+    UPDATE ELP_CLAIM_EQUIPMENT
+    SET
+      CLAIM_EQUIPMENT_DATE = :CLAIM_EQUIPMENT_DATE,
+      MANUFACTURER_ID = :MANUFACTURER_ID,
+      MODEL = :MODEL,
+      COLOR = :COLOR,
+      MEMORY = :MEMORY,
+      EQUIPMENT_ID = :EQUIPMENT_ID,
+      CLAIM_EQUIPMENT_TYPE_ID = :CLAIM_EQUIPMENT_TYPE_ID,
+      PRIORITY = :PRIORITY,
+      SKU = :SKU,
+      PRICE = :PRICE,
+      SERIAL_NUMBER = :SERIAL_NUMBER,
+      IMEI_NUMBER = :IMEI_NUMBER,
+      COMMENTS = :COMMENTS,
+      DEVICE_TYPE_ID = :DEVICE_TYPE_ID,
+      CLAIM_AUTHORIZATION_ID = :CLAIM_AUTHORIZATION_ID,
+      SHIPPINGFROMNAME = :SHIPPINGFROMNAME,
+      SHIPPINGFROMDESCRIPTION = :SHIPPINGFROMDESCRIPTION
+    WHERE
+      CLAIM_EQUIPMENT_ID = :CLAIM_EQUIPMENT_ID
+    ]]>
+  </UPDATE>
+  <DELETE>
+    <![CDATA[
+    DELETE FROM ELP_CLAIM_EQUIPMENT 
+    WHERE CLAIM_EQUIPMENT_ID = :CLAIM_EQUIPMENT_ID
+    ]]>
+  </DELETE>
+  
+  <GET_LATEST_REFURB_REPLACE_EQUIP_INFO>
+    <![CDATA[
+         with 
+            claim_equipment as (
+                                select claim_id,
+                                       make,
+                                       model, 
+                                       serial_number,
+                                       sku,
+                                       imei_number,
+                                       comments,
+                                      claim_equipment_id
+                                from 
+                                    (select ce.claim_id, 
+                                            (select m.description from elp_manufacturer m where m.manufacturer_id = ce.manufacturer_id) make,
+                                            ce.model,
+                                            ce.serial_number,
+                                            ce.sku,
+                                            ce.imei_number,
+                                            ce.comments,
+                                            ce.claim_equipment_id,
+                                            rank() over(partition by ce.claim_id, 
+                                                                     ce.claim_equipment_type_id, 
+                                                                     ce.manufacturer_id 
+                                                        order by ce.created_date desc) rank
+                                     from elp_claim_equipment ce
+                                     where ce.claim_equipment_type_id = :claim_equipment_type_id)
+                                where rank=1) 
+        select * 
+        from claim_equipment ce
+        where ce.claim_id = :claim_id
+    ]]>
+  </GET_LATEST_REFURB_REPLACE_EQUIP_INFO>
+  <UPDATE_CLAIM_EQUIPMENT_INFO>
+    <![CDATA[
+    UPDATE elp_claim_equipment SET
+				comments = :COMMENTS
+			WHERE
+				claim_equipment_id = :claim_equipment_id
+    ]]>
+  </UPDATE_CLAIM_EQUIPMENT_INFO>
+  
+  <REPLACEMENT_ITEM>
+         ELP_TBL_CLAIM_EQUIPMENT.equipmentload
+  </REPLACEMENT_ITEM>
+  
+ <REPLACEMENT_ITEM_STATUS>
+        ELP_TBL_CLAIM_EQUIPMENT_STATUS.equipmentstatus
+  </REPLACEMENT_ITEM_STATUS>
+</SQL>

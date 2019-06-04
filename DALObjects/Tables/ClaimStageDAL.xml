@@ -1,0 +1,153 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+
+<!-- ********************** THIS FILE HAS BEEN GENERATED FROM TEMPLATE SQLObject.cst (12/20/2012)********************** -->
+
+<SQL>
+  <LOAD>
+    <![CDATA[	
+      SELECT 
+        stage_id,
+        stage_name_id,
+        start_status_id,
+        company_group_id,
+        company_id,
+        dealer_id,
+        product_code,
+        coverage_type_id,
+        effective_date,
+        expiration_date,
+        created_date,
+        created_by,
+        modified_date,
+        modified_by,
+        sequence,
+        screen_id,
+        portal_id
+			FROM elp_stage
+			WHERE
+				stage_id = :stage_id
+		]]>
+  </LOAD>
+  <LOAD_LIST>
+    <![CDATA[	
+      SELECT s.stage_id
+        , s.stage_name_id
+        , GetDescriptionFromListItem(s.stage_name_id, :language_id) AS STAGE_NAME_DESC
+        , s.start_status_id
+        , GetDescriptionFromListItem(s.start_status_id, :language_id) AS START_STATUS_DESC
+        , s.company_group_id
+        , CG.CODE || case when CG.CODE is null then '' else '-' end || CG.DESCRIPTION AS COMPANY_GROUP_DESC
+        , s.company_id
+        , CO.CODE || case when CO.CODE is null then '' else '-' end || CO.DESCRIPTION AS COMPANY_DESC
+        , s.dealer_id
+        , D.DEALER || case when D.DEALER is null then '' else '-' end || D.DEALER_NAME AS DEALER_DESC
+        , s.product_code
+        , s.coverage_type_id
+        , GetDescriptionFromListItem(s.coverage_type_id, :language_id) AS COVERAGE_TYPE_DESC
+        , s.effective_date
+        , s.expiration_date
+        , s.sequence
+        , s.screen_id
+        , GetDescriptionFromListItem(s.screen_id, :language_id) AS SCREEN_DESC
+        , s.portal_id
+        , GetDescriptionFromListItem(s.portal_id, :language_id) AS PORTAL_DESC
+      FROM elp_stage s
+      left outer join ELP_COMPANY CO on CO.COMPANY_ID = s.COMPANY_ID
+      left outer join ELP_COMPANY_GROUP CG on CG.COMPANY_GROUP_ID = s.COMPANY_GROUP_ID
+      left outer join ELP_DEALER D on D.dealer_id = s.dealer_id
+      where 1=1
+        --dynamic_where_clause
+    ]]>
+  </LOAD_LIST>
+  <LOAD_STAGE_END_STATUS_LIST>
+    <![CDATA[	
+			SELECT 
+				se.stage_end_id,
+				se.stage_id,
+				se.end_status_id,
+        GetDescriptionFromListItem(csg.list_item_id, :language_id) AS END_STATUS_DESC,
+        se.created_date,
+				se.created_by,
+				se.modified_date,
+				se.modified_by
+			FROM 
+        elp_stage_end se,
+        elp_claim_status_by_group csg 
+			WHERE
+        se.end_status_id = csg.claim_status_by_group_id 
+				AND se.stage_id = :stage_id
+		]]>
+  </LOAD_STAGE_END_STATUS_LIST>
+  <LOAD_AVAILABLE_STAGE_START_STATUS>
+    <![CDATA[
+      select  claim_status_by_group_id As ID, 
+              GetDescriptionFromListItem(List_Item_id, :language_id) as DESCRIPTION
+      from    elp_claim_status_by_group
+      where   company_group_id = :company_group_id
+		]]>
+  </LOAD_AVAILABLE_STAGE_START_STATUS>
+  <LOAD_AVAILABLE_STAGE_END_STATUS>
+    <![CDATA[	
+      select  claim_status_by_group_id As ID, 
+              GetDescriptionFromListItem(List_Item_id, :language_id) as DESCRIPTION
+      from    elp_claim_status_by_group
+      where   company_group_id = :company_group_id
+		]]>
+  </LOAD_AVAILABLE_STAGE_END_STATUS>
+  <LOAD_SELECTED_STAGE_END_STATUS>
+    <![CDATA[	
+      select  se.end_status_id As ID, 
+              GetDescriptionFromListItem(csg.list_item_id, :language_id) As DESCRIPTION
+      from    elp_stage_end se, 
+              elp_claim_status_by_group csg
+      where   se.end_status_id = csg.claim_status_by_group_id
+              and se.stage_id = :stage_id
+		]]>
+  </LOAD_SELECTED_STAGE_END_STATUS>
+  <LOAD_MIN_EFFECTIVE_MAX_EXPIRATION>
+    <![CDATA[	
+      select min(min_effective) As min_effective, max(max_expiration) As max_expiration
+      from
+      (
+        select
+          MIN(Effective_Date) As min_effective, 
+          MAX(Expiration_Date) As max_expiration
+        from
+          elita.Elp_Stage 
+        where 1=1
+        --dynamic_where_clause
+      )
+    ]]>
+  </LOAD_MIN_EFFECTIVE_MAX_EXPIRATION>
+  <LOAD_STAGES_WITH_SAME_DEFINATION>
+    <![CDATA[	
+      select min_effective As min_effective, 
+             max_expiration As max_expiration
+      from
+      (
+        select
+          Effective_Date As min_effective, 
+          Expiration_Date As max_expiration
+        from
+          elita.Elp_Stage 
+        where 1=1
+        --dynamic_where_clause
+      )
+    ]]>
+  </LOAD_STAGES_WITH_SAME_DEFINATION>
+  <UPDATE>
+    <![CDATA[	
+      elp_tbl_stage.modify
+		]]>
+  </UPDATE>
+  <INSERT>
+    <![CDATA[	
+      elp_tbl_stage.add
+		]]>
+  </INSERT>
+  <DELETE>
+    <![CDATA[	
+      elp_tbl_stage.del
+		]]>
+  </DELETE>
+</SQL>

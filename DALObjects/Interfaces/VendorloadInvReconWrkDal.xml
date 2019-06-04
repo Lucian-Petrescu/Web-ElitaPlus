@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8" ?>
+
+<!-- ********************** THIS FILE HAS BEEN GENERATED FROM TEMPLATE SQLObject.cst (12/22/2017)********************** -->
+
+<SQL>
+	<LOAD>
+    elp_vendor_load.Load
+  </LOAD>
+	<LOAD_LIST>
+    elp_vendor_load.LoadList
+  </LOAD_LIST>	
+	<UPDATE>
+    elp_vendor_load.Modify
+	</UPDATE>
+	<INSERT>
+			INSERT INTO elp_vendorload_inv_recon_wrk
+					(			
+				file_processed_id, 
+				record_type, 
+				reject_code, 
+				reject_reason, 
+				record_loaded, 
+				service_center_id, 
+				vendor_sku, 
+				inventory_quantity, 
+				price_list_detail_id, 
+				entire_record, 
+				created_by,
+				vendorload_inv_recon_wrk_id
+					)
+			VALUES
+					(			
+				:file_processed_id, 
+				:record_type, 
+				:reject_code, 
+				:reject_reason, 
+				:record_loaded, 
+				:service_center_id, 
+				:vendor_sku, 
+				:inventory_quantity, 
+				:price_list_detail_id, 
+				:entire_record, 
+				:created_by,
+				:vendorload_inv_recon_wrk_id
+					)
+	</INSERT>
+	<DELETE>
+			DELETE FROM elp_vendorload_inv_recon_wrk
+			WHERE
+				vendorload_inv_recon_wrk_id = :vendorload_inv_recon_wrk_id
+	</DELETE>
+  <VALIDATE_FILE>
+    elp_vendor_load.Validate_Vendor_Inventory
+  </VALIDATE_FILE>
+  <PROCESS_FILE>
+    elp_vendor_load.Process_Vendor_Inventory
+  </PROCESS_FILE>
+  <DELETE_FILE>
+    elp_vendor_load.Delete_Vendor_Inventory
+  </DELETE_FILE>
+</SQL> 
+
+

@@ -1,0 +1,138 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+
+<!-- ********************** THIS FILE HAS BEEN GENERATED FROM TEMPLATE SQLObject.cst (8/21/2012)********************** -->
+
+<SQL>
+  <LOAD>
+    <![CDATA[	
+			SELECT 
+				code,
+				description,
+				created_by,
+				modified_by,
+				created_date,
+				modified_date,
+				schedule_id
+			FROM elp_schedule 
+			WHERE
+				schedule_id = :schedule_id
+		]]>
+  </LOAD>
+  <LOAD_LIST>
+    <![CDATA[	
+			SELECT 
+      	code,
+				description,
+				created_by,
+				modified_by,
+				created_date,
+				modified_date,
+        schedule_id
+			FROM elp_schedule 
+      WHERE 1=1
+      --dynamic_where_clause
+      AND ROWNUM < :row_num
+		]]>
+  </LOAD_LIST>
+  <UPDATE>
+    <![CDATA[	
+			UPDATE elp_schedule SET
+				code = :code,
+				description = :description,
+				modified_by = :modified_by
+			WHERE
+				schedule_id = :schedule_id
+		]]>
+  </UPDATE>
+  <INSERT>
+    INSERT INTO elp_schedule
+    (
+    code,
+    description,
+    created_by,
+    schedule_id
+    )
+    VALUES
+    (
+    :code,
+    :description,
+    :created_by,
+    :schedule_id
+    )
+  </INSERT>
+  <DELETE>
+    DELETE FROM elp_schedule
+    WHERE
+    schedule_id = :schedule_id
+  </DELETE>
+  <LOAD_LIST_SCHEDULE>
+    <![CDATA[
+      select
+	      s.SCHEDULE_ID,
+	      s.CODE,
+	      s.DESCRIPTION,
+	      ss.SERVICE_SCHEDULE_ID,
+	      ss.SERVICE_CLASS_ID,
+	      ss.SERVICE_TYPE_ID,
+	      ss.SCHEDULE_ID,
+	      ss.SERVICE_CENTER_ID,
+	      ss.EFFECTIVE,
+	      ss.EXPIRATION,
+	      s.CREATED_BY,
+	      s.MODIFIED_BY,
+	      s.CREATED_DATE,
+	      s.MODIFIED_DATE
+      from
+	      elp_schedule s
+	      join elp_service_schedule ss on s.schedule_id = ss.schedule_id
+      where ss.service_center_id = :service_center_id
+    ]]>
+  </LOAD_LIST_SCHEDULE>
+  <GET_SERVICE_CENTER_SCHEDULE_DETAIL>
+    <![CDATA[
+    select
+      sd.SCHEDULE_DETAIL_ID,
+      sd.SCHEDULE_ID,
+      sd.DAY_OF_WEEK_ID,
+      sd.FROM_TIME,
+      sd.TO_TIME,
+      sd.CREATED_BY,
+      sd.MODIFIED_BY,
+      sd.CREATED_DATE,
+      sd.MODIFIED_DATE
+    from elp_schedule_detail sd
+      join elp_schedule s on sd.schedule_id = s.schedule_id
+    where s.schedule_id = :schedule_id
+    ]]>
+  </GET_SERVICE_CENTER_SCHEDULE_DETAIL>
+  <GetScheduleDetailCount>
+    <![CDATA[
+    Select SCHEDULE_DETAIL_ID from elp_schedule_detail where schedule_id=:schedule_id
+    ]]>
+  </GetScheduleDetailCount>
+  <GetScheduleDetailInfo>
+    <![CDATA[
+    select
+      SCHEDULE_DETAIL_ID,
+      SCHEDULE_ID,
+      DAY_OF_WEEK_ID,
+      FROM_TIME,
+      TO_TIME,
+      CREATED_BY,
+      MODIFIED_BY,
+      CREATED_DATE,
+      MODIFIED_DATE from  elp_schedule_detail
+      where schedule_id=:schedule_id
+    ]]>
+  </GetScheduleDetailInfo>
+  <GetScheduleInfo>
+    <![CDATA[
+    Select code, description from elp_schedule where schedule_id=:schedule_id
+    ]]>
+  </GetScheduleInfo>
+  <GET_DUPLICATE_SCHEDULE_COUNT>
+    <![CDATA[
+    Select count(*) from elp_schedule where upper(code)=:CODE and schedule_id <>:schedule_id
+    ]]>
+  </GET_DUPLICATE_SCHEDULE_COUNT>
+</SQL>

@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xs:schema xmlns:tns="http://schemas.datacontract.org/2004/07/Assurant.Elita.ClaimFulfillment.OrderGateway.FileIngress.DataFiles" elementFormDefault="qualified" targetNamespace="http://schemas.datacontract.org/2004/07/Assurant.Elita.ClaimFulfillment.OrderGateway.FileIngress.DataFiles" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+  <xs:import schemaLocation="http://sf-au-southeast-mod.assurant.com/ElitaClaimFulfillment/modl-p1/WebAppGateway/fileadmin?xsd=xsd6" namespace="http://schemas.microsoft.com/2003/10/Serialization/Arrays" />
+  <xs:import schemaLocation="http://sf-au-southeast-mod.assurant.com/ElitaClaimFulfillment/modl-p1/WebAppGateway/fileadmin?xsd=xsd4" namespace="http://schemas.datacontract.org/2004/07/Assurant.Elita.ClaimFulfillment.OrderGateway.FileIngress.Types" />
+  <xs:import schemaLocation="http://sf-au-southeast-mod.assurant.com/ElitaClaimFulfillment/modl-p1/WebAppGateway/fileadmin?xsd=xsd7" namespace="http://schemas.datacontract.org/2004/07/FluentValidation.Results" />
+  <xs:complexType name="ArrayOfOrderFileRecord">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="OrderFileRecord" nillable="true" type="tns:OrderFileRecord" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="ArrayOfOrderFileRecord" nillable="true" type="tns:ArrayOfOrderFileRecord" />
+  <xs:complexType name="OrderFileRecord">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="EntireRecord" nillable="true" type="xs:string" />
+      <xs:element xmlns:q1="http://schemas.microsoft.com/2003/10/Serialization/Arrays" minOccurs="0" name="ErrorMessages" nillable="true" type="q1:ArrayOfstring" />
+      <xs:element minOccurs="0" name="FileIdentifier" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="LineNumber" type="xs:int" />
+      <xs:element minOccurs="0" name="Record" nillable="true" type="tns:DbsOrderFileRecord" />
+      <xs:element minOccurs="0" name="RecordIdentifier" nillable="true" type="xs:string" />
+      <xs:element xmlns:q2="http://schemas.datacontract.org/2004/07/Assurant.Elita.ClaimFulfillment.OrderGateway.FileIngress.Types" minOccurs="0" name="State" type="q2:RecordState" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="OrderFileRecord" nillable="true" type="tns:OrderFileRecord" />
+  <xs:complexType name="DbsOrderFileRecord">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="AssurantAuthorizationId" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="CapacityOfDamagedDevice" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="CapacityOfReplacement" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="CarrierCodeOfTheDamagedDevice" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="CarrierOfReplacement" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="ColorOfDamagedDevice" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="ColorOfReplacement" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="Comment" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="EParcelReference" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="EstimatedRepairAmount" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="EventType" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="ExpectedDeliveryDateForward" type="xs:dateTime" />
+      <xs:element minOccurs="0" name="ExpectedDeliveryDateReverse" type="xs:dateTime" />
+      <xs:element minOccurs="0" name="ExpectedDeliveryTimeForward" type="xs:dateTime" />
+      <xs:element minOccurs="0" name="ExternalAuthorizationNumber" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="ForwardCourierCode" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="ForwardCourierProductCode" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="ForwardTrackingNumber" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="ImeiOfDamagedDevice" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="ImeiOfReplacementDevice" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="InvoiceNumber" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="IsValid" type="xs:boolean" />
+      <xs:element minOccurs="0" name="ManufacturerOfDamagedDevice" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="ManufacturerOfReplacementDevice" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="MilestoneCode" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="ModelOfDamagedDevice" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="ModelOfReplacementDevice" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="ProblemFound" nillable="true" type="xs:string" />
+      <xs:element xmlns:q3="http://schemas.datacontract.org/2004/07/Assurant.Elita.ClaimFulfillment.OrderGateway.FileIngress.Types" minOccurs="0" name="RecordType" type="q3:DbsRecordType" />
+      <xs:element minOccurs="0" name="RecordTypeTimeStamp" type="xs:dateTime" />
+      <xs:element minOccurs="0" name="ReplacementType" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="ReverseCourierCode" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="ReverseCourierProduct" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="SerialNumberOfDamagedDevice" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="SerialNumberOfReplacementDevice" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="ServiceCenterId" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="ServiceLevel" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="SkuOfDamagedDevice" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="SkuOfReplacementDevice" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="TrackingNumberReverse" nillable="true" type="xs:string" />
+      <xs:element xmlns:q4="http://schemas.datacontract.org/2004/07/FluentValidation.Results" minOccurs="0" name="ValidationResult" nillable="true" type="q4:ValidationResult" />
+      <xs:element minOccurs="0" name="VendorOrderNumberForward" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="VendorRmaNumberReverse" nillable="true" type="xs:string" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="DbsOrderFileRecord" nillable="true" type="tns:DbsOrderFileRecord" />
+</xs:schema>

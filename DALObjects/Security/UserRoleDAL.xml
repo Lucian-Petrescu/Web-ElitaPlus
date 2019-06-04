@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="utf-8" ?>
+
+<!-- ********************** THIS FILE HAS BEEN GENERATED FROM TEMPLATE SQLObject.cst (4/17/2006)********************** -->
+
+<SQL>
+	<LOAD>
+		<![CDATA[	
+			SELECT 
+				role_id,
+				user_id,
+				created_date,
+				modified_date,
+				created_by,
+				modified_by,
+				user_role_id
+			FROM elp_user_role 
+			WHERE
+				user_role_id = :user_role_id
+		]]>
+	</LOAD>
+	<LOAD_LIST>		
+	</LOAD_LIST>	
+	<LOAD_BY_USERID_ROLEID>
+		SELECT 
+				role_id,
+				user_id,
+				created_date,
+				modified_date,
+				created_by,
+				modified_by,
+				user_role_id
+			FROM elp_user_role 
+			WHERE
+				user_id = :user_id
+			and	role_id = :role_id
+	</LOAD_BY_USERID_ROLEID>
+	<UPDATE>
+		<![CDATA[	
+			UPDATE elp_user_role SET
+				role_id = :role_id,
+				user_id = :user_id,
+				modified_by = :modified_by
+			WHERE
+				user_role_id = :user_role_id
+		]]>
+	</UPDATE>
+	<INSERT>
+			INSERT INTO elp_user_role
+					(			
+				role_id, 
+				user_id, 
+				created_by,
+				user_role_id
+					)
+			VALUES
+					(			
+				:role_id, 
+				:user_id, 
+				:created_by,
+				:user_role_id
+					)
+	</INSERT>
+	<DELETE>
+			DELETE FROM elp_user_role
+			WHERE
+				user_role_id = :user_role_id
+	</DELETE>
+</SQL> 
+
+
+

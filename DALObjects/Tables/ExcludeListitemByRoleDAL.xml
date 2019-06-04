@@ -1,0 +1,88 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+
+<!-- ********************** THIS FILE HAS BEEN GENERATED FROM TEMPLATE SQLObject.cst (4/8/2014)********************** -->
+
+<SQL>
+  <LOAD>
+    <![CDATA[	
+			SELECT 
+				list_item_id,
+				company_id,
+        list_id,
+				created_date,
+				created_by,
+				modified_date,
+				modified_by,
+				exclude_listitem_role_id
+			FROM elp_exclude_listitem_by_role 
+			WHERE
+				exclude_listitem_role_id = :exclude_listitem_role_id
+		]]>
+  </LOAD>
+  <LOAD_LIST>
+    <![CDATA[		
+			select
+			ELIBR.exclude_listitem_role_id,
+			c.description company_name,
+			r.description role_description,
+			trans.TRANSLATION list_description,
+			trans_i.TRANSLATION list_item_description
+			from 	elp_exclude_listitem_by_role ELIBR,
+					ELP_EXCLUDED_LI_ROLES ELIR,
+					elp_role r,
+					elp_list l,
+					elp_list_item li,
+					elp_dict_item_translation trans,
+					elp_dict_item_translation trans_i,
+					elp_company c
+			where
+					ELIBR.exclude_listitem_role_id = ELIR.exclude_listitem_role_id
+					and ELIBR.LIST_ITEM_ID = li.LIST_ITEM_ID
+					and li.list_id = l.list_id
+					and l.DICT_ITEM_ID = trans.DICT_ITEM_ID
+					and li.DICT_ITEM_ID = trans_i.DICT_ITEM_ID
+					and c.company_id = ELIBR.company_id
+					and	r.role_id = ELIR.role_id
+          and trans.LANGUAGE_ID = :language_id
+					and trans_i.LANGUAGE_ID = :language_id
+          --dynamic_where_clause
+			order by UPPER(list_item_description)    
+			]]>    
+  </LOAD_LIST>
+  <UPDATE>
+    <![CDATA[	
+			UPDATE elp_exclude_listitem_by_role SET
+				list_item_id = :list_item_id,
+				company_id = :company_id,
+        list_id = :list_id,
+				modified_by = :modified_by
+			WHERE
+				exclude_listitem_role_id = :exclude_listitem_role_id
+		]]>
+  </UPDATE>
+  <INSERT>
+    INSERT INTO elp_exclude_listitem_by_role
+    (
+    list_item_id,
+    company_id,
+    list_id,
+    created_by,
+    exclude_listitem_role_id
+    )
+    VALUES
+    (
+    :list_item_id,
+    :company_id,
+    :list_id,
+    :created_by,
+    :exclude_listitem_role_id
+    )
+  </INSERT>
+  <DELETE>
+    DELETE FROM elp_exclude_listitem_by_role
+    WHERE
+    exclude_listitem_role_id = :exclude_listitem_role_id
+  </DELETE>
+</SQL>
+
+

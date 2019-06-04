@@ -1,0 +1,74 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+
+<!-- ********************** THIS FILE HAS BEEN GENERATED FROM TEMPLATE SQLObject.cst (12/20/2012)********************** -->
+
+<SQL>
+  <LOAD>
+    <![CDATA[	
+			SELECT 
+				task_id,
+				subscriber_type_id,
+				subscriber_status_id,
+				created_date,
+				created_by,
+				modified_date,
+				modified_by,
+				subscriber_task_id
+			FROM elp_subscriber_task 
+			WHERE
+				subscriber_task_id = :subscriber_task_id
+		]]>
+  </LOAD>
+  <LOAD_LIST>
+    <![CDATA[	
+      select st.SUBSCRIBER_TASK_ID
+        ,st.TASK_ID
+	      ,st.SUBSCRIBER_TYPE_ID
+	      ,GETDESCRIPTIONFROMLISTITEM(st.SUBSCRIBER_TYPE_ID, :language_id) SUBSCRIBER_TYPE_DESC
+	      ,st.SUBSCRIBER_STATUS_ID
+	      ,GETDESCRIPTIONFROMLISTITEM(st.SUBSCRIBER_STATUS_ID, :language_id) SUBSCRIBER_STATUS_DESC
+        ,t.code TASK_CODE
+        ,t.description TASK_DESC
+      from ELP_SUBSCRIBER_TASK st
+      inner join elp_task t on st.task_id = t.task_id
+      where 1=1
+        --dynamic_where_clause
+    ]]>
+  </LOAD_LIST>
+  <UPDATE>
+    <![CDATA[	
+			UPDATE elp_subscriber_task SET
+				task_id = :task_id,
+				subscriber_type_id = :subscriber_type_id,
+				subscriber_status_id = :subscriber_status_id,
+				modified_by = :modified_by
+			WHERE
+				subscriber_task_id = :subscriber_task_id
+		]]>
+  </UPDATE>
+  <INSERT>
+    INSERT INTO elp_subscriber_task
+    (
+    task_id,
+    subscriber_type_id,
+    subscriber_status_id,
+    created_by,
+    subscriber_task_id
+    )
+    VALUES
+    (
+    :task_id,
+    :subscriber_type_id,
+    :subscriber_status_id,
+    :created_by,
+    :subscriber_task_id
+    )
+  </INSERT>
+  <DELETE>
+    DELETE FROM elp_subscriber_task
+    WHERE
+    subscriber_task_id = :subscriber_task_id
+  </DELETE>
+</SQL>
+
+

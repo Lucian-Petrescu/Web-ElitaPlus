@@ -1,0 +1,326 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xs:schema xmlns:tns="http://elita.assurant.com/Elita/ClaimService" elementFormDefault="qualified" targetNamespace="http://elita.assurant.com/Elita/ClaimService" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+  <xs:import schemaLocation="http://localhost/ElitaClaimService/ClaimService.svc?xsd=xsd2" namespace="http://elita.assurant.com/Elita/Claim/RecordingService/DataContracts" />
+  <xs:import schemaLocation="http://localhost/ElitaClaimService/ClaimService.svc?xsd=xsd5" namespace="http://elita.assurant.com/Elita/ClaimService/Data" />
+  <xs:complexType name="SearchClaimByCertificateNumber">
+    <xs:complexContent mixed="false">
+      <xs:extension base="tns:BaseClaimSearchRequest">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="DealerCode" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="CertificateNumber" nillable="true" type="xs:string" />
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:element name="SearchClaimByCertificateNumber" nillable="true" type="tns:SearchClaimByCertificateNumber" />
+  <xs:complexType name="BaseClaimSearchRequest">
+    <xs:sequence />
+  </xs:complexType>
+  <xs:element name="BaseClaimSearchRequest" nillable="true" type="tns:BaseClaimSearchRequest" />
+  <xs:complexType name="SearchClaimByClaimNumber">
+    <xs:complexContent mixed="false">
+      <xs:extension base="tns:BaseClaimSearchRequest">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="CompanyCode" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="ClaimNumber" nillable="true" type="xs:string" />
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:element name="SearchClaimByClaimNumber" nillable="true" type="tns:SearchClaimByClaimNumber" />
+  <xs:complexType name="SearchClaimBySerialNumber">
+    <xs:complexContent mixed="false">
+      <xs:extension base="tns:BaseClaimSearchRequest">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="DealerCode" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="SerialNumber" nillable="true" type="xs:string" />
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:element name="SearchClaimBySerialNumber" nillable="true" type="tns:SearchClaimBySerialNumber" />
+  <xs:complexType name="SearchClaimByDealerGroupCertNo">
+    <xs:complexContent mixed="false">
+      <xs:extension base="tns:BaseClaimSearchRequest">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="DealerGroup" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="CertificateNumber" nillable="true" type="xs:string" />
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:element name="SearchClaimByDealerGroupCertNo" nillable="true" type="tns:SearchClaimByDealerGroupCertNo" />
+  <xs:complexType name="SearchClaimByDealerGroupSerialNo">
+    <xs:complexContent mixed="false">
+      <xs:extension base="tns:BaseClaimSearchRequest">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="CompanyCode" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="DealerGroup" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="SerialNumber" nillable="true" type="xs:string" />
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:element name="SearchClaimByDealerGroupSerialNo" nillable="true" type="tns:SearchClaimByDealerGroupSerialNo" />
+  <xs:element name="Search">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" name="request" nillable="true" type="tns:ClaimSearchRequest" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:complexType name="ClaimSearchRequest">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="ClaimLookup" nillable="true" type="tns:BaseClaimSearchRequest" />
+      <xs:element minOccurs="0" name="CultureCode" nillable="true" type="xs:string" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="ClaimSearchRequest" nillable="true" type="tns:ClaimSearchRequest" />
+  <xs:element name="SearchResponse">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" name="SearchResult" nillable="true" type="tns:ClaimSearchResponse" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:complexType name="ClaimSearchResponse">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="ClaimResponse" nillable="true" type="tns:ArrayOfClaimSearchResponseInfo" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="ClaimSearchResponse" nillable="true" type="tns:ClaimSearchResponse" />
+  <xs:complexType name="ArrayOfClaimSearchResponseInfo">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="ClaimSearchResponseInfo" nillable="true" type="tns:ClaimSearchResponseInfo" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="ArrayOfClaimSearchResponseInfo" nillable="true" type="tns:ArrayOfClaimSearchResponseInfo" />
+  <xs:complexType name="ClaimSearchResponseInfo">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="CallerName" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="CaseNumber" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="CertificateNumber" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="ClaimCreatedDate" type="xs:dateTime" />
+      <xs:element minOccurs="0" name="ClaimNumber" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="ClaimStatus" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="CompanyCode" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="CoverageType" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="DateOfLoss" type="xs:dateTime" />
+      <xs:element minOccurs="0" name="DealerCode" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="DealerGroup" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="DeviceNickname" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="ExpectedRepairDate" nillable="true" type="xs:dateTime" />
+      <xs:element minOccurs="0" name="ExtStatusDescription" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="MethodOfRepair" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="PickupDate" nillable="true" type="xs:dateTime" />
+      <xs:element minOccurs="0" name="RepairDate" nillable="true" type="xs:dateTime" />
+      <xs:element minOccurs="0" name="ReportedDate" type="xs:dateTime" />
+      <xs:element minOccurs="0" name="SerialNumber" nillable="true" type="xs:string" />
+      <xs:element xmlns:q1="http://elita.assurant.com/Elita/Claim/RecordingService/DataContracts" minOccurs="0" name="ShippingAddress" nillable="true" type="q1:AddressInfo" />
+      <xs:element minOccurs="0" name="VisitDate" nillable="true" type="xs:dateTime" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="ClaimSearchResponseInfo" nillable="true" type="tns:ClaimSearchResponseInfo" />
+  <xs:complexType name="GetCustomerViewResponse">
+    <xs:sequence>
+      <xs:element xmlns:q2="http://elita.assurant.com/Elita/Claim/RecordingService/DataContracts" minOccurs="0" name="CallerName" nillable="true" type="q2:BaseCaller" />
+      <xs:element minOccurs="0" name="CertificateNumber" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="ClaimStatus" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="DateOfLoss" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="ProblemDescription" nillable="true" type="xs:string" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="GetCustomerViewResponse" nillable="true" type="tns:GetCustomerViewResponse" />
+  <xs:element name="GetDetails">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" name="request" nillable="true" type="tns:GetClaimDetailsRequest" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:complexType name="GetClaimDetailsRequest">
+    <xs:sequence>
+      <xs:element name="CompanyCode" nillable="true" type="xs:string" />
+      <xs:element name="ClaimNumber" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="CultureCode" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="ClaimDetailsRequest" nillable="true" type="tns:ArrayOfClaimDetailType" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="GetClaimDetailsRequest" nillable="true" type="tns:GetClaimDetailsRequest" />
+  <xs:complexType name="ArrayOfClaimDetailType">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="ClaimDetailType" type="tns:ClaimDetailType" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="ArrayOfClaimDetailType" nillable="true" type="tns:ArrayOfClaimDetailType" />
+  <xs:simpleType name="ClaimDetailType">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="ExtendedStatus" />
+      <xs:enumeration value="Comments" />
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:element name="ClaimDetailType" nillable="true" type="tns:ClaimDetailType" />
+  <xs:element name="GetDetailsResponse">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" name="GetDetailsResult" nillable="true" type="tns:GetClaimDetailsResponse" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:complexType name="GetClaimDetailsResponse">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="CallerName" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="CertificateNumber" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="ClaimNumber" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="ClaimStatus" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="Comments" nillable="true" type="tns:ArrayOfClaimCommentInfo">
+        <xs:annotation>
+          <xs:appinfo>
+            <DefaultValue EmitDefaultValue="false" xmlns="http://schemas.microsoft.com/2003/10/Serialization/" />
+          </xs:appinfo>
+        </xs:annotation>
+      </xs:element>
+      <xs:element minOccurs="0" name="CoverageType" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="DateOfLoss" nillable="true" type="xs:dateTime" />
+      <xs:element minOccurs="0" name="ExtendedStatus" nillable="true" type="tns:ArrayOfClaimExtendedStatusInfo">
+        <xs:annotation>
+          <xs:appinfo>
+            <DefaultValue EmitDefaultValue="false" xmlns="http://schemas.microsoft.com/2003/10/Serialization/" />
+          </xs:appinfo>
+        </xs:annotation>
+      </xs:element>
+      <xs:element minOccurs="0" name="Item" nillable="true" type="tns:ItemInfo">
+        <xs:annotation>
+          <xs:appinfo>
+            <DefaultValue EmitDefaultValue="false" xmlns="http://schemas.microsoft.com/2003/10/Serialization/" />
+          </xs:appinfo>
+        </xs:annotation>
+      </xs:element>
+      <xs:element minOccurs="0" name="MethodOfRepair" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="ProblemDescription" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="ReportedDate" type="xs:dateTime" />
+      <xs:element minOccurs="0" name="RiskType" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="ServiceCenter" nillable="true" type="tns:ServiceCenterInfo">
+        <xs:annotation>
+          <xs:appinfo>
+            <DefaultValue EmitDefaultValue="false" xmlns="http://schemas.microsoft.com/2003/10/Serialization/" />
+          </xs:appinfo>
+        </xs:annotation>
+      </xs:element>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="GetClaimDetailsResponse" nillable="true" type="tns:GetClaimDetailsResponse" />
+  <xs:complexType name="ArrayOfClaimCommentInfo">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="ClaimCommentInfo" nillable="true" type="tns:ClaimCommentInfo" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="ArrayOfClaimCommentInfo" nillable="true" type="tns:ArrayOfClaimCommentInfo" />
+  <xs:complexType name="ClaimCommentInfo">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="Comments" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="CommentsDate" type="xs:dateTime" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="ClaimCommentInfo" nillable="true" type="tns:ClaimCommentInfo" />
+  <xs:complexType name="ArrayOfClaimExtendedStatusInfo">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="ClaimExtendedStatusInfo" nillable="true" type="tns:ClaimExtendedStatusInfo" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="ArrayOfClaimExtendedStatusInfo" nillable="true" type="tns:ArrayOfClaimExtendedStatusInfo" />
+  <xs:complexType name="ClaimExtendedStatusInfo">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="Comments" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="Owner" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="StatusCode" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="StatusDate" type="xs:dateTime" />
+      <xs:element minOccurs="0" name="StatusDescription" nillable="true" type="xs:string" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="ClaimExtendedStatusInfo" nillable="true" type="tns:ClaimExtendedStatusInfo" />
+  <xs:complexType name="ItemInfo">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="ImeiNumber" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="Manufacturer" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="Model" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="SerialNumber" nillable="true" type="xs:string" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="ItemInfo" nillable="true" type="tns:ItemInfo" />
+  <xs:complexType name="ServiceCenterInfo">
+    <xs:sequence>
+      <xs:element xmlns:q3="http://elita.assurant.com/Elita/Claim/RecordingService/DataContracts" minOccurs="0" name="Address" nillable="true" type="q3:AddressInfo" />
+      <xs:element minOccurs="0" name="Code" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="Description" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="Phone" nillable="true" type="xs:string" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="ServiceCenterInfo" nillable="true" type="tns:ServiceCenterInfo" />
+  <xs:element name="ReadCase">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" name="request" nillable="true" type="tns:SearchCaseRequest" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:complexType name="SearchCaseRequest">
+    <xs:sequence>
+      <xs:element name="CompanyCode" nillable="true" type="xs:string" />
+      <xs:element name="CaseNumber" nillable="true" type="xs:string" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="SearchCaseRequest" nillable="true" type="tns:SearchCaseRequest" />
+  <xs:element name="ReadCaseResponse">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" name="ReadCaseResult" nillable="true" type="tns:SearchCaseResponse" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:complexType name="SearchCaseResponse">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="CompanyCode" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="CaseNumber" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="OpenDate" type="xs:dateTime" />
+      <xs:element minOccurs="0" name="PurposeCode" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="ClaimNumber" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="CertificateNumber" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="LastActivityDate" type="xs:dateTime" />
+      <xs:element minOccurs="0" name="CloseDate" nillable="true" type="xs:dateTime" />
+      <xs:element minOccurs="0" name="CloseReasonCode" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="Status" type="tns:CaseStatus" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="SearchCaseResponse" nillable="true" type="tns:SearchCaseResponse" />
+  <xs:simpleType name="CaseStatus">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="Open" />
+      <xs:enumeration value="Closed" />
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:element name="CaseStatus" nillable="true" type="tns:CaseStatus" />
+  <xs:element name="NewClaimEntitled">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" name="request" nillable="true" type="tns:NewClaimEntitledRequest" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:complexType name="NewClaimEntitledRequest">
+    <xs:sequence>
+      <xs:element name="DealerCode" nillable="true" type="xs:string" />
+      <xs:element name="CertificateNumber" nillable="true" type="xs:string" />
+      <xs:element name="LossDate" type="xs:dateTime" />
+      <xs:element name="CoverageTypeCode" nillable="true" type="xs:string" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="NewClaimEntitledRequest" nillable="true" type="tns:NewClaimEntitledRequest" />
+  <xs:element name="NewClaimEntitledResponse">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element xmlns:q4="http://elita.assurant.com/Elita/ClaimService/Data" minOccurs="0" name="NewClaimEntitledResult" nillable="true" type="q4:NewClaimEntitledResponse" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+</xs:schema>

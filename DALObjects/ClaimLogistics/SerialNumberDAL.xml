@@ -1,0 +1,60 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+
+<!-- ********************** THIS FILE HAS BEEN GENERATED FROM TEMPLATE SQLObject.cst (8/26/2008)********************** -->
+
+<SQL>
+  <LOAD>
+    <![CDATA[	
+			SELECT 
+				dealer_id,
+				cert_number,
+				serial_number,
+				created_by,
+				created_date,
+				modified_by,
+				modified_date,
+				serial_number_id
+			FROM elp_serial_number 
+			WHERE
+				serial_number_id = :serial_number_id
+		]]>
+  </LOAD>
+  <LOAD_LIST>
+  </LOAD_LIST>
+  <UPDATE>
+    <![CDATA[	
+			UPDATE elp_serial_number SET
+				dealer_id = :dealer_id,
+				cert_number = :cert_number,
+				serial_number = :serial_number,
+				modified_by = :modified_by
+			WHERE
+				serial_number_id = :serial_number_id
+		]]>
+  </UPDATE>
+  <INSERT>
+    INSERT INTO elp_serial_number
+    (
+    dealer_id,
+    cert_number,
+    serial_number,
+    created_by,
+    serial_number_id
+    )
+    VALUES
+    (
+    :dealer_id,
+    :cert_number,
+    :serial_number,
+    :created_by,
+    :serial_number_id
+    )
+  </INSERT>
+  <DELETE>
+    DELETE FROM elp_serial_number
+    WHERE
+    serial_number_id = :serial_number_id
+  </DELETE>
+</SQL>
+
+

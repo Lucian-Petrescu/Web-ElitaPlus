@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="utf-8" ?>
+
+<!-- ********************** THIS FILE HAS BEEN GENERATED FROM TEMPLATE SQLObject.cst (3/21/2018)********************** -->
+
+<SQL>
+	<LOAD>
+		<![CDATA[	
+			SELECT 
+				entity_type,
+				entity_id,
+				request_id,
+				comment_id,
+        (select comments from elp_comment c where c.comment_id= h.comment_id) comments,
+				status,
+				start_date,
+				end_date,
+				created_by,
+				created_date,
+				modified_date,
+				modified_by,
+				data_protection_history_id
+			FROM elp_data_protection_history h
+			WHERE
+				data_protection_history_id = :data_protection_history_id
+		]]>
+	</LOAD>
+  <LOAD_LIST>		
+	  <![CDATA[	
+			select 
+      data_protection_history_id,
+      entity_type,
+      entity_id,
+      request_id,
+      (select comments from elp_comment c where c.comment_id= h.comment_id) comments,
+      ELP_UTL_LOV.Description(status,:language_id) Status,
+      start_date,
+      end_date,
+      created_by,
+      created_date,
+      modified_date,
+      modified_by
+    from elp_data_protection_history h 
+    where 
+    h.entity_id = :entity_id
+		]]>
+	</LOAD_LIST>	
+  <REQUEST_ID_INFO>
+    elita.R_CONSUMER_SEARCH.GetRequestIdUsedInfo
+  </REQUEST_ID_INFO>
+	<UPDATE>
+		<![CDATA[	
+			UPDATE elp_data_protection_history SET
+				entity_type = :entity_type,
+				entity_id = :entity_id,
+				request_id = :request_id,
+				comment_id = :comment_id,
+				status = :status,
+				start_date = :start_date,
+				end_date = :end_date,
+				modified_by = :modified_by
+			WHERE
+				data_protection_history_id = :data_protection_history_id
+		]]>
+	</UPDATE>
+	<INSERT>
+			INSERT INTO elp_data_protection_history
+					(			
+				entity_type, 
+				entity_id, 
+				request_id, 
+				comment_id, 
+				status, 
+				start_date, 
+				end_date, 
+				created_by,
+				data_protection_history_id
+					)
+			VALUES
+					(			
+				:entity_type, 
+				:entity_id, 
+				:request_id, 
+				:comment_id, 
+				:status, 
+				:start_date, 
+				:end_date, 
+				:created_by,
+				:data_protection_history_id
+					)
+	</INSERT>
+	<DELETE>
+			DELETE FROM elp_data_protection_history
+			WHERE
+				data_protection_history_id = :data_protection_history_id
+	</DELETE>
+ 
+</SQL> 
+
+

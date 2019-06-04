@@ -1,0 +1,18 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<SQL>
+  <LOAD_LIST>
+    <![CDATA[	
+    elp_utl_documents.LoadList
+    ]]>
+  </LOAD_LIST>
+  <INSERT>
+    <![CDATA[	
+    elp_utl_documents.AddRepository
+    ]]>
+  </INSERT>
+  <UPDATE>
+    <![CDATA[	
+    elp_utl_documents.ModifyRepository
+    ]]>
+  </UPDATE>
+</SQL>

@@ -1,0 +1,149 @@
+<?xml version="1.0" encoding="utf-8" ?>
+
+<!-- ********************** THIS FILE HAS BEEN GENERATED FROM TEMPLATE SQLObject.cst (3/14/2007)********************** -->
+
+<SQL>
+	<LOAD>
+		<![CDATA[	
+			SELECT 
+				vsc_plan_id,
+				coverage_type_id,
+				allocation_percent_used,
+				allocation_percent_new,
+				is_base_plan_id,
+				is_dealer_discount_id,
+				add_to_plan_id,
+				is_claim_allowed_id,
+				created_by,
+				created_date,
+				modified_by,
+				modified_date,
+				vsc_coverage_id
+			FROM elp_vsc_coverage 
+			WHERE
+				vsc_coverage_id = :vsc_coverage_id
+		]]>
+	</LOAD>
+  <LOAD_LIST_BY_PLAN_ID>
+    <![CDATA[	
+      SELECT  C.VSC_COVERAGE_id, di2.Translation Coverage_Type
+        ,  ALLOCATION_PERCENT_USED, ALLOCATION_PERCENT_NEW, dI3.Translation IS_DEALER_DISCOUNT
+        , dI4.Translation ADD_TO_PLAN , dI5.Translation IS_CLAIM_ALLOWED, ROWNUM
+      FROM ELP_VSC_COVERAGE C
+      JOIN ELP_LIST_ITEM li2 on C.COVERAGE_TYPE_ID = li2.list_item_id
+      JOIN elp_dict_item_translation di2 ON li2.dict_item_id = di2.dict_item_id
+      JOIN ELP_LIST_ITEM li3 on C.IS_DEALER_DISCOUNT_ID = li3.list_item_id
+      JOIN elp_dict_item_translation di3 ON li3.dict_item_id = di3.dict_item_id
+      JOIN ELP_LIST_ITEM li4 on C.ADD_TO_PLAN_ID = li4.list_item_id
+      JOIN elp_dict_item_translation di4 ON li4.dict_item_id = di4.dict_item_id
+      JOIN ELP_LIST_ITEM li5 on C.IS_CLAIM_ALLOWED_ID = li5.list_item_id
+      JOIN elp_dict_item_translation di5 ON li5.dict_item_id = di5.dict_item_id
+      WHERE di2.language_id = di3.language_id
+        and di2.language_id = di4.language_id and di2.language_id = di5.language_id
+        and di2.language_id = :language_id
+        and VSC_PLAN_ID = :vsc_plan_id
+        and getyesno(IS_BASE_PLAN_ID) <> 'Y'
+      ORDER BY Coverage_Type
+    ]]>
+  </LOAD_LIST_BY_PLAN_ID>	
+	<UPDATE>
+		<![CDATA[	
+			UPDATE elp_vsc_coverage SET
+				vsc_plan_id = :vsc_plan_id,
+				coverage_type_id = :coverage_type_id,
+				allocation_percent_used = :allocation_percent_used,
+				allocation_percent_new = :allocation_percent_new,
+				is_base_plan_id = :is_base_plan_id,
+				is_dealer_discount_id = :is_dealer_discount_id,
+				add_to_plan_id = :add_to_plan_id,
+				is_claim_allowed_id = :is_claim_allowed_id,
+				modified_by = :modified_by
+			WHERE
+				vsc_coverage_id = :vsc_coverage_id
+		]]>
+	</UPDATE>
+	<INSERT>
+			INSERT INTO elp_vsc_coverage
+					(			
+				vsc_plan_id, 
+				coverage_type_id, 
+				allocation_percent_used,
+				allocation_percent_new,
+				is_base_plan_id,
+				is_dealer_discount_id,
+				add_to_plan_id,
+				is_claim_allowed_id,
+				created_by,
+				vsc_coverage_id
+					)
+			VALUES
+					(			
+				:vsc_plan_id, 
+				:coverage_type_id, 
+				:allocation_percent_used,
+				:allocation_percent_new,
+				:is_base_plan_id,
+				:is_dealer_discount_id, 
+				:add_to_plan_id,
+				:is_claim_allowed_id, 
+				:created_by,
+				:vsc_coverage_id
+					)
+	</INSERT>
+	<DELETE>
+			DELETE FROM elp_vsc_coverage
+			WHERE
+				vsc_coverage_id = :vsc_coverage_id
+	</DELETE>
+		<VSC_COVERAGE_LOAD_LIST>		
+		<![CDATA[	
+			
+			select distinct
+			ELP_VSC_PLAN.VSC_PLAN_ID PLANID,
+			ELP_VSC_RATE_VERSION.DEALER_GROUP_ID VERSION_DEALER_GROUP_ID,
+			ELP_DEALER.DEALER_GROUP_ID D_DEALER_GROUP_ID,
+			ELP_DEALER_GROUP.DEALER_GROUP_ID DG_DEALER_GROUP_ID,
+			ELP_DEALER.DEALER_GROUP_ID,
+			ELP_DEALER_GROUP.DEALER_GROUP_ID,
+			ELP_VSC_PLAN.VSC_PLAN_ID PLANID,
+			ELP_VSC_PLAN.DESCRIPTION,
+			ELP_DEALER.DEALER ||' - ' ||ELP_DEALER.DEALER_NAME DEALER_CODE_NAME,
+			ELP_DEALER.DEALER Dealer_Code,
+			ELP_DEALER.DEALER_NAME Dealer_name,
+			ELP_DEALER_GROUP.DESCRIPTION CODE,
+			to_char(ELP_VSC_RATE_VERSION.EFFECTIVE_DATE,'DD-Mon-YYYY') EFFECTIVE_DATE
+
+			from ELP_VSC_PLAN, ELP_DEALER ,ELP_DEALER_GROUP,ELP_VSC_RATE_VERSION
+			
+			Where 	ELP_DEALER.DEALER_GROUP_ID = ELP_DEALER_GROUP.DEALER_GROUP_ID
+			--dynamic_where_clause
+		
+			order by ELP_VSC_PLAN.VSC_PLAN_ID
+
+
+			
+				
+		]]>
+	</VSC_COVERAGE_LOAD_LIST>	
+	<VSC_COVERAGE_LIST>		
+		<![CDATA[	
+
+			
+select distinct 
+
+ELP_VSC_PLAN.DESCRIPTION DESCRIPTION,
+getyesno(IS_DEALER_DISCOUNT_ID) ISDEALERDISCOUNTID,
+getyesno(IS_CLAIM_ALLOWED_ID) ISCLAIMALLOWEDID,
+getyesno(is_base_plan_id) YESNO,
+ELP_VSC_COVERAGE.ALLOCATION_PERCENT_USED ALLOCATIONPERCENTUSED,
+ELP_VSC_COVERAGE.ALLOCATION_PERCENT_NEW ALLOCATIONPERCENTNEW,
+ELP_VSC_COVERAGE.COVERAGE_TYPE_ID COVERAGID
+from ELP_VSC_COVERAGE INNER JOIN ELP_VSC_PLAN on ELP_VSC_COVERAGE.VSC_PLAN_ID =ELP_VSC_PLAN.VSC_PLAN_ID
+where --dynamic_where_clause
+			
+				
+		]]>
+	</VSC_COVERAGE_LIST>
+</SQL> 
+
+

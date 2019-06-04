@@ -1,0 +1,88 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+
+<!-- ********************** THIS FILE HAS BEEN GENERATED FROM TEMPLATE SQLObject.cst (8/15/2017)********************** -->
+
+<SQL>
+  <LOAD>
+    <![CDATA[	
+			SELECT 
+				code,
+				description,
+				group_account_user_name,
+				group_account_password,
+				created_by,
+				created_date,
+				modified_by,
+				modified_date,
+				oc_template_group_id
+			FROM elp_oc_template_group 
+			WHERE
+				oc_template_group_id = :oc_template_group_id
+		]]>
+  </LOAD>
+  <LOAD_BY_CODE>
+    <![CDATA[	
+			SELECT 
+				code,
+				description,
+				group_account_user_name,
+				group_account_password,
+				created_by,
+				created_date,
+				modified_by,
+				modified_date,
+				oc_template_group_id
+			FROM elp_oc_template_group 
+			WHERE
+				TRIM(UPPER(code)) = TRIM(UPPER(:code))
+		]]>
+  </LOAD_BY_CODE>
+  <GET_ASSOCIATED_TEMPLATE_COUNT>
+    <![CDATA[	
+			select  count(oc_template_id) number_of_templates
+      from    elp_oc_template
+      where   oc_template_group_id = :oc_template_group_id
+		]]>
+  </GET_ASSOCIATED_TEMPLATE_COUNT>
+  <LOAD_LIST>
+  </LOAD_LIST>
+  <UPDATE>
+    <![CDATA[	
+			UPDATE elp_oc_template_group SET
+				code = :code,
+				description = :description,
+				group_account_user_name = :group_account_user_name,
+				group_account_password = :group_account_password,
+				modified_by = :modified_by
+			WHERE
+				oc_template_group_id = :oc_template_group_id
+		]]>
+  </UPDATE>
+  <INSERT>
+    INSERT INTO elp_oc_template_group
+    (
+    code,
+    description,
+    group_account_user_name,
+    group_account_password,
+    created_by,
+    oc_template_group_id
+    )
+    VALUES
+    (
+    :code,
+    :description,
+    :group_account_user_name,
+    :group_account_password,
+    :created_by,
+    :oc_template_group_id
+    )
+  </INSERT>
+  <DELETE>
+    DELETE FROM elp_oc_template_group
+    WHERE
+    oc_template_group_id = :oc_template_group_id
+  </DELETE>
+</SQL>
+
+

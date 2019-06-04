@@ -1,0 +1,134 @@
+<?xml version="1.0" encoding="utf-8" ?>
+
+<!-- ********************** THIS FILE HAS BEEN GENERATED FROM TEMPLATE SQLObject.cst (9/22/2015)********************** -->
+
+<SQL>
+  <LOAD>
+    <![CDATA[elp_tbl_claim_shipping.Load]]>
+</LOAD>
+  <INSERT>
+    <![CDATA[elp_tbl_claim_shipping.Add]]>
+  </INSERT>
+  <UPDATE>
+    <![CDATA[elp_tbl_claim_shipping.Modify]]>
+  </UPDATE>
+  <DELETE>
+    <![CDATA[elp_tbl_claim_shipping.Del]]>
+  </DELETE>
+
+  <LOAD_OLD>
+    <![CDATA[	
+			SELECT 
+				claim_id,
+				shipping_type_id,
+				shipping_date,
+				tracking_number,
+				received_date,
+				created_date,
+				created_by,
+				modified_date,
+				modified_by,
+				claim_shipping_id
+			FROM elp_claim_shipping 
+			WHERE
+				claim_shipping_id = :claim_shipping_id
+		]]>
+  </LOAD_OLD>
+  <LOAD_LIST>
+  </LOAD_LIST>
+  <UPDATE_OLD>
+    <![CDATA[	
+			UPDATE elp_claim_shipping SET
+				claim_id = :claim_id,
+				shipping_type_id = :shipping_type_id,
+				shipping_date = :shipping_date,
+				tracking_number = :tracking_number,
+				received_date = :received_date,
+				modified_by = :modified_by
+			WHERE
+				claim_shipping_id = :claim_shipping_id
+		]]>
+  </UPDATE_OLD>
+  <INSERT_OLD>
+    INSERT INTO elp_claim_shipping
+    (
+    claim_id,
+    shipping_type_id,
+    shipping_date,
+    tracking_number,
+    received_date,
+    created_by,
+    claim_shipping_id
+    )
+    VALUES
+    (
+    :claim_id,
+    :shipping_type_id,
+    :shipping_date,
+    :tracking_number,
+    :received_date,
+    :created_by,
+    :claim_shipping_id
+    )
+  </INSERT_OLD>
+  <DELETE_OLD>
+    DELETE FROM elp_claim_shipping
+    WHERE
+    claim_shipping_id = :claim_shipping_id
+  </DELETE_OLD>
+  <GET_CLAIM_SHIPPING_INFO>
+        <![CDATA[elp_tbl_claim_shipping.getclaimshippinginfo]]>
+  </GET_CLAIM_SHIPPING_INFO>
+  <GET_LATEST_CLAIM_SHIPPING_INFO>
+    <![CDATA[
+     with
+        claim_shipping as (select  claim_id,
+                                   shipping_type_id,
+                                   shipping_date,
+                                   carrier_code,
+                                   carrier_name,
+                                   tracking_number,
+                                   claim_shipping_id 
+                           from (
+                                    select rank() over(partition by cs.claim_id, 
+                                                                    cs.shipping_type_id
+                                                                    order by cs.created_date desc ) rank, 
+                                           cs.claim_id, 
+                                           cs.shipping_type_id shipping_type_id, 
+                                           cs.carrier_code, 
+                                           cs.carrier_name, 
+                                           cs.tracking_number, 
+                                           cs.shipping_date,
+                                           cs.claim_shipping_id
+                                    from elp_claim_shipping cs
+                                  )
+                            where rank=1),
+        ship_type_list_items as (select li.list_item_id shipping_type_id
+                                 from elp_list_item li 
+                                 inner join elp_list l on li.list_id = l.list_id
+                                 where l.code = 'SHIP_TYP'),
+        join_claimshipping_shiptype as (select stl.shipping_type_id shipping_type_id, 
+                                                cs.tracking_number tracking_number,
+                                                cs.shipping_date,
+                                                cs.carrier_code,
+                                                cs.carrier_name,
+                                                cs.claim_id,
+                                                cs.claim_shipping_id
+                                         from ship_type_list_items stl
+                                         left outer join claim_shipping cs on stl.shipping_type_id = cs.shipping_type_id)
+     select  * from join_claimshipping_shiptype
+              where claim_id = :claim_id
+              and shipping_type_id = :shipping_type_id        
+    ]]>
+  </GET_LATEST_CLAIM_SHIPPING_INFO>
+  <UPDATE_CLAIM_SHIPPING_INFO>
+    <![CDATA[
+    UPDATE elp_claim_shipping SET
+				tracking_number = :tracking_number
+			WHERE
+				claim_shipping_id = :claim_shipping_id
+    ]]>
+  </UPDATE_CLAIM_SHIPPING_INFO>
+</SQL>
+
+

@@ -1,0 +1,6 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<SQL>
+  <LOAD>elp_tbl_consent_actions.LoadConsentValue</LOAD>
+  <LOAD_LIST>elp_tbl_consent_actions.LoadList</LOAD_LIST>
+  <DELETE>elita.elp_tbl_consent_actions.Delete</DELETE>
+</SQL>

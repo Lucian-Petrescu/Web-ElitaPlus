@@ -1,0 +1,1 @@
+﻿<%@ ServiceHost Language="VB" Debug="true" Service="ElitaInternalWS.OpenMobile.OpenMobileWcf" CodeBehind="OpenMobileWcf.svc.vb" %>

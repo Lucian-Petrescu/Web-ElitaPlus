@@ -1,0 +1,168 @@
+<!------------------------------------------------------------------------------------------------------------------
+//
+//  AA      SSS  SSS  UU  UU RRRRR      AA    NN   NN  TTTTTTTT
+//A    A   SS    SS   UU  UU RR   RR  A    A  NNN  NN     TT 
+//AAAAAA   SSS   SSS  UU  UU RRRR     AAAAAA  NN N NN     TT
+//AA  AA     SS    SS UU  UU RR RR    AA  AA  NN  NNN     TT
+//AA  AA  SSSSS SSSSS  UUUU  RR   RR  AA  AA  NN  NNN     TT
+
+//Copyright 2002, Assurant Group Inc..  All Rights Reserved.
+//------------------------------------------------------------------------------
+//This information is CONFIDENTIAL and for Assurant Group's exclusive use ONLY.
+//Any reproduction or use without Assurant Group's explicit, written consent 
+//is PROHIBITED.
+//------------------------------------------------------------------------------
+
+//Purpose: Behavior for pop-up effect on buttons.
+//
+//Author:  Dexter R. Brown
+//
+//Date:    09/22/2002     
+
+//MODIFICATION HISTORY:
+//=====================
+//----------------------------------------------------------------------------------------------------------------------*/-->
+
+<PROPERTY NAME="popupborderColorOn"/>		<!--border color on mouse over-->
+<PROPERTY NAME="popupbackgroundColorOn"/>	<!--background color on mouse over-->
+<PROPERTY NAME="popupColorOn"/>				<!--text color on mouse over-->
+
+<PROPERTY NAME="popupborderColorOff"/>		<!--border color on mouse out-->
+<PROPERTY NAME="popupbackgroundColorOff"/>	<!--background color on mouse out-->
+<PROPERTY NAME="popupColorOff"/>			<!--text color on mouse out-->
+
+<ATTACH   EVENT="onreadystatechange" HANDLER="Initialize"/>
+<ATTACH   EVENT="onmouseout" HANDLER="DoMouseOut"/>
+<ATTACH   EVENT="onmouseover" HANDLER="DoMouseOver"/>
+
+<SCRIPT LANGUAGE="jscript">
+  	 
+  	this.hideFocus = true;
+  	 
+	function Initialize()
+	{
+		 
+		InitializeDefaults();
+					
+		//if the button's readyState is not complete, wait
+		 
+		if (readyState != "complete" && readyState != 4)
+		{
+			window.setTimeout(uniqueID + ".Format()", 50);
+		}
+		else 
+		{
+		
+			//detach onPropertyChange event
+			
+			detachEvent("onpropertychange", Initialize);
+			
+			//if the button's readyState is complete apply formatting
+			
+			/*with (event.srcElement.style)
+			{
+						
+				color = popupColorOff;		
+				borderColor = popupborderColorOff;
+				backgroundColor = popupbackgroundColorOff;
+				borderWidth = '2px';
+				borderStyle = 'inset';
+				textDecorationUnderline = false;
+			 				
+			}*/
+			
+		}
+		 
+	}
+	 
+	function InitializeDefaults()
+	{
+	 	
+		//  Attribute | Property Defaults
+			 
+		//background color
+	   
+		if (popupbackgroundColorOn  == null) popupbackgroundColorOn = '#f1f1f1';
+		if (popupbackgroundColorOff == null) popupbackgroundColorOff = '#f1f1f1';
+		 
+		//border color
+		 
+		if (popupborderColorOn  == null) popupborderColorOn = popupbackgroundColorOff;
+		if (popupborderColorOff  == null) popupborderColorOff = '#00004b';
+		  
+		//color
+ 			
+		if (popupColorOn  == null) popupColorOn = '#12135b'; //'#0000ff'
+		if (popupColorOff == null) popupColorOff = '#000000';
+		
+	}
+	
+	function DoMouseOver()
+	{ 
+		 		
+		/*with (event.srcElement.style)
+		{
+			
+			textDecorationUnderline = false;
+			borderStyle = 'inset';
+			color = popupColorOn;
+			borderColor = popupborderColorOn;
+			backgroundColor = popupbackgroundColorOn;
+			borderWidth = '2px';
+			cursor = 'hand';
+			this.hideFocus = true;
+						
+		}*/
+		
+	}
+	
+	function DoMouseOut()
+	{
+		 
+		with (event.srcElement.style)
+		{
+				
+			textDecorationUnderline = false;
+			borderStyle = 'outset';
+			color = popupColorOff;
+			borderColor = popupborderColorOff;
+			backgroundColor = popupbackgroundColorOff;
+			borderWidth = '1px';
+			
+		}
+		
+	}	
+ 
+	//this takes care of buttons that are disabled
+	
+	InitializeDisabledBtns();
+	
+	function InitializeDisabledBtns()
+	{
+			
+		if (this.disabled == true)
+		{
+			
+			InitializeDefaults();
+			
+			with (this.style)
+			{
+						
+				color = popupColorOff;		
+				borderColor = popupborderColorOff;
+				backgroundColor = popupbackgroundColorOff;
+				borderWidth = '1px';
+				borderStyle = 'groove';
+				textDecorationUnderline = false;
+			 				
+			}
+			
+			this.hideFocus = true;
+		 
+		}
+	
+	}
+	
+</SCRIPT>
+
+

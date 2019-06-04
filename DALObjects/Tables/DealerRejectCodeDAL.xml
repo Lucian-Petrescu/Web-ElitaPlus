@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="utf-8" ?>
+
+<!-- ********************** THIS FILE HAS BEEN GENERATED FROM TEMPLATE SQLObject.cst (9/4/2012)********************** -->
+
+<SQL>
+	<LOAD>
+		<![CDATA[	
+			SELECT 
+				dealer_id,
+				msg_code_id,
+				record_type_id,
+				created_by,
+				created_date,
+				modified_by,
+				modified_date,
+				dealer_reject_code_id
+			FROM elp_dealer_reject_code 
+			WHERE
+				dealer_reject_code_id = :dealer_reject_code_id
+		]]>
+	</LOAD>
+	<LOAD_LIST>
+		<![CDATA[		
+			SELECT
+				drc.DEALER_REJECT_CODE_ID,
+				mc.MSG_CODE_ID, 
+				mc.msg_code REJECT_CODE, 
+				dt.translation REJECT_REASON, 
+				(select list_item_id from elp_list_item where list_item_id = :record_type_id) RECORD_TYPE_ID				
+			FROM
+				ELP_MESSAGE_CODE mc left outer join ELP_DEALER_REJECT_CODE drc
+				on mc.msg_code_id = drc.msg_code_id
+				and dealer_id = :dealer_id
+				and record_type_id = :record_type_id,
+				ELP_LIST l, 
+				ELP_LIST_ITEM li, 
+				elp_label lb, 
+				elp_dict_item_translation dt
+			WHERE
+				mc.label_id = lb.label_id
+				and lb.dict_item_id = dt.dict_item_id
+				and l.list_id = li.list_id
+				and mc.msg_type = li.list_item_id
+				and l.code = 'MSGTYPE'
+				--dynamic_where_clause
+				--dynamic_order_by_clause
+		]]>
+	</LOAD_LIST>	
+	<UPDATE>
+		<![CDATA[	
+			UPDATE elp_dealer_reject_code SET
+				dealer_id = :dealer_id,
+				msg_code_id = :msg_code_id,
+				record_type_id = :record_type_id,
+				modified_by = :modified_by
+			WHERE
+				dealer_reject_code_id = :dealer_reject_code_id
+		]]>
+	</UPDATE>
+	<INSERT>
+			INSERT INTO elp_dealer_reject_code
+					(			
+				dealer_id, 
+				msg_code_id, 
+				record_type_id, 
+				created_by,
+				dealer_reject_code_id
+					)
+			VALUES
+					(			
+				:dealer_id, 
+				:msg_code_id, 
+				:record_type_id, 
+				:created_by,
+				:dealer_reject_code_id
+					)
+	</INSERT>
+	<DELETE>
+			DELETE FROM elp_dealer_reject_code
+			WHERE
+				dealer_reject_code_id = :dealer_reject_code_id
+	</DELETE>
+</SQL> 
+
+

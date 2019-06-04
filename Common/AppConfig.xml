@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<CONFIG>
+	<LOGGING>
+		<publishingConfiguration mode="on">
+			<publisher mode ="on" classTypeName="Assurant.Common.MessagePublishing.WindowsEventLogPublisher" logName = "ElitaPlus" applicationName = "Web" typeFilter = "ERROR*"/>
+			<publisher mode ="on" classTypeName="Assurant.Common.MessagePublishing.DBMessagePublisher"  typeFilter="ERROR_UNEXPECTED,ERROR_DATABASE,DEBUG" />
+		</publishingConfiguration>
+	</LOGGING>
+	<!--<HI> 
+	<publisher classTypeName="Assurant.Common.MessagePublishing.WindowsEventLogPublisher" logName = "ElitaPlus" applicationName = "Web" typeFilter = "ERROR*,-ERROR_BO,-ERROR_GUI"/>
+  <publisher classTypeName="Assurant.Common.MessagePublishing.EMailMessagePublisher" Recipients="Andres.Monterrosas@assurant.com" typeFilter = "ERROR_UNEXPECTED,ERROR_DATABASE,MESSAGE" subject="ElitaPlus System Error" from = "ElitaPlus_System@assurant.com" SMTPServerName="Mailrelay2005.etdbw.com" />
+	<publisher mode ="off" classTypeName="Assurant.Common.MessagePublishing.FileMessagePublisher" fileName="ElitaPlus.debug.log" maxSizeKB = "1000" maxAgeDays = "30" typeFilter = "DEBUG" /> 
+	<publisher  mode ="on" classTypeName="Assurant.Common.MessagePublishing.DBMessagePublisher" DBConnString="User ID=elp_app_user;Password=elp1ple;Data Source=elitaplus_dev" typeFilter="DEBUG" />
+	</HI>-->	
+</CONFIG>

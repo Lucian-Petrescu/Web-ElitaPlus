@@ -1,0 +1,379 @@
+<?xml version="1.0" encoding="utf-8" ?>
+
+<!-- ********************** THIS FILE HAS BEEN GENERATED FROM TEMPLATE SQLObject.cst (7/26/2004)********************** -->
+
+<SQL>
+  <LOAD>
+    <![CDATA[	
+			SELECT 
+				network_id,
+				user_name,
+				authorization_limit,
+				language_id,
+				active,
+				created_date,
+				modified_date,
+				password,
+				created_by,
+				modified_by,
+				user_id,
+				external,
+				external_type_id,
+				sc_dealer_id,
+				id1,
+				id2,
+				payment_limit
+			FROM elp_user 
+			WHERE
+				user_id = :user_id
+		]]>
+  </LOAD>
+  <LOAD_BY_NETWORK_ID>
+    <![CDATA[	
+			SELECT 
+				network_id,
+				user_name,
+				authorization_limit,
+				language_id,
+				active,
+				created_date,
+				modified_date,
+				password,
+				created_by,
+				modified_by,
+				user_id,
+				external,
+				external_type_id,
+				sc_dealer_id,
+				id1,
+				id2,
+				payment_limit
+			FROM elp_user 
+			WHERE
+				upper(network_id) = :network_id
+		]]>
+  </LOAD_BY_NETWORK_ID>
+  <MAINTAIN_USER_GET_USERS>
+    SELECT  U.*
+    FROM ELP_USER U
+    --dynamic_where_clause
+    order by Upper(U.USER_NAME)
+  </MAINTAIN_USER_GET_USERS>
+  <MAINTAIN_USER_ROLE_FETCH>
+    SELECT R.CODE,UR.ROLE_ID, U.NETWORK_ID, U.USER_NAME, U.USER_ID
+    FROM ELP_ROLE R,ELP_USER_ROLE UR, ELP_USER U
+    WHERE  R.ROLE_ID = UR.ROLE_ID
+    AND   U.USER_ID = UR.USER_ID
+    --dynamic_where_clause
+  </MAINTAIN_USER_ROLE_FETCH>
+  <MAINTAIN_USER_COMPANY_FETCH>
+    SELECT C.CODE,UC.COMPANY_ID, U.NETWORK_ID C_NETWORK_ID, U.USER_NAME, U.USER_ID
+    FROM ELP_COMPANY C,ELP_USER_COMPANY_ASSIGNED UC, ELP_USER U
+    WHERE  C.COMPANY_ID = UC.COMPANY_ID
+    AND   U.USER_ID = UC.USER_ID
+    --dynamic_where_clause
+  </MAINTAIN_USER_COMPANY_FETCH>
+  <UPDATE>
+    <![CDATA[	
+			UPDATE elp_user SET
+				network_id = :network_id,
+				user_name = :user_name,
+				authorization_limit = :authorization_limit,
+				language_id = :language_id,
+				active = :active,
+				password = :password,
+				external = :external,
+				external_type_id = :external_type_id,
+				sc_dealer_id = :sc_dealer_id,
+				modified_by = :modified_by,
+				id1 = :id1,
+				id2 = :id2,
+				payment_limit = :payment_limit
+			WHERE
+				user_id = :user_id
+		]]>
+  </UPDATE>
+  <INSERT>
+    INSERT INTO elp_user
+    (
+    network_id,
+    user_name,
+    authorization_limit,
+    language_id,
+    active,
+    password,
+    created_by,
+    user_id,
+    external,
+    external_type_id,
+    sc_dealer_id,
+    id1,
+    id2,
+    payment_limit
+    )
+    VALUES
+    (
+    :network_id,
+    :user_name,
+    :authorization_limit,
+    :language_id,
+    :active,
+    :password,
+    :created_by,
+    :user_id,
+    :external,
+    :external_type_id,
+    :sc_dealer_id,
+    :id1,
+    :id2,
+    :payment_limit
+    )
+  </INSERT>
+  <DELETE>
+    DELETE FROM elp_user
+    WHERE
+    user_id = :user_id
+  </DELETE>
+  <GET_USER_ROLES>
+    select ur.role_id id, r.description, r.code
+    from elp_role r,elp_user_role ur, elp_user u
+    where  r.role_id = ur.role_id
+    and   u.user_id = ur.user_id
+    and u.user_id = :user_id
+    order by r.description
+  </GET_USER_ROLES>
+  <GET_AVAILABLE_ROLES>
+    select r.role_id id, r.description, r.code code
+    from elp_role r
+    where r.role_id not in
+    (select ur.role_id from elp_user_role ur,
+    elp_user u where u.user_id = ur.user_id
+    and u.user_id =:user_id )
+    order by r.description
+  </GET_AVAILABLE_ROLES>
+  <GET_USER_COMPANY_ASSIGNED>
+    select c.company_id id, c.description, c.code code
+    from elp_company c
+    where company_id in
+    (
+    select company_id
+    from elp_user_company_assigned
+    where user_id = :user_id
+    ) and
+    c.company_group_id = :company_group_id
+  </GET_USER_COMPANY_ASSIGNED>
+  <GET_AVAILABLE_COMPANIES>
+    select c.company_id id, c.description, c.code code
+    from elp_company c
+    where c.company_group_id = :company_group_id
+    and c.company_id not in
+    (
+    select uc.company_id from ELP_USER_COMPANY uc
+    where uc.user_id = :user_id
+    )
+    and c.company_id in
+    (
+    select uc.company_id from ELP_USER_COMPANY_ASSIGNED uc
+    where uc.user_id = :user_id
+    )
+    union
+    select c.company_id id, c.description, c.code code
+    from elp_company c
+    where c.company_group_id = :company_group_id
+    and c.company_id not in
+    (
+    select uc.company_id from ELP_USER_COMPANY uc
+    where uc.user_id = :user_id
+    )
+    and exists (select null from elp_user_role ur
+    inner join elp_role r on ur.role_id = r.role_id
+    where ur.user_id = :user_id and IHQ_ONLY = 'Y'
+    )
+    order by description
+  </GET_AVAILABLE_COMPANIES>
+
+  <GET_AVAILABLE_COMPANIES_ASSIGNED>
+    select c.company_id id, c.description, c.code code
+    from elp_company c
+    where 1=1
+    and c.company_id not in
+    (
+    select uc.company_id from ELP_USER_COMPANY_ASSIGNED uc
+    where uc.user_id = :user_id
+    )
+  </GET_AVAILABLE_COMPANIES_ASSIGNED>
+
+  <GET_SP_USER_CLAIMS>
+    <![CDATA[	
+      select uc.sp_user_claims_id,
+             uc.user_id,
+             uc.sp_claim_type_id,
+             ut.code,
+             getdescriptionfromcode( :sp_claim_code,
+                                    ut.code, :lang_id) as sp_claim_code_description,
+             uc.sp_claim_value,
+             uc.effective_date,
+             uc.expiration_date
+        from elp_sp_user_claims uc
+       inner join elp_sp_claim_types ut on ut.sp_claim_type_id = uc.sp_claim_type_id
+			 where uc.user_id = :user_id
+		]]>
+  </GET_SP_USER_CLAIMS>
+
+  <GET_SELECTED_COMPANIES_ASSIGNED>
+    select uc.user_id, c.company_id, c.description, c.code code,
+    uc.authorization_limit, uc.payment_limit , 'Y' as is_loaded,
+    liability_override_limit
+    from
+    elp_company c, elp_user_company_assigned uc
+    where
+    c.company_id = uc.company_id and
+    uc.user_id = :user_id
+    order by
+    c.description
+  </GET_SELECTED_COMPANIES_ASSIGNED>
+
+  <GET_SELECTED_COMPANIES>
+    select c.company_id id, c.description, c.code code
+    from elp_company c
+    where c.company_group_id = :company_group_id
+    and c.company_id in
+    (
+    select uc.company_id from ELP_USER_COMPANY uc
+    where
+    uc.user_id = :user_id
+    )
+    order by c.description
+  </GET_SELECTED_COMPANIES>
+
+  <GET_AVAILABLE_COMPANY_GROUPS>
+    select distinct company_group_id
+    from elita.ELP_USER_COMPANY_ASSIGNED uc
+    INNER JOIN ELP_COMPANY C on uc.company_id = c.company_id
+    where uc.user_id = :user_id
+  </GET_AVAILABLE_COMPANY_GROUPS>
+
+  <GET_USER_COMPANIES>
+    SELECT
+    uc.user_id, uc.company_id, c.code,c.description
+    FROM
+    elp_user u, elp_user_company uc, elp_company c
+    WHERE u.user_id = :user_id
+    AND u.user_id = uc.user_id
+    AND uc.company_id = c.company_id
+    ORDER by c.code
+  </GET_USER_COMPANIES>
+  <GET_USER_COUNTRY_COMPANIES>
+    SELECT
+    uc.user_id, uc.company_id, c.code
+    FROM
+    elp_user u, elp_user_company uc, elp_company c, elp_company_country cc
+    WHERE u.user_id = :user_id
+    AND u.user_id = uc.user_id
+    AND uc.company_id = c.company_id
+    AND cc.company_id = c.company_id
+    AND cc.country_id = :country_id
+    ORDER by c.code
+  </GET_USER_COUNTRY_COMPANIES>
+  <GET_USER_COUNTRIES>
+    SELECT distinct rawtohex(u.user_id) user_id, c.country_id country_id , c.code, c.description
+    FROM ELP_USER_COMPANY uc , ELP_USER u, ELP_COMPANY_COUNTRY cc, ELP_COUNTRY c
+    WHERE	u.user_id = :user_id
+    AND uc.user_id =  u.user_id
+    AND cc.company_id = uc.company_id
+    AND c.country_id = cc.country_id
+
+    ORDER BY UPPER(c.description)
+  </GET_USER_COUNTRIES>
+  <DELETE_USER_COMPANIES>
+    DELETE FROM elp_user_company
+    where user_id = :user_id
+  </DELETE_USER_COMPANIES>
+  <GET_EXTERNAL_USER_SERVICE_CENTERS>
+    SELECT SERVICE_CENTER_ID ID
+    FROM ELP_SERVICE_CENTER
+    WHERE SERVICE_CENTER_ID = :SERVICE_CENTER_ID
+    OR  MASTER_CENTER_ID = :SERVICE_CENTER_ID
+  </GET_EXTERNAL_USER_SERVICE_CENTERS>
+  <GET_USER_OTHER_COMPANIES_IDs>
+    SELECT company_id
+    FROM elp_company
+    WHERE COMPANY_GROUP_ID = :company_group_id
+    AND company_id not like :company_id
+  </GET_USER_OTHER_COMPANIES_IDs>
+  <GET_USER_IHQ_ROLES>
+    select  r.code
+    from elp_user u
+    inner join elp_user_role ur on u.user_id = ur.user_id
+    inner join elp_role r on ur.role_id = r.role_id
+    where u.user_id = :user_id and IHQ_ONLY = 'Y'
+  </GET_USER_IHQ_ROLES>
+  <GET_USERS_BASED_ON_PERMISSION>
+  select  network_id
+  from elp_user u, elp_user_permission up
+  where u.user_id in(select distinct user_id
+                     from elp_user_company
+                     where company_id in(select company_id
+                                         from elp_company
+                                         where country_id = :country_id ))
+  and u.USER_ID = up.USER_ID
+  and elita.getcodefromlistitem(up.permission_id) = :permission_type_code
+  </GET_USERS_BASED_ON_PERMISSION>
+  <GET_USER_BASED_ON_INC_PERMISSION>
+    select  network_id
+    from elp_user u, elp_user_permission up
+    where u.user_id in(select distinct user_id
+    from elp_user_company
+    where company_id =:company_id)
+    and u.USER_ID = up.USER_ID
+    and u.user_id = :user_id
+    and elita.getcodefromlistitem(up.permission_id) = :permission_type_code
+  </GET_USER_BASED_ON_INC_PERMISSION>
+  <GET_USER_X509_CLIENT_IP>
+    select 
+    sct.code,spc.sp_claim_value, sct.claim_type,sct.sp_claim_category, spc.effective_date,spc.expiration_date
+    from
+    elp_user u, elp_sp_user_claims spc, elp_sp_claim_types sct
+    where
+    u.user_id = spc.user_id
+    and spc.sp_claim_type_id = sct.sp_claim_type_id
+    and u.user_id = :user_id
+    and spc.expiration_date > sysdate
+  </GET_USER_X509_CLIENT_IP>
+  <CHECK_DEALER_FOR_USER_CLAIM>
+    select count(1)
+    from elp_user u left join elp_user_company_assigned uc  on uc.user_id=u.user_id
+    inner join elp_company c on uc.company_id =c.company_id
+    inner join elp_dealer d  on c.company_id = d.company_id
+    where u.user_id = :user_id
+    and dealer = :dealer
+  </CHECK_DEALER_FOR_USER_CLAIM>
+  <CHECK_DEALER_GROUP_FOR_USER_CLAIM>
+    select count(1)
+    from elp_user u left join elp_user_company_assigned uc  on uc.user_id=u.user_id
+    inner join elp_company c on uc.company_id =c.company_id
+    inner join elp_company_group cg on cg.company_group_id=c.company_group_id
+    inner join elp_dealer_group dg on dg.company_group_id=cg.company_group_id
+    where u.user_id = :user_id
+    and dg.code =  :dealer_group_code
+  </CHECK_DEALER_GROUP_FOR_USER_CLAIM>
+  <CHECK_COMPANY_GROUP_FOR_USER_CLAIM>
+    select count(1)
+    from elp_user u left join elp_user_company_assigned uc  on uc.user_id=u.user_id
+    inner join elp_company c on uc.company_id =c.company_id
+    inner join elp_company_group cg on cg.company_group_id=c.company_group_id
+    where u.user_id = :user_id
+    and cg.code =  :company_group_code
+  </CHECK_COMPANY_GROUP_FOR_USER_CLAIM>
+  <CHECK_SERVICE_CENTER_FOR_USER_CLAIM>
+    select count(1)
+    from elp_user u left join elp_user_company_assigned uc  on uc.user_id=u.user_id
+    inner join elp_company c on uc.company_id =c.company_id
+    inner join elp_country co on c.country_id = co.country_id
+    inner join elp_service_center sc on sc.country_id = co.country_id
+    where u.user_id = :user_id
+    and  co.code = :country_code
+    and  sc.code = :service_center_code
+  </CHECK_SERVICE_CENTER_FOR_USER_CLAIM>
+</SQL>
+

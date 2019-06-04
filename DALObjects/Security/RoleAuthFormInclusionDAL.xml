@@ -1,0 +1,152 @@
+<?xml version="1.0" encoding="utf-8" ?> 
+
+<SQL>
+
+<LOAD>
+		<![CDATA[	
+			SELECT 
+				role_id,
+				form_id,
+				permission_type,
+				modified_date,
+				created_date,
+				created_by,
+				modified_by,
+				role_form_id
+			FROM elp_role_auth_form_inclusion 
+			WHERE
+				role_form_id = :role_form_id
+		]]>
+	</LOAD>
+	<LOAD_FORMROLE>
+		<![CDATA[	
+			SELECT 
+				role_id,
+				form_id,
+				permission_type,
+				modified_date,
+				created_date,
+				created_by,
+				modified_by,
+				role_form_id
+			FROM elp_role_auth_form_inclusion 
+			WHERE
+				form_id = :form_id
+			and role_id = :role_id
+		]]>
+	</LOAD_FORMROLE>
+	<LOAD_LIST>		
+	</LOAD_LIST>	
+	<UPDATE>
+		<![CDATA[	
+			UPDATE elp_role_auth_form_inclusion SET
+				role_id = :role_id,
+				form_id = :form_id,
+				permission_type = :permission_type,
+				modified_by = :modified_by
+			WHERE
+				role_form_id = :role_form_id
+		]]>
+	</UPDATE>
+	<INSERT>
+			INSERT INTO elp_role_auth_form_inclusion
+					(			
+				role_id, 
+				form_id, 
+				permission_type, 
+				created_by,
+				role_form_id
+					)
+			VALUES
+					(			
+				:role_id, 
+				:form_id, 
+				:permission_type, 
+				:created_by,
+				:role_form_id
+					)
+	</INSERT>
+	<DELETE>
+			DELETE FROM elp_role_auth_form_inclusion
+			WHERE
+				role_form_id = :role_form_id
+	</DELETE>
+  
+  <GET_TABS_FORMS>
+    select	tabs.TAB_ID TAB_ID, NVL(dict_tab.TRANSLATION,tabs.CODE) TAB_NAME,
+    forms.FORM_ID, NVL(dict_form.TRANSLATION, forms.CODE) FORM_NAME,
+    TAB_ICON_IMG, forms.CODE FORM_CODE, tabs.CODE TAB_CODE
+    from	elp_tab tabs,
+    elp_form forms,
+    elp_dict_item_translation dict_tab,
+    elp_dict_item_translation dict_form
+    where	tabs.TAB_ID = forms.TAB_ID
+    and tabs.DICT_ITEM_ID = dict_tab.DICT_ITEM_ID
+    and dict_tab.LANGUAGE_ID = :LANGUAGE_ID
+    and	forms.DICT_ITEM_ID = dict_form.DICT_ITEM_ID
+    and dict_form.LANGUAGE_ID = dict_tab.LANGUAGE_ID
+    order by Upper(TAB_NAME), Upper(FORM_NAME), tabs.TAB_ID, forms.FORM_ID
+  </GET_TABS_FORMS>
+  
+  <GET_PERMISSIONS_BY_FORM_ID>
+    select R.ROLE_ID, R.code ROLE_CODE, R.DESCRIPTION ROLE_DESC,
+    nvl(fi.PERMISSION_TYPE, 'N') PERMISSION_TYPE, case when fi.FORM_ID is not null then 'Y' else  'N' end ExistingRec
+    from elp_role r
+    left outer join ELP_ROLE_AUTH_FORM_INCLUSION fi
+    on r.role_id = fi.role_id and fi.form_id = HEXTORAW(#FORMID)
+    order by ROLE_DESC
+  </GET_PERMISSIONS_BY_FORM_ID>
+  
+<GET_FORMS_PERMISSIONS>
+			select 		tabs.TAB_ID TAB_ID, NVL(dict_tab.TRANSLATION,tabs.CODE) TAB_NAME,
+				        forms.FORM_ID FORM_ID, NVL(dict_form.TRANSLATION, forms.CODE) FORM_NAME,
+						roles.ROLE_ID ROLE_ID, Upper(roles.DESCRIPTION) ROLE_DESC, rafi.PERMISSION_TYPE PERMISSION, TAB_ICON_IMG
+				from  	elp_tab tabs,
+      					elp_form forms,
+      					elp_role roles,
+      					elp_role_auth_form_inclusion rafi,
+						elp_dict_item_translation dict_tab,
+						elp_dict_item_translation dict_form
+				where 	tabs.TAB_ID = forms.TAB_ID
+      					and roles.ROLE_ID = rafi.ROLE_ID 
+      					and	rafi.FORM_ID = forms.FORM_ID
+      					and tabs.DICT_ITEM_ID = dict_tab.DICT_ITEM_ID
+						and dict_tab.LANGUAGE_ID = :LANGUAGE_ID
+						and	forms.DICT_ITEM_ID = dict_form.DICT_ITEM_ID
+			   			and dict_form.LANGUAGE_ID = dict_tab.LANGUAGE_ID
+		Union
+			select 	    tabs.TAB_ID TAB_ID, NVL(dict_tab.TRANSLATION,tabs.CODE) TAB_NAME,
+						forms.FORM_ID FORM_ID, NVL(dict_form.TRANSLATION, forms.CODE) FORM_NAME,
+						roles.ROLE_ID ROLE_ID, Upper(roles.DESCRIPTION) ROLE_DESC, 'N' PERMISSION, TAB_ICON_IMG
+				from	elp_tab tabs,
+					  	elp_form forms,
+					  	elp_role roles,
+						elp_dict_item_translation dict_tab,
+						elp_dict_item_translation dict_form,
+					(
+							select 	tabs.TAB_ID,  forms.FORM_ID, roles.ROLE_ID
+								from  	elp_tab tabs,
+      									elp_form forms,
+      									elp_role roles
+      							where 	tabs.TAB_ID = forms.TAB_ID
+						Minus
+							select 	tabs.TAB_ID,  forms.FORM_ID, roles.ROLE_ID
+								from  	elp_tab tabs,
+  										elp_form forms,
+      									elp_role roles,
+      									elp_role_auth_form_inclusion rafi
+								where 	tabs.TAB_ID = forms.TAB_ID
+      									and roles.ROLE_ID = rafi.ROLE_ID
+      									and rafi.FORM_ID = forms.FORM_ID ) aTable
+      			where  aTable.TAB_ID = 	tabs.TAB_ID
+      				   and aTable.FORM_ID = forms.FORM_ID
+      				   and aTable.ROLE_ID = roles.ROLE_ID
+      				   and	tabs.TAB_ID = forms.TAB_ID
+      				   and tabs.DICT_ITEM_ID = dict_tab.DICT_ITEM_ID
+					   and dict_tab.LANGUAGE_ID = :LANGUAGE_ID
+					   and	forms.DICT_ITEM_ID = dict_form.DICT_ITEM_ID
+					   and dict_form.LANGUAGE_ID = dict_tab.LANGUAGE_ID
+			order by TAB_NAME, FORM_NAME, ROLE_DESC
+	</GET_FORMS_PERMISSIONS>
+			
+</SQL>

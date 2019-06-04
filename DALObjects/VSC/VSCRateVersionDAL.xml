@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="utf-8" ?>
+
+<!-- ********************** THIS FILE HAS BEEN GENERATED FROM TEMPLATE SQLObject.cst (4/11/2007)********************** -->
+
+<SQL>
+	<LOAD>
+		<![CDATA[	
+			SELECT 
+				vsc_plan_id,
+				dealer_id,
+				dealer_group_id,
+				version_number,
+				effective_date,
+				expiration_date,
+				created_date,
+				created_by,
+				modified_date,
+				modified_by,
+				vsc_rate_version_id
+			FROM elp_vsc_rate_version 
+			WHERE
+				vsc_rate_version_id = :vsc_rate_version_id
+		]]>
+	</LOAD>
+  
+  <LOAD_LIST>
+    <![CDATA[
+      select rv.VSC_RATE_VERSION_ID, p.code PlanCode, p.Description PLAN, d.dealer DealerCode, d.Dealer_Name DealerName,
+        dg.code DealerGroupCode, dg.DESCRIPTION DealerGroup, rv.Version_Number VERSION, rv.EFFECTIVE_DATE, rv.EXPIRATION_DATE,
+        (select max(Version_Number) from ELP_VSC_RATE_VERSION 
+	        where vsc_plan_id = rv.vsc_plan_id 
+		        and nvl(dealer_group_id, '0') =  nvl(rv.dealer_group_id, '0') 
+		        and nvl(dealer_id, '0') = nvl(rv.dealer_id, '0')
+        ) HighestVersion, ROWNUM
+      FROM ELP_VSC_RATE_VERSION rv join elp_vsc_plan p on rv.vsc_plan_id = p.vsc_plan_id
+      left join ELP_DEALER_GROUP dg on rv.dealer_group_id = dg.dealer_group_id
+      left outer join ELP_DEALER d on rv.dealer_id = d.dealer_id
+      where p.company_Group_id = :company_group_id
+        --dynamic_where_clause
+      ORDER BY PLAN, DealerGroup, DEALER, VERSION Desc
+    ]]>
+  </LOAD_LIST>
+  
+  <UPDATE>
+        <![CDATA[	
+			UPDATE elp_vsc_rate_version SET
+				vsc_plan_id = :vsc_plan_id,
+				dealer_id = :dealer_id,
+				dealer_group_id = :dealer_group_id,
+				version_number = :version_number,
+				effective_date = :effective_date,
+				expiration_date = :expiration_date,
+				modified_by = :modified_by
+			WHERE
+				vsc_rate_version_id = :vsc_rate_version_id
+		]]>
+	</UPDATE>
+  
+	<INSERT>
+			INSERT INTO elp_vsc_rate_version
+					(			
+				vsc_plan_id, 
+				dealer_id, 
+				dealer_group_id, 
+				version_number, 
+				effective_date, 
+				expiration_date, 
+				created_by,
+				vsc_rate_version_id
+					)
+			VALUES
+					(			
+				:vsc_plan_id, 
+				:dealer_id, 
+				:dealer_group_id, 
+				:version_number, 
+				:effective_date, 
+				:expiration_date, 
+				:created_by,
+				:vsc_rate_version_id
+					)
+	</INSERT>
+  
+	<DELETE>
+			DELETE FROM elp_vsc_rate_version
+			WHERE
+				vsc_rate_version_id = :vsc_rate_version_id
+	</DELETE>
+  
+</SQL> 
+
+

@@ -1,0 +1,423 @@
+<%@ CodeTemplate Language="C#" TargetLanguage="VB" Description="Generates a very simple business object." %>
+<%@ Property Name="SourceTable" Type="SchemaExplorer.TableSchema" Category="Context" Description="Table that the object is based on." %>
+<%@ Property Name="IncludeInsert" Type="System.Boolean" Default="True" Category="Options" Description="If true insert statements will be generated." %>
+<%@ Property Name="IncludeUpdate" Type="System.Boolean" Default="True" Category="Options" Description="If true update statements will be generated." %>
+<%@ Property Name="IncludeDelete" Type="System.Boolean" Default="False" Category="Options" Description="If true delete statements will be generated." %>
+<%@ Assembly Name="SchemaExplorer" %>
+<%@ Assembly Name="System.Data" %>
+<%@ Import Namespace="SchemaExplorer" %>
+<%@ Import Namespace="System.Data" %>
+<%@ Import Namespace="System.Text.RegularExpressions" %>
+
+'************* THIS CODE HAS BEEN GENERATED FROM TEMPLATE DALObject v2.cst (<%= DateTime.Now.ToShortDateString() %>)********************
+
+
+Public Class <%= GetClassName(SourceTable) %>DAL
+    Inherits OracleDALBase
+
+#Region "Constants"
+    Private Const supportChangesFilter As DataRowState = <%= (IncludeInsert) ? "DataRowState.Added" : "" %> <%= (IncludeUpdate) ? ((IncludeInsert) ? " Or DataRowState.Modified" : "DataRowState.Modified") : "" %> <%= (IncludeDelete) ? (((IncludeInsert) || (IncludeUpdate)) ? " Or DataRowState.Deleted" : "DataRowState.Deleted") : "" %>
+    Public Const TABLE_NAME As String = "<%= SourceTable.Name %>"
+    Public Const TABLE_KEY_NAME As String = COL_NAME_<%= SourceTable.PrimaryKey.MemberColumns[0].Name.ToUpper() %>
+	
+	<% for (int i = 0; i < SourceTable.Columns.Count; i++) { %>	
+	<% 
+	string cName = SourceTable.Columns[i].Name.ToUpper();
+	if ( !(cName == "CREATED_DATE" | cName == "MODIFIED_DATE" | cName == "CREATED_BY" | cName == "MODIFIED_BY") )
+	   {	
+	%>
+    Public Const COL_NAME_<%= SourceTable.Columns[i].Name.ToUpper() %> As String = "<%= SourceTable.Columns[i].Name.ToLower() %>"
+	<% } %>
+	<% } %>			
+    
+	<% for (int i = 0; i < SourceTable.Columns.Count; i++) { %>	
+	<% 
+	string cName = SourceTable.Columns[i].Name.ToUpper();
+	if ( !(cName == "CREATED_DATE" | cName == "MODIFIED_DATE" | cName == "CREATED_BY" | cName == "MODIFIED_BY") )
+	   {	
+	%>
+    Public Const PAR_I_NAME_<%= SourceTable.Columns[i].Name.ToUpper() %> As String = "pi_<%= SourceTable.Columns[i].Name.ToLower() %>"
+	<% } %>
+	<% } %>			
+
+#End Region
+
+#Region "Constructors"
+    Public Sub New()
+        MyBase.new()
+    End Sub
+
+#End Region
+
+#Region "Load Methods"
+
+    Public Sub LoadSchema(ByVal ds As DataSet)
+        Load(ds, Guid.Empty)
+    End Sub
+
+    Public Sub Load(ByVal familyDS As DataSet, ByVal id As Guid)
+        Try
+            Using cmd As OracleCommand = OracleDbHelper.CreateCommand(Me.Config("/SQL/LOAD"))
+                cmd.AddParameter(TABLE_KEY_NAME, OracleDbType.Raw, id.ToByteArray())
+                cmd.AddParameter(PAR_O_NAME_RESULTCURSOR, OracleDbType.RefCursor, direction:=ParameterDirection.Output)
+                OracleDbHelper.Fetch(cmd, Me.TABLE_NAME, familyDS)
+            End Using        
+        Catch ex As Exception
+            Throw New DataBaseAccessException(DataBaseAccessException.DatabaseAccessErrorType.ReadErr, ex)
+        End Try
+    End Sub
+
+    Public Function LoadList() As DataSet
+        Try
+            Using cmd As OracleCommand = OracleDbHelper.CreateCommand(Me.Config("/SQL/LOAD_LIST"))
+                cmd.AddParameter(PAR_O_NAME_RESULTCURSOR, OracleDbType.RefCursor, direction:=ParameterDirection.Output)
+                Return OracleDbHelper.Fetch(cmd, Me.TABLE_NAME)
+            End Using        
+        Catch ex As Exception
+            Throw New DataBaseAccessException(DataBaseAccessException.DatabaseAccessErrorType.ReadErr, ex)
+        End Try
+    End Function    
+    
+
+#End Region
+
+#Region "Overloaded Methods"
+    Public Overloads Sub Update(ByVal ds As DataSet, Optional ByVal Transaction As IDbTransaction = Nothing, Optional ByVal changesFilter As DataRowState = supportChangesFilter)
+		If ds Is Nothing Then
+            Return
+        End If
+        If (changesFilter Or (supportChangesFilter)) <> (supportChangesFilter) Then
+            Throw New NotSupportedException()
+        End If
+        If Not ds.Tables(Me.TABLE_NAME) Is Nothing Then
+            MyBase.Update(ds.Tables(Me.TABLE_NAME), Transaction, changesFilter)
+        End If
+    End Sub
+    
+    Protected Overrides Sub ConfigureDeleteCommand(ByRef command As Oracle.DataAccess.Client.OracleCommand, tableName As String)
+        <%if (IncludeDelete) { %> 
+        command.AddParameter(PAR_I_NAME_<%= SourceTable.PrimaryKey.MemberColumns[0].Name.ToUpper() %>, OracleDbType.Raw, sourceColumn:=COL_NAME_<%= SourceTable.PrimaryKey.MemberColumns[0].Name.ToUpper() %>)
+        <% } else {%>        Throw New NotSupportedException() <% } %>
+    End Sub
+
+    Protected Overrides Sub ConfigureInsertCommand(ByRef command As Oracle.DataAccess.Client.OracleCommand, tableName As String)
+        <%if (IncludeInsert) { %> 
+        With command
+            .AddParameter(PAR_I_NAME_<%= SourceTable.PrimaryKey.MemberColumns[0].Name.ToUpper() %>, OracleDbType.Raw, sourceColumn:=COL_NAME_<%= SourceTable.PrimaryKey.MemberColumns[0].Name.ToUpper() %>)
+            <% for (int i = 0; i < SourceTable.NonPrimaryKeyColumns.Count; i++) { 
+            if ((SourceTable.NonPrimaryKeyColumns[i].Name != "MODIFIED_DATE") && (SourceTable.NonPrimaryKeyColumns[i].Name != "MODIFIED_BY")) { %>	
+            .AddParameter(PAR_I_NAME_<%= SourceTable.NonPrimaryKeyColumns[i].Name %>, <%= GetOracleDBType(SourceTable.NonPrimaryKeyColumns[i]) %>, sourceColumn:=COL_NAME_<%= SourceTable.NonPrimaryKeyColumns[i].Name %>)
+            <% } } %>
+        End With
+        <% } else {%>        Throw New NotSupportedException() <% } %>
+    End Sub
+
+    Protected Overrides Sub ConfigureUpdateCommand(ByRef command As Oracle.DataAccess.Client.OracleCommand, tableName As String)
+        <%if (IncludeUpdate) { %> 
+        With command
+            .AddParameter(PAR_I_NAME_<%= SourceTable.PrimaryKey.MemberColumns[0].Name.ToUpper() %>, OracleDbType.Raw, sourceColumn:=COL_NAME_<%= SourceTable.PrimaryKey.MemberColumns[0].Name.ToUpper() %>)
+            <% for (int i = 0; i < SourceTable.NonPrimaryKeyColumns.Count; i++) { 
+            if ((SourceTable.NonPrimaryKeyColumns[i].Name != "CREATED_DATE") && (SourceTable.NonPrimaryKeyColumns[i].Name != "CREATED_BY")) { %>	
+            .AddParameter(PAR_I_NAME_<%= SourceTable.NonPrimaryKeyColumns[i].Name %>, <%= GetOracleDBType(SourceTable.NonPrimaryKeyColumns[i]) %>, sourceColumn:=COL_NAME_<%= SourceTable.NonPrimaryKeyColumns[i].Name %>)
+            <% } } %>
+        End With
+        <% } else {%>        Throw New NotSupportedException() <% } %>
+    End Sub
+#End Region
+
+End Class
+
+
+<script runat="template">
+public string GetMemberVariableDeclarationStatement(ColumnSchema column)
+{
+	return GetMemberVariableDeclarationStatement("protected", column);
+}
+
+public string GetMemberVariableDeclarationStatement(string protectionLevel, ColumnSchema column)
+{
+	string statement = protectionLevel + " ";
+	statement += GetCSharpVariableType(column) + " " + GetMemberVariableName(column);
+	
+	string defaultValue = GetMemberVariableDefaultValue(column);
+	if (defaultValue != "")
+	{
+		statement += " = " + defaultValue;
+	}
+	
+	statement += ";";
+	
+	return statement;
+}
+
+public string GetReaderAssignmentStatement(ColumnSchema column, int index)
+{
+	string statement = "if (!reader.IsDBNull(" + index.ToString() + ")) ";
+	statement += GetMemberVariableName(column) + " = ";
+	
+	if (column.Name.EndsWith("TypeCode")) statement += "(" + column.Name + ")";
+	
+	statement += "reader." + GetReaderMethod(column) + "(" + index.ToString() + ");";
+	
+	return statement;
+}
+
+public string GetCamelCaseName(string value)
+{
+	return value.Substring(0, 1).ToLower() + value.Substring(1);
+}
+
+public string GetMemberVariableName(ColumnSchema column)
+{
+	string propertyName = GetPropertyName(column);
+	string memberVariableName = "_" + GetCamelCaseName(propertyName);
+	
+	return memberVariableName;
+}
+
+public string GetPropertyName(ColumnSchema column)
+{
+	string propertyName = column.Name;
+	
+	if (propertyName == column.Table.Name + "Name") return "Name";
+	if (propertyName == column.Table.Name + "Description") return "Description";
+	
+	if (propertyName.EndsWith("TypeCode")) propertyName = propertyName.Substring(0, propertyName.Length - 4);
+	
+	return propertyName;
+}
+		
+public string GetMemberVariableDefaultValue(ColumnSchema column)
+{
+	switch (column.DataType)
+	{
+		case DbType.Guid:
+		{
+			return "Guid.Empty";
+		}
+		case DbType.AnsiString:
+		case DbType.AnsiStringFixedLength:
+		case DbType.String:
+		case DbType.StringFixedLength:
+		{
+			return "String.Empty";
+		}
+		default:
+		{
+			return "";
+		}
+	}
+}
+
+public string GetCSharpVariableType(ColumnSchema column)
+{
+	if (column.Name.EndsWith("TypeCode")) return column.Name;
+	
+	switch (column.DataType)
+	{
+		case DbType.AnsiString: return "string";
+		case DbType.AnsiStringFixedLength: return "string";
+		case DbType.Binary: return "byte[]";
+		case DbType.Boolean: return "bool";
+		case DbType.Byte: return "byte";
+		case DbType.Currency: return "decimal";
+		case DbType.Date: return "DateTime";
+		case DbType.DateTime: return "DateTime";
+		case DbType.Decimal: return "decimal";
+		case DbType.Double: return "double";
+		case DbType.Guid: return "Guid";
+		case DbType.Int16: return "short";
+		case DbType.Int32: return "int";
+		case DbType.Int64: return "long";
+		case DbType.Object: return "object";
+		case DbType.SByte: return "sbyte";
+		case DbType.Single: return "float";
+		case DbType.String: return "string";
+		case DbType.StringFixedLength: return "string";
+		case DbType.Time: return "TimeSpan";
+		case DbType.UInt16: return "ushort";
+		case DbType.UInt32: return "uint";
+		case DbType.UInt64: return "ulong";
+		case DbType.VarNumeric: return "decimal";
+		default:
+		{
+			return "__UNKNOWN__" + column.NativeType;
+		}
+	}
+}
+
+public string GetOracleDBType(ColumnSchema column)
+{
+	if (column.Name.EndsWith("TypeCode")) return column.Name;
+	
+	switch (column.DataType)
+	{
+		case DbType.AnsiString: return "OracleDbType.Varchar2";
+		case DbType.AnsiStringFixedLength: return "OracleDbType.Varchar2";
+		case DbType.Binary: return "OracleDbType.Raw";		
+		case DbType.Byte: return "OracleDbType.Raw";
+		case DbType.Currency: return "OracleDbType.Decimal";
+		case DbType.Date: return "OracleDbType.Date";
+		case DbType.DateTime: return "OracleDbType.Date";
+		case DbType.Decimal: return "OracleDbType.Decimal";
+		case DbType.Double: return "OracleDbType.Decimal";
+		case DbType.Guid: return "OracleDbType.Raw";
+		case DbType.Int16: return "OracleDbType.Decimal";
+		case DbType.Int32: return "OracleDbType.Decimal";
+		case DbType.Int64: return "OracleDbType.Decimal";				
+		case DbType.Single: return "OracleDbType.Decimal";
+		case DbType.String: return "OracleDbType.Varchar2";
+		case DbType.StringFixedLength: return "OracleDbType.Varchar2";
+		case DbType.Time: return "OracleDbType.Date";
+		case DbType.UInt16: return "OracleDbType.Decimal";
+		case DbType.UInt32: return "OracleDbType.Decimal";
+		case DbType.UInt64: return "OracleDbType.Decimal";
+		case DbType.VarNumeric: return "OracleDbType.Decimal";
+		default:
+		{
+			return "__UNKNOWN__" + column.NativeType;
+		}
+	}
+}
+
+public string GetReaderMethod(ColumnSchema column)
+{
+	switch (column.DataType)
+	{
+		case DbType.Byte:
+		{
+			return "GetByte";
+		}
+		case DbType.Int16:
+		{
+			return "GetInt16";
+		}
+		case DbType.Int32:
+		{
+			return "GetInt32";
+		}
+		case DbType.Int64:
+		{
+			return "GetInt64";
+		}
+		case DbType.AnsiStringFixedLength:
+		case DbType.AnsiString:
+		case DbType.String:
+		case DbType.StringFixedLength:
+		{
+			return "GetString";
+		}
+		case DbType.Boolean:
+		{
+			return "GetBoolean";
+		}
+		case DbType.Guid:
+		{
+			return "GetGuid";
+		}
+		case DbType.Currency:
+		case DbType.Decimal:
+		{
+			return "GetDecimal";
+		}
+		case DbType.DateTime:
+		case DbType.Date:
+		{
+			return "GetDateTime";
+		}
+		case DbType.Binary:
+		{
+			return "GetBytes";
+		}
+		default:
+		{
+			return "__SQL__" + column.DataType;
+		}
+	}
+}
+
+public string GetClassName(TableSchema table)
+{
+	string tName = table.Name;
+	if (table.Name.ToUpper().StartsWith("ELP_"))
+	{
+	   tName = table.Name.Substring(4);
+	}
+	if (table.Name.EndsWith("s"))
+	{
+		
+		tName = tName.Substring(0, tName.Length - 1);		
+	}
+	return DBNameToPascalName(tName);	
+}
+
+public string GetSqlDbType(ColumnSchema column)
+{
+	switch (column.NativeType)
+	{
+		case "bigint": return "BigInt";
+		case "binary": return "Binary";
+		case "bit": return "Bit";
+		case "char": return "Char";
+		case "datetime": return "DateTime";
+		case "decimal": return "Decimal";
+		case "float": return "Float";
+		case "image": return "Image";
+		case "int": return "Int";
+		case "money": return "Money";
+		case "nchar": return "NChar";
+		case "ntext": return "NText";
+		case "numeric": return "Decimal";
+		case "nvarchar": return "NVarChar";
+		case "real": return "Real";
+		case "smalldatetime": return "SmallDateTime";
+		case "smallint": return "SmallInt";
+		case "smallmoney": return "SmallMoney";
+		case "sql_variant": return "Variant";
+		case "sysname": return "NChar";
+		case "text": return "Text";
+		case "timestamp": return "Timestamp";
+		case "tinyint": return "TinyInt";
+		case "uniqueidentifier": return "UniqueIdentifier";
+		case "varbinary": return "VarBinary";
+		case "varchar": return "VarChar";
+		default: return "__UNKNOWN__" + column.NativeType;
+	}
+}
+
+public string GetPrimaryKeyType(TableSchema table)
+{
+	if (table.PrimaryKey != null)
+	{
+		if (table.PrimaryKey.MemberColumns.Count == 1)
+		{
+			return GetCSharpVariableType(table.PrimaryKey.MemberColumns[0]);
+		}
+		else
+		{
+			throw new ApplicationException("This template will not work on primary keys with more than one member column.");
+		}
+	}
+	else
+	{
+		throw new ApplicationException("This template will only work on tables with a primary key.");
+	}
+}
+
+public override string GetFileName()
+{
+	return this.GetClassName(this.SourceTable) + ".cs";
+}
+
+public string DBNameToPascalName(string dbName)
+{
+   string[] words = Regex.Split(dbName,"_");
+   string result="";
+   for (int i =0; i<words.Length; i++)
+	{
+	  result += words[i].Substring(0, 1).ToUpper() + words[i].Substring(1).ToLower();
+	}
+   return result;
+}
+
+</script>

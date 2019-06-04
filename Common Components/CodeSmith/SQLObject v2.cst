@@ -1,0 +1,54 @@
+<%@ CodeTemplate Language="C#" Inherits="CodeSmith.BaseTemplates.SqlCodeTemplate" TargetLanguage="XML" Description="Generates SELECT/INSERT/UPDATE/DELETE stored procedure based on a database table schema." %>
+<%@ Property Name="SourceTable" Type="SchemaExplorer.TableSchema" Category="Context" Description="Table that the stored procedures should be based on." %>
+<%@ Property Name="IncludeInsert" Type="System.Boolean" Default="True" Category="Options" Description="If true insert statements will be generated." %>
+<%@ Property Name="IncludeUpdate" Type="System.Boolean" Default="True" Category="Options" Description="If true update statements will be generated." %>
+<%@ Property Name="IncludeDelete" Type="System.Boolean" Default="False" Category="Options" Description="If true delete statements will be generated." %>
+<%@ Property Name="IncludeSelect" Type="System.Boolean" Default="True" Category="Options" Description="If true get statements will be generated." %>
+<%@ Property Name="IncludeSelectAll" Type="System.Boolean" Default="True" Category="Options" Description="If true getlist statements will be generated." %>
+<%@ Property Name="InsertProcedureName" Type="System.String" Default="Add" Category="Procedure Names" Description="Name of Insert Procedure in Package." %>
+<%@ Property Name="UpdateProcedureName" Type="System.String" Default="Modify" Category="Procedure Names" Description="Name of Update Procedure in Package." %>
+<%@ Property Name="DeleteProcedureName" Type="System.String" Default="Del" Category="Procedure Names" Description="Name of Delete Procedure in Package." %>
+<%@ Property Name="SelectProcedureName" Type="System.String" Default="Load" Category="Procedure Names" Description="Name of Select/Load Procedure in Package." %>
+<%@ Property Name="SelectAllProcedureName" Type="System.String" Default="LoadList" Category="Procedure Names" Description="Name of Select All/Load List Procedure in Package." %>
+<%@ Assembly Name="SchemaExplorer" %>
+<%@ Assembly Name="CodeSmith.BaseTemplates" %>
+<%@ Assembly Name="System.Data" %>
+<%@ Import Namespace="SchemaExplorer" %>
+<%@ Import Namespace="System.Data" %>
+<% if (SourceTable.PrimaryKey == null) throw new ApplicationException("SourceTable does not contain a primary key."); %>
+<?xml version="1.0" encoding="utf-8" ?>
+
+<!-- ********************** THIS FILE HAS BEEN GENERATED FROM TEMPLATE SQLObject v2.cst (<%= DateTime.Now.ToShortDateString() %>)********************** -->
+
+<SQL>
+    <% if (IncludeSelect) { %>
+	<LOAD><%= GetPackageName(SourceTable) %>.<%= SelectProcedureName %></LOAD>
+    <% } %>
+    <% if (IncludeSelectAll) { %>
+	<LOAD_LIST><%= GetPackageName(SourceTable) %>.<%= SelectAllProcedureName %></LOAD_LIST>
+    <% } %>
+    <% if (IncludeInsert) { %>
+	<INSERT><%= GetPackageName(SourceTable) %>.<%= InsertProcedureName %></INSERT>
+    <% } %>	
+    <% if (IncludeUpdate) { %>
+	<UPDATE><%= GetPackageName(SourceTable) %>.<%= UpdateProcedureName %></UPDATE>
+    <% } %>	
+    <% if (IncludeDelete) { %>
+	<UPDATE><%= GetPackageName(SourceTable) %>.<%= DeleteProcedureName %></UPDATE>
+    <% } %>
+</SQL> 
+
+
+<script runat="template">
+
+public string GetPackageName(TableSchema table)
+{
+	string tPackageName = table.Name;
+	if (table.Name.ToUpper().StartsWith("ELP_"))
+	{
+	   tPackageName = "ELP_TBL_" + table.Name.Substring(4);
+	}
+	return tPackageName.ToLower();	
+}
+
+</script>

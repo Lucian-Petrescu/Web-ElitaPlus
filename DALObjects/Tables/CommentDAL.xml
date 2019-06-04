@@ -1,0 +1,119 @@
+<?xml version="1.0" encoding="utf-8" ?>
+
+<!-- ********************** THIS FILE HAS BEEN GENERATED FROM TEMPLATE SQLObject.cst (1/3/2005)********************** -->
+
+<SQL>
+	<LOAD>
+		<![CDATA[	
+			SELECT 
+				comm.cert_id,
+				comm.claim_id,
+				comm.caller_name,
+				comm.comment_type_id,
+				comm.comments,				
+				comm.created_by,
+				comm.created_date,
+				comm.modified_by,
+				comm.modified_date,
+				comm.comment_id,
+        comm.gdpr_forgot_request_id
+			FROM elp_comment comm
+			WHERE
+				comm.comment_id = :comment_id			
+		]]>
+	</LOAD>
+	<LOAD_COMMENTS_FOR_CLAIM>
+		<![CDATA[	
+			SELECT
+				comm.cert_id,
+				comm.claim_id,
+				comm.caller_name,
+				comm.comment_type_id,
+				comm.comments,
+				comm.created_by,
+				comm.created_date,
+				comm.modified_by,
+				comm.modified_date,
+				comm.comment_id,
+        comm.gdpr_forgot_request_id     
+			FROM elp_comment comm
+			WHERE
+				comm.claim_id = hextoraw(:claim_id)
+			ORDER BY comm.created_date DESC
+		]]>
+	</LOAD_COMMENTS_FOR_CLAIM>
+	<LOAD_LIST>
+		<![CDATA[	
+			SELECT
+				com.comment_id,
+				com.caller_name,
+				com.comments,				
+				com.created_date,
+				nvl(usr.user_name, com.created_by) added_by
+			FROM elp_comment com, elp_user usr
+			WHERE
+				com.cert_id = :cert_id
+			AND usr.network_id(+) = com.created_by
+		]]>
+	</LOAD_LIST>
+    <EXT_LOAD_LIST>
+        <![CDATA[	
+			SELECT
+				cs.claim_status_id,
+				null as caller_name,
+				cs.comments,				
+				cs.status_date created_date,
+                nvl(u.user_name, cs.created_by) added_by
+			FROM elp_claim_status cs, elp_user u
+			WHERE cs.claim_id = :claim_id
+            and cs.comments is not null
+            and u.network_id(+) = cs.created_by
+		]]>
+    </EXT_LOAD_LIST>
+    <UPDATE>
+		<![CDATA[	
+			UPDATE elp_comment SET
+				cert_id = :cert_id,
+				claim_id = :claim_id,
+				caller_name = :caller_name,
+				comment_type_id = :comment_type_id,
+				comments = :comments,
+				modified_by = :modified_by,
+        gdpr_forgot_request_id=:gdpr_forgot_request_id
+			WHERE
+				comment_id = :comment_id
+		]]>
+	</UPDATE>
+	<INSERT>
+    INSERT INTO elp_comment
+    (
+    cert_id,
+    claim_id,
+    caller_name,
+    comment_type_id,
+    comments,
+    created_by,
+    comment_id,
+    gdpr_forgot_request_id
+    )
+    VALUES
+    (
+    :cert_id,
+    :claim_id,
+    :caller_name,
+    :comment_type_id,
+    :comments,
+    :created_by,
+    :comment_id,
+    :gdpr_forgot_request_id
+    )
+  </INSERT>
+	<DELETE>
+			DELETE FROM elp_comment
+			WHERE
+				comment_id = :comment_id
+	</DELETE>
+</SQL> 
+
+
+

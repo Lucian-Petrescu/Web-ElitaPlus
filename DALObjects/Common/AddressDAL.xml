@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="utf-8" ?>
+
+<!-- ********************** THIS FILE HAS BEEN GENERATED FROM TEMPLATE SQLObject.cst (10/28/2004)********************** -->
+
+<SQL>
+	<LOAD>
+		<![CDATA[	
+			SELECT 
+				address1,
+				address2,
+        address3,
+				city,
+				region_id,
+				postal_code,
+				country_id,
+				created_date,
+				modified_date,
+				created_by,
+				modified_by,
+				zip_locator,
+				address_id,
+				source,
+				source_id
+			FROM elp_address 
+			WHERE
+				address_id = :address_id
+		]]>
+	</LOAD>
+	<LOAD_LIST>		
+    <![CDATA[
+      select
+	      ci.CONTACT_INFO_ID,
+	      ci.ADDRESS_TYPE_ID,
+	      ci.ADDRESS_ID,
+	      ci.SALUTATION_ID,
+	      ci.NAME,
+	      ci.HOME_PHONE,
+	      ci.WORK_PHONE,
+	      ci.CELL_PHONE,
+	      ci.EMAIL,
+	      ci.JOB_TITLE,
+	      ci.COMPANY,
+	      a.ADDRESS1,
+	      a.ADDRESS2,
+	      a.CITY,
+	      a.REGION_ID,
+	      a.POSTAL_CODE,
+	      a.COUNTRY_ID,
+	      a.CREATED_DATE,
+	      a.MODIFIED_DATE,
+	      a.CREATED_BY,
+	      a.MODIFIED_BY,
+	      a.ZIP_LOCATOR,
+	      a.ADDRESS3
+      from elp_address a
+      join elp_contact_info ci on a.address_id = ci.address_id
+      where ci.contact_info_id = :contact_info_id
+    ]]>
+	</LOAD_LIST>	
+	<UPDATE>
+		<![CDATA[	
+			UPDATE elp_address SET
+				address1 = :address1,
+				address2 = :address2,
+        address3 = :address3,
+				city = :city,
+				region_id = :region_id,
+				postal_code = :postal_code,
+				country_id = :country_id,
+				zip_locator = :zip_locator,
+				modified_by = :modified_by,
+				source = :source,
+				source_id = :source_id
+			WHERE
+				address_id = hextoraw(:address_id)
+		]]>
+	</UPDATE>
+	<INSERT>
+    INSERT INTO elp_address
+    (
+    address1,
+    address2,
+    address3,
+    city,
+    region_id,
+    postal_code,
+    country_id,
+    zip_locator,
+    created_by,
+    address_id,
+    source,
+    source_id
+    )
+    VALUES
+    (
+    :address1,
+    :address2,
+    :address3,
+    :city,
+    :region_id,
+    :postal_code,
+    :country_id,
+    :zip_locator,
+    :created_by,
+    :address_id,
+    :source,
+    :source_id
+    )
+  </INSERT>
+	<DELETE>
+			DELETE FROM elp_address
+			WHERE
+				address_id = :address_id
+	</DELETE>
+</SQL> 
+
+
+

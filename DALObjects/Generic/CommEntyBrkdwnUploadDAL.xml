@@ -1,0 +1,319 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+
+<SQL>
+  <LOAD>
+    <![CDATA[	
+			SELECT 
+        cbu.comm_brkdwn_upload_id,
+				cbu.upload_session_id,
+				cbu.record_number,
+				cbu.validation_errors,
+        cbu.dealer_id,
+        d.company_id,
+        cbu.effective_date,
+        cbu.expiration_date,
+        cbu.allowed_markup_pct,
+        cbu.tolerance,
+        cbu.company_group_id,
+        cbu.position,
+        cbu.entity_id,
+        cbu.entity_name,
+        cbu.phone,
+        cbu.email,
+        cbu.address1,
+        cbu.address2,
+        cbu.city,
+        cbu.region_id,
+        cbu.postal_code,
+        cbu.country_id,
+        cbu.display_id,
+        cbu.tax_id,
+        cbu.commission_entity_type_id,
+        cbu.payment_method_id,
+        cbu.account_name,
+        cbu.bank_country_id,
+        cbu.payment_reason_id,
+        cbu.branch_name,
+        cbu.bank_name,
+        cbu.bank_sort_code,
+        cbu.iban_number,
+        cbu.swift_code,
+        cbu.account_type_id,
+        cbu.bank_id,
+        cbu.account_number,
+        cbu.bank_lookup_code,
+        cbu.transaction_limit,
+        cbu.bank_sub_code,
+        cbu.branch_digit,
+        cbu.account_digit,
+        cbu.branch_number,
+        cbu.bank_tax_id,
+        cbu.payee_type_id,
+        cbu.markup_percent,
+        cbu.commission_percent,
+        cbu.compute_method_id,
+				cbu.created_date,
+				cbu.modified_date,
+				cbu.created_by,
+				cbu.modified_by
+			FROM 
+        elp_comm_brkdwn_upload cbu,
+        elp_dealer d
+			WHERE
+        cbu.dealer_id = d.dealer_id
+        and cbu.comm_brkdwn_upload_id = :comm_brkdwn_upload_id
+		]]>
+  </LOAD>
+  <LOAD_LIST>
+  </LOAD_LIST>
+  <UPDATE>
+    <![CDATA[	
+			UPDATE 
+        elp_comm_brkdwn_upload 
+      SET
+				upload_session_id = :upload_session_id,
+				record_number = :record_number,
+				validation_errors = :validation_errors,
+        dealer_id = :dealer_id,
+        effective_date = :effective_date,
+        expiration_date = :expiration_date,
+        allowed_markup_pct = :allowed_markup_pct,
+        tolerance = :tolerance,
+        company_group_id = :company_group_id,
+        position = :position,
+        entity_id = :entity_id,
+        entity_name = :entity_name,
+        phone = :phone,
+        email = :email,
+        address1 = :address1,
+        address2 = :address2,
+        city = :city,
+        region_id = :region_id,
+        postal_code = :postal_code,
+        country_id = :country_id,
+        display_id = :display_id,
+        tax_id = :tax_id,
+        commission_entity_type_id = :commission_entity_type_id,
+        payment_method_id = :payment_method_id,
+        account_name = :account_name,
+        bank_country_id = :bank_country_id,
+        payment_reason_id = :payment_reason_id,
+        branch_name = :branch_name,
+        bank_name = :bank_name,
+        bank_sort_code = :bank_sort_code,
+        iban_number = :iban_number,
+        swift_code = :swift_code,
+        account_type_id = :account_type_id,
+        bank_id = :bank_id,
+        account_number = :account_number,
+        bank_lookup_code = :bank_lookup_code,
+        transaction_limit = :transaction_limit,
+        bank_sub_code = :bank_sub_code,
+        branch_digit = :branch_digit,
+        account_digit = :account_digit,
+        branch_number = :branch_number,
+        bank_tax_id = :bank_tax_id,
+        payee_type_id = :payee_type_id,
+        markup_percent = :markup_percent,
+        commission_percent = :commission_percent,
+        compute_method_id = :compute_method_id,
+				modified_by = :modified_by
+			WHERE
+				comm_brkdwn_upload_id = :comm_brkdwn_upload_id
+		]]>
+  </UPDATE>
+  <INSERT>
+    <![CDATA[	
+      INSERT INTO 
+        elp_contract_upload
+        (
+          upload_session_id,
+          record_number,
+          validation_errors,
+          dealer_id,
+          effective_date,
+          expiration_date,
+          allowed_markup_pct,
+          tolerance,
+          company_group_id,
+          position,
+          entity_id,
+          entity_name,
+          phone,
+          email,
+          address1,
+          address2,
+          city,
+          region_id,
+          postal_code,
+          country_id,
+          display_id,
+          tax_id,
+          commission_entity_type_id,
+          payment_method_id,
+          account_name,
+          bank_country_id,
+          payment_reason_id,
+          branch_name,
+          bank_name,
+          bank_sort_code,
+          iban_number,
+          swift_code,
+          account_type_id,
+          bank_id,
+          account_number,
+          bank_lookup_code,
+          transaction_limit,
+          bank_sub_code,
+          branch_digit,
+          account_digit,
+          branch_number,
+          bank_tax_id,
+          payee_type_id,
+          markup_percent,
+          commission_percent,
+          compute_method_id,
+          created_by,
+          comm_brkdwn_upload_id
+        )
+      VALUES
+        (
+          :upload_session_id,
+          :record_number,
+          :validation_errors,
+          :dealer_id,
+          :effective_date,
+          :expiration_date,
+          :allowed_markup_pct,
+          :tolerance,
+          :company_group_id,
+          :position,
+          :entity_id,
+          :entity_name,
+          :phone,
+          :email,
+          :address1,
+          :address2,
+          :city,
+          :region_id,
+          :postal_code,
+          :country_id,
+          :display_id,
+          :tax_id,
+          :commission_entity_type_id,
+          :payment_method_id,
+          :account_name,
+          :bank_country_id,
+          :payment_reason_id,
+          :branch_name,
+          :bank_name,
+          :bank_sort_code,
+          :iban_number,
+          :swift_code,
+          :account_type_id,
+          :bank_id,
+          :account_number,
+          :bank_lookup_code,
+          :transaction_limit,
+          :bank_sub_code,
+          :branch_digit,
+          :account_digit,
+          :branch_number,
+          :bank_tax_id,
+          :payee_type_id,
+          :markup_percent,
+          :commission_percent,
+          :compute_method_id,
+          :created_by,
+          :comm_brkdwn_upload_id
+    )
+		]]>
+  </INSERT>
+  <DELETE>
+    <![CDATA[	
+    DELETE
+    FROM
+      elp_comm_brkdwn_upload
+    WHERE
+      comm_brkdwn_upload_id = :comm_brkdwn_upload_id
+		]]>
+  </DELETE>
+  <LOAD_PREVALIDATED_COMM_ENTY_BRKDWNS_FOR_DEALER>
+    <![CDATA[	
+    SELECT
+      cbu.upload_session_id,
+      c.company_id,
+      cbu.dealer_id,
+      cbu.effective_date,
+      cbu.expiration_date,
+      cbu.allowed_markup_pct,
+      cbu.tolerance,
+      cbu.company_group_id,
+      cbu.compute_method_id,
+      totals.comm_percent_total,
+      totals.markup_percent_total
+    FROM
+      elp_comm_brkdwn_upload cbu,
+      elp_dealer d,
+      elp_company c,
+      (
+		    Select
+          Dealer_Id,
+		      Sum(commission_percent) as comm_percent_total,
+		      Sum(markup_percent) as markup_percent_total
+		    From
+          elp_comm_brkdwn_upload
+		    group By
+          Dealer_Id
+      ) totals
+    WHERE
+      cbu.dealer_id = d.dealer_id
+      and d.company_id = c.company_id
+      and cbu.dealer_id = totals.dealer_id
+      and cbu.upload_session_id = :upload_session_id
+    Group By 
+      cbu.upload_session_id,
+      c.company_id,
+      cbu.dealer_id,
+      cbu.effective_date,
+      cbu.expiration_date,
+      cbu.allowed_markup_pct,
+      cbu.tolerance,
+      cbu.company_group_id,
+      cbu.compute_method_id,
+      totals.comm_percent_total,
+      totals.markup_percent_total
+    ORDER BY
+      cbu.dealer_id asc
+		]]>
+  </LOAD_PREVALIDATED_COMM_ENTY_BRKDWNS_FOR_DEALER>
+  <LOAD_PREVALIDATED_COMM_ENTY_BRKDWNS_FOR_UPLOAD>
+    <![CDATA[	
+    SELECT
+      comm_brkdwn_upload_id,
+      upload_session_id,
+      dealer_id,
+      position,
+      record_number
+    FROM
+      elp_comm_brkdwn_upload
+    WHERE
+      dealer_id = :dealer_id
+    AND
+      upload_session_id = :upload_session_id
+    ORDER BY
+      position asc
+		]]>
+  </LOAD_PREVALIDATED_COMM_ENTY_BRKDWNS_FOR_UPLOAD>
+  <UPDATE_PREVALIDATED_COMM_ENTY_BRKDWN_RECORD>
+    <![CDATA[	
+    Update 
+      elp_comm_brkdwn_upload
+    set 
+      validation_errors = :validation_errors
+    where 
+      comm_brkdwn_upload_id = :comm_brkdwn_upload_id
+		]]>
+  </UPDATE_PREVALIDATED_COMM_ENTY_BRKDWN_RECORD>
+
+</SQL>

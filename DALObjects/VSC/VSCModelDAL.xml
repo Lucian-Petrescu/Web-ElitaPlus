@@ -1,0 +1,214 @@
+<?xml version="1.0" encoding="utf-8" ?>
+
+<!-- ********************** THIS FILE HAS BEEN GENERATED FROM TEMPLATE SQLObject.cst (3/14/2007)********************** -->
+
+<SQL>
+	<LOAD>
+		<![CDATA[	
+			SELECT 
+				manufacturer_id,
+				car_code,
+				model,
+				description,
+				model_year,
+				new_class_code_id,
+				used_class_code_id,
+				active_new_id,
+				active_used_id,
+				created_by,
+				created_date,
+				modified_by,
+				modified_date,
+				model_id,
+				vsc_coverage_limit_id,
+        coverage_limit_code, 
+        company_group_id,
+        external_car_code
+			FROM elp_vsc_model 
+			WHERE
+				model_id = :model_id
+		]]>
+	</LOAD>
+	<LOAD_BY_MDY> <!--MDY manufacturer_id + description + year uniqueness -->
+		<![CDATA[	
+			SELECT 
+				M.manufacturer_id,
+				M.car_code,
+				M.model,
+				M.description,
+				M.model_year,
+				M.new_class_code_id,
+				M.used_class_code_id,
+				M.active_new_id,
+				M.active_used_id,
+				M.created_by,
+				M.created_date,
+				M.modified_by,
+				M.modified_date,
+				M.model_id,
+				vsc_coverage_limit_id,
+        coverage_limit_code, 
+        company_group_id,
+        external_car_code
+			FROM elp_vsc_model M, elp_manufacturer MF
+			WHERE
+				M.manufacturer_id = MF.manufacturer_id
+				And MF.description = :manufacturer
+				And M.description = :description
+				And M.year = :year
+		]]>
+	</LOAD_BY_MDY>
+	<LOAD_LIST>
+		<![CDATA[		
+			SELECT
+				M.model_id,
+				MANF.DESCRIPTION make,
+				M.model,
+				M.description description,
+				M.model_year model_year,
+				(select class_code FROM elp_vsc_class_code WHERE class_code_id = M.new_class_code_id) new_class_code,
+				(select class_code FROM elp_vsc_class_code WHERE class_code_id = M.used_class_code_id) used_class_code,
+				CL.COVERAGE_MONTHS || '/' || CL.COVERAGE_KM_MI as engine_months_km_mi,
+				getcodefromlistitem(M.active_new_id) as active_new,
+				getcodefromlistitem(M.active_used_id) as active_used
+			FROM elp_vsc_model M, elp_manufacturer MANF, elp_vsc_coverage_limit CL
+			WHERE M.manufacturer_id = MANF.manufacturer_id
+			      AND M.coverage_limit_code = CL.coverage_limit_code
+			      AND getcodefromlistitem(CL.coverage_type_id) = '1'
+			--dynamic_where_clause
+			ORDER BY MANF.DESCRIPTION, M.model, M.model_year
+			]]>
+	</LOAD_LIST>
+  <LOAD_DISTINCTLIST>
+    <![CDATA[		
+			SELECT DISTINCT 
+				--dynamic_field_selector 
+			FROM elp_vsc_model M, elp_manufacturer MANF, elp_vsc_coverage_limit CL
+			WHERE M.manufacturer_id = MANF.manufacturer_id
+			      AND M.vsc_coverage_limit_id = CL.vsc_coverage_limit_id
+			      AND getcodefromlistitem(CL.coverage_type_id) = '1'
+			--dynamic_where_clause
+			ORDER BY M.model 
+			]]>
+  </LOAD_DISTINCTLIST>
+  <LOAD_VSC_MODELS>
+    <![CDATA[		
+      SELECT DISTINCT
+      MODEL code, MODEL DESCRIPTION
+      FROM
+      ELP_VSC_MODEL MODL, ELP_MANUFACTURER MFG
+      WHERE
+      MODL.MANUFACTURER_ID = MFG.MANUFACTURER_ID
+      and MFG.COMPANY_GROUP_ID = hextoraw(:company_group_id)
+      and upper(MFG.DESCRIPTION) = :description
+      ORDER BY DESCRIPTION
+    ]]>
+    </LOAD_VSC_MODELS>
+  <LOAD_VSC_ENGINE_VERSIONS>
+    <![CDATA[		
+      SELECT DISTINCT
+      MODL.DESCRIPTION code,  MODL.DESCRIPTION
+      FROM
+      ELP_VSC_MODEL MODL, ELP_MANUFACTURER MFG
+      WHERE
+      MODL.MANUFACTURER_ID = MFG.MANUFACTURER_ID
+      and MFG.COMPANY_GROUP_ID = hextoraw(:company_group_id)
+      and upper(MFG.DESCRIPTION) = :description
+      and TRIM(upper(MODEL)) = :model
+      ORDER BY DESCRIPTION
+    ]]>
+  </LOAD_VSC_ENGINE_VERSIONS>
+  <LOAD_VSC_YEARS>
+    <![CDATA[		
+      SELECT DISTINCT
+      MODEL_YEAR code, MODEL_YEAR DESCRIPTION
+      FROM
+      ELP_VSC_MODEL MODL, ELP_MANUFACTURER MFG
+      WHERE
+      MODL.MANUFACTURER_ID = MFG.MANUFACTURER_ID
+      and MFG.COMPANY_GROUP_ID = hextoraw(:company_group_id)
+      and upper(MFG.DESCRIPTION) = :make
+      and TRIM(upper(MODEL)) = :model
+      and upper(MODL.DESCRIPTION) = :engine_version
+      ORDER BY DESCRIPTION
+    ]]>
+  </LOAD_VSC_YEARS>
+  <LOAD_VSC_EXTERNALCARCODE>
+    <![CDATA[    
+    SELECT  Count(MODL.EXTERNAL_CAR_CODE)
+      FROM ELP_VSC_MODEL MODL
+      WHERE
+      MODL.COMPANY_GROUP_ID = hextoraw(:company_group_id)
+      AND (UPPER(MODL.Manufacturer_Id) != hextoraw(:manufacturer_id)
+      OR UPPER(MODL.MODEL) != :model
+      OR UPPER(MODL.DESCRIPTION) !=  :version )
+      AND UPPER(MODL.EXTERNAL_CAR_CODE) = :externalcarcode
+    ]]>
+  </LOAD_VSC_EXTERNALCARCODE>
+  <UPDATE>
+		<![CDATA[	
+			UPDATE elp_vsc_model SET
+				manufacturer_id = :manufacturer_id,
+				car_code = :car_code,
+				model = :model,
+				description = :description,
+				model_year = :model_year,
+				new_class_code_id = :new_class_code_id,
+				used_class_code_id = :used_class_code_id,
+				active_new_id = :active_new_id,
+				active_used_id = :active_used_id,
+				vsc_coverage_limit_id = :vsc_coverage_limit_id,
+				modified_by = :modified_by,
+        coverage_limit_code = :coverage_limit_code, 
+        company_group_id = :company_group_id,
+        external_car_code = :external_car_code
+			WHERE
+				model_id = :model_id
+		]]>
+	</UPDATE>
+	<INSERT>
+    INSERT INTO elp_vsc_model
+    (
+    manufacturer_id,
+    car_code,
+    model,
+    description,
+    model_year,
+    new_class_code_id,
+    used_class_code_id,
+    active_new_id,
+    active_used_id,
+    created_by,
+    model_id,
+    vsc_coverage_limit_id,
+    coverage_limit_code,
+    company_group_id,
+    external_car_code
+    )
+    VALUES
+    (
+    :manufacturer_id,
+    :car_code,
+    :model,
+    :description,
+    :model_year,
+    :new_class_code_id,
+    :used_class_code_id,
+    :active_new_id,
+    :active_used_id,
+    :created_by,
+    :model_id,
+    :vsc_coverage_limit_id,
+    :coverage_limit_code,
+    :company_group_id,
+    :external_car_code
+    )
+  </INSERT>
+	<DELETE>
+			DELETE FROM elp_vsc_model
+			WHERE
+				model_id = :model_id
+	</DELETE>
+</SQL> 
+
+

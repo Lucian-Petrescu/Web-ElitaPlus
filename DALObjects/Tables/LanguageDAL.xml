@@ -1,0 +1,78 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+
+<!-- ********************** THIS FILE HAS BEEN GENERATED FROM TEMPLATE SQLObject.cst (3/13/2009)********************** -->
+
+<SQL>
+	<LOAD>
+		<![CDATA[	
+			SELECT 
+				description,
+				code,
+				created_date,
+				modified_date,
+				created_by,
+				modified_by,
+				culture_code,
+				active_flag,
+				territory,
+				language_id
+			FROM elp_language 
+			WHERE
+				language_id = :language_id
+		]]>
+	</LOAD>
+	<LOAD_LIST>
+    <![CDATA[	
+      select language_id,
+             code,
+             description,
+             culture_code,
+             territory
+      from elp_language
+      --dynamic_where_clause
+      ORDER BY UPPER(description)
+    ]]>
+	</LOAD_LIST>	
+	<UPDATE>
+		<![CDATA[	
+			UPDATE elp_language SET
+				description = :description,
+				code = :code,
+				culture_code = :culture_code,
+				active_flag = :active_flag,
+				territory = :territory,
+				modified_by = :modified_by
+			WHERE
+				language_id = :language_id
+		]]>
+	</UPDATE>
+	<INSERT>
+			INSERT INTO elp_language
+					(			
+				description, 
+				code, 
+				culture_code, 
+				active_flag, 
+				territory, 
+				created_by,
+				language_id
+					)
+			VALUES
+					(			
+				:description, 
+				:code, 
+				:culture_code, 
+				:active_flag, 
+				:territory, 
+				:created_by,
+				:language_id
+					)
+	</INSERT>
+	<DELETE>
+			DELETE FROM elp_language
+			WHERE
+				language_id = :language_id
+	</DELETE>
+</SQL> 
+
+

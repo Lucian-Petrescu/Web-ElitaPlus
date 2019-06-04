@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<SQL>
+  <LOAD><![CDATA[	elp_case_utility.LoadCase ]]></LOAD>
+  <LOAD_CASE_BY_CASE_NUMBER><![CDATA[	elp_case_utility.LoadCaseByCaseNumber ]]></LOAD_CASE_BY_CASE_NUMBER>
+  <LOAD_CASE_BY_CLAIM_ID><![CDATA[	elp_case_utility.LoadCaseByClaimId ]]></LOAD_CASE_BY_CLAIM_ID>
+  <LOAD_CASE_LIST><![CDATA[	elp_case_utility.LoadCaseList ]]></LOAD_CASE_LIST>
+  <LOAD_CLAIM_CASE_LIST><![CDATA[	elp_case_utility.LoadClaimCaseList ]]></LOAD_CLAIM_CASE_LIST>
+  <LOAD_AGENT_SEARCH_LIST><![CDATA[	elp_case_utility.LoadAgentList ]]></LOAD_AGENT_SEARCH_LIST>
+  <LOAD_CASE_DENIED_REASONS_LIST><![CDATA[	elp_case_utility.LoadCaseDeniedReasonsList ]]></LOAD_CASE_DENIED_REASONS_LIST>
+  <GET_QUESTION_SET_CODE><![CDATA[	elp_case_utility.GetQuestionSetCode ]]></GET_QUESTION_SET_CODE>
+  <LOAD_CASE_FIELDS_LIST><![CDATA[	elp_case_utility.LoadClaimFieldsList ]]></LOAD_CASE_FIELDS_LIST>
+  <LOAD_CASE_NOTES_LIST><![CDATA[elp_case_utility.load_case_notes_list]]></LOAD_CASE_NOTES_LIST>
+</SQL>

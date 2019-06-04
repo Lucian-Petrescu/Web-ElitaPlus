@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="utf-8" ?>
+
+<!-- ********************** THIS FILE HAS BEEN GENERATED FROM TEMPLATE SQLObject.cst (7/10/2018)********************** -->
+
+<SQL>
+	<LOAD>
+		<![CDATA[	
+			SELECT 
+				cert_id,
+				dealer_id,
+				cert_number,
+				is_forgotten,
+				deleted_date,
+				request_id,
+				created_by,
+				modified_by,
+				created_date,
+				modified_date,
+				gdpr_forgot_request_id
+			FROM ELP_GDPR_FORGOT_REQUEST  
+			WHERE
+				gdpr_forgot_request_id = :gdpr_forgot_request_id
+		]]>
+	</LOAD>
+	<LOAD_LIST>	
+    	<![CDATA[	
+  	SELECT 
+				cert_id,
+				dealer_id,
+				cert_number,
+				is_forgotten,
+				deleted_date,
+				request_id,
+				created_by,
+				modified_by,
+				created_date,
+				modified_date,
+				GDPR_FORGOT_REQUEST_ID
+			FROM ELP_GDPR_FORGOT_REQUEST  
+			WHERE
+				cert_id = :cert_id
+        ]]>
+	</LOAD_LIST>	
+	<UPDATE>
+		<![CDATA[	
+			UPDATE ELP_GDPR_FORGOT_REQUEST  SET
+				cert_id = :cert_id,
+				dealer_id = :dealer_id,
+				cert_number = :cert_number,
+				is_forgotten = :is_forgotten,
+				deleted_date = :deleted_date,
+				request_id = :request_id,
+				modified_by = :modified_by
+			WHERE
+				GDPR_FORGOT_REQUEST_ID = :GDPR_FORGOT_REQUEST_ID
+		]]>
+	</UPDATE>
+	<INSERT>
+    INSERT INTO ELP_GDPR_FORGOT_REQUEST 
+    (
+    cert_id,
+    dealer_id,
+    cert_number,
+    is_forgotten,
+    deleted_date,
+    request_id,
+    created_by,
+    gdpr_forgot_request_id
+    )
+    VALUES
+    (
+    :cert_id,
+    :dealer_id,
+    :cert_number,
+    :is_forgotten,
+    :deleted_date,
+    :request_id,
+    :created_by,
+    :gdpr_forgot_request_id
+    )
+  </INSERT>
+	<DELETE>
+			DELETE FROM ELP_GDPR_FORGOT_REQUEST 
+			WHERE
+				gdpr_forgot_request_id = :gdpr_forgot_request_id
+	</DELETE>
+</SQL> 
+

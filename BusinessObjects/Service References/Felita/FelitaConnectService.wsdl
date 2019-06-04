@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="utf-8"?>
+<wsdl:definitions xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:soapenc="http://schemas.xmlsoap.org/soap/encoding/" xmlns:wsu="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-utility-1.0.xsd" xmlns:wsa="http://schemas.xmlsoap.org/ws/2004/08/addressing" xmlns:wsap="http://schemas.xmlsoap.org/ws/2004/08/addressing/policy" xmlns:wsp="http://schemas.xmlsoap.org/ws/2004/09/policy" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msc="http://schemas.microsoft.com/ws/2005/12/wsdl/contract" xmlns:tns="http://tempuri.org/" xmlns:wsaw="http://www.w3.org/2006/05/addressing/wsdl" xmlns:soap12="http://schemas.xmlsoap.org/wsdl/soap12/" xmlns:wsa10="http://www.w3.org/2005/08/addressing" xmlns:wsx="http://schemas.xmlsoap.org/ws/2004/09/mex" xmlns:wsam="http://www.w3.org/2007/05/addressing/metadata" name="FelitaConnectService" targetNamespace="http://tempuri.org/" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">
+  <wsdl:types>
+    <xsd:schema targetNamespace="http://tempuri.org/Imports">
+      <xsd:import schemaLocation="http://mia0wappt015/FelitaConnect/FelitaConnectService.svc?xsd=xsd1" namespace="http://tempuri.org/" />
+      <xsd:import schemaLocation="http://mia0wappt015/FelitaConnect/FelitaConnectService.svc?xsd=xsd5" namespace="http://schemas.datacontract.org/2004/07/System" />
+      <xsd:import schemaLocation="http://mia0wappt015/FelitaConnect/FelitaConnectService.svc?xsd=xsd0" namespace="http://schemas.microsoft.com/Message" />
+      <xsd:import schemaLocation="http://mia0wappt015/FelitaConnect/FelitaConnectService.svc?xsd=xsd2" namespace="http://schemas.microsoft.com/2003/10/Serialization/" />
+      <xsd:import schemaLocation="http://mia0wappt015/FelitaConnect/FelitaConnectService.svc?xsd=xsd3" namespace="http://schemas.datacontract.org/2004/07/FelitaConnect" />
+      <xsd:import schemaLocation="http://mia0wappt015/FelitaConnect/FelitaConnectService.svc?xsd=xsd4" namespace="http://schemas.microsoft.com/2003/10/Serialization/Arrays" />
+      <xsd:import schemaLocation="http://mia0wappt015/FelitaConnect/FelitaConnectService.svc?xsd=xsd6" namespace="http://tempuri.org/dsJournalInfo.xsd" />
+      <xsd:import schemaLocation="http://mia0wappt015/FelitaConnect/FelitaConnectService.svc?xsd=xsd7" namespace="http://schemas.datacontract.org/2004/07/FelitaConnect.DataSet" />
+    </xsd:schema>
+  </wsdl:types>
+  <wsdl:message name="FileInfo">
+    <wsdl:part name="parameters" element="tns:FileInfo" />
+  </wsdl:message>
+  <wsdl:message name="FileInfo_Headers">
+    <wsdl:part name="BatchId" element="tns:BatchId" />
+    <wsdl:part name="BusinessUnit" element="tns:BusinessUnit" />
+    <wsdl:part name="FileType" element="tns:FileType" />
+    <wsdl:part name="StreamLength" element="tns:StreamLength" />
+  </wsdl:message>
+  <wsdl:message name="ResponseInfo">
+    <wsdl:part name="parameters" element="tns:ResponseInfo" />
+  </wsdl:message>
+  <wsdl:message name="ResponseInfo_Headers">
+    <wsdl:part name="result" element="tns:result" />
+  </wsdl:message>
+  <wsdl:message name="IFelitaConnectService_ProcessInterface_ExceptionFault_FaultMessage">
+    <wsdl:part xmlns:q1="http://schemas.datacontract.org/2004/07/System" name="detail" element="q1:Exception" />
+  </wsdl:message>
+  <wsdl:message name="IFelitaConnectService_GetBatchStatus_InputMessage">
+    <wsdl:part name="parameters" element="tns:GetBatchStatus" />
+  </wsdl:message>
+  <wsdl:message name="IFelitaConnectService_GetBatchStatus_OutputMessage">
+    <wsdl:part name="parameters" element="tns:GetBatchStatusResponse" />
+  </wsdl:message>
+  <wsdl:message name="IFelitaConnectService_GetBatchStatus_ExceptionFault_FaultMessage">
+    <wsdl:part xmlns:q2="http://schemas.datacontract.org/2004/07/System" name="detail" element="q2:Exception" />
+  </wsdl:message>
+  <wsdl:portType name="IFelitaConnectService">
+    <wsdl:operation name="ProcessInterface">
+      <wsdl:input wsaw:Action="http://tempuri.org/IFelitaConnectService/ProcessInterface" name="FileInfo" message="tns:FileInfo" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IFelitaConnectService/ProcessInterfaceResponse" name="ResponseInfo" message="tns:ResponseInfo" />
+      <wsdl:fault wsaw:Action="http://tempuri.org/IFelitaConnectService/ProcessInterfaceExceptionFault" name="ExceptionFault" message="tns:IFelitaConnectService_ProcessInterface_ExceptionFault_FaultMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="GetBatchStatus">
+      <wsdl:input wsaw:Action="http://tempuri.org/IFelitaConnectService/GetBatchStatus" message="tns:IFelitaConnectService_GetBatchStatus_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IFelitaConnectService/GetBatchStatusResponse" message="tns:IFelitaConnectService_GetBatchStatus_OutputMessage" />
+      <wsdl:fault wsaw:Action="http://tempuri.org/IFelitaConnectService/GetBatchStatusExceptionFault" name="ExceptionFault" message="tns:IFelitaConnectService_GetBatchStatus_ExceptionFault_FaultMessage" />
+    </wsdl:operation>
+  </wsdl:portType>
+  <wsdl:binding name="BasicHttpBinding_IFelitaConnectService" type="tns:IFelitaConnectService">
+    <soap:binding transport="http://schemas.xmlsoap.org/soap/http" />
+    <wsdl:operation name="ProcessInterface">
+      <soap:operation soapAction="http://tempuri.org/IFelitaConnectService/ProcessInterface" style="document" />
+      <wsdl:input name="FileInfo">
+        <soap:header message="tns:FileInfo_Headers" part="BatchId" use="literal" />
+        <soap:header message="tns:FileInfo_Headers" part="BusinessUnit" use="literal" />
+        <soap:header message="tns:FileInfo_Headers" part="FileType" use="literal" />
+        <soap:header message="tns:FileInfo_Headers" part="StreamLength" use="literal" />
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output name="ResponseInfo">
+        <soap:header message="tns:ResponseInfo_Headers" part="result" use="literal" />
+        <soap:body use="literal" />
+      </wsdl:output>
+      <wsdl:fault name="ExceptionFault">
+        <soap:fault use="literal" name="ExceptionFault" namespace="" />
+      </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="GetBatchStatus">
+      <soap:operation soapAction="http://tempuri.org/IFelitaConnectService/GetBatchStatus" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+      <wsdl:fault name="ExceptionFault">
+        <soap:fault use="literal" name="ExceptionFault" namespace="" />
+      </wsdl:fault>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:service name="FelitaConnectService">
+    <wsdl:port name="BasicHttpBinding_IFelitaConnectService" binding="tns:BasicHttpBinding_IFelitaConnectService">
+      <soap:address location="http://mia0wappt015/FelitaConnect/FelitaConnectService.svc" />
+    </wsdl:port>
+  </wsdl:service>
+</wsdl:definitions>

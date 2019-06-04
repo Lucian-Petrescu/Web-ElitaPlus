@@ -1,0 +1,4 @@
+﻿<%@ ServiceHost Language="VB" Debug="true" 
+    Service="ElitaInternalWS.SpecializedServices.GW.GwPilService" 
+    Factory="ElitaInternalWS.Core.UnityServiceHostFactory"
+    CodeBehind="GwPilService.svc.vb" %>

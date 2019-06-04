@@ -1,0 +1,116 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+
+<!-- ********************** THIS FILE HAS BEEN GENERATED FROM TEMPLATE SQLObject.cst (1/9/2015)********************** -->
+
+<SQL>
+  <LOAD>
+    <![CDATA[	
+			SELECT 
+				acct_amt_src_id,
+				operation,
+				inv_rate_bucket_id,
+				afa_product_id,
+				loss_type,
+        count_field_to_use,
+				created_date,
+				created_by,
+				modified_date,
+				modified_by,
+				afa_acct_amt_src_mapping_id
+			FROM elp_afa_acct_amt_src_mapping 
+			WHERE
+				afa_acct_amt_src_mapping_id = :afa_acct_amt_src_mapping_id
+		]]>
+  </LOAD>
+  <LOAD_LIST>
+    <![CDATA[	
+       SELECT 
+				acct_amt_src_id,
+				operation,
+				inv_rate_bucket_id,
+				afa_product_id,
+				loss_type,
+        count_field_to_use,
+				created_date,
+				created_by,
+				modified_date,
+				modified_by,
+				afa_acct_amt_src_mapping_id
+      from ELP_AFA_ACCT_AMT_SRC_MAPPING m
+      where acct_amt_src_id = :acct_amt_src_id
+        --dynamic_in_clause          
+    ]]>
+  </LOAD_LIST>
+  
+  <LOAD_FORMULAR_BY_RPDO_LOSSTYPE>
+    <![CDATA[	
+        select rownum as DetailID, AFA_PRODUCT_ID, ProdCode, ProdDesc, Loss_type, LossTypeDesc, count_field_to_use, CountFieldDesc, Formular
+        from (
+          select m.AFA_PRODUCT_ID, p.code ProdCode, case when p.code is null then '' else p.code || ' - ' || p.DESCRIPTION end ProdDesc
+            , m.Loss_type, GetDescriptionFromListItem(getitemidfromlistanditem('CTYP', m.Loss_type), :language_id) LossTypeDesc
+            , m.count_field_to_use,GetDescriptionFromListItem(getitemidfromlistanditem('CNTFIELDEPRISM', m.count_field_to_use), :language_id)as CountFieldDesc
+            , LISTAGG(Operation || ' ' || GetDescriptionFromListItem(INV_RATE_BUCKET_ID, :language_id) , ' ') WITHIN GROUP (order by operation) Formular
+          from ELP_AFA_ACCT_AMT_SRC_MAPPING m
+          inner join ELP_AFA_ACCT_AMT_SRC s on s.ACCT_AMT_SRC_ID = m.ACCT_AMT_SRC_ID
+          left outer join ELP_AFA_PRODUCT p on m.AFA_PRODUCT_ID = p.AFA_PRODUCT_ID
+          where s.acct_amt_src_id = :acct_amt_src_id
+            --dynamic_in_clause
+          group by m.AFA_PRODUCT_ID, p.code, p.DESCRIPTION, m.Loss_type,  m.count_field_to_use
+        )
+        order by Upper(nvl(ProdDesc, '-')), count_field_to_use,upper(LossTypeDesc)
+    ]]>
+  </LOAD_FORMULAR_BY_RPDO_LOSSTYPE>
+  <UPDATE>
+    <![CDATA[	
+			UPDATE elp_afa_acct_amt_src_mapping SET
+				acct_amt_src_id = :acct_amt_src_id,
+				operation = :operation,
+				inv_rate_bucket_id = :inv_rate_bucket_id,
+				afa_product_id = :afa_product_id,
+				loss_type = :loss_type,
+        count_field_to_use = :count_field_to_use,
+				modified_by = :modified_by
+			WHERE
+				afa_acct_amt_src_mapping_id = :afa_acct_amt_src_mapping_id
+		]]>
+  </UPDATE>
+  <INSERT>
+    INSERT INTO elp_afa_acct_amt_src_mapping
+    (
+    acct_amt_src_id,
+    operation,
+    inv_rate_bucket_id,
+    afa_product_id,
+    loss_type,
+    count_field_to_use,
+    created_by,
+    afa_acct_amt_src_mapping_id
+    )
+    VALUES
+    (
+    :acct_amt_src_id,
+    :operation,
+    :inv_rate_bucket_id,
+    :afa_product_id,
+    :loss_type,
+    :count_field_to_use,
+    :created_by,
+    :afa_acct_amt_src_mapping_id
+    )
+  </INSERT>
+  <DELETE>
+    DELETE FROM elp_afa_acct_amt_src_mapping
+    WHERE
+    afa_acct_amt_src_mapping_id = :afa_acct_amt_src_mapping_id
+  </DELETE>
+
+
+  <LOAD_PRODUCT_LIST_BY_DEALER>
+    select p.afa_product_id,p.dealer_id,p.code,p.description,p.product_type
+    from ELP_AFA_PRODUCT p, elp_dealer d
+    where p.dealer_id = d.dealer_id
+    and p.dealer_id = :dealer_id
+    --dynamic_where_clause
+  </LOAD_PRODUCT_LIST_BY_DEALER>
+  
+</SQL>

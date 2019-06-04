@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="utf-8" ?>
+
+<!-- ********************** THIS FILE HAS BEEN GENERATED FROM TEMPLATE SQLObject.cst (9/27/2004)********************** -->
+
+<SQL>
+	<LOAD>
+		<![CDATA[	
+			SELECT
+				sgrtman.service_group_risk_type_id,
+				sgrtman.manufacturer_id,
+				sgrtman.created_by,
+				sgrtman.created_date,
+				sgrtman.modified_by,
+				sgrtman.modified_date,
+				man.description manufacturer_description,
+				sgrtman.sgrt_manufacturer_id
+			FROM
+				elp_sgrt_manufacturer sgrtman, elp_manufacturer man
+			WHERE
+				sgrtman.manufacturer_id = man.manufacturer_id
+			AND	sgrt_manufacturer_id = :sgrt_manufacturer_id
+		]]>
+	</LOAD>
+	<LOAD_LIST>		
+		<![CDATA[	
+			SELECT
+				sgrtman.service_group_risk_type_id,
+				sgrtman.manufacturer_id,
+				sgrtman.created_by,
+				sgrtman.created_date,
+				sgrtman.modified_by,
+				sgrtman.modified_date,
+				man.description manufacturer_description,
+				sgrtman.sgrt_manufacturer_id
+			FROM
+				elp_sgrt_manufacturer sgrtman, elp_manufacturer man
+			WHERE
+				sgrtman.manufacturer_id  = man.manufacturer_id
+			AND	sgrtman.service_group_risk_type_id = :service_group_risk_type_id
+		]]>
+	</LOAD_LIST>	
+	<UPDATE>
+		<![CDATA[	
+			UPDATE elp_sgrt_manufacturer SET
+				service_group_risk_type_id = :service_group_risk_type_id,
+				manufacturer_id = :manufacturer_id,
+				modified_by = :modified_by
+			WHERE
+				sgrt_manufacturer_id = :sgrt_manufacturer_id
+		]]>
+	</UPDATE>
+	<INSERT>
+			INSERT INTO elp_sgrt_manufacturer
+					(
+				service_group_risk_type_id,
+				manufacturer_id,
+				created_by,
+				sgrt_manufacturer_id
+					)
+			VALUES
+					(
+				:service_group_risk_type_id,
+				:manufacturer_id,
+				:created_by,
+				:sgrt_manufacturer_id
+					)
+	</INSERT>
+	<DELETE>
+			DELETE FROM elp_sgrt_manufacturer
+			WHERE
+				sgrt_manufacturer_id = :sgrt_manufacturer_id
+	</DELETE>		
+</SQL> 
+
+
+

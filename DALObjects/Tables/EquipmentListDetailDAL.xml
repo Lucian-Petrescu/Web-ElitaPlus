@@ -1,0 +1,135 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+
+<!-- ********************** THIS FILE HAS BEEN GENERATED FROM TEMPLATE SQLObject.cst (2/28/2012)********************** -->
+
+<SQL>
+  <LOAD>
+    <![CDATA[	
+			SELECT 
+				equipment_id,
+				equipment_list_id,
+				effective,
+				expiration,
+				created_date,
+				created_by,
+				modified_date,
+				modified_by,
+				equipment_list_detail_id
+			FROM 
+        elp_equipment_list_detail 
+			WHERE
+				equipment_list_detail_id = :equipment_list_detail_id
+		]]>
+  </LOAD>
+  <LOAD_LIST>
+    <![CDATA[
+      SELECT
+        equipment_id,
+        equipment_list_id,
+        effective,
+        expiration,
+        created_date,
+        created_by,
+        modified_date,
+        modified_by,
+        equipment_list_detail_id
+      FROM 
+        elp_equipment_list_detail
+      WHERE
+        equipment_list_id = :equipment_list_id      
+    ]]>
+  </LOAD_LIST>
+  <UPDATE>
+    <![CDATA[	
+			UPDATE 
+        elp_equipment_list_detail 
+      SET
+				equipment_id = :equipment_id,
+				equipment_list_id = :equipment_list_id,
+				effective = :effective,
+				expiration = :expiration
+			WHERE
+				equipment_list_detail_id = :equipment_list_detail_id
+		]]>
+  </UPDATE>
+  <INSERT>
+    <![CDATA[
+      INSERT INTO 
+        elp_equipment_list_detail
+      (
+        equipment_id,
+        equipment_list_id,
+        effective,
+        expiration,
+        equipment_list_detail_id
+      )
+      VALUES
+      (
+        :equipment_id,
+        :equipment_list_id,
+        :effective,
+        :expiration,
+        :equipment_list_detail_id
+      )
+    ]]>
+  </INSERT>
+  <DELETE>
+    <![CDATA[
+      UPDATE 
+        ELP_EQUIPMENT_LIST_DETAIL 
+      SET 
+        EXPIRATION = SYSDATE
+      WHERE 
+        EQUIPMENT_LIST_DETAIL_ID = :EQUIPMENT_LIST_DETAIL_ID 
+    ]]>
+  </DELETE>
+  <IS_CHILD>
+    <![CDATA[
+      SELECT
+        equipment_list_detail_id
+      FROM 
+        elp_equipment_list_detail
+      WHERE
+        equipment_id = :equipment_id AND
+        equipment_list_id = :equipment_list_id 
+    ]]>
+  </IS_CHILD>
+  <EQUIPMENT_EXPIRATION>
+    <![CDATA[
+      SELECT 
+        EXPIRATION 
+      FROM 
+        ELP_EQUIPMENT
+      WHERE 
+        EQUIPMENT_ID = :EQUIPMENT_ID
+    ]]>
+  </EQUIPMENT_EXPIRATION>
+  <EQUIPMENT_EFFECTIVE>
+    <![CDATA[
+      SELECT
+        EFFECTIVE
+      FROM
+        ELP_EQUIPMENT
+      WHERE
+        EQUIPMENT_ID = :EQUIPMENT_ID
+    ]]>
+  </EQUIPMENT_EFFECTIVE>
+  <EQUIPMENT_LIST>
+    <![CDATA[
+      select 
+        equipment_id 
+      from 
+        elp_equipment_list_detail 
+      where 
+        equipment_list_id=:equipment_list_id
+        and expiration > sysdate
+    ]]>
+  </EQUIPMENT_LIST>
+  <CURRENT_TIME_STAMP>
+    <![CDATA[
+      SELECT SYSDATE FROM DUAL
+    ]]>
+  </CURRENT_TIME_STAMP>
+</SQL>
+
+

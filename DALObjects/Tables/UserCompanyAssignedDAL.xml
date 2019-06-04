@@ -1,0 +1,86 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+
+<!-- ********************** THIS FILE HAS BEEN GENERATED FROM TEMPLATE SQLObject.cst (8/9/2010)********************** -->
+
+<SQL>
+  <LOAD>
+    <![CDATA[	
+			SELECT 
+				user_id,
+				company_id,
+				created_date,
+				modified_date,
+				created_by,
+				modified_by,
+				user_company_assigned_id,
+        authorization_limit,
+        payment_limit,
+        liability_override_limit
+			FROM elp_user_company_assigned 
+			WHERE
+				user_company_assigned_id = :user_company_assigned_id
+		]]>
+  </LOAD>
+  <LOAD_LIST>
+  </LOAD_LIST>
+  <LOAD_BY_USERID_COMPANYID>
+    <![CDATA[	
+			SELECT 
+				user_id,
+				company_id,
+				created_date,
+				modified_date,
+				created_by,
+				modified_by,
+				user_company_assigned_id,
+        authorization_limit,
+        payment_limit,
+        liability_override_limit
+			FROM elp_user_company_assigned 
+			WHERE user_id = :user_id
+			  and	company_id = :company_id
+	  ]]>
+  </LOAD_BY_USERID_COMPANYID>
+  <UPDATE>
+    <![CDATA[	
+			UPDATE elp_user_company_assigned SET
+				user_id = :user_id,
+				company_id = :company_id,
+				modified_by = :modified_by,
+        authorization_limit = :authorization_limit,
+        payment_limit = :payment_limit,
+        liability_override_limit = :liability_override_limit
+			WHERE
+				user_company_assigned_id = :user_company_assigned_id
+		]]>
+  </UPDATE>
+  <INSERT>
+    INSERT INTO elp_user_company_assigned
+    (
+    user_id,
+    company_id,
+    created_by,
+    user_company_assigned_id,
+    authorization_limit,
+    payment_limit,
+    liability_override_limit
+    )
+    VALUES
+    (
+    :user_id,
+    :company_id,
+    :created_by,
+    :user_company_assigned_id,
+    :authorization_limit,
+    :payment_limit,
+    :liability_override_limit
+    )
+  </INSERT>
+  <DELETE>
+    DELETE FROM elp_user_company_assigned
+    WHERE
+    user_company_assigned_id = :user_company_assigned_id
+  </DELETE>
+</SQL>
+
+

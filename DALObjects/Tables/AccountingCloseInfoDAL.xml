@@ -1,0 +1,151 @@
+<?xml version="1.0" encoding="utf-8" ?>
+
+<!-- ********************** THIS FILE HAS BEEN GENERATED FROM TEMPLATE SQLObject.cst (5/9/2005)********************** -->
+
+<SQL>
+	<LOAD>
+		<![CDATA[	
+			SELECT 
+				company_id,
+				closing_date,
+				created_by,
+				created_date,
+				modified_by,
+				modified_date,
+				accounting_close_info_id
+			FROM elp_accounting_close_info 
+			WHERE
+				accounting_close_info_id = :accounting_close_info_id
+		]]>
+	</LOAD>
+  <LOAD_LIST>
+    <![CDATA[	
+       SELECT
+        accounting_close_info_id,
+        company_id,
+        closing_date,
+		    created_by
+      FROM elp_accounting_close_info
+      WHERE
+       company_id = :closing_year and
+       substr(to_Char(CLOSING_DATE,'YYYYMMDD'),1,4) = 
+         (select max(substr(to_Char(Closing_Date,'YYYYMMDD'),1,4)) Closing_Date
+	       from ELITA.ELP_ACCOUNTING_CLOSE_INFO
+	       where COMPANY_ID = :closing_year)
+		]]>
+  </LOAD_LIST>
+	<GET_CLOSING_YEARS>	
+		<![CDATA[
+			select distinct substr(to_Char(CLOSING_DATE,'YYYYMMDD'),1,4) Id,
+					substr(to_Char(CLOSING_DATE,'YYYYMMDD'),1,4) Description
+				from ELITA.ELP_ACCOUNTING_CLOSE_INFO
+				where COMPANY_ID = :COMPANY_ID and
+				substr(to_Char(CLOSING_DATE,'YYYYMMDD'),1,4) <= to_char(SYSDATE,'YYYY')
+				order by Description
+		]]>	
+	</GET_CLOSING_YEARS>
+	<GET_ALL_THE_CLOSING_YEARS>	
+		<![CDATA[
+			select distinct substr(to_Char(CLOSING_DATE,'YYYYMMDD'),1,4) Id,
+					substr(to_Char(CLOSING_DATE,'YYYYMMDD'),1,4) Description
+				from ELITA.ELP_ACCOUNTING_CLOSE_INFO
+				where COMPANY_ID = :COMPANY_ID 
+				order by Description
+		]]>	
+	</GET_ALL_THE_CLOSING_YEARS>		
+	<GET_ALL_THE_CLOSING_YEARS_BY_USER>	
+		<![CDATA[
+			select distinct substr(to_Char(CLOSING_DATE,'YYYYMMDD'),1,4) Id,
+					substr(to_Char(CLOSING_DATE,'YYYYMMDD'),1,4) Description
+				from ELITA.ELP_ACCOUNTING_CLOSE_INFO
+                WHERE COMPANY_ID IN (SELECT COMPANY_ID FROM ELITA.ELP_USER_COMPANY WHERE USER_ID = :USER_ID)
+				order by Description desc
+		]]>	
+	</GET_ALL_THE_CLOSING_YEARS_BY_USER>		
+	<GET_CLOSING_DATE>	
+		<![CDATA[
+		Select * from
+		(	select ACCOUNTING_CLOSE_INFO_ID, CLOSING_DATE		
+				from ELP_ACCOUNTING_CLOSE_INFO
+				where COMPANY_ID = :COMPANY_ID
+				and CLOSING_DATE < :FOR_THIS_DATE
+                order by CLOSING_DATE desc
+                )
+        WHERE ROWNUM =1
+
+		]]>	
+	</GET_CLOSING_DATE>	
+	
+	<GET_MIN_CLOSING_DATE>	
+		<![CDATA[
+				select min(Closing_Date) Closing_Date
+				from ELITA.ELP_ACCOUNTING_CLOSE_INFO
+				where COMPANY_ID = :COMPANY_ID
+				
+		]]>	
+	</GET_MIN_CLOSING_DATE>
+	
+	<GET_ALL_CLOSING_DATES>	
+		<![CDATA[
+				select ACCOUNTING_CLOSE_INFO_ID ID, 
+				to_Char(CLOSING_DATE,'YYYYMMDD') code,
+				to_Char(CLOSING_DATE,'MM/DD/YYYY') description
+				from ELP_ACCOUNTING_CLOSE_INFO
+				where COMPANY_ID = :COMPANY_ID
+				and trunc(CLOSING_DATE) < trunc(SYSDATE)
+                order by CLOSING_DATE desc
+       
+		]]>	
+	</GET_ALL_CLOSING_DATES>	
+	
+	<GET_CLOSING_DATES>	
+		<![CDATA[
+			select accounting_close_info_id, to_char(Closing_Date,'DD-Mon-YYYY') Description
+				from ELITA.ELP_ACCOUNTING_CLOSE_INFO
+				where COMPANY_ID = :COMPANY_ID and
+				substr(to_Char(CLOSING_DATE,'YYYYMMDD'),1,4) = :closing_year
+				order by Closing_Date
+		]]>	
+	</GET_CLOSING_DATES>
+	<GET_LAST_CLOSING_DATES>	
+		<![CDATA[
+			select  max(Closing_Date) Description
+				from ELP_ACCOUNTING_CLOSE_INFO
+					where COMPANY_ID = :COMPANY_ID
+		]]>	
+	</GET_LAST_CLOSING_DATES>	
+	<UPDATE>
+		<![CDATA[	
+			UPDATE elp_accounting_close_info SET
+				company_id = :company_id,
+				closing_date = :closing_date,
+				modified_by = :modified_by
+			WHERE
+				accounting_close_info_id = :accounting_close_info_id
+		]]>
+	</UPDATE>
+	<INSERT>
+			INSERT INTO elp_accounting_close_info
+					(			
+				company_id, 
+				closing_date, 
+				created_by,
+				accounting_close_info_id
+					)
+			VALUES
+					(			
+				:company_id, 
+				:closing_date, 
+				:created_by,
+				:accounting_close_info_id
+					)
+	</INSERT>
+	<DELETE>
+			DELETE FROM elp_accounting_close_info
+			WHERE
+				accounting_close_info_id = :accounting_close_info_id
+	</DELETE>
+</SQL> 
+
+
+

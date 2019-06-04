@@ -1,0 +1,1 @@
+﻿<%@ ServiceHost Language="VB" Debug="true" Service="ElitaInternalWS.CertCustomerInfoService" CodeBehind="CertCustomerInfoService.svc.vb" %>

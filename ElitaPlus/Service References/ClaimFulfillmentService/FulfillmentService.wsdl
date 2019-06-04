@@ -1,0 +1,178 @@
+<?xml version="1.0" encoding="utf-8"?>
+<wsdl:definitions xmlns:wsap="http://schemas.xmlsoap.org/ws/2004/08/addressing/policy" xmlns:wsa10="http://www.w3.org/2005/08/addressing" xmlns:tns="http://elita.assurant.com/Elita/FulfillmentService" xmlns:msc="http://schemas.microsoft.com/ws/2005/12/wsdl/contract" xmlns:soapenc="http://schemas.xmlsoap.org/soap/encoding/" xmlns:wsx="http://schemas.xmlsoap.org/ws/2004/09/mex" xmlns:wsp="http://schemas.xmlsoap.org/ws/2004/09/policy" xmlns:wsam="http://www.w3.org/2007/05/addressing/metadata" xmlns:wsa="http://schemas.xmlsoap.org/ws/2004/08/addressing" xmlns:soap12="http://schemas.xmlsoap.org/wsdl/soap12/" xmlns:wsaw="http://www.w3.org/2006/05/addressing/wsdl" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:wsu="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-utility-1.0.xsd" xmlns:xsd="http://www.w3.org/2001/XMLSchema" targetNamespace="http://elita.assurant.com/Elita/FulfillmentService" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">
+  <wsdl:types>
+    <xsd:schema targetNamespace="http://elita.assurant.com/Elita/FulfillmentService/Imports">
+      <xsd:import schemaLocation="http://localhost/ElitaFulfillmentService/FulfillmentService.svc?xsd=xsd0" namespace="http://elita.assurant.com/Elita/FulfillmentService" />
+      <xsd:import schemaLocation="http://localhost/ElitaFulfillmentService/FulfillmentService.svc?xsd=xsd1" namespace="http://schemas.microsoft.com/2003/10/Serialization/" />
+      <xsd:import schemaLocation="http://localhost/ElitaFulfillmentService/FulfillmentService.svc?xsd=xsd2" namespace="http://schemas.datacontract.org/2004/07/Assurant.Elita.FulfillmentService.Contracts.Fulfillment.Inventory" />
+      <xsd:import schemaLocation="http://localhost/ElitaFulfillmentService/FulfillmentService.svc?xsd=xsd3" namespace="http://schemas.datacontract.org/2004/07/Assurant.Elita.FulfillmentService.DataElements.Fulfillment" />
+      <xsd:import schemaLocation="http://localhost/ElitaFulfillmentService/FulfillmentService.svc?xsd=xsd4" namespace="http://schemas.datacontract.org/2004/07/Assurant.Elita.FulfillmentService.Contracts.Fulfillment.Orders" />
+      <xsd:import schemaLocation="http://localhost/ElitaFulfillmentService/FulfillmentService.svc?xsd=xsd5" namespace="http://schemas.microsoft.com/2003/10/Serialization/Arrays" />
+      <xsd:import schemaLocation="http://localhost/ElitaFulfillmentService/FulfillmentService.svc?xsd=xsd6" namespace="http://schemas.datacontract.org/2004/07/Assurant.Elita.FulfillmentService.Contracts.Fulfillment" />
+      <xsd:import schemaLocation="http://localhost/ElitaFulfillmentService/FulfillmentService.svc?xsd=xsd7" namespace="http://schemas.datacontract.org/2004/07/Assurant.Elita.FulfillmentService.DataElements" />
+      <xsd:import schemaLocation="http://localhost/ElitaFulfillmentService/FulfillmentService.svc?xsd=xsd8" namespace="http://schemas.datacontract.org/2004/07/Assurant.Elita.FulfillmentService.DataElements.Generics" />
+    </xsd:schema>
+  </wsdl:types>
+  <wsdl:message name="IFulfillmentService_InventoryCheck_InputMessage">
+    <wsdl:part name="parameters" element="tns:InventoryCheck" />
+  </wsdl:message>
+  <wsdl:message name="IFulfillmentService_InventoryCheck_OutputMessage">
+    <wsdl:part name="parameters" element="tns:InventoryCheckResponse" />
+  </wsdl:message>
+  <wsdl:message name="IFulfillmentService_InventoryCheckList_InputMessage">
+    <wsdl:part name="parameters" element="tns:InventoryCheckList" />
+  </wsdl:message>
+  <wsdl:message name="IFulfillmentService_InventoryCheckList_OutputMessage">
+    <wsdl:part name="parameters" element="tns:InventoryCheckListResponse" />
+  </wsdl:message>
+  <wsdl:message name="IFulfillmentService_StartFulfillmentProcess_InputMessage">
+    <wsdl:part name="parameters" element="tns:StartFulfillmentProcess" />
+  </wsdl:message>
+  <wsdl:message name="IFulfillmentService_StartFulfillmentProcess_OutputMessage">
+    <wsdl:part name="parameters" element="tns:StartFulfillmentProcessResponse" />
+  </wsdl:message>
+  <wsdl:message name="IFulfillmentService_AddConseqDamageAuthorization_InputMessage">
+    <wsdl:part name="parameters" element="tns:AddConseqDamageAuthorization" />
+  </wsdl:message>
+  <wsdl:message name="IFulfillmentService_AddConseqDamageAuthorization_OutputMessage">
+    <wsdl:part name="parameters" element="tns:AddConseqDamageAuthorizationResponse" />
+  </wsdl:message>
+  <wsdl:message name="IFulfillmentService_SearchVendorSKU_InputMessage">
+    <wsdl:part name="parameters" element="tns:SearchVendorSKU" />
+  </wsdl:message>
+  <wsdl:message name="IFulfillmentService_SearchVendorSKU_OutputMessage">
+    <wsdl:part name="parameters" element="tns:SearchVendorSKUResponse" />
+  </wsdl:message>
+  <wsdl:message name="IFulfillmentService_UpdateOrderStatus_InputMessage">
+    <wsdl:part name="parameters" element="tns:UpdateOrderStatus" />
+  </wsdl:message>
+  <wsdl:message name="IFulfillmentService_UpdateOrderStatus_OutputMessage">
+    <wsdl:part name="parameters" element="tns:UpdateOrderStatusResponse" />
+  </wsdl:message>
+  <wsdl:message name="IFulfillmentService_SubmitServiceOrder_InputMessage">
+    <wsdl:part name="parameters" element="tns:SubmitServiceOrder" />
+  </wsdl:message>
+  <wsdl:message name="IFulfillmentService_SubmitServiceOrder_OutputMessage">
+    <wsdl:part name="parameters" element="tns:SubmitServiceOrderResponse" />
+  </wsdl:message>
+  <wsdl:message name="IFulfillmentService_UpdateServiceOrder_InputMessage">
+    <wsdl:part name="parameters" element="tns:UpdateServiceOrder" />
+  </wsdl:message>
+  <wsdl:message name="IFulfillmentService_UpdateServiceOrder_OutputMessage">
+    <wsdl:part name="parameters" element="tns:UpdateServiceOrderResponse" />
+  </wsdl:message>
+  <wsdl:message name="IFulfillmentService_GetAuthorizationDetails_InputMessage">
+    <wsdl:part name="parameters" element="tns:GetAuthorizationDetails" />
+  </wsdl:message>
+  <wsdl:message name="IFulfillmentService_GetAuthorizationDetails_OutputMessage">
+    <wsdl:part name="parameters" element="tns:GetAuthorizationDetailsResponse" />
+  </wsdl:message>
+  <wsdl:message name="IFulfillmentService_AddServiceWarranty_InputMessage">
+    <wsdl:part name="parameters" element="tns:AddServiceWarranty" />
+  </wsdl:message>
+  <wsdl:message name="IFulfillmentService_AddServiceWarranty_OutputMessage">
+    <wsdl:part name="parameters" element="tns:AddServiceWarrantyResponse" />
+  </wsdl:message>
+  <wsdl:message name="IFulfillmentService_ProcessIssueAnswer_InputMessage">
+    <wsdl:part name="parameters" element="tns:ProcessIssueAnswer" />
+  </wsdl:message>
+  <wsdl:message name="IFulfillmentService_ProcessIssueAnswer_OutputMessage">
+    <wsdl:part name="parameters" element="tns:ProcessIssueAnswerResponse" />
+  </wsdl:message>
+  <wsdl:message name="IFulfillmentService_ReSendFailedServiceOrder_InputMessage">
+    <wsdl:part name="parameters" element="tns:ReSendFailedServiceOrder" />
+  </wsdl:message>
+  <wsdl:message name="IFulfillmentService_ReSendFailedServiceOrder_OutputMessage">
+    <wsdl:part name="parameters" element="tns:ReSendFailedServiceOrderResponse" />
+  </wsdl:message>
+  <wsdl:message name="IFulfillmentService_GetClaimReimbursementAmount_InputMessage">
+    <wsdl:part name="parameters" element="tns:GetClaimReimbursementAmount" />
+  </wsdl:message>
+  <wsdl:message name="IFulfillmentService_GetClaimReimbursementAmount_OutputMessage">
+    <wsdl:part name="parameters" element="tns:GetClaimReimbursementAmountResponse" />
+  </wsdl:message>
+  <wsdl:message name="IFulfillmentService_SubmitFulfillmentIssueAnswer_InputMessage">
+    <wsdl:part name="parameters" element="tns:SubmitFulfillmentIssueAnswer" />
+  </wsdl:message>
+  <wsdl:message name="IFulfillmentService_SubmitFulfillmentIssueAnswer_OutputMessage">
+    <wsdl:part name="parameters" element="tns:SubmitFulfillmentIssueAnswerResponse" />
+  </wsdl:message>
+  <wsdl:message name="IFulfillmentService_SearchVendorInventory_InputMessage">
+    <wsdl:part name="parameters" element="tns:SearchVendorInventory" />
+  </wsdl:message>
+  <wsdl:message name="IFulfillmentService_SearchVendorInventory_OutputMessage">
+    <wsdl:part name="parameters" element="tns:SearchVendorInventoryResponse" />
+  </wsdl:message>
+  <wsdl:message name="IFulfillmentService_CheckVendorInventoryAndBestReplacement_InputMessage">
+    <wsdl:part name="parameters" element="tns:CheckVendorInventoryAndBestReplacement" />
+  </wsdl:message>
+  <wsdl:message name="IFulfillmentService_CheckVendorInventoryAndBestReplacement_OutputMessage">
+    <wsdl:part name="parameters" element="tns:CheckVendorInventoryAndBestReplacementResponse" />
+  </wsdl:message>
+  <wsdl:portType name="IFulfillmentService">
+    <wsdl:operation name="InventoryCheck">
+      <wsdl:input wsaw:Action="http://elita.assurant.com/Elita/FulfillmentService/IFulfillmentService/InventoryCheck" message="tns:IFulfillmentService_InventoryCheck_InputMessage" />
+      <wsdl:output wsaw:Action="http://elita.assurant.com/Elita/FulfillmentService/IFulfillmentService/InventoryCheckResponse" message="tns:IFulfillmentService_InventoryCheck_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="InventoryCheckList">
+      <wsdl:input wsaw:Action="http://elita.assurant.com/Elita/FulfillmentService/IFulfillmentService/InventoryCheckList" message="tns:IFulfillmentService_InventoryCheckList_InputMessage" />
+      <wsdl:output wsaw:Action="http://elita.assurant.com/Elita/FulfillmentService/IFulfillmentService/InventoryCheckListResponse" message="tns:IFulfillmentService_InventoryCheckList_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="StartFulfillmentProcess">
+      <wsdl:input wsaw:Action="http://elita.assurant.com/Elita/FulfillmentService/IFulfillmentService/StartFulfillmentProcess" message="tns:IFulfillmentService_StartFulfillmentProcess_InputMessage" />
+      <wsdl:output wsaw:Action="http://elita.assurant.com/Elita/FulfillmentService/IFulfillmentService/StartFulfillmentProcessResponse" message="tns:IFulfillmentService_StartFulfillmentProcess_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="AddConseqDamageAuthorization">
+      <wsdl:input wsaw:Action="http://elita.assurant.com/Elita/FulfillmentService/IFulfillmentService/AddConseqDamageAuthorization" message="tns:IFulfillmentService_AddConseqDamageAuthorization_InputMessage" />
+      <wsdl:output wsaw:Action="http://elita.assurant.com/Elita/FulfillmentService/IFulfillmentService/AddConseqDamageAuthorizationResponse" message="tns:IFulfillmentService_AddConseqDamageAuthorization_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="SearchVendorSKU">
+      <wsdl:input wsaw:Action="http://elita.assurant.com/Elita/FulfillmentService/IFulfillmentService/SearchVendorSKU" message="tns:IFulfillmentService_SearchVendorSKU_InputMessage" />
+      <wsdl:output wsaw:Action="http://elita.assurant.com/Elita/FulfillmentService/IFulfillmentService/SearchVendorSKUResponse" message="tns:IFulfillmentService_SearchVendorSKU_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="UpdateOrderStatus">
+      <wsdl:input wsaw:Action="http://elita.assurant.com/Elita/FulfillmentService/IFulfillmentService/UpdateOrderStatus" message="tns:IFulfillmentService_UpdateOrderStatus_InputMessage" />
+      <wsdl:output wsaw:Action="http://elita.assurant.com/Elita/FulfillmentService/IFulfillmentService/UpdateOrderStatusResponse" message="tns:IFulfillmentService_UpdateOrderStatus_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="SubmitServiceOrder">
+      <wsdl:input wsaw:Action="http://elita.assurant.com/Elita/FulfillmentService/IFulfillmentService/SubmitServiceOrder" message="tns:IFulfillmentService_SubmitServiceOrder_InputMessage" />
+      <wsdl:output wsaw:Action="http://elita.assurant.com/Elita/FulfillmentService/IFulfillmentService/SubmitServiceOrderResponse" message="tns:IFulfillmentService_SubmitServiceOrder_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="UpdateServiceOrder">
+      <wsdl:input wsaw:Action="http://elita.assurant.com/Elita/FulfillmentService/IFulfillmentService/UpdateServiceOrder" message="tns:IFulfillmentService_UpdateServiceOrder_InputMessage" />
+      <wsdl:output wsaw:Action="http://elita.assurant.com/Elita/FulfillmentService/IFulfillmentService/UpdateServiceOrderResponse" message="tns:IFulfillmentService_UpdateServiceOrder_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="GetAuthorizationDetails">
+      <wsdl:input wsaw:Action="http://elita.assurant.com/Elita/FulfillmentService/IFulfillmentService/GetAuthorizationDetails" message="tns:IFulfillmentService_GetAuthorizationDetails_InputMessage" />
+      <wsdl:output wsaw:Action="http://elita.assurant.com/Elita/FulfillmentService/IFulfillmentService/GetAuthorizationDetailsResponse" message="tns:IFulfillmentService_GetAuthorizationDetails_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="AddServiceWarranty">
+      <wsdl:input wsaw:Action="http://elita.assurant.com/Elita/FulfillmentService/IFulfillmentService/AddServiceWarranty" message="tns:IFulfillmentService_AddServiceWarranty_InputMessage" />
+      <wsdl:output wsaw:Action="http://elita.assurant.com/Elita/FulfillmentService/IFulfillmentService/AddServiceWarrantyResponse" message="tns:IFulfillmentService_AddServiceWarranty_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="ProcessIssueAnswer">
+      <wsdl:input wsaw:Action="http://elita.assurant.com/Elita/FulfillmentService/IFulfillmentService/ProcessIssueAnswer" message="tns:IFulfillmentService_ProcessIssueAnswer_InputMessage" />
+      <wsdl:output wsaw:Action="http://elita.assurant.com/Elita/FulfillmentService/IFulfillmentService/ProcessIssueAnswerResponse" message="tns:IFulfillmentService_ProcessIssueAnswer_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="ReSendFailedServiceOrder">
+      <wsdl:input wsaw:Action="http://elita.assurant.com/Elita/FulfillmentService/IFulfillmentService/ReSendFailedServiceOrder" message="tns:IFulfillmentService_ReSendFailedServiceOrder_InputMessage" />
+      <wsdl:output wsaw:Action="http://elita.assurant.com/Elita/FulfillmentService/IFulfillmentService/ReSendFailedServiceOrderResponse" message="tns:IFulfillmentService_ReSendFailedServiceOrder_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="GetClaimReimbursementAmount">
+      <wsdl:input wsaw:Action="http://elita.assurant.com/Elita/FulfillmentService/IFulfillmentService/GetClaimReimbursementAmount" message="tns:IFulfillmentService_GetClaimReimbursementAmount_InputMessage" />
+      <wsdl:output wsaw:Action="http://elita.assurant.com/Elita/FulfillmentService/IFulfillmentService/GetClaimReimbursementAmountResponse" message="tns:IFulfillmentService_GetClaimReimbursementAmount_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="SubmitFulfillmentIssueAnswer">
+      <wsdl:input wsaw:Action="http://elita.assurant.com/Elita/FulfillmentService/IFulfillmentService/SubmitFulfillmentIssueAnswer" message="tns:IFulfillmentService_SubmitFulfillmentIssueAnswer_InputMessage" />
+      <wsdl:output wsaw:Action="http://elita.assurant.com/Elita/FulfillmentService/IFulfillmentService/SubmitFulfillmentIssueAnswerResponse" message="tns:IFulfillmentService_SubmitFulfillmentIssueAnswer_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="SearchVendorInventory">
+      <wsdl:input wsaw:Action="http://elita.assurant.com/Elita/FulfillmentService/IFulfillmentService/SearchVendorInventory" message="tns:IFulfillmentService_SearchVendorInventory_InputMessage" />
+      <wsdl:output wsaw:Action="http://elita.assurant.com/Elita/FulfillmentService/IFulfillmentService/SearchVendorInventoryResponse" message="tns:IFulfillmentService_SearchVendorInventory_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="CheckVendorInventoryAndBestReplacement">
+      <wsdl:input wsaw:Action="http://elita.assurant.com/Elita/FulfillmentService/IFulfillmentService/CheckVendorInventoryAndBestReplacement" message="tns:IFulfillmentService_CheckVendorInventoryAndBestReplacement_InputMessage" />
+      <wsdl:output wsaw:Action="http://elita.assurant.com/Elita/FulfillmentService/IFulfillmentService/CheckVendorInventoryAndBestReplacementResponse" message="tns:IFulfillmentService_CheckVendorInventoryAndBestReplacement_OutputMessage" />
+    </wsdl:operation>
+  </wsdl:portType>
+</wsdl:definitions>

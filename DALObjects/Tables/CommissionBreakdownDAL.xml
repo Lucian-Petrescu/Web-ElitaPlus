@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="utf-8" ?>
+
+<!-- ********************** THIS FILE HAS BEEN GENERATED FROM TEMPLATE SQLObject.cst (11/22/2004)********************** -->
+
+<SQL>
+	<LOAD>
+		<![CDATA[	
+			SELECT 
+				commission_period_id,
+				allowed_markup_pct,
+				tolerance,
+				dealer_markup_pct,
+				dealer_comm_pct,
+				broker_markup_pct,
+				broker_comm_pct,
+				broker2_markup_pct,
+				broker2_comm_pct,
+				broker3_markup_pct,
+				broker3_comm_pct,
+				broker4_markup_pct,
+				broker4_comm_pct,
+				created_by,
+				created_date,
+				modified_by,
+				modified_date,
+				commission_breakdown_id
+			FROM elp_commission_breakdown 
+			WHERE
+				commission_breakdown_id = :commission_breakdown_id
+		]]>
+	</LOAD>
+	<LOAD_LIST>
+		SELECT 	commission_breakdown_id, commission_period_id, allowed_markup_pct,
+				tolerance, dealer_markup_pct, dealer_comm_pct, broker_markup_pct,
+				broker_comm_pct, broker2_markup_pct, broker2_comm_pct, broker3_markup_pct,
+				broker3_comm_pct, broker4_markup_pct, broker4_comm_pct
+		FROM	elp_commission_breakdown
+		WHERE	commission_period_id  = :commission_period_id
+		ORDER BY allowed_markup_pct, tolerance 		
+	</LOAD_LIST>	
+	<UPDATE>
+		<![CDATA[	
+			UPDATE elp_commission_breakdown SET
+				commission_period_id = :commission_period_id,
+				allowed_markup_pct = :allowed_markup_pct,
+				tolerance = :tolerance,
+				dealer_markup_pct = :dealer_markup_pct,
+				dealer_comm_pct = :dealer_comm_pct,
+				broker_markup_pct = :broker_markup_pct,
+				broker_comm_pct = :broker_comm_pct,
+				broker2_markup_pct = :broker2_markup_pct,
+				broker2_comm_pct = :broker2_comm_pct,
+				broker3_markup_pct = :broker3_markup_pct,
+				broker3_comm_pct = :broker3_comm_pct,
+				broker4_markup_pct = :broker4_markup_pct,
+				broker4_comm_pct = :broker4_comm_pct,
+				modified_by = :modified_by
+			WHERE
+				commission_breakdown_id = :commission_breakdown_id
+		]]>
+	</UPDATE>
+	<INSERT>
+			INSERT INTO elp_commission_breakdown
+					(			
+				commission_period_id, 
+				allowed_markup_pct, 
+				tolerance, 
+				dealer_markup_pct, 
+				dealer_comm_pct, 
+				broker_markup_pct, 
+				broker_comm_pct, 
+				broker2_markup_pct, 
+				broker2_comm_pct, 
+				broker3_markup_pct, 
+				broker3_comm_pct, 
+				broker4_markup_pct, 
+				broker4_comm_pct, 
+				created_by,
+				commission_breakdown_id
+					)
+			VALUES
+					(			
+				:commission_period_id, 
+				:allowed_markup_pct, 
+				:tolerance, 
+				:dealer_markup_pct, 
+				:dealer_comm_pct, 
+				:broker_markup_pct, 
+				:broker_comm_pct, 
+				:broker2_markup_pct, 
+				:broker2_comm_pct, 
+				:broker3_markup_pct, 
+				:broker3_comm_pct, 
+				:broker4_markup_pct, 
+				:broker4_comm_pct, 
+				:created_by,
+				:commission_breakdown_id
+					)
+	</INSERT>
+	<DELETE>
+			DELETE FROM elp_commission_breakdown
+			WHERE
+				commission_breakdown_id = :commission_breakdown_id
+	</DELETE>
+</SQL> 
+
+
+

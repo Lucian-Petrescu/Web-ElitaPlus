@@ -1,0 +1,95 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+
+<!-- ********************** THIS FILE HAS BEEN GENERATED FROM TEMPLATE SQLObject.cst (8/24/2010)********************** -->
+
+<SQL>
+  <LOAD>
+    <![CDATA[	
+			SELECT 
+				dealer_id,
+				mfg_coverage_id,
+				ext_warranty,
+				created_by,
+				created_date,
+				modified_by,
+				modified_date,
+				mfg_coverage_ext_id
+			FROM elp_mfg_coverage_ext 
+			WHERE
+				mfg_coverage_ext_id = :mfg_coverage_ext_id
+		]]>
+  </LOAD>
+  <LOAD_LIST>
+    SELECT
+    elp_mfg_coverage_ext.mfg_coverage_ext_id,
+    elp_mfg_coverage_ext.dealer_id,
+    elp_dealer.dealer_name,
+    elp_mfg_coverage_ext.mfg_coverage_id,
+    elp_mfg_coverage_ext.ext_warranty,
+    elp_mfg_coverage_ext.created_by,
+    elp_mfg_coverage_ext.created_date,
+    elp_mfg_coverage_ext.modified_by,
+    elp_mfg_coverage_ext.modified_date
+    FROM elp_mfg_coverage_ext, elp_dealer
+    WHERE
+    elp_mfg_coverage_ext.mfg_coverage_id = :mfg_coverage_id
+    and elp_dealer.dealer_id = elp_mfg_coverage_ext.dealer_id
+    order by dealer_name
+  </LOAD_LIST>
+  <GET_AVAILABLE_DEALERS>
+    select
+    d.dealer_id,
+    d.dealer_name
+    from
+    elp_dealer d, elp_company c
+    where
+    d.company_id = c.company_id
+    and c.company_group_id = :company_group_id
+    and ( NOT d.dealer_id in (select dealer_id
+    from elp_mfg_coverage_ext mce, elp_mfg_coverage mc
+    where mce.mfg_coverage_id = mc.mfg_coverage_id
+    and mc.mfg_coverage_id = :mfg_coverage_id
+    and d.company_id = c.company_id
+    and c.company_group_id = mc.company_group_id
+    )
+    --dynamic_where_clause
+    )
+    order by d.dealer_name
+  </GET_AVAILABLE_DEALERS>
+  <UPDATE>
+    <![CDATA[	
+			UPDATE elp_mfg_coverage_ext SET
+				dealer_id = :dealer_id,
+				mfg_coverage_id = :mfg_coverage_id,
+				ext_warranty = :ext_warranty,
+				modified_by = :modified_by
+			WHERE
+				mfg_coverage_ext_id = :mfg_coverage_ext_id
+		]]>
+  </UPDATE>
+  <INSERT>
+    INSERT INTO elp_mfg_coverage_ext
+    (
+    dealer_id,
+    mfg_coverage_id,
+    ext_warranty,
+    created_by,
+    mfg_coverage_ext_id
+    )
+    VALUES
+    (
+    :dealer_id,
+    :mfg_coverage_id,
+    :ext_warranty,
+    :created_by,
+    :mfg_coverage_ext_id
+    )
+  </INSERT>
+  <DELETE>
+    DELETE FROM elp_mfg_coverage_ext
+    WHERE
+    mfg_coverage_ext_id = :mfg_coverage_ext_id
+  </DELETE>
+</SQL>
+
+

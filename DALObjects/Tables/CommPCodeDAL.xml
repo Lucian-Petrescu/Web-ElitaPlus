@@ -1,0 +1,78 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+
+<!-- ********************** THIS FILE HAS BEEN GENERATED FROM TEMPLATE SQLObject.cst (2/1/2010)********************** -->
+
+<SQL>
+  <LOAD>
+    <![CDATA[	
+			SELECT 
+				product_code_id,
+				effective_date,
+				expiration_date,
+				created_by,
+				modified_by,
+				created_date,
+				modified_date,
+				comm_p_code_id
+			FROM elp_comm_p_code 
+			WHERE
+				comm_p_code_id = :comm_p_code_id
+		]]>
+  </LOAD>
+  <LOAD_LIST>
+    SELECT 	cp.commission_period_id, d.dealer_name,
+    cp.effective_date effective, cp.expiration_date expiration, c.code company_code
+    FROM elp_dealer d , elp_commission_period cp, elp_company c
+    WHERE	D.company_id = c.company_id
+    AND d.dealer_id like :dealer_id
+    AND cp.dealer_id = d.dealer_id
+    --dynamic_in_clause
+    ORDER BY dealer_name, effective desc, expiration
+  </LOAD_LIST>
+  <MAX_EXPIRATION>
+    select comm_p_code_id, to_char(EXPIRATION_DATE, 'DD-Mon-YYYY') EXPIRATION, sq.EXPIRATION_COUNT
+    from elp_comm_p_code,
+    (select Max(EXPIRATION_DATE) MAX_EXPIRATION, Count(*) EXPIRATION_COUNT
+    from elp_comm_p_code
+    where	product_code_ID = :product_code_ID0
+    ) sq
+    where	product_code_ID = :product_code_ID1
+    and EXPIRATION_date = MAX_EXPIRATION
+  </MAX_EXPIRATION>
+  <UPDATE>
+    <![CDATA[	
+			UPDATE elp_comm_p_code SET
+				product_code_id = :product_code_id,
+				effective_date = :effective_date,
+				expiration_date = :expiration_date,
+				modified_by = :modified_by
+			WHERE
+				comm_p_code_id = :comm_p_code_id
+		]]>
+  </UPDATE>
+  <INSERT>
+    INSERT INTO elp_comm_p_code
+    (
+    product_code_id,
+    effective_date,
+    expiration_date,
+    created_by,
+    comm_p_code_id
+    )
+    VALUES
+    (
+    :product_code_id,
+    :effective_date,
+    :expiration_date,
+    :created_by,
+    :comm_p_code_id
+    )
+  </INSERT>
+  <DELETE>
+    DELETE FROM elp_comm_p_code
+    WHERE
+    comm_p_code_id = :comm_p_code_id
+  </DELETE>
+</SQL>
+
+

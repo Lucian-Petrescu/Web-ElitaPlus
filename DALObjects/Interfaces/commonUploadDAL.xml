@@ -1,0 +1,33 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<SQL>
+  <LOAD_FILE_LINE>
+    <![CDATA[	
+			INSERT INTO ELP_Upload_File_Lines (file_line, line_number, upload_type)
+      values (:file_line, :line_number, :upload_type)
+		]]>
+  </LOAD_FILE_LINE>
+  <UPDATE_FILE_PROCESSED>
+    <![CDATA[	
+			update ELP_Upload_File_PROCESSED 
+      set process_status = :process_status
+      where upload_type = :upload_type
+      and filename = :filename
+		]]>
+  </UPDATE_FILE_PROCESSED>
+  <UPLOAD_INIT>
+    ELP_UTILITY_Upload.InitializeUpload
+  </UPLOAD_INIT>
+  <PROCESS_FILE>
+    ELP_UTILITY_Upload.ProcessFile
+  </PROCESS_FILE>
+  <LOAD_PROCESSING_ERR>
+    SELECT Record_Number, Error_Message
+    FROM ELP_Upload_File_Errors
+    where upload_type = ':upload_type'
+    order by Message_Date
+  </LOAD_PROCESSING_ERR>
+  <PROCESS_REACTIVATE_FILE>
+    elita.elp_reactivate
+  </PROCESS_REACTIVATE_FILE>
+  
+</SQL>

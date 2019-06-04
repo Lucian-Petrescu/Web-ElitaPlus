@@ -1,0 +1,109 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+
+<!-- ********************** THIS FILE HAS BEEN GENERATED FROM TEMPLATE SQLObject.cst (10/8/2009)********************** -->
+
+<SQL>
+  <LOAD>
+    <![CDATA[	
+			SELECT 
+				comuna_alias,
+				comuna_code_id,
+				created_by,
+				created_date,
+				modified_by,
+				modified_date,
+				comuna_alias_id
+			FROM elp_comuna_standardization 
+			WHERE
+				comuna_alias_id = :comuna_alias_id
+		]]>
+  </LOAD>
+  <LOAD_LIST>
+    SELECT
+    cs.comuna_alias_id,
+    cs.comuna_alias,
+    cs.comuna_code_id,
+    c.comuna,
+    r.country_id,
+    cs.created_by,
+    cs.created_date,
+    cs.modified_by,
+    cs.modified_date
+    FROM elp_comuna_standardization cs, elp_comuna_code c, elp_region r
+    WHERE  cs.comuna_code_id = c.comuna_code_id
+    AND c.region_id = r.region_id
+    AND UPPER(cs.comuna_alias) LIKE :comuna_alias
+    AND UPPER(c.comuna) LIKE :comuna
+    AND  r.country_id in
+    (SELECT co.country_id
+    FROM elp_user_company uc, elp_company co
+    WHERE co.company_id = uc.company_id
+    AND uc.user_id=:user_id)
+    order by c.comuna
+  </LOAD_LIST>
+  <GET_COMUNA_LIST>
+    SELECT
+    c.comuna_code_id id,
+    c.comuna description,
+    c.region_id
+    FROM elp_comuna_code c, elp_region r
+    WHERE c.region_id = r.region_id
+    AND  r.country_id in
+    (SELECT co.country_id
+    FROM elp_user_company uc, elp_company co
+    WHERE co.company_id = uc.company_id
+    AND uc.user_id=:user_id)
+    ORDER BY c.comuna
+  </GET_COMUNA_LIST>
+
+  <GET_COMUNA_STANDARDIZATION_LIST>
+    select
+    cs.COMUNA_ALIAS_ID id,
+    c.comuna_code_id,
+    cs.COMUNA_ALIAS description
+    FROM elp_comuna_code c, ELP_COMUNA_STANDARDIZATION cs, elp_region r
+    WHERE c.region_id = r.region_id
+    and c.COMUNA_CODE_ID = cs.COMUNA_CODE_ID
+    AND  r.country_id in
+    (SELECT co.country_id
+    FROM elp_user_company uc, elp_company co
+    WHERE co.company_id = uc.company_id
+    AND uc.user_id=:user_id)
+    and comuna_alias = :comuna_alias
+    ORDER BY cs.COMUNA_ALIAS
+  </GET_COMUNA_STANDARDIZATION_LIST>
+  <UPDATE>
+    <![CDATA[	
+			UPDATE elp_comuna_standardization SET
+				comuna_alias = :comuna_alias,
+				comuna_code_id = :comuna_code_id,
+				modified_by = :modified_by
+			WHERE
+				comuna_alias_id = :comuna_alias_id
+		]]>
+  </UPDATE>
+  <INSERT>
+    INSERT INTO elp_comuna_standardization
+    (
+    comuna_alias,
+    comuna_code_id,
+    created_by,
+    comuna_alias_id
+    )
+    VALUES
+    (
+    :comuna_alias,
+    :comuna_code_id,
+    :created_by,
+    :comuna_alias_id
+    )
+  </INSERT>
+  <DELETE>
+    DELETE FROM elp_comuna_standardization
+    WHERE
+    comuna_alias_id = :comuna_alias_id
+  </DELETE>
+</SQL>
+
+
+

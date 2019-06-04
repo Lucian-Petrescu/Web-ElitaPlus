@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xs:schema xmlns:tns="http://elita.assurant.com/Elita/ClaimService/Faults" elementFormDefault="qualified" targetNamespace="http://elita.assurant.com/Elita/ClaimService/Faults" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+  <xs:complexType name="ClaimNotFoundFault">
+    <xs:complexContent mixed="false">
+      <xs:extension base="tns:BaseFault">
+        <xs:sequence />
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:element name="ClaimNotFoundFault" nillable="true" type="tns:ClaimNotFoundFault" />
+  <xs:complexType name="BaseFault">
+    <xs:sequence>
+      <xs:element name="FaultCode" nillable="true" type="xs:string" />
+      <xs:element name="FaultMessage" nillable="true" type="xs:string" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="BaseFault" nillable="true" type="tns:BaseFault" />
+</xs:schema>

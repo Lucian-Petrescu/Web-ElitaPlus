@@ -1,0 +1,69 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+
+<!-- ********************** THIS FILE HAS BEEN GENERATED FROM TEMPLATE SQLObject.cst (5/25/2012)********************** -->
+
+<SQL>
+  <LOAD>
+    <![CDATA[	
+			SELECT 
+				code,
+				description,
+				effective,
+				expiration,
+				created_date,
+				created_by,
+				modified_date,
+				modified_by,
+				rule_list_id
+			FROM elp_rule_list 
+			WHERE
+				rule_list_id = :rule_list_id
+		]]>
+  </LOAD>
+  <LOAD_LIST_SEARCH>
+    SELECT RULE_LIST_ID, CODE, DESCRIPTION,
+    to_Char(EFFECTIVE,'DD-Mon-YYYY HH24:MI:SS') AS EFFECTIVE,
+    to_Char(EXPIRATION,'DD-Mon-YYYY HH24:MI:SS') AS EXPIRATION
+    FROM ELP_RULE_LIST
+    WHERE CODE LIKE :Code AND DESCRIPTION LIKE :Description
+  </LOAD_LIST_SEARCH>
+  <UPDATE>
+    <![CDATA[	
+			UPDATE elp_rule_list SET
+				code = :code,
+				description = :description,
+				effective = :effective,
+				expiration = :expiration,
+				modified_by = :modified_by
+			WHERE
+				rule_list_id = :rule_list_id
+		]]>
+  </UPDATE>
+  <INSERT>
+    INSERT INTO elp_rule_list
+    (
+    code,
+    description,
+    effective,
+    expiration,
+    created_by,
+    rule_list_id
+    )
+    VALUES
+    (
+    :code,
+    :description,
+    :effective,
+    :expiration,
+    :created_by,
+    :rule_list_id
+    )
+  </INSERT>
+  <DELETE>
+    DELETE FROM elp_rule_list
+    WHERE
+    rule_list_id = :rule_list_id
+  </DELETE>
+</SQL>
+
+

@@ -1,0 +1,51 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema">
+  <xs:element name="GetCertListDs">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element name="GetCertList">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element name="DealerCode" minOccurs="1" maxOccurs="1" type="xs:string"></xs:element>
+              <xs:element name="BranchCode" minOccurs="0" maxOccurs="1" type="xs:string"></xs:element>
+              <xs:element name="CertificateNumber" minOccurs="0" maxOccurs="1" type="xs:string"></xs:element>
+              <xs:element name="CustomerName" minOccurs="0" maxOccurs="1" type="xs:string"></xs:element>
+              <xs:element name="Email" minOccurs="0" maxOccurs="1" type="xs:string"></xs:element>
+              <xs:element name="SortBy" minOccurs="1" maxOccurs="1">
+                <xs:simpleType>
+                  <xs:restriction base="xs:int">
+                    <xs:totalDigits fixed="true" value="1"></xs:totalDigits>
+                    <xs:minInclusive value="1" />
+                    <xs:maxInclusive value="7" />
+                  </xs:restriction>
+                </xs:simpleType>
+              </xs:element>
+              <xs:element name="SortOrder" minOccurs="1" maxOccurs="1" >
+                <xs:simpleType>
+                  <xs:restriction base="xs:int">
+                    <xs:totalDigits fixed="true" value="1"></xs:totalDigits>
+                    <xs:minInclusive value="1" />
+                    <xs:maxInclusive value="2" />
+                  </xs:restriction>
+                </xs:simpleType>
+              </xs:element>
+              <xs:element name="ForCancellation" minOccurs="0" maxOccurs="1">
+                <xs:simpleType>
+                  <xs:restriction base="xs:string">
+                    <xs:pattern value="Y|N" />
+                  </xs:restriction>
+                </xs:simpleType>
+              </xs:element>
+              <xs:element name="RequestNumber" type="myPositiveInteger" minOccurs="0" maxOccurs="1" />
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:simpleType name="myPositiveInteger">
+    <xs:restriction base="xs:int">
+      <xs:minInclusive value="0" />
+    </xs:restriction>
+  </xs:simpleType>
+</xs:schema>

@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="utf-8" ?>
+
+<!-- ********************** THIS FILE HAS BEEN GENERATED FROM TEMPLATE SQLObject.cst (3/26/2007)********************** -->
+
+<SQL>
+	<LOAD>
+		<![CDATA[	
+			SELECT 
+				police_station_id,
+				claim_id,
+				report_number,
+				officer_name,
+				created_by,
+				created_date,
+				modified_by,
+				modified_date,
+				police_report_id
+			FROM elp_police_report 
+			WHERE
+				police_report_id = :police_report_id
+		]]>
+	</LOAD>
+	<LOAD_LIST>	
+	</LOAD_LIST>
+	<LOADBYCLAIMID>
+		SELECT 
+				police_station_id,
+				claim_id,
+				report_number,
+				officer_name,
+				created_by,
+				created_date,
+				modified_by,
+				modified_date,
+				police_report_id
+			FROM elp_police_report 
+			WHERE
+				claim_id = :claim_id	
+	</LOADBYCLAIMID>
+  <LOADCLAIMSBYREPORTNUM>
+    select claim_number
+    from elp_police_report  pr
+    join elp_claim          c  on c.claim_id = pr.claim_id
+    where pr.police_Station_ID = :police_station_id
+    and upper(Report_Number)   = :report_number
+  </LOADCLAIMSBYREPORTNUM>
+	<UPDATE>
+		<![CDATA[	
+			UPDATE elp_police_report SET
+				police_station_id = :police_station_id,
+				claim_id = :claim_id,
+				report_number = :report_number,
+				officer_name = :officer_name,
+				modified_by = :modified_by
+			WHERE
+				police_report_id = :police_report_id
+		]]>
+	</UPDATE>
+	<INSERT>
+			INSERT INTO elp_police_report
+					(			
+				police_station_id, 
+				claim_id, 
+				report_number, 
+				officer_name, 
+				created_by,
+				police_report_id
+					)
+			VALUES
+					(			
+				:police_station_id, 
+				:claim_id, 
+				:report_number, 
+				:officer_name, 
+				:created_by,
+				:police_report_id
+					)
+	</INSERT>
+	<DELETE>
+			DELETE FROM elp_police_report
+			WHERE
+				police_report_id = :police_report_id
+	</DELETE>
+</SQL> 
+
+

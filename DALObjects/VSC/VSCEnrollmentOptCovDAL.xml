@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8" ?>
+
+<!-- ********************** THIS FILE HAS BEEN GENERATED FROM TEMPLATE SQLObject.cst (4/10/2007)********************** -->
+
+<SQL>
+	<LOAD>
+		<![CDATA[	
+			SELECT 
+				enrollment_id,
+				optional_coverage_code,
+				created_by,
+				created_date,
+				modified_by,
+				modified_date,
+				optional_coverage_amount,
+				optional_coverage_id
+			FROM elp_vsc_enrollment_opt_cov 
+			WHERE
+				optional_coverage_id = :optional_coverage_id
+		]]>
+	</LOAD>
+	<LOAD_LIST>		
+	</LOAD_LIST>	
+	<UPDATE>
+		<![CDATA[	
+			UPDATE elp_vsc_enrollment_opt_cov SET
+				enrollment_id = :enrollment_id,
+				optional_coverage_code = :optional_coverage_code,
+				optional_coverage_amount = :optional_coverage_amount,
+				modified_by = :modified_by
+			WHERE
+				optional_coverage_id = :optional_coverage_id
+		]]>
+	</UPDATE>
+	<INSERT>
+			INSERT INTO elp_vsc_enrollment_opt_cov
+					(			
+				enrollment_id, 
+				optional_coverage_code, 
+				optional_coverage_amount, 
+				created_by,
+				optional_coverage_id
+					)
+			VALUES
+					(			
+				:enrollment_id, 
+				:optional_coverage_code, 
+				:optional_coverage_amount, 
+				:created_by,
+				:optional_coverage_id
+					)
+	</INSERT>
+	<DELETE>
+			DELETE FROM elp_vsc_enrollment_opt_cov
+			WHERE
+				optional_coverage_id = :optional_coverage_id
+	</DELETE>
+</SQL> 
+
+

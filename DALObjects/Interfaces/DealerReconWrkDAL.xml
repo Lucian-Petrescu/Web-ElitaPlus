@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8" ?>
+
+<!-- ********************** THIS FILE HAS BEEN GENERATED FROM TEMPLATE SQLObject v2.cst (11/8/2013)********************** -->
+
+<SQL>
+  <LOAD>elp_tbl_dealer_recon_wrk.Load</LOAD>
+  <LOAD_LIST>elp_tbl_dealer_recon_wrk.LoadList</LOAD_LIST>
+  <LOAD_REJECT_LIST>elp_tbl_dealer_recon_wrk.LoadRejectList</LOAD_REJECT_LIST>
+  <UPDATE>elp_tbl_dealer_recon_wrk.Modify</UPDATE>
+  <UPDATE_HEADER_COUNT>elp_tbl_dealer_recon_wrk.UpdateHeaderCount</UPDATE_HEADER_COUNT>
+  <CountSearch>
+    select count(1)
+    from elp_dealer_recon_wrk drw
+    where drw.dealerfile_processed_id =:dealerfile_processed_id
+    and   ( (:pi_record_mode is null  and reject_reason is not null )
+    or (:pi_record_mode = 'VAL' and certificate_loaded in ('D','V', 'A', 'S') and DRW.record_type not in ('AX','NX','XX') )
+    or (:pi_record_mode = 'LOD' and certificate_loaded in ('L') )
+    or (:pi_record_mode = 'BYP' and DRW.record_type in  ('XX','NX','AX' ) )
+    or (:pi_record_mode = 'REJ' and reject_reason is not null and DRW.record_type not in ('AX','NX','XX'))
+    or (:pi_record_mode = 'REMREJ' and reject_reason is not null and drw.suc_reconciliation_id is null and DRW.record_type not in ('AX','NX','XX'))
+    )
+    and  ( :pi_record_type is null   or  upper(drw.record_type) = upper(:pi_record_type) )
+    and  ( :pi_reject_code is null   or  upper(drw.reject_code) = upper(:pi_reject_code) )
+    and  ( :pi_reject_reason is null or  upper(drw.reject_reason) like upper(:pi_reject_reason)
+    and (drw.record_type = NVL(:fi_record_type,'%')
+    or drw.reject_reason = nvl(:fi_reject_reason,'%')
+    or drw.reject_code = nvl(:fi_reject_code,'%')))
+  </CountSearch>
+  <PARENT_COUNT>
+    Select count(1)
+    from elp_dealer_recon_wrk drw
+    inner join  elp_dealerfile_processed dp
+    on dp.dealerfile_processed_id = drw.dealerfile_processed_id
+    left outer join elp_dealer d
+    on d.dealer_id = dp.dealer_id
+    left outer join (select msg_code, label_id, msg_parameter_count
+    from elp_message_code
+    inner join elp_list_item li  on msg_type = li.list_item_id and li.code = 'DLREJECT'
+    inner join elp_list l        on l.list_id = li.list_id     and  l.code = 'MSGTYPE') mc       on mc.msg_code = drw.reject_code
+    left outer join elp_label l  on l.label_id = mc.label_id
+    WHERE (dp.dealerfile_processed_id = :pi_dealerfile_processed_id
+    or dp.parent_dealerfile_processed_id =  :pi_dealerfile_processed_id)
+    and   ( (:pi_record_mode is null  and reject_reason is not null )
+    or (:pi_record_mode = 'VAL' and certificate_loaded in ('D','V', 'A', 'S') and DRW.record_type not in ('AX','NX','XX') )
+    or (:pi_record_mode = 'LOD' and certificate_loaded in ('L') )
+    or (:pi_record_mode = 'BYP' and DRW.record_type in  ('XX','NX','AX' ) )
+    or (:pi_record_mode = 'REJ' and reject_reason is not null and DRW.record_type not in ('AX','NX','XX'))
+    or (:pi_record_mode = 'REMREJ' and reject_reason is not null and drw.suc_reconciliation_id is null and DRW.record_type not in ('AX','NX','XX'))
+    )
+    and  ( :pi_record_type is null   or  upper(drw.record_type) = upper(:pi_record_type) )
+    and  ( :pi_reject_code is null   or  upper(drw.reject_code) = upper(:pi_reject_code) )
+    and  ( :pi_reject_reason is null or  upper(drw.reject_reason) like upper(:pi_reject_reason)
+    and (drw.record_type = NVL(:fi_record_type,'%')
+    or drw.reject_reason = nvl(:fi_reject_reason,'%')
+    or drw.reject_code = nvl(:fi_reject_code,'%')))
+  </PARENT_COUNT>
+</SQL>

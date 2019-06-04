@@ -1,0 +1,224 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+
+<!-- ********************** THIS FILE HAS BEEN GENERATED FROM TEMPLATE SQLObject.cst (12/22/2010)********************** -->
+
+<SQL>
+  <LOAD>
+    <![CDATA[	
+			SELECT 
+				code,
+				description,
+				coverage_loss_id,
+				dealer_id,
+				available_for_serv_center_id,
+				add_item_allowed,
+				add_item_after_expired,
+				price_group_field_id,
+				allowed_occurrences_id,
+				combined_with_repair,
+				modified_date,
+				modified_by,
+				created_date,
+				created_by,
+        service_class_id,
+        service_type_id,
+				special_service_id
+			FROM  elp_special_service 
+			WHERE
+				special_service_id = :special_service_id
+		]]>
+  </LOAD>
+  <LOAD_LIST>
+    <![CDATA[		
+			  select spl_svc.special_service_id,
+               C.CODE || ' - ' || d.dealer_name DEALER_NAME,
+               getdescriptionfromlistitem(cov_loss.coverage_type_id,:language_id) coverage_type,
+               getdescriptionfromlistitem(cov_loss.cause_of_loss_id,:language_id) cause_of_loss
+                
+        from elp_coverage_loss cov_loss,  elp_special_service spl_svc, elp_dealer d, elp_company C	 
+        where spl_svc.coverage_loss_id = cov_loss.coverage_loss_id
+        and spl_svc.dealer_id = d.dealer_id   
+        and d.company_id = C.company_id
+	      --dynamic_in_clause
+				--dynamic_where_clause
+        order by upper(dealer_name), upper(coverage_type), upper(cause_of_loss)
+
+			]]>
+  </LOAD_LIST>
+  <UPDATE>
+    <![CDATA[	
+			UPDATE  elp_special_service SET
+				code = :code,
+				description = :description,
+				coverage_loss_id = :coverage_loss_id,
+				dealer_id = :dealer_id,
+				available_for_serv_center_id = :available_for_serv_center_id,
+				add_item_allowed = :add_item_allowed,
+				add_item_after_expired = :add_item_after_expired,
+				price_group_field_id = :price_group_field_id,
+				allowed_occurrences_id = :allowed_occurrences_id,
+				combined_with_repair = :combined_with_repair,
+				modified_by = :modified_by,
+        service_class_id = :service_class_id,
+        service_type_id = :service_type_id
+			WHERE
+				special_service_id = :special_service_id
+		]]>
+  </UPDATE>
+  <INSERT>
+    INSERT INTO  elp_special_service
+    (
+    code,
+    description,
+    coverage_loss_id,
+    dealer_id,
+    available_for_serv_center_id,
+    add_item_allowed,
+    add_item_after_expired,
+    price_group_field_id,
+    allowed_occurrences_id,
+    combined_with_repair,
+    created_by,
+    service_class_id,
+    service_type_id,
+    special_service_id
+    )
+    VALUES
+    (
+    :code,
+    :description,
+    :coverage_loss_id,
+    :dealer_id,
+    :available_for_serv_center_id,
+    :add_item_allowed,
+    :add_item_after_expired,
+    :price_group_field_id,
+    :allowed_occurrences_id,
+    :combined_with_repair,
+    :created_by,
+    :service_class_id,
+    :service_type_id,
+    :special_service_id
+    )
+  </INSERT>
+  <DELETE>
+    DELETE FROM  elp_special_service
+    WHERE
+    special_service_id = :special_service_id
+  </DELETE>
+  <VALIDATE_COVERAGE_LOSS>
+    Select * FROM elp_special_service
+    WHERE
+    dealer_id = :dealer_id
+    and coverage_loss_id= :coverage_loss_id
+    </VALIDATE_COVERAGE_LOSS>
+  <GET_AVAIABLE_SPL_SVC_LIST_FOR_COVERAGE_DEALER_PRODCODE>
+    select *
+    from elp_coverage_loss c,
+    elp_special_service spl_svc,
+    elp_product_special_service p_spl_svc,
+    elp_product_code p
+    where	c.company_group_id =  :company_group_id
+    and c.coverage_type_id = :coverage_type_id
+    and c.coverage_loss_id = spl_svc.coverage_loss_id
+    and spl_svc.special_service_id = p_spl_svc.special_service_id
+    and spl_svc.dealer_id = :dealer_id
+    and p_spl_svc.product_code_id = p.product_code_id
+    and p.product_code = :product_code
+  </GET_AVAIABLE_SPL_SVC_LIST_FOR_COVERAGE_DEALER_PRODCODE>
+  <WS_GETSPLSVCBYCLAIM>
+    select
+    distinct
+    ess.code special_service_code,
+    ess.description special_service_description,
+    (select getcodefromlistitem(ecl.coverage_type_id) from dual) coverage_type_code,
+    (select getdescriptionfromlistitem(ecl.coverage_type_id, lang.language_id) from dual) coverage_type_desc,
+    (select dealer from elp_dealer where ec.dealer_id = elp_dealer.dealer_id) dealer_code,
+    (select dealer_name from elp_dealer where ec.dealer_id = elp_dealer.dealer_id) dealer_desc,
+    (select getcodefromlistitem(ess.available_for_serv_center_id) from dual) avalbe_for_serv_cntr_code,
+    (select getdescriptionfromlistitem(ess.available_for_serv_center_id,lang.language_id) from dual) avalbe_for_serv_cntr_desc,
+    (select getcodefromlistitem(ess.add_item_allowed) from dual) add_item_allowed_code,
+    (select getdescriptionfromlistitem(ess.add_item_allowed, lang.language_id) from dual) add_item_allowed_desc,
+    (select getcodefromlistitem(ess.add_item_after_expired) from dual) add_item_after_expired_code,
+    (select getdescriptionfromlistitem(ess.add_item_after_expired, lang.language_id) from dual) add_item_after_expired_desc,
+    (select getcodefromlistitem(ess.SERVICE_CLASS_ID) from dual) service_class_code,
+    (select getdescriptionfromlistitem(ess.SERVICE_CLASS_ID, lang.language_id) from dual) service_class_desc,
+    (select getcodefromlistitem(ess.SERVICE_TYPE_ID) from dual) service_type_code,
+    (select getdescriptionfromlistitem(ess.SERVICE_TYPE_ID, lang.language_id) from dual) service_type_desc,
+    (select getcodefromlistitem(ess.allowed_occurrences_id) from dual) allowed_occurrences_code,
+    (select getdescriptionfromlistitem(ess.allowed_occurrences_id, lang.language_id) from dual) allowed_occurrences_desc,
+    (select getcodefromlistitem(ess.combined_with_repair) from dual) combined_with_repair_code,
+    (select getdescriptionfromlistitem(ess.combined_with_repair, lang.language_id) from dual) combined_with_repair_desc
+    from
+    elp_claim eclaim inner join elp_cert_item_coverage ecic on eclaim.cert_item_coverage_id = ecic.cert_item_coverage_id
+    inner join elp_cert_item eci on eci.cert_item_id = ecic.cert_item_id
+    inner join elp_cert ec on ec.cert_id = ecic.cert_id
+    inner join elp_product_code epc on ec.product_code = epc.product_code
+    inner join elp_product_special_service epss on epc.product_code_id = epss.product_code_id
+    inner join elp_special_service ess on ess.special_service_id = epss.special_service_id
+    inner join elp_coverage_loss ecl on ecl.coverage_loss_id = ess.coverage_loss_id,
+    elp_language lang
+    where
+    lang.language_id = :language_id and
+    eclaim.claim_number = :claim_number and
+    ec.dealer_id = ess.dealer_id and
+    ess.available_for_serv_center_id = :available_for_serv_center_id and
+    ecl.company_group_id = :company_group_id
+    --dynamic_where_clause
+  </WS_GETSPLSVCBYCLAIM>
+  
+  <WS_GETSPLSVCBYCERT>
+    select
+    ess.code special_service_code,
+    ess.description special_service_description,
+    (select getcodefromlistitem(ecl.coverage_type_id) from dual) coverage_type_code,
+    (select getdescriptionfromlistitem(ecl.coverage_type_id, lang.language_id) from dual) coverage_type_desc,
+    (select dealer from elp_dealer where ec.dealer_id = elp_dealer.dealer_id) dealer_code,
+    (select dealer_name from elp_dealer where ec.dealer_id = elp_dealer.dealer_id) dealer_desc,
+    (select getcodefromlistitem(ess.available_for_serv_center_id) from dual) avalbe_for_serv_cntr_code,
+    (select getdescriptionfromlistitem(ess.available_for_serv_center_id,lang.language_id) from dual) avalbe_for_serv_cntr_desc,
+    (select getcodefromlistitem(ess.add_item_allowed) from dual) add_item_allowed_code,
+    (select getdescriptionfromlistitem(ess.add_item_allowed, lang.language_id) from dual) add_item_allowed_desc,
+    (select getcodefromlistitem(ess.add_item_after_expired) from dual) add_item_after_expired_code,
+    (select getdescriptionfromlistitem(ess.add_item_after_expired, lang.language_id) from dual) add_item_after_expired_desc,
+    (select getcodefromlistitem(ess.SERVICE_CLASS_ID) from dual) service_class_code,
+    (select getdescriptionfromlistitem(ess.SERVICE_CLASS_ID, lang.language_id) from dual) service_class_desc,
+    (select getcodefromlistitem(ess.SERVICE_TYPE_ID) from dual) service_type_code,
+    (select getdescriptionfromlistitem(ess.SERVICE_TYPE_ID, lang.language_id) from dual) service_type_desc,
+    (select getcodefromlistitem(ess.allowed_occurrences_id) from dual) allowed_occurrences_code,
+    (select getdescriptionfromlistitem(ess.allowed_occurrences_id, lang.language_id) from dual) allowed_occurrences_desc,
+    (select getcodefromlistitem(ess.combined_with_repair) from dual) combined_with_repair_code,
+    (select getdescriptionfromlistitem(ess.combined_with_repair, lang.language_id) from dual) combined_with_repair_desc
+    from
+    elp_cert ec inner join elp_product_code epc on ec.product_code = epc.product_code
+    inner join elp_product_special_service epss on epc.product_code_id = epss.product_code_id
+    inner join elp_special_service ess on ess.special_service_id = epss.special_service_id
+    inner join elp_coverage_loss ecl on ecl.coverage_loss_id = ess.coverage_loss_id,
+    elp_language lang
+    where
+    lang.language_id = :language_id and
+    ec.dealer_id = ess.dealer_id and
+    ec.cert_number =  :cert_number and
+    ess.available_for_serv_center_id = :available_for_serv_center_id and
+    ecl.company_group_id = :company_group_id
+    --dynamic_where_clause
+  </WS_GETSPLSVCBYCERT>
+  <GET_SERVICE_TYPE_FROM_SERVICE_CLASS>
+    Select service_type_id id, li.code,GETDESCRIPTIONFROMLISTITEM(service_type_id,lang.language_id) description
+    from elp_service_class_type sct, elp_list_item li,elp_language lang
+    Where sct.service_type_id = li.list_item_id and service_class_id = :service_class_id and
+    lang.language_id = :language_id
+  </GET_SERVICE_TYPE_FROM_SERVICE_CLASS>
+  <PRICE_GROUPS_LIST>
+    SELECT distinct
+    LI.list_item_id id, rawtohex(D.language_id) language_id, LI.code code, D.translation description
+    FROM
+    ELITA.ELP_LIST L, ELITA.ELP_LIST_ITEM LI, ELITA.ELP_DICT_ITEM_TRANSLATION D
+    WHERE
+    L.list_id = LI.list_id
+    and L.code = 'PRCGROUP'
+    and LI.dict_item_id = D.dict_item_id and li.active_flag='Y'
+    and d.language_id=:language_id
+    ORDER BY UPPER(description)
+  </PRICE_GROUPS_LIST>
+</SQL>

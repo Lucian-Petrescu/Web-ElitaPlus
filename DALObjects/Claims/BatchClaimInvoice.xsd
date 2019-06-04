@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<xs:schema targetNamespace="http://tempuri.org/XMLSchema.xsd" elementFormDefault="qualified"
+	xmlns="http://tempuri.org/XMLSchema.xsd" xmlns:mstns="http://tempuri.org/XMLSchema.xsd"
+	xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+	<xs:element name="BatchClaimInvoice">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="INVOICE_TRANS_DETAIL">
+					<xs:complexType>
+						<xs:sequence>
+							<xs:element name="INVOICE_TRANS_ID" type="xs:string" nillable="true" />
+							<xs:element name="INVOICE_TRANS_DETAIL_ID" type="xs:string" nillable="true" />
+							<xs:element name="CLAIM_ID" type="xs:string" nillable="true" />
+							<xs:element name="CLAIM_MODIFIED_DATE" type="xs:date" nillable="true" />
+							<xs:element name="RESERVE_AMOUNT" type="xs:double" nillable="true" />
+							<xs:element name="PAYMENT_AMOUNT" type="xs:double" nillable="true" />
+							<xs:element name="REPAIR_DATE" type="xs:date" nillable="true" />
+							<xs:element name="PICKUP_DATE" type="xs:date" nillable="true" />
+							<xs:element name="SPARE_PARTS" type="xs:string" nillable="true" />
+							<xs:element name="CLOSE_CLAIM" type="xs:string" nillable="true" />
+							<xs:element name="USER_ID" type="xs:string" nillable="true" />
+							<xs:element name="ACTION" type="xs:string" nillable="true" />
+              <xs:element name="SALVAGE_AMOUNT" type="xs:double" nillable="true" />
+              <xs:element name="EXCLUDE_DEDUCTIBLE" type="xs:string" nillable="true" />
+              <xs:element name="TOTAL_BONUS" type="xs:double" nillable="true" />
+              <xs:element name="PAYMENT_AMOUNT_TOTAL" type="xs:double" nillable="true" />
+						</xs:sequence>
+					</xs:complexType>
+				</xs:element>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+</xs:schema>

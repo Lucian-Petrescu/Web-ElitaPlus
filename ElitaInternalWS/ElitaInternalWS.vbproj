@@ -1,0 +1,1301 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="12.0">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <ProductVersion>9.0.30729</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{7985ABEF-1C5C-4EC5-B178-3D1D374A910B}</ProjectGuid>
+    <SccProjectName>SAK</SccProjectName>
+    <SccLocalPath>SAK</SccLocalPath>
+    <SccAuxPath>SAK</SccAuxPath>
+    <SccProvider>SAK</SccProvider>
+    <ProjectTypeGuids>{349c5851-65df-11da-9384-00065b846f21};{F184B08F-C81C-45F6-A57F-5ABD9991F28F}</ProjectTypeGuids>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ApplicationIcon>
+    </ApplicationIcon>
+    <AssemblyKeyContainerName>
+    </AssemblyKeyContainerName>
+    <AssemblyName>ElitaInternalWS</AssemblyName>
+    <AssemblyOriginatorKeyFile>
+    </AssemblyOriginatorKeyFile>
+    <AssemblyOriginatorKeyMode>None</AssemblyOriginatorKeyMode>
+    <DefaultClientScript>JScript</DefaultClientScript>
+    <DefaultHTMLPageLayout>Grid</DefaultHTMLPageLayout>
+    <DefaultTargetSchema>IE50</DefaultTargetSchema>
+    <DelaySign>false</DelaySign>
+    <OutputType>Library</OutputType>
+    <OptionCompare>Binary</OptionCompare>
+    <OptionExplicit>On</OptionExplicit>
+    <OptionStrict>Off</OptionStrict>
+    <RootNamespace>ElitaInternalWS</RootNamespace>
+    <StartupObject>
+    </StartupObject>
+    <FileUpgradeFlags>
+    </FileUpgradeFlags>
+    <MyType>Windows</MyType>
+    <UpgradeBackupLocation>
+    </UpgradeBackupLocation>
+    <OldToolsVersion>4.0</OldToolsVersion>
+    <TargetFrameworkVersion>v4.6.2</TargetFrameworkVersion>
+    <UseIISExpress>false</UseIISExpress>
+    <IISExpressSSLPort />
+    <IISExpressAnonymousAuthentication />
+    <IISExpressWindowsAuthentication />
+    <IISExpressUseClassicPipelineMode />
+    <TargetFrameworkProfile />
+    <UseGlobalApplicationHostFile />
+    <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..\</SolutionDir>
+    <RestorePackages>true</RestorePackages>
+    <WcfConfigValidationEnabled>True</WcfConfigValidationEnabled>
+    <Use64BitIISExpress />
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <OutputPath>bin\</OutputPath>
+    <DocumentationFile>ElitaInternalWS.xml</DocumentationFile>
+    <BaseAddress>285212672</BaseAddress>
+    <ConfigurationOverrideFile>
+    </ConfigurationOverrideFile>
+    <DefineConstants>TRACE_BUILD</DefineConstants>
+    <DefineDebug>true</DefineDebug>
+    <DefineTrace>true</DefineTrace>
+    <DebugSymbols>true</DebugSymbols>
+    <Optimize>false</Optimize>
+    <RegisterForComInterop>false</RegisterForComInterop>
+    <RemoveIntegerChecks>false</RemoveIntegerChecks>
+    <TreatWarningsAsErrors>false</TreatWarningsAsErrors>
+    <WarningLevel>0</WarningLevel>
+    <NoWarn>42016,42017,42018,42019,42032,42353,42354,42355</NoWarn>
+    <DebugType>full</DebugType>
+    <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
+    <Prefer32Bit>false</Prefer32Bit>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <OutputPath>bin\</OutputPath>
+    <DocumentationFile>ElitaInternalWS.xml</DocumentationFile>
+    <BaseAddress>285212672</BaseAddress>
+    <ConfigurationOverrideFile>
+    </ConfigurationOverrideFile>
+    <DefineConstants>
+    </DefineConstants>
+    <DefineDebug>false</DefineDebug>
+    <DefineTrace>true</DefineTrace>
+    <DebugSymbols>false</DebugSymbols>
+    <Optimize>true</Optimize>
+    <RegisterForComInterop>false</RegisterForComInterop>
+    <RemoveIntegerChecks>false</RemoveIntegerChecks>
+    <TreatWarningsAsErrors>false</TreatWarningsAsErrors>
+    <WarningLevel>0</WarningLevel>
+    <NoWarn>42016,42017,42018,42019,42032,42353,42354,42355</NoWarn>
+    <DebugType>none</DebugType>
+    <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
+    <Prefer32Bit>false</Prefer32Bit>
+  </PropertyGroup>
+  <PropertyGroup Condition="$(TeamBuildOutDir) != '' ">
+    <OutDir>$(TeamBuildOutDir)</OutDir>
+    <NoWarn>42353,42354,42355</NoWarn>
+  </PropertyGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Common\Common.vbproj">
+      <Project>{54bb47a8-3dd9-41a7-b4a3-62869af3fcf1}</Project>
+      <Name>Common</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\DataAccessInterface\DataAccessInterface.vbproj">
+      <Project>{22d67a98-5e6d-4427-98af-38d1465e8fcd}</Project>
+      <Name>DataAccessInterface</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\DataAccess\DataAccess.vbproj">
+      <Project>{50b0b6f9-1d3e-4b7e-8943-e34e29940414}</Project>
+      <Name>DataAccess</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\DataEntities\DataEntities.vbproj">
+      <Project>{530b0245-ec69-4781-a1ec-5995c14b66d0}</Project>
+      <Name>DataEntities</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\External.AppleGSX\External.AppleGSX.vbproj">
+      <Project>{e50c26be-fe9e-48ac-a9d1-6915e1f44cba}</Project>
+      <Name>External.AppleGSX</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\External.Interfaces\External.Interfaces.vbproj">
+      <Project>{b4bc4b0c-f901-4558-8de1-58100e997036}</Project>
+      <Name>External.Interfaces</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Security\Security.vbproj">
+      <Project>{3e2ec759-6ae6-4db3-9400-cc6d389a960a}</Project>
+      <Name>Security</Name>
+    </ProjectReference>
+    <Reference Include="Assurant.Common.MessagePublishing, Version=2.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Elita.Common.MessagePublishing.2.0.0\lib\net462\Assurant.Common.MessagePublishing.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Assurant.Common.Types, Version=2.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Elita.Assurant.Common.Types.2.0.0\lib\net462\Assurant.Common.Types.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Assurant.Common.Validation, Version=1.0.1.6, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Elita.Assurant.Common.Validation.2.0.0\lib\net462\Assurant.Common.Validation.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Assurant.Elita.Audit, Version=3.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\Assurant.Elita.Audit.3.0.0\lib\net462\Assurant.Elita.Audit.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Assurant.Elita.Base.DataAccess, Version=4.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\Assurant.Elita.Base.DataAccess.4.0.0\lib\net462\Assurant.Elita.Base.DataAccess.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Assurant.Elita.ClientIntegration, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Assurant.Elita.ClientIntegration.4.0.1\lib\net462\Assurant.Elita.ClientIntegration.dll</HintPath>
+    </Reference>
+    <Reference Include="Assurant.Elita.Configuration, Version=4.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\Assurant.Elita.Configuration.4.0.2\lib\net462\Assurant.Elita.Configuration.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Assurant.Elita.Fulfillment.BusinessRules, Version=14.6.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\Assurant.Elita.Fulfillment.BusinessRules.14.6.0.1\lib\net46\Assurant.Elita.Fulfillment.BusinessRules.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Assurant.Elita.Fulfillment.BusinessRulesEngineInterface, Version=14.6.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\Assurant.Elita.Fulfillment.BusinessRules.14.6.0.1\lib\net46\Assurant.Elita.Fulfillment.BusinessRulesEngineInterface.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Assurant.Elita.Fulfillment.ElitaRulesEngine, Version=14.6.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\Assurant.Elita.Fulfillment.BusinessRules.14.6.0.1\lib\net46\Assurant.Elita.Fulfillment.ElitaRulesEngine.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Assurant.Elita.Security, Version=4.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\Assurant.Elita.Security.4.0.1\lib\net46\Assurant.Elita.Security.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Assurant.Integration.Rest.HttpProvider">
+      <HintPath>..\packages\Assurant.Integration.Rest.HttpProvider.1.0.4\lib\net46\Assurant.Integration.Rest.HttpProvider.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="EntityFramework, Version=4.4.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\EntityFramework.5.0.0\lib\net40\EntityFramework.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="JetBrains.Annotations, Version=11.1.0.0, Culture=neutral, PublicKeyToken=1010a0d8d6380325, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\JetBrains.Annotations.11.1.0\lib\net20\JetBrains.Annotations.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Microsoft.Azure.KeyVault.Core, Version=1.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Azure.KeyVault.Core.1.0.0\lib\net40\Microsoft.Azure.KeyVault.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Practices.ServiceLocation">
+      <HintPath>..\packages\CommonServiceLocator.1.0\lib\NET35\Microsoft.Practices.ServiceLocation.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Microsoft.Practices.Unity">
+      <HintPath>..\packages\Unity.2.1.505.2\lib\NET35\Microsoft.Practices.Unity.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Microsoft.Practices.Unity.Configuration">
+      <HintPath>..\packages\Unity.2.1.505.2\lib\NET35\Microsoft.Practices.Unity.Configuration.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Microsoft.Web.Services3, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL" />
+    <Reference Include="Microsoft.WindowsAzure.Storage, Version=9.3.2.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\WindowsAzure.Storage.9.3.3\lib\net45\Microsoft.WindowsAzure.Storage.dll</HintPath>
+    </Reference>
+    <Reference Include="Newtonsoft.Json">
+      <HintPath>..\packages\Newtonsoft.Json.11.0.2\lib\net45\Newtonsoft.Json.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Oracle.ManagedDataAccess, Version=4.122.1.0, Culture=neutral, PublicKeyToken=89b483f429c47342, processorArchitecture=MSIL">
+      <HintPath>..\packages\Oracle.ManagedDataAccess.12.2.1100\lib\net40\Oracle.ManagedDataAccess.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="RestSharp">
+      <HintPath>..\packages\RestSharp.105.2.3\lib\net46\RestSharp.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="RMEncryptor, Version=1.0.1920.15592, Culture=neutral">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\Common Components\RMEncryptor.dll</HintPath>
+    </Reference>
+    <Reference Include="System">
+      <Name>System</Name>
+    </Reference>
+    <Reference Include="System.ComponentModel.DataAnnotations" />
+    <Reference Include="System.Configuration" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="System.Data.Entity" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.EnterpriseServices" />
+    <Reference Include="System.IdentityModel">
+      <RequiredTargetFramework>3.0</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="System.Net" />
+    <Reference Include="System.Net.Http, Version=4.1.1.1, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\System.Net.Http.4.3.2\lib\net46\System.Net.Http.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.Net.Http.Extensions">
+      <HintPath>..\packages\System.Net.Http.Formatting.Extension.5.2.3.0\lib\System.Net.Http.Extensions.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.Net.Http.Formatting, Version=5.2.3.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\System.Net.Http.Formatting.Extension.5.2.3.0\lib\System.Net.Http.Formatting.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.Net.Http.Primitives">
+      <HintPath>..\packages\System.Net.Http.Formatting.Extension.5.2.3.0\lib\System.Net.Http.Primitives.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.Runtime.Serialization">
+      <RequiredTargetFramework>3.0</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="System.Security.Cryptography.Algorithms">
+      <HintPath>..\packages\System.Security.Cryptography.Algorithms.4.3.0\lib\net46\System.Security.Cryptography.Algorithms.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.Security.Cryptography.Encoding">
+      <HintPath>..\packages\System.Security.Cryptography.Encoding.4.3.0\lib\net46\System.Security.Cryptography.Encoding.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.Security.Cryptography.Primitives">
+      <HintPath>..\packages\System.Security.Cryptography.Primitives.4.3.0\lib\net46\System.Security.Cryptography.Primitives.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.Security.Cryptography.X509Certificates">
+      <HintPath>..\packages\System.Security.Cryptography.X509Certificates.4.3.0\lib\net46\System.Security.Cryptography.X509Certificates.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.ServiceModel">
+      <RequiredTargetFramework>3.0</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="System.Data">
+      <Name>System.Data</Name>
+    </Reference>
+    <Reference Include="System.ServiceModel.Activation" />
+    <Reference Include="System.ServiceModel.Web" />
+    <Reference Include="System.Web">
+      <Name>System.Web</Name>
+    </Reference>
+    <Reference Include="System.Web.ApplicationServices" />
+    <Reference Include="System.Web.DynamicData" />
+    <Reference Include="System.Web.Entity" />
+    <Reference Include="System.Web.Extensions" />
+    <Reference Include="System.Web.Extensions.Design" />
+    <Reference Include="System.Web.Services">
+      <Name>System.Web.Services</Name>
+    </Reference>
+    <Reference Include="System.Xml">
+      <Name>System.XML</Name>
+    </Reference>
+    <ProjectReference Include="..\BusinessObjects\BusinessObjects.vbproj">
+      <Name>BusinessObjects</Name>
+      <Project>{24AF00EF-6626-4D29-BEFB-F899C2A85AAD}</Project>
+      <Package>{F184B08F-C81C-45F6-A57F-5ABD9991F28F}</Package>
+    </ProjectReference>
+    <ProjectReference Include="..\Business\Business.vbproj">
+      <Project>{26a9c5d6-579b-4b5f-bf52-2c596819d92b}</Project>
+      <Name>Business</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\DALObjects\DALObjects.vbproj">
+      <Name>DALObjects</Name>
+      <Project>{D327817B-902A-4113-9336-4B53C560D50E}</Project>
+      <Package>{F184B08F-C81C-45F6-A57F-5ABD9991F28F}</Package>
+    </ProjectReference>
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="WindowsBase" />
+  </ItemGroup>
+  <ItemGroup>
+    <Import Include="Microsoft.VisualBasic" />
+    <Import Include="System" />
+    <Import Include="System.Collections" />
+    <Import Include="System.Data" />
+    <Import Include="System.Diagnostics" />
+    <Import Include="System.Linq" />
+    <Import Include="System.Web" />
+    <Import Include="System.Web.Services" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Accounting\1.0\AccountingService.svc.vb">
+      <DependentUpon>AccountingService.svc</DependentUpon>
+    </Compile>
+    <Compile Include="Accounting\1.0\IAccountingService.vb" />
+    <Compile Include="Accounting\2.0\AccountingService.svc.vb">
+      <DependentUpon>AccountingService.svc</DependentUpon>
+    </Compile>
+    <Compile Include="Accounting\2.0\IAccountingService.vb" />
+    <Compile Include="Accounting\FelitaWS.asmx.vb">
+      <DependentUpon>FelitaWS.asmx</DependentUpon>
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="AppServices\SA\SNMPortal\ClaimReportService.svc.vb">
+      <DependentUpon>ClaimReportService.svc</DependentUpon>
+    </Compile>
+    <Compile Include="AppServices\SA\SNMPortal\DataContracts\GetClaimCharterReportNextPageRequest.vb" />
+    <Compile Include="AppServices\SA\SNMPortal\DataContracts\GetClaimCharterReportRequest.vb" />
+    <Compile Include="AppServices\SA\SNMPortal\DataContracts\GetClaimCharterReportResponse.vb" />
+    <Compile Include="AppServices\SA\SNMPortal\DataContracts\GetClaimChartReportDetails.vb" />
+    <Compile Include="AppServices\SA\SNMPortal\Faults\InvalidRequest.vb" />
+    <Compile Include="AppServices\SA\SNMPortal\IClaimReportService.vb" />
+    <Compile Include="AppServices\SA\SNMPortal\SNMPortalConstants.vb" />
+    <Compile Include="AppServices\SA\SNMPortal\APRService.svc.vb">
+      <DependentUpon>APRService.svc</DependentUpon>
+    </Compile>
+    <Compile Include="AppServices\SA\SNMPortal\DataContracts\UpdateIMEIRequest.vb" />
+    <Compile Include="AppServices\SA\SNMPortal\DataContracts\UpdateIMEIResponse.vb" />
+    <Compile Include="AppServices\SA\SNMPortal\IAPRService.vb" />
+    <Compile Include="AssemblyInfo.vb">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Certificate\1.0\CertificateDocumentService.svc.vb">
+      <DependentUpon>CertificateDocumentService.svc</DependentUpon>
+    </Compile>
+    <Compile Include="Certificate\1.0\CertificateService.svc.vb">
+      <DependentUpon>CertificateService.svc</DependentUpon>
+    </Compile>
+    <Compile Include="Certificate\1.0\CertificateServiceHelper.vb" />
+    <Compile Include="Certificate\1.0\ICertificateDocumentService.vb" />
+    <Compile Include="Certificate\1.0\ICertificateService.vb" />
+    <Compile Include="Claim\1.0\ClaimDocumentService.svc.vb">
+      <DependentUpon>ClaimDocumentService.svc</DependentUpon>
+    </Compile>
+    <Compile Include="Claim\1.0\ClaimService.svc.vb">
+      <DependentUpon>ClaimService.svc</DependentUpon>
+    </Compile>
+    <Compile Include="Claim\1.0\ClaimServiceHelper.vb" />
+    <Compile Include="Claim\1.0\IClaimDocumentService.vb" />
+    <Compile Include="Claim\1.0\IClaimService.vb" />
+    <Compile Include="Claim\2.0\ClaimDocumentService.svc.vb">
+      <DependentUpon>ClaimDocumentService.svc</DependentUpon>
+    </Compile>
+    <Compile Include="Claim\2.0\IClaimDocumentService.vb" />
+    <Compile Include="Common\ElitaWcf.vb" />
+    <Compile Include="Common\ElitaWebService.vb">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Common\ElitaWebServiceConstants.vb">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Common\ElitaService.vb" />
+    <Compile Include="Contracts\DataContracts\CertAfterUpgradeLookup.vb" />
+    <Compile Include="Contracts\DataContracts\Certificate\AttachCertificateDocumentRequest.vb" />
+    <Compile Include="Contracts\DataContracts\Certificate\AttachCertificateDocumentResponse.vb" />
+    <Compile Include="Contracts\DataContracts\Certificate\CancelByExternalCertNumRequest.vb" />
+    <Compile Include="Contracts\DataContracts\Certificate\CancelByExternalCertNumResponse.vb" />
+    <Compile Include="Contracts\DataContracts\Certificate\CertficateDealerPhoneLookUp.vb" />
+    <Compile Include="Contracts\DataContracts\Certificate\CertificateDealerSerialLookUp.vb" />
+    <Compile Include="Contracts\DataContracts\Certificate\CertificateByCompanyLookup.vb" />
+    <Compile Include="Contracts\DataContracts\Certificate\CertificateDocumentInfo.vb" />
+    <Compile Include="Contracts\DataContracts\Certificate\DownloadCertificateDocumentRequest.vb" />
+    <Compile Include="Contracts\DataContracts\Certificate\DownloadCertificateDocumentResponse.vb" />
+    <Compile Include="Contracts\DataContracts\Certificate\GetCertificateDocumentsRequest.vb" />
+    <Compile Include="Contracts\DataContracts\Certificate\GetCertificateDocumentsResponse.vb" />
+    <Compile Include="Contracts\DataContracts\Certificate\SearchAppleCertificateByImeiRequest.vb" />
+    <Compile Include="Contracts\DataContracts\Certificate\SearchAppleCertificateByImeiResponse.vb" />
+    <Compile Include="Contracts\DataContracts\ClaimImeiNumberLookup.vb" />
+    <Compile Include="Contracts\DataContracts\Claims\CoverageTypes.vb" />
+    <Compile Include="Contracts\DataContracts\Claims\DownloadServiceOrderDocumentRequest.vb" />
+    <Compile Include="Contracts\DataContracts\Claims\DownloadServiceOrderDocumentResponse.vb" />
+    <Compile Include="Contracts\Faults\CertificateBelongsToDiffDealer.vb" />
+    <Compile Include="Contracts\Faults\CertificateDocumentNotFoundFault.vb" />
+    <Compile Include="Contracts\Faults\CertificateNotEligibleForAppleCare.vb" />
+    <Compile Include="Contracts\Faults\CompanyNotFoundFault.vb" />
+    <Compile Include="Contracts\Faults\CertificateNotEligibleForUpgrade.vb" />
+    <Compile Include="Contracts\Faults\CoverageNotFoundFault.vb" />
+    <Compile Include="Contracts\Faults\CustomerNameNotFoundFault.vb" />
+    <Compile Include="Contracts\Faults\DuplicateCertFound.vb" />
+    <Compile Include="Contracts\Faults\EmailandPostalCodeNotFoundFault.vb" />
+    <Compile Include="Contracts\Faults\InvalidCertificateNumber.vb" />
+    <Compile Include="Contracts\Faults\InvalidImeiNumber.vb" />
+    <Compile Include="Contracts\Faults\InvalidRequestFault.vb" />
+    <Compile Include="Contracts\Faults\InvalidUpdateFault.vb" />
+    <Compile Include="Contracts\Faults\InvalidWildCardSearch.vb" />
+    <Compile Include="Contracts\Faults\RepairNotFoundFault.vb" />
+    <Compile Include="Contracts\Faults\RequestWasNotSuccessFull.vb" />
+    <Compile Include="Contracts\Faults\ServiceOrderNotFoundFault.vb" />
+    <Compile Include="Exception\ElitaFaultExcepion.vb" />
+    <Compile Include="GeographicServices\IRegionAndComunaService.vb" />
+    <Compile Include="GeographicServices\RegionAndComunaService.svc.vb">
+      <DependentUpon>RegionAndComunaService.svc</DependentUpon>
+    </Compile>
+    <Compile Include="Claim\ServiceOrder\IServiceOrderDocumentService.vb" />
+    <Compile Include="Claim\ServiceOrder\ServiceOrderDocumentService.svc.vb">
+      <DependentUpon>ServiceOrderDocumentService.svc</DependentUpon>
+    </Compile>
+    <Compile Include="Security\RequiresX509Attribute.vb" />
+    <Compile Include="Security\RequiresX509BehaviorExtension.vb" />
+    <Compile Include="SpecializedServices\ABAG\DataContracts\ESC\ClaimCommentList.vb" />
+    <Compile Include="SpecializedServices\ABAG\DataContracts\ESC\ClaimExtendedStatusInfo.vb" />
+    <Compile Include="SpecializedServices\ABAG\DataContracts\ESC\ClaimStatusInfo.vb" />
+    <Compile Include="SpecializedServices\ABAG\DataContracts\ESC\GetClaimDetailRequest.vb" />
+    <Compile Include="SpecializedServices\ABAG\DataContracts\ESC\GetClaimDetailResponse.vb" />
+    <Compile Include="SpecializedServices\ABAG\DataContracts\ESC\GetPartsRequest.vb" />
+    <Compile Include="SpecializedServices\ABAG\DataContracts\ESC\GetPartsResponse.vb" />
+    <Compile Include="SpecializedServices\ABAG\DataContracts\ESC\GetServiceCenterClaimsRequest.vb" />
+    <Compile Include="SpecializedServices\ABAG\DataContracts\ESC\GetPriceListDetailResponse.vb" />
+    <Compile Include="SpecializedServices\ABAG\DataContracts\ESC\GetServiceCenterClaimsResponse.vb" />
+    <Compile Include="SpecializedServices\ABAG\DataContracts\ESC\GetServiceCenterRequest.vb" />
+    <Compile Include="SpecializedServices\ABAG\DataContracts\ESC\GetServiceCenterResponse.vb" />
+    <Compile Include="SpecializedServices\ABAG\DataContracts\ESC\PartsDescriptionInfo.vb" />
+    <Compile Include="SpecializedServices\ABAG\DataContracts\ESC\PartsListInfo.vb" />
+    <Compile Include="SpecializedServices\ABAG\DataContracts\ESC\PreInvoiceInfo.vb" />
+    <Compile Include="SpecializedServices\ABAG\DataContracts\ESC\PriceDetailInfo.vb" />
+    <Compile Include="SpecializedServices\ABAG\DataContracts\ESC\GetPriceListDetailRequest.vb" />
+    <Compile Include="SpecializedServices\ABAG\DataContracts\ESC\ServiceCenterClaimsInfo.vb" />
+    <Compile Include="SpecializedServices\ABAG\DataContracts\ESC\UpdateClaimRequest.vb" />
+    <Compile Include="SpecializedServices\ABAG\DataContracts\ESC\GetPreInvoiceRequest.vb" />
+    <Compile Include="SpecializedServices\ABAG\DataContracts\ESC\GetPreInvoiceResponse.vb" />
+    <Compile Include="SpecializedServices\ABAG\DataContracts\ESC\GetExtendedStatusesRequest.vb" />
+    <Compile Include="SpecializedServices\ABAG\DataContracts\ESC\GetExtendedStatusesResponse.vb" />
+    <Compile Include="SpecializedServices\ABAG\IEscService.vb" />
+    <Compile Include="SpecializedServices\ABAG\EscService.svc.vb">
+      <DependentUpon>EscService.svc</DependentUpon>
+    </Compile>
+    <Compile Include="SpecializedServices\ABRG\ClarMaxValueService.svc.vb">
+      <DependentUpon>ClarMaxValueService.svc</DependentUpon>
+    </Compile>
+    <Compile Include="SpecializedServices\ABRG\ClarMaxValueServiceHelper.vb" />
+    <Compile Include="SpecializedServices\ABRG\IClarMaxValueService.vb" />
+    <Compile Include="SpecializedServices\ASCN\DataContracts\SNMP\ClaimCommentList.vb" />
+    <Compile Include="SpecializedServices\ASCN\DataContracts\SNMP\ClaimStatusInfo.vb" />
+    <Compile Include="SpecializedServices\ASCN\DataContracts\SNMP\GetClaimDetailRequest.vb" />
+    <Compile Include="SpecializedServices\ASCN\DataContracts\SNMP\GetClaimDetailResponse.vb" />
+    <Compile Include="SpecializedServices\ASCN\DataContracts\SNMP\GetPartsRequest.vb" />
+    <Compile Include="SpecializedServices\ASCN\DataContracts\SNMP\GetPartsResponse.vb" />
+    <Compile Include="SpecializedServices\ASCN\DataContracts\SNMP\GetServiceCenterRequest.vb" />
+    <Compile Include="SpecializedServices\ASCN\DataContracts\SNMP\GetServiceCenterResponse.vb" />
+    <Compile Include="SpecializedServices\ASCN\DataContracts\SNMP\GetServiceCenterClaimsRequest.vb" />
+    <Compile Include="SpecializedServices\ASCN\DataContracts\SNMP\GetServiceCenterClaimsResponse.vb" />
+    <Compile Include="SpecializedServices\ASCN\DataContracts\SNMP\PartsDescriptionInfo.vb" />
+    <Compile Include="SpecializedServices\ASCN\DataContracts\SNMP\PartsListInfo.vb" />
+    <Compile Include="SpecializedServices\ASCN\DataContracts\SNMP\UpdateClaimRequest.vb" />
+    <Compile Include="SpecializedServices\ASCN\Helpers\FulfillmentRulesHelper.vb" />
+    <Compile Include="SpecializedServices\ASCN\ISNMPService.vb" />
+    <Compile Include="SpecializedServices\ASCN\SNMPService.svc.vb">
+      <DependentUpon>SNMPService.svc</DependentUpon>
+    </Compile>
+    <Compile Include="SpecializedServices\CustomerInfo\CertCustomerInfoService.svc.vb">
+      <DependentUpon>CertCustomerInfoService.svc</DependentUpon>
+    </Compile>
+    <Compile Include="SpecializedServices\CustomerInfo\DataContracts\CertCustInfo.vb" />
+    <Compile Include="SpecializedServices\CustomerInfo\DataContracts\CertCustomerInfoResponse.vb" />
+    <Compile Include="SpecializedServices\CustomerInfo\ICertCustomerInfoService.vb" />
+    <Compile Include="SpecializedServices\Faults\ClaimNotFoundFault.vb" />
+    <Compile Include="SpecializedServices\Faults\CompanyNotFoundFault.vb" />
+    <Compile Include="SpecializedServices\Faults\DatabaseErrorFault.vb" />
+    <Compile Include="SpecializedServices\Faults\DefaultExtendedStatusNotFoundFault.vb" />
+    <Compile Include="SpecializedServices\Faults\InvalidCauseOfLossFault.vb" />
+    <Compile Include="SpecializedServices\Faults\InvalidChangeInCoverageFault.vb" />
+    <Compile Include="SpecializedServices\Faults\InvalidClaimTypeFault.vb" />
+    <Compile Include="SpecializedServices\Faults\InvalidCountryFault.vb" />
+    <Compile Include="SpecializedServices\Faults\InvalidDateOfLossFault.vb" />
+    <Compile Include="SpecializedServices\Faults\InvalidExtendedStatusFault.vb" />
+    <Compile Include="SpecializedServices\Faults\InvalidManufacturerFault.vb" />
+    <Compile Include="SpecializedServices\Faults\InvalidPaymentAmountFault.vb" />
+    <Compile Include="SpecializedServices\Faults\InvalidRepairDateFault.vb" />
+    <Compile Include="SpecializedServices\Faults\InvalidRequestFault.vb" />
+    <Compile Include="SpecializedServices\Faults\InvalidServiceLevelFault.vb" />
+    <Compile Include="SpecializedServices\Faults\InvalidTaxAmountFault.vb" />
+    <Compile Include="SpecializedServices\Faults\InvalidUpgradeDateFault.vb" />
+    <Compile Include="SpecializedServices\Faults\MakeAndModelNotFoundFault.vb" />
+    <Compile Include="SpecializedServices\Faults\ManufacturerNotFoundFault.vb" />
+    <Compile Include="SpecializedServices\Faults\MethodOfRepairNotFoundFault.vb" />
+    <Compile Include="SpecializedServices\Faults\PartInfoNotFoundFault.vb" />
+    <Compile Include="SpecializedServices\Faults\PriceListNotConfiguredFault.vb" />
+    <Compile Include="SpecializedServices\Faults\RefurbishedCostRequiredFault.vb" />
+    <Compile Include="SpecializedServices\Faults\RepairClaimNotFulfilledFault.vb" />
+    <Compile Include="SpecializedServices\Faults\RequiredFieldMissingFault.vb" />
+    <Compile Include="SpecializedServices\Faults\ServiceCenterNotFoundFault.vb" />
+    <Compile Include="SpecializedServices\Faults\InvalidUpdateActionFault.vb" />
+    <Compile Include="SpecializedServices\Faults\ReplacementClaimFoundFault.vb" />
+    <Compile Include="SpecializedServices\Faults\UpdateClaimErrorFault.vb" />
+    <Compile Include="SpecializedServices\GOOW\DataContracts\BaseClaimRequest.vb" />
+    <Compile Include="SpecializedServices\GOOW\DataContracts\ChangeServiceCenterRequest.vb" />
+    <Compile Include="SpecializedServices\GOOW\DataContracts\ComputeTaxRequest.vb" />
+    <Compile Include="SpecializedServices\GOOW\DataContracts\ComputeTaxResponse.vb" />
+    <Compile Include="SpecializedServices\GOOW\DataContracts\CreateClaimRequest.vb" />
+    <Compile Include="SpecializedServices\GOOW\DataContracts\CreateClaimResponse.vb" />
+    <Compile Include="SpecializedServices\GOOW\DataContracts\DenyClaimRequest.vb" />
+    <Compile Include="SpecializedServices\GOOW\DataContracts\FulfillClaimRequest.vb" />
+    <Compile Include="SpecializedServices\GOOW\DataContracts\GetClaimInfoRequest.vb" />
+    <Compile Include="SpecializedServices\GOOW\DataContracts\GetClaimInfoResponse.vb" />
+    <Compile Include="SpecializedServices\GOOW\DataContracts\MaxDaysElapsedAdvExRequest.vb" />
+    <Compile Include="SpecializedServices\GOOW\DataContracts\PayClaimRequest.vb" />
+    <Compile Include="SpecializedServices\GOOW\DataContracts\ReturnDamagedDeviceAdvExRequest.vb" />
+    <Compile Include="SpecializedServices\GOOW\DataContracts\ShippingInfo.vb" />
+    <Compile Include="SpecializedServices\GOOW\GoogleService.svc.vb">
+      <DependentUpon>GoogleService.svc</DependentUpon>
+    </Compile>
+    <Compile Include="SpecializedServices\GOOW\IGoogleService.vb" />
+    <Compile Include="SpecializedServices\GW\DataContracts\AddressInfo.vb" />
+    <Compile Include="SpecializedServices\GW\DataContracts\CertificateEndorsementInfo.vb" />
+    <Compile Include="SpecializedServices\GW\DataContracts\CertificateItemCoverageDeductibleInfo.vb" />
+    <Compile Include="SpecializedServices\GW\DataContracts\ContractInfo.vb" />
+    <Compile Include="SpecializedServices\GW\DataContracts\SearchByTaxIdResultCertificateInfo.vb" />
+    <Compile Include="SpecializedServices\GW\DataContracts\SearchCertificateByTaxIdRequest.vb" />
+    <Compile Include="SpecializedServices\GW\DataContracts\SearchCertificateByTaxIdResponse.vb" />
+    <Compile Include="SpecializedServices\GW\DataContracts\SearchCertificateRequest.vb" />
+    <Compile Include="SpecializedServices\GW\DataContracts\SearchCertificateResponse.vb" />
+    <Compile Include="SpecializedServices\GW\DataContracts\SearchResultCertificateInfo.vb" />
+    <Compile Include="SpecializedServices\GW\DataContracts\SearchResultCertificateItemCoverageInfo.vb" />
+    <Compile Include="SpecializedServices\GW\DataContracts\SearchResultCertificateItemInfo.vb" />
+    <Compile Include="SpecializedServices\AfterUpgrade\CertAfterUpgradeService.svc.vb">
+      <DependentUpon>CertAfterUpgradeService.svc</DependentUpon>
+    </Compile>
+    <Compile Include="SpecializedServices\AfterUpgrade\ICertAfterUpgradeService.vb" />
+    <Compile Include="SpecializedServices\SFR\DataContracts\CertificateDC.vb" />
+    <Compile Include="SpecializedServices\SFR\DataContracts\SearchCertificateRequest.vb" />
+    <Compile Include="SpecializedServices\SFR\DataContracts\SearchCertificateResponse.vb" />
+    <Compile Include="SpecializedServices\SFR\ISFRPolicyService.vb" />
+    <Compile Include="SpecializedServices\SFR\SFRPolicyService.svc.vb">
+      <DependentUpon>SFRPolicyService.svc</DependentUpon>
+    </Compile>
+    <Compile Include="SpecializedServices\TIMB\CertificateCustomerService.svc.vb">
+      <DependentUpon>CertificateCustomerService.svc</DependentUpon>
+    </Compile>
+    <Compile Include="SpecializedServices\TIMB\CertificateClaimService.svc.vb">
+      <DependentUpon>CertificateClaimService.svc</DependentUpon>
+    </Compile>
+    <Compile Include="SpecializedServices\TIMB\DataContracts\CertficateClaimService\CertificateClaimRequest.vb" />
+    <Compile Include="SpecializedServices\TIMB\DataContracts\CertificateCustomerService\CustomerByCertificateRequest.vb" />
+    <Compile Include="SpecializedServices\TIMB\DataContracts\CertificateCustomerService\CustomerCertificateItemResponse.vb" />
+    <Compile Include="SpecializedServices\TIMB\DataContracts\CertificateCustomerService\CustomerCertificateResponse.vb" />
+    <Compile Include="SpecializedServices\TIMB\DataContracts\CertificateCustomerService\CustomerInfoResponse.vb" />
+    <Compile Include="SpecializedServices\TIMB\DataContracts\CertificateCustomerService\CustomerResponse.vb" />
+    <Compile Include="SpecializedServices\TIMB\ICertificateCustomerService.vb" />
+    <Compile Include="SpecializedServices\TIMB\ICertificateClaimService.vb" />
+    <Compile Include="SpecializedServices\TISA\CertificateCustomerService.svc.vb">
+      <DependentUpon>CertificateCustomerService.svc</DependentUpon>
+    </Compile>
+    <Compile Include="SpecializedServices\TISA\CHLSamsungUpgradeService.svc.vb">
+      <DependentUpon>CHLSamsungUpgradeService.svc</DependentUpon>
+    </Compile>
+    <Compile Include="SpecializedServices\TISA\DataContracts\CertificateCustomerService\CustomerByCertificateRequest.vb" />
+    <Compile Include="SpecializedServices\TISA\DataContracts\CertificateCustomerService\CustomerCertificateItemResponse.vb" />
+    <Compile Include="SpecializedServices\TISA\DataContracts\CertificateCustomerService\CustomerCertificateResponse.vb" />
+    <Compile Include="SpecializedServices\TISA\DataContracts\CertificateCustomerService\CustomerInfoResponse.vb" />
+    <Compile Include="SpecializedServices\TISA\DataContracts\CertificateCustomerService\CustomerRequest.vb" />
+    <Compile Include="SpecializedServices\TISA\DataContracts\CertificateCustomerService\CustomerResponse.vb" />
+    <Compile Include="SpecializedServices\TISA\DataContracts\ChileSamsungUpgradeService\GetCertGrossAmtByProdCodeRequst.vb" />
+    <Compile Include="SpecializedServices\TISA\DataContracts\ChileSamsungUpgradeService\GetCertGrossAmtByProdCodeResponse.vb" />
+    <Compile Include="SpecializedServices\TISA\DataContracts\ClaimService\CreateRepairReplacementClaimRequest.vb" />
+    <Compile Include="SpecializedServices\TISA\DataContracts\ClaimService\CreateServiceWarrantyClaimRequest.vb" />
+    <Compile Include="SpecializedServices\TISA\DataContracts\ClaimService\UpdateClaimReplacedWithRefubishedRequest.vb" />
+    <Compile Include="SpecializedServices\TISA\DataContracts\ClaimService\UpdateIrrepairableClaimRequest.vb" />
+    <Compile Include="SpecializedServices\TISA\DataContracts\ClaimService\UpdateRepairableClaimRequest.vb" />
+    <Compile Include="SpecializedServices\TISA\DataContracts\ClaimService\DenyClaimRequest.vb" />
+    <Compile Include="SNMPortal\DataContracts\GetClaimInfoRequest.vb" />
+    <Compile Include="SNMPortal\DataContracts\GetClaimInfoResponse.vb" />
+    <Compile Include="SNMPortal\ISNMPortalWcf.vb" />
+    <Compile Include="SpecializedServices\Faults\CoverageNotFoundFault.vb" />
+    <Compile Include="SpecializedServices\Faults\MultipleCoveragesFoundFault.vb" />
+    <Compile Include="SpecializedServices\TISA\DataContracts\ClaimService\CreateClaimRequest.vb" />
+    <Compile Include="SpecializedServices\TISA\DataContracts\ClaimService\CreateClaimResponse.vb" />
+    <Compile Include="SpecializedServices\TISA\DataContracts\ClaimService\UpdateClaimRequest.vb" />
+    <Compile Include="SpecializedServices\TISA\DataContracts\ClaimService\UpdateTheftClaimRequest.vb" />
+    <Compile Include="SpecializedServices\TISA\ICertificateCustomerService.vb" />
+    <Compile Include="SpecializedServices\TISA\ICHLSamsungUpgradeService.vb" />
+    <Compile Include="SpecializedServices\TISA\IClaimService.vb" />
+    <Compile Include="SpecializedServices\TISA\ClaimService.svc.vb">
+      <DependentUpon>ClaimService.svc</DependentUpon>
+    </Compile>
+    <Compile Include="SpecializedServices\GW\DataContracts\CertificateItemCoverageInfo.vb" />
+    <Compile Include="SpecializedServices\GW\DataContracts\CertificateItemInfo.vb" />
+    <Compile Include="SpecializedServices\GW\DataContracts\CompanyInfo.vb" />
+    <Compile Include="Contracts\DataContracts\Certificate\CertificateAccountNumberLookup.vb" />
+    <Compile Include="Contracts\DataContracts\Certificate\CertificateDetailTypes.vb" />
+    <Compile Include="Contracts\DataContracts\Certificate\CertificateInfo.vb" />
+    <Compile Include="Contracts\DataContracts\Certificate\CertificateLookup.vb" />
+    <Compile Include="Contracts\DataContracts\Certificate\CertificateNumberLookup.vb" />
+    <Compile Include="Contracts\DataContracts\Certificate\CertificateSerialTaxLookup.vb" />
+    <Compile Include="Contracts\DataContracts\Certificate\CoverageInfo.vb" />
+    <Compile Include="Contracts\DataContracts\Certificate\FinanceInfo.vb" />
+    <Compile Include="Contracts\DataContracts\Certificate\GetCertificateRequest.vb" />
+    <Compile Include="Contracts\DataContracts\Certificate\GetCertificateResponse.vb" />
+    <Compile Include="Contracts\DataContracts\Certificate\Iteminfo.vb" />
+    <Compile Include="Contracts\DataContracts\ClaimInfo.vb" />
+    <Compile Include="Contracts\DataContracts\ClaimLookup.vb" />
+    <Compile Include="Contracts\DataContracts\ClaimSerialNumberLookup.vb" />
+    <Compile Include="Contracts\DataContracts\Claims\AttachDocumentRequest.vb" />
+    <Compile Include="Contracts\DataContracts\Claims\AttachDocumentResponse.vb" />
+    <Compile Include="Contracts\DataContracts\Claims\ClaimImageInfo.vb" />
+    <Compile Include="Contracts\DataContracts\Claims\ClaimNumberLookup.vb" />
+    <Compile Include="Contracts\DataContracts\Claims\ClaimOperation.vb" />
+    <Compile Include="Contracts\DataContracts\Claims\DownloadDocumentRequest.vb" />
+    <Compile Include="Contracts\DataContracts\Claims\DownloadDocumentResponse.vb" />
+    <Compile Include="Contracts\DataContracts\Claims\GetClaimDetailsRequest.vb" />
+    <Compile Include="Contracts\DataContracts\Claims\GetClaimDetailsResponse.vb" />
+    <Compile Include="Contracts\DataContracts\Claims\UpdateBatchNumber.vb" />
+    <Compile Include="Contracts\DataContracts\Claims\UpdateClaimRequest.vb" />
+    <Compile Include="Contracts\DataContracts\Claims\UpdateClaimResponse.vb" />
+    <Compile Include="Contracts\DataContracts\GetClaimsRequest.vb" />
+    <Compile Include="Contracts\DataContracts\GetClaimsResponse.vb" />
+    <Compile Include="Contracts\Faults\CertificateNotFound.vb" />
+    <Compile Include="Contracts\Faults\ClaimImageNotFoundFault.vb" />
+    <Compile Include="Contracts\Faults\ClaimNotFoundFault.vb" />
+    <Compile Include="Contracts\Faults\ClaimOperationNotSupportedFault.vb" />
+    <Compile Include="Contracts\Faults\DealerNotFoundFault.vb" />
+    <Compile Include="Contracts\Faults\FileIntegrityFailedFault.vb" />
+    <Compile Include="Contracts\Faults\FileTypeNotValidFault.vb" />
+    <Compile Include="Contracts\Faults\ImageRepositoryNotFoundFault.vb" />
+    <Compile Include="Contracts\Faults\InvalidIdentificationNumber.vb" />
+    <Compile Include="Contracts\Faults\InvalidSerialnumber.vb" />
+    <Compile Include="Contracts\Faults\ValidationFault.vb" />
+    <Compile Include="Core\UnityInstanceProvider.vb" />
+    <Compile Include="Core\UnityServiceHost.vb" />
+    <Compile Include="Core\UnityServiceHostFactory.vb" />
+    <Compile Include="CustomerReg\CustomerRegistration.svc.vb">
+      <DependentUpon>CustomerRegistration.svc</DependentUpon>
+    </Compile>
+    <Compile Include="CustomerReg\ICustomerRegistration.vb" />
+    <Compile Include="ExtensionMethods.vb" />
+    <Compile Include="Extensions\ValidationExtensions.vb" />
+    <Compile Include="Galaxy\GalaxyWcf.svc.vb">
+      <DependentUpon>GalaxyWcf.svc</DependentUpon>
+    </Compile>
+    <Compile Include="Galaxy\GalaxyWS.asmx.vb">
+      <DependentUpon>GalaxyWS.asmx</DependentUpon>
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Galaxy\IGalaxyWcf.vb" />
+    <Compile Include="Generic\GenericWcf.svc.vb">
+      <DependentUpon>GenericWcf.svc</DependentUpon>
+    </Compile>
+    <Compile Include="Generic\IGenericWcf.vb" />
+    <Compile Include="Global.asax.vb">
+      <DependentUpon>Global.asax</DependentUpon>
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Gvs\GvsWcf.svc.vb">
+      <DependentUpon>GvsWcf.svc</DependentUpon>
+    </Compile>
+    <Compile Include="Gvs\IGvsWcf.vb" />
+    <Compile Include="My Project\Settings.Designer.vb">
+      <AutoGen>True</AutoGen>
+      <DesignTimeSharedInput>True</DesignTimeSharedInput>
+      <DependentUpon>Settings.settings</DependentUpon>
+    </Compile>
+    <Compile Include="Olita\IOlitaWcf.vb" />
+    <Compile Include="Olita\OlitaWcf.svc.vb">
+      <DependentUpon>OlitaWcf.svc</DependentUpon>
+    </Compile>
+    <Compile Include="OpenMobile\IOpenMobileWcf.vb" />
+    <Compile Include="OpenMobile\OpenMobileWcf.svc.vb">
+      <DependentUpon>OpenMobileWcf.svc</DependentUpon>
+    </Compile>
+    <Compile Include="OpenMobile\OpenMobileWS.asmx.vb">
+      <DependentUpon>OpenMobileWS.asmx</DependentUpon>
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Security\AnonymousIdentity.vb" />
+    <Compile Include="Security\ElitaAuthorizationPolicyBase.vb" />
+    <Compile Include="Security\DefaultPasswordValidator.vb" />
+    <Compile Include="Security\ElitaAuthorizationPolicyV1.vb" />
+    <Compile Include="Security\ElitaAuthorizationPolicyV2.vb" />
+    <Compile Include="Security\ElitaHeader.vb" />
+    <Compile Include="Security\ElitaPermissionAttribute.vb" />
+    <Compile Include="Security\ElitaServiceAuthorizationManager.vb" />
+    <Compile Include="Security\ElitaUserNamePasswordValidator.vb" />
+    <Compile Include="Security\LdapAuthenticationManager.vb" />
+    <Compile Include="Security\PasswordAuthorizationPolicy.vb" />
+    <Compile Include="Security\PasswordIdentity.vb" />
+    <Compile Include="Security\PasswordPrincipal.vb" />
+    <Compile Include="Security\PasswordSecurityTokenAuthenticator.vb" />
+    <Compile Include="Security\PasswordSecurityTokenManager.vb" />
+    <Compile Include="Security\PasswordServiceCredentials.vb" />
+    <Compile Include="SNMPortal\SNMPortalWcf.svc.vb">
+      <DependentUpon>SNMPortalWcf.svc</DependentUpon>
+    </Compile>
+    <Compile Include="SpecializedServices\ASCN\FVSTMobileApplicationService.svc.vb">
+      <DependentUpon>FVSTMobileApplicationService.svc</DependentUpon>
+    </Compile>
+    <Compile Include="SpecializedServices\ASCN\DataContracts\FVST\GetCertificateInfoRequest.vb" />
+    <Compile Include="SpecializedServices\ASCN\DataContracts\FVST\GetCertificateInfoResponse.vb" />
+    <Compile Include="SpecializedServices\ASCN\IFVSTMobileApplicationService.vb" />
+    <Compile Include="SpecializedServices\DataContracts\CertClaimInfoResponseDC.vb" />
+    <Compile Include="SpecializedServices\DataContracts\CertificateDC.vb" />
+    <Compile Include="SpecializedServices\DataContracts\ClaimDC.vb" />
+    <Compile Include="SpecializedServices\Faults\CertificateNotFoundFault.vb" />
+    <Compile Include="SpecializedServices\Faults\CHLMobileSCPortalFault.vb" />
+    <Compile Include="SpecializedServices\GW\DataContracts\DealerInfo.vb" />
+    <Compile Include="SpecializedServices\GW\DataContracts\GetCertificateInfoRequest.vb" />
+    <Compile Include="SpecializedServices\GW\DataContracts\GetCertificateInfoResponse.vb" />
+    <Compile Include="SpecializedServices\GW\GwPilService.svc.vb">
+      <DependentUpon>GwPilService.svc</DependentUpon>
+    </Compile>
+    <Compile Include="SpecializedServices\GW\IGwPilService.vb" />
+    <Compile Include="SpecializedServices\TISA\CHLMobileSCPortal.svc.vb">
+      <DependentUpon>CHLMobileSCPortal.svc</DependentUpon>
+    </Compile>
+    <Compile Include="SpecializedServices\DataContracts\CertClaimInfoRequestDC.vb" />
+    <Compile Include="SpecializedServices\TISA\ICHLMobileSCPortal.vb" />
+    <Compile Include="Test\IService1.vb" />
+    <Compile Include="Test\IWcfTest.vb" Condition=" '$(NET_FRAMEWORK)' == '3.5' " />
+    <Compile Include="MyTest.asmx.vb">
+      <DependentUpon>MyTest.asmx</DependentUpon>
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Olita\OlitaWS.asmx.vb">
+      <DependentUpon>OlitaWS.asmx</DependentUpon>
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Schemas\Utilities\VSCGetModels.vb">
+      <DependentUpon>VSCGetModels.xsd</DependentUpon>
+    </Compile>
+    <Compile Include="Security\UsernameTokenManager.vb">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Test\Service1.svc.vb">
+      <DependentUpon>Service1.svc</DependentUpon>
+    </Compile>
+    <Compile Include="GeographicServices\DataContracts\ComunasInfo.vb" />
+    <Compile Include="Contracts\Faults\CountryNotFoundFault.vb" />
+    <Compile Include="GeographicServices\DataContracts\GetRegionsAndComunasInfoRequest.vb" />
+    <Compile Include="GeographicServices\DataContracts\GetRegionsAndComunasInfoResponse.vb" />
+    <Compile Include="Contracts\Faults\RegionNotFoundFault.vb" />
+    <Compile Include="GeographicServices\DataContracts\RegionsAndComunasInfo.vb" />
+    <Compile Include="Utilities\IUtilityWcf.vb" />
+    <Compile Include="Utilities\UtilityWcf.svc.vb">
+      <DependentUpon>UtilityWcf.svc</DependentUpon>
+    </Compile>
+    <Compile Include="Utilities\VSCUtility.asmx.vb">
+      <DependentUpon>VSCUtility.asmx</DependentUpon>
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Vsc\IVscWcf.vb" />
+    <Compile Include="Vsc\VscWcf.svc.vb">
+      <DependentUpon>VscWcf.svc</DependentUpon>
+    </Compile>
+    <Compile Include="Vsc\VscWS.asmx.vb">
+      <DependentUpon>VscWS.asmx</DependentUpon>
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Test\WcfTest.svc.vb" Condition=" '$(NET_FRAMEWORK)' == '3.5' ">
+      <DependentUpon>WcfTest.svc</DependentUpon>
+    </Compile>
+    <Compile Include="Web References\GAPWebServiceProdRef\Reference.vb">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Reference.map</DependentUpon>
+    </Compile>
+    <Compile Include="Web References\GAPWebServiceRef\Reference.vb">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Reference.map</DependentUpon>
+    </Compile>
+    <Content Include="Accounting\1.0\AccountingService.svc" />
+    <Content Include="Accounting\2.0\AccountingService.svc" />
+    <Content Include="Accounting\FelitaWS.asmx" />
+    <Content Include="AppServices\SA\SNMPortal\ClaimReportService.svc" />
+    <Content Include="AppServices\SA\SNMPortal\APRService.svc" />
+    <Content Include="Certificate\1.0\CertificateDocumentService.svc" />
+    <Content Include="Certificate\1.0\CertificateService.svc" />
+    <Content Include="Claim\1.0\ClaimDocumentService.svc" />
+    <Content Include="Claim\1.0\ClaimService.svc" />
+    <Content Include="Claim\2.0\ClaimDocumentService.svc" />
+    <Content Include="CustomerReg\CustomerRegistration.svc" />
+    <Content Include="Galaxy\GalaxyWcf.svc" />
+    <Content Include="Galaxy\GalaxyWS.asmx" />
+    <Content Include="Generic\GenericWcf.svc" />
+    <Content Include="GeographicServices\RegionAndComunaService.svc" />
+    <Content Include="Global.asax" />
+    <Content Include="Gvs\GvsWcf.svc" />
+    <Content Include="MyTest.asmx" />
+    <Content Include="Olita\OlitaWcf.svc" />
+    <Content Include="Olita\OlitaWS.asmx" />
+    <Content Include="OpenMobile\OpenMobileWcf.svc" />
+    <Content Include="OpenMobile\OpenMobileWS.asmx" />
+    <Content Include="Schemas\Olita\OlitaGetCert.xsd">
+      <SubType>
+      </SubType>
+    </Content>
+    <Content Include="Schemas\Olita\OlitaGetRegions.xsd">
+      <SubType>
+      </SubType>
+    </Content>
+    <Content Include="Schemas\Olita\OlitaUpdateConsumerInfo.xsd">
+      <SubType>
+      </SubType>
+    </Content>
+    <Content Include="Claim\ServiceOrder\ServiceOrderDocumentService.svc" />
+    <Content Include="Services.xml">
+      <SubType>Designer</SubType>
+    </Content>
+    <Content Include="Settings.xml">
+      <SubType>Designer</SubType>
+    </Content>
+    <Content Include="SNMPortal\SNMPortalWcf.svc" />
+    <Content Include="SpecializedServices\ABAG\EscService.svc" />
+    <Content Include="SpecializedServices\ABRG\ClarMaxValueService.svc" />
+    <Content Include="SpecializedServices\ASCN\FVSTMobileApplicationService.svc" />
+    <Content Include="SpecializedServices\AfterUpgrade\CertAfterUpgradeService.svc" />
+    <Content Include="SpecializedServices\ASCN\SNMPService.svc" />
+    <Content Include="SpecializedServices\CustomerInfo\CertCustomerInfoService.svc" />
+    <Content Include="SpecializedServices\GOOW\GoogleService.svc" />
+    <Content Include="SpecializedServices\SFR\SFRPolicyService.svc" />
+    <Content Include="SpecializedServices\TIMB\CertificateCustomerService.svc" />
+    <Content Include="SpecializedServices\TIMB\CertificateClaimService.svc" />
+    <Content Include="SpecializedServices\TISA\CertificateCustomerService.svc" />
+    <Content Include="SpecializedServices\TISA\CHLSamsungUpgradeService.svc" />
+    <Content Include="SpecializedServices\TISA\ClaimService.svc" />
+    <Content Include="SpecializedServices\GW\GwPilService.svc" />
+    <Content Include="SpecializedServices\TISA\CHLMobileSCPortal.svc" />
+    <Content Include="Test\Service1.svc" />
+    <Content Include="Utilities\UtilityWcf.svc" />
+    <Content Include="Utilities\VSCUtility.asmx" />
+    <Content Include="Vsc\VscWcf.svc" />
+    <Content Include="Vsc\VscWS.asmx" />
+    <Content Include="Test\WcfTest.svc" Condition=" '$(NET_FRAMEWORK)' == '3.5' " />
+    <Content Include="ElitaSecurity.config">
+      <SubType>Designer</SubType>
+    </Content>
+    <Content Include="AppServices\SA\SNMPortal\Readme.md" />
+    <None Include="Claim\1.0\ClaimServices.cd" />
+    <Content Include="Contracts\DataContracts\Certificate\CertificateService.cd" />
+    <None Include="Contracts\DataContracts\ClaimService.cd" />
+    <None Include="Contracts\DataContracts\Claims\ClaimDocument.cd" />
+    <None Include="My Project\PublishProfiles\OctopusPublish.pubxml" />
+    <None Include="My Project\PublishProfiles\VNextOctopusPublish.pubxml" />
+    <None Include="My Project\Settings.settings">
+      <CustomToolNamespace>My</CustomToolNamespace>
+      <Generator>SettingsSingleFileGenerator</Generator>
+      <LastGenOutput>Settings.Designer.vb</LastGenOutput>
+    </None>
+    <Content Include="Schemas\Utilities\CancelCertificate.xsd" />
+    <Content Include="Schemas\Utilities\GetCert.xsd" />
+    <Content Include="Schemas\Utilities\GetCertList.xsd" />
+    <Content Include="Schemas\Utilities\GetSalutations.xsd" />
+    <Content Include="Schemas\Utilities\GetMembershipTypes.xsd" />
+    <Content Include="Schemas\Utilities\GetComunas.xsd" />
+    <Content Include="Schemas\Utilities\GetCountriesRegions.xsd" />
+    <Content Include="Schemas\Utilities\GetVSCMakes.xsd" />
+    <Content Include="Schemas\Utilities\GetVSCModels.xsd" />
+    <Content Include="Schemas\Utilities\GetVSCEngineVersions.xsd" />
+    <Content Include="Schemas\Utilities\GetVSCYears.xsd" />
+    <Content Include="Schemas\Utilities\GetLists.xsd" />
+    <Content Include="Schemas\Utilities\GetaList.xsd" />
+    <Content Include="Schemas\Olita\OlitaGetNonBusinessDates.xsd" />
+    <Content Include="Schemas\Utilities\GetMarkupAndCommission.xsd">
+      <SubType>Designer</SubType>
+    </Content>
+    <Content Include="Schemas\Utilities\GetDealerProductsInfo.xsd">
+      <SubType>Designer</SubType>
+    </Content>
+    <Content Include="Schemas\GenericClaimLogistics\GetSvcClaims.xsd">
+      <SubType>Designer</SubType>
+    </Content>
+    <Content Include="Schemas\GenericClaimLogistics\GetClaimDetail.xsd">
+      <SubType>Designer</SubType>
+    </Content>
+    <Content Include="Schemas\GenericClaimLogistics\SVCUpdateClaim.xsd">
+      <SubType>Designer</SubType>
+    </Content>
+    <Content Include="Schemas\VSC\AcselXQuoteCancelCert.xsd">
+      <SubType>Designer</SubType>
+    </Content>
+    <Content Include="Schemas\Utilities\CancelCreditCardAuthVSCBrazil.xsd">
+      <SubType>Designer</SubType>
+    </Content>
+    <Content Include="Schemas\Utilities\CreditCardAuthVSCBrazil.xsd">
+      <SubType>Designer</SubType>
+    </Content>
+    <Content Include="Schemas\Utilities\GetCertInfoWEPPTMX.xsd">
+      <SubType>Designer</SubType>
+    </Content>
+    <Content Include="Schemas\Utilities\GetSpecialService.xsd">
+      <SubType>Designer</SubType>
+    </Content>
+    <Content Include="Schemas\Utilities\GetClaimNumByCertAndPhone.xsd">
+      <SubType>Designer</SubType>
+    </Content>
+    <Content Include="Schemas\Utilities\GetParts.xsd">
+      <SubType>Designer</SubType>
+    </Content>
+    <Content Include="Schemas\Utilities\GetServiceCenter.xsd">
+      <SubType>Designer</SubType>
+    </Content>
+    <Content Include="Schemas\Utilities\GetCoverageInfo.xsd">
+      <SubType>Designer</SubType>
+    </Content>
+    <Content Include="Schemas\Utilities\GetMakesAndModels.xsd">
+      <SubType>Designer</SubType>
+    </Content>
+    <Content Include="Schemas\Utilities\SendCancelRequestTMX.xsd">
+      <SubType>Designer</SubType>
+    </Content>
+    <Content Include="Schemas\Utilities\GetCustomerFunctions.xsd">
+      <SubType>Designer</SubType>
+    </Content>
+    <Content Include="Schemas\Utilities\GetClaimStatusInfo.xsd">
+      <SubType>Designer</SubType>
+    </Content>
+    <Content Include="Schemas\GenericClaimLogistics\SubmitClaim.xsd">
+      <SubType>Designer</SubType>
+    </Content>
+    <Content Include="Schemas\Utilities\UpdateClaimDeviceInfo.xsd">
+      <SubType>Designer</SubType>
+    </Content>
+    <Content Include="Schemas\Utilities\UpdateSubscriberStatus.xsd">
+      <SubType>Designer</SubType>
+    </Content>
+    <Content Include="packages.config">
+      <SubType>Designer</SubType>
+    </Content>
+    <Content Include="SpecializedServices\ASCN\FVST Complete STack.cd" />
+    <Content Include="SpecializedServices\ASCN\FVSTMobileApplicationService.cd" />
+    <Content Include="SpecializedServices\GW\DataContracts\GW_PIL_Stack.cd" />
+    <Content Include="SpecializedServices\TISA\DataContracts\ClaimService\UpdateClaim.cd" />
+    <Content Include="SpecializedServices\TISA\DataContracts\ClaimService\CreateClaim.cd" />
+    <Content Include="Schemas\Generic\ContractValidation.xsd">
+      <SubType>Designer</SubType>
+    </Content>
+    <Content Include="Schemas\Generic\CommBrkdwnValidation.xsd">
+      <SubType>Designer</SubType>
+    </Content>
+    <Content Include="SpecializedServices\GOOW\DataContracts\CreateClaim.cd" />
+    <Content Include="SpecializedServices\GOOW\DataContracts\BaseClaim.cd" />
+    <None Include="Web References\GAPWebServiceProdRef\Reference.map">
+      <Generator>MSDiscoCodeGenerator</Generator>
+      <LastGenOutput>Reference.vb</LastGenOutput>
+    </None>
+    <None Include="Web References\GAPWebServiceProdRef\WSElitaServiceOrder.wsdl" />
+    <None Include="Web References\GAPWebServiceRef\Reference.map">
+      <Generator>MSDiscoCodeGenerator</Generator>
+      <LastGenOutput>Reference.vb</LastGenOutput>
+    </None>
+    <None Include="Web References\GAPWebServiceRef\WSElitaServiceOrder.disco" />
+    <EmbeddedResource Include="Common\ElitaWebService.resx">
+      <DependentUpon>ElitaWebService.vb</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Global.asax.resx">
+      <DependentUpon>Global.asax.vb</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="MyTest.asmx.resx">
+      <DependentUpon>MyTest.asmx.vb</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Olita\OlitaWS.asmx.resx">
+      <DependentUpon>OlitaWS.asmx.vb</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Utilities\VSCUtility.asmx.resx">
+      <DependentUpon>VSCUtility.asmx.vb</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Vsc\VscWS.asmx.resx">
+      <DependentUpon>VscWS.asmx.vb</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <None Include="app22.config22" />
+    <Content Include="Schemas\Accounting\FelitaEngine.xsd">
+      <SubType>
+      </SubType>
+    </Content>
+    <Content Include="Rel.Web.config">
+      <SubType>Designer</SubType>
+    </Content>
+    <None Include="Schemas\Accounting\FelitaEngine.xsx">
+      <DependentUpon>FelitaEngine.xsd</DependentUpon>
+    </None>
+    <Content Include="Schemas\Galaxy\GalaxyCertificateSearch.xsd">
+      <SubType>
+      </SubType>
+    </Content>
+    <Content Include="Schemas\Galaxy\GalaxyUpdateServiceCenter.xsd">
+      <SubType>
+      </SubType>
+    </Content>
+    <Content Include="Schemas\Galaxy\GalaxyUpdateClaim.xsd">
+      <SubType>
+      </SubType>
+    </Content>
+    <Content Include="Schemas\Galaxy\GalaxyPayClaim.xsd">
+      <SubType>
+      </SubType>
+    </Content>
+    <Content Include="Schemas\ClaimLogistics\GetNewOpenClaims.xsd" />
+    <Content Include="Schemas\ClaimLogistics\GetRoutes.xsd" />
+    <Content Include="Schemas\ClaimLogistics\UpdatePickListStatus.xsd" />
+    <Content Include="Schemas\ClaimLogistics\UpdateSCReceivedItems.xsd" />
+    <Content Include="Schemas\ClaimLogistics\GetActiveClaimsForSvc.xsd" />
+    <Content Include="Schemas\ClaimLogistics\GetExtendedClaimStatusList.xsd" />
+    <Content Include="Schemas\ClaimLogistics\GetClaimInfo.xsd" />
+    <Content Include="Schemas\ClaimLogistics\GetClaimsReadyFromSC.xsd" />
+    <Content Include="Schemas\ClaimLogistics\UpdateClaimData.xsd" />
+    <Content Include="Schemas\ClaimLogistics\UpdatePickupException.xsd" />
+    <Content Include="Schemas\ClaimLogistics\ClaimsByPicklist.xsd" />
+    <Content Include="Schemas\ClaimLogistics\GetClaimStatusHistory.xsd" />
+    <Content Include="Schemas\ClaimLogistics\GetPicklistByDateRange.xsd" />
+    <Content Include="Schemas\ClaimLogistics\SaveSerialNumberByCertNum.xsd" />
+    <Content Include="Schemas\ClaimLogistics\CancellationQuery.xsd" />
+    <Content Include="Schemas\ClaimLogistics\GetClaimsByDateRange.xsd" />
+    <Content Include="Schemas\ClaimLogistics\CertificateSearch.xsd" />
+    <None Include="Schemas\Galaxy\GalaxyPayClaim.xsx">
+      <DependentUpon>GalaxyPayClaim.xsd</DependentUpon>
+    </None>
+    <None Include="Schemas\Galaxy\GalaxyUpdateClaim.xsx">
+      <DependentUpon>GalaxyUpdateClaim.xsd</DependentUpon>
+    </None>
+    <None Include="Schemas\Galaxy\GalaxyUpdateServiceCenter.xsx">
+      <DependentUpon>GalaxyUpdateServiceCenter.xsd</DependentUpon>
+    </None>
+    <None Include="Schemas\Galaxy\GalaxyCertificateSearch.xsx">
+      <DependentUpon>GalaxyCertificateSearch.xsd</DependentUpon>
+    </None>
+    <Content Include="Schemas\Galaxy\GalaxyGetCertificateDetail.xsd">
+      <SubType>
+      </SubType>
+    </Content>
+    <None Include="Schemas\Galaxy\GalaxyGetCertificateDetail.xsx">
+      <DependentUpon>GalaxyGetCertificateDetail.xsd</DependentUpon>
+    </None>
+    <Content Include="Schemas\Galaxy\GalaxyInsertClaim.xsd">
+      <SubType>
+      </SubType>
+    </Content>
+    <None Include="Schemas\Galaxy\GalaxyInsertClaim.xsx">
+      <DependentUpon>GalaxyInsertClaim.xsd</DependentUpon>
+    </None>
+    <Content Include="Schemas\Galaxy\GalaxyInsertServiceCenter.xsd">
+      <SubType>
+      </SubType>
+    </Content>
+    <None Include="Schemas\Galaxy\GalaxyInsertServiceCenter.xsx">
+      <DependentUpon>GalaxyInsertServiceCenter.xsd</DependentUpon>
+    </None>
+    <Content Include="Schemas\GVS\ElitaTransactionUpdate.xsd" />
+    <Content Include="Schemas\GVS\GVSTransactionUpdate.xsd" />
+    <Content Include="Schemas\GVS\GVSUpdateSVC.xsd" />
+    <Content Include="Schemas\GVS\ElitaCancelSvcIntegration.xsd" />
+    <Content Include="Schemas\GVS\ElitaClaim.xsd" />
+    <Content Include="Schemas\Generic\ClaimValidation.xsd" />
+    <None Include="Schemas\Olita\OlitaGetCert.xsx">
+      <DependentUpon>OlitaGetCert.xsd</DependentUpon>
+    </None>
+    <None Include="Schemas\Olita\OlitaGetRegions.xsx">
+      <DependentUpon>OlitaGetRegions.xsd</DependentUpon>
+    </None>
+    <Content Include="Schemas\Olita\OlitaInsertCert.xsd">
+      <SubType>
+      </SubType>
+    </Content>
+    <None Include="Schemas\Olita\OlitaInsertCert.xsx">
+      <DependentUpon>OlitaInsertCert.xsd</DependentUpon>
+    </None>
+    <Content Include="Schemas\Olita\OlitaSerialNumberUpdate.xsd">
+      <SubType>
+      </SubType>
+    </Content>
+    <None Include="Schemas\Olita\OlitaSerialNumberUpdate.xsx">
+      <DependentUpon>OlitaSerialNumberUpdate.xsd</DependentUpon>
+    </None>
+    <None Include="Schemas\Olita\OlitaUpdateConsumerInfo.xsx">
+      <DependentUpon>OlitaUpdateConsumerInfo.xsd</DependentUpon>
+    </None>
+    <Content Include="Schemas\Utilities\GetCertificateBO.xsd">
+      <SubType>
+      </SubType>
+    </Content>
+    <Content Include="Schemas\Utilities\GetBranches.xsd">
+      <SubType>
+      </SubType>
+    </Content>
+    <Content Include="Schemas\OpenMobile\OpenMobileVerifyClaim.xsd">
+      <SubType>
+      </SubType>
+    </Content>
+    <None Include="Schemas\OpenMobile\OpenMobileVerifyClaim.xsx">
+      <DependentUpon>OpenMobileVerifyClaim.xsd</DependentUpon>
+    </None>
+    <None Include="Schemas\Utilities\GetBranches.xsx">
+      <DependentUpon>GetBranches.xsd</DependentUpon>
+    </None>
+    <None Include="Schemas\Utilities\GetCertificateBO.xsx">
+      <DependentUpon>GetCertificateBO.xsd</DependentUpon>
+    </None>
+    <Content Include="Schemas\Utilities\GetCertificateList.xsd">
+      <SubType>
+      </SubType>
+    </Content>
+    <None Include="Schemas\Utilities\GetCertificateList.xsx">
+      <DependentUpon>GetCertificateList.xsd</DependentUpon>
+    </None>
+    <Content Include="Schemas\Utilities\VSCGetMakes.xsd">
+      <SubType>
+      </SubType>
+    </Content>
+    <Content Include="Schemas\Utilities\GetDealers.xsd">
+      <SubType>
+      </SubType>
+    </Content>
+    <None Include="Schemas\Utilities\GetDealers.xsx">
+      <DependentUpon>GetDealers.xsd</DependentUpon>
+    </None>
+    <Content Include="Schemas\Utilities\GetProductCodes.xsd">
+      <SubType>
+      </SubType>
+    </Content>
+    <Content Include="Schemas\Utilities\GetManufacturers.xsd">
+      <SubType>
+      </SubType>
+    </Content>
+    <Content Include="Schemas\Utilities\GetExpectedGWP.xsd">
+      <SubType>
+      </SubType>
+    </Content>
+    <None Include="Schemas\Utilities\GetExpectedGWP.xsx">
+      <DependentUpon>GetExpectedGWP.xsd</DependentUpon>
+    </None>
+    <None Include="Schemas\Utilities\GetManufacturers.xsx">
+      <DependentUpon>GetManufacturers.xsd</DependentUpon>
+    </None>
+    <Content Include="Schemas\Utilities\GetPriceBands.xsd">
+      <SubType>
+      </SubType>
+    </Content>
+    <None Include="Schemas\Utilities\GetPriceBands.xsx">
+      <DependentUpon>GetPriceBands.xsd</DependentUpon>
+    </None>
+    <None Include="Schemas\Utilities\GetProductCodes.xsx">
+      <DependentUpon>GetProductCodes.xsd</DependentUpon>
+    </None>
+    <Content Include="Schemas\Utilities\GetRegions.xsd">
+      <SubType>
+      </SubType>
+    </Content>
+    <None Include="Schemas\Utilities\GetRegions.xsx">
+      <DependentUpon>GetRegions.xsd</DependentUpon>
+    </None>
+    <Content Include="Schemas\Utilities\UpdateClaimStatus.xsd">
+      <SubType>
+      </SubType>
+    </Content>
+    <None Include="Schemas\Utilities\UpdateClaimStatus.xsx">
+      <DependentUpon>UpdateClaimStatus.xsd</DependentUpon>
+    </None>
+    <None Include="Schemas\Utilities\VSCGetMakes.xsx">
+      <DependentUpon>VSCGetMakes.xsd</DependentUpon>
+    </None>
+    <Content Include="Schemas\Utilities\VSCGetModels.xsd">
+      <SubType>
+      </SubType>
+    </Content>
+    <None Include="Schemas\Utilities\VSCGetModels.xsx">
+      <DependentUpon>VSCGetModels.xsd</DependentUpon>
+    </None>
+    <Content Include="Schemas\Utilities\VSCGetVersions.xsd">
+      <SubType>
+      </SubType>
+    </Content>
+    <None Include="Schemas\Utilities\VSCGetVersions.xsx">
+      <DependentUpon>VSCGetVersions.xsd</DependentUpon>
+    </None>
+    <Content Include="Schemas\Utilities\VSCGetYears.xsd">
+      <SubType>
+      </SubType>
+    </Content>
+    <None Include="Schemas\Utilities\VSCGetYears.xsx">
+      <DependentUpon>VSCGetYears.xsd</DependentUpon>
+    </None>
+    <Content Include="Schemas\VSC\VSCEnrollment.xsd">
+      <SubType>
+      </SubType>
+    </Content>
+    <None Include="Schemas\VSC\VSCEnrollment.xsx">
+      <DependentUpon>VSCEnrollment.xsd</DependentUpon>
+    </None>
+    <Content Include="Schemas\VSC\VSCQuote.xsd">
+      <SubType>
+      </SubType>
+    </Content>
+    <None Include="Schemas\VSC\VSCQuote.xsx">
+      <DependentUpon>VSCQuote.xsd</DependentUpon>
+    </None>
+    <None Include="Web References\GAPWebServiceRef\WSElitaServiceOrder.wsdl" />
+    <None Include="Web References\GAPWebServiceProdRef\WSElitaServiceOrder.disco" />
+    <Content Include="Web.config">
+      <SubType>Designer</SubType>
+    </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <WebReferences Include="Web References\" />
+  </ItemGroup>
+  <ItemGroup>
+    <WebReferenceUrl Include="https://b2b.gapnetworks.com/assurant/ws/production/WSElitaServiceOrder.asmx">
+      <UrlBehavior>Dynamic</UrlBehavior>
+      <RelPath>Web References\GAPWebServiceProdRef\</RelPath>
+      <UpdateFromURL>https://b2b.gapnetworks.com/assurant/ws/production/WSElitaServiceOrder.asmx</UpdateFromURL>
+      <ServiceLocationURL>
+      </ServiceLocationURL>
+      <CachedDynamicPropName>
+      </CachedDynamicPropName>
+      <CachedAppSettingsObjectName>MySettings</CachedAppSettingsObjectName>
+      <CachedSettingsPropName>ElitaInternalWS_GAPWebServiceProdRef_WSElitaServiceOrder</CachedSettingsPropName>
+    </WebReferenceUrl>
+    <WebReferenceUrl Include="https://b2b.gapnetworks.com/assurant/ws/staging/WSElitaServiceOrder.asmx">
+      <UrlBehavior>Dynamic</UrlBehavior>
+      <RelPath>Web References\GAPWebServiceRef\</RelPath>
+      <UpdateFromURL>https://b2b.gapnetworks.com/assurant/ws/staging/WSElitaServiceOrder.asmx</UpdateFromURL>
+      <ServiceLocationURL>
+      </ServiceLocationURL>
+      <CachedDynamicPropName>
+      </CachedDynamicPropName>
+      <CachedAppSettingsObjectName>MySettings</CachedAppSettingsObjectName>
+      <CachedSettingsPropName>ElitaInternalWS_GAPWebServiceRef_WSElitaServiceOrder</CachedSettingsPropName>
+    </WebReferenceUrl>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Contracts\DataContracts\GeographicServices\" />
+    <Folder Include="Schemas\AcselX\" />
+  </ItemGroup>
+  <PropertyGroup>
+    <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">14.0</VisualStudioVersion>
+    <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>
+  </PropertyGroup>
+  <Import Project="$(MSBuildBinPath)\Microsoft.VisualBasic.targets" />
+  <PropertyGroup>
+    <PreBuildEvent>
+    </PreBuildEvent>
+    <PostBuildEvent>
+    </PostBuildEvent>
+  </PropertyGroup>
+  <Import Project="$(VSToolsPath)\WebApplications\Microsoft.WebApplication.targets" Condition="'$(VSToolsPath)' != ''" />
+  <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v10.0\WebApplications\Microsoft.WebApplication.targets" Condition="false" />
+  <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v11.0\WebApplications\Microsoft.WebApplication.targets" Condition="false" />
+  <ProjectExtensions>
+    <VisualStudio>
+      <FlavorProperties GUID="{349c5851-65df-11da-9384-00065b846f21}">
+        <WebProjectProperties>
+          <UseIIS>True</UseIIS>
+          <AutoAssignPort>True</AutoAssignPort>
+          <DevelopmentServerPort>2551</DevelopmentServerPort>
+          <DevelopmentServerVPath>/</DevelopmentServerVPath>
+          <IISUrl>http://localhost/ElitaInternalWS</IISUrl>
+          <NTLMAuthentication>False</NTLMAuthentication>
+          <UseCustomServer>False</UseCustomServer>
+          <CustomServerUrl>
+          </CustomServerUrl>
+          <SaveServerSettingsInUserFile>False</SaveServerSettingsInUserFile>
+        </WebProjectProperties>
+      </FlavorProperties>
+    </VisualStudio>
+  </ProjectExtensions>
+  <Target Name="AfterBuild">
+  </Target>
+  <Import Project="$(SolutionDir)\.nuget\NuGet.targets" Condition="Exists('$(SolutionDir)\.nuget\NuGet.targets')" />
+  <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
+    <PropertyGroup>
+      <ErrorText>This project references NuGet package(s) that are missing on this computer. Enable NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>
+    </PropertyGroup>
+    <Error Condition="!Exists('$(SolutionDir)\.nuget\NuGet.targets')" Text="$([System.String]::Format('$(ErrorText)', '$(SolutionDir)\.nuget\NuGet.targets'))" />
+  </Target>
+</Project>

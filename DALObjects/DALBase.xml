@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<SQL>
+  <CONVERTED_TIME>
+    <![CDATA[
+    
+    select ELITA.GETCONVERTEDTIME(:dateToConvert, (SELECT TZ_OFFSET(:toTimeZone) FROM dual), (sessiontimezone) ) as CONVERTEDTIME from dual
+    
+			]]>
+  </CONVERTED_TIME>
+</SQL>

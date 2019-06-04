@@ -1,0 +1,131 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<SQL>
+  <LOAD>
+    <![CDATA[	
+			SELECT 
+        br.best_replacement_id,
+				br.migration_path_id,
+				br.equipment_id,
+        rm.manufacturer_id AS equipment_mfg_id,
+        m.description AS equipment_mfg,
+        e.model AS equipment_model,
+        br.replacement_equipment_id,
+        rm.manufacturer_id AS replacement_equipment_mfg_id,
+        rm.description AS replacement_equipment_mfg,
+        re.model AS replacement_equipment_model,
+				br.priority,
+				br.created_by,
+				br.modified_by,
+				br.created_date,
+				br.modified_date
+			FROM 
+        elp_best_replacement br,
+        elp_equipment e,
+        elp_manufacturer m,
+        elp_equipment re,
+        elp_manufacturer rm
+			WHERE
+				br.best_replacement_id = :best_replacement_id AND
+        e.manufacturer_id = m.manufacturer_id AND
+        re.manufacturer_id = rm.manufacturer_id AND
+        br.equipment_id = e.equipment_id AND
+        br.replacement_equipment_id = re.equipment_id
+		]]>
+  </LOAD>
+
+  <LOAD_LIST>
+    <![CDATA[	
+			SELECT 
+        br.best_replacement_id,
+				br.migration_path_id,
+				br.equipment_id,
+        rm.manufacturer_id AS equipment_mfg_id,
+        m.description AS equipment_mfg,
+        e.model AS equipment_model,
+        br.replacement_equipment_id,
+        rm.manufacturer_id AS replacement_equipment_mfg_id,
+        rm.description AS replacement_equipment_mfg,
+        re.model AS replacement_equipment_model,
+				br.priority,
+				br.created_by,
+				br.modified_by,
+				br.created_date,
+				br.modified_date
+			FROM 
+        elp_best_replacement br,
+        elp_equipment e,
+        elp_manufacturer m,
+        elp_equipment re,
+        elp_manufacturer rm
+			WHERE
+				br.migration_path_id = :migration_path_id AND
+        e.manufacturer_id = m.manufacturer_id AND
+        re.manufacturer_id = rm.manufacturer_id AND
+        br.equipment_id = e.equipment_id AND
+        br.replacement_equipment_id = re.equipment_id
+			--dynamic_where_clause
+			--dynamic_order_by_clause
+		]]>
+  </LOAD_LIST>
+  <LOAD_BEST_REPLACEMENT>
+    <![CDATA[
+	      select e.equipment_id,
+               e.manufacturer_id,
+		           manf.description make,
+	  	         e.model,
+	             br.replacement_equipment_id,
+	             br.priority
+          from elp_best_replacement br
+    inner join elp_equipment e
+            on br.replacement_equipment_id = e.equipment_id
+    inner join elp_migration_path mp
+	          on mp.migration_path_id = br.migration_path_id
+    inner join elp_manufacturer manf
+	          on e.manufacturer_id = manf.manufacturer_id
+         where mp.migration_path_id = :migration_path_id
+           and br.equipment_id = :equipment_id
+           and rownum <= :number_of_replacements
+      order by br.priority
+    ]]>
+  </LOAD_BEST_REPLACEMENT>
+  <UPDATE>
+    <![CDATA[	
+			UPDATE 
+        elp_best_replacement 
+      SET
+				migration_path_id = :migration_path_id,
+				equipment_id = :equipment_id,
+				replacement_equipment_id = :replacement_equipment_id,
+        priority = :priority
+			WHERE
+				best_replacement_id = :best_replacement_id
+		]]>
+  </UPDATE>
+  <INSERT>
+    <![CDATA[	
+    INSERT INTO 
+      elp_best_replacement 
+    (
+      best_replacement_id,
+      migration_path_id,
+      equipment_id,
+      replacement_equipment_id,
+      priority
+    )
+    VALUES
+    (
+      :best_replacement_id,
+      :migration_path_id,
+      :equipment_id,
+      :replacement_equipment_id,
+      :priority
+    )
+    ]]>
+  </INSERT>
+  <DELETE>
+    <![CDATA[	
+    DELETE FROM elp_best_replacement
+    WHERE best_replacement_id = :best_replacement_id
+    ]]>
+  </DELETE>
+</SQL>

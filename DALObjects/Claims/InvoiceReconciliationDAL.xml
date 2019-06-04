@@ -1,0 +1,115 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+
+<!-- ********************** THIS FILE HAS BEEN GENERATED FROM TEMPLATE SQLObject.cst (2/21/2013)********************** -->
+
+<SQL>
+  <LOAD>
+    <![CDATA[	
+			SELECT 
+				claim_auth_item_id,
+				invoice_item_id,
+				reconciliation_status_id,
+				reconciled_amount,
+				created_date,
+				created_by,
+				modified_date,
+				modified_by,
+				invoice_reconciliation_id
+			FROM elp_invoice_reconciliation 
+			WHERE
+				invoice_reconciliation_id = :invoice_reconciliation_id
+		]]>
+  </LOAD>
+  <LOAD_LIST>
+  </LOAD_LIST>
+  <LOAD_BY_INVOICE_ITEM_ID>
+    <![CDATA[
+			SELECT 
+				claim_auth_item_id,
+				invoice_item_id,
+				reconciliation_status_id,
+				reconciled_amount,
+				created_date,
+				created_by,
+				modified_date,
+				modified_by,
+				invoice_reconciliation_id
+			FROM elp_invoice_reconciliation 
+			WHERE
+				invoice_item_id = :invoice_item_id
+    ]]>
+  </LOAD_BY_INVOICE_ITEM_ID>
+  <LOAD_BY_CLAIM_AUTH_ITEM_ID>
+    <![CDATA[
+			SELECT 
+				claim_auth_item_id,
+				invoice_item_id,
+				reconciliation_status_id,
+				reconciled_amount,
+				created_date,
+				created_by,
+				modified_date,
+				modified_by,
+				invoice_reconciliation_id
+			FROM elp_invoice_reconciliation 
+			WHERE
+				claim_auth_item_id = :claim_auth_item_id
+    ]]>
+  </LOAD_BY_CLAIM_AUTH_ITEM_ID>
+  <GET_INVOICE_AUTHORIZATION_STATUS>
+    <![CDATA[
+			SELECT DISTINCT 
+				reconciliation_status_id
+			FROM elp_invoice_reconciliation 
+			WHERE
+				claim_auth_item_id in (select claim_auth_item_id from elp_claim_auth_item where claim_authorization_id = :claim_authorization_id)
+    ]]>
+  </GET_INVOICE_AUTHORIZATION_STATUS>
+  <CAN_UNDO_BALANCE_INVOICE>
+    <![CDATA[
+    select count(*)
+      from elp_invoice_reconciliation
+     where invoice_item_id in (select invoice_item_id from elp_invoice_item where invoice_id = :invoice_id)
+       and reconciliation_status_id <> GetItemIdFromListAndItem('INVRECONSTAT', 'RC')
+    ]]>
+  </CAN_UNDO_BALANCE_INVOICE>
+  <UPDATE>
+    <![CDATA[	
+			UPDATE elp_invoice_reconciliation SET
+				claim_auth_item_id = :claim_auth_item_id,
+				invoice_item_id = :invoice_item_id,
+				reconciliation_status_id = :reconciliation_status_id,
+				reconciled_amount = :reconciled_amount,
+				modified_by = :modified_by
+			WHERE
+				invoice_reconciliation_id = :invoice_reconciliation_id
+		]]>
+  </UPDATE>
+  <INSERT>
+    INSERT INTO elp_invoice_reconciliation
+    (
+    claim_auth_item_id,
+    invoice_item_id,
+    reconciliation_status_id,
+    reconciled_amount,
+    created_by,
+    invoice_reconciliation_id
+    )
+    VALUES
+    (
+    :claim_auth_item_id,
+    :invoice_item_id,
+    :reconciliation_status_id,
+    :reconciled_amount,
+    :created_by,
+    :invoice_reconciliation_id
+    )
+  </INSERT>
+  <DELETE>
+    DELETE FROM elp_invoice_reconciliation
+    WHERE
+    invoice_reconciliation_id = :invoice_reconciliation_id
+  </DELETE>
+</SQL>
+
+

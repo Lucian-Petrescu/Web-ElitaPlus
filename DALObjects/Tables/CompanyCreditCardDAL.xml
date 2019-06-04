@@ -1,0 +1,99 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+
+<!-- ********************** THIS FILE HAS BEEN GENERATED FROM TEMPLATE SQLObject.cst (4/12/2010)********************** -->
+
+<SQL>
+  <LOAD>
+    <![CDATA[	
+			SELECT 
+				company_id,
+				credit_card_format_id,
+				billing_date,
+				created_by,
+				created_date,
+				modified_by,
+				modified_date,
+				company_credit_card_id
+			FROM elp_company_credit_card 
+			WHERE
+				company_credit_card_id = :company_credit_card_id
+		]]>
+  </LOAD>
+  <LOAD_BY_CREDIT_CARD_FORMAT>
+    <![CDATA[	
+			SELECT 
+				company_id,
+				credit_card_format_id,
+				billing_date,
+				created_by,
+				created_date,
+				modified_by,
+				modified_date,
+				company_credit_card_id
+			FROM elp_company_credit_card 
+			WHERE
+				credit_card_format_id = :credit_card_format_id
+        and company_id = :company_id
+		]]>
+  </LOAD_BY_CREDIT_CARD_FORMAT>
+  <LOAD_LIST>
+    <![CDATA[	
+select
+      CCC.company_credit_card_id,
+      CCC.company_id,
+      CO.code as company_code,
+      CCC.credit_card_format_id,
+      I.Code,
+      T.translation  as Credit_Card_Type,
+      CCC.Billing_Date
+    from ELITA.elp_company_credit_card CCC,
+         ELITA.elp_credit_card_format CCF,
+         ELITA.ELP_Company CO,
+	     ELITA.elp_list_item I,
+	     ELITA.elp_dict_item_translation T,
+	     ELITA.elp_language L
+    WHERE CCC.credit_card_format_id = CCF.credit_card_format_id
+    and CCC.company_id = CO.company_id
+    and CCF.credit_card_type_id = I.list_item_id
+	and I.dict_item_id = T.dict_item_id
+	and T.language_id = L.language_id and L.language_id = :language_id
+  --dynamic_in_clause
+    ]]>
+  </LOAD_LIST>
+  <UPDATE>
+    <![CDATA[	
+			UPDATE elp_company_credit_card SET
+				company_id = :company_id,
+				credit_card_format_id = :credit_card_format_id,
+				billing_date = :billing_date,
+				modified_by = :modified_by
+			WHERE
+				company_credit_card_id = :company_credit_card_id
+		]]>
+  </UPDATE>
+  <INSERT>
+    INSERT INTO elp_company_credit_card
+    (
+    company_id,
+    credit_card_format_id,
+    billing_date,
+    created_by,
+    company_credit_card_id
+    )
+    VALUES
+    (
+    :company_id,
+    :credit_card_format_id,
+    :billing_date,
+    :created_by,
+    :company_credit_card_id
+    )
+  </INSERT>
+  <DELETE>
+    DELETE FROM elp_company_credit_card
+    WHERE
+    company_credit_card_id = :company_credit_card_id
+  </DELETE>
+</SQL>
+
+

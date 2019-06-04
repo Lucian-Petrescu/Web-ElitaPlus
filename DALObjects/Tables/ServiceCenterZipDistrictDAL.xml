@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="utf-8" ?>
+
+<!-- ********************** THIS FILE HAS BEEN GENERATED FROM TEMPLATE SQLObject.cst (10/26/2004)********************** -->
+
+<SQL>
+	<LOAD>
+		<![CDATA[	
+			SELECT 
+				service_center_id,
+				zip_district_id,
+				created_by,
+				created_date,
+				modified_by,
+				modified_date,
+				service_center_zip_dst_id
+			FROM elp_service_center_zip_dst 
+			WHERE
+				service_center_zip_dst_id = :service_center_zip_dst_id
+		]]>
+	</LOAD>
+	<LOAD_LIST>
+		<![CDATA[	
+			SELECT
+				sczdst.service_center_id,
+				sczdst.zip_district_id,
+				sczdst.created_by,
+				sczdst.created_date,
+				sczdst.modified_by,
+				sczdst.modified_date,
+				zdst.short_desc zip_district_code,
+				zdst.description zip_district_description,
+				sczdst.service_center_zip_dst_id
+			FROM
+				elp_service_center_zip_dst sczdst, elp_zip_district zdst
+			WHERE
+				sczdst.zip_district_id  = zdst.zip_district_id
+			AND	sczdst.service_center_id = :service_center_id
+		]]>		
+	</LOAD_LIST>	
+	<UPDATE>
+		<![CDATA[	
+			UPDATE elp_service_center_zip_dst SET
+				service_center_id = :service_center_id,
+				zip_district_id = :zip_district_id,
+				modified_by = :modified_by
+			WHERE
+				service_center_zip_dst_id = :service_center_zip_dst_id
+		]]>
+	</UPDATE>
+	<INSERT>
+			INSERT INTO elp_service_center_zip_dst
+					(			
+				service_center_id, 
+				zip_district_id, 
+				created_by,
+				service_center_zip_dst_id
+					)
+			VALUES
+					(			
+				:service_center_id, 
+				:zip_district_id, 
+				:created_by,
+				:service_center_zip_dst_id
+					)
+	</INSERT>
+	<DELETE>
+			DELETE FROM elp_service_center_zip_dst
+			WHERE
+				service_center_zip_dst_id = :service_center_zip_dst_id
+	</DELETE>
+</SQL> 
+
+

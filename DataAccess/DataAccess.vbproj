@@ -1,0 +1,700 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="14.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{50B0B6F9-1D3E-4B7E-8943-E34E29940414}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <RootNamespace>Assurant.ElitaPlus.DataAccess</RootNamespace>
+    <AssemblyName>Assurant.ElitaPlus.DataAccess</AssemblyName>
+    <FileAlignment>512</FileAlignment>
+    <MyType>Windows</MyType>
+    <TargetFrameworkVersion>v4.6.2</TargetFrameworkVersion>
+    <RestorePackages>true</RestorePackages>
+    <SccProjectName>SAK</SccProjectName>
+    <SccLocalPath>SAK</SccLocalPath>
+    <SccAuxPath>SAK</SccAuxPath>
+    <SccProvider>SAK</SccProvider>
+    <TargetFrameworkProfile />
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <DefineDebug>true</DefineDebug>
+    <DefineTrace>true</DefineTrace>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DocumentationFile>Assurant.ElitaPlus.DataAccess.xml</DocumentationFile>
+    <NoWarn>42016,41999,42017,42018,42019,42032,42036,42020,42021,42022</NoWarn>
+    <Prefer32Bit>false</Prefer32Bit>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <DefineDebug>false</DefineDebug>
+    <DefineTrace>true</DefineTrace>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DocumentationFile>Assurant.ElitaPlus.DataAccess.xml</DocumentationFile>
+    <NoWarn>42016,41999,42017,42018,42019,42032,42036,42020,42021,42022</NoWarn>
+    <Prefer32Bit>false</Prefer32Bit>
+  </PropertyGroup>
+  <PropertyGroup>
+    <OptionExplicit>On</OptionExplicit>
+  </PropertyGroup>
+  <PropertyGroup>
+    <OptionCompare>Binary</OptionCompare>
+  </PropertyGroup>
+  <PropertyGroup>
+    <OptionStrict>Off</OptionStrict>
+  </PropertyGroup>
+  <PropertyGroup>
+    <OptionInfer>On</OptionInfer>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="EntityFramework">
+      <HintPath>..\packages\EntityFramework.5.0.0\lib\net40\EntityFramework.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Oracle.ManagedDataAccess, Version=4.122.1.0, Culture=neutral, PublicKeyToken=89b483f429c47342, processorArchitecture=MSIL">
+      <HintPath>..\packages\Oracle.ManagedDataAccess.12.2.1100\lib\net40\Oracle.ManagedDataAccess.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.ComponentModel.DataAnnotations" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Data.Entity" />
+    <Reference Include="System.Runtime.Serialization" />
+    <Reference Include="System.Security" />
+    <Reference Include="System.Transactions" />
+    <Reference Include="System.Xml" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="System.Net.Http" />
+  </ItemGroup>
+  <ItemGroup>
+    <Import Include="Microsoft.VisualBasic" />
+    <Import Include="System" />
+    <Import Include="System.Collections" />
+    <Import Include="System.Collections.Generic" />
+    <Import Include="System.Data" />
+    <Import Include="System.Diagnostics" />
+    <Import Include="System.Linq" />
+    <Import Include="System.Xml.Linq" />
+    <Import Include="System.Threading.Tasks" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Certificates\BaseSpecializedCertificateContext.vb" />
+    <Compile Include="Certificates\BillingDetail.vb">
+      <DependentUpon>CertificateDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Certificates\Certificate.vb">
+      <DependentUpon>CertificateDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Certificates\CertificateCancellation.vb">
+      <DependentUpon>CertificateDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Certificates\CertificateContext.Partial.vb" />
+    <Compile Include="Certificates\CertificateDataModel.Context.vb">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>CertificateDataModel.Context.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Certificates\CertificateDataModel.Designer.vb">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>CertificateDataModel.edmx</DependentUpon>
+    </Compile>
+    <Compile Include="Certificates\CertificateDataModel.vb">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>CertificateDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Certificates\CertificateEndorsement.vb">
+      <DependentUpon>CertificateDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Certificates\CertificateInstallment.vb">
+      <DependentUpon>CertificateDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Certificates\CertificateItem.vb">
+      <DependentUpon>CertificateDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Certificates\CertificateItemCoverage.vb">
+      <DependentUpon>CertificateDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Certificates\CertificateItemCoverageDeductible.vb">
+      <DependentUpon>CertificateDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Certificates\CertificateRepository.vb" />
+    <Compile Include="Certificates\TimbCertificateContext.vb" />
+    <Compile Include="Certificates\TimbCertificateRepository.vb" />
+    <Compile Include="Claims\BasedSpecializedClaimContext.vb" />
+    <Compile Include="Claims\Claim.vb">
+      <DependentUpon>ClaimDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Claims\ClaimContextPartial.vb" />
+    <Compile Include="Claims\ClaimDataModel.Context.vb">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>ClaimDataModel.Context.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Claims\ClaimDataModel.Designer.vb">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>ClaimDataModel.edmx</DependentUpon>
+    </Compile>
+    <Compile Include="Claims\ClaimDataModel.vb">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>ClaimDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Claims\ClaimEquipment.vb">
+      <DependentUpon>ClaimDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Claims\ClaimInvoice.vb">
+      <DependentUpon>ClaimDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Claims\ClaimIssueResponse.vb">
+      <DependentUpon>ClaimDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Claims\ClaimIssueStatus.vb">
+      <DependentUpon>ClaimDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Claims\ClaimRepository.vb" />
+    <Compile Include="Claims\ClaimStatus.vb">
+      <DependentUpon>ClaimDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Claims\Comment.vb">
+      <DependentUpon>ClaimDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Claims\Disbursement.vb">
+      <DependentUpon>ClaimDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Claims\EntityIssue.vb">
+      <DependentUpon>ClaimDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Claims\TimbClaimContext.vb" />
+    <Compile Include="Claims\TimbClaimRepository.vb" />
+    <Compile Include="Common\Address.vb">
+      <DependentUpon>AddressDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Common\AddressContextPartial.vb" />
+    <Compile Include="Common\AddressDataModel.Context.vb">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>AddressDataModel.Context.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Common\AddressDataModel.Designer.vb">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>AddressDataModel.edmx</DependentUpon>
+    </Compile>
+    <Compile Include="Common\AddressDataModel.vb">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>AddressDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Common\AddressRepository.vb" />
+    <Compile Include="Common\BankInfo.vb">
+      <DependentUpon>CountryDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Common\CommonRepository.vb" />
+    <Compile Include="Common\CommonDataModel.Context.vb">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>CommonDataModel.Context.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Common\CommonDataModel.Designer.vb">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>CommonDataModel.edmx</DependentUpon>
+    </Compile>
+    <Compile Include="Common\CommonDataModel.vb">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>CommonDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Common\Country.vb">
+      <DependentUpon>CountryDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Common\CountryContextPartial.vb" />
+    <Compile Include="Common\CountryDataModel.Context.vb">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>CountryDataModel.Context.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Common\CountryDataModel.Designer.vb">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>CountryDataModel.edmx</DependentUpon>
+    </Compile>
+    <Compile Include="Common\CountryDataModel.vb">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>CountryDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Common\CountryRepository.vb" />
+    <Compile Include="Common\Currency.vb">
+      <DependentUpon>CurrencyDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Common\CurrencyContextPartial.vb" />
+    <Compile Include="Common\CurrencyDataModel.Context.vb">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>CurrencyDataModel.Context.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Common\CurrencyDataModel.Designer.vb">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>CurrencyDataModel.edmx</DependentUpon>
+    </Compile>
+    <Compile Include="Common\CurrencyDataModel.vb">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>CurrencyDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Common\CurrencyRepository.vb" />
+    <Compile Include="Common\DictionaryItem.vb">
+      <DependentUpon>CommonDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Common\DictionaryItemTranslation.vb">
+      <DependentUpon>CommonDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Common\Expression.vb">
+      <DependentUpon>CommonDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Common\Label.vb">
+      <DependentUpon>CommonDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Common\Language.vb">
+      <DependentUpon>CommonDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Common\List.vb">
+      <DependentUpon>CommonDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Common\ListItem.vb">
+      <DependentUpon>CommonDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Common\Region.vb">
+      <DependentUpon>CountryDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Common\ServiceCenter.vb">
+      <DependentUpon>CountryDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Companies\CancellationReasons.vb">
+      <DependentUpon>CompanyDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Companies\Company.vb">
+      <DependentUpon>CompanyDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Companies\CompanyDataModel.Context.vb">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>CompanyDataModel.Context.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Companies\CompanyDataModel.Designer.vb">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>CompanyDataModel.edmx</DependentUpon>
+    </Compile>
+    <Compile Include="Companies\CompanyDataModel.vb">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>CompanyDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Companies\CompanyRepository.vb" />
+    <Compile Include="CompanyGroup\ClaimStatusByGroup.vb">
+      <DependentUpon>CompanyGroupDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="CompanyGroup\CompanyGroup.vb">
+      <DependentUpon>CompanyGroupDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="CompanyGroup\CompanyGroupContext.partial.vb" />
+    <Compile Include="CompanyGroup\CompanyGroupDataModel.Context.vb">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>CompanyGroupDataModel.Context.tt</DependentUpon>
+    </Compile>
+    <Compile Include="CompanyGroup\CompanyGroupDataModel.Designer.vb">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>CompanyGroupDataModel.edmx</DependentUpon>
+    </Compile>
+    <Compile Include="CompanyGroup\CompanyGroupDataModel.vb">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>CompanyGroupDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="CompanyGroup\CompanyGroupRepository.vb" />
+    <Compile Include="CompanyGroup\CoverageLoss.vb">
+      <DependentUpon>CompanyGroupDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="CompanyGroup\DefaultClaimStatus.vb">
+      <DependentUpon>CompanyGroupDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="CompanyGroup\Manufacturer.vb">
+      <DependentUpon>CompanyGroupDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="CompanyGroup\PaymentType.vb">
+      <DependentUpon>CompanyGroupDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="CompanyGroup\RiskType.vb">
+      <DependentUpon>CompanyGroupDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Core\BaseDbContext.vb" />
+    <Compile Include="Dealers\Branch.vb">
+      <DependentUpon>DealerDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Dealers\Contract.vb">
+      <DependentUpon>DealerDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Dealers\Coverage.vb">
+      <DependentUpon>DealerDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Dealers\Dealer.vb">
+      <DependentUpon>DealerDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Dealers\DealerDataModel.Context.vb">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>DealerDataModel.Context.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Dealers\DealerDataModel.Designer.vb">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>DealerDataModel.edmx</DependentUpon>
+    </Compile>
+    <Compile Include="Dealers\DealerDataModel.vb">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>DealerDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Dealers\DealerGroup.vb">
+      <DependentUpon>DealerDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Dealers\DealerRepository.vb" />
+    <Compile Include="Dealers\DealerRuleList.vb">
+      <DependentUpon>DealerDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Dealers\Issue.vb">
+      <DependentUpon>DealerDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Dealers\IssueQuestion.vb">
+      <DependentUpon>DealerDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Dealers\Item.vb">
+      <DependentUpon>DealerDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Dealers\ListPrice.vb">
+      <DependentUpon>DealerDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Dealers\Product.vb">
+      <DependentUpon>DealerDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Dealers\Rule.vb">
+      <DependentUpon>DealerDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Dealers\RuleIssue.vb">
+      <DependentUpon>DealerDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Dealers\RuleList.vb">
+      <DependentUpon>DealerDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Dealers\RuleListDetail.vb">
+      <DependentUpon>DealerDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Dealers\SoftQuestion.vb">
+      <DependentUpon>DealerDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Dealers\SuspendedReason.vb">
+      <DependentUpon>DealerDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Dealers\WarrantyMaster.vb">
+      <DependentUpon>DealerDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Equipment\Equipment.vb">
+      <DependentUpon>EquipmentDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Equipment\EquipmentDataModel.Context.vb">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>EquipmentDataModel.Context.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Equipment\EquipmentDataModel.Designer.vb">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>EquipmentDataModel.edmx</DependentUpon>
+    </Compile>
+    <Compile Include="Equipment\EquipmentDataModel.vb">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>EquipmentDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Equipment\EquipmentList.vb">
+      <DependentUpon>EquipmentDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Equipment\EquipmentListDetail.vb">
+      <DependentUpon>EquipmentDataModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Equipment\EquipmentRepository.vb" />
+    <Compile Include="My Project\AssemblyInfo.vb" />
+    <Compile Include="My Project\Application.Designer.vb">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Application.myapp</DependentUpon>
+    </Compile>
+    <Compile Include="My Project\Resources.Designer.vb">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
+    <Compile Include="My Project\Resources1.Designer.vb">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
+    <Compile Include="My Project\Settings.Designer.vb">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Settings.settings</DependentUpon>
+      <DesignTimeSharedInput>True</DesignTimeSharedInput>
+    </Compile>
+    <Compile Include="Core\Repository.vb" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="My Project\Resources.resx">
+      <Generator>VbMyResourcesResXFileCodeGenerator</Generator>
+      <CustomToolNamespace>My.Resources</CustomToolNamespace>
+      <SubType>Designer</SubType>
+      <LastGenOutput>Resources1.Designer.vb</LastGenOutput>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="App.config">
+      <SubType>Designer</SubType>
+    </None>
+    <EntityDeploy Include="Certificates\CertificateDataModel.edmx">
+      <Generator>EntityModelCodeGenerator</Generator>
+      <LastGenOutput>CertificateDataModel.Designer.vb</LastGenOutput>
+    </EntityDeploy>
+    <None Include="Certificates\CertificateDataModel.edmx.diagram">
+      <DependentUpon>CertificateDataModel.edmx</DependentUpon>
+    </None>
+    <EntityDeploy Include="Common\CommonDataModel.edmx">
+      <Generator>EntityModelCodeGenerator</Generator>
+      <LastGenOutput>CommonDataModel.Designer.vb</LastGenOutput>
+    </EntityDeploy>
+    <Compile Include="Common\CommonContext.Partial.vb" />
+    <EntityDeploy Include="Common\AddressDataModel.edmx">
+      <Generator>EntityModelCodeGenerator</Generator>
+      <LastGenOutput>AddressDataModel.Designer.vb</LastGenOutput>
+    </EntityDeploy>
+    <EntityDeploy Include="Claims\ClaimDataModel.edmx">
+      <Generator>EntityModelCodeGenerator</Generator>
+      <LastGenOutput>ClaimDataModel.Designer.vb</LastGenOutput>
+    </EntityDeploy>
+    <None Include="Claims\ClaimDataModel.edmx.diagram">
+      <DependentUpon>ClaimDataModel.edmx</DependentUpon>
+    </None>
+    <None Include="Common\AddressDataModel.edmx.diagram">
+      <DependentUpon>AddressDataModel.edmx</DependentUpon>
+    </None>
+    <None Include="Common\CommonDataModel.edmx.diagram">
+      <DependentUpon>CommonDataModel.edmx</DependentUpon>
+    </None>
+    <EntityDeploy Include="Dealers\DealerDataModel.edmx">
+      <Generator>EntityModelCodeGenerator</Generator>
+      <LastGenOutput>DealerDataModel.Designer.vb</LastGenOutput>
+    </EntityDeploy>
+    <Compile Include="Dealers\DealerContext.Partial.vb" />
+    <EntityDeploy Include="Companies\CompanyDataModel.edmx">
+      <Generator>EntityModelCodeGenerator</Generator>
+      <LastGenOutput>CompanyDataModel.Designer.vb</LastGenOutput>
+    </EntityDeploy>
+    <Compile Include="Companies\CompanyContext.Partial.vb" />
+    <EntityDeploy Include="Common\CountryDataModel.edmx">
+      <Generator>EntityModelCodeGenerator</Generator>
+      <LastGenOutput>CountryDataModel.Designer.vb</LastGenOutput>
+    </EntityDeploy>
+    <None Include="Common\CountryDataModel.edmx.diagram">
+      <DependentUpon>CountryDataModel.edmx</DependentUpon>
+    </None>
+    <EntityDeploy Include="Common\CurrencyDataModel.edmx">
+      <Generator>EntityModelCodeGenerator</Generator>
+      <LastGenOutput>CurrencyDataModel.Designer.vb</LastGenOutput>
+    </EntityDeploy>
+    <None Include="Common\CurrencyDataModel.edmx.diagram">
+      <DependentUpon>CurrencyDataModel.edmx</DependentUpon>
+    </None>
+    <None Include="Companies\CompanyDataModel.edmx.diagram">
+      <DependentUpon>CompanyDataModel.edmx</DependentUpon>
+    </None>
+    <EntityDeploy Include="CompanyGroup\CompanyGroupDataModel.edmx">
+      <Generator>EntityModelCodeGenerator</Generator>
+      <LastGenOutput>CompanyGroupDataModel.Designer.vb</LastGenOutput>
+    </EntityDeploy>
+    <None Include="CompanyGroup\CompanyGroupDataModel.edmx.diagram">
+      <DependentUpon>CompanyGroupDataModel.edmx</DependentUpon>
+    </None>
+    <None Include="Dealers\DealerDataModel.edmx.diagram">
+      <DependentUpon>DealerDataModel.edmx</DependentUpon>
+    </None>
+    <EntityDeploy Include="Equipment\EquipmentDataModel.edmx">
+      <Generator>EntityModelCodeGenerator</Generator>
+      <LastGenOutput>EquipmentDataModel.Designer.vb</LastGenOutput>
+    </EntityDeploy>
+    <Compile Include="Equipment\EquipmentContext.Partial.vb" />
+    <None Include="Equipment\EquipmentDataModel.edmx.diagram">
+      <DependentUpon>EquipmentDataModel.edmx</DependentUpon>
+    </None>
+    <None Include="My Project\Application.myapp">
+      <Generator>MyApplicationCodeGenerator</Generator>
+      <LastGenOutput>Application.Designer.vb</LastGenOutput>
+    </None>
+    <None Include="My Project\Settings.settings">
+      <Generator>SettingsSingleFileGenerator</Generator>
+      <CustomToolNamespace>My</CustomToolNamespace>
+      <LastGenOutput>Settings.Designer.vb</LastGenOutput>
+    </None>
+    <None Include="packages.config">
+      <SubType>Designer</SubType>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Common\Common.vbproj">
+      <Project>{54bb47a8-3dd9-41a7-b4a3-62869af3fcf1}</Project>
+      <Name>Common</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\DataAccessInterface\DataAccessInterface.vbproj">
+      <Project>{22d67a98-5e6d-4427-98af-38d1465e8fcd}</Project>
+      <Name>DataAccessInterface</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\DataEntities\DataEntities.vbproj">
+      <Project>{530b0245-ec69-4781-a1ec-5995c14b66d0}</Project>
+      <Name>DataEntities</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Security\Security.vbproj">
+      <Project>{3e2ec759-6ae6-4db3-9400-cc6d389a960a}</Project>
+      <Name>Security</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Certificates\CertificateDataModel.Context.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <DependentUpon>CertificateDataModel.edmx</DependentUpon>
+      <LastGenOutput>CertificateDataModel.Context.vb</LastGenOutput>
+    </Content>
+    <Content Include="Certificates\CertificateDataModel.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <DependentUpon>CertificateDataModel.edmx</DependentUpon>
+      <LastGenOutput>CertificateDataModel.vb</LastGenOutput>
+    </Content>
+    <Content Include="Claims\ClaimDataModel.Context.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <DependentUpon>ClaimDataModel.edmx</DependentUpon>
+      <LastGenOutput>ClaimDataModel.Context.vb</LastGenOutput>
+    </Content>
+    <Content Include="Claims\ClaimDataModel.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <DependentUpon>ClaimDataModel.edmx</DependentUpon>
+      <LastGenOutput>ClaimDataModel.vb</LastGenOutput>
+    </Content>
+    <Content Include="Common\AddressDataModel.Context.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <DependentUpon>AddressDataModel.edmx</DependentUpon>
+      <LastGenOutput>AddressDataModel.Context.vb</LastGenOutput>
+    </Content>
+    <Content Include="Common\AddressDataModel.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <DependentUpon>AddressDataModel.edmx</DependentUpon>
+      <LastGenOutput>AddressDataModel.vb</LastGenOutput>
+    </Content>
+    <Content Include="Common\CommonDataModel.Context.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <DependentUpon>CommonDataModel.edmx</DependentUpon>
+      <LastGenOutput>CommonDataModel.Context.vb</LastGenOutput>
+    </Content>
+    <Content Include="Common\CommonDataModel.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <DependentUpon>CommonDataModel.edmx</DependentUpon>
+      <LastGenOutput>CommonDataModel.vb</LastGenOutput>
+    </Content>
+    <Content Include="Common\CountryDataModel.Context.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <DependentUpon>CountryDataModel.edmx</DependentUpon>
+      <LastGenOutput>CountryDataModel.Context.vb</LastGenOutput>
+    </Content>
+    <Content Include="Common\CountryDataModel.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <DependentUpon>CountryDataModel.edmx</DependentUpon>
+      <LastGenOutput>CountryDataModel.vb</LastGenOutput>
+    </Content>
+    <Content Include="Common\CurrencyDataModel.Context.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <DependentUpon>CurrencyDataModel.edmx</DependentUpon>
+      <LastGenOutput>CurrencyDataModel.Context.vb</LastGenOutput>
+    </Content>
+    <Content Include="Common\CurrencyDataModel.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <DependentUpon>CurrencyDataModel.edmx</DependentUpon>
+      <LastGenOutput>CurrencyDataModel.vb</LastGenOutput>
+    </Content>
+    <Content Include="Companies\CompanyDataModel.Context.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <DependentUpon>CompanyDataModel.edmx</DependentUpon>
+      <LastGenOutput>CompanyDataModel.Context.vb</LastGenOutput>
+    </Content>
+    <Content Include="Companies\CompanyDataModel.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <DependentUpon>CompanyDataModel.edmx</DependentUpon>
+      <LastGenOutput>CompanyDataModel.vb</LastGenOutput>
+    </Content>
+    <Content Include="CompanyGroup\CompanyGroupDataModel.Context.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <DependentUpon>CompanyGroupDataModel.edmx</DependentUpon>
+      <LastGenOutput>CompanyGroupDataModel.Context.vb</LastGenOutput>
+    </Content>
+    <Content Include="CompanyGroup\CompanyGroupDataModel.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <DependentUpon>CompanyGroupDataModel.edmx</DependentUpon>
+      <LastGenOutput>CompanyGroupDataModel.vb</LastGenOutput>
+    </Content>
+    <Content Include="Dealers\DealerDataModel.Context.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <DependentUpon>DealerDataModel.edmx</DependentUpon>
+      <LastGenOutput>DealerDataModel.Context.vb</LastGenOutput>
+    </Content>
+    <Content Include="Dealers\DealerDataModel.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <DependentUpon>DealerDataModel.edmx</DependentUpon>
+      <LastGenOutput>DealerDataModel.vb</LastGenOutput>
+    </Content>
+    <Content Include="Equipment\EquipmentDataModel.Context.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <DependentUpon>EquipmentDataModel.edmx</DependentUpon>
+      <LastGenOutput>EquipmentDataModel.Context.vb</LastGenOutput>
+    </Content>
+    <Content Include="Equipment\EquipmentDataModel.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <DependentUpon>EquipmentDataModel.edmx</DependentUpon>
+      <LastGenOutput>EquipmentDataModel.vb</LastGenOutput>
+    </Content>
+  </ItemGroup>
+  <ItemGroup />
+  <Import Project="$(MSBuildToolsPath)\Microsoft.VisualBasic.targets" />
+  <Import Project="$(SolutionDir)\.nuget\NuGet.targets" Condition="Exists('$(SolutionDir)\.nuget\NuGet.targets')" />
+  <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
+    <PropertyGroup>
+      <ErrorText>This project references NuGet package(s) that are missing on this computer. Enable NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>
+    </PropertyGroup>
+    <Error Condition="!Exists('$(SolutionDir)\.nuget\NuGet.targets')" Text="$([System.String]::Format('$(ErrorText)', '$(SolutionDir)\.nuget\NuGet.targets'))" />
+  </Target>
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

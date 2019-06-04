@@ -1,0 +1,222 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+
+<!-- ********************** THIS FILE HAS BEEN GENERATED FROM TEMPLATE SQLObject.cst (1/30/2009)********************** -->
+
+<SQL>
+  <LOAD>
+    <![CDATA[	
+			SELECT 
+				dealer_id,
+				inbound_filename,
+				outbound_filename_regex,
+				output_path,
+				transall_package,
+				logfile_emails,
+				num_files, 
+				layout_code_id,
+        ftp_site_id,
+				created_by,
+				modified_by,
+				created_date,
+				modified_date,
+				transall_mapping_id
+			FROM elp_transall_mapping 
+			WHERE
+				transall_mapping_id = :transall_mapping_id
+		]]>
+  </LOAD>
+  <LOAD_LIST>
+    SELECT
+          tm.transall_mapping_id,
+          tm.dealer_id,
+          d.dealer_name,
+          tm.inbound_filename,
+          tm.outbound_filename_regex,
+          tm.output_path,
+          tm.transall_package,
+          tm.logfile_emails,
+          tm.num_files,
+          tm.layout_code_id,
+          tm.ftp_site_id,
+          tm.created_by,
+          tm.modified_by,
+          tm.created_date,
+          tm.modified_date
+    FROM  elp_transall_mapping tm, elp_dealer d
+    WHERE d.dealer_id = tm.dealer_id
+          --dynamic_where_clause
+    ORDER BY UPPER(d.dealer_name)
+  </LOAD_LIST>
+  <LOAD_LIST_BY_FILE>
+    SELECT
+    elp_transall_mapping.dealer_id,
+    elp_dealer.dealer_name,
+    inbound_filename,
+    outbound_filename_regex,
+    output_path,
+    transall_package,
+    logfile_emails,
+    num_files,
+    layout_code_id,
+    ftp_site_id,
+    elp_transall_mapping.created_by,
+    elp_transall_mapping.modified_by,
+    elp_transall_mapping.created_date,
+    elp_transall_mapping.modified_date,
+    transall_mapping_id
+    FROM elp_transall_mapping, elp_dealer
+    WHERE
+    upper(:file_name) like RTRIM(upper(REPLACE(REPLACE(inbound_filename,'*','%'), '_','/_'))) ESCAPE '/'
+    and elp_dealer.dealer_id = elp_transall_mapping.dealer_id
+    --dynamic_where_clause
+  </LOAD_LIST_BY_FILE>
+  <LOAD_LIST_BY_DIRECTORY>
+    SELECT
+    elp_transall_mapping.dealer_id,
+    elp_dealer.dealer_name,
+    inbound_filename,
+    outbound_filename_regex,
+    output_path,
+    transall_package,
+    logfile_emails,
+    num_files,
+    layout_code_id,
+    ftp_site_id,
+    elp_transall_mapping.created_by,
+    elp_transall_mapping.modified_by,
+    elp_transall_mapping.created_date,
+    elp_transall_mapping.modified_date,
+    transall_mapping_id
+    FROM elp_transall_mapping, elp_dealer
+    WHERE
+    upper(output_path) = upper(:output_path)
+    and elp_dealer.dealer_id = elp_transall_mapping.dealer_id
+    --dynamic_where_clause
+  </LOAD_LIST_BY_DIRECTORY>
+  <LOAD_LIST_BY_OUTPUT_DIRECTORY>
+    SELECT
+    elp_transall_mapping.dealer_id,
+    elp_dealer.dealer_name,
+    elp_transall_mapping.inbound_filename,
+    elp_transall_mapping.outbound_filename_regex,
+    elp_transall_mapping.output_path,
+    elp_transall_mapping.transall_package,
+    elp_transall_mapping.logfile_emails,
+    elp_transall_mapping.num_files,
+    elp_transall_mapping_out.layout_code_id,
+    elp_transall_mapping.ftp_site_id,
+    elp_transall_mapping.created_by,
+    elp_transall_mapping.modified_by,
+    elp_transall_mapping.created_date,
+    elp_transall_mapping.modified_date,
+    elp_transall_mapping.transall_mapping_id
+    FROM elp_transall_mapping, elp_dealer, elp_transall_mapping_out
+    WHERE
+    elp_transall_mapping.transall_mapping_id = elp_transall_mapping_out.transall_mapping_id
+    and upper(output_path) = upper(:output_path)
+    and elp_dealer.dealer_id = elp_transall_mapping.dealer_id
+    --dynamic_where_clause
+  </LOAD_LIST_BY_OUTPUT_DIRECTORY>
+  <LOAD_LIST_BY_OUTPUT_DIRECTORY_FILENAME>
+    SELECT
+    elp_transall_mapping.dealer_id,
+    elp_dealer.dealer_name,
+    elp_transall_mapping.inbound_filename,
+    elp_transall_mapping.outbound_filename_regex,
+    elp_transall_mapping.output_path,
+    elp_transall_mapping.transall_package,
+    elp_transall_mapping.logfile_emails,
+    elp_transall_mapping.num_files,
+    elp_transall_mapping_out.layout_code_id,
+    elp_transall_mapping.ftp_site_id,
+    elp_transall_mapping.created_by,
+    elp_transall_mapping.modified_by,
+    elp_transall_mapping.created_date,
+    elp_transall_mapping.modified_date,
+    elp_transall_mapping.transall_mapping_id
+    FROM elp_transall_mapping, elp_dealer, elp_transall_mapping_out
+    WHERE
+    elp_transall_mapping.transall_mapping_id = elp_transall_mapping_out.transall_mapping_id
+    and upper(elp_transall_mapping.output_path) = upper(:output_path)
+    and upper(:inbound_filename) like RTRIM(upper(REPLACE(REPLACE(elp_transall_mapping_out.output_mask,'*','%'), '_','/_'))) ESCAPE '/'
+    and elp_dealer.dealer_id = elp_transall_mapping.dealer_id
+    --dynamic_where_clause
+  </LOAD_LIST_BY_OUTPUT_DIRECTORY_FILENAME>
+  <LOAD_LIST_BY_DIRECTORY_FILENAME>
+    SELECT
+    elp_transall_mapping.dealer_id,
+    elp_dealer.dealer_name,
+    inbound_filename,
+    outbound_filename_regex,
+    output_path,
+    transall_package,
+    logfile_emails,
+    num_files,
+    layout_code_id,
+    ftp_site_id,
+    elp_transall_mapping.created_by,
+    elp_transall_mapping.modified_by,
+    elp_transall_mapping.created_date,
+    elp_transall_mapping.modified_date,
+    transall_mapping_id
+    FROM elp_transall_mapping, elp_dealer
+    WHERE
+    upper(output_path) = upper(:output_path)
+    and upper(inbound_filename) like upper(:inbound_filename)
+    and elp_dealer.dealer_id = elp_transall_mapping.dealer_id
+    --dynamic_where_clause
+  </LOAD_LIST_BY_DIRECTORY_FILENAME>
+  <UPDATE>
+    <![CDATA[	
+			UPDATE elp_transall_mapping SET
+				dealer_id = :dealer_id,
+				inbound_filename = :inbound_filename,
+				outbound_filename_regex = :outbound_filename_regex,
+				output_path = :output_path,
+				transall_package = :transall_package,
+				logfile_emails = :logfile_emails,
+				num_files = :num_files,
+				layout_code_id = :layout_code_id,
+        ftp_site_id = :ftp_site_id,
+				modified_by = :modified_by
+			WHERE
+				transall_mapping_id = :transall_mapping_id
+		]]>
+  </UPDATE>
+  <INSERT>
+    INSERT INTO elp_transall_mapping
+    (
+    dealer_id,
+    inbound_filename,
+    outbound_filename_regex,
+    output_path,
+    transall_package,
+    logfile_emails,
+    num_files,
+    layout_code_id,
+    ftp_site_id,
+    created_by,
+    transall_mapping_id
+    )
+    VALUES
+    (
+    :dealer_id,
+    :inbound_filename,
+    :outbound_filename_regex,
+    :output_path,
+    :transall_package,
+    :logfile_emails,
+    :num_files,
+    :layout_code_id,
+    :ftp_site_id,
+    :created_by,
+    :transall_mapping_id
+    )
+  </INSERT>
+  <DELETE>
+    DELETE FROM elp_transall_mapping
+    WHERE
+    transall_mapping_id = :transall_mapping_id
+  </DELETE>
+  <TRANSALL_LOG>Insert_Transall_Log</TRANSALL_LOG>
+</SQL>

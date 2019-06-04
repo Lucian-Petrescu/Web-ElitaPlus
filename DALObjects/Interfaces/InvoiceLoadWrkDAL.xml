@@ -1,0 +1,96 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+
+<!-- ********************** THIS FILE HAS BEEN GENERATED FROM TEMPLATE SQLObject.cst (1/7/2013)********************** -->
+
+<SQL>
+  <LOAD>
+    <![CDATA[	
+			SELECT 
+				record_type,
+				company,
+				invoice_number,
+				invoice_date,
+				attributes,
+				claim_number,
+				authorization_number,
+				line_item_number,
+				line_item_code,
+				line_item_description,
+				amount,
+				entire_record,
+				created_by,
+				created_date,
+				modified_by,
+				modified_date,
+				invoice_load_wrk_id
+			FROM elp_invoice_load_wrk 
+			WHERE
+				invoice_load_wrk_id = :invoice_load_wrk_id
+		]]>
+  </LOAD>
+  <LOAD_LIST>
+  </LOAD_LIST>
+  <UPDATE>
+    <![CDATA[	
+			UPDATE elp_invoice_load_wrk SET
+				record_type = :record_type,
+				company = :company,
+				invoice_number = :invoice_number,
+				invoice_date = :invoice_date,
+				attributes = :attributes,
+				claim_number = :claim_number,
+				authorization_number = :authorization_number,
+				line_item_number = :line_item_number,
+				line_item_code = :line_item_code,
+				line_item_description = :line_item_description,
+				amount = :amount,
+				entire_record = :entire_record,
+				modified_by = :modified_by
+			WHERE
+				invoice_load_wrk_id = :invoice_load_wrk_id
+		]]>
+  </UPDATE>
+  <INSERT>
+    INSERT INTO elp_invoice_load_wrk
+    (
+    record_type,
+    company,
+    invoice_number,
+    invoice_date,
+    attributes,
+    claim_number,
+    authorization_number,
+    line_item_number,
+    line_item_code,
+    line_item_description,
+    amount,
+    entire_record,
+    created_by,
+    invoice_load_wrk_id
+    )
+    VALUES
+    (
+    :record_type,
+    :company,
+    :invoice_number,
+    :invoice_date,
+    :attributes,
+    :claim_number,
+    :authorization_number,
+    :line_item_number,
+    :line_item_code,
+    :line_item_description,
+    :amount,
+    :entire_record,
+    :created_by,
+    :invoice_load_wrk_id
+    )
+  </INSERT>
+  <DELETE>
+    DELETE FROM elp_invoice_load_wrk
+    WHERE
+    invoice_load_wrk_id = :invoice_load_wrk_id
+  </DELETE>
+</SQL>
+
+

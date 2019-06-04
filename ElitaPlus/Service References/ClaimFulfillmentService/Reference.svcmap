@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ReferenceGroup xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" ID="1457f586-9141-4ea6-a042-55ab17b19829" xmlns="urn:schemas-microsoft-com:xml-wcfservicemap">
+  <ClientOptions>
+    <GenerateAsynchronousMethods>false</GenerateAsynchronousMethods>
+    <GenerateTaskBasedAsynchronousMethod>true</GenerateTaskBasedAsynchronousMethod>
+    <EnableDataBinding>true</EnableDataBinding>
+    <ExcludedTypes />
+    <ImportXmlTypes>false</ImportXmlTypes>
+    <GenerateInternalTypes>false</GenerateInternalTypes>
+    <GenerateMessageContracts>false</GenerateMessageContracts>
+    <NamespaceMappings />
+    <CollectionMappings />
+    <GenerateSerializableTypes>true</GenerateSerializableTypes>
+    <Serializer>Auto</Serializer>
+    <UseSerializerForFaults>true</UseSerializerForFaults>
+    <ReferenceAllAssemblies>true</ReferenceAllAssemblies>
+    <ReferencedAssemblies />
+    <ReferencedDataContractTypes />
+    <ServiceContractMappings />
+  </ClientOptions>
+  <MetadataSources>
+    <MetadataSource Address="http://localhost/ElitaFulfillmentService/FulfillmentService.svc" Protocol="http" SourceId="1" />
+  </MetadataSources>
+  <Metadata>
+    <MetadataFile FileName="FulfillmentService.xsd" MetadataType="Schema" ID="a60261a1-6ccd-4087-be8f-6c87d05336d4" SourceId="1" SourceUrl="http://localhost/ElitaFulfillmentService/FulfillmentService.svc?xsd=xsd3" />
+    <MetadataFile FileName="FulfillmentService1.xsd" MetadataType="Schema" ID="abef4fa5-8626-43f7-8328-04c077a07382" SourceId="1" SourceUrl="http://localhost/ElitaFulfillmentService/FulfillmentService.svc?xsd=xsd4" />
+    <MetadataFile FileName="FulfillmentService2.xsd" MetadataType="Schema" ID="c9e13f85-1880-4c30-8023-c013f3c6b5c2" SourceId="1" SourceUrl="http://localhost/ElitaFulfillmentService/FulfillmentService.svc?xsd=xsd6" />
+    <MetadataFile FileName="FulfillmentService3.xsd" MetadataType="Schema" ID="f333672d-b8b7-4a7c-8ada-43ba7325b4ce" SourceId="1" SourceUrl="http://localhost/ElitaFulfillmentService/FulfillmentService.svc?xsd=xsd0" />
+    <MetadataFile FileName="FulfillmentService4.xsd" MetadataType="Schema" ID="5d470cbd-2ed2-45bc-b027-2fe8fd8bf5f6" SourceId="1" SourceUrl="http://localhost/ElitaFulfillmentService/FulfillmentService.svc?xsd=xsd2" />
+    <MetadataFile FileName="FulfillmentService.wsdl" MetadataType="Wsdl" ID="4f9631ca-9c25-48b2-9541-4062f258a174" SourceId="1" SourceUrl="http://localhost/ElitaFulfillmentService/FulfillmentService.svc?wsdl=wsdl0" />
+    <MetadataFile FileName="FulfillmentService5.xsd" MetadataType="Schema" ID="6d4f3098-a4d7-4005-b7b6-f82c0a06112f" SourceId="1" SourceUrl="http://localhost/ElitaFulfillmentService/FulfillmentService.svc?xsd=xsd8" />
+    <MetadataFile FileName="FulfillmentService6.xsd" MetadataType="Schema" ID="17cd9caf-4301-4de3-9c7a-7f3d6d96354e" SourceId="1" SourceUrl="http://localhost/ElitaFulfillmentService/FulfillmentService.svc?xsd=xsd5" />
+    <MetadataFile FileName="FulfillmentService.disco" MetadataType="Disco" ID="ccd21209-40fe-4fe8-b4d7-fb2c82e99488" SourceId="1" SourceUrl="http://localhost/ElitaFulfillmentService/FulfillmentService.svc?disco" />
+    <MetadataFile FileName="FulfillmentService7.xsd" MetadataType="Schema" ID="59682e03-70e5-4a3e-9bb8-6abe32444c6a" SourceId="1" SourceUrl="http://localhost/ElitaFulfillmentService/FulfillmentService.svc?xsd=xsd7" />
+    <MetadataFile FileName="FulfillmentService1.wsdl" MetadataType="Wsdl" ID="a8ef5396-8eca-41c5-ab64-9008c664b416" SourceId="1" SourceUrl="http://localhost/ElitaFulfillmentService/FulfillmentService.svc?wsdl" />
+    <MetadataFile FileName="FulfillmentService8.xsd" MetadataType="Schema" ID="d4253b19-0258-4020-893a-7380bf042947" SourceId="1" SourceUrl="http://localhost/ElitaFulfillmentService/FulfillmentService.svc?xsd=xsd1" />
+  </Metadata>
+  <Extensions>
+    <ExtensionFile FileName="configuration91.svcinfo" Name="configuration91.svcinfo" />
+    <ExtensionFile FileName="configuration.svcinfo" Name="configuration.svcinfo" />
+  </Extensions>
+</ReferenceGroup>

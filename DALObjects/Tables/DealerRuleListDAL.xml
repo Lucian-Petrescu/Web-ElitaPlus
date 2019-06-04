@@ -1,0 +1,75 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+
+<!-- ********************** THIS FILE HAS BEEN GENERATED FROM TEMPLATE SQLObject.cst (5/29/2012)********************** -->
+<SQL>
+  <LOAD>
+    <![CDATA[	
+			SELECT
+				rule_list_id,
+				ED.dealer_id,
+				effective,
+				expiration,
+				EDRL.created_date,
+				EDRL.created_by,
+				EDRL.modified_date,
+				EDRL.modified_by,
+				dealer_rule_list_id, ED.DEALER_NAME DESCRIPTION
+			FROM ELP_DEALER_RULE_LIST EDRL INNER JOIN ELP_DEALER ED ON EDRL.DEALER_ID = ED.DEALER_ID
+      WHERE
+			dealer_rule_list_id = :dealer_rule_list_id
+		]]>
+  </LOAD>
+  <LOAD_LIST>
+    SELECT DEALER_RULE_LIST_ID, RULE_LIST_ID, EDRL.DEALER_ID, EFFECTIVE, EXPIRATION, ED.DEALER_NAME DESCRIPTION,
+    EDRL.created_date,
+    EDRL.created_by,
+    EDRL.modified_date,
+    EDRL.modified_by
+    FROM ELP_DEALER_RULE_LIST EDRL INNER JOIN ELP_DEALER ED ON EDRL.DEALER_ID = ED.DEALER_ID
+    WHERE RULE_LIST_ID = :RULE_LIST_ID
+  </LOAD_LIST>
+  <UPDATE>
+    <![CDATA[	
+			UPDATE elp_dealer_rule_list SET
+				rule_list_id = :rule_list_id,
+				dealer_id = :dealer_id,
+				effective = :effective,
+				expiration = :expiration,
+				modified_by = :modified_by
+			WHERE
+				dealer_rule_list_id = :dealer_rule_list_id
+		]]>
+  </UPDATE>
+  <INSERT>
+    INSERT INTO elp_dealer_rule_list
+    (
+    rule_list_id,
+    dealer_id,
+    effective,
+    expiration,
+    created_by,
+    dealer_rule_list_id
+    )
+    VALUES
+    (
+    :rule_list_id,
+    :dealer_id,
+    :effective,
+    :expiration,
+    :created_by,
+    :dealer_rule_list_id
+    )
+  </INSERT>
+  <DELETE>
+    DELETE FROM elp_dealer_rule_list
+    WHERE
+    dealer_rule_list_id = :dealer_rule_list_id
+  </DELETE>
+  <LOAD_DEALER_LIST>
+    SELECT
+    DEALER_ID ID, DEALER_NAME DESCRIPTION FROM ELP_DEALER ED
+    INNER JOIN ELP_COMPANY EC ON ED.COMPANY_ID = EC.COMPANY_ID
+  </LOAD_DEALER_LIST>
+</SQL>
+
+

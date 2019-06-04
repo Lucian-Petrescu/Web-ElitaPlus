@@ -1,0 +1,199 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+
+<!-- ********************** THIS FILE HAS BEEN GENERATED FROM TEMPLATE SQLObject.cst (4/30/2013)********************** -->
+
+<SQL>
+  <LOAD>
+    <![CDATA[	
+			SELECT 
+				claim_authorization_id,
+				claim_id,
+				authorization_number,
+				service_center_id,
+				service_level_id,
+				claim_authorization_status_id,
+				special_instruction,
+				visit_date,
+				device_reception_date,
+				expected_repair_date,
+				repair_date,
+				pick_up_date,
+				delivery_date,
+				who_pays_id,
+				defect_reason,
+				technical_report,
+				batch_number,
+				svc_reference_number,
+				external_created_date,
+				is_special_service_id,
+				reverse_logistics_id,
+				problem_found,
+				source,
+				created_by,
+				created_date,
+				modified_by,
+				modified_date,
+				hist_created_by,
+				hist_created_date,
+				hist_modified_by,
+				hist_modified_date,
+        verification_number,
+				claim_auth_history_id
+			FROM elp_claim_auth_history 
+			WHERE
+				claim_auth_history_id = :claim_auth_history_id
+		]]>
+  </LOAD>
+  <LOAD_LIST>
+    <![CDATA[	
+			SELECT 
+				claim_authorization_id,
+				claim_id,
+				authorization_number,
+				service_center_id,
+				service_level_id,
+				claim_authorization_status_id,
+				special_instruction,
+				visit_date,
+				device_reception_date,
+				expected_repair_date,
+				repair_date,
+				pick_up_date,
+				delivery_date,
+				who_pays_id,
+				defect_reason,
+				technical_report,
+				batch_number,
+				svc_reference_number,
+				external_created_date,
+				is_special_service_id,
+				reverse_logistics_id,
+				problem_found,
+				source,
+				created_by,
+				created_date,
+				modified_by,
+				modified_date,
+				hist_created_by,
+				hist_created_date,
+				hist_modified_by,
+				hist_modified_date,
+        verification_number,
+				claim_auth_history_id
+			FROM elp_claim_auth_history 
+			WHERE
+				claim_authorization_id = :claim_authorization_id
+		]]>
+  </LOAD_LIST>
+  <UPDATE>
+    <![CDATA[	
+			UPDATE elp_claim_auth_history SET
+				claim_authorization_id = :claim_authorization_id,
+				claim_id = :claim_id,
+				authorization_number = :authorization_number,
+				service_center_id = :service_center_id,
+				service_level_id = :service_level_id,
+				claim_authorization_status_id = :claim_authorization_status_id,
+				special_instruction = :special_instruction,
+				visit_date = :visit_date,
+				device_reception_date = :device_reception_date,
+				expected_repair_date = :expected_repair_date,
+				repair_date = :repair_date,
+				pick_up_date = :pick_up_date,
+				delivery_date = :delivery_date,
+				who_pays_id = :who_pays_id,
+				defect_reason = :defect_reason,
+				technical_report = :technical_report,
+				batch_number = :batch_number,
+				svc_reference_number = :svc_reference_number,
+				external_created_date = :external_created_date,
+				is_special_service_id = :is_special_service_id,
+				reverse_logistics_id = :reverse_logistics_id,
+				problem_found = :problem_found,
+				source = :source,
+				hist_created_by = :hist_created_by,
+				hist_created_date = :hist_created_date,
+				hist_modified_by = :hist_modified_by,
+				hist_modified_date = :hist_modified_date,
+				modified_by = :modified_by,
+        verification_number = :verification_number
+			WHERE
+				claim_auth_history_id = :claim_auth_history_id
+		]]>
+  </UPDATE>
+  <INSERT>
+    INSERT INTO elp_claim_auth_history
+    (
+    claim_authorization_id,
+    claim_id,
+    authorization_number,
+    service_center_id,
+    service_level_id,
+    claim_authorization_status_id,
+    special_instruction,
+    visit_date,
+    device_reception_date,
+    expected_repair_date,
+    repair_date,
+    pick_up_date,
+    delivery_date,
+    who_pays_id,
+    defect_reason,
+    technical_report,
+    batch_number,
+    svc_reference_number,
+    external_created_date,
+    is_special_service_id,
+    reverse_logistics_id,
+    problem_found,
+    source,
+    hist_created_by,
+    hist_created_date,
+    hist_modified_by,
+    hist_modified_date,
+    created_by,
+    verification_number,
+    claim_auth_history_id
+    )
+    VALUES
+    (
+    :claim_authorization_id,
+    :claim_id,
+    :authorization_number,
+    :service_center_id,
+    :service_level_id,
+    :claim_authorization_status_id,
+    :special_instruction,
+    :visit_date,
+    :device_reception_date,
+    :expected_repair_date,
+    :repair_date,
+    :pick_up_date,
+    :delivery_date,
+    :who_pays_id,
+    :defect_reason,
+    :technical_report,
+    :batch_number,
+    :svc_reference_number,
+    :external_created_date,
+    :is_special_service_id,
+    :reverse_logistics_id,
+    :problem_found,
+    :source,
+    :hist_created_by,
+    :hist_created_date,
+    :hist_modified_by,
+    :hist_modified_date,
+    :created_by,
+    :verification_number,
+    :claim_auth_history_id
+    )
+  </INSERT>
+  <DELETE>
+    DELETE FROM elp_claim_auth_history
+    WHERE
+    claim_auth_history_id = :claim_auth_history_id
+  </DELETE>
+</SQL>
+
+

@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xs:schema xmlns:base="http://gsxws.apple.com/types/base" xmlns:basic="http://gsxws.apple.com/types/basic" xmlns:tns="http://gsxws.apple.com/elements/core/asp/la" xmlns:asp="http://gsxws.apple.com/types/core/asp" xmlns:global="http://gsxws.apple.com/types/global" targetNamespace="http://gsxws.apple.com/elements/core/asp/la" version="1.0" xml:lang="en" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+  <xs:import schemaLocation="gsx-basic-types.xsd" namespace="http://gsxws.apple.com/types/basic" />
+  <xs:import schemaLocation="gsx-base-types.xsd" namespace="http://gsxws.apple.com/types/base" />
+  <xs:import schemaLocation="gsx-global-schema.xsd" namespace="http://gsxws.apple.com/types/global" />
+  <xs:import schemaLocation="gsx-coreAsp-schema.xsd" namespace="http://gsxws.apple.com/types/core/asp" />
+  <xs:complexType name="laAspAddressType">
+    <xs:complexContent mixed="false">
+      <xs:extension base="global:addressType" />
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:complexType name="laAspCreateCarryInRepairDataType">
+    <xs:complexContent mixed="false">
+      <xs:extension base="asp:carryInRepairType">
+        <xs:sequence>
+          <xs:element minOccurs="1" name="customerAddress" type="tns:laAspAddressType" />
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:complexType name="carryInRequestType">
+    <xs:sequence>
+      <xs:element minOccurs="1" name="userSession" type="global:gsxUserSessionType" />
+      <xs:element minOccurs="1" name="repairData" type="tns:laAspCreateCarryInRepairDataType" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="createCarryInRequestWrapper">
+    <xs:sequence>
+      <xs:element name="CreateCarryInRequest" type="tns:carryInRequestType" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="createCarryInResponseType">
+    <xs:sequence>
+      <xs:element minOccurs="1" name="operationId" type="xs:token" />
+      <xs:element minOccurs="1" name="repairConfirmation" type="asp:repairConfirmationType" />
+      <xs:element minOccurs="0" name="communicationMessage" type="xs:string" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="createCarryInResponseWrapper">
+    <xs:sequence>
+      <xs:element name="CreateCarryInResponse" type="tns:createCarryInResponseType" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="CreateCarryIn" type="tns:createCarryInRequestWrapper" />
+  <xs:element name="CreateCarryInResponse" type="tns:createCarryInResponseWrapper" />
+  <xs:complexType name="kbbPendingReturnReportRequestType">
+    <xs:sequence>
+      <xs:element minOccurs="1" name="userSession" type="global:gsxUserSessionType" />
+      <xs:element minOccurs="0" name="reportRequestInfo" type="asp:kbbPendingReturnReportRequestData" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="kbbPendingReturnReportRequestWrapper">
+    <xs:sequence>
+      <xs:element name="KBBPendingReturnReportRequest" type="tns:kbbPendingReturnReportRequestType" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="kbbPendingReturnReportResponseType">
+    <xs:sequence>
+      <xs:element minOccurs="1" name="operationId" type="xs:token" />
+      <xs:element minOccurs="1" maxOccurs="unbounded" name="reportResponseInfo" type="asp:kbbPendingReturnReportResponseData" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="kbbPendingReturnReportResponseWrapper">
+    <xs:sequence>
+      <xs:element name="KBBPendingReturnReportResponse" type="tns:kbbPendingReturnReportResponseType" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="KBBPendingReturnReport" type="tns:kbbPendingReturnReportRequestWrapper" />
+  <xs:element name="KBBPendingReturnReportResponse" type="tns:kbbPendingReturnReportResponseWrapper" />
+  <xs:complexType name="uploadKGBICMSTaxVoucherRequestType">
+    <xs:sequence>
+      <xs:element minOccurs="1" name="userSession" type="global:gsxUserSessionType" />
+      <xs:element minOccurs="1" name="uploadRequest" type="asp:uploadKGBICMSTaxVoucherRequestType" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="uploadKGBICMSTaxVoucherResponseType">
+    <xs:sequence>
+      <xs:element minOccurs="1" name="operationId" type="xs:token" />
+      <xs:element minOccurs="1" name="confirmationMessage" type="xs:string" />
+      <xs:element minOccurs="0" name="communicationMessage" type="xs:string" />
+      <xs:element minOccurs="1" name="confirmationNumber" type="xs:string" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="uploadKGBICMSTaxVoucherRequestWrapper">
+    <xs:sequence>
+      <xs:element name="UploadKGBICMSTaxVoucherRequest" type="tns:uploadKGBICMSTaxVoucherRequestType" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="uploadKGBICMSTaxVoucherResponseWrapper">
+    <xs:sequence>
+      <xs:element name="UploadKGBICMSTaxVoucherResponse" type="tns:uploadKGBICMSTaxVoucherResponseType" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="UploadKGBICMSTaxVoucher" type="tns:uploadKGBICMSTaxVoucherRequestWrapper" />
+  <xs:element name="UploadKGBICMSTaxVoucherResponse" type="tns:uploadKGBICMSTaxVoucherResponseWrapper" />
+</xs:schema>

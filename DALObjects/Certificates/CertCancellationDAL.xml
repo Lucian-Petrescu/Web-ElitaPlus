@@ -1,0 +1,242 @@
+<?xml version="1.0" encoding="utf-8" ?>
+
+<!-- ********************** THIS FILE HAS BEEN GENERATED FROM TEMPLATE SQLObject.cst (11/3/2004)********************** -->
+
+<SQL>
+	<LOAD>
+		<![CDATA[	
+			SELECT 
+				company_id,
+				cert_id,
+				cancellation_reason_id,
+				commission_breakdown_id,
+				original_region_id,
+				refund_dest_id,
+				cancellation_date,
+				source,
+				processed_date,
+				gross_amt_received,
+				premium_written,
+				original_premium,
+				loss_cost,
+				commission,
+				admin_expense,
+				marketing_expense,
+				other,
+				sales_tax,
+				tax1,
+				tax2,
+				tax3,
+				tax4,
+				tax5,
+				tax6,
+				computed_refund,
+				credit_issued_flag,
+				customer_paid,
+				principal_paid,
+				refund_amt,
+				assurant_gwp,
+				markup_commission,
+				payment_method_id,
+				Bank_info_id,
+				created_by,
+				created_date,
+				modified_by,
+				modified_date,
+        tracking_number,
+        status_id,
+        status_date,
+        markup_commission_vat,
+				cert_cancellation_id,
+        Pay_Reject_Code_XCD,
+        Refund_status_XCD,
+        Refund_method_XCD
+    FROM elp_cert_cancellation 
+			WHERE
+				cert_cancellation_id = :cert_cancellation_id
+		]]>
+	</LOAD>
+	<LOAD_LIST>		
+	</LOAD_LIST>	
+	<UPDATE>
+		<![CDATA[	
+			UPDATE elp_cert_cancellation SET
+				company_id = :company_id,
+				cert_id = :cert_id,
+				cancellation_reason_id = :cancellation_reason_id,
+				commission_breakdown_id = :commission_breakdown_id,
+				original_region_id = :original_region_id,
+				refund_dest_id = :refund_dest_id,
+				cancellation_date = :cancellation_date,
+				source = :source,
+				processed_date = :processed_date,
+				gross_amt_received = :gross_amt_received,
+				premium_written = :premium_written,
+				original_premium = :original_premium,
+				loss_cost = :loss_cost,
+				commission = :commission,
+				admin_expense = :admin_expense,
+				marketing_expense = :marketing_expense,
+				other = :other,
+				sales_tax = :sales_tax,
+				tax1 = :tax1,
+				tax2 = :tax2,
+				tax3 = :tax3,
+				tax4 = :tax4,
+				tax5 = :tax5,
+				tax6 = :tax6,
+				computed_refund = :computed_refund,
+				credit_issued_flag = :credit_issued_flag,
+				customer_paid = :customer_paid,
+				principal_paid = :principal_paid,
+				refund_amt = :refund_amt,
+				assurant_gwp = :assurant_gwp,
+				markup_commission = :markup_commission,
+				payment_method_id = :payment_method_id,
+				Bank_info_id = :Bank_info_id,
+				modified_by = :modified_by,
+        tracking_number = :tracking_number,
+        status_id = :status_id,
+        markup_commission_vat = :markup_commission_vat,
+        status_date = :status_date
+			WHERE
+				cert_cancellation_id = :cert_cancellation_id
+		]]>
+	</UPDATE>
+	<INSERT>
+    INSERT INTO elp_cert_cancellation
+    (
+    company_id,
+    cert_id,
+    cancellation_reason_id,
+    commission_breakdown_id,
+    original_region_id,
+    refund_dest_id,
+    cancellation_date,
+    source,
+    processed_date,
+    gross_amt_received,
+    premium_written,
+    original_premium,
+    loss_cost,
+    commission,
+    admin_expense,
+    marketing_expense,
+    other,
+    sales_tax,
+    tax1,
+    tax2,
+    tax3,
+    tax4,
+    tax5,
+    tax6,
+    computed_refund,
+    credit_issued_flag,
+    customer_paid,
+    principal_paid,
+    refund_amt,
+    assurant_gwp,
+    markup_commission,
+    payment_method_id,
+    Bank_info_id,
+    created_by,
+    tracking_number,
+    status_id,
+    status_date,
+    markup_commission_vat,
+    cert_cancellation_id
+    )
+    VALUES
+    (
+    :company_id,
+    :cert_id,
+    :cancellation_reason_id,
+    :commission_breakdown_id,
+    :original_region_id,
+    :refund_dest_id,
+    :cancellation_date,
+    :source,
+    :processed_date,
+    :gross_amt_received,
+    :premium_written,
+    :original_premium,
+    :loss_cost,
+    :commission,
+    :admin_expense,
+    :marketing_expense,
+    :other,
+    :sales_tax,
+    :tax1,
+    :tax2,
+    :tax3,
+    :tax4,
+    :tax5,
+    :tax6,
+    :computed_refund,
+    :credit_issued_flag,
+    :customer_paid,
+    :principal_paid,
+    :refund_amt,
+    :assurant_gwp,
+    :markup_commission,
+    :payment_method_id,
+    :Bank_info_id,
+    :created_by,
+    :tracking_number,
+    :status_id,
+    :status_date,
+    :markup_commission_vat,
+    :cert_cancellation_id
+    )
+  </INSERT>
+	<DELETE>
+			DELETE FROM elp_cert_cancellation
+			WHERE
+				cert_cancellation_id = :cert_cancellation_id
+	</DELETE>
+	<GET_REFUND_COMPUTE_METHOD_ID>
+	SELECT
+			refund_compute_method_id
+	FROM elp_cancellation_reason
+	where cancellation_id = :cancellation_id
+	</GET_REFUND_COMPUTE_METHOD_ID>
+	<GET_POLICY_COST>
+	SELECT  	ci.cert_id, Count(*),
+				sum(gross_amt_received) as policy_cost
+			
+	FROM		elp_cert_item ci, ELITA.ELP_CERT_ITEM_COVERAGE cic
+	WHERE 		ci.cert_id = :cert_id
+			AND cic.CERT_ITEM_ID = ci.CERT_ITEM_ID
+	GROUP BY ci.cert_id
+	</GET_POLICY_COST>
+	<PROCESS_CANCELLATION>
+		cancel_policy
+	</PROCESS_CANCELLATION>
+	<PROCESS_REVERSE_CANCELLATION>
+		reverse_cancellation
+	</PROCESS_REVERSE_CANCELLATION>
+	<GET_CERT_CANCELLATION_ID>
+	SELECT
+			cert_cancellation_id
+	FROM elp_cert_cancellation
+	WHERE cert_id = :cert_id			
+	</GET_CERT_CANCELLATION_ID>
+  <CANCEL_CERTIFICATES_BY_INVOCIE_NUMBER>
+    ELP_CANCELLATIONS.cancel_policy_by_invocie_num
+  </CANCEL_CERTIFICATES_BY_INVOCIE_NUMBER>
+  <CANCEL_COVERAGES>
+    ELP_DEALER_LOAD.CancelCoverages
+  </CANCEL_COVERAGES>
+  <VSC_CANCEL_CERTIFICATE>
+    ELP_CANCELLATIONS.vsc_cancel_policy
+  </VSC_CANCEL_CERTIFICATE>
+  <UPDATE_BANK_INFO_FOR_REJECTS>
+    elita.UpdateBankInfoForRejects
+  </UPDATE_BANK_INFO_FOR_REJECTS>
+  <SET_FUTURE_CANCELLATION_DATE>
+    elita.SetFutureCancellationDate
+  </SET_FUTURE_CANCELLATION_DATE>
+</SQL> 
+
+
+

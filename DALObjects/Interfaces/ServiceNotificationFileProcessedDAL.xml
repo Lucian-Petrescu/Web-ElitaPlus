@@ -1,0 +1,136 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+
+<!-- ********************** THIS FILE HAS BEEN GENERATED FROM TEMPLATE SQLObject.cst (11/5/2008)********************** -->
+
+<SQL>
+  <LOAD>
+    <![CDATA[	
+			SELECT 
+				filename,
+				process_flag,
+				received,
+				counted,
+				rejected,
+				validated,
+				loaded,
+				bypassed,
+				is_deleted,
+				created_by,
+				created_date,
+				modified_by,
+				modified_date,
+				svc_notification_processed_id
+			FROM elp_svc_notification_processed 
+			WHERE
+				svc_notification_processed_id = :svc_notification_processed_id
+		]]>
+  </LOAD>
+  <LOAD_LIST>
+    SELECT
+    svc_notification_processed_id,
+    filename,
+    process_flag,
+    received,
+    counted,
+    rejected,
+    validated,
+    loaded,
+    bypassed,
+    is_deleted,
+    created_by,
+    created_date,
+    modified_by,
+    modified_date,
+    svc_notification_processed_id
+    FROM elp_svc_notification_processed
+    WHERE
+    is_deleted = 'N'
+    ORDER BY filename desc
+  </LOAD_LIST>
+  <LOAD_LIST_FILE>
+    SELECT
+    svc_notification_processed_id,
+    filename,
+    process_flag,
+    received,
+    counted,
+    rejected,
+    validated,
+    loaded,
+    bypassed,
+    is_deleted,
+    created_by,
+    created_date,
+    modified_by,
+    modified_date,
+    svc_notification_processed_id
+    FROM elp_svc_notification_processed
+    WHERE
+    svc_notification_processed_id = :svc_notification_processed_id and
+    is_deleted = 'N'
+    ORDER BY filename desc
+  </LOAD_LIST_FILE>
+  <UPDATE>
+    <![CDATA[	
+			UPDATE elp_svc_notification_processed SET
+				filename = :filename,
+				process_flag = :process_flag,
+				received = :received,
+				counted = :counted,
+				rejected = :rejected,
+				validated = :validated,
+				loaded = :loaded,
+				bypassed = :bypassed,
+				is_deleted = :is_deleted,
+				modified_by = :modified_by
+			WHERE
+				svc_notification_processed_id = :svc_notification_processed_id
+		]]>
+  </UPDATE>
+  <INSERT>
+    INSERT INTO elp_svc_notification_processed
+    (
+    filename,
+    process_flag,
+    received,
+    counted,
+    rejected,
+    validated,
+    loaded,
+    bypassed,
+    is_deleted,
+    created_by,
+    svc_notification_processed_id
+    )
+    VALUES
+    (
+    :filename,
+    :process_flag,
+    :received,
+    :counted,
+    :rejected,
+    :validated,
+    :loaded,
+    :bypassed,
+    :is_deleted,
+    :created_by,
+    :svc_notification_processed_id
+    )
+  </INSERT>
+  <DELETE>
+    DELETE FROM elp_svc_notification_processed
+    WHERE
+    svc_notification_processed_id = :svc_notification_processed_id
+  </DELETE>
+  <VALIDATE_NEW_NOTIFICATION_FILE>
+    elp_service_notification.process_notifications
+  </VALIDATE_NEW_NOTIFICATION_FILE>
+  <PROCESS_NEW_NOTIFICATION_FILE>
+    elp_service_notification.process_notifications
+  </PROCESS_NEW_NOTIFICATION_FILE>
+  <DELETE_NEW_NOTIFICATION_FILE>
+    elp_service_notification.process_notifications
+  </DELETE_NEW_NOTIFICATION_FILE>
+</SQL>
+
+

@@ -1,0 +1,82 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+
+<!-- ********************** THIS FILE HAS BEEN GENERATED FROM TEMPLATE SQLObject.cst (7/26/2012)********************** -->
+
+<SQL>
+	<LOAD>
+		<![CDATA[	
+			SELECT 
+				claim_issue_id,
+				answer_id,
+				supports_claim_id,
+				answer_description,
+				answer_value,
+				created_by,
+				created_date,
+				modified_by,
+				modified_date,
+				claim_issue_response_id
+			FROM elp_claim_issue_response 
+			WHERE
+				claim_issue_response_id = :claim_issue_response_id
+		]]>
+	</LOAD>
+	<LOAD_LIST>
+    SELECT
+    claim_issue_id,
+    answer_id,
+    supports_claim_id,
+    answer_description,
+    answer_value,
+    created_by,
+    created_date,
+    modified_by,
+    modified_date,
+    claim_issue_response_id
+    FROM elp_claim_issue_response
+    WHERE
+    claim_issue_id = :claim_issue_id
+  </LOAD_LIST>
+	<UPDATE>
+		<![CDATA[	
+			UPDATE elp_claim_issue_response SET
+				claim_issue_id = :claim_issue_id,
+				answer_id = :answer_id,
+				supports_claim_id = :supports_claim_id,
+				answer_description = :answer_description,
+				answer_value = :answer_value,
+				modified_by = :modified_by
+			WHERE
+				claim_issue_response_id = :claim_issue_response_id
+		]]>
+	</UPDATE>
+	<INSERT>
+		INSERT INTO elp_claim_issue_response
+		(
+		claim_issue_id,
+		answer_id,
+		supports_claim_id,
+		answer_description,
+		answer_value,
+		created_by,
+		claim_issue_response_id
+		)
+		VALUES
+		(
+		:claim_issue_id,
+		:answer_id,
+		:supports_claim_id,
+		:answer_description,
+		:answer_value,
+		:created_by,
+		:claim_issue_response_id
+		)
+	</INSERT>
+	<DELETE>
+		DELETE FROM elp_claim_issue_response
+		WHERE
+		claim_issue_response_id = :claim_issue_response_id
+	</DELETE>
+</SQL>
+
+

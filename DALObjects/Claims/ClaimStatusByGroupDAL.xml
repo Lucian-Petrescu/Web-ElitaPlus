@@ -1,0 +1,183 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+
+<!-- ********************** THIS FILE HAS BEEN GENERATED FROM TEMPLATE SQLObject.cst (6/11/2008)********************** -->
+
+<SQL>
+  <LOAD>
+    <![CDATA[	
+			SELECT 
+				company_group_id,
+				dealer_id,
+				list_item_id,
+				status_order,
+				created_by,
+				created_date,
+				modified_by,
+				modified_date,
+				claim_status_by_group_id,
+        owner_id,
+        skipping_allowed_id,
+        active_id,
+        group_number
+			FROM elp_claim_status_by_group 
+			WHERE
+				claim_status_by_group_id = :claim_status_by_group_id
+		]]>
+  </LOAD>
+  <LOAD_LIST>
+    <![CDATA[	
+    select unique decode(a.company_group_id,null,a.dealer_id,a.company_group_id) id,
+    b.description as company_group_name,
+    b.code as company_group_code,
+    c.dealer_name as dealer_name,
+    c.dealer as dealer_code,
+    c.dealer_id
+    from ELP_CLAIM_STATUS_BY_GROUP a left join ELP_COMPANY_GROUP b on a.company_group_id = b.company_group_id
+    left join ELP_DEALER c on a.dealer_id = c.dealer_id
+    where 1=1
+    --dynamic_where_clause
+    order by c.dealer_name
+    		]]>
+  </LOAD_LIST>
+  <LOAD_LIST_BY_COMPANY_GROUP>
+    <![CDATA[	
+    select unique decode(a.company_group_id,null,a.dealer_id,a.company_group_id) id,
+    b.description as company_group_name,
+    b.code as company_group_code
+    from ELP_CLAIM_STATUS_BY_GROUP a left join ELP_COMPANY_GROUP b on a.company_group_id = b.company_group_id
+    where 1=1 
+    --dynamic_where_clause
+    order by b.description
+    		]]>
+  </LOAD_LIST_BY_COMPANY_GROUP>  
+  <LOAD_LIST_BY_COMPANY_GROUP_OR_DEALER>
+    <![CDATA[	
+		SELECT
+        i.list_item_id,
+				decode(g.claim_status_by_group_id, null, 'N', 'Y') as SELECTED,
+     			t.translation as extended_claim_status,
+          		g.owner_id,
+     			g.skipping_allowed_id,
+				g.status_order,
+        		g.claim_status_by_group_id,
+        		g.active_id,
+        decode(g.claim_status_by_group_id, null, 'Y', 'N') as ISNEW,
+        g.group_number
+			FROM 	elp_list l join elp_list_item i on l.list_id = i.list_id
+					join elp_dict_item_translation t on i.dict_item_id = t.dict_item_id --dynamic language id
+				 	left join elp_claim_status_by_group g on i.list_item_id = g.list_item_id --dynamic company group id or dealer id
+			WHERE
+				l.code = 'CLMSTAT'
+       ORDER BY g.status_order, t.translation
+    ]]>
+  </LOAD_LIST_BY_COMPANY_GROUP_OR_DEALER>
+  <STATUS_ORDER_EXIST>
+    <![CDATA[	
+       select count(*) as status_order_exist
+       from elp_claim_status_by_group
+       where 1 = 1
+       --dynamic_where_clause
+    ]]>
+  </STATUS_ORDER_EXIST>
+  <CLAIM_STATUS_EXIST>
+    <![CDATA[	
+       select count(*) as claim_status_exist
+       from elp_claim_status_by_group
+       where 1 = 1
+       --dynamic_where_clause
+    ]]>
+  </CLAIM_STATUS_EXIST>  
+  <IS_DELETABLE>
+    <![CDATA[	
+       select count(*) as status_used
+       from elp_claim_status_by_group
+       where claim_status_by_group_id in
+       (select claim_status_by_group_id from elp_claim_status)
+       --dynamic_where_clause
+    ]]>
+  </IS_DELETABLE>
+  <UPDATE>
+    <![CDATA[	
+			UPDATE elp_claim_status_by_group SET
+				company_group_id = :company_group_id,
+				dealer_id = :dealer_id,
+				list_item_id = :list_item_id,
+				status_order = :status_order,
+				modified_by = :modified_by,
+        owner_id = :owner_id,
+        skipping_allowed_id = :skipping_allowed_id,
+        active_id = :active_id,
+        group_number = :group_number
+			WHERE
+				claim_status_by_group_id = :claim_status_by_group_id
+		]]>
+  </UPDATE>
+  <INSERT>
+    INSERT INTO elp_claim_status_by_group
+    (
+    company_group_id,
+    dealer_id,
+    list_item_id,
+    status_order,
+    created_by,
+    claim_status_by_group_id,
+    owner_id,
+    skipping_allowed_id,
+    active_id,
+    group_number
+    )
+    VALUES
+    (
+    :company_group_id,
+    :dealer_id,
+    :list_item_id,
+    :status_order,
+    :created_by,
+    :claim_status_by_group_id,
+    :owner_id,
+    :skipping_allowed_id,
+    :active_id,
+    :group_number
+    )
+  </INSERT>
+  <DELETE>
+    DELETE FROM elp_claim_status_by_group
+    WHERE
+    claim_status_by_group_id = :claim_status_by_group_id
+  </DELETE>
+  <LOAD_LIST_DYNAMIC>
+    <![CDATA[	
+    select g.claim_status_by_group_id, 
+           getcodefromlistitem(g.list_item_id) code, 
+           getdescriptionfromlistitem(g.list_item_id, 
+                                      :language_id) description,
+           getcodefromlistitem(g.owner_id) owner_code,
+           g.status_order order_number,
+           getcodefromlistitem(g.skipping_allowed_id) skipping_allowed_code,
+           g.group_number 
+      from elp_claim_status_by_group g 
+      where g.company_group_id = :company_group_id
+      order by g.status_order
+		]]>
+  </LOAD_LIST_DYNAMIC>
+  <GET_CLAIM_STATUS_BY_CODE>
+    <![CDATA[	
+				SELECT g.claim_status_by_group_id
+				FROM
+				 	elp_claim_status_by_group g,
+				 	elp_list l,
+				 	elp_list_item i,
+				 	elp_dict_item_translation t
+				WHERE     
+				    g.company_group_id = :company_group_id AND
+					g.list_item_id = i.list_item_id AND
+					l.list_id = i.list_id AND
+					i.dict_item_id = t.dict_item_id AND
+					t.language_id = :language_id AND
+					l.code = 'CLMSTAT' AND
+					i.code = :status_code
+		]]>
+  </GET_CLAIM_STATUS_BY_CODE>
+</SQL>
+
+

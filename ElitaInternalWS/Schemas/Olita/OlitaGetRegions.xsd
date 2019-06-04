@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema">
+	<xs:element name="OlitaGetRegionsDs">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="OlitaGetRegions">
+					<xs:complexType>
+						<xs:sequence>
+							<xs:element name="country_code" type="xs:string" minOccurs="0" maxOccurs="1"></xs:element>
+						</xs:sequence>
+					</xs:complexType>
+				</xs:element>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+</xs:schema>

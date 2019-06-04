@@ -1,0 +1,96 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+
+<!-- ********************** THIS FILE HAS BEEN GENERATED FROM TEMPLATE SQLObject.cst (10/8/2009)********************** -->
+
+<SQL>
+	<LOAD>
+		<![CDATA[	
+			SELECT 
+        comuna_code_id,
+				region_id,
+				comuna,
+				postalcode,
+				created_date,
+				modified_date,
+				created_by,
+				modified_by
+			FROM elp_comuna_code 
+			WHERE
+				comuna_code_id = :comuna_code_id
+		]]>
+	</LOAD>
+	<LOAD_LIST>
+    SELECT
+    c.comuna_code_id,
+    c.region_id,
+    r.description region_dscription,
+    r.country_id,
+    c.comuna,
+    c.postalcode,
+    c.created_date,
+    c.modified_date,
+    c.created_by,
+    c.modified_by
+    FROM elp_comuna_code c, elp_region r
+    WHERE c.region_id = r.region_id
+    and UPPER(c.comuna) LIKE :comuna
+    and UPPER(c.postalcode) LIKE :postalcode
+    AND  r.country_id in
+    (SELECT co.country_id
+    FROM elp_user_company uc, elp_company co
+    WHERE co.company_id = uc.company_id
+    AND uc.user_id=:user_id)
+    --dynamic_where_clause
+    order by c.comuna
+  </LOAD_LIST>
+  <LOAD_LIST_DYNAMIC>
+    <![CDATA[	
+    SELECT
+    c.comuna_code_id,
+    c.region_id,
+    r.short_desc region_code,
+    r.description region_description,
+    c.comuna
+    FROM elp_comuna_code c, elp_region r
+    WHERE c.region_id = r.region_id
+    AND  r.country_id = :country_id
+    order by r.short_desc, c.comuna
+		]]>
+  </LOAD_LIST_DYNAMIC>
+	<UPDATE>
+		<![CDATA[	
+			UPDATE elp_comuna_code SET
+				region_id = :region_id,
+				comuna = :comuna,
+				postalcode = :postalcode,
+				modified_by = :modified_by
+			WHERE
+				comuna_code_id = :comuna_code_id
+		]]>
+	</UPDATE>
+	<INSERT>
+			INSERT INTO elp_comuna_code
+					(			
+				region_id, 
+				comuna, 
+				postalcode, 
+				created_by,
+				comuna_code_id
+					)
+			VALUES
+					(			
+				:region_id, 
+				:comuna, 
+				:postalcode, 
+				:created_by,
+				:comuna_code_id
+					)
+	</INSERT>
+	<DELETE>
+			DELETE FROM elp_comuna_code
+			WHERE
+				comuna_code_id = :comuna_code_id
+	</DELETE>
+</SQL> 
+
+

@@ -1,0 +1,131 @@
+<?xml version="1.0" encoding="utf-8" ?>
+
+<!-- ********************** THIS FILE HAS BEEN GENERATED FROM TEMPLATE SQLObject.cst (11/29/2004)********************** -->
+
+<SQL>
+	<LOAD>
+		<![CDATA[	
+			SELECT 
+				claim_id,
+				service_order_image_id,
+				service_order_image_data,
+				created_by,
+				created_date,
+				modified_by,
+				modified_date,
+				service_order_id,
+        claim_authorization_id
+			FROM elita.elp_service_order 
+			WHERE
+				service_order_id = :service_order_id
+		]]>
+	</LOAD>
+	<LOADLATEST>
+		<![CDATA[	
+			select *
+			from
+			(SELECT
+				claim_id,
+				service_order_image_id,
+				service_order_image_data,
+				created_by,
+				created_date,
+				modified_by,
+				modified_date,
+				service_order_id,
+        claim_authorization_id
+			FROM elp_service_order
+			WHERE
+				claim_id = :claim_id
+			
+			ORDER BY created_date desc)
+			where rownum = 1
+		]]>
+	</LOADLATEST>
+  <LOADLATESTMULTI>
+    <![CDATA[	
+			select *
+			from
+			(SELECT
+				claim_id,
+				service_order_image_id,
+				service_order_image_data,
+				created_by,
+				created_date,
+				modified_by,
+				modified_date,
+				service_order_id,
+				claim_authorization_id
+			FROM elp_service_order
+			WHERE
+				claim_id = :claim_id
+			AND claim_authorization_id = :claim_authorization_id 
+			
+			ORDER BY created_date desc)
+			where rownum = 1
+		]]>
+  </LOADLATESTMULTI>
+	<LOAD_LIST>		
+	</LOAD_LIST>
+	<LOADIMAGE>
+	    <![CDATA[	
+			SELECT 
+				service_order_image
+			FROM elita.elp_service_order_image 
+			WHERE
+				service_order_image_id = :service_order_image_id
+		]]>
+	</LOADIMAGE>
+  <LOADEMAILCONTENT>
+    <![CDATA[	
+			SELECT 
+				EMAIL_BODY
+			FROM ELITA.elp_email_notification 
+			WHERE
+      TABLE_NAME = 'ELP_COMPANY'
+      and PROCESS_TYPE_CODE = 'SERVICE_ORDER'
+			and REFERENCE_ID = :company_id
+		]]>
+  </LOADEMAILCONTENT>
+  <UPDATE>
+		<![CDATA[	
+			UPDATE elp_service_order SET
+				claim_id = :claim_id,
+				service_order_image_data = :service_order_image_data,
+				modified_by = :modified_by
+			WHERE
+				service_order_id = :service_order_id
+		]]>
+	</UPDATE>
+
+
+  <INSERT_CUSTOM>
+    <![CDATA[	
+    ELP_CLAIMS.InsertServiceOrder
+    ]]>
+  </INSERT_CUSTOM>
+	<INSERT>
+    INSERT INTO elp_service_order
+    (
+    claim_id,
+    service_order_image_data,
+    created_by,
+    service_order_id
+    )
+    VALUES
+    (
+    :claim_id,
+    :service_order_image_data,
+    :created_by,
+    :service_order_id
+    )
+  </INSERT>
+	<DELETE>
+			DELETE FROM elp_service_order
+			WHERE
+				service_order_id = :service_order_id
+	</DELETE>
+</SQL> 
+
+
+

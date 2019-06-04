@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8" ?>
+
+<!-- ********************** THIS FILE HAS BEEN GENERATED FROM TEMPLATE SQLObject.cst (4/11/2007)********************** -->
+
+<SQL>
+	<LOAD>
+		<![CDATA[	
+			SELECT 
+				dealer_id,
+				manufacturer_id,
+				created_date,
+				created_by,
+				modified_date,
+				modified_by,
+				vsc_dealer_auth_make_id
+			FROM elp_vsc_dealer_auth_make 
+			WHERE
+				vsc_dealer_auth_make_id = :vsc_dealer_auth_make_id
+		]]>
+	</LOAD>
+	<LOAD_LIST>		
+	</LOAD_LIST>	
+	<UPDATE>
+		<![CDATA[	
+			UPDATE elp_vsc_dealer_auth_make SET
+				dealer_id = :dealer_id,
+				manufacturer_id = :manufacturer_id,
+				modified_by = :modified_by
+			WHERE
+				vsc_dealer_auth_make_id = :vsc_dealer_auth_make_id
+		]]>
+	</UPDATE>
+	<INSERT>
+			INSERT INTO elp_vsc_dealer_auth_make
+					(			
+				dealer_id, 
+				manufacturer_id, 
+				created_by,
+				vsc_dealer_auth_make_id
+					)
+			VALUES
+					(			
+				:dealer_id, 
+				:manufacturer_id, 
+				:created_by,
+				:vsc_dealer_auth_make_id
+					)
+	</INSERT>
+	<DELETE>
+			DELETE FROM elp_vsc_dealer_auth_make
+			WHERE
+				vsc_dealer_auth_make_id = :vsc_dealer_auth_make_id
+	</DELETE>
+</SQL> 
+
+

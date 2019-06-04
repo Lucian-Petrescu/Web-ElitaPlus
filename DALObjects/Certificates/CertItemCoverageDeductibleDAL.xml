@@ -1,0 +1,80 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<SQL>
+  <LOAD>
+    <![CDATA[
+      select
+        cert_item_cvg_ded_id,
+        cert_item_coverage_id,
+        method_of_repair_id,
+        deductible_based_on_id,
+        deductible,
+        deductible_expression_id,
+        created_date,
+        modified_date,
+        created_by,
+        modified_by
+      from
+        elp_cert_item_cvg_ded
+      where
+        cert_item_cvg_ded_id = :cert_item_cvg_ded_id
+    ]]>
+  </LOAD>
+  <LOAD_LIST>
+    <![CDATA[
+      select
+        cert_item_cvg_ded_id,
+        cert_item_coverage_id,
+        method_of_repair_id,
+        deductible_based_on_id,
+        deductible,
+        deductible_expression_id,
+        created_date,
+        modified_date,
+        created_by,
+        modified_by
+      from
+        elp_cert_item_cvg_ded
+      where
+        cert_item_coverage_id = :cert_item_coverage_id and
+        method_of_repair_id = :method_of_repair_id
+    ]]>
+  </LOAD_LIST>
+  <INSERT>
+    <![CDATA[
+      insert into elp_cert_item_cvg_ded
+      (
+        cert_item_cvg_ded_id,
+        cert_item_coverage_id,
+        method_of_repair_id,
+        deductible_based_on_id,
+        deductible
+      )
+      values
+      (
+        :cert_item_cvg_ded_id
+        :cert_item_coverage_id,
+        :method_of_repair_id,
+        :deductible_based_on_id,
+        :deductible
+      )
+    ]]>
+  </INSERT>
+  <UPDATE>
+    <![CDATA[
+      update elp_cert_item_cvg_ded
+      set
+        cert_item_coverage_id = :cert_item_coverage_id,
+        method_of_repair_id = :method_of_repair_id,
+        deductible_based_on_id = :deductible_based_on_id,
+        deductible = :deductible
+      where
+        cert_item_cvg_ded_id = :cert_item_cvg_ded_id
+    ]]>
+  </UPDATE>
+  <UPDATE>
+    <![CDATA[
+      delete elp_cert_item_cvg_ded
+      where cert_item_cvg_ded_id = :cert_item_cvg_ded_id
+    ]]>
+  </UPDATE>
+</SQL>

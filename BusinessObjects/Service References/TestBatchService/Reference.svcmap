@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ReferenceGroup xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" ID="9d634de1-f48f-4aef-ae1c-73258c3e5e10" xmlns="urn:schemas-microsoft-com:xml-wcfservicemap">
+  <ClientOptions>
+    <GenerateAsynchronousMethods>false</GenerateAsynchronousMethods>
+    <EnableDataBinding>true</EnableDataBinding>
+    <ExcludedTypes />
+    <ImportXmlTypes>false</ImportXmlTypes>
+    <GenerateInternalTypes>false</GenerateInternalTypes>
+    <GenerateMessageContracts>false</GenerateMessageContracts>
+    <NamespaceMappings />
+    <CollectionMappings />
+    <GenerateSerializableTypes>true</GenerateSerializableTypes>
+    <Serializer>Auto</Serializer>
+    <UseSerializerForFaults>true</UseSerializerForFaults>
+    <ReferenceAllAssemblies>true</ReferenceAllAssemblies>
+    <ReferencedAssemblies />
+    <ReferencedDataContractTypes />
+    <ServiceContractMappings />
+  </ClientOptions>
+  <MetadataSources>
+    <MetadataSource Address="http://mia0tappf4.mia0.assurant.com:8000/ElitaBatchServices/TestService/mex" Protocol="mex" SourceId="1" />
+  </MetadataSources>
+  <Metadata>
+    <MetadataFile FileName="elita.assurant.com.wsdl" MetadataType="Wsdl" ID="6089d5cf-b47d-43d4-a620-61e57770ba6f" SourceId="1" SourceUrl="http://mia0tappf4.mia0.assurant.com:8000/ElitaBatchServices/TestService/mex" />
+    <MetadataFile FileName="service.wsdl" MetadataType="Wsdl" ID="88abfc65-4552-440d-8adf-1574f1416d0c" SourceId="1" SourceUrl="http://mia0tappf4.mia0.assurant.com:8000/ElitaBatchServices/TestService/mex" />
+    <MetadataFile FileName="elita.assurant.com.xsd" MetadataType="Schema" ID="de68ab75-6f6d-44ed-81eb-7caebcf44d3b" SourceId="1" SourceUrl="http://mia0tappf4.mia0.assurant.com:8000/ElitaBatchServices/TestService/mex" />
+    <MetadataFile FileName="service.xsd" MetadataType="Schema" ID="136b869b-99fa-4146-bcfe-c1e10287dfe4" SourceId="1" SourceUrl="http://mia0tappf4.mia0.assurant.com:8000/ElitaBatchServices/TestService/mex" />
+  </Metadata>
+  <Extensions>
+    <ExtensionFile FileName="configuration91.svcinfo" Name="configuration91.svcinfo" />
+    <ExtensionFile FileName="configuration.svcinfo" Name="configuration.svcinfo" />
+  </Extensions>
+</ReferenceGroup>

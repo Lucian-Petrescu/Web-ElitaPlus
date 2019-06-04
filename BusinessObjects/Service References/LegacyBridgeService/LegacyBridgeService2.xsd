@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xs:schema xmlns:tns="http://schemas.datacontract.org/2004/07/Assurant.Elita.ClaimService.Contracts.ClaimService" elementFormDefault="qualified" targetNamespace="http://schemas.datacontract.org/2004/07/Assurant.Elita.ClaimService.Contracts.ClaimService" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+  <xs:simpleType name="HasBenefitActionEnum">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="None" />
+      <xs:enumeration value="Yes" />
+      <xs:enumeration value="No" />
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:element name="HasBenefitActionEnum" nillable="true" type="tns:HasBenefitActionEnum" />
+  <xs:complexType name="LegacyBridgeResponse">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="DenialCode" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="StatusDecision" type="tns:LegacyBridgeStatusDecisionEnum" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="LegacyBridgeResponse" nillable="true" type="tns:LegacyBridgeResponse" />
+  <xs:simpleType name="LegacyBridgeStatusDecisionEnum">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="Deny" />
+      <xs:enumeration value="Approve" />
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:element name="LegacyBridgeStatusDecisionEnum" nillable="true" type="tns:LegacyBridgeStatusDecisionEnum" />
+</xs:schema>

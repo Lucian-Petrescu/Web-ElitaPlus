@@ -1,0 +1,94 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+
+<!-- ********************** THIS FILE HAS BEEN GENERATED FROM TEMPLATE SQLObject.cst (3/13/2009)********************** -->
+
+<SQL>
+  <LOAD>
+    <![CDATA[	
+			SELECT 
+        interface_split_rule_id,
+        source,
+        source_code,
+        new_source_code,
+        active,
+        field_name,
+        field_operator,
+        field_value,
+        created_by,
+        created_date,
+        modified_by,
+        modified_date
+			FROM elp_interface_split_rules
+			WHERE
+        active = 'Y' and
+        (source, source_code) in (select source, source_code from elp_interface_split_rules where interface_split_rule_id = :interface_split_rule_id)
+		]]>
+  </LOAD>
+  <LOAD_LIST>
+    <![CDATA[	
+      SELECT   
+        interface_split_rule_id,
+        source,
+        source_code
+      FROM (
+        SELECT 
+          interface_split_rule_id,
+          source,
+          source_code,
+          rank() OVER (PARTITION BY source || source_code
+          ORDER BY interface_split_rule_id) rank
+        FROM 
+          elp_interface_split_rules
+        WHERE
+          active = 'Y'
+          --dynamic_where_clause
+      )
+      WHERE rank = 1
+    ]]>
+  </LOAD_LIST>
+  <UPDATE>
+    <![CDATA[	
+			UPDATE elp_interface_split_rules 
+      SET
+				new_source_code = :new_source_code,
+				field_name = :field_name,
+				field_operator = :field_operator,
+				field_value = :field_value,
+        active = :active,
+				modified_by = :modified_by
+			WHERE
+				interface_split_rule_id = :interface_split_rule_id
+		]]>
+  </UPDATE>
+  <INSERT>
+    INSERT INTO elp_interface_split_rules
+    (
+    interface_split_rule_id,
+    source,
+    source_code,
+    new_source_code,
+    active,
+    field_name,
+    field_operator,
+    field_value,
+    created_by
+    )
+    VALUES
+    (
+    :interface_split_rule_id,
+    :source,
+    :source_code,
+    :new_source_code,
+    :active,
+    :field_name,
+    :field_operator,
+    :field_value,
+    :created_by
+    )
+  </INSERT>
+  <DELETE>
+
+  </DELETE>
+</SQL>
+
+

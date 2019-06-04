@@ -1,0 +1,230 @@
+<?xml version="1.0" encoding="utf-8" ?>
+
+<!-- ********************** THIS FILE HAS BEEN GENERATED FROM TEMPLATE SQLObject.cst (9/16/2005)********************** -->
+
+<SQL>
+	<LOAD>
+		<![CDATA[	
+			SELECT 
+				company_id,
+				cert_item_id,
+				endorsement_number,
+				cust_name_pre,
+				cust_name_post,
+				product_sales_date_pre,
+				product_sales_date_post,
+				warranty_sales_date_pre,
+				warranty_sales_date_post,
+        created_by,
+				created_date,
+				modified_by,
+				modified_date,
+				cert_endorse_id,
+        sales_price_pre,
+        sales_price_post,
+        address_id_pre, 
+        address_id_post, 
+        language_id_pre, 
+        language_id_post,
+        email_pre, 
+        email_post, 
+        home_phone_pre, 
+        home_phone_post, 
+        work_phone_pre, 
+        work_phone_post,
+        document_type_id_pre, 
+        document_type_id_post, 
+        id_type_pre, 
+        id_type_post, 
+        document_agency_pre, 
+        document_agency_post, 
+        identification_number_pre, 
+        identification_number_post, 
+        rg_number_pre, 
+        rg_number_post, 
+        document_issue_date_pre, 
+        document_issue_date_post,
+        cert_id
+			FROM elp_cert_endorse 
+			WHERE
+				cert_endorse_id = :cert_endorse_id
+		]]>
+	</LOAD>
+	<LOAD_LIST>	
+	    <![CDATA[
+			 
+SELECT 
+        e.cert_endorse_id,
+        e.endorsement_number,
+        nvl(e.endorsement_reason,elita.elp_utl_lov.Description_by_Code ('ENDOR','ENRPDU',d.language_id) ) as endorsement_reason,
+        nvl(d.translation,       elita.elp_utl_lov.Description_by_Code ('ENDOR','ENRPDU',d.language_id) ) as endorsement_type,
+        e.effective_date,
+        e.expiration_date,
+        e.created_date,
+        nvl(usr.user_name, e.created_by) created_by
+        From elp_cert_endorse e  
+        Inner join elp_cert ec on e.cert_id = ec.cert_id
+        left join elp_user usr on usr.network_id = e.created_by
+        left join elp_list_item li on li.list_item_id=e.endorsement_type_id
+        left join elp_dict_item_translation d on li.dict_item_id = d.dict_item_id
+        and d.language_id = :language_id
+        WHERE ec.cert_id = :cert_id
+        ORDER BY e.endorsement_number desc
+		]]>	
+	</LOAD_LIST>	
+	<UPDATE>
+		<![CDATA[	
+			UPDATE elp_cert_endorse SET
+				company_id = :company_id,
+				cert_item_id = :cert_item_id,
+				endorsement_number = :endorsement_number,
+				cust_name_pre = :cust_name_pre,
+				cust_name_post = :cust_name_post,
+				product_sales_date_pre = :product_sales_date_pre,
+				product_sales_date_post = :product_sales_date_post,
+				warranty_sales_date_pre = :warranty_sales_date_pre,
+				warranty_sales_date_post = :warranty_sales_date_post,
+				modified_by = :modified_by,
+        sales_price_pre = :sales_price_pre,
+        sales_price_post = :sales_price_post,
+        address_id_pre = :address_id_pre, 
+        address_id_post = :address_id_post, 
+        language_id_pre = :language_id_pre, 
+        language_id_post = :language_id_post,
+        email_pre = :email_pre, 
+        email_post = :email_post, 
+        home_phone_pre = :home_phone_pre, 
+        home_phone_post = :home_phone_post, 
+        work_phone_pre = :work_phone_pre, 
+        work_phone_post = :work_phone_pre,
+        document_type_id_pre = :document_type_id_pre, 
+        document_type_id_post = :document_type_id_post, 
+        id_type_pre = :id_type_pre, 
+        id_type_post = :id_type_post, 
+        document_agency_pre = :document_agency_pre, 
+        document_agency_post = :document_agency_post, 
+        identification_number_pre = :identification_number_pre, 
+        identification_number_post = :identification_number_post, 
+        rg_number_pre = :rg_number_pre, 
+        rg_number_post = :rg_number_post, 
+        document_issue_date_pre = :document_issue_date_pre, 
+        document_issue_date_post = :document_issue_date_post
+     WHERE
+				cert_endorse_id = :cert_endorse_id
+		]]>
+	</UPDATE>
+  <UPDATE_CUST_DETAILS>
+    elita.elp_update_customername
+  </UPDATE_CUST_DETAILS>
+	<INSERT>
+    INSERT INTO elp_cert_endorse
+    (
+    company_id,
+    cert_item_id,
+    endorsement_number,
+    cust_name_pre,
+    cust_name_post,
+    product_sales_date_pre,
+    product_sales_date_post,
+    warranty_sales_date_pre,
+    warranty_sales_date_post,
+    created_by,
+    cert_endorse_id,
+    sales_price_pre,
+    sales_price_post,
+    address_id_pre,
+    address_id_post,
+    language_id_pre,
+    language_id_post,
+    email_pre,
+    email_post,
+    home_phone_pre,
+    home_phone_post,
+    work_phone_pre,
+    work_phone_post,
+    document_type_id_pre,
+    document_type_id_post,
+    id_type_pre,
+    id_type_post,
+    document_agency_pre,
+    document_agency_post,
+    identification_number_pre,
+    identification_number_post,
+    rg_number_pre,
+    rg_number_post,
+    document_issue_date_pre,
+    document_issue_date_post,
+    cert_id
+    )
+    VALUES
+    (
+    :company_id,
+    :cert_item_id,
+    case when (select count(*) from elp_cert_endorse where cert_id = HEXTORAW(:cert_id)) = 0 then 0 else
+    (select (max(endorsement_number) + 1) from elp_cert_endorse where cert_id = HEXTORAW(:cert_id))  end ,
+    :cust_name_pre,
+    :cust_name_post,
+    :product_sales_date_pre,
+    :product_sales_date_post,
+    :warranty_sales_date_pre,
+    :warranty_sales_date_post,
+    :created_by,
+    :cert_endorse_id,
+    :sales_price_pre,
+    :sales_price_post,
+    :address_id_pre,
+    :address_id_post,
+    :language_id_pre,
+    :language_id_post,
+    :email_pre,
+    :email_post,
+    :home_phone_pre,
+    :home_phone_post,
+    :work_phone_pre,
+    :work_phone_post,
+    :document_type_id_pre,
+    :document_type_id_post,
+    :id_type_pre,
+    :id_type_post,
+    :document_agency_pre,
+    :document_agency_post,
+    :identification_number_pre,
+    :identification_number_post,
+    :rg_number_pre,
+    :rg_number_post,
+    :document_issue_date_pre,
+    :document_issue_date_post,
+    :cert_id
+    )
+  </INSERT>
+	<DELETE>
+			DELETE FROM elp_cert_endorse
+			WHERE
+				cert_endorse_id = :cert_endorse_id
+	</DELETE>
+  <VALIDATE_CERT_SALES_PRICE>
+       validate_cert_sales_price
+  </VALIDATE_CERT_SALES_PRICE>
+  <CAL_LIABILITY_LIMIT_USING_COVERAGE_TEMPLATE>
+       CalLiabLimitUsingCovTemplate
+  </CAL_LIABILITY_LIMIT_USING_COVERAGE_TEMPLATE>
+  <GET_COVERAGE_LOWEST_START_DATE>
+    SELECT 1 FROM elp_cert c
+    WHERE c.cert_id = :cert_id
+    AND c.product_sales_date =(SELECT MIN(cov.begin_date)
+    FROM elp_cert_item_coverage cov WHERE cov.cert_id = c.cert_id)
+  </GET_COVERAGE_LOWEST_START_DATE>
+  <GET_ACTIVE_CLAIMS_BY_COVERAGEID_CLAIMLOSSDATE>
+    select cl.claim_id, cl.cert_item_coverage_id, cl.loss_date, cl.status_code
+    FROM 	elp_claim cl, elp_cert_item_coverage pic
+    WHERE   pic.cert_item_coverage_id = :cert_item_coverage_id
+    AND 	pic.cert_item_coverage_id = cl.cert_item_coverage_id
+    AND  (NOT (cl.loss_date) Between :begin_date and :end_date)
+  </GET_ACTIVE_CLAIMS_BY_COVERAGEID_CLAIMLOSSDATE>
+  <GET_Dealer_Attribute_Value>
+    elp_utl_attribute.GetAttributeValue
+  </GET_Dealer_Attribute_Value>
+</SQL> 
+
+
+

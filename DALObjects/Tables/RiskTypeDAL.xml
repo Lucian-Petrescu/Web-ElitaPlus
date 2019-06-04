@@ -1,0 +1,187 @@
+<?xml version="1.0" encoding="utf-8" ?> 
+<SQL>
+		<LOAD>
+			SELECT 
+				company_group_id,
+				description,
+				risk_type_english,
+				risk_group_id,
+				created_date,
+				modified_date,
+				created_by,
+				modified_by,
+				soft_question_group_id,
+				risk_type_id,
+        product_tax_type_id
+			FROM elp_risk_type
+			WHERE risk_type_id = :risk_type_id
+		</LOAD>
+		<LOADSOFTQUESTIONLIST>
+      SELECT
+      risk_type_id,
+      company_group_id,
+      description,
+      risk_type_english,
+      risk_group_id,
+      created_date,
+      modified_date,
+      created_by,
+      modified_by,
+      soft_question_group_id,
+      product_tax_type_id
+      FROM elp_risk_type
+      WHERE soft_question_group_id = :soft_question_group_id
+      ORDER BY description
+    </LOADSOFTQUESTIONLIST>
+		<LOADAVAILABLESOFTQUESTIONLIST>
+      SELECT
+      risk_type_id,
+      company_group_id,
+      description,
+      risk_type_english,
+      risk_group_id,
+      created_date,
+      modified_date,
+      created_by,
+      modified_by,
+      soft_question_group_id,
+      product_tax_type_id
+      FROM elp_risk_type
+      WHERE company_group_id = :company_group_id
+      and soft_question_group_id is NULL
+      ORDER BY description
+    </LOADAVAILABLESOFTQUESTIONLIST>
+		<LOAD_LANGUAGE_ID>
+			SELECT 
+				language_id 
+			FROM 
+				elp_language 
+			WHERE 
+				code = 'EN'
+		</LOAD_LANGUAGE_ID>
+		<LOAD_COMPANY_ID>
+			SELECT 
+				company_id 
+			FROM 
+				elp_company
+			WHERE 
+				code = 'ABA'
+		</LOAD_COMPANY_ID>
+		<LOAD_LIST_DYNAMIC_SQL>
+      SELECT
+      rt.risk_type_id Risk_Type_Id,
+      rt.description Description,
+      rt.risk_type_english Risk_Type_English,
+      trans_ptt.translation Product_Tax_Type,
+      trans_rg.translation Risk_Group,
+      soft_question_group_id
+      FROM
+      elp_risk_type rt, elp_list_item li_ptt, elp_dict_item_translation trans_ptt,
+      elp_list_item li_rg, elp_dict_item_translation trans_rg
+      WHERE
+      rt.product_tax_type_id = li_ptt.list_item_id and
+      li_ptt.dict_item_id = trans_ptt.dict_item_id and
+      rt.risk_group_id = li_rg.list_item_id and
+      li_rg.dict_item_id = trans_rg.dict_item_id
+    </LOAD_LIST_DYNAMIC_SQL>
+		<LOAD_LIST>
+      SELECT
+      rt.risk_type_id Risk_Type_Id,
+      rt.description Description,
+      rt.risk_type_english Risk_Type_English,
+      trans_ptt.translation Product_Tax_Type,
+      trans_rg.translation Risk_Group,
+      soft_question_group_id
+      FROM
+      elp_risk_type rt, elp_list_item li_ptt, elp_dict_item_translation trans_ptt,
+      elp_list_item li_rg, elp_dict_item_translation trans_rg
+      WHERE
+      company_group_id = :company_group_id and
+      rt.description LIKE :description and
+      rt.risk_type_english LIKE :risk_type_english and
+      rt.product_tax_type_id = li_ptt.list_item_id and
+      li_ptt.dict_item_id = trans_ptt.dict_item_id and
+      rt.risk_group_id LIKE :risk_group_id and
+      rt.risk_group_id = li_rg.list_item_id and
+      li_rg.dict_item_id = trans_rg.dict_item_id and
+      trans_ptt.language_id = :language_id and
+      trans_rg.language_id = :language_id
+      ORDER BY UPPER(rt.description)
+    </LOAD_LIST>
+  <TAX_BY_PRODUCT_TYPE__YES__NUM>
+    select count(*)
+    from elp_country
+    where TAX_BY_PRODUCT_TYPE_ID = getyesnoid('Y')
+    --dynamic_where_clause
+  </TAX_BY_PRODUCT_TYPE__YES__NUM>
+		<LOAD_LIST_TEST1>
+      SELECT
+      rt.risk_type_id Risk_Type_Id,
+      rt.description Description,
+      rt.risk_type_english Risk_Type_English,
+      soft_question_group_id
+      FROM
+      elp_risk_type rt
+      WHERE
+      company_group_id = :company_group_id and
+      rt.description LIKE :description and
+      rt.risk_type_english LIKE :risk_type_english and
+      rt.risk_group_id LIKE :risk_group_id
+      ORDER BY UPPER(rt.description)
+    </LOAD_LIST_TEST1>
+		<LOAD_LIST_TEST>
+      SELECT rt.risk_type_id RISK_TYPE_ID,
+      rt.description DESCRIPTION,
+      rt.risk_type_english RISK_TYPE_ENGLISH,
+      translation RISK_GROUP,
+      soft_question_group_id
+      FROM
+      elp_risk_type rt,  elp_list_item li, elp_dict_item_translation trans
+      WHERE
+      rt.company_id = 'C79970098CFD3F15E0340800208D101F' and
+      rt.description = :DESCRIPTION and
+      rt.risk_group_id = list_item_id and
+      trans.language_id = 'C79970098CD83F15E0340800208D101F' and
+      li.dict_item_id = trans.dict_item_id
+    </LOAD_LIST_TEST>
+		<UPDATE>
+      UPDATE elp_risk_type
+      SET
+      company_group_id = :company_group_id,
+      description = :description,
+      risk_type_english = :risk_type_english,
+      risk_group_id = :risk_group_id,
+      soft_question_group_id = :soft_question_group_id,
+      modified_by = :modified_by,
+      product_tax_type_id = :product_tax_type_id
+      WHERE
+      risk_type_id = :risk_type_id
+    </UPDATE>
+		<INSERT>
+      INSERT INTO elp_risk_type
+      (
+      company_group_id,
+      description,
+      risk_type_english,
+      risk_group_id,
+      soft_question_group_id,
+      created_by,
+      risk_type_id,
+      product_tax_type_id
+      )
+      VALUES (
+      :company_group_id,
+      :description,
+      :risk_type_english,
+      :risk_group_id,
+      :soft_question_group_id,
+      :created_by,
+      :risk_type_id,
+      :product_tax_type_id
+      )
+    </INSERT>
+		<DELETE>
+			DELETE FROM elp_risk_type WHERE risk_type_id = :risk_type_id
+		</DELETE>
+		
+</SQL>

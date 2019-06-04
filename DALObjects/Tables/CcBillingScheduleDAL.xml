@@ -1,0 +1,161 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+
+<!-- ********************** THIS FILE HAS BEEN GENERATED FROM TEMPLATE SQLObject.cst (7/27/2011)********************** -->
+
+<SQL>
+  <LOAD>
+    <![CDATA[	
+			SELECT 
+				company_credit_card_id,
+				billing_date,
+				created_by,
+				created_date,
+				modified_by,
+				modified_date,
+				cc_billing_schedule_id
+			FROM elita.elp_cc_billing_schedule 
+			WHERE
+				cc_billing_schedule_id = :cc_billing_schedule_id
+		]]>
+  </LOAD>
+  <LOAD_LIST>
+    <![CDATA[	
+       SELECT
+        ccc.CC_BILLING_SCHEDULE_ID,
+        ccb.company_id,
+        ccb.BILLING_DATE,
+		    ccc.created_by
+      FROM elita.elp_cc_billing_schedule ccb , elp_company_credit_Card ccc
+      WHERE
+       company_id = :closing_year and
+       ccb.company_credit_Card_id = ccc.company_credit_Card_id_id and
+       substr(to_Char(ccb.BILLING_DATE,'YYYYMMDD'),1,4) = 
+         (select max(substr(to_Char(ccb.BILLING_DATE,'YYYYMMDD'),1,4)) BILLING_DATE
+	       from  elita.elp_cc_billing_schedule ccb , elp_company_credit_Card ccc
+	       where ccc.company_credit_Card_id = :closing_year and
+         ccb.company_credit_Card_id = ccc.company_credit_Card_id)
+		]]>
+  </LOAD_LIST>
+  <GET_BILLING_YEARS>
+    <![CDATA[
+			select distinct substr(to_Char(ccb.BILLING_DATE,'YYYYMMDD'),1,4) Id,
+					substr(to_Char(ccb.BILLING_DATE,'YYYYMMDD'),1,4) Description
+				 FROM elita.elp_cc_billing_schedule ccb , elp_company_credit_Card ccc
+				where  ccc.company_credit_Card_id = :company_credit_card_Id
+        and ccb.company_credit_Card_id = ccc.company_credit_Card_id
+				and substr(to_Char(ccb.BILLING_DATE,'YYYYMMDD'),1,4) <= to_char(SYSDATE,'YYYY')
+				order by Description
+		]]>
+  </GET_BILLING_YEARS>
+  <GET_ALL_THE_BILLING_YEARS>
+    <![CDATA[
+			select distinct substr(to_Char(ccb.BILLING_DATE,'YYYYMMDD'),1,4) Id,
+					substr(to_Char(ccb.BILLING_DATE,'YYYYMMDD'),1,4) Description
+				 FROM elita.elp_cc_billing_schedule ccb , elp_company_credit_Card ccc
+				where  ccc.company_credit_Card_id = :company_credit_card_Id
+        and ccb.company_credit_Card_id = ccc.company_credit_Card_id
+				order by Description
+		]]>
+  </GET_ALL_THE_BILLING_YEARS>
+  <GET_ALL_THE_BILLING_YEARS_BY_USER>
+    <![CDATA[
+			select distinct substr(to_Char(ccb.BILLING_DATE,'YYYYMMDD'),1,4) Id,
+					substr(to_Char(ccb.BILLING_DATE,'YYYYMMDD'),1,4) Description
+				from ELITA.elita.elp_cc_billing_schedule
+                WHERE COMPANY_ID IN (SELECT COMPANY_ID FROM ELITA.ELP_USER_COMPANY WHERE USER_ID = :USER_ID)
+				order by Description desc
+		]]>
+  </GET_ALL_THE_BILLING_YEARS_BY_USER>
+  <GET_BILLING_DATE>
+    <![CDATA[
+		Select * from
+		(	select CC_BILLING_SCHEDULE_ID, ccb.BILLING_DATE		
+				 FROM elita.elp_cc_billing_schedule ccb , elp_company_credit_Card ccc
+				where ccc.company_credit_Card_id = :company_credit_card_Id
+        and ccb.company_credit_Card_id = ccc.company_credit_Card_id
+				and ccb.BILLING_DATE < :FOR_THIS_DATE
+                order by ccb.BILLING_DATE desc
+                )
+        WHERE ROWNUM =1
+
+		]]>
+  </GET_BILLING_DATE>
+
+  <GET_MIN_BILLING_DATE>
+    <![CDATA[
+				select min(ccb.BILLING_DATE) BILLING_DATE
+			 FROM elita.elp_cc_billing_schedule ccb , elp_company_credit_Card ccc
+				where  ccc.company_credit_Card_id = :company_credit_card_Id
+        and ccb.company_credit_Card_id = ccc.company_credit_Card_id
+				
+		]]>
+  </GET_MIN_BILLING_DATE>
+
+  <GET_ALL_BILLING_DATES>
+    <![CDATA[
+				select CC_BILLING_SCHEDULE_ID ID, 
+               COMPANY_CREDIT_CARD_ID
+				       to_Char(ccb.BILLING_DATE,'YYYYMMDD') code,
+				       to_Char(ccb.BILLING_DATE,'MM/DD/YYYY') description
+				from  FROM elita.elp_cc_billing_schedule ccb , elp_company_credit_Card ccc
+				where  ccc.company_credit_Card_id = :company_credit_card_Id
+        and ccb.company_credit_Card_id = ccc.company_credit_Card_id
+				and trunc(ccb.BILLING_DATE) < trunc(SYSDATE)
+                order by ccb.BILLING_DATE desc
+       
+		]]>
+  </GET_ALL_BILLING_DATES>
+  <GET_BILLING_DATES>
+    <![CDATA[
+			select CC_BILLING_SCHEDULE_ID, to_char(ccb.BILLING_DATE,'DD-Mon-YYYY') Description
+				from elita.elp_cc_billing_schedule ccb , elp_company_credit_Card ccc
+				where  ccc.company_credit_Card_id = :company_credit_card_Id
+        and ccb.COMPANY_CREDIT_CARD_ID = ccc.company_credit_Card_id
+				and substr(to_Char(ccb.BILLING_DATE,'YYYYMMDD'),1,4) = :closing_year
+				order by ccb.BILLING_DATE
+		]]>
+  </GET_BILLING_DATES>
+  <GET_LAST_BILLING_DATES>
+    <![CDATA[
+			select  max(ccb.BILLING_DATE) Description
+			from elita.elp_cc_billing_schedule ccb , elp_company_credit_Card ccc
+				where  ccc.company_credit_Card_id = :company_credit_card_Id
+        and ccb.COMPANY_CREDIT_CARD_ID = ccc.company_credit_Card_id
+		]]>
+  </GET_LAST_BILLING_DATES>
+  <UPDATE>
+    <![CDATA[	
+			UPDATE elita.elp_cc_billing_schedule SET
+				company_credit_card_id = :company_credit_card_id,
+				billing_date = :billing_date,
+				modified_by = :modified_by
+			WHERE
+				cc_billing_schedule_id = :cc_billing_schedule_id
+		]]>
+  </UPDATE>
+  <INSERT>
+    INSERT INTO elita.elp_cc_billing_schedule
+    (
+    company_credit_card_id,
+    billing_date,
+    created_by,
+    cc_billing_schedule_id
+    )
+    VALUES
+    (
+    :company_credit_card_id,
+    :billing_date,
+    :created_by,
+    :cc_billing_schedule_id
+    )
+  </INSERT>
+  <DELETE>
+    DELETE FROM elita.elp_cc_billing_schedule
+    WHERE
+    cc_billing_schedule_id = :cc_billing_schedule_id
+  </DELETE>
+
+
+</SQL>
+
+

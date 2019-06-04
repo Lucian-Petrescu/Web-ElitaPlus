@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xs:schema xmlns:tns="http://assurant.com/Elita/CaseManagement/Core/Data" elementFormDefault="qualified" targetNamespace="http://assurant.com/Elita/CaseManagement/Core/Data" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+  <xs:simpleType name="CallerAuthenticationStatusTypes">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="Success" />
+      <xs:enumeration value="Failure" />
+      <xs:enumeration value="SystemError" />
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:element name="CallerAuthenticationStatusTypes" nillable="true" type="tns:CallerAuthenticationStatusTypes" />
+</xs:schema>

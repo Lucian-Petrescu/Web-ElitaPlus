@@ -1,0 +1,247 @@
+<?xml version="1.0" encoding="utf-8" ?>
+
+<!-- ********************** THIS FILE HAS BEEN GENERATED FROM TEMPLATE SQLObject.cst (11/8/2004)********************** -->
+
+<SQL>
+	<LOAD>
+		<![CDATA[	
+			SELECT 
+				dealerfile_processed_id,
+				reject_reason,
+				payment_loaded,
+				record_type,
+				certificate,
+				serial_number,
+				payment_amount,
+				date_of_payment,
+				date_paid_for,
+				campaign_number,
+        membership_number,
+        payment_invoice_number,
+        collected_amount,
+        service_line_number,
+				layout,
+				product_code,
+				new_product_code,
+        adjustment_amount,
+        installment_num,
+				created_by,
+				created_date,
+				modified_by,
+				modified_date,
+        fee_income,
+				dealer_pmt_recon_wrk_id
+			FROM elp_dealer_pmt_recon_wrk 
+			WHERE
+				dealer_pmt_recon_wrk_id = :dealer_pmt_recon_wrk_id 
+		]]>
+	</LOAD>
+	<LOAD_LIST>
+    SELECT
+    dp.dealerfile_processed_id,
+    drw.dealer_pmt_recon_wrk_id,
+    d.dealer,
+    drw.record_type,
+    drw.reject_reason,
+    drw.certificate,
+    drw.serial_number,
+    drw.payment_amount,
+    drw.date_of_payment,
+    drw.date_paid_for,
+    drw.campaign_number,
+    drw.membership_number,
+    drw.payment_invoice_number,
+    drw.collected_amount,
+    drw.service_line_number,
+    drw.new_product_code,
+    drw.product_code,
+    drw.adjustment_amount,
+    drw.installment_num,
+    drw.reject_msg_parms,
+    drw.created_by,
+    drw.created_date,
+    drw.modified_by,
+    drw.modified_date,
+    mc.msg_parameter_count,
+    (SELECT TRANSLATION FROM ELP_LABEL innerL
+    Inner join elp_dict_item_translation innert on innert.DICT_ITEM_ID = innerl.DICT_ITEM_ID
+    and innert.LANGUAGE_ID =  :language_id
+    WHERE innerL.ui_prog_code = l.ui_prog_code
+    ) Translated_MSG,
+    drw.fee_income
+    FROM elp_dealer_pmt_recon_wrk DRW
+    inner join  ELP_DEALERFILE_PROCESSED dp
+    on dp.dealerfile_processed_id = drw.dealerfile_processed_id
+    left outer join elp_dealer d
+    on d.dealer_id = dp.dealer_id
+    left outer join (select MSG_CODE, LABEL_ID, MSG_PARAMETER_COUNT
+    From elp_message_code
+    inner join ELP_LIST_ITEM li  ON msg_type = li.LIST_ITEM_ID AND li.code = 'DLPAYREJECT'
+    INNER JOIN ELP_LIST l ON l.LIST_ID = li.LIST_ID AND  l.code = 'MSGTYPE'
+    ) mc on mc.MSG_CODE = DRW.reject_code
+    left outer join elp_label l on l.label_id = mc.label_id
+    WHERE
+    drw.dealerfile_processed_id = :dealerfile_processed_id
+    and (((:p_recordMode= 'REJ') and (reject_reason is not null) and (record_type != 'X'))
+    or  ((:p_recordMode is null) and (reject_reason is not null))
+    or  ((:p_recordMode = 'LOD') and (payment_loaded = 'L'))
+    or  ((:p_recordMode = 'BYP') and (payment_loaded = 'N') and (Record_type='X'))
+    or  ((:p_recordMode = 'VAL') and (payment_loaded = 'V'))
+    or  ((:p_recordMode = 'REMREJ') and (reconcile_rejected_code = 'R') and (record_type != 'X')))
+  </LOAD_LIST>
+  <LOAD_LIST_FOR_PARENT>
+    SELECT
+    dp.parent_dealerfile_processed_id,
+    dp.dealerfile_processed_id,
+    drw.dealer_pmt_recon_wrk_id,
+    d.dealer,
+    drw.record_type,
+    drw.reject_reason,
+    drw.certificate,
+    drw.serial_number,
+    drw.payment_amount,
+    drw.date_of_payment,
+    drw.date_paid_for,
+    drw.campaign_number,
+    drw.membership_number,
+    drw.payment_invoice_number,
+    drw.collected_amount,
+    drw.service_line_number,
+    drw.new_product_code,
+    drw.product_code,
+    drw.adjustment_amount,
+    drw.installment_num,
+    drw.reject_msg_parms,
+    drw.created_by,
+    drw.created_date,
+    drw.modified_by,
+    drw.modified_date,
+    mc.msg_parameter_count,
+    (SELECT TRANSLATION FROM ELP_LABEL innerL
+    Inner join elp_dict_item_translation innert on innert.DICT_ITEM_ID = innerl.DICT_ITEM_ID
+    and innert.LANGUAGE_ID =  :language_id
+    WHERE innerL.ui_prog_code = l.ui_prog_code
+    ) Translated_MSG,
+    drw.fee_income
+    FROM elp_dealer_pmt_recon_wrk DRW
+    inner join  ELP_DEALERFILE_PROCESSED dp
+    on dp.dealerfile_processed_id = drw.dealerfile_processed_id
+    left outer join elp_dealer d
+    on d.dealer_id = dp.dealer_id
+    left outer join (select MSG_CODE, LABEL_ID, MSG_PARAMETER_COUNT
+    From elp_message_code
+    inner join ELP_LIST_ITEM li  ON msg_type = li.LIST_ITEM_ID AND li.code = 'DLPAYREJECT'
+    INNER JOIN ELP_LIST l ON l.LIST_ID = li.LIST_ID AND  l.code = 'MSGTYPE'
+    ) mc on mc.MSG_CODE = DRW.reject_code
+    left outer join elp_label l on l.label_id = mc.label_id
+    WHERE
+    (dp.dealerfile_processed_id = :dealerfile_processed_id
+    or dp.parent_dealerfile_processed_id = :dealerfile_processed_id)
+    and (((:p_recordMode= 'REJ') and (reject_reason is not null) and (record_type != 'X'))
+    or  ((:p_recordMode is null) and (reject_reason is not null))
+    or  ((:p_recordMode = 'LOD') and (payment_loaded = 'L'))
+    or  ((:p_recordMode = 'BYP') and (payment_loaded = 'N') and (Record_type='X'))
+    or  ((:p_recordMode = 'VAL') and (payment_loaded = 'V'))
+    or  ((:p_recordMode = 'REMREJ') and (reconcile_rejected_code = 'R') and (record_type != 'X')))
+  </LOAD_LIST_FOR_PARENT>
+	<LOAD_REJECT_LIST>			
+			SELECT   
+				certificate,
+				record_type,
+				serial_number,
+				reject_reason
+			FROM elp_dealer_pmt_recon_wrk 
+			WHERE
+				dealerfile_processed_id = :dealerfile_processed_id
+				AND reject_reason IS NOT NULL
+	</LOAD_REJECT_LIST>		
+	<UPDATE>
+		<![CDATA[	
+			UPDATE elp_dealer_pmt_recon_wrk SET
+				dealerfile_processed_id = :dealerfile_processed_id,
+				reject_reason = :reject_reason,
+				payment_loaded = :payment_loaded,
+				record_type = :record_type,
+				certificate = :certificate,
+				serial_number = :serial_number,
+				payment_amount = :payment_amount,
+				date_of_payment = :date_of_payment,
+				date_paid_for = :date_paid_for,
+				campaign_number = :campaign_number,
+        membership_number = :membership_number,
+        payment_invoice_number = :payment_invoice_number,
+        collected_amount = :collected_amount,
+        service_line_number = :service_line_number,
+				layout = :layout,
+				product_code = :product_code,
+				new_product_code = :new_product_code,
+        adjustment_amount = :adjustment_amount,
+        installment_num = :installment_num,
+				modified_by = :modified_by,
+        fee_income = :fee_income
+			WHERE
+				dealer_pmt_recon_wrk_id = :dealer_pmt_recon_wrk_id
+				AND NVL(modified_date,created_date) = NVL(:modified_date,created_date)
+		]]>
+	</UPDATE>
+	<INSERT>
+    INSERT INTO elp_dealer_pmt_recon_wrk
+    (
+    dealerfile_processed_id,
+    reject_reason,
+    payment_loaded,
+    record_type,
+    certificate,
+    serial_number,
+    payment_amount,
+    date_of_payment,
+    date_paid_for,
+    campaign_number,
+    membership_number,
+    payment_invoice_number,
+    collected_amount,
+    service_line_number,
+    layout,
+    product_code,
+    new_product_code,
+    adjustment_amount,
+    installment_num,
+    created_by,
+    fee_income,
+    dealer_pmt_recon_wrk_id
+    )
+    VALUES
+    (
+    :dealerfile_processed_id,
+    :reject_reason,
+    :payment_loaded,
+    :record_type,
+    :certificate,
+    :serial_number,
+    :payment_amount,
+    :date_of_payment,
+    :date_paid_for,
+    :campaign_number,
+    :membership_number,
+    :payment_invoice_number,
+    :collected_amount,
+    :service_line_number,
+    :layout,
+    :product_code,
+    :new_product_code,
+    :adjustment_amount,
+    :installment_num,
+    :created_by,
+    :fee_income,
+    :dealer_pmt_recon_wrk_id
+    )
+  </INSERT>
+	<DELETE>
+			DELETE FROM elp_dealer_pmt_recon_wrk
+			WHERE
+				dealer_pmt_recon_wrk_id = :dealer_pmt_recon_wrk_id
+	</DELETE>
+</SQL> 
+
+
+

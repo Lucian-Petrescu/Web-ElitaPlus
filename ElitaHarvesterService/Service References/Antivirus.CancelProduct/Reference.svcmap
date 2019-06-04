@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ReferenceGroup xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" ID="1725601d-0f3a-40a8-97ef-992569b4f7c5" xmlns="urn:schemas-microsoft-com:xml-wcfservicemap">
+  <ClientOptions>
+    <GenerateAsynchronousMethods>false</GenerateAsynchronousMethods>
+    <EnableDataBinding>true</EnableDataBinding>
+    <ExcludedTypes />
+    <ImportXmlTypes>false</ImportXmlTypes>
+    <GenerateInternalTypes>false</GenerateInternalTypes>
+    <GenerateMessageContracts>false</GenerateMessageContracts>
+    <NamespaceMappings />
+    <CollectionMappings />
+    <GenerateSerializableTypes>true</GenerateSerializableTypes>
+    <Serializer>Auto</Serializer>
+    <UseSerializerForFaults>true</UseSerializerForFaults>
+    <ReferenceAllAssemblies>true</ReferenceAllAssemblies>
+    <ReferencedAssemblies />
+    <ReferencedDataContractTypes />
+    <ServiceContractMappings />
+  </ClientOptions>
+  <MetadataSources>
+    <MetadataSource Address="http://intra.btsmod.assurant.com/Assurant.Integration.Wireless.VendorIntegration.CancelProduct/CancelProduct.svc" Protocol="http" SourceId="1" />
+  </MetadataSources>
+  <Metadata>
+    <MetadataFile FileName="CancelProduct1.disco" MetadataType="Disco" ID="8fb0cb52-873b-461f-ae21-decb4c074830" SourceId="1" SourceUrl="http://mia0wbtsm001.ad.assurant.com/Assurant.Integration.Wireless.VendorIntegration.CancelProduct/CancelProduct.svc?disco" />
+    <MetadataFile FileName="BizTalkServiceInstance1.wsdl" MetadataType="Wsdl" ID="dd93c139-a906-45a2-902e-548ae90bf29e" SourceId="1" SourceUrl="http://mia0wbtsm001.ad.assurant.com/Assurant.Integration.Wireless.VendorIntegration.CancelProduct/CancelProduct.svc?wsdl" />
+    <MetadataFile FileName="CancelProduct2.xsd" MetadataType="Schema" ID="dd11dd18-7189-4902-808f-169e28b1b1ae" SourceId="1" SourceUrl="http://mia0wbtsm001.ad.assurant.com/Assurant.Integration.Wireless.VendorIntegration.CancelProduct/CancelProduct.svc?xsd=xsd2" />
+    <MetadataFile FileName="CancelProduct21.xsd" MetadataType="Schema" ID="ecfa8972-5980-412b-8bb6-abe59e58e35b" SourceId="1" SourceUrl="http://mia0wbtsm001.ad.assurant.com/Assurant.Integration.Wireless.VendorIntegration.CancelProduct/CancelProduct.svc?xsd=xsd3" />
+  </Metadata>
+  <Extensions>
+    <ExtensionFile FileName="configuration91.svcinfo" Name="configuration91.svcinfo" />
+    <ExtensionFile FileName="configuration.svcinfo" Name="configuration.svcinfo" />
+  </Extensions>
+</ReferenceGroup>

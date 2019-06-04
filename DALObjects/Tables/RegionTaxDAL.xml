@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="utf-8" ?>
+
+<!-- ********************** THIS FILE HAS BEEN GENERATED FROM TEMPLATE SQLObject.cst (8/17/2007)********************** -->
+
+<SQL>
+  <LOAD>
+    <![CDATA[	
+			SELECT 
+				region_id,
+				tax_type_id,
+				effective_date,
+				expiration_date,
+				description,
+        product_tax_type_id,
+				created_date,
+				modified_date,
+				created_by,
+				modified_by,
+				region_tax_id,
+        dealer_id
+			FROM elp_region_tax 
+			WHERE
+				region_tax_id = :region_tax_id
+		]]>
+  </LOAD>
+  <LOAD_LIST>
+    <![CDATA[
+      SELECT	REGION_TAX_ID,
+        concat(to_char(EFFECTIVE_DATE,'DD-Mon-YYYY'), '    ' || to_char(EXPIRATION_DATE,'DD-Mon-YYYY')) ListFields,
+        DESCRIPTION
+      FROM ELP_REGION_TAX rt
+      WHERE REGION_ID = :REGION_ID
+        AND  TAX_TYPE_ID = :TAX_TYPE_ID
+        AND  product_tax_type_id = :product_tax_type_id
+        --dynamic_where_clause
+      ORDER BY  rt.EFFECTIVE_DATE  desc
+    ]]>
+    </LOAD_LIST>
+  <LOAD_MINEFFECTIVE_MAXEXPIRATION_DATES>
+    <![CDATA[
+    SELECT	MIN(EFFECTIVE_DATE) EFFECTIVE_DATE, 
+      MAX(EXPIRATION_DATE) EXPIRATION_DATE, 
+      COUNT(*) RECORD_COUNT
+    FROM ELP_REGION_TAX
+    WHERE REGION_ID = :REGION_ID
+	    AND  TAX_TYPE_ID = :TAX_TYPE_ID
+      AND  product_tax_type_id = :product_tax_type_id
+      --dynamic_where_clause
+    ]]>
+  </LOAD_MINEFFECTIVE_MAXEXPIRATION_DATES>
+  <UPDATE>
+    <![CDATA[	
+			UPDATE elp_region_tax SET
+				region_id = :region_id,
+				tax_type_id = :tax_type_id,
+				effective_date = :effective_date,
+				expiration_date = :expiration_date,
+				description = :description,
+        product_tax_type_id = :product_tax_type_id,
+				modified_by = :modified_by,
+        dealer_id = :dealer_id
+			WHERE
+				region_tax_id = :region_tax_id
+		]]>
+  </UPDATE>
+  <INSERT>
+    INSERT INTO elp_region_tax
+    (
+    region_id,
+    tax_type_id,
+    effective_date,
+    expiration_date,
+    description,
+    product_tax_type_id,
+    created_by,
+    region_tax_id,
+    dealer_id
+    )
+    VALUES
+    (
+    :region_id,
+    :tax_type_id,
+    :effective_date,
+    :expiration_date,
+    :description,
+    :product_tax_type_id,
+    :created_by,
+    :region_tax_id,
+    :dealer_id
+    )
+  </INSERT>
+  <DELETE>
+    DELETE FROM elp_region_tax
+    WHERE
+    region_tax_id = :region_tax_id
+  </DELETE>
+</SQL>

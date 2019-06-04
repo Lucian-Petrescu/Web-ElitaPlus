@@ -1,0 +1,175 @@
+<?xml version="1.0" encoding="utf-8" ?>
+
+<!-- ********************** THIS FILE HAS BEEN GENERATED FROM TEMPLATE SQLObject.cst (11/23/2005)********************** -->
+
+<SQL>
+	<LOAD>
+		<![CDATA[	
+			SELECT 
+				claimfile_processed_id,
+				reject_reason,
+				claim_loaded,
+				dealer_code,
+				certificate,
+				certificate_sales_date,
+				authorization_number,
+				authorization_creation_date,
+				authorization_code,
+				problem_description,
+				product_code,
+				additional_product_code,
+				manufacturer,
+				model,
+				serial_number,
+				service_center_code,
+				amount,
+				do_not_process,
+				date_claim_closed,
+				status_code,
+				claim_number,
+				replacement_date,
+				created_by,
+				created_date,
+				modified_by,
+				modified_date,
+				claim_recon_wrk_id
+			FROM elp_claim_recon_wrk 
+			WHERE
+				claim_recon_wrk_id = :claim_recon_wrk_id
+		]]>
+	</LOAD>
+	<LOAD_LIST>	
+			SELECT 
+				claimfile_processed_id,
+				reject_reason,
+				claim_loaded,
+				dealer_code,
+				certificate,
+				certificate_sales_date,
+				authorization_number,
+				authorization_creation_date,
+				authorization_code,
+				problem_description,
+				product_code,
+				additional_product_code,
+				manufacturer,
+				model,
+				serial_number,
+				service_center_code,
+				amount,
+				do_not_process,
+				date_claim_closed,
+				status_code,
+				claim_number,
+				replacement_date,
+				created_by,
+				created_date,
+				modified_by,
+				modified_date,
+				claim_recon_wrk_id
+			FROM elp_claim_recon_wrk 
+			WHERE
+				claimfile_processed_id = :claimfile_processed_id
+				and reject_reason IS NOT NULL	
+	</LOAD_LIST>
+  <GET_DEALER_CODE>
+    SELECT DISTINCT	dealer_code
+    FROM elp_claim_recon_wrk
+    WHERE
+    claimfile_processed_id = :claimfile_processed_id
+  </GET_DEALER_CODE>
+	<UPDATE>
+		<![CDATA[	
+			UPDATE elp_claim_recon_wrk SET
+				claimfile_processed_id = :claimfile_processed_id,
+				reject_reason = :reject_reason,
+				claim_loaded = :claim_loaded,
+				dealer_code = :dealer_code,
+				certificate = :certificate,
+				certificate_sales_date = :certificate_sales_date,
+				authorization_number = :authorization_number,
+				authorization_creation_date = :authorization_creation_date,
+				authorization_code = :authorization_code,
+				problem_description = :problem_description,
+				product_code = :product_code,
+				additional_product_code = :additional_product_code,
+				manufacturer = :manufacturer,
+				model = :model,
+				serial_number = :serial_number,
+				service_center_code = :service_center_code,
+				amount = :amount,
+				do_not_process = :do_not_process,
+				date_claim_closed = :date_claim_closed,
+				status_code = :status_code,
+				claim_number = :claim_number,
+				replacement_date = :replacement_date,
+				modified_by = :modified_by
+			WHERE
+				claim_recon_wrk_id = :claim_recon_wrk_id
+				AND NVL(modified_date,created_date) = NVL(:modified_date,created_date)
+		]]>
+	</UPDATE>
+	<INSERT>
+			INSERT INTO elp_claim_recon_wrk
+					(			
+				claimfile_processed_id, 
+				reject_reason, 
+				claim_loaded, 
+				dealer_code, 
+				certificate, 
+				certificate_sales_date, 
+				authorization_number, 
+				authorization_creation_date, 
+				authorization_code, 
+				problem_description, 
+				product_code, 
+				additional_product_code, 
+				manufacturer, 
+				model, 
+				serial_number, 
+				service_center_code, 
+				amount, 
+				do_not_process, 
+				date_claim_closed, 
+				status_code, 
+				claim_number,
+				replacement_date,
+				created_by,
+				claim_recon_wrk_id
+					)
+			VALUES
+					(			
+				:claimfile_processed_id, 
+				:reject_reason, 
+				:claim_loaded, 
+				:dealer_code, 
+				:certificate, 
+				:certificate_sales_date, 
+				:authorization_number, 
+				:authorization_creation_date, 
+				:authorization_code, 
+				:problem_description, 
+				:product_code, 
+				:additional_product_code, 
+				:manufacturer, 
+				:model, 
+				:serial_number, 
+				:service_center_code, 
+				:amount, 
+				:do_not_process, 
+				:date_claim_closed, 
+				:status_code, 
+				:claim_number,
+				:replacement_date,
+				:created_by,
+				:claim_recon_wrk_id
+					)
+	</INSERT>
+	<DELETE>
+			DELETE FROM elp_claim_recon_wrk
+			WHERE
+				claim_recon_wrk_id = :claim_recon_wrk_id
+	</DELETE>
+</SQL> 
+
+

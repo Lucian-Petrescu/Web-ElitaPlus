@@ -1,0 +1,13 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<SQL>
+  <DROPDOWN_ID>
+    <![CDATA[
+      select list_id from elp_list where code = :code
+    ]]>
+  </DROPDOWN_ID>
+  <DROPDOWN_ITEM_ID>
+    <![CDATA[
+      select list_item_id from elp_list_item  where code =:code and list_id=:list_id
+    ]]>
+  </DROPDOWN_ITEM_ID>
+</SQL>

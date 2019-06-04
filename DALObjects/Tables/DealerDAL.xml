@@ -1,0 +1,1005 @@
+<?xml version="1.0" encoding="utf-8" ?>
+
+<!-- ********************** THIS FILE HAS BEEN GENERATED FROM TEMPLATE SQLObject.cst (11/19/2004)********************** -->
+
+<SQL>
+  <LOAD>
+    <![CDATA[	
+			SELECT 
+				dealer,
+				dealer_name,
+				tax_id_number,
+				company_id,
+				address_id,
+				contact_name,
+				contact_phone,
+				contact_ext,
+				contact_fax,
+				contact_email,
+				retailer_id,
+				created_date,
+				modified_date,
+				dealer_group_id,
+				created_by,
+				modified_by,
+				active_flag,
+				service_network_id,
+				ibnr_factor,
+				ibnr_compute_method_id,
+        STAT_ibnr_factor,
+				STAT_ibnr_compute_method_id,
+        LAE_ibnr_factor,
+				LAE_ibnr_compute_method_id,
+				convert_product_code_id,
+				dealer_type_id,
+				branch_validation_id,
+				bank_info_id,
+				business_name,
+				state_tax_id_number,
+				city_tax_id_number,
+				web_address,
+				mailing_address_id,
+				number_of_other_locations,
+				price_matrix_uses_wp_id,
+				invoice_by_branch_id,
+				separated_credit_notes_id,
+        manual_enrollment_allowed_id,
+        edit_branch_id,
+				dealer_id,
+        (Select distinct Service_center_id from elp_service_center where OriginalDealerID=:dealer_id and rownum=1) Service_center_id,
+        olita_search,
+        delay_factor_flag_id,
+        installment_factor_flag_id,
+        registration_process_flag_id,
+        registration_email_from,
+        use_warranty_master_id,
+        Insert_Make_If_Not_Exist_ID,
+        use_incoming_sales_tax_id,
+        auto_process_file_id,
+        round_comm_flag_id,
+        cert_cancel_by_id,
+        use_installment_defn_id,
+        program_name,
+        service_line_phone,
+				service_line_fax,
+				service_line_email,
+				esc_insurance_label,
+        expected_premium_is_wp_id,
+        claim_system_id,
+        assurant_is_obligor_id,
+        max_man_warr,
+        min_man_warr,
+        migration_path_id,
+        use_equipment_id,
+        equipment_list_code,
+        question_list_code,
+        validate_sku_id,
+        cancel_request_flag_id,
+        pay_deductible_id,
+        bank_info_mandatory_id,
+        validate_billing_cycle_id,
+				PRODUCT_BY_REGION_ID,
+        claim_verification_num_length,
+        claim_extended_status_entry_id,
+        validate_serial_number_id,
+        allow_update_cancellation_id,
+        reject_after_cancellation_id,
+        ALLOW_FUTURE_CANCEL_DATE_ID,
+        dealer_support_web_claims_id,
+        deductible_collection_id,
+        claim_status_for_ext_system_id,
+        NEW_DEVICE_SKU_REQUIRED_ID,
+		    USE_CLAIM_AUTHORIZATION_ID,
+				enrollfilepreprocessproc_id,
+				certnumlookupby_id,
+        license_tag_validation,
+        replaceclaimdedtolerancepct,
+        billing_process_code_id,
+				billresult_exception_dest_id,
+				billresult_notification_email,
+        client_dealer_code,
+        FULLFILEPROCESS_ID,
+        max_ncrecords,
+        certificates_autonumber_prefix,
+        certificates_autonumber_id,
+        file_load_notification_email,
+        Max_CertNum_Length_Allowed,
+        auto_rej_err_type_id,
+        rejected_record_recon_id,
+        lawsuit_mandatory_id,
+        auto_select_service_center,
+        dealer_extract_period_id,
+        policy_event_notify_email,
+        claim_auto_approve_id,
+        def_salvage_center_id,
+        reuse_serial_number_id,
+        require_customer_aml_info_id, 
+        grace_period_months,
+        grace_period_days,
+     max_commission_percent,
+        auto_process_pymt_file_id,
+        max_commission_percent,
+        vsc_vin_restric_id,
+        plan_code_in_quote_output_id,
+        auto_gen_rej_pymt_file_id,
+        pymt_rej_rec_recon_id,
+        USE_NEWBILLFORM,
+        SHARE_CUSTOMER,
+        dealer_customer_lookup_by,
+        identification_number_type,
+        use_quote,
+        contract_manual_verification,
+        accept_payment_by_check,
+        claim_recording_xcd,
+        imei_use_xcd,
+        claim_recording_check_inv_xcd,
+        void_duration,
+        suspend_period,
+        suspend_applies_xcd,
+        invoice_cutoff_day,
+        source_system_xcd,
+        benefit_carrier_code,
+        benefit_sold_to_account,
+        enable_fraud_monitoring_xcd,
+        is_reshipment_allowed,
+        is_cancel_shipment_allowed,
+        cancel_shipment_grace_period,
+        validate_address_xcd,
+        case_profile_code,
+        close_case_grace_period_days
+			FROM elp_dealer
+			WHERE
+				dealer_id = :dealer_id
+		]]>
+  </LOAD>
+  <LOAD_BY_COMPANY_DEALER>
+    <![CDATA[	
+			SELECT 
+				dealer,
+				dealer_name,
+				tax_id_number,
+				company_id,
+				address_id,
+				contact_name,
+				contact_phone,
+				contact_ext,
+				contact_fax,
+				contact_email,
+				retailer_id,
+				created_date,
+				modified_date,
+				dealer_group_id,
+				created_by,
+				modified_by,
+				active_flag,
+				service_network_id,
+				ibnr_factor,
+				ibnr_compute_method_id,
+        STAT_ibnr_factor,
+				STAT_ibnr_compute_method_id,
+        LAE_ibnr_factor,
+				LAE_ibnr_compute_method_id,
+				convert_product_code_id,
+				dealer_type_id,
+				branch_validation_id,
+				bank_info_id,
+				business_name,
+				state_tax_id_number,
+				city_tax_id_number,
+				web_address,
+				mailing_address_id,
+				number_of_other_locations,
+				price_matrix_uses_wp_id,
+        manual_enrollment_allowed_id,
+        edit_branch_id,
+				dealer_id,
+        olita_search,
+        registration_process_flag_id,
+        registration_email_from,
+        use_warranty_master_id,
+        Insert_Make_If_Not_Exist_ID,
+        use_incoming_sales_tax_id,
+        auto_process_file_id,
+        round_comm_flag_id,
+        cert_cancel_by_id,
+        use_installment_defn_id,
+        program_name,
+        service_line_phone,
+				service_line_fax,
+				service_line_email,
+				esc_insurance_label,
+        expected_premium_is_wp_id,
+        claim_system_id,
+        assurant_is_obligor_id,
+        max_man_warr,
+        min_man_warr,
+        migration_path_id,
+        use_equipment_id,
+        equipment_list_code,
+        question_list_code,
+        validate_sku_id,
+        cancel_request_flag_id,
+        pay_deductible_id,
+        bank_info_mandatory_id,
+        validate_billing_cycle_id,
+			  PRODUCT_BY_REGION_ID,
+        claim_verification_num_length,
+        claim_extended_status_entry_id,
+        validate_serial_number_id,
+        allow_update_cancellation_id,
+        reject_after_cancellation_id,
+        ALLOW_FUTURE_CANCEL_DATE_ID,
+        dealer_support_web_claims_id,
+        deductible_collection_id,
+        claim_status_for_ext_system_id,
+        NEW_DEVICE_SKU_REQUIRED_ID,
+		    USE_CLAIM_AUTHORIZATION_ID,
+				certnumlookupby_id,
+        license_tag_validation,
+        replaceclaimdedtolerancepct,
+        billing_process_code_id,
+				billresult_exception_dest_id,
+				billresult_notification_email,
+        client_dealer_code,
+        FULLFILEPROCESS_ID,
+        max_ncrecords,
+        certificates_autonumber_prefix,
+        certificates_autonumber_id,
+        file_load_notification_email,
+        Max_CertNum_Length_Allowed,
+        auto_rej_err_type_id,
+        rejected_record_recon_id,
+        lawsuit_mandatory_id,
+        auto_select_service_center,
+        dealer_extract_period_id,
+        policy_event_notify_email,
+        claim_auto_approve_id,
+        def_salvage_center_id,
+        reuse_serial_number_id,
+        require_customer_aml_info_id,
+        auto_process_pymt_file_id,
+        grace_period_months,
+        grace_period_days,
+        max_commission_percent,
+        vsc_vin_restric_id,
+        plan_code_in_quote_output_id,
+        auto_gen_rej_pymt_file_id,
+        pymt_rej_rec_recon_id,
+        USE_NEWBILLFORM,
+        SHARE_CUSTOMER,
+        dealer_customer_lookup_by,
+        identification_number_type,
+        use_quote,
+        contract_manual_verification,
+        accept_payment_by_check,
+        claim_recording_xcd,
+        imei_use_xcd,
+        claim_recording_check_inv_xcd,
+        void_duration,
+        suspend_period,
+        suspend_applies_xcd,
+        invoice_cutoff_day,
+        source_system_xcd,
+        benefit_carrier_code,
+        benefit_sold_to_account,
+        enable_fraud_monitoring_xcd,
+        is_reshipment_allowed,
+        is_cancel_shipment_allowed,
+        cancel_shipment_grace_period,
+        validate_address_xcd,
+        case_profile_code,
+        close_case_grace_period_days
+      FROM elp_dealer 
+			WHERE
+				company_id= :company_id
+				And	dealer = :dealer
+		]]>
+  </LOAD_BY_COMPANY_DEALER>
+  <LOAD_FIRST_DEALER_BY_DEALER_GROUP>
+    <![CDATA[	
+			SELECT 	d.dealer_id Id,
+			d.dealer,
+			d.dealer_name	
+		FROM    
+		  elp_dealer d,
+			elp_dealer_group g
+      
+		WHERE		    
+			d.dealer_group_id = g.dealer_group_id
+      and g.dealer_group_id = :dealer_group_id
+			and rownum = 1
+			]]>
+  </LOAD_FIRST_DEALER_BY_DEALER_GROUP>
+  <GET_DEALERID_BY_CODE_AND_DEALERGROUP>
+    <![CDATA[	
+			SELECT 	d.dealer_id Id,
+			d.dealer,
+			d.dealer_name	
+		FROM    
+		  elp_dealer d,
+			elp_dealer_group g
+      
+		WHERE		    
+			d.dealer_group_id = g.dealer_group_id
+      and g.dealer_group_id = :dealer_group_id
+			and d.dealer = :dealer
+			]]>
+  </GET_DEALERID_BY_CODE_AND_DEALERGROUP>
+  <LOAD_LIST>
+    <![CDATA[	
+			SELECT 	d.dealer_id,
+			d.dealer,
+			d.dealer_name,
+			g.description dealer_group,
+			c.code company_code,
+			d.active_flag,
+      g.code dealer_group_code
+		FROM    
+		    elp_dealer d,
+			elp_dealer_group g,
+			elp_company c
+		WHERE		    
+			--dynamic_in_clause
+			and d.company_id = c.Company_id
+			and d.dealer_group_id = g.dealer_group_id(+)
+			--dynamic_where_clause
+			--dynamic_order_by_clause
+			]]>
+  </LOAD_LIST>
+  <UPDATE>
+    <![CDATA[	
+			UPDATE elp_dealer SET
+				dealer = :dealer,
+				dealer_name = :dealer_name,
+				tax_id_number = :tax_id_number,
+				company_id = :company_id,
+				address_id = :address_id,
+				contact_name = :contact_name,
+				contact_phone = :contact_phone,
+				contact_ext = :contact_ext,
+				contact_fax = :contact_fax,
+				contact_email = :contact_email,
+				retailer_id = :retailer_id,
+				dealer_group_id = :dealer_group_id,
+				active_flag = :active_flag,
+				service_network_id = :service_network_id,
+				ibnr_factor = :ibnr_factor,
+				ibnr_compute_method_id = :ibnr_compute_method_id,
+        STAT_ibnr_factor = :STAT_ibnr_factor,
+				STAT_ibnr_compute_method_id = :STAT_ibnr_compute_method_id,
+        LAE_ibnr_factor = :LAE_ibnr_factor,
+				LAE_ibnr_compute_method_id = :LAE_ibnr_compute_method_id,
+				convert_product_code_id = :convert_product_code_id,
+				dealer_type_id = :dealer_type_id,
+				branch_validation_id = :branch_validation_id,
+				bank_info_id = :bank_info_id,
+				business_name = :business_name,
+				state_tax_id_number = :state_tax_id_number,
+				city_tax_id_number = :city_tax_id_number,
+				web_address = :web_address,
+				mailing_address_id = :mailing_address_id,
+				number_of_other_locations = :number_of_other_locations,
+				price_matrix_uses_wp_id = :price_matrix_uses_wp_id,
+				invoice_by_branch_id = :invoice_by_branch_id,
+				separated_credit_notes_id = :separated_credit_notes_id,
+        manual_enrollment_allowed_id =:manual_enrollment_allowed_id, 
+        edit_branch_id = :edit_branch_id,
+				modified_by = :modified_by,
+        olita_search = :olita_search,
+        delay_factor_flag_id = :delay_factor_flag_id,
+        installment_factor_flag_id = :installment_factor_flag_id,
+        registration_process_flag_id = :registration_process_flag_id,
+        registration_email_from = :registration_email_from,
+        use_warranty_master_id = :use_warranty_master_id,
+        Insert_Make_If_Not_Exist_ID = :Insert_Make_If_Not_Exist_ID,
+        use_incoming_sales_tax_id = :use_incoming_sales_tax_id,
+        auto_process_file_id = :auto_process_file_id,
+        round_comm_flag_id = :round_comm_flag_id,
+        cert_cancel_by_id = :cert_cancel_by_id,
+        use_installment_defn_id = :use_installment_defn_id,
+        program_name = :program_name,
+				service_line_phone = :service_line_phone,
+				service_line_fax = :service_line_fax,
+				service_line_email = :service_line_email,
+				esc_insurance_label = :esc_insurance_label,
+        expected_premium_is_wp_id = :expected_premium_is_wp_id,
+        claim_system_id = :claim_system_id,
+        assurant_is_obligor_id = :assurant_is_obligor_id,
+        max_man_warr = :max_man_warr,
+        min_man_warr = :min_man_warr,
+        migration_path_id = :migration_path_id,
+        use_equipment_id = :use_equipment_id,
+        equipment_list_code = :equipment_list_code,
+        question_list_code = :question_list_code,
+        validate_sku_id= :validate_sku_id,
+        cancel_request_flag_id = :cancel_request_flag_id,
+        pay_deductible_id = :pay_deductible_id,
+        bank_info_mandatory_id = :bank_info_mandatory_id,
+        validate_billing_cycle_id = :validate_billing_cycle_id,
+				PRODUCT_BY_REGION_ID = :PRODUCT_BY_REGION_ID,
+        claim_verification_num_length =:claim_verification_num_length,
+        claim_extended_status_entry_id =:claim_extended_status_entry_id,
+        validate_serial_number_id = :validate_serial_number_id,
+        allow_update_cancellation_id = :allow_update_cancellation_id,
+        reject_after_cancellation_id = :reject_after_cancellation_id,
+        ALLOW_FUTURE_CANCEL_DATE_ID = :ALLOW_FUTURE_CANCEL_DATE_ID,
+  		  USE_CLAIM_AUTHORIZATION_ID = :USE_CLAIM_AUTHORIZATION_ID,
+        dealer_support_web_claims_id = :dealer_support_web_claims_id,
+        deductible_collection_id = :deductible_collection_id,
+        claim_status_for_ext_system_id = :claim_status_for_ext_system_id,
+        NEW_DEVICE_SKU_REQUIRED_ID = :NEW_DEVICE_SKU_REQUIRED_ID,
+				enrollfilepreprocessproc_id = :enrollfilepreprocessproc_id,
+				certnumlookupby_id = :certnumlookupby_id,
+        license_tag_validation= :license_tag_validation,
+        replaceclaimdedtolerancepct = :replaceclaimdedtolerancepct,
+        billing_process_code_id = :billing_process_code_id,
+				billresult_exception_dest_id = :billresult_exception_dest_id,
+				billresult_notification_email = :billresult_notification_email,
+        client_dealer_code = :client_dealer_code,
+        FULLFILEPROCESS_ID = :FULLFILEPROCESS_ID,
+        max_ncrecords = :max_ncrecords,
+        certificates_autonumber_prefix = :certificates_autonumber_prefix,
+        certificates_autonumber_id = :certificates_autonumber_id,
+        file_load_notification_email = :file_load_notification_email,
+        Max_CertNum_Length_Allowed = :Max_CertNum_Length_Allowed,
+        auto_rej_err_type_id = :auto_rej_err_type_id,
+        rejected_record_recon_id = :rejected_record_recon_id,
+        lawsuit_mandatory_id = :lawsuit_mandatory_id,
+        auto_select_service_center = :auto_select_service_center,
+        dealer_extract_period_id = :dealer_extract_period_id,
+        policy_event_notify_email = :policy_event_notify_email,
+        claim_auto_approve_id = :claim_auto_approve_id,
+        def_salvage_center_id = :def_salvage_center_id,
+        reuse_serial_number_id = :reuse_serial_number_id,
+        require_customer_aml_info_id = :require_customer_aml_info_id,
+        grace_period_months = :grace_period_months,
+        grace_period_days = :grace_period_days,
+        auto_process_pymt_file_id   = :auto_process_pymt_file_id,
+        max_commission_percent = :max_commission_percent,
+        vsc_vin_restric_id = :vsc_vin_restric_id,
+        plan_code_in_quote_output_id = :plan_code_in_quote_output_id,
+        auto_gen_rej_pymt_file_id = :auto_gen_rej_pymt_file_id,
+        pymt_rej_rec_recon_id = :pymt_rej_rec_recon_id,
+        USE_NEWBILLFORM = :USE_NEWBILLFORM,
+        SHARE_CUSTOMER = :SHARE_CUSTOMER,
+        dealer_customer_lookup_by = :dealer_customer_lookup_by,
+        identification_number_type = :identification_number_type,
+        use_quote = :use_quote,
+        contract_manual_verification = :contract_manual_verification,
+        accept_payment_by_check = :accept_payment_by_check,
+        claim_recording_xcd =:claim_recording_xcd,
+        imei_use_xcd =:imei_use_xcd,
+        claim_recording_check_inv_xcd = :claim_recording_check_inv_xcd,
+        void_duration = :void_duration,
+        suspend_period = :suspend_period,
+        suspend_applies_xcd = :suspend_applies_xcd,
+        invoice_cutoff_day = :invoice_cutoff_day,
+        source_system_xcd = :source_system_xcd,
+        benefit_carrier_code = :benefit_carrier_code,
+        benefit_sold_to_account = :benefit_sold_to_account,
+        enable_fraud_monitoring_xcd = :enable_fraud_monitoring_xcd,
+        is_reshipment_allowed = :is_reshipment_allowed,
+        is_cancel_shipment_allowed = :is_cancel_shipment_allowed,
+        cancel_shipment_grace_period = :cancel_shipment_grace_period,
+        validate_address_xcd = :validate_address_xcd,
+        case_profile_code = :case_profile_code,
+        close_case_grace_period_days = :close_case_grace_period_days
+        WHERE
+				dealer_id = :dealer_id
+		]]>
+  </UPDATE>
+  <INSERT>
+    INSERT INTO elp_dealer
+    (
+    dealer,
+    dealer_name,
+    tax_id_number,
+    company_id,
+    address_id,
+    contact_name,
+    contact_phone,
+    contact_ext,
+    contact_fax,
+    contact_email,
+    retailer_id,
+    dealer_group_id,
+    active_flag,
+    service_network_id,
+    ibnr_factor,
+    ibnr_compute_method_id,
+    STAT_ibnr_factor,
+    STAT_ibnr_compute_method_id,
+    LAE_ibnr_factor,
+    LAE_ibnr_compute_method_id,
+    convert_product_code_id,
+    dealer_type_id,
+    branch_validation_id,
+    bank_info_id,
+    business_name,
+    state_tax_id_number,
+    city_tax_id_number,
+    web_address,
+    mailing_address_id,
+    number_of_other_locations,
+    price_matrix_uses_wp_id,
+    invoice_by_branch_id,
+    separated_credit_notes_id,
+    manual_enrollment_allowed_id,
+    created_by,
+    edit_branch_id,
+    dealer_id,
+    olita_search,
+    delay_factor_flag_id,
+    installment_factor_flag_id,
+    registration_process_flag_id,
+    registration_email_from,
+    use_warranty_master_id,
+    Insert_Make_If_Not_Exist_ID,
+    use_incoming_sales_tax_id,
+    auto_process_file_id,
+    round_comm_flag_id,
+    cert_cancel_by_id,
+    use_installment_defn_id,
+    program_name,
+    service_line_phone,
+    service_line_fax,
+    service_line_email,
+    esc_insurance_label,
+    expected_premium_is_wp_id,
+    claim_system_id,
+    assurant_is_obligor_id,
+    max_man_warr,
+    min_man_warr,
+    migration_path_id,
+    use_equipment_id,
+    equipment_list_code,
+    question_list_code,
+    validate_sku_id,
+    cancel_request_flag_id,
+    pay_deductible_id,
+    bank_info_mandatory_id,
+    validate_billing_cycle_id,
+    PRODUCT_BY_REGION_ID,
+    claim_verification_num_length,
+    claim_extended_status_entry_id,
+    validate_serial_number_id,
+    allow_update_cancellation_id,
+    reject_after_cancellation_id,
+    ALLOW_FUTURE_CANCEL_DATE_ID,
+    dealer_support_web_claims_id,
+    deductible_collection_id,
+    claim_status_for_ext_system_id,
+    NEW_DEVICE_SKU_REQUIRED_ID,
+    USE_CLAIM_AUTHORIZATION_ID,
+    enrollfilepreprocessproc_id,
+    certnumlookupby_id,
+    license_tag_validation,
+    replaceclaimdedtolerancepct,
+    billing_process_code_id,
+    billresult_exception_dest_id,
+    billresult_notification_email,
+    client_dealer_code,
+    FULLFILEPROCESS_ID,
+    max_ncrecords,
+    certificates_autonumber_prefix,
+    certificates_autonumber_id,
+    file_load_notification_email,
+    Max_CertNum_Length_Allowed,
+    auto_rej_err_type_id,
+    rejected_record_recon_id,
+    lawsuit_mandatory_id,
+    auto_select_service_center,
+    dealer_extract_period_id,
+    policy_event_notify_email,
+    claim_auto_approve_id,
+    def_salvage_center_id,
+    reuse_serial_number_id,
+    require_customer_aml_info_id,
+    auto_process_pymt_file_id,
+    grace_period_months,
+    grace_period_days,
+    max_commission_percent,
+    vsc_vin_restric_id,
+    plan_code_in_quote_output_id,
+    auto_gen_rej_pymt_file_id,
+    pymt_rej_rec_recon_id,
+    USE_NEWBILLFORM,
+    SHARE_CUSTOMER,
+    dealer_customer_lookup_by,
+    identification_number_type,
+    use_quote,
+    contract_manual_verification,
+    accept_payment_by_check,
+    claim_recording_xcd,
+    imei_use_xcd,
+    claim_recording_check_inv_xcd,
+    void_duration,
+    suspend_period,
+    suspend_applies_xcd,
+    invoice_cutoff_day,
+    source_system_xcd,
+    benefit_carrier_code,
+    benefit_sold_to_account,
+    enable_fraud_monitoring_xcd,
+    is_reshipment_allowed,
+    is_cancel_shipment_allowed,
+    cancel_shipment_grace_period,
+    validate_address_xcd,
+    case_profile_code,
+    close_case_grace_period_days
+    )
+    VALUES
+    (
+    :dealer,
+    :dealer_name,
+    :tax_id_number,
+    :company_id,
+    :address_id,
+    :contact_name,
+    :contact_phone,
+    :contact_ext,
+    :contact_fax,
+    :contact_email,
+    :retailer_id,
+    :dealer_group_id,
+    :active_flag,
+    :service_network_id,
+    :ibnr_factor,
+    :ibnr_compute_method_id,
+    :STAT_ibnr_factor,
+    :STAT_ibnr_compute_method_id,
+    :LAE_ibnr_factor,
+    :LAE_ibnr_compute_method_id,
+    :convert_product_code_id,
+    :dealer_type_id,
+    :branch_validation_id,
+    :bank_info_id,
+    :business_name,
+    :state_tax_id_number,
+    :city_tax_id_number,
+    :web_address,
+    :mailing_address_id,
+    :number_of_other_locations,
+    :price_matrix_uses_wp_id,
+    :invoice_by_branch_id,
+    :separated_credit_notes_id,
+    :manual_enrollment_allowed_id,
+    :created_by,
+    :edit_branch_id,
+    :dealer_id,
+    :olita_search,
+    :delay_factor_flag_id,
+    :installment_factor_flag_id,
+    :registration_process_flag_id,
+    :registration_email_from,
+    :use_warranty_master_id,
+    :Insert_Make_If_Not_Exist_ID,
+    :use_incoming_sales_tax_id,
+    :auto_process_file_id,
+    :round_comm_flag_id,
+    :cert_cancel_by_id,
+    :use_installment_defn_id,
+    :program_name,
+    :service_line_phone,
+    :service_line_fax,
+    :service_line_email,
+    :esc_insurance_label,
+    :expected_premium_is_wp_id,
+    :claim_system_id,
+    :assurant_is_obligor_id,
+    :max_man_warr,
+    :min_man_warr,
+    :migration_path_id,
+    :use_equipment_id,
+    :equipment_list_code,
+    :question_list_code,
+    :validate_sku_id,
+    :cancel_request_flag_id,
+    :pay_deductible_id,
+    :bank_info_mandatory_id,
+    :validate_billing_cycle_id,
+    :PRODUCT_BY_REGION_ID,
+    :claim_verification_num_length,
+    :claim_extended_status_entry_id,
+    :validate_serial_number_id,
+    :allow_update_cancellation_id,
+    :reject_after_cancellation_id,
+    :ALLOW_FUTURE_CANCEL_DATE_ID,
+    :dealer_support_web_claims_id,
+    :deductible_collection_id,
+    :claim_status_for_ext_system_id,
+    :NEW_DEVICE_SKU_REQUIRED_ID,
+    :USE_CLAIM_AUTHORIZATION_ID,
+    :enrollfilepreprocessproc_id,
+    :certnumlookupby_id,
+    :license_tag_validation,
+    :replaceclaimdedtolerancepct,
+    :billing_process_code_id,
+    :billresult_exception_dest_id,
+    :billresult_notification_email,
+    :client_dealer_code,
+    :FULLFILEPROCESS_ID,
+    :max_ncrecords,
+    :certificates_autonumber_prefix,
+    :certificates_autonumber_id,
+    :file_load_notification_email,
+    :Max_CertNum_Length_Allowed,
+    :auto_rej_err_type_id,
+    :rejected_record_recon_id,
+    :lawsuit_mandatory_id,
+    :auto_select_service_center,
+    :dealer_extract_period_id,
+    :policy_event_notify_email,
+    :claim_auto_approve_id,
+    :def_salvage_center_id,
+    :reuse_serial_number_id,
+    :require_customer_aml_info_id,
+    :auto_process_pymt_file_id,
+    :grace_period_months,
+    :grace_period_days,
+    :max_commission_percent,
+    :vsc_vin_restric_id,
+    :plan_code_in_quote_output_id,
+    :auto_gen_rej_pymt_file_id,
+    :pymt_rej_rec_recon_id,
+    :USE_NEWBILLFORM,
+    :SHARE_CUSTOMER,
+    :dealer_customer_lookup_by,
+    :identification_number_type,
+    :use_quote,
+    :contract_manual_verification,
+    :accept_payment_by_check,
+    :claim_recording_xcd,
+    :imei_use_xcd,
+    :claim_recording_check_inv_xcd,
+    :void_duration,
+    :suspend_period,
+    :suspend_applies_xcd,
+    :invoice_cutoff_day,
+    :source_system_xcd,
+    :benefit_carrier_code,
+    :benefit_sold_to_account,
+    :enable_fraud_monitoring_xcd,
+    :is_reshipment_allowed,
+    :is_cancel_shipment_allowed,
+    :cancel_shipment_grace_period,
+    :validate_address_xcd,
+    :case_profile_code,
+    :close_case_grace_period_days
+    )
+  </INSERT>
+  <DELETE>
+    DELETE FROM elp_dealer
+    WHERE
+    dealer_id = :dealer_id
+  </DELETE>
+  <GET_CONTRACT_MONTHLY_BILLING>
+    <![CDATA[
+			SELECT 
+				d.dealer_id id, d.dealer code, d.dealer_name description
+				from elp_dealer d
+				INNER JOIN elp_company c
+				ON c.company_id = d.company_id
+				INNER JOIN elp_contract cont
+				ON cont.dealer_id = d.dealer_id
+			WHERE cont.recurring_premium_id = (
+						SELECT li.list_item_id
+						FROM elp_list l, elp_list_item li
+						WHERE l.code = 'PERIODRENEW' -- Product Item
+						AND li.list_id = l.list_id
+						and li.code = '1')
+				and c.company_id in (select company_id from ELP_USER_COMPANY where user_id = HEXTORAW(:user_id))
+				and to_date(:today_date,'yyyymmdd') between cont.effective
+				and cont.expiration
+		]]>
+  </GET_CONTRACT_MONTHLY_BILLING>
+  <GET_DEALER_COVERAGES_COUNT>
+    <![CDATA[
+			SELECT count(*) as Dealer_Coverages_Count from
+				ELP_PRODUCT_CODE P,
+				ELP_ITEM I,
+				ELP_COVERAGE C
+			where
+			P.DEALER_ID =: dealer_id and
+			P.PRODUCT_CODE_ID = I.PRODUCT_CODE_ID AND
+			I.ITEM_ID= C.ITEM_ID		
+		]]>
+  </GET_DEALER_COVERAGES_COUNT>
+  <GET_DEALER_PRODUCT_CODES_COUNT>
+    <![CDATA[
+			SELECT count(*) as Dealer_Product_Code_Count
+			FROM ELP_PRODUCT_CODE where DEALER_ID = :dealer_id
+		]]>
+  </GET_DEALER_PRODUCT_CODES_COUNT>
+  <GET_DEALER_CERTIFICATES_COUNT>
+    <![CDATA[
+			SELECT 	count(*) as Dealer_Certificates_Count
+			FROM elp_cert WHERE dealer_id = :dealer_id
+		]]>
+  </GET_DEALER_CERTIFICATES_COUNT>
+  <GET_DUPLICATE_DEALER_COUNT>
+    <![CDATA[
+			SELECT 	count(dealer) as Dealer_Count
+			FROM elp_dealer d, elp_company c
+			WHERE d.dealer = :dealer
+			and c.company_type_id = :company_type_id
+			and d.company_id = c.Company_id
+			and c.business_country_id = :business_country_id
+		]]>
+  </GET_DUPLICATE_DEALER_COUNT>
+  <GET_DEALER_COUNT_BY_CODE>
+    <![CDATA[
+			SELECT 	count(dealer) as Dealer_Count
+			FROM elp_dealer d
+			WHERE d.dealer = :dealer
+		]]>
+  </GET_DEALER_COUNT_BY_CODE>
+  <GET_DEALER_TYPE_ID>
+    <![CDATA[
+		SELECT 	dealer_type_id as Dealer_Type_Id
+		FROM elp_dealer d
+		WHERE d.DEALER_ID = :dealer_id
+	]]>
+  </GET_DEALER_TYPE_ID>
+  <RENEW_COVERAGES>
+    DealerDefinitions.RenewCoverages
+  </RENEW_COVERAGES>
+  <COPY_DEALER_DEFINITIONS>
+    DealerDefinitions.CopyProductCodes
+  </COPY_DEALER_DEFINITIONS>
+  <CREATE_EXTERNAL_TABLE>
+    ELP_ELITA_LOAD_EXT.ELP_ELITA_CREATE_TABLE_EXT
+  </CREATE_EXTERNAL_TABLE>
+  <UPDATE_CLAIMS_ASYNC>
+    elp_utl_load_async.Update_Claims_Async
+  </UPDATE_CLAIMS_ASYNC>  
+  <DELETE_ALL_DEALER_DEFINITIONS>
+    DealerDefinitions.DeleteCoverageRates
+  </DELETE_ALL_DEALER_DEFINITIONS>
+  <DELETE_DEALER_PRODUCTCODES_AND_ITEMS>
+    DealerDefinitions.DeleteItems
+  </DELETE_DEALER_PRODUCTCODES_AND_ITEMS>
+
+  <CERT_ADD_ENABLED_DEALER_LIST>
+    <![CDATA[
+      SELECT dealer_id id,  rawtohex(d.company_id) company_id, dealer code, dealer_name description, 
+              C.CODE || ' - ' || dealer_name descriptionDual
+      FROM ELP_DEALER d inner join elp_company c on c.company_id = d.company_id
+      where GetYesNo(d.MANUAL_ENROLLMENT_ALLOWED_ID) = 'Y'
+      --dynamic_where_clause
+    ]]>
+  </CERT_ADD_ENABLED_DEALER_LIST>
+  <DEALER_COUNTRY>
+    SELECT distinct  c.country_id   , c.code, c.description
+    FROM ELP_dealer d , ELP_company comp, ELP_COMPANY_COUNTRY cc, ELP_COUNTRY c
+    WHERE	d.company_id = comp.company_id
+    AND comp.company_id = cc.company_id
+    AND cc.country_id = c.country_id
+    AND d.dealer_id = :dealer_id
+    ORDER BY UPPER(c.description)
+  </DEALER_COUNTRY>
+  <GET_DEALERS_HAVING_DUPLICATE_CERTIFICATES_AUTONUMBER_PREFIX_COUNT>
+    <![CDATA[
+    select count(*) as duplicate_prefix_count from
+    (select CERTIFICATES_AUTONUMBER_PREFIX, count(nvl(CERTIFICATES_AUTONUMBER_PREFIX,'xxx'))
+    from ELITA.elp_dealer
+    WHERE getcodefromlistitem(CERTIFICATES_AUTONUMBER_ID) = 'Y'
+    and company_id = :company_id
+    --dynamic_where_clause
+    group by CERTIFICATES_AUTONUMBER_PREFIX
+    having count(nvl(CERTIFICATES_AUTONUMBER_PREFIX,'xxx')) > :count_level)
+		]]>
+  </GET_DEALERS_HAVING_DUPLICATE_CERTIFICATES_AUTONUMBER_PREFIX_COUNT>
+  <GET_CERT_AUTO_GEN_FLAG>
+    <![CDATA[
+    select case when upper(code) = 'Y' then 1
+           else 0
+           end value
+    from 
+    (select li.list_item_id, 
+            li.code            
+    from elp_dealer d, 
+    elp_list_item li
+    where d.certificates_autonumber_id = li.list_item_id(+)
+    and d.dealer_id = :dealer_id)
+		]]>
+  </GET_CERT_AUTO_GEN_FLAG>
+  <GET_SELECTED_COVERAGE_TYPES>
+    <![CDATA[
+			select distinct LI.list_item_id id,
+                translation description, code
+		from elp_dealer_clm_aprove_covtype dcac,
+			elp_list_item li,
+			elp_dict_item_translation trans
+		where	dcac.dealer_id = :dealer_id
+			and dcac.coverage_type_id = list_item_id
+			and li.dict_item_id = trans.dict_item_id
+			and language_id = :language_id
+		order by upper(description)
+		]]>
+  </GET_SELECTED_COVERAGE_TYPES>
+  <GET_SELECTED_CLAIM_TYPES>
+    <![CDATA[
+    select distinct LI.list_item_id id,
+                translation description, code
+		from ELP_DEALER_CLM_APROVE_CLMTYPE dcac,
+			elp_list_item li,
+			elp_dict_item_translation trans
+		where	dcac.dealer_id = :dealer_id
+			and dcac.claim_type_id = list_item_id
+			and li.dict_item_id = trans.dict_item_id
+			and language_id = :language_id
+		order by upper(description)
+		]]>
+  </GET_SELECTED_CLAIM_TYPES>
+  <GET_AVAILABLE_COVERAGE_TYPES>
+    <![CDATA[
+      Select Distinct li.list_item_id id, li.code, Dit.Translation description
+      From Elp_Dealer D
+      Inner Join Elp_Product_Code Pc On D.Dealer_Id = Pc.Dealer_Id
+      Inner Join Elp_Item I On Pc.Product_Code_Id = I.Product_Code_Id
+      Inner Join Elp_Coverage C On I.Item_Id = C.Item_Id
+      Inner Join Elp_List_Item Li On Li.List_Item_Id = C.Coverage_Type_Id
+      Inner Join Elp_Dict_Item_Translation Dit On Dit.Dict_Item_Id = Li.Dict_Item_Id
+      Where dit.language_id = :language_id 
+      and D.dealer_id = :dealer_id
+      and LI.list_item_id not in ( select dcac.coverage_type_id list_item_id
+							       from elp_dealer_clm_aprove_covtype dcac
+							       where dcac.dealer_id = :dealer_id
+                                  )
+      ORDER BY UPPER(Dit.Translation)
+		]]>
+  </GET_AVAILABLE_COVERAGE_TYPES>
+  <GET_AVAILABLE_CLAIM_TYPES>
+    <![CDATA[
+			SELECT
+			LI.list_item_id id, LI.code code, D.translation description
+			FROM
+			ELITA.ELP_LIST L, ELITA.ELP_LIST_ITEM LI, ELITA.ELP_DICT_ITEM_TRANSLATION D
+			WHERE
+			L.list_id = LI.list_id
+			and L.code = 'CLTYP'
+			and LI.dict_item_id = D.dict_item_id
+			and language_id = :LANGUAGE_ID
+			and LI.list_item_id not in (
+										select dcac.claim_type_id list_item_id
+										from ELP_DEALER_CLM_APROVE_CLMTYPE dcac
+										where dcac.dealer_id = :dealer_id
+										)
+			ORDER BY UPPER(description)
+		]]>
+  </GET_AVAILABLE_CLAIM_TYPES>
+  <DELETE_DEALER_CLAIM_TYPES>
+    DELETE FROM elp_dealer_clm_aprove_clmtype
+    where dealer_id = :dealer_id
+  </DELETE_DEALER_CLAIM_TYPES>
+  <GET_DEALER_CLAIM_TYPES>
+    <![CDATA[
+    SELECT dcac.dealer_id, dcac.dealer_claim_aprove_clmtype_id, dcac.claim_type_id, li.code, d.translation description
+    FROM   elp_dealer_clm_aprove_clmtype dcac, elita.elp_list_item li, elita.elp_dict_item_translation d
+    WHERE  dcac.dealer_id = :dealer_id
+    AND    dcac.claim_type_id = li.list_item_id
+    AND    li.dict_item_id = d.dict_item_id
+    and    d.language_id = :LANGUAGE_ID
+    ORDER by d.translation
+    ]]>
+  </GET_DEALER_CLAIM_TYPES>
+  <CHECK_SKIP_ACTIVE_CLAIM>
+    <![CDATA[
+    Select 1 as Skip_Check
+    From   Elp_Attribute a, Elp_Attribute_Value av,Elp_Dealer d
+    Where  a.Attribute_Id = av.Attribute_Id
+    And    d.Dealer_Id = av.Reference_Id
+    And    a.Table_Name = 'ELP_DEALER'
+    And    a.Ui_Prog_Code = 'SKIP_CLAIM_CHECK_DURING_CERT_CANCEL'
+    And    av.Attribute_Value='Y'
+    And    d.dealer_id = :dealer_id
+    ]]>
+  </CHECK_SKIP_ACTIVE_CLAIM>
+  <GET_DEALER_PROVIDER_CLASS_CODE>
+    elita.elp_fulfillment_webservice.getproviderclasscode
+  </GET_DEALER_PROVIDER_CLASS_CODE>
+</SQL>
+
+
+

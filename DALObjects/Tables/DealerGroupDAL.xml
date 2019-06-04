@@ -1,0 +1,121 @@
+<?xml version="1.0" encoding="utf-8" ?> 
+
+<SQL>
+	<LOAD>
+		<![CDATA[	
+			SELECT 
+				description,
+				code,
+				created_date,
+				modified_date,
+				created_by,
+				modified_by,
+				company_group_id,
+        ACCTING_BY_GROUP_ID,
+        bank_info_id,
+				dealer_group_id,
+        use_client_code_ynid,
+        auto_rej_err_type_id
+			FROM elp_dealer_group 
+			WHERE
+				dealer_group_id = :dealer_group_id
+		]]>
+	</LOAD>
+	<LOAD_LIST_DYNAMIC_SQL>
+	<![CDATA[	
+			SELECT 
+				dealer_group_id,
+				description,
+				code,
+        ACCTING_BY_GROUP_ID,
+        bank_info_id,
+        use_client_code_ynid,
+        auto_rej_err_type_id
+			FROM elp_dealer_group
+		]]>		
+	</LOAD_LIST_DYNAMIC_SQL>	
+	<LOAD_LIST>
+	<![CDATA[	
+			select dg.dealer_group_id,
+				     dg.description,
+				     dg.code,
+				     dg.ACCTING_BY_GROUP_ID,
+             dg.bank_info_id,
+             nvl(t.translation, ' ') ACCTING_BY_GROUP_Desc,
+             nvl(edit.translation, ' ') use_client_code_yndesc,
+             nvl(editt.translation, ' ') auto_rej_err_type_desc
+			  from elp_dealer_group dg
+             left outer join elp_list_item i on i.list_item_id = dg.ACCTING_BY_GROUP_ID
+             left outer join elp_dict_item_translation t on i.dict_item_id = t.dict_item_id AND t.language_id = :language_id
+			       left outer join elp_list_item eli on eli.list_item_id = dg.use_client_code_ynid
+             left outer join elp_dict_item_translation edit on eli.dict_item_id = edit.dict_item_id AND edit.language_id = :language_id
+             left outer join elp_list_item ii on ii.list_item_id = dg.auto_rej_err_type_id
+             left outer join elp_dict_item_translation editt on ii.dict_item_id = editt.dict_item_id AND editt.language_id = :language_id
+       where dg.code like :code 
+			   and upper(dg.description) like :description
+			   and dg.company_group_id = :company_group_id
+			 order by upper(dg.description)
+		]]>		
+	</LOAD_LIST>
+	<UPDATE>
+		<![CDATA[
+		   UPDATE elp_dealer_group SET	
+				description = :description,
+				code = :code,
+				company_group_id = :company_group_id,
+        accting_by_group_id = :accting_by_group_id,
+        bank_info_id = :bank_info_id,
+				modified_by = :modified_by,
+        use_client_code_ynid = :use_client_code_ynid,
+        auto_rej_err_type_id = :auto_rej_err_type_id
+			WHERE
+				dealer_group_id = :dealer_group_id
+		]]>
+	</UPDATE>
+	<INSERT>
+    INSERT INTO elp_dealer_group
+    (
+    description,
+    code,
+    company_group_id,
+    created_by,
+    dealer_group_id,
+    accting_by_group_id,
+    bank_info_id,
+    use_client_code_ynid,
+    auto_rej_err_type_id
+    )
+    VALUES
+    (
+    :description,
+    :code,
+    :company_group_id,
+    :created_by,
+    :dealer_group_id,
+    :accting_by_group_id,
+    :bank_info_id,
+    :use_client_code_ynid,
+    :auto_rej_err_type_id
+    )
+  </INSERT>
+	<DELETE>
+			DELETE FROM elp_dealer_group
+			WHERE
+				dealer_group_id = :dealer_group_id
+	</DELETE>
+  <CHECK_ALL_DEALER_OBLIGOR>
+    select distinct ASSURANT_IS_OBLIGOR_ID from elp_Dealer d,
+    elp_dealer_group dg
+    where d.dealer_group_id = dg.dealer_group_id
+    and dg.dealer_group_id = :dealer_group_id
+    group by ASSURANT_IS_OBLIGOR_ID
+  </CHECK_ALL_DEALER_OBLIGOR>
+  <GET_CLIENT_DEALER_CODE_YN>
+    select nvl(eli.code, ' ') use_client_code_yn
+    from elp_dealer_group dg
+    left outer join elp_list_item eli on eli.list_item_id = dg.use_client_code_ynid
+    where dealer_group_id = :dealer_group_id
+  </GET_CLIENT_DEALER_CODE_YN>
+</SQL> 
+
+

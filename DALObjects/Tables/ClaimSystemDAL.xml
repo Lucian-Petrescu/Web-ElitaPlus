@@ -1,0 +1,86 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+
+<!-- ********************** THIS FILE HAS BEEN GENERATED FROM TEMPLATE SQLObject.cst (2/23/2010)********************** -->
+
+<SQL>
+  <LOAD>
+    <![CDATA[	
+			SELECT 
+        claim_system_id,
+				code,
+				description,
+				new_claim_id,
+				pay_claim_id,
+				maintain_claim_id,
+				created_by,
+				created_date,
+				modified_by,
+				modified_date				
+			FROM elp_claim_system 
+			WHERE
+				claim_system_id = :claim_system_id
+		]]>
+  </LOAD>
+  <LOAD_LIST>
+    <![CDATA[	
+    SELECT
+      claim_system_id,
+      code,
+      description,
+      new_claim_id,
+      pay_claim_id,
+      maintain_claim_id,
+      GetYesNo(new_claim_id) new_claim,
+      GetYesNo(pay_claim_id) pay_claim,
+      GetYesNo(maintain_claim_id) maintain_claim,
+      created_by,
+      created_date,
+      modified_by,
+      modified_date
+    FROM elp_claim_system
+		WHERE UPPER(description) LIKE UPPER(:description)
+  ]]>
+  </LOAD_LIST>
+  <UPDATE>
+    <![CDATA[	
+			UPDATE elp_claim_system SET
+				code = :code,
+				description = :description,
+				new_claim_id = :new_claim_id,
+				pay_claim_id = :pay_claim_id,
+				maintain_claim_id = :maintain_claim_id,
+				modified_by = :modified_by
+			WHERE
+				claim_system_id = :claim_system_id
+		]]>
+  </UPDATE>
+  <INSERT>
+    INSERT INTO elp_claim_system
+    (
+    code,
+    description,
+    new_claim_id,
+    pay_claim_id,
+    maintain_claim_id,
+    created_by,
+    claim_system_id
+    )
+    VALUES
+    (
+    :code,
+    :description,
+    :new_claim_id,
+    :pay_claim_id,
+    :maintain_claim_id,
+    :created_by,
+    :claim_system_id
+    )
+  </INSERT>
+  <DELETE>
+    DELETE FROM elp_claim_system
+    WHERE
+    claim_system_id = :claim_system_id
+  </DELETE>
+</SQL>
+
+

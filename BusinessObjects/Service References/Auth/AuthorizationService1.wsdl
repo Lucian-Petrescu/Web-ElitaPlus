@@ -1,0 +1,684 @@
+<?xml version="1.0" encoding="utf-8"?>
+<wsdl:definitions xmlns:wsap="http://schemas.xmlsoap.org/ws/2004/08/addressing/policy" xmlns:wsa10="http://www.w3.org/2005/08/addressing" xmlns:tns="http://services.assurant.com/integration/authorization/2012/05/01/" xmlns:msc="http://schemas.microsoft.com/ws/2005/12/wsdl/contract" xmlns:soapenc="http://schemas.xmlsoap.org/soap/encoding/" xmlns:wsx="http://schemas.xmlsoap.org/ws/2004/09/mex" xmlns:wsp="http://schemas.xmlsoap.org/ws/2004/09/policy" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:wsam="http://www.w3.org/2007/05/addressing/metadata" xmlns:wsa="http://schemas.xmlsoap.org/ws/2004/08/addressing" xmlns:wsaw="http://www.w3.org/2006/05/addressing/wsdl" xmlns:soap12="http://schemas.xmlsoap.org/wsdl/soap12/" xmlns:wsu="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-utility-1.0.xsd" xmlns:xsd="http://www.w3.org/2001/XMLSchema" name="AuthorizationService" targetNamespace="http://services.assurant.com/integration/authorization/2012/05/01/" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">
+  <wsp:Policy wsu:Id="CustomBinding_IAuthorization_policy">
+    <wsp:ExactlyOne>
+      <wsp:All>
+        <sp:TransportBinding xmlns:sp="http://schemas.xmlsoap.org/ws/2005/07/securitypolicy">
+          <wsp:Policy>
+            <sp:TransportToken>
+              <wsp:Policy>
+                <sp:HttpsToken RequireClientCertificate="false" />
+              </wsp:Policy>
+            </sp:TransportToken>
+            <sp:AlgorithmSuite>
+              <wsp:Policy>
+                <sp:Basic256 />
+              </wsp:Policy>
+            </sp:AlgorithmSuite>
+            <sp:Layout>
+              <wsp:Policy>
+                <sp:Strict />
+              </wsp:Policy>
+            </sp:Layout>
+            <sp:IncludeTimestamp />
+          </wsp:Policy>
+        </sp:TransportBinding>
+        <sp:SignedSupportingTokens xmlns:sp="http://schemas.xmlsoap.org/ws/2005/07/securitypolicy">
+          <wsp:Policy>
+            <sp:UsernameToken sp:IncludeToken="http://schemas.xmlsoap.org/ws/2005/07/securitypolicy/IncludeToken/AlwaysToRecipient">
+              <wsp:Policy>
+                <sp:WssUsernameToken10 />
+              </wsp:Policy>
+            </sp:UsernameToken>
+          </wsp:Policy>
+        </sp:SignedSupportingTokens>
+        <sp:Wss11 xmlns:sp="http://schemas.xmlsoap.org/ws/2005/07/securitypolicy">
+          <wsp:Policy />
+        </sp:Wss11>
+        <sp:Trust10 xmlns:sp="http://schemas.xmlsoap.org/ws/2005/07/securitypolicy">
+          <wsp:Policy>
+            <sp:MustSupportIssuedTokens />
+            <sp:RequireClientEntropy />
+            <sp:RequireServerEntropy />
+          </wsp:Policy>
+        </sp:Trust10>
+      </wsp:All>
+    </wsp:ExactlyOne>
+  </wsp:Policy>
+  <wsdl:types>
+    <xsd:schema targetNamespace="http://services.assurant.com/integration/authorization/2012/05/01/Imports">
+      <xsd:import schemaLocation="http://msp0wapfd001.cead.prd/Authorization/Entity/20120501/AuthorizationService.svc?xsd=xsd0" namespace="http://services.assurant.com/integration/authorization/2012/05/01/" />
+      <xsd:import schemaLocation="http://msp0wapfd001.cead.prd/Authorization/Entity/20120501/AuthorizationService.svc?xsd=xsd4" namespace="http://www.microsoft.com/practices/EnterpriseLibrary/2007/01/wcf/validation" />
+      <xsd:import schemaLocation="http://msp0wapfd001.cead.prd/Authorization/Entity/20120501/AuthorizationService.svc?xsd=xsd1" namespace="http://schemas.microsoft.com/2003/10/Serialization/" />
+      <xsd:import schemaLocation="http://msp0wapfd001.cead.prd/Authorization/Entity/20120501/AuthorizationService.svc?xsd=xsd2" namespace="http://schemas.microsoft.com/2003/10/Serialization/Arrays" />
+      <xsd:import schemaLocation="http://msp0wapfd001.cead.prd/Authorization/Entity/20120501/AuthorizationService.svc?xsd=xsd3" namespace="http://services.assurant.com/integration/faults/2012/6/12/" />
+      <xsd:import schemaLocation="http://msp0wapfd001.cead.prd/Authorization/Entity/20120501/AuthorizationService.svc?xsd=xsd5" namespace="http://schemas.datacontract.org/2004/07/Microsoft.Practices.EnterpriseLibrary.Validation.Integration.WCF" />
+    </xsd:schema>
+  </wsdl:types>
+  <wsdl:message name="IAuthorization_AddUsersToGroup_InputMessage">
+    <wsdl:part name="parameters" element="tns:AddUsersToGroup" />
+  </wsdl:message>
+  <wsdl:message name="IAuthorization_AddUsersToGroup_OutputMessage">
+    <wsdl:part name="parameters" element="tns:AddUsersToGroupResponse" />
+  </wsdl:message>
+  <wsdl:message name="IAuthorization_AddUsersToGroup_AuthorizationFaultFault_FaultMessage">
+    <wsdl:part name="detail" element="tns:AuthorizationFault" />
+  </wsdl:message>
+  <wsdl:message name="IAuthorization_AddUsersToGroup_ValidationFaultFault_FaultMessage">
+    <wsdl:part xmlns:q1="http://www.microsoft.com/practices/EnterpriseLibrary/2007/01/wcf/validation" name="detail" element="q1:ValidationFault" />
+  </wsdl:message>
+  <wsdl:message name="IAuthorization_AddPermissionsToUser_InputMessage">
+    <wsdl:part name="parameters" element="tns:AddPermissionsToUser" />
+  </wsdl:message>
+  <wsdl:message name="IAuthorization_AddPermissionsToUser_OutputMessage">
+    <wsdl:part name="parameters" element="tns:AddPermissionsToUserResponse" />
+  </wsdl:message>
+  <wsdl:message name="IAuthorization_AddPermissionsToUser_AuthorizationFaultFault_FaultMessage">
+    <wsdl:part name="detail" element="tns:AuthorizationFault" />
+  </wsdl:message>
+  <wsdl:message name="IAuthorization_AddPermissionsToUser_ValidationFaultFault_FaultMessage">
+    <wsdl:part xmlns:q2="http://www.microsoft.com/practices/EnterpriseLibrary/2007/01/wcf/validation" name="detail" element="q2:ValidationFault" />
+  </wsdl:message>
+  <wsdl:message name="IAuthorization_AddPermissionsToGroup_InputMessage">
+    <wsdl:part name="parameters" element="tns:AddPermissionsToGroup" />
+  </wsdl:message>
+  <wsdl:message name="IAuthorization_AddPermissionsToGroup_OutputMessage">
+    <wsdl:part name="parameters" element="tns:AddPermissionsToGroupResponse" />
+  </wsdl:message>
+  <wsdl:message name="IAuthorization_AddPermissionsToGroup_ValidationFaultFault_FaultMessage">
+    <wsdl:part xmlns:q3="http://www.microsoft.com/practices/EnterpriseLibrary/2007/01/wcf/validation" name="detail" element="q3:ValidationFault" />
+  </wsdl:message>
+  <wsdl:message name="IAuthorization_AddPermissionsToGroup_AuthorizationFaultFault_FaultMessage">
+    <wsdl:part name="detail" element="tns:AuthorizationFault" />
+  </wsdl:message>
+  <wsdl:message name="IAuthorization_RemoveUsersFromGroup_InputMessage">
+    <wsdl:part name="parameters" element="tns:RemoveUsersFromGroup" />
+  </wsdl:message>
+  <wsdl:message name="IAuthorization_RemoveUsersFromGroup_OutputMessage">
+    <wsdl:part name="parameters" element="tns:RemoveUsersFromGroupResponse" />
+  </wsdl:message>
+  <wsdl:message name="IAuthorization_RemoveUsersFromGroup_AuthorizationFaultFault_FaultMessage">
+    <wsdl:part name="detail" element="tns:AuthorizationFault" />
+  </wsdl:message>
+  <wsdl:message name="IAuthorization_RemoveUsersFromGroup_ValidationFaultFault_FaultMessage">
+    <wsdl:part xmlns:q4="http://www.microsoft.com/practices/EnterpriseLibrary/2007/01/wcf/validation" name="detail" element="q4:ValidationFault" />
+  </wsdl:message>
+  <wsdl:message name="IAuthorization_RemovePermissionsFromUser_InputMessage">
+    <wsdl:part name="parameters" element="tns:RemovePermissionsFromUser" />
+  </wsdl:message>
+  <wsdl:message name="IAuthorization_RemovePermissionsFromUser_OutputMessage">
+    <wsdl:part name="parameters" element="tns:RemovePermissionsFromUserResponse" />
+  </wsdl:message>
+  <wsdl:message name="IAuthorization_RemovePermissionsFromUser_AuthorizationFaultFault_FaultMessage">
+    <wsdl:part name="detail" element="tns:AuthorizationFault" />
+  </wsdl:message>
+  <wsdl:message name="IAuthorization_RemovePermissionsFromUser_ValidationFaultFault_FaultMessage">
+    <wsdl:part xmlns:q5="http://www.microsoft.com/practices/EnterpriseLibrary/2007/01/wcf/validation" name="detail" element="q5:ValidationFault" />
+  </wsdl:message>
+  <wsdl:message name="IAuthorization_RemovePermissionsFromGroup_InputMessage">
+    <wsdl:part name="parameters" element="tns:RemovePermissionsFromGroup" />
+  </wsdl:message>
+  <wsdl:message name="IAuthorization_RemovePermissionsFromGroup_OutputMessage">
+    <wsdl:part name="parameters" element="tns:RemovePermissionsFromGroupResponse" />
+  </wsdl:message>
+  <wsdl:message name="IAuthorization_RemovePermissionsFromGroup_ValidationFaultFault_FaultMessage">
+    <wsdl:part xmlns:q6="http://www.microsoft.com/practices/EnterpriseLibrary/2007/01/wcf/validation" name="detail" element="q6:ValidationFault" />
+  </wsdl:message>
+  <wsdl:message name="IAuthorization_RemovePermissionsFromGroup_AuthorizationFaultFault_FaultMessage">
+    <wsdl:part name="detail" element="tns:AuthorizationFault" />
+  </wsdl:message>
+  <wsdl:message name="IAuthorization_CreateUser_InputMessage">
+    <wsdl:part name="parameters" element="tns:CreateUser" />
+  </wsdl:message>
+  <wsdl:message name="IAuthorization_CreateUser_OutputMessage">
+    <wsdl:part name="parameters" element="tns:CreateUserResponse" />
+  </wsdl:message>
+  <wsdl:message name="IAuthorization_CreateUser_AuthorizationFaultFault_FaultMessage">
+    <wsdl:part name="detail" element="tns:AuthorizationFault" />
+  </wsdl:message>
+  <wsdl:message name="IAuthorization_CreateUser_ValidationFaultFault_FaultMessage">
+    <wsdl:part xmlns:q7="http://www.microsoft.com/practices/EnterpriseLibrary/2007/01/wcf/validation" name="detail" element="q7:ValidationFault" />
+  </wsdl:message>
+  <wsdl:message name="IAuthorization_GetUserForServiceById_InputMessage">
+    <wsdl:part name="parameters" element="tns:GetUserForServiceById" />
+  </wsdl:message>
+  <wsdl:message name="IAuthorization_GetUserForServiceById_OutputMessage">
+    <wsdl:part name="parameters" element="tns:GetUserForServiceByIdResponse" />
+  </wsdl:message>
+  <wsdl:message name="IAuthorization_GetUserForServiceById_AuthorizationFaultFault_FaultMessage">
+    <wsdl:part name="detail" element="tns:AuthorizationFault" />
+  </wsdl:message>
+  <wsdl:message name="IAuthorization_GetUserForServiceById_ValidationFaultFault_FaultMessage">
+    <wsdl:part xmlns:q8="http://www.microsoft.com/practices/EnterpriseLibrary/2007/01/wcf/validation" name="detail" element="q8:ValidationFault" />
+  </wsdl:message>
+  <wsdl:message name="IAuthorization_GetUserForServiceById_NotFoundFaultFault_FaultMessage">
+    <wsdl:part xmlns:q9="http://services.assurant.com/integration/faults/2012/6/12/" name="detail" element="q9:NotFoundFault" />
+  </wsdl:message>
+  <wsdl:message name="IAuthorization_GetUserForServiceByKey_InputMessage">
+    <wsdl:part name="parameters" element="tns:GetUserForServiceByKey" />
+  </wsdl:message>
+  <wsdl:message name="IAuthorization_GetUserForServiceByKey_OutputMessage">
+    <wsdl:part name="parameters" element="tns:GetUserForServiceByKeyResponse" />
+  </wsdl:message>
+  <wsdl:message name="IAuthorization_GetUserForServiceByKey_NotFoundFaultFault_FaultMessage">
+    <wsdl:part xmlns:q10="http://services.assurant.com/integration/faults/2012/6/12/" name="detail" element="q10:NotFoundFault" />
+  </wsdl:message>
+  <wsdl:message name="IAuthorization_GetUserForServiceByKey_ValidationFaultFault_FaultMessage">
+    <wsdl:part xmlns:q11="http://www.microsoft.com/practices/EnterpriseLibrary/2007/01/wcf/validation" name="detail" element="q11:ValidationFault" />
+  </wsdl:message>
+  <wsdl:message name="IAuthorization_GetUserForServiceByKey_AuthorizationFaultFault_FaultMessage">
+    <wsdl:part name="detail" element="tns:AuthorizationFault" />
+  </wsdl:message>
+  <wsdl:message name="IAuthorization_GetUsers_InputMessage">
+    <wsdl:part name="parameters" element="tns:GetUsers" />
+  </wsdl:message>
+  <wsdl:message name="IAuthorization_GetUsers_OutputMessage">
+    <wsdl:part name="parameters" element="tns:GetUsersResponse" />
+  </wsdl:message>
+  <wsdl:message name="IAuthorization_GetUsers_AuthorizationFaultFault_FaultMessage">
+    <wsdl:part name="detail" element="tns:AuthorizationFault" />
+  </wsdl:message>
+  <wsdl:message name="IAuthorization_FindUsers_InputMessage">
+    <wsdl:part name="parameters" element="tns:FindUsers" />
+  </wsdl:message>
+  <wsdl:message name="IAuthorization_FindUsers_OutputMessage">
+    <wsdl:part name="parameters" element="tns:FindUsersResponse" />
+  </wsdl:message>
+  <wsdl:message name="IAuthorization_FindUsers_AuthorizationFaultFault_FaultMessage">
+    <wsdl:part name="detail" element="tns:AuthorizationFault" />
+  </wsdl:message>
+  <wsdl:message name="IAuthorization_UpdateUser_InputMessage">
+    <wsdl:part name="parameters" element="tns:UpdateUser" />
+  </wsdl:message>
+  <wsdl:message name="IAuthorization_UpdateUser_OutputMessage">
+    <wsdl:part name="parameters" element="tns:UpdateUserResponse" />
+  </wsdl:message>
+  <wsdl:message name="IAuthorization_UpdateUser_ValidationFaultFault_FaultMessage">
+    <wsdl:part xmlns:q12="http://www.microsoft.com/practices/EnterpriseLibrary/2007/01/wcf/validation" name="detail" element="q12:ValidationFault" />
+  </wsdl:message>
+  <wsdl:message name="IAuthorization_UpdateUser_NotFoundFaultFault_FaultMessage">
+    <wsdl:part xmlns:q13="http://services.assurant.com/integration/faults/2012/6/12/" name="detail" element="q13:NotFoundFault" />
+  </wsdl:message>
+  <wsdl:message name="IAuthorization_UpdateUser_AuthorizationFaultFault_FaultMessage">
+    <wsdl:part name="detail" element="tns:AuthorizationFault" />
+  </wsdl:message>
+  <wsdl:message name="IAuthorization_CreateGroup_InputMessage">
+    <wsdl:part name="parameters" element="tns:CreateGroup" />
+  </wsdl:message>
+  <wsdl:message name="IAuthorization_CreateGroup_OutputMessage">
+    <wsdl:part name="parameters" element="tns:CreateGroupResponse" />
+  </wsdl:message>
+  <wsdl:message name="IAuthorization_CreateGroup_AuthorizationFaultFault_FaultMessage">
+    <wsdl:part name="detail" element="tns:AuthorizationFault" />
+  </wsdl:message>
+  <wsdl:message name="IAuthorization_CreateGroup_ValidationFaultFault_FaultMessage">
+    <wsdl:part xmlns:q14="http://www.microsoft.com/practices/EnterpriseLibrary/2007/01/wcf/validation" name="detail" element="q14:ValidationFault" />
+  </wsdl:message>
+  <wsdl:message name="IAuthorization_GetGroup_InputMessage">
+    <wsdl:part name="parameters" element="tns:GetGroup" />
+  </wsdl:message>
+  <wsdl:message name="IAuthorization_GetGroup_OutputMessage">
+    <wsdl:part name="parameters" element="tns:GetGroupResponse" />
+  </wsdl:message>
+  <wsdl:message name="IAuthorization_GetGroup_AuthorizationFaultFault_FaultMessage">
+    <wsdl:part name="detail" element="tns:AuthorizationFault" />
+  </wsdl:message>
+  <wsdl:message name="IAuthorization_GetGroup_NotFoundFaultFault_FaultMessage">
+    <wsdl:part xmlns:q15="http://services.assurant.com/integration/faults/2012/6/12/" name="detail" element="q15:NotFoundFault" />
+  </wsdl:message>
+  <wsdl:message name="IAuthorization_GetGroup_ValidationFaultFault_FaultMessage">
+    <wsdl:part xmlns:q16="http://www.microsoft.com/practices/EnterpriseLibrary/2007/01/wcf/validation" name="detail" element="q16:ValidationFault" />
+  </wsdl:message>
+  <wsdl:message name="IAuthorization_GetGroups_InputMessage">
+    <wsdl:part name="parameters" element="tns:GetGroups" />
+  </wsdl:message>
+  <wsdl:message name="IAuthorization_GetGroups_OutputMessage">
+    <wsdl:part name="parameters" element="tns:GetGroupsResponse" />
+  </wsdl:message>
+  <wsdl:message name="IAuthorization_GetGroups_ValidationFaultFault_FaultMessage">
+    <wsdl:part xmlns:q17="http://www.microsoft.com/practices/EnterpriseLibrary/2007/01/wcf/validation" name="detail" element="q17:ValidationFault" />
+  </wsdl:message>
+  <wsdl:message name="IAuthorization_GetGroups_AuthorizationFaultFault_FaultMessage">
+    <wsdl:part name="detail" element="tns:AuthorizationFault" />
+  </wsdl:message>
+  <wsdl:message name="IAuthorization_UpdateGroup_InputMessage">
+    <wsdl:part name="parameters" element="tns:UpdateGroup" />
+  </wsdl:message>
+  <wsdl:message name="IAuthorization_UpdateGroup_OutputMessage">
+    <wsdl:part name="parameters" element="tns:UpdateGroupResponse" />
+  </wsdl:message>
+  <wsdl:message name="IAuthorization_UpdateGroup_ValidationFaultFault_FaultMessage">
+    <wsdl:part xmlns:q18="http://www.microsoft.com/practices/EnterpriseLibrary/2007/01/wcf/validation" name="detail" element="q18:ValidationFault" />
+  </wsdl:message>
+  <wsdl:message name="IAuthorization_UpdateGroup_AuthorizationFaultFault_FaultMessage">
+    <wsdl:part name="detail" element="tns:AuthorizationFault" />
+  </wsdl:message>
+  <wsdl:message name="IAuthorization_UpdateGroup_NotFoundFaultFault_FaultMessage">
+    <wsdl:part xmlns:q19="http://services.assurant.com/integration/faults/2012/6/12/" name="detail" element="q19:NotFoundFault" />
+  </wsdl:message>
+  <wsdl:message name="IAuthorization_FindPermissions_InputMessage">
+    <wsdl:part name="parameters" element="tns:FindPermissions" />
+  </wsdl:message>
+  <wsdl:message name="IAuthorization_FindPermissions_OutputMessage">
+    <wsdl:part name="parameters" element="tns:FindPermissionsResponse" />
+  </wsdl:message>
+  <wsdl:message name="IAuthorization_FindPermissions_AuthorizationFaultFault_FaultMessage">
+    <wsdl:part name="detail" element="tns:AuthorizationFault" />
+  </wsdl:message>
+  <wsdl:message name="IAuthorization_FindPermissions_ValidationFaultFault_FaultMessage">
+    <wsdl:part xmlns:q20="http://www.microsoft.com/practices/EnterpriseLibrary/2007/01/wcf/validation" name="detail" element="q20:ValidationFault" />
+  </wsdl:message>
+  <wsdl:message name="IAuthorization_GetPermissions_InputMessage">
+    <wsdl:part name="parameters" element="tns:GetPermissions" />
+  </wsdl:message>
+  <wsdl:message name="IAuthorization_GetPermissions_OutputMessage">
+    <wsdl:part name="parameters" element="tns:GetPermissionsResponse" />
+  </wsdl:message>
+  <wsdl:message name="IAuthorization_GetPermissions_AuthorizationFaultFault_FaultMessage">
+    <wsdl:part name="detail" element="tns:AuthorizationFault" />
+  </wsdl:message>
+  <wsdl:message name="IAuthorization_GetPermissions_ValidationFaultFault_FaultMessage">
+    <wsdl:part xmlns:q21="http://www.microsoft.com/practices/EnterpriseLibrary/2007/01/wcf/validation" name="detail" element="q21:ValidationFault" />
+  </wsdl:message>
+  <wsdl:portType name="IAuthorization">
+    <wsdl:operation name="AddUsersToGroup">
+      <wsdl:input wsaw:Action="http://services.assurant.com/integration/authorization/2012/05/01/IAuthorization/AddUsersToGroup" message="tns:IAuthorization_AddUsersToGroup_InputMessage" />
+      <wsdl:output wsaw:Action="http://services.assurant.com/integration/authorization/2012/05/01/IAuthorization/AddUsersToGroupResponse" message="tns:IAuthorization_AddUsersToGroup_OutputMessage" />
+      <wsdl:fault wsaw:Action="http://services.assurant.com/integration/authorization/2012/05/01/IAuthorization/AddUsersToGroupAuthorizationFaultFault" name="AuthorizationFaultFault" message="tns:IAuthorization_AddUsersToGroup_AuthorizationFaultFault_FaultMessage" />
+      <wsdl:fault wsaw:Action="http://services.assurant.com/integration/authorization/2012/05/01/IAuthorization/AddUsersToGroupValidationFaultFault" name="ValidationFaultFault" message="tns:IAuthorization_AddUsersToGroup_ValidationFaultFault_FaultMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="AddPermissionsToUser">
+      <wsdl:input wsaw:Action="http://services.assurant.com/integration/authorization/2012/05/01/IAuthorization/AddPermissionsToUser" message="tns:IAuthorization_AddPermissionsToUser_InputMessage" />
+      <wsdl:output wsaw:Action="http://services.assurant.com/integration/authorization/2012/05/01/IAuthorization/AddPermissionsToUserResponse" message="tns:IAuthorization_AddPermissionsToUser_OutputMessage" />
+      <wsdl:fault wsaw:Action="http://services.assurant.com/integration/authorization/2012/05/01/IAuthorization/AddPermissionsToUserAuthorizationFaultFault" name="AuthorizationFaultFault" message="tns:IAuthorization_AddPermissionsToUser_AuthorizationFaultFault_FaultMessage" />
+      <wsdl:fault wsaw:Action="http://services.assurant.com/integration/authorization/2012/05/01/IAuthorization/AddPermissionsToUserValidationFaultFault" name="ValidationFaultFault" message="tns:IAuthorization_AddPermissionsToUser_ValidationFaultFault_FaultMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="AddPermissionsToGroup">
+      <wsdl:input wsaw:Action="http://services.assurant.com/integration/authorization/2012/05/01/IAuthorization/AddPermissionsToGroup" message="tns:IAuthorization_AddPermissionsToGroup_InputMessage" />
+      <wsdl:output wsaw:Action="http://services.assurant.com/integration/authorization/2012/05/01/IAuthorization/AddPermissionsToGroupResponse" message="tns:IAuthorization_AddPermissionsToGroup_OutputMessage" />
+      <wsdl:fault wsaw:Action="http://services.assurant.com/integration/authorization/2012/05/01/IAuthorization/AddPermissionsToGroupValidationFaultFault" name="ValidationFaultFault" message="tns:IAuthorization_AddPermissionsToGroup_ValidationFaultFault_FaultMessage" />
+      <wsdl:fault wsaw:Action="http://services.assurant.com/integration/authorization/2012/05/01/IAuthorization/AddPermissionsToGroupAuthorizationFaultFault" name="AuthorizationFaultFault" message="tns:IAuthorization_AddPermissionsToGroup_AuthorizationFaultFault_FaultMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="RemoveUsersFromGroup">
+      <wsdl:input wsaw:Action="http://services.assurant.com/integration/authorization/2012/05/01/IAuthorization/RemoveUsersFromGroup" message="tns:IAuthorization_RemoveUsersFromGroup_InputMessage" />
+      <wsdl:output wsaw:Action="http://services.assurant.com/integration/authorization/2012/05/01/IAuthorization/RemoveUsersFromGroupResponse" message="tns:IAuthorization_RemoveUsersFromGroup_OutputMessage" />
+      <wsdl:fault wsaw:Action="http://services.assurant.com/integration/authorization/2012/05/01/IAuthorization/RemoveUsersFromGroupAuthorizationFaultFault" name="AuthorizationFaultFault" message="tns:IAuthorization_RemoveUsersFromGroup_AuthorizationFaultFault_FaultMessage" />
+      <wsdl:fault wsaw:Action="http://services.assurant.com/integration/authorization/2012/05/01/IAuthorization/RemoveUsersFromGroupValidationFaultFault" name="ValidationFaultFault" message="tns:IAuthorization_RemoveUsersFromGroup_ValidationFaultFault_FaultMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="RemovePermissionsFromUser">
+      <wsdl:input wsaw:Action="http://services.assurant.com/integration/authorization/2012/05/01/IAuthorization/RemovePermissionsFromUser" message="tns:IAuthorization_RemovePermissionsFromUser_InputMessage" />
+      <wsdl:output wsaw:Action="http://services.assurant.com/integration/authorization/2012/05/01/IAuthorization/RemovePermissionsFromUserResponse" message="tns:IAuthorization_RemovePermissionsFromUser_OutputMessage" />
+      <wsdl:fault wsaw:Action="http://services.assurant.com/integration/authorization/2012/05/01/IAuthorization/RemovePermissionsFromUserAuthorizationFaultFault" name="AuthorizationFaultFault" message="tns:IAuthorization_RemovePermissionsFromUser_AuthorizationFaultFault_FaultMessage" />
+      <wsdl:fault wsaw:Action="http://services.assurant.com/integration/authorization/2012/05/01/IAuthorization/RemovePermissionsFromUserValidationFaultFault" name="ValidationFaultFault" message="tns:IAuthorization_RemovePermissionsFromUser_ValidationFaultFault_FaultMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="RemovePermissionsFromGroup">
+      <wsdl:input wsaw:Action="http://services.assurant.com/integration/authorization/2012/05/01/IAuthorization/RemovePermissionsFromGroup" message="tns:IAuthorization_RemovePermissionsFromGroup_InputMessage" />
+      <wsdl:output wsaw:Action="http://services.assurant.com/integration/authorization/2012/05/01/IAuthorization/RemovePermissionsFromGroupResponse" message="tns:IAuthorization_RemovePermissionsFromGroup_OutputMessage" />
+      <wsdl:fault wsaw:Action="http://services.assurant.com/integration/authorization/2012/05/01/IAuthorization/RemovePermissionsFromGroupValidationFaultFault" name="ValidationFaultFault" message="tns:IAuthorization_RemovePermissionsFromGroup_ValidationFaultFault_FaultMessage" />
+      <wsdl:fault wsaw:Action="http://services.assurant.com/integration/authorization/2012/05/01/IAuthorization/RemovePermissionsFromGroupAuthorizationFaultFault" name="AuthorizationFaultFault" message="tns:IAuthorization_RemovePermissionsFromGroup_AuthorizationFaultFault_FaultMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="CreateUser">
+      <wsdl:input wsaw:Action="http://services.assurant.com/integration/authorization/2012/05/01/IAuthorization/CreateUser" message="tns:IAuthorization_CreateUser_InputMessage" />
+      <wsdl:output wsaw:Action="http://services.assurant.com/integration/authorization/2012/05/01/IAuthorization/CreateUserResponse" message="tns:IAuthorization_CreateUser_OutputMessage" />
+      <wsdl:fault wsaw:Action="http://services.assurant.com/integration/authorization/2012/05/01/IAuthorization/CreateUserAuthorizationFaultFault" name="AuthorizationFaultFault" message="tns:IAuthorization_CreateUser_AuthorizationFaultFault_FaultMessage" />
+      <wsdl:fault wsaw:Action="http://services.assurant.com/integration/authorization/2012/05/01/IAuthorization/CreateUserValidationFaultFault" name="ValidationFaultFault" message="tns:IAuthorization_CreateUser_ValidationFaultFault_FaultMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="GetUserForServiceById">
+      <wsdl:input wsaw:Action="http://services.assurant.com/integration/authorization/2012/05/01/IAuthorization/GetUserForServiceById" message="tns:IAuthorization_GetUserForServiceById_InputMessage" />
+      <wsdl:output wsaw:Action="http://services.assurant.com/integration/authorization/2012/05/01/IAuthorization/GetUserForServiceByIdResponse" message="tns:IAuthorization_GetUserForServiceById_OutputMessage" />
+      <wsdl:fault wsaw:Action="http://services.assurant.com/integration/authorization/2012/05/01/IAuthorization/GetUserForServiceByIdAuthorizationFaultFault" name="AuthorizationFaultFault" message="tns:IAuthorization_GetUserForServiceById_AuthorizationFaultFault_FaultMessage" />
+      <wsdl:fault wsaw:Action="http://services.assurant.com/integration/authorization/2012/05/01/IAuthorization/GetUserForServiceByIdValidationFaultFault" name="ValidationFaultFault" message="tns:IAuthorization_GetUserForServiceById_ValidationFaultFault_FaultMessage" />
+      <wsdl:fault wsaw:Action="http://services.assurant.com/integration/authorization/2012/05/01/IAuthorization/GetUserForServiceByIdNotFoundFaultFault" name="NotFoundFaultFault" message="tns:IAuthorization_GetUserForServiceById_NotFoundFaultFault_FaultMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="GetUserForServiceByKey">
+      <wsdl:input wsaw:Action="http://services.assurant.com/integration/authorization/2012/05/01/IAuthorization/GetUserForServiceByKey" message="tns:IAuthorization_GetUserForServiceByKey_InputMessage" />
+      <wsdl:output wsaw:Action="http://services.assurant.com/integration/authorization/2012/05/01/IAuthorization/GetUserForServiceByKeyResponse" message="tns:IAuthorization_GetUserForServiceByKey_OutputMessage" />
+      <wsdl:fault wsaw:Action="http://services.assurant.com/integration/authorization/2012/05/01/IAuthorization/GetUserForServiceByKeyNotFoundFaultFault" name="NotFoundFaultFault" message="tns:IAuthorization_GetUserForServiceByKey_NotFoundFaultFault_FaultMessage" />
+      <wsdl:fault wsaw:Action="http://services.assurant.com/integration/authorization/2012/05/01/IAuthorization/GetUserForServiceByKeyValidationFaultFault" name="ValidationFaultFault" message="tns:IAuthorization_GetUserForServiceByKey_ValidationFaultFault_FaultMessage" />
+      <wsdl:fault wsaw:Action="http://services.assurant.com/integration/authorization/2012/05/01/IAuthorization/GetUserForServiceByKeyAuthorizationFaultFault" name="AuthorizationFaultFault" message="tns:IAuthorization_GetUserForServiceByKey_AuthorizationFaultFault_FaultMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="GetUsers">
+      <wsdl:input wsaw:Action="http://services.assurant.com/integration/authorization/2012/05/01/IAuthorization/GetUsers" message="tns:IAuthorization_GetUsers_InputMessage" />
+      <wsdl:output wsaw:Action="http://services.assurant.com/integration/authorization/2012/05/01/IAuthorization/GetUsersResponse" message="tns:IAuthorization_GetUsers_OutputMessage" />
+      <wsdl:fault wsaw:Action="http://services.assurant.com/integration/authorization/2012/05/01/IAuthorization/GetUsersAuthorizationFaultFault" name="AuthorizationFaultFault" message="tns:IAuthorization_GetUsers_AuthorizationFaultFault_FaultMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="FindUsers">
+      <wsdl:input wsaw:Action="http://services.assurant.com/integration/authorization/2012/05/01/IAuthorization/FindUsers" message="tns:IAuthorization_FindUsers_InputMessage" />
+      <wsdl:output wsaw:Action="http://services.assurant.com/integration/authorization/2012/05/01/IAuthorization/FindUsersResponse" message="tns:IAuthorization_FindUsers_OutputMessage" />
+      <wsdl:fault wsaw:Action="http://services.assurant.com/integration/authorization/2012/05/01/IAuthorization/FindUsersAuthorizationFaultFault" name="AuthorizationFaultFault" message="tns:IAuthorization_FindUsers_AuthorizationFaultFault_FaultMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="UpdateUser">
+      <wsdl:input wsaw:Action="http://services.assurant.com/integration/authorization/2012/05/01/IAuthorization/UpdateUser" message="tns:IAuthorization_UpdateUser_InputMessage" />
+      <wsdl:output wsaw:Action="http://services.assurant.com/integration/authorization/2012/05/01/IAuthorization/UpdateUserResponse" message="tns:IAuthorization_UpdateUser_OutputMessage" />
+      <wsdl:fault wsaw:Action="http://services.assurant.com/integration/authorization/2012/05/01/IAuthorization/UpdateUserValidationFaultFault" name="ValidationFaultFault" message="tns:IAuthorization_UpdateUser_ValidationFaultFault_FaultMessage" />
+      <wsdl:fault wsaw:Action="http://services.assurant.com/integration/authorization/2012/05/01/IAuthorization/UpdateUserNotFoundFaultFault" name="NotFoundFaultFault" message="tns:IAuthorization_UpdateUser_NotFoundFaultFault_FaultMessage" />
+      <wsdl:fault wsaw:Action="http://services.assurant.com/integration/authorization/2012/05/01/IAuthorization/UpdateUserAuthorizationFaultFault" name="AuthorizationFaultFault" message="tns:IAuthorization_UpdateUser_AuthorizationFaultFault_FaultMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="CreateGroup">
+      <wsdl:input wsaw:Action="http://services.assurant.com/integration/authorization/2012/05/01/IAuthorization/CreateGroup" message="tns:IAuthorization_CreateGroup_InputMessage" />
+      <wsdl:output wsaw:Action="http://services.assurant.com/integration/authorization/2012/05/01/IAuthorization/CreateGroupResponse" message="tns:IAuthorization_CreateGroup_OutputMessage" />
+      <wsdl:fault wsaw:Action="http://services.assurant.com/integration/authorization/2012/05/01/IAuthorization/CreateGroupAuthorizationFaultFault" name="AuthorizationFaultFault" message="tns:IAuthorization_CreateGroup_AuthorizationFaultFault_FaultMessage" />
+      <wsdl:fault wsaw:Action="http://services.assurant.com/integration/authorization/2012/05/01/IAuthorization/CreateGroupValidationFaultFault" name="ValidationFaultFault" message="tns:IAuthorization_CreateGroup_ValidationFaultFault_FaultMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="GetGroup">
+      <wsdl:input wsaw:Action="http://services.assurant.com/integration/authorization/2012/05/01/IAuthorization/GetGroup" message="tns:IAuthorization_GetGroup_InputMessage" />
+      <wsdl:output wsaw:Action="http://services.assurant.com/integration/authorization/2012/05/01/IAuthorization/GetGroupResponse" message="tns:IAuthorization_GetGroup_OutputMessage" />
+      <wsdl:fault wsaw:Action="http://services.assurant.com/integration/authorization/2012/05/01/IAuthorization/GetGroupAuthorizationFaultFault" name="AuthorizationFaultFault" message="tns:IAuthorization_GetGroup_AuthorizationFaultFault_FaultMessage" />
+      <wsdl:fault wsaw:Action="http://services.assurant.com/integration/authorization/2012/05/01/IAuthorization/GetGroupNotFoundFaultFault" name="NotFoundFaultFault" message="tns:IAuthorization_GetGroup_NotFoundFaultFault_FaultMessage" />
+      <wsdl:fault wsaw:Action="http://services.assurant.com/integration/authorization/2012/05/01/IAuthorization/GetGroupValidationFaultFault" name="ValidationFaultFault" message="tns:IAuthorization_GetGroup_ValidationFaultFault_FaultMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="GetGroups">
+      <wsdl:input wsaw:Action="http://services.assurant.com/integration/authorization/2012/05/01/IAuthorization/GetGroups" message="tns:IAuthorization_GetGroups_InputMessage" />
+      <wsdl:output wsaw:Action="http://services.assurant.com/integration/authorization/2012/05/01/IAuthorization/GetGroupsResponse" message="tns:IAuthorization_GetGroups_OutputMessage" />
+      <wsdl:fault wsaw:Action="http://services.assurant.com/integration/authorization/2012/05/01/IAuthorization/GetGroupsValidationFaultFault" name="ValidationFaultFault" message="tns:IAuthorization_GetGroups_ValidationFaultFault_FaultMessage" />
+      <wsdl:fault wsaw:Action="http://services.assurant.com/integration/authorization/2012/05/01/IAuthorization/GetGroupsAuthorizationFaultFault" name="AuthorizationFaultFault" message="tns:IAuthorization_GetGroups_AuthorizationFaultFault_FaultMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="UpdateGroup">
+      <wsdl:input wsaw:Action="http://services.assurant.com/integration/authorization/2012/05/01/IAuthorization/UpdateGroup" message="tns:IAuthorization_UpdateGroup_InputMessage" />
+      <wsdl:output wsaw:Action="http://services.assurant.com/integration/authorization/2012/05/01/IAuthorization/UpdateGroupResponse" message="tns:IAuthorization_UpdateGroup_OutputMessage" />
+      <wsdl:fault wsaw:Action="http://services.assurant.com/integration/authorization/2012/05/01/IAuthorization/UpdateGroupValidationFaultFault" name="ValidationFaultFault" message="tns:IAuthorization_UpdateGroup_ValidationFaultFault_FaultMessage" />
+      <wsdl:fault wsaw:Action="http://services.assurant.com/integration/authorization/2012/05/01/IAuthorization/UpdateGroupAuthorizationFaultFault" name="AuthorizationFaultFault" message="tns:IAuthorization_UpdateGroup_AuthorizationFaultFault_FaultMessage" />
+      <wsdl:fault wsaw:Action="http://services.assurant.com/integration/authorization/2012/05/01/IAuthorization/UpdateGroupNotFoundFaultFault" name="NotFoundFaultFault" message="tns:IAuthorization_UpdateGroup_NotFoundFaultFault_FaultMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="FindPermissions">
+      <wsdl:input wsaw:Action="http://services.assurant.com/integration/authorization/2012/05/01/IAuthorization/FindPermissions" message="tns:IAuthorization_FindPermissions_InputMessage" />
+      <wsdl:output wsaw:Action="http://services.assurant.com/integration/authorization/2012/05/01/IAuthorization/FindPermissionsResponse" message="tns:IAuthorization_FindPermissions_OutputMessage" />
+      <wsdl:fault wsaw:Action="http://services.assurant.com/integration/authorization/2012/05/01/IAuthorization/FindPermissionsAuthorizationFaultFault" name="AuthorizationFaultFault" message="tns:IAuthorization_FindPermissions_AuthorizationFaultFault_FaultMessage" />
+      <wsdl:fault wsaw:Action="http://services.assurant.com/integration/authorization/2012/05/01/IAuthorization/FindPermissionsValidationFaultFault" name="ValidationFaultFault" message="tns:IAuthorization_FindPermissions_ValidationFaultFault_FaultMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="GetPermissions">
+      <wsdl:input wsaw:Action="http://services.assurant.com/integration/authorization/2012/05/01/IAuthorization/GetPermissions" message="tns:IAuthorization_GetPermissions_InputMessage" />
+      <wsdl:output wsaw:Action="http://services.assurant.com/integration/authorization/2012/05/01/IAuthorization/GetPermissionsResponse" message="tns:IAuthorization_GetPermissions_OutputMessage" />
+      <wsdl:fault wsaw:Action="http://services.assurant.com/integration/authorization/2012/05/01/IAuthorization/GetPermissionsAuthorizationFaultFault" name="AuthorizationFaultFault" message="tns:IAuthorization_GetPermissions_AuthorizationFaultFault_FaultMessage" />
+      <wsdl:fault wsaw:Action="http://services.assurant.com/integration/authorization/2012/05/01/IAuthorization/GetPermissionsValidationFaultFault" name="ValidationFaultFault" message="tns:IAuthorization_GetPermissions_ValidationFaultFault_FaultMessage" />
+    </wsdl:operation>
+  </wsdl:portType>
+  <wsdl:binding name="CustomBinding_IAuthorization" type="tns:IAuthorization">
+    <wsp:PolicyReference URI="#CustomBinding_IAuthorization_policy" />
+    <soap12:binding transport="http://schemas.xmlsoap.org/soap/http" />
+    <wsdl:operation name="AddUsersToGroup">
+      <soap12:operation soapAction="http://services.assurant.com/integration/authorization/2012/05/01/IAuthorization/AddUsersToGroup" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+      <wsdl:fault name="AuthorizationFaultFault">
+        <soap12:fault use="literal" name="AuthorizationFaultFault" namespace="" />
+      </wsdl:fault>
+      <wsdl:fault name="ValidationFaultFault">
+        <soap12:fault use="literal" name="ValidationFaultFault" namespace="" />
+      </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="AddPermissionsToUser">
+      <soap12:operation soapAction="http://services.assurant.com/integration/authorization/2012/05/01/IAuthorization/AddPermissionsToUser" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+      <wsdl:fault name="AuthorizationFaultFault">
+        <soap12:fault use="literal" name="AuthorizationFaultFault" namespace="" />
+      </wsdl:fault>
+      <wsdl:fault name="ValidationFaultFault">
+        <soap12:fault use="literal" name="ValidationFaultFault" namespace="" />
+      </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="AddPermissionsToGroup">
+      <soap12:operation soapAction="http://services.assurant.com/integration/authorization/2012/05/01/IAuthorization/AddPermissionsToGroup" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+      <wsdl:fault name="ValidationFaultFault">
+        <soap12:fault use="literal" name="ValidationFaultFault" namespace="" />
+      </wsdl:fault>
+      <wsdl:fault name="AuthorizationFaultFault">
+        <soap12:fault use="literal" name="AuthorizationFaultFault" namespace="" />
+      </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="RemoveUsersFromGroup">
+      <soap12:operation soapAction="http://services.assurant.com/integration/authorization/2012/05/01/IAuthorization/RemoveUsersFromGroup" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+      <wsdl:fault name="AuthorizationFaultFault">
+        <soap12:fault use="literal" name="AuthorizationFaultFault" namespace="" />
+      </wsdl:fault>
+      <wsdl:fault name="ValidationFaultFault">
+        <soap12:fault use="literal" name="ValidationFaultFault" namespace="" />
+      </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="RemovePermissionsFromUser">
+      <soap12:operation soapAction="http://services.assurant.com/integration/authorization/2012/05/01/IAuthorization/RemovePermissionsFromUser" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+      <wsdl:fault name="AuthorizationFaultFault">
+        <soap12:fault use="literal" name="AuthorizationFaultFault" namespace="" />
+      </wsdl:fault>
+      <wsdl:fault name="ValidationFaultFault">
+        <soap12:fault use="literal" name="ValidationFaultFault" namespace="" />
+      </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="RemovePermissionsFromGroup">
+      <soap12:operation soapAction="http://services.assurant.com/integration/authorization/2012/05/01/IAuthorization/RemovePermissionsFromGroup" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+      <wsdl:fault name="ValidationFaultFault">
+        <soap12:fault use="literal" name="ValidationFaultFault" namespace="" />
+      </wsdl:fault>
+      <wsdl:fault name="AuthorizationFaultFault">
+        <soap12:fault use="literal" name="AuthorizationFaultFault" namespace="" />
+      </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="CreateUser">
+      <soap12:operation soapAction="http://services.assurant.com/integration/authorization/2012/05/01/IAuthorization/CreateUser" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+      <wsdl:fault name="AuthorizationFaultFault">
+        <soap12:fault use="literal" name="AuthorizationFaultFault" namespace="" />
+      </wsdl:fault>
+      <wsdl:fault name="ValidationFaultFault">
+        <soap12:fault use="literal" name="ValidationFaultFault" namespace="" />
+      </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="GetUserForServiceById">
+      <soap12:operation soapAction="http://services.assurant.com/integration/authorization/2012/05/01/IAuthorization/GetUserForServiceById" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+      <wsdl:fault name="AuthorizationFaultFault">
+        <soap12:fault use="literal" name="AuthorizationFaultFault" namespace="" />
+      </wsdl:fault>
+      <wsdl:fault name="ValidationFaultFault">
+        <soap12:fault use="literal" name="ValidationFaultFault" namespace="" />
+      </wsdl:fault>
+      <wsdl:fault name="NotFoundFaultFault">
+        <soap12:fault use="literal" name="NotFoundFaultFault" namespace="" />
+      </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="GetUserForServiceByKey">
+      <soap12:operation soapAction="http://services.assurant.com/integration/authorization/2012/05/01/IAuthorization/GetUserForServiceByKey" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+      <wsdl:fault name="NotFoundFaultFault">
+        <soap12:fault use="literal" name="NotFoundFaultFault" namespace="" />
+      </wsdl:fault>
+      <wsdl:fault name="ValidationFaultFault">
+        <soap12:fault use="literal" name="ValidationFaultFault" namespace="" />
+      </wsdl:fault>
+      <wsdl:fault name="AuthorizationFaultFault">
+        <soap12:fault use="literal" name="AuthorizationFaultFault" namespace="" />
+      </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="GetUsers">
+      <soap12:operation soapAction="http://services.assurant.com/integration/authorization/2012/05/01/IAuthorization/GetUsers" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+      <wsdl:fault name="AuthorizationFaultFault">
+        <soap12:fault use="literal" name="AuthorizationFaultFault" namespace="" />
+      </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="FindUsers">
+      <soap12:operation soapAction="http://services.assurant.com/integration/authorization/2012/05/01/IAuthorization/FindUsers" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+      <wsdl:fault name="AuthorizationFaultFault">
+        <soap12:fault use="literal" name="AuthorizationFaultFault" namespace="" />
+      </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="UpdateUser">
+      <soap12:operation soapAction="http://services.assurant.com/integration/authorization/2012/05/01/IAuthorization/UpdateUser" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+      <wsdl:fault name="ValidationFaultFault">
+        <soap12:fault use="literal" name="ValidationFaultFault" namespace="" />
+      </wsdl:fault>
+      <wsdl:fault name="NotFoundFaultFault">
+        <soap12:fault use="literal" name="NotFoundFaultFault" namespace="" />
+      </wsdl:fault>
+      <wsdl:fault name="AuthorizationFaultFault">
+        <soap12:fault use="literal" name="AuthorizationFaultFault" namespace="" />
+      </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="CreateGroup">
+      <soap12:operation soapAction="http://services.assurant.com/integration/authorization/2012/05/01/IAuthorization/CreateGroup" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+      <wsdl:fault name="AuthorizationFaultFault">
+        <soap12:fault use="literal" name="AuthorizationFaultFault" namespace="" />
+      </wsdl:fault>
+      <wsdl:fault name="ValidationFaultFault">
+        <soap12:fault use="literal" name="ValidationFaultFault" namespace="" />
+      </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="GetGroup">
+      <soap12:operation soapAction="http://services.assurant.com/integration/authorization/2012/05/01/IAuthorization/GetGroup" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+      <wsdl:fault name="AuthorizationFaultFault">
+        <soap12:fault use="literal" name="AuthorizationFaultFault" namespace="" />
+      </wsdl:fault>
+      <wsdl:fault name="NotFoundFaultFault">
+        <soap12:fault use="literal" name="NotFoundFaultFault" namespace="" />
+      </wsdl:fault>
+      <wsdl:fault name="ValidationFaultFault">
+        <soap12:fault use="literal" name="ValidationFaultFault" namespace="" />
+      </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="GetGroups">
+      <soap12:operation soapAction="http://services.assurant.com/integration/authorization/2012/05/01/IAuthorization/GetGroups" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+      <wsdl:fault name="ValidationFaultFault">
+        <soap12:fault use="literal" name="ValidationFaultFault" namespace="" />
+      </wsdl:fault>
+      <wsdl:fault name="AuthorizationFaultFault">
+        <soap12:fault use="literal" name="AuthorizationFaultFault" namespace="" />
+      </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="UpdateGroup">
+      <soap12:operation soapAction="http://services.assurant.com/integration/authorization/2012/05/01/IAuthorization/UpdateGroup" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+      <wsdl:fault name="ValidationFaultFault">
+        <soap12:fault use="literal" name="ValidationFaultFault" namespace="" />
+      </wsdl:fault>
+      <wsdl:fault name="AuthorizationFaultFault">
+        <soap12:fault use="literal" name="AuthorizationFaultFault" namespace="" />
+      </wsdl:fault>
+      <wsdl:fault name="NotFoundFaultFault">
+        <soap12:fault use="literal" name="NotFoundFaultFault" namespace="" />
+      </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="FindPermissions">
+      <soap12:operation soapAction="http://services.assurant.com/integration/authorization/2012/05/01/IAuthorization/FindPermissions" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+      <wsdl:fault name="AuthorizationFaultFault">
+        <soap12:fault use="literal" name="AuthorizationFaultFault" namespace="" />
+      </wsdl:fault>
+      <wsdl:fault name="ValidationFaultFault">
+        <soap12:fault use="literal" name="ValidationFaultFault" namespace="" />
+      </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="GetPermissions">
+      <soap12:operation soapAction="http://services.assurant.com/integration/authorization/2012/05/01/IAuthorization/GetPermissions" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+      <wsdl:fault name="AuthorizationFaultFault">
+        <soap12:fault use="literal" name="AuthorizationFaultFault" namespace="" />
+      </wsdl:fault>
+      <wsdl:fault name="ValidationFaultFault">
+        <soap12:fault use="literal" name="ValidationFaultFault" namespace="" />
+      </wsdl:fault>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:service name="AuthorizationService">
+    <wsdl:port name="CustomBinding_IAuthorization" binding="tns:CustomBinding_IAuthorization">
+      <soap12:address location="http://msp0wapfd001.cead.prd/Authorization/Entity/20120501/AuthorizationService.svc" />
+    </wsdl:port>
+  </wsdl:service>
+</wsdl:definitions>

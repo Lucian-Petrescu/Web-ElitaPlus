@@ -1,0 +1,103 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+
+<!-- ********************** THIS FILE HAS BEEN GENERATED FROM TEMPLATE SQLObject.cst (11/18/2004)********************** -->
+
+<SQL>
+  <LOAD>
+    <![CDATA[	
+  select  cp.commission_plan_id,
+          cp.code,
+          cp.description,
+          cp.effective_date,
+          cp.expiration_date,
+          cp.reference,
+          cp.reference_id,
+          d.dealer_id,
+          nvl(comp.company_id,  d.company_id ) company_Id,
+          cp.created_by,
+          cp.created_date,
+          cp.modified_by,
+          cp.modified_date
+          from   ELP_COMMISSION_PLAN 	cp
+          left join elp_dealer d on d.dealer_id = cp.reference_id
+			                           and cp.reference = 'ELP_DEALER'
+          left join elp_company  comp on comp.company_id = cp.reference_id
+											           and cp.reference = 'ELP_COMPANY'
+    WHERE 
+                                commission_plan_id = :commission_plan_id 
+		]]>
+  </LOAD>
+  <LOAD_LIST>
+    SELECT 	cp.commission_plan_id, d.dealer_name,
+    cp.effective_date effective, cp.expiration_date expiration, cp.code, cp.description, c.code company_code
+    FROM elp_dealer d , elp_commission_plan cp, elp_company c
+    WHERE	d.company_id = c.company_id
+    AND d.dealer_id like :dealer_id
+    AND cp.reference_id = d.dealer_id
+    --dynamic_in_clause
+    ORDER BY dealer_name, effective desc, expiration
+  </LOAD_LIST>
+   <MAX_EXPIRATION>
+    select commission_plan_id, to_char(EXPIRATION_DATE, 'DD-Mon-YYYY') EXPIRATION, sq.EXPIRATION_COUNT
+    from elp_commission_plan,
+    (select Max(EXPIRATION_DATE) MAX_EXPIRATION, Count(*) EXPIRATION_COUNT
+    from elp_commission_plan
+    where	reference_ID = :dealer_ID0
+    ) sq
+    where	reference_ID = :dealer_ID1
+    and EXPIRATION_date = MAX_EXPIRATION
+  </MAX_EXPIRATION>
+  <UPDATE>
+    <![CDATA[	
+			UPDATE elp_commission_plan SET
+			    code = :code,
+				  description = :description,
+          reference = 'ELP_DEALER',
+				  reference_id = :dealer_id,
+				  effective_date = :effective_date,
+				  expiration_date = :expiration_date,
+				  modified_by = :modified_by
+  			  WHERE
+				  commission_plan_id = :commission_plan_id
+		]]>
+  </UPDATE>
+  <INSERT>
+    INSERT INTO elp_commission_plan
+    (
+    code,
+    description,
+    reference,
+    reference_id,
+    effective_date,
+    expiration_date,
+    created_by,
+    commission_plan_id
+    )
+    VALUES
+    (
+    :code,
+    :description,
+    'ELP_DEALER',
+    :dealer_id,
+    :effective_date,
+    :expiration_date,
+    :created_by,
+    :commission_plan_id
+    )
+  </INSERT>
+  <DELETE>
+    DELETE FROM elp_commission_plan
+    WHERE
+    commission_plan_id = :commission_plan_id
+  </DELETE>
+
+<CODE_MATCH>
+    SELECT count (cp.code)
+        FROM elp_commission_plan cp
+        WHERE cp.reference_id != :dealer_id
+        and cp.code = :code
+</CODE_MATCH>
+</SQL>
+
+
+

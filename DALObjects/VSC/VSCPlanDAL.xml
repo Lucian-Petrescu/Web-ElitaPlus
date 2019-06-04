@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="utf-8" ?>
+
+<!-- ********************** THIS FILE HAS BEEN GENERATED FROM TEMPLATE SQLObject.cst (3/14/2007)********************** -->
+
+<SQL>
+	<LOAD>
+		<![CDATA[	
+			SELECT 
+			    vsc_plan_id,
+				company_group_id,
+				code,
+				description,
+				risk_type_id,
+				risk_group_id,
+				created_by,
+				created_date,
+				modified_by,
+				modified_date,
+				is_wrap_plan
+			FROM elp_vsc_plan 
+			WHERE
+				vsc_plan_id = :vsc_plan_id
+		]]>
+	</LOAD>
+	<LOAD_LIST>
+		<![CDATA[		
+			SELECT
+			    vsc_plan_id id,
+				company_group_id,
+				code,
+				description,
+				risk_type_id,
+				risk_group_id,
+				created_by,
+				created_date,
+				modified_by,
+				modified_date,
+				is_wrap_plan
+			FROM elp_vsc_plan 
+			WHERE
+			--dynamic_in_clause
+			--dynamic_where_clause
+			----dynamic_order_by_clause
+			]]>
+	</LOAD_LIST>	
+	<UPDATE>
+		<![CDATA[	
+			UPDATE elp_vsc_plan SET
+				company_group_id = :company_group_id,
+				code = :code,
+				description = :description,
+				risk_type_id = :risk_type_id,
+				risk_group_id = :risk_group_id,
+				modified_by = :modified_by,
+				is_wrap_plan =:is_wrap_plan
+			WHERE
+				vsc_plan_id = :vsc_plan_id
+		]]>
+	</UPDATE>
+	<INSERT>
+			INSERT INTO elp_vsc_plan
+					(			
+				company_group_id, 
+				code, 
+				description, 
+				risk_type_id, 
+				risk_group_id, 
+				created_by,
+				vsc_plan_id,
+				is_wrap_plan
+					)
+			VALUES
+					(			
+				:company_group_id, 
+				:code, 
+				:description, 
+				:risk_type_id, 
+				:risk_group_id,
+				:created_by,
+				:vsc_plan_id,
+				:is_wrap_plan
+					)
+	</INSERT>
+	<DELETE>
+			DELETE FROM elp_vsc_plan
+			WHERE
+				vsc_plan_id = :vsc_plan_id
+	</DELETE>
+</SQL> 
+
+

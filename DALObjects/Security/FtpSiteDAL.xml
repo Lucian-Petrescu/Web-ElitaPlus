@@ -1,0 +1,91 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+
+<!-- ********************** THIS FILE HAS BEEN GENERATED FROM TEMPLATE SQLObject.cst (6/26/2009)********************** -->
+
+<SQL>
+  <LOAD>
+    <![CDATA[	
+			SELECT 
+				code,
+				description,
+				host,
+				port,
+				ELP_CRYPT_PW.decrypt_value(user_name) user_name,
+				ELP_CRYPT_PW.decrypt_value(password) password, 
+				account,
+				directory,
+				created_date,
+				modified_date,
+				created_by,
+				modified_by,
+				ftp_site_id
+			FROM elp_ftp_site 
+			WHERE
+				ftp_site_id = :ftp_site_id
+		]]>
+  </LOAD>
+  <LOAD_LIST>
+    <![CDATA[	
+			SELECT 
+        ftp_site_id,
+				code,
+				description,
+				host
+			FROM elp_ftp_site ftp 
+          --dynamic_where_clause
+    Order by Upper(ftp.code), Upper(ftp.description), Upper(ftp.host)
+		]]>
+  </LOAD_LIST>
+  <UPDATE>
+    <![CDATA[	
+			UPDATE elp_ftp_site SET
+				code = :code,
+				description = :description,
+				host = :host,
+				port = :port,
+				user_name = ELP_CRYPT_PW.encrypt_value(:user_name),
+				password = ELP_CRYPT_PW.encrypt_value(:password),
+				account = :account,
+				directory = :directory,
+				modified_by = :modified_by
+			WHERE
+				ftp_site_id = :ftp_site_id
+		]]>
+  </UPDATE>
+  <INSERT>
+    INSERT INTO elp_ftp_site
+    (
+    code,
+    description,
+    host,
+    port,
+    user_name,
+    password,
+    account,
+    directory,
+    created_by,
+    ftp_site_id
+    )
+    VALUES
+    (
+    :code,
+    :description,
+    :host,
+    :port,
+    ELP_CRYPT_PW.encrypt_value(:user_name),
+    ELP_CRYPT_PW.encrypt_value(:password),
+    :account,
+    :directory,
+    :created_by,
+    :ftp_site_id
+    )
+  </INSERT>
+  <DELETE>
+    DELETE FROM elp_ftp_site
+    WHERE
+    ftp_site_id = :ftp_site_id
+  </DELETE>
+</SQL>
+
+
+

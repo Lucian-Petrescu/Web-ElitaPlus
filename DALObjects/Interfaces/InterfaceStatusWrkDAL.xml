@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="utf-8" ?>
+
+<!-- ********************** THIS FILE HAS BEEN GENERATED FROM TEMPLATE SQLObject.cst (3/22/2006)********************** -->
+
+<SQL>
+	<LOAD>
+		<![CDATA[	
+			SELECT 
+				description,
+				status,
+				created_by,
+				created_date,
+				modified_by,
+				modified_date,
+				interface_status_id,
+        filename,
+        sessionpaddrid,
+        active_filename,
+        error_message
+			FROM elp_interface_status_wrk 
+			WHERE
+				interface_status_id = :interface_status_id
+		]]>
+	</LOAD>
+  <ISSTATUS_RUNNING>
+    <![CDATA[
+    SELECT
+    status
+    FROM elp_interface_status_wrk
+    WHERE
+      file_id = :file_id
+    AND
+      status = 'Running'
+   ]]>
+  </ISSTATUS_RUNNING>
+  <GET_ACTIVE_PROCESS>
+  
+    SELECT active_filename FROM  ELP_INTERFACE_STATUS_WRK w where active_filename= :activefilename
+    
+  </GET_ACTIVE_PROCESS>
+  
+  <GET_ACTIVE_PROCESS_PARENTFILE>
+    SELECT active_filename FROM  ELP_INTERFACE_STATUS_WRK w where active_filename in
+    (select filename from elp_dealerfile_processed
+    where dealerfile_processed_id = (select dealerfile_processed_id from elp_dealerfile_processed where filename = :activefilename)
+    or parent_dealerfile_processed_id = (select dealerfile_processed_id from elp_dealerfile_processed where filename = :activefilename))
+  </GET_ACTIVE_PROCESS_PARENTFILE>
+  
+  <!--REQ-1056-->
+	<LOAD_LIST>
+    SELECT interface_status_id,active_filename,description,status,created_date FROM  ELP_INTERFACE_STATUS_WRK
+    --dynamic_where_clause
+  </LOAD_LIST>
+  <!--END REQ-1056-->
+	<UPDATE>
+		<![CDATA[	
+			UPDATE elp_interface_status_wrk SET
+        description = :description,
+				status = :status,
+        active_filename = :active_filename,
+				modified_by = :modified_by
+			WHERE
+				interface_status_id = :interface_status_id
+		--		AND NVL(modified_date,created_date) = NVL(:modified_date,created_date)
+		]]>
+	</UPDATE>
+	<INSERT>
+			INSERT INTO elp_interface_status_wrk
+					(			
+				description, 
+				status, 
+				created_by,
+				interface_status_id
+					)
+			VALUES
+					(			
+				:description, 
+				:status, 
+				:created_by,
+				:interface_status_id
+					)
+	</INSERT>
+	<DELETE>
+			DELETE FROM elp_interface_status_wrk
+			WHERE
+				interface_status_id = :interface_status_id
+	</DELETE>
+</SQL> 
+
+
+

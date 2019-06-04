@@ -1,0 +1,380 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<SERVICES>
+  <WEB_SERVICE name="UTILITYWS">
+    <REQUEST name="GetMakes">
+      <SCHEMA>Utilities/VSCGetMakes.xsd</SCHEMA>
+      <BO_CLASS>Manufacturer</BO_CLASS>
+      <SECURITY>VSC_GROUP</SECURITY>
+    </REQUEST>
+    <REQUEST name="GetModels">
+      <SCHEMA>Utilities/VSCGetModels.xsd</SCHEMA>
+      <BO_CLASS>VSCModel</BO_CLASS>
+      <SECURITY>VSC_GROUP</SECURITY>
+    </REQUEST>
+    <REQUEST name="GetVersions">
+      <SCHEMA>Utilities/VSCGetVersions.xsd</SCHEMA>
+      <BO_CLASS>VSCModel</BO_CLASS>
+      <SECURITY>VSC_GROUP</SECURITY>
+    </REQUEST>
+    <REQUEST name="GetYears">
+      <SCHEMA>Utilities/VSCGetYears.xsd</SCHEMA>
+      <BO_CLASS>VSCModel</BO_CLASS>
+      <SECURITY>VSC_GROUP</SECURITY>
+    </REQUEST>
+    <REQUEST name="GetDealers">
+      <SCHEMA>Utilities/GetDealers.xsd</SCHEMA>
+      <BO_CLASS>GetDealers</BO_CLASS>
+      <SECURITY>GALAXY_GROUP</SECURITY>
+    </REQUEST>
+    <REQUEST name="GetProductCodes">
+      <SCHEMA>Utilities/GetProductCodes.xsd</SCHEMA>
+      <BO_CLASS>GetProductCodes</BO_CLASS>
+      <SECURITY>GALAXY_GROUP</SECURITY>
+    </REQUEST>
+    <REQUEST name="GetBranches">
+      <SCHEMA>Utilities/GetBranches.xsd</SCHEMA>
+      <BO_CLASS>GetBranches</BO_CLASS>
+      <SECURITY>GALAXY_GROUP</SECURITY>
+    </REQUEST>
+    <REQUEST name="GetManufacturers">
+      <SCHEMA>Utilities/GetManufacturers.xsd</SCHEMA>
+      <BO_CLASS>GetManufacturers</BO_CLASS>
+      <SECURITY>GALAXY_GROUP</SECURITY>
+    </REQUEST>
+    <REQUEST name="GetPriceBands">
+      <SCHEMA>Utilities/GetPriceBands.xsd</SCHEMA>
+      <BO_CLASS>GetPriceBands</BO_CLASS>
+      <SECURITY>OLITA_GROUP</SECURITY>
+    </REQUEST>
+    <REQUEST name="GetExpectedGWP">
+      <SCHEMA>Utilities/GetExpectedGWP.xsd</SCHEMA>
+      <BO_CLASS>GetExpectedGWP</BO_CLASS>
+      <SECURITY>OLITA_GROUP</SECURITY>
+    </REQUEST>
+    <REQUEST name="GETREGIONS">
+      <SCHEMA>Utilities/GetRegions.xsd</SCHEMA>
+      <BO_CLASS>GetRegions</BO_CLASS>
+      <SECURITY>OLITA_GROUP</SECURITY>
+    </REQUEST>
+    <REQUEST name="GetCert">
+      <SCHEMA>Utilities/GetCert.xsd</SCHEMA>
+      <BO_CLASS>GetCert</BO_CLASS>
+      <SECURITY>OLITA_GROUP</SECURITY>
+    </REQUEST>
+    <REQUEST name="GetSalutations">
+      <SCHEMA>Utilities/GetSalutations.xsd</SCHEMA>
+      <BO_CLASS>GetSalutations</BO_CLASS>
+      <SECURITY>OLITA_GROUP</SECURITY>
+    </REQUEST>
+  </WEB_SERVICE>
+  <WEB_SERVICE name="VSCWS">
+    <REQUEST name="GetQuote">
+      <SCHEMA>VSC/VSCQuote.xsd</SCHEMA>
+      <BO_CLASS>QuoteEngine</BO_CLASS>
+      <SECURITY>VSC_GROUP</SECURITY>
+    </REQUEST>
+    <REQUEST name="Enroll">
+      <SCHEMA>VSC/VSCEnrollment.xsd</SCHEMA>
+      <BO_CLASS>Enrollment</BO_CLASS>
+      <SECURITY>VSC_GROUP</SECURITY>
+    </REQUEST>
+  </WEB_SERVICE>
+  <WEB_SERVICE name="OLITAWS">
+    <REQUEST name="GETCERTUSINGTRANNO">
+      <SCHEMA>Olita/OlitaGetCert.xsd</SCHEMA>
+      <BO_CLASS>OlitaGetCert</BO_CLASS>
+      <SECURITY>OLITA_GROUP</SECURITY>
+    </REQUEST>
+    <REQUEST name="UPDATECONSUMERINFO">
+      <SCHEMA>Olita/OlitaUpdateConsumerInfo.xsd</SCHEMA>
+      <BO_CLASS>OlitaUpdateConsumerInfo</BO_CLASS>
+      <SECURITY>OLITA_GROUP</SECURITY>
+    </REQUEST>
+    <REQUEST name="GETREGIONS">
+      <SCHEMA>Utilities/GetRegions.xsd</SCHEMA>
+      <BO_CLASS>GetRegions</BO_CLASS>
+      <SECURITY>OLITA_GROUP</SECURITY>
+    </REQUEST>
+    <REQUEST name="OLITAINSERTCERT">
+      <SCHEMA>Olita/OlitaInsertCert.xsd</SCHEMA>
+      <BO_CLASS>OlitaInsertCert</BO_CLASS>
+      <SECURITY>OLITA_GROUP</SECURITY>
+    </REQUEST>
+    <REQUEST name="GetDealers">
+      <SCHEMA>Utilities/GetDealers.xsd</SCHEMA>
+      <BO_CLASS>GetDealers</BO_CLASS>
+      <SECURITY>GALAXY_GROUP</SECURITY>
+    </REQUEST>
+    <REQUEST name="GetProductCodes">
+      <SCHEMA>Utilities/GetProductCodes.xsd</SCHEMA>
+      <BO_CLASS>GetProductCodes</BO_CLASS>
+      <SECURITY>GALAXY_GROUP</SECURITY>
+    </REQUEST>
+    <REQUEST name="GetBranches">
+      <SCHEMA>Utilities/GetBranches.xsd</SCHEMA>
+      <BO_CLASS>GetBranches</BO_CLASS>
+      <SECURITY>GALAXY_GROUP</SECURITY>
+    </REQUEST>
+    <REQUEST name="GetManufacturers">
+      <SCHEMA>Utilities/GetManufacturers.xsd</SCHEMA>
+      <BO_CLASS>GetManufacturers</BO_CLASS>
+      <SECURITY>GALAXY_GROUP</SECURITY>
+    </REQUEST>
+    <REQUEST name="GETROUTES">
+      <SCHEMA>ClaimLogistics/GetRoutes.xsd</SCHEMA>
+      <BO_CLASS>GetRoutes</BO_CLASS>
+      <SECURITY>OLITA_GROUP</SECURITY>
+    </REQUEST>
+    <REQUEST name="OlitaSerialNumberUpdate">
+      <SCHEMA>Olita/OlitaSerialNumberUpdate.xsd</SCHEMA>
+      <BO_CLASS>OlitaSerialNumberUpdate</BO_CLASS>
+      <SECURITY>OLITA_GROUP</SECURITY>
+    </REQUEST>
+    <REQUEST name="GetPriceBands">
+      <SCHEMA>Utilities/GetPriceBands.xsd</SCHEMA>
+      <BO_CLASS>GetPriceBands</BO_CLASS>
+      <SECURITY>OLITA_GROUP</SECURITY>
+    </REQUEST>
+    <REQUEST name="GetExpectedGWP">
+      <SCHEMA>Utilities/GetExpectedGWP.xsd</SCHEMA>
+      <BO_CLASS>GetExpectedGWP</BO_CLASS>
+      <SECURITY>OLITA_GROUP</SECURITY>
+    </REQUEST>
+    <REQUEST name="GetNewOpenClaims">
+      <SCHEMA>ClaimLogistics/GetNewOpenClaims.xsd</SCHEMA>
+      <BO_CLASS>GetNewOpenClaims</BO_CLASS>
+      <SECURITY>OLITA_GROUP</SECURITY>
+    </REQUEST>
+    <REQUEST name="GetRoutes">
+      <SCHEMA>ClaimLogistics/GetRoutes.xsd</SCHEMA>
+      <BO_CLASS>GetRoutes</BO_CLASS>
+      <SECURITY>OLITA_GROUP</SECURITY>
+    </REQUEST>
+    <REQUEST name="UpdatePickListStatus">
+      <SCHEMA>ClaimLogistics/UpdatePickListStatus.xsd</SCHEMA>
+      <BO_CLASS>UpdatePickListStatus</BO_CLASS>
+      <SECURITY>OLITA_GROUP</SECURITY>
+    </REQUEST>
+    <REQUEST name="UpdateSCReceivedItems">
+      <SCHEMA>ClaimLogistics/UpdateSCReceivedItems.xsd</SCHEMA>
+      <BO_CLASS>UpdateSCReceivedItems</BO_CLASS>
+      <SECURITY>OLITA_GROUP</SECURITY>
+    </REQUEST>
+    <REQUEST name="GetExtendedClaimStatusList">
+      <SCHEMA>ClaimLogistics/GetExtendedClaimStatusList.xsd</SCHEMA>
+      <BO_CLASS>GetExtendedClaimStatusList</BO_CLASS>
+      <SECURITY>OLITA_GROUP</SECURITY>
+    </REQUEST>
+    <REQUEST name="GetActiveClaimsForSvc">
+      <SCHEMA>ClaimLogistics/GetActiveClaimsForSvc.xsd</SCHEMA>
+      <BO_CLASS>GetActiveClaimsForSvc</BO_CLASS>
+      <SECURITY>OLITA_GROUP</SECURITY>
+    </REQUEST>
+    <REQUEST name="UpdateClaimData">
+      <SCHEMA>ClaimLogistics/UpdateClaimData.xsd</SCHEMA>
+      <BO_CLASS>UpdateClaimData</BO_CLASS>
+      <SECURITY>OLITA_GROUP</SECURITY>
+    </REQUEST>
+    <REQUEST name="GetClaimsReadyFromSC">
+      <SCHEMA>ClaimLogistics/GetClaimsReadyFromSC.xsd</SCHEMA>
+      <BO_CLASS>GetClaimsReadyFromSC</BO_CLASS>
+      <SECURITY>OLITA_GROUP</SECURITY>
+    </REQUEST>
+    <REQUEST name="UpdatePickupException">
+      <SCHEMA>ClaimLogistics/UpdatePickupException.xsd</SCHEMA>
+      <BO_CLASS>UpdatePickupException</BO_CLASS>
+      <SECURITY>OLITA_GROUP</SECURITY>
+    </REQUEST>
+    <REQUEST name="GetClaimInfo">
+      <SCHEMA>ClaimLogistics/GetClaimInfo.xsd</SCHEMA>
+      <BO_CLASS>GetClaimInfo</BO_CLASS>
+      <SECURITY>OLITA_GROUP</SECURITY>
+    </REQUEST>
+    <REQUEST name="GetClaimStatusHistory">
+      <SCHEMA>ClaimLogistics/GetClaimStatusHistory.xsd</SCHEMA>
+      <BO_CLASS>GetClaimStatusHistory</BO_CLASS>
+      <SECURITY>OLITA_GROUP</SECURITY>
+    </REQUEST>
+    <REQUEST name="ClaimsByPicklist">
+      <SCHEMA>ClaimLogistics/ClaimsByPicklist.xsd</SCHEMA>
+      <BO_CLASS>ClaimsByPicklist</BO_CLASS>
+      <SECURITY>OLITA_GROUP</SECURITY>
+    </REQUEST>
+    <REQUEST name="SaveSerialNumberByCertNum">
+      <SCHEMA>ClaimLogistics/SaveSerialNumberByCertNum.xsd</SCHEMA>
+      <BO_CLASS>SaveSerialNumberByCertNum</BO_CLASS>
+      <SECURITY>OLITA_GROUP</SECURITY>
+    </REQUEST>
+    <REQUEST name="GetPicklistByDateRange">
+      <SCHEMA>ClaimLogistics/GetPicklistByDateRange.xsd</SCHEMA>
+      <BO_CLASS>GetPicklistByDateRange</BO_CLASS>
+      <SECURITY>OLITA_GROUP</SECURITY>
+    </REQUEST>
+    <REQUEST name="CancellationQuery">
+      <SCHEMA>ClaimLogistics/CancellationQuery.xsd</SCHEMA>
+      <BO_CLASS>CancellationQuery</BO_CLASS>
+      <SECURITY>OLITA_GROUP</SECURITY>
+    </REQUEST>
+    <REQUEST name="GetClaimsByDateRange">
+      <SCHEMA>ClaimLogistics/GetClaimsByDateRange.xsd</SCHEMA>
+      <BO_CLASS>GetClaimsByDateRange</BO_CLASS>
+      <SECURITY>OLITA_GROUP</SECURITY>
+    </REQUEST>
+    <REQUEST name="CertificateSearch">
+      <SCHEMA>ClaimLogistics/CertificateSearch.xsd</SCHEMA>
+      <BO_CLASS>CertificateSearch</BO_CLASS>
+      <SECURITY>OLITA_GROUP</SECURITY>
+    </REQUEST>
+    <REQUEST name="CancelCertificate">
+      <SCHEMA>Utilities/CancelCertificate.xsd</SCHEMA>
+      <BO_CLASS>CancelCertificate</BO_CLASS>
+      <SECURITY>OLITA_GROUP</SECURITY>
+    </REQUEST>
+    <REQUEST name="GetCert">
+      <SCHEMA>Utilities/GetCert.xsd</SCHEMA>
+      <BO_CLASS>GetCert</BO_CLASS>
+      <SECURITY>OLITA_GROUP</SECURITY>
+    </REQUEST>
+    <REQUEST name="GetCertList">
+      <SCHEMA>Utilities/GetCertList.xsd</SCHEMA>
+      <BO_CLASS>GetCertList</BO_CLASS>
+      <SECURITY>OLITA_GROUP</SECURITY>
+    </REQUEST>
+    <REQUEST name="GetSalutations">
+      <SCHEMA>Utilities/GetSalutations.xsd</SCHEMA>
+      <BO_CLASS>GetSalutations</BO_CLASS>
+      <SECURITY>OLITA_GROUP</SECURITY>
+    </REQUEST>
+    <REQUEST name="GetLists">
+      <SCHEMA>Utilities/GetLists.xsd</SCHEMA>
+      <BO_CLASS>GetLists</BO_CLASS>
+      <SECURITY>OLITA_GROUP</SECURITY>
+    </REQUEST>
+    <REQUEST name="GetaList">
+      <SCHEMA>Utilities/GetaList.xsd</SCHEMA>
+      <BO_CLASS>GetaList</BO_CLASS>
+      <SECURITY>OLITA_GROUP</SECURITY>
+    </REQUEST>
+    <REQUEST name="GetMarkupAndCommission">
+      <SCHEMA>Utilities/GetMarkupAndCommission.xsd</SCHEMA>
+      <BO_CLASS>GetMarkupAndCommission</BO_CLASS>
+      <SECURITY>VSC_GROUP</SECURITY>
+    </REQUEST>    
+  </WEB_SERVICE>
+  <WEB_SERVICE name="FELITAWS">
+    <REQUEST name="FelitaEngine">
+      <SCHEMA>Accounting/FelitaEngine.xsd</SCHEMA>
+      <BO_CLASS>FelitaEngine</BO_CLASS>
+      <SECURITY>OLITA_GROUP</SECURITY>
+    </REQUEST>
+  </WEB_SERVICE>
+  <WEB_SERVICE name="GALAXYWS">
+    <REQUEST name="GalaxyCertificateSearch">
+      <SCHEMA>Galaxy/GalaxyCertificateSearch.xsd</SCHEMA>
+      <BO_CLASS>GalaxySearchCertificate</BO_CLASS>
+      <SECURITY>GALAXY_GROUP</SECURITY>
+    </REQUEST>
+    <REQUEST name="GalaxyGetCertificateDetail">
+      <SCHEMA>Galaxy/GalaxyGetCertificateDetail.xsd</SCHEMA>
+      <BO_CLASS>GalaxyGetCertificateDetail</BO_CLASS>
+      <SECURITY>GALAXY_GROUP</SECURITY>
+    </REQUEST>
+    <REQUEST name="GalaxyInsertServiceCenter">
+      <SCHEMA>Galaxy/GalaxyInsertServiceCenter.xsd</SCHEMA>
+      <BO_CLASS>GalaxyInsertServiceCenter</BO_CLASS>
+      <SECURITY>GALAXY_GROUP</SECURITY>
+    </REQUEST>
+    <REQUEST name="GalaxyInsertClaim">
+      <SCHEMA>Galaxy/GalaxyInsertClaim.xsd</SCHEMA>
+      <BO_CLASS>GalaxyInsertClaim</BO_CLASS>
+      <SECURITY>GALAXY_GROUP</SECURITY>
+    </REQUEST>
+    <REQUEST name="GalaxyUpdateClaim">
+      <SCHEMA>Galaxy/GalaxyUpdateClaim.xsd</SCHEMA>
+      <BO_CLASS>GalaxyUpdateClaim</BO_CLASS>
+      <SECURITY>GALAXY_GROUP</SECURITY>
+    </REQUEST>
+    <REQUEST name="GalaxyPayClaim">
+      <SCHEMA>Galaxy/GalaxyPayClaim.xsd</SCHEMA>
+      <BO_CLASS>GalaxyPayClaim</BO_CLASS>
+      <SECURITY>GALAXY_GROUP</SECURITY>
+    </REQUEST>
+    <REQUEST name="GalaxyUpdateServiceCenter">
+      <SCHEMA>Galaxy/GalaxyUpdateServiceCenter.xsd</SCHEMA>
+      <BO_CLASS>GalaxyUpdateServiceCenter</BO_CLASS>
+      <SECURITY>GALAXY_GROUP</SECURITY>
+    </REQUEST>
+    <REQUEST name="GetDealers">
+      <SCHEMA>Utilities/GetDealers.xsd</SCHEMA>
+      <BO_CLASS>GetDealers</BO_CLASS>
+      <SECURITY>GALAXY_GROUP</SECURITY>
+    </REQUEST>
+    <REQUEST name="GETREGIONS">
+      <SCHEMA>Utilities/GetRegions.xsd</SCHEMA>
+      <BO_CLASS>GetRegions</BO_CLASS>
+      <SECURITY>GALAXY_GROUP</SECURITY>
+    </REQUEST>
+  </WEB_SERVICE>
+  <WEB_SERVICE name="OPENMOBILEWS">
+    <REQUEST name="OpenMobileVerifyClaim">
+      <SCHEMA>OpenMobile/OpenMobileVerifyClaim.xsd</SCHEMA>
+      <BO_CLASS>OpenMobileVerifyClaim</BO_CLASS>
+      <SECURITY>OPENMOBILE_GROUP</SECURITY>
+    </REQUEST>
+  </WEB_SERVICE>
+  <WEB_SERVICE name="GVSWS">
+    <REQUEST name="ElitaUpdateClaim">
+      <SCHEMA>GVS/ElitaClaim.xsd</SCHEMA>
+      <BO_CLASS>ElitaClaim</BO_CLASS>
+      <SECURITY>GVS_GROUP</SECURITY>
+      <BINDING>X</BINDING>
+    </REQUEST>
+    <REQUEST name="ElitaInsertNewClaim">
+      <SCHEMA>GVS/ElitaClaim.xsd</SCHEMA>
+      <BO_CLASS>ElitaClaim</BO_CLASS>
+      <SECURITY>GVS_GROUP</SECURITY>
+      <BINDING>X</BINDING>
+    </REQUEST>
+    <REQUEST name="ElitaCancelSvcIntegration">
+      <SCHEMA>GVS/ElitaCancelSvcIntegration.xsd</SCHEMA>
+      <BO_CLASS>ElitaCancelSvcIntegration</BO_CLASS>
+      <SECURITY>GVS_GROUP</SECURITY>
+    </REQUEST>
+    <REQUEST name="ElitaTransactionUpdate">
+      <SCHEMA>GVS/ElitaTransactionUpdate.xsd</SCHEMA>
+      <BO_CLASS>ElitaTransactionUpdate</BO_CLASS>
+      <SECURITY>GVS_GROUP</SECURITY>
+    </REQUEST>
+    <REQUEST name="GVS_INSERT_NEW_CLAIM">
+      <SCHEMA>GVS/ElitaClaim.xsd</SCHEMA>
+      <BO_CLASS>GVSInsertNewClaim</BO_CLASS>
+      <SECURITY>GVS_GROUP</SECURITY>
+      <BINDING>XF</BINDING>
+    </REQUEST>
+    <REQUEST name="GVS_UPDATE_CLAIM">
+      <SCHEMA>GVS/ElitaClaim.xsd</SCHEMA>
+      <BO_CLASS>GVSUpdateClaim</BO_CLASS>
+      <SECURITY>GVS_GROUP</SECURITY>
+      <BINDING>XF</BINDING>
+    </REQUEST>
+    <REQUEST name="GVS_UPDATE_SVC">
+      <SCHEMA>GVS/GVSUpdateSVC.xsd</SCHEMA>
+      <BO_CLASS>GVSUpdateSVC</BO_CLASS>
+      <SECURITY>GVS_GROUP</SECURITY>
+      <BINDING>XF</BINDING>
+    </REQUEST>
+    <REQUEST name="GVS_TRANSACTION_UPDATE">
+      <SCHEMA>GVS/GVSTransactionUpdate.xsd</SCHEMA>
+      <BO_CLASS>GVSTransactionUpdate</BO_CLASS>
+      <SECURITY>GVS_GROUP</SECURITY>
+      <BINDING>XF</BINDING>
+    </REQUEST>
+  </WEB_SERVICE>
+  <WEB_SERVICE name="GenericWS">
+    <REQUEST name="ClaimValidation">
+      <SCHEMA>Generic/ClaimValidation.xsd</SCHEMA>
+      <BO_CLASS>ClaimValidation</BO_CLASS>
+      <SECURITY>GENERIC_GROUP</SECURITY>
+    </REQUEST>
+  </WEB_SERVICE>
+</SERVICES>

@@ -1,0 +1,128 @@
+<?xml version="1.0" encoding="utf-8" ?>
+
+<!-- ********************** THIS FILE HAS BEEN GENERATED FROM TEMPLATE SQLObject.cst (8/3/2006)********************** -->
+
+<SQL>
+	<LOAD>
+		<![CDATA[	
+			SELECT 
+				product_code_id,
+				risk_type_id,
+				max_replacement_cost,
+				created_date,
+				modified_date,
+				created_by,
+				modified_by,
+				item_number,
+				optional_item,
+				optional_item_code,
+        inuseflag,
+				item_id
+			FROM elp_item 
+			WHERE
+				item_id = :item_id
+		]]>
+	</LOAD>
+	<LOAD_LIST>
+    SELECT	ITEM_ID, C.CODE || ' - ' || dealer_name DEALER_NAME, PRODUCT_CODE, ITEM_NUMBER, risk.DESCRIPTION RISK_TYPE
+      ,optional_item, optional_item_code, item.inuseflag
+    FROM	elp_item item, elp_product_code pc, elp_dealer edealer, elp_risk_type risk, elp_company c
+    WHERE
+    pc.DEALER_ID = edealer.DEALER_ID
+    and item.PRODUCT_CODE_ID = pc.PRODUCT_CODE_ID
+    and item.RISK_TYPE_ID = risk.RISK_TYPE_ID
+    and c.company_id = edealer.company_id
+    --dynamic_in_clause
+    --dynamic_where_clause
+    --dynamic_order_by_clause
+  </LOAD_LIST>
+  <LOAD_DEALER_ITMES_INFO_FOR_WS>
+    <![CDATA[	
+      select rawtohex(item_id) as item_id, rawtohex(product_code_id) as product_code_id, item_number  from elita.elp_item
+      where product_code_id in
+      (
+      select product_code_id
+      from elita.elp_product_code pc ,elp_dealer d
+      where pc.dealer_id = d.dealer_id and
+      D.DEALER_ID = :dealer_id
+      )
+    ]]>
+  </LOAD_DEALER_ITMES_INFO_FOR_WS>
+	<GET_DEALER_ID>
+			SELECT elp_dealer.dealer_id
+			FROM elp_item, elp_product_code, elp_dealer
+			WHERE
+				elp_item.product_code_id = elp_product_code.product_code_id
+				AND elp_product_code.dealer_id = elp_dealer.dealer_id
+				AND item_id = :item_id
+	</GET_DEALER_ID>
+	<ITEM_UNIQUE>
+    <![CDATA[	
+      SELECT count(*)
+      FROM elp_item
+      WHERE product_code_id = :product_code_id
+        AND risk_type_id = :risk_type_id
+        and ITEM_NUMBER <> :item_number
+    ]]>
+  </ITEM_UNIQUE>
+  <OPTIONAL_ITEM_UNIQUE>
+    <![CDATA[	
+      SELECT count(*)
+      FROM elp_item
+      WHERE product_code_id = :product_code_id
+        and ITEM_NUMBER <> :item_number
+		    AND GETCODEFROMLISTITEM(OPTIONAL_ITEM) = 'Y'
+		    AND OPTIONAL_ITEM_CODE = :optional_item_code
+    ]]>
+  </OPTIONAL_ITEM_UNIQUE>
+  
+  <UPDATE>
+		<![CDATA[	
+			UPDATE elp_item SET
+				product_code_id = :product_code_id,
+				risk_type_id = :risk_type_id,
+				max_replacement_cost = :max_replacement_cost,
+				item_number = :item_number,
+				optional_item = :optional_item,
+				optional_item_code = :optional_item_code,
+        inuseflag = :inuseflag,
+        modified_by = :modified_by
+			WHERE
+				item_id = :item_id
+		]]>
+	</UPDATE>
+	<INSERT>
+    INSERT INTO elp_item
+    (
+    product_code_id,
+    risk_type_id,
+    max_replacement_cost,
+    item_number,
+    optional_item,
+    optional_item_code,
+    created_by,
+    item_id,
+    inuseflag
+    )
+    VALUES
+    (
+    :product_code_id,
+    :risk_type_id,
+    :max_replacement_cost,
+    :item_number,
+    :optional_item,
+    :optional_item_code,
+    :created_by,
+    :item_id,
+    :inuseflag
+    )
+  </INSERT>
+	<DELETE>
+			DELETE FROM elp_item
+			WHERE
+				item_id = :item_id
+	</DELETE>
+
+</SQL> 
+
+

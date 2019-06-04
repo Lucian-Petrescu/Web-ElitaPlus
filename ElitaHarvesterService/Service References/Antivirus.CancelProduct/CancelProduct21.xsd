@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xs:schema xmlns="http://Assurant.Integration.Wireless.VendorIntegration.CancelProduct.Common.Schemas.CancelProductResponse" xmlns:b="http://schemas.microsoft.com/BizTalk/2003" targetNamespace="http://Assurant.Integration.Wireless.VendorIntegration.CancelProduct.Common.Schemas.CancelProductResponse" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+  <xs:element name="CancelProductResponse">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element name="ActivationCode" type="xs:string" />
+        <xs:element name="VendorName" type="xs:string" />
+        <xs:element name="ProductType" type="xs:string" />
+        <xs:element name="ProductId" type="xs:string" />
+        <xs:element name="MEId" type="xs:string" />
+        <xs:element name="TransactionId" type="xs:string" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+</xs:schema>

@@ -1,0 +1,95 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<SQL>
+  <LOAD>
+    <![CDATA[
+      SELECT 
+        EQUIPMENT_IMAGE_ID,
+        EQUIPMENT_ID,
+        CODE,
+        DESCRIPTION,
+        PATH,
+        IMAGE_TYPE_ID,
+        CREATED_DATE,
+        MODIFIED_DATE,
+        CREATED_BY,
+        MODIFIED_BY,
+        '' as IMAGE_TYPE
+      FROM
+        ELITA.ELP_EQUIPMENT_IMAGE
+      WHERE
+        EQUIPMENT_IMAGE_ID = :equipment_image_id
+    ]]>
+  </LOAD>
+  <LOAD_LIST>
+    <![CDATA[
+      SELECT 
+        EI.EQUIPMENT_IMAGE_ID,
+        EI.EQUIPMENT_ID,
+        EI.CODE,
+        EI.DESCRIPTION,
+        EI.PATH,
+        EI.IMAGE_TYPE_ID,
+        EI.CREATED_DATE,
+        EI.MODIFIED_DATE,
+        EI.CREATED_BY,
+        EI.MODIFIED_BY,
+        DIT.TRANSLATION AS IMAGE_TYPE
+      FROM
+        ELITA.ELP_EQUIPMENT_IMAGE EI,
+        ELP_LIST L,
+        ELP_LIST_ITEM LI,
+        ELP_DICT_ITEM_TRANSLATION DIT
+      WHERE
+        L.LIST_ID = LI.LIST_ID AND
+        LI.LIST_ITEM_ID = EI.IMAGE_TYPE_ID AND
+        LI.DICT_ITEM_ID = DIT.DICT_ITEM_ID AND
+        DIT.LANGUAGE_ID = :language_id AND
+        EI.EQUIPMENT_ID = :equipment_id
+    ]]>
+  </LOAD_LIST>
+  <INSERT>
+    <![CDATA[
+      INSERT INTO 
+        ELITA.ELP_EQUIPMENT_IMAGE
+      (
+        EQUIPMENT_IMAGE_ID,
+        EQUIPMENT_ID,
+        CODE,
+        DESCRIPTION,
+        PATH,
+        IMAGE_TYPE_ID
+      )
+      VALUES
+      (
+        :equipment_image_id,
+        :equipment_id,
+        :code,
+        :description,
+        :path,
+        :image_type_id
+      )
+    ]]>
+  </INSERT>
+  <UPDATE>
+    <![CDATA[
+      UPDATE 
+        ELITA.ELP_EQUIPMENT_IMAGE
+      SET
+        CODE = :code,
+        DESCRIPTION = :description,
+        PATH = :path,
+        IMAGE_TYPE_ID = :image_type_id,
+        EQUIPMENT_ID = :equipment_id
+      WHERE
+        EQUIPMENT_IMAGE_ID = :equipment_image_id
+    ]]>
+  </UPDATE>
+  <DELETE>
+    <![CDATA[
+      DELETE FROM
+        ELITA.ELP_EQUIPMENT_IMAGE
+      WHERE
+        EQUIPMENT_IMAGE_ID = :equipment_image_id
+    ]]>
+  </DELETE>
+</SQL>

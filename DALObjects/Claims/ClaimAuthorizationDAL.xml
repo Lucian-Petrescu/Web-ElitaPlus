@@ -1,0 +1,285 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+
+<!-- ********************** THIS FILE HAS BEEN GENERATED FROM TEMPLATE SQLObject.cst (2/21/2013)********************** -->
+
+<SQL>
+  <LOAD>
+    <![CDATA[	
+			SELECT 
+				claim_authorization_id,
+        claim_id,
+				authorization_number,
+				service_center_id,
+				service_level_id,
+				claim_authorization_status_id,
+				special_instruction,
+				visit_date,
+				device_reception_date,
+				expected_repair_date,
+				repair_date,
+				pick_up_date,
+				delivery_date,
+				who_pays_id,
+				defect_reason,
+				technical_report,
+				batch_number,
+				svc_reference_number,
+				external_created_date,
+				is_special_service_id,
+				problem_found,
+				source,
+        reverse_logistics_id,
+        contains_deductible_id,
+        created_by,
+				created_date,
+				modified_by,
+				modified_date,
+        verification_number,
+        auth_fulfillment_type_xcd,
+        cash_pymt_method_xcd,
+        sub_status_reason,
+        linked_claim_auth_id,
+        sub_status_xcd,
+        auth_type_xcd,
+        party_type_xcd,
+        party_reference_id
+        	FROM elp_claim_authorization 
+			WHERE
+				claim_authorization_id = hextoraw(:claim_authorization_id)
+		]]>
+  </LOAD>
+  <LOAD_LIST>
+    <![CDATA[	
+			SELECT 
+				claim_authorization_id,
+        claim_id,
+				authorization_number,
+				service_center_id,
+				service_level_id,
+				claim_authorization_status_id,
+				special_instruction,
+				visit_date,
+				device_reception_date,
+				expected_repair_date,
+				repair_date,
+				pick_up_date,
+				delivery_date,
+				who_pays_id,
+				defect_reason,
+				technical_report,
+				batch_number,
+				svc_reference_number,
+				external_created_date,
+				is_special_service_id,
+				problem_found,
+				source,
+        reverse_logistics_id,
+        contains_deductible_id,
+        created_by,
+				created_date,
+				modified_by,
+				modified_date,
+        verification_number,
+        auth_fulfillment_type_xcd,
+        cash_pymt_method_xcd,
+        sub_status_reason,
+        linked_claim_auth_id,
+        sub_status_xcd,
+        auth_type_xcd,
+        party_type_xcd,
+        party_reference_id
+			FROM elp_claim_authorization 
+			WHERE
+				claim_id = hextoraw(:claim_id)
+        --dynamic_where_clause
+		]]>
+  </LOAD_LIST>
+  <LOAD_LIST_BY_INVOICE_ID>
+    <![CDATA[	
+			SELECT 
+				claim_authorization_id,
+        claim_id,
+				authorization_number,
+				service_center_id,
+				service_level_id,
+				claim_authorization_status_id,
+				special_instruction,
+				visit_date,
+				device_reception_date,
+				expected_repair_date,
+				repair_date,
+				pick_up_date,
+				delivery_date,
+				who_pays_id,
+				defect_reason,
+				technical_report,
+				batch_number,
+				svc_reference_number,
+				external_created_date,
+				is_special_service_id,
+				problem_found,
+				source,
+        reverse_logistics_id,
+        contains_deductible_id,
+        created_by,
+				created_date,
+				modified_by,
+				modified_date,
+        verification_number,
+        auth_type_xcd,
+        party_type_xcd,
+        party_reference_id
+			FROM elp_claim_authorization 
+			WHERE
+				claim_authorization_id in (select claim_authorization_id from elp_invoice_item where invoice_id = hextoraw(:invoice_id))
+		]]>
+  </LOAD_LIST_BY_INVOICE_ID>
+  <LOAD_PRICE_LIST_DETAILS>
+    <![CDATA[ELP_PRICE_LIST_UTILITY.Load_Price_List_Details]]>
+  </LOAD_PRICE_LIST_DETAILS>
+  <UPDATE>
+    <![CDATA[	
+			UPDATE elp_claim_authorization SET
+				claim_id = :claim_id,
+				authorization_number = :authorization_number,
+				service_center_id = :service_center_id,
+				service_level_id = :service_level_id,
+				claim_authorization_status_id = :claim_authorization_status_id,
+				special_instruction = :special_instruction,
+				visit_date = :visit_date,
+				device_reception_date = :device_reception_date,
+				expected_repair_date = :expected_repair_date,
+				repair_date = :repair_date,
+				pick_up_date = :pick_up_date,
+				delivery_date = :delivery_date,
+				who_pays_id = :who_pays_id,
+				defect_reason = :defect_reason,
+				technical_report = :technical_report,
+				batch_number = :batch_number,
+				svc_reference_number = :svc_reference_number,
+				external_created_date = :external_created_date,
+				is_special_service_id = :is_special_service_id,
+				problem_found = :problem_found,
+				source = :source,
+        reverse_logistics_id =:reverse_logistics_id,
+        contains_deductible_id=:contains_deductible_id,
+        modified_by = :modified_by,
+        verification_number = :verification_number,
+        auth_type_xcd = :auth_type_xcd,
+        party_type_xcd = :party_type_xcd,
+        party_reference_id = :party_reference_id
+			WHERE
+				claim_authorization_id = hextoraw(:claim_authorization_id)
+		]]>
+  </UPDATE>
+  <INSERT>
+    INSERT INTO elp_claim_authorization
+    (
+    claim_authorization_id,
+    claim_id,
+    authorization_number,
+    service_center_id,
+    service_level_id,
+    claim_authorization_status_id,
+    special_instruction,
+    visit_date,
+    device_reception_date,
+    expected_repair_date,
+    repair_date,
+    pick_up_date,
+    delivery_date,
+    who_pays_id,
+    defect_reason,
+    technical_report,
+    batch_number,
+    svc_reference_number,
+    external_created_date,
+    is_special_service_id,
+    problem_found,
+    source,
+    reverse_logistics_id,
+    contains_deductible_id,
+    created_by,
+    verification_number,
+    auth_type_xcd,
+    party_type_xcd,
+    party_reference_id
+    )
+    VALUES
+    (
+    :claim_authorization_id,
+    :claim_id,
+    :authorization_number,
+    :service_center_id,
+    :service_level_id,
+    :claim_authorization_status_id,
+    :special_instruction,
+    :visit_date,
+    :device_reception_date,
+    :expected_repair_date,
+    :repair_date,
+    :pick_up_date,
+    :delivery_date,
+    :who_pays_id,
+    :defect_reason,
+    :technical_report,
+    :batch_number,
+    :svc_reference_number,
+    :external_created_date,
+    :is_special_service_id,
+    :problem_found,
+    :source,
+    :reverse_logistics_id,
+    :contains_deductible_id,
+    :created_by,
+    :verification_number,
+    :auth_type_xcd,
+    :party_type_xcd,
+    :party_reference_id
+    )
+  </INSERT>
+  <DELETE>
+    DELETE FROM elp_claim_authorization
+    WHERE
+    claim_authorization_id = hextoraw(:claim_authorization_id)
+  </DELETE>
+  <GET_NEXT_CLAIM_AUTH_NUMBER_SP>
+    ELITA.GetNextClaimAuthNumber
+  </GET_NEXT_CLAIM_AUTH_NUMBER_SP>
+  <ADDED_TO_INVOICE_GROUP>
+    <![CDATA[
+        select count(*)
+          from elp_invoice_group_detail
+    inner join elp_invoice_reconciliation
+            on elp_invoice_reconciliation.invoice_reconciliation_id = elp_invoice_group_detail.invoice_reconciliation_id
+    inner join elp_claim_auth_item
+            on elp_claim_auth_item.claim_auth_item_id = elp_invoice_reconciliation.claim_auth_item_id
+         where elp_claim_auth_item.claim_authorization_id = hextoraw(:claim_authorization_id)
+    ]]>
+  </ADDED_TO_INVOICE_GROUP>
+
+<CANCEL_SHIPMENT_REQUEST>
+    elita.ELP_TBL_CLAIM_CANCEL_SHIPMENT.elp_cancel_claim
+  </CANCEL_SHIPMENT_REQUEST>
+<RESHIPMENT>
+    elita.ELP_TBL_CLAIM_RESHIPMENT.reshipmentprocess
+  </RESHIPMENT>
+  <MANUALCASHPAY>
+    elita.elp_fulfillment_OracleEBS.ConvertToManualCashReimAuth
+  </MANUALCASHPAY>
+
+  <CHECK_LINKED_AUTH_ITEM>
+    elita.ELP_TBL_CLAIM_RESHIPMENT.checklinkedauthitem
+  </CHECK_LINKED_AUTH_ITEM>
+
+  <SAVE_CLAIM_REPLACE_OPTIONS>
+    elita.elp_case_utility.SaveClaimReplaceOptions
+  </SAVE_CLAIM_REPLACE_OPTIONS>
+
+  <REFUND_FEE>
+    elita.Elp_Tbl_Claim_Auth_Item.RefundFee
+  </REFUND_FEE>
+
+</SQL>
+
+

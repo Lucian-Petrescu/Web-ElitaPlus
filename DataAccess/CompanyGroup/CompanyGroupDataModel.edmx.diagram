@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="2.0" xmlns:edmx="http://schemas.microsoft.com/ado/2008/10/edmx">
+ <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2008/10/edmx">
+    <!-- Diagram content (shape and connector positions) -->
+    <edmx:Diagrams>
+      <Diagram DiagramId="3419b8e5a2e646d6927b1f2d2386988a" Name="Diagram1" ZoomLevel="100">
+        <EntityTypeShape EntityType="Model6.CompanyGroup" Width="1.5" PointX="0.75" PointY="0.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="Model6.RiskType" Width="1.5" PointX="3.125" PointY="0.625" />
+        <AssociationConnector Association="Model6.FK_RISK_TYPE_COMPANY_GROUP" />
+        <EntityTypeShape EntityType="Model6.Manufacturer" Width="1.5" PointX="3.125" PointY="4.5" />
+        <AssociationConnector Association="Model6.FK_MANUFACTURER_COMPANY_GROUP" />
+        <EntityTypeShape EntityType="Model6.PaymentType" Width="1.5" PointX="5.625" PointY="0.625" />
+        <AssociationConnector Association="Model6.FK_COMP_GRP_ID" />
+        <EntityTypeShape EntityType="Model6.CoverageLoss" Width="2.875" PointX="3" PointY="8.5" />
+        <AssociationConnector Association="Model6.FK_COVLOSS_COMPGRP" />
+        <EntityTypeShape EntityType="Model6.ClaimStatusByGroup" Width="1.5" PointX="5.5" PointY="4.375" />
+        <AssociationConnector Association="Model6.FK_CLAIM_STATUS_CMPGRP_ID" />
+        <EntityTypeShape EntityType="Model6.DefaultClaimStatus" Width="1.5" PointX="8.75" PointY="2.875" />
+        <AssociationConnector Association="Model6.FK_D_CLAIM_STATUS_BY_GROUP_ID" />
+        <AssociationConnector Association="Model6.FK_DCS_COMPANY_GROUP_ID" />
+      </Diagram>
+    </edmx:Diagrams>
+  </edmx:Designer>
+</edmx:Edmx>

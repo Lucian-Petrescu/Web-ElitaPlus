@@ -1,0 +1,4111 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<SQL>
+	<LOOKUP_LIST>
+		<ALL_LANGUAGE_LISTS>
+			SELECT
+			L.LIST_ID ID, L.CODE CODE, T.TRANSLATION DESCRIPTION
+			FROM
+			ELP_LIST L,
+			ELP_DICT_ITEM_TRANSLATION T
+			WHERE
+			L.DICT_ITEM_ID = T.DICT_ITEM_ID
+			AND T.LANGUAGE_ID = :language_id
+			ORDER BY
+			UPPER(TRIM(DESCRIPTION))
+		</ALL_LANGUAGE_LISTS>
+		<LIST_LANGUAGE_ITEMS>
+			SELECT
+			I.LIST_ITEM_ID ID, I.CODE CODE, T.TRANSLATION DESCRIPTION
+			FROM
+			ELP_LIST L,
+			ELP_LIST_ITEM I,
+			ELP_DICT_ITEM_TRANSLATION T
+			WHERE
+			I.LIST_ID = L.LIST_ID
+			AND	I.DICT_ITEM_ID = T.DICT_ITEM_ID
+			AND L.CODE = :code
+			AND T.LANGUAGE_ID = :language_id
+			ORDER BY
+			UPPER(TRIM(DESCRIPTION))
+		</LIST_LANGUAGE_ITEMS>
+	<LIST_ITEMS>
+      SELECT
+      I.LIST_ITEM_ID ID, RAWTOHEX(LANG.LANGUAGE_ID) LANGUAGE_ID, I.CODE CODE, T.TRANSLATION DESCRIPTION, DISPLAY_TO_USER,( L.CODE || '-' || I.code) EXTCODE
+      FROM
+      ELP_LIST L,
+      ELP_LIST_ITEM I,
+      ELP_DICT_ITEM_TRANSLATION T,
+      ELP_LANGUAGE LANG
+      WHERE
+      I.LIST_ID = L.LIST_ID
+      AND	I.DICT_ITEM_ID = T.DICT_ITEM_ID
+      AND T.LANGUAGE_ID = LANG.LANGUAGE_ID
+      AND L.CODE = :DropdownCode
+      ORDER BY
+      UPPER(TRIM(DESCRIPTION))
+    </LIST_ITEMS>
+    <LIST_ITEM_ID>
+      SELECT
+      I.LIST_ITEM_ID ID, RAWTOHEX(LANG.LANGUAGE_ID) LANGUAGE_ID, I.CODE CODE, T.TRANSLATION DESCRIPTION
+      FROM
+      ELP_LIST L,
+      ELP_LIST_ITEM I,
+      ELP_DICT_ITEM_TRANSLATION T,
+      ELP_LANGUAGE LANG
+      WHERE
+      I.LIST_ID = L.LIST_ID
+      AND	I.DICT_ITEM_ID = T.DICT_ITEM_ID
+      AND T.LANGUAGE_ID = LANG.LANGUAGE_ID
+      AND I.LIST_ITEM_ID = :ListItemId
+      ORDER BY
+      UPPER(TRIM(DESCRIPTION))
+    </LIST_ITEM_ID>
+    <LIST_ID>
+      SELECT
+      l.LIST_ID ID, RAWTOHEX(t1.LANGUAGE_ID) LANGUAGE_ID, l.CODE CODE, T.TRANSLATION DESCRIPTION
+      FROM
+      ELP_LIST L,
+      ELP_DICT_ITEM_TRANSLATION T,
+      ELP_LANGUAGE LANG,
+      ELP_DICT_ITEM_TRANSLATION T1
+      WHERE
+      L.DICT_ITEM_ID = T.DICT_ITEM_ID
+      AND L.DICT_ITEM_ID = T1.DICT_ITEM_ID  (+)
+      AND LANG.LANGUAGE_ID = T.LANGUAGE_ID
+      AND LANG.CODE = 'EN'
+      ORDER BY
+      UPPER(TRIM(T1.TRANSLATION))
+    </LIST_ID>
+    <LIST>
+      SELECT
+      l.LIST_ID ID, RAWTOHEX(LANG.LANGUAGE_ID) LANGUAGE_ID, l.CODE CODE, T.TRANSLATION DESCRIPTION
+      FROM
+      ELP_LIST L,
+      ELP_DICT_ITEM_TRANSLATION T,
+      ELP_LANGUAGE LANG
+      WHERE
+      L.DICT_ITEM_ID = T.DICT_ITEM_ID
+      AND LANG.LANGUAGE_ID = T.LANGUAGE_ID
+      AND upper(L.EXCLUDE_BY_ROLE) = 'Y'
+      ORDER BY
+      UPPER(TRIM(T.TRANSLATION))
+    </LIST>
+    <COUNTRIES>
+      SELECT
+      country_id id,  code , description
+      FROM
+      elp_country
+    </COUNTRIES>
+    <COVERAGE_EXTENSIONS>
+      SELECT
+      LI.list_item_id id, rawtohex(D.language_id) language_id, LI.code code, D.translation description
+      FROM
+      ELITA.ELP_LIST L, ELITA.ELP_LIST_ITEM LI, ELITA.ELP_DICT_ITEM_TRANSLATION D
+      WHERE
+      L.list_id = LI.list_id
+      and L.code = 'COVEXT'
+      and LI.dict_item_id = D.dict_item_id
+      ORDER BY code
+    </COVERAGE_EXTENSIONS>
+    <COUNTRY_BY_COMPANY>
+      SELECT
+      country_id id,  code , description
+      FROM
+      elp_company
+      WHERE
+      company_id = :CompanyId
+    </COUNTRY_BY_COMPANY>
+    <COMPANIES>
+      SELECT
+      company_id id,  code , description
+      FROM
+      elp_company
+      ORDER BY CODE
+    </COMPANIES>
+    <COMPANY_CREDIT_CARDS>
+      select
+      CCC.CREDIT_CARD_FORMAT_ID as id,
+      RAWTOHEX(T.LANGUAGE_ID) LANGUAGE_ID,
+      I.CODE as code,
+      T.translation  as description
+      from ELITA.ELP_COMPANY_CREDIT_CARD CCC
+      join ELITA.elp_credit_card_format CCF on CCF.credit_card_format_id = CCC.credit_card_format_id
+      join ELITA.elp_list_item I on CCF.CREDIT_CARD_TYPE_ID = I.list_item_id
+      join ELITA.elp_dict_item_translation T on I.dict_item_id = T.dict_item_id
+      join ELITA.elp_language L on T.language_id = L.language_id
+      WHERE CCC.COMPANY_ID = :company_id
+      ORDER bY I.code
+    </COMPANY_CREDIT_CARDS>
+    <COMPANY_CREDIT_CARDS_FORMAT>
+      select
+      credit_card_format_id as id,
+      RAWTOHEX(T.LANGUAGE_ID) LANGUAGE_ID,
+      I.CODE as code,
+      T.translation  as description
+      from ELITA.elp_credit_card_format CCF
+      join ELITA.elp_list_item I on CCF.CREDIT_CARD_TYPE_ID = I.list_item_id
+      join ELITA.elp_dict_item_translation T on I.dict_item_id = T.dict_item_id
+      join ELITA.elp_language L on T.language_id = L.language_id --and L.language_id = :language_id
+      ORDER bY I.code
+    </COMPANY_CREDIT_CARDS_FORMAT>
+    <GET_COMPANY>
+      SELECT
+      company_id id,  code , description, use_recoveries_id
+      FROM
+      elp_company
+      WHERE company_id = :CompanyId
+    </GET_COMPANY>
+    <COMPANY_GROUP>
+      SELECT
+      company_group_id id, description,  code
+      FROM
+      elp_company_group
+      order by code
+    </COMPANY_GROUP>
+    <COMPANY_GROUPS>
+      SELECT
+      company_group_id id, description,  code
+      FROM
+      elp_company_group
+      --dynamic_in_clause
+      order by code
+    </COMPANY_GROUPS>
+    <COMPANY_GROUP_CLAIM_NUMBERING>
+      SELECT
+      LI.list_item_id id, rawtohex(D.language_id) language_id, LI.code code, D.translation description
+      FROM
+      ELITA.ELP_LIST L, ELITA.ELP_LIST_ITEM LI, ELITA.ELP_DICT_ITEM_TRANSLATION D
+      WHERE
+      L.list_id = LI.list_id
+      and L.code = 'CLNUM'
+      and LI.dict_item_id = D.dict_item_id
+      ORDER BY UPPER(description)
+    </COMPANY_GROUP_CLAIM_NUMBERING>
+    <!-- REQ 1142-->
+    <LCNSTAG>
+      SELECT
+      LI.list_item_id id, rawtohex(D.language_id) language_id, LI.code code, D.translation description
+      FROM
+      ELITA.ELP_LIST L, ELITA.ELP_LIST_ITEM LI, ELITA.ELP_DICT_ITEM_TRANSLATION D
+      WHERE
+      L.list_id = LI.list_id
+      and L.code = 'LCNSTAG'
+      and LI.dict_item_id = D.dict_item_id
+      ORDER BY UPPER(description)
+    </LCNSTAG>
+    <INCVTNEWVHCL>
+      SELECT
+      LI.list_item_id id, rawtohex(D.language_id) language_id, LI.code code, D.translation description
+      FROM
+      ELITA.ELP_LIST L, ELITA.ELP_LIST_ITEM LI, ELITA.ELP_DICT_ITEM_TRANSLATION D
+      WHERE
+      L.list_id = LI.list_id
+      and L.code = 'INCVTNEWVHCL'
+      and LI.dict_item_id = D.dict_item_id
+      ORDER BY UPPER(D.translation) desc
+    </INCVTNEWVHCL>
+    <!-- REQ 1142-->
+    <COMPANY_GROUP_INVOICE_NUMBERING>
+      SELECT
+      LI.list_item_id id, rawtohex(D.language_id) language_id, LI.code code, D.translation description
+      FROM
+      ELITA.ELP_LIST L, ELITA.ELP_LIST_ITEM LI, ELITA.ELP_DICT_ITEM_TRANSLATION D
+      WHERE
+      L.list_id = LI.list_id
+      and L.code = 'INVNUM'
+      and LI.dict_item_id = D.dict_item_id
+      ORDER BY UPPER(description)
+    </COMPANY_GROUP_INVOICE_NUMBERING>
+    <INCFIRSTPYMT>
+      SELECT
+      LI.list_item_id id, rawtohex(D.language_id) language_id, LI.code code, D.translation description
+      FROM
+      ELITA.ELP_LIST L, ELITA.ELP_LIST_ITEM LI, ELITA.ELP_DICT_ITEM_TRANSLATION D
+      WHERE
+      L.list_id = LI.list_id
+      and L.code = 'INCFIRSTPYMT'
+      and LI.dict_item_id = D.dict_item_id
+      ORDER BY UPPER(description)
+    </INCFIRSTPYMT>
+    <PRMETHOD>
+      SELECT
+      LI.list_item_id id, rawtohex(D.language_id) language_id, LI.code code, D.translation description
+      FROM
+      ELITA.ELP_LIST L, ELITA.ELP_LIST_ITEM LI, ELITA.ELP_DICT_ITEM_TRANSLATION D
+      WHERE
+      L.list_id = LI.list_id
+      and L.code = 'PRMETHOD'
+      and LI.dict_item_id = D.dict_item_id
+      ORDER BY UPPER(description)
+    </PRMETHOD>
+	  <REFUND_COMP_METHOD>
+	    SELECT
+	    LI.list_item_id id, rawtohex(D.language_id) language_id, LI.code code, D.translation description
+	    FROM
+	    ELITA.ELP_LIST L, ELITA.ELP_LIST_ITEM LI, ELITA.ELP_DICT_ITEM_TRANSLATION D
+	    WHERE
+	    L.list_id = LI.list_id
+	    and L.code = 'RMETH'
+	    and LI.dict_item_id = D.dict_item_id
+	    ORDER BY UPPER(description)
+	  </REFUND_COMP_METHOD>
+    <COMPUTE_METHOD>
+      SELECT
+      LI.list_item_id id, rawtohex(D.language_id) language_id, LI.code code, D.translation description
+      FROM
+      ELITA.ELP_LIST L, ELITA.ELP_LIST_ITEM LI, ELITA.ELP_DICT_ITEM_TRANSLATION D
+      WHERE
+      L.list_id = LI.list_id
+      and L.code = 'MCM'
+      and LI.dict_item_id = D.dict_item_id
+      ORDER BY UPPER(description)
+    </COMPUTE_METHOD>
+    <REASON_CODE>
+      SELECT
+      LI.list_item_id id, rawtohex(D.language_id) language_id, LI.code code, D.translation description
+      FROM
+      ELITA.ELP_LIST L, ELITA.ELP_LIST_ITEM LI, ELITA.ELP_DICT_ITEM_TRANSLATION D
+      WHERE
+      L.list_id = LI.list_id
+      and L.code = 'REASON_CODE'
+      and LI.dict_item_id = D.dict_item_id
+      ORDER BY UPPER(description)
+    </REASON_CODE>
+    <AUTHDTL>
+      SELECT
+      LI.list_item_id id, rawtohex(D.language_id) language_id, LI.code code, D.translation description
+      FROM
+      ELITA.ELP_LIST L, ELITA.ELP_LIST_ITEM LI, ELITA.ELP_DICT_ITEM_TRANSLATION D
+      WHERE
+      L.list_id = LI.list_id
+      and L.code = 'AUTHDTL'
+      and LI.dict_item_id = D.dict_item_id
+      ORDER BY UPPER(description)
+    </AUTHDTL>
+    <COMPANY_TYPE>
+      SELECT
+      LI.list_item_id id, rawtohex(D.language_id) language_id, LI.code code, D.translation description
+      FROM
+      ELITA.ELP_LIST L, ELITA.ELP_LIST_ITEM LI, ELITA.ELP_DICT_ITEM_TRANSLATION D
+      WHERE
+      L.list_id = LI.list_id
+      and L.code = 'COTYP'
+      and LI.dict_item_id = D.dict_item_id
+      ORDER BY UPPER(description)
+    </COMPANY_TYPE>
+    <ADDRESSES>
+      SELECT
+      a.address_id id, rawtohex(company_id) company_id, a.postal_code code, a.address1 description
+      FROM
+      elita.elp_address a, elita.elp_company c
+      WHERE
+      a.country_id = c.business_country_id
+      ORDER BY code
+    </ADDRESSES>
+    <CURRENCIES>
+      SELECT
+      currency_id id, code, description
+      FROM
+      ELITA.ELP_CURRENCY
+    </CURRENCIES>
+    <MASTERCLAIMPROC>
+      SELECT
+      i.list_item_id id, i.code description, i.code
+      FROM
+      elita.elp_list_item i, elita.elp_list l
+      WHERE
+      i.list_id = l.list_id
+      AND upper(l.code)= 'MASTERCLAIMPROC'
+    </MASTERCLAIMPROC>
+    <YES_NO>
+      SELECT
+      i.list_item_id id, i.code description, i.code
+      FROM
+      elita.elp_list_item i, elita.elp_list l
+      WHERE
+      i.list_id = l.list_id
+      AND upper(l.code)= 'YESNO'
+    </YES_NO>
+    <PERIODRENEW>
+      SELECT
+      LI.list_item_id id, rawtohex(D.language_id) language_id, LI.code code, D.translation description
+      FROM
+      ELITA.ELP_LIST L, ELITA.ELP_LIST_ITEM LI, ELITA.ELP_DICT_ITEM_TRANSLATION D
+      WHERE
+      L.list_id = LI.list_id
+      and L.code = 'PERIODRENEW'
+      and LI.dict_item_id = D.dict_item_id
+      ORDER BY code
+    </PERIODRENEW>
+    <FSTAPRVL>
+      SELECT
+      LI.list_item_id id, rawtohex(D.language_id) language_id, LI.code code, D.translation description
+      FROM
+      ELITA.ELP_LIST L, ELITA.ELP_LIST_ITEM LI, ELITA.ELP_DICT_ITEM_TRANSLATION D
+      WHERE
+      L.list_id = LI.list_id
+      and L.code = 'FSTAPRVL'
+      and LI.dict_item_id = D.dict_item_id
+      ORDER BY code
+    </FSTAPRVL>
+    <FUTURE_DATE_ALLOW_FOR>
+      SELECT
+      LI.list_item_id id, rawtohex(D.language_id) language_id, LI.code code, D.translation description
+      FROM
+      ELITA.ELP_LIST L, ELITA.ELP_LIST_ITEM LI, ELITA.ELP_DICT_ITEM_TRANSLATION D
+      WHERE
+      L.list_id = LI.list_id
+      and L.code = 'FDAF'
+      and LI.dict_item_id = D.dict_item_id
+      ORDER BY code
+    </FUTURE_DATE_ALLOW_FOR>
+    <BILLING_FREQUENCY>
+      SELECT
+      i.list_item_id id, i.code description, i.code
+      FROM
+      elita.elp_list_item i, elita.elp_list l
+      WHERE
+      i.list_id = l.list_id
+      AND upper(l.code)= 'BLFQ'
+    </BILLING_FREQUENCY>
+    <VALIDATE_BANK_INFO>
+      SELECT
+      LI.list_item_id id, rawtohex(D.language_id) language_id, LI.code code, D.translation description
+      FROM
+      ELITA.ELP_LIST L, ELITA.ELP_LIST_ITEM LI, ELITA.ELP_DICT_ITEM_TRANSLATION D
+      WHERE
+      L.list_id = LI.list_id
+      and L.code = 'VBINFO'
+      and LI.dict_item_id = D.dict_item_id
+      ORDER BY UPPER(description)
+    </VALIDATE_BANK_INFO>
+    <BILLING_STATUS>
+      SELECT
+      i.list_item_id id, i.code description, i.code
+      FROM
+      elita.elp_list_item i, elita.elp_list l
+      WHERE
+      i.list_id = l.list_id
+      AND upper(l.code)= 'BLST'
+    </BILLING_STATUS>
+    <REJECT_CODES>
+      SELECT
+      i.list_item_id id, i.code description, i.code
+      FROM
+      elita.elp_list_item i, elita.elp_list l
+      WHERE
+      i.list_id = l.list_id
+      AND upper(l.code)= 'REJCODE'
+    </REJECT_CODES>
+    <EXTENDED_CLAIM_STATUS_OWNER>
+      SELECT
+      i.list_item_id id, i.code description, i.code
+      FROM
+      elita.elp_list_item i, elita.elp_list l
+      WHERE
+      i.list_id = l.list_id
+      AND upper(l.code)= 'EXTOWN'
+    </EXTENDED_CLAIM_STATUS_OWNER>
+    <DOCUMENT_TYPES>
+      SELECT
+      LI.list_item_id id, rawtohex(D.language_id) language_id, LI.code code, D.translation description
+      FROM
+      ELITA.ELP_LIST L, ELITA.ELP_LIST_ITEM LI, ELITA.ELP_DICT_ITEM_TRANSLATION D
+      WHERE
+      L.list_id = LI.list_id
+      and L.code = 'DTYP'
+      and LI.dict_item_id = D.dict_item_id
+      ORDER BY UPPER(description)
+    </DOCUMENT_TYPES>
+    <VALIDATION_TYPES>
+      SELECT
+      LI.list_item_id id, rawtohex(D.language_id) language_id, LI.code code, D.translation description
+      FROM
+      ELITA.ELP_LIST L, ELITA.ELP_LIST_ITEM LI, ELITA.ELP_DICT_ITEM_TRANSLATION D
+      WHERE
+      L.list_id = LI.list_id
+      and L.code = 'IDVAL'
+      and LI.dict_item_id = D.dict_item_id
+      ORDER BY UPPER(description)
+    </VALIDATION_TYPES>
+    <AUDIT_SOURCE>
+      SELECT
+      LI.list_item_id id, rawtohex(D.language_id) language_id, LI.code code, D.translation description
+      FROM
+      ELITA.ELP_LIST L, ELITA.ELP_LIST_ITEM LI, ELITA.ELP_DICT_ITEM_TRANSLATION D
+      WHERE
+      L.list_id = LI.list_id
+      and L.code = 'AUDIT_SOURCE'
+      and LI.dict_item_id = D.dict_item_id
+      ORDER BY UPPER(description)
+    </AUDIT_SOURCE>
+    <AUDIANCE_TYPES>
+      SELECT
+      LI.list_item_id id, rawtohex(D.language_id) language_id, LI.code code, D.translation description
+      FROM
+      ELITA.ELP_LIST L, ELITA.ELP_LIST_ITEM LI, ELITA.ELP_DICT_ITEM_TRANSLATION D
+      WHERE
+      L.list_id = LI.list_id
+      and L.code = 'AUDIANCE'
+      and LI.dict_item_id = D.dict_item_id
+      ORDER BY UPPER(description)
+    </AUDIANCE_TYPES>
+    <SYSTEM_NOTIFICATION_TYPE>
+      SELECT
+      LI.list_item_id id, rawtohex(D.language_id) language_id, LI.code code, D.translation description
+      FROM
+      ELITA.ELP_LIST L, ELITA.ELP_LIST_ITEM LI, ELITA.ELP_DICT_ITEM_TRANSLATION D
+      WHERE
+      L.list_id = LI.list_id
+      and L.code = 'NOTIFICATION'
+      and LI.dict_item_id = D.dict_item_id
+      ORDER BY UPPER(description)
+    </SYSTEM_NOTIFICATION_TYPE>
+    <LANGUAGE_CULTURES>
+      SELECT
+      language_id id, description, culture_code code
+      FROM
+      elita.elp_language
+    </LANGUAGE_CULTURES>
+    <LANGUAGES>
+      SELECT
+      language_id id, description, code
+      FROM
+      elita.elp_language
+    </LANGUAGES>
+    <MANUFACTURERS>
+      SELECT
+      manufacturer_id id,  rawtohex(company_group_id) company_group_id, description code, description
+      FROM
+      ELP_MANUFACTURER
+      ORDER BY code
+    </MANUFACTURERS>
+    <FLP>
+      SELECT
+      i.list_item_id id, i.code description, i.code
+      FROM
+      elita.elp_list_item i, elita.elp_list l
+      WHERE
+      i.list_id = l.list_id
+      AND upper(l.code)= 'FLP'
+    </FLP>
+    <SPLIT_SYSTEM>
+      SELECT split_System_Id id,
+      description description,
+      system_code code
+      FROM ELP_SPLIT_SYSTEM
+      ORDER BY description
+    </SPLIT_SYSTEM>
+    <SPLIT_SYSTEM_TRANSLATIONS>
+      select ss.split_system_id id, rawtohex(ss.company_id) company_id,
+      dict.translation description,
+      ss.system_code
+      from elp_split_system ss,
+      elp_list l,
+      elp_list_item li,
+      elp_language la,
+      elp_dict_item_translation dict
+      where  ss.interface_code = :interface_code
+      and la.code = :language_code
+      and L.CODE = :list_code
+      and ss.system_code = li.code
+      and l.list_id = li.list_id
+      and li.dict_item_id = dict.dict_item_id
+      and la.language_id = dict.language_id
+      order by description
+    </SPLIT_SYSTEM_TRANSLATIONS>
+    <SPLIT_SYSTEM_CODE>
+      select ss.split_system_id id, rawtohex(ss.company_id) company_id,
+      ss.description description,
+      ss.system_code
+      from elp_split_system ss
+      where  ss.interface_code = :interface_code
+      order by description
+    </SPLIT_SYSTEM_CODE>
+    <ORIGINAL_DEALER_LIST>
+      SELECT
+      dealer_id id,  rawtohex(company_id) company_id, dealer code, dealer_name description
+      FROM
+      ELP_DEALER
+      WHERE
+      company_id= :Company_id
+      and
+      not exists
+      (Select OriginalDealerID From elp_service_center where OriginalDealerID=ELP_DEALER.dealer_id and not Service_center_id= :Service_center_id)
+
+    </ORIGINAL_DEALER_LIST>
+    <DEALERS>
+      SELECT
+      dealer_id id,  rawtohex(company_id) company_id, dealer code, dealer_name description, rawtohex(dealer_group_id) dealer_group_id
+      FROM
+      ELP_DEALER
+      --dynamic_where_clause
+      --dynamic_order_by_clause
+    </DEALERS>
+    <PRODUCERS>
+      SELECT
+      producer_id id,  rawtohex(company_id) company_id, code,  description 
+      FROM
+      ELP_PRODUCER
+      --dynamic_where_clause
+      --dynamic_order_by_clause
+    </PRODUCERS>
+    <PARENT_DEALERS>
+      SELECT   dealer_id id, rawtohex(company_id) company_id, dealer code, dealer_name description, rawtohex(dealer_group_id) dealer_group_id
+      FROM     elp_dealer d
+      WHERE   EXISTS ( SELECT   1
+      FROM      elp_product_code        pc,
+      elp_product_code_parent pcp
+      WHERE   d.dealer_id = pc.dealer_id
+      AND        pc.product_code_id = pcp.product_code_id)
+      --dynamic_where_clause
+      --dynamic_order_by_clause
+    </PARENT_DEALERS>
+    <DEALER_GROUPS>
+      SELECT
+      dealer_group_id id,  rawtohex(company_group_id) company_group_id, code, description
+      FROM
+      ELP_DEALER_GROUP
+      --dynamic_where_clause
+      --dynamic_order_by_clause
+    </DEALER_GROUPS>
+    <DEALERS_COMM_PROD>
+      SELECT dealer_id id,  rawtohex(company_id) company_id, dealer code, dealer_name description
+      FROM
+      ELP_DEALER
+      where dealer_id in
+      (select distinct dealer_id from elp_contract
+      where IS_COMM_P_CODE_ID = GETYESNOID('Y'))
+      order by code
+    </DEALERS_COMM_PROD>
+    <DEALERS_DUAL_COLUMNS>
+      SELECT
+      dealer_id id,  rawtohex(d.company_id) company_id, dealer code, C.CODE || ' - ' || dealer_name description, rawtohex(dealer_group_id) dealer_group_id, C.CODE || ' - ' || dealer description1
+      FROM
+      ELP_DEALER d, elp_company c
+      WHERE c.company_id = d.company_id
+      --dynamic_where_clause
+      --dynamic_order_by_clause
+    </DEALERS_DUAL_COLUMNS>
+    <CAMPAIGN_NUMBERS>
+      Select  distinct c.dealer_id dealer_id, c.campaign_number,rawtohex(d.company_id) company_id
+      from elp_cert c, elp_dealer d
+      where c.dealer_id = d.dealer_id
+      and  c.campaign_number is not null
+      order by c.campaign_number
+    </CAMPAIGN_NUMBERS>
+    <DEALERS_WITH_EDIT_BRANCH_ONLY>
+      SELECT
+      dealer_id id,  rawtohex(company_id) company_id, dealer code, dealer_name description, rawtohex(dealer_group_id) dealer_group_id
+      FROM
+      ELP_DEALER
+      WHERE GetYesNo(edit_branch_id) = 'Y'
+      --dynamic_where_clause
+      --dynamic_order_by_clause
+    </DEALERS_WITH_EDIT_BRANCH_ONLY>
+    <DEALERS_DUAL_COLUMNS_WITH_EDIT_BRANCH_ONLY>
+      SELECT
+      dealer_id id,  rawtohex(d.company_id) company_id, dealer code, C.CODE || ' - ' || dealer_name description, rawtohex(dealer_group_id) dealer_group_id
+      FROM
+      ELP_DEALER d, elp_company c
+      WHERE c.company_id = d.company_id
+      and GetYesNo(edit_branch_id) = 'Y'
+      --dynamic_where_clause
+      --dynamic_order_by_clause
+    </DEALERS_DUAL_COLUMNS_WITH_EDIT_BRANCH_ONLY>
+    <DEALERS_PRODUCT_CONVERSIONS>
+      SELECT UNIQUE ELP_DEALER.DEALER_ID ID, RAWTOHEX(ELP_DEALER.DEALER_ID) DEALER_ID, RAWTOHEX(ELP_DEALER.COMPANY_ID) COMPANY_ID, DEALER CODE, DEALER_NAME DESCRIPTION, ELP_LIST_ITEM.CODE CONV_CODE
+      FROM ELP_DEALER
+      INNER JOIN ELP_LIST_ITEM ON ELP_DEALER.CONVERT_PRODUCT_CODE_ID = ELP_LIST_ITEM.LIST_ITEM_ID AND ELP_LIST_ITEM.CODE not in ('N')
+      --dynamic_where_clause
+      --dynamic_order_by_clause
+    </DEALERS_PRODUCT_CONVERSIONS>
+    <DEALERS_PRODUCT_CONVERSIONS_DUAL>
+      SELECT UNIQUE ELP_DEALER.DEALER_ID ID, RAWTOHEX(ELP_DEALER.DEALER_ID) DEALER_ID,  RAWTOHEX(ELP_DEALER.COMPANY_ID) COMPANY_ID, DEALER CODE, ELP_COMPANY.CODE || ' - ' || dealer_name DESCRIPTION, ELP_LIST_ITEM.CODE CONV_CODE
+      FROM ELP_DEALER
+      INNER JOIN ELP_LIST_ITEM ON ELP_DEALER.CONVERT_PRODUCT_CODE_ID = ELP_LIST_ITEM.LIST_ITEM_ID AND ELP_LIST_ITEM.CODE not in ('N')
+      INNER JOIN ELP_COMPANY ON ELP_DEALER.COMPANY_ID = ELP_COMPANY.COMPANY_ID
+      --dynamic_where_clause
+      --dynamic_order_by_clause
+    </DEALERS_PRODUCT_CONVERSIONS_DUAL>
+    <DEALER_GROUPS>
+      SELECT
+      dealer_group_id id,  rawtohex(company_group_id) company_group_id,  code , description
+      FROM
+      elp_dealer_group
+      ORDER BY description
+    </DEALER_GROUPS>
+    <DEALER_TEMPLATES>
+      SELECT
+      t.oc_template_id as id, t.template_code as code, t.description, t.has_customized_params_xcd, t.allow_manual_use_xcd, t.allow_manual_resend_xcd, t.effective_date, t.expiration_date, d.dealer
+      FROM
+      elp_oc_template t, elp_oc_template_group tg, elp_oc_template_group_dealer tgd, elp_dealer d
+      WHERE
+      t.oc_template_group_id = tg.oc_template_group_id
+      and tg.oc_template_group_id = tgd.oc_template_group_id
+      and tgd.dealer_id = d.dealer_id
+      ORDER BY t.description
+    </DEALER_TEMPLATES>
+    <DEALERS_GROUPS_BY_COMPANY_DUAL_COLUMNS>
+      SELECT distinct
+      dg.dealer_group_id id,  rawtohex(dg.company_group_id) company_group_id,  dg.code , dg.code || ' - ' || dg.description description
+      FROM
+      elp_dealer_group dg inner join elp_company_group cg
+      on cg.company_group_id = dg.company_group_id
+      inner join elp_company c on c.company_group_id = cg.company_group_id
+      --dynamic_where_clause
+    </DEALERS_GROUPS_BY_COMPANY_DUAL_COLUMNS>
+    <DEALERS_GROUPS_BY_COMPANY>
+      SELECT
+      dg.dealer_group_id id,  rawtohex(dg.company_group_id) company_group_id,  dg.code , dg.description, rawtohex(c.company_id) company_id
+      FROM
+      elp_dealer_group dg, elp_company c
+      where  dg.company_group_id = c.company_group_id
+
+    </DEALERS_GROUPS_BY_COMPANY>
+    <DEALERS_BY_DEALER_TYPE>
+
+
+      SELECT
+      unique dealer_id id, rawtohex(d.company_id) company_id, dealer code, C.CODE || ' - ' || dealer_name description, rawtohex(dealer_group_id) dealer_group_id
+      FROM
+      ELP_DEALER d,
+      elp_company c,
+      ELP_LIST_ITEM LI,
+      ELP_DICT_ITEM_TRANSLATION DT
+
+      where c.company_id = d.company_id and
+      d.dealer_type_id = li.list_item_id and
+      dt.dict_item_id = li.dict_item_id
+      and  (dt.translation = :dealer_type  OR  dt.translation = :second_dealer_type)
+
+      order by description
+
+    </DEALERS_BY_DEALER_TYPE>
+
+
+    <DEALER_EDIT_MODEL>
+      select elp_dealer.dealer_id id, dealer  || ' - ' || dealer_name as description
+      from elp_dealer, elp_contract
+      where company_id in (select company_id from elp_user_company where user_id = :user_id)
+      and elp_dealer.dealer_id = elp_contract.dealer_id
+      and elp_contract.edit_model_id = GetItemIdFromListAndItem('YESNO', 'Y')
+    </DEALER_EDIT_MODEL>
+    <!-- This replaces the current query -->
+    <DEALER_COMMISSION_BREAKDOWN>
+      SELECT UNIQUE C.DEALER_ID AS ID,
+      rawtohex(company_id) company_id,
+      DEALER_NAME AS DESCRIPTION,
+      DEALER AS CODE
+      FROM ELP_DEALER C
+      INNER JOIN  ELP_COMMISSION_PERIOD CP ON C.DEALER_ID = CP.DEALER_ID
+      --dynamic_where_clause
+      ORDER BY DEALER_NAME
+    </DEALER_COMMISSION_BREAKDOWN>
+    <!-- This is a new query -->
+    <DEALER_COMMISSION_BREAKDOWN_DUAL_COLUMNS>
+      SELECT UNIQUE DEALER.DEALER_ID AS ID,
+      rawtohex(DEALER.company_id) company_id,
+      C.CODE || ' - ' || DEALER_NAME AS DESCRIPTION,
+      DEALER AS CODE
+      FROM ELP_DEALER DEALER
+      INNER JOIN  ELP_COMMISSION_PERIOD CP ON  DEALER.DEALER_ID = CP.DEALER_ID
+      INNER JOIN  ELP_COMPANY C ON  DEALER.COMPANY_ID = C.Company_ID
+      --dynamic_where_clause
+      ORDER BY DESCRIPTION
+    </DEALER_COMMISSION_BREAKDOWN_DUAL_COLUMNS>
+    <DEALERS_MONTHLY_BILLING>
+      <![CDATA[
+			SELECT distinct
+				d.dealer_id id,  rawtohex(company_id) company_id, dealer code, dealer_name description
+			FROM
+				ELP_DEALER d,
+				Elp_CONTRACT c,
+				ELP_LIST_ITEM li
+			WHERE d.dealer_id = c.dealer_id
+				and c.effective <= sysdate
+				and c.recurring_premium_id = li.list_item_id
+				and (li.code <> '0' or elp_utl_attribute.GetAttributeValue('ELP_DEALER',d.dealer_id,'NEW_INVOICE_PAYMENT',sysdate)='Y' )
+			ORDER BY description
+			]]>
+    </DEALERS_MONTHLY_BILLING>
+
+    <POLICE_STATIONS>
+      SELECT
+      police_station_id id,  rawtohex(p.country_id) country_id, police_station_code code,
+      c.code country, police_station_name description
+      FROM
+      ELP_POLICE_STATION p, elp_country c
+      WHERE p.country_id = c.country_id
+      --dynamic_where_clause
+      --dynamic_order_by_clause
+    </POLICE_STATIONS>
+    <PRODUCTCODE>
+      SELECT
+      PRODUCT_CODE_ID ID, RAWTOHEX(DEALER_ID) DEALER_ID, PRODUCT_CODE CODE, DESCRIPTION  DESCRIPTION
+      FROM ELITA.ELP_PRODUCT_CODE
+      ORDER BY  UPPER(PRODUCT_CODE)
+    </PRODUCTCODE>
+    <PRODUCTCODE_BY_COMPANY>
+      Select min(PRODUCT_CODE_ID) ID, min(product_code) CODE, min(DESCRIPTION) DESCRIPTION
+      from elp_product_code, elp_dealer cc
+      where elp_product_code.dealer_id = cc.dealer_id
+      --dynamic_in_clause
+      group by product_code
+      order by UPPER(elp_product_code.product_code)
+    </PRODUCTCODE_BY_COMPANY>
+    <PRODUCTCODE_BY_DEALER>
+      Select PRODUCT_CODE_ID ID, product_code CODE, DESCRIPTION,
+      product_code||' - '||description code_and_description
+      from elp_product_code, elp_dealer cc
+      where elp_product_code.dealer_id = cc.dealer_id
+      and cc.dealer_id = :dealer_id
+      order by UPPER(elp_product_code.product_code)
+    </PRODUCTCODE_BY_DEALER>
+    <BRANCHCODE>
+      SELECT
+      BRANCH_ID ID, RAWTOHEX(DEALER_ID) DEALER_ID, BRANCH_CODE CODE,BRANCH_NAME DESCRIPTION
+      FROM ELITA.ELP_BRANCH
+      ORDER BY  UPPER(BRANCH_CODE)
+    </BRANCHCODE>
+
+    <PRICEMATRIX_ITEM>
+      SELECT  PRICE_MATRIX_ID ID, RAWTOHEX(PC.PRODUCT_CODE_ID) PRODUCT_CODE_ID, I.CODE CODE, T.TRANSLATION DESCRIPTION
+      FROM ELP_LIST L, ELP_LIST_ITEM I, elp_product_code pc,
+      ELP_DICT_ITEM_TRANSLATION T,
+      ELP_LANGUAGE
+      WHERE I.LIST_ID = L.LIST_ID
+      and pc.PRICE_MATRIX_ID = list_item_id
+      AND I.DICT_ITEM_ID = T.DICT_ITEM_ID
+      AND T.LANGUAGE_ID = ELP_LANGUAGE.LANGUAGE_ID
+      AND ELP_LANGUAGE.LANGUAGE_ID = :LANGUAGE_ID
+      and L.code = ('YESNO')
+      ORDER BY DESCRIPTION
+    </PRICEMATRIX_ITEM>
+    <PERCENTOF_RETAIL_ITEM>
+      select  PC.PRODUCT_CODE_ID ID, rawtohex(product_code_id) product_code_id, PERCENT_OF_RETAIL CODE, PERCENT_OF_RETAIL DESCRIPTION
+      from	elp_product_code PC
+      order by UPPER(DESCRIPTION)
+    </PERCENTOF_RETAIL_ITEM>
+    <ZIP_DISTRICTS>
+      SELECT
+      zip_district_id id,  rawtohex(country_id) country_id, short_desc code, description,
+      short_desc||' - '||description code_and_description
+      FROM
+      ELP_ZIP_DISTRICT
+      ORDER BY code_and_description
+    </ZIP_DISTRICTS>
+    <RISK_TYPES>
+      SELECT
+      risk_type_id id, description, risk_type_english code, rawtohex(company_group_id) company_group_id
+      from
+      elita.elp_risk_type
+      order by UPPER(DESCRIPTION)
+    </RISK_TYPES>
+    <ITEM_RISKTYPE>
+      select ITEM_ID id,  rawtohex(product_code_id) product_code_id, risk.DESCRIPTION, ITEM_NUMBER CODE
+      from	elp_item, elp_risk_type risk
+      where	elp_item.risk_type_id = risk.risk_type_id
+      order by UPPER(DESCRIPTION), ITEM_NUMBER
+    </ITEM_RISKTYPE>
+    <RISK_PRODUCTCODE>
+      select elp_item.risk_type_id id,  rawtohex(product_code_id) product_code_id, risk.DESCRIPTION, ITEM_NUMBER CODE
+      from	elp_item, elp_risk_type risk
+      where	elp_item.risk_type_id = risk.risk_type_id
+      order by UPPER(DESCRIPTION), ITEM_NUMBER
+    </RISK_PRODUCTCODE>
+    <POSTALCODEFORMAT>
+      SELECT
+      postal_code_format_id id, description
+      from
+      elita.ELP_POSTAL_CODE_FORMAT
+      order by UPPER(DESCRIPTION)
+    </POSTALCODEFORMAT>
+    <PRICE_GROUPS>
+      SELECT
+      price_group_id id,  rawtohex(country_id) country_id, short_desc code, description
+      FROM
+      ELITA.ELP_PRICE_GROUP
+      ORDER BY UPPER(description)
+    </PRICE_GROUPS>
+    <SERVICE_GROUPS>
+      SELECT
+      service_group_id id,  rawtohex(country_id) country_id, short_desc code, description
+      FROM
+      ELITA.ELP_SERVICE_GROUP
+      ORDER BY UPPER(description)
+    </SERVICE_GROUPS>
+    <SERVICE_CENTERS>
+      SELECT
+      sc.service_center_id id,  rawtohex(sc.country_id) country_id, sc.code, sc.description
+      FROM
+      ELITA.ELP_SERVICE_CENTER sc
+      WHERE
+      sc.STATUS_CODE ='A'
+      ORDER BY UPPER(sc.description)
+    </SERVICE_CENTERS>
+    <SERVICE_NETWORKS>
+      SELECT
+      service_network_id id,  rawtohex(company_group_id) company_group_id, short_desc code, description
+      FROM
+      ELITA.ELP_SERVICE_NETWORK
+      ORDER BY UPPER(description)
+    </SERVICE_NETWORKS>
+    <ROUTE>
+      SELECT
+      rt.route_id id,  rawtohex(sn.company_group_id) company_group_id, rt.code, rt.description
+      FROM
+      ELITA.ELP_ROUTE rt,
+      ELITA.elp_service_network sn
+      where rt.service_network_id = sn.service_network_id
+      ORDER BY UPPER(description)
+
+    </ROUTE>
+    <REPAIR_CODES>
+      SELECT
+      repair_code_id id,  rawtohex(company_group_id) company_group_id, short_desc code, description
+      FROM
+      ELITA.ELP_REPAIR_CODE
+      ORDER BY UPPER(description)
+    </REPAIR_CODES>
+    <SERVICE_TYPES>
+      SELECT
+      LI.list_item_id id, rawtohex(D.language_id) language_id, LI.code code, D.translation description
+      FROM
+      ELITA.ELP_LIST L, ELITA.ELP_LIST_ITEM LI, ELITA.ELP_DICT_ITEM_TRANSLATION D
+      WHERE
+      L.list_id = LI.list_id
+      and L.code = 'STYP'
+      and LI.dict_item_id = D.dict_item_id
+      ORDER BY UPPER(description)
+    </SERVICE_TYPES>
+    <POSTPRE_PAID>
+      SELECT
+      LI.list_item_id id, rawtohex(D.language_id) language_id, LI.code code, D.translation description
+      FROM
+      ELITA.ELP_LIST L, ELITA.ELP_LIST_ITEM LI, ELITA.ELP_DICT_ITEM_TRANSLATION D
+      WHERE
+      L.list_id = LI.list_id
+      and L.code = 'POSTPRE'
+      and LI.dict_item_id = D.dict_item_id
+      ORDER BY UPPER(description)
+    </POSTPRE_PAID>
+    <COLLECTION_CYCLE_TYPE>
+      SELECT
+      LI.list_item_id id, rawtohex(D.language_id) language_id, LI.code code, D.translation description
+      FROM
+      ELITA.ELP_LIST L, ELITA.ELP_LIST_ITEM LI, ELITA.ELP_DICT_ITEM_TRANSLATION D
+      WHERE
+      L.list_id = LI.list_id
+      and L.code = 'COLLCYCLE'
+      and LI.dict_item_id = D.dict_item_id
+      ORDER BY UPPER(description)
+    </COLLECTION_CYCLE_TYPE>
+    <REPLACEMENT_BASED_ON>
+      SELECT
+      LI.list_item_id id, rawtohex(D.language_id) language_id, LI.code code, D.translation description
+      FROM
+      ELITA.ELP_LIST L, ELITA.ELP_LIST_ITEM LI, ELITA.ELP_DICT_ITEM_TRANSLATION D
+      WHERE
+      L.list_id = LI.list_id
+      and L.code = 'REPLOG'
+      and LI.dict_item_id = D.dict_item_id
+      ORDER BY UPPER(description)
+    </REPLACEMENT_BASED_ON>
+    <COVERAGE_TYPES>
+      SELECT
+      LI.list_item_id id, rawtohex(D.language_id) language_id, LI.code code, D.translation description
+      FROM
+      ELITA.ELP_LIST L, ELITA.ELP_LIST_ITEM LI, ELITA.ELP_DICT_ITEM_TRANSLATION D
+      WHERE
+      L.list_id = LI.list_id
+      and L.code = 'CTYP'
+      and LI.dict_item_id = D.dict_item_id
+      ORDER BY UPPER(description)
+    </COVERAGE_TYPES>
+    <NOTIFICATION_TYPES>
+      SELECT
+      LI.list_item_id id, rawtohex(D.language_id) language_id, LI.code code, D.translation description
+      FROM
+      ELITA.ELP_LIST L, ELITA.ELP_LIST_ITEM LI, ELITA.ELP_DICT_ITEM_TRANSLATION D
+      WHERE
+      L.list_id = LI.list_id
+      and L.code = 'SNTYP'
+      and LI.dict_item_id = D.dict_item_id
+      ORDER BY UPPER(description)
+    </NOTIFICATION_TYPES>
+    <WHO_PAYS>
+      SELECT
+      LI.list_item_id id, rawtohex(D.language_id) language_id, LI.code code, D.translation description
+      FROM
+      ELITA.ELP_LIST L, ELITA.ELP_LIST_ITEM LI, ELITA.ELP_DICT_ITEM_TRANSLATION D
+      WHERE
+      L.list_id = LI.list_id
+      and L.code = 'WPAYS'
+      and LI.dict_item_id = D.dict_item_id
+      ORDER BY UPPER(description)
+    </WHO_PAYS>
+    <COVERAGE_TYPE_BY_COMPANY_GROUP>
+      select distinct LI.list_item_id id, rawtohex(trans.language_id) language_id,
+      translation description, code
+      from elp_coverage_by_company_group c,
+      elp_list_item li,
+      elp_dict_item_translation trans
+      where	c.company_group_id = :company_group_id
+      and c.coverage_type_id  = list_item_id
+      and li.dict_item_id = trans.dict_item_id
+      order by upper(description)
+    </COVERAGE_TYPE_BY_COMPANY_GROUP>
+    <COVERAGE_TYPE_BY_DEALER>
+      SELECT distinct  LI.list_item_id id, edealer.dealer_id dealer_id, rawtohex(trans.language_id) language_id,
+      trans.translation description, li.code
+      FROM
+      elp_coverage cov, elp_dealer edealer, elp_product_code pc, elp_item item,
+      elp_risk_type risk, elp_list_item li, elp_dict_item_translation trans, elp_company c
+      WHERE
+      cov.ITEM_ID = item.ITEM_ID
+      and COVERAGE_TYPE_ID = list_item_id
+      and item.RISK_TYPE_ID = risk.RISK_TYPE_ID
+      and li.DICT_ITEM_ID = trans.DICT_ITEM_ID
+      and item.product_code_id = pc.product_code_id
+      and edealer.dealer_id = pc.dealer_id
+      and c.company_id = edealer.company_id
+      --dynamic_in_clause
+      --dynamic_where_clause
+      and edealer.dealer_id = :dealer_id
+      and sysdate between effective and expiration
+    </COVERAGE_TYPE_BY_DEALER>    
+		<COVERAGE_TYPES_NOT_IN_COV_LOSS>
+			SELECT
+			LI.list_item_id id, rawtohex(D.language_id) language_id, LI.code code, D.translation description
+			FROM
+			ELITA.ELP_LIST L, ELITA.ELP_LIST_ITEM LI, ELITA.ELP_DICT_ITEM_TRANSLATION D
+			WHERE
+			L.list_id = LI.list_id
+			and L.code = 'CTYP'
+			and LI.dict_item_id = D.dict_item_id
+			and LI.list_item_id not in
+			(
+			select c.coverage_type_id id
+			from elp_coverage_loss c
+			where c.company_group_id = :company_group_id
+			)
+			ORDER BY UPPER(description)
+		</COVERAGE_TYPES_NOT_IN_COV_LOSS>
+		<COVERAGE_TYPES_BY_COMPANY_GROUP_NOT_IN_COV_LOSS>
+			select distinct LI.list_item_id id, rawtohex(trans.language_id) language_id,
+			translation description, code
+			from elp_coverage_by_company_group c,
+			elp_list_item li,
+			elp_dict_item_translation trans
+			where	c.company_group_id = :company_group_id
+			and c.coverage_type_id  = list_item_id
+			and li.dict_item_id = trans.dict_item_id
+			and li.list_item_id not in
+			(
+			select c.coverage_type_id id
+			from elp_coverage_loss c
+			where c.company_group_id = :company_group_id
+			)
+			order by upper(description)
+		</COVERAGE_TYPES_BY_COMPANY_GROUP_NOT_IN_COV_LOSS>
+		<CAUSE_OF_LOSS_BY_COVERAGE_TYPE>
+			select distinct LI.list_item_id id, rawtohex(trans.language_id) language_id,
+			translation description, code, c.active
+			from elp_coverage_loss c,
+			elp_list_item li,
+			elp_dict_item_translation trans
+			where	c.company_group_id = :company_group_id
+			and c.coverage_type_id = :coverage_type_id
+			and c.cause_of_loss_id  = list_item_id
+			and li.dict_item_id = trans.dict_item_id
+			order by upper(description)
+		</CAUSE_OF_LOSS_BY_COVERAGE_TYPE>
+		<ITEM_COVERAGETYPE>
+			select distinct COVERAGE_TYPE_ID ID, trans.Translation Description, CODE CODE, RAWTOHEX(LANGUAGE_ID) LANGUAGE_ID
+			from	elp_coverage, elp_list_item li, elp_dict_item_translation trans
+			where	ITEM_ID = :ITEM_ID
+			and coverage_type_id = list_item_id
+			and li.DICT_ITEM_ID = trans.DICT_ITEM_ID
+			order by UPPER(Description)
+		</ITEM_COVERAGETYPE>
+		<CERTIFICATEDURATION>
+			select sys_guid() ID, r.CODE, r.DESCRIPTION
+			from (select distinct CERTIFICATE_DURATION CODE, CERTIFICATE_DURATION DESCRIPTION
+			from	elp_coverage
+			where	ITEM_ID = :ITEM_ID
+			and coverage_type_id = :COVERAGE_TYPE_ID) r
+			order by UPPER(Description)
+		</CERTIFICATEDURATION>
+		<COVERAGEDURATION>
+			select sys_guid() ID, r.CODE, r.DESCRIPTION
+			from (select distinct COVERAGE_DURATION CODE, COVERAGE_DURATION DESCRIPTION
+			from	elp_coverage
+			where	ITEM_ID = :ITEM_ID
+			and coverage_type_id = :COVERAGE_TYPE_ID
+			and CERTIFICATE_DURATION like :CERTIFICATE_DURATION) r
+			order by UPPER(Description)
+		</COVERAGEDURATION>
+		<CLAIM_TYPES>
+			SELECT
+			LI.list_item_id id, rawtohex(D.language_id) language_id, LI.code code, D.translation description
+			FROM
+			ELITA.ELP_LIST L, ELITA.ELP_LIST_ITEM LI, ELITA.ELP_DICT_ITEM_TRANSLATION D
+			WHERE
+			L.list_id = LI.list_id
+			and L.code = 'CLTYP'
+			and LI.dict_item_id = D.dict_item_id
+			ORDER BY UPPER(description)
+		</CLAIM_TYPES>
+		<COLORS>
+			SELECT
+			LI.list_item_id id, rawtohex(D.language_id) language_id, LI.code code, D.translation description
+			FROM
+			ELITA.ELP_LIST L, ELITA.ELP_LIST_ITEM LI, ELITA.ELP_DICT_ITEM_TRANSLATION D
+			WHERE
+			L.list_id = LI.list_id
+			and L.code = 'COLORS'
+			and LI.dict_item_id = D.dict_item_id
+			ORDER BY UPPER(description)
+		</COLORS>
+		<ACTION>
+			SELECT
+			LI.list_item_id id, rawtohex(D.language_id) language_id, LI.code code, D.translation description
+			FROM
+			ELITA.ELP_LIST L, ELITA.ELP_LIST_ITEM LI, ELITA.ELP_DICT_ITEM_TRANSLATION D
+			WHERE
+			L.list_id = LI.list_id
+			and L.code = 'ACTION'
+			and LI.dict_item_id = D.dict_item_id
+			ORDER BY UPPER(description)
+		</ACTION>
+		<CLAIM_ACTIVITIES>
+			SELECT
+			LI.list_item_id id, rawtohex(D.language_id) language_id, LI.code code, D.translation description
+			FROM
+			ELITA.ELP_LIST
+			L, ELITA.ELP_LIST_ITEM LI, ELITA.ELP_DICT_ITEM_TRANSLATION D
+			WHERE
+			L.list_id = LI.list_id
+			and L.code = 'CLACT'
+			and LI.dict_item_id = D.dict_item_id
+			ORDER BY UPPER(description)
+		</CLAIM_ACTIVITIES>
+		<TMK_STATUS>
+			SELECT
+			LI.list_item_id id, rawtohex(D.language_id) language_id, LI.code code, D.translation description
+			FROM
+			ELITA.ELP_LIST L, ELITA.ELP_LIST_ITEM LI, ELITA.ELP_DICT_ITEM_TRANSLATION D
+			WHERE
+			L.list_id = LI.list_id
+			and L.code = 'TMKSTATUS'
+			and LI.dict_item_id = D.dict_item_id
+			ORDER BY UPPER(description)
+		</TMK_STATUS>
+		<CLAIM_FORMAT>
+			SELECT
+			CLAIM_FORMAT_ID id, DESCRIPTION, CODE
+			FROM
+			ELITA.ELP_CLAIM_FORMAT
+			ORDER BY UPPER(DESCRIPTION)
+		</CLAIM_FORMAT>
+    <CERT_NUMBER_FORMAT>
+     	SELECT
+	      CERT_NUMBER_FORMAT_ID ID, DESCRIPTION, CODE
+	    FROM
+	      ELITA.ELP_CERT_NUMBER_FORMAT
+    </CERT_NUMBER_FORMAT>
+    <CAUSES_OF_LOSS>
+			SELECT
+			LI.list_item_id id, rawtohex(D.language_id) language_id, LI.code code, D.translation description
+			FROM
+			ELITA.ELP_LIST L, ELITA.ELP_LIST_ITEM LI, ELITA.ELP_DICT_ITEM_TRANSLATION D
+			WHERE
+			L.list_id = LI.list_id
+			and L.code = 'CAUSE'
+			and LI.dict_item_id = D.dict_item_id
+			ORDER BY UPPER(description)
+		</CAUSES_OF_LOSS>
+		<INCOME_RANGE>
+			SELECT
+			LI.list_item_id id, rawtohex(D.language_id) language_id, LI.code code, D.translation description
+			FROM
+			ELITA.ELP_LIST L, ELITA.ELP_LIST_ITEM LI, ELITA.ELP_DICT_ITEM_TRANSLATION D
+			WHERE
+			L.list_id = LI.list_id
+			and L.code = 'IRNG'
+			and LI.dict_item_id = D.dict_item_id
+			ORDER BY UPPER(description)
+		</INCOME_RANGE>
+		<METHODS_OF_REPAIR>
+			SELECT
+			LI.list_item_id id, rawtohex(D.language_id) language_id, LI.code code, D.translation description
+			FROM
+			ELITA.ELP_LIST L, ELITA.ELP_LIST_ITEM LI, ELITA.ELP_DICT_ITEM_TRANSLATION D
+			WHERE
+			L.list_id = LI.list_id
+			and L.code = 'METHR'
+			and LI.dict_item_id = D.dict_item_id
+			ORDER BY UPPER(description)
+		</METHODS_OF_REPAIR>
+		<METHODS_OF_REPAIR_FOR_REPAIRS>
+			SELECT
+			LI.list_item_id id, rawtohex(D.language_id) language_id, LI.code code, D.translation description
+			FROM
+			ELITA.ELP_LIST L, ELITA.ELP_LIST_ITEM LI, ELITA.ELP_DICT_ITEM_TRANSLATION D
+			WHERE
+			L.list_id = LI.list_id
+			and L.code = 'METHR'
+			and LI.dict_item_id = D.dict_item_id
+			and LI.code in ('C','H','S','P','R')
+			ORDER BY UPPER(description)
+		</METHODS_OF_REPAIR_FOR_REPAIRS>
+		<REASONS_CLOSED>
+			SELECT
+			LI.list_item_id id, rawtohex(D.language_id) language_id, LI.code code, D.translation description
+			FROM
+			ELITA.ELP_LIST L, ELITA.ELP_LIST_ITEM LI, ELITA.ELP_DICT_ITEM_TRANSLATION D
+			WHERE
+			L.list_id = LI.list_id
+			and L.code = 'RESCL'
+			and LI.dict_item_id = D.dict_item_id
+			ORDER BY UPPER(description)
+		</REASONS_CLOSED>
+		<DENIED_REASON>
+			SELECT
+			LI.list_item_id id, rawtohex(D.language_id) language_id, LI.code code, D.translation description, li.extended_code
+			FROM
+			ELITA.ELP_LIST L, ELITA.ELP_LIST_ITEM LI, ELITA.ELP_DICT_ITEM_TRANSLATION D
+			WHERE
+			L.list_id = LI.list_id
+			and L.code = 'DNDREASON'
+			and LI.dict_item_id = D.dict_item_id
+			ORDER BY UPPER(description)
+		</DENIED_REASON>
+		<DEALER_DENIED_REASON>
+			SELECT
+			LI.list_item_id id, rawtohex(M.language_id) language_id, D.dealer, LI.code, li.extended_code, M.denial_title description
+			FROM
+			ELITA.ELP_LIST L, ELITA.ELP_LIST_ITEM LI, ELITA.ELP_DENIAL_REASON_MSG M, ELITA.ELP_DEALER D
+			WHERE
+            L.code = 'DNDREASON'
+			and L.list_id = LI.list_id
+			and LI.extended_code = M.DENIAL_REASON_XCD
+            and M.dealer_id = D.dealer_id
+			ORDER BY UPPER(code)
+		</DEALER_DENIED_REASON>
+		<LOANER_CENTERS>
+			SELECT
+			distinct(SC.service_center_id) id, rawtohex(country_id) country_id, SC.code code, SC.description description
+			FROM
+			ELITA.ELP_SERVICE_CENTER SC, ELITA.ELP_LIST L, ELITA.ELP_LIST_ITEM LI
+			WHERE
+			L.list_id = LI.list_id
+			and L.code = 'STYP'
+			and LI.code in ('2', '3')
+			ORDER BY UPPER(description)
+		</LOANER_CENTERS>
+		<PAYMENT_TYPES>
+			SELECT
+			payment_type_id id,  rawtohex(company_group_id) company_group_id, code, description
+			FROM
+			ELITA.ELP_PAYMENT_TYPE
+			ORDER BY UPPER(description)
+		</PAYMENT_TYPES>
+		<CURRENCY_TYPES>
+			SELECT
+			currency_id id, code, description
+			FROM
+			ELITA.ELP_CURRENCY
+			ORDER BY UPPER(description)
+		</CURRENCY_TYPES>
+		<CURRENCY_NOTATION_BY_COUNTRY>
+			select NOTATION CURRENCY_NOTATION from ELP_CURRENCY, elp_country ,elp_company WHERE
+			ELP_CURRENCY.CURRENCY_ID = elp_country.PRIMARY_CURRENCY_ID
+			and elp_country.country_id = elp_company.business_country_id
+			and elp_company.company_id = :company_id
+		</CURRENCY_NOTATION_BY_COUNTRY>
+		<!--<CREDIT_CARD_TYPES>
+			SELECT
+			creditcard_type_id id, code, description
+			FROM
+			ELITA.ELP_CREDITCARD_TYPE
+			ORDER BY UPPER(description)
+		</CREDIT_CARD_TYPES>-->
+    <CANCELLATION_REASONS>
+      SELECT
+      cancellation_id id, rawtohex(company_id) company_id, code, description
+      FROM
+      ELITA.ELP_CANCELLATION_REASON
+      ORDER BY UPPER(description)
+    </CANCELLATION_REASONS>
+    <CANCELLATION_REASONS_DEALER_FILE>
+      SELECT
+      cancellation_id id, rawtohex(company_id) company_id, code, description
+      FROM
+      ELITA.ELP_CANCELLATION_REASON
+      WHERE CODE in ('011', '012', '013')
+      ORDER BY UPPER(description)
+    </CANCELLATION_REASONS_DEALER_FILE>
+    <CANCELLATION_REASONS_WITH_CODE>
+      SELECT
+      cancellation_id id, rawtohex(company_id) company_id,
+      cr.code, (cr.code || ' - ' || cr.description) description
+      FROM
+      ELITA.ELP_CANCELLATION_REASON cr
+      WHERE
+      GetYesNo(cr.display_code_id) = 'Y'
+      ORDER BY UPPER(description)
+    </CANCELLATION_REASONS_WITH_CODE>
+    <CANCELLATION_REASONS_BY_DEALER>
+      SELECT
+      cr.cancellation_id id, rawtohex(cr.company_id) company_id,
+      cr.code, (cr.code || ' - ' || cr.description) description,
+      rawtohex(de.dealer_id) dealer_id
+      FROM
+      ELITA.ELP_CANCELLATION_REASON cr,
+      ELITA.ELP_DEALER de
+      WHERE
+      de.company_id = cr.company_id
+      AND GetYesNo(cr.display_code_id) = 'Y'
+      ORDER BY UPPER(cr.code || ' - ' || cr.description)
+    </CANCELLATION_REASONS_BY_DEALER>
+    <COUNTRY_REGIONS>
+      SELECT
+      region_id id, rawtohex(country_id) country_id, short_desc code, description
+      FROM
+      ELITA.ELP_REGION
+      ORDER BY UPPER(description)
+    </COUNTRY_REGIONS>
+    <REGION_TAX>
+      SELECT
+      REGION_TAX_ID ID,
+      RAWTOHEX(REGION_ID) REGION_ID,
+      CONCAT(to_char(EFFECTIVE_DATE,'DD-Mon-YYYY'), '    ' || to_char(EXPIRATION_DATE,'DD-Mon-YYYY')) CODE,
+      DESCRIPTION
+      FROM ELP_REGION_TAX
+      WHERE
+      TAX_TYPE_ID = :TAX_TYPE_ID
+      ORDER BY  EFFECTIVE_DATE DESC
+    </REGION_TAX>
+    <REGIONS>
+      SELECT
+      region_id id, short_desc code, description
+      FROM
+      ELITA.ELP_REGION
+      ORDER BY UPPER(description)
+    </REGIONS>
+    <SERVICE_ORDER_REPORTS>
+      SELECT
+      LI.list_item_id id,  rawtohex(company_id) company_id, LI.code code, D.translation description
+      FROM
+      ELITA.ELP_LIST L, ELITA.ELP_LIST_ITEM LI,
+      ELITA.ELP_DICT_ITEM_TRANSLATION D, ELP_COMPANY EC
+      WHERE
+      L.list_id = LI.list_id
+      and L.code = 'SORPT'
+      and LI.dict_item_id = D.dict_item_id
+      and EC.LANGUAGE_ID  = D.LANGUAGE_ID
+      ORDER BY UPPER(description)
+    </SERVICE_ORDER_REPORTS>
+    <INVOICE_METHOD>
+      SELECT
+      i.list_item_id id, i.code description, i.code
+      FROM
+      elita.elp_list_item i, elita.elp_list l
+      WHERE
+      i.list_id = l.list_id
+      AND upper(l.code)= 'IMTH'
+    </INVOICE_METHOD>
+    <FTP_SITE>
+      SELECT
+      f.ftp_site_id id, f.description description, f.code code
+      FROM
+      elita.elp_ftp_site f
+      ORDER BY UPPER(f.description)
+    </FTP_SITE>
+    <RISK_GROUPS>
+      SELECT
+      LI.list_item_id id, rawtohex(D.language_id) language_id, LI.code code, D.translation description
+      FROM
+      ELITA.ELP_LIST L, ELITA.ELP_LIST_ITEM LI, ELITA.ELP_DICT_ITEM_TRANSLATION D
+      WHERE
+      L.list_id = LI.list_id
+      and L.code = 'RGRP'
+      and LI.dict_item_id = D.dict_item_id
+      ORDER BY UPPER(description)
+    </RISK_GROUPS>
+    <USERS>
+      SELECT
+      user_id id, user_name description, network_id code
+      FROM
+      elita.elp_user
+    </USERS>
+    <COMMENT_TYPES>
+      SELECT
+      LI.list_item_id id, rawtohex(D.language_id) language_id, LI.code code, D.translation description
+      FROM
+      ELITA.ELP_LIST L, ELITA.ELP_LIST_ITEM LI, ELITA.ELP_DICT_ITEM_TRANSLATION D
+      WHERE
+      L.list_id = LI.list_id
+      and L.code = 'COMMT'
+      and LI.dict_item_id = D.dict_item_id
+      ORDER BY UPPER(description)
+    </COMMENT_TYPES>
+    <DAYS_OF_WEEK>
+      SELECT
+      LI.list_item_id id, rawtohex(D.language_id) language_id, LI.code code, D.translation description
+      FROM
+      ELITA.ELP_LIST L, ELITA.ELP_LIST_ITEM LI, ELITA.ELP_DICT_ITEM_TRANSLATION D
+      WHERE
+      L.list_id = LI.list_id
+      and L.code = 'DAYS_OF_WEEK'
+      and LI.dict_item_id = D.dict_item_id
+      ORDER BY UPPER(description)
+    </DAYS_OF_WEEK>
+    <AFAPT>
+      SELECT
+      LI.list_item_id id, rawtohex(D.language_id) language_id, LI.code code, D.translation description
+      FROM
+      ELITA.ELP_LIST L, ELITA.ELP_LIST_ITEM LI, ELITA.ELP_DICT_ITEM_TRANSLATION D
+      WHERE
+      L.list_id = LI.list_id
+      and L.code = 'AFAPT'
+      and LI.dict_item_id = D.dict_item_id
+      ORDER BY UPPER(description)
+    </AFAPT>
+    <PMTGRPSTAT>
+      SELECT
+      LI.list_item_id id, rawtohex(D.language_id) language_id, LI.code code, D.translation description
+      FROM
+      ELITA.ELP_LIST L, ELITA.ELP_LIST_ITEM LI, ELITA.ELP_DICT_ITEM_TRANSLATION D
+      WHERE
+      L.list_id = LI.list_id
+      and L.code = 'PMTGRPSTAT'
+      and LI.dict_item_id = D.dict_item_id
+      ORDER BY UPPER(description)
+    </PMTGRPSTAT>
+    <INVRECONSTAT>
+      SELECT
+      LI.list_item_id id, rawtohex(D.language_id) language_id, LI.code code, D.translation description
+      FROM
+      ELITA.ELP_LIST L, ELITA.ELP_LIST_ITEM LI, ELITA.ELP_DICT_ITEM_TRANSLATION D
+      WHERE
+      L.list_id = LI.list_id
+      and L.code = 'INVRECONSTAT'
+      and LI.dict_item_id = D.dict_item_id
+      ORDER BY UPPER(description)
+    </INVRECONSTAT>
+    <WQ_HIST_ACTION>
+      SELECT
+      LI.list_item_id id, rawtohex(D.language_id) language_id, LI.code code, D.translation description
+      FROM
+      ELITA.ELP_LIST L, ELITA.ELP_LIST_ITEM LI, ELITA.ELP_DICT_ITEM_TRANSLATION D
+      WHERE
+      L.list_id = LI.list_id
+      and L.code = 'WQ_HIST_ACTION'
+      and LI.dict_item_id = D.dict_item_id
+      ORDER BY UPPER(description)
+    </WQ_HIST_ACTION>
+    <CLM_IMG_STATUS>
+      SELECT
+      LI.list_item_id id, rawtohex(D.language_id) language_id, LI.code code, D.translation description
+      FROM
+      ELITA.ELP_LIST L, ELITA.ELP_LIST_ITEM LI, ELITA.ELP_DICT_ITEM_TRANSLATION D
+      WHERE
+      L.list_id = LI.list_id
+      and L.code = 'CLM_IMG_STATUS'
+      and LI.dict_item_id = D.dict_item_id
+      ORDER BY UPPER(description)
+    </CLM_IMG_STATUS>
+    <TAX_TYPES>
+      SELECT
+      i.list_item_id id, i.code description, i.code
+      FROM
+      elita.elp_list_item i, elita.elp_list l
+      WHERE
+      i.list_id = l.list_id
+      AND upper(l.code)= 'TTYP'
+    </TAX_TYPES>
+    <CLAIM_SEARCH_FIELDS>
+      SELECT
+      LI.list_item_id id, rawtohex(D.language_id) language_id, LI.code code, D.translation description
+      FROM
+      ELITA.ELP_LIST L, ELITA.ELP_LIST_ITEM LI, ELITA.ELP_DICT_ITEM_TRANSLATION D
+      WHERE
+      L.list_id = LI.list_id
+      and L.code = 'CSEDR'
+      and LI.dict_item_id = D.dict_item_id
+      ORDER BY UPPER(description)
+    </CLAIM_SEARCH_FIELDS>
+    <ADJUSTER_CLAIM_SEARCH_FIELDS>
+      SELECT
+      LI.list_item_id id, rawtohex(D.language_id) language_id, LI.code code, D.translation description
+      FROM
+      ELITA.ELP_LIST L, ELITA.ELP_LIST_ITEM LI, ELITA.ELP_DICT_ITEM_TRANSLATION D
+      WHERE
+      L.list_id = LI.list_id
+      and L.code = 'ADJ_INBOX'
+      and LI.dict_item_id = D.dict_item_id
+      ORDER BY UPPER(description)
+    </ADJUSTER_CLAIM_SEARCH_FIELDS>
+    <NOTIFICATION_SEARCH_FIELDS>
+      SELECT
+      LI.list_item_id id, rawtohex(D.language_id) language_id, LI.code code, D.translation description
+      FROM
+      ELITA.ELP_LIST L, ELITA.ELP_LIST_ITEM LI, ELITA.ELP_DICT_ITEM_TRANSLATION D
+      WHERE
+      L.list_id = LI.list_id
+      and L.code = 'SNOTE_SORTBY'
+      and LI.dict_item_id = D.dict_item_id
+      ORDER BY UPPER(description)
+    </NOTIFICATION_SEARCH_FIELDS>
+    <HUB_REGIONS>
+      SELECT
+      LI.list_item_id id, rawtohex(D.language_id) language_id, LI.code code, D.translation description
+      FROM
+      ELITA.ELP_LIST L, ELITA.ELP_LIST_ITEM LI, ELITA.ELP_DICT_ITEM_TRANSLATION D
+      WHERE
+      L.list_id = LI.list_id
+      and L.code = 'HUBREGION'
+      and LI.dict_item_id = D.dict_item_id
+      ORDER BY UPPER(description)
+    </HUB_REGIONS>
+    <REPAIR_LOGISTICS_SEARCH_FIELDS>
+      SELECT
+      LI.list_item_id id, rawtohex(D.language_id) language_id, LI.code code, D.translation description
+      FROM
+      ELITA.ELP_LIST L, ELITA.ELP_LIST_ITEM LI, ELITA.ELP_DICT_ITEM_TRANSLATION D
+      WHERE
+      L.list_id = LI.list_id
+      and L.code = 'RLSDR'
+      and LI.dict_item_id = D.dict_item_id
+      ORDER BY UPPER(description)
+    </REPAIR_LOGISTICS_SEARCH_FIELDS>
+    <SORT_ORDER>
+      SELECT
+      LI.list_item_id id, rawtohex(D.language_id) language_id, LI.code code, D.translation description
+      FROM
+      ELITA.ELP_LIST L, ELITA.ELP_LIST_ITEM LI, ELITA.ELP_DICT_ITEM_TRANSLATION D
+      WHERE
+      L.list_id = LI.list_id
+      and L.code = 'SORT_ORDER'
+      and LI.dict_item_id = D.dict_item_id
+      ORDER BY UPPER(description)
+    </SORT_ORDER>
+    <CLAIM_SEARCH_BY_COMMENT_TYPE>
+      SELECT
+      LI.list_item_id id, rawtohex(D.language_id) language_id, LI.code code, D.translation description
+      FROM
+      ELITA.ELP_LIST L, ELITA.ELP_LIST_ITEM LI, ELITA.ELP_DICT_ITEM_TRANSLATION D
+      WHERE
+      L.list_id = LI.list_id
+      and L.code = 'CMTYPSORT'
+      and LI.dict_item_id = D.dict_item_id
+      ORDER BY UPPER(description)
+    </CLAIM_SEARCH_BY_COMMENT_TYPE>
+    <CERTIFICATE_SEARCH_FIELDS>
+      SELECT
+      LI.list_item_id id, rawtohex(D.language_id) language_id, LI.code code, D.translation description
+      FROM
+      ELITA.ELP_LIST L, ELITA.ELP_LIST_ITEM LI, ELITA.ELP_DICT_ITEM_TRANSLATION D
+      WHERE
+      L.list_id = LI.list_id
+      and L.code = 'CSDRP'
+      and LI.dict_item_id = D.dict_item_id
+      ORDER BY UPPER(description)
+    </CERTIFICATE_SEARCH_FIELDS>
+    <CLAIM_FOLLOWUP_SEARCH_FIELDS>
+      SELECT
+      LI.list_item_id id, rawtohex(D.language_id) language_id, LI.code code, D.translation description
+      FROM
+      ELITA.ELP_LIST L, ELITA.ELP_LIST_ITEM LI, ELITA.ELP_DICT_ITEM_TRANSLATION D
+      WHERE
+      L.list_id = LI.list_id
+      and L.code = 'CFUDR'
+      and LI.dict_item_id = D.dict_item_id
+      and LI.display_to_user = 'Y'
+      ORDER BY UPPER(description)
+    </CLAIM_FOLLOWUP_SEARCH_FIELDS>
+    <INVOICE_SEARCH_FIELDS>
+      SELECT
+      LI.list_item_id id, rawtohex(D.language_id) language_id, LI.code code, D.translation description
+      FROM
+      ELITA.ELP_LIST L, ELITA.ELP_LIST_ITEM LI, ELITA.ELP_DICT_ITEM_TRANSLATION D
+      WHERE
+      L.list_id = LI.list_id
+      and L.code = 'INSDR'
+      and LI.dict_item_id = D.dict_item_id
+      ORDER BY UPPER(description)
+    </INVOICE_SEARCH_FIELDS>
+    <PENDING_CLAIM_SEARCH_FIELDS>
+      SELECT
+      LI.list_item_id id, rawtohex(D.language_id) language_id, LI.code code, D.translation description
+      FROM
+      ELITA.ELP_LIST L, ELITA.ELP_LIST_ITEM LI, ELITA.ELP_DICT_ITEM_TRANSLATION D
+      WHERE
+      L.list_id = LI.list_id
+      and L.code = 'PCSDR'
+      and LI.dict_item_id = D.dict_item_id
+      ORDER BY UPPER(description)
+    </PENDING_CLAIM_SEARCH_FIELDS>
+    <PENDING_APPROVAL_CLAIM_SEARCH_FIELDS>
+      SELECT
+      LI.list_item_id id, rawtohex(D.language_id) language_id, LI.code code, D.translation description
+      FROM
+      ELITA.ELP_LIST L, ELITA.ELP_LIST_ITEM LI, ELITA.ELP_DICT_ITEM_TRANSLATION D
+      WHERE
+      L.list_id = LI.list_id
+      and L.code = 'PCSDR'
+      and LI.dict_item_id = D.dict_item_id
+      ORDER BY UPPER(description)
+    </PENDING_APPROVAL_CLAIM_SEARCH_FIELDS>
+    <MONTHS>
+      SELECT
+      LI.list_item_id id, rawtohex(D.language_id) language_id, LI.code code, D.translation description
+      FROM
+      ELITA.ELP_LIST L, ELITA.ELP_LIST_ITEM LI, ELITA.ELP_DICT_ITEM_TRANSLATION D
+      WHERE
+      L.list_id = LI.list_id
+      and L.code = 'MONTH'
+      and LI.dict_item_id = D.dict_item_id
+      ORDER BY UPPER(code)
+    </MONTHS>
+    <ACCOUNTING_CLOSING_YEARS>
+      <![CDATA[
+			SELECT
+				min (accounting_close_info_id) id,
+				min (rawtohex(company_id)) company_id,
+				substr(to_Char(CLOSING_DATE,'YYYYMMDD'),1,4) code,
+				substr(to_Char(CLOSING_DATE,'YYYYMMDD'),1,4) description
+			FROM
+				ELITA.ELP_ACCOUNTING_CLOSE_INFO
+			GROUP BY substr(to_Char(CLOSING_DATE,'YYYYMMDD'),1,4)
+			]]>
+    </ACCOUNTING_CLOSING_YEARS>
+    <EXTERNAL_USER_TYPE>
+      SELECT
+      i.list_item_id id, i.code description, i.code
+      FROM
+      elita.elp_list_item i, elita.elp_list l
+      WHERE
+      i.list_id = l.list_id
+      AND upper(l.code)= 'EXTYP'
+    </EXTERNAL_USER_TYPE>
+    <REPLACEMENT_POLICIES>
+      SELECT
+      LI.list_item_id id, rawtohex(D.language_id) language_id, LI.code code, D.translation description
+      FROM
+      ELITA.ELP_LIST L, ELITA.ELP_LIST_ITEM LI, ELITA.ELP_DICT_ITEM_TRANSLATION D
+      WHERE
+      L.list_id = LI.list_id
+      and L.code = 'REPP'
+      and LI.dict_item_id = D.dict_item_id
+      ORDER BY UPPER(description)
+    </REPLACEMENT_POLICIES>
+    <SALUTATION>
+      SELECT
+      LI.list_item_id id, rawtohex(D.language_id) language_id, LI.code code, D.translation description
+      FROM
+      ELITA.ELP_LIST L, ELITA.ELP_LIST_ITEM LI, ELITA.ELP_DICT_ITEM_TRANSLATION D
+      WHERE
+      L.list_id = LI.list_id
+      and L.code = 'SLTN'
+      and LI.dict_item_id = D.dict_item_id
+      ORDER BY UPPER(description)
+    </SALUTATION>
+    <SALUTATION_LANGUAGE>
+      SELECT
+      LI.list_item_id id, LI.code code, D.translation description
+      FROM
+      ELITA.ELP_LIST L, ELITA.ELP_LIST_ITEM LI, ELITA.ELP_DICT_ITEM_TRANSLATION D
+      WHERE
+      L.list_id = LI.list_id
+      and L.code = 'SLTN'
+      and LI.dict_item_id = D.dict_item_id
+      and D.language_id = :language_id
+      ORDER BY UPPER(description)
+    </SALUTATION_LANGUAGE>
+    <MEMBERSHIP_TYPE_LANGUAGE>
+      SELECT
+      LI.list_item_id id, LI.code code, D.translation description
+      FROM
+      ELITA.ELP_LIST L, ELITA.ELP_LIST_ITEM LI, ELITA.ELP_DICT_ITEM_TRANSLATION D
+      WHERE
+      L.list_id = LI.list_id
+      and L.code = 'MEMTYPE'
+      and LI.dict_item_id = D.dict_item_id
+      and D.language_id = :language_id
+      ORDER BY UPPER(description)
+    </MEMBERSHIP_TYPE_LANGUAGE>
+    <REFUND_DESTINATION>
+      SELECT
+      LI.list_item_id id, rawtohex(D.language_id) language_id, LI.code code, D.translation description
+      FROM
+      ELITA.ELP_LIST L, ELITA.ELP_LIST_ITEM LI, ELITA.ELP_DICT_ITEM_TRANSLATION D
+      WHERE
+      L.list_id = LI.list_id
+      and L.code = 'REFDS'
+      and LI.dict_item_id = D.dict_item_id
+      ORDER BY UPPER(description)
+    </REFUND_DESTINATION>
+    <PAYMENT_METHOD>
+      SELECT
+      LI.list_item_id id, rawtohex(D.language_id) language_id, LI.code code, D.translation description
+      FROM
+      ELITA.ELP_LIST L, ELITA.ELP_LIST_ITEM LI, ELITA.ELP_DICT_ITEM_TRANSLATION D
+      WHERE
+      L.list_id = LI.list_id
+      and L.code = 'PMTHD'
+      and LI.dict_item_id = D.dict_item_id
+      ORDER BY UPPER(description)
+    </PAYMENT_METHOD>
+    <PAYMENT_METHOD_BY_ROLE>
+      SELECT   LI.list_item_id id, rawtohex(D.language_id) language_id, LI.code code, D.translation description
+      FROM     ELITA.ELP_LIST L, ELITA.ELP_LIST_ITEM LI, ELITA.ELP_DICT_ITEM_TRANSLATION D
+      WHERE    L.list_id = LI.list_id
+      and      L.code = 'PMTHD'
+      and      LI.dict_item_id = D.dict_item_id   and d.language_id =  :language_id
+      and      list_item_id not in
+      (SELECT list_item_id id
+      FROM  Elp_Exclude_ListItem_By_Role ELR ,
+      Elp_Excluded_li_roles ER
+      WHERE ELR.company_id = :company_id
+      and ELR.Exclude_ListItem_Role_Id = ER.Exclude_ListItem_Role_Id(+)
+      and (ER.role_id in (select ROLE_ID from elp_user_role where user_id =  :user_id )
+      or ER.role_id is null)
+      )
+      ORDER BY UPPER(description)
+    </PAYMENT_METHOD_BY_ROLE>
+    <LK_PAYMENTMETHOD_WITH_OUT_BANKTRANSFER>
+      <![CDATA[	
+          SELECT
+            LI.list_item_id id, rawtohex(D.language_id) language_id, LI.code code, D.translation description
+          FROM
+            ELITA.ELP_LIST L, ELITA.ELP_LIST_ITEM LI, ELITA.ELP_DICT_ITEM_TRANSLATION D
+          WHERE
+            L.list_id = LI.list_id
+          and L.code = 'PMTHD'
+          and LI.dict_item_id = D.dict_item_id
+          and LI.code <> 'CTT'
+          ORDER BY UPPER(description)
+          ]]>
+    </LK_PAYMENTMETHOD_WITH_OUT_BANKTRANSFER>
+    <PAYMENT_REASON>
+      SELECT
+      LI.list_item_id id, rawtohex(D.language_id) language_id, LI.code code, D.translation description
+      FROM
+      ELITA.ELP_LIST L, ELITA.ELP_LIST_ITEM LI, ELITA.ELP_DICT_ITEM_TRANSLATION D
+      WHERE
+      L.list_id = LI.list_id
+      and L.code = 'PMRSN'
+      and LI.dict_item_id = D.dict_item_id
+      ORDER BY UPPER(description)
+    </PAYMENT_REASON>
+    <DED_COLL_METHOD>
+      SELECT
+      LI.list_item_id id, rawtohex(D.language_id) language_id, LI.code code, D.translation description
+      FROM
+      ELITA.ELP_LIST L, ELITA.ELP_LIST_ITEM LI, ELITA.ELP_DICT_ITEM_TRANSLATION D
+      WHERE
+      L.list_id = LI.list_id
+      and L.code = 'DEDCOLLMTHD'
+      and LI.dict_item_id = D.dict_item_id
+      ORDER BY UPPER(description)
+    </DED_COLL_METHOD>
+    <ACCT_STATUS>
+      SELECT
+      LI.list_item_id id, rawtohex(D.language_id) language_id, LI.code code, D.translation description
+      FROM
+      ELITA.ELP_LIST L, ELITA.ELP_LIST_ITEM LI, ELITA.ELP_DICT_ITEM_TRANSLATION D
+      WHERE
+      L.list_id = LI.list_id
+      and L.code = 'ACPB'
+      and LI.dict_item_id = D.dict_item_id
+      ORDER BY UPPER(description)
+    </ACCT_STATUS>
+    <ACCOUNT_TYPES>
+      SELECT
+      LI.list_item_id id, rawtohex(D.language_id) language_id, LI.code code, D.translation description
+      FROM
+      ELITA.ELP_LIST L, ELITA.ELP_LIST_ITEM LI, ELITA.ELP_DICT_ITEM_TRANSLATION D
+      WHERE
+      L.list_id = LI.list_id
+      and L.code = 'ACCTTYPE'
+      and LI.dict_item_id = D.dict_item_id
+      ORDER BY UPPER(description)
+    </ACCOUNT_TYPES>
+    <CONTRACT_TYPES>
+      SELECT
+      LI.list_item_id id, rawtohex(D.language_id) language_id, LI.code code, D.translation description
+      FROM
+      ELITA.ELP_LIST L, ELITA.ELP_LIST_ITEM LI, ELITA.ELP_DICT_ITEM_TRANSLATION D
+      WHERE
+      L.list_id = LI.list_id
+      and L.code = 'CONTP'
+      and LI.dict_item_id = D.dict_item_id
+      ORDER BY UPPER(description)
+    </CONTRACT_TYPES>
+    <POLTYPE>
+      SELECT li.list_item_id id, li.code,D.translation description
+      FROM elita.elp_list_item li, elita.elp_list l, ELITA.ELP_DICT_ITEM_TRANSLATION D
+      WHERE li.list_id = l.list_id
+      AND upper(l.code) = 'POLTYPE'
+      and LI.dict_item_id = D.dict_item_id
+    </POLTYPE>
+    <POLGEN>
+      SELECT i.list_item_id id, i.code
+      FROM elita.elp_list_item i, elita.elp_list l
+      WHERE i.list_id = l.list_id
+      AND upper(l.code) = 'POLGEN'
+    </POLGEN>
+    <COUNTRY_LINE_OF_BUSINESS>
+      Select country_line_of_business_id id,code,description
+      from elita.elp_country_line_of_business
+    </COUNTRY_LINE_OF_BUSINESS>
+    <PAYEE>
+      SELECT
+      LI.list_item_id id, rawtohex(D.language_id) language_id, LI.code code, D.translation description
+      FROM
+      ELITA.ELP_LIST L, ELITA.ELP_LIST_ITEM LI, ELITA.ELP_DICT_ITEM_TRANSLATION D
+      WHERE
+      L.list_id = LI.list_id
+      and L.code = 'PAYEE'
+      and LI.dict_item_id = D.dict_item_id
+      ORDER BY UPPER(description)
+    </PAYEE>
+    <PAYEE_TYPE>
+      SELECT
+      LI.list_item_id id, rawtohex(D.language_id) language_id, LI.code code, D.translation description
+      FROM
+      ELITA.ELP_LIST L, ELITA.ELP_LIST_ITEM LI, ELITA.ELP_DICT_ITEM_TRANSLATION D
+      WHERE
+      L.list_id = LI.list_id
+      and L.code = 'PYTYPE'
+      and LI.dict_item_id = D.dict_item_id
+      ORDER BY UPPER(description)
+    </PAYEE_TYPE>
+    <COMM_SCHL>
+      SELECT
+      LI.list_item_id id, rawtohex(D.language_id) language_id, LI.code code, D.translation description
+      FROM
+      ELITA.ELP_LIST L, ELITA.ELP_LIST_ITEM LI, ELITA.ELP_DICT_ITEM_TRANSLATION D
+      WHERE
+      L.list_id = LI.list_id
+      and L.code = 'COMMSCHL'
+      and LI.dict_item_id = D.dict_item_id
+      ORDER BY UPPER(description)
+    </COMM_SCHL>
+    <USER_DEALER>
+      SELECT d.dealer_id, d.DEALER code, d.DEALER_NAME description
+      FROM ELP_USER_COMPANY u , ELP_DEALER d
+      WHERE user_id =  :user_id
+      AND u.COMPANY_ID = d.COMPANY_ID
+    </USER_DEALER>
+    <USER_DEALER_ASSIGNED>
+      Select D.Dealer_Id,
+      D.Dealer Code,
+      D.Dealer_Name Description
+      From Elp_Dealer D
+      Where ((D.Company_Id In (Select Company_Id
+      From Elp_User_Company_Assigned Uca
+      Where Uca.User_Id = :user_id)) OR
+      (Exists (Select *
+      From Elp_User_Role  Ur
+      Inner Join Elp_Role R On Ur.Role_Id = R.Role_Id
+      Where Ur.User_Id = :user_id
+      And R.Ihq_Only = 'Y')))
+      And D.dealer = :dealer
+    </USER_DEALER_ASSIGNED>
+    <!--
+	    <USER_SC>
+	        SELECT sc.service_center_id, sc.code, sc.description
+		    FROM ELP_USER_COMPANY u , ELP_SERVICE_CENTER sc
+		    WHERE u.user_id =  :user_id
+            AND u.company_id = sc.company_id
+	    </USER_SC>
+		-->
+    <COINS>
+      SELECT
+      LI.list_item_id id, rawtohex(D.language_id) language_id, LI.code code, D.translation description
+      FROM
+      ELITA.ELP_LIST L, ELITA.ELP_LIST_ITEM LI, ELITA.ELP_DICT_ITEM_TRANSLATION D
+      WHERE
+      L.list_id = LI.list_id
+      and L.code = 'COINS'
+      and LI.dict_item_id = D.dict_item_id
+      ORDER BY UPPER(description)
+    </COINS>
+    <USER_COMPANIES>
+      SELECT rawtohex(u.user_id) user_id, c.company_id id , c.code, c.description, c.use_recoveries_id
+      FROM ELP_USER_COMPANY uc , ELP_USER u, ELP_COMPANY c
+      WHERE	uc.user_id =  u.user_id
+      AND c.company_id = uc.company_id
+      ORDER BY UPPER(c.description)
+    </USER_COMPANIES>
+    <GET_USER_COMPANY_GROUPS>
+      SELECT rawtohex(u.user_id) user_id, c.company_group_id id , cg.code, cg.description
+      FROM ELP_USER_COMPANY uc , ELP_USER u, ELP_COMPANY c, ELP_COMPANY_GROUP cg
+      WHERE	uc.user_id =  u.user_id
+      AND c.company_id = uc.company_id
+      AND c.company_group_id = cg.company_group_id
+      ORDER by cg.code
+    </GET_USER_COMPANY_GROUPS>
+    <USER_COUNTRIES>
+      SELECT distinct rawtohex(u.user_id) user_id, c.country_id id , c.code, c.description
+      FROM ELP_USER_COMPANY uc , ELP_USER u, ELP_COMPANY_COUNTRY cc, ELP_COUNTRY c
+      WHERE	uc.user_id =  u.user_id
+      AND cc.company_id = uc.company_id
+      AND c.country_id = cc.country_id
+      ORDER BY UPPER(c.description)
+    </USER_COUNTRIES>
+    <COMPANY_GROUP_COUNTRIES>
+      select distinct rawtohex(c.COMPANY_GROUP_ID),co.COUNTRY_ID id, co.CODE, co.DESCRIPTION
+      from ELP_COUNTRY co,ELP_COMPANY_COUNTRY cc,ELP_COMPANY c
+      where cc.COUNTRY_ID=co.COUNTRY_ID
+      and c.COMPANY_ID= cc.COMPANY_ID
+      and c.COMPANY_GROUP_ID=:company_group_id
+      order by  co.DESCRIPTION
+    </COMPANY_GROUP_COUNTRIES>
+    <USER_COUNTRIES_FOR_ALL_COMPANIES>
+      SELECT distinct rawtohex(u.user_id) user_id, c.country_id id , c.code, c.description
+      FROM ELP_USER_COMPANY uc , ELP_USER u, ELP_COMPANY_COUNTRY cc, ELP_COUNTRY c
+      WHERE	uc.user_id =  u.user_id
+      AND c.country_id = cc.country_id
+      --dynamic_in_clause
+      ORDER BY UPPER(c.description)
+    </USER_COUNTRIES_FOR_ALL_COMPANIES>
+    <IHQ_ROLES>
+      SELECT
+      ROLE_ID id, description,  code
+      FROM
+      ELP_ROLE
+      WHERE
+      code IN('IHQSE','IHQSU','IHQAC','IHQVI')
+    </IHQ_ROLES>
+    <ROLES_ALL>
+      SELECT
+      ROLE_ID id, description,  code
+      FROM
+      ELP_ROLE
+    </ROLES_ALL>
+    <TABS_ALL>
+      SELECT
+      tab_id id,code description,dict_item_id
+      FROM
+      ELP_TAB
+    </TABS_ALL>
+    <IBNR>
+      SELECT
+      LI.list_item_id id, rawtohex(D.language_id) language_id, LI.code code, D.translation description
+      FROM
+      ELITA.ELP_LIST L, ELITA.ELP_LIST_ITEM LI, ELITA.ELP_DICT_ITEM_TRANSLATION D
+      WHERE
+      L.list_id = LI.list_id
+      and L.code = 'IBNR'
+      and LI.dict_item_id = D.dict_item_id
+      ORDER BY UPPER(description)
+    </IBNR>
+    <EARNING_CODES>
+      SELECT
+      earning_code_id id, rawtohex(company_group_id) company_group_id, description,  code
+      FROM
+      elp_earning_code
+      ORDER BY code
+    </EARNING_CODES>
+    <COMMISSION_ENTITIES>
+      SELECT
+      entity_id id, rawtohex(company_group_id) company_group_id, entity_name description
+      FROM
+      elp_commission_entity
+      ORDER BY entity_name
+    </COMMISSION_ENTITIES>
+    <DEALER_TYPE>
+      SELECT
+      LI.list_item_id id, rawtohex(D.language_id) language_id, LI.code code, D.translation description
+      FROM
+      ELITA.ELP_LIST L, ELITA.ELP_LIST_ITEM LI, ELITA.ELP_DICT_ITEM_TRANSLATION D
+      WHERE
+      L.list_id = LI.list_id
+      and L.code = 'DLTYP'
+      and LI.dict_item_id = D.dict_item_id
+      ORDER BY UPPER(description)
+    </DEALER_TYPE>
+    <END_PERIOD>
+      SELECT
+      LI.list_item_id id, rawtohex(D.language_id) language_id, LI.code code, D.translation description
+      FROM
+      ELITA.ELP_LIST L, ELITA.ELP_LIST_ITEM LI, ELITA.ELP_DICT_ITEM_TRANSLATION D
+      WHERE
+      L.list_id = LI.list_id
+      and L.code = 'ENDP'
+      and LI.dict_item_id = D.dict_item_id
+      ORDER BY UPPER(description)
+    </END_PERIOD>
+    <MANUFACTURERS_BY_COMPANY_GROUP>
+      SELECT DISTINCT
+      RAWTOHEX(mfr.MANUFACTURER_ID) As MANUFACTURER_ID, mfr.DESCRIPTION
+      FROM
+      ELP_MANUFACTURER mfr INNER JOIN ELP_VSC_MODEL mdl ON mdl.MANUFACTURER_ID = mfr.MANUFACTURER_ID
+      WHERE
+      ACTIVE_FLAG = 'Y'
+      AND mfr.COMPANY_GROUP_ID = :company_group_id
+      ORDER BY mfr.DESCRIPTION
+    </MANUFACTURERS_BY_COMPANY_GROUP>
+    <MAKES_BY_COMPANY_GROUP>
+      SELECT DISTINCT
+      mfr.MANUFACTURER_ID As ID, mfr.DESCRIPTION AS Code, mfr.DESCRIPTION
+      FROM
+      ELP_MANUFACTURER mfr INNER JOIN ELP_VSC_MODEL mdl ON mdl.MANUFACTURER_ID = mfr.MANUFACTURER_ID
+      WHERE
+      ACTIVE_FLAG = 'Y'
+      AND mfr.COMPANY_GROUP_ID = :company_group_id
+      ORDER BY mfr.DESCRIPTION
+    </MAKES_BY_COMPANY_GROUP>
+    <MODELS_BY_MANUFACTURERS>
+      SELECT DISTINCT
+      MODEL id, MODEL code, MODEL DESCRIPTION
+      FROM
+      ELP_VSC_MODEL
+      WHERE
+      MANUFACTURER_ID = :manufacturer_id
+      ORDER BY DESCRIPTION
+    </MODELS_BY_MANUFACTURERS>
+    <TRIMS_BY_MODEL>
+      SELECT DISTINCT
+      DESCRIPTION code,  DESCRIPTION code,  DESCRIPTION
+      FROM
+      ELP_VSC_MODEL
+      WHERE
+      TRIM(MODEL) = :model and
+      MANUFACTURER_ID = :manufacturer_id
+    </TRIMS_BY_MODEL>
+    <YEARS_BY_TRIM>
+      SELECT DISTINCT
+      MODEL_YEAR id, MODEL_YEAR code, MODEL_YEAR DESCRIPTION
+      FROM
+      ELP_VSC_MODEL
+      WHERE
+      DESCRIPTION = :trim AND
+      MODEL = :model AND
+      MANUFACTURER_ID = :manufacturer_id
+      ORDER BY MODEL_YEAR
+    </YEARS_BY_TRIM>
+    <VSC_PLAN_BY_COMPANY_GROUP_ID>
+      SELECT
+      vsc_plan_id id, code, description
+      FROM
+      elp_vsc_plan
+      WHERE company_group_id = :company_group_id
+      order by UPPER(description)
+    </VSC_PLAN_BY_COMPANY_GROUP_ID>
+
+    <DEALER_TYPE_BY_COMPANY_GROUP_ID>
+      Select
+      Distinct dealer_type_id ID
+      From
+      elp_dealer
+      Where company_id IN
+      (Select company_id from elp_company Where company_group_id = :company_group_id)
+    </DEALER_TYPE_BY_COMPANY_GROUP_ID>
+    <COMPANIES_BY_COUNTRY_ID>
+      Select
+      Distinct Company_id ID,code, description
+      From
+      elp_company
+      Where country_id =:country_id
+    </COMPANIES_BY_COUNTRY_ID>
+    <DEALERS_BY_COUNTRY_ID>
+      Select
+      Distinct dealer_id ID, dealer code, dealer_name description
+      From  elp_company co,elp_dealer de
+      Where co.company_id=de.company_id
+      and country_id =:country_id
+    </DEALERS_BY_COUNTRY_ID>
+    <PRODUCTCODE_BY_COUNTRY_ID>
+      Select
+      Distinct product_code_id ID, product_code code,pc.description
+      From  elp_company c1,elp_dealer d1,elp_product_code pc
+      Where c1.company_id=d1.company_id
+      and d1.dealer_id=pc.dealer_id
+      and country_id =:country_id
+      and  not exists (Select product_code_id from elp_product_code_parent pcp
+      where pc.product_code_id=pcp.product_code_id)
+    </PRODUCTCODE_BY_COUNTRY_ID>
+    <LK_VSC_PLAN_ID>
+      select ELP_VSC_PLAN.VSC_PLAN_ID ID ,
+      rawtohex(ELP_VSC_PLAN.company_group_id) company_group_id,
+      ELP_VSC_PLAN.CODE,
+      ELP_VSC_PLAN.DESCRIPTION
+      from ELP_VSC_PLAN
+      where VSC_PLAN_ID in
+      (select VSC_PLAN_ID from ELP_VSC_RATE_VERSION )
+      order by ELP_VSC_PLAN.VSC_PLAN_ID
+    </LK_VSC_PLAN_ID>
+    <VSC_CLASS_CODES_BY_COMPANY_GROUP>
+      SELECT DISTINCT
+      CC.CLASS_CODE_ID As ID, CC.CLASS_CODE AS Code, CC.CLASS_CODE AS DESCRIPTION
+      FROM
+      ELP_VSC_CLASS_CODE CC, ELP_COMPANY_GROUP CG
+      WHERE
+      CG.COMPANY_GROUP_ID = CC.COMPANY_GROUP_ID
+      AND CG.COMPANY_GROUP_ID = :company_group_id
+      AND GetYesNo(ACTIVE) = 'Y'
+      ORDER BY CC.CLASS_CODE
+    </VSC_CLASS_CODES_BY_COMPANY_GROUP>
+    <LK_VSC_COVERAGE_LIMIT>
+      SELECT
+      VSC_COVERAGE_LIMIT_ID As ID, COVERAGE_LIMIT_CODE AS Code, COVERAGE_MONTHS || ' - ' || COVERAGE_KM_MI  AS DESCRIPTION
+      FROM
+      ELP_VSC_COVERAGE_LIMIT
+      WHERE
+      getcodefromlistitem(coverage_type_id) = '1'
+      AND COMPANY_GROUP_ID = :company_group_id
+      ORDER BY COVERAGE_LIMIT_CODE
+    </LK_VSC_COVERAGE_LIMIT>
+    <ACCTCOMPANIES>
+      SELECT ACCT_COMPANY_ID As ID, DESCRIPTION
+      FROM ELP_ACCT_COMPANY
+      ORDER BY UPPER(DESCRIPTION)
+    </ACCTCOMPANIES>
+    <ADDL_DAC>
+      SELECT
+      LI.list_item_id id, rawtohex(D.language_id) language_id, LI.code code, D.translation description
+      FROM
+      ELITA.ELP_LIST L, ELITA.ELP_LIST_ITEM LI, ELITA.ELP_DICT_ITEM_TRANSLATION D
+      WHERE
+      L.list_id = LI.list_id
+      and L.code = 'ADDAC'
+      and LI.dict_item_id = D.dict_item_id
+      ORDER BY UPPER(description)
+    </ADDL_DAC>
+    <LK_RISK_GROUPS>
+      SELECT
+      li.list_item_id id, li.code, dit.translation description
+      FROM
+      elp_list_item li,elp_dict_item_translation dit
+      WHERE
+      li.dict_item_id= dit.dict_item_id
+      AND li.list_id=(select list_id from elp_list where code='RGRP')
+      AND dit.language_id=:language_id
+      ORDER BY dit.translation
+    </LK_RISK_GROUPS>
+    <SERVICE_CENTER_STATUS>
+      SELECT
+      i.list_item_id id, i.code description, i.code
+      FROM
+      elita.elp_list_item i, elita.elp_list l
+      WHERE
+      i.list_id = l.list_id
+      AND upper(l.code)= 'SCSTAT'
+    </SERVICE_CENTER_STATUS>
+    <LK_RISK_TYPES>
+      SELECT
+      risk_type_id id, description, risk_type_english, risk_group_id, company_group_id
+      FROM
+      elp_risk_type
+      WHERE
+      company_group_id= :company_group_id
+      AND risk_group_id= :risk_group_id
+      ORDER BY description
+    </LK_RISK_TYPES>
+    <CERT_RISK_TYPES>
+      SELECT	risk.risk_type_id id ,ITEM_ID, c.PRODUCT_CODE, ITEM_NUMBER, risk.DESCRIPTION description
+      FROM	elp_dealer d,elp_cert C,elp_product_code pc, elp_risk_type risk,elp_item item
+      WHERE
+      c.dealer_id = d.dealer_id
+      and c.dealer_id = pc.DEALER_ID
+      and c.product_code = pc.product_code
+      and  pc.PRODUCT_CODE_ID = item.PRODUCT_CODE_ID
+      and item.RISK_TYPE_ID = risk.RISK_TYPE_ID
+      and cert_id = hextoraw(:cert_id)
+      and d.dealer_id = hextoraw(:dealer_id)
+    </CERT_RISK_TYPES>
+    <LK_COMMISSION_TYPE>
+      SELECT
+      LI.list_item_id id, rawtohex(D.language_id) language_id, LI.code code, D.translation description
+      FROM
+      ELITA.ELP_LIST L, ELITA.ELP_LIST_ITEM LI, ELITA.ELP_DICT_ITEM_TRANSLATION D
+      WHERE
+      L.list_id = LI.list_id
+      and L.code = 'COMMTYPE'
+      and LI.dict_item_id = D.dict_item_id
+      ORDER BY UPPER(description)
+    </LK_COMMISSION_TYPE>
+    <LK_DEALE_BROKER>
+      SELECT
+      LI.list_item_id id, rawtohex(D.language_id) language_id, LI.code code, D.translation description
+      FROM
+      ELITA.ELP_LIST L, ELITA.ELP_LIST_ITEM LI, ELITA.ELP_DICT_ITEM_TRANSLATION D
+      WHERE
+      L.list_id = LI.list_id
+      and L.code = 'DLRBRK'
+      and LI.dict_item_id = D.dict_item_id
+      ORDER BY UPPER(description)
+    </LK_DEALE_BROKER>
+    <ACCOUNT_TYPE>
+      SELECT
+      LI.list_item_id id, rawtohex(D.language_id) language_id, LI.code code, D.translation description
+      FROM
+      ELITA.ELP_LIST L, ELITA.ELP_LIST_ITEM LI, ELITA.ELP_DICT_ITEM_TRANSLATION D
+      WHERE
+      L.list_id = LI.list_id
+      and L.code = 'CRDBT'
+      and LI.dict_item_id = D.dict_item_id
+      ORDER BY UPPER(description)
+    </ACCOUNT_TYPE>
+    <CONV_CODE_CONTROL>
+      SELECT
+      LI.list_item_id id, rawtohex(D.language_id) language_id, LI.code code, D.translation description
+      FROM
+      ELITA.ELP_LIST L, ELITA.ELP_LIST_ITEM LI, ELITA.ELP_DICT_ITEM_TRANSLATION D
+      WHERE
+      L.list_id = LI.list_id
+      and L.code = 'CONVCTL'
+      and LI.dict_item_id = D.dict_item_id
+      ORDER BY UPPER(description)
+    </CONV_CODE_CONTROL>
+    <ANALYSIS_CODES>
+      SELECT
+      LI.list_item_id id, rawtohex(D.language_id) language_id, LI.code code, D.translation description
+      FROM
+      ELITA.ELP_LIST L, ELITA.ELP_LIST_ITEM LI, ELITA.ELP_DICT_ITEM_TRANSLATION D
+      WHERE
+      L.list_id = LI.list_id
+      and L.code = 'ANYLSCODE'
+      and LI.dict_item_id = D.dict_item_id
+      ORDER BY UPPER(description)
+    </ANALYSIS_CODES>
+    <PAY_AS_PAID_ACC_TYPE>
+      SELECT
+      LI.list_item_id id, rawtohex(D.language_id) language_id, LI.code code, D.translation description
+      FROM
+      ELITA.ELP_LIST L, ELITA.ELP_LIST_ITEM LI, ELITA.ELP_DICT_ITEM_TRANSLATION D
+      WHERE
+      L.list_id = LI.list_id
+      and L.code = 'PAPAT'
+      and LI.dict_item_id = D.dict_item_id
+      ORDER BY UPPER(description)
+    </PAY_AS_PAID_ACC_TYPE>
+    <VENDOR_STATUS>
+      SELECT
+      LI.list_item_id id, rawtohex(D.language_id) language_id, LI.code code, D.translation description
+      FROM
+      ELITA.ELP_LIST L, ELITA.ELP_LIST_ITEM LI, ELITA.ELP_DICT_ITEM_TRANSLATION D
+      WHERE
+      L.list_id = LI.list_id
+      and L.code = 'VENSTAT'
+      and LI.dict_item_id = D.dict_item_id
+      ORDER BY UPPER(description)
+    </VENDOR_STATUS>
+    <ACCOUNTING_EVENTS>
+      <![CDATA[
+            SELECT
+                D.TRANSLATION description,
+                D.TRANSLATION code,
+                AE.ACCT_EVENT_TYPE_ID id
+            FROM
+                ELITA.ELP_LIST_ITEM LI, 
+                ELITA.ELP_DICT_ITEM_TRANSLATION D,
+                ELITA.ELP_ACCT_EVENT AE
+            WHERE
+                AE.ACCT_COMPANY_ID = :ACCT_COMPANY_ID
+            AND LI.LIST_ITEM_ID = AE.ACCT_EVENT_TYPE_ID
+            AND LI.DICT_ITEM_ID = D.DICT_ITEM_ID
+            AND D.LANGUAGE_ID = :LANGUAGE_ID
+            ORDER BY UPPER(DESCRIPTION)
+]]>
+    </ACCOUNTING_EVENTS>
+    <ACCOUNTING_COMPANIES>
+      <![CDATA[
+            Select      DISTINCT(C.ACCT_COMPANY_ID)  ID,
+                        C.ACCT_COMPANY_ID ACCT_COMPANY_ID,
+                        AC.description code,
+                        AC.description,
+                        AC.ftp_directory,
+                        AC.USE_ACCOUNTING                        
+            FROM    ELP_COMPANY C, 
+                    ELP_USER_COMPANY UC,
+                    ELP_ACCT_COMPANY AC
+            Where 
+                  UC.USER_ID = :USER_ID
+              AND C.COMPANY_ID = UC.COMPANY_ID
+              AND AC.ACCT_COMPANY_ID = C.ACCT_COMPANY_ID
+
+]]>
+
+    </ACCOUNTING_COMPANIES>
+
+    <ACCOUNTING_FILENAMES>
+      <![CDATA[
+            Select  DISTINCT ACCT_TRANSMISSION_ID ID,
+                    FILE_NAME   Description                     
+            FROM    ELP_ACCT_TRANSMISSION
+            Where   COMPANY_ID = :COMPANY_ID    
+                AND to_char(CREATED_DATE,'YYYYMMDD') between :begin_date and :end_date
+           ]]>
+    </ACCOUNTING_FILENAMES>
+    <TRANSLATE_PRODUCT_CODES>
+      SELECT
+      LI.list_item_id id, rawtohex(D.language_id) language_id, LI.code code, D.translation description
+      FROM
+      ELITA.ELP_LIST L, ELITA.ELP_LIST_ITEM LI, ELITA.ELP_DICT_ITEM_TRANSLATION D
+      WHERE
+      L.list_id = LI.list_id
+      and L.code = 'TPRDC'
+      and LI.dict_item_id = D.dict_item_id
+      ORDER BY UPPER(description)
+    </TRANSLATE_PRODUCT_CODES>
+    <STAT_IBNR>
+      SELECT
+      LI.list_item_id id, rawtohex(D.language_id) language_id, LI.code code, D.translation description
+      FROM
+      ELITA.ELP_LIST L, ELITA.ELP_LIST_ITEM LI, ELITA.ELP_DICT_ITEM_TRANSLATION D
+      WHERE
+      L.list_id = LI.list_id
+      and L.code = 'STAT_IBNR'
+      and LI.dict_item_id = D.dict_item_id
+      ORDER BY UPPER(description)
+    </STAT_IBNR>
+    <LAE_IBNR>
+      SELECT
+      LI.list_item_id id, rawtohex(D.language_id) language_id, LI.code code, D.translation description
+      FROM
+      ELITA.ELP_LIST L, ELITA.ELP_LIST_ITEM LI, ELITA.ELP_DICT_ITEM_TRANSLATION D
+      WHERE
+      L.list_id = LI.list_id
+      and L.code = 'LAE_IBNR'
+      and LI.dict_item_id = D.dict_item_id
+      ORDER BY UPPER(description)
+    </LAE_IBNR>
+    <CLAIM_SYSTEM>
+      SELECT claim_system_id id, code, description, new_claim_id, pay_claim_id, maintain_claim_id
+      FROM ELITA.ELP_CLAIM_SYSTEM
+      ORDER BY UPPER(description)
+    </CLAIM_SYSTEM>
+    <EXTENDED_CLAIM_STATUSES>
+      SELECT
+      LI.list_item_id id, rawtohex(D.language_id) language_id, LI.code code, D.translation description
+      FROM
+      ELITA.ELP_LIST L, ELITA.ELP_LIST_ITEM LI, ELITA.ELP_DICT_ITEM_TRANSLATION D
+      WHERE
+      L.list_id = LI.list_id
+      and L.code = 'CLMSTAT'
+      and LI.dict_item_id = D.dict_item_id
+      ORDER BY UPPER(description)
+    </EXTENDED_CLAIM_STATUSES>
+    <PICKLIST_STORES>
+      SELECT
+      sc.service_center_id id,  rawtohex(sc.country_id) country_id, sc.code, sc.description
+      FROM
+      ELITA.ELP_SERVICE_CENTER sc
+      WHERE
+      sc.STATUS_CODE ='A'
+      and sc.route_id is not null
+      ORDER BY UPPER(sc.description)
+    </PICKLIST_STORES>
+    <PICKLIST_HEADER>
+      select header.header_id id, rawtohex(network.company_group_id) company_group_id, header.picklist_number code, route.route_id, route.code, route.description
+      from elp_pickup_list_header header
+      join elp_route route on header.route_id = route.route_id
+      join elp_service_network network on network.service_network_id = route.service_network_id
+      order by header.picklist_number desc
+    </PICKLIST_HEADER>
+    <CCANBY>
+      SELECT
+      LI.list_item_id id, rawtohex(D.language_id) language_id, LI.code code, D.translation description
+      FROM
+      ELITA.ELP_LIST L, ELITA.ELP_LIST_ITEM LI, ELITA.ELP_DICT_ITEM_TRANSLATION D
+      WHERE
+      L.list_id = LI.list_id
+      and L.code = 'CCANBY'
+      and LI.dict_item_id = D.dict_item_id
+      ORDER BY UPPER(description)
+    </CCANBY>
+    <INTEGRATED_WITH>
+      SELECT
+      LI.list_item_id id, rawtohex(D.language_id) language_id, LI.code code, D.translation description
+      FROM
+      ELITA.ELP_LIST L, ELITA.ELP_LIST_ITEM LI, ELITA.ELP_DICT_ITEM_TRANSLATION D
+      WHERE
+      L.list_id = LI.list_id
+      and L.code = 'INTR'
+      and LI.dict_item_id = D.dict_item_id
+      ORDER BY UPPER(description)
+    </INTEGRATED_WITH>
+    <SERVICE_CENTERS_DEALER>
+      SELECT
+      SC.SERVICE_CENTER_ID ID, rawtohex(D.DEALER_ID) DEALER_ID , SC.CODE Code ,SC.DESCRIPTION Description
+      FROM
+      ELP_SERVICE_CENTER SC,ELP_SERVICE_NETWORK_SVC NSC, ELP_DEALER D
+      WHERE
+      NSC.SERVICE_CENTER_ID = SC.SERVICE_CENTER_ID AND
+      D.SERVICE_NETWORK_ID = NSC.SERVICE_NETWORK_ID
+    </SERVICE_CENTERS_DEALER>
+    <GVS_FUNCTION_TYPE>
+      SELECT
+      LI.list_item_id id, rawtohex(D.language_id) language_id, LI.code code, D.translation description
+      FROM
+      ELITA.ELP_LIST L, ELITA.ELP_LIST_ITEM LI, ELITA.ELP_DICT_ITEM_TRANSLATION D
+      WHERE
+      L.list_id = LI.list_id
+      and L.code = 'FTYPE'
+      and LI.dict_item_id = D.dict_item_id
+      ORDER BY UPPER(description)
+    </GVS_FUNCTION_TYPE>
+    <GVS_TRANSACTION_STATUS>
+      SELECT
+      LI.list_item_id id, rawtohex(D.language_id) language_id, LI.code code, D.translation description
+      FROM
+      ELITA.ELP_LIST L, ELITA.ELP_LIST_ITEM LI, ELITA.ELP_DICT_ITEM_TRANSLATION D
+      WHERE
+      L.list_id = LI.list_id
+      and L.code = 'GVSTAT'
+      and LI.dict_item_id = D.dict_item_id
+      ORDER BY UPPER(description)
+    </GVS_TRANSACTION_STATUS>
+    <COMUNA_CODE>
+      select cs.COMUNA_ALIAS Code,
+      ec.comuna,
+      er.Description Description
+      from ELITA.ELP_COMUNA_CODE ec, ELP_COMUNA_STANDARDIZATION cs, ELP_REGION  er
+      where ec.COMUNA_CODE_ID = cs.COMUNA_CODE_ID
+      and  ec.REGION_ID = er.REGION_ID
+      and er.Region_ID = :region_id
+    </COMUNA_CODE>
+    <CATEGORIES>
+      SELECT fc.form_category_id id,fc.code description,t.code tab, fc.dict_item_id
+      FROM elp_form_category fc, elp_tab t
+      WHERE fc.tab_id = t.tab_id
+    </CATEGORIES>
+    <REPORT>
+      SELECT f.form_id id, f.code code, trans.translation description
+      FROM  elp_form f, elp_dict_item_translation trans, elp_user u,
+      ( Select f.form_id
+      From    elp_form f
+      Where   f.relative_url = 'Reports'
+
+      Minus
+
+      (Select ce.form_id
+      From  elp_user_company uc, elp_company_form_exclusion ce
+      Where     uc.user_id = :user_id
+      And ce.company_id = uc.company_id
+      Union
+      Select  f.form_id
+      From    elp_form f
+      Where   f.code like 'REPORT%'
+      And   f.relative_url = 'Reports'
+      ) ) filter
+
+      WHERE   u.user_id = :user_id
+      And   f.form_id = filter.form_id
+      And   trans.dict_item_id = f.dict_item_id
+      And   trans.language_id = u.language_id
+    </REPORT>
+    <EXTENDED_STATUS>
+      select distinct g.LIST_ITEM_ID id, li.code code ,dict.translation description
+      from	elp_list l,elp_list_item li,elp_dict_item_translation dict,elp_language lan,
+      elp_claim_status_by_group g
+      where	li.list_id = l.list_id
+      and		li.dict_item_id = dict.dict_item_id
+      and		dict.language_id = lan.language_id
+      and 	g.LIST_ITEM_ID = li.LIST_ITEM_ID
+      and 	g.company_group_id = :company_group_id
+      and		lan.language_id = :language_id
+    </EXTENDED_STATUS>
+    <EXTENDED_STATUS_BY_GROUP_LIST>
+      select distinct g.CLAIM_STATUS_BY_GROUP_ID id,g.LIST_ITEM_ID, li.code code ,dict.translation description
+      from	elp_list l,elp_list_item li,elp_dict_item_translation dict,elp_language lan,
+      elp_claim_status_by_group g
+      where	li.list_id = l.list_id
+      and		li.dict_item_id = dict.dict_item_id
+      and		dict.language_id = lan.language_id
+      and 	g.LIST_ITEM_ID = li.LIST_ITEM_ID
+      and 	g.company_group_id = :company_group_id
+      and		lan.language_id = :language_id
+    </EXTENDED_STATUS_BY_GROUP_LIST>
+    <CLAIM_EXTENDED_STATUS_DEFAULT_TYPES>
+      SELECT
+      LI.list_item_id id, rawtohex(D.language_id) language_id, LI.code code, D.translation description
+      FROM
+      ELITA.ELP_LIST L, ELITA.ELP_LIST_ITEM LI, ELITA.ELP_DICT_ITEM_TRANSLATION D
+      WHERE
+      L.list_id = LI.list_id
+      and L.code = 'ECSDT'
+      and LI.dict_item_id = D.dict_item_id
+      ORDER BY UPPER(description)
+    </CLAIM_EXTENDED_STATUS_DEFAULT_TYPES>
+    <SC_TAT_BY_GROUP_LIST>
+      select TURN_AROUND_TIME_RANGE_ID id, code , description
+      from	ELP_TURN_AROUND_TIME_RANGE TAT
+      where	company_group_id = :company_group_id
+    </SC_TAT_BY_GROUP_LIST>
+    <REPLACEMENT_STORES>
+      SELECT
+      sc.service_center_id id,  rawtohex(sc.country_id) country_id, sc.code, sc.description
+      FROM
+      ELITA.ELP_SERVICE_CENTER sc, ELP_SERV_CENTER_METH_REPAIR svcmr
+      WHERE
+      sc.service_center_id = svcmr.service_center_id
+      and getcodefromlistitem(svcmr.SERV_CENTER_MOR_ID) = 'R'
+      ORDER BY UPPER(sc.description)
+    </REPLACEMENT_STORES>
+    <TZN>
+      SELECT
+      LI.list_item_id id, rawtohex(D.language_id) language_id, LI.code code, D.translation description
+      FROM
+      ELITA.ELP_LIST L, ELITA.ELP_LIST_ITEM LI, ELITA.ELP_DICT_ITEM_TRANSLATION D
+      WHERE
+      L.list_id = LI.list_id
+      and L.code = 'TZN'
+      and LI.dict_item_id = D.dict_item_id
+      ORDER BY UPPER(description)
+    </TZN>
+    <COLLMETHOD>
+      SELECT
+      LI.list_item_id id, rawtohex(D.language_id) language_id, LI.code code, D.translation description
+      FROM
+      ELITA.ELP_LIST L, ELITA.ELP_LIST_ITEM LI, ELITA.ELP_DICT_ITEM_TRANSLATION D
+      WHERE
+      L.list_id = LI.list_id
+      and L.code = 'COLLMETHOD'
+      and LI.dict_item_id = D.dict_item_id
+      ORDER BY UPPER(description)
+    </COLLMETHOD>
+    <PMTINSTR>
+      SELECT
+      LI.list_item_id id, rawtohex(D.language_id) language_id, LI.code code, D.translation description
+      FROM
+      ELITA.ELP_LIST L, ELITA.ELP_LIST_ITEM LI, ELITA.ELP_DICT_ITEM_TRANSLATION D
+      WHERE
+      L.list_id = LI.list_id
+      and L.code = 'PMTINSTR'
+      and LI.dict_item_id = D.dict_item_id
+      ORDER BY UPPER(description)
+    </PMTINSTR>
+    <CLITYP>
+      SELECT
+      LI.list_item_id id, rawtohex(D.language_id) language_id, LI.code code, D.translation description
+      FROM
+      ELITA.ELP_LIST L, ELITA.ELP_LIST_ITEM LI, ELITA.ELP_DICT_ITEM_TRANSLATION D
+      WHERE
+      L.list_id = LI.list_id
+      and L.code = 'CLITYP'
+      and LI.dict_item_id = D.dict_item_id
+      ORDER BY UPPER(description)
+    </CLITYP>
+    <REPORT_RUNDATE_PAGENUM>
+      Elp_ReportPageCtrl.GetDateAndPageNumber
+    </REPORT_RUNDATE_PAGENUM>
+    <CHECK_REPORT_RUNDATE>
+      select status from Elp_Reports_PageCtrl where Report_Name = :report_name and
+      PERIOD_GENERATED = :ReportRun_date and company_id = :CompanyId
+    </CHECK_REPORT_RUNDATE>
+    <INSTALLMENT_DEFINITION>
+      SELECT
+      i.list_item_id id, i.code description, i.code
+      FROM
+      elita.elp_list_item i, elita.elp_list l
+      WHERE
+      i.list_id = l.list_id
+      AND upper(l.code)= 'INSTDEF'
+    </INSTALLMENT_DEFINITION>
+    <PHONE_NUMBER_TYPE>
+      SELECT
+      i.list_item_id id, i.code description, i.code
+      FROM
+      elita.elp_list_item i, elita.elp_list l
+      WHERE
+      i.list_id = l.list_id
+      AND upper(l.code)= 'PHNRTP'
+    </PHONE_NUMBER_TYPE>
+    <MOB_TYPE>
+      SELECT i.list_item_id id, i.code
+      FROM elita.elp_list_item i, elita.elp_list l
+      WHERE i.list_id = l.list_id
+      AND upper(l.code) = 'MOB_TYPE'
+    </MOB_TYPE>
+    <SUBSTAT>
+      SELECT
+      LI.list_item_id id, rawtohex(D.language_id) language_id, LI.code code, D.translation description
+      FROM
+      ELITA.ELP_LIST L, ELITA.ELP_LIST_ITEM LI, ELITA.ELP_DICT_ITEM_TRANSLATION D
+      WHERE
+      L.list_id = LI.list_id
+      and L.code = 'SUBSTAT'
+      and LI.dict_item_id = D.dict_item_id
+      ORDER BY UPPER(description)
+    </SUBSTAT>
+    <CAUSE_OF_LOSS_BY_COVERAGE_TYPE_AND_SPL_SVC>
+      <![CDATA[	
+      select distinct LI.list_item_id id, rawtohex(trans.language_id) language_id,
+      translation description, li.code, c.active
+      from elp_coverage_loss c,
+      elp_list_item li,
+      elp_dict_item_translation trans,
+      elp_special_service spl_svc,
+      elp_product_special_service p_spl_svc,
+      elp_product_code p
+      where	c.company_group_id =  :company_group_id
+      and c.coverage_type_id = :coverage_type_id
+      and c.cause_of_loss_id  = list_item_id
+      and li.dict_item_id = trans.dict_item_id
+      and c.coverage_loss_id = spl_svc.coverage_loss_id
+      and spl_svc.special_service_id = p_spl_svc.special_service_id
+      and spl_svc.dealer_id = :dealer_id
+      and p_spl_svc.product_code_id = p.product_code_id
+      and trans.language_id = :language_id
+      and p.product_code = :product_id
+
+      union
+
+      select distinct LI.list_item_id id, rawtohex(trans.language_id) language_id,
+      translation description, code, c.active
+      from elp_coverage_loss c,
+      elp_list_item li,
+      elp_dict_item_translation trans
+      where	c.company_group_id =  :company_group_id
+      and c.coverage_type_id = :coverage_type_id
+      and c.cause_of_loss_id  = list_item_id
+      and c.cause_of_loss_id  = list_item_id
+      and li.dict_item_id = trans.dict_item_id
+      and trans.language_id = :language_id
+      and  LI.list_item_id not in (select distinct LI.list_item_id id
+                                  from elp_coverage_loss c,
+                                  elp_list_item li,
+                                  elp_dict_item_translation trans,
+                                  elp_special_service spl_svc,
+                                  elp_product_special_service p_spl_svc,
+                                  elp_product_code p
+                                  where	c.company_group_id =  :company_group_id
+                                  and c.coverage_type_id = :coverage_type_id
+                                  and c.cause_of_loss_id  = list_item_id
+                                  and li.dict_item_id = trans.dict_item_id
+                                  and c.coverage_loss_id = spl_svc.coverage_loss_id
+                                  and spl_svc.special_service_id = p_spl_svc.special_service_id
+                                  and spl_svc.dealer_id = :dealer_id
+                                  and p_spl_svc.product_code_id = p.product_code_id
+                                  and trans.language_id = :language_id
+                                  and p.product_code <> :product_id)
+      order by description
+	  ]]>
+    </CAUSE_OF_LOSS_BY_COVERAGE_TYPE_AND_SPL_SVC>
+    <EQUIPMENTS>
+      <![CDATA[	SELECT DISTINCT e.EQUIPMENT_ID AS ID, e.MODEL AS CODE, e.DESCRIPTION, rawtohex(m.COMPANY_GROUP_ID) COMPANY_GROUP_ID,
+        rawtohex(e.MANUFACTURER_ID) MANUFACTURER_ID, rawtohex(e.IS_MASTER_EQUIPMENT) IS_MASTER_EQUIPMENT,
+        rawtohex(e.EQUIPMENT_TYPE_ID) EQUIPMENT_TYPE_ID
+      FROM ELP_EQUIPMENT e INNER JOIN ELP_MANUFACTURER m ON e.MANUFACTURER_ID = m.MANUFACTURER_ID
+      WHERE m.COMPANY_GROUP_ID = :COMPANY_GROUP_ID
+      ORDER BY e.DESCRIPTION]]>
+    </EQUIPMENTS>
+    <EQUIPMENTS_BY_EQUIPMENTLIST>
+      <![CDATA[SELECT DISTINCT e.EQUIPMENT_ID AS ID, e.MODEL AS CODE, e.DESCRIPTION, rawtohex(m.COMPANY_GROUP_ID) COMPANY_GROUP_ID,
+      rawtohex(e.MANUFACTURER_ID) MANUFACTURER_ID, rawtohex(e.IS_MASTER_EQUIPMENT) IS_MASTER_EQUIPMENT,
+      rawtohex(e.EQUIPMENT_TYPE_ID) EQUIPMENT_TYPE_ID
+      FROM elita.ELP_EQUIPMENT e
+      INNER JOIN elita.ELP_MANUFACTURER m ON e.MANUFACTURER_ID = m.MANUFACTURER_ID
+      inner join elita.elp_equipment_list_detail elstd on e.equipment_id = elstd.equipment_id
+      inner join elita.elp_equipment_list elst on elstd.equipment_list_id = elst.equipment_list_id
+      WHERE m.COMPANY_GROUP_ID = :COMPANY_GROUP_ID
+      and elst.code = :Equipment_list_code
+      and :eff_date between elst.effective and elst.expiration
+      ORDER BY e.DESCRIPTION]]>
+    </EQUIPMENTS_BY_EQUIPMENTLIST>
+    <BEST_REPLACEMENT>
+      <![CDATA[	
+        SELECT 
+          MIGRATION_PATH_ID AS ID,
+          CODE,
+          DESCRIPTION
+        FROM 
+          ELP_MIGRATION_PATH
+        ORDER BY
+          UPPER(DESCRIPTION)
+      ]]>
+    </BEST_REPLACEMENT>
+    <EQUIPMENT_LIST>
+      <![CDATA[
+      select equipment_list_id as ID, code as CODE, code || ' - ' || description DESCRIPTION
+      from (
+      select equipment_list_id, code, description , effective,expiration, rank()
+        OVER (PARTITION BY code ORDER BY effective  ) code_rank
+      from elp_equipment_list where effective >= to_date(:long_date,'MM/DD/YYYY HH24:MI:SS')
+      or to_date(:long_date,'MM/DD/YYYY HH24:MI:SS') between EFFECTIVE and expiration)
+      where code_rank = 1
+      ]]>
+    </EQUIPMENT_LIST>
+    <EQUIPMENT_LIST_FOR_PRICE_LIST_OLD>
+      <![CDATA[
+      select el.equipment_list_id id, code || ' - ' || description DESCRIPTION, effective, expiration
+      from elp_equipment_list el inner join elp_equipment_list_Detail eld on el.equipment_list_id = eld.equipment_list_id
+      inner join elp_equipment e on e.equipment_id = eld.equipment_id
+      inner join elp_manufacturer m on e.manufacturer_id = m.manufacturer_id
+      where company_group_id= :company_group_id and (el.effective >= to_date(:long_date,'MM/DD/YYYY HH24:MI:SS')
+      or to_date(:long_date,'MM/DD/YYYY HH24:MI:SS') between el.EFFECTIVE and el.expiration)
+     ]]>
+    </EQUIPMENT_LIST_FOR_PRICE_LIST_OLD>
+    <EQUIPMENT_LIST_FOR_PRICE_LIST>
+      <![CDATA[
+      select  Equipment_id id,m.description || '_'|| e.description DESCRIPTION
+       from elp_equipment e inner join elp_manufacturer m on e.manufacturer_id = m.manufacturer_id
+      and company_group_id = :company_group_id and (effective >= to_date(:long_date,'MM/DD/YYYY HH24:MI:SS')
+      or to_date(:long_date,'MM/DD/YYYY HH24:MI:SS') between EFFECTIVE and expiration)
+     ]]>
+    </EQUIPMENT_LIST_FOR_PRICE_LIST>
+    <ISSUE_TYPE>
+      <![CDATA[
+      SELECT
+        ISSUE_TYPE_ID AS ID,
+        CODE,
+        DESCRIPTION
+      FROM
+        ELITA.ELP_ISSUE_TYPE
+      ]]>
+    </ISSUE_TYPE>
+    <NOTE_TYPE>
+      <![CDATA[
+      SELECT
+        ISSUE_COMMENT_TYPE_ID AS ID,
+        DESCRIPTION
+      FROM
+        ELITA.ELP_ISSUE_COMMENT_TYPE
+      ]]>
+    </NOTE_TYPE>
+    <BEST_REPLACEMENT_BY_COMPANY_GROUP>
+      <![CDATA[	
+        select 
+          migration_path_id as id,
+          code,
+          description
+        from 
+          elp_migration_path
+        where
+          company_group_id = :company_group_id
+        order by
+          upper(description)
+      ]]>
+    </BEST_REPLACEMENT_BY_COMPANY_GROUP>
+    <COMDEDUCTBASED>
+      SELECT
+      LI.list_item_id id, rawtohex(D.language_id) language_id, LI.code code, D.translation description
+      FROM
+      ELITA.ELP_LIST L, ELITA.ELP_LIST_ITEM LI, ELITA.ELP_DICT_ITEM_TRANSLATION D
+      WHERE
+      L.list_id = LI.list_id
+      and L.code = 'COMDEDUCTBASED'
+      and LI.dict_item_id = D.dict_item_id
+      ORDER BY UPPER(description)
+    </COMDEDUCTBASED>
+    <CLMLDFTYP>
+      SELECT
+      LI.list_item_id id, rawtohex(D.language_id) language_id, LI.code code, D.translation description
+      FROM
+      ELITA.ELP_LIST L, ELITA.ELP_LIST_ITEM LI, ELITA.ELP_DICT_ITEM_TRANSLATION D
+      WHERE
+      L.list_id = LI.list_id
+      and L.code = 'CLMLDFTYP'
+      and LI.dict_item_id = D.dict_item_id
+      ORDER BY UPPER(description)
+    </CLMLDFTYP>
+    <CSTAT>
+      SELECT
+      LI.list_item_id id, rawtohex(D.language_id) language_id, LI.code code, D.translation description
+      FROM
+      ELITA.ELP_LIST L, ELITA.ELP_LIST_ITEM LI, ELITA.ELP_DICT_ITEM_TRANSLATION D
+      WHERE
+      L.list_id = LI.list_id
+      and L.code = 'CSTAT'
+      and LI.dict_item_id = D.dict_item_id
+      ORDER BY UPPER(description)
+    </CSTAT>
+    <CLSTAT>
+      SELECT
+      LI.list_item_id id, rawtohex(D.language_id) language_id, LI.code code, D.translation description
+      FROM
+      ELITA.ELP_LIST L, ELITA.ELP_LIST_ITEM LI, ELITA.ELP_DICT_ITEM_TRANSLATION D
+      WHERE
+      L.list_id = LI.list_id
+      and L.code = 'CLSTAT'
+      and LI.dict_item_id = D.dict_item_id
+      ORDER BY UPPER(description)
+    </CLSTAT>
+    <SVC_TYP>
+      SELECT
+      LI.list_item_id id, rawtohex(D.language_id) language_id, LI.code code, D.translation description
+      FROM
+      ELITA.ELP_LIST L, ELITA.ELP_LIST_ITEM LI, ELITA.ELP_DICT_ITEM_TRANSLATION D
+      WHERE
+      L.list_id = LI.list_id
+      and L.code = 'SVC_TYP'
+      and LI.dict_item_id = D.dict_item_id
+      ORDER BY UPPER(description)
+    </SVC_TYP>
+    <WQ_ACTION>
+      SELECT
+      LI.list_item_id id, rawtohex(D.language_id) language_id, LI.code code, D.translation description
+      FROM
+      ELITA.ELP_LIST L, ELITA.ELP_LIST_ITEM LI, ELITA.ELP_DICT_ITEM_TRANSLATION D
+      WHERE
+      L.list_id = LI.list_id
+      and L.code = 'WQ_ACTION'
+      and LI.dict_item_id = D.dict_item_id
+      ORDER BY UPPER(description)
+    </WQ_ACTION>
+    <CLMISSUESTATUS>
+      SELECT
+      LI.list_item_id id, rawtohex(D.language_id) language_id, LI.code code, D.translation description
+      FROM
+      ELITA.ELP_LIST L, ELITA.ELP_LIST_ITEM LI, ELITA.ELP_DICT_ITEM_TRANSLATION D
+      WHERE
+      L.list_id = LI.list_id
+      and L.code = 'CLMISSUESTATUS'
+      and LI.dict_item_id = D.dict_item_id
+      ORDER BY UPPER(description)
+    </CLMISSUESTATUS>
+    <BENTCOV>
+      select distinct li.LIST_ITEM_ID id, li.code code ,dict.translation description
+      from	elp_list l,elp_list_item li,elp_dict_item_translation dict,elp_language lan,
+      elp_acct_cov_entity ce, elp_acct_business_unit bu, elp_acct_company ac
+      where	li.list_id = l.list_id
+      and		li.dict_item_id = dict.dict_item_id
+      and		dict.language_id = lan.language_id
+      and 	ce.BUSINESS_ENTITY_ID = li.LIST_ITEM_ID
+      and 	bu.acct_business_unit_id = ce.ACCT_BUSINESS_UNIT_ID
+      and   bu.acct_company_id = ac.acct_company_id
+      and   ac.acct_company_id = :acct_company_id
+      and  lan.language_id = :language_id
+      ORDER BY UPPER(description)
+    </BENTCOV>
+    <FIN_ADJ_BY>
+      SELECT
+      i.list_item_id id, rawtohex(D.language_id) language_id, D.translation description, i.code
+      FROM
+      elita.elp_list_item i, elita.elp_list l, ELITA.ELP_DICT_ITEM_TRANSLATION D
+      WHERE
+      i.list_id = l.list_id
+      and i.dict_item_id = D.dict_item_id
+      AND upper(l.code)= 'FAB'
+    </FIN_ADJ_BY>
+    <QUESTION_LIST>
+      <![CDATA[
+      select question_list_id as ID, code as CODE, code || ' - ' || description as DESCRIPTION
+      from elp_question_list where to_date(:long_date,'MM/DD/YYYY HH24:MI:SS') BETWEEN trunc(effective) AND trunc(expiration) ORDER BY Code, Expiration
+      ]]>
+    </QUESTION_LIST>
+    <QUESTION_TYPE>
+      SELECT
+      LI.list_item_id id, rawtohex(D.language_id) language_id, LI.code code, D.translation description
+      FROM
+      ELITA.ELP_LIST L, ELITA.ELP_LIST_ITEM LI, ELITA.ELP_DICT_ITEM_TRANSLATION D
+      WHERE
+      L.list_id = LI.list_id
+      and L.code = 'QTYP'
+      and LI.dict_item_id = D.dict_item_id
+      ORDER BY UPPER(description)
+    </QUESTION_TYPE>
+    <QUESTION>
+      SELECT
+      LI.list_item_id id, rawtohex(D.language_id) language_id, LI.code code, D.translation description
+      FROM
+      ELITA.ELP_LIST L, ELITA.ELP_LIST_ITEM LI, ELITA.ELP_DICT_ITEM_TRANSLATION D
+      WHERE
+      L.list_id = LI.list_id
+      and L.code = 'QUESTION'
+      and LI.dict_item_id = D.dict_item_id
+      ORDER BY UPPER(description)
+    </QUESTION>
+    <ROLE_PROVIDER>
+      SELECT
+      LI.list_item_id id, rawtohex(D.language_id) language_id, LI.code code, D.translation description
+      FROM
+      ELITA.ELP_LIST L, ELITA.ELP_LIST_ITEM LI, ELITA.ELP_DICT_ITEM_TRANSLATION D
+      WHERE
+      L.list_id = LI.list_id
+      and L.code = 'ROLE_PROVIDER'
+      and LI.dict_item_id = D.dict_item_id
+      ORDER BY UPPER(description)
+    </ROLE_PROVIDER>
+    <ISSUES>
+      <![CDATA[	
+      SELECT DESCRIPTION, ID ,CODE
+      FROM (SELECT DISTINCT (DESCRIPTION),
+           ISSUE_ID ID, CODE CODE,
+           rank() OVER(PARTITION BY DESCRIPTION ORDER BY effective) code_rank
+           FROM ELP_ISSUE)
+      WHERE code_rank = 1       
+      ]]>
+    </ISSUES>
+    <DEALER_AVAILABLE>
+      <![CDATA[	
+        SELECT
+          DEALER_NAME DESCRIPTION,
+          DEALER_ID ID
+        FROM 
+          ELP_DEALER      
+        WHERE
+          QUESTION_LIST_CODE <> :QUESTION_LIST_CODE
+      ]]>
+    </DEALER_AVAILABLE>
+    <CLAIM_EXTENDED_STATUS_ENTRY>
+      SELECT
+      LI.list_item_id id, rawtohex(D.language_id) language_id, LI.code code, D.translation description
+      FROM
+      ELITA.ELP_LIST L, ELITA.ELP_LIST_ITEM LI, ELITA.ELP_DICT_ITEM_TRANSLATION D
+      WHERE
+      L.list_id = LI.list_id
+      and L.code = 'EXTSTATENT'
+      and LI.dict_item_id = D.dict_item_id
+      ORDER BY UPPER(description)
+    </CLAIM_EXTENDED_STATUS_ENTRY>
+
+    <RISK_TYPE>
+      <![CDATA[
+      SELECT
+        distinct (rt.description || ' - ' || ci.cert_product_code || ' - ' || ci.item_description) AS DESCRIPTION,
+        cic.cert_item_id ID
+      FROM 		
+        elp_cert c,
+        elp_cert_item ci,
+        elp_cert_item_coverage cic,
+        elp_risk_type rt,
+        elp_list l,
+        elp_list_item i,
+        elp_dict_item_translation t,
+        elp_language lang,
+        elp_dealer d
+      WHERE
+        c.cert_id = hextoraw(:cert_id)
+        AND c.cert_id = ci.cert_id
+        AND ci.cert_item_id = cic.cert_item_id
+        AND ci.risk_type_id = rt.risk_type_id
+        AND i.list_id = l.list_id
+        AND	i.dict_item_id = t.dict_item_id
+        AND t.language_id = lang.language_id
+        AND lang.language_id = hextoraw(:language_id)
+        AND l.code = 'CTYP'
+        AND i.list_item_id = cic.coverage_type_id
+        AND c.dealer_id = d.dealer_id
+        AND (:loss_date BETWEEN cic.begin_date AND cic.end_date  or (nvl(d.grace_period_months,0) > 0 OR nvl(d.grace_period_days,0) > 0))
+      ORDER BY 
+        description
+      ]]>
+    </RISK_TYPE>
+
+    <COVERAGE_TYPE>
+      <![CDATA[
+      SELECT 	
+        cic.cert_item_coverage_id ID,
+        t.translation DESCRIPTION
+      FROM 		
+        elp_cert c,
+        elp_cert_item ci,
+        elp_dealer d,
+        elp_cert_item_coverage cic,
+        elp_risk_type rt,
+        elp_list l,
+        elp_list_item i,
+        elp_dict_item_translation t,
+        elp_language lang
+      WHERE
+        c.cert_id = hextoraw(:cert_id)
+        AND c.cert_id = ci.cert_id
+        and d.dealer_id = c.dealer_id
+        AND ci.cert_item_id = cic.cert_item_id
+        AND ci.risk_type_id = rt.risk_type_id
+        AND i.list_id = l.list_id
+        AND	i.dict_item_id = t.dict_item_id
+        AND t.language_id = lang.language_id
+        AND lang.language_id = hextoraw(:language_id)
+        AND l.code = 'CTYP'
+        AND i.list_item_id = cic.coverage_type_id
+        AND ((:loss_date BETWEEN cic.begin_date AND cic.end_date) OR (nvl(d.grace_period_months,0) > 0 OR nvl(d.grace_period_days,0) > 0))
+        AND cic.cert_item_id = hextoraw(:cert_item_id)
+        AND i.code <> 'M'  AND i.code <> 'MP'
+      ORDER BY 
+        t.translation
+      ]]>
+    </COVERAGE_TYPE>
+
+    <SCHEDULE>
+      <![CDATA[
+      SELECT
+        Schedule_id as ID,
+        CODE,
+        CODE || ' - ' || DESCRIPTION as DESCRIPTION
+      FROM
+        elp_Schedule WHERE Schedule_id IN (SELECT Schedule_id FROM ELP_SCHEDULE_DETAIL)
+      ]]>
+    </SCHEDULE>
+    <ANSWER_TYPE>
+      <![CDATA[
+      SELECT ANSWER_TYPE_ID AS ID,CODE,DESCRIPTION
+      FROM ELP_ANSWER_TYPE
+      ORDER BY CODE      
+      ]]>
+    </ANSWER_TYPE>
+    <ENTITY_ATTR>
+      <![CDATA[
+       SELECT ENTITY_ATTRIBUTE_ID AS ID,ENTITY||'-'||ATTRIBUTE AS DESCRIPTION
+       FROM ELP_ENTITY_ATTRIBUTE 
+       WHERE to_date(:todayDate,'MM/DD/YYYY HH24:MI:SS') BETWEEN EFFECTIVE AND EXPIRATION
+       ORDER BY DESCRIPTION
+      ]]>
+    </ENTITY_ATTR>
+    <ATTRIBUTE_VALUE>
+      <![CDATA[
+      select distinct DLR.dealer_id id, rawtohex(DLR.company_id) company_id,DLR.DEALER AS CODE,DLR.DEALER_NAME AS DESCRIPTION ,ATV.ATTRIBUTE_VALUE 
+      from elp_dealer dlr,elp_attribute att,elp_attribute_value atv
+      where atv.reference_id = dlr.dealer_id
+      AND ATT.ATTRIBUTE_ID=ATV.ATTRIBUTE_ID
+      AND ATV.ATTRIBUTE_VALUE = 'Y'
+      and att.Table_Name = :TABLE_NAME
+      AND ATT.UI_PROG_CODE = :UI_PROG_CODE
+      --dynamic_and_clause]]>
+    </ATTRIBUTE_VALUE>
+
+    <PRICE_LIST>
+      <![CDATA[ 
+      SELECT 
+	      DISTINCT price_list_id AS ID, rawtohex(country_id) country_id, CODE, DESCRIPTION
+      FROM 
+	      elp_price_list
+      WHERE 
+	      SYSDATE BETWEEN EFFECTIVE AND EXPIRATION
+      ]]>
+    </PRICE_LIST>
+    <SUBSCRIBER_TYPE>
+      SELECT
+      LI.list_item_id id, rawtohex(D.language_id) language_id, LI.code code, D.translation description
+      FROM
+      ELITA.ELP_LIST L, ELITA.ELP_LIST_ITEM LI, ELITA.ELP_DICT_ITEM_TRANSLATION D
+      WHERE
+      L.list_id = LI.list_id
+      and L.code = 'SUBSCRIBER_TYPE'
+      and LI.dict_item_id = D.dict_item_id
+      ORDER BY UPPER(description)
+    </SUBSCRIBER_TYPE>
+    <EQPTYPE>
+      SELECT
+      LI.list_item_id id, rawtohex(D.language_id) language_id, LI.code code, D.translation description
+      FROM
+      ELITA.ELP_LIST L, ELITA.ELP_LIST_ITEM LI, ELITA.ELP_DICT_ITEM_TRANSLATION D
+      WHERE
+      L.list_id = LI.list_id
+      and L.code = 'EQPTYPE'
+      and LI.dict_item_id = D.dict_item_id
+      ORDER BY UPPER(description)
+    </EQPTYPE>
+    <INV_STAT>
+      SELECT
+      LI.list_item_id id, rawtohex(D.language_id) language_id, LI.code code, D.translation description
+      FROM
+      ELITA.ELP_LIST L, ELITA.ELP_LIST_ITEM LI, ELITA.ELP_DICT_ITEM_TRANSLATION D
+      WHERE
+      L.list_id = LI.list_id
+      and L.code = 'INV_STAT'
+      and LI.dict_item_id = D.dict_item_id
+      ORDER BY UPPER(description)
+    </INV_STAT>
+    <REGSTATUS>
+      SELECT
+      i.list_item_id id, i.code description, i.code
+      FROM
+      elita.elp_list_item i, elita.elp_list l
+      WHERE
+      i.list_id = l.list_id
+      AND upper(l.code)= 'REGSTATUS'
+    </REGSTATUS>
+    <EVNT_TYP>
+      SELECT
+      i.list_item_id id, i.code description, i.code
+      FROM
+      elita.elp_list_item i, elita.elp_list l
+      WHERE
+      i.list_id = l.list_id
+      AND upper(l.code)= 'EVNT_TYP'
+    </EVNT_TYP>
+    <SKUVAL>
+      SELECT
+      LI.list_item_id id, rawtohex(D.language_id) language_id, LI.code code, D.translation description
+      FROM
+      ELITA.ELP_LIST L, ELITA.ELP_LIST_ITEM LI, ELITA.ELP_DICT_ITEM_TRANSLATION D
+      WHERE
+      L.list_id = LI.list_id
+      and L.code = 'SKUVAL'
+      and LI.dict_item_id = D.dict_item_id
+      ORDER BY UPPER(description)
+    </SKUVAL>
+    <CLM_AUTH_TYP>
+      SELECT
+      LI.list_item_id id, rawtohex(D.language_id) language_id, LI.code code, D.translation description
+      FROM
+      ELITA.ELP_LIST L, ELITA.ELP_LIST_ITEM LI, ELITA.ELP_DICT_ITEM_TRANSLATION D
+      WHERE
+      L.list_id = LI.list_id
+      and L.code = 'CLM_AUTH_TYP'
+      and LI.dict_item_id = D.dict_item_id
+      ORDER BY UPPER(description)
+    </CLM_AUTH_TYP>
+    <ISSUE_DESCRIPTION>
+      SELECT
+      LI.list_item_id id, rawtohex(D.language_id) language_id, LI.code code, D.translation description
+      FROM
+      ELITA.ELP_LIST L, ELITA.ELP_LIST_ITEM LI, ELITA.ELP_DICT_ITEM_TRANSLATION D
+      WHERE
+      L.list_id = LI.list_id
+      and L.code = 'ISSUE_DESCRIPTION'
+      and LI.dict_item_id = D.dict_item_id
+      ORDER BY UPPER(description)
+    </ISSUE_DESCRIPTION>
+    <ANSWER_VALUE>
+      SELECT LI.list_item_id id, rawtohex(D.language_id) language_id, LI.code code, D.translation description
+      FROM ELITA.ELP_LIST L, ELITA.ELP_LIST_ITEM LI, ELITA.ELP_DICT_ITEM_TRANSLATION D
+      WHERE L.list_id = LI.list_id
+      AND L.code = 'ANSWER_VALUE'
+      AND LI.dict_item_id = D.dict_item_id
+      ORDER BY UPPER(description)
+    </ANSWER_VALUE>
+    <COMPANY_GROUP_INV_GRP_NUMBERING>
+      SELECT
+      LI.list_item_id id, rawtohex(D.language_id) language_id, LI.code code, D.translation description
+      FROM
+      ELITA.ELP_LIST L, ELITA.ELP_LIST_ITEM LI, ELITA.ELP_DICT_ITEM_TRANSLATION D
+      WHERE
+      L.list_id = LI.list_id
+      and L.code = 'INVGRPNUM'
+      and LI.dict_item_id = D.dict_item_id
+      ORDER BY UPPER(description)
+    </COMPANY_GROUP_INV_GRP_NUMBERING>
+    <COMPANY_GROUP_AUTHORIZATION_NUMBERING>
+      SELECT
+      LI.list_item_id id, rawtohex(D.language_id) language_id, LI.code code, D.translation description
+      FROM
+      ELITA.ELP_LIST L, ELITA.ELP_LIST_ITEM LI, ELITA.ELP_DICT_ITEM_TRANSLATION D
+      WHERE
+      L.list_id = LI.list_id
+      and L.code = 'AUTHNUM'
+      and LI.dict_item_id = D.dict_item_id
+      ORDER BY UPPER(description)
+    </COMPANY_GROUP_AUTHORIZATION_NUMBERING>
+    <PMTGRPNUM>
+      SELECT
+      LI.list_item_id id, rawtohex(D.language_id) language_id, LI.code code, D.translation description
+      FROM
+      ELITA.ELP_LIST L, ELITA.ELP_LIST_ITEM LI, ELITA.ELP_DICT_ITEM_TRANSLATION D
+      WHERE
+      L.list_id = LI.list_id
+      and L.code = 'PMTGRPNUM'
+      and LI.dict_item_id = D.dict_item_id
+      ORDER BY UPPER(description)
+    </PMTGRPNUM>
+    <CLM_AUTH_STAT>
+      SELECT
+      LI.list_item_id id, rawtohex(D.language_id) language_id, LI.code code, D.translation description
+      FROM
+      ELITA.ELP_LIST L, ELITA.ELP_LIST_ITEM LI, ELITA.ELP_DICT_ITEM_TRANSLATION D
+      WHERE
+      L.list_id = LI.list_id
+      and L.code = 'CLM_AUTH_STAT'
+      and LI.dict_item_id = D.dict_item_id
+      ORDER BY UPPER(description)
+    </CLM_AUTH_STAT>
+    <CLAIM_EQUIP_TYPE>
+      SELECT
+      LI.list_item_id id, rawtohex(D.language_id) language_id, LI.code code, D.translation description
+      FROM
+      ELITA.ELP_LIST L, ELITA.ELP_LIST_ITEM LI, ELITA.ELP_DICT_ITEM_TRANSLATION D
+      WHERE
+      L.list_id = LI.list_id
+      and L.code = 'CLAIM_EQUIP_TYPE'
+      and LI.dict_item_id = D.dict_item_id
+      ORDER BY UPPER(description)
+    </CLAIM_EQUIP_TYPE>
+    <CLM_AUTH_STAT>
+      SELECT
+      LI.list_item_id id, rawtohex(D.language_id) language_id, LI.code code, D.translation description
+      FROM
+      ELITA.ELP_LIST L, ELITA.ELP_LIST_ITEM LI, ELITA.ELP_DICT_ITEM_TRANSLATION D
+      WHERE
+      L.list_id = LI.list_id
+      and L.code = 'CLM_AUTH_STAT'
+      and LI.dict_item_id = D.dict_item_id
+      ORDER BY UPPER(description)
+    </CLM_AUTH_STAT>
+    <SVCCLASS>
+      SELECT
+      LI.list_item_id id, rawtohex(D.language_id) language_id, LI.code code, D.translation description
+      FROM
+      ELITA.ELP_LIST L, ELITA.ELP_LIST_ITEM LI, ELITA.ELP_DICT_ITEM_TRANSLATION D
+      WHERE
+      L.list_id = LI.list_id
+      and L.code = 'SVCCLASS'
+      and LI.dict_item_id = D.dict_item_id
+      ORDER BY UPPER(description)
+    </SVCCLASS>
+    <SVCTYP>
+      SELECT
+      LI.list_item_id id, rawtohex(D.language_id) language_id, LI.code code, D.translation description
+      FROM
+      ELITA.ELP_LIST L, ELITA.ELP_LIST_ITEM LI, ELITA.ELP_DICT_ITEM_TRANSLATION D
+      WHERE
+      L.list_id = LI.list_id
+      and L.code = 'SVCTYP'
+      and LI.dict_item_id = D.dict_item_id
+      ORDER BY UPPER(description)
+    </SVCTYP>
+    <SVC_TYP_BY_CLASS>
+      select LI.list_item_id id,
+      rawtohex(D.language_id) language_id,
+      LI.code code,
+      D.translation description
+      from elp_service_class_type    sct,
+      elp_list_item             LI,
+      elp_dict_item_translation d
+      where sct.service_type_id = LI.list_item_id
+      and d.dict_item_id = LI.dict_item_id
+      and d.language_id = :language_id
+      and sct.service_class_id= :service_class_id
+      ORDER BY UPPER(description)
+    </SVC_TYP_BY_CLASS>
+    <ADJ_RESN>
+      <![CDATA[
+      SELECT
+      LI.list_item_id id, rawtohex(D.language_id) language_id, LI.code code, D.translation description
+      FROM
+      ELITA.ELP_LIST L, ELITA.ELP_LIST_ITEM LI, ELITA.ELP_DICT_ITEM_TRANSLATION D
+      WHERE
+      L.list_id = LI.list_id
+      and L.code = 'ADJ_RESN'
+      and LI.dict_item_id = D.dict_item_id
+      ORDER BY UPPER(description)
+      ]]>
+    </ADJ_RESN>
+    <TEQP>
+      SELECT
+      LI.list_item_id id, rawtohex(D.language_id) language_id, LI.code code, D.translation description
+      FROM
+      ELITA.ELP_LIST L, ELITA.ELP_LIST_ITEM LI, ELITA.ELP_DICT_ITEM_TRANSLATION D
+      WHERE
+      L.list_id = LI.list_id
+      and L.code = 'TEQP'
+      and LI.dict_item_id = D.dict_item_id
+      ORDER BY UPPER(description)
+    </TEQP>
+    <SVC_LVL>
+      SELECT
+      LI.list_item_id id, rawtohex(D.language_id) language_id, LI.code code, D.translation description
+      FROM
+      ELITA.ELP_LIST L, ELITA.ELP_LIST_ITEM LI, ELITA.ELP_DICT_ITEM_TRANSLATION D
+      WHERE
+      L.list_id = LI.list_id
+      and L.code = 'SVC_LVL'
+      and LI.dict_item_id = D.dict_item_id
+      ORDER BY UPPER(description)
+    </SVC_LVL>
+    <ATBDTYP>
+      SELECT
+      LI.list_item_id id, rawtohex(D.language_id) language_id, LI.code code, D.translation description
+      FROM
+      ELITA.ELP_LIST L, ELITA.ELP_LIST_ITEM LI, ELITA.ELP_DICT_ITEM_TRANSLATION D
+      WHERE
+      L.list_id = LI.list_id
+      and L.code = 'ATBDTYP'
+      and LI.dict_item_id = D.dict_item_id
+      ORDER BY UPPER(description)
+    </ATBDTYP>
+    <DEVICE>
+      SELECT
+      LI.list_item_id id, rawtohex(D.language_id) language_id, LI.code code, D.translation description
+      FROM
+      ELITA.ELP_LIST L, ELITA.ELP_LIST_ITEM LI, ELITA.ELP_DICT_ITEM_TRANSLATION D
+      WHERE
+      L.list_id = LI.list_id
+      and L.code = 'DEVICE'
+      and LI.dict_item_id = D.dict_item_id
+      ORDER BY UPPER(description)
+    </DEVICE>
+    <MARITAL_STATUS>
+      SELECT
+      LI.list_item_id id, rawtohex(D.language_id) language_id, LI.code code, D.translation description
+      FROM
+      ELITA.ELP_LIST L, ELITA.ELP_LIST_ITEM LI, ELITA.ELP_DICT_ITEM_TRANSLATION D
+      WHERE
+      L.list_id = LI.list_id
+      and L.code = 'MARITAL_STATUS'
+      and LI.dict_item_id = D.dict_item_id
+      ORDER BY UPPER(description)
+    </MARITAL_STATUS>
+    <NATIONALITY>
+      SELECT
+      LI.list_item_id id, rawtohex(D.language_id) language_id, LI.code code, D.translation description
+      FROM
+      ELITA.ELP_LIST L, ELITA.ELP_LIST_ITEM LI, ELITA.ELP_DICT_ITEM_TRANSLATION D
+      WHERE
+      L.list_id = LI.list_id
+      and L.code = 'NATIONALITY'
+      and LI.dict_item_id = D.dict_item_id
+      ORDER BY UPPER(description)
+    </NATIONALITY>
+    <PLACEOFBIRTH>
+      SELECT
+      LI.list_item_id id, rawtohex(D.language_id) language_id, LI.code code, D.translation description
+      FROM
+      ELITA.ELP_LIST L, ELITA.ELP_LIST_ITEM LI, ELITA.ELP_DICT_ITEM_TRANSLATION D
+      WHERE
+      L.list_id = LI.list_id
+      and L.code = 'PLACEOFBIRTH'
+      and LI.dict_item_id = D.dict_item_id
+      ORDER BY UPPER(description)
+    </PLACEOFBIRTH>
+    <SOURCE>
+      SELECT
+      LI.list_item_id id, rawtohex(D.language_id) language_id, LI.code code, D.translation description
+      FROM
+      ELITA.ELP_LIST L, ELITA.ELP_LIST_ITEM LI, ELITA.ELP_DICT_ITEM_TRANSLATION D
+      WHERE
+      L.list_id = LI.list_id
+      and L.code = 'SOURCE'
+      and LI.dict_item_id = D.dict_item_id
+      ORDER BY UPPER(description)
+    </SOURCE>
+    <GENDER>
+      SELECT
+      LI.list_item_id id, rawtohex(D.language_id) language_id, LI.code code, D.translation description
+      FROM
+      ELITA.ELP_LIST L, ELITA.ELP_LIST_ITEM LI, ELITA.ELP_DICT_ITEM_TRANSLATION D
+      WHERE
+      L.list_id = LI.list_id
+      and L.code = 'GENDER'
+      and LI.dict_item_id = D.dict_item_id
+      ORDER BY UPPER(description)
+    </GENDER>
+    <UPG_TERM_UNIT_OF_MEASURE>
+      SELECT
+      LI.list_item_id id, rawtohex(D.language_id) language_id, LI.code code, D.translation description
+      FROM
+      ELITA.ELP_LIST L, ELITA.ELP_LIST_ITEM LI, ELITA.ELP_DICT_ITEM_TRANSLATION D
+      WHERE
+      L.list_id = LI.list_id
+      and L.code = 'UPG_TERM_UNIT_OF_MEASURE'
+      and LI.dict_item_id = D.dict_item_id
+      ORDER BY UPPER(description)
+    </UPG_TERM_UNIT_OF_MEASURE>
+    <CAIT>
+      SELECT
+      LI.list_item_id id, rawtohex(D.language_id) language_id, LI.code code, D.translation description
+      FROM
+      ELITA.ELP_LIST L, ELITA.ELP_LIST_ITEM LI, ELITA.ELP_DICT_ITEM_TRANSLATION D
+      WHERE
+      L.list_id = LI.list_id
+      and L.code = 'CAIT'
+      and LI.dict_item_id = D.dict_item_id
+      ORDER BY UPPER(description)
+    </CAIT>
+    <PERSON_TYPE>
+      SELECT
+      LI.list_item_id id, rawtohex(D.language_id) language_id, LI.code code, D.translation description
+      FROM
+      ELITA.ELP_LIST L, ELITA.ELP_LIST_ITEM LI, ELITA.ELP_DICT_ITEM_TRANSLATION D
+      WHERE
+      L.list_id = LI.list_id
+      and L.code = 'PERSON_TYPE'
+      and LI.dict_item_id = D.dict_item_id
+      ORDER BY UPPER(description)
+    </PERSON_TYPE>
+    <GET_MANUFACTURER_BY_EQUIPMENT_LIST>
+      select distinct mf.manufacturer_id ID, mf.description DESCRIPTION, mf.description CODE
+      from elita.elp_manufacturer mf
+      inner join elita.elp_equipment eq
+      on eq.manufacturer_id = mf.manufacturer_id
+      inner join elita.elp_equipment_list_detail elstd
+      on eq.equipment_id = elstd.equipment_id
+      inner join elita.elp_equipment_list elst
+      on elst.equipment_list_id = elstd.equipment_list_id
+      where elst.code = :list_code
+      and :effective_on between elst.effective and elst.expiration
+    </GET_MANUFACTURER_BY_EQUIPMENT_LIST>
+    <COVERAGE_OFFSET_METHOD>
+      SELECT
+      LI.list_item_id id, rawtohex(D.language_id) language_id, LI.code code, D.translation description
+      FROM
+      ELITA.ELP_LIST L, ELITA.ELP_LIST_ITEM LI, ELITA.ELP_DICT_ITEM_TRANSLATION D
+      WHERE
+      L.list_id = LI.list_id
+      and L.code = 'COVERAGE_OFFSET_METHOD'
+      and LI.dict_item_id = D.dict_item_id
+      ORDER BY UPPER(description)
+    </COVERAGE_OFFSET_METHOD>
+    <CURRENCY_BY_COMPANY_AND_DEALERS_IN_COMPANY>
+      select cur.currency_id id, cur.notation || ' (' ||cur.description ||')' description, cur.iso_code
+      from elita.elp_company cmp, elita.elp_country cnt, elita.elp_currency cur
+      where cmp.business_country_id = cnt.country_id
+      and cnt.primary_currency_id = cur.currency_id
+      and cmp.company_id = :company_id
+      union
+      select cur.currency_id id, cur.notation || ' (' ||cur.description ||')' description, cur.iso_code
+      from elita.elp_company cmp, elita.elp_currency cur, elita.elp_contract con, elita.elp_Dealer d
+      where cmp.company_id = d.company_id
+      and con.dealer_id=d.dealer_id and con.currency_id=cur.currency_id
+      and cmp.company_id = :company_id
+    </CURRENCY_BY_COMPANY_AND_DEALERS_IN_COMPANY>
+    <CURRENCY_BY_COMPANIES_BY_USER>
+      select distinct cur.currency_id id, cur.notation || ' (' ||cur.description ||')' description
+      from elita.elp_company cmp, elita.elp_country cnt, elita.elp_currency cur
+      where cmp.business_country_id = cnt.country_id
+      and cnt.primary_currency_id = cur.currency_id
+      and cmp.company_id in (select company_id from elp_user_company where user_id = :user_id)
+    </CURRENCY_BY_COMPANIES_BY_USER>
+    <FIELD_NAMES>
+      select interface_split_column_id id, source, column_name description
+      from elp_interface_split_column
+    </FIELD_NAMES>
+    <PREINVSTAT>
+      SELECT
+      LI.list_item_id id, rawtohex(D.language_id) language_id, LI.code code, D.translation description
+      FROM
+      ELITA.ELP_LIST L, ELITA.ELP_LIST_ITEM LI, ELITA.ELP_DICT_ITEM_TRANSLATION D
+      WHERE
+      L.list_id = LI.list_id
+      and L.code = 'PREINVSTAT'
+      and LI.dict_item_id = D.dict_item_id
+      ORDER BY UPPER(description)
+    </PREINVSTAT>
+    <PROD_LIABILITY_LIMIT_BASED_ON_TYPES>
+      SELECT
+      LI.list_item_id id, rawtohex(D.language_id) language_id, LI.code code, D.translation description
+      FROM
+      ELITA.ELP_LIST L, ELITA.ELP_LIST_ITEM LI, ELITA.ELP_DICT_ITEM_TRANSLATION D
+      WHERE
+      L.list_id = LI.list_id
+      and L.code = 'PRODLILIMBASEDON'
+      and LI.dict_item_id = D.dict_item_id
+      ORDER BY UPPER(description)
+    </PROD_LIABILITY_LIMIT_BASED_ON_TYPES>
+    <PROD_LIABILITY_LIMIT_POLICY_TYPES>
+      SELECT
+      LI.list_item_id id, rawtohex(D.language_id) language_id, LI.code code, D.translation description
+      FROM
+      ELITA.ELP_LIST L, ELITA.ELP_LIST_ITEM LI, ELITA.ELP_DICT_ITEM_TRANSLATION D
+      WHERE
+      L.list_id = LI.list_id
+      and L.code = 'PRODLILIMPOLICY'
+      and LI.dict_item_id = D.dict_item_id
+      ORDER BY UPPER(description)
+    </PROD_LIABILITY_LIMIT_POLICY_TYPES>
+    <INVTYP>
+      SELECT
+      LI.list_item_id id, rawtohex(D.language_id) language_id, LI.code code, D.translation description
+      FROM
+      ELITA.ELP_LIST L, ELITA.ELP_LIST_ITEM LI, ELITA.ELP_DICT_ITEM_TRANSLATION D
+      WHERE
+      L.list_id = LI.list_id
+      and L.code = 'INVTYP'
+      and LI.dict_item_id = D.dict_item_id
+      ORDER BY UPPER(description)
+    </INVTYP>
+    <INVSTAT>
+      SELECT
+      LI.list_item_id id, rawtohex(D.language_id) language_id, LI.code code, D.translation description
+      FROM
+      ELITA.ELP_LIST L, ELITA.ELP_LIST_ITEM LI, ELITA.ELP_DICT_ITEM_TRANSLATION D
+      WHERE
+      L.list_id = LI.list_id
+      and L.code = 'INVSTAT'
+      and LI.dict_item_id = D.dict_item_id
+      ORDER BY UPPER(description)
+    </INVSTAT>
+    <CLRULEBASEDON>
+      SELECT
+      LI.list_item_id id, rawtohex(D.language_id) language_id, LI.code code, D.translation description
+      FROM
+      ELITA.ELP_LIST L, ELITA.ELP_LIST_ITEM LI, ELITA.ELP_DICT_ITEM_TRANSLATION D
+      WHERE
+      L.list_id = LI.list_id
+      and L.code = 'CLRULEBASEDON'
+      and LI.dict_item_id = D.dict_item_id
+      ORDER BY UPPER(description)
+    </CLRULEBASEDON>
+    <UPG_FINANCE_BAL_COMP_METH>
+      SELECT
+      LI.list_item_id id, rawtohex(D.language_id) language_id, LI.code code, D.translation description
+      FROM
+      ELITA.ELP_LIST L, ELITA.ELP_LIST_ITEM LI, ELITA.ELP_DICT_ITEM_TRANSLATION D
+      WHERE
+      L.list_id = LI.list_id
+      and L.code = 'UPG_FINANCE_BAL_COMP_METH'
+      and LI.dict_item_id = D.dict_item_id
+      ORDER BY UPPER(description)
+    </UPG_FINANCE_BAL_COMP_METH>
+    <STAGES>
+      SELECT DISTINCT STAGE_NAME_ID id, D.translation description
+      FROM
+      elita.ELP_STAGE CS, ELITA.ELP_LIST_ITEM LI, ELITA.ELP_DICT_ITEM_TRANSLATION D
+      WHERE
+      CS.STAGE_NAME_ID = LI.LIST_ITEM_ID
+      and LI.dict_item_id = D.dict_item_id
+      <!--AND COMPANY_GROUP_ID = :company_group_id-->
+    </STAGES>
+    <STAGESTATUS>
+      SELECT
+      LI.list_item_id id, rawtohex(D.language_id) language_id, LI.code code, D.translation description
+      FROM
+      ELITA.ELP_LIST L, ELITA.ELP_LIST_ITEM LI, ELITA.ELP_DICT_ITEM_TRANSLATION D
+      WHERE
+      L.list_id = LI.list_id
+      and L.code = 'CLM_STAGE_STATUS'
+      and LI.dict_item_id = D.dict_item_id
+      ORDER BY UPPER(description)
+    </STAGESTATUS>
+    <DATE_OF_PAYMENT_OPTION>
+      SELECT
+      LI.list_item_id id, rawtohex(D.language_id) language_id, LI.code code, D.translation description
+      FROM
+      ELITA.ELP_LIST L, ELITA.ELP_LIST_ITEM LI, ELITA.ELP_DICT_ITEM_TRANSLATION D
+      WHERE
+      L.list_id = LI.list_id
+      and L.code = 'DATE_OF_PAYMENT_OPTION'
+      and LI.dict_item_id = D.dict_item_id
+      ORDER BY UPPER(description)
+    </DATE_OF_PAYMENT_OPTION>
+    <NUMBER_OF_DIGITS_ROUNDOFF>
+      SELECT
+      LI.list_item_id id, rawtohex(D.language_id) language_id, LI.code code, D.translation description
+      FROM
+      ELITA.ELP_LIST L, ELITA.ELP_LIST_ITEM LI, ELITA.ELP_DICT_ITEM_TRANSLATION D
+      WHERE
+      L.list_id = LI.list_id
+      and L.code = 'NUMBER_OF_DIGITS_ROUNDOFF'
+      and LI.dict_item_id = D.dict_item_id
+      ORDER BY UPPER(description)
+    </NUMBER_OF_DIGITS_ROUNDOFF>
+    <SHIPPING_TYPES>
+      SELECT
+      LI.list_item_id id, rawtohex(D.language_id) language_id, LI.code code, D.translation description
+      FROM
+      ELITA.ELP_LIST L, ELITA.ELP_LIST_ITEM LI, ELITA.ELP_DICT_ITEM_TRANSLATION D
+      WHERE
+      L.list_id = LI.list_id
+      and L.code = 'SHIP_TYP'
+      and LI.dict_item_id = D.dict_item_id
+      ORDER BY UPPER(description)
+    </SHIPPING_TYPES>
+    <MSGTYPE>
+      SELECT
+      LI.list_item_id id, rawtohex(D.language_id) language_id, LI.code code, D.translation description
+      FROM
+      ELITA.ELP_LIST L, ELITA.ELP_LIST_ITEM LI, ELITA.ELP_DICT_ITEM_TRANSLATION D
+      WHERE
+      L.list_id = LI.list_id
+      and L.code = 'MSGTYPE'
+      and LI.dict_item_id = D.dict_item_id
+      ORDER BY UPPER(description)
+    </MSGTYPE>
+    <FILE_TYP>
+      SELECT
+      LI.list_item_id id, rawtohex(D.language_id) language_id, LI.code code, D.translation description
+      FROM
+      ELITA.ELP_LIST L, ELITA.ELP_LIST_ITEM LI, ELITA.ELP_DICT_ITEM_TRANSLATION D
+      WHERE
+      L.list_id = LI.list_id
+      and L.code = 'FILE_TYP'
+      and LI.dict_item_id = D.dict_item_id
+      ORDER BY UPPER(description)
+    </FILE_TYP>
+    <GET_USER_COMPANIES>
+      select distinct c.company_id id, c.description, c.code code
+      from elp_company c
+      inner join elp_user_company uc on uc.company_id = c.company_id
+      where c.company_group_id = :company_group_id
+      and uc.company_id = c.company_id
+      and uc.user_id = :user_id
+    </GET_USER_COMPANIES>
+
+    <GET_CLAIM_STATUS_BY_USER_ROLE>
+      select claim_status_by_role_id,
+      claim_status_by_group_id,
+      role_id,
+      company_id
+      from elp_claim_status_by_user_role
+    </GET_CLAIM_STATUS_BY_USER_ROLE>
+    <EXTENDED_STATUS_BY_USER_ROLE>
+      select distinct g.CLAIM_STATUS_BY_GROUP_ID id, li.code code ,dict.translation description,
+      CASE WHEN dcs.claim_status_by_group_id is not null or csa.current_status_id is not null then 'N' else 'Y' end as enabled
+      from  elp_list l,elp_list_item li,elp_dict_item_translation dict,elp_language lan,
+      elp_claim_status_by_group g
+      left join elp_default_claim_status dcs on g.claim_status_by_group_id = dcs.claim_status_by_group_id
+      left  join elp_claim_status_action csa on g.claim_status_by_group_id = csa.current_status_id
+      where  li.list_id = l.list_id
+      and    li.dict_item_id = dict.dict_item_id
+      and    dict.language_id = lan.language_id
+      and   g.LIST_ITEM_ID = li.LIST_ITEM_ID
+      and   g.company_group_id = :company_group_id
+      and		lan.language_id = :language_id
+    </EXTENDED_STATUS_BY_USER_ROLE>
+    <AUTO_REJ_ERR_TYPE>
+      SELECT
+      LI.list_item_id id, rawtohex(D.language_id) language_id, LI.code code, D.translation description
+      FROM
+      ELITA.ELP_LIST L, ELITA.ELP_LIST_ITEM LI, ELITA.ELP_DICT_ITEM_TRANSLATION D
+      WHERE
+      L.list_id = LI.list_id
+      and L.code = 'AUTO_REJ_ERR_TYPE'
+      and LI.dict_item_id = D.dict_item_id
+      ORDER BY UPPER(description)
+    </AUTO_REJ_ERR_TYPE>
+
+    <VRSTID>
+      SELECT
+      LI.list_item_id id, rawtohex(D.language_id) language_id, LI.code code, D.translation description
+      FROM
+      ELITA.ELP_LIST L, ELITA.ELP_LIST_ITEM LI, ELITA.ELP_DICT_ITEM_TRANSLATION D
+      WHERE
+      L.list_id = LI.list_id
+      and L.code = 'VRSTID'
+      and LI.dict_item_id = D.dict_item_id
+      ORDER BY UPPER(description)
+    </VRSTID>
+    <PLNQT>
+      SELECT
+      LI.list_item_id id, rawtohex(D.language_id) language_id, LI.code code, D.translation description
+      FROM
+      ELITA.ELP_LIST L, ELITA.ELP_LIST_ITEM LI, ELITA.ELP_DICT_ITEM_TRANSLATION D
+      WHERE
+      L.list_id = LI.list_id
+      and L.code = 'PLNQT'
+      and LI.dict_item_id = D.dict_item_id
+      ORDER BY UPPER(description)
+    </PLNQT>
+    <CBCM>
+      SELECT
+      LI.list_item_id id, rawtohex(D.language_id) language_id, LI.code code, D.translation description
+      FROM
+      ELITA.ELP_LIST L, ELITA.ELP_LIST_ITEM LI, ELITA.ELP_DICT_ITEM_TRANSLATION D
+      WHERE
+      L.list_id = LI.list_id
+      and L.code = 'CBCM'
+      and LI.dict_item_id = D.dict_item_id
+      ORDER BY UPPER(description)
+    </CBCM>
+    <AUTO_GEN_REJ_PYMT_FILE>
+      SELECT
+      LI.list_item_id id, rawtohex(D.language_id) language_id, LI.code code, D.translation description
+      FROM
+      ELITA.ELP_LIST L, ELITA.ELP_LIST_ITEM LI, ELITA.ELP_DICT_ITEM_TRANSLATION D
+      WHERE
+      L.list_id = LI.list_id
+      and L.code = 'AUTO_GEN_REJ_PYMT_FILE'
+      and LI.dict_item_id = D.dict_item_id
+      ORDER BY UPPER(description)
+    </AUTO_GEN_REJ_PYMT_FILE>
+    <COMPUTE_DEDUCTIBLE_BASED_ON_AND_EXPRESSIONS>
+      <![CDATA[
+        SELECT id,
+               language_id, 
+               code,
+               description
+        FROM (
+          SELECT li.list_item_id         id, 
+                rawtohex(d.language_id) language_id, 
+                li.code                 code, 
+                d.translation           description,
+                Upper(d.translation)    upper_description,
+                1                       sort_sequence
+          FROM   elita.elp_list      l, 
+                elita.elp_list_item li, 
+                elita.elp_dict_item_translation d
+          WHERE  l.list_id       =  li.list_id
+            AND  l.code          =  'COMDEDUCTBASED'
+            AND  li.code         != 'EXP'
+            AND  li.dict_item_id =  d.dict_item_id
+          UNION ALL
+          SELECT e.expression_id         id,
+                rawtohex(l.language_id) language_id,
+                e.expression_code       code,
+                e.expression_name       description,
+                Upper(e.expression_name) upper_description,
+                2                       sort_sequence
+          FROM   elp_expression e,
+                elp_language   l
+        )
+        ORDER BY sort_sequence, Upper(upper_description)      
+      ]]>
+    </COMPUTE_DEDUCTIBLE_BASED_ON_AND_EXPRESSIONS>
+    <PPT>
+      SELECT
+      LI.list_item_id id, rawtohex(D.language_id) language_id, LI.code code, D.translation description
+      FROM
+      ELITA.ELP_LIST L, ELITA.ELP_LIST_ITEM LI, ELITA.ELP_DICT_ITEM_TRANSLATION D
+      WHERE
+      L.list_id = LI.list_id
+      and L.code = 'PPT'
+      and LI.dict_item_id = D.dict_item_id
+      ORDER BY UPPER(description)
+    </PPT>
+    <PMTHD>
+      SELECT
+      LI.list_item_id id, rawtohex(D.language_id) language_id, LI.code code, D.translation description
+      FROM
+      ELITA.ELP_LIST L, ELITA.ELP_LIST_ITEM LI, ELITA.ELP_DICT_ITEM_TRANSLATION D
+      WHERE
+      L.list_id = LI.list_id
+      and L.code = 'PMTHD'
+      and LI.dict_item_id = D.dict_item_id
+      ORDER BY UPPER(description)
+    </PMTHD>
+    <POST_MIG_CONDITIONS>
+      SELECT
+      LI.list_item_id id, rawtohex(D.language_id) language_id, LI.code code, D.translation description
+      FROM
+      ELITA.ELP_LIST L, ELITA.ELP_LIST_ITEM LI, ELITA.ELP_DICT_ITEM_TRANSLATION D
+      WHERE
+      L.list_id = LI.list_id
+      and L.code = 'POST_MIG_CONDITIONS'
+      and LI.dict_item_id = D.dict_item_id
+      ORDER BY UPPER(description)
+    </POST_MIG_CONDITIONS>
+    <REINSURANCE_STATUSES>
+      SELECT
+      LI.list_item_id id, rawtohex(D.language_id) language_id, LI.code code, D.translation description
+      FROM
+      ELITA.ELP_LIST L, ELITA.ELP_LIST_ITEM LI, ELITA.ELP_DICT_ITEM_TRANSLATION D
+      WHERE
+      L.list_id = LI.list_id
+      and L.code = 'REINSURANCE_STATUSES'
+      and LI.dict_item_id = D.dict_item_id
+      ORDER BY UPPER(description)
+    </REINSURANCE_STATUSES>
+    <REINS_STATUSES_WITHOUT_PARTIAL_STATUSES>
+      SELECT
+      LI.list_item_id id, rawtohex(D.language_id) language_id, LI.code code, D.translation description
+      FROM
+      ELITA.ELP_LIST L, ELITA.ELP_LIST_ITEM LI, ELITA.ELP_DICT_ITEM_TRANSLATION D
+      WHERE
+      L.list_id = LI.list_id
+      and L.code = 'REINSURANCE_STATUSES'
+      and LI.CODE not in ('PARTIALLY_REINSURED','PARTIALLY_REJECTED')
+      and LI.dict_item_id = D.dict_item_id
+      ORDER BY UPPER(description)
+    </REINS_STATUSES_WITHOUT_PARTIAL_STATUSES>
+
+    <ALLOW_CC_REJECTIONS>
+      SELECT
+      LI.list_item_id id, rawtohex(D.language_id) language_id, LI.code code, D.translation description
+      FROM
+      ELITA.ELP_LIST L, ELITA.ELP_LIST_ITEM LI, ELITA.ELP_DICT_ITEM_TRANSLATION D
+      WHERE
+      L.list_id = LI.list_id
+      and L.code = 'ACCR'
+      and LI.dict_item_id = D.dict_item_id
+      ORDER BY UPPER(description)
+    </ALLOW_CC_REJECTIONS>
+
+    <UFI_AUTHORITY>
+      SELECT
+      LI.list_item_id id, rawtohex(D.language_id) language_id, LI.code code, D.translation description
+      FROM
+      ELITA.ELP_LIST L, ELITA.ELP_LIST_ITEM LI, ELITA.ELP_DICT_ITEM_TRANSLATION D
+      WHERE
+      L.list_id = LI.list_id
+      and L.code = 'UFI_AUTHORITY'
+      and LI.dict_item_id = D.dict_item_id
+      ORDER BY UPPER(description)
+    </UFI_AUTHORITY>
+    <PROD_REWARD_NAMES>
+      SELECT
+      LI.list_item_id id, rawtohex(D.language_id) language_id, LI.code code, D.translation description
+      FROM
+      ELITA.ELP_LIST L, ELITA.ELP_LIST_ITEM LI, ELITA.ELP_DICT_ITEM_TRANSLATION D
+      WHERE
+      L.list_id = LI.list_id
+      and L.code = 'PRDREWARDNAME'
+      and LI.dict_item_id = D.dict_item_id
+      ORDER BY UPPER(description)
+    </PROD_REWARD_NAMES>
+    <PROD_REWARD_TYPES>
+      SELECT
+      LI.list_item_id id, rawtohex(D.language_id) language_id, LI.code code, D.translation description
+      FROM
+      ELITA.ELP_LIST L, ELITA.ELP_LIST_ITEM LI, ELITA.ELP_DICT_ITEM_TRANSLATION D
+      WHERE
+      L.list_id = LI.list_id
+      and L.code = 'PRDREWARDTYPE'
+      and LI.dict_item_id = D.dict_item_id
+      ORDER BY UPPER(description)
+    </PROD_REWARD_TYPES>
+    <DEVICE_GROUPS>
+      SELECT
+      L1.list_id id, rawtohex(D.language_id) language_id, LI.code code, D.translation description
+      FROM
+      ELITA.ELP_LIST L, ELITA.ELP_LIST_ITEM LI, elita.elp_list l1, ELITA.ELP_DICT_ITEM_TRANSLATION D
+      WHERE
+      L.list_id = LI.list_id
+      and li.code = l1.code
+      and L.code = 'DEVICE_GROUPS'
+      and LI.dict_item_id = D.dict_item_id
+      ORDER BY UPPER(description)
+    </DEVICE_GROUPS>
+    <DEVICE_TYPES>
+      SELECT
+      LI.list_item_id id, rawtohex(D.language_id) language_id, LI.code code, D.translation description
+      FROM
+      ELITA.ELP_LIST L, ELITA.ELP_LIST_ITEM LI, ELITA.ELP_DICT_ITEM_TRANSLATION D,elp_language lan
+      WHERE
+      L.list_id = LI.list_id
+      and L.code = :device_type
+      and LI.dict_item_id = D.dict_item_id
+      and d.language_id = lan.language_id
+      and	lan.language_id = :language_id
+      ORDER BY UPPER(description)
+    </DEVICE_TYPES>
+    <DCM_QUESTION_SET>
+      SELECT DCM_QUESTION_SET_ID id, code, DESCRIPTION, CURRENT_VERSION
+      FROM ELITA.elp_dcm_question_set
+      ORDER BY UPPER(description)
+    </DCM_QUESTION_SET>
+    <PERILTYP>
+      SELECT
+      LI.list_item_id id, rawtohex(D.language_id) language_id, LI.code code, D.translation description
+      FROM
+      ELITA.ELP_LIST L, ELITA.ELP_LIST_ITEM LI, ELITA.ELP_DICT_ITEM_TRANSLATION D
+      WHERE
+      L.list_id = LI.list_id
+      and L.code = 'PERILTYP'
+      and LI.dict_item_id = D.dict_item_id
+      ORDER BY UPPER(description)
+    </PERILTYP>
+    <CASE_SEARCH_FIELDS>
+      SELECT
+      LI.list_item_id id, rawtohex(D.language_id) language_id, LI.code code, D.translation description
+      FROM
+      ELITA.ELP_LIST L, ELITA.ELP_LIST_ITEM LI, ELITA.ELP_DICT_ITEM_TRANSLATION D
+      WHERE
+      L.list_id = LI.list_id
+      and L.code = 'CASESORTDRP'
+      and LI.dict_item_id = D.dict_item_id
+      ORDER BY UPPER(description)
+    </CASE_SEARCH_FIELDS>
+    <REWARD_SEARCH_FIELDS>
+      SELECT
+      LI.list_item_id id, rawtohex(D.language_id) language_id, LI.code code, D.translation description
+      FROM
+      ELITA.ELP_LIST L, ELITA.ELP_LIST_ITEM LI, ELITA.ELP_DICT_ITEM_TRANSLATION D
+      WHERE
+      L.list_id = LI.list_id
+      and L.code = 'REWARDSORTDRP'
+      and LI.dict_item_id = D.dict_item_id
+      ORDER BY UPPER(description)
+    </REWARD_SEARCH_FIELDS>
+    <CASE_PURPOSE>
+      SELECT
+      LI.list_item_id id, rawtohex(D.language_id) language_id, LI.code code, D.translation description
+      FROM
+      ELITA.ELP_LIST L, ELITA.ELP_LIST_ITEM LI, ELITA.ELP_DICT_ITEM_TRANSLATION D
+      WHERE
+      L.list_id = LI.list_id
+      and L.code = 'CASEPUR'
+      and LI.dict_item_id = D.dict_item_id
+      ORDER BY UPPER(description)
+    </CASE_PURPOSE>
+    <CASE_STATUS>
+      SELECT
+      LI.list_item_id id, rawtohex(D.language_id) language_id, LI.code code, D.translation description
+      FROM
+      ELITA.ELP_LIST L, ELITA.ELP_LIST_ITEM LI, ELITA.ELP_DICT_ITEM_TRANSLATION D
+      WHERE
+      L.list_id = LI.list_id
+      and L.code = 'CASESTAT'
+      and LI.dict_item_id = D.dict_item_id
+      ORDER BY UPPER(description)
+    </CASE_STATUS>
+    <CASE_CLOSE_REASON>
+      SELECT
+      LI.list_item_id id, rawtohex(D.language_id) language_id, LI.code code, D.translation description
+      FROM
+      ELITA.ELP_LIST L, ELITA.ELP_LIST_ITEM LI, ELITA.ELP_DICT_ITEM_TRANSLATION D
+      WHERE
+      L.list_id = LI.list_id
+      and L.code = 'CASECLSRSN'
+      and LI.dict_item_id = D.dict_item_id
+      ORDER BY UPPER(description)
+    </CASE_CLOSE_REASON>
+    <CUSTOMER_TYPE>
+      SELECT
+      LI.list_item_id id, rawtohex(D.language_id) language_id, LI.code code, D.translation description
+      FROM
+      ELITA.ELP_LIST L, ELITA.ELP_LIST_ITEM LI, ELITA.ELP_DICT_ITEM_TRANSLATION D
+      WHERE
+      L.list_id = LI.list_id
+      and L.code = 'CALR_REL_TYPE'
+      and LI.dict_item_id = D.dict_item_id
+      ORDER BY UPPER(description)
+    </CUSTOMER_TYPE>
+    <PRODUCT_LIABILITY_LIMIT_BASE>
+      <![CDATA[	
+				SELECT
+	      LI.list_item_id id, rawtohex(D.language_id) language_id, LI.code code, D.translation description
+	      FROM
+	      ELITA.ELP_LIST L, ELITA.ELP_LIST_ITEM LI, ELITA.ELP_DICT_ITEM_TRANSLATION D
+	      WHERE
+	      L.list_id = LI.list_id
+	      and L.code = 'PRODLILIMBASEDON'
+	      and LI.dict_item_id = D.dict_item_id
+	      ORDER BY UPPER(description)
+		]]>
+    </PRODUCT_LIABILITY_LIMIT_BASE>
+    <PRODUCT_LIMIT_APP_TO_TYPES>
+      <![CDATA[	
+				SELECT
+	      LI.list_item_id id, rawtohex(D.language_id) language_id, LI.extended_code code, D.translation description
+	      FROM
+	      ELITA.ELP_LIST L, ELITA.ELP_LIST_ITEM LI, ELITA.ELP_DICT_ITEM_TRANSLATION D
+	      WHERE
+	      L.list_id = LI.list_id
+	      and L.code = 'PRODLIMITAPPTO'
+	      and LI.dict_item_id = D.dict_item_id
+	      ORDER BY UPPER(description)
+		]]>
+    </PRODUCT_LIMIT_APP_TO_TYPES>
+    <UPDATE_REPLACE__REG_ITEMS>
+      SELECT
+      LI.list_item_id id, rawtohex(D.language_id) language_id, LI.code code, D.translation description
+      FROM
+      ELITA.ELP_LIST L, ELITA.ELP_LIST_ITEM LI, ELITA.ELP_DICT_ITEM_TRANSLATION D
+      WHERE
+      L.list_id = LI.list_id
+      and L.code = 'RIUR'
+      and LI.dict_item_id = D.dict_item_id
+      ORDER BY UPPER(description)
+    </UPDATE_REPLACE__REG_ITEMS>
+    <OCTPT>
+      <![CDATA[	
+				SELECT
+	      LI.list_item_id id, rawtohex(D.language_id) language_id, LI.extended_code code, D.translation description
+	      FROM
+	      ELITA.ELP_LIST L, ELITA.ELP_LIST_ITEM LI, ELITA.ELP_DICT_ITEM_TRANSLATION D
+	      WHERE
+	      L.list_id = LI.list_id
+	      and L.code = 'OCTPT'
+	      and LI.dict_item_id = D.dict_item_id
+	      ORDER BY UPPER(description)
+		    ]]>
+    </OCTPT>
+    <OCTPS>
+      <![CDATA[	
+				SELECT
+	      LI.list_item_id id, rawtohex(D.language_id) language_id, LI.extended_code code, D.translation description
+	      FROM
+	      ELITA.ELP_LIST L, ELITA.ELP_LIST_ITEM LI, ELITA.ELP_DICT_ITEM_TRANSLATION D
+	      WHERE
+	      L.list_id = LI.list_id
+	      and L.code = 'OCTPS'
+	      and LI.dict_item_id = D.dict_item_id
+	      ORDER BY UPPER(description)
+		    ]]>
+    </OCTPS>
+    <OCTR>
+      <![CDATA[	
+				SELECT
+	      LI.list_item_id id, rawtohex(D.language_id) language_id, LI.extended_code code, D.translation description
+	      FROM
+	      ELITA.ELP_LIST L, ELITA.ELP_LIST_ITEM LI, ELITA.ELP_DICT_ITEM_TRANSLATION D
+	      WHERE
+	      L.list_id = LI.list_id
+	      and L.code = 'OCTR'
+	      and LI.dict_item_id = D.dict_item_id
+	      ORDER BY UPPER(description)
+		    ]]>
+    </OCTR>
+    <YESNO_XCD>
+      <![CDATA[	
+				SELECT
+	      LI.list_item_id id, rawtohex(D.language_id) language_id, LI.extended_code code, D.translation description
+	      FROM
+	      ELITA.ELP_LIST L, ELITA.ELP_LIST_ITEM LI, ELITA.ELP_DICT_ITEM_TRANSLATION D
+	      WHERE
+	      L.list_id = LI.list_id
+	      and L.code = 'YESNO'
+	      and LI.dict_item_id = D.dict_item_id
+	      ORDER BY UPPER(description)
+		    ]]>
+    </YESNO_XCD>
+    <REWARD_STATUS>
+      <![CDATA[	
+				SELECT
+	      LI.list_item_id id, rawtohex(D.language_id) language_id, LI.extended_code code, D.translation description
+	      FROM
+	      ELITA.ELP_LIST L, ELITA.ELP_LIST_ITEM LI, ELITA.ELP_DICT_ITEM_TRANSLATION D
+	      WHERE
+	      L.list_id = LI.list_id
+	      and L.code = 'REWARD_STATUS'
+	      and LI.dict_item_id = D.dict_item_id
+	      ORDER BY UPPER(description)
+		    ]]>
+    </REWARD_STATUS>
+    <REWARD_TYPE>
+      <![CDATA[	
+				SELECT
+	      LI.list_item_id id, rawtohex(D.language_id) language_id, LI.extended_code code, D.translation description
+	      FROM
+	      ELITA.ELP_LIST L, ELITA.ELP_LIST_ITEM LI, ELITA.ELP_DICT_ITEM_TRANSLATION D
+	      WHERE
+	      L.list_id = LI.list_id
+	      and L.code = 'REWARD_TYPE'
+	      and LI.dict_item_id = D.dict_item_id
+	      ORDER BY UPPER(description)
+		    ]]>
+    </REWARD_TYPE>
+    <ISSUE_TYPE_CODE>
+      <![CDATA[
+      SELECT
+        ISSUE_TYPE_ID AS ID,
+        CODE,
+        DESCRIPTION
+      FROM
+        ELITA.ELP_ISSUE_TYPE
+      ]]>
+    </ISSUE_TYPE_CODE>
+    <BENEFITS_ELIGIBLE_ACTION>
+      <![CDATA[	
+				SELECT
+	      LI.list_item_id id, rawtohex(D.language_id) language_id, LI.extended_code code, D.translation description
+	      FROM
+	      ELITA.ELP_LIST L, ELITA.ELP_LIST_ITEM LI, ELITA.ELP_DICT_ITEM_TRANSLATION D
+	      WHERE
+	      L.list_id = LI.list_id
+	      and L.code = 'BENEFITS_ELIGIBLE_ACTION'
+	      and LI.dict_item_id = D.dict_item_id
+	      ORDER BY UPPER(description)
+		    ]]>      
+    </BENEFITS_ELIGIBLE_ACTION>
+    <EDTMFGTRM>
+      <![CDATA[	
+				SELECT
+	      LI.list_item_id id, rawtohex(D.language_id) language_id, LI.code code, D.translation description
+	      FROM
+	      ELITA.ELP_LIST L, ELITA.ELP_LIST_ITEM LI, ELITA.ELP_DICT_ITEM_TRANSLATION D
+	      WHERE
+	      L.list_id = LI.list_id
+	      and L.code = 'EDTMFGTRM'
+	      and LI.dict_item_id = D.dict_item_id
+	      ORDER BY UPPER(description)
+		    ]]>
+    </EDTMFGTRM>
+    <EQUIPMENT_MAKE_MODEL>
+      <![CDATA[	
+      SELECT DISTINCT e.EQUIPMENT_ID AS ID, 
+         m.DESCRIPTION AS EQUIPMENT_MAKE,
+         e.MODEL       AS EQUIPMENT_MODEL     
+      FROM ELP_EQUIPMENT e 
+        INNER JOIN ELP_MANUFACTURER m ON e.MANUFACTURER_ID = m.MANUFACTURER_ID
+      WHERE e.EQUIPMENT_ID = :EQUIPMENT_ID
+      ORDER BY m.DESCRIPTION
+      ]]>
+    </EQUIPMENT_MAKE_MODEL>
+    <EPSO>
+      <![CDATA[
+      SELECT
+      LI.list_item_id id, rawtohex(D.language_id) language_id, LI.code code, D.translation description
+      FROM
+      ELITA.ELP_LIST L, ELITA.ELP_LIST_ITEM LI, ELITA.ELP_DICT_ITEM_TRANSLATION D
+      WHERE
+      L.list_id = LI.list_id
+      and L.code = 'EPSO'
+      and LI.dict_item_id = D.dict_item_id
+      ORDER BY UPPER(description)
+      ]]>
+    </EPSO>
+    <LK_BENEFIT_TAX_TYPES>
+      <![CDATA[
+      SELECT
+        li.extended_code as code, d.translation as description, rawtohex(d.language_id) language_id
+      FROM
+        elita.elp_list l 
+        join elita.elp_list_item li on (l.list_id = li.list_id)
+        join elita.elp_dict_item_translation d on (li.dict_item_id = d.dict_item_id)
+      WHERE
+            l.code = 'BENEFIT_TAX_TYPES'
+      ORDER BY UPPER(d.translation)
+      ]]>
+    </LK_BENEFIT_TAX_TYPES>
+    <LK_UNIT_OF_MEASURE>
+      <![CDATA[
+      SELECT
+        li.extended_code as code, d.translation as description, rawtohex(d.language_id) language_id
+      FROM
+        elita.elp_list l 
+        join elita.elp_list_item li on (l.list_id = li.list_id)
+        join elita.elp_dict_item_translation d on (li.dict_item_id = d.dict_item_id)
+      WHERE
+            l.code = 'UNIT_OF_MEASURE'
+      ORDER BY UPPER(d.translation)
+      ]]>
+    </LK_UNIT_OF_MEASURE>
+    <EXTRACT_TYPE_LIST>
+      SELECT
+      CEPL.COMM_EXTRACT_PACKAGE_ID ID ,
+      CEPL.CODE,
+      CEPL.DESCRIPTION
+      FROM ELITA.ELP_COMM_EXTRACT_PACKAGE_LIST CEPL
+      ORDER BY CODE
+    </EXTRACT_TYPE_LIST>
+    <RETAIL_PRICE_SEARCH_SORTBY_LIST>
+      <![CDATA[
+          SELECT
+                  LI.list_item_id id, 
+                  rawtohex(D.language_id) language_id, 
+                  LI.code code, 
+                  D.translation description
+          FROM
+                  ELITA.ELP_LIST L, 
+                  ELITA.ELP_LIST_ITEM LI,
+                  ELITA.ELP_DICT_ITEM_TRANSLATION D
+          WHERE
+                  L.list_id = LI.list_id
+                  and L.code = 'RETAIL_PRICE_SEARCH_SORTBY_LIST'
+                  and LI.dict_item_id = D.dict_item_id
+          ORDER BY UPPER(description)
+       ]]>
+    </RETAIL_PRICE_SEARCH_SORTBY_LIST>
+    <LK_TCOMP>
+      <![CDATA[  	
+      SELECT
+      LI.list_item_id id, rawtohex(D.language_id) language_id, LI.code code, D.translation description
+      FROM
+      ELITA.ELP_LIST L, ELITA.ELP_LIST_ITEM LI, ELITA.ELP_DICT_ITEM_TRANSLATION D
+      WHERE
+      L.list_id = LI.list_id
+      and L.code = 'TCOMP'
+      and LI.dict_item_id = D.dict_item_id
+      ORDER BY code
+       ]]>
+     </LK_TCOMP>
+    <LK_DESIRED_DELIVERY_TIME_SLOT>
+      <![CDATA[  	
+      SELECT
+      LI.list_item_id id, rawtohex(D.language_id) language_id, LI.code code, D.translation description
+      FROM
+      ELITA.ELP_LIST L, ELITA.ELP_LIST_ITEM LI, ELITA.ELP_DICT_ITEM_TRANSLATION D
+      WHERE
+      L.list_id = LI.list_id
+      and L.code = 'DESIRED_DELIVERY_TIME_SLOT'
+      and LI.dict_item_id = D.dict_item_id
+      ORDER BY code
+       ]]>
+    </LK_DESIRED_DELIVERY_TIME_SLOT>
+  
+<GET_COMPANY_GROUPS>
+    <![CDATA[  	
+      SELECT distinct c.company_group_id id , cg.code, cg.description
+      FROM ELP_USER_COMPANY uc , ELP_USER u, ELP_COMPANY c, ELP_COMPANY_GROUP cg
+      WHERE	uc.user_id =  u.user_id
+      AND c.company_id = uc.company_id
+      AND c.company_group_id = cg.company_group_id
+      AND c.company_id=:company_id
+      ORDER by cg.code  
+     ]]>
+  </GET_COMPANY_GROUPS>
+  </LOOKUP_LIST>
+  
+
+</SQL>

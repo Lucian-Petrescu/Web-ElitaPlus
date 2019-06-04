@@ -1,0 +1,2731 @@
+<?xml version="1.0" encoding="utf-8" ?>
+
+<!-- ********************** THIS FILE HAS BEEN GENERATED FROM TEMPLATE SQLObject.cst (8/16/2007)********************** -->
+
+<SQL>
+  <LOAD>
+    <![CDATA[	
+			SELECT 
+				company_id,
+				dealer_id,
+				service_center_id,
+				acct_event_type_id,
+				acct_event_field_id,
+				acct_company_id,
+				country,
+				region,
+				region_description,
+				tax_id_code,
+				currency,
+				bank_id,
+				bank_account_number,
+				certificate,
+				payee,
+				address1,
+				address2, 
+				city,
+				zip,
+				authorization_number,
+				payment_amount,
+				payment_amount_rev,
+				payment_date,
+				acct_period,
+				coverage_type,
+				description,
+				network_id,
+				payment_number,
+				transaction_id_number,
+				process_date,
+				acct_transmission_id,            
+        vendor_update,
+        payment_to_customer,
+        bank_sortcode,
+        bank_address_1,
+        bank_address_2,
+        bank_address_3,
+        bank_address_4,
+        bank_name_1,
+        bank_name_2,
+        bank_iban,
+        bank_branch,
+        commission_entity_id,
+        warr_sales_date,
+        contract_inception_date,
+        account_number,
+        policy_number,
+				modified_date,
+				modified_by,
+				created_date,
+				created_by,
+				acct_trans_log_id
+			FROM elp_acct_trans_log 
+			WHERE
+				acct_trans_log_id = :acct_trans_log_id
+		]]>
+  </LOAD>
+  <LOAD_LIST>
+  </LOAD_LIST>
+  <UPDATE>
+    <![CDATA[	
+			UPDATE elp_acct_trans_log SET
+				company_id = :company_id,
+				dealer_id = :dealer_id,
+				service_center_id = :service_center_id,
+				acct_event_type_id = :acct_event_type_id,
+				acct_event_field_id = :acct_event_field_id,
+				acct_company_id = :acct_company_id,
+				country = :country,
+				region = :region,
+				region_description = :region_description,
+				tax_id_code = :tax_id_code,
+				currency = :currency,
+				bank_id = :bank_id,
+				bank_account_number = :bank_account_number,
+				certificate = :certificate,
+				payee = :payee,
+				address1 = :address1,
+				address2 = :address2,
+				city = :city,
+				zip = :zip,
+				authorization_number = :authorization_number,
+				payment_amount = :payment_amount,
+				payment_amount_rev = :payment_amount_rev,
+				payment_date = :payment_date,
+				acct_period = :acct_period,
+				coverage_type = :coverage_type,
+				description = :description,
+				network_id = :network_id,
+				payment_number = :payment_number,
+				transaction_id_number = :transaction_id_number,
+				process_date = :process_date,
+				acct_transmission_id = :acct_transmission_id,
+        vendor_update = :vendor_update,
+        payment_to_customer = :payment_to_customer,
+        bank_sortcode = :bank_sortcode,
+        bank_address_1 = :bank_address_1,
+        bank_address_2 = :bank_address_2,
+        bank_address_3 = :bank_address_3,
+        bank_address_4 = :bank_address_4,
+        bank_name_1 = :bank_name_1,
+        bank_name_2 = :bank_name_2,
+        bank_iban = :bank_iban,
+        bank_branch = :bank_branch,
+        commission_entity_id = :commission_entity_id,
+        warr_sales_date = :warr_sales_date,
+        contract_inception_date = :contract_inception_date,
+        account_number = :account_number,
+        policy_number =:policy_number,
+				modified_by = :modified_by
+			WHERE
+				acct_trans_log_id = :acct_trans_log_id
+		]]>
+  </UPDATE>
+  <INSERT>
+    INSERT INTO elp_acct_trans_log
+    (
+    company_id,
+    dealer_id,
+    service_center_id,
+    acct_event_type_id,
+    acct_event_field_id,
+    acct_company_id,
+    country,
+    region,
+    region_description,
+    tax_id_code,
+    currency,
+    bank_id,
+    bank_account_number,
+    certificate,
+    payee,
+    address1,
+    address2,
+    city,
+    zip,
+    authorization_number,
+    payment_amount,
+    payment_amount_rev,
+    payment_date,
+    acct_period,
+    coverage_type,
+    description,
+    network_id,
+    payment_number,
+    transaction_id_number,
+    process_date,
+    acct_transmission_id,
+    vendor_update,
+    payment_to_customer,
+    bank_sortcode,
+    bank_address_1,
+    bank_address_2,
+    bank_address_3,
+    bank_address_4,
+    bank_name_1,
+    bank_name_2,
+    bank_iban,
+    bank_branch,
+    commission_entity_id,
+    warr_sales_date,
+    contract_inception_date,
+    account_number,
+    policy_number,
+    created_by,
+    acct_trans_log_id
+    )
+    VALUES
+    (
+    :company_id,
+    :dealer_id,
+    :service_center_id,
+    :acct_event_type_id,
+    :acct_event_field_id,
+    :acct_company_id,
+    :country,
+    :region,
+    :region_description,
+    :tax_id_code,
+    :currency,
+    :bank_id,
+    :bank_account_number,
+    :certificate,
+    :payee,
+    :address1,
+    :address2,
+    :city,
+    :zip,
+    :authorization_number,
+    :payment_amount,
+    :payment_amount_rev,
+    :payment_date,
+    :acct_period,
+    :coverage_type,
+    :description,
+    :network_id,
+    :payment_number,
+    :transaction_id_number,
+    :process_date,
+    :acct_transmission_id,
+    :vendor_update,
+    :payment_to_customer,
+    :bank_sortcode,
+    :bank_address_1,
+    :bank_address_2,
+    :bank_address_3,
+    :bank_address_4,
+    :bank_name_1,
+    :bank_name_2,
+    :bank_iban,
+    :bank_branch,
+    :commission_entity_id,
+    :warr_sales_date,
+    :contract_inception_date,
+    :account_number,
+    :policy_number,
+    :created_by,
+    :acct_trans_log_id
+    )
+  </INSERT>
+  <DELETE>
+    DELETE FROM elp_acct_trans_log
+    WHERE
+    acct_trans_log_id = :acct_trans_log_id
+  </DELETE>
+  <JOURNAL_UPR>
+    <![CDATA[     
+        select
+           TransLog_Id,
+		   ACCT_TRANS_LOG_ID,
+           AccountCode,
+         AccountCode AS OriginalAccountCode,
+       '' AS TaxOverrideCode,
+		   AccountingPeriod,
+		   AllocationMarker,
+		   CurrencyCode,
+           DebitCredit,
+           Description,
+           JournalSource,
+           JournalType,
+           TransactionAmount,
+           TransactionAmountDecimalPlaces,
+           TransactionDate,
+           TransactionReference, 
+           AnalysisCode1,
+		   AnalysisCode2,
+		   AnalysisCode3,
+		   AnalysisCode4,
+		   AnalysisCode5,
+		   AnalysisCode6,
+		   AnalysisCode7,
+		   AnalysisCode8,
+		   AnalysisCode9,
+		   AnalysisCode10, 
+		   GeneralDescription1,
+		   GeneralDescription2,
+		   GeneralDescription3,
+		   GeneralDescription4,
+		   GeneralDescription5,
+		   GeneralDescription6,
+		   GeneralDescription7,
+		   GeneralDescription8,
+		   GeneralDescription9,
+		   GeneralDescription10,
+		   GeneralDescription11,
+		   GeneralDescription12,
+		   GeneralDescription13,
+		   GeneralDescription14,
+		   GeneralDescription15,
+		   GeneralDescription16,
+		   GeneralDescription17,
+		   GeneralDescription18,
+		   GeneralDescription19,
+		   GeneralDescription20,
+		   GeneralDescription21,
+		   GeneralDescription22,
+		   GeneralDescription23,
+		   GeneralDescription24,
+		   GeneralDescription25,
+           Created_date,
+           payment_amount,
+           ROWNUM AS LINENUM,
+           JOURNAL_ID_SUFFIX,
+           BLOCK_OF_BUSINESS,
+           UDAK_PRIMARY,
+       REV,
+           '' AS PLACEHOLDER,
+        '' AS TRANSACTION_ID_NUMBER,
+        DEALER_CODE,
+        COMPANY_CODE,
+        WARR_SALES_DATE,
+        CONTRACT_INCEPTION_DATE,
+        POLICY_NUMBER,
+        LOSS_DATE,
+        '' AS INVOICE_REGION,
+        ACCT_COMPANY_CODE,
+        ACCT_EVENT_MAPPING,
+        NULL AS INVOICE_DATE
+  from 
+(SELECT
+		   DISTINCT RAWTOHEX(ELP_ACCT_TRANS_LOG.ACCT_TRANS_LOG_ID) AS TransLog_Id,
+		   ELP_ACCT_TRANS_LOG.ACCT_TRANS_LOG_ID,
+       DECODE(ELP_ACCT_EVENT_DETAIL.USE_PAYEE_SETTINGS,'Y',ELP_ACCT_SETTINGS.ACCOUNT_CODE,ELP_ACCT_EVENT_DETAIL.ACCOUNT_CODE)  AS AccountCode,
+		   ELP_ACCT_TRANS_LOG.ACCT_PERIOD AS AccountingPeriod,
+		   ELP_ACCT_EVENT_DETAIL.ALLOCATION_MARKER AS AllocationMarker,
+		   ELP_ACCT_TRANS_LOG.CURRENCY AS CurrencyCode,
+           CASE  WHEN ELP_ACCT_TRANS_LOG.PAYMENT_AMOUNT < 0 THEN DECODE(ELP_ACCT_EVENT_DETAIL.DEBIT_CREDIT,'D','C','C','D') ELSE ELP_ACCT_EVENT_DETAIL.DEBIT_CREDIT END AS DebitCredit,
+       SUBSTR(ELP_ACCT_TRANSACTIONS.GetAnalysisCodeValue('1',GETCODEFROMLISTITEM(ELP_ACCT_EVENT_DETAIL.DESCRIPTION_SRC_ID),ELP_ACCT_TRANS_LOG.ACCT_TRANS_LOG_ID, ELP_ACCT_EVENT_DETAIL.DESCRIPTION, '',ELP_ACCT_SETTINGS.ACCT_SETTINGS_ID), 1,49) AS Description,
+           'ELX' AS JournalSource,
+           ELP_ACCT_EVENT_DETAIL.JOURNAL_TYPE AS JournalType,
+             CASE  WHEN ELP_ACCT_TRANS_LOG.PAYMENT_AMOUNT < 0 THEN ROUND(((COALESCE(ELP_ACCT_EVENT_DETAIL.CALCULATION,100)/100 * ELP_ACCT_TRANS_LOG.PAYMENT_AMOUNT) * -1),2) ELSE ROUND(((COALESCE(ELP_ACCT_EVENT_DETAIL.CALCULATION,100)/100 * ELP_ACCT_TRANS_LOG.PAYMENT_AMOUNT)),2)  END AS TransactionAmount,
+           '2' AS TransactionAmountDecimalPlaces,
+           TO_CHAR(ELP_ACCT_TRANS_LOG.PAYMENT_DATE,'DDMMYYYY') AS TransactionDate,
+           SUBSTR(RAWTOHEX(ELP_ACCT_TRANS_LOG.ACCT_TRANS_LOG_ID),1,16) || '_'  || TO_CHAR(ELP_ACCT_TRANS_LOG.PAYMENT_DATE,'DDMMYYYY') AS TransactionReference, 
+        ELP_ACCT_TRANSACTIONS.GetAnalysisCodeValue('0',GETCODEFROMLISTITEM(ELP_ACCT_EVENT_DETAIL.ANALYSIS_SRC_1_ID),ELP_ACCT_TRANS_LOG.ACCT_TRANS_LOG_ID, ELP_ACCT_EVENT_DETAIL.ANALYSIS_CODE_1, ELP_ACCT_SETTINGS.ACCOUNT_ANALYSIS_CODE_1,ELP_ACCT_SETTINGS.ACCT_SETTINGS_ID,1) AS AnalysisCode1,
+        ELP_ACCT_TRANSACTIONS.GetAnalysisCodeValue('0',GETCODEFROMLISTITEM(ELP_ACCT_EVENT_DETAIL.ANALYSIS_SRC_2_ID),ELP_ACCT_TRANS_LOG.ACCT_TRANS_LOG_ID, ELP_ACCT_EVENT_DETAIL.ANALYSIS_CODE_2, ELP_ACCT_SETTINGS.ACCOUNT_ANALYSIS_CODE_2,ELP_ACCT_SETTINGS.ACCT_SETTINGS_ID,2) AS AnalysisCode2,
+        ELP_ACCT_TRANSACTIONS.GetAnalysisCodeValue('0',GETCODEFROMLISTITEM(ELP_ACCT_EVENT_DETAIL.ANALYSIS_SRC_3_ID),ELP_ACCT_TRANS_LOG.ACCT_TRANS_LOG_ID, ELP_ACCT_EVENT_DETAIL.ANALYSIS_CODE_3, ELP_ACCT_SETTINGS.ACCOUNT_ANALYSIS_CODE_3,ELP_ACCT_SETTINGS.ACCT_SETTINGS_ID,3) AS AnalysisCode3,
+        ELP_ACCT_TRANSACTIONS.GetAnalysisCodeValue('0',GETCODEFROMLISTITEM(ELP_ACCT_EVENT_DETAIL.ANALYSIS_SRC_4_ID),ELP_ACCT_TRANS_LOG.ACCT_TRANS_LOG_ID, ELP_ACCT_EVENT_DETAIL.ANALYSIS_CODE_4, ELP_ACCT_SETTINGS.ACCOUNT_ANALYSIS_CODE_4,ELP_ACCT_SETTINGS.ACCT_SETTINGS_ID,4) AS AnalysisCode4,
+        ELP_ACCT_TRANSACTIONS.GetAnalysisCodeValue('0',GETCODEFROMLISTITEM(ELP_ACCT_EVENT_DETAIL.ANALYSIS_SRC_5_ID),ELP_ACCT_TRANS_LOG.ACCT_TRANS_LOG_ID, ELP_ACCT_EVENT_DETAIL.ANALYSIS_CODE_5, ELP_ACCT_SETTINGS.ACCOUNT_ANALYSIS_CODE_5,ELP_ACCT_SETTINGS.ACCT_SETTINGS_ID,5) AS AnalysisCode5,
+        ELP_ACCT_TRANSACTIONS.GetAnalysisCodeValue('0',GETCODEFROMLISTITEM(ELP_ACCT_EVENT_DETAIL.ANALYSIS_SRC_6_ID),ELP_ACCT_TRANS_LOG.ACCT_TRANS_LOG_ID, ELP_ACCT_EVENT_DETAIL.ANALYSIS_CODE_6, ELP_ACCT_SETTINGS.ACCOUNT_ANALYSIS_CODE_6,ELP_ACCT_SETTINGS.ACCT_SETTINGS_ID,6) AS AnalysisCode6,
+        ELP_ACCT_TRANSACTIONS.GetAnalysisCodeValue('0',GETCODEFROMLISTITEM(ELP_ACCT_EVENT_DETAIL.ANALYSIS_SRC_7_ID),ELP_ACCT_TRANS_LOG.ACCT_TRANS_LOG_ID, ELP_ACCT_EVENT_DETAIL.ANALYSIS_CODE_7, ELP_ACCT_SETTINGS.ACCOUNT_ANALYSIS_CODE_7,ELP_ACCT_SETTINGS.ACCT_SETTINGS_ID,7) AS AnalysisCode7,
+        ELP_ACCT_TRANSACTIONS.GetAnalysisCodeValue('0',GETCODEFROMLISTITEM(ELP_ACCT_EVENT_DETAIL.ANALYSIS_SRC_8_ID),ELP_ACCT_TRANS_LOG.ACCT_TRANS_LOG_ID, ELP_ACCT_EVENT_DETAIL.ANALYSIS_CODE_8, ELP_ACCT_SETTINGS.ACCOUNT_ANALYSIS_CODE_8,ELP_ACCT_SETTINGS.ACCT_SETTINGS_ID,8) AS AnalysisCode8,
+        ELP_ACCT_TRANSACTIONS.GetAnalysisCodeValue('0',GETCODEFROMLISTITEM(ELP_ACCT_EVENT_DETAIL.ANALYSIS_SRC_9_ID),ELP_ACCT_TRANS_LOG.ACCT_TRANS_LOG_ID, ELP_ACCT_EVENT_DETAIL.ANALYSIS_CODE_9, ELP_ACCT_SETTINGS.ACCOUNT_ANALYSIS_CODE_9,ELP_ACCT_SETTINGS.ACCT_SETTINGS_ID,9) AS AnalysisCode9,
+        ELP_ACCT_TRANSACTIONS.GetAnalysisCodeValue('0',GETCODEFROMLISTITEM(ELP_ACCT_EVENT_DETAIL.ANALYSIS_SRC_10_ID),ELP_ACCT_TRANS_LOG.ACCT_TRANS_LOG_ID, ELP_ACCT_EVENT_DETAIL.ANALYSIS_CODE_10, ELP_ACCT_SETTINGS.ACCOUNT_ANALYSIS_CODE_10,ELP_ACCT_SETTINGS.ACCT_SETTINGS_ID,10) AS AnalysisCode10, 
+		   ELP_ACCT_TRANS_LOG.ADDRESS1 AS GeneralDescription1,
+		   ELP_ACCT_TRANS_LOG.ADDRESS2 AS GeneralDescription2,
+		   '' AS GeneralDescription3,
+		   ELP_ACCT_TRANS_LOG.CITY || ELP_ACCT_TRANS_LOG.REGION AS GeneralDescription4,
+		   ELP_ACCT_TRANS_LOG.COUNTRY || DECODE(ELP_ACCT_TRANS_LOG.COUNTRY,null,'',' ') || ELP_ACCT_TRANS_LOG.ZIP AS GeneralDescription5,
+		   ELP_ACCT_TRANS_LOG.BANK_ACCOUNT_NUMBER AS GeneralDescription6,
+		   ELP_ACCT_TRANS_LOG.BANK_ID AS GeneralDescription7,
+		   '' AS GeneralDescription8,
+		   ELP_ACCT_TRANS_LOG.PAYEE AS GeneralDescription9,
+		   ELP_ACCT_TRANS_LOG.TAX_ID_CODE AS GeneralDescription10,
+		   '' AS GeneralDescription11,
+		   '' AS GeneralDescription12,
+		   '' AS GeneralDescription13,
+		   '' AS GeneralDescription14,
+		   '' AS GeneralDescription15,
+		   '' AS GeneralDescription16,
+		   '' AS GeneralDescription17,
+		   '' AS GeneralDescription18,
+		   '' AS GeneralDescription19,
+		   '' AS GeneralDescription20,
+		   '' AS GeneralDescription21,
+		   '' AS GeneralDescription22,
+		   '' AS GeneralDescription23,
+		   LIEVENT.CODE AS GeneralDescription24,
+		   :NETWORK_ID AS GeneralDescription25,
+       TO_CHAR(ELP_ACCT_TRANS_LOG.CREATED_DATE,'DDMMYYYY') AS CREATED_DATE,
+       ROUND(((COALESCE(ELP_ACCT_EVENT_DETAIL.CALCULATION,100)/100 * ELP_ACCT_TRANS_LOG.PAYMENT_AMOUNT)),2) AS payment_amount,
+           ROWNUM AS LINENUM,
+           ELP_ACCT_EVENT_DETAIL.JOURNAL_ID_SUFFIX,
+           ELP_ACCT_SETTINGS.ACCOUNT_ANALYSIS_CODE_6 AS BLOCK_OF_BUSINESS,
+           ELP_ACCT_EVENT_DETAIL.ANALYSIS_CODE_3 AS UDAK_PRIMARY,
+           0 AS REV,
+           ELP_DEALER.DEALER AS DEALER_CODE,
+           ELP_COMPANY.CODE AS COMPANY_CODE,
+           ELP_ACCT_TRANS_LOG.WARR_SALES_DATE,
+           ELP_ACCT_TRANS_LOG.CONTRACT_INCEPTION_DATE,
+           ELP_ACCT_TRANS_LOG.POLICY_NUMBER,
+           ELP_ACCT_TRANS_LOG.LOSS_DATE,
+           ELP_ACCT_COMPANY.CODE AS ACCT_COMPANY_CODE,
+           GetCodeMappingFromListItem(ELP_ACCT_EVENT.ACCT_EVENT_TYPE_ID, ELP_COMPANY.COMPANY_ID) AS ACCT_EVENT_MAPPING
+    FROM
+		    ELP_ACCT_TRANS_LOG,
+		    ELP_ACCT_EVENT,
+		    ELP_ACCT_EVENT_DETAIL,
+		    ELP_ACCT_SETTINGS,
+            ELP_COMPANY,
+            ELP_LIST_ITEM LIEVENT,
+            ELP_ACCT_BUSINESS_UNIT,
+            ELP_DEALER,
+            ELP_ACCT_COMPANY
+    WHERE
+	        ELP_ACCT_COMPANY.ACCT_COMPANY_ID = ELP_COMPANY.ACCT_COMPANY_ID
+       AND  ELP_ACCT_EVENT.ACCT_COMPANY_ID = ELP_COMPANY.ACCT_COMPANY_ID
+       AND ELP_ACCT_EVENT.ACCT_EVENT_TYPE_ID = :ACCT_EVENT_TYPE_ID
+       AND ELP_ACCT_EVENT_DETAIL.ACCT_BUSINESS_UNIT_ID = ELP_ACCT_BUSINESS_UNIT.ACCT_BUSINESS_UNIT_ID
+       AND LIEVENT.LIST_ITEM_ID = ELP_ACCT_TRANS_LOG.ACCT_EVENT_TYPE_ID
+       AND NVL(ELP_ACCT_EVENT_DETAIL.BUSINESS_ENTITY_ID,hextoraw('1')) = NVL(ELP_ACCT_TRANSACTIONS.GetBusinessEntity(ELP_ACCT_BUSINESS_UNIT.ACCT_BUSINESS_UNIT_ID,ELP_ACCT_TRANS_LOG.COVERAGE_TYPE,ELP_ACCT_TRANS_LOG.INVOICE_REGION),hextoraw('1'))
+       AND ELP_ACCT_EVENT_DETAIL.FIELD_TYPE_ID = ELP_ACCT_TRANS_LOG.ACCT_EVENT_FIELD_ID
+       AND ELP_ACCT_EVENT_DETAIL.ACCT_EVENT_ID = ELP_ACCT_EVENT.ACCT_EVENT_ID
+       AND ELP_ACCT_TRANS_LOG.ACCT_EVENT_TYPE_ID = ELP_ACCT_EVENT.ACCT_EVENT_TYPE_ID
+       AND ELP_DEALER.DEALER_ID = ELP_ACCT_SETTINGS.DEALER_ID
+       AND ELP_ACCT_SETTINGS.ACCT_SETTINGS_ID = GETACCTSETTINGS(ELP_ACCT_TRANS_LOG.DEALER_ID,null,ELP_ACCT_EVENT_DETAIL.ACCOUNT_TYPE)
+       AND ELP_ACCT_TRANS_LOG.BRANCH_ID IS NULL
+       AND ELP_ACCT_BUSINESS_UNIT.ACCT_BUSINESS_UNIT_ID = :ACCT_BUSINESS_UNIT_ID
+       AND ELP_ACCT_TRANS_LOG.BUSINESS_UNIT = ELP_ACCT_BUSINESS_UNIT.BUSINESS_UNIT
+       AND ELP_ACCT_TRANS_LOG.COMPANY_ID = ELP_COMPANY.COMPANY_ID
+       AND ELP_COMPANY.COMPANY_ID = :COMPANY_ID
+       --REQ-5396 start
+	     and ( (ELP_ACCT_EVENT_DETAIL.include_exclude_ind = 'E'
+		            and ( ELP_ACCT_TRANS_LOG.dealer_id not in (select dealer_id from elita.ELP_ACCT_EVENT_DETAIL_INCEXC where acct_event_detail_id = ELP_ACCT_EVENT_DETAIL.acct_event_detail_id and coverage_type_id is null)
+				            and ELP_ACCT_TRANS_LOG.coverage_type not in (select getcodefromlistitem(coverage_type_id) from elita.ELP_ACCT_EVENT_DETAIL_INCEXC where acct_event_detail_id = ELP_ACCT_EVENT_DETAIL.acct_event_detail_id and dealer_id is null)
+				            and (ELP_ACCT_TRANS_LOG.dealer_id, ELP_ACCT_TRANS_LOG.coverage_type) not in (select dealer_id, getcodefromlistitem(coverage_type_id) from elita.ELP_ACCT_EVENT_DETAIL_INCEXC where acct_event_detail_id = ELP_ACCT_EVENT_DETAIL.acct_event_detail_id and dealer_id is not null and coverage_type_id is not null)
+		            )
+            ) or
+            (ELP_ACCT_EVENT_DETAIL.include_exclude_ind = 'I'
+      	        and (ELP_ACCT_TRANS_LOG.dealer_id in (select dealer_id from elita.ELP_ACCT_EVENT_DETAIL_INCEXC where acct_event_detail_id = ELP_ACCT_EVENT_DETAIL.acct_event_detail_id and coverage_type_id is null)
+      			        or ELP_ACCT_TRANS_LOG.coverage_type in (select getcodefromlistitem(coverage_type_id) from elita.ELP_ACCT_EVENT_DETAIL_INCEXC where acct_event_detail_id = ELP_ACCT_EVENT_DETAIL.acct_event_detail_id and dealer_id is null)
+				            or (ELP_ACCT_TRANS_LOG.dealer_id, ELP_ACCT_TRANS_LOG.COVERAGE_TYPE) in (select dealer_id, getcodefromlistitem(coverage_type_id) from elita.ELP_ACCT_EVENT_DETAIL_INCEXC where acct_event_detail_id = ELP_ACCT_EVENT_DETAIL.acct_event_detail_id and dealer_id is not null and coverage_type_id is not null)
+      	        )
+            )
+        )
+        --REQ-5396 end
+        --dynamic_where_clause
+UNION /* Reversal */
+     SELECT
+		   DISTINCT RAWTOHEX(ELP_ACCT_TRANS_LOG.ACCT_TRANS_LOG_ID) AS TransLog_Id,
+		   ELP_ACCT_TRANS_LOG.ACCT_TRANS_LOG_ID,
+		   DECODE(ELP_ACCT_EVENT_DETAIL.USE_PAYEE_SETTINGS,'Y',ELP_ACCT_SETTINGS.ACCOUNT_CODE,ELP_ACCT_EVENT_DETAIL.ACCOUNT_CODE)  AS AccountCode,
+		   ELP_ACCT_TRANS_LOG.ACCT_PERIOD AS AccountingPeriod,
+		   ELP_ACCT_EVENT_DETAIL.ALLOCATION_MARKER AS AllocationMarker,
+		   ELP_ACCT_TRANS_LOG.CURRENCY AS CurrencyCode,
+            CASE  WHEN ELP_ACCT_TRANS_LOG.PAYMENT_AMOUNT < 0 THEN  ELP_ACCT_EVENT_DETAIL.DEBIT_CREDIT ELSE DECODE(ELP_ACCT_EVENT_DETAIL.DEBIT_CREDIT,'D','C','D') END  AS DebitCredit,
+       SUBSTR(ELP_ACCT_TRANSACTIONS.GetAnalysisCodeValue('1',GETCODEFROMLISTITEM(ELP_ACCT_EVENT_DETAIL.DESCRIPTION_SRC_ID),ELP_ACCT_TRANS_LOG.ACCT_TRANS_LOG_ID, ELP_ACCT_EVENT_DETAIL.DESCRIPTION, '',ELP_ACCT_SETTINGS.ACCT_SETTINGS_ID), 1,49) AS Description,
+           'ELX' AS JournalSource,
+           ELP_ACCT_EVENT_DETAIL.JOURNAL_TYPE AS JournalType,
+             CASE  WHEN ELP_ACCT_TRANS_LOG.PAYMENT_AMOUNT < 0 THEN ROUND(((COALESCE(ELP_ACCT_EVENT_DETAIL.CALCULATION,100)/100 * ELP_ACCT_TRANS_LOG.PAYMENT_AMOUNT) * -1),2) ELSE ROUND(((COALESCE(ELP_ACCT_EVENT_DETAIL.CALCULATION,100)/100 * ELP_ACCT_TRANS_LOG.PAYMENT_AMOUNT)),2) END AS TransactionAmount,
+           '2' AS TransactionAmountDecimalPlaces,
+           TO_CHAR((ELP_ACCT_TRANS_LOG.PAYMENT_DATE + 1),'DDMMYYYY') AS TransactionDate,
+           SUBSTR(RAWTOHEX(ELP_ACCT_TRANS_LOG.ACCT_TRANS_LOG_ID),1,16) || '_' || TO_CHAR((ELP_ACCT_TRANS_LOG.PAYMENT_DATE + 1),'DDMMYYYY') AS TransactionReference, 
+        ELP_ACCT_TRANSACTIONS.GetAnalysisCodeValue('0',GETCODEFROMLISTITEM(ELP_ACCT_EVENT_DETAIL.ANALYSIS_SRC_1_ID),ELP_ACCT_TRANS_LOG.ACCT_TRANS_LOG_ID, ELP_ACCT_EVENT_DETAIL.ANALYSIS_CODE_1, ELP_ACCT_SETTINGS.ACCOUNT_ANALYSIS_CODE_1,ELP_ACCT_SETTINGS.ACCT_SETTINGS_ID,1) AS AnalysisCode1,
+        ELP_ACCT_TRANSACTIONS.GetAnalysisCodeValue('0',GETCODEFROMLISTITEM(ELP_ACCT_EVENT_DETAIL.ANALYSIS_SRC_2_ID),ELP_ACCT_TRANS_LOG.ACCT_TRANS_LOG_ID, ELP_ACCT_EVENT_DETAIL.ANALYSIS_CODE_2, ELP_ACCT_SETTINGS.ACCOUNT_ANALYSIS_CODE_2,ELP_ACCT_SETTINGS.ACCT_SETTINGS_ID,2) AS AnalysisCode2,
+        ELP_ACCT_TRANSACTIONS.GetAnalysisCodeValue('0',GETCODEFROMLISTITEM(ELP_ACCT_EVENT_DETAIL.ANALYSIS_SRC_3_ID),ELP_ACCT_TRANS_LOG.ACCT_TRANS_LOG_ID, ELP_ACCT_EVENT_DETAIL.ANALYSIS_CODE_3, ELP_ACCT_SETTINGS.ACCOUNT_ANALYSIS_CODE_3,ELP_ACCT_SETTINGS.ACCT_SETTINGS_ID,3) AS AnalysisCode3,
+        ELP_ACCT_TRANSACTIONS.GetAnalysisCodeValue('0',GETCODEFROMLISTITEM(ELP_ACCT_EVENT_DETAIL.ANALYSIS_SRC_4_ID),ELP_ACCT_TRANS_LOG.ACCT_TRANS_LOG_ID, ELP_ACCT_EVENT_DETAIL.ANALYSIS_CODE_4, ELP_ACCT_SETTINGS.ACCOUNT_ANALYSIS_CODE_4,ELP_ACCT_SETTINGS.ACCT_SETTINGS_ID,4) AS AnalysisCode4,
+        ELP_ACCT_TRANSACTIONS.GetAnalysisCodeValue('0',GETCODEFROMLISTITEM(ELP_ACCT_EVENT_DETAIL.ANALYSIS_SRC_5_ID),ELP_ACCT_TRANS_LOG.ACCT_TRANS_LOG_ID, ELP_ACCT_EVENT_DETAIL.ANALYSIS_CODE_5, ELP_ACCT_SETTINGS.ACCOUNT_ANALYSIS_CODE_5,ELP_ACCT_SETTINGS.ACCT_SETTINGS_ID,5) AS AnalysisCode5,
+        ELP_ACCT_TRANSACTIONS.GetAnalysisCodeValue('0',GETCODEFROMLISTITEM(ELP_ACCT_EVENT_DETAIL.ANALYSIS_SRC_6_ID),ELP_ACCT_TRANS_LOG.ACCT_TRANS_LOG_ID, ELP_ACCT_EVENT_DETAIL.ANALYSIS_CODE_6, ELP_ACCT_SETTINGS.ACCOUNT_ANALYSIS_CODE_6,ELP_ACCT_SETTINGS.ACCT_SETTINGS_ID,6) AS AnalysisCode6,
+        ELP_ACCT_TRANSACTIONS.GetAnalysisCodeValue('0',GETCODEFROMLISTITEM(ELP_ACCT_EVENT_DETAIL.ANALYSIS_SRC_7_ID),ELP_ACCT_TRANS_LOG.ACCT_TRANS_LOG_ID, ELP_ACCT_EVENT_DETAIL.ANALYSIS_CODE_7, ELP_ACCT_SETTINGS.ACCOUNT_ANALYSIS_CODE_7,ELP_ACCT_SETTINGS.ACCT_SETTINGS_ID,7) AS AnalysisCode7,
+        ELP_ACCT_TRANSACTIONS.GetAnalysisCodeValue('0',GETCODEFROMLISTITEM(ELP_ACCT_EVENT_DETAIL.ANALYSIS_SRC_8_ID),ELP_ACCT_TRANS_LOG.ACCT_TRANS_LOG_ID, ELP_ACCT_EVENT_DETAIL.ANALYSIS_CODE_8, ELP_ACCT_SETTINGS.ACCOUNT_ANALYSIS_CODE_8,ELP_ACCT_SETTINGS.ACCT_SETTINGS_ID,8) AS AnalysisCode8,
+        ELP_ACCT_TRANSACTIONS.GetAnalysisCodeValue('0',GETCODEFROMLISTITEM(ELP_ACCT_EVENT_DETAIL.ANALYSIS_SRC_9_ID),ELP_ACCT_TRANS_LOG.ACCT_TRANS_LOG_ID, ELP_ACCT_EVENT_DETAIL.ANALYSIS_CODE_9, ELP_ACCT_SETTINGS.ACCOUNT_ANALYSIS_CODE_9,ELP_ACCT_SETTINGS.ACCT_SETTINGS_ID,9) AS AnalysisCode9,
+        ELP_ACCT_TRANSACTIONS.GetAnalysisCodeValue('0',GETCODEFROMLISTITEM(ELP_ACCT_EVENT_DETAIL.ANALYSIS_SRC_10_ID),ELP_ACCT_TRANS_LOG.ACCT_TRANS_LOG_ID, ELP_ACCT_EVENT_DETAIL.ANALYSIS_CODE_10, ELP_ACCT_SETTINGS.ACCOUNT_ANALYSIS_CODE_10,ELP_ACCT_SETTINGS.ACCT_SETTINGS_ID,10) AS AnalysisCode10,
+        ELP_ACCT_TRANS_LOG.ADDRESS1 AS GeneralDescription1,
+		    ELP_ACCT_TRANS_LOG.ADDRESS2 AS GeneralDescription2,
+		   '' AS GeneralDescription3,
+		   ELP_ACCT_TRANS_LOG.CITY || ELP_ACCT_TRANS_LOG.REGION AS GeneralDescription4,
+		   ELP_ACCT_TRANS_LOG.COUNTRY || DECODE(ELP_ACCT_TRANS_LOG.COUNTRY,null,'',' ') || ELP_ACCT_TRANS_LOG.ZIP AS GeneralDescription5,
+		   ELP_ACCT_TRANS_LOG.BANK_ACCOUNT_NUMBER AS GeneralDescription6,
+		   ELP_ACCT_TRANS_LOG.BANK_ID AS GeneralDescription7,
+		   '' AS GeneralDescription8,
+		   ELP_ACCT_TRANS_LOG.PAYEE AS GeneralDescription9,
+		   ELP_ACCT_TRANS_LOG.TAX_ID_CODE AS GeneralDescription10,
+		   '' AS GeneralDescription11,
+		   '' AS GeneralDescription12,
+		   '' AS GeneralDescription13,
+		   '' AS GeneralDescription14,
+		   '' AS GeneralDescription15,
+		   '' AS GeneralDescription16,
+		   '' AS GeneralDescription17,
+		   '' AS GeneralDescription18,
+		   '' AS GeneralDescription19,
+		   '' AS GeneralDescription20,
+		   '' AS GeneralDescription21,
+		   '' AS GeneralDescription22, 
+		   '' AS GeneralDescription23,
+		   LIEVENT.CODE AS GeneralDescription24,
+		   :NETWORK_ID AS GeneralDescription25,
+        TO_CHAR(ELP_ACCT_TRANS_LOG.CREATED_DATE,'DDMMYYYY') AS CREATED_DATE,
+       ROUND(((COALESCE(ELP_ACCT_EVENT_DETAIL.CALCULATION,100)/100 * ELP_ACCT_TRANS_LOG.PAYMENT_AMOUNT)),2) AS payment_amount,
+           ROWNUM AS LINENUM,
+           ELP_ACCT_EVENT_DETAIL.JOURNAL_ID_SUFFIX,
+           ELP_ACCT_SETTINGS.ACCOUNT_ANALYSIS_CODE_6 AS BLOCK_OF_BUSINESS,
+           ELP_ACCT_EVENT_DETAIL.ANALYSIS_CODE_3 AS UDAK_PRIMARY,
+       1 AS REV,
+           ELP_DEALER.DEALER AS DEALER_CODE,
+       ELP_COMPANY.CODE AS COMPANY_CODE,
+           ELP_ACCT_TRANS_LOG.WARR_SALES_DATE,
+           ELP_ACCT_TRANS_LOG.CONTRACT_INCEPTION_DATE,
+           ELP_ACCT_TRANS_LOG.POLICY_NUMBER,
+           ELP_ACCT_TRANS_LOG.LOSS_DATE,
+           ELP_ACCT_COMPANY.CODE AS ACCT_COMPANY_CODE,
+           GetCodeMappingFromListItem(ELP_ACCT_EVENT.ACCT_EVENT_TYPE_ID, ELP_COMPANY.COMPANY_ID) AS ACCT_EVENT_MAPPING
+    FROM
+		    ELP_ACCT_TRANS_LOG,
+		    ELP_ACCT_EVENT,
+		    ELP_ACCT_EVENT_DETAIL,
+		    ELP_ACCT_SETTINGS,
+            ELP_COMPANY,
+            ELP_LIST_ITEM LIEVENT,
+            ELP_ACCT_BUSINESS_UNIT,
+       ELP_DEALER,
+       ELP_ACCT_COMPANY
+    WHERE
+	        ELP_ACCT_COMPANY.ACCT_COMPANY_ID = ELP_COMPANY.ACCT_COMPANY_ID
+	     AND ELP_ACCT_EVENT.ACCT_COMPANY_ID = ELP_COMPANY.ACCT_COMPANY_ID
+       AND ELP_ACCT_EVENT.ACCT_EVENT_TYPE_ID = :ACCT_EVENT_TYPE_ID
+       AND ELP_ACCT_EVENT_DETAIL.ACCT_BUSINESS_UNIT_ID = ELP_ACCT_BUSINESS_UNIT.ACCT_BUSINESS_UNIT_ID
+       AND LIEVENT.LIST_ITEM_ID = ELP_ACCT_TRANS_LOG.ACCT_EVENT_TYPE_ID
+       AND NVL(ELP_ACCT_EVENT_DETAIL.BUSINESS_ENTITY_ID,hextoraw('1')) = NVL(ELP_ACCT_TRANSACTIONS.GetBusinessEntity(ELP_ACCT_BUSINESS_UNIT.ACCT_BUSINESS_UNIT_ID,ELP_ACCT_TRANS_LOG.COVERAGE_TYPE,ELP_ACCT_TRANS_LOG.INVOICE_REGION),hextoraw('1'))
+       AND ELP_ACCT_EVENT_DETAIL.FIELD_TYPE_ID = ELP_ACCT_TRANS_LOG.ACCT_EVENT_FIELD_ID
+       AND ELP_ACCT_EVENT_DETAIL.ACCT_EVENT_ID = ELP_ACCT_EVENT.ACCT_EVENT_ID
+       AND ELP_ACCT_TRANS_LOG.ACCT_EVENT_TYPE_ID = ELP_ACCT_EVENT.ACCT_EVENT_TYPE_ID
+       AND ELP_DEALER.DEALER_ID = ELP_ACCT_SETTINGS.DEALER_ID
+       AND ELP_ACCT_SETTINGS.ACCT_SETTINGS_ID = GETACCTSETTINGS(ELP_ACCT_TRANS_LOG.DEALER_ID,null, ELP_ACCT_EVENT_DETAIL.ACCOUNT_TYPE)
+       AND ELP_ACCT_TRANS_LOG.BRANCH_ID IS NULL
+       AND (NOT ELP_ACCT_TRANS_LOG.PAYMENT_AMOUNT IS NULL OR ELP_ACCT_TRANS_LOG.PAYMENT_AMOUNT > 0)
+       AND ELP_ACCT_BUSINESS_UNIT.ACCT_BUSINESS_UNIT_ID = :ACCT_BUSINESS_UNIT_ID
+       AND ELP_ACCT_TRANS_LOG.BUSINESS_UNIT = ELP_ACCT_BUSINESS_UNIT.BUSINESS_UNIT
+       AND ELP_ACCT_TRANS_LOG.COMPANY_ID = ELP_COMPANY.COMPANY_ID
+       AND ELP_COMPANY.COMPANY_ID = :COMPANY_ID
+       --REQ-5396 start
+	     and ( (ELP_ACCT_EVENT_DETAIL.include_exclude_ind = 'E'
+		            and ( ELP_ACCT_TRANS_LOG.dealer_id not in (select dealer_id from elita.ELP_ACCT_EVENT_DETAIL_INCEXC where acct_event_detail_id = ELP_ACCT_EVENT_DETAIL.acct_event_detail_id and coverage_type_id is null)
+				            and ELP_ACCT_TRANS_LOG.coverage_type not in (select getcodefromlistitem(coverage_type_id) from elita.ELP_ACCT_EVENT_DETAIL_INCEXC where acct_event_detail_id = ELP_ACCT_EVENT_DETAIL.acct_event_detail_id and dealer_id is null)
+				            and (ELP_ACCT_TRANS_LOG.dealer_id, ELP_ACCT_TRANS_LOG.coverage_type) not in (select dealer_id, getcodefromlistitem(coverage_type_id) from elita.ELP_ACCT_EVENT_DETAIL_INCEXC where acct_event_detail_id = ELP_ACCT_EVENT_DETAIL.acct_event_detail_id and dealer_id is not null and coverage_type_id is not null)
+		            )
+            ) or
+            (ELP_ACCT_EVENT_DETAIL.include_exclude_ind = 'I'
+      	        and (ELP_ACCT_TRANS_LOG.dealer_id in (select dealer_id from elita.ELP_ACCT_EVENT_DETAIL_INCEXC where acct_event_detail_id = ELP_ACCT_EVENT_DETAIL.acct_event_detail_id and coverage_type_id is null)
+      			        or ELP_ACCT_TRANS_LOG.coverage_type in (select getcodefromlistitem(coverage_type_id) from elita.ELP_ACCT_EVENT_DETAIL_INCEXC where acct_event_detail_id = ELP_ACCT_EVENT_DETAIL.acct_event_detail_id and dealer_id is null)
+				            or (ELP_ACCT_TRANS_LOG.dealer_id, ELP_ACCT_TRANS_LOG.COVERAGE_TYPE) in (select dealer_id, getcodefromlistitem(coverage_type_id) from elita.ELP_ACCT_EVENT_DETAIL_INCEXC where acct_event_detail_id = ELP_ACCT_EVENT_DETAIL.acct_event_detail_id and dealer_id is not null and coverage_type_id is not null)
+      	        )
+            )
+        )
+        --REQ-5396 end
+       --dynamic_where_clause ) t
+      order by LINENUM asc
+   ]]>
+  </JOURNAL_UPR>
+  <JOURNAL_IBNR>
+    <![CDATA[
+      select
+           TransLog_Id,
+		   ACCT_TRANS_LOG_ID,
+           AccountCode,
+       AccountCode AS OriginalAccountCode,
+       '' AS TaxOverrideCode,
+		   AccountingPeriod,
+		   AllocationMarker,
+		   CurrencyCode,
+           DebitCredit,
+           Description,
+           JournalSource,
+           JournalType,
+           TransactionAmount,
+           TransactionAmountDecimalPlaces,
+           TransactionDate,
+           TransactionReference, 
+           AnalysisCode1,
+		   AnalysisCode2,
+		   AnalysisCode3,
+		   AnalysisCode4,
+		   AnalysisCode5,
+		   AnalysisCode6,
+		   AnalysisCode7,
+		   AnalysisCode8,
+		   AnalysisCode9,
+		   AnalysisCode10, 
+		   GeneralDescription1,
+		   GeneralDescription2,
+		   GeneralDescription3,
+		   GeneralDescription4,
+		   GeneralDescription5,
+		   GeneralDescription6,
+		   GeneralDescription7,
+		   GeneralDescription8,
+		   GeneralDescription9,
+		   GeneralDescription10,
+		   GeneralDescription11,
+		   GeneralDescription12,
+		   GeneralDescription13,
+		   GeneralDescription14,
+		   GeneralDescription15,
+		   GeneralDescription16,
+		   GeneralDescription17,
+		   GeneralDescription18,
+		   GeneralDescription19,
+		   GeneralDescription20,
+		   GeneralDescription21,
+		   GeneralDescription22,
+		   GeneralDescription23,
+		   GeneralDescription24,
+		   GeneralDescription25,
+           Created_date,
+           payment_amount,
+           ROWNUM AS LINENUM,
+           JOURNAL_ID_SUFFIX,
+           BLOCK_OF_BUSINESS,
+           UDAK_PRIMARY,
+           REV,
+           '' AS PLACEHOLDER,
+        '' AS TRANSACTION_ID_NUMBER,
+        DEALER_CODE,
+        COMPANY_CODE,
+        WARR_SALES_DATE,
+        CONTRACT_INCEPTION_DATE,
+        POLICY_NUMBER,
+        LOSS_DATE,
+        '' AS INVOICE_REGION,
+        ACCT_COMPANY_CODE,
+        ACCT_EVENT_MAPPING,
+           NULL AS INVOICE_DATE
+from 
+(     SELECT
+		   DISTINCT RAWTOHEX(ELP_ACCT_TRANS_LOG.ACCT_TRANS_LOG_ID) AS TransLog_Id,
+		   ELP_ACCT_TRANS_LOG.ACCT_TRANS_LOG_ID,
+           DECODE(ELP_ACCT_EVENT_DETAIL.USE_PAYEE_SETTINGS,'Y',ELP_ACCT_SETTINGS.ACCOUNT_CODE,ELP_ACCT_EVENT_DETAIL.ACCOUNT_CODE)  AS AccountCode,
+		   ELP_ACCT_TRANS_LOG.ACCT_PERIOD AS AccountingPeriod,
+		   ELP_ACCT_EVENT_DETAIL.ALLOCATION_MARKER AS AllocationMarker,
+		   ELP_ACCT_TRANS_LOG.CURRENCY AS CurrencyCode,
+           CASE  WHEN ELP_ACCT_TRANS_LOG.PAYMENT_AMOUNT < 0 THEN DECODE(ELP_ACCT_EVENT_DETAIL.DEBIT_CREDIT,'D','C','C','D') ELSE ELP_ACCT_EVENT_DETAIL.DEBIT_CREDIT END AS DebitCredit,
+       SUBSTR(ELP_ACCT_TRANSACTIONS.GetAnalysisCodeValue('1',GETCODEFROMLISTITEM(ELP_ACCT_EVENT_DETAIL.DESCRIPTION_SRC_ID),ELP_ACCT_TRANS_LOG.ACCT_TRANS_LOG_ID, ELP_ACCT_EVENT_DETAIL.DESCRIPTION, '',ELP_ACCT_SETTINGS.ACCT_SETTINGS_ID), 1,49) AS Description,
+           'ELX' AS JournalSource,
+           ELP_ACCT_EVENT_DETAIL.JOURNAL_TYPE AS JournalType,
+             CASE  WHEN ELP_ACCT_TRANS_LOG.PAYMENT_AMOUNT < 0 THEN ROUND(((COALESCE(ELP_ACCT_EVENT_DETAIL.CALCULATION,100)/100 * ELP_ACCT_TRANS_LOG.PAYMENT_AMOUNT) * -1),2) ELSE ROUND(((COALESCE(ELP_ACCT_EVENT_DETAIL.CALCULATION,100)/100 * ELP_ACCT_TRANS_LOG.PAYMENT_AMOUNT)),2)  END AS TransactionAmount,
+           '2' AS TransactionAmountDecimalPlaces,
+           TO_CHAR(ELP_ACCT_TRANS_LOG.PAYMENT_DATE,'DDMMYYYY') AS TransactionDate,
+           SUBSTR(RAWTOHEX(ELP_ACCT_TRANS_LOG.ACCT_TRANS_LOG_ID),1,16) || '_'  || TO_CHAR(ELP_ACCT_TRANS_LOG.PAYMENT_DATE,'DDMMYYYY')  AS TransactionReference, 
+        ELP_ACCT_TRANSACTIONS.GetAnalysisCodeValue('0',GETCODEFROMLISTITEM(ELP_ACCT_EVENT_DETAIL.ANALYSIS_SRC_1_ID),ELP_ACCT_TRANS_LOG.ACCT_TRANS_LOG_ID, ELP_ACCT_EVENT_DETAIL.ANALYSIS_CODE_1, ELP_ACCT_SETTINGS.ACCOUNT_ANALYSIS_CODE_1,ELP_ACCT_SETTINGS.ACCT_SETTINGS_ID,1) AS AnalysisCode1,
+        ELP_ACCT_TRANSACTIONS.GetAnalysisCodeValue('0',GETCODEFROMLISTITEM(ELP_ACCT_EVENT_DETAIL.ANALYSIS_SRC_2_ID),ELP_ACCT_TRANS_LOG.ACCT_TRANS_LOG_ID, ELP_ACCT_EVENT_DETAIL.ANALYSIS_CODE_2, ELP_ACCT_SETTINGS.ACCOUNT_ANALYSIS_CODE_2,ELP_ACCT_SETTINGS.ACCT_SETTINGS_ID,2) AS AnalysisCode2,
+        ELP_ACCT_TRANSACTIONS.GetAnalysisCodeValue('0',GETCODEFROMLISTITEM(ELP_ACCT_EVENT_DETAIL.ANALYSIS_SRC_3_ID),ELP_ACCT_TRANS_LOG.ACCT_TRANS_LOG_ID, ELP_ACCT_EVENT_DETAIL.ANALYSIS_CODE_3, ELP_ACCT_SETTINGS.ACCOUNT_ANALYSIS_CODE_3,ELP_ACCT_SETTINGS.ACCT_SETTINGS_ID,3) AS AnalysisCode3,
+        ELP_ACCT_TRANSACTIONS.GetAnalysisCodeValue('0',GETCODEFROMLISTITEM(ELP_ACCT_EVENT_DETAIL.ANALYSIS_SRC_4_ID),ELP_ACCT_TRANS_LOG.ACCT_TRANS_LOG_ID, ELP_ACCT_EVENT_DETAIL.ANALYSIS_CODE_4, ELP_ACCT_SETTINGS.ACCOUNT_ANALYSIS_CODE_4,ELP_ACCT_SETTINGS.ACCT_SETTINGS_ID,4) AS AnalysisCode4,
+        ELP_ACCT_TRANSACTIONS.GetAnalysisCodeValue('0',GETCODEFROMLISTITEM(ELP_ACCT_EVENT_DETAIL.ANALYSIS_SRC_5_ID),ELP_ACCT_TRANS_LOG.ACCT_TRANS_LOG_ID, ELP_ACCT_EVENT_DETAIL.ANALYSIS_CODE_5, ELP_ACCT_SETTINGS.ACCOUNT_ANALYSIS_CODE_5,ELP_ACCT_SETTINGS.ACCT_SETTINGS_ID,5) AS AnalysisCode5,
+        ELP_ACCT_TRANSACTIONS.GetAnalysisCodeValue('0',GETCODEFROMLISTITEM(ELP_ACCT_EVENT_DETAIL.ANALYSIS_SRC_6_ID),ELP_ACCT_TRANS_LOG.ACCT_TRANS_LOG_ID, ELP_ACCT_EVENT_DETAIL.ANALYSIS_CODE_6, ELP_ACCT_SETTINGS.ACCOUNT_ANALYSIS_CODE_6,ELP_ACCT_SETTINGS.ACCT_SETTINGS_ID,6) AS AnalysisCode6,
+        ELP_ACCT_TRANSACTIONS.GetAnalysisCodeValue('0',GETCODEFROMLISTITEM(ELP_ACCT_EVENT_DETAIL.ANALYSIS_SRC_7_ID),ELP_ACCT_TRANS_LOG.ACCT_TRANS_LOG_ID, ELP_ACCT_EVENT_DETAIL.ANALYSIS_CODE_7, ELP_ACCT_SETTINGS.ACCOUNT_ANALYSIS_CODE_7,ELP_ACCT_SETTINGS.ACCT_SETTINGS_ID,7) AS AnalysisCode7,
+        ELP_ACCT_TRANSACTIONS.GetAnalysisCodeValue('0',GETCODEFROMLISTITEM(ELP_ACCT_EVENT_DETAIL.ANALYSIS_SRC_8_ID),ELP_ACCT_TRANS_LOG.ACCT_TRANS_LOG_ID, ELP_ACCT_EVENT_DETAIL.ANALYSIS_CODE_8, ELP_ACCT_SETTINGS.ACCOUNT_ANALYSIS_CODE_8,ELP_ACCT_SETTINGS.ACCT_SETTINGS_ID,8) AS AnalysisCode8,
+        ELP_ACCT_TRANSACTIONS.GetAnalysisCodeValue('0',GETCODEFROMLISTITEM(ELP_ACCT_EVENT_DETAIL.ANALYSIS_SRC_9_ID),ELP_ACCT_TRANS_LOG.ACCT_TRANS_LOG_ID, ELP_ACCT_EVENT_DETAIL.ANALYSIS_CODE_9, ELP_ACCT_SETTINGS.ACCOUNT_ANALYSIS_CODE_9,ELP_ACCT_SETTINGS.ACCT_SETTINGS_ID,9) AS AnalysisCode9,
+        ELP_ACCT_TRANSACTIONS.GetAnalysisCodeValue('0',GETCODEFROMLISTITEM(ELP_ACCT_EVENT_DETAIL.ANALYSIS_SRC_10_ID),ELP_ACCT_TRANS_LOG.ACCT_TRANS_LOG_ID, ELP_ACCT_EVENT_DETAIL.ANALYSIS_CODE_10, ELP_ACCT_SETTINGS.ACCOUNT_ANALYSIS_CODE_10,ELP_ACCT_SETTINGS.ACCT_SETTINGS_ID,10) AS AnalysisCode10,
+        ELP_ACCT_TRANS_LOG.ADDRESS1 AS GeneralDescription1,
+		   ELP_ACCT_TRANS_LOG.ADDRESS2 AS GeneralDescription2,
+		   '' AS GeneralDescription3,
+		   ELP_ACCT_TRANS_LOG.CITY || ELP_ACCT_TRANS_LOG.REGION AS GeneralDescription4,
+		   ELP_ACCT_TRANS_LOG.COUNTRY || DECODE(ELP_ACCT_TRANS_LOG.COUNTRY,null,'',' ') || ELP_ACCT_TRANS_LOG.ZIP AS GeneralDescription5,
+		   ELP_ACCT_TRANS_LOG.BANK_ACCOUNT_NUMBER AS GeneralDescription6,
+		   ELP_ACCT_TRANS_LOG.BANK_ID AS GeneralDescription7,
+		   '' AS GeneralDescription8,
+		   ELP_ACCT_TRANS_LOG.PAYEE AS GeneralDescription9,
+		   ELP_ACCT_TRANS_LOG.TAX_ID_CODE AS GeneralDescription10,
+		   '' AS GeneralDescription11,
+		   '' AS GeneralDescription12,
+		   '' AS GeneralDescription13,
+		   '' AS GeneralDescription14,
+		   '' AS GeneralDescription15,
+		   '' AS GeneralDescription16,
+		   '' AS GeneralDescription17,
+		   '' AS GeneralDescription18,
+		   '' AS GeneralDescription19,
+		   '' AS GeneralDescription20,
+		   '' AS GeneralDescription21,
+		   '' AS GeneralDescription22,
+		   '' AS GeneralDescription23,
+		   LIEVENT.CODE AS GeneralDescription24,
+		   :NETWORK_ID AS GeneralDescription25,
+        TO_CHAR(ELP_ACCT_TRANS_LOG.CREATED_DATE,'DDMMYYYY') AS CREATED_DATE,
+       ROUND(((COALESCE(ELP_ACCT_EVENT_DETAIL.CALCULATION,100)/100 * ELP_ACCT_TRANS_LOG.PAYMENT_AMOUNT)),2) AS payment_amount,
+           ROWNUM AS LINENUM,
+           ELP_ACCT_EVENT_DETAIL.JOURNAL_ID_SUFFIX,
+           ELP_ACCT_SETTINGS.ACCOUNT_ANALYSIS_CODE_6 AS BLOCK_OF_BUSINESS,
+           ELP_ACCT_EVENT_DETAIL.ANALYSIS_CODE_3 AS UDAK_PRIMARY,
+       0 AS REV,
+     ELP_DEALER.DEALER AS DEALER_CODE,
+       ELP_COMPANY.CODE AS COMPANY_CODE,
+           ELP_ACCT_TRANS_LOG.WARR_SALES_DATE,
+           ELP_ACCT_TRANS_LOG.CONTRACT_INCEPTION_DATE,
+           ELP_ACCT_TRANS_LOG.POLICY_NUMBER,
+           ELP_ACCT_TRANS_LOG.LOSS_DATE,
+           ELP_ACCT_COMPANY.CODE AS ACCT_COMPANY_CODE,
+           GetCodeMappingFromListItem(ELP_ACCT_EVENT.ACCT_EVENT_TYPE_ID, ELP_COMPANY.COMPANY_ID) AS ACCT_EVENT_MAPPING
+  FROM
+		    ELP_ACCT_TRANS_LOG,
+		    ELP_ACCT_EVENT,
+		    ELP_ACCT_EVENT_DETAIL,
+		    ELP_ACCT_SETTINGS,
+            ELP_COMPANY,
+            ELP_LIST_ITEM LIEVENT,
+            ELP_ACCT_BUSINESS_UNIT,
+            ELP_DEALER,
+       ELP_ACCT_COMPANY
+    WHERE
+	        ELP_ACCT_COMPANY.ACCT_COMPANY_ID = ELP_COMPANY.ACCT_COMPANY_ID
+	     AND ELP_ACCT_EVENT.ACCT_COMPANY_ID = ELP_COMPANY.ACCT_COMPANY_ID
+       AND ELP_ACCT_EVENT.ACCT_EVENT_TYPE_ID = :ACCT_EVENT_TYPE_ID
+       AND ELP_ACCT_EVENT_DETAIL.ACCT_BUSINESS_UNIT_ID = ELP_ACCT_BUSINESS_UNIT.ACCT_BUSINESS_UNIT_ID
+       AND LIEVENT.LIST_ITEM_ID = ELP_ACCT_TRANS_LOG.ACCT_EVENT_TYPE_ID
+       AND NVL(ELP_ACCT_EVENT_DETAIL.BUSINESS_ENTITY_ID,hextoraw('1')) = NVL(ELP_ACCT_TRANSACTIONS.GetBusinessEntity(ELP_ACCT_BUSINESS_UNIT.ACCT_BUSINESS_UNIT_ID,ELP_ACCT_TRANS_LOG.COVERAGE_TYPE,ELP_ACCT_TRANS_LOG.INVOICE_REGION),hextoraw('1'))
+       AND ELP_ACCT_EVENT_DETAIL.FIELD_TYPE_ID = ELP_ACCT_TRANS_LOG.ACCT_EVENT_FIELD_ID
+       AND ELP_ACCT_EVENT_DETAIL.ACCT_EVENT_ID = ELP_ACCT_EVENT.ACCT_EVENT_ID
+       AND ELP_ACCT_TRANS_LOG.ACCT_EVENT_TYPE_ID = ELP_ACCT_EVENT.ACCT_EVENT_TYPE_ID
+       AND ELP_DEALER.DEALER_ID = ELP_ACCT_SETTINGS.DEALER_ID
+       AND ELP_ACCT_SETTINGS.ACCT_SETTINGS_ID = GETACCTSETTINGS(ELP_ACCT_TRANS_LOG.DEALER_ID,null, ELP_ACCT_EVENT_DETAIL.ACCOUNT_TYPE)
+       AND ELP_ACCT_TRANS_LOG.BRANCH_ID IS NULL
+       AND ELP_ACCT_BUSINESS_UNIT.ACCT_BUSINESS_UNIT_ID = :ACCT_BUSINESS_UNIT_ID
+       AND ELP_ACCT_TRANS_LOG.BUSINESS_UNIT = ELP_ACCT_BUSINESS_UNIT.BUSINESS_UNIT
+       AND ELP_ACCT_TRANS_LOG.COMPANY_ID = ELP_COMPANY.COMPANY_ID
+       AND ELP_COMPANY.COMPANY_ID = :COMPANY_ID
+       --REQ-5396 start
+	     and ( (ELP_ACCT_EVENT_DETAIL.include_exclude_ind = 'E'
+		            and ( ELP_ACCT_TRANS_LOG.dealer_id not in (select dealer_id from elita.ELP_ACCT_EVENT_DETAIL_INCEXC where acct_event_detail_id = ELP_ACCT_EVENT_DETAIL.acct_event_detail_id and coverage_type_id is null)
+				            and ELP_ACCT_TRANS_LOG.coverage_type not in (select getcodefromlistitem(coverage_type_id) from elita.ELP_ACCT_EVENT_DETAIL_INCEXC where acct_event_detail_id = ELP_ACCT_EVENT_DETAIL.acct_event_detail_id and dealer_id is null)
+				            and (ELP_ACCT_TRANS_LOG.dealer_id, ELP_ACCT_TRANS_LOG.coverage_type) not in (select dealer_id, getcodefromlistitem(coverage_type_id) from elita.ELP_ACCT_EVENT_DETAIL_INCEXC where acct_event_detail_id = ELP_ACCT_EVENT_DETAIL.acct_event_detail_id and dealer_id is not null and coverage_type_id is not null)
+		            )
+            ) or
+            (ELP_ACCT_EVENT_DETAIL.include_exclude_ind = 'I'
+      	        and (ELP_ACCT_TRANS_LOG.dealer_id in (select dealer_id from elita.ELP_ACCT_EVENT_DETAIL_INCEXC where acct_event_detail_id = ELP_ACCT_EVENT_DETAIL.acct_event_detail_id and coverage_type_id is null)
+      			        or ELP_ACCT_TRANS_LOG.coverage_type in (select getcodefromlistitem(coverage_type_id) from elita.ELP_ACCT_EVENT_DETAIL_INCEXC where acct_event_detail_id = ELP_ACCT_EVENT_DETAIL.acct_event_detail_id and dealer_id is null)
+				            or (ELP_ACCT_TRANS_LOG.dealer_id, ELP_ACCT_TRANS_LOG.COVERAGE_TYPE) in (select dealer_id, getcodefromlistitem(coverage_type_id) from elita.ELP_ACCT_EVENT_DETAIL_INCEXC where acct_event_detail_id = ELP_ACCT_EVENT_DETAIL.acct_event_detail_id and dealer_id is not null and coverage_type_id is not null)
+      	        )
+            )
+        )
+        --REQ-5396 end
+        --dynamic_where_clause
+UNION /* Reversal */
+     SELECT
+		   DISTINCT RAWTOHEX(ELP_ACCT_TRANS_LOG.ACCT_TRANS_LOG_ID) AS TransLog_Id,
+		   ELP_ACCT_TRANS_LOG.ACCT_TRANS_LOG_ID,
+		   DECODE(ELP_ACCT_EVENT_DETAIL.USE_PAYEE_SETTINGS,'Y',ELP_ACCT_SETTINGS.ACCOUNT_CODE,ELP_ACCT_EVENT_DETAIL.ACCOUNT_CODE)  AS AccountCode,
+		   ELP_ACCT_TRANS_LOG.ACCT_PERIOD AS AccountingPeriod,
+		   ELP_ACCT_EVENT_DETAIL.ALLOCATION_MARKER AS AllocationMarker,
+		   ELP_ACCT_TRANS_LOG.CURRENCY AS CurrencyCode,
+             CASE  WHEN ELP_ACCT_TRANS_LOG.PAYMENT_AMOUNT < 0 THEN  ELP_ACCT_EVENT_DETAIL.DEBIT_CREDIT ELSE DECODE(ELP_ACCT_EVENT_DETAIL.DEBIT_CREDIT,'D','C','D') END  AS DebitCredit,
+        SUBSTR(ELP_ACCT_TRANSACTIONS.GetAnalysisCodeValue('1',GETCODEFROMLISTITEM(ELP_ACCT_EVENT_DETAIL.DESCRIPTION_SRC_ID),ELP_ACCT_TRANS_LOG.ACCT_TRANS_LOG_ID, ELP_ACCT_EVENT_DETAIL.DESCRIPTION, '',ELP_ACCT_SETTINGS.ACCT_SETTINGS_ID), 1,49) AS Description,
+           'ELX' AS JournalSource,
+           ELP_ACCT_EVENT_DETAIL.JOURNAL_TYPE AS JournalType,
+             CASE  WHEN ELP_ACCT_TRANS_LOG.PAYMENT_AMOUNT < 0 THEN ROUND(((COALESCE(ELP_ACCT_EVENT_DETAIL.CALCULATION,100)/100 * ELP_ACCT_TRANS_LOG.PAYMENT_AMOUNT) * -1),2) ELSE ROUND(((COALESCE(ELP_ACCT_EVENT_DETAIL.CALCULATION,100)/100 * ELP_ACCT_TRANS_LOG.PAYMENT_AMOUNT)),2) END AS TransactionAmount,
+           '2' AS TransactionAmountDecimalPlaces,
+          TO_CHAR((ELP_ACCT_TRANS_LOG.PAYMENT_DATE + 1),'DDMMYYYY') AS TransactionDate,
+           SUBSTR(RAWTOHEX(ELP_ACCT_TRANS_LOG.ACCT_TRANS_LOG_ID),1,16) || '_' || TO_CHAR((ELP_ACCT_TRANS_LOG.PAYMENT_DATE + 1),'DDMMYYYY') AS TransactionReference, 
+        ELP_ACCT_TRANSACTIONS.GetAnalysisCodeValue('0',GETCODEFROMLISTITEM(ELP_ACCT_EVENT_DETAIL.ANALYSIS_SRC_1_ID),ELP_ACCT_TRANS_LOG.ACCT_TRANS_LOG_ID, ELP_ACCT_EVENT_DETAIL.ANALYSIS_CODE_1, ELP_ACCT_SETTINGS.ACCOUNT_ANALYSIS_CODE_1,ELP_ACCT_SETTINGS.ACCT_SETTINGS_ID,1) AS AnalysisCode1,
+        ELP_ACCT_TRANSACTIONS.GetAnalysisCodeValue('0',GETCODEFROMLISTITEM(ELP_ACCT_EVENT_DETAIL.ANALYSIS_SRC_2_ID),ELP_ACCT_TRANS_LOG.ACCT_TRANS_LOG_ID, ELP_ACCT_EVENT_DETAIL.ANALYSIS_CODE_2, ELP_ACCT_SETTINGS.ACCOUNT_ANALYSIS_CODE_2,ELP_ACCT_SETTINGS.ACCT_SETTINGS_ID,2) AS AnalysisCode2,
+        ELP_ACCT_TRANSACTIONS.GetAnalysisCodeValue('0',GETCODEFROMLISTITEM(ELP_ACCT_EVENT_DETAIL.ANALYSIS_SRC_3_ID),ELP_ACCT_TRANS_LOG.ACCT_TRANS_LOG_ID, ELP_ACCT_EVENT_DETAIL.ANALYSIS_CODE_3, ELP_ACCT_SETTINGS.ACCOUNT_ANALYSIS_CODE_3,ELP_ACCT_SETTINGS.ACCT_SETTINGS_ID,3) AS AnalysisCode3,
+        ELP_ACCT_TRANSACTIONS.GetAnalysisCodeValue('0',GETCODEFROMLISTITEM(ELP_ACCT_EVENT_DETAIL.ANALYSIS_SRC_4_ID),ELP_ACCT_TRANS_LOG.ACCT_TRANS_LOG_ID, ELP_ACCT_EVENT_DETAIL.ANALYSIS_CODE_4, ELP_ACCT_SETTINGS.ACCOUNT_ANALYSIS_CODE_4,ELP_ACCT_SETTINGS.ACCT_SETTINGS_ID,4) AS AnalysisCode4,
+        ELP_ACCT_TRANSACTIONS.GetAnalysisCodeValue('0',GETCODEFROMLISTITEM(ELP_ACCT_EVENT_DETAIL.ANALYSIS_SRC_5_ID),ELP_ACCT_TRANS_LOG.ACCT_TRANS_LOG_ID, ELP_ACCT_EVENT_DETAIL.ANALYSIS_CODE_5, ELP_ACCT_SETTINGS.ACCOUNT_ANALYSIS_CODE_5,ELP_ACCT_SETTINGS.ACCT_SETTINGS_ID,5) AS AnalysisCode5,
+        ELP_ACCT_TRANSACTIONS.GetAnalysisCodeValue('0',GETCODEFROMLISTITEM(ELP_ACCT_EVENT_DETAIL.ANALYSIS_SRC_6_ID),ELP_ACCT_TRANS_LOG.ACCT_TRANS_LOG_ID, ELP_ACCT_EVENT_DETAIL.ANALYSIS_CODE_6, ELP_ACCT_SETTINGS.ACCOUNT_ANALYSIS_CODE_6,ELP_ACCT_SETTINGS.ACCT_SETTINGS_ID,6) AS AnalysisCode6,
+        ELP_ACCT_TRANSACTIONS.GetAnalysisCodeValue('0',GETCODEFROMLISTITEM(ELP_ACCT_EVENT_DETAIL.ANALYSIS_SRC_7_ID),ELP_ACCT_TRANS_LOG.ACCT_TRANS_LOG_ID, ELP_ACCT_EVENT_DETAIL.ANALYSIS_CODE_7, ELP_ACCT_SETTINGS.ACCOUNT_ANALYSIS_CODE_7,ELP_ACCT_SETTINGS.ACCT_SETTINGS_ID,7) AS AnalysisCode7,
+        ELP_ACCT_TRANSACTIONS.GetAnalysisCodeValue('0',GETCODEFROMLISTITEM(ELP_ACCT_EVENT_DETAIL.ANALYSIS_SRC_8_ID),ELP_ACCT_TRANS_LOG.ACCT_TRANS_LOG_ID, ELP_ACCT_EVENT_DETAIL.ANALYSIS_CODE_8, ELP_ACCT_SETTINGS.ACCOUNT_ANALYSIS_CODE_8,ELP_ACCT_SETTINGS.ACCT_SETTINGS_ID,8) AS AnalysisCode8,
+        ELP_ACCT_TRANSACTIONS.GetAnalysisCodeValue('0',GETCODEFROMLISTITEM(ELP_ACCT_EVENT_DETAIL.ANALYSIS_SRC_9_ID),ELP_ACCT_TRANS_LOG.ACCT_TRANS_LOG_ID, ELP_ACCT_EVENT_DETAIL.ANALYSIS_CODE_9, ELP_ACCT_SETTINGS.ACCOUNT_ANALYSIS_CODE_9,ELP_ACCT_SETTINGS.ACCT_SETTINGS_ID,9) AS AnalysisCode9,
+        ELP_ACCT_TRANSACTIONS.GetAnalysisCodeValue('0',GETCODEFROMLISTITEM(ELP_ACCT_EVENT_DETAIL.ANALYSIS_SRC_10_ID),ELP_ACCT_TRANS_LOG.ACCT_TRANS_LOG_ID, ELP_ACCT_EVENT_DETAIL.ANALYSIS_CODE_10, ELP_ACCT_SETTINGS.ACCOUNT_ANALYSIS_CODE_10,ELP_ACCT_SETTINGS.ACCT_SETTINGS_ID,10) AS AnalysisCode10,
+		   ELP_ACCT_TRANS_LOG.ADDRESS1 AS GeneralDescription1,
+		   ELP_ACCT_TRANS_LOG.ADDRESS2 AS GeneralDescription2,
+		   '' AS GeneralDescription3,
+		   ELP_ACCT_TRANS_LOG.CITY || ELP_ACCT_TRANS_LOG.REGION AS GeneralDescription4,
+		   ELP_ACCT_TRANS_LOG.COUNTRY || DECODE(ELP_ACCT_TRANS_LOG.COUNTRY,null,'',' ') || ELP_ACCT_TRANS_LOG.ZIP AS GeneralDescription5,
+		   ELP_ACCT_TRANS_LOG.BANK_ACCOUNT_NUMBER AS GeneralDescription6,
+		   ELP_ACCT_TRANS_LOG.BANK_ID AS GeneralDescription7,
+		   '' AS GeneralDescription8,
+		   ELP_ACCT_TRANS_LOG.PAYEE AS GeneralDescription9,
+		   ELP_ACCT_TRANS_LOG.TAX_ID_CODE AS GeneralDescription10,
+		   '' AS GeneralDescription11,
+		   '' AS GeneralDescription12,
+		   '' AS GeneralDescription13,
+		   '' AS GeneralDescription14,
+		   '' AS GeneralDescription15,
+		   '' AS GeneralDescription16,
+		   '' AS GeneralDescription17,
+		   '' AS GeneralDescription18,
+		   '' AS GeneralDescription19,
+		   '' AS GeneralDescription20,
+		   '' AS GeneralDescription21,
+		   '' AS GeneralDescription22,
+		   '' AS GeneralDescription23,
+		   LIEVENT.CODE AS GeneralDescription24,
+		   :NETWORK_ID AS GeneralDescription25,
+       TO_CHAR(ELP_ACCT_TRANS_LOG.CREATED_DATE,'DDMMYYYY') AS CREATED_DATE,
+       ROUND(((COALESCE(ELP_ACCT_EVENT_DETAIL.CALCULATION,100)/100 * ELP_ACCT_TRANS_LOG.PAYMENT_AMOUNT)),2) AS payment_amount,
+           ROWNUM AS LINENUM,
+           ELP_ACCT_EVENT_DETAIL.JOURNAL_ID_SUFFIX,
+           ELP_ACCT_SETTINGS.ACCOUNT_ANALYSIS_CODE_6 AS BLOCK_OF_BUSINESS,
+           ELP_ACCT_EVENT_DETAIL.ANALYSIS_CODE_3 AS UDAK_PRIMARY,
+           1 AS REV,
+          ELP_DEALER.DEALER AS DEALER_CODE,
+       ELP_COMPANY.CODE AS COMPANY_CODE,
+           ELP_ACCT_TRANS_LOG.WARR_SALES_DATE,
+           ELP_ACCT_TRANS_LOG.CONTRACT_INCEPTION_DATE,
+           ELP_ACCT_TRANS_LOG.POLICY_NUMBER,
+           ELP_ACCT_TRANS_LOG.LOSS_DATE,
+           ELP_ACCT_COMPANY.CODE AS ACCT_COMPANY_CODE,
+           GetCodeMappingFromListItem(ELP_ACCT_EVENT.ACCT_EVENT_TYPE_ID, ELP_COMPANY.COMPANY_ID) AS ACCT_EVENT_MAPPING
+    FROM
+		    ELP_ACCT_TRANS_LOG,
+		    ELP_ACCT_EVENT,
+		    ELP_ACCT_EVENT_DETAIL,
+		    ELP_ACCT_SETTINGS,
+            ELP_COMPANY,
+            ELP_LIST_ITEM LIEVENT,
+            ELP_ACCT_BUSINESS_UNIT,
+            ELP_DEALER,
+       ELP_ACCT_COMPANY
+    WHERE
+	        ELP_ACCT_COMPANY.ACCT_COMPANY_ID = ELP_COMPANY.ACCT_COMPANY_ID
+	     AND ELP_ACCT_EVENT.ACCT_COMPANY_ID = ELP_COMPANY.ACCT_COMPANY_ID
+       AND ELP_ACCT_EVENT.ACCT_EVENT_TYPE_ID = :ACCT_EVENT_TYPE_ID
+       AND ELP_ACCT_EVENT_DETAIL.ACCT_BUSINESS_UNIT_ID = ELP_ACCT_BUSINESS_UNIT.ACCT_BUSINESS_UNIT_ID
+       AND LIEVENT.LIST_ITEM_ID = ELP_ACCT_TRANS_LOG.ACCT_EVENT_TYPE_ID
+       AND NVL(ELP_ACCT_EVENT_DETAIL.BUSINESS_ENTITY_ID,hextoraw('1')) = NVL(ELP_ACCT_TRANSACTIONS.GetBusinessEntity(ELP_ACCT_BUSINESS_UNIT.ACCT_BUSINESS_UNIT_ID,ELP_ACCT_TRANS_LOG.COVERAGE_TYPE,ELP_ACCT_TRANS_LOG.INVOICE_REGION),hextoraw('1'))
+       AND ELP_ACCT_EVENT_DETAIL.FIELD_TYPE_ID = ELP_ACCT_TRANS_LOG.ACCT_EVENT_FIELD_ID
+       AND ELP_ACCT_EVENT_DETAIL.ACCT_EVENT_ID = ELP_ACCT_EVENT.ACCT_EVENT_ID
+       AND ELP_ACCT_TRANS_LOG.ACCT_EVENT_TYPE_ID = ELP_ACCT_EVENT.ACCT_EVENT_TYPE_ID
+       AND ELP_DEALER.DEALER_ID = ELP_ACCT_SETTINGS.DEALER_ID
+       AND ELP_ACCT_SETTINGS.ACCT_SETTINGS_ID = GETACCTSETTINGS(ELP_ACCT_TRANS_LOG.DEALER_ID,null, ELP_ACCT_EVENT_DETAIL.ACCOUNT_TYPE)
+       AND ELP_ACCT_TRANS_LOG.BRANCH_ID IS NULL
+       AND (NOT ELP_ACCT_TRANS_LOG.PAYMENT_AMOUNT IS NULL OR ELP_ACCT_TRANS_LOG.PAYMENT_AMOUNT > 0)
+       AND ELP_ACCT_BUSINESS_UNIT.ACCT_BUSINESS_UNIT_ID = :ACCT_BUSINESS_UNIT_ID
+       AND ELP_ACCT_TRANS_LOG.BUSINESS_UNIT = ELP_ACCT_BUSINESS_UNIT.BUSINESS_UNIT
+       AND ELP_ACCT_TRANS_LOG.COMPANY_ID = ELP_COMPANY.COMPANY_ID
+       AND ELP_COMPANY.COMPANY_ID = :COMPANY_ID
+       --REQ-5396 start
+	     and ( (ELP_ACCT_EVENT_DETAIL.include_exclude_ind = 'E'
+		            and ( ELP_ACCT_TRANS_LOG.dealer_id not in (select dealer_id from elita.ELP_ACCT_EVENT_DETAIL_INCEXC where acct_event_detail_id = ELP_ACCT_EVENT_DETAIL.acct_event_detail_id and coverage_type_id is null)
+				            and ELP_ACCT_TRANS_LOG.coverage_type not in (select getcodefromlistitem(coverage_type_id) from elita.ELP_ACCT_EVENT_DETAIL_INCEXC where acct_event_detail_id = ELP_ACCT_EVENT_DETAIL.acct_event_detail_id and dealer_id is null)
+				            and (ELP_ACCT_TRANS_LOG.dealer_id, ELP_ACCT_TRANS_LOG.coverage_type) not in (select dealer_id, getcodefromlistitem(coverage_type_id) from elita.ELP_ACCT_EVENT_DETAIL_INCEXC where acct_event_detail_id = ELP_ACCT_EVENT_DETAIL.acct_event_detail_id and dealer_id is not null and coverage_type_id is not null)
+		            )
+            ) or
+            (ELP_ACCT_EVENT_DETAIL.include_exclude_ind = 'I'
+      	        and (ELP_ACCT_TRANS_LOG.dealer_id in (select dealer_id from elita.ELP_ACCT_EVENT_DETAIL_INCEXC where acct_event_detail_id = ELP_ACCT_EVENT_DETAIL.acct_event_detail_id and coverage_type_id is null)
+      			        or ELP_ACCT_TRANS_LOG.coverage_type in (select getcodefromlistitem(coverage_type_id) from elita.ELP_ACCT_EVENT_DETAIL_INCEXC where acct_event_detail_id = ELP_ACCT_EVENT_DETAIL.acct_event_detail_id and dealer_id is null)
+				            or (ELP_ACCT_TRANS_LOG.dealer_id, ELP_ACCT_TRANS_LOG.COVERAGE_TYPE) in (select dealer_id, getcodefromlistitem(coverage_type_id) from elita.ELP_ACCT_EVENT_DETAIL_INCEXC where acct_event_detail_id = ELP_ACCT_EVENT_DETAIL.acct_event_detail_id and dealer_id is not null and coverage_type_id is not null)
+      	        )
+            )
+        )
+        --REQ-5396 end
+       --dynamic_where_clause
+       ) t
+      order by LINENUM asc
+        ]]>
+  </JOURNAL_IBNR>
+  <JOURNAL_PREM>
+    <![CDATA[
+         SELECT
+		   DISTINCT RAWTOHEX(ELP_ACCT_TRANS_LOG.ACCT_TRANS_LOG_ID) AS TransLog_Id,
+		   ELP_ACCT_TRANS_LOG.ACCT_TRANS_LOG_ID,
+       CASE
+          WHEN ELP_ACCT_EVENT_DETAIL.USE_PAYEE_SETTINGS = 'Y' THEN
+              DECODE(ELP_ACCT_TRANS_LOG.PAYMENT_TO_CUSTOMER,'Y',ELP_ACCT_EVENT_DETAIL.ACCOUNT_CODE,ELP_ACCT_SETTINGS.ACCOUNT_CODE)
+         ELSE
+           DECODE(ELP_ACCT_TRANS_LOG.ACCOUNT_NUMBER, null,ELP_ACCT_EVENT_DETAIL.ACCOUNT_CODE, ELP_ACCT_TRANS_LOG.ACCOUNT_NUMBER)
+         END AS AccountCode,
+        CASE
+          WHEN ELP_ACCT_EVENT_DETAIL.USE_PAYEE_SETTINGS = 'Y' THEN
+              DECODE(ELP_ACCT_TRANS_LOG.PAYMENT_TO_CUSTOMER,'Y',ELP_ACCT_EVENT_DETAIL.ACCOUNT_CODE,ELP_ACCT_SETTINGS.ACCOUNT_CODE)
+         ELSE
+           ELP_ACCT_EVENT_DETAIL.ACCOUNT_CODE
+       END AS OriginalAccountCode,
+       ELP_ACCT_TRANS_LOG.ACCOUNT_NUMBER AS TaxOverrideCode,
+       ELP_ACCT_TRANS_LOG.ACCT_PERIOD AS AccountingPeriod,
+		   ELP_ACCT_EVENT_DETAIL.ALLOCATION_MARKER AS AllocationMarker,
+		   ELP_ACCT_TRANS_LOG.CURRENCY AS CurrencyCode,
+           CASE  WHEN ELP_ACCT_TRANS_LOG.PAYMENT_AMOUNT < 0 THEN DECODE(ELP_ACCT_EVENT_DETAIL.DEBIT_CREDIT,'D','C','C','D') ELSE ELP_ACCT_EVENT_DETAIL.DEBIT_CREDIT END AS DebitCredit,
+       SUBSTR(ELP_ACCT_TRANSACTIONS.GetAnalysisCodeValue('1',GETCODEFROMLISTITEM(ELP_ACCT_EVENT_DETAIL.DESCRIPTION_SRC_ID),ELP_ACCT_TRANS_LOG.ACCT_TRANS_LOG_ID, ELP_ACCT_EVENT_DETAIL.DESCRIPTION, '',ELP_ACCT_SETTINGS.ACCT_SETTINGS_ID), 1,49) AS Description,
+           'ELX' AS JournalSource,
+           ELP_ACCT_EVENT_DETAIL.JOURNAL_TYPE AS JournalType,
+             CASE  WHEN ELP_ACCT_TRANS_LOG.PAYMENT_AMOUNT < 0 THEN ROUND(((COALESCE(ELP_ACCT_EVENT_DETAIL.CALCULATION,100)/100 * ELP_ACCT_TRANS_LOG.PAYMENT_AMOUNT) * -1),2) ELSE ROUND(((COALESCE(ELP_ACCT_EVENT_DETAIL.CALCULATION,100)/100 * ELP_ACCT_TRANS_LOG.PAYMENT_AMOUNT)),2)  END AS TransactionAmount,
+           '2' AS TransactionAmountDecimalPlaces,
+           TO_CHAR(ELP_ACCT_TRANS_LOG.PAYMENT_DATE,'DDMMYYYY') AS TransactionDate,
+           SUBSTR(RAWTOHEX(ELP_ACCT_TRANS_LOG.ACCT_TRANS_LOG_ID),1,16) || '_'  || TO_CHAR(ELP_ACCT_TRANS_LOG.PAYMENT_DATE,'DDMMYYYY') AS TransactionReference, 
+        ELP_ACCT_TRANSACTIONS.GetAnalysisCodeValue('0',GETCODEFROMLISTITEM(ELP_ACCT_EVENT_DETAIL.ANALYSIS_SRC_1_ID),ELP_ACCT_TRANS_LOG.ACCT_TRANS_LOG_ID, ELP_ACCT_EVENT_DETAIL.ANALYSIS_CODE_1, ELP_ACCT_SETTINGS.ACCOUNT_ANALYSIS_CODE_1,ELP_ACCT_SETTINGS.ACCT_SETTINGS_ID,1) AS AnalysisCode1,
+        ELP_ACCT_TRANSACTIONS.GetAnalysisCodeValue('0',GETCODEFROMLISTITEM(ELP_ACCT_EVENT_DETAIL.ANALYSIS_SRC_2_ID),ELP_ACCT_TRANS_LOG.ACCT_TRANS_LOG_ID, ELP_ACCT_EVENT_DETAIL.ANALYSIS_CODE_2, ELP_ACCT_SETTINGS.ACCOUNT_ANALYSIS_CODE_2,ELP_ACCT_SETTINGS.ACCT_SETTINGS_ID,2) AS AnalysisCode2,
+        ELP_ACCT_TRANSACTIONS.GetAnalysisCodeValue('0',GETCODEFROMLISTITEM(ELP_ACCT_EVENT_DETAIL.ANALYSIS_SRC_3_ID),ELP_ACCT_TRANS_LOG.ACCT_TRANS_LOG_ID, ELP_ACCT_EVENT_DETAIL.ANALYSIS_CODE_3, ELP_ACCT_SETTINGS.ACCOUNT_ANALYSIS_CODE_3,ELP_ACCT_SETTINGS.ACCT_SETTINGS_ID,3) AS AnalysisCode3,
+        ELP_ACCT_TRANSACTIONS.GetAnalysisCodeValue('0',GETCODEFROMLISTITEM(ELP_ACCT_EVENT_DETAIL.ANALYSIS_SRC_4_ID),ELP_ACCT_TRANS_LOG.ACCT_TRANS_LOG_ID, ELP_ACCT_EVENT_DETAIL.ANALYSIS_CODE_4, ELP_ACCT_SETTINGS.ACCOUNT_ANALYSIS_CODE_4,ELP_ACCT_SETTINGS.ACCT_SETTINGS_ID,4) AS AnalysisCode4,
+        ELP_ACCT_TRANSACTIONS.GetAnalysisCodeValue('0',GETCODEFROMLISTITEM(ELP_ACCT_EVENT_DETAIL.ANALYSIS_SRC_5_ID),ELP_ACCT_TRANS_LOG.ACCT_TRANS_LOG_ID, ELP_ACCT_EVENT_DETAIL.ANALYSIS_CODE_5, ELP_ACCT_SETTINGS.ACCOUNT_ANALYSIS_CODE_5,ELP_ACCT_SETTINGS.ACCT_SETTINGS_ID,5) AS AnalysisCode5,
+        ELP_ACCT_TRANSACTIONS.GetAnalysisCodeValue('0',GETCODEFROMLISTITEM(ELP_ACCT_EVENT_DETAIL.ANALYSIS_SRC_6_ID),ELP_ACCT_TRANS_LOG.ACCT_TRANS_LOG_ID, ELP_ACCT_EVENT_DETAIL.ANALYSIS_CODE_6, ELP_ACCT_SETTINGS.ACCOUNT_ANALYSIS_CODE_6,ELP_ACCT_SETTINGS.ACCT_SETTINGS_ID,6) AS AnalysisCode6,
+        ELP_ACCT_TRANSACTIONS.GetAnalysisCodeValue('0',GETCODEFROMLISTITEM(ELP_ACCT_EVENT_DETAIL.ANALYSIS_SRC_7_ID),ELP_ACCT_TRANS_LOG.ACCT_TRANS_LOG_ID, ELP_ACCT_EVENT_DETAIL.ANALYSIS_CODE_7, ELP_ACCT_SETTINGS.ACCOUNT_ANALYSIS_CODE_7,ELP_ACCT_SETTINGS.ACCT_SETTINGS_ID,7) AS AnalysisCode7,
+        ELP_ACCT_TRANSACTIONS.GetAnalysisCodeValue('0',GETCODEFROMLISTITEM(ELP_ACCT_EVENT_DETAIL.ANALYSIS_SRC_8_ID),ELP_ACCT_TRANS_LOG.ACCT_TRANS_LOG_ID, ELP_ACCT_EVENT_DETAIL.ANALYSIS_CODE_8, ELP_ACCT_SETTINGS.ACCOUNT_ANALYSIS_CODE_8,ELP_ACCT_SETTINGS.ACCT_SETTINGS_ID,8) AS AnalysisCode8,
+        ELP_ACCT_TRANSACTIONS.GetAnalysisCodeValue('0',GETCODEFROMLISTITEM(ELP_ACCT_EVENT_DETAIL.ANALYSIS_SRC_9_ID),ELP_ACCT_TRANS_LOG.ACCT_TRANS_LOG_ID, ELP_ACCT_EVENT_DETAIL.ANALYSIS_CODE_9, ELP_ACCT_SETTINGS.ACCOUNT_ANALYSIS_CODE_9,ELP_ACCT_SETTINGS.ACCT_SETTINGS_ID,9) AS AnalysisCode9,
+        ELP_ACCT_TRANSACTIONS.GetAnalysisCodeValue('0',GETCODEFROMLISTITEM(ELP_ACCT_EVENT_DETAIL.ANALYSIS_SRC_10_ID),ELP_ACCT_TRANS_LOG.ACCT_TRANS_LOG_ID, ELP_ACCT_EVENT_DETAIL.ANALYSIS_CODE_10, ELP_ACCT_SETTINGS.ACCOUNT_ANALYSIS_CODE_10,ELP_ACCT_SETTINGS.ACCT_SETTINGS_ID,10) AS AnalysisCode10,
+		   ELP_ACCT_TRANS_LOG.ADDRESS1 AS GeneralDescription1,
+		   ELP_ACCT_TRANS_LOG.ADDRESS2 AS GeneralDescription2,
+		   '' AS GeneralDescription3,
+		   ELP_ACCT_TRANS_LOG.CITY || ELP_ACCT_TRANS_LOG.REGION AS GeneralDescription4,
+		   ELP_ACCT_TRANS_LOG.COUNTRY || DECODE(ELP_ACCT_TRANS_LOG.COUNTRY,null,'',' ') || ELP_ACCT_TRANS_LOG.ZIP AS GeneralDescription5,
+		   ELP_ACCT_TRANS_LOG.BANK_ACCOUNT_NUMBER AS GeneralDescription6,
+		   ELP_ACCT_TRANS_LOG.BANK_ID AS GeneralDescription7,
+		   '' AS GeneralDescription8,
+		   ELP_ACCT_TRANS_LOG.PAYEE AS GeneralDescription9,
+		   ELP_ACCT_TRANS_LOG.TAX_ID_CODE AS GeneralDescription10,
+		   '' AS GeneralDescription11,
+		   '' AS GeneralDescription12,
+		   '' AS GeneralDescription13,
+		   '' AS GeneralDescription14,
+		   '' AS GeneralDescription15,
+		   '' AS GeneralDescription16,
+		   '' AS GeneralDescription17,
+		   '' AS GeneralDescription18,
+		   '' AS GeneralDescription19, 
+		   '' AS GeneralDescription20,
+		   '' AS GeneralDescription21,
+		   '' AS GeneralDescription22,
+		   '' AS GeneralDescription23,
+		   LIEVENT.CODE AS GeneralDescription24,
+		   :NETWORK_ID AS GeneralDescription25,
+      TO_CHAR(ELP_ACCT_TRANS_LOG.CREATED_DATE,'DDMMYYYY') AS CREATED_DATE,
+           ROUND(((COALESCE(ELP_ACCT_EVENT_DETAIL.CALCULATION,100)/100 * ELP_ACCT_TRANS_LOG.PAYMENT_AMOUNT)),2) AS payment_amount,
+           ROWNUM AS LINENUM,
+           ELP_ACCT_EVENT_DETAIL.JOURNAL_ID_SUFFIX,
+           ELP_ACCT_SETTINGS.ACCOUNT_ANALYSIS_CODE_6 AS BLOCK_OF_BUSINESS,
+           ELP_ACCT_EVENT_DETAIL.ANALYSIS_CODE_3 AS UDAK_PRIMARY,
+           0 AS REV,
+           '' AS PLACEHOLDER,
+           TRANSACTION_ID_NUMBER,
+           ELP_DEALER.DEALER AS DEALER_CODE,
+       ELP_COMPANY.CODE AS COMPANY_CODE,
+           ELP_ACCT_TRANS_LOG.WARR_SALES_DATE,
+           ELP_ACCT_TRANS_LOG.CONTRACT_INCEPTION_DATE,
+           ELP_ACCT_TRANS_LOG.POLICY_NUMBER,
+           ELP_ACCT_TRANS_LOG.LOSS_DATE,
+           ELP_ACCT_TRANS_LOG.REGION,
+           ELP_ACCT_TRANS_LOG.INVOICE_REGION,
+           ELP_ACCT_COMPANY.CODE AS ACCT_COMPANY_CODE,
+           GetCodeMappingFromListItem(ELP_ACCT_EVENT.ACCT_EVENT_TYPE_ID, ELP_COMPANY.COMPANY_ID) AS ACCT_EVENT_MAPPING,
+           NULL AS INVOICE_DATE
+    FROM
+		    ELP_ACCT_TRANS_LOG,
+		    ELP_ACCT_EVENT,
+		    ELP_ACCT_EVENT_DETAIL,
+		    ELP_ACCT_SETTINGS,
+            ELP_COMPANY,
+            ELP_LIST_ITEM LIEVENT,
+            ELP_ACCT_BUSINESS_UNIT,
+            ELP_DEALER,
+       ELP_ACCT_COMPANY
+    WHERE
+	        ELP_ACCT_COMPANY.ACCT_COMPANY_ID = ELP_COMPANY.ACCT_COMPANY_ID
+	     AND ELP_ACCT_EVENT.ACCT_COMPANY_ID = ELP_COMPANY.ACCT_COMPANY_ID
+       AND ELP_ACCT_EVENT.ACCT_EVENT_TYPE_ID = :ACCT_EVENT_TYPE_ID
+       AND ELP_ACCT_EVENT_DETAIL.ACCT_BUSINESS_UNIT_ID = ELP_ACCT_BUSINESS_UNIT.ACCT_BUSINESS_UNIT_ID
+       AND LIEVENT.LIST_ITEM_ID = ELP_ACCT_TRANS_LOG.ACCT_EVENT_TYPE_ID
+       AND NVL(ELP_ACCT_EVENT_DETAIL.BUSINESS_ENTITY_ID,hextoraw('1')) = NVL(ELP_ACCT_TRANSACTIONS.GetBusinessEntity(ELP_ACCT_BUSINESS_UNIT.ACCT_BUSINESS_UNIT_ID,ELP_ACCT_TRANS_LOG.COVERAGE_TYPE,ELP_ACCT_TRANS_LOG.INVOICE_REGION),hextoraw('1'))
+       AND ELP_ACCT_EVENT_DETAIL.FIELD_TYPE_ID = ELP_ACCT_TRANS_LOG.ACCT_EVENT_FIELD_ID
+       AND ELP_ACCT_EVENT_DETAIL.ACCT_EVENT_ID = ELP_ACCT_EVENT.ACCT_EVENT_ID
+       AND ELP_ACCT_TRANS_LOG.ACCT_EVENT_TYPE_ID = ELP_ACCT_EVENT.ACCT_EVENT_TYPE_ID
+       AND ELP_DEALER.DEALER_ID = ELP_ACCT_SETTINGS.DEALER_ID
+       AND ELP_ACCT_SETTINGS.ACCT_SETTINGS_ID = GETACCTSETTINGS(ELP_ACCT_TRANS_LOG.DEALER_ID,null, ELP_ACCT_EVENT_DETAIL.ACCOUNT_TYPE)
+       AND ELP_ACCT_TRANS_LOG.BRANCH_ID IS NULL
+       AND ELP_ACCT_BUSINESS_UNIT.ACCT_BUSINESS_UNIT_ID = :ACCT_BUSINESS_UNIT_ID
+       AND ELP_ACCT_TRANS_LOG.BUSINESS_UNIT = ELP_ACCT_BUSINESS_UNIT.BUSINESS_UNIT
+       AND ELP_ACCT_TRANS_LOG.COMPANY_ID = ELP_COMPANY.COMPANY_ID
+       AND ELP_COMPANY.COMPANY_ID = :COMPANY_ID
+       --REQ-5396 start
+	     and ( (ELP_ACCT_EVENT_DETAIL.include_exclude_ind = 'E'
+		            and ( ELP_ACCT_TRANS_LOG.dealer_id not in (select dealer_id from elita.ELP_ACCT_EVENT_DETAIL_INCEXC where acct_event_detail_id = ELP_ACCT_EVENT_DETAIL.acct_event_detail_id and coverage_type_id is null)
+				            and ELP_ACCT_TRANS_LOG.coverage_type not in (select getcodefromlistitem(coverage_type_id) from elita.ELP_ACCT_EVENT_DETAIL_INCEXC where acct_event_detail_id = ELP_ACCT_EVENT_DETAIL.acct_event_detail_id and dealer_id is null)
+				            and (ELP_ACCT_TRANS_LOG.dealer_id, ELP_ACCT_TRANS_LOG.coverage_type) not in (select dealer_id, getcodefromlistitem(coverage_type_id) from elita.ELP_ACCT_EVENT_DETAIL_INCEXC where acct_event_detail_id = ELP_ACCT_EVENT_DETAIL.acct_event_detail_id and dealer_id is not null and coverage_type_id is not null)
+		            )
+            ) or
+            (ELP_ACCT_EVENT_DETAIL.include_exclude_ind = 'I'
+      	        and (ELP_ACCT_TRANS_LOG.dealer_id in (select dealer_id from elita.ELP_ACCT_EVENT_DETAIL_INCEXC where acct_event_detail_id = ELP_ACCT_EVENT_DETAIL.acct_event_detail_id and coverage_type_id is null)
+      			        or ELP_ACCT_TRANS_LOG.coverage_type in (select getcodefromlistitem(coverage_type_id) from elita.ELP_ACCT_EVENT_DETAIL_INCEXC where acct_event_detail_id = ELP_ACCT_EVENT_DETAIL.acct_event_detail_id and dealer_id is null)
+				            or (ELP_ACCT_TRANS_LOG.dealer_id, ELP_ACCT_TRANS_LOG.COVERAGE_TYPE) in (select dealer_id, getcodefromlistitem(coverage_type_id) from elita.ELP_ACCT_EVENT_DETAIL_INCEXC where acct_event_detail_id = ELP_ACCT_EVENT_DETAIL.acct_event_detail_id and dealer_id is not null and coverage_type_id is not null)
+      	        )
+            )
+        )
+        --REQ-5396 end
+        --dynamic_where_clause
+        ORDER BY LINENUM ASC
+        ]]>
+  </JOURNAL_PREM>
+  <JOURNAL_REFUNDS>
+    <![CDATA[
+     SELECT 
+		   DISTINCT RAWTOHEX(ELP_ACCT_TRANS_LOG.ACCT_TRANS_LOG_ID) AS TransLog_Id,
+		   ELP_ACCT_TRANS_LOG.ACCT_TRANS_LOG_ID,
+        CASE
+          WHEN ELP_ACCT_EVENT_DETAIL.USE_PAYEE_SETTINGS = 'Y' THEN
+              DECODE(ELP_ACCT_TRANS_LOG.PAYMENT_TO_CUSTOMER,'Y',ELP_ACCT_EVENT_DETAIL.ACCOUNT_CODE,ELP_ACCT_SETTINGS.ACCOUNT_CODE)
+         ELSE
+           DECODE(ELP_ACCT_TRANS_LOG.ACCOUNT_NUMBER, null,ELP_ACCT_EVENT_DETAIL.ACCOUNT_CODE, ELP_ACCT_TRANS_LOG.ACCOUNT_NUMBER)
+         END AS AccountCode,
+     CASE
+          WHEN ELP_ACCT_EVENT_DETAIL.USE_PAYEE_SETTINGS = 'Y' THEN
+              DECODE(ELP_ACCT_TRANS_LOG.PAYMENT_TO_CUSTOMER,'Y',ELP_ACCT_EVENT_DETAIL.ACCOUNT_CODE,ELP_ACCT_SETTINGS.ACCOUNT_CODE)
+         ELSE
+           ELP_ACCT_EVENT_DETAIL.ACCOUNT_CODE
+         END AS OriginalAccountCode,
+       ELP_ACCT_TRANS_LOG.ACCOUNT_NUMBER AS TaxOverrideCode,
+		   ELP_ACCT_TRANS_LOG.ACCT_PERIOD AS AccountingPeriod,
+		   ELP_ACCT_EVENT_DETAIL.ALLOCATION_MARKER AS AllocationMarker,
+		   ELP_ACCT_TRANS_LOG.CURRENCY AS CurrencyCode,
+           CASE  WHEN ELP_ACCT_TRANS_LOG.PAYMENT_AMOUNT < 0 THEN DECODE(ELP_ACCT_EVENT_DETAIL.DEBIT_CREDIT,'D','C','C','D') ELSE ELP_ACCT_EVENT_DETAIL.DEBIT_CREDIT END AS DebitCredit,
+     SUBSTR(ELP_ACCT_TRANSACTIONS.GetAnalysisCodeValue('1',GETCODEFROMLISTITEM(ELP_ACCT_EVENT_DETAIL.DESCRIPTION_SRC_ID),ELP_ACCT_TRANS_LOG.ACCT_TRANS_LOG_ID, ELP_ACCT_EVENT_DETAIL.DESCRIPTION, '',ELP_ACCT_SETTINGS.ACCT_SETTINGS_ID), 1,49) AS Description,
+           'ELX' AS JournalSource,
+           ELP_ACCT_EVENT_DETAIL.JOURNAL_TYPE AS JournalType,
+             CASE  WHEN ELP_ACCT_TRANS_LOG.PAYMENT_AMOUNT < 0 THEN ROUND(((COALESCE(ELP_ACCT_EVENT_DETAIL.CALCULATION,100)/100 * ELP_ACCT_TRANS_LOG.PAYMENT_AMOUNT) * -1),2) ELSE ROUND(((COALESCE(ELP_ACCT_EVENT_DETAIL.CALCULATION,100)/100 * ELP_ACCT_TRANS_LOG.PAYMENT_AMOUNT)),2)  END AS TransactionAmount,
+           '2' AS TransactionAmountDecimalPlaces,
+           TO_CHAR(ELP_ACCT_TRANS_LOG.PAYMENT_DATE,'DDMMYYYY') AS TransactionDate,
+           SUBSTR(RAWTOHEX(ELP_ACCT_TRANS_LOG.ACCT_TRANS_LOG_ID),1,16) || '_'  || TO_CHAR(ELP_ACCT_TRANS_LOG.PAYMENT_DATE,'DDMMYYYY')  AS TransactionReference, 
+        ELP_ACCT_TRANSACTIONS.GetAnalysisCodeValue('0',GETCODEFROMLISTITEM(ELP_ACCT_EVENT_DETAIL.ANALYSIS_SRC_1_ID),ELP_ACCT_TRANS_LOG.ACCT_TRANS_LOG_ID, ELP_ACCT_EVENT_DETAIL.ANALYSIS_CODE_1, ELP_ACCT_SETTINGS.ACCOUNT_ANALYSIS_CODE_1,ELP_ACCT_SETTINGS.ACCT_SETTINGS_ID,1) AS AnalysisCode1,
+        ELP_ACCT_TRANSACTIONS.GetAnalysisCodeValue('0',GETCODEFROMLISTITEM(ELP_ACCT_EVENT_DETAIL.ANALYSIS_SRC_2_ID),ELP_ACCT_TRANS_LOG.ACCT_TRANS_LOG_ID, ELP_ACCT_EVENT_DETAIL.ANALYSIS_CODE_2, ELP_ACCT_SETTINGS.ACCOUNT_ANALYSIS_CODE_2,ELP_ACCT_SETTINGS.ACCT_SETTINGS_ID,2) AS AnalysisCode2,
+        ELP_ACCT_TRANSACTIONS.GetAnalysisCodeValue('0',GETCODEFROMLISTITEM(ELP_ACCT_EVENT_DETAIL.ANALYSIS_SRC_3_ID),ELP_ACCT_TRANS_LOG.ACCT_TRANS_LOG_ID, ELP_ACCT_EVENT_DETAIL.ANALYSIS_CODE_3, ELP_ACCT_SETTINGS.ACCOUNT_ANALYSIS_CODE_3,ELP_ACCT_SETTINGS.ACCT_SETTINGS_ID,3) AS AnalysisCode3,
+        ELP_ACCT_TRANSACTIONS.GetAnalysisCodeValue('0',GETCODEFROMLISTITEM(ELP_ACCT_EVENT_DETAIL.ANALYSIS_SRC_4_ID),ELP_ACCT_TRANS_LOG.ACCT_TRANS_LOG_ID, ELP_ACCT_EVENT_DETAIL.ANALYSIS_CODE_4, ELP_ACCT_SETTINGS.ACCOUNT_ANALYSIS_CODE_4,ELP_ACCT_SETTINGS.ACCT_SETTINGS_ID,4) AS AnalysisCode4,
+        ELP_ACCT_TRANSACTIONS.GetAnalysisCodeValue('0',GETCODEFROMLISTITEM(ELP_ACCT_EVENT_DETAIL.ANALYSIS_SRC_5_ID),ELP_ACCT_TRANS_LOG.ACCT_TRANS_LOG_ID, ELP_ACCT_EVENT_DETAIL.ANALYSIS_CODE_5, ELP_ACCT_SETTINGS.ACCOUNT_ANALYSIS_CODE_5,ELP_ACCT_SETTINGS.ACCT_SETTINGS_ID,5) AS AnalysisCode5,
+        ELP_ACCT_TRANSACTIONS.GetAnalysisCodeValue('0',GETCODEFROMLISTITEM(ELP_ACCT_EVENT_DETAIL.ANALYSIS_SRC_6_ID),ELP_ACCT_TRANS_LOG.ACCT_TRANS_LOG_ID, ELP_ACCT_EVENT_DETAIL.ANALYSIS_CODE_6, ELP_ACCT_SETTINGS.ACCOUNT_ANALYSIS_CODE_6,ELP_ACCT_SETTINGS.ACCT_SETTINGS_ID,6) AS AnalysisCode6,
+        ELP_ACCT_TRANSACTIONS.GetAnalysisCodeValue('0',GETCODEFROMLISTITEM(ELP_ACCT_EVENT_DETAIL.ANALYSIS_SRC_7_ID),ELP_ACCT_TRANS_LOG.ACCT_TRANS_LOG_ID, ELP_ACCT_EVENT_DETAIL.ANALYSIS_CODE_7, ELP_ACCT_SETTINGS.ACCOUNT_ANALYSIS_CODE_7,ELP_ACCT_SETTINGS.ACCT_SETTINGS_ID,7) AS AnalysisCode7,
+        ELP_ACCT_TRANSACTIONS.GetAnalysisCodeValue('0',GETCODEFROMLISTITEM(ELP_ACCT_EVENT_DETAIL.ANALYSIS_SRC_8_ID),ELP_ACCT_TRANS_LOG.ACCT_TRANS_LOG_ID, ELP_ACCT_EVENT_DETAIL.ANALYSIS_CODE_8, ELP_ACCT_SETTINGS.ACCOUNT_ANALYSIS_CODE_8,ELP_ACCT_SETTINGS.ACCT_SETTINGS_ID,8) AS AnalysisCode8,
+        ELP_ACCT_TRANSACTIONS.GetAnalysisCodeValue('0',GETCODEFROMLISTITEM(ELP_ACCT_EVENT_DETAIL.ANALYSIS_SRC_9_ID),ELP_ACCT_TRANS_LOG.ACCT_TRANS_LOG_ID, ELP_ACCT_EVENT_DETAIL.ANALYSIS_CODE_9, ELP_ACCT_SETTINGS.ACCOUNT_ANALYSIS_CODE_9,ELP_ACCT_SETTINGS.ACCT_SETTINGS_ID,9) AS AnalysisCode9,
+        ELP_ACCT_TRANSACTIONS.GetAnalysisCodeValue('0',GETCODEFROMLISTITEM(ELP_ACCT_EVENT_DETAIL.ANALYSIS_SRC_10_ID),ELP_ACCT_TRANS_LOG.ACCT_TRANS_LOG_ID, ELP_ACCT_EVENT_DETAIL.ANALYSIS_CODE_10, ELP_ACCT_SETTINGS.ACCOUNT_ANALYSIS_CODE_10,ELP_ACCT_SETTINGS.ACCT_SETTINGS_ID,10) AS AnalysisCode10,
+		 SUBSTR(ELP_ACCT_TRANS_LOG.PAYEE,1,30) AS GeneralDescription1,
+		   SUBSTR((ELP_ACCT_TRANS_LOG.ADDRESS1 || ' ' || ELP_ACCT_TRANS_LOG.ADDRESS2),1,30) AS GeneralDescription2,
+		   SUBSTR(ELP_ACCT_TRANS_LOG.CITY,1,30) AS GeneralDescription3,
+		   RPAD(ELP_ACCT_TRANS_LOG.CITY,12,' ') || ',' || RPAD(ELP_ACCT_TRANS_LOG.REGION_DESCRIPTION,11,' ') || ',' || RPAD(ELP_ACCT_TRANS_LOG.ZIP,5,' ') AS GeneralDescription4,
+		   RPAD(ELP_ACCT_TRANS_LOG.REGION,2,' ') || ',' || RPAD(ELP_COUNTRY.CODE,2,' ') || ',' || RPAD(ELP_ACCT_TRANS_LOG.COUNTRY,24,' ') AS GeneralDescription5,
+		   ELP_ACCT_TRANS_LOG.BANK_ACCOUNT_NUMBER AS GeneralDescription6,
+		   ELP_ACCT_TRANS_LOG.BANK_ID AS GeneralDescription7,
+		   '' AS GeneralDescription8,
+		   ELP_ACCT_TRANS_LOG.PAYEE AS GeneralDescription9,
+		   ELP_ACCT_TRANS_LOG.TAX_ID_CODE AS GeneralDescription10,
+		   '' AS GeneralDescription11,
+		   ELP_ACCT_TRANS_LOG.AUTHORIZATION_NUMBER || '|' || ELP_COMPANY.CODE AS GeneralDescription12,
+		   '' AS GeneralDescription13,
+		   '' AS GeneralDescription14,
+		   '' AS GeneralDescription15,
+		   '' AS GeneralDescription16,
+		   '' AS GeneralDescription17,
+		   '' AS GeneralDescription18,
+		   '' AS GeneralDescription19,
+		   '' AS GeneralDescription20,
+		   '' AS GeneralDescription21,
+		   '' AS GeneralDescription22,
+		   '' AS GeneralDescription23,
+		   LIEVENT.CODE AS GeneralDescription24,
+		   :NETWORK_ID AS GeneralDescription25,
+       TO_CHAR(ELP_ACCT_TRANS_LOG.CREATED_DATE,'DDMMYYYY') AS CREATED_DATE,
+            ROUND(((COALESCE(ELP_ACCT_EVENT_DETAIL.CALCULATION,100)/100 * ELP_ACCT_TRANS_LOG.PAYMENT_AMOUNT)),2) as payment_amount,
+           ELP_ACCT_TRANS_LOG.DEALER_ID,
+           ROWNUM AS LINENUM,
+           ELP_ACCT_EVENT_DETAIL.JOURNAL_ID_SUFFIX,
+           ELP_ACCT_SETTINGS.ACCOUNT_ANALYSIS_CODE_6 AS BLOCK_OF_BUSINESS,
+           ELP_ACCT_EVENT_DETAIL.ANALYSIS_CODE_3 AS UDAK_PRIMARY,
+            ROUND(((COALESCE(ELP_ACCT_EVENT_DETAIL.CALCULATION,100)/100 * ELP_ACCT_TRANS_LOG.PAYMENT_AMOUNT)),2)  AS ORIG_TRANSACTIONAMOUNT,
+           ELP_ACCT_EVENT_DETAIL.DEBIT_CREDIT AS ORIG_DEBIT_CREDIT,
+           TRUNC(SYSDATE) AS CURRENT_DATE,
+           '' AS PLACEHOLDER,
+           ELP_ACCT_TRANS_LOG.CITY,
+           ELP_ACCT_TRANS_LOG.REGION,
+           ELP_ACCT_TRANS_LOG.COUNTRY,
+           ELP_ACCT_TRANS_LOG.ZIP,
+           ELP_ACCT_BUSINESS_UNIT.CODE AS CONTROL_GROUP,
+           0 AS REV,
+           TRANSACTION_ID_NUMBER,
+           PAYMENT_TO_CUSTOMER,
+           TO_CHAR(SYSDATE,'DDD') || dbms_random.string('U', 4) AS VENDOR_ID,
+           ELP_DEALER.DEALER AS DEALER_CODE,
+       ELP_COMPANY.CODE AS COMPANY_CODE,
+           ELP_ACCT_TRANS_LOG.WARR_SALES_DATE,
+           ELP_ACCT_TRANS_LOG.CONTRACT_INCEPTION_DATE,
+           ELP_ACCT_TRANS_LOG.POLICY_NUMBER,
+           ELP_ACCT_TRANS_LOG.LOSS_DATE,
+           ELP_ACCT_TRANS_LOG.INVOICE_REGION,
+           ELP_ACCT_EVENT_DETAIL.USE_PAYEE_SETTINGS,
+           ELP_ACCT_COMPANY.CODE AS ACCT_COMPANY_CODE,
+           GetCodeMappingFromListItem(ELP_ACCT_EVENT.ACCT_EVENT_TYPE_ID, ELP_COMPANY.COMPANY_ID) AS ACCT_EVENT_MAPPING,
+           NULL AS INVOICE_DATE,
+           null as BRANCH_NAME,
+           null as BANK_NAME,
+           null as BANK_SORT_CODE,
+           null as BANK_LOOKUP_CODE,
+           null as BANK_SUB_CODE,
+           null as IBAN_NUMBER,
+           NULL AS ACCOUNT_NAME,
+           NULL AS PAYMENT_METHOD
+    FROM
+		    ELP_ACCT_TRANS_LOG,
+		    ELP_ACCT_EVENT,
+		    ELP_ACCT_EVENT_DETAIL,
+		    ELP_ACCT_SETTINGS,
+        ELP_COMPANY,
+        ELP_LIST_ITEM LIEVENT,
+        ELP_ACCT_BUSINESS_UNIT,
+        ELP_DEALER,
+        ELP_COMMISSION_ENTITY,
+        ELP_DEALER_GROUP,
+        ELP_BRANCH,
+        ELP_COUNTRY,
+       ELP_ACCT_COMPANY
+    WHERE
+	        ELP_ACCT_COMPANY.ACCT_COMPANY_ID = ELP_COMPANY.ACCT_COMPANY_ID
+	     AND ELP_ACCT_EVENT.ACCT_COMPANY_ID = ELP_COMPANY.ACCT_COMPANY_ID
+       AND ELP_ACCT_EVENT.ACCT_EVENT_TYPE_ID = :ACCT_EVENT_TYPE_ID
+       AND ELP_ACCT_EVENT_DETAIL.ACCT_BUSINESS_UNIT_ID = ELP_ACCT_BUSINESS_UNIT.ACCT_BUSINESS_UNIT_ID
+       AND LIEVENT.LIST_ITEM_ID = ELP_ACCT_TRANS_LOG.ACCT_EVENT_TYPE_ID
+       AND NVL(ELP_ACCT_EVENT_DETAIL.BUSINESS_ENTITY_ID,hextoraw('1')) = NVL(ELP_ACCT_TRANSACTIONS.GetBusinessEntity(ELP_ACCT_BUSINESS_UNIT.ACCT_BUSINESS_UNIT_ID,ELP_ACCT_TRANS_LOG.COVERAGE_TYPE,ELP_ACCT_TRANS_LOG.INVOICE_REGION),hextoraw('1'))
+       AND ELP_ACCT_EVENT_DETAIL.FIELD_TYPE_ID = ELP_ACCT_TRANS_LOG.ACCT_EVENT_FIELD_ID
+       AND ELP_ACCT_EVENT_DETAIL.ACCT_EVENT_ID = ELP_ACCT_EVENT.ACCT_EVENT_ID
+       AND ELP_ACCT_TRANS_LOG.ACCT_EVENT_TYPE_ID = ELP_ACCT_EVENT.ACCT_EVENT_TYPE_ID
+       AND ELP_ACCT_BUSINESS_UNIT.ACCT_BUSINESS_UNIT_ID = :ACCT_BUSINESS_UNIT_ID
+       AND ELP_ACCT_TRANS_LOG.BUSINESS_UNIT = ELP_ACCT_BUSINESS_UNIT.BUSINESS_UNIT
+       AND ELP_ACCT_TRANS_LOG.COMPANY_ID = ELP_COMPANY.COMPANY_ID
+       AND UPPER(ELP_COUNTRY.DESCRIPTION(+)) = UPPER(ELP_ACCT_TRANS_LOG.COUNTRY)
+       AND ELP_COMPANY.COMPANY_ID = :COMPANY_ID
+       AND ELP_ACCT_SETTINGS.DEALER_ID =  ELP_DEALER.DEALER_ID (+)
+       AND ELP_ACCT_SETTINGS.DEALER_GROUP_ID = ELP_DEALER_GROUP.DEALER_GROUP_ID (+)
+       AND ELP_ACCT_SETTINGS.COMMISSION_ENTITY_ID = ELP_COMMISSION_ENTITY.ENTITY_ID (+)
+       AND ELP_ACCT_SETTINGS.BRANCH_ID = ELP_BRANCH.BRANCH_ID (+)
+        AND
+          (
+              (
+                 ELP_ACCT_SETTINGS.ACCT_SETTINGS_ID = GETACCTSETTINGS(ELP_ACCT_TRANS_LOG.DEALER_ID,null, ELP_ACCT_EVENT_DETAIL.ACCOUNT_TYPE)
+                AND ELP_ACCT_TRANS_LOG.BRANCH_ID IS NULL
+                AND ELP_ACCT_TRANS_LOG.DEALER_ID IS NOT NULL
+              )
+              OR
+              (
+                 ELP_ACCT_SETTINGS.DEALER_GROUP_ID = ELP_ACCT_TRANS_LOG.DEALER_GROUP_ID
+                 AND ELP_ACCT_TRANS_LOG.DEALER_GROUP_ID IS NOT NULL
+                 AND ELP_ACCT_SETTINGS.ACCOUNT_TYPE = ELP_ACCT_EVENT_DETAIL.ACCOUNT_TYPE
+              )
+              OR
+              (
+                ELP_ACCT_TRANS_LOG.COMMISSION_ENTITY_ID IS NOT NULL
+                AND ELP_ACCT_SETTINGS.COMMISSION_ENTITY_ID = ELP_ACCT_TRANS_LOG.COMMISSION_ENTITY_ID
+                AND ELP_ACCT_SETTINGS.ACCOUNT_TYPE = ELP_ACCT_EVENT_DETAIL.ACCOUNT_TYPE
+              )
+               OR
+              (
+                ELP_ACCT_TRANS_LOG.BRANCH_ID IS NOT NULL
+                AND ELP_ACCT_SETTINGS.BRANCH_ID = ELP_ACCT_TRANS_LOG.BRANCH_ID
+                AND ELP_ACCT_SETTINGS.ACCOUNT_TYPE = ELP_ACCT_EVENT_DETAIL.ACCOUNT_TYPE
+              )
+         )
+        --REQ-5396 start
+	     and ( (ELP_ACCT_EVENT_DETAIL.include_exclude_ind = 'E'
+		            and ( ELP_ACCT_TRANS_LOG.dealer_id not in (select dealer_id from elita.ELP_ACCT_EVENT_DETAIL_INCEXC where acct_event_detail_id = ELP_ACCT_EVENT_DETAIL.acct_event_detail_id and coverage_type_id is null)
+				            and ELP_ACCT_TRANS_LOG.coverage_type not in (select getcodefromlistitem(coverage_type_id) from elita.ELP_ACCT_EVENT_DETAIL_INCEXC where acct_event_detail_id = ELP_ACCT_EVENT_DETAIL.acct_event_detail_id and dealer_id is null)
+				            and (ELP_ACCT_TRANS_LOG.dealer_id, ELP_ACCT_TRANS_LOG.coverage_type) not in (select dealer_id, getcodefromlistitem(coverage_type_id) from elita.ELP_ACCT_EVENT_DETAIL_INCEXC where acct_event_detail_id = ELP_ACCT_EVENT_DETAIL.acct_event_detail_id and dealer_id is not null and coverage_type_id is not null)
+		            )
+            ) or
+            (ELP_ACCT_EVENT_DETAIL.include_exclude_ind = 'I'
+      	        and (ELP_ACCT_TRANS_LOG.dealer_id in (select dealer_id from elita.ELP_ACCT_EVENT_DETAIL_INCEXC where acct_event_detail_id = ELP_ACCT_EVENT_DETAIL.acct_event_detail_id and coverage_type_id is null)
+      			        or (ELP_ACCT_TRANS_LOG.coverage_type is null or ELP_ACCT_TRANS_LOG.coverage_type in (select getcodefromlistitem(coverage_type_id) from elita.ELP_ACCT_EVENT_DETAIL_INCEXC where acct_event_detail_id = ELP_ACCT_EVENT_DETAIL.acct_event_detail_id and dealer_id is null))
+				            or (ELP_ACCT_TRANS_LOG.dealer_id, ELP_ACCT_TRANS_LOG.COVERAGE_TYPE) in (select dealer_id, getcodefromlistitem(coverage_type_id) from elita.ELP_ACCT_EVENT_DETAIL_INCEXC where acct_event_detail_id = ELP_ACCT_EVENT_DETAIL.acct_event_detail_id and dealer_id is not null and coverage_type_id is not null)
+      	        )
+            )
+        )
+        --REQ-5396 end
+        --dynamic_where_clause
+        ORDER BY LINENUM ASC
+        ]]>
+  </JOURNAL_REFUNDS>
+  <JOURNAL_CLAIM>
+    <![CDATA[
+     SELECT
+		   DISTINCT RAWTOHEX(ELP_ACCT_TRANS_LOG.ACCT_TRANS_LOG_ID) AS TransLog_Id,
+		   ELP_ACCT_TRANS_LOG.ACCT_TRANS_LOG_ID,
+       CASE
+          WHEN ELP_ACCT_EVENT_DETAIL.USE_PAYEE_SETTINGS = 'Y' THEN
+              DECODE(ELP_ACCT_TRANS_LOG.PAYMENT_TO_CUSTOMER,'Y',ELP_ACCT_EVENT_DETAIL.ACCOUNT_CODE,ELP_ACCT_SETTINGS_SS.ACCOUNT_CODE)
+         ELSE
+           DECODE(ELP_ACCT_TRANS_LOG.ACCOUNT_NUMBER, null,ELP_ACCT_EVENT_DETAIL.ACCOUNT_CODE, ELP_ACCT_TRANS_LOG.ACCOUNT_NUMBER)
+         END AS AccountCode,
+       CASE
+          WHEN ELP_ACCT_EVENT_DETAIL.USE_PAYEE_SETTINGS = 'Y' THEN
+              DECODE(ELP_ACCT_TRANS_LOG.PAYMENT_TO_CUSTOMER,'Y',ELP_ACCT_EVENT_DETAIL.ACCOUNT_CODE,ELP_ACCT_SETTINGS_SS.ACCOUNT_CODE)
+       ELSE
+           ELP_ACCT_EVENT_DETAIL.ACCOUNT_CODE
+       END AS OriginalAccountCode,
+       ELP_ACCT_TRANS_LOG.ACCOUNT_NUMBER AS TaxOverrideCode,
+		   ELP_ACCT_TRANS_LOG.ACCT_PERIOD AS AccountingPeriod,
+		   ELP_ACCT_EVENT_DETAIL.ALLOCATION_MARKER AS AllocationMarker,
+		   ELP_ACCT_TRANS_LOG.CURRENCY AS CurrencyCode,
+       CASE  WHEN ELP_ACCT_TRANS_LOG.PAYMENT_AMOUNT < 0 THEN DECODE(ELP_ACCT_EVENT_DETAIL.DEBIT_CREDIT,'D','C','C','D') ELSE ELP_ACCT_EVENT_DETAIL.DEBIT_CREDIT END AS DebitCredit,
+       SUBSTR(ELP_ACCT_TRANSACTIONS.GetAnalysisCodeValue('1',GETCODEFROMLISTITEM(ELP_ACCT_EVENT_DETAIL.DESCRIPTION_SRC_ID),ELP_ACCT_TRANS_LOG.ACCT_TRANS_LOG_ID, ELP_ACCT_EVENT_DETAIL.DESCRIPTION, '',ELP_ACCT_SETTINGS.ACCT_SETTINGS_ID), 1,49) AS Description,
+       'ELX' AS JournalSource,
+       ELP_ACCT_EVENT_DETAIL.JOURNAL_TYPE AS JournalType,
+       CASE  
+          WHEN ELP_ACCT_TRANS_LOG.PAYMENT_AMOUNT < 0 THEN 
+            ROUND(((COALESCE(ELP_ACCT_EVENT_DETAIL.CALCULATION,100)/100 * ELP_ACCT_TRANS_LOG.PAYMENT_AMOUNT) * -1),2) 
+          ELSE 
+            ROUND(((COALESCE(ELP_ACCT_EVENT_DETAIL.CALCULATION,100)/100 * ELP_ACCT_TRANS_LOG.PAYMENT_AMOUNT)),2) 
+          END AS TransactionAmount,
+       '2' AS TransactionAmountDecimalPlaces,
+      TO_CHAR(ELP_ACCT_TRANS_LOG.PAYMENT_DATE,'DDMMYYYY') AS TransactionDate,
+      ELP_DISBURSEMENT.SVC_CONTROL_NUMBER AS TransactionReference,
+      ELP_ACCT_TRANSACTIONS.GetAnalysisCodeValue('0',GETCODEFROMLISTITEM(ELP_ACCT_EVENT_DETAIL.ANALYSIS_SRC_1_ID),ELP_ACCT_TRANS_LOG.ACCT_TRANS_LOG_ID, ELP_ACCT_EVENT_DETAIL.ANALYSIS_CODE_1, ELP_ACCT_SETTINGS.ACCOUNT_ANALYSIS_CODE_1,ELP_ACCT_SETTINGS.ACCT_SETTINGS_ID,1) AS AnalysisCode1,
+      ELP_ACCT_TRANSACTIONS.GetAnalysisCodeValue('0',GETCODEFROMLISTITEM(ELP_ACCT_EVENT_DETAIL.ANALYSIS_SRC_2_ID),ELP_ACCT_TRANS_LOG.ACCT_TRANS_LOG_ID, ELP_ACCT_EVENT_DETAIL.ANALYSIS_CODE_2, ELP_ACCT_SETTINGS.ACCOUNT_ANALYSIS_CODE_2,ELP_ACCT_SETTINGS.ACCT_SETTINGS_ID,2) AS AnalysisCode2,
+      ELP_ACCT_TRANSACTIONS.GetAnalysisCodeValue('0',GETCODEFROMLISTITEM(ELP_ACCT_EVENT_DETAIL.ANALYSIS_SRC_3_ID),ELP_ACCT_TRANS_LOG.ACCT_TRANS_LOG_ID, ELP_ACCT_EVENT_DETAIL.ANALYSIS_CODE_3, ELP_ACCT_SETTINGS.ACCOUNT_ANALYSIS_CODE_3,ELP_ACCT_SETTINGS.ACCT_SETTINGS_ID,3) AS AnalysisCode3,
+      ELP_ACCT_TRANSACTIONS.GetAnalysisCodeValue('0',GETCODEFROMLISTITEM(ELP_ACCT_EVENT_DETAIL.ANALYSIS_SRC_4_ID),ELP_ACCT_TRANS_LOG.ACCT_TRANS_LOG_ID, ELP_ACCT_EVENT_DETAIL.ANALYSIS_CODE_4, ELP_ACCT_SETTINGS.ACCOUNT_ANALYSIS_CODE_4,ELP_ACCT_SETTINGS.ACCT_SETTINGS_ID,4) AS AnalysisCode4,
+      ELP_ACCT_TRANSACTIONS.GetAnalysisCodeValue('0',GETCODEFROMLISTITEM(ELP_ACCT_EVENT_DETAIL.ANALYSIS_SRC_5_ID),ELP_ACCT_TRANS_LOG.ACCT_TRANS_LOG_ID, ELP_ACCT_EVENT_DETAIL.ANALYSIS_CODE_5, ELP_ACCT_SETTINGS.ACCOUNT_ANALYSIS_CODE_5,ELP_ACCT_SETTINGS.ACCT_SETTINGS_ID,5) AS AnalysisCode5,
+      ELP_ACCT_TRANSACTIONS.GetAnalysisCodeValue('0',GETCODEFROMLISTITEM(ELP_ACCT_EVENT_DETAIL.ANALYSIS_SRC_6_ID),ELP_ACCT_TRANS_LOG.ACCT_TRANS_LOG_ID, ELP_ACCT_EVENT_DETAIL.ANALYSIS_CODE_6, ELP_ACCT_SETTINGS.ACCOUNT_ANALYSIS_CODE_6,ELP_ACCT_SETTINGS.ACCT_SETTINGS_ID,6) AS AnalysisCode6,
+      ELP_ACCT_TRANSACTIONS.GetAnalysisCodeValue('0',GETCODEFROMLISTITEM(ELP_ACCT_EVENT_DETAIL.ANALYSIS_SRC_7_ID),ELP_ACCT_TRANS_LOG.ACCT_TRANS_LOG_ID, ELP_ACCT_EVENT_DETAIL.ANALYSIS_CODE_7, ELP_ACCT_SETTINGS.ACCOUNT_ANALYSIS_CODE_7,ELP_ACCT_SETTINGS.ACCT_SETTINGS_ID,7) AS AnalysisCode7,
+      ELP_ACCT_TRANSACTIONS.GetAnalysisCodeValue('0',GETCODEFROMLISTITEM(ELP_ACCT_EVENT_DETAIL.ANALYSIS_SRC_8_ID),ELP_ACCT_TRANS_LOG.ACCT_TRANS_LOG_ID, ELP_ACCT_EVENT_DETAIL.ANALYSIS_CODE_8, ELP_ACCT_SETTINGS.ACCOUNT_ANALYSIS_CODE_8,ELP_ACCT_SETTINGS.ACCT_SETTINGS_ID,8) AS AnalysisCode8,
+      ELP_ACCT_TRANSACTIONS.GetAnalysisCodeValue('0',GETCODEFROMLISTITEM(ELP_ACCT_EVENT_DETAIL.ANALYSIS_SRC_9_ID),ELP_ACCT_TRANS_LOG.ACCT_TRANS_LOG_ID, ELP_ACCT_EVENT_DETAIL.ANALYSIS_CODE_9, ELP_ACCT_SETTINGS.ACCOUNT_ANALYSIS_CODE_9,ELP_ACCT_SETTINGS.ACCT_SETTINGS_ID,9) AS AnalysisCode9,
+      ELP_ACCT_TRANSACTIONS.GetAnalysisCodeValue('0',GETCODEFROMLISTITEM(ELP_ACCT_EVENT_DETAIL.ANALYSIS_SRC_10_ID),ELP_ACCT_TRANS_LOG.ACCT_TRANS_LOG_ID, ELP_ACCT_EVENT_DETAIL.ANALYSIS_CODE_10, ELP_ACCT_SETTINGS.ACCOUNT_ANALYSIS_CODE_10,ELP_ACCT_SETTINGS.ACCT_SETTINGS_ID,10) AS AnalysisCode10,
+       SUBSTR(ELP_ACCT_TRANS_LOG.PAYEE,1,30) AS GeneralDescription1,
+		   SUBSTR((ELP_ACCT_TRANS_LOG.ADDRESS1 || ' ' || ELP_ACCT_TRANS_LOG.ADDRESS2),1,30) AS GeneralDescription2,
+		   SUBSTR(ELP_ACCT_TRANS_LOG.CITY,1,30) AS GeneralDescription3,
+		   RPAD(ELP_ACCT_TRANS_LOG.CITY,12,' ') || ',' || RPAD(ELP_ACCT_TRANS_LOG.REGION_DESCRIPTION,11,' ') || ',' || RPAD(ELP_ACCT_TRANS_LOG.ZIP,5,' ') AS GeneralDescription4,
+		   RPAD(ELP_ACCT_TRANS_LOG.REGION,2,' ') || ',' || RPAD(ELP_COUNTRY.CODE,2,' ') || ',' || RPAD(ELP_ACCT_TRANS_LOG.COUNTRY,24,' ') AS GeneralDescription5,
+		   ELP_ACCT_TRANS_LOG.BANK_ACCOUNT_NUMBER AS GeneralDescription6,
+		   ELP_ACCT_TRANS_LOG.BANK_ID AS GeneralDescription7,
+		   ELP_DISBURSEMENT.SVC_CONTROL_NUMBER AS GeneralDescription8,
+		   ELP_ACCT_TRANS_LOG.PAYEE AS GeneralDescription9,
+		   ELP_ACCT_TRANS_LOG.TAX_ID_CODE AS GeneralDescription10,
+		   DECODE(ELP_ACCT_EVENT_DETAIL.USE_PAYEE_SETTINGS,'Y',null,SUBSTR(RAWTOHEX(ELP_ACCT_TRANS_LOG.AUTHORIZATION_NUMBER),1,16)) AS GeneralDescription12,
+		   DECODE(ELP_ACCT_EVENT_DETAIL.USE_PAYEE_SETTINGS,'Y',null,SUBSTR(RAWTOHEX(ELP_ACCT_TRANS_LOG.AUTHORIZATION_NUMBER),17,16)) AS GeneralDescription13,
+		   DECODE(ELP_ACCT_EVENT_DETAIL.USE_PAYEE_SETTINGS,'Y',null,ELP_DISBURSEMENT.CERTIFICATE) AS GeneralDescription14,
+		   LIEVENT.CODE AS GeneralDescription24,
+		   :NETWORK_ID AS GeneralDescription25,
+           ROUND(((COALESCE(ELP_ACCT_EVENT_DETAIL.CALCULATION,100)/100 * ELP_ACCT_TRANS_LOG.PAYMENT_AMOUNT)),2) AS payment_amount,
+           ELP_ACCT_TRANS_LOG.DEALER_ID,
+           ROWNUM AS LINENUM,
+           nvl(ELP_ACCT_TRANS_LOG.LINE_NUMBER, '') AS LINE_NUM,
+           ELP_ACCT_EVENT_DETAIL.JOURNAL_ID_SUFFIX,
+           ELP_ACCT_SETTINGS.ACCOUNT_ANALYSIS_CODE_6 AS BLOCK_OF_BUSINESS,
+           ELP_ACCT_EVENT_DETAIL.ANALYSIS_CODE_3 AS UDAK_PRIMARY,
+            ROUND(((COALESCE(ELP_ACCT_EVENT_DETAIL.CALCULATION,100)/100 * ELP_ACCT_TRANS_LOG.PAYMENT_AMOUNT)),2)  AS ORIG_TRANSACTIONAMOUNT,
+           ELP_ACCT_EVENT_DETAIL.DEBIT_CREDIT AS ORIG_DEBIT_CREDIT,
+           TRUNC(SYSDATE) AS CURRENT_DATE,
+           '' AS PLACEHOLDER,
+           SUBSTR(ELP_ACCT_TRANS_LOG.CITY,1,30) AS CITY,
+           ELP_ACCT_TRANS_LOG.REGION,
+           ELP_ACCT_TRANS_LOG.COUNTRY,
+           REPLACE(ELP_ACCT_TRANS_LOG.ZIP,'-','') AS ZIP,
+           ELP_ACCT_BUSINESS_UNIT.CODE AS CONTROL_GROUP,
+           0 AS REV,
+           DECODE(ELP_ACCT_EVENT_DETAIL.USE_PAYEE_SETTINGS,'Y',null,TRANSACTION_ID_NUMBER)  AS TRANSACTION_ID_NUMBER,
+           PAYMENT_TO_CUSTOMER,
+           DECODE(PAYMENT_TO_CUSTOMER,'Y',(TO_CHAR(SYSDATE,'DDD') || dbms_random.string('U', 4)),ELP_ACCT_SETTINGS_SS.ACCOUNT_ANALYSIS_CODE_6) AS VENDOR_ID,
+           DECODE(ELP_ACCT_EVENT_DETAIL.USE_PAYEE_SETTINGS,'Y',null,ELP_DEALER.DEALER) AS DEALER_CODE,
+           ELP_COMPANY.CODE AS COMPANY_CODE,
+           DECODE(ELP_ACCT_EVENT_DETAIL.USE_PAYEE_SETTINGS,'Y',null,ELP_ACCT_TRANS_LOG.INVOICE_REGION) AS INVOICE_REGION,
+           ELP_ACCT_TRANS_LOG.BANK_ACCOUNT_NUMBER AS BANK_ACCOUNT_NUMBER,
+		       ELP_ACCT_TRANS_LOG.BANK_ID AS BANK_ID,
+           TO_CHAR(ELP_ACCT_TRANS_LOG.CREATED_DATE,'DDMMYYYY') AS CREATED_DATE,
+           ELP_ACCT_EVENT_DETAIL.USE_PAYEE_SETTINGS,
+           ELP_ACCT_COMPANY.CODE AS ACCT_COMPANY_CODE,
+           GetCodeMappingFromListItem(ELP_ACCT_EVENT.ACCT_EVENT_TYPE_ID, ELP_COMPANY.COMPANY_ID) AS ACCT_EVENT_MAPPING,
+           TO_CHAR(ELP_DISBURSEMENT.INVOICE_DATE,'DDMMYYYY') AS INVOICE_DATE,
+           ELP_DISBURSEMENT.BRANCH_NAME,
+           ELP_DISBURSEMENT.BANK_NAME,
+           ELP_DISBURSEMENT.BANK_SORT_CODE,
+           ELP_DISBURSEMENT.BANK_LOOKUP_CODE,
+           ELP_DISBURSEMENT.BANK_SUB_CODE,
+           ELP_DISBURSEMENT.IBAN_NUMBER,
+           ELP_DISBURSEMENT.ACCOUNT_NAME,
+           ELP_DISBURSEMENT.PAYMENT_METHOD
+      FROM
+		    ELP_ACCT_TRANS_LOG,
+		    ELP_DISBURSEMENT,
+            ELP_ACCT_EVENT,
+		    ELP_ACCT_EVENT_DETAIL,
+		    ELP_ACCT_SETTINGS,
+		    ELP_ACCT_SETTINGS ELP_ACCT_SETTINGS_SS,
+            ELP_COMPANY,
+            ELP_LIST_ITEM LIEVENT,
+            ELP_ACCT_BUSINESS_UNIT,
+            ELP_DEALER,
+            ELP_COUNTRY,
+       ELP_ACCT_COMPANY
+    WHERE
+	        ELP_ACCT_COMPANY.ACCT_COMPANY_ID = ELP_COMPANY.ACCT_COMPANY_ID
+	     AND ELP_ACCT_EVENT.ACCT_COMPANY_ID = ELP_COMPANY.ACCT_COMPANY_ID
+       AND ELP_DISBURSEMENT.DISBURSEMENT_ID = HEXTORAW(ELP_ACCT_TRANS_LOG.AUTHORIZATION_NUMBER)
+       AND ELP_ACCT_EVENT.ACCT_EVENT_TYPE_ID = :ACCT_EVENT_TYPE_ID
+       AND ELP_ACCT_EVENT_DETAIL.ACCT_BUSINESS_UNIT_ID = ELP_ACCT_BUSINESS_UNIT.ACCT_BUSINESS_UNIT_ID
+       AND LIEVENT.LIST_ITEM_ID = ELP_ACCT_TRANS_LOG.ACCT_EVENT_TYPE_ID
+       AND NVL(ELP_ACCT_EVENT_DETAIL.BUSINESS_ENTITY_ID,hextoraw('1')) = NVL(ELP_ACCT_TRANSACTIONS.GetBusinessEntity(ELP_ACCT_BUSINESS_UNIT.ACCT_BUSINESS_UNIT_ID,ELP_ACCT_TRANS_LOG.COVERAGE_TYPE,ELP_ACCT_TRANS_LOG.INVOICE_REGION),hextoraw('1'))
+       AND ELP_ACCT_EVENT_DETAIL.FIELD_TYPE_ID = ELP_ACCT_TRANS_LOG.ACCT_EVENT_FIELD_ID
+       AND ELP_ACCT_EVENT_DETAIL.ACCT_EVENT_ID = ELP_ACCT_EVENT.ACCT_EVENT_ID
+       AND ELP_ACCT_TRANS_LOG.ACCT_EVENT_TYPE_ID = ELP_ACCT_EVENT.ACCT_EVENT_TYPE_ID
+       AND ELP_DEALER.DEALER_ID = ELP_ACCT_SETTINGS.DEALER_ID
+       AND ELP_ACCT_SETTINGS.ACCT_SETTINGS_ID = GETACCTSETTINGS(ELP_ACCT_TRANS_LOG.DEALER_ID,null, '0')
+       AND ELP_ACCT_TRANS_LOG.BRANCH_ID IS NULL
+       AND ELP_ACCT_BUSINESS_UNIT.ACCT_BUSINESS_UNIT_ID = :ACCT_BUSINESS_UNIT_ID
+       AND ELP_ACCT_TRANS_LOG.BUSINESS_UNIT = ELP_ACCT_BUSINESS_UNIT.BUSINESS_UNIT
+       AND ELP_ACCT_TRANS_LOG.COMPANY_ID = ELP_COMPANY.COMPANY_ID
+       AND UPPER(ELP_COUNTRY.DESCRIPTION(+)) = UPPER(ELP_ACCT_TRANS_LOG.COUNTRY)
+       AND ELP_COMPANY.COMPANY_ID = :COMPANY_ID
+       AND ELP_ACCT_SETTINGS_SS.SERVICE_CENTER_ID (+)= ELP_ACCT_TRANS_LOG.SERVICE_CENTER_ID
+       AND (
+       		(ELP_ACCT_TRANS_LOG.PAYMENT_TO_CUSTOMER = 'Y')
+       		OR
+       		(ELP_ACCT_TRANS_LOG.PAYMENT_TO_CUSTOMER = 'N' AND ELP_ACCT_SETTINGS_SS.SERVICE_CENTER_ID IS NOT NULL AND ELP_ACCT_SETTINGS_SS.ACCOUNT_TYPE = '1')
+       		)
+       --REQ-5992 start
+	     and ( (ELP_ACCT_EVENT_DETAIL.include_exclude_ind = 'E'
+		            and ( ELP_ACCT_TRANS_LOG.dealer_id not in (select dealer_id from elita.ELP_ACCT_EVENT_DETAIL_INCEXC where acct_event_detail_id = ELP_ACCT_EVENT_DETAIL.acct_event_detail_id and coverage_type_id is null)
+				            and ELP_ACCT_TRANS_LOG.coverage_type not in (select getcodefromlistitem(coverage_type_id) from elita.ELP_ACCT_EVENT_DETAIL_INCEXC where acct_event_detail_id = ELP_ACCT_EVENT_DETAIL.acct_event_detail_id and dealer_id is null)
+				            and (ELP_ACCT_TRANS_LOG.dealer_id, ELP_ACCT_TRANS_LOG.coverage_type) not in (select dealer_id, getcodefromlistitem(coverage_type_id) from elita.ELP_ACCT_EVENT_DETAIL_INCEXC where acct_event_detail_id = ELP_ACCT_EVENT_DETAIL.acct_event_detail_id and dealer_id is not null and coverage_type_id is not null)
+		            )
+            ) or
+            (ELP_ACCT_EVENT_DETAIL.include_exclude_ind = 'I'
+      	        and (ELP_ACCT_TRANS_LOG.dealer_id in (select dealer_id from elita.ELP_ACCT_EVENT_DETAIL_INCEXC where acct_event_detail_id = ELP_ACCT_EVENT_DETAIL.acct_event_detail_id and coverage_type_id is null)
+      			        or ELP_ACCT_TRANS_LOG.coverage_type in (select getcodefromlistitem(coverage_type_id) from elita.ELP_ACCT_EVENT_DETAIL_INCEXC where acct_event_detail_id = ELP_ACCT_EVENT_DETAIL.acct_event_detail_id and dealer_id is null)
+				            or (ELP_ACCT_TRANS_LOG.dealer_id, ELP_ACCT_TRANS_LOG.COVERAGE_TYPE) in (select dealer_id, getcodefromlistitem(coverage_type_id) from elita.ELP_ACCT_EVENT_DETAIL_INCEXC where acct_event_detail_id = ELP_ACCT_EVENT_DETAIL.acct_event_detail_id and dealer_id is not null and coverage_type_id is not null)
+      	        )
+            )
+        )
+        --REQ-5992 end
+       --dynamic_where_clause
+Order by LINENUM ASC
+        ]]>
+  </JOURNAL_CLAIM>
+  <JOURNAL_CLAIMRES>
+    <![CDATA[
+             select
+           TransLog_Id,
+		   ACCT_TRANS_LOG_ID,
+           AccountCode,
+           AccountCode AS OriginalAccountCode,
+       '' AS TaxOverrideCode,
+		   AccountingPeriod,
+		   AllocationMarker,
+		   CurrencyCode,
+           DebitCredit,
+           Description,
+           JournalSource,
+           JournalType,
+           TransactionAmount,
+           TransactionAmountDecimalPlaces,
+           TransactionDate,
+           TransactionReference, 
+           AnalysisCode1,
+		   AnalysisCode2,
+		   AnalysisCode3,
+		   AnalysisCode4,
+		   AnalysisCode5,
+		   AnalysisCode6,
+		   AnalysisCode7,
+		   AnalysisCode8,
+		   AnalysisCode9,
+		   AnalysisCode10, 
+		   GeneralDescription1,
+		   GeneralDescription2,
+		   GeneralDescription3,
+		   GeneralDescription4,
+		   GeneralDescription5,
+		   GeneralDescription6,
+		   GeneralDescription7,
+		   GeneralDescription8,
+		   GeneralDescription9,
+		   GeneralDescription10,
+		   GeneralDescription11,
+		   GeneralDescription12,
+		   GeneralDescription13,
+		   GeneralDescription14,
+		   GeneralDescription15,
+		   GeneralDescription16,
+		   GeneralDescription17,
+		   GeneralDescription18,
+		   GeneralDescription19,
+		   GeneralDescription20,
+		   GeneralDescription21,
+		   GeneralDescription22,
+		   GeneralDescription23,
+		   GeneralDescription24,
+		   GeneralDescription25,
+           Created_date,
+           payment_amount,
+           ROWNUM AS LINENUM,
+           JOURNAL_ID_SUFFIX,
+           BLOCK_OF_BUSINESS,
+           UDAK_PRIMARY,
+           REV,
+           '' AS PLACEHOLDER,
+        '' AS TRANSACTION_ID_NUMBER,
+        DEALER_CODE,
+       COMPANY_CODE,
+        WARR_SALES_DATE,
+        CONTRACT_INCEPTION_DATE,
+        POLICY_NUMBER,
+        LOSS_DATE,
+        '' AS INVOICE_REGION,
+        ACCT_COMPANY_CODE,
+        ACCT_EVENT_MAPPING,
+           NULL AS INVOICE_DATE
+from 
+(
+SELECT
+		   DISTINCT RAWTOHEX(ELP_ACCT_TRANS_LOG.ACCT_TRANS_LOG_ID) AS TransLog_Id,
+		   ELP_ACCT_TRANS_LOG.ACCT_TRANS_LOG_ID,
+           DECODE(ELP_ACCT_EVENT_DETAIL.USE_PAYEE_SETTINGS,'Y',ELP_ACCT_SETTINGS.ACCOUNT_CODE,ELP_ACCT_EVENT_DETAIL.ACCOUNT_CODE)  AS AccountCode,
+		   ELP_ACCT_TRANS_LOG.ACCT_PERIOD AS AccountingPeriod,
+		   ELP_ACCT_EVENT_DETAIL.ALLOCATION_MARKER AS AllocationMarker,
+		   ELP_ACCT_TRANS_LOG.CURRENCY AS CurrencyCode,
+           CASE  WHEN ELP_ACCT_TRANS_LOG.PAYMENT_AMOUNT < 0 THEN DECODE(ELP_ACCT_EVENT_DETAIL.DEBIT_CREDIT,'D','C','C','D') ELSE ELP_ACCT_EVENT_DETAIL.DEBIT_CREDIT END AS DebitCredit,
+        SUBSTR(ELP_ACCT_TRANSACTIONS.GetAnalysisCodeValue('1',GETCODEFROMLISTITEM(ELP_ACCT_EVENT_DETAIL.DESCRIPTION_SRC_ID),ELP_ACCT_TRANS_LOG.ACCT_TRANS_LOG_ID, ELP_ACCT_EVENT_DETAIL.DESCRIPTION, '',ELP_ACCT_SETTINGS.ACCT_SETTINGS_ID), 1,49) AS Description,
+           'ELX' AS JournalSource,
+           ELP_ACCT_EVENT_DETAIL.JOURNAL_TYPE AS JournalType,
+             CASE  WHEN ELP_ACCT_TRANS_LOG.PAYMENT_AMOUNT < 0 THEN ROUND(((COALESCE(ELP_ACCT_EVENT_DETAIL.CALCULATION,100)/100 * ELP_ACCT_TRANS_LOG.PAYMENT_AMOUNT) * -1),2) ELSE ROUND(((COALESCE(ELP_ACCT_EVENT_DETAIL.CALCULATION,100)/100 * ELP_ACCT_TRANS_LOG.PAYMENT_AMOUNT)),2) END AS TransactionAmount,
+           '2' AS TransactionAmountDecimalPlaces,
+           TO_CHAR(ELP_ACCT_TRANS_LOG.PAYMENT_DATE,'DDMMYYYY') AS TransactionDate,
+           SUBSTR(RAWTOHEX(ELP_ACCT_TRANS_LOG.ACCT_TRANS_LOG_ID),1,16) || '_'  || TO_CHAR(ELP_ACCT_TRANS_LOG.PAYMENT_DATE,'DDMMYYYY') AS TransactionReference, 
+      ELP_ACCT_TRANSACTIONS.GetAnalysisCodeValue('0',GETCODEFROMLISTITEM(ELP_ACCT_EVENT_DETAIL.ANALYSIS_SRC_1_ID),ELP_ACCT_TRANS_LOG.ACCT_TRANS_LOG_ID, ELP_ACCT_EVENT_DETAIL.ANALYSIS_CODE_1, ELP_ACCT_SETTINGS.ACCOUNT_ANALYSIS_CODE_1,ELP_ACCT_SETTINGS.ACCT_SETTINGS_ID,1) AS AnalysisCode1,
+      ELP_ACCT_TRANSACTIONS.GetAnalysisCodeValue('0',GETCODEFROMLISTITEM(ELP_ACCT_EVENT_DETAIL.ANALYSIS_SRC_2_ID),ELP_ACCT_TRANS_LOG.ACCT_TRANS_LOG_ID, ELP_ACCT_EVENT_DETAIL.ANALYSIS_CODE_2, ELP_ACCT_SETTINGS.ACCOUNT_ANALYSIS_CODE_2,ELP_ACCT_SETTINGS.ACCT_SETTINGS_ID,2) AS AnalysisCode2,
+      ELP_ACCT_TRANSACTIONS.GetAnalysisCodeValue('0',GETCODEFROMLISTITEM(ELP_ACCT_EVENT_DETAIL.ANALYSIS_SRC_3_ID),ELP_ACCT_TRANS_LOG.ACCT_TRANS_LOG_ID, ELP_ACCT_EVENT_DETAIL.ANALYSIS_CODE_3, ELP_ACCT_SETTINGS.ACCOUNT_ANALYSIS_CODE_3,ELP_ACCT_SETTINGS.ACCT_SETTINGS_ID,3) AS AnalysisCode3,
+      ELP_ACCT_TRANSACTIONS.GetAnalysisCodeValue('0',GETCODEFROMLISTITEM(ELP_ACCT_EVENT_DETAIL.ANALYSIS_SRC_4_ID),ELP_ACCT_TRANS_LOG.ACCT_TRANS_LOG_ID, ELP_ACCT_EVENT_DETAIL.ANALYSIS_CODE_4, ELP_ACCT_SETTINGS.ACCOUNT_ANALYSIS_CODE_4,ELP_ACCT_SETTINGS.ACCT_SETTINGS_ID,4) AS AnalysisCode4,
+      ELP_ACCT_TRANSACTIONS.GetAnalysisCodeValue('0',GETCODEFROMLISTITEM(ELP_ACCT_EVENT_DETAIL.ANALYSIS_SRC_5_ID),ELP_ACCT_TRANS_LOG.ACCT_TRANS_LOG_ID, ELP_ACCT_EVENT_DETAIL.ANALYSIS_CODE_5, ELP_ACCT_SETTINGS.ACCOUNT_ANALYSIS_CODE_5,ELP_ACCT_SETTINGS.ACCT_SETTINGS_ID,5) AS AnalysisCode5,
+      ELP_ACCT_TRANSACTIONS.GetAnalysisCodeValue('0',GETCODEFROMLISTITEM(ELP_ACCT_EVENT_DETAIL.ANALYSIS_SRC_6_ID),ELP_ACCT_TRANS_LOG.ACCT_TRANS_LOG_ID, ELP_ACCT_EVENT_DETAIL.ANALYSIS_CODE_6, ELP_ACCT_SETTINGS.ACCOUNT_ANALYSIS_CODE_6,ELP_ACCT_SETTINGS.ACCT_SETTINGS_ID,6) AS AnalysisCode6,
+      ELP_ACCT_TRANSACTIONS.GetAnalysisCodeValue('0',GETCODEFROMLISTITEM(ELP_ACCT_EVENT_DETAIL.ANALYSIS_SRC_7_ID),ELP_ACCT_TRANS_LOG.ACCT_TRANS_LOG_ID, ELP_ACCT_EVENT_DETAIL.ANALYSIS_CODE_7, ELP_ACCT_SETTINGS.ACCOUNT_ANALYSIS_CODE_7,ELP_ACCT_SETTINGS.ACCT_SETTINGS_ID,7) AS AnalysisCode7,
+      ELP_ACCT_TRANSACTIONS.GetAnalysisCodeValue('0',GETCODEFROMLISTITEM(ELP_ACCT_EVENT_DETAIL.ANALYSIS_SRC_8_ID),ELP_ACCT_TRANS_LOG.ACCT_TRANS_LOG_ID, ELP_ACCT_EVENT_DETAIL.ANALYSIS_CODE_8, ELP_ACCT_SETTINGS.ACCOUNT_ANALYSIS_CODE_8,ELP_ACCT_SETTINGS.ACCT_SETTINGS_ID,8) AS AnalysisCode8,
+      ELP_ACCT_TRANSACTIONS.GetAnalysisCodeValue('0',GETCODEFROMLISTITEM(ELP_ACCT_EVENT_DETAIL.ANALYSIS_SRC_9_ID),ELP_ACCT_TRANS_LOG.ACCT_TRANS_LOG_ID, ELP_ACCT_EVENT_DETAIL.ANALYSIS_CODE_9, ELP_ACCT_SETTINGS.ACCOUNT_ANALYSIS_CODE_9,ELP_ACCT_SETTINGS.ACCT_SETTINGS_ID,9) AS AnalysisCode9,
+      ELP_ACCT_TRANSACTIONS.GetAnalysisCodeValue('0',GETCODEFROMLISTITEM(ELP_ACCT_EVENT_DETAIL.ANALYSIS_SRC_10_ID),ELP_ACCT_TRANS_LOG.ACCT_TRANS_LOG_ID, ELP_ACCT_EVENT_DETAIL.ANALYSIS_CODE_10, ELP_ACCT_SETTINGS.ACCOUNT_ANALYSIS_CODE_10,ELP_ACCT_SETTINGS.ACCT_SETTINGS_ID,10) AS AnalysisCode10,
+      ELP_ACCT_TRANS_LOG.ADDRESS1 AS GeneralDescription1,
+		   ELP_ACCT_TRANS_LOG.ADDRESS2 AS GeneralDescription2,
+		   '' AS GeneralDescription3,
+		   ELP_ACCT_TRANS_LOG.CITY || ELP_ACCT_TRANS_LOG.REGION AS GeneralDescription4,
+		   ELP_ACCT_TRANS_LOG.COUNTRY || DECODE(ELP_ACCT_TRANS_LOG.COUNTRY,null,'',' ') || ELP_ACCT_TRANS_LOG.ZIP AS GeneralDescription5,
+		   ELP_ACCT_TRANS_LOG.BANK_ACCOUNT_NUMBER AS GeneralDescription6,
+		   ELP_ACCT_TRANS_LOG.BANK_ID AS GeneralDescription7,
+		   '' AS GeneralDescription8,
+		   ELP_ACCT_TRANS_LOG.PAYEE AS GeneralDescription9,
+		   ELP_ACCT_TRANS_LOG.TAX_ID_CODE AS GeneralDescription10,
+		   '' AS GeneralDescription11,
+		   '' AS GeneralDescription12,
+		   '' AS GeneralDescription13,
+		   '' AS GeneralDescription14,
+		   '' AS GeneralDescription15,
+		   '' AS GeneralDescription16,
+		   '' AS GeneralDescription17,
+		   '' AS GeneralDescription18,
+		   '' AS GeneralDescription19,
+		   '' AS GeneralDescription20,
+		   '' AS GeneralDescription21,
+		   '' AS GeneralDescription22,
+		   '' AS GeneralDescription23,
+		   LIEVENT.CODE AS GeneralDescription24,
+		   :NETWORK_ID AS GeneralDescription25,
+       TO_CHAR(ELP_ACCT_TRANS_LOG.CREATED_DATE,'DDMMYYYY') AS CREATED_DATE,
+       ROUND(((COALESCE(ELP_ACCT_EVENT_DETAIL.CALCULATION,100)/100 * ELP_ACCT_TRANS_LOG.PAYMENT_AMOUNT)),2) AS payment_amount,
+           ROWNUM AS LINENUM,
+           ELP_ACCT_EVENT_DETAIL.JOURNAL_ID_SUFFIX,
+           ELP_ACCT_SETTINGS.ACCOUNT_ANALYSIS_CODE_6 AS BLOCK_OF_BUSINESS,
+           ELP_ACCT_EVENT_DETAIL.ANALYSIS_CODE_3 AS UDAK_PRIMARY,
+           0 AS REV,
+           ELP_DEALER.DEALER AS DEALER_CODE,
+       ELP_COMPANY.CODE AS COMPANY_CODE,
+           ELP_ACCT_TRANS_LOG.WARR_SALES_DATE,
+           ELP_ACCT_TRANS_LOG.CONTRACT_INCEPTION_DATE,
+           ELP_ACCT_TRANS_LOG.POLICY_NUMBER,
+           ELP_ACCT_TRANS_LOG.LOSS_DATE,
+           ELP_ACCT_COMPANY.CODE AS ACCT_COMPANY_CODE,
+           GetCodeMappingFromListItem(ELP_ACCT_EVENT.ACCT_EVENT_TYPE_ID, ELP_COMPANY.COMPANY_ID) AS ACCT_EVENT_MAPPING
+      FROM
+		    ELP_ACCT_TRANS_LOG,
+		    ELP_ACCT_EVENT,
+		    ELP_ACCT_EVENT_DETAIL,
+		    ELP_ACCT_SETTINGS,
+            ELP_COMPANY,
+            ELP_LIST_ITEM LIEVENT,
+            ELP_ACCT_BUSINESS_UNIT,
+            ELP_DEALER,
+       ELP_ACCT_COMPANY
+    WHERE
+	        ELP_ACCT_COMPANY.ACCT_COMPANY_ID = ELP_COMPANY.ACCT_COMPANY_ID
+	     AND ELP_ACCT_EVENT.ACCT_COMPANY_ID = ELP_COMPANY.ACCT_COMPANY_ID
+       AND ELP_ACCT_EVENT.ACCT_EVENT_TYPE_ID = :ACCT_EVENT_TYPE_ID
+       AND ELP_ACCT_EVENT_DETAIL.ACCT_BUSINESS_UNIT_ID = ELP_ACCT_BUSINESS_UNIT.ACCT_BUSINESS_UNIT_ID
+       AND LIEVENT.LIST_ITEM_ID = ELP_ACCT_TRANS_LOG.ACCT_EVENT_TYPE_ID
+       AND NVL(ELP_ACCT_EVENT_DETAIL.BUSINESS_ENTITY_ID,hextoraw('1')) = NVL(ELP_ACCT_TRANSACTIONS.GetBusinessEntity(ELP_ACCT_BUSINESS_UNIT.ACCT_BUSINESS_UNIT_ID,ELP_ACCT_TRANS_LOG.COVERAGE_TYPE,ELP_ACCT_TRANS_LOG.INVOICE_REGION),hextoraw('1'))
+       AND ELP_ACCT_EVENT_DETAIL.FIELD_TYPE_ID = ELP_ACCT_TRANS_LOG.ACCT_EVENT_FIELD_ID
+       AND ELP_ACCT_EVENT_DETAIL.ACCT_EVENT_ID = ELP_ACCT_EVENT.ACCT_EVENT_ID
+       AND ELP_ACCT_TRANS_LOG.ACCT_EVENT_TYPE_ID = ELP_ACCT_EVENT.ACCT_EVENT_TYPE_ID
+       AND ELP_DEALER.DEALER_ID = ELP_ACCT_SETTINGS.DEALER_ID
+       AND ELP_ACCT_SETTINGS.ACCT_SETTINGS_ID = GETACCTSETTINGS(ELP_ACCT_TRANS_LOG.DEALER_ID,null, ELP_ACCT_EVENT_DETAIL.ACCOUNT_TYPE)
+       AND ELP_ACCT_TRANS_LOG.BRANCH_ID IS NULL
+       AND ELP_ACCT_BUSINESS_UNIT.ACCT_BUSINESS_UNIT_ID = :ACCT_BUSINESS_UNIT_ID
+       AND ELP_ACCT_TRANS_LOG.BUSINESS_UNIT = ELP_ACCT_BUSINESS_UNIT.BUSINESS_UNIT
+       AND ELP_ACCT_TRANS_LOG.COMPANY_ID = ELP_COMPANY.COMPANY_ID
+       AND ELP_COMPANY.COMPANY_ID = :COMPANY_ID
+       --REQ-5992 start
+	     and ( (ELP_ACCT_EVENT_DETAIL.include_exclude_ind = 'E'
+		            and ( ELP_ACCT_TRANS_LOG.dealer_id not in (select dealer_id from elita.ELP_ACCT_EVENT_DETAIL_INCEXC where acct_event_detail_id = ELP_ACCT_EVENT_DETAIL.acct_event_detail_id and coverage_type_id is null)
+				            and ELP_ACCT_TRANS_LOG.coverage_type not in (select getcodefromlistitem(coverage_type_id) from elita.ELP_ACCT_EVENT_DETAIL_INCEXC where acct_event_detail_id = ELP_ACCT_EVENT_DETAIL.acct_event_detail_id and dealer_id is null)
+				            and (ELP_ACCT_TRANS_LOG.dealer_id, ELP_ACCT_TRANS_LOG.coverage_type) not in (select dealer_id, getcodefromlistitem(coverage_type_id) from elita.ELP_ACCT_EVENT_DETAIL_INCEXC where acct_event_detail_id = ELP_ACCT_EVENT_DETAIL.acct_event_detail_id and dealer_id is not null and coverage_type_id is not null)
+		            )
+            ) or
+            (ELP_ACCT_EVENT_DETAIL.include_exclude_ind = 'I'
+      	        and (ELP_ACCT_TRANS_LOG.dealer_id in (select dealer_id from elita.ELP_ACCT_EVENT_DETAIL_INCEXC where acct_event_detail_id = ELP_ACCT_EVENT_DETAIL.acct_event_detail_id and coverage_type_id is null)
+      			        or ELP_ACCT_TRANS_LOG.coverage_type in (select getcodefromlistitem(coverage_type_id) from elita.ELP_ACCT_EVENT_DETAIL_INCEXC where acct_event_detail_id = ELP_ACCT_EVENT_DETAIL.acct_event_detail_id and dealer_id is null)
+				            or (ELP_ACCT_TRANS_LOG.dealer_id, ELP_ACCT_TRANS_LOG.COVERAGE_TYPE) in (select dealer_id, getcodefromlistitem(coverage_type_id) from elita.ELP_ACCT_EVENT_DETAIL_INCEXC where acct_event_detail_id = ELP_ACCT_EVENT_DETAIL.acct_event_detail_id and dealer_id is not null and coverage_type_id is not null)
+      	        )
+            )
+        )
+        --REQ-5992 end
+        --dynamic_where_clause
+UNION /* Reversal */
+     SELECT
+		   DISTINCT RAWTOHEX(ELP_ACCT_TRANS_LOG.ACCT_TRANS_LOG_ID) AS TransLog_Id,
+		   ELP_ACCT_TRANS_LOG.ACCT_TRANS_LOG_ID,
+		   DECODE(ELP_ACCT_EVENT_DETAIL.USE_PAYEE_SETTINGS,'Y',ELP_ACCT_SETTINGS.ACCOUNT_CODE,ELP_ACCT_EVENT_DETAIL.ACCOUNT_CODE)  AS AccountCode,
+		   ELP_ACCT_TRANS_LOG.ACCT_PERIOD AS AccountingPeriod,
+		   ELP_ACCT_EVENT_DETAIL.ALLOCATION_MARKER AS AllocationMarker,
+		   ELP_ACCT_TRANS_LOG.CURRENCY AS CurrencyCode,
+             CASE  WHEN ELP_ACCT_TRANS_LOG.PAYMENT_AMOUNT < 0 THEN  ELP_ACCT_EVENT_DETAIL.DEBIT_CREDIT ELSE DECODE(ELP_ACCT_EVENT_DETAIL.DEBIT_CREDIT,'D','C','D') END  AS DebitCredit,
+     SUBSTR(ELP_ACCT_TRANSACTIONS.GetAnalysisCodeValue('1',GETCODEFROMLISTITEM(ELP_ACCT_EVENT_DETAIL.DESCRIPTION_SRC_ID),ELP_ACCT_TRANS_LOG.ACCT_TRANS_LOG_ID, ELP_ACCT_EVENT_DETAIL.DESCRIPTION, '',ELP_ACCT_SETTINGS.ACCT_SETTINGS_ID), 1,49) AS Description,
+           'ELX' AS JournalSource,
+           ELP_ACCT_EVENT_DETAIL.JOURNAL_TYPE AS JournalType,
+             CASE  WHEN ELP_ACCT_TRANS_LOG.PAYMENT_AMOUNT < 0 THEN ROUND(((COALESCE(ELP_ACCT_EVENT_DETAIL.CALCULATION,100)/100 * ELP_ACCT_TRANS_LOG.PAYMENT_AMOUNT) * -1),2) ELSE ROUND(((COALESCE(ELP_ACCT_EVENT_DETAIL.CALCULATION,100)/100 * ELP_ACCT_TRANS_LOG.PAYMENT_AMOUNT)),2) END AS TransactionAmount,
+           '2' AS TransactionAmountDecimalPlaces,
+           TO_CHAR((ELP_ACCT_TRANS_LOG.PAYMENT_DATE + 1),'DDMMYYYY') AS TransactionDate,
+           SUBSTR(RAWTOHEX(ELP_ACCT_TRANS_LOG.ACCT_TRANS_LOG_ID),1,16) || '_' || TO_CHAR((ELP_ACCT_TRANS_LOG.PAYMENT_DATE + 1),'DDMMYYYY') AS TransactionReference, 
+      ELP_ACCT_TRANSACTIONS.GetAnalysisCodeValue('0',GETCODEFROMLISTITEM(ELP_ACCT_EVENT_DETAIL.ANALYSIS_SRC_1_ID),ELP_ACCT_TRANS_LOG.ACCT_TRANS_LOG_ID, ELP_ACCT_EVENT_DETAIL.ANALYSIS_CODE_1, ELP_ACCT_SETTINGS.ACCOUNT_ANALYSIS_CODE_1,ELP_ACCT_SETTINGS.ACCT_SETTINGS_ID,1) AS AnalysisCode1,
+      ELP_ACCT_TRANSACTIONS.GetAnalysisCodeValue('0',GETCODEFROMLISTITEM(ELP_ACCT_EVENT_DETAIL.ANALYSIS_SRC_2_ID),ELP_ACCT_TRANS_LOG.ACCT_TRANS_LOG_ID, ELP_ACCT_EVENT_DETAIL.ANALYSIS_CODE_2, ELP_ACCT_SETTINGS.ACCOUNT_ANALYSIS_CODE_2,ELP_ACCT_SETTINGS.ACCT_SETTINGS_ID,2) AS AnalysisCode2,
+      ELP_ACCT_TRANSACTIONS.GetAnalysisCodeValue('0',GETCODEFROMLISTITEM(ELP_ACCT_EVENT_DETAIL.ANALYSIS_SRC_3_ID),ELP_ACCT_TRANS_LOG.ACCT_TRANS_LOG_ID, ELP_ACCT_EVENT_DETAIL.ANALYSIS_CODE_3, ELP_ACCT_SETTINGS.ACCOUNT_ANALYSIS_CODE_3,ELP_ACCT_SETTINGS.ACCT_SETTINGS_ID,3) AS AnalysisCode3,
+      ELP_ACCT_TRANSACTIONS.GetAnalysisCodeValue('0',GETCODEFROMLISTITEM(ELP_ACCT_EVENT_DETAIL.ANALYSIS_SRC_4_ID),ELP_ACCT_TRANS_LOG.ACCT_TRANS_LOG_ID, ELP_ACCT_EVENT_DETAIL.ANALYSIS_CODE_4, ELP_ACCT_SETTINGS.ACCOUNT_ANALYSIS_CODE_4,ELP_ACCT_SETTINGS.ACCT_SETTINGS_ID,4) AS AnalysisCode4,
+      ELP_ACCT_TRANSACTIONS.GetAnalysisCodeValue('0',GETCODEFROMLISTITEM(ELP_ACCT_EVENT_DETAIL.ANALYSIS_SRC_5_ID),ELP_ACCT_TRANS_LOG.ACCT_TRANS_LOG_ID, ELP_ACCT_EVENT_DETAIL.ANALYSIS_CODE_5, ELP_ACCT_SETTINGS.ACCOUNT_ANALYSIS_CODE_5,ELP_ACCT_SETTINGS.ACCT_SETTINGS_ID,5) AS AnalysisCode5,
+      ELP_ACCT_TRANSACTIONS.GetAnalysisCodeValue('0',GETCODEFROMLISTITEM(ELP_ACCT_EVENT_DETAIL.ANALYSIS_SRC_6_ID),ELP_ACCT_TRANS_LOG.ACCT_TRANS_LOG_ID, ELP_ACCT_EVENT_DETAIL.ANALYSIS_CODE_6, ELP_ACCT_SETTINGS.ACCOUNT_ANALYSIS_CODE_6,ELP_ACCT_SETTINGS.ACCT_SETTINGS_ID,6) AS AnalysisCode6,
+      ELP_ACCT_TRANSACTIONS.GetAnalysisCodeValue('0',GETCODEFROMLISTITEM(ELP_ACCT_EVENT_DETAIL.ANALYSIS_SRC_7_ID),ELP_ACCT_TRANS_LOG.ACCT_TRANS_LOG_ID, ELP_ACCT_EVENT_DETAIL.ANALYSIS_CODE_7, ELP_ACCT_SETTINGS.ACCOUNT_ANALYSIS_CODE_7,ELP_ACCT_SETTINGS.ACCT_SETTINGS_ID,7) AS AnalysisCode7,
+      ELP_ACCT_TRANSACTIONS.GetAnalysisCodeValue('0',GETCODEFROMLISTITEM(ELP_ACCT_EVENT_DETAIL.ANALYSIS_SRC_8_ID),ELP_ACCT_TRANS_LOG.ACCT_TRANS_LOG_ID, ELP_ACCT_EVENT_DETAIL.ANALYSIS_CODE_8, ELP_ACCT_SETTINGS.ACCOUNT_ANALYSIS_CODE_8,ELP_ACCT_SETTINGS.ACCT_SETTINGS_ID,8) AS AnalysisCode8,
+      ELP_ACCT_TRANSACTIONS.GetAnalysisCodeValue('0',GETCODEFROMLISTITEM(ELP_ACCT_EVENT_DETAIL.ANALYSIS_SRC_9_ID),ELP_ACCT_TRANS_LOG.ACCT_TRANS_LOG_ID, ELP_ACCT_EVENT_DETAIL.ANALYSIS_CODE_9, ELP_ACCT_SETTINGS.ACCOUNT_ANALYSIS_CODE_9,ELP_ACCT_SETTINGS.ACCT_SETTINGS_ID,9) AS AnalysisCode9,
+      ELP_ACCT_TRANSACTIONS.GetAnalysisCodeValue('0',GETCODEFROMLISTITEM(ELP_ACCT_EVENT_DETAIL.ANALYSIS_SRC_10_ID),ELP_ACCT_TRANS_LOG.ACCT_TRANS_LOG_ID, ELP_ACCT_EVENT_DETAIL.ANALYSIS_CODE_10, ELP_ACCT_SETTINGS.ACCOUNT_ANALYSIS_CODE_10,ELP_ACCT_SETTINGS.ACCT_SETTINGS_ID,10) AS AnalysisCode10,
+         ELP_ACCT_TRANS_LOG.ADDRESS1 AS GeneralDescription1,
+		   ELP_ACCT_TRANS_LOG.ADDRESS2 AS GeneralDescription2,
+		   '' AS GeneralDescription3,
+		   ELP_ACCT_TRANS_LOG.CITY || ELP_ACCT_TRANS_LOG.REGION AS GeneralDescription4,
+		   ELP_ACCT_TRANS_LOG.COUNTRY || DECODE(ELP_ACCT_TRANS_LOG.COUNTRY,null,'',' ') || ELP_ACCT_TRANS_LOG.ZIP AS GeneralDescription5,
+		   ELP_ACCT_TRANS_LOG.BANK_ACCOUNT_NUMBER AS GeneralDescription6,
+		   ELP_ACCT_TRANS_LOG.BANK_ID AS GeneralDescription7,
+		   '' AS GeneralDescription8,
+		   ELP_ACCT_TRANS_LOG.PAYEE AS GeneralDescription9,
+		   ELP_ACCT_TRANS_LOG.TAX_ID_CODE AS GeneralDescription10,
+		   '' AS GeneralDescription11,
+		   '' AS GeneralDescription12,
+		   '' AS GeneralDescription13,
+		   '' AS GeneralDescription14,
+		   '' AS GeneralDescription15,
+		   '' AS GeneralDescription16,
+		   '' AS GeneralDescription17,
+		   '' AS GeneralDescription18,
+		   '' AS GeneralDescription19,
+		   '' AS GeneralDescription20,
+		   '' AS GeneralDescription21,
+		   '' AS GeneralDescription22,
+		   '' AS GeneralDescription23,
+		   LIEVENT.CODE AS GeneralDescription24,
+		   :NETWORK_ID AS GeneralDescription25,
+       TO_CHAR(ELP_ACCT_TRANS_LOG.CREATED_DATE,'DDMMYYYY') AS CREATED_DATE,
+       ROUND(((COALESCE(ELP_ACCT_EVENT_DETAIL.CALCULATION,100)/100 * ELP_ACCT_TRANS_LOG.PAYMENT_AMOUNT)),2) AS payment_amount,
+           ROWNUM AS LINENUM,
+           ELP_ACCT_EVENT_DETAIL.JOURNAL_ID_SUFFIX,
+           ELP_ACCT_SETTINGS.ACCOUNT_ANALYSIS_CODE_6 AS BLOCK_OF_BUSINESS,
+           ELP_ACCT_EVENT_DETAIL.ANALYSIS_CODE_3 AS UDAK_PRIMARY,
+           1 AS REV,
+           ELP_DEALER.DEALER AS DEALER_CODE,
+       ELP_COMPANY.CODE AS COMPANY_CODE,
+           ELP_ACCT_TRANS_LOG.WARR_SALES_DATE,
+           ELP_ACCT_TRANS_LOG.CONTRACT_INCEPTION_DATE,
+           ELP_ACCT_TRANS_LOG.POLICY_NUMBER,
+           ELP_ACCT_TRANS_LOG.LOSS_DATE,
+           ELP_ACCT_COMPANY.CODE AS ACCT_COMPANY_CODE,
+           GetCodeMappingFromListItem(ELP_ACCT_EVENT.ACCT_EVENT_TYPE_ID, ELP_COMPANY.COMPANY_ID) AS ACCT_EVENT_MAPPING
+    FROM
+		    ELP_ACCT_TRANS_LOG,
+		    ELP_ACCT_EVENT,
+		    ELP_ACCT_EVENT_DETAIL,
+		    ELP_ACCT_SETTINGS,
+            ELP_COMPANY,
+            ELP_LIST_ITEM LIEVENT,
+            ELP_ACCT_BUSINESS_UNIT,
+            ELP_DEALER,
+       ELP_ACCT_COMPANY
+    WHERE
+	        ELP_ACCT_COMPANY.ACCT_COMPANY_ID = ELP_COMPANY.ACCT_COMPANY_ID
+	     AND ELP_ACCT_EVENT.ACCT_COMPANY_ID = ELP_COMPANY.ACCT_COMPANY_ID
+       AND ELP_ACCT_EVENT.ACCT_EVENT_TYPE_ID = :ACCT_EVENT_TYPE_ID
+       AND ELP_ACCT_EVENT_DETAIL.ACCT_BUSINESS_UNIT_ID = ELP_ACCT_BUSINESS_UNIT.ACCT_BUSINESS_UNIT_ID
+       AND LIEVENT.LIST_ITEM_ID = ELP_ACCT_TRANS_LOG.ACCT_EVENT_TYPE_ID
+       AND NVL(ELP_ACCT_EVENT_DETAIL.BUSINESS_ENTITY_ID,hextoraw('1')) = NVL(ELP_ACCT_TRANSACTIONS.GetBusinessEntity(ELP_ACCT_BUSINESS_UNIT.ACCT_BUSINESS_UNIT_ID,ELP_ACCT_TRANS_LOG.COVERAGE_TYPE,ELP_ACCT_TRANS_LOG.INVOICE_REGION),hextoraw('1'))
+       AND ELP_ACCT_EVENT_DETAIL.FIELD_TYPE_ID = ELP_ACCT_TRANS_LOG.ACCT_EVENT_FIELD_ID
+       AND ELP_ACCT_EVENT_DETAIL.ACCT_EVENT_ID = ELP_ACCT_EVENT.ACCT_EVENT_ID
+       AND ELP_ACCT_TRANS_LOG.ACCT_EVENT_TYPE_ID = ELP_ACCT_EVENT.ACCT_EVENT_TYPE_ID
+       AND ELP_DEALER.DEALER_ID = ELP_ACCT_SETTINGS.DEALER_ID
+       AND ELP_ACCT_SETTINGS.ACCT_SETTINGS_ID = GETACCTSETTINGS(ELP_ACCT_TRANS_LOG.DEALER_ID,null, ELP_ACCT_EVENT_DETAIL.ACCOUNT_TYPE)
+       AND ELP_ACCT_TRANS_LOG.BRANCH_ID IS NULL
+       AND (NOT ELP_ACCT_TRANS_LOG.PAYMENT_AMOUNT IS NULL OR ELP_ACCT_TRANS_LOG.PAYMENT_AMOUNT > 0)
+       AND ELP_ACCT_BUSINESS_UNIT.ACCT_BUSINESS_UNIT_ID = :ACCT_BUSINESS_UNIT_ID
+       AND ELP_ACCT_TRANS_LOG.BUSINESS_UNIT = ELP_ACCT_BUSINESS_UNIT.BUSINESS_UNIT
+       AND ELP_ACCT_TRANS_LOG.COMPANY_ID = ELP_COMPANY.COMPANY_ID
+       AND ELP_COMPANY.COMPANY_ID = :COMPANY_ID
+       --REQ-5992 start
+	     and ( (ELP_ACCT_EVENT_DETAIL.include_exclude_ind = 'E'
+		            and ( ELP_ACCT_TRANS_LOG.dealer_id not in (select dealer_id from elita.ELP_ACCT_EVENT_DETAIL_INCEXC where acct_event_detail_id = ELP_ACCT_EVENT_DETAIL.acct_event_detail_id and coverage_type_id is null)
+				            and ELP_ACCT_TRANS_LOG.coverage_type not in (select getcodefromlistitem(coverage_type_id) from elita.ELP_ACCT_EVENT_DETAIL_INCEXC where acct_event_detail_id = ELP_ACCT_EVENT_DETAIL.acct_event_detail_id and dealer_id is null)
+				            and (ELP_ACCT_TRANS_LOG.dealer_id, ELP_ACCT_TRANS_LOG.coverage_type) not in (select dealer_id, getcodefromlistitem(coverage_type_id) from elita.ELP_ACCT_EVENT_DETAIL_INCEXC where acct_event_detail_id = ELP_ACCT_EVENT_DETAIL.acct_event_detail_id and dealer_id is not null and coverage_type_id is not null)
+		            )
+            ) or
+            (ELP_ACCT_EVENT_DETAIL.include_exclude_ind = 'I'
+      	        and (ELP_ACCT_TRANS_LOG.dealer_id in (select dealer_id from elita.ELP_ACCT_EVENT_DETAIL_INCEXC where acct_event_detail_id = ELP_ACCT_EVENT_DETAIL.acct_event_detail_id and coverage_type_id is null)
+      			        or ELP_ACCT_TRANS_LOG.coverage_type in (select getcodefromlistitem(coverage_type_id) from elita.ELP_ACCT_EVENT_DETAIL_INCEXC where acct_event_detail_id = ELP_ACCT_EVENT_DETAIL.acct_event_detail_id and dealer_id is null)
+				            or (ELP_ACCT_TRANS_LOG.dealer_id, ELP_ACCT_TRANS_LOG.COVERAGE_TYPE) in (select dealer_id, getcodefromlistitem(coverage_type_id) from elita.ELP_ACCT_EVENT_DETAIL_INCEXC where acct_event_detail_id = ELP_ACCT_EVENT_DETAIL.acct_event_detail_id and dealer_id is not null and coverage_type_id is not null)
+      	        )
+            )
+        )
+        --REQ-5992 end
+       --dynamic_where_clause
+       ) t
+       order by LINENUM asc
+        ]]>
+  </JOURNAL_CLAIMRES>
+  <JOURNAL_INV>
+    <![CDATA[ 
+       SELECT
+		   DISTINCT RAWTOHEX(ELP_ACCT_TRANS_LOG.ACCT_TRANS_LOG_ID) AS TransLog_Id,
+		   ELP_ACCT_TRANS_LOG.ACCT_TRANS_LOG_ID,
+           DECODE(ELP_ACCT_EVENT_DETAIL.USE_PAYEE_SETTINGS,'Y',ELP_ACCT_SETTINGS.ACCOUNT_CODE,ELP_ACCT_EVENT_DETAIL.ACCOUNT_CODE)  AS AccountCode,
+		   ELP_ACCT_TRANS_LOG.ACCT_PERIOD AS AccountingPeriod,
+		   elp_acct_invoicing.GetCheckDigit(ELP_ACCT_TRANS_LOG.TRANSACTION_ID_NUMBER) AS AllocationMarker,
+		   TRIM(ELP_ACCT_SETTINGS.DEFAULT_CURRENCY_CODE) AS CurrencyCode,
+           CASE  WHEN ELP_ACCT_TRANS_LOG.PAYMENT_AMOUNT < 0 THEN DECODE(ELP_ACCT_EVENT_DETAIL.DEBIT_CREDIT,'D','C','C','D') ELSE ELP_ACCT_EVENT_DETAIL.DEBIT_CREDIT END AS DebitCredit,
+       SUBSTR(ELP_ACCT_TRANSACTIONS.GetAnalysisCodeValue('1',GETCODEFROMLISTITEM(ELP_ACCT_EVENT_DETAIL.DESCRIPTION_SRC_ID),ELP_ACCT_TRANS_LOG.ACCT_TRANS_LOG_ID, ELP_ACCT_EVENT_DETAIL.DESCRIPTION, '',ELP_ACCT_SETTINGS.ACCT_SETTINGS_ID), 1,49) AS Description,
+       'ELX' AS JournalSource,
+           ELP_ACCT_EVENT_DETAIL.JOURNAL_TYPE AS JournalType,
+             CASE  WHEN ELP_ACCT_TRANS_LOG.PAYMENT_AMOUNT < 0 THEN ROUND(((COALESCE(ELP_ACCT_EVENT_DETAIL.CALCULATION,100)/100 * ELP_ACCT_TRANS_LOG.PAYMENT_AMOUNT) * -1),2) ELSE ROUND(((COALESCE(ELP_ACCT_EVENT_DETAIL.CALCULATION,100)/100 * ELP_ACCT_TRANS_LOG.PAYMENT_AMOUNT)),2) END AS TransactionAmount,
+           '2' AS TransactionAmountDecimalPlaces,
+           TO_CHAR(ELP_ACCT_TRANS_LOG.PAYMENT_DATE,'DDMMYYYY') AS TransactionDate,
+           ELP_ACCT_TRANS_LOG.TRANSACTION_ID_NUMBER AS TransactionReference,
+        ELP_ACCT_TRANSACTIONS.GetAnalysisCodeValue('0',GETCODEFROMLISTITEM(ELP_ACCT_EVENT_DETAIL.ANALYSIS_SRC_1_ID),ELP_ACCT_TRANS_LOG.ACCT_TRANS_LOG_ID, ELP_ACCT_EVENT_DETAIL.ANALYSIS_CODE_1, ELP_ACCT_SETTINGS.ACCOUNT_ANALYSIS_CODE_1,ELP_ACCT_SETTINGS.ACCT_SETTINGS_ID,1) AS AnalysisCode1,
+        ELP_ACCT_TRANSACTIONS.GetAnalysisCodeValue('0',GETCODEFROMLISTITEM(ELP_ACCT_EVENT_DETAIL.ANALYSIS_SRC_2_ID),ELP_ACCT_TRANS_LOG.ACCT_TRANS_LOG_ID, ELP_ACCT_EVENT_DETAIL.ANALYSIS_CODE_2, ELP_ACCT_SETTINGS.ACCOUNT_ANALYSIS_CODE_2,ELP_ACCT_SETTINGS.ACCT_SETTINGS_ID,2) AS AnalysisCode2,
+        ELP_ACCT_TRANSACTIONS.GetAnalysisCodeValue('0',GETCODEFROMLISTITEM(ELP_ACCT_EVENT_DETAIL.ANALYSIS_SRC_3_ID),ELP_ACCT_TRANS_LOG.ACCT_TRANS_LOG_ID, ELP_ACCT_EVENT_DETAIL.ANALYSIS_CODE_3, ELP_ACCT_SETTINGS.ACCOUNT_ANALYSIS_CODE_3,ELP_ACCT_SETTINGS.ACCT_SETTINGS_ID,3) AS AnalysisCode3,
+        ELP_ACCT_TRANSACTIONS.GetAnalysisCodeValue('0',GETCODEFROMLISTITEM(ELP_ACCT_EVENT_DETAIL.ANALYSIS_SRC_4_ID),ELP_ACCT_TRANS_LOG.ACCT_TRANS_LOG_ID, ELP_ACCT_EVENT_DETAIL.ANALYSIS_CODE_4, ELP_ACCT_SETTINGS.ACCOUNT_ANALYSIS_CODE_4,ELP_ACCT_SETTINGS.ACCT_SETTINGS_ID,4) AS AnalysisCode4,
+        ELP_ACCT_TRANSACTIONS.GetAnalysisCodeValue('0',GETCODEFROMLISTITEM(ELP_ACCT_EVENT_DETAIL.ANALYSIS_SRC_5_ID),ELP_ACCT_TRANS_LOG.ACCT_TRANS_LOG_ID, ELP_ACCT_EVENT_DETAIL.ANALYSIS_CODE_5, ELP_ACCT_SETTINGS.ACCOUNT_ANALYSIS_CODE_5,ELP_ACCT_SETTINGS.ACCT_SETTINGS_ID,5) AS AnalysisCode5,
+        ELP_ACCT_TRANSACTIONS.GetAnalysisCodeValue('0',GETCODEFROMLISTITEM(ELP_ACCT_EVENT_DETAIL.ANALYSIS_SRC_6_ID),ELP_ACCT_TRANS_LOG.ACCT_TRANS_LOG_ID, ELP_ACCT_EVENT_DETAIL.ANALYSIS_CODE_6, ELP_ACCT_SETTINGS.ACCOUNT_ANALYSIS_CODE_6,ELP_ACCT_SETTINGS.ACCT_SETTINGS_ID,6) AS AnalysisCode6,
+        ELP_ACCT_TRANSACTIONS.GetAnalysisCodeValue('0',GETCODEFROMLISTITEM(ELP_ACCT_EVENT_DETAIL.ANALYSIS_SRC_7_ID),ELP_ACCT_TRANS_LOG.ACCT_TRANS_LOG_ID, ELP_ACCT_EVENT_DETAIL.ANALYSIS_CODE_7, ELP_ACCT_SETTINGS.ACCOUNT_ANALYSIS_CODE_7,ELP_ACCT_SETTINGS.ACCT_SETTINGS_ID,7) AS AnalysisCode7,
+        ELP_ACCT_TRANSACTIONS.GetAnalysisCodeValue('0',GETCODEFROMLISTITEM(ELP_ACCT_EVENT_DETAIL.ANALYSIS_SRC_8_ID),ELP_ACCT_TRANS_LOG.ACCT_TRANS_LOG_ID, ELP_ACCT_EVENT_DETAIL.ANALYSIS_CODE_8, ELP_ACCT_SETTINGS.ACCOUNT_ANALYSIS_CODE_8,ELP_ACCT_SETTINGS.ACCT_SETTINGS_ID,8) AS AnalysisCode8,
+        ELP_ACCT_TRANSACTIONS.GetAnalysisCodeValue('0',GETCODEFROMLISTITEM(ELP_ACCT_EVENT_DETAIL.ANALYSIS_SRC_9_ID),ELP_ACCT_TRANS_LOG.ACCT_TRANS_LOG_ID, ELP_ACCT_EVENT_DETAIL.ANALYSIS_CODE_9, ELP_ACCT_SETTINGS.ACCOUNT_ANALYSIS_CODE_9,ELP_ACCT_SETTINGS.ACCT_SETTINGS_ID,9) AS AnalysisCode9,
+        ELP_ACCT_TRANSACTIONS.GetAnalysisCodeValue('0',GETCODEFROMLISTITEM(ELP_ACCT_EVENT_DETAIL.ANALYSIS_SRC_10_ID),ELP_ACCT_TRANS_LOG.ACCT_TRANS_LOG_ID, ELP_ACCT_EVENT_DETAIL.ANALYSIS_CODE_10, ELP_ACCT_SETTINGS.ACCOUNT_ANALYSIS_CODE_10,ELP_ACCT_SETTINGS.ACCT_SETTINGS_ID,10) AS AnalysisCode10,
+        ELP_ACCT_TRANS_LOG.ADDRESS1 AS GeneralDescription1,
+		   ELP_ACCT_TRANS_LOG.ADDRESS2 AS GeneralDescription2,
+		   '' AS GeneralDescription3,
+		   ELP_ACCT_TRANS_LOG.CITY || ELP_ACCT_TRANS_LOG.REGION AS GeneralDescription4,
+		   ELP_ACCT_TRANS_LOG.COUNTRY || DECODE(ELP_ACCT_TRANS_LOG.COUNTRY,null,'',' ') || ELP_ACCT_TRANS_LOG.ZIP AS GeneralDescription5,
+		   ELP_ACCT_TRANS_LOG.BANK_ACCOUNT_NUMBER AS GeneralDescription6,
+		   ELP_ACCT_TRANS_LOG.BANK_ID AS GeneralDescription7,
+		   '' AS GeneralDescription8,
+		   ELP_ACCT_TRANS_LOG.PAYEE AS GeneralDescription9,
+		   ELP_ACCT_TRANS_LOG.TAX_ID_CODE AS GeneralDescription10,
+		   '' AS GeneralDescription11,
+		   TO_CHAR(ELP_ACCT_TRANS_LOG.PROCESS_DATE,'DDMMYYYY') || '|' || TO_CHAR(ELP_ACCT_TRANS_LOG.PAYMENT_DATE,'DDMMYYYY') AS GeneralDescription12,
+		   '' AS GeneralDescription13,
+		   '' AS GeneralDescription14,
+		   '' AS GeneralDescription15,
+		   '' AS GeneralDescription16,
+		   '' AS GeneralDescription17,
+		   '' AS GeneralDescription18,
+		   '' AS GeneralDescription19,
+		   '' AS GeneralDescription20,
+		   '' AS GeneralDescription21,
+		   '' AS GeneralDescription22,
+		   '' AS GeneralDescription23,
+		   LIEVENT.CODE AS GeneralDescription24,
+		   :NETWORK_ID AS GeneralDescription25,
+       TO_CHAR(ELP_ACCT_TRANS_LOG.CREATED_DATE,'DDMMYYYY') AS CREATED_DATE,
+           ROUND(((COALESCE(ELP_ACCT_EVENT_DETAIL.CALCULATION,100)/100 * ELP_ACCT_TRANS_LOG.PAYMENT_AMOUNT)),2) AS payment_amount,
+           ELP_ACCT_TRANS_LOG.PROCESS_DATE AS GeneralDate1,
+           ROWNUM AS LINENUM,
+           ELP_ACCT_EVENT_DETAIL.JOURNAL_ID_SUFFIX,
+           ELP_ACCT_SETTINGS.ACCOUNT_ANALYSIS_CODE_6 AS BLOCK_OF_BUSINESS,
+           ELP_ACCT_EVENT_DETAIL.ANALYSIS_CODE_3 AS UDAK_PRIMARY,
+           0 AS REV,
+           '' AS PLACEHOLDER,
+        '' AS TRANSACTION_ID_NUMBER,
+           PAYMENT_TO_CUSTOMER,
+           ELP_ACCT_SETTINGS.ACCOUNT_ANALYSIS_CODE_6 AS VENDOR_ID,
+          ELP_DEALER.DEALER AS DEALER_CODE,
+       ELP_COMPANY.CODE AS COMPANY_CODE,
+           ELP_ACCT_TRANS_LOG.WARR_SALES_DATE,
+           ELP_ACCT_TRANS_LOG.CONTRACT_INCEPTION_DATE,
+           ELP_ACCT_TRANS_LOG.POLICY_NUMBER,
+           ELP_ACCT_TRANS_LOG.LOSS_DATE,
+           ELP_ACCT_TRANS_LOG.INVOICE_REGION,
+           ELP_ACCT_COMPANY.CODE AS ACCT_COMPANY_CODE,
+           GetCodeMappingFromListItem(ELP_ACCT_EVENT.ACCT_EVENT_TYPE_ID, ELP_COMPANY.COMPANY_ID) AS ACCT_EVENT_MAPPING,
+           NULL AS INVOICE_DATE
+      FROM
+		    ELP_ACCT_TRANS_LOG,
+		    ELP_ACCT_EVENT,
+		    ELP_ACCT_EVENT_DETAIL,
+		    ELP_ACCT_SETTINGS,
+            ELP_COMPANY,
+            ELP_LIST_ITEM LIEVENT,
+            ELP_ACCT_BUSINESS_UNIT,
+            ELP_DEALER,
+       ELP_ACCT_COMPANY
+    WHERE
+	        ELP_ACCT_COMPANY.ACCT_COMPANY_ID = ELP_COMPANY.ACCT_COMPANY_ID
+	     AND ELP_ACCT_EVENT.ACCT_COMPANY_ID = ELP_COMPANY.ACCT_COMPANY_ID
+       AND ELP_ACCT_EVENT.ACCT_EVENT_TYPE_ID = :ACCT_EVENT_TYPE_ID
+       AND ELP_ACCT_EVENT_DETAIL.ACCT_BUSINESS_UNIT_ID = ELP_ACCT_BUSINESS_UNIT.ACCT_BUSINESS_UNIT_ID
+       AND LIEVENT.LIST_ITEM_ID = ELP_ACCT_TRANS_LOG.ACCT_EVENT_TYPE_ID
+       AND NVL(ELP_ACCT_EVENT_DETAIL.BUSINESS_ENTITY_ID,hextoraw('1')) = NVL(ELP_ACCT_TRANSACTIONS.GetBusinessEntity(ELP_ACCT_BUSINESS_UNIT.ACCT_BUSINESS_UNIT_ID,ELP_ACCT_TRANS_LOG.COVERAGE_TYPE,ELP_ACCT_TRANS_LOG.INVOICE_REGION),hextoraw('1'))
+       AND ELP_ACCT_EVENT_DETAIL.FIELD_TYPE_ID = ELP_ACCT_TRANS_LOG.ACCT_EVENT_FIELD_ID
+       AND ELP_ACCT_EVENT_DETAIL.ACCT_EVENT_ID = ELP_ACCT_EVENT.ACCT_EVENT_ID
+       AND ELP_ACCT_TRANS_LOG.ACCT_EVENT_TYPE_ID = ELP_ACCT_EVENT.ACCT_EVENT_TYPE_ID
+       AND ELP_DEALER.DEALER_ID = ELP_ACCT_SETTINGS.DEALER_ID
+       AND ELP_ACCT_SETTINGS.ACCT_SETTINGS_ID = GETACCTSETTINGS(ELP_ACCT_TRANS_LOG.DEALER_ID,null, ELP_ACCT_EVENT_DETAIL.ACCOUNT_TYPE)
+       AND ELP_ACCT_TRANS_LOG.BRANCH_ID IS NULL
+       AND ELP_ACCT_BUSINESS_UNIT.ACCT_BUSINESS_UNIT_ID = :ACCT_BUSINESS_UNIT_ID
+       AND ELP_ACCT_TRANS_LOG.BUSINESS_UNIT = ELP_ACCT_BUSINESS_UNIT.BUSINESS_UNIT
+       AND ELP_ACCT_TRANS_LOG.COMPANY_ID = ELP_COMPANY.COMPANY_ID
+       AND ELP_COMPANY.COMPANY_ID = :COMPANY_ID
+       --dynamic_where_clause
+   UNION ALL
+      SELECT
+		   DISTINCT RAWTOHEX(ELP_ACCT_TRANS_LOG.ACCT_TRANS_LOG_ID) AS TransLog_Id,
+		   ELP_ACCT_TRANS_LOG.ACCT_TRANS_LOG_ID,
+           DECODE(ELP_ACCT_EVENT_DETAIL.USE_PAYEE_SETTINGS,'Y',ELP_ACCT_SETTINGS.ACCOUNT_CODE,ELP_ACCT_EVENT_DETAIL.ACCOUNT_CODE)  AS AccountCode,
+		   ELP_ACCT_TRANS_LOG.ACCT_PERIOD AS AccountingPeriod,
+		   elp_acct_invoicing.GetCheckDigit(ELP_ACCT_TRANS_LOG.TRANSACTION_ID_NUMBER) AS AllocationMarker,
+		   TRIM(ELP_ACCT_SETTINGS.DEFAULT_CURRENCY_CODE) AS CurrencyCode,
+           CASE  WHEN ELP_ACCT_TRANS_LOG.PAYMENT_AMOUNT < 0 THEN DECODE(ELP_ACCT_EVENT_DETAIL.DEBIT_CREDIT,'D','C','C','D') ELSE ELP_ACCT_EVENT_DETAIL.DEBIT_CREDIT END AS DebitCredit,
+       SUBSTR(ELP_ACCT_TRANSACTIONS.GetAnalysisCodeValue('1',GETCODEFROMLISTITEM(ELP_ACCT_EVENT_DETAIL.DESCRIPTION_SRC_ID),ELP_ACCT_TRANS_LOG.ACCT_TRANS_LOG_ID, ELP_ACCT_EVENT_DETAIL.DESCRIPTION, '',ELP_ACCT_SETTINGS.ACCT_SETTINGS_ID), 1,49) AS Description,
+        'ELX' AS JournalSource,
+           ELP_ACCT_EVENT_DETAIL.JOURNAL_TYPE AS JournalType,
+             CASE  WHEN ELP_ACCT_TRANS_LOG.PAYMENT_AMOUNT < 0 THEN ROUND(((COALESCE(ELP_ACCT_EVENT_DETAIL.CALCULATION,100)/100 * ELP_ACCT_TRANS_LOG.PAYMENT_AMOUNT) * -1),2) ELSE ROUND(((COALESCE(ELP_ACCT_EVENT_DETAIL.CALCULATION,100)/100 * ELP_ACCT_TRANS_LOG.PAYMENT_AMOUNT)),2)  END AS TransactionAmount,
+           '2' AS TransactionAmountDecimalPlaces,
+           TO_CHAR(ELP_ACCT_TRANS_LOG.PAYMENT_DATE,'DDMMYYYY') AS TransactionDate,
+           ELP_ACCT_TRANS_LOG.TRANSACTION_ID_NUMBER AS TransactionReference,
+      ELP_ACCT_TRANSACTIONS.GetAnalysisCodeValue('0',GETCODEFROMLISTITEM(ELP_ACCT_EVENT_DETAIL.ANALYSIS_SRC_1_ID),ELP_ACCT_TRANS_LOG.ACCT_TRANS_LOG_ID, ELP_ACCT_EVENT_DETAIL.ANALYSIS_CODE_1, ELP_ACCT_SETTINGS.ACCOUNT_ANALYSIS_CODE_1,ELP_ACCT_SETTINGS.ACCT_SETTINGS_ID,1) AS AnalysisCode1,
+      ELP_ACCT_TRANSACTIONS.GetAnalysisCodeValue('0',GETCODEFROMLISTITEM(ELP_ACCT_EVENT_DETAIL.ANALYSIS_SRC_2_ID),ELP_ACCT_TRANS_LOG.ACCT_TRANS_LOG_ID, ELP_ACCT_EVENT_DETAIL.ANALYSIS_CODE_2, ELP_ACCT_SETTINGS.ACCOUNT_ANALYSIS_CODE_2,ELP_ACCT_SETTINGS.ACCT_SETTINGS_ID,2) AS AnalysisCode2,
+      ELP_ACCT_TRANSACTIONS.GetAnalysisCodeValue('0',GETCODEFROMLISTITEM(ELP_ACCT_EVENT_DETAIL.ANALYSIS_SRC_3_ID),ELP_ACCT_TRANS_LOG.ACCT_TRANS_LOG_ID, ELP_ACCT_EVENT_DETAIL.ANALYSIS_CODE_3, ELP_ACCT_SETTINGS.ACCOUNT_ANALYSIS_CODE_3,ELP_ACCT_SETTINGS.ACCT_SETTINGS_ID,3) AS AnalysisCode3,
+      ELP_ACCT_TRANSACTIONS.GetAnalysisCodeValue('0',GETCODEFROMLISTITEM(ELP_ACCT_EVENT_DETAIL.ANALYSIS_SRC_4_ID),ELP_ACCT_TRANS_LOG.ACCT_TRANS_LOG_ID, ELP_ACCT_EVENT_DETAIL.ANALYSIS_CODE_4, ELP_ACCT_SETTINGS.ACCOUNT_ANALYSIS_CODE_4,ELP_ACCT_SETTINGS.ACCT_SETTINGS_ID,4) AS AnalysisCode4,
+      ELP_ACCT_TRANSACTIONS.GetAnalysisCodeValue('0',GETCODEFROMLISTITEM(ELP_ACCT_EVENT_DETAIL.ANALYSIS_SRC_5_ID),ELP_ACCT_TRANS_LOG.ACCT_TRANS_LOG_ID, ELP_ACCT_EVENT_DETAIL.ANALYSIS_CODE_5, ELP_ACCT_SETTINGS.ACCOUNT_ANALYSIS_CODE_5,ELP_ACCT_SETTINGS.ACCT_SETTINGS_ID,5) AS AnalysisCode5,
+      ELP_ACCT_TRANSACTIONS.GetAnalysisCodeValue('0',GETCODEFROMLISTITEM(ELP_ACCT_EVENT_DETAIL.ANALYSIS_SRC_6_ID),ELP_ACCT_TRANS_LOG.ACCT_TRANS_LOG_ID, ELP_ACCT_EVENT_DETAIL.ANALYSIS_CODE_6, ELP_ACCT_SETTINGS.ACCOUNT_ANALYSIS_CODE_6,ELP_ACCT_SETTINGS.ACCT_SETTINGS_ID,6) AS AnalysisCode6,
+      ELP_ACCT_TRANSACTIONS.GetAnalysisCodeValue('0',GETCODEFROMLISTITEM(ELP_ACCT_EVENT_DETAIL.ANALYSIS_SRC_7_ID),ELP_ACCT_TRANS_LOG.ACCT_TRANS_LOG_ID, ELP_ACCT_EVENT_DETAIL.ANALYSIS_CODE_7, ELP_ACCT_SETTINGS.ACCOUNT_ANALYSIS_CODE_7,ELP_ACCT_SETTINGS.ACCT_SETTINGS_ID,7) AS AnalysisCode7,
+      ELP_ACCT_TRANSACTIONS.GetAnalysisCodeValue('0',GETCODEFROMLISTITEM(ELP_ACCT_EVENT_DETAIL.ANALYSIS_SRC_8_ID),ELP_ACCT_TRANS_LOG.ACCT_TRANS_LOG_ID, ELP_ACCT_EVENT_DETAIL.ANALYSIS_CODE_8, ELP_ACCT_SETTINGS.ACCOUNT_ANALYSIS_CODE_8,ELP_ACCT_SETTINGS.ACCT_SETTINGS_ID,8) AS AnalysisCode8,
+      ELP_ACCT_TRANSACTIONS.GetAnalysisCodeValue('0',GETCODEFROMLISTITEM(ELP_ACCT_EVENT_DETAIL.ANALYSIS_SRC_9_ID),ELP_ACCT_TRANS_LOG.ACCT_TRANS_LOG_ID, ELP_ACCT_EVENT_DETAIL.ANALYSIS_CODE_9, ELP_ACCT_SETTINGS.ACCOUNT_ANALYSIS_CODE_9,ELP_ACCT_SETTINGS.ACCT_SETTINGS_ID,9) AS AnalysisCode9,
+      ELP_ACCT_TRANSACTIONS.GetAnalysisCodeValue('0',GETCODEFROMLISTITEM(ELP_ACCT_EVENT_DETAIL.ANALYSIS_SRC_10_ID),ELP_ACCT_TRANS_LOG.ACCT_TRANS_LOG_ID, ELP_ACCT_EVENT_DETAIL.ANALYSIS_CODE_10, ELP_ACCT_SETTINGS.ACCOUNT_ANALYSIS_CODE_10,ELP_ACCT_SETTINGS.ACCT_SETTINGS_ID,10) AS AnalysisCode10,
+       ELP_ACCT_TRANS_LOG.ADDRESS1 AS GeneralDescription1,
+		   ELP_ACCT_TRANS_LOG.ADDRESS2 AS GeneralDescription2,
+		   '' AS GeneralDescription3,
+		   ELP_ACCT_TRANS_LOG.CITY || ELP_ACCT_TRANS_LOG.REGION AS GeneralDescription4,
+		   ELP_ACCT_TRANS_LOG.COUNTRY || DECODE(ELP_ACCT_TRANS_LOG.COUNTRY,null,'',' ') || ELP_ACCT_TRANS_LOG.ZIP AS GeneralDescription5,
+		   ELP_ACCT_TRANS_LOG.BANK_ACCOUNT_NUMBER AS GeneralDescription6,
+		   ELP_ACCT_TRANS_LOG.BANK_ID AS GeneralDescription7,
+		   '' AS GeneralDescription8,
+		   ELP_ACCT_TRANS_LOG.PAYEE AS GeneralDescription9,
+		   ELP_ACCT_TRANS_LOG.TAX_ID_CODE AS GeneralDescription10,
+		   '' AS GeneralDescription11,
+		   '' AS GeneralDescription12,
+		   '' AS GeneralDescription13,
+		   TO_CHAR(ELP_ACCT_TRANS_LOG.PROCESS_DATE,'DDMMYYYY') || '|' || TO_CHAR(ELP_ACCT_TRANS_LOG.PAYMENT_DATE,'DDMMYYYY') AS GeneralDescription14,
+		   '' AS GeneralDescription15,
+		   '' AS GeneralDescription16,
+		   '' AS GeneralDescription17,
+		   '' AS GeneralDescription18,
+		   '' AS GeneralDescription19,
+		   '' AS GeneralDescription20,
+		   '' AS GeneralDescription21,
+		   '' AS GeneralDescription22,
+		   '' AS GeneralDescription23,
+		   LIEVENT.CODE AS GeneralDescription24,
+		   :NETWORK_ID AS GeneralDescription25,
+       TO_CHAR(ELP_ACCT_TRANS_LOG.CREATED_DATE,'DDMMYYYY') AS CREATED_DATE,
+           ROUND(((COALESCE(ELP_ACCT_EVENT_DETAIL.CALCULATION,100)/100 * ELP_ACCT_TRANS_LOG.PAYMENT_AMOUNT)),2) AS payment_amount,
+           ELP_ACCT_TRANS_LOG.PROCESS_DATE AS GeneralDate1,
+           ROWNUM AS LINENUM,
+           ELP_ACCT_EVENT_DETAIL.JOURNAL_ID_SUFFIX,
+           ELP_ACCT_SETTINGS.ACCOUNT_ANALYSIS_CODE_6 AS BLOCK_OF_BUSINESS,
+           ELP_ACCT_EVENT_DETAIL.ANALYSIS_CODE_3 AS UDAK_PRIMARY,
+           0 AS REV,
+           '' AS PLACEHOLDER,
+        '' AS TRANSACTION_ID_NUMBER,
+           PAYMENT_TO_CUSTOMER,
+           ELP_ACCT_SETTINGS.ACCOUNT_ANALYSIS_CODE_6 AS VENDOR_ID,
+           ELP_DEALER.DEALER AS DEALER_CODE,
+       ELP_COMPANY.CODE AS COMPANY_CODE,
+           ELP_ACCT_TRANS_LOG.WARR_SALES_DATE,
+           ELP_ACCT_TRANS_LOG.CONTRACT_INCEPTION_DATE,
+           ELP_ACCT_TRANS_LOG.POLICY_NUMBER,
+           ELP_ACCT_TRANS_LOG.LOSS_DATE,
+           ELP_ACCT_TRANS_LOG.INVOICE_REGION,
+           ELP_ACCT_COMPANY.CODE AS ACCT_COMPANY_CODE,
+           GetCodeMappingFromListItem(ELP_ACCT_EVENT.ACCT_EVENT_TYPE_ID, ELP_COMPANY.COMPANY_ID) AS ACCT_EVENT_MAPPING,
+           NULL AS INVOICE_DATE
+    FROM
+		    ELP_ACCT_TRANS_LOG,
+		    ELP_ACCT_EVENT,
+		    ELP_ACCT_EVENT_DETAIL,
+		    ELP_ACCT_SETTINGS,
+            ELP_COMPANY,
+            ELP_LIST_ITEM LIEVENT,
+            ELP_ACCT_BUSINESS_UNIT,
+            ELP_DEALER,
+       ELP_ACCT_COMPANY
+    WHERE
+	        ELP_ACCT_COMPANY.ACCT_COMPANY_ID = ELP_COMPANY.ACCT_COMPANY_ID
+	     AND ELP_ACCT_EVENT.ACCT_COMPANY_ID = ELP_COMPANY.ACCT_COMPANY_ID
+       AND ELP_ACCT_EVENT.ACCT_EVENT_TYPE_ID = :ACCT_EVENT_TYPE_ID
+       AND ELP_ACCT_EVENT_DETAIL.ACCT_BUSINESS_UNIT_ID = ELP_ACCT_BUSINESS_UNIT.ACCT_BUSINESS_UNIT_ID
+       AND LIEVENT.LIST_ITEM_ID = ELP_ACCT_TRANS_LOG.ACCT_EVENT_TYPE_ID
+       AND ELP_ACCT_EVENT_DETAIL.FIELD_TYPE_ID = ELP_ACCT_TRANS_LOG.ACCT_EVENT_FIELD_ID
+       AND ELP_ACCT_EVENT_DETAIL.ACCT_EVENT_ID = ELP_ACCT_EVENT.ACCT_EVENT_ID
+       AND ELP_ACCT_TRANS_LOG.ACCT_EVENT_TYPE_ID = ELP_ACCT_EVENT.ACCT_EVENT_TYPE_ID
+       AND ELP_DEALER.DEALER_ID = ELP_ACCT_SETTINGS.DEALER_ID
+       AND ELP_ACCT_SETTINGS.ACCT_SETTINGS_ID = GETACCTSETTINGS(ELP_ACCT_TRANS_LOG.DEALER_ID,ELP_ACCT_TRANS_LOG.BRANCH_ID, ELP_ACCT_EVENT_DETAIL.ACCOUNT_TYPE)
+       AND ELP_ACCT_TRANS_LOG.BRANCH_ID IS NOT NULL
+       AND ELP_ACCT_BUSINESS_UNIT.ACCT_BUSINESS_UNIT_ID = :ACCT_BUSINESS_UNIT_ID
+       AND ELP_ACCT_TRANS_LOG.BUSINESS_UNIT = ELP_ACCT_BUSINESS_UNIT.BUSINESS_UNIT
+       AND ELP_ACCT_TRANS_LOG.COMPANY_ID = ELP_COMPANY.COMPANY_ID
+       AND ELP_COMPANY.COMPANY_ID = :COMPANY_ID
+       --dynamic_where_clause
+        ]]>
+  </JOURNAL_INV>
+  <JOURNAL_CLAIM_AP>
+    <![CDATA[ 
+    SELECT
+       ELP_ACCT_EVENT_DETAIL.ACCOUNT_CODE  AS AccountCode,
+       ELP_ACCT_EVENT_DETAIL.ACCOUNT_CODE  AS OriginalAccountCode,
+       ELP_ACCT_TRANS_LOG.ACCOUNT_NUMBER AS TaxOverrideCode,
+       ELP_ACCT_EVENT_DETAIL.DEBIT_CREDIT DebitCredit,
+       SUBSTR(ELP_ACCT_TRANSACTIONS.GetAnalysisCodeValue('1',GETCODEFROMLISTITEM(ELP_ACCT_EVENT_DETAIL.DESCRIPTION_SRC_ID),ELP_ACCT_TRANS_LOG.ACCT_TRANS_LOG_ID, ELP_ACCT_EVENT_DETAIL.DESCRIPTION, '',ELP_ACCT_SETTINGS.ACCT_SETTINGS_ID), 1,49) AS Description,
+       ELP_ACCT_EVENT_DETAIL.JOURNAL_TYPE AS JournalType,
+       SUM(ROUND(((COALESCE(ELP_ACCT_EVENT_DETAIL.CALCULATION,100)/100 * ELP_ACCT_TRANS_LOG.PAYMENT_AMOUNT)),2)) AS TransactionAmount,
+       TO_CHAR(ELP_ACCT_TRANS_LOG.PAYMENT_DATE,'DDMMYYYY') AS TransactionDate,
+       ELP_ACCT_TRANS_LOG.PAYMENT_NUMBER  AS TransactionReference,
+       ELP_ACCT_TRANSACTIONS.GetAnalysisCodeValue('0',GETCODEFROMLISTITEM(ELP_ACCT_EVENT_DETAIL.ANALYSIS_SRC_1_ID),ELP_ACCT_TRANS_LOG.ACCT_TRANS_LOG_ID, ELP_ACCT_EVENT_DETAIL.ANALYSIS_CODE_1, ELP_ACCT_SETTINGS.ACCOUNT_ANALYSIS_CODE_1,ELP_ACCT_SETTINGS.ACCT_SETTINGS_ID,1) AS AnalysisCode1,
+       ELP_ACCT_TRANSACTIONS.GetAnalysisCodeValue('0',GETCODEFROMLISTITEM(ELP_ACCT_EVENT_DETAIL.ANALYSIS_SRC_2_ID),ELP_ACCT_TRANS_LOG.ACCT_TRANS_LOG_ID, ELP_ACCT_EVENT_DETAIL.ANALYSIS_CODE_2, ELP_ACCT_SETTINGS.ACCOUNT_ANALYSIS_CODE_2,ELP_ACCT_SETTINGS.ACCT_SETTINGS_ID,2) AS AnalysisCode2,
+       ELP_ACCT_TRANSACTIONS.GetAnalysisCodeValue('0',GETCODEFROMLISTITEM(ELP_ACCT_EVENT_DETAIL.ANALYSIS_SRC_3_ID),ELP_ACCT_TRANS_LOG.ACCT_TRANS_LOG_ID, ELP_ACCT_EVENT_DETAIL.ANALYSIS_CODE_3, ELP_ACCT_SETTINGS.ACCOUNT_ANALYSIS_CODE_3,ELP_ACCT_SETTINGS.ACCT_SETTINGS_ID,3) AS AnalysisCode3,
+       ELP_ACCT_TRANSACTIONS.GetAnalysisCodeValue('0',GETCODEFROMLISTITEM(ELP_ACCT_EVENT_DETAIL.ANALYSIS_SRC_4_ID),ELP_ACCT_TRANS_LOG.ACCT_TRANS_LOG_ID, ELP_ACCT_EVENT_DETAIL.ANALYSIS_CODE_4, ELP_ACCT_SETTINGS.ACCOUNT_ANALYSIS_CODE_4,ELP_ACCT_SETTINGS.ACCT_SETTINGS_ID,4) AS AnalysisCode4,
+       ELP_ACCT_TRANSACTIONS.GetAnalysisCodeValue('0',GETCODEFROMLISTITEM(ELP_ACCT_EVENT_DETAIL.ANALYSIS_SRC_5_ID),ELP_ACCT_TRANS_LOG.ACCT_TRANS_LOG_ID, ELP_ACCT_EVENT_DETAIL.ANALYSIS_CODE_5, ELP_ACCT_SETTINGS.ACCOUNT_ANALYSIS_CODE_5,ELP_ACCT_SETTINGS.ACCT_SETTINGS_ID,5) AS AnalysisCode5,
+       ELP_ACCT_TRANSACTIONS.GetAnalysisCodeValue('0',GETCODEFROMLISTITEM(ELP_ACCT_EVENT_DETAIL.ANALYSIS_SRC_6_ID),ELP_ACCT_TRANS_LOG.ACCT_TRANS_LOG_ID, ELP_ACCT_EVENT_DETAIL.ANALYSIS_CODE_6, ELP_ACCT_SETTINGS.ACCOUNT_ANALYSIS_CODE_6,ELP_ACCT_SETTINGS.ACCT_SETTINGS_ID,6) AS AnalysisCode6,
+       ELP_ACCT_TRANSACTIONS.GetAnalysisCodeValue('0',GETCODEFROMLISTITEM(ELP_ACCT_EVENT_DETAIL.ANALYSIS_SRC_7_ID),ELP_ACCT_TRANS_LOG.ACCT_TRANS_LOG_ID, ELP_ACCT_EVENT_DETAIL.ANALYSIS_CODE_7, ELP_ACCT_SETTINGS.ACCOUNT_ANALYSIS_CODE_7,ELP_ACCT_SETTINGS.ACCT_SETTINGS_ID,7) AS AnalysisCode7,
+       ELP_ACCT_TRANSACTIONS.GetAnalysisCodeValue('0',GETCODEFROMLISTITEM(ELP_ACCT_EVENT_DETAIL.ANALYSIS_SRC_8_ID),ELP_ACCT_TRANS_LOG.ACCT_TRANS_LOG_ID, ELP_ACCT_EVENT_DETAIL.ANALYSIS_CODE_8, ELP_ACCT_SETTINGS.ACCOUNT_ANALYSIS_CODE_8,ELP_ACCT_SETTINGS.ACCT_SETTINGS_ID,8) AS AnalysisCode8,
+       ELP_ACCT_TRANSACTIONS.GetAnalysisCodeValue('0',GETCODEFROMLISTITEM(ELP_ACCT_EVENT_DETAIL.ANALYSIS_SRC_9_ID),ELP_ACCT_TRANS_LOG.ACCT_TRANS_LOG_ID, ELP_ACCT_EVENT_DETAIL.ANALYSIS_CODE_9, ELP_ACCT_SETTINGS.ACCOUNT_ANALYSIS_CODE_9,ELP_ACCT_SETTINGS.ACCT_SETTINGS_ID,9) AS AnalysisCode9,
+       ELP_ACCT_TRANSACTIONS.GetAnalysisCodeValue('0',GETCODEFROMLISTITEM(ELP_ACCT_EVENT_DETAIL.ANALYSIS_SRC_10_ID),ELP_ACCT_TRANS_LOG.ACCT_TRANS_LOG_ID, ELP_ACCT_EVENT_DETAIL.ANALYSIS_CODE_10, ELP_ACCT_SETTINGS.ACCOUNT_ANALYSIS_CODE_10,ELP_ACCT_SETTINGS.ACCT_SETTINGS_ID,10) AS AnalysisCode10,
+       ELP_ACCT_TRANS_LOG.ADDRESS1 AS GeneralDescription1,
+		   ELP_ACCT_TRANS_LOG.ADDRESS2 AS GeneralDescription2,
+		   ELP_ACCT_TRANS_LOG.PAYEE AS GeneralDescription9,
+		   LIEVENT.CODE AS GeneralDescription24,
+       '' AS LINENUM,
+       nvl(ELP_ACCT_TRANS_LOG.LINE_NUMBER, '') AS LINE_NUM,
+       ELP_ACCT_SETTINGS.ACCOUNT_ANALYSIS_CODE_6 AS BLOCK_OF_BUSINESS,
+       ELP_ACCT_EVENT_DETAIL.ANALYSIS_CODE_3 AS UDAK_PRIMARY,
+       TRUNC(SYSDATE) AS CURRENT_DATE,
+       ELP_ACCT_TRANS_LOG.CITY,
+       ELP_ACCT_TRANS_LOG.REGION,
+       (select code from elp_country where UPPER(description) = UPPER(ELP_ACCT_TRANS_LOG.COUNTRY)) as COUNTRY,
+       REPLACE(ELP_ACCT_TRANS_LOG.ZIP,'-','') AS ZIP,
+       ELP_ACCT_BUSINESS_UNIT.CODE AS CONTROL_GROUP,
+       TRANSACTION_ID_NUMBER,
+       PAYMENT_TO_CUSTOMER,
+       DECODE(PAYMENT_TO_CUSTOMER,'Y',ELP_ACCT_TRANS_LOG.VENDOR_NUM_ACCT,ELP_ACCT_SETTINGS_SS.ACCOUNT_ANALYSIS_CODE_6) AS VENDOR_ID,
+       row_number() over (partition by
+       						DECODE(PAYMENT_TO_CUSTOMER,'Y',(TO_CHAR(SYSDATE,'DDD') || dbms_random.string('U', 4)),ELP_ACCT_SETTINGS_SS.ACCOUNT_ANALYSIS_CODE_6),
+       						ELP_ACCT_TRANS_LOG.PAYMENT_NUMBER,
+       						TO_CHAR(ELP_ACCT_TRANS_LOG.PAYMENT_DATE,'DDMMYYYY')
+       						order by '1') AS INVOICE_LINE_NUMBER,
+       '' AS CERTIFICATE,
+       '' AS DEALER_NAME,
+       DECODE(ELP_DISBURSEMENT.PAYMENT_METHOD, null, ELITA.GetCodeMappingFromListItem(ELP_ACCT_BUSINESS_UNIT.PAYMENT_METHOD_ID, ELP_COMPANY.COMPANY_ID),ELITA.GetCodeMappingFromListItem(GetItemIdFromListAndItem(ELP_DISBURSEMENT.PAYMENT_METHOD,LIEVENT.code), ELP_COMPANY.COMPANY_ID)) AS PAYMENT_METHOD,
+       ELP_ACCT_TRANS_LOG.INVOICE_REGION,
+       ELP_COMPANY.CODE AS COMPANY_CODE,
+		   ELP_ACCT_TRANS_LOG.CURRENCY AS CURRENCYCODE,
+       ELP_ACCT_COMPANY.CODE AS ACCT_COMPANY_CODE,
+       GetCodeMappingFromListItem(ELP_ACCT_EVENT.ACCT_EVENT_TYPE_ID, ELP_COMPANY.COMPANY_ID) AS ACCT_EVENT_MAPPING,
+       TO_CHAR(ELP_DISBURSEMENT.INVOICE_DATE,'DDMMYYYY') AS INVOICE_DATE,
+       null as BRANCH_NAME,
+       null as BANK_NAME,
+       null as BANK_SORT_CODE,
+       null as BANK_LOOKUP_CODE,
+       null as BANK_SUB_CODE,
+       null as IBAN_NUMBER,
+       NULL AS ACCOUNT_NAME       
+    FROM
+		   ELP_ACCT_TRANS_LOG,
+		   ELP_ACCT_EVENT,
+		   ELP_ACCT_EVENT_DETAIL,
+		   ELP_ACCT_SETTINGS,
+		   ELP_ACCT_SETTINGS ELP_ACCT_SETTINGS_SS,
+       ELP_COMPANY,
+       ELP_LIST_ITEM LIEVENT,
+       ELP_ACCT_BUSINESS_UNIT,
+       ELP_DISBURSEMENT,
+       ELP_ACCT_COMPANY
+    WHERE
+	         ELP_ACCT_COMPANY.ACCT_COMPANY_ID = ELP_COMPANY.ACCT_COMPANY_ID
+	     AND ELP_ACCT_EVENT.ACCT_COMPANY_ID = ELP_COMPANY.ACCT_COMPANY_ID
+       AND ELP_ACCT_EVENT.ACCT_EVENT_TYPE_ID = :ACCT_EVENT_TYPE_ID
+       AND ELP_ACCT_EVENT_DETAIL.ACCT_BUSINESS_UNIT_ID = ELP_ACCT_BUSINESS_UNIT.ACCT_BUSINESS_UNIT_ID
+       AND HEXTORAW(ELP_ACCT_TRANS_LOG.AUTHORIZATION_NUMBER) = ELP_DISBURSEMENT.DISBURSEMENT_ID
+       AND LIEVENT.LIST_ITEM_ID = ELP_ACCT_TRANS_LOG.ACCT_EVENT_TYPE_ID
+       AND NVL(ELP_ACCT_EVENT_DETAIL.BUSINESS_ENTITY_ID,hextoraw('1')) = NVL(ELP_ACCT_TRANSACTIONS.GetBusinessEntity(ELP_ACCT_BUSINESS_UNIT.ACCT_BUSINESS_UNIT_ID,ELP_ACCT_TRANS_LOG.COVERAGE_TYPE,ELP_ACCT_TRANS_LOG.INVOICE_REGION),hextoraw('1'))
+       AND ELP_ACCT_EVENT_DETAIL.FIELD_TYPE_ID = ELP_ACCT_TRANS_LOG.ACCT_EVENT_FIELD_ID
+       AND ELP_ACCT_EVENT_DETAIL.ACCT_EVENT_ID = ELP_ACCT_EVENT.ACCT_EVENT_ID
+       AND ELP_ACCT_TRANS_LOG.ACCT_EVENT_TYPE_ID = ELP_ACCT_EVENT.ACCT_EVENT_TYPE_ID
+       AND ELP_ACCT_SETTINGS.ACCT_SETTINGS_ID = GETACCTSETTINGS(ELP_ACCT_TRANS_LOG.DEALER_ID,null, '0')
+       AND ELP_ACCT_TRANS_LOG.BRANCH_ID IS NULL
+       AND ELP_ACCT_BUSINESS_UNIT.ACCT_BUSINESS_UNIT_ID = :ACCT_BUSINESS_UNIT_ID
+       AND ELP_ACCT_TRANS_LOG.BUSINESS_UNIT = ELP_ACCT_BUSINESS_UNIT.BUSINESS_UNIT
+       AND ELP_ACCT_TRANS_LOG.COMPANY_ID = ELP_COMPANY.COMPANY_ID
+       AND ELP_COMPANY.COMPANY_ID = :COMPANY_ID
+       AND ELP_ACCT_SETTINGS_SS.SERVICE_CENTER_ID (+)= ELP_ACCT_TRANS_LOG.SERVICE_CENTER_ID
+       AND (
+       		   (ELP_ACCT_TRANS_LOG.PAYMENT_TO_CUSTOMER = 'Y')
+       	     OR
+       		   (COALESCE(ELP_ACCT_TRANS_LOG.PAYMENT_TO_CUSTOMER,'N') = 'N' AND ELP_ACCT_SETTINGS_SS.SERVICE_CENTER_ID IS NOT NULL)
+       		 )
+       AND ELP_ACCT_EVENT_DETAIL.DEBIT_CREDIT = 'D' 
+        --dynamic_where_clause
+    GROUP BY
+       ELP_ACCT_EVENT_DETAIL.ACCOUNT_CODE,
+       ELP_ACCT_TRANS_LOG.ACCOUNT_NUMBER,
+       ELP_ACCT_EVENT_DETAIL.DEBIT_CREDIT,
+       SUBSTR(ELP_ACCT_TRANSACTIONS.GetAnalysisCodeValue('1',GETCODEFROMLISTITEM(ELP_ACCT_EVENT_DETAIL.DESCRIPTION_SRC_ID),ELP_ACCT_TRANS_LOG.ACCT_TRANS_LOG_ID, ELP_ACCT_EVENT_DETAIL.DESCRIPTION, '',ELP_ACCT_SETTINGS.ACCT_SETTINGS_ID), 1,49),
+       ELP_ACCT_EVENT_DETAIL.JOURNAL_TYPE,
+       TO_CHAR(ELP_ACCT_TRANS_LOG.PAYMENT_DATE,'DDMMYYYY'),
+       ELP_ACCT_TRANS_LOG.PAYMENT_NUMBER,
+       ELP_ACCT_TRANSACTIONS.GetAnalysisCodeValue('0',GETCODEFROMLISTITEM(ELP_ACCT_EVENT_DETAIL.ANALYSIS_SRC_1_ID),ELP_ACCT_TRANS_LOG.ACCT_TRANS_LOG_ID, ELP_ACCT_EVENT_DETAIL.ANALYSIS_CODE_1, ELP_ACCT_SETTINGS.ACCOUNT_ANALYSIS_CODE_1,ELP_ACCT_SETTINGS.ACCT_SETTINGS_ID,1),
+       ELP_ACCT_TRANSACTIONS.GetAnalysisCodeValue('0',GETCODEFROMLISTITEM(ELP_ACCT_EVENT_DETAIL.ANALYSIS_SRC_2_ID),ELP_ACCT_TRANS_LOG.ACCT_TRANS_LOG_ID, ELP_ACCT_EVENT_DETAIL.ANALYSIS_CODE_2, ELP_ACCT_SETTINGS.ACCOUNT_ANALYSIS_CODE_2,ELP_ACCT_SETTINGS.ACCT_SETTINGS_ID,2),
+       ELP_ACCT_TRANSACTIONS.GetAnalysisCodeValue('0',GETCODEFROMLISTITEM(ELP_ACCT_EVENT_DETAIL.ANALYSIS_SRC_3_ID),ELP_ACCT_TRANS_LOG.ACCT_TRANS_LOG_ID, ELP_ACCT_EVENT_DETAIL.ANALYSIS_CODE_3, ELP_ACCT_SETTINGS.ACCOUNT_ANALYSIS_CODE_3,ELP_ACCT_SETTINGS.ACCT_SETTINGS_ID,3),
+       ELP_ACCT_TRANSACTIONS.GetAnalysisCodeValue('0',GETCODEFROMLISTITEM(ELP_ACCT_EVENT_DETAIL.ANALYSIS_SRC_4_ID),ELP_ACCT_TRANS_LOG.ACCT_TRANS_LOG_ID, ELP_ACCT_EVENT_DETAIL.ANALYSIS_CODE_4, ELP_ACCT_SETTINGS.ACCOUNT_ANALYSIS_CODE_4,ELP_ACCT_SETTINGS.ACCT_SETTINGS_ID,4),
+       ELP_ACCT_TRANSACTIONS.GetAnalysisCodeValue('0',GETCODEFROMLISTITEM(ELP_ACCT_EVENT_DETAIL.ANALYSIS_SRC_5_ID),ELP_ACCT_TRANS_LOG.ACCT_TRANS_LOG_ID, ELP_ACCT_EVENT_DETAIL.ANALYSIS_CODE_5, ELP_ACCT_SETTINGS.ACCOUNT_ANALYSIS_CODE_5,ELP_ACCT_SETTINGS.ACCT_SETTINGS_ID,5),
+       ELP_ACCT_TRANSACTIONS.GetAnalysisCodeValue('0',GETCODEFROMLISTITEM(ELP_ACCT_EVENT_DETAIL.ANALYSIS_SRC_6_ID),ELP_ACCT_TRANS_LOG.ACCT_TRANS_LOG_ID, ELP_ACCT_EVENT_DETAIL.ANALYSIS_CODE_6, ELP_ACCT_SETTINGS.ACCOUNT_ANALYSIS_CODE_6,ELP_ACCT_SETTINGS.ACCT_SETTINGS_ID,6),
+       ELP_ACCT_TRANSACTIONS.GetAnalysisCodeValue('0',GETCODEFROMLISTITEM(ELP_ACCT_EVENT_DETAIL.ANALYSIS_SRC_7_ID),ELP_ACCT_TRANS_LOG.ACCT_TRANS_LOG_ID, ELP_ACCT_EVENT_DETAIL.ANALYSIS_CODE_7, ELP_ACCT_SETTINGS.ACCOUNT_ANALYSIS_CODE_7,ELP_ACCT_SETTINGS.ACCT_SETTINGS_ID,7),
+       ELP_ACCT_TRANSACTIONS.GetAnalysisCodeValue('0',GETCODEFROMLISTITEM(ELP_ACCT_EVENT_DETAIL.ANALYSIS_SRC_8_ID),ELP_ACCT_TRANS_LOG.ACCT_TRANS_LOG_ID, ELP_ACCT_EVENT_DETAIL.ANALYSIS_CODE_8, ELP_ACCT_SETTINGS.ACCOUNT_ANALYSIS_CODE_8,ELP_ACCT_SETTINGS.ACCT_SETTINGS_ID,8),
+       ELP_ACCT_TRANSACTIONS.GetAnalysisCodeValue('0',GETCODEFROMLISTITEM(ELP_ACCT_EVENT_DETAIL.ANALYSIS_SRC_9_ID),ELP_ACCT_TRANS_LOG.ACCT_TRANS_LOG_ID, ELP_ACCT_EVENT_DETAIL.ANALYSIS_CODE_9, ELP_ACCT_SETTINGS.ACCOUNT_ANALYSIS_CODE_9,ELP_ACCT_SETTINGS.ACCT_SETTINGS_ID,9),
+       ELP_ACCT_TRANSACTIONS.GetAnalysisCodeValue('0',GETCODEFROMLISTITEM(ELP_ACCT_EVENT_DETAIL.ANALYSIS_SRC_10_ID),ELP_ACCT_TRANS_LOG.ACCT_TRANS_LOG_ID, ELP_ACCT_EVENT_DETAIL.ANALYSIS_CODE_10, ELP_ACCT_SETTINGS.ACCOUNT_ANALYSIS_CODE_10,ELP_ACCT_SETTINGS.ACCT_SETTINGS_ID,10),
+		   ELP_ACCT_TRANS_LOG.ADDRESS1,
+		   ELP_ACCT_TRANS_LOG.ADDRESS2,
+		   ELP_ACCT_TRANS_LOG.PAYEE,
+		   LIEVENT.CODE,
+       ELP_ACCT_SETTINGS.ACCOUNT_ANALYSIS_CODE_6,
+       ELP_ACCT_EVENT_DETAIL.ANALYSIS_CODE_3,
+       TRUNC(SYSDATE),
+       ELP_ACCT_TRANS_LOG.CITY,
+       ELP_ACCT_TRANS_LOG.REGION,
+       ELP_ACCT_TRANS_LOG.COUNTRY,
+       ELP_ACCT_TRANS_LOG.ZIP,
+       ELP_ACCT_BUSINESS_UNIT.CODE,
+       TRANSACTION_ID_NUMBER,
+       PAYMENT_TO_CUSTOMER,
+       ELP_ACCT_SETTINGS_SS.ACCOUNT_ANALYSIS_CODE_6,
+       DECODE(PAYMENT_TO_CUSTOMER,'Y',ELP_ACCT_TRANS_LOG.VENDOR_NUM_ACCT,ELP_ACCT_SETTINGS_SS.ACCOUNT_ANALYSIS_CODE_6),
+       DECODE(ELP_DISBURSEMENT.PAYMENT_METHOD, null, ELITA.GetCodeMappingFromListItem(ELP_ACCT_BUSINESS_UNIT.PAYMENT_METHOD_ID, ELP_COMPANY.COMPANY_ID), ELITA.GetCodeMappingFromListItem(GetItemIdFromListAndItem(ELP_DISBURSEMENT.PAYMENT_METHOD,LIEVENT.code), ELP_COMPANY.COMPANY_ID)),
+       ELP_ACCT_TRANS_LOG.INVOICE_REGION,
+       ELP_COMPANY.CODE,
+		   ELP_ACCT_TRANS_LOG.CURRENCY,
+       ELP_ACCT_COMPANY.CODE,
+       GetCodeMappingFromListItem(ELP_ACCT_EVENT.ACCT_EVENT_TYPE_ID, ELP_COMPANY.COMPANY_ID),
+       TO_CHAR(ELP_DISBURSEMENT.INVOICE_DATE,'DDMMYYYY'),
+       ELP_ACCT_TRANS_LOG.LINE_NUMBER
+    ]]>
+  </JOURNAL_CLAIM_AP>
+  <JOURNAL_REFUNDS_AP>
+    <![CDATA[
+   SELECT
+       ELP_ACCT_EVENT_DETAIL.ACCOUNT_CODE  AS AccountCode,
+       ELP_ACCT_EVENT_DETAIL.ACCOUNT_CODE  AS OriginalAccountCode,
+       ELP_ACCT_TRANS_LOG.ACCOUNT_NUMBER AS TaxOverrideCode,
+       ELP_ACCT_EVENT_DETAIL.DEBIT_CREDIT DebitCredit,
+       SUBSTR(ELP_ACCT_TRANSACTIONS.GetAnalysisCodeValue('1',GETCODEFROMLISTITEM(ELP_ACCT_EVENT_DETAIL.DESCRIPTION_SRC_ID),ELP_ACCT_TRANS_LOG.ACCT_TRANS_LOG_ID, ELP_ACCT_EVENT_DETAIL.DESCRIPTION, '',ELP_ACCT_SETTINGS.ACCT_SETTINGS_ID), 1,49) AS Description,
+       ELP_ACCT_EVENT_DETAIL.JOURNAL_TYPE AS JournalType,
+       ABS(SUM(ROUND(((COALESCE(ELP_ACCT_EVENT_DETAIL.CALCULATION,100)/100 * ELP_ACCT_TRANS_LOG.PAYMENT_AMOUNT)),2))) AS TransactionAmount,
+       TO_CHAR(ELP_ACCT_TRANS_LOG.PAYMENT_DATE,'DDMMYYYY') AS TransactionDate,
+       ''  AS TransactionReference,
+      ELP_ACCT_TRANSACTIONS.GetAnalysisCodeValue('0',GETCODEFROMLISTITEM(ELP_ACCT_EVENT_DETAIL.ANALYSIS_SRC_1_ID),ELP_ACCT_TRANS_LOG.ACCT_TRANS_LOG_ID, ELP_ACCT_EVENT_DETAIL.ANALYSIS_CODE_1, ELP_ACCT_SETTINGS.ACCOUNT_ANALYSIS_CODE_1,ELP_ACCT_SETTINGS.ACCT_SETTINGS_ID,1) AS AnalysisCode1,
+      ELP_ACCT_TRANSACTIONS.GetAnalysisCodeValue('0',GETCODEFROMLISTITEM(ELP_ACCT_EVENT_DETAIL.ANALYSIS_SRC_2_ID),ELP_ACCT_TRANS_LOG.ACCT_TRANS_LOG_ID, ELP_ACCT_EVENT_DETAIL.ANALYSIS_CODE_2, ELP_ACCT_SETTINGS.ACCOUNT_ANALYSIS_CODE_2,ELP_ACCT_SETTINGS.ACCT_SETTINGS_ID,2) AS AnalysisCode2,
+      ELP_ACCT_TRANSACTIONS.GetAnalysisCodeValue('0',GETCODEFROMLISTITEM(ELP_ACCT_EVENT_DETAIL.ANALYSIS_SRC_3_ID),ELP_ACCT_TRANS_LOG.ACCT_TRANS_LOG_ID, ELP_ACCT_EVENT_DETAIL.ANALYSIS_CODE_3, ELP_ACCT_SETTINGS.ACCOUNT_ANALYSIS_CODE_3,ELP_ACCT_SETTINGS.ACCT_SETTINGS_ID,3) AS AnalysisCode3,
+      ELP_ACCT_TRANSACTIONS.GetAnalysisCodeValue('0',GETCODEFROMLISTITEM(ELP_ACCT_EVENT_DETAIL.ANALYSIS_SRC_4_ID),ELP_ACCT_TRANS_LOG.ACCT_TRANS_LOG_ID, ELP_ACCT_EVENT_DETAIL.ANALYSIS_CODE_4, ELP_ACCT_SETTINGS.ACCOUNT_ANALYSIS_CODE_4,ELP_ACCT_SETTINGS.ACCT_SETTINGS_ID,4) AS AnalysisCode4,
+      ELP_ACCT_TRANSACTIONS.GetAnalysisCodeValue('0',GETCODEFROMLISTITEM(ELP_ACCT_EVENT_DETAIL.ANALYSIS_SRC_5_ID),ELP_ACCT_TRANS_LOG.ACCT_TRANS_LOG_ID, ELP_ACCT_EVENT_DETAIL.ANALYSIS_CODE_5, ELP_ACCT_SETTINGS.ACCOUNT_ANALYSIS_CODE_5,ELP_ACCT_SETTINGS.ACCT_SETTINGS_ID,5) AS AnalysisCode5,
+      ELP_ACCT_TRANSACTIONS.GetAnalysisCodeValue('0',GETCODEFROMLISTITEM(ELP_ACCT_EVENT_DETAIL.ANALYSIS_SRC_6_ID),ELP_ACCT_TRANS_LOG.ACCT_TRANS_LOG_ID, ELP_ACCT_EVENT_DETAIL.ANALYSIS_CODE_6, ELP_ACCT_SETTINGS.ACCOUNT_ANALYSIS_CODE_6,ELP_ACCT_SETTINGS.ACCT_SETTINGS_ID,6) AS AnalysisCode6,
+      ELP_ACCT_TRANSACTIONS.GetAnalysisCodeValue('0',GETCODEFROMLISTITEM(ELP_ACCT_EVENT_DETAIL.ANALYSIS_SRC_7_ID),ELP_ACCT_TRANS_LOG.ACCT_TRANS_LOG_ID, ELP_ACCT_EVENT_DETAIL.ANALYSIS_CODE_7, ELP_ACCT_SETTINGS.ACCOUNT_ANALYSIS_CODE_7,ELP_ACCT_SETTINGS.ACCT_SETTINGS_ID,7) AS AnalysisCode7,
+      ELP_ACCT_TRANSACTIONS.GetAnalysisCodeValue('0',GETCODEFROMLISTITEM(ELP_ACCT_EVENT_DETAIL.ANALYSIS_SRC_8_ID),ELP_ACCT_TRANS_LOG.ACCT_TRANS_LOG_ID, ELP_ACCT_EVENT_DETAIL.ANALYSIS_CODE_8, ELP_ACCT_SETTINGS.ACCOUNT_ANALYSIS_CODE_8,ELP_ACCT_SETTINGS.ACCT_SETTINGS_ID,8) AS AnalysisCode8,
+      ELP_ACCT_TRANSACTIONS.GetAnalysisCodeValue('0',GETCODEFROMLISTITEM(ELP_ACCT_EVENT_DETAIL.ANALYSIS_SRC_9_ID),ELP_ACCT_TRANS_LOG.ACCT_TRANS_LOG_ID, ELP_ACCT_EVENT_DETAIL.ANALYSIS_CODE_9, ELP_ACCT_SETTINGS.ACCOUNT_ANALYSIS_CODE_9,ELP_ACCT_SETTINGS.ACCT_SETTINGS_ID,9) AS AnalysisCode9,
+      ELP_ACCT_TRANSACTIONS.GetAnalysisCodeValue('0',GETCODEFROMLISTITEM(ELP_ACCT_EVENT_DETAIL.ANALYSIS_SRC_10_ID),ELP_ACCT_TRANS_LOG.ACCT_TRANS_LOG_ID, ELP_ACCT_EVENT_DETAIL.ANALYSIS_CODE_10, ELP_ACCT_SETTINGS.ACCOUNT_ANALYSIS_CODE_10,ELP_ACCT_SETTINGS.ACCT_SETTINGS_ID,10) AS AnalysisCode10,
+     ELP_ACCT_TRANS_LOG.ADDRESS1 AS GeneralDescription1,
+		   ELP_ACCT_TRANS_LOG.ADDRESS2 AS GeneralDescription2,
+		   ELP_ACCT_TRANS_LOG.PAYEE AS GeneralDescription9,
+		   LIEVENT.CODE AS GeneralDescription24,
+       '' AS LINENUM,
+       ELP_ACCT_SETTINGS.ACCOUNT_ANALYSIS_CODE_6 AS BLOCK_OF_BUSINESS,
+       ELP_ACCT_EVENT_DETAIL.ANALYSIS_CODE_3 AS UDAK_PRIMARY,
+       TRUNC(SYSDATE) AS CURRENT_DATE,
+       ELP_ACCT_TRANS_LOG.CITY,
+       ELP_ACCT_TRANS_LOG.REGION,
+       (select code from elp_country where UPPER(description) = UPPER(ELP_ACCT_TRANS_LOG.COUNTRY)) as COUNTRY,
+       REPLACE(ELP_ACCT_TRANS_LOG.ZIP,'-','') AS ZIP,
+       ELP_ACCT_BUSINESS_UNIT.CODE AS CONTROL_GROUP,
+       TRANSACTION_ID_NUMBER,
+       PAYMENT_TO_CUSTOMER,
+       TO_CHAR(SYSDATE,'DDD') || dbms_random.string('U', 4) AS VENDOR_ID,
+       1 AS INVOICE_LINE_NUMBER,
+       ELP_ACCT_TRANS_LOG.CERTIFICATE,
+       SUBSTR(ELP_DEALER.DEALER_NAME,1,37) AS DEALER_NAME,
+       'PRSC' AS PAYMENT_METHOD,
+       ELP_ACCT_TRANS_LOG.INVOICE_REGION,
+       ELP_COMPANY.CODE AS COMPANY_CODE,
+       ELP_ACCT_COMPANY.CODE AS ACCT_COMPANY_CODE,
+       GetCodeMappingFromListItem(ELP_ACCT_EVENT.ACCT_EVENT_TYPE_ID, ELP_COMPANY.COMPANY_ID) AS ACCT_EVENT_MAPPING,
+       ELP_ACCT_TRANS_LOG.CURRENCY AS CurrencyCode,
+       NULL AS INVOICE_DATE,
+       null as BRANCH_NAME,
+       null as BANK_NAME,
+       null as BANK_SORT_CODE,
+       null as BANK_LOOKUP_CODE,
+       null as BANK_SUB_CODE,
+       null as IBAN_NUMBER,
+       NULL AS ACCOUNT_NAME
+    FROM
+		    ELP_ACCT_TRANS_LOG,
+		    ELP_ACCT_EVENT,
+		    ELP_ACCT_EVENT_DETAIL,
+		    ELP_ACCT_SETTINGS,
+        ELP_COMPANY,
+        ELP_LIST_ITEM LIEVENT,
+        ELP_ACCT_BUSINESS_UNIT,
+        ELP_DEALER,
+       ELP_ACCT_COMPANY
+    WHERE
+	        ELP_ACCT_COMPANY.ACCT_COMPANY_ID = ELP_COMPANY.ACCT_COMPANY_ID
+	     AND ELP_ACCT_EVENT.ACCT_COMPANY_ID = ELP_COMPANY.ACCT_COMPANY_ID
+       AND ELP_ACCT_EVENT.ACCT_EVENT_TYPE_ID = :ACCT_EVENT_TYPE_ID
+       AND ELP_ACCT_EVENT_DETAIL.ACCT_BUSINESS_UNIT_ID = ELP_ACCT_BUSINESS_UNIT.ACCT_BUSINESS_UNIT_ID
+       AND LIEVENT.LIST_ITEM_ID = ELP_ACCT_TRANS_LOG.ACCT_EVENT_TYPE_ID
+       AND ELP_ACCT_EVENT_DETAIL.FIELD_TYPE_ID = ELP_ACCT_TRANS_LOG.ACCT_EVENT_FIELD_ID
+       AND NVL(ELP_ACCT_EVENT_DETAIL.BUSINESS_ENTITY_ID,hextoraw('1')) = NVL(ELP_ACCT_TRANSACTIONS.GetBusinessEntity(ELP_ACCT_BUSINESS_UNIT.ACCT_BUSINESS_UNIT_ID,ELP_ACCT_TRANS_LOG.COVERAGE_TYPE,ELP_ACCT_TRANS_LOG.INVOICE_REGION),hextoraw('1'))
+       AND ELP_ACCT_EVENT_DETAIL.ACCT_EVENT_ID = ELP_ACCT_EVENT.ACCT_EVENT_ID
+       AND ELP_ACCT_TRANS_LOG.ACCT_EVENT_TYPE_ID = ELP_ACCT_EVENT.ACCT_EVENT_TYPE_ID
+       AND ELP_DEALER.DEALER_ID = ELP_ACCT_SETTINGS.DEALER_ID
+       AND ELP_ACCT_SETTINGS.ACCT_SETTINGS_ID = GETACCTSETTINGS(ELP_ACCT_TRANS_LOG.DEALER_ID,null, ELP_ACCT_EVENT_DETAIL.ACCOUNT_TYPE)
+       AND ELP_ACCT_TRANS_LOG.BRANCH_ID IS NULL
+       AND ELP_ACCT_BUSINESS_UNIT.ACCT_BUSINESS_UNIT_ID = :ACCT_BUSINESS_UNIT_ID
+       AND ELP_ACCT_TRANS_LOG.BUSINESS_UNIT = ELP_ACCT_BUSINESS_UNIT.BUSINESS_UNIT
+       AND ELP_ACCT_TRANS_LOG.COMPANY_ID = ELP_COMPANY.COMPANY_ID
+       AND ELP_COMPANY.COMPANY_ID = :COMPANY_ID
+       AND ELP_ACCT_EVENT_DETAIL.DEBIT_CREDIT = 'D'
+       --REQ-5396 start
+	     and ( (ELP_ACCT_EVENT_DETAIL.include_exclude_ind = 'E'
+		            and ( ELP_ACCT_TRANS_LOG.dealer_id not in (select dealer_id from elita.ELP_ACCT_EVENT_DETAIL_INCEXC where acct_event_detail_id = ELP_ACCT_EVENT_DETAIL.acct_event_detail_id and coverage_type_id is null)
+				            and ELP_ACCT_TRANS_LOG.coverage_type not in (select getcodefromlistitem(coverage_type_id) from elita.ELP_ACCT_EVENT_DETAIL_INCEXC where acct_event_detail_id = ELP_ACCT_EVENT_DETAIL.acct_event_detail_id and dealer_id is null)
+				            and (ELP_ACCT_TRANS_LOG.dealer_id, ELP_ACCT_TRANS_LOG.coverage_type) not in (select dealer_id, getcodefromlistitem(coverage_type_id) from elita.ELP_ACCT_EVENT_DETAIL_INCEXC where acct_event_detail_id = ELP_ACCT_EVENT_DETAIL.acct_event_detail_id and dealer_id is not null and coverage_type_id is not null)
+		            )
+            ) or
+            (ELP_ACCT_EVENT_DETAIL.include_exclude_ind = 'I'
+      	        and (ELP_ACCT_TRANS_LOG.dealer_id in (select dealer_id from elita.ELP_ACCT_EVENT_DETAIL_INCEXC where acct_event_detail_id = ELP_ACCT_EVENT_DETAIL.acct_event_detail_id and coverage_type_id is null)
+      			        or ELP_ACCT_TRANS_LOG.coverage_type in (select getcodefromlistitem(coverage_type_id) from elita.ELP_ACCT_EVENT_DETAIL_INCEXC where acct_event_detail_id = ELP_ACCT_EVENT_DETAIL.acct_event_detail_id and dealer_id is null)
+				            or (ELP_ACCT_TRANS_LOG.dealer_id, ELP_ACCT_TRANS_LOG.COVERAGE_TYPE) in (select dealer_id, getcodefromlistitem(coverage_type_id) from elita.ELP_ACCT_EVENT_DETAIL_INCEXC where acct_event_detail_id = ELP_ACCT_EVENT_DETAIL.acct_event_detail_id and dealer_id is not null and coverage_type_id is not null)
+      	        )
+            )
+        )
+        --REQ-5396 end
+        --dynamic_where_clause
+       GROUP BY
+       ELP_ACCT_EVENT_DETAIL.ACCOUNT_CODE,
+       ELP_ACCT_TRANS_LOG.ACCOUNT_NUMBER,
+       ELP_ACCT_EVENT_DETAIL.DEBIT_CREDIT,
+       SUBSTR(ELP_ACCT_TRANSACTIONS.GetAnalysisCodeValue('1',GETCODEFROMLISTITEM(ELP_ACCT_EVENT_DETAIL.DESCRIPTION_SRC_ID),ELP_ACCT_TRANS_LOG.ACCT_TRANS_LOG_ID, ELP_ACCT_EVENT_DETAIL.DESCRIPTION, '',ELP_ACCT_SETTINGS.ACCT_SETTINGS_ID), 1,49),
+       ELP_ACCT_EVENT_DETAIL.JOURNAL_TYPE,
+       TO_CHAR(ELP_ACCT_TRANS_LOG.PAYMENT_DATE,'DDMMYYYY'),
+        ELP_ACCT_TRANSACTIONS.GetAnalysisCodeValue('0',GETCODEFROMLISTITEM(ELP_ACCT_EVENT_DETAIL.ANALYSIS_SRC_1_ID),ELP_ACCT_TRANS_LOG.ACCT_TRANS_LOG_ID, ELP_ACCT_EVENT_DETAIL.ANALYSIS_CODE_1, ELP_ACCT_SETTINGS.ACCOUNT_ANALYSIS_CODE_1,ELP_ACCT_SETTINGS.ACCT_SETTINGS_ID,1),
+        ELP_ACCT_TRANSACTIONS.GetAnalysisCodeValue('0',GETCODEFROMLISTITEM(ELP_ACCT_EVENT_DETAIL.ANALYSIS_SRC_2_ID),ELP_ACCT_TRANS_LOG.ACCT_TRANS_LOG_ID, ELP_ACCT_EVENT_DETAIL.ANALYSIS_CODE_2, ELP_ACCT_SETTINGS.ACCOUNT_ANALYSIS_CODE_2,ELP_ACCT_SETTINGS.ACCT_SETTINGS_ID,2),
+        ELP_ACCT_TRANSACTIONS.GetAnalysisCodeValue('0',GETCODEFROMLISTITEM(ELP_ACCT_EVENT_DETAIL.ANALYSIS_SRC_3_ID),ELP_ACCT_TRANS_LOG.ACCT_TRANS_LOG_ID, ELP_ACCT_EVENT_DETAIL.ANALYSIS_CODE_3, ELP_ACCT_SETTINGS.ACCOUNT_ANALYSIS_CODE_3,ELP_ACCT_SETTINGS.ACCT_SETTINGS_ID,3),
+        ELP_ACCT_TRANSACTIONS.GetAnalysisCodeValue('0',GETCODEFROMLISTITEM(ELP_ACCT_EVENT_DETAIL.ANALYSIS_SRC_4_ID),ELP_ACCT_TRANS_LOG.ACCT_TRANS_LOG_ID, ELP_ACCT_EVENT_DETAIL.ANALYSIS_CODE_4, ELP_ACCT_SETTINGS.ACCOUNT_ANALYSIS_CODE_4,ELP_ACCT_SETTINGS.ACCT_SETTINGS_ID,4),
+        ELP_ACCT_TRANSACTIONS.GetAnalysisCodeValue('0',GETCODEFROMLISTITEM(ELP_ACCT_EVENT_DETAIL.ANALYSIS_SRC_5_ID),ELP_ACCT_TRANS_LOG.ACCT_TRANS_LOG_ID, ELP_ACCT_EVENT_DETAIL.ANALYSIS_CODE_5, ELP_ACCT_SETTINGS.ACCOUNT_ANALYSIS_CODE_5,ELP_ACCT_SETTINGS.ACCT_SETTINGS_ID,5),
+        ELP_ACCT_TRANSACTIONS.GetAnalysisCodeValue('0',GETCODEFROMLISTITEM(ELP_ACCT_EVENT_DETAIL.ANALYSIS_SRC_6_ID),ELP_ACCT_TRANS_LOG.ACCT_TRANS_LOG_ID, ELP_ACCT_EVENT_DETAIL.ANALYSIS_CODE_6, ELP_ACCT_SETTINGS.ACCOUNT_ANALYSIS_CODE_6,ELP_ACCT_SETTINGS.ACCT_SETTINGS_ID,6),
+        ELP_ACCT_TRANSACTIONS.GetAnalysisCodeValue('0',GETCODEFROMLISTITEM(ELP_ACCT_EVENT_DETAIL.ANALYSIS_SRC_7_ID),ELP_ACCT_TRANS_LOG.ACCT_TRANS_LOG_ID, ELP_ACCT_EVENT_DETAIL.ANALYSIS_CODE_7, ELP_ACCT_SETTINGS.ACCOUNT_ANALYSIS_CODE_7,ELP_ACCT_SETTINGS.ACCT_SETTINGS_ID,7),
+        ELP_ACCT_TRANSACTIONS.GetAnalysisCodeValue('0',GETCODEFROMLISTITEM(ELP_ACCT_EVENT_DETAIL.ANALYSIS_SRC_8_ID),ELP_ACCT_TRANS_LOG.ACCT_TRANS_LOG_ID, ELP_ACCT_EVENT_DETAIL.ANALYSIS_CODE_8, ELP_ACCT_SETTINGS.ACCOUNT_ANALYSIS_CODE_8,ELP_ACCT_SETTINGS.ACCT_SETTINGS_ID,8),
+        ELP_ACCT_TRANSACTIONS.GetAnalysisCodeValue('0',GETCODEFROMLISTITEM(ELP_ACCT_EVENT_DETAIL.ANALYSIS_SRC_9_ID),ELP_ACCT_TRANS_LOG.ACCT_TRANS_LOG_ID, ELP_ACCT_EVENT_DETAIL.ANALYSIS_CODE_9, ELP_ACCT_SETTINGS.ACCOUNT_ANALYSIS_CODE_9,ELP_ACCT_SETTINGS.ACCT_SETTINGS_ID,9),
+        ELP_ACCT_TRANSACTIONS.GetAnalysisCodeValue('0',GETCODEFROMLISTITEM(ELP_ACCT_EVENT_DETAIL.ANALYSIS_SRC_10_ID),ELP_ACCT_TRANS_LOG.ACCT_TRANS_LOG_ID, ELP_ACCT_EVENT_DETAIL.ANALYSIS_CODE_10, ELP_ACCT_SETTINGS.ACCOUNT_ANALYSIS_CODE_10,ELP_ACCT_SETTINGS.ACCT_SETTINGS_ID,10),
+		   ELP_ACCT_TRANS_LOG.ADDRESS1,
+		   ELP_ACCT_TRANS_LOG.ADDRESS2,
+		   ELP_ACCT_TRANS_LOG.PAYEE,
+		   LIEVENT.CODE,
+       ELP_ACCT_SETTINGS.ACCOUNT_ANALYSIS_CODE_6,
+       ELP_ACCT_EVENT_DETAIL.ANALYSIS_CODE_3,
+       TRUNC(SYSDATE),
+       ELP_ACCT_TRANS_LOG.CITY,
+       ELP_ACCT_TRANS_LOG.REGION,
+       ELP_ACCT_TRANS_LOG.COUNTRY,
+       ELP_ACCT_TRANS_LOG.ZIP,
+       ELP_ACCT_BUSINESS_UNIT.CODE,
+       TRANSACTION_ID_NUMBER,
+       PAYMENT_TO_CUSTOMER,
+       ELP_ACCT_TRANS_LOG.CERTIFICATE,
+       ELP_DEALER.DEALER_NAME,
+       ELP_ACCT_TRANS_LOG.INVOICE_REGION,
+       ELP_COMPANY.CODE,
+            ELP_ACCT_COMPANY.CODE,
+           GetCodeMappingFromListItem(ELP_ACCT_EVENT.ACCT_EVENT_TYPE_ID, ELP_COMPANY.COMPANY_ID),
+           ELP_ACCT_TRANS_LOG.CURRENCY
+    ]]>
+  </JOURNAL_REFUNDS_AP>
+  <JOURNAL_AP_PURGE>
+    <![CDATA[
+    SELECT
+      ELP_ACCT_TRANS_LOG.ACCT_TRANS_LOG_ID
+    FROM
+      ELP_ACCT_TRANS_LOG,
+      ELP_ACCT_EVENT,
+      ELP_ACCT_EVENT_DETAIL,
+      ELP_ACCT_SETTINGS,
+      ELP_ACCT_SETTINGS ELP_ACCT_SETTINGS_SS,
+      ELP_COMPANY,
+      ELP_LIST_ITEM LIEVENT,
+      ELP_ACCT_BUSINESS_UNIT
+    WHERE
+      ELP_ACCT_EVENT.ACCT_COMPANY_ID = ELP_COMPANY.ACCT_COMPANY_ID
+      AND ELP_ACCT_EVENT.ACCT_EVENT_TYPE_ID = :ACCT_EVENT_TYPE_ID
+      AND ELP_ACCT_EVENT_DETAIL.ACCT_BUSINESS_UNIT_ID = ELP_ACCT_BUSINESS_UNIT.ACCT_BUSINESS_UNIT_ID
+      AND LIEVENT.LIST_ITEM_ID = ELP_ACCT_TRANS_LOG.ACCT_EVENT_TYPE_ID
+      AND ELP_ACCT_EVENT_DETAIL.FIELD_TYPE_ID = ELP_ACCT_TRANS_LOG.ACCT_EVENT_FIELD_ID
+      AND NVL(ELP_ACCT_EVENT_DETAIL.BUSINESS_ENTITY_ID,hextoraw('1')) = NVL(ELP_ACCT_TRANSACTIONS.GetBusinessEntity(ELP_ACCT_BUSINESS_UNIT.ACCT_BUSINESS_UNIT_ID,ELP_ACCT_TRANS_LOG.COVERAGE_TYPE,ELP_ACCT_TRANS_LOG.INVOICE_REGION),hextoraw('1'))
+      AND ELP_ACCT_EVENT_DETAIL.ACCT_EVENT_ID = ELP_ACCT_EVENT.ACCT_EVENT_ID
+      AND ELP_ACCT_TRANS_LOG.ACCT_EVENT_TYPE_ID = ELP_ACCT_EVENT.ACCT_EVENT_TYPE_ID
+      AND ELP_ACCT_SETTINGS.ACCT_SETTINGS_ID = GETACCTSETTINGS(ELP_ACCT_TRANS_LOG.DEALER_ID,null, ELP_ACCT_EVENT_DETAIL.ACCOUNT_TYPE)
+      AND ELP_ACCT_TRANS_LOG.BRANCH_ID IS NULL
+      AND ELP_ACCT_BUSINESS_UNIT.ACCT_BUSINESS_UNIT_ID = :ACCT_BUSINESS_UNIT_ID
+      AND ELP_ACCT_TRANS_LOG.BUSINESS_UNIT = ELP_ACCT_BUSINESS_UNIT.BUSINESS_UNIT
+      AND ELP_ACCT_TRANS_LOG.COMPANY_ID = ELP_COMPANY.COMPANY_ID
+      AND ELP_COMPANY.COMPANY_ID = :COMPANY_ID
+      AND ELP_ACCT_SETTINGS_SS.SERVICE_CENTER_ID (+)= ELP_ACCT_TRANS_LOG.SERVICE_CENTER_ID
+      AND (
+      (ELP_ACCT_TRANS_LOG.TRANSACTION_ID_NUMBER = 'Y')
+      OR
+      (upper(ELP_ACCT_TRANS_LOG.TRANSACTION_ID_NUMBER) = 'N' AND LIEVENT.CODE = 'REFUNDS')
+      OR
+      (upper(ELP_ACCT_TRANS_LOG.TRANSACTION_ID_NUMBER) = 'N' AND LIEVENT.CODE = 'CLAIM' AND ELP_ACCT_SETTINGS_SS.SERVICE_CENTER_ID IS NOT NULL)
+      OR
+      (upper(ELP_ACCT_TRANS_LOG.TRANSACTION_ID_NUMBER) = 'N' AND LIEVENT.CODE = 'CLAIM' AND ELP_ACCT_TRANS_LOG.PAYMENT_TO_CUSTOMER = 'Y')
+      )
+    ]]>
+  </JOURNAL_AP_PURGE>
+  <VENDOR>
+    <![CDATA[
+     SELECT
+	 ELP_ACCT_SETTINGS.ACCOUNT_CODE  AS AccountCode,
+	 ELP_ACCT_SETTINGS.DESCRIPTION AS Beneficiary,
+	 ELP_ADDRESS.ADDRESS1 AS AddressLine1,
+	 ELP_ADDRESS.ADDRESS2 AS AddressLine2,
+     ELP_REGION.DESCRIPTION AS Area,
+     ELP_COUNTRY.DESCRIPTION AS Country,
+     ELP_COUNTRY.CODE AS CountryCode,
+     ELP_ACCT_SETTINGS.ADDRESS_LOOKUP_CODE AS AddressLookupCode,
+     ELP_ADDRESS.POSTAL_CODE AS PostalCode,
+     ELP_DEALER.DEALER AS ShortHeading,
+     ELP_REGION.DESCRIPTION State,
+     SUBSTR(ELP_REGION.ACCOUNTING_CODE,1,2) StateCode,
+     ELP_ADDRESS.CITY AS TownCity,
+	 ELP_ACCT_SETTINGS.ADDRESS_STATUS AS AddressStatus,
+	 ELP_DEALER.CONTACT_PHONE AS TelePhoneNumber,
+	 ELP_DEALER.CONTACT_FAX AS FaxNumber,
+	 ELP_DEALER.WEB_ADDRESS AS WebPageAddress,
+     ELP_DEALER.CONTACT_EMAIL AS EmailAddress,
+	 ELP_DEALER.TAX_ID_NUMBER AS TaxIdentificationNumber,
+	 1 AS SequenceNumber,
+	 ELP_ACCT_SETTINGS.USER_AREA AS UserArea,
+	 /* --Bank */
+	 ELP_BANK_INFO.BANK_SUB_CODE AS BankSubCode,
+	  ELP_BANK_INFO.BANK_LOOKUP_CODE As BankDetailsLookupCode,
+	  ELP_ACCT_SETTINGS.DATA_ACCESS_GROUP_CODE AS DataAccessGroupCode,
+	  ELP_BANK_INFO.TRANSACTION_LIMIT AS TransactionLimit,
+	  null AS DirectDebitFirstPayment,
+	  ELP_BANK_INFO.ACCOUNT_NAME AS BankAccountName,
+	  ELP_BANK_INFO.BRANCH_NAME AS BankBranch,
+	  ELP_BANK_INFO.ACCOUNT_NUMBER AS BankAccountNumber,
+	  ELP_BANK_INFO.BANK_NAME AS BankName,
+	  ELP_BANK_INFO.BANK_SORT_CODE AS BankSortCode,
+	  ELP_BANK_INFO.IBAN_NUMBER AS IBAN_NUMBER,
+	  ELP_BANK_INFO.SWIFT_CODE AS SWIFT_CODE,
+	  ELP_BANK_INFO.BANK_ID AS BANK_ID,
+	 /* --Supplier */
+	  TRIM(ELP_ACCT_SETTINGS.DEFAULT_CURRENCY_CODE) AS DefaultCurrencyCode,
+	  ELP_DEALER.DEALER_NAME AS Description,
+	  ELP_ACCT_SETTINGS.SUPPLIER_LOOKUP_CODE AS SupplierLookupCode,
+	  ELP_ACCT_SETTINGS.PAYMENT_METHOD AS PaymentMethod,
+	  ELP_ACCT_SETTINGS. SUPPLIER_STATUS AS SupplierStatus,
+	  ELP_DEALER.DEALER_NAME AS SupplierName,
+      ELP_ACCT_SETTINGS.CONVERSION_CODE_CONTROL AS ConversionCodeControl,
+	  ELP_ACCT_SETTINGS.REPORT_CONVERSION_CONTROL AS ReportConversionControl,
+	  ELP_ACCT_SETTINGS.SUPPLIER_ANALYSIS_CODE_1 AS SupplierAnalysis1,
+	  ELP_ACCT_SETTINGS.SUPPLIER_ANALYSIS_CODE_2 AS SupplierAnalysis2,
+	  ELP_ACCT_SETTINGS.SUPPLIER_ANALYSIS_CODE_3 AS SupplierAnalysis3,
+	  ELP_ACCT_SETTINGS.SUPPLIER_ANALYSIS_CODE_4 AS SupplierAnalysis4,
+	  ELP_ACCT_SETTINGS.SUPPLIER_ANALYSIS_CODE_5 AS SupplierAnalysis5,
+	  ELP_ACCT_SETTINGS.SUPPLIER_ANALYSIS_CODE_6 AS SupplierAnalysis6,
+	  ELP_ACCT_SETTINGS.SUPPLIER_ANALYSIS_CODE_7 AS SupplierAnalysis7,
+	  ELP_ACCT_SETTINGS.SUPPLIER_ANALYSIS_CODE_8 AS SupplierAnalysis8,
+	  ELP_ACCT_SETTINGS.SUPPLIER_ANALYSIS_CODE_9 AS SupplierAnalysis9,
+	  ELP_ACCT_SETTINGS.SUPPLIER_ANALYSIS_CODE_10 AS SupplierAnalysis10,
+	 /* --Account */
+	  ELP_ACCT_SETTINGS.ACCOUNT_TYPE AS AccountType,
+	  ELP_ACCT_SETTINGS.BALANCE_TYPE AS BalanceType,
+	  ELP_ACCT_SETTINGS.ACCOUNT_ANALYSIS_1 AS EnterAnalysis1,
+	  ELP_ACCT_SETTINGS.ACCOUNT_ANALYSIS_2 AS EnterAnalysis2,
+	  ELP_ACCT_SETTINGS.ACCOUNT_ANALYSIS_3 AS EnterAnalysis3,
+	  ELP_ACCT_SETTINGS.ACCOUNT_ANALYSIS_4 AS EnterAnalysis4,
+	  ELP_ACCT_SETTINGS.ACCOUNT_ANALYSIS_5 AS EnterAnalysis5,
+	  ELP_ACCT_SETTINGS.ACCOUNT_ANALYSIS_6 AS EnterAnalysis6,
+	  ELP_ACCT_SETTINGS.ACCOUNT_ANALYSIS_7 AS EnterAnalysis7,
+	  ELP_ACCT_SETTINGS.ACCOUNT_ANALYSIS_8 AS EnterAnalysis8,
+	  ELP_ACCT_SETTINGS.ACCOUNT_ANALYSIS_9 AS EnterAnalysis9,
+	  ELP_ACCT_SETTINGS.ACCOUNT_ANALYSIS_10 AS EnterAnalysis10,
+	  ELP_DEALER.DEALER_NAME AS LongDescription,
+	  ELP_ACCT_SETTINGS.SUPPRESS_REVALUATION AS SuppressRevaluation,
+	  ELP_ACCT_SETTINGS.PAY_AS_PAID_ACCOUNT_TYPE AS PayAsPaidAccountType,
+	  ELP_ACCT_SETTINGS.ACCOUNT_ANALYSIS_A_1 AS Analysis1,
+	  ELP_ACCT_SETTINGS.ACCOUNT_ANALYSIS_A_2 AS Analysis2,
+	  ELP_ACCT_SETTINGS.ACCOUNT_ANALYSIS_A_3 AS Analysis3,
+	  ELP_ACCT_SETTINGS.ACCOUNT_ANALYSIS_A_4 AS Analysis4,
+	  ELP_ACCT_SETTINGS.ACCOUNT_ANALYSIS_A_5 AS Analysis5,
+	  ELP_ACCT_SETTINGS.ACCOUNT_ANALYSIS_A_6 AS Analysis6,
+	  ELP_ACCT_SETTINGS.ACCOUNT_ANALYSIS_A_7 AS Analysis7,
+	  ELP_ACCT_SETTINGS.ACCOUNT_ANALYSIS_A_8 AS Analysis8,
+	  ELP_ACCT_SETTINGS.ACCOUNT_ANALYSIS_A_9 AS Analysis9,
+	  ELP_ACCT_SETTINGS.ACCOUNT_ANALYSIS_A_10 AS Analysis10,
+    ELP_ACCT_SETTINGS.DEFAULT_BANK_SUB_CODE AS DefaultBankSubcode,
+    ELP_ACCT_TRANS_LOG.ACCT_TRANS_LOG_ID,
+      ELP_LIST_ITEM.CODE AS PAYMENTTERMS,
+      GETCODEFROMLISTITEM(ELP_ACCT_COMPANY.USE_ELITA_BANK_INFO_ID) AS INCLUDEBANKDETAILS,
+      ELP_COMPANY.CODE AS COMPANY_CODE
+FROM
+    ELP_LIST_ITEM,
+	ELP_ACCT_SETTINGS,
+    ELP_ACCT_COMPANY,
+	ELP_DEALER,
+	ELP_ADDRESS,
+	ELP_REGION,
+	ELP_COUNTRY,
+	ELP_BANK_INFO,
+    ELP_ACCT_TRANS_LOG, 
+    ELP_COMPANY
+WHERE
+          ELP_ACCT_SETTINGS.DEALER_ID = ELP_DEALER.DEALER_ID
+  AND ELP_COMPANY.COMPANY_ID = ELP_ACCT_TRANS_LOG.COMPANY_ID
+	AND   ELP_ADDRESS.ADDRESS_ID = ELP_DEALER.ADDRESS_ID
+	AND   ELP_REGION.REGION_ID  (+)= ELP_ADDRESS.REGION_ID
+	AND   ELP_COUNTRY.COUNTRY_ID = ELP_ADDRESS.COUNTRY_ID
+    AND   ELP_BANK_INFO.BANK_INFO_ID (+)= ELP_DEALER.BANK_INFO_ID
+	AND   ELP_ACCT_TRANS_LOG.COMPANY_ID = :COMPANY_ID
+    AND   ELP_LIST_ITEM.LIST_ITEM_ID  (+)= ELP_ACCT_SETTINGS.PAYMENT_TERMS_ID
+    AND   ELP_ACCT_SETTINGS.BRANCH_ID IS NULL
+	AND   ELP_ACCT_SETTINGS.ACCT_COMPANY_ID = ELP_ACCT_TRANS_LOG.ACCT_COMPANY_ID
+	AND   ELP_ACCT_SETTINGS.ACCT_COMPANY_ID = ELP_ACCT_COMPANY.ACCT_COMPANY_ID
+    AND   ELP_ACCT_TRANS_LOG.DEALER_ID = ELP_ACCT_SETTINGS.DEALER_ID
+    AND   ELP_ACCT_TRANS_LOG.VENDOR_UPDATE = 'Y'
+    AND   ELP_ACCT_TRANS_LOG.BRANCH_ID IS NULL
+UNION
+SELECT
+	 ELP_ACCT_SETTINGS.ACCOUNT_CODE  AS AccountCode,
+	 ELP_ACCT_SETTINGS.DESCRIPTION AS Beneficiary,
+	 ELP_ADDRESS.ADDRESS1 AS AddressLine1,
+	 ELP_ADDRESS.ADDRESS2 AS AddressLine2,
+     ELP_REGION.DESCRIPTION AS Area,
+     ELP_COUNTRY.DESCRIPTION AS Country,
+     ELP_COUNTRY.CODE AS CountryCode,
+     ELP_ACCT_SETTINGS.ADDRESS_LOOKUP_CODE AS AddressLookupCode,
+     ELP_ADDRESS.POSTAL_CODE AS PostalCode,
+     ELP_SERVICE_CENTER.CODE AS ShortHeading,
+     ELP_REGION.DESCRIPTION State,
+     SUBSTR(ELP_REGION.ACCOUNTING_CODE,1,2) StateCode,
+     ELP_ADDRESS.CITY AS TownCity,
+	 ELP_ACCT_SETTINGS.ADDRESS_STATUS AS AddressStatus,
+	 ELP_SERVICE_CENTER.PHONE1 AS TelePhoneNumber,
+	 ELP_SERVICE_CENTER.FAX AS FaxNumber,
+	 ELP_SERVICE_CENTER.FTP_ADDRESS AS WebPageAddress,
+     ELP_SERVICE_CENTER.EMAIL AS EmailAddress,
+     ELP_SERVICE_CENTER.TAX_ID AS TaxIdentificationNumber,
+      1 AS SequenceNumber,
+      ELP_ACCT_SETTINGS.USER_AREA AS UserArea,
+	/* --Bank */
+	 ELP_BANK_INFO.BANK_SUB_CODE AS BankSubCode,
+	  ELP_BANK_INFO.BANK_LOOKUP_CODE As BankDetailsLookupCode,
+	  ELP_ACCT_SETTINGS.DATA_ACCESS_GROUP_CODE AS DataAccessGroupCode,
+	  ELP_BANK_INFO.TRANSACTION_LIMIT AS TransactionLimit,
+	  null AS DirectDebitFirstPayment,
+	  ELP_BANK_INFO.ACCOUNT_NAME AS BankAccountName,
+	  ELP_BANK_INFO.BRANCH_NAME AS BankBranch,
+	  ELP_BANK_INFO.ACCOUNT_NUMBER AS BankAccountNumber,
+	  ELP_BANK_INFO.BANK_NAME AS BankName,
+	  ELP_BANK_INFO.BANK_SORT_CODE AS BankSortCode,
+	  ELP_BANK_INFO.IBAN_NUMBER AS IBAN_NUMBER,
+	  ELP_BANK_INFO.SWIFT_CODE AS SWIFT_CODE,
+	  ELP_BANK_INFO.BANK_ID AS BANK_ID,
+	 /* --Supplier */
+	  TRIM(ELP_ACCT_SETTINGS.DEFAULT_CURRENCY_CODE) AS DefaultCurrencyCode,
+	  ELP_SERVICE_CENTER.DESCRIPTION AS Description,
+	  ELP_ACCT_SETTINGS.SUPPLIER_LOOKUP_CODE AS SupplierLookupCode,
+	  ELP_ACCT_SETTINGS.PAYMENT_METHOD AS PaymentMethod,
+	  ELP_ACCT_SETTINGS. SUPPLIER_STATUS AS SupplierStatus,
+	  ELP_SERVICE_CENTER.DESCRIPTION AS SupplierName,
+      ELP_ACCT_SETTINGS.CONVERSION_CODE_CONTROL AS ConversionCodeControl,
+	  ELP_ACCT_SETTINGS.REPORT_CONVERSION_CONTROL AS ReportConversionControl,
+	  ELP_ACCT_SETTINGS.SUPPLIER_ANALYSIS_CODE_1 AS SupplierAnalysis1,
+	  ELP_ACCT_SETTINGS.SUPPLIER_ANALYSIS_CODE_2 AS SupplierAnalysis2,
+	  ELP_ACCT_SETTINGS.SUPPLIER_ANALYSIS_CODE_3 AS SupplierAnalysis3,
+	  ELP_ACCT_SETTINGS.SUPPLIER_ANALYSIS_CODE_4 AS SupplierAnalysis4,
+	  ELP_ACCT_SETTINGS.SUPPLIER_ANALYSIS_CODE_5 AS SupplierAnalysis5,
+	  ELP_ACCT_SETTINGS.SUPPLIER_ANALYSIS_CODE_6 AS SupplierAnalysis6,
+	  ELP_ACCT_SETTINGS.SUPPLIER_ANALYSIS_CODE_7 AS SupplierAnalysis7,
+	  ELP_ACCT_SETTINGS.SUPPLIER_ANALYSIS_CODE_8 AS SupplierAnalysis8,
+	  ELP_ACCT_SETTINGS.SUPPLIER_ANALYSIS_CODE_9 AS SupplierAnalysis9,
+	  ELP_ACCT_SETTINGS.SUPPLIER_ANALYSIS_CODE_10 AS SupplierAnalysis10,
+	 /* Account */
+	   ELP_ACCT_SETTINGS.ACCOUNT_TYPE AS AccountType,
+	  ELP_ACCT_SETTINGS.BALANCE_TYPE AS BalanceType,
+	  ELP_ACCT_SETTINGS.ACCOUNT_ANALYSIS_1 AS EnterAnalysis1,
+	  ELP_ACCT_SETTINGS.ACCOUNT_ANALYSIS_2 AS EnterAnalysis2,
+	  ELP_ACCT_SETTINGS.ACCOUNT_ANALYSIS_3 AS EnterAnalysis3,
+	  ELP_ACCT_SETTINGS.ACCOUNT_ANALYSIS_4 AS EnterAnalysis4,
+	  ELP_ACCT_SETTINGS.ACCOUNT_ANALYSIS_5 AS EnterAnalysis5,
+	  ELP_ACCT_SETTINGS.ACCOUNT_ANALYSIS_6 AS EnterAnalysis6,
+	  ELP_ACCT_SETTINGS.ACCOUNT_ANALYSIS_7 AS EnterAnalysis7,
+	  ELP_ACCT_SETTINGS.ACCOUNT_ANALYSIS_8 AS EnterAnalysis8,
+	  ELP_ACCT_SETTINGS.ACCOUNT_ANALYSIS_9 AS EnterAnalysis9,
+	  ELP_ACCT_SETTINGS.ACCOUNT_ANALYSIS_10 AS EnterAnalysis10,
+	  ELP_SERVICE_CENTER.DESCRIPTION AS LongDescription,
+	  ELP_ACCT_SETTINGS.SUPPRESS_REVALUATION AS SuppressRevaluation,
+	  ELP_ACCT_SETTINGS.PAY_AS_PAID_ACCOUNT_TYPE AS PayAsPaidAccountType,
+	  ELP_ACCT_SETTINGS.ACCOUNT_ANALYSIS_A_1 AS Analysis1,
+	  ELP_ACCT_SETTINGS.ACCOUNT_ANALYSIS_A_2 AS Analysis2,
+	  ELP_ACCT_SETTINGS.ACCOUNT_ANALYSIS_A_3 AS Analysis3,
+	  ELP_ACCT_SETTINGS.ACCOUNT_ANALYSIS_A_4 AS Analysis4,
+	  ELP_ACCT_SETTINGS.ACCOUNT_ANALYSIS_A_5 AS Analysis5,
+	  ELP_ACCT_SETTINGS.ACCOUNT_ANALYSIS_A_6 AS Analysis6,
+	  ELP_ACCT_SETTINGS.ACCOUNT_ANALYSIS_A_7 AS Analysis7,
+	  ELP_ACCT_SETTINGS.ACCOUNT_ANALYSIS_A_8 AS Analysis8,
+	  ELP_ACCT_SETTINGS.ACCOUNT_ANALYSIS_A_9 AS Analysis9,
+	  ELP_ACCT_SETTINGS.ACCOUNT_ANALYSIS_A_10 AS Analysis10,
+    ELP_ACCT_SETTINGS.DEFAULT_BANK_SUB_CODE AS DefaultBankSubcode,
+	  ELP_ACCT_TRANS_LOG.ACCT_TRANS_LOG_ID,
+      ELP_LIST_ITEM.CODE AS PAYMENTTERMS,
+      GETCODEFROMLISTITEM(ELP_ACCT_COMPANY.USE_ELITA_BANK_INFO_ID) AS INCLUDEBANKDETAILS,
+      ELP_COMPANY.CODE AS COMPANY_CODE
+FROM
+    ELP_LIST_ITEM,
+	ELP_ACCT_SETTINGS,
+    ELP_ACCT_COMPANY,
+	ELP_SERVICE_CENTER,
+	ELP_ADDRESS,
+	ELP_REGION,
+	ELP_COUNTRY,
+	ELP_BANK_INFO,
+    ELP_ACCT_TRANS_LOG, 
+    ELP_COMPANY
+WHERE
+		  ELP_ACCT_SETTINGS.SERVICE_CENTER_ID = ELP_SERVICE_CENTER.SERVICE_CENTER_ID
+  AND ELP_COMPANY.COMPANY_ID = ELP_ACCT_TRANS_LOG.COMPANY_ID
+	AND   ELP_ADDRESS.ADDRESS_ID = ELP_SERVICE_CENTER.ADDRESS_ID
+	AND   ELP_REGION.REGION_ID  (+)= ELP_ADDRESS.REGION_ID
+	AND   ELP_COUNTRY.COUNTRY_ID = ELP_ADDRESS.COUNTRY_ID
+	 AND   ELP_BANK_INFO.BANK_INFO_ID (+) = ELP_SERVICE_CENTER.BANK_INFO_ID
+	AND   ELP_ACCT_TRANS_LOG.COMPANY_ID = :COMPANY_ID
+    AND   ELP_LIST_ITEM.LIST_ITEM_ID  (+)= ELP_ACCT_SETTINGS.PAYMENT_TERMS_ID
+	AND   ELP_ACCT_SETTINGS.ACCT_COMPANY_ID = ELP_ACCT_TRANS_LOG.ACCT_COMPANY_ID
+	AND   ELP_ACCT_SETTINGS.ACCT_COMPANY_ID = ELP_ACCT_COMPANY.ACCT_COMPANY_ID
+    AND   ELP_ACCT_TRANS_LOG.SERVICE_CENTER_ID = ELP_ACCT_SETTINGS.SERVICE_CENTER_ID
+    AND   ELP_ACCT_TRANS_LOG.VENDOR_UPDATE = 'Y' 
+UNION
+SELECT
+	 ELP_ACCT_SETTINGS.ACCOUNT_CODE  AS AccountCode,
+	 ELP_ACCT_SETTINGS.DESCRIPTION AS Beneficiary,
+	 ELP_BRANCH.ADDRESS1 AS AddressLine1,
+	 ELP_BRANCH.ADDRESS2 AS AddressLine2,
+     ELP_REGION.DESCRIPTION AS Area,
+     ELP_COUNTRY.DESCRIPTION AS Country,
+     ELP_COUNTRY.CODE AS CountryCode,
+     ELP_ACCT_SETTINGS.ADDRESS_LOOKUP_CODE AS AddressLookupCode,
+     ELP_BRANCH.POSTAL_CODE AS PostalCode,
+     ELP_BRANCH.BRANCH_CODE AS ShortHeading,
+     ELP_REGION.DESCRIPTION State,
+     SUBSTR(ELP_REGION.ACCOUNTING_CODE,1,2) StateCode,
+     ELP_BRANCH.CITY AS TownCity,
+	 ELP_ACCT_SETTINGS.ADDRESS_STATUS AS AddressStatus,
+	 ELP_BRANCH.CONTACT_PHONE AS TelePhoneNumber,
+	 ELP_BRANCH.CONTACT_FAX AS FaxNumber,
+	 ELP_DEALER.WEB_ADDRESS AS WebPageAddress,
+     ELP_BRANCH.CONTACT_EMAIL AS EmailAddress,
+	 ELP_DEALER.TAX_ID_NUMBER AS TaxIdentificationNumber,
+	 1 AS SequenceNumber,
+	 ELP_ACCT_SETTINGS.USER_AREA AS UserArea,
+	 /* --Bank */
+	 ELP_BANK_INFO.BANK_SUB_CODE AS BankSubCode,
+	  ELP_BANK_INFO.BANK_LOOKUP_CODE As BankDetailsLookupCode,
+	  ELP_ACCT_SETTINGS.DATA_ACCESS_GROUP_CODE AS DataAccessGroupCode,
+	  ELP_BANK_INFO.TRANSACTION_LIMIT AS TransactionLimit,
+	  null AS DirectDebitFirstPayment,
+	  ELP_BANK_INFO.ACCOUNT_NAME AS BankAccountName,
+	  ELP_BANK_INFO.BRANCH_NAME AS BankBranch,
+	  ELP_BANK_INFO.ACCOUNT_NUMBER AS BankAccountNumber,
+	  ELP_BANK_INFO.BANK_NAME AS BankName,
+	  ELP_BANK_INFO.BANK_SORT_CODE AS BankSortCode,
+	  ELP_BANK_INFO.IBAN_NUMBER AS IBAN_NUMBER,
+	  ELP_BANK_INFO.SWIFT_CODE AS SWIFT_CODE,
+	  ELP_BANK_INFO.BANK_ID AS BANK_ID,
+	 /* --Supplier */
+	  TRIM(ELP_ACCT_SETTINGS.DEFAULT_CURRENCY_CODE) AS DefaultCurrencyCode,
+	  ELP_BRANCH.BRANCH_NAME AS Description,
+	  ELP_ACCT_SETTINGS.SUPPLIER_LOOKUP_CODE AS SupplierLookupCode,
+	  ELP_ACCT_SETTINGS.PAYMENT_METHOD AS PaymentMethod,
+	  ELP_ACCT_SETTINGS.SUPPLIER_STATUS AS SupplierStatus,
+	  ELP_BRANCH.BRANCH_NAME AS SupplierName,
+      ELP_ACCT_SETTINGS.CONVERSION_CODE_CONTROL AS ConversionCodeControl,
+	  ELP_ACCT_SETTINGS.REPORT_CONVERSION_CONTROL AS ReportConversionControl,
+	  ELP_ACCT_SETTINGS.SUPPLIER_ANALYSIS_CODE_1 AS SupplierAnalysis1,
+	  ELP_ACCT_SETTINGS.SUPPLIER_ANALYSIS_CODE_2 AS SupplierAnalysis2,
+	  ELP_ACCT_SETTINGS.SUPPLIER_ANALYSIS_CODE_3 AS SupplierAnalysis3,
+	  ELP_ACCT_SETTINGS.SUPPLIER_ANALYSIS_CODE_4 AS SupplierAnalysis4,
+	  ELP_ACCT_SETTINGS.SUPPLIER_ANALYSIS_CODE_5 AS SupplierAnalysis5,
+	  ELP_ACCT_SETTINGS.SUPPLIER_ANALYSIS_CODE_6 AS SupplierAnalysis6,
+	  ELP_ACCT_SETTINGS.SUPPLIER_ANALYSIS_CODE_7 AS SupplierAnalysis7,
+	  ELP_ACCT_SETTINGS.SUPPLIER_ANALYSIS_CODE_8 AS SupplierAnalysis8,
+	  ELP_ACCT_SETTINGS.SUPPLIER_ANALYSIS_CODE_9 AS SupplierAnalysis9,
+	  ELP_ACCT_SETTINGS.SUPPLIER_ANALYSIS_CODE_10 AS SupplierAnalysis10,
+	 /* --Account */
+	  ELP_ACCT_SETTINGS.ACCOUNT_TYPE AS AccountType,
+	  ELP_ACCT_SETTINGS.BALANCE_TYPE AS BalanceType,
+	  ELP_ACCT_SETTINGS.ACCOUNT_ANALYSIS_1 AS EnterAnalysis1,
+	  ELP_ACCT_SETTINGS.ACCOUNT_ANALYSIS_2 AS EnterAnalysis2,
+	  ELP_ACCT_SETTINGS.ACCOUNT_ANALYSIS_3 AS EnterAnalysis3,
+	  ELP_ACCT_SETTINGS.ACCOUNT_ANALYSIS_4 AS EnterAnalysis4,
+	  ELP_ACCT_SETTINGS.ACCOUNT_ANALYSIS_5 AS EnterAnalysis5,
+	  ELP_ACCT_SETTINGS.ACCOUNT_ANALYSIS_6 AS EnterAnalysis6,
+	  ELP_ACCT_SETTINGS.ACCOUNT_ANALYSIS_7 AS EnterAnalysis7,
+	  ELP_ACCT_SETTINGS.ACCOUNT_ANALYSIS_8 AS EnterAnalysis8,
+	  ELP_ACCT_SETTINGS.ACCOUNT_ANALYSIS_9 AS EnterAnalysis9,
+	  ELP_ACCT_SETTINGS.ACCOUNT_ANALYSIS_10 AS EnterAnalysis10,
+      ELP_BRANCH.BRANCH_NAME AS LongDescription,
+	  ELP_ACCT_SETTINGS.SUPPRESS_REVALUATION AS SuppressRevaluation,
+	  ELP_ACCT_SETTINGS.PAY_AS_PAID_ACCOUNT_TYPE AS PayAsPaidAccountType,
+	  ELP_ACCT_SETTINGS.ACCOUNT_ANALYSIS_A_1 AS Analysis1,
+	  ELP_ACCT_SETTINGS.ACCOUNT_ANALYSIS_A_2 AS Analysis2,
+	  ELP_ACCT_SETTINGS.ACCOUNT_ANALYSIS_A_3 AS Analysis3,
+	  ELP_ACCT_SETTINGS.ACCOUNT_ANALYSIS_A_4 AS Analysis4,
+	  ELP_ACCT_SETTINGS.ACCOUNT_ANALYSIS_A_5 AS Analysis5,
+	  ELP_ACCT_SETTINGS.ACCOUNT_ANALYSIS_A_6 AS Analysis6,
+	  ELP_ACCT_SETTINGS.ACCOUNT_ANALYSIS_A_7 AS Analysis7,
+	  ELP_ACCT_SETTINGS.ACCOUNT_ANALYSIS_A_8 AS Analysis8,
+	  ELP_ACCT_SETTINGS.ACCOUNT_ANALYSIS_A_9 AS Analysis9,
+	  ELP_ACCT_SETTINGS.ACCOUNT_ANALYSIS_A_10 AS Analysis10,
+    ELP_ACCT_SETTINGS.DEFAULT_BANK_SUB_CODE AS DefaultBankSubcode,
+	  ELP_ACCT_TRANS_LOG.ACCT_TRANS_LOG_ID,
+      ELP_LIST_ITEM.CODE AS PAYMENTTERMS,
+      GETCODEFROMLISTITEM(ELP_ACCT_COMPANY.USE_ELITA_BANK_INFO_ID) AS INCLUDEBANKDETAILS,
+      ELP_COMPANY.CODE AS COMPANY_CODE
+FROM
+    ELP_LIST_ITEM,
+	ELP_ACCT_SETTINGS,
+    ELP_ACCT_COMPANY,
+    ELP_BRANCH,
+	ELP_DEALER,
+	ELP_REGION,
+	ELP_COUNTRY,
+    ELP_ACCT_TRANS_LOG,
+    ELP_BANK_INFO, 
+    ELP_COMPANY
+WHERE
+        ELP_BANK_INFO.BANK_INFO_ID (+)= ELP_BRANCH.BANK_INFO_ID
+  AND ELP_COMPANY.COMPANY_ID = ELP_ACCT_TRANS_LOG.COMPANY_ID
+     AND ELP_REGION.REGION_ID  (+)= ELP_BRANCH.REGION_ID
+	AND   ELP_COUNTRY.COUNTRY_ID = ELP_BRANCH.COUNTRY_ID
+	AND   ELP_ACCT_TRANS_LOG.COMPANY_ID = :COMPANY_ID
+    AND   ELP_LIST_ITEM.LIST_ITEM_ID  (+)= ELP_ACCT_SETTINGS.PAYMENT_TERMS_ID
+	AND   ELP_ACCT_SETTINGS.ACCT_COMPANY_ID = ELP_ACCT_TRANS_LOG.ACCT_COMPANY_ID
+	AND   ELP_ACCT_SETTINGS.ACCT_COMPANY_ID = ELP_ACCT_COMPANY.ACCT_COMPANY_ID
+    AND   ELP_DEALER.DEALER_ID = ELP_BRANCH.DEALER_ID
+    AND   ELP_ACCT_SETTINGS.DEALER_ID = ELP_DEALER.DEALER_ID
+    AND   ELP_ACCT_TRANS_LOG.BRANCH_ID =  ELP_BRANCH.BRANCH_ID
+    AND   ELP_ACCT_TRANS_LOG.DEALER_ID = ELP_ACCT_SETTINGS.DEALER_ID
+    AND   ELP_ACCT_TRANS_LOG.VENDOR_UPDATE = 'Y'
+    AND   ELP_ACCT_TRANS_LOG.BRANCH_ID = ELP_ACCT_SETTINGS.BRANCH_ID
+    AND   ELP_ACCT_TRANS_LOG.BRANCH_ID IS NOT NULL
+ UNION
+ SELECT
+	 ELP_ACCT_SETTINGS.ACCOUNT_CODE  AS AccountCode,
+	 ELP_ACCT_SETTINGS.DESCRIPTION AS Beneficiary,
+	 '' AS AddressLine1,
+	 '' AS AddressLine2,
+   '' AS Area,
+   '' AS Country,
+   '' AS CountryCode,
+   ELP_ACCT_SETTINGS.ADDRESS_LOOKUP_CODE AS AddressLookupCode,
+   '' AS PostalCode,
+   ELP_DEALER_GROUP.CODE AS ShortHeading,
+   '' State,
+   '' StateCode,
+   '' AS TownCity,
+	 ELP_ACCT_SETTINGS.ADDRESS_STATUS AS AddressStatus,
+	 '' AS TelePhoneNumber,
+	 '' AS FaxNumber,
+	 '' AS WebPageAddress,
+   '' AS EmailAddress,
+	 null AS TaxIdentificationNumber,
+	 1 AS SequenceNumber,
+	 ELP_ACCT_SETTINGS.USER_AREA AS UserArea,
+	 /* --Bank */
+	 ELP_BANK_INFO.BANK_SUB_CODE AS BankSubCode,
+	  ELP_BANK_INFO.BANK_LOOKUP_CODE As BankDetailsLookupCode,
+	  ELP_ACCT_SETTINGS.DATA_ACCESS_GROUP_CODE AS DataAccessGroupCode,
+	  ELP_BANK_INFO.TRANSACTION_LIMIT AS TransactionLimit,
+	  null AS DirectDebitFirstPayment,
+	  ELP_BANK_INFO.ACCOUNT_NAME AS BankAccountName,
+	  ELP_BANK_INFO.BRANCH_NAME AS BankBranch,
+	  ELP_BANK_INFO.ACCOUNT_NUMBER AS BankAccountNumber,
+	  ELP_BANK_INFO.BANK_NAME AS BankName,
+	  ELP_BANK_INFO.BANK_SORT_CODE AS BankSortCode,
+	  ELP_BANK_INFO.IBAN_NUMBER AS IBAN_NUMBER,
+	  ELP_BANK_INFO.SWIFT_CODE AS SWIFT_CODE,
+	  ELP_BANK_INFO.BANK_ID AS BANK_ID,
+	 /* --Supplier */
+	  TRIM(ELP_ACCT_SETTINGS.DEFAULT_CURRENCY_CODE) AS DefaultCurrencyCode,
+	  ELP_DEALER_GROUP.DESCRIPTION AS Description,
+	  ELP_ACCT_SETTINGS.SUPPLIER_LOOKUP_CODE AS SupplierLookupCode,
+	  ELP_ACCT_SETTINGS.PAYMENT_METHOD AS PaymentMethod,
+	  ELP_ACCT_SETTINGS. SUPPLIER_STATUS AS SupplierStatus,
+	  ELP_DEALER_GROUP.DESCRIPTION AS SupplierName,
+    ELP_ACCT_SETTINGS.CONVERSION_CODE_CONTROL AS ConversionCodeControl,
+	  ELP_ACCT_SETTINGS.REPORT_CONVERSION_CONTROL AS ReportConversionControl,
+	  ELP_ACCT_SETTINGS.SUPPLIER_ANALYSIS_CODE_1 AS SupplierAnalysis1,
+	  ELP_ACCT_SETTINGS.SUPPLIER_ANALYSIS_CODE_2 AS SupplierAnalysis2,
+	  ELP_ACCT_SETTINGS.SUPPLIER_ANALYSIS_CODE_3 AS SupplierAnalysis3,
+	  ELP_ACCT_SETTINGS.SUPPLIER_ANALYSIS_CODE_4 AS SupplierAnalysis4,
+	  ELP_ACCT_SETTINGS.SUPPLIER_ANALYSIS_CODE_5 AS SupplierAnalysis5,
+	  ELP_ACCT_SETTINGS.SUPPLIER_ANALYSIS_CODE_6 AS SupplierAnalysis6,
+	  ELP_ACCT_SETTINGS.SUPPLIER_ANALYSIS_CODE_7 AS SupplierAnalysis7,
+	  ELP_ACCT_SETTINGS.SUPPLIER_ANALYSIS_CODE_8 AS SupplierAnalysis8,
+	  ELP_ACCT_SETTINGS.SUPPLIER_ANALYSIS_CODE_9 AS SupplierAnalysis9,
+	  ELP_ACCT_SETTINGS.SUPPLIER_ANALYSIS_CODE_10 AS SupplierAnalysis10,
+	 /* --Account */
+	  ELP_ACCT_SETTINGS.ACCOUNT_TYPE AS AccountType,
+	  ELP_ACCT_SETTINGS.BALANCE_TYPE AS BalanceType,
+	  ELP_ACCT_SETTINGS.ACCOUNT_ANALYSIS_1 AS EnterAnalysis1,
+	  ELP_ACCT_SETTINGS.ACCOUNT_ANALYSIS_2 AS EnterAnalysis2,
+	  ELP_ACCT_SETTINGS.ACCOUNT_ANALYSIS_3 AS EnterAnalysis3,
+	  ELP_ACCT_SETTINGS.ACCOUNT_ANALYSIS_4 AS EnterAnalysis4,
+	  ELP_ACCT_SETTINGS.ACCOUNT_ANALYSIS_5 AS EnterAnalysis5,
+	  ELP_ACCT_SETTINGS.ACCOUNT_ANALYSIS_6 AS EnterAnalysis6,
+	  ELP_ACCT_SETTINGS.ACCOUNT_ANALYSIS_7 AS EnterAnalysis7,
+	  ELP_ACCT_SETTINGS.ACCOUNT_ANALYSIS_8 AS EnterAnalysis8,
+	  ELP_ACCT_SETTINGS.ACCOUNT_ANALYSIS_9 AS EnterAnalysis9,
+	  ELP_ACCT_SETTINGS.ACCOUNT_ANALYSIS_10 AS EnterAnalysis10,
+	  ELP_DEALER_GROUP.DESCRIPTION AS LongDescription,
+	  ELP_ACCT_SETTINGS.SUPPRESS_REVALUATION AS SuppressRevaluation,
+	  ELP_ACCT_SETTINGS.PAY_AS_PAID_ACCOUNT_TYPE AS PayAsPaidAccountType,
+	  ELP_ACCT_SETTINGS.ACCOUNT_ANALYSIS_A_1 AS Analysis1,
+	  ELP_ACCT_SETTINGS.ACCOUNT_ANALYSIS_A_2 AS Analysis2,
+	  ELP_ACCT_SETTINGS.ACCOUNT_ANALYSIS_A_3 AS Analysis3,
+	  ELP_ACCT_SETTINGS.ACCOUNT_ANALYSIS_A_4 AS Analysis4,
+	  ELP_ACCT_SETTINGS.ACCOUNT_ANALYSIS_A_5 AS Analysis5,
+	  ELP_ACCT_SETTINGS.ACCOUNT_ANALYSIS_A_6 AS Analysis6,
+	  ELP_ACCT_SETTINGS.ACCOUNT_ANALYSIS_A_7 AS Analysis7,
+	  ELP_ACCT_SETTINGS.ACCOUNT_ANALYSIS_A_8 AS Analysis8,
+	  ELP_ACCT_SETTINGS.ACCOUNT_ANALYSIS_A_9 AS Analysis9,
+	  ELP_ACCT_SETTINGS.ACCOUNT_ANALYSIS_A_10 AS Analysis10,
+    ELP_ACCT_SETTINGS.DEFAULT_BANK_SUB_CODE AS DefaultBankSubcode,
+	  ELP_ACCT_TRANS_LOG.ACCT_TRANS_LOG_ID,
+    ELP_LIST_ITEM.CODE AS PAYMENTTERMS,
+    GETCODEFROMLISTITEM(ELP_ACCT_COMPANY.USE_ELITA_BANK_INFO_ID) AS INCLUDEBANKDETAILS,
+      ELP_COMPANY.CODE AS COMPANY_CODE
+FROM
+    ELP_LIST_ITEM,
+	ELP_ACCT_SETTINGS,
+    ELP_ACCT_COMPANY,
+	ELP_DEALER_GROUP,
+    ELP_ACCT_TRANS_LOG,
+    ELP_BANK_INFO, 
+    ELP_COMPANY
+WHERE
+        ELP_BANK_INFO.BANK_INFO_ID (+)= ELP_DEALER_GROUP.BANK_INFO_ID      
+  AND ELP_COMPANY.COMPANY_ID = ELP_ACCT_TRANS_LOG.COMPANY_ID
+    AND ELP_ACCT_SETTINGS.DEALER_GROUP_ID = ELP_DEALER_GROUP.DEALER_GROUP_ID
+	AND   ELP_ACCT_TRANS_LOG.COMPANY_ID = :COMPANY_ID
+    AND   ELP_LIST_ITEM.LIST_ITEM_ID  (+)= ELP_ACCT_SETTINGS.PAYMENT_TERMS_ID
+	AND   ELP_ACCT_SETTINGS.ACCT_COMPANY_ID = ELP_ACCT_TRANS_LOG.ACCT_COMPANY_ID
+	AND   ELP_ACCT_SETTINGS.ACCT_COMPANY_ID = ELP_ACCT_COMPANY.ACCT_COMPANY_ID
+    AND   ELP_ACCT_TRANS_LOG.DEALER_GROUP_ID = ELP_ACCT_SETTINGS.DEALER_GROUP_ID
+    AND   ELP_ACCT_TRANS_LOG.VENDOR_UPDATE = 'Y'
+UNION    
+SELECT
+	 ELP_ACCT_SETTINGS.ACCOUNT_CODE  AS AccountCode,
+	 ELP_ACCT_SETTINGS.DESCRIPTION AS Beneficiary,
+	 ELP_COMMISSION_ENTITY.ADDRESS1 AS AddressLine1,
+	 ELP_COMMISSION_ENTITY.ADDRESS2 AS AddressLine2,
+     ELP_REGION.DESCRIPTION AS Area,
+     ELP_COUNTRY.DESCRIPTION AS Country,
+     ELP_COUNTRY.CODE AS CountryCode,
+     ELP_ACCT_SETTINGS.ADDRESS_LOOKUP_CODE AS AddressLookupCode,
+     ELP_COMMISSION_ENTITY.POSTAL_CODE AS PostalCode,
+     ELP_COMMISSION_ENTITY.ENTITY_NAME AS ShortHeading,
+     ELP_REGION.DESCRIPTION State,
+     SUBSTR(ELP_REGION.ACCOUNTING_CODE,1,2) StateCode,
+     ELP_COMMISSION_ENTITY.CITY AS TownCity,
+	 ELP_ACCT_SETTINGS.ADDRESS_STATUS AS AddressStatus,
+	 ELP_COMMISSION_ENTITY.PHONE AS TelePhoneNumber,
+	 '' AS FaxNumber,
+	 '' AS WebPageAddress,
+     ELP_COMMISSION_ENTITY.EMAIL AS EmailAddress,
+	 '' AS TaxIdentificationNumber,
+	 1 AS SequenceNumber,
+	 ELP_ACCT_SETTINGS.USER_AREA AS UserArea,
+	 /* --Bank */
+	 ELP_BANK_INFO.BANK_SUB_CODE AS BankSubCode,
+	  ELP_BANK_INFO.BANK_LOOKUP_CODE As BankDetailsLookupCode,
+	  ELP_ACCT_SETTINGS.DATA_ACCESS_GROUP_CODE AS DataAccessGroupCode,
+	  ELP_BANK_INFO.TRANSACTION_LIMIT AS TransactionLimit,
+	  null AS DirectDebitFirstPayment,
+	  ELP_BANK_INFO.ACCOUNT_NAME AS BankAccountName,
+	  ELP_BANK_INFO.BRANCH_NAME AS BankBranch,
+	  ELP_BANK_INFO.ACCOUNT_NUMBER AS BankAccountNumber,
+	  ELP_BANK_INFO.BANK_NAME AS BankName,
+	  ELP_BANK_INFO.BANK_SORT_CODE AS BankSortCode,
+	  ELP_BANK_INFO.IBAN_NUMBER AS IBAN_NUMBER,
+	  ELP_BANK_INFO.SWIFT_CODE AS SWIFT_CODE,
+	  ELP_BANK_INFO.BANK_ID AS BANK_ID,
+	 /* --Supplier */
+	  TRIM(ELP_ACCT_SETTINGS.DEFAULT_CURRENCY_CODE) AS DefaultCurrencyCode,
+	  ELP_COMMISSION_ENTITY.ENTITY_NAME AS Description,
+	  ELP_ACCT_SETTINGS.SUPPLIER_LOOKUP_CODE AS SupplierLookupCode,
+	  ELP_ACCT_SETTINGS.PAYMENT_METHOD AS PaymentMethod,
+	  ELP_ACCT_SETTINGS.SUPPLIER_STATUS AS SupplierStatus,
+	  ELP_COMMISSION_ENTITY.ENTITY_NAME AS SupplierName,
+      ELP_ACCT_SETTINGS.CONVERSION_CODE_CONTROL AS ConversionCodeControl,
+	  ELP_ACCT_SETTINGS.REPORT_CONVERSION_CONTROL AS ReportConversionControl,
+	  ELP_ACCT_SETTINGS.SUPPLIER_ANALYSIS_CODE_1 AS SupplierAnalysis1,
+	  ELP_ACCT_SETTINGS.SUPPLIER_ANALYSIS_CODE_2 AS SupplierAnalysis2,
+	  ELP_ACCT_SETTINGS.SUPPLIER_ANALYSIS_CODE_3 AS SupplierAnalysis3,
+	  ELP_ACCT_SETTINGS.SUPPLIER_ANALYSIS_CODE_4 AS SupplierAnalysis4,
+	  ELP_ACCT_SETTINGS.SUPPLIER_ANALYSIS_CODE_5 AS SupplierAnalysis5,
+	  ELP_ACCT_SETTINGS.SUPPLIER_ANALYSIS_CODE_6 AS SupplierAnalysis6,
+	  ELP_ACCT_SETTINGS.SUPPLIER_ANALYSIS_CODE_7 AS SupplierAnalysis7,
+	  ELP_ACCT_SETTINGS.SUPPLIER_ANALYSIS_CODE_8 AS SupplierAnalysis8,
+	  ELP_ACCT_SETTINGS.SUPPLIER_ANALYSIS_CODE_9 AS SupplierAnalysis9,
+	  ELP_ACCT_SETTINGS.SUPPLIER_ANALYSIS_CODE_10 AS SupplierAnalysis10,
+	 /* --Account */
+	  ELP_ACCT_SETTINGS.ACCOUNT_TYPE AS AccountType,
+	  ELP_ACCT_SETTINGS.BALANCE_TYPE AS BalanceType,
+	  ELP_ACCT_SETTINGS.ACCOUNT_ANALYSIS_1 AS EnterAnalysis1,
+	  ELP_ACCT_SETTINGS.ACCOUNT_ANALYSIS_2 AS EnterAnalysis2,
+	  ELP_ACCT_SETTINGS.ACCOUNT_ANALYSIS_3 AS EnterAnalysis3,
+	  ELP_ACCT_SETTINGS.ACCOUNT_ANALYSIS_4 AS EnterAnalysis4,
+	  ELP_ACCT_SETTINGS.ACCOUNT_ANALYSIS_5 AS EnterAnalysis5,
+	  ELP_ACCT_SETTINGS.ACCOUNT_ANALYSIS_6 AS EnterAnalysis6,
+	  ELP_ACCT_SETTINGS.ACCOUNT_ANALYSIS_7 AS EnterAnalysis7,
+	  ELP_ACCT_SETTINGS.ACCOUNT_ANALYSIS_8 AS EnterAnalysis8,
+	  ELP_ACCT_SETTINGS.ACCOUNT_ANALYSIS_9 AS EnterAnalysis9,
+	  ELP_ACCT_SETTINGS.ACCOUNT_ANALYSIS_10 AS EnterAnalysis10,
+      ELP_COMMISSION_ENTITY.ENTITY_NAME AS LongDescription,
+	  ELP_ACCT_SETTINGS.SUPPRESS_REVALUATION AS SuppressRevaluation,
+	  ELP_ACCT_SETTINGS.PAY_AS_PAID_ACCOUNT_TYPE AS PayAsPaidAccountType,
+	  ELP_ACCT_SETTINGS.ACCOUNT_ANALYSIS_A_1 AS Analysis1,
+	  ELP_ACCT_SETTINGS.ACCOUNT_ANALYSIS_A_2 AS Analysis2,
+	  ELP_ACCT_SETTINGS.ACCOUNT_ANALYSIS_A_3 AS Analysis3,
+	  ELP_ACCT_SETTINGS.ACCOUNT_ANALYSIS_A_4 AS Analysis4,
+	  ELP_ACCT_SETTINGS.ACCOUNT_ANALYSIS_A_5 AS Analysis5,
+	  ELP_ACCT_SETTINGS.ACCOUNT_ANALYSIS_A_6 AS Analysis6,
+	  ELP_ACCT_SETTINGS.ACCOUNT_ANALYSIS_A_7 AS Analysis7,
+	  ELP_ACCT_SETTINGS.ACCOUNT_ANALYSIS_A_8 AS Analysis8,
+	  ELP_ACCT_SETTINGS.ACCOUNT_ANALYSIS_A_9 AS Analysis9,
+	  ELP_ACCT_SETTINGS.ACCOUNT_ANALYSIS_A_10 AS Analysis10,
+    ELP_ACCT_SETTINGS.DEFAULT_BANK_SUB_CODE AS DefaultBankSubcode,
+	  ELP_ACCT_TRANS_LOG.ACCT_TRANS_LOG_ID,
+      ELP_LIST_ITEM.CODE AS PAYMENTTERMS,
+      GETCODEFROMLISTITEM(ELP_ACCT_COMPANY.USE_ELITA_BANK_INFO_ID) AS INCLUDEBANKDETAILS,
+      ELP_COMPANY.CODE AS COMPANY_CODE
+FROM
+    ELP_LIST_ITEM,
+	  ELP_ACCT_SETTINGS,
+    ELP_ACCT_COMPANY,
+    ELP_COMMISSION_ENTITY,
+	  ELP_REGION,
+	  ELP_COUNTRY,
+    ELP_ACCT_TRANS_LOG,
+    ELP_BANK_INFO, 
+    ELP_COMPANY
+WHERE
+        ELP_BANK_INFO.BANK_INFO_ID (+)= ELP_COMMISSION_ENTITY.BANK_INFO_ID
+  AND ELP_COMPANY.COMPANY_ID = ELP_ACCT_TRANS_LOG.COMPANY_ID
+     AND ELP_REGION.REGION_ID  (+)= ELP_COMMISSION_ENTITY.REGION_ID
+	AND   ELP_COUNTRY.COUNTRY_ID = ELP_COMMISSION_ENTITY.COUNTRY_ID
+	AND   ELP_ACCT_TRANS_LOG.COMPANY_ID = :COMPANY_ID
+    AND   ELP_LIST_ITEM.LIST_ITEM_ID  (+)= ELP_ACCT_SETTINGS.PAYMENT_TERMS_ID
+	AND   ELP_ACCT_SETTINGS.ACCT_COMPANY_ID = ELP_ACCT_TRANS_LOG.ACCT_COMPANY_ID
+	AND   ELP_ACCT_SETTINGS.ACCT_COMPANY_ID = ELP_ACCT_COMPANY.ACCT_COMPANY_ID
+    AND   ELP_ACCT_SETTINGS.COMMISSION_ENTITY_ID = ELP_COMMISSION_ENTITY.ENTITY_ID
+    AND   ELP_ACCT_TRANS_LOG.COMMISSION_ENTITY_ID = ELP_ACCT_SETTINGS.COMMISSION_ENTITY_ID
+    AND   ELP_ACCT_TRANS_LOG.VENDOR_UPDATE = 'Y'
+ ]]>
+
+  </VENDOR>
+  <HEADER>
+    <![CDATA[
+      SELECT
+		      ELP_ACCT_BUSINESS_UNIT.BUSINESS_UNIT AS BusinessUnit,
+		      'A' AS BudgetCode
+      FROM
+		      ELP_ACCT_BUSINESS_UNIT
+      WHERE 
+          ELP_ACCT_BUSINESS_UNIT.ACCT_COMPANY_ID = :ACCT_COMPANY_ID
+      AND ELP_ACCT_BUSINESS_UNIT.BUSINESS_UNIT = :BUSINESS_UNIT
+         
+    ]]>
+  </HEADER>
+  <JOURNAL_POSTING_PARAMETERS>
+    <![CDATA[  
+    SELECT
+      ELP_ACCT_EVENT.ALLOW_BAL_TRAN AS AllowBalTran,
+      ELP_ACCT_EVENT.ALLOW_OVER_BUDGET AS AllowOverBudget,
+      ELP_ACCT_EVENT.ALLOW_POST_TO_SUSPENDED AS AllowPostToSuspended,
+      ELP_ACCT_EVENT.BALANCING_OPTIONS AS BalancingOptions,
+      '0' || TO_CHAR(SYSDATE,'MM') || TO_CHAR(SYSDATE,'YYYY') AS DefaultPeriod,
+      ELP_ACCT_EVENT.JOURNAL_TYPE AS JournalType,
+      'LIALL' AS LayoutCode,
+      ELP_ACCT_EVENT.LOAD_ONLY AS LoadOnly,
+      ELP_ACCT_EVENT.POST_PROVISIONAL AS PostProvisional,
+      ELP_ACCT_EVENT.POST_TO_HOLD AS PostToHold,
+      ELP_ACCT_EVENT.POSTING_TYPE AS PostingType,
+      ELP_ACCT_EVENT.REPORTING_ACCOUNT AS ReportingAccount,
+      ELP_ACCT_EVENT.SUPPRESS_SUBSTITUTED_MESSAGES AS SupressSubstitutedMessages,
+      ELP_ACCT_EVENT.SUSPENSE_ACCOUNT AS SuspenseAccount,
+      ELP_ACCT_EVENT.TRANSACTION_AMOUNT_ACCOUNT AS TransactionAmountAccount,
+      ELP_ACCT_EVENT.EVENT_DESCRIPTION AS DESCRIPTION,
+      LIEVENT.CODE AS GeneralDescription24
+    FROM
+        ELP_ACCT_EVENT, ELP_ACCT_EVENT_DETAIL, ELP_LIST_ITEM LIEVENT
+    WHERE
+        ELP_ACCT_EVENT.ACCT_COMPANY_ID = :ACCT_COMPANY_ID
+    AND ELP_ACCT_EVENT.ACCT_EVENT_TYPE_ID = :ACCT_EVENT_TYPE_ID
+    AND ELP_ACCT_EVENT.ACCT_EVENT_ID = ELP_ACCT_EVENT_DETAIL.ACCT_EVENT_ID
+    AND ELP_ACCT_EVENT_DETAIL.ACCT_BUSINESS_UNIT_ID = :ACCT_BUSINESS_UNIT_ID
+    AND LIEVENT.LIST_ITEM_ID = ELP_ACCT_EVENT.ACCT_EVENT_TYPE_ID
+    AND rownum = 1
+  ]]>
+  </JOURNAL_POSTING_PARAMETERS>
+  <EVENT_CLAIM>
+    ELP_ACCT_TRANSACTIONS.GET_CLAIMS
+  </EVENT_CLAIM>
+  <EVENT_CLAIMRES>
+  </EVENT_CLAIMRES>
+  <EVENT_IBNR>
+  </EVENT_IBNR>
+  <EVENT_UPR>
+  </EVENT_UPR>
+  <EVENT_REFUNDS>
+    ELP_ACCT_TRANSACTIONS.GET_PREMIUM_REFUND
+  </EVENT_REFUNDS>
+  <EVENT_PREM></EVENT_PREM>
+  <EVENT_VEND>
+    ELP_ACCT_TRANSACTIONS.GET_VENDORS
+  </EVENT_VEND>
+  <EVENT_INV>
+    ELP_ACCT_TRANSACTIONS.GET_INVOICES_BY_DATE
+  </EVENT_INV>
+</SQL>
+
+

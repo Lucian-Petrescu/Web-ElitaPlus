@@ -1,0 +1,179 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+
+<!-- ********************** THIS FILE HAS BEEN GENERATED FROM TEMPLATE SQLObject.cst (2/20/2015)********************** -->
+
+<SQL>
+  <LOAD>
+    <![CDATA[	
+			SELECT 
+				dealer_id,
+				invoice_month,
+				data_amount,
+				amount_type_code,
+				created_date,
+				created_by,
+				modified_date,
+				modified_by,
+        data_text,
+        data_text2,
+				data_text3,
+				data_text4,
+        data_date,
+				afa_invoice_manual_data_id
+			FROM elp_afa_invoice_manaul_data 
+			WHERE
+				afa_invoice_manual_data_id = :afa_invoice_manual_data_id
+		]]>
+  </LOAD>
+  <LOAD_LIST>
+    <![CDATA[	
+      select md.dealer_id, md.INVOICE_MONTH , d.dealer || ' - ' || d.dealer_name as dealer_name
+        , sum(case when md.amount_type_code = 'MDF' then md.DATA_AMOUNT else 0 end) MDFReconAmount
+        , sum(case when md.amount_type_code = 'CESSLOSS' then md.DATA_AMOUNT else 0 end) CessionLossAmount
+        , max(elita.ELP_AFA_ACCT_TRANS.IsSSGLFilePosted(d.dealer, md.INVOICE_MONTH)) SSGLFilePosted
+      from elp_afa_invoice_manaul_data md
+      inner join elp_dealer d on d.dealer_id = md.dealer_id
+      where md.dealer_id = :dealer_id
+        --dynamic_in_clause
+        and md.amount_type_code in ('MDF', 'CESSLOSS')
+      group by md.dealer_id, md.INVOICE_MONTH, d.dealer || ' - ' || d.dealer_name
+      order by INVOICE_MONTH desc
+    ]]>
+  </LOAD_LIST>
+
+  <LOAD_MONTHLY_AMOUNTS>
+    <![CDATA[	
+      SELECT 
+				dealer_id,
+				invoice_month,
+				data_amount,
+				amount_type_code,
+				created_date,
+				created_by,
+				modified_date,
+				modified_by,
+        data_text,
+        data_text2,
+				data_text3,
+				data_text4,
+        data_date,
+				afa_invoice_manual_data_id
+      from elp_afa_invoice_manaul_data md
+      where md.dealer_id = :dealer_id
+        and invoice_month = :invoice_month      
+    ]]>
+  </LOAD_MONTHLY_AMOUNTS>
+  
+  <UPDATE>
+    <![CDATA[	
+			UPDATE elp_afa_invoice_manaul_data SET
+				dealer_id = :dealer_id,
+				invoice_month = :invoice_month,
+				data_amount = :data_amount,
+				amount_type_code = :amount_type_code,
+        data_text = :data_text,
+        data_text2 = :data_text2,
+				data_text3 = :data_text3,
+				data_text4 = :data_text4,
+        data_date = :data_date,
+				modified_by = :modified_by
+			WHERE
+				afa_invoice_manual_data_id = :afa_invoice_manual_data_id
+		]]>
+  </UPDATE>
+  <INSERT>
+    INSERT INTO elp_afa_invoice_manaul_data
+    (
+    dealer_id,
+    invoice_month,
+    data_amount,
+    amount_type_code,
+    created_by,
+    data_text,
+    data_text2,
+    data_text3,
+    data_text4,
+    data_date,
+    afa_invoice_manual_data_id
+    )
+    VALUES
+    (
+    :dealer_id,
+    :invoice_month,
+    :data_amount,
+    :amount_type_code,
+    :created_by,
+    :data_text,
+    :data_text2,
+    :data_text3,
+    :data_text4,
+    :data_date,
+    :afa_invoice_manual_data_id
+    )
+  </INSERT>
+  <DELETE>
+    DELETE FROM elp_afa_invoice_manaul_data
+    WHERE
+    afa_invoice_manual_data_id = :afa_invoice_manual_data_id
+  </DELETE>
+
+  <START_INVOICE_PROCESS>
+    elita.ELP_AFA_GEN_INVOICE_DATA.Start_InvGen_AfterManualData
+  </START_INVOICE_PROCESS>
+
+  <LOAD_LIST_PONumber>
+    <![CDATA[	
+      select md.dealer_id, md.INVOICE_MONTH , d.dealer || ' - ' || d.dealer_name as dealer_name
+        , md.DATA_TEXT as PONumber
+        , md.AFA_INVOICE_MANUAL_DATA_ID
+        , to_Char(to_date( md.INVOICE_MONTH || '01', 'yyyymmdd'), 'Month YYYY') as Invoice_Month_Desc
+      from elp_afa_invoice_manaul_data md
+      inner join elp_dealer d on d.dealer_id = md.dealer_id
+      where md.dealer_id = :dealer_id
+        and md.amount_type_code = 'PONUM'
+        --dynamic_in_clause
+      order by INVOICE_MONTH desc
+    ]]>
+  </LOAD_LIST_PONumber>
+  
+  <LOAD_LIST_BY_TYPE>
+    <![CDATA[	
+      select *
+      from elp_afa_invoice_manaul_data md
+      where md.dealer_id = :dealer_id
+        and md.amount_type_code = :amount_type_code 
+        --dynamic_in_clause
+    ]]>
+  </LOAD_LIST_BY_TYPE>
+
+  <LOAD_INVOICE_DATES>
+    <![CDATA[	
+      select D.DEALER, D.DEALER_NAME, D.DEALER_ID
+        ,p.INVOICE_MONTH
+        ,I.AFA_INVOICE_DATA_ID
+        ,NVL(TRIM(EXTRACT(i.Invoice_xml_data, '/InvoiceData/InvoiceDate/text()')), 'Not Available') as InvoiceDate
+        ,NVL(TRIM(EXTRACT(i.Invoice_xml_data, '/InvoiceData/DueDate/text()')), 'Not Available') as DueDate
+        ,nvl((select to_char(max(data_date), 'mm/dd/yyyy')
+              from  elita.ELP_AFA_INVOICE_MANAUL_DATA
+              where dealer_id = d.dealer_id
+              and invoice_month = p.INVOICE_MONTH
+              and trim(upper(Amount_Type_Code)) = 'DATE_INVOICE'
+          ), 'Not Available') as ManualInvoiceDate
+        ,nvl((select to_char(max(data_date), 'mm/dd/yyyy')
+              from  elita.ELP_AFA_INVOICE_MANAUL_DATA
+              where dealer_id = d.dealer_id
+              and invoice_month = p.INVOICE_MONTH
+              and trim(upper(Amount_Type_Code)) = 'DATE_INV_DUE'
+        ), 'Not Available') as ManualDueDate
+        from ELP_dEALER d
+        INNER JOIN (SELECT :invoice_month AS INVOICE_MONTH FROM DUAL) p on 1=1
+        left outer JOIN afa.ELP_AFA_INVOICE_DATA I ON D.DEALER_ID = I.DEALER_ID and nvl(i.DELETED, 'N') = 'N' AND i.INVOICE_MONTH = p.INVOICE_MONTH
+        where  d.dealer_id = :dealer_id
+          --dynamic_in_clause
+    ]]>
+  </LOAD_INVOICE_DATES>
+
+  <UPDATE_INVOICE_WITH_MANUAL_DATES>
+    elita.ELP_AFA_GEN_INVOICE_DATA.UpdateInvDataWithManualDates
+  </UPDATE_INVOICE_WITH_MANUAL_DATES>
+</SQL>

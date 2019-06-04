@@ -1,0 +1,192 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+
+<!-- ********************** THIS FILE HAS BEEN GENERATED FROM TEMPLATE SQLObject.cst (1/9/2013)********************** -->
+
+<SQL>
+  <LOAD>
+    <![CDATA[	
+			SELECT 
+				file_header_id,
+				cert_number,
+				warranty_sales_date,
+				cert_created_date,
+				product_code,
+				item_retail_price,
+				cancellation_date,
+				refund_amt,
+				payment_instrument,
+				account_number,
+				credit_card_number,
+				customer_name,
+				installment_amount,
+				cess_salesrep,
+				cess_office,
+				sales_rep_number,
+				sales_department,
+				businessline,
+				invoice_number,
+				dealer_branch_code,
+				document_type,
+				identification_number,
+				address1,
+				postal_code,
+				city,
+				home_phone,
+				mfg_description,
+				model,
+				additional_info,
+				serial_number,
+				linked_cert_number,
+				date_paid_for,
+				billed_amount,
+				installment_number,
+				record_type,
+				created_date,
+				created_by,
+				modified_date,
+				modified_by,
+				cancellation_reason_code,
+				file_detail_id
+			FROM elp_daily_outbound_file_detail 
+			WHERE
+				file_detail_id = :file_detail_id
+		]]>
+  </LOAD>
+  <LOAD_LIST>
+  </LOAD_LIST>
+  <UPDATE>
+    <![CDATA[	
+			UPDATE elp_daily_outbound_file_detail SET
+				file_header_id = :file_header_id,
+				cert_number = :cert_number,
+				warranty_sales_date = :warranty_sales_date,
+				cert_created_date = :cert_created_date,
+				product_code = :product_code,
+				item_retail_price = :item_retail_price,
+				cancellation_date = :cancellation_date,
+				refund_amt = :refund_amt,
+				payment_instrument = :payment_instrument,
+				account_number = :account_number,
+				credit_card_number = :credit_card_number,
+				customer_name = :customer_name,
+				installment_amount = :installment_amount,
+				cess_salesrep = :cess_salesrep,
+				cess_office = :cess_office,
+				sales_rep_number = :sales_rep_number,
+				sales_department = :sales_department,
+				businessline = :businessline,
+				invoice_number = :invoice_number,
+				dealer_branch_code = :dealer_branch_code,
+				document_type = :document_type,
+				identification_number = :identification_number,
+				address1 = :address1,
+				postal_code = :postal_code,
+				city = :city,
+				home_phone = :home_phone,
+				mfg_description = :mfg_description,
+				model = :model,
+				additional_info = :additional_info,
+				serial_number = :serial_number,
+				linked_cert_number = :linked_cert_number,
+				date_paid_for = :date_paid_for,
+				billed_amount = :billed_amount,
+				installment_number = :installment_number,
+				record_type = :record_type,
+				cancellation_reason_code = :cancellation_reason_code,
+				modified_by = :modified_by
+			WHERE
+				file_detail_id = :file_detail_id
+		]]>
+  </UPDATE>
+  <INSERT>
+    INSERT INTO elp_daily_outbound_file_detail
+    (
+    file_header_id,
+    cert_number,
+    warranty_sales_date,
+    cert_created_date,
+    product_code,
+    item_retail_price,
+    cancellation_date,
+    refund_amt,
+    payment_instrument,
+    account_number,
+    credit_card_number,
+    customer_name,
+    installment_amount,
+    cess_salesrep,
+    cess_office,
+    sales_rep_number,
+    sales_department,
+    businessline,
+    invoice_number,
+    dealer_branch_code,
+    document_type,
+    identification_number,
+    address1,
+    postal_code,
+    city,
+    home_phone,
+    mfg_description,
+    model,
+    additional_info,
+    serial_number,
+    linked_cert_number,
+    date_paid_for,
+    billed_amount,
+    installment_number,
+    record_type,
+    cancellation_reason_code,
+    created_by,
+    file_detail_id
+    )
+    VALUES
+    (
+    :file_header_id,
+    :cert_number,
+    :warranty_sales_date,
+    :cert_created_date,
+    :product_code,
+    :item_retail_price,
+    :cancellation_date,
+    :refund_amt,
+    :payment_instrument,
+    :account_number,
+    :credit_card_number,
+    :customer_name,
+    :installment_amount,
+    :cess_salesrep,
+    :cess_office,
+    :sales_rep_number,
+    :sales_department,
+    :businessline,
+    :invoice_number,
+    :dealer_branch_code,
+    :document_type,
+    :identification_number,
+    :address1,
+    :postal_code,
+    :city,
+    :home_phone,
+    :mfg_description,
+    :model,
+    :additional_info,
+    :serial_number,
+    :linked_cert_number,
+    :date_paid_for,
+    :billed_amount,
+    :installment_number,
+    :record_type,
+    :cancellation_reason_code,
+    :created_by,
+    :file_detail_id
+    )
+  </INSERT>
+  <DELETE>
+    DELETE FROM elp_daily_outbound_file_detail
+    WHERE
+    file_detail_id = :file_detail_id
+  </DELETE>
+</SQL>
+
+

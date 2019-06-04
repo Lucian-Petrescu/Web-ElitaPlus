@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="utf-8" ?>
+
+<!-- ********************** THIS FILE HAS BEEN GENERATED FROM TEMPLATE SQLObject.cst (7/4/2017)********************** -->
+
+<SQL>
+	<LOAD>
+		<![CDATA[	
+			SELECT 
+				case_id,
+				claim_id,
+				action_owner_xcd,
+				action_type_xcd,
+				status_xcd,
+				ref_source,
+				ref_id,
+				created_by,
+				created_date,
+				modified_by,
+				modified_date,
+				case_action_id
+			FROM elp_case_action 
+			WHERE
+				case_action_id = :case_action_id
+		]]>
+	</LOAD>
+	<LOAD_CASE_ACTION_LIST>
+    <![CDATA[elp_case_utility.LoadCaseActionList]]>
+	</LOAD_CASE_ACTION_LIST>
+  <LOAD_CLAIM_ACTION_LIST>
+    <![CDATA[elp_case_utility.LoadClaimActionList]]>
+  </LOAD_CLAIM_ACTION_LIST>
+  <UPDATE>
+		<![CDATA[	
+			UPDATE elp_case_action SET
+				case_id = :case_id,
+				claim_id = :claim_id,
+				action_owner_xcd = :action_owner_xcd,
+				action_type_xcd = :action_type_xcd,
+				status_xcd = :status_xcd,
+				ref_source = :ref_source,
+				ref_id = :ref_id,
+				modified_by = :modified_by
+			WHERE
+				case_action_id = :case_action_id
+		]]>
+	</UPDATE>
+	<INSERT>
+			INSERT INTO elp_case_action
+					(			
+				case_id, 
+				claim_id, 
+				action_owner_xcd, 
+				action_type_xcd, 
+				status_xcd, 
+				ref_source, 
+				ref_id, 
+				created_by,
+				case_action_id
+					)
+			VALUES
+					(			
+				:case_id, 
+				:claim_id, 
+				:action_owner_xcd, 
+				:action_type_xcd, 
+				:status_xcd, 
+				:ref_source, 
+				:ref_id, 
+				:created_by,
+				:case_action_id
+					)
+	</INSERT>
+	<DELETE>
+			DELETE FROM elp_case_action
+			WHERE
+				case_action_id = :case_action_id
+	</DELETE>
+</SQL> 
+
+

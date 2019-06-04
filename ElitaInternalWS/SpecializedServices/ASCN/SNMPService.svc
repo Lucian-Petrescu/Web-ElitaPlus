@@ -1,0 +1,2 @@
+﻿<%@ ServiceHost Language="VB" Debug="true" Service="ElitaInternalWS.SpecializedServices.Ascn.SNMPService"
+     Factory="ElitaInternalWS.Core.UnityServiceHostFactory"   CodeBehind="SNMPService.svc.vb" %>

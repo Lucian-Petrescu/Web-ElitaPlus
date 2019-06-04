@@ -1,0 +1,179 @@
+<?xml version="1.0" encoding="utf-8" ?>
+
+<!-- ********************** THIS FILE HAS BEEN GENERATED FROM TEMPLATE SQLObject.cst (8/27/2004)********************** -->
+
+<SQL>
+	<LOAD>
+		<![CDATA[	
+			SELECT 
+				description,
+				country_id,
+				created_date,
+				modified_date,
+				short_desc,
+        accounting_code,
+        invoicetax_gl_acct,
+				created_by,
+				modified_by,
+				region_id
+			FROM elp_region 
+			WHERE
+				region_id = :region_id
+		]]>
+	</LOAD>
+	<LOAD_LIST_DYNAMIC>		
+		<![CDATA[	
+			SELECT 
+				region_id,
+				description,
+				short_desc,
+        accounting_code,
+        invoicetax_gl_acct
+			FROM elp_region 
+			WHERE 
+			    country_id = :country_id
+      ORDER BY description
+		]]>	
+	</LOAD_LIST_DYNAMIC>
+	<LOAD_LIST>		
+		<![CDATA[	
+			SELECT 
+				r.region_id,
+				c.country_id,
+				c.description as country_name,
+				r.description,
+				r.short_desc,
+        r.accounting_code,
+        r.invoicetax_gl_acct
+			FROM elp_region r , elp_country c 
+			WHERE
+				r.country_id  = c.country_id
+				AND r.country_id = :country_id
+				AND UPPER(r.short_desc) LIKE :short_desc	
+				AND UPPER(r.description) LIKE :description
+			ORDER BY UPPER(c.description), UPPER(r.description)		
+		]]>	
+	</LOAD_LIST>
+	<LOAD_LIST_FOR_USER_COUNTRIES>		
+		<![CDATA[	
+			SELECT distinct 
+				r.region_id,
+				c.country_id,
+				c.description as country_name,
+				r.description,
+				r.short_desc,
+        r.accounting_code,
+        r.invoicetax_gl_acct
+			FROM elp_region r, elp_country c 
+			WHERE
+				r.country_id  = c.country_id
+				AND r.description LIKE :description
+        AND r.short_desc LIKE :short_desc	
+				--dynamic_in_clause
+			ORDER BY UPPER(c.description), UPPER(r.description)			
+		]]>	
+	</LOAD_LIST_FOR_USER_COUNTRIES>
+  <LOAD_LIST_FOR_WS>
+    <![CDATA[	
+			SELECT 
+				country_id,
+				description,
+				short_desc,
+        accounting_code,
+        invoicetax_gl_acct
+			FROM elp_region 
+			WHERE 
+			    --dynamic_where_clause
+			ORDER BY UPPER(description)
+		]]>
+  </LOAD_LIST_FOR_WS>
+  <LOAD_REGIONS_AND_COMUNAS>
+    <![CDATA[	
+      select r.short_desc as region_code,
+             r.description as region_description,
+             cc.comuna as comuna
+      from elp_region r,
+            elp_country c,
+            elp_comuna_code cc
+      where r.country_id = c.country_id and
+            r.region_id = cc.region_id (+) and
+            c.country_id = :country_id
+            --dynamic_where_clause
+      order by r.short_desc, cc.comuna		
+   ]]>
+  </LOAD_REGIONS_AND_COMUNAS>  
+  <UPDATE>
+		<![CDATA[	
+			UPDATE elp_region SET
+				description = :description,
+				country_id = :country_id,
+				short_desc = :short_desc,
+        accounting_code = :accounting_code,
+        invoicetax_gl_acct = :invoicetax_gl_acct,
+				modified_by = :modified_by
+			WHERE
+				region_id = :region_id
+				AND NVL(modified_date,created_date) = NVL(:modified_date,created_date)
+		]]>
+	</UPDATE>
+	<INSERT>
+    INSERT INTO elp_region
+    (
+    description,
+    country_id,
+    short_desc,
+    accounting_code,
+    invoicetax_gl_acct,
+    created_by,
+    region_id
+    )
+    VALUES
+    (
+    :description,
+    :country_id,
+    :short_desc,
+    :accounting_code,
+    :invoicetax_gl_acct,
+    :created_by,
+    :region_id
+    )
+  </INSERT>
+	<DELETE>
+			DELETE FROM elp_region
+			WHERE
+				region_id = :region_id
+	</DELETE>
+  <REGION_BY_COUNTRY>
+		<![CDATA[	
+			SELECT 
+				region_id id,
+				short_desc code,
+        description,
+        short_desc||' - '||description code_and_description 
+			FROM elp_region 
+			WHERE 
+			country_id = :country_id
+			ORDER BY UPPER(short_desc)
+		]]>
+  </REGION_BY_COUNTRY>
+  <IS_REGION_CODE_UNIQUE>
+    <![CDATA[
+    SELECT  REGION_ID 
+    FROM ELP_REGION 
+    WHERE COUNTRY_ID = :country_id
+    and UPPER(SHORT_DESC) = UPPER(:short_desc)
+    and REGION_ID <> :region_Id
+    ]]>
+  </IS_REGION_CODE_UNIQUE>
+  <IS_REGION_DESCRIPTION_UNIQUE>
+    <![CDATA[
+    SELECT  REGION_ID 
+    FROM ELP_REGION 
+    WHERE COUNTRY_ID = :country_id
+    and UPPER(DESCRIPTION) = UPPER(:description)
+    and REGION_ID <> :region_Id
+    ]]>
+  </IS_REGION_DESCRIPTION_UNIQUE>
+</SQL> 
+
+

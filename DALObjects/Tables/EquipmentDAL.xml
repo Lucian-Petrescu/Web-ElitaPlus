@@ -1,0 +1,257 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<SQL>
+  <LOAD>
+    <![CDATA[
+      SELECT 
+        EQUIPMENT_ID,
+        DESCRIPTION,
+        MODEL,
+        MASTER_EQUIPMENT_ID,
+        REPAIRABLE_ID,
+        MANUFACTURER_ID,
+        EQUIPMENT_CLASS_ID,
+        EQUIPMENT_TYPE_ID,
+        CREATED_DATE,
+        MODIFIED_DATE,
+        CREATED_BY,
+        MODIFIED_BY,
+        EFFECTIVE,
+        EXPIRATION,
+        IS_MASTER_EQUIPMENT,
+        COLOR_XCD,
+        MEMORY_XCD,
+        CARRIER_XCD
+      FROM
+        ELP_EQUIPMENT
+      WHERE
+        EQUIPMENT_ID = :equipment_id
+    ]]>
+  </LOAD>
+  <LOAD_LIST>
+    <![CDATA[	
+            SELECT
+        E.EQUIPMENT_ID,
+        E.DESCRIPTION,
+        E.MODEL,
+        M.DESCRIPTION AS MANUFACTURER,
+        DITEC.TRANSLATION AS EQUIPMENT_CLASS,
+        DITET.TRANSLATION AS EQUIPMENT_TYPE,
+	      EWM.SKU_NUMBER SKU, EWM.RISK_TYPE_ID,
+        elp_utl_lov.Description_by_Code('EQPCOLOR',elp_utl_lov.code(E.COLOR_XCD),:language_id) as color_xcd,
+        elp_utl_lov.Description_by_Code('EQPMEMORY',elp_utl_lov.code(E.MEMORY_XCD),:language_id) memory_xcd,
+        elp_utl_lov.Description_by_Code('EQPCARRIER',elp_utl_lov.code(E.CARRIER_XCD),:language_id) carrier_xcd 
+        
+      FROM
+        ELITA.ELP_EQUIPMENT E
+        INNER JOIN ELP_MANUFACTURER M ON E.MANUFACTURER_ID = M.MANUFACTURER_ID
+        LEFT JOIN ELP_WARRANTY_MASTER EWM ON UPPER(M.DESCRIPTION) = UPPER(EWM.MANUFACTURER_NAME) AND EWM.MODEL_NUMBER = E.MODEL,
+        ELP_LIST_ITEM LIEC,
+        ELP_LIST LEC,
+        ELP_DICT_ITEM_TRANSLATION DITEC,
+		    ELP_LIST_ITEM LIET,
+		    ELP_LIST LET,
+        ELP_DICT_ITEM_TRANSLATION DITET
+                
+        
+      WHERE
+        LIEC.LIST_ID = LEC.LIST_ID AND
+        LIET.LIST_ID = LET.LIST_ID AND
+        E.EQUIPMENT_CLASS_ID = LIEC.LIST_ITEM_ID AND
+        E.EQUIPMENT_TYPE_ID = LIET.LIST_ITEM_ID AND
+        DITEC.DICT_ITEM_ID = LIEC.DICT_ITEM_ID AND
+        DITET.DICT_ITEM_ID = LIET.DICT_ITEM_ID AND
+        LEC.CODE = 'EQPCLS' AND
+        LET.CODE = 'EQPTYPE' AND
+        DITEC.LANGUAGE_ID = :language_id AND
+        --dynamic_where_clause
+	      DITET.LANGUAGE_ID = DITEC.LANGUAGE_ID        
+			  --dynamic_order_by_clause]]>
+  </LOAD_LIST>
+  <LOAD_LIST_BY_EQUIPMENT_LIST>
+    <![CDATA[	
+        SELECT DISTINCT 
+        E.EQUIPMENT_ID,
+        E.DESCRIPTION,
+        E.MODEL,
+        M.DESCRIPTION AS MANUFACTURER,
+        DITEC.TRANSLATION AS EQUIPMENT_CLASS,
+        DITET.TRANSLATION AS EQUIPMENT_TYPE,
+	      EWM.SKU_NUMBER SKU, EWM.RISK_TYPE_ID,
+        elp_utl_lov.Description_by_Code('EQPCOLOR',elp_utl_lov.code(E.COLOR_XCD),:language_id) as color_xcd,
+        elp_utl_lov.Description_by_Code('EQPMEMORY',elp_utl_lov.code(E.MEMORY_XCD),:language_id) memory_xcd,
+        elp_utl_lov.Description_by_Code('EQPCARRIER',elp_utl_lov.code(E.CARRIER_XCD),:language_id) carrier_xcd 
+
+      FROM
+        ELITA.ELP_EQUIPMENT E
+        INNER JOIN ELP_MANUFACTURER M ON E.MANUFACTURER_ID = M.MANUFACTURER_ID
+        LEFT JOIN ELP_WARRANTY_MASTER EWM ON UPPER(M.DESCRIPTION) = UPPER(EWM.MANUFACTURER_NAME) AND EWM.MODEL_NUMBER = E.MODEL 
+        INNER JOIN ELP_EQUIPMENT_LIST_DETAIL ELSTD ON E.EQUIPMENT_ID = ELSTD.EQUIPMENT_ID
+        INNER JOIN ELP_EQUIPMENT_LIST ELST ON ELSTD.EQUIPMENT_LIST_ID = ELST.EQUIPMENT_LIST_ID,
+        ELP_LIST_ITEM LIEC,
+        ELP_LIST LEC,
+        ELP_DICT_ITEM_TRANSLATION DITEC,
+		    ELP_LIST_ITEM LIET,
+		    ELP_LIST LET,
+        ELP_DICT_ITEM_TRANSLATION DITET
+      WHERE
+        LIEC.LIST_ID = LEC.LIST_ID AND
+        LIET.LIST_ID = LET.LIST_ID AND
+        E.EQUIPMENT_CLASS_ID = LIEC.LIST_ITEM_ID AND
+        E.EQUIPMENT_TYPE_ID = LIET.LIST_ITEM_ID AND
+        DITEC.DICT_ITEM_ID = LIEC.DICT_ITEM_ID AND
+        DITET.DICT_ITEM_ID = LIET.DICT_ITEM_ID AND
+        LEC.CODE = 'EQPCLS' AND
+        LET.CODE = 'EQPTYPE' AND
+        DITEC.LANGUAGE_ID = :language_id AND
+        ELST.CODE = :EQUIP_LIST_CODE AND :EFF_DATE BETWEEN ELST.EFFECTIVE AND ELST.EXPIRATION AND
+        --dynamic_where_clause
+	      DITET.LANGUAGE_ID = DITEC.LANGUAGE_ID        
+			  --dynamic_order_by_clause]]>
+  </LOAD_LIST_BY_EQUIPMENT_LIST>
+  <INSERT>
+    <![CDATA[
+    INSERT INTO 
+      ELP_EQUIPMENT
+    (
+      equipment_id,
+      description,
+      model,
+      master_equipment_id,
+      repairable_id,
+      manufacturer_id,
+      equipment_class_id,
+      equipment_type_id,
+      effective,
+      expiration,
+      is_master_equipment,      
+      color_xcd,
+      memory_xcd,
+      carrier_xcd
+    )
+    VALUES
+    (
+      :equipment_id,
+      :description,
+      :model,
+      :master_equipment_id,
+      :repairable_id,
+      :manufacturer_id,
+      :equipment_class_id,
+      :equipment_type_id,
+      :effective,
+      :expiration,
+      :is_master_equipment,
+      case when :color_xcd = '00000000-0000-0000-0000-000000000000' then null else :color_xcd end,
+      :memory_xcd,
+      :carrier_xcd
+    )
+    ]]>
+  </INSERT>
+  <UPDATE>
+    <![CDATA[
+    UPDATE
+      ELP_EQUIPMENT
+    SET
+      description = :description,
+      model = :model,
+      master_equipment_id = :master_equipment_id,
+      repairable_id = :repairable_id,
+      manufacturer_id = :manufacturer_id,
+      equipment_class_id = :equipment_class_id,
+      equipment_type_id = :equipment_type_id,
+      effective = :effective,
+      expiration = :expiration,
+      is_master_equipment = :is_master_equipment,      
+      color_xcd = :color_xcd,
+      memory_xcd = :memory_xcd,
+      carrier_xcd = :carrier_xcd
+    where
+      equipment_id = :equipment_id
+    ]]>
+  </UPDATE>
+  <DELETE>
+    <![CDATA[	
+    DELETE
+      ELP_EQUIPMENT
+    WHERE
+      equipment_id = :equipment_id
+    ]]>
+  </DELETE>
+  <SEARCH_Equipment_List_detail>
+    SELECT EQ.EQUIPMENT_ID ID, EQ.DESCRIPTION FROM ELP_EQUIPMENT EQ
+    INNER JOIN ELP_MANUFACTURER EM ON EQ.MANUFACTURER_ID = EM.MANUFACTURER_ID
+    WHERE (SELECT SYSDATE FROM DUAL) BETWEEN EQ.EFFECTIVE AND EQ.EXPIRATION
+    AND EM.COMPANY_GROUP_ID = :COMPANY_GROUP_ID AND EQ.EQUIPMENT_TYPE_ID != :PARENT_EQUIPMENT_TYPE
+  </SEARCH_Equipment_List_detail>
+  <LOAD_EQUIPMENT_LIST_FOR_WS>
+    <![CDATA[	
+SELECT M.DESCRIPTION AS MANUFACTURER,
+       E.MODEL
+FROM ELITA.ELP_EQUIPMENT E,
+     ELP_MANUFACTURER M
+WHERE E.EQUIPMENT_ID in ( select DISTINCT EQUIPMENT_ID
+            					from ELP_EQUIPMENT_LIST EL , ELP_EQUIPMENT_LIST_DETAIL ELD
+            					WHERE ELD.EQUIPMENT_LIST_ID = EL.EQUIPMENT_LIST_ID
+            					AND EL.CODE = :equipment_code)
+AND E.MANUFACTURER_ID = M.MANUFACTURER_ID
+--AND M.COMPANY_GROUP_ID = :company_group_id
+order by M.DESCRIPTION,E.MODEL
+    ]]>
+  </LOAD_EQUIPMENT_LIST_FOR_WS>
+  <FIND_EQUIPMENT_BY_MAKE_MODEL_DEALER>
+    <![CDATA[
+          select elp_equipment.equipment_id
+            from elp_dealer
+      inner join elp_equipment_list
+              on elp_equipment_list.code = elp_dealer.equipment_list_code
+             and :lookup_date between elp_equipment_list.effective and elp_equipment_list.expiration
+      inner join elp_equipment_list_detail on elp_equipment_list_detail.equipment_list_id = elp_equipment_list.equipment_list_id
+      inner join elp_equipment on elp_equipment_list_detail.equipment_id = elp_equipment.equipment_id
+      inner join elp_manufacturer on elp_manufacturer.manufacturer_id = elp_equipment.manufacturer_id
+      left outer join elp_mfg_standardization on elp_mfg_standardization.manufacturer_id = elp_manufacturer.manufacturer_id
+           where elp_dealer.dealer = :dealer
+             and (upper(elp_manufacturer.description) = upper(:manufacturer) or upper(elp_mfg_standardization.description) = upper(:manufacturer))
+             and GetTextForComparison(:model) = GetTextForComparison(elp_equipment.model)
+             and rownum = 1
+    ]]>
+  </FIND_EQUIPMENT_BY_MAKE_MODEL_DEALER>
+  <GET_EQUIPMENT_ID_BY_EQUIPMENTLIST>
+    <![CDATA[SELECT DISTINCT e.EQUIPMENT_ID AS ID
+      FROM elita.ELP_EQUIPMENT e
+      INNER JOIN elita.ELP_MANUFACTURER m ON e.MANUFACTURER_ID = m.MANUFACTURER_ID
+      inner join elita.elp_equipment_list_detail elstd on e.equipment_id = elstd.equipment_id
+      inner join elita.elp_equipment_list elst on elstd.equipment_list_id = elst.equipment_list_id
+      WHERE elst.code = :equipment_list_code
+      and :effective_date between e.effective and e.expiration
+      and :effective_date between elst.effective and elst.expiration
+      and :effective_date between elstd.effective and elstd.expiration
+      and e.manufacturer_id = hextoraw(:manufacturerid)
+      and GetTextForComparison(e.model) = GetTextForComparison(:model)]]>
+  </GET_EQUIPMENT_ID_BY_EQUIPMENTLIST>
+  <GET_EQUIPMENT_CLASS_ID_BY_EQUIPMENT_ID>
+    <![CDATA[
+      select equipment_class_id
+        from elp_equipment
+       where equipment_id = :equipment_id
+    ]]>
+  </GET_EQUIPMENT_CLASS_ID_BY_EQUIPMENT_ID>
+
+  <LOAD_EQUIPMENT_FOR_BENEFITS_LIST>
+    <![CDATA[
+      SELECT DISTINCT 
+        E.EQUIPMENT_ID,
+        M.DESCRIPTION || ' / ' || E.MODEL AS DESCRIPTION,
+        E.MODEL,
+        M.DESCRIPTION AS MANUFACTURER
+      FROM
+        ELITA.ELP_EQUIPMENT E
+        JOIN      ELP_MANUFACTURER M              ON E.MANUFACTURER_ID = M.MANUFACTURER_ID
+        JOIN      ELP_EQUIPMENT_LIST_DETAIL ELSTD ON E.EQUIPMENT_ID = ELSTD.EQUIPMENT_ID
+        JOIN      ELP_EQUIPMENT_LIST ELST         ON ELSTD.EQUIPMENT_LIST_ID = ELST.EQUIPMENT_LIST_ID
+      WHERE 
+      
+      :EFF_DATE BETWEEN ELST.EFFECTIVE AND ELST.EXPIRATION
+      ORDER BY MANUFACTURER, MODEL
+    ]]>
+  </LOAD_EQUIPMENT_FOR_BENEFITS_LIST>
+</SQL>

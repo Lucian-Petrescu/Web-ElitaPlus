@@ -1,0 +1,70 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+
+<!-- ********************** THIS FILE HAS BEEN GENERATED FROM TEMPLATE SQLObject.cst (9/25/2012)********************** -->
+
+<SQL>
+  <LOAD>
+    <![CDATA[	
+			SELECT 
+				workqueue_id,
+				company_id,
+				user_id,
+				created_date,
+				created_by,
+				modified_date,
+				modified_by,
+				workqueue_assign_id
+			FROM elp_workqueue_assign 
+			WHERE
+				workqueue_assign_id = :workqueue_assign_id
+		]]>
+  </LOAD>
+  <LOAD_LIST>
+    SELECT
+    workqueue_id,
+    company_id,
+    user_id,
+    created_date,
+    created_by,
+    modified_date,
+    modified_by,
+    workqueue_assign_id
+    FROM elp_workqueue_assign
+    WHERE
+    user_id = :user_id
+  </LOAD_LIST>
+  <UPDATE>
+    <![CDATA[	
+			UPDATE elp_workqueue_assign SET
+				workqueue_id = :workqueue_id,
+				company_id = :company_id,
+				user_id = :user_id,
+				modified_by = :modified_by
+			WHERE
+				workqueue_assign_id = :workqueue_assign_id
+		]]>
+  </UPDATE>
+  <INSERT>
+    INSERT INTO elp_workqueue_assign
+    (
+    workqueue_id,
+    company_id,
+    user_id,
+    created_by,
+    workqueue_assign_id
+    )
+    VALUES
+    (
+    :workqueue_id,
+    :company_id,
+    :user_id,
+    :created_by,
+    :workqueue_assign_id
+    )
+  </INSERT>
+  <DELETE>
+    DELETE FROM elp_workqueue_assign
+    WHERE
+    workqueue_assign_id = :workqueue_assign_id
+  </DELETE>
+</SQL>

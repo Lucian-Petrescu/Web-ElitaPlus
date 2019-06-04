@@ -1,0 +1,74 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+
+<!-- ********************** THIS FILE HAS BEEN GENERATED FROM TEMPLATE SQLObject.cst (5/9/2013)********************** -->
+
+<SQL>
+  <LOAD>
+    <![CDATA[	
+			SELECT 
+				claim_id,
+				sku_number,
+				description,
+				created_date,
+				created_by,
+				modified_date,
+				modified_by,
+				replacement_part_id
+			FROM elp_replacement_part 
+			WHERE
+				replacement_part_id = :replacement_part_id
+		]]>
+  </LOAD>
+  <LOAD_LIST>
+    <![CDATA[	
+			SELECT 
+				claim_id,
+				sku_number,
+				description,
+				created_date,
+				created_by,
+				modified_date,
+				modified_by,
+				replacement_part_id
+			FROM elp_replacement_part 
+			WHERE
+				claim_id = :claim_id
+		]]>
+  </LOAD_LIST>
+  <UPDATE>
+    <![CDATA[	
+			UPDATE elp_replacement_part SET
+				claim_id = :claim_id,
+				sku_number = :sku_number,
+				description = :description,
+				modified_by = :modified_by
+			WHERE
+				replacement_part_id = :replacement_part_id
+		]]>
+  </UPDATE>
+  <INSERT>
+    INSERT INTO elp_replacement_part
+    (
+    claim_id,
+    sku_number,
+    description,
+    created_by,
+    replacement_part_id
+    )
+    VALUES
+    (
+    :claim_id,
+    :sku_number,
+    :description,
+    :created_by,
+    :replacement_part_id
+    )
+  </INSERT>
+  <DELETE>
+    DELETE FROM elp_replacement_part
+    WHERE
+    replacement_part_id = :replacement_part_id
+  </DELETE>
+</SQL>
+
+

@@ -1,0 +1,84 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<SQL>
+  <LOAD>
+    <![CDATA[	
+			SELECT 
+			 product_code_parent_id,
+       product_code_id,
+       effective,
+       expiration,
+       created_by,                   
+       created_date,
+       modified_by,
+       modified_date,
+       smart_bundle_flat_amt,
+       smart_bundle_flat_amt_currency,
+       payment_split_rule_id
+			FROM elp_product_code_parent 
+			WHERE
+				product_code_parent_id = :product_code_parent_id
+		]]>
+  </LOAD>
+  <LOAD_LIST>
+    <![CDATA[
+    Select pcp.product_code_parent_id product_code_parent_id,
+           pc.product_code_id,
+           pc.product_code,
+           pcp.effective,
+           pcp.expiration,
+           pcp.smart_bundle_flat_amt,
+           cc.description smart_bundle_flat_amt_currency,
+           ELP_UTL_LOV.Description(pcp.payment_split_rule_id,:language_id) as payment_split_rule
+    from elp_product_code_parent pcp, 
+         elp_product_code pc,
+         elp_dealer d,
+         elp_currency cc
+    where pcp.product_code_id=pc.product_code_id
+         and pc.dealer_id=d.dealer_id
+         and pcp.smart_bundle_flat_amt_currency=cc.currency_id (+)
+         --dynamic_where_clause
+         --dynamic_order_by_clause
+ ]]>
+  </LOAD_LIST>
+  <UPDATE>
+    <![CDATA[	
+			UPDATE elp_product_code_parent SET
+				 product_code_id = :product_code_id,
+         effective = :effective,
+         expiration = :expiration,
+         smart_bundle_flat_amt = :smart_bundle_flat_amt,
+         smart_bundle_flat_amt_currency = :smart_bundle_flat_amt_currency,
+         modified_by = :modified_by,
+         payment_split_rule_id = :payment_split_rule_id
+			WHERE
+				product_code_parent_id = :product_code_parent_id
+		]]>
+  </UPDATE>
+  <INSERT>
+    INSERT INTO elp_product_code_parent
+    (
+    product_code_id,
+    effective,
+    expiration,
+    smart_bundle_flat_amt,
+    smart_bundle_flat_amt_currency
+    created_by,
+    payment_split_rule_id
+    )
+    VALUES
+    (
+    :product_code_id,
+    :effective,
+    :expiration,
+    :smart_bundle_flat_amt,
+    :smart_bundle_flat_amt_currency,
+    :created_by,
+    :payment_split_rule_id
+    )
+  </INSERT>
+  <DELETE>
+    DELETE FROM elp_product_code_parent
+    WHERE
+    product_code_id = :product_code_id
+  </DELETE>
+</SQL>

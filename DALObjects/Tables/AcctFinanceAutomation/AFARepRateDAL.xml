@@ -1,0 +1,96 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+
+<!-- ********************** THIS FILE HAS BEEN GENERATED FROM TEMPLATE SQLObject.cst (5/29/2015)********************** -->
+
+<SQL>
+  <LOAD>
+    <![CDATA[	
+			SELECT 
+				afa_invoice_rate_id,
+				risk_fee,
+				spm_coe,
+				fullfillment_notification,
+				marketing_expenses,
+				premium_taxes,
+				loss_reserve_cost,
+				overhead,
+				general_expenses,
+				assessments,
+        lae,
+				created_date,
+				created_by,
+				modified_date,
+				modified_by,
+				afa_reporting_rate_id
+			FROM elita.elp_afa_reporting_rates 
+			WHERE
+				afa_reporting_rate_id = :afa_reporting_rate_id
+		]]>
+  </LOAD>
+  <LOAD_LIST>
+  </LOAD_LIST>
+  <RPTRATE_LOAD_LIST>
+    select afa_reporting_rate_id,afa_invoice_rate_id,risk_fee,spm_coe,fullfillment_notification,
+    marketing_expenses,premium_taxes,loss_reserve_cost,overhead,general_expenses,assessments,lae
+    from elita.elp_afa_reporting_rates
+    where afa_invoice_rate_id = :afa_invoice_rate_id
+  </RPTRATE_LOAD_LIST>
+  <UPDATE>
+    <![CDATA[	
+			UPDATE elita.elp_afa_reporting_rates SET
+				afa_invoice_rate_id = :afa_invoice_rate_id,
+				risk_fee = :risk_fee,
+				spm_coe = :spm_coe,
+				fullfillment_notification = :fullfillment_notification,
+				marketing_expenses = :marketing_expenses,
+				premium_taxes = :premium_taxes,
+				loss_reserve_cost = :loss_reserve_cost,
+				overhead = :overhead,
+				general_expenses = :general_expenses,
+				assessments = :assessments,
+        lae = :lae,
+				modified_by = :modified_by
+			WHERE
+				afa_reporting_rate_id = :afa_reporting_rate_id
+		]]>
+  </UPDATE>
+  <INSERT>
+    INSERT INTO elita.elp_afa_reporting_rates
+    (
+    afa_invoice_rate_id,
+    risk_fee,
+    spm_coe,
+    fullfillment_notification,
+    marketing_expenses,
+    premium_taxes,
+    loss_reserve_cost,
+    overhead,
+    general_expenses,
+    assessments,
+    lae,
+    created_by,
+    afa_reporting_rate_id
+    )
+    VALUES
+    (
+    :afa_invoice_rate_id,
+    :risk_fee,
+    :spm_coe,
+    :fullfillment_notification,
+    :marketing_expenses,
+    :premium_taxes,
+    :loss_reserve_cost,
+    :overhead,
+    :general_expenses,
+    :assessments,
+    :lae,
+    :created_by,
+    :afa_reporting_rate_id
+    )
+  </INSERT>
+  <DELETE>
+    DELETE FROM elita.elp_afa_reporting_rates
+    WHERE
+    afa_reporting_rate_id = :afa_reporting_rate_id
+  </DELETE>
+</SQL>

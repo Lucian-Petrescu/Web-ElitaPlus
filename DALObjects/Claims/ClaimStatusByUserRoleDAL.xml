@@ -1,0 +1,60 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+
+<!-- ********************** THIS FILE HAS BEEN GENERATED FROM TEMPLATE SQLObject.cst (10/30/2015)********************** -->
+
+<SQL>
+  <LOAD>
+    <![CDATA[	
+			SELECT 
+				claim_status_by_group_id,
+				role_id,
+				company_id,
+				created_by,
+				created_date,
+				modified_by,
+				modified_date,
+				claim_status_by_role_id
+			FROM elp_claim_status_by_user_role 
+			WHERE
+				claim_status_by_role_id = :claim_status_by_role_id
+		]]>
+  </LOAD>
+  <LOAD_LIST>
+  </LOAD_LIST>
+  <UPDATE>
+    <![CDATA[	
+			UPDATE elp_claim_status_by_user_role SET
+				claim_status_by_group_id = :claim_status_by_group_id,
+				role_id = :role_id,
+				company_id = :company_id,
+				modified_by = :modified_by
+			WHERE
+				claim_status_by_role_id = :claim_status_by_role_id
+		]]>
+  </UPDATE>
+  <INSERT>
+    INSERT INTO elp_claim_status_by_user_role
+    (
+    claim_status_by_group_id,
+    role_id,
+    company_id,
+    created_by,
+    claim_status_by_role_id
+    )
+    VALUES
+    (
+    :claim_status_by_group_id,
+    :role_id,
+    :company_id,
+    :created_by,
+    :claim_status_by_role_id
+    )
+  </INSERT>
+  <DELETE>
+    DELETE FROM elp_claim_status_by_user_role
+    WHERE
+    claim_status_by_role_id = :claim_status_by_role_id
+  </DELETE>
+</SQL>
+
+

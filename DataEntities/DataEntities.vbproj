@@ -1,0 +1,330 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="14.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{530B0245-EC69-4781-A1EC-5995C14B66D0}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <RootNamespace>Assurant.ElitaPlus.DataEntities</RootNamespace>
+    <AssemblyName>Assurant.ElitaPlus.DataEntities</AssemblyName>
+    <FileAlignment>512</FileAlignment>
+    <MyType>Windows</MyType>
+    <TargetFrameworkVersion>v4.6.2</TargetFrameworkVersion>
+    <SccProjectName>SAK</SccProjectName>
+    <SccLocalPath>SAK</SccLocalPath>
+    <SccAuxPath>SAK</SccAuxPath>
+    <SccProvider>SAK</SccProvider>
+    <TargetFrameworkProfile />
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <DefineDebug>true</DefineDebug>
+    <DefineTrace>true</DefineTrace>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DocumentationFile>Assurant.ElitaPlus.DataEntities.xml</DocumentationFile>
+    <NoWarn>42016,41999,42017,42018,42019,42032,42036,42020,42021,42022</NoWarn>
+    <DefineConstants>DataEntities</DefineConstants>
+    <Prefer32Bit>false</Prefer32Bit>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <DefineDebug>false</DefineDebug>
+    <DefineTrace>true</DefineTrace>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DocumentationFile>Assurant.ElitaPlus.DataEntities.xml</DocumentationFile>
+    <NoWarn>42016,41999,42017,42018,42019,42032,42036,42020,42021,42022</NoWarn>
+    <DefineConstants>DataEntities</DefineConstants>
+    <Prefer32Bit>false</Prefer32Bit>
+  </PropertyGroup>
+  <PropertyGroup>
+    <OptionExplicit>On</OptionExplicit>
+  </PropertyGroup>
+  <PropertyGroup>
+    <OptionCompare>Text</OptionCompare>
+  </PropertyGroup>
+  <PropertyGroup>
+    <OptionStrict>Off</OptionStrict>
+  </PropertyGroup>
+  <PropertyGroup>
+    <OptionInfer>Off</OptionInfer>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.ComponentModel.DataAnnotations" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.IdentityModel" />
+    <Reference Include="System.Xml" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="System.Net.Http" />
+  </ItemGroup>
+  <ItemGroup>
+    <Import Include="Microsoft.VisualBasic" />
+    <Import Include="System" />
+    <Import Include="System.Collections" />
+    <Import Include="System.Collections.Generic" />
+    <Import Include="System.Data" />
+    <Import Include="System.Diagnostics" />
+    <Import Include="System.Linq" />
+    <Import Include="System.Xml.Linq" />
+    <Import Include="System.Threading.Tasks" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="..\DataAccess\Certificates\BillingDetail.vb">
+      <Link>Certificates\BillingDetail.vb</Link>
+    </Compile>
+    <Compile Include="..\DataAccess\Certificates\Certificate.vb">
+      <Link>Certificates\Certificate.vb</Link>
+    </Compile>
+    <Compile Include="..\DataAccess\Certificates\CertificateCancellation.vb">
+      <Link>Certificates\CertificateCancellation.vb</Link>
+    </Compile>
+    <Compile Include="..\DataAccess\Certificates\CertificateEndorsement.vb">
+      <Link>Certificates\CertificateEndorsement.vb</Link>
+    </Compile>
+    <Compile Include="..\DataAccess\Certificates\CertificateInstallment.vb">
+      <Link>Certificates\CertificateInstallment.vb</Link>
+    </Compile>
+    <Compile Include="..\DataAccess\Certificates\CertificateItem.vb">
+      <Link>Certificates\CertificateItem.vb</Link>
+    </Compile>
+    <Compile Include="..\DataAccess\Certificates\CertificateItemCoverage.vb">
+      <Link>Certificates\CertificateItemCoverage.vb</Link>
+    </Compile>
+    <Compile Include="..\DataAccess\Certificates\CertificateItemCoverageDeductible.vb">
+      <Link>Certificates\CertificateItemCoverageDeductible.vb</Link>
+    </Compile>
+    <Compile Include="..\DataAccess\Claims\Claim.vb">
+      <Link>Claims\Claim.vb</Link>
+    </Compile>
+    <Compile Include="..\DataAccess\Claims\ClaimEquipment.vb">
+      <Link>Claims\ClaimEquipment.vb</Link>
+    </Compile>
+    <Compile Include="..\DataAccess\Claims\ClaimInvoice.vb">
+      <Link>Claims\ClaimInvoice.vb</Link>
+    </Compile>
+    <Compile Include="..\DataAccess\Claims\ClaimIssueResponse.vb">
+      <Link>Claims\ClaimIssueResponse.vb</Link>
+    </Compile>
+    <Compile Include="..\DataAccess\Claims\ClaimIssueStatus.vb">
+      <Link>Claims\ClaimIssueStatus.vb</Link>
+    </Compile>
+    <Compile Include="..\DataAccess\Claims\ClaimStatus.vb">
+      <Link>Claims\ClaimStatus.vb</Link>
+    </Compile>
+    <Compile Include="..\DataAccess\Claims\Comment.vb">
+      <Link>Claims\Comment.vb</Link>
+    </Compile>
+    <Compile Include="..\DataAccess\Claims\Disbursement.vb">
+      <Link>Claims\Disbursement.vb</Link>
+    </Compile>
+    <Compile Include="..\DataAccess\Claims\EntityIssue.vb">
+      <Link>Claims\EntityIssue.vb</Link>
+    </Compile>
+    <Compile Include="..\DataAccess\Common\Address.vb">
+      <Link>Common\Address.vb</Link>
+    </Compile>
+    <Compile Include="..\DataAccess\Common\BankInfo.vb">
+      <Link>Common\BankInfo.vb</Link>
+    </Compile>
+    <Compile Include="..\DataAccess\Common\Country.vb">
+      <Link>Common\Country.vb</Link>
+    </Compile>
+    <Compile Include="..\DataAccess\Common\Currency.vb">
+      <Link>Common\Currency.vb</Link>
+    </Compile>
+    <Compile Include="..\DataAccess\Common\DictionaryItem.vb">
+      <Link>Common\DictionaryItem.vb</Link>
+    </Compile>
+    <Compile Include="..\DataAccess\Common\DictionaryItemTranslation.vb">
+      <Link>Common\DictionaryItemTranslation.vb</Link>
+    </Compile>
+    <Compile Include="..\DataAccess\Common\Expression.vb">
+      <Link>Common\Expression.vb</Link>
+    </Compile>
+    <Compile Include="..\DataAccess\Common\Label.vb">
+      <Link>Common\Label.vb</Link>
+    </Compile>
+    <Compile Include="..\DataAccess\Common\Language.vb">
+      <Link>Common\Language.vb</Link>
+    </Compile>
+    <Compile Include="..\DataAccess\Common\List.vb">
+      <Link>Common\List.vb</Link>
+    </Compile>
+    <Compile Include="..\DataAccess\Common\ListItem.vb">
+      <Link>Common\ListItem.vb</Link>
+    </Compile>
+    <Compile Include="..\DataAccess\Common\Region.vb">
+      <Link>Common\Region.vb</Link>
+    </Compile>
+    <Compile Include="..\DataAccess\Common\ServiceCenter.vb">
+      <Link>Common\ServiceCenter.vb</Link>
+    </Compile>
+    <Compile Include="..\DataAccess\Companies\CancellationReasons.vb">
+      <Link>Companies\CancellationReasons.vb</Link>
+    </Compile>
+    <Compile Include="..\DataAccess\Companies\Company.vb">
+      <Link>Companies\Company.vb</Link>
+    </Compile>
+    <Compile Include="..\DataAccess\CompanyGroup\ClaimStatusByGroup.vb">
+      <Link>CompanyGroup\ClaimStatusByGroup.vb</Link>
+    </Compile>
+    <Compile Include="..\DataAccess\CompanyGroup\CompanyGroup.vb">
+      <Link>CompanyGroup\CompanyGroup.vb</Link>
+    </Compile>
+    <Compile Include="..\DataAccess\CompanyGroup\CoverageLoss.vb">
+      <Link>CompanyGroup\CoverageLoss.vb</Link>
+    </Compile>
+    <Compile Include="..\DataAccess\CompanyGroup\DefaultClaimStatus.vb">
+      <Link>CompanyGroup\DefaultClaimStatus.vb</Link>
+    </Compile>
+    <Compile Include="..\DataAccess\CompanyGroup\Manufacturer.vb">
+      <Link>CompanyGroup\Manufacturer.vb</Link>
+    </Compile>
+    <Compile Include="..\DataAccess\CompanyGroup\PaymentType.vb">
+      <Link>CompanyGroup\PaymentType.vb</Link>
+    </Compile>
+    <Compile Include="..\DataAccess\CompanyGroup\RiskType.vb">
+      <Link>CompanyGroup\RiskType.vb</Link>
+    </Compile>
+    <Compile Include="..\DataAccess\Dealers\Branch.vb">
+      <Link>Dealers\Branch.vb</Link>
+    </Compile>
+    <Compile Include="..\DataAccess\Dealers\Contract.vb">
+      <Link>Dealers\Contract.vb</Link>
+    </Compile>
+    <Compile Include="..\DataAccess\Dealers\Coverage.vb">
+      <Link>Dealers\Coverage.vb</Link>
+    </Compile>
+    <Compile Include="..\DataAccess\Dealers\Dealer.vb">
+      <Link>Dealers\Dealer.vb</Link>
+    </Compile>
+    <Compile Include="..\DataAccess\Dealers\DealerGroup.vb">
+      <Link>Dealers\DealerGroup.vb</Link>
+    </Compile>
+    <Compile Include="..\DataAccess\Dealers\DealerRuleList.vb">
+      <Link>Dealers\DealerRuleList.vb</Link>
+    </Compile>
+    <Compile Include="..\DataAccess\Dealers\Issue.vb">
+      <Link>Dealers\Issue.vb</Link>
+    </Compile>
+    <Compile Include="..\DataAccess\Dealers\IssueQuestion.vb">
+      <Link>Dealers\IssueQuestion.vb</Link>
+    </Compile>
+    <Compile Include="..\DataAccess\Dealers\Item.vb">
+      <Link>Dealers\Item.vb</Link>
+    </Compile>
+    <Compile Include="..\DataAccess\Dealers\ListPrice.vb">
+      <Link>Dealers\ListPrice.vb</Link>
+    </Compile>
+    <Compile Include="..\DataAccess\Dealers\Product.vb">
+      <Link>Dealers\Product.vb</Link>
+    </Compile>
+    <Compile Include="..\DataAccess\Dealers\Rule.vb">
+      <Link>Dealers\Rule.vb</Link>
+    </Compile>
+    <Compile Include="..\DataAccess\Dealers\RuleIssue.vb">
+      <Link>Dealers\RuleIssue.vb</Link>
+    </Compile>
+    <Compile Include="..\DataAccess\Dealers\RuleList.vb">
+      <Link>Dealers\RuleList.vb</Link>
+    </Compile>
+    <Compile Include="..\DataAccess\Dealers\RuleListDetail.vb">
+      <Link>Dealers\RuleListDetail.vb</Link>
+    </Compile>
+    <Compile Include="..\DataAccess\Dealers\SoftQuestion.vb">
+      <Link>Dealers\SoftQuestion.vb</Link>
+    </Compile>
+    <Compile Include="..\DataAccess\Dealers\SuspendedReason.vb">
+      <Link>Dealers\SuspendedReason.vb</Link>
+    </Compile>
+    <Compile Include="..\DataAccess\Dealers\WarrantyMaster.vb">
+      <Link>Dealers\WarrantyMaster.vb</Link>
+    </Compile>
+    <Compile Include="..\DataAccess\Equipment\Equipment.vb">
+      <Link>Equipment\Equipment.vb</Link>
+    </Compile>
+    <Compile Include="..\DataAccess\Equipment\EquipmentList.vb">
+      <Link>Equipment\EquipmentList.vb</Link>
+    </Compile>
+    <Compile Include="..\DataAccess\Equipment\EquipmentListDetail.vb">
+      <Link>Equipment\EquipmentListDetail.vb</Link>
+    </Compile>
+    <Compile Include="Claims\Claim.Partial.vb" />
+    <Compile Include="Claims\PriceListDetailRecord.vb" />
+    <Compile Include="Common\ElitaListItem.vb" />
+    <Compile Include="Common\LabelTranslation.vb" />
+    <Compile Include="Core\IClaimEntity.vb" />
+    <Compile Include="Core\ICompanyGroupEntity.vb" />
+    <Compile Include="Constants\LanguageCodes.vb" />
+    <Compile Include="Constants\ListCodes.vb" />
+    <Compile Include="Core\BaseEntity.vb" />
+    <Compile Include="Core\IAddressEntity.vb" />
+    <Compile Include="Core\ICertificateEntity.vb" />
+    <Compile Include="Core\ICommonEntity.vb" />
+    <Compile Include="Core\ICompanyEntity.vb" />
+    <Compile Include="Core\ICountryEntity.vb" />
+    <Compile Include="Core\IDealerEntity.vb" />
+    <Compile Include="Core\IEffectiveExpiration.vb" />
+    <Compile Include="Core\IEquipmentEntity.vb" />
+    <Compile Include="Core\IRecordCreateModifyInfo.vb" />
+    <Compile Include="Core\ISupportsEquipment.vb" />
+    <Compile Include="Core\ISupportsIssues.vb" />
+    <Compile Include="Dealers\Dealer.Partial.vb" />
+    <Compile Include="Dealers\DealerRuleList.Partial.vb" />
+    <Compile Include="Dealers\Rule.Partial.vb" />
+    <Compile Include="Dealers\RuleList.Partial.vb" />
+    <Compile Include="Dealers\RuleListDetail.Partial.vb" />
+    <Compile Include="Equipment\Equipment.Partial.vb" />
+    <Compile Include="Equipment\EquipmentList.Partial.vb" />
+    <Compile Include="Equipment\EquipmentListDetail.Partial.vb" />
+    <Compile Include="My Project\AssemblyInfo.vb" />
+    <Compile Include="My Project\Application.Designer.vb">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Application.myapp</DependentUpon>
+    </Compile>
+    <Compile Include="My Project\Resources.Designer.vb">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
+    <Compile Include="My Project\Settings.Designer.vb">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Settings.settings</DependentUpon>
+      <DesignTimeSharedInput>True</DesignTimeSharedInput>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="My Project\Resources.resx">
+      <Generator>VbMyResourcesResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.vb</LastGenOutput>
+      <CustomToolNamespace>My.Resources</CustomToolNamespace>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Dealers\RuleIssue.Partial.vb" />
+    <None Include="My Project\Application.myapp">
+      <Generator>MyApplicationCodeGenerator</Generator>
+      <LastGenOutput>Application.Designer.vb</LastGenOutput>
+    </None>
+    <None Include="My Project\Settings.settings">
+      <Generator>SettingsSingleFileGenerator</Generator>
+      <CustomToolNamespace>My</CustomToolNamespace>
+      <LastGenOutput>Settings.Designer.vb</LastGenOutput>
+    </None>
+  </ItemGroup>
+  <ItemGroup />
+  <Import Project="$(MSBuildToolsPath)\Microsoft.VisualBasic.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

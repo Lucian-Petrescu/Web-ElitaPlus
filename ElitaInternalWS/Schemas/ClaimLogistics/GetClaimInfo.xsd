@@ -1,0 +1,26 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema">
+  <xs:element name="GetClaimInfoDs">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element name="GetClaimInfo">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element name="ELITA_CLAIM_NUMBER" type="xs:string" minOccurs="0" maxOccurs="1" />
+              <xs:element name="BBY_CLAIM_NUMBER" type="xs:string" minOccurs="0" maxOccurs="1" />
+              <xs:element name="CUSTOMER_NAME" type="xs:string" minOccurs="0" maxOccurs="1" />
+              <xs:element name="CUSTOMER_PHONE" type="xs:string" minOccurs="0" maxOccurs="1" />
+              <xs:element name="INCLUDE_STATUS_HISTORY" minOccurs="1" maxOccurs="1">
+                <xs:simpleType>
+                  <xs:restriction base="xs:string">
+                    <xs:pattern value="Y|N" />
+                  </xs:restriction>
+                </xs:simpleType>
+              </xs:element>              
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+</xs:schema>

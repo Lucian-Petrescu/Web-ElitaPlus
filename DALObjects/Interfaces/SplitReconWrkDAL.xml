@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="utf-8" ?>
+
+<!-- ********************** THIS FILE HAS BEEN GENERATED FROM TEMPLATE SQLObject.cst (12/29/2005)********************** -->
+
+<SQL>
+	<LOAD>
+		<![CDATA[	
+			SELECT 
+				splitfile_processed_id,
+				record_type,
+				rest,
+				split_processed,
+				outfile_name,
+				created_by,
+				created_date,
+				modified_by,
+				modified_date,
+				split_recon_wrk_id
+			FROM elp_split_recon_wrk 
+			WHERE
+				split_recon_wrk_id = :split_recon_wrk_id
+		]]>
+	</LOAD>
+	<LOAD_LIST>	
+	   SELECT outfile_name
+	   FROM (SELECT  outfile_name, count(*) + 2 records
+	         FROM elp_split_recon_wrk
+             GROUP BY outfile_name
+             ORDER BY outfile_name)	
+	</LOAD_LIST>	
+	<UPDATE>
+		<![CDATA[	
+			UPDATE elp_split_recon_wrk SET
+				splitfile_processed_id = :splitfile_processed_id,
+				record_type = :record_type,
+				rest = :rest,
+				split_processed = :split_processed,
+				outfile_name = :outfile_name,
+				modified_by = :modified_by
+			WHERE
+				split_recon_wrk_id = :split_recon_wrk_id
+				AND NVL(modified_date,created_date) = NVL(:modified_date,created_date)
+		]]>
+	</UPDATE>
+	<INSERT>
+			INSERT INTO elp_split_recon_wrk
+					(			
+				splitfile_processed_id, 
+				record_type, 
+				rest, 
+				split_processed, 
+				outfile_name, 
+				created_by,
+				split_recon_wrk_id
+					)
+			VALUES
+					(			
+				:splitfile_processed_id, 
+				:record_type, 
+				:rest, 
+				:split_processed, 
+				:outfile_name, 
+				:created_by,
+				:split_recon_wrk_id
+					)
+	</INSERT>
+	<DELETE>
+			DELETE FROM elp_split_recon_wrk
+			WHERE
+				split_recon_wrk_id = :split_recon_wrk_id
+	</DELETE>
+</SQL> 
+
+

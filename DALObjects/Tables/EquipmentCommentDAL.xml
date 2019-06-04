@@ -1,0 +1,71 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<SQL>
+  <LOAD>
+    <![CDATA[
+      SELECT 
+        EQUIPMENT_COMMENT_ID,
+        EQUIPMENT_ID,
+        COMMENTS,
+        CREATED_DATE,
+        MODIFIED_DATE,
+        CREATED_BY,
+        MODIFIED_BY
+      FROM
+        ELITA.ELP_EQUIPMENT_COMMENT
+      WHERE
+        EQUIPMENT_COMMENT_ID = :equipment_comment_id
+    ]]>
+  </LOAD>
+  <LOAD_LIST>
+    <![CDATA[
+      SELECT 
+        EQUIPMENT_COMMENT_ID,
+        EQUIPMENT_ID,
+        COMMENTS,
+        CREATED_DATE,
+        MODIFIED_DATE,
+        CREATED_BY,
+        MODIFIED_BY
+      FROM
+        ELITA.ELP_EQUIPMENT_COMMENT
+      WHERE
+        EQUIPMENT_ID = :equipment_id
+    ]]>
+  </LOAD_LIST>
+  <INSERT>
+    <![CDATA[
+      INSERT INTO 
+        ELITA.ELP_EQUIPMENT_COMMENT
+      (
+        EQUIPMENT_COMMENT_ID,
+        EQUIPMENT_ID,
+        COMMENTS
+      )
+      VALUES
+      (
+        :equipment_comment_id,
+        :equipment_id,
+        :comments
+      )
+    ]]>
+  </INSERT>
+  <UPDATE>
+    <![CDATA[
+      UPDATE 
+        ELITA.ELP_EQUIPMENT_COMMENT
+      SET
+        COMMENTS = :comments,
+        EQUIPMENT_ID = :equipment_id
+      WHERE
+        EQUIPMENT_COMMENT_ID = :equipment_comment_id
+    ]]>
+  </UPDATE>
+  <DELETE>
+    <![CDATA[
+      DELETE FROM
+        ELITA.ELP_EQUIPMENT_COMMENT
+      WHERE
+        EQUIPMENT_COMMENT_ID = :equipment_comment_id
+    ]]>
+  </DELETE>
+</SQL>

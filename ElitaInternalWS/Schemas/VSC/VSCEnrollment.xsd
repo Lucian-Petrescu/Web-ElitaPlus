@@ -1,0 +1,123 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema">
+  <xs:element name="VSCEnrollmentDs">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element name="VSCEnrollment">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element name="Certificate_Number" type="stringRequired" minOccurs="0" maxOccurs="1" />
+              <xs:element name="Customer" minOccurs="1" maxOccurs="unbounded">
+                <xs:complexType>
+                  <xs:sequence>
+                    <xs:element name="Customer_Name" type="stringRequired" minOccurs="1" />
+                    <xs:element name="Customer_Occupation" type="xs:string" minOccurs="0"/>
+                    <xs:element name="PEP" minOccurs="0">
+                      <xs:simpleType>
+                        <xs:restriction base="xs:string">
+                          <xs:pattern value="Y|N" />
+                        </xs:restriction>
+                      </xs:simpleType>
+                    </xs:element>
+                    <xs:element name="Income_Range_Code" type="xs:string" minOccurs="0" maxOccurs="1" />
+                  </xs:sequence>
+                </xs:complexType>
+              </xs:element>
+              <xs:element name="Address" type="xs:string" minOccurs="1" maxOccurs="1" />
+              <xs:element name="City" type="xs:string" minOccurs="1" maxOccurs="1" />
+              <xs:element name="Region" type="xs:string" minOccurs="1" maxOccurs="1" />
+              <xs:element name="Postal_Code" type="xs:string" minOccurs="1" maxOccurs="1" />
+              <xs:element name="Country_Code" type="xs:string" minOccurs="1" maxOccurs="1" />
+              <xs:element name="Home_Phone" type="xs:string" minOccurs="1" maxOccurs="1" />
+              <xs:element name="Vehicle_Year" minOccurs="1" maxOccurs="1">
+                <xs:simpleType>
+                  <xs:restriction base="xs:int">
+                    <xs:totalDigits fixed="true" value="4"></xs:totalDigits>
+                    <xs:minInclusive value="1940" />
+                    <xs:maxInclusive value="2100" />
+                  </xs:restriction>
+                </xs:simpleType>
+              </xs:element>
+              <xs:element name="Vehicle_Make" type="stringRequired" minOccurs="0" maxOccurs="1" />
+              <xs:element name="Vehicle_Model" type="stringRequired" minOccurs="0" maxOccurs="1" />
+              <xs:element name="Engine_Version" type="stringRequired" minOccurs="0" maxOccurs="1" />
+              <xs:element name="Vehicle_Mileage" type="xs:int" minOccurs="1" maxOccurs="1" />
+              <xs:element name="VIN" type="xs:string" minOccurs="0" maxOccurs="1" />
+              <xs:element name="Vehicle_Purchase_Price" type="xs:decimal" minOccurs="1" maxOccurs="1" />
+              <xs:element name="Vehicle_Purchase_Date" type="xs:date" minOccurs="1" maxOccurs="1" />
+              <xs:element name="Vehicle_In_Service_Date" type="xs:date" minOccurs="1" maxOccurs="1" />
+              <xs:element name="Vehicle_Delivery_Date" type="xs:date" minOccurs="1" maxOccurs="1" />
+              <xs:element name="Plan_Code" type="stringRequired" minOccurs="1" maxOccurs="1" />
+              <xs:element name="Plan_Amount" type="xs:double" minOccurs="1" maxOccurs="1" />
+              <xs:element name="Quote_Item_Number" type="xs:int" minOccurs="1" maxOccurs="1" />
+              <xs:element name="Term_Months" type="xs:int" minOccurs="1" maxOccurs="1" />
+              <xs:element name="Term_Miles" type="xs:int" minOccurs="1" maxOccurs="1" />
+              <xs:element name="Deductible" type="xs:decimal" minOccurs="1" maxOccurs="1" />
+              <xs:element name="Optional_Coverage" minOccurs="0" maxOccurs="unbounded">
+                <xs:complexType>
+                  <xs:sequence>
+                    <xs:element name="Optional_Coverage_Code" type="stringRequired" minOccurs="1" maxOccurs="1" />
+                    <xs:element name="Optional_Coverage_Price" type="xs:decimal" minOccurs="1" maxOccurs="1" />
+                    <xs:element name="OptionalCoverageQuote_Item_Number" type="xs:int" minOccurs="1" maxOccurs="1" />
+                  </xs:sequence>
+                </xs:complexType>
+              </xs:element>
+              <xs:element name="Dealer_Code" type="stringRequired" minOccurs="1" maxOccurs="1" />
+              <xs:element name="Agent_Number" type="xs:string" minOccurs="0" maxOccurs="1" />
+              <xs:element name="Warranty_Sale_Date" type="xs:date" minOccurs="1" maxOccurs="1" />
+              <xs:element name="Quote_Number" type="stringRequired" minOccurs="1" maxOccurs="1" />
+              <xs:element name="Vehicle_License_Tag" type="stringRequired" minOccurs="0" maxOccurs="1" />
+              <xs:element name="Document_Type" type="xs:string" minOccurs="0" maxOccurs="1" />
+              <xs:element name="Identity_document_No" type="stringRequired" minOccurs="1" maxOccurs="1" />
+              <xs:element name="RG_No" type="xs:string" minOccurs="0" maxOccurs="1" />
+              <xs:element name="ID_Type" type="xs:string" minOccurs="0" maxOccurs="1" />
+              <xs:element name="Issuing_agency" type="xs:string" minOccurs="0" maxOccurs="1" />
+              <xs:element name="Document_Issue_Date" type="xs:date" minOccurs="0" maxOccurs="1" />
+              <xs:element name="Birth_Date" type="xs:date" minOccurs="0" maxOccurs="1" />
+              <xs:element name="Work_Phone" type="xs:string" minOccurs="0" maxOccurs="1" />
+              <xs:element name="Collection_Method_Code" type="stringRequired" minOccurs="1" maxOccurs="1" />
+              <xs:element name="Payment_Instrument_Code" type="stringRequired" minOccurs="1" maxOccurs="1" />
+              <xs:element name="Installments_Number" type="xs:int" minOccurs="1" maxOccurs="1" />
+              <xs:element name="Credit_Card_Info " minOccurs="0" maxOccurs="1">
+                <xs:complexType>
+                  <xs:sequence>
+                    <xs:element name="Credit_Card_Type_Code" type="stringRequired" minOccurs="1" maxOccurs="1" />
+                    <xs:element name="Name_On_Credit_Card" type="stringRequired" minOccurs="1" maxOccurs="1" />
+                    <xs:element name="Credit_Card_Number" type="xs:string" minOccurs="1" maxOccurs="1" />
+                    <xs:element name="Expiration_Date" type="stringRequired" minOccurs="1" maxOccurs="1" />
+                    <xs:element name="Card_Security_Code" type="xs:string" minOccurs="0" maxOccurs="1"/>
+                  </xs:sequence>
+                </xs:complexType>
+              </xs:element>
+              <xs:element name="Bank_Account_Info" minOccurs="0" maxOccurs="1">
+                <xs:complexType>
+                  <xs:sequence>
+                    <xs:element name="Bank_ID" type="xs:string" minOccurs="0" maxOccurs="1" />
+                    <xs:element name="Account_Number" type="xs:string" minOccurs="1" maxOccurs="1" />
+                    <xs:element name="Name_On_Account " type="xs:string" minOccurs="1" maxOccurs="1" />
+                  </xs:sequence>
+                </xs:complexType>
+              </xs:element>
+              <xs:element name="Payment_Authoriztion_Num" type="xs:string" minOccurs="0" maxOccurs="1" />
+              <xs:element name="External_Car_Code" type="xs:string" minOccurs="0" maxOccurs="1" />
+              <xs:element name="Is_CreditCard_AuthReq" type="xs:string" minOccurs="0" maxOccurs="1"/>
+              <xs:element name="Sales_Tax" type="xs:double" minOccurs="0" maxOccurs="1"/>
+              <xs:element name="Validate_Only" minOccurs="0" maxOccurs="1">
+                <xs:simpleType>
+                  <xs:restriction base="xs:string">
+                    <xs:pattern value="Y|N" />
+                  </xs:restriction>
+                </xs:simpleType>
+              </xs:element>
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:simpleType name="stringRequired">
+    <xs:restriction base="xs:string">
+      <xs:minLength value="1"></xs:minLength>
+    </xs:restriction>
+  </xs:simpleType>
+</xs:schema>

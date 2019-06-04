@@ -1,0 +1,62 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<SQL>
+  <LOAD>
+    <![CDATA[	
+			SELECT 
+				user_permission_id,
+				user_id,
+				permission_id,
+				created_date,
+				created_by,
+				modified_date,
+				modified_by
+			FROM elp_user_permission 
+			WHERE
+				user_permission_id = :user_permission_id
+		]]>
+  </LOAD>
+  <LOAD_LIST>
+    <![CDATA[	
+      SELECT
+				user_permission_id,
+				user_id,
+				permission_id,
+				created_date,
+				created_by,
+				modified_date,
+				modified_by
+      FROM elp_user_permission
+      WHERE user_id = :user_id
+  ]]>
+  </LOAD_LIST>
+  <UPDATE>
+    update elp_user_permission
+    set user_id = :user_id,
+        permission_id = :permission_id,
+        modified_date = :modified_date,
+        modified_by = :modified_by
+    where user_permission_id = :user_permission_id
+  </UPDATE>
+  <INSERT>
+    INSERT INTO elp_user_permission
+    (
+    user_permission_id,
+    user_id,
+    permission_id,
+    created_date,
+    created_by
+    )
+    VALUES
+    (
+    :user_permission_id,
+    :user_id,
+    :permission_id,
+    :created_date,
+    :created_by
+    )
+  </INSERT>
+  <DELETE>
+    DELETE FROM elp_user_permission
+    WHERE user_permission_id = :user_permission_id
+  </DELETE>
+</SQL>

@@ -1,0 +1,95 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+
+<!-- ********************** THIS FILE HAS BEEN GENERATED FROM TEMPLATE SQLObject.cst (10/9/2017)********************** -->
+
+<SQL>
+  <LOAD>
+    <![CDATA[	
+			SELECT 
+				dsr.depreciation_schedule_id,
+        ds.code as DepreciationScheduleCode,
+				dsr.table_reference,
+				dsr.table_reference_id,
+				dsr.effective_date,
+				dsr.expiration_date,
+				dsr.depreciation_sch_usage_xcd,
+        getdescriptionfromitemextcode(dsr.depreciation_sch_usage_xcd) as depreciation_sch_usage, 
+				dsr.created_by,
+				dsr.created_date,
+				dsr.modified_by,
+				dsr.modified_date,
+				dsr.depreciation_scd_relation_id
+			FROM elp_depreciation_scd_relation dsr
+      INNER JOIN elp_depreciation_scd ds on ds.depreciation_schedule_id = dsr.depreciation_schedule_id
+			WHERE
+				dsr.depreciation_scd_relation_id = :depreciation_scd_relation_id
+		]]>
+  </LOAD>
+  <LOAD_LIST>
+    <![CDATA[	
+      SELECT 
+             dsr.depreciation_schedule_id,
+             ds.code as DepreciationScheduleCode,
+             dsr.table_reference,
+				     dsr.table_reference_id,
+             dsr.effective_date,
+             dsr.expiration_date,
+             dsr.depreciation_sch_usage_xcd,
+             getdescriptionfromitemextcode(dsr.depreciation_sch_usage_xcd) as depreciation_sch_usage, 
+             dsr.created_by,
+				     dsr.created_date,
+				     dsr.modified_by,
+				     dsr.modified_date,
+             dsr.depreciation_scd_relation_id
+        FROM elp_depreciation_scd_relation dsr
+       INNER JOIN elp_depreciation_scd ds on ds.depreciation_schedule_id = dsr.depreciation_schedule_id
+       WHERE table_reference_id = :table_reference_id
+       ORDER BY ds.code, dsr.effective_date
+		]]>
+  </LOAD_LIST>
+  <UPDATE>
+    <![CDATA[	
+			UPDATE elp_depreciation_scd_relation SET
+				depreciation_schedule_id = :depreciation_schedule_id,
+				table_reference = :table_reference,
+				table_reference_id = :table_reference_id,
+				effective_date = :effective_date,
+				expiration_date = :expiration_date,
+				depreciation_sch_usage_xcd = :depreciation_sch_usage_xcd,
+				modified_by = :modified_by
+			WHERE
+				depreciation_scd_relation_id = :depreciation_scd_relation_id
+		]]>
+  </UPDATE>
+  <INSERT>
+    INSERT INTO elp_depreciation_scd_relation
+    (
+    depreciation_schedule_id,
+    table_reference,
+    table_reference_id,
+    effective_date,
+    expiration_date,
+    depreciation_sch_usage_xcd,
+    created_by,
+    depreciation_scd_relation_id
+    )
+    VALUES
+    (
+    :depreciation_schedule_id,
+    :table_reference,
+    :table_reference_id,
+    :effective_date,
+    :expiration_date,
+    :depreciation_sch_usage_xcd,
+    :created_by,
+    :depreciation_scd_relation_id
+    )
+  </INSERT>
+  <DELETE>
+    DELETE FROM elp_depreciation_scd_relation
+    WHERE
+    depreciation_scd_relation_id = :depreciation_scd_relation_id
+  </DELETE>
+</SQL>
+
+

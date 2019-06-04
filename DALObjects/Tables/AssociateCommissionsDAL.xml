@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="utf-8" ?>
+
+<!-- ********************** THIS FILE HAS BEEN GENERATED FROM TEMPLATE SQLObject.cst (9/10/2007)********************** -->
+
+<SQL>
+  <LOAD>
+    <![CDATA[	
+			SELECT 
+				commission_tolerance_id,
+				markup_percent,
+				commission_percent,
+				position,
+				created_by,
+				created_date,
+				modified_by,
+				modified_date,
+				associate_commissions_id
+			FROM elp_associate_commissions 
+			WHERE
+				associate_commissions_id = :associate_commissions_id
+		]]>
+  </LOAD>
+  <LOAD_LIST>
+    select
+    ac.associate_commissions_id,
+    ac.commission_tolerance_id,
+    ac.markup_percent,
+    ac.commission_percent,
+    ac.position,
+    ce.entity_name,
+    cpe.payee_type_id
+    from elp_associate_commissions ac,
+    elp_commission_tolerance ct,
+    elp_commission_period_entity cpe,
+    elp_commission_entity ce
+    WHERE ac.commission_tolerance_id = :commission_tolerance_id
+    and ac.commission_tolerance_id = ct.commission_tolerance_id
+    and ct.commission_period_id = cpe.commission_period_id
+    and ac.position = cpe.position
+    and cpe.entity_id = ce.entity_id(+)
+  </LOAD_LIST>
+  <LOAD_ALL_TOLERANCES_ASSOC_COMM>
+    SELECT
+      associate_commissions_id,
+      commission_tolerance_id,
+      markup_percent,
+      commission_percent,
+      position
+    FROM elp_associate_commissions
+    WHERE
+    commission_tolerance_id = :commission_tolerance_id
+  </LOAD_ALL_TOLERANCES_ASSOC_COMM>
+  <UPDATE>
+    <![CDATA[	
+			UPDATE elp_associate_commissions SET
+				commission_tolerance_id = :commission_tolerance_id,
+				markup_percent = :markup_percent,
+				commission_percent = :commission_percent,
+				position = :position,
+				modified_by = :modified_by
+			WHERE
+				associate_commissions_id = :associate_commissions_id
+		]]>
+  </UPDATE>
+  <INSERT>
+    INSERT INTO elp_associate_commissions
+    (
+    commission_tolerance_id,
+    markup_percent,
+    commission_percent,
+    position,
+    created_by,
+    associate_commissions_id
+    )
+    VALUES
+    (
+    :commission_tolerance_id,
+    :markup_percent,
+    :commission_percent,
+    :position,
+    :created_by,
+    :associate_commissions_id
+    )
+  </INSERT>
+  <DELETE>
+    DELETE FROM elp_associate_commissions
+    WHERE
+    associate_commissions_id = :associate_commissions_id
+  </DELETE>
+</SQL>
+
+
+
+
+

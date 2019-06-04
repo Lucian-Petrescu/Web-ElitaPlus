@@ -1,0 +1,365 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+
+<!-- ********************** THIS FILE HAS BEEN GENERATED FROM TEMPLATE SQLObject.cst (4/27/2012)********************** -->
+
+<SQL>
+  <LOAD>
+    <![CDATA[	
+			SELECT 
+				code,
+        description,
+				issue_type_id,
+				effective,
+				expiration,
+				created_date,
+				created_by,
+				modified_date,
+				modified_by,
+				issue_id,
+        pre_conditions,
+        issue_processor_xcd,
+        sp_claim_type_xcd,
+        sp_claim_value,
+        denied_reason_xcd
+			FROM elp_issue 
+			WHERE
+				issue_id = :issue_id
+		]]>
+  </LOAD>
+  <LOAD_SEARCH_LIST>
+    <![CDATA[	
+      SELECT
+        EI.ISSUE_ID AS ISSUE_ID,
+        EI.CODE AS CODE,
+        EI.DESCRIPTION AS DESCRIPTION,    
+		    EIT.DESCRIPTION AS ISSUE_TYPE,       
+        to_Char(EI.EFFECTIVE,'DD-Mon-YYYY HH24:MI:SS') AS EFFECTIVE,
+        to_Char(EI.EXPIRATION,'DD-Mon-YYYY HH24:MI:SS') AS EXPIRATION
+			FROM
+        elp_issue EI INNER JOIN elp_issue_type EIT 
+        ON EI.ISSUE_TYPE_ID  = EIT.ISSUE_TYPE_ID
+      WHERE
+        EI.ISSUE_TYPE_ID = :ISSUE_TYPE_ID
+        --dynamic_where_clause 
+      ORDER BY 
+        Code, Expiration  
+		]]>
+  </LOAD_SEARCH_LIST>
+  <LOAD_LIST>
+    <![CDATA[	
+      SELECT
+        EI.ISSUE_ID AS ISSUE_ID,
+        EI.CODE AS CODE,
+        EI.DESCRIPTION AS DESCRIPTION,    
+		    EIT.DESCRIPTION AS ISSUE_TYPE,       
+        to_Char(EI.EFFECTIVE,'DD-Mon-YYYY HH24:MI:SS') AS EFFECTIVE,
+        to_Char(EI.EXPIRATION,'DD-Mon-YYYY HH24:MI:SS') AS EXPIRATION
+			FROM
+        elp_issue EI INNER JOIN elp_issue_type EIT 
+        ON EI.ISSUE_TYPE_ID  = EIT.ISSUE_TYPE_ID
+      WHERE
+        rownum < 101
+        --dynamic_where_clause 
+      ORDER BY 
+        Code, Expiration  
+		]]>
+  </LOAD_LIST>
+  <LOAD_AVAILABLE_LIST>
+        <![CDATA[	
+      SELECT
+        EI.ISSUE_ID AS ISSUE_ID,
+        EI.CODE AS CODE,
+        EI.DESCRIPTION AS DESCRIPTION,    
+		    EIT.DESCRIPTION AS ISSUE_TYPE,       
+        to_Char(EI.EFFECTIVE,'DD-Mon-YYYY HH24:MI:SS') AS EFFECTIVE,
+        to_Char(EI.EXPIRATION,'DD-Mon-YYYY HH24:MI:SS') AS EXPIRATION
+			FROM
+        elp_issue EI INNER JOIN elp_issue_type EIT 
+        ON EI.ISSUE_TYPE_ID  = EIT.ISSUE_TYPE_ID      
+        --dynamic_where_clause 
+      ORDER BY 
+        Code, Expiration  
+		]]>
+  </LOAD_AVAILABLE_LIST>
+  <LOAD_ISSUES_BY_DEALER>
+    <![CDATA[	
+    SELECT ei.issue_id,ei.code,ei.description FROM ELP_ISSUE ei
+      inner join ELP_RULE_ISSUE eri
+      ON ei.issue_id = eri.issue_id
+      inner join ELP_RULE er
+      on er.rule_id = eri.rule_id
+      inner join Elp_Rule_List_Detail erld
+      on erld.rule_id = er.rule_id
+      inner join elp_dealer_rule_list edrl
+      on edrl.rule_list_id = erld.rule_list_id
+      where :nowdate  BETWEEN ei.effective AND ei.expiration
+			and :nowdate BETWEEN eri.effective AND eri.expiration
+			and :nowdate BETWEEN er.effective AND er.expiration
+			and :nowdate BETWEEN erld.effective AND erld.expiration
+			and :nowdate BETWEEN edrl.effective AND edrl.expiration
+			and edrl.dealer_id = :dealer_id
+    ]]>
+  </LOAD_ISSUES_BY_DEALER>
+  <UPDATE>
+    <![CDATA[	
+			UPDATE elp_issue SET
+				code = :code,
+        description = :description,
+				issue_type_id = :issue_type_id,
+				effective = :effective,
+				expiration = :expiration,
+				modified_by = :modified_by,
+        pre_conditions = :pre_conditions,
+        issue_processor_xcd = :issue_processor_xcd,
+        sp_claim_type_xcd = :sp_claim_type_xcd,
+        sp_claim_value =:sp_claim_value,
+        denied_reason_xcd = :denied_reason_xcd
+			WHERE
+				issue_id = :issue_id
+		]]>
+  </UPDATE>
+  <INSERT>
+    <![CDATA[    
+    INSERT INTO elp_issue
+    (
+    code,
+    description,
+    issue_type_id,
+    effective,
+    expiration,
+    created_by,
+    issue_id,
+    pre_conditions,
+    issue_processor_xcd,
+    sp_claim_type_xcd,
+    sp_claim_value,
+    denied_reason_xcd
+    )
+    VALUES
+    (
+    :code,
+    :description,
+    :issue_type_id,
+    :effective,
+    :expiration,
+    :created_by,
+    :issue_id,
+    :pre_conditions,
+    :issue_processor_xcd,
+    :sp_claim_type_xcd,
+    :sp_claim_value,
+    :denied_reason_xcd
+    )
+    ]]>    
+  </INSERT>
+  <DELETE>
+    <![CDATA[
+    DELETE FROM elp_issue
+    WHERE
+    issue_id = :issue_id
+    ]]>    
+  </DELETE>
+  <CURRENT_TIME_STAMP>
+    <![CDATA[
+      SELECT SYSDATE FROM DUAL
+    ]]>
+  </CURRENT_TIME_STAMP>
+  <CHECK_OVERLAP>
+    <![CDATA[
+      SELECT * 
+      FROM 
+        ELP_ISSUE
+      WHERE   
+        rownum < '101'
+        AND ISSUE_ID <> :ISSUE_ID
+        --dynamic_where_clause
+    ]]>
+  </CHECK_OVERLAP>
+  <CHECK_OVERLAP_DURATION>
+    <![CDATA[
+    SELECT * 
+    FROM 
+      ELP_ISSUE
+    WHERE   
+      rownum < '101'
+      AND ISSUE_ID <> :ISSUE_ID 
+      --dynamic_where_clause
+    ]]>
+  </CHECK_OVERLAP_DURATION>
+  <GetSelectedIssuesList>
+    <![CDATA[
+    SELECT *
+    FROM 
+      ELP_ISSUE
+    WHERE
+      ISSUE_ID=:ISSUE_ID
+     ]]>
+  </GetSelectedIssuesList>
+  <GetSelectedQuestionsList>
+    <![CDATA[
+    SELECT
+	    EIQ.SOFT_QUESTION_ID AS ID,
+	    ESQ.DESCRIPTION AS DESCRIPTION
+    FROM
+	    ELITA.ELP_ISSUE_QUESTION EIQ
+	    INNER JOIN ELITA.ELP_ISSUE EI
+	    ON EI.ISSUE_ID = EIQ.ISSUE_ID
+      INNER JOIN ELITA.ELP_ISSUE_TYPE EIT
+      ON EIT.ISSUE_TYPE_ID = EI.ISSUE_TYPE_ID
+	    INNER JOIN ELITA.ELP_SOFT_QUESTION  ESQ
+	    ON EIQ.SOFT_QUESTION_ID = ESQ.SOFT_QUESTION_ID
+    WHERE
+	    EIQ.ISSUE_ID=:ISSUE_ID
+      AND EIQ.EXPIRATION > SYSDATE
+     ]]>
+  </GetSelectedQuestionsList>
+  <GetSelectedRulesList>
+    <![CDATA[
+     SELECT
+        RI.rule_id as ID, 
+        ER.Description 
+      FROM 
+        elp_issue EI
+        join elp_rule_issue RI ON EI.issue_id = RI.issue_id
+        join elp_rule ER on RI.rule_id = ER.rule_ID
+      WHERE
+        EI.ISSUE_ID=:ISSUE_ID 
+        AND RI.EXPIRATION > SYSDATE
+     ]]>
+  </GetSelectedRulesList>
+  <GetAvailableRulesList>
+    <![CDATA[ 
+      SELECT 
+        rule_id as ID, 
+        Description 
+      FROM 
+        ELP_RULE
+       WHERE
+        EXPIRATION > SYSDATE
+     ]]>
+  </GetAvailableRulesList>
+  <SOFT_QUESTION_EXPIRATION>
+    <![CDATA[ 
+      SELECT
+	      ESQ.EXPIRATION
+      FROM
+	      ELITA.ELP_SOFT_QUESTION ESQ
+	      INNER JOIN ELITA.ELP_ISSUE_QUESTION EIQ
+	      ON ESQ.SOFT_QUESTION_ID = EIQ.SOFT_QUESTION_ID
+      WHERE
+	      EIQ.SOFT_QUESTION_ID=:SOFT_QUESTION_ID 
+        AND EIQ.ISSUE_ID=:ISSUE_ID
+      ]]>
+  </SOFT_QUESTION_EXPIRATION>
+  <SOFT_QUESTION_ID>
+    <![CDATA[ 
+      SELECT
+       SOFT_QUESTION_ID
+      FROM 
+       ELITA.ELP_ISSUE_QUESTION
+      WHERE
+       ISSUE_QUESTION_ID=:ISSUE_QUESTION_ID 
+     ]]>
+  </SOFT_QUESTION_ID>
+  <RULE_ID>
+    <![CDATA[ 
+      SELECT
+       RULE_ID
+      FROM 
+       ELITA.ELP_RULE_ISSUE
+      WHERE
+       RULE_ISSUE_ID=:RULE_ISSUE_ID 
+     ]]>
+  </RULE_ID>
+  <RULE_EXPIRATION>
+    <![CDATA[ 
+      SELECT
+	      EXPIRATION
+      FROM
+	      ELITA.ELP_RULE 
+      WHERE
+	      RULE_ID = :RULE_ID
+     ]]>   
+  </RULE_EXPIRATION>
+  <IS_ISSUE_TO_NOTE_QUESTION_RULE>
+    <![CDATA[     
+    SELECT EI.ISSUE_ID
+    FROM
+    ELITA.ELP_ISSUE  EI
+    INNER JOIN ELITA.ELP_ISSUE_COMMENT EIC
+    ON  EIC.ISSUE_ID=EI.ISSUE_ID
+    WHERE
+    EI.ISSUE_ID = :ISSUE_ID
+    UNION
+    SELECT EI.ISSUE_ID
+    FROM
+    ELITA.ELP_ISSUE  EI
+    INNER JOIN ELITA.ELP_RULE_ISSUE ERI
+    ON  ERI.ISSUE_ID=EI.ISSUE_ID
+    WHERE
+    EI.ISSUE_ID = :ISSUE_ID
+    OR  ERI.EFFECTIVE > SYSDATE
+    UNION
+    SELECT EI.ISSUE_ID
+    FROM
+    ELITA.ELP_ISSUE  EI
+    INNER JOIN ELITA.ELP_ISSUE_QUESTION EIQ
+    ON  EIQ.ISSUE_ID=EI.ISSUE_ID
+    WHERE
+    EI.ISSUE_ID = :ISSUE_ID
+    OR EIQ.EFFECTIVE > SYSDATE
+     ]]>
+  </IS_ISSUE_TO_NOTE_QUESTION_RULE>
+  <EXPIRE_LIST>
+    <![CDATA[
+      UPDATE
+        ELP_ISSUE
+      SET
+        EXPIRATION = :EXPIRATION
+      WHERE
+        ISSUE_ID = :ISSUE_ID 
+    ]]>
+  </EXPIRE_LIST>
+  <EXPIRE_ISSUE_QUESTIONS>
+    <![CDATA[
+      UPDATE 
+        ELP_ISSUE_QUESTION 
+      SET 
+        --dynamic_field_selector
+      WHERE 
+        ISSUE_ID = :ISSUE_ID 
+        --dynamic_where_clause
+    ]]>
+  </EXPIRE_ISSUE_QUESTIONS>
+  <EXPIRE_ISSUE_RULES>
+    <![CDATA[ 
+      UPDATE 
+        ELP_RULE_ISSUE
+      SET 
+        --dynamic_field_selector
+      WHERE 
+        ISSUE_ID = :ISSUE_ID 
+        --dynamic_where_clause
+    ]]>
+  </EXPIRE_ISSUE_RULES>
+  <CHECK_LIST_OVERLAP_TO_EXPIRE>
+    <![CDATA[
+     SELECT * 
+     FROM 
+        ELP_ISSUE
+     WHERE   
+        rownum < '101'
+        AND ISSUE_ID <> :ISSUE_ID
+        --dynamic_where_clause
+    ]]>
+  </CHECK_LIST_OVERLAP_TO_EXPIRE>
+  <GetListItembyCode>
+    select
+    lst.list_id, lst.code List_code, lstitem.code List_Item_code , lstitem.list_item_id
+    from elp_list lst inner join elp_list_item lstitem
+    on lst.list_id = lstitem.list_id
+    and lstitem.code = :item_code and lst.list_id = :list_id
+  </GetListItembyCode>
+  </SQL>
+
+

@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="utf-8" ?>
+
+<!-- ********************** THIS FILE HAS BEEN GENERATED FROM TEMPLATE SQLObject.cst (12/21/2006)********************** -->
+
+<SQL>
+	<LOAD>
+		<![CDATA[	
+			SELECT 
+				company_group_id,
+				code,
+				description,
+				created_by,
+				created_date,
+				modified_by,
+				modified_date,
+				earning_code_id
+			FROM elp_earning_code 
+			WHERE
+				earning_code_id = :earning_code_id
+		]]>
+	</LOAD>
+	<LOAD_LIST>	
+		<![CDATA[		
+			SELECT
+				EARNING_CODE_ID, CODE, DESCRIPTION
+			FROM
+				elp_earning_code 
+			WHERE
+				COMPANY_GROUP_ID = :COMPANY_GROUP_ID
+				--dynamic_where_clause				
+		]]>				
+	</LOAD_LIST>	
+	<UPDATE>
+		<![CDATA[	
+			UPDATE elp_earning_code SET
+				company_group_id = :company_group_id,
+				code = :code,
+				description = :description,
+				modified_by = :modified_by
+			WHERE
+				earning_code_id = :earning_code_id
+		]]>
+	</UPDATE>
+	<INSERT>
+			INSERT INTO elp_earning_code
+					(			
+				company_group_id, 
+				code, 
+				description, 
+				created_by,
+				earning_code_id
+					)
+			VALUES
+					(			
+				:company_group_id, 
+				:code, 
+				:description, 
+				:created_by,
+				:earning_code_id
+					)
+	</INSERT>
+	<DELETE>
+			DELETE FROM elp_earning_code
+			WHERE
+				earning_code_id = :earning_code_id
+	</DELETE>
+</SQL> 
+
+
+

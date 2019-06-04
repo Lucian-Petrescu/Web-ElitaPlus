@@ -1,0 +1,128 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+
+<!-- ********************** THIS FILE HAS BEEN GENERATED FROM TEMPLATE SQLObject.cst (3/9/2009)********************** -->
+
+<SQL>
+  <LOAD>
+    <![CDATA[	
+			SELECT 
+				code,
+				parent_category_id,
+				tab_id,
+				dict_item_id,
+				created_date,
+				created_by,
+				modified_date,
+				modified_by,
+				form_category_id
+			FROM elp_form_category 
+			WHERE
+				form_category_id = :form_category_id
+		]]>
+  </LOAD>
+  <LOAD_LIST>
+    select fc.Form_Category_id, fc.code, Tr.TRANSLATION Description, t.Tab_id, Trt.TRANSLATION Tab_Name, nvl(Form_Count,0)Form_Count
+    From elp_form_category fc
+    inner join  elp_tab t on fc.tab_id = t.tab_id
+    inner join  ELP_DICT_ITEM_TRANSLATION tr on tr.DICT_ITEM_ID = fc.DICT_ITEM_ID
+    inner join  ELP_DICT_ITEM_TRANSLATION trt on trt.DICT_ITEM_ID = t.DICT_ITEM_ID  AND  tr.LANGUAGE_ID =  trt.LANGUAGE_ID
+    left outer join (SELECT Form_Category_id, COUNT(*)Form_Count FROM ELP_FORM GROUP BY Form_Category_id)a 
+      on a.Form_Category_id= fc.Form_Category_id
+    where tr.LANGUAGE_ID = :language_id
+    --dynamic_where_clause
+  </LOAD_LIST>
+  <LOAD_CATEGORY_ALL>
+    select fc.Form_Category_id, fc.code, Tr.TRANSLATION Description, t.CODE Tab_Code, Trt.TRANSLATION Tab_Name
+    From elp_form_category fc
+    inner join  elp_tab t on fc.tab_id = t.tab_id
+    inner join  ELP_DICT_ITEM_TRANSLATION tr on tr.DICT_ITEM_ID = fc.DICT_ITEM_ID
+    inner join  ELP_DICT_ITEM_TRANSLATION trt on trt.DICT_ITEM_ID = t.DICT_ITEM_ID  AND  tr.LANGUAGE_ID =  trt.LANGUAGE_ID
+    where tr.LANGUAGE_ID = :language_id
+    ORDER BY TAB_CODE, DESCRIPTION
+  </LOAD_CATEGORY_ALL>
+  <LOAD_TAB_LIST>
+    select t.Tab_id, Trt.TRANSLATION Tab_DESC, t.CODE Tab_Code
+    From elp_tab t
+    inner join  ELP_DICT_ITEM_TRANSLATION trt on trt.DICT_ITEM_ID = t.DICT_ITEM_ID
+    where trt.LANGUAGE_ID = :language_id
+    Order by Tab_DESC
+  </LOAD_TAB_LIST>
+  <LOAD_FORM_LIST>
+    select f.Form_ID, ft.TRANSLATION  Form_Name, tt.TRANSLATION Tab_Name, fc.form_category_id
+      , fct.TRANSLATION  Form_Category_Name, t.Code Tab_Code
+    From elp_form f
+    inner join elp_tab t on f.tab_id = t.tab_id
+    inner join  ELP_DICT_ITEM_TRANSLATION ft on ft.DICT_ITEM_ID = f.DICT_ITEM_ID
+    inner join  ELP_DICT_ITEM_TRANSLATION tt on tt.DICT_ITEM_ID = t.DICT_ITEM_ID  AND  ft.LANGUAGE_ID =  tt.LANGUAGE_ID
+    left outer join elp_form_category fc on f.form_category_id = fc.form_category_id
+    left outer join  ELP_DICT_ITEM_TRANSLATION fct on fct.DICT_ITEM_ID = fc.DICT_ITEM_ID  AND  fct.LANGUAGE_ID =  tt.LANGUAGE_ID
+    where ft.LANGUAGE_ID = :language_id
+    --dynamic_where_clause
+    order by Tab_Name, Form_Category_Name, Form_Name
+  </LOAD_FORM_LIST>
+  <UPDATE_FORM_FORM_CATEGORY>
+    <AssignToFormCategory>
+      update ELP_FORM  set FORM_CATEGORY_ID   = :form_category_id
+      where FORM_ID = :form_id
+    </AssignToFormCategory>
+    <RemoveFromFormCategory>
+      update ELP_FORM  set FORM_CATEGORY_ID   = null
+      where FORM_ID = :form_id
+    </RemoveFromFormCategory>
+  </UPDATE_FORM_FORM_CATEGORY>
+  <UPDATE_FROM_CATEGORY_DESCRIPTION>
+    update ELP_DICT_ITEM_TRANSLATION
+    set TRANSLATION = :translation
+    where DICT_ITEM_ID = :dict_item_id
+  </UPDATE_FROM_CATEGORY_DESCRIPTION>
+  <UPDATE>
+    <![CDATA[	
+			UPDATE elp_form_category SET
+				code = :code,
+				parent_category_id = :parent_category_id,
+				tab_id = :tab_id,
+				dict_item_id = :dict_item_id,
+				modified_by = :modified_by
+			WHERE
+				form_category_id = :form_category_id
+		]]>
+  </UPDATE>
+  <INSERT>
+    INSERT INTO elp_form_category
+    (
+    code,
+    parent_category_id,
+    tab_id,
+    dict_item_id,
+    created_by,
+    form_category_id
+    )
+    VALUES
+    (
+    :code,
+    :parent_category_id,
+    :tab_id,
+    :dict_item_id,
+    :created_by,
+    :form_category_id
+    )
+  </INSERT>
+  <DELETE>
+    DELETE FROM elp_form_category
+    WHERE
+    form_category_id = :form_category_id
+  </DELETE>
+
+  <LOAD_DICT_ITEM_TRANSLATION_PROC>
+    ELP_TRANSLATION.NEW_DICT_ITEM
+  </LOAD_DICT_ITEM_TRANSLATION_PROC>
+  
+  <DELETE_DICT_ITEM_TRANSLATION>
+    <DELETE_TRANSLATION>
+      DELETE FROM ELP_DICT_ITEM_TRANSLATION WHERE  DICT_ITEM_ID = :dict_item_id
+    </DELETE_TRANSLATION>
+    <DELETE_DIC_ITEM>
+      DELETE FROM ELP_DICTIONARY_ITEM WHERE  DICT_ITEM_ID = :dict_item_id
+    </DELETE_DIC_ITEM>
+  </DELETE_DICT_ITEM_TRANSLATION>
+</SQL>

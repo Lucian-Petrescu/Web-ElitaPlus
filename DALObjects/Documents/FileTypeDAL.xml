@@ -1,0 +1,13 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<SQL>
+  <INSERT>
+    <![CDATA[	
+    elp_utl_documents.AddFileType
+    ]]>
+  </INSERT>
+  <UPDATE>
+    <![CDATA[	
+    elp_utl_documents.ModifyFileType
+    ]]>
+  </UPDATE>
+</SQL>

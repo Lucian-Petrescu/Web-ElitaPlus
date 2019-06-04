@@ -1,0 +1,83 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+
+<!-- ********************** THIS FILE HAS BEEN GENERATED FROM TEMPLATE SQLObject.cst (5/17/2013)********************** -->
+
+<SQL>
+  <LOAD>
+    <![CDATA[	
+			SELECT 
+				product_code_id,
+				TYPE_OF_EQUIPMENT_ID,
+				external_prod_code_id,
+				policy,
+				created_date,
+				created_by,
+				modified_date,
+				modified_by,
+				product_policy_id
+			FROM elp_product_policy 
+			WHERE
+				product_policy_id = :product_policy_id
+		]]>
+  </LOAD>
+  <LOAD_LIST>
+    <![CDATA[	
+    select
+      PCP.product_policy_ID,
+      PC.Product_Code_id,
+      PCP.TYPE_OF_EQUIPMENT_ID,
+      getdescriptionfromlistitem(PCP.TYPE_OF_EQUIPMENT_ID, :language_id ) Type_Of_Equipment,
+      PCP.External_Prod_code_id,
+      getdescriptionfromlistitem(PCP.External_Prod_code_id, :language_id ) External_Prod_Code,     
+      PCP.Policy,
+      pcp.created_date,
+      pcp.created_by,
+      pcp.modified_date,
+      pcp.modified_by
+      
+    from ELITA.ELP_Product_Policy PCP,
+    	 ELITA.elp_product_code PC         
+    WHERE pcp.product_code_id = pc.product_code_id
+    and pc.product_code_id = :product_code_id
+    ]]>
+  </LOAD_LIST>
+  <UPDATE>
+    <![CDATA[	
+			UPDATE elp_product_policy SET
+				product_code_id = :product_code_id,
+				TYPE_OF_EQUIPMENT_ID = :TYPE_OF_EQUIPMENT_ID,
+				external_prod_code_id = :external_prod_code_id,
+				policy = :policy,
+				modified_by = :modified_by
+			WHERE
+				product_policy_id = :product_policy_id
+		]]>
+  </UPDATE>
+  <INSERT>
+    INSERT INTO elp_product_policy
+    (
+    product_code_id,
+    TYPE_OF_EQUIPMENT_ID,
+    external_prod_code_id,
+    policy,
+    created_by,
+    product_policy_id
+    )
+    VALUES
+    (
+    :product_code_id,
+    :type_of_equipment_id,
+    :external_prod_code_id,
+    :policy,
+    :created_by,
+    :product_policy_id
+    )
+  </INSERT>
+  <DELETE>
+    DELETE FROM elp_product_policy
+    WHERE
+    product_policy_id = :product_policy_id
+  </DELETE>
+</SQL>
+
+

@@ -1,0 +1,108 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+ 
+<!-- ********************** THIS FILE HAS BEEN GENERATED FROM TEMPLATE SQLObject.cst (5/11/2012)********************** -->
+
+<SQL>
+	<LOAD>
+		<![CDATA[	
+			SELECT
+				issue_type_id,
+				code,
+				description,
+				is_system_generated,
+				is_self_cleaning,				
+				created_date,
+				created_by,
+				modified_date,
+				modified_by				
+			FROM elp_issue_type 
+			WHERE
+				issue_type_id = :issue_type_id
+		]]>
+	</LOAD>
+	<LOAD_LIST>
+		<![CDATA[	
+			SELECT
+				issue_type_id,
+				code,
+				description,
+				is_system_generated,
+				is_self_cleaning,
+				elita.getyesno(is_system_generated) is_system_generated_desc,
+				elita.getyesno(is_self_cleaning) is_self_cleaning_desc,			
+				created_date,
+				created_by,
+				modified_date,
+				modified_by				
+			FROM elp_issue_type		  
+			  --dynamic_where_clause 
+			Order by
+				code
+			]]>
+	</LOAD_LIST>
+	<UPDATE>
+		<![CDATA[	
+			UPDATE elp_issue_type SET
+				code = :code,
+				description = :description,
+				is_system_generated = :is_system_generated,
+				is_self_cleaning = :is_self_cleaning,				
+				modified_by = :modified_by
+			WHERE
+				issue_type_id = :issue_type_id
+		]]>
+	</UPDATE>
+	<INSERT>
+		<![CDATA[	
+		INSERT INTO elp_issue_type
+		(
+		issue_type_id,
+		code,
+		description,
+		is_system_generated,
+		is_self_cleaning,		
+		created_date,
+		created_by
+		)
+		VALUES
+		(
+		:issue_type_id,
+		:code,
+		:description,
+		:is_system_generated,
+		:is_self_cleaning,
+		:created_date,
+		:created_by		
+		)
+		]]>
+	</INSERT>
+	<DELETE>
+		<![CDATA[	
+		DELETE FROM elp_issue_type
+		WHERE
+		issue_type_id = :issue_type_id
+		]]>
+	</DELETE>
+	<DROPDOWN_ID>
+		<![CDATA[
+    select list_id from elp_list where code = :code
+    ]]>
+	</DROPDOWN_ID>
+	<DROPDOWN_ITEM_ID>
+		<![CDATA[
+    select list_item_id from elp_list_item  where code =:code and list_id=:list_id
+    ]]>
+	</DROPDOWN_ITEM_ID>
+	<ADD_DROPDOWN_ITEM>
+		ELP_TRANSLATION.LOAD_DROPDOWN_ITEM
+	</ADD_DROPDOWN_ITEM>
+	<UPDATE_DROPDOWN_ITEM>
+		ELP_TRANSLATION.UPDATE_DROPDOWN_ITEM
+	</UPDATE_DROPDOWN_ITEM>
+	<DELETE_DROPDOWN_ITEM>
+		ELP_TRANSLATION.DELETE_DROPDOWN_ITEM
+	</DELETE_DROPDOWN_ITEM>
+</SQL>
+
+
+

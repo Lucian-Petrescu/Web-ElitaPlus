@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="utf-8" ?>
+
+<!-- ********************** THIS FILE HAS BEEN GENERATED FROM TEMPLATE SQLObject.cst (9/20/2004)********************** -->
+
+<SQL>
+	<LOAD>
+		<![CDATA[	
+			SELECT 
+				country_id,
+				short_desc,
+				description,
+				created_by,
+				created_date,
+				modified_by,
+				modified_date,
+				service_group_id
+			FROM elp_service_group 
+			WHERE
+				service_group_id = :service_group_id
+		]]>
+	</LOAD>
+	<LOAD_LIST>		
+		<![CDATA[	
+			SELECT
+				sg.service_group_id,
+				c.description country_description,
+				sg.short_desc,
+				sg.description
+			FROM elp_service_group sg,
+				 elp_country c
+			WHERE
+				sg.country_id = c.country_id
+			--dynamic_where_clause
+		]]>
+	</LOAD_LIST>	
+	<UPDATE>
+		<![CDATA[	
+			UPDATE elp_service_group SET
+				country_id = :country_id,
+				short_desc = :short_desc,
+				description = :description,
+				modified_by = :modified_by
+			WHERE
+				service_group_id = :service_group_id
+		]]>
+	</UPDATE>
+	<INSERT>
+			INSERT INTO elp_service_group
+					(			
+				country_id, 
+				short_desc, 
+				description, 
+				created_by,
+				service_group_id
+					)
+			VALUES
+					(			
+				:country_id, 
+				:short_desc, 
+				:description, 
+				:created_by,
+				:service_group_id
+					)
+	</INSERT>
+	<DELETE>
+			DELETE FROM elp_service_group
+			WHERE
+				service_group_id = :service_group_id
+	</DELETE>
+</SQL> 
+
+
+

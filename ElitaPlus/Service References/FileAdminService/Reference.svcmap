@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ReferenceGroup xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" ID="a666c9e6-3e4e-43be-9b26-8376b7153d02" xmlns="urn:schemas-microsoft-com:xml-wcfservicemap">
+  <ClientOptions>
+    <GenerateAsynchronousMethods>false</GenerateAsynchronousMethods>
+    <GenerateTaskBasedAsynchronousMethod>true</GenerateTaskBasedAsynchronousMethod>
+    <EnableDataBinding>true</EnableDataBinding>
+    <ExcludedTypes />
+    <ImportXmlTypes>false</ImportXmlTypes>
+    <GenerateInternalTypes>false</GenerateInternalTypes>
+    <GenerateMessageContracts>false</GenerateMessageContracts>
+    <NamespaceMappings />
+    <CollectionMappings />
+    <GenerateSerializableTypes>true</GenerateSerializableTypes>
+    <Serializer>Auto</Serializer>
+    <UseSerializerForFaults>true</UseSerializerForFaults>
+    <ReferenceAllAssemblies>true</ReferenceAllAssemblies>
+    <ReferencedAssemblies />
+    <ReferencedDataContractTypes />
+    <ServiceContractMappings />
+  </ClientOptions>
+  <MetadataSources>
+    <MetadataSource Address="http://sf-au-southeast-mod.assurant.com/ElitaClaimFulfillment/modl-p1/WebAppGateway/fileadmin" Protocol="http" SourceId="1" />
+  </MetadataSources>
+  <Metadata>
+    <MetadataFile FileName="fileadmin.xsd" MetadataType="Schema" ID="a77ce957-8918-4934-9e53-15677174b8f4" SourceId="1" SourceUrl="http://sf-au-southeast-mod.assurant.com/ElitaClaimFulfillment/modl-p1/WebAppGateway/fileadmin?xsd=xsd7" />
+    <MetadataFile FileName="fileadmin1.xsd" MetadataType="Schema" ID="47ce1d49-2392-4b02-a7e8-34269c3799c6" SourceId="1" SourceUrl="http://sf-au-southeast-mod.assurant.com/ElitaClaimFulfillment/modl-p1/WebAppGateway/fileadmin?xsd=xsd6" />
+    <MetadataFile FileName="FileProcessor.wsdl" MetadataType="Wsdl" ID="c317638c-3f46-4210-bdf7-0dc08f137b34" SourceId="1" SourceUrl="http://sf-au-southeast-mod.assurant.com/ElitaClaimFulfillment/modl-p1/WebAppGateway/fileadmin" />
+    <MetadataFile FileName="fileadmin2.xsd" MetadataType="Schema" ID="9acb5160-c85f-45ef-9194-19dadcff5616" SourceId="1" SourceUrl="http://sf-au-southeast-mod.assurant.com/ElitaClaimFulfillment/modl-p1/WebAppGateway/fileadmin?xsd=xsd4" />
+    <MetadataFile FileName="fileadmin3.xsd" MetadataType="Schema" ID="51f2ba59-7801-46a4-a610-f645c354be99" SourceId="1" SourceUrl="http://sf-au-southeast-mod.assurant.com/ElitaClaimFulfillment/modl-p1/WebAppGateway/fileadmin?xsd=xsd3" />
+    <MetadataFile FileName="fileadmin4.xsd" MetadataType="Schema" ID="95cd1bec-f16a-4a7d-88cc-a16ce8a1f36c" SourceId="1" SourceUrl="http://sf-au-southeast-mod.assurant.com/ElitaClaimFulfillment/modl-p1/WebAppGateway/fileadmin?xsd=xsd2" />
+    <MetadataFile FileName="fileadmin5.xsd" MetadataType="Schema" ID="c3cff240-7c33-4cb9-a121-1d782f285319" SourceId="1" SourceUrl="http://sf-au-southeast-mod.assurant.com/ElitaClaimFulfillment/modl-p1/WebAppGateway/fileadmin?xsd=xsd1" />
+    <MetadataFile FileName="fileadmin6.xsd" MetadataType="Schema" ID="d8d0e92b-3f0e-4253-9214-5a22fe06d6b8" SourceId="1" SourceUrl="http://sf-au-southeast-mod.assurant.com/ElitaClaimFulfillment/modl-p1/WebAppGateway/fileadmin?xsd=xsd0" />
+    <MetadataFile FileName="fileadmin7.xsd" MetadataType="Schema" ID="1c330291-938d-4db7-83c8-25bab46c302e" SourceId="1" SourceUrl="http://sf-au-southeast-mod.assurant.com/ElitaClaimFulfillment/modl-p1/WebAppGateway/fileadmin?xsd=xsd5" />
+    <MetadataFile FileName="fileadmin.wsdl" MetadataType="Wsdl" ID="d8936419-542f-467d-9249-08c3085d89db" SourceId="1" SourceUrl="http://sf-au-southeast-mod.assurant.com/ElitaClaimFulfillment/modl-p1/WebAppGateway/fileadmin?wsdl=wsdl0" />
+    <MetadataFile FileName="fileadmin8.xsd" MetadataType="Schema" ID="303c4e65-6978-4d54-a3ab-9b5b42203f70" SourceId="1" SourceUrl="http://sf-au-southeast-mod.assurant.com/ElitaClaimFulfillment/modl-p1/WebAppGateway/fileadmin?xsd=xsd8" />
+  </Metadata>
+  <Extensions>
+    <ExtensionFile FileName="configuration91.svcinfo" Name="configuration91.svcinfo" />
+    <ExtensionFile FileName="configuration.svcinfo" Name="configuration.svcinfo" />
+  </Extensions>
+</ReferenceGroup>

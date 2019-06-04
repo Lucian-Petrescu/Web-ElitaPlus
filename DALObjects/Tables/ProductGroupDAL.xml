@@ -1,0 +1,124 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+
+<!-- ********************** THIS FILE HAS BEEN GENERATED FROM TEMPLATE SQLObject.cst (9/16/2008)********************** -->
+
+<SQL>
+  <LOAD>
+    <![CDATA[	
+			SELECT 
+				PRODUCT_GROUP_ID, 
+        DEALER_ID, 
+        PRODUCT_GROUP_NAME, 
+        CREATED_DATE, 
+        MODIFIED_DATE, 
+        CREATED_BY, 
+        MODIFIED_BY
+			FROM elp_product_group
+			WHERE
+				product_group_id = :product_group_id
+		]]>
+  </LOAD>
+  <LOAD_LIST>
+    <![CDATA[	
+		 SELECT  distinct pg.product_group_id, C.CODE || ' - ' || dealer_name DEALER, pg.product_group_name
+      FROM
+      elp_company c
+      inner join elp_dealer edealer
+      on c.company_id = edealer.company_id 
+      inner join elp_product_group pg
+      on edealer.dealer_id = pg.dealer_id
+      --dynamic_in_clause
+      --dynamic_where_clause
+		]]>
+  </LOAD_LIST>
+  <LOAD_AVAILABLE_PRODUCTCODES_LIST>
+    SELECT
+    PC.PRODUCT_CODE || ' - ' || RT.DESCRIPTION DESCRIPTION,
+    PC.PRODUCT_CODE,
+    PC.PRODUCT_CODE_ID ID
+
+    FROM ELP_PRODUCT_CODE pc
+
+    FULL JOIN
+
+    (SELECT pgd.product_code_id
+    FROM ELP_PRODUCT_GROUP pg
+    INNER JOIN ELP_PRODUCT_GROUP_DETAIL pgd
+    on pg.PRODUCT_GROUP_ID = pgd.PRODUCT_GROUP_ID
+    WHERE DEALER_ID = :dealer_id) T1
+    ON pc.product_code_id = T1.product_code_id
+
+    left join (select  product_code_id, min(item_number) item_number from elp_item
+    group by product_code_id) I
+    ON PC.PRODUCT_CODE_ID = I.PRODUCT_CODE_ID
+    left join elp_item it on I.product_code_id = it.product_code_id and I.item_number = it.item_number
+    left JOIN ELP_RISK_TYPE RT
+    ON  it.RISK_TYPE_ID = RT.RISK_TYPE_ID
+    where pc.dealer_id = :dealer_id
+    and T1.product_code_id is null
+    ORDER BY DESCRIPTION
+  </LOAD_AVAILABLE_PRODUCTCODES_LIST>
+  <LOAD_SELECTED_PRODUCTCODES_LIST>
+    select distinct PC.PRODUCT_CODE || ' - ' || RT.DESCRIPTION DESCRIPTION,
+    PC.PRODUCT_CODE,
+    PC.PRODUCT_CODE_ID ID,
+    PG.PRODUCT_GROUP_ID,
+    PG.PRODUCT_GROUP_NAME
+    from ELP_PRODUCT_CODE  PC
+    left join (select  product_code_id, min(item_number) item_number from elp_item
+    group by product_code_id) I
+    ON PC.PRODUCT_CODE_ID = I.PRODUCT_CODE_ID
+    left join elp_item it on I.product_code_id = it.product_code_id and I.item_number = it.item_number
+    left JOIN ELP_RISK_TYPE RT
+    ON RT.RISK_TYPE_ID  = it.RISK_TYPE_ID
+    INNER JOIN ELP_PRODUCT_GROUP PG
+    on PC.DEALER_ID = PG.DEALER_ID
+    INNER JOIN ELP_PRODUCT_GROUP_DETAIL PGD
+    ON PG.PRODUCT_GROUP_ID = PGD.PRODUCT_GROUP_ID
+    AND PGD.PRODUCT_CODE_ID =  PC.PRODUCT_CODE_ID
+    where PC.DEALER_ID = :DEALER_ID
+    ORDER BY DESCRIPTION
+  </LOAD_SELECTED_PRODUCTCODES_LIST>
+  <UPDATE>
+    <![CDATA[	
+			UPDATE elp_product_group SET
+				product_group_name = :product_group_name,
+				modified_by = :modified_by
+			WHERE
+				product_group_id = :product_group_id
+		]]>
+  </UPDATE>
+  <INSERT>
+    INSERT INTO elp_product_group
+    (
+    product_group_id,
+    dealer_id,
+    product_group_name
+    )
+    VALUES
+    (
+    :product_group_id,
+    :dealer_id,
+    :product_group_name
+    )
+  </INSERT>
+  <DELETE>
+    DELETE FROM elp_product_group
+    WHERE
+    product_group_id = :product_group_id
+  </DELETE>
+  <LOAD_PRODUCT_CODES>
+    <![CDATA[
+	       SELECT
+				pc.product_code_id,
+				pc.product_code,
+				pc.description
+			FROM
+				elp_product_code pc
+			WHERE --dynamic_where_clause 
+			ORDER BY UPPER(pc.description)
+	   ]]>
+  </LOAD_PRODUCT_CODES>
+</SQL>
+
+

@@ -1,0 +1,72 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+
+<!-- ********************** THIS FILE HAS BEEN GENERATED FROM TEMPLATE SQLObject.cst (4/29/2015)********************** -->
+
+<SQL>
+  <LOAD>
+    <![CDATA[	
+			SELECT 
+				dealer_id,
+				coverage_type_id,
+				created_date,
+				created_by,
+				modified_date,
+				modified_by,
+				dealer_clm_aprove_covtype_id
+			FROM elp_dealer_clm_aprove_covtype 
+			WHERE
+				dealer_clm_aprove_covtype_id = :dealer_clm_aprove_covtype_id
+		]]>
+  </LOAD>
+  <LOAD_BY_DEALERID_COVERAGETYPEID>
+    <![CDATA[	
+			SELECT 
+				dealer_id,
+				coverage_type_id,
+				created_date,
+				created_by,
+				modified_date,
+				modified_by,
+				dealer_clm_aprove_covtype_id
+			FROM elp_dealer_clm_aprove_covtype 
+			WHERE
+				dealer_id = :dealer_id
+        and coverage_type_id = :coverage_type_id
+		]]>
+  </LOAD_BY_DEALERID_COVERAGETYPEID>
+  <LOAD_LIST>
+  </LOAD_LIST>
+  <UPDATE>
+    <![CDATA[	
+			UPDATE elp_dealer_clm_aprove_covtype SET
+				dealer_id = :dealer_id,
+				coverage_type_id = :coverage_type_id,
+				modified_by = :modified_by
+			WHERE
+				dealer_clm_aprove_covtype_id = :dealer_clm_aprove_covtype_id
+		]]>
+  </UPDATE>
+  <INSERT>
+    INSERT INTO elp_dealer_clm_aprove_covtype
+    (
+    dealer_id,
+    coverage_type_id,
+    created_by,
+    dealer_clm_aprove_covtype_id
+    )
+    VALUES
+    (
+    :dealer_id,
+    :coverage_type_id,
+    :created_by,
+    :dealer_clm_aprove_covtype_id
+    )
+  </INSERT>
+  <DELETE>
+    DELETE FROM elp_dealer_clm_aprove_covtype
+    WHERE
+    dealer_clm_aprove_covtype_id = :dealer_clm_aprove_covtype_id
+  </DELETE>
+</SQL>
+
+

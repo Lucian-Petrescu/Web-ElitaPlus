@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xs:schema xmlns:tns="http://schemas.datacontract.org/2004/07/Assurant.Elita.ClaimFulfillment.OrderGateway.FileIngress.Types" elementFormDefault="qualified" targetNamespace="http://schemas.datacontract.org/2004/07/Assurant.Elita.ClaimFulfillment.OrderGateway.FileIngress.Types" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+  <xs:simpleType name="DbsRecordType">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="None" />
+      <xs:enumeration value="DeviceShippedForward" />
+      <xs:enumeration value="DeviceDeliveredForward" />
+      <xs:enumeration value="DeviceShippedReverse" />
+      <xs:enumeration value="DeviceReceivedReverse" />
+      <xs:enumeration value="DeviceShippedToStoreForward" />
+      <xs:enumeration value="DeviceDeliveredToStoreForward" />
+      <xs:enumeration value="DevicePickedUpFromStoreReverse" />
+      <xs:enumeration value="SatchelShippedForward" />
+      <xs:enumeration value="SatchelDeliveredForward" />
+      <xs:enumeration value="EParcelProvided" />
+      <xs:enumeration value="DeviceInRepair" />
+      <xs:enumeration value="CustomerDecisionRequired" />
+      <xs:enumeration value="NoFaultFound" />
+      <xs:enumeration value="IneligibleDeviceReturned" />
+      <xs:enumeration value="UnsuccessfulDeliveryAttempt" />
+      <xs:enumeration value="FailedDelivery" />
+      <xs:enumeration value="IATAPackagingShippedForward" />
+      <xs:enumeration value="IATAPackagingDeliveredForward" />
+      <xs:enumeration value="ServiceFeeRequired" />
+      <xs:enumeration value="Completed" />
+      <xs:enumeration value="AwaitingOutOfWarrantyDecision" />
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:element name="DbsRecordType" nillable="true" type="tns:DbsRecordType" />
+  <xs:simpleType name="RecordState">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="Initialized" />
+      <xs:enumeration value="Counted" />
+      <xs:enumeration value="Validated" />
+      <xs:enumeration value="ReadyToQueue" />
+      <xs:enumeration value="Queued" />
+      <xs:enumeration value="Rejected" />
+      <xs:enumeration value="Processed" />
+      <xs:enumeration value="ByPassed" />
+      <xs:enumeration value="ParsingFailed" />
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:element name="RecordState" nillable="true" type="tns:RecordState" />
+  <xs:simpleType name="ImportedFileType">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="OrderFile" />
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:element name="ImportedFileType" nillable="true" type="tns:ImportedFileType" />
+</xs:schema>

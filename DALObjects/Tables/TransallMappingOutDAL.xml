@@ -1,0 +1,72 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+
+<!-- ********************** THIS FILE HAS BEEN GENERATED FROM TEMPLATE SQLObject.cst (4/27/2011)********************** -->
+
+<SQL>
+  <LOAD>
+    <![CDATA[	
+			SELECT 
+				transall_mapping_id,
+				output_mask,
+				layout_code_id,
+				modified_date,
+				modified_by,
+				created_date,
+				created_by,
+				transall_mapping_out_id
+			FROM elp_transall_mapping_out 
+			WHERE
+				transall_mapping_out_id = :transall_mapping_out_id
+		]]>
+  </LOAD>
+  <LOAD_LIST>
+    SELECT
+    transall_mapping_out_id,
+    transall_mapping_id,
+    output_mask,
+    layout_code_id,
+    modified_date,
+    modified_by,
+    created_date,
+    created_by
+    FROM elp_transall_mapping_out
+    WHERE
+    transall_mapping_id = :transall_mapping_id
+  </LOAD_LIST>
+  <UPDATE>
+    <![CDATA[	
+			UPDATE elp_transall_mapping_out SET
+				transall_mapping_id = :transall_mapping_id,
+				output_mask = :output_mask,
+				layout_code_id = :layout_code_id,
+				modified_by = :modified_by
+			WHERE
+				transall_mapping_out_id = :transall_mapping_out_id
+		]]>
+  </UPDATE>
+  <INSERT>
+    INSERT INTO elp_transall_mapping_out
+    (
+    transall_mapping_id,
+    output_mask,
+    layout_code_id,
+    created_by,
+    transall_mapping_out_id
+    )
+    VALUES
+    (
+    :transall_mapping_id,
+    :output_mask,
+    :layout_code_id,
+    :created_by,
+    :transall_mapping_out_id
+    )
+  </INSERT>
+  <DELETE>
+    DELETE FROM elp_transall_mapping_out
+    WHERE
+    transall_mapping_out_id = :transall_mapping_out_id
+  </DELETE>
+</SQL>
+
+

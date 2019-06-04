@@ -1,0 +1,1 @@
+﻿<%@ ServiceHost Language="VB" Debug="true" Service="ElitaInternalWS.GeographicServices.RegionAndComunaService"  Factory="ElitaInternalWS.Core.UnityServiceHostFactory"  CodeBehind="RegionAndComunaService.svc.vb" %>

@@ -1,0 +1,71 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+
+<!-- ********************** THIS FILE HAS BEEN GENERATED FROM TEMPLATE SQLObject.cst (4/12/2014)********************** -->
+
+<SQL>
+  <LOAD>
+    <![CDATA[	
+			SELECT 
+				exclude_listitem_role_id,
+				role_id,
+				created_date,
+				created_by,
+				modified_date,
+				modified_by,
+				excluded_li_roles_id
+			FROM elp_excluded_li_roles 
+			WHERE
+				excluded_li_roles_id = :excluded_li_roles_id
+		]]>
+  </LOAD>
+  <LOAD_LIST>
+    <![CDATA[	
+			SELECT
+				er.role_id,
+				er.exclude_listitem_role_id,
+				er.created_by,
+				er.created_date,
+				er.modified_by,
+				er.modified_date,
+				er.excluded_li_roles_id
+			FROM
+				elp_excluded_li_roles er, elp_exclude_listitem_by_role elibr
+			WHERE
+				er.exclude_listitem_role_id  = elibr.exclude_listitem_role_id
+			AND	er.exclude_listitem_role_id = :exclude_listitem_role_id
+		]]>
+  </LOAD_LIST>
+  <UPDATE>
+    <![CDATA[	
+			UPDATE elp_excluded_li_roles SET
+				exclude_listitem_role_id = :exclude_listitem_role_id,
+				role_id = :role_id,
+				modified_by = :modified_by
+			WHERE
+				excluded_li_roles_id = :excluded_li_roles_id
+		]]>
+  </UPDATE>
+  <INSERT>
+    INSERT INTO elp_excluded_li_roles
+    (
+    exclude_listitem_role_id,
+    role_id,
+    created_by,
+    excluded_li_roles_id
+    )
+    VALUES
+    (
+    :exclude_listitem_role_id,
+    :role_id,
+    :created_by,
+    :excluded_li_roles_id
+    )
+  </INSERT>
+  <DELETE>
+    DELETE FROM elp_excluded_li_roles
+    WHERE
+    excluded_li_roles_id = :excluded_li_roles_id
+  </DELETE>
+</SQL>
+
+

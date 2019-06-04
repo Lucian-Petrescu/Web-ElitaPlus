@@ -1,0 +1,257 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 15
+VisualStudioVersion = 15.0.27428.2037
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Core", "Core", "{272856C1-7EA4-405C-BB97-E7F58B2968D5}"
+EndProject
+Project("{F184B08F-C81C-45F6-A57F-5ABD9991F28F}") = "Assurant.Common.CrystalEnterpriseHelper", "Assurant.Common.CrystalEnterpriseHelper\Assurant.Common.CrystalEnterpriseHelper.vbproj", "{7F4C7ADF-CA31-4E8F-AFF5-12DF10AF44BA}"
+EndProject
+Project("{F184B08F-C81C-45F6-A57F-5ABD9991F28F}") = "Common", "Common\Common.vbproj", "{54BB47A8-3DD9-41A7-B4A3-62869AF3FCF1}"
+EndProject
+Project("{F184B08F-C81C-45F6-A57F-5ABD9991F28F}") = "DALObjects", "DALObjects\DALObjects.vbproj", "{D327817B-902A-4113-9336-4B53C560D50E}"
+EndProject
+Project("{F184B08F-C81C-45F6-A57F-5ABD9991F28F}") = "BusinessObjects", "BusinessObjects\BusinessObjects.vbproj", "{24AF00EF-6626-4D29-BEFB-F899C2A85AAD}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Windows Services", "Windows Services", "{7D7489EB-F378-4D0E-A6A6-30DE82DBB9E7}"
+EndProject
+Project("{F184B08F-C81C-45F6-A57F-5ABD9991F28F}") = "ElitaBatchServices", "ElitaBatchServices\ElitaBatchServices.vbproj", "{26FA0FC8-184D-4D89-92B6-B1ED04A40B69}"
+EndProject
+Project("{F184B08F-C81C-45F6-A57F-5ABD9991F28F}") = "ElitaHarvesterService", "ElitaHarvesterService\ElitaHarvesterService.vbproj", "{982A5D52-6A4B-4665-87FB-FD79E4F71660}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ElitaTransallFileSystemService", "ElitaTransallFileSystemService\ElitaTransallFileSystemService.csproj", "{EC566C6B-3BB4-4B35-AC45-D4A72C8CB140}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Web", "Web", "{4DCCE29E-D99D-44DA-845A-7C5026A871A7}"
+EndProject
+Project("{F184B08F-C81C-45F6-A57F-5ABD9991F28F}") = "ElitaInternalWS", "ElitaInternalWS\ElitaInternalWS.vbproj", "{7985ABEF-1C5C-4EC5-B178-3D1D374A910B}"
+EndProject
+Project("{F184B08F-C81C-45F6-A57F-5ABD9991F28F}") = "ElitaPlusWebApp", "ElitaPlus\ElitaPlusWebApp.vbproj", "{3493ECA8-2EEB-4422-B08B-9E5C23CA9FDF}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".nuget", ".nuget", "{866744F2-21B7-4759-9F0F-B4C288EAFF54}"
+	ProjectSection(SolutionItems) = preProject
+		.nuget\NuGet.Config = .nuget\NuGet.Config
+		.nuget\NuGet.exe = .nuget\NuGet.exe
+		.nuget\NuGet.targets = .nuget\NuGet.targets
+	EndProjectSection
+EndProject
+Project("{F184B08F-C81C-45F6-A57F-5ABD9991F28F}") = "BusinessObjects.Test", "BusinessObjects.Test\BusinessObjects.Test.vbproj", "{96DCFF91-3C92-47B2-8FA2-B1E85BCD6745}"
+EndProject
+Project("{F184B08F-C81C-45F6-A57F-5ABD9991F28F}") = "DataAccessInterface", "DataAccessInterface\DataAccessInterface.vbproj", "{22D67A98-5E6D-4427-98AF-38D1465E8FCD}"
+EndProject
+Project("{F184B08F-C81C-45F6-A57F-5ABD9991F28F}") = "DataEntities", "DataEntities\DataEntities.vbproj", "{530B0245-EC69-4781-A1EC-5995C14B66D0}"
+EndProject
+Project("{F184B08F-C81C-45F6-A57F-5ABD9991F28F}") = "DataAccess", "DataAccess\DataAccess.vbproj", "{50B0B6F9-1D3E-4B7E-8943-E34E29940414}"
+EndProject
+Project("{F184B08F-C81C-45F6-A57F-5ABD9991F28F}") = "Security", "Security\Security.vbproj", "{3E2EC759-6AE6-4DB3-9400-CC6D389A960A}"
+EndProject
+Project("{F184B08F-C81C-45F6-A57F-5ABD9991F28F}") = "Business", "Business\Business.vbproj", "{26A9C5D6-579B-4B5F-BF52-2C596819D92B}"
+EndProject
+Project("{F184B08F-C81C-45F6-A57F-5ABD9991F28F}") = "External.AppleGSX", "External.AppleGSX\External.AppleGSX.vbproj", "{E50C26BE-FE9E-48AC-A9D1-6915E1F44CBA}"
+	ProjectSection(ProjectDependencies) = postProject
+		{B4BC4B0C-F901-4558-8DE1-58100E997036} = {B4BC4B0C-F901-4558-8DE1-58100E997036}
+	EndProjectSection
+EndProject
+Project("{F184B08F-C81C-45F6-A57F-5ABD9991F28F}") = "External.Interfaces", "External.Interfaces\External.Interfaces.vbproj", "{B4BC4B0C-F901-4558-8DE1-58100E997036}"
+EndProject
+Project("{F184B08F-C81C-45F6-A57F-5ABD9991F28F}") = "External.Darty", "External.Darty\External.Darty.vbproj", "{EA94D1D8-AC5A-4898-9457-A7FE5B0F71F2}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "External.Indix", "External.Indix\External.Indix.csproj", "{9FB24DD6-158A-4899-B198-5C2B58D23D90}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "External.AppleCare", "External.AppleCare\External.AppleCare.csproj", "{8EA47869-D032-44F3-BA37-22D25A026563}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{F9C8754F-C42E-41B5-8366-4FFA202A47FF}"
+	ProjectSection(SolutionItems) = preProject
+		ElitaBatchServices.nuspec = ElitaBatchServices.nuspec
+		ElitaHarvesterService.nuspec = ElitaHarvesterService.nuspec
+		ElitaInternalWS.nuspec = ElitaInternalWS.nuspec
+		ElitaPlus.nuspec = ElitaPlus.nuspec
+		ElitaTransallFileSystemService.nuspec = ElitaTransallFileSystemService.nuspec
+		PrePackage.ps1 = PrePackage.ps1
+	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "External.Falabella", "External.Falabella\External.Falabella.csproj", "{AE9A065D-21CA-4DF2-8F5E-2DD740F1760C}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{7F4C7ADF-CA31-4E8F-AFF5-12DF10AF44BA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7F4C7ADF-CA31-4E8F-AFF5-12DF10AF44BA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7F4C7ADF-CA31-4E8F-AFF5-12DF10AF44BA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7F4C7ADF-CA31-4E8F-AFF5-12DF10AF44BA}.Release|Any CPU.Build.0 = Release|Any CPU
+		{54BB47A8-3DD9-41A7-B4A3-62869AF3FCF1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{54BB47A8-3DD9-41A7-B4A3-62869AF3FCF1}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{54BB47A8-3DD9-41A7-B4A3-62869AF3FCF1}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{54BB47A8-3DD9-41A7-B4A3-62869AF3FCF1}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D327817B-902A-4113-9336-4B53C560D50E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D327817B-902A-4113-9336-4B53C560D50E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D327817B-902A-4113-9336-4B53C560D50E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D327817B-902A-4113-9336-4B53C560D50E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{24AF00EF-6626-4D29-BEFB-F899C2A85AAD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{24AF00EF-6626-4D29-BEFB-F899C2A85AAD}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{24AF00EF-6626-4D29-BEFB-F899C2A85AAD}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{24AF00EF-6626-4D29-BEFB-F899C2A85AAD}.Release|Any CPU.Build.0 = Release|Any CPU
+		{26FA0FC8-184D-4D89-92B6-B1ED04A40B69}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{26FA0FC8-184D-4D89-92B6-B1ED04A40B69}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{26FA0FC8-184D-4D89-92B6-B1ED04A40B69}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{26FA0FC8-184D-4D89-92B6-B1ED04A40B69}.Release|Any CPU.Build.0 = Release|Any CPU
+		{982A5D52-6A4B-4665-87FB-FD79E4F71660}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{982A5D52-6A4B-4665-87FB-FD79E4F71660}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{982A5D52-6A4B-4665-87FB-FD79E4F71660}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{982A5D52-6A4B-4665-87FB-FD79E4F71660}.Release|Any CPU.Build.0 = Release|Any CPU
+		{EC566C6B-3BB4-4B35-AC45-D4A72C8CB140}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{EC566C6B-3BB4-4B35-AC45-D4A72C8CB140}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{EC566C6B-3BB4-4B35-AC45-D4A72C8CB140}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{EC566C6B-3BB4-4B35-AC45-D4A72C8CB140}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7985ABEF-1C5C-4EC5-B178-3D1D374A910B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7985ABEF-1C5C-4EC5-B178-3D1D374A910B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7985ABEF-1C5C-4EC5-B178-3D1D374A910B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7985ABEF-1C5C-4EC5-B178-3D1D374A910B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3493ECA8-2EEB-4422-B08B-9E5C23CA9FDF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3493ECA8-2EEB-4422-B08B-9E5C23CA9FDF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3493ECA8-2EEB-4422-B08B-9E5C23CA9FDF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3493ECA8-2EEB-4422-B08B-9E5C23CA9FDF}.Release|Any CPU.Build.0 = Release|Any CPU
+		{96DCFF91-3C92-47B2-8FA2-B1E85BCD6745}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{96DCFF91-3C92-47B2-8FA2-B1E85BCD6745}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{96DCFF91-3C92-47B2-8FA2-B1E85BCD6745}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{96DCFF91-3C92-47B2-8FA2-B1E85BCD6745}.Release|Any CPU.Build.0 = Release|Any CPU
+		{22D67A98-5E6D-4427-98AF-38D1465E8FCD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{22D67A98-5E6D-4427-98AF-38D1465E8FCD}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{22D67A98-5E6D-4427-98AF-38D1465E8FCD}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{22D67A98-5E6D-4427-98AF-38D1465E8FCD}.Release|Any CPU.Build.0 = Release|Any CPU
+		{530B0245-EC69-4781-A1EC-5995C14B66D0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{530B0245-EC69-4781-A1EC-5995C14B66D0}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{530B0245-EC69-4781-A1EC-5995C14B66D0}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{530B0245-EC69-4781-A1EC-5995C14B66D0}.Release|Any CPU.Build.0 = Release|Any CPU
+		{50B0B6F9-1D3E-4B7E-8943-E34E29940414}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{50B0B6F9-1D3E-4B7E-8943-E34E29940414}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{50B0B6F9-1D3E-4B7E-8943-E34E29940414}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{50B0B6F9-1D3E-4B7E-8943-E34E29940414}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3E2EC759-6AE6-4DB3-9400-CC6D389A960A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3E2EC759-6AE6-4DB3-9400-CC6D389A960A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3E2EC759-6AE6-4DB3-9400-CC6D389A960A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3E2EC759-6AE6-4DB3-9400-CC6D389A960A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{26A9C5D6-579B-4B5F-BF52-2C596819D92B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{26A9C5D6-579B-4B5F-BF52-2C596819D92B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{26A9C5D6-579B-4B5F-BF52-2C596819D92B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{26A9C5D6-579B-4B5F-BF52-2C596819D92B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E50C26BE-FE9E-48AC-A9D1-6915E1F44CBA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E50C26BE-FE9E-48AC-A9D1-6915E1F44CBA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E50C26BE-FE9E-48AC-A9D1-6915E1F44CBA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E50C26BE-FE9E-48AC-A9D1-6915E1F44CBA}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B4BC4B0C-F901-4558-8DE1-58100E997036}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B4BC4B0C-F901-4558-8DE1-58100E997036}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B4BC4B0C-F901-4558-8DE1-58100E997036}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B4BC4B0C-F901-4558-8DE1-58100E997036}.Release|Any CPU.Build.0 = Release|Any CPU
+		{EA94D1D8-AC5A-4898-9457-A7FE5B0F71F2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{EA94D1D8-AC5A-4898-9457-A7FE5B0F71F2}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{EA94D1D8-AC5A-4898-9457-A7FE5B0F71F2}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{EA94D1D8-AC5A-4898-9457-A7FE5B0F71F2}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9FB24DD6-158A-4899-B198-5C2B58D23D90}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9FB24DD6-158A-4899-B198-5C2B58D23D90}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9FB24DD6-158A-4899-B198-5C2B58D23D90}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9FB24DD6-158A-4899-B198-5C2B58D23D90}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8EA47869-D032-44F3-BA37-22D25A026563}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8EA47869-D032-44F3-BA37-22D25A026563}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8EA47869-D032-44F3-BA37-22D25A026563}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8EA47869-D032-44F3-BA37-22D25A026563}.Release|Any CPU.Build.0 = Release|Any CPU
+		{AE9A065D-21CA-4DF2-8F5E-2DD740F1760C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{AE9A065D-21CA-4DF2-8F5E-2DD740F1760C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{AE9A065D-21CA-4DF2-8F5E-2DD740F1760C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{AE9A065D-21CA-4DF2-8F5E-2DD740F1760C}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{7F4C7ADF-CA31-4E8F-AFF5-12DF10AF44BA} = {272856C1-7EA4-405C-BB97-E7F58B2968D5}
+		{26FA0FC8-184D-4D89-92B6-B1ED04A40B69} = {7D7489EB-F378-4D0E-A6A6-30DE82DBB9E7}
+		{982A5D52-6A4B-4665-87FB-FD79E4F71660} = {7D7489EB-F378-4D0E-A6A6-30DE82DBB9E7}
+		{EC566C6B-3BB4-4B35-AC45-D4A72C8CB140} = {7D7489EB-F378-4D0E-A6A6-30DE82DBB9E7}
+		{7985ABEF-1C5C-4EC5-B178-3D1D374A910B} = {4DCCE29E-D99D-44DA-845A-7C5026A871A7}
+		{3493ECA8-2EEB-4422-B08B-9E5C23CA9FDF} = {4DCCE29E-D99D-44DA-845A-7C5026A871A7}
+		{3E2EC759-6AE6-4DB3-9400-CC6D389A960A} = {272856C1-7EA4-405C-BB97-E7F58B2968D5}
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {AF9BF1EE-7C0D-4C07-8F04-B347CCB81AF4}
+		EnterpriseLibraryConfigurationToolBinariesPath = .nuget\..\packages\Unity.2.1.505.2\lib\NET35
+	EndGlobalSection
+	GlobalSection(TeamFoundationVersionControl) = preSolution
+		SccNumberOfProjects = 22
+		SccEnterpriseProvider = {4CA58AB2-18FA-4F8D-95D4-32DDF27D184C}
+		SccTeamFoundationServer = https://tfs.assurant.com/tfs/gl
+		SccLocalPath0 = .
+		SccProjectUniqueName1 = Assurant.Common.CrystalEnterpriseHelper\\Assurant.Common.CrystalEnterpriseHelper.vbproj
+		SccProjectTopLevelParentUniqueName1 = Elita2015.sln
+		SccProjectName1 = Assurant.Common.CrystalEnterpriseHelper
+		SccLocalPath1 = Assurant.Common.CrystalEnterpriseHelper
+		SccProjectUniqueName2 = Common\\Common.vbproj
+		SccProjectName2 = Common
+		SccLocalPath2 = Common
+		SccProjectUniqueName3 = DALObjects\\DALObjects.vbproj
+		SccProjectName3 = DALObjects
+		SccLocalPath3 = DALObjects
+		SccProjectUniqueName4 = BusinessObjects\\BusinessObjects.vbproj
+		SccProjectName4 = BusinessObjects
+		SccLocalPath4 = BusinessObjects
+		SccProjectUniqueName5 = ElitaBatchServices\\ElitaBatchServices.vbproj
+		SccProjectTopLevelParentUniqueName5 = Elita2015.sln
+		SccProjectName5 = ElitaBatchServices
+		SccLocalPath5 = ElitaBatchServices
+		SccProjectUniqueName6 = ElitaHarvesterService\\ElitaHarvesterService.vbproj
+		SccProjectTopLevelParentUniqueName6 = Elita2015.sln
+		SccProjectName6 = ElitaHarvesterService
+		SccLocalPath6 = ElitaHarvesterService
+		SccProjectUniqueName7 = ElitaTransallFileSystemService\\ElitaTransallFileSystemService.csproj
+		SccProjectTopLevelParentUniqueName7 = Elita2015.sln
+		SccProjectName7 = ElitaTransallFileSystemService
+		SccLocalPath7 = ElitaTransallFileSystemService
+		SccProjectUniqueName8 = ElitaInternalWS\\ElitaInternalWS.vbproj
+		SccProjectTopLevelParentUniqueName8 = Elita2015.sln
+		SccProjectName8 = ElitaInternalWS
+		SccLocalPath8 = ElitaInternalWS
+		SccProjectUniqueName9 = ElitaPlus\\ElitaPlusWebApp.vbproj
+		SccProjectTopLevelParentUniqueName9 = Elita2015.sln
+		SccProjectName9 = ElitaPlus
+		SccLocalPath9 = ElitaPlus
+		SccProjectUniqueName10 = BusinessObjects.Test\\BusinessObjects.Test.vbproj
+		SccProjectName10 = BusinessObjects.Test
+		SccLocalPath10 = BusinessObjects.Test
+		SccProjectUniqueName11 = DataAccessInterface\\DataAccessInterface.vbproj
+		SccProjectName11 = DataAccessInterface
+		SccLocalPath11 = DataAccessInterface
+		SccProjectUniqueName12 = DataEntities\\DataEntities.vbproj
+		SccProjectName12 = DataEntities
+		SccLocalPath12 = DataEntities
+		SccProjectUniqueName13 = DataAccess\\DataAccess.vbproj
+		SccProjectName13 = DataAccess
+		SccLocalPath13 = DataAccess
+		SccProjectUniqueName14 = Security\\Security.vbproj
+		SccProjectTopLevelParentUniqueName14 = Elita2015.sln
+		SccProjectName14 = Security
+		SccLocalPath14 = Security
+		SccProjectUniqueName15 = Business\\Business.vbproj
+		SccProjectName15 = Business
+		SccLocalPath15 = Business
+		SccProjectUniqueName16 = External.AppleGSX\\External.AppleGSX.vbproj
+		SccProjectName16 = External.AppleGSX
+		SccLocalPath16 = External.AppleGSX
+		SccProjectUniqueName17 = External.Interfaces\\External.Interfaces.vbproj
+		SccProjectName17 = External.Interfaces
+		SccLocalPath17 = External.Interfaces
+		SccProjectUniqueName18 = External.Darty\\External.Darty.vbproj
+		SccProjectName18 = External.Darty
+		SccLocalPath18 = External.Darty
+		SccProjectUniqueName19 = External.Indix\\External.Indix.csproj
+		SccProjectName19 = External.Indix
+		SccLocalPath19 = External.Indix
+		SccProjectUniqueName20 = External.AppleCare\\External.AppleCare.csproj
+		SccProjectName20 = External.AppleCare
+		SccLocalPath20 = External.AppleCare
+		SccProjectUniqueName21 = External.Falabella\\External.Falabella.csproj
+		SccProjectName21 = External.Falabella
+		SccLocalPath21 = External.Falabella
+	EndGlobalSection
+EndGlobal

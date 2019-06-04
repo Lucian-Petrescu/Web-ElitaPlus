@@ -1,0 +1,100 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+
+<!-- ********************** THIS FILE HAS BEEN GENERATED FROM TEMPLATE SQLObject.cst (9/17/2012)********************** -->
+
+<SQL>
+  <LOAD>
+    <![CDATA[	
+			SELECT 
+				workqueue_item_id,
+				workqueue_id,
+				user_id,
+				time_stamp,
+				history_action_id,
+				reason,
+        workqueue_item_desc,
+				created_date,
+				created_by,
+				modified_date,
+				modified_by,
+				workqueue_item_hist_id
+			FROM elp_workqueue_item_history 
+			WHERE
+				workqueue_item_hist_id = :workqueue_item_hist_id
+		]]>
+  </LOAD>
+  <LOAD_LIST>
+  </LOAD_LIST>
+  <UPDATE>
+    <![CDATA[	
+			UPDATE elp_workqueue_item_history SET
+				workqueue_item_id = :workqueue_item_id,
+				workqueue_id = :workqueue_id,
+				user_id = :user_id,
+				time_stamp = :time_stamp,
+				history_action_id = :history_action_id,
+				reason = :reason,
+        workqueue_item_desc = :workqueue_item_desc,
+				modified_by = :modified_by
+			WHERE
+				workqueue_item_hist_id = :workqueue_item_hist_id
+		]]>
+  </UPDATE>
+  <INSERT>
+    INSERT INTO elp_workqueue_item_history
+    (
+    workqueue_item_id,
+    workqueue_id,
+    user_id,
+    time_stamp,
+    history_action_id,
+    reason,
+    workqueue_item_desc,
+    created_by,
+    workqueue_item_hist_id
+    )
+    VALUES
+    (
+    :workqueue_item_id,
+    :workqueue_id,
+    :user_id,
+    :time_stamp,
+    :history_action_id,
+    :reason,
+    :workqueue_item_desc,
+    :created_by,
+    :workqueue_item_hist_id
+    )
+  </INSERT>
+  <DELETE>
+    DELETE FROM elp_workqueue_item_history
+    WHERE
+    workqueue_item_hist_id = :workqueue_item_hist_id
+  </DELETE>
+  <LOAD_WORKQUEUE_HISTORY>
+    <![CDATA[	
+			SELECT 
+				workqueue_item_id,
+				workqueue_id,
+				elp_user.user_name,
+				time_stamp,
+        workqueue_item_desc, 
+				history_action_id,
+				reason,
+				workqueue_item_hist_id
+			FROM elp_workqueue_item_history inner join elp_user on elp_user.user_id = ELP_WORKQUEUE_ITEM_HISTORY.user_id
+      WHERE workqueue_id = :workqueue_id
+		]]>
+  </LOAD_WORKQUEUE_HISTORY>
+  <LOAD_WORKQUEUE_USERS_ACTIONS>
+  <![CDATA[	
+		select elp_user.user_name, count(history_action_id) as Items_Accessed,
+	        sum(decode(history_action_id, GetItemIdFromListAndItem('WQ_HIST_ACTION', 'REDR'), 1, 0)) As Items_Redirected,
+	        sum(decode(history_action_id, GetItemIdFromListAndItem('WQ_HIST_ACTION', 'REQU'), 1, 0)) As Items_Requeued,
+	        sum(decode(history_action_id, GetItemIdFromListAndItem('WQ_HIST_ACTION', 'PROC'), 1, 0)) As Items_Processed
+    from ELP_WORKQUEUE_ITEM_HISTORY inner join elp_user on elp_user.user_id = ELP_WORKQUEUE_ITEM_HISTORY.user_id
+    where WORKQUEUE_ID = :workqueue_id
+    group by elp_user.user_name
+		]]>
+</LOAD_WORKQUEUE_USERS_ACTIONS>
+</SQL>

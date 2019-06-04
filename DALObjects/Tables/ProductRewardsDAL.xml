@@ -1,0 +1,125 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+
+<!-- ********************** THIS FILE HAS BEEN GENERATED FROM TEMPLATE SQLObject.cst (5/17/2013)********************** -->
+
+<SQL>
+  <LOAD>
+    <![CDATA[	
+			SELECT 
+				 product_code_id,
+         reward_name,
+         prod_reward_id,
+         reward_type,
+         reward_amount,
+         min_purchase_price,
+         days_to_redeem,
+         effective_date,
+         expiration_date,
+         created_date,
+				  created_by,
+				  modified_date,
+				  modified_by
+			FROM elp_prod_rewards 
+			WHERE
+				prod_reward_id = :prod_reward_id
+		]]>
+  </LOAD>
+  <LOAD_LIST>
+    <![CDATA[	
+   select
+      PR.PROD_REWARD_ID,
+      PC.Product_Code_id,
+      PR.REWARD_NAME,
+      PR.REWARD_TYPE,
+      PR.REWARD_AMOUNT,
+      PR.min_purchase_price,
+      PR.DAYS_TO_REDEEM,     
+      PR.EFFECTIVE_DATE,
+      PR.Expiration_Date,
+      PR.created_date,
+      PR.created_by,
+      PR.modified_date,
+      PR.modified_by
+    From ELITA.ELP_PROD_REWARDS PR,
+    	   ELITA.elp_product_code PC         
+    WHERE pr.product_code_id = pc.product_code_id
+    and pc.product_code_id = :product_code_id
+    ]]>
+  </LOAD_LIST>
+  <VALIDATE_UNIQUE_COMBINATION>
+    <![CDATA[	
+     Select effective_date,expiration_date
+     from elp_prod_rewards pr, elp_product_code pc
+     where pr.product_code_id = pc.product_code_id
+     and pc.product_code_id = :product_code_id
+     and pr.reward_type = :reward_type
+     and pr.effective_date = :effective_date
+     and pr.expiration_date  = :expiration_date
+               
+		]]>
+  </VALIDATE_UNIQUE_COMBINATION>
+  <VALIDATE_OVERLAPPING>
+    <![CDATA[	
+     Select effective_date,expiration_date
+     from elp_prod_rewards pr, elp_product_code pc
+     where pr.product_code_id = pc.product_code_id
+     and pc.product_code_id = :product_code_id
+     and pr.reward_type = :reward_type
+     and ((:effective_date between pr.effective_date  and pr.expiration_date) or
+      (:expiration_date between pr.effective_date  and pr.expiration_date)) 
+               
+		]]>
+  </VALIDATE_OVERLAPPING>
+  <UPDATE>
+    <![CDATA[	
+			UPDATE ELP_PROD_REWARDS SET
+				 product_code_id = :product_code_id,
+         reward_name = :reward_name,
+         prod_reward_id = :prod_reward_id,
+         reward_type = :reward_type,
+         reward_amount = :reward_amount,
+         min_purchase_price = :min_purchase_price,
+         days_to_redeem = :days_to_redeem,
+         effective_date = :effective_date,
+         expiration_date = :expiration_date,
+         modified_by = :modified_by
+			WHERE
+				prod_reward_id = :prod_reward_id
+		]]>
+  </UPDATE>
+  <INSERT>
+    INSERT INTO ELP_PROD_REWARDS
+    (
+    product_code_id,
+    reward_name,
+    prod_reward_id,
+    reward_type,
+    reward_amount,
+    min_purchase_price,
+    days_to_redeem,
+    effective_date,
+    expiration_date,
+    created_by
+    )
+    VALUES
+    (
+    :product_code_id,
+    :reward_name,
+    :prod_reward_id,
+    :reward_type,
+    :reward_amount,
+    :min_purchase_price,
+    :days_to_redeem,
+    :effective_date,
+    :expiration_date,
+    :created_by
+    )
+  </INSERT>
+  <DELETE>
+    DELETE FROM ELP_PROD_REWARDS
+    WHERE
+    prod_reward_id = :prod_reward_id
+  </DELETE>
+</SQL>
+
+

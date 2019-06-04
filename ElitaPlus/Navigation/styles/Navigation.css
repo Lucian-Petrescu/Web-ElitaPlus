@@ -1,0 +1,69 @@
+﻿.logo{ padding-top:0px; float:left}
+.container{	margin: 0px auto;width:100%;background-color:#fff; border:0px solid #000;padding:0px; display:block;  }
+.header{ background-color:#fff; float:left; width:100% ; padding:0px;  }
+
+/*- Elita Primary Navigation --------------------------- */
+.ElitaNav { float:left;font-size:13px;line-height:normal; background-color:#666; margin:0px 0px 2px 0px; padding:5px 0px;  width:96%; float:left; }	  
+.ElitaNav ul {margin:0;padding:0px; list-style:none; }
+.ElitaNav li {display:inline;margin:0;  padding:6px 0px; border:0px solid #000;}
+.ElitaNav li a{margin:0; padding:0px 10px; border-right:1px solid #ccc; color:#fff; text-decoration:none;}
+.ElitaNav li.current{ background-color:#ff9900;}
+.ElitaNav li.current a{ border:none;}
+.ElitaNav li:hover {background-color:#ff9900;}
+
+.minMaxWindow{float:right; width:4%;margin:0px 0px 0px 0px; padding:1px 0px 3px 0px; background-color:#666; CURSOR: hand}
+.navSeparator{border-bottom:2px solid #ff9900; margin:0px; padding:0px; float:left; width:100%;} 
+  
+/*-----------------------------------------Global Menu-------------------------------------*/
+.globalNav{width:650px; float:right;margin:0px; padding-left:20px; text-align:right;border:0px solid black; padding-top:24px; }
+.globalNav1 { float:right; text-align:left;border:0px solid red; margin:0px;}
+.globalNav1 ul{ list-style:none; margin:0px; padding:0px; }
+.globalNav1 ul li{ display:inline; font-size:12px; padding-right:5px; color:#333; margin:0px; vertical-align:middle; padding-top:4px;}
+.globalNav1 ul li select { background:url(../images/inputBg.png) repeat-x; border:0px solid #999; padding:2px 2px 2px 2px; margin:0px; color:#333;width:200px;}
+.globalNav1 ul li select option{ color:#333; font-size:11px; }
+.globalNav1 ul li a{color:#333; text-decoration:none;}
+.UserName{ font-weight:bold; color:#0066CC;}
+
+.globalNavSelLang{width:auto !important; float:right;  text-align:right; margin-top:0px; padding:0px; margin-right:10px;}
+
+/* New Nav Control */
+.ElitaNavDiv 
+{ float:left;font-size:13px;line-height:normal; background-color:#666; margin:0px 0px 2px 0px; padding:0px 0px;  width:96%; float:left; }	 
+
+.MenuLink
+{	background: #666;font-size: 13px;   }
+
+.MenuLink A
+{color: #fff; }
+
+.TopMenuLink
+{border: none; border-left: solid 1px #fff; padding:6px 8px 6px 0px;margin-right: 10px;}
+
+.SubMenuLink
+{	border: none;	background: #666;}
+
+/*  this style also modified for enabling / disabling in the navigation_menu.ascx file */
+.SubMenuLink A
+{color: #fff; }
+
+/*  this style also modified for enabling / disabling in the navigation_menu.ascx file */
+.SubMenuLink A:Hover
+{color: #fff; background:#ff9900 !important; }
+
+.SubMenuLink2
+{margin-left: -10;margin-top: 5px;}
+
+.MenuItemStyle
+{background: #666;border-bottom: 1px solid #fff;font-size: 11px;padding:5px 8px 4px 0px;margin:0px;}
+
+.MenuStyleHover
+{background:#ff9900; }
+
+.SubMenuStyleHover
+{background:#ff9900; }
+
+.SubMenuStyle
+{border: #ededed ridge 1px;}
+
+A.disabled{color: #999 !important }	/* this is applied via js */
+

@@ -1,0 +1,90 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<SQL>
+  <PAYMENT_SUM_AND_COUNT>
+    select sum(payment_count) as  payment_count , sum  (payment_amount_total) as  payment_amount_total  from (
+    select count(*) payment_count, nvl(sum(PAYMENT_AMOUNT), 0) payment_amount_total from ELP_CERT_PAYMENT
+    WHERE CERT_ID = :CERT_ID
+    union all
+    select count(*) payment_count, nvl(sum(AMOUNT), 0) payment_amount_total from ELP_AR_PAYMENTS
+    WHERE REFERENCE_ID = :CERT_ID
+    and  REFERENCE = 'ELP_CERT')
+
+  </PAYMENT_SUM_AND_COUNT>
+  <LOAD_PAYMENT_HISTORY>
+     <![CDATA[
+    select serial_number,
+           payment_amount,
+           payment_due_date,
+           coverage_seq,
+           to_char( date_paid_from, 'DD-Mon-YYYY') date_paid_from,
+           to_char( date_paid_for, 'DD-Mon-YYYY') date_paid_for,
+           to_char( date_of_payment, 'DD-Mon-YYYY') date_of_payment,
+           to_char( date_processed, 'DD-Mon-YYYY') date_processed,
+           source,
+           incoming_amount,
+           installment_num,
+           payment_info,
+           payment_reference_number
+     from (select cp.serial_number,
+            nvl(cp.payment_amount, 0) as payment_amount,
+            to_char( getadjustdays( add_months( cp.date_paid_for, -(getcodefromlistitem(ci.billing_frequency_id))), c.warranty_sales_date, c.dealer_id), 'DD-Mon-YYYY') as payment_due_date,
+            (select max(cic.sequence_number)
+            from elp_cert_pmt_coverage cpc join elp_cert_item_coverage cic on cic.cert_item_coverage_id = cpc.cert_item_coverage_id
+            where cpc.cert_payment_id = cp.cert_payment_id)
+            as coverage_seq,
+            cp.date_paid_from as date_paid_from,
+            cp.date_paid_for as date_paid_for,
+            cp.date_of_payment as date_of_payment,
+            cp.date_processed as date_processed,
+            cp.source,
+            cp.incoming_amount,
+            cp.installment_num,
+            case when cp.payment_type = 'PP' then 'Penalty Payment for ' || ceil(months_between( cp.date_paid_for, cp.date_paid_from)) || ' months' when cp.payment_type = 'BP' then 'Bulk Payment for ' || ceil(months_between( cp.date_paid_for, cp.date_paid_from)) || ' months' end as payment_info,
+            cp.payment_reference_number
+            from elp_cert_payment cp,
+            elp_cert_installment ci,
+            elp_cert c
+            where cp.cert_id = c.cert_id
+            and cp.cert_id = ci.cert_id(+)
+            and c.cert_id = :CERT_ID
+            union all
+            select null              as serial_number,
+            nvl(cp.amount, 0)        as payment_amount,
+            null                     as payment_due_date,
+            ------------------------------------------
+            (select max(cic.sequence_number)
+            from elp_cert_item_coverage cic
+            where cert_id = cp.reference_id
+            and cp.invoice_period_end_date >= begin_date and cp.invoice_period_end_date <= end_date ) as coverage_seq,
+            ------------------------------------------
+            cp.invoice_period_start_date as date_paid_from,
+            cp.invoice_period_end_date   as date_paid_for,
+            cp.payment_date              as date_of_payment,
+            cp.created_date              as date_processed,
+            cp.source,
+            cp.amount,
+            null                                                 as installment_num,
+            null as payment_info,
+            invoice_number                                       as payment_reference_number
+            from elita.elp_ar_payments  cp
+            where 1=1
+            and cp.reference    = 'ELP_CERT'
+            and cp.reference_id = :CERT_ID ) cp
+       ]]>
+  </LOAD_PAYMENT_HISTORY>
+  <LOAD_COLLECTED_HISTORY>
+    select nvl(ccp.COLLECTED_AMOUNT,0)            as COLLECTED_AMOUNT,
+    to_Char(ccp.COLLECTED_DATE,'DD-Mon-YYYY')     as COLLECTED_DATE,
+    to_Char(ccp.BILLING_START_DATE,'DD-Mon-YYYY') as BILLING_START_DATE,
+    to_char(ccp.Created_date, 'DD-Mon-YYYY')      as Created_date,
+    ccp.INCOMING_AMOUNT,
+    cp.installment_num
+    from ELP_CERT_COLLECTED_PAYMENT ccp
+    inner join ELP_CERT_PAYMENT cp on ccp.CERT_PAYMENT_ID = cp.CERT_PAYMENT_ID
+    where cp.CERT_ID = :CERT_ID
+  </LOAD_COLLECTED_HISTORY>
+  <COLLECTED_SUM_AND_COUNT>
+    select count(*) collected_count, nvl(sum(COLLECTED_AMOUNT), 0) collected_amount_total from ELP_CERT_COLLECTED_PAYMENT
+    WHERE CERT_PAYMENT_ID IN (select CERT_PAYMENT_ID from ELP_CERT_PAYMENT WHERE CERT_ID = :CERT_ID)
+  </COLLECTED_SUM_AND_COUNT>     
+</SQL>

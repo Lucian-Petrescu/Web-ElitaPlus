@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema">
+    <xs:element name="OlitaUpdateConsumerInfoDs">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name="OlitaUpdateConsumerInfo">
+                    <xs:complexType>
+                        <xs:sequence>
+                            <xs:element name="dealer" type="stringRequired" minOccurs="1" maxOccurs="1">
+                            </xs:element>
+                            <xs:element name="SALUTATION" type="xs:string" minOccurs="0" maxOccurs="1" /> 
+                            <xs:element name="cert_number" type="stringRequired" minOccurs="1" maxOccurs="1">
+                            </xs:element>
+                            <xs:element name="customer_name" type="stringRequired" minOccurs="1" maxOccurs="1">
+                            </xs:element>
+                            <xs:element name="address1" type="stringRequired" minOccurs="1" maxOccurs="1">
+                            </xs:element>
+                            <xs:element name="address2" type="xs:string" minOccurs="0" maxOccurs="1">
+                            </xs:element>
+                            <xs:element name="city" type="stringRequired" minOccurs="1" maxOccurs="1">
+                            </xs:element>
+                            <xs:element name="short_desc" type="stringRequired" minOccurs="1" maxOccurs="1">
+                            </xs:element>
+                            <xs:element name="code" type="stringRequired" minOccurs="1" maxOccurs="1">
+                            </xs:element>
+                            <xs:element name="postal_code" type="stringRequired" minOccurs="1" maxOccurs="1">
+                            </xs:element>
+                            <xs:element name="home_phone" type="stringRequired" minOccurs="1" maxOccurs="1">
+                            </xs:element>
+                            <xs:element name="email" type="stringRequired" minOccurs="1" maxOccurs="1">
+                            </xs:element>
+                            <xs:element name="user_pw" type="stringRequired" minOccurs="1" maxOccurs="1">
+                            </xs:element>
+                            <xs:element name="work_phone" type="stringRequired" minOccurs="0" maxOccurs="1">
+                            </xs:element>
+                            <xs:element name="membership_number" type="stringRequired" minOccurs="0" maxOccurs="1">
+                            </xs:element>
+                            <xs:element name="primary_member_name" type="stringRequired" minOccurs="0" maxOccurs="1">
+                            </xs:element>
+                            <xs:element name="mailing_address1" type="stringRequired" minOccurs="0" maxOccurs="1">
+                            </xs:element>
+                            <xs:element name="mailing_address2" type="xs:string" minOccurs="0" maxOccurs="1">
+                            </xs:element>
+                            <xs:element name="mailing_city" type="stringRequired" minOccurs="0" maxOccurs="1">
+                            </xs:element>
+                            <xs:element name="mailing_region_short_desc" type="stringRequired" minOccurs="0" maxOccurs="1">
+                            </xs:element>
+                            <xs:element name="mailing_country_code" type="stringRequired" minOccurs="0" maxOccurs="1">
+                            </xs:element>
+                            <xs:element name="mailing_postal_code" type="stringRequired" minOccurs="0" maxOccurs="1">
+                            </xs:element>
+                            <xs:element name="warranty_sales_date" type="xs:dateTime" minOccurs="0" maxOccurs="1">
+                            </xs:element>
+                            <xs:element name="membership_type" type="stringRequired" minOccurs="0" maxOccurs="1">
+                            </xs:element>
+                            <xs:element name="vat_num" type="stringRequired" minOccurs="0" maxOccurs="1" />
+                            <xs:element name="identification_number" type="stringRequired" minOccurs="0" maxOccurs="1" />
+                            <xs:element name="product_sales_date" type="xs:dateTime" minOccurs="0" maxOccurs="1" />
+                            <xs:element name="sales_price" type="myPositiveDecimal" minOccurs="0" maxOccurs="1" />
+                            <xs:element name="product_serial_numbers" minOccurs="0" maxOccurs="unbounded">
+                              <xs:complexType>
+                                <xs:sequence>
+                                  <xs:element name="full_cert_number" type="stringRequired" minOccurs="1" maxOccurs="1" />
+                                  <xs:element name="product_serial_number" type="stringRequired" minOccurs="1" maxOccurs="1" />
+                                  <xs:element name="product_description" type="stringRequired" minOccurs="0" maxOccurs="1" />
+                                  <xs:element name="product_item_code" type="stringRequired" minOccurs="0" maxOccurs="1" />
+                                  <xs:element name="product_manufacturer" type="stringRequired" minOccurs="0" maxOccurs="1" />
+                                  <xs:element name="product_model" type="stringRequired" minOccurs="0" maxOccurs="1" />
+                                  <xs:element name="product_item_retail_price" type="myPositiveDecimal" minOccurs="0" maxOccurs="1" />
+                                </xs:sequence>
+                              </xs:complexType>
+                            </xs:element>
+                        </xs:sequence>
+                    </xs:complexType>
+                </xs:element>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+    <xs:simpleType name="stringRequired">
+        <xs:restriction base="xs:string">
+            <xs:minLength value="1">
+            </xs:minLength>
+        </xs:restriction>
+    </xs:simpleType>
+  <xs:simpleType name="myPositiveDecimal">
+    <xs:restriction base="xs:decimal">
+      <xs:minInclusive value="0" />
+    </xs:restriction>
+  </xs:simpleType>
+</xs:schema>

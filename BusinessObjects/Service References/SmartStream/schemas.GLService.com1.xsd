@@ -1,0 +1,38 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<xs:schema xmlns:ser="http://schemas.microsoft.com/2003/10/Serialization/" xmlns:tns="http://schemas.GLService.com" elementFormDefault="qualified" targetNamespace="http://schemas.GLService.com" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+  <xs:import namespace="http://schemas.microsoft.com/2003/10/Serialization/" />
+  <xs:complexType name="BatchSummaryTypes">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="BatchSummaryType" nillable="true" type="tns:BatchSummaryType" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="BatchSummaryTypes" nillable="true" type="tns:BatchSummaryTypes" />
+  <xs:complexType name="BatchSummaryType">
+    <xs:sequence>
+      <xs:element name="BatchID" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="JournalHeaderID" type="ser:guid" />
+      <xs:element name="BatchStatus" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="ErrorDescription" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="RecordCount" type="xs:int" />
+      <xs:element minOccurs="0" name="JournalCount" type="xs:int" />
+      <xs:element minOccurs="0" name="TotalDebits" type="xs:decimal" />
+      <xs:element minOccurs="0" name="TotalCredits" type="xs:decimal" />
+      <xs:element minOccurs="0" name="LoadTime" type="xs:dateTime" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="BatchSummaryType" nillable="true" type="tns:BatchSummaryType" />
+  <xs:complexType name="ControlSummaryType">
+    <xs:sequence>
+      <xs:element name="BatchID" nillable="true" type="xs:string" />
+      <xs:element name="JournalHeaderID" type="ser:guid" />
+      <xs:element name="SysCode" nillable="true" type="xs:string" />
+      <xs:element name="BatchStatus" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="ErrorDescription" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="RecordCount" type="xs:int" />
+      <xs:element minOccurs="0" name="TotalDebits" type="xs:decimal" />
+      <xs:element minOccurs="0" name="TotalCredits" type="xs:decimal" />
+      <xs:element minOccurs="0" name="LoadTime" type="xs:dateTime" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="ControlSummaryType" nillable="true" type="tns:ControlSummaryType" />
+</xs:schema>

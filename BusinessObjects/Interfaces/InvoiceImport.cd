@@ -1,0 +1,47 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1">
+  <Class Name="Assurant.ElitaPlus.BusinessObjectsNew.ClaimFileProcessed">
+    <Position X="1" Y="0.5" Width="1.75" />
+    <Compartments>
+      <Compartment Name="Fields" Collapsed="true" />
+    </Compartments>
+    <NestedTypes>
+      <Struct Name="Assurant.ElitaPlus.BusinessObjectsNew.ClaimFileProcessed.DealerInfo" Collapsed="true">
+        <TypeIdentifier>
+          <NewMemberFileName>Interfaces\ClaimFileProcessed.vb</NewMemberFileName>
+        </TypeIdentifier>
+      </Struct>
+    </NestedTypes>
+    <TypeIdentifier>
+      <HashCode>ACACsJAhIEWAWQCACQAUKAABCECAAAgAQCmAEAAQAAA=</HashCode>
+      <FileName>Interfaces\ClaimFileProcessed.vb</FileName>
+    </TypeIdentifier>
+    <ShowAsCollectionAssociation>
+      <Property Name="InvoiceReconWrkChildren" />
+    </ShowAsCollectionAssociation>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="Assurant.ElitaPlus.BusinessObjectsNew.InvoiceReconWrk">
+    <Position X="7.5" Y="0.5" Width="2" />
+    <TypeIdentifier>
+      <HashCode>AQACoYIAAAMAASGAAwIABASQACAAEACAEgAQAEEYAAA=</HashCode>
+      <FileName>Interfaces\InvoiceReconWrk.vb</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Interface Name="Assurant.ElitaPlus.BusinessObjectsNew.IFileLoadHeaderWork">
+    <Position X="1" Y="7.25" Width="1.75" />
+    <TypeIdentifier>
+      <HashCode>AAACAIABAAWAAAAAAAAEAAAAAEAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Interfaces\IFileLoadHeaderWork.vb</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="Assurant.ElitaPlus.BusinessObjectsNew.IFileLoadReconWork">
+    <Position X="3.25" Y="4.5" Width="1.75" />
+    <TypeIdentifier>
+      <HashCode>AAACAAAAAAEAAAEAAQAAAAAAAAAAAAAAAgAAAAEAAAA=</HashCode>
+      <FileName>Interfaces\IFileLoadReconWork.vb</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Font Name="Tahoma" Size="8.25" />
+</ClassDiagram>

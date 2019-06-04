@@ -1,0 +1,260 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xs:schema xmlns:base="http://gsxws.apple.com/types/base" xmlns:basic="http://gsxws.apple.com/types/basic" xmlns:tns="http://gsxws.apple.com/types/iphone" xmlns:asp="http://gsxws.apple.com/types/core/asp" xmlns:global="http://gsxws.apple.com/types/global" targetNamespace="http://gsxws.apple.com/types/iphone" version="1.0" xml:lang="en" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+  <xs:import schemaLocation="https://gsxapi.apple.com:443/gsx-ws/services/am/iphone?xsd=2" namespace="http://gsxws.apple.com/types/basic" />
+  <xs:import schemaLocation="https://gsxapi.apple.com:443/gsx-ws/services/am/iphone?xsd=1" namespace="http://gsxws.apple.com/types/base" />
+  <xs:import schemaLocation="https://gsxapi.apple.com:443/gsx-ws/services/am/iphone?xsd=5" namespace="http://gsxws.apple.com/types/global" />
+  <xs:import schemaLocation="https://gsxapi.apple.com:443/gsx-ws/services/am/iphone?xsd=3" namespace="http://gsxws.apple.com/types/core/asp" />
+  <xs:complexType name="iphoneUnitDetailType">
+    <xs:complexContent mixed="false">
+      <xs:extension base="global:unitDetailType">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="alternateDeviceId" type="basic:Token_18_LOANER" />
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:complexType name="iphoneWarrantyDetailType">
+    <xs:complexContent mixed="false">
+      <xs:extension base="global:warrantyDetailType">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="imeiNumber" type="basic:Token_0_15" />
+          <xs:element minOccurs="0" name="soldToName" type="basic:String_100" />
+          <xs:element minOccurs="0" name="meId" type="basic:String_18" />
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:complexType name="iphonePartsLookupInfoType">
+    <xs:complexContent mixed="false">
+      <xs:extension base="global:partsLookupInfoType">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="alternateDeviceId" type="basic:Token_18_LOANER" />
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:complexType name="iphoneRepairDetailsType">
+    <xs:complexContent mixed="false">
+      <xs:extension base="global:repairDetailsType">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="imeiNumber" type="basic:Token_15" />
+          <xs:element minOccurs="0" name="meId" type="basic:Token_18" />
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:complexType name="iphoneRepairDetailsLookupResponseType">
+    <xs:complexContent mixed="false">
+      <xs:extension base="asp:repairDetailsLookupResponseType">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="imeiNumber" type="basic:Token_15" />
+          <xs:element minOccurs="0" name="meId" type="basic:Token_18" />
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:complexType name="iphoneRepairLookupInfoType">
+    <xs:complexContent mixed="false">
+      <xs:extension base="asp:repairLookupInfoType">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="alternateDeviceId" type="basic:Token_18_LOANER" />
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:complexType name="iphoneMailInRepairType">
+    <xs:complexContent mixed="false">
+      <xs:extension base="base:baseMailInRepairType">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="imeiNumber" type="basic:Token_15" />
+          <xs:element minOccurs="1" name="customerAddress" type="global:addressType" />
+          <xs:element minOccurs="1" maxOccurs="unbounded" name="orderLines" type="asp:mailInOrderLinesType" />
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:complexType name="iphonePartsPendingReturnRequestType">
+    <xs:complexContent mixed="false">
+      <xs:extension base="asp:partsPendingReturnRequestType">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="alternateDeviceIds" type="tns:alternateDeviceIdsType" />
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:complexType name="createIPhoneCarryInRequestType">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="serialNumber" type="basic:Token_18_LOANER" />
+      <xs:element minOccurs="0" name="alternateDeviceId" type="basic:Token_18_LOANER" />
+      <xs:element minOccurs="1" name="unitReceivedDate" type="basic:String_35" />
+      <xs:element minOccurs="1" name="unitReceivedTime" type="basic:String_35" />
+      <xs:element minOccurs="0" name="diagnosedByTechId" type="basic:String_15" />
+      <xs:element minOccurs="0" default="N" name="requestReviewByApple" type="basic:yesNoType" />
+      <xs:element minOccurs="1" name="diagnosis" type="basic:String_1500" />
+      <xs:element minOccurs="1" name="symptom" type="basic:String_1500" />
+      <xs:element minOccurs="0" name="notes" type="basic:String_0_800" />
+      <xs:element minOccurs="0" name="billTo" type="basic:Token_0_10" />
+      <xs:element minOccurs="1" name="shipTo" type="basic:Token_10" />
+      <xs:element minOccurs="1" name="poNumber" type="basic:String_35" />
+      <xs:element minOccurs="0" name="referenceNumber" type="basic:String_15" />
+      <xs:element minOccurs="0" default="N" name="popFaxed" type="basic:yesNoType" />
+      <xs:element minOccurs="0" default="N" name="isNonReplenished" type="basic:yesNoType" />
+      <xs:element minOccurs="0" default="N" name="checkIfOutOfWarrantyCoverage" type="basic:yesNoType" />
+      <xs:element minOccurs="0" name="fileName" type="xs:string" />
+      <xs:element minOccurs="0" name="fileData" type="xs:base64Binary" />
+      <xs:element minOccurs="0" name="overrideDiagnosticCodeCheck" type="xs:string" />
+      <xs:element minOccurs="1" name="customerAddress" type="global:addressType" />
+      <xs:element minOccurs="0" default="N" name="markCompleteFlag" type="basic:yesNoType" />
+      <xs:element minOccurs="0" name="replacementImeiNumber" type="basic:Token_18_LOANER" />
+      <xs:element minOccurs="0" name="serviceType" type="basic:String_3_LOANER" />
+      <xs:element minOccurs="0" name="shipBox" type="basic:String_1_LOANER" />
+      <xs:element minOccurs="0" name="consumerLawEligible" type="xs:string" />
+      <xs:element minOccurs="1" maxOccurs="25" name="orderLines" type="asp:carryInOrderLinesType" />
+      <xs:element minOccurs="0" maxOccurs="25" name="componentCheckDetails" type="tns:componentCheckDetailsType" />
+      <xs:element minOccurs="0" default="N" name="componentCheckReview" type="basic:yesNoType" />
+      <xs:element minOccurs="0" name="reportedSymptomCode" type="xs:string" />
+      <xs:element minOccurs="0" name="reportedIssueCode" type="xs:string" />
+      <xs:element minOccurs="0" name="questions" type="global:questionDetailsRequest" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="iphoneAPPRequestPart">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="displaySerialNumber" type="basic:String_40" />
+      <xs:element minOccurs="1" name="serialNumber" type="basic:Token_18" />
+      <xs:element minOccurs="1" name="alternateDeviceId" type="basic:Token_18" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="iphoneAPPOrderRequestInfoType">
+    <xs:sequence>
+      <xs:element minOccurs="1" name="addressLine1" type="basic:String_60" />
+      <xs:element minOccurs="0" name="addressLine2" type="basic:String_40" />
+      <xs:element minOccurs="1" name="country" type="basic:String_3" />
+      <xs:element minOccurs="1" name="zipCode" type="basic:String_10" />
+      <xs:element minOccurs="1" name="city" type="basic:String_40" />
+      <xs:element minOccurs="1" name="state" type="basic:String_3" />
+      <xs:element minOccurs="0" name="county" type="basic:String_40" />
+      <xs:element minOccurs="1" name="firstName" type="basic:Token_96" />
+      <xs:element minOccurs="1" name="lastName" type="basic:Token_96" />
+      <xs:element minOccurs="0" name="companyName" type="basic:String_100" />
+      <xs:element minOccurs="1" name="primaryPhone" type="basic:String_30" />
+      <xs:element minOccurs="1" name="emailAddress" type="basic:String_241" />
+      <xs:element minOccurs="1" name="productNumber" type="basic:Token_18" />
+      <xs:element minOccurs="1" name="purchaseOrder" type="basic:String_35" />
+      <xs:element minOccurs="1" name="shipTo" type="basic:Token_10" />
+      <xs:element minOccurs="1" name="requestPart" type="tns:iphoneAPPRequestPart" />
+      <xs:element minOccurs="0" name="pocDeliveryPreference" type="basic:String_1" />
+      <xs:element minOccurs="0" name="pocLanguage" type="basic:String_3" />
+      <xs:element minOccurs="0" name="purchaseMode" type="xs:string" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="createIPhoneCarryInReturnReplaceRequestType">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="serialNumber" type="xs:token" />
+      <xs:element minOccurs="0" name="alternateDeviceId" type="xs:token" />
+      <xs:element minOccurs="1" name="unitReceivedDate" type="xs:string" />
+      <xs:element minOccurs="1" name="unitReceivedTime" type="xs:string" />
+      <xs:element minOccurs="0" name="diagnosedByTechId" type="xs:string" />
+      <xs:element minOccurs="0" name="requestReviewByApple" type="xs:token" />
+      <xs:element minOccurs="1" name="diagnosis" type="xs:string" />
+      <xs:element minOccurs="1" name="symptom" type="xs:string" />
+      <xs:element minOccurs="0" name="notes" type="xs:string" />
+      <xs:element minOccurs="0" name="billTo" type="xs:token" />
+      <xs:element minOccurs="1" name="shipTo" type="xs:token" />
+      <xs:element minOccurs="1" name="poNumber" type="xs:string" />
+      <xs:element minOccurs="0" name="referenceNumber" type="xs:string" />
+      <xs:element minOccurs="0" name="popFaxed" type="xs:token" />
+      <xs:element minOccurs="0" name="checkIfOutOfWarrantyCoverage" type="xs:token" />
+      <xs:element minOccurs="0" name="fileName" type="xs:string" />
+      <xs:element minOccurs="0" name="fileData" type="xs:base64Binary" />
+      <xs:element minOccurs="0" name="overrideDiagnosticCodeCheck" type="xs:string" />
+      <xs:element minOccurs="0" name="serviceType" type="basic:String_3_LOANER" />
+      <xs:element minOccurs="0" name="consumerLawEligible" type="xs:string" />
+      <xs:element minOccurs="1" name="customerAddress" type="global:addressType" />
+      <xs:element minOccurs="0" name="markCompleteFlag" type="xs:token" />
+      <xs:element minOccurs="0" name="replacementImeiNumber" type="xs:token" />
+      <xs:element minOccurs="1" maxOccurs="25" name="orderLines" type="asp:orderLinesTypeWHU" />
+      <xs:element minOccurs="0" maxOccurs="25" name="componentCheckDetails" type="tns:componentCheckDetailsType" />
+      <xs:element minOccurs="0" default="N" name="componentCheckReview" type="basic:yesNoType" />
+      <xs:element minOccurs="0" name="reportedSymptomCode" type="xs:string" />
+      <xs:element minOccurs="0" name="reportedIssueCode" type="xs:string" />
+      <xs:element minOccurs="0" name="questions" type="global:questionDetailsRequest" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="iphoneReturnReportingRequestType">
+    <xs:complexContent mixed="false">
+      <xs:extension base="asp:reportingBulkReturnRequestType">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="alternateDeviceIds" type="tns:alternateDevIdsType" />
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:complexType name="alternateDevIdsType">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="1000" name="alternateDeviceId" type="xs:token" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="alternateDeviceIdsType">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="100" name="alternateDeviceId" type="xs:token" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="iphoneReturnReportingResponseType">
+    <xs:complexContent mixed="false">
+      <xs:extension base="asp:reportingBulkReturnResponseType">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="imei" type="xs:token" />
+          <xs:element minOccurs="0" name="meid" type="xs:string" />
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:complexType name="componentCheckDetailsType">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="component" type="basic:String_20" />
+      <xs:element minOccurs="0" name="serialNumber" type="basic:Token_18" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="loanerIphoneReturnRequestType">
+    <xs:sequence>
+      <xs:element minOccurs="1" name="repairConfirmationNumber" type="xs:string" />
+      <xs:element minOccurs="1" name="loanerPartNumber" type="xs:string" />
+      <xs:element minOccurs="1" name="serialNumber" type="xs:string" />
+      <xs:element minOccurs="1" name="dispositioncd" type="xs:string" />
+      <xs:element minOccurs="0" name="visualMechanicalInspection" type="xs:string" />
+      <xs:element minOccurs="0" name="fileName" type="xs:string" />
+      <xs:element minOccurs="0" name="fileData" type="xs:base64Binary" />
+      <xs:element minOccurs="0" maxOccurs="25" name="componentCheckDetails" type="tns:componentCheckDetailsType" />
+      <xs:element minOccurs="0" name="isRestored" type="xs:string" />
+      <xs:element minOccurs="0" name="comptiaCode" type="xs:string" />
+      <xs:element minOccurs="0" name="comptiaModifier" type="xs:string" />
+      <xs:element minOccurs="0" name="diagnosticEventNumber" type="xs:string" />
+      <xs:element minOccurs="0" name="outcome" type="xs:string" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="loanerIphoneReturnResponseType">
+    <xs:sequence>
+      <xs:element minOccurs="1" name="confirmationNumber" type="xs:string" />
+      <xs:element minOccurs="0" name="billingPart" type="asp:carryInOrderPartsType" />
+      <xs:element minOccurs="0" name="totalFromOrder" type="xs:string" />
+      <xs:element minOccurs="0" name="icmsTax" type="xs:string" />
+      <xs:element minOccurs="0" name="pisTax" type="xs:string" />
+      <xs:element minOccurs="0" name="ipiTax" type="xs:string" />
+      <xs:element minOccurs="0" name="icmsStTax" type="xs:string" />
+      <xs:element minOccurs="0" name="cofinsTax" type="xs:string" />
+      <xs:element minOccurs="0" name="issTax" type="xs:string" />
+      <xs:element minOccurs="0" name="vatTax" type="xs:string" />
+      <xs:element minOccurs="0" name="diagnosticEventEndResult" type="xs:string" />
+      <xs:element minOccurs="0" name="diagnosticStartTimeStamp" type="xs:string" />
+      <xs:element minOccurs="0" name="diagnosticEndTimeStamp" type="xs:string" />
+      <xs:element minOccurs="0" maxOccurs="650" name="messages" type="xs:string" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="repairStatusInfo">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="repairConfirmationNumber" type="basic:String_25" />
+      <xs:element minOccurs="0" name="repairNumber" type="basic:Token_15" />
+      <xs:element minOccurs="0" name="repairStatus" type="basic:Token_5" />
+    </xs:sequence>
+  </xs:complexType>
+</xs:schema>

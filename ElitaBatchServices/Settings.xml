@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8" ?> 
+<settingsSection>
+<!--  Manual Configuration overwrite Dynamic one
+-->
+    <add key="MANUAL_DB_CONNECTION" value=""></add>
+    <add key="MANUAL_DB_USERID" value=""></add>
+    <add key="MANUAL_DB_PASSWORD" value=""></add>
+    <add key="MANUAL_HUB" value=""></add>
+    <add key="MANUAL_DOMAIN" value=""></add>
+</settingsSection>

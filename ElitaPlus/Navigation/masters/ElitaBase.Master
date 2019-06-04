@@ -1,0 +1,111 @@
+﻿<%@ Master Language="VB" AutoEventWireup="false" CodeBehind="ElitaBase.Master.vb"
+    Inherits="Assurant.ElitaPlus.ElitaPlusWebApp.ElitaBase" %>
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<%@ Register TagPrefix="Elita" TagName="MessageController" Src="~/Common/MessageController.ascx" %>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head runat="server">
+    <title></title>
+    <meta http-equiv="X-UA-Compatible" content="IE=11" />
+    <link type="text/css" href="../styles/jquery-ui.min.css" rel="stylesheet"/>
+    <link type="text/css" href="../styles/jquery-ui.elita.css" rel="stylesheet"/>
+    <script language="javascript" type="text/javascript" src="../Navigation/scripts/jquery-1.12.4.min.js" > </script>
+    <script language="javascript" type="text/javascript" src="../Navigation/scripts/jquery-ui.min.js" > </script>
+     
+    <script language="javascript" type="text/javascript">   
+        (function ($) {
+            $(document).ready(function () {          
+                var actionLink = $('[id$="Grid"]').find($('[id$="SelectAction"]'));
+                //actionLink.removeAttr('disabled');
+                actionLink.dblclick(function () {            
+                    return true;
+                });
+            });
+        })(jQuery);
+
+    </script>  
+    <script language="JavaScript" type="text/javascript">
+        window.latestClick = '';
+
+        function isNotDblClick()
+        {
+            if (window.latestClick != "clicked")
+            {
+                window.latestClick = "clicked";
+                return true;
+            } else
+            {
+                return false;
+            }
+        }
+    </script>  
+    <script language="javascript" type="text/javascript" src="../Navigation/scripts/Tabs.js" > </script>   
+    <script language="javascript" type="text/javascript" src="../Navigation/scripts/Navigation.js" > </script> 
+    <asp:ContentPlaceHolder ID="HeadPlaceHolder" runat="server">      
+    </asp:ContentPlaceHolder>
+</head>
+    
+<body>   
+    <form id="form1" runat="server">
+    <div id="modalPage" class="overlay">
+    <div id="light" class="overlay_message_content">
+        <p class="modalTitle">
+            <asp:Label ID="modalTitleText" runat="server" />
+        </p>
+        <table class="formGrid" cellspacing="0" cellpadding="0" border="0">
+            <tbody>
+                <tr>
+                    <td align="right">
+                        <img id="imgMsgIcon" name="imgMsgIcon" width="28" runat="server" height="28" />
+                    </td>
+                    <td id="tdModalMessage" colspan="2" runat="server">
+                    </td>
+                    <td>
+                    &nbsp;
+                    </td>
+                </tr>
+                <tr>
+                    <%--<td>
+                    &nbsp;
+                    </td>--%>
+                    <td id="tdBtnArea" nowrap="nowrap" runat="server" colspan="4" align="right">
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+    <div id="fade" class="black_overlay">
+    </div>
+    </div>
+    <div id="ContentZoneHomeDiv" class="contentZoneHome">
+        <div id="BreadCrumDiv" class="breadCrum" runat="server">
+        </div>
+        <div id="divMsgPanel">
+        <Elita:MessageController runat="server" ID="moMessageController" />
+        </div>
+        <asp:ContentPlaceHolder ID="MessagePlaceHolder" runat="server">
+        </asp:ContentPlaceHolder>
+        <div class="dataContainer">
+            <h2 class="searchGridHeader" runat="server" id="PageHeader">
+            </h2>
+            <asp:ContentPlaceHolder ID="SummaryPlaceHolder" runat="server">
+            </asp:ContentPlaceHolder>
+        </div>
+        <asp:ContentPlaceHolder ID="BodyPlaceHolder" runat="server">
+        </asp:ContentPlaceHolder>
+    </div>
+    <div class="navSeparator">
+    </div>
+    <div id="footer">
+        <div class="AFooter">
+            <h4>
+                2018 Assurant Solutions. All rights reserved</h4>
+            <ul><li><a target="_blank" href="http://www.assurant.com/inc/assurant/notice.html">Notice</a></li>
+                <li>|</li>
+                <li><a target="_blank" href="http://www.assurant.com/inc/assurant/privacy.html">Privacy Policy</a></li>
+            </ul>
+        </div>
+    </div>
+    </form>
+</body>
+</html>

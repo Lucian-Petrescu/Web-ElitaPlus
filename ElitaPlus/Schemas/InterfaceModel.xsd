@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<xs:schema id="InterfaceModel" targetNamespace="http://tempuri.org/InterfaceModel.xsd" elementFormDefault="qualified"
+	xmlns="http://tempuri.org/InterfaceModel.xsd" xmlns:mstns="http://tempuri.org/InterfaceModel.xsd"
+	xmlns:xs="http://www.w3.org/2001/XMLSchema">
+	<xs:element name="InterfaceModelDs">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="InterfaceModel">
+					<xs:complexType>
+						<xs:all>
+							<xs:element name="Make" type="stringRequired" minOccurs="1" maxOccurs="1" />
+							<xs:element name="Model" type="stringRequired" minOccurs="1" maxOccurs="1" />
+							<xs:element name="Version_Engine" type="stringRequired" minOccurs="1" maxOccurs="1" />
+							<xs:element name="Model_Year" minOccurs="1" maxOccurs="1">
+								<xs:simpleType>
+									<xs:restriction base="xs:int">
+										<xs:totalDigits fixed="true" value="4"></xs:totalDigits>
+										<xs:minInclusive value="1940" />
+										<xs:maxInclusive value="2100" />
+									</xs:restriction>
+								</xs:simpleType>
+							</xs:element>
+							<xs:element name="New_Class_Code" type="stringRequired" minOccurs="1" maxOccurs="1" />
+							<xs:element name="Used_Class_Code" type="stringRequired" minOccurs="1" maxOccurs="1" />
+							<xs:element name="Car_Code" type="xs:integer" minOccurs="1" maxOccurs="1" />
+							<xs:element name="Active_New" type="yn" minOccurs="1" maxOccurs="1" />
+							<xs:element name="Active_Used" type="yn" minOccurs="1" maxOccurs="1" />
+						</xs:all>
+					</xs:complexType>
+				</xs:element>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+	<xs:simpleType name="stringRequired">
+		<xs:restriction base="xs:string">
+			<xs:minLength value="1"></xs:minLength>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="stringOne">
+		<xs:restriction base="xs:string">
+			<xs:length value="1"></xs:length>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="yn">
+		<xs:restriction base="xs:string">
+			<xs:pattern value="Y|N" />
+		</xs:restriction>
+	</xs:simpleType>
+</xs:schema>

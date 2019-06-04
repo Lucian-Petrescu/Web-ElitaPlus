@@ -1,0 +1,83 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+
+<!-- ********************** THIS FILE HAS BEEN GENERATED FROM TEMPLATE SQLObject.cst (7/29/2008)********************** -->
+
+<SQL>
+  <LOAD>
+    <![CDATA[	
+			SELECT 
+				header_id,
+				claim_id,
+				claim_id,
+				created_by,
+				created_date,
+				modified_by,
+				modified_date,
+				is_exception,				
+				detail_id
+			FROM elp_pickup_list_detail 
+			WHERE
+				detail_id = :detail_id
+		]]>
+  </LOAD>
+  <LOAD_BY_CLAIM>
+    <![CDATA[	
+			SELECT 
+				header_id,
+				claim_id,
+				created_by,
+				created_date,
+				modified_by,
+				modified_date,
+				is_exception,
+				detail_id
+			FROM elp_pickup_list_detail 
+			WHERE
+				claim_id = :claim_id
+		]]>
+  </LOAD_BY_CLAIM>
+  <LOAD_LIST>
+  </LOAD_LIST>
+  <UPDATE>
+    <![CDATA[	
+			UPDATE elp_pickup_list_detail SET
+				header_id = :header_id,
+				claim_id = :claim_id,
+				is_exception = :is_exception,
+				modified_by = :modified_by
+			WHERE
+				detail_id = :detail_id
+		]]>
+  </UPDATE>
+  <INSERT>
+    INSERT INTO elp_pickup_list_detail
+    (
+    header_id,
+    claim_id,
+    claim_id,
+    is_exception,
+    created_by,
+    detail_id
+    )
+    VALUES
+    (
+    :header_id,
+    :claim_id,
+    :claim_id,
+    :is_exception,
+    :created_by,
+    :detail_id
+    )
+  </INSERT>
+  <DELETE>
+    DELETE FROM elp_pickup_list_detail
+    WHERE
+    detail_id = :detail_id
+  </DELETE>
+  <UPDATE_PICKUP_EXCEPTION>
+    ELP_CLAIM_LOGISTICS.UPDATE_PICKUP_EXCEPTION
+  </UPDATE_PICKUP_EXCEPTION>
+  
+</SQL>
+
+

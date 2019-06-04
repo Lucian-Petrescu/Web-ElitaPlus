@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="utf-8" ?>
+
+<!-- ********************** THIS FILE HAS BEEN GENERATED FROM TEMPLATE SQLObject.cst (9/18/2018)********************** -->
+
+<SQL>
+	<LOAD>
+		<![CDATA[	
+			SELECT 
+				entity_reference,
+				entity_reference_id,
+				list_item_id,
+				created_date,
+				created_by,
+				modified_date,
+				modified_by,
+				list_item_by_entity_id
+			FROM elp_list_item_by_entity 
+			WHERE
+				list_item_by_entity_id = :list_item_by_entity_id
+		]]>
+	</LOAD>
+	<LOAD_LIST>		
+	</LOAD_LIST>	
+	<UPDATE>
+		<![CDATA[	
+			UPDATE elp_list_item_by_entity SET
+				entity_reference = :entity_reference,
+				entity_reference_id = :entity_reference_id,
+				list_item_id = :list_item_id,
+				modified_by = :modified_by
+			WHERE
+				list_item_by_entity_id = :list_item_by_entity_id
+		]]>
+	</UPDATE>
+	<INSERT>
+			INSERT INTO elp_list_item_by_entity
+					(			
+				entity_reference, 
+				entity_reference_id, 
+				list_item_id, 
+				created_by,
+				list_item_by_entity_id
+					)
+			VALUES
+					(			
+				:entity_reference, 
+				:entity_reference_id, 
+				:list_item_id, 
+				:created_by,
+				:list_item_by_entity_id
+					)
+	</INSERT>
+	<DELETE>
+			DELETE FROM elp_list_item_by_entity
+			WHERE
+				list_item_by_entity_id = :list_item_by_entity_id
+	</DELETE>
+<DELETE_ENTITY_ITEM>
+   DELETE FROM elp_list_item_by_entity
+			WHERE
+				entity_reference_id = :entity_reference_id 
+      and list_item_id in(SELECT
+			I.LIST_ITEM_ID 
+			FROM
+			ELP_LIST L,
+			ELP_LIST_ITEM I
+            WHERE
+			I.LIST_ID = L.LIST_ID
+            and L.CODE=:code)
+  </DELETE_ENTITY_ITEM>
+
+ <GET_SELECTED_LIST_ITEM>
+   	<![CDATA[	
+    SELECT
+			I.LIST_ITEM_ID ID, I.CODE CODE, T.TRANSLATION DESCRIPTION
+			FROM
+			ELP_LIST L,
+			ELP_LIST_ITEM I,
+			ELP_DICT_ITEM_TRANSLATION T,
+      ELP_LIST_ITEM_BY_ENTITY e ,
+      ELP_LANGUAGE LA
+			WHERE
+			I.LIST_ID = L.LIST_ID
+			AND	I.DICT_ITEM_ID = T.DICT_ITEM_ID
+      and e.list_item_id= i.list_item_id
+		  AND L.CODE = :code
+      and e.entity_reference_id =:entity_reference_id
+      and T.language_id = LA.language_id      
+			and La.code= :language_code
+			ORDER BY
+			UPPER(TRIM(DESCRIPTION))
+      ]]>
+  </GET_SELECTED_LIST_ITEM>
+ 
+
+<LoadEntityList>
+    <![CDATA[
+      Elita.elp_utl_list_item_entity.SearchEntityItem
+    ]]>
+  </LoadEntityList>
+  
+<AvailableListItem>
+    <![CDATA[
+      Elita.elp_utl_list_item_entity.AvailableListItem
+    ]]>
+  </AvailableListItem>
+<SelectedListItem>
+    <![CDATA[
+      Elita.elp_utl_list_item_entity.SelectedListItem
+    ]]>
+  </SelectedListItem>
+
+</SQL> 
+
+

@@ -1,0 +1,96 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+
+<!-- ********************** THIS FILE HAS BEEN GENERATED FROM TEMPLATE SQLObject.cst (4/2/2010)********************** -->
+
+<SQL>
+  <LOAD>
+    <![CDATA[	
+			SELECT 
+				company_id,
+				filename,
+				received,
+				counted,
+				rejected,
+				validated,
+				loaded,
+				created_by,
+				created_date,
+				modified_by,
+				modified_date,
+				account_identifier,
+				claimload_file_processed_id,
+        file_type,
+        sc_country_code
+			FROM elp_claimload_file_processed 
+			WHERE
+				claimload_file_processed_id = hextoraw(:claimload_file_processed_id)
+		]]>
+  </LOAD>
+  <LOAD_LIST>
+    ELP_TBL_CLAIMLOAD_FILE_PROCESS.loadlist
+  </LOAD_LIST>
+  <UPDATE>
+    <![CDATA[	
+			UPDATE elp_claimload_file_processed SET
+				company_id = :company_id,
+				filename = :filename,
+				received = :received,
+				counted = :counted,
+				rejected = :rejected,
+				validated = :validated,
+				loaded = :loaded,
+				account_identifier = :account_identifier,
+        sc_country_code = :sc_country_code,
+				modified_by = :modified_by
+			WHERE
+				claimload_file_processed_id = hextoraw(:claimload_file_processed_id)
+		]]>
+  </UPDATE>
+  <INSERT>
+    INSERT INTO elp_claimload_file_processed
+    (
+    company_id,
+    filename,
+    received,
+    counted,
+    rejected,
+    validated,
+    loaded,
+    account_identifier,
+    sc_country_code,
+    created_by,
+    claimload_file_processed_id
+    )
+    VALUES
+    (
+    :company_id,
+    :filename,
+    :received,
+    :counted,
+    :rejected,
+    :validated,
+    :loaded,
+    :account_identifier,
+    :sc_country_code
+    :created_by,
+    :claimload_file_processed_id
+    )
+  </INSERT>
+  <DELETE>
+    DELETE FROM elp_claimload_file_processed
+    WHERE
+    claimload_file_processed_id = hextoraw(:claimload_file_processed_id)
+  </DELETE>
+
+  <VALIDATE_FILE>
+    ELP_Claim_Load_Common.ValidateClaimFile
+  </VALIDATE_FILE>
+  <PROCESS_FILE>
+    ELP_Claim_Load_Common.ProcessClaimFile
+  </PROCESS_FILE>
+  <DELETE_FILE>
+    ELP_Claim_Load_Common.DeleteClaimFile
+  </DELETE_FILE>
+</SQL>
+
+

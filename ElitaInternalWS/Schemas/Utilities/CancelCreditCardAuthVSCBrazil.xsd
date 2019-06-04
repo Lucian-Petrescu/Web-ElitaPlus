@@ -1,0 +1,18 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema">
+  <xs:element name="CancelCreditCardAuthVSCBrazilDs">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element name="CancelCreditCardAuthVSCBrazil">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element name="Token" type="xs:string" minOccurs="0"></xs:element>
+              <xs:element name="AuthNumber" type="xs:string" minOccurs="0"></xs:element>
+              <xs:element name="Value" type="xs:string" minOccurs="0"></xs:element>
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>  
+</xs:schema>

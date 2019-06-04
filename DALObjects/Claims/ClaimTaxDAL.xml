@@ -1,0 +1,168 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+
+<!-- ********************** THIS FILE HAS BEEN GENERATED FROM TEMPLATE SQLObject.cst (7/8/2009)********************** -->
+
+<SQL>
+  <LOAD>
+    <![CDATA[	
+			SELECT 
+				claim_invoice_id,
+				disbursement_id,
+				tax_type_id,
+				tax1_amount,
+				tax1_description,
+				tax2_amount,
+				tax2_description,
+				tax3_amount,
+				tax3_description,
+				tax4_amount,
+				tax4_description,
+				tax5_amount,
+				tax5_description,
+				tax6_amount,
+				tax6_description,
+				created_by,
+				created_date,
+				modified_by,
+				modified_date,
+				claim_tax_id
+			FROM elita.elp_claim_tax 
+			WHERE
+				claim_tax_id = :claim_tax_id
+		]]>
+  </LOAD>
+  <LOAD_BY_CLAIM_INVOICE_ID>
+    <![CDATA[	
+			SELECT 
+				claim_invoice_id,
+				disbursement_id,
+				tax_type_id,
+				tax1_amount,
+				tax1_description,
+				tax2_amount,
+				tax2_description,
+				tax3_amount,
+				tax3_description,
+				tax4_amount,
+				tax4_description,
+				tax5_amount,
+				tax5_description,
+				tax6_amount,
+				tax6_description,
+				created_by,
+				created_date,
+				modified_by,
+				modified_date,
+				claim_tax_id
+			FROM elita.elp_claim_tax 
+			WHERE
+				claim_invoice_id = :claim_invoice_id
+		]]>
+  </LOAD_BY_CLAIM_INVOICE_ID>
+  <LOAD_LIST>
+  </LOAD_LIST>
+  <LOAD_LIST_BY_CLAIM_INVOICE_ID>
+    <![CDATA[
+      select 
+        claim_tax_id,
+        claim_invoice_id,
+        disbursement_id,
+        tax_type_id,
+        tax1_amount,
+        tax1_description,
+        tax2_amount,
+        tax2_description,
+        tax3_amount,
+        tax3_description,
+        tax4_amount,
+        tax4_description,
+        tax5_amount,
+        tax5_description,
+        tax6_amount,
+        tax6_description
+      from elita.elp_claim_tax
+      where claim_invoice_id = :claim_invoice_id
+    ]]>
+  </LOAD_LIST_BY_CLAIM_INVOICE_ID>
+  <UPDATE>
+    <![CDATA[	
+			UPDATE elita.elp_claim_tax SET
+				claim_invoice_id = :claim_invoice_id,
+				disbursement_id = :disbursement_id,
+				tax_type_id = :tax_type_id,
+				tax1_amount = :tax1_amount,
+				tax1_description = :tax1_description,
+				tax2_amount = :tax2_amount,
+				tax2_description = :tax2_description,
+				tax3_amount = :tax3_amount,
+				tax3_description = :tax3_description,
+				tax4_amount = :tax4_amount,
+				tax4_description = :tax4_description,
+				tax5_amount = :tax5_amount,
+				tax5_description = :tax5_description,
+				tax6_amount = :tax6_amount,
+				tax6_description = :tax6_description,
+				modified_by = :modified_by
+			WHERE
+				claim_tax_id = :claim_tax_id
+		]]>
+  </UPDATE>
+  <INSERT>
+    INSERT INTO elita.elp_claim_tax
+    (
+    claim_invoice_id,
+    disbursement_id,
+    tax_type_id,
+    tax1_amount,
+    tax1_description,
+    tax2_amount,
+    tax2_description,
+    tax3_amount,
+    tax3_description,
+    tax4_amount,
+    tax4_description,
+    tax5_amount,
+    tax5_description,
+    tax6_amount,
+    tax6_description,
+    created_by,
+    claim_tax_id
+    )
+    VALUES
+    (
+    :claim_invoice_id,
+    :disbursement_id,
+    :tax_type_id,
+    :tax1_amount,
+    :tax1_description,
+    :tax2_amount,
+    :tax2_description,
+    :tax3_amount,
+    :tax3_description,
+    :tax4_amount,
+    :tax4_description,
+    :tax5_amount,
+    :tax5_description,
+    :tax6_amount,
+    :tax6_description,
+    :created_by,
+    :claim_tax_id
+    )
+  </INSERT>
+  <DELETE>
+    DELETE FROM elita.elp_claim_tax
+    WHERE
+    claim_tax_id = :claim_tax_id
+  </DELETE>
+  <LOAD_CLAIM_TAX_COUNTRY>
+    <![CDATA[
+      SELECT A.COUNTRY_ID
+      FROM ELP_CLAIM C
+      INNER JOIN ELP_SERVICE_CENTER SC ON C.SERVICE_CENTER_ID = SC.SERVICE_CENTER_ID
+      INNER JOIN ELP_ADDRESS A ON A.ADDRESS_ID = SC.ADDRESS_ID
+      WHERE CLAIM_ID = :claim_id
+    ]]>
+  </LOAD_CLAIM_TAX_COUNTRY>
+</SQL>
+
+

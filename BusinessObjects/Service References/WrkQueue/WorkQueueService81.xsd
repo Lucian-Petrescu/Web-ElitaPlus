@@ -1,0 +1,201 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xs:schema xmlns:tns="http://services.assurant.com/integration/workqueue/composite/2012/09/01/" elementFormDefault="qualified" targetNamespace="http://services.assurant.com/integration/workqueue/composite/2012/09/01/" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+  <xs:import schemaLocation="http://msp0wapfd001.cead.prd/WorkQueue/Composite/20120901/WorkQueueService.svc?xsd=xsd2" namespace="http://services.assurant.com/integration/workqueue/2012/05/15/" />
+  <xs:import schemaLocation="http://msp0wapfd001.cead.prd/WorkQueue/Composite/20120901/WorkQueueService.svc?xsd=xsd1" namespace="http://schemas.microsoft.com/2003/10/Serialization/" />
+  <xs:import schemaLocation="http://msp0wapfd001.cead.prd/WorkQueue/Composite/20120901/WorkQueueService.svc?xsd=xsd7" namespace="http://schemas.microsoft.com/2003/10/Serialization/Arrays" />
+  <xs:element name="AddWorkQueueItemRequest">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element xmlns:q1="http://services.assurant.com/integration/workqueue/2012/05/15/" minOccurs="0" name="QueueItem" nillable="true" type="q1:WorkQueueItem" />
+        <xs:element minOccurs="0" name="UserName" nillable="true" type="xs:string" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:complexType name="NotAuthorizedFault">
+    <xs:sequence />
+  </xs:complexType>
+  <xs:element name="NotAuthorizedFault" nillable="true" type="tns:NotAuthorizedFault" />
+  <xs:element name="CreateWorkQueueRequest">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element xmlns:q2="http://services.assurant.com/integration/workqueue/2012/05/15/" minOccurs="0" name="Queue" nillable="true" type="q2:WorkQueue" />
+        <xs:element minOccurs="0" name="UserName" nillable="true" type="xs:string" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="WorkQueueResponse">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element xmlns:q3="http://services.assurant.com/integration/workqueue/2012/05/15/" minOccurs="0" name="Queue" nillable="true" type="q3:WorkQueue" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="GetWorkQueueByNameRequest">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" name="QueueName" nillable="true" type="xs:string" />
+        <xs:element minOccurs="0" name="UserName" nillable="true" type="xs:string" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="GetWorkQueueByIdRequest">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element xmlns:q4="http://schemas.microsoft.com/2003/10/Serialization/" minOccurs="0" name="QueueId" type="q4:guid" />
+        <xs:element minOccurs="0" name="UserName" nillable="true" type="xs:string" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="UpdateWorkQueueRequest">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element xmlns:q5="http://services.assurant.com/integration/workqueue/2012/05/15/" minOccurs="0" name="Queue" nillable="true" type="q5:WorkQueue" />
+        <xs:element minOccurs="0" name="UserName" nillable="true" type="xs:string" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="RequestBase">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" name="UserName" nillable="true" type="xs:string" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="WorkQueueListResponse">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element xmlns:q6="http://services.assurant.com/integration/workqueue/2012/05/15/" minOccurs="0" name="Queues" nillable="true" type="q6:ArrayOfWorkQueue" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="WorkQueueItemResponse">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element xmlns:q7="http://services.assurant.com/integration/workqueue/2012/05/15/" minOccurs="0" name="QueueItem" nillable="true" type="q7:WorkQueueItem" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="ProcessWorkQueueItemRequest">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element xmlns:q8="http://services.assurant.com/integration/workqueue/2012/05/15/" minOccurs="0" name="QueueItem" nillable="true" type="q8:WorkQueueItem" />
+        <xs:element minOccurs="0" name="QueueToAddName" nillable="true" type="xs:string" />
+        <xs:element minOccurs="0" name="UserName" nillable="true" type="xs:string" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="WorkQueueTypeRequest">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element xmlns:q9="http://services.assurant.com/integration/workqueue/2012/05/15/" minOccurs="0" name="QueueType" nillable="true" type="q9:WorkQueueType" />
+        <xs:element minOccurs="0" name="UserName" nillable="true" type="xs:string" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="WorkQueueTypeResponse">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element xmlns:q10="http://services.assurant.com/integration/workqueue/2012/05/15/" minOccurs="0" name="QueueType" nillable="true" type="q10:WorkQueueType" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="WorkQueueTypeListResponse">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element xmlns:q11="http://services.assurant.com/integration/workqueue/2012/05/15/" minOccurs="0" name="QueueTypes" nillable="true" type="q11:ArrayOfWorkQueueType" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="WorkQueueItemDataTypeRequest">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element xmlns:q12="http://services.assurant.com/integration/workqueue/2012/05/15/" minOccurs="0" name="ItemDataType" nillable="true" type="q12:WorkQueueItemDataType" />
+        <xs:element minOccurs="0" name="UserName" nillable="true" type="xs:string" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="WorkQueueItemDataTypeResponse">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element xmlns:q13="http://services.assurant.com/integration/workqueue/2012/05/15/" minOccurs="0" name="ItemDataType" nillable="true" type="q13:WorkQueueItemDataType" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="WorkQueueItemDataTypeListResponse">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element xmlns:q14="http://services.assurant.com/integration/workqueue/2012/05/15/" minOccurs="0" name="ItemDataTypes" nillable="true" type="q14:ArrayOfWorkQueueItemDataType" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="CreateWorkQueueItemStatusReasonRequest">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element xmlns:q15="http://services.assurant.com/integration/workqueue/2012/05/15/" minOccurs="0" name="ItemStatusReason" nillable="true" type="q15:WorkQueueItemStatusReason" />
+        <xs:element minOccurs="0" name="UserName" nillable="true" type="xs:string" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="WorkQueueItemStatusReasonResponse">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element xmlns:q16="http://services.assurant.com/integration/workqueue/2012/05/15/" minOccurs="0" name="ItemStatusReason" nillable="true" type="q16:WorkQueueItemStatusReason" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="GetWorkQueueItemStatusReasonListRequest">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element xmlns:q17="http://schemas.microsoft.com/2003/10/Serialization/" minOccurs="0" name="OwnerId" type="q17:guid" />
+        <xs:element xmlns:q18="http://services.assurant.com/integration/workqueue/2012/05/15/" minOccurs="0" name="StatusReasonOwnerType" type="q18:StatusReasonOwnerType" />
+        <xs:element minOccurs="0" name="UserName" nillable="true" type="xs:string" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="WorkQueueItemStatusReasonListResponse">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element xmlns:q19="http://services.assurant.com/integration/workqueue/2012/05/15/" minOccurs="0" name="ItemStatusReasons" nillable="true" type="q19:ArrayOfWorkQueueItemStatusReason" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="UpdateWorkQueueItemStatusReasonRequest">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element xmlns:q20="http://services.assurant.com/integration/workqueue/2012/05/15/" minOccurs="0" name="ItemStatusReason" nillable="true" type="q20:WorkQueueItemStatusReason" />
+        <xs:element minOccurs="0" name="UserName" nillable="true" type="xs:string" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="WorkQueueStatsRequest">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" name="Action" nillable="true" type="xs:string" />
+        <xs:element minOccurs="0" name="UserName" nillable="true" type="xs:string" />
+        <xs:element xmlns:q21="http://schemas.microsoft.com/2003/10/Serialization/Arrays" minOccurs="0" name="WorkQueues" nillable="true" type="q21:ArrayOfstring" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="WorkQueueStatsResponse">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element xmlns:q22="http://services.assurant.com/integration/workqueue/2012/05/15/" minOccurs="0" name="QueueStats" nillable="true" type="q22:ArrayOfWorkQueueStats" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="WorkQueueUserStatsRequest">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element xmlns:q23="http://schemas.microsoft.com/2003/10/Serialization/Arrays" minOccurs="0" name="Queues" nillable="true" type="q23:ArrayOfstring" />
+        <xs:element minOccurs="0" name="UserName" nillable="true" type="xs:string" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="WorkQueueUserStatsResponse">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element xmlns:q24="http://services.assurant.com/integration/workqueue/2012/05/15/" minOccurs="0" name="QueueUserStats" nillable="true" type="q24:ArrayOfWorkQueueUserStats" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+</xs:schema>

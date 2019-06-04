@@ -1,0 +1,299 @@
+<?xml version="1.0" encoding="utf-8" ?>
+
+<!-- ********************** THIS FILE HAS BEEN GENERATED FROM TEMPLATE SQLObject.cst (10/12/2004)********************** -->
+
+<SQL>
+	<LOAD>
+    SELECT
+    dealer_id,
+    filename,
+    received,
+    counted,
+    rejected,
+    remaining_rejected,
+    bypassed,
+    validated,
+    loaded,
+    layout,
+    file_type_code,
+    created_by,
+    created_date,
+    modified_by,
+    modified_date,
+    dealerfile_processed_id,
+    dealer_group_id,
+    elp_utl_parentchild_rel.is_file_child(:dealerfile_processed_id) as Is_Child_File
+    FROM elp_dealerfile_processed
+    WHERE
+    dealerfile_processed_id = :dealerfile_processed_id
+  </LOAD>
+  <LOAD_PARENT_CHILDS>
+    select '' dealer_id,
+    '' filename,
+    sum(received) received,
+    sum(counted) counted,
+    sum(rejected) rejected,
+    sum(remaining_rejected) remaining_rejected,
+    sum(bypassed) bypassed,
+    sum(validated) validated,
+    sum(loaded) loaded,
+    '' layout,
+    '' file_type_code,
+    '' created_by,
+    '' created_date,
+    '' modified_by,
+    '' modified_date,
+    nvl(parent_dealerfile_processed_id,dealerfile_processed_id) dealerfile_processed_id,
+    '' dealer_group_id,
+    elp_utl_parentchild_rel.is_file_child(:dealerfile_processed_id) as Is_Child_File
+    from elp_dealerfile_processed
+    where nvl(parent_dealerfile_processed_id,dealerfile_processed_id) = :file_id
+    group by (nvl(parent_dealerfile_processed_id,dealerfile_processed_id))
+  </LOAD_PARENT_CHILDS>
+	<LOAD_LIST>
+    select x.dealerfile_processed_id,
+    x.filename,
+    x.received,
+    nvl(x.counted,0) counted,
+    nvl(x.rejected,0) rejected,
+    nvl(x.remaining_rejected,0) remaining_rejected,
+    nvl(x.bypassed,0) bypassed,
+    nvl(x.validated,0) validated,
+    nvl(x.loaded,0) loaded,
+    x.layout,
+    x.file_type_code,
+    x.dealer_id,
+    x.dealer_group_id,
+    elp_utl_parentchild_rel.is_file_child(:dealerfile_processed_id) as Is_Child_File,
+    x.status,
+    x.status || decode(x.error_message, null, null, ' : ' || x.error_message) || decode(x.description, null, null, ' : ' || x.description) status_desc
+    from (
+    select 	dfp.dealerfile_processed_id,
+    dfp.filename,
+    dfp.received,
+    dfp.counted,
+    dfp.rejected,
+    dfp.remaining_rejected,
+    dfp.bypassed,
+    dfp.validated,
+    dfp.loaded,
+    dfp.layout,
+    dfp.file_type_code,
+    dfp.dealer_id,
+    dfp.dealer_group_id,
+    dfp.created_date,
+    isw.status,
+    isw.error_message,
+    isw.description,
+    row_number() over (partition by dfp.dealerfile_processed_id order by nvl(isw.modified_date, isw.created_date) desc) rk
+    from elp_dealerfile_processed                dfp
+    left outer join elp_interface_status_wrk     isw on isw.file_id = dfp.dealerfile_processed_id
+    where dfp.file_type_code = :file_type_code
+    and nvl(dfp.identifier,'FILE') != 'WSVC'
+    --dynamic_where_clause
+    ) x
+    where x.rk = 1
+    order by x.created_date desc, x.filename desc
+  </LOAD_LIST>
+  <LOAD_PARENT_LIST>
+    select
+    dfp_p.dealerfile_processed_id,
+    dfp_p.filename,
+    d.company_id,
+    nvl(sum(dfp_c.received),0) received,
+    nvl(sum(dfp_c.counted),0) counted,
+    nvl(sum(dfp_c.rejected),0) rejected,
+    nvl(sum(dfp_c.validated),0) validated,
+    nvl(sum(dfp_c.loaded),0) loaded,
+    nvl(sum(dfp_c.remaining_rejected),0) remaining_rejected,
+    nvl(sum(dfp_c.bypassed),0) bypassed,
+    substr(
+    min(
+    case isw.status when 'Running' then '1Running'
+    when 'Pending' then '2Pending'
+    when 'Failure' then '3Failure'
+    else '4Success' end), 2, 100) status,
+    substr(
+    min(
+    case isw.status when 'Running' then '1' || error_message
+    when 'Pending' then '2' || error_message
+    when 'Failure' then '3' || error_message
+    else '4' || error_message end), 2, 500) status_desc,
+    dfp_p.layout,
+    elp_utl_parentchild_rel.is_file_child(:dealerfile_processed_id) as Is_Child_File,
+    dfp_p.created_date
+    from            elp_dealerfile_processed dfp_p
+    inner join      elp_dealerfile_processed dfp_c on ((dfp_c.parent_dealerfile_processed_id = dfp_p.dealerfile_processed_id) or
+    (dfp_c.dealerfile_processed_id        = dfp_p.dealerfile_processed_id))
+    inner join elp_dealer d on dfp_p.dealer_id = d.dealer_id
+    left outer join (
+    select file_id, status, error_message
+    from (
+    select file_id, status, error_message,
+    dense_rank() over (partition by file_id order by nvl(modified_date, created_date) desc) rk
+    from elp_interface_status_wrk
+    )
+    where rk = 1
+    ) isw on isw.file_id = dfp_c.dealerfile_processed_id
+    where exists
+    (
+    select 1 from
+    elp_dealerfile_processed dfp_i
+    where dfp_i.parent_dealerfile_processed_id = dfp_p.dealerfile_processed_id
+    )
+    and dfp_p.file_type_code = :file_type_code
+    and nvl(dfp_p.identifier,'FILE') != 'WSVC'
+    --dynamic_where_clause
+    group by  dfp_p.dealerfile_processed_id,
+    dfp_p.filename,
+    dfp_p.layout,
+    d.company_id,
+    dfp_p.created_date
+    order by dfp_p.created_date desc, dfp_p.filename desc
+  </LOAD_PARENT_LIST>
+	<UPDATE>
+		<![CDATA[	
+			UPDATE elp_dealerfile_processed SET
+				dealer_id = :dealer_id,
+				filename = :filename,
+				received = :received,
+				counted = :counted,
+				rejected = :rejected,
+        bypassed = :bypassed,
+				validated = :validated,
+				loaded = :loaded,
+				layout = :layout,
+				modified_by = :modified_by,
+         dealer_group_id = :dealer_group_id,
+         remaining_rejected = :remaining_rejected
+			WHERE
+				dealerfile_processed_id = :dealerfile_processed_id
+				AND NVL(modified_date,created_date) = NVL(:modified_date,created_date)
+		]]>
+	</UPDATE>
+	<INSERT>
+    INSERT INTO elp_dealerfile_processed
+    (
+    dealer_id,
+    filename,
+    received,
+    counted,
+    rejected,
+    bypassed,
+    validated,
+    loaded,
+    layout,
+    created_by,
+    dealerfile_processed_id,
+    dealer_group_id,
+    remaining_rejected
+    )
+    VALUES
+    (
+    :dealer_id,
+    :filename,
+    :received,
+    :counted,
+    :rejected,
+    :bypassed,
+    :validated,
+    :loaded,
+    :layout,
+    :created_by,
+    :dealerfile_processed_id
+    :dealer_group_id,
+    :remaining_rejected
+    )
+  </INSERT>
+	<DELETE>
+			DELETE FROM elp_dealerfile_processed
+			WHERE
+				dealerfile_processed_id = :dealerfile_processed_id
+	</DELETE>
+	<VALIDATE_FILE>
+    elp_utl_load_async.Enrollment_Validate
+  </VALIDATE_FILE>
+	<PROCESS_FILE>
+    elp_utl_load_async.Enrollment_Load
+  </PROCESS_FILE>
+  <GENERATE_RESPONSE_FILE>
+    elp_utl_load_async.Gen_Response_File
+  </GENERATE_RESPONSE_FILE>  
+  <PROCESS_FILE_VSC>
+    elp_dealer_load.vsc_policy_load
+  </PROCESS_FILE_VSC>
+  <DELETE_FILE>
+		elp_dealer_load.dealer_delete
+	</DELETE_FILE>
+	<DOWNLOAD_FILE>
+		elp_dealer_load.dealer_download
+	</DOWNLOAD_FILE>
+	<VALIDATE_PAYMENT>
+		elp_dealer_payment.dealer_validate_payment
+	</VALIDATE_PAYMENT>
+  <VALIDATE_REINSURANCE>
+    elita.ELP_REINSURANCE_LOAD.dealer_validate_reinsurance
+  </VALIDATE_REINSURANCE>
+  <VALIDATE_INVOICE>
+    elp_ar_invoice_validation.DealerValidate
+  </VALIDATE_INVOICE>
+  <VALIDATE_INVOICE_PAYMENT>
+    elp_ar_payment_validation.validateDealerPayment
+  </VALIDATE_INVOICE_PAYMENT>
+  <PROCESS_INVOICE>
+    ELITA.elp_ar_invoice_processing.invoice_load
+  </PROCESS_INVOICE>
+  <PROCESS_INVOICE_PAYMENT>
+    ELITA.elp_ar_payment_processing.Payment_load
+  </PROCESS_INVOICE_PAYMENT>  
+  <PROCESS_REINSURANCE>
+    ELITA.ELP_REINSURANCE_LOAD.dealer_process_reinsurance
+  </PROCESS_REINSURANCE>
+  <PROCESS_PAYMENT>
+		elp_dealer_payment.policy_payment
+	</PROCESS_PAYMENT>
+  <DELETE_REINSURANCE>
+    ELITA.ELP_REINSURANCE_LOAD.dealer_delete_reinsurance
+  </DELETE_REINSURANCE>
+	<DELETE_PAYMENT>
+		elp_dealer_payment.dealer_delete_payment
+	</DELETE_PAYMENT>
+	<DOWNLOAD_PAYMENT>
+		elp_dealer_payment.dealer_download_payment
+	</DOWNLOAD_PAYMENT>
+  <DEALER_FILES_LOADED_BETWEEN_DATE_RANGE>
+    <![CDATA[
+            Select  DISTINCT DEALERFILE_PROCESSED_ID ID,
+                    FILENAME   Description,
+                    FILENAME   Code,
+                    FILENAME   code_and_description,
+                    P.CREATED_DATE
+            FROM    ELP_DEALERFILE_PROCESSED P, ELP_DEALER D
+            Where   P.DEALER_ID = d.DEALER_ID
+                AND D.COMPANY_ID = :COMPANY_ID
+                AND D.DEALER like :DEALER
+                AND to_char(P.CREATED_DATE,'YYYYMMDD') between :begin_date and :end_date
+                AND file_type_code = upper(:file_type_code)
+                and decode (:rejectedype, 'Rejects', p.rejected, p.remaining_rejected) > 0
+                Order By P.CREATED_DATE ASC
+           ]]>
+  </DEALER_FILES_LOADED_BETWEEN_DATE_RANGE>
+  <PAYMENT_FILES_LOADED_BETWEEN_DATE_RANGE>
+    <![CDATA[
+            Select  DISTINCT DEALERFILE_PROCESSED_ID ID,
+                    FILENAME   Description,
+                    FILENAME   Code,
+                    FILENAME   code_and_description,
+                    P.CREATED_DATE
+            FROM    ELP_DEALERFILE_PROCESSED P, ELP_DEALER D
+            Where   P.DEALER_ID = d.DEALER_ID
+                AND D.COMPANY_ID = :COMPANY_ID
+                AND D.DEALER like :DEALER
+                AND to_char(P.CREATED_DATE,'YYYYMMDD') between :begin_date and :end_date
+                AND file_type_code = upper(:file_type_code)
+                Order By P.CREATED_DATE ASC
+           ]]>
+  </PAYMENT_FILES_LOADED_BETWEEN_DATE_RANGE>
+</SQL> 
+
+

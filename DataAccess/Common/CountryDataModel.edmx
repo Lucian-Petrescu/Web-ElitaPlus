@@ -1,0 +1,650 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="2.0" xmlns:edmx="http://schemas.microsoft.com/ado/2008/10/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+    <Schema Namespace="Model4.Store" Provider="Oracle.ManagedDataAccess.Client" ProviderManifestToken="11.2" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/02/edm/ssdl">
+        <EntityType Name="ELP_BANK_INFO">
+          <Key>
+            <PropertyRef Name="BANK_INFO_ID" />
+          </Key>
+          <Property Name="BANK_INFO_ID" Type="raw" MaxLength="16" Nullable="false" />
+          <Property Name="ACCOUNT_NAME" Type="varchar2" MaxLength="50" Nullable="false" />
+          <Property Name="CREATED_BY" Type="varchar2" MaxLength="30" Nullable="false" />
+          <Property Name="CREATED_DATE" Type="date" Nullable="false" />
+          <Property Name="MODIFIED_BY" Type="varchar2" MaxLength="30" />
+          <Property Name="MODIFIED_DATE" Type="date" />
+          <Property Name="COUNTRY_ID" Type="raw" MaxLength="16" Nullable="false" />
+          <Property Name="PAYMENT_REASON_ID" Type="raw" MaxLength="16" />
+          <Property Name="BRANCH_NAME" Type="varchar2" MaxLength="50" />
+          <Property Name="BANK_NAME" Type="varchar2" MaxLength="50" />
+          <Property Name="BANK_SORT_CODE" Type="varchar2" MaxLength="15" />
+          <Property Name="IBAN_NUMBER" Type="varchar2" MaxLength="40" />
+          <Property Name="SWIFT_CODE" Type="varchar2" MaxLength="40" />
+          <Property Name="ACCOUNT_TYPE_ID" Type="raw" MaxLength="16" />
+          <Property Name="BANK_ID" Type="varchar2" MaxLength="10" />
+          <Property Name="ACCOUNT_NUMBER" Type="varchar2" MaxLength="29" />
+          <Property Name="BANK_LOOKUP_CODE" Type="varchar2" MaxLength="15" />
+          <Property Name="TRANSACTION_LIMIT" Type="number" Precision="17" Scale="2" />
+          <Property Name="BANK_SUB_CODE" Type="varchar2" MaxLength="5" />
+          <Property Name="BRANCH_DIGIT" Type="number" Precision="8" Scale="0" />
+          <Property Name="ACCOUNT_DIGIT" Type="number" Precision="8" Scale="0" />
+          <Property Name="BRANCH_NUMBER" Type="number" Precision="8" Scale="0" />
+          <Property Name="TAX_ID" Type="varchar2" MaxLength="15" />
+        </EntityType>
+        <EntityType Name="ELP_COUNTRY">
+          <Key>
+            <PropertyRef Name="COUNTRY_ID" />
+          </Key>
+          <Property Name="COUNTRY_ID" Type="raw" MaxLength="16" Nullable="false" />
+          <Property Name="DESCRIPTION" Type="varchar2" MaxLength="40" Nullable="false" />
+          <Property Name="CODE" Type="varchar2" MaxLength="5" Nullable="false" />
+          <Property Name="LANGUAGE_ID" Type="raw" MaxLength="16" Nullable="false" />
+          <Property Name="PRIMARY_CURRENCY_ID" Type="raw" MaxLength="16" Nullable="false" />
+          <Property Name="SECONDARY_CURRENCY_ID" Type="raw" MaxLength="16" />
+          <Property Name="CREATED_DATE" Type="date" Nullable="false" />
+          <Property Name="MODIFIED_DATE" Type="date" />
+          <Property Name="CREATED_BY" Type="varchar2" MaxLength="30" Nullable="false" />
+          <Property Name="MODIFIED_BY" Type="varchar2" MaxLength="30" />
+          <Property Name="MAIL_ADDR_FORMAT" Type="varchar2" MaxLength="100" Nullable="false" />
+          <Property Name="BANK_ID_LENGTH" Type="number" Precision="2" Scale="0" />
+          <Property Name="BANK_ACCT_LENGTH" Type="number" Precision="2" Scale="0" />
+          <Property Name="EUROPEAN_COUNTRY_ID" Type="raw" MaxLength="16" Nullable="false" />
+          <Property Name="VALIDATE_BANK_INFO_ID" Type="raw" MaxLength="16" />
+          <Property Name="TAX_BY_PRODUCT_TYPE_ID" Type="raw" MaxLength="16" />
+          <Property Name="CONTACT_INFO_REQ_FIELDS" Type="varchar2" MaxLength="200" />
+          <Property Name="ADDRESS_REQ_FIELDS" Type="varchar2" MaxLength="200" />
+          <Property Name="REQUIRE_BYTE_CONVERSION" Type="raw" MaxLength="16" Nullable="false" />
+          <Property Name="USE_BANK_LIST_ID" Type="raw" MaxLength="16" />
+          <Property Name="LAST_REGULATORY_EXTRACT_DATE" Type="date" />
+          <Property Name="REGULATORY_REPORTING_ID" Type="raw" MaxLength="16" />
+          <Property Name="NOTIFY_GROUP_EMAIL" Type="varchar2" MaxLength="50" />
+          <Property Name="CREDIT_SCORING_PCT" Type="number" Precision="3" Scale="0" />
+          <Property Name="ABNORMAL_CLM_FRQ_NO" Type="number" Precision="2" Scale="0" />
+          <Property Name="CERT_COUNT_SUSP_OP" Type="number" Precision="2" Scale="0" />
+          <Property Name="NATIONALITY_ID" Type="raw" MaxLength="16" />
+        </EntityType>
+        <EntityType Name="ELP_REGION">
+          <Key>
+            <PropertyRef Name="REGION_ID" />
+          </Key>
+          <Property Name="REGION_ID" Type="raw" MaxLength="16" Nullable="false" />
+          <Property Name="DESCRIPTION" Type="varchar2" MaxLength="30" Nullable="false" />
+          <Property Name="COUNTRY_ID" Type="raw" MaxLength="16" Nullable="false" />
+          <Property Name="CREATED_DATE" Type="date" Nullable="false" />
+          <Property Name="MODIFIED_DATE" Type="date" />
+          <Property Name="SHORT_DESC" Type="varchar2" MaxLength="5" Nullable="false" />
+          <Property Name="CREATED_BY" Type="varchar2" MaxLength="30" Nullable="false" />
+          <Property Name="MODIFIED_BY" Type="varchar2" MaxLength="30" />
+          <Property Name="ACCOUNTING_CODE" Type="varchar2" MaxLength="5" Nullable="false" />
+          <Property Name="INVOICETAX_GL_ACCT" Type="varchar2" MaxLength="15" />
+        </EntityType>
+        <EntityType Name="ELP_SERVICE_CENTER">
+          <Key>
+            <PropertyRef Name="SERVICE_CENTER_ID" />
+          </Key>
+          <Property Name="SERVICE_CENTER_ID" Type="raw" MaxLength="16" Nullable="false" />
+          <Property Name="ADDRESS_ID" Type="raw" MaxLength="16" Nullable="false" />
+          <Property Name="SERVICE_GROUP_ID" Type="raw" MaxLength="16" Nullable="false" />
+          <Property Name="LOANER_CENTER_ID" Type="raw" MaxLength="16" />
+          <Property Name="MASTER_CENTER_ID" Type="raw" MaxLength="16" />
+          <Property Name="CODE" Type="varchar2" MaxLength="10" Nullable="false" />
+          <Property Name="DESCRIPTION" Type="varchar2" MaxLength="50" Nullable="false" />
+          <Property Name="RATING_CODE" Type="varchar2" MaxLength="1" />
+          <Property Name="CONTACT_NAME" Type="varchar2" MaxLength="50" Nullable="false" />
+          <Property Name="OWNER_NAME" Type="varchar2" MaxLength="30" />
+          <Property Name="PHONE1" Type="varchar2" MaxLength="20" Nullable="false" />
+          <Property Name="PHONE2" Type="varchar2" MaxLength="20" />
+          <Property Name="FAX" Type="varchar2" MaxLength="20" Nullable="false" />
+          <Property Name="EMAIL" Type="varchar2" MaxLength="50" />
+          <Property Name="FTP_ADDRESS" Type="varchar2" MaxLength="30" />
+          <Property Name="TAX_ID" Type="varchar2" MaxLength="20" Nullable="false" />
+          <Property Name="SERVICE_WARRANTY_DAYS" Type="number" Precision="3" Scale="0" Nullable="false" />
+          <Property Name="STATUS_CODE" Type="varchar2" MaxLength="1" Nullable="false" />
+          <Property Name="BUSINESS_HOURS" Type="varchar2" MaxLength="100" />
+          <Property Name="MASTER_FLAG" Type="varchar2" MaxLength="1" Nullable="false" />
+          <Property Name="LOANER_FLAG" Type="varchar2" MaxLength="1" Nullable="false" />
+          <Property Name="DEFAULT_TO_EMAIL_FLAG" Type="varchar2" MaxLength="1" Nullable="false" />
+          <Property Name="IVA_RESPONSIBLE_FLAG" Type="varchar2" MaxLength="1" Nullable="false" />
+          <Property Name="CREATED_BY" Type="varchar2" MaxLength="30" Nullable="false" />
+          <Property Name="CREATED_DATE" Type="date" Nullable="false" />
+          <Property Name="MODIFIED_BY" Type="varchar2" MaxLength="30" />
+          <Property Name="MODIFIED_DATE" Type="date" />
+          <Property Name="COUNTRY_ID" Type="raw" MaxLength="16" Nullable="false" />
+          <Property Name="COMMENTS" Type="varchar2" MaxLength="1000" />
+          <Property Name="BANK_INFO_ID" Type="raw" MaxLength="16" />
+          <Property Name="PAYMENT_METHOD_ID" Type="raw" MaxLength="16" />
+          <Property Name="SHIPPING" Type="varchar2" MaxLength="1" />
+          <Property Name="PROCESSING_FEE" Type="number" Precision="11" Scale="2" />
+          <Property Name="CC_EMAIL" Type="varchar2" MaxLength="50" />
+          <Property Name="ORIGINALDEALERID" Type="raw" MaxLength="16" />
+          <Property Name="ROUTE_ID" Type="raw" MaxLength="16" />
+          <Property Name="INTEGRATED_WITH_ID" Type="raw" MaxLength="16" />
+          <Property Name="PAY_MASTER" Type="varchar2" MaxLength="1" />
+          <Property Name="INTEGRATED_AS_OF" Type="date" />
+          <Property Name="FREE_ZONE_FLAG" Type="varchar2" MaxLength="1" />
+          <Property Name="REVERSE_LOGISTICS_ID" Type="raw" MaxLength="16" Nullable="false" />
+          <Property Name="SERVICE_LEVEL_GROUP_ID_OLD" Type="raw" MaxLength="16" />
+          <Property Name="DISTRIBUTION_METHOD_ID" Type="raw" MaxLength="16" />
+          <Property Name="FULFILLMENT_TIME_ZONE_ID" Type="raw" MaxLength="16" />
+          <Property Name="PRICE_LIST_CODE" Type="varchar2" MaxLength="10" />
+          <Property Name="DISCOUNT_PCT" Type="number" Precision="7" Scale="4" />
+          <Property Name="DISCOUNT_DAYS" Type="number" Precision="5" Scale="0" />
+          <Property Name="NET_DAYS" Type="number" Precision="5" Scale="0" />
+          <Property Name="PRICE_GROUP_ID_OLD" Type="raw" MaxLength="16" />
+          <Property Name="PRE_INVOICE_ID" Type="raw" MaxLength="16" Nullable="false" />
+        </EntityType>
+        <Association Name="FK_BANK_INFO_COUNTRY">
+          <End Role="ELP_COUNTRY" Type="Self.ELP_COUNTRY" Multiplicity="1" />
+          <End Role="ELP_BANK_INFO" Type="Self.ELP_BANK_INFO" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ELP_COUNTRY">
+              <PropertyRef Name="COUNTRY_ID" />
+            </Principal>
+            <Dependent Role="ELP_BANK_INFO">
+              <PropertyRef Name="COUNTRY_ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_REGION_COUNTRY">
+          <End Role="ELP_COUNTRY" Type="Self.ELP_COUNTRY" Multiplicity="1" />
+          <End Role="ELP_REGION" Type="Self.ELP_REGION" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ELP_COUNTRY">
+              <PropertyRef Name="COUNTRY_ID" />
+            </Principal>
+            <Dependent Role="ELP_REGION">
+              <PropertyRef Name="COUNTRY_ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_SERVICE_CENTER_COUNTRY">
+          <End Role="ELP_COUNTRY" Type="Self.ELP_COUNTRY" Multiplicity="1" />
+          <End Role="ELP_SERVICE_CENTER" Type="Self.ELP_SERVICE_CENTER" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ELP_COUNTRY">
+              <PropertyRef Name="COUNTRY_ID" />
+            </Principal>
+            <Dependent Role="ELP_SERVICE_CENTER">
+              <PropertyRef Name="COUNTRY_ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_SVC_BANK_INFO">
+          <End Role="ELP_BANK_INFO" Type="Self.ELP_BANK_INFO" Multiplicity="0..1" />
+          <End Role="ELP_SERVICE_CENTER" Type="Self.ELP_SERVICE_CENTER" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ELP_BANK_INFO">
+              <PropertyRef Name="BANK_INFO_ID" />
+            </Principal>
+            <Dependent Role="ELP_SERVICE_CENTER">
+              <PropertyRef Name="BANK_INFO_ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_SVCCTR_LOANER_SVCCTR">
+          <End Role="ELP_SERVICE_CENTER" Type="Self.ELP_SERVICE_CENTER" Multiplicity="0..1" />
+          <End Role="ELP_SERVICE_CENTER1" Type="Self.ELP_SERVICE_CENTER" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ELP_SERVICE_CENTER">
+              <PropertyRef Name="SERVICE_CENTER_ID" />
+            </Principal>
+            <Dependent Role="ELP_SERVICE_CENTER1">
+              <PropertyRef Name="LOANER_CENTER_ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_SVCCTR_MASTER_SVCCTR">
+          <End Role="ELP_SERVICE_CENTER" Type="Self.ELP_SERVICE_CENTER" Multiplicity="0..1" />
+          <End Role="ELP_SERVICE_CENTER1" Type="Self.ELP_SERVICE_CENTER" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ELP_SERVICE_CENTER">
+              <PropertyRef Name="SERVICE_CENTER_ID" />
+            </Principal>
+            <Dependent Role="ELP_SERVICE_CENTER1">
+              <PropertyRef Name="MASTER_CENTER_ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="Model4StoreContainer">
+          <EntitySet Name="ELP_BANK_INFO" EntityType="Self.ELP_BANK_INFO" Schema="ELITA" store:Type="Tables" />
+          <EntitySet Name="ELP_COUNTRY" EntityType="Self.ELP_COUNTRY" Schema="ELITA" store:Type="Tables" />
+          <EntitySet Name="ELP_REGION" EntityType="Self.ELP_REGION" Schema="ELITA" store:Type="Tables" />
+          <EntitySet Name="ELP_SERVICE_CENTER" EntityType="Self.ELP_SERVICE_CENTER" Schema="ELITA" store:Type="Tables" />
+          <AssociationSet Name="FK_BANK_INFO_COUNTRY" Association="Self.FK_BANK_INFO_COUNTRY">
+            <End Role="ELP_COUNTRY" EntitySet="ELP_COUNTRY" />
+            <End Role="ELP_BANK_INFO" EntitySet="ELP_BANK_INFO" />
+          </AssociationSet>
+          <AssociationSet Name="FK_REGION_COUNTRY" Association="Self.FK_REGION_COUNTRY">
+            <End Role="ELP_COUNTRY" EntitySet="ELP_COUNTRY" />
+            <End Role="ELP_REGION" EntitySet="ELP_REGION" />
+          </AssociationSet>
+          <AssociationSet Name="FK_SERVICE_CENTER_COUNTRY" Association="Self.FK_SERVICE_CENTER_COUNTRY">
+            <End Role="ELP_COUNTRY" EntitySet="ELP_COUNTRY" />
+            <End Role="ELP_SERVICE_CENTER" EntitySet="ELP_SERVICE_CENTER" />
+          </AssociationSet>
+          <AssociationSet Name="FK_SVC_BANK_INFO" Association="Self.FK_SVC_BANK_INFO">
+            <End Role="ELP_BANK_INFO" EntitySet="ELP_BANK_INFO" />
+            <End Role="ELP_SERVICE_CENTER" EntitySet="ELP_SERVICE_CENTER" />
+          </AssociationSet>
+          <AssociationSet Name="FK_SVCCTR_LOANER_SVCCTR" Association="Self.FK_SVCCTR_LOANER_SVCCTR">
+            <End Role="ELP_SERVICE_CENTER" EntitySet="ELP_SERVICE_CENTER" />
+            <End Role="ELP_SERVICE_CENTER1" EntitySet="ELP_SERVICE_CENTER" />
+          </AssociationSet>
+          <AssociationSet Name="FK_SVCCTR_MASTER_SVCCTR" Association="Self.FK_SVCCTR_MASTER_SVCCTR">
+            <End Role="ELP_SERVICE_CENTER" EntitySet="ELP_SERVICE_CENTER" />
+            <End Role="ELP_SERVICE_CENTER1" EntitySet="ELP_SERVICE_CENTER" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema></edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="Model4" Alias="Self" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2008/09/edm">
+        <EntityType Name="Country">
+          <Key>
+            <PropertyRef Name="CountryId" />
+          </Key>
+          <Property Name="CountryId" Type="Guid" Nullable="false" />
+          <Property Name="Description" Type="String" MaxLength="40" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Code" Type="String" MaxLength="5" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="LanguageId" Type="Guid" Nullable="false" />
+          <Property Name="PrimaryCurrencyId" Type="Guid" Nullable="false" />
+          <Property Name="SECONDARY_CURRENCY_ID" Type="Guid" />
+          <Property Name="CreatedDate" Type="DateTime" Nullable="false" />
+          <Property Name="ModifiedDate" Type="DateTime" />
+          <Property Name="CreatedBy" Type="String" MaxLength="30" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="ModifiedBy" Type="String" MaxLength="30" FixedLength="false" Unicode="false" />
+          <Property Name="MAIL_ADDR_FORMAT" Type="String" MaxLength="100" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="BANK_ID_LENGTH" Type="Int16" />
+          <Property Name="BANK_ACCT_LENGTH" Type="Int16" />
+          <Property Name="EUROPEAN_COUNTRY_ID" Type="Guid" Nullable="false" />
+          <Property Name="VALIDATE_BANK_INFO_ID" Type="Guid" />
+          <Property Name="TAX_BY_PRODUCT_TYPE_ID" Type="Guid" />
+          <Property Name="CONTACT_INFO_REQ_FIELDS" Type="String" MaxLength="200" FixedLength="false" Unicode="false" />
+          <Property Name="ADDRESS_REQ_FIELDS" Type="String" MaxLength="200" FixedLength="false" Unicode="false" />
+          <Property Name="REQUIRE_BYTE_CONVERSION" Type="Guid" Nullable="false" />
+          <Property Name="USE_BANK_LIST_ID" Type="Guid" />
+          <Property Name="LAST_REGULATORY_EXTRACT_DATE" Type="DateTime" />
+          <Property Name="REGULATORY_REPORTING_ID" Type="Guid" />
+          <Property Name="NOTIFY_GROUP_EMAIL" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="CREDIT_SCORING_PCT" Type="Int16" />
+          <Property Name="ABNORMAL_CLM_FRQ_NO" Type="Int16" />
+          <Property Name="CERT_COUNT_SUSP_OP" Type="Int16" />
+          <Property Name="NATIONALITY_ID" Type="Guid" />
+          <NavigationProperty Name="Regions" Relationship="Model4.FK_REGION_COUNTRY" FromRole="Country" ToRole="ELP_REGION" />
+          <NavigationProperty Name="ServiceCenters" Relationship="Model4.FK_SERVICE_CENTER_COUNTRY" FromRole="Country" ToRole="ELP_SERVICE_CENTER" />
+          <NavigationProperty Name="BankInfos" Relationship="Model4.FK_BANK_INFO_COUNTRY" FromRole="Country" ToRole="ELP_BANK_INFO" />
+        </EntityType>
+        <EntityContainer Name="Entities3" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="Countries" EntityType="Model4.Country" />
+          <EntitySet Name="Regions" EntityType="Model4.Region" />
+          <AssociationSet Name="FK_REGION_COUNTRY" Association="Model4.FK_REGION_COUNTRY">
+            <End Role="Country" EntitySet="Countries" />
+            <End Role="ELP_REGION" EntitySet="Regions" />
+          </AssociationSet>
+          <EntitySet Name="ServiceCenters" EntityType="Model4.ServiceCenter" />
+          <AssociationSet Name="FK_SERVICE_CENTER_COUNTRY" Association="Model4.FK_SERVICE_CENTER_COUNTRY">
+            <End Role="Country" EntitySet="Countries" />
+            <End Role="ELP_SERVICE_CENTER" EntitySet="ServiceCenters" />
+          </AssociationSet>
+          <AssociationSet Name="FK_SVCCTR_LOANER_SVCCTR" Association="Model4.FK_SVCCTR_LOANER_SVCCTR">
+            <End Role="ELP_SERVICE_CENTER" EntitySet="ServiceCenters" />
+            <End Role="ELP_SERVICE_CENTER1" EntitySet="ServiceCenters" />
+          </AssociationSet>
+          <AssociationSet Name="FK_SVCCTR_MASTER_SVCCTR" Association="Model4.FK_SVCCTR_MASTER_SVCCTR">
+            <End Role="ELP_SERVICE_CENTER" EntitySet="ServiceCenters" />
+            <End Role="ELP_SERVICE_CENTER1" EntitySet="ServiceCenters" />
+          </AssociationSet>
+          <EntitySet Name="BankInfoes" EntityType="Model4.BankInfo" />
+          <AssociationSet Name="FK_BANK_INFO_COUNTRY" Association="Model4.FK_BANK_INFO_COUNTRY">
+            <End Role="Country" EntitySet="Countries" />
+            <End Role="ELP_BANK_INFO" EntitySet="BankInfoes" />
+          </AssociationSet>
+          <AssociationSet Name="FK_SVC_BANK_INFO" Association="Model4.FK_SVC_BANK_INFO">
+            <End Role="ELP_BANK_INFO" EntitySet="BankInfoes" />
+            <End Role="ServiceCenter" EntitySet="ServiceCenters" />
+          </AssociationSet>
+        </EntityContainer>
+        <EntityType Name="Region">
+          <Key>
+            <PropertyRef Name="RegionId" />
+          </Key>
+          <Property Name="RegionId" Type="Guid" Nullable="false" />
+          <Property Name="Description" Type="String" Nullable="false" MaxLength="30" FixedLength="false" Unicode="false" />
+          <Property Name="CountryId" Type="Guid" Nullable="false" />
+          <Property Name="CreatedDate" Type="DateTime" Nullable="false" />
+          <Property Name="ModifiedDate" Type="DateTime" />
+          <Property Name="ShortDesc" Type="String" Nullable="false" MaxLength="5" FixedLength="false" Unicode="false" />
+          <Property Name="CreatedBy" Type="String" Nullable="false" MaxLength="30" FixedLength="false" Unicode="false" />
+          <Property Name="ModifiedBy" Type="String" MaxLength="30" FixedLength="false" Unicode="false" />
+          <Property Name="ACCOUNTING_CODE" Type="String" Nullable="false" MaxLength="5" FixedLength="false" Unicode="false" />
+          <Property Name="INVOICETAX_GL_ACCT" Type="String" MaxLength="15" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="Country" Relationship="Model4.FK_REGION_COUNTRY" FromRole="ELP_REGION" ToRole="Country" />
+        </EntityType>
+        <Association Name="FK_REGION_COUNTRY">
+          <End Type="Model4.Country" Role="Country" Multiplicity="1" />
+          <End Type="Model4.Region" Role="ELP_REGION" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Country">
+              <PropertyRef Name="CountryId" />
+            </Principal>
+            <Dependent Role="ELP_REGION">
+              <PropertyRef Name="CountryId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityType Name="ServiceCenter">
+          <Key>
+            <PropertyRef Name="ServiceCenterId" />
+          </Key>
+          <Property Name="ServiceCenterId" Type="Guid" Nullable="false" />
+          <Property Name="ADDRESS_ID" Type="Guid" Nullable="false" />
+          <Property Name="SERVICE_GROUP_ID" Type="Guid" Nullable="false" />
+          <Property Name="LOANER_CENTER_ID" Type="Guid" />
+          <Property Name="MASTER_CENTER_ID" Type="Guid" />
+          <Property Name="CODE" Type="String" Nullable="false" MaxLength="10" FixedLength="false" Unicode="false" />
+          <Property Name="DESCRIPTION" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="RATING_CODE" Type="String" MaxLength="1" FixedLength="false" Unicode="false" />
+          <Property Name="CONTACT_NAME" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="OWNER_NAME" Type="String" MaxLength="30" FixedLength="false" Unicode="false" />
+          <Property Name="PHONE1" Type="String" Nullable="false" MaxLength="20" FixedLength="false" Unicode="false" />
+          <Property Name="PHONE2" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+          <Property Name="FAX" Type="String" Nullable="false" MaxLength="20" FixedLength="false" Unicode="false" />
+          <Property Name="EMAIL" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="FTP_ADDRESS" Type="String" MaxLength="30" FixedLength="false" Unicode="false" />
+          <Property Name="TAX_ID" Type="String" Nullable="false" MaxLength="20" FixedLength="false" Unicode="false" />
+          <Property Name="SERVICE_WARRANTY_DAYS" Type="Int16" Nullable="false" />
+          <Property Name="STATUS_CODE" Type="String" Nullable="false" MaxLength="1" FixedLength="false" Unicode="false" />
+          <Property Name="BUSINESS_HOURS" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="MASTER_FLAG" Type="String" Nullable="false" MaxLength="1" FixedLength="false" Unicode="false" />
+          <Property Name="LOANER_FLAG" Type="String" Nullable="false" MaxLength="1" FixedLength="false" Unicode="false" />
+          <Property Name="DEFAULT_TO_EMAIL_FLAG" Type="String" Nullable="false" MaxLength="1" FixedLength="false" Unicode="false" />
+          <Property Name="IVA_RESPONSIBLE_FLAG" Type="String" Nullable="false" MaxLength="1" FixedLength="false" Unicode="false" />
+          <Property Name="CreatedBy" Type="String" Nullable="false" MaxLength="30" FixedLength="false" Unicode="false" />
+          <Property Name="CreatedDate" Type="DateTime" Nullable="false" />
+          <Property Name="ModifiedBy" Type="String" MaxLength="30" FixedLength="false" Unicode="false" />
+          <Property Name="ModifiedDate" Type="DateTime" />
+          <Property Name="COUNTRY_ID" Type="Guid" Nullable="false" />
+          <Property Name="COMMENTS" Type="String" MaxLength="1000" FixedLength="false" Unicode="false" />
+          <Property Name="BankInfoId" Type="Guid" />
+          <Property Name="PAYMENT_METHOD_ID" Type="Guid" />
+          <Property Name="SHIPPING" Type="String" MaxLength="1" FixedLength="false" Unicode="false" />
+          <Property Name="PROCESSING_FEE" Type="Decimal" Precision="11" Scale="2" />
+          <Property Name="CC_EMAIL" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="ORIGINALDEALERID" Type="Guid" />
+          <Property Name="ROUTE_ID" Type="Guid" />
+          <Property Name="INTEGRATED_WITH_ID" Type="Guid" />
+          <Property Name="PAY_MASTER" Type="String" MaxLength="1" FixedLength="false" Unicode="false" />
+          <Property Name="INTEGRATED_AS_OF" Type="DateTime" />
+          <Property Name="FREE_ZONE_FLAG" Type="String" MaxLength="1" FixedLength="false" Unicode="false" />
+          <Property Name="REVERSE_LOGISTICS_ID" Type="Guid" Nullable="false" />
+          <Property Name="SERVICE_LEVEL_GROUP_ID_OLD" Type="Guid" />
+          <Property Name="DISTRIBUTION_METHOD_ID" Type="Guid" />
+          <Property Name="FULFILLMENT_TIME_ZONE_ID" Type="Guid" />
+          <Property Name="PRICE_LIST_CODE" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
+          <Property Name="DISCOUNT_PCT" Type="Decimal" Precision="7" Scale="4" />
+          <Property Name="DISCOUNT_DAYS" Type="Int16" />
+          <Property Name="NET_DAYS" Type="Int16" />
+          <Property Name="PRICE_GROUP_ID_OLD" Type="Guid" />
+          <Property Name="PRE_INVOICE_ID" Type="Guid" Nullable="false" />
+          <NavigationProperty Name="Country" Relationship="Model4.FK_SERVICE_CENTER_COUNTRY" FromRole="ELP_SERVICE_CENTER" ToRole="Country" />
+          <NavigationProperty Name="Servicecenter1" Relationship="Model4.FK_SVCCTR_LOANER_SVCCTR" FromRole="ELP_SERVICE_CENTER" ToRole="ELP_SERVICE_CENTER1" />
+          <NavigationProperty Name="ServiceCenter2" Relationship="Model4.FK_SVCCTR_LOANER_SVCCTR" FromRole="ELP_SERVICE_CENTER1" ToRole="ELP_SERVICE_CENTER" />
+          <NavigationProperty Name="ServiceCenter3" Relationship="Model4.FK_SVCCTR_MASTER_SVCCTR" FromRole="ELP_SERVICE_CENTER1" ToRole="ELP_SERVICE_CENTER" />
+          <NavigationProperty Name="BankInfo" Relationship="Model4.FK_SVC_BANK_INFO" FromRole="ServiceCenter" ToRole="ELP_BANK_INFO" />
+        </EntityType>
+        <Association Name="FK_SERVICE_CENTER_COUNTRY">
+          <End Type="Model4.Country" Role="Country" Multiplicity="1" />
+          <End Type="Model4.ServiceCenter" Role="ELP_SERVICE_CENTER" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Country">
+              <PropertyRef Name="CountryId" />
+            </Principal>
+            <Dependent Role="ELP_SERVICE_CENTER">
+              <PropertyRef Name="COUNTRY_ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_SVCCTR_LOANER_SVCCTR">
+          <End Type="Model4.ServiceCenter" Role="ELP_SERVICE_CENTER" Multiplicity="0..1" />
+          <End Type="Model4.ServiceCenter" Role="ELP_SERVICE_CENTER1" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ELP_SERVICE_CENTER">
+              <PropertyRef Name="ServiceCenterId" />
+            </Principal>
+            <Dependent Role="ELP_SERVICE_CENTER1">
+              <PropertyRef Name="LOANER_CENTER_ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_SVCCTR_MASTER_SVCCTR">
+          <End Type="Model4.ServiceCenter" Role="ELP_SERVICE_CENTER" Multiplicity="0..1" />
+          <End Type="Model4.ServiceCenter" Role="ELP_SERVICE_CENTER1" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ELP_SERVICE_CENTER">
+              <PropertyRef Name="ServiceCenterId" />
+            </Principal>
+            <Dependent Role="ELP_SERVICE_CENTER1">
+              <PropertyRef Name="MASTER_CENTER_ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityType Name="BankInfo">
+          <Key>
+            <PropertyRef Name="BankInfoId" />
+          </Key>
+          <Property Name="BankInfoId" Type="Guid" Nullable="false" />
+          <Property Name="AccountName" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="CreatedBy" Type="String" Nullable="false" MaxLength="30" FixedLength="false" Unicode="false" />
+          <Property Name="CreatedDate" Type="DateTime" Nullable="false" />
+          <Property Name="ModifiedBy" Type="String" MaxLength="30" FixedLength="false" Unicode="false" />
+          <Property Name="ModifiedDate" Type="DateTime" />
+          <Property Name="CountryId" Type="Guid" Nullable="false" />
+          <Property Name="PAYMENT_REASON_ID" Type="Guid" />
+          <Property Name="BranchName" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="BankName" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="BankSortCode" Type="String" MaxLength="15" FixedLength="false" Unicode="false" />
+          <Property Name="IbanNumber" Type="String" MaxLength="40" FixedLength="false" Unicode="false" />
+          <Property Name="SWIFT_CODE" Type="String" MaxLength="40" FixedLength="false" Unicode="false" />
+          <Property Name="ACCOUNT_TYPE_ID" Type="Guid" />
+          <Property Name="BankId" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
+          <Property Name="ACCOUNT_NUMBER" Type="String" MaxLength="29" FixedLength="false" Unicode="false" />
+          <Property Name="BANK_LOOKUP_CODE" Type="String" MaxLength="15" FixedLength="false" Unicode="false" />
+          <Property Name="TRANSACTION_LIMIT" Type="Decimal" Precision="17" Scale="2" />
+          <Property Name="BANK_SUB_CODE" Type="String" MaxLength="5" FixedLength="false" Unicode="false" />
+          <Property Name="BRANCH_DIGIT" Type="Int32" />
+          <Property Name="ACCOUNT_DIGIT" Type="Int32" />
+          <Property Name="BRANCH_NUMBER" Type="Int32" />
+          <Property Name="TAX_ID" Type="String" MaxLength="15" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="Country" Relationship="Model4.FK_BANK_INFO_COUNTRY" FromRole="ELP_BANK_INFO" ToRole="Country" />
+          <NavigationProperty Name="ServiceCenter" Relationship="Model4.FK_SVC_BANK_INFO" FromRole="ELP_BANK_INFO" ToRole="ServiceCenter" />
+        </EntityType>
+        <Association Name="FK_BANK_INFO_COUNTRY">
+          <End Type="Model4.Country" Role="Country" Multiplicity="1" />
+          <End Type="Model4.BankInfo" Role="ELP_BANK_INFO" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Country">
+              <PropertyRef Name="CountryId" />
+            </Principal>
+            <Dependent Role="ELP_BANK_INFO">
+              <PropertyRef Name="CountryId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_SVC_BANK_INFO">
+          <End Type="Model4.BankInfo" Role="ELP_BANK_INFO" Multiplicity="0..1" />
+          <End Type="Model4.ServiceCenter" Role="ServiceCenter" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ELP_BANK_INFO">
+              <PropertyRef Name="BankInfoId" />
+            </Principal>
+            <Dependent Role="ServiceCenter">
+              <PropertyRef Name="BankInfoId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2008/09/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="Model4StoreContainer" CdmEntityContainer="Entities3">
+          <EntitySetMapping Name="Countries">
+            <EntityTypeMapping TypeName="Model4.Country">
+              <MappingFragment StoreEntitySet="ELP_COUNTRY">
+                <ScalarProperty Name="CountryId" ColumnName="COUNTRY_ID" />
+                <ScalarProperty Name="Description" ColumnName="DESCRIPTION" />
+                <ScalarProperty Name="Code" ColumnName="CODE" />
+                <ScalarProperty Name="LanguageId" ColumnName="LANGUAGE_ID" />
+                <ScalarProperty Name="PrimaryCurrencyId" ColumnName="PRIMARY_CURRENCY_ID" />
+                <ScalarProperty Name="SECONDARY_CURRENCY_ID" ColumnName="SECONDARY_CURRENCY_ID" />
+                <ScalarProperty Name="CreatedDate" ColumnName="CREATED_DATE" />
+                <ScalarProperty Name="ModifiedDate" ColumnName="MODIFIED_DATE" />
+                <ScalarProperty Name="CreatedBy" ColumnName="CREATED_BY" />
+                <ScalarProperty Name="ModifiedBy" ColumnName="MODIFIED_BY" />
+                <ScalarProperty Name="MAIL_ADDR_FORMAT" ColumnName="MAIL_ADDR_FORMAT" />
+                <ScalarProperty Name="BANK_ID_LENGTH" ColumnName="BANK_ID_LENGTH" />
+                <ScalarProperty Name="BANK_ACCT_LENGTH" ColumnName="BANK_ACCT_LENGTH" />
+                <ScalarProperty Name="EUROPEAN_COUNTRY_ID" ColumnName="EUROPEAN_COUNTRY_ID" />
+                <ScalarProperty Name="VALIDATE_BANK_INFO_ID" ColumnName="VALIDATE_BANK_INFO_ID" />
+                <ScalarProperty Name="TAX_BY_PRODUCT_TYPE_ID" ColumnName="TAX_BY_PRODUCT_TYPE_ID" />
+                <ScalarProperty Name="CONTACT_INFO_REQ_FIELDS" ColumnName="CONTACT_INFO_REQ_FIELDS" />
+                <ScalarProperty Name="ADDRESS_REQ_FIELDS" ColumnName="ADDRESS_REQ_FIELDS" />
+                <ScalarProperty Name="REQUIRE_BYTE_CONVERSION" ColumnName="REQUIRE_BYTE_CONVERSION" />
+                <ScalarProperty Name="USE_BANK_LIST_ID" ColumnName="USE_BANK_LIST_ID" />
+                <ScalarProperty Name="LAST_REGULATORY_EXTRACT_DATE" ColumnName="LAST_REGULATORY_EXTRACT_DATE" />
+                <ScalarProperty Name="REGULATORY_REPORTING_ID" ColumnName="REGULATORY_REPORTING_ID" />
+                <ScalarProperty Name="NOTIFY_GROUP_EMAIL" ColumnName="NOTIFY_GROUP_EMAIL" />
+                <ScalarProperty Name="CREDIT_SCORING_PCT" ColumnName="CREDIT_SCORING_PCT" />
+                <ScalarProperty Name="ABNORMAL_CLM_FRQ_NO" ColumnName="ABNORMAL_CLM_FRQ_NO" />
+                <ScalarProperty Name="CERT_COUNT_SUSP_OP" ColumnName="CERT_COUNT_SUSP_OP" />
+                <ScalarProperty Name="NATIONALITY_ID" ColumnName="NATIONALITY_ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Regions">
+            <EntityTypeMapping TypeName="Model4.Region">
+              <MappingFragment StoreEntitySet="ELP_REGION">
+                <ScalarProperty Name="INVOICETAX_GL_ACCT" ColumnName="INVOICETAX_GL_ACCT" />
+                <ScalarProperty Name="ACCOUNTING_CODE" ColumnName="ACCOUNTING_CODE" />
+                <ScalarProperty Name="ModifiedBy" ColumnName="MODIFIED_BY" />
+                <ScalarProperty Name="CreatedBy" ColumnName="CREATED_BY" />
+                <ScalarProperty Name="ShortDesc" ColumnName="SHORT_DESC" />
+                <ScalarProperty Name="ModifiedDate" ColumnName="MODIFIED_DATE" />
+                <ScalarProperty Name="CreatedDate" ColumnName="CREATED_DATE" />
+                <ScalarProperty Name="CountryId" ColumnName="COUNTRY_ID" />
+                <ScalarProperty Name="Description" ColumnName="DESCRIPTION" />
+                <ScalarProperty Name="RegionId" ColumnName="REGION_ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="ServiceCenters">
+            <EntityTypeMapping TypeName="Model4.ServiceCenter">
+              <MappingFragment StoreEntitySet="ELP_SERVICE_CENTER">
+                <ScalarProperty Name="PRE_INVOICE_ID" ColumnName="PRE_INVOICE_ID" />
+                <ScalarProperty Name="PRICE_GROUP_ID_OLD" ColumnName="PRICE_GROUP_ID_OLD" />
+                <ScalarProperty Name="NET_DAYS" ColumnName="NET_DAYS" />
+                <ScalarProperty Name="DISCOUNT_DAYS" ColumnName="DISCOUNT_DAYS" />
+                <ScalarProperty Name="DISCOUNT_PCT" ColumnName="DISCOUNT_PCT" />
+                <ScalarProperty Name="PRICE_LIST_CODE" ColumnName="PRICE_LIST_CODE" />
+                <ScalarProperty Name="FULFILLMENT_TIME_ZONE_ID" ColumnName="FULFILLMENT_TIME_ZONE_ID" />
+                <ScalarProperty Name="DISTRIBUTION_METHOD_ID" ColumnName="DISTRIBUTION_METHOD_ID" />
+                <ScalarProperty Name="SERVICE_LEVEL_GROUP_ID_OLD" ColumnName="SERVICE_LEVEL_GROUP_ID_OLD" />
+                <ScalarProperty Name="REVERSE_LOGISTICS_ID" ColumnName="REVERSE_LOGISTICS_ID" />
+                <ScalarProperty Name="FREE_ZONE_FLAG" ColumnName="FREE_ZONE_FLAG" />
+                <ScalarProperty Name="INTEGRATED_AS_OF" ColumnName="INTEGRATED_AS_OF" />
+                <ScalarProperty Name="PAY_MASTER" ColumnName="PAY_MASTER" />
+                <ScalarProperty Name="INTEGRATED_WITH_ID" ColumnName="INTEGRATED_WITH_ID" />
+                <ScalarProperty Name="ROUTE_ID" ColumnName="ROUTE_ID" />
+                <ScalarProperty Name="ORIGINALDEALERID" ColumnName="ORIGINALDEALERID" />
+                <ScalarProperty Name="CC_EMAIL" ColumnName="CC_EMAIL" />
+                <ScalarProperty Name="PROCESSING_FEE" ColumnName="PROCESSING_FEE" />
+                <ScalarProperty Name="SHIPPING" ColumnName="SHIPPING" />
+                <ScalarProperty Name="PAYMENT_METHOD_ID" ColumnName="PAYMENT_METHOD_ID" />
+                <ScalarProperty Name="BankInfoId" ColumnName="BANK_INFO_ID" />
+                <ScalarProperty Name="COMMENTS" ColumnName="COMMENTS" />
+                <ScalarProperty Name="COUNTRY_ID" ColumnName="COUNTRY_ID" />
+                <ScalarProperty Name="ModifiedDate" ColumnName="MODIFIED_DATE" />
+                <ScalarProperty Name="ModifiedBy" ColumnName="MODIFIED_BY" />
+                <ScalarProperty Name="CreatedDate" ColumnName="CREATED_DATE" />
+                <ScalarProperty Name="CreatedBy" ColumnName="CREATED_BY" />
+                <ScalarProperty Name="IVA_RESPONSIBLE_FLAG" ColumnName="IVA_RESPONSIBLE_FLAG" />
+                <ScalarProperty Name="DEFAULT_TO_EMAIL_FLAG" ColumnName="DEFAULT_TO_EMAIL_FLAG" />
+                <ScalarProperty Name="LOANER_FLAG" ColumnName="LOANER_FLAG" />
+                <ScalarProperty Name="MASTER_FLAG" ColumnName="MASTER_FLAG" />
+                <ScalarProperty Name="BUSINESS_HOURS" ColumnName="BUSINESS_HOURS" />
+                <ScalarProperty Name="STATUS_CODE" ColumnName="STATUS_CODE" />
+                <ScalarProperty Name="SERVICE_WARRANTY_DAYS" ColumnName="SERVICE_WARRANTY_DAYS" />
+                <ScalarProperty Name="TAX_ID" ColumnName="TAX_ID" />
+                <ScalarProperty Name="FTP_ADDRESS" ColumnName="FTP_ADDRESS" />
+                <ScalarProperty Name="EMAIL" ColumnName="EMAIL" />
+                <ScalarProperty Name="FAX" ColumnName="FAX" />
+                <ScalarProperty Name="PHONE2" ColumnName="PHONE2" />
+                <ScalarProperty Name="PHONE1" ColumnName="PHONE1" />
+                <ScalarProperty Name="OWNER_NAME" ColumnName="OWNER_NAME" />
+                <ScalarProperty Name="CONTACT_NAME" ColumnName="CONTACT_NAME" />
+                <ScalarProperty Name="RATING_CODE" ColumnName="RATING_CODE" />
+                <ScalarProperty Name="DESCRIPTION" ColumnName="DESCRIPTION" />
+                <ScalarProperty Name="CODE" ColumnName="CODE" />
+                <ScalarProperty Name="MASTER_CENTER_ID" ColumnName="MASTER_CENTER_ID" />
+                <ScalarProperty Name="LOANER_CENTER_ID" ColumnName="LOANER_CENTER_ID" />
+                <ScalarProperty Name="SERVICE_GROUP_ID" ColumnName="SERVICE_GROUP_ID" />
+                <ScalarProperty Name="ADDRESS_ID" ColumnName="ADDRESS_ID" />
+                <ScalarProperty Name="ServiceCenterId" ColumnName="SERVICE_CENTER_ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="BankInfoes">
+            <EntityTypeMapping TypeName="Model4.BankInfo">
+              <MappingFragment StoreEntitySet="ELP_BANK_INFO">
+                <ScalarProperty Name="TAX_ID" ColumnName="TAX_ID" />
+                <ScalarProperty Name="BRANCH_NUMBER" ColumnName="BRANCH_NUMBER" />
+                <ScalarProperty Name="ACCOUNT_DIGIT" ColumnName="ACCOUNT_DIGIT" />
+                <ScalarProperty Name="BRANCH_DIGIT" ColumnName="BRANCH_DIGIT" />
+                <ScalarProperty Name="BANK_SUB_CODE" ColumnName="BANK_SUB_CODE" />
+                <ScalarProperty Name="TRANSACTION_LIMIT" ColumnName="TRANSACTION_LIMIT" />
+                <ScalarProperty Name="BANK_LOOKUP_CODE" ColumnName="BANK_LOOKUP_CODE" />
+                <ScalarProperty Name="ACCOUNT_NUMBER" ColumnName="ACCOUNT_NUMBER" />
+                <ScalarProperty Name="BankId" ColumnName="BANK_ID" />
+                <ScalarProperty Name="ACCOUNT_TYPE_ID" ColumnName="ACCOUNT_TYPE_ID" />
+                <ScalarProperty Name="SWIFT_CODE" ColumnName="SWIFT_CODE" />
+                <ScalarProperty Name="IbanNumber" ColumnName="IBAN_NUMBER" />
+                <ScalarProperty Name="BankSortCode" ColumnName="BANK_SORT_CODE" />
+                <ScalarProperty Name="BankName" ColumnName="BANK_NAME" />
+                <ScalarProperty Name="BranchName" ColumnName="BRANCH_NAME" />
+                <ScalarProperty Name="PAYMENT_REASON_ID" ColumnName="PAYMENT_REASON_ID" />
+                <ScalarProperty Name="CountryId" ColumnName="COUNTRY_ID" />
+                <ScalarProperty Name="ModifiedDate" ColumnName="MODIFIED_DATE" />
+                <ScalarProperty Name="ModifiedBy" ColumnName="MODIFIED_BY" />
+                <ScalarProperty Name="CreatedDate" ColumnName="CREATED_DATE" />
+                <ScalarProperty Name="CreatedBy" ColumnName="CREATED_BY" />
+                <ScalarProperty Name="AccountName" ColumnName="ACCOUNT_NAME" />
+                <ScalarProperty Name="BankInfoId" ColumnName="BANK_INFO_ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2008/10/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="true" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="true" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>

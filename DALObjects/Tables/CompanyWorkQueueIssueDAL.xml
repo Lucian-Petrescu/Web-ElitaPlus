@@ -1,0 +1,79 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+
+<!-- ********************** THIS FILE HAS BEEN GENERATED FROM TEMPLATE SQLObject.cst (9/25/2012)********************** -->
+
+<SQL>
+  <LOAD>
+    <![CDATA[	
+			SELECT 
+				workqueue_id,
+				company_id,
+				issue_id,
+				created_date,
+				created_by,
+				modified_date,
+				modified_by,
+				company_wrkque_issue_id
+			FROM elp_company_wrkque_issue 
+			WHERE
+				company_wrkque_issue_id = :company_wrkque_issue_id
+		]]>
+  </LOAD>
+  <LOAD_LIST></LOAD_LIST>
+  <LOAD_WQ_BY_ISSUE>
+    SELECT
+    workqueue_id,
+    company_id,
+    issue_id,
+    created_date,
+    created_by,
+    modified_date,
+    modified_by,
+    company_wrkque_issue_id
+    FROM elp_company_wrkque_issue
+    WHERE
+    issue_id = :issue_id
+  </LOAD_WQ_BY_ISSUE>
+  <LOAD_WQ_BY_ISSUE_COMPANY>
+    <![CDATA[	
+    select workqueue_id 
+    from elp_company_wrkque_issue
+    where issue_id = :issue_id
+    and company_id = :company_id
+    ]]>
+  </LOAD_WQ_BY_ISSUE_COMPANY>
+  <UPDATE>
+    <![CDATA[	
+			UPDATE elp_company_wrkque_issue SET
+				workqueue_id = :workqueue_id,
+				company_id = :company_id,
+				issue_id = :issue_id,
+				modified_by = :modified_by
+			WHERE
+				company_wrkque_issue_id = :company_wrkque_issue_id
+		]]>
+  </UPDATE>
+  <INSERT>
+    INSERT INTO elp_company_wrkque_issue
+    (
+    workqueue_id,
+    company_id,
+    issue_id,
+    created_by,
+    company_wrkque_issue_id
+    )
+    VALUES
+    (
+    :workqueue_id,
+    :company_id,
+    :issue_id,
+    :created_by,
+    :company_wrkque_issue_id
+    )
+  </INSERT>
+  <DELETE>
+    DELETE FROM elp_company_wrkque_issue
+    WHERE
+    company_wrkque_issue_id = :company_wrkque_issue_id
+  </DELETE>
+</SQL>

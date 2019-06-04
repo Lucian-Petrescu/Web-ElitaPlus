@@ -1,0 +1,159 @@
+<?xml version="1.0" encoding="utf-8" ?>
+
+<!-- ********************** THIS FILE HAS BEEN GENERATED FROM TEMPLATE SQLObject.cst (1/18/2005)********************** -->
+
+<SQL>
+  <LOAD>
+    <![CDATA[	
+			SELECT 
+				company_group_id,
+				risk_group_id,
+				description,
+				description_english,
+				created_by,
+				created_date,
+				modified_by,
+				modified_date,
+				parts_description_id,
+        code
+			FROM elp_parts_description 
+			WHERE
+				parts_description_id = :parts_description_id
+		]]>
+  </LOAD>
+  <LOAD_LIST>
+    <![CDATA[	
+				SELECT
+				parts_description_id,
+				translation Risk_Group,
+				parts.description,
+				parts.description_english,
+				parts.risk_group_id,
+				parts.company_group_id,
+        parts.code
+			FROM elp_parts_description parts,
+					elp_list_item li,
+					elp_dict_item_translation trans
+			WHERE li.list_item_id = risk_group_id
+			AND li.dict_item_id = trans.dict_item_id
+		]]>
+  </LOAD_LIST>
+  <LOAD_ASSIGNED_LIST>
+    <![CDATA[	
+			SELECT
+				distinct
+				parts.risk_group_id,
+				translation as risk_group
+			FROM elp_parts_description parts,
+					elp_list_item li,
+					elp_dict_item_translation trans
+			WHERE li.list_item_id = risk_group_id
+			AND li.dict_item_id = trans.dict_item_id
+		]]>
+  </LOAD_ASSIGNED_LIST>
+  <UPDATE>
+    <![CDATA[	
+			UPDATE elp_parts_description SET
+				company_group_id = :company_group_id,
+				risk_group_id = :risk_group_id,
+				description = :description,
+				description_english = :description_english,
+				modified_by = :modified_by,
+        code = :code
+			WHERE
+				parts_description_id = :parts_description_id
+		]]>
+  </UPDATE>
+  <INSERT>
+    INSERT INTO elp_parts_description
+    (
+    company_group_id,
+    risk_group_id,
+    description,
+    description_english,
+    created_by,
+    parts_description_id,
+    code
+    )
+    VALUES
+    (
+    :company_group_id,
+    :risk_group_id,
+    :description,
+    :description_english,
+    :created_by,
+    :parts_description_id,
+    :code
+    )
+  </INSERT>
+  <DELETE>
+    DELETE FROM elp_parts_description
+    WHERE
+    parts_description_id = :parts_description_id
+  </DELETE>
+  <MAX_CODE>
+    <![CDATA[	
+      select max(to_number(code))
+      from elp_parts_description
+      where company_group_id = :company_group_id and code is not null
+		]]>
+  </MAX_CODE>
+  <CODE_VALIDATION>
+    <![CDATA[	
+      select count(*)
+      from elp_parts_description
+      where company_group_id = :company_group_id and code = :code
+		]]>
+  </CODE_VALIDATION>
+  <GET_PARTS_DESCRIPTION_BY_CODE>
+    <![CDATA[	
+      select
+        parts_description_id
+      from elp_parts_description
+      where company_group_id = :company_group_id and code = :code
+		]]>
+  </GET_PARTS_DESCRIPTION_BY_CODE>
+  <GET_PARTS_DESCRIPTION_BY_CODE_AND_RISK_GROUP>
+    <![CDATA[	
+     select parts.parts_description_id
+      from elp_parts_description parts 
+      where company_group_id = :company_group_id and code = :code
+      And parts.Risk_Group_Id = (Select RT.Risk_Group_Id
+                             From Elp_Risk_Type RT
+                             Where RT.COMPANY_GROUP_ID = :company_group_id
+                             and RT.RISK_TYPE_ID = (Select c.original_risk_type_id
+                                                    From Elp_Claim C
+                                                    Where C.claim_id = :claim_id))
+     
+        
+		]]>
+  </GET_PARTS_DESCRIPTION_BY_CODE_AND_RISK_GROUP>
+
+  <IS_PART_CODE_UNIQUE>
+    <![CDATA[	
+        
+      Select parts_description_id
+      from elp_parts_description 
+      where risk_group_id=:risk_group_id
+      and company_group_id=:company_group_id 
+      and code =:code
+		]]>
+  </IS_PART_CODE_UNIQUE>
+
+  <IS_ENGLISH_DESCRIPTION_UNIQUE>
+    <![CDATA[	
+        
+      Select parts_description_id
+      from elp_parts_description 
+      where risk_group_id=:risk_group_id
+      and company_group_id=:company_group_id 
+      and description_english=:description_english 
+		]]>
+  </IS_ENGLISH_DESCRIPTION_UNIQUE>
+
+
+
+
+</SQL>
+
+

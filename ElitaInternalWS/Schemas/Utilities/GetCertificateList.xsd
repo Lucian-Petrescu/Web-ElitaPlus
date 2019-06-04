@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema">
+  <xs:element name="GetCertificateListInput">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element name="CertificateNumber" minOccurs="0" maxOccurs="1" type="xs:string">
+        </xs:element>
+        <xs:element name="CustomerName" minOccurs="0" maxOccurs="1" type="xs:string">
+        </xs:element>
+        <xs:element name="Address" minOccurs="0" maxOccurs="1" type="xs:string">
+        </xs:element>
+        <xs:element name="ZIP" minOccurs="0" maxOccurs="1" type="xs:string">
+        </xs:element>
+        <xs:element name="TaxID" minOccurs="0" maxOccurs="1" type="xs:string">
+        </xs:element>
+        <xs:element name="DealerCode" minOccurs="0" maxOccurs="1" type="xs:string">
+        </xs:element>
+        <xs:element name="LimitResultset" minOccurs="0" maxOccurs="1" type="xs:integer">
+        </xs:element>
+        <xs:element name="SortBy" minOccurs="0" maxOccurs="1" type="xs:string">
+        </xs:element>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:simpleType name="stringRequired">
+    <xs:restriction base="xs:string">
+      <xs:minLength value="1"></xs:minLength>
+    </xs:restriction>
+  </xs:simpleType>
+</xs:schema>

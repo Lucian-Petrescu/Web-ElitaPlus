@@ -1,0 +1,79 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+
+<!-- ********************** THIS FILE HAS BEEN GENERATED FROM TEMPLATE SQLObject.cst (9/26/2014)********************** -->
+
+<SQL>
+  <LOAD>
+    <![CDATA[	
+			SELECT 
+				user_id,
+				notification_id,
+				created_by,
+				created_date,
+				modified_by,
+				modified_date,
+				user_notification_id
+			FROM elp_user_notification 
+			WHERE
+				user_notification_id = :user_notification_id
+		]]>
+  </LOAD>
+  <LOAD_LIST>
+<![CDATA[	
+    select count(*)
+    from elp_notification n
+    where notification_id not in ( select notification_id
+                                   from elp_user_notification un
+                                   where un.notification_id = n.notification_id
+                                   and un.user_id =:user_id)
+    and n.notification_begin_date >= sysdate
+    and n.notification_end_date <= sysdate
+		]]>
+</LOAD_LIST>
+  <UPDATE>
+  </UPDATE>
+  <INSERT>
+    INSERT INTO elp_user_notification
+    (
+    user_id,
+    notification_id,
+    created_by,
+    user_notification_id
+    )
+    VALUES
+    (
+    :user_id,
+    :notification_id,
+    :created_by,
+    :user_notification_id
+    )
+  </INSERT>
+  <DELETE>
+    DELETE FROM elp_user_notification
+    WHERE
+    user_notification_id = :user_notification_id
+  </DELETE>
+  <USER_NOTIFICATIONS_COUNT>
+<![CDATA[	
+    select count(*)
+    from elp_notification n
+    where notification_id not in ( select notification_id
+                                   from elp_user_notification un
+                                   where un.notification_id = n.notification_id
+                                   and un.user_id =:user_id)
+    and n.notification_begin_date <= sysdate
+    and n.notification_end_date >= sysdate
+    and n.enabled ='Y'
+    --dynamic_where_clause
+		]]>
+</USER_NOTIFICATIONS_COUNT>
+<INSERT_USER_NOTIFICATIONS>
+  elita.elp_utility.Insert_User_Notifications
+</INSERT_USER_NOTIFICATIONS>
+<DELETE_USER_NOTIFICATIONS>
+  elita.elp_utility.Delete_User_Notifications
+</DELETE_USER_NOTIFICATIONS>
+  
+</SQL>
+
+

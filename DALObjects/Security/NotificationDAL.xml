@@ -1,0 +1,149 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+
+<!-- ********************** THIS FILE HAS BEEN GENERATED FROM TEMPLATE SQLObject.cst (10/31/2014)********************** -->
+
+<SQL>
+	<LOAD>
+		<![CDATA[	
+			SELECT 
+				notification_type_id,
+				notification_begin_date,
+				notification_end_date,
+				audiance_type_id,
+				notification_name,
+				notification_details,
+				created_by,
+				created_date,
+				modified_by,
+				modified_date,
+				outage_begin_date,
+				outage_end_date,
+				contact_info,
+				serial_no,
+				enabled,
+				notification_id
+			FROM elp_notification 
+			WHERE
+				notification_id = :notification_id
+		]]>
+	</LOAD>
+  <LOAD_LIST>
+    <![CDATA[	
+    SELECT *
+    FROM   (
+	    	SELECT note.NOTIFICATION_ID,
+	       note_dit.translation as NOTIFICATION_TYPE,
+	       audi_dit.translation as AUDIANCE_TYPE,
+  	     note.notification_name as notification_name,
+  	     note.notification_details as notification_details,
+  	     note.CONTACT_INFO as CONTACT_INFO,
+	       note.NOTIFICATION_BEGIN_DATE,
+	       note.NOTIFICATION_END_DATE,
+	       note.OUTAGE_BEGIN_DATE,
+	       note.OUTAGE_END_DATE,
+	       note.SERIAL_NO,
+        note.ENABLED
+	    FROM ELP_NOTIFICATION note
+	    INNER JOIN elp_list_item                note_li   ON note_li.list_item_id = note.NOTIFICATION_TYPE_ID
+	    INNER JOIN elp_dict_item_translation    note_dit  ON note_dit.dict_item_id = note_li.dict_item_id
+	    INNER JOIN elp_list_item                audi_li   ON audi_li.list_item_id = note.AUDIANCE_TYPE_ID
+	    INNER JOIN elp_dict_item_translation    audi_dit  ON audi_dit.dict_item_id = audi_li.dict_item_id
+	    WHERE note_dit.language_id = :language_id
+	    AND   audi_dit.language_id = :language_id
+	    --dynamic_where_clause
+    )
+    WHERE  ROWNUM <= :row_num
+    --dynamic_order_by_clause
+    ]]>
+  </LOAD_LIST>
+  <LOAD_LIST_FOR_USER>
+    <![CDATA[	
+    SELECT *
+    FROM   (
+	    	SELECT N.NOTIFICATION_ID,
+	       GETDESCRIPTIONFROMLISTITEM (N.NOTIFICATION_TYPE_ID,:language_id) as NOTIFICATION_TYPE,
+	       GETDESCRIPTIONFROMLISTITEM (N.AUDIANCE_TYPE_ID,:language_id) as AUDIANCE_TYPE,
+	  	   N.notification_name as notification_name,
+  	     N.notification_details as notification_details,
+  	     N.CONTACT_INFO as CONTACT_INFO,
+	       N.NOTIFICATION_BEGIN_DATE,
+	       N.NOTIFICATION_END_DATE,
+	       N.OUTAGE_BEGIN_DATE,
+	       N.OUTAGE_END_DATE,
+	       N.SERIAL_NO,
+         N.ENABLED
+	    FROM ELP_NOTIFICATION N
+	    WHERE N.notification_begin_date <= sysdate
+	    and N.notification_end_date >= sysdate
+      and N.ENABLED = 'Y'
+      and N.notification_id not in ( select notification_id
+                                   from elp_user_notification un
+                                   where un.notification_id = N.notification_id
+                                   and un.user_id =:user_id)
+	    --dynamic_where_clause
+    )
+    WHERE  ROWNUM <= :row_num
+    Order By NOTIFICATION_BEGIN_DATE asc
+    ]]>
+  </LOAD_LIST_FOR_USER>
+	<UPDATE>
+		<![CDATA[	
+			UPDATE elp_notification SET
+				notification_type_id = :notification_type_id,
+				notification_begin_date = :notification_begin_date,
+				notification_end_date = :notification_end_date,
+				audiance_type_id = :audiance_type_id,
+				notification_name = :notification_name,
+				notification_details = :notification_details,
+				outage_begin_date = :outage_begin_date,
+				outage_end_date = :outage_end_date,
+				contact_info = :contact_info,
+				serial_no = :serial_no,
+				enabled = :enabled,
+				modified_by = :modified_by
+			WHERE
+				notification_id = :notification_id
+		]]>
+	</UPDATE>
+	<INSERT>
+			INSERT INTO elp_notification
+					(			
+				notification_type_id, 
+				notification_begin_date, 
+				notification_end_date, 
+				audiance_type_id, 
+				notification_name, 
+				notification_details, 
+				outage_begin_date, 
+				outage_end_date, 
+				contact_info, 
+				serial_no,
+				enabled, 
+				created_by,
+				notification_id
+					)
+			VALUES
+					(			
+				:notification_type_id, 
+				:notification_begin_date, 
+				:notification_end_date, 
+				:audiance_type_id, 
+				:notification_name, 
+				:notification_details, 
+				:outage_begin_date, 
+				:outage_end_date, 
+				:contact_info, 
+				:serial_no,
+				:enabled, 
+				:created_by,
+				:notification_id
+					)
+	</INSERT>
+	<DELETE>
+			DELETE FROM elp_notification
+			WHERE
+				notification_id = :notification_id
+	</DELETE>
+</SQL>
+
+

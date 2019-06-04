@@ -1,0 +1,98 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+
+<!-- ********************** THIS FILE HAS BEEN GENERATED FROM TEMPLATE SQLObject.cst (8/15/2017)********************** -->
+
+<SQL>
+  <LOAD>
+    <![CDATA[	
+			SELECT 
+        oc_template_params_id,
+				oc_template_id,
+				param_name,
+				param_value_source_xcd,
+        '' as param_value,
+        'STD' as param_type,
+				param_data_type_xcd,
+				date_format_string,
+				allow_empty_value_xcd,
+				created_by,
+				created_date,
+				modified_by,
+				modified_date
+			FROM elp_oc_template_params 
+			WHERE
+				oc_template_params_id = :oc_template_params_id
+		]]>
+  </LOAD>
+  <LOAD_LIST>
+  </LOAD_LIST>
+  <LOAD_LIST_BY_TEMPLATE_ID>
+    <![CDATA[	
+			SELECT 
+        oc_template_params_id,
+				oc_template_id,
+				param_name,
+				param_value_source_xcd,
+        elp_utl_lov.description(param_value_source_xcd, :language_id) param_value_source_description,
+        '' as param_value,
+        'STD' as param_type,
+				param_data_type_xcd,
+        elp_utl_lov.description(param_data_type_xcd, :language_id) param_data_type_description,
+				date_format_string,
+				allow_empty_value_xcd,
+        elp_utl_lov.description(allow_empty_value_xcd, :language_id) allow_empty_value_description,
+				created_by,
+				created_date,
+				modified_by,
+				modified_date
+			FROM elp_oc_template_params 
+			WHERE
+				oc_template_id = :oc_template_id
+		]]>
+  </LOAD_LIST_BY_TEMPLATE_ID>
+  <UPDATE>
+    <![CDATA[	
+			UPDATE elp_oc_template_params SET
+				oc_template_id = :oc_template_id,
+				param_name = :param_name,
+				param_value_source_xcd = :param_value_source_xcd,
+				param_data_type_xcd = :param_data_type_xcd,
+				date_format_string = :date_format_string,
+				allow_empty_value_xcd = :allow_empty_value_xcd,
+				modified_by = :modified_by
+			WHERE
+				oc_template_params_id = :oc_template_params_id
+		]]>
+  </UPDATE>
+  <INSERT>
+    INSERT INTO elp_oc_template_params
+    (
+    oc_template_id,
+    param_name,
+    param_value_source_xcd,
+    param_data_type_xcd,
+    date_format_string,
+    allow_empty_value_xcd,
+    created_by,
+    oc_template_params_id
+    )
+    VALUES
+    (
+    :oc_template_id,
+    :param_name,
+    :param_value_source_xcd,
+    :param_data_type_xcd,
+    :date_format_string,
+    :allow_empty_value_xcd,
+    :created_by,
+    :oc_template_params_id
+    )
+  </INSERT>
+  <DELETE>
+    DELETE FROM elp_oc_template_params
+    WHERE
+    oc_template_params_id = :oc_template_params_id
+  </DELETE>
+</SQL>
+
+

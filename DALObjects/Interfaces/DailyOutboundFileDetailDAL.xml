@@ -1,0 +1,94 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+
+<!-- ********************** THIS FILE HAS BEEN GENERATED FROM TEMPLATE SQLObject.cst (1/31/2013)********************** -->
+
+<SQL>
+  <LOAD>
+    <![CDATA[	
+			SELECT 
+				company_id,
+				dealer_id,
+				cert_id,
+				cert_number,
+				cert_created_date,
+				record_type,
+				created_date,
+				created_by,
+				rec_cancel,
+				rec_new_business,
+				rec_billing,
+				file_detail_id,
+        0 as File_Detail_Temp_id
+			FROM elp_daily_outbound_file_detail 
+			WHERE
+				file_detail_id = :file_detail_id
+		]]>
+  </LOAD>
+  <LOAD_LIST>
+    SELECT file_detail_id,company_id,dealer_id,cert_number,cert_created_Date,rec_new_business,rec_cancel,
+    rec_billing,cert_id,billing_Detail_id,record_type,created_Date,created_by ,'0' as File_Detail_Temp_id FROM elp_daily_outbound_file_detail
+  </LOAD_LIST>
+  <UPDATE>
+    <![CDATA[	
+			UPDATE elp_daily_outbound_file_detail SET
+				company_id = :company_id,
+				dealer_id = :dealer_id,
+				cert_id = :cert_id,
+				cert_number = :cert_number,
+				cert_created_date = :cert_created_date,
+				record_type = :record_type,
+				rec_cancel = :rec_cancel,
+				rec_new_business = :rec_new_business,
+				rec_billing = :rec_billing,
+				modified_by = :modified_by
+			WHERE
+				file_detail_id = :file_detail_id
+		]]>
+  </UPDATE>
+  <INSERT>
+    INSERT INTO elp_daily_outbound_file_detail
+    (
+    file_detail_id,
+    billing_detail_id,
+    company_id,
+    dealer_id,
+    cert_id,
+    cert_number,
+    cert_created_date,
+    rec_cancel,
+    rec_new_business,
+    rec_billing,
+    record_type,
+    created_date,
+    created_by
+    )
+    VALUES
+    (
+    :file_detail_id,
+    :billing_detail_id,
+    :company_id,
+    :dealer_id,
+    :cert_id,
+    :cert_number,
+    :cert_created_date,
+    :rec_cancel,
+    :rec_new_business,
+    :rec_billing,
+    :record_type,
+    :created_date,
+    :created_by
+    )
+  </INSERT>
+  <DELETE>
+    DELETE FROM elp_daily_outbound_file_detail
+    WHERE
+    file_detail_id = :file_detail_id
+  </DELETE>
+  <Detail_Records_View_List>
+    SELECT * FROM elp_daily_outbound_file_detail
+    WHERE
+    file_detail_id = :file_detail_id
+  </Detail_Records_View_List>
+  </SQL>
+
+

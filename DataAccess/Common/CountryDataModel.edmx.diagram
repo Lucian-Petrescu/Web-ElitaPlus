@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="2.0" xmlns:edmx="http://schemas.microsoft.com/ado/2008/10/edmx">
+ <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2008/10/edmx">
+    <!-- Diagram content (shape and connector positions) -->
+    <edmx:Diagrams>
+      <Diagram DiagramId="ced599d4eac54a169f669a769d187c7b" Name="Diagram1" ZoomLevel="89">
+        <EntityTypeShape EntityType="Model4.Country" Width="1.5" PointX="0.75" PointY="0.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="Model4.Region" Width="1.5" PointX="3" PointY="0.75" />
+        <AssociationConnector Association="Model4.FK_REGION_COUNTRY" />
+        <EntityTypeShape EntityType="Model4.ServiceCenter" Width="1.5" PointX="3" PointY="4.375" />
+        <AssociationConnector Association="Model4.FK_SERVICE_CENTER_COUNTRY" />
+        <AssociationConnector Association="Model4.FK_SVCCTR_LOANER_SVCCTR" />
+        <AssociationConnector Association="Model4.FK_SVCCTR_MASTER_SVCCTR" />
+        <EntityTypeShape EntityType="Model4.BankInfo" Width="2" PointX="5.75" PointY="0.625" />
+        <AssociationConnector Association="Model4.FK_BANK_INFO_COUNTRY" ManuallyRouted="false" >
+        </AssociationConnector>
+        <AssociationConnector Association="Model4.FK_SVC_BANK_INFO" />
+      </Diagram>
+    </edmx:Diagrams>
+  </edmx:Designer>
+</edmx:Edmx>

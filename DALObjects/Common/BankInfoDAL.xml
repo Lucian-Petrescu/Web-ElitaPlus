@@ -1,0 +1,127 @@
+<?xml version="1.0" encoding="utf-8" ?> 
+
+<SQL>
+	<LOAD>
+		<![CDATA[	
+			SELECT 
+				bank_info_id,
+				account_name,
+				bank_id,
+				account_number,
+				country_id,
+				payment_reason_id,
+				branch_name,
+				bank_name,
+				bank_sort_code,
+				created_by,
+				created_date,
+				modified_by,
+				modified_date,
+        iban_number,
+        swift_code,
+        bank_lookup_code,
+        transaction_limit,
+        bank_sub_code,
+        account_type_id,
+        branch_digit,
+        account_digit,
+        branch_number,
+        tax_id,
+        account_number_last4digits,
+        iban_number_last4digits,
+        address_id
+			FROM elp_bank_info 
+			WHERE BANK_INFO_ID = :BANK_INFO_ID
+		]]>
+	</LOAD>
+	<LOAD_LIST>		
+	</LOAD_LIST>	
+	<UPDATE>
+		<![CDATA[	
+			UPDATE elp_bank_info SET
+				account_name = :account_name,
+				bank_id = :bank_id,
+				account_number = :account_number,
+				country_id = :country_id,
+				branch_name = :branch_name,
+				bank_name = :bank_name,
+				bank_sort_code = :bank_sort_code,
+				modified_by = :modified_by,
+        iban_number = :iban_number,
+        swift_code = :swift_code,
+        bank_lookup_code = :bank_lookup_code,
+        transaction_limit = :transaction_limit,
+        bank_sub_code = :bank_sub_code,
+        account_type_id = :account_type_id,
+        branch_digit = :branch_digit,
+        account_digit = :account_digit,
+        branch_number = :branch_number,
+        tax_id        = :tax_id,
+        address_id = :address_id
+			WHERE
+				bank_info_id = :bank_info_id
+		]]>
+	</UPDATE>
+	<INSERT>
+    INSERT INTO elp_bank_info
+    (
+    bank_info_id,
+    account_name,
+    bank_id,
+    account_number,
+    country_id,
+    payment_reason_id,
+    branch_name,
+    bank_name,
+    bank_sort_code,
+    created_by,
+    iban_number,
+    swift_code,
+    bank_lookup_code,
+    transaction_limit,
+    bank_sub_code,
+    account_type_id,
+    branch_digit,
+    account_digit,
+    branch_number,
+    tax_id,
+    address_id
+    )
+    VALUES
+    (
+    :bank_info_id,
+    :account_name,
+    :bank_id,
+    :account_number,
+    :country_id,
+    :payment_reason_id,
+    :branch_name,
+    :bank_name,
+    :bank_sort_code,
+    :created_by,
+    :iban_number,
+    :swift_code,
+    :bank_lookup_code,
+    :transaction_limit,
+    :bank_sub_code,
+    :account_type_id,
+    :branch_digit,
+    :account_digit,
+    :branch_number,
+    :tax_id,
+    :address_id
+    )
+  </INSERT>
+	<DELETE>
+			DELETE FROM elp_bank_info
+			WHERE
+				bank_info_id = :bank_info_id
+	</DELETE>
+  <VALIDATE_IBAN_NUMBER>
+    elita.elp_table_bank_info.iban_is_valid_dotnet
+  </VALIDATE_IBAN_NUMBER>
+</SQL> 
+
+
+
+

@@ -1,0 +1,129 @@
+<?xml version="1.0" encoding="utf-8" ?>
+
+<!-- ********************** THIS FILE HAS BEEN GENERATED FROM TEMPLATE SQLObject.cst (4/19/2007)********************** -->
+
+<SQL>
+  <LOAD>
+    <![CDATA[	
+			SELECT 
+				acct_company_id,
+				description,
+                ftp_directory, 
+                use_accounting,
+				modified_date,
+				modified_by,
+                use_elita_bank_info_id,
+                code,
+                rpt_commission_breakdown,
+                acct_system_id,
+                process_method_id,
+                cov_entity_by_region,
+                balance_directory,
+                notify_email,
+                use_coverage_entity,
+				created_date,
+				created_by
+			FROM elp_acct_company 
+			WHERE
+				acct_company_id = :acct_company_id
+		]]>
+  </LOAD>
+  <LOAD_LIST>
+    <![CDATA[	
+			SELECT 
+				acct_company_id,			
+				description,
+        ftp_directory,
+        use_accounting,
+        use_elita_bank_info_id,
+        code,
+        rpt_commission_breakdown,
+        acct_system_id,
+        GetYesNo(use_elita_bank_info_id)use_elita_bank_info,
+        process_method_id,
+        cov_entity_by_region,
+        modified_date,
+				modified_by,
+				created_date,
+				created_by,
+        balance_directory,
+        notify_email,
+        use_coverage_entity
+			FROM elp_acct_company	
+			WHERE UPPER(description) LIKE UPPER(:description)
+			ORDER BY UPPER(description)	
+		]]>
+  </LOAD_LIST>
+  <UPDATE>
+    <![CDATA[	
+			UPDATE elp_acct_company SET
+				description = :description,
+        ftp_directory = :ftp_directory,
+        use_accounting = :use_accounting,
+        use_elita_bank_info_id = :use_elita_bank_info_id,
+        code = :code,
+        rpt_commission_breakdown = :rpt_commission_breakdown,
+        acct_system_id = :acct_system_id,
+        process_method_id = :process_method_id,
+        cov_entity_by_region = :cov_entity_by_region,
+				modified_by = :modified_by,
+        balance_directory = :balance_directory,
+        notify_email = :notify_email,
+        use_coverage_entity = :use_coverage_entity
+			WHERE
+				acct_company_id = :acct_company_id
+		]]>
+  </UPDATE>
+  <INSERT>
+    INSERT INTO elp_acct_company
+    (
+    description,
+    ftp_directory,
+    use_accounting,
+    use_elita_bank_info_id,
+    code,
+    rpt_commission_breakdown,
+    acct_system_id,
+    process_method_id,
+    cov_entity_by_region,
+    created_by,
+    acct_company_id,
+    balance_directory,
+    notify_email,
+    use_coverage_entity
+    )
+    VALUES
+    (
+    :description,
+    :ftp_directory,
+    :use_accounting,
+    :use_elita_bank_info_id,
+    :code,
+    :rpt_commission_breakdown,
+    :acct_system_id,
+    :process_method_id,
+    :cov_entity_by_region,
+    :created_by,
+    :acct_company_id,
+    :balance_directory,
+    :notify_email,
+    :use_coverage_entity
+    )
+  </INSERT>
+  <DELETE>
+    DELETE FROM elp_acct_company
+    WHERE
+    acct_company_id = :acct_company_id
+  </DELETE>
+  <GET_COMPANIES>
+    <![CDATA[	
+			Select DISTINCT(a.ACCT_COMPANY_ID),b.description,b.ftp_directory
+			from ELP_COMPANY a, ELP_ACCT_COMPANY b
+			Where rownum <= :row_num
+			ANd a.ACCT_COMPANY_ID = b.ACCT_COMPANY_ID
+			--dynamic_where_clause
+		]]>
+  </GET_COMPANIES>
+</SQL>
+
+

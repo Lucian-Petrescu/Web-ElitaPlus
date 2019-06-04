@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="utf-8" ?>
+
+<!-- ********************** THIS FILE HAS BEEN GENERATED FROM TEMPLATE SQLObject.cst (9/23/2004)********************** -->
+
+<SQL>
+  <LOAD>
+    <![CDATA[	
+			SELECT 
+				regular_expression_id,
+				created_date,
+				modified_date,
+				created_by,
+				modified_by,
+				description,
+				locator_start_position,
+				locator_length,
+				reformat_file_input_flag,
+				postal_code_format_id,
+        comuna_enabled
+			FROM elp_postal_code_format 
+			WHERE
+				postal_code_format_id = :postal_code_format_id
+		]]>
+  </LOAD>
+  <LOAD_LIST>
+    <![CDATA[	
+			SELECT 
+			pcf.postal_code_format_id,
+			pcf.description,
+			ex.format
+			FROM elp_postal_code_format pcf, elp_regular_expression ex   
+			WHERE pcf.regular_expression_id = ex.regular_expression_id and
+				UPPER(description) LIKE UPPER(:description)
+			ORDER BY UPPER(description)
+		]]>
+  </LOAD_LIST>
+  <UPDATE>
+    <![CDATA[	
+			UPDATE elp_postal_code_format SET
+				regular_expression_id = :regular_expression_id,
+				description = :description,
+				locator_start_position = :locator_start_position,
+				locator_length = :locator_length,
+				reformat_file_input_flag = :reformat_file_input_flag,
+        comuna_enabled = :comuna_enabled,
+				modified_by = :modified_by
+			WHERE
+				postal_code_format_id = :postal_code_format_id
+		]]>
+  </UPDATE>
+  <INSERT>
+    INSERT INTO elp_postal_code_format
+    (
+    regular_expression_id,
+    description,
+    locator_start_position,
+    locator_length,
+    reformat_file_input_flag,
+    created_by,
+    postal_code_format_id,
+    comuna_enabled
+    )
+    VALUES
+    (
+    :regular_expression_id,
+    :description,
+    :locator_start_position,
+    :locator_length,
+    :reformat_file_input_flag,
+    :created_by,
+    :postal_code_format_id,
+    :comuna_enabled
+    )
+  </INSERT>
+  <DELETE>
+    DELETE FROM elp_postal_code_format
+    WHERE
+    postal_code_format_id = :postal_code_format_id
+  </DELETE>
+</SQL>
+
+
+

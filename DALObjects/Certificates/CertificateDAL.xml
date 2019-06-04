@@ -1,0 +1,1208 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!-- ********************** THIS FILE HAS BEEN GENERATED FROM TEMPLATE SQLObject.cst (10/12/2004)********************** -->
+<SQL>
+  <LOAD>
+    <![CDATA[	
+						Elita.ELP_TBL_CERTIFICATE.Load
+		]]>
+  </LOAD>
+  <COMBINED_LOAD_LIST>
+    <![CDATA[		
+      select c.cert_id,
+              c.cert_number,
+              c.status_code,
+              c.customer_name,
+              ca.address1,
+              ca.postal_code,
+              c.identification_number,
+              d.dealer,
+              dg.code as dealer_group_code,   
+              c.product_code,
+              c.membership_number,
+              c.invoice_number,
+              c.home_phone,
+              c.work_phone,
+              c.vehicle_license_tag,
+              c.service_line_number,
+              c.is_restricted
+      from elp_dealer d
+      Join elp_cert c on c.dealer_id = d.dealer_id
+      --join   elp_cert_item_coverage cic on c.cert_id = cic.cert_id
+      --dynamic_join_clause
+      Left Join elp_dealer_group dg on dg.dealer_group_id = d.dealer_group_id
+      Left Join elp_address      ca on ca.address_id = c.address_id
+      Left join elita.ELP_GDPR_FORGOT_REQUEST fr on c.cert_id=fr.cert_id
+      --dynamic_from_clause
+      where rownum < :row_num and fr.cert_id is null and
+        --dynamic_where_clause
+        --dynamic_order_by_clause
+		]]>
+  </COMBINED_LOAD_LIST>
+  <COMBINED_VSC_LOAD_LIST>
+    <![CDATA[		
+      select  c.cert_id,
+              c.cert_number,
+              c.status_code,
+              c.customer_name,
+              ca.address1,
+              ca.postal_code,
+              c.identification_number,
+              d.dealer,
+              dg.code as dealer_group_code,
+              c.product_code,
+              c.membership_number,
+              c.invoice_number,
+              c.home_phone,
+              c.work_phone,
+              c.vehicle_license_tag,
+              ci.serial_number,
+              ci.imei_number,
+              c.is_restricted
+    from elp_dealer d
+    Join elp_cert c on c.dealer_id = d.dealer_id
+    join elp_cert_item ci on ci.cert_id = c.cert_id
+    --join   elp_cert_item_coverage cic on c.cert_id = cic.cert_id
+    --dynamic_join_clause
+    --dynamic_from_clause                                         
+    Left Join elp_dealer_group dg on dg.dealer_group_id = d.dealer_group_id
+    Left Join elp_address ca on ca.address_id = c.address_id   
+    where rownum < :row_num and
+    --dynamic_where_clause
+    --dynamic_order_by_claus   
+		]]>
+  </COMBINED_VSC_LOAD_LIST>
+  <LOAD_LIST>
+    <![CDATA[
+			SELECT /*+ index (c) */
+				c.cert_id,
+				c.CERT_NUMBER,
+				c.status_code,
+				c.CUSTOMER_NAME,
+			    (select ADDRESS1 from elp_address where address_id = c.address_id and rownum = 1) ADDRESS1,
+			  	(select POSTAL_CODE from elp_address where address_id = c.address_id and rownum = 1) POSTAL_CODE,
+				c.IDENTIFICATION_NUMBER,
+				d.dealer,
+        dg.code DEALER_GROUP_CODE,
+				c.product_code,
+				C.MEMBERSHIP_NUMBER,
+				c.INVOICE_NUMBER,
+        c.dealer_reward_points
+			FROM
+				elp_cert c,
+				ELP_DEALER d,
+        elp_dealer_group dg
+			WHERE
+			    c.dealer_id = d.dealer_id and
+          d.dealer_group_id = dg.dealer_group_id(+) and
+			--dynamic_where_clause
+			 and ROWNUM < :row_num
+			--dynamic_order_by_clause
+		]]>
+  </LOAD_LIST>
+  <LOAD_LIST_BY_PHONE>
+    <![CDATA[
+			SELECT
+				c.cert_id,
+				c.CERT_NUMBER,
+				c.status_code,
+				c.CUSTOMER_NAME,
+			    (select ADDRESS1 from elp_address where address_id = c.address_id and rownum = 1) ADDRESS1,
+			  	(select POSTAL_CODE from elp_address where address_id = c.address_id and rownum = 1) POSTAL_CODE,
+				c.IDENTIFICATION_NUMBER,
+				d.dealer,
+        dg.code DEALER_GROUP_CODE,
+				c.product_code,
+				c.home_phone,
+				c.work_phone,
+        c.dealer_reward_points
+			FROM
+				elp_cert c,
+				ELP_DEALER d,
+        elp_dealer_group dg
+			WHERE
+				c.dealer_id = d.dealer_id 
+        and d.dealer_group_id = dg.dealer_group_id(+) 
+        and ROWNUM < :row_num
+		    --dynamic_where_clause
+		    --dynamic_order_by_clause
+		]]>
+  </LOAD_LIST_BY_PHONE>
+  <LOAD_GALAXY_LIST>
+    <![CDATA[
+ 	    SELECT     	
+        c.cert_number,
+				d.dealer as dealer_code,
+        d.dealer_name as dealer_name,
+        c.customer_name,
+				m.description as make,
+				ci.model as model,
+				c.vehicle_year as year,
+				ci.serial_number as vin,
+				c.vehicle_license_tag,
+				cic.coverage_km_mi as term_km_mi,
+				round(months_between(cic.end_date + 1, cic.begin_date),0) as term_months,
+			  cic.begin_date as effective_date,
+			  cic.end_date as expiration_date,
+        c.home_phone as customer_phone
+			FROM
+				elp_cert c,
+				elp_cert_item ci,
+				elp_cert_item_coverage cic,
+				elp_dealer d,
+				elp_manufacturer m
+			WHERE  
+			   c.dealer_id = d.dealer_id and
+			   c.cert_id = ci.cert_id and
+			   c.company_id = ci.company_id and
+				 ci.cert_item_id = cic.cert_item_id and
+				 c.company_id = cic.company_id and
+ 		     cic.coverage_type_id = GetFirstCoverage(c.cert_id) and
+			   ci.manufacturer_id = m.manufacturer_id and
+			   --dynamic_where_clause
+			   and ROWNUM <= :row_num
+			   --dynamic_order_by_clause
+		]]>
+  </LOAD_GALAXY_LIST>
+  <LOAD_OLITA_LIST>
+    <![CDATA[
+ 	    SELECT
+        	c.cert_number,
+			m.description as manufacturer,
+			ci.model as model,
+			ci.serial_number,
+	        ci.item_description,
+        	sum(cic.GROSS_AMT_RECEIVED) as warranty_sales_price,
+        	c.warranty_sales_date
+		FROM	elp_cert c,
+				elp_cert_item ci,
+				elp_cert_item_coverage cic,
+				elp_manufacturer m
+		WHERE
+			   c.cert_id = ci.cert_id and
+			   c.company_id = ci.company_id and
+			   ci.cert_item_id = cic.cert_item_id and
+			   c.company_id = cic.company_id and
+			   ci.manufacturer_id = m.manufacturer_id and
+			   --dynamic_where_clause
+			   and ROWNUM < :row_num
+    GROUP BY c.cert_number, m.description , ci.model, ci.serial_number, ci.item_description, c.warranty_sales_date
+		--dynamic_order_by_clause
+		]]>
+  </LOAD_OLITA_LIST>
+  <LOAD_CERTIFICATE_FOR_CANCELLATION>
+    <![CDATA[
+      SELECT
+					b.branch_name as branch_description,
+					c.warranty_sales_date,
+					c.product_sales_date,
+					c.sales_price,
+          (select sum (cic.GROSS_AMT_RECEIVED) From elp_cert_item_coverage cic where c.cert_id = cic.cert_id) as gross_amount_received,
+					c.cert_number,
+					ROUND(elita.getcertterm(c.cert_id),2) as certificate_duration,
+					i.installment_amount,
+					i.number_of_installments,
+					ROUND(elita.getcertterm(c.cert_id, 'M'),2) as mfg_warranty_duration,
+					c.invoice_number,
+					c.insurance_activation_date,
+					c.work_phone,
+					c.home_phone,
+          (select t.Translation
+                  from ELP_LIST_ITEM li
+      		 inner join elp_dict_item_translation t on t.DICT_ITEM_ID = li.DICT_ITEM_ID,
+      		 elp_company inner join elp_dealer on elp_company.company_id = elp_dealer.company_id
+      		 where li.List_Item_ID = c.SALUTATION_ID
+             and t.LANGUAGE_ID =  elp_company.LANGUAGE_ID
+             and elp_dealer.dealer_id = c.dealer_id) Salutation,
+					c.customer_name,
+					c.identification_number as customer_tax_id,
+					c.email as customer_email,
+					a.address1,
+					a.address2,
+					a.city,
+					r.short_desc as region,
+					a.postal_code,
+          c.sales_rep_number as sales_rep,
+          ci.model,
+          p.description as product_description,
+          ci.serial_number,
+					m.description as mfg_description
+					FROM
+						elp_cert c,
+						elp_dealer d,
+						elp_cert_item ci,
+						elp_manufacturer m,
+						elp_region r,
+						elp_address a,
+						elp_country country,
+						elp_branch b,
+						elp_cert_installment i,
+						elp_product_code p
+             --dynamic_from_clause
+					WHERE
+						c.dealer_id = d.dealer_id and
+						c.cert_id = ci.cert_id and
+			      ci.item_number = (select min(item_number) from elp_cert_item where cert_id = c.cert_id) and
+			      d.dealer_id = hextoraw(:dealerId) and
+            c.product_code = p.product_code and
+			      p.dealer_id = c.dealer_id and
+			      c.status_code = 'A' and               
+			      c.dealer_branch_code = b.branch_code (+) and
+			      c.dealer_id = b.dealer_id (+) and
+						ci.manufacturer_id = m.manufacturer_id (+) and
+						c.address_id = a.address_id (+) and
+						a.region_id = r.region_id (+) and
+						a.country_id = country.country_id (+) and
+						c.cert_id = i.cert_id (+) and
+            c.cert_number = :cert_number
+            --dynamic_where_clause
+		]]>
+  </LOAD_CERTIFICATE_FOR_CANCELLATION>
+  <LOAD_CERTIFICATES_FOR_CANCELLATION>
+    <![CDATA[
+Select * from (
+SELECT
+          c.warranty_sales_date,
+          c.sales_rep_number as SalesRepID,
+					c.cert_number,
+          (select t.Translation
+          from ELP_LIST_ITEM li
+      		inner join elp_dict_item_translation t on t.DICT_ITEM_ID = li.DICT_ITEM_ID,
+      		elp_company inner join elp_dealer on elp_company.company_id = elp_dealer.company_id
+      		where li.List_Item_ID = c.SALUTATION_ID
+          and t.LANGUAGE_ID =  elp_company.LANGUAGE_ID
+          and elp_dealer.dealer_id = c.dealer_id) Salutation,
+					c.customer_name,
+          c.email,
+          a.address1,
+					a.address2,
+					a.city,
+          m.description as mfg_description,
+          ci.model,
+          ci.serial_number,
+          --dynamic_row_number
+					FROM
+						elp_cert c,
+            elp_dealer d,
+            elp_address a,
+						elp_cert_item ci,
+						elp_manufacturer m
+            --dynamic_from_clause
+					WHERE
+						c.dealer_id = d.dealer_id and
+            d.dealer_id = hextoraw(:dealerId) and
+						c.cert_id = ci.cert_id and
+			      ci.item_number = (select min(item_number) from elp_cert_item where cert_id = c.cert_id) and
+			      c.status_code = 'A' and
+            c.address_id = a.address_id (+) and
+						ci.manufacturer_id = m.manufacturer_id (+) 
+            --dynamic_where_clause
+			--dynamic_order_by_clause
+ )
+ where number_of_row > :low_limit AND number_of_row < :high_limit
+		]]>
+  </LOAD_CERTIFICATES_FOR_CANCELLATION>
+  <LOAD_MARKUP_AND_COMMISSION>
+    <![CDATA[
+Select * from (
+SELECT
+					d.dealer as dealer_code,
+          c.cert_number as certificate_number,
+          (select sum(MARKUP_COMMISSION) from elp_cert_item_coverage cic where cic.cert_id = c.cert_id) as markup,
+          (select sum(COMMISSION) from elp_cert_item_coverage cic where cic.cert_id = c.cert_id) as commission
+          --dynamic_row_number
+					FROM
+						elp_cert c,
+            elp_dealer d					
+					WHERE
+						c.dealer_id = d.dealer_id and
+			      c.status_code = 'A'
+            --dynamic_where_clause
+			--dynamic_order_by_clause
+ )
+ where number_of_row > :low_limit AND number_of_row < :high_limit
+		]]>
+  </LOAD_MARKUP_AND_COMMISSION>
+  <LOAD_SERIAL_NUMBER_LIST>
+    <![CDATA[
+			SELECT 	
+				c.cert_id, 
+				ci.serial_number,
+        ci.imei_number,
+   			c.cert_number, 				
+				c.status_code,
+				d.dealer,
+				c.product_code
+			FROM 				
+				elp_dealer d,
+				elp_cert c,
+				elp_cert_item ci				 
+			WHERE c.cert_id = ci.cert_id AND
+				  d.dealer_id = c.dealer_id and						
+			--dynamic_where_clause
+			
+			 and ROWNUM < :row_num
+			--dynamic_order_by_clause
+			
+		]]>
+  </LOAD_SERIAL_NUMBER_LIST>
+  <LOAD_VEHICLE_LICENSE_FLAG_LIST>
+    <![CDATA[
+			SELECT 	
+				c.cert_id, 
+				c.vehicle_license_tag,
+				c.cert_number, 				
+				c.status_code,
+				c.customer_name
+			FROM 				
+  			elp_cert c,				
+        elp_cert_item ci				 
+			WHERE c.cert_id = ci.cert_id AND
+			--dynamic_where_clause
+      AND c.vehicle_license_tag is not null
+      AND ROWNUM < :row_num 				
+			--dynamic_order_by_clause
+		]]>
+  </LOAD_VEHICLE_LICENSE_FLAG_LIST>
+  <GET_PROD_CODE_DESC>
+    SELECT
+    description
+    FROM elp_product_code
+    WHERE
+    dealer_id = :dealer_id and
+    product_code = :product_code
+  </GET_PROD_CODE_DESC>
+  <GET_TOTALS>
+    elita.ELP_TBL_CERTIFICATE_PREMIUM
+  </GET_TOTALS>
+  <GET_COMMISSION_FOR_ENTITIES>
+    ELP_INSTALLMENT.GetEntityWiseCommDetails
+  </GET_COMMISSION_FOR_ENTITIES>
+  <GET_CANCELLATION_ID>
+    SELECT
+    cc.cert_cancellation_id
+    FROM elp_cert c, elp_cert_cancellation cc
+    WHERE c.cert_id = :cert_id
+    AND c.cert_id = cc.cert_id
+  </GET_CANCELLATION_ID>
+  <GET_CANCEL_REQUEST_ID>
+    SELECT
+    cr.cert_cancel_request_id
+    FROM elp_cert c, elp_cert_cancel_request cr
+    WHERE c.cert_id = :cert_id
+    AND c.cert_id = cr.cert_id
+    and cr.created_date = (select max(created_date) from elp_cert_cancel_request where cert_id = :cert_id)
+  </GET_CANCEL_REQUEST_ID>
+  <LOAD_CLAIMS>
+    select clm.claim_id,
+    clm.claim_number,
+    cl.created_date,
+    clm.status_code,
+    clm.authorized_amount,
+    (select nvl(sum(d.PAYMENT_AMOUNT + nvl(bonus, 0) + nvl(bonus_tax, 0)), 0)
+    from ELP_DISBURSEMENT d
+    where d.claim_id = clm.claim_id)                                                  as total_paid,
+    GetDescriptionFromItemextcode('CLMSTAT-' || clm.extended_status_code, :language_id) as extended_status,
+    ELITA.GetLatestClaimComment(clm.claim_id)                                           as comments,
+    getcodefromlistitem(clm.method_of_repair_id)                                        as Method_Of_Repair_code,
+    clm.Repair_Date
+    from elp_cert_item_coverage   cic
+    join elp_cert                 c on c.cert_id = cic.cert_id
+    join elp_claim_extended_mv    clm on clm.cert_item_coverage_id  = cic.cert_item_coverage_id
+    join elp_claim                cl on cl.claim_id = clm.claim_id
+    and cl.cert_item_coverage_id = cic.cert_item_coverage_id
+    where cic.cert_id = :cert_id
+    order by created_date desc,
+    claim_number desc
+  </LOAD_CLAIMS>
+  <LOAD_CLAIMS_EXTENDED>
+    select
+    clm.claim_id,
+    clm.claim_number,
+    clm.status_code,
+    clm.extended_status_code
+    from elp_cert_item_coverage   cic
+    join elp_cert                 c    on  c.cert_id = cic.cert_id
+    join elp_claim_extended_mv    clm  on  clm.cert_item_coverage_id  = cic.cert_item_coverage_id
+    and c.cert_id = clm.cert_id
+    join elp_claim                cl   on  cl.claim_id = clm.claim_id
+    and cl.cert_item_coverage_id = cic.cert_item_coverage_id
+    left join elp_claim_equipment ce   on  cl.claim_id = ce.claim_id
+    where clm.cert_id = :cert_id
+    and   clm.dealer_id = :dealer_id
+    and nvl(ce.serial_number, ce.imei_number) = :serial_imei_number
+    and cl.status_Code = 'A'
+  </LOAD_CLAIMS_EXTENDED>
+  <UPDATE>
+    Elita.elp_tbl_certificate.Modify
+  </UPDATE>
+  <VALIDATE_BR_DOCUMENT>
+    elp_dealer_load.validate_brazil_identification
+  </VALIDATE_BR_DOCUMENT>
+  <LOAD_OLITA_CONSUMER_CERT_LIST>
+    <![CDATA[
+			SELECT
+					c.cert_id,
+					c.cert_number,
+					d.dealer,
+					c.status_code,
+          ci.item_description as dealer_item_description,
+					m.description as manufacturer_description,
+					ci.model,
+					ci.serial_number,
+          (select t.Translation
+                  from ELP_LIST_ITEM li
+      		 inner join elp_dict_item_translation t on t.DICT_ITEM_ID = li.DICT_ITEM_ID,
+      		 elp_company inner join elp_dealer on elp_company.company_id = elp_dealer.company_id
+      		 where li.List_Item_ID = c.SALUTATION_ID
+             and t.LANGUAGE_ID =  elp_company.LANGUAGE_ID
+             and elp_dealer.dealer_id = c.dealer_id) Salutation,
+					c.customer_name,
+					a.address1,
+					a.address2,
+					a.city,
+					r.description as region_description,
+					a.postal_code,
+					c.home_phone,
+					c.email,
+					country.code as country_code,
+          c.invoice_number,
+          c.warranty_sales_date,
+          sales_price,
+          c.dealer_product_code,
+					c.membership_number,
+					c.primary_member_name,
+					ma.address1 as mailing_address1,
+					ma.address2 as mailing_address2,
+          ma.city as mailing_city,
+					mr.description as mailing_region_description,
+                    ma.postal_code as mailing_postal_code,
+					mcountry.code as mailing_country_code,
+					li.code as membership_type,
+					c.product_sales_date,
+					Round(GetCertTerm(c.cert_id, null),2) as certificate_duration,
+					GetCertItemCoverageGrossAmt(c.cert_id, 'ITEM') as warranty_price,
+          c.work_phone,
+          ci.item_code,
+          ci.item_retail_price,
+          Round(GetCertTerm(c.cert_id, 'EM'),2) as coverage_duration,
+          c.vat_num
+          ,(select sum(PREMIUM_WRITTEN )  from ELP_CERT_ITEM_COVERAGE cic where cic.cert_id = c.cert_id) PREMIUM_WRITTEN
+          ,(select sum(SALES_TAX)  from ELP_CERT_ITEM_COVERAGE where cert_id = c.cert_id) SALES_TAX
+          ,(select sum(GROSS_AMT_RECEIVED)  from ELP_CERT_ITEM_COVERAGE where cert_id = c.cert_id) GROSS_AMT_RECEIVED
+          ,(select MAX(TAX1_PERCENT) 
+            from (select ct.*, 
+                  rank() over (partition by country_id,company_type_id,tax_type_id,product_Tax_type_id order by dealer_id) rk
+                  from	ELP_COUNTRY_TAX ct
+                  where	ct.TAX_TYPE_ID =  GetTaxTypeID('1')
+                    and (ct.dealer_id = :dealerId or ct.dealer_id is null)
+              ) where (COUNTRY_ID , company_type_id) IN (SELECT BUSINESS_COUNTRY_ID, COMPANY_TYPE_ID
+                    FROM ELP_COMPANY WHERE COMPANY_ID = C.COMPANY_ID)
+                    and		(c.WARRANTY_SALES_DATE between EFFECTIVE_DATE AND EXPIRATION_DATE)
+                    and rk = 1) TAX1_PERCENT
+          ,c.IDENTIFICATION_NUMBER
+          ,(select DESCRIPTION from elp_product_code pc where  pc.PRODUCT_CODE = c.PRODUCT_CODE and pc.dealer_id = c.dealer_id) Item_Description
+        	FROM
+						elp_cert c,
+						elp_dealer d,
+						elp_cert_item ci,
+						elp_manufacturer m,
+						elp_region r,
+						elp_address a,
+						elp_country country,
+						elp_address ma,
+						elp_region mr,
+						elp_country mcountry,
+						elp_list_item li
+					WHERE
+						c.dealer_id = d.dealer_id and
+						c.cert_id = ci.cert_id and
+            ci.item_number = (select min(item_number) from elp_cert_item where cert_id = c.cert_id) and 
+            d.dealer_id = :dealerId and
+						ci.manufacturer_id = m.manufacturer_id (+) and
+						c.address_id = a.address_id (+) and
+						a.region_id = r.region_id (+) and
+						a.country_id = country.country_id (+) and
+						c.mailing_address_id = ma.address_id (+) and
+						ma.region_id = mr.region_id (+) and
+						ma.country_id = mcountry.country_id (+) and
+						c.membership_type_id = li.list_item_id (+)
+            --dynamic_where_clause
+            and ROWNUM < :row_num       
+					Order BY c.cert_number
+		]]>
+  </LOAD_OLITA_CONSUMER_CERT_LIST>
+  <Get_Claim_MaxLossDate>
+    <![CDATA[
+      select count(*) as TotalClaim, max(Loss_Date) as MaxLossDate
+      FROM ELP_CLAIM cm, ELP_CERT_ITEM_COVERAGE cic
+      where cm.CERT_ITEM_COVERAGE_ID =  cic.CERT_ITEM_COVERAGE_ID
+	      and cic.CERT_ID = :cert_id
+    ]]>
+  </Get_Claim_MaxLossDate>
+  <LOAD_GALAXY_CERTIFICATE_DETAIL>
+    <![CDATA[
+			        select c.cert_id,
+               c.cert_number as certificate_number,
+               d.dealer as dealer_code,
+               d.dealer_name as dealer_name,
+              -- getcodefromlistitem(c.purchase_currency_id) as purchase_currency_code,
+               cur.code as Purchase_Currency_Code,
+               getcodefromlistitem(c.method_of_repair_id) as method_of_repair_code,
+               a.address1,
+               a.address2,
+               a.city,
+               r.description as region,
+               a.postal_code,
+               country.code as country_code,
+               c.product_code,
+               c.status_code,
+               c.product_sales_date,
+               c.warranty_sales_date,
+               c.identification_number,
+               c.customer_name,
+               c.home_phone,
+               c.work_phone,
+               c.email,
+               c.dealer_item,
+               ci.item_description as dealer_item_description,
+               c.sales_price,
+               c.dealer_product_code,
+               c.date_paid_for,
+               c.date_paid,
+               c.retailer,
+               (select code 
+                from elp_country 
+                where country_id = c.country_purchase_id) as country_purchase,
+               c.vehicle_year,
+               c.odometer,
+               (select class_code 
+                from elp_vsc_class_code 
+                where class_code_id = c.class_code_id) as class_code,
+                c.registration_date,
+                c.vehicle_license_tag,
+                m.description as make,
+                ci.model as model,
+                ci.serial_number as vin,
+                ELITA.elp_claims.DetermineClaimWaitingPeriod(c.cert_id) as claim_waiting_period,
+                (select Max(COVERAGE_KM_MI) 
+                 from ELP_VSC_COVERAGE_LIMIT cl
+                 where vscm.coverage_limit_code = cl.coverage_limit_code
+                 and cl.coverage_type_id in (select coverage_type_id 
+                                             from elp_cert_item_coverage cic 
+                                             where cic.cert_id = c.cert_id)
+                 and cl.company_group_id = (select company_group_id 
+                                            from elp_company
+                                            where company_id = hextoraw(:company_id2) )) as MFG_Max_Mileage_Limit,
+                elita.getcertremainingbalance(c.cert_id ,c.payment_type_id) as remaining_balance,
+                pc.description plan_name,
+                ve.new_used,
+                ve.in_service_date,
+                ci.allowed_events,
+                ci.max_insured_amount
+        from elp_cert c
+        inner join elp_dealer d on c.dealer_id = d.dealer_id
+        left outer join elp_address a on c.address_id = a.address_id
+        left outer join elp_region r on a.region_id = r.region_id
+        left outer join elp_country country on a.country_id = country.country_id
+        inner join elp_cert_item ci on c.cert_id = ci.cert_id
+        inner join elp_manufacturer m on ci.manufacturer_id = m.manufacturer_id
+        inner join elp_vsc_model vscm on c.model_id = vscm.model_id
+        inner join elp_product_code pc on pc.dealer_id = c.dealer_id and pc.product_code = c.product_code
+        inner join elp_vsc_enrollment ve on ve.certificate_number = c.cert_number and ve.dealer_code = d.dealer
+        left outer join elp_currency cur on cur.currency_id = c.purchase_currency_id
+        where c.cert_number = :cert_number 
+        and d.dealer = :dealer_code  
+        and c.company_id = hextoraw(:company_id) 
+        and ci.item_number = (select min(item_number) 
+                              from elp_cert_item 
+                              where cert_id = c.cert_id)
+		]]>
+  </LOAD_GALAXY_CERTIFICATE_DETAIL>
+  <CLAIMS_CANCEL_NOT_CLOSED_CERT>
+    <![CDATA[
+    select count(*) TotalClaim
+    from elp_claim              claim,
+    elp_cert_item_coverage pic,
+    elp_cert               cert
+    where cert.cert_id = pic.cert_id and
+    pic.cert_item_coverage_id = claim.cert_item_coverage_id and
+    cert.dealer_id = :dealer_id and
+    cert.cert_number = :cert_number
+    and claim.status_code <> 'C'
+    ]]>
+  </CLAIMS_CANCEL_NOT_CLOSED_CERT>
+  <CLAIMS_CANCEL_PAID_CERT>
+    <![CDATA[
+    select NVL(sum(clinv.amount),0) TotalClaim
+    from elp_claim              claim,
+    elp_cert_item_coverage pic,
+    elp_cert               cert,
+    elp_claim_invoice      clinv
+    where cert.cert_id = pic.cert_id and
+    pic.cert_item_coverage_id = claim.cert_item_coverage_id and
+    claim.claim_id = clinv.claim_id and cert.dealer_id = :dealer_id and
+    cert.cert_number = :cert_number
+    and claim.status_code = 'C'
+    ]]>
+  </CLAIMS_CANCEL_PAID_CERT>
+
+
+  <CERT_ADD_ENABLED_DEALER_DETAILS>
+    <![CDATA[
+      select nvl(cu.ISO_CODE, '') CurrencyCode, nvl(co.CODE, cc.CODE)CountryCode, nvl(co.MAIL_ADDR_FORMAT,cc.MAIL_ADDR_FORMAT)MAIL_ADDR_FORMAT
+        , GETCODEFROMLISTITEM(INSTALLMENT_PAYMENT_ID)InstallmentAllowed, GETCODEFROMLISTITEM(USE_INSTALLMENT_DEFN_ID) UseInstallmentDefn   
+      from elp_dealer d
+      inner join elp_contract c on d.dealer_id = c.dealer_id
+      inner join elp_currency cu on c.CURRENCY_ID = cu.CURRENCY_ID
+      inner join elp_company cp on cp.company_id = d.company_id
+      left outer join elp_country cc on cp.BUSINESS_COUNTRY_ID = cc.country_id
+      left outer join elp_address a on a.address_id = d.address_id
+      left outer join elp_country co on co.country_id = a.country_id
+      where rownum= 1 and d.dealer_id = :dealer_id
+            and c.EFFECTIVE = (   SELECT NVL(curC.EFFECTIVE, lastC.EFFECTIVE) EFFECTIVE
+		        FROM (select  EFFECTIVE
+		        from elp_contract
+		        where dealer_id = :dealer_id
+		                   and EFFECTIVE <= sysdate and EXPIRATION >=  sysdate
+		           )curC right outer join
+		        (select  max(EFFECTIVE)EFFECTIVE
+		        from elp_contract
+		        where dealer_id = :dealer_id
+ 		       )lastC  ON 1=1)
+    ]]>
+  </CERT_ADD_ENABLED_DEALER_DETAILS>
+
+  <CERT_ADD_INSERT>
+    ELP_CERTIFICATE.Add_Certificate
+  </CERT_ADD_INSERT>
+  <IS_REVERSE_CANCELLATION_ENABLED>
+    ELP_CERTIFICATE.IsReverseCancellationEnabled
+  </IS_REVERSE_CANCELLATION_ENABLED>
+  <CLAIMLOGISTICS_CERT_DETAIL>
+    <![CDATA[
+					select
+							c.cert_id,
+							c.cert_number as certificate_number,
+							d.dealer as dealer_code,
+		          			d.dealer_name as dealer_name,
+							c.status_code
+					from
+						elp_cert c,
+						elp_dealer d
+					where
+						c.cert_number = :cert_number and
+						c.dealer_id = d.dealer_id and
+			            d.dealer = :dealer_code
+				      	--dynamic_where_clause
+    ]]>
+  </CLAIMLOGISTICS_CERT_DETAIL>
+  <GET_CERT_LIST_BY_INVOICE_NUMBER>
+    <![CDATA[
+					select
+							c.cert_id,
+							c.cert_number as certificate_number,
+							c.status_code
+					from
+						elp_cert c
+					where
+						c.invoice_number = :invoice_number
+				      	--dynamic_where_clause
+    ]]>
+  </GET_CERT_LIST_BY_INVOICE_NUMBER>
+  <GET_CERT_LIST_WITH_INVOICE_NUMBER_BY_CERT_NUMBER>
+    <![CDATA[
+					select
+							c.cert_id,
+							c.cert_number as certificate_number,
+							c.status_code
+					from
+						elp_cert c
+					where
+						c.invoice_number = (select invoice_number from elp_cert cert
+					        					    where cert_number = :cert_number 
+							      			      --dynamic_where_clause2
+										           )
+            --dynamic_where_clause
+    ]]>
+  </GET_CERT_LIST_WITH_INVOICE_NUMBER_BY_CERT_NUMBER>
+  <TOTAL_CLAIMS_NOT_CLOSED_FOR_CERT>
+    <![CDATA[
+    select count(*) TotalNumberOfClaims
+    from elp_claim              claim,
+    elp_cert_item_coverage pic,
+    elp_cert               cert  
+    where cert.cert_id = pic.cert_id and
+    pic.cert_item_coverage_id = claim.cert_item_coverage_id and
+    cert.dealer_id = :dealer_id and
+    cert.cert_number = :cert_number
+    and claim.status_code <> 'C'
+    ]]>
+  </TOTAL_CLAIMS_NOT_CLOSED_FOR_CERT>
+  <TOTAL_ACTIVE_CLAIMS_FOR_CERT>
+    <![CDATA[
+    select count(*) TotalNumberOfClaims
+    from elp_claim              claim,
+    elp_cert_item_coverage pic,
+    elp_cert               cert  
+    where cert.cert_id = pic.cert_id and
+    pic.cert_item_coverage_id = claim.cert_item_coverage_id and
+    cert.dealer_id = :dealer_id and
+    cert.cert_number = :cert_number
+    and trunc(claim.loss_date) >= trunc(:cancellation_date)
+    and claim.status_code in ('A','P')
+    ]]>
+  </TOTAL_ACTIVE_CLAIMS_FOR_CERT>
+  <GET_INFORCECERT_LASTEST_DATE>
+    select created_Date
+    from Elp_InforceCerts_mv
+    where rownum =1
+  </GET_INFORCECERT_LASTEST_DATE>
+  <VALIDATE_VSC_LICENSE_TAG>
+    select cert_number
+    from elp_cert
+    where upper(source)='VSC'
+    and upper(status_code) = 'A'
+    and upper(vehicle_license_tag) = :vehicle_license_tag
+    and upper(cert_number) != :cert_number
+    and company_id in (select company_id from elp_company where company_group_id = :company_group_id)
+  </VALIDATE_VSC_LICENSE_TAG>
+  <VALIDATE_PRODUCTCODE_SPECIALSERVICES>
+    select  elita.getyesno(ss.add_item_allowed) add_item_allowed,elita.getyesno(add_item_after_expired) add_item_after_expired
+    from elp_product_special_service pss, elp_special_service ss
+    where pss.special_service_id = ss.special_service_id
+    and pss.product_code_id = :product_code_id
+  </VALIDATE_PRODUCTCODE_SPECIALSERVICES>
+
+  <GetCertInfoWEPPTMX>
+    <![CDATA[
+select distinct a.dealer dealer_code,
+       a.cert_number cert_Number,
+       a.status_code cert_Status,
+       a.warranty_sales_date enrollment_Date,
+       a.work_phone phone_Number,
+       a.email customer_Email,
+       oci.Serial_Number serial_Number,
+       m.description manufacturer,
+       oci.Model,
+       a.NumOfClaims num_Of_Claims,
+       cl.claim_number last_Claim_Number,
+       case when cl.status_code = 'C' and exists (select null from elp_disbursement where claim_id = cl.claim_id) then 'A' else cl.status_code end last_Claim_Status,
+       case
+          when cl.claim_number is null then
+          null
+         when cl.status_code = 'A' then
+          'Si'
+         when cl.status_code = 'C' and exists (select null from elp_disbursement where claim_id = cl.claim_id) then
+          'Si'
+         else
+          'No'
+       end replacement_Approved,
+       cl.deductible last_Claim_Deductible,
+       (select max(clh.REPAIR_DATE_NEW)
+          from elp_claim_history clh
+         inner join elp_claim cl4
+            on clh.claim_id = cl4.claim_id
+         inner join elp_cert_item_coverage cic4
+            on cic4.cert_item_coverage_id = cl4.cert_item_coverage_id
+         where cic4.cert_id = a.cert_id) last_Repair_Date,
+       (select getcodefromlistitem(coverage_type_id) from elp_cert_item_coverage where cert_item_coverage_id = cl.cert_item_coverage_id) last_Claim_Coverage,
+       nvl((SELECT max(authorization_number)
+       	from elp_claim_authorization ca1
+        where ca1.claim_id = cl.claim_id
+        	and ca1.created_Date = (Select max(created_Date) from elp_claim_authorization where claim_id = cl.claim_id)
+        ), cl.authorization_number) authorization_number
+  from (select d.dealer,
+               c.cert_id,
+               c.cert_number,
+               c.status_code,
+               c.warranty_sales_date,
+               c.work_phone,
+               c.email,
+               min(ci.item_number) item_number,
+               (select max(cl1.claim_id)
+                 from elp_Claim cl1
+                 inner join elp_cert_item_coverage cic1 on cic1.cert_item_coverage_id = cl1.cert_item_coverage_id
+                 left outer join elp_claim_authorization ca1 on cl1.claim_id = ca1.claim_id
+                 where cic1.cert_id = c.cert_id
+                   and (
+                          (getcodefromlistitem(cl1.claim_auth_type_id) = 'M' 
+                           and ca1.created_Date =(select max(ca.created_Date)
+                                         from elp_claim cl3
+                                         inner join elp_cert_item_coverage cic3 on cic3.cert_item_coverage_id =cl3.cert_item_coverage_id
+                                         inner join elp_claim_authorization ca on ca.claim_id = cl3.claim_id
+                                         where cic1.cert_id = cic3.cert_id
+                                           and replace(cl3.claim_number, 'R', '') = cl3.master_claim_number
+                                           and getcodefromlistitem(cl3.method_of_repair_id) = 'R'
+                                         )
+                          ) 
+                         or                       
+                         (getcodefromlistitem(cl1.claim_auth_type_id) = 'S' 
+                         and cl1.created_Date = (select max(cl3.created_Date)
+                                            from elp_claim cl3 
+                                            inner join elp_cert_item_coverage cic3 on cic3.cert_item_coverage_id = cl3.cert_item_coverage_id
+                                            where cic1.cert_id = cic3.cert_id
+                                             and replace(cl3.claim_number, 'R', '') =cl3.master_claim_number
+                                             and getcodefromlistitem(cl3.method_of_repair_id) = 'R'
+                                            )
+                          )                       
+                       )
+                   and getcodefromlistitem(cl1.method_of_repair_id) = 'R'
+                ) LastClaim,
+               (select count(distinct cl2.master_claim_number)
+                  from elp_claim cl2
+                 inner join elp_cert_item_coverage cic2 on cic2.cert_item_coverage_id = cl2.cert_item_coverage_id
+                 left outer join elp_claim mcl on mcl.claim_number = cl2.master_claim_number and mcl.company_id = cl2.company_id
+                 where cic2.cert_id = c.cert_id
+                   and replace(cl2.claim_number, 'R', '') = cl2.master_claim_number
+                   and cl2.status_code <> 'D'
+                   and nvl(mcl.created_Date, cl2.created_Date) >= ADD_MONTHS(sysdate, -12)
+               ) NumOfClaims
+         from elp_Cert c
+         inner join elp_cert_item ci on c.cert_id = ci.cert_id
+         inner join elp_dealer d on d.dealer_id = c.dealer_id
+         inner join
+	          (select sum(case when c1.STATUS_CODE = 'A' then 1 else 0 end) ActiveCnt
+			          , sum(case when c1.STATUS_CODE = 'C' then 1 else 0 end) CancelCnt
+			          , max(case when c1.STATUS_CODE = 'A' then c1.created_date else null end) ActiveLastAddedDate
+			          , max(case when c1.STATUS_CODE = 'C' then c1.created_date else null end) CancelledLastAddedDate
+		          from elp_Cert c1
+		          inner join elp_cert_item ci1 on c1.cert_id = ci1.cert_id
+		          inner join elp_dealer d1 on d1.dealer_id = c1.dealer_id
+		          where 1=1
+		          --dynamic_where_clause1
+	          ) f on c.created_Date = ActiveLastAddedDate or c.created_Date = CancelledLastAddedDate
+         where 1 = 1   
+            and rownum < 100
+            AND (ActiveCnt + CancelCnt) > 0
+	          and C.STATUS_CODE = CASE WHEN ActiveCnt > 0 THEN 'A' WHEN ActiveCnt = 0 and CancelCnt > 0 then 'C' else 'XXX' end
+        --dynamic_where_clause
+         group by d.dealer,
+                  c.cert_id,
+                  c.cert_number,
+                  c.status_code,
+                  c.warranty_sales_date,
+                  c.work_phone,
+                  c.email) a
+  inner join elp_cert_item oci on a.cert_id = oci.cert_id and a.item_number = oci.item_number
+                 and oci.created_date = (select max(created_date) from elp_cert_item where cert_id = a.cert_id and item_number = a.item_number)
+  left join elp_claim cl on cl.claim_id = a.LastClaim 
+  left outer join elp_manufacturer m on m.MANUFACTURER_ID = oci.MANUFACTURER_ID  
+    ]]>
+  </GetCertInfoWEPPTMX>
+  <WS_GetCustomerFunctions>
+    Elita.ELP_Claim_Logistics.GetCustomerFunctions
+  </WS_GetCustomerFunctions>
+  <WS_GetCoverageInfo>
+    Elita.ELP_Claim_Logistics.GetCoverageInfo
+  </WS_GetCoverageInfo>
+  <GetCertsWithActiveClaimByCertNumAndPhone>
+    <![CDATA[
+      select c.cert_id
+        , (select claim_number
+		from elp_claim cl
+		inner join elp_Cert_item_coverage cic on cic.cert_item_coverage_id = cl.cert_item_coverage_id
+		where cic.cert_id = c.cert_id
+			and cl.status_code = 'A'
+			and cl.created_Date = (select max(cl.created_Date)
+									from  elp_claim cl
+									inner join elp_Cert_item_coverage cic on cic.cert_item_coverage_id = cl.cert_item_coverage_id
+									where cic.cert_id = c.cert_id
+									and cl.status_code = 'A') ) claim_number
+      from elp_Cert c
+      inner join elp_cert_item ci on c.cert_id = ci.cert_id
+      inner join elp_dealer d on d.dealer_id = c.dealer_id
+      where 1=1 and rownum < 100
+	          --dynamic_where_clause
+    ]]>
+  </GetCertsWithActiveClaimByCertNumAndPhone>
+  <GETCERTNUM>
+    <![CDATA[	
+			SELECT cert_number
+			FROM elp_cert 
+			WHERE
+				cert_id = :cert_id
+		]]>
+  </GETCERTNUM>
+  <WS_GetCertIDWithCertNumberAndDealer>
+    select cert_id,status_code
+    from elp_cert
+    where cert_number= :cert_number
+    and dealer_id = :dealer_id
+  </WS_GetCertIDWithCertNumberAndDealer>
+  <CERTIFICATE_HISTORY>
+    ELP_CERTIFICATE.GetCertificateHistory
+  </CERTIFICATE_HISTORY>
+  <CERT_INSTALLMENT_HISTORY>
+    ELP_CERTIFICATE.getCertInstallmentHistory
+  </CERT_INSTALLMENT_HISTORY>
+  <!--5525-->
+  <SEARCH_CERT_INFO>
+    <![CDATA[
+      Elita.elp_ws_getCertificate.search_certificate
+    ]]>
+  </SEARCH_CERT_INFO>
+  <SEARCH_CERT_BY_SERIAL_NUMBER>
+    <![CDATA[
+    Elita.elp_ws_getCertificate.GetCertBySerialNumber
+    ]]>
+  </SEARCH_CERT_BY_SERIAL_NUMBER>
+  <CERTIFICATE_COVERAGEAMOUNT>
+    <![CDATA[	
+    
+select sum(gross_amt)
+from   elp_cert          c,
+       elp_cert_item     ci,
+       elp_product_code  pc,
+       elp_item          i,
+       elp_coverage      co,
+       elp_coverage_rate cr
+where  c.cert_id = :cert_id
+       and c.cert_id = ci.cert_id
+       and c.dealer_id = pc.dealer_id
+       and c.product_code = pc.product_code
+       and pc.product_code_id = i.product_code_id
+       and i.item_id = co.item_id
+       and co.coverage_id = cr.coverage_id
+       and c.warranty_sales_date between co.effective and co.expiration
+       and decode(nvl(ci.original_retail_price, 0), 0, 0.01, ci.original_retail_price) between
+       decode(nvl(cr.low_price, 0), 0, 0.01, cr.low_price) and cr.high_price
+group  by c.cert_number
+
+
+		]]>
+  </CERTIFICATE_COVERAGEAMOUNT>
+  <CERTIFICATE_OVERALL_PAYMENTS>
+    <![CDATA[	
+    select count(cp.cert_id)
+    from elp_cert_payment cp
+    where cp.cert_id = :cert_id
+    ]]>
+  </CERTIFICATE_OVERALL_PAYMENTS>
+
+  <GW_CERTIFICATE_SEARCH>
+    Elita.ELP_DAILY_GW_EXTRACT.SearchCertificate
+  </GW_CERTIFICATE_SEARCH>
+  <GET_CANCELLATION_DATE>
+    SELECT
+    cc.cancellation_date
+    FROM elp_cert c,elp_cert_cancellation cc
+    WHERE c.cert_id = :cert_id
+    AND c.cert_id = cc.cert_id
+  </GET_CANCELLATION_DATE>
+  <GET_MONTHS_PASSED_FOR_H3GI>
+    <![CDATA[
+    elita.GetMonthsPassedForH3GI
+     ]]>
+  </GET_MONTHS_PASSED_FOR_H3GI>
+
+  <SEARCH_CERT_BY_SRNR_IDENTNR_UPGRDDATE>
+    <![CDATA[
+    Elita.elp_ws_getCertAfterUpgrade.GetCertBySrNrIdentNrUpgrdDate
+    ]]>
+  </SEARCH_CERT_BY_SRNR_IDENTNR_UPGRDDATE>
+  <GET_CERT_EXT_INFO>
+    Elita.elp_certificate.getCertExtensionInfo
+  </GET_CERT_EXT_INFO>
+  <GET_CERT_UPG_EXT_INFO>
+    Elita.elp_certificate.getCertUpgExtensionInfo
+  </GET_CERT_UPG_EXT_INFO>
+  <GET_FRAUD_CERT_EXT>
+      ELITA.ELP_CERTIFICATE.GetFraudulentCertExtensions
+  </GET_FRAUD_CERT_EXT>
+    <GET_OTHER_CUSTOMER_INFO>
+    Elita.elp_customer_ops.get_other_customers
+  </GET_OTHER_CUSTOMER_INFO>
+  <GET_OTHER_CUSTOMER_DETAILS>
+    Elita.elp_customer_ops.get_customer_details
+  </GET_OTHER_CUSTOMER_DETAILS>
+  <UPDATE_CUSTOMER_DETAILS>
+    Elita.elp_customer_ops.update_customer_details
+  </UPDATE_CUSTOMER_DETAILS>
+  <GET_PARENT_CERT_ID>
+    Elita.ELP_UTL_PARENTCHILD_REL.get_parent_cert_id
+  </GET_PARENT_CERT_ID>
+  <LOAD_CUST_PERSONAL_HISTORY>
+    Select  elita.GetDescriptionFromItemextcode(hist.salutation, :language_id) salutation,
+    hist.first_name first_name,
+    hist.middle_name  middle_name,
+    hist.last_name    last_name,
+    hist.corporate_name,
+    elita.GetDescriptionFromItemextcode(hist.gender, :language_id) gender,
+    to_char(hist.birth_date,'DD-Mon-YYYY') birth_date,
+    elita.GetDescriptionFromItemextcode(hist.marital_status, :language_id) marital_status,
+    elita.GetDescriptionFromItemextcode(hist.nationality, :language_id) nationality,
+    elita.GetDescriptionFromItemextcode(hist.place_of_birth, :language_id) place_of_birth,
+    hist.modified_by,
+    to_char(hist.hist_created_date,'DD-Mon-YYYY') change_date,
+    hist.customer_id  customer_id
+    from elita.elp_cust_relation cr, elita.elp_customer_hist hist
+    where cr.reference_id = :cert_id
+    and   cr.REFERENCE_SOURCE = 'CERT'
+    and   cr.relationship_type in ('CUSTOMER_TYPE-P','CUSTOMER_TYPE-M')
+    and   cr.customer_id = hist.customer_id
+    order by hist.hist_created_date desc
+  </LOAD_CUST_PERSONAL_HISTORY>
+  <LOAD_CUST_ADDRESS_HISTORY>
+    select ah.address1,
+    ah.address2,
+    ah.address3,
+    ah.city,
+    co.description country,
+    r.description state,
+    ah.postal_code,
+    ah.zip_locator,
+    ah.postal_code,
+    c.address_id,
+    ah.address_id,
+    ah.modified_by,
+    to_char(ah.hist_created_date,'DD-Mon-YYYY') change_date
+    from elita.elp_cust_relation cr, elp_customer c, elita.elp_address_Hist ah, elita.elp_country co, elita.elp_region r
+    where cr.reference_id = :cert_id
+    and   cr.REFERENCE_SOURCE = 'CERT'
+    and   cr.relationship_type in ('CUSTOMER_TYPE-P','CUSTOMER_TYPE-M')
+    and   cr.customer_id = c.customer_id
+    and   c.address_id = ah.address_id
+    and ah.country_id = co.country_id
+    and ah.region_id = r.region_id(+)
+    order by ah.hist_created_date desc
+  </LOAD_CUST_ADDRESS_HISTORY>
+  <LOAD_CUST_CONTACT_HISTORY>
+    select email,
+    home_phone,
+    work_phone,
+    to_char(hist_created_date,'DD-Mon-YYYY') change_date,
+    modified_by
+    from (SELECT cust_contact_type,
+    cust_contact_value,
+    hist_created_date,
+    ch.modified_by,
+    row_number() over (PARTITION BY cust_contact_type ORDER BY hist_created_date) rn
+    FROM   elita.elp_cust_relation cr, elita.elp_cust_contact_hist ch
+    where  cr.reference_id = :cert_id
+    and    cr.REFERENCE_SOURCE = 'CERT'
+    and    cr.relationship_type in ('CUSTOMER_TYPE-P','CUSTOMER_TYPE-M')
+    and    cr.customer_id = ch.customer_id
+    and    ch.cust_contact_type in ('CUSTOMER_CONTACT_TYPE-HOME_PHONE','CUSTOMER_CONTACT_TYPE-WORK_PHONE','CUSTOMER_CONTACT_TYPE-EMAIL')
+    )
+    PIVOT
+    (max(cust_contact_value) for cust_contact_type IN ('CUSTOMER_CONTACT_TYPE-HOME_PHONE' as HOME_PHONE,
+    'CUSTOMER_CONTACT_TYPE-WORK_PHONE' as WORK_PHONE,
+    'CUSTOMER_CONTACT_TYPE-EMAIL' as EMAIL))
+    order by hist_created_date
+  </LOAD_CUST_CONTACT_HISTORY>
+  <LOAD_CUST_BANK_DETAIL_HISTORY>
+    select distinct
+    bi.account_name,
+    bi.bank_name,
+    bi.bank_id,
+    bi.account_type_id,
+    bi.bank_lookup_code,
+    bi.bank_sort_code,
+    bi.branch_name,
+    bi.bank_sub_code,
+    SUBSTR(bi.account_number,-4,4) as account_number,
+    get_cert_ext_field_value(ap.reference_id, 'PaymentReferenceNumber') as mandate_id,
+    SUBSTR(bi.iban_number,1,4)  ||'***' ||SUBSTR(bi.iban_number,-4,4)   as iban_number,
+    bi.created_by,
+    bi.created_date
+    from elp_bank_info bi
+    left join elp_dealer_group dg on dg.bank_info_id = bi.bank_info_id
+    join elp_ar_payments ap on ap.bank_info_id = bi.bank_info_id
+    join elp_cert c on c.cert_id = ap.reference_id
+    where ap.reference_id = :cert_id
+    and   ap.reference = 'ELP_CERT'
+  </LOAD_CUST_BANK_DETAIL_HISTORY>
+  
+  <CANCEL_CERT_BY_EXTERNAL_NUMBER>
+    Elita.elp_certificate.CancelCertByExternalCertNum
+  </CANCEL_CERT_BY_EXTERNAL_NUMBER>
+  <LOAD_CERT_CALLER>
+    <![CDATA[
+       select case
+                  when c.customer_id is null then
+                   c.customer_name
+                  else
+                   cu.first_name
+              end as first_name,
+              cu.last_name,
+              case
+                  when c.customer_id is null then
+                   c.work_phone
+                  else
+                   elita.get_customer_contact_value(cu.customer_id, 'WORK_PHONE')
+              end as work_phone,
+              case
+                  when c.customer_id is null then
+                   c.email
+                  else
+                   elita.get_customer_contact_value(cu.customer_id, 'EMAIL')
+              end as email,
+              getdescriptionfromitemextcode('CALR_REL_TYPE-SELF') as relationship
+         from elp_cert c
+         left join elp_customer cu on cu.customer_id = c.customer_id
+        where c.cert_id =  :cert_id
+      ]]>
+  </LOAD_CERT_CALLER>
+  <LOAD_CASE_CALLER>
+    <![CDATA[
+      select ca.case_number,
+             cal.first_name,
+             cal.last_name,
+             elp_case_utility.get_caller_contact_value(cal.caller_id,
+                                                       'PhoneNumber') work_phone,
+             elp_case_utility.get_caller_contact_value(cal.caller_id,
+                                                       'EmailAddress') email,
+             getdescriptionfromitemextcode(cal.relation_type_xcd) as relationship
+        from elp_case                  ca
+       inner join elp_case_interaction ci  on ca.case_id = ci.case_id
+       inner join elp_caller           cal on cal.caller_id = ci.caller_id
+       where ca.case_id = :case_id
+      union
+      select ca.case_number,
+             case
+                 when c.customer_id is null then
+                  c.customer_name
+                 else
+                  cu.first_name
+             end as first_name,
+             cu.last_name,
+             case
+                 when c.customer_id is null then
+                  c.work_phone
+                 else
+                  elita.get_customer_contact_value(cu.customer_id, 'WORK_PHONE')
+             end as work_phone,
+             case
+                 when c.customer_id is null then
+                  c.email
+                 else
+                  elita.get_customer_contact_value(cu.customer_id, 'EMAIL')
+             end as email,
+             getdescriptionfromitemextcode('CALR_REL_TYPE-SELF') as relationship
+      from elp_case ca
+     inner join elp_cert c on c.cert_id = ca.cert_id
+      left join elp_customer cu on cu.customer_id = c.customer_id
+     where ca.case_id = :case_id
+     ]]>
+  </LOAD_CASE_CALLER>
+  <Get_Certificate_By_IMEI>
+    elita.elp_ws_getCertificate.Search_PolicyByIMEI
+  </Get_Certificate_By_IMEI>
+  <GET_CERT_TERM>
+    select (max(coverage_duration))
+    from elp_cert_item_coverage
+    where cert_id = :cert_id
+  </GET_CERT_TERM>
+  <GET_CERT_INSTAL_BANK_INFO_ID>
+    select ci.bank_info_id
+    from elp_cert_installment ci
+    where  ci.cert_id = :cert_id
+    and ci.bank_info_id is not null
+  </GET_CERT_INSTAL_BANK_INFO_ID>
+  <Update_IMEI_AddEvent>
+    elita.ELP_CERTIFICATE.UpdateIMEINumberAddEvent
+  </Update_IMEI_AddEvent>
+  <GET_CERT_PYMT_PASSED_DUE_EXT_INFO>
+    Elita.elp_certificate.getCertPaymentPassedDueExtInfo
+  </GET_CERT_PYMT_PASSED_DUE_EXT_INFO>  
+</SQL>

@@ -1,0 +1,88 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+
+<!-- ********************** THIS FILE HAS BEEN GENERATED FROM TEMPLATE SQLObject.cst (5/23/2012)********************** -->
+
+<SQL>
+  <LOAD>
+    <![CDATA[	
+			SELECT 
+				company_group_id,
+				action_id,
+				current_status_id,
+				next_status_id,
+				created_date,
+				created_by,
+				modified_date,
+				modified_by,
+				claim_status_action_id
+			FROM elp_claim_status_action 
+			WHERE
+				claim_status_action_id = :claim_status_action_id
+		]]>
+  </LOAD>
+  <LOAD_LIST>
+    <![CDATA[	
+      SELECT
+        a.claim_status_action_id,
+        a.action_id,
+        getdescriptionfromlistitem(a.action_id,:language_id) action,
+        a.current_status_id,
+        getdescriptionfromlistitem((select LIST_ITEM_ID
+                      from ELP_CLAIM_STATUS_BY_GROUP
+                      where CLAIM_STATUS_BY_GROUP_ID = a.current_status_id),
+                      :language_id) current_status,
+        a.next_status_id,
+        getdescriptionfromlistitem((select LIST_ITEM_ID
+                      from ELP_CLAIM_STATUS_BY_GROUP
+                      where CLAIM_STATUS_BY_GROUP_ID = a.next_status_id),
+                      :language_id) next_status,
+        a.created_date,
+        a.created_by,
+        a.modified_date,
+        a.modified_by
+			FROM ELP_CLAIM_STATUS_ACTION a
+			WHERE
+				a.company_group_id = :company_group_id
+      ORDER BY action_id
+		]]>
+  </LOAD_LIST>
+  <UPDATE>
+    <![CDATA[	
+			UPDATE elp_claim_status_action SET
+				company_group_id = :company_group_id,
+				action_id = :action_id,
+				current_status_id = :current_status_id,
+				next_status_id = :next_status_id,
+				modified_by = :modified_by
+			WHERE
+				claim_status_action_id = :claim_status_action_id
+		]]>
+  </UPDATE>
+  <INSERT>
+    INSERT INTO elp_claim_status_action
+    (
+    company_group_id,
+    action_id,
+    current_status_id,
+    next_status_id,
+    created_by,
+    claim_status_action_id
+    )
+    VALUES
+    (
+    :company_group_id,
+    :action_id,
+    :current_status_id,
+    :next_status_id,
+    :created_by,
+    :claim_status_action_id
+    )
+  </INSERT>
+  <DELETE>
+    DELETE FROM elp_claim_status_action
+    WHERE
+    claim_status_action_id = :claim_status_action_id
+  </DELETE>
+</SQL>
+
+

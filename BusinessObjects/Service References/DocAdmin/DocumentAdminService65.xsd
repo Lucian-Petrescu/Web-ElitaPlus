@@ -1,0 +1,213 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xs:schema xmlns:ser="http://schemas.microsoft.com/2003/10/Serialization/" elementFormDefault="qualified" targetNamespace="http://services.assurant.com/ssi/document/2012/6/20/" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+  <xs:import schemaLocation="http://msp0wapfd001.cead.prd/Document/Entity/20120620/DocumentAdminService.svc?xsd=xsd1" namespace="http://schemas.microsoft.com/2003/10/Serialization/" />
+  <xs:import schemaLocation="http://msp0wapfd001.cead.prd/Document/Entity/20120620/DocumentAdminService.svc?xsd=xsd2" namespace="http://services.assurant.com/integration/faults/2012/6/12/" />
+  <xs:element name="CreateDocumentFormat">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element xmlns:q1="http://services.assurant.com/ssi/document/2012/6/20/" minOccurs="0" name="format" nillable="true" type="q1:DocumentFormat" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:complexType name="DocumentFormat">
+    <xs:complexContent mixed="false">
+      <xs:extension xmlns:q2="http://services.assurant.com/ssi/document/2012/6/20/" base="q2:EntityBase">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="Description" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="Extension" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="Name" nillable="true" type="xs:string" />
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:element xmlns:q3="http://services.assurant.com/ssi/document/2012/6/20/" name="DocumentFormat" nillable="true" type="q3:DocumentFormat" />
+  <xs:complexType name="EntityBase">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="CreatedBy" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="CreatedOn" type="xs:dateTime" />
+      <xs:element minOccurs="0" name="Id" type="ser:guid" />
+      <xs:element minOccurs="0" name="UpdatedBy" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="UpdatedOn" nillable="true" type="xs:dateTime" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element xmlns:q4="http://services.assurant.com/ssi/document/2012/6/20/" name="EntityBase" nillable="true" type="q4:EntityBase" />
+  <xs:element name="CreateDocumentFormatResponse">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element xmlns:q5="http://services.assurant.com/ssi/document/2012/6/20/" minOccurs="0" name="CreateDocumentFormatResult" nillable="true" type="q5:DocumentFormat" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:complexType name="DocumentFault">
+    <xs:complexContent mixed="false">
+      <xs:extension xmlns:q6="http://services.assurant.com/integration/faults/2012/6/12/" base="q6:FaultBaseOfException5F2dSckg">
+        <xs:sequence />
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:element xmlns:q7="http://services.assurant.com/ssi/document/2012/6/20/" name="DocumentFault" nillable="true" type="q7:DocumentFault" />
+  <xs:element name="GetDocumentFormat">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" name="id" type="ser:guid" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="GetDocumentFormatResponse">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element xmlns:q8="http://services.assurant.com/ssi/document/2012/6/20/" minOccurs="0" name="GetDocumentFormatResult" nillable="true" type="q8:DocumentFormat" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="GetDocumentFormats">
+    <xs:complexType>
+      <xs:sequence />
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="GetDocumentFormatsResponse">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element xmlns:q9="http://services.assurant.com/ssi/document/2012/6/20/" minOccurs="0" name="GetDocumentFormatsResult" nillable="true" type="q9:ArrayOfDocumentFormat" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:complexType name="ArrayOfDocumentFormat">
+    <xs:sequence>
+      <xs:element xmlns:q10="http://services.assurant.com/ssi/document/2012/6/20/" minOccurs="0" maxOccurs="unbounded" name="DocumentFormat" nillable="true" type="q10:DocumentFormat" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element xmlns:q11="http://services.assurant.com/ssi/document/2012/6/20/" name="ArrayOfDocumentFormat" nillable="true" type="q11:ArrayOfDocumentFormat" />
+  <xs:element name="UpdateDocumentFormat">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element xmlns:q12="http://services.assurant.com/ssi/document/2012/6/20/" minOccurs="0" name="format" nillable="true" type="q12:DocumentFormat" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="UpdateDocumentFormatResponse">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element xmlns:q13="http://services.assurant.com/ssi/document/2012/6/20/" minOccurs="0" name="UpdateDocumentFormatResult" nillable="true" type="q13:DocumentFormat" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="CreateRepository">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element xmlns:q14="http://services.assurant.com/ssi/document/2012/6/20/" minOccurs="0" name="repository" nillable="true" type="q14:DocumentRepository" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:complexType name="DocumentRepository">
+    <xs:complexContent mixed="false">
+      <xs:extension xmlns:q15="http://services.assurant.com/ssi/document/2012/6/20/" base="q15:EntityBase">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="Description" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="Name" nillable="true" type="xs:string" />
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:element xmlns:q16="http://services.assurant.com/ssi/document/2012/6/20/" name="DocumentRepository" nillable="true" type="q16:DocumentRepository" />
+  <xs:complexType name="FileDocumentRepository">
+    <xs:complexContent mixed="false">
+      <xs:extension xmlns:q17="http://services.assurant.com/ssi/document/2012/6/20/" base="q17:DocumentRepository">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="EncryptionEnabled" type="xs:boolean" />
+          <xs:element minOccurs="0" name="Location" nillable="true" type="xs:string" />
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:element xmlns:q18="http://services.assurant.com/ssi/document/2012/6/20/" name="FileDocumentRepository" nillable="true" type="q18:FileDocumentRepository" />
+  <xs:complexType name="SqlDocumentRepository">
+    <xs:complexContent mixed="false">
+      <xs:extension xmlns:q19="http://services.assurant.com/ssi/document/2012/6/20/" base="q19:DocumentRepository">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="BinaryDataColumnName" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="Catalog" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="DocumentIdColumnName" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="Server" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="Table" nillable="true" type="xs:string" />
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:element xmlns:q20="http://services.assurant.com/ssi/document/2012/6/20/" name="SqlDocumentRepository" nillable="true" type="q20:SqlDocumentRepository" />
+  <xs:element name="CreateRepositoryResponse">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element xmlns:q21="http://services.assurant.com/ssi/document/2012/6/20/" minOccurs="0" name="CreateRepositoryResult" nillable="true" type="q21:DocumentRepository" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:complexType name="RepositoryFault">
+    <xs:complexContent mixed="false">
+      <xs:extension xmlns:q22="http://services.assurant.com/integration/faults/2012/6/12/" base="q22:FaultBaseOfException5F2dSckg">
+        <xs:sequence />
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:element xmlns:q23="http://services.assurant.com/ssi/document/2012/6/20/" name="RepositoryFault" nillable="true" type="q23:RepositoryFault" />
+  <xs:element name="GetRepositoryById">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" name="id" type="ser:guid" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="GetRepositoryByIdResponse">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element xmlns:q24="http://services.assurant.com/ssi/document/2012/6/20/" minOccurs="0" name="GetRepositoryByIdResult" nillable="true" type="q24:DocumentRepository" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="GetRepositoryByName">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" name="name" nillable="true" type="xs:string" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="GetRepositoryByNameResponse">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element xmlns:q25="http://services.assurant.com/ssi/document/2012/6/20/" minOccurs="0" name="GetRepositoryByNameResult" nillable="true" type="q25:DocumentRepository" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="GetRepositories">
+    <xs:complexType>
+      <xs:sequence />
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="GetRepositoriesResponse">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element xmlns:q26="http://services.assurant.com/ssi/document/2012/6/20/" minOccurs="0" name="GetRepositoriesResult" nillable="true" type="q26:ArrayOfDocumentRepository" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:complexType name="ArrayOfDocumentRepository">
+    <xs:sequence>
+      <xs:element xmlns:q27="http://services.assurant.com/ssi/document/2012/6/20/" minOccurs="0" maxOccurs="unbounded" name="DocumentRepository" nillable="true" type="q27:DocumentRepository" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element xmlns:q28="http://services.assurant.com/ssi/document/2012/6/20/" name="ArrayOfDocumentRepository" nillable="true" type="q28:ArrayOfDocumentRepository" />
+  <xs:element name="UpdateRepository">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element xmlns:q29="http://services.assurant.com/ssi/document/2012/6/20/" minOccurs="0" name="repository" nillable="true" type="q29:DocumentRepository" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="UpdateRepositoryResponse">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element xmlns:q30="http://services.assurant.com/ssi/document/2012/6/20/" minOccurs="0" name="UpdateRepositoryResult" nillable="true" type="q30:DocumentRepository" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+</xs:schema>

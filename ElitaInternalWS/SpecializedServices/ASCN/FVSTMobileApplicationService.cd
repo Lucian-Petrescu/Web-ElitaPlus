@@ -1,0 +1,43 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1" MembersFormat="FullSignature">
+  <Class Name="ElitaInternalWS.GetCertificateInfoRequest">
+    <Position X="2" Y="2.75" Width="2" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAIAAAAAAAAAAAA=</HashCode>
+      <FileName>SpecializedServices\ASCN\DataContracts\GetCertificateInfoRequest.vb</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="ElitaInternalWS.GetCertificateInfoResponse">
+    <Position X="5" Y="2.25" Width="2" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAACAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>SpecializedServices\ASCN\DataContracts\GetCertificateInfoResponse.vb</FileName>
+    </TypeIdentifier>
+    <ShowAsCollectionAssociation>
+      <Property Name="Coverages" />
+    </ShowAsCollectionAssociation>
+  </Class>
+  <Class Name="ElitaInternalWS.CertificateDetails">
+    <Position X="8.25" Y="2" Width="2" />
+    <TypeIdentifier>
+      <HashCode>AAABAAAAAAAAAgAAAAAAAAAAwgACEAZAAAAAAAAAAAA=</HashCode>
+      <FileName>SpecializedServices\ASCN\DataContracts\GetCertificateInfoResponse.vb</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="ElitaInternalWS.FVSTMobileApplicationService">
+    <Position X="3" Y="6.75" Width="6" />
+    <TypeIdentifier>
+      <HashCode>EAAAAAAAAAAAAAAAAAAAAAAAACAAIAAAAAAAAAAAAGA=</HashCode>
+      <FileName>SpecializedServices\ASCN\FVSTMobileApplicationService.svc.vb</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Interface Name="ElitaInternalWS.IFVSTMobileApplicationService">
+    <Position X="3" Y="5.25" Width="5.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAEA=</HashCode>
+      <FileName>SpecializedServices\ASCN\IFVSTMobileApplicationService.vb</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Font Name="Segoe UI" Size="9" />
+</ClassDiagram>

@@ -1,0 +1,15 @@
+﻿.tabHeaderText{font-size:11px; font-weight:bold; font-style:normal;}  
+.style-tabs .ui-widget-header{background: #FFFFFF; border:none;}
+.ui-widget INPUT{font-family:Verdana,Arial,Helvetica, sans-serif; font-size:small;}
+.ui-widget-content{cursor:default;}
+.style-tabs .ui-widget-header .ui-state-active{border:1px solid #000000;background-color:#0066CC;font-family:Verdana,Arial,Helvetica,sans-serif;font-weight:normal;color:#fff;}
+.style-tabs .ui-tabs .ui-tabs-panel{padding-left:0em;}
+.style-tabs .ui-tabs{position:static;}
+
+.tabHeaderTextOld{font-size:12px; color:black; font-style:normal;}             
+.style-tabs-old .ui-widget-header{background: #fef9ea; border:none;}
+.style-tabs-old {background-color:#fef9ea;}
+.style-tabs-oldBG {background:#d5d6e4;}
+.style-tabs-old .ui-widget-header .ui-state-active {background:#d5d6e4; border-color:black;}       
+.style-tabs-oldBG .ui-state-active,.ui-widget-content .ui-state-active,.ui-widget-header .ui-state-active,a.ui-button:active,.ui-button:active,.ui-button.ui-state-active:hover {
+    border:1px solid #000000;background: #d5d6e4;}

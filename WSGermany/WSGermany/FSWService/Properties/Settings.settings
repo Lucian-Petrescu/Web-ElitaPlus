@@ -1,0 +1,24 @@
+﻿<?xml version='1.0' encoding='utf-8'?>
+<SettingsFile xmlns="http://schemas.microsoft.com/VisualStudio/2004/01/settings" CurrentProfile="(Default)" GeneratedClassNamespace="FSWService.Properties" GeneratedClassName="Settings">
+  <Profiles />
+  <Settings>
+    <Setting Name="LOOKOUT_PATH" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">:\bertlet</Value>
+    </Setting>
+    <Setting Name="STARTS_WITH" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">u</Value>
+    </Setting>
+    <Setting Name="ESTENSION_WITH" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">trc</Value>
+    </Setting>
+    <Setting Name="OVERRIDE_FILES" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">yes</Value>
+    </Setting>
+    <Setting Name="RUN_INTERVAL" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">5</Value>
+    </Setting>
+    <Setting Name="DRIVE_LETTER" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">c</Value>
+    </Setting>
+  </Settings>
+</SettingsFile>

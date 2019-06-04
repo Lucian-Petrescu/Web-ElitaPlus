@@ -1,0 +1,235 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+
+<!-- ********************** THIS FILE HAS BEEN GENERATED FROM TEMPLATE 
+
+SQLObject.cst (10/13/2004)********************** -->
+
+<SQL>
+  <LOAD>
+    <![CDATA[	
+			SELECT 
+        equipment_recon_wrk_id,
+				file_processed_id,
+        load_status,
+        record_type,
+        manufacturer,
+        model,
+        description,
+        is_master,
+        master_equipment_description,	
+        repairable,
+        equipment_class,
+        equipment_type,
+        manufacturer_warranty,
+        attributes,
+        note1,
+        note2,
+        note3,
+        note4,
+        note5,
+        note6,
+        note7,
+        note8,
+        note9,
+        note10,
+				reject_reason,
+        reject_code,
+        reject_msg_parms,        
+				created_by,
+        created_date,
+        modified_by,
+        modified_date        
+			FROM elp_equipment_recon_wrk 
+			WHERE
+				equipment_recon_wrk_id = :equipment_recon_wrk_id
+		]]>
+  </LOAD>
+  <LOAD_LIST>
+    SELECT
+    ERW.equipment_recon_wrk_id,
+    ERW.file_processed_id,
+    ERW.load_status,
+    ERW.record_type,
+    ERW.manufacturer,
+    ERW.model,
+    ERW.description,
+    ERW.is_master,
+    ERW.master_equipment_description,
+    ERW.repairable,
+    ERW.equipment_class,
+    ERW.equipment_type,
+    ERW.manufacturer_warranty,
+    ERW.attributes,
+    ERW.note1,
+    ERW.note2,
+    ERW.note3,
+    ERW.note4,
+    ERW.note5,
+    ERW.note6,
+    ERW.note7,
+    ERW.note8,
+    ERW.note9,
+    ERW.note10,
+    ERW.reject_reason,
+    ERW.reject_code,
+    ERW.reject_msg_parms,
+    ERW.created_by,
+    ERW.created_date,
+    ERW.modified_by,
+    ERW.modified_date,
+    mc.MSG_PARAMETER_COUNT,
+    (SELECT TRANSLATION FROM ELP_LABEL innerL
+    Inner join elp_dict_item_translation innert on innert.DICT_ITEM_ID =
+
+    innerl.DICT_ITEM_ID
+    and innert.LANGUAGE_ID = :language_id
+    WHERE innerL.ui_prog_code = l.ui_prog_code
+    ) Translated_MSG
+    FROM elp_equipment_recon_wrk ERW
+    left outer join (select MSG_CODE, LABEL_ID, MSG_PARAMETER_COUNT
+    From elp_message_code
+    inner join ELP_LIST_ITEM li  ON msg_type = li.LIST_ITEM_ID AND li.code =
+
+    'DLREJECT'
+    INNER JOIN ELP_LIST l ON l.LIST_ID = li.LIST_ID AND  l.code = 'MSGTYPE'
+    ) mc on mc.MSG_CODE = ERW.reject_code
+    left outer join elp_label l on l.label_id = mc.label_id
+    WHERE file_processed_id = :file_processed_id
+    AND reject_reason IS NOT NULL
+  </LOAD_LIST>
+  <LOAD_REJECT_LIST>
+    SELECT
+    customer_name,
+    record_type,
+    reject_reason
+    FROM elp_equipment_recon_wrk
+    WHERE
+    file_processed_id = :file_processed_id
+    AND reject_reason IS NOT NULL
+  </LOAD_REJECT_LIST>
+  <UPDATE>
+    <![CDATA[	
+			UPDATE elp_equipment_recon_wrk SET
+				equipment_recon_wrk_id=:equipment_recon_wrk_id,
+				file_processed_id=:file_processed_id,
+        load_status=:load_status,
+        record_type=:record_type,
+        manufacturer=:manufacturer,
+        model=:model,
+        description=:description,
+        is_master=:is_master,
+        master_equipment_description=:master_equipment_description,	
+        equipment_class=:equipment_class,
+        equipment_type=:equipment_type,
+        manufacturer_warranty=:manufacturer_warranty,
+        repairable=:repairable,
+        attributes=:attributes,
+        note1=:note1,
+        note2=:note2,
+        note3=:note3,
+        note4=:note4,
+        note5=:note5,
+        note6=:note6,
+        note7=:note7,
+        note8=:note8,
+        note9=:note9,
+        note10=:note10,
+				reject_reason=:reject_reason,
+        reject_code=:reject_code,
+        reject_msg_parms=:reject_msg_parms,        
+				created_by=:created_by,
+        created_date=:created_date,
+        modified_by=:modified_by,
+        modified_date=:modified_date        
+			WHERE
+				equipment_recon_wrk_id = :equipment_recon_wrk_id	
+        AND NVL(modified_date,created_date) = NVL
+(:modified_date,created_date)
+		]]>
+  </UPDATE>
+  <INSERT>
+    INSERT INTO elp_equipment_recon_wrk
+    (
+    equipment_recon_wrk_id,
+    file_processed_id,
+    load_status,
+    record_type,
+    manufacturer,
+    model,
+    description,
+    is_master,
+    master_equipment_description,
+    equipment_class,
+    equipment_type,
+    manufacturer_warranty,
+    repairable,
+    attributes,
+    note1,
+    note2,
+    note3,
+    note4,
+    note5,
+    note6,
+    note7,
+    note8,
+    note9,
+    note10,
+    reject_reason,
+    reject_mode,
+    reject_msg_parms,
+    created_by,
+    created_date,
+    modified_by,
+    modified_date,    
+    )
+    VALUES
+    (
+    :equipment_recon_wrk_id,
+    :file_processed_id,
+    :load_status,
+    :record_type,
+    :manufacturer,
+    :model,
+    :description,
+    :is_master,
+    :master_equipment_description,
+    :equipment_class,
+    :equipment_type,
+    :manufacturer_warranty,
+    :repairable,
+    :attributes,
+    :note1,
+    :note2,
+    :note3,
+    :note4,
+    :note5,
+    :note6,
+    :note7,
+    :note8,
+    :note9,
+    :note10,
+    :reject_reason,
+    :reject_mode,
+    :reject_msg_parms,
+    :created_by,
+    :created_date,
+    :modified_by,
+    :modified_date,
+    )
+  </INSERT>
+  <DELETE>
+    DELETE FROM elp_equipment_recon_wrk
+    WHERE
+    equipment_recon_wrk_id = :equipment_recon_wrk_id
+  </DELETE>
+  <VALIDATE_FILE>
+    ELP_EQUIPMENT_LOAD.Validate_Equipment
+  </VALIDATE_FILE>
+  <PROCESS_FILE>
+    ELP_EQUIPMENT_LOAD.Load_Equipment
+  </PROCESS_FILE>
+  <DELETE_FILE>
+    ELP_EQUIPMENT_LOAD.Delete_Equipment
+  </DELETE_FILE>
+</SQL>
+

@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8" ?>
+ <xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema">  
+  <xs:element name="GalaxyUpdateServiceCenterDs">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element name="GalaxyUpdateServiceCenter">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element name="SERVICE_CENTER_CODE" type="stringRequired" minOccurs="1" maxOccurs="1" />
+              <xs:element name="SERVICE_CENTER_NAME" type="xs:string" minOccurs="0" maxOccurs="1" />
+              <xs:element name="ADDRESS" type="xs:string" minOccurs="0" maxOccurs="1" />
+              <xs:element name="CITY" type="xs:string" minOccurs="0" maxOccurs="1" />
+              <xs:element name="REGION_CODE" type="xs:string" minOccurs="0" maxOccurs="1" />
+              <xs:element name="POSTAL_CODE" type="xs:string" minOccurs="0" maxOccurs="1" />
+              <xs:element name="COUNTRY_CODE" type="xs:string" minOccurs="0" maxOccurs="1" />
+              <xs:element name="STATUS_CODE" minOccurs="0" maxOccurs="1">
+                <xs:simpleType>
+                  <xs:restriction base="xs:string">
+                    <xs:pattern value="A|C" />
+                  </xs:restriction>
+                </xs:simpleType>
+              </xs:element>
+              <xs:element name="TAX_ID" type="xs:string" minOccurs="0" maxOccurs="1" />
+              <xs:element name="SERVICE_TYPE" type="xs:string" minOccurs="0" maxOccurs="1" />
+              <xs:element name="PHONE" type="xs:string" minOccurs="0" maxOccurs="1" />
+              <xs:element name="FAX" type="xs:string" minOccurs="0" maxOccurs="1" />
+              <xs:element name="COMMENTS" type="xs:string" minOccurs="0" maxOccurs="1" />
+              <xs:element name="ORIGINAL_DEALER_CODE" type="xs:string" minOccurs="0" maxOccurs="1" />
+              <xs:element name="RATING_CODE" minOccurs="0" maxOccurs="1">
+                <xs:simpleType>
+                  <xs:restriction base="xs:string">
+                    <xs:pattern value="[A-Z0-9]" />
+                  </xs:restriction>
+                </xs:simpleType>
+              </xs:element>
+              <xs:element name="PAYMENT_METHOD" type="xs:string" minOccurs="0" maxOccurs="1" />
+              <xs:element name="ACCOUNT_NAME" type="xs:string" minOccurs="0" maxOccurs="1" />
+              <xs:element name="BANK_ID" type="xs:string" minOccurs="0" maxOccurs="1" />
+              <xs:element name="IBAN_NUMBER" type="xs:string" minOccurs="0" maxOccurs="1" />
+              <xs:element name="ACCOUNT_NUMBER" type="xs:string" minOccurs="0" maxOccurs="1" />
+              <xs:element name="BANK_COUNTRY_CODE" type="xs:string" minOccurs="0" maxOccurs="1" />
+              <xs:element name="SWIFT_CODE" type="xs:string" minOccurs="0" maxOccurs="1" />
+              <xs:element name="ACCOUNT_TYPE" type="xs:string" minOccurs="0" maxOccurs="1" />
+              <xs:element name="REGISTRATION_NUMBER" type="xs:string" minOccurs="0" maxOccurs="1" />
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:simpleType name="stringRequired">
+    <xs:restriction base="xs:string">
+      <xs:minLength value="1"></xs:minLength>
+    </xs:restriction>
+  </xs:simpleType>
+</xs:schema>

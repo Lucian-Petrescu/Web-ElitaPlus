@@ -1,0 +1,4 @@
+﻿<%@ ServiceHost Language="VB" Debug="true" 
+    Service="ElitaInternalWS.SpecializedServices.Goow.GoogleService" 
+     Factory="ElitaInternalWS.Core.UnityServiceHostFactory"
+    CodeBehind="GoogleService.svc.vb" %>

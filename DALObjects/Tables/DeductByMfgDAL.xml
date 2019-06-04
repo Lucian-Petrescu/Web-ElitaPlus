@@ -1,0 +1,83 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+
+<!-- ********************** THIS FILE HAS BEEN GENERATED FROM TEMPLATE SQLObject.cst (3/7/2008)********************** -->
+
+<SQL>
+  <LOAD>
+    <![CDATA[	
+			SELECT 
+				dealer_id,
+				manufacturer_id,
+				model,
+				created_date,
+				created_by,
+				modified_date,
+				modified_by,
+				deduct_by_mfg_id,
+        deductible
+			FROM elp_deduct_by_mfg
+      
+			WHERE
+				deduct_by_mfg_id = :deduct_by_mfg_id
+		]]>
+  </LOAD>
+  <LOAD_LIST>
+    <![CDATA[	
+        SELECT
+            mfgc.deduct_by_mfg_id,
+            dlr.dealer || ' - ' || dlr.dealer_name dealer_name,
+            dlr.dealer_id,
+            mfr.description manufacturer,
+            mfr.manufacturer_id,
+            mfgc.model,
+            mfgc.deductible
+        FROM elp_deduct_by_mfg mfgc, elp_dealer dlr, elp_manufacturer mfr
+        WHERE
+            mfr.company_group_Id = :company_group_id and
+            mfr.manufacturer_id = mfgc.manufacturer_id and
+            dlr.dealer_id = mfgc.dealer_id
+            --dynamic_where_clause
+        ORDER BY UPPER(dealer), UPPER(manufacturer)
+  		]]>
+  </LOAD_LIST>
+  <UPDATE>
+    <![CDATA[	
+			UPDATE elp_deduct_by_mfg SET
+				dealer_id = :dealer_id,
+				manufacturer_id = :manufacturer_id,
+				model = :model,
+				modified_by = :modified_by,
+        deductible = :deductible
+			WHERE
+				deduct_by_mfg_id = :deduct_by_mfg_id
+		]]>
+  </UPDATE>
+  <INSERT>
+    INSERT INTO elp_deduct_by_mfg
+    (
+    dealer_id,
+    manufacturer_id,
+    model,
+    created_by,
+    deduct_by_mfg_id,
+    deductible
+    )
+    VALUES
+    (
+    :dealer_id,
+    :manufacturer_id,
+    :model,
+    :created_by,
+    :deduct_by_mfg_id,
+    :deductible
+    )
+  </INSERT>
+  <DELETE>
+    DELETE FROM elp_deduct_by_mfg
+    WHERE
+    deduct_by_mfg_id = :deduct_by_mfg_id
+  </DELETE>
+</SQL>
+
+
+

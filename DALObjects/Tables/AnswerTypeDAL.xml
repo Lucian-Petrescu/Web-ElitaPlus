@@ -1,0 +1,68 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+
+<!-- ********************** THIS FILE HAS BEEN GENERATED FROM TEMPLATE SQLObject.cst (8/31/2012)********************** -->
+
+<SQL>
+  <LOAD>
+    <![CDATA[	
+			SELECT 
+				code,
+				description,
+				validation_regex,
+				created_date,
+				created_by,
+				modified_date,
+				modified_by,
+				answer_type_item_id,
+				look_up_list_code,
+				answer_type_id
+			FROM elp_answer_type 
+			WHERE
+				answer_type_id = :answer_type_id
+		]]>
+  </LOAD>
+  <LOAD_LIST>
+  </LOAD_LIST>
+  <UPDATE>
+    <![CDATA[	
+			UPDATE elp_answer_type SET
+				code = :code,
+				description = :description,
+				validation_regex = :validation_regex,
+				answer_type_item_id = :answer_type_item_id,
+				look_up_list_code = :look_up_list_code,
+				modified_by = :modified_by
+			WHERE
+				answer_type_id = :answer_type_id
+		]]>
+  </UPDATE>
+  <INSERT>
+    INSERT INTO elp_answer_type
+    (
+    code,
+    description,
+    validation_regex,
+    answer_type_item_id,
+    look_up_list_code,
+    created_by,
+    answer_type_id
+    )
+    VALUES
+    (
+    :code,
+    :description,
+    :validation_regex,
+    :answer_type_item_id,
+    :look_up_list_code,
+    :created_by,
+    :answer_type_id
+    )
+  </INSERT>
+  <DELETE>
+    DELETE FROM elp_answer_type
+    WHERE
+    answer_type_id = :answer_type_id
+  </DELETE>
+</SQL>
+
+

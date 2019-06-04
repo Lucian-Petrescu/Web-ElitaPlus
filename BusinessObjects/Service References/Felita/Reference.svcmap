@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ReferenceGroup xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" ID="8d8ae73c-728d-4468-85e9-62c384d7abb9" xmlns="urn:schemas-microsoft-com:xml-wcfservicemap">
+  <ClientOptions>
+    <GenerateAsynchronousMethods>false</GenerateAsynchronousMethods>
+    <EnableDataBinding>true</EnableDataBinding>
+    <ExcludedTypes />
+    <ImportXmlTypes>false</ImportXmlTypes>
+    <GenerateInternalTypes>false</GenerateInternalTypes>
+    <GenerateMessageContracts>false</GenerateMessageContracts>
+    <NamespaceMappings />
+    <CollectionMappings />
+    <GenerateSerializableTypes>true</GenerateSerializableTypes>
+    <Serializer>Auto</Serializer>
+    <ReferenceAllAssemblies>true</ReferenceAllAssemblies>
+    <ReferencedAssemblies />
+    <ReferencedDataContractTypes />
+    <ServiceContractMappings />
+  </ClientOptions>
+  <MetadataSources>
+    <MetadataSource Address="http://mia0wappt015/FelitaConnect/FelitaConnectService.svc" Protocol="http" SourceId="1" />
+  </MetadataSources>
+  <Metadata>
+    <MetadataFile FileName="FelitaConnectService.wsdl" MetadataType="Wsdl" ID="b307e69f-29a9-4adb-988c-00cf23405492" SourceId="1" SourceUrl="http://mia0wappt015/FelitaConnect/FelitaConnectService.svc?wsdl" />
+    <MetadataFile FileName="FelitaConnectService.xsd" MetadataType="Schema" ID="196b4e1f-ed07-473e-b405-5d8dfeeb11c6" SourceId="1" SourceUrl="http://mia0wappt015/FelitaConnect/FelitaConnectService.svc?xsd=xsd2" />
+    <MetadataFile FileName="FelitaConnectService1.xsd" MetadataType="Schema" ID="0338290c-4472-4c6e-81dd-3b255eb9c88b" SourceId="1" SourceUrl="http://mia0wappt015/FelitaConnect/FelitaConnectService.svc?xsd=xsd7" />
+    <MetadataFile FileName="FelitaConnectService2.xsd" MetadataType="Schema" ID="b03fe554-9155-47db-83d1-e9cfd08e386d" SourceId="1" SourceUrl="http://mia0wappt015/FelitaConnect/FelitaConnectService.svc?xsd=xsd1" />
+    <MetadataFile FileName="FelitaConnectService3.xsd" MetadataType="Schema" ID="bc821ee5-23de-4052-b250-031d42f2991d" SourceId="1" SourceUrl="http://mia0wappt015/FelitaConnect/FelitaConnectService.svc?xsd=xsd4" />
+    <MetadataFile FileName="FelitaConnectService.disco" MetadataType="Disco" ID="4ba62af1-e68e-4191-bf29-bc1a7f48a6c9" SourceId="1" SourceUrl="http://mia0wappt015/FelitaConnect/FelitaConnectService.svc?disco" />
+    <MetadataFile FileName="dsJournalInfo.xsd" MetadataType="Schema" ID="92ac2a39-fa69-4699-a4b1-1c07d5ee18f9" SourceId="1" SourceUrl="http://mia0wappt015/FelitaConnect/FelitaConnectService.svc?xsd=xsd6" />
+    <MetadataFile FileName="FelitaConnectService4.xsd" MetadataType="Schema" ID="0b436a26-170f-45c8-b528-9c9d14e255a1" SourceId="1" SourceUrl="http://mia0wappt015/FelitaConnect/FelitaConnectService.svc?xsd=xsd5" />
+    <MetadataFile FileName="FelitaConnectService5.xsd" MetadataType="Schema" ID="0f74ed8c-9e4e-4cb3-811c-826975a69b30" SourceId="1" SourceUrl="http://mia0wappt015/FelitaConnect/FelitaConnectService.svc?xsd=xsd3" />
+    <MetadataFile FileName="FelitaConnectService6.xsd" MetadataType="Schema" ID="f59c9f69-0490-47a6-8cb0-98b61f59744f" SourceId="1" SourceUrl="http://mia0wappt015/FelitaConnect/FelitaConnectService.svc?xsd=xsd0" />
+  </Metadata>
+  <Extensions>
+    <ExtensionFile FileName="configuration91.svcinfo" Name="configuration91.svcinfo" />
+    <ExtensionFile FileName="configuration.svcinfo" Name="configuration.svcinfo" />
+  </Extensions>
+</ReferenceGroup>

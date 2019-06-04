@@ -1,0 +1,106 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+
+<!-- ********************** THIS FILE HAS BEEN GENERATED FROM TEMPLATE SQLObject.cst (2/11/2014)********************** -->
+
+<SQL>
+  <LOAD>
+    <![CDATA[	
+			SELECT 
+				contract_id,
+				product_code,
+				cert_duration,
+				converage_type_id,
+				replacement_policy_claim_count,
+				created_date,
+				modified_date,
+				created_by,
+				modified_by,
+				reppolicy_claim_count_id
+			FROM elp_reppolicy_claim_count 
+			WHERE
+				reppolicy_claim_count_id = :reppolicy_claim_count_id
+		]]>
+  </LOAD>
+  <LOAD_LIST>
+    <![CDATA[	
+			SELECT 
+				contract_id,
+				product_code,
+				cert_duration,
+				converage_type_id,
+				replacement_policy_claim_count,
+				created_date,
+				modified_date,
+				created_by,
+				modified_by,
+				reppolicy_claim_count_id
+			FROM elp_reppolicy_claim_count 
+			WHERE
+				contract_id = :contract_id
+		]]>
+  </LOAD_LIST>
+  <UPDATE>
+    <![CDATA[	
+			UPDATE elp_reppolicy_claim_count SET
+				contract_id = :contract_id,
+				product_code = :product_code,
+				cert_duration = :cert_duration,
+				converage_type_id = :converage_type_id,
+				replacement_policy_claim_count = :replacement_policy_claim_count,
+				modified_by = :modified_by
+			WHERE
+				reppolicy_claim_count_id = :reppolicy_claim_count_id
+		]]>
+  </UPDATE>
+  <INSERT>
+    INSERT INTO elp_reppolicy_claim_count
+    (
+    contract_id,
+    product_code,
+    cert_duration,
+    converage_type_id,
+    replacement_policy_claim_count,
+    created_by,
+    reppolicy_claim_count_id
+    )
+    VALUES
+    (
+    :contract_id,
+    :product_code,
+    :cert_duration,
+    :converage_type_id,
+    :replacement_policy_claim_count,
+    :created_by,
+    :reppolicy_claim_count_id
+    )
+  </INSERT>
+  <DELETE>
+    DELETE FROM elp_reppolicy_claim_count
+    WHERE
+    reppolicy_claim_count_id = :reppolicy_claim_count_id
+  </DELETE>
+  <GetReplacementPolicyClaimCntByClaim>
+    elita.ELP_CLAIM_LOAD_COMMON.GetRepPolicyClaimCntByClaim
+  </GetReplacementPolicyClaimCntByClaim>
+  <LOAD_COVERAGE_TYPE_BY_DEALER>
+    select distinct LI.list_item_id id, translation description, code
+    from (
+    select DISTINCT COVERAGE_TYPE_ID
+    from elp_product_code pc
+    inner join elp_item i on pc.product_code_id = i.product_code_id
+    inner join elp_coverage c on c.item_id = i.item_id
+    where pc.dealer_id = :dealer_id
+    ) c 
+    inner join elp_list_item li on c.coverage_type_id  = li.list_item_id
+    inner join elp_dict_item_translation trans on li.dict_item_id = trans.dict_item_id
+    where	trans.language_id = :language_id
+    order by upper(description)
+  </LOAD_COVERAGE_TYPE_BY_DEALER>
+  <LOAD_AVAILABLE_CERT_DURATION_BY_DEALER>
+    select DISTINCT CERTIFICATE_DURATION
+    from elp_product_code pc
+    inner join elp_item i on pc.product_code_id = i.product_code_id
+    inner join elp_coverage c on c.item_id = i.item_id
+    where pc.dealer_id = :dealer_id
+  </LOAD_AVAILABLE_CERT_DURATION_BY_DEALER>
+</SQL>

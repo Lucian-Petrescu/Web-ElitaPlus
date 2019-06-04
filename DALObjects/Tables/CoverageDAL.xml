@@ -1,0 +1,365 @@
+<?xml version="1.0" encoding="utf-8" ?>
+
+<!-- ********************** THIS FILE HAS BEEN GENERATED FROM TEMPLATE SQLObject.cst (8/16/2006)********************** -->
+
+<SQL>
+	<LOAD>
+		<![CDATA[	
+			SELECT 
+				cov.item_id item_id,
+				product_item_id,
+				coverage_type_id,
+				certificate_duration,
+				coverage_duration,
+				effective,
+				expiration,
+        offset_method_id,
+        getcodefromlistitem(offset_method_id) as offset_method,
+        offset_to_start,
+        offset_to_start_days,
+				optional_id,
+				liability_limit,
+        liability_limit_percent,    
+				deductible,
+        cov.deductible_percent,
+				cov.created_date created_date,
+				cov.modified_date modified_date,
+				cov.created_by created_by,
+				cov.modified_by modified_by,
+        cov.is_claim_allowed_id,    
+				coverage_id,
+				edealer.dealer_id dealer_id,
+				item.product_code_id product_code_id,
+				risk.risk_type_id risk_type_id,
+				earning_code_id,
+				repair_discount_pct,
+				replacement_discount_pct,
+        use_coverage_start_date_id,
+        cov.method_of_repair_id,
+        deductible_based_on_id,
+        agent_code,
+        markup_distribution_percent,
+        nvl(cov.cov_liability_limit,0) As cov_liability_limit,
+        cov.cov_liability_limit_percent,
+        pc.prod_liability_limit_base_id,
+        cov.recover_device_id as recover_device_id,
+        deductible_expression_id,
+        cov.is_reinsured_id,
+        cov.inuseflag,
+        cov.cov_claim_limit,
+        cov.liability_limit_per_incident
+			FROM elp_coverage cov, elp_dealer edealer, elp_product_code pc, 
+				 elp_item item, elp_risk_type risk
+			WHERE
+				cov.ITEM_ID = item.ITEM_ID
+				and item.product_code_id = pc.product_code_id
+				and edealer.dealer_id = pc.dealer_id
+				and item.RISK_TYPE_ID = risk.RISK_TYPE_ID
+				and coverage_id = :coverage_id
+		]]>
+	</LOAD>
+	<LOAD_LIST>		
+		<![CDATA[	
+			SELECT
+				COVERAGE_ID, C.CODE || ' - ' || dealer_name DEALER,  PRODUCT_CODE,
+				risk.DESCRIPTION RISK_TYPE, ITEM_NUMBER, TRANSLATION COVERAGE_TYPE,
+				CERTIFICATE_DURATION, COVERAGE_DURATION,
+				to_char(EFFECTIVE,'DD-Mon-YYYY') EFFECTIVE, to_char(EXPIRATION,'DD-Mon-YYYY') EXPIRATION,
+        EFFECTIVE EFFECTIVE_DATE_FORMAT, EXPIRATION EXPIRATION_DATE_FORMAT    
+			FROM
+				elp_coverage cov, elp_dealer edealer, elp_product_code pc, elp_item item,
+				elp_risk_type risk, elp_list_item li, elp_dict_item_translation trans, elp_company c
+			WHERE
+				cov.ITEM_ID = item.ITEM_ID
+				and COVERAGE_TYPE_ID = list_item_id
+				and item.RISK_TYPE_ID = risk.RISK_TYPE_ID
+				and li.DICT_ITEM_ID = trans.DICT_ITEM_ID
+				and item.product_code_id = pc.product_code_id
+				and edealer.dealer_id = pc.dealer_id
+				and c.company_id = edealer.company_id
+				--dynamic_in_clause
+   				--dynamic_where_clause
+				and trans.LANGUAGE_ID = :LANGUAGE_ID
+				--dynamic_order_by_clause
+		]]>
+	</LOAD_LIST>	
+	<MAX_EXPIRATION>
+		<![CDATA[	
+			SELECT COVERAGE_ID, to_char(EXPIRATION, 'DD-Mon-YYYY') EXPIRATION, sq.EXPIRATION_COUNT
+			FROM elp_coverage,
+					(select Max(EXPIRATION) MAX_EXPIRATION, Count(*) EXPIRATION_COUNT  
+						from elp_coverage
+						where	ITEM_ID = :ITEM_ID
+							and	COVERAGE_TYPE_ID = :COVERAGE_TYPE_ID
+							and CERTIFICATE_DURATION = :CERTIFICATE_DURATION
+							and COVERAGE_DURATION = :COVERAGE_DURATION) sq
+			WHERE	ITEM_ID = :ITEM_ID
+					and	COVERAGE_TYPE_ID = :COVERAGE_TYPE_ID
+					and CERTIFICATE_DURATION = :CERTIFICATE_DURATION
+					and COVERAGE_DURATION = :COVERAGE_DURATION
+					and EXPIRATION = MAX_EXPIRATION
+		]]>
+	</MAX_EXPIRATION>
+	<COVERAGE_LIST>
+			<![CDATA[	
+				SELECT DISTINCT
+			    COVERAGE_ID, edealer.dealer_id, item.product_code_id, item.RISK_TYPE_ID, ITEM_NUMBER,
+			    COVERAGE_TYPE_ID, CERTIFICATE_DURATION, COVERAGE_DURATION,
+				cov.EFFECTIVE COVERAGE_EFFECTIVE, cov.EXPIRATION COVERAGE_EXPIRATION
+			FROM
+				elp_coverage cov, elp_dealer edealer, elp_product_code pc, elp_item item,
+				elp_risk_type risk, elp_list_item li, elp_contract, elp_list_item yes_no
+			WHERE
+				cov.ITEM_ID = item.ITEM_ID
+				and COVERAGE_TYPE_ID = li.list_item_id
+				and item.RISK_TYPE_ID = risk.RISK_TYPE_ID
+				and item.product_code_id = pc.product_code_id
+				and edealer.dealer_id = pc.dealer_id
+				and edealer.dealer_id =  elp_contract.dealer_id
+				and elp_contract.effective <= cov.effective
+				and cov.expiration <=  elp_contract.expiration
+				and elp_contract.effective <= :EFFECTIVE
+				and :EXPIRATION <= elp_contract.expiration
+				and elp_contract.fixed_esc_duration_flag = yes_no.list_item_id
+				and edealer.dealer_id = :DEALER_ID
+				and item.product_code_id = :PRODUCT_CODE_ID
+				and item.RISK_TYPE_ID = :RISK_TYPE_ID
+				and item.item_id = :ITEM_ID
+				and coverage_type_id = :COVERAGE_TYPE_ID
+				and ((yes_no.code = 'N' and CERTIFICATE_DURATION= :CERTIFICATE_DURATION)
+				    or(yes_no.code = 'Y' and COVERAGE_DURATION= :COVERAGE_DURATION and CERTIFICATE_DURATION= :CERTIFICATE_DURATION))
+				and coverage_id != :COVERAGE_ID
+   		    ORDER by COVERAGE_EFFECTIVE
+   		  ]]>
+	</COVERAGE_LIST>
+  <LOAD_DEALER_COVERAGES_INFO_FOR_WS>
+    <![CDATA[	
+        select rawtohex(coverage_id) as coverage_id,
+	           rawtohex(item_id) as item_id,
+	           getcodefromlistitem(coverage_type_id) as coverage_type_code,
+	           certificate_duration,
+	           coverage_duration,
+	           effective as effective_date,
+	           expiration as expiration_date,
+	           getcodefromlistitem(is_claim_allowed_id) as is_claim_allowed_code
+        from elita.elp_coverage
+        where item_id in
+        (
+	        select item_id  from elita.elp_item
+	        where product_code_id in
+	        (
+	        select product_code_id
+	        from elita.elp_product_code pc ,elp_dealer d
+	        where pc.dealer_id = d.dealer_id and
+	        d.dealer_id = :dealer_id)
+        )
+        and :warranty_sales_date >= effective
+        and :warranty_sales_date <= expiration
+    ]]>
+  </LOAD_DEALER_COVERAGES_INFO_FOR_WS>
+	<UPDATE>
+		<![CDATA[	
+			UPDATE elp_coverage SET
+				item_id = :item_id,
+				product_item_id = :product_item_id,
+				coverage_type_id = :coverage_type_id,
+				certificate_duration = :certificate_duration,
+				coverage_duration = :coverage_duration,
+				effective = :effective,
+				expiration = :expiration,
+				offset_method_id = :offset_method_id,
+				offset_to_start = :offset_to_start,
+        offset_to_start_days = :offset_to_start_days,
+				optional_id = :optional_id,
+				liability_limit = :liability_limit,
+        liability_limit_percent = :liability_limit_percent,
+				deductible = :deductible,
+        deductible_percent = :deductible_percent,
+				modified_by = :modified_by,
+				earning_code_id = :earning_code_id,
+				repair_discount_pct = :repair_discount_pct,
+				replacement_discount_pct = :replacement_discount_pct,
+        is_claim_allowed_id = :is_claim_allowed_id,
+        use_coverage_start_date_id = :use_coverage_start_date_id,
+        method_of_repair_id = :method_of_repair_id,
+        deductible_based_on_id = :deductible_based_on_id,
+        agent_code = :agent_code,
+        markup_distribution_percent = :markup_distribution_percent,
+        cov_liability_limit = nvl(:cov_liability_limit,0),
+        cov_liability_limit_percent = :cov_liability_limit_percent,
+        recover_device_id = :recover_device_id,
+        deductible_expression_id = :deductible_expression_id,
+        is_reinsured_id= :is_reinsured_id,
+        inuseflag = :inuseflag,
+        cov_claim_limit = :cov_claim_limit,
+        liability_limit_per_incident = :liability_limit_per_incident
+			WHERE
+				coverage_id = :coverage_id
+		]]>
+	</UPDATE>
+	<INSERT>
+    INSERT INTO elp_coverage
+    (
+    item_id,
+    product_item_id,
+    coverage_type_id,
+    certificate_duration,
+    coverage_duration,
+    effective,
+    expiration,
+    offset_method_id,
+    offset_to_start,
+    offset_to_start_days,
+    optional_id,
+    liability_limit,
+    liability_limit_percent,
+    deductible,
+    deductible_percent,
+    created_by,
+    coverage_id,
+    earning_code_id,
+    repair_discount_pct,
+    replacement_discount_pct,
+    is_claim_allowed_id,
+    use_coverage_start_date_id,
+    method_of_repair_id,
+    deductible_based_on_id,
+    agent_code,
+    markup_distribution_percent,
+    cov_liability_limit,
+    cov_liability_limit_percent,
+    recover_device_id,
+    deductible_expression_id,
+    is_reinsured_id,
+    inuseflag,
+    cov_claim_limit,
+    liability_limit_per_incident
+    )
+    VALUES
+    (
+    :item_id,
+    :product_item_id,
+    :coverage_type_id,
+    :certificate_duration,
+    :coverage_duration,
+    :effective,
+    :expiration,
+    :offset_method_id,
+    :offset_to_start,
+    :offset_to_start_days,
+    :optional_id,
+    :liability_limit,
+    :liability_limit_percent,
+    :deductible,
+    :deductible_percent,
+    :created_by,
+    :coverage_id,
+    :earning_code_id,
+    :repair_discount_pct,
+    :replacement_discount_pct,
+    :is_claim_allowed_id,
+    :use_coverage_start_date_id,
+    :method_of_repair_id,
+    :deductible_based_on_id,
+    :agent_code,
+    :markup_distribution_percent,
+    nvl(:cov_liability_limit,0),
+    :cov_liability_limit_percent,
+    :recover_device_id,
+    :deductible_expression_id,
+    :is_reinsured_id,
+    :inuseflag,
+    :cov_claim_limit,
+    :liability_limit_per_incident
+    )
+  </INSERT>
+	<DELETE>
+			DELETE FROM elp_coverage
+			WHERE
+				coverage_id = :coverage_id
+	</DELETE>
+	<CURRENCY_OF_COVERAGE>
+		<![CDATA[	
+				select CU.DESCRIPTION
+				from ELP_CONTRACT C,
+					ELP_ITEM I,
+					ELP_PRODUCT_CODE P,
+					ELP_DEALER D,
+					ELP_COVERAGE CO,
+					ELP_CURRENCY CU
+				Where CO.ITEM_ID = I.ITEM_ID
+				and I.PRODUCT_CODE_ID = P.PRODUCT_CODE_ID
+				and P.DEALER_ID = D.DEALER_ID
+				and D.DEALER_ID = C.DEALER_ID
+				and C.CURRENCY_OF_COVERAGES_ID = CU.CURRENCY_ID
+				and CO.EFFECTIVE between C.EFFECTIVE and C.EXPIRATION		
+				and coverage_id = :coverage_id
+		]]>
+	</CURRENCY_OF_COVERAGE>
+  <PRODUCT_LIABILITY_LIMIT_BASE>
+    <![CDATA[	
+				select pc.prod_liability_limit_base_id
+				from ELP_PRODUCT_CODE PC
+				Where PC.product_code_id = :product_code_id
+		]]>
+  </PRODUCT_LIABILITY_LIMIT_BASE>
+  <GET_COVERAGE_DEDUCTIBLE_FROM_CONTRACT>
+    <![CDATA[	
+      select c.COVERAGE_DEDUCTIBLE_ID ID, I.CODE CODE,T.TRANSLATION DESCRIPTION
+      from ELP_LIST L, ELP_LIST_ITEM I, ELP_CONTRACT c,
+      ELP_DICT_ITEM_TRANSLATION T,
+      ELP_LANGUAGE
+      where I.LIST_ID = L.LIST_ID
+      and c.COVERAGE_DEDUCTIBLE_ID = list_item_id
+      and I.DICT_ITEM_ID = T.DICT_ITEM_ID
+      and T.LANGUAGE_ID = ELP_LANGUAGE.LANGUAGE_ID
+      and L.code = ('YESNO')
+      and :effective_date between to_char(c.EFFECTIVE ,'yyyyMMdd')and to_char(c.EXPIRATION ,'yyyyMMdd')
+      --dynamic_where_clause
+  ]]>
+  </GET_COVERAGE_DEDUCTIBLE_FROM_CONTRACT>
+  <EXPIRE_COVERAGES>
+    <![CDATA[	
+			UPDATE elp_coverage SET
+				expiration = :expiration
+      WHERE
+				coverage_id in (select C.coverage_id 
+                        FROM elp_coverage C,
+                            ELP_ITEM I,
+					                  ELP_PRODUCT_CODE P
+                        where C.ITEM_ID = I.ITEM_ID
+                    				and I.PRODUCT_CODE_ID = P.PRODUCT_CODE_ID
+				                    and P.DEALER_ID = :dealer_id
+                            and C.effective >= :effective
+                            and C.expiration > :expiration)
+		]]>
+  </EXPIRE_COVERAGES>
+  <GET_ASSOCIATED_CERT_COUNT>
+    <![CDATA[	    
+      select (select count(c.cert_id)
+              from   elp_cert               c,
+                     elp_cert_item          ci,
+                     elp_cert_item_coverage cic
+              where  c.cert_id = ci.cert_id
+              and    ci.cert_item_id = cic.cert_item_id
+              and    c.dealer_id = edealer.dealer_id
+              and    c.product_code = pc.product_code
+              and    cic.coverage_type_id = cov.coverage_type_id
+              and    ci.risk_type_id = item.risk_type_id
+              and    c.warranty_sales_date between trunc(cov.effective) and
+                     trunc(cov.expiration)) as Associated_Cert_count
+      from   elp_coverage     cov,
+             elp_dealer       edealer,
+             elp_product_code pc,
+             elp_item         item,
+             elp_risk_type    risk
+      where  cov.item_id = item.item_id
+      and    item.product_code_id = pc.product_code_id
+      and    edealer.dealer_id = pc.dealer_id
+      and    item.risk_type_id = risk.risk_type_id
+      and    coverage_id = :coverage_id
+		]]>
+  </GET_ASSOCIATED_CERT_COUNT>
+</SQL> 
+
+

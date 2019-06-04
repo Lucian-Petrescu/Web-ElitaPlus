@@ -1,0 +1,173 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+
+<!-- ********************** THIS FILE HAS BEEN GENERATED FROM TEMPLATE SQLObject.cst (4/27/2012)********************** -->
+
+<SQL>
+  <LOAD>
+    <![CDATA[	
+			SELECT 
+				issue_id,
+				soft_question_id,
+				display_order,
+				created_date,
+				created_by,
+				modified_date,
+				modified_by,
+				effective,
+				expiration,
+				issue_question_id
+			FROM elp_issue_question 
+			WHERE
+				issue_question_id = :issue_question_id
+		]]>
+  </LOAD>
+  <LOAD_LIST>
+    <![CDATA[	
+			SELECT 
+				issue_id,
+				soft_question_id,
+				display_order,
+				created_date,
+				created_by,
+				modified_date,
+				modified_by,
+				effective,
+				expiration,
+				issue_question_id
+			FROM elp_issue_question 
+			WHERE
+				issue_id = :issue_id
+		]]>
+  </LOAD_LIST>
+  <LOAD_FILTERED_LIST>
+        <![CDATA[	
+			SELECT
+	            iq.issue_id,
+	            iq.soft_question_id,	            
+	            iq.display_order,
+	            iq.created_date,
+	            iq.created_by,
+	            iq.modified_date,
+	            iq.modified_by,
+	            iq.effective,
+	            iq.expiration,
+	            iq.issue_question_id
+            FROM
+	            elp_issue_question iq
+	            inner join
+	            elp_issue_question_list iql on iq.issue_question_id = iql.issue_question_id
+	            inner join
+	            elp_question_list ql on iql.question_list_id = ql.question_list_id
+	            inner join
+	            elp_dealer d on ql.code = d.question_list_code
+            WHERE
+	            iq.issue_id = :issue_id
+	            and d.dealer_id = :dealer_id
+	            and sysdate between iq.effective and iq.expiration
+	            and sysdate between iql.effective and iql.expiration
+	            and sysdate between ql.effective and ql.expiration
+            ORDER BY
+	            iql.display_order			
+		]]>
+  </LOAD_FILTERED_LIST>  
+  <UPDATE>
+    <![CDATA[	
+			UPDATE elp_issue_question SET
+				issue_id = :issue_id,
+				soft_question_id = :soft_question_id,
+				display_order = :display_order,
+				effective = :effective,
+				expiration = :expiration,
+				modified_by = :modified_by
+			WHERE
+				issue_question_id = :issue_question_id
+		]]>
+  </UPDATE>
+  <INSERT>
+    INSERT INTO elp_issue_question
+    (
+    issue_id,
+    soft_question_id,
+    display_order,
+    effective,
+    expiration,
+    created_by,
+    issue_question_id
+    )
+    VALUES
+    (
+    :issue_id,
+    :soft_question_id,
+    :display_order,
+    :effective,
+    :expiration,
+    :created_by,
+    :issue_question_id
+    )
+  </INSERT>
+  <DELETE>
+    DELETE FROM elp_issue_question
+    WHERE
+    issue_question_id = :issue_question_id
+  </DELETE>
+  <Available_Question_List>
+    <![CDATA[
+    SELECT Distinct
+           q.SOFT_QUESTION_ID ID,
+           Q.description DESCRIPTION
+        from
+            ELP_LANGUAGE l, 
+            ELP_SOFT_QUESTION q
+            LEFT OUTER JOIN
+            ELP_ISSUE_QUESTION iq ON q.SOFT_QUESTION_ID = iq.SOFT_QUESTION_ID
+            INNER JOIN
+            ELP_LIST_ITEM li On q.QUESTION_TYPE_ID = li.LIST_ITEM_ID
+        WHERE
+            l.LANGUAGE_ID = :languageId
+            AND li.CODE <> 'DIAG'
+		]]>
+  </Available_Question_List>
+  <SEARCH_Question_List_detail>
+    <![CDATA[
+      SELECT 
+        EIQ.issue_question_id ID, 
+        EI.description || ' - ' || ESQ.description DESCRIPTION
+      FROM 
+        ELP_ISSUE_QUESTION EIQ
+        INNER JOIN ELP_ISSUE EI ON
+        EIQ.issue_id = EI.issue_id
+        INNER JOIN ELP_SOFT_QUESTION ESQ
+        ON EIQ.soft_question_id = ESQ.soft_question_id
+      WHERE
+        EIQ.EXPIRATION > SYSDATE
+		]]>    
+  </SEARCH_Question_List_detail>
+  <SEARCH_Dealer_List_detail>
+    <![CDATA[	
+      SELECT
+        LTRIM(RTRIM(DEALER_NAME)) DESCRIPTION,
+        DEALER_ID ID
+      FROM
+        ELP_DEALER
+		  MINUS
+		  SELECT
+        LTRIM(RTRIM(DEALER_NAME)) DESCRIPTION,
+        DEALER_ID ID
+      FROM
+        ELP_DEALER 
+      ]]>
+  </SEARCH_Dealer_List_detail>
+  <IS_CHILD>
+    <![CDATA[
+      SELECT
+        issue_question_id
+      FROM 
+        elp_issue_question
+      WHERE
+        soft_question_id = :soft_question_id 
+        AND issue_id = :issue_id 
+    ]]>
+  </IS_CHILD>
+</SQL>
+
+

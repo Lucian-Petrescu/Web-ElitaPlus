@@ -1,0 +1,126 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xs:schema id="ServiceOrderReport" targetNamespace="http://tempuri.org/ServiceOrderReport.xsd" elementFormDefault="qualified" xmlns="http://tempuri.org/ServiceOrderReport.xsd" xmlns:mstns="http://tempuri.org/ServiceOrderReport.xsd" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+  <xs:element name="ServiceOrderReport">
+    <xs:complexType>
+      <xs:choice maxOccurs="unbounded">
+        <xs:element name="ServiceOrder">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element name="COMPANY_ID" type="xs:base64Binary" minOccurs="0" nillable="true" />
+              <xs:element name="CLAIM_ID" type="xs:base64Binary" minOccurs="0" nillable="true" />
+              <xs:element name="SERVICE_CENTER_ID" type="xs:base64Binary" minOccurs="0" nillable="true" />
+              <xs:element name="LOSS_DATE" type="xs:date" minOccurs="0" nillable="true" />
+              <xs:element name="SVC_NAME" type="xs:string" minOccurs="0" nillable="true" />
+              <xs:element name="SVC_CODE" type="xs:string" minOccurs="0" nillable="true" />
+              <xs:element name="SVC_ADDRESS1" type="xs:string" minOccurs="0" nillable="true" />
+              <xs:element name="SVC_ADDRESS2" type="xs:string" minOccurs="0" nillable="true" />
+              <xs:element name="SVC_CITY" type="xs:string" minOccurs="0" nillable="true" />
+              <xs:element name="SVC_CONTACT" type="xs:string" minOccurs="0" nillable="true" />
+              <xs:element name="SVC_STATE_PROVINCE" type="xs:string" minOccurs="0" nillable="true" />
+              <xs:element name="SVC_ZIP" type="xs:string" minOccurs="0" nillable="true" />
+              <xs:element name="SVC_PHONE" type="xs:string" minOccurs="0" nillable="true" />
+              <xs:element name="SVC_FAX" type="xs:string" minOccurs="0" nillable="true" />
+              <xs:element name="SVC_EMAIL" type="xs:string" minOccurs="0" nillable="true" />
+              <xs:element name="SVC_ADDR_MAILING_LABEL" type="xs:string" minOccurs="0" nillable="true" />
+              <xs:element name="LC_NAME" type="xs:string" minOccurs="0" nillable="true" />
+              <xs:element name="LC_CODE" type="xs:string" minOccurs="0" nillable="true" />
+              <xs:element name="LC_ADDRESS1" type="xs:string" minOccurs="0" nillable="true" />
+              <xs:element name="LC_ADDRESS2" type="xs:string" minOccurs="0" nillable="true" />
+              <xs:element name="LC_CITY" type="xs:string" minOccurs="0" nillable="true" />
+              <xs:element name="LC_STATE_PROVINCE" type="xs:string" minOccurs="0" nillable="true" />
+              <xs:element name="LC_ZIP" type="xs:string" minOccurs="0" nillable="true" />
+              <xs:element name="LC_PHONE" type="xs:string" minOccurs="0" nillable="true" />
+              <xs:element name="LC_FAX" type="xs:string" minOccurs="0" nillable="true" />
+              <xs:element name="LC_EMAIL" type="xs:string" minOccurs="0" nillable="true" />
+              <xs:element name="LC_ADDR_MAILING_LABEL" type="xs:string" minOccurs="0" nillable="true" />
+              <xs:element name="REPAIR_METHOD" type="xs:string" minOccurs="0" nillable="true" />
+              <xs:element name="DATE_CREATED" type="xs:date" minOccurs="0" nillable="true" />
+              <xs:element name="CERTIFICATE" type="xs:string" minOccurs="0" nillable="true" />
+              <xs:element name="IDENTIFICATION_NUMBER" type="xs:string" minOccurs="0" nillable="true" />
+              <xs:element name="PROBLEM_DESCRIPTION" type="xs:string" minOccurs="0" nillable="true" />
+              <xs:element name="SPECIAL_INSTRUCTION" type="xs:string" minOccurs="0" nillable="true" />
+              <xs:element name="CUSTOMER_NAME" type="xs:string" minOccurs="0" nillable="true" />
+              <xs:element name="ADDRESS1" type="xs:string" minOccurs="0" nillable="true" />
+              <xs:element name="ADDRESS2" type="xs:string" minOccurs="0" nillable="true" />
+              <xs:element name="CITY" type="xs:string" minOccurs="0" nillable="true" />
+              <xs:element name="STATE_PROVINCE" type="xs:string" minOccurs="0" nillable="true" />
+              <xs:element name="ZIP" type="xs:string" minOccurs="0" nillable="true" />
+              <xs:element name="HOME_PHONE" type="xs:string" minOccurs="0" nillable="true" />
+              <xs:element name="MOBILE_PHONE" type="xs:string" minOccurs="0" nillable="true" />
+              <xs:element name="CUSTOMER_EMAIL" type="xs:string" minOccurs="0" nillable="true" />
+              <xs:element name="ADDR_MAILING_LABEL" type="xs:string" minOccurs="0" nillable="true" />
+              <xs:element name="RETAILER" type="xs:string" minOccurs="0" nillable="true" />
+              <xs:element name="INVOICE_NUMBER" type="xs:string" minOccurs="0" nillable="true" />
+              <xs:element name="PRODUCT_DESCRIPTION" type="xs:string" minOccurs="0" nillable="true" />
+              <xs:element name="COVERAGE_TYPE" type="xs:string" minOccurs="0" nillable="true" />
+              <xs:element name="MANUFACTURER" type="xs:string" minOccurs="0" nillable="true" />
+              <xs:element name="MODEL" type="xs:string" minOccurs="0" nillable="true" />
+              <xs:element name="SERIAL_NUMBER" type="xs:string" minOccurs="0" nillable="true" />
+              <xs:element name="PRODUCT_SALES_DATE" type="xs:date" minOccurs="0" nillable="true" />
+              <xs:element name="DEALER_NAME" type="xs:string" minOccurs="0" nillable="true" />
+              <xs:element name="NAME_OF_CONTACT" type="xs:string" minOccurs="0" nillable="true" />
+              <xs:element name="DEDUCTIBLE_AMOUNT" type="xs:decimal" minOccurs="0" nillable="true" />
+              <xs:element name="AUTHORIZATION_AMOUNT" type="xs:decimal" minOccurs="0" nillable="true" />
+              <xs:element name="AUTHORIZED_BY" type="xs:string" minOccurs="0" nillable="true" />
+              <xs:element name="CLAIM_NUMBER" type="xs:string" minOccurs="0" nillable="true" />
+              <xs:element name="COMPANY_NAME" type="xs:string" minOccurs="0" nillable="true" />
+              <xs:element name="COMPANY_ADDRESS1" type="xs:string" minOccurs="0" nillable="true" />
+              <xs:element name="COMPANY_ADDRESS2" type="xs:string" minOccurs="0" nillable="true" />
+              <xs:element name="COMPANY_CITY" type="xs:string" minOccurs="0" nillable="true" />
+              <xs:element name="COMPANY_STATE" type="xs:string" minOccurs="0" nillable="true" />
+              <xs:element name="COMPANY_ZIP" type="xs:string" minOccurs="0" nillable="true" />
+              <xs:element name="COMPANY_PHONE" type="xs:string" minOccurs="0" nillable="true" />
+              <xs:element name="COMPANY_FAX" type="xs:string" minOccurs="0" nillable="true" />
+              <xs:element name="COMPANY_EMAIL" type="xs:string" minOccurs="0" nillable="true" />
+              <xs:element name="COMPANY_ADDR_MAILING_LABEL" type="xs:string" minOccurs="0" nillable="true" />
+              <xs:element name="WARRANTY_SALES_DATE" type="xs:date" minOccurs="0" nillable="true" />
+              <xs:element name="WARRANTY_END_DATE" type="xs:date" minOccurs="0" nillable="true" />
+              <xs:element name="LIABILITY_LIMIT" type="xs:decimal" minOccurs="0" nillable="true" />
+              <xs:element name="RPC_NAME" type="xs:string" minOccurs="0" nillable="true" />
+              <xs:element name="RPC_CODE" type="xs:string" minOccurs="0" nillable="true" />
+              <xs:element name="RPC_ADDRESS1" type="xs:string" minOccurs="0" nillable="true" />
+              <xs:element name="RPC_ADDRESS2" type="xs:string" minOccurs="0" nillable="true" />
+              <xs:element name="RPC_CITY" type="xs:string" minOccurs="0" nillable="true" />
+              <xs:element name="RPC_STATE_PROVINCE" type="xs:string" minOccurs="0" nillable="true" />
+              <xs:element name="RPC_ZIP" type="xs:string" minOccurs="0" nillable="true" />
+              <xs:element name="RPC_PHONE" type="xs:string" minOccurs="0" nillable="true" />
+              <xs:element name="RPC_FAX" type="xs:string" minOccurs="0" nillable="true" />
+              <xs:element name="RPC_EMAIL" type="xs:string" minOccurs="0" nillable="true" />
+              <xs:element name="RPC_ADDR_MAILING_LABEL" type="xs:string" minOccurs="0" nillable="true" />
+              <xs:element name="CLAIM_REASON_CLOSED" type="xs:string" minOccurs="0" nillable="true" />
+              <xs:element name="CLAIM_ACTIVITY" type="xs:string" minOccurs="0" nillable="true" />
+              <xs:element name="ASSURANT_AMOUNT" type="xs:decimal" minOccurs="0" nillable="true" />
+              <xs:element name="CONSUMER_AMOUNT" type="xs:decimal" minOccurs="0" nillable="true" />
+              <xs:element name="CAMPAIGN_NUMBER" type="xs:string" nillable="true" />
+              <xs:element name="COMPANY_CODE" type="xs:string" nillable="true" />
+              <xs:element name="SALES_PRICE" type="xs:decimal" nillable="true" />
+              <xs:element name="TOTAL_PAID" type="xs:decimal" nillable="true" />
+              <xs:element name="TAX_ID" type="xs:string" nillable="true" />
+              <xs:element name="CAUSE_OF_LOSS" type="xs:string" nillable="true" />
+              <xs:element name="AUTHORIZATION_NUMBER" type="xs:string" nillable="true" />
+              <xs:element name="IMAGE_PATH" type="xs:string" nillable="true" />
+              <xs:element name="IMEI" type="xs:string" nillable="true" />
+              <xs:element name="SHIPPING_SALUTATIONID" type="xs:string" nillable="true" />
+              <xs:element name="SHIPPING_NAME" type="xs:string" nillable="true" />
+              <xs:element name="SHIPPING_ADDRESS1" type="xs:string" nillable="true" />
+              <xs:element name="SHIPPING_ADDRESS2" type="xs:string" nillable="true" />
+              <xs:element name="SHIPPING_ADDRESS3" type="xs:string" nillable="true" />
+              <xs:element name="SHIPPING_POSTALCODE" type="xs:string" nillable="true" />
+              <xs:element name="SHIPPING_REGION" type="xs:string" nillable="true" />
+              <xs:element name="SHIPPING_CITY" type="xs:string" nillable="true" />
+              <xs:element name="SHIPPING_COUNTRY" type="xs:string" nillable="true" />
+              <xs:element name="SHIPPING_HOMEPHONE" type="xs:string" nillable="true" />
+              <xs:element name="SHIPPING_WORKPHONE" type="xs:string" nillable="true" />
+              <xs:element name="SHIPPING_CELLPHONE" type="xs:string" nillable="true" />
+              <xs:element name="SHIPPING_EMAIL" type="xs:string" nillable="true" />
+              <xs:element name="RISK_TYPE" type="xs:string" nillable="true" />
+              <xs:element name="MASTER_CLAIM_NUMBER" type="xs:string" minOccurs="0" nillable="true" />
+              <xs:element name="DEDUCTIBLE_AMT_DISCLAIMER_ON" type="xs:string" minOccurs="0" nillable="true" />
+              <xs:element name="EXTENDED_CLAIM_STATUS" type="xs:string" minOccurs="0" nillable="true" />
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+      </xs:choice>
+    </xs:complexType>
+  </xs:element>
+</xs:schema>

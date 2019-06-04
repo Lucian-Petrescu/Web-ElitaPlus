@@ -1,0 +1,176 @@
+<?xml version="1.0" encoding="utf-8" ?>
+
+<!-- ********************** THIS FILE HAS BEEN GENERATED FROM TEMPLATE SQLObject.cst (10/12/2004)********************** -->
+
+<SQL>
+	<LOAD>	
+		  SELECT 
+				split_system_id,
+				filename,
+				process_flag,
+				received,
+				counted,
+				rejected,
+				validated,
+				loaded,
+				bypassed,
+				invoice_number,
+				invoice_amount,
+				detail_amount,
+				processed_amount,
+				created_by,
+				created_date,
+				modified_by,
+				modified_date,
+				claimfile_processed_id
+			FROM elp_claimfile_processed 
+			WHERE claimfile_processed_id = :claimfile_processed_id
+	</LOAD>
+	<LOAD_LIST>
+    SELECT
+    claimfile_processed_id,
+    filename,
+    received,
+    bypassed,
+    counted,
+    rejected,
+    validated,
+    loaded,
+    processed_amount
+    FROM elp_claimfile_processed dp
+    WHERE
+          dp.split_system_id = :split_system_id
+      AND ( 		dp.is_deleted = 'N'
+            OR  (			  dp.is_deleted = 'Y'
+                  AND  	:is_in_role = 'Y'
+                )
+          )
+      AND dp.counted > 0   
+    ORDER BY filename desc
+  </LOAD_LIST>
+  <LOAD_LIST_FOR_A_DEALER>
+    SELECT
+    dp.claimfile_processed_id,
+    dp.filename,
+    dp.received,
+    dp.bypassed,
+    dp.counted,
+    dp.rejected,
+    dp.validated,
+    dp.loaded,
+    dp.processed_amount
+    FROM elp_claimfile_processed dp
+    WHERE
+          dp.split_system_id = :split_system_id
+      AND dp.claimfile_processed_id in (SELECT cw.claimfile_processed_id FROM elp_claim_recon_wrk cw WHERE cw.dealer_code =:dealer_code)
+      AND ( 		dp.is_deleted = 'N'
+            OR  (			  dp.is_deleted = 'Y'
+                  AND  	:is_in_role = 'Y'
+                )
+          )
+    ORDER BY filename desc
+  </LOAD_LIST_FOR_A_DEALER>
+	<UPDATE>
+		<![CDATA[	
+			UPDATE elp_claimfile_processed SET
+				split_system_id = :split_system_id,
+				filename = :filename,
+				process_flag = :process_flag,
+				received = :received,
+				counted = :counted,
+				rejected = :rejected,
+				validated = :validated,
+				loaded = :loaded,
+				bypassed = :bypassed,
+				invoice_number = :invoice_number,
+				invoice_amount = :invoice_amount,
+				detail_amount = :detail_amount,
+				processed_amount = :processed_amount,
+				modified_by = :modified_by
+			WHERE
+				claimfile_processed_id = :claimfile_processed_id
+				AND NVL(modified_date,created_date) = NVL(:modified_date,created_date)
+		]]>
+	</UPDATE>
+	<INSERT>
+			INSERT INTO elp_claimfile_processed
+					(			
+				split_system_id, 
+				filename, 
+				process_flag, 
+				received, 
+				counted, 
+				rejected, 
+				validated, 
+				loaded, 
+				bypassed, 
+				invoice_number, 
+				invoice_amount, 
+				detail_amount, 
+				processed_amount, 
+				created_by,
+				claimfile_processed_id
+					)
+			VALUES
+					(			
+				:split_system_id, 
+				:filename, 
+				:process_flag, 
+				:received, 
+				:counted, 
+				:rejected, 
+				:validated, 
+				:loaded, 
+				:bypassed, 
+				:invoice_number, 
+				:invoice_amount, 
+				:detail_amount, 
+				:processed_amount, 
+				:created_by,
+				:claimfile_processed_id
+					)
+	</INSERT>
+	<DELETE>
+			DELETE FROM elp_claimfile_processed
+			WHERE
+				claimfile_processed_id = :claimfile_processed_id
+	</DELETE>
+	<VALIDATE_NEW_CLAIM_FILE>
+		elp_claim_load.elp_claim_validate
+	</VALIDATE_NEW_CLAIM_FILE>
+	<PROCESS_NEW_CLAIM_FILE>
+		elp_claim_load.elp_claim_process
+	</PROCESS_NEW_CLAIM_FILE>
+	<DELETE_NEW_CLAIM_FILE>
+	    elp_claim_load.elp_claim_delete
+	</DELETE_NEW_CLAIM_FILE>
+	<VALIDATE_NEW_CLAIM_HP>
+		elp_hp_claim_load.elp_claim_validate
+	</VALIDATE_NEW_CLAIM_HP>
+	<PROCESS_NEW_CLAIM_HP>
+		elp_hp_claim_load.elp_claim_process
+	</PROCESS_NEW_CLAIM_HP>
+	<DELETE_NEW_CLAIM_HP>
+	    elp_hp_claim_load.elp_claim_delete
+	</DELETE_NEW_CLAIM_HP>
+	<VALIDATE_CLOSE_CLAIM_FILE>
+	    elp_claim_close.elp_claim_validate
+	</VALIDATE_CLOSE_CLAIM_FILE>
+	<PROCESS_CLOSE_CLAIM_FILE>
+		elp_claim_close.elp_claim_process
+	</PROCESS_CLOSE_CLAIM_FILE>
+	<DELETE_CLOSE_CLAIM_FILE>
+		elp_claim_close.elp_claim_delete
+	</DELETE_CLOSE_CLAIM_FILE>
+	<VALIDATE_CLOSE_CLAIM_SUNCOM>
+	    elp_suncom_claims.elp_claim_validate
+	</VALIDATE_CLOSE_CLAIM_SUNCOM>
+	<PROCESS_CLOSE_CLAIM_SUNCOM>
+		elp_suncom_claims.elp_claim_process
+	</PROCESS_CLOSE_CLAIM_SUNCOM>
+	<DELETE_CLOSE_CLAIM_SUNCOM>
+		elp_suncom_claims.elp_claim_delete
+	</DELETE_CLOSE_CLAIM_SUNCOM>
+</SQL> 
+
+

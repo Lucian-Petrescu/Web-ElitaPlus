@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ReferenceGroup xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" ID="dd9ca0c2-6c26-4582-8083-7a81c6916cb2" xmlns="urn:schemas-microsoft-com:xml-wcfservicemap">
+  <ClientOptions>
+    <GenerateAsynchronousMethods>false</GenerateAsynchronousMethods>
+    <GenerateTaskBasedAsynchronousMethod>true</GenerateTaskBasedAsynchronousMethod>
+    <EnableDataBinding>true</EnableDataBinding>
+    <ExcludedTypes />
+    <ImportXmlTypes>false</ImportXmlTypes>
+    <GenerateInternalTypes>false</GenerateInternalTypes>
+    <GenerateMessageContracts>false</GenerateMessageContracts>
+    <NamespaceMappings />
+    <CollectionMappings />
+    <GenerateSerializableTypes>true</GenerateSerializableTypes>
+    <Serializer>Auto</Serializer>
+    <UseSerializerForFaults>true</UseSerializerForFaults>
+    <ReferenceAllAssemblies>true</ReferenceAllAssemblies>
+    <ReferencedAssemblies />
+    <ReferencedDataContractTypes />
+    <ServiceContractMappings />
+  </ClientOptions>
+  <MetadataSources>
+    <MetadataSource Address="http://localhost/ElitaClaimService/ClaimService.svc" Protocol="http" SourceId="1" />
+  </MetadataSources>
+  <Metadata>
+    <MetadataFile FileName="ClaimService4.xsd" MetadataType="Schema" ID="aa5a8590-ae18-44a1-b8b9-7605514529ad" SourceId="1" SourceUrl="http://localhost/ElitaClaimService/ClaimService.svc?xsd=xsd6" />
+    <MetadataFile FileName="ClaimService.xsd" MetadataType="Schema" ID="81f2600d-bd02-47a9-861d-cf9f836e1674" SourceId="1" SourceUrl="http://localhost/ElitaClaimService/ClaimService.svc?xsd=xsd1" />
+    <MetadataFile FileName="ClaimService.wsdl" MetadataType="Wsdl" ID="cc3ad28e-e2ad-4419-8296-9a785610352f" SourceId="1" SourceUrl="http://localhost/ElitaClaimService/ClaimService.svc?wsdl" />
+    <MetadataFile FileName="ClaimService1.wsdl" MetadataType="Wsdl" ID="39606b9e-9f4d-4510-abc9-93bd7febe6ef" SourceId="1" SourceUrl="http://localhost/ElitaClaimService/ClaimService.svc?wsdl=wsdl0" />
+    <MetadataFile FileName="ClaimService1.xsd" MetadataType="Schema" ID="595f1001-4ca1-4eda-b08f-3064605262e5" SourceId="1" SourceUrl="http://localhost/ElitaClaimService/ClaimService.svc?xsd=xsd3" />
+    <MetadataFile FileName="ClaimService41.xsd" MetadataType="Schema" ID="16686d32-3161-4308-a60b-70a7d7115ae0" SourceId="1" SourceUrl="http://localhost/ElitaClaimService/ClaimService.svc?xsd=xsd5" />
+    <MetadataFile FileName="ClaimService2.xsd" MetadataType="Schema" ID="6d1cd7ac-5eae-4458-8eb6-d76f1ed4392e" SourceId="1" SourceUrl="http://localhost/ElitaClaimService/ClaimService.svc?xsd=xsd0" />
+    <MetadataFile FileName="ClaimService.disco" MetadataType="Disco" ID="35c090ef-3e39-4652-be8d-88c07b7ec739" SourceId="1" SourceUrl="http://localhost/ElitaClaimService/ClaimService.svc?disco" />
+    <MetadataFile FileName="ClaimService3.xsd" MetadataType="Schema" ID="39c43bff-332d-4230-b933-d46d4082e026" SourceId="1" SourceUrl="http://localhost/ElitaClaimService/ClaimService.svc?xsd=xsd2" />
+    <MetadataFile FileName="ClaimService42.xsd" MetadataType="Schema" ID="07a1e850-77fe-4865-a498-d75f4142631e" SourceId="1" SourceUrl="http://localhost/ElitaClaimService/ClaimService.svc?xsd=xsd4" />
+  </Metadata>
+  <Extensions>
+    <ExtensionFile FileName="configuration91.svcinfo" Name="configuration91.svcinfo" />
+    <ExtensionFile FileName="configuration.svcinfo" Name="configuration.svcinfo" />
+  </Extensions>
+</ReferenceGroup>

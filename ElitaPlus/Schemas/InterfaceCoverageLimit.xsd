@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<xs:schema id="InterfaceCoverageLimit" targetNamespace="http://tempuri.org/InterfaceCoverageLimit.xsd"
+	elementFormDefault="qualified" xmlns="http://tempuri.org/InterfaceCoverageLimit.xsd" xmlns:mstns="http://tempuri.org/InterfaceCoverageLimit.xsd"
+	xmlns:xs="http://www.w3.org/2001/XMLSchema">
+	<xs:element name="InterfaceCoverageLimitDs">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="InterfaceCoverageLimit">
+					<xs:complexType>
+						<xs:all>
+							<xs:element name="car_code" type="xs:integer" minOccurs="1" maxOccurs="1" />
+							<xs:element name="coverage_type_code" type="stringRequired" minOccurs="1" maxOccurs="1" />
+							<xs:element name="coverage_type_description" type="stringRequired" minOccurs="1" maxOccurs="1" />
+							<xs:element name="coverage_km-mi" type="xs:nonNegativeInteger" minOccurs="1" maxOccurs="1" />
+							<xs:element name="coverage_months" type="xs:nonNegativeInteger" minOccurs="1" maxOccurs="1" />
+						</xs:all>
+					</xs:complexType>
+				</xs:element>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+	<xs:simpleType name="stringRequired">
+		<xs:restriction base="xs:string">
+			<xs:minLength value="1"></xs:minLength>
+		</xs:restriction>
+	</xs:simpleType>
+</xs:schema>

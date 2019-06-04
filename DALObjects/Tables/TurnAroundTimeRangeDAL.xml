@@ -1,0 +1,126 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+
+<!-- ********************** THIS FILE HAS BEEN GENERATED FROM TEMPLATE SQLObject.cst (5/16/2012)********************** -->
+
+<SQL>
+  <LOAD>
+    <![CDATA[	
+			SELECT 
+				company_group_id,
+				color_id,
+				code,
+				description,
+				min_days,
+				max_days,
+				created_date,
+				created_by,
+				modified_date,
+				modified_by,
+				turn_around_time_range_id
+			FROM elp_turn_around_time_range 
+			WHERE
+				turn_around_time_range_id = :turn_around_time_range_id
+		]]>
+  </LOAD>
+  <LOAD_LIST>
+    <![CDATA[	
+			SELECT 
+				turn_around_time_range_id,
+        color_id,
+        getdescriptionfromlistitem(color_id,:language_id) color,
+				code,
+				description,
+				min_days,
+				max_days,
+				created_date,
+				created_by,
+				modified_date,
+				modified_by				
+			FROM elp_turn_around_time_range 
+			WHERE
+				company_group_id = :company_group_id
+      ORDER BY min_days asc
+		]]>    
+  </LOAD_LIST>
+  <LOAD_LIST_WITH_COLOR>
+    <![CDATA[	
+      SELECT 
+        turn_around_time_range_id,
+        getcodefromlistitem(color_id) color_code,
+        getdescriptionfromlistitem(color_id,:language_id) color_name,
+        min_days,
+        max_days,
+        description
+			FROM elp_turn_around_time_range 
+			WHERE
+				company_group_id = :company_group_id
+      ORDER BY min_days asc
+		]]>
+  </LOAD_LIST_WITH_COLOR>
+  <UPDATE>
+    <![CDATA[	
+			UPDATE elp_turn_around_time_range SET
+				company_group_id = :company_group_id,
+				color_id = :color_id,
+				code = :code,
+				description = :description,
+				min_days = :min_days,
+				max_days = :max_days,
+				modified_by = :modified_by
+			WHERE
+				turn_around_time_range_id = :turn_around_time_range_id
+		]]>
+  </UPDATE>
+  <INSERT>
+    INSERT INTO elp_turn_around_time_range
+    (
+    company_group_id,
+    color_id,
+    code,
+    description,
+    min_days,
+    max_days,
+    created_by,
+    turn_around_time_range_id
+    )
+    VALUES
+    (
+    :company_group_id,
+    :color_id,
+    :code,
+    :description,
+    :min_days,
+    :max_days,
+    :created_by,
+    :turn_around_time_range_id
+    )
+  </INSERT>
+  <DELETE>
+    DELETE FROM elp_turn_around_time_range
+    WHERE
+    turn_around_time_range_id = :turn_around_time_range_id
+  </DELETE>
+  <GET_MIN_MAX_VAL_FROM_TAT>
+    <![CDATA[	
+      SELECT 
+        min_days,
+        max_days
+			FROM elp_turn_around_time_range 
+			WHERE
+				company_group_id = :company_group_id
+      AND code = :code
+      ORDER BY min_days asc
+		]]>
+  </GET_MIN_MAX_VAL_FROM_TAT>
+    <GET_MIN_MAX_VAL_FROM_ID>
+    <![CDATA[	
+      SELECT 
+        min_days,
+        max_days
+			FROM elp_turn_around_time_range 
+			WHERE turn_around_time_range_id = :turn_around_time_range_id
+		]]>
+  </GET_MIN_MAX_VAL_FROM_ID>
+</SQL>
+
+

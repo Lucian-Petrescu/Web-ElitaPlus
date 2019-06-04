@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ReferenceGroup xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" ID="34cb802c-e406-443c-9656-7acdeb5ca55f" xmlns="urn:schemas-microsoft-com:xml-wcfservicemap">
+  <ClientOptions>
+    <GenerateAsynchronousMethods>false</GenerateAsynchronousMethods>
+    <GenerateTaskBasedAsynchronousMethod>true</GenerateTaskBasedAsynchronousMethod>
+    <EnableDataBinding>true</EnableDataBinding>
+    <ExcludedTypes />
+    <ImportXmlTypes>false</ImportXmlTypes>
+    <GenerateInternalTypes>false</GenerateInternalTypes>
+    <GenerateMessageContracts>false</GenerateMessageContracts>
+    <NamespaceMappings />
+    <CollectionMappings />
+    <GenerateSerializableTypes>true</GenerateSerializableTypes>
+    <Serializer>Auto</Serializer>
+    <UseSerializerForFaults>true</UseSerializerForFaults>
+    <ReferenceAllAssemblies>true</ReferenceAllAssemblies>
+    <ReferencedAssemblies />
+    <ReferencedDataContractTypes />
+    <ServiceContractMappings />
+  </ClientOptions>
+  <MetadataSources>
+    <MetadataSource Address="http://localhost/PolicyService/PolicyService.svc" Protocol="http" SourceId="1" />
+  </MetadataSources>
+  <Metadata>
+    <MetadataFile FileName="PolicyService1.disco" MetadataType="Disco" ID="87bc5ffe-05dc-4140-83cc-da3840ae216b" SourceId="1" SourceUrl="http://localhost/PolicyService/PolicyService.svc?disco" />
+    <MetadataFile FileName="PolicyService3.wsdl" MetadataType="Wsdl" ID="ef4c9914-f1fd-42fb-a1c8-3da460c1118e" SourceId="1" SourceUrl="http://localhost/PolicyService/PolicyService.svc?wsdl=wsdl0" />
+    <MetadataFile FileName="PolicyService31.wsdl" MetadataType="Wsdl" ID="d9e81472-8ae0-4d75-8daf-6c0fcd5ae299" SourceId="1" SourceUrl="http://localhost/PolicyService/PolicyService.svc?wsdl=wsdl1" />
+    <MetadataFile FileName="PolicyService8.xsd" MetadataType="Schema" ID="20944cbb-fcb9-477f-84ab-c6dca2cef486" SourceId="1" SourceUrl="http://localhost/PolicyService/PolicyService.svc?xsd=xsd4" />
+    <MetadataFile FileName="PolicyService81.xsd" MetadataType="Schema" ID="06f18f77-cff7-4410-8157-a903fa1ab50f" SourceId="1" SourceUrl="http://localhost/PolicyService/PolicyService.svc?xsd=xsd5" />
+    <MetadataFile FileName="PolicyService82.xsd" MetadataType="Schema" ID="e1f481d1-2d92-4695-be76-19ca40a76a73" SourceId="1" SourceUrl="http://localhost/PolicyService/PolicyService.svc?xsd=xsd6" />
+    <MetadataFile FileName="PolicyService83.xsd" MetadataType="Schema" ID="4cff4720-fce6-4f40-b1d9-3693746fef98" SourceId="1" SourceUrl="http://localhost/PolicyService/PolicyService.svc?xsd=xsd7" />
+    <MetadataFile FileName="PolicyService84.xsd" MetadataType="Schema" ID="37784bb3-4c52-4276-8d01-20aa800d97e3" SourceId="1" SourceUrl="http://localhost/PolicyService/PolicyService.svc?xsd=xsd0" />
+    <MetadataFile FileName="PolicyService85.xsd" MetadataType="Schema" ID="512893e4-d8d6-4888-8599-2cbe10b8c471" SourceId="1" SourceUrl="http://localhost/PolicyService/PolicyService.svc?xsd=xsd1" />
+    <MetadataFile FileName="PolicyService86.xsd" MetadataType="Schema" ID="27d86da5-991e-47ab-9f7d-8a5c2fdf257f" SourceId="1" SourceUrl="http://localhost/PolicyService/PolicyService.svc?xsd=xsd2" />
+    <MetadataFile FileName="PolicyService87.xsd" MetadataType="Schema" ID="0b6ef04d-5100-4f78-8193-04f48f0b4e60" SourceId="1" SourceUrl="http://localhost/PolicyService/PolicyService.svc?xsd=xsd3" />
+    <MetadataFile FileName="PolicyService32.wsdl" MetadataType="Wsdl" ID="2beaa513-2ef2-4492-8beb-7682d2b24418" SourceId="1" SourceUrl="http://localhost/PolicyService/PolicyService.svc?wsdl" />
+  </Metadata>
+  <Extensions>
+    <ExtensionFile FileName="configuration91.svcinfo" Name="configuration91.svcinfo" />
+    <ExtensionFile FileName="configuration.svcinfo" Name="configuration.svcinfo" />
+  </Extensions>
+</ReferenceGroup>

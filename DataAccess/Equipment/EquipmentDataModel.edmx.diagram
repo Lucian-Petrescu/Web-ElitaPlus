@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="2.0" xmlns:edmx="http://schemas.microsoft.com/ado/2008/10/edmx">
+ <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2008/10/edmx">
+    <!-- Diagram content (shape and connector positions) -->
+    <edmx:Diagrams>
+      <Diagram DiagramId="0143cbeb165f490ab985769fde2e6ce3" Name="Diagram1" ZoomLevel="100">
+        <EntityTypeShape EntityType="Model7.ELP_MANUFACTURER" Width="1.5" PointX="0.75" PointY="6.375" />
+        <AssociationConnector Association="Model7.FK_MANUFACTURER" />
+        <EntityTypeShape EntityType="Model7.Equipment" Width="2.25" PointX="1.25" PointY="0.75" />
+        <AssociationConnector Association="Model7.FK_MASTER_MODEL" />
+        <AssociationConnector Association="Model7.FK_MANUFACTURER" />
+        <AssociationConnector Association="Model7.FK_MANUFACTURER" />
+        <EntityTypeShape EntityType="Model7.EquipmentList" Width="2.25" PointX="4.25" PointY="0.75" />
+        <EntityTypeShape EntityType="Model7.EquipmentListDetail" Width="2.5" PointX="7.625" PointY="0.875" />
+        <AssociationConnector Association="Model7.FK_ELP_EQUIP_DETAIL_EQUIP" />
+        <AssociationConnector Association="Model7.FK_MANUFACTURER" />
+        <AssociationConnector Association="Model7.FK_ELP_EQUIP_DETAIL_LIST" />
+      </Diagram>
+    </edmx:Diagrams>
+  </edmx:Designer>
+</edmx:Edmx>

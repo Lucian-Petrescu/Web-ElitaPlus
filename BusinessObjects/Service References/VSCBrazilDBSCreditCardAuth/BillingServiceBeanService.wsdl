@@ -1,0 +1,287 @@
+<?xml version="1.0" encoding="utf-8"?>
+<wsdl:definitions xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:tns="http://delphos.com.br/billing" xmlns:ns1="http://schemas.xmlsoap.org/soap/http" name="BillingServiceBeanService" targetNamespace="http://delphos.com.br/billing" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">
+  <wsdl:types>
+    <xs:schema attributeFormDefault="unqualified" elementFormDefault="unqualified" targetNamespace="http://delphos.com.br/billing" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+      <xs:element name="cancelarVenda" type="tns:cancelarVenda" />
+      <xs:element name="cancelarVendaResponse" type="tns:cancelarVendaResponse" />
+      <xs:element name="iniciarVendaCartaoCredito" type="tns:iniciarVendaCartaoCredito" />
+      <xs:element name="iniciarVendaCartaoCreditoResponse" type="tns:iniciarVendaCartaoCreditoResponse" />
+      <xs:element name="iniciarVendaCartaoCreditoV1" type="tns:iniciarVendaCartaoCreditoV1" />
+      <xs:element name="iniciarVendaCartaoCreditoV1Response" type="tns:iniciarVendaCartaoCreditoV1Response" />
+      <xs:element name="iniciarVendaTombamento" type="tns:iniciarVendaTombamento" />
+      <xs:element name="iniciarVendaTombamentoResponse" type="tns:iniciarVendaTombamentoResponse" />
+      <xs:complexType name="iniciarVendaCartaoCreditoV1">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="token" type="xs:string" />
+          <xs:element minOccurs="0" name="codigoEmpresa" type="xs:string" />
+          <xs:element minOccurs="0" name="codigoProduto" type="xs:string" />
+          <xs:element minOccurs="0" name="codigoSistema" type="xs:string" />
+          <xs:element minOccurs="0" name="cpf" type="xs:string" />
+          <xs:element minOccurs="0" name="nome" type="xs:string" />
+          <xs:element minOccurs="0" name="email" type="xs:string" />
+          <xs:element minOccurs="0" name="dddCelular" type="xs:string" />
+          <xs:element minOccurs="0" name="telefoneCelular" type="xs:string" />
+          <xs:element minOccurs="0" name="dddContato" type="xs:string" />
+          <xs:element minOccurs="0" name="telefoneContato" type="xs:string" />
+          <xs:element minOccurs="0" name="codigoVenda" type="xs:string" />
+          <xs:element minOccurs="0" name="dataVenda" type="xs:string" />
+          <xs:element minOccurs="0" name="bandeiraCartao" type="xs:string" />
+          <xs:element minOccurs="0" name="cpfPortadorCartao" type="xs:string" />
+          <xs:element minOccurs="0" name="nomePortadorCartao" type="xs:string" />
+          <xs:element minOccurs="0" name="numeroCartao" type="xs:string" />
+          <xs:element minOccurs="0" name="vencimentoCartao" type="xs:string" />
+          <xs:element minOccurs="0" name="cvvCartao" type="xs:string" />
+          <xs:element minOccurs="0" name="tipoCobranca" type="xs:string" />
+          <xs:element minOccurs="0" name="quantidadeParcelas" type="xs:string" />
+          <xs:element minOccurs="0" name="valorCobranca" type="xs:string" />
+          <xs:element minOccurs="0" name="dataPrimeiraCobranca" type="xs:string" />
+          <xs:element minOccurs="0" name="dataFimVigencia" type="xs:string" />
+          <xs:element minOccurs="0" name="dealer" type="xs:string" />
+          <xs:element minOccurs="0" name="produtoErp" type="xs:string" />
+          <xs:element minOccurs="0" name="identificadorErp" type="xs:string" />
+        </xs:sequence>
+      </xs:complexType>
+      <xs:complexType name="iniciarVendaCartaoCreditoV1Response">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="return" type="tns:retornoIniciarVendaCartaoCredito" />
+        </xs:sequence>
+      </xs:complexType>
+      <xs:complexType name="retornoIniciarVendaCartaoCredito">
+        <xs:complexContent mixed="false">
+          <xs:extension base="tns:retornoBillingService">
+            <xs:sequence>
+              <xs:element minOccurs="0" name="codigoProduto" type="xs:string" />
+              <xs:element minOccurs="0" name="codigoVenda" type="xs:string" />
+              <xs:element minOccurs="0" name="codigoVendaBilling" type="xs:string" />
+              <xs:element minOccurs="0" name="codigoErroAdquirente" type="xs:string" />
+              <xs:element minOccurs="0" name="codigoErroProvedor" type="xs:string" />
+            </xs:sequence>
+          </xs:extension>
+        </xs:complexContent>
+      </xs:complexType>
+      <xs:complexType name="retornoBillingService" abstract="true">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="retorno" type="xs:string" />
+          <xs:element minOccurs="0" name="mensagemRetorno" type="xs:string" />
+          <xs:element minOccurs="0" name="codigoErro" type="xs:string" />
+          <xs:element minOccurs="0" name="mensagemErro" type="xs:string" />
+        </xs:sequence>
+      </xs:complexType>
+      <xs:complexType name="iniciarVendaCartaoCredito">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="token" type="xs:string" />
+          <xs:element minOccurs="0" name="codigoEmpresa" type="xs:string" />
+          <xs:element minOccurs="0" name="codigoProduto" type="xs:string" />
+          <xs:element minOccurs="0" name="codigoSistema" type="xs:string" />
+          <xs:element minOccurs="0" name="cpf" type="xs:string" />
+          <xs:element minOccurs="0" name="nome" type="xs:string" />
+          <xs:element minOccurs="0" name="email" type="xs:string" />
+          <xs:element minOccurs="0" name="dddCelular" type="xs:string" />
+          <xs:element minOccurs="0" name="telefoneCelular" type="xs:string" />
+          <xs:element minOccurs="0" name="dddContato" type="xs:string" />
+          <xs:element minOccurs="0" name="telefoneContato" type="xs:string" />
+          <xs:element minOccurs="0" name="codigoVenda" type="xs:string" />
+          <xs:element minOccurs="0" name="dataVenda" type="xs:string" />
+          <xs:element minOccurs="0" name="bandeiraCartao" type="xs:string" />
+          <xs:element minOccurs="0" name="cpfPortadorCartao" type="xs:string" />
+          <xs:element minOccurs="0" name="nomePortadorCartao" type="xs:string" />
+          <xs:element minOccurs="0" name="numeroCartao" type="xs:string" />
+          <xs:element minOccurs="0" name="vencimentoCartao" type="xs:string" />
+          <xs:element minOccurs="0" name="cvvCartao" type="xs:string" />
+          <xs:element minOccurs="0" name="tipoCobranca" type="xs:string" />
+          <xs:element minOccurs="0" name="quantidadeParcelas" type="xs:string" />
+          <xs:element minOccurs="0" name="valorCobranca" type="xs:string" />
+          <xs:element minOccurs="0" name="dataPrimeiraCobranca" type="xs:string" />
+          <xs:element minOccurs="0" name="dataFimVigencia" type="xs:string" />
+        </xs:sequence>
+      </xs:complexType>
+      <xs:complexType name="iniciarVendaCartaoCreditoResponse">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="return" type="tns:retornoIniciarVendaCartaoCredito" />
+        </xs:sequence>
+      </xs:complexType>
+      <xs:complexType name="iniciarVendaTombamento">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="token" type="xs:string" />
+          <xs:element minOccurs="0" name="produtoErp" type="xs:string" />
+          <xs:element minOccurs="0" name="apolice" type="xs:string" />
+          <xs:element minOccurs="0" name="numeroBilhete" type="xs:string" />
+          <xs:element minOccurs="0" name="numeroCartaoCredito" type="xs:string" />
+          <xs:element minOccurs="0" name="vencimentoCartaoCredito" type="xs:string" />
+          <xs:element minOccurs="0" name="bandeiraCartaoCredito" type="xs:string" />
+          <xs:element minOccurs="0" name="valorParcela" type="xs:string" />
+          <xs:element minOccurs="0" name="dataVencimentoParcela" type="xs:string" />
+          <xs:element minOccurs="0" name="cpf" type="xs:string" />
+          <xs:element minOccurs="0" name="dataFimVigencia" type="xs:string" />
+          <xs:element minOccurs="0" name="nome" type="xs:string" />
+          <xs:element minOccurs="0" name="cpfCliente" type="xs:string" />
+          <xs:element minOccurs="0" name="ddd" type="xs:string" />
+          <xs:element minOccurs="0" name="numeroTelefoneCliente" type="xs:string" />
+          <xs:element minOccurs="0" name="emailCliente" type="xs:string" />
+          <xs:element minOccurs="0" name="codigoEmpresa" type="xs:string" />
+          <xs:element minOccurs="0" name="codigoProduto" type="xs:string" />
+          <xs:element minOccurs="0" name="codigoSistema" type="xs:string" />
+        </xs:sequence>
+      </xs:complexType>
+      <xs:complexType name="iniciarVendaTombamentoResponse">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="return" type="tns:retornoIniciarVendaCartao" />
+        </xs:sequence>
+      </xs:complexType>
+      <xs:complexType name="retornoIniciarVendaCartao">
+        <xs:complexContent mixed="false">
+          <xs:extension base="tns:retornoBillingService">
+            <xs:sequence>
+              <xs:element minOccurs="0" name="codigoProduto" type="xs:string" />
+              <xs:element minOccurs="0" name="codigoApolice" type="xs:string" />
+              <xs:element minOccurs="0" name="codigoVendaBilling" type="xs:string" />
+              <xs:element minOccurs="0" name="codigoErroAdquirente" type="xs:string" />
+              <xs:element minOccurs="0" name="codigoErroProvedor" type="xs:string" />
+            </xs:sequence>
+          </xs:extension>
+        </xs:complexContent>
+      </xs:complexType>
+      <xs:complexType name="cancelarVenda">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="codigoEmpresa" type="xs:string" />
+          <xs:element minOccurs="0" name="codigoProduto" type="xs:string" />
+          <xs:element minOccurs="0" name="codigoSistema" type="xs:string" />
+          <xs:element minOccurs="0" name="token" type="xs:string" />
+          <xs:element minOccurs="0" name="cpf" type="xs:string" />
+          <xs:element minOccurs="0" name="codigoVenda" type="xs:string" />
+          <xs:element minOccurs="0" name="codigoMotivoCancelamento" type="xs:string" />
+          <xs:element minOccurs="0" name="valorEstorno" type="xs:string" />
+          <xs:element minOccurs="0" name="flagCancelamentoGateway" type="xs:string" />
+        </xs:sequence>
+      </xs:complexType>
+      <xs:complexType name="cancelarVendaResponse">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="return" type="tns:retornoCancelarVenda" />
+        </xs:sequence>
+      </xs:complexType>
+      <xs:complexType name="retornoCancelarVenda">
+        <xs:complexContent mixed="false">
+          <xs:extension base="tns:retornoBillingService">
+            <xs:sequence>
+              <xs:element minOccurs="0" name="codigoProduto" type="xs:string" />
+              <xs:element minOccurs="0" name="codigoVenda" type="xs:string" />
+            </xs:sequence>
+          </xs:extension>
+        </xs:complexContent>
+      </xs:complexType>
+      <xs:element name="falhaServico" type="tns:falhaServico" />
+      <xs:complexType name="falhaServico">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="codigoErro" type="xs:string" />
+          <xs:element minOccurs="0" name="mensagemErro" type="xs:string" />
+          <xs:element minOccurs="0" name="message" type="xs:string" />
+        </xs:sequence>
+      </xs:complexType>
+    </xs:schema>
+  </wsdl:types>
+  <wsdl:message name="cancelarVenda">
+    <wsdl:part name="parameters" element="tns:cancelarVenda" />
+  </wsdl:message>
+  <wsdl:message name="iniciarVendaCartaoCredito">
+    <wsdl:part name="parameters" element="tns:iniciarVendaCartaoCredito" />
+  </wsdl:message>
+  <wsdl:message name="iniciarVendaTombamentoResponse">
+    <wsdl:part name="parameters" element="tns:iniciarVendaTombamentoResponse" />
+  </wsdl:message>
+  <wsdl:message name="iniciarVendaCartaoCreditoV1">
+    <wsdl:part name="parameters" element="tns:iniciarVendaCartaoCreditoV1" />
+  </wsdl:message>
+  <wsdl:message name="BillingWebServiceException">
+    <wsdl:part name="BillingWebServiceException" element="tns:falhaServico" />
+  </wsdl:message>
+  <wsdl:message name="cancelarVendaResponse">
+    <wsdl:part name="parameters" element="tns:cancelarVendaResponse" />
+  </wsdl:message>
+  <wsdl:message name="iniciarVendaTombamento">
+    <wsdl:part name="parameters" element="tns:iniciarVendaTombamento" />
+  </wsdl:message>
+  <wsdl:message name="iniciarVendaCartaoCreditoResponse">
+    <wsdl:part name="parameters" element="tns:iniciarVendaCartaoCreditoResponse" />
+  </wsdl:message>
+  <wsdl:message name="iniciarVendaCartaoCreditoV1Response">
+    <wsdl:part name="parameters" element="tns:iniciarVendaCartaoCreditoV1Response" />
+  </wsdl:message>
+  <wsdl:portType name="billing">
+    <wsdl:operation name="iniciarVendaCartaoCreditoV1">
+      <wsdl:input name="iniciarVendaCartaoCreditoV1" message="tns:iniciarVendaCartaoCreditoV1" />
+      <wsdl:output name="iniciarVendaCartaoCreditoV1Response" message="tns:iniciarVendaCartaoCreditoV1Response" />
+      <wsdl:fault name="BillingWebServiceException" message="tns:BillingWebServiceException" />
+    </wsdl:operation>
+    <wsdl:operation name="iniciarVendaCartaoCredito">
+      <wsdl:input name="iniciarVendaCartaoCredito" message="tns:iniciarVendaCartaoCredito" />
+      <wsdl:output name="iniciarVendaCartaoCreditoResponse" message="tns:iniciarVendaCartaoCreditoResponse" />
+      <wsdl:fault name="BillingWebServiceException" message="tns:BillingWebServiceException" />
+    </wsdl:operation>
+    <wsdl:operation name="iniciarVendaTombamento">
+      <wsdl:input name="iniciarVendaTombamento" message="tns:iniciarVendaTombamento" />
+      <wsdl:output name="iniciarVendaTombamentoResponse" message="tns:iniciarVendaTombamentoResponse" />
+      <wsdl:fault name="BillingWebServiceException" message="tns:BillingWebServiceException" />
+    </wsdl:operation>
+    <wsdl:operation name="cancelarVenda">
+      <wsdl:input name="cancelarVenda" message="tns:cancelarVenda" />
+      <wsdl:output name="cancelarVendaResponse" message="tns:cancelarVendaResponse" />
+      <wsdl:fault name="BillingWebServiceException" message="tns:BillingWebServiceException" />
+    </wsdl:operation>
+  </wsdl:portType>
+  <wsdl:binding name="BillingServiceBeanServiceSoapBinding" type="tns:billing">
+    <soap:binding transport="http://schemas.xmlsoap.org/soap/http" />
+    <wsdl:operation name="iniciarVendaCartaoCredito">
+      <soap:operation soapAction="" style="document" />
+      <wsdl:input name="iniciarVendaCartaoCredito">
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output name="iniciarVendaCartaoCreditoResponse">
+        <soap:body use="literal" />
+      </wsdl:output>
+      <wsdl:fault name="BillingWebServiceException">
+        <soap:fault use="literal" name="BillingWebServiceException" namespace="" />
+      </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="iniciarVendaCartaoCreditoV1">
+      <soap:operation soapAction="" style="document" />
+      <wsdl:input name="iniciarVendaCartaoCreditoV1">
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output name="iniciarVendaCartaoCreditoV1Response">
+        <soap:body use="literal" />
+      </wsdl:output>
+      <wsdl:fault name="BillingWebServiceException">
+        <soap:fault use="literal" name="BillingWebServiceException" namespace="" />
+      </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="iniciarVendaTombamento">
+      <soap:operation soapAction="" style="document" />
+      <wsdl:input name="iniciarVendaTombamento">
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output name="iniciarVendaTombamentoResponse">
+        <soap:body use="literal" />
+      </wsdl:output>
+      <wsdl:fault name="BillingWebServiceException">
+        <soap:fault use="literal" name="BillingWebServiceException" namespace="" />
+      </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="cancelarVenda">
+      <soap:operation soapAction="" style="document" />
+      <wsdl:input name="cancelarVenda">
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output name="cancelarVendaResponse">
+        <soap:body use="literal" />
+      </wsdl:output>
+      <wsdl:fault name="BillingWebServiceException">
+        <soap:fault use="literal" name="BillingWebServiceException" namespace="" />
+      </wsdl:fault>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:service name="BillingServiceBeanService">
+    <wsdl:port name="BillingPort" binding="tns:BillingServiceBeanServiceSoapBinding">
+      <soap:address location="http://dbs.assurant.com:80/dbs/servico" />
+    </wsdl:port>
+  </wsdl:service>
+</wsdl:definitions>

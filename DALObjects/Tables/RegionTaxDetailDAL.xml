@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="utf-8" ?>
+
+<!-- ********************** THIS FILE HAS BEEN GENERATED FROM TEMPLATE SQLObject.cst (8/17/2007)********************** -->
+
+<SQL>
+  <LOAD>
+    <![CDATA[	
+			SELECT 
+				region_tax_id,
+				tax_bucket,
+				percent,
+				non_taxable,
+				minimum_tax,
+				gl_account_number,
+				created_date,
+				modified_date,
+				created_by,
+				modified_by,
+				region_tax_detail_id
+			FROM elp_region_tax_detail 
+			WHERE
+				region_tax_detail_id = :region_tax_detail_id
+		]]>
+  </LOAD>
+  <LOAD_LIST>
+    <![CDATA[	
+      SELECT 
+				region_tax_id,
+				tax_bucket,
+				percent,
+				non_taxable,
+				minimum_tax,
+				gl_account_number,
+				created_date,
+				modified_date,
+				created_by,
+				modified_by,
+				region_tax_detail_id
+      from elp_region_tax_detail
+      where Region_Tax_id = :region_tax_id
+      order by Tax_Bucket
+    ]]>
+  </LOAD_LIST>
+  <UPDATE>
+    <![CDATA[	
+			UPDATE elp_region_tax_detail SET
+				region_tax_id = :region_tax_id,
+				tax_bucket = :tax_bucket,
+				percent = :percent,
+				non_taxable = :non_taxable,
+				minimum_tax = :minimum_tax,
+				gl_account_number = :gl_account_number,
+				modified_by = :modified_by
+			WHERE
+				region_tax_detail_id = :region_tax_detail_id
+    ]]>
+  </UPDATE>
+  <INSERT>
+    INSERT INTO elp_region_tax_detail
+    (
+    region_tax_id,
+    tax_bucket,
+    percent,
+    non_taxable,
+    minimum_tax,
+    gl_account_number,
+    created_by,
+    region_tax_detail_id
+    )
+    VALUES
+    (
+    :region_tax_id,
+    :tax_bucket,
+    :percent,
+    :non_taxable,
+    :minimum_tax,
+    :gl_account_number,
+    :created_by,
+    :region_tax_detail_id
+    )
+  </INSERT>
+  <DELETE>
+    DELETE FROM elp_region_tax_detail
+    WHERE
+    region_tax_detail_id = :region_tax_detail_id
+  </DELETE>
+</SQL>

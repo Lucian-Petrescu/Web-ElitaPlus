@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xs:schema xmlns:tns="http://elita.assurant.com/Elita/ClaimService/Data" elementFormDefault="qualified" targetNamespace="http://elita.assurant.com/Elita/ClaimService/Data" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+  <xs:import schemaLocation="http://localhost/ElitaClaimService/ClaimService.svc?xsd=xsd6" namespace="http://schemas.microsoft.com/2003/10/Serialization/Arrays" />
+  <xs:complexType name="NewClaimEntitledResponse">
+    <xs:sequence>
+      <xs:element name="IsNewClaimEntitled" type="xs:boolean" />
+      <xs:element xmlns:q1="http://schemas.microsoft.com/2003/10/Serialization/Arrays" minOccurs="0" name="DenialCodes" nillable="true" type="q1:ArrayOfstring" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="NewClaimEntitledResponse" nillable="true" type="tns:NewClaimEntitledResponse" />
+</xs:schema>

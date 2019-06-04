@@ -1,0 +1,1572 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="12.0">
+  <PropertyGroup>
+    <ProjectType>Local</ProjectType>
+    <ProductVersion>9.0.30729</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{D327817B-902A-4113-9336-4B53C560D50E}</ProjectGuid>
+    <SccProjectName>SAK</SccProjectName>
+    <SccLocalPath>SAK</SccLocalPath>
+    <SccAuxPath>SAK</SccAuxPath>
+    <SccProvider>SAK</SccProvider>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ApplicationIcon>
+    </ApplicationIcon>
+    <AssemblyKeyContainerName>
+    </AssemblyKeyContainerName>
+    <AssemblyName>Assurant.ElitaPlus.DALObjects</AssemblyName>
+    <AssemblyOriginatorKeyFile>
+    </AssemblyOriginatorKeyFile>
+    <AssemblyOriginatorKeyMode>None</AssemblyOriginatorKeyMode>
+    <DefaultClientScript>JScript</DefaultClientScript>
+    <DefaultHTMLPageLayout>Grid</DefaultHTMLPageLayout>
+    <DefaultTargetSchema>IE50</DefaultTargetSchema>
+    <DelaySign>false</DelaySign>
+    <OutputType>Library</OutputType>
+    <OptionCompare>Binary</OptionCompare>
+    <OptionExplicit>On</OptionExplicit>
+    <OptionStrict>Off</OptionStrict>
+    <RootNamespace>Assurant.ElitaPlus.DALObjects</RootNamespace>
+    <StartupObject>Assurant.ElitaPlus.DALObjects.%28None%29</StartupObject>
+    <FileUpgradeFlags>
+    </FileUpgradeFlags>
+    <MyType>Windows</MyType>
+    <UpgradeBackupLocation>
+    </UpgradeBackupLocation>
+    <OldToolsVersion>3.5</OldToolsVersion>
+    <IsWebBootstrapper>true</IsWebBootstrapper>
+    <TargetFrameworkVersion>v4.6.2</TargetFrameworkVersion>
+    <PublishUrl>http://localhost/Assurant.ElitaPlus.DALObjects/</PublishUrl>
+    <Install>true</Install>
+    <InstallFrom>Web</InstallFrom>
+    <UpdateEnabled>true</UpdateEnabled>
+    <UpdateMode>Foreground</UpdateMode>
+    <UpdateInterval>7</UpdateInterval>
+    <UpdateIntervalUnits>Days</UpdateIntervalUnits>
+    <UpdatePeriodically>false</UpdatePeriodically>
+    <UpdateRequired>false</UpdateRequired>
+    <MapFileExtensions>true</MapFileExtensions>
+    <ApplicationRevision>0</ApplicationRevision>
+    <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
+    <UseApplicationTrust>false</UseApplicationTrust>
+    <BootstrapperEnabled>true</BootstrapperEnabled>
+    <TargetFrameworkProfile />
+    <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..\</SolutionDir>
+    <RestorePackages>true</RestorePackages>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <OutputPath>bin\</OutputPath>
+    <DocumentationFile>Assurant.ElitaPlus.DALObjects.xml</DocumentationFile>
+    <BaseAddress>285212672</BaseAddress>
+    <ConfigurationOverrideFile>
+    </ConfigurationOverrideFile>
+    <DefineConstants>
+    </DefineConstants>
+    <DefineDebug>true</DefineDebug>
+    <DefineTrace>true</DefineTrace>
+    <DebugSymbols>true</DebugSymbols>
+    <Optimize>false</Optimize>
+    <RegisterForComInterop>false</RegisterForComInterop>
+    <RemoveIntegerChecks>false</RemoveIntegerChecks>
+    <TreatWarningsAsErrors>false</TreatWarningsAsErrors>
+    <WarningLevel>0</WarningLevel>
+    <NoWarn>42016,42017,42018,42019,42032</NoWarn>
+    <DebugType>full</DebugType>
+    <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
+    <Prefer32Bit>false</Prefer32Bit>
+    <UseVSHostingProcess>false</UseVSHostingProcess>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <OutputPath>bin\</OutputPath>
+    <DocumentationFile>Assurant.ElitaPlus.DALObjects.xml</DocumentationFile>
+    <BaseAddress>285212672</BaseAddress>
+    <ConfigurationOverrideFile>
+    </ConfigurationOverrideFile>
+    <DefineConstants>
+    </DefineConstants>
+    <DefineDebug>false</DefineDebug>
+    <DefineTrace>true</DefineTrace>
+    <DebugSymbols>false</DebugSymbols>
+    <Optimize>true</Optimize>
+    <RegisterForComInterop>false</RegisterForComInterop>
+    <RemoveIntegerChecks>false</RemoveIntegerChecks>
+    <TreatWarningsAsErrors>false</TreatWarningsAsErrors>
+    <WarningLevel>0</WarningLevel>
+    <NoWarn>42016,42017,42018,42019,42032</NoWarn>
+    <DebugType>none</DebugType>
+    <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
+    <Prefer32Bit>false</Prefer32Bit>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Assurant.Common.MessagePublishing, Version=2.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Elita.Common.MessagePublishing.2.0.0\lib\net462\Assurant.Common.MessagePublishing.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Assurant.Common.Types, Version=2.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Elita.Assurant.Common.Types.2.0.0\lib\net462\Assurant.Common.Types.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Assurant.Common.Zip, Version=2.0.6452.10757, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Elita.Assurant.Common.Zip.2.0.0\lib\net462\Assurant.Common.Zip.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="ICSharpCode.SharpZipLib, Version=0.84.0.0, Culture=neutral, PublicKeyToken=1b03e6acf1164f73">
+      <HintPath>..\packages\3rdParty.ICSharpCode.SharpZipLib.0.84.0.0\lib\net11\ICSharpCode.SharpZipLib.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Ionic.Zip, Version=1.9.1.8, Culture=neutral, PublicKeyToken=edbe51ad942a3f5c, processorArchitecture=MSIL">
+      <HintPath>..\packages\3rdParty.Ionic.Zip.1.9.1.8\lib\net20\Ionic.Zip.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Oracle.ManagedDataAccess, Version=4.122.1.0, Culture=neutral, PublicKeyToken=89b483f429c47342, processorArchitecture=MSIL">
+      <HintPath>..\packages\Oracle.ManagedDataAccess.12.2.1100\lib\net40\Oracle.ManagedDataAccess.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="RMEncryptor">
+      <Name>RMEncryptor</Name>
+      <HintPath>..\Common Components\RMEncryptor.dll</HintPath>
+    </Reference>
+    <Reference Include="System">
+      <Name>System</Name>
+    </Reference>
+    <Reference Include="System.Configuration" />
+    <Reference Include="System.Core">
+      <RequiredTargetFramework>3.5</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="System.Data">
+      <Name>System.Data</Name>
+    </Reference>
+    <Reference Include="System.Data.DataSetExtensions">
+      <RequiredTargetFramework>3.5</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="System.Drawing">
+      <Name>System.Drawing</Name>
+    </Reference>
+    <Reference Include="System.Windows.Forms">
+      <Name>System.Windows.Forms</Name>
+    </Reference>
+    <Reference Include="System.Xml">
+      <Name>System.XML</Name>
+    </Reference>
+    <ProjectReference Include="..\Common\Common.vbproj">
+      <Name>Common</Name>
+      <Project>{54BB47A8-3DD9-41A7-B4A3-62869AF3FCF1}</Project>
+      <Package>{F184B08F-C81C-45F6-A57F-5ABD9991F28F}</Package>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Import Include="Assurant.Common.Types" />
+    <Import Include="Assurant.ElitaPlus.Common" />
+    <Import Include="Microsoft.VisualBasic" />
+    <Import Include="Oracle.ManagedDataAccess.Client" />
+    <Import Include="Oracle.ManagedDataAccess.Types" />
+    <Import Include="System" />
+    <Import Include="System.Collections" />
+    <Import Include="System.Data" />
+    <Import Include="System.Diagnostics" />
+    <Import Include="System.Linq" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="AssemblyInfo.vb">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Certificates\CertCancellationDAL.vb">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Certificates\CertCancelRequestDAL.vb" />
+    <Compile Include="Certificates\CertEndorseCovDAL.vb">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Certificates\CertEndorseDAL.vb">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Certificates\CertificateDAL.vb">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Certificates\CertImageDAL.vb" />
+    <Compile Include="Certificates\CertInstallmentDAL.vb" />
+    <Compile Include="Certificates\CertItemCoverageDAL.vb">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Certificates\CertItemCoverageDeductibleDAL.vb" />
+    <Compile Include="Certificates\CertItemDAL.vb">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Certificates\CertItemHistoryDAL.vb" />
+    <Compile Include="Certificates\CertRegisteredItemDAL.vb" />
+    <Compile Include="Certificates\CertRegisteredItemHistDAL.vb" />
+    <Compile Include="Certificates\CheckPaymentDAL.vb" />
+    <Compile Include="Certificates\RewardsDAL.vb" />
+    <Compile Include="ClaimLogistics\PickupListDetailDAL.vb" />
+    <Compile Include="ClaimLogistics\PickupListHeaderDAL.vb" />
+    <Compile Include="ClaimLogistics\SerialNumberDAL.vb" />
+    <Compile Include="Claims\BatchClaimInvoice.Designer.vb">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>BatchClaimInvoice.xsd</DependentUpon>
+    </Compile>
+    <Compile Include="Claims\CaseConseqDamageDal.vb" />
+    <Compile Include="Claims\ClaimAuthDetailDAL.vb" />
+    <Compile Include="Claims\ClaimAuthHistoryDAL.vb" />
+    <Compile Include="Claims\ClaimAuthItemDAL.vb" />
+    <Compile Include="Claims\ClaimAuthorizationDAL.vb" />
+    <Compile Include="Claims\ClaimDAL.vb">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Claims\ClaimEquipmentDAL.vb" />
+    <Compile Include="Claims\ClaimHistoryDAL.vb" />
+    <Compile Include="Claims\ClaimInvoiceDAL.vb">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Claims\ClaimIssueDAL.vb" />
+    <Compile Include="Claims\ClaimIssueResponseDAL.vb" />
+    <Compile Include="Claims\ClaimIssueStatusDAL.vb" />
+    <Compile Include="Claims\ClaimPaymentGroupDAL.vb" />
+    <Compile Include="Claims\ClaimPaymentGroupDetailDAL.vb" />
+    <Compile Include="Claims\ClaimShippingDAL.vb" />
+    <Compile Include="Claims\ClaimStatusActionDAL.vb" />
+    <Compile Include="Claims\ClaimStatusByGroupDAL.vb" />
+    <Compile Include="Claims\ClaimStatusByUserRoleDAL.vb" />
+    <Compile Include="Claims\ClaimStatusDAL.vb" />
+    <Compile Include="Claims\ClaimTaxDAL.vb" />
+    <Compile Include="Claims\DefaultClaimStatusDAL.vb" />
+    <Compile Include="Claims\DeniedClaimsDAL.vb" />
+    <Compile Include="Claims\DisbursementDAL.vb">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Claims\EntityIssueDAL.vb" />
+    <Compile Include="Claims\InvoiceDAL.vb" />
+    <Compile Include="Claims\InvoiceGroupDAL.vb" />
+    <Compile Include="Claims\InvoiceGroupDetailDAL.vb" />
+    <Compile Include="Claims\InvoiceItemDAL.vb" />
+    <Compile Include="Claims\InvoiceReconciliationDAL.vb" />
+    <Compile Include="Claims\InvoiceTransDAL.vb">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Claims\PartsInfoDAL.vb">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Claims\PreInvoiceDAL.vb" />
+    <Compile Include="Claims\PreInvoiceDetailsDAL.vb" />
+    <Compile Include="Claims\RepairAndLogisticsDAL.vb" />
+    <Compile Include="Claims\ReplacementDAL.vb">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Claims\ReplacementPartDAL.vb" />
+    <Compile Include="Common\AddressDAL.vb">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Common\BankInfoDAL.vb">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Claims\ClaimAgingDetailsDAL.vb" />
+    <Compile Include="Common\ClaimCloseRulesDAL.vb" />
+    <Compile Include="Common\ContactInfoDAL.vb" />
+    <Compile Include="Common\CreditCardInfoDAL.vb" />
+    <Compile Include="Common\TranslateDropdownDAL.vb" />
+    <Compile Include="Common\DSHelper.vb" />
+    <Compile Include="Common\NonBusinessCalendarDAL.vb" />
+    <Compile Include="Common\OverlapValidationVisitorDAL.vb" />
+    <Compile Include="Common\ShippingInfoDAL.vb">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Common\ValidateDuplicateCodeDAL.vb" />
+    <Compile Include="CustomerReg\CustItemDAL.vb" />
+    <Compile Include="CustomerReg\CustRegistrationDAL.vb" />
+    <Compile Include="DALBase.vb">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="DALConcurrencyAccessException.vb">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="DALException.vb">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="DALExtension.vb" />
+    <Compile Include="DALInvalidParameterValueException.vb">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="DataBaseAccessException.vb">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="DatabaseComunaException.vb" />
+    <Compile Include="DatabaseException.vb">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="DataBaseIntegrityConstraintViolation.vb">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="DataBaseLengthExceededException.vb">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="DataBaseUniqueKeyConstraintViolationException.vb">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="DatabasePostalCodeValidation.vb" />
+    <Compile Include="DataProtection\CertificateDataProtectionDAL.vb" />
+    <Compile Include="DataProtection\ConsumerSearchRequestsDAL.vb" />
+    <Compile Include="DataProtection\DataProtectionHistoryDAL.vb" />
+    <Compile Include="DBHelper.vb">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="DCM\CaseActionDAL.vb" />
+    <Compile Include="DCM\CaseDAL.vb" />
+    <Compile Include="DCM\CaseInteractionDAL.vb" />
+    <Compile Include="DCM\CaseQuestionAnswerDAL.vb" />
+    <Compile Include="Documents\DocumentDAL.vb" />
+    <Compile Include="Documents\FileTypeDAL.vb" />
+    <Compile Include="Documents\RepositoryDAL.vb" />
+    <Compile Include="Events\CustCommunicationDAL.vb" />
+    <Compile Include="Events\EventConfigDAL.vb" />
+    <Compile Include="Events\EventTaskDAL.vb" />
+    <Compile Include="Events\PublishedTaskDAL.vb" />
+    <Compile Include="Events\SubscriberTaskDAL.vb" />
+    <Compile Include="Events\TaskDAL.vb" />
+    <Compile Include="Generic\CommEntyBrkdwnUploadDAL.vb" />
+    <Compile Include="Generic\ContractUploadDAL.vb" />
+    <Compile Include="Interfaces\AppleGBIFileReconWrkDAL.vb" />
+    <Compile Include="Interfaces\ARInvoiceReconWrkDAL.vb" />
+    <Compile Include="Interfaces\ARPaymentReconWrkDAL.vb" />
+    <Compile Include="Interfaces\BestReplacementReconDAL.vb" />
+    <Compile Include="Interfaces\BillingPayDetailDAL.vb" />
+    <Compile Include="Interfaces\CancellationReqExceptionDAL.vb" />
+    <Compile Include="Interfaces\ClaimReconWrkPartsDAL.vb" />
+    <Compile Include="Interfaces\commonUploadDAL.vb" />
+    <Compile Include="Interfaces\DailyObdFileDetailTempDAL.vb" />
+    <Compile Include="Interfaces\DailyOutboundFileDetailDAL.vb" />
+    <Compile Include="Interfaces\DealerReinsReconWrkDAL.vb" />
+    <Compile Include="Interfaces\DealerVscReconWrkDAL.vb" />
+    <Compile Include="Interfaces\EquipmentReconDAL.vb" />
+    <Compile Include="Interfaces\FileProcessedDAL.vb" />
+    <Compile Include="GVS\TransactionLogHeaderDAL.vb" />
+    <Compile Include="GVS\TransDtlClmUpdte2elitaDAL.vb" />
+    <Compile Include="GVS\TransDtlClmUpdte2gvsDAL.vb" />
+    <Compile Include="GVS\TransDtlFollowupDAL.vb" />
+    <Compile Include="GVS\TransDtlNewClaimDAL.vb" />
+    <Compile Include="GVS\TransDtlPartApprovalDAL.vb" />
+    <Compile Include="GVS\TransDtlPartDAL.vb" />
+    <Compile Include="GVS\TransDtlServiceCenterDAL.vb" />
+    <Compile Include="Interfaces\BillingDetailDAL.vb" />
+    <Compile Include="Interfaces\BillingHeaderDAL.vb" />
+    <Compile Include="Interfaces\ClaimFileProcessedDAL.vb">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Interfaces\ClaimloadFileProcessedDAL.vb" />
+    <Compile Include="Interfaces\ClaimloadReconWrkDAL.vb" />
+    <Compile Include="Interfaces\ClaimReconWrkDAL.vb">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Interfaces\ClaimSuspenseDAL.vb">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Interfaces\DealerFileProcessedDAL.vb">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Interfaces\DealerPmtReconWrkDAL.vb">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Interfaces\DealerReconWrkBundlesDAL.vb" />
+    <Compile Include="Interfaces\DealerReconWrkDAL.vb">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Interfaces\DealerTmkReconWrkDAL.vb" />
+    <Compile Include="Interfaces\FileProcessedReconDAL.vb" />
+    <Compile Include="Interfaces\InterfaceStatusWrkDAL.vb">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Interfaces\InvoiceLoadWrkDAL.vb" />
+    <Compile Include="Interfaces\InvoiceReconWrkDAL.vb" />
+    <Compile Include="Interfaces\PaymentDetailDAL.vb" />
+    <Compile Include="Interfaces\ServiceNotificationFileProcessedDAL.vb" />
+    <Compile Include="Interfaces\SplitfileProcessedDAL.vb">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Interfaces\SplitReconWrkDAL.vb">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Interfaces\SplitSystemDAL.vb">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Interfaces\SvcNotificationReconWrkDAL.vb" />
+    <Compile Include="Interfaces\VendorloadInvReconWrkDal.vb" />
+    <Compile Include="Interfaces\VscTableProcessedDAL.vb">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="LookupListDALNew.vb">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="MultiValueReturn.vb" />
+    <Compile Include="OracleDALBase.vb" />
+    <Compile Include="OracleDbHelper.vb" />
+    <Compile Include="OutboundComm\OcMessageAttemptsDAL.vb" />
+    <Compile Include="OutboundComm\OcMessageDAL.vb" />
+    <Compile Include="OutboundComm\OcMessageParamsDAL.vb" />
+    <Compile Include="OutboundComm\OcTemplateDAL.vb" />
+    <Compile Include="OutboundComm\OcTemplateGroupDAL.vb" />
+    <Compile Include="OutboundComm\OcTemplateGroupDealerDAL.vb" />
+    <Compile Include="OutboundComm\OcTemplateParamsDAL.vb" />
+    <Compile Include="OutboundComm\OcTemplateRecipientDAL.vb" />
+    <Compile Include="Reports\ReportConfigDAL.vb" />
+    <Compile Include="Reports\ReportRequestsDAL.vb" />
+    <Compile Include="Reports\ReportsPageCtrlDAL.vb" />
+    <Compile Include="Reports\RoleReportDAL.vb" />
+    <Compile Include="Reports\ServiceOrderReport.Designer.vb">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>ServiceOrderReport.xsd</DependentUpon>
+    </Compile>
+    <Compile Include="Security\AuditSecurityLogsDAL.vb" />
+    <Compile Include="Security\NotificationDAL.vb" />
+    <Compile Include="Security\SpClaimTypesDAL.vb" />
+    <Compile Include="Security\SpUserClaimPropertiesDAL.vb" />
+    <Compile Include="Security\SpUserClaimsDAL.vb" />
+    <Compile Include="Security\UserNotificationDAL.vb" />
+    <Compile Include="Tables\Accounting\AcctEventDetailIncexcDAL.vb" />
+    <Compile Include="Tables\AcctFinanceAutomation\AfaAcctAmtSrcDAL.vb" />
+    <Compile Include="Tables\AcctFinanceAutomation\AfaAcctAmtSrcMappingDAL.vb" />
+    <Compile Include="Tables\AcctFinanceAutomation\AfaInvoiceDataDAL.vb" />
+    <Compile Include="Tables\AcctFinanceAutomation\AfaInvoiceManaulDataDAL.vb" />
+    <Compile Include="Tables\AcctFinanceAutomation\AFAInvoiceRateDAL.vb" />
+    <Compile Include="Tables\AcctFinanceAutomation\AFAProductDAL.vb" />
+    <Compile Include="Tables\AcctFinanceAutomation\AFARepRateDAL.vb" />
+    <Compile Include="Tables\AcctFinanceAutomation\ReconciliationDAL.vb" />
+    <Compile Include="Tables\ApsPublishingLogDAL.vb" />
+    <Compile Include="Tables\BankMaintenanceDAL.vb" />
+    <Compile Include="Tables\BenefitProductCodeDAL.vb" />
+    <Compile Include="Tables\ClaimFulfillmentOrderDetailDAL.vb" />
+    <Compile Include="Tables\ClaimBonusSettingsDAL.vb" />
+    <Compile Include="Tables\ClaimStageDAL.vb" />
+    <Compile Include="Tables\CommPlanExtractDAL.vb" />
+    <Compile Include="Tables\CompanyRuleListDAL.vb" />
+    <Compile Include="Tables\CompanyWorkQueueIssueDAL.vb" />
+    <Compile Include="Tables\BankNameDAL.vb" />
+    <Compile Include="Tables\CompensationPlanDAL.vb" />
+    <Compile Include="Tables\CountryLineOfBusinessDAL.vb" />
+    <Compile Include="Tables\CoverageConseqDamageDAL.vb" />
+    <Compile Include="Tables\DealerClmAproveClmtypeDAL.vb" />
+    <Compile Include="Tables\DealerClmAproveCovtypeDAL.vb" />
+    <Compile Include="Tables\DealerRejectCodeDAL.vb" />
+    <Compile Include="Tables\DepreciationScdDal.vb" />
+    <Compile Include="Tables\DepreciationScdRelationDal.vb" />
+    <Compile Include="Tables\DepreciationSchDetailsDal.vb" />
+    <Compile Include="Tables\EntityScheduleDAL.vb" />
+    <Compile Include="Security\CompanyFormExclusionDAL.vb">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Security\FormAuthorizationDAL.vb">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Security\FtpSiteDAL.vb" />
+    <Compile Include="Security\RoleAuthCtrlExclusionDAL.vb">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Security\RoleAuthFormInclusionDAL.vb">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Security\RoleAuthTabsExclusionDAL.vb">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Security\ServersDAL.vb">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Security\TabFormDAL.vb">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Security\UserDAL.vb">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Security\UserRoleDAL.vb">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Security\WebPasswdDAL.vb" />
+    <Compile Include="Security\WebServicesDAL.vb" />
+    <Compile Include="Security\WsFunctionsDAL.vb" />
+    <Compile Include="StoredProcedureGeneratedException.vb">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Tables\AccountingCloseInfoDAL.vb">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Tables\Accounting\AcctBusinessUnitDAL.vb">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Tables\Accounting\AcctCompanyDAL.vb">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Tables\Accounting\AcctCovEntityDAL.vb" />
+    <Compile Include="Tables\Accounting\AcctEventDAL.vb">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Tables\Accounting\AcctEventDetailDAL.vb">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Tables\Accounting\AcctExecLogDAL.vb" />
+    <Compile Include="Tables\Accounting\AcctFileTypeDAL.vb">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Tables\Accounting\AcctPremInvoiceDAL.vb" />
+    <Compile Include="Tables\Accounting\AcctSettingDAL.vb">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Tables\Accounting\AcctTransLogDAL.vb">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Tables\Accounting\AcctTransmissionDAL.vb">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Tables\AnswerDAL.vb" />
+    <Compile Include="Tables\AnswerTypeDAL.vb" />
+    <Compile Include="Tables\AssociateCommissionsDAL.vb">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Tables\AttributeDAL.vb" />
+    <Compile Include="Tables\AttributeValueDAL.vb" />
+    <Compile Include="Tables\BestReplacementDAL.vb" />
+    <Compile Include="Tables\BillingCycleDAL.vb" />
+    <Compile Include="Tables\BillingPlanDAL.vb" />
+    <Compile Include="Tables\BranchDAL.vb">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Tables\BranchStandardizationDAL.vb" />
+    <Compile Include="Tables\CancellationReasonDAL.vb">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Tables\CcBillingScheduleDAL.vb" />
+    <Compile Include="Tables\ClaimStatusLetterDAL.vb" />
+    <Compile Include="Tables\ClaimSystemDAL.vb" />
+    <Compile Include="Tables\DealerRuleListDAL.vb" />
+    <Compile Include="Tables\EntityAttributeDAL.vb" />
+    <Compile Include="Tables\ExcludeCancReasonByRoleDAL.vb" />
+    <Compile Include="Tables\ExcludedLiRolesDAL.vb" />
+    <Compile Include="Tables\ExcludeListitemByRoleDAL.vb" />
+    <Compile Include="Tables\InterfaceSplitRuleDAL.vb" />
+    <Compile Include="Tables\IssueCommentDAL.vb" />
+    <Compile Include="Tables\IssueDAL.vb" />
+    <Compile Include="Tables\IssueQuestionDAL.vb" />
+    <Compile Include="Tables\IssueQuestionListDAL.vb" />
+    <Compile Include="Tables\IssueTypeDAL.vb" />
+    <Compile Include="Tables\Permissions\BasePermissionDAL.vb" />
+    <Compile Include="Tables\Permissions\RolePermissionDAL.vb" />
+    <Compile Include="Tables\Permissions\UserPermissionDAL.vb" />
+    <Compile Include="Tables\PriceListDAL.vb" />
+    <Compile Include="Tables\PriceListDetailDAL.vb" />
+    <Compile Include="Tables\ProcessDAL.vb" />
+    <Compile Include="Tables\ProducerDAL.vb" />
+    <Compile Include="Tables\ProductCodeDetailDAL.vb" />
+    <Compile Include="Tables\ProductCodeParentDAL.vb" />
+    <Compile Include="Tables\ProductEquipmentDAL.vb" />
+    <Compile Include="Tables\ProductPolicyDAL.vb" />
+    <Compile Include="Tables\ProductRegionDAL.vb" />
+    <Compile Include="Tables\ProductRewardsDAL.vb" />
+    <Compile Include="Tables\QuestionListDAL.vb" />
+    <Compile Include="Tables\ReppolicyClaimCountDAL.vb" />
+    <Compile Include="Tables\ConsentActionsDAL.vb" />
+    <Compile Include="Tables\RuleDAL.vb" />
+    <Compile Include="Tables\RuleIssueDAL.vb" />
+    <Compile Include="Tables\RuleListDAL.vb" />
+    <Compile Include="Tables\RuleListDetailDAL.vb" />
+    <Compile Include="Tables\RuleProcessDAL.vb" />
+    <Compile Include="Tables\ScheduleDAL.vb" />
+    <Compile Include="Tables\ScheduleDetailDAL.vb" />
+    <Compile Include="Tables\ServiceClassTypeDAL.vb" />
+    <Compile Include="Tables\ServiceLevelDetailDAL.vb" />
+    <Compile Include="Tables\ServiceLevelGroupDAL.vb" />
+    <Compile Include="Tables\CodeMappingDAL.vb" />
+    <Compile Include="Tables\CommPCodeDAL.vb" />
+    <Compile Include="Tables\CommPCodeEntityDAL.vb" />
+    <Compile Include="Tables\CommPCodeEntityListDAL.vb" />
+    <Compile Include="Tables\CompanyCreditCardDAL.vb" />
+    <Compile Include="Tables\ComunaCodeDAL.vb" />
+    <Compile Include="Tables\ComunaStandardizationDAL.vb" />
+    <Compile Include="Tables\CoverageDeductibleDAL.vb" />
+    <Compile Include="Tables\CoverageMfgDAL.vb" />
+    <Compile Include="Tables\CreditCardFormatDAL.vb" />
+    <Compile Include="Tables\DeductByMfgDAL.vb" />
+    <Compile Include="Tables\DelayFactorDAL.vb" />
+    <Compile Include="Tables\EquipmentAttributeDAL.vb" />
+    <Compile Include="Tables\EquipmentDAL.vb" />
+    <Compile Include="Tables\EquipmentImageDAL.vb" />
+    <Compile Include="Tables\EquipmentCommentDAL.vb" />
+    <Compile Include="Tables\EquipmentListDAL.vb" />
+    <Compile Include="Tables\EquipmentListDetailDAL.vb" />
+    <Compile Include="Tables\FormCategoryDAL.vb" />
+    <Compile Include="Tables\InstallmentFactorDAL.vb" />
+    <Compile Include="Tables\LanguageDAL.vb" />
+    <Compile Include="Tables\ListPriceDAL.vb" />
+    <Compile Include="Tables\MerchantCodeDAL.vb" />
+    <Compile Include="Tables\MessageCodeDAL.vb" />
+    <Compile Include="Tables\MfgCoverageDAL.vb" />
+    <Compile Include="Tables\MfgCoverageExtDAL.vb" />
+    <Compile Include="Tables\BestReplacementGroupDAL.vb" />
+    <Compile Include="Tables\PremiumAdjustmentDetailsDAL.vb" />
+    <Compile Include="Tables\PremiumAdjustmentSettingsDAL.vb" />
+    <Compile Include="Tables\ProdRepairPriceDAL.vb" />
+    <Compile Include="Tables\ProductGroupDAL.vb" />
+    <Compile Include="Tables\ProductGroupPrcDAL.vb" />
+    <Compile Include="Tables\ProductSpecialServiceDAL.vb" />
+    <Compile Include="Tables\RegistrationLetterDAL.vb" />
+    <Compile Include="Tables\RegularExpressionDAL.vb" />
+    <Compile Include="Tables\RelatedEquipmentDAL.vb" />
+    <Compile Include="Tables\RoleDAL.vb" />
+    <Compile Include="Tables\RouteDAL.vb" />
+    <Compile Include="Tables\ServCenterMethRepairDAL.vb">
+    </Compile>
+    <Compile Include="Tables\ServiceOrdersAddressDAL.vb" />
+    <Compile Include="Tables\CommentDAL.vb">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Tables\CommissionBreakdownDAL.vb">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Tables\CommissionEntityDAL.vb">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Tables\CommissionPeriodDAL.vb">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Tables\CommissionPeriodEntityDAL.vb" />
+    <Compile Include="Tables\CommissionToleranceDAL.vb">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Tables\CompanyCountryDAL.vb">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Tables\CompanyDAL.vb">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Tables\CompanyGroupDAL.vb">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Tables\ContractDAL.vb">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Tables\CountryDAL.vb">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Tables\CountryPostalCodeFormatDAL.vb">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Tables\CountryTaxDAL.vb" />
+    <Compile Include="Tables\CoverageByCompanyGroupDAL.vb">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Tables\CoverageDAL.vb">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Tables\CoverageLossDAL.vb">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Tables\CoverageRateDAL.vb">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Tables\CoverageTypeDAL.vb">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Tables\CurrencyConversionDAL.vb">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Tables\CurrencyDAL.vb">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Tables\DealerDAL.vb">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Tables\DealerGroupDAL.vb">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Tables\EarningCodeDAL.vb">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Tables\EarningPatternDAL.vb">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Tables\EarningPercentDAL.vb">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Tables\IbnrLossPaidDAL.vb">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Tables\ItemDAL.vb">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Tables\ManufacturerDAL.vb">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Tables\MfgModelDAL.vb">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Tables\MfgStandardizationDAL.vb">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Tables\PartsDescriptionDAL.vb">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Tables\PaymentTypeDAL.vb">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Tables\PoliceReportDAL.vb">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Tables\PoliceStationDAL.vb">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Tables\PostalCodeFormatDAL.vb">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Tables\PriceGroupDAL.vb">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Tables\PriceGroupDetailDAL.vb">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Tables\ProductCodeConversionDAL.vb">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Tables\ProductCodeDAL.vb">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Tables\RegionDAL.vb">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Tables\RegionStandardizationDAL.vb">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Tables\RegionTaxDAL.vb" />
+    <Compile Include="Tables\RegionTaxDetailDAL.vb" />
+    <Compile Include="Tables\RepairCodeDAL.vb">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Tables\RiskTypeDAL.vb">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Tables\ServiceCenterDAL.vb">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Tables\ServiceCenterDealerDAL.vb">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Tables\ServiceCenterManufacturerDAL.vb">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Tables\ServiceCenterZipDistrictDAL.vb">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Tables\ServiceGroupDAL.vb">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Tables\ServiceGroupRiskTypeDAL.vb">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Tables\ServiceNetworkDAL.vb">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Tables\ServiceNetworkSvcDAL.vb">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Tables\ServiceOrderDAL.vb">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Tables\ServiceScheduleDAL.vb" />
+    <Compile Include="Tables\SgRtManufacturerDAL.vb">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Tables\QuestionDAL.vb">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Tables\SoftQuestionDAL.vb" />
+    <Compile Include="Tables\SoftQuestionGroupDAL.vb">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Tables\SpecialServiceDAL.vb" />
+    <Compile Include="Tables\StageEndStatusDAL.vb" />
+    <Compile Include="Tables\SuspendedReasonsDAL.vb" />
+    <Compile Include="Tables\TransAllMappingDAL.vb" />
+    <Compile Include="Tables\TransallMappingOutDAL.vb" />
+    <Compile Include="Tables\TurnAroundTimeRangeDAL.vb" />
+    <Compile Include="Tables\UserCompanyAssignedDAL.vb" />
+    <Compile Include="Tables\UserCompanyDAL.vb">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Tables\VendorContactDAL.vb" />
+    <Compile Include="Tables\VendorQuantityDAL.vb" />
+    <Compile Include="Tables\WarrantyMasterDAL.vb" />
+    <Compile Include="Tables\WorkqueueHistoryDAL.vb" />
+    <Compile Include="Tables\WorkQueueAssignDAL.vb" />
+    <Compile Include="Tables\ZipDistrictDAL.vb">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Tables\ZipDistrictDetailDAL.vb">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Translation\DictionaryItemDAL.vb">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Translation\DictItemTranslationDAL.vb">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Translation\DropdownDAL.vb">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Translation\DropdownItemDAL.vb">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Translation\LabelDAL.vb" />
+    <Compile Include="Translation\NewDictionaryItemDAL.vb" />
+    <Compile Include="Translation\TranslationDAL.vb">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="VSC\TransCcauthVscbrazilDAL.vb" />
+    <Compile Include="VSC\VSCClassCodeDAL.vb">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="VSC\VSCCoverageDAL.vb">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="VSC\VSCCoverageLimitDAL.vb">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="VSC\VSCCoverageRateDAL.vb">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="VSC\VSCDealerAuthMakeDAL.vb">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="VSC\VSCEnrollmentApplicantDAL.vb">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="VSC\VSCEnrollmentDAL.vb">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="VSC\VSCEnrollmentOptCovDAL.vb">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="VSC\VSCLiabilityLimitDAL.vb">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="VSC\VSCModelDAL.vb">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="VSC\VSCPlanDAL.vb">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="VSC\VSCQuoteDAL.vb">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="VSC\VSCQuoteItemDAL.vb">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="VSC\VSCRateVersionDAL.vb">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Translation\ListItemByEntityDAL.vb" />
+    <EmbeddedResource Include="Tables\ProducerDAL.xml">
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Translation\ListItemByEntityDAL.xml" />
+    <EmbeddedResource Include="Tables\ConsentActionsDAL.xml">
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Tables\DepreciationScdDal.xml" />
+    <EmbeddedResource Include="Tables\DepreciationScdRelationDal.xml" />
+    <EmbeddedResource Include="Tables\DepreciationSchDetailsDal.xml" />
+    <EmbeddedResource Include="Tables\CoverageConseqDamageDAL.xml" />
+    <EmbeddedResource Include="Tables\ProductRewardsDAL.xml">
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Tables\ProductEquipmentDAL.xml" />
+    <EmbeddedResource Include="Tables\ProductCodeDetailDAL.xml">
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Tables\ProductCodeParentDAL.xml">
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Tables\StageEndStatusDAL.xml" />
+    <EmbeddedResource Include="Tables\DealerClmAproveClmtypeDAL.xml" />
+    <EmbeddedResource Include="Tables\DealerClmAproveCovtypeDAL.xml" />
+    <EmbeddedResource Include="Tables\Permissions\RolePermissionDAL.xml" />
+    <EmbeddedResource Include="Tables\Permissions\UserPermissionDAL.xml" />
+    <EmbeddedResource Include="Tables\InterfaceSplitRuleDAL.xml" />
+    <EmbeddedResource Include="Tables\ExcludedLiRolesDAL.xml" />
+    <EmbeddedResource Include="Tables\ExcludeListitemByRoleDAL.xml">
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Tables\ExcludeCancReasonByRoleDAL.xml">
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Tables\ReppolicyClaimCountDAL.xml">
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Tables\SuspendedReasonsDAL.xml" />
+    <EmbeddedResource Include="Tables\ProductPolicyDAL.xml" />
+    <EmbeddedResource Include="Claims\ClaimAuthHistoryDAL.xml">
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Tables\ServiceClassTypeDAL.xml">
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Interfaces\InvoiceLoadWrkDAL.xml" />
+    <EmbeddedResource Include="Tables\EntityScheduleDAL.xml" />
+    <EmbeddedResource Include="Tables\WorkqueueHistoryDAL.xml">
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Tables\CompanyWorkQueueIssueDAL.xml" />
+    <EmbeddedResource Include="Tables\WorkQueueAssignDAL.xml" />
+    <EmbeddedResource Include="Tables\AnswerTypeDAL.xml" />
+    <EmbeddedResource Include="Tables\DealerRejectCodeDAL.xml">
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Tables\EntityAttributeDAL.xml" />
+    <EmbeddedResource Include="Tables\ScheduleDAL.xml">
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Tables\ScheduleDetailDAL.xml">
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Tables\ServiceScheduleDAL.xml" />
+    <EmbeddedResource Include="Tables\VendorContactDAL.xml" />
+    <EmbeddedResource Include="Tables\VendorQuantityDAL.xml" />
+    <EmbeddedResource Include="Claims\ClaimDAL.xml">
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Claims\ClaimIssueDAL.xml">
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Tables\PriceListDAL.xml" />
+    <EmbeddedResource Include="Tables\PriceListDetailDAL.xml">
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Tables\ProductRegionDAL.xml">
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Tables\RuleProcessDAL.xml" />
+    <EmbeddedResource Include="Tables\ProcessDAL.xml" />
+    <EmbeddedResource Include="Tables\DealerRuleListDAL.xml">
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Tables\IssueCommentDAL.xml" />
+    <EmbeddedResource Include="Tables\RuleIssueDAL.xml" />
+    <EmbeddedResource Include="Tables\RuleListDAL.xml">
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Tables\RuleListDetailDAL.xml" />
+    <EmbeddedResource Include="Tables\IssueTypeDAL.xml">
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Tables\RuleDAL.xml" />
+    <EmbeddedResource Include="Tables\TurnAroundTimeRangeDAL.xml" />
+    <EmbeddedResource Include="VSC\TransCcauthVscbrazilDAL.xml" />
+    <EmbeddedResource Include="Tables\SoftQuestionDAL.xml">
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Tables\QuestionListDAL.xml">
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Tables\IssueDAL.xml">
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Tables\IssueQuestionDAL.xml" />
+    <EmbeddedResource Include="Tables\IssueQuestionListDAL.xml" />
+    <EmbeddedResource Include="Tables\ServiceLevelDetailDAL.xml" />
+    <EmbeddedResource Include="Tables\ServiceLevelGroupDAL.xml" />
+    <EmbeddedResource Include="Tables\EquipmentListDetailDAL.xml" />
+    <EmbeddedResource Include="Tables\RelatedEquipmentDAL.xml">
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Tables\PremiumAdjustmentSettingsDAL.xml">
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Tables\PremiumAdjustmentDetailsDAL.xml" />
+    <EmbeddedResource Include="Tables\ListPriceDAL.xml" />
+    <EmbeddedResource Include="Tables\BestReplacementDAL.xml" />
+    <EmbeddedResource Include="Tables\BestReplacementGroupDAL.xml" />
+    <EmbeddedResource Include="Tables\RegularExpressionDAL.xml" />
+    <EmbeddedResource Include="Tables\EquipmentAttributeDAL.xml" />
+    <EmbeddedResource Include="Tables\EquipmentImageDAL.xml" />
+    <EmbeddedResource Include="Tables\EquipmentCommentDAL.xml" />
+    <EmbeddedResource Include="Tables\TransallMappingOutDAL.xml">
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Tables\EquipmentDAL.xml">
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Tables\MfgCoverageExtDAL.xml" />
+    <EmbeddedResource Include="Tables\UserCompanyAssignedDAL.xml" />
+    <EmbeddedResource Include="Tables\MerchantCodeDAL.xml">
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Certificates\CertCancellationDAL.xml">
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Certificates\CertEndorseCovDAL.xml">
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Certificates\CertEndorseDAL.xml">
+      <SubType>Code</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Certificates\CertificateDAL.xml">
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Certificates\CertItemCoverageDAL.xml" />
+    <EmbeddedResource Include="Certificates\CertItemDAL.xml">
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Claims\ClaimInvoiceDAL.xml">
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Claims\DisbursementDAL.xml" />
+    <EmbeddedResource Include="Claims\InvoiceTransDAL.xml" />
+    <EmbeddedResource Include="Claims\PartsInfoDAL.xml" />
+    <EmbeddedResource Include="Common\AddressDAL.xml" />
+    <EmbeddedResource Include="Common\BankInfoDAL.xml" />
+    <EmbeddedResource Include="Common\ShippingInfoDAL.xml" />
+    <EmbeddedResource Include="DALBase.xml" />
+    <EmbeddedResource Include="Interfaces\ClaimFileProcessedDAL.xml" />
+    <EmbeddedResource Include="Interfaces\ClaimReconWrkDAL.xml" />
+    <EmbeddedResource Include="Interfaces\ClaimSuspenseDAL.xml" />
+    <EmbeddedResource Include="Interfaces\DealerFileProcessedDAL.xml">
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Interfaces\DealerPmtReconWrkDAL.xml">
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Interfaces\DealerReconWrkDAL.xml">
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Interfaces\InterfaceStatusWrkDAL.xml" />
+    <EmbeddedResource Include="Interfaces\SplitfileProcessedDAL.xml" />
+    <EmbeddedResource Include="Interfaces\SplitSystemDAL.xml" />
+    <EmbeddedResource Include="Interfaces\VscTableProcessedDAL.xml" />
+    <EmbeddedResource Include="LookupListDALNew.xml">
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Reports\RoleReportDAL.xml" />
+    <EmbeddedResource Include="Security\CompanyFormExclusionDAL.xml" />
+    <EmbeddedResource Include="Security\FormAuthorizationDAL.xml" />
+    <EmbeddedResource Include="Security\RoleAuthCtrlExclusionDAL.xml" />
+    <EmbeddedResource Include="Security\RoleAuthFormInclusionDAL.xml" />
+    <EmbeddedResource Include="Security\RoleAuthTabsExclusionDAL.xml" />
+    <EmbeddedResource Include="Security\ServersDAL.xml" />
+    <EmbeddedResource Include="Security\TabFormDAL.xml">
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Security\UserDAL.xml">
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Security\UserRoleDAL.xml" />
+    <EmbeddedResource Include="Tables\AccountingCloseInfoDAL.xml" />
+    <EmbeddedResource Include="Tables\Accounting\AcctBusinessUnitDAL.xml" />
+    <EmbeddedResource Include="Tables\Accounting\AcctCompanyDAL.xml" />
+    <EmbeddedResource Include="Tables\Accounting\AcctEventDAL.xml" />
+    <EmbeddedResource Include="Tables\Accounting\AcctEventDetailDAL.xml" />
+    <EmbeddedResource Include="Tables\Accounting\AcctFileTypeDAL.xml" />
+    <EmbeddedResource Include="Tables\Accounting\AcctSettingDAL.xml" />
+    <EmbeddedResource Include="Tables\Accounting\AcctTransLogDAL.xml">
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Tables\Accounting\AcctTransmissionDAL.xml" />
+    <EmbeddedResource Include="Tables\AssociateCommissionsDAL.xml">
+      <SubType>Code</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Tables\BranchDAL.xml" />
+    <EmbeddedResource Include="Tables\CancellationReasonDAL.xml" />
+    <EmbeddedResource Include="Tables\CommentDAL.xml" />
+    <EmbeddedResource Include="Tables\CommissionBreakdownDAL.xml" />
+    <EmbeddedResource Include="Tables\CommissionEntityDAL.xml" />
+    <EmbeddedResource Include="Tables\CommissionPeriodDAL.xml" />
+    <EmbeddedResource Include="Tables\CommissionToleranceDAL.xml">
+      <SubType>Code</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Tables\CompanyCountryDAL.xml">
+      <SubType>Code</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Tables\CompanyDAL.xml" />
+    <EmbeddedResource Include="Tables\CompanyGroupDAL.xml">
+      <SubType>Code</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Tables\ContractDAL.xml" />
+    <EmbeddedResource Include="Tables\CountryDAL.xml">
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Tables\CountryPostalCodeFormatDAL.xml" />
+    <EmbeddedResource Include="Tables\CoverageByCompanyGroupDAL.xml">
+      <SubType>Code</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Tables\CoverageDAL.xml">
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Tables\CoverageLossDAL.xml">
+      <SubType>Code</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Tables\CoverageRateDAL.xml">
+      <SubType>Code</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Tables\CoverageTypeDAL.xml">
+      <SubType>Code</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Tables\CurrencyConversionDAL.xml">
+      <SubType>Code</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Tables\CurrencyDAL.xml" />
+    <EmbeddedResource Include="Tables\DealerDAL.xml">
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Tables\DealerGroupDAL.xml" />
+    <EmbeddedResource Include="Tables\EarningCodeDAL.xml" />
+    <EmbeddedResource Include="Tables\EarningPatternDAL.xml" />
+    <EmbeddedResource Include="Tables\EarningPercentDAL.xml" />
+    <EmbeddedResource Include="Tables\IbnrLossPaidDAL.xml" />
+    <EmbeddedResource Include="Tables\ItemDAL.xml" />
+    <EmbeddedResource Include="Tables\ManufacturerDAL.xml">
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Tables\MfgModelDAL.xml" />
+    <EmbeddedResource Include="Tables\MfgStandardizationDAL.xml" />
+    <EmbeddedResource Include="Tables\PartsDescriptionDAL.xml" />
+    <EmbeddedResource Include="Tables\PaymentTypeDAL.xml" />
+    <EmbeddedResource Include="Tables\PoliceReportDAL.xml" />
+    <EmbeddedResource Include="Tables\PoliceStationDAL.xml" />
+    <EmbeddedResource Include="Tables\PostalCodeFormatDAL.xml" />
+    <EmbeddedResource Include="Tables\PriceGroupDAL.xml" />
+    <EmbeddedResource Include="Tables\PriceGroupDetailDAL.xml" />
+    <EmbeddedResource Include="Tables\ProductCodeConversionDAL.xml" />
+    <EmbeddedResource Include="Tables\ProductCodeDAL.xml">
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Tables\RegionDAL.xml" />
+    <EmbeddedResource Include="Tables\RegionStandardizationDAL.xml" />
+    <EmbeddedResource Include="Tables\RepairCodeDAL.xml" />
+    <EmbeddedResource Include="Tables\RiskTypeDAL.xml" />
+    <EmbeddedResource Include="Tables\ServiceCenterDAL.xml" />
+    <EmbeddedResource Include="Tables\ServiceCenterDealerDAL.xml" />
+    <EmbeddedResource Include="Tables\ServiceCenterManufacturerDAL.xml" />
+    <EmbeddedResource Include="Tables\ServiceCenterZipDistrictDAL.xml" />
+    <EmbeddedResource Include="Tables\ServiceGroupDAL.xml" />
+    <EmbeddedResource Include="Tables\ServiceGroupRiskTypeDAL.xml" />
+    <EmbeddedResource Include="Tables\ServiceNetworkDAL.xml" />
+    <EmbeddedResource Include="Tables\ServiceNetworkSvcDAL.xml">
+      <SubType>Code</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Tables\ServiceOrderDAL.xml" />
+    <EmbeddedResource Include="Tables\SgRtManufacturerDAL.xml" />
+    <EmbeddedResource Include="Tables\QuestionDAL.xml" />
+    <EmbeddedResource Include="Tables\SoftQuestionGroupDAL.xml" />
+    <EmbeddedResource Include="Tables\UserCompanyDAL.xml">
+      <SubType>Code</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Tables\ZipDistrictDAL.xml" />
+    <EmbeddedResource Include="Tables\ZipDistrictDetailDAL.xml" />
+    <EmbeddedResource Include="Translation\DictionaryItemDAL.xml" />
+    <EmbeddedResource Include="Translation\DictItemTranslationDAL.xml" />
+    <EmbeddedResource Include="Translation\DropdownDAL.xml" />
+    <EmbeddedResource Include="Translation\DropdownItemDAL.xml" />
+    <EmbeddedResource Include="Translation\TranslationDAL.xml" />
+    <EmbeddedResource Include="VSC\VSCClassCodeDAL.xml" />
+    <EmbeddedResource Include="VSC\VSCCoverageDAL.xml" />
+    <EmbeddedResource Include="VSC\VSCCoverageLimitDAL.xml" />
+    <EmbeddedResource Include="VSC\VSCCoverageRateDAL.xml" />
+    <EmbeddedResource Include="VSC\VSCDealerAuthMakeDAL.xml" />
+    <EmbeddedResource Include="VSC\VSCEnrollmentApplicantDAL.xml" />
+    <EmbeddedResource Include="VSC\VSCEnrollmentDAL.xml" />
+    <EmbeddedResource Include="VSC\VSCEnrollmentOptCovDAL.xml" />
+    <EmbeddedResource Include="VSC\VSCLiabilityLimitDAL.xml" />
+    <EmbeddedResource Include="VSC\VSCModelDAL.xml" />
+    <EmbeddedResource Include="VSC\VSCPlanDAL.xml" />
+    <EmbeddedResource Include="VSC\VSCQuoteDAL.xml" />
+    <EmbeddedResource Include="VSC\VSCQuoteItemDAL.xml" />
+    <EmbeddedResource Include="VSC\VSCRateVersionDAL.xml" />
+    <EmbeddedResource Include="ClaimLogistics\PickupListDetailDAL.xml" />
+    <EmbeddedResource Include="ClaimLogistics\PickupListHeaderDAL.xml" />
+    <EmbeddedResource Include="ClaimLogistics\SerialNumberDAL.xml" />
+    <EmbeddedResource Include="Certificates\CertInstallmentDAL.xml" />
+    <EmbeddedResource Include="Certificates\CertItemHistoryDAL.xml" />
+    <EmbeddedResource Include="Certificates\CertCancelRequestDAL.xml" />
+    <EmbeddedResource Include="Certificates\CertItemCoverageDeductibleDAL.xml">
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Certificates\CertImageDAL.xml" />
+    <EmbeddedResource Include="Certificates\CertRegisteredItemDAL.xml" />
+    <EmbeddedResource Include="Certificates\CertRegisteredItemHistDAL.xml" />
+    <EmbeddedResource Include="Certificates\RewardsDAL.xml">
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Certificates\CheckPaymentDAL.xml" />
+    <Content Include="Claims\BatchClaimInvoice.xsd">
+      <Generator>MSDataSetGenerator</Generator>
+      <LastGenOutput>BatchClaimInvoice.Designer.vb</LastGenOutput>
+      <SubType>
+      </SubType>
+    </Content>
+    <EmbeddedResource Include="Claims\ClaimAuthDetailDAL.xml" />
+    <EmbeddedResource Include="Common\NonBusinessCalendarDAL.xml" />
+    <EmbeddedResource Include="Claims\ClaimStatusByGroupDAL.xml" />
+    <EmbeddedResource Include="Claims\ClaimStatusDAL.xml">
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Interfaces\DealerReconWrkBundlesDAL.xml" />
+    <EmbeddedResource Include="Claims\DeniedClaimsDAL.xml" />
+    <EmbeddedResource Include="Claims\ClaimHistoryDAL.xml" />
+    <EmbeddedResource Include="Interfaces\BillingHeaderDAL.xml" />
+    <EmbeddedResource Include="Interfaces\BillingDetailDAL.xml">
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Interfaces\ServiceNotificationFileProcessedDAL.xml" />
+    <EmbeddedResource Include="GVS\TransactionLogHeaderDAL.xml" />
+    <EmbeddedResource Include="GVS\TransDtlClmUpdte2elitaDAL.xml" />
+    <EmbeddedResource Include="GVS\TransDtlClmUpdte2gvsDAL.xml" />
+    <EmbeddedResource Include="GVS\TransDtlFollowupDAL.xml" />
+    <EmbeddedResource Include="GVS\TransDtlNewClaimDAL.xml" />
+    <EmbeddedResource Include="GVS\TransDtlPartApprovalDAL.xml" />
+    <EmbeddedResource Include="GVS\TransDtlPartDAL.xml" />
+    <EmbeddedResource Include="GVS\TransDtlServiceCenterDAL.xml" />
+    <EmbeddedResource Include="Claims\ClaimTaxDAL.xml" />
+    <EmbeddedResource Include="Interfaces\ClaimloadFileProcessedDAL.xml" />
+    <EmbeddedResource Include="Interfaces\ClaimloadReconWrkDAL.xml">
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Common\CreditCardInfoDAL.xml" />
+    <EmbeddedResource Include="Interfaces\DealerTmkReconWrkDAL.xml" />
+    <EmbeddedResource Include="Interfaces\PaymentDetailDAL.xml">
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Claims\ClaimEquipmentDAL.xml" />
+    <EmbeddedResource Include="Interfaces\FileProcessedDAL.xml" />
+    <EmbeddedResource Include="Interfaces\DealerVscReconWrkDAL.xml">
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Common\ContactInfoDAL.xml" />
+    <EmbeddedResource Include="Interfaces\CancellationReqExceptionDAL.xml" />
+    <EmbeddedResource Include="Interfaces\EquipmentReconDAL.xml" />
+    <EmbeddedResource Include="Interfaces\BestReplacementReconDAL.xml" />
+    <EmbeddedResource Include="Interfaces\commonUploadDAL.xml">
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Interfaces\ClaimReconWrkPartsDAL.xml" />
+    <EmbeddedResource Include="Claims\RepairAndLogisticsDAL.xml">
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Common\OverlapValidationVisitorDAL.xml" />
+    <EmbeddedResource Include="Common\ValidateDuplicateCodeDAL.xml" />
+    <EmbeddedResource Include="Claims\ClaimStatusActionDAL.xml" />
+    <EmbeddedResource Include="Claims\ClaimIssueResponseDAL.xml" />
+    <EmbeddedResource Include="Claims\ClaimIssueStatusDAL.xml" />
+    <EmbeddedResource Include="Claims\EntityIssueDAL.xml">
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Common\TranslateDropdownDAL.xml" />
+    <Compile Include="Claims\ClaimImageDAL.vb" />
+    <EmbeddedResource Include="Claims\ClaimImageDAL.xml" />
+    <EmbeddedResource Include="Events\EventConfigDAL.xml" />
+    <EmbeddedResource Include="Events\EventTaskDAL.xml" />
+    <EmbeddedResource Include="Events\PublishedTaskDAL.xml">
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Events\SubscriberTaskDAL.xml" />
+    <EmbeddedResource Include="Events\TaskDAL.xml">
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="CustomerReg\CustItemDAL.xml" />
+    <EmbeddedResource Include="CustomerReg\CustRegistrationDAL.xml" />
+    <EmbeddedResource Include="Interfaces\DailyObdFileDetailTempDAL.xml" />
+    <EmbeddedResource Include="Interfaces\DailyOutboundFileDetailDAL.xml" />
+    <EmbeddedResource Include="Interfaces\InvoiceReconWrkDAL.xml" />
+    <EmbeddedResource Include="Claims\ClaimPaymentGroupDAL.xml">
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Claims\ClaimAuthorizationDAL.xml" />
+    <EmbeddedResource Include="Claims\ClaimAuthItemDAL.xml">
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Claims\InvoiceDAL.xml">
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Claims\InvoiceItemDAL.xml" />
+    <EmbeddedResource Include="Claims\InvoiceReconciliationDAL.xml" />
+    <EmbeddedResource Include="Claims\ClaimPaymentGroupDetailDAL.xml">
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <Embeddedresource Include="Claims\InvoiceGroupDAL.xml">
+      <SubType>Designer</SubType>
+    </Embeddedresource>
+    <EmbeddedResource Include="Claims\InvoiceGroupDetailDAL.xml">
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Claims\ReplacementPartDAL.xml" />
+    <EmbeddedResource Include="Claims\PreInvoiceDAL.xml" />
+    <EmbeddedResource Include="Claims\PreInvoiceDetailsDAL.xml">
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Claims\DefaultClaimStatusDAL.xml" />
+    <EmbeddedResource Include="Common\ClaimCloseRulesDAL.xml">
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Documents\DocumentDAL.xml" />
+    <EmbeddedResource Include="Documents\FileTypeDAL.xml" />
+    <EmbeddedResource Include="Documents\RepositoryDAL.xml" />
+    <EmbeddedResource Include="Claims\ClaimAgingDetailsDAL.xml">
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Claims\ClaimShippingDAL.xml" />
+    <EmbeddedResource Include="Claims\ClaimStatusByUserRoleDAL.xml">
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Generic\ContractUploadDAL.xml">
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Generic\CommEntyBrkdwnUploadDAL.xml">
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Interfaces\DealerReinsReconWrkDAL.xml">
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Interfaces\BillingPayDetailDAL.xml">
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Events\CustCommunicationDAL.xml" />
+    <EmbeddedResource Include="DCM\CaseDAL.xml">
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="DCM\CaseInteractionDAL.xml" />
+    <EmbeddedResource Include="DCM\CaseActionDAL.xml" />
+    <EmbeddedResource Include="DCM\CaseQuestionAnswerDAL.xml" />
+    <EmbeddedResource Include="Interfaces\ARInvoiceReconWrkDAL.xml" />
+    <EmbeddedResource Include="Interfaces\ARPaymentReconWrkDAL.xml">
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Claims\CaseConseqDamageDal.xml" />
+    <EmbeddedResource Include="DataProtection\CertificateDataProtectionDAL.xml" />
+    <Compile Include="DataProtection\CertForgotRequestDAL.vb" />
+    <EmbeddedResource Include="DataProtection\CertForgotRequestDAL.xml" />
+    <Content Include="DataProtection\ConsumerSearchRequestsDAL.xml" />
+    <EmbeddedResource Include="DataProtection\DataProtectionHistoryDAL.xml" />
+    <EmbeddedResource Include="Interfaces\AppleGBIFileReconWrkDAL.xml">
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <Content Include="Interfaces\FileProcessedReconDAL.xml" />
+    <Content Include="Interfaces\SplitReconWrkDAL.xml" />
+    <EmbeddedResource Include="Interfaces\SvcNotificationReconWrkDAL.xml" />
+    <EmbeddedResource Include="Reports\ReportConfigDAL.xml" />
+    <EmbeddedResource Include="Reports\ReportsPageCtrlDAL.xml" />
+    <EmbeddedResource Include="Reports\ReportRequestsDAL.xml">
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="OutboundComm\OcTemplateDAL.xml" />
+    <EmbeddedResource Include="OutboundComm\OcTemplateGroupDAL.xml" />
+    <EmbeddedResource Include="OutboundComm\OcTemplateGroupDealerDAL.xml" />
+    <EmbeddedResource Include="OutboundComm\OcTemplateParamsDAL.xml">
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="OutboundComm\OcTemplateRecipientDAL.xml" />
+    <EmbeddedResource Include="OutboundComm\OcMessageDAL.xml" />
+    <EmbeddedResource Include="OutboundComm\OcMessageAttemptsDAL.xml" />
+    <EmbeddedResource Include="OutboundComm\OcMessageParamsDAL.xml" />
+    <EmbeddedResource Include="Interfaces\VendorloadInvReconWrkDal.xml" />
+    <Content Include="Reports\ServiceOrderReport.xsd">
+      <Generator>MSDataSetGenerator</Generator>
+      <LastGenOutput>ServiceOrderReport.Designer.vb</LastGenOutput>
+      <SubType>
+      </SubType>
+    </Content>
+    <EmbeddedResource Include="Security\WebPasswdDAL.xml" />
+    <EmbeddedResource Include="Tables\ServCenterMethRepairDAL.xml" />
+    <EmbeddedResource Include="Security\FtpSiteDAL.xml" />
+    <EmbeddedResource Include="Tables\ComunaCodeDAL.xml" />
+    <EmbeddedResource Include="Tables\ComunaStandardizationDAL.xml" />
+    <EmbeddedResource Include="Security\WebServicesDAL.xml" />
+    <EmbeddedResource Include="Security\WsFunctionsDAL.xml" />
+    <EmbeddedResource Include="Tables\CommPCodeDAL.xml" />
+    <EmbeddedResource Include="Tables\CommPCodeEntityDAL.xml" />
+    <EmbeddedResource Include="Tables\ClaimSystemDAL.xml" />
+    <EmbeddedResource Include="Tables\CommPCodeEntityListDAL.xml" />
+    <EmbeddedResource Include="Tables\CompanyCreditCardDAL.xml" />
+    <EmbeddedResource Include="Tables\Accounting\AcctCovEntityDAL.xml" />
+    <EmbeddedResource Include="Tables\AttributeDAL.xml">
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Tables\AttributeValueDAL.xml">
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Tables\BillingPlanDAL.xml" />
+    <EmbeddedResource Include="Tables\CcBillingScheduleDAL.xml" />
+    <EmbeddedResource Include="Tables\CoverageDeductibleDAL.xml">
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Tables\EquipmentListDAL.xml">
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Tables\BillingCycleDAL.xml">
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Tables\AnswerDAL.xml" />
+    <EmbeddedResource Include="Tables\BankMaintenanceDAL.xml" />
+    <EmbeddedResource Include="Tables\BankNameDAL.xml" />
+    <EmbeddedResource Include="Tables\ApsPublishingLogDAL.xml">
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Tables\Accounting\AcctEventDetailIncexcDAL.xml">
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Security\NotificationDAL.xml">
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Security\UserNotificationDAL.xml">
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Tables\AcctFinanceAutomation\AfaInvoiceDataDAL.xml">
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Tables\AcctFinanceAutomation\AfaAcctAmtSrcDAL.xml">
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Tables\AcctFinanceAutomation\AfaAcctAmtSrcMappingDAL.xml">
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Tables\AcctFinanceAutomation\ReconciliationDAL.xml">
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Tables\AcctFinanceAutomation\AFAProductDAL.xml">
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Tables\AcctFinanceAutomation\AFAInvoiceRateDAL.xml">
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Tables\AcctFinanceAutomation\AfaInvoiceManaulDataDAL.xml">
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Tables\AcctFinanceAutomation\AFARepRateDAL.xml">
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Tables\ClaimStageDAL.xml">
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Tables\ClaimBonusSettingsDAL.xml">
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Tables\CompanyRuleListDAL.xml">
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Security\AuditSecurityLogsDAL.xml" />
+    <EmbeddedResource Include="Security\SpClaimTypesDAL.xml" />
+    <Content Include="Security\SpUserClaimPropertiesDAL.xml" />
+    <EmbeddedResource Include="Security\SpUserClaimsDAL.xml" />
+    <EmbeddedResource Include="Tables\CompensationPlanDAL.xml">
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Tables\CommPlanExtractDAL.xml" />
+    <EmbeddedResource Include="Tables\BenefitProductCodeDAL.xml" />
+    <EmbeddedResource Include="Tables\ClaimFulfillmentOrderDetailDAL.xml">
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Tables\CountryLineOfBusinessDAL.xml">
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <Content Include="Tables\CoverageMfgDAL.xml" />
+    <EmbeddedResource Include="Tables\ProductSpecialServiceDAL.xml" />
+    <EmbeddedResource Include="Tables\SpecialServiceDAL.xml">
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Tables\CreditCardFormatDAL.xml" />
+    <EmbeddedResource Include="Tables\LanguageDAL.xml" />
+    <EmbeddedResource Include="Tables\RoleDAL.xml" />
+    <EmbeddedResource Include="Tables\FormCategoryDAL.xml" />
+    <EmbeddedResource Include="Tables\TransAllMappingDAL.xml">
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Tables\MessageCodeDAL.xml" />
+    <EmbeddedResource Include="Tables\ClaimStatusLetterDAL.xml" />
+    <EmbeddedResource Include="Tables\DeductByMfgDAL.xml" />
+    <EmbeddedResource Include="Tables\ProdRepairPriceDAL.xml" />
+    <EmbeddedResource Include="Tables\ProductGroupPrcDAL.xml" />
+    <EmbeddedResource Include="Tables\ProductGroupDAL.xml" />
+    <EmbeddedResource Include="Translation\NewDictionaryItemDAL.xml" />
+    <EmbeddedResource Include="Tables\WarrantyMasterDAL.xml" />
+    <EmbeddedResource Include="Tables\RouteDAL.xml" />
+    <EmbeddedResource Include="Tables\CodeMappingDAL.xml" />
+    <EmbeddedResource Include="Tables\RegistrationLetterDAL.xml" />
+    <EmbeddedResource Include="Tables\InstallmentFactorDAL.xml" />
+    <EmbeddedResource Include="Tables\DelayFactorDAL.xml" />
+    <EmbeddedResource Include="Translation\LabelDAL.xml" />
+    <EmbeddedResource Include="Tables\Accounting\AcctExecLogDAL.xml" />
+    <EmbeddedResource Include="Tables\MfgCoverageDAL.xml">
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Tables\BranchStandardizationDAL.xml" />
+    <EmbeddedResource Include="Tables\Accounting\AcctPremInvoiceDAL.xml">
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Tables\ServiceOrdersAddressDAL.xml" />
+    <EmbeddedResource Include="Tables\CountryTaxDAL.xml" />
+    <EmbeddedResource Include="Tables\RegionTaxDAL.xml" />
+    <EmbeddedResource Include="Tables\RegionTaxDetailDAL.xml" />
+    <EmbeddedResource Include="Tables\CommissionPeriodEntityDAL.xml" />
+    <None Include="App.config">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Claims\BatchClaimInvoice.xsc">
+      <DependentUpon>BatchClaimInvoice.xsd</DependentUpon>
+    </None>
+    <None Include="Claims\BatchClaimInvoice.xsx">
+      <DependentUpon>BatchClaimInvoice.xsd</DependentUpon>
+    </None>
+    <None Include="DALBase.cd" />
+    <None Include="packages.config">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Reports\ServiceOrderReport.xsc">
+      <DependentUpon>ServiceOrderReport.xsd</DependentUpon>
+    </None>
+    <None Include="Reports\ServiceOrderReport.xsx">
+      <DependentUpon>ServiceOrderReport.xsd</DependentUpon>
+    </None>
+    <None Include="Tables\Permissions\Permission.cd" />
+  </ItemGroup>
+  <ItemGroup>
+    <BootstrapperPackage Include="Microsoft.Net.Client.3.5">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 3.5 SP1 Client Profile</ProductName>
+      <Install>false</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Net.Framework.2.0">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 2.0 %28x86%29</ProductName>
+      <Install>true</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Net.Framework.3.0">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 3.0 %28x86%29</ProductName>
+      <Install>false</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Net.Framework.3.5">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 3.5</ProductName>
+      <Install>false</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Net.Framework.3.5.SP1">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 3.5 SP1</ProductName>
+      <Install>false</Install>
+    </BootstrapperPackage>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="My Project\" />
+  </ItemGroup>
+  <Import Project="$(MSBuildBinPath)\Microsoft.VisualBasic.targets" />
+  <PropertyGroup>
+    <PreBuildEvent>
+    </PreBuildEvent>
+    <PostBuildEvent>
+    </PostBuildEvent>
+  </PropertyGroup>
+  <Import Project="$(SolutionDir)\.nuget\NuGet.targets" Condition="Exists('$(SolutionDir)\.nuget\NuGet.targets')" />
+  <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
+    <PropertyGroup>
+      <ErrorText>This project references NuGet package(s) that are missing on this computer. Enable NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>
+    </PropertyGroup>
+    <Error Condition="!Exists('$(SolutionDir)\.nuget\NuGet.targets')" Text="$([System.String]::Format('$(ErrorText)', '$(SolutionDir)\.nuget\NuGet.targets'))" />
+  </Target>
+  <ProjectExtensions>
+    <VisualStudio>
+      <UserProperties DocumentXCommentEditorState="&lt;HtmlEditState&gt;&#xA;  &lt;Attributes /&gt;&#xA;&lt;/HtmlEditState&gt;" />
+    </VisualStudio>
+  </ProjectExtensions>
+</Project>

@@ -1,0 +1,61 @@
+﻿<%--
+Default skin template. The following skins are provided as examples only.
+
+1. Named control skin. The SkinId should be uniquely defined because
+   duplicate SkinId's per control type are not allowed in the same theme.
+
+<asp:GridView runat="server" SkinId="gridviewSkin" BackColor="White" >
+   <AlternatingRowStyle BackColor="Blue" />
+</asp:GridView>
+
+2. Default skin. The SkinId is not defined. Only one default 
+   control skin per control type is allowed in the same theme.
+
+<asp:Image runat="server" ImageUrl="~/images/image1.jpg" />
+--%>
+
+<asp:Label runat="server" />
+<asp:Label runat="server" SkinId="SummaryLabel" />
+
+<asp:DataGrid runat="server" SkinId="DetailPageDataGrid" 
+    UseAccessibleHeader="true"
+    CssClass="dataGrid"
+    AutoGenerateColumns="False">
+</asp:DataGrid>
+<asp:GridView runat="server" SkinId="DetailPageGridView" 
+    CssClass="dataGrid"
+    AutoGenerateColumns="False">
+</asp:GridView>
+
+<asp:TextBox runat="server" SkinId="LargeTextBox" CssClass="large" />
+<asp:TextBox runat="server" SkinId="MediumTextBox" CssClass="medium" />
+<asp:TextBox runat="server" SkinId="SmallTextBox" CssClass="small" />
+<asp:TextBox runat="server" SkinId="exSmallTextBox" CssClass="exsmall" />
+
+<asp:DropDownList runat="server" SkinId="MediumDropDown" CssClass="medium" />
+<asp:DropDownList runat="server" SkinId="SmallDropDown" CssClass="small" />
+<asp:DropDownList runat="server" SkinId="ExtraSmallDropDown" CssClass="exsmall" />
+<asp:DropDownList runat="server" SkinId="LargeDropDown" CssClass="large" />
+
+<asp:Button runat="server" CssClass="primaryBtn floatR" SkinId="PrimaryRightButton" />
+<asp:Button runat="server" CssClass="primaryBtn" SkinId="PrimaryLeftButton" />
+<asp:Button runat="server" CssClass="altBtn floatR" SkinId="AlternateRightButton" />
+<asp:Button runat="server" CssClass="altBtn" SkinId="AlternateLeftButton" />
+<asp:Button runat="server" CssClass="centerBtn" SkinId="CenterButton" />
+
+<asp:Button runat="server" CssClass="searchBtn" SkinId="SearchButton" />
+<asp:Button runat="server" CssClass="searchBtn" SkinId="SearchLeftButton" />
+<asp:Button runat="server" CssClass="searchBtn floatR" SkinId="SearchRightButton" />
+<asp:Button runat="server" CssClass="popMenuItem" SkinId="PopMenuButton" />
+<asp:Button runat="server" CssClass="popupBtn" SkinId="ActionButton" />
+
+
+<asp:LinkButton runat="server" CssClass="altBtn floatR" SkinId="AlternateRightButton" />
+
+<asp:LinkButton runat="server" CssClass="addBtn" SkinId="TabZoneAddButton" />
+
+<asp:ImageButton runat="server" SkinId="ImageButton" />
+
+<asp:Panel runat="server" CssClass="popupMenuWraper" SkinId="PopUpMenuPanel" />
+
+<%-- Skins for Active, Inactive, Pass Due and Suspend  --%>

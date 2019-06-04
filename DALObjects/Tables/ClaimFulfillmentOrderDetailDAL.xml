@@ -1,0 +1,15 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<SQL>
+  <LOAD>elita.elp_tbl_cf_order_details.Load</LOAD>
+  <LOAD_LIST>elita.elp_tbl_cf_order_details.LoadList</LOAD_LIST>
+  <INSERT>elita.elp_tbl_cf_order_details.Add</INSERT>
+  <UPDATE>elita.elp_tbl_cf_order_details.Modify</UPDATE>
+  <DELETE>elita.elp_tbl_cf_order_details.Del</DELETE>
+    <CODE_UNIQUE>
+      <![CDATA[	
+        select count(*)
+        from   elp_cf_order_header
+        where  code = :pi_code
+    ]]>
+    </CODE_UNIQUE>
+</SQL>

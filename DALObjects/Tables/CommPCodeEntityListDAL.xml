@@ -1,0 +1,33 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+
+<SQL>
+  <LOAD>
+    <![CDATA[	
+			SELECT
+				comm_p_code_entity_id,
+				comm_p_code_id,
+				payee_type_id,
+				'payee_type' as payee_type,
+				entity_id,
+				'entity' as entity,
+				is_comm_fixed_id,
+				'is_comm_fixed_code' as is_comm_fixed_code,
+				'is_comm_fixed' as is_comm_fixed,
+				commission_amount,				
+				markup_amount,
+				created_by,
+				modified_by,
+				created_date,
+				modified_date,
+        comm_schedule_id,
+        'comm_schedule' as comm_schedule,
+        number_of_days_clawback,
+        branch_id,
+        'branch_name' as branch_name
+     
+			FROM elp_comm_p_code_entity pce
+      WHERE
+   rownum = 0		  
+		]]>
+  </LOAD>
+</SQL>

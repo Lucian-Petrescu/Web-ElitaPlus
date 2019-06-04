@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ReferenceGroup xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" ID="53ed6125-0b21-453b-ac04-f69ed5f4338c" xmlns="urn:schemas-microsoft-com:xml-wcfservicemap">
+  <ClientOptions>
+    <GenerateAsynchronousMethods>false</GenerateAsynchronousMethods>
+    <GenerateTaskBasedAsynchronousMethod>true</GenerateTaskBasedAsynchronousMethod>
+    <EnableDataBinding>true</EnableDataBinding>
+    <ExcludedTypes />
+    <ImportXmlTypes>false</ImportXmlTypes>
+    <GenerateInternalTypes>false</GenerateInternalTypes>
+    <GenerateMessageContracts>false</GenerateMessageContracts>
+    <NamespaceMappings />
+    <CollectionMappings />
+    <GenerateSerializableTypes>true</GenerateSerializableTypes>
+    <Serializer>Auto</Serializer>
+    <UseSerializerForFaults>true</UseSerializerForFaults>
+    <ReferenceAllAssemblies>true</ReferenceAllAssemblies>
+    <ReferencedAssemblies />
+    <ReferencedDataContractTypes />
+    <ServiceContractMappings />
+  </ClientOptions>
+  <MetadataSources>
+    <MetadataSource Address="http://localhost/ElitaClaimService/LegacyBridgeService.svc" Protocol="http" SourceId="1" />
+  </MetadataSources>
+  <Metadata>
+    <MetadataFile FileName="LegacyBridgeService.xsd" MetadataType="Schema" ID="95c372ea-5145-4aca-9650-f804b393dba3" SourceId="1" SourceUrl="http://localhost/ElitaClaimService/LegacyBridgeService.svc?xsd=xsd0" />
+    <MetadataFile FileName="LegacyBridgeService.disco" MetadataType="Disco" ID="8f142403-5434-40d2-a68c-1204c9dd3e5d" SourceId="1" SourceUrl="http://localhost/ElitaClaimService/LegacyBridgeService.svc?disco" />
+    <MetadataFile FileName="LegacyBridgeService3.xsd" MetadataType="Schema" ID="4bc3ac8e-05ea-4a39-91bd-2ef6cd575624" SourceId="1" SourceUrl="http://localhost/ElitaClaimService/LegacyBridgeService.svc?xsd=xsd3" />
+    <MetadataFile FileName="LegacyBridgeService2.xsd" MetadataType="Schema" ID="fb885c5f-ebc0-4242-9c41-a05b3c94afe9" SourceId="1" SourceUrl="http://localhost/ElitaClaimService/LegacyBridgeService.svc?xsd=xsd2" />
+    <MetadataFile FileName="LegacyBridgeService1.xsd" MetadataType="Schema" ID="a9cf091e-5cf8-401c-8695-faa745b090f5" SourceId="1" SourceUrl="http://localhost/ElitaClaimService/LegacyBridgeService.svc?xsd=xsd1" />
+    <MetadataFile FileName="LegacyBridgeService.wsdl" MetadataType="Wsdl" ID="9791ebe5-6a81-4b01-8b8e-9afce8e87c96" SourceId="1" SourceUrl="http://localhost/ElitaClaimService/LegacyBridgeService.svc?wsdl" />
+    <MetadataFile FileName="LegacyBridgeService1.wsdl" MetadataType="Wsdl" ID="02577bbc-25ee-4568-83c1-16899b48e9d4" SourceId="1" SourceUrl="http://localhost/ElitaClaimService/LegacyBridgeService.svc?wsdl=wsdl0" />
+  </Metadata>
+  <Extensions>
+    <ExtensionFile FileName="configuration91.svcinfo" Name="configuration91.svcinfo" />
+    <ExtensionFile FileName="configuration.svcinfo" Name="configuration.svcinfo" />
+  </Extensions>
+</ReferenceGroup>

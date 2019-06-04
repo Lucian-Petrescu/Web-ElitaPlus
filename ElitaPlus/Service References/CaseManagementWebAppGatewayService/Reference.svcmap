@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ReferenceGroup xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" ID="ae2b8143-1662-498e-8b6f-1cdd0ee9f654" xmlns="urn:schemas-microsoft-com:xml-wcfservicemap">
+  <ClientOptions>
+    <GenerateAsynchronousMethods>false</GenerateAsynchronousMethods>
+    <GenerateTaskBasedAsynchronousMethod>true</GenerateTaskBasedAsynchronousMethod>
+    <EnableDataBinding>true</EnableDataBinding>
+    <ExcludedTypes />
+    <ImportXmlTypes>false</ImportXmlTypes>
+    <GenerateInternalTypes>false</GenerateInternalTypes>
+    <GenerateMessageContracts>false</GenerateMessageContracts>
+    <NamespaceMappings />
+    <CollectionMappings />
+    <GenerateSerializableTypes>true</GenerateSerializableTypes>
+    <Serializer>Auto</Serializer>
+    <UseSerializerForFaults>true</UseSerializerForFaults>
+    <ReferenceAllAssemblies>true</ReferenceAllAssemblies>
+    <ReferencedAssemblies />
+    <ReferencedDataContractTypes />
+    <ServiceContractMappings />
+  </ClientOptions>
+  <MetadataSources>
+    <MetadataSource Address="http://localhost/ElitaCaseManagement/WebAppGateway" Protocol="http" SourceId="1" />
+  </MetadataSources>
+  <Metadata>
+    <MetadataFile FileName="WebAppGateway.wsdl" MetadataType="Wsdl" ID="727e3887-48e5-49ff-8b85-297a4af01593" SourceId="1" SourceUrl="http://localhost/ElitaCaseManagement/WebAppGateway" />
+    <MetadataFile FileName="WebAppGateway1.wsdl" MetadataType="Wsdl" ID="cf9abb6f-c99d-4098-a8dd-f2fec57a7152" SourceId="1" SourceUrl="http://localhost/ElitaCaseManagement/WebAppGateway?wsdl=wsdl0" />
+    <MetadataFile FileName="WebAppGateway.xsd" MetadataType="Schema" ID="831c547c-ca6c-47e8-9690-4a8cf6f02a96" SourceId="1" SourceUrl="http://localhost/ElitaCaseManagement/WebAppGateway?xsd=xsd4" />
+    <MetadataFile FileName="WebAppGateway1.xsd" MetadataType="Schema" ID="bd494a84-f070-475f-b8df-78bd91af2de4" SourceId="1" SourceUrl="http://localhost/ElitaCaseManagement/WebAppGateway?xsd=xsd3" />
+    <MetadataFile FileName="WebAppGateway2.xsd" MetadataType="Schema" ID="d3a271a5-a313-4ca3-a7c8-e7fe2aaa0cd2" SourceId="1" SourceUrl="http://localhost/ElitaCaseManagement/WebAppGateway?xsd=xsd0" />
+    <MetadataFile FileName="WebAppGateway3.xsd" MetadataType="Schema" ID="d05dbe7a-03f3-4618-99d1-3a4cc885b989" SourceId="1" SourceUrl="http://localhost/ElitaCaseManagement/WebAppGateway?xsd=xsd2" />
+    <MetadataFile FileName="WebAppGateway4.xsd" MetadataType="Schema" ID="ec0c2bb4-a494-4a44-834f-865e27ea71a2" SourceId="1" SourceUrl="http://localhost/ElitaCaseManagement/WebAppGateway?xsd=xsd1" />
+  </Metadata>
+  <Extensions>
+    <ExtensionFile FileName="configuration91.svcinfo" Name="configuration91.svcinfo" />
+    <ExtensionFile FileName="configuration.svcinfo" Name="configuration.svcinfo" />
+  </Extensions>
+</ReferenceGroup>

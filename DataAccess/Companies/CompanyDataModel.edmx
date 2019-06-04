@@ -1,0 +1,325 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="2.0" xmlns:edmx="http://schemas.microsoft.com/ado/2008/10/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+    <Schema Namespace="Model3.Store" Provider="Oracle.ManagedDataAccess.Client" ProviderManifestToken="11.2" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/02/edm/ssdl">
+        <EntityType Name="ELP_CANCELLATION_REASON">
+          <Key>
+            <PropertyRef Name="CANCELLATION_ID" />
+          </Key>
+          <Property Name="CANCELLATION_ID" Type="raw" MaxLength="16" Nullable="false" />
+          <Property Name="DESCRIPTION" Type="varchar2" MaxLength="50" Nullable="false" />
+          <Property Name="CODE" Type="varchar2" MaxLength="5" Nullable="false" />
+          <Property Name="COMPANY_ID" Type="raw" MaxLength="16" Nullable="false" />
+          <Property Name="REFUND_COMPUTE_METHOD_ID" Type="raw" MaxLength="16" Nullable="false" />
+          <Property Name="REFUND_DESTINATION_ID" Type="raw" MaxLength="16" Nullable="false" />
+          <Property Name="INPUT_AMT_REQ_ID" Type="raw" MaxLength="16" Nullable="false" />
+          <Property Name="CREATED_DATE" Type="date" Nullable="false" />
+          <Property Name="MODIFIED_DATE" Type="date" />
+          <Property Name="CREATED_BY" Type="varchar2" MaxLength="30" Nullable="false" />
+          <Property Name="MODIFIED_BY" Type="varchar2" MaxLength="30" />
+          <Property Name="ACTIVE_FLAG" Type="varchar2" MaxLength="1" Nullable="false" />
+          <Property Name="DISPLAY_CODE_ID" Type="raw" MaxLength="16" />
+        </EntityType>
+        <EntityType Name="ELP_COMPANY">
+          <Key>
+            <PropertyRef Name="COMPANY_ID" />
+          </Key>
+          <Property Name="COMPANY_ID" Type="raw" MaxLength="16" Nullable="false" />
+          <Property Name="DESCRIPTION" Type="varchar2" MaxLength="70" Nullable="false" />
+          <Property Name="CODE" Type="varchar2" MaxLength="5" Nullable="false" />
+          <Property Name="TAX_ID_NUMBER" Type="varchar2" MaxLength="15" Nullable="false" />
+          <Property Name="BUSINESS_COUNTRY_ID" Type="raw" MaxLength="16" Nullable="false" />
+          <Property Name="PHONE" Type="varchar2" MaxLength="15" Nullable="false" />
+          <Property Name="FAX" Type="varchar2" MaxLength="15" Nullable="false" />
+          <Property Name="EMAIL" Type="varchar2" MaxLength="50" Nullable="false" />
+          <Property Name="REFUND_TOLERANCE_AMT" Type="number" Precision="11" Scale="2" Nullable="false" />
+          <Property Name="CLAIM_NUMBER_FORMAT_ID" Type="raw" MaxLength="16" Nullable="false" />
+          <Property Name="INVOICE_METHOD_ID" Type="raw" MaxLength="16" Nullable="false" />
+          <Property Name="LANGUAGE_ID" Type="raw" MaxLength="16" Nullable="false" />
+          <Property Name="CREATED_DATE" Type="date" Nullable="false" />
+          <Property Name="MODIFIED_DATE" Type="date" />
+          <Property Name="CREATED_BY" Type="varchar2" MaxLength="30" Nullable="false" />
+          <Property Name="MODIFIED_BY" Type="varchar2" MaxLength="30" />
+          <Property Name="DEFAULT_FOLLOWUP_DAYS" Type="number" Precision="3" Scale="0" Nullable="false" />
+          <Property Name="MAX_FOLLOWUP_DAYS" Type="number" Precision="3" Scale="0" Nullable="false" />
+          <Property Name="LEGAL_DISCLAIMER" Type="varchar2" MaxLength="1000" />
+          <Property Name="SALUTATION_ID" Type="raw" MaxLength="16" Nullable="false" />
+          <Property Name="ADDRESS1" Type="varchar2" MaxLength="50" />
+          <Property Name="ADDRESS2" Type="varchar2" MaxLength="50" />
+          <Property Name="CITY" Type="varchar2" MaxLength="50" />
+          <Property Name="REGION_ID" Type="raw" MaxLength="16" />
+          <Property Name="POSTAL_CODE" Type="varchar2" MaxLength="25" />
+          <Property Name="COUNTRY_ID" Type="raw" MaxLength="16" />
+          <Property Name="COMPANY_GROUP_ID" Type="raw" MaxLength="16" />
+          <Property Name="COMPANY_TYPE_ID" Type="raw" MaxLength="16" Nullable="false" />
+          <Property Name="UPR_USES_WP_ID" Type="raw" MaxLength="16" Nullable="false" />
+          <Property Name="DAYS_TO_CLOSE_CLAIM" Type="number" Precision="4" Scale="0" Nullable="false" />
+          <Property Name="MASTER_CLAIM_PROCESSING_ID" Type="raw" MaxLength="16" Nullable="false" />
+          <Property Name="CLAIM_NUMBER_OFFSET" Type="number" Precision="2" Scale="0" Nullable="false" />
+          <Property Name="EUMEMBER_ID" Type="raw" MaxLength="16" Nullable="false" />
+          <Property Name="USEZIPDISTRICT_ID" Type="raw" MaxLength="16" />
+          <Property Name="ACCT_COMPANY_ID" Type="raw" MaxLength="16" />
+          <Property Name="AUTH_DETAIL_RQRD_ID" Type="raw" MaxLength="16" Nullable="false" />
+          <Property Name="ADDL_DAC_ID" Type="raw" MaxLength="16" Nullable="false" />
+          <Property Name="AUTO_PROCESS_FILE_ID" Type="raw" MaxLength="16" Nullable="false" />
+          <Property Name="USE_RECOVERIES_ID" Type="raw" MaxLength="16" />
+          <Property Name="SERVICE_ORDERS_BY_DEALER_ID" Type="raw" MaxLength="16" Nullable="false" />
+          <Property Name="REQUIRE_ITEM_DESCRIPTION_ID" Type="raw" MaxLength="16" />
+          <Property Name="CLIP_METHOD_ID" Type="raw" MaxLength="16" />
+          <Property Name="REPORT_COMMISSION_TAX_ID" Type="raw" MaxLength="16" />
+          <Property Name="TIME_ZONE_NAME_ID" Type="raw" MaxLength="16" />
+          <Property Name="COMPUTE_TAX_BASED_ID" Type="raw" MaxLength="16" />
+          <Property Name="BILLING_BY_DEALER_ID" Type="raw" MaxLength="16" Nullable="false" />
+          <Property Name="POLICE_RPT_FOR_LOSS_COV_ID" Type="raw" MaxLength="16" Nullable="false" />
+          <Property Name="FTP_SITE_ID" Type="raw" MaxLength="16" />
+          <Property Name="REQ_CUSTOMER_LEGAL_INFO_ID" Type="raw" MaxLength="16" Nullable="false" />
+          <Property Name="USE_TRANSFER_OF_OWNERSHIP" Type="raw" MaxLength="16" />
+          <Property Name="REQUIRE_AGENT_CODE" Type="raw" MaxLength="16" Nullable="false" />
+          <Property Name="OVERRIDE_WARRANTYPRICE_CHECK" Type="raw" MaxLength="16" Nullable="false" />
+          <Property Name="UNIQUE_CERTIFICATE_NUMBERS_ID" Type="raw" MaxLength="16" Nullable="false" />
+          <Property Name="UNIQUE_CERT_EFFECTIVE_DATE" Type="date" />
+          <Property Name="CERTNUMLOOKUPBY_ID" Type="raw" MaxLength="16" />
+          <Property Name="USE_PRE_INVOICE_PROCESS_ID" Type="raw" MaxLength="16" />
+          <Property Name="SC_PRE_INV_WAITING_PERIOD" Type="number" Precision="3" Scale="0" />
+        </EntityType>
+        <Association Name="FK_CAN_RESN_COMPANY">
+          <End Role="ELP_COMPANY" Type="Self.ELP_COMPANY" Multiplicity="1" />
+          <End Role="ELP_CANCELLATION_REASON" Type="Self.ELP_CANCELLATION_REASON" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ELP_COMPANY">
+              <PropertyRef Name="COMPANY_ID" />
+            </Principal>
+            <Dependent Role="ELP_CANCELLATION_REASON">
+              <PropertyRef Name="COMPANY_ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="Model3StoreContainer">
+          <EntitySet Name="ELP_CANCELLATION_REASON" EntityType="Self.ELP_CANCELLATION_REASON" Schema="ELITA" store:Type="Tables" />
+          <EntitySet Name="ELP_COMPANY" EntityType="Self.ELP_COMPANY" Schema="ELITA" store:Type="Tables" />
+          <AssociationSet Name="FK_CAN_RESN_COMPANY" Association="Self.FK_CAN_RESN_COMPANY">
+            <End Role="ELP_COMPANY" EntitySet="ELP_COMPANY" />
+            <End Role="ELP_CANCELLATION_REASON" EntitySet="ELP_CANCELLATION_REASON" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema></edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="Model3" Alias="Self" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2008/09/edm">
+        <EntityType Name="Company">
+          <Key>
+            <PropertyRef Name="CompanyId" />
+          </Key>
+          <Property Name="CompanyId" Type="Guid" Nullable="false" />
+          <Property Name="Description" Type="String" MaxLength="70" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Code" Type="String" MaxLength="5" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="TAX_ID_NUMBER" Type="String" MaxLength="15" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="BusinessCountryId" Type="Guid" Nullable="false" />
+          <Property Name="Phone" Type="String" MaxLength="15" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="FAX" Type="String" MaxLength="15" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Email" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="REFUND_TOLERANCE_AMT" Type="Decimal" Precision="11" Scale="2" Nullable="false" />
+          <Property Name="CLAIM_NUMBER_FORMAT_ID" Type="Guid" Nullable="false" />
+          <Property Name="InvoiceMethodId" Type="Guid" Nullable="false" />
+          <Property Name="LANGUAGE_ID" Type="Guid" Nullable="false" />
+          <Property Name="CreatedDate" Type="DateTime" Nullable="false" />
+          <Property Name="ModifiedDate" Type="DateTime" />
+          <Property Name="CreatedBy" Type="String" MaxLength="30" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="ModifiedBy" Type="String" MaxLength="30" FixedLength="false" Unicode="false" />
+          <Property Name="DefaultFollowUpDays" Type="Int16" Nullable="false" />
+          <Property Name="MaxFollowUpDays" Type="Int16" Nullable="false" />
+          <Property Name="LEGAL_DISCLAIMER" Type="String" MaxLength="1000" FixedLength="false" Unicode="false" />
+          <Property Name="SALUTATION_ID" Type="Guid" Nullable="false" />
+          <Property Name="Address1" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="Address2" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="City" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="RegionId" Type="Guid" />
+          <Property Name="PostalCode" Type="String" MaxLength="25" FixedLength="false" Unicode="false" />
+          <Property Name="CountryId" Type="Guid" />
+          <Property Name="CompanyGroupId" Type="Guid" />
+          <Property Name="CompanyTypeId" Type="Guid" Nullable="false" />
+          <Property Name="UPR_USES_WP_ID" Type="Guid" Nullable="false" />
+          <Property Name="DaysToCloseClaim" Type="Int16" Nullable="false" />
+          <Property Name="MasterClaimProcessingId" Type="Guid" Nullable="false" />
+          <Property Name="ClaimNumberOffset" Type="Int16" Nullable="false" />
+          <Property Name="EUMEMBER_ID" Type="Guid" Nullable="false" />
+          <Property Name="USEZIPDISTRICT_ID" Type="Guid" />
+          <Property Name="ACCT_COMPANY_ID" Type="Guid" />
+          <Property Name="AUTH_DETAIL_RQRD_ID" Type="Guid" Nullable="false" />
+          <Property Name="ADDL_DAC_ID" Type="Guid" Nullable="false" />
+          <Property Name="AUTO_PROCESS_FILE_ID" Type="Guid" Nullable="false" />
+          <Property Name="USE_RECOVERIES_ID" Type="Guid" />
+          <Property Name="SERVICE_ORDERS_BY_DEALER_ID" Type="Guid" Nullable="false" />
+          <Property Name="REQUIRE_ITEM_DESCRIPTION_ID" Type="Guid" />
+          <Property Name="CLIP_METHOD_ID" Type="Guid" />
+          <Property Name="REPORT_COMMISSION_TAX_ID" Type="Guid" />
+          <Property Name="TIME_ZONE_NAME_ID" Type="Guid" />
+          <Property Name="COMPUTE_TAX_BASED_ID" Type="Guid" />
+          <Property Name="BILLING_BY_DEALER_ID" Type="Guid" Nullable="false" />
+          <Property Name="POLICE_RPT_FOR_LOSS_COV_ID" Type="Guid" Nullable="false" />
+          <Property Name="FTP_SITE_ID" Type="Guid" />
+          <Property Name="REQ_CUSTOMER_LEGAL_INFO_ID" Type="Guid" Nullable="false" />
+          <Property Name="USE_TRANSFER_OF_OWNERSHIP" Type="Guid" />
+          <Property Name="REQUIRE_AGENT_CODE" Type="Guid" Nullable="false" />
+          <Property Name="OVERRIDE_WARRANTYPRICE_CHECK" Type="Guid" Nullable="false" />
+          <Property Name="UNIQUE_CERTIFICATE_NUMBERS_ID" Type="Guid" Nullable="false" />
+          <Property Name="UNIQUE_CERT_EFFECTIVE_DATE" Type="DateTime" />
+          <Property Name="CERTNUMLOOKUPBY_ID" Type="Guid" />
+          <Property Name="USE_PRE_INVOICE_PROCESS_ID" Type="Guid" />
+          <Property Name="SC_PRE_INV_WAITING_PERIOD" Type="Int16" />
+          <NavigationProperty Name="CancellationReasons" Relationship="Model3.FK_CAN_RESN_COMPANY" FromRole="Company" ToRole="ELP_CANCELLATION_REASON" />
+        </EntityType>
+        <EntityContainer Name="CompanyContext" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="Companies" EntityType="Model3.Company" />
+          <EntitySet Name="CancellationReasons" EntityType="Model3.CancellationReasons" />
+          <AssociationSet Name="FK_CAN_RESN_COMPANY" Association="Model3.FK_CAN_RESN_COMPANY">
+            <End Role="Company" EntitySet="Companies" />
+            <End Role="ELP_CANCELLATION_REASON" EntitySet="CancellationReasons" />
+          </AssociationSet>
+        </EntityContainer>
+        <EntityType Name="CancellationReasons">
+          <Key>
+            <PropertyRef Name="CancellationId" />
+          </Key>
+          <Property Name="CancellationId" Type="Guid" Nullable="false" />
+          <Property Name="Description" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="Code" Type="String" Nullable="false" MaxLength="5" FixedLength="false" Unicode="false" />
+          <Property Name="CompanyId" Type="Guid" Nullable="false" />
+          <Property Name="REFUND_COMPUTE_METHOD_ID" Type="Guid" Nullable="false" />
+          <Property Name="REFUND_DESTINATION_ID" Type="Guid" Nullable="false" />
+          <Property Name="INPUT_AMT_REQ_ID" Type="Guid" Nullable="false" />
+          <Property Name="CreatedDate" Type="DateTime" Nullable="false" />
+          <Property Name="ModifiedDate" Type="DateTime" />
+          <Property Name="CreatedBy" Type="String" Nullable="false" MaxLength="30" FixedLength="false" Unicode="false" />
+          <Property Name="ModifiedBy" Type="String" MaxLength="30" FixedLength="false" Unicode="false" />
+          <Property Name="ACTIVE_FLAG" Type="String" Nullable="false" MaxLength="1" FixedLength="false" Unicode="false" />
+          <Property Name="DISPLAY_CODE_ID" Type="Guid" />
+          <NavigationProperty Name="Company" Relationship="Model3.FK_CAN_RESN_COMPANY" FromRole="ELP_CANCELLATION_REASON" ToRole="Company" />
+        </EntityType>
+        <Association Name="FK_CAN_RESN_COMPANY">
+          <End Type="Model3.Company" Role="Company" Multiplicity="1" />
+          <End Type="Model3.CancellationReasons" Role="ELP_CANCELLATION_REASON" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Company">
+              <PropertyRef Name="CompanyId" />
+            </Principal>
+            <Dependent Role="ELP_CANCELLATION_REASON">
+              <PropertyRef Name="CompanyId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2008/09/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="Model3StoreContainer" CdmEntityContainer="CompanyContext">
+          <EntitySetMapping Name="Companies">
+            <EntityTypeMapping TypeName="Model3.Company">
+              <MappingFragment StoreEntitySet="ELP_COMPANY">
+                <ScalarProperty Name="CompanyId" ColumnName="COMPANY_ID" />
+                <ScalarProperty Name="Description" ColumnName="DESCRIPTION" />
+                <ScalarProperty Name="Code" ColumnName="CODE" />
+                <ScalarProperty Name="TAX_ID_NUMBER" ColumnName="TAX_ID_NUMBER" />
+                <ScalarProperty Name="BusinessCountryId" ColumnName="BUSINESS_COUNTRY_ID" />
+                <ScalarProperty Name="Phone" ColumnName="PHONE" />
+                <ScalarProperty Name="FAX" ColumnName="FAX" />
+                <ScalarProperty Name="Email" ColumnName="EMAIL" />
+                <ScalarProperty Name="REFUND_TOLERANCE_AMT" ColumnName="REFUND_TOLERANCE_AMT" />
+                <ScalarProperty Name="CLAIM_NUMBER_FORMAT_ID" ColumnName="CLAIM_NUMBER_FORMAT_ID" />
+                <ScalarProperty Name="InvoiceMethodId" ColumnName="INVOICE_METHOD_ID" />
+                <ScalarProperty Name="LANGUAGE_ID" ColumnName="LANGUAGE_ID" />
+                <ScalarProperty Name="CreatedDate" ColumnName="CREATED_DATE" />
+                <ScalarProperty Name="ModifiedDate" ColumnName="MODIFIED_DATE" />
+                <ScalarProperty Name="CreatedBy" ColumnName="CREATED_BY" />
+                <ScalarProperty Name="ModifiedBy" ColumnName="MODIFIED_BY" />
+                <ScalarProperty Name="DefaultFollowUpDays" ColumnName="DEFAULT_FOLLOWUP_DAYS" />
+                <ScalarProperty Name="MaxFollowUpDays" ColumnName="MAX_FOLLOWUP_DAYS" />
+                <ScalarProperty Name="LEGAL_DISCLAIMER" ColumnName="LEGAL_DISCLAIMER" />
+                <ScalarProperty Name="SALUTATION_ID" ColumnName="SALUTATION_ID" />
+                <ScalarProperty Name="Address1" ColumnName="ADDRESS1" />
+                <ScalarProperty Name="Address2" ColumnName="ADDRESS2" />
+                <ScalarProperty Name="City" ColumnName="CITY" />
+                <ScalarProperty Name="RegionId" ColumnName="REGION_ID" />
+                <ScalarProperty Name="PostalCode" ColumnName="POSTAL_CODE" />
+                <ScalarProperty Name="CountryId" ColumnName="COUNTRY_ID" />
+                <ScalarProperty Name="CompanyGroupId" ColumnName="COMPANY_GROUP_ID" />
+                <ScalarProperty Name="CompanyTypeId" ColumnName="COMPANY_TYPE_ID" />
+                <ScalarProperty Name="UPR_USES_WP_ID" ColumnName="UPR_USES_WP_ID" />
+                <ScalarProperty Name="DaysToCloseClaim" ColumnName="DAYS_TO_CLOSE_CLAIM" />
+                <ScalarProperty Name="MasterClaimProcessingId" ColumnName="MASTER_CLAIM_PROCESSING_ID" />
+                <ScalarProperty Name="ClaimNumberOffset" ColumnName="CLAIM_NUMBER_OFFSET" />
+                <ScalarProperty Name="EUMEMBER_ID" ColumnName="EUMEMBER_ID" />
+                <ScalarProperty Name="USEZIPDISTRICT_ID" ColumnName="USEZIPDISTRICT_ID" />
+                <ScalarProperty Name="ACCT_COMPANY_ID" ColumnName="ACCT_COMPANY_ID" />
+                <ScalarProperty Name="AUTH_DETAIL_RQRD_ID" ColumnName="AUTH_DETAIL_RQRD_ID" />
+                <ScalarProperty Name="ADDL_DAC_ID" ColumnName="ADDL_DAC_ID" />
+                <ScalarProperty Name="AUTO_PROCESS_FILE_ID" ColumnName="AUTO_PROCESS_FILE_ID" />
+                <ScalarProperty Name="USE_RECOVERIES_ID" ColumnName="USE_RECOVERIES_ID" />
+                <ScalarProperty Name="SERVICE_ORDERS_BY_DEALER_ID" ColumnName="SERVICE_ORDERS_BY_DEALER_ID" />
+                <ScalarProperty Name="REQUIRE_ITEM_DESCRIPTION_ID" ColumnName="REQUIRE_ITEM_DESCRIPTION_ID" />
+                <ScalarProperty Name="CLIP_METHOD_ID" ColumnName="CLIP_METHOD_ID" />
+                <ScalarProperty Name="REPORT_COMMISSION_TAX_ID" ColumnName="REPORT_COMMISSION_TAX_ID" />
+                <ScalarProperty Name="TIME_ZONE_NAME_ID" ColumnName="TIME_ZONE_NAME_ID" />
+                <ScalarProperty Name="COMPUTE_TAX_BASED_ID" ColumnName="COMPUTE_TAX_BASED_ID" />
+                <ScalarProperty Name="BILLING_BY_DEALER_ID" ColumnName="BILLING_BY_DEALER_ID" />
+                <ScalarProperty Name="POLICE_RPT_FOR_LOSS_COV_ID" ColumnName="POLICE_RPT_FOR_LOSS_COV_ID" />
+                <ScalarProperty Name="FTP_SITE_ID" ColumnName="FTP_SITE_ID" />
+                <ScalarProperty Name="REQ_CUSTOMER_LEGAL_INFO_ID" ColumnName="REQ_CUSTOMER_LEGAL_INFO_ID" />
+                <ScalarProperty Name="USE_TRANSFER_OF_OWNERSHIP" ColumnName="USE_TRANSFER_OF_OWNERSHIP" />
+                <ScalarProperty Name="REQUIRE_AGENT_CODE" ColumnName="REQUIRE_AGENT_CODE" />
+                <ScalarProperty Name="OVERRIDE_WARRANTYPRICE_CHECK" ColumnName="OVERRIDE_WARRANTYPRICE_CHECK" />
+                <ScalarProperty Name="UNIQUE_CERTIFICATE_NUMBERS_ID" ColumnName="UNIQUE_CERTIFICATE_NUMBERS_ID" />
+                <ScalarProperty Name="UNIQUE_CERT_EFFECTIVE_DATE" ColumnName="UNIQUE_CERT_EFFECTIVE_DATE" />
+                <ScalarProperty Name="CERTNUMLOOKUPBY_ID" ColumnName="CERTNUMLOOKUPBY_ID" />
+                <ScalarProperty Name="USE_PRE_INVOICE_PROCESS_ID" ColumnName="USE_PRE_INVOICE_PROCESS_ID" />
+                <ScalarProperty Name="SC_PRE_INV_WAITING_PERIOD" ColumnName="SC_PRE_INV_WAITING_PERIOD" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="CancellationReasons">
+            <EntityTypeMapping TypeName="Model3.CancellationReasons">
+              <MappingFragment StoreEntitySet="ELP_CANCELLATION_REASON">
+                <ScalarProperty Name="DISPLAY_CODE_ID" ColumnName="DISPLAY_CODE_ID" />
+                <ScalarProperty Name="ACTIVE_FLAG" ColumnName="ACTIVE_FLAG" />
+                <ScalarProperty Name="ModifiedBy" ColumnName="MODIFIED_BY" />
+                <ScalarProperty Name="CreatedBy" ColumnName="CREATED_BY" />
+                <ScalarProperty Name="ModifiedDate" ColumnName="MODIFIED_DATE" />
+                <ScalarProperty Name="CreatedDate" ColumnName="CREATED_DATE" />
+                <ScalarProperty Name="INPUT_AMT_REQ_ID" ColumnName="INPUT_AMT_REQ_ID" />
+                <ScalarProperty Name="REFUND_DESTINATION_ID" ColumnName="REFUND_DESTINATION_ID" />
+                <ScalarProperty Name="REFUND_COMPUTE_METHOD_ID" ColumnName="REFUND_COMPUTE_METHOD_ID" />
+                <ScalarProperty Name="CompanyId" ColumnName="COMPANY_ID" />
+                <ScalarProperty Name="Code" ColumnName="CODE" />
+                <ScalarProperty Name="Description" ColumnName="DESCRIPTION" />
+                <ScalarProperty Name="CancellationId" ColumnName="CANCELLATION_ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2008/10/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="true" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="true" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>

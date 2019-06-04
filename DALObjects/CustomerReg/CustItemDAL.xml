@@ -1,0 +1,223 @@
+<?xml version="1.0" encoding="utf-8" ?>
+
+<!-- ********************** THIS FILE HAS BEEN GENERATED FROM TEMPLATE SQLObject.cst (1/3/2013)********************** -->
+
+<SQL>
+	<LOAD>
+		<![CDATA[	
+			SELECT 
+				registration_id,
+				cert_item_id,
+				registration_date,
+				make,
+				model,
+				item_name,
+				registration_status_id,
+				coverage,
+				imei_number,
+				product_key,
+				product_procurement_date,
+				order_ref_num,
+				created_date,
+				created_by,
+				modified_date,
+				modified_by,
+				registration_item_id,
+				is_deleted_id,
+				cell_phone
+			FROM elp_customer_registration_item 
+			WHERE
+				registration_item_id = :registration_item_id
+		]]>
+	</LOAD>
+	<LOAD_LIST>		
+	</LOAD_LIST>
+	<GET_ITEM_FROM_EMAIL>
+		<![CDATA[
+			SELECT
+				cri.REGISTRATION_ITEM_ID,
+				cri.REGISTRATION_ID,
+				cri.CERT_ITEM_ID,
+				cri.REGISTRATION_DATE,
+				cri.MAKE,
+				cri.MODEL,
+				cri.ITEM_NAME,
+				GETCODEFROMLISTITEM(cri.REGISTRATION_STATUS_ID) REGISTRATION_STATUS,
+				cri.COVERAGE,
+				cri.IMEI_NUMBER,
+				cri.PRODUCT_KEY,
+				cri.PRODUCT_PROCUREMENT_DATE,
+				cri.ORDER_REF_NUM,
+				GETCODEFROMLISTITEM(cri.IS_DELETED_ID) IS_DELETED,
+				cri.CELL_PHONE,
+				cri.created_date,
+				cri.created_by,
+				cri.modified_date,
+				cri.modified_by
+			FROM
+				ELP_CUSTOMER_REGISTRATION_ITEM cri,
+				elp_customer_registration cr,
+				elp_dealer d,
+				elp_contact_info ci,
+				elp_address a,				
+				elp_country c
+			WHERE	cri.registration_id						=	cr.registration_id
+			and		cr.dealer_id							=	d.dealer_id
+			and		cr.contact_info_id 						= 	ci.contact_info_id
+			and     ci.address_id							=	a.address_id
+			and		a.country_id							=	c.country_id			
+			and     GETCODEFROMLISTITEM(cri.IS_DELETED_ID)	<>	'Y'
+			and		upper(ci.email)							=	upper(:emailId)
+			and		ci.address_type_id						=	:addressTypeId
+			and		cr.dealer_id							=	:dealerId
+		]]>
+	</GET_ITEM_FROM_EMAIL>
+	<GET_ITEM_FOR_DEALER_AND_REGISTRATION>
+		<![CDATA[
+			SELECT 
+				cri.registration_id,
+				cri.cert_item_id,
+				cri.registration_date,
+				cri.make,
+				cri.model,
+				cri.item_name,
+				cri.registration_status_id,
+				cri.coverage,
+				cri.imei_number,
+				cri.product_key,
+				cri.product_procurement_date,
+				cri.order_ref_num,
+				cri.created_date,
+				cri.created_by,
+				cri.modified_date,
+				cri.modified_by,
+				cri.registration_item_id,
+				cri.is_deleted_id,
+				cri.cell_phone
+			FROM 
+				elp_customer_registration_item cri,
+				elp_customer_registration cr  
+			WHERE
+				cr.registration_id 			=	cri.registration_id
+			and	upper(cri.imei_number)		=	upper(:imei_number)
+			and	cr.dealer_id				=   :dealer_id
+			and	cr.registration_id 			=	:registration_id
+		]]>
+	</GET_ITEM_FOR_DEALER_AND_REGISTRATION>
+	<GET_ITEM_BY_REG_AND_IMEI>
+		<![CDATA[
+			SELECT          
+				cri.registration_item_id
+			FROM
+				ELP_CUSTOMER_REGISTRATION_ITEM cri				
+			WHERE	cri.registration_id						=	:registration_id
+			and		upper(cri.imei_number)					=	upper(:imei_number)
+			and     GETCODEFROMLISTITEM(cri.IS_DELETED_ID) <>	'Y'
+			and		rownum									=	1
+		]]>
+	</GET_ITEM_BY_REG_AND_IMEI>
+	<CHECK_ITEM_FOR_DEALER>
+		<![CDATA[
+			SELECT          
+				count(cri.registration_item_id)
+			FROM
+				ELP_CUSTOMER_REGISTRATION_ITEM cri,
+				elp_customer_registration cr				
+			WHERE	cri.registration_id								=	cr.registration_id
+			and		upper(cri.imei_number)							=	upper(:imei_number)
+			and		cr.dealer_id									=	:dealer_id
+			and		GETCODEFROMLISTITEM(cri.REGISTRATION_STATUS_ID)	<>	'INACTIVE'
+		]]>
+	</CHECK_ITEM_FOR_DEALER>
+	<GET_CERT_ITEM_ID_FOR_IMEI_AND_TAX_ID>
+		<![CDATA[
+		select 
+			ci.cert_item_id
+		from
+			elp_cert c, 
+			elp_cert_item ci
+		where
+			ci.cert_id						=	c.cert_id
+		and c.status_code					=	'A'		
+		and upper(c.IDENTIFICATION_NUMBER)	=	upper(:tax_id)
+		and upper(ci.SERIAL_NUMBER)			=	upper(:imei_number)
+		and	c.dealer_id						=	:dealer_id
+		--dynamic_where_clause
+		]]>
+	</GET_CERT_ITEM_ID_FOR_IMEI_AND_TAX_ID>
+	<UPDATE>
+		<![CDATA[	
+			UPDATE elp_customer_registration_item SET
+				registration_id = :registration_id,
+				cert_item_id = :cert_item_id,
+				registration_date = :registration_date,
+				make = :make,
+				model = :model,
+				item_name = :item_name,
+				registration_status_id = :registration_status_id,
+				coverage = :coverage,
+				imei_number = :imei_number,
+				product_key = :product_key,
+				product_procurement_date = :product_procurement_date,
+				order_ref_num = :order_ref_num,
+				modified_by = :modified_by,
+				is_deleted_id = :is_deleted_id,
+				cell_phone = :cell_phone
+			WHERE
+				registration_item_id = :registration_item_id
+		]]>
+	</UPDATE>
+	<INSERT>
+		INSERT INTO elp_customer_registration_item
+		(
+		registration_id,
+		cert_item_id,
+		registration_date,
+		make,
+		model,
+		item_name,
+		registration_status_id,
+		coverage,
+		imei_number,
+		product_key,
+		product_procurement_date,
+		order_ref_num,
+		created_by,
+		registration_item_id,
+		is_deleted_id,
+		cell_phone
+		)
+		VALUES
+		(
+		:registration_id,
+		:cert_item_id,
+		:registration_date,
+		:make,
+		:model,
+		:item_name,
+		:registration_status_id,
+		:coverage,
+		:imei_number,
+		:product_key,
+		:product_procurement_date,
+		:order_ref_num,
+		:created_by,
+		:registration_item_id,
+		:is_deleted_id,
+		:cell_phone
+		)
+	</INSERT>
+	<DELETE>
+			DELETE FROM elp_customer_registration_item
+			WHERE
+				registration_item_id = :registration_item_id
+	</DELETE>
+  <FIND_REGISTRATION>
+    ELP_REGISTRATION.FindRegistration
+  </FIND_REGISTRATION>
+	<VALIDATE_IMEI>
+		ELP_VALIDATE_IMEI_NUMBER
+	</VALIDATE_IMEI>
+</SQL> 
+
+

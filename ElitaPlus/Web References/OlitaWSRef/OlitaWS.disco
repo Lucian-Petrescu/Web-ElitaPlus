@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<discovery xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns="http://schemas.xmlsoap.org/disco/">
+  <contractRef ref="http://localhost/ElitaInternalWS/Olita/OlitaWS.asmx?wsdl" docRef="http://localhost/ElitaInternalWS/Olita/OlitaWS.asmx" xmlns="http://schemas.xmlsoap.org/disco/scl/" />
+  <soap address="http://localhost/ElitaInternalWS/Olita/OlitaWS.asmx" xmlns:q1="http://tempuri.org/ElitaInternalWS/Olita/OlitaWS" binding="q1:OlitaWSSoap" xmlns="http://schemas.xmlsoap.org/disco/soap/" />
+  <soap address="http://localhost/ElitaInternalWS/Olita/OlitaWS.asmx" xmlns:q2="http://tempuri.org/ElitaInternalWS/Olita/OlitaWS" binding="q2:OlitaWSSoap12" xmlns="http://schemas.xmlsoap.org/disco/soap/" />
+</discovery>

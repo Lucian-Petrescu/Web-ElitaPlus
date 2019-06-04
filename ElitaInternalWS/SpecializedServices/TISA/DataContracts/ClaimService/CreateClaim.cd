@@ -1,0 +1,41 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1">
+  <Class Name="ElitaInternalWS.SpecializedServices.Tisa.CreateClaimRequest">
+    <Position X="3.5" Y="1.25" Width="2" />
+    <TypeIdentifier>
+      <HashCode>AAgAABAAAAAAAAAAQoAgCQAgAAEAhAIAAAggAAAIACA=</HashCode>
+      <FileName>SpecializedServices\TISA\DataContracts\ClaimService\CreateClaimRequest.vb</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Property Name="ClaimType" />
+    </ShowAsAssociation>
+    <ShowAsCollectionAssociation>
+      <Property Name="ExtendedStatuses" />
+    </ShowAsCollectionAssociation>
+  </Class>
+  <Class Name="ElitaInternalWS.SpecializedServices.Tisa.ExtendedStatus" Collapsed="true">
+    <Position X="6.5" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAABAAAAAAAAAgAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>SpecializedServices\TISA\DataContracts\ClaimService\UpdateClaimRequest.vb</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="ElitaInternalWS.SpecializedServices.Tisa.CreateReplacementClaimRequest">
+    <Position X="8.5" Y="2.5" Width="2.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAABAAAAAAAAAAAAAAwAAAAAAA=</HashCode>
+      <FileName>SpecializedServices\TISA\DataContracts\ClaimService\CreateReplacementClaimRequest.vb</FileName>
+    </TypeIdentifier>
+    <ShowAsCollectionAssociation>
+      <Property Name="ExtendedStatuses" />
+    </ShowAsCollectionAssociation>
+  </Class>
+  <Enum Name="ElitaInternalWS.SpecializedServices.Tisa.ClaimTypeEnum">
+    <Position X="0.75" Y="3.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAEAAAAAIAAAAAAAAAAAA=</HashCode>
+      <FileName>SpecializedServices\TISA\DataContracts\ClaimService\CreateClaimRequest.vb</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Font Name="Segoe UI" Size="9" />
+</ClassDiagram>

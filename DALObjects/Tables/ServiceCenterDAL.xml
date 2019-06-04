@@ -1,0 +1,989 @@
+<?xml version="1.0" encoding="utf-8" ?>
+
+<!-- ********************** THIS FILE HAS BEEN GENERATED FROM TEMPLATE SQLObject.cst (10/7/2004)********************** -->
+
+<SQL>
+  <LOAD>
+    <![CDATA[	
+			SELECT 
+				country_id,
+				address_id,
+        service_group_id,
+        loaner_center_id,
+				master_center_id,
+				code,
+				description,
+				rating_code,
+				contact_name,
+				owner_name,
+				phone1,
+				phone2,
+				fax,
+				email,
+				ftp_address,
+				tax_id,
+				service_warranty_days,
+				status_code,
+				business_hours,
+				master_flag,
+				loaner_flag,
+				default_to_email_flag,
+				iva_responsible_flag,
+				created_by,
+				created_date,
+				modified_by,
+				modified_date,
+				service_center_id,
+				payment_method_id,
+				bank_info_id,
+				comments,
+				shipping,
+				processing_fee,
+				cc_email,
+				OriginalDealerID,
+        route_id,
+        integrated_with_id,
+        pay_master,
+        integrated_as_of,
+        free_zone_flag,
+        reverse_logistics_id,
+        distribution_method_id,
+				fulfillment_time_zone_id,
+				price_list_code,
+				discount_pct,
+				discount_days,
+				net_days,
+				service_center_id,
+        pre_invoice_id,
+        auto_process_inv_file_xcd,
+        withholding_rate
+			FROM elp_service_center 
+			WHERE
+				service_center_id = :service_center_id
+		]]>
+  </LOAD>
+  <LOAD_LIST>
+    <![CDATA[
+			SELECT
+				sc.service_center_id,
+				c.description country_description,
+				sc.code,
+				sc.description,
+				a.address1 address,
+				a.city,
+				a.postal_code zip,
+				sg.description Service_Group_Desc
+				
+			FROM
+				elp_service_center sc,
+				elp_address a,
+				elp_country c,
+				elp_service_group sg
+			WHERE
+					sc.country_id = c.country_id
+				AND sc.address_id = a.address_id
+				AND sc.service_group_id = sg.service_group_id
+				--dynamic_where_clause 
+			ORDER BY UPPER(sc.description)
+		]]>
+  </LOAD_LIST>
+
+  <UPDATE>
+    <![CDATA[	
+			UPDATE elp_service_center SET
+				country_id = :country_id,
+				address_id = :address_id,
+				service_group_id = :service_group_id,
+        loaner_center_id = :loaner_center_id,
+				master_center_id = :master_center_id,
+				code = :code,
+				description = :description,
+				rating_code = :rating_code,
+				contact_name = :contact_name,
+				owner_name = :owner_name,
+				phone1 = :phone1,
+				phone2 = :phone2,
+				fax = :fax,
+				email = :email,
+				ftp_address = :ftp_address,
+				tax_id = :tax_id,
+				service_warranty_days = :service_warranty_days,
+				status_code = :status_code,
+				business_hours = :business_hours,
+				master_flag = :master_flag,
+				loaner_flag = :loaner_flag,
+				default_to_email_flag = :default_to_email_flag,
+				iva_responsible_flag = :iva_responsible_flag,
+				modified_by = :modified_by,
+				payment_method_id = :payment_method_id,
+				bank_info_id = :bank_info_id,
+				comments= :comments,
+				shipping= :shipping,
+				processing_fee= :processing_fee,
+				cc_email = :cc_email,
+				originaldealerid= :originaldealerid,
+				
+        route_id = :route_id,
+        integrated_with_id = :integrated_with_id,
+        pay_master = :pay_master,
+        integrated_as_of = :integrated_as_of,
+        free_zone_flag = :free_zone_flag,
+        reverse_logistics_id =:reverse_logistics_id,
+        distribution_method_id = :distribution_method_id,
+				fulfillment_time_zone_id = :fulfillment_time_zone_id,
+				price_list_code = :price_list_code,
+				discount_pct = :discount_pct,
+				discount_days = :discount_days,
+				net_days = :net_days,
+        pre_invoice_id = :pre_invoice_id,
+        auto_process_inv_file_xcd = :auto_process_inv_file_xcd,
+        withholding_rate = :withholding_rate
+			WHERE
+				service_center_id = :service_center_id
+		]]>
+  </UPDATE>
+  <INSERT>
+    INSERT INTO elp_service_center
+    (
+    country_id,
+    address_id,
+    service_group_id,
+    loaner_center_id,
+    master_center_id,
+    code,
+    description,
+    rating_code,
+    contact_name,
+    owner_name,
+    phone1,
+    phone2,
+    fax,
+    email,
+    ftp_address,
+    tax_id,
+    service_warranty_days,
+    status_code,
+    business_hours,
+    master_flag,
+    loaner_flag,
+    default_to_email_flag,
+    iva_responsible_flag,
+    created_by,
+    service_center_id,
+    payment_method_id,
+    bank_info_id,
+    comments,
+    shipping,
+    processing_fee,
+    cc_email,
+    originaldealerid,
+    route_id,
+    integrated_with_id,
+    pay_master,
+    integrated_as_of,
+    free_zone_flag,
+    reverse_logistics_id,
+    distribution_method_id,
+    fulfillment_time_zone_id,
+    price_list_code,
+    discount_pct,
+    discount_days,
+    net_days,
+    pre_invoice_id,
+    auto_process_inv_file_xcd,
+    withholding_rate
+    )
+    VALUES
+    (
+    :country_id,
+    :address_id,
+    :service_group_id,
+    :loaner_center_id,
+    :master_center_id,
+    :code,
+    :description,
+    :rating_code,
+    :contact_name,
+    :owner_name,
+    :phone1,
+    :phone2,
+    :fax,
+    :email,
+    :ftp_address,
+    :tax_id,
+    :service_warranty_days,
+    :status_code,
+    :business_hours,
+    :master_flag,
+    :loaner_flag,
+    :default_to_email_flag,
+    :iva_responsible_flag,
+    :created_by,
+    :service_center_id,
+    :payment_method_id,
+    :bank_info_id,
+    :comments,
+    :shipping,
+    :processing_fee,
+    :cc_email,
+    :originaldealerid,
+    :route_id,
+    :integrated_with_id,
+    :pay_master,
+    :integrated_as_of,
+    :free_zone_flag,
+    :reverse_logistics_id,
+    :distribution_method_id,
+    :fulfillment_time_zone_id,
+    :price_list_code,
+    :discount_pct,
+    :discount_days,
+    :net_days,
+    :pre_invoice_id,
+    :auto_process_inv_file_xcd,
+    :withholding_rate
+    )
+  </INSERT>
+  <DELETE>
+    DELETE FROM elp_service_center
+    WHERE
+    service_center_id = :service_center_id
+  </DELETE>
+  <LOCATE_SERVICE_CENTER>
+    <![CDATA[
+				SELECT distinct
+					sc.service_center_id,
+					sc.description,
+					sc.code,
+					sc.rating_code,
+          addr.city,
+					addr.address1,
+					addr.address2,
+					addr.zip_locator,
+					decode( sc_dp.dealer_id, null, 'n', 'y') dealer_pref_flag,
+					decode( sc_mfa.manufacturer_id, null, 'n', 'y') man_auth_flag,
+					decode( zd.zip_code, null, 'n', 'y' ) cover_zip_code_flag,
+					decode( sg.service_group_id, null, 'n', 'y') cover_item_flag,
+					'0' dealers_SVC_flag,
+          sc.phone1,
+          sc.phone2,
+          sc.fax,
+          sc.business_hours,
+          sc.processing_fee,
+          addr.POSTAL_CODE zip,
+          sc.email,
+          sc.default_to_email_flag,
+          sc.shipping,
+          sc.comments,
+          sc.contact_name,
+          sc.cc_email,
+          rgn.description REGION,
+          cont.description country,
+          dlr.dealer_name ORIGINAL_DEALER
+				FROM elp_serv_center_meth_repair scmr
+					inner join elp_service_center sc on sc.service_center_id = scmr.service_center_id
+					LEFT JOIN elp_service_center_dealer	sc_dp ON (sc.service_center_id = sc_dp.service_center_id AND sc_dp.dealer_id = :dealer_id)
+					LEFT JOIN elp_service_center_mfg sc_mfa ON (sc.service_center_id = sc_mfa.service_center_id AND sc_mfa.manufacturer_id = :manufacturer_id)
+					LEFT JOIN (SELECT sg.service_group_id FROM elp_service_group sg
+							        inner join elp_service_group_risk_type sgrt on sgrt.service_group_id = sg.service_group_id
+							        inner join elp_risk_type rt on sgrt.risk_type_id = rt.risk_type_id
+							        left outer join elp_sgrt_manufacturer sgrtmf on sgrtmf.service_group_risk_type_id = sgrt.service_group_risk_type_id
+						        WHERE rt.risk_type_id = :risk_type_id
+					   			    AND (sgrtmf.manufacturer_id is null or sgrtmf.manufacturer_id = :manufacturer_id)
+					) sg ON sc.service_group_id = sg.service_group_id
+					LEFT JOIN ( SELECT unique sc_zd.service_center_id,
+								        zd_detail.zip_code      
+							        FROM elp_service_center sc,
+								        elp_service_center_zip_dst sc_zd,
+								        elp_zip_district zd,
+								        elp_zip_district_detail zd_detail                 
+							WHERE (zd_detail.zip_code = :zip_code or zd_detail.zip_code = '*')
+              AND sc_zd.service_center_id = sc.service_center_id
+							AND sc_zd.zip_district_id = zd.zip_district_id
+							AND zd_detail.zip_district_id = zd.zip_district_id
+						) zd on (sc.service_center_id = zd.service_center_id)
+					LEFT JOIN elp_address addr ON (sc.address_id = addr.address_id )  
+          LEFT JOIN elp_region rgn on (addr.region_id = rgn.region_id)
+          LEFT JOIN elp_country cont on (addr.country_id = cont.country_id)
+          LEFT JOIN elp_dealer dlr on (sc.ORIGINALDEALERID = dlr.dealer_id)
+				WHERE 1=1
+				  AND upper(addr.city) like upper(:city)
+          AND sc.status_code = 'A' 
+          AND scmr.serv_center_mor_id = :method_repair_id
+				  --dynamic_where_clause				
+    ]]>
+  </LOCATE_SERVICE_CENTER>
+  <GET_SERVICE_CENTER_LIST>
+    <![CDATA[
+      SELECT DISTINCT sc.service_center_id id,  rawtohex(sc.country_id) country_id, sc.code, sc.description
+      FROM elp_serv_center_meth_repair scmr
+      inner join elp_service_center sc on sc.service_center_id = scmr.service_center_id
+      WHERE sc.status_code = 'A'
+        --dynamic_where_clause
+    ]]>
+  </GET_SERVICE_CENTER_LIST>
+  <GET_SERVICE_CENTER_LIST_FOR_WS>
+    <![CDATA[
+      select distinct sc.service_center_id id,  
+                sc.code, 
+                sc.description,
+                sc.iva_responsible_flag as iva_responsible,
+                sc.tax_id,
+                sc.owner_name,
+                sc.contact_name,
+                sc.phone1,
+                sc.phone2,
+                sc.fax,
+                sc.email,
+                sc.cc_email,
+                sc.business_hours,
+                sc.pay_master,
+                sc1.code master_center_code,
+                nvl(sa1.address1,'') as address1,
+		            nvl(sa1.address2,'') as address2,
+		            nvl(sa1.city,'') as city,
+		            nvl(sa1.postal_code,'') as postal_code,
+		            nvl(region1.description,'') as region,
+		            nvl(country1.description,'') as country
+      from elp_service_center sc
+      left outer join elp_service_center sc1 on sc.master_center_id = sc1.service_center_id  
+      left outer join ELP_ADDRESS sa1 on sa1.address_id = sc.address_id
+	    left outer join ELP_REGION region1 on sa1.region_id = region1.region_id
+	    left outer join ELP_COUNTRY country1 on country1.country_id = sa1.country_id
+      where sc.country_id = :country_id
+      and sc.code = :code
+    ]]>
+  </GET_SERVICE_CENTER_LIST_FOR_WS>
+  <LOCATE_SERVICE_CENTER_WITH_NO_ZIP_DISTRICT>
+    <![CDATA[
+        SELECT distinct
+          sc.service_center_id,
+          sc.description,
+          sc.code,
+          sc.rating_code,
+          addr.city,
+          addr.address1,
+          addr.address2,
+          addr.zip_locator,
+          decode( sc_dp.dealer_id, null, 'n', 'y') dealer_pref_flag,
+          decode( sc_mfa.manufacturer_id, null, 'n', 'y') man_auth_flag,
+          decode( addr.zip_locator, null, 'n', 'y' ) cover_zip_code_flag,
+          decode( sg.service_group_id, null, 'n', 'y') cover_item_flag,
+          '0' dealers_SVC_flag,
+          sc.phone1,
+          sc.phone2,
+          sc.fax,
+          sc.business_hours,
+          sc.processing_fee,
+          addr.POSTAL_CODE zip,
+          sc.email,
+          sc.default_to_email_flag,
+          sc.shipping,
+          sc.comments,
+          sc.contact_name,
+          sc.cc_email,
+          rgn.description REGION,
+          cont.description country,
+          dlr.dealer_name ORIGINAL_DEALER
+        FROM elp_serv_center_meth_repair scmr
+					inner join elp_service_center sc on sc.service_center_id = scmr.service_center_id
+					LEFT JOIN elp_service_center_dealer	sc_dp ON (sc.service_center_id = sc_dp.service_center_id AND sc_dp.dealer_id = :dealer_id)
+					LEFT JOIN elp_service_center_mfg sc_mfa ON (sc.service_center_id = sc_mfa.service_center_id AND sc_mfa.manufacturer_id = :manufacturer_id)
+					LEFT JOIN (SELECT sg.service_group_id FROM elp_service_group sg
+							        inner join elp_service_group_risk_type sgrt on sgrt.service_group_id = sg.service_group_id
+							        inner join elp_risk_type rt on sgrt.risk_type_id = rt.risk_type_id
+							        left outer join elp_sgrt_manufacturer sgrtmf on sgrtmf.service_group_risk_type_id = sgrt.service_group_risk_type_id
+						        WHERE rt.risk_type_id = :risk_type_id
+					   			    AND (sgrtmf.manufacturer_id is null or sgrtmf.manufacturer_id = :manufacturer_id)
+					) sg ON sc.service_group_id = sg.service_group_id
+        LEFT JOIN elp_address addr ON (sc.address_id = addr.address_id)   
+        LEFT JOIN elp_region rgn on (addr.region_id = rgn.region_id)
+        LEFT JOIN elp_country cont on (addr.country_id = cont.country_id)
+        LEFT JOIN elp_dealer dlr on (sc.ORIGINALDEALERID = dlr.dealer_id)
+        WHERE 1=1
+          and addr.zip_locator like :zip_code
+          AND sc.status_code = 'A' 
+          AND upper(addr.city) like upper(:city)
+          AND scmr.serv_center_mor_id = :method_repair_id
+          --dynamic_where_clause
+       
+    ]]>
+  </LOCATE_SERVICE_CENTER_WITH_NO_ZIP_DISTRICT>
+  <LOCATE_SERVICE_CENTER_WITH_NO_ZIP_DISTRICT_DEALERS_SVC>
+    <![CDATA[
+		select distinct * from
+		(	SELECT 
+				sc.service_center_id,
+				sc.description,
+				sc.code,
+				sc.rating_code,
+        addr.city,
+				addr.address1,
+				addr.address2,
+				addr.zip_locator,
+				decode( sc_dp.dealer_id, null, 'n', 'y') dealer_pref_flag,
+				'y' man_auth_flag,
+				'y' cover_zip_code_flag,
+				'y' cover_item_flag,
+				'1' dealers_SVC_flag,
+        sc.phone1,
+        sc.phone2,
+        sc.fax,
+        sc.business_hours,
+        sc.processing_fee,
+        addr.POSTAL_CODE zip,
+        sc.email,
+        sc.default_to_email_flag,
+        sc.shipping,
+        sc.comments,
+        sc.contact_name,
+        sc.cc_email,
+        rgn.description REGION,
+        cont.description country,
+        dlr.dealer_name ORIGINAL_DEALER 
+			FROM
+				elp_service_center sc
+				LEFT JOIN elp_service_center_dealer sc_dp ON (sc.service_center_id = sc_dp.service_center_id AND sc_dp.dealer_id = :dealer_id)
+				LEFT JOIN elp_service_center_mfg sc_mfa ON (sc.service_center_id = sc_mfa.service_center_id AND sc_mfa.manufacturer_id = :manufacturer_id)
+				LEFT JOIN elp_address addr ON (sc.address_id = addr.address_id)	
+        LEFT JOIN elp_region rgn on (addr.region_id = rgn.region_id)
+        LEFT JOIN elp_country cont on (addr.country_id = cont.country_id)
+        LEFT JOIN elp_dealer dlr on (sc.ORIGINALDEALERID = dlr.dealer_id)
+			WHERE
+				sc.originaldealerid = :dealer_id
+        AND sc.status_code = 'A'     
+				--dynamic_in_clause				
+			UNION	
+			SELECT distinct
+				sc.service_center_id,
+				sc.description,
+				sc.code,
+				sc.rating_code,
+        addr.city,
+				addr.address1,
+				addr.address2,
+				addr.zip_locator,
+				decode( sc_dp.dealer_id, null, 'n', 'y') dealer_pref_flag,
+				decode( sc_mfa.manufacturer_id, null, 'n', 'y') man_auth_flag,
+				decode( addr.zip_locator, null, 'n', 'y' ) cover_zip_code_flag,
+				decode( sg.service_group_id, null, 'n', 'y') cover_item_flag,
+				'0' dealers_SVC_flag,
+        sc.phone1,
+        sc.phone2,
+        sc.fax,
+        sc.business_hours,
+        sc.processing_fee,
+        addr.POSTAL_CODE zip,
+        sc.email,
+        sc.default_to_email_flag,
+        sc.shipping,
+        sc.comments,
+        sc.contact_name,
+        sc.cc_email,
+        rgn.description REGION,
+        cont.description country,
+        dlr.dealer_name ORIGINAL_DEALER
+			FROM elp_serv_center_meth_repair scmr
+					inner join elp_service_center sc on sc.service_center_id = scmr.service_center_id
+					LEFT JOIN elp_service_center_dealer	sc_dp ON (sc.service_center_id = sc_dp.service_center_id AND sc_dp.dealer_id = :dealer_id)
+					LEFT JOIN elp_service_center_mfg sc_mfa ON (sc.service_center_id = sc_mfa.service_center_id AND sc_mfa.manufacturer_id = :manufacturer_id)
+					LEFT JOIN (SELECT sg.service_group_id FROM elp_service_group sg
+							        inner join elp_service_group_risk_type sgrt on sgrt.service_group_id = sg.service_group_id
+							        inner join elp_risk_type rt on sgrt.risk_type_id = rt.risk_type_id
+							        left outer join elp_sgrt_manufacturer sgrtmf on sgrtmf.service_group_risk_type_id = sgrt.service_group_risk_type_id
+						        WHERE rt.risk_type_id = :risk_type_id
+					   			    AND (sgrtmf.manufacturer_id is null or sgrtmf.manufacturer_id = :manufacturer_id)
+					) sg ON sc.service_group_id = sg.service_group_id
+        LEFT JOIN elp_address addr ON (sc.address_id = addr.address_id)  
+        LEFT JOIN elp_region rgn on (addr.region_id = rgn.region_id)
+        LEFT JOIN elp_country cont on (addr.country_id = cont.country_id)
+        LEFT JOIN elp_dealer dlr on (sc.ORIGINALDEALERID = dlr.dealer_id)
+			WHERE 1=1
+			and addr.zip_locator like :zip_code
+      AND sc.status_code = 'A'    
+			AND upper(addr.city) like upper(:city)
+      AND sc.service_center_id = scmr.service_center_id
+      AND scmr.serv_center_mor_id = :method_repair_id
+			--dynamic_where_clause			 
+		 )
+		]]>
+  </LOCATE_SERVICE_CENTER_WITH_NO_ZIP_DISTRICT_DEALERS_SVC>
+  <LOCATE_SERVICE_CENTER_DEALERS_SVC>
+    <![CDATA[
+			select distinct * from 
+			(SELECT distinct
+				sc.service_center_id,
+				sc.description,
+				sc.code,
+				sc.rating_code,
+        addr.city,
+				addr.address1,
+				addr.address2,
+				addr.zip_locator,
+				decode( sc_dp.dealer_id, null, 'n', 'y') dealer_pref_flag,
+				'y' man_auth_flag,
+				'y' cover_zip_code_flag,
+				'y' cover_item_flag,
+				'1' dealers_SVC_flag,
+        sc.phone1,
+        sc.phone2,
+        sc.fax,
+        sc.business_hours,
+        sc.processing_fee,
+        addr.POSTAL_CODE zip,
+        sc.email,
+        sc.default_to_email_flag,
+        sc.shipping,
+        sc.comments,
+        sc.contact_name,
+        sc.cc_email,
+        rgn.description REGION,
+        cont.description country,
+        dlr.dealer_name ORIGINAL_DEALER
+			FROM
+				elp_service_center sc
+				LEFT JOIN elp_service_center_dealer sc_dp ON (sc.service_center_id = sc_dp.service_center_id AND sc_dp.dealer_id = :dealer_id)
+				LEFT JOIN elp_service_center_mfg sc_mfa ON (sc.service_center_id = sc_mfa.service_center_id AND sc_mfa.manufacturer_id = :manufacturer_id)
+				LEFT JOIN elp_address addr ON (sc.address_id = addr.address_id)				
+        LEFT JOIN elp_region rgn on (addr.region_id = rgn.region_id)
+        LEFT JOIN elp_country cont on (addr.country_id = cont.country_id)
+        LEFT JOIN elp_dealer dlr on (sc.ORIGINALDEALERID = dlr.dealer_id)
+			WHERE
+				sc.originaldealerid = :dealer_id
+        AND sc.status_code = 'A'     
+			  --dynamic_in_clause
+			
+			UNION
+		
+				SELECT
+					sc.service_center_id,
+					sc.description,
+					sc.code,
+					sc.rating_code,
+          addr.city,
+					addr.address1,
+					addr.address2,
+					addr.zip_locator,
+					decode( sc_dp.dealer_id, null, 'n', 'y') dealer_pref_flag,
+					decode( sc_mfa.manufacturer_id, null, 'n', 'y') man_auth_flag,
+					decode( zd.zip_code, null, 'n', 'y' ) cover_zip_code_flag,
+					decode( sg.service_group_id, null, 'n', 'y') cover_item_flag,
+					'0' dealers_SVC_flag,
+          sc.phone1,
+          sc.phone2,
+          sc.fax,
+          sc.business_hours,
+          sc.processing_fee,
+          addr.POSTAL_CODE zip,
+          sc.email,
+          sc.default_to_email_flag,
+          sc.shipping,
+          sc.comments,
+          sc.contact_name,
+          sc.cc_email,
+          rgn.description REGION,
+          cont.description country,
+          dlr.dealer_name ORIGINAL_DEALER
+				FROM elp_serv_center_meth_repair scmr
+					inner join elp_service_center sc on sc.service_center_id = scmr.service_center_id
+					LEFT JOIN elp_service_center_dealer	sc_dp ON (sc.service_center_id = sc_dp.service_center_id AND sc_dp.dealer_id = :dealer_id)
+					LEFT JOIN elp_service_center_mfg sc_mfa ON (sc.service_center_id = sc_mfa.service_center_id AND sc_mfa.manufacturer_id = :manufacturer_id)
+					LEFT JOIN (SELECT sg.service_group_id FROM elp_service_group sg
+							        inner join elp_service_group_risk_type sgrt on sgrt.service_group_id = sg.service_group_id
+							        inner join elp_risk_type rt on sgrt.risk_type_id = rt.risk_type_id
+							        left outer join elp_sgrt_manufacturer sgrtmf on sgrtmf.service_group_risk_type_id = sgrt.service_group_risk_type_id
+						        WHERE rt.risk_type_id = :risk_type_id
+					   			    AND (sgrtmf.manufacturer_id is null or sgrtmf.manufacturer_id = :manufacturer_id)
+					) sg ON sc.service_group_id = sg.service_group_id
+					LEFT JOIN ( SELECT unique sc_zd.service_center_id,
+								        zd_detail.zip_code,
+                        CHECKANYZIPCODEFORZIPDISTRICT(sc_zd.zip_district_id) as anyzipcodeflag        
+							        FROM elp_service_center sc,
+								        elp_service_center_zip_dst sc_zd,
+								        elp_zip_district zd,
+								        elp_zip_district_detail zd_detail                 
+							WHERE sc_zd.service_center_id = sc.service_center_id
+							AND sc_zd.zip_district_id = zd.zip_district_id
+							AND zd_detail.zip_district_id = zd.zip_district_id
+						) zd on (sc.service_center_id = zd.service_center_id AND (zd.zip_code  = :zip_code or zd.anyzipcodeflag='y'))
+					LEFT JOIN elp_address addr ON (sc.address_id = addr.address_id ) 
+          LEFT JOIN elp_region rgn on (addr.region_id = rgn.region_id)
+          LEFT JOIN elp_country cont on (addr.country_id = cont.country_id)
+          LEFT JOIN elp_dealer dlr on (sc.ORIGINALDEALERID = dlr.dealer_id)
+				WHERE 1=1
+				AND upper(addr.city) like upper(:city)
+        AND sc.status_code = 'A' 
+        AND scmr.serv_center_mor_id =  :method_repair_id
+				--dynamic_where_clause
+		  
+			)
+		]]>
+  </LOCATE_SERVICE_CENTER_DEALERS_SVC>
+
+  <GET_USER_CUST_COUNTRIES>
+    <![CDATA[
+		SELECT  c.country_id id , 
+				c.code, 
+				c.description
+		FROM    ELP_USER_COMPANY uc , 
+				ELP_COMPANY_COUNTRY cc, 
+				ELP_COUNTRY c
+		WHERE	uc.user_id= :user_id
+		AND     c.country_id = cc.country_id
+		AND     uc.company_id= cc.company_id
+		AND     cc.country_id=c.Country_id
+		UNION
+		SELECT  c.country_id id , 
+				c.code, 
+				c.description
+		FROM   elp_country c
+		WHERE  c.country_id=:country_id
+		]]>
+  </GET_USER_CUST_COUNTRIES>
+  <GET_SERVICE_CENTER_BY_CODE>
+    <![CDATA[	
+			SELECT 
+				country_id,
+				address_id,
+				service_group_id,
+				loaner_center_id,
+				master_center_id,
+				code,
+				description,
+				rating_code,
+				contact_name,
+				owner_name,
+				phone1,
+				phone2,
+				fax,
+				email,
+				ftp_address,
+				tax_id,
+				service_warranty_days,
+				status_code,
+				business_hours,
+				master_flag,
+				loaner_flag,
+				default_to_email_flag,
+				iva_responsible_flag,
+				created_by,
+				created_date,
+				modified_by,
+				modified_date,
+				service_center_id,
+				payment_method_id,
+				bank_info_id,
+				comments,
+				shipping,
+				processing_fee,
+				cc_email,
+				OriginalDealerID,
+        route_id,
+        integrated_with_id,
+        pay_master        
+			FROM elp_service_center 
+			WHERE
+				code=:code
+        --dynamic_where_clause 
+		]]>
+  </GET_SERVICE_CENTER_BY_CODE>
+  <GET_SERVICE_CENTER_ID>
+    <![CDATA[	
+			SELECT 
+				service_center_id
+			FROM elp_service_center 
+			WHERE
+				code=:code
+        --dynamic_where_clause 
+		]]>
+  </GET_SERVICE_CENTER_ID>
+  <GET_SERVICE_CENTERS_FOR_COUNTRY>
+    <![CDATA[	
+			select 	sc.service_center_id service_center_id, sc.code, sc.description 
+	    from	ELP_SERVICE_CENTER sc
+	    where	sc.country_id = :country_id
+	    order by 	sc.code, sc.description
+		]]>
+  </GET_SERVICE_CENTERS_FOR_COUNTRY>
+  <GET_SERVICE_CENTER_BY_SERVICE_NETWORK>
+    <![CDATA[	
+			select 	sc.service_center_id id, sc.code, sc.description 
+	    from	ELP_SERVICE_NETWORK sn,
+      		  ELP_SERVICE_NETWORK_SVC sn_svc,
+			      ELP_SERVICE_CENTER sc
+	    where	sc.service_center_id = sn_svc.service_center_id
+	    and		sn_svc.SERVICE_NETWORK_ID =  sn.SERVICE_NETWORK_ID
+	    and		sn_svc.SERVICE_NETWORK_ID =:sv_network_id
+      --dynamic_where_clause 
+	    order by 	sc.code, sc.description
+		]]>
+  </GET_SERVICE_CENTER_BY_SERVICE_NETWORK>
+  <GetServiceCenterbyId>
+    SELECT distinct
+    sc.service_center_id,
+    sc.description,
+    sc.code,
+    sc.rating_code,
+    addr.city,
+    addr.address1,
+    addr.address2,
+    addr.zip_locator,
+    decode( sc_dp.dealer_id, null, 'n', 'y') dealer_pref_flag,
+    decode( sc_mfa.manufacturer_id, null, 'n', 'y') man_auth_flag,
+    decode( zd.zip_code, null, 'n', 'y' ) cover_zip_code_flag,
+    decode( sg.service_group_id, null, 'n', 'y') cover_item_flag,
+    '0' dealers_SVC_flag
+    FROM
+    elp_serv_center_meth_repair scmr
+    inner join elp_service_center sc on sc.service_center_id = scmr.service_center_id
+    LEFT JOIN elp_service_center_dealer	sc_dp ON (sc.service_center_id = sc_dp.service_center_id AND sc_dp.dealer_id = :dealer_id)
+    LEFT JOIN elp_service_center_mfg sc_mfa ON (sc.service_center_id = sc_mfa.service_center_id AND sc_mfa.manufacturer_id = :manufacturer_id)
+    LEFT JOIN
+    (SELECT sg.service_group_id FROM elp_service_group sg inner join elp_service_group_risk_type sgrt on sgrt.service_group_id = sg.service_group_id
+    inner join elp_risk_type rt on sgrt.risk_type_id = rt.risk_type_id
+    left outer join elp_sgrt_manufacturer sgrtmf on sgrtmf.service_group_risk_type_id = sgrt.service_group_risk_type_id
+    WHERE rt.risk_type_id = :risk_type_id AND (sgrtmf.manufacturer_id is null or sgrtmf.manufacturer_id = :manufacturer_id)) SG
+    ON sc.service_group_id = sg.service_group_id
+    LEFT JOIN
+    (SELECT unique sc_zd.service_center_id, zd_detail.zip_code, CHECKANYZIPCODEFORZIPDISTRICT(sc_zd.zip_district_id) as anyzipcodeflag
+    FROM elp_service_center sc,elp_service_center_zip_dst sc_zd,elp_zip_district zd,elp_zip_district_detail zd_detail
+    WHERE sc_zd.service_center_id = sc.service_center_id
+    AND sc_zd.zip_district_id = zd.zip_district_id
+    AND zd_detail.zip_district_id = zd.zip_district_id) zd
+    on (sc.service_center_id = zd.service_center_id AND (zd.zip_code  = :zip_code or zd.anyzipcodeflag='y'))
+    LEFT JOIN elp_address addr ON (sc.address_id = addr.address_id )
+    WHERE 1=1
+    AND sc.status_code = 'A' AND SC.SERVICE_CENTER_ID = :SERVICE_CENTER_ID
+  </GetServiceCenterbyId>
+  <GET_SERVICE_CENTER_DETAILS>
+    select elp_service_center.service_center_id,
+    elp_service_center.code,
+    elp_service_center.description,
+    elp_service_center.contact_name,
+    elp_service_center.phone1,
+    elp_service_center.phone2,
+    elp_address.address1,
+    elp_address.address2,
+    elp_service_center.fax,
+    elp_address.city,
+    elp_service_center.rating_code,
+    elp_service_center.business_hours,
+    elp_service_center.processing_fee,
+    elp_address.POSTAL_CODE zip,
+    elp_service_center.email,
+    elp_service_center.default_to_email_flag,
+    elp_service_center.shipping,
+    elp_service_center.comments,
+    elp_service_center.cc_email,
+    case when exists (select * from elp_service_center_dealer where elp_service_center_dealer.service_center_id = elp_service_center.service_center_id and dealer_id = :dealer_id) then 'y' else 'n' end dealer_pref_flag,
+    case when exists (select * from elp_service_center_mfg where elp_service_center_mfg.service_center_id = elp_service_center.service_center_id and manufacturer_id = :manufacturer_id) then 'y' else 'n' end man_auth_flag,
+    rgn.description REGION,
+    cont.description country,
+    dlr.dealer_name ORIGINAL_DEALER
+    from elp_service_center
+    inner join elp_address on elp_address.address_id = elp_service_center.address_id
+    LEFT JOIN elp_region rgn on (elp_address.region_id = rgn.region_id)
+    LEFT JOIN elp_country cont on (elp_address.country_id = cont.country_id)
+    LEFT JOIN elp_dealer dlr on (elp_service_center.ORIGINALDEALERID = dlr.dealer_id)
+    where 1 = 1
+    --dynamic_where_clause
+  </GET_SERVICE_CENTER_DETAILS>
+  <GET_SERVICE_CENTER_CONTACT_INFO>
+    <![CDATA[>
+    select
+      vc.service_center_id,
+			vc.contact_info_id,
+      vc.effective,
+			vc.expiration,
+			vc.vendor_contact_id,
+      cf.CONTACT_INFO_ID,
+      cf.ADDRESS_TYPE_ID,
+      cf.ADDRESS_ID,
+      cf.SALUTATION_ID ,
+      cf.NAME,
+      cf.HOME_PHONE,
+      cf.WORK_PHONE,
+      cf.EMAIL,
+      cf.CELL_PHONE,
+      cf.COMPANY,
+      cf.JOB_TITLE
+    from elp_contact_info cf
+      join  elp_vendor_contact vc
+      on vc.contact_info_id = cf.contact_info_id
+    where vc.service_center_id = :service_center_id
+    ]]>
+  </GET_SERVICE_CENTER_CONTACT_INFO>
+  <GET_SERVICE_CENTER_QUANTITY>
+    <![CDATA[elita.ELP_PRICE_LIST_UTILITY.Get_Service_Center_Quantity]]>
+  </GET_SERVICE_CENTER_QUANTITY>
+  <IsPriceListAssignedToServiceCenter>
+    <![CDATA[	
+		select price_list_code from elp_service_center where UPPER(price_list_code) = UPPER(:price_list_code)
+	]]>
+  </IsPriceListAssignedToServiceCenter>
+  <LOAD_SERVICE_CENTER_LIST>
+    <![CDATA[
+		select 
+			SERVICE_CENTER_ID,
+			ADDRESS_ID,
+			SERVICE_GROUP_ID,
+			LOANER_CENTER_ID,
+			MASTER_CENTER_ID,
+			CODE,
+			DESCRIPTION,
+			RATING_CODE,
+			CONTACT_NAME,
+			OWNER_NAME,
+			PHONE1,
+			PHONE2,
+			FAX,
+			EMAIL,
+			FTP_ADDRESS,
+			TAX_ID,
+			SERVICE_WARRANTY_DAYS,
+			STATUS_CODE,
+			BUSINESS_HOURS,
+			MASTER_FLAG,
+			LOANER_FLAG,
+			DEFAULT_TO_EMAIL_FLAG,
+			IVA_RESPONSIBLE_FLAG,
+			CREATED_BY,
+			CREATED_DATE,
+			MODIFIED_BY,
+			MODIFIED_DATE,
+			COUNTRY_ID,
+			COMMENTS,
+			BANK_INFO_ID,
+			PAYMENT_METHOD_ID,
+			SHIPPING,
+			PROCESSING_FEE,
+			CC_EMAIL,
+			ORIGINALDEALERID,
+			ROUTE_ID,
+			INTEGRATED_WITH_ID,
+			PAY_MASTER,
+			INTEGRATED_AS_OF,
+			FREE_ZONE_FLAG,
+			REVERSE_LOGISTICS_ID,
+			DISTRIBUTION_METHOD_ID,
+			FULFILLMENT_TIME_ZONE_ID,
+			PRICE_LIST_CODE,
+			DISCOUNT_PCT,
+			DISCOUNT_DAYS,
+			NET_DAYS,
+			service_center_id id, 
+			service_center_id, 
+			description, 
+			price_list_code,
+      pre_invoice_id
+		from elp_service_center			
+		]]>
+  </LOAD_SERVICE_CENTER_LIST>
+  <LOAD_PRICE_LIST_LIST>
+    <![CDATA[	
+		select 
+			SERVICE_CENTER_ID,
+			ADDRESS_ID,
+			SERVICE_GROUP_ID,
+			LOANER_CENTER_ID,
+			MASTER_CENTER_ID,
+			CODE,
+			DESCRIPTION,
+			RATING_CODE,
+			CONTACT_NAME,
+			OWNER_NAME,
+			PHONE1,
+			PHONE2,
+			FAX,
+			EMAIL,
+			FTP_ADDRESS,
+			TAX_ID,
+			SERVICE_WARRANTY_DAYS,
+			STATUS_CODE,
+			BUSINESS_HOURS,
+			MASTER_FLAG,
+			LOANER_FLAG,
+			DEFAULT_TO_EMAIL_FLAG,
+			IVA_RESPONSIBLE_FLAG,
+			CREATED_BY,
+			CREATED_DATE,
+			MODIFIED_BY,
+			MODIFIED_DATE,
+			COUNTRY_ID,
+			COMMENTS,
+			BANK_INFO_ID,
+			PAYMENT_METHOD_ID,
+			SHIPPING,
+			PROCESSING_FEE,
+			CC_EMAIL,
+			ORIGINALDEALERID,
+			ROUTE_ID,
+			INTEGRATED_WITH_ID,
+			PAY_MASTER,
+			INTEGRATED_AS_OF,
+			FREE_ZONE_FLAG,
+			REVERSE_LOGISTICS_ID,
+			DISTRIBUTION_METHOD_ID,
+			FULFILLMENT_TIME_ZONE_ID,
+			PRICE_LIST_CODE,
+			DISCOUNT_PCT,
+			DISCOUNT_DAYS,
+			NET_DAYS, 
+			service_center_id, 
+			service_center_id ID, 
+			description DESCRIPTION, 
+			price_list_code,
+      pre_invoice_id
+		from elp_service_center
+		where UPPER(PRICE_LIST_CODE) like UPPER(:price_list_code)
+	]]>
+  </LOAD_PRICE_LIST_LIST>
+  <GET_STRING_BYTES>
+    <![CDATA[	
+		select lengthb(:svc_desc) from dual
+	]]>
+  </GET_STRING_BYTES>
+  <GET_SERVICE_CENTER_SCHEDULE>
+    <![CDATA[
+    SELECT DISTINCT
+	    s.SCHEDULE_ID,
+	    s.CODE,
+	    s.DESCRIPTION,
+	    s.CREATED_BY,
+	    s.MODIFIED_BY,
+	    s.CREATED_DATE,
+	    s.MODIFIED_DATE,
+	    ss.SERVICE_SCHEDULE_ID AS ID,
+	    ss.SERVICE_CLASS_ID,
+	    ss.SERVICE_TYPE_ID,
+	    ss.SCHEDULE_ID,
+	    ss.SERVICE_CENTER_ID,
+	    ss.EFFECTIVE,
+	    ss.EXPIRATION
+     from elp_schedule s
+      join elp_service_schedule ss on s.schedule_id = ss.schedule_id
+     where ss.SERVICE_CENTER_ID = :Service_center_id
+    ]]>
+  </GET_SERVICE_CENTER_SCHEDULE>
+
+  <CHECK_IF_SERVICE_CENTER_IS_MASTER_CENTER>
+    <![CDATA[	
+    select case
+           when check_master_center is not null
+                and check_service_center is not null 
+                and check_master_center = check_service_center then 1
+           else 0 
+           end result
+    from
+    (select (select service_center_id
+            from elp_service_center sc
+            where sc.service_center_id = sc.master_center_id
+            and sc.service_center_id = :Service_center_id
+            and pay_master = 'Y') check_master_center,
+            :Service_center_id check_service_center
+    from dual)
+   ]]>
+  </CHECK_IF_SERVICE_CENTER_IS_MASTER_CENTER>
+</SQL> 
+
+

@@ -1,0 +1,90 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+
+<!-- ********************** THIS FILE HAS BEEN GENERATED FROM TEMPLATE SQLObject.cst (7/1/2008)********************** -->
+
+<SQL>
+  <LOAD>
+    <![CDATA[	
+			SELECT 
+				company_id,
+				list_item_id,
+				new_description,
+				created_by,
+				created_date,
+				modified_by,
+				modified_date,
+				code_mapping_id
+			FROM elp_code_mapping 
+			WHERE
+				code_mapping_id = :code_mapping_id
+		]]>
+  </LOAD>
+  <LOAD_LIST>
+    SELECT
+    LI.list_item_id, LI.code, T.TRANSLATION description, cm.new_description, cm.code_mapping_id
+    FROM
+    ELP_LIST_ITEM LI,
+    ELP_DICT_ITEM_TRANSLATION T,
+    ELP_LANGUAGE LANG,
+    ELP_DICT_ITEM_TRANSLATION T1,
+    (select new_description, list_item_id, code_mapping_id from elp_code_mapping
+    where company_id = :company_id) cm
+    WHERE
+    LI.DICT_ITEM_ID = T.DICT_ITEM_ID
+    AND LI.DICT_ITEM_ID = T1.DICT_ITEM_ID  (+)
+    AND LANG.LANGUAGE_ID = T.LANGUAGE_ID
+    AND LANG.CODE = 'EN'
+    and li.list_item_id = cm.list_item_id(+)
+    AND T1.LANGUAGE_ID = :Language_Id
+    AND LI.LIST_ID = :List_Id
+    ORDER BY
+    UPPER(TRIM(T.TRANSLATION))
+
+  </LOAD_LIST>
+  <UPDATE>
+    <![CDATA[	
+			UPDATE elp_code_mapping SET
+				company_id = :company_id,
+				list_item_id = :list_item_id,
+				new_description = :new_description,
+				modified_by = :modified_by
+			WHERE
+				code_mapping_id = :code_mapping_id
+		]]>
+  </UPDATE>
+  <INSERT>
+    INSERT INTO elp_code_mapping
+    (
+    company_id,
+    list_item_id,
+    new_description,
+    created_by,
+    code_mapping_id
+    )
+    VALUES
+    (
+    :company_id,
+    :list_item_id,
+    :new_description,
+    :created_by,
+    :code_mapping_id
+    )
+  </INSERT>
+  <DELETE>
+    DELETE FROM elp_code_mapping
+    WHERE
+    code_mapping_id = :code_mapping_id
+  </DELETE>
+
+  <GET_CONVERTED_CODE>
+    select NEW_DESCRIPTION
+    from  ELP_CODE_MAPPING cm
+    inner join elp_list_item li on li.LIST_ITEM_ID = cm.LIST_ITEM_ID
+    inner join elp_list l on l.list_id = li.list_id
+    where COMPANY_ID = :company_id
+    and l.code = :list_code
+    and li.code = :list_item_code
+  </GET_CONVERTED_CODE>
+</SQL>
+
+

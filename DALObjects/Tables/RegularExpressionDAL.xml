@@ -1,0 +1,56 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+
+<!-- ********************** THIS FILE HAS BEEN GENERATED FROM TEMPLATE SQLObject.cst (6/1/2011)********************** -->
+
+<SQL>
+  <LOAD>
+    <![CDATA[	
+			SELECT 
+				format,
+				build_method,
+				created_by,
+				created_date,
+				modified_by,
+				modified_date,
+				regular_expression_id
+			FROM elita.elp_regular_expression 
+			WHERE
+				regular_expression_id = :regular_expression_id
+		]]>
+  </LOAD>
+  <LOAD_LIST>
+  </LOAD_LIST>
+  <UPDATE>
+    <![CDATA[	
+			UPDATE elita.elp_regular_expression SET
+				format = :format,
+				build_method = :build_method,
+				modified_by = :modified_by
+			WHERE
+				regular_expression_id = :regular_expression_id
+		]]>
+  </UPDATE>
+  <INSERT>
+    INSERT INTO elita.elp_regular_expression
+    (
+    format,
+    build_method,
+    created_by,
+    regular_expression_id
+    )
+    VALUES
+    (
+    :format,
+    :build_method,
+    :created_by,
+    :regular_expression_id
+    )
+  </INSERT>
+  <DELETE>
+    DELETE FROM elita.elp_regular_expression
+    WHERE
+    regular_expression_id = :regular_expression_id
+  </DELETE>
+</SQL>
+
+

@@ -1,0 +1,204 @@
+<?xml version="1.0" encoding="utf-8" ?>
+
+<!-- ********************** THIS FILE HAS BEEN GENERATED FROM TEMPLATE SQLObject.cst (8/17/2006)********************** -->
+
+<SQL>
+  <LOAD>
+    <![CDATA[	
+			SELECT 
+				description,
+				hub_region,
+				machine_prefix,
+				environment,
+				ftp_hostname,
+				ftp_host_path,
+        ftp_trigger_extension,
+        ftp_split_path,
+        crystal_sdk,
+				crystal_viewer,
+        felita_ftp_hostname,
+        ldap_ip,
+        created_by,
+				created_date,
+				modified_by,
+				modified_date,
+        serviceorder_image_hostname,
+        smartstream_hostname,
+				server_id,
+        privacy_level_xcd,
+        database_name,
+        batch_hostname,
+        smartstream_ap_upload,
+        smartstream_gl_upload,
+        smartstream_gl_status,
+        acct_balance_hostname,
+        db_unique_name,
+        no_of_parallel_processes,
+        commit_frequency
+       
+			FROM elp_servers 
+			WHERE
+				server_id = :server_id
+		]]>
+  </LOAD>
+  <LOAD_BY_CODE>
+    <![CDATA[	
+			SELECT 
+				description,
+				hub_region,
+				machine_prefix,
+				environment,
+				ftp_hostname,
+        ftp_host_path,
+        ftp_trigger_extension,
+        ftp_split_path,
+				crystal_sdk,
+				crystal_viewer,
+				felita_ftp_hostname,
+        ldap_ip,
+        created_by,
+				created_date,
+				modified_by,
+				modified_date,
+        serviceorder_image_hostname,
+        smartstream_hostname,
+				server_id,
+        privacy_level_xcd,
+        database_name,
+        batch_hostname,
+        smartstream_ap_upload,
+        smartstream_gl_upload,
+        smartstream_gl_status,
+        acct_balance_hostname,
+        db_unique_name,
+        no_of_parallel_processes,
+        commit_frequency,
+	      (Select off_line_message   
+	      from elp_webservices WS 
+	      where GetCodeFromListItem(on_line_id) = 'N'
+	            and	upper(WS.web_service_name) = :web_service_name1) as ws_off_line_message, 
+	      (select off_line_message
+	      from ELP_WS_FUNCTIONS WF
+	      where GetCodeFromListItem(on_line_id) = 'N'
+	        and upper(WF.FUNCTION_NAME) = :function_name
+	        and WF.WEBSERVICE_ID = (select WEBSERVICE_ID
+	  			        from elp_webservices WS1
+	                                where upper(WS1.web_service_name) = :web_service_name2)) as function_off_line_message
+                                  
+        
+			FROM elp_servers 
+			WHERE
+					upper(hub_region) = :hub_region
+			 AND	upper(machine_prefix) = :machine_prefix
+			 AND	upper(environment) = :environment
+		]]>
+  </LOAD_BY_CODE>
+  <LOAD_LIST>
+    <![CDATA[
+      select server_id, environment, description, batch_hostname 
+      from ELP_SERVERS
+					--dynamic_where_clause
+			order by upper(ENVIRONMENT) 
+    ]]>
+  </LOAD_LIST>
+  <UPDATE>
+    <![CDATA[	
+			UPDATE elp_servers SET
+				description = :description,
+				hub_region = :hub_region,
+				machine_prefix = :machine_prefix,
+				environment = :environment,
+				ftp_hostname = :ftp_hostname,
+        ftp_host_path = :ftp_host_path,
+        ftp_trigger_extension = :ftp_trigger_extension,
+        ftp_split_path = :ftp_split_path,
+        crystal_sdk = :crystal_sdk,
+				crystal_viewer = :crystal_viewer,
+				felita_ftp_hostname = :felita_ftp_hostname,
+        ldap_ip = :ldap_ip,
+        modified_by = :modified_by,
+        serviceorder_image_hostname = :serviceorder_image_hostname,
+        smartstream_hostname = :smartstream_hostname,
+        privacy_level_xcd = :privacy_level_xcd,
+        database_name = :database_name,
+        batch_hostname = :batch_hostname,
+        smartstream_ap_upload = :smartstream_ap_upload,
+        smartstream_gl_upload = :smartstream_gl_upload,
+        smartstream_gl_status = :smartstream_gl_status,
+        acct_balance_hostname = :acct_balance_hostname,
+        db_unique_name = :db_unique_name,
+        no_of_parallel_processes = :no_of_parallel_processes,
+        commit_frequency = :commit_frequency
+			WHERE
+				server_id = :server_id
+		]]>
+  </UPDATE>
+  <INSERT>
+    INSERT INTO elp_servers
+    (
+    description,
+    hub_region,
+    machine_prefix,
+    environment,
+    ftp_hostname,
+    ftp_host_path,
+    ftp_trigger_extension,
+    ftp_split_path,
+    crystal_sdk,
+    crystal_viewer,
+    felita_ftp_hostname,
+    ldap_ip,
+    created_by,
+    serviceorder_image_hostname,
+    smartstream_hostname,
+    server_id,
+    privacy_level_xcd,
+    database_name,
+    batch_hostname,
+    smartstream_ap_upload,
+    smartstream_gl_upload,
+    smartstream_gl_status,
+    acct_balance_hostname,
+    db_unique_name,
+    no_of_parallel_processes,
+    commit_frequency
+    )
+    VALUES
+    (
+    :description,
+    :hub_region,
+    :machine_prefix,
+    :environment,
+    :ftp_hostname,
+    :ftp_host_path,
+    :ftp_trigger_extension,
+    :ftp_split_path,
+    :crystal_sdk,
+    :crystal_viewer,
+    :felita_ftp_hostname,
+    :ldap_ip,
+    :created_by,
+    :serviceorder_image_hostname,
+    :smartstream_hostname,
+    :server_id,
+    :privacy_level_xcd,
+    :database_name,
+    :batch_hostname,
+    :smartstream_ap_upload,
+    :smartstream_gl_upload,
+    :smartstream_gl_status,
+    :acct_balance_hostname,
+    :db_unique_name,
+    :no_of_parallel_processes,
+    :commit_frequency
+    )
+  </INSERT>
+  <DELETE>
+    DELETE FROM elp_servers
+    WHERE
+    server_id = :server_id
+  </DELETE>
+  <TEST_BATCH>
+    Select ELP_WEB_SERVICES.TESTBATCHSERVICES('{0}','{1}','{2}') from DUAL
+  </TEST_BATCH>
+</SQL>

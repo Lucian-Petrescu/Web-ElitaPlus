@@ -1,0 +1,378 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+
+<!-- ********************** THIS FILE HAS BEEN GENERATED FROM TEMPLATE SQLObject.cst (6/11/2008)********************** -->
+
+<SQL>
+  <LOAD>
+    <![CDATA[	
+			SELECT
+				s.claim_id,
+				s.comments,
+				s.created_by,
+				s.created_date,
+				s.modified_by,
+				s.modified_date,
+				s.claim_status_id,
+				g.status_order,
+				i.code status_code,
+     		t.translation status_description,
+        s.status_date,
+        s.claim_status_by_group_id,
+        t1.translation owner,
+        s.external_user_name
+
+			FROM 	elp_claim_status s,
+				 	elp_claim_status_by_group g,
+				 	elp_list l,
+				 	elp_list_item i,
+				 	elp_dict_item_translation t,
+				 	elp_list_item i1,
+				 	elp_dict_item_translation t1          
+			WHERE
+      	g.owner_id = i1.list_item_id (+) AND
+				:language_id = t1.language_id (+) AND
+				i1.dict_item_id = t1.dict_item_id (+) AND
+				s.claim_status_id = :claim_status_id AND
+				s.claim_status_by_group_id = g.claim_status_by_group_id AND
+				g.list_item_id = i.list_item_id AND
+				l.list_id = i.list_id AND
+				i.dict_item_id = t.dict_item_id AND
+				t.language_id = :language_id AND
+				l.code = 'CLMSTAT'
+		]]>
+  </LOAD>
+  <LOAD_LIST>
+    <![CDATA[	
+			SELECT
+				s.claim_id,
+				s.comments,
+				s.created_by,
+				s.created_date,
+				s.modified_by,
+				s.modified_date,
+				s.claim_status_id,
+				g.status_order,
+				i.code status_code,
+     		t.translation status_description,
+        s.status_date,
+        elita.getdescriptionfromlistitem(g.owner_id, :language_id) as Extended_Status_Owner 
+			FROM 	elp_claim_status s,
+				 	elp_claim_status_by_group g,
+				 	elp_list l,
+				 	elp_list_item i,
+				 	elp_dict_item_translation t
+			WHERE
+				s.claim_id = :claim_id AND
+				s.claim_status_by_group_id = g.claim_status_by_group_id AND
+				g.list_item_id = i.list_item_id AND
+				l.list_id = i.list_id AND
+				i.dict_item_id = t.dict_item_id AND
+				t.language_id = :language_id AND
+				l.code = 'CLMSTAT'
+       ORDER BY s.created_date DESC
+		]]>
+  </LOAD_LIST>
+  <MAX_CLAIM_STATUS>
+    <![CDATA[	
+			SELECT
+				s.claim_id,
+				s.comments,
+				s.created_by,
+				s.created_date,
+				s.modified_by,
+				s.modified_date,
+				s.claim_status_id,
+				g.status_order,
+				i.code status_code,
+     		t.translation status_description,
+        s.status_date,
+        t1.translation owner
+			FROM 	elp_claim_status s,
+				 	elp_claim_status_by_group g,
+				 	elp_list l,
+				 	elp_list_item i,
+				 	elp_dict_item_translation t,
+				 	elp_list_item i1,
+				 	elp_dict_item_translation t1
+			WHERE
+				g.owner_id = i1.list_item_id (+) AND
+				:language_id = t1.language_id (+) AND
+				i1.dict_item_id = t1.dict_item_id (+) AND
+				s.claim_id = :claim_id AND
+				s.claim_status_by_group_id = g.claim_status_by_group_id AND
+				g.list_item_id = i.list_item_id AND
+				l.list_id = i.list_id AND
+				i.dict_item_id = t.dict_item_id AND
+				t.language_id = :language_id AND
+				l.code = 'CLMSTAT' AND
+				s.STATUS_DATE =
+				(
+				SELECT MAX(s.STATUS_DATE)
+				FROM 	
+					elp_claim_status s,
+				 	elp_claim_status_by_group g,
+				 	elp_list l,
+				 	elp_list_item i,
+				 	elp_dict_item_translation t
+				WHERE
+					s.claim_id = :claim_id AND
+					s.claim_status_by_group_id = g.claim_status_by_group_id AND
+					g.list_item_id = i.list_item_id AND
+					l.list_id = i.list_id AND
+					i.dict_item_id = t.dict_item_id AND
+					t.language_id = :language_id AND
+					l.code = 'CLMSTAT'
+				)
+		]]>
+  </MAX_CLAIM_STATUS>
+  <CLAIM_STATUS_HISTORY>
+    <![CDATA[	
+      select
+	      claim_status_id,
+	      selected,
+	      extended_claim_status,
+	      owner_id,
+	      skipping_allowed_id,
+	      status_order,
+	      claim_status_by_group_id,
+	      active_id,
+	      status_comments,
+	      status_date,
+        list_item_id,
+        group_number
+      from table(elp_claims.GetClaimStatus(:claim_id,:language_id,:company_group_id))
+		]]>
+  </CLAIM_STATUS_HISTORY>
+  <CLAIM_STATUS_HISTORY_ONLY>
+    <![CDATA[	
+      select
+	            status.claim_status_id,
+	            'Y' as selected,
+	            tran.translation as extended_claim_status,
+	            sgroup.owner_id,
+	            sgroup.skipping_allowed_id,
+	            sgroup.status_order,
+	            sgroup.claim_status_by_group_id,
+	            sgroup.active_id,
+	            status.comments as status_comments,
+	            status.status_date,
+              sgroup.list_item_id,
+              sgroup.group_number,
+              'Y' Enabled
+      from elp_claim_status status
+	      join elp_claim_status_by_group sgroup on status.claim_status_by_group_id = sgroup.claim_status_by_group_id
+	      join elp_list_item item on item.list_item_id = sgroup.list_item_id
+	      join elp_dict_item_translation tran on tran.dict_item_id = item.dict_item_id and tran.language_id = :language_id
+      where status.claim_id = :claim_id
+	      and sgroup.company_group_id = :company_group_id
+      order by status.status_date
+  ]]>
+  </CLAIM_STATUS_HISTORY_ONLY>
+  <UPDATE>
+    <![CDATA[	
+			UPDATE elp_claim_status SET
+				claim_id = :claim_id,
+				claim_status_by_group_id = :claim_status_by_group_id,
+				comments = :comments,
+				modified_by = :modified_by,
+        status_date = :status_date,
+        external_user_name = :external_user_name
+
+			WHERE
+				claim_status_id = :claim_status_id
+		]]>
+  </UPDATE>
+  <INSERT>
+    INSERT INTO elp_claim_status
+    (
+    claim_id,
+    claim_status_by_group_id,
+    comments,
+    created_by,
+    claim_status_id,
+    status_date,
+    external_user_name
+
+    )
+    VALUES
+    (
+    :claim_id,
+    :claim_status_by_group_id,
+    :comments,
+    :created_by,
+    :claim_status_id,
+    :status_date,
+    :external_user_name
+
+    )
+  </INSERT>
+  <DELETE>
+    DELETE FROM elp_claim_status
+    WHERE
+    claim_status_id = :claim_status_id
+  </DELETE>
+  <GET_CLAIM_STATUS_BY_CODE>
+    <![CDATA[	
+				SELECT g.claim_status_by_group_id
+				FROM
+				 	elp_claim_status_by_group g,
+				 	elp_list l,
+				 	elp_list_item i,
+				 	elp_dict_item_translation t
+				WHERE     
+				    g.company_group_id = :company_group_id
+					g.list_item_id = i.list_item_id AND
+					l.list_id = i.list_id AND
+					i.dict_item_id = t.dict_item_id AND
+					t.language_id = :language_id AND
+					l.code = 'CLMSTAT' AND
+					i.code = :status_code
+		]]>
+  </GET_CLAIM_STATUS_BY_CODE>
+  <CLAIM_HISTORY_DETAILS>
+    <![CDATA[	
+         SELECT 
+          C.CLAIM_NUMBER,
+          SC.STATUS_CODE_OLD,
+          SC.STATUS_CODE_NEW,
+          SC.AUTHORIZED_AMOUNT_OLD,
+          SC.AUTHORIZED_AMOUNT_NEW,
+          SC.CLAIM_CLOSED_DATE_OLD,
+          SC.CLAIM_CLOSED_DATE_NEW,
+          SC.REPAIR_DATE_OLD,
+          SC.REPAIR_DATE_NEW,
+          SC.CREATED_DATE,
+          SC.CREATED_BY,
+          SC.MODIFIED_DATE,
+          SC.MODIFIED_BY,
+          SC.LIABILITY_LIMIT_OLD,
+          SC.LIABILITY_LIMIT_NEW,
+          SC.CERT_ITEM_COVERAGE_ID_OLD,
+          SC.CERT_ITEM_COVERAGE_ID_NEW,
+          (SELECT
+            t.translation   FROM
+            elp_cert_item_coverage cic,
+            elp_dict_item_translation t,
+	          elp_language lang,
+	          elp_cert c,
+	          elp_cert_item ci,
+            elp_list_item i,
+            elp_list l
+	         WHERE cic.cert_item_coverage_id = SC.CERT_ITEM_COVERAGE_ID_OLD  
+              AND c.cert_id = ci.cert_id
+	            AND ci.cert_item_id = cic.cert_item_id
+				      AND	i.dict_item_id = t.dict_item_id
+
+				      AND t.language_id = lang.language_id
+				      AND lang.language_id = :p_language_id
+				      AND l.code = 'CTYP'
+				      AND i.list_item_id = cic.coverage_type_id
+		          )DESCRIPTION_OLD,
+    (SELECT
+            t.translation   FROM
+            elp_cert_item_coverage cic,
+            elp_dict_item_translation t,
+	          elp_language lang,
+	          elp_cert d,
+	          elp_cert_item ci,
+            elp_list_item i,
+            elp_list l
+	         WHERE cic.cert_item_coverage_id = SC.CERT_ITEM_COVERAGE_ID_NEW 
+              AND d.cert_id = ci.cert_id
+	            AND ci.cert_item_id = cic.cert_item_id
+				      AND	i.dict_item_id = t.dict_item_id
+
+				      AND t.language_id = lang.language_id
+				      AND lang.language_id = :language_id
+				      AND l.code = 'CTYP'
+				      AND i.list_item_id = cic.coverage_type_id
+		          )DESCRIPTION_NEW,
+
+          SC.CLAIM_MODIFIED_DATE_NEW,
+          SC.CLAIM_MODIFIED_DATE_OLD,
+          SC.CLAIM_MODIFIED_BY_NEW,
+          SC.CLAIM_MODIFIED_BY_OLD,
+          SC.DEDUCTIBLE_NEW,
+          DEDUCTIBLE_OLD 
+    
+        FROM
+				 	ELP_CLAIM C 
+				 	INNER JOIN  ELP_CLAIM_HISTORY SC  ON C.CLAIM_ID =  SC.CLAIM_ID
+				WHERE   
+          C.CLAIM_ID = :p_claim_id order by SC.CREATED_DATE
+		]]>
+  </CLAIM_HISTORY_DETAILS>
+  <EXTENDED_CLAIM_STATUS_FOR_COMPANY_GROUP>
+    <![CDATA[	         
+				SELECT
+					unique
+	     			t.translation as extended_claim_status,
+	        		g.claim_status_by_group_id,
+	        		g.status_order
+				FROM 	elp_list_item i
+						join elp_dict_item_translation t on i.dict_item_id = t.dict_item_id AND t.language_id = :language_id
+					 	join elp_claim_status_by_group g on i.list_item_id = g.list_item_id AND g.company_group_id = :company_group_id
+	       		ORDER BY g.status_order, t.translation          
+		]]>
+  </EXTENDED_CLAIM_STATUS_FOR_COMPANY_GROUP>
+  <UPDATE_EXTENDED_CLAIM_MV>
+    <![CDATA[
+    Update Elp_Claim_Extended_Mv Cemv
+    Set    Cemv.Claim_Status_Id = :claim_status_id,
+    Cemv.Extended_Status_Code = :status_code
+    Where  Cemv.Claim_Id = :p_claim_id
+    	]]>
+  </UPDATE_EXTENDED_CLAIM_MV>
+  <GET_EXTENDED_CLAIM_MV>
+    select claim_extended_id,
+    claim_id,
+    extended_status_code
+    from elp_claim_extended_mv
+    where claim_id = :p_claim_id
+  </GET_EXTENDED_CLAIM_MV>
+  <ADD_CLAIM_TO_NEWPICKLIST>
+    ELITA.ELP_SERVICE_NOTIFICATION.ADD_CLAIM_TO_NEWPICKLIST
+  </ADD_CLAIM_TO_NEWPICKLIST>
+  
+<CLAIM_STATUS_BY_USER_ROLE>
+
+  WITH tmp_q AS(
+  select distinct claim_status_id,
+  selected,
+  extended_claim_status,
+  owner_id,
+  skipping_allowed_id,
+  status_order,
+  cs.claim_status_by_group_id,
+  active_id,
+  status_comments,
+  status_date,
+  list_item_id,
+  group_number,
+  ROW_NUMBER() OVER(PARTITION BY extended_claim_status ORDER BY r.role_ID) as RN,
+  CASE (Select Count(*) comassigned from Elp_Claim_Status_By_User_Role where company_id in (select company_id from elp_claim where claim_id = :claim_id)) when 0 then 'Y'
+  ELSE
+  (case (select count(*) isassigned from Elp_Claim_Status_By_User_Role where role_id in (select role_id from elp_user_role where user_id = :user_id)
+  and company_id = (select company_id from elp_claim where claim_id = :claim_id))
+  when 0 then 'N'
+  else
+  (case when ((r.role_id is not null and c.company_id is not null) or (dcs.default_claim_status_id is not null) or (csa.claim_status_action_id is not null)) then 'Y' else 'N' end)
+  end)
+  END as Enabled
+  from table(elp_claims.GetClaimStatus(:claim_id,:language_id,:company_group_id)) cs
+  left join Elp_Claim_Status_By_User_Role sr on cs.claim_status_by_group_id = sr.claim_status_by_group_id
+  left join elp_claim c on c.company_id = sr.company_id and c.claim_id = :claim_id
+  LEFT join (select role_id from elp_user_role where user_id =  :user_id) r on sr.role_id = r.role_id
+  left join elp_default_claim_status dcs on dcs.claim_status_by_group_id = cs.claim_status_by_group_id
+  left join elp_claim_status_action csa on csa.current_status_id = cs.claim_status_by_group_iD)
+
+  select distinct claim_status_id,selected,extended_claim_status,owner_id,skipping_allowed_id,status_order,claim_status_by_group_id,active_id,status_comments,status_date,list_item_id,group_number,Enabled
+  from tmp_q
+  where RN = 1
+  --order by extended_claim_status
+  order by status_order
+</CLAIM_STATUS_BY_USER_ROLE>
+</SQL> 
+
+
+ 
