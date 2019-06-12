@@ -18,6 +18,7 @@ Partial Class ClaimAuthorizationDetailForm
     Private Const GridColQuantityIdx As Integer = 5
     Private Const GridColDeviceIdx As Integer = 6
     Private Const GridColDeviceRdoCtrl As String = "rdoDevice"
+    Private Const AuthType_SalesOrder As String = "AUTH_TYPE-SALES_ORDER"
 #End Region
 
 #Region "Page State"
@@ -324,8 +325,8 @@ Partial Class ClaimAuthorizationDetailForm
         Me.PanButtonsHidden.Visible = Not Me.State.IsEditMode And Not Me.State.ShowHistory
         Me.ActionButton.Visible = Not Me.State.IsEditMode And Not Me.State.ShowHistory
         Me.btnNewServiceCenter.Visible = Not Me.State.IsEditMode And Me.State.MyBO.CanVoidClaimAuthorization And Not Me.State.ShowHistory And Not (State.ClaimBO.Dealer.DealerFulfillmentProviderClassCode = Codes.PROVIDER_CLASS_CODE__FULPROVORAEBS)
-        Me.btnrefundFee.Visible =  Me.State.MyBO.ClaimAuthStatus  =  ClaimAuthorizationStatus.Authorized 'ClaimAuthorizationStatus.Collected  
-
+        'Me.btnrefundFee.Visible =  Me.State.MyBO.ClaimAuthStatus  =  ClaimAuthorizationStatus.Authorized 'ClaimAuthorizationStatus.Collected  
+        Me.btnRefundFee.Visible = Me.State.MyBO.ClaimAuthStatus = ClaimAuthorizationStatus.Authorized AndAlso State.MyBO.AuthTypeXcd.Equals(AuthType_SalesOrder) 
     End Sub
 
     Private Sub PopulateDropDowns()
