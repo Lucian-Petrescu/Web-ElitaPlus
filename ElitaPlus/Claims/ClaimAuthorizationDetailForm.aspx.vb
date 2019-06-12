@@ -324,7 +324,7 @@ Partial Class ClaimAuthorizationDetailForm
         Me.PanButtonsHidden.Visible = Not Me.State.IsEditMode And Not Me.State.ShowHistory
         Me.ActionButton.Visible = Not Me.State.IsEditMode And Not Me.State.ShowHistory
         Me.btnNewServiceCenter.Visible = Not Me.State.IsEditMode And Me.State.MyBO.CanVoidClaimAuthorization And Not Me.State.ShowHistory And Not (State.ClaimBO.Dealer.DealerFulfillmentProviderClassCode = Codes.PROVIDER_CLASS_CODE__FULPROVORAEBS)
-        Me.btnrefundFee.Visible =  Me.State.MyBO.ClaimAuthStatus  = ClaimAuthorizationStatus.Collected  'ClaimAuthorizationStatus.Authorized
+        Me.btnrefundFee.Visible =  Me.State.MyBO.ClaimAuthStatus  =  ClaimAuthorizationStatus.Authorized 'ClaimAuthorizationStatus.Collected  
 
     End Sub
 
