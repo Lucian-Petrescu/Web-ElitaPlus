@@ -1,0 +1,57 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<SQL>
+  <LOAD>
+    <![CDATA[	
+			SELECT 
+				search_config_id,
+				field_name_xcd,
+				sequence_number,
+				created_by,
+				created_date,
+				modified_date,
+				modified_by,
+				search_config_criteria_id
+			FROM elp_search_config_criteria 
+			WHERE
+				search_config_criteria_id = :search_config_criteria_id
+		]]>
+  </LOAD>
+  <LOAD_LIST>
+  </LOAD_LIST>
+  <UPDATE>
+    <![CDATA[	
+			UPDATE elp_search_config_criteria SET
+				search_config_id = :search_config_id,
+				field_name_xcd = :field_name_xcd,
+				sequence_number = :sequence_number,
+				modified_by = :modified_by
+			WHERE
+				search_config_criteria_id = :search_config_criteria_id
+		]]>
+  </UPDATE>
+  <INSERT>
+    INSERT INTO elp_search_config_criteria
+    (
+    search_config_id,
+    field_name_xcd,
+    sequence_number,
+    created_by,
+    search_config_criteria_id
+    )
+    VALUES
+    (
+    :search_config_id,
+    :field_name_xcd,
+    :sequence_number,
+    :created_by,
+    :search_config_criteria_id
+    )
+  </INSERT>
+  <DELETE>
+    DELETE FROM elp_search_config_criteria
+    WHERE
+    search_config_criteria_id = :search_config_criteria_id
+  </DELETE>
+</SQL>
+
+

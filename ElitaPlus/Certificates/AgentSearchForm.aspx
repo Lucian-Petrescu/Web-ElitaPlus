@@ -1,6 +1,6 @@
 <%@ Page Language="vb" AutoEventWireup="false" CodeBehind="AgentSearchForm.aspx.vb"
-    Inherits="Assurant.ElitaPlus.ElitaPlusWebApp.Certificates.AgentSearchForm"
-    MasterPageFile="../Navigation/masters/ElitaBase.Master" Theme="Default" %>
+Inherits="Assurant.ElitaPlus.ElitaPlusWebApp.Certificates.AgentSearchForm"
+MasterPageFile="../Navigation/masters/ElitaBase.Master" Theme="Default" %>
 
 <%@ Register TagPrefix="asp" Namespace="AjaxControlToolkit" Assembly="AjaxControlToolkit" %>
 <asp:Content ID="HeaderContent" ContentPlaceHolderID="HeadPlaceHolder" runat="server">
@@ -43,47 +43,47 @@
             border-bottom: 0px solid #E1E1E1;
         }
 
-            table.dataRep td {
-                padding: 4px 6px;
-                margin: 0px;
-                vertical-align: top;
-                font-size: 13px;
-                border-bottom: 0px solid #E1E1E1;
-            }
+        table.dataRep td {
+            padding: 4px 6px;
+            margin: 0px;
+            vertical-align: top;
+            font-size: 13px;
+            border-bottom: 0px solid #E1E1E1;
+        }
 
-                table.dataRep td.noBor {
-                    border: none;
-                }
+        table.dataRep td.noBor {
+            border: none;
+        }
 
-                table.dataRep td.bor {
-                    border-bottom: 1px solid #999;
-                }
+        table.dataRep td.bor {
+            border-bottom: 1px solid #999;
+        }
 
-            table.dataRep th {
-                padding: 3px 6px;
-                margin: 0px;
-                vertical-align: top;
-                font-size: 13px;
-                color: #333;
-                text-align: left;
-                background: url('Images/dataGrdHeadBg.png') repeat-x bottom left;
-                border-right: 1px solid #CCC;
-                border-bottom: 1px solid #999;
-            }
+        table.dataRep th {
+            padding: 3px 6px;
+            margin: 0px;
+            vertical-align: top;
+            font-size: 13px;
+            color: #333;
+            text-align: left;
+            background: url('Images/dataGrdHeadBg.png') repeat-x bottom left;
+            border-right: 1px solid #CCC;
+            border-bottom: 1px solid #999;
+        }
 
-            table.dataRep td.StatActive {
-                text-align: left;
-                color: #339900;
-                font-size: 13px;
-                font-weight: bold;
-            }
+        table.dataRep td.StatActive {
+            text-align: left;
+            color: #339900;
+            font-size: 13px;
+            font-weight: bold;
+        }
 
-            table.dataRep td.StatPending {
-                text-align: left;
-                color: #CC6600;
-                font-size: 13px;
-                font-weight: bold;
-            }
+        table.dataRep td.StatPending {
+            text-align: left;
+            color: #CC6600;
+            font-size: 13px;
+            font-weight: bold;
+        }
 
         table.dataGrid td.StatInactive {
             text-align: left;
@@ -103,9 +103,9 @@
             color: #0066CC;
         }
 
-            table.dataRep td a:hover {
-                color: #0066CC;
-            }
+        table.dataRep td a:hover {
+            color: #0066CC;
+        }
 
         table.dataRep th a {
             color: #333;
@@ -147,7 +147,7 @@
         <tr>
 
             <td class="bor" visible="false">Agent_Search_By
-               &nbsp;
+                &nbsp;
             </td>
 
             <td colspan="3" width="85%">
@@ -155,27 +155,19 @@
                     <tr>
                         <td>
                             <asp:Label ID="LabelCompany" runat="server">Company</asp:Label><br />
-                            <asp:DropDownList ID="ddlCompany" runat="server" SkinID="MediumDropDown" AutoPostBack="False">
+                            <asp:DropDownList ID="ddlCompany" runat="server" SkinID="MediumDropDown" AutoPostBack="True">
                             </asp:DropDownList>
                         </td>
                         <td>
                             <asp:Label ID="LabelDealer" runat="server">Dealer</asp:Label><br />
-                            <asp:DropDownList ID="ddlDealer" runat="server" SkinID="MediumDropDown" AutoPostBack="False">
-                            </asp:DropDownList>
-                        </td>
-                        <td>
-                            <asp:Label ID="LabelPolicyStatus" runat="server">POLICY_STATUS</asp:Label><br />
-                            <asp:DropDownList ID="ddlPolicyStatus" runat="server" SkinID="SmallDropDown" AutoPostBack="False">
-                                <asp:ListItem Text="" Value=""></asp:ListItem>
-                                <asp:ListItem Text="Active" Value="A"></asp:ListItem>
-                                <asp:ListItem Text="Cancelled" Value="C"></asp:ListItem>
+                            <asp:DropDownList ID="ddlDealer" runat="server" SkinID="MediumDropDown" AutoPostBack="True">
                             </asp:DropDownList>
                         </td>
                     </tr>
                     <tr>
                         <td>
                             <asp:Label ID="LabelCase" runat="server">CASE_NUMBER</asp:Label><br />
-                            <asp:TextBox ID="TextBoxCaseText" runat="server" AutoPostBack="False" SkinID="MediumTextBox"></asp:TextBox>
+                            <asp:TextBox ID="TextBoxCaseNumber" runat="server" AutoPostBack="False" SkinID="MediumTextBox"></asp:TextBox>
                         </td>
 
                         <td>
@@ -187,64 +179,15 @@
                             <asp:TextBox ID="TextBoxClaimNumber" runat="server" AutoPostBack="False" SkinID="MediumTextBox"></asp:TextBox>
                         </td>
                     </tr>
+                    <asp:PlaceHolder runat="server" ID="PanelHolderDynamicSearchCriteria"></asp:PlaceHolder>
                     <tr>
-                        <td>
-                            <asp:Label ID="LabelCustomerFirstName" runat="server">CUSTOMER_FIRST_NAME</asp:Label><br />
-                            <asp:TextBox ID="TextBoxCustomerFirstName" runat="server" SkinID="MediumTextBox" AutoPostBack="False"></asp:TextBox>
-                        </td>
-                        <td>
-                            <asp:Label ID="LabelCustomerLastName" runat="server">CUSTOMER_LAST_NAME</asp:Label><br />
-                            <asp:TextBox ID="TextBoxCustomerLastName" runat="server" SkinID="MediumTextBox" AutoPostBack="False"></asp:TextBox>
-                        </td>
-                        <td>
-                            <asp:Label ID="LabelPhoneNumber" runat="server">PHONE_NUMBER</asp:Label><br />
-                            <asp:TextBox ID="TextBoxPhoneNumber" runat="server" AutoPostBack="False" SkinID="MediumTextBox"></asp:TextBox>
-                        </td>
+                        <td colspan="3"></td>
                     </tr>
                     <tr>
-                        <td>
-                            <asp:Label ID="LabelSerialNumber" runat="server">SERIAL_IMEI_NUMBER</asp:Label><br />
-                            <asp:TextBox ID="TextBoxSerialNumber" runat="server" AutoPostBack="False" SkinID="MediumTextBox"></asp:TextBox>
+                        <td align="left">
+                            <asp:CheckBox runat="server" ID="checkboxAdditionalSearchCriteria" Text="SHOW_ADDITIONAL_SEARCH_FIELDS" Checked ="false" AutoPostBack="true" />
                         </td>
-
-                        <td>
-                            <asp:Label ID="LabelInvoiceNumber" runat="server">INVOICE_NUMBER</asp:Label><br />
-                            <asp:TextBox ID="TextBoxInvoiceNumber" runat="server" SkinID="MediumTextBox" AutoPostBack="False"></asp:TextBox>
-                        </td>
-                        <td>
-                            <asp:Label ID="LabelEmail" runat="server">EMAIL</asp:Label><br />
-                            <asp:TextBox ID="TextBoxEmail" runat="server" SkinID="MediumTextBox" AutoPostBack="False"></asp:TextBox>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>
-                            <asp:Label ID="LabelZip" runat="server">Zip</asp:Label><br />
-                            <asp:TextBox ID="TextBoxZip" runat="server" SkinID="MediumTextBox" AutoPostBack="False"></asp:TextBox>
-                        </td>
-                        <td>
-                            <asp:Label ID="lblTaxId" runat="server">TAX_ID</asp:Label><br />
-                            <asp:TextBox ID="txtTaxId" runat="server" SkinID="MediumTextBox" AutoPostBack="False"></asp:TextBox>
-                        </td>
-                        <td>
-                            <asp:Label ID="lblServiceLineNumber" runat="server">SERVICE_LINE_NUMBER</asp:Label><br />
-                            <asp:TextBox ID="txtServiceLineNumber" runat="server" SkinID="MediumTextBox" AutoPostBack="False"></asp:TextBox>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>
-                            <asp:Label ID="lblAccountNumber" runat="server">ACCOUNT_NUMBER</asp:Label><br />
-                            <asp:TextBox ID="txtAccountNumber" runat="server" SkinID="MediumTextBox" AutoPostBack="False"></asp:TextBox>
-                        </td>
-                        <td>
-                            <asp:Label ID="lblGlobalCustomerNumber" runat="server">GLOBAL_CUSTOMER_NUMBER</asp:Label><br />
-                            <asp:TextBox ID="txtGlobalCustomerNumber" runat="server" SkinID="MediumTextBox" AutoPostBack="False"></asp:TextBox>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td></td>
-                        <td align="right" style="padding-right: 80px;">
-                            <asp:Button ID="btnNewCase" runat="server" SkinID="SearchButton" Visible="false" Text="Start New Case"></asp:Button>
-                        </td>
+                        <td align="right" style="padding-right: 80px;"></td>
                         <td align="left">
                             <label>
                                 <asp:Button ID="btnClearSearch" runat="server" SkinID="AlternateLeftButton" Text="Clear"></asp:Button>
@@ -263,11 +206,11 @@
     <!-- new layout start -->
     <div class="dataContainer">
         <h2 class="dataGridHeader">
-            <asp:Label ID="lblSearchResults" runat="server" Text="SEARCH_RESULTS_FOR_AGENTS" Visible="true" ></asp:Label>
+            <asp:Label ID="lblSearchResults" runat="server" Text="SEARCH_RESULTS_FOR_AGENTS" Visible="true"></asp:Label>
         </h2>
         <div>
             <table width="100%" class="dataGrid">
-                <tr id="trPageSize" runat="server">
+                <tr id="trPageSize" runat="server" visible="false">
                     <td class="bor" align="left">&nbsp;
                         
                     </td>
@@ -278,37 +221,35 @@
             </table>
         </div>
         <div style="width: 100%">
-            <asp:Repeater ID="rep" runat="server" OnItemDataBound="rep_OnItemDataBound" OnItemCommand="rep_OnItemCommand" >
+            <asp:Repeater ID="repeaterSearchResult" runat="server" OnItemDataBound="repeaterSearchResult_OnItemDataBound" OnItemCommand="repeaterSearchResult_OnItemCommand">
                 <ItemTemplate>
                     <table class="dataRep" style="width: 100%; border-collapse: collapse" cellspacing="0" rules="all" border="1">
                         <tbody>
-                            <tr>
-                                <td>
-                                    <div id="sub-title">
-                                        <div id="sub-left">
-                                            <asp:Label ID="lblsummary1" runat="server" Font-Bold="true" Text='<%# Eval("summary1") %>' />
-                                            <br />
-                                            <%# Eval("summary2") %>
-                                        </div>
-                                        <div id="sub-right" style="text-align: right">
-                                            <asp:HiddenField ID ="hfItemType" runat="server" Value='<%# Eval("itemtype") %>'></asp:HiddenField>
-                                            <asp:Label ID="lblStatus" runat="server"></asp:Label>
-                                            <br />
-                                            <asp:LinkButton CommandName="SelectActionCert" ID="btnEditCert" runat="server"  Visible="false"
-                                OnClientClick="document.body.style.cursor = 'wait'; if(isNotDblClick()) {return true;} else return false;"></asp:LinkButton>
-                                            <asp:LinkButton ID="LinkButtonNewCase" runat="server"  Visible="false"
-                                OnClientClick="document.body.style.cursor = 'wait'; if(isNotDblClick()) {return true;} else return false;"></asp:LinkButton>
-                                            <asp:LinkButton CommandName="SelectActionCase" ID="btnEditCase" runat="server"  Visible="false"
-                                OnClientClick="document.body.style.cursor = 'wait'; if(isNotDblClick()) {return true;} else return false;"></asp:LinkButton>
-                                            <asp:LinkButton CommandName="SelectAction" ID="btnEditAgent" runat="server" 
-                                OnClientClick="document.body.style.cursor = 'wait'; if(isNotDblClick()) {return true;} else return false;"></asp:LinkButton><br />
-                                             <asp:LinkButton CommandName="SelectActionCancelReq" ID="btnCancelReqAgent" runat="server" 
-                                OnClientClick="document.body.style.cursor = 'wait'; if(isNotDblClick()) {return true;} else return false;"></asp:LinkButton>
-                                        </div>
-                                        <div class="clear-both"></div>
+                        <tr>
+                            <td>
+                                <div id="sub-title">
+                                    <div id="sub-left">
+                                        <asp:Xml ID="Xmlsource" runat="server"></asp:Xml>                                            
                                     </div>
-                                </td>
-                            </tr>
+                                    <div id="sub-right" style="text-align: right">
+                                        <asp:HiddenField ID ="hfItemType" runat="server" Value='<%# Eval("item_type") %>'></asp:HiddenField>
+                                        <asp:Label ID="lblStatus" runat="server"></asp:Label>
+                                        <br />
+                                        <asp:LinkButton CommandName="SelectActionCert" ID="btnEditCert" runat="server" Visible="false"
+                                                        OnClientClick="document.body.style.cursor = 'wait'; if(isNotDblClick()) {return true;} else return false;"></asp:LinkButton>
+                                        <asp:LinkButton ID="LinkButtonNewCase" runat="server" Visible="false"
+                                                        OnClientClick="document.body.style.cursor = 'wait'; if(isNotDblClick()) {return true;} else return false;"></asp:LinkButton>
+                                        <asp:LinkButton CommandName="SelectActionCase" ID="btnEditCase" runat="server" Visible="false"
+                                                        OnClientClick="document.body.style.cursor = 'wait'; if(isNotDblClick()) {return true;} else return false;"></asp:LinkButton>
+                                        <asp:LinkButton CommandName="SelectAction" ID="btnEditAgent" runat="server"
+                                                        OnClientClick="document.body.style.cursor = 'wait'; if(isNotDblClick()) {return true;} else return false;"></asp:LinkButton><br />
+                                        <asp:LinkButton CommandName="SelectActionCancelReq" ID="btnCancelReqAgent" runat="server"
+                                                        OnClientClick="document.body.style.cursor = 'wait'; if(isNotDblClick()) {return true;} else return false;"></asp:LinkButton>
+                                    </div>
+                                    <div class="clear-both"></div>
+                                </div>
+                            </td>
+                        </tr>
                         </tbody>
                     </table>
                 </ItemTemplate>
@@ -316,4 +257,4 @@
         </div>
     </div>
     <!-- end new layout -->
- </asp:Content>
+</asp:Content>

@@ -2464,7 +2464,20 @@ Public Class Dealer
         End Set
     End Property
 
-
+    Public Property Show_Previous_Caller_Info() As String
+        Get
+            CheckDeleted()
+            If Row(DealerDAL.COL_NAME_SHOW_PREV_CALLER_INFO) Is DBNull.Value Then
+                Return Nothing
+            Else
+                Return CType(Row(DealerDAL.COL_NAME_SHOW_PREV_CALLER_INFO), String)
+            End If
+        End Get
+        Set(ByVal Value As String)
+            CheckDeleted()
+            Me.SetValue(DealerDAL.COL_NAME_SHOW_PREV_CALLER_INFO, Value)
+        End Set
+    End Property
     <ValidateBasedOnCancelShipment("")>
     Public Property Validate_Address() As String
         Get
@@ -2480,7 +2493,6 @@ Public Class Dealer
             Me.SetValue(DealerDAL.COL_NAME_VALIDATE_ADDRESS, Value)
         End Set
     End Property
-
 
     Public Property Is_Reshipment_Allowed() As String
         Get
@@ -2513,7 +2525,7 @@ Public Class Dealer
             Me.SetValue(DealerDAL.CANCEL_SHIPMENT_GRACE_PERIOD, Value)
         End Set
     End Property
-     Public Property CaseProfileCode() As String
+    Public Property CaseProfileCode() As String
         Get
             CheckDeleted()
             If Row(DealerDAL.COL_NAME_CASE_PROFILE_CODE) Is DBNull.Value Then
@@ -2528,7 +2540,7 @@ Public Class Dealer
         End Set
     End Property
 
-        Public Property CloseCaseGracePeriodDays() As String
+    Public Property CloseCaseGracePeriodDays() As String
         Get
             CheckDeleted()
             If Row(DealerDAL.COL_NAME_CLOSE_CASE_GRACE_PERIOD_DAYS) Is DBNull.Value Then
@@ -2826,7 +2838,7 @@ Public Class Dealer
         End If
 
         If dealerContract?.PolicyTypeId.Equals(LookupListNew.GetIdFromCode(LookupListNew.LK_CONTRACT_POLICY_TYPE, Codes.CONTRACT_POLTYPE_INDIVIDUAL)) AndAlso
-            dealerContract?.PolicyGenerationId.Equals(LookupListNew.GetIdFromCode(LookupListNew.LK_CONTRACT_POLICY_GEN_TYPE, Codes.CONTRACT_POLGEN_AUTOGENERATE)) Then
+           dealerContract?.PolicyGenerationId.Equals(LookupListNew.GetIdFromCode(LookupListNew.LK_CONTRACT_POLICY_GEN_TYPE, Codes.CONTRACT_POLGEN_AUTOGENERATE)) Then
             Return True
         End If
 
@@ -2854,7 +2866,7 @@ Public Class Dealer
         Dim contractEffective As Date = oContract.Effective.Value
         Dim contractExpiration As Date = oContract.Expiration.Value
         If (CType(EnteredEffectiveDate, Date) >= contractEffective) And (CType(EnteredEffectiveDate, Date) <= contractExpiration) And
-            (CType(EnteredExpirationDate, Date) >= contractEffective) And (CType(EnteredExpirationDate, Date) <= contractExpiration) Then
+           (CType(EnteredExpirationDate, Date) >= contractEffective) And (CType(EnteredExpirationDate, Date) <= contractExpiration) Then
             blnDateWithinContract = True
         Else
             blnDateWithinContract = False

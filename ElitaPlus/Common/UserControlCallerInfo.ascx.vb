@@ -26,7 +26,17 @@
     Public Property WorkPhoneNumber() As String
     Public Property Email() As String
     Public Property RelationshipCode() As String
+    Public Property RelationshipDesc() As String
+    Public Property ItemSelected() As Boolean
 
+#End Region
+
+#Region "Variables"
+    Public Event SelectedIndexChanged1(ByVal aSrc As UserControlCallerInfo)
+
+    Public Delegate Sub SelectedIndexChanged(ByVal aSrc As UserControlCallerInfo)
+    Public Event GridSelectionHandler  As SelectedIndexChanged
+    
 #End Region
     
 #Region "Control State"
@@ -55,24 +65,71 @@
     End Sub
     
 #Region "Caller View - Other Public Sub"
-    Public Sub PopulateGridViewCaller(ByVal certId As Guid)
+    Public Sub PopulateGridViewCaller(ByVal certId As Guid,  Optional ByVal caseId As Guid = nothing, Optional ByVal IsAuthenticated As Boolean = True)
         Page.TranslateGridHeader(GridViewCaller)
         Dim emptyDataRow As DataRow
-        If (Not certId.Equals(Guid.Empty)) Then
-            State.callersDataTable = Certificate.getCallerListForCert(certId)
+
+        If  IsAuthenticated = True
+            If (Not certId.Equals(Guid.Empty)) Then
+                State.callersDataTable = Certificate.getCallerListForCert(certId)            
+            Else
+                State.callersDataTable = Certificate.getCallerListForCase(caseId)  
+            End If
+        Else
+            State.callersDataTable = Certificate.getCallerListForCert(Guid.Empty)
         End If
+
         emptyDataRow = State.callersDataTable.NewRow()
         State.callersDataTable.Rows.InsertAt(emptyDataRow, 0)
         GridViewCaller.EditIndex = 0
         GridViewCaller.SelectedIndex = 0
+        ItemSelected = True
+        BindData()
+
+
+    End Sub
+
+    Public Sub DisableGridSelection()
+        
+        GridViewCaller.EditIndex = -1
+        GridViewCaller.SelectedIndex = -1
+        ItemSelected = False
+        BindData()
+
+    End Sub
+
+    Public Sub PopulateGridViewPrevCaller(ByVal certId As Guid, Optional ByVal caseId As Guid = nothing, Optional ByVal IsAuthenticated As Boolean = True)
+        Page.TranslateGridHeader(GridViewCaller)
+        Dim emptyDataRow As DataRow        
+        State.callersDataTable = Certificate.getCallerListForCert(Guid.Empty)
+                 
+        'Session("PrevCallerFirstName") = "c"
+        'Session("PrevCallerLastName") = "k"
+        'Session("PrevCallerRelationshipCode") = "Self"
+        'Session("PrevCallerWorkPhoneNumber") = "1234"
+        'Session("PrevCallerEmail") = "rc.k@y.com"
+       
+        emptyDataRow = State.callersDataTable.NewRow()
+        emptyDataRow("FIRST_NAME")= Session("PrevCallerFirstName")
+        emptyDataRow("LAST_NAME") = Session("PrevCallerLastName")
+        emptyDataRow("RELATIONSHIP") = Session("PrevCallerRelationshipCode")
+        emptyDataRow("WORK_PHONE") = Session("PrevCallerWorkPhoneNumber")
+        emptyDataRow("EMAIL") = Session("PrevCallerEmail")
+
+        State.callersDataTable.Rows.InsertAt(emptyDataRow, 0)
+        GridViewCaller.EditIndex = -1
+        GridViewCaller.SelectedIndex = -1
+        ItemSelected = False
         BindData()
     End Sub
+
     Public Sub GetCallerInformation()
         For i As Integer = 0 To GridViewCaller.Rows.Count - 1
             If i = GridViewCaller.SelectedIndex Then
                 FirstName = DirectCast(GridViewCaller.Rows(i).FindControl(TextBoxFirstName), TextBox).Text
                 LastName = DirectCast(GridViewCaller.Rows(i).FindControl(TextBoxLastName), TextBox).Text
                 RelationshipCode = DirectCast(GridViewCaller.Rows(i).FindControl(DropDownlistRelationship), DropDownList).SelectedValue
+                RelationshipDesc = DirectCast(GridViewCaller.Rows(i).FindControl(DropDownlistRelationship), DropDownList).SelectedItem.Text
                 WorkPhoneNumber = DirectCast(GridViewCaller.Rows(i).FindControl(TextBoxWorkPhone), TextBox).Text
                 Email = DirectCast(GridViewCaller.Rows(i).FindControl(TextBoxEmail), TextBox).Text
                 Exit Sub
@@ -83,7 +140,7 @@
 #Region "Caller View - Other Private Sub/Function"
     Private Sub BindData()
         GridViewCaller.DataSource = State.callersDataTable
-        GridViewCaller.DataBind()
+        GridViewCaller.DataBind()        
     End Sub
     Private Sub GridViewCaller_RowDataBound(ByVal sender As System.Object, ByVal e As GridViewRowEventArgs) Handles GridViewCaller.RowDataBound
         Try
@@ -115,17 +172,23 @@
                 Page.SetSelectedGridText(GridViewCaller, GridViewCallerColLastName, State.callersDataTable.Rows(GridViewCaller.SelectedIndex).Item(CallerTableColLastName).ToString)
                 Page.SetSelectedGridText(GridViewCaller, GridViewCallerColWorkPhone, State.callersDataTable.Rows(GridViewCaller.SelectedIndex).Item(CallerTableColWorkPhone).ToString)
                 Page.SetSelectedGridText(GridViewCaller, GridViewCallerColEmail, State.callersDataTable.Rows(GridViewCaller.SelectedIndex).Item(CallerTableColEmail).ToString)
+
+                ItemSelected = True
+                RaiseEvent GridSelectionHandler(Me)
+                'RaiseEvent SelectedIndexChanged(Me)
+
             End If
         Catch ex As Exception
             Page.HandleErrors(ex, Page.MasterPage.MessageController)
         End Try
     End Sub
+
     Private Sub FillRelationshipDropDownList(ByVal dtRow As GridViewRow)
         Dim ddlRel As DropDownList = DirectCast(dtRow.FindControl(DropDownlistRelationship), DropDownList)
 
         If Not ddlRel Is Nothing Then
             Dim relList As ListItem() = (From llItem As DataRow In LookupListNew.GetRelationshipList(Authentication.CurrentUser.LanguageId).ToTable().AsEnumerable()
-                                               Select New ListItem(llItem.Field(Of String)(LookupListNew.COL_DESCRIPTION_NAME), llItem.Field(Of String)(LookupListNew.COL_CODE_NAME))).Distinct().ToArray()
+                    Select New ListItem(llItem.Field(Of String)(LookupListNew.COL_DESCRIPTION_NAME), llItem.Field(Of String)(LookupListNew.COL_CODE_NAME))).Distinct().ToArray()
 
             ElitaPlusPage.BindListControlToArray(ddlRel, relList, False)
             ElitaPlusPage.BindSelectItemByText(State.callersDataTable.Rows(GridViewCaller.SelectedIndex).Item(4).ToString, ddlRel)

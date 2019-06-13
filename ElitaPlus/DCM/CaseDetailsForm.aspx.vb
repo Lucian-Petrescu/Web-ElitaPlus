@@ -14,15 +14,17 @@
         Public LastOperation As DetailPageCommand
         Public EditingBo As CaseBase
         Public BoChanged As Boolean = False
-        Public Sub New(ByVal lastOp As DetailPageCommand, ByVal curEditingBo As CaseBase, Optional ByVal boChanged As Boolean = False)
-            LastOperation = LastOp
-            EditingBo = curEditingBo
-            BoChanged = boChanged
+        Public IsCallerAuthenticated As Boolean = False
+        Public Sub New(ByVal lastOp As DetailPageCommand, ByVal curEditingBo As CaseBase, Optional ByVal boChanged As Boolean = False,Optional Byval IsCallerAuthenticated As Boolean = False)
+            Me.LastOperation = LastOp
+            Me.EditingBo = curEditingBo
+            Me.BoChanged = boChanged
+            Me.IsCallerAuthenticated = IsCallerAuthenticated
         End Sub
     End Class
 
 #End Region
-    #Region "Page State"
+#Region "Page State"
     Class BaseState
         Public NavCtrl As INavigationController
     End Class
@@ -40,6 +42,7 @@
         Public LastErrMsg As String
         Public InputParameters As Parameters
         Public DisabledTabs As String = String.Empty
+        Public IsCallerAuthenticated As Boolean = True
         Sub New()
         End Sub
     End Class
@@ -81,12 +84,15 @@
 
 #Region "Parameters"
     Public Class Parameters
-        'Public caseID As Guid
+        Public caseID As Guid
         Public CaseBo As CaseBase
+        Public IsCallerAuthenticated As Boolean = True
         Public Sub New(ByVal caseBo As CaseBase)
             Me.CaseBo = caseBo
         End Sub
-        Public Sub New(ByVal caseId As Guid)
+        Public Sub New(ByVal caseId As Guid,Optional byval IsCallerAuthenticated As boolean = True)
+            Me.CaseId = caseId
+            Me.IsCallerAuthenticated = IsCallerAuthenticated
             Me.CaseBo = New CaseBase(caseId)
         End Sub
     End Class
@@ -97,7 +103,13 @@
 
             If Not CallingParameters Is Nothing Then
                 StartNavControl()
-                State.MyBo = New CaseBase(CType(CallingParameters, Guid))
+                Try
+                    State.MyBo = New CaseBase(CType(CallingParameters, Guid))
+                Catch ex As Exception
+                    State.MyBo = New CaseBase(CType(CallingParameters, Parameters).caseId)
+                    State.IsCallerAuthenticated = CType(CallingParameters, Parameters).IsCallerAuthenticated
+                End Try
+                ' State.MyBo = New CaseBase(CType(CallingParameters, Guid))                
             Else
                 Throw New Exception("No Calling Parameters")
             End If
@@ -162,15 +174,15 @@
         Dim nav As New ElitaPlusNavigation
         Me.NavController = New NavControllerBase(nav.Flow("CREATE_CASE_DETAIL"))
     End Sub
-    #End Region
+#End Region
 #Region "Controlling Logic"
     Private Sub UpdateBreadCrum()
         If (Not State Is Nothing) Then
             If (Not State.MyBO Is Nothing) Then
                 MasterPage.BreadCrum = MasterPage.PageTab & ElitaBase.Sperator &
-                    TranslationBase.TranslateLabelOrMessage("Case") & " " & State.MyBO.CaseNumber
+                                       TranslationBase.TranslateLabelOrMessage("Case") & " " & State.MyBO.CaseNumber
                 MasterPage.PageTitle = TranslationBase.TranslateLabelOrMessage(Message.CASE_DETAIL) & " (<strong>" &
-                    State.MyBO.CaseNumber & "</strong>) " & TranslationBase.TranslateLabelOrMessage("SUMMARY")
+                                       State.MyBO.CaseNumber & "</strong>) " & TranslationBase.TranslateLabelOrMessage("SUMMARY")
             End If
         End If
     End Sub
@@ -361,7 +373,7 @@
         Try
 
             Dim myBo As CaseBase = State.MyBO
-            Dim retObj As ReturnType = New ReturnType(DetailPageCommand.Back, myBo, False)
+            Dim retObj As ReturnType = New ReturnType(DetailPageCommand.Back, myBo, False,State.IsCallerAuthenticated)
             NavController = Nothing
             ReturnToCallingPage(retObj)
 

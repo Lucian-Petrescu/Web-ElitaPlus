@@ -2571,6 +2571,24 @@ Namespace Tables
         Protected WithEvents txtClosecaseperiod As Global.System.Web.UI.WebControls.TextBox
         
         '''<summary>
+        '''lblShowPrevCallerInfo control.
+        '''</summary>
+        '''<remarks>
+        '''Auto-generated field.
+        '''To modify move field declaration from designer file to code-behind file.
+        '''</remarks>
+        Protected WithEvents lblShowPrevCallerInfo As Global.System.Web.UI.WebControls.Label
+        
+        '''<summary>
+        '''moShowPrevCallerInfo control.
+        '''</summary>
+        '''<remarks>
+        '''Auto-generated field.
+        '''To modify move field declaration from designer file to code-behind file.
+        '''</remarks>
+        Protected WithEvents moShowPrevCallerInfo As Global.System.Web.UI.WebControls.DropDownList
+        
+        '''<summary>
         '''EditPanel_WRITE control.
         '''</summary>
         '''<remarks>
