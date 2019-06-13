@@ -384,6 +384,9 @@
     <Compile Include="Tables\ProductEquipment.vb" />
     <Compile Include="Tables\ProductRewards.vb" />
     <Compile Include="Tables\ConsentActions.vb" />
+    <Compile Include="Tables\SearchConfig.vb" />
+    <Compile Include="Tables\SearchConfigAssignment.vb" />
+    <Compile Include="Tables\SearchConfigCriteria.vb" />
     <Compile Include="Tables\StageEndStatus.vb" />
     <Compile Include="Tables\DealerClmAproveClmtype.vb" />
     <Compile Include="Tables\DealerClmAproveCovtype.vb" />

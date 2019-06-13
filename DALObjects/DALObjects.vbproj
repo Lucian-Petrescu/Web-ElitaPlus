@@ -569,6 +569,9 @@
     <Compile Include="Tables\RuleProcessDAL.vb" />
     <Compile Include="Tables\ScheduleDAL.vb" />
     <Compile Include="Tables\ScheduleDetailDAL.vb" />
+    <Compile Include="Tables\SearchConfigAssignmentDal.vb" />
+    <Compile Include="Tables\SearchConfigCriteriaDal.vb" />
+    <Compile Include="Tables\SearchConfigDal.vb" />
     <Compile Include="Tables\ServiceClassTypeDAL.vb" />
     <Compile Include="Tables\ServiceLevelDetailDAL.vb" />
     <Compile Include="Tables\ServiceLevelGroupDAL.vb" />
@@ -860,6 +863,8 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Translation\ListItemByEntityDAL.vb" />
+    <EmbeddedResource Include="Tables\SearchConfigCriteriaDal.xml" />
+    <EmbeddedResource Include="Tables\SearchConfigDal.xml" />
     <EmbeddedResource Include="Tables\ProducerDAL.xml">
       <SubType>Designer</SubType>
     </EmbeddedResource>
@@ -1447,6 +1452,7 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Security\AuditSecurityLogsDAL.xml" />
     <EmbeddedResource Include="Security\SpClaimTypesDAL.xml" />
+    <EmbeddedResource Include="Tables\SearchConfigAssignmentDal.xml" />
     <Content Include="Security\SpUserClaimPropertiesDAL.xml" />
     <EmbeddedResource Include="Security\SpUserClaimsDAL.xml" />
     <EmbeddedResource Include="Tables\CompensationPlanDAL.xml">

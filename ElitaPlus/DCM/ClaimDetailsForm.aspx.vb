@@ -17,10 +17,12 @@
         Public LastOperation As DetailPageCommand
         Public EditingBo As CaseBase
         Public BoChanged As Boolean = False
-        Public Sub New(ByVal lastOp As DetailPageCommand, ByVal curEditingBo As CaseBase, Optional ByVal boChanged As Boolean = False)
-            LastOperation = LastOp
-            EditingBo = curEditingBo
-            BoChanged = boChanged
+        Public IsCallerAuthenticated As Boolean = False
+        Public Sub New(ByVal lastOp As DetailPageCommand, ByVal curEditingBo As CaseBase, Optional ByVal boChanged As Boolean = False,Optional Byval IsCallerAuthenticated As Boolean = False)
+            Me.LastOperation = LastOp
+            Me.EditingBo = curEditingBo
+            Me.BoChanged = boChanged
+            Me.IsCallerAuthenticated = IsCallerAuthenticated
         End Sub
         Public Sub New(ByVal lastOp As DetailPageCommand)
             LastOperation = LastOp
@@ -36,6 +38,7 @@
         Public ClaimCaseListDv As CaseBase.CaseSearchDV = Nothing
         Public ClaimActionListDv As CaseAction.CaseActionDV = Nothing
         Public SelectedCaseId As Guid = Guid.Empty
+        Public IsCallerAuthenticated As Boolean = False
     End Class
 
     Public Sub New()
@@ -213,7 +216,7 @@
             Dim dvRow As DataRowView = CType(e.Row.DataItem, DataRowView)
             Dim btnSelectCase As LinkButton
             If (e.Row.RowType = DataControlRowType.DataRow) _
-                OrElse (e.Row.RowType = DataControlRowType.Separator) Then
+               OrElse (e.Row.RowType = DataControlRowType.Separator) Then
                 If (Not e.Row.Cells(ClaimCaseGridColCaseIdIdx).FindControl(ClaimCaseGridColCaseNumberCtrl) Is Nothing) Then
                     btnSelectCase = CType(e.Row.Cells(ClaimCaseGridColCaseIdIdx).FindControl(ClaimCaseGridColCaseNumberCtrl), LinkButton)
                     btnSelectCase.CommandArgument = GetGuidStringFromByteArray(CType(dvRow(CaseBase.CaseSearchDV.ColCaseId), Byte()))

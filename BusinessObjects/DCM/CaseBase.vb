@@ -1,6 +1,9 @@
 '************* THIS CODE HAS BEEN GENERATED FROM TEMPLATE BusinessObject.cst (5/25/2017)  ********************
+Imports System.Collections.Generic
 Imports System.Globalization
 Imports System.Threading
+Imports System.Web.UI
+Imports System.Windows.Forms
 
 Public Class CaseBase
     Inherits BusinessObjectBase
@@ -414,7 +417,7 @@ Public Class CaseBase
                 CasePurpose.Equals(String.Empty) AndAlso
                 CertificateNumber.Equals(String.Empty) AndAlso
                 CaseClosedReason.Equals(String.Empty)
-                    ) Then
+                ) Then
                 Dim errors() As ValidationError = {New ValidationError(SearchException, GetType(CaseBase), Nothing, "Search", Nothing)}
                 Throw New BOValidationException(errors, GetType(CaseBase).FullName)
             End If
@@ -446,12 +449,12 @@ Public Class CaseBase
                     Throw New BOValidationException(errors, GetType(CaseBase).FullName)
                 End If
                 fromdate = DateTime.Parse(CaseOpenDateFrom.ToString(),
-                                                    Thread.CurrentThread.CurrentCulture,
-                                                    DateTimeStyles.NoCurrentDateDefault)
+                                          Thread.CurrentThread.CurrentCulture,
+                                          DateTimeStyles.NoCurrentDateDefault)
 
                 todate = DateTime.Parse(CaseOpenDateTo.ToString(),
-                                                    Thread.CurrentThread.CurrentCulture,
-                                                    DateTimeStyles.NoCurrentDateDefault)
+                                        Thread.CurrentThread.CurrentCulture,
+                                        DateTimeStyles.NoCurrentDateDefault)
             End If
 
 
@@ -492,6 +495,66 @@ Public Class CaseBase
         End Try
     End Function
 
+    Public Shared Function GetAgentSearchConfigList(ByVal companyId As Guid, ByVal dealerId As Guid, ByVal searchType As String) As DataSet
+        Try
+            Dim dal As New CaseDAL
+            Return (dal.LoadAgentSearchConfigList(CompanyId,DealerId,searchType))
+        Catch ex As DataBaseAccessException
+            Throw New DataBaseAccessException(ex.ErrorType, ex)
+        End Try
+    End Function
+    Public shared Function GetExclSecFieldsList(ByVal companyId As Guid, ByVal dealerId As Guid) As  DataSet
+        Try
+            Dim dal As New CaseDAL
+            Return dal.LoadExclSecFieldsList(CompanyId,DealerId)
+        Catch ex As DataBaseAccessException
+            Throw New DataBaseAccessException(ex.ErrorType, ex)
+        End Try
+    End Function
+    Public shared Function DisplaySecField(ByVal exclSecFieldsDt As DataTable, ByVal callerAuthenticationNeeded As Boolean, _
+                                           byval secFieldTableName As string ,byval secField As string, Byval isCallerAuthenticated As boolean) As boolean
+
+        If Not exclSecFieldsDt Is nothing AndAlso CallerAuthenticationNeeded AndAlso Not IsCallerAuthenticated then
+            If secField Is String.Empty orElse (exclSecFieldsDt.AsEnumerable().Where(Function(p)  p.Field(Of String)("table_name") = secFieldTableName And p.Field(Of String)("column_name") = secField).Count > 0 ) then
+                Return False
+            End If
+            '(ExclSecFieldsDt.AsEnumerable().Where(Function(p) p.Field(Of String)("table_name") = "ELP_CUSTOMER" and p.Field(Of String)("column_name") = secField).Count > 0 ) then                       
+        End if
+        Return True
+        
+    End Function
+    Public Shared Function LoadExclSecFieldsConfig(ByVal companyId As Guid, ByVal dealerId As Guid) As List(Of ExclSecFields)
+        Try
+            
+            Dim exclSecFieildsDv  As DataSet
+                
+            exclSecFieildsDv  = CaseBase.GetExclSecFieldsList(Guid.Empty,dealerId)
+            'Populate User Roles
+            Dim oUser As User
+            Dim selectedDs As dataview = oUser.GetUserRoles(New User(Authentication.CurrentUser.NetworkId).Id)               
+            Dim objList As New List(Of ExclSecFields)
+            objList = (from secFields In exclSecFieildsDv.Tables(0).AsEnumerable() Join role In selectedDs.table.AsEnumerable() _
+                On secFields.Field(Of String)("role") equals role.Field(Of String)("code") 
+                Where secFields.Field(Of String)("purpose_xcd") = "EXCLUDE_PURPOSE-NOT_AUTHORIZED"
+                Select New ExclSecFields With {.Table_Name = secFields.Field(Of String)("table_name"), 
+                    .Column_Name= secFields.Field(Of String)("column_name")
+                    }).ToList()        
+            return objList 
+                        
+        Catch ex As DataBaseAccessException
+            Throw New DataBaseAccessException(ex.ErrorType, ex)
+        End Try
+    End Function
+
+    
+    Public Class ExclSecFields
+        Public Property Table_Name As String
+        Public Property Column_Name As String        
+    End Class
+    
+
+
+
     Public Shared Function GetClaimCaseList(ByVal claimId As Guid, ByVal languageId As Guid) As CaseSearchDV
         Try
             Dim dal As New CaseDAL
@@ -513,8 +576,8 @@ Public Class CaseBase
     End Function
 
     Public Shared Function GetQuestionSetCode(companyGroupId As Guid, companyId As Guid, dealerId As Guid, productCodeId As Guid,
-                                     riskTypeId As Guid, deviceTypeId As Guid,
-                                     coverageTypeId As Guid, coverageConseqDamageId As Guid, purposeCode As String) As String
+                                              riskTypeId As Guid, deviceTypeId As Guid,
+                                              coverageTypeId As Guid, coverageConseqDamageId As Guid, purposeCode As String) As String
         Try
             Dim dal As New CaseDAL
 

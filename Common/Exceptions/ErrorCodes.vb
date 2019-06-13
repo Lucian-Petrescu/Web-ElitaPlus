@@ -1078,7 +1078,7 @@ Public Class ErrorCodes
 
     Public Const GUI_FTP_FILE_PROCESS_FAILED As String = "GUI_FTP_FILE_PROCESS_FAILED"
 
-        'KDDI Chnages
+    'KDDI Chnages
     Public Const MSG_CANCEL_SHIPMENT_GRACE_PERIOD_MANDATORY As String = "CANCEL_SHIPMENT_GRACE_PERIOD_MANDATORY"
 
     Public Const INVALID_PARTS_SERVICE_CLASS_AND_TYPE As String = "INV_PARTS_CLASSTYPE"
@@ -1104,4 +1104,6 @@ Public Class ErrorCodes
     Public Const GUI_WEB_APP_GATEWAY_SERVICE_ERR As String = "GUI_WEB_APP_GATEWAY_SERVICE_ERR" ' Error while calling WebAppGateway web service
 
     Public Const GUI_CASE_MANAGEMENT_WEBAPPGATEWAY_SERVICE_ERR As String = "GUI_CASE_MANAGEMENT_WEBAPPGATEWAY_SERVICE_ERR" ' Error while calling Case Management WebAppGateway service
+
+    Public Const GUI_SINGLE_AUTH_CLAIM_WITH_DATA_PRIVACY_NOT_SUPPORTED_ERR As String = "GUI_SINGLE_AUTH_CLAIM_WITH_DATA_PRIVACY_NOT_SUPPORTED_ERR" ' Error while calling Case Management WebAppGateway service
 End Class

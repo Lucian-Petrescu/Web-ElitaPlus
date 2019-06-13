@@ -1,0 +1,61 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<SQL>
+  <LOAD>
+    <![CDATA[	
+			SELECT 
+				search_config_id,
+				company_id,
+				dealer_id,
+				created_by,
+				created_date,
+				modified_date,
+				modified_by,
+				search_config_assignment_id
+			FROM elp_search_config_assignment 
+			WHERE
+				search_config_assignment_id = :search_config_assignment_id
+		]]>
+  </LOAD>
+  <LOAD_LIST>
+  </LOAD_LIST>
+  <LOAD_SEARCH_CRITERIA_FIELDS>
+    elita.elp_search_criteria.get_search_criteria_fields
+  </LOAD_SEARCH_CRITERIA_FIELDS>
+  <UPDATE>
+    <![CDATA[	
+			UPDATE elp_search_config_assignment SET
+				search_config_id = :search_config_id,
+				company_id = :company_id,
+				dealer_id = :dealer_id,
+				modified_by = :modified_by
+			WHERE
+				search_config_assignment_id = :search_config_assignment_id
+		]]>
+  </UPDATE>
+  <INSERT>
+    INSERT INTO elp_search_config_assignment
+    (
+    search_config_id,
+    company_id,
+    dealer_id,
+    created_by,
+    search_config_assignment_id
+    )
+    VALUES
+    (
+    :search_config_id,
+    :company_id,
+    :dealer_id,
+    :created_by,
+    :search_config_assignment_id
+    )
+  </INSERT>
+  <DELETE>
+    DELETE FROM elp_search_config_assignment
+    WHERE
+    search_config_assignment_id = :search_config_assignment_id
+  </DELETE>
+
+</SQL>
+
+

@@ -176,13 +176,40 @@ Partial Public Class ClaimRecordingForm
     Protected WithEvents trCallers As Global.System.Web.UI.HtmlControls.HtmlTableRow
     
     '''<summary>
-    '''GridCallers control.
+    '''ucCallerInfo control.
     '''</summary>
     '''<remarks>
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents GridCallers As Global.System.Web.UI.WebControls.DataGrid
+    Protected WithEvents ucCallerInfo As Global.Assurant.ElitaPlus.ElitaPlusWebApp.UserControlCallerInfo
+    
+    '''<summary>
+    '''hprevCallerinformation control.
+    '''</summary>
+    '''<remarks>
+    '''Auto-generated field.
+    '''To modify move field declaration from designer file to code-behind file.
+    '''</remarks>
+    Protected WithEvents hprevCallerinformation As Global.System.Web.UI.HtmlControls.HtmlGenericControl
+    
+    '''<summary>
+    '''lvlPreCaller control.
+    '''</summary>
+    '''<remarks>
+    '''Auto-generated field.
+    '''To modify move field declaration from designer file to code-behind file.
+    '''</remarks>
+    Protected WithEvents lvlPreCaller As Global.System.Web.UI.WebControls.Label
+    
+    '''<summary>
+    '''ucPrevCallerInfo control.
+    '''</summary>
+    '''<remarks>
+    '''Auto-generated field.
+    '''To modify move field declaration from designer file to code-behind file.
+    '''</remarks>
+    Protected WithEvents ucPrevCallerInfo As Global.Assurant.ElitaPlus.ElitaPlusWebApp.UserControlCallerInfo
     
     '''<summary>
     '''btn_Caller_Cont control.

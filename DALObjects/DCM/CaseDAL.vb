@@ -41,10 +41,12 @@ Public Class CaseDAL
     Public Const PoCursorCase As Integer = 0
     Public Const SpParamNameCaseList As String = "po_case_list"
     Public Const SpParamNameAgentList As String = "po_agent_list"
+    Public Const SpParamNameSecFieldsList As String = "po_sec_fields_list"
     Public Const SpParamNameCaseDeniedReasonList As String = "po_case_denied_reasons_list"
     Public Const SpParamNameCaseNotesList As String = "po_case_notes_list"
     Private Const ParONameQuestionSetCode As String = "po_question_set_code"
     Private Const ParONameCaseFieldsList As String = "po_claim_fields_list"
+    Public Const SpParamNameAGSearchResultsConfigList As String = "po_search_results_config_list"
 
 #End Region
 
@@ -74,7 +76,7 @@ Public Class CaseDAL
     End Sub
     Public Sub LoadCaseByCaseNumber(ByVal familyDs As DataSet, ByVal caseNumber As String, ByVal companyCode As String)
         Try
-             Using cmd As OracleCommand = CreateCommand(Config("/SQL/LOAD_CASE_BY_CASE_NUMBER"))
+            Using cmd As OracleCommand = CreateCommand(Config("/SQL/LOAD_CASE_BY_CASE_NUMBER"))
                 cmd.AddParameter(ParINameCaseNumber, OracleDbType.Varchar2, CaseNumber)
                 cmd.AddParameter("pi_company_code", OracleDbType.Varchar2, CompanyCode)
                 cmd.AddParameter(PAR_O_NAME_RESULTCURSOR, OracleDbType.RefCursor, direction:=ParameterDirection.Output)
@@ -242,11 +244,80 @@ Public Class CaseDAL
         Try
             DBHelper.FetchSp(selectStmt, inParameters.ToArray, outputParameter, ds, "GetAgentList")
             ds.Tables(0).TableName = "GetAgentList"
+            
             Return ds
         Catch ex As Exception
             Throw New DataBaseAccessException(DataBaseAccessException.DatabaseAccessErrorType.ReadErr, ex)
         End Try
     End Function
+
+
+    
+    Public Function LoadAgentSearchConfigList(ByVal companyId As Guid, ByVal dealerId As Guid, byval searchType As string) As DataSet
+        Dim selectStmt As String = Config("/SQL/LOAD_AGENT_SEARCH_RESULTS_CONFIG_LIST")
+        Dim ds As DataSet = New DataSet
+        Dim outputParameter(PoCursorCase) As DBHelper.DBHelperParameter
+        Dim inParameters As New List(Of DBHelper.DBHelperParameter)
+        Dim param As DBHelper.DBHelperParameter
+
+        If companyId.Equals(Guid.Empty) Then
+            param = New DBHelper.DBHelperParameter("pi_company_id", DBNull.Value)
+            inParameters.Add(param)
+        Else
+            param = New DBHelper.DBHelperParameter("pi_company_id", companyId.ToByteArray)
+            inParameters.Add(param)
+        End If
+     
+        If DealerId.Equals(Guid.Empty) Then
+            param = New DBHelper.DBHelperParameter("pi_dealer_id", DBNull.Value)
+            inParameters.Add(param)
+        Else
+            param = New DBHelper.DBHelperParameter("pi_dealer_id", DealerId.ToByteArray)
+            inParameters.Add(param)
+        End If
+
+        param = New DBHelper.DBHelperParameter("pi_search_type", searchType)
+        inParameters.Add(param)
+        
+        outputParameter(PoCursorCase) = New DBHelper.DBHelperParameter(SpParamNameAGSearchResultsConfigList, GetType(DataSet))
+
+        Try
+            DBHelper.FetchSp(selectStmt, inParameters.ToArray, outputParameter, ds, "AgentSearchResultsConfigList")
+            ds.Tables(0).TableName = "AgentSearchResultsConfigList"
+            Return ds
+        Catch ex As Exception
+            Throw New DataBaseAccessException(DataBaseAccessException.DatabaseAccessErrorType.ReadErr, ex)
+        End Try
+    End Function
+
+
+    Public Function LoadExclSecFieldsList(ByVal companyId As Guid, ByVal dealerId As Guid) As DataSet
+        Dim selectStmt As String = Config("/SQL/LOAD_EXCL_SEC_FIELDS_LIST")
+        Dim ds As DataSet = New DataSet
+        Dim outputParameter(PoCursorCase) As DBHelper.DBHelperParameter
+        Dim inParameters As New List(Of DBHelper.DBHelperParameter)
+        Dim param As DBHelper.DBHelperParameter
+     
+        If DealerId.Equals(Guid.Empty) Then
+            param = New DBHelper.DBHelperParameter("pi_dealer_id", DBNull.Value)
+            inParameters.Add(param)
+        Else
+            param = New DBHelper.DBHelperParameter("pi_dealer_id", DealerId.ToByteArray)
+            inParameters.Add(param)
+        End If
+        
+        outputParameter(PoCursorCase) = New DBHelper.DBHelperParameter(SpParamNameSecFieldsList, GetType(DataSet))
+
+        Try
+            DBHelper.FetchSp(selectStmt, inParameters.ToArray, outputParameter, ds, "GetExclSecFieldsList")
+            ds.Tables(0).TableName = "GetExclSecFieldsList"
+            Return ds
+        Catch ex As Exception
+            Throw New DataBaseAccessException(DataBaseAccessException.DatabaseAccessErrorType.ReadErr, ex)
+        End Try
+    End Function
+
+
 
     Public Function LoadClaimCaseList(ByVal claimId As Guid, ByVal languageId As Guid) As DataSet
         Dim selectStmt As String = Config("/SQL/LOAD_CLAIM_CASE_LIST")
@@ -319,8 +390,8 @@ Public Class CaseDAL
 
 
     Public Function GetQuestionSetCode(companyGroupId As Guid, companyId As Guid, dealerId As Guid, productCodeId As Guid,
-                                      riskTypeId As Guid, deviceTypeId As Guid,
-                                      coverageTypeId As Guid, coverageConseqDamageId As Guid, purposeCode As String) As String
+                                       riskTypeId As Guid, deviceTypeId As Guid,
+                                       coverageTypeId As Guid, coverageConseqDamageId As Guid, purposeCode As String) As String
         Dim selectStmt As String = Config("/SQL/GET_QUESTION_SET_CODE")
         Dim strQuestionSetCode As String = String.Empty
         Dim ds As DataSet = New DataSet

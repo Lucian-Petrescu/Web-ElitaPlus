@@ -146,7 +146,8 @@
         cancel_shipment_grace_period,
         validate_address_xcd,
         case_profile_code,
-        close_case_grace_period_days
+        close_case_grace_period_days,
+        show_prev_caller_info_xcd
 			FROM elp_dealer
 			WHERE
 				dealer_id = :dealer_id
@@ -288,7 +289,8 @@
         cancel_shipment_grace_period,
         validate_address_xcd,
         case_profile_code,
-        close_case_grace_period_days
+        close_case_grace_period_days,
+        show_prev_caller_info_xcd
       FROM elp_dealer 
 			WHERE
 				company_id= :company_id
@@ -483,7 +485,8 @@
         cancel_shipment_grace_period = :cancel_shipment_grace_period,
         validate_address_xcd = :validate_address_xcd,
         case_profile_code = :case_profile_code,
-        close_case_grace_period_days = :close_case_grace_period_days
+        close_case_grace_period_days = :close_case_grace_period_days,
+        show_prev_caller_info_xcd = :show_prev_caller_info_xcd
         WHERE
 				dealer_id = :dealer_id
 		]]>
@@ -626,7 +629,8 @@
     cancel_shipment_grace_period,
     validate_address_xcd,
     case_profile_code,
-    close_case_grace_period_days
+    close_case_grace_period_days,
+    show_prev_caller_info_xcd
     )
     VALUES
     (
@@ -765,7 +769,8 @@
     :cancel_shipment_grace_period,
     :validate_address_xcd,
     :case_profile_code,
-    :close_case_grace_period_days
+    :close_case_grace_period_days,
+    :show_prev_caller_info_xcd
     )
   </INSERT>
   <DELETE>
@@ -852,7 +857,7 @@
   </CREATE_EXTERNAL_TABLE>
   <UPDATE_CLAIMS_ASYNC>
     elp_utl_load_async.Update_Claims_Async
-  </UPDATE_CLAIMS_ASYNC>  
+  </UPDATE_CLAIMS_ASYNC>
   <DELETE_ALL_DEALER_DEFINITIONS>
     DealerDefinitions.DeleteCoverageRates
   </DELETE_ALL_DEALER_DEFINITIONS>
