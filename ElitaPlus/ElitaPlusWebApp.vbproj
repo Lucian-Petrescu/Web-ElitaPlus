@@ -1072,6 +1072,13 @@
       <DependentUpon>ExportFileProcessedNewForm.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
+    <Compile Include="Reports\LossSummaryArgForm.aspx.designer.vb">
+      <DependentUpon>LossSummaryArgForm.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Reports\LossSummaryArgForm.aspx.vb">
+      <DependentUpon>LossSummaryArgForm.aspx</DependentUpon>
+      <SubType>ASPXCodebehind</SubType>
+    </Compile>
     <Compile Include="Reports\PaymentDetailReportForm.aspx.designer.vb">
       <DependentUpon>PaymentDetailReportForm.aspx</DependentUpon>
     </Compile>
@@ -5643,6 +5650,7 @@
     <Content Include="Reports\CertificatesBillingBrazilReportForm.aspx" />
     <Content Include="Reports\CollectionAmdocsReportForm.aspx" />
     <Content Include="Reports\ExportFileProcessedNewForm.aspx" />
+    <Content Include="Reports\LossSummaryArgForm.aspx" />
     <Content Include="Reports\PaymentDetailReportForm.aspx" />
     <Content Include="Reports\PaymentsByCreditCardType.aspx" />
     <Content Include="Reports\ClaimEventCountPerCertificateReportForm.aspx" />
