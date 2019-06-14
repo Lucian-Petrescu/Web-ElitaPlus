@@ -460,8 +460,7 @@ Public Class CaseRecordingForm
             'For Optus , if Agent is CSR Enable the Authetication Sceen always.
 
             If Not State.ExclSecFieldsDt is Nothing AndAlso State.ExclSecFieldsDt.Rows.Count > 0 then
-                'Uncomment this Code once the casemanagement changes are moved to Test/Model)
-                'callerinfo.IsAuthenticated = False                
+                callerinfo.IsAuthenticated = False                
             End If
 
             callerinfo.PhoneNumber = UcExistingCallerInfo.WorkPhoneNumber
@@ -478,8 +477,7 @@ Public Class CaseRecordingForm
             callerinfo.EmailAddress = UcPreviousCallerInfo.Email
             'For Optus , if Agent is CSR Enable the Authetication Sceen always.
             If Not State.ExclSecFieldsDt is Nothing AndAlso State.ExclSecFieldsDt.Rows.Count > 0 then
-                 'Uncomment this Code once the casemanagement changes are moved to Test/Model)
-                'callerinfo.IsAuthenticated = False                
+                callerinfo.IsAuthenticated = False                
             End If
 
             callerinfo.PhoneNumber = UcPreviousCallerInfo.WorkPhoneNumber
@@ -564,8 +562,7 @@ Public Class CaseRecordingForm
             callerinfo.CultureCode = Thread.CurrentThread.CurrentCulture.ToString().ToUpper()
             callerinfo.EmailAddress = UcExistingCallerInfo.Email    
             If Not State.ExclSecFieldsDt is Nothing AndAlso State.ExclSecFieldsDt.Rows.Count > 0 then
-                'Uncomment this Code once the casemanagement changes are moved to Test/Model)
-                'callerinfo.IsAuthenticated = False                
+                callerinfo.IsAuthenticated = False                
             End If                    
 
             callerinfo.PhoneNumber = UcExistingCallerInfo.WorkPhoneNumber
@@ -581,8 +578,7 @@ Public Class CaseRecordingForm
             callerinfo.CultureCode = Thread.CurrentThread.CurrentCulture.ToString().ToUpper()
             callerinfo.EmailAddress = UcPreviousCallerInfo.Email
             If Not State.ExclSecFieldsDt is Nothing AndAlso State.ExclSecFieldsDt.Rows.Count > 0 then
-                'Uncomment this Code once the casemanagement changes are moved to Test/Model)
-                'callerinfo.IsAuthenticated = False                
+                callerinfo.IsAuthenticated = False                
             End If
 
             callerinfo.PhoneNumber = UcPreviousCallerInfo.WorkPhoneNumber

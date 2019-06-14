@@ -19,10 +19,10 @@ Namespace Certificates
 #Region "Constant"
         Private Const BackupStateSessionKey As String = "SESSION_KEY_BACKUP_STATE_AGENT_SEARCH_FORM"
         Private Const PurposeCancelCertRequest As String = "CERTCANCEL"
-        
+
         Private Const DefaultItem As Integer = 0
         Private Const OneSpace As String = " "
-       
+
         Private Const SelectActionCommand As String = "SelectAction"
         Private Const SelectActionCommandCase As String = "SelectActionCase"
         Private Const SelectActionCommandCert As String = "SelectActionCert"
@@ -30,6 +30,9 @@ Namespace Certificates
         Private Const ActionCommandNewCaseCertificate As String = "NewCaseViewCertificate"
         Private Const ActionCommandNewCaseClaim As String = "NewCaseViewClaim"
         Private Const ActionCommandResumeCaseClaim As String = "ResumeCaseViewClaim"
+        Private Const CodeSearchFieldCaseNumber As String = "CASE_NUMBER"
+        Private Const CodeSearchFieldCertificateNumber As String = "CERTIFICATE_NUMBER"
+        Private Const CodeSearchFieldClaimNumber As String = "CLAIM_NUMBER"
         Private Const CodeSearchFieldAccountNumber As String = "ACCOUNT_NUMBER"
         Private Const CodeSearchFieldCustomerFirstName As String = "CUSTOMER_FIRST_NAME"
         Private Const CodeSearchFieldCustomerLastName As String = "CUSTOMER_LAST_NAME"
@@ -51,10 +54,10 @@ Namespace Certificates
 #End Region
 #End Region
 #Region "Page State"
-        
+
         Class MyState
-            Public SearchDv As CaseBase.AgentSearchDV = Nothing            
-            
+            Public SearchDv As CaseBase.AgentSearchDv = Nothing
+
             Public SelectedId As Guid = Guid.Empty
             Public IsCallerAuthenticated As Boolean = False
             Public IsGridVisible As Boolean = False
@@ -75,16 +78,16 @@ Namespace Certificates
             Public TaxId As String = String.Empty
             Public ServiceLineNumber As String = String.Empty
             Public AccountNumber As String = String.Empty
-            Public GlobalCustomerNumber As String = String.Empty    
+            Public GlobalCustomerNumber As String = String.Empty
             Public ExclSecFieldsDt As DataTable = Nothing
             Public SearchResultsConfigListDt As DataTable = Nothing
-            Public CallerAuthenticationNeeded As boolean = False
+            Public CallerAuthenticationNeeded As Boolean = False
             Public SearchCriteriaDt As DataTable
             Public PreviousCompanyId As Guid = Guid.Empty
             Public PreviousDealerId As Guid = Guid.Empty
             Public ShowAdditionalSearchFields As Boolean = False
 
-            
+
             Sub New()
             End Sub
         End Class
@@ -105,10 +108,10 @@ Namespace Certificates
                 'Return CType(MyBase.State, MyState)
                 If NavController Is Nothing Then
                     'Restart flow
-                    StartNavControl()                    
+                    StartNavControl()
                     NavController.State = CType(Session(BackupStateSessionKey), MyState)
                 ElseIf NavController.State Is Nothing Then
-                    NavController.State = New MyState                    
+                    NavController.State = New MyState
                 ElseIf (Me.GetType.BaseType.FullName <> NavController.State.GetType.ReflectedType.FullName) Then
                     'Restart flow
                     StartNavControl()
@@ -168,14 +171,14 @@ Namespace Certificates
             Public BoChanged As Boolean = False
             Public IsCallerAuthenticated As Boolean = False
 
-            Public Sub New(ByVal lastOp As DetailPageCommand, ByVal curEditingBo As CaseBase, Optional ByVal boChanged As Boolean = False,Optional Byval IsCallerAuthenticated As Boolean = False)
+            Public Sub New(ByVal lastOp As DetailPageCommand, ByVal curEditingBo As CaseBase, Optional ByVal boChanged As Boolean = False, Optional ByVal IsCallerAuthenticated As Boolean = False)
                 LastOperation = lastOp
                 Me.EditingBo = curEditingBo
                 Me.BoChanged = boChanged
                 Me.IsCallerAuthenticated = IsCallerAuthenticated
             End Sub
         End Class
-        
+
 #End Region
 
 #Region "Page Event"
@@ -185,12 +188,12 @@ Namespace Certificates
             Form.DefaultButton = btnSearch.UniqueID
             Try
                 If Not IsPostBack Then
-                    
+
                     UpdateBreadCrum()
                     PopulateSearchDropDownControls()
                     PopulateUserPermission()
                     GetDynamicSearchCriteria()
-                                        
+
                     If Authentication.CurrentUser.IsDealer Then
                         State.DealerId = Authentication.CurrentUser.ScDealerId
                         ControlMgr.SetEnableControl(Me, ddlCompany, False)
@@ -201,7 +204,7 @@ Namespace Certificates
 
                     If _isReturningFromChild Then
                         ' It is returning from detail
-                                               
+
                         PopulateSearchResultInRepeater()
                     End If
 
@@ -215,7 +218,7 @@ Namespace Certificates
             End Try
             ShowMissingTranslations(MasterPage.MessageController)
         End Sub
-	
+
         Private Sub Page_PageReturn(ByVal returnFromUrl As String, ByVal returnPar As Object) Handles MyBase.PageReturn
             Try
                 MenuEnabled = True
@@ -223,15 +226,15 @@ Namespace Certificates
                 'Reset the Autentication mode to False.
                 Me.State.IsCallerAuthenticated = False
                 If Not returnPar Is Nothing AndAlso returnPar.GetType() Is GetType(CaseRecordingForm.ReturnType) Then
-                    Dim returnParInstance As CaseRecordingForm.ReturnType = Ctype(returnPar, CaseRecordingForm.ReturnType)
+                    Dim returnParInstance As CaseRecordingForm.ReturnType = CType(returnPar, CaseRecordingForm.ReturnType)
                     ' Me.State.IsCallerAuthenticated = returnParInstance.IsCallerAuthenticated
                 End If
 
                 If Not returnPar Is Nothing AndAlso returnPar.GetType() Is GetType(ClaimForm.ReturnType) Then
-                    Dim returnParInstance As ClaimForm.ReturnType = Ctype(returnPar, ClaimForm.ReturnType)
+                    Dim returnParInstance As ClaimForm.ReturnType = CType(returnPar, ClaimForm.ReturnType)
                     'Me.State.IsCallerAuthenticated = returnParInstance.IsCallerAuthenticated
                 End If
-                
+
             Catch ex As Exception
                 HandleErrors(ex, MasterPage.MessageController)
             End Try
@@ -274,11 +277,12 @@ Namespace Certificates
 
             State.DealerId = GetSelectedItem(ddlDealer)
             State.CompanyId = GetSelectedItem(ddlCompany)
-            State.CertificateNumber = TextBoxCertificateNumber.Text.ToUpper.Trim
-            State.ClaimNumber = TextBoxClaimNumber.Text.ToUpper.Trim
-            State.CaseNumber = TextBoxCaseNumber.Text.ToUpper.Trim
+            
 
             ' Dynamic controls - text box
+            State.CertificateNumber = GetSearchTextBoxValue(CodeSearchFieldCertificateNumber)
+            State.ClaimNumber = GetSearchTextBoxValue(CodeSearchFieldClaimNumber)
+            State.CaseNumber = GetSearchTextBoxValue(CodeSearchFieldCaseNumber)
             State.CustomerFirstName = GetSearchTextBoxValue(CodeSearchFieldCustomerFirstName)
             State.CustomerLastName = GetSearchTextBoxValue(CodeSearchFieldCustomerLastName)
             State.Zipcode = GetSearchTextBoxValue(CodeSearchFieldZip)
@@ -306,9 +310,9 @@ Namespace Certificates
             End If
 
             'Clear the text box
-            ClearSearchTextBox(TextBoxCaseNumber.ID)
-            ClearSearchTextBox(TextBoxCertificateNumber.ID)
-            ClearSearchTextBox(TextBoxClaimNumber.ID)
+            ClearSearchTextBox(CodeSearchFieldCertificateNumber)
+            ClearSearchTextBox(CodeSearchFieldClaimNumber)
+            ClearSearchTextBox(CodeSearchFieldCaseNumber)
             ClearSearchTextBox(CodeSearchFieldCustomerFirstName)
             ClearSearchTextBox(CodeSearchFieldCustomerLastName)
             ClearSearchTextBox(CodeSearchFieldZip)
@@ -324,9 +328,7 @@ Namespace Certificates
             ' Reset drop down
             ResetSearchDropDown(CodeSearchFieldCertificateStatus)
 
-            lblRecordCount.Text = String.Empty
-            repeaterSearchResult.DataSource = Nothing
-            repeaterSearchResult.DataBind()
+            ResetSearchResult()
 
             checkboxAdditionalSearchCriteria.Checked = False
         End Sub
@@ -334,11 +336,10 @@ Namespace Certificates
             If State.CompanyId <> Guid.Empty And ddlCompany.Items.Count > 0 Then SetSelectedItem(ddlCompany, State.CompanyId)
             If State.DealerId <> Guid.Empty And ddlDealer.Items.Count > 0 Then SetSelectedItem(ddlDealer, State.DealerId)
 
-            TextBoxCaseNumber.Text = State.CaseNumber
-            TextBoxCertificateNumber.Text = State.CertificateNumber
-            TextBoxClaimNumber.Text = State.ClaimNumber
-
             ' Dynamic controls - Text Box
+            SetSearchTextBox(CodeSearchFieldCertificateNumber, State.CertificateNumber)
+            SetSearchTextBox(CodeSearchFieldClaimNumber, State.ClaimNumber)
+            SetSearchTextBox(CodeSearchFieldCaseNumber, State.CaseNumber)
             SetSearchTextBox(CodeSearchFieldCustomerFirstName, State.CustomerFirstName)
             SetSearchTextBox(CodeSearchFieldCustomerLastName, State.CustomerLastName)
             SetSearchTextBox(CodeSearchFieldZip, State.Zipcode)
@@ -356,7 +357,7 @@ Namespace Certificates
 
             checkboxAdditionalSearchCriteria.Checked = State.ShowAdditionalSearchFields
         End Sub
-        
+
         Private Sub GetDynamicSearchCriteria()
             If Not (State.CompanyId.Equals(State.PreviousCompanyId) And State.DealerId.Equals(State.PreviousDealerId)) Then
                 'Get all Search Criteria for the company and dealer
@@ -384,7 +385,7 @@ Namespace Certificates
                 End If
             End If
         End Sub
-        
+
 #End Region
 
 #Region "Event handlers - Button, Dropdown, CheckBox"
@@ -392,7 +393,7 @@ Namespace Certificates
             Try
                 SetStateFieldsValue()
                 State.IsGridVisible = True
-                State.SearchDv = Nothing                
+                State.SearchDv = Nothing
                 PopulateSearchResultInRepeater()
             Catch ex As Exception
                 HandleErrors(ex, MasterPage.MessageController)
@@ -419,11 +420,13 @@ Namespace Certificates
             PopulateExclSecFields()
             PopulateSearchConfigList()
             GetDynamicSearchCriteria()
+            ResetSearchResult()
         End Sub
 
         Protected Sub ddlCompany_SelectedIndexChanged(sender As Object, e As EventArgs) Handles ddlCompany.SelectedIndexChanged
             State.CompanyId = GetSelectedItem(ddlCompany)
             GetDynamicSearchCriteria()
+            ResetSearchResult()
         End Sub
         Protected Sub checkboxAdditionalSearchCriteria_CheckedChanged(sender As Object, e As EventArgs) Handles checkboxAdditionalSearchCriteria.CheckedChanged
             State.ShowAdditionalSearchFields = checkboxAdditionalSearchCriteria.Checked
@@ -444,8 +447,8 @@ Namespace Certificates
         Private Sub PopulateDealerDropdown()
             Dim oDealerList = GetDealerListByCompanyForUser()
             Dim dealerTextFunc As Func(Of ListItem, String) = Function(li As ListItem)
-                Return li.Translation + OneSpace + "(" + li.Code + ")"
-                    End Function
+                                                                  Return li.Translation + OneSpace + "(" + li.Code + ")"
+                                                              End Function
             ddlDealer.Populate(oDealerList, New PopulateOptions() With
                                   {
                                   .AddBlankItem = True,
@@ -461,12 +464,12 @@ Namespace Certificates
             Dim companyList As ListItem() = CommonConfigManager.Current.ListManager.GetList(listCode:="Company")
 
             Dim filteredCompanyList As ListItem() = (From x In companyList
-                    Where Authentication.CurrentUser.Companies.Contains(x.ListItemId)
-                    Select x).ToArray()
+                                                     Where Authentication.CurrentUser.Companies.Contains(x.ListItemId)
+                                                     Select x).ToArray()
 
             Dim companyTextFunc As Func(Of ListItem, String) = Function(li As ListItem)
-                Return li.Translation + OneSpace + "(" + li.Code + ")"
-                    End Function
+                                                                   Return li.Translation + OneSpace + "(" + li.Code + ")"
+                                                               End Function
 
             ddlCompany.Populate(filteredCompanyList, New PopulateOptions() With
                                    {
@@ -483,9 +486,9 @@ Namespace Certificates
         End Sub
         Private Sub PopulateUserPermission()
             Dim oUser As User = New User()
-            State.CallerAuthenticationNeeded  = oUser.NeedPERMtoViewPrivacyData()
-        End Sub 
-	
+            State.CallerAuthenticationNeeded = oUser.NeedPERMtoViewPrivacyData()
+        End Sub
+
         Private Sub PopulateExclSecFields()
             Try
 
@@ -493,11 +496,11 @@ Namespace Certificates
                     Dim exclSecFieldsDt As DataTable
                     Dim objList As List(Of CaseBase.ExclSecFields)
 
-                   ' If State.ExclSecFieldsDt Is Nothing Then
-                        objList = CaseBase.LoadExclSecFieldsConfig(Guid.Empty, State.DealerId)
-                        If objList.Count > 0 Then
-                            State.ExclSecFieldsDt = ConvertToDataTable(Of CaseBase.ExclSecFields)(objList)                          
-                        End If
+                    ' If State.ExclSecFieldsDt Is Nothing Then
+                    objList = CaseBase.LoadExclSecFieldsConfig(Guid.Empty, State.DealerId)
+                    If objList.Count > 0 Then
+                        State.ExclSecFieldsDt = ConvertToDataTable(Of CaseBase.ExclSecFields)(objList)
+                    End If
                     'End If
                 End If
 
@@ -507,20 +510,20 @@ Namespace Certificates
                 HandleErrors(ex, MasterPage.MessageController)
             End Try
         End Sub
-	
+
         Private Function PopulateSearchConfigList() As Boolean
             Try
                 If Not (State.CompanyId.Equals(State.PreviousCompanyId) And State.DealerId.Equals(State.PreviousDealerId)) Then
                     Dim dsResults As DataSet
                     'If State.SearchResultsConfigListDt Is Nothing Then
-                        dsResults = CaseBase.GetAgentSearchConfigList(State.CompanyId, State.DealerId, SearchTypeXCD)
-                        If dsResults.Tables(0).Rows.Count > 0 Then
-                            State.SearchResultsConfigListDt = dsResults.Tables(0)
-                            Return True
-                        Else
-                            Return False
-                        End If
-                     'End If
+                    dsResults = CaseBase.GetAgentSearchConfigList(State.CompanyId, State.DealerId, SearchTypeXCD)
+                    If dsResults.Tables(0).Rows.Count > 0 Then
+                        State.SearchResultsConfigListDt = dsResults.Tables(0)
+                        Return True
+                    Else
+                        Return False
+                    End If
+                    'End If
                 End If
 
             Catch ex As ThreadAbortException
@@ -528,7 +531,7 @@ Namespace Certificates
                 HandleErrors(ex, MasterPage.MessageController)
             End Try
         End Function
-	
+
 #End Region
 #Region "Helper functions"
 
@@ -649,7 +652,7 @@ Namespace Certificates
                 txt.Text = String.Empty
             End If
         End Sub
-        
+
         Private Function GetSearchDropDownValue(ByVal dropdownName As String) As String
             Dim ddl As DropDownList = TryCast(PanelHolderDynamicSearchCriteria.FindControl(dropdownName), DropDownList)
             If ddl IsNot Nothing Then
@@ -674,6 +677,15 @@ Namespace Certificates
 #End Region
 
 #Region " Search Result - Function"
+        Private Sub ResetSearchResult()
+            repeaterSearchResult.DataSource = Nothing
+            repeaterSearchResult.DataBind()
+            State.SearchDv = Nothing
+            Session("recCount") = 0
+            lblRecordCount.Text = ""
+            ControlMgr.SetVisibleControl(Me, repeaterSearchResult, False)
+            ControlMgr.SetVisibleControl(Me, trPageSize, repeaterSearchResult.Visible)
+        End Sub
         Private Sub PopulateSearchResultInRepeater()
             Try
                 If (State.SearchDv Is Nothing) Then
@@ -697,37 +709,37 @@ Namespace Certificates
                                                            Authentication.CurrentUser.LanguageId)
 
                     ValidSearchResultCountNew(State.SearchDv.Count, True)
-                
-                
-                    If Not State.SearchDv Is nothing                         
 
-                        State.SearchDv.Table.Columns.Add("LOSS_DATE_FORMAT",GetType(string))
-                        State.SearchDv.Table.Columns.Add("REPORTED_DATE_FORMAT",GetType(string))
-                        State.SearchDv.Table.Columns.Add("CASE_OPEN_DATE_FORMAT",GetType(string))
-                        
+
+                    If Not State.SearchDv Is Nothing Then
+
+                        State.SearchDv.Table.Columns.Add("LOSS_DATE_FORMAT", GetType(String))
+                        State.SearchDv.Table.Columns.Add("REPORTED_DATE_FORMAT", GetType(String))
+                        State.SearchDv.Table.Columns.Add("CASE_OPEN_DATE_FORMAT", GetType(String))
+
                         For Each dr As DataRow In State.SearchDv.Table.Rows
-                            If Not dr("LOSS_DATE") Is DBNull.value Then                                                       
-                                dr("LOSS_DATE_FORMAT") = GetDateFormattedStringNullable(CType(dr("LOSS_DATE"),datetime))
-                            End if
-                            If Not dr("REPORTED_DATE") Is DBNull.value Then                                 
-                                dr("REPORTED_DATE_FORMAT") =  GetDateFormattedStringNullable(CType(dr("REPORTED_DATE"),datetime))
-                            End if
-                            If Not dr("CASE_OPEN_DATE") Is DBNull.value Then                                
-                                dr("CASE_OPEN_DATE_FORMAT") = GetDateFormattedStringNullable(CType(dr("CASE_OPEN_DATE"),datetime))
-                            End if
+                            If Not dr("LOSS_DATE") Is DBNull.Value Then
+                                dr("LOSS_DATE_FORMAT") = GetDateFormattedStringNullable(CType(dr("LOSS_DATE"), DateTime))
+                            End If
+                            If Not dr("REPORTED_DATE") Is DBNull.Value Then
+                                dr("REPORTED_DATE_FORMAT") = GetDateFormattedStringNullable(CType(dr("REPORTED_DATE"), DateTime))
+                            End If
+                            If Not dr("CASE_OPEN_DATE") Is DBNull.Value Then
+                                dr("CASE_OPEN_DATE_FORMAT") = GetDateFormattedStringNullable(CType(dr("CASE_OPEN_DATE"), DateTime))
+                            End If
                         Next
 
-                        If Not State.ExclSecFieldsDt Is nothing AndAlso State.CallerAuthenticationNeeded then
-                            For each col As DataColumn In State.SearchDv.Table.Columns
+                        If Not State.ExclSecFieldsDt Is Nothing AndAlso State.CallerAuthenticationNeeded Then
+                            For Each col As DataColumn In State.SearchDv.Table.Columns
                                 For Each drSecrow As DataRow In State.ExclSecFieldsDt.Rows
                                     If col.ColumnName.ToString().ToUpper().Contains(drSecrow("Column_Name").ToString().ToUpper()) _
-                                       AndAlso Not State.IsCallerAuthenticated then
+                                       AndAlso Not State.IsCallerAuthenticated Then
                                         'AndAlso ((drSecrow("Table_Name").ToString().ToUpper() = "ELP_CERT") OrElse drSecrow("Table_Name").ToString().ToUpper() ="ELP_ADDRESS" OrElse drSecrow("Table_Name").ToString().ToUpper() = "ELP_CALLER") then
-                                        State.SearchDv.Table.Columns(col.ColumnName).Expression = string.empty
+                                        State.SearchDv.Table.Columns(col.ColumnName).Expression = String.Empty
                                     End If
                                 Next
-                            Next                           
-                        End If    
+                            Next
+                        End If
                     End If
 
                 End If
@@ -752,12 +764,12 @@ Namespace Certificates
                 HandleErrors(ex, MasterPage.MessageController)
             End Try
         End Sub
-     
+
         Protected Sub repeaterSearchResult_OnItemDataBound(sender As Object, e As RepeaterItemEventArgs)
             If e.Item.ItemType = ListItemType.Item Or e.Item.ItemType = ListItemType.AlternatingItem Then
                 Dim isRestricted As String = String.Empty
                 Dim lblStatus As WebControls.Label = DirectCast(e.Item.FindControl("lblStatus"), WebControls.Label)
-                Dim xmlSource As XML = DirectCast(e.Item.FindControl("Xmlsource"), XML)                
+                Dim xmlSource As Xml = DirectCast(e.Item.FindControl("Xmlsource"), Xml)
 
                 Dim statusCode As Object = DataBinder.Eval(e.Item.DataItem, "Status_Code")
                 Dim itemtype As Object = DataBinder.Eval(e.Item.DataItem, "item_type")
@@ -769,7 +781,7 @@ Namespace Certificates
 
                 Dim btnNewCase As LinkButton = DirectCast(e.Item.FindControl("LinkButtonNewCase"), LinkButton)
                 btnNewCase.Text = TranslationBase.TranslateLabelOrMessage("DCM_NEW_CASE")
-                
+
                 Dim btnEditAgent As LinkButton = DirectCast(e.Item.FindControl("btnEditAgent"), LinkButton)
                 btnEditAgent.CommandArgument = GetGuidStringFromByteArray(CType(cId, Byte()))
                 btnEditAgent.CommandName = SelectActionCommand
@@ -779,7 +791,7 @@ Namespace Certificates
                 ds.Tables.Add(row.Row.Table.Clone())
                 ds.Tables(0).TableName = "Results"
                 ds.Tables("Results").ImportRow(CType(row.Row, DataRow))
-                Dim xmlStr As String = ds.GetXml()             
+                Dim xmlStr As String = ds.GetXml()
                 Dim xdoc As New System.Xml.XmlDocument()
                 Dim trans As XslTransform = New XslTransform()
                 Dim srConfigRow As DataRow()
@@ -790,9 +802,9 @@ Namespace Certificates
 
                 If (itemtype.ToString = "Cert") Then
 
-                    xdoc.LoadXml(ds.GetXml())                    
-                    srConfigRow=  State.SearchResultsConfigListDt.Select("item_type_xcd = 'ITEM_TYPE-CERT'")                    
-                    trans.Load(XmlReader.Create(New StringReader(srConfigRow(0)("search_config_data").ToString())) )
+                    xdoc.LoadXml(ds.GetXml())
+                    srConfigRow = State.SearchResultsConfigListDt.Select("item_type_xcd = 'ITEM_TYPE-CERT'")
+                    trans.Load(XmlReader.Create(New StringReader(srConfigRow(0)("search_config_data").ToString())))
                     xmlSource.Transform = trans
                     xmlSource.Document = xdoc
 
@@ -831,35 +843,35 @@ Namespace Certificates
 
                         End If
                     End If
-                                       
+
                     btnEditCert.Visible = Not State.CallerAuthenticationNeeded
                     btnEditCert.Text = TranslationBase.TranslateLabelOrMessage("VIEW")
                     btnEditCert.CommandArgument = GetGuidStringFromByteArray(CType(cId, Byte()))
-                    btnEditCert.CommandName = SelectActionCommandCert                        
-                    
+                    btnEditCert.CommandName = SelectActionCommandCert
+
                     btnNewCase.Visible = True
                     btnNewCase.CommandArgument = GetGuidStringFromByteArray(CType(cId, Byte()))
                     btnNewCase.CommandName = ActionCommandNewCaseCertificate
-                    
+
                 ElseIf (itemtype.ToString = "Claim") Then
 
-                    xdoc.LoadXml(ds.GetXml() )                    
-                    srConfigRow  =  State.SearchResultsConfigListDt.Select("item_type_xcd = 'ITEM_TYPE-CLAIM'")                    
+                    xdoc.LoadXml(ds.GetXml())
+                    srConfigRow = State.SearchResultsConfigListDt.Select("item_type_xcd = 'ITEM_TYPE-CLAIM'")
                     trans.Load(XmlReader.Create(New StringReader(srConfigRow(0)("search_config_data").ToString())))
-                    xmlSource.Transform = trans                        
+                    xmlSource.Transform = trans
                     xmlSource.Document = xdoc
 
-                    lblStatus.Text = LookupListNew.GetDescriptionFromCode("CLSTAT", statusCode.ToString, Authentication.CurrentUser.LanguageId)                    
-                    btnEditAgent.Visible = Not State.CallerAuthenticationNeeded                   
-                    btnEditAgent.Text = TranslationBase.TranslateLabelOrMessage("DCM_VIEW_CLAIM")                    
+                    lblStatus.Text = LookupListNew.GetDescriptionFromCode("CLSTAT", statusCode.ToString, Authentication.CurrentUser.LanguageId)
+                    btnEditAgent.Visible = Not State.CallerAuthenticationNeeded
+                    btnEditAgent.Text = TranslationBase.TranslateLabelOrMessage("DCM_VIEW_CLAIM")
                     btnNewCase.Visible = True
                     btnNewCase.CommandArgument = GetGuidStringFromByteArray(CType(cId, Byte()))
                     btnNewCase.CommandName = ActionCommandNewCaseClaim
 
                 ElseIf (itemtype.ToString = "Case") Then
 
-                    xdoc.LoadXml(ds.GetXml())                    
-                    srConfigRow  =  State.SearchResultsConfigListDt.Select("item_type_xcd = 'ITEM_TYPE-CASE'")                    
+                    xdoc.LoadXml(ds.GetXml())
+                    srConfigRow = State.SearchResultsConfigListDt.Select("item_type_xcd = 'ITEM_TYPE-CASE'")
                     trans.Load(XmlReader.Create(New StringReader(srConfigRow(0)("search_config_data").ToString())))
                     xmlSource.Transform = trans
                     xmlSource.Document = xdoc
@@ -871,7 +883,7 @@ Namespace Certificates
                         btnEditAgent.CommandName = ActionCommandResumeCaseClaim
                     End If
 
-                    btnEditCase.Visible = Not State.CallerAuthenticationNeeded                   
+                    btnEditCase.Visible = Not State.CallerAuthenticationNeeded
                     btnEditCase.Text = TranslationBase.TranslateLabelOrMessage("DCM_VIEW_CLAIM")
                     btnEditCase.CommandArgument = GetGuidStringFromByteArray(CType(cId, Byte()))
                     btnEditCase.CommandName = SelectActionCommandCase
@@ -883,22 +895,22 @@ Namespace Certificates
                     lblStatus.CssClass = "StatInactive"
                 End If
 
-                
+
 
             End If
         End Sub
 
         Protected Sub repeaterSearchResult_OnItemCommand(sender As Object, e As RepeaterCommandEventArgs)
-            Try               
+            Try
                 If Not e.CommandArgument.ToString().Equals(String.Empty) Then
-                    Dim selectedId As Guid  = New Guid(e.CommandArgument.ToString())
+                    Dim selectedId As Guid = New Guid(e.CommandArgument.ToString())
                     If e.CommandName = SelectActionCommand Or e.CommandName = SelectActionCancelCert Then
-                   
-                        Dim itemtype As HiddenField = DirectCast(e.Item.FindControl("hfItemType"), HiddenField)                        
+
+                        Dim itemtype As HiddenField = DirectCast(e.Item.FindControl("hfItemType"), HiddenField)
                         If Not itemtype.Value.ToString().Equals(String.Empty) Then
                             If (itemtype.Value.ToString = "Cert") Then
                                 callPage(ClaimRecordingForm.Url, New ClaimRecordingForm.Parameters(selectedId, Nothing, Nothing,
-                                                                                                   If(e.CommandName = SelectActionCommand, Codes.CASE_PURPOSE__REPORT_CLAIM, Codes.CASE_PURPOSE__CANCELLATION_REQUEST),Me.State.IsCallerAuthenticated))
+                                                                                                   If(e.CommandName = SelectActionCommand, Codes.CASE_PURPOSE__REPORT_CLAIM, Codes.CASE_PURPOSE__CANCELLATION_REQUEST), Me.State.IsCallerAuthenticated))
                             ElseIf (itemtype.Value.ToString = "Claim") Then
                                 Dim claimId As Guid
                                 claimId = selectedId
@@ -907,36 +919,36 @@ Namespace Certificates
                                     If (claimBo.ClaimAuthorizationType = ClaimAuthorizationType.Multiple) Then
                                         NavController = Nothing
                                         callPage(ClaimWizardForm.URL, New ClaimWizardForm.Parameters(ClaimWizardForm.ClaimWizardSteps.Step3, Nothing, claimId, Nothing))
-                                    Else                                        
-                                        If not State.ExclSecFieldsDt Is Nothing and State.ExclSecFieldsDt.Rows.Count > 0 then
+                                    Else
+                                        If Not State.ExclSecFieldsDt Is Nothing And State.ExclSecFieldsDt.Rows.Count > 0 Then
                                             NavController.FlowSession(FlowSessionKeys.SESSION_CLAIM) = claimBo
                                             NavController.Navigate(Me, FlowEvents.EVENT_CLAIM_SELECTED)
                                         Else
                                             MasterPage.MessageController.AddError(TranslationBase.TranslateLabelOrMessage(ElitaPlus.Common.ErrorCodes.GUI_CASE_MANAGEMENT_WEBAPPGATEWAY_SERVICE_ERR), False)
-                                        End If                                        
+                                        End If
 
                                     End If
                                 Else
-                                    callPage(ClaimForm.URL, New ClaimForm.Parameters(selectedId,State.IsCallerAuthenticated))
+                                    callPage(ClaimForm.URL, New ClaimForm.Parameters(selectedId, State.IsCallerAuthenticated))
                                 End If
                             ElseIf (itemtype.Value.ToString = "Case") Then
-                                callPage(ClaimRecordingForm.Url, New ClaimRecordingForm.Parameters(Nothing, Nothing, selectedId,,Me.State.IsCallerAuthenticated))
+                                callPage(ClaimRecordingForm.Url, New ClaimRecordingForm.Parameters(Nothing, Nothing, selectedId,, Me.State.IsCallerAuthenticated))
                             End If
                         End If
-                    
-                    ElseIf e.CommandName = SelectActionCommandCase Then                    
-                        callPage(CaseDetailsForm.URL,new CaseDetailsForm.Parameters(selectedId, State.IsCallerAuthenticated))
+
+                    ElseIf e.CommandName = SelectActionCommandCase Then
+                        callPage(CaseDetailsForm.Url, New CaseDetailsForm.Parameters(selectedId, State.IsCallerAuthenticated))
                     ElseIf e.CommandName = ActionCommandNewCaseCertificate Then
-                        callPage(CaseRecordingForm.Url, New CaseRecordingForm.Parameters(selectedId, CaseRecordingForm.CasePurpose.CertificateInquiry,Me.State.IsCallerAuthenticated))
+                        callPage(CaseRecordingForm.Url, New CaseRecordingForm.Parameters(selectedId, CaseRecordingForm.CasePurpose.CertificateInquiry, Me.State.IsCallerAuthenticated))
 
                     ElseIf e.CommandName = ActionCommandNewCaseClaim Then
-                        callPage(CaseRecordingForm.Url, New CaseRecordingForm.Parameters(selectedId, CaseRecordingForm.CasePurpose.ClaimInquiry,Me.State.IsCallerAuthenticated))
+                        callPage(CaseRecordingForm.Url, New CaseRecordingForm.Parameters(selectedId, CaseRecordingForm.CasePurpose.ClaimInquiry, Me.State.IsCallerAuthenticated))
 
                     ElseIf e.CommandName = ActionCommandResumeCaseClaim Then
-                        callPage(CaseRecordingForm.Url, New CaseRecordingForm.Parameters(selectedId, CaseRecordingForm.CasePurpose.CaseInquiry,Me.State.IsCallerAuthenticated))
+                        callPage(CaseRecordingForm.Url, New CaseRecordingForm.Parameters(selectedId, CaseRecordingForm.CasePurpose.CaseInquiry, Me.State.IsCallerAuthenticated))
 
                     ElseIf e.CommandName = SelectActionCommandCert Then
-                        callPage(CertificateForm.URL, New CertificateForm.Parameters(selectedId,Me.State.IsCallerAuthenticated))
+                        callPage(CertificateForm.URL, New CertificateForm.Parameters(selectedId, Me.State.IsCallerAuthenticated))
 
                     End If
                 End If

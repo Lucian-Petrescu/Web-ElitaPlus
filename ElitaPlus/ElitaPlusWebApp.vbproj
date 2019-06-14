@@ -5749,21 +5749,21 @@
     <Content Include="Service References\ClaimFulfillmentService\Assurant.ElitaPlus.ElitaPlusWebApp.ClaimFulfillmentService.CheckVendorInventoryAndBestReplacementResponse.datasource">
       <DependentUpon>Reference.svcmap</DependentUpon>
     </Content>
-    <None Include="Service References\CaseManagementWebAppGatewayService\WebAppGateway.wsdl" />
-    <None Include="Service References\CaseManagementWebAppGatewayService\WebAppGateway.xsd">
+    <None Include="Service References\CaseManagementWebAppGatewayService\WebAppGateway2.wsdl" />
+    <None Include="Service References\CaseManagementWebAppGatewayService\WebAppGateway21.wsdl" />
+    <None Include="Service References\CaseManagementWebAppGatewayService\WebAppGateway5.xsd">
       <SubType>Designer</SubType>
     </None>
-    <None Include="Service References\CaseManagementWebAppGatewayService\WebAppGateway1.wsdl" />
-    <None Include="Service References\CaseManagementWebAppGatewayService\WebAppGateway1.xsd">
+    <None Include="Service References\CaseManagementWebAppGatewayService\WebAppGateway51.xsd">
       <SubType>Designer</SubType>
     </None>
-    <None Include="Service References\CaseManagementWebAppGatewayService\WebAppGateway2.xsd">
+    <None Include="Service References\CaseManagementWebAppGatewayService\WebAppGateway52.xsd">
       <SubType>Designer</SubType>
     </None>
-    <None Include="Service References\CaseManagementWebAppGatewayService\WebAppGateway3.xsd">
+    <None Include="Service References\CaseManagementWebAppGatewayService\WebAppGateway53.xsd">
       <SubType>Designer</SubType>
     </None>
-    <None Include="Service References\CaseManagementWebAppGatewayService\WebAppGateway4.xsd">
+    <None Include="Service References\CaseManagementWebAppGatewayService\WebAppGateway54.xsd">
       <SubType>Designer</SubType>
     </None>
     <None Include="Service References\ClaimFulfillmentService\FulfillmentService.disco" />

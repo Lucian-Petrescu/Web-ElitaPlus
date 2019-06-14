@@ -282,6 +282,9 @@ Namespace CaseManagementWebAppGatewayService
         <System.Runtime.Serialization.OptionalFieldAttribute()>  _
         Private EmailAddressField As String
         
+        <System.Runtime.Serialization.OptionalFieldAttribute()>  _
+        Private IsAuthenticatedField As System.Nullable(Of Boolean)
+        
         <Global.System.ComponentModel.BrowsableAttribute(false)>  _
         Public Property ExtensionData() As System.Runtime.Serialization.ExtensionDataObject Implements System.Runtime.Serialization.IExtensibleDataObject.ExtensionData
             Get
@@ -366,6 +369,19 @@ Namespace CaseManagementWebAppGatewayService
                 If (Object.ReferenceEquals(Me.EmailAddressField, value) <> true) Then
                     Me.EmailAddressField = value
                     Me.RaisePropertyChanged("EmailAddress")
+                End If
+            End Set
+        End Property
+        
+        <System.Runtime.Serialization.DataMemberAttribute(Order:=6)>  _
+        Public Property IsAuthenticated() As System.Nullable(Of Boolean)
+            Get
+                Return Me.IsAuthenticatedField
+            End Get
+            Set
+                If (Me.IsAuthenticatedField.Equals(value) <> true) Then
+                    Me.IsAuthenticatedField = value
+                    Me.RaisePropertyChanged("IsAuthenticated")
                 End If
             End Set
         End Property
