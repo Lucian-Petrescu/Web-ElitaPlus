@@ -164,21 +164,6 @@ MasterPageFile="../Navigation/masters/ElitaBase.Master" Theme="Default" %>
                             </asp:DropDownList>
                         </td>
                     </tr>
-                    <tr>
-                        <td>
-                            <asp:Label ID="LabelCase" runat="server">CASE_NUMBER</asp:Label><br />
-                            <asp:TextBox ID="TextBoxCaseNumber" runat="server" AutoPostBack="False" SkinID="MediumTextBox"></asp:TextBox>
-                        </td>
-
-                        <td>
-                            <asp:Label ID="LabelCertificateNumber" runat="server">CERTIFICATE_NUMBER</asp:Label><br />
-                            <asp:TextBox ID="TextBoxCertificateNumber" runat="server" SkinID="MediumTextBox" AutoPostBack="False"></asp:TextBox>
-                        </td>
-                        <td>
-                            <asp:Label ID="LabelClaimNumber" runat="server">CLAIM_NUMBER</asp:Label><br />
-                            <asp:TextBox ID="TextBoxClaimNumber" runat="server" AutoPostBack="False" SkinID="MediumTextBox"></asp:TextBox>
-                        </td>
-                    </tr>
                     <asp:PlaceHolder runat="server" ID="PanelHolderDynamicSearchCriteria"></asp:PlaceHolder>
                     <tr>
                         <td colspan="3"></td>

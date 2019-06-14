@@ -60,60 +60,6 @@ Namespace Certificates
         Protected WithEvents ddlDealer As Global.System.Web.UI.WebControls.DropDownList
         
         '''<summary>
-        '''LabelCase control.
-        '''</summary>
-        '''<remarks>
-        '''Auto-generated field.
-        '''To modify move field declaration from designer file to code-behind file.
-        '''</remarks>
-        Protected WithEvents LabelCase As Global.System.Web.UI.WebControls.Label
-        
-        '''<summary>
-        '''TextBoxCaseNumber control.
-        '''</summary>
-        '''<remarks>
-        '''Auto-generated field.
-        '''To modify move field declaration from designer file to code-behind file.
-        '''</remarks>
-        Protected WithEvents TextBoxCaseNumber As Global.System.Web.UI.WebControls.TextBox
-        
-        '''<summary>
-        '''LabelCertificateNumber control.
-        '''</summary>
-        '''<remarks>
-        '''Auto-generated field.
-        '''To modify move field declaration from designer file to code-behind file.
-        '''</remarks>
-        Protected WithEvents LabelCertificateNumber As Global.System.Web.UI.WebControls.Label
-        
-        '''<summary>
-        '''TextBoxCertificateNumber control.
-        '''</summary>
-        '''<remarks>
-        '''Auto-generated field.
-        '''To modify move field declaration from designer file to code-behind file.
-        '''</remarks>
-        Protected WithEvents TextBoxCertificateNumber As Global.System.Web.UI.WebControls.TextBox
-        
-        '''<summary>
-        '''LabelClaimNumber control.
-        '''</summary>
-        '''<remarks>
-        '''Auto-generated field.
-        '''To modify move field declaration from designer file to code-behind file.
-        '''</remarks>
-        Protected WithEvents LabelClaimNumber As Global.System.Web.UI.WebControls.Label
-        
-        '''<summary>
-        '''TextBoxClaimNumber control.
-        '''</summary>
-        '''<remarks>
-        '''Auto-generated field.
-        '''To modify move field declaration from designer file to code-behind file.
-        '''</remarks>
-        Protected WithEvents TextBoxClaimNumber As Global.System.Web.UI.WebControls.TextBox
-        
-        '''<summary>
         '''PanelHolderDynamicSearchCriteria control.
         '''</summary>
         '''<remarks>
