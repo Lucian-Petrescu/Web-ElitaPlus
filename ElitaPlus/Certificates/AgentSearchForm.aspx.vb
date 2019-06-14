@@ -493,12 +493,12 @@ Namespace Certificates
                     Dim exclSecFieldsDt As DataTable
                     Dim objList As List(Of CaseBase.ExclSecFields)
 
-                    If State.ExclSecFieldsDt Is Nothing Then
+                   ' If State.ExclSecFieldsDt Is Nothing Then
                         objList = CaseBase.LoadExclSecFieldsConfig(Guid.Empty, State.DealerId)
                         If objList.Count > 0 Then
                             State.ExclSecFieldsDt = ConvertToDataTable(Of CaseBase.ExclSecFields)(objList)                          
                         End If
-                    End If
+                    'End If
                 End If
 
 
@@ -512,7 +512,7 @@ Namespace Certificates
             Try
                 If Not (State.CompanyId.Equals(State.PreviousCompanyId) And State.DealerId.Equals(State.PreviousDealerId)) Then
                     Dim dsResults As DataSet
-                    If State.SearchResultsConfigListDt Is Nothing Then
+                    'If State.SearchResultsConfigListDt Is Nothing Then
                         dsResults = CaseBase.GetAgentSearchConfigList(State.CompanyId, State.DealerId, SearchTypeXCD)
                         If dsResults.Tables(0).Rows.Count > 0 Then
                             State.SearchResultsConfigListDt = dsResults.Tables(0)
@@ -520,7 +520,7 @@ Namespace Certificates
                         Else
                             Return False
                         End If
-                    End If
+                     'End If
                 End If
 
             Catch ex As ThreadAbortException
