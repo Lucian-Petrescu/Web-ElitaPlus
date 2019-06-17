@@ -1,3 +1,6 @@
+Imports Microsoft.Owin.Security.Cookies
+Imports Microsoft.Owin.Security.OpenIdConnect
+
 Partial Class LogOutForm
     Inherits System.Web.UI.Page
 
@@ -44,6 +47,17 @@ Partial Class LogOutForm
     Private Sub CleanUp()
         Session.Clear()
         Session.Abandon()
+
+        If (TypeOf System.Threading.Thread.CurrentPrincipal Is ElitaPlusPrincipal) Then
+            Dim idToken As String = ElitaPlusPrincipal.Current.IdToken
+            If Not String.IsNullOrEmpty(idToken) Then
+                ' delete okta authentification cookies
+                Context.GetOwinContext().Authentication.SignOut(
+                    CookieAuthenticationDefaults.AuthenticationType,
+                    OpenIdConnectAuthenticationDefaults.AuthenticationType
+                )
+            End If
+        End If
     End Sub
 
     Private Sub ReconnectToTheSite()

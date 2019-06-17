@@ -1,6 +1,6 @@
 Imports System.IO.Compression
-
-
+Imports System.Net
+Imports System.Web.Routing
 
 Public Class [Global]
     Inherits System.Web.HttpApplication
@@ -32,18 +32,27 @@ Public Class [Global]
 
 #End Region
 
+    Public Function RemoteCertificateValidationCallback(ByVal sender As Object, ByVal certificate As System.Security.Cryptography.X509Certificates.X509Certificate, ByVal chain As System.Security.Cryptography.X509Certificates.X509Chain, ByVal sslPolicyErrors As System.Net.Security.SslPolicyErrors) As Boolean
+        Return True
+    End Function
+
     Sub Application_Start(ByVal sender As Object, ByVal e As EventArgs)
-        ' Fires when the application is started
+        ' Fires when the application is started        
+
+#If DEBUG Then
+        ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls Or SecurityProtocolType.Tls11 Or SecurityProtocolType.Tls12
+        System.Net.ServicePointManager.ServerCertificateValidationCallback = New System.Net.Security.RemoteCertificateValidationCallback(AddressOf RemoteCertificateValidationCallback)
+#End If
     End Sub
 
     Sub Session_OnStart(ByVal sender As Object, ByVal e As EventArgs)
-        'Dim cookie As HttpCookie = Me.Request.Cookies.Item(ELPWebConstants.ELITA_PLUS_AUTHENTICATION_COOKIE)
+
         Dim cookie As HttpCookie = Me.Request.Cookies.Item(ELPWebConstants.ELITA_PLUS_AUTHENTICATION_COOKIE & "-" & Session.SessionID)
         Dim connCookie As HttpCookie
         '   Dim connType As String = ELPWebConstants.CONNECTION_TYPE_DEFAULT
 
         If cookie Is Nothing Then
-            'cookie = New HttpCookie(ELPWebConstants.ELITA_PLUS_AUTHENTICATION_COOKIE)
+
             cookie = New HttpCookie(ELPWebConstants.ELITA_PLUS_AUTHENTICATION_COOKIE & "-" & Session.SessionID)
             cookie.Expires = DateTime.Now.AddDays(1.0)
             cookie.Value = "0"
@@ -246,7 +255,6 @@ Public Class [Global]
                     Session("RedirectUrl") = Me.Request.Url.AbsoluteUri
                 End If
 
-                'Dim cookie As HttpCookie = Me.Response.Cookies.Item(ELPWebConstants.ELITA_PLUS_AUTHENTICATION_COOKIE)
                 Dim cookie As HttpCookie = Me.Response.Cookies.Item(ELPWebConstants.ELITA_PLUS_AUTHENTICATION_COOKIE & "-" & Session.SessionID)
 
                 If Not cookie Is Nothing AndAlso cookie.Value = "1" Then
