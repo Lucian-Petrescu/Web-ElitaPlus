@@ -11,13 +11,13 @@ Imports System.Threading.Tasks
 
 <Assembly: OwinStartup(GetType(Startup))>
 Public Class Startup
-    Private ReadOnly clientId As String = ConfigurationManager.AppSettings("okta:ClientId")
-    Private ReadOnly redirectUri As String = ConfigurationManager.AppSettings("okta:RedirectUri")
-    Private ReadOnly authority As String = ConfigurationManager.AppSettings("okta:OrgUri")
-    Private ReadOnly clientSecret As String = ConfigurationManager.AppSettings("okta:ClientSecret")
-    Private ReadOnly postLogoutRedirectUri As String = ConfigurationManager.AppSettings("okta:PostLogoutRedirectUri")
-    Private ReadOnly responseType As String = ConfigurationManager.AppSettings("okta:ResponseType")
-    Private ReadOnly scope As String = ConfigurationManager.AppSettings("okta:Scope")
+    Private ReadOnly clientId As String = ConfigurationManager.AppSettings("Okta.ClientId")
+    Private ReadOnly redirectUri As String = ConfigurationManager.AppSettings("Okta.RedirectUri")
+    Private ReadOnly authority As String = ConfigurationManager.AppSettings("Okta.OrgUri")
+    Private ReadOnly clientSecret As String = ConfigurationManager.AppSettings("Okta.ClientSecret")
+    Private ReadOnly postLogoutRedirectUri As String = ConfigurationManager.AppSettings("Okta.PostLogoutRedirectUri")
+    Private ReadOnly responseType As String = ConfigurationManager.AppSettings("Okta.ResponseType")
+    Private ReadOnly scope As String = ConfigurationManager.AppSettings("Okta.Scope")
 
     Public Sub Configuration(ByVal app As IAppBuilder)
         app.SetDefaultSignInAsAuthenticationType(CookieAuthenticationDefaults.AuthenticationType)
