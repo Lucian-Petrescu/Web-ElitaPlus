@@ -160,12 +160,12 @@ Partial Class CoverageLossForm
         Me.UserControlAvailableSelectedCauseOfLoss.SetAvailableData(availableDv, LookupListNew.COL_DESCRIPTION_NAME, LookupListNew.COL_ID_NAME)
         Me.UserControlAvailableSelectedCauseOfLoss.SetSelectedData(selectedDv, LookupListNew.COL_DESCRIPTION_NAME, LookupListNew.COL_ID_NAME)
 
-        Me.cboDefaultValue.Populate(selectedLst, New PopulateOptions() With
-                {
-                    .AddBlankItem = True
-                })
+        'Me.cboDefaultValue.Populate(selectedLst, New PopulateOptions() With
+        '        {
+        '            .AddBlankItem = True
+        '        })
 
-        'Me.BindListControlToDataView(cboDefaultValue, selectedDv, , , True)
+        Me.BindListControlToDataView(cboDefaultValue, selectedDv, , , True)
 
         FindDefaultValue()
         ControlMgr.SetVisibleControl(Me, UserControlAvailableSelectedCauseOfLoss, True)
