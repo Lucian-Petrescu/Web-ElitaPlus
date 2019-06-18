@@ -277,7 +277,7 @@ Namespace Certificates
 
             State.DealerId = GetSelectedItem(ddlDealer)
             State.CompanyId = GetSelectedItem(ddlCompany)
-            
+
 
             ' Dynamic controls - text box
             State.CertificateNumber = GetSearchTextBoxValue(CodeSearchFieldCertificateNumber)
@@ -299,15 +299,9 @@ Namespace Certificates
 
             State.ShowAdditionalSearchFields = checkboxAdditionalSearchCriteria.Checked
         End Sub
-        Protected Sub SetSearchSettingToDefault()
+        Protected Sub SetSearchSettingToDefault(Optional ByVal setCompanyDealerValue As Boolean = False)
 
-            If Authentication.CurrentUser.IsDealer Then
-                If State.CompanyId <> Guid.Empty And ddlCompany.Items.Count > 0 Then SetSelectedItem(ddlCompany, State.CompanyId)
-                If State.DealerId <> Guid.Empty And ddlDealer.Items.Count > 0 Then SetSelectedItem(ddlDealer, State.DealerId)
-            Else
-                ddlCompany.SelectedIndex = DefaultItem
-                ddlDealer.SelectedIndex = DefaultItem
-            End If
+            SetCompanyDealerDropdown(setCompanyDealerValue)
 
             'Clear the text box
             ClearSearchTextBox(CodeSearchFieldCertificateNumber)
@@ -331,6 +325,15 @@ Namespace Certificates
             ResetSearchResult()
 
             checkboxAdditionalSearchCriteria.Checked = False
+        End Sub
+        Protected Sub SetCompanyDealerDropdown(ByVal setCompanyDealerValue As Boolean)
+            If Authentication.CurrentUser.IsDealer OrElse setCompanyDealerValue = True Then
+                If Not State.CompanyId.Equals(Guid.Empty) And ddlCompany.Items.Count > 0 Then SetSelectedItem(ddlCompany, State.CompanyId)
+                If Not State.DealerId.Equals(Guid.Empty) And ddlDealer.Items.Count > 0 Then SetSelectedItem(ddlDealer, State.DealerId)
+            Else
+                ddlCompany.SelectedIndex = DefaultItem
+                ddlDealer.SelectedIndex = DefaultItem
+            End If
         End Sub
         Private Sub GetStateFieldsValueIntoControl()
             If State.CompanyId <> Guid.Empty And ddlCompany.Items.Count > 0 Then SetSelectedItem(ddlCompany, State.CompanyId)
@@ -363,6 +366,7 @@ Namespace Certificates
                 'Get all Search Criteria for the company and dealer
                 Dim dv As DataView = SearchConfigAssignment.GetDynamicSearchCriteriaFields(State.CompanyId, State.DealerId, Authentication.CurrentUser.LanguageCode, "AGENT_SEARCH")
                 State.SearchCriteriaDt = dv.Table
+                PopulateSearchConfigList()
                 State.PreviousCompanyId = State.CompanyId
                 State.PreviousDealerId = State.DealerId
             End If
@@ -416,23 +420,36 @@ Namespace Certificates
             Redirect(CaseSearchForm.Url)
         End Sub
         Protected Sub ddlDealer_SelectedIndexChanged(sender As Object, e As EventArgs) Handles ddlDealer.SelectedIndexChanged
-            State.DealerId = GetSelectedItem(ddlDealer)
-            PopulateExclSecFields()
-            PopulateSearchConfigList()
-            GetDynamicSearchCriteria()
-            ResetSearchResult()
+            Try
+                State.DealerId = GetSelectedItem(ddlDealer)
+                SetSearchSettingToDefault(True)
+                SetStateFieldsValue()
+                PopulateExclSecFields()
+                GetDynamicSearchCriteria()
+            Catch ex As Exception
+                HandleErrors(ex, MasterPage.MessageController)
+            End Try
         End Sub
 
         Protected Sub ddlCompany_SelectedIndexChanged(sender As Object, e As EventArgs) Handles ddlCompany.SelectedIndexChanged
-            State.CompanyId = GetSelectedItem(ddlCompany)
-            GetDynamicSearchCriteria()
-            ResetSearchResult()
+            Try
+                State.CompanyId = GetSelectedItem(ddlCompany)
+                SetSearchSettingToDefault(True)
+                GetDynamicSearchCriteria()
+            Catch ex As Exception
+                HandleErrors(ex, MasterPage.MessageController)
+            End Try
         End Sub
         Protected Sub checkboxAdditionalSearchCriteria_CheckedChanged(sender As Object, e As EventArgs) Handles checkboxAdditionalSearchCriteria.CheckedChanged
-            State.ShowAdditionalSearchFields = checkboxAdditionalSearchCriteria.Checked
-            SetStateFieldsValue()
-            DisplayDynamicSearchCriteria()
-            GetStateFieldsValueIntoControl()
+            Try
+                State.ShowAdditionalSearchFields = checkboxAdditionalSearchCriteria.Checked
+                SetStateFieldsValue()
+                DisplayDynamicSearchCriteria()
+                GetStateFieldsValueIntoControl()
+                ResetSearchResult()
+            Catch ex As Exception
+                HandleErrors(ex, MasterPage.MessageController)
+            End Try
         End Sub
 #End Region
 
@@ -511,26 +528,15 @@ Namespace Certificates
             End Try
         End Sub
 
-        Private Function PopulateSearchConfigList() As Boolean
-            Try
-                If Not (State.CompanyId.Equals(State.PreviousCompanyId) And State.DealerId.Equals(State.PreviousDealerId)) Then
-                    Dim dsResults As DataSet
-                    'If State.SearchResultsConfigListDt Is Nothing Then
-                    dsResults = CaseBase.GetAgentSearchConfigList(State.CompanyId, State.DealerId, SearchTypeXCD)
-                    If dsResults.Tables(0).Rows.Count > 0 Then
-                        State.SearchResultsConfigListDt = dsResults.Tables(0)
-                        Return True
-                    Else
-                        Return False
-                    End If
-                    'End If
+        Private Sub PopulateSearchConfigList()
+            If Not (State.CompanyId.Equals(State.PreviousCompanyId) And State.DealerId.Equals(State.PreviousDealerId)) Then
+                Dim dsResults As DataSet
+                dsResults = CaseBase.GetAgentSearchConfigList(State.CompanyId, State.DealerId, SearchTypeXCD)
+                If dsResults.Tables(0).Rows.Count > 0 Then
+                    State.SearchResultsConfigListDt = dsResults.Tables(0)
                 End If
-
-            Catch ex As ThreadAbortException
-            Catch ex As Exception
-                HandleErrors(ex, MasterPage.MessageController)
-            End Try
-        End Function
+            End If
+        End Sub
 
 #End Region
 #Region "Helper functions"

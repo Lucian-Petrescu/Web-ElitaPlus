@@ -190,6 +190,15 @@ Public Class CaseDAL
             inParameters.Add(param)
         End If
 
+        param = New DBHelper.DBHelperParameter("pi_cert_number", CertificateNumber)
+        inParameters.Add(param)
+
+        param = New DBHelper.DBHelperParameter("pi_case_number", CaseNumber)
+        inParameters.Add(param)
+
+        param = New DBHelper.DBHelperParameter("pi_serial_number", SerialNumber)
+        inParameters.Add(param)
+
         param = New DBHelper.DBHelperParameter("pi_customer_first_name", CustomerFirstName)
         inParameters.Add(param)
 
@@ -197,31 +206,19 @@ Public Class CaseDAL
         param = New DBHelper.DBHelperParameter("pi_customer_last_name", CustomerLastName)
         inParameters.Add(param)
 
-        param = New DBHelper.DBHelperParameter("pi_case_number", CaseNumber)
-        inParameters.Add(param)
-
-        param = New DBHelper.DBHelperParameter("pi_claim_number", ClaimNumber)
-        inParameters.Add(param)
-
-        param = New DBHelper.DBHelperParameter("pi_certificate_number", CertificateNumber)
-        inParameters.Add(param)
-
-        param = New DBHelper.DBHelperParameter("pi_serial_number", SerialNumber)
-        inParameters.Add(param)
-
-        param = New DBHelper.DBHelperParameter("pi_invoice_number", InvoiceNumber)
-        inParameters.Add(param)
-
         param = New DBHelper.DBHelperParameter("pi_phone_number", PhoneNumber)
-        inParameters.Add(param)
-
-        param = New DBHelper.DBHelperParameter("pi_zip_code", Zipcode)
         inParameters.Add(param)
 
         param = New DBHelper.DBHelperParameter("pi_status_code", CertificateStatus)
         inParameters.Add(param)
 
+        param = New DBHelper.DBHelperParameter("pi_invoice_number", InvoiceNumber)
+        inParameters.Add(param)
+
         param = New DBHelper.DBHelperParameter("pi_email", Email)
+        inParameters.Add(param)
+
+        param = New DBHelper.DBHelperParameter("pi_claim_number", ClaimNumber)
         inParameters.Add(param)
 
         param = New DBHelper.DBHelperParameter("pi_tax_id", TaxId)
@@ -235,11 +232,14 @@ Public Class CaseDAL
 
         param = New DBHelper.DBHelperParameter("pi_global_customer_number", GlobalCustomerNumber)
         inParameters.Add(param)
-
+        
+        param = New DBHelper.DBHelperParameter("pi_zip_code", Zipcode)
+        inParameters.Add(param)
+        
         param = New DBHelper.DBHelperParameter("pi_language_id", LanguageId.ToByteArray)
         inParameters.Add(param)
 
-        outputParameter(PoCursorCase) = New DBHelper.DBHelperParameter(SpParamNameAgentList, GetType(DataSet))
+        outputParameter(PoCursorCase) = New DBHelper.DBHelperParameter("po_cursor", GetType(DataSet))
 
         Try
             DBHelper.FetchSp(selectStmt, inParameters.ToArray, outputParameter, ds, "GetAgentList")
