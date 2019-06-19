@@ -7,6 +7,7 @@ Imports Assurant.Elita.CommonConfiguration
 Imports Assurant.Elita.CommonConfiguration.DataElements
 Imports Assurant.Elita.Web.Forms
 Imports System.Threading
+Imports Microsoft.Web.Services3.Referral
 
 Namespace Tables
 
@@ -46,7 +47,7 @@ Namespace Tables
 #Region "MyState"
 
         Class MyState
-            Public ParentBO As ProductCodeParent
+            'Public ParentBO As ProductCodeParent
             Public moProductCodeId As Guid = Guid.Empty
             Public Parent_Product_code_id As Guid = Guid.Empty
 
@@ -141,9 +142,9 @@ Namespace Tables
             Public CompanyCode As String
             Public DealerCode As String
             Public ProductCodeDetailId As Guid = Guid.Empty
-            Public ProductCodeParentId As Guid = Guid.Empty
+            'Public ProductCodeParentId As Guid = Guid.Empty
             Public MyProductChildBO As ProductCodeDetail
-            Public MyProductParentBO As ProductCodeParent
+            'Public MyProductParentBO As ProductCodeParent
 
             Public ProductEquipmentId As Guid = Guid.Empty
             Public ProductBenefitsId As Guid = Guid.Empty
@@ -162,6 +163,9 @@ Namespace Tables
             Public ProductEquipmentOrig As ProductEquipment
             Public DeviceGroupCode As String
             Public DeviceTypesDetailsGridTranslated As Boolean = False
+
+            'US 327809
+            Public PaymentSplitRuleLkl As ListItem() = Nothing
 
             Public Sub New()
             End Sub
@@ -661,17 +665,7 @@ Namespace Tables
                     AttributeValues.ParentBusinessObject = CType(Me.State.moProductCode, IAttributable)
                     'AttributeValues.TranslateHeaders()--Commented since it is calling two times
                     EnableDisableFields()
-                    If Me.State.IsProductCodeNew = False And Me.State.moProductCode.IsParentProduct Then
-                        Me.mo_ParentsGrid.DataSource = Me.State.parentsearchDV
-                        If Not Me.State.ExtendedAttributesGridTranslated Then
-                            Me.TranslateGridHeader(Me.mo_ParentsGrid)
-                            Me.State.ExtendedAttributesGridTranslated = True
-                        End If
-                        Me.mo_ParentsGrid.DataBind()
-                    Else
-                        ' Add tabs to disable.
-                        DisabledTabsList.Add(Tab_ExtendedAttributes)
-                    End If
+                    PopulateProductParentGrid()
                     If TheProductCode.ListForDeviceGroups = Guid.Empty Then
                         If DisabledTabsList.Contains(tab_DeviceTypeDetails) = False Then
                             DisabledTabsList.Add(tab_DeviceTypeDetails)
@@ -713,6 +707,20 @@ Namespace Tables
                 Me.State.LastOperation = DetailPageCommand.Nothing_
             Else
                 Me.ShowMissingTranslations(Me.MasterPage.MessageController)
+            End If
+        End Sub
+
+        Private Sub PopulateProductParentGrid()
+            If Me.State.IsProductCodeNew = False And Me.State.moProductCode.IsParentProduct Then
+                Me.mo_ParentsGrid.DataSource = Me.State.parentsearchDV
+                If Not Me.State.ExtendedAttributesGridTranslated Then
+                    Me.TranslateGridHeader(Me.mo_ParentsGrid)
+                    Me.State.ExtendedAttributesGridTranslated = True
+                End If
+                Me.mo_ParentsGrid.DataBind()
+            Else
+                ' Add tabs to disable.
+                DisabledTabsList.Add(Tab_ExtendedAttributes)
             End If
         End Sub
 
@@ -1299,6 +1307,8 @@ Namespace Tables
                                                         .BlankItemValue = String.Empty,
                                                         .ValueFunc = AddressOf .GetCode
                                                        })
+
+                Me.State.PaymentSplitRuleLkl = CommonConfigManager.Current.ListManager.GetList("PAYSPLITRULE", Thread.CurrentPrincipal.GetLanguageCode())
             Catch ex As Exception
                 Me.MasterPage.MessageController.AddError(PRODUCTCODE_FORM001)
                 Me.MasterPage.MessageController.AddError(ex.Message, False)
@@ -1579,13 +1589,13 @@ Namespace Tables
                         Me.PopulateControlFromBOProperty(Me.moExpNotificationDaysText, .ExpirationNotificationDays)
                         PopulateControlFromBOProperty(TextBoxFulfillmentReimThresholdValue, .FullillmentReimburesementThreshold)
                         BindSelectItem(TheDepreciationSchedule.DepreciationScheduleId.ToString, ddlDepSchCashReimbursement)
-                        BindSelectItem(.claimProfile, ddlClaimProfile)
+                        BindSelectItem(.ClaimProfile, ddlClaimProfile)
                     End If
 
                     ShowHideBenefitsControls(Me.TheProductCode.BenefitEligibleFlagXCD = Codes.EXT_YESNO_Y)
 
                 End With
-                
+
                 'BindSelectItem(Me.State.DepreciationScdRelationBO.DepreciationScheduleId.ToString, ddlDepSchCashReimbursement)
 
                 If (AttributeValues.ParentBusinessObject Is Nothing) Then
@@ -1642,6 +1652,7 @@ Namespace Tables
                 PopulateMyProductRewardsGrid()
                 PopulateProductEquipmentGrid()
                 PopulateProductBenefitsGrid()
+                PopulateProductParentGrid()
             End If
         End Sub
 
@@ -2002,7 +2013,6 @@ Namespace Tables
                 End If
 
                 Me.PopulateBOsFromForm()
-                ' Me.PopulateParentBOFormFrom()
 
                 If (Not GetSelectedItem(Me.moUpgTermUOMDrop).Equals(Guid.Empty) AndAlso (
                     GetSelectedItem(Me.moUpgTermUOMDrop) = LookupListNew.GetIdFromCode(LookupListNew.LK_UPGRADE_TERM_UNIT_OF_MEASURE, Codes.UPG_UNIT_OF_MEASURE__RANGE_IN_DAYS) Or
@@ -2060,7 +2070,6 @@ Namespace Tables
                         Me.PopulateBOProperty(TheProductCode, "PercentOfRetail", "0.0")
                     End If
 
-                    ' Me.State.ParentBO.Save()
                     Me.TheProductCode.Save()
 
                     _moDepreciationScdRelation = Nothing
@@ -3933,12 +3942,80 @@ Namespace Tables
 
                         e.Row.Cells(Me.GRID_COL_EFFECTIVE_IDX).Text = Me.GetDateFormattedString(CType(dvRow(ProductCodeParent.ProductCodeSearchDV.COL_EFFECTIVE), Date))
                         e.Row.Cells(Me.GRID_COL_EXPIRATION_IDX).Text = Me.GetDateFormattedString(CType(dvRow(ProductCodeParent.ProductCodeSearchDV.COL_EXPIRATION), Date))
-                        e.Row.Cells(Me.GRID_COL_PAYMENT_SPLIT_RULE_IDX).Text = dvRow(ProductCodeParent.ProductCodeSearchDV.COL_PAYMENT_SPLIT_RULE_ID).ToString
+
+                        ' manage Payment Split Rule Field edition
+                        Dim paymentSplitRuleText As String = dvRow(ProductCodeParent.ProductCodeSearchDV.COL_PAYMENT_SPLIT_RULE_ID).ToString()
+
+                        Dim lblLocalPaymentSplitRule As Label = TryCast(e.Row.FindControl("lblPaymentSplitRule"), Label)
+                        If Not lblLocalPaymentSplitRule Is Nothing Then
+                            ' read mode
+                            lblLocalPaymentSplitRule.Text = paymentSplitRuleText
+                        End If
+
+                        ' edit mode
+                        Dim ddlLocalPaymentSplitRule As DropDownList = CType(e.Row.FindControl("ddlPaymentSplitRule"), DropDownList)
+                        If Not ddlLocalPaymentSplitRule Is Nothing Then
+                            ddlLocalPaymentSplitRule.Populate(Me.State.PaymentSplitRuleLkl, New PopulateOptions() With
+                                                         {
+                                                         .AddBlankItem = True,
+                                                         .BlankItemValue = String.Empty
+                                                         })
+
+                            Dim listItem As WebControls.ListItem = ddlLocalPaymentSplitRule.Items.FindByText(paymentSplitRuleText)
+                            If Not listItem Is Nothing Then
+                                ddlLocalPaymentSplitRule.SelectedValue = listItem.Value
+                            End If
+                        End If
                     End If
                 End If
             Catch ex As Exception
                 Me.HandleErrors(ex, Me.MasterPage.MessageController)
             End Try
+        End Sub
+
+        Protected Sub mo_ParentsGrid_OnRowCommand(sender As Object, e As GridViewCommandEventArgs)
+            Dim nIndex As Integer = CInt(e.CommandArgument)
+
+            Try
+                If e.CommandName = EDIT_COMMAND_NAME Then
+                    mo_ParentsGrid.EditIndex = nIndex
+                    PopulateProductParentGrid()
+                ElseIf (e.CommandName = SAVE_COMMAND) Then
+                    mo_ParentsGrid.EditIndex = NO_ROW_SELECTED_INDEX
+                    SaveRecordParent(nIndex)
+                    PopulateProductParentGrid()
+                ElseIf (e.CommandName = CANCEL_COMMAND) Then
+                    mo_ParentsGrid.EditIndex = NO_ROW_SELECTED_INDEX
+                    PopulateProductParentGrid()
+                End If
+
+            Catch ex As Exception
+                Me.HandleErrors(ex, Me.MasterPage.MessageController)
+            End Try
+        End Sub
+
+        Private Sub SaveRecordParent(nIndex As Integer)
+            Dim gvRow As GridViewRow = mo_ParentsGrid.Rows(nIndex)
+
+            If Not gvRow Is Nothing Then
+                ' Get the ProductCodeParentBo
+                Dim productCodeParentId As Guid = GuidControl.ByteArrayToGuid(mo_ParentsGrid.DataKeys(gvRow.RowIndex).Values(0))
+                Dim productCodeParentBo As ProductCodeParent = New ProductCodeParent(productCodeParentId)
+
+                Dim ddlLocalPaymentSplitRule As DropDownList = TryCast(gvRow.FindControl("ddlPaymentSplitRule"), DropDownList)
+
+                Dim paymentSplitRuleId As Guid = Nothing
+                ' Get the list Item Id
+                Guid.TryParse(ddlLocalPaymentSplitRule.SelectedValue, paymentSplitRuleId)
+
+                ' Save if only there are changes.
+                If productCodeParentBo.PaymentSplitRuleId <> paymentSplitRuleId Then
+                    productCodeParentBo.PaymentSplitRuleId = paymentSplitRuleId
+                    productCodeParentBo.Save()
+                End If
+                ' update the dataSource
+                Me.State.parentsearchDV = ProductCodeParent.GetList(Me.State.oDealer.Id, Me.State.moProductCode.Id)
+            End If
         End Sub
 
         Protected Sub gvChilds_RowDataBound(sender As Object, e As GridViewRowEventArgs)
