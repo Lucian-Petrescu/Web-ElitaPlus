@@ -47,6 +47,10 @@ Namespace SpecializedServices
                 .Model = ds.Tables("CertificateInfo").Rows(0)("Model").ToString()
                 .Phone_Number = ds.Tables("CertificateInfo").Rows(0)("Phone_Number").ToString()
                 .Serial_Number = ds.Tables("CertificateInfo").Rows(0)("Serial_Number").ToString()
+                .Related_Company_Code = ds.Tables("CertificateInfo").Rows(0)("Related_Company_Code").ToString()
+                .Related_Cert_Number = ds.Tables("CertificateInfo").Rows(0)("Related_Cert_Number").ToString()
+                .Related_Dealer_Code = ds.Tables("CertificateInfo").Rows(0)("Related_Dealer_Code").ToString()
+                .Relation = ds.Tables("CertificateInfo").Rows(0)("Relation").ToString()
             End With
 
             response.ClaimInfo = ds _
