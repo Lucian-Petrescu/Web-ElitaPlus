@@ -3305,6 +3305,9 @@ Public MustInherit Class ClaimBase
                                  End Select
                              End Function)
                 End If
+            Case Codes.DEDUCTIBLE_BASED_ON__COMPUTED_EXTERNALLY
+                Me.DeductiblePercentID = LookupListNew.GetIdFromCode(LookupListNew.LK_YESNO, Codes.YESNO_N)
+                Me.Deductible = New DecimalType(0D)
             Case Else
         End Select
 

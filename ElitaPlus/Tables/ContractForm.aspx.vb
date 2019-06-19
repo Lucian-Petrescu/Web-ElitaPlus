@@ -1539,7 +1539,8 @@ Partial Class ContractForm
                         (deductibleBasedOnCode = Codes.DEDUCTIBLE_BASED_ON__PERCENT_OF_ORIGINAL_RETAIL_PRICE) OrElse
                         (deductibleBasedOnCode = Codes.DEDUCTIBLE_BASED_ON__PERCENT_OF_LIST_PRICE) OrElse
                         (deductibleBasedOnCode = Codes.DEDUCTIBLE_BASED_ON__PERCENT_OF_ITEM_RETAIL_PRICE) OrElse
-                        (deductibleBasedOnCode = Codes.DEDUCTIBLE_BASED_ON__PERCENT_OF_LIST_PRICE_WSD) Then
+                        (deductibleBasedOnCode = Codes.DEDUCTIBLE_BASED_ON__PERCENT_OF_LIST_PRICE_WSD) OrElse
+                        (deductibleBasedOnCode = Codes.DEDUCTIBLE_BASED_ON__COMPUTED_EXTERNALLY) Then
 
                     Me.PopulateBOProperty(Me.State.MyBO, "DeductibleBasedOnId", Me.cboDeductibleBasedOn)
                     Me.PopulateBOProperty(Me.State.MyBO, "DeductibleExpressionId", Guid.Empty)

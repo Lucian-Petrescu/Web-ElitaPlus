@@ -1,6 +1,7 @@
 '************* THIS CODE HAS BEEN GENERATED FROM TEMPLATE BusinessObject.cst (10/13/2004)  ********************
 Imports System.Collections.Generic
 Imports Assurant.Common.Validation
+Imports Assurant.ElitaPlus.DataEntities
 
 Public Class CertItemCoverage
     Inherits BusinessObjectBase
@@ -1149,16 +1150,19 @@ Public Class CertItemCoverage
                     Dim oCertItemCoverage As New CertItemCoverage(certItemCoverageId)
                     If (Not oCertItemCoverage Is Nothing) Then
                         returnValue.DeductibleBasedOnId = oCertItemCoverage.DeductibleBasedOnId
-                        If (returnValue.DeductibleBasedOn = "FIXED") Then
+
+                        If (returnValue.DeductibleBasedOn = DeductibleBasedOnCodes.Fixed) Then
                             If (oCertItemCoverage.Deductible Is Nothing) Then
                                 returnValue.Deductible = New DecimalType(0D)
                             Else
                                 returnValue.Deductible = oCertItemCoverage.Deductible
                             End If
 
-                        ElseIf returnValue.DeductibleBasedOn = "EXP"
+                        ElseIf returnValue.DeductibleBasedOn = DeductibleBasedOnCodes.Expression Then
                             returnValue.Deductible = 0
                             returnValue.ExpressionId = oCertItemCoverage.DeductibleExpressionId
+                        ElseIf returnValue.DeductibleBasedOn = DeductibleBasedOnCodes.ComputedExternally Then
+                            returnValue.Deductible = New DecimalType(0D)
                         Else
                             If (oCertItemCoverage.DeductiblePercent Is Nothing) Then
                                 returnValue.Deductible = New DecimalType(0D)

@@ -163,6 +163,7 @@ Public Class DeductibleBasedOnCodes
     Public Const PercentageOfListPrice As String = "LIST"
     Public Const PercentageOfOrigRetailPrice As String = "ORIG"
     Public Const Expression As String = "EXP"
+    Public Const ComputedExternally As String = "COMPUTED_EXTERNALLY"
 End Class
 
 Public Class DealerTypeCodes
