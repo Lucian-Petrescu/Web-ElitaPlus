@@ -755,7 +755,6 @@ Public Class ClaimRecordingForm
             caseRequest.CaseNumber = oCase.CaseNumber
 
             Dim callerinfo As New PhoneCaller()
-            
             If Me.State.ExistingUserControlItemSelected = True
                 UcExistingCallerInfo.GetCallerInformation()
 
@@ -902,11 +901,12 @@ Public Class ClaimRecordingForm
                     callerinfo.EmailAddress = UcPreviousCallerInfo.Email
                     callerinfo.CultureCode = Thread.CurrentThread.CurrentCulture.ToString().ToUpper()
                     'For Optus , if Agent is CSR Enable the Authetication Sceen always.
-                    If Not State.ExclSecFieldsDt is Nothing AndAlso State.ExclSecFieldsDt.Rows.Count > 0 then
-                        callerinfo.IsAuthenticated = False
-                        'Else
-                        '   callerinfo.IsAuthenticated = State.IsCallerAuthenticated
-                    End If
+                    'If Not State.ExclSecFieldsDt is Nothing AndAlso State.ExclSecFieldsDt.Rows.Count > 0 then
+                    '    callerinfo.IsAuthenticated = False
+                    '    'Else
+                    '    '   callerinfo.IsAuthenticated = State.IsCallerAuthenticated
+                    'End If
+                    callerinfo.IsAuthenticated = State.IsCallerAuthenticated
                     callerinfo.PhoneNumber = UcPreviousCallerInfo.WorkPhoneNumber
                     
                 End If
