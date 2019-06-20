@@ -47,7 +47,6 @@ Namespace Tables
 #Region "MyState"
 
         Class MyState
-            'Public ParentBO As ProductCodeParent
             Public moProductCodeId As Guid = Guid.Empty
             Public Parent_Product_code_id As Guid = Guid.Empty
 
@@ -142,9 +141,7 @@ Namespace Tables
             Public CompanyCode As String
             Public DealerCode As String
             Public ProductCodeDetailId As Guid = Guid.Empty
-            'Public ProductCodeParentId As Guid = Guid.Empty
-            Public MyProductChildBO As ProductCodeDetail
-            'Public MyProductParentBO As ProductCodeParent
+            Public MyProductChildBO As ProductCodeDetail            
 
             Public ProductEquipmentId As Guid = Guid.Empty
             Public ProductBenefitsId As Guid = Guid.Empty
@@ -3933,11 +3930,11 @@ Namespace Tables
                     If itemType = ListItemType.Item Or itemType = ListItemType.AlternatingItem Or itemType = ListItemType.SelectedItem Then
                         Dim gvChilds As GridView = TryCast(e.Row.FindControl("gvChilds"), GridView)
                         dv = Me.State.childsearchDV
-                        'dv.RowFilter = "product_code_parent_id='" & dvRow("product_code_parent_id").ToString & "'"
+
                         Me.State.Parent_Product_code_id = GuidControl.ByteArrayToGuid(mo_ParentsGrid.DataKeys(e.Row.RowIndex).Values(0))
 
                         dv.RowFilter = "product_code_parent_id = '" & GuidControl.GuidToHexString(Me.State.Parent_Product_code_id) & "'"
-                        gvChilds.DataSource = dv ' Me.State.childsearchDV.RowFilter("product_code_parent_id=" + dvRow(ProductCodeParent.ProductCodeSearchDV.COL_PRODUCT_CODE_PARENT_ID).ToString())
+                        gvChilds.DataSource = dv
                         gvChilds.DataBind()
 
                         e.Row.Cells(Me.GRID_COL_EFFECTIVE_IDX).Text = Me.GetDateFormattedString(CType(dvRow(ProductCodeParent.ProductCodeSearchDV.COL_EFFECTIVE), Date))
