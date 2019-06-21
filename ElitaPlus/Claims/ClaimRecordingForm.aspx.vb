@@ -399,7 +399,6 @@ Public Class ClaimRecordingForm
     Private Sub PopulateExclSecFields()
         Try
             Dim certId as Guid 
-            Dim dealerId as guid
             If (Not State.CertificateId.Equals(Guid.Empty)) Then
                 certId = State.CertificateId                
             ElseIf (Not State.CaseId.Equals(Guid.Empty)) Then
@@ -412,7 +411,7 @@ Public Class ClaimRecordingForm
                 Dim exclSecFieldsDt As DataTable                
                 Dim objList As List(Of CaseBase.ExclSecFields)
                 If State.ExclSecFieldsDt Is Nothing then                                                                        
-                    objList = CaseBase.LoadExclSecFieldsConfig(Guid.Empty,dealerId)
+                    objList = CaseBase.LoadExclSecFieldsConfig(Guid.Empty,oCertificate.DealerId)
                     If objList.count > 0 then
                         exclSecFieldsDt= ConvertToDataTable(of CaseBase.ExclSecFields) (objList)
                         If Not ExclSecFieldsdt Is nothing and ExclSecFieldsDt.Rows.Count > 0 then
@@ -755,7 +754,6 @@ Public Class ClaimRecordingForm
             caseRequest.CaseNumber = oCase.CaseNumber
 
             Dim callerinfo As New PhoneCaller()
-            
             If Me.State.ExistingUserControlItemSelected = True
                 UcExistingCallerInfo.GetCallerInformation()
 
@@ -902,11 +900,12 @@ Public Class ClaimRecordingForm
                     callerinfo.EmailAddress = UcPreviousCallerInfo.Email
                     callerinfo.CultureCode = Thread.CurrentThread.CurrentCulture.ToString().ToUpper()
                     'For Optus , if Agent is CSR Enable the Authetication Sceen always.
-                    If Not State.ExclSecFieldsDt is Nothing AndAlso State.ExclSecFieldsDt.Rows.Count > 0 then
-                        callerinfo.IsAuthenticated = False
-                        'Else
-                        '   callerinfo.IsAuthenticated = State.IsCallerAuthenticated
-                    End If
+                    'If Not State.ExclSecFieldsDt is Nothing AndAlso State.ExclSecFieldsDt.Rows.Count > 0 then
+                    '    callerinfo.IsAuthenticated = False
+                    '    'Else
+                    '    '   callerinfo.IsAuthenticated = State.IsCallerAuthenticated
+                    'End If
+                    callerinfo.IsAuthenticated = State.IsCallerAuthenticated
                     callerinfo.PhoneNumber = UcPreviousCallerInfo.WorkPhoneNumber
                     
                 End If
