@@ -67,7 +67,7 @@
      from elp_cert_registered_item_hist crih
      inner join elita.elp_cert_item ci on ci.cert_item_id = crih.cert_item_id
      where crih.cert_registered_item_id=:cert_registered_item_id
-     order by crih.modified_date desc
+     order by nvl(crih.modified_date,crih.created_date) desc
      ]]>
    </LOAD_HISTORY>
 	<UPDATE>
