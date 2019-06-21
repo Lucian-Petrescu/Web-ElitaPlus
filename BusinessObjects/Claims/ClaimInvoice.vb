@@ -378,7 +378,7 @@ Public Class ClaimInvoice
 
             'Logic to Decide whether to Close the Claim along with the current Payment
             If Me.ClaimAuthorizationId = Guid.Empty Then 'Single Auth Claims
-                If Invoiceable.ClaimActivityCode = Codes.CLAIM_ACTIVITY__PENDING_REPLACEMENT Then 'And Me.CloseClaim Then
+                If Invoiceable.ClaimActivityCode = Codes.CLAIM_ACTIVITY__PENDING_REPLACEMENT And Me.RemainingAmount.Value = 0 Then  'And Me.CloseClaim Then
                     Invoiceable.ClaimActivityId = LookupListNew.GetIdFromCode(LookupListNew.LK_CLAIM_ACTIVITIES, Codes.CLAIM_ACTIVITY__REPLACED)
                     Invoiceable.ReasonClosedId = LookupListNew.GetIdFromCode(LookupListNew.LK_REASONS_CLOSED, Codes.REASON_CLOSED__TO_BE_REPAIRED)
                     Invoiceable.CloseTheClaim()
@@ -387,7 +387,7 @@ Public Class ClaimInvoice
                     Invoiceable.CloseTheClaim()
                 End If
             Else 'Multi Auth Claims
-                If Me.CloseClaim And Invoiceable.ClaimActivityCode = Codes.CLAIM_ACTIVITY__PENDING_REPLACEMENT Then
+                If Me.CloseClaim And Invoiceable.ClaimActivityCode = Codes.CLAIM_ACTIVITY__PENDING_REPLACEMENT And Me.RemainingAmount.Value = 0 Then
                     Invoiceable.ClaimActivityId = LookupListNew.GetIdFromCode(LookupListNew.LK_CLAIM_ACTIVITIES, Codes.CLAIM_ACTIVITY__REPLACED)
                     Invoiceable.ReasonClosedId = LookupListNew.GetIdFromCode(LookupListNew.LK_REASONS_CLOSED, Codes.REASON_CLOSED__TO_BE_REPAIRED)
                     Invoiceable.CloseTheClaim()
@@ -396,6 +396,8 @@ Public Class ClaimInvoice
                     Invoiceable.CloseTheClaim()
                 End If
             End If
+
+
 
             Invoiceable.CalculateFollowUpDate()
 
