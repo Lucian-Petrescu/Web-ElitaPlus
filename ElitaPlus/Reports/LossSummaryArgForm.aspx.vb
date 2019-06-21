@@ -12,7 +12,7 @@ Namespace Reports
 #Region "Constants"
 
         Private Const RPT_FILENAME_WINDOW As String = "LossSummaryArg"
-        Private Const RPT_FILENAME As String = "LossSummaryArg"
+        Private Const RPT_FILENAME As String = "ArgentinaLossSummary"
         Private Const RPT_FILENAME_EXPORT As String = "LossSummary_Exp_Arg"
 
         Public Const NO As String = "N"
@@ -24,8 +24,7 @@ Namespace Reports
 
         Private Const LABEL_SELECT_COMPANY As String = "SELECT_COMPANY"
         Private Const LABEL_SELECT_DEALER As String = "OR A SINGLE DEALER"
-        Public Const PAGETITLE As String = "LOSSSUMMARYARG"
-        Public Const PAGETITLEWITHCURRENCY As String = "LOSSSUMMARYWITHCURRENCY"
+        Public Const PAGETITLE As String = "LOSS_SUMMARY_ARGENTINA"
         Public Const PAGETAB As String = "REPORTS"
 
 #End Region
@@ -99,10 +98,6 @@ Namespace Reports
         End Sub
 
         Private Sub InitializeForm()
-            TheReportExtractInputControl.ViewVisible = False
-            TheReportExtractInputControl.PdfVisible = False
-            TheReportExtractInputControl.ExportDataVisible = False
-            TheReportExtractInputControl.DestinationVisible = False
             PopulateCompaniesDropdown()
             PopulateMonthsAndYearsDropdown()
 
@@ -211,7 +206,7 @@ Namespace Reports
 
 #Region "Report Generation"
         Function SetParameters(ByVal companyCode As String, ByVal BeginMonthAndYear As String, ByVal EndMonthAndYear As String,
-                                 ByVal selectedReportingPeriod As String) As ReportCeBaseForm.Params
+                                 ByVal selectedReportingPeriod As String, ByVal dealerCode As String, dealerForCur As Guid, rptCurrency As Guid) As ReportCeBaseForm.Params
             Dim params As New ReportCeBaseForm.Params
             Dim reportName As String = RPT_FILENAME
             Dim moReportFormat As ReportCeBaseForm.RptFormat
@@ -228,7 +223,11 @@ Namespace Reports
                      New ReportCeBaseForm.RptParam("PI_COMPANY_CODE", companyCode),
                      New ReportCeBaseForm.RptParam("PI_REPORTING_PERIOD", selectedReportingPeriod),
                      New ReportCeBaseForm.RptParam("PI_BEGIN_MONTH_AND_YEAR", BeginMonthAndYear),
-                     New ReportCeBaseForm.RptParam("PI_END_MONTH_AND_YEAR", EndMonthAndYear)}
+                     New ReportCeBaseForm.RptParam("PI_END_MONTH_AND_YEAR", EndMonthAndYear),
+                     New ReportCeBaseForm.RptParam("PI_DEALER_CODE", dealerCode),
+                     New ReportCeBaseForm.RptParam("PI_DEALER_WITH_CUR", DALBase.GuidToSQLString(dealerForCur)),
+                     New ReportCeBaseForm.RptParam("PI_RPT_CUR", DALBase.GuidToSQLString(rptCurrency))}
+
             With params
                 .msRptName = reportName
                 .msRptWindowName = TranslationBase.TranslateLabelOrMessage(RPT_FILENAME_WINDOW)
@@ -286,7 +285,7 @@ Namespace Reports
             End If
             ReportCeBase.EnableReportCe(Me, TheReportCeInputControl)
 
-            Dim params As ReportCeBaseForm.Params = SetParameters(compCode, BeginMonthAndYear, EndMonthAndYear, selectedReportingPeriod)
+            Dim params As ReportCeBaseForm.Params = SetParameters(compCode, BeginMonthAndYear, EndMonthAndYear, selectedReportingPeriod, String.Empty, Guid.Empty, Guid.Empty)
             Session(ReportCeBaseForm.SESSION_PARAMETERS_KEY) = params
 
         End Sub
