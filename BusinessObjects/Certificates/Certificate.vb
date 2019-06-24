@@ -555,7 +555,7 @@ Public Class Certificate
             Me.SetValue(CertificateDAL.COL_NAME_CUST_REQ_CANCEL_DATE, Value)
         End Set
     End Property
-    <ValidStringLength("", Max:=30)>
+    <ValidStringLength("", Max:=50)>
     Public Property InvoiceNumber() As String
         Get
             CheckDeleted()
@@ -1189,7 +1189,7 @@ Public Class Certificate
         End Set
     End Property
 
-    <ValidStringLength("", Max:=20), ValueMustBeBlankForDocumentNumber(""), SPValidationDocumentNumber(IDENTIFICATION_NUMBER), ValueTaxIdLenht("")>
+    <ValidStringLength("", Max:=50), ValueMustBeBlankForDocumentNumber(""), SPValidationDocumentNumber(IDENTIFICATION_NUMBER), ValueTaxIdLenht("")>
     Public Property IdentificationNumber() As String
         Get
             CheckDeleted()
