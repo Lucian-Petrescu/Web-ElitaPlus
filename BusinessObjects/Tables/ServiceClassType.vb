@@ -49,7 +49,7 @@ Public Class ServiceClassType
             Dim newRow As DataRow = Me.Dataset.Tables(dal.TABLE_NAME).NewRow
             Me.Dataset.Tables(dal.TABLE_NAME).Rows.Add(newRow)
             Me.Row = newRow
-            setvalue(dal.TABLE_KEY_NAME, Guid.NewGuid)
+            SetValue(dal.TABLE_KEY_NAME, Guid.NewGuid)
             Initialize()
         Catch ex As Assurant.ElitaPlus.DALObjects.DataBaseAccessException
             Throw New DataBaseAccessException(DataBaseAccessException.DatabaseAccessErrorType.ReadErr, ex)
@@ -100,7 +100,7 @@ Public Class ServiceClassType
         End Get
     End Property
 
-    <ValueMandatory("")> _
+    <ValueMandatory("")>
     Public Property ServiceClassId() As Guid
         Get
             CheckDeleted()
@@ -335,7 +335,12 @@ Public Class ServiceCLassTypeList
     End Function
 
     Public Shared Function IsDeductibleApplicable(ByVal serviceClassId As Guid, ByVal serviceTypeId As Guid) As Boolean
-        Return GetDetails(serviceClassId, serviceTypeId).IsDeductibleApplicable
+        Dim serviceClassType as ServiceClassType = GetDetails(serviceClassId, serviceTypeId)
+        If serviceClassType Is Nothing Then
+            Return False
+        Else
+            Return serviceClassType.IsDeductibleApplicable
+        End If
     End Function
 
 End Class
