@@ -1555,7 +1555,7 @@ Public NotInheritable Class ClaimAuthorization
     Public Function ContainsDeductibleLineItem() As Boolean
         Dim flag As Boolean = False
 
-        For Each item As ClaimAuthItem In Me.ClaimAuthorizationItemChildren.Where(Function(i) i.IsDeleted = False)
+        For Each item As ClaimAuthItem In Me.ClaimAuthorizationItemChildren.Where(Function(i As ClaimAuthItem) i.IsDeleted = False)
             If ServiceCLassTypeList.Instance.IsDeductibleApplicable(item.ServiceClassId, item.ServiceTypeId) Then
                 flag = True
                 Exit For

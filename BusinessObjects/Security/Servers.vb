@@ -8,7 +8,7 @@ Public Class Servers
 #Region "Constants"
 
     Public Shared BatchTestURL As String = "http://{0}/ElitaBatchServices/TestService/"
- 
+
 
 #End Region
 #Region "Constructors"
@@ -20,7 +20,7 @@ Public Class Servers
         Me.Load(id)
     End Sub
 
-    Public Sub New(ByVal sHubRegion As String, ByVal sMachinePrefix As String, Optional ByVal webServiceName As String = Nothing, _
+    Public Sub New(ByVal sHubRegion As String, ByVal sMachinePrefix As String, Optional ByVal webServiceName As String = Nothing,
                     Optional ByVal webServiceFunctionName As String = Nothing)
         MyBase.New()
         Dim sEnvironment As String = EnvironmentContext.Current.EnvironmentName
@@ -96,9 +96,14 @@ Public Class Servers
         End Try
     End Sub
 
-    Protected Sub Load(ByVal sHubRegion As String, ByVal sMachinePrefix As String, ByVal sEnvironment As String, _
+    Protected Sub Load(ByVal sHubRegion As String, ByVal sMachinePrefix As String, ByVal sEnvironment As String,
                        Optional ByVal webServiceName As String = Nothing, Optional ByVal webServiceFunctionName As String = Nothing)
         Try
+
+            sHubRegion = "P1"
+            sMachinePrefix = "ATL0"
+            sEnvironment = "MODL"
+
             Dim dal As New ServersDAL
             If Me._isDSCreator Then
                 If Not Me.Row Is Nothing Then
@@ -146,7 +151,7 @@ Public Class Servers
         End Get
     End Property
 
-    <ValueMandatory(""), ValidStringLength("", Max:=30)> _
+    <ValueMandatory(""), ValidStringLength("", Max:=30)>
     Public Property Description() As String
         Get
             CheckDeleted()
@@ -163,7 +168,7 @@ Public Class Servers
     End Property
 
 
-    <ValueMandatory(""), ValidStringLength("", Max:=2)> _
+    <ValueMandatory(""), ValidStringLength("", Max:=2)>
     Public Property HubRegion() As String
         Get
             CheckDeleted()
@@ -180,7 +185,7 @@ Public Class Servers
     End Property
 
 
-    <ValueMandatory(""), ValidStringLength("", Max:=4)> _
+    <ValueMandatory(""), ValidStringLength("", Max:=4)>
     Public Property MachinePrefix() As String
         Get
             CheckDeleted()
@@ -197,7 +202,7 @@ Public Class Servers
     End Property
 
 
-    <ValueMandatory(""), ValidStringLength("", Max:=11)> _
+    <ValueMandatory(""), ValidStringLength("", Max:=11)>
     Public Property Environment() As String
         Get
             CheckDeleted()
@@ -214,7 +219,7 @@ Public Class Servers
     End Property
 
 
-    <ValueMandatory(""), ValidStringLength("", Max:=50)> _
+    <ValueMandatory(""), ValidStringLength("", Max:=50)>
     Public Property FtpHostname() As String
         Get
             CheckDeleted()
@@ -230,7 +235,7 @@ Public Class Servers
         End Set
     End Property
 
-    <ValidStringLength("", Max:=50)> _
+    <ValidStringLength("", Max:=50)>
     Public Property FelitaFtpHostname() As String
         Get
             CheckDeleted()
@@ -246,7 +251,7 @@ Public Class Servers
         End Set
     End Property
 
-    <ValueMandatory(""), ValidStringLength("", Max:=30)> _
+    <ValueMandatory(""), ValidStringLength("", Max:=30)>
     Public Property LdapIp() As String
         Get
             CheckDeleted()
@@ -278,7 +283,7 @@ Public Class Servers
     '    End Set
     'End Property
 
-    <ValueMandatory(""), ValidStringLength("", Max:=200)> _
+    <ValueMandatory(""), ValidStringLength("", Max:=200)>
     Public Property FtpHostPath() As String
         Get
             CheckDeleted()
@@ -294,7 +299,7 @@ Public Class Servers
         End Set
     End Property
 
-    <ValidStringLength("", Max:=20)> _
+    <ValidStringLength("", Max:=20)>
     Public Property FtpTriggerExtension() As String
         Get
             CheckDeleted()
@@ -310,7 +315,7 @@ Public Class Servers
         End Set
     End Property
 
-    <ValueMandatory(""), ValidStringLength("", Max:=50)> _
+    <ValueMandatory(""), ValidStringLength("", Max:=50)>
     Public Property FtpSplitPath() As String
         Get
             CheckDeleted()
@@ -326,7 +331,7 @@ Public Class Servers
         End Set
     End Property
 
-    <ValidStringLength("", Max:=100)> _
+    <ValidStringLength("", Max:=100)>
     Public Property SmartStreamHostName() As String
         Get
             CheckDeleted()
@@ -342,7 +347,7 @@ Public Class Servers
         End Set
     End Property
 
-    <ValueMandatory(""), ValidStringLength("", Max:=200)> _
+    <ValueMandatory(""), ValidStringLength("", Max:=200)>
     Public Property ServiceOrderImageHost() As String
         Get
             CheckDeleted()
@@ -374,7 +379,7 @@ Public Class Servers
         End Set
     End Property
 
-    <ValueMandatory(""), ValidStringLength("", Max:=10)> _
+    <ValueMandatory(""), ValidStringLength("", Max:=10)>
     Public Property DatabaseName() As String
         Get
             CheckDeleted()
@@ -390,7 +395,7 @@ Public Class Servers
         End Set
     End Property
 
-    <ValidStringLength("", Max:=200)> _
+    <ValidStringLength("", Max:=200)>
     Public Property BatchHostname() As String
         Get
             CheckDeleted()
@@ -406,7 +411,7 @@ Public Class Servers
         End Set
     End Property
 
-    <ValidStringLength("", Max:=200)> _
+    <ValidStringLength("", Max:=200)>
     Public Property AcctBalanceHostname() As String
         Get
             CheckDeleted()
@@ -444,7 +449,7 @@ Public Class Servers
         End Get
     End Property
 
-    <ValidStringLength("", Max:=200)> _
+    <ValidStringLength("", Max:=200)>
     Public Property SmartStreamGLStatus() As String
         Get
             CheckDeleted()
@@ -460,7 +465,7 @@ Public Class Servers
         End Set
     End Property
 
-    <ValidStringLength("", Max:=200)> _
+    <ValidStringLength("", Max:=200)>
     Public Property SmartStreamGLUpload() As String
         Get
             CheckDeleted()
@@ -476,7 +481,7 @@ Public Class Servers
         End Set
     End Property
 
-    <ValidStringLength("", Max:=200)> _
+    <ValidStringLength("", Max:=200)>
     Public Property SmartStreamAPUpload() As String
         Get
             CheckDeleted()
