@@ -174,7 +174,8 @@
       <HintPath>..\packages\Assurant.Elita.Base.DataAccess.5.0.2\lib\net462\Assurant.Elita.Base.DataAccess.dll</HintPath>
     </Reference>
     <Reference Include="Assurant.Elita.Caching, Version=1.0.18.18085, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Assurant.Elita.Caching.1.0.0\lib\net46\Assurant.Elita.Caching.dll</HintPath>
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\Libraries\Caching\Cache\bin\Debug\Assurant.Elita.Caching.dll</HintPath>
     </Reference>
     <Reference Include="Assurant.Elita.ClientIntegration, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\Assurant.Elita.ClientIntegration.4.0.0\lib\net462\Assurant.Elita.ClientIntegration.dll</HintPath>
@@ -465,6 +466,13 @@
     </Compile>
     <Compile Include="AcctFinanceAutomation\ReportingRatesForm.aspx.vb">
       <DependentUpon>ReportingRatesForm.aspx</DependentUpon>
+      <SubType>ASPXCodebehind</SubType>
+    </Compile>
+    <Compile Include="Admin\CleanupCacheForm.aspx.designer.vb">
+      <DependentUpon>CleanupCacheForm.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Admin\CleanupCacheForm.aspx.vb">
+      <DependentUpon>CleanupCacheForm.aspx</DependentUpon>
       <SubType>ASPXCodebehind</SubType>
     </Compile>
     <Compile Include="Admin\InterfaceSplitRuleForm.aspx.designer.vb">
@@ -5453,6 +5461,7 @@
     <Content Include="AcctFinanceAutomation\InvoiceXmlDownload.aspx" />
     <Content Include="AcctFinanceAutomation\ReconciliationForm.aspx" />
     <Content Include="AcctFinanceAutomation\ReportingRatesForm.aspx" />
+    <Content Include="Admin\CleanupCacheForm.aspx" />
     <Content Include="Admin\InterfaceSplitRuleForm.aspx" />
     <Content Include="Admin\InterfaceSplitRuleListForm.aspx" />
     <Content Include="App_Themes\Default\Images\ajax-loader.gif" />
