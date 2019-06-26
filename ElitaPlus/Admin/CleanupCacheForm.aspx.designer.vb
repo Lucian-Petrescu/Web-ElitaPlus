@@ -12,16 +12,25 @@ Option Explicit On
 
 
 Partial Public Class CleanupCacheForm
-
+    
     '''<summary>
-    '''txtNote control.
+    '''lblnotify control.
     '''</summary>
     '''<remarks>
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents txtNote As Global.System.Web.UI.WebControls.TextBox
-
+    Protected WithEvents lblnotify As Global.System.Web.UI.WebControls.Label
+    
+    '''<summary>
+    '''lblNote control.
+    '''</summary>
+    '''<remarks>
+    '''Auto-generated field.
+    '''To modify move field declaration from designer file to code-behind file.
+    '''</remarks>
+    Protected WithEvents lblNote As Global.System.Web.UI.WebControls.Label
+    
     '''<summary>
     '''cachebtn control.
     '''</summary>

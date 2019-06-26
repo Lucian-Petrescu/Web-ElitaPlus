@@ -11,13 +11,18 @@
 <asp:Content ID="Content4" ContentPlaceHolderID="BodyPlaceHolder" runat="server">
     <div >
        <table>
-           <tr runat="server">
-               <td runat="server">
-                   <asp:TextBox ID="txtNote" TextMode="MultiLine" SkinID="MediumTextBox" runat="server" Text="Attention Note: This Activity is Must be done by Super Users Only because it impacts system performance" Height="57px" Width="247px"></asp:TextBox>
+           <tr>
+              <td>
+                  <asp:label ID="lblnotify" runat="server"></asp:label>   
+                   </td>
+               </tr>
+               <tr>
+               <td>
+                   <asp:label ID="lblNote" runat="server">ATTENTION_NOTE</asp:label>
                </td>
            </tr>
-           <tr runat="server">
-               <td runat="server">
+           <tr>
+               <td>
                    <asp:Button ID="cachebtn" runat="server" Text="CLEANUPCACHEFORM"/>
                    </td>
            </tr>
