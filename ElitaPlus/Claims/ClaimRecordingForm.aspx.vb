@@ -717,8 +717,14 @@ Public Class ClaimRecordingForm
             Dim oCase As CaseBase = New CaseBase(State.CaseId)
             SetSelectedItem(moPurposecode, oCase.CasePurposeCode)
             moPurposecode.Enabled = False
-        End If        
-        UcExistingCallerInfo.PopulateGridViewCaller(State.CertificateId, State.CaseId, State.IsCallerAuthenticated)
+        End If
+
+        If Not State.CallerAuthenticationNeeded Then
+            UcExistingCallerInfo.PopulateGridViewCaller(State.CertificateId, State.CaseId)
+        Else
+            UcExistingCallerInfo.PopulateGridViewCaller(State.CertificateId, State.CaseId, State.IsCallerAuthenticated)
+        End If
+
         Me.State.ExistingUserControlItemSelected = True
     End Sub
 
@@ -1330,6 +1336,7 @@ Public Class ClaimRecordingForm
 
                 If questionSubmitObj.GetType() Is GetType(CallerAuthenticationResponse) Then
                     Dim oCertificate As Certificate = New Certificate(State.CertificateId)
+                    State.IsCallerAuthenticated = True
                     'If  State.IsCallerAuthenticated = False AndAlso Not State.ExclSecFieldsDt Is Nothing AndAlso (State.ExclSecFieldsDt.AsEnumerable().Where(Function(p) p.Field(Of String)("table_name") = "ELP_CERT" and p.Field(Of String)("column_name") = "CUSTOMER_NAME").Count > 0 ) then
                     If Not CaseBase.DisplaySecField(State.ExclSecFieldsDt, State.CallerAuthenticationNeeded, "ELP_CERT", "CUSTOMER_NAME", State.IsCallerAuthenticated) then            
                         moProtectionEvtDtl.CustomerName = String.Empty
