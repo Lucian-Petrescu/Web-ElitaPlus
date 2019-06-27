@@ -1337,6 +1337,20 @@ Public Class ProductCode
         End Set
     End Property
     
+    public Property ClaimLiabilityCountMethodXcd() As String
+        Get
+            CheckDeleted()
+            If Row(ProductCodeDAL.CLAIM_LIABILITY_CNT_METHOD_XCD) Is DBNull.Value Then
+                Return Nothing
+            Else
+                Return CType(Row(ProductCodeDAL.CLAIM_LIABILITY_CNT_METHOD_XCD), String)
+            End If
+        End Get
+        Set(ByVal Value As String)
+            CheckDeleted()
+            Me.SetValue(ProductCodeDAL.CLAIM_LIABILITY_CNT_METHOD_XCD, Value)
+        End Set
+    End Property
 #End Region
 
 #Region "Public Members"

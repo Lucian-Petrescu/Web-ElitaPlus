@@ -207,6 +207,16 @@
                                     <asp:TextBox ID="moPercentOfRetailText" runat="server" SkinID="MediumTextBox"></asp:TextBox>
                                 </td>
                                 <td align="right" nowrap="nowrap">
+                                    <asp:Label ID="moClaimLiabilityCountMethodLabel" runat="server" Font-Bold="false">CLAIM_LIABILITY_COUNT_METHOD</asp:Label>&nbsp;
+                                </td>
+                                <td align="left" nowrap="nowrap">
+                                    <asp:DropDownList ID="moClaimLiabilityCountMethodXcdDrop" AutoPostBack="true" runat="server" SkinID="MediumDropDown"/>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td></td>
+                                <td></td>
+                                <td align="right" nowrap="nowrap">
                                     <asp:Label ID="moProdLiabilityLimitLabel" runat="server" Font-Bold="false">PROD_LIABILITY_LIMIT</asp:Label>&nbsp;
                                 </td>
                                 <td align="left" nowrap="nowrap">
@@ -524,7 +534,7 @@
                                     <asp:DropDownList ID="ddlCalcCovgEndDateBasedOn" runat="server" SkinID="MediumDropDown"></asp:DropDownList>
                                 </td>
                             </tr>
-                             <tr>
+                            <tr>
                                 <td align="right" nowrap="nowrap">
                                     <asp:Label ID="moPerIncidentLiabilityLimitCapLabel" runat="server" Font-Bold="false">PER_INCIDENT_LIABILITY_LIMIT_CAP</asp:Label>&nbsp;
                                 </td>
@@ -543,7 +553,7 @@
         <asp:HiddenField ID="hdnSelectedTab" runat="server" Value="0" />
         <asp:HiddenField ID="hdnDisabledTab" runat="server" />
         <%--This anchor is used to scroll to the Tab content--%>
-        <a ID="topTabs" runat="server" />
+        <a id="topTabs" runat="server" />
 
         <div id="tabs" class="style-tabs">
             <ul>
@@ -751,9 +761,9 @@
                 <input id="hdnOperationType" type="hidden" runat="server" />
                 <div class="Page" runat="server" id="mo_ExtendedAttributes" style="height: 100%; overflow: auto">
                     <asp:GridView ID="mo_ParentsGrid" runat="server" Width="100%" OnRowCreated="RowCreated"
-                            OnRowDataBound="mo_ParentsGrid_RowDataBound" OnRowCommand="mo_ParentsGrid_OnRowCommand"
-                            AllowPaging="True" AllowSorting="False" CellPadding="1"
-                            AutoGenerateColumns="False" SkinID="DetailPageGridView" DataKeyNames="product_code_parent_id">
+                        OnRowDataBound="mo_ParentsGrid_RowDataBound" OnRowCommand="mo_ParentsGrid_OnRowCommand"
+                        AllowPaging="True" AllowSorting="False" CellPadding="1"
+                        AutoGenerateColumns="False" SkinID="DetailPageGridView" DataKeyNames="product_code_parent_id">
                         <SelectedRowStyle Wrap="False"></SelectedRowStyle>
                         <EditRowStyle Wrap="False"></EditRowStyle>
                         <AlternatingRowStyle Wrap="False"></AlternatingRowStyle>
@@ -789,24 +799,24 @@
                                 HeaderText="SMART BUNDLE AMOUNT" HeaderStyle-HorizontalAlign="Center" HtmlEncode="false" />
                             <asp:BoundField DataField="smart_bundle_flat_amt_currency" SortExpression="smart_bundle_flat_amt_currency" ReadOnly="true"
                                 HeaderText="SMART BUNDLE CURRENCY" HeaderStyle-HorizontalAlign="Center" HtmlEncode="false" />
-                             <asp:TemplateField HeaderText="PAYMENT_SPLIT_RULE">
+                            <asp:TemplateField HeaderText="PAYMENT_SPLIT_RULE">
                                 <ItemTemplate>
                                     <asp:Label ID="lblPaymentSplitRule" runat="server"></asp:Label>
                                 </ItemTemplate>
-                                 <EditItemTemplate>
-                                     <asp:DropDownList ID="ddlPaymentSplitRule" runat="server" SkinID="MediumDropDown" AutoPostBack="True"></asp:DropDownList>
-                                 </EditItemTemplate>
+                                <EditItemTemplate>
+                                    <asp:DropDownList ID="ddlPaymentSplitRule" runat="server" SkinID="MediumDropDown" AutoPostBack="True"></asp:DropDownList>
+                                </EditItemTemplate>
                             </asp:TemplateField>
                             <asp:TemplateField>
                                 <HeaderStyle HorizontalAlign="Center" ForeColor="#12135B" Width="30px" Wrap="False"></HeaderStyle>
                                 <ItemStyle HorizontalAlign="Center" Width="30px"></ItemStyle>
                                 <ItemTemplate>
                                     <asp:ImageButton ID="BtnEditRecordParent" Style="cursor: pointer; cursor: hand;" runat="server" ImageUrl="../Navigation/images/edit.png"
-                                       CommandName="EditRecord" CommandArgument="<%#Container.DisplayIndex %>"></asp:ImageButton>
+                                        CommandName="EditRecord" CommandArgument="<%#Container.DisplayIndex %>"></asp:ImageButton>
                                 </ItemTemplate>
                                 <EditItemTemplate>
-                                    <asp:LinkButton ID="BtnCancelRecordParent" runat="server" CommandName="CancelRecord" CommandArgument="<%#Container.DisplayIndex %>" 
-                                                    Text="Cancel"></asp:LinkButton>
+                                    <asp:LinkButton ID="BtnCancelRecordParent" runat="server" CommandName="CancelRecord" CommandArgument="<%#Container.DisplayIndex %>"
+                                        Text="Cancel"></asp:LinkButton>
                                 </EditItemTemplate>
                             </asp:TemplateField>
                             <asp:TemplateField>
@@ -1131,8 +1141,8 @@
             <div id="tab_moProductBenefits">
                 <div class="Page" runat="server" id="Div2" style="height: 100%; overflow: auto">
                     <asp:GridView ID="ProductBenefitsGridView" runat="server" Width="100%" OnRowCreated="ProductBenefitsGridView_RowCreated"
-                        OnRowCommand="ProductBenefitsGridView_RowCommand" AllowPaging="True" AllowSorting="False" CellPadding="1" 
-                        AutoGenerateColumns="False"  SkinID="DetailPageGridView" >
+                        OnRowCommand="ProductBenefitsGridView_RowCommand" AllowPaging="True" AllowSorting="False" CellPadding="1"
+                        AutoGenerateColumns="False" SkinID="DetailPageGridView">
                         <SelectedRowStyle Wrap="False"></SelectedRowStyle>
                         <EditRowStyle Wrap="False"></EditRowStyle>
                         <AlternatingRowStyle Wrap="False"></AlternatingRowStyle>
@@ -1165,7 +1175,7 @@
                             <asp:TemplateField Visible="True" HeaderText="Product_Equipment_Effective_Date">
                                 <ItemStyle HorizontalAlign="center"></ItemStyle>
                                 <ItemTemplate>
-                                    <asp:Label runat="server" ID="lblProdBenefitsEffectiveDate" ></asp:Label>
+                                    <asp:Label runat="server" ID="lblProdBenefitsEffectiveDate"></asp:Label>
                                 </ItemTemplate>
                                 <EditItemTemplate>
                                     <asp:TextBox ID="txtProdBenefitsEffectiveDate" runat="server" Visible="True" SkinID="exSmallTextBox"></asp:TextBox>

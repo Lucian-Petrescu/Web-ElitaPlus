@@ -108,6 +108,7 @@ Public Class ProductCodeDAL
 
     Public Const ColNameClaimProfileCode = "claim_profile_code"
     Public Const COL_NAME_PER_INCIDENT_LIABILITY_LIMIT_CAP As String = "liability_limit_per_incident"
+    public Const CLAIM_LIABILITY_CNT_METHOD_XCD as String ="CLAIM_LIABILITY_CNT_METHOD_XCD"
 
 #End Region
 

@@ -141,7 +141,7 @@ Namespace Tables
             Public CompanyCode As String
             Public DealerCode As String
             Public ProductCodeDetailId As Guid = Guid.Empty
-            Public MyProductChildBO As ProductCodeDetail            
+            Public MyProductChildBO As ProductCodeDetail
 
             Public ProductEquipmentId As Guid = Guid.Empty
             Public ProductBenefitsId As Guid = Guid.Empty
@@ -968,6 +968,7 @@ Namespace Tables
             ClearList(moProdLiabilityLimitBasedOnDrop)
             ClearList(moProdLiabilityLimitPolicyDrop)
             ClearList(moProdLimitApplicableToXCDDrop)
+            ClearList(moClaimLiabilityCountMethodXcdDrop)
             Me.State.ProductPolicySearchDV = Nothing
             ClearList(moInstallmentRepricableDrop)
             ClearProductEquipment() ' Clear the product equipment tab
@@ -1207,6 +1208,14 @@ Namespace Tables
                                                         .ValueFunc = AddressOf PopulateOptions.GetExtendedCode
                                                        })
 
+                Dim claimLiabilityCountMethodList As ListItem() = CommonConfigManager.Current.ListManager.GetList("CLAIM_LIABILITY_COUNT_METHOD", Thread.CurrentPrincipal.GetLanguageCode())
+                moClaimLiabilityCountMethodXcdDrop.Populate(claimLiabilityCountMethodList, New PopulateOptions() With
+                                                           {
+                                                           .AddBlankItem = True,
+                                                           .BlankItemValue = String.Empty,
+                                                           .ValueFunc = AddressOf .GetExtendedCode
+                                                           })
+
                 If Me.State.DealerTypeID.Equals(Me.State.dealerTypeVSC) Then
                     oVSCPlanview = LookupListNew.GetVSCPlanLookupList(Authentication.CurrentUser.CompanyGroup.Id)
                     ProductCodeMultipleDrop.NothingSelected = True
@@ -1387,6 +1396,7 @@ Namespace Tables
                         BindSelectItem(Nothing, ddlDepSchCashReimbursement)
 
                         BindSelectItem(Nothing, ddlClaimProfile)
+                        BindSelectItem(Nothing, moClaimLiabilityCountMethodXcdDrop)
                     Else
                         BindSelectItem(.RiskGroupId.ToString, moRiskGroupDrop)
                         BindSelectItem(.MethodOfRepairId.ToString, moMethodOfRepairDrop)
@@ -1410,6 +1420,10 @@ Namespace Tables
                         BindSelectItem(.SplitWarrantyId.ToString, moSplitWarrantyDrop)
                         BindSelectItem(.BillingFrequencyId.ToString, moBillingFrequencyId)
                         BindSelectItem(.ProdLiabilityLimit, moProdLimitApplicableToXCDDrop)
+
+                        If Not TheProductCode.ClaimLiabilityCountMethodXcd Is Nothing Then
+                            BindSelectItem(.ClaimLiabilityCountMethodXcd.ToString, moClaimLiabilityCountMethodXcdDrop)
+                        End If
 
                         If Me.State.DealerTypeID.Equals(Me.State.dealerTypeVSC) Then
                             Dim oPlanview As DataView = LookupListNew.GetVSCPlanLookupList(Authentication.CurrentUser.CompanyGroup.Id)
@@ -1757,7 +1771,10 @@ Namespace Tables
 
                 PopulateBOProperty(TheProductCode, FulfillmentReimThresholdProperty, TextBoxFulfillmentReimThresholdValue)
                 PopulateBOProperty(TheProductCode, "ClaimProfile", Me.ddlClaimProfile, False, True)
-                Me.PopulateBOProperty(TheProductCode, "PerIncidentLiabilityLimitCap", Me.moPerIncidentLiabilityLimitCapText)
+                PopulateBOProperty(TheProductCode, "PerIncidentLiabilityLimitCap", Me.moPerIncidentLiabilityLimitCapText)
+
+                PopulateBOProperty(TheProductCode,nameof(ProductCode.ClaimLiabilityCountMethodXcd), moClaimLiabilityCountMethodXcdDrop, isGuidValue:=False, isStringValue:=True)
+
             End With
             If Not TheDepreciationSchedule.IsDeleted Then
                 PopulateBOProperty(TheDepreciationSchedule, "DepreciationScheduleId", ddlDepSchCashReimbursement)
@@ -2203,6 +2220,7 @@ Namespace Tables
             Me.BindBOPropertyToLabel(TheProductCode, CANCELLATION_WITHIN_TERM_PROPERTY, Me.moCancellationWithinTermLabel)
             Me.BindBOPropertyToLabel(TheProductCode, EXPIRATION_NOTIFICATION_DAYS_PROPERTY, Me.moExpNotificationDaysLabel)
             BindBOPropertyToLabel(TheProductCode, FulfillmentReimThresholdProperty, labelFulfillmentReimThresholdValue)
+            BindBOPropertyToLabel(TheProductCode, NameOf(ProductCode.ClaimLiabilityCountMethodXcd), moClaimLiabilityCountMethodLabel)
 
 
         End Sub

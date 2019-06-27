@@ -400,7 +400,11 @@ Namespace Tables
         '''To modify move field declaration from designer file to code-behind file.
         '''</remarks>
         Protected WithEvents moPercentOfRetailText As Global.System.Web.UI.WebControls.TextBox
+
+        Protected WithEvents moClaimLiabilityCountMethodLabel As Global.System.Web.UI.WebControls.Label
         
+        Protected WithEvents moClaimLiabilityCountMethodXcdDrop As Global.System.Web.UI.WebControls.DropDownList
+
         '''<summary>
         '''moProdLiabilityLimitLabel control.
         '''</summary>
