@@ -10,6 +10,7 @@ Imports Assurant.Elita.Web.Forms
 Imports Newtonsoft.Json
 Imports OracleInternal.ServiceObjects
 Imports Assurant.Elita.CommonConfiguration.DataElements
+Imports System.Globalization
 
 Namespace Certificates
     Partial Public Class AgentSearchForm
@@ -46,6 +47,8 @@ Namespace Certificates
         Private Const CodeSearchFieldTaxId As String = "TAX_ID"
         Private Const CodeSearchFieldZip As String = "ZIP"
         Private Const SearchTypeXCD As String = "SEARCH_TYPE-AGENT_SEARCH"
+        Private Const CodeSearchFieldDob As String = "BIRTH_DATE"
+        Public Event TextChanged As EventHandler
 
 #End Region
 
@@ -86,6 +89,8 @@ Namespace Certificates
             Public PreviousCompanyId As Guid = Guid.Empty
             Public PreviousDealerId As Guid = Guid.Empty
             Public ShowAdditionalSearchFields As Boolean = False
+            Public Dob As String = String.Empty
+
 
 
             Sub New()
@@ -294,10 +299,32 @@ Namespace Certificates
             State.ServiceLineNumber = GetSearchTextBoxValue(CodeSearchFieldServiceLineNumber)
             State.AccountNumber = GetSearchTextBoxValue(CodeSearchFieldAccountNumber)
             State.GlobalCustomerNumber = GetSearchTextBoxValue(CodeSearchFieldGlobalCustomerNumber)
+
             ' Dynamic controls - drop down
             State.CertificateStatus = GetSearchDropDownValue(CodeSearchFieldCertificateStatus)
 
             State.ShowAdditionalSearchFields = checkboxAdditionalSearchCriteria.Checked
+        End Sub
+
+        Protected Sub txtDateOfBirth_TextChanged(ByVal sender As Object, ByVal e As EventArgs)
+            Try
+                State.Dob = txtDateOfBirth.Text
+                Dim currentCulture As CultureInfo = Thread.CurrentThread.CurrentCulture
+                If (currentCulture.Name.Equals("ja-JP")) Then
+                    'If (currentCulture.Name.Equals("en-US")) Then
+                    Dim s As String = txtDateOfBirth.Text.Trim
+                    Dim parsedDate As DateTime
+                    If DateTime.TryParse(s, parsedDate) Then
+                        parsedDate = DateTime.Parse(s)
+                    Else
+                        parsedDate = DateTime.Now
+                    End If
+                    Dim ci As CultureInfo = New CultureInfo("ja-JP")
+                    txtDateOfBirth.Text = parsedDate.ToString("D", ci)
+                End If
+            Catch ex As Exception
+                Throw New Exception("Please enter proper date: " & ex.Message)
+            End Try
         End Sub
         Protected Sub SetSearchSettingToDefault(Optional ByVal setCompanyDealerValue As Boolean = False)
 
@@ -318,6 +345,7 @@ Namespace Certificates
             ClearSearchTextBox(CodeSearchFieldServiceLineNumber)
             ClearSearchTextBox(CodeSearchFieldAccountNumber)
             ClearSearchTextBox(CodeSearchFieldGlobalCustomerNumber)
+            ClearSearchTextBox(CodeSearchFieldDob)
 
             ' Reset drop down
             ResetSearchDropDown(CodeSearchFieldCertificateStatus)
@@ -325,6 +353,7 @@ Namespace Certificates
             ResetSearchResult()
 
             checkboxAdditionalSearchCriteria.Checked = False
+            txtDateOfBirth.Text = String.Empty
         End Sub
         Protected Sub SetCompanyDealerDropdown(ByVal setCompanyDealerValue As Boolean)
             If Authentication.CurrentUser.IsDealer OrElse setCompanyDealerValue = True Then
@@ -387,6 +416,7 @@ Namespace Certificates
                 If foundRows.Length > 0 Then
                     GenerateSearchCriteriaFields(foundRows)
                 End If
+                Me.AddCalendar_New(Me.btnDateOfBirth, Me.txtDateOfBirth)
             End If
         End Sub
 
@@ -712,6 +742,7 @@ Namespace Certificates
                                                            State.ServiceLineNumber,
                                                            State.AccountNumber,
                                                            State.GlobalCustomerNumber,
+                                                           State.Dob,
                                                            Authentication.CurrentUser.LanguageId)
 
                     ValidSearchResultCountNew(State.SearchDv.Count, True)
