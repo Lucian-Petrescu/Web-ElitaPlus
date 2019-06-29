@@ -2648,7 +2648,6 @@ Public Class ClaimRecordingForm
             If (deliveryOptions IsNot Nothing AndAlso Not String.IsNullOrWhiteSpace(deliveryOptions.ServiceCenterCode) AndAlso Not String.IsNullOrWhiteSpace(deliveryOptions.CountryCode)) Then
                 serviceCenterCode = deliveryOptions.ServiceCenterCode
                 countryCode = deliveryOptions.CountryCode
-
                 ''''''End
             Else
                 ''''if service center and country are not available in Fulfillment Profile then fall back to old logic
