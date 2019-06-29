@@ -2637,44 +2637,62 @@ Public Class ClaimRecordingForm
             Exit Sub
         End Try
     End Sub
-    Private Sub GetEstimatedDeliveryDate(ByRef ucDeliverySlots as UserControlDeliverySlot, ByVal deliveryAddress As Address, ByVal courierCode As String, ByVal courierProductCode As String)
-        try
+    Private Sub GetEstimatedDeliveryDate(ByRef ucDeliverySlots as UserControlDeliverySlot, ByVal deliveryAddress As Address, ByVal deliveryOptions As DeliveryOptions)
+        Try
             'get the service center
-            Dim defaultServiceCenter As ServiceCenter
-            if State.ClaimBo is nothing AndAlso string.IsNullOrEmpty(State.SubmitWsBaseClaimRecordingResponse.ClaimNumber) = False then
-                Dim companyId as Guid = ElitaPlusIdentity.Current.ActiveUser.CompanyId
+            Dim defaultServiceCenter As ServiceCenter = Nothing
+            Dim serviceCenterCode As String = String.Empty
+            Dim countryCode As String = String.Empty
 
-                if ElitaPlusIdentity.Current.ActiveUser.Companies.Count > 1 then
-                    for each cid as Guid in ElitaPlusIdentity.Current.ActiveUser.Companies()
-                        dim comobj as new Company(cid)
-                        if comobj.Code = State.SubmitWsBaseClaimRecordingResponse.CompanyCode then
-                            companyId = cid
-                            exit for
+            ''''Begin  - new code to look up service center code and country code from fulfillment profile
+            If (deliveryOptions IsNot Nothing AndAlso Not String.IsNullOrWhiteSpace(deliveryOptions.ServiceCenterCode) AndAlso Not String.IsNullOrWhiteSpace(deliveryOptions.CountryCode)) Then
+                serviceCenterCode = deliveryOptions.ServiceCenterCode
+                countryCode = deliveryOptions.CountryCode
+
+                ''''''End
+            Else
+                ''''if service center and country are not available in Fulfillment Profile then fall back to old logic
+                If (serviceCenterCode Is Nothing) Then
+                    If State.ClaimBo Is Nothing AndAlso String.IsNullOrEmpty(State.SubmitWsBaseClaimRecordingResponse.ClaimNumber) = False Then
+                        Dim companyId As Guid = ElitaPlusIdentity.Current.ActiveUser.CompanyId
+
+                        If ElitaPlusIdentity.Current.ActiveUser.Companies.Count > 1 Then
+                            For Each cid As Guid In ElitaPlusIdentity.Current.ActiveUser.Companies()
+                                Dim comobj As New Company(cid)
+                                If comobj.Code = State.SubmitWsBaseClaimRecordingResponse.CompanyCode Then
+                                    companyId = cid
+                                    Exit For
+                                End If
+                            Next
                         End If
-                    Next
-                end If   
 
-                state.ClaimBo = ClaimFacade.Instance.GetClaim(Of ClaimBase)(State.SubmitWsBaseClaimRecordingResponse.ClaimNumber,companyId)
-                defaultServiceCenter = New ServiceCenter(State.ClaimBo.ServiceCenterId)
-            else
-                Dim ctryBo As New Country(LookupListNew.GetIdFromCode(LookupListNew.LK_COUNTRIES, deliveryAddress.Country))
-                If ctryBo Is Nothing OrElse String.IsNullOrWhiteSpace(ctryBo.Code) OrElse String.IsNullOrWhiteSpace(deliveryAddress.PostalCode) Then
-                    MasterPage.MessageController.AddError(Message.MSG_ERR_COUNTRY_POSTAL_MANDATORY, True)
-                    Exit Sub
-                End If
+                        State.ClaimBo = ClaimFacade.Instance.GetClaim(Of ClaimBase)(State.SubmitWsBaseClaimRecordingResponse.ClaimNumber, companyId)
+                        'defaultServiceCenter = New ServiceCenter(State.ClaimBo.ServiceCenterId)
+                        serviceCenterCode = New ServiceCenter(State.ClaimBo.ServiceCenterId).Code
+                        countryCode = deliveryAddress.Country
+                    Else
+                        Dim ctryBo As New Country(LookupListNew.GetIdFromCode(LookupListNew.LK_COUNTRIES, deliveryAddress.Country))
+                        If ctryBo Is Nothing OrElse String.IsNullOrWhiteSpace(ctryBo.Code) OrElse String.IsNullOrWhiteSpace(deliveryAddress.PostalCode) Then
+                            MasterPage.MessageController.AddError(Message.MSG_ERR_COUNTRY_POSTAL_MANDATORY, True)
+                            Exit Sub
+                        End If
 
-                If ctryBo.DefaultSCId.IsEmpty Then
-                    MasterPage.MessageController.AddError(Message.MSG_ERR_DEFAULT_SERVICE_CENTER, True)
-                    Exit Sub
+                        If ctryBo.DefaultSCId.IsEmpty Then
+                            MasterPage.MessageController.AddError(Message.MSG_ERR_DEFAULT_SERVICE_CENTER, True)
+                            Exit Sub
+                        End If
+                        serviceCenterCode = New ServiceCenter(ctryBo.DefaultSCId).Code
+                        countryCode = deliveryAddress.Country
+                    End If
                 End If
-                defaultServiceCenter = New ServiceCenter(ctryBo.DefaultSCId)
             End If
 
+
             With ucDeliverySlots
-                .CountryCode = deliveryAddress.Country
-                .ServiceCenter= defaultServiceCenter.Code
-                .DeliveryAddress = New UserControlDeliverySlot.DeliveryAddressInfo () with {
-                    .CountryCode= deliveryAddress.Country,
+                .CountryCode = countryCode
+                .ServiceCenter = serviceCenterCode
+                .DeliveryAddress = New UserControlDeliverySlot.DeliveryAddressInfo() With {
+                    .CountryCode = deliveryAddress.Country,
                     .RegionShortDesc = deliveryAddress.State,
                     .PostalCode = deliveryAddress.PostalCode,
                     .City = deliveryAddress.City,
@@ -2682,9 +2700,9 @@ Public Class ClaimRecordingForm
                     .Address2 = deliveryAddress.Address2,
                     .Address3 = deliveryAddress.Address3
                     }
-                .PopulateDeliveryDate(blnNotSpecifyCheckInitState := False, blnEnableNotSpecifyCheck := False)
+                .PopulateDeliveryDate(blnNotSpecifyCheckInitState:=False, blnEnableNotSpecifyCheck:=False)
             End With
-        
+
         Catch ex As ThreadAbortException
         Catch ex As Exception
             HandleErrors(ex, MasterPage.MessageController)
@@ -2738,7 +2756,7 @@ Public Class ClaimRecordingForm
         'Catch ex As Exception
         '    Throw
         'End Try
-    End sub
+    End Sub
 #End Region
 #Region "Logistics Options -  Button event"
     Protected Sub btnLogisticsOptionsBack_Click(sender As Object, e As EventArgs) Handles btnLogisticsOptionsBack.Click
@@ -2807,7 +2825,7 @@ Public Class ClaimRecordingForm
                 'postalCode = CType(lOption.LogisticOptionInfo, LogisticOptionInfoCustomerAddress).Address.PostalCode
             End If
 
-            GetEstimatedDeliveryDate(ucDeliverySlots, deliveryAddress, lOption.DeliveryOptions.CourierCode, lOption.DeliveryOptions.CourierProductCode)
+            GetEstimatedDeliveryDate(ucDeliverySlots, deliveryAddress, lOption.DeliveryOptions)
             'Dim wsResponseValue As Integer = GetEstimatedDeliveryDate(countryCode, postalCode, lOption.DeliveryOptions.CourierCode, lOption.DeliveryOptions.CourierProductCode)
             'Dim dateInString As String
             'Dim daysUpperRange As Integer
