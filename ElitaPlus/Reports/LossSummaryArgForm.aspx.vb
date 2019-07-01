@@ -92,9 +92,9 @@ Namespace Reports
 
                 Me.InstallProgressBar()
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.ErrControllerMaster)
+                Me.HandleErrors(ex, Me.MasterPage.MessageController)
             End Try
-            Me.ShowMissingTranslations(Me.ErrControllerMaster)
+            Me.ShowMissingTranslations(Me.MasterPage.MessageController)
         End Sub
 
         Private Sub InitializeForm()
@@ -120,7 +120,7 @@ Namespace Reports
                 GenerateReport()
             Catch ex As Threading.ThreadAbortException
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.ErrControllerMaster)
+                Me.HandleErrors(ex, Me.MasterPage.MessageController)
             End Try
         End Sub
 
@@ -143,7 +143,7 @@ Namespace Reports
                 'PopulateDealerDropDown()
                 'PopulateCurrencyDropdown()
             Catch ex As Exception
-                HandleErrors(ex, Me.ErrControllerMaster)
+                HandleErrors(ex, Me.MasterPage.MessageController)
             End Try
         End Sub
 
