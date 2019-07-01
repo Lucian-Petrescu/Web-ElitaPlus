@@ -15,6 +15,7 @@ Public Class DealerFileProcessedData
     Public interfaceStatus_id, dealerfile_processed_id As Guid
     Public oSP, desc As Integer
     Public fileTypeCode As InterfaceTypeCode
+    Public network_id As String
 
     Public dealerCode, dealergrpCode, filename, layout, DealerType, parentFile As String
     Public dealerId, dealergroupId As Guid
@@ -73,6 +74,7 @@ Public Class DealerFileProcessedDAL
     Public Const DEALERFILE_PROCESSED_ID = 1
     Public Const INTERFACE_STATUS_ID = 2
     Public Const IS_SPLIT_FILE = 3
+    Public Const NETWORK_ID = 4
     Public Const TOTAL_PARAM_SP = 3
 
 
@@ -441,7 +443,7 @@ Public Class DealerFileProcessedDAL
 
     Private Sub AsyncExecuteDelSP(ByVal oDealerFileProcessedData As DealerFileProcessedData, ByVal selectStmt As String)
         If (oDealerFileProcessedData.fileTypeCode = DealerFileProcessedData.InterfaceTypeCode.RINS) Then
-            Dim inputParameters(2) As DBHelperParameter
+            Dim inputParameters(3) As DBHelperParameter
             Dim outputParameter(0) As DBHelperParameter
             With oDealerFileProcessedData
                 inputParameters(0) = New DBHelperParameter("pi_filename", .filename)
@@ -459,11 +461,12 @@ Public Class DealerFileProcessedDAL
             End If
 
         Else
-            Dim inputParameters(TOTAL_PARAM_SP) As DBHelperParameter
+            Dim inputParameters(4) As DBHelperParameter
             Dim outputParameter(0) As DBHelperParameter
 
             With oDealerFileProcessedData
                 inputParameters(FILENAME) = New DBHelperParameter(COL_NAME_FILENAME, .filename)
+                inputParameters(NETWORK_ID) = New DBHelperParameter(NETWORK_ID, .network_id)
                 Select Case oDealerFileProcessedData.oSP
                     Case SP_DEALER
                         If .layout Is Nothing Then
