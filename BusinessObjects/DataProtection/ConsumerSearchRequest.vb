@@ -1,4 +1,4 @@
-﻿Imports Assurant.Common.CrystalEnterpriseHelper
+﻿'Imports Assurant.Common.CrystalEnterpriseHelper
 
 Public Class ConsumerSearchRequest
     Inherits BusinessObjectBase
@@ -114,20 +114,17 @@ Public Class ConsumerSearchRequest
     End Class
 
 
-
-
-
 #Region "Report Parameter Class"
 
-    Public Class RptParam
-        Public moCeHelperParameter As ceHelperParameter
+    'Public Class RptParam
+    '    Public moCeHelperParameter As ceHelperParameter
 
-        Public Sub New(ByVal parmName As String, ByVal parmValue As String,
-            Optional ByVal parmSubReportName As String = ceHelperParameter.EMPTY_CEPARAM)
-            moCeHelperParameter = New ceHelperParameter(parmName, parmValue, parmSubReportName)
-        End Sub
+    '    Public Sub New(ByVal parmName As String, ByVal parmValue As String,
+    '        Optional ByVal parmSubReportName As String = ceHelperParameter.EMPTY_CEPARAM)
+    '        moCeHelperParameter = New ceHelperParameter(parmName, parmValue, parmSubReportName)
+    '    End Sub
 
-    End Class
+    'End Class
 #End Region
 
     Public Class Params
@@ -136,11 +133,11 @@ Public Class ConsumerSearchRequest
         Public moRptFormat As RptFormat
         Public moAction As RptAction
         Public instanceId As Long
-        Public moRptParams() As RptParam
+        'Public moRptParams() As RptParam
         Public msCsvDelimiter As String
         Public msCsvSeparator As String
-        Public moDest As ceDestination
-        Public moSched As ceSchedule
+        'Public moDest As ceDestination
+        'Public moSched As ceSchedule
 
         Public Sub New()
             ' Default Values
@@ -155,28 +152,28 @@ Public Class ConsumerSearchRequest
 
 
 #Region "Variables"
-    Private moError As SSHelper.RptError
+    'Private moError As SSHelper.RptError
 
 #End Region
 
 #Region " Properties "
-    Public Property Status() As SSHelper.RptStatus
-        Get
-            Return moError.status
-        End Get
-        Set(ByVal Value As SSHelper.RptStatus)
-            moError.status = Value
-        End Set
-    End Property
+    'Public Property Status() As SSHelper.RptStatus
+    '    Get
+    '        Return moError.status
+    '    End Get
+    '    Set(ByVal Value As SSHelper.RptStatus)
+    '        moError.status = Value
+    '    End Set
+    'End Property
 
-    Public Property ErrorMsg() As String
-        Get
-            Return moError.msg
-        End Get
-        Set(ByVal Value As String)
-            moError.msg = Value
-        End Set
-    End Property
+    'Public Property ErrorMsg() As String
+    '    Get
+    '        Return moError.msg
+    '    End Get
+    '    Set(ByVal Value As String)
+    '        moError.msg = Value
+    '    End Set
+    'End Property
 
 #End Region
     <ValueMandatory(""), ValidStringLength("", Max:=800)>
