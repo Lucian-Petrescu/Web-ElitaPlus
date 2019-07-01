@@ -1,4 +1,4 @@
-Imports Assurant.Common.CrystalEnterpriseHelper
+'Imports Assurant.Common.CrystalEnterpriseHelper
 Imports Microsoft.Reporting.WebForms
 
 Namespace Reports
