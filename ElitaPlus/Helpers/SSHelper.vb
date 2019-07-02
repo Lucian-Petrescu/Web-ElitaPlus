@@ -165,8 +165,6 @@ Public Class SSHelper
 
 #Region "Variables"
 
-    'Private _entSession As EnterpriseSession
-    ' Private _infoStore As InfoStore
     'crystal enterprise login info
     Private SSHttpProtocol As String
     Private _SSUserID As String
@@ -177,7 +175,6 @@ Public Class SSHelper
     Private _dbUserID As String
     Private _dbPW As String
     Private _dbServer As String
-    'Private _dbServerType As SsReportServerType
 
     Private _domain As String
     Private _rootDir As String
@@ -186,7 +183,6 @@ Public Class SSHelper
     Private _SSToken As String
     Private _SSCMS As String
     Private moInstanceId As Long
-    '  Private moStatus As RptStatus
     Private moError As RptError
 
 #End Region
@@ -252,12 +248,6 @@ Public Class SSHelper
             Return _dbPW
         End Get
     End Property
-
-    'Public ReadOnly Property dbServerType() As SsReportServerType
-    '    Get
-    '        Return _dbServerType
-    '    End Get
-    'End Property
 
     Public ReadOnly Property dbServer() As String
         Get

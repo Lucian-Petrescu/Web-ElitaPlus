@@ -1,4 +1,3 @@
-'Imports Assurant.Common.CrystalEnterpriseHelper
 Imports System.Globalization
 Imports Assurant.Elita.CommonConfiguration
 Imports Assurant.Elita.CommonConfiguration.DataElements
