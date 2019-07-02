@@ -333,11 +333,6 @@
     <Reference Include="System.Xml">
       <Name>System.XML</Name>
     </Reference>
-    <ProjectReference Include="..\Assurant.Common.CrystalEnterpriseHelper\Assurant.Common.CrystalEnterpriseHelper.vbproj">
-      <Name>Assurant.Common.CrystalEnterpriseHelper</Name>
-      <Project>{7F4C7ADF-CA31-4E8F-AFF5-12DF10AF44BA}</Project>
-      <Package>{F184B08F-C81C-45F6-A57F-5ABD9991F28F}</Package>
-    </ProjectReference>
     <ProjectReference Include="..\BusinessObjects\BusinessObjects.vbproj">
       <Name>BusinessObjects</Name>
       <Project>{24AF00EF-6626-4D29-BEFB-F899C2A85AAD}</Project>
@@ -931,7 +926,10 @@
       <DependentUpon>QuestionSetListForm.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
+    <Compile Include="Helpers\ceHelperParameter.vb" />
     <Compile Include="Helpers\ListHelper.vb" />
+    <Compile Include="Helpers\SSHelper.vb" />
+    <Compile Include="Helpers\ssHelperParameter.vb" />
     <Compile Include="Interfaces\AppleGBIFileForm.aspx.designer.vb">
       <DependentUpon>AppleGBIFileForm.aspx</DependentUpon>
     </Compile>
