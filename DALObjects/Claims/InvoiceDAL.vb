@@ -47,25 +47,23 @@ Public Class InvoiceDAL
         End Try
     End Sub
 
-    Public Function LoadList(ByVal invoiceNumber As SearchCriteriaStringType, _
-                            ByVal invoiceAmount As SearchCriteriaStructType(Of Double), _
-                            ByVal invoiceDate As SearchCriteriaStructType(Of Date), _
-                            ByVal serviceCenterName As String, _
-                            ByVal batchNumber As SearchCriteriaStringType, _
-                            ByVal claimNumber As SearchCriteriaStringType, _
-                            ByVal dateCreated As SearchCriteriaStructType(Of Date), _
-                            ByVal authorizationNumber As SearchCriteriaStringType, _
-                            ByVal userId As Guid, _
-                            ByVal languageId As Guid, _
-                            Optional ByVal LimitResultset As Integer = 100) As DataSet
+    Public Function LoadList(ByVal invoiceNumber As SearchCriteriaStringType,
+                            ByVal invoiceAmount As SearchCriteriaStructType(Of Double),
+                            ByVal invoiceDate As SearchCriteriaStructType(Of Date),
+                            ByVal serviceCenterName As String,
+                            ByVal batchNumber As SearchCriteriaStringType,
+                            ByVal claimNumber As SearchCriteriaStringType,
+                            ByVal dateCreated As SearchCriteriaStructType(Of Date),
+                            ByVal authorizationNumber As SearchCriteriaStringType,
+                            ByVal userId As Guid,
+                            ByVal languageId As Guid) As DataSet
         Dim selectStmt As String = Me.Config("/SQL/LOAD_LIST")
         Dim whereClauseConditions As String
-        Dim parameters() As DBHelper.DBHelperParameter = _
+        Dim parameters() As DBHelper.DBHelperParameter =
             New DBHelper.DBHelperParameter() _
-            { _
-                New DBHelper.DBHelperParameter(UserDAL.COL_NAME_USER_ID, userId.ToByteArray()), _
-                New DBHelper.DBHelperParameter(COL_NAME_LANGUAGE_ID, languageId.ToByteArray()), _
-                New DBHelper.DBHelperParameter(PAR_NAME_ROW_NUMBER, LimitResultset) _
+            {
+                New DBHelper.DBHelperParameter(UserDAL.COL_NAME_USER_ID, userId.ToByteArray()),
+                New DBHelper.DBHelperParameter(COL_NAME_LANGUAGE_ID, languageId.ToByteArray())
             }
         whereClauseConditions &= invoiceNumber.ToSqlString(MV_INVOICE_NAME, COL_NAME_INVOICE_NUMBER, parameters)
         whereClauseConditions &= invoiceAmount.ToSqlString(MV_INVOICE_NAME, COL_NAME_INVOICE_AMOUNT, parameters)

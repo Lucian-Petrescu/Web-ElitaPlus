@@ -39,7 +39,7 @@
       inner join elp_dict_item_translation on elp_dict_item_translation.dict_item_id = elp_list_item.dict_item_id
            where elp_invoice_extended_mv.company_id in (select company_id from elp_user_company where user_id = :user_id)
              and elp_dict_item_translation.language_id = hextoraw(:language_id)
-             and rownum <= :row_num
+             --and rownum <= :row_num
              --dynamic_where_clause
         group by invoice_id, invoice_number, invoice_date, service_center_description, elp_dict_item_translation.translation, invoice_amount, elp_list_item.code
     ]]>
