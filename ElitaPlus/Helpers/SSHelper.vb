@@ -133,7 +133,6 @@ Public Class SSHelper
 
 #Region " Constants "
     Public Const AUTHENTICATION_ENTERPRISE As String = "Enterprise"
-    ' Public Const SAVEAS_MIME As String = "application/octet-stream"
     Public Const SAVEAS_MIME As String = "application/octet"
     Public Const CSV_EXTENSION As String = ".txt"
     Public Const EXCEL_EXTENSION As String = ".xls"
@@ -165,12 +164,12 @@ Public Class SSHelper
 
 #Region "Variables"
 
-    'crystal enterprise login info
     Private SSHttpProtocol As String
     Private _SSUserID As String
     Private _SSPW As String
     Private _SSMachineName As String
     Private _SSViewerMachineName As String
+
     'db login info
     Private _dbUserID As String
     Private _dbPW As String
@@ -201,8 +200,8 @@ Public Class SSHelper
                 SSRSReportViewer = New ReportViewer
                 SSRSReportViewer.ServerReport.ReportServerCredentials = New SSRSReportServerCredentials(conn)
                 SSRSReportViewer.ProcessingMode = Microsoft.Reporting.WebForms.ProcessingMode.Remote
-                SSRSReportViewer.ServerReport.ReportServerUrl = New Uri(conn.ReportServerUrl) '("http://atl0wsrsd020.cead.prd/ReportServer")
-                SSRSReportViewer.ServerReport.ReportPath = "/" & conn.rootDir & "/" & conn.ReportPath & "/" '"/ElitaPlus1/Reports/CommentsAdded"
+                SSRSReportViewer.ServerReport.ReportServerUrl = New Uri(conn.ReportServerUrl)
+                SSRSReportViewer.ServerReport.ReportPath = "/" & conn.rootDir & "/" & conn.ReportPath & "/"
 
             Catch exc As Exception
                 Status = RptStatus.SS_CONNECTION_PROBLEM
@@ -211,7 +210,6 @@ Public Class SSHelper
             Finally
                 SSRSReportViewer = Nothing
             End Try
-
 
             'initialize 
             SSHttpProtocol = .ssHttpProtocol
@@ -226,9 +224,7 @@ Public Class SSHelper
             _dbServer = .dbServer
             _domain = conn.domain
             _rootDir = .rootDir
-            '_SSToken = _entSession.LogonTokenMgr.DefaultToken
-            '_ssToken = _entSession.LogonTokenMgr.CreateWCATokenEx("", 1440, 100)
-            '_SSCMS = _entSession.CMSName
+
         End With
     End Sub
 
