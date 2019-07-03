@@ -239,6 +239,15 @@ Public Class commonUploadDAL
                 param = New DBHelper.DBHelperParameter("p_User", strUser)
                 inParameters.Add(param)
 
+            ElseIf String.Equals(strUploadType, "CANCEL") Then
+                sqlStmt = Me.Config("/SQL/PROCESS_CANCEL_FILE")
+
+                param = New DBHelper.DBHelperParameter("pi_Uploadtype", strUploadType)
+                inParameters.Add(param)
+
+                param = New DBHelper.DBHelperParameter("pi_User", strUser)
+                inParameters.Add(param)
+
             Else
                 sqlStmt = Me.Config("/SQL/PROCESS_FILE")
 
