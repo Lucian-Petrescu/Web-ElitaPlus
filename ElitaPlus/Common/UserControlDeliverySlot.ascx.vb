@@ -310,15 +310,7 @@ Public Class UserControlDeliverySlot
         If State.CurrentEstimate.Behavior.UseDeliverySlot = False Then
             trDeliverySlot.Attributes("style") = "display: none"
         End If
-
-        'If State.EnableNotSpecifyCheck Then
-        '    If State.CurrentEstimate.Behavior IsNot Nothing AndAlso State.CurrentEstimate.Behavior.SelectionAllowed Then
-        '        Page.ChangeEnabledControlProperty(chkNotSpecify, True)
-        '    Else
-        '        Page.ChangeEnabledControlProperty(chkNotSpecify, False)
-        '        Page.MasterPage.MessageController.AddInformation(Message.MSG_ERR_ESTIMATED_DELIVERY_DATE_TIME_NOT_SELECTABLE, True)
-        '    End If
-        'End If
+        
         EnableDisableNotSpecifyCheckBox()
         ShowDeliveryTimeRange(State.CurrentEstimate)
     End Sub
