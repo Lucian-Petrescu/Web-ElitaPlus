@@ -306,6 +306,8 @@ Partial Class ClaimIssueActionAnswerForm
                 selectActionCode = IssueActionCode.ResendGcReq
             Case "SWPROBDESC"
                 selectActionCode = IssueActionCode.SwProbDesc
+            Case "CFI_OIS_OOW"
+                selectActionCode = IssueActionCode.FulfillmentIssue
             Case Else
                 ' If the there is any other value consider it as new fulfillment issue
                 ' TODO: Enhance to support other answer type and also multiple question/answer for the same issue
@@ -1587,6 +1589,7 @@ Partial Class ClaimIssueActionAnswerForm
     Private Const SoftQuestionId As String = "lblSoftQuestionID"
     Private Const QuestionDesc As String = "lblQuestionDesc"
     Private Const ddlYesNoControl As String = "ddlList"
+    Private Const ddlWidthForOptusClaimChoices As String = "200"
     Private Sub GridQuestions_RowDataBound(ByVal sender As Object, ByVal e As GridViewRowEventArgs) Handles GridQuestions.RowDataBound
         Try
 
@@ -1603,6 +1606,12 @@ Partial Class ClaimIssueActionAnswerForm
                     Case "YES_NO"
                         Dim ddl As DropDownList = CType(e.Row.Cells(QGridColAnswerIdx).FindControl(ddlYesNoControl), DropDownList)
                         ddl.Visible = True
+                        Dim dv As DataView = oQuestion.AnswerChildren.Table.AsDataView()
+                        BindCodeToListControl(ddl, dv, "ANSWER_VALUE", "CODE", False, False)
+                    Case "MULTI_CHOICES"
+                        Dim ddl As DropDownList = CType(e.Row.Cells(QGridColAnswerIdx).FindControl(ddlYesNoControl), DropDownList)
+                        ddl.Visible = True
+                        ddl.Width = ddlWidthForOptusClaimChoices
                         Dim dv As DataView = oQuestion.AnswerChildren.Table.AsDataView()
                         BindCodeToListControl(ddl, dv, "ANSWER_VALUE", "CODE", False, False)
                 End Select
@@ -1624,7 +1633,7 @@ Partial Class ClaimIssueActionAnswerForm
                     Dim oQuestion As New Question(gSoftQuestionId)
                     Dim oAnswerType As New AnswerType(oQuestion.AnswerTypeId)
                     Select Case oAnswerType.Code
-                        Case "YES_NO"
+                        Case "YES_NO", "MULTI_CHOICES"
                             strAnswerCode = CType(row.Cells(QGridColAnswerIdx).FindControl(ddlYesNoControl), DropDownList).SelectedValue
                             Exit For
                     End Select
