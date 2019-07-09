@@ -1184,94 +1184,7 @@ Public Class ClaimRecordingForm
                 End If
 
                 questionUserControl.GetQuestionAnswer()
-
-                'For Each row In GridQuestions.Rows
-                '    answerType = CType(row.FindControl("lblAnswerType"), Label).Text
-                '    code = CType(row.FindControl("lblCode"), Label).Text
-
-                '    If questionSubmitobj.GetType() Is GetType(QuestionResponse) Then
-                '        questionObject = DirectCast(questionSubmitobj, QuestionResponse).Questions.FirstOrDefault(Function(x) x.Code = code)
-                '    ElseIf questionSubmitobj.GetType() Is GetType(CallerAuthenticationResponse) Then
-                '        questionObject = DirectCast(questionSubmitobj, CallerAuthenticationResponse).Questions.FirstOrDefault(Function(x) x.Code = code)
-                '    End If
-
-                '    Select Case answerType.Trim().ToUpper()
-                '        Case "CHOICE"
-                '            Dim answer As String = CType(row.FindControl("rblChoice"), RadioButtonList).SelectedValue
-                '            If questionObject.Mandatory AndAlso String.IsNullOrEmpty(answer) Then
-                '                errAnswerMandatory.AppendLine(questionObject.Text & " </br>")
-                '            Else
-                '                Dim choiceAnswer As ChoiceAnswer = questionObject.Answer
-                '                choiceAnswer.Answer = choiceAnswer.Answers.FirstOrDefault(Function(y) y.Code = answer)
-                '            End If
-                '        Case "LISTOFVALUES"
-                '            Dim answer As String = CType(row.FindControl("ddlList"), DropDownList).SelectedValue
-                '            If questionObject.Mandatory AndAlso String.IsNullOrEmpty(answer) Then
-                '                errAnswerMandatory.AppendLine(questionObject.Text & " </br>")
-                '            Else
-                '                Dim listofvalues As ListOfValuesAnswer = questionObject.Answer
-                '                listofvalues.Answer = listofvalues.Answers.FirstOrDefault(Function(y) y.Code = answer)
-                '            End If
-                '        Case "NUMBER", "TEXT"
-                '            Dim answer As String = CType(row.FindControl("txtNo"), TextBox).Text
-                '            If questionObject.Mandatory AndAlso String.IsNullOrEmpty(answer) Then
-                '                errAnswerMandatory.AppendLine(questionObject.Text & " </br>")
-                '            ElseIf (Not String.IsNullOrEmpty(answer)) Then
-                '                If answerType.Trim().ToUpper().Equals("NUMBER") Then
-                '                    Dim numbervalue As NumberAnswer = New NumberAnswer()
-                '                    Try
-                '                        numbervalue.Answer = Convert.ToDecimal(answer)
-                '                    Catch ex As Exception
-                '                        errorQuestionCodes.AppendLine(questionObject.Text)
-                '                    End Try
-                '                    questionObject.Answer = numbervalue
-                '                Else
-                '                    Dim txtValue As TextAnswer = New TextAnswer()
-                '                    txtValue.Answer = answer
-                '                    questionObject.Answer = txtValue
-                '                End If
-                '            End If
-                '        Case "BOOLEAN", "LEGALCONSENT"
-                '            Dim answer As Boolean = CType(row.FindControl("chkCheck"), CheckBox).Checked
-
-                '            If answerType.Trim().ToUpper().Equals("BOOLEAN") Then
-                '                Dim booleanValue As BooleanAnswer = New BooleanAnswer()
-                '                booleanValue.Answer = answer
-                '                questionObject.Answer = booleanValue
-                '            Else
-                '                ' In case of Legal Consent then Answer should be True to move ahead
-                '                If questionObject.Mandatory AndAlso Not (answer) Then
-                '                    errAnswerMandatory.AppendLine(questionObject.Text & " </br>")
-                '                Else
-                '                    Dim legalConsentValue As LegalConsentAnswer = New LegalConsentAnswer()
-                '                    legalConsentValue.Answer = answer
-                '                    questionObject.Answer = legalConsentValue
-                '                End If
-                '            End If
-                '        Case "DATE"
-                '            Dim answer As String = CType(row.FindControl("txtDate"), TextBox).Text
-                '            If questionObject.Mandatory AndAlso String.IsNullOrEmpty(answer) Then
-                '                errAnswerMandatory.AppendLine(questionObject.Text & " </br>")
-                '            ElseIf (Not String.IsNullOrEmpty(answer)) Then
-                '                Dim dateAnswer As DateAnswer = New DateAnswer()
-                '                Try
-                '                    'Fix for Japan date control-------------------------------
-                '                    Dim formatProvider = LocalizationMgr.CurrentFormatProvider
-                '                    If formatProvider.Name.Equals("ja-JP") Then
-                '                        Dim dateFragments() As String = answer.Split("-")
-                '                        dateAnswer.Answer = New DateTime(Integer.Parse(dateFragments(2)), Integer.Parse(dateFragments(1)), Integer.Parse(dateFragments(0))).Date
-                '                    Else
-                '                        dateAnswer.Answer = Convert.ToDateTime(answer, formatProvider)
-                '                    End If
-                '                    '--------------------------------------------------------
-                '                Catch ex As Exception
-                '                    errorQuestionCodes.AppendLine(questionObject.Text)
-                '                End Try
-                '                questionObject.Answer = dateAnswer
-                '            End If
-                '    End Select
-                'Next
-
+                
                 If (Not String.IsNullOrEmpty(questionUserControl.ErrAnswerMandatory.ToString())) Then
                     MasterPage.MessageController.AddError(ElitaPlus.Common.ErrorCodes.GUI_ANSWER_IS_REQUIRED_ERR, true)
                     Exit Sub
@@ -1294,15 +1207,12 @@ Public Class ClaimRecordingForm
                         wsRequest = New CallerAuthenticationRequest()
                     End If
                 End If
-
-
-
+                
                 wsRequest.CaseNumber = questionSubmitObj.CaseNumber
                 wsRequest.CompanyCode = questionSubmitObj.CompanyCode
                 wsRequest.InteractionNumber = questionSubmitObj.InteractionNumber
                 wsRequest.Questions = questionSubmitObj.Questions
-
-
+                
                 Try
                     Dim wsResponse = WcfClientHelper.Execute(Of ClaimRecordingServiceClient, IClaimRecordingService, BaseClaimRecordingResponse)(
                         GetClient(),
@@ -1419,68 +1329,7 @@ Public Class ClaimRecordingForm
                 End If
 
                 questionUserControl.GetQuestionAnswer()
-
-                'For Each row In GridQuestions.Rows
-
-                '    Dim answerType As String = CType(row.FindControl("lblAnswerType"), Label).Text
-                '    Dim code As String = CType(row.FindControl("lblCode"), Label).Text
-                '    Dim questionObject
-
-                '    If questionSubmitobj.GetType() Is GetType(QuestionResponse) Then
-                '        questionObject = DirectCast(questionSubmitobj, QuestionResponse).Questions.FirstOrDefault(Function(x) x.Code = code)
-                '    ElseIf questionSubmitobj.GetType() Is GetType(CallerAuthenticationResponse) Then
-                '        questionObject = DirectCast(questionSubmitobj, CallerAuthenticationResponse).Questions.FirstOrDefault(Function(x) x.Code = code)
-                '    End If
-
-                '    Select Case answerType.Trim().ToUpper()
-                '        Case "CHOICE"
-                '            Dim answer As String = CType(row.FindControl("rblChoice"), RadioButtonList).SelectedValue
-                '            Dim choiceAnswer As ChoiceAnswer = questionObject.Answer
-                '            choiceAnswer.Answer = choiceAnswer.Answers.FirstOrDefault(Function(y) y.Code = answer)
-                '        Case "LISTOFVALUES"
-                '            Dim answer As String = CType(row.FindControl("ddlList"), DropDownList).SelectedValue
-                '            Dim listofvalues As ListOfValuesAnswer = questionObject.Answer
-                '            listofvalues.Answer = listofvalues.Answers.FirstOrDefault(Function(y) y.Code = answer)
-                '        Case "NUMBER", "TEXT"
-                '            Dim answer As String = CType(row.FindControl("txtNo"), TextBox).Text
-                '            If answerType.Trim().ToUpper().Equals("NUMBER") Then
-                '                Dim numbervalue As NumberAnswer = New NumberAnswer()
-                '                numbervalue.Answer = Convert.ToDecimal(answer)
-                '                questionObject.Answer = numbervalue
-                '            Else
-                '                Dim txtValue As TextAnswer = New TextAnswer()
-                '                txtValue.Answer = answer
-                '                questionObject.Answer = txtValue
-                '            End If
-                '        Case "BOOLEAN", "LEGALCONSENT"
-                '            Dim answer As Boolean = CType(row.FindControl("chkCheck"), CheckBox).Checked
-                '            If answerType.Trim().ToUpper().Equals("BOOLEAN") Then
-                '                questionObject.Answer = New BooleanAnswer() With {.Answer = answer}
-                '            Else
-                '                questionObject.Answer = New LegalConsentAnswer() With {.Answer = answer}
-                '            End If
-                '        Case "DATE"
-                '            Dim answer As String = CType(row.FindControl("txtDate"), TextBox).Text
-                '            If Not String.IsNullOrEmpty(answer) Then
-                '                Dim dateAnswer As DateAnswer = New DateAnswer()
-                '                'Fix for Japan date control-------------------------------
-                '                Dim formatProvider = LocalizationMgr.CurrentFormatProvider
-                '                If formatProvider.Name.Equals("ja-JP") Then
-                '                    Dim dateFragments() As String = answer.Split("-")
-                '                    dateAnswer.Answer = New DateTime(Integer.Parse(dateFragments(2)), Integer.Parse(dateFragments(1)), Integer.Parse(dateFragments(0))).Date
-                '                Else
-                '                    REM dateAnswer.Answer = Convert.ToDateTime(answer, formatProvider)
-                '                    Dim resultDate As DateTime
-                '                    If DateTime.TryParse(answer, formatProvider, DateTimeStyles.None, resultDate) Then
-                '                        dateAnswer.Answer = resultDate
-                '                        questionObject.Answer = dateAnswer
-                '                    End If
-                '                    '--------------------------------------------------------
-                '                End If
-                '            End If
-                '    End Select
-                'Next
-
+                
                 Dim wsRequest
                 If State.SubmitWsBaseClaimRecordingResponse IsNot Nothing Then
                     If State.SubmitWsBaseClaimRecordingResponse.GetType() Is GetType(QuestionResponse) Then
