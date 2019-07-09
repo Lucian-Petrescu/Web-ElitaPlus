@@ -1012,6 +1012,7 @@ Public Class ErrorCodes
 
     Public Const GUI_ANSWER_IS_REQUIRED_ERR As String = "GUI_ANSWER_IS_REQUIRED_ERR" ' Answer to below question is Mandatory
     Public Const GUI_ANSWER_TO_QUESTION_INVALID_ERR As String = "GUI_ANSWER_TO_QUESTION_INVALID_ERR" ' Invalid data to below question
+    Public Const GUI_ANSWER_LENGTH_TO_QUESTION_TOO_LONG_ERR As String = "GUI_NUMBER_TOO_LONG" ' Invalid data to below question
     Public Const GUI_CLAIM_RECORDING_SERVICE_ERR As String = "GUI_CLAIM_RECORDING_SERVICE_ERR" ' Error while calling claim recording web service
     Public Const GUI_COMPLETE_SHIPPING_ADDRESS_REQUIRED_ERR As String = "GUI_COMPLETE_SHIPPING_ADDRESS_REQUIRED_ERR" ' Please enter complete shipping address
 
