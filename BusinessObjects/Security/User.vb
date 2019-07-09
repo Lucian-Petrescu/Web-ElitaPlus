@@ -1107,12 +1107,17 @@ Public Class User
         Return oSpUserClaims
     End Function
     Public Function NeedPERMtoViewPrivacyData() As boolean
-        If (ElitaPlusIdentity.Current.ActiveUser.UserPermission.Where(Function(up) up.PermissionId = LookupListNew.GetIdFromCode(LookupListNew.DropdownLanguageLookupList(LookupListNew.LK_USER_ROLE_PERMISSION, ElitaPlusIdentity.Current.ActiveUser.LanguageId),"AUTH_NEEDED_VIEW_SEC_FIELDS")).Count() > 0) Then
-            return True
-        Else
-            return False
-        End If
-      
+        Dim oRole As Role
+        Dim rowRole as DataRowView        
+        Dim authNeededRolePermId as Guid = LookupListNew.GetIdFromCode(LookupListNew.DropdownLanguageLookupList(LookupListNew.LK_USER_ROLE_PERMISSION, ElitaPlusIdentity.Current.ActiveUser.LanguageId),"AUTH_NEEDED_VIEW_SEC_FIELDS")
+        dim dvRoles as dataview = GetUserRoles(New User(Authentication.CurrentUser.NetworkId).Id)
+        for each rowRole In dvRoles
+            oRole = New Role(New Guid(CType(rowRole("Id"), Byte())))
+            If oRole.RolePermission.Where(Function(up) up.PermissionId = authNeededRolePermId).Any Then
+                return True
+            End If
+        Next
+        Return False
     End Function
 
 #End Region
