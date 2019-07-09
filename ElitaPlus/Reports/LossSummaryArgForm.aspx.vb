@@ -72,7 +72,6 @@ Namespace Reports
         Protected Sub Page_Load(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Load
             'Put user code to initialize the page here
             Me.MasterPage.MessageController.Clear_Hide()
-            ClearErrLabels()
             Me.Title = TranslationBase.TranslateLabelOrMessage(RPT_FILENAME_WINDOW)
             Try
                 If Not Me.IsPostBack Then
@@ -85,11 +84,11 @@ Namespace Reports
                     UpdateBreadCrum()
                     TheReportCeInputControl.ExcludeExport()
                     Me.SetFormTab(PAGETAB)
+                    ClearErrLabels()
                 Else
                     currentAccountingMonth = CType(ViewState("CURRENTACCOUNTINGMONTH"), Integer)
                     currentAccountingYear = CType(ViewState("CURRENTACCOUNTINGYEAR"), Integer)
                 End If
-
                 Me.InstallProgressBar()
             Catch ex As Exception
                 Me.HandleErrors(ex, Me.MasterPage.MessageController)
@@ -135,39 +134,36 @@ Namespace Reports
         End Sub
 #End Region
 
-#Region "Handlers-DropDown"
+        '#Region "Handlers-DropDown"
 
-        Protected Sub OnFromDrop_Changed(ByVal fromMultipleDrop As Assurant.ElitaPlus.ElitaPlusWebApp.Common.MultipleColumnDDLabelControl) _
-             Handles moUserCompanyMultipleDrop.SelectedDropChanged
-            Try
-                'PopulateDealerDropDown()
-                'PopulateCurrencyDropdown()
-            Catch ex As Exception
-                HandleErrors(ex, Me.MasterPage.MessageController)
-            End Try
-        End Sub
+        '        Protected Sub OnFromDrop_Changed(ByVal fromMultipleDrop As Assurant.ElitaPlus.ElitaPlusWebApp.Common.MultipleColumnDDLabelControl) _
+        '             Handles moUserCompanyMultipleDrop.SelectedDropChanged
+        '            Try
+        '                'PopulateDealerDropDown()
+        '                'PopulateCurrencyDropdown()
+        '            Catch ex As Exception
+        '                HandleErrors(ex, Me.MasterPage.MessageController)
+        '            End Try
+        '        End Sub
 
-#End Region
+        '#End Region
 
 #Region "Populate"
 
         Private Sub PopulateCompaniesDropdown()
             Dim dv As DataView = LookupListNew.GetUserCompaniesLookupList()
             UserCompanyMultipleDrop.NothingSelected = True
-            UserCompanyMultipleDrop.SetControl(True, UserCompanyMultipleDrop.MODES.NEW_MODE, True, dv, TranslationBase.TranslateLabelOrMessage(LABEL_SELECT_COMPANY), True)
+            UserCompanyMultipleDrop.SetControl(False, UserCompanyMultipleDrop.MODES.NEW_MODE, True, dv, TranslationBase.TranslateLabelOrMessage(LABEL_SELECT_COMPANY), True)
             If dv.Count.Equals(ONE_ITEM) Then
                 'HideHtmlElement("ddSeparator")
                 UserCompanyMultipleDrop.SelectedIndex = Me.ONE_ITEM
                 'UserCompanyMultipleDrop.Visible = False
-                OnFromDrop_Changed(UserCompanyMultipleDrop)
+                ' OnFromDrop_Changed(UserCompanyMultipleDrop)
             End If
         End Sub
 
         Private Sub PopulateMonthsAndYearsDropdown()
-            'Dim dvM As DataView = LookupListNew.GetMonthsLookupList(ElitaPlusIdentity.Current.ActiveUser.LanguageId)
-            'dvM.Sort = "CODE"
-            'Me.BindListControlToDataView(Me.MonthDropDownList, dvM, , , True)
-
+           
             Dim MonthList As DataElements.ListItem() =
                 CommonConfigManager.Current.ListManager.GetList(listCode:="MONTH",
                                                                 languageCode:=Thread.CurrentPrincipal.GetLanguageCode())
@@ -178,11 +174,6 @@ Namespace Reports
                                            .AddBlankItem = True,
                                            .SortFunc = AddressOf PopulateOptions.GetCode
                                          })
-
-
-            'Dim dvY As DataView = AccountingCloseInfo.GetClosingYears(ElitaPlusIdentity.Current.ActiveUser.CompanyId)
-            'dvY.RowFilter = " DESCRIPTION LIKE '" & currentAccountingYear & "' or DESCRIPTION LIKE '" & currentAccountingYear - 1 & "'"
-            'Me.BindListTextToDataView(Me.YearDropDownList, dvY, , , True)
 
             Dim YearList As DataElements.ListItem() =
                 CommonConfigManager.Current.ListManager.GetList(listCode:="ClosingYearsByCompany",
@@ -199,7 +190,9 @@ Namespace Reports
                                          New PopulateOptions() With
                                          {
                                            .AddBlankItem = True,
-                                           .BlankItemValue = "0"
+                                           .BlankItemValue = "0",
+                                           .ValueFunc = AddressOf PopulateOptions.GetCode,
+                                           .TextFunc = AddressOf PopulateOptions.GetDescription
                                          })
         End Sub
 #End Region
