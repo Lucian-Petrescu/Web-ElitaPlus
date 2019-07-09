@@ -582,7 +582,6 @@ Namespace Tables
                         Me.PopulateBOProperty(TheProductConv, "Manufacturer", Me.moManufacturer, False)
                     End If
                     ' Texts
-                    Me.txtdealerProdCode.Text = Me.txtdealerProdCode.Text.ToUpper()
                     Me.PopulateBOProperty(TheProductConv, "ExternalProdCode", Me.txtdealerProdCode)
                     Me.PopulateBOProperty(TheProductConv, "Model", Me.txtModel)
                     Me.PopulateBOProperty(TheProductConv, "CertificateDuration", Me.txtCertDuration)
