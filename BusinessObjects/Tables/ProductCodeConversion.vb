@@ -129,7 +129,7 @@ Public Class ProductCodeConversion
         End Get
         Set(ByVal Value As String)
             CheckDeleted()
-            Me.SetValue(ProductCodeConversionDAL.COL_NAME_EXTERNAL_PROD_CODE, Value)
+            Me.SetValue(ProductCodeConversionDAL.COL_NAME_EXTERNAL_PROD_CODE, If(Value Is Nothing, Value, Value.ToUpper()))
         End Set
     End Property
 
