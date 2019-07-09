@@ -321,10 +321,10 @@ Public Class UserControlDeliverySlot
             chkNotSpecify.Checked = State.CurrentEstimate.Behavior.SelectionAllowed
 
             If (State.CurrentEstimate.Behavior.SelectionAllowed = False) Then
-                Page.ChangeEnabledControlProperty(chkNotSpecify, False)
+                chkNotSpecify.Enabled = False
                 Page.MasterPage.MessageController.AddInformation(Message.MSG_ERR_ESTIMATED_DELIVERY_DATE_TIME_NOT_SELECTABLE, True)
             Else
-                Page.ChangeEnabledControlProperty(chkNotSpecify, True)
+                chkNotSpecify.Enabled = True
             End If
         End If
 
