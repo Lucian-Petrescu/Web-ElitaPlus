@@ -163,7 +163,6 @@ Public Class UserControlDeliverySlot
             End If
 
             ddlDeliverySlots.Items.Clear() ' remove the delivery slot options
-            'Page.MasterPage.MessageController.AddError(TranslationBase.TranslateLabelOrMessage("DESIRED_DELIVERY_DATE") & " - " & txtDeliveryDate.Text & " : " & TranslationBase.TranslateLabelOrMessage(Messages.INVALID_DATE_ERR), False)
             Return False
         End If
         Return True
@@ -275,8 +274,6 @@ Public Class UserControlDeliverySlot
             .Address2 = State.DeliveryAddress.Address2,
             .Address3 = State.DeliveryAddress.Address3}
         
-        'wsRequest.LookupDate = Date.Now 'TODO: there is some issue due to timezone when sending today time from here to service so sending nothing
-
         Try
             Dim wsResponse As GetDeliverySlotsResponse = WcfClientHelper.Execute(Of WebAppGatewayClient, WebAppGateway, GetDeliverySlotsResponse)(
                                                                                 GetClaimFulfillmentWebAppGatewayClient(),
@@ -321,10 +318,10 @@ Public Class UserControlDeliverySlot
             chkNotSpecify.Checked = State.CurrentEstimate.Behavior.SelectionAllowed
 
             If (State.CurrentEstimate.Behavior.SelectionAllowed = False) Then
-                Page.ChangeEnabledControlProperty(chkNotSpecify, False)
+                chkNotSpecify.Enabled = False
                 Page.MasterPage.MessageController.AddInformation(Message.MSG_ERR_ESTIMATED_DELIVERY_DATE_TIME_NOT_SELECTABLE, True)
             Else
-                Page.ChangeEnabledControlProperty(chkNotSpecify, True)
+                chkNotSpecify.Enabled = True
             End If
         End If
 
@@ -353,8 +350,7 @@ Public Class UserControlDeliverySlot
         End If
 
         ShowDeliveryEstimate()
-
-        'SetControlStatus()
+        
     End Sub
     Private Sub ShowFaultException(ByVal fex As FaultException)
         If fex IsNot Nothing Then
