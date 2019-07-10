@@ -195,7 +195,7 @@
                     <p class='MsoNormal'>
                       <b>
                       <span lang='ES-PR' style='font-size:11.0pt;font-family:"Trebuchet MS"'>
-                        Nombre del Centro de Atención a Cientes (CAC): <span style='color:#999999'></span>
+                        Nombre del Centro de Atención Autorizado: <span style='color:#999999'></span>
                       </span>
                       </b>
                       <span lang='ES-PR' style='font-size:11.0pt;font-family:"Trebuchet MS";color:#999999'>
@@ -209,8 +209,7 @@
                     <p class='MsoNormal'>
                     <b>
                       <span style='font-size:11.0pt;font-family:"Trebuchet MS"'>
-                      Código
-                      CAC:
+                      Código:
                       </span>
                       </b>
                       <span style='font-size:11.0pt;font-family:"Trebuchet MS";color:#999999'>
@@ -702,9 +701,8 @@
                       <p class='MsoNormal'>
                         <span class='sp'>
                           <span lang='ES' style='font-size:11.0pt;font-family:"Trebuchet MS"'>
-                            Por medio de ésta CERTIFICO que el CAC autorizado
-                            me ha hecho entrega de la unidad de reemplazo, acorde a los términos y
-                            condiciones del Programa.
+                            Por medio de esta CERTIFICO que Assurant Daños Mexico SA de CV o Assurant Servicios de Mexico SA de CV, me ha hecho entrega de la unidad reparada, acorde a los terminos
+                            y condiciones del Programa.
                           </span>
                         </span>
                       </p>
@@ -738,14 +736,14 @@
                   <td width="49%" valign="top" style='width:49.18%;padding:0in 0in 0in 0in'>
                     <p class='MsoNormal' align='center' style='text-align:center'>
                     <span class='sp'>
-                    <span style='font-size:10.0pt;font-family:"Trebuchet MS"'>Firma Cliente</span>
+                    <span style='font-size:10.0pt;font-family:"Trebuchet MS"'>Firma del Cliente</span>
                     </span>
                     </p>
                   </td>
                   <td valign='top' style='padding:0in 0in 0in 0in'>
                     <p class='MsoNormal' align='center' style='text-align:center'>
                     <span class='sp'>
-                    <span   style='font-size:10.0pt;font-family:"Trebuchet MS"'>Firma Representante CAC</span>
+                    <span   style='font-size:10.0pt;font-family:"Trebuchet MS"'>Firma del representante del Centro de Atencion Autorizado</span>
                     </span>
                     </p>
                     <p class='MsoNormal'>

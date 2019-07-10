@@ -335,7 +335,7 @@
                             </tr>
                             <tr>
                               <td>
-                                NO. DE SERIE
+                                NUMERO IMEI
                               </td>
                               <td>
                                 COSTO DEL SERVICIO
@@ -370,7 +370,7 @@
                                 FECHA DE COMPRA
                               </td>
                               <td>
-                                TIPO DE PLAN
+                                TIPO DE SERVICIO
                               </td>
                             </tr>
                             <tr>
@@ -522,6 +522,15 @@
                   </td>
                   <td>
                   </td>
+                </tr>
+                <tr>
+                <td>
+                </td>
+                  <td class="boldLarger" style="text-align: center; word-wrap:normal;">
+                    Por medio de esta CERTIFICO que Assurant Danos SA de CV o Assurant Servicios de Mexico SA de CV. me ha hecho entrega de la unidad reparada, acorde a los temrinos y condiciones del Programaogma.
+                  </td>
+                <td>
+                </td>
                 </tr>
                 <tr>
                   <td colspan="3" style="height: 40px;">
@@ -802,7 +811,7 @@
                             </tr>
                             <tr>
                               <td>
-                                NO. DE SERIE
+                                NUMERO IMEI
                               </td>
                               <td>
                                 COSTO DEL SERVICIO
@@ -837,7 +846,7 @@
                                 FECHA DE COMPRA
                               </td>
                               <td>
-                                TIPO DE PLAN
+                                TIPO DE SERVICIO
                               </td>
                             </tr>
                             <tr>
@@ -988,6 +997,15 @@
                   </td>
                   <td>
                   </td>
+                </tr>
+                <tr>
+                <td>
+                </td>
+                  <td class="boldLarger" style="text-align: center; word-wrap:normal;">
+                    Por medio de esta CERTIFICO que Assurant Danos SA de CV o Assurant Servicios de Mexico SA de CV. me ha hecho entrega de la unidad reparada, acorde a los temrinos y condiciones del Programaogma.
+                  </td>
+                <td>
+                </td>
                 </tr>
                 <tr>
                   <td colspan="3" style="height: 40px;">
