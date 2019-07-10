@@ -216,6 +216,7 @@ Public Class CommentTypeCodes
     '5623  
     Public Const ClaimDeniedReportTimeNotWithInGracePeriod As String = "DNGP"
     Public Const ClaimDeniedCoverageTypeMissing As String = "DNCTM"
+    Public Const ClaimDeniedDevicePurchasedDate As String = "DNDPD"
 End Class
 Public Class SubscriberStatusCodes
     Public Const Active As String = "A"
@@ -247,6 +248,7 @@ Public Class DeniedReasonCodes
     Public Const NoProblemFound As String = "DNPF"
     Public Const UnderMFGWarranty As String = "DMF"
     Public Const CustomerDesistClaim As String = "DCUSTDC"
+    Public Const DevicePurchasedDate As String = "DNDPD"
 End Class
 
 Public Class ReasonClosedCodes
