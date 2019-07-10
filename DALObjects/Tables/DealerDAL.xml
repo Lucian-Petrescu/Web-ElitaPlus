@@ -147,7 +147,8 @@
         validate_address_xcd,
         case_profile_code,
         close_case_grace_period_days,
-        show_prev_caller_info_xcd
+        show_prev_caller_info_xcd,
+        display_mask_dob_xcd
 			FROM elp_dealer
 			WHERE
 				dealer_id = :dealer_id
@@ -290,7 +291,8 @@
         validate_address_xcd,
         case_profile_code,
         close_case_grace_period_days,
-        show_prev_caller_info_xcd
+        show_prev_caller_info_xcd,
+        display_mask_dob_xcd
       FROM elp_dealer 
 			WHERE
 				company_id= :company_id
@@ -486,7 +488,8 @@
         validate_address_xcd = :validate_address_xcd,
         case_profile_code = :case_profile_code,
         close_case_grace_period_days = :close_case_grace_period_days,
-        show_prev_caller_info_xcd = :show_prev_caller_info_xcd
+        show_prev_caller_info_xcd = :show_prev_caller_info_xcd,
+        display_mask_dob_xcd = :display_mask_dob_xcd
         WHERE
 				dealer_id = :dealer_id
 		]]>
@@ -630,7 +633,8 @@
     validate_address_xcd,
     case_profile_code,
     close_case_grace_period_days,
-    show_prev_caller_info_xcd
+    show_prev_caller_info_xcd,
+    display_mask_dob_xcd
     )
     VALUES
     (
@@ -770,7 +774,8 @@
     :validate_address_xcd,
     :case_profile_code,
     :close_case_grace_period_days,
-    :show_prev_caller_info_xcd
+    :show_prev_caller_info_xcd,
+    :display_mask_dob_xcd
     )
   </INSERT>
   <DELETE>

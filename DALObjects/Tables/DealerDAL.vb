@@ -283,6 +283,7 @@ Public Class DealerDAL
 
     Public Const COL_NAME_SHOW_PREV_CALLER_INFO As String = "show_prev_caller_info_xcd"
 
+    Public Const COL_NAME_DISPLAY_DOB As String = "display_mask_dob_xcd"
 #End Region
 
 #Region "Constructors"
