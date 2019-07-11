@@ -2589,6 +2589,24 @@ Namespace Tables
         Protected WithEvents moShowPrevCallerInfo As Global.System.Web.UI.WebControls.DropDownList
         
         '''<summary>
+        '''lblDealerNameFlag control.
+        '''</summary>
+        '''<remarks>
+        '''Auto-generated field.
+        '''To modify move field declaration from designer file to code-behind file.
+        '''</remarks>
+        Protected WithEvents lblDealerNameFlag As Global.System.Web.UI.WebControls.Label
+        
+        '''<summary>
+        '''ddlDealerNameFlag control.
+        '''</summary>
+        '''<remarks>
+        '''Auto-generated field.
+        '''To modify move field declaration from designer file to code-behind file.
+        '''</remarks>
+        Protected WithEvents ddlDealerNameFlag As Global.System.Web.UI.WebControls.DropDownList
+        
+        '''<summary>
         '''EditPanel_WRITE control.
         '''</summary>
         '''<remarks>

@@ -69,6 +69,15 @@ Namespace Certificates
         Protected WithEvents PanelHolderDynamicSearchCriteria As Global.System.Web.UI.WebControls.PlaceHolder
         
         '''<summary>
+        '''tdDateofBirthTag control.
+        '''</summary>
+        '''<remarks>
+        '''Auto-generated field.
+        '''To modify move field declaration from designer file to code-behind file.
+        '''</remarks>
+        Protected WithEvents tdDateofBirthTag As Global.System.Web.UI.HtmlControls.HtmlTableCell
+        
+        '''<summary>
         '''lblDateOfBirth control.
         '''</summary>
         '''<remarks>
