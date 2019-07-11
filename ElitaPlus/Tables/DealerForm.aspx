@@ -1150,8 +1150,16 @@ MasterPageFile="../Navigation/masters/ElitaBase.Master" %>
     <td align="left" nowrap="nowrap">
         <asp:DropDownList ID="moShowPrevCallerInfo" runat="server" SkinID="MediumDropDown"></asp:DropDownList>
     </td>
-                
-</tr>
+    </tr>
+
+    <tr>
+        <td align="right" nowrap="nowrap">
+        <asp:Label ID="lblDealerNameFlag" runat="server">DISPLAY_MASK_DOB</asp:Label>
+    </td>
+    <td align="left" nowrap="nowrap">
+        <asp:DropDownList ID="ddlDealerNameFlag" runat="server" SkinID="MediumDropDown"></asp:DropDownList>
+    </td>
+    </tr>
            
 <tr> <td colspan="4" class="borderLeft"> 
     <div class="dataContainer">            

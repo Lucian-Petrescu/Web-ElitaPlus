@@ -9,6 +9,7 @@ Public Class CaseBase
     Inherits BusinessObjectBase
 #Region "Constants"
     Private Const SearchException As String = "SEARCH_CRITERION_001" ' Case List Search Exception - If no criterion(except companyid) is selected
+    Private Const MinimumSearchCriterion As String = "MINIMUM_SEARCH_CRITERION"
 #End Region
 
 #Region "Constructors"
@@ -471,7 +472,30 @@ Public Class CaseBase
                                         ByVal taxId As String, ByVal serviceLineNumber As String, ByVal accountNumber As String,
                                         ByVal globalCustomerNumber As String, ByVal dateofbirth As String,
                                         ByVal languageId As Guid) As AgentSearchDv
+
+        If (dealerId.Equals(Guid.Empty) AndAlso
+             customerFirstName.Equals(String.Empty) AndAlso
+             customerLastName.Equals(String.Empty) AndAlso
+             caseNumber.Equals(String.Empty) AndAlso
+             claimNumber.Equals(String.Empty) AndAlso
+             certificateNumber.Equals(String.Empty) AndAlso
+             serialNumber.Equals(String.Empty) AndAlso
+             invoiceNumber.Equals(String.Empty) AndAlso
+             phoneNumber.Equals(String.Empty) AndAlso
+             zipcode.Equals(String.Empty) AndAlso
+             certificateStatus = "" AndAlso
+             email.Equals(String.Empty) AndAlso
+             taxId.Equals(String.Empty) AndAlso
+             accountNumber.Equals(String.Empty) AndAlso
+             globalCustomerNumber.Equals(String.Empty) AndAlso
+             Not dateofbirth.Equals(String.Empty)
+                 ) Then
+            Dim errors() As ValidationError = {New ValidationError(TranslationBase.TranslateLabelOrMessage(MinimumSearchCriterion), GetType(CaseBase), Nothing, "Search", Nothing)}
+            Throw New BOValidationException(errors, GetType(CaseBase).FullName)
+        End If
+
         Try
+
             Dim dal As New CaseDAL
             Return New AgentSearchDv(dal.LoadAgentSearchList(companyId,
                                                              dealerId,
@@ -619,6 +643,7 @@ Public Class CaseBase
             Throw New DataBaseAccessException(ex.ErrorType, ex)
         End Try
     End Function
+
 #End Region
 #Region "CaseSearchDV"
     Public Class CaseSearchDv

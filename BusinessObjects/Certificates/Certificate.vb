@@ -3,6 +3,7 @@ Imports Assurant.ElitaPlus.Common
 Imports System.Math
 Imports Assurant.ElitaPlus.BusinessObjectsNew.CertItem
 Imports System.Collections.Generic
+Imports System.Globalization
 
 Public Class Certificate
     Inherits BusinessObjectBase
@@ -5196,6 +5197,25 @@ Public Class Certificate
 
         Return dal.GetCertPaymentPassedDueExtInfo(CertId)
 
+    End Function
+
+    Public Function MaskDatePart(txtDate As String, Optional noMask As Boolean = True) As String
+        If Not (String.IsNullOrEmpty(txtDate)) Then
+            If (CultureInfo.CurrentCulture.Name.Equals("ja-JP")) Then
+                Dim parsedDate As DateTime
+                parsedDate = DateTime.Parse(txtDate)
+                txtDate = parsedDate.ToString("D", CultureInfo.CurrentCulture)
+                If (noMask) Then
+                    Return txtDate
+                Else
+                    Return txtDate.Replace(txtDate.Substring(0, 4), "XXXX")
+                End If
+            Else
+                Dim dateofbirth As Date = txtDate
+                Return dateofbirth.ToString("dd-MMM-xxxx")
+            End If
+            Return txtDate
+        End If
     End Function
 
 #End Region

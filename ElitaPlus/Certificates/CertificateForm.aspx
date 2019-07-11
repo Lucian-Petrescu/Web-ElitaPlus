@@ -316,7 +316,7 @@
                                     <td align="right" id="tdDateOfBirthTag" runat="server">
                                         <asp:Label ID="moDateOfBirthLabel" runat="server">DATE_OF_BIRTH</asp:Label>
                                     </td>
-                                    <td align="left">
+                                    <td align="left" id="tdDateOfBirthCalTag">
                                         <asp:TextBox ID="moDateOfBirthText" TabIndex="1" runat="server" CssClass="FLATTEXTBOX_TAB"></asp:TextBox>
                                         <asp:ImageButton ID="BtnDateOfBirth" runat="server" Width="20px" Height="17px" ImageUrl="../Common/Images/calendarIcon2.jpg"></asp:ImageButton>
                                     </td>

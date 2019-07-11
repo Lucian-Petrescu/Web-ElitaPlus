@@ -180,7 +180,8 @@
       <HintPath>..\packages\Assurant.Elita.ClientIntegration.4.0.0\lib\net462\Assurant.Elita.ClientIntegration.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="Assurant.Elita.CommonConfiguration, Version=2.1.5.0, Culture=neutral, processorArchitecture=MSIL">
+    <Reference Include="Assurant.Elita.CommonConfiguration, Version=2.1.6.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
       <HintPath>..\packages\Assurant.Elita.CommonConfiguration.2.1.5\lib\net46\Assurant.Elita.CommonConfiguration.dll</HintPath>
     </Reference>
     <Reference Include="Assurant.Elita.Configuration, Version=4.0.0.0, Culture=neutral, processorArchitecture=MSIL">

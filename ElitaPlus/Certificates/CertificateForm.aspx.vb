@@ -12,7 +12,6 @@ Imports Assurant.Elita
 Namespace Certificates
     Partial Class CertificateForm
         Inherits ElitaPlusSearchPage
-
 #Region " Web Form Designer Generated Code "
 
         'This call is required by the Web Form Designer.
@@ -419,7 +418,7 @@ Namespace Certificates
             Public EditingBo As Certificate
             Public BoChanged As Boolean = False
             Public IsCallerAuthenticated As Boolean = False
-            Public Sub New(ByVal LastOp As DetailPageCommand, ByVal curEditingBo As Certificate, Optional ByVal boChanged As Boolean = False,Optional byval IsCallerAuthenticated As Boolean = False)
+            Public Sub New(ByVal LastOp As DetailPageCommand, ByVal curEditingBo As Certificate, Optional ByVal boChanged As Boolean = False, Optional ByVal IsCallerAuthenticated As Boolean = False)
                 Me.LastOperation = LastOp
                 Me.EditingBo = curEditingBo
                 Me.BoChanged = boChanged
@@ -648,7 +647,7 @@ Namespace Certificates
             'KDDI
             Public AddressFlag As Boolean = True
             'Authentication
-            Public IsCallerAuthenticated As boolean = False
+            Public IsCallerAuthenticated As Boolean = False
 
 
 #End Region
@@ -708,11 +707,11 @@ Namespace Certificates
 
         Public Class Parameters
 
-            Public CertificateId As Guid = Nothing            
-            Public IsCallerAuthenticated As boolean = False
+            Public CertificateId As Guid = Nothing
+            Public IsCallerAuthenticated As Boolean = False
 
-            Public Sub New(ByVal certificateId As Guid, Optional IsCallerAuthenticated As Boolean = False)                
-                Me.CertificateId = certificateId                
+            Public Sub New(ByVal certificateId As Guid, Optional IsCallerAuthenticated As Boolean = False)
+                Me.CertificateId = certificateId
                 Me.IsCallerAuthenticated = IsCallerAuthenticated
             End Sub
 
@@ -735,7 +734,7 @@ Namespace Certificates
                     Try
                         Me.State.MyBO = New Certificate(CType(Me.CallingParameters, Guid))
                     Catch ex As Exception
-                        Me.State.MyBO = New Certificate(CType(Me.CallingParameters, Parameters).CertificateId)                    
+                        Me.State.MyBO = New Certificate(CType(Me.CallingParameters, Parameters).CertificateId)
                         Me.state.IsCallerAuthenticated = CType(Me.CallingParameters, Parameters).IsCallerAuthenticated
                     End Try
                     Me.CertId = Me.State.MyBO.Id
@@ -2616,7 +2615,7 @@ Namespace Certificates
                 'Me.tdDateOfBirthTag.InnerHtml = ""
                 'ControlMgr.SetVisibleControl(Me, BtnDateOfBirth, False)
                 'End If
-                Me.PopulateControlFromBOProperty(Me.moDateOfBirthText, .DateOfBirth)
+                'Me.PopulateControlFromBOProperty(Me.moDateOfBirthText, .DateOfBirth)
                 'DEF-21659 - END
 
                 If Not blnPremiumEdit Then PopulatePaymentTypesDropdown(Me.moPaymentTypeId)
@@ -2777,6 +2776,30 @@ Namespace Certificates
                 Else
                     ControlMgr.SetVisibleControl(Me, moCertificatesLinkPanel, False)
                     'ControlMgr.SetVisibleControl(Me, linkOrigCertId, False)
+                End If
+
+                Me.PopulateControlFromBOProperty(Me.moDateOfBirthText, .DateOfBirth)
+                Dim IsDobDisplay As Boolean = Me.State.MyBO.Dealer.DisplayDobXcd.ToUpper().Equals("YESNO-Y")
+                Dim IsCustomerLglInfo As Boolean = Me.State.ReqCustomerLegalInfoId.Equals(LookupListNew.GetIdFromCode(LookupListCache.LK_CLITYP, "0"))
+
+                If (Not IsDobDisplay And IsCustomerLglInfo) Then
+                    ControlMgr.SetVisibleControl(Me, moDateOfBirthLabel, False)
+                    ControlMgr.SetVisibleControl(Me, moDateOfBirthText, False)
+                    ControlMgr.SetVisibleControl(Me, BtnDateOfBirth, False)
+                    ControlMgr.SetVisibleControl(Me, tdDateOfBirthCalTag, False)
+
+                End If
+
+                If (Not IsDobDisplay And Not IsCustomerLglInfo) Then
+                    If Not (Me.State.IsEdit) Then
+                        Me.moDateOfBirthText.Text = Me.State.MyBO.MaskDatePart(Me.moDateOfBirthText.Text, True)
+                    End If
+                End If
+
+                If (IsDobDisplay) Then
+                    If Not (Me.State.IsEdit) Then
+                        Me.moDateOfBirthText.Text = Me.State.MyBO.MaskDatePart(Me.moDateOfBirthText.Text, False)
+                    End If
                 End If
 
             End With
@@ -3761,8 +3784,8 @@ Namespace Certificates
                 Dim filteredCancellationReasonList As ListItem()
                 If Me.State.CancelRulesForSFR = Codes.YESNO_Y Then
                     filteredCancellationReasonList = (From x In cancellationRequestReason
-                        Where x.Translation.Contains("SFR")
-                        Select x).ToArray()
+                                                      Where x.Translation.Contains("SFR")
+                                                      Select x).ToArray()
                 Else
                     filteredCancellationReasonList = cancellationRequestReason.ToArray()
                 End If
@@ -3771,8 +3794,8 @@ Namespace Certificates
                                                            {
                                                            .AddBlankItem = True,
                                                            .TextFunc = Function(x)
-                                                               Return x.Code + " - " + x.Translation
-                                                           End Function
+                                                                           Return x.Code + " - " + x.Translation
+                                                                       End Function
                                                            })
             Catch ex As Exception
                 Me.HandleErrors(ex, Me.MasterPage.MessageController)
@@ -3810,8 +3833,8 @@ Namespace Certificates
                                                           {
                                                           .AddBlankItem = True,
                                                           .TextFunc = Function(x)
-                                                              Return x.Code + " - " + x.Translation
-                                                          End Function
+                                                                          Return x.Code + " - " + x.Translation
+                                                                      End Function
                                                           })
             Catch ex As Exception
                 Me.HandleErrors(ex, Me.MasterPage.MessageController)
@@ -6672,7 +6695,7 @@ Namespace Certificates
                     Me.State.ActionInProgress = ElitaPlusPage.DetailPageCommand.Back
                 Else
                     Dim myBo As Certificate = Me.State.MyBO
-                    Dim retObj As ReturnType = New ReturnType(ElitaPlusPage.DetailPageCommand.Back, myBo, Me.State.certificateChanged,Me.state.IsCallerAuthenticated)
+                    Dim retObj As ReturnType = New ReturnType(ElitaPlusPage.DetailPageCommand.Back, myBo, Me.State.certificateChanged, Me.state.IsCallerAuthenticated)
                     Me.State.selectedTab = 0
                     Me.State.CertHistoryDV = Nothing
                     Me.NavController = Nothing
@@ -6684,7 +6707,7 @@ Namespace Certificates
                 Try
                     If Me.AddressCtr.MyBO Is Nothing Then
                         Dim myBo As Certificate = Me.State.MyBO
-                        Dim retObj As ReturnType = New ReturnType(ElitaPlusPage.DetailPageCommand.Back, myBo, Me.State.certificateChanged,Me.state.IsCallerAuthenticated)
+                        Dim retObj As ReturnType = New ReturnType(ElitaPlusPage.DetailPageCommand.Back, myBo, Me.State.certificateChanged, Me.state.IsCallerAuthenticated)
                         Me.NavController = Nothing
                         Session(Me.SESSION_KEY_BACKUP_STATE) = New MyState
                         Me.ReturnToCallingPage(retObj)
@@ -6713,7 +6736,7 @@ Namespace Certificates
 
                 If Not String.IsNullOrEmpty(Me.State.ClaimRecordingXcd) AndAlso
                    Me.State.ClaimRecordingXcd.Equals(Codes.DEALER_CLAIM_RECORDING_DYNAMIC_QUESTIONS) Then
-                    callPage(ClaimRecordingForm.Url, New ClaimRecordingForm.Parameters(Me.State.MyBO.Id, Nothing, Nothing, Codes.CASE_PURPOSE__REPORT_CLAIM,Me.State.IsCallerAuthenticated))
+                    callPage(ClaimRecordingForm.Url, New ClaimRecordingForm.Parameters(Me.State.MyBO.Id, Nothing, Nothing, Codes.CASE_PURPOSE__REPORT_CLAIM, Me.State.IsCallerAuthenticated))
                 Else
                     'REQ-863 Claims Payable
                     'Check whether to use new claim Authorization structure or not
@@ -6722,7 +6745,7 @@ Namespace Certificates
                     Else
                         Dim certId As Guid = Me.State.MyBO.Id
                         Me.NavController = Nothing
-                        Me.callPage(ClaimWizardForm.URL, New ClaimWizardForm.Parameters(ClaimWizardForm.ClaimWizardSteps.Step1, certId, Nothing, Nothing, True,,Me.state.IsCallerAuthenticated))
+                        Me.callPage(ClaimWizardForm.URL, New ClaimWizardForm.Parameters(ClaimWizardForm.ClaimWizardSteps.Step1, certId, Nothing, Nothing, True,, Me.state.IsCallerAuthenticated))
                     End If
                 End If
 
@@ -8029,8 +8052,6 @@ Namespace Certificates
             Session("SourceCertificateId") = SourceCertificateId
             Me.callPage(CertificateForm.URL, Me.State.MyBO.OriginalCertificateId)
         End Sub
-
-
 #End Region
 
     End Class
