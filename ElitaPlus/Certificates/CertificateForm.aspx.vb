@@ -1808,7 +1808,7 @@ Namespace Certificates
 
 
 
-            If Me.State.MyBO.IsParentCertificate OrElse Me.State.MyBO.IsChildCertificate Then
+            If Me.State.MyBO.IsChildCertificate Then
                 'ControlMgr.SetEnableTabStrip(Me, tsHoriz.Items(Me.CERT_ENDORSEMENTS_TAB), False)
                 EnableTab(CERT_ENDORSEMENTS_TAB, False)
             End If
@@ -6497,7 +6497,7 @@ Namespace Certificates
                 Dim coverageRow As DataRow = dv.Table.Rows(0)
             End If
 
-            If ItemDV.Count > 1 Or cert.StatusCode <> CERT_STATUS Then
+            If ItemDV.Count > 1 Or cert.StatusCode <> CERT_STATUS Or Me.State.MyBO.IsChildCertificate Then
                 Me.btnAddEndorsement_WRITE.Enabled = False
             End If
 
