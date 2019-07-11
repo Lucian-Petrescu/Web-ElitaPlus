@@ -5199,13 +5199,17 @@ Public Class Certificate
 
     End Function
 
-    Public Function MaskDatePart(txtDate As String) As String
+    Public Function MaskDatePart(txtDate As String, Optional noMask As Boolean = True) As String
         If Not (String.IsNullOrEmpty(txtDate)) Then
             If (CultureInfo.CurrentCulture.Name.Equals("ja-JP")) Then
                 Dim parsedDate As DateTime
                 parsedDate = DateTime.Parse(txtDate)
                 txtDate = parsedDate.ToString("D", CultureInfo.CurrentCulture)
-                Return txtDate.Replace(txtDate.Substring(0, 4), "XXXX")
+                If (noMask) Then
+                    Return txtDate
+                Else
+                    Return txtDate.Replace(txtDate.Substring(0, 4), "XXXX")
+                End If
             Else
                 Dim dateofbirth As Date = txtDate
                 Return dateofbirth.ToString("dd-MMM-xxxx")

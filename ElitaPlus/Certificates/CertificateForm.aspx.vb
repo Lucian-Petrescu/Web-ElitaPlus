@@ -2790,9 +2790,15 @@ Namespace Certificates
 
                 End If
 
+                If (Not IsDobDisplay And Not IsCustomerLglInfo) Then
+                    If Not (Me.State.IsEdit) Then
+                        Me.moDateOfBirthText.Text = Me.State.MyBO.MaskDatePart(Me.moDateOfBirthText.Text, True)
+                    End If
+                End If
+
                 If (IsDobDisplay) Then
                     If Not (Me.State.IsEdit) Then
-                        Me.moDateOfBirthText.Text = Me.State.MyBO.MaskDatePart(Me.moDateOfBirthText.Text)
+                        Me.moDateOfBirthText.Text = Me.State.MyBO.MaskDatePart(Me.moDateOfBirthText.Text, False)
                     End If
                 End If
 
