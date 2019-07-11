@@ -2083,7 +2083,7 @@ Namespace Tables
 
             If Not moConseqDamageTypeDropdown Is Nothing Then
                 'moConseqDamageTypeDropdown.PopulateOld("PERILTYP", ListValueType.Description, ListValueType.ExtendedCode, PopulateBehavior.AddBlankListItem, String.Empty, ListValueType.Description)
-                Dim DamageTypeList As DataElements.ListItem() = CommonConfigManager.Current.ListManager.GetList(listCode:="PERILTYP", languageCode:=Thread.CurrentPrincipal.GetLanguageCode())
+                Dim DamageTypeList As DataElements.ListItem() = CommonConfigManager.Current.ListManager.GetList(listCode:="PERILTYP", languageCode:=Thread.CurrentPrincipal.GetLanguageCode(), context:=New ListContext())
                 moConseqDamageTypeDropdown.Populate(DamageTypeList, New PopulateOptions() With
                     {
                         .AddBlankItem = True,
