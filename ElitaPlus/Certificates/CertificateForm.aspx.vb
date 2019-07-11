@@ -8,12 +8,10 @@ Imports Assurant.Elita.CommonConfiguration
 Imports Assurant.Elita.CommonConfiguration.DataElements
 Imports Assurant.Elita.Web.Forms
 Imports Assurant.Elita
-Imports System.Globalization
 
 Namespace Certificates
     Partial Class CertificateForm
         Inherits ElitaPlusSearchPage
-        Public Event TextChanged As EventHandler
 #Region " Web Form Designer Generated Code "
 
         'This call is required by the Web Form Designer.
@@ -1202,14 +1200,6 @@ Namespace Certificates
 
             Catch ex As Exception
                 Me.HandleErrors(ex, Me.MasterPage.MessageController)
-            End Try
-        End Sub
-        Protected Sub txtDateOfBirth_TextChanged(ByVal sender As Object, ByVal e As EventArgs)
-            Try
-                Me.State.MyBO.DateOfBirth = Me.moDateOfBirthText.Text
-                Me.moDateOfBirthText.Text = Me.State.MyBO.FrmtDatePart(moDateOfBirthText.Text)
-            Catch ex As Exception
-                Throw New Exception("Please enter proper date: " & ex.Message)
             End Try
         End Sub
 
@@ -2803,8 +2793,6 @@ Namespace Certificates
                 If (IsDobDisplay) Then
                     If Not (Me.State.IsEdit) Then
                         Me.moDateOfBirthText.Text = Me.State.MyBO.MaskDatePart(Me.moDateOfBirthText.Text)
-                    Else
-                        Me.moDateOfBirthText.Text = Me.State.MyBO.FrmtDatePart(Me.moDateOfBirthText.Text)
                     End If
                 End If
 

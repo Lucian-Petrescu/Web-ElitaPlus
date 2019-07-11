@@ -48,7 +48,6 @@ Namespace Certificates
         Private Const CodeSearchFieldZip As String = "ZIP"
         Private Const SearchTypeXCD As String = "SEARCH_TYPE-AGENT_SEARCH"
         Private Const CodeSearchFieldDob As String = "BIRTH_DATE"
-        Public Event TextChanged As EventHandler
 
 #End Region
 
@@ -304,15 +303,6 @@ Namespace Certificates
             State.CertificateStatus = GetSearchDropDownValue(CodeSearchFieldCertificateStatus)
 
             State.ShowAdditionalSearchFields = checkboxAdditionalSearchCriteria.Checked
-        End Sub
-
-        Protected Sub txtDateOfBirth_TextChanged(ByVal sender As Object, ByVal e As EventArgs)
-            Try
-                State.Dob = txtDateOfBirth.Text
-                txtDateOfBirth.Text = CaseBase.FrmtDatePart(txtDateOfBirth.Text)
-            Catch ex As Exception
-                Throw New Exception("Please enter proper date: " & ex.Message)
-            End Try
         End Sub
 
         Protected Sub SetSearchSettingToDefault(Optional ByVal setCompanyDealerValue As Boolean = False)

@@ -643,19 +643,7 @@ Public Class CaseBase
             Throw New DataBaseAccessException(ex.ErrorType, ex)
         End Try
     End Function
-    Public Shared Function FrmtDatePart(txtDate As String) As String
-        If Not (String.IsNullOrEmpty(txtDate)) Then
-            If (CultureInfo.CurrentCulture.Name.Equals("ja-JP")) Then
-                Dim parsedDate As DateTime
-                parsedDate = DateTime.Parse(txtDate)
-                Return parsedDate.ToString("D", CultureInfo.CurrentCulture)
-            Else
-                Return txtDate
-            End If
-        Else
-            Return txtDate
-        End If
-    End Function
+
 #End Region
 #Region "CaseSearchDV"
     Public Class CaseSearchDv

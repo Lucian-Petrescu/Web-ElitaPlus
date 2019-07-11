@@ -4,7 +4,6 @@ Imports System.Math
 Imports Assurant.ElitaPlus.BusinessObjectsNew.CertItem
 Imports System.Collections.Generic
 Imports System.Globalization
-Imports System.Threading
 
 Public Class Certificate
     Inherits BusinessObjectBase
@@ -5198,19 +5197,6 @@ Public Class Certificate
 
         Return dal.GetCertPaymentPassedDueExtInfo(CertId)
 
-    End Function
-    Public Function FrmtDatePart(txtDate As String) As String
-        If Not (String.IsNullOrEmpty(txtDate)) Then
-            If (CultureInfo.CurrentCulture.Name.Equals("ja-JP")) Then
-                Dim parsedDate As DateTime
-                parsedDate = DateTime.Parse(txtDate)
-                Return parsedDate.ToString("D", CultureInfo.CurrentCulture)
-            Else
-                Return txtDate
-            End If
-        Else
-            Return txtDate
-        End If
     End Function
 
     Public Function MaskDatePart(txtDate As String) As String
