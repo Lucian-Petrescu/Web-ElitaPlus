@@ -1002,7 +1002,7 @@ Public Class DealerReconWrk
     End Property
 
 
-    <ValidStringLength("", Max:=20)>
+    <ValidStringLength("", Max:=100)>
     Public Property NewProductCode() As String
         Get
             CheckDeleted()
