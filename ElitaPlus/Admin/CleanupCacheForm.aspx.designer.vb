@@ -23,20 +23,11 @@ Partial Public Class CleanupCacheForm
     Protected WithEvents lblnotify As Global.System.Web.UI.WebControls.Label
     
     '''<summary>
-    '''lblNote control.
+    '''btncache control.
     '''</summary>
     '''<remarks>
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents lblNote As Global.System.Web.UI.WebControls.Label
-    
-    '''<summary>
-    '''cachebtn control.
-    '''</summary>
-    '''<remarks>
-    '''Auto-generated field.
-    '''To modify move field declaration from designer file to code-behind file.
-    '''</remarks>
-    Protected WithEvents cachebtn As Global.System.Web.UI.WebControls.Button
+    Protected WithEvents btncache As Global.System.Web.UI.WebControls.Button
 End Class
