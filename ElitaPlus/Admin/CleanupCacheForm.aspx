@@ -13,17 +13,18 @@
        <table>
            <tr>
               <td>
-                  <asp:label ID="lblnotify" runat="server"></asp:label>   
+                  <asp:label ID="lblnotify" runat="server" SkinID="SummaryLabel"></asp:label>   
                    </td>
                </tr>
                <tr>
                <td>
-                   <asp:label ID="lblNote" runat="server">ATTENTION_NOTE</asp:label>
+                  
                </td>
            </tr>
            <tr>
-               <td>
-                   <asp:Button ID="cachebtn" runat="server" Text="CLEANUPCACHEFORM"/>
+               <td><div class="btnZone">
+                   <asp:Button ID="btncache" runat="server" Text="CLEANUPCACHEFORM" SkinID="AlternateLeftButton"/>
+                   </div>
                    </td>
            </tr>
        </table>
