@@ -2229,6 +2229,9 @@ Namespace ClaimRecordingService
         <System.Runtime.Serialization.OptionalFieldAttribute()>  _
         Private ServiceCenterCodeField As String
         
+        <System.Runtime.Serialization.OptionalFieldAttribute()>  _
+        Private DesiredDeliveryDateMandatoryField As Boolean
+        
         <Global.System.ComponentModel.BrowsableAttribute(false)>  _
         Public Property ExtensionData() As System.Runtime.Serialization.ExtensionDataObject Implements System.Runtime.Serialization.IExtensibleDataObject.ExtensionData
             Get
@@ -2326,6 +2329,19 @@ Namespace ClaimRecordingService
                 If (Object.ReferenceEquals(Me.ServiceCenterCodeField, value) <> true) Then
                     Me.ServiceCenterCodeField = value
                     Me.RaisePropertyChanged("ServiceCenterCode")
+                End If
+            End Set
+        End Property
+        
+        <System.Runtime.Serialization.DataMemberAttribute(Order:=7)>  _
+        Public Property DesiredDeliveryDateMandatory() As Boolean
+            Get
+                Return Me.DesiredDeliveryDateMandatoryField
+            End Get
+            Set
+                If (Me.DesiredDeliveryDateMandatoryField.Equals(value) <> true) Then
+                    Me.DesiredDeliveryDateMandatoryField = value
+                    Me.RaisePropertyChanged("DesiredDeliveryDateMandatory")
                 End If
             End Set
         End Property
