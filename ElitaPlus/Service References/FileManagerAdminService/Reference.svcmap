@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ReferenceGroup xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" ID="c4d40e7e-2c92-40a1-a5e8-fb2ae269c520" xmlns="urn:schemas-microsoft-com:xml-wcfservicemap">
+  <ClientOptions>
+    <GenerateAsynchronousMethods>false</GenerateAsynchronousMethods>
+    <GenerateTaskBasedAsynchronousMethod>true</GenerateTaskBasedAsynchronousMethod>
+    <EnableDataBinding>true</EnableDataBinding>
+    <ExcludedTypes />
+    <ImportXmlTypes>false</ImportXmlTypes>
+    <GenerateInternalTypes>false</GenerateInternalTypes>
+    <GenerateMessageContracts>false</GenerateMessageContracts>
+    <NamespaceMappings />
+    <CollectionMappings />
+    <GenerateSerializableTypes>true</GenerateSerializableTypes>
+    <Serializer>Auto</Serializer>
+    <UseSerializerForFaults>true</UseSerializerForFaults>
+    <ReferenceAllAssemblies>true</ReferenceAllAssemblies>
+    <ReferencedAssemblies />
+    <ReferencedDataContractTypes />
+    <ServiceContractMappings />
+  </ClientOptions>
+  <MetadataSources>
+    <MetadataSource Address="http://localhost/ElitaClaimManagement/FileManager/admin" Protocol="http" SourceId="1" />
+  </MetadataSources>
+  <Metadata>
+    <MetadataFile FileName="admin.xsd" MetadataType="Schema" ID="bdfaecc5-7e2d-4cf9-ab6f-f6b14651795f" SourceId="1" SourceUrl="http://localhost/ElitaClaimManagement/FileManager/admin?xsd=xsd1" />
+    <MetadataFile FileName="admin1.xsd" MetadataType="Schema" ID="952b6a11-f7d8-49df-8ffe-1d57ced2bda9" SourceId="1" SourceUrl="http://localhost/ElitaClaimManagement/FileManager/admin?xsd=xsd2" />
+    <MetadataFile FileName="admin2.xsd" MetadataType="Schema" ID="120de3f2-513e-4b07-8385-660696d5786b" SourceId="1" SourceUrl="http://localhost/ElitaClaimManagement/FileManager/admin?xsd=xsd4" />
+    <MetadataFile FileName="admin3.xsd" MetadataType="Schema" ID="e360d83a-dc82-4b36-931f-ff4bdd23ed36" SourceId="1" SourceUrl="http://localhost/ElitaClaimManagement/FileManager/admin?xsd=xsd0" />
+    <MetadataFile FileName="FileManagerAdmin.wsdl" MetadataType="Wsdl" ID="ecc7dccd-e8cd-45fa-a268-4dc6146b52e5" SourceId="1" SourceUrl="http://localhost/ElitaClaimManagement/FileManager/admin" />
+    <MetadataFile FileName="admin.wsdl" MetadataType="Wsdl" ID="cdc76493-6442-4bfb-8eee-90e631887760" SourceId="1" SourceUrl="http://localhost/ElitaClaimManagement/FileManager/admin?wsdl=wsdl0" />
+    <MetadataFile FileName="admin4.xsd" MetadataType="Schema" ID="126d45bb-da07-46b1-ba12-23d5c5c9e75f" SourceId="1" SourceUrl="http://localhost/ElitaClaimManagement/FileManager/admin?xsd=xsd3" />
+  </Metadata>
+  <Extensions>
+    <ExtensionFile FileName="configuration91.svcinfo" Name="configuration91.svcinfo" />
+    <ExtensionFile FileName="configuration.svcinfo" Name="configuration.svcinfo" />
+  </Extensions>
+</ReferenceGroup>
