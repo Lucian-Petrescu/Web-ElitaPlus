@@ -235,7 +235,7 @@ Public Class CertAddController
             Return _InvoiceNumber
         End Get
         Set(ByVal Value As String)
-            _InvoiceNumber = Left(Value, 30)
+            _InvoiceNumber = Left(Value, 50)
         End Set
     End Property
 
@@ -346,7 +346,7 @@ Public Class CertAddController
             Return _CustTaxID
         End Get
         Set(ByVal Value As String)
-            _CustTaxID = Left(Value, 20)
+            _CustTaxID = Left(Value, 50)
         End Set
     End Property
 

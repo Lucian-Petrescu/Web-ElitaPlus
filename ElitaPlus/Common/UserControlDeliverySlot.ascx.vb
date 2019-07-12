@@ -163,7 +163,6 @@ Public Class UserControlDeliverySlot
             End If
 
             ddlDeliverySlots.Items.Clear() ' remove the delivery slot options
-            'Page.MasterPage.MessageController.AddError(TranslationBase.TranslateLabelOrMessage("DESIRED_DELIVERY_DATE") & " - " & txtDeliveryDate.Text & " : " & TranslationBase.TranslateLabelOrMessage(Messages.INVALID_DATE_ERR), False)
             Return False
         End If
         Return True
@@ -275,8 +274,6 @@ Public Class UserControlDeliverySlot
             .Address2 = State.DeliveryAddress.Address2,
             .Address3 = State.DeliveryAddress.Address3}
         
-        'wsRequest.LookupDate = Date.Now 'TODO: there is some issue due to timezone when sending today time from here to service so sending nothing
-
         Try
             Dim wsResponse As GetDeliverySlotsResponse = WcfClientHelper.Execute(Of WebAppGatewayClient, WebAppGateway, GetDeliverySlotsResponse)(
                                                                                 GetClaimFulfillmentWebAppGatewayClient(),
@@ -301,52 +298,60 @@ Public Class UserControlDeliverySlot
         End Try
     End Sub
 
-    Private sub ShowDeliveryEstimate()
-        
-        if string.IsNullOrEmpty(State.CurrentEstimate.CourierCode) = true then
+     Private Sub ShowDeliveryEstimate()
+
+        If String.IsNullOrEmpty(State.CurrentEstimate.CourierCode) = True Then
             trCourierProduct.Attributes("style") = "display: none"
         End If
 
-        if State.CurrentEstimate.Behavior.UseDeliverySlot = False Then
+        If State.CurrentEstimate.Behavior.UseDeliverySlot = False Then
             trDeliverySlot.Attributes("style") = "display: none"
         End If
+        
+        EnableDisableNotSpecifyCheckBox()
+        ShowDeliveryTimeRange(State.CurrentEstimate)
+    End Sub
 
-        if State.EnableNotSepecifyCheck Then
-            If State.CurrentEstimate.Behavior IsNot Nothing AndAlso State.CurrentEstimate.Behavior.SelectionAllowed Then
-                Page.ChangeEnabledControlProperty(chkNotSpecify, True)
-            Else
-                Page.ChangeEnabledControlProperty(chkNotSpecify, False)
+    Private Sub EnableDisableNotSpecifyCheckBox()
+        ''if selection is not allowed, then uncheck and disable the check box
+        If (Not State Is Nothing andAlso Not State.CurrentEstimate Is Nothing AndAlso Not State.CurrentEstimate.Behavior Is Nothing) Then
+            chkNotSpecify.Checked = State.CurrentEstimate.Behavior.SelectionAllowed
+
+            If (State.CurrentEstimate.Behavior.SelectionAllowed = False) Then
+                chkNotSpecify.Enabled = False
                 Page.MasterPage.MessageController.AddInformation(Message.MSG_ERR_ESTIMATED_DELIVERY_DATE_TIME_NOT_SELECTABLE, True)
+            Else
+                chkNotSpecify.Enabled = True
             End If
         End If
 
-        ShowDeliveryTimeRange(State.CurrentEstimate)
-    End sub
-    Private sub ShowInitDeliveryEstimates()
-        dim blnUseCourier as boolean = false
+        SetControlStatus()
+    End Sub
+
+    Private Sub ShowInitDeliveryEstimates()
+        Dim blnUseCourier As Boolean = False
         State.CurrentEstimate = State.DeliveryDateList.First()
-        
-        if string.IsNullOrEmpty(State.CurrentEstimate.CourierCode) = False then
+
+       If String.IsNullOrEmpty(State.CurrentEstimate.CourierCode) = False Then
             blnUseCourier = True
         End If
-            
-        If blnUseCourier = False then ' no courier product
-            if State.DeliveryDateList.Count() > 1 Then 'error response, if no courier product, only one estimate should be returned
+
+        If blnUseCourier = False Then ' no courier product
+            If State.DeliveryDateList.Count() > 1 Then 'error response, if no courier product, only one estimate should be returned
                 ClearDisableAll()
                 Page.MasterPage.MessageController.AddInformation("INVALID_DELIVERY_ESTIMATE", True)
-                Exit Sub            
-            End If 
+                Exit Sub
+            End If
         Else ' populate the courier product dropdown
-            for each de as DeliveryEstimate in State.DeliveryDateList
-                ddlCourierProduct.Items.Add(New ListItem()With {.Text= $"{de.CourierCode} - {de.CourierProductCode}", .Value=$"{de.CourierCode}{de.CourierProductCode}"})
+            For Each de As DeliveryEstimate In State.DeliveryDateList
+                ddlCourierProduct.Items.Add(New ListItem() With {.Text = $"{de.CourierCode} - {de.CourierProductCode}", .Value = $"{de.CourierCode}{de.CourierProductCode}"})
             Next
             ddlCourierProduct.SelectedValue = $"{State.CurrentEstimate.CourierCode}{State.CurrentEstimate.CourierProductCode}"
         End If
 
         ShowDeliveryEstimate()
-
-        SetControlStatus()
-    End sub
+        
+    End Sub
     Private Sub ShowFaultException(ByVal fex As FaultException)
         If fex IsNot Nothing Then
             If fex.Code IsNot Nothing Then

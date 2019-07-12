@@ -9,6 +9,7 @@ Public Class CaseBase
     Inherits BusinessObjectBase
 #Region "Constants"
     Private Const SearchException As String = "SEARCH_CRITERION_001" ' Case List Search Exception - If no criterion(except companyid) is selected
+    Private Const MinimumSearchCriterion As String = "MINIMUM_SEARCH_CRITERION"
 #End Region
 
 #Region "Constructors"
@@ -30,14 +31,14 @@ Public Class CaseBase
     'Exiting BO attaching to a BO family
     Public Sub New(ByVal id As Guid, ByVal familyDs As DataSet)
         MyBase.New(False)
-        Dataset = familyDS
+        Dataset = familyDs
         Load(id)
     End Sub
 
     'New BO attaching to a BO family
     Public Sub New(ByVal familyDs As DataSet)
         MyBase.New(False)
-        Dataset = familyDS
+        Dataset = familyDs
         Load()
     End Sub
 
@@ -48,7 +49,7 @@ Public Class CaseBase
     Public Sub New(ByVal caseNumber As String, ByVal companyCode As String)
         MyBase.New()
         Dataset = New DataSet
-        Load(CaseNumber, CompanyCode)
+        Load(caseNumber, companyCode)
     End Sub
     Protected Sub Load()
         Try
@@ -98,12 +99,12 @@ Public Class CaseBase
             End If
             Row = Nothing
             If Dataset.Tables.IndexOf(CaseDAL.TableName) >= 0 Then
-                Row = FindRow(CaseNumber, CaseDAL.ColNameCaseNumber, Dataset.Tables(CaseDAL.TableName))
+                Row = FindRow(caseNumber, CaseDAL.ColNameCaseNumber, Dataset.Tables(CaseDAL.TableName))
             End If
             If Row Is Nothing Then 'it is not in the dataset, so will bring it from the db
                 Dim dal As New CaseDAL
-                dal.LoadCaseByCaseNumber(Dataset, CaseNumber, CompanyCode)
-                Row = FindRow(CaseNumber, CaseDAL.ColNameCaseNumber, Dataset.Tables(CaseDAL.TableName))
+                dal.LoadCaseByCaseNumber(Dataset, caseNumber, companyCode)
+                Row = FindRow(caseNumber, CaseDAL.ColNameCaseNumber, Dataset.Tables(CaseDAL.TableName))
             End If
             If Row Is Nothing Then
                 Throw New DataNotFoundException
@@ -146,7 +147,7 @@ Public Class CaseBase
         End Get
         Set(ByVal value As Guid)
             CheckDeleted()
-            SetValue(CaseDAL.ColNameCompanyId, Value)
+            SetValue(CaseDAL.ColNameCompanyId, value)
         End Set
     End Property
     <ValidStringLength("", Max:=70)>
@@ -161,7 +162,7 @@ Public Class CaseBase
         End Get
         Set(ByVal value As String)
             CheckDeleted()
-            SetValue(CaseDAL.ColNameCompanyDesc, Value)
+            SetValue(CaseDAL.ColNameCompanyDesc, value)
         End Set
     End Property
 
@@ -177,7 +178,7 @@ Public Class CaseBase
         End Get
         Set(ByVal value As String)
             CheckDeleted()
-            SetValue(CaseDAL.ColNameCaseNumber, Value)
+            SetValue(CaseDAL.ColNameCaseNumber, value)
         End Set
     End Property
 
@@ -194,7 +195,7 @@ Public Class CaseBase
         End Get
         Set(ByVal value As DateType)
             CheckDeleted()
-            SetValue(CaseDAL.ColNameCaseOpenDate, Value)
+            SetValue(CaseDAL.ColNameCaseOpenDate, value)
         End Set
     End Property
 
@@ -210,7 +211,7 @@ Public Class CaseBase
         End Get
         Set(ByVal value As String)
             CheckDeleted()
-            SetValue(CaseDAL.ColNameCasePurposeCode, Value)
+            SetValue(CaseDAL.ColNameCasePurposeCode, value)
         End Set
     End Property
 
@@ -226,7 +227,7 @@ Public Class CaseBase
         End Get
         Set(ByVal value As String)
             CheckDeleted()
-            SetValue(CaseDAL.ColNameCaseStatusCode, Value)
+            SetValue(CaseDAL.ColNameCaseStatusCode, value)
         End Set
     End Property
 
@@ -243,7 +244,7 @@ Public Class CaseBase
         End Get
         Set(ByVal value As Guid)
             CheckDeleted()
-            SetValue(CaseDAL.ColNameInitialInteractionId, Value)
+            SetValue(CaseDAL.ColNameInitialInteractionId, value)
         End Set
     End Property
 
@@ -259,7 +260,7 @@ Public Class CaseBase
         End Get
         Set(ByVal value As String)
             CheckDeleted()
-            SetValue(CaseDAL.ColNameInitialCallerName, Value)
+            SetValue(CaseDAL.ColNameInitialCallerName, value)
         End Set
     End Property
 
@@ -274,7 +275,7 @@ Public Class CaseBase
         End Get
         Set(ByVal value As Guid)
             CheckDeleted()
-            SetValue(CaseDAL.ColNameClaimId, Value)
+            SetValue(CaseDAL.ColNameClaimId, value)
         End Set
     End Property
     <ValidStringLength("", Max:=20)>
@@ -289,7 +290,7 @@ Public Class CaseBase
         End Get
         Set(ByVal value As String)
             CheckDeleted()
-            SetValue(CaseDAL.ColNameClaimNumber, Value)
+            SetValue(CaseDAL.ColNameClaimNumber, value)
         End Set
     End Property
 
@@ -305,7 +306,7 @@ Public Class CaseBase
         End Get
         Set(ByVal value As Guid)
             CheckDeleted()
-            SetValue(CaseDAL.ColNameCertId, Value)
+            SetValue(CaseDAL.ColNameCertId, value)
         End Set
     End Property
     <ValidStringLength("", Max:=20)>
@@ -320,7 +321,7 @@ Public Class CaseBase
         End Get
         Set(ByVal value As String)
             CheckDeleted()
-            SetValue(CaseDAL.ColNameCertNumber, Value)
+            SetValue(CaseDAL.ColNameCertNumber, value)
         End Set
     End Property
 
@@ -336,7 +337,7 @@ Public Class CaseBase
         End Get
         Set(ByVal value As DateType)
             CheckDeleted()
-            SetValue(CaseDAL.ColNameLastActivityDate, Value)
+            SetValue(CaseDAL.ColNameLastActivityDate, value)
         End Set
     End Property
 
@@ -353,7 +354,7 @@ Public Class CaseBase
         End Get
         Set(ByVal value As DateType)
             CheckDeleted()
-            SetValue(CaseDAL.ColNameCaseCloseDate, Value)
+            SetValue(CaseDAL.ColNameCaseCloseDate, value)
         End Set
     End Property
 
@@ -370,7 +371,7 @@ Public Class CaseBase
         End Get
         Set(ByVal value As String)
             CheckDeleted()
-            SetValue(CaseDAL.ColNameCaseCloseCode, Value)
+            SetValue(CaseDAL.ColNameCaseCloseCode, value)
         End Set
     End Property
 
@@ -402,63 +403,63 @@ Public Class CaseBase
 #End Region
 
 #Region "DataView Retrieveing Methods"
-    Public Shared Function GetCaseList(ByVal companyId As Guid, ByVal caseNumber As String, ByVal caseStatus As String, ByVal callerFirstName As String, ByVal callerLastName As String, ByVal caseOpenDateFrom As String, ByVal caseOpenDateTo As String, ByVal casePurpose As String, ByVal certificateNumber As String, ByVal caseClosedReason As String, ByVal languageId As Guid) As CaseSearchDV
+    Public Shared Function GetCaseList(ByVal companyId As Guid, ByVal caseNumber As String, ByVal caseStatus As String, ByVal callerFirstName As String, ByVal callerLastName As String, ByVal caseOpenDateFrom As String, ByVal caseOpenDateTo As String, ByVal casePurpose As String, ByVal certificateNumber As String, ByVal caseClosedReason As String, ByVal languageId As Guid) As CaseSearchDv
         Try
             Dim dal As New CaseDAL
             Dim fromdate As Date?
             Dim todate As Date?
 
-            If (CaseNumber.Equals(String.Empty) AndAlso
-                CaseStatus.Equals(String.Empty) AndAlso
-                CallerFirstName.Equals(String.Empty) AndAlso
-                CallerLastName.Equals(String.Empty) AndAlso
-                CaseOpenDateFrom.Equals(String.Empty) AndAlso
-                CaseOpenDateTo.Equals(String.Empty) AndAlso
-                CasePurpose.Equals(String.Empty) AndAlso
-                CertificateNumber.Equals(String.Empty) AndAlso
-                CaseClosedReason.Equals(String.Empty)
+            If (caseNumber.Equals(String.Empty) AndAlso
+                caseStatus.Equals(String.Empty) AndAlso
+                callerFirstName.Equals(String.Empty) AndAlso
+                callerLastName.Equals(String.Empty) AndAlso
+                caseOpenDateFrom.Equals(String.Empty) AndAlso
+                caseOpenDateTo.Equals(String.Empty) AndAlso
+                casePurpose.Equals(String.Empty) AndAlso
+                certificateNumber.Equals(String.Empty) AndAlso
+                caseClosedReason.Equals(String.Empty)
                 ) Then
                 Dim errors() As ValidationError = {New ValidationError(SearchException, GetType(CaseBase), Nothing, "Search", Nothing)}
                 Throw New BOValidationException(errors, GetType(CaseBase).FullName)
             End If
 
-            If Not (CaseOpenDateFrom.Equals(String.Empty) AndAlso CaseOpenDateTo.Equals(String.Empty)) Then
-                If CaseOpenDateFrom.Equals(String.Empty) Then
+            If Not (caseOpenDateFrom.Equals(String.Empty) AndAlso caseOpenDateTo.Equals(String.Empty)) Then
+                If caseOpenDateFrom.Equals(String.Empty) Then
                     Dim errors() As ValidationError = {New ValidationError(TranslationBase.TranslateLabelOrMessage("CASE_OPEN_DATE_FROM") & " : " & TranslationBase.TranslateLabelOrMessage(Messages.VALUE_MANDATORY_ERR), GetType(CaseBase), Nothing, "Case Open Date", Nothing)}
                     Throw New BOValidationException(errors, GetType(CaseBase).FullName)
-                ElseIf Not DateHelper.IsDate(CaseOpenDateFrom) Then
+                ElseIf Not DateHelper.IsDate(caseOpenDateFrom) Then
                     Dim errors() As ValidationError = {New ValidationError(TranslationBase.TranslateLabelOrMessage("CASE_OPEN_DATE_FROM") & " : " & TranslationBase.TranslateLabelOrMessage(Messages.INVALID_DATE_ERR), GetType(CaseBase), Nothing, "Case Open Date", Nothing)}
                     Throw New BOValidationException(errors, GetType(CaseBase).FullName)
                 End If
 
-                If CaseOpenDateTo.Equals(String.Empty) Then
+                If caseOpenDateTo.Equals(String.Empty) Then
                     Dim errors() As ValidationError = {New ValidationError(TranslationBase.TranslateLabelOrMessage("CASE_OPEN_DATE_TO") & " : " & TranslationBase.TranslateLabelOrMessage(Messages.VALUE_MANDATORY_ERR), GetType(CaseBase), Nothing, "Case Open Date", Nothing)}
                     Throw New BOValidationException(errors, GetType(CaseBase).FullName)
-                ElseIf Not DateHelper.IsDate(CaseOpenDateTo) Then
+                ElseIf Not DateHelper.IsDate(caseOpenDateTo) Then
                     Dim errors() As ValidationError = {New ValidationError(TranslationBase.TranslateLabelOrMessage("CASE_OPEN_DATE_TO") & " : " & TranslationBase.TranslateLabelOrMessage(Messages.INVALID_DATE_ERR), GetType(CaseBase), Nothing, "Case Open Date", Nothing)}
                     Throw New BOValidationException(errors, GetType(CaseBase).FullName)
                 End If
 
-                If DateHelper.GetDateValue(CaseOpenDateFrom) > DateHelper.GetDateValue(CaseOpenDateTo) Then
+                If DateHelper.GetDateValue(caseOpenDateFrom) > DateHelper.GetDateValue(caseOpenDateTo) Then
                     Dim errors() As ValidationError = {New ValidationError(TranslationBase.TranslateLabelOrMessage("CASE_OPEN_DATE_FROM") & " : " & TranslationBase.TranslateLabelOrMessage(Messages.VALID_DATE_RANGE_ERR), GetType(CaseBase), Nothing, "Case Open Date", Nothing)}
                     Throw New BOValidationException(errors, GetType(CaseBase).FullName)
                 End If
 
-                If DateHelper.GetDateValue(CaseOpenDateFrom).AddDays(7) < DateHelper.GetDateValue(CaseOpenDateTo) Then
+                If DateHelper.GetDateValue(caseOpenDateFrom).AddDays(7) < DateHelper.GetDateValue(caseOpenDateTo) Then
                     Dim errors() As ValidationError = {New ValidationError(TranslationBase.TranslateLabelOrMessage("CASE_OPEN_DATE_FROM") & " : " & TranslationBase.TranslateLabelOrMessage("CASE_OPEN_DATE_RANGE_ERR"), GetType(CaseBase), Nothing, "Case Open Date", Nothing)}
                     Throw New BOValidationException(errors, GetType(CaseBase).FullName)
                 End If
-                fromdate = DateTime.Parse(CaseOpenDateFrom.ToString(),
+                fromdate = DateTime.Parse(caseOpenDateFrom.ToString(),
                                           Thread.CurrentThread.CurrentCulture,
                                           DateTimeStyles.NoCurrentDateDefault)
 
-                todate = DateTime.Parse(CaseOpenDateTo.ToString(),
+                todate = DateTime.Parse(caseOpenDateTo.ToString(),
                                         Thread.CurrentThread.CurrentCulture,
                                         DateTimeStyles.NoCurrentDateDefault)
             End If
 
 
-            Return New CaseSearchDV(dal.LoadCaseList(CompanyId, CaseNumber, CaseStatus, CallerFirstName, CallerLastName, fromdate, todate, CasePurpose, CertificateNumber, CaseClosedReason, LanguageId).Tables(0))
+            Return New CaseSearchDv(dal.LoadCaseList(companyId, caseNumber, caseStatus, callerFirstName, callerLastName, fromdate, todate, casePurpose, certificateNumber, caseClosedReason, languageId).Tables(0))
         Catch ex As DataBaseAccessException
             Throw New DataBaseAccessException(ex.ErrorType, ex)
         End Try
@@ -468,28 +469,53 @@ Public Class CaseBase
                                         ByVal caseNumber As String, ByVal claimNumber As String, ByVal certificateNumber As String,
                                         ByVal serialNumber As String, ByVal invoiceNumber As String, ByVal phoneNumber As String, ByVal zipcode As String,
                                         ByVal certificateStatus As String, ByVal email As String,
-                                        ByVal taxId As String, ByVal serviceLineNumber As String, ByVal accountNumber As String, ByVal globalCustomerNumber As String,
-                                        ByVal languageId As Guid) As AgentSearchDV
+                                        ByVal taxId As String, ByVal serviceLineNumber As String, ByVal accountNumber As String,
+                                        ByVal globalCustomerNumber As String, ByVal dateofbirth As String,
+                                        ByVal languageId As Guid) As AgentSearchDv
+
+        If (dealerId.Equals(Guid.Empty) AndAlso
+             customerFirstName.Equals(String.Empty) AndAlso
+             customerLastName.Equals(String.Empty) AndAlso
+             caseNumber.Equals(String.Empty) AndAlso
+             claimNumber.Equals(String.Empty) AndAlso
+             certificateNumber.Equals(String.Empty) AndAlso
+             serialNumber.Equals(String.Empty) AndAlso
+             invoiceNumber.Equals(String.Empty) AndAlso
+             phoneNumber.Equals(String.Empty) AndAlso
+             zipcode.Equals(String.Empty) AndAlso
+             certificateStatus = "" AndAlso
+             email.Equals(String.Empty) AndAlso
+             taxId.Equals(String.Empty) AndAlso
+             accountNumber.Equals(String.Empty) AndAlso
+             globalCustomerNumber.Equals(String.Empty) AndAlso
+             Not dateofbirth.Equals(String.Empty)
+                 ) Then
+            Dim errors() As ValidationError = {New ValidationError(TranslationBase.TranslateLabelOrMessage(MinimumSearchCriterion), GetType(CaseBase), Nothing, "Search", Nothing)}
+            Throw New BOValidationException(errors, GetType(CaseBase).FullName)
+        End If
+
         Try
+
             Dim dal As New CaseDAL
-            Return New AgentSearchDV(dal.LoadAgentSearchList(CompanyId,
-                                                             DealerId,
-                                                             CustomerFirstName,
-                                                             CustomerLastName,
-                                                             CaseNumber,
-                                                             ClaimNumber,
-                                                             CertificateNumber,
-                                                             SerialNumber,
-                                                             InvoiceNumber,
-                                                             PhoneNumber,
-                                                             Zipcode,
-                                                             CertificateStatus,
-                                                             Email,
-                                                             TaxId,
-                                                             ServiceLineNumber,
-                                                             AccountNumber,
-                                                             GlobalCustomerNumber,
-                                                             LanguageId).Tables(0))
+            Return New AgentSearchDv(dal.LoadAgentSearchList(companyId,
+                                                             dealerId,
+                                                             customerFirstName,
+                                                             customerLastName,
+                                                             caseNumber,
+                                                             claimNumber,
+                                                             certificateNumber,
+                                                             serialNumber,
+                                                             invoiceNumber,
+                                                             phoneNumber,
+                                                             zipcode,
+                                                             certificateStatus,
+                                                             email,
+                                                             taxId,
+                                                             serviceLineNumber,
+                                                             accountNumber,
+                                                             globalCustomerNumber,
+                                                             dateofbirth,
+                                                             languageId).Tables(0))
         Catch ex As DataBaseAccessException
             Throw New DataBaseAccessException(ex.ErrorType, ex)
         End Try
@@ -498,77 +524,77 @@ Public Class CaseBase
     Public Shared Function GetAgentSearchConfigList(ByVal companyId As Guid, ByVal dealerId As Guid, ByVal searchType As String) As DataSet
         Try
             Dim dal As New CaseDAL
-            Return (dal.LoadAgentSearchConfigList(CompanyId,DealerId,searchType))
+            Return (dal.LoadAgentSearchConfigList(companyId, dealerId, searchType))
         Catch ex As DataBaseAccessException
             Throw New DataBaseAccessException(ex.ErrorType, ex)
         End Try
     End Function
-    Public shared Function GetExclSecFieldsList(ByVal companyId As Guid, ByVal dealerId As Guid) As  DataSet
+    Public Shared Function GetExclSecFieldsList(ByVal companyId As Guid, ByVal dealerId As Guid) As DataSet
         Try
             Dim dal As New CaseDAL
-            Return dal.LoadExclSecFieldsList(CompanyId,DealerId)
+            Return dal.LoadExclSecFieldsList(companyId, dealerId)
         Catch ex As DataBaseAccessException
             Throw New DataBaseAccessException(ex.ErrorType, ex)
         End Try
     End Function
-    Public shared Function DisplaySecField(ByVal exclSecFieldsDt As DataTable, ByVal callerAuthenticationNeeded As Boolean, _
-                                           byval secFieldTableName As string ,byval secField As string, Byval isCallerAuthenticated As boolean) As boolean
+    Public Shared Function DisplaySecField(ByVal exclSecFieldsDt As DataTable, ByVal callerAuthenticationNeeded As Boolean,
+                                           ByVal secFieldTableName As String, ByVal secField As String, ByVal isCallerAuthenticated As Boolean) As Boolean
 
-        If Not exclSecFieldsDt Is nothing AndAlso CallerAuthenticationNeeded AndAlso Not IsCallerAuthenticated then
-            If secField Is String.Empty orElse (exclSecFieldsDt.AsEnumerable().Where(Function(p)  p.Field(Of String)("table_name") = secFieldTableName And p.Field(Of String)("column_name") = secField).Count > 0 ) then
+        If Not exclSecFieldsDt Is Nothing AndAlso callerAuthenticationNeeded AndAlso Not isCallerAuthenticated Then
+            If secField Is String.Empty OrElse (exclSecFieldsDt.AsEnumerable().Where(Function(p) p.Field(Of String)("table_name") = secFieldTableName And p.Field(Of String)("column_name") = secField).Count > 0) Then
                 Return False
             End If
             '(ExclSecFieldsDt.AsEnumerable().Where(Function(p) p.Field(Of String)("table_name") = "ELP_CUSTOMER" and p.Field(Of String)("column_name") = secField).Count > 0 ) then                       
-        End if
+        End If
         Return True
-        
+
     End Function
     Public Shared Function LoadExclSecFieldsConfig(ByVal companyId As Guid, ByVal dealerId As Guid) As List(Of ExclSecFields)
         Try
-            
-            Dim exclSecFieildsDv  As DataSet
-                
-            exclSecFieildsDv  = CaseBase.GetExclSecFieldsList(Guid.Empty,dealerId)
+
+            Dim exclSecFieildsDv As DataSet
+
+            exclSecFieildsDv = CaseBase.GetExclSecFieldsList(Guid.Empty, dealerId)
             'Populate User Roles
             Dim oUser As User
-            Dim selectedDs As dataview = oUser.GetUserRoles(New User(Authentication.CurrentUser.NetworkId).Id)               
+            Dim selectedDs As DataView = oUser.GetUserRoles(New User(Authentication.CurrentUser.NetworkId).Id)
             Dim objList As New List(Of ExclSecFields)
-            objList = (from secFields In exclSecFieildsDv.Tables(0).AsEnumerable() Join role In selectedDs.table.AsEnumerable() _
-                On secFields.Field(Of String)("role") equals role.Field(Of String)("code") 
-                Where secFields.Field(Of String)("purpose_xcd") = "EXCLUDE_PURPOSE-NOT_AUTHORIZED"
-                Select New ExclSecFields With {.Table_Name = secFields.Field(Of String)("table_name"), 
-                    .Column_Name= secFields.Field(Of String)("column_name")
-                    }).ToList()        
-            return objList 
-                        
+            objList = (From secFields In exclSecFieildsDv.Tables(0).AsEnumerable() Join role In selectedDs.Table.AsEnumerable()
+                On secFields.Field(Of String)("role") Equals role.Field(Of String)("code")
+                       Where secFields.Field(Of String)("purpose_xcd") = "EXCLUDE_PURPOSE-NOT_AUTHORIZED"
+                       Select New ExclSecFields With {.Table_Name = secFields.Field(Of String)("table_name"),
+                           .Column_Name = secFields.Field(Of String)("column_name")
+                           }).ToList()
+            Return objList
+
         Catch ex As DataBaseAccessException
             Throw New DataBaseAccessException(ex.ErrorType, ex)
         End Try
     End Function
 
-    
+
     Public Class ExclSecFields
         Public Property Table_Name As String
-        Public Property Column_Name As String        
+        Public Property Column_Name As String
     End Class
-    
 
 
 
-    Public Shared Function GetClaimCaseList(ByVal claimId As Guid, ByVal languageId As Guid) As CaseSearchDV
+
+    Public Shared Function GetClaimCaseList(ByVal claimId As Guid, ByVal languageId As Guid) As CaseSearchDv
         Try
             Dim dal As New CaseDAL
-            Return New CaseSearchDV(dal.LoadClaimCaseList(ClaimId, LanguageId).Tables(0))
+            Return New CaseSearchDv(dal.LoadClaimCaseList(claimId, languageId).Tables(0))
         Catch ex As DataBaseAccessException
             Throw New DataBaseAccessException(ex.ErrorType, ex)
         End Try
     End Function
 
-    Public Shared Function GetCaseDeniedReasonsList(ByVal caseId As Guid, ByVal languageId As Guid) As CaseDeniedReasonsDV
+    Public Shared Function GetCaseDeniedReasonsList(ByVal caseId As Guid, ByVal languageId As Guid) As CaseDeniedReasonsDv
         Try
             Dim dal As New CaseDAL
 
-            Return New CaseDeniedReasonsDV(dal.LoadCaseDeniedReasonsList(CaseId, LanguageId).Tables(0))
+            Return New CaseDeniedReasonsDv(dal.LoadCaseDeniedReasonsList(caseId, languageId).Tables(0))
 
         Catch ex As DataBaseAccessException
             Throw New DataBaseAccessException(ex.ErrorType, ex)
@@ -609,14 +635,15 @@ Public Class CaseBase
             Throw New DataBaseAccessException(ex.ErrorType, ex)
         End Try
     End Function
-    Public Shared Function GetCaseNotesList(ByVal caseId As Guid) As CaseNotesDV
+    Public Shared Function GetCaseNotesList(ByVal caseId As Guid) As CaseNotesDv
         Try
             Dim dal As New CaseDAL
-            Return New CaseNotesDV(dal.LoadCaseNotesList(CaseId).Tables(0))
+            Return New CaseNotesDv(dal.LoadCaseNotesList(caseId).Tables(0))
         Catch ex As DataBaseAccessException
             Throw New DataBaseAccessException(ex.ErrorType, ex)
         End Try
     End Function
+
 #End Region
 #Region "CaseSearchDV"
     Public Class CaseSearchDv

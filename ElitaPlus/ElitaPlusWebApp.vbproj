@@ -174,13 +174,14 @@
       <HintPath>..\packages\Assurant.Elita.Base.DataAccess.5.0.2\lib\net462\Assurant.Elita.Base.DataAccess.dll</HintPath>
     </Reference>
     <Reference Include="Assurant.Elita.Caching, Version=1.0.18.18085, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Assurant.Elita.Caching.1.0.0\lib\net46\Assurant.Elita.Caching.dll</HintPath>
+      <HintPath>..\packages\Assurant.Elita.Caching.1.1.0\lib\net46\Assurant.Elita.Caching.dll</HintPath>
     </Reference>
     <Reference Include="Assurant.Elita.ClientIntegration, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\Assurant.Elita.ClientIntegration.4.0.0\lib\net462\Assurant.Elita.ClientIntegration.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="Assurant.Elita.CommonConfiguration, Version=2.1.5.0, Culture=neutral, processorArchitecture=MSIL">
+    <Reference Include="Assurant.Elita.CommonConfiguration, Version=2.1.6.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
       <HintPath>..\packages\Assurant.Elita.CommonConfiguration.2.1.5\lib\net46\Assurant.Elita.CommonConfiguration.dll</HintPath>
     </Reference>
     <Reference Include="Assurant.Elita.Configuration, Version=4.0.0.0, Culture=neutral, processorArchitecture=MSIL">
@@ -333,11 +334,6 @@
     <Reference Include="System.Xml">
       <Name>System.XML</Name>
     </Reference>
-    <ProjectReference Include="..\Assurant.Common.CrystalEnterpriseHelper\Assurant.Common.CrystalEnterpriseHelper.vbproj">
-      <Name>Assurant.Common.CrystalEnterpriseHelper</Name>
-      <Project>{7F4C7ADF-CA31-4E8F-AFF5-12DF10AF44BA}</Project>
-      <Package>{F184B08F-C81C-45F6-A57F-5ABD9991F28F}</Package>
-    </ProjectReference>
     <ProjectReference Include="..\BusinessObjects\BusinessObjects.vbproj">
       <Name>BusinessObjects</Name>
       <Project>{24AF00EF-6626-4D29-BEFB-F899C2A85AAD}</Project>
@@ -465,6 +461,13 @@
     </Compile>
     <Compile Include="AcctFinanceAutomation\ReportingRatesForm.aspx.vb">
       <DependentUpon>ReportingRatesForm.aspx</DependentUpon>
+      <SubType>ASPXCodebehind</SubType>
+    </Compile>
+    <Compile Include="Admin\CleanupCacheForm.aspx.designer.vb">
+      <DependentUpon>CleanupCacheForm.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Admin\CleanupCacheForm.aspx.vb">
+      <DependentUpon>CleanupCacheForm.aspx</DependentUpon>
       <SubType>ASPXCodebehind</SubType>
     </Compile>
     <Compile Include="Admin\InterfaceSplitRuleForm.aspx.designer.vb">
@@ -924,7 +927,10 @@
       <DependentUpon>QuestionSetListForm.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
+    <Compile Include="Helpers\ceHelperParameter.vb" />
     <Compile Include="Helpers\ListHelper.vb" />
+    <Compile Include="Helpers\SSHelper.vb" />
+    <Compile Include="Helpers\ssHelperParameter.vb" />
     <Compile Include="Interfaces\AppleGBIFileForm.aspx.designer.vb">
       <DependentUpon>AppleGBIFileForm.aspx</DependentUpon>
     </Compile>
@@ -1085,6 +1091,13 @@
     <Compile Include="Reports\ExportFileProcessedNewForm.aspx.vb">
       <DependentUpon>ExportFileProcessedNewForm.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Reports\LossSummaryArgForm.aspx.designer.vb">
+      <DependentUpon>LossSummaryArgForm.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Reports\LossSummaryArgForm.aspx.vb">
+      <DependentUpon>LossSummaryArgForm.aspx</DependentUpon>
+      <SubType>ASPXCodebehind</SubType>
     </Compile>
     <Compile Include="Reports\PaymentDetailReportForm.aspx.designer.vb">
       <DependentUpon>PaymentDetailReportForm.aspx</DependentUpon>
@@ -5465,6 +5478,7 @@
     <Content Include="AcctFinanceAutomation\InvoiceXmlDownload.aspx" />
     <Content Include="AcctFinanceAutomation\ReconciliationForm.aspx" />
     <Content Include="AcctFinanceAutomation\ReportingRatesForm.aspx" />
+    <Content Include="Admin\CleanupCacheForm.aspx" />
     <Content Include="Admin\InterfaceSplitRuleForm.aspx" />
     <Content Include="Admin\InterfaceSplitRuleListForm.aspx" />
     <Content Include="App_Themes\Default\Images\ajax-loader.gif" />
@@ -5666,6 +5680,7 @@
     <Content Include="Reports\CertificatesBillingBrazilReportForm.aspx" />
     <Content Include="Reports\CollectionAmdocsReportForm.aspx" />
     <Content Include="Reports\ExportFileProcessedNewForm.aspx" />
+    <Content Include="Reports\LossSummaryArgForm.aspx" />
     <Content Include="Reports\PaymentDetailReportForm.aspx" />
     <Content Include="Reports\PaymentsByCreditCardType.aspx" />
     <Content Include="Reports\ClaimEventCountPerCertificateReportForm.aspx" />

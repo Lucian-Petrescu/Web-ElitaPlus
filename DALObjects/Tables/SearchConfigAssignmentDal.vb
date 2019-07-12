@@ -51,7 +51,7 @@
 
         Dim selectStmt As String = Config("/SQL/LOAD_SEARCH_CRITERIA_FIELDS")
         Dim parameters() As DBHelper.DBHelperParameter = New DBHelper.DBHelperParameter() {New DBHelper.DBHelperParameter(ParameterNameCompanyId, companyId.ToByteArray),
-                                                                                           New DBHelper.DBHelperParameter(ParameterNameDealerId, dealerId.ToByteArray),
+                                                                                           New DBHelper.DBHelperParameter(ParameterNameDealerId, If(dealerId.Equals(Guid.Empty), DBNull.Value, dealerId.ToByteArray)),
                                                                                            New DBHelper.DBHelperParameter(ParameterNameLanguageCode, languageCode),
                                                                                            New DBHelper.DBHelperParameter(ParameterNameSearchType, searchType)}
         Dim outputParameter(0) As DBHelper.DBHelperParameter

@@ -487,7 +487,7 @@ Public Class DealerReconWrk
         End Set
     End Property
 
-    <ValidStringLength("", Max:=30)>
+    <ValidStringLength("", Max:=50)>
     Public Property NumberComp() As String
         Get
             CheckDeleted()
@@ -1002,7 +1002,7 @@ Public Class DealerReconWrk
     End Property
 
 
-    <ValidStringLength("", Max:=20)>
+    <ValidStringLength("", Max:=100)>
     Public Property NewProductCode() As String
         Get
             CheckDeleted()

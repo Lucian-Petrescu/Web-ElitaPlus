@@ -1,11 +1,8 @@
-Imports Assurant.Common.CrystalEnterpriseHelper
-Imports CrystalDecisions.Enterprise.Desktop
-
 Namespace Reports
 
     Partial Class ReportCeBaseForm
         Inherits ReportCeBase
-        
+
 
 #Region "Constants"
 

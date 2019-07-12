@@ -68,7 +68,7 @@ Public Class CaseDAL
             Using cmd As OracleCommand = CreateCommand(Config("/SQL/LOAD"))
                 cmd.AddParameter(TableKeyName, OracleDbType.Raw, id.ToByteArray())
                 cmd.AddParameter(PAR_O_NAME_RESULTCURSOR, OracleDbType.RefCursor, direction:=ParameterDirection.Output)
-                Fetch(cmd, TableName, familyDS)
+                Fetch(cmd, TableName, familyDs)
             End Using
         Catch ex As Exception
             Throw New DataBaseAccessException(DataBaseAccessException.DatabaseAccessErrorType.ReadErr, ex)
@@ -77,10 +77,10 @@ Public Class CaseDAL
     Public Sub LoadCaseByCaseNumber(ByVal familyDs As DataSet, ByVal caseNumber As String, ByVal companyCode As String)
         Try
             Using cmd As OracleCommand = CreateCommand(Config("/SQL/LOAD_CASE_BY_CASE_NUMBER"))
-                cmd.AddParameter(ParINameCaseNumber, OracleDbType.Varchar2, CaseNumber)
-                cmd.AddParameter("pi_company_code", OracleDbType.Varchar2, CompanyCode)
+                cmd.AddParameter(ParINameCaseNumber, OracleDbType.Varchar2, caseNumber)
+                cmd.AddParameter("pi_company_code", OracleDbType.Varchar2, companyCode)
                 cmd.AddParameter(PAR_O_NAME_RESULTCURSOR, OracleDbType.RefCursor, direction:=ParameterDirection.Output)
-                Fetch(cmd, TableName, familyDS)
+                Fetch(cmd, TableName, familyDs)
             End Using
         Catch ex As Exception
             Throw New DataBaseAccessException(DataBaseAccessException.DatabaseAccessErrorType.ReadErr, ex)
@@ -95,7 +95,7 @@ Public Class CaseDAL
         Dim inParameters As New List(Of DBHelper.DBHelperParameter)
         Dim param As DBHelper.DBHelperParameter
 
-        param = New DBHelper.DBHelperParameter("pi_claim_id", ClaimId.ToByteArray())
+        param = New DBHelper.DBHelperParameter("pi_claim_id", claimId.ToByteArray())
         inParameters.Add(param)
 
         outputParameter(PoCursorCase) = New DBHelper.DBHelperParameter("po_ResultCursor", GetType(DataSet))
@@ -116,45 +116,45 @@ Public Class CaseDAL
         Dim inParameters As New List(Of DBHelper.DBHelperParameter)
         Dim param As DBHelper.DBHelperParameter
 
-        param = New DBHelper.DBHelperParameter("pi_company_id", CompanyId.ToByteArray)
+        param = New DBHelper.DBHelperParameter("pi_company_id", companyId.ToByteArray)
         inParameters.Add(param)
 
-        param = New DBHelper.DBHelperParameter("pi_case_number", CaseNumber)
+        param = New DBHelper.DBHelperParameter("pi_case_number", caseNumber)
         inParameters.Add(param)
 
-        param = New DBHelper.DBHelperParameter("pi_case_status", CaseStatus)
+        param = New DBHelper.DBHelperParameter("pi_case_status", caseStatus)
         inParameters.Add(param)
 
-        param = New DBHelper.DBHelperParameter("pi_caller_first_name", CallerFirstName)
+        param = New DBHelper.DBHelperParameter("pi_caller_first_name", callerFirstName)
         inParameters.Add(param)
 
-        param = New DBHelper.DBHelperParameter("pi_caller_last_name", CallerLastName)
+        param = New DBHelper.DBHelperParameter("pi_caller_last_name", callerLastName)
         inParameters.Add(param)
 
-        If CaseOpenDateFrom.HasValue Then
-            param = New DBHelper.DBHelperParameter("pi_case_open_date_from", CaseOpenDateFrom.Value)
+        If caseOpenDateFrom.HasValue Then
+            param = New DBHelper.DBHelperParameter("pi_case_open_date_from", caseOpenDateFrom.Value)
         Else
             param = New DBHelper.DBHelperParameter("pi_case_open_date_from", DBNull.Value)
         End If
         inParameters.Add(param)
 
-        If CaseOpenDateTo.HasValue Then
-            param = New DBHelper.DBHelperParameter("pi_case_open_date_to", CaseOpenDateTo.Value)
+        If caseOpenDateTo.HasValue Then
+            param = New DBHelper.DBHelperParameter("pi_case_open_date_to", caseOpenDateTo.Value)
         Else
             param = New DBHelper.DBHelperParameter("pi_case_open_date_to", DBNull.Value)
         End If
         inParameters.Add(param)
 
-        param = New DBHelper.DBHelperParameter("pi_case_purpose", CasePurpose)
+        param = New DBHelper.DBHelperParameter("pi_case_purpose", casePurpose)
         inParameters.Add(param)
 
-        param = New DBHelper.DBHelperParameter("pi_certificate_number", CertificateNumber)
+        param = New DBHelper.DBHelperParameter("pi_certificate_number", certificateNumber)
         inParameters.Add(param)
 
-        param = New DBHelper.DBHelperParameter("pi_case_closed_reason", CaseClosedReason)
+        param = New DBHelper.DBHelperParameter("pi_case_closed_reason", caseClosedReason)
         inParameters.Add(param)
 
-        param = New DBHelper.DBHelperParameter("pi_language_id", LanguageId.ToByteArray)
+        param = New DBHelper.DBHelperParameter("pi_language_id", languageId.ToByteArray)
         inParameters.Add(param)
 
         outputParameter(PoCursorCase) = New DBHelper.DBHelperParameter(SpParamNameCaseList, GetType(DataSet))
@@ -171,7 +171,8 @@ Public Class CaseDAL
                                         ByVal caseNumber As String, ByVal claimNumber As String, ByVal certificateNumber As String,
                                         ByVal serialNumber As String, ByVal invoiceNumber As String, ByVal phoneNumber As String, ByVal zipcode As String,
                                         ByVal certificateStatus As String, ByVal email As String,
-                                        ByVal taxId As String, ByVal serviceLineNumber As String, ByVal accountNumber As String, ByVal globalCustomerNumber As String,
+                                        ByVal taxId As String, ByVal serviceLineNumber As String, ByVal accountNumber As String,
+                                        ByVal globalCustomerNumber As String, ByVal dateofBirth As String,
                                         ByVal languageId As Guid) As DataSet
         Dim selectStmt As String = Config("/SQL/LOAD_AGENT_SEARCH_LIST")
         Dim ds As DataSet = New DataSet
@@ -179,72 +180,75 @@ Public Class CaseDAL
         Dim inParameters As New List(Of DBHelper.DBHelperParameter)
         Dim param As DBHelper.DBHelperParameter
 
-        param = New DBHelper.DBHelperParameter("pi_company_id", CompanyId.ToByteArray)
+        param = New DBHelper.DBHelperParameter("pi_company_id", companyId.ToByteArray)
         inParameters.Add(param)
 
-        If DealerId.Equals(Guid.Empty) Then
+        If dealerId.Equals(Guid.Empty) Then
             param = New DBHelper.DBHelperParameter("pi_dealer_id", DBNull.Value)
             inParameters.Add(param)
         Else
-            param = New DBHelper.DBHelperParameter("pi_dealer_id", DealerId.ToByteArray)
+            param = New DBHelper.DBHelperParameter("pi_dealer_id", dealerId.ToByteArray)
             inParameters.Add(param)
         End If
 
-        param = New DBHelper.DBHelperParameter("pi_customer_first_name", CustomerFirstName)
+        param = New DBHelper.DBHelperParameter("pi_cert_number", certificateNumber)
+        inParameters.Add(param)
+
+        param = New DBHelper.DBHelperParameter("pi_case_number", caseNumber)
+        inParameters.Add(param)
+
+        param = New DBHelper.DBHelperParameter("pi_serial_number", serialNumber)
+        inParameters.Add(param)
+
+        param = New DBHelper.DBHelperParameter("pi_customer_first_name", customerFirstName)
         inParameters.Add(param)
 
 
-        param = New DBHelper.DBHelperParameter("pi_customer_last_name", CustomerLastName)
+        param = New DBHelper.DBHelperParameter("pi_customer_last_name", customerLastName)
         inParameters.Add(param)
 
-        param = New DBHelper.DBHelperParameter("pi_case_number", CaseNumber)
+        param = New DBHelper.DBHelperParameter("pi_phone_number", phoneNumber)
         inParameters.Add(param)
 
-        param = New DBHelper.DBHelperParameter("pi_claim_number", ClaimNumber)
+        param = New DBHelper.DBHelperParameter("pi_status_code", certificateStatus)
         inParameters.Add(param)
 
-        param = New DBHelper.DBHelperParameter("pi_certificate_number", CertificateNumber)
+        param = New DBHelper.DBHelperParameter("pi_invoice_number", invoiceNumber)
         inParameters.Add(param)
 
-        param = New DBHelper.DBHelperParameter("pi_serial_number", SerialNumber)
+        param = New DBHelper.DBHelperParameter("pi_email", email)
         inParameters.Add(param)
 
-        param = New DBHelper.DBHelperParameter("pi_invoice_number", InvoiceNumber)
+        param = New DBHelper.DBHelperParameter("pi_claim_number", claimNumber)
         inParameters.Add(param)
 
-        param = New DBHelper.DBHelperParameter("pi_phone_number", PhoneNumber)
+        param = New DBHelper.DBHelperParameter("pi_tax_id", taxId)
         inParameters.Add(param)
 
-        param = New DBHelper.DBHelperParameter("pi_zip_code", Zipcode)
+        param = New DBHelper.DBHelperParameter("pi_service_line_number", serviceLineNumber)
         inParameters.Add(param)
 
-        param = New DBHelper.DBHelperParameter("pi_status_code", CertificateStatus)
+        param = New DBHelper.DBHelperParameter("pi_account_number", accountNumber)
         inParameters.Add(param)
 
-        param = New DBHelper.DBHelperParameter("pi_email", Email)
+        param = New DBHelper.DBHelperParameter("pi_global_customer_number", globalCustomerNumber)
         inParameters.Add(param)
 
-        param = New DBHelper.DBHelperParameter("pi_tax_id", TaxId)
+        param = New DBHelper.DBHelperParameter("pi_zip_code", zipcode)
         inParameters.Add(param)
 
-        param = New DBHelper.DBHelperParameter("pi_service_line_number", ServiceLineNumber)
+        param = New DBHelper.DBHelperParameter("pi_language_id", languageId.ToByteArray)
         inParameters.Add(param)
 
-        param = New DBHelper.DBHelperParameter("pi_account_number", AccountNumber)
+        param = New DBHelper.DBHelperParameter("pi_dob", dateofBirth)
         inParameters.Add(param)
 
-        param = New DBHelper.DBHelperParameter("pi_global_customer_number", GlobalCustomerNumber)
-        inParameters.Add(param)
-
-        param = New DBHelper.DBHelperParameter("pi_language_id", LanguageId.ToByteArray)
-        inParameters.Add(param)
-
-        outputParameter(PoCursorCase) = New DBHelper.DBHelperParameter(SpParamNameAgentList, GetType(DataSet))
+        outputParameter(PoCursorCase) = New DBHelper.DBHelperParameter("po_cursor", GetType(DataSet))
 
         Try
             DBHelper.FetchSp(selectStmt, inParameters.ToArray, outputParameter, ds, "GetAgentList")
             ds.Tables(0).TableName = "GetAgentList"
-            
+
             Return ds
         Catch ex As Exception
             Throw New DataBaseAccessException(DataBaseAccessException.DatabaseAccessErrorType.ReadErr, ex)
@@ -252,8 +256,8 @@ Public Class CaseDAL
     End Function
 
 
-    
-    Public Function LoadAgentSearchConfigList(ByVal companyId As Guid, ByVal dealerId As Guid, byval searchType As string) As DataSet
+
+    Public Function LoadAgentSearchConfigList(ByVal companyId As Guid, ByVal dealerId As Guid, ByVal searchType As String) As DataSet
         Dim selectStmt As String = Config("/SQL/LOAD_AGENT_SEARCH_RESULTS_CONFIG_LIST")
         Dim ds As DataSet = New DataSet
         Dim outputParameter(PoCursorCase) As DBHelper.DBHelperParameter
@@ -267,18 +271,18 @@ Public Class CaseDAL
             param = New DBHelper.DBHelperParameter("pi_company_id", companyId.ToByteArray)
             inParameters.Add(param)
         End If
-     
-        If DealerId.Equals(Guid.Empty) Then
+
+        If dealerId.Equals(Guid.Empty) Then
             param = New DBHelper.DBHelperParameter("pi_dealer_id", DBNull.Value)
             inParameters.Add(param)
         Else
-            param = New DBHelper.DBHelperParameter("pi_dealer_id", DealerId.ToByteArray)
+            param = New DBHelper.DBHelperParameter("pi_dealer_id", dealerId.ToByteArray)
             inParameters.Add(param)
         End If
 
         param = New DBHelper.DBHelperParameter("pi_search_type", searchType)
         inParameters.Add(param)
-        
+
         outputParameter(PoCursorCase) = New DBHelper.DBHelperParameter(SpParamNameAGSearchResultsConfigList, GetType(DataSet))
 
         Try
@@ -297,15 +301,15 @@ Public Class CaseDAL
         Dim outputParameter(PoCursorCase) As DBHelper.DBHelperParameter
         Dim inParameters As New List(Of DBHelper.DBHelperParameter)
         Dim param As DBHelper.DBHelperParameter
-     
-        If DealerId.Equals(Guid.Empty) Then
+
+        If dealerId.Equals(Guid.Empty) Then
             param = New DBHelper.DBHelperParameter("pi_dealer_id", DBNull.Value)
             inParameters.Add(param)
         Else
-            param = New DBHelper.DBHelperParameter("pi_dealer_id", DealerId.ToByteArray)
+            param = New DBHelper.DBHelperParameter("pi_dealer_id", dealerId.ToByteArray)
             inParameters.Add(param)
         End If
-        
+
         outputParameter(PoCursorCase) = New DBHelper.DBHelperParameter(SpParamNameSecFieldsList, GetType(DataSet))
 
         Try
@@ -326,9 +330,9 @@ Public Class CaseDAL
         Dim inParameters As New List(Of DBHelper.DBHelperParameter)
         Dim param As DBHelper.DBHelperParameter
 
-        param = New DBHelper.DBHelperParameter("pi_claim_id", ClaimId.ToByteArray)
+        param = New DBHelper.DBHelperParameter("pi_claim_id", claimId.ToByteArray)
         inParameters.Add(param)
-        param = New DBHelper.DBHelperParameter("pi_language_id", LanguageId.ToByteArray)
+        param = New DBHelper.DBHelperParameter("pi_language_id", languageId.ToByteArray)
         inParameters.Add(param)
 
         outputParameter(PoCursorCase) = New DBHelper.DBHelperParameter(SpParamNameCaseList, GetType(DataSet))
@@ -349,9 +353,9 @@ Public Class CaseDAL
         Dim inParameters As New List(Of DBHelper.DBHelperParameter)
         Dim param As DBHelper.DBHelperParameter
 
-        param = New DBHelper.DBHelperParameter("pi_case_id", CaseId.ToByteArray)
+        param = New DBHelper.DBHelperParameter("pi_case_id", caseId.ToByteArray)
         inParameters.Add(param)
-        param = New DBHelper.DBHelperParameter("pi_language_id", LanguageId.ToByteArray)
+        param = New DBHelper.DBHelperParameter("pi_language_id", languageId.ToByteArray)
         inParameters.Add(param)
 
         outputParameter(PoCursorCase) = New DBHelper.DBHelperParameter(SpParamNameCaseDeniedReasonList, GetType(DataSet))
@@ -438,7 +442,7 @@ Public Class CaseDAL
         Dim inParameters As New List(Of DBHelper.DBHelperParameter)
         Dim param As DBHelper.DBHelperParameter
 
-        param = New DBHelper.DBHelperParameter("pi_case_id", CaseId.ToByteArray)
+        param = New DBHelper.DBHelperParameter("pi_case_id", caseId.ToByteArray)
         inParameters.Add(param)
 
         outputParameter(PoCursorCase) = New DBHelper.DBHelperParameter(SpParamNameCaseNotesList, GetType(DataSet))
@@ -455,11 +459,11 @@ Public Class CaseDAL
 #End Region
 
 #Region "Overloaded Methods"
-    Public Overloads Sub Update(ByVal ds As DataSet, Optional ByVal Transaction As IDbTransaction = Nothing, Optional ByVal changesFilter As DataRowState = supportChangesFilter)
+    Public Overloads Sub Update(ByVal ds As DataSet, Optional ByVal Transaction As IDbTransaction = Nothing, Optional ByVal changesFilter As DataRowState = SupportChangesFilter)
         If ds Is Nothing Then
             Return
         End If
-        If (changesFilter Or (supportChangesFilter)) <> (supportChangesFilter) Then
+        If (changesFilter Or (SupportChangesFilter)) <> (SupportChangesFilter) Then
             Throw New NotSupportedException()
         End If
         If Not ds.Tables(TableName) Is Nothing Then

@@ -11,9 +11,9 @@ Option Strict On
 Option Explicit On
 
 Namespace Tables
-
+    
     Partial Public Class ProductCodeForm
-
+        
         '''<summary>
         '''ScriptManager1 control.
         '''</summary>
@@ -22,7 +22,7 @@ Namespace Tables
         '''To modify move field declaration from designer file to code-behind file.
         '''</remarks>
         Protected WithEvents ScriptManager1 As Global.System.Web.UI.ScriptManager
-
+        
         '''<summary>
         '''Td1 control.
         '''</summary>
@@ -31,7 +31,7 @@ Namespace Tables
         '''To modify move field declaration from designer file to code-behind file.
         '''</remarks>
         Protected WithEvents Td1 As Global.System.Web.UI.HtmlControls.HtmlTableCell
-
+        
         '''<summary>
         '''DealerDropControl control.
         '''</summary>
@@ -40,7 +40,7 @@ Namespace Tables
         '''To modify move field declaration from designer file to code-behind file.
         '''</remarks>
         Protected WithEvents DealerDropControl As Global.Assurant.ElitaPlus.ElitaPlusWebApp.Common.MultipleColumnDDLabelControl_New
-
+        
         '''<summary>
         '''TRPlanCode control.
         '''</summary>
@@ -49,7 +49,7 @@ Namespace Tables
         '''To modify move field declaration from designer file to code-behind file.
         '''</remarks>
         Protected WithEvents TRPlanCode As Global.System.Web.UI.HtmlControls.HtmlTableCell
-
+        
         '''<summary>
         '''ProductDropControl control.
         '''</summary>
@@ -58,7 +58,7 @@ Namespace Tables
         '''To modify move field declaration from designer file to code-behind file.
         '''</remarks>
         Protected WithEvents ProductDropControl As Global.Assurant.ElitaPlus.ElitaPlusWebApp.Common.MultipleColumnDDLabelControl_New
-
+        
         '''<summary>
         '''TRPrdCode control.
         '''</summary>
@@ -67,7 +67,7 @@ Namespace Tables
         '''To modify move field declaration from designer file to code-behind file.
         '''</remarks>
         Protected WithEvents TRPrdCode As Global.System.Web.UI.HtmlControls.HtmlTableRow
-
+        
         '''<summary>
         '''moProductCodeLabel control.
         '''</summary>
@@ -76,7 +76,7 @@ Namespace Tables
         '''To modify move field declaration from designer file to code-behind file.
         '''</remarks>
         Protected WithEvents moProductCodeLabel As Global.System.Web.UI.WebControls.Label
-
+        
         '''<summary>
         '''moProductCodeText control.
         '''</summary>
@@ -85,7 +85,7 @@ Namespace Tables
         '''To modify move field declaration from designer file to code-behind file.
         '''</remarks>
         Protected WithEvents moProductCodeText As Global.System.Web.UI.WebControls.TextBox
-
+        
         '''<summary>
         '''moDescriptionLabel control.
         '''</summary>
@@ -94,7 +94,7 @@ Namespace Tables
         '''To modify move field declaration from designer file to code-behind file.
         '''</remarks>
         Protected WithEvents moDescriptionLabel As Global.System.Web.UI.WebControls.Label
-
+        
         '''<summary>
         '''moDescriptionText control.
         '''</summary>
@@ -103,7 +103,7 @@ Namespace Tables
         '''To modify move field declaration from designer file to code-behind file.
         '''</remarks>
         Protected WithEvents moDescriptionText As Global.System.Web.UI.WebControls.TextBox
-
+        
         '''<summary>
         '''moRiskGroupLabel control.
         '''</summary>
@@ -112,7 +112,7 @@ Namespace Tables
         '''To modify move field declaration from designer file to code-behind file.
         '''</remarks>
         Protected WithEvents moRiskGroupLabel As Global.System.Web.UI.WebControls.Label
-
+        
         '''<summary>
         '''moRiskGroupDrop control.
         '''</summary>
@@ -121,7 +121,7 @@ Namespace Tables
         '''To modify move field declaration from designer file to code-behind file.
         '''</remarks>
         Protected WithEvents moRiskGroupDrop As Global.System.Web.UI.WebControls.DropDownList
-
+        
         '''<summary>
         '''LabelWaitingPeriod control.
         '''</summary>
@@ -130,7 +130,7 @@ Namespace Tables
         '''To modify move field declaration from designer file to code-behind file.
         '''</remarks>
         Protected WithEvents LabelWaitingPeriod As Global.System.Web.UI.WebControls.Label
-
+        
         '''<summary>
         '''moWaitingPeriod control.
         '''</summary>
@@ -139,7 +139,7 @@ Namespace Tables
         '''To modify move field declaration from designer file to code-behind file.
         '''</remarks>
         Protected WithEvents moWaitingPeriod As Global.System.Web.UI.WebControls.TextBox
-
+        
         '''<summary>
         '''moMethodOfRepairLabel control.
         '''</summary>
@@ -148,7 +148,7 @@ Namespace Tables
         '''To modify move field declaration from designer file to code-behind file.
         '''</remarks>
         Protected WithEvents moMethodOfRepairLabel As Global.System.Web.UI.WebControls.Label
-
+        
         '''<summary>
         '''moMethodOfRepairDrop control.
         '''</summary>
@@ -157,7 +157,7 @@ Namespace Tables
         '''To modify move field declaration from designer file to code-behind file.
         '''</remarks>
         Protected WithEvents moMethodOfRepairDrop As Global.System.Web.UI.WebControls.DropDownList
-
+        
         '''<summary>
         '''LabelDaysToCancel control.
         '''</summary>
@@ -166,7 +166,7 @@ Namespace Tables
         '''To modify move field declaration from designer file to code-behind file.
         '''</remarks>
         Protected WithEvents LabelDaysToCancel As Global.System.Web.UI.WebControls.Label
-
+        
         '''<summary>
         '''moDaysToCancel control.
         '''</summary>
@@ -175,7 +175,7 @@ Namespace Tables
         '''To modify move field declaration from designer file to code-behind file.
         '''</remarks>
         Protected WithEvents moDaysToCancel As Global.System.Web.UI.WebControls.TextBox
-
+        
         '''<summary>
         '''pnlMethdOfRepair_Replacement control.
         '''</summary>
@@ -184,7 +184,7 @@ Namespace Tables
         '''To modify move field declaration from designer file to code-behind file.
         '''</remarks>
         Protected WithEvents pnlMethdOfRepair_Replacement As Global.System.Web.UI.WebControls.Panel
-
+        
         '''<summary>
         '''moNumOfReplacementsLabel control.
         '''</summary>
@@ -193,7 +193,7 @@ Namespace Tables
         '''To modify move field declaration from designer file to code-behind file.
         '''</remarks>
         Protected WithEvents moNumOfReplacementsLabel As Global.System.Web.UI.WebControls.Label
-
+        
         '''<summary>
         '''moNumOfReplacementsText control.
         '''</summary>
@@ -202,7 +202,7 @@ Namespace Tables
         '''To modify move field declaration from designer file to code-behind file.
         '''</remarks>
         Protected WithEvents moNumOfReplacementsText As Global.System.Web.UI.WebControls.TextBox
-
+        
         '''<summary>
         '''moNumOfRepairClaimsLabel control.
         '''</summary>
@@ -211,7 +211,7 @@ Namespace Tables
         '''To modify move field declaration from designer file to code-behind file.
         '''</remarks>
         Protected WithEvents moNumOfRepairClaimsLabel As Global.System.Web.UI.WebControls.Label
-
+        
         '''<summary>
         '''moNumOfRepairClaimsText control.
         '''</summary>
@@ -220,7 +220,7 @@ Namespace Tables
         '''To modify move field declaration from designer file to code-behind file.
         '''</remarks>
         Protected WithEvents moNumOfRepairClaimsText As Global.System.Web.UI.WebControls.TextBox
-
+        
         '''<summary>
         '''moNumOfReplClaimsLabel control.
         '''</summary>
@@ -229,7 +229,7 @@ Namespace Tables
         '''To modify move field declaration from designer file to code-behind file.
         '''</remarks>
         Protected WithEvents moNumOfReplClaimsLabel As Global.System.Web.UI.WebControls.Label
-
+        
         '''<summary>
         '''moNumOfReplClaimsText control.
         '''</summary>
@@ -238,7 +238,7 @@ Namespace Tables
         '''To modify move field declaration from designer file to code-behind file.
         '''</remarks>
         Protected WithEvents moNumOfReplClaimsText As Global.System.Web.UI.WebControls.TextBox
-
+        
         '''<summary>
         '''moTypeOfEquipmentLabel control.
         '''</summary>
@@ -247,7 +247,7 @@ Namespace Tables
         '''To modify move field declaration from designer file to code-behind file.
         '''</remarks>
         Protected WithEvents moTypeOfEquipmentLabel As Global.System.Web.UI.WebControls.Label
-
+        
         '''<summary>
         '''moTypeOfEquipmentDrop control.
         '''</summary>
@@ -256,7 +256,7 @@ Namespace Tables
         '''To modify move field declaration from designer file to code-behind file.
         '''</remarks>
         Protected WithEvents moTypeOfEquipmentDrop As Global.System.Web.UI.WebControls.DropDownList
-
+        
         '''<summary>
         '''LabelApplyWaitingPeriod control.
         '''</summary>
@@ -265,7 +265,7 @@ Namespace Tables
         '''To modify move field declaration from designer file to code-behind file.
         '''</remarks>
         Protected WithEvents LabelApplyWaitingPeriod As Global.System.Web.UI.WebControls.Label
-
+        
         '''<summary>
         '''cboIgnoreWaitingPeriodWhen_WSD_Equal_PSD control.
         '''</summary>
@@ -274,7 +274,7 @@ Namespace Tables
         '''To modify move field declaration from designer file to code-behind file.
         '''</remarks>
         Protected WithEvents cboIgnoreWaitingPeriodWhen_WSD_Equal_PSD As Global.System.Web.UI.WebControls.DropDownList
-
+        
         '''<summary>
         '''moPriceMatrixLabel control.
         '''</summary>
@@ -283,7 +283,7 @@ Namespace Tables
         '''To modify move field declaration from designer file to code-behind file.
         '''</remarks>
         Protected WithEvents moPriceMatrixLabel As Global.System.Web.UI.WebControls.Label
-
+        
         '''<summary>
         '''moPriceMatrixDrop control.
         '''</summary>
@@ -292,7 +292,7 @@ Namespace Tables
         '''To modify move field declaration from designer file to code-behind file.
         '''</remarks>
         Protected WithEvents moPriceMatrixDrop As Global.System.Web.UI.WebControls.DropDownList
-
+        
         '''<summary>
         '''moProdLiabilityLimitBasedOnLabel control.
         '''</summary>
@@ -301,7 +301,7 @@ Namespace Tables
         '''To modify move field declaration from designer file to code-behind file.
         '''</remarks>
         Protected WithEvents moProdLiabilityLimitBasedOnLabel As Global.System.Web.UI.WebControls.Label
-
+        
         '''<summary>
         '''moProdLiabilityLimitBasedOnDrop control.
         '''</summary>
@@ -310,7 +310,7 @@ Namespace Tables
         '''To modify move field declaration from designer file to code-behind file.
         '''</remarks>
         Protected WithEvents moProdLiabilityLimitBasedOnDrop As Global.System.Web.UI.WebControls.DropDownList
-
+        
         '''<summary>
         '''moUserDescriptionLabel control.
         '''</summary>
@@ -319,7 +319,7 @@ Namespace Tables
         '''To modify move field declaration from designer file to code-behind file.
         '''</remarks>
         Protected WithEvents moUserDescriptionLabel As Global.System.Web.UI.WebControls.Label
-
+        
         '''<summary>
         '''moUseDepreciationDrop control.
         '''</summary>
@@ -328,7 +328,7 @@ Namespace Tables
         '''To modify move field declaration from designer file to code-behind file.
         '''</remarks>
         Protected WithEvents moUseDepreciationDrop As Global.System.Web.UI.WebControls.DropDownList
-
+        
         '''<summary>
         '''moProdLimitApplicableToXCDLabel control.
         '''</summary>
@@ -337,7 +337,7 @@ Namespace Tables
         '''To modify move field declaration from designer file to code-behind file.
         '''</remarks>
         Protected WithEvents moProdLimitApplicableToXCDLabel As Global.System.Web.UI.WebControls.Label
-
+        
         '''<summary>
         '''moProdLimitApplicableToXCDDrop control.
         '''</summary>
@@ -346,7 +346,7 @@ Namespace Tables
         '''To modify move field declaration from designer file to code-behind file.
         '''</remarks>
         Protected WithEvents moProdLimitApplicableToXCDDrop As Global.System.Web.UI.WebControls.DropDownList
-
+        
         '''<summary>
         '''moBundledItemLabel control.
         '''</summary>
@@ -355,7 +355,7 @@ Namespace Tables
         '''To modify move field declaration from designer file to code-behind file.
         '''</remarks>
         Protected WithEvents moBundledItemLabel As Global.System.Web.UI.WebControls.Label
-
+        
         '''<summary>
         '''moBundledItemId control.
         '''</summary>
@@ -364,7 +364,7 @@ Namespace Tables
         '''To modify move field declaration from designer file to code-behind file.
         '''</remarks>
         Protected WithEvents moBundledItemId As Global.System.Web.UI.WebControls.DropDownList
-
+        
         '''<summary>
         '''moProdLiabilityLimitPolicyLabel control.
         '''</summary>
@@ -373,7 +373,7 @@ Namespace Tables
         '''To modify move field declaration from designer file to code-behind file.
         '''</remarks>
         Protected WithEvents moProdLiabilityLimitPolicyLabel As Global.System.Web.UI.WebControls.Label
-
+        
         '''<summary>
         '''moProdLiabilityLimitPolicyDrop control.
         '''</summary>
@@ -382,7 +382,7 @@ Namespace Tables
         '''To modify move field declaration from designer file to code-behind file.
         '''</remarks>
         Protected WithEvents moProdLiabilityLimitPolicyDrop As Global.System.Web.UI.WebControls.DropDownList
-
+        
         '''<summary>
         '''moPercentOfRetailLabel control.
         '''</summary>
@@ -391,7 +391,7 @@ Namespace Tables
         '''To modify move field declaration from designer file to code-behind file.
         '''</remarks>
         Protected WithEvents moPercentOfRetailLabel As Global.System.Web.UI.WebControls.Label
-
+        
         '''<summary>
         '''moPercentOfRetailText control.
         '''</summary>
@@ -400,7 +400,7 @@ Namespace Tables
         '''To modify move field declaration from designer file to code-behind file.
         '''</remarks>
         Protected WithEvents moPercentOfRetailText As Global.System.Web.UI.WebControls.TextBox
-
+        
         '''<summary>
         '''moProdLiabilityLimitLabel control.
         '''</summary>
@@ -409,7 +409,7 @@ Namespace Tables
         '''To modify move field declaration from designer file to code-behind file.
         '''</remarks>
         Protected WithEvents moProdLiabilityLimitLabel As Global.System.Web.UI.WebControls.Label
-
+        
         '''<summary>
         '''moProdLiabilityLimitText control.
         '''</summary>
@@ -418,7 +418,7 @@ Namespace Tables
         '''To modify move field declaration from designer file to code-behind file.
         '''</remarks>
         Protected WithEvents moProdLiabilityLimitText As Global.System.Web.UI.WebControls.TextBox
-
+        
         '''<summary>
         '''moProdLiabilityLimitPercentLabel control.
         '''</summary>
@@ -427,7 +427,7 @@ Namespace Tables
         '''To modify move field declaration from designer file to code-behind file.
         '''</remarks>
         Protected WithEvents moProdLiabilityLimitPercentLabel As Global.System.Web.UI.WebControls.Label
-
+        
         '''<summary>
         '''moProdLiabilityLimitPercentText control.
         '''</summary>
@@ -436,7 +436,7 @@ Namespace Tables
         '''To modify move field declaration from designer file to code-behind file.
         '''</remarks>
         Protected WithEvents moProdLiabilityLimitPercentText As Global.System.Web.UI.WebControls.TextBox
-
+        
         '''<summary>
         '''pnlInstallment control.
         '''</summary>
@@ -445,7 +445,7 @@ Namespace Tables
         '''To modify move field declaration from designer file to code-behind file.
         '''</remarks>
         Protected WithEvents pnlInstallment As Global.System.Web.UI.WebControls.Panel
-
+        
         '''<summary>
         '''moBillingFrequencyLabel control.
         '''</summary>
@@ -454,7 +454,7 @@ Namespace Tables
         '''To modify move field declaration from designer file to code-behind file.
         '''</remarks>
         Protected WithEvents moBillingFrequencyLabel As Global.System.Web.UI.WebControls.Label
-
+        
         '''<summary>
         '''moBillingFrequencyId control.
         '''</summary>
@@ -463,7 +463,7 @@ Namespace Tables
         '''To modify move field declaration from designer file to code-behind file.
         '''</remarks>
         Protected WithEvents moBillingFrequencyId As Global.System.Web.UI.WebControls.DropDownList
-
+        
         '''<summary>
         '''moInstallmentsLabel control.
         '''</summary>
@@ -472,7 +472,7 @@ Namespace Tables
         '''To modify move field declaration from designer file to code-behind file.
         '''</remarks>
         Protected WithEvents moInstallmentsLabel As Global.System.Web.UI.WebControls.Label
-
+        
         '''<summary>
         '''moInstallmentText control.
         '''</summary>
@@ -481,7 +481,7 @@ Namespace Tables
         '''To modify move field declaration from designer file to code-behind file.
         '''</remarks>
         Protected WithEvents moInstallmentText As Global.System.Web.UI.WebControls.TextBox
-
+        
         '''<summary>
         '''pnlMethodOfRepair_Repair control.
         '''</summary>
@@ -490,7 +490,7 @@ Namespace Tables
         '''To modify move field declaration from designer file to code-behind file.
         '''</remarks>
         Protected WithEvents pnlMethodOfRepair_Repair As Global.System.Web.UI.WebControls.Panel
-
+        
         '''<summary>
         '''moMethodOfRepairByPriceLabel control.
         '''</summary>
@@ -499,7 +499,7 @@ Namespace Tables
         '''To modify move field declaration from designer file to code-behind file.
         '''</remarks>
         Protected WithEvents moMethodOfRepairByPriceLabel As Global.System.Web.UI.WebControls.Label
-
+        
         '''<summary>
         '''moMethodOfRepairByPriceDrop control.
         '''</summary>
@@ -508,7 +508,7 @@ Namespace Tables
         '''To modify move field declaration from designer file to code-behind file.
         '''</remarks>
         Protected WithEvents moMethodOfRepairByPriceDrop As Global.System.Web.UI.WebControls.DropDownList
-
+        
         '''<summary>
         '''moSplitWarrantyLabel control.
         '''</summary>
@@ -517,7 +517,7 @@ Namespace Tables
         '''To modify move field declaration from designer file to code-behind file.
         '''</remarks>
         Protected WithEvents moSplitWarrantyLabel As Global.System.Web.UI.WebControls.Label
-
+        
         '''<summary>
         '''moSplitWarrantyDrop control.
         '''</summary>
@@ -526,7 +526,7 @@ Namespace Tables
         '''To modify move field declaration from designer file to code-behind file.
         '''</remarks>
         Protected WithEvents moSplitWarrantyDrop As Global.System.Web.UI.WebControls.DropDownList
-
+        
         '''<summary>
         '''lblAutoApprovePSP_TD control.
         '''</summary>
@@ -535,7 +535,7 @@ Namespace Tables
         '''To modify move field declaration from designer file to code-behind file.
         '''</remarks>
         Protected WithEvents lblAutoApprovePSP_TD As Global.System.Web.UI.HtmlControls.HtmlTableCell
-
+        
         '''<summary>
         '''lblAutoApprovePSP control.
         '''</summary>
@@ -544,7 +544,7 @@ Namespace Tables
         '''To modify move field declaration from designer file to code-behind file.
         '''</remarks>
         Protected WithEvents lblAutoApprovePSP As Global.System.Web.UI.WebControls.Label
-
+        
         '''<summary>
         '''txtAutoApprovePSP_TD control.
         '''</summary>
@@ -553,7 +553,7 @@ Namespace Tables
         '''To modify move field declaration from designer file to code-behind file.
         '''</remarks>
         Protected WithEvents txtAutoApprovePSP_TD As Global.System.Web.UI.HtmlControls.HtmlTableCell
-
+        
         '''<summary>
         '''txtAutoApprovePSP control.
         '''</summary>
@@ -562,7 +562,7 @@ Namespace Tables
         '''To modify move field declaration from designer file to code-behind file.
         '''</remarks>
         Protected WithEvents txtAutoApprovePSP As Global.System.Web.UI.WebControls.TextBox
-
+        
         '''<summary>
         '''moCommentsLabel control.
         '''</summary>
@@ -571,7 +571,7 @@ Namespace Tables
         '''To modify move field declaration from designer file to code-behind file.
         '''</remarks>
         Protected WithEvents moCommentsLabel As Global.System.Web.UI.WebControls.Label
-
+        
         '''<summary>
         '''moCommentsText control.
         '''</summary>
@@ -580,7 +580,7 @@ Namespace Tables
         '''To modify move field declaration from designer file to code-behind file.
         '''</remarks>
         Protected WithEvents moCommentsText As Global.System.Web.UI.WebControls.TextBox
-
+        
         '''<summary>
         '''moReInsuredLabel control.
         '''</summary>
@@ -589,7 +589,7 @@ Namespace Tables
         '''To modify move field declaration from designer file to code-behind file.
         '''</remarks>
         Protected WithEvents moReInsuredLabel As Global.System.Web.UI.WebControls.Label
-
+        
         '''<summary>
         '''moReInsuredDrop control.
         '''</summary>
@@ -598,7 +598,7 @@ Namespace Tables
         '''To modify move field declaration from designer file to code-behind file.
         '''</remarks>
         Protected WithEvents moReInsuredDrop As Global.System.Web.UI.WebControls.DropDownList
-
+        
         '''<summary>
         '''moSpecialServiceLabel control.
         '''</summary>
@@ -607,7 +607,7 @@ Namespace Tables
         '''To modify move field declaration from designer file to code-behind file.
         '''</remarks>
         Protected WithEvents moSpecialServiceLabel As Global.System.Web.UI.WebControls.Label
-
+        
         '''<summary>
         '''moSpecialServiceText control.
         '''</summary>
@@ -616,7 +616,7 @@ Namespace Tables
         '''To modify move field declaration from designer file to code-behind file.
         '''</remarks>
         Protected WithEvents moSpecialServiceText As Global.System.Web.UI.WebControls.TextBox
-
+        
         '''<summary>
         '''moInstallmentRepricableLabel control.
         '''</summary>
@@ -625,7 +625,7 @@ Namespace Tables
         '''To modify move field declaration from designer file to code-behind file.
         '''</remarks>
         Protected WithEvents moInstallmentRepricableLabel As Global.System.Web.UI.WebControls.Label
-
+        
         '''<summary>
         '''moInstallmentRepricableDrop control.
         '''</summary>
@@ -634,7 +634,7 @@ Namespace Tables
         '''To modify move field declaration from designer file to code-behind file.
         '''</remarks>
         Protected WithEvents moInstallmentRepricableDrop As Global.System.Web.UI.WebControls.DropDownList
-
+        
         '''<summary>
         '''pnlUPGFields control.
         '''</summary>
@@ -643,7 +643,7 @@ Namespace Tables
         '''To modify move field declaration from designer file to code-behind file.
         '''</remarks>
         Protected WithEvents pnlUPGFields As Global.System.Web.UI.WebControls.Panel
-
+        
         '''<summary>
         '''moUpgradeProgramLabel control.
         '''</summary>
@@ -652,7 +652,7 @@ Namespace Tables
         '''To modify move field declaration from designer file to code-behind file.
         '''</remarks>
         Protected WithEvents moUpgradeProgramLabel As Global.System.Web.UI.WebControls.Label
-
+        
         '''<summary>
         '''moUpgradeProgramDrop control.
         '''</summary>
@@ -661,7 +661,7 @@ Namespace Tables
         '''To modify move field declaration from designer file to code-behind file.
         '''</remarks>
         Protected WithEvents moUpgradeProgramDrop As Global.System.Web.UI.WebControls.DropDownList
-
+        
         '''<summary>
         '''moUPGFinanceBalCompMethLabel control.
         '''</summary>
@@ -670,7 +670,7 @@ Namespace Tables
         '''To modify move field declaration from designer file to code-behind file.
         '''</remarks>
         Protected WithEvents moUPGFinanceBalCompMethLabel As Global.System.Web.UI.WebControls.Label
-
+        
         '''<summary>
         '''moUPGFinanceBalCompMethDrop control.
         '''</summary>
@@ -679,7 +679,7 @@ Namespace Tables
         '''To modify move field declaration from designer file to code-behind file.
         '''</remarks>
         Protected WithEvents moUPGFinanceBalCompMethDrop As Global.System.Web.UI.WebControls.DropDownList
-
+        
         '''<summary>
         '''moupgFinanceInfoRequireLabel control.
         '''</summary>
@@ -688,7 +688,7 @@ Namespace Tables
         '''To modify move field declaration from designer file to code-behind file.
         '''</remarks>
         Protected WithEvents moupgFinanceInfoRequireLabel As Global.System.Web.UI.WebControls.Label
-
+        
         '''<summary>
         '''moupgFinanceInfoRequireDrop control.
         '''</summary>
@@ -697,7 +697,7 @@ Namespace Tables
         '''To modify move field declaration from designer file to code-behind file.
         '''</remarks>
         Protected WithEvents moupgFinanceInfoRequireDrop As Global.System.Web.UI.WebControls.DropDownList
-
+        
         '''<summary>
         '''moUpgFeeLabel control.
         '''</summary>
@@ -706,7 +706,7 @@ Namespace Tables
         '''To modify move field declaration from designer file to code-behind file.
         '''</remarks>
         Protected WithEvents moUpgFeeLabel As Global.System.Web.UI.WebControls.Label
-
+        
         '''<summary>
         '''moUpgFeeText control.
         '''</summary>
@@ -715,7 +715,7 @@ Namespace Tables
         '''To modify move field declaration from designer file to code-behind file.
         '''</remarks>
         Protected WithEvents moUpgFeeText As Global.System.Web.UI.WebControls.TextBox
-
+        
         '''<summary>
         '''moUpgTermUOMLabel control.
         '''</summary>
@@ -724,7 +724,7 @@ Namespace Tables
         '''To modify move field declaration from designer file to code-behind file.
         '''</remarks>
         Protected WithEvents moUpgTermUOMLabel As Global.System.Web.UI.WebControls.Label
-
+        
         '''<summary>
         '''moUpgTermUOMDrop control.
         '''</summary>
@@ -733,7 +733,7 @@ Namespace Tables
         '''To modify move field declaration from designer file to code-behind file.
         '''</remarks>
         Protected WithEvents moUpgTermUOMDrop As Global.System.Web.UI.WebControls.DropDownList
-
+        
         '''<summary>
         '''moUpgradeTermLabel control.
         '''</summary>
@@ -742,7 +742,7 @@ Namespace Tables
         '''To modify move field declaration from designer file to code-behind file.
         '''</remarks>
         Protected WithEvents moUpgradeTermLabel As Global.System.Web.UI.WebControls.Label
-
+        
         '''<summary>
         '''moUpgradeTermText control.
         '''</summary>
@@ -751,7 +751,7 @@ Namespace Tables
         '''To modify move field declaration from designer file to code-behind file.
         '''</remarks>
         Protected WithEvents moUpgradeTermText As Global.System.Web.UI.WebControls.TextBox
-
+        
         '''<summary>
         '''moUpgradeTermFromLabel control.
         '''</summary>
@@ -760,7 +760,7 @@ Namespace Tables
         '''To modify move field declaration from designer file to code-behind file.
         '''</remarks>
         Protected WithEvents moUpgradeTermFromLabel As Global.System.Web.UI.WebControls.Label
-
+        
         '''<summary>
         '''moUpgradeTermFROMText control.
         '''</summary>
@@ -769,7 +769,7 @@ Namespace Tables
         '''To modify move field declaration from designer file to code-behind file.
         '''</remarks>
         Protected WithEvents moUpgradeTermFROMText As Global.System.Web.UI.WebControls.TextBox
-
+        
         '''<summary>
         '''moUpgradeTermToLabel control.
         '''</summary>
@@ -778,7 +778,7 @@ Namespace Tables
         '''To modify move field declaration from designer file to code-behind file.
         '''</remarks>
         Protected WithEvents moUpgradeTermToLabel As Global.System.Web.UI.WebControls.Label
-
+        
         '''<summary>
         '''moUpgradeTermToText control.
         '''</summary>
@@ -787,7 +787,7 @@ Namespace Tables
         '''To modify move field declaration from designer file to code-behind file.
         '''</remarks>
         Protected WithEvents moUpgradeTermToText As Global.System.Web.UI.WebControls.TextBox
-
+        
         '''<summary>
         '''moIsNewProductCodeLabel control.
         '''</summary>
@@ -796,7 +796,7 @@ Namespace Tables
         '''To modify move field declaration from designer file to code-behind file.
         '''</remarks>
         Protected WithEvents moIsNewProductCodeLabel As Global.System.Web.UI.WebControls.Label
-
+        
         '''<summary>
         '''moProductCodeIdLabel control.
         '''</summary>
@@ -805,7 +805,7 @@ Namespace Tables
         '''To modify move field declaration from designer file to code-behind file.
         '''</remarks>
         Protected WithEvents moProductCodeIdLabel As Global.System.Web.UI.WebControls.Label
-
+        
         '''<summary>
         '''HiddenSaveChangesPromptResponse control.
         '''</summary>
@@ -814,7 +814,7 @@ Namespace Tables
         '''To modify move field declaration from designer file to code-behind file.
         '''</remarks>
         Protected WithEvents HiddenSaveChangesPromptResponse As Global.System.Web.UI.HtmlControls.HtmlInputHidden
-
+        
         '''<summary>
         '''moBillingCriteriaLabel control.
         '''</summary>
@@ -823,7 +823,7 @@ Namespace Tables
         '''To modify move field declaration from designer file to code-behind file.
         '''</remarks>
         Protected WithEvents moBillingCriteriaLabel As Global.System.Web.UI.WebControls.Label
-
+        
         '''<summary>
         '''moBillingCriteriaDrop control.
         '''</summary>
@@ -832,7 +832,7 @@ Namespace Tables
         '''To modify move field declaration from designer file to code-behind file.
         '''</remarks>
         Protected WithEvents moBillingCriteriaDrop As Global.System.Web.UI.WebControls.DropDownList
-
+        
         '''<summary>
         '''moCancellationDependencyLabel control.
         '''</summary>
@@ -841,7 +841,7 @@ Namespace Tables
         '''To modify move field declaration from designer file to code-behind file.
         '''</remarks>
         Protected WithEvents moCancellationDependencyLabel As Global.System.Web.UI.WebControls.Label
-
+        
         '''<summary>
         '''moCancellationDependencyDrop control.
         '''</summary>
@@ -850,7 +850,7 @@ Namespace Tables
         '''To modify move field declaration from designer file to code-behind file.
         '''</remarks>
         Protected WithEvents moCancellationDependencyDrop As Global.System.Web.UI.WebControls.DropDownList
-
+        
         '''<summary>
         '''moPostPrePaidLabel control.
         '''</summary>
@@ -859,7 +859,7 @@ Namespace Tables
         '''To modify move field declaration from designer file to code-behind file.
         '''</remarks>
         Protected WithEvents moPostPrePaidLabel As Global.System.Web.UI.WebControls.Label
-
+        
         '''<summary>
         '''moPostPrePaidDrop control.
         '''</summary>
@@ -868,7 +868,7 @@ Namespace Tables
         '''To modify move field declaration from designer file to code-behind file.
         '''</remarks>
         Protected WithEvents moPostPrePaidDrop As Global.System.Web.UI.WebControls.DropDownList
-
+        
         '''<summary>
         '''moCnlLumpsumBillingLabel control.
         '''</summary>
@@ -877,7 +877,7 @@ Namespace Tables
         '''To modify move field declaration from designer file to code-behind file.
         '''</remarks>
         Protected WithEvents moCnlLumpsumBillingLabel As Global.System.Web.UI.WebControls.Label
-
+        
         '''<summary>
         '''moCnlLumpsumBillingDrop control.
         '''</summary>
@@ -886,7 +886,7 @@ Namespace Tables
         '''To modify move field declaration from designer file to code-behind file.
         '''</remarks>
         Protected WithEvents moCnlLumpsumBillingDrop As Global.System.Web.UI.WebControls.DropDownList
-
+        
         '''<summary>
         '''lblProductEquipmentValidation control.
         '''</summary>
@@ -895,7 +895,7 @@ Namespace Tables
         '''To modify move field declaration from designer file to code-behind file.
         '''</remarks>
         Protected WithEvents lblProductEquipmentValidation As Global.System.Web.UI.WebControls.Label
-
+        
         '''<summary>
         '''cboProductEquipmentValidation control.
         '''</summary>
@@ -904,7 +904,7 @@ Namespace Tables
         '''To modify move field declaration from designer file to code-behind file.
         '''</remarks>
         Protected WithEvents cboProductEquipmentValidation As Global.System.Web.UI.WebControls.DropDownList
-
+        
         '''<summary>
         '''lblAllowRegisteredItems control.
         '''</summary>
@@ -913,7 +913,7 @@ Namespace Tables
         '''To modify move field declaration from designer file to code-behind file.
         '''</remarks>
         Protected WithEvents lblAllowRegisteredItems As Global.System.Web.UI.WebControls.Label
-
+        
         '''<summary>
         '''cboAllowRegisteredItems control.
         '''</summary>
@@ -922,7 +922,7 @@ Namespace Tables
         '''To modify move field declaration from designer file to code-behind file.
         '''</remarks>
         Protected WithEvents cboAllowRegisteredItems As Global.System.Web.UI.WebControls.DropDownList
-
+        
         '''<summary>
         '''lblListForDeviceGroup control.
         '''</summary>
@@ -931,7 +931,7 @@ Namespace Tables
         '''To modify move field declaration from designer file to code-behind file.
         '''</remarks>
         Protected WithEvents lblListForDeviceGroup As Global.System.Web.UI.WebControls.Label
-
+        
         '''<summary>
         '''cboListForDeviceGroup control.
         '''</summary>
@@ -940,7 +940,7 @@ Namespace Tables
         '''To modify move field declaration from designer file to code-behind file.
         '''</remarks>
         Protected WithEvents cboListForDeviceGroup As Global.System.Web.UI.WebControls.DropDownList
-
+        
         '''<summary>
         '''moInitialQuestionSetLabel control.
         '''</summary>
@@ -949,7 +949,7 @@ Namespace Tables
         '''To modify move field declaration from designer file to code-behind file.
         '''</remarks>
         Protected WithEvents moInitialQuestionSetLabel As Global.System.Web.UI.WebControls.Label
-
+        
         '''<summary>
         '''cboInitialQuestionSet control.
         '''</summary>
@@ -958,7 +958,7 @@ Namespace Tables
         '''To modify move field declaration from designer file to code-behind file.
         '''</remarks>
         Protected WithEvents cboInitialQuestionSet As Global.System.Web.UI.WebControls.DropDownList
-
+        
         '''<summary>
         '''moMaxAgeOfRegisteredItemLabel control.
         '''</summary>
@@ -967,7 +967,7 @@ Namespace Tables
         '''To modify move field declaration from designer file to code-behind file.
         '''</remarks>
         Protected WithEvents moMaxAgeOfRegisteredItemLabel As Global.System.Web.UI.WebControls.Label
-
+        
         '''<summary>
         '''moMaxAgeOfRegisteredItemText control.
         '''</summary>
@@ -976,7 +976,7 @@ Namespace Tables
         '''To modify move field declaration from designer file to code-behind file.
         '''</remarks>
         Protected WithEvents moMaxAgeOfRegisteredItemText As Global.System.Web.UI.WebControls.TextBox
-
+        
         '''<summary>
         '''moMaxRegistrationsAllowedLabel control.
         '''</summary>
@@ -985,7 +985,7 @@ Namespace Tables
         '''To modify move field declaration from designer file to code-behind file.
         '''</remarks>
         Protected WithEvents moMaxRegistrationsAllowedLabel As Global.System.Web.UI.WebControls.Label
-
+        
         '''<summary>
         '''moMaxRegistrationsAllowedText control.
         '''</summary>
@@ -994,7 +994,7 @@ Namespace Tables
         '''To modify move field declaration from designer file to code-behind file.
         '''</remarks>
         Protected WithEvents moMaxRegistrationsAllowedText As Global.System.Web.UI.WebControls.TextBox
-
+        
         '''<summary>
         '''trUpdateReplaceRegItemsId control.
         '''</summary>
@@ -1003,7 +1003,7 @@ Namespace Tables
         '''To modify move field declaration from designer file to code-behind file.
         '''</remarks>
         Protected WithEvents trUpdateReplaceRegItemsId As Global.System.Web.UI.HtmlControls.HtmlTableRow
-
+        
         '''<summary>
         '''lblUpdateReplaceRegItemsId control.
         '''</summary>
@@ -1012,7 +1012,7 @@ Namespace Tables
         '''To modify move field declaration from designer file to code-behind file.
         '''</remarks>
         Protected WithEvents lblUpdateReplaceRegItemsId As Global.System.Web.UI.WebControls.Label
-
+        
         '''<summary>
         '''cboUpdateReplaceRegItemsId control.
         '''</summary>
@@ -1021,7 +1021,7 @@ Namespace Tables
         '''To modify move field declaration from designer file to code-behind file.
         '''</remarks>
         Protected WithEvents cboUpdateReplaceRegItemsId As Global.System.Web.UI.WebControls.DropDownList
-
+        
         '''<summary>
         '''lblRegisteredItemsLimit control.
         '''</summary>
@@ -1030,7 +1030,7 @@ Namespace Tables
         '''To modify move field declaration from designer file to code-behind file.
         '''</remarks>
         Protected WithEvents lblRegisteredItemsLimit As Global.System.Web.UI.WebControls.Label
-
+        
         '''<summary>
         '''txtRegisteredItemsLimit control.
         '''</summary>
@@ -1039,7 +1039,7 @@ Namespace Tables
         '''To modify move field declaration from designer file to code-behind file.
         '''</remarks>
         Protected WithEvents txtRegisteredItemsLimit As Global.System.Web.UI.WebControls.TextBox
-
+        
         '''<summary>
         '''moClaimLimitPerRegisteredItemlabel control.
         '''</summary>
@@ -1048,7 +1048,7 @@ Namespace Tables
         '''To modify move field declaration from designer file to code-behind file.
         '''</remarks>
         Protected WithEvents moClaimLimitPerRegisteredItemlabel As Global.System.Web.UI.WebControls.Label
-
+        
         '''<summary>
         '''moClaimLimitPerRegisteredItemText control.
         '''</summary>
@@ -1057,7 +1057,7 @@ Namespace Tables
         '''To modify move field declaration from designer file to code-behind file.
         '''</remarks>
         Protected WithEvents moClaimLimitPerRegisteredItemText As Global.System.Web.UI.WebControls.TextBox
-
+        
         '''<summary>
         '''moCancellationWithinTermLabel control.
         '''</summary>
@@ -1066,7 +1066,7 @@ Namespace Tables
         '''To modify move field declaration from designer file to code-behind file.
         '''</remarks>
         Protected WithEvents moCancellationWithinTermLabel As Global.System.Web.UI.WebControls.Label
-
+        
         '''<summary>
         '''cboCancellationWithinTerm control.
         '''</summary>
@@ -1075,7 +1075,7 @@ Namespace Tables
         '''To modify move field declaration from designer file to code-behind file.
         '''</remarks>
         Protected WithEvents cboCancellationWithinTerm As Global.System.Web.UI.WebControls.DropDownList
-
+        
         '''<summary>
         '''moExpNotificationDaysLabel control.
         '''</summary>
@@ -1084,7 +1084,7 @@ Namespace Tables
         '''To modify move field declaration from designer file to code-behind file.
         '''</remarks>
         Protected WithEvents moExpNotificationDaysLabel As Global.System.Web.UI.WebControls.Label
-
+        
         '''<summary>
         '''moExpNotificationDaysText control.
         '''</summary>
@@ -1093,7 +1093,7 @@ Namespace Tables
         '''To modify move field declaration from designer file to code-behind file.
         '''</remarks>
         Protected WithEvents moExpNotificationDaysText As Global.System.Web.UI.WebControls.TextBox
-
+        
         '''<summary>
         '''labelFulfillmentReimThresholdValue control.
         '''</summary>
@@ -1102,7 +1102,7 @@ Namespace Tables
         '''To modify move field declaration from designer file to code-behind file.
         '''</remarks>
         Protected WithEvents labelFulfillmentReimThresholdValue As Global.System.Web.UI.WebControls.Label
-
+        
         '''<summary>
         '''TextBoxFulfillmentReimThresholdValue control.
         '''</summary>
@@ -1111,7 +1111,7 @@ Namespace Tables
         '''To modify move field declaration from designer file to code-behind file.
         '''</remarks>
         Protected WithEvents TextBoxFulfillmentReimThresholdValue As Global.System.Web.UI.WebControls.TextBox
-
+        
         '''<summary>
         '''LabelDepSchCashReimbursement control.
         '''</summary>
@@ -1120,7 +1120,7 @@ Namespace Tables
         '''To modify move field declaration from designer file to code-behind file.
         '''</remarks>
         Protected WithEvents LabelDepSchCashReimbursement As Global.System.Web.UI.WebControls.Label
-
+        
         '''<summary>
         '''ddlDepSchCashReimbursement control.
         '''</summary>
@@ -1129,7 +1129,7 @@ Namespace Tables
         '''To modify move field declaration from designer file to code-behind file.
         '''</remarks>
         Protected WithEvents ddlDepSchCashReimbursement As Global.System.Web.UI.WebControls.DropDownList
-
+        
         '''<summary>
         '''moBenefitsEligibleFlagLabel control.
         '''</summary>
@@ -1138,7 +1138,7 @@ Namespace Tables
         '''To modify move field declaration from designer file to code-behind file.
         '''</remarks>
         Protected WithEvents moBenefitsEligibleFlagLabel As Global.System.Web.UI.WebControls.Label
-
+        
         '''<summary>
         '''moBenefitsEligibleFlagDropDownList control.
         '''</summary>
@@ -1147,7 +1147,7 @@ Namespace Tables
         '''To modify move field declaration from designer file to code-behind file.
         '''</remarks>
         Protected WithEvents moBenefitsEligibleFlagDropDownList As Global.System.Web.UI.WebControls.DropDownList
-
+        
         '''<summary>
         '''moBenefitsEligibleActionLabel control.
         '''</summary>
@@ -1156,7 +1156,7 @@ Namespace Tables
         '''To modify move field declaration from designer file to code-behind file.
         '''</remarks>
         Protected WithEvents moBenefitsEligibleActionLabel As Global.System.Web.UI.WebControls.Label
-
+        
         '''<summary>
         '''moBenefitsEligibleActionDropDownList control.
         '''</summary>
@@ -1165,7 +1165,7 @@ Namespace Tables
         '''To modify move field declaration from designer file to code-behind file.
         '''</remarks>
         Protected WithEvents moBenefitsEligibleActionDropDownList As Global.System.Web.UI.WebControls.DropDownList
-
+        
         '''<summary>
         '''lblClaimProfile control.
         '''</summary>
@@ -1174,7 +1174,7 @@ Namespace Tables
         '''To modify move field declaration from designer file to code-behind file.
         '''</remarks>
         Protected WithEvents lblClaimProfile As Global.System.Web.UI.WebControls.Label
-
+        
         '''<summary>
         '''ddlClaimProfile control.
         '''</summary>
@@ -1183,7 +1183,7 @@ Namespace Tables
         '''To modify move field declaration from designer file to code-behind file.
         '''</remarks>
         Protected WithEvents ddlClaimProfile As Global.System.Web.UI.WebControls.DropDownList
-
+        
         '''<summary>
         '''lblCalcCovgEndDateBasedOn control.
         '''</summary>
@@ -1192,7 +1192,7 @@ Namespace Tables
         '''To modify move field declaration from designer file to code-behind file.
         '''</remarks>
         Protected WithEvents lblCalcCovgEndDateBasedOn As Global.System.Web.UI.WebControls.Label
-
+        
         '''<summary>
         '''ddlCalcCovgEndDateBasedOn control.
         '''</summary>
@@ -1201,7 +1201,7 @@ Namespace Tables
         '''To modify move field declaration from designer file to code-behind file.
         '''</remarks>
         Protected WithEvents ddlCalcCovgEndDateBasedOn As Global.System.Web.UI.WebControls.DropDownList
-
+        
         '''<summary>
         '''moPerIncidentLiabilityLimitCapLabel control.
         '''</summary>
@@ -1210,7 +1210,7 @@ Namespace Tables
         '''To modify move field declaration from designer file to code-behind file.
         '''</remarks>
         Protected WithEvents moPerIncidentLiabilityLimitCapLabel As Global.System.Web.UI.WebControls.Label
-
+        
         '''<summary>
         '''moPerIncidentLiabilityLimitCapText control.
         '''</summary>
@@ -1219,7 +1219,7 @@ Namespace Tables
         '''To modify move field declaration from designer file to code-behind file.
         '''</remarks>
         Protected WithEvents moPerIncidentLiabilityLimitCapText As Global.System.Web.UI.WebControls.TextBox
-
+        
         '''<summary>
         '''hdnSelectedTab control.
         '''</summary>
@@ -1228,7 +1228,7 @@ Namespace Tables
         '''To modify move field declaration from designer file to code-behind file.
         '''</remarks>
         Protected WithEvents hdnSelectedTab As Global.System.Web.UI.WebControls.HiddenField
-
+        
         '''<summary>
         '''hdnDisabledTab control.
         '''</summary>
@@ -1237,7 +1237,7 @@ Namespace Tables
         '''To modify move field declaration from designer file to code-behind file.
         '''</remarks>
         Protected WithEvents hdnDisabledTab As Global.System.Web.UI.WebControls.HiddenField
-
+        
         '''<summary>
         '''topTabs control.
         '''</summary>
@@ -1246,7 +1246,7 @@ Namespace Tables
         '''To modify move field declaration from designer file to code-behind file.
         '''</remarks>
         Protected WithEvents topTabs As Global.System.Web.UI.HtmlControls.HtmlAnchor
-
+        
         '''<summary>
         '''Label4 control.
         '''</summary>
@@ -1255,7 +1255,7 @@ Namespace Tables
         '''To modify move field declaration from designer file to code-behind file.
         '''</remarks>
         Protected WithEvents Label4 As Global.System.Web.UI.WebControls.Label
-
+        
         '''<summary>
         '''Label6 control.
         '''</summary>
@@ -1264,7 +1264,7 @@ Namespace Tables
         '''To modify move field declaration from designer file to code-behind file.
         '''</remarks>
         Protected WithEvents Label6 As Global.System.Web.UI.WebControls.Label
-
+        
         '''<summary>
         '''Label8 control.
         '''</summary>
@@ -1273,7 +1273,7 @@ Namespace Tables
         '''To modify move field declaration from designer file to code-behind file.
         '''</remarks>
         Protected WithEvents Label8 As Global.System.Web.UI.WebControls.Label
-
+        
         '''<summary>
         '''Label1 control.
         '''</summary>
@@ -1282,7 +1282,7 @@ Namespace Tables
         '''To modify move field declaration from designer file to code-behind file.
         '''</remarks>
         Protected WithEvents Label1 As Global.System.Web.UI.WebControls.Label
-
+        
         '''<summary>
         '''Label2 control.
         '''</summary>
@@ -1291,7 +1291,7 @@ Namespace Tables
         '''To modify move field declaration from designer file to code-behind file.
         '''</remarks>
         Protected WithEvents Label2 As Global.System.Web.UI.WebControls.Label
-
+        
         '''<summary>
         '''Label3 control.
         '''</summary>
@@ -1300,7 +1300,7 @@ Namespace Tables
         '''To modify move field declaration from designer file to code-behind file.
         '''</remarks>
         Protected WithEvents Label3 As Global.System.Web.UI.WebControls.Label
-
+        
         '''<summary>
         '''Label5 control.
         '''</summary>
@@ -1309,7 +1309,7 @@ Namespace Tables
         '''To modify move field declaration from designer file to code-behind file.
         '''</remarks>
         Protected WithEvents Label5 As Global.System.Web.UI.WebControls.Label
-
+        
         '''<summary>
         '''Label7 control.
         '''</summary>
@@ -1318,7 +1318,7 @@ Namespace Tables
         '''To modify move field declaration from designer file to code-behind file.
         '''</remarks>
         Protected WithEvents Label7 As Global.System.Web.UI.WebControls.Label
-
+        
         '''<summary>
         '''Label9 control.
         '''</summary>
@@ -1327,7 +1327,7 @@ Namespace Tables
         '''To modify move field declaration from designer file to code-behind file.
         '''</remarks>
         Protected WithEvents Label9 As Global.System.Web.UI.WebControls.Label
-
+        
         '''<summary>
         '''moRegionDetail1 control.
         '''</summary>
@@ -1336,7 +1336,7 @@ Namespace Tables
         '''To modify move field declaration from designer file to code-behind file.
         '''</remarks>
         Protected WithEvents moRegionDetail1 As Global.System.Web.UI.HtmlControls.HtmlGenericControl
-
+        
         '''<summary>
         '''UserControlAvailableSelectedRegions control.
         '''</summary>
@@ -1345,7 +1345,7 @@ Namespace Tables
         '''To modify move field declaration from designer file to code-behind file.
         '''</remarks>
         Protected WithEvents UserControlAvailableSelectedRegions As Global.Assurant.ElitaPlus.ElitaPlusWebApp.Generic.UserControlAvailableSelected_New
-
+        
         '''<summary>
         '''moExtProdCode_Policy_WRITE1 control.
         '''</summary>
@@ -1354,7 +1354,7 @@ Namespace Tables
         '''To modify move field declaration from designer file to code-behind file.
         '''</remarks>
         Protected WithEvents moExtProdCode_Policy_WRITE1 As Global.System.Web.UI.HtmlControls.HtmlGenericControl
-
+        
         '''<summary>
         '''moProductPolicyDatagrid control.
         '''</summary>
@@ -1363,7 +1363,7 @@ Namespace Tables
         '''To modify move field declaration from designer file to code-behind file.
         '''</remarks>
         Protected WithEvents moProductPolicyDatagrid As Global.System.Web.UI.WebControls.GridView
-
+        
         '''<summary>
         '''HiddenDeletePromptResponse control.
         '''</summary>
@@ -1372,7 +1372,7 @@ Namespace Tables
         '''To modify move field declaration from designer file to code-behind file.
         '''</remarks>
         Protected WithEvents HiddenDeletePromptResponse As Global.System.Web.UI.HtmlControls.HtmlInputHidden
-
+        
         '''<summary>
         '''btnNewProductPolicy_WRITE control.
         '''</summary>
@@ -1381,7 +1381,7 @@ Namespace Tables
         '''To modify move field declaration from designer file to code-behind file.
         '''</remarks>
         Protected WithEvents btnNewProductPolicy_WRITE As Global.System.Web.UI.WebControls.Button
-
+        
         '''<summary>
         '''moAnalysisCode1Label control.
         '''</summary>
@@ -1390,7 +1390,7 @@ Namespace Tables
         '''To modify move field declaration from designer file to code-behind file.
         '''</remarks>
         Protected WithEvents moAnalysisCode1Label As Global.System.Web.UI.WebControls.Label
-
+        
         '''<summary>
         '''moAnalysisCode1Text control.
         '''</summary>
@@ -1399,7 +1399,7 @@ Namespace Tables
         '''To modify move field declaration from designer file to code-behind file.
         '''</remarks>
         Protected WithEvents moAnalysisCode1Text As Global.System.Web.UI.WebControls.TextBox
-
+        
         '''<summary>
         '''moAnalysisCode6Label control.
         '''</summary>
@@ -1408,7 +1408,7 @@ Namespace Tables
         '''To modify move field declaration from designer file to code-behind file.
         '''</remarks>
         Protected WithEvents moAnalysisCode6Label As Global.System.Web.UI.WebControls.Label
-
+        
         '''<summary>
         '''moAnalysisCode6Text control.
         '''</summary>
@@ -1417,7 +1417,7 @@ Namespace Tables
         '''To modify move field declaration from designer file to code-behind file.
         '''</remarks>
         Protected WithEvents moAnalysisCode6Text As Global.System.Web.UI.WebControls.TextBox
-
+        
         '''<summary>
         '''moAnalysisCode2Label control.
         '''</summary>
@@ -1426,7 +1426,7 @@ Namespace Tables
         '''To modify move field declaration from designer file to code-behind file.
         '''</remarks>
         Protected WithEvents moAnalysisCode2Label As Global.System.Web.UI.WebControls.Label
-
+        
         '''<summary>
         '''moAnalysisCode2Text control.
         '''</summary>
@@ -1435,7 +1435,7 @@ Namespace Tables
         '''To modify move field declaration from designer file to code-behind file.
         '''</remarks>
         Protected WithEvents moAnalysisCode2Text As Global.System.Web.UI.WebControls.TextBox
-
+        
         '''<summary>
         '''moAnalysisCode7Label control.
         '''</summary>
@@ -1444,7 +1444,7 @@ Namespace Tables
         '''To modify move field declaration from designer file to code-behind file.
         '''</remarks>
         Protected WithEvents moAnalysisCode7Label As Global.System.Web.UI.WebControls.Label
-
+        
         '''<summary>
         '''moAnalysisCode7Text control.
         '''</summary>
@@ -1453,7 +1453,7 @@ Namespace Tables
         '''To modify move field declaration from designer file to code-behind file.
         '''</remarks>
         Protected WithEvents moAnalysisCode7Text As Global.System.Web.UI.WebControls.TextBox
-
+        
         '''<summary>
         '''moAnalysisCode3Label control.
         '''</summary>
@@ -1462,7 +1462,7 @@ Namespace Tables
         '''To modify move field declaration from designer file to code-behind file.
         '''</remarks>
         Protected WithEvents moAnalysisCode3Label As Global.System.Web.UI.WebControls.Label
-
+        
         '''<summary>
         '''moAnalysisCode3Text control.
         '''</summary>
@@ -1471,7 +1471,7 @@ Namespace Tables
         '''To modify move field declaration from designer file to code-behind file.
         '''</remarks>
         Protected WithEvents moAnalysisCode3Text As Global.System.Web.UI.WebControls.TextBox
-
+        
         '''<summary>
         '''moAnalysisCode8Label control.
         '''</summary>
@@ -1480,7 +1480,7 @@ Namespace Tables
         '''To modify move field declaration from designer file to code-behind file.
         '''</remarks>
         Protected WithEvents moAnalysisCode8Label As Global.System.Web.UI.WebControls.Label
-
+        
         '''<summary>
         '''moAnalysisCode8Text control.
         '''</summary>
@@ -1489,7 +1489,7 @@ Namespace Tables
         '''To modify move field declaration from designer file to code-behind file.
         '''</remarks>
         Protected WithEvents moAnalysisCode8Text As Global.System.Web.UI.WebControls.TextBox
-
+        
         '''<summary>
         '''moAnalysisCode4Label control.
         '''</summary>
@@ -1498,7 +1498,7 @@ Namespace Tables
         '''To modify move field declaration from designer file to code-behind file.
         '''</remarks>
         Protected WithEvents moAnalysisCode4Label As Global.System.Web.UI.WebControls.Label
-
+        
         '''<summary>
         '''moAnalysisCode4Text control.
         '''</summary>
@@ -1507,7 +1507,7 @@ Namespace Tables
         '''To modify move field declaration from designer file to code-behind file.
         '''</remarks>
         Protected WithEvents moAnalysisCode4Text As Global.System.Web.UI.WebControls.TextBox
-
+        
         '''<summary>
         '''moAnalysisCode9Label control.
         '''</summary>
@@ -1516,7 +1516,7 @@ Namespace Tables
         '''To modify move field declaration from designer file to code-behind file.
         '''</remarks>
         Protected WithEvents moAnalysisCode9Label As Global.System.Web.UI.WebControls.Label
-
+        
         '''<summary>
         '''moAnalysisCode9Text control.
         '''</summary>
@@ -1525,7 +1525,7 @@ Namespace Tables
         '''To modify move field declaration from designer file to code-behind file.
         '''</remarks>
         Protected WithEvents moAnalysisCode9Text As Global.System.Web.UI.WebControls.TextBox
-
+        
         '''<summary>
         '''moAnalysisCode5Label control.
         '''</summary>
@@ -1534,7 +1534,7 @@ Namespace Tables
         '''To modify move field declaration from designer file to code-behind file.
         '''</remarks>
         Protected WithEvents moAnalysisCode5Label As Global.System.Web.UI.WebControls.Label
-
+        
         '''<summary>
         '''moAnalysisCode5Text control.
         '''</summary>
@@ -1543,7 +1543,7 @@ Namespace Tables
         '''To modify move field declaration from designer file to code-behind file.
         '''</remarks>
         Protected WithEvents moAnalysisCode5Text As Global.System.Web.UI.WebControls.TextBox
-
+        
         '''<summary>
         '''moAnalysisCode10Label control.
         '''</summary>
@@ -1552,7 +1552,7 @@ Namespace Tables
         '''To modify move field declaration from designer file to code-behind file.
         '''</remarks>
         Protected WithEvents moAnalysisCode10Label As Global.System.Web.UI.WebControls.Label
-
+        
         '''<summary>
         '''moAnalysisCode10Text control.
         '''</summary>
@@ -1561,7 +1561,7 @@ Namespace Tables
         '''To modify move field declaration from designer file to code-behind file.
         '''</remarks>
         Protected WithEvents moAnalysisCode10Text As Global.System.Web.UI.WebControls.TextBox
-
+        
         '''<summary>
         '''AttributeValues control.
         '''</summary>
@@ -1570,7 +1570,7 @@ Namespace Tables
         '''To modify move field declaration from designer file to code-behind file.
         '''</remarks>
         Protected WithEvents AttributeValues As Global.Assurant.ElitaPlus.ElitaPlusWebApp.UserControlAttrtibutes
-
+        
         '''<summary>
         '''hdnOperationType control.
         '''</summary>
@@ -1579,7 +1579,7 @@ Namespace Tables
         '''To modify move field declaration from designer file to code-behind file.
         '''</remarks>
         Protected WithEvents hdnOperationType As Global.System.Web.UI.HtmlControls.HtmlInputHidden
-
+        
         '''<summary>
         '''mo_ExtendedAttributes control.
         '''</summary>
@@ -1588,7 +1588,7 @@ Namespace Tables
         '''To modify move field declaration from designer file to code-behind file.
         '''</remarks>
         Protected WithEvents mo_ExtendedAttributes As Global.System.Web.UI.HtmlControls.HtmlGenericControl
-
+        
         '''<summary>
         '''mo_ParentsGrid control.
         '''</summary>
@@ -1597,7 +1597,7 @@ Namespace Tables
         '''To modify move field declaration from designer file to code-behind file.
         '''</remarks>
         Protected WithEvents mo_ParentsGrid As Global.System.Web.UI.WebControls.GridView
-
+        
         '''<summary>
         '''ErrorControllerProductEquipment control.
         '''</summary>
@@ -1606,7 +1606,7 @@ Namespace Tables
         '''To modify move field declaration from designer file to code-behind file.
         '''</remarks>
         Protected WithEvents ErrorControllerProductEquipment As Global.Assurant.ElitaPlus.ElitaPlusWebApp.ErrorController
-
+        
         '''<summary>
         '''ProductEquipmentGridView control.
         '''</summary>
@@ -1615,7 +1615,7 @@ Namespace Tables
         '''To modify move field declaration from designer file to code-behind file.
         '''</remarks>
         Protected WithEvents ProductEquipmentGridView As Global.System.Web.UI.WebControls.GridView
-
+        
         '''<summary>
         '''BtnSaveProdEquip_WRITE control.
         '''</summary>
@@ -1624,7 +1624,7 @@ Namespace Tables
         '''To modify move field declaration from designer file to code-behind file.
         '''</remarks>
         Protected WithEvents BtnSaveProdEquip_WRITE As Global.System.Web.UI.WebControls.Button
-
+        
         '''<summary>
         '''BtnCancelProdEquip control.
         '''</summary>
@@ -1633,7 +1633,7 @@ Namespace Tables
         '''To modify move field declaration from designer file to code-behind file.
         '''</remarks>
         Protected WithEvents BtnCancelProdEquip As Global.System.Web.UI.WebControls.Button
-
+        
         '''<summary>
         '''Div1 control.
         '''</summary>
@@ -1642,7 +1642,7 @@ Namespace Tables
         '''To modify move field declaration from designer file to code-behind file.
         '''</remarks>
         Protected WithEvents Div1 As Global.System.Web.UI.HtmlControls.HtmlGenericControl
-
+        
         '''<summary>
         '''ProductRewardsGridView control.
         '''</summary>
@@ -1651,7 +1651,7 @@ Namespace Tables
         '''To modify move field declaration from designer file to code-behind file.
         '''</remarks>
         Protected WithEvents ProductRewardsGridView As Global.System.Web.UI.WebControls.GridView
-
+        
         '''<summary>
         '''Hidden1 control.
         '''</summary>
@@ -1660,7 +1660,7 @@ Namespace Tables
         '''To modify move field declaration from designer file to code-behind file.
         '''</remarks>
         Protected WithEvents Hidden1 As Global.System.Web.UI.HtmlControls.HtmlInputHidden
-
+        
         '''<summary>
         '''btnNewProductRewards_WRITE control.
         '''</summary>
@@ -1669,7 +1669,7 @@ Namespace Tables
         '''To modify move field declaration from designer file to code-behind file.
         '''</remarks>
         Protected WithEvents btnNewProductRewards_WRITE As Global.System.Web.UI.WebControls.Button
-
+        
         '''<summary>
         '''Label13 control.
         '''</summary>
@@ -1678,7 +1678,7 @@ Namespace Tables
         '''To modify move field declaration from designer file to code-behind file.
         '''</remarks>
         Protected WithEvents Label13 As Global.System.Web.UI.WebControls.Label
-
+        
         '''<summary>
         '''ddlDeviceTypeAvailable control.
         '''</summary>
@@ -1687,7 +1687,7 @@ Namespace Tables
         '''To modify move field declaration from designer file to code-behind file.
         '''</remarks>
         Protected WithEvents ddlDeviceTypeAvailable As Global.System.Web.UI.WebControls.DropDownList
-
+        
         '''<summary>
         '''btnAddDeviceType control.
         '''</summary>
@@ -1696,7 +1696,7 @@ Namespace Tables
         '''To modify move field declaration from designer file to code-behind file.
         '''</remarks>
         Protected WithEvents btnAddDeviceType As Global.System.Web.UI.WebControls.Button
-
+        
         '''<summary>
         '''GridViewDeviceTypesDetails control.
         '''</summary>
@@ -1705,7 +1705,7 @@ Namespace Tables
         '''To modify move field declaration from designer file to code-behind file.
         '''</remarks>
         Protected WithEvents GridViewDeviceTypesDetails As Global.System.Web.UI.WebControls.GridView
-
+        
         '''<summary>
         '''Div2 control.
         '''</summary>
@@ -1714,7 +1714,7 @@ Namespace Tables
         '''To modify move field declaration from designer file to code-behind file.
         '''</remarks>
         Protected WithEvents Div2 As Global.System.Web.UI.HtmlControls.HtmlGenericControl
-
+        
         '''<summary>
         '''ProductBenefitsGridView control.
         '''</summary>
@@ -1723,7 +1723,7 @@ Namespace Tables
         '''To modify move field declaration from designer file to code-behind file.
         '''</remarks>
         Protected WithEvents ProductBenefitsGridView As Global.System.Web.UI.WebControls.GridView
-
+        
         '''<summary>
         '''Hidden2 control.
         '''</summary>
@@ -1732,7 +1732,7 @@ Namespace Tables
         '''To modify move field declaration from designer file to code-behind file.
         '''</remarks>
         Protected WithEvents Hidden2 As Global.System.Web.UI.HtmlControls.HtmlInputHidden
-
+        
         '''<summary>
         '''btnNewProductBenefits_WRITE control.
         '''</summary>
@@ -1741,7 +1741,7 @@ Namespace Tables
         '''To modify move field declaration from designer file to code-behind file.
         '''</remarks>
         Protected WithEvents btnNewProductBenefits_WRITE As Global.System.Web.UI.WebControls.Button
-
+        
         '''<summary>
         '''btnApply_WRITE control.
         '''</summary>
@@ -1750,7 +1750,7 @@ Namespace Tables
         '''To modify move field declaration from designer file to code-behind file.
         '''</remarks>
         Protected WithEvents btnApply_WRITE As Global.System.Web.UI.WebControls.Button
-
+        
         '''<summary>
         '''btnUndo_WRITE control.
         '''</summary>
@@ -1759,7 +1759,7 @@ Namespace Tables
         '''To modify move field declaration from designer file to code-behind file.
         '''</remarks>
         Protected WithEvents btnUndo_WRITE As Global.System.Web.UI.WebControls.Button
-
+        
         '''<summary>
         '''btnBack control.
         '''</summary>
@@ -1768,7 +1768,7 @@ Namespace Tables
         '''To modify move field declaration from designer file to code-behind file.
         '''</remarks>
         Protected WithEvents btnBack As Global.System.Web.UI.WebControls.Button
-
+        
         '''<summary>
         '''btnNew_WRITE control.
         '''</summary>
@@ -1777,7 +1777,7 @@ Namespace Tables
         '''To modify move field declaration from designer file to code-behind file.
         '''</remarks>
         Protected WithEvents btnNew_WRITE As Global.System.Web.UI.WebControls.Button
-
+        
         '''<summary>
         '''btnCopy_WRITE control.
         '''</summary>
@@ -1786,7 +1786,7 @@ Namespace Tables
         '''To modify move field declaration from designer file to code-behind file.
         '''</remarks>
         Protected WithEvents btnCopy_WRITE As Global.System.Web.UI.WebControls.Button
-
+        
         '''<summary>
         '''btnDelete_WRITE control.
         '''</summary>
@@ -1795,7 +1795,7 @@ Namespace Tables
         '''To modify move field declaration from designer file to code-behind file.
         '''</remarks>
         Protected WithEvents btnDelete_WRITE As Global.System.Web.UI.WebControls.Button
-
+        
         '''<summary>
         '''btnProdRepairPrice_WRITE control.
         '''</summary>

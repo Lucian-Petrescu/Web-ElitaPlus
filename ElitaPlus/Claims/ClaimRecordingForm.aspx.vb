@@ -399,7 +399,6 @@ Public Class ClaimRecordingForm
     Private Sub PopulateExclSecFields()
         Try
             Dim certId as Guid 
-            Dim dealerId as guid
             If (Not State.CertificateId.Equals(Guid.Empty)) Then
                 certId = State.CertificateId                
             ElseIf (Not State.CaseId.Equals(Guid.Empty)) Then
@@ -412,7 +411,7 @@ Public Class ClaimRecordingForm
                 Dim exclSecFieldsDt As DataTable                
                 Dim objList As List(Of CaseBase.ExclSecFields)
                 If State.ExclSecFieldsDt Is Nothing then                                                                        
-                    objList = CaseBase.LoadExclSecFieldsConfig(Guid.Empty,dealerId)
+                    objList = CaseBase.LoadExclSecFieldsConfig(Guid.Empty,oCertificate.DealerId)
                     If objList.count > 0 then
                         exclSecFieldsDt= ConvertToDataTable(of CaseBase.ExclSecFields) (objList)
                         If Not ExclSecFieldsdt Is nothing and ExclSecFieldsDt.Rows.Count > 0 then
@@ -718,8 +717,14 @@ Public Class ClaimRecordingForm
             Dim oCase As CaseBase = New CaseBase(State.CaseId)
             SetSelectedItem(moPurposecode, oCase.CasePurposeCode)
             moPurposecode.Enabled = False
-        End If        
-        UcExistingCallerInfo.PopulateGridViewCaller(State.CertificateId, State.CaseId, State.IsCallerAuthenticated)
+        End If
+
+        If Not State.CallerAuthenticationNeeded Then
+            UcExistingCallerInfo.PopulateGridViewCaller(State.CertificateId, State.CaseId)
+        Else
+            UcExistingCallerInfo.PopulateGridViewCaller(State.CertificateId, State.CaseId, State.IsCallerAuthenticated)
+        End If
+
         Me.State.ExistingUserControlItemSelected = True
     End Sub
 
@@ -755,7 +760,6 @@ Public Class ClaimRecordingForm
             caseRequest.CaseNumber = oCase.CaseNumber
 
             Dim callerinfo As New PhoneCaller()
-            
             If Me.State.ExistingUserControlItemSelected = True
                 UcExistingCallerInfo.GetCallerInformation()
 
@@ -902,11 +906,12 @@ Public Class ClaimRecordingForm
                     callerinfo.EmailAddress = UcPreviousCallerInfo.Email
                     callerinfo.CultureCode = Thread.CurrentThread.CurrentCulture.ToString().ToUpper()
                     'For Optus , if Agent is CSR Enable the Authetication Sceen always.
-                    If Not State.ExclSecFieldsDt is Nothing AndAlso State.ExclSecFieldsDt.Rows.Count > 0 then
-                        callerinfo.IsAuthenticated = False
-                        'Else
-                        '   callerinfo.IsAuthenticated = State.IsCallerAuthenticated
-                    End If
+                    'If Not State.ExclSecFieldsDt is Nothing AndAlso State.ExclSecFieldsDt.Rows.Count > 0 then
+                    '    callerinfo.IsAuthenticated = False
+                    '    'Else
+                    '    '   callerinfo.IsAuthenticated = State.IsCallerAuthenticated
+                    'End If
+                    callerinfo.IsAuthenticated = State.IsCallerAuthenticated
                     callerinfo.PhoneNumber = UcPreviousCallerInfo.WorkPhoneNumber
                     
                 End If
@@ -1179,99 +1184,15 @@ Public Class ClaimRecordingForm
                 End If
 
                 questionUserControl.GetQuestionAnswer()
-
-                'For Each row In GridQuestions.Rows
-                '    answerType = CType(row.FindControl("lblAnswerType"), Label).Text
-                '    code = CType(row.FindControl("lblCode"), Label).Text
-
-                '    If questionSubmitobj.GetType() Is GetType(QuestionResponse) Then
-                '        questionObject = DirectCast(questionSubmitobj, QuestionResponse).Questions.FirstOrDefault(Function(x) x.Code = code)
-                '    ElseIf questionSubmitobj.GetType() Is GetType(CallerAuthenticationResponse) Then
-                '        questionObject = DirectCast(questionSubmitobj, CallerAuthenticationResponse).Questions.FirstOrDefault(Function(x) x.Code = code)
-                '    End If
-
-                '    Select Case answerType.Trim().ToUpper()
-                '        Case "CHOICE"
-                '            Dim answer As String = CType(row.FindControl("rblChoice"), RadioButtonList).SelectedValue
-                '            If questionObject.Mandatory AndAlso String.IsNullOrEmpty(answer) Then
-                '                errAnswerMandatory.AppendLine(questionObject.Text & " </br>")
-                '            Else
-                '                Dim choiceAnswer As ChoiceAnswer = questionObject.Answer
-                '                choiceAnswer.Answer = choiceAnswer.Answers.FirstOrDefault(Function(y) y.Code = answer)
-                '            End If
-                '        Case "LISTOFVALUES"
-                '            Dim answer As String = CType(row.FindControl("ddlList"), DropDownList).SelectedValue
-                '            If questionObject.Mandatory AndAlso String.IsNullOrEmpty(answer) Then
-                '                errAnswerMandatory.AppendLine(questionObject.Text & " </br>")
-                '            Else
-                '                Dim listofvalues As ListOfValuesAnswer = questionObject.Answer
-                '                listofvalues.Answer = listofvalues.Answers.FirstOrDefault(Function(y) y.Code = answer)
-                '            End If
-                '        Case "NUMBER", "TEXT"
-                '            Dim answer As String = CType(row.FindControl("txtNo"), TextBox).Text
-                '            If questionObject.Mandatory AndAlso String.IsNullOrEmpty(answer) Then
-                '                errAnswerMandatory.AppendLine(questionObject.Text & " </br>")
-                '            ElseIf (Not String.IsNullOrEmpty(answer)) Then
-                '                If answerType.Trim().ToUpper().Equals("NUMBER") Then
-                '                    Dim numbervalue As NumberAnswer = New NumberAnswer()
-                '                    Try
-                '                        numbervalue.Answer = Convert.ToDecimal(answer)
-                '                    Catch ex As Exception
-                '                        errorQuestionCodes.AppendLine(questionObject.Text)
-                '                    End Try
-                '                    questionObject.Answer = numbervalue
-                '                Else
-                '                    Dim txtValue As TextAnswer = New TextAnswer()
-                '                    txtValue.Answer = answer
-                '                    questionObject.Answer = txtValue
-                '                End If
-                '            End If
-                '        Case "BOOLEAN", "LEGALCONSENT"
-                '            Dim answer As Boolean = CType(row.FindControl("chkCheck"), CheckBox).Checked
-
-                '            If answerType.Trim().ToUpper().Equals("BOOLEAN") Then
-                '                Dim booleanValue As BooleanAnswer = New BooleanAnswer()
-                '                booleanValue.Answer = answer
-                '                questionObject.Answer = booleanValue
-                '            Else
-                '                ' In case of Legal Consent then Answer should be True to move ahead
-                '                If questionObject.Mandatory AndAlso Not (answer) Then
-                '                    errAnswerMandatory.AppendLine(questionObject.Text & " </br>")
-                '                Else
-                '                    Dim legalConsentValue As LegalConsentAnswer = New LegalConsentAnswer()
-                '                    legalConsentValue.Answer = answer
-                '                    questionObject.Answer = legalConsentValue
-                '                End If
-                '            End If
-                '        Case "DATE"
-                '            Dim answer As String = CType(row.FindControl("txtDate"), TextBox).Text
-                '            If questionObject.Mandatory AndAlso String.IsNullOrEmpty(answer) Then
-                '                errAnswerMandatory.AppendLine(questionObject.Text & " </br>")
-                '            ElseIf (Not String.IsNullOrEmpty(answer)) Then
-                '                Dim dateAnswer As DateAnswer = New DateAnswer()
-                '                Try
-                '                    'Fix for Japan date control-------------------------------
-                '                    Dim formatProvider = LocalizationMgr.CurrentFormatProvider
-                '                    If formatProvider.Name.Equals("ja-JP") Then
-                '                        Dim dateFragments() As String = answer.Split("-")
-                '                        dateAnswer.Answer = New DateTime(Integer.Parse(dateFragments(2)), Integer.Parse(dateFragments(1)), Integer.Parse(dateFragments(0))).Date
-                '                    Else
-                '                        dateAnswer.Answer = Convert.ToDateTime(answer, formatProvider)
-                '                    End If
-                '                    '--------------------------------------------------------
-                '                Catch ex As Exception
-                '                    errorQuestionCodes.AppendLine(questionObject.Text)
-                '                End Try
-                '                questionObject.Answer = dateAnswer
-                '            End If
-                '    End Select
-                'Next
-
+                
                 If (Not String.IsNullOrEmpty(questionUserControl.ErrAnswerMandatory.ToString())) Then
-                    MasterPage.MessageController.AddError(ElitaPlus.Common.ErrorCodes.GUI_ANSWER_IS_REQUIRED_ERR, True)
+                    MasterPage.MessageController.AddError(ElitaPlus.Common.ErrorCodes.GUI_ANSWER_IS_REQUIRED_ERR, true)
                     Exit Sub
                 ElseIf (Not String.IsNullOrEmpty(questionUserControl.ErrorQuestionCodes.ToString())) Then
                     MasterPage.MessageController.AddError(ElitaPlus.Common.ErrorCodes.GUI_ANSWER_TO_QUESTION_INVALID_ERR, True)
+                    Exit Sub
+                ElseIf (Not String.IsNullOrEmpty(questionUserControl.ErrTextAnswerLength.ToString())) Then
+                    MasterPage.MessageController.AddError(ElitaPlus.Common.ErrorCodes.GUI_ANSWER_LENGTH_TO_QUESTION_TOO_LONG_ERR, true)
                     Exit Sub
                 End If
 
@@ -1286,15 +1207,12 @@ Public Class ClaimRecordingForm
                         wsRequest = New CallerAuthenticationRequest()
                     End If
                 End If
-
-
-
+                
                 wsRequest.CaseNumber = questionSubmitObj.CaseNumber
                 wsRequest.CompanyCode = questionSubmitObj.CompanyCode
                 wsRequest.InteractionNumber = questionSubmitObj.InteractionNumber
                 wsRequest.Questions = questionSubmitObj.Questions
-
-
+                
                 Try
                     Dim wsResponse = WcfClientHelper.Execute(Of ClaimRecordingServiceClient, IClaimRecordingService, BaseClaimRecordingResponse)(
                         GetClient(),
@@ -1331,6 +1249,7 @@ Public Class ClaimRecordingForm
 
                 If questionSubmitObj.GetType() Is GetType(CallerAuthenticationResponse) Then
                     Dim oCertificate As Certificate = New Certificate(State.CertificateId)
+                    State.IsCallerAuthenticated = True
                     'If  State.IsCallerAuthenticated = False AndAlso Not State.ExclSecFieldsDt Is Nothing AndAlso (State.ExclSecFieldsDt.AsEnumerable().Where(Function(p) p.Field(Of String)("table_name") = "ELP_CERT" and p.Field(Of String)("column_name") = "CUSTOMER_NAME").Count > 0 ) then
                     If Not CaseBase.DisplaySecField(State.ExclSecFieldsDt, State.CallerAuthenticationNeeded, "ELP_CERT", "CUSTOMER_NAME", State.IsCallerAuthenticated) then            
                         moProtectionEvtDtl.CustomerName = String.Empty
@@ -1410,68 +1329,7 @@ Public Class ClaimRecordingForm
                 End If
 
                 questionUserControl.GetQuestionAnswer()
-
-                'For Each row In GridQuestions.Rows
-
-                '    Dim answerType As String = CType(row.FindControl("lblAnswerType"), Label).Text
-                '    Dim code As String = CType(row.FindControl("lblCode"), Label).Text
-                '    Dim questionObject
-
-                '    If questionSubmitobj.GetType() Is GetType(QuestionResponse) Then
-                '        questionObject = DirectCast(questionSubmitobj, QuestionResponse).Questions.FirstOrDefault(Function(x) x.Code = code)
-                '    ElseIf questionSubmitobj.GetType() Is GetType(CallerAuthenticationResponse) Then
-                '        questionObject = DirectCast(questionSubmitobj, CallerAuthenticationResponse).Questions.FirstOrDefault(Function(x) x.Code = code)
-                '    End If
-
-                '    Select Case answerType.Trim().ToUpper()
-                '        Case "CHOICE"
-                '            Dim answer As String = CType(row.FindControl("rblChoice"), RadioButtonList).SelectedValue
-                '            Dim choiceAnswer As ChoiceAnswer = questionObject.Answer
-                '            choiceAnswer.Answer = choiceAnswer.Answers.FirstOrDefault(Function(y) y.Code = answer)
-                '        Case "LISTOFVALUES"
-                '            Dim answer As String = CType(row.FindControl("ddlList"), DropDownList).SelectedValue
-                '            Dim listofvalues As ListOfValuesAnswer = questionObject.Answer
-                '            listofvalues.Answer = listofvalues.Answers.FirstOrDefault(Function(y) y.Code = answer)
-                '        Case "NUMBER", "TEXT"
-                '            Dim answer As String = CType(row.FindControl("txtNo"), TextBox).Text
-                '            If answerType.Trim().ToUpper().Equals("NUMBER") Then
-                '                Dim numbervalue As NumberAnswer = New NumberAnswer()
-                '                numbervalue.Answer = Convert.ToDecimal(answer)
-                '                questionObject.Answer = numbervalue
-                '            Else
-                '                Dim txtValue As TextAnswer = New TextAnswer()
-                '                txtValue.Answer = answer
-                '                questionObject.Answer = txtValue
-                '            End If
-                '        Case "BOOLEAN", "LEGALCONSENT"
-                '            Dim answer As Boolean = CType(row.FindControl("chkCheck"), CheckBox).Checked
-                '            If answerType.Trim().ToUpper().Equals("BOOLEAN") Then
-                '                questionObject.Answer = New BooleanAnswer() With {.Answer = answer}
-                '            Else
-                '                questionObject.Answer = New LegalConsentAnswer() With {.Answer = answer}
-                '            End If
-                '        Case "DATE"
-                '            Dim answer As String = CType(row.FindControl("txtDate"), TextBox).Text
-                '            If Not String.IsNullOrEmpty(answer) Then
-                '                Dim dateAnswer As DateAnswer = New DateAnswer()
-                '                'Fix for Japan date control-------------------------------
-                '                Dim formatProvider = LocalizationMgr.CurrentFormatProvider
-                '                If formatProvider.Name.Equals("ja-JP") Then
-                '                    Dim dateFragments() As String = answer.Split("-")
-                '                    dateAnswer.Answer = New DateTime(Integer.Parse(dateFragments(2)), Integer.Parse(dateFragments(1)), Integer.Parse(dateFragments(0))).Date
-                '                Else
-                '                    REM dateAnswer.Answer = Convert.ToDateTime(answer, formatProvider)
-                '                    Dim resultDate As DateTime
-                '                    If DateTime.TryParse(answer, formatProvider, DateTimeStyles.None, resultDate) Then
-                '                        dateAnswer.Answer = resultDate
-                '                        questionObject.Answer = dateAnswer
-                '                    End If
-                '                    '--------------------------------------------------------
-                '                End If
-                '            End If
-                '    End Select
-                'Next
-
+                
                 Dim wsRequest
                 If State.SubmitWsBaseClaimRecordingResponse IsNot Nothing Then
                     If State.SubmitWsBaseClaimRecordingResponse.GetType() Is GetType(QuestionResponse) Then
@@ -2631,44 +2489,61 @@ Public Class ClaimRecordingForm
             Exit Sub
         End Try
     End Sub
-    Private Sub GetEstimatedDeliveryDate(ByRef ucDeliverySlots as UserControlDeliverySlot, ByVal deliveryAddress As Address, ByVal courierCode As String, ByVal courierProductCode As String)
-        try
+    Private Sub GetEstimatedDeliveryDate(ByRef ucDeliverySlots as UserControlDeliverySlot, ByVal deliveryAddress As Address, ByVal deliveryOptions As DeliveryOptions)
+        Try
             'get the service center
-            Dim defaultServiceCenter As ServiceCenter
-            if State.ClaimBo is nothing AndAlso string.IsNullOrEmpty(State.SubmitWsBaseClaimRecordingResponse.ClaimNumber) = False then
-                Dim companyId as Guid = ElitaPlusIdentity.Current.ActiveUser.CompanyId
+            Dim defaultServiceCenter As ServiceCenter = Nothing
+            Dim serviceCenterCode As String = String.Empty
+            Dim countryCode As String = String.Empty
 
-                if ElitaPlusIdentity.Current.ActiveUser.Companies.Count > 1 then
-                    for each cid as Guid in ElitaPlusIdentity.Current.ActiveUser.Companies()
-                        dim comobj as new Company(cid)
-                        if comobj.Code = State.SubmitWsBaseClaimRecordingResponse.CompanyCode then
-                            companyId = cid
-                            exit for
+            ''''Begin  - new code to look up service center code and country code from fulfillment profile
+            If (deliveryOptions IsNot Nothing AndAlso Not String.IsNullOrWhiteSpace(deliveryOptions.ServiceCenterCode) AndAlso Not String.IsNullOrWhiteSpace(deliveryOptions.CountryCode)) Then
+                serviceCenterCode = deliveryOptions.ServiceCenterCode
+                countryCode = deliveryOptions.CountryCode
+                ''''''End
+            Else
+                ''''if service center and country are not available in Fulfillment Profile then fall back to old logic
+                If (serviceCenterCode Is Nothing) Then
+                    If State.ClaimBo Is Nothing AndAlso String.IsNullOrEmpty(State.SubmitWsBaseClaimRecordingResponse.ClaimNumber) = False Then
+                        Dim companyId As Guid = ElitaPlusIdentity.Current.ActiveUser.CompanyId
+
+                        If ElitaPlusIdentity.Current.ActiveUser.Companies.Count > 1 Then
+                            For Each cid As Guid In ElitaPlusIdentity.Current.ActiveUser.Companies()
+                                Dim comobj As New Company(cid)
+                                If comobj.Code = State.SubmitWsBaseClaimRecordingResponse.CompanyCode Then
+                                    companyId = cid
+                                    Exit For
+                                End If
+                            Next
                         End If
-                    Next
-                end If   
 
-                state.ClaimBo = ClaimFacade.Instance.GetClaim(Of ClaimBase)(State.SubmitWsBaseClaimRecordingResponse.ClaimNumber,companyId)
-                defaultServiceCenter = New ServiceCenter(State.ClaimBo.ServiceCenterId)
-            else
-                Dim ctryBo As New Country(LookupListNew.GetIdFromCode(LookupListNew.LK_COUNTRIES, deliveryAddress.Country))
-                If ctryBo Is Nothing OrElse String.IsNullOrWhiteSpace(ctryBo.Code) OrElse String.IsNullOrWhiteSpace(deliveryAddress.PostalCode) Then
-                    MasterPage.MessageController.AddError(Message.MSG_ERR_COUNTRY_POSTAL_MANDATORY, True)
-                    Exit Sub
-                End If
+                        State.ClaimBo = ClaimFacade.Instance.GetClaim(Of ClaimBase)(State.SubmitWsBaseClaimRecordingResponse.ClaimNumber, companyId)
+                        'defaultServiceCenter = New ServiceCenter(State.ClaimBo.ServiceCenterId)
+                        serviceCenterCode = New ServiceCenter(State.ClaimBo.ServiceCenterId).Code
+                        countryCode = deliveryAddress.Country
+                    Else
+                        Dim ctryBo As New Country(LookupListNew.GetIdFromCode(LookupListNew.LK_COUNTRIES, deliveryAddress.Country))
+                        If ctryBo Is Nothing OrElse String.IsNullOrWhiteSpace(ctryBo.Code) OrElse String.IsNullOrWhiteSpace(deliveryAddress.PostalCode) Then
+                            MasterPage.MessageController.AddError(Message.MSG_ERR_COUNTRY_POSTAL_MANDATORY, True)
+                            Exit Sub
+                        End If
 
-                If ctryBo.DefaultSCId.IsEmpty Then
-                    MasterPage.MessageController.AddError(Message.MSG_ERR_DEFAULT_SERVICE_CENTER, True)
-                    Exit Sub
+                        If ctryBo.DefaultSCId.IsEmpty Then
+                            MasterPage.MessageController.AddError(Message.MSG_ERR_DEFAULT_SERVICE_CENTER, True)
+                            Exit Sub
+                        End If
+                        serviceCenterCode = New ServiceCenter(ctryBo.DefaultSCId).Code
+                        countryCode = deliveryAddress.Country
+                    End If
                 End If
-                defaultServiceCenter = New ServiceCenter(ctryBo.DefaultSCId)
             End If
 
+
             With ucDeliverySlots
-                .CountryCode = deliveryAddress.Country
-                .ServiceCenter= defaultServiceCenter.Code
-                .DeliveryAddress = New UserControlDeliverySlot.DeliveryAddressInfo () with {
-                    .CountryCode= deliveryAddress.Country,
+                .CountryCode = countryCode
+                .ServiceCenter = serviceCenterCode
+                .DeliveryAddress = New UserControlDeliverySlot.DeliveryAddressInfo() With {
+                    .CountryCode = deliveryAddress.Country,
                     .RegionShortDesc = deliveryAddress.State,
                     .PostalCode = deliveryAddress.PostalCode,
                     .City = deliveryAddress.City,
@@ -2676,9 +2551,9 @@ Public Class ClaimRecordingForm
                     .Address2 = deliveryAddress.Address2,
                     .Address3 = deliveryAddress.Address3
                     }
-                .PopulateDeliveryDate(blnNotSpecifyCheckInitState := False, blnEnableNotSpecifyCheck := False)
+                .PopulateDeliveryDate(blnNotSpecifyCheckInitState:=False, blnEnableNotSpecifyCheck:=False)
             End With
-        
+
         Catch ex As ThreadAbortException
         Catch ex As Exception
             HandleErrors(ex, MasterPage.MessageController)
@@ -2732,7 +2607,7 @@ Public Class ClaimRecordingForm
         'Catch ex As Exception
         '    Throw
         'End Try
-    End sub
+    End Sub
 #End Region
 #Region "Logistics Options -  Button event"
     Protected Sub btnLogisticsOptionsBack_Click(sender As Object, e As EventArgs) Handles btnLogisticsOptionsBack.Click
@@ -2801,7 +2676,7 @@ Public Class ClaimRecordingForm
                 'postalCode = CType(lOption.LogisticOptionInfo, LogisticOptionInfoCustomerAddress).Address.PostalCode
             End If
 
-            GetEstimatedDeliveryDate(ucDeliverySlots, deliveryAddress, lOption.DeliveryOptions.CourierCode, lOption.DeliveryOptions.CourierProductCode)
+            GetEstimatedDeliveryDate(ucDeliverySlots, deliveryAddress, lOption.DeliveryOptions)
             'Dim wsResponseValue As Integer = GetEstimatedDeliveryDate(countryCode, postalCode, lOption.DeliveryOptions.CourierCode, lOption.DeliveryOptions.CourierProductCode)
             'Dim dateInString As String
             'Dim daysUpperRange As Integer

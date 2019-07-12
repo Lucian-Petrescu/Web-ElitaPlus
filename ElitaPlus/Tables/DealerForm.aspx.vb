@@ -1034,7 +1034,7 @@ Namespace Tables
             Me.reshipmentAllowedDrop.Populate(oYesNoList, populateOptions2)
             Me.moValidateAddress.Populate(oYesNoList, populateOptions2)
             Me.moShowPrevCallerInfo.Populate(oYesNoList, populateOptions2)
-
+            Me.ddlDealerNameFlag.Populate(oYesNoList, populateOptions3)
             'ddlCaseProfile.Populate(CommonConfigManager.Current.ListManager.GetList("CaseProfile", Thread.CurrentPrincipal.GetLanguageCode()), New PopulateOptions() With
             '                           {
             '                           .AddBlankItem = True,
@@ -1140,6 +1140,7 @@ Namespace Tables
             txtCancelShipmentGracePeriod.Text = String.Empty
             ddlCaseProfile.ClearSelection()
             moShowPrevCallerInfo.ClearSelection()
+            ddlDealerNameFlag.ClearSelection()
         End Sub
 
         Private Sub SetAssurantIsObligor()
@@ -1437,6 +1438,8 @@ Namespace Tables
                 Me.PopulateControlFromBOProperty(Me.txtClosecaseperiod, .CloseCaseGracePeriodDays)
 
                 BindSelectItem(Me.State.MyBO.Show_Previous_Caller_Info, Me.moShowPrevCallerInfo)
+
+                BindSelectItem(Me.State.MyBO.DisplayDobXcd, Me.ddlDealerNameFlag)
 
                 Me.PopulateControlFromBOProperty(Me.txtCancelShipmentGracePeriod, .Cancel_Shipment_Grace_Period)
 
@@ -1761,6 +1764,7 @@ Namespace Tables
 
                 Me.PopulateBOProperty(Me.State.MyBO, "CloseCaseGracePeriodDays", Me.txtClosecaseperiod)
                 Me.PopulateBOProperty(Me.State.MyBO, "Show_Previous_Caller_Info", Me.moShowPrevCallerInfo, False, True)
+                Me.PopulateBOProperty(Me.State.MyBO, "DisplayDobXcd", Me.ddlDealerNameFlag, False, True)
 
             End With
             If Me.ErrCollection.Count > 0 Then

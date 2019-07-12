@@ -22,7 +22,7 @@
     <MetadataSource Address="http://elitaplus-api-modl.p1.assurant.com/ElitaClaimService1/ClaimRecordingService.svc?singlewsdl" Protocol="http" SourceId="1" />
   </MetadataSources>
   <Metadata>
-    <MetadataFile FileName="ClaimRecordingService1.wsdl" MetadataType="Wsdl" ID="91c409ed-2b3b-4236-9d0c-14042599bdea" SourceId="1" SourceUrl="http://elitaplus-api-modl.p1.assurant.com/ElitaClaimService1/ClaimRecordingService.svc?singlewsdl" />
+    <MetadataFile FileName="ClaimRecordingService.wsdl" MetadataType="Wsdl" ID="2c79873f-2eef-4832-84d4-a4d9dabdc0f0" SourceId="1" SourceUrl="http://elitaplus-api-modl.p1.assurant.com/ElitaClaimService1/ClaimRecordingService.svc?singlewsdl" />
   </Metadata>
   <Extensions>
     <ExtensionFile FileName="configuration91.svcinfo" Name="configuration91.svcinfo" />
