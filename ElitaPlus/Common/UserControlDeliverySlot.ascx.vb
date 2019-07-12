@@ -315,7 +315,7 @@ Public Class UserControlDeliverySlot
     Private Sub EnableDisableNotSpecifyCheckBox()
         ''if selection is not allowed, then uncheck and disable the check box
         If (Not State Is Nothing andAlso Not State.CurrentEstimate Is Nothing AndAlso Not State.CurrentEstimate.Behavior Is Nothing) Then
-            chkNotSpecify.Checked = State.CurrentEstimate.Behavior.SelectionAllowed
+            chkNotSpecify.Checked = True
 
             If (State.CurrentEstimate.Behavior.SelectionAllowed = False) Then
                 chkNotSpecify.Enabled = False

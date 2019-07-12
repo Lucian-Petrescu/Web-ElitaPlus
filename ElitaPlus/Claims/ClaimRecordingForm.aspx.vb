@@ -2189,20 +2189,7 @@ Public Class ClaimRecordingForm
                     DisplayWsErrorMessage(wsResponse.ClaimRecordingMessages)
                 End If
                 PopulateLogisticsOptionsGrid()
-
-                'If wsResponse.QuestionsByStage IsNot Nothing And wsResponse.QuestionsByStage.Count > 0 Then
-                '    logisticsOptionsQuestions.SetQuestionTitle(TranslationBase.TranslateLabelOrMessage("QUESTION_SET"))
-                '    '
-                '    logisticsOptionsQuestions.QuestionDataSource = wsResponse.QuestionsByStage.FirstOrDefault().Value
-                '    logisticsOptionsQuestions.QuestionDataBind()
-                '    '
-                '    ControlMgr.SetVisibleControl(Me, logisticsOptionsQuestions, True)
-                'Else
-                '    ControlMgr.SetVisibleControl(Me, logisticsOptionsQuestions, False)
-                'End If
-
-
-
+                
                 mvClaimsRecording.ActiveViewIndex = ClaimRecordingViewIndexLogisticsOptions
             End If
         End If
@@ -2271,11 +2258,7 @@ Public Class ClaimRecordingForm
 
                 Dim btnEstimateDeliveryDate As Button = CType(gridViewTarget.Rows(i).FindControl(GridLoEstimateDeliveryDateBtnCtrl), Button)
                 ControlMgr.SetEnableControl(Me, btnEstimateDeliveryDate, isEnableControl)
-
-                'If logisticsOptionItem.DeliveryOptions.AllowChangeEstimatedDeliveryDate Then
-                '    Dim ddlDeliveryDates As DropDownList = CType(gridViewTarget.Rows(i).FindControl(GridLoEstimateDeliveryDateDdlCtrl), DropDownList)
-                '    ControlMgr.SetEnableControl(Me, ddlDeliveryDates, isEnableControl)
-                'End If
+                
             End If
 
         Next
@@ -2410,7 +2393,7 @@ Public Class ClaimRecordingForm
                         dim ucDeliverySlots as UserControlDeliverySlot = CType(gvr.Cells(GridLoColLoDetailIdx).FindControl(LogisticsOptionsEstimateDeliveryDateCtrl), UserControlDeliverySlot)
                         Dim selectedDeliveryDate As Nullable(Of Date) = ucDeliverySlots.DeliveryDate
 
-                        If selectedDeliveryDate.HasValue = False Then
+                        If lOption.DeliveryOptions.DesiredDeliveryDateMandatory AndAlso Not selectedDeliveryDate.HasValue Then
                             MasterPage.MessageController.AddError(Message.MSG_ERR_DELIVERY_DATE_MANDATORY, True)
                             Return False
                         Else
@@ -2419,15 +2402,6 @@ Public Class ClaimRecordingForm
                             End If
                         End If
 
-                        'Dim estimateDeliveryDate As String = CType(gvr.Cells(GridLoColLoDetailIdx).FindControl("ddlDeliveryDates"), DropDownList).SelectedValue
-                        'If estimateDeliveryDate.Equals(String.Empty) Then
-                        '    MasterPage.MessageController.AddError(Message.MSG_ERR_DELIVERY_DATE_MANDATORY, True)
-                        '    Return False
-                        'Else
-                        '    If Not lOption.LogisticOptionInfo Is Nothing Then
-                        '        lOption.LogisticOptionInfo.EstimatedChangedDeliveryDate = DateHelper.GetDateValue(estimateDeliveryDate)
-                        '    End If
-                        'End If
                     End If
 
                 End If
@@ -2457,9 +2431,7 @@ Public Class ClaimRecordingForm
         Else
             Exit Sub
         End If
-
-        'logisticsOptionsQuestions.GetQuestionAnswer()
-
+        
         wsRequest.CaseNumber = wsPreviousResponse.CaseNumber
         wsRequest.CompanyCode = wsPreviousResponse.CompanyCode
         wsRequest.InteractionNumber = wsPreviousResponse.InteractionNumber
@@ -2468,12 +2440,7 @@ Public Class ClaimRecordingForm
 
         wsRequest.QuestionSetCode = wsPreviousResponse.Stages(State.LogisticsStage)?.Options.SingleOrDefault(Function(opt) opt.Selected = True)?.QuestionSetCode
         wsRequest.Questions = wsPreviousResponse.Stages(State.LogisticsStage)?.Options.SingleOrDefault(Function(opt) opt.Selected = True)?.Questions
-
-        'wsRequest.QuestionSetCode = wsPreviousResponse.Stages.FirstOrDefault().QuestionSetCode
-        'If wsPreviousResponse.QuestionsByStage IsNot Nothing Then
-        '    wsRequest.Questions = wsPreviousResponse.QuestionsByStage.FirstOrDefault().Value '.Stages.FirstOrDefault().Questions
-        'End If
-
+        
         Try
             Dim wsResponse = WcfClientHelper.Execute(Of ClaimRecordingServiceClient, IClaimRecordingService, BaseClaimRecordingResponse)(
                 GetClient(),
@@ -2558,55 +2525,7 @@ Public Class ClaimRecordingForm
         Catch ex As Exception
             HandleErrors(ex, MasterPage.MessageController)
         End Try
-        'Dim wsRequest As New GetDurationRequest
-        'Dim minDayInError As Integer = 1
-
-        'If String.IsNullOrWhiteSpace(countryCode) OrElse String.IsNullOrWhiteSpace(postalCode) Then
-        '    MasterPage.MessageController.AddError(Message.MSG_ERR_COUNTRY_POSTAL_MANDATORY, True)
-        '    Return minDayInError
-        'End If
-
-        'Dim countryBo As New Country(LookupListNew.GetIdFromCode(LookupListNew.LK_COUNTRIES, countryCode))
-        'wsRequest.CountryCode = countryBo.Code
-        'If countryBo.DefaultSCId.IsEmpty Then
-        '    MasterPage.MessageController.AddError(Message.MSG_ERR_DEFAULT_SERVICE_CENTER, True)
-        '    Return minDayInError
-        'End If
-        'Dim defaultServiceCenterAddress As BusinessObjectsNew.Address = (New ServiceCenter(countryBo.DefaultSCId)).Address
-        'If defaultServiceCenterAddress Is Nothing OrElse String.IsNullOrWhiteSpace(defaultServiceCenterAddress.PostalCode) Then
-        '    MasterPage.MessageController.AddError(Message.MSG_ERR_DEFAULT_SERVICE_CENTER_ADDRESS, True)
-        '    Return minDayInError
-        'End If
-        'wsRequest.SourceZipCode = defaultServiceCenterAddress.PostalCode
-
-        'wsRequest.CourierCode = courierCode
-        'wsRequest.DestinationZipCode = postalCode
-
-        'Try
-        '    Dim wsResponse As GetDurationResponse() = WcfClientHelper.Execute(Of ClaimRecordingServiceClient, IClaimRecordingService, GetDurationResponse())(
-        '                                                                    GetClient(),
-        '                                                                    New List(Of Object) From {New InteractiveUserHeader() With {.LanId = Authentication.CurrentUser.NetworkId}},
-        '                                                                    Function(ByVal c As ClaimRecordingServiceClient)
-        '                                                                        Return c.GetCourierDurations(wsRequest)
-        '                                                                    End Function)
-        '    If wsResponse IsNot Nothing Then
-        '        Dim durationDay As GetDurationResponse = wsResponse.FirstOrDefault(Function(q) q.ProductCode = courierProductCode)
-        '        If Not durationDay Is Nothing Then
-        '            Return durationDay.DurationDays
-        '        Else
-        '            MasterPage.MessageController.AddError(Message.MSG_ERR_COURIER_PRODUCT_NOT_FOUND, True)
-        '            Return minDayInError
-        '        End If
-        '    Else
-        '        MasterPage.MessageController.AddError(Message.MSG_ERR_ESTIMATED_DELIVERY_DATE_NOT_FOUND, True)
-        '        Return minDayInError
-        '    End If
-        'Catch fex As FaultException
-        '    ThrowWsFaultExceptions(fex)
-        '    Return minDayInError
-        'Catch ex As Exception
-        '    Throw
-        'End Try
+        
     End Sub
 #End Region
 #Region "Logistics Options -  Button event"
@@ -2648,50 +2567,26 @@ Public Class ClaimRecordingForm
 
             Dim lb As Label
             lb = CType(gvr.Cells(GridLoColLoRdoIdx).FindControl(GridLoCodeLblCtrl), Label)
-
-
-            'Dim ddlDeliveryDates As DropDownList = CType(gvr.Cells(GridLoColLoDetailIdx).FindControl(GridLoEstimateDeliveryDateDdlCtrl), DropDownList)
-
+            
             dim ucDeliverySlots as UserControlDeliverySlot = CType(gvr.Cells(GridLoColLoDetailIdx).FindControl(LogisticsOptionsEstimateDeliveryDateCtrl), UserControlDeliverySlot)
             ucDeliverySlots.Visible = True            
             ucDeliverySlots.TranslateLabels()
 
             dim deliveryAddress As Address
-
-            'ddlDeliveryDates.Items.Clear()
-            'Dim countryCode As String
-            'Dim postalCode As String
-            Dim lOption As LogisticOption = logisticsStage.Options.FirstOrDefault(Function(q) q.Code = lb.Text)
+            
+           Dim lOption As LogisticOption = logisticsStage.Options.FirstOrDefault(Function(q) q.Code = lb.Text)
             ' Logistics Options
             If lOption.Type = LogisticOptionType.DealerBranchAddress Then
                 CType(lOption.LogisticOptionInfo, LogisticOptionInfoDealerBranchAddress).Address = PopulateAddressFromAddressController(CType(gvr.Cells(GridLoColLoDetailIdx).FindControl("ucAddressControllerLogisticsOptions"), UserControlAddress_New))
                 deliveryAddress = CType(lOption.LogisticOptionInfo, LogisticOptionInfoDealerBranchAddress).Address
-                'countryCode = CType(lOption.LogisticOptionInfo, LogisticOptionInfoDealerBranchAddress).Address.Country
-                'postalCode = CType(lOption.LogisticOptionInfo, LogisticOptionInfoDealerBranchAddress).Address.PostalCode
-
+           
             ElseIf lOption.Type = LogisticOptionType.CustomerAddress Then
                 CType(lOption.LogisticOptionInfo, LogisticOptionInfoCustomerAddress).Address = PopulateAddressFromAddressController(CType(gvr.Cells(GridLoColLoDetailIdx).FindControl("ucAddressControllerLogisticsOptions"), UserControlAddress_New))
                 deliveryAddress = CType(lOption.LogisticOptionInfo, LogisticOptionInfoCustomerAddress).Address
-                'countryCode = CType(lOption.LogisticOptionInfo, LogisticOptionInfoCustomerAddress).Address.Country
-                'postalCode = CType(lOption.LogisticOptionInfo, LogisticOptionInfoCustomerAddress).Address.PostalCode
-            End If
+           End If
 
             GetEstimatedDeliveryDate(ucDeliverySlots, deliveryAddress, lOption.DeliveryOptions)
-            'Dim wsResponseValue As Integer = GetEstimatedDeliveryDate(countryCode, postalCode, lOption.DeliveryOptions.CourierCode, lOption.DeliveryOptions.CourierProductCode)
-            'Dim dateInString As String
-            'Dim daysUpperRange As Integer
-            'If Not lOption.DeliveryOptions.EstimateDeliveryDateChangeWindow Is Nothing Then
-            '    daysUpperRange = lOption.DeliveryOptions.EstimateDeliveryDateChangeWindow
-            'Else
-            '    daysUpperRange = wsResponseValue
-            'End If
-
-            'For i As Integer = wsResponseValue To daysUpperRange
-            '    dateInString = GetDateFormattedStringNullable(DateTime.Now.AddDays(i))
-            '    ddlDeliveryDates.Items.Add(New ListItem(dateInString, dateInString))
-            'Next
-            'lOption.LogisticOptionInfo.EstimatedDeliveryDate = DateTime.Now.AddDays(wsResponseValue)
-            'ddlDeliveryDates.SelectedValue = GetDateFormattedStringNullable(lOption.LogisticOptionInfo.EstimatedDeliveryDate)
+           
         Catch ex As Exception
             HandleErrors(ex, MasterPage.MessageController)
         End Try
@@ -2799,29 +2694,7 @@ Public Class ClaimRecordingForm
                         End If
                     End If
                 End If
-
-                '' Questions
-                'Dim logisticsOptionsQuestionsItemCtrl As UserControlQuestion = CType(e.Row.FindControl(LogisticsOptionsQuestionsCtrl), UserControlQuestion)
-                'If logisticsOptionItem.Questions IsNot Nothing AndAlso logisticsOptionItem.Questions.Length > 0 Then
-
-                '    With logisticsOptionsQuestionsItemCtrl
-                '        .DateFormat = DATE_FORMAT
-                '        .UserNameSetting = UserName
-                '        .PasswordSetting = Password
-                '        .ServiceUrlSetting = ServiceUrl
-                '        .ServiceEndPointNameSetting = EndPointName
-                '        .HostMessageController = MasterPage.MessageController
-                '    End With
-                '    '
-                '    logisticsOptionsQuestionsItemCtrl.SetQuestionTitle(TranslationBase.TranslateLabelOrMessage("QUESTION_SET"))
-                '    '
-                '    logisticsOptionsQuestionsItemCtrl.QuestionDataSource = logisticsOptionItem.Questions
-                '    logisticsOptionsQuestionsItemCtrl.QuestionDataBind()
-                '    ControlMgr.SetVisibleControl(Me, logisticsOptionsQuestionsItemCtrl, True)
-                'Else
-                '    ControlMgr.SetVisibleControl(Me, logisticsOptionsQuestionsItemCtrl, False)
-                'End If
-
+                
                 moAddressController.TranslateAllLabelControl()
 
                 'KDDI
@@ -2866,47 +2739,13 @@ Public Class ClaimRecordingForm
             If Not logisticsOptionItem Is Nothing _
                AndAlso Not logisticsOptionItem.DeliveryOptions Is Nothing _
                AndAlso logisticsOptionItem.DeliveryOptions.DisplayEstimatedDeliveryDate Then
-
-                'Dim lblDeliveryOptions As Label = CType(e.Row.FindControl(GridLoDeliveryOptionsLblCtrl), Label)
+                
                 ' TODO: Assign the delivery code/description when it comes in the contract
-                'lblDeliveryOptions.Text = logisticsOptionItem.DeliveryOptions.CourierCode
-
+                
                 Dim lblDeliveryDate As Label = CType(e.Row.FindControl(GridLoDeliveryDateLblCtrl), Label)
                 lblDeliveryDate.Text = TranslationBase.TranslateLabelOrMessage("EXPECTED_DELIVERY_DATE")
 
-                'Dim ddlDeliveryDates As DropDownList = CType(e.Row.FindControl(GridLoEstimateDeliveryDateDdlCtrl), DropDownList)
-                'ddlDeliveryDates.ClearSelection()
-
-                'If Not logisticsOptionItem.LogisticOptionInfo.EstimatedDeliveryDate Is Nothing Then
-                '    Dim daysLowerRange As Integer
-                '    Dim daysUpperRange As Integer
-                '    Dim dateInString As String
-                '    Dim estimateDate As Date = logisticsOptionItem.LogisticOptionInfo.EstimatedDeliveryDate
-
-                '    Dim ts As TimeSpan = estimateDate.Subtract(Date.Today)
-                '    If ts.Days > 0 Then
-                '        daysLowerRange = ts.Days
-                '    End If
-
-                '    If Not logisticsOptionItem.DeliveryOptions.EstimateDeliveryDateChangeWindow Is Nothing Then
-                '        daysUpperRange = logisticsOptionItem.DeliveryOptions.EstimateDeliveryDateChangeWindow
-                '    Else
-                '        daysUpperRange = daysLowerRange
-                '    End If
-
-                '    For i As Integer = daysLowerRange To daysUpperRange
-                '        dateInString = GetDateFormattedStringNullable(DateTime.Now.AddDays(i))
-                '        ddlDeliveryDates.Items.Add(New ListItem(dateInString, dateInString))
-                '    Next
-
-                '    If Not logisticsOptionItem.LogisticOptionInfo.EstimatedChangedDeliveryDate Is Nothing Then
-                '        ddlDeliveryDates.SelectedValue = GetDateFormattedStringNullable(logisticsOptionItem.LogisticOptionInfo.EstimatedChangedDeliveryDate)
-                '    End If
-                'End If
-
-                'If logisticsOptionItem.DeliveryOptions.AllowChangeEstimatedDeliveryDate Then
-                '    ControlMgr.SetEnableControl(Me, ddlDeliveryDates, isEnableControl)
-                'End If
+                
                 Dim btnEstimateDeliveryDate As Button = CType(e.Row.FindControl(GridLoEstimateDeliveryDateBtnCtrl), Button)
                 ControlMgr.SetEnableControl(Me, btnEstimateDeliveryDate, isEnableControl)
                 btnEstimateDeliveryDate.Text = TranslationBase.TranslateLabelOrMessage("GET_DELIVERY_DATE")
