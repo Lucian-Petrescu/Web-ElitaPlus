@@ -5211,10 +5211,12 @@ Public Class Certificate
                     Return txtDate.Replace(txtDate.Substring(0, 4), "XXXX")
                 End If
             Else
-                Dim dateofbirth As Date = txtDate
-                Return dateofbirth.ToString("dd-MMM-xxxx")
+                If (Not noMask) Then
+                    Dim dateofbirth As Date = txtDate
+                    Return dateofbirth.ToString("dd-MMM-xxxx")
+                End If
             End If
-            Return txtDate
+                Return txtDate
         End If
     End Function
 

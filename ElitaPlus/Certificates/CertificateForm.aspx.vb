@@ -2505,7 +2505,6 @@ Namespace Certificates
                 Me.PopulateControlFromBOProperty(Me.moBillingDateText, .DatePaidFor)
 
                 Me.PopulateControlFromBOProperty(Me.moVehicleLicenseTagText, .VehicleLicenseTag)
-                Me.PopulateControlFromBOProperty(Me.moDateOfBirthText, .DateOfBirth)
 
                 'Added for Req-703 - Start
                 Me.PopulateControlFromBOProperty(Me.moCapSeriesText, .CapitalizationSeries)
@@ -2779,30 +2778,32 @@ Namespace Certificates
                 End If
 
                 Me.PopulateControlFromBOProperty(Me.moDateOfBirthText, .DateOfBirth)
-                Dim IsDobDisplay As Boolean = Me.State.MyBO.Dealer.DisplayDobXcd.ToUpper().Equals("YESNO-Y")
-                Dim IsCustomerLglInfo As Boolean = Me.State.ReqCustomerLegalInfoId.Equals(LookupListNew.GetIdFromCode(LookupListCache.LK_CLITYP, "0"))
-
-                If (Not IsDobDisplay And IsCustomerLglInfo) Then
-                    ControlMgr.SetVisibleControl(Me, moDateOfBirthLabel, False)
-                    ControlMgr.SetVisibleControl(Me, moDateOfBirthText, False)
-                    ControlMgr.SetVisibleControl(Me, BtnDateOfBirth, False)
-                    ControlMgr.SetVisibleControl(Me, tdDateOfBirthCalTag, False)
-
-                End If
-
-                If (Not IsDobDisplay And Not IsCustomerLglInfo) Then
-                    If Not (Me.State.IsEdit) Then
-                        Me.moDateOfBirthText.Text = Me.State.MyBO.MaskDatePart(Me.moDateOfBirthText.Text, True)
-                    End If
-                End If
-
-                If (IsDobDisplay) Then
-                    If Not (Me.State.IsEdit) Then
-                        Me.moDateOfBirthText.Text = Me.State.MyBO.MaskDatePart(Me.moDateOfBirthText.Text, False)
-                    End If
-                End If
+                DisplayMaskDob()
 
             End With
+        End Sub
+        Protected Sub DisplayMaskDob()
+            Dim IsDobDisplay As Boolean = Me.State.MyBO.Dealer.DisplayDobXcd.ToUpper().Equals("YESNO-Y")
+            Dim IsCustomerLglInfo As Boolean = Me.State.ReqCustomerLegalInfoId.Equals(LookupListNew.GetIdFromCode(LookupListCache.LK_CLITYP, "0"))
+
+            If (Not IsDobDisplay And IsCustomerLglInfo) Then
+                ControlMgr.SetVisibleControl(Me, moDateOfBirthLabel, False)
+                ControlMgr.SetVisibleControl(Me, moDateOfBirthText, False)
+                ControlMgr.SetVisibleControl(Me, BtnDateOfBirth, False)
+                ControlMgr.SetVisibleControl(Me, tdDateOfBirthCalTag, False)
+            End If
+
+            If (Not IsDobDisplay And Not IsCustomerLglInfo) Then
+                If Not (Me.State.IsEdit) Then
+                    Me.moDateOfBirthText.Text = Me.State.MyBO.MaskDatePart(Me.moDateOfBirthText.Text, True)
+                End If
+            End If
+
+            If (IsDobDisplay) Then
+                If Not (Me.State.IsEdit) Then
+                    Me.moDateOfBirthText.Text = Me.State.MyBO.MaskDatePart(Me.moDateOfBirthText.Text, False)
+                End If
+            End If
         End Sub
 
         Protected Sub PopulateCanceDueDateFromForm()
@@ -4631,6 +4632,7 @@ Namespace Certificates
                     Me.MasterPage.MessageController.AddSuccess(Message.MSG_RECORD_NOT_SAVED, True)
                     Me.EnableDisableFields()
                 End If
+                DisplayMaskDob()
             Catch ex As DataNotFoundException
                 Me.MasterPage.MessageController.AddError(ex.Message)
                 Me.State.IsEdit = True
