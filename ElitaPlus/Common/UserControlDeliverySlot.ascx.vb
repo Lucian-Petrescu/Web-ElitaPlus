@@ -383,7 +383,7 @@ Public Class UserControlDeliverySlot
             End If
 
             if de.Behavior.UseDeliverySlot Then 'add slot information 
-                If fastestDeliveryDate.DeliverySlots IsNot Nothing AndAlso fastestDeliveryDate.DeliverySlots.Length > 0 Then
+                If fastestDeliveryDate.DeliverySlots IsNot Nothing AndAlso fastestDeliveryDate.DeliverySlots.Length > 0 AndAlso de.Behavior.SelectionAllowed  Then
                     Dim fastestDeliveryTimeSlot As DeliverySlot = (From delSlot As DeliverySlot In fastestDeliveryDate.DeliverySlots Select delSlot Order By delSlot.Sequence Ascending).First()
                     If fastestDeliveryTimeSlot IsNot Nothing Then
                         fastestDeliveryDateTime = If(LookupListNew.GetDescriptionFromCode(LookupListNew.LK_DESIRED_DELIVERY_TIME_SLOT, fastestDeliveryTimeSlot.Description, Authentication.CurrentUser.LanguageId), fastestDeliveryTimeSlot.Description) + " " + fDeliveryDate
@@ -409,7 +409,7 @@ Public Class UserControlDeliverySlot
             End If
 
             if de.Behavior.UseDeliverySlot Then 'add slot information 
-                If lastDeliveryDate.DeliverySlots IsNot Nothing AndAlso lastDeliveryDate.DeliverySlots.Length > 0 Then
+                If lastDeliveryDate.DeliverySlots IsNot Nothing AndAlso lastDeliveryDate.DeliverySlots.Length > 0 AndAlso de.Behavior.SelectionAllowed  Then
                     Dim lastDeliveryTimeSlot As DeliverySlot = (From delSlot As DeliverySlot In lastDeliveryDate.DeliverySlots Select delSlot Order By delSlot.Sequence Ascending).Last()
                     If lastDeliveryTimeSlot IsNot Nothing Then
                         lastDeliveryDateTime = If(LookupListNew.GetDescriptionFromCode(LookupListNew.LK_DESIRED_DELIVERY_TIME_SLOT, lastDeliveryTimeSlot.Description, Authentication.CurrentUser.LanguageId), lastDeliveryTimeSlot.Description) + " " + lDeliveryDate
