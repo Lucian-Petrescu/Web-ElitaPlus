@@ -303,6 +303,7 @@ Namespace Certificates
             State.CertificateStatus = GetSearchDropDownValue(CodeSearchFieldCertificateStatus)
 
             State.ShowAdditionalSearchFields = checkboxAdditionalSearchCriteria.Checked
+            State.Dob = txtDateOfBirth.Text
         End Sub
 
         Protected Sub SetSearchSettingToDefault(Optional ByVal setCompanyDealerValue As Boolean = False)
