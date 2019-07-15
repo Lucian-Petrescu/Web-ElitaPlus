@@ -2652,12 +2652,23 @@ Namespace Certificates
                     Me.State.ReqCustomerLegalInfoId = (New Company(Me.State.MyBO.CompanyId).ReqCustomerLegalInfoId)
                 End If
 
+                Dim IsDisplayMaskFlag As Boolean = Me.State.MyBO.Dealer.DisplayDobXcd.ToUpper().Equals("YESNO-Y")
                 If Me.State.ReqCustomerLegalInfoId.Equals(LookupListNew.GetIdFromCode(LookupListCache.LK_CLITYP, "0")) Then '0= None
                     Me.moCustLegalInfo1.Attributes("style") = "display: none"
-                    Me.moCustLegalInfo2.Attributes("style") = "display: none"
+                    ControlMgr.SetVisibleControl(Me, moIncomeRangeLabel, False)   'Me.moCustLegalInfo2.Attributes("style") = "display: none"
+                    ControlMgr.SetVisibleControl(Me, moIncomeRangeText, False)
+                    ControlMgr.SetVisibleControl(Me, cboIncomeRangeId, False)
+
+                    If (Not IsDisplayMaskFlag) Then
+                        ControlMgr.SetVisibleControl(Me, moDateOfBirthLabel, False)
+                        ControlMgr.SetVisibleControl(Me, moDateOfBirthText, False)
+                        ControlMgr.SetVisibleControl(Me, BtnDateOfBirth, False)
+                        ControlMgr.SetVisibleControl(Me, tdDateOfBirthCalTag, False)
+                    End If
+
                 Else
-                    'populate the dropdowns
-                    PopulateIncomeRangeDropdown(cboIncomeRangeId)
+                        'populate the dropdowns
+                        PopulateIncomeRangeDropdown(cboIncomeRangeId)
                     PopulatePoliticallyExposedDropdown(cboPoliticallyExposedId)
                     Me.PopulateControlFromBOProperty(Me.moOccupationText, .Occupation)
                     Me.SetSelectedItem(Me.cboPoliticallyExposedId, .PoliticallyExposedId)
