@@ -5203,7 +5203,7 @@ Public Class Certificate
         If Not (String.IsNullOrEmpty(txtDate)) Then
             If (CultureInfo.CurrentCulture.Name.Equals("ja-JP")) Then
                 Dim parsedDate As DateTime
-                parsedDate = DateTime.Parse(txtDate)
+                parsedDate = DateTime.ParseExact(txtDate, "dd-M-yyyy", CultureInfo.InvariantCulture).ToString("MM/dd/yyyy", CultureInfo.InvariantCulture)
                 txtDate = parsedDate.ToString("D", CultureInfo.CurrentCulture)
                 If (noMask) Then
                     Return txtDate
