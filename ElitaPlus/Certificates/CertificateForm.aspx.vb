@@ -3025,7 +3025,10 @@ Namespace Certificates
 
                 'DEF-21659 - START
                 'If Not .DateOfBirth Is Nothing Then
-                Me.PopulateBOProperty(Me.State.MyBO, "DateOfBirth", Me.moDateOfBirthText)
+                If (Me.State.IsEdit) Then
+                    Me.PopulateBOProperty(Me.State.MyBO, "DateOfBirth", Me.moDateOfBirthText)
+                End If
+
                 'End If
                 'DEF-21659 - END
 
