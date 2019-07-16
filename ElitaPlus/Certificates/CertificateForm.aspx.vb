@@ -1178,16 +1178,26 @@ Namespace Certificates
                 End If
 
                 If ReturnFromUrl.Contains(ClaimRecordingForm.Url2) Then
-                    Dim retObj As ClaimRecordingForm.ReturnType = CType(ReturnPar, ClaimRecordingForm.ReturnType)
-                    Select Case retObj.LastOperation
-                        Case ElitaPlusPage.DetailPageCommand.Cancel
-                            If Not retObj Is Nothing Then
-                                Me.State.MyBO = New Certificate(retObj.CertificateId)
-                                Me.State.IsCallerAuthenticated = retObj.IsCallerAuthenticated
-                            End If
-                    End Select
+                    If TypeOf ReturnPar Is ClaimRecordingForm.ReturnType Then
+                        Dim retObjCRF As ClaimRecordingForm.ReturnType = CType(ReturnPar, ClaimRecordingForm.ReturnType)
+                        Select Case retObjCRF.LastOperation
+                            Case ElitaPlusPage.DetailPageCommand.Cancel
+                                If Not retObjCRF Is Nothing Then
+                                    Me.State.MyBO = New Certificate(retObjCRF.CertificateId)
+                                    Me.State.IsCallerAuthenticated = retObjCRF.IsCallerAuthenticated
+                                End If
+                        End Select
+                    ElseIf TypeOf ReturnPar Is ClaimForm.ReturnType Then
+                        Dim retObjCF As ClaimForm.ReturnType = CType(ReturnPar, ClaimForm.ReturnType)
+                        Select Case retObjCF.LastOperation
+                            Case ElitaPlusPage.DetailPageCommand.Back
+                                If Not retObjCF Is Nothing Then
+                                    Me.State.MyBO = New Certificate(retObjCF.EditingBo.CertificateId)
+                                    Me.State.IsCallerAuthenticated = retObjCF.IsCallerAuthenticated
+                                End If
+                        End Select
+                    End If
                 Else
-
                     Dim retObj As ClaimForm.ReturnType = CType(ReturnPar, ClaimForm.ReturnType)
                     Select Case retObj.LastOperation
                         Case ElitaPlusPage.DetailPageCommand.Back
