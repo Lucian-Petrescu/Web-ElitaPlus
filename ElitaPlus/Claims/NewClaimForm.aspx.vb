@@ -3126,7 +3126,7 @@ Partial Class NewClaimForm
             'Assumption : No Service Orders are created for this Path
             Me.NavController.FlowSession(FlowSessionKeys.SESSION_CLAIM) = Me.State.MyBO
             Me.NavController.Navigate(Me, "create_claim", Message.MSG_CLAIM_ADDED)
-
+        Catch ex As Threading.ThreadAbortException
         Catch ex As Exception
             Me.State.MyBO.StatusCode = oldStatus
             ' DEF-25037 Throw ex
