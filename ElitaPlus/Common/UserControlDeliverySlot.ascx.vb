@@ -235,10 +235,10 @@ Public Class UserControlDeliverySlot
     End Function
 
     Public Sub TranslateLabels()
-        lblCourierProduct.Text = TranslationBase.TranslateLabelOrMessage(lblCourierProduct.Text)
-        lblAvailableDeliveryTiming.Text = TranslationBase.TranslateLabelOrMessage(lblAvailableDeliveryTiming.Text)
-        lblDesiredDate.Text = TranslationBase.TranslateLabelOrMessage(lblDesiredDate.Text)
-        lblDeliverySlot.Text = TranslationBase.TranslateLabelOrMessage(lblDeliverySlot.Text)
+        lblCourierProduct.Text = TranslationBase.TranslateLabelOrMessage("COURIER_PRODUCT")
+        lblAvailableDeliveryTiming.Text = TranslationBase.TranslateLabelOrMessage("AVAILABLE_DELIVERY_TIMING")
+        lblDesiredDate.Text = TranslationBase.TranslateLabelOrMessage("DESIRED_DELIVERY_DATE")
+        lblDeliverySlot.Text = TranslationBase.TranslateLabelOrMessage("DESIRED_DELIVERY_TIME")
 
     End Sub
     Public Sub PopulateDeliveryDate(Optional blnNotSpecifyCheckInitState As Boolean = True, Optional blnEnableNotSpecifyCheck As Boolean = True)
