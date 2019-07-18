@@ -234,13 +234,6 @@ Public Class UserControlDeliverySlot
         Return client
     End Function
 
-    Public Sub TranslateLabels()
-        lblCourierProduct.Text = TranslationBase.TranslateLabelOrMessage("COURIER_PRODUCT")
-        lblAvailableDeliveryTiming.Text = TranslationBase.TranslateLabelOrMessage("AVAILABLE_DELIVERY_TIMING")
-        lblDesiredDate.Text = TranslationBase.TranslateLabelOrMessage("DESIRED_DELIVERY_DATE")
-        lblDeliverySlot.Text = TranslationBase.TranslateLabelOrMessage("DESIRED_DELIVERY_TIME")
-
-    End Sub
     Public Sub PopulateDeliveryDate(Optional blnNotSpecifyCheckInitState As Boolean = True, Optional blnEnableNotSpecifyCheck As Boolean = True)
 
         chkNotSpecify.Text = " " + TranslationBase.TranslateLabelOrMessage("NOT_SPECIFY")

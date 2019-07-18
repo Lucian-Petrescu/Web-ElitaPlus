@@ -2570,8 +2570,7 @@ Public Class ClaimRecordingForm
             
             dim ucDeliverySlots as UserControlDeliverySlot = CType(gvr.Cells(GridLoColLoDetailIdx).FindControl(LogisticsOptionsEstimateDeliveryDateCtrl), UserControlDeliverySlot)
             ucDeliverySlots.Visible = True            
-            ucDeliverySlots.TranslateLabels()
-
+           
             dim deliveryAddress As Address
             
            Dim lOption As LogisticOption = logisticsStage.Options.FirstOrDefault(Function(q) q.Code = lb.Text)
