@@ -81,6 +81,7 @@ Public Class ClaimRecordingForm
         
         Public ExclSecFieldsDt As DataTable = Nothing
         Public ExistingUserControlItemSelected as boolean  = True
+        public IsOriginalEquipmentSelectedAndOutOfQuantity as Boolean = false
         
 #Region "SubmitWsBaseClaimRecordingResponse"
         Private _mSubmitWsBaseClaimRecordingResponse As BaseClaimRecordingResponse = Nothing
@@ -1789,7 +1790,7 @@ Public Class ClaimRecordingForm
                     .OrderBy("ClaimedDevice", LinqExtentions.SortDirection.Descending) _
                     .ThenBy(Function(d) d.Priority)
 
-
+            
             If replacements Is Nothing OrElse replacements.Count = 0 Then
                 ControlMgr.SetVisibleControl(Me, rep, False)
                 ControlMgr.SetEnableControl(Me, btnBestReplacementNotSelectedContinue, True)
@@ -1873,6 +1874,12 @@ Public Class ClaimRecordingForm
         Else
             wsRequest.IsBestReplacementDeviceSelected = True
             wsRequest.ReplacementDevice = State.BestReplacementDeviceSelected
+        End If
+
+        'set the flag to true when the original equipment is selected as replacement and it is out of stock 
+        If(Not wsRequest.ReplacementDevice is nothing AndAlso Not bestReplacement.OriginalDevice is Nothing _
+                AndAlso wsRequest.ReplacementDevice is bestReplacement.OriginalDevice AndAlso bestReplacement.OriginalDevice.InventoryQuantity = 0)
+            State.IsOriginalEquipmentSelectedAndOutOfQuantity = true
         End If
 
         Try
@@ -2738,7 +2745,8 @@ Public Class ClaimRecordingForm
             ' Delivery Options
             If Not logisticsOptionItem Is Nothing _
                AndAlso Not logisticsOptionItem.DeliveryOptions Is Nothing _
-               AndAlso logisticsOptionItem.DeliveryOptions.DisplayEstimatedDeliveryDate Then
+               AndAlso logisticsOptionItem.DeliveryOptions.DisplayEstimatedDeliveryDate _
+               AndAlso State.IsOriginalEquipmentSelectedAndOutOfQuantity Then
                 
                 ' TODO: Assign the delivery code/description when it comes in the contract
                 
