@@ -2745,8 +2745,7 @@ Public Class ClaimRecordingForm
             ' Delivery Options
             If Not logisticsOptionItem Is Nothing _
                AndAlso Not logisticsOptionItem.DeliveryOptions Is Nothing _
-               AndAlso logisticsOptionItem.DeliveryOptions.DisplayEstimatedDeliveryDate _
-               AndAlso State.IsOriginalEquipmentSelectedAndOutOfQuantity Then
+               AndAlso logisticsOptionItem.DeliveryOptions.DisplayEstimatedDeliveryDate AndAlso State.IsOriginalEquipmentSelectedAndOutOfQuantity Then
                 
                 ' TODO: Assign the delivery code/description when it comes in the contract
                 
