@@ -837,7 +837,7 @@
                                 FECHA DE COMPRA
                               </td>
                               <td>
-                                NO. DE SERIE
+                                TIPO DE PLAN
                               </td>
                             </tr>
                             <tr>
