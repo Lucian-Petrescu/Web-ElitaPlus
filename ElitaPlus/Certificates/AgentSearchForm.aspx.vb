@@ -47,7 +47,9 @@ Namespace Certificates
         Private Const CodeSearchFieldTaxId As String = "TAX_ID"
         Private Const CodeSearchFieldZip As String = "ZIP"
         Private Const SearchTypeXCD As String = "SEARCH_TYPE-AGENT_SEARCH"
-        Private Const CodeSearchFieldDob As String = "BIRTH_DATE"
+        Private Const CodeSearchFieldDob As String = "BIRTH_DATE_CAL"
+
+
 
 #End Region
 
@@ -89,9 +91,6 @@ Namespace Certificates
             Public PreviousDealerId As Guid = Guid.Empty
             Public ShowAdditionalSearchFields As Boolean = False
             Public Dob As String = String.Empty
-
-
-
             Sub New()
             End Sub
         End Class
@@ -303,7 +302,7 @@ Namespace Certificates
             State.CertificateStatus = GetSearchDropDownValue(CodeSearchFieldCertificateStatus)
 
             State.ShowAdditionalSearchFields = checkboxAdditionalSearchCriteria.Checked
-            State.Dob = txtDateOfBirth.Text
+            State.Dob = GetSearchTextBoxValue(CodeSearchFieldDob)
         End Sub
 
         Protected Sub SetSearchSettingToDefault(Optional ByVal setCompanyDealerValue As Boolean = False)
@@ -333,7 +332,6 @@ Namespace Certificates
             ResetSearchResult()
 
             checkboxAdditionalSearchCriteria.Checked = False
-            txtDateOfBirth.Text = String.Empty
         End Sub
         Protected Sub SetCompanyDealerDropdown(ByVal setCompanyDealerValue As Boolean)
             If Authentication.CurrentUser.IsDealer OrElse setCompanyDealerValue = True Then
@@ -363,6 +361,7 @@ Namespace Certificates
             SetSearchTextBox(CodeSearchFieldServiceLineNumber, State.ServiceLineNumber)
             SetSearchTextBox(CodeSearchFieldAccountNumber, State.AccountNumber)
             SetSearchTextBox(CodeSearchFieldGlobalCustomerNumber, State.GlobalCustomerNumber)
+            SetSearchTextBox(CodeSearchFieldDob, State.Dob)
 
             ' Dynamic controls - Drop down
             SetSearchDropDown(CodeSearchFieldCertificateStatus, State.CertificateStatus)
@@ -396,7 +395,11 @@ Namespace Certificates
                 If foundRows.Length > 0 Then
                     GenerateSearchCriteriaFields(foundRows)
                 End If
-                Me.AddCalendar_New(Me.btnDateOfBirth, Me.txtDateOfBirth)
+                Dim txtCtl As TextBox = TryCast(PanelHolderDynamicSearchCriteria.FindControl(CodeSearchFieldDob), TextBox)
+                Dim btnImg As ImageButton = TryCast(PanelHolderDynamicSearchCriteria.FindControl(CodeSearchFieldDob + "BTN"), ImageButton)
+                If (Not txtCtl Is Nothing And Not btnImg Is Nothing) Then
+                    Me.AddCalendar_New(btnImg, txtCtl)
+                End If
             End If
         End Sub
 
@@ -572,7 +575,31 @@ Namespace Certificates
             txt.AutoPostBack = False
             Return txt
         End Function
+        Private Function CreateCalendarControlField(ByVal calControl As String) As htmlControlsObj
+            Dim txt As New TextBox
+            txt.ID = calControl
+            txt.SkinID = "MediumTextBox"
+            txt.AutoPostBack = False
 
+            Dim btnimg As New ImageButton
+            btnimg.ID = calControl + "BTN"
+            btnimg.ImageUrl = "~/App_Themes/Default/Images/calendar.png"
+
+            Dim objcontrol As New htmlControlsObj
+            objcontrol.imgbtn = btnimg
+            objcontrol.txtboxcontrl = txt
+            Return objcontrol
+        End Function
+
+        'Private Function CreateImageButtonField(ByVal imageButtonName As String) As ImageButton
+
+        '    Dim btnimg As New ImageButton
+        '    btnimg.ID = "imageButtonName"
+        '    btnimg.ImageUrl = "~/App_Themes/Default/Images/calendar.png"
+        '    Dim txt5 As TextBox = TryCast(PanelHolderDynamicSearchCriteria.FindControl("TAX_ID"), TextBox)
+        '    'Me.AddCalendar_New(btnimg, txt5)
+        '    Return btnimg
+        'End Function
         Private Sub GenerateSearchCriteriaFields(ByVal foundRows() As DataRow)
             If foundRows.Length > 0 Then
                 ' Dim placeHolderDynamic As PlaceHolder = Page.FindControl(placeholdername)
@@ -602,6 +629,14 @@ Namespace Certificates
                             td.Controls.Add(CreateTextBoxField(fieldCode))
                         Case "dropdownlist"
                             td.Controls.Add(CreateDropdownField(fieldCode))
+                        Case "calendar"
+                            Dim obj As htmlControlsObj
+                            obj = CreateCalendarControlField(fieldCode)
+                            td.Controls.Add(obj.txtboxcontrl)
+                            tr.Controls.Add(td)
+                            td.Controls.Add(New LiteralControl("&nbsp"))
+                            td.Controls.Add(obj.imgbtn)
+
                         Case Else
                             Throw New NotSupportedException(fieldType.Trim().ToUpper())
                     End Select
@@ -979,5 +1014,9 @@ Namespace Certificates
         End Sub
 
 #End Region
+    End Class
+    Public Class htmlControlsObj
+        Public txtboxcontrl As TextBox
+        Public imgbtn As ImageButton
     End Class
 End Namespace
