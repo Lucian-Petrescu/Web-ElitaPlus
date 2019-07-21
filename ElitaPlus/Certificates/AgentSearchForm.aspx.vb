@@ -215,6 +215,7 @@ Namespace Certificates
                 Else
                     DisplayDynamicSearchCriteria()
                 End If
+                ShowHideFields()
                 DisplayNewProgressBarOnClick(btnSearch, "Loading_Agent")
             Catch ex As Exception
                 HandleErrors(ex, MasterPage.MessageController)
@@ -369,6 +370,24 @@ Namespace Certificates
             checkboxAdditionalSearchCriteria.Checked = State.ShowAdditionalSearchFields
         End Sub
 
+        Private Sub ShowHideFields()
+            If Not Me.State.CompanyId.IsEmpty Then
+                Dim countryCode As String = String.Empty
+                countryCode = BusinessObjectsNew.Claim.GetCountryCodeOverwrite(Me.State.CompanyId)
+                'temp solution for now but its need to change
+                If (countryCode = "JP") Then
+                    ControlMgr.SetVisibleControl(Me, checkboxAdditionalSearchCriteria, False)
+                End If
+            End If
+        End Sub
+        Public Function GetCountryCode() As String
+            Dim countryCode As String = String.Empty
+            If Not Me.State.CompanyId.IsEmpty Then
+                countryCode = BusinessObjectsNew.Claim.GetCountryCodeOverwrite(Me.State.CompanyId)
+            Else
+                Return countryCode
+            End If
+        End Function
         Private Sub GetDynamicSearchCriteria()
             If Not (State.CompanyId.Equals(State.PreviousCompanyId) And State.DealerId.Equals(State.PreviousDealerId)) Then
                 'Get all Search Criteria for the company and dealer
@@ -395,11 +414,7 @@ Namespace Certificates
                 If foundRows.Length > 0 Then
                     GenerateSearchCriteriaFields(foundRows)
                 End If
-                Dim txtCtl As TextBox = TryCast(PanelHolderDynamicSearchCriteria.FindControl(CodeSearchFieldDob), TextBox)
-                Dim btnImg As ImageButton = TryCast(PanelHolderDynamicSearchCriteria.FindControl(CodeSearchFieldDob + "BTN"), ImageButton)
-                If (Not txtCtl Is Nothing And Not btnImg Is Nothing) Then
-                    Me.AddCalendar_New(btnImg, txtCtl)
-                End If
+                ActivateCalendarClick()
             End If
         End Sub
 
@@ -631,10 +646,10 @@ Namespace Certificates
                             td.Controls.Add(CreateDropdownField(fieldCode))
                         Case "calendar"
                             Dim obj As htmlControlsObj
-                            obj = CreateCalendarControlField(fieldCode)
-                            td.Controls.Add(obj.txtboxcontrl)
-                            tr.Controls.Add(td)
-                            td.Controls.Add(New LiteralControl("&nbsp"))
+                                obj = CreateCalendarControlField(fieldCode)
+                                td.Controls.Add(obj.txtboxcontrl)
+                                tr.Controls.Add(td)
+                                td.Controls.Add(New LiteralControl("&nbsp"))
                             td.Controls.Add(obj.imgbtn)
 
                         Case Else
@@ -682,7 +697,13 @@ Namespace Certificates
             Return oDealerList.ToArray()
 
         End Function
-
+        Private Sub ActivateCalendarClick()
+            Dim txtCtl As TextBox = TryCast(PanelHolderDynamicSearchCriteria.FindControl(CodeSearchFieldDob), TextBox)
+            Dim btnImg As ImageButton = TryCast(PanelHolderDynamicSearchCriteria.FindControl(CodeSearchFieldDob + "BTN"), ImageButton)
+            If (Not txtCtl Is Nothing And Not btnImg Is Nothing) Then
+                Me.AddCalendar_New(btnImg, txtCtl)
+            End If
+        End Sub
         Private Function GetSearchTextBoxValue(ByVal textboxName As String) As String
             Dim txt As TextBox = TryCast(PanelHolderDynamicSearchCriteria.FindControl(textboxName), TextBox)
             If txt IsNot Nothing Then
