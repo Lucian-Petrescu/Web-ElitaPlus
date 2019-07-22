@@ -81,7 +81,6 @@ Public Class ClaimRecordingForm
         
         Public ExclSecFieldsDt As DataTable = Nothing
         Public ExistingUserControlItemSelected as boolean  = True
-        public IsOriginalEquipmentSelectedAndOutOfQuantity as Boolean = false
         
 #Region "SubmitWsBaseClaimRecordingResponse"
         Private _mSubmitWsBaseClaimRecordingResponse As BaseClaimRecordingResponse = Nothing
@@ -1875,13 +1874,7 @@ Public Class ClaimRecordingForm
             wsRequest.IsBestReplacementDeviceSelected = True
             wsRequest.ReplacementDevice = State.BestReplacementDeviceSelected
         End If
-
-        'set the flag to true when the original equipment is selected as replacement and it is out of stock 
-        If(Not wsRequest.ReplacementDevice is nothing AndAlso Not bestReplacement.OriginalDevice is Nothing _
-                AndAlso wsRequest.ReplacementDevice is bestReplacement.OriginalDevice AndAlso bestReplacement.OriginalDevice.InventoryQuantity = 0)
-            State.IsOriginalEquipmentSelectedAndOutOfQuantity = true
-        End If
-
+        
         Try
             Dim wsResponse = WcfClientHelper.Execute(Of ClaimRecordingServiceClient, IClaimRecordingService, BaseClaimRecordingResponse)(
                 GetClient(),
@@ -2744,7 +2737,7 @@ Public Class ClaimRecordingForm
             ' Delivery Options
             If Not logisticsOptionItem Is Nothing _
                AndAlso Not logisticsOptionItem.DeliveryOptions Is Nothing _
-               AndAlso logisticsOptionItem.DeliveryOptions.DisplayEstimatedDeliveryDate AndAlso State.IsOriginalEquipmentSelectedAndOutOfQuantity Then
+               AndAlso logisticsOptionItem.DeliveryOptions.DisplayEstimatedDeliveryDate Then
                 
                 ' TODO: Assign the delivery code/description when it comes in the contract
                 
