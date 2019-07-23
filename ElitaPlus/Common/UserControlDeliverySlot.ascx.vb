@@ -123,9 +123,12 @@ Public Class UserControlDeliverySlot
 
 #End Region
 #Region "Control Event"
-    Protected Sub Page_Load(ByVal sender As Object, ByVal e As EventArgs) Handles Me.Load
-    End Sub
 
+    Protected Sub Page_Load(ByVal sender As Object, ByVal e As EventArgs) Handles Me.Load
+        If (Page.IsPostBack) Then
+            TranslateLabels()
+        End If
+    End Sub
     Public Sub TranslateLabels()
         lblCourierProduct.Text = TranslationBase.TranslateLabelOrMessage("COURIER_PRODUCT")
         lblAvailableDeliveryTiming.Text = TranslationBase.TranslateLabelOrMessage("AVAILABLE_DELIVERY_TIMING")
