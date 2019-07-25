@@ -25,7 +25,7 @@ Namespace SpecializedServices.GW
         <DataMember(IsRequired:=False, Name:="AccountNumber"), StringLength(30, MinimumLength:=0)>
         Public Property AccountNumber As String
 
-        <DataMember(IsRequired:=False, Name:="ServiceLineNumber"), StringLength(25, MinimumLength:=0)>
+        <DataMember(IsRequired:=False, Name:="ServiceLineNumber"), StringLength(50, MinimumLength:=0)>
         Public Property ServiceLineNumber As String
 
         <DataMember(IsRequired:=False, Name:="TaxId"), StringLength(20, MinimumLength:=0)>
