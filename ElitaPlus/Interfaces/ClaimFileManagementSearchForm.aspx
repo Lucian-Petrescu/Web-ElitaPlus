@@ -49,7 +49,7 @@
                 <asp:Label runat="server" ID="moSearchResultsHeader">SEARCH_RESULTS</asp:Label>
             </h2>
             <div class="Page" runat="server" id="moDataGrid_WRITE1" style="height: 100%; overflow: auto; width: 100%;">
-                <asp:GridView ID="DataGridView" runat="server" Width="100%" AllowPaging="False" AllowSorting="True"
+                <asp:GridView ID="DataGridView" runat="server" Width="100%" AllowPaging="True" AllowCustomPaging="true" AllowSorting="False"
                     CellPadding="1" AutoGenerateColumns="False" SkinID="DetailPageGridView"> 
                     <SelectedRowStyle Wrap="False"></SelectedRowStyle>
                     <EditRowStyle Wrap="False"></EditRowStyle>
@@ -95,14 +95,14 @@
                                     CommandArgument="<%#Container.DisplayIndex %>" CausesValidation="false"></asp:LinkButton>
                             </ItemTemplate>
                         </asp:TemplateField>
-                        <asp:TemplateField HeaderText="Processed">
-                            <HeaderStyle Wrap="False" Width="1%"></HeaderStyle>
+                        <asp:BoundField DataField="QueuedRecords" HeaderText="Requeued">
+                            <HeaderStyle Wrap="False" HorizontalAlign="Center" Width="1%"></HeaderStyle>
                             <ItemStyle HorizontalAlign="Center"></ItemStyle>
-                            <ItemTemplate>
-                                <asp:LinkButton ID="BtnShowProcessed" runat="server" CommandName="ShowRecordProcessed" 
-                                    CommandArgument="<%#Container.DisplayIndex %>" CausesValidation="false"></asp:LinkButton>
-                            </ItemTemplate>
-                        </asp:TemplateField>
+                        </asp:BoundField>
+                        <asp:BoundField DataField="ProcessedRecords" HeaderText="Processed">
+                            <HeaderStyle Wrap="False" HorizontalAlign="Center" Width="1%"></HeaderStyle>
+                            <ItemStyle HorizontalAlign="Center"></ItemStyle>
+                        </asp:BoundField>
                         <asp:TemplateField HeaderText="Status">
                             <HeaderStyle Wrap="False" Width="1%" HorizontalAlign="Center"></HeaderStyle>
                             <ItemStyle HorizontalAlign="Center"></ItemStyle>
@@ -119,8 +119,10 @@
     <%-- <div class="btnZone"> --%>
     <div class="btnZone">
         <asp:Panel ID="moButtonPanel" runat="server" Visible="True">
-            <asp:Button ID="BtnProcessFile" runat="server" Enabled="false" CausesValidation="False"  
-                Text="PROCESS_RECORDS" SkinID="AlternateLeftButton"></asp:Button>&nbsp;
+            <asp:Button ID="BtnRefresh" runat="server" Enabled="true" CausesValidation="False"  
+                Text="REFRESH" SkinID="AlternateLeftButton"></asp:Button>&nbsp;
+            <asp:Button ID="BtnReprocessFile" runat="server" Enabled="false" CausesValidation="False"  
+                Text="REPROCESS" SkinID="AlternateLeftButton"></asp:Button>&nbsp;
             <asp:Button ID="BtnDeleteFile" runat="server" Enabled="false" CausesValidation="False"
                 Text="DELETE" SkinID="AlternateLeftButton"></asp:Button>
         </asp:Panel>

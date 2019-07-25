@@ -34,8 +34,8 @@ Public Class ClaimFileManagementSearchForm
 
     Private Const MSG_RECORD_DELETED_OK As String = "MSG_RECORD_DELETED_OK"
     Private Const MSG_RECORD_DELETED_FAILED As String = "MSG_RECORD_DELETED_FAILED"
-    Private Const MSG_RECORD_PROCESSED_OK As String = "MSG_RECORD_PROCESSED_OK"
-    Private Const MSG_RECORD_PROCESSED_FAILED As String = "MSG_RECORD_PROCESSED_FAILED"
+    Private Const MSG_RECORDS_REPROCESSED_OK As String = "MSG_RECORDS_REPROCESSED_OK"
+    Private Const MSG_RECORDS_REPROCESSED_FAILED As String = "MSG_RECORDS_REPROCESSED_FAILED"
 
     Public Const GRID_COL_FILE_IDENTIFIER_IDX As Integer = 0
     Public Const GRID_COL_SELECT_IDX As Integer = 1
@@ -44,8 +44,9 @@ Public Class ClaimFileManagementSearchForm
     Public Const GRID_COL_COUNTED_IDX As Integer = 4
     Public Const GRID_COL_REJECTED_IDX As Integer = 5
     Public Const GRID_COL_VALIDATED_IDX As Integer = 6
-    Public Const GRID_COL_LOADED_IDX As Integer = 7
-    Public Const GRID_COL_STATUS_IDX As Integer = 8
+    Public Const GRID_COL_QUEUED_IDX As Integer = 7
+    Public Const GRID_COL_LOADED_IDX As Integer = 8
+    Public Const GRID_COL_STATUS_IDX As Integer = 9
 
     Public Const GRID_COL_FILENAME As String = "LogicalFileName"
     Public Const GRID_COL_RECEIVED As String = "ReceivedRecords"
@@ -108,9 +109,9 @@ Public Class ClaimFileManagementSearchForm
 
                 End Select
 
-                DataGridView.PageIndex = State.PageIndex
-                cboPageSize.SelectedValue = CType(State.PageSize, String)
-                DataGridView.PageSize = State.PageSize
+                DataGridView.PageIndex = State.PagingInfo.PageIndex
+                cboPageSize.SelectedValue = CType(State.PagingInfo.PageSize, String)
+                DataGridView.PageSize = State.PagingInfo.PageSize
 
                 ControlMgr.SetVisibleControl(Me, trPageSize, DataGridView.Visible)
             End If
@@ -124,15 +125,12 @@ Public Class ClaimFileManagementSearchForm
 
 #Region "Page State"
     Class MyState
-        Public PageIndex As Integer = 0
-        Public PageSize As Integer = 30
+        Public PagingInfo As PagingFilter
         Public PageSort As String
         REM ---------------
         Public IsGridVisible As Boolean
-        Public SelectedPageSize As Integer = DEFAULT_PAGE_SIZE
         Public IsReturningFromChild As Boolean
         Public SearchDV As IEnumerable(Of FileInfoDto) = Nothing
-        Public SortExpression As String = "file_name desc "
         Public SelectedIndex As Integer = -1
         REM ---------------
 
@@ -207,9 +205,7 @@ Public Class ClaimFileManagementSearchForm
 
         Public ReadOnly Property RecordsProcessed As Integer
             Get
-                Dim oLinkButton As LinkButton = CType(SelectedGridRow.FindControl(GRID_LINK_BTN_PROCESSED), LinkButton)
-
-                Return CInt(oLinkButton.Text)
+                Return CInt(SelectedGridRow.Cells(GRID_COL_LOADED_IDX).Text)
             End Get
         End Property
 
@@ -276,16 +272,15 @@ Public Class ClaimFileManagementSearchForm
             If Not IsPostBack Then
                 TranslateGridHeader(DataGridView)
 
-                ControlMgr.SetVisibleControl(Me, trPageSize, State.IsReturningFromChild)
-
                 If State.IsGridVisible Then
-                    If Not (State.SelectedPageSize = DEFAULT_PAGE_SIZE) Then
-                        cboPageSize.SelectedValue = CType(State.SelectedPageSize, String)
-                        DataGridView.PageSize = State.SelectedPageSize
+                    If Not (State.PagingInfo.PageSize = DEFAULT_PAGE_SIZE) Then
+                        cboPageSize.SelectedValue = CType(State.PagingInfo.PageSize, String)
+                        DataGridView.PageSize = State.PagingInfo.PageSize
                     End If
                 End If
 
                 SetGridItemStyleColor(DataGridView)
+                State.PagingInfo = New PagingFilter With {.PageIndex = DEFAULT_PAGE_INDEX, .PageSize = DEFAULT_PAGE_SIZE}
 
                 If IsReturningFromChild Then
                     PopulateGrid(True)
@@ -336,6 +331,8 @@ Public Class ClaimFileManagementSearchForm
         Try
             If State.SearchDV Is Nothing OrElse RefreshData Then
                 LoadClaimFileInfo(RefreshData)
+
+                ControlMgr.SetVisibleControl(Me, trPageSize, State.SearchDV.Any())
             End If
 
             If (DataGridView.BottomPagerRow IsNot Nothing AndAlso Not DataGridView.BottomPagerRow.Visible) Then
@@ -356,17 +353,35 @@ Public Class ClaimFileManagementSearchForm
 
     Private Sub LoadClaimFileInfo(Optional ByVal refreshData As Boolean = False)
         Try
+            Dim SearchInfo As SearchCriteria = New SearchCriteria With
+            {
+                .RecordFilter = Nothing,
+                .PagingFilter = State.PagingInfo
+            }
+
             Dim wsResponse As FileInfoDto() = WcfClientHelper.Execute(Of FileManagerAdminClient, FileManagerAdmin, FileInfoDto())(
-                    GetClient(),
-                    New List(Of Object) From {New InteractiveUserHeader() With {.LanId = Authentication.CurrentUser.NetworkId}},
-                    Function(ByVal c As FileManagerAdminClient)
-                        Return c.SearchFileInfoRecords()
-                    End Function)
+                GetClient(),
+                New List(Of Object) From {New InteractiveUserHeader() With {.LanId = Authentication.CurrentUser.NetworkId}},
+                Function(ByVal c As FileManagerAdminClient)
+                    Return c.SearchFileInfoRecords(SearchInfo)
+                End Function)
 
             If (Response IsNot Nothing) Then
                 State.SearchDV = wsResponse
 
                 DataGridView.DataSource = State.SearchDV
+
+                DataGridView.PageSize = State.PagingInfo.PageSize
+                DataGridView.PageIndex = State.PagingInfo.PageIndex
+
+                DataGridView.VirtualItemCount =
+                    WcfClientHelper.Execute(Of FileManagerAdminClient, FileManagerAdmin, FileInfoDto())(
+                    GetClient(),
+                    New List(Of Object) From {New InteractiveUserHeader() With {.LanId = Authentication.CurrentUser.NetworkId}},
+                    Function(ByVal c As FileManagerAdminClient)
+                        Return c.SearchFileInfoRecords(Nothing)
+                    End Function).Count
+
                 DataGridView.DataBind()
             End If
 
@@ -468,19 +483,39 @@ Public Class ClaimFileManagementSearchForm
         End Get
     End Property
 
+
+    Private Sub BtnRefresh_Click(sender As Object, e As EventArgs) Handles BtnRefresh.Click
+        Try
+            PopulateGrid(True)
+
+        Catch ex As Exception
+            ThePage.HandleErrors(ex, ThePage.MasterPage.MessageController)
+
+        Finally
+            State.SelectedIndex = -1
+            ShowPageDisplay()
+
+        End Try
+    End Sub
+
     Private Sub BtnDeleteFile_Click(sender As Object, e As EventArgs) Handles BtnDeleteFile.Click
         Try
             Dim SelectedFile As FileInfoSummary = State.SelectedFile
 
             If (SelectedFile IsNot Nothing) Then
+                Dim Message As String
+
                 If (DeleteClaimFileInfo(SelectedFile.FileIndentifier)) Then
-                    MasterPage.MessageController.AddSuccess(MSG_RECORD_DELETED_OK)
+                    Message = TranslationBase.TranslateLabelOrMessage(MSG_RECORD_DELETED_OK)
 
                     PopulateGrid(True)
+
                 Else
-                    MasterPage.MessageController.AddMessage(MSG_RECORD_DELETED_FAILED)
+                    Message = TranslationBase.TranslateLabelOrMessage(MSG_RECORD_DELETED_FAILED)
 
                 End If
+
+                MasterPage.MessageController.AddSuccess(Message)
             End If
 
         Catch ex As Exception
@@ -492,17 +527,18 @@ Public Class ClaimFileManagementSearchForm
 
         End Try
     End Sub
-    Private Sub BtnProcessFile_Click(sender As Object, e As EventArgs) Handles BtnProcessFile.Click
+
+    Private Sub BtnReprocessFile_Click(sender As Object, e As EventArgs) Handles BtnReprocessFile.Click
         Try
             Dim SelectedFile As FileInfoSummary = State.SelectedFile
 
             If (SelectedFile IsNot Nothing) Then
                 If (ReprocessFileInfoRecords(SelectedFile.FileIndentifier)) Then
-                    MasterPage.MessageController.AddSuccess(MSG_RECORD_PROCESSED_OK)
+                    MasterPage.MessageController.AddSuccess(MSG_RECORDS_REPROCESSED_OK)
 
                     PopulateGrid(True)
                 Else
-                    MasterPage.MessageController.AddMessage(MSG_RECORD_PROCESSED_FAILED)
+                    MasterPage.MessageController.AddMessage(MSG_RECORDS_REPROCESSED_FAILED)
 
                 End If
             End If
@@ -516,7 +552,6 @@ Public Class ClaimFileManagementSearchForm
 
         End Try
     End Sub
-
 
 #End Region
 
@@ -534,38 +569,66 @@ Public Class ClaimFileManagementSearchForm
 
     Private Sub EnableDisableButtons()
 
+        ControlMgr.SetEnableControl(ThePage, BtnRefresh, True)
         DataGridView.SelectedIndex = State.SelectedIndex
 
         Dim SelectedFile As FileInfoSummary = State.SelectedFile
 
         If (SelectedFile Is Nothing) Then
-            ControlMgr.SetEnableControl(ThePage, BtnProcessFile, False)
+            ControlMgr.SetEnableControl(ThePage, BtnReprocessFile, False)
             ControlMgr.SetEnableControl(ThePage, BtnDeleteFile, False)
 
         Else
-            ControlMgr.SetEnableControl(ThePage, BtnProcessFile, SelectedFile.FileReprocessingIsAvailable)
+            ControlMgr.SetEnableControl(ThePage, BtnReprocessFile, SelectedFile.FileReprocessingIsAvailable)
             ControlMgr.SetEnableControl(ThePage, BtnDeleteFile, SelectedFile.FileDeletionIsAvailable)
 
         End If
 
     End Sub
 
+    Private Sub Grid_PageSizeChanged(ByVal source As Object, ByVal e As System.EventArgs) Handles cboPageSize.SelectedIndexChanged
+        Try
+            Dim PageSize As Integer = CType(cboPageSize.SelectedValue, Int32)
+
+            State.PagingInfo = New PagingFilter With {.PageIndex = DEFAULT_PAGE_INDEX, .PageSize = PageSize}
+            PopulateGrid(True)
+
+        Catch ex As Exception
+            HandleErrors(ex, Me.MasterPage.MessageController)
+
+        End Try
+    End Sub
+
+    Private Sub Grid_PageIndexChanging(ByVal source As Object, ByVal e As System.Web.UI.WebControls.GridViewPageEventArgs) Handles DataGridView.PageIndexChanging
+        Try
+            State.PagingInfo = New PagingFilter With {.PageIndex = e.NewPageIndex, .PageSize = State.PagingInfo.PageSize}
+            PopulateGrid(True)
+
+        Catch ex As Exception
+            HandleErrors(ex, Me.MasterPage.MessageController)
+
+        End Try
+    End Sub
+
+
     Protected Sub DataGridView_RowCommand(sender As Object, e As GridViewCommandEventArgs) Handles DataGridView.RowCommand
         Try
-            State.PageIndex = DataGridView.PageIndex
-            State.SelectedIndex = CInt(e.CommandArgument)
+            If (Not e.CommandName.Equals("Page")) Then
+                State.PagingInfo.PageIndex = DataGridView.PageIndex
+                State.SelectedIndex = CInt(e.CommandArgument)
 
-            Dim SelectedFile As FileInfoSummary = New FileInfoSummary(DataGridView.Rows(State.SelectedIndex))
+                Dim SelectedFile As FileInfoSummary = New FileInfoSummary(DataGridView.Rows(State.SelectedIndex))
 
-            If (e.CommandName = GRID_LINK_BTN_SELECT) Then
-                State.SelectedFile = SelectedFile
-                ShowPageDisplay()
+                If (e.CommandName = GRID_LINK_BTN_SELECT) Then
+                    State.SelectedFile = SelectedFile
+                    ShowPageDisplay()
 
-            Else
-                If (SelectedFile IsNot Nothing) Then
-                    ThePage.callPage(ClaimFileManagementDetailForm.PageUrl, SelectedFile.ClaimFileParams(e.CommandName))
+                Else
+                    If (SelectedFile IsNot Nothing) Then
+                        ThePage.callPage(ClaimFileManagementDetailForm.PageUrl, SelectedFile.ClaimFileParams(e.CommandName))
+                    End If
+
                 End If
-
             End If
 
         Catch ex As Threading.ThreadAbortException
@@ -598,9 +661,8 @@ Public Class ClaimFileManagementSearchForm
                         ThePage.PopulateControlFromBOProperty(oLinkButton, fileInfo.ValidatedRecords)
                         oLinkButton.Enabled = fileInfo.ValidatedRecords > 0
 
-                        oLinkButton = CType(.FindControl(GRID_LINK_BTN_PROCESSED), LinkButton)
-                        ThePage.PopulateControlFromBOProperty(oLinkButton, fileInfo.ProcessedRecords)
-                        oLinkButton.Enabled = fileInfo.ProcessedRecords > 0
+                        ThePage.PopulateControlFromBOProperty(.Cells(GRID_COL_QUEUED_IDX), fileInfo.QueuedRecords)
+                        ThePage.PopulateControlFromBOProperty(.Cells(GRID_COL_LOADED_IDX), fileInfo.ProcessedRecords) ' processed records are removed from service fabric; available in azure storage only.
 
                         oStatusLabel = CType(.FindControl(GRID_LINK_BTN_STATUS), Label)
                         ThePage.PopulateControlFromBOProperty(oStatusLabel, System.Enum.GetName(GetType(FileStateType), fileInfo.FileState))

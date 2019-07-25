@@ -33,6 +33,15 @@ Namespace Interfaces
         Protected WithEvents lblPageSize As Global.System.Web.UI.WebControls.Label
         
         '''<summary>
+        '''colonSepertor control.
+        '''</summary>
+        '''<remarks>
+        '''Auto-generated field.
+        '''To modify move field declaration from designer file to code-behind file.
+        '''</remarks>
+        Protected WithEvents colonSepertor As Global.System.Web.UI.WebControls.Label
+        
+        '''<summary>
         '''cboPageSize control.
         '''</summary>
         '''<remarks>

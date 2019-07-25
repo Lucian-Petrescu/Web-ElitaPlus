@@ -105,6 +105,212 @@ Namespace FileManagerAdminService
     
     <System.Diagnostics.DebuggerStepThroughAttribute(),  _
      System.CodeDom.Compiler.GeneratedCodeAttribute("System.Runtime.Serialization", "4.0.0.0"),  _
+     System.Runtime.Serialization.DataContractAttribute(Name:="SearchCriteria", [Namespace]:="http://assurant.com/Elita/FileManager/Data"),  _
+     System.SerializableAttribute()>  _
+    Partial Public Class SearchCriteria
+        Inherits Object
+        Implements System.Runtime.Serialization.IExtensibleDataObject, System.ComponentModel.INotifyPropertyChanged
+        
+        <System.NonSerializedAttribute()>  _
+        Private extensionDataField As System.Runtime.Serialization.ExtensionDataObject
+        
+        <System.Runtime.Serialization.OptionalFieldAttribute()>  _
+        Private PagingFilterField As FileManagerAdminService.PagingFilter
+        
+        <System.Runtime.Serialization.OptionalFieldAttribute()>  _
+        Private RecordFilterField As FileManagerAdminService.RecordFilter
+        
+        <Global.System.ComponentModel.BrowsableAttribute(false)>  _
+        Public Property ExtensionData() As System.Runtime.Serialization.ExtensionDataObject Implements System.Runtime.Serialization.IExtensibleDataObject.ExtensionData
+            Get
+                Return Me.extensionDataField
+            End Get
+            Set
+                Me.extensionDataField = value
+            End Set
+        End Property
+        
+        <System.Runtime.Serialization.DataMemberAttribute()>  _
+        Public Property PagingFilter() As FileManagerAdminService.PagingFilter
+            Get
+                Return Me.PagingFilterField
+            End Get
+            Set
+                If (Object.ReferenceEquals(Me.PagingFilterField, value) <> true) Then
+                    Me.PagingFilterField = value
+                    Me.RaisePropertyChanged("PagingFilter")
+                End If
+            End Set
+        End Property
+        
+        <System.Runtime.Serialization.DataMemberAttribute()>  _
+        Public Property RecordFilter() As FileManagerAdminService.RecordFilter
+            Get
+                Return Me.RecordFilterField
+            End Get
+            Set
+                If (Object.ReferenceEquals(Me.RecordFilterField, value) <> true) Then
+                    Me.RecordFilterField = value
+                    Me.RaisePropertyChanged("RecordFilter")
+                End If
+            End Set
+        End Property
+        
+        Public Event PropertyChanged As System.ComponentModel.PropertyChangedEventHandler Implements System.ComponentModel.INotifyPropertyChanged.PropertyChanged
+        
+        Protected Sub RaisePropertyChanged(ByVal propertyName As String)
+            Dim propertyChanged As System.ComponentModel.PropertyChangedEventHandler = Me.PropertyChangedEvent
+            If (Not (propertyChanged) Is Nothing) Then
+                propertyChanged(Me, New System.ComponentModel.PropertyChangedEventArgs(propertyName))
+            End If
+        End Sub
+    End Class
+    
+    <System.Diagnostics.DebuggerStepThroughAttribute(),  _
+     System.CodeDom.Compiler.GeneratedCodeAttribute("System.Runtime.Serialization", "4.0.0.0"),  _
+     System.Runtime.Serialization.DataContractAttribute(Name:="PagingFilter", [Namespace]:="http://assurant.com/Elita/FileManager/Data"),  _
+     System.SerializableAttribute()>  _
+    Partial Public Class PagingFilter
+        Inherits Object
+        Implements System.Runtime.Serialization.IExtensibleDataObject, System.ComponentModel.INotifyPropertyChanged
+        
+        <System.NonSerializedAttribute()>  _
+        Private extensionDataField As System.Runtime.Serialization.ExtensionDataObject
+        
+        <System.Runtime.Serialization.OptionalFieldAttribute()>  _
+        Private PageIndexField As Integer
+        
+        <System.Runtime.Serialization.OptionalFieldAttribute()>  _
+        Private PageSizeField As Integer
+        
+        <Global.System.ComponentModel.BrowsableAttribute(false)>  _
+        Public Property ExtensionData() As System.Runtime.Serialization.ExtensionDataObject Implements System.Runtime.Serialization.IExtensibleDataObject.ExtensionData
+            Get
+                Return Me.extensionDataField
+            End Get
+            Set
+                Me.extensionDataField = value
+            End Set
+        End Property
+        
+        <System.Runtime.Serialization.DataMemberAttribute()>  _
+        Public Property PageIndex() As Integer
+            Get
+                Return Me.PageIndexField
+            End Get
+            Set
+                If (Me.PageIndexField.Equals(value) <> true) Then
+                    Me.PageIndexField = value
+                    Me.RaisePropertyChanged("PageIndex")
+                End If
+            End Set
+        End Property
+        
+        <System.Runtime.Serialization.DataMemberAttribute()>  _
+        Public Property PageSize() As Integer
+            Get
+                Return Me.PageSizeField
+            End Get
+            Set
+                If (Me.PageSizeField.Equals(value) <> true) Then
+                    Me.PageSizeField = value
+                    Me.RaisePropertyChanged("PageSize")
+                End If
+            End Set
+        End Property
+        
+        Public Event PropertyChanged As System.ComponentModel.PropertyChangedEventHandler Implements System.ComponentModel.INotifyPropertyChanged.PropertyChanged
+        
+        Protected Sub RaisePropertyChanged(ByVal propertyName As String)
+            Dim propertyChanged As System.ComponentModel.PropertyChangedEventHandler = Me.PropertyChangedEvent
+            If (Not (propertyChanged) Is Nothing) Then
+                propertyChanged(Me, New System.ComponentModel.PropertyChangedEventArgs(propertyName))
+            End If
+        End Sub
+    End Class
+    
+    <System.Diagnostics.DebuggerStepThroughAttribute(),  _
+     System.CodeDom.Compiler.GeneratedCodeAttribute("System.Runtime.Serialization", "4.0.0.0"),  _
+     System.Runtime.Serialization.DataContractAttribute(Name:="RecordFilter", [Namespace]:="http://assurant.com/Elita/FileManager/Data"),  _
+     System.SerializableAttribute()>  _
+    Partial Public Class RecordFilter
+        Inherits Object
+        Implements System.Runtime.Serialization.IExtensibleDataObject, System.ComponentModel.INotifyPropertyChanged
+        
+        <System.NonSerializedAttribute()>  _
+        Private extensionDataField As System.Runtime.Serialization.ExtensionDataObject
+        
+        <System.Runtime.Serialization.OptionalFieldAttribute()>  _
+        Private RecordStateField As FileManagerAdminService.RecordStateType
+        
+        <Global.System.ComponentModel.BrowsableAttribute(false)>  _
+        Public Property ExtensionData() As System.Runtime.Serialization.ExtensionDataObject Implements System.Runtime.Serialization.IExtensibleDataObject.ExtensionData
+            Get
+                Return Me.extensionDataField
+            End Get
+            Set
+                Me.extensionDataField = value
+            End Set
+        End Property
+        
+        <System.Runtime.Serialization.DataMemberAttribute()>  _
+        Public Property RecordState() As FileManagerAdminService.RecordStateType
+            Get
+                Return Me.RecordStateField
+            End Get
+            Set
+                If (Me.RecordStateField.Equals(value) <> true) Then
+                    Me.RecordStateField = value
+                    Me.RaisePropertyChanged("RecordState")
+                End If
+            End Set
+        End Property
+        
+        Public Event PropertyChanged As System.ComponentModel.PropertyChangedEventHandler Implements System.ComponentModel.INotifyPropertyChanged.PropertyChanged
+        
+        Protected Sub RaisePropertyChanged(ByVal propertyName As String)
+            Dim propertyChanged As System.ComponentModel.PropertyChangedEventHandler = Me.PropertyChangedEvent
+            If (Not (propertyChanged) Is Nothing) Then
+                propertyChanged(Me, New System.ComponentModel.PropertyChangedEventArgs(propertyName))
+            End If
+        End Sub
+    End Class
+    
+    <System.CodeDom.Compiler.GeneratedCodeAttribute("System.Runtime.Serialization", "4.0.0.0"),  _
+     System.Runtime.Serialization.DataContractAttribute(Name:="RecordStateType", [Namespace]:="http://schemas.datacontract.org/2004/07/Assurant.Elita.ClaimManagement.Extension."& _ 
+        "FileManager.Contracts")>  _
+    Public Enum RecordStateType As Integer
+        
+        <System.Runtime.Serialization.EnumMemberAttribute()>  _
+        Initialized = 0
+        
+        <System.Runtime.Serialization.EnumMemberAttribute()>  _
+        Counted = 1
+        
+        <System.Runtime.Serialization.EnumMemberAttribute()>  _
+        Validated = 2
+        
+        <System.Runtime.Serialization.EnumMemberAttribute()>  _
+        ReadyToQueue = 3
+        
+        <System.Runtime.Serialization.EnumMemberAttribute()>  _
+        Queued = 4
+        
+        <System.Runtime.Serialization.EnumMemberAttribute()>  _
+        Rejected = 5
+        
+        <System.Runtime.Serialization.EnumMemberAttribute()>  _
+        Processed = 6
+        
+        <System.Runtime.Serialization.EnumMemberAttribute()>  _
+        ByPassed = 7
+        
+        <System.Runtime.Serialization.EnumMemberAttribute()>  _
+        ParsingFailed = 8
+    End Enum
+    
+    <System.Diagnostics.DebuggerStepThroughAttribute(),  _
+     System.CodeDom.Compiler.GeneratedCodeAttribute("System.Runtime.Serialization", "4.0.0.0"),  _
      System.Runtime.Serialization.DataContractAttribute(Name:="FileInfoDto", [Namespace]:="http://assurant.com/Elita/FileManager/Data"),  _
      System.SerializableAttribute()>  _
     Partial Public Class FileInfoDto
@@ -935,39 +1141,6 @@ Namespace FileManagerAdminService
             End Set
         End Property
     End Class
-    
-    <System.CodeDom.Compiler.GeneratedCodeAttribute("System.Runtime.Serialization", "4.0.0.0"),  _
-     System.Runtime.Serialization.DataContractAttribute(Name:="RecordStateType", [Namespace]:="http://schemas.datacontract.org/2004/07/Assurant.Elita.ClaimManagement.Extension."& _ 
-        "FileManager.Contracts")>  _
-    Public Enum RecordStateType As Integer
-        
-        <System.Runtime.Serialization.EnumMemberAttribute()>  _
-        Initialized = 0
-        
-        <System.Runtime.Serialization.EnumMemberAttribute()>  _
-        Counted = 1
-        
-        <System.Runtime.Serialization.EnumMemberAttribute()>  _
-        Validated = 2
-        
-        <System.Runtime.Serialization.EnumMemberAttribute()>  _
-        ReadyToQueue = 3
-        
-        <System.Runtime.Serialization.EnumMemberAttribute()>  _
-        Queued = 4
-        
-        <System.Runtime.Serialization.EnumMemberAttribute()>  _
-        Rejected = 5
-        
-        <System.Runtime.Serialization.EnumMemberAttribute()>  _
-        Processed = 6
-        
-        <System.Runtime.Serialization.EnumMemberAttribute()>  _
-        ByPassed = 7
-        
-        <System.Runtime.Serialization.EnumMemberAttribute()>  _
-        ParsingFailed = 8
-    End Enum
     
     <System.Diagnostics.DebuggerStepThroughAttribute(),  _
      System.CodeDom.Compiler.GeneratedCodeAttribute("System.Runtime.Serialization", "4.0.0.0"),  _
@@ -2022,132 +2195,6 @@ Namespace FileManagerAdminService
         End Sub
     End Class
     
-    <System.Diagnostics.DebuggerStepThroughAttribute(),  _
-     System.CodeDom.Compiler.GeneratedCodeAttribute("System.Runtime.Serialization", "4.0.0.0"),  _
-     System.Runtime.Serialization.DataContractAttribute(Name:="SearchFilter", [Namespace]:="http://assurant.com/Elita/FileManager/Data"),  _
-     System.SerializableAttribute()>  _
-    Partial Public Class SearchFilter
-        Inherits Object
-        Implements System.Runtime.Serialization.IExtensibleDataObject, System.ComponentModel.INotifyPropertyChanged
-        
-        <System.NonSerializedAttribute()>  _
-        Private extensionDataField As System.Runtime.Serialization.ExtensionDataObject
-        
-        <System.Runtime.Serialization.OptionalFieldAttribute()>  _
-        Private PagingFilterField As FileManagerAdminService.PagingFilter
-        
-        <System.Runtime.Serialization.OptionalFieldAttribute()>  _
-        Private RecordStateField As FileManagerAdminService.RecordStateType
-        
-        <Global.System.ComponentModel.BrowsableAttribute(false)>  _
-        Public Property ExtensionData() As System.Runtime.Serialization.ExtensionDataObject Implements System.Runtime.Serialization.IExtensibleDataObject.ExtensionData
-            Get
-                Return Me.extensionDataField
-            End Get
-            Set
-                Me.extensionDataField = value
-            End Set
-        End Property
-        
-        <System.Runtime.Serialization.DataMemberAttribute()>  _
-        Public Property PagingFilter() As FileManagerAdminService.PagingFilter
-            Get
-                Return Me.PagingFilterField
-            End Get
-            Set
-                If (Object.ReferenceEquals(Me.PagingFilterField, value) <> true) Then
-                    Me.PagingFilterField = value
-                    Me.RaisePropertyChanged("PagingFilter")
-                End If
-            End Set
-        End Property
-        
-        <System.Runtime.Serialization.DataMemberAttribute()>  _
-        Public Property RecordState() As FileManagerAdminService.RecordStateType
-            Get
-                Return Me.RecordStateField
-            End Get
-            Set
-                If (Me.RecordStateField.Equals(value) <> true) Then
-                    Me.RecordStateField = value
-                    Me.RaisePropertyChanged("RecordState")
-                End If
-            End Set
-        End Property
-        
-        Public Event PropertyChanged As System.ComponentModel.PropertyChangedEventHandler Implements System.ComponentModel.INotifyPropertyChanged.PropertyChanged
-        
-        Protected Sub RaisePropertyChanged(ByVal propertyName As String)
-            Dim propertyChanged As System.ComponentModel.PropertyChangedEventHandler = Me.PropertyChangedEvent
-            If (Not (propertyChanged) Is Nothing) Then
-                propertyChanged(Me, New System.ComponentModel.PropertyChangedEventArgs(propertyName))
-            End If
-        End Sub
-    End Class
-    
-    <System.Diagnostics.DebuggerStepThroughAttribute(),  _
-     System.CodeDom.Compiler.GeneratedCodeAttribute("System.Runtime.Serialization", "4.0.0.0"),  _
-     System.Runtime.Serialization.DataContractAttribute(Name:="PagingFilter", [Namespace]:="http://assurant.com/Elita/FileManager/Data"),  _
-     System.SerializableAttribute()>  _
-    Partial Public Class PagingFilter
-        Inherits Object
-        Implements System.Runtime.Serialization.IExtensibleDataObject, System.ComponentModel.INotifyPropertyChanged
-        
-        <System.NonSerializedAttribute()>  _
-        Private extensionDataField As System.Runtime.Serialization.ExtensionDataObject
-        
-        <System.Runtime.Serialization.OptionalFieldAttribute()>  _
-        Private PageIndexField As Integer
-        
-        <System.Runtime.Serialization.OptionalFieldAttribute()>  _
-        Private PageSizeField As Integer
-        
-        <Global.System.ComponentModel.BrowsableAttribute(false)>  _
-        Public Property ExtensionData() As System.Runtime.Serialization.ExtensionDataObject Implements System.Runtime.Serialization.IExtensibleDataObject.ExtensionData
-            Get
-                Return Me.extensionDataField
-            End Get
-            Set
-                Me.extensionDataField = value
-            End Set
-        End Property
-        
-        <System.Runtime.Serialization.DataMemberAttribute()>  _
-        Public Property PageIndex() As Integer
-            Get
-                Return Me.PageIndexField
-            End Get
-            Set
-                If (Me.PageIndexField.Equals(value) <> true) Then
-                    Me.PageIndexField = value
-                    Me.RaisePropertyChanged("PageIndex")
-                End If
-            End Set
-        End Property
-        
-        <System.Runtime.Serialization.DataMemberAttribute()>  _
-        Public Property PageSize() As Integer
-            Get
-                Return Me.PageSizeField
-            End Get
-            Set
-                If (Me.PageSizeField.Equals(value) <> true) Then
-                    Me.PageSizeField = value
-                    Me.RaisePropertyChanged("PageSize")
-                End If
-            End Set
-        End Property
-        
-        Public Event PropertyChanged As System.ComponentModel.PropertyChangedEventHandler Implements System.ComponentModel.INotifyPropertyChanged.PropertyChanged
-        
-        Protected Sub RaisePropertyChanged(ByVal propertyName As String)
-            Dim propertyChanged As System.ComponentModel.PropertyChangedEventHandler = Me.PropertyChangedEvent
-            If (Not (propertyChanged) Is Nothing) Then
-                propertyChanged(Me, New System.ComponentModel.PropertyChangedEventArgs(propertyName))
-            End If
-        End Sub
-    End Class
-    
     <System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0"),  _
      System.ServiceModel.ServiceContractAttribute([Namespace]:="http://assurant.com/Elita/FileManagement", ConfigurationName:="FileManagerAdminService.FileManagerAdmin")>  _
     Public Interface FileManagerAdmin
@@ -2160,11 +2207,11 @@ Namespace FileManagerAdminService
         
         <System.ServiceModel.OperationContractAttribute(Action:="http://assurant.com/Elita/FileManagement/FileManagerAdmin/SearchFileInfoRecords", ReplyAction:="http://assurant.com/Elita/FileManagement/FileManagerAdmin/SearchFileInfoRecordsRe"& _ 
             "sponse")>  _
-        Function SearchFileInfoRecords() As FileManagerAdminService.FileInfoDto()
+        Function SearchFileInfoRecords(ByVal searchCriteria As FileManagerAdminService.SearchCriteria) As FileManagerAdminService.FileInfoDto()
         
         <System.ServiceModel.OperationContractAttribute(Action:="http://assurant.com/Elita/FileManagement/FileManagerAdmin/SearchFileInfoRecords", ReplyAction:="http://assurant.com/Elita/FileManagement/FileManagerAdmin/SearchFileInfoRecordsRe"& _ 
             "sponse")>  _
-        Function SearchFileInfoRecordsAsync() As System.Threading.Tasks.Task(Of FileManagerAdminService.FileInfoDto())
+        Function SearchFileInfoRecordsAsync(ByVal searchCriteria As FileManagerAdminService.SearchCriteria) As System.Threading.Tasks.Task(Of FileManagerAdminService.FileInfoDto())
         
         <System.ServiceModel.OperationContractAttribute(Action:="http://assurant.com/Elita/FileManagement/FileManagerAdmin/SearchFileInfoRecord", ReplyAction:="http://assurant.com/Elita/FileManagement/FileManagerAdmin/SearchFileInfoRecordRes"& _ 
             "ponse")>  _
@@ -2197,12 +2244,12 @@ Namespace FileManagerAdminService
         <System.ServiceModel.OperationContractAttribute(Action:="http://assurant.com/Elita/FileManagement/FileManagerAdmin/SearchFileDetailsRecord"& _ 
             "s", ReplyAction:="http://assurant.com/Elita/FileManagement/FileManagerAdmin/SearchFileDetailsRecord"& _ 
             "sResponse")>  _
-        Function SearchFileDetailsRecords(ByVal fileInfoLocator As FileManagerAdminService.DataItemLocator, ByVal searchFilter As FileManagerAdminService.SearchFilter) As FileManagerAdminService.FileDetailsRecordDto()
+        Function SearchFileDetailsRecords(ByVal fileInfoLocator As FileManagerAdminService.DataItemLocator, ByVal searchCriteria As FileManagerAdminService.SearchCriteria) As FileManagerAdminService.FileDetailsRecordDto()
         
         <System.ServiceModel.OperationContractAttribute(Action:="http://assurant.com/Elita/FileManagement/FileManagerAdmin/SearchFileDetailsRecord"& _ 
             "s", ReplyAction:="http://assurant.com/Elita/FileManagement/FileManagerAdmin/SearchFileDetailsRecord"& _ 
             "sResponse")>  _
-        Function SearchFileDetailsRecordsAsync(ByVal fileInfoLocator As FileManagerAdminService.DataItemLocator, ByVal searchFilter As FileManagerAdminService.SearchFilter) As System.Threading.Tasks.Task(Of FileManagerAdminService.FileDetailsRecordDto())
+        Function SearchFileDetailsRecordsAsync(ByVal fileInfoLocator As FileManagerAdminService.DataItemLocator, ByVal searchCriteria As FileManagerAdminService.SearchCriteria) As System.Threading.Tasks.Task(Of FileManagerAdminService.FileDetailsRecordDto())
         
         <System.ServiceModel.OperationContractAttribute(Action:="http://assurant.com/Elita/FileManagement/FileManagerAdmin/SaveFileInfoRecord", ReplyAction:="http://assurant.com/Elita/FileManagement/FileManagerAdmin/SaveFileInfoRecordRespo"& _ 
             "nse")>  _
@@ -2306,12 +2353,12 @@ Namespace FileManagerAdminService
             Return MyBase.Channel.ContainsRecordAsync(recordLocator, partitionId)
         End Function
         
-        Public Function SearchFileInfoRecords() As FileManagerAdminService.FileInfoDto() Implements FileManagerAdminService.FileManagerAdmin.SearchFileInfoRecords
-            Return MyBase.Channel.SearchFileInfoRecords
+        Public Function SearchFileInfoRecords(ByVal searchCriteria As FileManagerAdminService.SearchCriteria) As FileManagerAdminService.FileInfoDto() Implements FileManagerAdminService.FileManagerAdmin.SearchFileInfoRecords
+            Return MyBase.Channel.SearchFileInfoRecords(searchCriteria)
         End Function
         
-        Public Function SearchFileInfoRecordsAsync() As System.Threading.Tasks.Task(Of FileManagerAdminService.FileInfoDto()) Implements FileManagerAdminService.FileManagerAdmin.SearchFileInfoRecordsAsync
-            Return MyBase.Channel.SearchFileInfoRecordsAsync
+        Public Function SearchFileInfoRecordsAsync(ByVal searchCriteria As FileManagerAdminService.SearchCriteria) As System.Threading.Tasks.Task(Of FileManagerAdminService.FileInfoDto()) Implements FileManagerAdminService.FileManagerAdmin.SearchFileInfoRecordsAsync
+            Return MyBase.Channel.SearchFileInfoRecordsAsync(searchCriteria)
         End Function
         
         Public Function SearchFileInfoRecord(ByVal fileInfoLocator As FileManagerAdminService.DataItemLocator) As FileManagerAdminService.FileInfoDto Implements FileManagerAdminService.FileManagerAdmin.SearchFileInfoRecord
@@ -2338,12 +2385,12 @@ Namespace FileManagerAdminService
             Return MyBase.Channel.SearchFileDetailsRecordAsync(fileInfoLocator, fileDetailsLocator)
         End Function
         
-        Public Function SearchFileDetailsRecords(ByVal fileInfoLocator As FileManagerAdminService.DataItemLocator, ByVal searchFilter As FileManagerAdminService.SearchFilter) As FileManagerAdminService.FileDetailsRecordDto() Implements FileManagerAdminService.FileManagerAdmin.SearchFileDetailsRecords
-            Return MyBase.Channel.SearchFileDetailsRecords(fileInfoLocator, searchFilter)
+        Public Function SearchFileDetailsRecords(ByVal fileInfoLocator As FileManagerAdminService.DataItemLocator, ByVal searchCriteria As FileManagerAdminService.SearchCriteria) As FileManagerAdminService.FileDetailsRecordDto() Implements FileManagerAdminService.FileManagerAdmin.SearchFileDetailsRecords
+            Return MyBase.Channel.SearchFileDetailsRecords(fileInfoLocator, searchCriteria)
         End Function
         
-        Public Function SearchFileDetailsRecordsAsync(ByVal fileInfoLocator As FileManagerAdminService.DataItemLocator, ByVal searchFilter As FileManagerAdminService.SearchFilter) As System.Threading.Tasks.Task(Of FileManagerAdminService.FileDetailsRecordDto()) Implements FileManagerAdminService.FileManagerAdmin.SearchFileDetailsRecordsAsync
-            Return MyBase.Channel.SearchFileDetailsRecordsAsync(fileInfoLocator, searchFilter)
+        Public Function SearchFileDetailsRecordsAsync(ByVal fileInfoLocator As FileManagerAdminService.DataItemLocator, ByVal searchCriteria As FileManagerAdminService.SearchCriteria) As System.Threading.Tasks.Task(Of FileManagerAdminService.FileDetailsRecordDto()) Implements FileManagerAdminService.FileManagerAdmin.SearchFileDetailsRecordsAsync
+            Return MyBase.Channel.SearchFileDetailsRecordsAsync(fileInfoLocator, searchCriteria)
         End Function
         
         Public Function SaveFileInfoRecord(ByVal fileInfoLocator As FileManagerAdminService.DataItemLocator, ByVal fileInfoRecord As FileManagerAdminService.FileInfoDto) As Boolean Implements FileManagerAdminService.FileManagerAdmin.SaveFileInfoRecord

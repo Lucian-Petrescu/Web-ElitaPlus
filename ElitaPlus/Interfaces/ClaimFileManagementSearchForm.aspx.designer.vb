@@ -104,13 +104,22 @@ Partial Public Class ClaimFileManagementSearchForm
     Protected WithEvents moButtonPanel As Global.System.Web.UI.WebControls.Panel
     
     '''<summary>
-    '''BtnProcessFile control.
+    '''BtnRefresh control.
     '''</summary>
     '''<remarks>
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents BtnProcessFile As Global.System.Web.UI.WebControls.Button
+    Protected WithEvents BtnRefresh As Global.System.Web.UI.WebControls.Button
+    
+    '''<summary>
+    '''BtnReprocessFile control.
+    '''</summary>
+    '''<remarks>
+    '''Auto-generated field.
+    '''To modify move field declaration from designer file to code-behind file.
+    '''</remarks>
+    Protected WithEvents BtnReprocessFile As Global.System.Web.UI.WebControls.Button
     
     '''<summary>
     '''BtnDeleteFile control.

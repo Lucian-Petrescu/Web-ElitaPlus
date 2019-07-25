@@ -211,12 +211,6 @@ Namespace Interfaces
             GoBack()
         End Sub
 
-        Private Sub SetSession()
-            With Me.State
-                .PagingInfo = New PagingFilter With {.PageIndex = Grid.PageIndex, .PageSize = Grid.PageSize}
-                .SearchDV = Me.State.SearchDV
-            End With
-        End Sub
 #End Region
 
 #Region "Handlers-Buttons-Methods"
@@ -353,9 +347,12 @@ Namespace Interfaces
             ControlMgr.SetVisibleControl(Me, trPageSize, IsVisible)
             ControlMgr.SetVisibleControl(Me, cboPageSize, IsVisible)
             ControlMgr.SetVisibleControl(Me, Grid, IsVisible)
-            ControlMgr.SetVisibleControl(Me, Grid.BottomPagerRow, IsVisible)
             ControlMgr.SetVisibleControl(Me, lblRecordCount, IsVisible)
             ControlMgr.SetVisibleControl(Me, lblRecordCountValue, IsVisible)
+
+            If (Grid.BottomPagerRow IsNot Nothing) Then
+                ControlMgr.SetVisibleControl(Me, Grid.BottomPagerRow, IsVisible)
+            End If
 
             ControlMgr.SetVisibleControl(Me, SaveButton_WRITE, State.IsEditable)
 
@@ -395,7 +392,6 @@ Namespace Interfaces
 #Region "Grid Handles"
         Protected WithEvents gvAdditionalInfo As GridView = Nothing
         Protected WithEvents gvFinancialLineInfo As GridView = Nothing
-
 
         Private Sub Grid_PageSizeChanged(ByVal source As Object, ByVal e As System.EventArgs) Handles cboPageSize.SelectedIndexChanged
             Try
@@ -1251,15 +1247,15 @@ Namespace Interfaces
 
         Private Sub LoadFileDetailRecords(Optional ByVal refreshData As Boolean = False)
             Try
-                Dim SearchInfo As SearchFilter = Nothing
+                Dim SearchInfo As SearchCriteria = Nothing
 
                 If (State.CallingPageParams IsNot Nothing And
                     State.CallingPageParams.FileInfoParams IsNot Nothing And
                     State.PagingInfo IsNot Nothing) Then
 
-                    SearchInfo = New SearchFilter With
+                    SearchInfo = New SearchCriteria With
                     {
-                        .RecordState = State.CallingPageParams.FileInfoParams.RecordState,
+                        .RecordFilter = New RecordFilter With {.RecordState = State.CallingPageParams.FileInfoParams.RecordState},
                         .PagingFilter = State.PagingInfo
                     }
                 End If

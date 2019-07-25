@@ -30,6 +30,26 @@
     </xs:restriction>
   </xs:simpleType>
   <xs:element name="DataItemType" nillable="true" type="tns:DataItemType" />
+  <xs:complexType name="SearchCriteria">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="PagingFilter" nillable="true" type="tns:PagingFilter" />
+      <xs:element minOccurs="0" name="RecordFilter" nillable="true" type="tns:RecordFilter" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="SearchCriteria" nillable="true" type="tns:SearchCriteria" />
+  <xs:complexType name="PagingFilter">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="PageIndex" type="xs:int" />
+      <xs:element minOccurs="0" name="PageSize" type="xs:int" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="PagingFilter" nillable="true" type="tns:PagingFilter" />
+  <xs:complexType name="RecordFilter">
+    <xs:sequence>
+      <xs:element xmlns:q1="http://schemas.datacontract.org/2004/07/Assurant.Elita.ClaimManagement.Extension.FileManager.Contracts" minOccurs="0" name="RecordState" type="q1:RecordStateType" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="RecordFilter" nillable="true" type="tns:RecordFilter" />
   <xs:complexType name="ArrayOfFileInfoDto">
     <xs:sequence>
       <xs:element minOccurs="0" maxOccurs="unbounded" name="FileInfoDto" nillable="true" type="tns:FileInfoDto" />
@@ -50,12 +70,12 @@
           <xs:element name="BypassedRecords" type="xs:int" />
           <xs:element name="PhysicalFileName" nillable="true" type="xs:string" />
           <xs:element name="LogicalFileName" nillable="true" type="xs:string" />
-          <xs:element xmlns:q1="http://schemas.datacontract.org/2004/07/Assurant.Elita.ClaimManagement.Extension.FileManager.Contracts" name="Type" type="q1:FileType" />
-          <xs:element xmlns:q2="http://assurant.com/Elita/FileManagement/ExchangeLayout" name="FileHeader" nillable="true" type="q2:Header" />
-          <xs:element xmlns:q3="http://assurant.com/Elita/FileManagement/ExchangeLayout" name="FileFooter" nillable="true" type="q3:Footer" />
+          <xs:element xmlns:q2="http://schemas.datacontract.org/2004/07/Assurant.Elita.ClaimManagement.Extension.FileManager.Contracts" name="Type" type="q2:FileType" />
+          <xs:element xmlns:q3="http://assurant.com/Elita/FileManagement/ExchangeLayout" name="FileHeader" nillable="true" type="q3:Header" />
+          <xs:element xmlns:q4="http://assurant.com/Elita/FileManagement/ExchangeLayout" name="FileFooter" nillable="true" type="q4:Footer" />
           <xs:element name="RecordedDateTime" type="xs:dateTime" />
-          <xs:element xmlns:q4="http://schemas.datacontract.org/2004/07/Assurant.Elita.ClaimManagement.Extension.FileManager.Contracts" name="FileState" type="q4:FileStateType" />
-          <xs:element xmlns:q5="http://schemas.datacontract.org/2004/07/Assurant.Elita.ClaimManagement.Extension.FileManager.Contracts" name="LifeCycleRecordState" type="q5:LifeCycleRecordStateType" />
+          <xs:element xmlns:q5="http://schemas.datacontract.org/2004/07/Assurant.Elita.ClaimManagement.Extension.FileManager.Contracts" name="FileState" type="q5:FileStateType" />
+          <xs:element xmlns:q6="http://schemas.datacontract.org/2004/07/Assurant.Elita.ClaimManagement.Extension.FileManager.Contracts" name="LifeCycleRecordState" type="q6:LifeCycleRecordStateType" />
           <xs:element name="RejectedRecords" type="xs:int" />
         </xs:sequence>
       </xs:extension>
@@ -78,28 +98,14 @@
           <xs:element name="PartitionId" type="ser:guid" />
           <xs:element name="EntireRecord" nillable="true" type="xs:string" />
           <xs:element name="LineNumber" type="xs:int" />
-          <xs:element xmlns:q6="http://schemas.datacontract.org/2004/07/Assurant.Elita.ClaimManagement.Extension.FileManager.Contracts" name="RecordState" type="q6:RecordStateType" />
-          <xs:element xmlns:q7="http://schemas.datacontract.org/2004/07/Assurant.Elita.ClaimManagement.Extension.FileManager.Contracts" name="LifeCycleRecordStateType" type="q7:LifeCycleRecordStateType" />
-          <xs:element xmlns:q8="http://assurant.com/Elita/FileManagement/ExchangeLayout" name="RecordContents" nillable="true" type="q8:DataLine" />
+          <xs:element xmlns:q7="http://schemas.datacontract.org/2004/07/Assurant.Elita.ClaimManagement.Extension.FileManager.Contracts" name="RecordState" type="q7:RecordStateType" />
+          <xs:element xmlns:q8="http://schemas.datacontract.org/2004/07/Assurant.Elita.ClaimManagement.Extension.FileManager.Contracts" name="LifeCycleRecordStateType" type="q8:LifeCycleRecordStateType" />
+          <xs:element xmlns:q9="http://assurant.com/Elita/FileManagement/ExchangeLayout" name="RecordContents" nillable="true" type="q9:DataLine" />
         </xs:sequence>
       </xs:extension>
     </xs:complexContent>
   </xs:complexType>
   <xs:element name="FileDetailsRecordDto" nillable="true" type="tns:FileDetailsRecordDto" />
-  <xs:complexType name="SearchFilter">
-    <xs:sequence>
-      <xs:element minOccurs="0" name="PagingFilter" nillable="true" type="tns:PagingFilter" />
-      <xs:element xmlns:q9="http://schemas.datacontract.org/2004/07/Assurant.Elita.ClaimManagement.Extension.FileManager.Contracts" minOccurs="0" name="RecordState" type="q9:RecordStateType" />
-    </xs:sequence>
-  </xs:complexType>
-  <xs:element name="SearchFilter" nillable="true" type="tns:SearchFilter" />
-  <xs:complexType name="PagingFilter">
-    <xs:sequence>
-      <xs:element minOccurs="0" name="PageIndex" type="xs:int" />
-      <xs:element minOccurs="0" name="PageSize" type="xs:int" />
-    </xs:sequence>
-  </xs:complexType>
-  <xs:element name="PagingFilter" nillable="true" type="tns:PagingFilter" />
   <xs:complexType name="ArrayOfFileDetailsRecordDto">
     <xs:sequence>
       <xs:element minOccurs="0" maxOccurs="unbounded" name="FileDetailsRecordDto" nillable="true" type="tns:FileDetailsRecordDto" />
