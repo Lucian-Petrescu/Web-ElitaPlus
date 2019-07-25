@@ -36,12 +36,29 @@ Public Class UserControlDeliverySlot
             State.DeliveryDateSelected = value
         End Set
     End Property
+
+    Public ReadOnly Property DefaultDeliveryDay As DeliveryDay
+        Get
+            Return State.DefaultDeliveryDay
+        End Get
+    End Property
+
     Public ReadOnly Property DeliverySlot() As String
         Get
             If ddlDeliverySlots.SelectedIndex <> -1 Then
                 Return ddlDeliverySlots.SelectedValue.ToString
             Else
                 Return String.Empty
+            End If
+        End Get
+    End Property
+
+    Public ReadOnly Property DeliverySlotTimeSpan As Nullable(Of TimeSpan)
+        Get
+            If State.DeliveryDaySelected IsNot Nothing Then
+                Return State.DeliveryDaySelected.DeliverySlots.FirstOrDefault(Function(s) s.Sequence = If(String.IsNullOrWhiteSpace(DeliverySlot), 0, Convert.ToInt32(DeliverySlot)))?.EndTime
+            Else
+                Return Nothing
             End If
         End Get
     End Property
@@ -100,6 +117,8 @@ Public Class UserControlDeliverySlot
         Public CourierProductCode as string
         Public DeliveryAddress as DeliveryAddressInfo
         Public DeliveryDateList As DeliveryEstimate()
+        Public DeliveryDaySelected As DeliveryDay
+        Public DefaultDeliveryDay As DeliveryDay
         Public DeliveryDateSelected As Nullable(Of Date)
         Public CurrentEstimate as DeliveryEstimate
         Public EnableNotSepecifyCheck as Boolean
@@ -183,6 +202,8 @@ Public Class UserControlDeliverySlot
             If ValidateSetDeliveryDate(txtDeliveryDate.Text) Then
                 If State.DeliveryDateList IsNot Nothing AndAlso State.DeliveryDateList.Length > 0 Then
                     Dim delDay As DeliveryDay = State.CurrentEstimate.AvailableDeliveryDays.FirstOrDefault(Function(q) q.DeliveryDate.Date = State.DeliveryDateSelected)
+                    State.DefaultDeliveryDay = State.CurrentEstimate.AvailableDeliveryDays.LastOrDefault()
+                    State.DeliveryDaySelected = delDay
 
                     If delDay IsNot Nothing AndAlso delDay.DeliverySlots IsNot Nothing AndAlso delDay.DeliverySlots.Length > 0 Then
                         Dim deliverySlots As DeliverySlot() = delDay.DeliverySlots()
