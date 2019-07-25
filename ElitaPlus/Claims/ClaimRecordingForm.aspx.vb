@@ -9,6 +9,7 @@ Imports Assurant.Elita.CommonConfiguration
 Imports Assurant.Elita.ServiceIntegration.Validation
 Imports Assurant.ElitaPlus.ElitaPlusWebApp.Certificates
 Imports Assurant.ElitaPlus.ElitaPlusWebApp.ClaimRecordingService
+Imports Microsoft.Practices.ObjectBuilder2
 
 Public Class ClaimRecordingForm
     Inherits ElitaPlusSearchPage
