@@ -1443,7 +1443,7 @@ Public Class Certificate
         End Set
     End Property
 
-    <ValidStringLength("", Max:=25)>
+    <ValidStringLength("", Max:=50)>
     Public Property ServiceLineNumber() As String
         Get
             CheckDeleted()
