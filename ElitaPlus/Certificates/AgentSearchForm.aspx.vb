@@ -191,12 +191,9 @@ Namespace Certificates
             Form.DefaultButton = btnSearch.UniqueID
             Try
                 If Not IsPostBack Then
-
                     UpdateBreadCrum()
                     PopulateSearchDropDownControls()
                     PopulateUserPermission()
-                    GetDynamicSearchCriteria()
-
                     If Authentication.CurrentUser.IsDealer Then
                         State.DealerId = Authentication.CurrentUser.ScDealerId
                         ControlMgr.SetEnableControl(Me, ddlCompany, False)
@@ -212,6 +209,8 @@ Namespace Certificates
                     End If
 
                     SetFocus(ddlCompany)
+                    GetDynamicSearchCriteria()
+
                 Else
                     DisplayDynamicSearchCriteria()
                 End If
