@@ -302,7 +302,7 @@ Namespace Certificates
             State.CertificateStatus = GetSearchDropDownValue(CodeSearchFieldCertificateStatus)
 
             State.ShowAdditionalSearchFields = checkboxAdditionalSearchCriteria.Checked
-            State.Dob = GetSearchTextBoxValue(CodeSearchFieldDob)
+            State.Dob = convertDateFrmt(GetSearchTextBoxValue(CodeSearchFieldDob))
         End Sub
 
         Protected Sub SetSearchSettingToDefault(Optional ByVal setCompanyDealerValue As Boolean = False)
@@ -744,6 +744,17 @@ Namespace Certificates
                 ddl.SelectedIndex = DefaultItem
             End If
         End Sub
+        Public Function convertDateFrmt(txtDate As String) As String
+            If Not (String.IsNullOrEmpty(txtDate)) Then
+                If (CultureInfo.CurrentCulture.Name.Equals("ja-JP")) Then
+                    Dim parsedDate As DateTime
+                    parsedDate = DateTime.ParseExact(txtDate, "dd-M-yyyy", CultureInfo.InvariantCulture).ToString("MM/dd/yyyy", CultureInfo.InvariantCulture)
+                    txtDate = parsedDate.ToString("dd-MMM-yyyy", CultureInfo.CreateSpecificCulture("en-US"))
+                    Return txtDate
+                End If
+            End If
+            Return txtDate
+        End Function
 
 #End Region
 
