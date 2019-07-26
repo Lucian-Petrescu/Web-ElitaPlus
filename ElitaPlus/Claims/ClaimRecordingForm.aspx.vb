@@ -2441,7 +2441,7 @@ Public Class ClaimRecordingForm
         wsRequest.Questions = wsPreviousResponse.Stages(State.LogisticsStage)?.Options.SingleOrDefault(Function(opt) opt.Selected = True)?.Questions
 
         Try
-
+            'Logic to get forward logistic delivery date and slot
             Dim estimatedDeliveryDate As Nullable(Of Date) = UserControlDeliverySlot.DefaultDeliveryDay.DeliveryDate.Add(UserControlDeliverySlot.DefaultDeliveryDay.DeliverySlots.LastOrDefault().EndTime)
             Dim estimatedChangedDeliveryDate As Nullable(Of Date) = If(Not UserControlDeliverySlot.DeliveryDate.HasValue, estimatedDeliveryDate, UserControlDeliverySlot.DeliveryDate.Value.Add(UserControlDeliverySlot.DeliverySlotTimeSpan))
             wsRequest.Stages.Where(Function(s) s.Code = "FW").ForEach(Sub(s As LogisticStage)
