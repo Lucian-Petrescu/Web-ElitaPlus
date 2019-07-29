@@ -768,22 +768,34 @@ Partial Class CountryTaxEdit
 
     Private Sub LoadRegionTaxList()
 
+        lstRegionTax.Items.Clear()
+
+        If lstRegion.SelectedIndex = -1 Then
+            Return
+        End If
+
         Dim oRegionTaxList As DataView = RegionTax.getList(Me.GetSelectedItem(Me.lstRegion), Me.State.MyBO.TaxTypeId,
                                            Me.State.MyBO.ProductTaxTypeId, Me.State.MyBO.DealerId)
-        Me.lstRegionTax.Items.Clear()
-        oRegionTaxList.Sort = Nothing   ' Preserve sort order from database by Effective Date, which is not in the select field list
+        'Me.lstRegionTax.Items.Clear()
+        'oRegionTaxList.Sort = Nothing   ' Preserve sort order from database by Effective Date, which is not in the select field list
         ' Me.BindListControlToDataView(Me.lstRegionTax, oRegionTaxList, "ListFields", "REGION_TAX_ID", False)
-        Dim listcontext As ListContext = New ListContext()
-        listcontext.TaxTypeId = Me.State.MyBO.TaxTypeId
-        listcontext.ProductTaxTypeId = Me.State.MyBO.ProductTaxTypeId
-        listcontext.DealerId = Me.State.MyBO.DealerId
-        Dim regionLkl As ListItem() = CommonConfigManager.Current.ListManager.GetList(ListCodes.RegionTaxByProductTaxTypeAndDealer, Thread.CurrentPrincipal.GetLanguageCode(), listcontext)
-        Dim list As ArrayList = ElitaPlusIdentity.Current.ActiveUser.Companies
+        'Dim listcontext As ListContext = New ListContext()
+        'listcontext.TaxTypeId = Me.State.MyBO.TaxTypeId
+        'listcontext.ProductTaxTypeId = Me.State.MyBO.ProductTaxTypeId
+        'listcontext.DealerId = Me.State.MyBO.DealerId
+        'Dim regionLkl As ListItem() = CommonConfigManager.Current.ListManager.GetList(ListCodes.RegionTaxByProductTaxTypeAndDealer, Thread.CurrentPrincipal.GetLanguageCode(), listcontext)
+        'Dim list As ArrayList = ElitaPlusIdentity.Current.ActiveUser.Companies
 
-        lstRegionTax.DataValueField = REGION_TAX_ID
-        lstRegionTax.DataTextField = LISTFIELDS
-        lstRegionTax.DataSource = oRegionTaxList
-        lstRegionTax.DataBind()
+        If oRegionTaxList.Count > 0 Then
+            For i As Integer = 0 To oRegionTaxList.Count - 1
+                lstRegionTax.Items.Add(New WebControls.ListItem() With {.Text = oRegionTaxList(i)("ListFields"), .Value = New Guid(CType(oRegionTaxList(i)("region_tax_id"), Byte())).ToString()})
+            Next
+        End If
+
+        'lstRegionTax.DataValueField = REGION_TAX_ID
+        'lstRegionTax.DataTextField = LISTFIELDS
+        'lstRegionTax.DataSource = oRegionTaxList
+        'lstRegionTax.DataBind()
 
 
     End Sub
@@ -1042,10 +1054,11 @@ Partial Class CountryTaxEdit
             Else
                 Try
                     'Call the Region tax Detail screen (RegionTaxes.aspx)
-                    Me.callPage(RegionTaxes.URL, New RegionTaxes.Parameters(Me.State.MyBO, Nothing, _
-                        Me.dlstTaxType_WRITE.SelectedItem.Text, Me.cboProductTaxType.SelectedItem.Text, _
-                        GetSelectedItem(Me.lstRegion), Me.lstRegion.SelectedItem.Text, _
-                         GetSelectedItem(Me.moDealerMultipleDrop.CodeDropDown), Me.moDealerMultipleDrop.DescDropDown.SelectedItem.Text, Me.moDealerMultipleDrop.CodeDropDown.SelectedItem.Text))
+                    Me.callPage(RegionTaxes.URL, New RegionTaxes.Parameters(Me.State.MyBO, Nothing,
+                        Me.dlstTaxType_WRITE.SelectedItem.Text, Me.cboProductTaxType.SelectedItem.Text,
+                        GetSelectedItem(Me.lstRegion), Me.lstRegion.SelectedItem.Text,
+                         GetSelectedItem(Me.moDealerMultipleDrop.CodeDropDown), Me.moDealerMultipleDrop.DescDropDown.SelectedItem.Text, Me.moDealerMultipleDrop.CodeDropDown.SelectedItem.Text,
+                         GetSelectedItem(Me.cboCompanyType), Me.cboCompanyType.SelectedItem.Text))
                 Catch ex As Threading.ThreadAbortException
                 Catch ex As Exception
                 End Try
@@ -1065,10 +1078,11 @@ Partial Class CountryTaxEdit
             Else
                 Try
                     'Call the Region tax Detail screen (RegionTaxes.aspx)
-                    Me.callPage(RegionTaxes.URL, New RegionTaxes.Parameters(Me.State.MyBO, _
-                        Me.GetSelectedItem(Me.lstRegionTax), Me.dlstTaxType_WRITE.SelectedItem.Text, _
-                        Me.cboProductTaxType.SelectedItem.Text, GetSelectedItem(Me.lstRegion), Me.lstRegion.SelectedItem.Text, _
-                        GetSelectedItem(Me.moDealerMultipleDrop.CodeDropDown), Me.moDealerMultipleDrop.DescDropDown.SelectedItem.Text, Me.moDealerMultipleDrop.CodeDropDown.SelectedItem.Text))
+                    Me.callPage(RegionTaxes.URL, New RegionTaxes.Parameters(Me.State.MyBO,
+                        Me.GetSelectedItem(Me.lstRegionTax), Me.dlstTaxType_WRITE.SelectedItem.Text,
+                        Me.cboProductTaxType.SelectedItem.Text, GetSelectedItem(Me.lstRegion), Me.lstRegion.SelectedItem.Text,
+                        GetSelectedItem(Me.moDealerMultipleDrop.CodeDropDown), Me.moDealerMultipleDrop.DescDropDown.SelectedItem.Text, Me.moDealerMultipleDrop.CodeDropDown.SelectedItem.Text,
+                        GetSelectedItem(Me.cboCompanyType), Me.cboCompanyType.SelectedItem.Text))
                 Catch ex As Threading.ThreadAbortException
                 Catch ex As Exception
                 End Try

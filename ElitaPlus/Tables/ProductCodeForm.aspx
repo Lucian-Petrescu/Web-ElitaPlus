@@ -531,6 +531,20 @@
                                 <td align="left" nowrap="nowrap">
                                     <asp:TextBox ID="moPerIncidentLiabilityLimitCapText" TabIndex="12" runat="server" SkinID="SmallTextBox"></asp:TextBox>
                                 </td>
+                                 <td align="right" nowrap="nowrap">
+                                    <asp:Label ID="lblPriceMatrixUsesWpXcd" runat="server" Font-Bold="false">PRICE_MATRIX_USES_WP_XCD</asp:Label>&nbsp;
+                                </td>
+                                <td align="left" nowrap="nowrap">
+                                    <asp:DropDownList ID="cboPriceMatrixUsesWpXcd" runat="server" SkinID="MediumDropDown"></asp:DropDownList>
+                                </td>
+                            </tr>
+                             <tr>
+                                 <td align="right" nowrap="nowrap">
+                                    <asp:Label ID="lblExpectedPremiumIsWpXcd" runat="server" Font-Bold="false">EXPECTED_PREMIUM_IS_WP_XCD</asp:Label>&nbsp;
+                                </td>
+                                <td align="left" nowrap="nowrap">
+                                    <asp:DropDownList ID="cboExpectedPremiumIsWpXcd" runat="server" SkinID="MediumDropDown"></asp:DropDownList>
+                                </td>
                             </tr>
                         </table>
                     </td>

@@ -39,6 +39,13 @@
                  <asp:Label ID="lblDealerDesc" runat="server" ForeColor="Black" SkinID="SummaryLabel"></asp:Label>
             </td>
         </tr>
+        <tr>
+            <td nowrap="nowrap" align="left" class="borderLeft">
+                <asp:Label ID="Label66" runat="server">COMPANY TYPE:</asp:Label>: 
+ 		        <asp:Label ID="Label67" runat="server">TYPE:</asp:Label>: 
+                <asp:Label ID="lblCompanyType" runat="server" ForeColor="Black"></asp:Label>
+            </td>  
+        </tr>
     </table>
 </asp:Content>
 <asp:Content ID="Content3" ContentPlaceHolderID="MessagePlaceHolder" runat="server">

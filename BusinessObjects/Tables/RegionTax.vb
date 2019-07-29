@@ -275,6 +275,21 @@ Public Class RegionTax
             Return _detailRecords
         End Get
     End Property
+    Public Property CompanyTypeXCD() As Guid
+        Get
+            CheckDeleted()
+            If Row(CountryTaxDAL.COL_NAME_COMPANY_TYPE_ID) Is DBNull.Value Then
+                Return Nothing
+            Else
+                Return New Guid(CType(Row(CountryTaxDAL.COL_NAME_COMPANY_TYPE_ID), Byte()))
+            End If
+        End Get
+        Set(ByVal Value As Guid)
+            CheckDeleted()
+            Me.SetValue(CountryTaxDAL.COL_NAME_COMPANY_TYPE_ID, Value)
+        End Set
+    End Property
+
 #End Region
 
 #Region "Public Members"

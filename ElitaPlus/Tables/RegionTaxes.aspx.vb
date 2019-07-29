@@ -50,6 +50,7 @@ Partial Class RegionTaxes
 #Region "Constants "
     Public Const URL As String = "RegionTaxes.aspx"
     Public Const DEALER_ID_PROPERTY As String = "DealerId"
+    Public Const COMPANY_TYPE_ID_PROPERTY As String = "CompanyTypeId"
 #End Region
 
 #Region "Page State"
@@ -73,6 +74,9 @@ Partial Class RegionTaxes
         Public DealerID As Guid
         Public DealerDesc As String
         Public Dealer As String
+
+        Public CompanyTypeXCD As Guid
+        Public CompanyType As String
 
     End Class
 
@@ -113,10 +117,12 @@ Partial Class RegionTaxes
         Public DealerID As Guid
         Public DealerDesc As String
         Public Dealer As String
+        Public CompanyTypeId As Guid
+        Public CompanyType As String
 
-        Public Sub New(ByVal countryTaxBO As CountryTax, ByVal regionTaxID As Guid, ByVal taxTypeDesc As String, _
-                       ByVal sProductTaxTypeDesc As String, ByVal regionID As Guid, ByVal regionDesc As String, _
-                       ByVal dealerID As Guid, ByVal dealerDesc As String, ByVal dealer As String)
+        Public Sub New(ByVal countryTaxBO As CountryTax, ByVal regionTaxID As Guid, ByVal taxTypeDesc As String,
+                       ByVal sProductTaxTypeDesc As String, ByVal regionID As Guid, ByVal regionDesc As String,
+                       ByVal dealerID As Guid, ByVal dealerDesc As String, ByVal dealer As String, ByVal CompanyTypeId As Guid, ByVal CompanyType As String)
             Me.CountryTaxBO = countryTaxBO
             Me.RegionTaxID = regionTaxID
             Me.TaxTypeDesc = taxTypeDesc
@@ -126,6 +132,8 @@ Partial Class RegionTaxes
             Me.DealerID = dealerID
             Me.DealerDesc = dealerDesc
             Me.Dealer = dealer
+            Me.CompanyTypeId = CompanyTypeId
+            Me.CompanyType = CompanyType
         End Sub
     End Class
 #End Region
@@ -166,6 +174,7 @@ Partial Class RegionTaxes
                 Me.PopulateFormFromBOs()
             End If
             Me.BindBOPropertyToLabel(Me.State.MyBO, DEALER_ID_PROPERTY, Me.lblDealer)
+            Me.BindBOPropertyToLabel(Me.State.MyBO, COMPANY_TYPE_ID_PROPERTY, Me.lblCompanyType)
             CheckIfComingFromSaveConfirm()
 
             If Not Me.IsPostBack Then
@@ -187,6 +196,19 @@ Partial Class RegionTaxes
                 Me.Label12.Visible = False
                 Me.lblDealerDesc.Visible = False
             End If
+
+            If Not Me.State.CompanyType.IsNullOrEmpty(Me.State.CompanyType) Then
+                Me.Label66.Visible = True
+                Me.Label67.Visible = True
+                lblCompanyType.Visible = True
+                lblCompanyType.Text = Me.State.CompanyType
+
+            Else
+                Me.Label66.Visible = False
+                Me.Label67.Visible = False
+                lblCompanyType.Visible = False
+            End If
+
 
 
         Catch ex As Exception
@@ -214,6 +236,8 @@ Partial Class RegionTaxes
                 Me.State.DealerID = objParam.DealerID
                 Me.State.DealerDesc = objParam.DealerDesc
                 Me.State.Dealer = objParam.Dealer
+                Me.State.CompanyTypeXCD = objParam.CompanyTypeId
+                Me.State.CompanyType = objParam.CompanyType
 
                 If objParam.RegionTaxID = Nothing Or objParam.RegionTaxID = Guid.Empty Then
                     'new region tax, with regionid and taxtype id from countrytax form
@@ -225,6 +249,8 @@ Partial Class RegionTaxes
                     Me.State.MyBO.Description = strTemp.Substring(0, Math.Min(strTemp.Length, 30))
                     Me.State.MyBO.DealerId = objParam.DealerID
                     Me.State.MyBO.SetEffectiveExpirationDates()
+                    Me.State.MyBO.CompanyTypeXCD = objParam.CompanyTypeId
+
                 Else
                     'existing region tax
                     Me.State.MyBO = New RegionTax(objParam.RegionTaxID)
@@ -400,6 +426,7 @@ Partial Class RegionTaxes
         Me.PopulateBOProperty(objBO, "EffectiveDate", Me.txtEffectiveDate)
         Me.PopulateBOProperty(objBO, "ExpirationDate", Me.txtExpirationDate)
         Me.PopulateBOProperty(objBO, "DealerId", Me.State.DealerID)
+        Me.PopulateBOProperty(objBO, "CompanyTypeId", Me.State.CompanyTypeXCD)
 
         LoadTaxDetailUserControls(False)
 

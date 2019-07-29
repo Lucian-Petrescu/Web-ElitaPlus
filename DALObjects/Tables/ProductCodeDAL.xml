@@ -82,7 +82,9 @@
         benefit_eligible_action_xcd,
         claim_profile_code,
         calc_cvg_end_date_based_on_xcd,
-        liability_limit_per_incident
+        liability_limit_per_incident,
+        price_matrix_uses_wp_xcd,
+        expected_premium_is_wp_xcd
 			FROM elp_product_code 
 			WHERE
 				product_code_id = :product_code_id
@@ -164,7 +166,9 @@
         benefit_eligible_action_xcd,
         claim_profile_code,
         calc_cvg_end_date_based_on_xcd,
-        liability_limit_per_incident
+        liability_limit_per_incident,
+        price_matrix_uses_wp_xcd,
+        expected_premium_is_wp_xcd
 			FROM elp_product_code
 			WHERE
 				dealer_id = :dealer_id AND
@@ -391,7 +395,9 @@
         benefit_eligible_action_xcd = :benefit_eligible_action_xcd,
         claim_profile_code  = :claim_profile_code,
         calc_cvg_end_date_based_on_xcd =:calc_cvg_end_date_based_on_xcd,
-        liability_limit_per_incident = :liability_limit_per_incident
+        liability_limit_per_incident = :liability_limit_per_incident,
+        price_matrix_uses_wp_xcd = :price_matrix_uses_wp_xcd,
+        expected_premium_is_wp_xcd = :expected_premium_is_wp_xcd
 			WHERE
 				product_code_id = :product_code_id
 		]]>
@@ -470,7 +476,9 @@
     benefit_eligible_action_xcd,
     claim_profile_code,
     calc_cvg_end_date_based_on_xcd,
-    liability_limit_per_incident
+    liability_limit_per_incident,
+    price_matrix_uses_wp_xcd,
+    expected_premium_is_wp_xcd
     )
     VALUES
     (
@@ -545,7 +553,9 @@
     :benefit_eligible_action_xcd,
     :claim_profile_code,
     :calc_cvg_end_date_based_on_xcd,
-    :liability_limit_per_incident
+    :liability_limit_per_incident,
+    :price_matrix_uses_wp_xcd,
+    :expected_premium_is_wp_xcd
     )
   </INSERT>
   <DELETE>

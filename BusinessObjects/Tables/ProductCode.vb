@@ -1336,7 +1336,39 @@ Public Class ProductCode
             Me.SetValue(ProductCodeDAL.ColNameClaimProfileCode, Value)
         End Set
     End Property
-    
+
+    <ValueMandatory("")>
+    Public Property PriceMatrixUsesWpXcd() As String
+        Get
+            CheckDeleted()
+            If Row(ProductCodeDAL.COL_NAME_PRICE_MATRIX_USES_WP_XCD) Is DBNull.Value Then
+                Return Nothing
+            Else
+                Return CType(Row(ProductCodeDAL.COL_NAME_PRICE_MATRIX_USES_WP_XCD), String)
+            End If
+        End Get
+        Set(ByVal Value As String)
+            CheckDeleted()
+            Me.SetValue(ProductCodeDAL.COL_NAME_PRICE_MATRIX_USES_WP_XCD, Value)
+        End Set
+    End Property
+
+    <ValueMandatory("")>
+    Public Property ExpectedPremiumIsWpXcd() As String
+        Get
+            CheckDeleted()
+            If Row(ProductCodeDAL.COL_NAME_EXPECTED_PREMIUM_IS_WP_XCD) Is DBNull.Value Then
+                Return Nothing
+            Else
+                Return CType(Row(ProductCodeDAL.COL_NAME_EXPECTED_PREMIUM_IS_WP_XCD), String)
+            End If
+        End Get
+        Set(ByVal Value As String)
+            CheckDeleted()
+            Me.SetValue(ProductCodeDAL.COL_NAME_EXPECTED_PREMIUM_IS_WP_XCD, Value)
+        End Set
+    End Property
+
 #End Region
 
 #Region "Public Members"
