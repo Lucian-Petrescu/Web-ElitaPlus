@@ -1279,7 +1279,7 @@
           <AutoAssignPort>True</AutoAssignPort>
           <DevelopmentServerPort>2551</DevelopmentServerPort>
           <DevelopmentServerVPath>/</DevelopmentServerVPath>
-          <IISUrl>http://localhost:81/ElitaInternalWS</IISUrl>
+          <IISUrl>http://localhost/ElitaInternalWS</IISUrl>
           <NTLMAuthentication>False</NTLMAuthentication>
           <UseCustomServer>False</UseCustomServer>
           <CustomServerUrl>
