@@ -9,6 +9,7 @@ Imports Assurant.Elita.CommonConfiguration
 Imports Assurant.Elita.ServiceIntegration.Validation
 Imports Assurant.ElitaPlus.ElitaPlusWebApp.Certificates
 Imports Assurant.ElitaPlus.ElitaPlusWebApp.ClaimRecordingService
+Imports Microsoft.Practices.ObjectBuilder2
 
 Public Class ClaimRecordingForm
     Inherits ElitaPlusSearchPage
@@ -1587,8 +1588,8 @@ Public Class ClaimRecordingForm
                 MasterPage.MessageController.AddError(Message.MSG_ERR_DEFAULT_SERVICE_CENTER, True)
                 Exit Sub
             End If
-	    
-	    
+        
+        
             Dim defaultServiceCenter As ServiceCenter
             if State.ClaimBo is nothing AndAlso string.IsNullOrEmpty(State.SubmitWsBaseClaimRecordingResponse.ClaimNumber) = False then
                 Dim companyId as Guid = ElitaPlusIdentity.Current.ActiveUser.CompanyId
@@ -2434,18 +2435,28 @@ Public Class ClaimRecordingForm
         wsRequest.CompanyCode = wsPreviousResponse.CompanyCode
         wsRequest.InteractionNumber = wsPreviousResponse.InteractionNumber
         wsRequest.Stages = wsPreviousResponse.Stages
-        wsRequest.QuestionVersion = 1
 
+        wsRequest.QuestionVersion = 1
         wsRequest.QuestionSetCode = wsPreviousResponse.Stages(State.LogisticsStage)?.Options.SingleOrDefault(Function(opt) opt.Selected = True)?.QuestionSetCode
         wsRequest.Questions = wsPreviousResponse.Stages(State.LogisticsStage)?.Options.SingleOrDefault(Function(opt) opt.Selected = True)?.Questions
-        
+
         Try
+            'Logic to get forward logistic delivery date and slot
+            Dim estimatedDeliveryDate As Nullable(Of Date) = UserControlDeliverySlot.DefaultDeliveryDay.DeliveryDate.Add(UserControlDeliverySlot.DefaultDeliveryDay.DeliverySlots.LastOrDefault().EndTime)
+            Dim estimatedChangedDeliveryDate As Nullable(Of Date) = If(Not UserControlDeliverySlot.DeliveryDate.HasValue, estimatedDeliveryDate, UserControlDeliverySlot.DeliveryDate.Value.Add(UserControlDeliverySlot.DeliverySlotTimeSpan))
+            wsRequest.Stages.Where(Function(s) s.Code = "FW").ForEach(Sub(s As LogisticStage)
+                                                                          s.Options.ForEach(Sub(o As LogisticOption)
+                                                                                                o.LogisticOptionInfo.EstimatedDeliveryDate = estimatedDeliveryDate
+                                                                                                o.LogisticOptionInfo.EstimatedChangedDeliveryDate = estimatedChangedDeliveryDate
+                                                                                            End Sub)
+                                                                      End Sub)
+
             Dim wsResponse = WcfClientHelper.Execute(Of ClaimRecordingServiceClient, IClaimRecordingService, BaseClaimRecordingResponse)(
                 GetClient(),
                 New List(Of Object) From {New InteractiveUserHeader() With {.LanId = Authentication.CurrentUser.NetworkId}},
                 Function(ByVal c As ClaimRecordingServiceClient)
                     Return c.Submit(wsRequest)
-                                                                                                                                            End Function)
+                End Function)
             If wsResponse IsNot Nothing Then
                 State.SubmitWsBaseClaimRecordingResponse = wsResponse
             End If
@@ -2454,6 +2465,7 @@ Public Class ClaimRecordingForm
             Exit Sub
         End Try
     End Sub
+
     Private Sub GetEstimatedDeliveryDate(ByRef ucDeliverySlots as UserControlDeliverySlot, ByVal deliveryAddress As Address, ByVal deliveryOptions As DeliveryOptions)
         Try
             'get the service center
