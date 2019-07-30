@@ -812,33 +812,33 @@ Namespace Tables
             'Dim yesNoLkL As DataView = LookupListNew.DropdownLookupList("YESNO", langId, True)
             Dim oYesNoList As DataElements.ListItem() = CommonConfigManager.Current.ListManager.GetList(listCode:="YESNO", languageCode:=Thread.CurrentPrincipal.GetLanguageCode())
             Dim textFun As Func(Of DataElements.ListItem, String) = Function(li As DataElements.ListItem)
-                                                                        Return li.Code + " - " + li.Translation
-                                                                    End Function
+                Return li.Code + " - " + li.Translation
+                    End Function
             Dim populateOptions As PopulateOptions = New PopulateOptions() With
-            {
-                .AddBlankItem = True
-            }
+                    {
+                    .AddBlankItem = True
+                    }
             Dim populateOptions1 As PopulateOptions = New PopulateOptions() With
-            {
-                .AddBlankItem = False
-            }
+                    {
+                    .AddBlankItem = False
+                    }
             Dim populateOptions2 As PopulateOptions = New PopulateOptions() With
-            {
-                .AddBlankItem = False,
-                .ValueFunc = AddressOf .GetExtendedCode
-            }
+                    {
+                    .AddBlankItem = False,
+                    .ValueFunc = AddressOf .GetExtendedCode
+                    }
             Dim populateOptions3 As PopulateOptions = New PopulateOptions() With
-            {
-                .AddBlankItem = True,
-                .BlankItemValue = String.Empty,
-                .ValueFunc = AddressOf .GetExtendedCode
-            }
+                    {
+                    .AddBlankItem = True,
+                    .BlankItemValue = String.Empty,
+                    .ValueFunc = AddressOf .GetExtendedCode
+                    }
             Dim populateOptions4 As PopulateOptions = New PopulateOptions() With
-            {
-                .AddBlankItem = True,
-                .TextFunc = textFun,
-                .SortFunc = textFun
-            }
+                    {
+                    .AddBlankItem = True,
+                    .TextFunc = textFun,
+                    .SortFunc = textFun
+                    }
 
             'Dim dg As DealerGroup
             'BindListControlToDataView(Me.moDealerGroupDrop, LookupListNew.GetDealerGroupLookupList(ElitaPlusIdentity.Current.ActiveUser.CompanyGroup.Id), , , True)
@@ -1033,7 +1033,8 @@ Namespace Tables
             Me.cancelShipmentAllowedDrop.Populate(oYesNoList, populateOptions2)
             Me.reshipmentAllowedDrop.Populate(oYesNoList, populateOptions2)
             Me.moValidateAddress.Populate(oYesNoList, populateOptions2)
-
+            Me.moShowPrevCallerInfo.Populate(oYesNoList, populateOptions2)
+            Me.ddlDealerNameFlag.Populate(oYesNoList, populateOptions3)
             'ddlCaseProfile.Populate(CommonConfigManager.Current.ListManager.GetList("CaseProfile", Thread.CurrentPrincipal.GetLanguageCode()), New PopulateOptions() With
             '                           {
             '                           .AddBlankItem = True,
@@ -1138,6 +1139,8 @@ Namespace Tables
 
             txtCancelShipmentGracePeriod.Text = String.Empty
             ddlCaseProfile.ClearSelection()
+            moShowPrevCallerInfo.ClearSelection()
+            ddlDealerNameFlag.ClearSelection()
         End Sub
 
         Private Sub SetAssurantIsObligor()
@@ -1146,7 +1149,7 @@ Namespace Tables
             oCompany = New Company(Me.State.MyBO.CompanyId)
 
             oComputeTaxBased_CustomAddrId = LookupListNew.GetIdFromCode(LookupListNew.DropdownLookupList(
-                        Codes.COMPUTE_TAX_BASED, Authentication.LangId), Codes.COMPUTE_TAX_BASED_CUSTOMERS_ADDRESS)
+                Codes.COMPUTE_TAX_BASED, Authentication.LangId), Codes.COMPUTE_TAX_BASED_CUSTOMERS_ADDRESS)
 
             If (oCompany.ComputeTaxBasedId.Equals(oComputeTaxBased_CustomAddrId)) Then
                 ' Yes => Invisible
@@ -1163,8 +1166,8 @@ Namespace Tables
             If Me.State.MyBO.AssurantIsObligorId.Equals(System.Guid.Empty) Then
                 ' Default
                 SetSelectedItem(Me.moAObligorDrop,
-                    LookupListNew.GetIdFromCode(LookupListNew.DropdownLookupList(
-                                Codes.YESNO, ElitaPlusIdentity.Current.ActiveUser.LanguageId), Codes.YESNO_Y))
+                                LookupListNew.GetIdFromCode(LookupListNew.DropdownLookupList(
+                                    Codes.YESNO, ElitaPlusIdentity.Current.ActiveUser.LanguageId), Codes.YESNO_Y))
             Else
                 SetSelectedItem(Me.moAObligorDrop, Me.State.MyBO.AssurantIsObligorId)
             End If
@@ -1433,6 +1436,10 @@ Namespace Tables
                 BindSelectItem(Me.State.MyBO.Validate_Address, Me.moValidateAddress)
 
                 Me.PopulateControlFromBOProperty(Me.txtClosecaseperiod, .CloseCaseGracePeriodDays)
+
+                BindSelectItem(Me.State.MyBO.Show_Previous_Caller_Info, Me.moShowPrevCallerInfo)
+
+                BindSelectItem(Me.State.MyBO.DisplayDobXcd, Me.ddlDealerNameFlag)
 
                 Me.PopulateControlFromBOProperty(Me.txtCancelShipmentGracePeriod, .Cancel_Shipment_Grace_Period)
 
@@ -1706,7 +1713,7 @@ Namespace Tables
 
                 If Not Me.inputServiceCenterId.Value = Guid.Empty.ToString Then
                     AjaxController.PopulateBOAutoComplete(Me.moDefaultSalvageCenter, Me.inputServiceCenterDesc,
-                                    Me.inputServiceCenterId, Me.State.MyBO, "DefaultSalvgeCenterId")
+                                                          Me.inputServiceCenterId, Me.State.MyBO, "DefaultSalvgeCenterId")
                 End If
                 Me.PopulateBOProperty(Me.State.MyBO, "AutoGenerateRejectedPaymentFileId", Me.ddlAutoGenRejPymtFile)
                 Me.PopulateBOProperty(Me.State.MyBO, "PaymentRejectedRecordReconcileId", Me.ddlPymtRejRecRecon)
@@ -1756,6 +1763,8 @@ Namespace Tables
                 Me.PopulateBOProperty(Me.State.MyBO, "CaseProfileCode", Me.ddlCaseProfile, False, True)
 
                 Me.PopulateBOProperty(Me.State.MyBO, "CloseCaseGracePeriodDays", Me.txtClosecaseperiod)
+                Me.PopulateBOProperty(Me.State.MyBO, "Show_Previous_Caller_Info", Me.moShowPrevCallerInfo, False, True)
+                Me.PopulateBOProperty(Me.State.MyBO, "DisplayDobXcd", Me.ddlDealerNameFlag, False, True)
 
             End With
             If Me.ErrCollection.Count > 0 Then
@@ -2049,7 +2058,7 @@ Namespace Tables
                             End If
                             'REQ-5467 : If LawsuitMandatory Value has changed from No to YES then create a Asynchronous Job to Update any Claims that needs to catch up
                             If Me.State.LawsuitMandatoryIdAtLoad.Equals(LookupListNew.GetIdFromCode(LookupListNew.LK_YESNO, Codes.YESNO_N)) AndAlso
-                                 Me.State.MyBO.IsLawsuitMandatoryId.Equals(LookupListNew.GetIdFromCode(LookupListNew.LK_YESNO, Codes.YESNO_Y)) Then
+                               Me.State.MyBO.IsLawsuitMandatoryId.Equals(LookupListNew.GetIdFromCode(LookupListNew.LK_YESNO, Codes.YESNO_Y)) Then
                                 Me.State.MyBO.UpdateClaimsAsyncForLawsuit()
                             End If
 
@@ -2057,7 +2066,7 @@ Namespace Tables
 
                         If moBankInfo.State.IsBODirty Then
                             If moBankInfo.State.myBankInfoBo.BankInfoAddress.Id.Equals(Guid.Empty) OrElse (Not moBankInfo.State.myBankInfoBo.BankInfoAddress.Id.Equals(Guid.Empty) _
-                           AndAlso Not moBankInfo.State.myBankInfoBo.AddressId.Equals(moBankInfo.State.myBankInfoBo.BankInfoAddress.Id)) Then
+                                                                                                           AndAlso Not moBankInfo.State.myBankInfoBo.AddressId.Equals(moBankInfo.State.myBankInfoBo.BankInfoAddress.Id)) Then
                                 moBankInfo.State.myBankInfoBo.AddressId = moBankInfo.State.myBankInfoBo.BankInfoAddress.Id
                             End If
                             If moBankInfo.State.myBankInfoBo.IsDirty OrElse moBankInfo.State.myBankInfoBo.BankInfoAddress.IsDirty Then
@@ -2086,7 +2095,7 @@ Namespace Tables
                         Me.PopulateFormFromBOs()
                         Me.EnableDisableFields()
                         If Me.State.blnIsComingFromNew And
-                            LookupListNew.GetCodeFromId(LookupListNew.LK_DEALER_TYPE, Me.State.MyBO.DealerTypeId) = Codes.DEALER_TYPES__VSC Then
+                           LookupListNew.GetCodeFromId(LookupListNew.LK_DEALER_TYPE, Me.State.MyBO.DealerTypeId) = Codes.DEALER_TYPES__VSC Then
                             Me.DisplayMessage(Message.MSG_PROMPT_FOR_SETUP_SERVICE_CENTER_OF_DEALER, "", Me.MSG_BTN_YES_NO, Me.MSG_TYPE_CONFIRM, Me.HiddenSaveChangesPromptResponse)
                         Else
                             'Me.AddInfoMsg(Message.SAVE_RECORD_CONFIRMATION)
@@ -2249,9 +2258,9 @@ Namespace Tables
 
         Private Sub PopulateAddressFields()
             Dim populateOptions As PopulateOptions = New PopulateOptions() With
-            {
-                .AddBlankItem = True
-            }
+                    {
+                    .AddBlankItem = True
+                    }
 
             If Me.State.IsNew Then
                 'Set country to the country of selected company
@@ -2273,8 +2282,8 @@ Namespace Tables
 
                     If Not Me.State.MyBO.Address.CountryId.Equals(Guid.Empty) Then
                         CType(Me.AddressCtr.FindControl("moCountryText"), TextBox).Text = (From lst In countryList
-                                                                                           Where lst.ListItemId = Me.State.MyBO.Address.CountryId
-                                                                                           Select lst.Translation).FirstOrDefault()
+                            Where lst.ListItemId = Me.State.MyBO.Address.CountryId
+                            Select lst.Translation).FirstOrDefault()
                     End If
 
                     'If oCountryList.Count > 0 Then
@@ -2298,9 +2307,9 @@ Namespace Tables
 
         Private Sub PopulateMailingAddressFields()
             Dim populateOptions As PopulateOptions = New PopulateOptions() With
-            {
-                .AddBlankItem = True
-            }
+                    {
+                    .AddBlankItem = True
+                    }
 
             If Me.State.IsNew Then
                 'Set country to the country of selected company
@@ -2322,8 +2331,8 @@ Namespace Tables
 
                     If Not Me.State.MyBO.MailingAddress.CountryId.Equals(Guid.Empty) Then
                         CType(Me.MailingAddressCtr.FindControl("moCountryText"), TextBox).Text = (From lst In countryList
-                                                                                                  Where lst.ListItemId = Me.State.MyBO.MailingAddress.CountryId
-                                                                                                  Select lst.Translation).FirstOrDefault()
+                            Where lst.ListItemId = Me.State.MyBO.MailingAddress.CountryId
+                            Select lst.Translation).FirstOrDefault()
                     End If
 
                     'If oCountryList.Count > 0 Then
@@ -2348,9 +2357,9 @@ Namespace Tables
 
         Private Sub PopulateSvcOrdersAddressFields()
             Dim populateOptions As PopulateOptions = New PopulateOptions() With
-            {
-                .AddBlankItem = True
-            }
+                    {
+                    .AddBlankItem = True
+                    }
 
             If Me.State.IsNew Then
                 'Set country to the country of selected company
@@ -2372,8 +2381,8 @@ Namespace Tables
 
                     If Not Me.State.SvcOrdersByDealer.Address.CountryId.Equals(Guid.Empty) Then
                         CType(Me.SvcOrderAddressCtr.FindControl("moCountryText"), TextBox).Text = (From lst In countryList
-                                                                                                   Where lst.ListItemId = Me.State.SvcOrdersByDealer.Address.CountryId
-                                                                                                   Select lst.Translation).FirstOrDefault()
+                            Where lst.ListItemId = Me.State.SvcOrdersByDealer.Address.CountryId
+                            Select lst.Translation).FirstOrDefault()
                     End If
 
                     'If oCountryList.Count > 0 Then
@@ -2619,9 +2628,9 @@ Namespace Tables
                 Dim dvRow As DataRowView = CType(e.Row.DataItem, DataRowView)
 
                 Dim populateOptions As PopulateOptions = New PopulateOptions() With
-                    {
+                        {
                         .AddBlankItem = True
-                    }
+                        }
 
                 If Not dvRow Is Nothing And Not State.MerchantCodeSearchDV.Count > 0 Then
                     If itemType = ListItemType.Item Or itemType = ListItemType.AlternatingItem Or itemType = ListItemType.SelectedItem Or itemType = ListItemType.EditItem Then

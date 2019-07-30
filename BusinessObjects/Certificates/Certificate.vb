@@ -3,6 +3,7 @@ Imports Assurant.ElitaPlus.Common
 Imports System.Math
 Imports Assurant.ElitaPlus.BusinessObjectsNew.CertItem
 Imports System.Collections.Generic
+Imports System.Globalization
 
 Public Class Certificate
     Inherits BusinessObjectBase
@@ -555,7 +556,7 @@ Public Class Certificate
             Me.SetValue(CertificateDAL.COL_NAME_CUST_REQ_CANCEL_DATE, Value)
         End Set
     End Property
-    <ValidStringLength("", Max:=30)>
+    <ValidStringLength("", Max:=50)>
     Public Property InvoiceNumber() As String
         Get
             CheckDeleted()
@@ -1189,7 +1190,7 @@ Public Class Certificate
         End Set
     End Property
 
-    <ValidStringLength("", Max:=20), ValueMustBeBlankForDocumentNumber(""), SPValidationDocumentNumber(IDENTIFICATION_NUMBER), ValueTaxIdLenht("")>
+    <ValidStringLength("", Max:=50), ValueMustBeBlankForDocumentNumber(""), SPValidationDocumentNumber(IDENTIFICATION_NUMBER), ValueTaxIdLenht("")>
     Public Property IdentificationNumber() As String
         Get
             CheckDeleted()
@@ -1442,7 +1443,7 @@ Public Class Certificate
         End Set
     End Property
 
-    <ValidStringLength("", Max:=25)>
+    <ValidStringLength("", Max:=50)>
     Public Property ServiceLineNumber() As String
         Get
             CheckDeleted()
@@ -5196,6 +5197,27 @@ Public Class Certificate
 
         Return dal.GetCertPaymentPassedDueExtInfo(CertId)
 
+    End Function
+
+    Public Function MaskDatePart(txtDate As String, Optional noMask As Boolean = True) As String
+        If Not (String.IsNullOrEmpty(txtDate)) Then
+            If (CultureInfo.CurrentCulture.Name.Equals("ja-JP")) Then
+                Dim parsedDate As DateTime
+                parsedDate = DateTime.ParseExact(txtDate, "dd-M-yyyy", CultureInfo.InvariantCulture).ToString("MM/dd/yyyy", CultureInfo.InvariantCulture)
+                txtDate = parsedDate.ToString("D", CultureInfo.CurrentCulture)
+                If (noMask) Then
+                    Return txtDate
+                Else
+                    Return txtDate.Replace(txtDate.Substring(0, 4), "XXXX")
+                End If
+            Else
+                If (Not noMask) Then
+                    Dim dateofbirth As Date = txtDate
+                    Return dateofbirth.ToString("dd-MMM-xxxx")
+                End If
+            End If
+                Return txtDate
+        End If
     End Function
 
 #End Region

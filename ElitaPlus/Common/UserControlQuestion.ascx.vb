@@ -29,6 +29,7 @@ Public Class UserControlQuestion
         Public Const QuestionDataSource As String = "QuestionDataSource"
         Public Const ErrorQuestionCodes As String = "ErrorQuestionCodes"
         Public Const ErrAnswerMandatory As String = "ErrAnswerMandatory"
+        Public Const ErrTextAnswerLength As String = "ErrTextAnswerLength"
 
     End Class
 #End Region
@@ -146,6 +147,15 @@ Public Class UserControlQuestion
         End Get
         Set(value As StringBuilder)
             ViewState(ViewStateItems.ErrAnswerMandatory) = value
+        End Set
+    End Property
+
+    Public Property ErrTextAnswerLength As StringBuilder
+        Get
+            Return DirectCast(ViewState(ViewStateItems.ErrTextAnswerLength), StringBuilder)
+        End Get
+        Set(value As StringBuilder)
+            ViewState(ViewStateItems.ErrTextAnswerLength) = value
         End Set
     End Property
 
@@ -563,6 +573,7 @@ Public Class UserControlQuestion
 
         ErrAnswerMandatory = New StringBuilder()
         ErrorQuestionCodes = New StringBuilder()
+        ErrTextAnswerLength = new StringBuilder()
         Try
             For Each row In GridQuestions.Rows
 
@@ -608,9 +619,13 @@ Public Class UserControlQuestion
                                 End Try
                                 questionObject.Answer = numberValue
                             Else
-                                Dim txtValue As TextAnswer = New TextAnswer()
-                                txtValue.Answer = answer
-                                questionObject.Answer = txtValue
+                                If(Not String.IsNullOrWhiteSpace(questionObject.Length) AndAlso answer.Length > questionObject.Length)
+                                    ErrTextAnswerLength.AppendLine(questionObject.Text & " </br>")
+                                else
+                                    Dim txtValue As TextAnswer = New TextAnswer()
+                                    txtValue.Answer = answer
+                                    questionObject.Answer = txtValue
+                                End If
                             End If
                         End If
                     Case AnswerTypes.BooleanAnswer, AnswerTypes.LegalConsent

@@ -1149,16 +1149,19 @@ Public Class CertItemCoverage
                     Dim oCertItemCoverage As New CertItemCoverage(certItemCoverageId)
                     If (Not oCertItemCoverage Is Nothing) Then
                         returnValue.DeductibleBasedOnId = oCertItemCoverage.DeductibleBasedOnId
-                        If (returnValue.DeductibleBasedOn = "FIXED") Then
+
+                        If (returnValue.DeductibleBasedOn = Codes.DEDUCTIBLE_BASED_ON__FIXED) Then
                             If (oCertItemCoverage.Deductible Is Nothing) Then
                                 returnValue.Deductible = New DecimalType(0D)
                             Else
                                 returnValue.Deductible = oCertItemCoverage.Deductible
                             End If
 
-                        ElseIf returnValue.DeductibleBasedOn = "EXP"
+                        ElseIf returnValue.DeductibleBasedOn = Codes.DEDUCTIBLE_BASED_ON__EXPRESSION Then
                             returnValue.Deductible = 0
                             returnValue.ExpressionId = oCertItemCoverage.DeductibleExpressionId
+                        ElseIf returnValue.DeductibleBasedOn = Codes.DEDUCTIBLE_BASED_ON__COMPUTED_EXTERNALLY Then
+                            returnValue.Deductible = New DecimalType(0D)
                         Else
                             If (oCertItemCoverage.DeductiblePercent Is Nothing) Then
                                 returnValue.Deductible = New DecimalType(0D)

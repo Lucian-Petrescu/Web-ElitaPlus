@@ -2223,6 +2223,15 @@ Namespace ClaimRecordingService
         <System.Runtime.Serialization.OptionalFieldAttribute()>  _
         Private EstimateDeliveryDateChangeWindowField As System.Nullable(Of Integer)
         
+        <System.Runtime.Serialization.OptionalFieldAttribute()>  _
+        Private CountryCodeField As String
+        
+        <System.Runtime.Serialization.OptionalFieldAttribute()>  _
+        Private ServiceCenterCodeField As String
+        
+        <System.Runtime.Serialization.OptionalFieldAttribute()>  _
+        Private DesiredDeliveryDateMandatoryField As Boolean
+        
         <Global.System.ComponentModel.BrowsableAttribute(false)>  _
         Public Property ExtensionData() As System.Runtime.Serialization.ExtensionDataObject Implements System.Runtime.Serialization.IExtensibleDataObject.ExtensionData
             Get
@@ -2294,6 +2303,45 @@ Namespace ClaimRecordingService
                 If (Me.EstimateDeliveryDateChangeWindowField.Equals(value) <> true) Then
                     Me.EstimateDeliveryDateChangeWindowField = value
                     Me.RaisePropertyChanged("EstimateDeliveryDateChangeWindow")
+                End If
+            End Set
+        End Property
+        
+        <System.Runtime.Serialization.DataMemberAttribute(Order:=5)>  _
+        Public Property CountryCode() As String
+            Get
+                Return Me.CountryCodeField
+            End Get
+            Set
+                If (Object.ReferenceEquals(Me.CountryCodeField, value) <> true) Then
+                    Me.CountryCodeField = value
+                    Me.RaisePropertyChanged("CountryCode")
+                End If
+            End Set
+        End Property
+        
+        <System.Runtime.Serialization.DataMemberAttribute(Order:=6)>  _
+        Public Property ServiceCenterCode() As String
+            Get
+                Return Me.ServiceCenterCodeField
+            End Get
+            Set
+                If (Object.ReferenceEquals(Me.ServiceCenterCodeField, value) <> true) Then
+                    Me.ServiceCenterCodeField = value
+                    Me.RaisePropertyChanged("ServiceCenterCode")
+                End If
+            End Set
+        End Property
+        
+        <System.Runtime.Serialization.DataMemberAttribute(Order:=7)>  _
+        Public Property DesiredDeliveryDateMandatory() As Boolean
+            Get
+                Return Me.DesiredDeliveryDateMandatoryField
+            End Get
+            Set
+                If (Me.DesiredDeliveryDateMandatoryField.Equals(value) <> true) Then
+                    Me.DesiredDeliveryDateMandatoryField = value
+                    Me.RaisePropertyChanged("DesiredDeliveryDateMandatory")
                 End If
             End Set
         End Property

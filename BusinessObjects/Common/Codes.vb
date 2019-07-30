@@ -93,6 +93,7 @@ Public Class Codes
     Public Const DEDUCTIBLE_BASED_ON__PERCENT_OF_ITEM_RETAIL_PRICE As String = "ITEM"
     Public Const DEDUCTIBLE_BASED_ON__EXPRESSION As String = "EXP"
     Public Const DEDUCTIBLE_BASED_ON__PERCENT_OF_LIST_PRICE_WSD As String = "LISTWSD"
+    Public Const DEDUCTIBLE_BASED_ON__COMPUTED_EXTERNALLY As String = "COMPUTED_EXTERNALLY"
 
     ' Claim Issue processor
     Public Const ISSUE_PROCESSOR__SYSTEM = "ISSPRO-SYSTEM"
@@ -231,6 +232,7 @@ Public Class Codes
     '5623
     Public Const COMMENT_TYPE__CLAIM_DENIED_REPORT_TIME_NOT_WITHIN_GRACE_PERIOD As String = "DNGP"
     Public Const COMMENT_TYPE__CLAIM_DENIED_COVERAGE_TYPE_MISSING As String = "DNCTM"
+    Public Const COMMENT_TYPE__CLAIM_DENIED_DEVICE_PURCHASED_DATE As String = "DNDPD"
 
 
     'Default Search Fields
@@ -562,6 +564,7 @@ Public Class Codes
     '5623
     Public Const REASON_DENIED__NOT_REPORTED_WITHIN_GRACE_PERIOD As String = "DNGP"
     Public Const REASON_DENIED__COVERAGE_TYPE_MISSING As String = "DNCTM"
+    Public Const REASON_DENIED__DEVICE_PURCHASED_DATE As String = "DNDPD"
 
     Public Const REASON_DENIED__INCORRECT_DEVICE_SELECTED As String = "DNCTM"
     'Kept code individually to keep changes here only

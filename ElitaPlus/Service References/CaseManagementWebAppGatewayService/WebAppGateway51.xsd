@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xs:schema xmlns:tns="http://assurant.com/Elita/CaseManagement/WebAppGateway" elementFormDefault="qualified" targetNamespace="http://assurant.com/Elita/CaseManagement/WebAppGateway" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+  <xs:import schemaLocation="http://l16mia0d8313lfl.cead.prd/ElitaCaseManagement/WebAppGateway?xsd=xsd1" namespace="http://assurant.com/Elita/CaseManagement/WebAppGateway/Data" />
+  <xs:element name="CreateCase">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element xmlns:q1="http://assurant.com/Elita/CaseManagement/WebAppGateway/Data" minOccurs="0" name="request" nillable="true" type="q1:CreateCaseRequest" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="CreateCaseResponse">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element xmlns:q2="http://assurant.com/Elita/CaseManagement/WebAppGateway/Data" minOccurs="0" name="CreateCaseResult" nillable="true" type="q2:BaseCaseResponse" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="SaveCase">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element xmlns:q3="http://assurant.com/Elita/CaseManagement/WebAppGateway/Data" minOccurs="0" name="request" nillable="true" type="q3:SaveCaseRequest" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="SaveCaseResponse">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element xmlns:q4="http://assurant.com/Elita/CaseManagement/WebAppGateway/Data" minOccurs="0" name="SaveCaseResult" nillable="true" type="q4:BaseCaseResponse" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="BeginInteraction">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element xmlns:q5="http://assurant.com/Elita/CaseManagement/WebAppGateway/Data" minOccurs="0" name="request" nillable="true" type="q5:BeginInteractionRequest" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="BeginInteractionResponse">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element xmlns:q6="http://assurant.com/Elita/CaseManagement/WebAppGateway/Data" minOccurs="0" name="BeginInteractionResult" nillable="true" type="q6:BaseCaseResponse" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="Submit">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element xmlns:q7="http://assurant.com/Elita/CaseManagement/WebAppGateway/Data" minOccurs="0" name="request" nillable="true" type="q7:BaseSubmitRequest" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="SubmitResponse">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element xmlns:q8="http://assurant.com/Elita/CaseManagement/WebAppGateway/Data" minOccurs="0" name="SubmitResult" nillable="true" type="q8:BaseCaseResponse" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+</xs:schema>

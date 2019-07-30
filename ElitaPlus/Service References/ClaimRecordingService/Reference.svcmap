@@ -19,10 +19,10 @@
     <ServiceContractMappings />
   </ClientOptions>
   <MetadataSources>
-    <MetadataSource Address="http://elitaplus-api-modl.p1.assurant.com/ElitaClaimService1/ClaimRecordingService.svc?singlewsdl" Protocol="http" SourceId="1" />
+    <MetadataSource Address="https://elitaplus-modl.j2.assurant.com/ElitaClaimService2/ClaimRecordingService.svc?singleWsdl" Protocol="http" SourceId="1" />
   </MetadataSources>
   <Metadata>
-    <MetadataFile FileName="ClaimRecordingService1.wsdl" MetadataType="Wsdl" ID="91c409ed-2b3b-4236-9d0c-14042599bdea" SourceId="1" SourceUrl="http://elitaplus-api-modl.p1.assurant.com/ElitaClaimService1/ClaimRecordingService.svc?singlewsdl" />
+    <MetadataFile FileName="ClaimRecordingService13.wsdl" MetadataType="Wsdl" ID="db905f56-84ec-4d77-b0fc-4ccd65d009fa" SourceId="1" SourceUrl="https://elitaplus-modl.j2.assurant.com/ElitaClaimService2/ClaimRecordingService.svc?singleWsdl" />
   </Metadata>
   <Extensions>
     <ExtensionFile FileName="configuration91.svcinfo" Name="configuration91.svcinfo" />

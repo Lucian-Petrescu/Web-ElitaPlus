@@ -1,0 +1,57 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<SQL>
+  <LOAD>
+    <![CDATA[	
+			SELECT 
+				code,
+				description,
+				search_type_xcd,
+				created_by,
+				created_date,
+				modified_by,
+				modified_date,
+				search_config_id
+			FROM elp_search_config 
+			WHERE
+				search_config_id = :search_config_id
+		]]>
+  </LOAD>
+  <LOAD_LIST>
+  </LOAD_LIST>
+  <UPDATE>
+    <![CDATA[	
+			UPDATE elp_search_config SET
+				code = :code,
+				description = :description,
+				search_type_xcd = :search_type_xcd,
+				modified_by = :modified_by
+			WHERE
+				search_config_id = :search_config_id
+		]]>
+  </UPDATE>
+  <INSERT>
+    INSERT INTO elp_search_config
+    (
+    code,
+    description,
+    search_type_xcd,
+    created_by,
+    search_config_id
+    )
+    VALUES
+    (
+    :code,
+    :description,
+    :search_type_xcd,
+    :created_by,
+    :search_config_id
+    )
+  </INSERT>
+  <DELETE>
+    DELETE FROM elp_search_config
+    WHERE
+    search_config_id = :search_config_id
+  </DELETE>
+</SQL>
+
+

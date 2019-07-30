@@ -1,0 +1,162 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xs:schema xmlns:tns="http://assurant.com/Elita/CaseManagement/WebAppGateway/Data" elementFormDefault="qualified" targetNamespace="http://assurant.com/Elita/CaseManagement/WebAppGateway/Data" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+  <xs:import schemaLocation="http://l16mia0d8313lfl.cead.prd/ElitaCaseManagement/WebAppGateway?xsd=xsd3" namespace="http://elita.assurant.com/Elita/Claim/RecordingService/DataContracts" />
+  <xs:import schemaLocation="http://l16mia0d8313lfl.cead.prd/ElitaCaseManagement/WebAppGateway?xsd=xsd4" namespace="http://assurant.com/Elita/CaseManagement/Core/Data" />
+  <xs:complexType name="PhoneCaller">
+    <xs:complexContent mixed="false">
+      <xs:extension base="tns:BaseCaller">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="PhoneNumber" nillable="true" type="xs:string" />
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:element name="PhoneCaller" nillable="true" type="tns:PhoneCaller" />
+  <xs:complexType name="BaseCaller">
+    <xs:sequence>
+      <xs:element name="FirstName" nillable="true" type="xs:string" />
+      <xs:element name="LastName" nillable="true" type="xs:string" />
+      <xs:element name="RelationshipTypeCode" nillable="true" type="xs:string" />
+      <xs:element name="ChannelCode" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="CultureCode" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="EmailAddress" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="IsAuthenticated" nillable="true" type="xs:boolean" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="BaseCaller" nillable="true" type="tns:BaseCaller" />
+  <xs:complexType name="CreateCaseRequest">
+    <xs:complexContent mixed="false">
+      <xs:extension base="tns:BaseCaseRequest">
+        <xs:sequence>
+          <xs:element name="Reference" nillable="true" type="tns:BaseReference" />
+          <xs:element name="Caller" nillable="true" type="tns:BaseCaller" />
+          <xs:element minOccurs="0" name="PurposeCode" nillable="true" type="xs:string" />
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:element name="CreateCaseRequest" nillable="true" type="tns:CreateCaseRequest" />
+  <xs:complexType name="BaseCaseRequest">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="Notes" nillable="true" type="tns:ArrayOfNote" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="BaseCaseRequest" nillable="true" type="tns:BaseCaseRequest" />
+  <xs:complexType name="ArrayOfNote">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="Note" nillable="true" type="tns:Note" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="ArrayOfNote" nillable="true" type="tns:ArrayOfNote" />
+  <xs:complexType name="Note">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="Body" nillable="true" type="xs:string" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="Note" nillable="true" type="tns:Note" />
+  <xs:complexType name="BaseReference">
+    <xs:sequence />
+  </xs:complexType>
+  <xs:element name="BaseReference" nillable="true" type="tns:BaseReference" />
+  <xs:complexType name="CertificateReference">
+    <xs:complexContent mixed="false">
+      <xs:extension base="tns:BaseReference">
+        <xs:sequence>
+          <xs:element name="DealerCode" nillable="true" type="xs:string" />
+          <xs:element name="CertificateNumber" nillable="true" type="xs:string" />
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:element name="CertificateReference" nillable="true" type="tns:CertificateReference" />
+  <xs:complexType name="ClaimReference">
+    <xs:complexContent mixed="false">
+      <xs:extension base="tns:BaseReference">
+        <xs:sequence>
+          <xs:element name="CompanyCode" nillable="true" type="xs:string" />
+          <xs:element name="ClaimNumber" nillable="true" type="xs:string" />
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:element name="ClaimReference" nillable="true" type="tns:ClaimReference" />
+  <xs:complexType name="BeginInteractionRequest">
+    <xs:complexContent mixed="false">
+      <xs:extension base="tns:BaseReference">
+        <xs:sequence>
+          <xs:element name="CompanyCode" nillable="true" type="xs:string" />
+          <xs:element name="CaseNumber" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="Caller" nillable="true" type="tns:BaseCaller" />
+          <xs:element minOccurs="0" name="PurposeCode" nillable="true" type="xs:string" />
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:element name="BeginInteractionRequest" nillable="true" type="tns:BeginInteractionRequest" />
+  <xs:complexType name="SaveCaseRequest">
+    <xs:complexContent mixed="false">
+      <xs:extension base="tns:BaseCaseRequest">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="CompanyCode" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="CaseNumber" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="CloseReasonCode" nillable="true" type="xs:string" />
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:element name="SaveCaseRequest" nillable="true" type="tns:SaveCaseRequest" />
+  <xs:complexType name="BaseCaseResponse">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="CompanyCode" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="CaseNumber" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="InteractionNumber" nillable="true" type="xs:string" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="BaseCaseResponse" nillable="true" type="tns:BaseCaseResponse" />
+  <xs:complexType name="AuthenticationCaseResponse">
+    <xs:complexContent mixed="false">
+      <xs:extension base="tns:BaseCaseResponse">
+        <xs:sequence>
+          <xs:element xmlns:q1="http://elita.assurant.com/Elita/Claim/RecordingService/DataContracts" minOccurs="0" name="Questions" nillable="true" type="q1:ArrayOfQuestion" />
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:element name="AuthenticationCaseResponse" nillable="true" type="tns:AuthenticationCaseResponse" />
+  <xs:complexType name="AuthenticationResponse">
+    <xs:complexContent mixed="false">
+      <xs:extension base="tns:BaseCaseResponse">
+        <xs:sequence>
+          <xs:element xmlns:q2="http://assurant.com/Elita/CaseManagement/Core/Data" minOccurs="0" name="CallerAuthenticationStatus" type="q2:CallerAuthenticationStatusTypes" />
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:element name="AuthenticationResponse" nillable="true" type="tns:AuthenticationResponse" />
+  <xs:complexType name="CaseResponse">
+    <xs:complexContent mixed="false">
+      <xs:extension base="tns:BaseCaseResponse">
+        <xs:sequence />
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:element name="CaseResponse" nillable="true" type="tns:CaseResponse" />
+  <xs:complexType name="BaseSubmitRequest">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="CompanyCode" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="CaseNumber" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="InteractionNumber" nillable="true" type="xs:string" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="BaseSubmitRequest" nillable="true" type="tns:BaseSubmitRequest" />
+  <xs:complexType name="CallerAuthenticationRequest">
+    <xs:complexContent mixed="false">
+      <xs:extension base="tns:BaseSubmitRequest">
+        <xs:sequence>
+          <xs:element xmlns:q3="http://elita.assurant.com/Elita/Claim/RecordingService/DataContracts" minOccurs="0" name="Questions" nillable="true" type="q3:ArrayOfQuestion" />
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:element name="CallerAuthenticationRequest" nillable="true" type="tns:CallerAuthenticationRequest" />
+</xs:schema>

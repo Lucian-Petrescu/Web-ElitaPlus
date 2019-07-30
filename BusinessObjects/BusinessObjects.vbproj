@@ -100,10 +100,6 @@
     <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Assurant.Common.CrystalEnterpriseHelper\Assurant.Common.CrystalEnterpriseHelper.vbproj">
-      <Project>{7F4C7ADF-CA31-4E8F-AFF5-12DF10AF44BA}</Project>
-      <Name>Assurant.Common.CrystalEnterpriseHelper</Name>
-    </ProjectReference>
     <ProjectReference Include="..\Business\Business.vbproj">
       <Project>{26a9c5d6-579b-4b5f-bf52-2c596819d92b}</Project>
       <Name>Business</Name>
@@ -384,6 +380,9 @@
     <Compile Include="Tables\ProductEquipment.vb" />
     <Compile Include="Tables\ProductRewards.vb" />
     <Compile Include="Tables\ConsentActions.vb" />
+    <Compile Include="Tables\SearchConfig.vb" />
+    <Compile Include="Tables\SearchConfigAssignment.vb" />
+    <Compile Include="Tables\SearchConfigCriteria.vb" />
     <Compile Include="Tables\StageEndStatus.vb" />
     <Compile Include="Tables\DealerClmAproveClmtype.vb" />
     <Compile Include="Tables\DealerClmAproveCovtype.vb" />

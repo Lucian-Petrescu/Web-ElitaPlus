@@ -121,7 +121,7 @@
                             <asp:Label ID="label10" runat="server">INVOICE_NUMBER</asp:Label>:
                         </td>
                         <td style="white-space: nowrap;" align="left">
-                            <asp:TextBox ID="txtInvNum" runat="server" Width="200px" MaxLength="30" TabIndex="517"></asp:TextBox>
+                            <asp:TextBox ID="txtInvNum" runat="server" Width="200px" MaxLength="50" TabIndex="517"></asp:TextBox>
                         </td>
                         <td class="TD_LABEL">
                             <asp:Label ID="label15" runat="server">MODEL</asp:Label>:
@@ -224,13 +224,13 @@
                             <asp:Label ID="label23" runat="server">TAX_ID</asp:Label>:
                         </td>
                         <td style="white-space: nowrap;" align="left">
-                            <asp:TextBox ID="txtTaxID" runat="server" Width="200px" MaxLength="20" TabIndex="535"></asp:TextBox>
+                            <asp:TextBox ID="txtTaxID" runat="server" Width="200px" MaxLength="50" TabIndex="535"></asp:TextBox>
                         </td>
                         <td class="TD_LABEL">
                             <asp:Label ID="label26" runat="server">ADDRESS1</asp:Label>:
                         </td>
                         <td style="white-space: nowrap;" align="left">
-                            <asp:TextBox ID="txtAddress1" runat="server" Width="200px" MaxLength="50" TabIndex="545"></asp:TextBox>
+                            <asp:TextBox ID="txtAddress1" runat="server" Width="200px" MaxLength="100" TabIndex="545"></asp:TextBox>
                         </td>
 
                     </tr>
@@ -245,7 +245,7 @@
                             <asp:Label ID="label27" runat="server">ADDRESS2</asp:Label>:
                         </td>
                         <td style="white-space: nowrap;" align="left">
-                            <asp:TextBox ID="txtAddress2" runat="server" Width="200px" MaxLength="50" TabIndex="547"></asp:TextBox>
+                            <asp:TextBox ID="txtAddress2" runat="server" Width="200px" MaxLength="100" TabIndex="547"></asp:TextBox>
                         </td>
 
                     </tr>

@@ -242,7 +242,7 @@ Public Class ElitaPlusPage
         Dim bCanUpdate As Boolean = False
         Dim sPageName As String = Path.GetFileNameWithoutExtension(Request.Url.ToString)
         Dim mPagePermissionType As FormAuthorization.enumPermissionType =
-                                        FormAuthorization.GetPermissions(sPageName)
+                FormAuthorization.GetPermissions(sPageName)
         If mPagePermissionType = FormAuthorization.enumPermissionType.EDIT Then
             bCanUpdate = True
         End If
@@ -307,7 +307,7 @@ Public Class ElitaPlusPage
         'was not getting called and the the ViewOnly property set for a DropDown at 
         'Control level was not working
         If (PagePermissionType = FormAuthorization.enumPermissionType.VIEWONLY OrElse
-                PagePermissionType = FormAuthorization.enumPermissionType.EDIT) Then
+            PagePermissionType = FormAuthorization.enumPermissionType.EDIT) Then
             'check the authorization config if not panel/label
             If Not ((TypeOf oWebControl Is Panel) AndAlso (TypeOf oWebControl Is Label)) Then
                 bCanEnable = CanSetControlEnabled(oWebControl.ID)
@@ -658,7 +658,7 @@ Public Class ElitaPlusPage
             If oCurrentControl.GetType.IsSubclassOf(GetType(WebControl)) Then
                 oWebcontrol = CType(oCurrentControl, WebControl)
                 If Not oWebcontrol.GetType.ToString.Equals("System.Web.UI.WebControls.Label") _
-                    AndAlso Not oWebcontrol.GetType.ToString.Equals("System.Web.UI.WebControls.Panel") Then
+                   AndAlso Not oWebcontrol.GetType.ToString.Equals("System.Web.UI.WebControls.Panel") Then
                     oWebcontrol.Enabled = blnEnable
                 End If
             End If
@@ -724,8 +724,8 @@ Public Class ElitaPlusPage
     Public Sub ApplyAllowNavigation()
         Dim sPageName As String = Path.GetFileNameWithoutExtension(Request.Url.ToString)
         If ((sPageName.ToUpper).StartsWith("NAVIGATION_") = False) AndAlso (sPageName.ToUpper <> "DEFAULT") _
-        AndAlso (sPageName.ToUpper <> "HOMEFORM") AndAlso (sPageName.ToUpper <> "MAINPAGE") _
-        AndAlso (sPageName.ToUpper <> "LOGINFORM") AndAlso (sPageName.ToUpper <> "ERRORFORM") Then
+           AndAlso (sPageName.ToUpper <> "HOMEFORM") AndAlso (sPageName.ToUpper <> "MAINPAGE") _
+           AndAlso (sPageName.ToUpper <> "LOGINFORM") AndAlso (sPageName.ToUpper <> "ERRORFORM") Then
             If (sPageName.ToUpper = "NOTIFICATIONLISTFORM" AndAlso CType(Session("PageCalledFrom"), String) = "MAINPAGE") Then
                 Me.MenuEnabled = False
             Else
@@ -756,7 +756,7 @@ Public Class ElitaPlusPage
 
 
         If (Me.GetType.Name.ToLower <> GetType(ErrorForm).Name.ToLower & "_aspx") AndAlso
-            (Not Me.NavController Is Nothing AndAlso Not MyBase.useExistingState) Then
+           (Not Me.NavController Is Nothing AndAlso Not MyBase.useExistingState) Then
             Me.NavController.Navigate(Me)
         End If
 
@@ -1068,8 +1068,8 @@ Public Class ElitaPlusPage
 
 #Region "Common Dropdown binding and GUID handling Helper Functions "
     Public Shared Sub BindListControlToArray(ByVal lstControl As ListControl, ByVal Data As ListItem(),
-                                            Optional ByVal AddNothingSelected As Boolean = True, Optional ByVal AddSelectSelected As Boolean = False,
-                                            Optional ByVal nothingValue As String = "", Optional ByVal selectValue As String = "")
+                                             Optional ByVal AddNothingSelected As Boolean = True, Optional ByVal AddSelectSelected As Boolean = False,
+                                             Optional ByVal nothingValue As String = "", Optional ByVal selectValue As String = "")
         Dim i As Integer
         lstControl.Items.Clear()
         If AddNothingSelected Then
@@ -1086,10 +1086,10 @@ Public Class ElitaPlusPage
     End Sub
 
     Public Shared Sub BindListControlToDataView(ByVal lstControl As ListControl, ByVal Data As DataView,
-                                            Optional ByVal TextColumnName As String = "DESCRIPTION", Optional ByVal GuidValueColumnName As String = "ID",
-                                            Optional ByVal AddNothingSelected As Boolean = True, Optional ByVal SortByTextColumn As Boolean = True,
-                                            Optional ByVal AddSelectSelected As Boolean = False,
-                                            Optional ByVal AddOtherSelected As Boolean = False)
+                                                Optional ByVal TextColumnName As String = "DESCRIPTION", Optional ByVal GuidValueColumnName As String = "ID",
+                                                Optional ByVal AddNothingSelected As Boolean = True, Optional ByVal SortByTextColumn As Boolean = True,
+                                                Optional ByVal AddSelectSelected As Boolean = False,
+                                                Optional ByVal AddOtherSelected As Boolean = False)
         Dim i As Integer
         lstControl.Items.Clear()
         If AddNothingSelected Then
@@ -1112,9 +1112,9 @@ Public Class ElitaPlusPage
         End If
     End Sub
     Public Shared Sub BindCodeNameToListControl(ByVal lstControl As ListControl, ByVal Data As DataView,
-                                     Optional ByVal TextColumnName1 As String = "DESCRIPTION", Optional ByVal TextColumnName2 As String = "CODE", Optional ByVal GuidValueColumnName As String = "ID",
-                                     Optional ByVal AddNothingSelected As Boolean = True, Optional ByVal SortByTextColumn As Boolean = True,
-                                     Optional ByVal AddSelectSelected As Boolean = False)
+                                                Optional ByVal TextColumnName1 As String = "DESCRIPTION", Optional ByVal TextColumnName2 As String = "CODE", Optional ByVal GuidValueColumnName As String = "ID",
+                                                Optional ByVal AddNothingSelected As Boolean = True, Optional ByVal SortByTextColumn As Boolean = True,
+                                                Optional ByVal AddSelectSelected As Boolean = False)
         Dim i As Integer
         lstControl.Items.Clear()
         If AddNothingSelected Then
@@ -1135,9 +1135,9 @@ Public Class ElitaPlusPage
     End Sub
 
     Public Shared Sub BindCodeToListControl(ByVal lstControl As ListControl, ByVal Data As DataView,
-                                     Optional ByVal TextColumnName1 As String = "DESCRIPTION", Optional ByVal TextColumnName2 As String = "CODE",
-                                     Optional ByVal AddNothingSelected As Boolean = True, Optional ByVal SortByTextColumn As Boolean = True,
-                                     Optional ByVal AddSelectSelected As Boolean = False)
+                                            Optional ByVal TextColumnName1 As String = "DESCRIPTION", Optional ByVal TextColumnName2 As String = "CODE",
+                                            Optional ByVal AddNothingSelected As Boolean = True, Optional ByVal SortByTextColumn As Boolean = True,
+                                            Optional ByVal AddSelectSelected As Boolean = False)
         Dim i As Integer
         lstControl.Items.Clear()
         If AddNothingSelected Then
@@ -1158,8 +1158,8 @@ Public Class ElitaPlusPage
     End Sub
 
     Public Shared Sub BindListTextToDataView(ByVal lstControl As ListControl, ByVal Data As DataView,
-        Optional ByVal TextColumnName As String = "DESCRIPTION", Optional ByVal ValueColumnName As String = "ID",
-        Optional ByVal AddNothingSelected As Boolean = True, Optional ByVal SortByTextColumn As Boolean = True)
+                                             Optional ByVal TextColumnName As String = "DESCRIPTION", Optional ByVal ValueColumnName As String = "ID",
+                                             Optional ByVal AddNothingSelected As Boolean = True, Optional ByVal SortByTextColumn As Boolean = True)
         Dim i As Integer
         lstControl.Items.Clear()
         If AddNothingSelected Then
@@ -1423,7 +1423,7 @@ Public Class ElitaPlusPage
     End Sub
 
     Public Sub AddCalendar_New(ByVal control As System.Web.UI.WebControls.WebControl, ByVal textbox As System.Web.UI.WebControls.WebControl, Optional ByVal caller As String = "", Optional ByVal setDateTime As String = "N",
-                                           Optional ByVal disablePreviousDates As String = "N")
+                               Optional ByVal disablePreviousDates As String = "N")
         Dim AppPath As String = Request.ApplicationPath
         Dim ServerName As String = Request.ServerVariables("SERVER_NAME")
         'Dim url As String = "http://" & ServerName & AppPath & "/Common/CalendarForm.aspx"
@@ -1445,10 +1445,10 @@ Public Class ElitaPlusPage
     End Sub
 
     Public Shared Sub AddCalendarNewWithEnableDates(ByVal control As System.Web.UI.WebControls.WebControl,
-                                           ByVal textBox As System.Web.UI.WebControls.WebControl,
-                                           Optional ByVal caller As String = "",
-                                           Optional ByVal setDateTime As String = "N",
-                                           Optional ByVal enabledDates As List(of Date) = nothing)
+                                                    ByVal textBox As System.Web.UI.WebControls.WebControl,
+                                                    Optional ByVal caller As String = "",
+                                                    Optional ByVal setDateTime As String = "N",
+                                                    Optional ByVal enabledDates As List(of Date) = nothing)
         Dim url As String = ELPWebConstants.APPLICATION_PATH & "/Common/CalendarForm_New.aspx"
         Dim textId As String = textBox.UniqueID.Replace(":", "_").Replace("$", "_")
         dim strEnabledDates as String = string.Empty
@@ -1459,10 +1459,10 @@ Public Class ElitaPlusPage
     End Sub
 
     Public Shared Sub AddCalendarNewWithDisableBeforeDate(ByVal control As System.Web.UI.WebControls.WebControl,
-                                                    ByVal textBox As System.Web.UI.WebControls.WebControl,
-                                                    Optional ByVal caller As String = "",
-                                                    Optional ByVal setDateTime As String = "N",
-                                                    Optional ByVal disableBeforeDate As Date = nothing)
+                                                          ByVal textBox As System.Web.UI.WebControls.WebControl,
+                                                          Optional ByVal caller As String = "",
+                                                          Optional ByVal setDateTime As String = "N",
+                                                          Optional ByVal disableBeforeDate As Date = nothing)
         Dim url As String = ELPWebConstants.APPLICATION_PATH & "/Common/CalendarForm_New.aspx"
         Dim textId As String = textBox.UniqueID.Replace(":", "_").Replace("$", "_")
         dim strDisabledBeforeDate as String = string.Empty
@@ -2257,7 +2257,7 @@ Public Class ElitaPlusPage
         Dim sUniqueId As String
         Try
             If TypeOf oControl Is Label Or TypeOf oControl Is TableCell _
-                Or TypeOf oControl Is TextBox Or TypeOf oControl Is CheckBox Then
+               Or TypeOf oControl Is TextBox Or TypeOf oControl Is CheckBox Then
                 sPropertyValue = GetValueFromPropertyName(bo, propertyName)
                 PopulateControlFromBOProperty(oControl, sPropertyValue, format)
             ElseIf TypeOf oControl Is DropDownList Or TypeOf oControl Is ListBox Then
@@ -2756,7 +2756,7 @@ Public Class ElitaPlusPage
             'Check if there is a label bound to the BO property
             ' Dim assocLbl As Label = FindBoPropAssociatedLabel(err.BusinessObjectType, err.PropertyName)
             Dim assocLbl As Label = FindBoPropAssociatedLabel(err.BusinessObjectType, err.PropertyName,
-                                           validationExc.UniqueId)
+                                                              validationExc.UniqueId)
             If Not assocLbl Is Nothing Then
                 assocLbl.ForeColor = Color.Red
                 errStrList(i) &= RemoveDecoration(assocLbl.Text) & ":"
@@ -2764,14 +2764,14 @@ Public Class ElitaPlusPage
             'Check if there is a Grid Header bound to the BO property
             If TypeOf (Me.boPropToGridHeaderBinding.Item(GetUniqueKeyName(err.BusinessObjectType, err.PropertyName, validationExc.UniqueId))) Is TemplateField Then
                 Dim grdColTmplFld As TemplateField = Me.FindBoPropAssociatedGridHeaderTmplFld(err.BusinessObjectType, err.PropertyName,
-                                                            validationExc.UniqueId)
+                                                                                              validationExc.UniqueId)
                 If Not grdColTmplFld Is Nothing Then
                     grdColTmplFld.HeaderStyle.ForeColor = Color.Red
                     errStrList(i) &= RemoveDecoration(grdColTmplFld.HeaderText) & ":"
                 End If
             ElseIf TypeOf (Me.boPropToGridHeaderBinding.Item(GetUniqueKeyName(err.BusinessObjectType, err.PropertyName, validationExc.UniqueId))) Is DataGridColumn Then
                 Dim assocGridColumn As DataGridColumn = Me.FindBoPropAssociatedGridHeader(err.BusinessObjectType, err.PropertyName,
-                                                            validationExc.UniqueId)
+                                                                                          validationExc.UniqueId)
                 If Not assocGridColumn Is Nothing Then
                     assocGridColumn.HeaderStyle.ForeColor = Color.Red
                     errStrList(i) &= RemoveDecoration(assocGridColumn.HeaderText) & ":"
@@ -2807,7 +2807,7 @@ Public Class ElitaPlusPage
 
     ' New Framework
     Private Function GetUniqueKeyName(ByVal bo As IBusinessObjectBase, ByVal propName As String,
-    ByVal uniqueId As String) As String
+                                      ByVal uniqueId As String) As String
         Dim keyName As String
 
         keyName = (bo.GetType.Name & "." & propName).ToUpper & "." & uniqueId
@@ -2825,7 +2825,7 @@ Public Class ElitaPlusPage
 
     'Type
     Private Function GetUniqueKeyName(ByVal boType As Type, ByVal propName As String,
-    ByVal uniqueId As String) As String
+                                      ByVal uniqueId As String) As String
         Dim keyName As String
 
         keyName = (boType.Name & "." & propName).ToUpper & "." & uniqueId
@@ -2872,7 +2872,7 @@ Public Class ElitaPlusPage
     'End Function
 
     Protected Function FindBoPropAssociatedLabel(ByVal boType As Type, ByVal propName As String,
-    ByVal sUniqueId As String) As Label
+                                                 ByVal sUniqueId As String) As Label
         Dim oLabel As Label
         '   Return CType(Me.boPropToLabelBinding.Item((boType.Name & "." & propName).ToUpper), Label)
         oLabel = CType(Me.boPropToLabelBinding.Item(GetUniqueKeyName(boType, propName, sUniqueId)), Label)
@@ -2888,7 +2888,7 @@ Public Class ElitaPlusPage
     'End Function
 
     Protected Overloads Function FindBoPropAssociatedGridHeader(ByVal boType As Type, ByVal propName As String,
-    ByVal sUniqueId As String) As DataGridColumn
+                                                                ByVal sUniqueId As String) As DataGridColumn
         Dim oCol As DataGridColumn
 
         oCol = CType(Me.boPropToGridHeaderBinding.Item(GetUniqueKeyName(boType, propName, sUniqueId)), DataGridColumn)
@@ -2901,7 +2901,7 @@ Public Class ElitaPlusPage
     End Function
 
     Protected Overloads Function FindBoPropAssociatedGridHeaderTmplFld(ByVal boType As Type, ByVal propName As String,
-   ByVal sUniqueId As String) As TemplateField
+                                                                       ByVal sUniqueId As String) As TemplateField
         Dim oCol As TemplateField
 
         oCol = CType(Me.boPropToGridHeaderBinding.Item(GetUniqueKeyName(boType, propName, sUniqueId)), TemplateField)
@@ -2913,7 +2913,7 @@ Public Class ElitaPlusPage
     End Function
 
     Protected Overloads Function FindBoPropAssociatedGridViewHeader(ByVal boType As Type, ByVal propName As String,
-    ByVal sUniqueId As String) As DataControlField
+                                                                    ByVal sUniqueId As String) As DataControlField
         Dim oCol As DataControlField
 
         oCol = CType(Me.boPropToGridHeaderBinding.Item(GetUniqueKeyName(boType, propName, sUniqueId)), DataControlField)
@@ -2982,7 +2982,7 @@ Public Class ElitaPlusPage
 
     Private Sub HandleErrors(ByVal exc As Exception, ByVal ErrorCtrl As IErrorController, Optional ByVal Translate As Boolean = True)
         If exc.GetType Is GetType(Threading.ThreadAbortException) OrElse
-            (Not exc.InnerException Is Nothing AndAlso exc.InnerException.GetType Is GetType(Threading.ThreadAbortException)) Then
+           (Not exc.InnerException Is Nothing AndAlso exc.InnerException.GetType Is GetType(Threading.ThreadAbortException)) Then
             Return
         End If
 
@@ -3061,11 +3061,11 @@ Public Class ElitaPlusPage
                         mandatoryAttr = pInfo.GetCustomAttributes(GetType(ValidBaseAttribute), True)
                         For Each att As Object In mandatoryAttr
                             If Not att.GetType.Equals(GetType(ValidStringLengthAttribute)) AndAlso
-                              Not att.GetType.Equals(GetType(ValidDateRangeAttribute)) AndAlso
-                              Not att.GetType.Equals(GetType(ValidNumericRangeAttribute)) AndAlso
-                              Not att.GetType.Equals(GetType(ValidIntervalDateAttribute)) AndAlso
-                              Not att.GetType.Equals(GetType(ValidateDecimalNumberAttribute)) AndAlso
-                              CType(att, ValidBaseAttribute).isMandatory(propName, bo) Then
+                               Not att.GetType.Equals(GetType(ValidDateRangeAttribute)) AndAlso
+                               Not att.GetType.Equals(GetType(ValidNumericRangeAttribute)) AndAlso
+                               Not att.GetType.Equals(GetType(ValidIntervalDateAttribute)) AndAlso
+                               Not att.GetType.Equals(GetType(ValidateDecimalNumberAttribute)) AndAlso
+                               CType(att, ValidBaseAttribute).isMandatory(propName, bo) Then
                                 isMandatory = True
                                 Exit For
                             End If
@@ -3093,11 +3093,11 @@ Public Class ElitaPlusPage
                                         mandatoryAttr = currField.GetCustomAttributes(GetType(ValidBaseAttribute), True)
                                         For Each att As Object In mandatoryAttr
                                             If Not att.GetType.Equals(GetType(ValidStringLengthAttribute)) AndAlso
-                                              Not att.GetType.Equals(GetType(ValidDateRangeAttribute)) AndAlso
-                                              Not att.GetType.Equals(GetType(ValidNumericRangeAttribute)) AndAlso
-                                              Not att.GetType.Equals(GetType(ValidIntervalDateAttribute)) AndAlso
-                                              Not att.GetType.Equals(GetType(ValidateDecimalNumberAttribute)) AndAlso
-                                              CType(att, ValidBaseAttribute).isMandatory(propName, bo) Then
+                                               Not att.GetType.Equals(GetType(ValidDateRangeAttribute)) AndAlso
+                                               Not att.GetType.Equals(GetType(ValidNumericRangeAttribute)) AndAlso
+                                               Not att.GetType.Equals(GetType(ValidIntervalDateAttribute)) AndAlso
+                                               Not att.GetType.Equals(GetType(ValidateDecimalNumberAttribute)) AndAlso
+                                               CType(att, ValidBaseAttribute).isMandatory(propName, bo) Then
                                                 isMandatory = True
                                                 Exit For
                                             End If
@@ -3122,11 +3122,11 @@ Public Class ElitaPlusPage
                                         mandatoryAttr = currProperty.GetCustomAttributes(GetType(ValidBaseAttribute), True)
                                         For Each att As Object In mandatoryAttr
                                             If Not att.GetType.Equals(GetType(ValidStringLengthAttribute)) AndAlso
-                                              Not att.GetType.Equals(GetType(ValidDateRangeAttribute)) AndAlso
-                                              Not att.GetType.Equals(GetType(ValidNumericRangeAttribute)) AndAlso
-                                              Not att.GetType.Equals(GetType(ValidIntervalDateAttribute)) AndAlso
-                                              Not att.GetType.Equals(GetType(ValidateDecimalNumberAttribute)) AndAlso
-                                              CType(att, ValidBaseAttribute).isMandatory(propName, bo) Then
+                                               Not att.GetType.Equals(GetType(ValidDateRangeAttribute)) AndAlso
+                                               Not att.GetType.Equals(GetType(ValidNumericRangeAttribute)) AndAlso
+                                               Not att.GetType.Equals(GetType(ValidIntervalDateAttribute)) AndAlso
+                                               Not att.GetType.Equals(GetType(ValidateDecimalNumberAttribute)) AndAlso
+                                               CType(att, ValidBaseAttribute).isMandatory(propName, bo) Then
                                                 isMandatory = True
                                                 Exit For
                                             End If
@@ -3412,8 +3412,8 @@ Public Class ElitaPlusPage
             Case "System.Web.UI.WebControls.WebControl"
 
                 If oParentControl.GetType.ToString = "System.Web.UI.WebControls.Image" Or
-                    oParentControl.GetType.ToString = "System.Web.UI.WebControls.Label" Or
-                    oParentControl.GetType.ToString = "System.Web.UI.WebControls.Button" Then
+                   oParentControl.GetType.ToString = "System.Web.UI.WebControls.Label" Or
+                   oParentControl.GetType.ToString = "System.Web.UI.WebControls.Button" Then
                     ' do nothing
                 ElseIf oParentControl.GetType.ToString = "System.Web.UI.WebControls.TextBox" Then
                     Dim txtBox As TextBox = CType(oParentControl, System.Web.UI.WebControls.TextBox)
@@ -3687,6 +3687,23 @@ Public Class ElitaPlusPage
 
     End Function
 
+#Region "Convert List to Datatable"
+    Public Function ConvertToDataTable(Of T)(list As IList(Of T)) As DataTable
+        Dim entityType As Type = GetType(T)
+        Dim table As New DataTable()
+        Dim properties As PropertyDescriptorCollection = TypeDescriptor.GetProperties(entityType)
+        For Each prop As PropertyDescriptor In properties
+            table.Columns.Add(prop.Name, If(Nullable.GetUnderlyingType(prop.PropertyType), prop.PropertyType))
+        Next
+        For Each item As T In list
+            Dim row As DataRow = table.NewRow()
+            For Each prop As PropertyDescriptor In properties
+                row(prop.Name) = If(prop.GetValue(item), DBNull.Value)
+            Next
+            table.Rows.Add(row)
+        Next
+        Return table
+    End Function
+#End Region
+
 End Class
-
-

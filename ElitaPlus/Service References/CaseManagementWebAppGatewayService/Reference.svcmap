@@ -19,16 +19,16 @@
     <ServiceContractMappings />
   </ClientOptions>
   <MetadataSources>
-    <MetadataSource Address="http://localhost/ElitaCaseManagement/WebAppGateway" Protocol="http" SourceId="1" />
+    <MetadataSource Address="http://l16mia0d8313lfl.cead.prd/ElitaCaseManagement/WebAppGateway" Protocol="http" SourceId="1" />
   </MetadataSources>
   <Metadata>
-    <MetadataFile FileName="WebAppGateway.wsdl" MetadataType="Wsdl" ID="727e3887-48e5-49ff-8b85-297a4af01593" SourceId="1" SourceUrl="http://localhost/ElitaCaseManagement/WebAppGateway" />
-    <MetadataFile FileName="WebAppGateway1.wsdl" MetadataType="Wsdl" ID="cf9abb6f-c99d-4098-a8dd-f2fec57a7152" SourceId="1" SourceUrl="http://localhost/ElitaCaseManagement/WebAppGateway?wsdl=wsdl0" />
-    <MetadataFile FileName="WebAppGateway.xsd" MetadataType="Schema" ID="831c547c-ca6c-47e8-9690-4a8cf6f02a96" SourceId="1" SourceUrl="http://localhost/ElitaCaseManagement/WebAppGateway?xsd=xsd4" />
-    <MetadataFile FileName="WebAppGateway1.xsd" MetadataType="Schema" ID="bd494a84-f070-475f-b8df-78bd91af2de4" SourceId="1" SourceUrl="http://localhost/ElitaCaseManagement/WebAppGateway?xsd=xsd3" />
-    <MetadataFile FileName="WebAppGateway2.xsd" MetadataType="Schema" ID="d3a271a5-a313-4ca3-a7c8-e7fe2aaa0cd2" SourceId="1" SourceUrl="http://localhost/ElitaCaseManagement/WebAppGateway?xsd=xsd0" />
-    <MetadataFile FileName="WebAppGateway3.xsd" MetadataType="Schema" ID="d05dbe7a-03f3-4618-99d1-3a4cc885b989" SourceId="1" SourceUrl="http://localhost/ElitaCaseManagement/WebAppGateway?xsd=xsd2" />
-    <MetadataFile FileName="WebAppGateway4.xsd" MetadataType="Schema" ID="ec0c2bb4-a494-4a44-834f-865e27ea71a2" SourceId="1" SourceUrl="http://localhost/ElitaCaseManagement/WebAppGateway?xsd=xsd1" />
+    <MetadataFile FileName="WebAppGateway5.xsd" MetadataType="Schema" ID="d78593a3-403e-4303-ba76-bce282037956" SourceId="1" SourceUrl="http://l16mia0d8313lfl.cead.prd/ElitaCaseManagement/WebAppGateway?xsd=xsd3" />
+    <MetadataFile FileName="WebAppGateway51.xsd" MetadataType="Schema" ID="cf122920-5499-488a-afec-6f3fdea7b562" SourceId="1" SourceUrl="http://l16mia0d8313lfl.cead.prd/ElitaCaseManagement/WebAppGateway?xsd=xsd2" />
+    <MetadataFile FileName="WebAppGateway52.xsd" MetadataType="Schema" ID="d3957fd0-0c67-4150-9103-2395b6b68955" SourceId="1" SourceUrl="http://l16mia0d8313lfl.cead.prd/ElitaCaseManagement/WebAppGateway?xsd=xsd1" />
+    <MetadataFile FileName="WebAppGateway53.xsd" MetadataType="Schema" ID="cdd63ee9-a756-4b41-89ec-dbc3738c4274" SourceId="1" SourceUrl="http://l16mia0d8313lfl.cead.prd/ElitaCaseManagement/WebAppGateway?xsd=xsd0" />
+    <MetadataFile FileName="WebAppGateway54.xsd" MetadataType="Schema" ID="970d0783-c46b-4179-a191-8aa8bbcb8bbc" SourceId="1" SourceUrl="http://l16mia0d8313lfl.cead.prd/ElitaCaseManagement/WebAppGateway?xsd=xsd4" />
+    <MetadataFile FileName="WebAppGateway2.wsdl" MetadataType="Wsdl" ID="b4b2dee6-0784-4916-b089-c209d50c4c3e" SourceId="1" SourceUrl="http://l16mia0d8313lfl.cead.prd/ElitaCaseManagement/WebAppGateway?wsdl=wsdl0" />
+    <MetadataFile FileName="WebAppGateway21.wsdl" MetadataType="Wsdl" ID="8b349b95-4074-4020-ae2e-9f9b20e6ae61" SourceId="1" SourceUrl="http://l16mia0d8313lfl.cead.prd/ElitaCaseManagement/WebAppGateway" />
   </Metadata>
   <Extensions>
     <ExtensionFile FileName="configuration91.svcinfo" Name="configuration91.svcinfo" />

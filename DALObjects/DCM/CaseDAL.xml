@@ -5,9 +5,12 @@
   <LOAD_CASE_BY_CLAIM_ID><![CDATA[	elp_case_utility.LoadCaseByClaimId ]]></LOAD_CASE_BY_CLAIM_ID>
   <LOAD_CASE_LIST><![CDATA[	elp_case_utility.LoadCaseList ]]></LOAD_CASE_LIST>
   <LOAD_CLAIM_CASE_LIST><![CDATA[	elp_case_utility.LoadClaimCaseList ]]></LOAD_CLAIM_CASE_LIST>
-  <LOAD_AGENT_SEARCH_LIST><![CDATA[	elp_case_utility.LoadAgentList ]]></LOAD_AGENT_SEARCH_LIST>
+  <LOAD_EXCL_SEC_FIELDS_LIST><![CDATA[Elp_Role_Excl_Sec_Fields.SecFieldsElements]]></LOAD_EXCL_SEC_FIELDS_LIST>
+  <!--<LOAD_AGENT_SEARCH_LIST><![CDATA[	elp_case_utility.LoadAgentList ]]></LOAD_AGENT_SEARCH_LIST>-->
+  <LOAD_AGENT_SEARCH_LIST><![CDATA[	elp_Agent_Search ]]></LOAD_AGENT_SEARCH_LIST>
   <LOAD_CASE_DENIED_REASONS_LIST><![CDATA[	elp_case_utility.LoadCaseDeniedReasonsList ]]></LOAD_CASE_DENIED_REASONS_LIST>
   <GET_QUESTION_SET_CODE><![CDATA[	elp_case_utility.GetQuestionSetCode ]]></GET_QUESTION_SET_CODE>
   <LOAD_CASE_FIELDS_LIST><![CDATA[	elp_case_utility.LoadClaimFieldsList ]]></LOAD_CASE_FIELDS_LIST>
   <LOAD_CASE_NOTES_LIST><![CDATA[elp_case_utility.load_case_notes_list]]></LOAD_CASE_NOTES_LIST>
+  <LOAD_AGENT_SEARCH_RESULTS_CONFIG_LIST><![CDATA[Elp_Search_Result_Config.load_results_config_list]]></LOAD_AGENT_SEARCH_RESULTS_CONFIG_LIST>
 </SQL>

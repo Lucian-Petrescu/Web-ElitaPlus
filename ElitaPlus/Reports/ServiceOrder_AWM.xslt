@@ -522,7 +522,7 @@
                   </td>
                   <td>
                   </td>
-                </tr>
+                </tr>                
                 <tr>
                   <td colspan="3" style="height: 40px;">
                   </td>
@@ -988,7 +988,7 @@
                   </td>
                   <td>
                   </td>
-                </tr>
+                </tr>                
                 <tr>
                   <td colspan="3" style="height: 40px;">
                   </td>

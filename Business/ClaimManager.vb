@@ -2190,6 +2190,9 @@ Public Class ClaimManager
                                      End Function)
                         End If
                 End Select
+            Case DeductibleBasedOnCodes.ComputedExternally
+                pClaim.DeductibleByPercentId = YesNoCodes.No.ToGuid(ListCodes.YesNo, CommonManager)
+                pClaim.Deductible = 0D
         End Select
     End Sub
 
@@ -2834,11 +2837,12 @@ Public Class ClaimManager
                         Else
                             returnValue.Deductible = pCic.Deductible
                         End If
-
-                    ElseIf returnValue.DeductibleBasedOn = DeductibleBasedOnCodes.Expression
+                    ElseIf returnValue.DeductibleBasedOn = DeductibleBasedOnCodes.Expression Then
                         returnValue.Deductible = 0
                         returnValue.ExpressionId = pCic.DeductibleExpressionId
-
+                    ElseIf returnValue.DeductibleBasedOn = DeductibleBasedOnCodes.ComputedExternally Then
+                        returnValue.Deductible = 0
+                        returnValue.ExpressionId = Nothing
                     Else
                         If (pCic.DeductiblePercent Is Nothing) Then
                             returnValue.Deductible = 0

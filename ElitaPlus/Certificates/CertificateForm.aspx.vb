@@ -12,7 +12,6 @@ Imports Assurant.Elita
 Namespace Certificates
     Partial Class CertificateForm
         Inherits ElitaPlusSearchPage
-
 #Region " Web Form Designer Generated Code "
 
         'This call is required by the Web Form Designer.
@@ -418,10 +417,12 @@ Namespace Certificates
             Public LastOperation As DetailPageCommand
             Public EditingBo As Certificate
             Public BoChanged As Boolean = False
-            Public Sub New(ByVal LastOp As DetailPageCommand, ByVal curEditingBo As Certificate, Optional ByVal boChanged As Boolean = False)
+            Public IsCallerAuthenticated As Boolean = False
+            Public Sub New(ByVal LastOp As DetailPageCommand, ByVal curEditingBo As Certificate, Optional ByVal boChanged As Boolean = False, Optional ByVal IsCallerAuthenticated As Boolean = False)
                 Me.LastOperation = LastOp
                 Me.EditingBo = curEditingBo
                 Me.BoChanged = boChanged
+                Me.IsCallerAuthenticated = IsCallerAuthenticated
             End Sub
         End Class
 
@@ -645,6 +646,8 @@ Namespace Certificates
 
             'KDDI
             Public AddressFlag As Boolean = True
+            'Authentication
+            Public IsCallerAuthenticated As Boolean = False
 
 
 #End Region
@@ -680,7 +683,7 @@ Namespace Certificates
                 ElseIf Me.NavController.State Is Nothing Then
                     Me.NavController.State = New MyState
                 ElseIf (Me.GetType.BaseType.FullName <>
-                    Me.NavController.State.GetType.ReflectedType.FullName) Then
+                        Me.NavController.State.GetType.ReflectedType.FullName) Then
                     'Restart flow
                     Me.StartNavControl()
                     Me.NavController.State = CType(Session(Me.SESSION_KEY_BACKUP_STATE), MyState)
@@ -702,6 +705,18 @@ Namespace Certificates
             End Get
         End Property
 
+        Public Class Parameters
+
+            Public CertificateId As Guid = Nothing
+            Public IsCallerAuthenticated As Boolean = False
+
+            Public Sub New(ByVal certificateId As Guid, Optional IsCallerAuthenticated As Boolean = False)
+                Me.CertificateId = certificateId
+                Me.IsCallerAuthenticated = IsCallerAuthenticated
+            End Sub
+
+        End Class
+
         Private Sub Page_PageCall(ByVal CallFromUrl As String, ByVal CallingPar As Object) Handles MyBase.PageCall
             Try
                 Me.WorkingPanelVisible = True
@@ -716,7 +731,12 @@ Namespace Certificates
                     Me.State.CoveragesearchDV = Nothing
                     Me.State.ClaimsearchDV = Nothing
 
-                    Me.State.MyBO = New Certificate(CType(Me.CallingParameters, Guid))
+                    Try
+                        Me.State.MyBO = New Certificate(CType(Me.CallingParameters, Guid))
+                    Catch ex As Exception
+                        Me.State.MyBO = New Certificate(CType(Me.CallingParameters, Parameters).CertificateId)
+                        Me.state.IsCallerAuthenticated = CType(Me.CallingParameters, Parameters).IsCallerAuthenticated
+                    End Try
                     Me.CertId = Me.State.MyBO.Id
                     Me.State.ValFlag = Me.State.MyBO.GetValFlag()
                     Me.State.certificateChanged = False
@@ -757,9 +777,9 @@ Namespace Certificates
             If (Not Me.State Is Nothing) Then
                 If (Not Me.State.MyBO Is Nothing) Then
                     Me.MasterPage.BreadCrum = Me.MasterPage.PageTab & ElitaBase.Sperator &
-                        TranslationBase.TranslateLabelOrMessage("Certificate") & " " & Me.State.MyBO.CertNumber
+                                              TranslationBase.TranslateLabelOrMessage("Certificate") & " " & Me.State.MyBO.CertNumber
                     Me.MasterPage.PageTitle = TranslationBase.TranslateLabelOrMessage(Message.Certificate_Detail) & " (<strong>" &
-                        Me.State.MyBO.CertNumber & "</strong>) " & TranslationBase.TranslateLabelOrMessage("SUMMARY")
+                                              Me.State.MyBO.CertNumber & "</strong>) " & TranslationBase.TranslateLabelOrMessage("SUMMARY")
                 End If
             End If
         End Sub
@@ -1158,20 +1178,32 @@ Namespace Certificates
                 End If
 
                 If ReturnFromUrl.Contains(ClaimRecordingForm.Url2) Then
-                    Dim retObj As ClaimRecordingForm.ReturnType = CType(ReturnPar, ClaimRecordingForm.ReturnType)
-                    Select Case retObj.LastOperation
-                        Case ElitaPlusPage.DetailPageCommand.Cancel
-                            If Not retObj Is Nothing Then
-                                Me.State.MyBO = New Certificate(retObj.CertificateId)
-                            End If
-                    End Select
+                    If TypeOf ReturnPar Is ClaimRecordingForm.ReturnType Then
+                        Dim retObjCRF As ClaimRecordingForm.ReturnType = CType(ReturnPar, ClaimRecordingForm.ReturnType)
+                        Select Case retObjCRF.LastOperation
+                            Case ElitaPlusPage.DetailPageCommand.Cancel
+                                If Not retObjCRF Is Nothing Then
+                                    Me.State.MyBO = New Certificate(retObjCRF.CertificateId)
+                                    Me.State.IsCallerAuthenticated = retObjCRF.IsCallerAuthenticated
+                                End If
+                        End Select
+                    ElseIf TypeOf ReturnPar Is ClaimForm.ReturnType Then
+                        Dim retObjCF As ClaimForm.ReturnType = CType(ReturnPar, ClaimForm.ReturnType)
+                        Select Case retObjCF.LastOperation
+                            Case ElitaPlusPage.DetailPageCommand.Back
+                                If Not retObjCF Is Nothing Then
+                                    Me.State.MyBO = New Certificate(retObjCF.EditingBo.CertificateId)
+                                    Me.State.IsCallerAuthenticated = retObjCF.IsCallerAuthenticated
+                                End If
+                        End Select
+                    End If
                 Else
-
                     Dim retObj As ClaimForm.ReturnType = CType(ReturnPar, ClaimForm.ReturnType)
                     Select Case retObj.LastOperation
                         Case ElitaPlusPage.DetailPageCommand.Back
                             If Not retObj Is Nothing Then
                                 Me.State.MyBO = New Certificate(retObj.EditingBo.CertificateId)
+                                Me.State.IsCallerAuthenticated = retObj.IsCallerAuthenticated
                             End If
                     End Select
                 End If
@@ -1264,13 +1296,13 @@ Namespace Certificates
 
             If Not (Me.State.MyBO.PaymentTypeId.Equals(Guid.Empty)) Then
                 If (Me.State.MyBO.getCollectionMethodCode = Codes.COLLECTION_METHOD__ASSURANT_COLLECTS And Me.State.MyBO.getPaymentInstrumentCode = Codes.PAYMENT_INSTRUMENT__CREDIT_CARD) _
-                    Or (Me.State.MyBO.getCollectionMethodCode = Codes.COLLECTION_METHOD__THRID_PARTY_COLLECTS And Me.State.MyBO.getPaymentInstrumentCode = Codes.PAYMENT_INSTRUMENT__FINANCED_BY_CREDIT_CARD) _
-                    Or (Me.State.MyBO.getCollectionMethodCode = Codes.COLLECTION_METHOD__ASSURANT_COLLECTS_PRE_AUTH And Me.State.MyBO.getPaymentInstrumentCode = Codes.PAYMENT_INSTRUMENT__PRE_AUTH_CREDIT_CARD) _
-                    Or (Me.State.MyBO.getCollectionMethodCode = Codes.COLLECTION_METHOD__THRID_PARTY_COLLECTS And Me.State.MyBO.getPaymentInstrumentCode = Codes.PAYMENT_INSTRUMENT__FINANCED_BY_THRID_PARTY) _
-                    Or (Me.State.MyBO.getCollectionMethodCode = Codes.COLLECTION_METHOD__PARTIAL_PAYMENT And Me.State.MyBO.getPaymentInstrumentCode = Codes.PAYMENT_INSTRUMENT__CREDIT_CARD) Then
+                   Or (Me.State.MyBO.getCollectionMethodCode = Codes.COLLECTION_METHOD__THRID_PARTY_COLLECTS And Me.State.MyBO.getPaymentInstrumentCode = Codes.PAYMENT_INSTRUMENT__FINANCED_BY_CREDIT_CARD) _
+                   Or (Me.State.MyBO.getCollectionMethodCode = Codes.COLLECTION_METHOD__ASSURANT_COLLECTS_PRE_AUTH And Me.State.MyBO.getPaymentInstrumentCode = Codes.PAYMENT_INSTRUMENT__PRE_AUTH_CREDIT_CARD) _
+                   Or (Me.State.MyBO.getCollectionMethodCode = Codes.COLLECTION_METHOD__THRID_PARTY_COLLECTS And Me.State.MyBO.getPaymentInstrumentCode = Codes.PAYMENT_INSTRUMENT__FINANCED_BY_THRID_PARTY) _
+                   Or (Me.State.MyBO.getCollectionMethodCode = Codes.COLLECTION_METHOD__PARTIAL_PAYMENT And Me.State.MyBO.getPaymentInstrumentCode = Codes.PAYMENT_INSTRUMENT__CREDIT_CARD) Then
                     Me.State.creditCardPayment = True
                 ElseIf (Me.State.MyBO.getCollectionMethodCode = Codes.COLLECTION_METHOD__ASSURANT_COLLECTS And Me.State.MyBO.getPaymentInstrumentCode = Codes.PAYMENT_INSTRUMENT__DEBIT_ACCOUNT) _
-                    Or (Me.State.MyBO.getCollectionMethodCode = Codes.COLLECTION_METHOD__PARTIAL_PAYMENT And Me.State.MyBO.getPaymentInstrumentCode = Codes.PAYMENT_INSTRUMENT__DEBIT_ACCOUNT) Then
+                       Or (Me.State.MyBO.getCollectionMethodCode = Codes.COLLECTION_METHOD__PARTIAL_PAYMENT And Me.State.MyBO.getPaymentInstrumentCode = Codes.PAYMENT_INSTRUMENT__DEBIT_ACCOUNT) Then
                     Me.State.directDebitPayment = True
                 End If
             End If
@@ -1483,8 +1515,8 @@ Namespace Certificates
                 End If
                 'AA REQ-910 new fields added BEGIN
                 If Me.State.ReqCustomerLegalInfoId.Equals(LookupListNew.GetIdFromCode(LookupListCache.LK_CLITYP, "1")) Or
-           Me.State.ReqCustomerLegalInfoId.Equals(LookupListNew.GetIdFromCode(LookupListCache.LK_CLITYP, "3")) Or
-           Me.State.ReqCustomerLegalInfoId.Equals(LookupListNew.GetIdFromCode(LookupListCache.LK_CLITYP, "2")) Then  ' 1= Display and Require When Cancelling or 2= Display Only or 3=Display and Require at enrollment
+                   Me.State.ReqCustomerLegalInfoId.Equals(LookupListNew.GetIdFromCode(LookupListCache.LK_CLITYP, "3")) Or
+                   Me.State.ReqCustomerLegalInfoId.Equals(LookupListNew.GetIdFromCode(LookupListCache.LK_CLITYP, "2")) Then  ' 1= Display and Require When Cancelling or 2= Display Only or 3=Display and Require at enrollment
                     ControlMgr.SetVisibleControl(Me, cboIncomeRangeId, False)
                     ControlMgr.SetVisibleControl(Me, cboPoliticallyExposedId, False)
                     ControlMgr.SetVisibleControl(Me, moIncomeRangeText, True)
@@ -1497,8 +1529,8 @@ Namespace Certificates
 
                 'REQ-1255 - AML Regulations - START
                 If Me.State.ReqCustomerLegalInfoId.Equals(LookupListNew.GetIdFromCode(LookupListCache.LK_CLITYP, "1")) Or
-           Me.State.ReqCustomerLegalInfoId.Equals(LookupListNew.GetIdFromCode(LookupListCache.LK_CLITYP, "2")) Or
-           Me.State.ReqCustomerLegalInfoId.Equals(LookupListNew.GetIdFromCode(LookupListCache.LK_CLITYP, "3")) Then  ' 1= Display and Require When Cancelling or 2= Display Only or 3= Display and Require At Enrollment
+                   Me.State.ReqCustomerLegalInfoId.Equals(LookupListNew.GetIdFromCode(LookupListCache.LK_CLITYP, "2")) Or
+                   Me.State.ReqCustomerLegalInfoId.Equals(LookupListNew.GetIdFromCode(LookupListCache.LK_CLITYP, "3")) Then  ' 1= Display and Require When Cancelling or 2= Display Only or 3= Display and Require At Enrollment
 
                     'Marital Status
                     ControlMgr.SetVisibleControl(Me, ddlMaritalStatus, False)
@@ -1613,7 +1645,7 @@ Namespace Certificates
                         Me.setTaxIdTab()
                         'START  DEF-1986
                         EnableDisableTaxIdControls(Me.cboDocumentTypeId.SelectedItem.Text)
-                    'END    DEF-1986
+                        'END    DEF-1986
                     Case Me.CERT_ITEMS_INFO_TAB
                         Me.EnableDisableTabs(Me.State.IsEdit)
                     Case Me.CERT_CANCEL_REQUEST_INFO_TAB
@@ -1785,7 +1817,7 @@ Namespace Certificates
 
 
 
-            If Me.State.MyBO.IsParentCertificate OrElse Me.State.MyBO.IsChildCertificate Then
+            If Me.State.MyBO.IsChildCertificate Then
                 'ControlMgr.SetEnableTabStrip(Me, tsHoriz.Items(Me.CERT_ENDORSEMENTS_TAB), False)
                 EnableTab(CERT_ENDORSEMENTS_TAB, False)
             End If
@@ -2422,9 +2454,9 @@ Namespace Certificates
 
             If Not (Me.State.MyBO.PaymentTypeId.Equals(Guid.Empty)) Then
                 If (Me.State.MyBO.getCollectionMethodCode = Codes.COLLECTION_METHOD__ASSURANT_COLLECTS And Me.State.MyBO.getPaymentInstrumentCode = Codes.PAYMENT_INSTRUMENT__CREDIT_CARD) _
-                    OrElse (Me.State.MyBO.getCollectionMethodCode = Codes.COLLECTION_METHOD__THRID_PARTY_COLLECTS And Me.State.MyBO.getPaymentInstrumentCode = Codes.PAYMENT_INSTRUMENT__FINANCED_BY_CREDIT_CARD) _
-                    OrElse (Me.State.MyBO.getCollectionMethodCode = Codes.COLLECTION_METHOD__THRID_PARTY_COLLECTS And Me.State.MyBO.getPaymentInstrumentCode = Codes.PAYMENT_INSTRUMENT__FINANCED_BY_THRID_PARTY) _
-                    OrElse (Me.State.MyBO.getCollectionMethodCode = Codes.COLLECTION_METHOD__ASSURANT_COLLECTS_PRE_AUTH And Me.State.MyBO.getPaymentInstrumentCode = Codes.PAYMENT_INSTRUMENT__PRE_AUTH_CREDIT_CARD) Then
+                   OrElse (Me.State.MyBO.getCollectionMethodCode = Codes.COLLECTION_METHOD__THRID_PARTY_COLLECTS And Me.State.MyBO.getPaymentInstrumentCode = Codes.PAYMENT_INSTRUMENT__FINANCED_BY_CREDIT_CARD) _
+                   OrElse (Me.State.MyBO.getCollectionMethodCode = Codes.COLLECTION_METHOD__THRID_PARTY_COLLECTS And Me.State.MyBO.getPaymentInstrumentCode = Codes.PAYMENT_INSTRUMENT__FINANCED_BY_THRID_PARTY) _
+                   OrElse (Me.State.MyBO.getCollectionMethodCode = Codes.COLLECTION_METHOD__ASSURANT_COLLECTS_PRE_AUTH And Me.State.MyBO.getPaymentInstrumentCode = Codes.PAYMENT_INSTRUMENT__PRE_AUTH_CREDIT_CARD) Then
                     Me.State.creditCardPayment = True
                 End If
                 Me.PopulateControlFromBOProperty(Me.moPaymentByText, Me.State.MyBO.getPaymentTypeDescription)
@@ -2483,7 +2515,6 @@ Namespace Certificates
                 Me.PopulateControlFromBOProperty(Me.moBillingDateText, .DatePaidFor)
 
                 Me.PopulateControlFromBOProperty(Me.moVehicleLicenseTagText, .VehicleLicenseTag)
-                Me.PopulateControlFromBOProperty(Me.moDateOfBirthText, .DateOfBirth)
 
                 'Added for Req-703 - Start
                 Me.PopulateControlFromBOProperty(Me.moCapSeriesText, .CapitalizationSeries)
@@ -2593,7 +2624,7 @@ Namespace Certificates
                 'Me.tdDateOfBirthTag.InnerHtml = ""
                 'ControlMgr.SetVisibleControl(Me, BtnDateOfBirth, False)
                 'End If
-                Me.PopulateControlFromBOProperty(Me.moDateOfBirthText, .DateOfBirth)
+                'Me.PopulateControlFromBOProperty(Me.moDateOfBirthText, .DateOfBirth)
                 'DEF-21659 - END
 
                 If Not blnPremiumEdit Then PopulatePaymentTypesDropdown(Me.moPaymentTypeId)
@@ -2631,12 +2662,23 @@ Namespace Certificates
                     Me.State.ReqCustomerLegalInfoId = (New Company(Me.State.MyBO.CompanyId).ReqCustomerLegalInfoId)
                 End If
 
+                Dim IsDisplayMaskFlag As Boolean = Me.State.MyBO.Dealer.DisplayDobXcd.ToUpper().Equals("YESNO-Y")
                 If Me.State.ReqCustomerLegalInfoId.Equals(LookupListNew.GetIdFromCode(LookupListCache.LK_CLITYP, "0")) Then '0= None
                     Me.moCustLegalInfo1.Attributes("style") = "display: none"
-                    Me.moCustLegalInfo2.Attributes("style") = "display: none"
+                    ControlMgr.SetVisibleControl(Me, moIncomeRangeLabel, False)   'Me.moCustLegalInfo2.Attributes("style") = "display: none"
+                    ControlMgr.SetVisibleControl(Me, moIncomeRangeText, False)
+                    ControlMgr.SetVisibleControl(Me, cboIncomeRangeId, False)
+
+                    If (Not IsDisplayMaskFlag) Then
+                        ControlMgr.SetVisibleControl(Me, moDateOfBirthLabel, False)
+                        ControlMgr.SetVisibleControl(Me, moDateOfBirthText, False)
+                        ControlMgr.SetVisibleControl(Me, BtnDateOfBirth, False)
+                        ControlMgr.SetVisibleControl(Me, tdDateOfBirthCalTag, False)
+                    End If
+
                 Else
-                    'populate the dropdowns
-                    PopulateIncomeRangeDropdown(cboIncomeRangeId)
+                        'populate the dropdowns
+                        PopulateIncomeRangeDropdown(cboIncomeRangeId)
                     PopulatePoliticallyExposedDropdown(cboPoliticallyExposedId)
                     Me.PopulateControlFromBOProperty(Me.moOccupationText, .Occupation)
                     Me.SetSelectedItem(Me.cboPoliticallyExposedId, .PoliticallyExposedId)
@@ -2756,7 +2798,33 @@ Namespace Certificates
                     'ControlMgr.SetVisibleControl(Me, linkOrigCertId, False)
                 End If
 
+                Me.PopulateControlFromBOProperty(Me.moDateOfBirthText, .DateOfBirth)
+                DisplayMaskDob()
+
             End With
+        End Sub
+        Protected Sub DisplayMaskDob()
+            Dim IsDobDisplay As Boolean = Me.State.MyBO.Dealer.DisplayDobXcd.ToUpper().Equals("YESNO-Y")
+            Dim IsCustomerLglInfo As Boolean = Me.State.ReqCustomerLegalInfoId.Equals(LookupListNew.GetIdFromCode(LookupListCache.LK_CLITYP, "0"))
+
+            If (Not IsDobDisplay And IsCustomerLglInfo) Then
+                ControlMgr.SetVisibleControl(Me, moDateOfBirthLabel, False)
+                ControlMgr.SetVisibleControl(Me, moDateOfBirthText, False)
+                ControlMgr.SetVisibleControl(Me, BtnDateOfBirth, False)
+                ControlMgr.SetVisibleControl(Me, tdDateOfBirthCalTag, False)
+            End If
+
+            If (Not IsDobDisplay And Not IsCustomerLglInfo) Then
+                If Not (Me.State.IsEdit) Then
+                    Me.moDateOfBirthText.Text = Me.State.MyBO.MaskDatePart(Me.moDateOfBirthText.Text, True)
+                End If
+            End If
+
+            If (IsDobDisplay) Then
+                If Not (Me.State.IsEdit) Then
+                    Me.moDateOfBirthText.Text = Me.State.MyBO.MaskDatePart(Me.moDateOfBirthText.Text, False)
+                End If
+            End If
         End Sub
 
         Protected Sub PopulateCanceDueDateFromForm()
@@ -2887,9 +2955,9 @@ Namespace Certificates
         Private Function IfCreditCardInfoChanged() As Boolean
             With Me.State.TheDirectDebitState.CreditCardInfo
                 If .ExpirationDate = Me.moExpirationDateText.Text _
-                    AndAlso .NameOnCreditCard = Me.moNameOnCreditCardText.Text _
-                    AndAlso .CreditCardFormatId.Equals(GetSelectedItem(Me.moCreditCardTypeIDDropDown)) _
-                    AndAlso "****" & .Last4Digits = Me.moCreditCardNumberText.Text Then
+                   AndAlso .NameOnCreditCard = Me.moNameOnCreditCardText.Text _
+                   AndAlso .CreditCardFormatId.Equals(GetSelectedItem(Me.moCreditCardTypeIDDropDown)) _
+                   AndAlso "****" & .Last4Digits = Me.moCreditCardNumberText.Text Then
                     Return False
                 Else
                     Return True
@@ -2967,7 +3035,10 @@ Namespace Certificates
 
                 'DEF-21659 - START
                 'If Not .DateOfBirth Is Nothing Then
-                Me.PopulateBOProperty(Me.State.MyBO, "DateOfBirth", Me.moDateOfBirthText)
+                If (Me.State.IsEdit) Then
+                    Me.PopulateBOProperty(Me.State.MyBO, "DateOfBirth", Me.moDateOfBirthText)
+                End If
+
                 'End If
                 'DEF-21659 - END
 
@@ -3601,9 +3672,9 @@ Namespace Certificates
             Try
                 Dim salutation As ListItem() = CommonConfigManager.Current.ListManager.GetList("SLTN", Thread.CurrentPrincipal.GetLanguageCode())
                 salutationDropDownList.Populate(salutation, New PopulateOptions() With
-                                                      {
-                                                        .AddBlankItem = True
-                                                       })
+                                                   {
+                                                   .AddBlankItem = True
+                                                   })
             Catch ex As Exception
                 Me.HandleErrors(ex, Me.MasterPage.MessageController)
             End Try
@@ -3616,9 +3687,9 @@ Namespace Certificates
                 Dim membershipType As ListItem() = CommonConfigManager.Current.ListManager.GetList("MEMTYPE", Thread.CurrentPrincipal.GetLanguageCode())
 
                 membershipTypeDropDownList.Populate(membershipType, New PopulateOptions() With
-                                                    {
-                                                      .AddBlankItem = True
-                                                     })
+                                                       {
+                                                       .AddBlankItem = True
+                                                       })
             Catch ex As Exception
                 Me.HandleErrors(ex, Me.MasterPage.MessageController)
             End Try
@@ -3631,9 +3702,9 @@ Namespace Certificates
 
                 Dim langList As Assurant.Elita.CommonConfiguration.DataElements.ListItem() = CommonConfigManager.Current.ListManager.GetList("LanguageList", Thread.CurrentPrincipal.GetLanguageCode())
                 langPrefDropDownList.Populate(langList, New PopulateOptions() With
-                                           {
-                                           .AddBlankItem = True
-                                           })
+                                                 {
+                                                 .AddBlankItem = True
+                                                 })
             Catch ex As Exception
                 Me.HandleErrors(ex, Me.MasterPage.MessageController)
             End Try
@@ -3647,9 +3718,9 @@ Namespace Certificates
                 oListContext.CompanyId = Me.State.MyBO.CompanyId
                 Dim creditCardTypeList As Assurant.Elita.CommonConfiguration.DataElements.ListItem() = CommonConfigManager.Current.ListManager.GetList("CreditCardByCompany", Thread.CurrentPrincipal.GetLanguageCode(), oListContext)
                 cboCreditCardTypesDropDownList.Populate(creditCardTypeList, New PopulateOptions() With
-                                           {
-                                           .AddBlankItem = True
-                                           })
+                                                           {
+                                                           .AddBlankItem = True
+                                                           })
             Catch ex As Exception
                 Me.HandleErrors(ex, Me.MasterPage.MessageController)
             End Try
@@ -3667,19 +3738,19 @@ Namespace Certificates
                 oListContext.CompanyGroupId = ElitaPlusIdentity.Current.ActiveUser.Company.CompanyGroupId
                 Dim paymentTypeList As Assurant.Elita.CommonConfiguration.DataElements.ListItem() = CommonConfigManager.Current.ListManager.GetList("PaymentTypeByCompanyGroup", Thread.CurrentPrincipal.GetLanguageCode(), oListContext)
                 cboPaymentTypesTypesDropDownList.Populate(paymentTypeList, New PopulateOptions() With
-                                           {
-                                           .AddBlankItem = True
-                                           })
+                                                             {
+                                                             .AddBlankItem = True
+                                                             })
 
                 ' populate payment instrument list
                 Dim paymentInstrumentList As ListItem() = CommonConfigManager.Current.ListManager.GetList("PMTINSTR", Thread.CurrentPrincipal.GetLanguageCode())
                 moPaymentInstrument.Populate(paymentInstrumentList, New PopulateOptions() With
-                                                  {
-                                                    .AddBlankItem = True,
-                                                     .BlankItemValue = "0",
-                                                    .ValueFunc = AddressOf PopulateOptions.GetCode,
-                                                    .SortFunc = AddressOf PopulateOptions.GetCode
-                                                   })
+                                                {
+                                                .AddBlankItem = True,
+                                                .BlankItemValue = "0",
+                                                .ValueFunc = AddressOf PopulateOptions.GetCode,
+                                                .SortFunc = AddressOf PopulateOptions.GetCode
+                                                })
 
 
                 SetSelectedItem(moPaymentInstrument, State.MyBO.getPaymentInstrumentCode)
@@ -3694,8 +3765,8 @@ Namespace Certificates
             Try
                 Dim documentType As ListItem() = CommonConfigManager.Current.ListManager.GetList("DTYP", Thread.CurrentPrincipal.GetLanguageCode())
                 documentTypeDropDownlist.Populate(documentType, New PopulateOptions() With
-                                                    {
-                                                      .AddBlankItem = True
+                                                     {
+                                                     .AddBlankItem = True
                                                      })
             Catch ex As Exception
                 Me.HandleErrors(ex, Me.MasterPage.MessageController)
@@ -3712,9 +3783,9 @@ Namespace Certificates
                 listcontext.CompanyId = Me.State.MyBO.CompanyId
                 Dim cancellationReasolist As Assurant.Elita.CommonConfiguration.DataElements.ListItem() = CommonConfigManager.Current.ListManager.GetList("CancellationReasonsByRole", Thread.CurrentPrincipal.GetLanguageCode(), listcontext)
                 cancellationReasonDropDownList.Populate(cancellationReasolist, New PopulateOptions() With
-                                                  {
-                                                    .AddBlankItem = True
-                                                   })
+                                                           {
+                                                           .AddBlankItem = True
+                                                           })
 
                 BindSelectItemByText(defaultDescription, cancellationReasonDropDownList)
 
@@ -3745,12 +3816,12 @@ Namespace Certificates
                 End If
 
                 cancellationReasonDropDownList.Populate(filteredCancellationReasonList, New PopulateOptions() With
-                                                  {
-                                                    .AddBlankItem = True,
-                                                    .TextFunc = Function(x)
-                                                                    Return x.Code + " - " + x.Translation
-                                                                End Function
-                                                   })
+                                                           {
+                                                           .AddBlankItem = True,
+                                                           .TextFunc = Function(x)
+                                                                           Return x.Code + " - " + x.Translation
+                                                                       End Function
+                                                           })
             Catch ex As Exception
                 Me.HandleErrors(ex, Me.MasterPage.MessageController)
             End Try
@@ -3784,12 +3855,12 @@ Namespace Certificates
             Try
                 Dim cancelComment As ListItem() = CommonConfigManager.Current.ListManager.GetList("COMMT", Thread.CurrentPrincipal.GetLanguageCode())
                 CancelCommentTypeDropDownList.Populate(cancelComment, New PopulateOptions() With
-                                                      {
-                                                        .AddBlankItem = True,
-                                                        .TextFunc = Function(x)
-                                                                        Return x.Code + " - " + x.Translation
-                                                                    End Function
-                                                       })
+                                                          {
+                                                          .AddBlankItem = True,
+                                                          .TextFunc = Function(x)
+                                                                          Return x.Code + " - " + x.Translation
+                                                                      End Function
+                                                          })
             Catch ex As Exception
                 Me.HandleErrors(ex, Me.MasterPage.MessageController)
             End Try
@@ -3808,10 +3879,10 @@ Namespace Certificates
 
                 Dim paymentMethodList As Assurant.Elita.CommonConfiguration.DataElements.ListItem() = CommonConfigManager.Current.ListManager.GetList(ListCodes.PaymentMethodByRoleCompany, Thread.CurrentPrincipal.GetLanguageCode(), oListContext)
                 PaymentMethodDropDownList.Populate(paymentMethodList, New PopulateOptions() With
-                                               {
-                                               .AddBlankItem = True,
-                                               .SortFunc = AddressOf PopulateOptions.GetDescription
-                                               })
+                                                      {
+                                                      .AddBlankItem = True,
+                                                      .SortFunc = AddressOf PopulateOptions.GetDescription
+                                                      })
             Catch ex As Exception
                 Me.HandleErrors(ex, Me.MasterPage.MessageController)
             End Try
@@ -3824,8 +3895,8 @@ Namespace Certificates
                 Dim maritalStatus As ListItem() = CommonConfigManager.Current.ListManager.GetList("MARITAL_STATUS", Thread.CurrentPrincipal.GetLanguageCode())
                 MaritalStatusDropDownList.Populate(maritalStatus, New PopulateOptions() With
                                                       {
-                                                        .AddBlankItem = True
-                                                       })
+                                                      .AddBlankItem = True
+                                                      })
             Catch ex As Exception
                 Me.HandleErrors(ex, Me.MasterPage.MessageController)
             End Try
@@ -3836,7 +3907,7 @@ Namespace Certificates
                 Dim nationalities As ListItem() = CommonConfigManager.Current.ListManager.GetList("NATIONALITY", Thread.CurrentPrincipal.GetLanguageCode())
                 nationalityDropDownList.Populate(nationalities, New PopulateOptions() With
                                                     {
-                                                        .AddBlankItem = True
+                                                    .AddBlankItem = True
                                                     })
             Catch ex As Exception
                 Me.HandleErrors(ex, Me.MasterPage.MessageController)
@@ -3848,9 +3919,9 @@ Namespace Certificates
 
                 Dim placeOfBirth As ListItem() = CommonConfigManager.Current.ListManager.GetList("PLACEOFBIRTH", Thread.CurrentPrincipal.GetLanguageCode())
                 PlaceOfBirthDropDownList.Populate(placeOfBirth, New PopulateOptions() With
-                                                    {
-                                                        .AddBlankItem = True
-                                                    })
+                                                     {
+                                                     .AddBlankItem = True
+                                                     })
 
             Catch ex As Exception
                 Me.HandleErrors(ex, Me.MasterPage.MessageController)
@@ -3862,9 +3933,9 @@ Namespace Certificates
 
                 Dim gender As ListItem() = CommonConfigManager.Current.ListManager.GetList("GENDER", Thread.CurrentPrincipal.GetLanguageCode())
                 GenderDropDownList.Populate(gender, New PopulateOptions() With
-                                                    {
-                                                        .AddBlankItem = True
-                                                    })
+                                               {
+                                               .AddBlankItem = True
+                                               })
             Catch ex As Exception
                 Me.HandleErrors(ex, Me.MasterPage.MessageController)
             End Try
@@ -3874,9 +3945,9 @@ Namespace Certificates
             Try
                 Dim personType As ListItem() = CommonConfigManager.Current.ListManager.GetList("PERSON_TYPE", Thread.CurrentPrincipal.GetLanguageCode())
                 PersonTypeDropDownList.Populate(personType, New PopulateOptions() With
-                                                         {
-                                                                .AddBlankItem = True
-                                                          })
+                                                   {
+                                                   .AddBlankItem = True
+                                                   })
             Catch ex As Exception
                 Me.HandleErrors(ex, Me.MasterPage.MessageController)
             End Try
@@ -3888,7 +3959,7 @@ Namespace Certificates
 
                 IncomeRangeDropDownList.Populate(incomeRange, New PopulateOptions() With
                                                     {
-                                                        .AddBlankItem = True
+                                                    .AddBlankItem = True
                                                     })
             Catch ex As Exception
                 Me.HandleErrors(ex, Me.MasterPage.MessageController)
@@ -3900,9 +3971,9 @@ Namespace Certificates
                 Dim politicallyExposed As ListItem() = CommonConfigManager.Current.ListManager.GetList("YESNO", Thread.CurrentPrincipal.GetLanguageCode())
 
                 PoliticallyExposedDropDownList.Populate(politicallyExposed, New PopulateOptions() With
-                                                    {
-                                                        .AddBlankItem = True
-                                                    })
+                                                           {
+                                                           .AddBlankItem = True
+                                                           })
             Catch ex As Exception
                 Me.HandleErrors(ex, Me.MasterPage.MessageController)
             End Try
@@ -3913,9 +3984,9 @@ Namespace Certificates
                 Dim billingStatus As ListItem() = CommonConfigManager.Current.ListManager.GetList("BLST", Thread.CurrentPrincipal.GetLanguageCode())
 
                 moBillingStatusId.Populate(billingStatus, New PopulateOptions() With
-                                                    {
-                                                        .AddBlankItem = True
-                                                    })
+                                              {
+                                              .AddBlankItem = True
+                                              })
             Catch ex As Exception
                 Me.HandleErrors(ex, Me.MasterPage.MessageController)
             End Try
@@ -4551,7 +4622,7 @@ Namespace Certificates
                 'REQ-1255 -- START
                 'Validate CUIT_CUIL field
                 If Me.State.ReqCustomerLegalInfoId.Equals(LookupListNew.GetIdFromCode(LookupListCache.LK_CLITYP, "1")) Or
-                    Me.State.ReqCustomerLegalInfoId.Equals(LookupListNew.GetIdFromCode(LookupListCache.LK_CLITYP, "2")) Then  '1= Display and Require When Cancelling or 2= Display Only
+                   Me.State.ReqCustomerLegalInfoId.Equals(LookupListNew.GetIdFromCode(LookupListCache.LK_CLITYP, "2")) Then  '1= Display and Require When Cancelling or 2= Display Only
                     If Me.moCUIT_CUILText.Text <> String.Empty Then
                         Dim CUIT_CUIL_Number As Int64 = 0
                         Dim DigitCheckerResult As Boolean = False
@@ -4585,6 +4656,7 @@ Namespace Certificates
                     Me.MasterPage.MessageController.AddSuccess(Message.MSG_RECORD_NOT_SAVED, True)
                     Me.EnableDisableFields()
                 End If
+                DisplayMaskDob()
             Catch ex As DataNotFoundException
                 Me.MasterPage.MessageController.AddError(ex.Message)
                 Me.State.IsEdit = True
@@ -4668,8 +4740,8 @@ Namespace Certificates
                     End Try
 
                     If Not Me.State.MyBO Is Nothing AndAlso Not objBillingPayDetail Is Nothing _
-                    AndAlso currentStatus = Codes.BILLING_STATUS__REJECTED _
-                    AndAlso selectedStatus = Codes.BILLING_STATUS__ACTIVE Then
+                       AndAlso currentStatus = Codes.BILLING_STATUS__REJECTED _
+                       AndAlso selectedStatus = Codes.BILLING_STATUS__ACTIVE Then
                         Throw New GUIException(Message.MSG_BILLING_STATUS_CANNOT_BE_CHANGED, Message.MSG_BILLING_STATUS_CANNOT_BE_CHANGED)
                     End If
                 Else
@@ -4681,10 +4753,10 @@ Namespace Certificates
                     End Try
 
                     If Not Me.State.MyBO Is Nothing AndAlso Not objBillingDetail Is Nothing _
-                    AndAlso currentStatus = Codes.BILLING_STATUS__REJECTED _
-                    AndAlso selectedStatus = Codes.BILLING_STATUS__ACTIVE _
-                    AndAlso Not objBillingDetail.ReAttemptCount.Equals(DBNull.Value) _
-                    AndAlso objBillingDetail.ReAttemptCount >= Contract.GetContract(Me.State.MyBO.DealerId, Me.State.MyBO.WarrantySalesDate.Value).CollectionReAttempts.Value Then
+                       AndAlso currentStatus = Codes.BILLING_STATUS__REJECTED _
+                       AndAlso selectedStatus = Codes.BILLING_STATUS__ACTIVE _
+                       AndAlso Not objBillingDetail.ReAttemptCount.Equals(DBNull.Value) _
+                       AndAlso objBillingDetail.ReAttemptCount >= Contract.GetContract(Me.State.MyBO.DealerId, Me.State.MyBO.WarrantySalesDate.Value).CollectionReAttempts.Value Then
                         Throw New GUIException(Message.MSG_BILLING_STATUS_CANNOT_BE_CHANGED, Message.MSG_BILLING_STATUS_CANNOT_BE_CHANGED)
                     End If
                 End If
@@ -5522,7 +5594,7 @@ Namespace Certificates
             Catch ex As Threading.ThreadAbortException
             Catch ex As Exception
                 If (TypeOf ex Is System.Reflection.TargetInvocationException) AndAlso
-                (TypeOf ex.InnerException Is Threading.ThreadAbortException) Then Return
+                   (TypeOf ex.InnerException Is Threading.ThreadAbortException) Then Return
                 Me.HandleErrors(ex, Me.MasterPage.MessageController)
             End Try
         End Sub
@@ -6474,7 +6546,7 @@ Namespace Certificates
                 Dim coverageRow As DataRow = dv.Table.Rows(0)
             End If
 
-            If ItemDV.Count > 1 Or cert.StatusCode <> CERT_STATUS Then
+            If ItemDV.Count > 1 Or cert.StatusCode <> CERT_STATUS Or Me.State.MyBO.IsChildCertificate Then
                 Me.btnAddEndorsement_WRITE.Enabled = False
             End If
 
@@ -6649,7 +6721,7 @@ Namespace Certificates
                     Me.State.ActionInProgress = ElitaPlusPage.DetailPageCommand.Back
                 Else
                     Dim myBo As Certificate = Me.State.MyBO
-                    Dim retObj As ReturnType = New ReturnType(ElitaPlusPage.DetailPageCommand.Back, myBo, Me.State.certificateChanged)
+                    Dim retObj As ReturnType = New ReturnType(ElitaPlusPage.DetailPageCommand.Back, myBo, Me.State.certificateChanged, Me.state.IsCallerAuthenticated)
                     Me.State.selectedTab = 0
                     Me.State.CertHistoryDV = Nothing
                     Me.NavController = Nothing
@@ -6661,7 +6733,7 @@ Namespace Certificates
                 Try
                     If Me.AddressCtr.MyBO Is Nothing Then
                         Dim myBo As Certificate = Me.State.MyBO
-                        Dim retObj As ReturnType = New ReturnType(ElitaPlusPage.DetailPageCommand.Back, myBo, Me.State.certificateChanged)
+                        Dim retObj As ReturnType = New ReturnType(ElitaPlusPage.DetailPageCommand.Back, myBo, Me.State.certificateChanged, Me.state.IsCallerAuthenticated)
                         Me.NavController = Nothing
                         Session(Me.SESSION_KEY_BACKUP_STATE) = New MyState
                         Me.ReturnToCallingPage(retObj)
@@ -6689,8 +6761,8 @@ Namespace Certificates
                 Dim dealer As New Dealer(Me.State.MyBO.DealerId)
 
                 If Not String.IsNullOrEmpty(Me.State.ClaimRecordingXcd) AndAlso
-                    Me.State.ClaimRecordingXcd.Equals(Codes.DEALER_CLAIM_RECORDING_DYNAMIC_QUESTIONS) Then
-                    callPage(ClaimRecordingForm.Url, New ClaimRecordingForm.Parameters(Me.State.MyBO.Id, Nothing, Nothing, Codes.CASE_PURPOSE__REPORT_CLAIM))
+                   Me.State.ClaimRecordingXcd.Equals(Codes.DEALER_CLAIM_RECORDING_DYNAMIC_QUESTIONS) Then
+                    callPage(ClaimRecordingForm.Url, New ClaimRecordingForm.Parameters(Me.State.MyBO.Id, Nothing, Nothing, Codes.CASE_PURPOSE__REPORT_CLAIM, Me.State.IsCallerAuthenticated))
                 Else
                     'REQ-863 Claims Payable
                     'Check whether to use new claim Authorization structure or not
@@ -6699,7 +6771,7 @@ Namespace Certificates
                     Else
                         Dim certId As Guid = Me.State.MyBO.Id
                         Me.NavController = Nothing
-                        Me.callPage(ClaimWizardForm.URL, New ClaimWizardForm.Parameters(ClaimWizardForm.ClaimWizardSteps.Step1, certId, Nothing, Nothing, True))
+                        Me.callPage(ClaimWizardForm.URL, New ClaimWizardForm.Parameters(ClaimWizardForm.ClaimWizardSteps.Step1, certId, Nothing, Nothing, True,, Me.state.IsCallerAuthenticated))
                     End If
                 End If
 
@@ -6718,8 +6790,8 @@ Namespace Certificates
                 Dim dealer As New Dealer(Me.State.MyBO.DealerId)
 
                 If Not String.IsNullOrEmpty(Me.State.ClaimRecordingXcd) AndAlso
-                    (Me.State.ClaimRecordingXcd.Equals(Codes.DEALER_CLAIM_RECORDING_DYNAMIC_QUESTIONS) OrElse
-                     Me.State.ClaimRecordingXcd.Equals(Codes.DEALER_CLAIM_RECORDING_BOTH)) Then
+                   (Me.State.ClaimRecordingXcd.Equals(Codes.DEALER_CLAIM_RECORDING_DYNAMIC_QUESTIONS) OrElse
+                    Me.State.ClaimRecordingXcd.Equals(Codes.DEALER_CLAIM_RECORDING_BOTH)) Then
                     callPage(ClaimRecordingForm.Url, New ClaimRecordingForm.Parameters(Me.State.MyBO.Id, Nothing, Nothing, Codes.CASE_PURPOSE__REPORT_CLAIM))
                 End If
 
@@ -7325,8 +7397,8 @@ Namespace Certificates
                 If (Me.State.ReqCustomerLegalInfoId.Equals(LookupListNew.GetIdFromCode(LookupListCache.LK_CLITYP, "1")) _
                     Or Me.State.ReqCustomerLegalInfoId.Equals(LookupListNew.GetIdFromCode(LookupListCache.LK_CLITYP, "3"))) AndAlso (Me.State.QuotedRefundAmt > 0) Then ' 1 = Display and Require When Cancelling 
                     If (Me.State.MyBO.Occupation Is Nothing OrElse Me.State.MyBO.Occupation.Equals(String.Empty)) Or
-                        (Me.State.MyBO.PoliticallyExposedId.Equals(Guid.Empty)) Or
-                        (Me.State.MyBO.IncomeRangeId.Equals(Guid.Empty)) Then
+                       (Me.State.MyBO.PoliticallyExposedId.Equals(Guid.Empty)) Or
+                       (Me.State.MyBO.IncomeRangeId.Equals(Guid.Empty)) Then
                         Throw New GUIException(Message.MSG_CANCELLATION_CANNOT_BE_PROCESSED, Assurant.ElitaPlus.Common.ErrorCodes.CANNOT_CANCEL_CERT_CUST_LEGAL_INFO_MISSING)
                     End If
                 End If
@@ -8006,8 +8078,6 @@ Namespace Certificates
             Session("SourceCertificateId") = SourceCertificateId
             Me.callPage(CertificateForm.URL, Me.State.MyBO.OriginalCertificateId)
         End Sub
-
-
 #End Region
 
     End Class

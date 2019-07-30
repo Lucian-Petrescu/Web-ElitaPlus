@@ -624,7 +624,7 @@
                                 <HeaderStyle HorizontalAlign="Center" ForeColor="#12135B" Width="30px" Wrap="False"></HeaderStyle>
                                 <ItemStyle HorizontalAlign="Center" Width="30px"></ItemStyle>
                                 <ItemTemplate>
-                                    <asp:ImageButton ID="EditButton_WRITE" Style="cursor: hand" runat="server" ImageUrl="../Navigation/images/edit.png"
+                                    <asp:ImageButton ID="EditButton_WRITE" Style="cursor: pointer; cursor: hand;" runat="server" ImageUrl="../Navigation/images/edit.png"
                                         CommandName="EditRecord" CommandArgument="<%#Container.DisplayIndex %>"></asp:ImageButton>
                                 </ItemTemplate>
                                 <EditItemTemplate>
@@ -636,7 +636,7 @@
                                 <HeaderStyle HorizontalAlign="Center" ForeColor="#12135B" Width="30px" Wrap="False"></HeaderStyle>
                                 <ItemStyle HorizontalAlign="Center" Width="30px"></ItemStyle>
                                 <ItemTemplate>
-                                    <asp:ImageButton Style="cursor: hand;" ID="DeleteButton_WRITE" ImageUrl="../Navigation/images/icon_delete.png"
+                                    <asp:ImageButton Style="cursor: pointer; cursor: hand;" ID="DeleteButton_WRITE" ImageUrl="../Navigation/images/icon_delete.png"
                                         runat="server" CommandName="DeleteRecord" CommandArgument="<%#Container.DisplayIndex %>"></asp:ImageButton>
                                 </ItemTemplate>
                                 <EditItemTemplate>
@@ -750,10 +750,10 @@
             <div id="tab_ExtendedAttributes">
                 <input id="hdnOperationType" type="hidden" runat="server" />
                 <div class="Page" runat="server" id="mo_ExtendedAttributes" style="height: 100%; overflow: auto">
-
                     <asp:GridView ID="mo_ParentsGrid" runat="server" Width="100%" OnRowCreated="RowCreated"
-                        OnRowDataBound="mo_ParentsGrid_RowDataBound" AllowPaging="True" AllowSorting="False" CellPadding="1"
-                        AutoGenerateColumns="False" SkinID="DetailPageGridView" DataKeyNames="product_code_parent_id">
+                            OnRowDataBound="mo_ParentsGrid_RowDataBound" OnRowCommand="mo_ParentsGrid_OnRowCommand"
+                            AllowPaging="True" AllowSorting="False" CellPadding="1"
+                            AutoGenerateColumns="False" SkinID="DetailPageGridView" DataKeyNames="product_code_parent_id">
                         <SelectedRowStyle Wrap="False"></SelectedRowStyle>
                         <EditRowStyle Wrap="False"></EditRowStyle>
                         <AlternatingRowStyle Wrap="False"></AlternatingRowStyle>
@@ -761,7 +761,7 @@
                         <Columns>
                             <asp:TemplateField>
                                 <ItemTemplate>
-                                    <img alt="" style="cursor: pointer" src="..\\App_Themes\\Default\\Images\\sort_indicator_des.png" />
+                                    <img alt="" style="cursor: pointer; cursor: hand;" src="..\\App_Themes\\Default\\Images\\sort_indicator_des.png" />
                                     <asp:Panel ID="pnlChild" runat="server" Style="display: none">
                                         <asp:GridView ID="gvChilds" runat="server" AutoGenerateColumns="false" SkinID="DetailPageGridView" OnRowDataBound="gvChilds_RowDataBound"
                                             DataKeyNames="product_code_detail_id">
@@ -789,8 +789,35 @@
                                 HeaderText="SMART BUNDLE AMOUNT" HeaderStyle-HorizontalAlign="Center" HtmlEncode="false" />
                             <asp:BoundField DataField="smart_bundle_flat_amt_currency" SortExpression="smart_bundle_flat_amt_currency" ReadOnly="true"
                                 HeaderText="SMART BUNDLE CURRENCY" HeaderStyle-HorizontalAlign="Center" HtmlEncode="false" />
-                            <asp:BoundField DataField="payment_split_rule" SortExpression="payment_split_rule" ReadOnly="true"
-                                HeaderText="PAYMENT_SPLIT_RULE" HeaderStyle-HorizontalAlign="Center" HtmlEncode="false" />
+                             <asp:TemplateField HeaderText="PAYMENT_SPLIT_RULE">
+                                <ItemTemplate>
+                                    <asp:Label ID="lblPaymentSplitRule" runat="server"></asp:Label>
+                                </ItemTemplate>
+                                 <EditItemTemplate>
+                                     <asp:DropDownList ID="ddlPaymentSplitRule" runat="server" SkinID="MediumDropDown" AutoPostBack="True"></asp:DropDownList>
+                                 </EditItemTemplate>
+                            </asp:TemplateField>
+                            <asp:TemplateField>
+                                <HeaderStyle HorizontalAlign="Center" ForeColor="#12135B" Width="30px" Wrap="False"></HeaderStyle>
+                                <ItemStyle HorizontalAlign="Center" Width="30px"></ItemStyle>
+                                <ItemTemplate>
+                                    <asp:ImageButton ID="BtnEditRecordParent" Style="cursor: pointer; cursor: hand;" runat="server" ImageUrl="../Navigation/images/edit.png"
+                                       CommandName="EditRecord" CommandArgument="<%#Container.DisplayIndex %>"></asp:ImageButton>
+                                </ItemTemplate>
+                                <EditItemTemplate>
+                                    <asp:LinkButton ID="BtnCancelRecordParent" runat="server" CommandName="CancelRecord" CommandArgument="<%#Container.DisplayIndex %>" 
+                                                    Text="Cancel"></asp:LinkButton>
+                                </EditItemTemplate>
+                            </asp:TemplateField>
+                            <asp:TemplateField>
+                                <HeaderStyle HorizontalAlign="Center" ForeColor="#12135B" Width="30px" Wrap="False"></HeaderStyle>
+                                <ItemStyle HorizontalAlign="Center" Width="30px"></ItemStyle>
+                                <ItemTemplate></ItemTemplate>
+                                <EditItemTemplate>
+                                    <asp:Button ID="BtnSaveRecordParent" runat="server" CommandName="SaveRecord" CommandArgument="<%#Container.DisplayIndex %>"
+                                        Text="Save" SkinID="PrimaryRightButton"></asp:Button>
+                                </EditItemTemplate>
+                            </asp:TemplateField>
                             <asp:BoundField DataField="product_code_parent_id" ReadOnly="true" Visible="false" />
                         </Columns>
                         <PagerSettings PageButtonCount="30" Mode="Numeric" Position="TopAndBottom" />
@@ -822,7 +849,7 @@
                                         <asp:TemplateField ShowHeader="false">
                                             <ItemStyle HorizontalAlign="Center" Width="3%"></ItemStyle>
                                             <ItemTemplate>
-                                                <asp:ImageButton ID="EditButton_WRITE" Style="cursor: hand" runat="server" ImageUrl="~/Navigation/images/icons/edit2.gif"
+                                                <asp:ImageButton ID="EditButton_WRITE" Style="cursor: pointer; cursor: hand;" runat="server" ImageUrl="~/Navigation/images/icons/edit2.gif"
                                                     CommandName="EditRecord" CommandArgument="<%#Container.DisplayIndex %>"></asp:ImageButton>
                                             </ItemTemplate>
                                         </asp:TemplateField>
@@ -985,7 +1012,7 @@
                                 <HeaderStyle HorizontalAlign="Center" ForeColor="#12135B" Width="30px" Wrap="False"></HeaderStyle>
                                 <ItemStyle HorizontalAlign="Center" Width="30px"></ItemStyle>
                                 <ItemTemplate>
-                                    <asp:ImageButton ID="EditButton_WRITE" Style="cursor: hand" runat="server" ImageUrl="../Navigation/images/edit.png"
+                                    <asp:ImageButton ID="EditButton_WRITE" Style="cursor: pointer; cursor: hand;" runat="server" ImageUrl="../Navigation/images/edit.png"
                                         CommandName="EditRecord" CommandArgument="<%#Container.DisplayIndex %>"></asp:ImageButton>
                                 </ItemTemplate>
                                 <EditItemTemplate>
@@ -997,7 +1024,7 @@
                                 <HeaderStyle HorizontalAlign="Center" ForeColor="#12135B" Width="30px" Wrap="False"></HeaderStyle>
                                 <ItemStyle HorizontalAlign="Center" Width="30px"></ItemStyle>
                                 <ItemTemplate>
-                                    <asp:ImageButton Style="cursor: hand;" ID="DeleteButton_WRITE" ImageUrl="../Navigation/images/icon_delete.png"
+                                    <asp:ImageButton Style="cursor: pointer; cursor: hand;" ID="DeleteButton_WRITE" ImageUrl="../Navigation/images/icon_delete.png"
                                         runat="server" CommandName="DeleteRecord" CommandArgument="<%#Container.DisplayIndex %>"></asp:ImageButton>
                                 </ItemTemplate>
                                 <EditItemTemplate>
@@ -1073,7 +1100,7 @@
                                             <HeaderStyle ForeColor="#12135B" Wrap="False"></HeaderStyle>
                                             <ItemStyle HorizontalAlign="Center"></ItemStyle>
                                             <ItemTemplate>
-                                                <asp:ImageButton ID="EditButton_WRITE" Style="cursor: hand" runat="server" ImageUrl="~/Navigation/images/icons/edit2.gif"
+                                                <asp:ImageButton ID="EditButton_WRITE" Style="cursor: pointer; cursor: hand;" runat="server" ImageUrl="~/Navigation/images/icons/edit2.gif"
                                                     CommandName="EditRecord" CommandArgument='<%# DataBinder.Eval(Container.DataItem, "DeviceTypeId") %>'></asp:ImageButton>
                                             </ItemTemplate>
                                             <EditItemTemplate>
@@ -1085,7 +1112,7 @@
                                             <HeaderStyle ForeColor="#12135B" Wrap="False"></HeaderStyle>
                                             <ItemStyle HorizontalAlign="Center"></ItemStyle>
                                             <ItemTemplate>
-                                                <asp:ImageButton Style="cursor: hand;" ID="DeleteButton_WRITE" ImageUrl="~/Navigation/images/icons/trash.gif"
+                                                <asp:ImageButton Style="cursor: pointer; cursor: hand;" ID="DeleteButton_WRITE" ImageUrl="~/Navigation/images/icons/trash.gif"
                                                     runat="server" CommandName="DeleteRecord" CommandArgument='<%# DataBinder.Eval(Container.DataItem, "DeviceTypeId") %>'></asp:ImageButton>
                                             </ItemTemplate>
                                             <EditItemTemplate>
@@ -1166,7 +1193,7 @@
                                 <HeaderStyle HorizontalAlign="Center" ForeColor="#12135B" Width="30px" Wrap="False"></HeaderStyle>
                                 <ItemStyle HorizontalAlign="Center" Width="30px"></ItemStyle>
                                 <ItemTemplate>
-                                    <asp:ImageButton ID="EditButton_WRITE" Style="cursor: hand" runat="server" ImageUrl="../Navigation/images/edit.png"
+                                    <asp:ImageButton ID="EditButton_WRITE" Style="cursor: pointer; cursor: hand;" runat="server" ImageUrl="../Navigation/images/edit.png"
                                         CommandName="EditRecord" CommandArgument="<%#Container.DisplayIndex %>"></asp:ImageButton>
                                 </ItemTemplate>
                                 <EditItemTemplate>
@@ -1178,7 +1205,7 @@
                                 <HeaderStyle HorizontalAlign="Center" ForeColor="#12135B" Width="30px" Wrap="False"></HeaderStyle>
                                 <ItemStyle HorizontalAlign="Center" Width="30px"></ItemStyle>
                                 <ItemTemplate>
-                                    <asp:ImageButton Style="cursor: hand;" ID="DeleteButton_WRITE" ImageUrl="../Navigation/images/icon_delete.png"
+                                    <asp:ImageButton Style="cursor: pointer; cursor: hand;" ID="DeleteButton_WRITE" ImageUrl="../Navigation/images/icon_delete.png"
                                         runat="server" CommandName="DeleteRecord" CommandArgument="<%#Container.DisplayIndex %>"></asp:ImageButton>
                                 </ItemTemplate>
                                 <EditItemTemplate>

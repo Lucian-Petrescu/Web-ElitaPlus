@@ -26,7 +26,7 @@ Public Class User
     ''' <param name="pPrivilegeCode"></param>
     ''' <returns></returns>
 
-    Public Shared Function GetUsers(ByVal country_id As Guid, ByVal pPermissionCode As String) As String()
+        Public Shared Function GetUsers(ByVal country_id As Guid, ByVal pPermissionCode As String) As String()
         Dim dal As New UserDAL
         Dim oLANIdDs As DataSet
         Dim lanIdList As New List(Of String)
@@ -539,7 +539,7 @@ Public Class User
         Get
             Dim bDealerGroup As Boolean = False
             If IsExternal AndAlso _
-                Me.ExternalTypeId.Equals(LookupListNew.GetIdFromCode(LookupListNew.LK_EXTERNAL_USER_TYPES, Codes.EXTERNAL_USER_TYPE__DEALER_GROUP)) Then
+               Me.ExternalTypeId.Equals(LookupListNew.GetIdFromCode(LookupListNew.LK_EXTERNAL_USER_TYPES, Codes.EXTERNAL_USER_TYPE__DEALER_GROUP)) Then
                 bDealerGroup = True
             End If
             Return bDealerGroup
@@ -549,7 +549,7 @@ Public Class User
         Get
             Dim bDealer As Boolean = False
             If IsExternal AndAlso _
-                Me.ExternalTypeId.Equals(LookupListNew.GetIdFromCode(LookupListNew.LK_EXTERNAL_USER_TYPES, Codes.EXTERNAL_USER_TYPE__DEALER)) Then
+               Me.ExternalTypeId.Equals(LookupListNew.GetIdFromCode(LookupListNew.LK_EXTERNAL_USER_TYPES, Codes.EXTERNAL_USER_TYPE__DEALER)) Then
                 bDealer = True
             End If
             Return bDealer
@@ -560,7 +560,7 @@ Public Class User
         Get
             Dim bServiceCenter As Boolean = False
             If IsExternal AndAlso _
-                Me.ExternalTypeId.Equals(LookupListNew.GetIdFromCode(LookupListNew.LK_EXTERNAL_USER_TYPES, Codes.EXTERNAL_USER_TYPE__SERVICE_CENTER)) Then
+               Me.ExternalTypeId.Equals(LookupListNew.GetIdFromCode(LookupListNew.LK_EXTERNAL_USER_TYPES, Codes.EXTERNAL_USER_TYPE__SERVICE_CENTER)) Then
                 bServiceCenter = True
             End If
             Return bServiceCenter
@@ -1106,6 +1106,20 @@ Public Class User
         oSpUserClaims = New SpUserClaims(SpClaimsID, Me.Dataset)
         Return oSpUserClaims
     End Function
+    Public Function NeedPERMtoViewPrivacyData() As boolean
+        Dim oRole As Role
+        Dim rowRole as DataRowView        
+        Dim authNeededRolePermId as Guid = LookupListNew.GetIdFromCode(LookupListNew.DropdownLanguageLookupList(LookupListNew.LK_USER_ROLE_PERMISSION, ElitaPlusIdentity.Current.ActiveUser.LanguageId),"AUTH_NEEDED_VIEW_SEC_FIELDS")
+        dim dvRoles as dataview = GetUserRoles(New User(Authentication.CurrentUser.NetworkId).Id)
+        for each rowRole In dvRoles
+            oRole = New Role(New Guid(CType(rowRole("Id"), Byte())))
+            If oRole.RolePermission.Where(Function(up) up.PermissionId = authNeededRolePermId).Any Then
+                return True
+            End If
+        Next
+        Return False
+    End Function
+
 #End Region
 
 #Region "External User Methods"
@@ -1152,8 +1166,8 @@ Public Class User
 
 #Region "DataView Retrieveing Methods"
     Public Shared Function GetUserNewList(ByVal NetworkIDMask As String, ByVal userNameMask As String, _
-                                ByVal roleMask As String, ByVal companyCodeMask As String _
-                                ) As UserSearchDV
+                                          ByVal roleMask As String, ByVal companyCodeMask As String _
+                                          ) As UserSearchDV
         Try
             'Dim compIds As ArrayList = ElitaPlusIdentity.Current.ActiveUser.Companies
             Dim dal As New UserDAL
@@ -1194,7 +1208,7 @@ Public Class User
             End If
 
             dv = New UserSearchDV(dal.LoadUserList(NetworkIDMask, userNameMask, _
-                                                 roleMask, companyCodeMask).Tables(0))
+                                                   roleMask, companyCodeMask).Tables(0))
 
             If Not filterCondition = "" Then
                 dv.RowFilter = filterCondition
@@ -1277,8 +1291,8 @@ Public Class User
                 row(WorkQueueAssignSelectionView.COL_NAME_NAME_WORKQUEUE_ID) = detail.WorkqueueId.ToByteArray
 
                 row(WorkQueueAssignSelectionView.COL_NAME_NAME_WORKQUEUE_DESC) = (From wq In WQ_List _
-                                                                            Where wq.Id = detail.WorkqueueId _
-                                                                            Select wq.Name).FirstOrDefault
+                    Where wq.Id = detail.WorkqueueId _
+                    Select wq.Name).FirstOrDefault
                 row(WorkQueueAssignSelectionView.COL_NAME_COMPANY_ID) = detail.CompanyId.ToByteArray
                 row(WorkQueueAssignSelectionView.COL_NAME_USER_ID) = detail.UserId.ToByteArray
                 t.Rows.Add(row)
@@ -1394,9 +1408,9 @@ Public Class User
     End Function
 #End Region
 
-    #Region "User Claim Validations"
+#Region "User Claim Validations"
 
-     Public Shared Function IsDealerValidForUserClaim(ByVal userId As Guid, ByVal dealerCode As String) As Boolean
+    Public Shared Function IsDealerValidForUserClaim(ByVal userId As Guid, ByVal dealerCode As String) As Boolean
         Dim dal As New UserDAL
         
         return dal.IsDealerValidForUserClaim(userId, dealerCode)
@@ -1410,7 +1424,7 @@ Public Class User
         
     End Function
 
-     Public Shared Function IsCompanyGroupValidForUserClaim(ByVal userId As Guid, ByVal companyGroupCode As String) As Boolean
+    Public Shared Function IsCompanyGroupValidForUserClaim(ByVal userId As Guid, ByVal companyGroupCode As String) As Boolean
         Dim dal As New UserDAL
 
         return dal.IsCompanyGroupValidForUserClaim(userId, companyGroupCode)

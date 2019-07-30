@@ -60,283 +60,22 @@ Namespace Certificates
         Protected WithEvents ddlDealer As Global.System.Web.UI.WebControls.DropDownList
         
         '''<summary>
-        '''LabelPolicyStatus control.
+        '''PanelHolderDynamicSearchCriteria control.
         '''</summary>
         '''<remarks>
         '''Auto-generated field.
         '''To modify move field declaration from designer file to code-behind file.
         '''</remarks>
-        Protected WithEvents LabelPolicyStatus As Global.System.Web.UI.WebControls.Label
+        Protected WithEvents PanelHolderDynamicSearchCriteria As Global.System.Web.UI.WebControls.PlaceHolder
         
         '''<summary>
-        '''ddlPolicyStatus control.
+        '''checkboxAdditionalSearchCriteria control.
         '''</summary>
         '''<remarks>
         '''Auto-generated field.
         '''To modify move field declaration from designer file to code-behind file.
         '''</remarks>
-        Protected WithEvents ddlPolicyStatus As Global.System.Web.UI.WebControls.DropDownList
-        
-        '''<summary>
-        '''LabelCase control.
-        '''</summary>
-        '''<remarks>
-        '''Auto-generated field.
-        '''To modify move field declaration from designer file to code-behind file.
-        '''</remarks>
-        Protected WithEvents LabelCase As Global.System.Web.UI.WebControls.Label
-        
-        '''<summary>
-        '''TextBoxCaseText control.
-        '''</summary>
-        '''<remarks>
-        '''Auto-generated field.
-        '''To modify move field declaration from designer file to code-behind file.
-        '''</remarks>
-        Protected WithEvents TextBoxCaseText As Global.System.Web.UI.WebControls.TextBox
-        
-        '''<summary>
-        '''LabelCertificateNumber control.
-        '''</summary>
-        '''<remarks>
-        '''Auto-generated field.
-        '''To modify move field declaration from designer file to code-behind file.
-        '''</remarks>
-        Protected WithEvents LabelCertificateNumber As Global.System.Web.UI.WebControls.Label
-        
-        '''<summary>
-        '''TextBoxCertificateNumber control.
-        '''</summary>
-        '''<remarks>
-        '''Auto-generated field.
-        '''To modify move field declaration from designer file to code-behind file.
-        '''</remarks>
-        Protected WithEvents TextBoxCertificateNumber As Global.System.Web.UI.WebControls.TextBox
-        
-        '''<summary>
-        '''LabelClaimNumber control.
-        '''</summary>
-        '''<remarks>
-        '''Auto-generated field.
-        '''To modify move field declaration from designer file to code-behind file.
-        '''</remarks>
-        Protected WithEvents LabelClaimNumber As Global.System.Web.UI.WebControls.Label
-        
-        '''<summary>
-        '''TextBoxClaimNumber control.
-        '''</summary>
-        '''<remarks>
-        '''Auto-generated field.
-        '''To modify move field declaration from designer file to code-behind file.
-        '''</remarks>
-        Protected WithEvents TextBoxClaimNumber As Global.System.Web.UI.WebControls.TextBox
-        
-        '''<summary>
-        '''LabelCustomerFirstName control.
-        '''</summary>
-        '''<remarks>
-        '''Auto-generated field.
-        '''To modify move field declaration from designer file to code-behind file.
-        '''</remarks>
-        Protected WithEvents LabelCustomerFirstName As Global.System.Web.UI.WebControls.Label
-        
-        '''<summary>
-        '''TextBoxCustomerFirstName control.
-        '''</summary>
-        '''<remarks>
-        '''Auto-generated field.
-        '''To modify move field declaration from designer file to code-behind file.
-        '''</remarks>
-        Protected WithEvents TextBoxCustomerFirstName As Global.System.Web.UI.WebControls.TextBox
-        
-        '''<summary>
-        '''LabelCustomerLastName control.
-        '''</summary>
-        '''<remarks>
-        '''Auto-generated field.
-        '''To modify move field declaration from designer file to code-behind file.
-        '''</remarks>
-        Protected WithEvents LabelCustomerLastName As Global.System.Web.UI.WebControls.Label
-        
-        '''<summary>
-        '''TextBoxCustomerLastName control.
-        '''</summary>
-        '''<remarks>
-        '''Auto-generated field.
-        '''To modify move field declaration from designer file to code-behind file.
-        '''</remarks>
-        Protected WithEvents TextBoxCustomerLastName As Global.System.Web.UI.WebControls.TextBox
-        
-        '''<summary>
-        '''LabelPhoneNumber control.
-        '''</summary>
-        '''<remarks>
-        '''Auto-generated field.
-        '''To modify move field declaration from designer file to code-behind file.
-        '''</remarks>
-        Protected WithEvents LabelPhoneNumber As Global.System.Web.UI.WebControls.Label
-        
-        '''<summary>
-        '''TextBoxPhoneNumber control.
-        '''</summary>
-        '''<remarks>
-        '''Auto-generated field.
-        '''To modify move field declaration from designer file to code-behind file.
-        '''</remarks>
-        Protected WithEvents TextBoxPhoneNumber As Global.System.Web.UI.WebControls.TextBox
-        
-        '''<summary>
-        '''LabelSerialNumber control.
-        '''</summary>
-        '''<remarks>
-        '''Auto-generated field.
-        '''To modify move field declaration from designer file to code-behind file.
-        '''</remarks>
-        Protected WithEvents LabelSerialNumber As Global.System.Web.UI.WebControls.Label
-        
-        '''<summary>
-        '''TextBoxSerialNumber control.
-        '''</summary>
-        '''<remarks>
-        '''Auto-generated field.
-        '''To modify move field declaration from designer file to code-behind file.
-        '''</remarks>
-        Protected WithEvents TextBoxSerialNumber As Global.System.Web.UI.WebControls.TextBox
-        
-        '''<summary>
-        '''LabelInvoiceNumber control.
-        '''</summary>
-        '''<remarks>
-        '''Auto-generated field.
-        '''To modify move field declaration from designer file to code-behind file.
-        '''</remarks>
-        Protected WithEvents LabelInvoiceNumber As Global.System.Web.UI.WebControls.Label
-        
-        '''<summary>
-        '''TextBoxInvoiceNumber control.
-        '''</summary>
-        '''<remarks>
-        '''Auto-generated field.
-        '''To modify move field declaration from designer file to code-behind file.
-        '''</remarks>
-        Protected WithEvents TextBoxInvoiceNumber As Global.System.Web.UI.WebControls.TextBox
-        
-        '''<summary>
-        '''LabelEmail control.
-        '''</summary>
-        '''<remarks>
-        '''Auto-generated field.
-        '''To modify move field declaration from designer file to code-behind file.
-        '''</remarks>
-        Protected WithEvents LabelEmail As Global.System.Web.UI.WebControls.Label
-        
-        '''<summary>
-        '''TextBoxEmail control.
-        '''</summary>
-        '''<remarks>
-        '''Auto-generated field.
-        '''To modify move field declaration from designer file to code-behind file.
-        '''</remarks>
-        Protected WithEvents TextBoxEmail As Global.System.Web.UI.WebControls.TextBox
-        
-        '''<summary>
-        '''LabelZip control.
-        '''</summary>
-        '''<remarks>
-        '''Auto-generated field.
-        '''To modify move field declaration from designer file to code-behind file.
-        '''</remarks>
-        Protected WithEvents LabelZip As Global.System.Web.UI.WebControls.Label
-        
-        '''<summary>
-        '''TextBoxZip control.
-        '''</summary>
-        '''<remarks>
-        '''Auto-generated field.
-        '''To modify move field declaration from designer file to code-behind file.
-        '''</remarks>
-        Protected WithEvents TextBoxZip As Global.System.Web.UI.WebControls.TextBox
-        
-        '''<summary>
-        '''lblTaxId control.
-        '''</summary>
-        '''<remarks>
-        '''Auto-generated field.
-        '''To modify move field declaration from designer file to code-behind file.
-        '''</remarks>
-        Protected WithEvents lblTaxId As Global.System.Web.UI.WebControls.Label
-        
-        '''<summary>
-        '''txtTaxId control.
-        '''</summary>
-        '''<remarks>
-        '''Auto-generated field.
-        '''To modify move field declaration from designer file to code-behind file.
-        '''</remarks>
-        Protected WithEvents txtTaxId As Global.System.Web.UI.WebControls.TextBox
-        
-        '''<summary>
-        '''lblServiceLineNumber control.
-        '''</summary>
-        '''<remarks>
-        '''Auto-generated field.
-        '''To modify move field declaration from designer file to code-behind file.
-        '''</remarks>
-        Protected WithEvents lblServiceLineNumber As Global.System.Web.UI.WebControls.Label
-        
-        '''<summary>
-        '''txtServiceLineNumber control.
-        '''</summary>
-        '''<remarks>
-        '''Auto-generated field.
-        '''To modify move field declaration from designer file to code-behind file.
-        '''</remarks>
-        Protected WithEvents txtServiceLineNumber As Global.System.Web.UI.WebControls.TextBox
-        
-        '''<summary>
-        '''lblAccountNumber control.
-        '''</summary>
-        '''<remarks>
-        '''Auto-generated field.
-        '''To modify move field declaration from designer file to code-behind file.
-        '''</remarks>
-        Protected WithEvents lblAccountNumber As Global.System.Web.UI.WebControls.Label
-        
-        '''<summary>
-        '''txtAccountNumber control.
-        '''</summary>
-        '''<remarks>
-        '''Auto-generated field.
-        '''To modify move field declaration from designer file to code-behind file.
-        '''</remarks>
-        Protected WithEvents txtAccountNumber As Global.System.Web.UI.WebControls.TextBox
-        
-        '''<summary>
-        '''lblGlobalCustomerNumber control.
-        '''</summary>
-        '''<remarks>
-        '''Auto-generated field.
-        '''To modify move field declaration from designer file to code-behind file.
-        '''</remarks>
-        Protected WithEvents lblGlobalCustomerNumber As Global.System.Web.UI.WebControls.Label
-        
-        '''<summary>
-        '''txtGlobalCustomerNumber control.
-        '''</summary>
-        '''<remarks>
-        '''Auto-generated field.
-        '''To modify move field declaration from designer file to code-behind file.
-        '''</remarks>
-        Protected WithEvents txtGlobalCustomerNumber As Global.System.Web.UI.WebControls.TextBox
-        
-        '''<summary>
-        '''btnNewCase control.
-        '''</summary>
-        '''<remarks>
-        '''Auto-generated field.
-        '''To modify move field declaration from designer file to code-behind file.
-        '''</remarks>
-        Protected WithEvents btnNewCase As Global.System.Web.UI.WebControls.Button
+        Protected WithEvents checkboxAdditionalSearchCriteria As Global.System.Web.UI.WebControls.CheckBox
         
         '''<summary>
         '''btnClearSearch control.
@@ -402,12 +141,12 @@ Namespace Certificates
         Protected WithEvents lblRecordCount As Global.System.Web.UI.WebControls.Label
         
         '''<summary>
-        '''rep control.
+        '''repeaterSearchResult control.
         '''</summary>
         '''<remarks>
         '''Auto-generated field.
         '''To modify move field declaration from designer file to code-behind file.
         '''</remarks>
-        Protected WithEvents rep As Global.System.Web.UI.WebControls.Repeater
+        Protected WithEvents repeaterSearchResult As Global.System.Web.UI.WebControls.Repeater
     End Class
 End Namespace

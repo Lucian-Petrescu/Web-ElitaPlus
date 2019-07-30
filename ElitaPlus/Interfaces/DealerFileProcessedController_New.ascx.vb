@@ -302,7 +302,7 @@ Namespace Interfaces
         Private Sub Page_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load, Me.Load
             If IsReturningFromChild Then
                 ValidateSelection()
-                If (DealerMultipleDrop.SelectedIndex > ThePage.BLANK_ITEM_SELECTED Or DealerGroupMultipleDrop.SelectedIndex > ThePage.BLANK_ITEM_SELECTED) Then
+                If (DealerMultipleDrop.SelectedIndex > ThePage.BLANK_ITEM_SELECTED Or DealerGroupMultipleDrop.SelectedIndex > ThePage.BLANK_ITEM_SELECTED Or rdParentFile.Checked) Then
                     TheState.IsGridVisible = True
                     Me.PopulateGrid(ThePage.POPULATE_ACTION_SAVE)
                     ControlMgr.SetVisibleForControlFamily(ThePage, moButtonPanel, True, True)

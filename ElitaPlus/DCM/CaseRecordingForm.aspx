@@ -1,6 +1,6 @@
 ﻿<%@ Page Language="vb" AutoEventWireup="false" CodeBehind="CaseRecordingForm.aspx.vb"
-    Inherits="Assurant.ElitaPlus.ElitaPlusWebApp.CaseRecordingForm" MasterPageFile="~/Navigation/masters/ElitaBase.Master"
-    Theme="Default" EnableSessionState="True" %>
+Inherits="Assurant.ElitaPlus.ElitaPlusWebApp.CaseRecordingForm" MasterPageFile="~/Navigation/masters/ElitaBase.Master"
+Theme="Default" EnableSessionState="True"%>
 
 <%@ Register TagPrefix="Elita" TagName="CaseHeaderInformation" Src="~/Common/UserControlCaseHeaderInfo.ascx" %>
 <%@ Register TagPrefix="asp" Namespace="AjaxControlToolkit" Assembly="AjaxControlToolkit" %>
@@ -50,23 +50,23 @@
             </p>
             <table class="formGrid" width="98%">
                 <tbody>
-                    <tr>
-                        <td>
-                            <img id="imgMsgIcon" width="28" runat="server" src="~/App_Themes/Default/Images/dialogue_confirm.png" height="28" />
-                        </td>
-                        <td id="tdModalMessage" colspan="2" runat="server">
-                            <asp:Label ID="lblCancelMessage" runat="server"></asp:Label>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>&nbsp;
-                        </td>
-                        <td id="tdBtnArea" runat="server" colspan="2">
-                            <asp:Button ID="btnCancelYes" class="primaryBtn floatR" runat="server" Text="Yes"></asp:Button>
-                            <input id="btnModalCancelNo" class="popWindowAltbtn floatR" runat="server" type="button"
-                                value="No" onclick="hideModal('ModalCancel');" />
-                        </td>
-                    </tr>
+                <tr>
+                    <td>
+                        <img id="imgMsgIcon" width="28" runat="server" src="~/App_Themes/Default/Images/dialogue_confirm.png" height="28" />
+                    </td>
+                    <td id="tdModalMessage" colspan="2" runat="server">
+                        <asp:Label ID="lblCancelMessage" runat="server"></asp:Label>
+                    </td>
+                </tr>
+                <tr>
+                    <td>&nbsp;
+                    </td>
+                    <td id="tdBtnArea" runat="server" colspan="2">
+                        <asp:Button ID="btnCancelYes" class="primaryBtn floatR" runat="server" Text="Yes"></asp:Button>
+                        <input id="btnModalCancelNo" class="popWindowAltbtn floatR" runat="server" type="button"
+                               value="No" onclick="hideModal('ModalCancel');" />
+                    </td>
+                </tr>
                 </tbody>
             </table>
         </div>
@@ -89,18 +89,30 @@
                             <td style="text-align: center">
                                 <Elita:UserControlCallerInfo runat="server" ID="ucCallerInfo" />
                             </td>
+                        </tr>                        
+
+                    </table>
+                </div>
+            </div>
+            <div class="dataContainer">
+                <h2 class="dataGridHeader" runat="server" id="hprevCallerinformation">
+                    <asp:Label runat="server" ID="lvlPreCaller" Text="PREVIOUS_CALLER_INFORMATION"></asp:Label></h2>
+                <div style="width: 100%">
+                    <table style="width: 100%; height: 100%" class="dataGrid">                                            
+                        <tr>
+                            <td style="text-align: center">
+                                <Elita:UserControlCallerInfo runat="server" ID="ucPrevCallerInfo" />
+                            </td>
                         </tr>
                     </table>
                 </div>
             </div>
-        </asp:View>
-
+        </asp:View>                                
         <asp:View ID="vQuestion" runat="server">
             <div class="dataContainer">
                 <Elita:UserControlQuestion runat="server" ID="questionUserControl" />
             </div>
         </asp:View>
-
         <asp:View ID="vCaseInteraction" runat="server">
             <div class="dataContainer">
                 <h2 class="dataGridHeader" runat="server" id="hCaseInteraction">
@@ -132,7 +144,7 @@
     <div class="btnZone">
         <asp:Button ID="button_Continue" runat="server" SkinID="PrimaryRightButton" Text="Continue" />
         <asp:LinkButton ID="btn_Cancel" runat="server" SkinID="TabZoneAddButton" Text="Cancel"
-            OnClientClick="return revealModal('ModalCancel');" />
+                        OnClientClick="return revealModal('ModalCancel');" />
     </div>
 
 </asp:Content>

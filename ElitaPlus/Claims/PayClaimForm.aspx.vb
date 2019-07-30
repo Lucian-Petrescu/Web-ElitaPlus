@@ -2501,9 +2501,12 @@ Partial Class PayClaimForm
             Dim claim As Claim = ClaimFacade.Instance.CreateClaim(Of Claim)()
             If (claim.Handle_Replaced_Items(0, Me.State.ClaimBO.Id, Me.State.ClaimBO.CertificateId,
                     Me.State.ClaimBO.CertItemCoverageId, DateHelper.GetDateValue(txtRepairDate.Text)) = 0) Then
-                'close the replacement claim with reason "Replaced"
-                If (closeClaim) Then
-                    Me.State.ClaimInvoiceBO.CloseClaim = True
+                'If reaminingamount is > 0 then ask for confirmation 
+                Me.State.ClaimInvoiceBO.CloseClaim = False
+                If System.Math.Abs(Me.State.ClaimInvoiceBO.RemainingAmount.Value) > 0 Then
+                    Me.DisplayMessage(Message.MSG_PROMPT_FOR_CLOSING_THE_CLAIM, "", Me.MSG_BTN_YES_NO, Me.MSG_TYPE_CONFIRM, Me.HiddenSaveChangesPromptResponse)
+                    Me.State.ActionInProgress = ElitaPlusPage.DetailPageCommand.Accept
+                    Return True
                 End If
                 Return SaveClaimInvoice()
             Else
@@ -2512,8 +2515,11 @@ Partial Class PayClaimForm
                 Return True
             End If
         Else
-            If (closeClaim) Then
-                Me.State.ClaimInvoiceBO.CloseClaim = True
+            Me.State.ClaimInvoiceBO.CloseClaim = False
+            If System.Math.Abs(Me.State.ClaimInvoiceBO.RemainingAmount.Value) > 0 Then
+                Me.DisplayMessage(Message.MSG_PROMPT_FOR_CLOSING_THE_CLAIM, "", Me.MSG_BTN_YES_NO, Me.MSG_TYPE_CONFIRM, Me.HiddenSaveChangesPromptResponse)
+                Me.State.ActionInProgress = ElitaPlusPage.DetailPageCommand.Accept
+                Return True
             End If
             Return SaveClaimInvoice()
         End If
@@ -3054,6 +3060,13 @@ Partial Class PayClaimForm
                             ControlMgr.SetEnableControl(Me, Me.LabelAlreadyPaid, False)
                             ControlMgr.SetEnableControl(Me, Me.txtOtherAmt, False)
                             ControlMgr.SetEnableControl(Me, Me.txtOtherTax, False)
+                        Else
+                            ControlMgr.SetVisibleControl(Me, Me.hrSeprator, True)
+                            ControlMgr.SetVisibleControl(Me, Me.PaymentMethodDrop, True)
+                            ControlMgr.SetVisibleControl(Me, Me.moPaymentMethodLabel, True)
+                            ControlMgr.SetVisibleControl(Me, Me.Req_Pay_MethodLabel, True)
+                            ControlMgr.SetVisibleControl(Me, Me.PayeeAddress, False)
+                            ControlMgr.SetVisibleControl(Me, Me.PayeeBankInfo, False)
                         End If
                     Else
                         ControlMgr.SetVisibleControl(Me, Me.hrSeprator, True)

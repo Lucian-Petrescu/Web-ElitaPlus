@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<SavedWcfConfigurationInformation xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" Version="9.1" CheckSum="ctJ8TR4SdhZkRKrO9Aebv7nrifg=">
+<SavedWcfConfigurationInformation xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" Version="9.1" CheckSum="Hdbcw0LSVg7Gq/Z8tH9fAKlGM/o=">
   <bindingConfigurations>
     <bindingConfiguration bindingType="customBinding" name="CustomBinding_IClaimRecordingService">
       <properties>
@@ -719,10 +719,10 @@
     </bindingConfiguration>
   </bindingConfigurations>
   <endpoints>
-    <endpoint name="CustomBinding_IClaimRecordingService" contract="ClaimRecordingService.IClaimRecordingService" bindingType="customBinding" address="http://elitaplus-api-modl.p1.assurant.com/ElitaClaimService1/ClaimRecordingService.svc" bindingConfiguration="CustomBinding_IClaimRecordingService">
+    <endpoint name="CustomBinding_IClaimRecordingService" contract="ClaimRecordingService.IClaimRecordingService" bindingType="customBinding" address="http://elitaplus-modl.j2.assurant.com/ElitaClaimService2/ClaimRecordingService.svc" bindingConfiguration="CustomBinding_IClaimRecordingService">
       <properties>
         <property path="/address" isComplexType="false" isExplicitlyDefined="true" clrType="System.Uri, System, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
-          <serializedValue>http://elitaplus-api-modl.p1.assurant.com/ElitaClaimService1/ClaimRecordingService.svc</serializedValue>
+          <serializedValue>http://elitaplus-modl.j2.assurant.com/ElitaClaimService2/ClaimRecordingService.svc</serializedValue>
         </property>
         <property path="/behaviorConfiguration" isComplexType="false" isExplicitlyDefined="false" clrType="System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
           <serializedValue />
@@ -804,10 +804,10 @@
         </property>
       </properties>
     </endpoint>
-    <endpoint name="CustomBinding_IClaimRecordingService1" contract="ClaimRecordingService.IClaimRecordingService" bindingType="customBinding" address="http://elitaplus-api-modl.p1.assurant.com/ElitaClaimService1/ClaimRecordingService.svc/Secure" bindingConfiguration="CustomBinding_IClaimRecordingService">
+    <endpoint name="CustomBinding_IClaimRecordingService1" contract="ClaimRecordingService.IClaimRecordingService" bindingType="customBinding" address="http://elitaplus-modl.j2.assurant.com/ElitaClaimService2/ClaimRecordingService.svc/Secure" bindingConfiguration="CustomBinding_IClaimRecordingService">
       <properties>
         <property path="/address" isComplexType="false" isExplicitlyDefined="true" clrType="System.Uri, System, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
-          <serializedValue>http://elitaplus-api-modl.p1.assurant.com/ElitaClaimService1/ClaimRecordingService.svc/Secure</serializedValue>
+          <serializedValue>http://elitaplus-modl.j2.assurant.com/ElitaClaimService2/ClaimRecordingService.svc/Secure</serializedValue>
         </property>
         <property path="/behaviorConfiguration" isComplexType="false" isExplicitlyDefined="false" clrType="System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
           <serializedValue />
