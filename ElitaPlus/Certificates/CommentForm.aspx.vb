@@ -147,7 +147,12 @@ Partial Class CommentForm
         End If
         If IsFromCertificateForm() Then
             If Not Me.CallingParameters Is Nothing Then
-                Me.State.CertificateBO = New Certificate(CType(Me.CallingParameters, Guid))
+                Try
+                    Me.State.CertificateBO = New Certificate(CType(Me.CallingParameters, Guid))
+                Catch ex As Exception
+                    Dim callingParams As Certificates.CertificateForm.Parameters = CType(Me.CallingParameters, Certificates.CertificateForm.Parameters)
+                    Me.State.CertificateBO = New Certificate(callingParams.CertificateId)
+                End Try
             ElseIf Not Me.State.MyBO Is Nothing Then
                 Me.State.CertificateBO = New Certificate(Me.State.MyBO.CertId)
             End If

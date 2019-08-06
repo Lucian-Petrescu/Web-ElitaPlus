@@ -168,15 +168,6 @@ MasterPageFile="../Navigation/masters/ElitaBase.Master" Theme="Default" %>
                     <tr>
                         <td colspan="3"></td>
                     </tr>
-                    <tr>
-                         <td>
-                                <asp:Label ID="lblDateOfBirth" runat="server" text = "DATE_OF_BIRTH"></asp:Label><br />                           
-                                <asp:TextBox ID="txtDateOfBirth" TabIndex="1" runat="server"
-                                    SkinID="smallTextBox"></asp:TextBox>                           
-                                <asp:ImageButton ID="btnDateOfBirth" runat="server" ImageUrl="~/App_Themes/Default/Images/calendar.png"
-                                    valign="bottom"></asp:ImageButton>
-                            </td>
-                        </tr>
                         <td align="left">
                             <asp:CheckBox runat="server" ID="checkboxAdditionalSearchCriteria" Text="SHOW_ADDITIONAL_SEARCH_FIELDS" Checked ="false" AutoPostBack="true" />
                         </td>

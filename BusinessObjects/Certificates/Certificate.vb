@@ -1443,7 +1443,7 @@ Public Class Certificate
         End Set
     End Property
 
-    <ValidStringLength("", Max:=25)>
+    <ValidStringLength("", Max:=50)>
     Public Property ServiceLineNumber() As String
         Get
             CheckDeleted()
@@ -5203,7 +5203,7 @@ Public Class Certificate
         If Not (String.IsNullOrEmpty(txtDate)) Then
             If (CultureInfo.CurrentCulture.Name.Equals("ja-JP")) Then
                 Dim parsedDate As DateTime
-                parsedDate = DateTime.Parse(txtDate)
+                parsedDate = DateTime.ParseExact(txtDate, "dd-M-yyyy", CultureInfo.InvariantCulture).ToString("MM/dd/yyyy", CultureInfo.InvariantCulture)
                 txtDate = parsedDate.ToString("D", CultureInfo.CurrentCulture)
                 If (noMask) Then
                     Return txtDate
@@ -5211,10 +5211,12 @@ Public Class Certificate
                     Return txtDate.Replace(txtDate.Substring(0, 4), "XXXX")
                 End If
             Else
-                Dim dateofbirth As Date = txtDate
-                Return dateofbirth.ToString("dd-MMM-xxxx")
+                If (Not noMask) Then
+                    Dim dateofbirth As Date = txtDate
+                    Return dateofbirth.ToString("dd-MMM-xxxx")
+                End If
             End If
-            Return txtDate
+                Return txtDate
         End If
     End Function
 

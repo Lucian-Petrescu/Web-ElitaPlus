@@ -230,7 +230,7 @@
                             <asp:Label ID="label26" runat="server">ADDRESS1</asp:Label>:
                         </td>
                         <td style="white-space: nowrap;" align="left">
-                            <asp:TextBox ID="txtAddress1" runat="server" Width="200px" MaxLength="50" TabIndex="545"></asp:TextBox>
+                            <asp:TextBox ID="txtAddress1" runat="server" Width="200px" MaxLength="100" TabIndex="545"></asp:TextBox>
                         </td>
 
                     </tr>
@@ -245,7 +245,7 @@
                             <asp:Label ID="label27" runat="server">ADDRESS2</asp:Label>:
                         </td>
                         <td style="white-space: nowrap;" align="left">
-                            <asp:TextBox ID="txtAddress2" runat="server" Width="200px" MaxLength="50" TabIndex="547"></asp:TextBox>
+                            <asp:TextBox ID="txtAddress2" runat="server" Width="200px" MaxLength="100" TabIndex="547"></asp:TextBox>
                         </td>
 
                     </tr>

@@ -1,7 +1,7 @@
 ﻿<%@ Control Language="vb" AutoEventWireup="false" CodeBehind="UserControlDeliverySlot.ascx.vb" Inherits="Assurant.ElitaPlus.ElitaPlusWebApp.UserControlDeliverySlot" %>
 <tr runat="server" id="trCourierProduct">
     <td align="right" nowrap="nowrap">
-        <asp:Label runat="server" ID="lblCourierProduct" text="COURIER_PRODUCT"/> :
+        <asp:Label runat="server" ID="lblCourierProduct">COURIER_PRODUCT</asp:Label>:
     </td>
     <td align="left" nowrap="nowrap">
         <asp:DropDownList ID="ddlCourierProduct" runat="server" SkinID="MediumDropDown" AutoPostBack="true" OnSelectedIndexChanged="ddlCourierProduct_SelectedIndexChanged">
@@ -17,7 +17,7 @@
 </tr>
 <tr>
     <td align="right" nowrap="nowrap">
-        <asp:Label runat="server" ID="lblAvailableDeliveryTiming" text="AVAILABLE_DELIVERY_TIMING"/> :
+        <asp:Label runat="server" ID="lblAvailableDeliveryTiming">AVAILABLE_DELIVERY_TIMING</asp:Label>:
     </td>
     <td align="left" nowrap="nowrap">
         <asp:Label runat="server" ID="lblAvailableDeliveryTimingData" />
@@ -25,7 +25,7 @@
 </tr>
 <tr>
     <td align="right" nowrap="nowrap">
-        <asp:Label runat="server" ID="lblDesiredDate" Text="DESIRED_DELIVERY_DATE"/> :
+        <asp:Label runat="server" ID="lblDesiredDate">DESIRED_DELIVERY_DATE</asp:Label>:
     </td>
     <td align="left" nowrap="nowrap">
         <asp:TextBox ID="txtDeliveryDate" runat="server" AutoPostBack ="true" OnTextChanged="txtDeliveryDate_TextChanged"></asp:TextBox>
@@ -34,7 +34,7 @@
 </tr>
 <tr runat="server" id="trDeliverySlot">
     <td align="right" nowrap="nowrap">
-        <asp:Label runat="server" ID="lblDeliverySlot" Text="DESIRED_DELIVERY_TIME"/> :
+        <asp:Label runat="server" ID="lblDeliverySlot">DESIRED_DELIVERY_TIME</asp:Label>:
     </td>
     <td align="left" nowrap="nowrap">
         <asp:DropDownList ID="ddlDeliverySlots" runat="server" SkinID="SmallDropDown">

@@ -619,7 +619,7 @@ Public Class UserControlQuestion
                                 End Try
                                 questionObject.Answer = numberValue
                             Else
-                                If(answer.Length > questionObject.Length)
+                                If(Not String.IsNullOrWhiteSpace(questionObject.Length) AndAlso answer.Length > questionObject.Length)
                                     ErrTextAnswerLength.AppendLine(questionObject.Text & " </br>")
                                 else
                                     Dim txtValue As TextAnswer = New TextAnswer()

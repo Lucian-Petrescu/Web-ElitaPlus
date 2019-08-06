@@ -69,33 +69,6 @@ Namespace Certificates
         Protected WithEvents PanelHolderDynamicSearchCriteria As Global.System.Web.UI.WebControls.PlaceHolder
         
         '''<summary>
-        '''lblDateOfBirth control.
-        '''</summary>
-        '''<remarks>
-        '''Auto-generated field.
-        '''To modify move field declaration from designer file to code-behind file.
-        '''</remarks>
-        Protected WithEvents lblDateOfBirth As Global.System.Web.UI.WebControls.Label
-        
-        '''<summary>
-        '''txtDateOfBirth control.
-        '''</summary>
-        '''<remarks>
-        '''Auto-generated field.
-        '''To modify move field declaration from designer file to code-behind file.
-        '''</remarks>
-        Protected WithEvents txtDateOfBirth As Global.System.Web.UI.WebControls.TextBox
-        
-        '''<summary>
-        '''btnDateOfBirth control.
-        '''</summary>
-        '''<remarks>
-        '''Auto-generated field.
-        '''To modify move field declaration from designer file to code-behind file.
-        '''</remarks>
-        Protected WithEvents btnDateOfBirth As Global.System.Web.UI.WebControls.ImageButton
-        
-        '''<summary>
         '''checkboxAdditionalSearchCriteria control.
         '''</summary>
         '''<remarks>

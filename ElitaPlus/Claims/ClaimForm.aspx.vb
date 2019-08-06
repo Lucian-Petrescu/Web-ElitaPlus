@@ -33,6 +33,7 @@ Partial Class ClaimForm
     Private Const ACTIVE_STATUS As String = "A"
     Public Const NULL_VALUE As String = "0"
     Public Const SELECT_ACTION_COMMAND As String = "SelectAction"
+    Public Const GRID_COL_SERVICE_CENTER_NAME_IDX As Integer = 1
     Public Const GRID_COL_AMOUNT_IDX As Integer = 2
     Public Const GRID_COL_STATUS_CODE_IDX As Integer = 4
     Public params As New ArrayList
@@ -3767,6 +3768,11 @@ Partial Class ClaimForm
                     btnEditItem.CommandArgument = claimAuth.Id.ToString
                     btnEditItem.CommandName = SELECT_ACTION_COMMAND
                     btnEditItem.Text = claimAuth.AuthorizationNumber
+                End If
+
+                ''''supress the service center name if the authorization type is not Purchase Order
+                If (Not string.IsNullOrWhiteSpace(claimAuth.AuthTypeXcd) AndAlso claimAuth.AuthTypeXcd <> "AUTH_TYPE-PURCHASE_ORDER")
+                    e.Row.Cells(GRID_COL_SERVICE_CENTER_NAME_IDX).Text = "NA"
                 End If
 
                 ' Convert short status codes to full description with css

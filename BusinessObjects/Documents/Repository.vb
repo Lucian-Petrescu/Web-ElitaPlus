@@ -156,7 +156,7 @@ Namespace Documents
             End Set
         End Property
 
-        <ValueMandatory(""), ValidStringLength("", Max:=50)>
+        <ValidStringLength("", Max:=50)>
         Public Property RepositoryTypeXcd() As String
             Get
                 CheckDeleted()

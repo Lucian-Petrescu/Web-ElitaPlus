@@ -1178,16 +1178,26 @@ Namespace Certificates
                 End If
 
                 If ReturnFromUrl.Contains(ClaimRecordingForm.Url2) Then
-                    Dim retObj As ClaimRecordingForm.ReturnType = CType(ReturnPar, ClaimRecordingForm.ReturnType)
-                    Select Case retObj.LastOperation
-                        Case ElitaPlusPage.DetailPageCommand.Cancel
-                            If Not retObj Is Nothing Then
-                                Me.State.MyBO = New Certificate(retObj.CertificateId)
-                                Me.State.IsCallerAuthenticated = retObj.IsCallerAuthenticated
-                            End If
-                    End Select
+                    If TypeOf ReturnPar Is ClaimRecordingForm.ReturnType Then
+                        Dim retObjCRF As ClaimRecordingForm.ReturnType = CType(ReturnPar, ClaimRecordingForm.ReturnType)
+                        Select Case retObjCRF.LastOperation
+                            Case ElitaPlusPage.DetailPageCommand.Cancel
+                                If Not retObjCRF Is Nothing Then
+                                    Me.State.MyBO = New Certificate(retObjCRF.CertificateId)
+                                    Me.State.IsCallerAuthenticated = retObjCRF.IsCallerAuthenticated
+                                End If
+                        End Select
+                    ElseIf TypeOf ReturnPar Is ClaimForm.ReturnType Then
+                        Dim retObjCF As ClaimForm.ReturnType = CType(ReturnPar, ClaimForm.ReturnType)
+                        Select Case retObjCF.LastOperation
+                            Case ElitaPlusPage.DetailPageCommand.Back
+                                If Not retObjCF Is Nothing Then
+                                    Me.State.MyBO = New Certificate(retObjCF.EditingBo.CertificateId)
+                                    Me.State.IsCallerAuthenticated = retObjCF.IsCallerAuthenticated
+                                End If
+                        End Select
+                    End If
                 Else
-
                     Dim retObj As ClaimForm.ReturnType = CType(ReturnPar, ClaimForm.ReturnType)
                     Select Case retObj.LastOperation
                         Case ElitaPlusPage.DetailPageCommand.Back
@@ -2505,7 +2515,6 @@ Namespace Certificates
                 Me.PopulateControlFromBOProperty(Me.moBillingDateText, .DatePaidFor)
 
                 Me.PopulateControlFromBOProperty(Me.moVehicleLicenseTagText, .VehicleLicenseTag)
-                Me.PopulateControlFromBOProperty(Me.moDateOfBirthText, .DateOfBirth)
 
                 'Added for Req-703 - Start
                 Me.PopulateControlFromBOProperty(Me.moCapSeriesText, .CapitalizationSeries)
@@ -2653,12 +2662,23 @@ Namespace Certificates
                     Me.State.ReqCustomerLegalInfoId = (New Company(Me.State.MyBO.CompanyId).ReqCustomerLegalInfoId)
                 End If
 
+                Dim IsDisplayMaskFlag As Boolean = Me.State.MyBO.Dealer.DisplayDobXcd.ToUpper().Equals("YESNO-Y")
                 If Me.State.ReqCustomerLegalInfoId.Equals(LookupListNew.GetIdFromCode(LookupListCache.LK_CLITYP, "0")) Then '0= None
                     Me.moCustLegalInfo1.Attributes("style") = "display: none"
-                    Me.moCustLegalInfo2.Attributes("style") = "display: none"
+                    ControlMgr.SetVisibleControl(Me, moIncomeRangeLabel, False)   'Me.moCustLegalInfo2.Attributes("style") = "display: none"
+                    ControlMgr.SetVisibleControl(Me, moIncomeRangeText, False)
+                    ControlMgr.SetVisibleControl(Me, cboIncomeRangeId, False)
+
+                    If (Not IsDisplayMaskFlag) Then
+                        ControlMgr.SetVisibleControl(Me, moDateOfBirthLabel, False)
+                        ControlMgr.SetVisibleControl(Me, moDateOfBirthText, False)
+                        ControlMgr.SetVisibleControl(Me, BtnDateOfBirth, False)
+                        ControlMgr.SetVisibleControl(Me, tdDateOfBirthCalTag, False)
+                    End If
+
                 Else
-                    'populate the dropdowns
-                    PopulateIncomeRangeDropdown(cboIncomeRangeId)
+                        'populate the dropdowns
+                        PopulateIncomeRangeDropdown(cboIncomeRangeId)
                     PopulatePoliticallyExposedDropdown(cboPoliticallyExposedId)
                     Me.PopulateControlFromBOProperty(Me.moOccupationText, .Occupation)
                     Me.SetSelectedItem(Me.cboPoliticallyExposedId, .PoliticallyExposedId)
@@ -2779,30 +2799,32 @@ Namespace Certificates
                 End If
 
                 Me.PopulateControlFromBOProperty(Me.moDateOfBirthText, .DateOfBirth)
-                Dim IsDobDisplay As Boolean = Me.State.MyBO.Dealer.DisplayDobXcd.ToUpper().Equals("YESNO-Y")
-                Dim IsCustomerLglInfo As Boolean = Me.State.ReqCustomerLegalInfoId.Equals(LookupListNew.GetIdFromCode(LookupListCache.LK_CLITYP, "0"))
-
-                If (Not IsDobDisplay And IsCustomerLglInfo) Then
-                    ControlMgr.SetVisibleControl(Me, moDateOfBirthLabel, False)
-                    ControlMgr.SetVisibleControl(Me, moDateOfBirthText, False)
-                    ControlMgr.SetVisibleControl(Me, BtnDateOfBirth, False)
-                    ControlMgr.SetVisibleControl(Me, tdDateOfBirthCalTag, False)
-
-                End If
-
-                If (Not IsDobDisplay And Not IsCustomerLglInfo) Then
-                    If Not (Me.State.IsEdit) Then
-                        Me.moDateOfBirthText.Text = Me.State.MyBO.MaskDatePart(Me.moDateOfBirthText.Text, True)
-                    End If
-                End If
-
-                If (IsDobDisplay) Then
-                    If Not (Me.State.IsEdit) Then
-                        Me.moDateOfBirthText.Text = Me.State.MyBO.MaskDatePart(Me.moDateOfBirthText.Text, False)
-                    End If
-                End If
+                DisplayMaskDob()
 
             End With
+        End Sub
+        Protected Sub DisplayMaskDob()
+            Dim IsDobDisplay As Boolean = Me.State.MyBO.Dealer.DisplayDobXcd.ToUpper().Equals("YESNO-Y")
+            Dim IsCustomerLglInfo As Boolean = Me.State.ReqCustomerLegalInfoId.Equals(LookupListNew.GetIdFromCode(LookupListCache.LK_CLITYP, "0"))
+
+            If (Not IsDobDisplay And IsCustomerLglInfo) Then
+                ControlMgr.SetVisibleControl(Me, moDateOfBirthLabel, False)
+                ControlMgr.SetVisibleControl(Me, moDateOfBirthText, False)
+                ControlMgr.SetVisibleControl(Me, BtnDateOfBirth, False)
+                ControlMgr.SetVisibleControl(Me, tdDateOfBirthCalTag, False)
+            End If
+
+            If (Not IsDobDisplay And Not IsCustomerLglInfo) Then
+                If Not (Me.State.IsEdit) Then
+                    Me.moDateOfBirthText.Text = Me.State.MyBO.MaskDatePart(Me.moDateOfBirthText.Text, True)
+                End If
+            End If
+
+            If (IsDobDisplay) Then
+                If Not (Me.State.IsEdit) Then
+                    Me.moDateOfBirthText.Text = Me.State.MyBO.MaskDatePart(Me.moDateOfBirthText.Text, False)
+                End If
+            End If
         End Sub
 
         Protected Sub PopulateCanceDueDateFromForm()
@@ -3013,7 +3035,10 @@ Namespace Certificates
 
                 'DEF-21659 - START
                 'If Not .DateOfBirth Is Nothing Then
-                Me.PopulateBOProperty(Me.State.MyBO, "DateOfBirth", Me.moDateOfBirthText)
+                If (Me.State.IsEdit) Then
+                    Me.PopulateBOProperty(Me.State.MyBO, "DateOfBirth", Me.moDateOfBirthText)
+                End If
+
                 'End If
                 'DEF-21659 - END
 
@@ -4631,6 +4656,7 @@ Namespace Certificates
                     Me.MasterPage.MessageController.AddSuccess(Message.MSG_RECORD_NOT_SAVED, True)
                     Me.EnableDisableFields()
                 End If
+                DisplayMaskDob()
             Catch ex As DataNotFoundException
                 Me.MasterPage.MessageController.AddError(ex.Message)
                 Me.State.IsEdit = True
