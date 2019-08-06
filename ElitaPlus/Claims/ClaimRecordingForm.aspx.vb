@@ -87,7 +87,7 @@ Public Class ClaimRecordingForm
 
         Public DeliveryDate As Nullable(Of Date)
         Public DefaultDeliveryDay As DeliveryDay
-        Public DeliverySlotTimeSpan As Nullable(Of TimeSpan)
+        Public DeliverySlotTimeSpan As TimeSpan
 
 #Region "SubmitWsBaseClaimRecordingResponse"
         Private _mSubmitWsBaseClaimRecordingResponse As BaseClaimRecordingResponse = Nothing
@@ -2402,7 +2402,7 @@ Public Class ClaimRecordingForm
 
                         State.DeliveryDate = ucDeliverySlots.DeliveryDate
                         State.DefaultDeliveryDay = ucDeliverySlots.DefaultDeliveryDay
-                        State.DeliverySlotTimeSpan = ucDeliverySlots.DeliverySlotTimeSpan
+                        State.DeliverySlotTimeSpan = If(ucDeliverySlots.DeliverySlotTimeSpan Is Nothing, TimeSpan.Zero, ucDeliverySlots.DeliverySlotTimeSpan)
 
                         If lOption.DeliveryOptions.DesiredDeliveryDateMandatory AndAlso Not selectedDeliveryDate.HasValue Then
                             MasterPage.MessageController.AddError(Message.MSG_ERR_DELIVERY_DATE_MANDATORY, True)
