@@ -5,6 +5,7 @@ Imports Assurant.Elita.ClientIntegration.Headers
 Imports System.Collections.Generic
 Imports System.Threading
 Imports System.Globalization
+Imports System.Net
 
 Public Class UserControlDeliverySlot
     Inherits UserControl
@@ -36,15 +37,33 @@ Public Class UserControlDeliverySlot
             State.DeliveryDateSelected = value
         End Set
     End Property
+
+    Public ReadOnly Property DefaultDeliveryDay As DeliveryDay
+        Get
+            Return State.DefaultDeliveryDay
+        End Get
+    End Property
+
     Public ReadOnly Property DeliverySlot() As String
         Get
             If ddlDeliverySlots.SelectedIndex <> -1 Then
-                Return ddlDeliverySlots.SelectedValue.ToString
+                Return ddlDeliverySlots.SelectedItem.Value
             Else
                 Return String.Empty
             End If
         End Get
     End Property
+
+    Public ReadOnly Property DeliverySlotTimeSpan As Nullable(Of TimeSpan)
+        Get
+            If State.SelectedDeliveryDay IsNot Nothing Then
+                Return State.SelectedDeliveryDay.DeliverySlots.FirstOrDefault(Function(s) s.Sequence = If(String.IsNullOrWhiteSpace(DeliverySlot), 0, Convert.ToInt32(DeliverySlot)))?.BeginTime
+            Else
+                Return Nothing
+            End If
+        End Get
+    End Property
+
 
     Public Property CountryCode() As String
         Get
@@ -100,8 +119,10 @@ Public Class UserControlDeliverySlot
         Public CourierProductCode as string
         Public DeliveryAddress as DeliveryAddressInfo
         Public DeliveryDateList As DeliveryEstimate()
+        Public SelectedDeliveryDay As DeliveryDay
+        Public DefaultDeliveryDay As DeliveryDay
         Public DeliveryDateSelected As Nullable(Of Date)
-        Public CurrentEstimate as DeliveryEstimate
+        Public CurrentEstimate As DeliveryEstimate
         Public EnableNotSepecifyCheck as Boolean
     End Class
 
@@ -183,6 +204,8 @@ Public Class UserControlDeliverySlot
             If ValidateSetDeliveryDate(txtDeliveryDate.Text) Then
                 If State.DeliveryDateList IsNot Nothing AndAlso State.DeliveryDateList.Length > 0 Then
                     Dim delDay As DeliveryDay = State.CurrentEstimate.AvailableDeliveryDays.FirstOrDefault(Function(q) q.DeliveryDate.Date = State.DeliveryDateSelected)
+                    State.DefaultDeliveryDay = State.CurrentEstimate.AvailableDeliveryDays.FirstOrDefault()
+                    State.SelectedDeliveryDay = delDay
 
                     If delDay IsNot Nothing AndAlso delDay.DeliverySlots IsNot Nothing AndAlso delDay.DeliverySlots.Length > 0 Then
                         Dim deliverySlots As DeliverySlot() = delDay.DeliverySlots()
@@ -241,6 +264,7 @@ Public Class UserControlDeliverySlot
 
         'client.ClientCredentials.UserName.UserName = "InternalUsers\os0iej"
         'client.ClientCredentials.UserName.Password = "XXXX"
+
         Return client
     End Function
 
