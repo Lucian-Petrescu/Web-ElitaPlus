@@ -8,6 +8,7 @@ Imports Assurant.Elita.CommonConfiguration.DataElements
 Imports Assurant.Elita.Web.Forms
 Imports System.Threading
 Imports Microsoft.Web.Services3.Referral
+Imports Assurant.ElitaPlus.Common
 
 Namespace Tables
 
@@ -406,6 +407,7 @@ Namespace Tables
         Private Const PRODUCT_EQUIPMENT_VALIDATION_PROPERTY As String = "ProductEquipmentValidation"
 
         Private Const FulfillmentReimThresholdProperty As String = "FullillmentReimburesementThreshold"
+        Private Const INTEGRITY_CONSTRAINT_VIOLATION_MSG As String = "Integrity Constraint Violation"
 
 
 
@@ -2109,11 +2111,17 @@ Namespace Tables
                     .Delete()
                     .Save()
                 End With
+
             Catch ex As Exception
-                Me.MasterPage.MessageController.AddError(PRODUCTCODE_FORM002)
-                Me.MasterPage.MessageController.AddError(ex.Message, False)
-                Me.MasterPage.MessageController.Show()
+                If ex.Message = INTEGRITY_CONSTRAINT_VIOLATION_MSG Then
+                    Me.MasterPage.MessageController.AddError(ErrorCodes.DB_INTEGRITY_CONSTRAINT_VIOLATED, True)
+                    TheProductCode.RejectChanges()
+                Else
+                    Me.MasterPage.MessageController.AddError(PRODUCTCODE_FORM002)
+                    Me.MasterPage.MessageController.AddError(ex.Message, False)
+                End If
                 bIsOk = False
+                Me.MasterPage.MessageController.Show()
             End Try
             Return bIsOk
         End Function
