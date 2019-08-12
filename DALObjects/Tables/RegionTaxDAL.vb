@@ -16,6 +16,8 @@ Public Class RegionTaxDAL
     Public Const COL_NAME_EXPIRATION_DATE As String = "expiration_date"
     Public Const COL_NAME_DESCRIPTION As String = "description"
     Public Const COL_NAME_PRODUCT_TAX_TYPE_ID As String = "product_tax_type_id"
+    Public Const COL_NAME_COMPANY_TYPE_XCD As String = "company_type_xcd"
+
 
     Private Const COL_NAME_RECORDCOUNT As String = "RECORD_COUNT"
 

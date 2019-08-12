@@ -86,15 +86,6 @@ Partial Public Class RegionTaxes
     Protected WithEvents Label66 As Global.System.Web.UI.WebControls.Label
     
     '''<summary>
-    '''Label67 control.
-    '''</summary>
-    '''<remarks>
-    '''Auto-generated field.
-    '''To modify move field declaration from designer file to code-behind file.
-    '''</remarks>
-    Protected WithEvents Label67 As Global.System.Web.UI.WebControls.Label
-    
-    '''<summary>
     '''lblCompanyType control.
     '''</summary>
     '''<remarks>

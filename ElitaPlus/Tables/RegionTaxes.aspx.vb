@@ -1,5 +1,9 @@
 Imports System.Text
 Imports System.Globalization
+Imports Assurant.Elita.CommonConfiguration
+Imports Assurant.Elita.CommonConfiguration.DataElements
+Imports System.Threading
+Imports Assurant.ElitaPlus.Security
 
 Partial Class RegionTaxes
     Inherits ElitaPlusPage
@@ -50,7 +54,7 @@ Partial Class RegionTaxes
 #Region "Constants "
     Public Const URL As String = "RegionTaxes.aspx"
     Public Const DEALER_ID_PROPERTY As String = "DealerId"
-    Public Const COMPANY_TYPE_ID_PROPERTY As String = "CompanyTypeId"
+    Public Const COMPANY_TYPE_ID_PROPERTY As String = "CompanyTypeXCD"
 #End Region
 
 #Region "Page State"
@@ -75,7 +79,7 @@ Partial Class RegionTaxes
         Public DealerDesc As String
         Public Dealer As String
 
-        Public CompanyTypeXCD As Guid
+        Public CompanyTypeXCD As String
         Public CompanyType As String
 
     End Class
@@ -199,13 +203,11 @@ Partial Class RegionTaxes
 
             If Not Me.State.CompanyType.IsNullOrEmpty(Me.State.CompanyType) Then
                 Me.Label66.Visible = True
-                Me.Label67.Visible = True
                 lblCompanyType.Visible = True
                 lblCompanyType.Text = Me.State.CompanyType
 
             Else
                 Me.Label66.Visible = False
-                Me.Label67.Visible = False
                 lblCompanyType.Visible = False
             End If
 
@@ -236,8 +238,18 @@ Partial Class RegionTaxes
                 Me.State.DealerID = objParam.DealerID
                 Me.State.DealerDesc = objParam.DealerDesc
                 Me.State.Dealer = objParam.Dealer
-                Me.State.CompanyTypeXCD = objParam.CompanyTypeId
                 Me.State.CompanyType = objParam.CompanyType
+
+                ' getting Contry Type extnded code from  Country type GUID
+                Dim listcontext As ListContext = New ListContext()
+                Dim ExtendedcountryTypes As ListItem() = CommonConfigManager.Current.ListManager.GetList("COTYP", Thread.CurrentPrincipal.GetLanguageCode(), listcontext)
+
+                Dim filteredExtendedCountryType As ListItem() = (From x In ExtendedcountryTypes
+                                                                 Where x.ListItemId = objParam.CompanyTypeId
+                                                                 Select x).ToArray()
+                If filteredExtendedCountryType.Any Then
+                    Me.State.CompanyTypeXCD = filteredExtendedCountryType(0).ExtendedCode
+                End If
 
                 If objParam.RegionTaxID = Nothing Or objParam.RegionTaxID = Guid.Empty Then
                     'new region tax, with regionid and taxtype id from countrytax form
@@ -249,12 +261,14 @@ Partial Class RegionTaxes
                     Me.State.MyBO.Description = strTemp.Substring(0, Math.Min(strTemp.Length, 30))
                     Me.State.MyBO.DealerId = objParam.DealerID
                     Me.State.MyBO.SetEffectiveExpirationDates()
-                    Me.State.MyBO.CompanyTypeXCD = objParam.CompanyTypeId
-
+                    Me.State.MyBO.CompanyTypeXCD = Me.State.CompanyTypeXCD
                 Else
                     'existing region tax
                     Me.State.MyBO = New RegionTax(objParam.RegionTaxID)
                 End If
+
+
+
             End If
         Catch ex As Exception
             Me.HandleErrors(ex, Me.MasterPage.MessageController)
@@ -426,7 +440,7 @@ Partial Class RegionTaxes
         Me.PopulateBOProperty(objBO, "EffectiveDate", Me.txtEffectiveDate)
         Me.PopulateBOProperty(objBO, "ExpirationDate", Me.txtExpirationDate)
         Me.PopulateBOProperty(objBO, "DealerId", Me.State.DealerID)
-        Me.PopulateBOProperty(objBO, "CompanyTypeId", Me.State.CompanyTypeXCD)
+        Me.PopulateBOProperty(objBO, COMPANY_TYPE_ID_PROPERTY, Me.State.CompanyTypeXCD)
 
         LoadTaxDetailUserControls(False)
 

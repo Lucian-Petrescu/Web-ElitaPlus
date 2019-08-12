@@ -41,9 +41,8 @@
         </tr>
         <tr>
             <td nowrap="nowrap" align="left" class="borderLeft">
-                <asp:Label ID="Label66" runat="server">COMPANY TYPE:</asp:Label>: 
- 		        <asp:Label ID="Label67" runat="server">TYPE:</asp:Label>: 
-                <asp:Label ID="lblCompanyType" runat="server" ForeColor="Black"></asp:Label>
+                <asp:Label ID="Label66" runat="server">COMPANY_TYPE</asp:Label>: 
+ 		        <asp:Label ID="lblCompanyType" runat="server" ForeColor="Black"></asp:Label>
             </td>  
         </tr>
     </table>

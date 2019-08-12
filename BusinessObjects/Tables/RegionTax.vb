@@ -275,18 +275,18 @@ Public Class RegionTax
             Return _detailRecords
         End Get
     End Property
-    Public Property CompanyTypeXCD() As Guid
+    Public Property CompanyTypeXCD() As String
         Get
             CheckDeleted()
-            If Row(CountryTaxDAL.COL_NAME_COMPANY_TYPE_ID) Is DBNull.Value Then
+            If Row(RegionTaxDAL.COL_NAME_COMPANY_TYPE_XCD) Is DBNull.Value Then
                 Return Nothing
             Else
-                Return New Guid(CType(Row(CountryTaxDAL.COL_NAME_COMPANY_TYPE_ID), Byte()))
+                Return CType(Row(RegionTaxDAL.COL_NAME_COMPANY_TYPE_XCD), String)
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set(ByVal Value As String)
             CheckDeleted()
-            Me.SetValue(CountryTaxDAL.COL_NAME_COMPANY_TYPE_ID, Value)
+            Me.SetValue(RegionTaxDAL.COL_NAME_COMPANY_TYPE_XCD, Value)
         End Set
     End Property
 
@@ -397,6 +397,7 @@ Public Class RegionTax
             Me.Description = .Description
             Me.ProductTaxTypeId = .ProductTaxTypeId
             Me.DealerId = .DealerId
+            Me.CompanyTypeXCD = CompanyTypeXCD
             Me._detailRecords.Clear()
             For Each oRTD In .RegionTaxDetailList
                 Me.RegionTaxDetail(oRTD.TaxBucket) = oRTD
