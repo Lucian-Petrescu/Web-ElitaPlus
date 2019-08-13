@@ -8,7 +8,7 @@ Imports Assurant.Elita.CommonConfiguration.DataElements
 Imports Assurant.Elita.Web.Forms
 Imports System.Threading
 Imports Microsoft.Web.Services3.Referral
-Imports Assurant.ElitaPlus.Common
+
 
 Namespace Tables
 
@@ -142,7 +142,7 @@ Namespace Tables
             Public CompanyCode As String
             Public DealerCode As String
             Public ProductCodeDetailId As Guid = Guid.Empty
-            Public MyProductChildBO As ProductCodeDetail            
+            Public MyProductChildBO As ProductCodeDetail
 
             Public ProductEquipmentId As Guid = Guid.Empty
             Public ProductBenefitsId As Guid = Guid.Empty
@@ -2114,7 +2114,7 @@ Namespace Tables
 
             Catch ex As Exception
                 If ex.Message = INTEGRITY_CONSTRAINT_VIOLATION_MSG Then
-                    Me.MasterPage.MessageController.AddError(ErrorCodes.DB_INTEGRITY_CONSTRAINT_VIOLATED, True)
+                    Me.MasterPage.MessageController.AddError(Assurant.ElitaPlus.Common.ErrorCodes.DB_INTEGRITY_CONSTRAINT_VIOLATED, True)
                     TheProductCode.RejectChanges()
                 Else
                     Me.MasterPage.MessageController.AddError(PRODUCTCODE_FORM002)
