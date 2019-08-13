@@ -318,6 +318,16 @@ Public Class Reconciliation
         End Try
     End Function
 
+    Public Shared Function ReloadReconcillation(ByVal dealerId As Guid, ByVal firstDayOfMonth As String, ByVal userName As String) As Boolean
+        Try
+
+            Dim dal As New ReconciliationDAL
+            Return dal.ReloadReconcillation(dealerId, firstDayOfMonth, userName)
+
+        Catch ex As Assurant.ElitaPlus.DALObjects.DataBaseAccessException
+            Throw New DataBaseAccessException(ex.ErrorType, ex)
+        End Try
+    End Function
 #End Region
 
 End Class

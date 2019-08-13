@@ -99,6 +99,7 @@ Public Class ReconciliationForm
                 TranslateGridHeader(GridViewMHP)
                 TranslateGridHeader(GridViewBLGS)
                 BtnOverRideRecon.Enabled = False
+                BtnReRunRecon.Enabled = False
                 divDataContainer.Visible = False
                 cboPageSize.SelectedValue = CType(Me.State.PageSize, String)
                 'cboResPageSize.SelectedValue = CType(Me.State.PageSize, String)
@@ -208,11 +209,13 @@ Public Class ReconciliationForm
 
                 If State.searchActiveDV.Count = 0 Then
                     BtnOverRideRecon.Enabled = False
+                    BtnReRunRecon.Enabled = False
                     ControlMgr.SetVisibleControl(Me, Grid, False)
                 Else
                     Me.Grid.DataSource = Me.State.searchActiveDV
                     ControlMgr.SetVisibleControl(Me, Grid, True)
                     BtnOverRideRecon.Enabled = True
+                    ControlMgr.SetVisibleControl(Me, BtnReRunRecon, True)
                 End If
 
                 Me.State.PageIndex = Me.Grid.PageIndex
@@ -248,11 +251,13 @@ Public Class ReconciliationForm
 
                 If State.searchActiveDV.Count = 0 Then
                     BtnOverRideRecon.Enabled = False
+                    BtnReRunRecon.Enabled = False
                     ControlMgr.SetVisibleControl(Me, GridViewMHP, False)
                 Else
                     Me.GridViewMHP.DataSource = Me.State.searchActiveDV
                     ControlMgr.SetVisibleControl(Me, GridViewMHP, True)
                     BtnOverRideRecon.Enabled = True
+                    ControlMgr.SetVisibleControl(Me, BtnReRunRecon, True)
                 End If
 
                 Me.State.PageIndex = Me.GridViewMHP.PageIndex
@@ -289,11 +294,13 @@ Public Class ReconciliationForm
 
                 If State.searchActiveDV.Count = 0 Then
                     BtnOverRideRecon.Enabled = False
+                    BtnReRunRecon.Enabled = False
                     ControlMgr.SetVisibleControl(Me, GridViewBLGS, False)
                 Else
                     Me.GridViewBLGS.DataSource = Me.State.searchActiveDV
                     ControlMgr.SetVisibleControl(Me, GridViewBLGS, True)
                     BtnOverRideRecon.Enabled = True
+                    ControlMgr.SetVisibleControl(Me, BtnReRunRecon, True)
                 End If
 
                 Me.State.PageIndex = Me.GridViewBLGS.PageIndex
@@ -336,6 +343,7 @@ Public Class ReconciliationForm
                 ControlMgr.SetVisibleControl(Me, GridViewBLGS, False)
                 ControlMgr.SetVisibleControl(Me, Grid, False)
                 BtnOverRideRecon.Enabled = False
+                BtnReRunRecon.Enabled = False
                 Return False
             End If
 
@@ -621,13 +629,29 @@ Public Class ReconciliationForm
     Private Sub BtnOverRideRecon_Click(ByVal sender As Object, ByVal e As System.EventArgs) Handles BtnOverRideRecon.Click
         Dim Result As Boolean
         Try
-            Result = Reconciliation.OverRideReconciliation(Me.State.DealerIdInSearch, Me.State.firstDayOfMonth, _
+            Result = Reconciliation.OverRideReconciliation(Me.State.DealerIdInSearch, Me.State.firstDayOfMonth,
                                                            Me.State.lastDayOfMonth, ElitaPlusIdentity.Current.ActiveUser.UserName)
 
             If Result Then
                 Me.MasterPage.MessageController.AddSuccess(Message.MSG_RECON_OVERRIDEN_SUCCESSFULLY, True)
             Else
                 Me.MasterPage.MessageController.AddErrorAndShow(Message.MSG_COULD_NOT_OVERRIDE_RECON, True)
+            End If
+
+        Catch ex As Exception
+            Me.HandleErrors(ex, Me.MasterPage.MessageController)
+        End Try
+    End Sub
+
+    Private Sub BtnReRunRecon_Click(ByVal sender As Object, ByVal e As System.EventArgs) Handles BtnReRunRecon.Click
+        Dim Result As Boolean
+        Try
+            Result = Reconciliation.ReloadReconcillation(Me.State.DealerIdInSearch, Me.State.firstDayOfMonth, ElitaPlusIdentity.Current.ActiveUser.UserName)
+
+            If Result Then
+                Me.MasterPage.MessageController.AddSuccess(Message.MSG_RECONCILLATION_REQUEUE_SUCCESS, True)
+            Else
+                Me.MasterPage.MessageController.AddErrorAndShow(Message.MSG_RECONCILLATION_REQUEUE_FAILED, True)
             End If
 
         Catch ex As Exception
