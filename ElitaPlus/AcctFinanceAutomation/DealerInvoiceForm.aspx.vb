@@ -102,6 +102,24 @@ Partial Class DealerInvoiceForm
     '        Me.HandleErrors(ex, Me.MasterPage.MessageController)
     '    End Try
     'End Sub
+
+
+    Private Sub BtnReloadInvoice_Click(ByVal sender As Object, ByVal e As System.EventArgs) Handles BtnReloadInvoice.Click
+        Dim Result As Boolean
+        Try
+            Result = AfaInvoiceData.ReRunInvoice(Me.GetSelectedItem(ddlDealer), Me.GetSelectedValue(ddlAcctPeriodYear), ElitaPlusIdentity.Current.ActiveUser.UserName)
+
+            If Result Then
+                Me.MasterPage.MessageController.AddSuccess(Message.MSG_INVOICE_REQUEUE_SUCCESS, True)
+            Else
+                Me.MasterPage.MessageController.AddErrorAndShow(Message.MSG_INVOICE_REQUEUE_FAILED, True)
+            End If
+
+        Catch ex As Exception
+            Me.HandleErrors(ex, Me.MasterPage.MessageController)
+        End Try
+    End Sub
+
 #End Region
 
 #Region "Method Logic"

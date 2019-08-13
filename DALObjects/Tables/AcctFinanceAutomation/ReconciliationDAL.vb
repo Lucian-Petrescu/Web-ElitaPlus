@@ -79,7 +79,7 @@ Public Class ReconciliationDAL
     End Function
 
     ' Execute Store Procedure
-    Public Function OverRideReconciliation(ByVal dealerId As Guid, ByVal firstDayOfMonth As String, ByVal lastDayOfMonth As String, _
+    Public Function OverRideReconciliation(ByVal dealerId As Guid, ByVal firstDayOfMonth As String, ByVal lastDayOfMonth As String,
                                            ByVal userName As String) As Boolean
 
         Dim inputParameters(3) As DBHelper.DBHelperParameter
@@ -98,7 +98,34 @@ Public Class ReconciliationDAL
             inputParameters(3) = New DBHelper.DBHelperParameter("pi_userName", userName)
         End If
 
-        Dim outputParameters() As DBHelper.DBHelperParameter = New DBHelper.DBHelperParameter() { _
+        Dim outputParameters() As DBHelper.DBHelperParameter = New DBHelper.DBHelperParameter() {
+                            New DBHelper.DBHelperParameter("po_Result", GetType(String))}
+
+        Try
+            ' Call DBHelper Store Procedure
+            DBHelper.ExecuteSp(selectStmt, inputParameters, outputParameters)
+            If CType(outputParameters(0).Value, String).Trim = "N" Then
+                Return False
+            ElseIf CType(outputParameters(0).Value, String).Trim = "Y" Then
+                Return True
+            End If
+
+        Catch ex As Exception
+            Throw New DataBaseAccessException(DataBaseAccessException.DatabaseAccessErrorType.ReadErr, ex)
+        End Try
+    End Function
+
+    ' Execute Store Procedure
+    Public Function ReloadReconcillation(ByVal dealerId As Guid, ByVal firstDayOfMonth As String, ByVal userName As String) As Boolean
+
+        Dim inputParameters(3) As DBHelper.DBHelperParameter
+        Dim selectStmt As String = Me.Config("/SQL/RELOAD_RECON")
+
+        inputParameters(0) = New DBHelper.DBHelperParameter("pi_dealer_id", dealerId.ToByteArray)
+        inputParameters(1) = New DBHelper.DBHelperParameter("pi_billingDtStart", firstDayOfMonth)
+        inputParameters(3) = New DBHelper.DBHelperParameter("pi_userName", userName)
+
+        Dim outputParameters() As DBHelper.DBHelperParameter = New DBHelper.DBHelperParameter() {
                             New DBHelper.DBHelperParameter("po_Result", GetType(String))}
 
         Try
