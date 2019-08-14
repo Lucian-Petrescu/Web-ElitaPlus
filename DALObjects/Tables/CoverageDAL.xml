@@ -47,7 +47,8 @@
         cov.is_reinsured_id,
         cov.inuseflag,
         cov.cov_claim_limit,
-        cov.liability_limit_per_incident
+        cov.liability_limit_per_incident,
+        tax_type_xcd
 			FROM elp_coverage cov, elp_dealer edealer, elp_product_code pc, 
 				 elp_item item, elp_risk_type risk
 			WHERE
@@ -192,7 +193,8 @@
         is_reinsured_id= :is_reinsured_id,
         inuseflag = :inuseflag,
         cov_claim_limit = :cov_claim_limit,
-        liability_limit_per_incident = :liability_limit_per_incident
+        liability_limit_per_incident = :liability_limit_per_incident,
+        tax_type_xcd = :tax_type_xcd
 			WHERE
 				coverage_id = :coverage_id
 		]]>
@@ -233,7 +235,8 @@
     is_reinsured_id,
     inuseflag,
     cov_claim_limit,
-    liability_limit_per_incident
+    liability_limit_per_incident,
+    tax_type_xcd
     )
     VALUES
     (
@@ -270,7 +273,8 @@
     :is_reinsured_id,
     :inuseflag,
     :cov_claim_limit,
-    :liability_limit_per_incident
+    :liability_limit_per_incident,
+    :tax_type_xcd
     )
   </INSERT>
 	<DELETE>

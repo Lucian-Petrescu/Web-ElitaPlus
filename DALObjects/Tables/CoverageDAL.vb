@@ -64,6 +64,7 @@ Public Class CoverageDAL
     Public Const COL_NAME_INUSEFLAG As String = "inuseflag"
     Public Const COL_NAME_COVERAGE_CLAIM_LIMIT As String = "cov_claim_limit"
     Public Const COL_NAME_PER_INCIDENT_LIABILITY_LIMIT_CAP As String = "liability_limit_per_incident"
+    Public Const COL_NAME_TAX_TYPE_XCD As String = "tax_type_XCD"
 #End Region
 
 #Region "Constructors"

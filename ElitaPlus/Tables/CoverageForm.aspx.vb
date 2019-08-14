@@ -60,6 +60,7 @@ Namespace Tables
             Public selectedRecoverDeviceId As Guid
             Public selectedClaimLimitCount As String
             Public selectedPerIncidentLiabilityLimitCap As String
+            Public selectedTaxTypeXCD As String
         End Class
 #End Region
 
@@ -169,6 +170,7 @@ Namespace Tables
         Private Const CLAIM_LIMIT_COUNT_PROPERTY As String = "CoverageClaimLimit"
 
         Public Const ConfigurationSuperUserRole As String = "CONSU"
+        Public Const TAX_TYPE_XCD As String = "tax_type_xcd"
 
 #End Region
 
@@ -749,6 +751,7 @@ Namespace Tables
             Me.State.selectedRecoverDeviceId = GetSelectedItem(moRecoverDeciveDrop)
             Me.State.selectedClaimLimitCount = Me.moClaimLimitCountText.Text
             Me.State.selectedPerIncidentLiabilityLimitCap = Me.moPerIncidentLiabilityLimitCapText.Text
+            Me.State.selectedTaxTypeXCD = GetSelectedValue(moTaxTypeDrop)
 
         End Sub
 
@@ -1087,6 +1090,7 @@ Namespace Tables
             Me.State.selectedCoverageLiabilityLimitPercent = Nothing
             Me.State.selectedRecoverDeviceId = Guid.Empty
             Me.State.selectedClaimLimitCount = Nothing
+            Me.State.selectedTaxTypeXCD = Nothing
         End Sub
 
         Private Sub btnNew_WRITE_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnNew_WRITE.Click
@@ -2261,6 +2265,7 @@ Namespace Tables
             PopulateCoverageDeductibleList()
             PopulateCoverageConseqDamageList()
             EnableUniqueFields()
+            PopulateTaxTypeCode()
         End Sub
 
         Private Sub PopulateDealer()
@@ -2495,6 +2500,34 @@ Namespace Tables
                 Else
                     BindSelectItem(TheCoverage.EarningCodeId.ToString, moEarningCodeDrop)
                 End If
+            Catch ex As Exception
+                Me.MasterPage.MessageController.AddError(COVERAGE_FORM002 & " " & ex.Message, True)
+            End Try
+        End Sub
+
+        Private Sub PopulateTaxTypeCode()
+            Try
+
+                moTaxTypeDrop.Populate(CommonConfigManager.Current.ListManager.GetList("TTYP", Thread.CurrentPrincipal.GetLanguageCode()), New PopulateOptions() With
+                 {
+                    .AddBlankItem = True,
+                    .ValueFunc = AddressOf .GetExtendedCode
+                })
+
+                If IsPostBack And Not Me.State.IsUndo Then
+                    ' JLR - Restore Presviously Selected Values
+                    BindSelectItem(Me.State.selectedTaxTypeXCD.ToString, moTaxTypeDrop)
+                    Me.State.IsUndo = False
+                Else
+
+                    If TheCoverage.TaxTypeXCD Is Nothing Then
+                        BindSelectItem(String.Empty, moTaxTypeDrop)
+                    Else
+
+                        BindSelectItem(TheCoverage.TaxTypeXCD.ToString, moTaxTypeDrop)
+                    End If
+                End If
+
             Catch ex As Exception
                 Me.MasterPage.MessageController.AddError(COVERAGE_FORM002 & " " & ex.Message, True)
             End Try
@@ -2936,6 +2969,8 @@ Namespace Tables
 
                 If moEarningCodeDrop.SelectedIndex > NO_ITEM_SELECTED_INDEX Then Me.PopulateBOProperty(TheCoverage, "EarningCodeId", moEarningCodeDrop)
                 If moRecoverDeciveDrop.SelectedIndex > NO_ITEM_SELECTED_INDEX Then Me.PopulateBOProperty(TheCoverage, "RecoverDeviceId", moRecoverDeciveDrop)
+                Me.PopulateBOProperty(TheCoverage, "TaxTypeXCD", Me.moTaxTypeDrop, False, True)
+
             End With
 
             If Me.ErrCollection.Count > 0 Then

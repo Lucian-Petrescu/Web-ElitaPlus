@@ -759,6 +759,22 @@ Public Class Coverage
             Me.SetValue(CoverageDAL.COL_NAME_INUSEFLAG, Value)
         End Set
     End Property
+
+    <ValueMandatory("")>
+    Public Property TaxTypeXCD() As String
+        Get
+            CheckDeleted()
+            If Row(CoverageDAL.COL_NAME_TAX_TYPE_XCD) Is DBNull.Value Then
+                Return Nothing
+            Else
+                Return CType(Row(CoverageDAL.COL_NAME_TAX_TYPE_XCD), String)
+            End If
+        End Get
+        Set(ByVal Value As String)
+            CheckDeleted()
+            Me.SetValue(CoverageDAL.COL_NAME_TAX_TYPE_XCD, Value)
+        End Set
+    End Property
 #End Region
 
 #Region "Public Members"

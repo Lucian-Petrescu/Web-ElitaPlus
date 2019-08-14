@@ -170,8 +170,13 @@
                                         <asp:DropDownList ID="moEarningCodeDrop" TabIndex="10" runat="server" SkinID="SmallDropDown">
                                         </asp:DropDownList>
                                     </td>
-                                    <td style="height: 17px" colspan="1"></td>
-                                    <td style="height: 17px" colspan="1"></td>
+                                    <td style="height: 17px" align="right" colspan="1">
+                                        <asp:Label ID="lblTaxType" runat="server" Font-Bold="false">TAX_TYPE</asp:Label>
+                                    </td>
+                                    <td style="height: 17px"  align="left" colspan="1">
+                                        <asp:DropDownList ID="moTaxTypeDrop" TabIndex="10" runat="server" SkinID="SmallDropDown">
+                                        </asp:DropDownList>
+                                    </td>
                                 </tr>
                                 <tr>
                                     <td colspan="5">
