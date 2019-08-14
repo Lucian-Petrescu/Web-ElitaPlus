@@ -1,0 +1,144 @@
+<?xml version="1.0" encoding="utf-8"?>
+<wsdl:definitions xmlns:wsap="http://schemas.xmlsoap.org/ws/2004/08/addressing/policy" xmlns:wsa10="http://www.w3.org/2005/08/addressing" xmlns:tns="http://assurant.com/Elita/FileManagement" xmlns:msc="http://schemas.microsoft.com/ws/2005/12/wsdl/contract" xmlns:soapenc="http://schemas.xmlsoap.org/soap/encoding/" xmlns:wsx="http://schemas.xmlsoap.org/ws/2004/09/mex" xmlns:wsp="http://schemas.xmlsoap.org/ws/2004/09/policy" xmlns:wsam="http://www.w3.org/2007/05/addressing/metadata" xmlns:wsa="http://schemas.xmlsoap.org/ws/2004/08/addressing" xmlns:wsaw="http://www.w3.org/2006/05/addressing/wsdl" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:soap12="http://schemas.xmlsoap.org/wsdl/soap12/" xmlns:wsu="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-utility-1.0.xsd" xmlns:xsd="http://www.w3.org/2001/XMLSchema" targetNamespace="http://assurant.com/Elita/FileManagement" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">
+  <wsdl:types>
+    <xsd:schema targetNamespace="http://assurant.com/Elita/FileManagement/Imports">
+      <xsd:import schemaLocation="http://localhost/ElitaClaimManagement/FileManager/admin?xsd=xsd0" namespace="http://assurant.com/Elita/FileManagement" />
+      <xsd:import schemaLocation="http://localhost/ElitaClaimManagement/FileManager/admin?xsd=xsd1" namespace="http://schemas.microsoft.com/2003/10/Serialization/" />
+      <xsd:import schemaLocation="http://localhost/ElitaClaimManagement/FileManager/admin?xsd=xsd2" namespace="http://assurant.com/Elita/FileManager/Data" />
+      <xsd:import schemaLocation="http://localhost/ElitaClaimManagement/FileManager/admin?xsd=xsd3" namespace="http://schemas.datacontract.org/2004/07/Assurant.Elita.ClaimManagement.Extension.FileManager.Contracts" />
+      <xsd:import schemaLocation="http://localhost/ElitaClaimManagement/FileManager/admin?xsd=xsd4" namespace="http://assurant.com/Elita/FileManagement/ExchangeLayout" />
+    </xsd:schema>
+  </wsdl:types>
+  <wsdl:message name="FileManagerAdmin_ContainsRecord_InputMessage">
+    <wsdl:part name="parameters" element="tns:ContainsRecord" />
+  </wsdl:message>
+  <wsdl:message name="FileManagerAdmin_ContainsRecord_OutputMessage">
+    <wsdl:part name="parameters" element="tns:ContainsRecordResponse" />
+  </wsdl:message>
+  <wsdl:message name="FileManagerAdmin_SearchFileInfoRecords_InputMessage">
+    <wsdl:part name="parameters" element="tns:SearchFileInfoRecords" />
+  </wsdl:message>
+  <wsdl:message name="FileManagerAdmin_SearchFileInfoRecords_OutputMessage">
+    <wsdl:part name="parameters" element="tns:SearchFileInfoRecordsResponse" />
+  </wsdl:message>
+  <wsdl:message name="FileManagerAdmin_SearchFileInfoRecord_InputMessage">
+    <wsdl:part name="parameters" element="tns:SearchFileInfoRecord" />
+  </wsdl:message>
+  <wsdl:message name="FileManagerAdmin_SearchFileInfoRecord_OutputMessage">
+    <wsdl:part name="parameters" element="tns:SearchFileInfoRecordResponse" />
+  </wsdl:message>
+  <wsdl:message name="FileManagerAdmin_ReprocessFileInfoRecords_InputMessage">
+    <wsdl:part name="parameters" element="tns:ReprocessFileInfoRecords" />
+  </wsdl:message>
+  <wsdl:message name="FileManagerAdmin_ReprocessFileInfoRecords_OutputMessage">
+    <wsdl:part name="parameters" element="tns:ReprocessFileInfoRecordsResponse" />
+  </wsdl:message>
+  <wsdl:message name="FileManagerAdmin_SearchFileDetailsRecord_InputMessage">
+    <wsdl:part name="parameters" element="tns:SearchFileDetailsRecord" />
+  </wsdl:message>
+  <wsdl:message name="FileManagerAdmin_SearchFileDetailsRecord_OutputMessage">
+    <wsdl:part name="parameters" element="tns:SearchFileDetailsRecordResponse" />
+  </wsdl:message>
+  <wsdl:message name="FileManagerAdmin_SearchFileDetailsRecords_InputMessage">
+    <wsdl:part name="parameters" element="tns:SearchFileDetailsRecords" />
+  </wsdl:message>
+  <wsdl:message name="FileManagerAdmin_SearchFileDetailsRecords_OutputMessage">
+    <wsdl:part name="parameters" element="tns:SearchFileDetailsRecordsResponse" />
+  </wsdl:message>
+  <wsdl:message name="FileManagerAdmin_SaveFileInfoRecord_InputMessage">
+    <wsdl:part name="parameters" element="tns:SaveFileInfoRecord" />
+  </wsdl:message>
+  <wsdl:message name="FileManagerAdmin_SaveFileInfoRecord_OutputMessage">
+    <wsdl:part name="parameters" element="tns:SaveFileInfoRecordResponse" />
+  </wsdl:message>
+  <wsdl:message name="FileManagerAdmin_SaveFileDetailsRecord_InputMessage">
+    <wsdl:part name="parameters" element="tns:SaveFileDetailsRecord" />
+  </wsdl:message>
+  <wsdl:message name="FileManagerAdmin_SaveFileDetailsRecord_OutputMessage">
+    <wsdl:part name="parameters" element="tns:SaveFileDetailsRecordResponse" />
+  </wsdl:message>
+  <wsdl:message name="FileManagerAdmin_SaveFileDetailsRecords_InputMessage">
+    <wsdl:part name="parameters" element="tns:SaveFileDetailsRecords" />
+  </wsdl:message>
+  <wsdl:message name="FileManagerAdmin_SaveFileDetailsRecords_OutputMessage">
+    <wsdl:part name="parameters" element="tns:SaveFileDetailsRecordsResponse" />
+  </wsdl:message>
+  <wsdl:message name="FileManagerAdmin_RemoveFileInfoRecord_InputMessage">
+    <wsdl:part name="parameters" element="tns:RemoveFileInfoRecord" />
+  </wsdl:message>
+  <wsdl:message name="FileManagerAdmin_RemoveFileInfoRecord_OutputMessage">
+    <wsdl:part name="parameters" element="tns:RemoveFileInfoRecordResponse" />
+  </wsdl:message>
+  <wsdl:message name="FileManagerAdmin_RemoveFileDetailsRecords_InputMessage">
+    <wsdl:part name="parameters" element="tns:RemoveFileDetailsRecords" />
+  </wsdl:message>
+  <wsdl:message name="FileManagerAdmin_RemoveFileDetailsRecords_OutputMessage">
+    <wsdl:part name="parameters" element="tns:RemoveFileDetailsRecordsResponse" />
+  </wsdl:message>
+  <wsdl:message name="FileManagerAdmin_SaveAzureFileInfoEntity_InputMessage">
+    <wsdl:part name="parameters" element="tns:SaveAzureFileInfoEntity" />
+  </wsdl:message>
+  <wsdl:message name="FileManagerAdmin_SaveAzureFileInfoEntity_OutputMessage">
+    <wsdl:part name="parameters" element="tns:SaveAzureFileInfoEntityResponse" />
+  </wsdl:message>
+  <wsdl:message name="FileManagerAdmin_SaveAzureFileDetailsEntities_InputMessage">
+    <wsdl:part name="parameters" element="tns:SaveAzureFileDetailsEntities" />
+  </wsdl:message>
+  <wsdl:message name="FileManagerAdmin_SaveAzureFileDetailsEntities_OutputMessage">
+    <wsdl:part name="parameters" element="tns:SaveAzureFileDetailsEntitiesResponse" />
+  </wsdl:message>
+  <wsdl:portType name="FileManagerAdmin">
+    <wsdl:operation name="ContainsRecord">
+      <wsdl:input wsaw:Action="http://assurant.com/Elita/FileManagement/FileManagerAdmin/ContainsRecord" message="tns:FileManagerAdmin_ContainsRecord_InputMessage" />
+      <wsdl:output wsaw:Action="http://assurant.com/Elita/FileManagement/FileManagerAdmin/ContainsRecordResponse" message="tns:FileManagerAdmin_ContainsRecord_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="SearchFileInfoRecords">
+      <wsdl:input wsaw:Action="http://assurant.com/Elita/FileManagement/FileManagerAdmin/SearchFileInfoRecords" message="tns:FileManagerAdmin_SearchFileInfoRecords_InputMessage" />
+      <wsdl:output wsaw:Action="http://assurant.com/Elita/FileManagement/FileManagerAdmin/SearchFileInfoRecordsResponse" message="tns:FileManagerAdmin_SearchFileInfoRecords_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="SearchFileInfoRecord">
+      <wsdl:input wsaw:Action="http://assurant.com/Elita/FileManagement/FileManagerAdmin/SearchFileInfoRecord" message="tns:FileManagerAdmin_SearchFileInfoRecord_InputMessage" />
+      <wsdl:output wsaw:Action="http://assurant.com/Elita/FileManagement/FileManagerAdmin/SearchFileInfoRecordResponse" message="tns:FileManagerAdmin_SearchFileInfoRecord_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="ReprocessFileInfoRecords">
+      <wsdl:input wsaw:Action="http://assurant.com/Elita/FileManagement/FileManagerAdmin/ReprocessFileInfoRecords" message="tns:FileManagerAdmin_ReprocessFileInfoRecords_InputMessage" />
+      <wsdl:output wsaw:Action="http://assurant.com/Elita/FileManagement/FileManagerAdmin/ReprocessFileInfoRecordsResponse" message="tns:FileManagerAdmin_ReprocessFileInfoRecords_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="SearchFileDetailsRecord">
+      <wsdl:input wsaw:Action="http://assurant.com/Elita/FileManagement/FileManagerAdmin/SearchFileDetailsRecord" message="tns:FileManagerAdmin_SearchFileDetailsRecord_InputMessage" />
+      <wsdl:output wsaw:Action="http://assurant.com/Elita/FileManagement/FileManagerAdmin/SearchFileDetailsRecordResponse" message="tns:FileManagerAdmin_SearchFileDetailsRecord_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="SearchFileDetailsRecords">
+      <wsdl:input wsaw:Action="http://assurant.com/Elita/FileManagement/FileManagerAdmin/SearchFileDetailsRecords" message="tns:FileManagerAdmin_SearchFileDetailsRecords_InputMessage" />
+      <wsdl:output wsaw:Action="http://assurant.com/Elita/FileManagement/FileManagerAdmin/SearchFileDetailsRecordsResponse" message="tns:FileManagerAdmin_SearchFileDetailsRecords_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="SaveFileInfoRecord">
+      <wsdl:input wsaw:Action="http://assurant.com/Elita/FileManagement/FileManagerAdmin/SaveFileInfoRecord" message="tns:FileManagerAdmin_SaveFileInfoRecord_InputMessage" />
+      <wsdl:output wsaw:Action="http://assurant.com/Elita/FileManagement/FileManagerAdmin/SaveFileInfoRecordResponse" message="tns:FileManagerAdmin_SaveFileInfoRecord_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="SaveFileDetailsRecord">
+      <wsdl:input wsaw:Action="http://assurant.com/Elita/FileManagement/FileManagerAdmin/SaveFileDetailsRecord" message="tns:FileManagerAdmin_SaveFileDetailsRecord_InputMessage" />
+      <wsdl:output wsaw:Action="http://assurant.com/Elita/FileManagement/FileManagerAdmin/SaveFileDetailsRecordResponse" message="tns:FileManagerAdmin_SaveFileDetailsRecord_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="SaveFileDetailsRecords">
+      <wsdl:input wsaw:Action="http://assurant.com/Elita/FileManagement/FileManagerAdmin/SaveFileDetailsRecords" message="tns:FileManagerAdmin_SaveFileDetailsRecords_InputMessage" />
+      <wsdl:output wsaw:Action="http://assurant.com/Elita/FileManagement/FileManagerAdmin/SaveFileDetailsRecordsResponse" message="tns:FileManagerAdmin_SaveFileDetailsRecords_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="RemoveFileInfoRecord">
+      <wsdl:input wsaw:Action="http://assurant.com/Elita/FileManagement/FileManagerAdmin/RemoveFileInfoRecord" message="tns:FileManagerAdmin_RemoveFileInfoRecord_InputMessage" />
+      <wsdl:output wsaw:Action="http://assurant.com/Elita/FileManagement/FileManagerAdmin/RemoveFileInfoRecordResponse" message="tns:FileManagerAdmin_RemoveFileInfoRecord_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="RemoveFileDetailsRecords">
+      <wsdl:input wsaw:Action="http://assurant.com/Elita/FileManagement/FileManagerAdmin/RemoveFileDetailsRecords" message="tns:FileManagerAdmin_RemoveFileDetailsRecords_InputMessage" />
+      <wsdl:output wsaw:Action="http://assurant.com/Elita/FileManagement/FileManagerAdmin/RemoveFileDetailsRecordsResponse" message="tns:FileManagerAdmin_RemoveFileDetailsRecords_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="SaveAzureFileInfoEntity">
+      <wsdl:input wsaw:Action="http://assurant.com/Elita/FileManagement/FileManagerAdmin/SaveAzureFileInfoEntity" message="tns:FileManagerAdmin_SaveAzureFileInfoEntity_InputMessage" />
+      <wsdl:output wsaw:Action="http://assurant.com/Elita/FileManagement/FileManagerAdmin/SaveAzureFileInfoEntityResponse" message="tns:FileManagerAdmin_SaveAzureFileInfoEntity_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="SaveAzureFileDetailsEntities">
+      <wsdl:input wsaw:Action="http://assurant.com/Elita/FileManagement/FileManagerAdmin/SaveAzureFileDetailsEntities" message="tns:FileManagerAdmin_SaveAzureFileDetailsEntities_InputMessage" />
+      <wsdl:output wsaw:Action="http://assurant.com/Elita/FileManagement/FileManagerAdmin/SaveAzureFileDetailsEntitiesResponse" message="tns:FileManagerAdmin_SaveAzureFileDetailsEntities_OutputMessage" />
+    </wsdl:operation>
+  </wsdl:portType>
+</wsdl:definitions>
