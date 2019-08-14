@@ -6013,7 +6013,7 @@
     <None Include="Service References\FileManagerAdminService\admin4.xsd">
       <SubType>Designer</SubType>
     </None>
-    <None Include="Service References\FileManagerAdminService\FileManagerAdmin.wsdl" />
+    <None Include="Service References\FileManagerAdminService\FileManagerRelay.wsdl" />
     <None Include="Service References\GiftCardService\GiftCardService.disco" />
     <None Include="Service References\GiftCardService\configuration91.svcinfo" />
     <None Include="Service References\GiftCardService\configuration.svcinfo" />

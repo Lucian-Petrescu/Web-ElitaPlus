@@ -16,7 +16,7 @@ Public Class ClaimFileManagementSearchForm
 
     Public PageTitle As String = "CLAIM_FILE_MANAGEMENT_SEARCH"
     Private Shared FILE_NAME_INVALID_CHARACTERS As String() = {"\", "/", ":", "*", "?", """", "<", ">", "|"} 'Operating system invalid characters
-    Private Const ServiceEndPointName = "CustomBinding_FileManagerAdmin"
+    Private Const ServiceEndPointName = "CustomBinding_FileManagerRelay"
 
     Public Enum GridDefinitionEnum
         FileIdentifier = 0
@@ -359,10 +359,10 @@ Public Class ClaimFileManagementSearchForm
                 .PagingFilter = State.PagingInfo
             }
 
-            Dim wsResponse As FileInfoDto() = WcfClientHelper.Execute(Of FileManagerAdminClient, FileManagerAdmin, FileInfoDto())(
+            Dim wsResponse As FileInfoDto() = WcfClientHelper.Execute(Of FileManagerRelayClient, FileManagerRelay, FileInfoDto())(
                 GetClient(),
                 New List(Of Object) From {New InteractiveUserHeader() With {.LanId = Authentication.CurrentUser.NetworkId}},
-                Function(ByVal c As FileManagerAdminClient)
+                Function(ByVal c As FileManagerRelayClient)
                     Return c.SearchFileInfoRecords(SearchInfo)
                 End Function)
 
@@ -375,10 +375,10 @@ Public Class ClaimFileManagementSearchForm
                 DataGridView.PageIndex = State.PagingInfo.PageIndex
 
                 DataGridView.VirtualItemCount =
-                    WcfClientHelper.Execute(Of FileManagerAdminClient, FileManagerAdmin, FileInfoDto())(
+                    WcfClientHelper.Execute(Of FileManagerRelayClient, FileManagerRelay, FileInfoDto())(
                     GetClient(),
                     New List(Of Object) From {New InteractiveUserHeader() With {.LanId = Authentication.CurrentUser.NetworkId}},
-                    Function(ByVal c As FileManagerAdminClient)
+                    Function(ByVal c As FileManagerRelayClient)
                         Return c.SearchFileInfoRecords(Nothing)
                     End Function).Count
 
@@ -404,10 +404,10 @@ Public Class ClaimFileManagementSearchForm
                     .ForceRefresh = True
                 }
 
-                Dim wsResponse As FileInfoDto = WcfClientHelper.Execute(Of FileManagerAdminClient, FileManagerAdmin, FileInfoDto)(
+                Dim wsResponse As FileInfoDto = WcfClientHelper.Execute(Of FileManagerRelayClient, FileManagerRelay, FileInfoDto)(
                         GetClient(),
                         New List(Of Object) From {New InteractiveUserHeader() With {.LanId = Authentication.CurrentUser.NetworkId}},
-                        Function(ByVal c As FileManagerAdminClient)
+                        Function(ByVal c As FileManagerRelayClient)
                             Return c.RemoveFileInfoRecord(FileInfoLocator)
                         End Function)
 
@@ -435,10 +435,10 @@ Public Class ClaimFileManagementSearchForm
                     .ForceRefresh = True
                 }
 
-                Return WcfClientHelper.Execute(Of FileManagerAdminClient, FileManagerAdmin, Boolean)(
+                Return WcfClientHelper.Execute(Of FileManagerRelayClient, FileManagerRelay, Boolean)(
                     GetClient(),
                     New List(Of Object) From {New InteractiveUserHeader() With {.LanId = Authentication.CurrentUser.NetworkId}},
-                    Function(ByVal c As FileManagerAdminClient)
+                    Function(ByVal c As FileManagerRelayClient)
                         Return c.ReprocessFileInfoRecords(FileInfoLocator)
                     End Function)
             End If
@@ -456,10 +456,10 @@ Public Class ClaimFileManagementSearchForm
     '' Gets New Instance of File Admin Service Client with Credentials Configured
     '' </summary>
     '' <returns>Instance of <see cref="FileAdminClient"/></returns>
-    Private Shared Function GetClient() As FileManagerAdminClient
+    Private Shared Function GetClient() As FileManagerRelayClient
         Dim oWebPasswd As WebPasswd = New WebPasswd(Guid.Empty, LookupListNew.GetIdFromCode(Codes.SERVICE_TYPE, Codes.SERVICE_TYPE__FILE_MANAGEMENT_ADMIN_SERVICE), False)
 
-        Dim client = New FileManagerAdminClient(ServiceEndPointName, oWebPasswd.Url)
+        Dim client = New FileManagerRelayClient(ServiceEndPointName, oWebPasswd.Url)
 
         client.ClientCredentials.UserName.UserName = oWebPasswd.UserId
         client.ClientCredentials.UserName.Password = oWebPasswd.Password

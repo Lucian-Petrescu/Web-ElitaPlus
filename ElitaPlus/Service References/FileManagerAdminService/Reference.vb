@@ -2196,134 +2196,134 @@ Namespace FileManagerAdminService
     End Class
     
     <System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0"),  _
-     System.ServiceModel.ServiceContractAttribute([Namespace]:="http://assurant.com/Elita/FileManagement", ConfigurationName:="FileManagerAdminService.FileManagerAdmin")>  _
-    Public Interface FileManagerAdmin
+     System.ServiceModel.ServiceContractAttribute([Namespace]:="http://assurant.com/Elita/FileManagement", ConfigurationName:="FileManagerAdminService.FileManagerRelay")>  _
+    Public Interface FileManagerRelay
         
-        <System.ServiceModel.OperationContractAttribute(Action:="http://assurant.com/Elita/FileManagement/FileManagerAdmin/ContainsRecord", ReplyAction:="http://assurant.com/Elita/FileManagement/FileManagerAdmin/ContainsRecordResponse")>  _
+        <System.ServiceModel.OperationContractAttribute(Action:="http://assurant.com/Elita/FileManagement/FileManagerRelay/ContainsRecord", ReplyAction:="http://assurant.com/Elita/FileManagement/FileManagerRelay/ContainsRecordResponse")>  _
         Function ContainsRecord(ByVal recordLocator As FileManagerAdminService.DataItemLocator, ByVal partitionId As System.Guid) As Boolean
         
-        <System.ServiceModel.OperationContractAttribute(Action:="http://assurant.com/Elita/FileManagement/FileManagerAdmin/ContainsRecord", ReplyAction:="http://assurant.com/Elita/FileManagement/FileManagerAdmin/ContainsRecordResponse")>  _
+        <System.ServiceModel.OperationContractAttribute(Action:="http://assurant.com/Elita/FileManagement/FileManagerRelay/ContainsRecord", ReplyAction:="http://assurant.com/Elita/FileManagement/FileManagerRelay/ContainsRecordResponse")>  _
         Function ContainsRecordAsync(ByVal recordLocator As FileManagerAdminService.DataItemLocator, ByVal partitionId As System.Guid) As System.Threading.Tasks.Task(Of Boolean)
         
-        <System.ServiceModel.OperationContractAttribute(Action:="http://assurant.com/Elita/FileManagement/FileManagerAdmin/SearchFileInfoRecords", ReplyAction:="http://assurant.com/Elita/FileManagement/FileManagerAdmin/SearchFileInfoRecordsRe"& _ 
+        <System.ServiceModel.OperationContractAttribute(Action:="http://assurant.com/Elita/FileManagement/FileManagerRelay/SearchFileInfoRecords", ReplyAction:="http://assurant.com/Elita/FileManagement/FileManagerRelay/SearchFileInfoRecordsRe"& _ 
             "sponse")>  _
         Function SearchFileInfoRecords(ByVal searchCriteria As FileManagerAdminService.SearchCriteria) As FileManagerAdminService.FileInfoDto()
         
-        <System.ServiceModel.OperationContractAttribute(Action:="http://assurant.com/Elita/FileManagement/FileManagerAdmin/SearchFileInfoRecords", ReplyAction:="http://assurant.com/Elita/FileManagement/FileManagerAdmin/SearchFileInfoRecordsRe"& _ 
+        <System.ServiceModel.OperationContractAttribute(Action:="http://assurant.com/Elita/FileManagement/FileManagerRelay/SearchFileInfoRecords", ReplyAction:="http://assurant.com/Elita/FileManagement/FileManagerRelay/SearchFileInfoRecordsRe"& _ 
             "sponse")>  _
         Function SearchFileInfoRecordsAsync(ByVal searchCriteria As FileManagerAdminService.SearchCriteria) As System.Threading.Tasks.Task(Of FileManagerAdminService.FileInfoDto())
         
-        <System.ServiceModel.OperationContractAttribute(Action:="http://assurant.com/Elita/FileManagement/FileManagerAdmin/SearchFileInfoRecord", ReplyAction:="http://assurant.com/Elita/FileManagement/FileManagerAdmin/SearchFileInfoRecordRes"& _ 
+        <System.ServiceModel.OperationContractAttribute(Action:="http://assurant.com/Elita/FileManagement/FileManagerRelay/SearchFileInfoRecord", ReplyAction:="http://assurant.com/Elita/FileManagement/FileManagerRelay/SearchFileInfoRecordRes"& _ 
             "ponse")>  _
         Function SearchFileInfoRecord(ByVal fileInfoLocator As FileManagerAdminService.DataItemLocator) As FileManagerAdminService.FileInfoDto
         
-        <System.ServiceModel.OperationContractAttribute(Action:="http://assurant.com/Elita/FileManagement/FileManagerAdmin/SearchFileInfoRecord", ReplyAction:="http://assurant.com/Elita/FileManagement/FileManagerAdmin/SearchFileInfoRecordRes"& _ 
+        <System.ServiceModel.OperationContractAttribute(Action:="http://assurant.com/Elita/FileManagement/FileManagerRelay/SearchFileInfoRecord", ReplyAction:="http://assurant.com/Elita/FileManagement/FileManagerRelay/SearchFileInfoRecordRes"& _ 
             "ponse")>  _
         Function SearchFileInfoRecordAsync(ByVal fileInfoLocator As FileManagerAdminService.DataItemLocator) As System.Threading.Tasks.Task(Of FileManagerAdminService.FileInfoDto)
         
-        <System.ServiceModel.OperationContractAttribute(Action:="http://assurant.com/Elita/FileManagement/FileManagerAdmin/ReprocessFileInfoRecord"& _ 
-            "s", ReplyAction:="http://assurant.com/Elita/FileManagement/FileManagerAdmin/ReprocessFileInfoRecord"& _ 
+        <System.ServiceModel.OperationContractAttribute(Action:="http://assurant.com/Elita/FileManagement/FileManagerRelay/ReprocessFileInfoRecord"& _ 
+            "s", ReplyAction:="http://assurant.com/Elita/FileManagement/FileManagerRelay/ReprocessFileInfoRecord"& _ 
             "sResponse")>  _
         Function ReprocessFileInfoRecords(ByVal fileInfoLocator As FileManagerAdminService.DataItemLocator) As Boolean
         
-        <System.ServiceModel.OperationContractAttribute(Action:="http://assurant.com/Elita/FileManagement/FileManagerAdmin/ReprocessFileInfoRecord"& _ 
-            "s", ReplyAction:="http://assurant.com/Elita/FileManagement/FileManagerAdmin/ReprocessFileInfoRecord"& _ 
+        <System.ServiceModel.OperationContractAttribute(Action:="http://assurant.com/Elita/FileManagement/FileManagerRelay/ReprocessFileInfoRecord"& _ 
+            "s", ReplyAction:="http://assurant.com/Elita/FileManagement/FileManagerRelay/ReprocessFileInfoRecord"& _ 
             "sResponse")>  _
         Function ReprocessFileInfoRecordsAsync(ByVal fileInfoLocator As FileManagerAdminService.DataItemLocator) As System.Threading.Tasks.Task(Of Boolean)
         
-        <System.ServiceModel.OperationContractAttribute(Action:="http://assurant.com/Elita/FileManagement/FileManagerAdmin/SearchFileDetailsRecord"& _ 
-            "", ReplyAction:="http://assurant.com/Elita/FileManagement/FileManagerAdmin/SearchFileDetailsRecord"& _ 
+        <System.ServiceModel.OperationContractAttribute(Action:="http://assurant.com/Elita/FileManagement/FileManagerRelay/SearchFileDetailsRecord"& _ 
+            "", ReplyAction:="http://assurant.com/Elita/FileManagement/FileManagerRelay/SearchFileDetailsRecord"& _ 
             "Response")>  _
         Function SearchFileDetailsRecord(ByVal fileInfoLocator As FileManagerAdminService.DataItemLocator, ByVal fileDetailsLocator As FileManagerAdminService.DataItemLocator) As FileManagerAdminService.FileDetailsRecordDto
         
-        <System.ServiceModel.OperationContractAttribute(Action:="http://assurant.com/Elita/FileManagement/FileManagerAdmin/SearchFileDetailsRecord"& _ 
-            "", ReplyAction:="http://assurant.com/Elita/FileManagement/FileManagerAdmin/SearchFileDetailsRecord"& _ 
+        <System.ServiceModel.OperationContractAttribute(Action:="http://assurant.com/Elita/FileManagement/FileManagerRelay/SearchFileDetailsRecord"& _ 
+            "", ReplyAction:="http://assurant.com/Elita/FileManagement/FileManagerRelay/SearchFileDetailsRecord"& _ 
             "Response")>  _
         Function SearchFileDetailsRecordAsync(ByVal fileInfoLocator As FileManagerAdminService.DataItemLocator, ByVal fileDetailsLocator As FileManagerAdminService.DataItemLocator) As System.Threading.Tasks.Task(Of FileManagerAdminService.FileDetailsRecordDto)
         
-        <System.ServiceModel.OperationContractAttribute(Action:="http://assurant.com/Elita/FileManagement/FileManagerAdmin/SearchFileDetailsRecord"& _ 
-            "s", ReplyAction:="http://assurant.com/Elita/FileManagement/FileManagerAdmin/SearchFileDetailsRecord"& _ 
+        <System.ServiceModel.OperationContractAttribute(Action:="http://assurant.com/Elita/FileManagement/FileManagerRelay/SearchFileDetailsRecord"& _ 
+            "s", ReplyAction:="http://assurant.com/Elita/FileManagement/FileManagerRelay/SearchFileDetailsRecord"& _ 
             "sResponse")>  _
         Function SearchFileDetailsRecords(ByVal fileInfoLocator As FileManagerAdminService.DataItemLocator, ByVal searchCriteria As FileManagerAdminService.SearchCriteria) As FileManagerAdminService.FileDetailsRecordDto()
         
-        <System.ServiceModel.OperationContractAttribute(Action:="http://assurant.com/Elita/FileManagement/FileManagerAdmin/SearchFileDetailsRecord"& _ 
-            "s", ReplyAction:="http://assurant.com/Elita/FileManagement/FileManagerAdmin/SearchFileDetailsRecord"& _ 
+        <System.ServiceModel.OperationContractAttribute(Action:="http://assurant.com/Elita/FileManagement/FileManagerRelay/SearchFileDetailsRecord"& _ 
+            "s", ReplyAction:="http://assurant.com/Elita/FileManagement/FileManagerRelay/SearchFileDetailsRecord"& _ 
             "sResponse")>  _
         Function SearchFileDetailsRecordsAsync(ByVal fileInfoLocator As FileManagerAdminService.DataItemLocator, ByVal searchCriteria As FileManagerAdminService.SearchCriteria) As System.Threading.Tasks.Task(Of FileManagerAdminService.FileDetailsRecordDto())
         
-        <System.ServiceModel.OperationContractAttribute(Action:="http://assurant.com/Elita/FileManagement/FileManagerAdmin/SaveFileInfoRecord", ReplyAction:="http://assurant.com/Elita/FileManagement/FileManagerAdmin/SaveFileInfoRecordRespo"& _ 
+        <System.ServiceModel.OperationContractAttribute(Action:="http://assurant.com/Elita/FileManagement/FileManagerRelay/SaveFileInfoRecord", ReplyAction:="http://assurant.com/Elita/FileManagement/FileManagerRelay/SaveFileInfoRecordRespo"& _ 
             "nse")>  _
         Function SaveFileInfoRecord(ByVal fileInfoLocator As FileManagerAdminService.DataItemLocator, ByVal fileInfoRecord As FileManagerAdminService.FileInfoDto) As Boolean
         
-        <System.ServiceModel.OperationContractAttribute(Action:="http://assurant.com/Elita/FileManagement/FileManagerAdmin/SaveFileInfoRecord", ReplyAction:="http://assurant.com/Elita/FileManagement/FileManagerAdmin/SaveFileInfoRecordRespo"& _ 
+        <System.ServiceModel.OperationContractAttribute(Action:="http://assurant.com/Elita/FileManagement/FileManagerRelay/SaveFileInfoRecord", ReplyAction:="http://assurant.com/Elita/FileManagement/FileManagerRelay/SaveFileInfoRecordRespo"& _ 
             "nse")>  _
         Function SaveFileInfoRecordAsync(ByVal fileInfoLocator As FileManagerAdminService.DataItemLocator, ByVal fileInfoRecord As FileManagerAdminService.FileInfoDto) As System.Threading.Tasks.Task(Of Boolean)
         
-        <System.ServiceModel.OperationContractAttribute(Action:="http://assurant.com/Elita/FileManagement/FileManagerAdmin/SaveFileDetailsRecord", ReplyAction:="http://assurant.com/Elita/FileManagement/FileManagerAdmin/SaveFileDetailsRecordRe"& _ 
+        <System.ServiceModel.OperationContractAttribute(Action:="http://assurant.com/Elita/FileManagement/FileManagerRelay/SaveFileDetailsRecord", ReplyAction:="http://assurant.com/Elita/FileManagement/FileManagerRelay/SaveFileDetailsRecordRe"& _ 
             "sponse")>  _
         Function SaveFileDetailsRecord(ByVal fileInfoLocator As FileManagerAdminService.DataItemLocator, ByVal fileDetailsRecord As FileManagerAdminService.FileDetailsRecordDto) As Boolean
         
-        <System.ServiceModel.OperationContractAttribute(Action:="http://assurant.com/Elita/FileManagement/FileManagerAdmin/SaveFileDetailsRecord", ReplyAction:="http://assurant.com/Elita/FileManagement/FileManagerAdmin/SaveFileDetailsRecordRe"& _ 
+        <System.ServiceModel.OperationContractAttribute(Action:="http://assurant.com/Elita/FileManagement/FileManagerRelay/SaveFileDetailsRecord", ReplyAction:="http://assurant.com/Elita/FileManagement/FileManagerRelay/SaveFileDetailsRecordRe"& _ 
             "sponse")>  _
         Function SaveFileDetailsRecordAsync(ByVal fileInfoLocator As FileManagerAdminService.DataItemLocator, ByVal fileDetailsRecord As FileManagerAdminService.FileDetailsRecordDto) As System.Threading.Tasks.Task(Of Boolean)
         
-        <System.ServiceModel.OperationContractAttribute(Action:="http://assurant.com/Elita/FileManagement/FileManagerAdmin/SaveFileDetailsRecords", ReplyAction:="http://assurant.com/Elita/FileManagement/FileManagerAdmin/SaveFileDetailsRecordsR"& _ 
+        <System.ServiceModel.OperationContractAttribute(Action:="http://assurant.com/Elita/FileManagement/FileManagerRelay/SaveFileDetailsRecords", ReplyAction:="http://assurant.com/Elita/FileManagement/FileManagerRelay/SaveFileDetailsRecordsR"& _ 
             "esponse")>  _
         Function SaveFileDetailsRecords(ByVal fileInfoLocator As FileManagerAdminService.DataItemLocator, ByVal fileDetailsRecords() As FileManagerAdminService.FileDetailsRecordDto) As Boolean
         
-        <System.ServiceModel.OperationContractAttribute(Action:="http://assurant.com/Elita/FileManagement/FileManagerAdmin/SaveFileDetailsRecords", ReplyAction:="http://assurant.com/Elita/FileManagement/FileManagerAdmin/SaveFileDetailsRecordsR"& _ 
+        <System.ServiceModel.OperationContractAttribute(Action:="http://assurant.com/Elita/FileManagement/FileManagerRelay/SaveFileDetailsRecords", ReplyAction:="http://assurant.com/Elita/FileManagement/FileManagerRelay/SaveFileDetailsRecordsR"& _ 
             "esponse")>  _
         Function SaveFileDetailsRecordsAsync(ByVal fileInfoLocator As FileManagerAdminService.DataItemLocator, ByVal fileDetailsRecords() As FileManagerAdminService.FileDetailsRecordDto) As System.Threading.Tasks.Task(Of Boolean)
         
-        <System.ServiceModel.OperationContractAttribute(Action:="http://assurant.com/Elita/FileManagement/FileManagerAdmin/RemoveFileInfoRecord", ReplyAction:="http://assurant.com/Elita/FileManagement/FileManagerAdmin/RemoveFileInfoRecordRes"& _ 
+        <System.ServiceModel.OperationContractAttribute(Action:="http://assurant.com/Elita/FileManagement/FileManagerRelay/RemoveFileInfoRecord", ReplyAction:="http://assurant.com/Elita/FileManagement/FileManagerRelay/RemoveFileInfoRecordRes"& _ 
             "ponse")>  _
         Function RemoveFileInfoRecord(ByVal fileInfoLocator As FileManagerAdminService.DataItemLocator) As FileManagerAdminService.FileInfoDto
         
-        <System.ServiceModel.OperationContractAttribute(Action:="http://assurant.com/Elita/FileManagement/FileManagerAdmin/RemoveFileInfoRecord", ReplyAction:="http://assurant.com/Elita/FileManagement/FileManagerAdmin/RemoveFileInfoRecordRes"& _ 
+        <System.ServiceModel.OperationContractAttribute(Action:="http://assurant.com/Elita/FileManagement/FileManagerRelay/RemoveFileInfoRecord", ReplyAction:="http://assurant.com/Elita/FileManagement/FileManagerRelay/RemoveFileInfoRecordRes"& _ 
             "ponse")>  _
         Function RemoveFileInfoRecordAsync(ByVal fileInfoLocator As FileManagerAdminService.DataItemLocator) As System.Threading.Tasks.Task(Of FileManagerAdminService.FileInfoDto)
         
-        <System.ServiceModel.OperationContractAttribute(Action:="http://assurant.com/Elita/FileManagement/FileManagerAdmin/RemoveFileDetailsRecord"& _ 
-            "s", ReplyAction:="http://assurant.com/Elita/FileManagement/FileManagerAdmin/RemoveFileDetailsRecord"& _ 
+        <System.ServiceModel.OperationContractAttribute(Action:="http://assurant.com/Elita/FileManagement/FileManagerRelay/RemoveFileDetailsRecord"& _ 
+            "s", ReplyAction:="http://assurant.com/Elita/FileManagement/FileManagerRelay/RemoveFileDetailsRecord"& _ 
             "sResponse")>  _
         Function RemoveFileDetailsRecords(ByVal fileInfoLocator As FileManagerAdminService.DataItemLocator, ByVal fileDetailsRecords() As FileManagerAdminService.FileDetailsRecordDto) As FileManagerAdminService.FileDetailsRecordDto()
         
-        <System.ServiceModel.OperationContractAttribute(Action:="http://assurant.com/Elita/FileManagement/FileManagerAdmin/RemoveFileDetailsRecord"& _ 
-            "s", ReplyAction:="http://assurant.com/Elita/FileManagement/FileManagerAdmin/RemoveFileDetailsRecord"& _ 
+        <System.ServiceModel.OperationContractAttribute(Action:="http://assurant.com/Elita/FileManagement/FileManagerRelay/RemoveFileDetailsRecord"& _ 
+            "s", ReplyAction:="http://assurant.com/Elita/FileManagement/FileManagerRelay/RemoveFileDetailsRecord"& _ 
             "sResponse")>  _
         Function RemoveFileDetailsRecordsAsync(ByVal fileInfoLocator As FileManagerAdminService.DataItemLocator, ByVal fileDetailsRecords() As FileManagerAdminService.FileDetailsRecordDto) As System.Threading.Tasks.Task(Of FileManagerAdminService.FileDetailsRecordDto())
         
-        <System.ServiceModel.OperationContractAttribute(Action:="http://assurant.com/Elita/FileManagement/FileManagerAdmin/SaveAzureFileInfoEntity"& _ 
-            "", ReplyAction:="http://assurant.com/Elita/FileManagement/FileManagerAdmin/SaveAzureFileInfoEntity"& _ 
+        <System.ServiceModel.OperationContractAttribute(Action:="http://assurant.com/Elita/FileManagement/FileManagerRelay/SaveAzureFileInfoEntity"& _ 
+            "", ReplyAction:="http://assurant.com/Elita/FileManagement/FileManagerRelay/SaveAzureFileInfoEntity"& _ 
             "Response")>  _
         Function SaveAzureFileInfoEntity(ByVal fileInfoDto As FileManagerAdminService.FileInfoDto) As Boolean
         
-        <System.ServiceModel.OperationContractAttribute(Action:="http://assurant.com/Elita/FileManagement/FileManagerAdmin/SaveAzureFileInfoEntity"& _ 
-            "", ReplyAction:="http://assurant.com/Elita/FileManagement/FileManagerAdmin/SaveAzureFileInfoEntity"& _ 
+        <System.ServiceModel.OperationContractAttribute(Action:="http://assurant.com/Elita/FileManagement/FileManagerRelay/SaveAzureFileInfoEntity"& _ 
+            "", ReplyAction:="http://assurant.com/Elita/FileManagement/FileManagerRelay/SaveAzureFileInfoEntity"& _ 
             "Response")>  _
         Function SaveAzureFileInfoEntityAsync(ByVal fileInfoDto As FileManagerAdminService.FileInfoDto) As System.Threading.Tasks.Task(Of Boolean)
         
-        <System.ServiceModel.OperationContractAttribute(Action:="http://assurant.com/Elita/FileManagement/FileManagerAdmin/SaveAzureFileDetailsEnt"& _ 
-            "ities", ReplyAction:="http://assurant.com/Elita/FileManagement/FileManagerAdmin/SaveAzureFileDetailsEnt"& _ 
+        <System.ServiceModel.OperationContractAttribute(Action:="http://assurant.com/Elita/FileManagement/FileManagerRelay/SaveAzureFileDetailsEnt"& _ 
+            "ities", ReplyAction:="http://assurant.com/Elita/FileManagement/FileManagerRelay/SaveAzureFileDetailsEnt"& _ 
             "itiesResponse")>  _
         Function SaveAzureFileDetailsEntities(ByVal fileInfoDto As FileManagerAdminService.FileInfoDto, ByVal fileDetailsDto() As FileManagerAdminService.FileDetailsRecordDto) As Boolean
         
-        <System.ServiceModel.OperationContractAttribute(Action:="http://assurant.com/Elita/FileManagement/FileManagerAdmin/SaveAzureFileDetailsEnt"& _ 
-            "ities", ReplyAction:="http://assurant.com/Elita/FileManagement/FileManagerAdmin/SaveAzureFileDetailsEnt"& _ 
+        <System.ServiceModel.OperationContractAttribute(Action:="http://assurant.com/Elita/FileManagement/FileManagerRelay/SaveAzureFileDetailsEnt"& _ 
+            "ities", ReplyAction:="http://assurant.com/Elita/FileManagement/FileManagerRelay/SaveAzureFileDetailsEnt"& _ 
             "itiesResponse")>  _
         Function SaveAzureFileDetailsEntitiesAsync(ByVal fileInfoDto As FileManagerAdminService.FileInfoDto, ByVal fileDetailsDto() As FileManagerAdminService.FileDetailsRecordDto) As System.Threading.Tasks.Task(Of Boolean)
     End Interface
     
     <System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")>  _
-    Public Interface FileManagerAdminChannel
-        Inherits FileManagerAdminService.FileManagerAdmin, System.ServiceModel.IClientChannel
+    Public Interface FileManagerRelayChannel
+        Inherits FileManagerAdminService.FileManagerRelay, System.ServiceModel.IClientChannel
     End Interface
     
     <System.Diagnostics.DebuggerStepThroughAttribute(),  _
      System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")>  _
-    Partial Public Class FileManagerAdminClient
-        Inherits System.ServiceModel.ClientBase(Of FileManagerAdminService.FileManagerAdmin)
-        Implements FileManagerAdminService.FileManagerAdmin
+    Partial Public Class FileManagerRelayClient
+        Inherits System.ServiceModel.ClientBase(Of FileManagerAdminService.FileManagerRelay)
+        Implements FileManagerAdminService.FileManagerRelay
         
         Public Sub New()
             MyBase.New
@@ -2345,107 +2345,107 @@ Namespace FileManagerAdminService
             MyBase.New(binding, remoteAddress)
         End Sub
         
-        Public Function ContainsRecord(ByVal recordLocator As FileManagerAdminService.DataItemLocator, ByVal partitionId As System.Guid) As Boolean Implements FileManagerAdminService.FileManagerAdmin.ContainsRecord
+        Public Function ContainsRecord(ByVal recordLocator As FileManagerAdminService.DataItemLocator, ByVal partitionId As System.Guid) As Boolean Implements FileManagerAdminService.FileManagerRelay.ContainsRecord
             Return MyBase.Channel.ContainsRecord(recordLocator, partitionId)
         End Function
         
-        Public Function ContainsRecordAsync(ByVal recordLocator As FileManagerAdminService.DataItemLocator, ByVal partitionId As System.Guid) As System.Threading.Tasks.Task(Of Boolean) Implements FileManagerAdminService.FileManagerAdmin.ContainsRecordAsync
+        Public Function ContainsRecordAsync(ByVal recordLocator As FileManagerAdminService.DataItemLocator, ByVal partitionId As System.Guid) As System.Threading.Tasks.Task(Of Boolean) Implements FileManagerAdminService.FileManagerRelay.ContainsRecordAsync
             Return MyBase.Channel.ContainsRecordAsync(recordLocator, partitionId)
         End Function
         
-        Public Function SearchFileInfoRecords(ByVal searchCriteria As FileManagerAdminService.SearchCriteria) As FileManagerAdminService.FileInfoDto() Implements FileManagerAdminService.FileManagerAdmin.SearchFileInfoRecords
+        Public Function SearchFileInfoRecords(ByVal searchCriteria As FileManagerAdminService.SearchCriteria) As FileManagerAdminService.FileInfoDto() Implements FileManagerAdminService.FileManagerRelay.SearchFileInfoRecords
             Return MyBase.Channel.SearchFileInfoRecords(searchCriteria)
         End Function
         
-        Public Function SearchFileInfoRecordsAsync(ByVal searchCriteria As FileManagerAdminService.SearchCriteria) As System.Threading.Tasks.Task(Of FileManagerAdminService.FileInfoDto()) Implements FileManagerAdminService.FileManagerAdmin.SearchFileInfoRecordsAsync
+        Public Function SearchFileInfoRecordsAsync(ByVal searchCriteria As FileManagerAdminService.SearchCriteria) As System.Threading.Tasks.Task(Of FileManagerAdminService.FileInfoDto()) Implements FileManagerAdminService.FileManagerRelay.SearchFileInfoRecordsAsync
             Return MyBase.Channel.SearchFileInfoRecordsAsync(searchCriteria)
         End Function
         
-        Public Function SearchFileInfoRecord(ByVal fileInfoLocator As FileManagerAdminService.DataItemLocator) As FileManagerAdminService.FileInfoDto Implements FileManagerAdminService.FileManagerAdmin.SearchFileInfoRecord
+        Public Function SearchFileInfoRecord(ByVal fileInfoLocator As FileManagerAdminService.DataItemLocator) As FileManagerAdminService.FileInfoDto Implements FileManagerAdminService.FileManagerRelay.SearchFileInfoRecord
             Return MyBase.Channel.SearchFileInfoRecord(fileInfoLocator)
         End Function
         
-        Public Function SearchFileInfoRecordAsync(ByVal fileInfoLocator As FileManagerAdminService.DataItemLocator) As System.Threading.Tasks.Task(Of FileManagerAdminService.FileInfoDto) Implements FileManagerAdminService.FileManagerAdmin.SearchFileInfoRecordAsync
+        Public Function SearchFileInfoRecordAsync(ByVal fileInfoLocator As FileManagerAdminService.DataItemLocator) As System.Threading.Tasks.Task(Of FileManagerAdminService.FileInfoDto) Implements FileManagerAdminService.FileManagerRelay.SearchFileInfoRecordAsync
             Return MyBase.Channel.SearchFileInfoRecordAsync(fileInfoLocator)
         End Function
         
-        Public Function ReprocessFileInfoRecords(ByVal fileInfoLocator As FileManagerAdminService.DataItemLocator) As Boolean Implements FileManagerAdminService.FileManagerAdmin.ReprocessFileInfoRecords
+        Public Function ReprocessFileInfoRecords(ByVal fileInfoLocator As FileManagerAdminService.DataItemLocator) As Boolean Implements FileManagerAdminService.FileManagerRelay.ReprocessFileInfoRecords
             Return MyBase.Channel.ReprocessFileInfoRecords(fileInfoLocator)
         End Function
         
-        Public Function ReprocessFileInfoRecordsAsync(ByVal fileInfoLocator As FileManagerAdminService.DataItemLocator) As System.Threading.Tasks.Task(Of Boolean) Implements FileManagerAdminService.FileManagerAdmin.ReprocessFileInfoRecordsAsync
+        Public Function ReprocessFileInfoRecordsAsync(ByVal fileInfoLocator As FileManagerAdminService.DataItemLocator) As System.Threading.Tasks.Task(Of Boolean) Implements FileManagerAdminService.FileManagerRelay.ReprocessFileInfoRecordsAsync
             Return MyBase.Channel.ReprocessFileInfoRecordsAsync(fileInfoLocator)
         End Function
         
-        Public Function SearchFileDetailsRecord(ByVal fileInfoLocator As FileManagerAdminService.DataItemLocator, ByVal fileDetailsLocator As FileManagerAdminService.DataItemLocator) As FileManagerAdminService.FileDetailsRecordDto Implements FileManagerAdminService.FileManagerAdmin.SearchFileDetailsRecord
+        Public Function SearchFileDetailsRecord(ByVal fileInfoLocator As FileManagerAdminService.DataItemLocator, ByVal fileDetailsLocator As FileManagerAdminService.DataItemLocator) As FileManagerAdminService.FileDetailsRecordDto Implements FileManagerAdminService.FileManagerRelay.SearchFileDetailsRecord
             Return MyBase.Channel.SearchFileDetailsRecord(fileInfoLocator, fileDetailsLocator)
         End Function
         
-        Public Function SearchFileDetailsRecordAsync(ByVal fileInfoLocator As FileManagerAdminService.DataItemLocator, ByVal fileDetailsLocator As FileManagerAdminService.DataItemLocator) As System.Threading.Tasks.Task(Of FileManagerAdminService.FileDetailsRecordDto) Implements FileManagerAdminService.FileManagerAdmin.SearchFileDetailsRecordAsync
+        Public Function SearchFileDetailsRecordAsync(ByVal fileInfoLocator As FileManagerAdminService.DataItemLocator, ByVal fileDetailsLocator As FileManagerAdminService.DataItemLocator) As System.Threading.Tasks.Task(Of FileManagerAdminService.FileDetailsRecordDto) Implements FileManagerAdminService.FileManagerRelay.SearchFileDetailsRecordAsync
             Return MyBase.Channel.SearchFileDetailsRecordAsync(fileInfoLocator, fileDetailsLocator)
         End Function
         
-        Public Function SearchFileDetailsRecords(ByVal fileInfoLocator As FileManagerAdminService.DataItemLocator, ByVal searchCriteria As FileManagerAdminService.SearchCriteria) As FileManagerAdminService.FileDetailsRecordDto() Implements FileManagerAdminService.FileManagerAdmin.SearchFileDetailsRecords
+        Public Function SearchFileDetailsRecords(ByVal fileInfoLocator As FileManagerAdminService.DataItemLocator, ByVal searchCriteria As FileManagerAdminService.SearchCriteria) As FileManagerAdminService.FileDetailsRecordDto() Implements FileManagerAdminService.FileManagerRelay.SearchFileDetailsRecords
             Return MyBase.Channel.SearchFileDetailsRecords(fileInfoLocator, searchCriteria)
         End Function
         
-        Public Function SearchFileDetailsRecordsAsync(ByVal fileInfoLocator As FileManagerAdminService.DataItemLocator, ByVal searchCriteria As FileManagerAdminService.SearchCriteria) As System.Threading.Tasks.Task(Of FileManagerAdminService.FileDetailsRecordDto()) Implements FileManagerAdminService.FileManagerAdmin.SearchFileDetailsRecordsAsync
+        Public Function SearchFileDetailsRecordsAsync(ByVal fileInfoLocator As FileManagerAdminService.DataItemLocator, ByVal searchCriteria As FileManagerAdminService.SearchCriteria) As System.Threading.Tasks.Task(Of FileManagerAdminService.FileDetailsRecordDto()) Implements FileManagerAdminService.FileManagerRelay.SearchFileDetailsRecordsAsync
             Return MyBase.Channel.SearchFileDetailsRecordsAsync(fileInfoLocator, searchCriteria)
         End Function
         
-        Public Function SaveFileInfoRecord(ByVal fileInfoLocator As FileManagerAdminService.DataItemLocator, ByVal fileInfoRecord As FileManagerAdminService.FileInfoDto) As Boolean Implements FileManagerAdminService.FileManagerAdmin.SaveFileInfoRecord
+        Public Function SaveFileInfoRecord(ByVal fileInfoLocator As FileManagerAdminService.DataItemLocator, ByVal fileInfoRecord As FileManagerAdminService.FileInfoDto) As Boolean Implements FileManagerAdminService.FileManagerRelay.SaveFileInfoRecord
             Return MyBase.Channel.SaveFileInfoRecord(fileInfoLocator, fileInfoRecord)
         End Function
         
-        Public Function SaveFileInfoRecordAsync(ByVal fileInfoLocator As FileManagerAdminService.DataItemLocator, ByVal fileInfoRecord As FileManagerAdminService.FileInfoDto) As System.Threading.Tasks.Task(Of Boolean) Implements FileManagerAdminService.FileManagerAdmin.SaveFileInfoRecordAsync
+        Public Function SaveFileInfoRecordAsync(ByVal fileInfoLocator As FileManagerAdminService.DataItemLocator, ByVal fileInfoRecord As FileManagerAdminService.FileInfoDto) As System.Threading.Tasks.Task(Of Boolean) Implements FileManagerAdminService.FileManagerRelay.SaveFileInfoRecordAsync
             Return MyBase.Channel.SaveFileInfoRecordAsync(fileInfoLocator, fileInfoRecord)
         End Function
         
-        Public Function SaveFileDetailsRecord(ByVal fileInfoLocator As FileManagerAdminService.DataItemLocator, ByVal fileDetailsRecord As FileManagerAdminService.FileDetailsRecordDto) As Boolean Implements FileManagerAdminService.FileManagerAdmin.SaveFileDetailsRecord
+        Public Function SaveFileDetailsRecord(ByVal fileInfoLocator As FileManagerAdminService.DataItemLocator, ByVal fileDetailsRecord As FileManagerAdminService.FileDetailsRecordDto) As Boolean Implements FileManagerAdminService.FileManagerRelay.SaveFileDetailsRecord
             Return MyBase.Channel.SaveFileDetailsRecord(fileInfoLocator, fileDetailsRecord)
         End Function
         
-        Public Function SaveFileDetailsRecordAsync(ByVal fileInfoLocator As FileManagerAdminService.DataItemLocator, ByVal fileDetailsRecord As FileManagerAdminService.FileDetailsRecordDto) As System.Threading.Tasks.Task(Of Boolean) Implements FileManagerAdminService.FileManagerAdmin.SaveFileDetailsRecordAsync
+        Public Function SaveFileDetailsRecordAsync(ByVal fileInfoLocator As FileManagerAdminService.DataItemLocator, ByVal fileDetailsRecord As FileManagerAdminService.FileDetailsRecordDto) As System.Threading.Tasks.Task(Of Boolean) Implements FileManagerAdminService.FileManagerRelay.SaveFileDetailsRecordAsync
             Return MyBase.Channel.SaveFileDetailsRecordAsync(fileInfoLocator, fileDetailsRecord)
         End Function
         
-        Public Function SaveFileDetailsRecords(ByVal fileInfoLocator As FileManagerAdminService.DataItemLocator, ByVal fileDetailsRecords() As FileManagerAdminService.FileDetailsRecordDto) As Boolean Implements FileManagerAdminService.FileManagerAdmin.SaveFileDetailsRecords
+        Public Function SaveFileDetailsRecords(ByVal fileInfoLocator As FileManagerAdminService.DataItemLocator, ByVal fileDetailsRecords() As FileManagerAdminService.FileDetailsRecordDto) As Boolean Implements FileManagerAdminService.FileManagerRelay.SaveFileDetailsRecords
             Return MyBase.Channel.SaveFileDetailsRecords(fileInfoLocator, fileDetailsRecords)
         End Function
         
-        Public Function SaveFileDetailsRecordsAsync(ByVal fileInfoLocator As FileManagerAdminService.DataItemLocator, ByVal fileDetailsRecords() As FileManagerAdminService.FileDetailsRecordDto) As System.Threading.Tasks.Task(Of Boolean) Implements FileManagerAdminService.FileManagerAdmin.SaveFileDetailsRecordsAsync
+        Public Function SaveFileDetailsRecordsAsync(ByVal fileInfoLocator As FileManagerAdminService.DataItemLocator, ByVal fileDetailsRecords() As FileManagerAdminService.FileDetailsRecordDto) As System.Threading.Tasks.Task(Of Boolean) Implements FileManagerAdminService.FileManagerRelay.SaveFileDetailsRecordsAsync
             Return MyBase.Channel.SaveFileDetailsRecordsAsync(fileInfoLocator, fileDetailsRecords)
         End Function
         
-        Public Function RemoveFileInfoRecord(ByVal fileInfoLocator As FileManagerAdminService.DataItemLocator) As FileManagerAdminService.FileInfoDto Implements FileManagerAdminService.FileManagerAdmin.RemoveFileInfoRecord
+        Public Function RemoveFileInfoRecord(ByVal fileInfoLocator As FileManagerAdminService.DataItemLocator) As FileManagerAdminService.FileInfoDto Implements FileManagerAdminService.FileManagerRelay.RemoveFileInfoRecord
             Return MyBase.Channel.RemoveFileInfoRecord(fileInfoLocator)
         End Function
         
-        Public Function RemoveFileInfoRecordAsync(ByVal fileInfoLocator As FileManagerAdminService.DataItemLocator) As System.Threading.Tasks.Task(Of FileManagerAdminService.FileInfoDto) Implements FileManagerAdminService.FileManagerAdmin.RemoveFileInfoRecordAsync
+        Public Function RemoveFileInfoRecordAsync(ByVal fileInfoLocator As FileManagerAdminService.DataItemLocator) As System.Threading.Tasks.Task(Of FileManagerAdminService.FileInfoDto) Implements FileManagerAdminService.FileManagerRelay.RemoveFileInfoRecordAsync
             Return MyBase.Channel.RemoveFileInfoRecordAsync(fileInfoLocator)
         End Function
         
-        Public Function RemoveFileDetailsRecords(ByVal fileInfoLocator As FileManagerAdminService.DataItemLocator, ByVal fileDetailsRecords() As FileManagerAdminService.FileDetailsRecordDto) As FileManagerAdminService.FileDetailsRecordDto() Implements FileManagerAdminService.FileManagerAdmin.RemoveFileDetailsRecords
+        Public Function RemoveFileDetailsRecords(ByVal fileInfoLocator As FileManagerAdminService.DataItemLocator, ByVal fileDetailsRecords() As FileManagerAdminService.FileDetailsRecordDto) As FileManagerAdminService.FileDetailsRecordDto() Implements FileManagerAdminService.FileManagerRelay.RemoveFileDetailsRecords
             Return MyBase.Channel.RemoveFileDetailsRecords(fileInfoLocator, fileDetailsRecords)
         End Function
         
-        Public Function RemoveFileDetailsRecordsAsync(ByVal fileInfoLocator As FileManagerAdminService.DataItemLocator, ByVal fileDetailsRecords() As FileManagerAdminService.FileDetailsRecordDto) As System.Threading.Tasks.Task(Of FileManagerAdminService.FileDetailsRecordDto()) Implements FileManagerAdminService.FileManagerAdmin.RemoveFileDetailsRecordsAsync
+        Public Function RemoveFileDetailsRecordsAsync(ByVal fileInfoLocator As FileManagerAdminService.DataItemLocator, ByVal fileDetailsRecords() As FileManagerAdminService.FileDetailsRecordDto) As System.Threading.Tasks.Task(Of FileManagerAdminService.FileDetailsRecordDto()) Implements FileManagerAdminService.FileManagerRelay.RemoveFileDetailsRecordsAsync
             Return MyBase.Channel.RemoveFileDetailsRecordsAsync(fileInfoLocator, fileDetailsRecords)
         End Function
         
-        Public Function SaveAzureFileInfoEntity(ByVal fileInfoDto As FileManagerAdminService.FileInfoDto) As Boolean Implements FileManagerAdminService.FileManagerAdmin.SaveAzureFileInfoEntity
+        Public Function SaveAzureFileInfoEntity(ByVal fileInfoDto As FileManagerAdminService.FileInfoDto) As Boolean Implements FileManagerAdminService.FileManagerRelay.SaveAzureFileInfoEntity
             Return MyBase.Channel.SaveAzureFileInfoEntity(fileInfoDto)
         End Function
         
-        Public Function SaveAzureFileInfoEntityAsync(ByVal fileInfoDto As FileManagerAdminService.FileInfoDto) As System.Threading.Tasks.Task(Of Boolean) Implements FileManagerAdminService.FileManagerAdmin.SaveAzureFileInfoEntityAsync
+        Public Function SaveAzureFileInfoEntityAsync(ByVal fileInfoDto As FileManagerAdminService.FileInfoDto) As System.Threading.Tasks.Task(Of Boolean) Implements FileManagerAdminService.FileManagerRelay.SaveAzureFileInfoEntityAsync
             Return MyBase.Channel.SaveAzureFileInfoEntityAsync(fileInfoDto)
         End Function
         
-        Public Function SaveAzureFileDetailsEntities(ByVal fileInfoDto As FileManagerAdminService.FileInfoDto, ByVal fileDetailsDto() As FileManagerAdminService.FileDetailsRecordDto) As Boolean Implements FileManagerAdminService.FileManagerAdmin.SaveAzureFileDetailsEntities
+        Public Function SaveAzureFileDetailsEntities(ByVal fileInfoDto As FileManagerAdminService.FileInfoDto, ByVal fileDetailsDto() As FileManagerAdminService.FileDetailsRecordDto) As Boolean Implements FileManagerAdminService.FileManagerRelay.SaveAzureFileDetailsEntities
             Return MyBase.Channel.SaveAzureFileDetailsEntities(fileInfoDto, fileDetailsDto)
         End Function
         
-        Public Function SaveAzureFileDetailsEntitiesAsync(ByVal fileInfoDto As FileManagerAdminService.FileInfoDto, ByVal fileDetailsDto() As FileManagerAdminService.FileDetailsRecordDto) As System.Threading.Tasks.Task(Of Boolean) Implements FileManagerAdminService.FileManagerAdmin.SaveAzureFileDetailsEntitiesAsync
+        Public Function SaveAzureFileDetailsEntitiesAsync(ByVal fileInfoDto As FileManagerAdminService.FileInfoDto, ByVal fileDetailsDto() As FileManagerAdminService.FileDetailsRecordDto) As System.Threading.Tasks.Task(Of Boolean) Implements FileManagerAdminService.FileManagerRelay.SaveAzureFileDetailsEntitiesAsync
             Return MyBase.Channel.SaveAzureFileDetailsEntitiesAsync(fileInfoDto, fileDetailsDto)
         End Function
     End Class

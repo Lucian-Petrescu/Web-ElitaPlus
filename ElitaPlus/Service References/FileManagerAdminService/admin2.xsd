@@ -1,189 +1,45 @@
 <?xml version="1.0" encoding="utf-8"?>
-<xs:schema xmlns:ser="http://schemas.microsoft.com/2003/10/Serialization/" xmlns:tns="http://assurant.com/Elita/FileManagement/ExchangeLayout" elementFormDefault="qualified" targetNamespace="http://assurant.com/Elita/FileManagement/ExchangeLayout" xmlns:xs="http://www.w3.org/2001/XMLSchema">
-  <xs:import schemaLocation="http://localhost/ElitaClaimManagement/FileManager/admin?xsd=xsd1" namespace="http://schemas.microsoft.com/2003/10/Serialization/" />
-  <xs:complexType name="DataLine">
-    <xs:complexContent mixed="false">
-      <xs:extension base="tns:BaseLine">
-        <xs:sequence>
-          <xs:element minOccurs="0" name="FileDetailIdentifier" nillable="true" type="xs:string" />
-        </xs:sequence>
-      </xs:extension>
-    </xs:complexContent>
-  </xs:complexType>
-  <xs:element name="DataLine" nillable="true" type="tns:DataLine" />
-  <xs:complexType name="BaseLine">
-    <xs:sequence>
-      <xs:element name="RecordQualifier" nillable="true" type="xs:string" />
-      <xs:element minOccurs="0" name="Errors" nillable="true" type="tns:ArrayOfError" />
-    </xs:sequence>
-  </xs:complexType>
-  <xs:element name="BaseLine" nillable="true" type="tns:BaseLine" />
-  <xs:complexType name="ArrayOfError">
-    <xs:sequence>
-      <xs:element minOccurs="0" maxOccurs="unbounded" name="Error" nillable="true" type="tns:Error" />
-    </xs:sequence>
-  </xs:complexType>
-  <xs:element name="ArrayOfError" nillable="true" type="tns:ArrayOfError" />
-  <xs:complexType name="Error">
-    <xs:sequence>
-      <xs:element minOccurs="0" name="Code" nillable="true" type="xs:string" />
-      <xs:element minOccurs="0" name="Message" nillable="true" type="xs:string" />
-    </xs:sequence>
-  </xs:complexType>
-  <xs:element name="Error" nillable="true" type="tns:Error" />
-  <xs:complexType name="Header">
-    <xs:complexContent mixed="false">
-      <xs:extension base="tns:BaseLine">
-        <xs:sequence>
-          <xs:element name="PurposeCode" nillable="true" type="xs:string" />
-          <xs:element name="SenderIdentifier" nillable="true" type="tns:Identifier" />
-          <xs:element minOccurs="0" name="SenderSubIdentifier" nillable="true" type="tns:Identifier" />
-          <xs:element minOccurs="0" name="SenderAdditionalIdentifier" nillable="true" type="tns:Identifier" />
-          <xs:element name="SenderIdentity" nillable="true" type="tns:Base64Identifier" />
-          <xs:element name="SenderSecret" nillable="true" type="tns:Base64Identifier" />
-          <xs:element name="EnvironmentQualifier" nillable="true" type="xs:string" />
-          <xs:element name="ReceiverIdentifier" nillable="true" type="tns:Identifier" />
-          <xs:element minOccurs="0" name="ReceiverSubIdentifier" nillable="true" type="tns:Identifier" />
-          <xs:element minOccurs="0" name="ReceiverAdditionalIdentifier" nillable="true" type="tns:Identifier" />
-          <xs:element name="Date" nillable="true" type="tns:FormattedDate" />
-          <xs:element name="Time" nillable="true" type="tns:FormattedTime" />
-          <xs:element minOccurs="0" name="SenderControlNumber" nillable="true" type="xs:string" />
-          <xs:element minOccurs="0" name="ReceiverControlNumber" nillable="true" type="xs:string" />
-          <xs:element minOccurs="0" name="FileIdentifier" nillable="true" type="xs:string" />
-        </xs:sequence>
-      </xs:extension>
-    </xs:complexContent>
-  </xs:complexType>
-  <xs:element name="Header" nillable="true" type="tns:Header" />
-  <xs:complexType name="Identifier">
-    <xs:sequence>
-      <xs:element name="Code" nillable="true" type="xs:string" />
-      <xs:element name="Qualifier" nillable="true" type="xs:string" />
-    </xs:sequence>
-  </xs:complexType>
-  <xs:element name="Identifier" nillable="true" type="tns:Identifier" />
-  <xs:complexType name="Base64Identifier">
-    <xs:complexContent mixed="false">
-      <xs:extension base="tns:Identifier">
-        <xs:sequence />
-      </xs:extension>
-    </xs:complexContent>
-  </xs:complexType>
-  <xs:element name="Base64Identifier" nillable="true" type="tns:Base64Identifier" />
-  <xs:complexType name="FormattedDate">
-    <xs:sequence>
-      <xs:element name="DateInfo" nillable="true" type="xs:string" />
-      <xs:element name="DateFormat" nillable="true" type="xs:string" />
-      <xs:element minOccurs="0" name="Date" nillable="true" type="xs:dateTime" />
-    </xs:sequence>
-  </xs:complexType>
-  <xs:element name="FormattedDate" nillable="true" type="tns:FormattedDate" />
-  <xs:complexType name="FormattedTime">
-    <xs:sequence>
-      <xs:element name="TimeInfo" nillable="true" type="xs:string" />
-      <xs:element name="TimeZoneCode" nillable="true" type="xs:string" />
-      <xs:element minOccurs="0" name="Time" type="ser:duration" />
-    </xs:sequence>
-  </xs:complexType>
-  <xs:element name="FormattedTime" nillable="true" type="tns:FormattedTime" />
-  <xs:complexType name="Footer">
-    <xs:complexContent mixed="false">
-      <xs:extension base="tns:BaseLine">
-        <xs:sequence>
-          <xs:element name="RecordCount" nillable="true" type="xs:string" />
-          <xs:element minOccurs="0" name="SenderControlNumber" nillable="true" type="xs:string" />
-          <xs:element minOccurs="0" name="ReceiverControlNumber" nillable="true" type="xs:string" />
-        </xs:sequence>
-      </xs:extension>
-    </xs:complexContent>
-  </xs:complexType>
-  <xs:element name="Footer" nillable="true" type="tns:Footer" />
-  <xs:complexType name="ReportClaim">
-    <xs:complexContent mixed="false">
-      <xs:extension base="tns:DataLine">
-        <xs:sequence>
-          <xs:element minOccurs="0" name="RecordIdentifier" nillable="true" type="xs:string" />
-          <xs:element name="CertificateIdentifier" nillable="true" type="tns:Identifier" />
-          <xs:element minOccurs="0" name="CertificateSubIdentifier" nillable="true" type="tns:Identifier" />
-          <xs:element minOccurs="0" name="CertificateAdditionalIdentifier" nillable="true" type="tns:Identifier" />
-          <xs:element name="LossDate" nillable="true" type="tns:FormattedDate" />
-          <xs:element minOccurs="0" name="LossTimeStart" nillable="true" type="tns:FormattedTime" />
-          <xs:element minOccurs="0" name="LossTimeEnd" nillable="true" type="tns:FormattedTime" />
-          <xs:element name="ItemIdentifier" nillable="true" type="tns:Identifier" />
-          <xs:element minOccurs="0" name="ItemSubIdentifier" nillable="true" type="tns:Identifier" />
-          <xs:element minOccurs="0" name="ItemAdditionalIdentifier" nillable="true" type="tns:Identifier" />
-          <xs:element name="CoverageTypeIdentifier" nillable="true" type="tns:Identifier" />
-          <xs:element minOccurs="0" name="CoverageTypeSubIdentifier" nillable="true" type="tns:Identifier" />
-          <xs:element minOccurs="0" name="CoverageTypeAdditionalIdentifier" nillable="true" type="tns:Identifier" />
-          <xs:element minOccurs="0" name="ClaimedItem" nillable="true" type="tns:Item" />
-          <xs:element name="ProblemStatement" nillable="true" type="xs:string" />
-          <xs:element minOccurs="0" name="FinancialItems" nillable="true" type="tns:ArrayOfFinancialInfo" />
-          <xs:element minOccurs="0" name="AdditionalItems" nillable="true" type="tns:ArrayOfAdditionalInfo" />
-        </xs:sequence>
-      </xs:extension>
-    </xs:complexContent>
-  </xs:complexType>
-  <xs:element name="ReportClaim" nillable="true" type="tns:ReportClaim" />
-  <xs:complexType name="Item">
-    <xs:sequence>
-      <xs:element minOccurs="0" name="Sku" nillable="true" type="xs:string" />
-      <xs:element minOccurs="0" name="Make" nillable="true" type="xs:string" />
-      <xs:element minOccurs="0" name="Model" nillable="true" type="xs:string" />
-      <xs:element minOccurs="0" name="Color" nillable="true" type="xs:string" />
-      <xs:element minOccurs="0" name="Capacity" nillable="true" type="xs:string" />
-      <xs:element minOccurs="0" name="Carrier" nillable="true" type="xs:string" />
-      <xs:element name="Identification" nillable="true" type="tns:Identifier" />
-      <xs:element minOccurs="0" name="AdditionalIdentification" nillable="true" type="tns:Identifier" />
-    </xs:sequence>
-  </xs:complexType>
-  <xs:element name="Item" nillable="true" type="tns:Item" />
-  <xs:complexType name="ArrayOfFinancialInfo">
-    <xs:sequence>
-      <xs:element minOccurs="0" maxOccurs="unbounded" name="FinancialInfo" nillable="true" type="tns:FinancialInfo" />
-    </xs:sequence>
-  </xs:complexType>
-  <xs:element name="ArrayOfFinancialInfo" nillable="true" type="tns:ArrayOfFinancialInfo" />
-  <xs:complexType name="FinancialInfo">
-    <xs:complexContent mixed="false">
-      <xs:extension base="tns:BaseLine">
-        <xs:sequence>
-          <xs:element minOccurs="0" name="FinancialItemIdentification" nillable="true" type="tns:Identifier" />
-          <xs:element minOccurs="0" name="FinancialItemSubIdentification" nillable="true" type="tns:Identifier" />
-          <xs:element minOccurs="0" name="FinancialItemAdditionalIdentification" nillable="true" type="tns:Identifier" />
-          <xs:element name="Amount" nillable="true" type="tns:FormattedAmount" />
-          <xs:element minOccurs="0" name="OriginalAmount" nillable="true" type="tns:FormattedAmount" />
-          <xs:element minOccurs="0" name="ConversionRate" nillable="true" type="tns:FormattedAmount" />
-          <xs:element minOccurs="0" name="ConversionDate" nillable="true" type="tns:FormattedDate" />
-          <xs:element minOccurs="0" name="ConversionTime" nillable="true" type="tns:FormattedTime" />
-        </xs:sequence>
-      </xs:extension>
-    </xs:complexContent>
-  </xs:complexType>
-  <xs:element name="FinancialInfo" nillable="true" type="tns:FinancialInfo" />
-  <xs:complexType name="FormattedAmount">
-    <xs:sequence>
-      <xs:element name="AmountInfo" nillable="true" type="xs:string" />
-      <xs:element name="CurrencyCode" nillable="true" type="xs:string" />
-      <xs:element name="AmountDecimalSeparator" nillable="true" type="xs:string" />
-      <xs:element minOccurs="0" name="Amount" nillable="true" type="xs:decimal" />
-    </xs:sequence>
-  </xs:complexType>
-  <xs:element name="FormattedAmount" nillable="true" type="tns:FormattedAmount" />
-  <xs:complexType name="AdditionalInfo">
-    <xs:complexContent mixed="false">
-      <xs:extension base="tns:BaseLine">
-        <xs:sequence>
-          <xs:element name="Information" nillable="true" type="xs:string" />
-          <xs:element name="Qualifier" nillable="true" type="xs:string" />
-        </xs:sequence>
-      </xs:extension>
-    </xs:complexContent>
-  </xs:complexType>
-  <xs:element name="AdditionalInfo" nillable="true" type="tns:AdditionalInfo" />
-  <xs:complexType name="ArrayOfAdditionalInfo">
-    <xs:sequence>
-      <xs:element minOccurs="0" maxOccurs="unbounded" name="AdditionalInfo" nillable="true" type="tns:AdditionalInfo" />
-    </xs:sequence>
-  </xs:complexType>
-  <xs:element name="ArrayOfAdditionalInfo" nillable="true" type="tns:ArrayOfAdditionalInfo" />
+<xs:schema xmlns:tns="http://schemas.datacontract.org/2004/07/Assurant.Elita.ClaimManagement.Extension.FileManager.Contracts" elementFormDefault="qualified" targetNamespace="http://schemas.datacontract.org/2004/07/Assurant.Elita.ClaimManagement.Extension.FileManager.Contracts" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+  <xs:simpleType name="RecordStateType">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="Initialized" />
+      <xs:enumeration value="Counted" />
+      <xs:enumeration value="Validated" />
+      <xs:enumeration value="ReadyToQueue" />
+      <xs:enumeration value="Queued" />
+      <xs:enumeration value="Rejected" />
+      <xs:enumeration value="Processed" />
+      <xs:enumeration value="ByPassed" />
+      <xs:enumeration value="ParsingFailed" />
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:element name="RecordStateType" nillable="true" type="tns:RecordStateType" />
+  <xs:simpleType name="LifeCycleRecordStateType">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="New" />
+      <xs:enumeration value="Active" />
+      <xs:enumeration value="Stale" />
+      <xs:enumeration value="FrequentAccess" />
+      <xs:enumeration value="Backup" />
+      <xs:enumeration value="InfrequentAccess" />
+      <xs:enumeration value="ColdAccess" />
+      <xs:enumeration value="Purge" />
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:element name="LifeCycleRecordStateType" nillable="true" type="tns:LifeCycleRecordStateType" />
+  <xs:simpleType name="FileType">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="ClaimUpFile" />
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:element name="FileType" nillable="true" type="tns:FileType" />
+  <xs:simpleType name="FileStateType">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="Initialized" />
+      <xs:enumeration value="Validated" />
+      <xs:enumeration value="Rejected" />
+      <xs:enumeration value="Processed" />
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:element name="FileStateType" nillable="true" type="tns:FileStateType" />
 </xs:schema>
