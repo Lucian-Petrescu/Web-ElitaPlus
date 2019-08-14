@@ -1225,7 +1225,7 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Reference.svcmap</DependentUpon>
     </Compile>
-    <Compile Include="Service References\FileAdminService\Reference.vb">
+    <Compile Include="Service References\FileManagerAdmin\Reference.vb">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>Reference.svcmap</DependentUpon>
@@ -5892,27 +5892,15 @@
       <Generator>WCF Proxy Generator</Generator>
       <LastGenOutput>Reference.vb</LastGenOutput>
     </None>
-    <Content Include="Service References\FileAdminService\Assurant.ElitaPlus.ElitaPlusWebApp.FileAdminService.GetFileRecordsResponse.datasource">
+    <Content Include="Service References\FileManagerAdmin\Assurant.ElitaPlus.ElitaPlusWebApp.FileManagerAdmin.FileDetailsRecordDto.datasource">
       <DependentUpon>Reference.svcmap</DependentUpon>
     </Content>
-    <Content Include="Service References\FileAdminService\Assurant.ElitaPlus.ElitaPlusWebApp.FileAdminService.GetFilesResponse.datasource">
+    <Content Include="Service References\FileManagerAdmin\Assurant.ElitaPlus.ElitaPlusWebApp.FileManagerAdmin.FileInfoDto.datasource">
       <DependentUpon>Reference.svcmap</DependentUpon>
     </Content>
-    <Content Include="Service References\FileAdminService\Assurant.ElitaPlus.ElitaPlusWebApp.FileAdminService.ProcessFileResponse.datasource">
-      <DependentUpon>Reference.svcmap</DependentUpon>
-    </Content>
-    <Content Include="Service References\FileAdminService\Assurant.ElitaPlus.ElitaPlusWebApp.FileAdminService.QueueFileResponse.datasource">
-      <DependentUpon>Reference.svcmap</DependentUpon>
-    </Content>
-    <Content Include="Service References\FileAdminService\Assurant.ElitaPlus.ElitaPlusWebApp.FileAdminService.SaveRecordResponse.datasource">
-      <DependentUpon>Reference.svcmap</DependentUpon>
-    </Content>
-    <Content Include="Service References\FileAdminService\Assurant.ElitaPlus.ElitaPlusWebApp.FileAdminService.ValidateFileResponse.datasource">
-      <DependentUpon>Reference.svcmap</DependentUpon>
-    </Content>
-    <None Include="Service References\FileAdminService\configuration91.svcinfo" />
-    <None Include="Service References\FileAdminService\configuration.svcinfo" />
-    <None Include="Service References\FileAdminService\Reference.svcmap">
+    <None Include="Service References\FileManagerAdmin\configuration91.svcinfo" />
+    <None Include="Service References\FileManagerAdmin\configuration.svcinfo" />
+    <None Include="Service References\FileManagerAdmin\Reference.svcmap">
       <Generator>WCF Proxy Generator</Generator>
       <LastGenOutput>Reference.vb</LastGenOutput>
     </None>
@@ -5933,35 +5921,23 @@
     <None Include="Service References\ClaimService\ClaimService3.xsd">
       <SubType>Designer</SubType>
     </None>
-    <None Include="Service References\FileAdminService\fileadmin.wsdl" />
-    <None Include="Service References\FileAdminService\fileadmin.xsd">
+    <None Include="Service References\FileManagerAdmin\admin.wsdl" />
+    <None Include="Service References\FileManagerAdmin\admin.xsd">
       <SubType>Designer</SubType>
     </None>
-    <None Include="Service References\FileAdminService\fileadmin1.xsd">
+    <None Include="Service References\FileManagerAdmin\admin1.xsd">
       <SubType>Designer</SubType>
     </None>
-    <None Include="Service References\FileAdminService\fileadmin2.xsd">
+    <None Include="Service References\FileManagerAdmin\admin2.xsd">
       <SubType>Designer</SubType>
     </None>
-    <None Include="Service References\FileAdminService\fileadmin3.xsd">
+    <None Include="Service References\FileManagerAdmin\admin3.xsd">
       <SubType>Designer</SubType>
     </None>
-    <None Include="Service References\FileAdminService\fileadmin4.xsd">
+    <None Include="Service References\FileManagerAdmin\admin4.xsd">
       <SubType>Designer</SubType>
     </None>
-    <None Include="Service References\FileAdminService\fileadmin5.xsd">
-      <SubType>Designer</SubType>
-    </None>
-    <None Include="Service References\FileAdminService\fileadmin6.xsd">
-      <SubType>Designer</SubType>
-    </None>
-    <None Include="Service References\FileAdminService\fileadmin7.xsd">
-      <SubType>Designer</SubType>
-    </None>
-    <None Include="Service References\FileAdminService\fileadmin8.xsd">
-      <SubType>Designer</SubType>
-    </None>
-    <None Include="Service References\FileAdminService\FileProcessor.wsdl" />
+    <None Include="Service References\FileManagerAdmin\FileManagerRelay.wsdl" />
     <None Include="Service References\GiftCardService\GiftCardService.disco" />
     <None Include="Service References\GiftCardService\configuration91.svcinfo" />
     <None Include="Service References\GiftCardService\configuration.svcinfo" />
@@ -8708,7 +8684,7 @@
     <WCFMetadataStorage Include="Service References\ClaimFulfillmentWebAppGatewayService\" />
     <WCFMetadataStorage Include="Service References\ClaimRecordingService\" />
     <WCFMetadataStorage Include="Service References\ClaimService\" />
-    <WCFMetadataStorage Include="Service References\FileAdminService\" />
+    <WCFMetadataStorage Include="Service References\FileManagerAdmin\" />
     <WCFMetadataStorage Include="Service References\GalaxyWcfRef\" />
     <WCFMetadataStorage Include="Service References\GiftCardService\" />
     <WCFMetadataStorage Include="Service References\OlitaWcfRef\" />
