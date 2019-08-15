@@ -24,7 +24,7 @@
   <Metadata>
     <MetadataFile FileName="FileManagerRelay.wsdl" MetadataType="Wsdl" ID="84c15747-2f54-4a69-9aa5-49ada3c1a76f" SourceId="1" SourceUrl="http://l16mia0d7491npx.cead.prd/ElitaClaimManagement/WebApp/admin" />
     <MetadataFile FileName="admin.wsdl" MetadataType="Wsdl" ID="88d00657-ddc8-4411-ba59-0ed232e18e6b" SourceId="1" SourceUrl="http://l16mia0d7491npx.cead.prd/ElitaClaimManagement/WebApp/admin?wsdl=wsdl0" />
-    <MetadataFile FileName="admin.xsd" MetadataType="Schema" ID="389fedca-1a94-4bdc-b046-a9540822c0c4" SourceId="1" SourceUrl="http://l16mia0d7491npx.cead.prd/ElitaClaimManagement/WebApp/admin?xsd=xsd4" />
+    <MetadataFile FileName="admin.xsd" MetadataType="Schema" ID="5c15b98b-e315-4e32-9410-bef92cd9e890" SourceId="1" SourceUrl="http://l16mia0d7491npx.cead.prd/ElitaClaimManagement/WebApp/admin?xsd=xsd4" />
     <MetadataFile FileName="admin1.xsd" MetadataType="Schema" ID="ffdaca74-242c-429d-9299-ae649f05e893" SourceId="1" SourceUrl="http://l16mia0d7491npx.cead.prd/ElitaClaimManagement/WebApp/admin?xsd=xsd2" />
     <MetadataFile FileName="admin2.xsd" MetadataType="Schema" ID="800a58a7-70ef-4d56-a55b-e56055b2cc3f" SourceId="1" SourceUrl="http://l16mia0d7491npx.cead.prd/ElitaClaimManagement/WebApp/admin?xsd=xsd3" />
     <MetadataFile FileName="admin3.xsd" MetadataType="Schema" ID="8e2df9f7-4f69-4a03-bcf7-a353d0884c17" SourceId="1" SourceUrl="http://l16mia0d7491npx.cead.prd/ElitaClaimManagement/WebApp/admin?xsd=xsd0" />

@@ -18,7 +18,8 @@ Namespace FileManagerAdminService
     
     <System.Diagnostics.DebuggerStepThroughAttribute(),  _
      System.CodeDom.Compiler.GeneratedCodeAttribute("System.Runtime.Serialization", "4.0.0.0"),  _
-     System.Runtime.Serialization.DataContractAttribute(Name:="DataItemLocator", [Namespace]:="http://assurant.com/Elita/FileManager/Data"),  _
+     System.Runtime.Serialization.DataContractAttribute(Name:="DataItemLocator", [Namespace]:="http://schemas.datacontract.org/2004/07/Assurant.Elita.ClaimManagement.Extension."& _ 
+        "FileManager.Contracts"),  _
      System.SerializableAttribute()>  _
     Partial Public Class DataItemLocator
         Inherits Object
@@ -27,11 +28,14 @@ Namespace FileManagerAdminService
         <System.NonSerializedAttribute()>  _
         Private extensionDataField As System.Runtime.Serialization.ExtensionDataObject
         
-        Private TypeField As FileManagerAdminService.DataItemType
+        <System.Runtime.Serialization.OptionalFieldAttribute()>  _
+        Private ForceRefreshField As Boolean
         
+        <System.Runtime.Serialization.OptionalFieldAttribute()>  _
         Private IdentifierField As String
         
-        Private ForceRefreshField As Boolean
+        <System.Runtime.Serialization.OptionalFieldAttribute()>  _
+        Private TypeField As FileManagerAdminService.DataItemType
         
         <Global.System.ComponentModel.BrowsableAttribute(false)>  _
         Public Property ExtensionData() As System.Runtime.Serialization.ExtensionDataObject Implements System.Runtime.Serialization.IExtensibleDataObject.ExtensionData
@@ -43,20 +47,20 @@ Namespace FileManagerAdminService
             End Set
         End Property
         
-        <System.Runtime.Serialization.DataMemberAttribute(IsRequired:=true)>  _
-        Public Property Type() As FileManagerAdminService.DataItemType
+        <System.Runtime.Serialization.DataMemberAttribute()>  _
+        Public Property ForceRefresh() As Boolean
             Get
-                Return Me.TypeField
+                Return Me.ForceRefreshField
             End Get
             Set
-                If (Me.TypeField.Equals(value) <> true) Then
-                    Me.TypeField = value
-                    Me.RaisePropertyChanged("Type")
+                If (Me.ForceRefreshField.Equals(value) <> true) Then
+                    Me.ForceRefreshField = value
+                    Me.RaisePropertyChanged("ForceRefresh")
                 End If
             End Set
         End Property
         
-        <System.Runtime.Serialization.DataMemberAttribute(IsRequired:=true, Order:=1)>  _
+        <System.Runtime.Serialization.DataMemberAttribute()>  _
         Public Property Identifier() As String
             Get
                 Return Me.IdentifierField
@@ -69,15 +73,15 @@ Namespace FileManagerAdminService
             End Set
         End Property
         
-        <System.Runtime.Serialization.DataMemberAttribute(IsRequired:=true, Order:=2)>  _
-        Public Property ForceRefresh() As Boolean
+        <System.Runtime.Serialization.DataMemberAttribute()>  _
+        Public Property Type() As FileManagerAdminService.DataItemType
             Get
-                Return Me.ForceRefreshField
+                Return Me.TypeField
             End Get
             Set
-                If (Me.ForceRefreshField.Equals(value) <> true) Then
-                    Me.ForceRefreshField = value
-                    Me.RaisePropertyChanged("ForceRefresh")
+                If (Me.TypeField.Equals(value) <> true) Then
+                    Me.TypeField = value
+                    Me.RaisePropertyChanged("Type")
                 End If
             End Set
         End Property

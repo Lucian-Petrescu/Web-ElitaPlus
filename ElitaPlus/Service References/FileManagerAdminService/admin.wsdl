@@ -4,8 +4,8 @@
     <xsd:schema targetNamespace="http://assurant.com/Elita/FileManagement/Imports">
       <xsd:import schemaLocation="http://l16mia0d7491npx.cead.prd/ElitaClaimManagement/WebApp/admin?xsd=xsd0" namespace="http://assurant.com/Elita/FileManagement" />
       <xsd:import schemaLocation="http://l16mia0d7491npx.cead.prd/ElitaClaimManagement/WebApp/admin?xsd=xsd1" namespace="http://schemas.microsoft.com/2003/10/Serialization/" />
-      <xsd:import schemaLocation="http://l16mia0d7491npx.cead.prd/ElitaClaimManagement/WebApp/admin?xsd=xsd2" namespace="http://assurant.com/Elita/FileManager/Data" />
-      <xsd:import schemaLocation="http://l16mia0d7491npx.cead.prd/ElitaClaimManagement/WebApp/admin?xsd=xsd3" namespace="http://schemas.datacontract.org/2004/07/Assurant.Elita.ClaimManagement.Extension.FileManager.Contracts" />
+      <xsd:import schemaLocation="http://l16mia0d7491npx.cead.prd/ElitaClaimManagement/WebApp/admin?xsd=xsd2" namespace="http://schemas.datacontract.org/2004/07/Assurant.Elita.ClaimManagement.Extension.FileManager.Contracts" />
+      <xsd:import schemaLocation="http://l16mia0d7491npx.cead.prd/ElitaClaimManagement/WebApp/admin?xsd=xsd3" namespace="http://assurant.com/Elita/FileManager/Data" />
       <xsd:import schemaLocation="http://l16mia0d7491npx.cead.prd/ElitaClaimManagement/WebApp/admin?xsd=xsd4" namespace="http://assurant.com/Elita/FileManagement/ExchangeLayout" />
     </xsd:schema>
   </wsdl:types>

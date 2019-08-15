@@ -5945,6 +5945,9 @@
     <Content Include="Service References\FileManagerAdminService\Assurant.ElitaPlus.ElitaPlusWebApp.FileManagerAdminService.FileInfoDto.datasource">
       <DependentUpon>Reference.svcmap</DependentUpon>
     </Content>
+    <None Include="Service References\FileManagerAdminService\admin.xsd">
+      <SubType>Designer</SubType>
+    </None>
     <None Include="Service References\FileManagerAdminService\configuration91.svcinfo" />
     <None Include="Service References\FileManagerAdminService\configuration.svcinfo" />
     <None Include="Service References\FileManagerAdminService\Reference.svcmap">
@@ -5998,9 +6001,6 @@
     </None>
     <None Include="Service References\FileAdminService\FileProcessor.wsdl" />
     <None Include="Service References\FileManagerAdminService\admin.wsdl" />
-    <None Include="Service References\FileManagerAdminService\admin.xsd">
-      <SubType>Designer</SubType>
-    </None>
     <None Include="Service References\FileManagerAdminService\admin1.xsd">
       <SubType>Designer</SubType>
     </None>
@@ -8793,7 +8793,7 @@
           <AutoAssignPort>True</AutoAssignPort>
           <DevelopmentServerPort>2550</DevelopmentServerPort>
           <DevelopmentServerVPath>/</DevelopmentServerVPath>
-          <IISUrl>http://localhost:80/ElitaPlus</IISUrl>
+          <IISUrl>http://localhost:81/ElitaPlus</IISUrl>
           <NTLMAuthentication>False</NTLMAuthentication>
           <UseCustomServer>False</UseCustomServer>
           <CustomServerUrl>
