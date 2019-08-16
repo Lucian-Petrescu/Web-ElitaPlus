@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
-<SavedWcfConfigurationInformation xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" Version="9.1" CheckSum="RR7+IFpKKmjFycI+IlYBtJZc3Kw=">
+<SavedWcfConfigurationInformation xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" Version="9.1" CheckSum="bJARuw4Bpxe8P/0UHSVOawWaxZs=">
   <bindingConfigurations>
-    <bindingConfiguration bindingType="customBinding" name="CustomBinding_FileManagerAdmin">
+    <bindingConfiguration bindingType="customBinding" name="CustomBinding_FileManagerRelay">
       <properties>
         <property path="/name" isComplexType="false" isExplicitlyDefined="true" clrType="System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
-          <serializedValue>CustomBinding_FileManagerAdmin</serializedValue>
+          <serializedValue>CustomBinding_FileManagerRelay</serializedValue>
         </property>
         <property path="/closeTimeout" isComplexType="false" isExplicitlyDefined="true" clrType="System.TimeSpan, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
           <serializedValue />
@@ -719,10 +719,10 @@
     </bindingConfiguration>
   </bindingConfigurations>
   <endpoints>
-    <endpoint name="CustomBinding_FileManagerAdmin" contract="FileManagerAdminService.FileManagerAdmin" bindingType="customBinding" address="http://localhost/ElitaClaimManagement/FileManager/admin" bindingConfiguration="CustomBinding_FileManagerAdmin">
+    <endpoint name="CustomBinding_FileManagerRelay" contract="FileManagerAdminService.FileManagerRelay" bindingType="customBinding" address="http://l16mia0d7491npx.cead.prd/ElitaClaimManagement/WebApp/admin" bindingConfiguration="CustomBinding_FileManagerRelay">
       <properties>
         <property path="/address" isComplexType="false" isExplicitlyDefined="true" clrType="System.Uri, System, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
-          <serializedValue>http://localhost/ElitaClaimManagement/FileManager/admin</serializedValue>
+          <serializedValue>http://l16mia0d7491npx.cead.prd/ElitaClaimManagement/WebApp/admin</serializedValue>
         </property>
         <property path="/behaviorConfiguration" isComplexType="false" isExplicitlyDefined="false" clrType="System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
           <serializedValue />
@@ -731,10 +731,10 @@
           <serializedValue>customBinding</serializedValue>
         </property>
         <property path="/bindingConfiguration" isComplexType="false" isExplicitlyDefined="true" clrType="System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
-          <serializedValue>CustomBinding_FileManagerAdmin</serializedValue>
+          <serializedValue>CustomBinding_FileManagerRelay</serializedValue>
         </property>
         <property path="/contract" isComplexType="false" isExplicitlyDefined="true" clrType="System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
-          <serializedValue>FileManagerAdminService.FileManagerAdmin</serializedValue>
+          <serializedValue>FileManagerAdminService.FileManagerRelay</serializedValue>
         </property>
         <property path="/headers" isComplexType="true" isExplicitlyDefined="false" clrType="System.ServiceModel.Configuration.AddressHeaderCollectionElement, System.ServiceModel, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
           <serializedValue>System.ServiceModel.Configuration.AddressHeaderCollectionElement</serializedValue>
@@ -794,7 +794,7 @@
           <serializedValue>False</serializedValue>
         </property>
         <property path="/name" isComplexType="false" isExplicitlyDefined="true" clrType="System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
-          <serializedValue>CustomBinding_FileManagerAdmin</serializedValue>
+          <serializedValue>CustomBinding_FileManagerRelay</serializedValue>
         </property>
         <property path="/kind" isComplexType="false" isExplicitlyDefined="false" clrType="System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
           <serializedValue />

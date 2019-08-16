@@ -73,7 +73,7 @@ Namespace Interfaces
 #Region "Constants"
         Public Const PageUrl As String = "ClaimFileManagementDetailForm.aspx"
         Public PageTitle As String = "CLAIM_MANAGEMENT_FILE_DETAILS"
-        Private Const ServiceEndPointName = "CustomBinding_FileManagerAdmin"
+        Private Const ServiceEndPointName = "CustomBinding_FileManagerRelay"
 
         Public Enum GridDefenitionEnum
             FileDetailsRecordIdentifier = 0
@@ -1260,10 +1260,10 @@ Namespace Interfaces
                     }
                 End If
 
-                State.SearchDV = WcfClientHelper.Execute(Of FileManagerAdminClient, FileManagerAdmin, FileDetailsRecordDto())(
+                State.SearchDV = WcfClientHelper.Execute(Of FileManagerRelayClient, FileManagerRelay, FileDetailsRecordDto())(
                     GetClient(),
                     New List(Of Object) From {New InteractiveUserHeader() With {.LanId = Authentication.CurrentUser.NetworkId}},
-                    Function(ByVal c As FileManagerAdminClient)
+                    Function(ByVal c As FileManagerRelayClient)
                         Return c.SearchFileDetailsRecords(State.CallingPageParams.DataItemLocatorInfo, SearchInfo)
                     End Function)
 
@@ -1278,10 +1278,10 @@ Namespace Interfaces
             Dim wsResponse As Boolean = False
 
             Try
-                wsResponse = WcfClientHelper.Execute(Of FileManagerAdminClient, FileManagerAdmin, Boolean)(
+                wsResponse = WcfClientHelper.Execute(Of FileManagerRelayClient, FileManagerRelay, Boolean)(
                     GetClient(),
                     New List(Of Object) From {New InteractiveUserHeader() With {.LanId = Authentication.CurrentUser.NetworkId}},
-                    Function(ByVal c As FileManagerAdminClient)
+                    Function(ByVal c As FileManagerRelayClient)
                         Return c.SaveFileDetailsRecord(
                             FileDetailsRecord.Locator,
                             FileDetailsRecord)
@@ -1300,10 +1300,10 @@ Namespace Interfaces
         '' Gets New Instance of File Admin Service Client with Credentials Configured
         '' </summary>
         '' <returns>Instance of <see cref="FileAdminClient"/></returns>
-        Private Shared Function GetClient() As FileManagerAdminClient
+        Private Shared Function GetClient() As FileManagerRelayClient
             Dim oWebPasswd As WebPasswd = New WebPasswd(Guid.Empty, LookupListNew.GetIdFromCode(Codes.SERVICE_TYPE, Codes.SERVICE_TYPE__FILE_MANAGEMENT_ADMIN_SERVICE), False)
 
-            Dim client = New FileManagerAdminClient(ServiceEndPointName, oWebPasswd.Url)
+            Dim client = New FileManagerRelayClient(ServiceEndPointName, oWebPasswd.Url)
 
             client.ClientCredentials.UserName.UserName = oWebPasswd.UserId
             client.ClientCredentials.UserName.Password = oWebPasswd.Password
