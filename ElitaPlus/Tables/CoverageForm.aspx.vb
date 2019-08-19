@@ -1317,9 +1317,11 @@ Namespace Tables
 
         Private Sub btnDelete_WRITE_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnDelete_WRITE.Click
             Try
+                Me.DisplayMessage(Message.DELETE_RECORD_PROMPT, "", MSG_BTN_YES_NO, MSG_TYPE_CONFIRM, Me.HiddenSaveChangesPromptResponse)
+                Dim retType As New CoverageSearchForm.ReturnType(ElitaPlusPage.DetailPageCommand.Delete, Me.State.moCoverageId)
                 If DeleteCoverage() = True Then
-                    Me.DisplayMessage(Message.DELETE_RECORD_PROMPT, "", MSG_BTN_YES_NO, MSG_TYPE_CONFIRM, Me.HiddenSaveChangesPromptResponse)
-                    Me.State.ActionInProgress = ElitaPlusPage.DetailPageCommand.Delete
+                    retType.BoChanged = True
+                    Me.ReturnToCallingPage(retType)
                 End If
             Catch ex As Threading.ThreadAbortException
             Catch ex As Exception
