@@ -123,6 +123,7 @@ Public Class CoverageRate
     Private Const LOSS_COST_PERCENT As Integer = 8
     Private Const GROSS_AMOUNT_PERCENT As Integer = 13
     Private Const RENEWAL_NUMBER As Integer = 10
+    Private Const REGION_ID As Integer = 11
 #End Region
 
 #Region "Properties"
@@ -319,6 +320,20 @@ Public Class CoverageRate
         Set(ByVal Value As LongType)
             CheckDeleted()
             Me.SetValue(CoverageRateDAL.COL_NAME_RENEWAL_NUMBER, Value)
+        End Set
+    End Property
+    Public Property RegionId() As Guid
+        Get
+            CheckDeleted()
+            If Row(CoverageRateDAL.COL_NAME_REGION_ID) Is DBNull.Value Then
+                Return Nothing
+            Else
+                Return New Guid(CType(Row(CoverageRateDAL.COL_NAME_REGION_ID), Byte()))
+            End If
+        End Get
+        Set(ByVal Value As Guid)
+            CheckDeleted()
+            Me.SetValue(CoverageRateDAL.COL_NAME_REGION_ID, Value)
         End Set
     End Property
 

@@ -3560,6 +3560,14 @@ Public Class Certificate
         Return ds.Tables(CertificateDAL.TABLE_PREMIUM_TOTALS).DefaultView
 
     End Function
+    Public Shared Function SalesTaxDetail(ByVal certId As Guid) As DataView
+        Dim dal As New CertificateDAL
+        Dim ds As DataSet
+
+        ds = dal.getSalesTaxDetails(certId)
+        Return ds.Tables(CertificateDAL.TABLE_SALES_TAX_DETAILS).DefaultView
+
+    End Function
 
     Public Shared Function ValidateProductForSpecialServices(ByVal DealerId As Guid, ByVal ProdCode As String) As DataView
         Dim dal As New CertificateDAL

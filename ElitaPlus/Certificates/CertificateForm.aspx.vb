@@ -205,6 +205,21 @@ Namespace Certificates
         'Public Const REFUND_AMT_BELOW_TOLERANCE As String = "REFUND_AMT_BELOW_TOLERANCE"
         Public Const IDENTIFICATION_NUMBER_TYPE_DEFAULT = "IDENTIFICATION_NUMBER"
 
+#Region "SalesTaxesDetail"
+        Private Const COL_SALES_TAX1 As String = "tax1"
+        Private Const COL_SALES_TAX2 As String = "tax2"
+        Private Const COL_SALES_TAX3 As String = "tax3"
+        Private Const COL_SALES_TAX4 As String = "tax4"
+        Private Const COL_SALES_TAX5 As String = "tax5"
+        Private Const COL_SALES_TAX6 As String = "tax6"
+        Private Const COL_SALES_TAX1_DESCRIPTION As String = "tax1_description"
+        Private Const COL_SALES_TAX2_DESCRIPTION As String = "tax2_description"
+        Private Const COL_SALES_TAX3_DESCRIPTION As String = "tax3_description"
+        Private Const COL_SALES_TAX4_DESCRIPTION As String = "tax4_description"
+        Private Const COL_SALES_TAX5_DESCRIPTION As String = "tax5_description"
+        Private Const COL_SALES_TAX6_DESCRIPTION As String = "tax6_description"
+#End Region
+
 #End Region
 
 #Region "Variables"
@@ -3189,8 +3204,10 @@ Namespace Certificates
             ' Total Sales Tax
             If dv.Table.Rows(0).IsNull(Certificate.COL_TOTAL_SALES_TAX) Then
                 Me.PopulateControlFromBOProperty(Me.moSalesTaxText, 0, Me.DECIMAL_FORMAT)
+
             Else
                 Me.PopulateControlFromBOProperty(Me.moSalesTaxText, CType(dv.Table.Rows(0).Item(Certificate.COL_TOTAL_SALES_TAX), Decimal), Me.DECIMAL_FORMAT)
+                PopulateSalesTaxesDetailPopUp(Me.State.MyBO.Id)
             End If
 
             ' Total MTD Payments
@@ -3662,6 +3679,83 @@ Namespace Certificates
             Else
                 ControlMgr.SetVisibleControl(Me, ReverseCancellationButton_WRITE, False)
             End If
+
+        End Sub
+
+        Private Sub PopulateSalesTaxesDetailPopUp(ByVal certId As Guid)
+
+            Dim dv As DataView
+
+            Try
+                dv = State.MyBO.SalesTaxDetail(certId)
+
+                If dv.Count = 0 Then
+                    Exit Sub
+                End If
+
+                If dv.Table.Rows(0).IsNull(COL_SALES_TAX1) Then
+                    Me.PopulateControlFromBOProperty(Me.lblTax1, 0, Me.DECIMAL_FORMAT)
+                Else
+                    Me.PopulateControlFromBOProperty(Me.lblTax1, CType(dv.Table.Rows(0).Item(COL_SALES_TAX1), Decimal), Me.DECIMAL_FORMAT)
+                End If
+
+                If dv.Table.Rows(0).IsNull(COL_SALES_TAX2) Then
+                    Me.PopulateControlFromBOProperty(Me.lblTax2, 0, Me.DECIMAL_FORMAT)
+                Else
+                    Me.PopulateControlFromBOProperty(Me.lblTax2, CType(dv.Table.Rows(0).Item(COL_SALES_TAX2), Decimal), Me.DECIMAL_FORMAT)
+                End If
+
+                If dv.Table.Rows(0).IsNull(COL_SALES_TAX3) Then
+                    Me.PopulateControlFromBOProperty(Me.lblTax3, 0, Me.DECIMAL_FORMAT)
+                Else
+                    Me.PopulateControlFromBOProperty(Me.lblTax3, CType(dv.Table.Rows(0).Item(COL_SALES_TAX3), Decimal), Me.DECIMAL_FORMAT)
+                End If
+
+                If dv.Table.Rows(0).IsNull(COL_SALES_TAX4) Then
+                    Me.PopulateControlFromBOProperty(Me.lblTax4, 0, Me.DECIMAL_FORMAT)
+                Else
+                    Me.PopulateControlFromBOProperty(Me.lblTax4, CType(dv.Table.Rows(0).Item(COL_SALES_TAX4), Decimal), Me.DECIMAL_FORMAT)
+                End If
+
+                If dv.Table.Rows(0).IsNull(COL_SALES_TAX5) Then
+                    Me.PopulateControlFromBOProperty(Me.lblTax5, 0, Me.DECIMAL_FORMAT)
+                Else
+                    Me.PopulateControlFromBOProperty(Me.lblTax5, CType(dv.Table.Rows(0).Item(COL_SALES_TAX5), Decimal), Me.DECIMAL_FORMAT)
+                End If
+
+                If dv.Table.Rows(0).IsNull(COL_SALES_TAX6) Then
+                    Me.PopulateControlFromBOProperty(Me.lblTax6, 0, Me.DECIMAL_FORMAT)
+                Else
+                    Me.PopulateControlFromBOProperty(Me.lblTax6, CType(dv.Table.Rows(0).Item(COL_SALES_TAX6), Decimal), Me.DECIMAL_FORMAT)
+                End If
+
+                If Not dv.Table.Rows(0).IsNull(COL_SALES_TAX1_DESCRIPTION) Then
+                    Me.PopulateControlFromBOProperty(Me.lblTax1Description, CType(dv.Table.Rows(0).Item(COL_SALES_TAX1_DESCRIPTION), Decimal))
+                End If
+
+                If Not dv.Table.Rows(0).IsNull(COL_SALES_TAX2_DESCRIPTION) Then
+                    Me.PopulateControlFromBOProperty(Me.lblTax2Description, CType(dv.Table.Rows(0).Item(COL_SALES_TAX2_DESCRIPTION), Decimal))
+                End If
+
+                If Not dv.Table.Rows(0).IsNull(COL_SALES_TAX3_DESCRIPTION) Then
+                    Me.PopulateControlFromBOProperty(Me.lblTax3Description, CType(dv.Table.Rows(0).Item(COL_SALES_TAX3_DESCRIPTION), Decimal))
+                End If
+
+                If Not dv.Table.Rows(0).IsNull(COL_SALES_TAX4_DESCRIPTION) Then
+                    Me.PopulateControlFromBOProperty(Me.lblTax4Description, CType(dv.Table.Rows(0).Item(COL_SALES_TAX4_DESCRIPTION), Decimal))
+                End If
+
+                If Not dv.Table.Rows(0).IsNull(COL_SALES_TAX5_DESCRIPTION) Then
+                    Me.PopulateControlFromBOProperty(Me.lblTax5Description, CType(dv.Table.Rows(0).Item(COL_SALES_TAX5_DESCRIPTION), Decimal))
+                End If
+
+                If Not dv.Table.Rows(0).IsNull(COL_SALES_TAX6_DESCRIPTION) Then
+                    Me.PopulateControlFromBOProperty(Me.lblTax6Description, CType(dv.Table.Rows(0).Item(COL_SALES_TAX6_DESCRIPTION), Decimal))
+                End If
+
+            Catch ex As Exception
+                Me.HandleErrors(ex, Me.MasterPage.MessageController)
+            End Try
 
         End Sub
 

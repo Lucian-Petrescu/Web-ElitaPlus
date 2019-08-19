@@ -13,6 +13,7 @@ Public Class CertificateDAL
     Public Const TABLE_NAME As String = "ELP_CERT"
     Public Const TABLE_KEY_NAME As String = "cert_id"
     Public Const TABLE_PREMIUM_TOTALS As String = "Premium_Totals"
+    Public Const TABLE_SALES_TAX_DETAILS As String = "Sales_Taxes"
     Public Const TABLE_CANCEL_ID As String = "Cert_Cancel_Id"
     Public Const TABLE_CANCEL_REQUEST_ID As String = "Cert_Cancel_Request_Id"
     Public Const TABLE_CANCEL_DATE As String = "Cert_Cancel_Date"
@@ -1143,7 +1144,20 @@ Public Class CertificateDAL
 
     End Function
 
+    Public Function getSalesTaxDetails(ByVal certId As Guid) As DataSet
+        Dim selectStmt As String = Me.Config("/SQL/GET_SALES_TAX_DETAIL")
+        Dim parameters() As DBHelper.DBHelperParameter = New DBHelper.DBHelperParameter() _
+                 {New DBHelper.DBHelperParameter(COL_NAME_CERT_ID, certId.ToByteArray)}
+        Dim outParameters() As DBHelper.DBHelperParameter = New DBHelper.DBHelperParameter() {New DBHelper.DBHelperParameter("po_resultcursor", GetType(DataSet))}
+        Try
+            Dim ds = New DataSet
+            DBHelper.FetchSp(selectStmt, parameters, outParameters, ds, Me.TABLE_SALES_TAX_DETAILS)
+            Return ds
+        Catch ex As Exception
+            Throw New DataBaseAccessException(DataBaseAccessException.DatabaseAccessErrorType.ReadErr, ex)
+        End Try
 
+    End Function
 
     Public Function ValidateProductForSpecialServices(ByVal prodCodeId As Guid) As DataSet
         Dim ds As New DataSet
