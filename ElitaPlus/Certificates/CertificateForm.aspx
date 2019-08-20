@@ -1089,7 +1089,7 @@
                                     </td>
                                     <td align="left">
                                         <asp:TextBox ID="moSalesTaxText" runat="server" SkinID="SmallTextBox" />
-                                        <asp:Label ID="lblTaxDetails" runat="server" ForeColor ="Blue" > Details</asp:Label>
+                                        <asp:Label ID="lblTaxDetails" runat="server" ForeColor ="Blue"  Text="Tax_Details"> </asp:Label>
                                     </td>
                                     <ajaxToolkit:HoverMenuExtender ID="HoverMenuExtender1" runat="server" TargetControlID="lblTaxDetails"
                                          PopupControlID="PanTaxDetails" PopupPosition="top" PopDelay="25" HoverCssClass="popupBtnHover">
@@ -2469,27 +2469,27 @@
     <asp:Panel ID="PanTaxDetails" runat="server"  SkinID="PopUpMenuPanel" BorderWidth="1" >
         <table>
             <tr>
-                <td width="20px"> <asp:Label ID="lblTax1Description" runat="server" Text="Tax1"></asp:Label> </td>
-                <td width="20px"> <asp:Label ID="lblTax1" runat="server"></asp:Label></td>
+                <td width="70%" align="right"> <asp:Label ID="lblTax1Description" runat="server" Text="Tax1"></asp:Label>: </td>
+                <td width="30%px" align="left"> <asp:Label ID="lblTax1" runat="server"></asp:Label></td>
             </tr>
             <tr>
-                <td width="20px"> <asp:Label ID="lblTax2Description" runat="server" Text="Tax2"></asp:Label> </td>
-                <td width="20px"> <asp:Label ID="lblTax2" runat="server"></asp:Label></td>
+                <td width="70%" align="right"> <asp:Label ID="lblTax2Description" runat="server" Text="Tax2"></asp:Label>: </td>
+                <td width="30%" align="left"> <asp:Label ID="lblTax2" runat="server"></asp:Label></td>
             </tr>
             <tr>
-                <td width="20px"> <asp:Label ID="lblTax3Description" runat="server" Text="Tax3" ></asp:Label> </td>
-                <td width="20px"> <asp:Label ID="lblTax3" runat="server"></asp:Label></td>
+                <td width="70%" align="right"> <asp:Label ID="lblTax3Description" runat="server" Text="Tax3" ></asp:Label>: </td>
+                <td width="30%" align="left"> <asp:Label ID="lblTax3" runat="server"></asp:Label></td>
             </tr>
             <tr>
-                <td width="20px"> <asp:Label ID="lblTax4Description" runat="server" Text="Tax4" ></asp:Label> </td>
-                <td width="20px"> <asp:Label ID="lblTax4" runat="server"></asp:Label></td>
+                <td width="70%" align="right"> <asp:Label ID="lblTax4Description" runat="server" Text="Tax4" ></asp:Label>: </td>
+                <td width="30%" align="left"> <asp:Label ID="lblTax4" runat="server"></asp:Label></td>
             </tr>
              <tr>
-                <td width="20px"> <asp:Label ID="lblTax5Description" runat="server" Text="Tax5"></asp:Label> </td>
-                <td width="20px"> <asp:Label ID="lblTax5" runat="server"></asp:Label></td>
+                <td width="70%" align="right"> <asp:Label ID="lblTax5Description" runat="server" Text="Tax5"></asp:Label>: </td>
+                <td width="30%" align="left"> <asp:Label ID="lblTax5" runat="server"></asp:Label></td>
             </tr> <tr>
-                <td width="20px"> <asp:Label ID="lblTax6Description" runat="server" Text="Tax6"></asp:Label> </td>
-                <td width="20px"> <asp:Label ID="lblTax6" runat="server"></asp:Label></td>
+                <td width="70%" align="right"> <asp:Label ID="lblTax6Description" runat="server" Text="Tax6"></asp:Label>: </td>
+                <td width="30%" align="left"> <asp:Label ID="lblTax6" runat="server"></asp:Label></td>
             </tr>
              
         </table>

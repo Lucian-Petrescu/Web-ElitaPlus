@@ -3689,7 +3689,7 @@ Namespace Certificates
             Try
                 dv = State.MyBO.SalesTaxDetail(certId)
 
-                If dv.Count = 0 Then
+                If IsNothing(dv) Then
                     Exit Sub
                 End If
 
@@ -3730,27 +3730,27 @@ Namespace Certificates
                 End If
 
                 If Not dv.Table.Rows(0).IsNull(COL_SALES_TAX1_DESCRIPTION) Then
-                    Me.PopulateControlFromBOProperty(Me.lblTax1Description, CType(dv.Table.Rows(0).Item(COL_SALES_TAX1_DESCRIPTION), Decimal))
+                    Me.PopulateControlFromBOProperty(Me.lblTax1Description, CType(dv.Table.Rows(0).Item(COL_SALES_TAX1_DESCRIPTION), String))
                 End If
 
                 If Not dv.Table.Rows(0).IsNull(COL_SALES_TAX2_DESCRIPTION) Then
-                    Me.PopulateControlFromBOProperty(Me.lblTax2Description, CType(dv.Table.Rows(0).Item(COL_SALES_TAX2_DESCRIPTION), Decimal))
+                    Me.PopulateControlFromBOProperty(Me.lblTax2Description, CType(dv.Table.Rows(0).Item(COL_SALES_TAX2_DESCRIPTION), String))
                 End If
 
                 If Not dv.Table.Rows(0).IsNull(COL_SALES_TAX3_DESCRIPTION) Then
-                    Me.PopulateControlFromBOProperty(Me.lblTax3Description, CType(dv.Table.Rows(0).Item(COL_SALES_TAX3_DESCRIPTION), Decimal))
+                    Me.PopulateControlFromBOProperty(Me.lblTax3Description, CType(dv.Table.Rows(0).Item(COL_SALES_TAX3_DESCRIPTION), String))
                 End If
 
                 If Not dv.Table.Rows(0).IsNull(COL_SALES_TAX4_DESCRIPTION) Then
-                    Me.PopulateControlFromBOProperty(Me.lblTax4Description, CType(dv.Table.Rows(0).Item(COL_SALES_TAX4_DESCRIPTION), Decimal))
+                    Me.PopulateControlFromBOProperty(Me.lblTax4Description, CType(dv.Table.Rows(0).Item(COL_SALES_TAX4_DESCRIPTION), String))
                 End If
 
                 If Not dv.Table.Rows(0).IsNull(COL_SALES_TAX5_DESCRIPTION) Then
-                    Me.PopulateControlFromBOProperty(Me.lblTax5Description, CType(dv.Table.Rows(0).Item(COL_SALES_TAX5_DESCRIPTION), Decimal))
+                    Me.PopulateControlFromBOProperty(Me.lblTax5Description, CType(dv.Table.Rows(0).Item(COL_SALES_TAX5_DESCRIPTION), String))
                 End If
 
                 If Not dv.Table.Rows(0).IsNull(COL_SALES_TAX6_DESCRIPTION) Then
-                    Me.PopulateControlFromBOProperty(Me.lblTax6Description, CType(dv.Table.Rows(0).Item(COL_SALES_TAX6_DESCRIPTION), Decimal))
+                    Me.PopulateControlFromBOProperty(Me.lblTax6Description, CType(dv.Table.Rows(0).Item(COL_SALES_TAX6_DESCRIPTION), String))
                 End If
 
             Catch ex As Exception
