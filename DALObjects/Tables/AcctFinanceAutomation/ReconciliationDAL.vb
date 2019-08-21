@@ -118,12 +118,12 @@ Public Class ReconciliationDAL
     ' Execute Store Procedure
     Public Function ReloadReconcillation(ByVal dealerId As Guid, ByVal firstDayOfMonth As String, ByVal userName As String) As Boolean
 
-        Dim inputParameters(3) As DBHelper.DBHelperParameter
+        Dim inputParameters(2) As DBHelper.DBHelperParameter
         Dim selectStmt As String = Me.Config("/SQL/RELOAD_RECON")
 
         inputParameters(0) = New DBHelper.DBHelperParameter("pi_dealer_id", dealerId.ToByteArray)
         inputParameters(1) = New DBHelper.DBHelperParameter("pi_billingDtStart", firstDayOfMonth)
-        inputParameters(3) = New DBHelper.DBHelperParameter("pi_userName", userName)
+        inputParameters(2) = New DBHelper.DBHelperParameter("pi_userName", userName)
 
         Dim outputParameters() As DBHelper.DBHelperParameter = New DBHelper.DBHelperParameter() {
                             New DBHelper.DBHelperParameter("po_Result", GetType(String))}

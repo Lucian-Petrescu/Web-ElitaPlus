@@ -107,7 +107,9 @@ Partial Class DealerInvoiceForm
     Private Sub BtnReloadInvoice_Click(ByVal sender As Object, ByVal e As System.EventArgs) Handles BtnReloadInvoice.Click
         Dim Result As Boolean
         Try
-            Result = AfaInvoiceData.ReRunInvoice(Me.GetSelectedItem(ddlDealer), Me.GetSelectedValue(ddlAcctPeriodYear), ElitaPlusIdentity.Current.ActiveUser.UserName)
+            Dim SelectedMonthYear As String = Me.GetSelectedValue(ddlAcctPeriodMonth) & Me.GetSelectedValue(ddlAcctPeriodYear)
+
+            Result = AfaInvoiceData.ReRunInvoice(Me.GetSelectedItem(ddlDealer), SelectedMonthYear, ElitaPlusIdentity.Current.ActiveUser.UserName)
 
             If Result Then
                 Me.MasterPage.MessageController.AddSuccess(Message.MSG_INVOICE_REQUEUE_SUCCESS, True)

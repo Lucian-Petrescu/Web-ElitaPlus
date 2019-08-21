@@ -284,11 +284,11 @@ Public Class AfaInvoiceData
     '    End Try
     'End Sub
 
-    Public Shared Function ReRunInvoice(ByVal dealerId As Guid, ByVal firstDayOfMonth As String, ByVal userName As String) As Boolean
+    Public Shared Function ReRunInvoice(ByVal dealerId As Guid, ByVal SelectedMonthYear As String, ByVal userName As String) As Boolean
         Try
 
             Dim dal As New AfaInvoiceDataDAL
-            Return dal.ReRunInvoice(dealerId, firstDayOfMonth, userName)
+            Return dal.ReRunInvoice(dealerId, SelectedMonthYear, userName)
 
         Catch ex As Assurant.ElitaPlus.DALObjects.DataBaseAccessException
             Throw New DataBaseAccessException(ex.ErrorType, ex)
