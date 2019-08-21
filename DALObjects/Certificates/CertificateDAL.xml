@@ -375,7 +375,7 @@ SELECT
     elita.ELP_TBL_CERTIFICATE_PREMIUM
   </GET_TOTALS>
   <GET_SALES_TAX_DETAIL>
-    elita.elp_tbl_sales_tax_detail
+    elita.elp_tbl_certificate.elp_tbl_sales_tax_detail
   </GET_SALES_TAX_DETAIL>
   <GET_COMMISSION_FOR_ENTITIES>
     ELP_INSTALLMENT.GetEntityWiseCommDetails

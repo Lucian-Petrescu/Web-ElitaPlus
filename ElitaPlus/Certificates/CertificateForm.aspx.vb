@@ -3693,68 +3693,37 @@ Namespace Certificates
                     Exit Sub
                 End If
 
-                If dv.Table.Rows(0).IsNull(COL_SALES_TAX1) Then
-                    Me.PopulateControlFromBOProperty(Me.lblTax1, 0, Me.DECIMAL_FORMAT)
-                Else
-                    Me.PopulateControlFromBOProperty(Me.lblTax1, CType(dv.Table.Rows(0).Item(COL_SALES_TAX1), Decimal), Me.DECIMAL_FORMAT)
-                End If
-
-                If dv.Table.Rows(0).IsNull(COL_SALES_TAX2) Then
-                    Me.PopulateControlFromBOProperty(Me.lblTax2, 0, Me.DECIMAL_FORMAT)
-                Else
-                    Me.PopulateControlFromBOProperty(Me.lblTax2, CType(dv.Table.Rows(0).Item(COL_SALES_TAX2), Decimal), Me.DECIMAL_FORMAT)
-                End If
-
-                If dv.Table.Rows(0).IsNull(COL_SALES_TAX3) Then
-                    Me.PopulateControlFromBOProperty(Me.lblTax3, 0, Me.DECIMAL_FORMAT)
-                Else
-                    Me.PopulateControlFromBOProperty(Me.lblTax3, CType(dv.Table.Rows(0).Item(COL_SALES_TAX3), Decimal), Me.DECIMAL_FORMAT)
-                End If
-
-                If dv.Table.Rows(0).IsNull(COL_SALES_TAX4) Then
-                    Me.PopulateControlFromBOProperty(Me.lblTax4, 0, Me.DECIMAL_FORMAT)
-                Else
-                    Me.PopulateControlFromBOProperty(Me.lblTax4, CType(dv.Table.Rows(0).Item(COL_SALES_TAX4), Decimal), Me.DECIMAL_FORMAT)
-                End If
-
-                If dv.Table.Rows(0).IsNull(COL_SALES_TAX5) Then
-                    Me.PopulateControlFromBOProperty(Me.lblTax5, 0, Me.DECIMAL_FORMAT)
-                Else
-                    Me.PopulateControlFromBOProperty(Me.lblTax5, CType(dv.Table.Rows(0).Item(COL_SALES_TAX5), Decimal), Me.DECIMAL_FORMAT)
-                End If
-
-                If dv.Table.Rows(0).IsNull(COL_SALES_TAX6) Then
-                    Me.PopulateControlFromBOProperty(Me.lblTax6, 0, Me.DECIMAL_FORMAT)
-                Else
-                    Me.PopulateControlFromBOProperty(Me.lblTax6, CType(dv.Table.Rows(0).Item(COL_SALES_TAX6), Decimal), Me.DECIMAL_FORMAT)
-                End If
-
-                If Not dv.Table.Rows(0).IsNull(COL_SALES_TAX1_DESCRIPTION) Then
-                    Me.PopulateControlFromBOProperty(Me.lblTax1Description, CType(dv.Table.Rows(0).Item(COL_SALES_TAX1_DESCRIPTION), String))
-                End If
-
-                If Not dv.Table.Rows(0).IsNull(COL_SALES_TAX2_DESCRIPTION) Then
-                    Me.PopulateControlFromBOProperty(Me.lblTax2Description, CType(dv.Table.Rows(0).Item(COL_SALES_TAX2_DESCRIPTION), String))
-                End If
-
-                If Not dv.Table.Rows(0).IsNull(COL_SALES_TAX3_DESCRIPTION) Then
-                    Me.PopulateControlFromBOProperty(Me.lblTax3Description, CType(dv.Table.Rows(0).Item(COL_SALES_TAX3_DESCRIPTION), String))
-                End If
-
-                If Not dv.Table.Rows(0).IsNull(COL_SALES_TAX4_DESCRIPTION) Then
-                    Me.PopulateControlFromBOProperty(Me.lblTax4Description, CType(dv.Table.Rows(0).Item(COL_SALES_TAX4_DESCRIPTION), String))
-                End If
-
-                If Not dv.Table.Rows(0).IsNull(COL_SALES_TAX5_DESCRIPTION) Then
-                    Me.PopulateControlFromBOProperty(Me.lblTax5Description, CType(dv.Table.Rows(0).Item(COL_SALES_TAX5_DESCRIPTION), String))
-                End If
-
-                If Not dv.Table.Rows(0).IsNull(COL_SALES_TAX6_DESCRIPTION) Then
-                    Me.PopulateControlFromBOProperty(Me.lblTax6Description, CType(dv.Table.Rows(0).Item(COL_SALES_TAX6_DESCRIPTION), String))
-                End If
+                Me.moTaxDetailsRepeater.DataSource = dv
+                Me.moTaxDetailsRepeater.DataBind()
 
             Catch ex As Exception
                 Me.HandleErrors(ex, Me.MasterPage.MessageController)
+            End Try
+
+        End Sub
+
+        Protected Sub moTaxDetailsRepeater_ItemDataBound(ByVal sender As Object, ByVal e As RepeaterItemEventArgs) Handles moTaxDetailsRepeater.ItemDataBound
+            Try
+                Dim TaxDetailsDr As DataRow = DirectCast(e.Item.DataItem, System.Data.DataRowView).Row
+
+                DirectCast(e.Item.FindControl("tax_type"), Label).Text = TaxDetailsDr("tax_type") & " => "
+                DirectCast(e.Item.FindControl("tax1_description"), Label).Text = TaxDetailsDr("tax1_description")
+                DirectCast(e.Item.FindControl("tax1"), Label).Text = TaxDetailsDr("tax1")
+                DirectCast(e.Item.FindControl("tax2_description"), Label).Text = TaxDetailsDr("tax2_description")
+                DirectCast(e.Item.FindControl("tax2"), Label).Text = TaxDetailsDr("tax2")
+                DirectCast(e.Item.FindControl("tax3_description"), Label).Text = TaxDetailsDr("tax3_description")
+                DirectCast(e.Item.FindControl("tax3"), Label).Text = TaxDetailsDr("tax3")
+                DirectCast(e.Item.FindControl("tax4_description"), Label).Text = TaxDetailsDr("tax4_description")
+                DirectCast(e.Item.FindControl("tax4"), Label).Text = TaxDetailsDr("tax4")
+                DirectCast(e.Item.FindControl("tax5_description"), Label).Text = TaxDetailsDr("tax5_description")
+                DirectCast(e.Item.FindControl("tax5"), Label).Text = TaxDetailsDr("tax5")
+                DirectCast(e.Item.FindControl("tax6_description"), Label).Text = TaxDetailsDr("tax6_description")
+                DirectCast(e.Item.FindControl("tax6"), Label).Text = TaxDetailsDr("tax6")
+                DirectCast(e.Item.FindControl("Total"), Label).Text = TaxDetailsDr("Total")
+                DirectCast(e.Item.FindControl("tax_total"), Label).Text = TaxDetailsDr("tax_total")
+
+            Catch ex As Exception
+
             End Try
 
         End Sub

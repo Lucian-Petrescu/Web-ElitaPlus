@@ -5361,112 +5361,13 @@ Namespace Certificates
         Protected WithEvents PanTaxDetails As Global.System.Web.UI.WebControls.Panel
         
         '''<summary>
-        '''lblTax1Description control.
+        '''moTaxDetailsRepeater control.
         '''</summary>
         '''<remarks>
         '''Auto-generated field.
         '''To modify move field declaration from designer file to code-behind file.
         '''</remarks>
-        Protected WithEvents lblTax1Description As Global.System.Web.UI.WebControls.Label
-        
-        '''<summary>
-        '''lblTax1 control.
-        '''</summary>
-        '''<remarks>
-        '''Auto-generated field.
-        '''To modify move field declaration from designer file to code-behind file.
-        '''</remarks>
-        Protected WithEvents lblTax1 As Global.System.Web.UI.WebControls.Label
-        
-        '''<summary>
-        '''lblTax2Description control.
-        '''</summary>
-        '''<remarks>
-        '''Auto-generated field.
-        '''To modify move field declaration from designer file to code-behind file.
-        '''</remarks>
-        Protected WithEvents lblTax2Description As Global.System.Web.UI.WebControls.Label
-        
-        '''<summary>
-        '''lblTax2 control.
-        '''</summary>
-        '''<remarks>
-        '''Auto-generated field.
-        '''To modify move field declaration from designer file to code-behind file.
-        '''</remarks>
-        Protected WithEvents lblTax2 As Global.System.Web.UI.WebControls.Label
-        
-        '''<summary>
-        '''lblTax3Description control.
-        '''</summary>
-        '''<remarks>
-        '''Auto-generated field.
-        '''To modify move field declaration from designer file to code-behind file.
-        '''</remarks>
-        Protected WithEvents lblTax3Description As Global.System.Web.UI.WebControls.Label
-        
-        '''<summary>
-        '''lblTax3 control.
-        '''</summary>
-        '''<remarks>
-        '''Auto-generated field.
-        '''To modify move field declaration from designer file to code-behind file.
-        '''</remarks>
-        Protected WithEvents lblTax3 As Global.System.Web.UI.WebControls.Label
-        
-        '''<summary>
-        '''lblTax4Description control.
-        '''</summary>
-        '''<remarks>
-        '''Auto-generated field.
-        '''To modify move field declaration from designer file to code-behind file.
-        '''</remarks>
-        Protected WithEvents lblTax4Description As Global.System.Web.UI.WebControls.Label
-        
-        '''<summary>
-        '''lblTax4 control.
-        '''</summary>
-        '''<remarks>
-        '''Auto-generated field.
-        '''To modify move field declaration from designer file to code-behind file.
-        '''</remarks>
-        Protected WithEvents lblTax4 As Global.System.Web.UI.WebControls.Label
-        
-        '''<summary>
-        '''lblTax5Description control.
-        '''</summary>
-        '''<remarks>
-        '''Auto-generated field.
-        '''To modify move field declaration from designer file to code-behind file.
-        '''</remarks>
-        Protected WithEvents lblTax5Description As Global.System.Web.UI.WebControls.Label
-        
-        '''<summary>
-        '''lblTax5 control.
-        '''</summary>
-        '''<remarks>
-        '''Auto-generated field.
-        '''To modify move field declaration from designer file to code-behind file.
-        '''</remarks>
-        Protected WithEvents lblTax5 As Global.System.Web.UI.WebControls.Label
-        
-        '''<summary>
-        '''lblTax6Description control.
-        '''</summary>
-        '''<remarks>
-        '''Auto-generated field.
-        '''To modify move field declaration from designer file to code-behind file.
-        '''</remarks>
-        Protected WithEvents lblTax6Description As Global.System.Web.UI.WebControls.Label
-        
-        '''<summary>
-        '''lblTax6 control.
-        '''</summary>
-        '''<remarks>
-        '''Auto-generated field.
-        '''To modify move field declaration from designer file to code-behind file.
-        '''</remarks>
-        Protected WithEvents lblTax6 As Global.System.Web.UI.WebControls.Label
+        Protected WithEvents moTaxDetailsRepeater As Global.System.Web.UI.WebControls.Repeater
         
         '''<summary>
         '''HiddenSavePromptResponse control.
