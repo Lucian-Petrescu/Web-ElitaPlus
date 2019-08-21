@@ -2466,7 +2466,7 @@
             </div>
         </div>
     </asp:Panel>
-    <asp:Panel ID="PanTaxDetails" runat="server"  SkinID="PopUpMenuPanel" BorderWidth="1" >
+    <asp:Panel ID="PanTaxDetails" runat="server"  BackColor="#82c0ff">
         <table>
             <tr>
                 <td width="70%" align="right"> <asp:Label ID="lblTax1Description" runat="server" Text="Tax1"></asp:Label>: </td>

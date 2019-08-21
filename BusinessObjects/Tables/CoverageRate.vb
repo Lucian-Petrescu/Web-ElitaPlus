@@ -336,6 +336,20 @@ Public Class CoverageRate
             Me.SetValue(CoverageRateDAL.COL_NAME_REGION_ID, Value)
         End Set
     End Property
+    Public Property TaxRegion() As String
+        Get
+            CheckDeleted()
+            If Row(CoverageRateDAL.COL_NAME_TAX_REGION) Is DBNull.Value Then
+                Return Nothing
+            Else
+                Return CType(Row(CoverageRateDAL.COL_NAME_TAX_REGION), String)
+            End If
+        End Get
+        Set(ByVal Value As String)
+            CheckDeleted()
+            Me.SetValue(CoverageRateDAL.COL_NAME_TAX_REGION, Value)
+        End Set
+    End Property
 
 
 

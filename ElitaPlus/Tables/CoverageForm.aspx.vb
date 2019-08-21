@@ -170,8 +170,8 @@ Namespace Tables
         Private Const CLAIM_LIMIT_COUNT_PROPERTY As String = "CoverageClaimLimit"
 
         Public Const ConfigurationSuperUserRole As String = "CONSU"
-        Public Const TAX_TYPE_XCD As String = "tax_type_xcd"
-        Public Const TAX_REGION_DROP_DOWN_CONTROL As Integer = 0
+        Public Const POS_TAX_TYPE_XCD As String = "TTYP-1"
+
 
 #End Region
 
@@ -889,6 +889,7 @@ Namespace Tables
                 Dim sVal As String
                 Dim langId As Guid = ElitaPlusIdentity.Current.ActiveUser.LanguageId
                 Dim yesNoLkL As DataView = LookupListNew.DropdownLookupList("YESNO", langId, True)
+                Dim selectedTaxType As String = GetSelectedValue(moTaxTypeDrop)
                 sVal = LookupListNew.GetCodeFromDescription(yesNoLkL, Me.moCovDeductibleText.Text)
                 If sVal = YES Then
                     If IsNumeric(moDeductiblePercentText.Text) And IsNumeric(moDeductibleText.Text) Then
@@ -992,6 +993,15 @@ Namespace Tables
                         Throw New GUIException(Message.INVALID_ATTRIBUTE, Assurant.ElitaPlus.Common.ErrorCodes.CANNOT_SET_ATTRIBUTE_WITHOUT_REINSURED_FLAG)
                     End If
                 End If
+
+                If TheCoverage.DealerMarkupId = LookupListNew.GetIdFromCode(LookupListNew.LK_YESNO, YES) Then
+                    If Not selectedTaxType.Equals(Guid.Empty.ToString) And Not selectedTaxType.Equals(POS_TAX_TYPE_XCD) Then
+                        Throw New GUIException(Message.MSG_ERR_WHEN_DEALER_MARKUP_ALLOWED_TAX_TYPE_SHOULD_BE_EMPTY_OR_POS, Assurant.ElitaPlus.Common.ErrorCodes.INVALID_TAX_TYPE_FOR_DEALER)
+                    End If
+
+                End If
+
+
                 ValidateCoverage()
                 SaveChanges()
                 SetLabelColor(Me.moDeductiblePercentLabel)
@@ -1225,10 +1235,10 @@ Namespace Tables
                         Me.PopulateBOProperty(oCoverageRate(i), "RenewalNumber", CType(moGridView.Rows(i).Cells(RENEWAL_NUMBER).Controls(1), TextBox).Text)
                     End If
 
-                    If moGridView.Rows(i).Cells(REGION_ID).Controls(1).GetType().ToString = "System.Web.UI.WebControls.Label" Then
-                        Me.PopulateBOProperty(oCoverageRate(i), "RegionId", CType(moGridView.Rows(i).Cells(REGION_ID).Controls(1), Label).Text)
+                    If moGridView.Rows(i).Cells(REGION_ID).Controls(0).GetType().ToString = "System.Web.UI.WebControls.Label" Then
+                        Me.PopulateBOProperty(oCoverageRate(i), "TaxRegion", CType(moGridView.Rows(i).Cells(REGION_ID).Controls(0), Label).Text)
                     Else
-                        Me.PopulateBOProperty(oCoverageRate(i), "RegionId", CType(moGridView.Rows(i).Cells(REGION_ID).Controls(1), DropDownList).SelectedValue)
+                        Me.PopulateBOProperty(oCoverageRate(i), "TaxRegion", CType(moGridView.Rows(i).Cells(REGION_ID).Controls(1), DropDownList).SelectedValue)
                     End If
 
                 Next

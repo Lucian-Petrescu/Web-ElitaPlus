@@ -775,6 +775,22 @@ Public Class Coverage
             Me.SetValue(CoverageDAL.COL_NAME_TAX_TYPE_XCD, Value)
         End Set
     End Property
+
+    <ValueMandatory("")>
+    Public Property DealerMarkupId() As Guid
+        Get
+            CheckDeleted()
+            If Row(CoverageDAL.COL_NAME_DEALER_MARKUP) Is DBNull.Value Then
+                Return Nothing
+            Else
+                Return New Guid(CType(Row(CoverageDAL.COL_NAME_DEALER_MARKUP), Byte()))
+            End If
+        End Get
+        Set(ByVal Value As Guid)
+            CheckDeleted()
+            Me.SetValue(CoverageDAL.COL_NAME_DEALER_MARKUP, Value)
+        End Set
+    End Property
 #End Region
 
 #Region "Public Members"

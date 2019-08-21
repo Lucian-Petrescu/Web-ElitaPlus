@@ -76,6 +76,7 @@ Partial Class CountryTaxEdit
     Private Const BOPROP_TAXGROUP_COMPMETHOD As String = "Tax{0}ComputeMethodId"
     Private Const BOPROP_TAXGROUP_PERCTFLAG As String = "Tax{0}PercentFlagId"
     Private Const BOPROP_TAXGROUP_PERCT As String = "Tax{0}Percent"
+    Private Const TAX_ON_GROSS_COMPUTE_METHOD As String = "Compute On Gross"
 
     Public Const COUNTRYID_PROPERTY As String = "CountryId"
     Public Const TAXTYPEID_PROPERTY As String = "TaxTypeId"
@@ -670,6 +671,12 @@ Partial Class CountryTaxEdit
                 intErrNum += 1
                 blnSaveErr = True
             End Try
+
+            If intTaxGroup = 1 And oUserControl.ComputeMethodDescription = TAX_ON_GROSS_COMPUTE_METHOD Then
+                errMsg(intErrNum) = Message.MSG_TAX_METHOD_COMPUTE_ON_GROSS_NOT_ALLOWED_ON_1ST_BRACKET
+                intErrNum += 1
+                blnSaveErr = True
+            End If
 
             If Not blnSaveErr Then
                 With oUserControl
