@@ -1337,7 +1337,6 @@ Public Class ProductCode
         End Set
     End Property
 
-    <ValueMandatory("")>
     Public Property PriceMatrixUsesWpXcd() As String
         Get
             CheckDeleted()
@@ -1353,7 +1352,6 @@ Public Class ProductCode
         End Set
     End Property
 
-    <ValueMandatory("")>
     Public Property ExpectedPremiumIsWpXcd() As String
         Get
             CheckDeleted()

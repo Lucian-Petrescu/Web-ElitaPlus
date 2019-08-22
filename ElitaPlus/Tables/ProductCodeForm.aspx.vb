@@ -1317,12 +1317,12 @@ Namespace Tables
 
                 cboExpectedPremiumIsWpXcd.Populate(yesNoLkl, New PopulateOptions() With
                                                       {
-                                                        .AddBlankItem = False,
+                                                        .AddBlankItem = True,
                                                         .ValueFunc = AddressOf PopulateOptions.GetExtendedCode
                                                        })
                 cboPriceMatrixUsesWpXcd.Populate(yesNoLkl, New PopulateOptions() With
                                                       {
-                                                        .AddBlankItem = False,
+                                                        .AddBlankItem = True,
                                                         .ValueFunc = AddressOf PopulateOptions.GetExtendedCode
                                                        })
 

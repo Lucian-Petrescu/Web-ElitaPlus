@@ -760,7 +760,6 @@ Public Class Coverage
         End Set
     End Property
 
-    <ValueMandatory("")>
     Public Property TaxTypeXCD() As String
         Get
             CheckDeleted()
@@ -776,7 +775,6 @@ Public Class Coverage
         End Set
     End Property
 
-    <ValueMandatory("")>
     Public Property DealerMarkupId() As Guid
         Get
             CheckDeleted()
