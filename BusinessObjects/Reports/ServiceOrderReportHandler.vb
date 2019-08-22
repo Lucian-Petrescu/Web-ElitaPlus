@@ -91,6 +91,7 @@ Public Class ServiceOrderReportHandler
 
         If Not cert.AddressChild.RegionId.Equals(Guid.Empty) Then
             soRow.STATE_PROVINCE = New Region(cert.AddressChild.RegionId).Description
+            soRow.STATE_PROVINCE_CODE = New Region(cert.AddressChild.RegionId).ShortDesc
         End If
         soRow.ZIP = cert.AddressChild.PostalCode
         soRow.HOME_PHONE = cert.HomePhone
