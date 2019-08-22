@@ -783,27 +783,11 @@ Partial Class CountryTaxEdit
 
         Dim oRegionTaxList As DataView = RegionTax.getList(Me.GetSelectedItem(Me.lstRegion), Me.State.MyBO.TaxTypeId,
                                            Me.State.MyBO.ProductTaxTypeId, Me.State.MyBO.DealerId)
-        'Me.lstRegionTax.Items.Clear()
-        'oRegionTaxList.Sort = Nothing   ' Preserve sort order from database by Effective Date, which is not in the select field list
-        ' Me.BindListControlToDataView(Me.lstRegionTax, oRegionTaxList, "ListFields", "REGION_TAX_ID", False)
-        'Dim listcontext As ListContext = New ListContext()
-        'listcontext.TaxTypeId = Me.State.MyBO.TaxTypeId
-        'listcontext.ProductTaxTypeId = Me.State.MyBO.ProductTaxTypeId
-        'listcontext.DealerId = Me.State.MyBO.DealerId
-        'Dim regionLkl As ListItem() = CommonConfigManager.Current.ListManager.GetList(ListCodes.RegionTaxByProductTaxTypeAndDealer, Thread.CurrentPrincipal.GetLanguageCode(), listcontext)
-        'Dim list As ArrayList = ElitaPlusIdentity.Current.ActiveUser.Companies
-
         If oRegionTaxList.Count > 0 Then
             For i As Integer = 0 To oRegionTaxList.Count - 1
                 lstRegionTax.Items.Add(New WebControls.ListItem() With {.Text = oRegionTaxList(i)("ListFields"), .Value = New Guid(CType(oRegionTaxList(i)("region_tax_id"), Byte())).ToString()})
             Next
         End If
-
-        'lstRegionTax.DataValueField = REGION_TAX_ID
-        'lstRegionTax.DataTextField = LISTFIELDS
-        'lstRegionTax.DataSource = oRegionTaxList
-        'lstRegionTax.DataBind()
-
 
     End Sub
 #End Region
