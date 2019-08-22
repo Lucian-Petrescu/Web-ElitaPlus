@@ -1,0 +1,196 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xs:schema xmlns:tns="http://assurant.com/Elita/FileManagement" elementFormDefault="qualified" targetNamespace="http://assurant.com/Elita/FileManagement" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+  <xs:import schemaLocation="http://l16mia0d7491npx.cead.prd/ElitaClaimManagement/WebApp/admin?xsd=xsd2" namespace="http://schemas.datacontract.org/2004/07/Assurant.Elita.ClaimManagement.Extension.FileManager.Contracts" />
+  <xs:import schemaLocation="http://l16mia0d7491npx.cead.prd/ElitaClaimManagement/WebApp/admin?xsd=xsd1" namespace="http://schemas.microsoft.com/2003/10/Serialization/" />
+  <xs:import schemaLocation="http://l16mia0d7491npx.cead.prd/ElitaClaimManagement/WebApp/admin?xsd=xsd3" namespace="http://assurant.com/Elita/FileManager/Data" />
+  <xs:element name="ContainsRecord">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element xmlns:q1="http://schemas.datacontract.org/2004/07/Assurant.Elita.ClaimManagement.Extension.FileManager.Contracts" minOccurs="0" name="recordLocator" nillable="true" type="q1:DataItemLocator" />
+        <xs:element xmlns:q2="http://schemas.microsoft.com/2003/10/Serialization/" minOccurs="0" name="partitionId" type="q2:guid" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="ContainsRecordResponse">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" name="ContainsRecordResult" type="xs:boolean" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="SearchFileInfoRecords">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element xmlns:q3="http://assurant.com/Elita/FileManager/Data" minOccurs="0" name="searchCriteria" nillable="true" type="q3:SearchCriteria" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="SearchFileInfoRecordsResponse">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element xmlns:q4="http://assurant.com/Elita/FileManager/Data" minOccurs="0" name="SearchFileInfoRecordsResult" nillable="true" type="q4:ArrayOfFileInfoDto" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="SearchFileInfoRecord">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element xmlns:q5="http://schemas.datacontract.org/2004/07/Assurant.Elita.ClaimManagement.Extension.FileManager.Contracts" minOccurs="0" name="fileInfoLocator" nillable="true" type="q5:DataItemLocator" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="SearchFileInfoRecordResponse">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element xmlns:q6="http://assurant.com/Elita/FileManager/Data" minOccurs="0" name="SearchFileInfoRecordResult" nillable="true" type="q6:FileInfoDto" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="ReprocessFileInfoRecords">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element xmlns:q7="http://schemas.datacontract.org/2004/07/Assurant.Elita.ClaimManagement.Extension.FileManager.Contracts" minOccurs="0" name="fileInfoLocator" nillable="true" type="q7:DataItemLocator" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="ReprocessFileInfoRecordsResponse">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" name="ReprocessFileInfoRecordsResult" type="xs:boolean" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="SearchFileDetailsRecord">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element xmlns:q8="http://schemas.datacontract.org/2004/07/Assurant.Elita.ClaimManagement.Extension.FileManager.Contracts" minOccurs="0" name="fileInfoLocator" nillable="true" type="q8:DataItemLocator" />
+        <xs:element xmlns:q9="http://schemas.datacontract.org/2004/07/Assurant.Elita.ClaimManagement.Extension.FileManager.Contracts" minOccurs="0" name="fileDetailsLocator" nillable="true" type="q9:DataItemLocator" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="SearchFileDetailsRecordResponse">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element xmlns:q10="http://assurant.com/Elita/FileManager/Data" minOccurs="0" name="SearchFileDetailsRecordResult" nillable="true" type="q10:FileDetailsRecordDto" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="SearchFileDetailsRecords">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element xmlns:q11="http://schemas.datacontract.org/2004/07/Assurant.Elita.ClaimManagement.Extension.FileManager.Contracts" minOccurs="0" name="fileInfoLocator" nillable="true" type="q11:DataItemLocator" />
+        <xs:element xmlns:q12="http://assurant.com/Elita/FileManager/Data" minOccurs="0" name="searchCriteria" nillable="true" type="q12:SearchCriteria" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="SearchFileDetailsRecordsResponse">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element xmlns:q13="http://assurant.com/Elita/FileManager/Data" minOccurs="0" name="SearchFileDetailsRecordsResult" nillable="true" type="q13:ArrayOfFileDetailsRecordDto" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="SaveFileInfoRecord">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element xmlns:q14="http://schemas.datacontract.org/2004/07/Assurant.Elita.ClaimManagement.Extension.FileManager.Contracts" minOccurs="0" name="fileInfoLocator" nillable="true" type="q14:DataItemLocator" />
+        <xs:element xmlns:q15="http://assurant.com/Elita/FileManager/Data" minOccurs="0" name="fileInfoRecord" nillable="true" type="q15:FileInfoDto" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="SaveFileInfoRecordResponse">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" name="SaveFileInfoRecordResult" type="xs:boolean" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="SaveFileDetailsRecord">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element xmlns:q16="http://schemas.datacontract.org/2004/07/Assurant.Elita.ClaimManagement.Extension.FileManager.Contracts" minOccurs="0" name="fileInfoLocator" nillable="true" type="q16:DataItemLocator" />
+        <xs:element xmlns:q17="http://assurant.com/Elita/FileManager/Data" minOccurs="0" name="fileDetailsRecord" nillable="true" type="q17:FileDetailsRecordDto" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="SaveFileDetailsRecordResponse">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" name="SaveFileDetailsRecordResult" type="xs:boolean" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="SaveFileDetailsRecords">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element xmlns:q18="http://schemas.datacontract.org/2004/07/Assurant.Elita.ClaimManagement.Extension.FileManager.Contracts" minOccurs="0" name="fileInfoLocator" nillable="true" type="q18:DataItemLocator" />
+        <xs:element xmlns:q19="http://assurant.com/Elita/FileManager/Data" minOccurs="0" name="fileDetailsRecords" nillable="true" type="q19:ArrayOfFileDetailsRecordDto" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="SaveFileDetailsRecordsResponse">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" name="SaveFileDetailsRecordsResult" type="xs:boolean" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="RemoveFileInfoRecord">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element xmlns:q20="http://schemas.datacontract.org/2004/07/Assurant.Elita.ClaimManagement.Extension.FileManager.Contracts" minOccurs="0" name="fileInfoLocator" nillable="true" type="q20:DataItemLocator" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="RemoveFileInfoRecordResponse">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element xmlns:q21="http://assurant.com/Elita/FileManager/Data" minOccurs="0" name="RemoveFileInfoRecordResult" nillable="true" type="q21:FileInfoDto" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="RemoveFileDetailsRecords">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element xmlns:q22="http://schemas.datacontract.org/2004/07/Assurant.Elita.ClaimManagement.Extension.FileManager.Contracts" minOccurs="0" name="fileInfoLocator" nillable="true" type="q22:DataItemLocator" />
+        <xs:element xmlns:q23="http://assurant.com/Elita/FileManager/Data" minOccurs="0" name="fileDetailsRecords" nillable="true" type="q23:ArrayOfFileDetailsRecordDto" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="RemoveFileDetailsRecordsResponse">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element xmlns:q24="http://assurant.com/Elita/FileManager/Data" minOccurs="0" name="RemoveFileDetailsRecordsResult" nillable="true" type="q24:ArrayOfFileDetailsRecordDto" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="SaveAzureFileInfoEntity">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element xmlns:q25="http://assurant.com/Elita/FileManager/Data" minOccurs="0" name="fileInfoDto" nillable="true" type="q25:FileInfoDto" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="SaveAzureFileInfoEntityResponse">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" name="SaveAzureFileInfoEntityResult" type="xs:boolean" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="SaveAzureFileDetailsEntities">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element xmlns:q26="http://assurant.com/Elita/FileManager/Data" minOccurs="0" name="fileInfoDto" nillable="true" type="q26:FileInfoDto" />
+        <xs:element xmlns:q27="http://assurant.com/Elita/FileManager/Data" minOccurs="0" name="fileDetailsDto" nillable="true" type="q27:ArrayOfFileDetailsRecordDto" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="SaveAzureFileDetailsEntitiesResponse">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" name="SaveAzureFileDetailsEntitiesResult" type="xs:boolean" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+</xs:schema>

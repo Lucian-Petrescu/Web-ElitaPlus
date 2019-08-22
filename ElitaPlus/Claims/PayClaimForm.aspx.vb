@@ -3060,6 +3060,13 @@ Partial Class PayClaimForm
                             ControlMgr.SetEnableControl(Me, Me.LabelAlreadyPaid, False)
                             ControlMgr.SetEnableControl(Me, Me.txtOtherAmt, False)
                             ControlMgr.SetEnableControl(Me, Me.txtOtherTax, False)
+                        Else
+                            ControlMgr.SetVisibleControl(Me, Me.hrSeprator, True)
+                            ControlMgr.SetVisibleControl(Me, Me.PaymentMethodDrop, True)
+                            ControlMgr.SetVisibleControl(Me, Me.moPaymentMethodLabel, True)
+                            ControlMgr.SetVisibleControl(Me, Me.Req_Pay_MethodLabel, True)
+                            ControlMgr.SetVisibleControl(Me, Me.PayeeAddress, False)
+                            ControlMgr.SetVisibleControl(Me, Me.PayeeBankInfo, False)
                         End If
                     Else
                         ControlMgr.SetVisibleControl(Me, Me.hrSeprator, True)
