@@ -99,7 +99,7 @@ Public Class ReconciliationForm
                 TranslateGridHeader(GridViewMHP)
                 TranslateGridHeader(GridViewBLGS)
                 BtnOverRideRecon.Enabled = False
-                BtnReRunRecon.Enabled = False
+                ControlMgr.SetVisibleControl(Me, BtnReRunRecon, True)
                 divDataContainer.Visible = False
                 cboPageSize.SelectedValue = CType(Me.State.PageSize, String)
                 'cboResPageSize.SelectedValue = CType(Me.State.PageSize, String)
@@ -209,13 +209,11 @@ Public Class ReconciliationForm
 
                 If State.searchActiveDV.Count = 0 Then
                     BtnOverRideRecon.Enabled = False
-                    BtnReRunRecon.Enabled = False
                     ControlMgr.SetVisibleControl(Me, Grid, False)
                 Else
                     Me.Grid.DataSource = Me.State.searchActiveDV
                     ControlMgr.SetVisibleControl(Me, Grid, True)
                     BtnOverRideRecon.Enabled = True
-                    ControlMgr.SetVisibleControl(Me, BtnReRunRecon, True)
                 End If
 
                 Me.State.PageIndex = Me.Grid.PageIndex
@@ -251,13 +249,11 @@ Public Class ReconciliationForm
 
                 If State.searchActiveDV.Count = 0 Then
                     BtnOverRideRecon.Enabled = False
-                    BtnReRunRecon.Enabled = False
                     ControlMgr.SetVisibleControl(Me, GridViewMHP, False)
                 Else
                     Me.GridViewMHP.DataSource = Me.State.searchActiveDV
                     ControlMgr.SetVisibleControl(Me, GridViewMHP, True)
                     BtnOverRideRecon.Enabled = True
-                    ControlMgr.SetVisibleControl(Me, BtnReRunRecon, True)
                 End If
 
                 Me.State.PageIndex = Me.GridViewMHP.PageIndex
@@ -294,13 +290,11 @@ Public Class ReconciliationForm
 
                 If State.searchActiveDV.Count = 0 Then
                     BtnOverRideRecon.Enabled = False
-                    BtnReRunRecon.Enabled = False
                     ControlMgr.SetVisibleControl(Me, GridViewBLGS, False)
                 Else
                     Me.GridViewBLGS.DataSource = Me.State.searchActiveDV
                     ControlMgr.SetVisibleControl(Me, GridViewBLGS, True)
                     BtnOverRideRecon.Enabled = True
-                    ControlMgr.SetVisibleControl(Me, BtnReRunRecon, True)
                 End If
 
                 Me.State.PageIndex = Me.GridViewBLGS.PageIndex
@@ -343,7 +337,6 @@ Public Class ReconciliationForm
                 ControlMgr.SetVisibleControl(Me, GridViewBLGS, False)
                 ControlMgr.SetVisibleControl(Me, Grid, False)
                 BtnOverRideRecon.Enabled = False
-                BtnReRunRecon.Enabled = False
                 Return False
             End If
 
@@ -646,6 +639,11 @@ Public Class ReconciliationForm
     Private Sub BtnReRunRecon_Click(ByVal sender As Object, ByVal e As System.EventArgs) Handles BtnReRunRecon.Click
         Dim Result As Boolean
         Try
+            If Me.GetSelectedItem(ddlDealer) = Guid.Empty Then
+                Me.MasterPage.MessageController.AddInformation(Message.MSG_DEALER_REQUIRED)
+                Exit Sub
+            End If
+
             Result = Reconciliation.ReloadReconcillation(Me.State.DealerIdInSearch, Me.State.firstDayOfMonth, ElitaPlusIdentity.Current.ActiveUser.UserName)
 
             If Result Then
