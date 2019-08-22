@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <xs:schema xmlns:tns="http://schemas.datacontract.org/2004/07/Assurant.Elita.ClaimManagement.Extension.FileManager.Contracts" elementFormDefault="qualified" targetNamespace="http://schemas.datacontract.org/2004/07/Assurant.Elita.ClaimManagement.Extension.FileManager.Contracts" xmlns:xs="http://www.w3.org/2001/XMLSchema">
-  <xs:import schemaLocation="http://l16mia0d7491npx.cead.prd/ElitaClaimManagement/WebApp/admin?xsd=xsd3" namespace="http://assurant.com/Elita/FileManager/Data" />
+  <xs:import schemaLocation="http://localhost/ElitaClaimManagement/WebApp/admin?xsd=xsd3" namespace="http://assurant.com/Elita/FileManager/Data" />
   <xs:complexType name="DataItemLocator">
     <xs:sequence>
       <xs:element minOccurs="0" name="ForceRefresh" type="xs:boolean" />

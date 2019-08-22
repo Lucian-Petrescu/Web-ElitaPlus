@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <xs:schema xmlns:ser="http://schemas.microsoft.com/2003/10/Serialization/" xmlns:tns="http://assurant.com/Elita/FileManagement/ExchangeLayout" elementFormDefault="qualified" targetNamespace="http://assurant.com/Elita/FileManagement/ExchangeLayout" xmlns:xs="http://www.w3.org/2001/XMLSchema">
-  <xs:import schemaLocation="http://l16mia0d7491npx.cead.prd/ElitaClaimManagement/WebApp/admin?xsd=xsd1" namespace="http://schemas.microsoft.com/2003/10/Serialization/" />
+  <xs:import schemaLocation="http://localhost/ElitaClaimManagement/WebApp/admin?xsd=xsd1" namespace="http://schemas.microsoft.com/2003/10/Serialization/" />
   <xs:complexType name="DataLine">
     <xs:complexContent mixed="false">
       <xs:extension base="tns:BaseLine">
