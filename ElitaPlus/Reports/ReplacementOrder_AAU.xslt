@@ -218,7 +218,7 @@
           </tr>
           <tr>
             <td colspan="2">
-              Additional comments:$<xsl:value-of select="a:ServiceOrderReport/a:ServiceOrder/a:SPECIAL_INSTRUCTION" />
+              Additional comments:<xsl:value-of select="a:ServiceOrderReport/a:ServiceOrder/a:SPECIAL_INSTRUCTION" />
             </td>
           </tr>
         </table>
