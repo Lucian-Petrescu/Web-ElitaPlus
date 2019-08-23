@@ -917,6 +917,7 @@ Public Class Codes
     Public Const SFR_CR_DEATH As String = "104"
     Public Const SFR_CR_MOVINGABROAD As String = "105"
     Public Const SFR_CR_CHATELLAW As String = "106"
+    Public Const SFR_CR_HAMONLAW As String = "107"
 
     'Company Attributes
     Public Const COMP_ATTR__RPT_EXP_NOTIFY_EMAIL As String = "RPT_EXP_NOTIFY_EMAIL"

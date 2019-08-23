@@ -4071,6 +4071,8 @@ Namespace Certificates
                                 ElseIf State.CancReasonIsLawful = Codes.EXT_YESNO_Y Then
                                     If State.CancReasonCode = Codes.SFR_CR_CHATELLAW And State.certCancelRequestBO.CancellationRequestDate.Value < DateAdd("M", State.CertTerm, Me.State.MyBO.WarrantySalesDate.Value) Then
                                         dtCancellationDate = DateAdd("D", -1, DateAdd("M", State.CertTerm, Me.State.MyBO.WarrantySalesDate.Value))
+                                    ElseIf State.CancReasonCode = Codes.SFR_CR_HAMONLAW And State.certCancelRequestBO.CancellationRequestDate.Value > DateAdd("M", State.CertTerm, Me.State.MyBO.WarrantySalesDate.Value) Then
+                                        dtCancellationDate = DateAdd("D", +30, State.certCancelRequestBO.CancellationRequestDate.Value)
                                     Else
                                         dtCancellationDate = State.certCancelRequestBO.CancellationRequestDate.Value
                                     End If
