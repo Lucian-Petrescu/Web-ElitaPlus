@@ -83,7 +83,7 @@ Public Class commonUploadForm
     Private Sub uploadFile()
         Dim fileLines As New Collections.Generic.List(Of String)
 
-        Using sr As New StreamReader(InputFile.PostedFile.InputStream, Encoding.Default)
+        Using sr As New StreamReader(InputFile.PostedFile.InputStream, Encoding.UTF8)
             Dim line As String = sr.ReadLine()
             While Not line Is Nothing
                 If line.Trim <> String.Empty Then
