@@ -21,7 +21,8 @@ Public Class CoverageRateDAL
     Public Const COL_NAME_LOSS_COST_PERCENT As String = "loss_cost_percent"
     Public Const COL_NAME_GROSS_AMOUNT_PERCENT As String = "gross_amount_percent"
     Public Const COL_NAME_RENEWAL_NUMBER As String = "renewal_number"
-
+    Public Const COL_NAME_REGION_ID As String = "region_id"
+    Public Const COL_NAME_TAX_REGION As String = "tax_region"
 
     Public Const COL_NAME_PRODUCT_CODE_ID As String = "product_code_id"
     Public Const COL_NAME_WARRANTY_SALES_DATE As String = "warranty_sales_date"

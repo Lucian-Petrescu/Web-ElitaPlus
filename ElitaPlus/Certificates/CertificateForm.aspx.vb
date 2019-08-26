@@ -165,6 +165,25 @@ Namespace Certificates
         Public Const GRID_COL_ENDORSE_EXPIRATION_DATE As Integer = 6
 #End Region
 
+#Region "Sales Tax Details Repeater"
+        Public Const REPEATER_COL_TAX_TYPE As String = "tax_type"
+        Public Const REPEATER_COL_TAX1_DESCRIPTION As String = "tax1_description"
+        Public Const REPEATER_COL_TAX1 As String = "tax1"
+        Public Const REPEATER_COL_TAX2_DESCRIPTION As String = "tax2_description"
+        Public Const REPEATER_COL_TAX2 As String = "tax2"
+        Public Const REPEATER_COL_TAX3_DESCRIPTION As String = "tax3_description"
+        Public Const REPEATER_COL_TAX3 As String = "tax3"
+        Public Const REPEATER_COL_TAX4_DESCRIPTION As String = "tax4_description"
+        Public Const REPEATER_COL_TAX4 As String = "tax4"
+        Public Const REPEATER_COL_TAX5_DESCRIPTION As String = "tax5_description"
+        Public Const REPEATER_COL_TAX5 As String = "tax5"
+        Public Const REPEATER_COL_TAX6_DESCRIPTION As String = "tax6_description"
+        Public Const REPEATER_COL_TAX6 As String = "tax6"
+        Public Const REPEATER_COL_TAX_TOTAL As String = "Total"
+        Public Const REPEATER_COL_TAX_TOTAL_VALUE As String = "tax_total"
+
+#End Region
+
 #Region "Installment History Grid"
         Public Const INSTALLMENT_HISTORY_GRID_COL_START_DATE As Integer = 0
         Public Const INSTALLMENT_HISTORY_GRID_COL_END_DATE As Integer = 1
@@ -204,6 +223,21 @@ Namespace Certificates
         'Public Const INVALID_AMOUNT_ENTERED As String = "INVALID_AMOUNT_ENTERED"
         'Public Const REFUND_AMT_BELOW_TOLERANCE As String = "REFUND_AMT_BELOW_TOLERANCE"
         Public Const IDENTIFICATION_NUMBER_TYPE_DEFAULT = "IDENTIFICATION_NUMBER"
+
+#Region "SalesTaxesDetail"
+        Private Const COL_SALES_TAX1 As String = "tax1"
+        Private Const COL_SALES_TAX2 As String = "tax2"
+        Private Const COL_SALES_TAX3 As String = "tax3"
+        Private Const COL_SALES_TAX4 As String = "tax4"
+        Private Const COL_SALES_TAX5 As String = "tax5"
+        Private Const COL_SALES_TAX6 As String = "tax6"
+        Private Const COL_SALES_TAX1_DESCRIPTION As String = "tax1_description"
+        Private Const COL_SALES_TAX2_DESCRIPTION As String = "tax2_description"
+        Private Const COL_SALES_TAX3_DESCRIPTION As String = "tax3_description"
+        Private Const COL_SALES_TAX4_DESCRIPTION As String = "tax4_description"
+        Private Const COL_SALES_TAX5_DESCRIPTION As String = "tax5_description"
+        Private Const COL_SALES_TAX6_DESCRIPTION As String = "tax6_description"
+#End Region
 
 #End Region
 
@@ -3189,8 +3223,10 @@ Namespace Certificates
             ' Total Sales Tax
             If dv.Table.Rows(0).IsNull(Certificate.COL_TOTAL_SALES_TAX) Then
                 Me.PopulateControlFromBOProperty(Me.moSalesTaxText, 0, Me.DECIMAL_FORMAT)
+
             Else
                 Me.PopulateControlFromBOProperty(Me.moSalesTaxText, CType(dv.Table.Rows(0).Item(Certificate.COL_TOTAL_SALES_TAX), Decimal), Me.DECIMAL_FORMAT)
+                PopulateSalesTaxesDetailPopUp(Me.State.MyBO.Id)
             End If
 
             ' Total MTD Payments
@@ -3662,6 +3698,52 @@ Namespace Certificates
             Else
                 ControlMgr.SetVisibleControl(Me, ReverseCancellationButton_WRITE, False)
             End If
+
+        End Sub
+
+        Private Sub PopulateSalesTaxesDetailPopUp(ByVal certId As Guid)
+
+            Dim dv As DataView
+
+            Try
+                dv = State.MyBO.SalesTaxDetail(certId)
+
+                If IsNothing(dv) Then
+                    Exit Sub
+                End If
+
+                Me.moTaxDetailsRepeater.DataSource = dv
+                Me.moTaxDetailsRepeater.DataBind()
+
+            Catch ex As Exception
+                Me.HandleErrors(ex, Me.MasterPage.MessageController)
+            End Try
+
+        End Sub
+
+        Protected Sub moTaxDetailsRepeater_ItemDataBound(ByVal sender As Object, ByVal e As RepeaterItemEventArgs) Handles moTaxDetailsRepeater.ItemDataBound
+            Try
+                Dim TaxDetailsDr As DataRow = DirectCast(e.Item.DataItem, System.Data.DataRowView).Row
+
+                DirectCast(e.Item.FindControl(REPEATER_COL_TAX_TYPE), Label).Text = TaxDetailsDr(REPEATER_COL_TAX_TYPE) & " => "
+                DirectCast(e.Item.FindControl(REPEATER_COL_TAX1_DESCRIPTION), Label).Text = TaxDetailsDr(REPEATER_COL_TAX1_DESCRIPTION)
+                DirectCast(e.Item.FindControl(REPEATER_COL_TAX1), Label).Text = TaxDetailsDr(REPEATER_COL_TAX1)
+                DirectCast(e.Item.FindControl(REPEATER_COL_TAX2_DESCRIPTION), Label).Text = TaxDetailsDr(REPEATER_COL_TAX2_DESCRIPTION)
+                DirectCast(e.Item.FindControl(REPEATER_COL_TAX2), Label).Text = TaxDetailsDr(REPEATER_COL_TAX2)
+                DirectCast(e.Item.FindControl(REPEATER_COL_TAX3_DESCRIPTION), Label).Text = TaxDetailsDr(REPEATER_COL_TAX3_DESCRIPTION)
+                DirectCast(e.Item.FindControl(REPEATER_COL_TAX3), Label).Text = TaxDetailsDr(REPEATER_COL_TAX3)
+                DirectCast(e.Item.FindControl(REPEATER_COL_TAX4_DESCRIPTION), Label).Text = TaxDetailsDr(REPEATER_COL_TAX4_DESCRIPTION)
+                DirectCast(e.Item.FindControl(REPEATER_COL_TAX4), Label).Text = TaxDetailsDr(REPEATER_COL_TAX4)
+                DirectCast(e.Item.FindControl(REPEATER_COL_TAX5_DESCRIPTION), Label).Text = TaxDetailsDr(REPEATER_COL_TAX5_DESCRIPTION)
+                DirectCast(e.Item.FindControl(REPEATER_COL_TAX5), Label).Text = TaxDetailsDr(REPEATER_COL_TAX5)
+                DirectCast(e.Item.FindControl(REPEATER_COL_TAX6_DESCRIPTION), Label).Text = TaxDetailsDr(REPEATER_COL_TAX6_DESCRIPTION)
+                DirectCast(e.Item.FindControl(REPEATER_COL_TAX6), Label).Text = TaxDetailsDr(REPEATER_COL_TAX6)
+                DirectCast(e.Item.FindControl(REPEATER_COL_TAX_TOTAL), Label).Text = TaxDetailsDr(REPEATER_COL_TAX_TOTAL)
+                DirectCast(e.Item.FindControl(REPEATER_COL_TAX_TOTAL_VALUE), Label).Text = TaxDetailsDr(REPEATER_COL_TAX_TOTAL_VALUE)
+
+            Catch ex As Exception
+                Me.HandleErrors(ex, Me.MasterPage.MessageController)
+            End Try
 
         End Sub
 

@@ -408,6 +408,8 @@ Namespace Tables
 
         Private Const FulfillmentReimThresholdProperty As String = "FullillmentReimburesementThreshold"
         Private Const INTEGRITY_CONSTRAINT_VIOLATION_MSG As String = "Integrity Constraint Violation"
+        Private Const PRICE_MATRIX_USES_WP_XCD_PROPERTY As String = "PriceMatrixUsesWpXcd"
+        Private Const EXPECTED_PREMIUM_IS_WP_XCD_PROPERTY As String = "ExpectedPremiumIsWpXcd"
 
 
 
@@ -988,6 +990,9 @@ Namespace Tables
 
             ClearList(ddlClaimProfile)
             ClearList(ddlCalcCovgEndDateBasedOn)
+            cboPriceMatrixUsesWpXcd.ClearSelection()
+            cboExpectedPremiumIsWpXcd.ClearSelection()
+
         End Sub
         Private Sub ClearProductEquipment()
             If Me.State.IsProductCodeNew Then
@@ -1308,6 +1313,21 @@ Namespace Tables
                                                        })
 
                 Me.State.PaymentSplitRuleLkl = CommonConfigManager.Current.ListManager.GetList("PAYSPLITRULE", Thread.CurrentPrincipal.GetLanguageCode())
+
+
+                cboExpectedPremiumIsWpXcd.Populate(yesNoLkl, New PopulateOptions() With
+                                                      {
+                                                        .AddBlankItem = True,
+                                                        .BlankItemValue = String.Empty,
+                                                        .ValueFunc = AddressOf PopulateOptions.GetExtendedCode
+                                                       })
+                cboPriceMatrixUsesWpXcd.Populate(yesNoLkl, New PopulateOptions() With
+                                                      {
+                                                        .AddBlankItem = True,
+                                                        .BlankItemValue = String.Empty,
+                                                        .ValueFunc = AddressOf PopulateOptions.GetExtendedCode
+                                                       })
+
             Catch ex As Exception
                 Me.MasterPage.MessageController.AddError(PRODUCTCODE_FORM001)
                 Me.MasterPage.MessageController.AddError(ex.Message, False)
@@ -1389,6 +1409,8 @@ Namespace Tables
                         BindSelectItem(Nothing, ddlDepSchCashReimbursement)
 
                         BindSelectItem(Nothing, ddlClaimProfile)
+                        BindSelectItem(.PriceMatrixUsesWpXcd, cboPriceMatrixUsesWpXcd)
+                        BindSelectItem(.ExpectedPremiumIsWpXcd, cboExpectedPremiumIsWpXcd)
                     Else
                         BindSelectItem(.RiskGroupId.ToString, moRiskGroupDrop)
                         BindSelectItem(.MethodOfRepairId.ToString, moMethodOfRepairDrop)
@@ -1589,6 +1611,8 @@ Namespace Tables
                         PopulateControlFromBOProperty(TextBoxFulfillmentReimThresholdValue, .FullillmentReimburesementThreshold)
                         BindSelectItem(TheDepreciationSchedule.DepreciationScheduleId.ToString, ddlDepSchCashReimbursement)
                         BindSelectItem(.ClaimProfile, ddlClaimProfile)
+                        BindSelectItem(.PriceMatrixUsesWpXcd, cboPriceMatrixUsesWpXcd)
+                        BindSelectItem(.ExpectedPremiumIsWpXcd, cboExpectedPremiumIsWpXcd)
                     End If
 
                     ShowHideBenefitsControls(Me.TheProductCode.BenefitEligibleFlagXCD = Codes.EXT_YESNO_Y)
@@ -1760,6 +1784,8 @@ Namespace Tables
                 PopulateBOProperty(TheProductCode, FulfillmentReimThresholdProperty, TextBoxFulfillmentReimThresholdValue)
                 PopulateBOProperty(TheProductCode, "ClaimProfile", Me.ddlClaimProfile, False, True)
                 Me.PopulateBOProperty(TheProductCode, "PerIncidentLiabilityLimitCap", Me.moPerIncidentLiabilityLimitCapText)
+                Me.PopulateBOProperty(TheProductCode, "ExpectedPremiumIsWpXcd", Me.cboExpectedPremiumIsWpXcd, False, True)
+                Me.PopulateBOProperty(TheProductCode, "PriceMatrixUsesWpXcd", Me.cboPriceMatrixUsesWpXcd, False, True)
             End With
             If Not TheDepreciationSchedule.IsDeleted Then
                 PopulateBOProperty(TheDepreciationSchedule, "DepreciationScheduleId", ddlDepSchCashReimbursement)

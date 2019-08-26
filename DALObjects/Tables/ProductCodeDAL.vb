@@ -108,6 +108,8 @@ Public Class ProductCodeDAL
 
     Public Const ColNameClaimProfileCode = "claim_profile_code"
     Public Const COL_NAME_PER_INCIDENT_LIABILITY_LIMIT_CAP As String = "liability_limit_per_incident"
+    Public Const COL_NAME_PRICE_MATRIX_USES_WP_XCD = "price_matrix_uses_wp_xcd"
+    Public Const COL_NAME_EXPECTED_PREMIUM_IS_WP_XCD = "expected_premium_is_wp_xcd"
 
 #End Region
 

@@ -1221,6 +1221,42 @@ Namespace Tables
         Protected WithEvents moPerIncidentLiabilityLimitCapText As Global.System.Web.UI.WebControls.TextBox
         
         '''<summary>
+        '''lblPriceMatrixUsesWpXcd control.
+        '''</summary>
+        '''<remarks>
+        '''Auto-generated field.
+        '''To modify move field declaration from designer file to code-behind file.
+        '''</remarks>
+        Protected WithEvents lblPriceMatrixUsesWpXcd As Global.System.Web.UI.WebControls.Label
+        
+        '''<summary>
+        '''cboPriceMatrixUsesWpXcd control.
+        '''</summary>
+        '''<remarks>
+        '''Auto-generated field.
+        '''To modify move field declaration from designer file to code-behind file.
+        '''</remarks>
+        Protected WithEvents cboPriceMatrixUsesWpXcd As Global.System.Web.UI.WebControls.DropDownList
+        
+        '''<summary>
+        '''lblExpectedPremiumIsWpXcd control.
+        '''</summary>
+        '''<remarks>
+        '''Auto-generated field.
+        '''To modify move field declaration from designer file to code-behind file.
+        '''</remarks>
+        Protected WithEvents lblExpectedPremiumIsWpXcd As Global.System.Web.UI.WebControls.Label
+        
+        '''<summary>
+        '''cboExpectedPremiumIsWpXcd control.
+        '''</summary>
+        '''<remarks>
+        '''Auto-generated field.
+        '''To modify move field declaration from designer file to code-behind file.
+        '''</remarks>
+        Protected WithEvents cboExpectedPremiumIsWpXcd As Global.System.Web.UI.WebControls.DropDownList
+        
+        '''<summary>
         '''hdnSelectedTab control.
         '''</summary>
         '''<remarks>
