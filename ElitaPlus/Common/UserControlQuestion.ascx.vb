@@ -340,9 +340,7 @@ Public Class UserControlQuestion
                 Case AnswerTypes.NumberAnswer, AnswerTypes.TextAnswer
                     Dim txt As TextBox = CType(e.Row.FindControl("txtNo"), TextBox)
                     txt.Visible = True
-                    If oAnswerType.Trim().ToUpper().Equals(AnswerTypes.NumberAnswer) Then
-                        txt.TextMode = TextBoxMode.Number
-                    End If
+
                     If isReEvaulateOnChange Then
                         txt.AutoPostBack = isReEvaulateOnChange
                     End If
@@ -612,6 +610,11 @@ Public Class UserControlQuestion
                         ElseIf (Not String.IsNullOrEmpty(answer)) Then
                             If answerType.Trim().ToUpper().Equals(AnswerTypes.NumberAnswer) Then
                                 Dim numberValue As NumberAnswer = New NumberAnswer()
+                                Dim numbRegExp As New RegularExpressions.Regex("^\d+$")
+                                Dim isValidNumb As Boolean = numbRegExp.Match(answer).Success
+                                If (Not isValidNumb) Then
+                                    ErrorQuestionCodes.AppendLine(questionObject.Text)
+                                End If
                                 Try
                                     numberValue.Answer = Convert.ToDecimal(answer)
                                 Catch ex As Exception
