@@ -597,7 +597,7 @@ Partial Class ClaimForm
         ControlMgr.SetVisibleControl(Me, Me.TextboxSpecialInstruction, Me.TextboxSpecialInstruction.Visible And Not Me.State.IsMultiAuthClaim)
 
         'Disable Buttons for MultiAuthClaim
-        'ControlMgr.SetVisibleControl(Me, Me.btnPrint, Me.btnPrint.Visible And Not Me.State.IsMultiAuthClaim)
+        ControlMgr.SetVisibleControl(Me, Me.btnPrint, Me.btnPrint.Visible And Not Me.State.IsMultiAuthClaim)
         ControlMgr.SetVisibleControl(Me, Me.btnServiceCenterInfo, Me.btnServiceCenterInfo.Visible And Not Me.State.IsMultiAuthClaim)
         ControlMgr.SetVisibleControl(Me, Me.btnNewServiceCenter, Me.btnNewServiceCenter.Visible And Not Me.State.IsMultiAuthClaim)
         ControlMgr.SetVisibleControl(Me, Me.btnShipping, Me.btnShipping.Visible And Not Me.State.IsMultiAuthClaim)
