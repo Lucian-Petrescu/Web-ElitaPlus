@@ -68,9 +68,25 @@
           </tr>
           <tr>
             <td colspan="2">
-              Address:&#160;<xsl:value-of select="a:ServiceOrderReport/a:ServiceOrder/a:ADDRESS1" />&#160;
-              <xsl:value-of select="a:ServiceOrderReport/a:ServiceOrder/a:ADDRESS2" />,<xsl:value-of select="a:ServiceOrderReport/a:ServiceOrder/a:CITY" />,
-              <xsl:value-of select="a:ServiceOrderReport/a:ServiceOrder/a:STATE_PROVINCE_CODE" />,<xsl:value-of select="a:ServiceOrderReport/a:ServiceOrder/a:ZIP" />
+              Address:&#160;<xsl:value-of select="a:ServiceOrderReport/a:ServiceOrder/a:ADDRESS1" />
+              <xsl:text>,&#160;</xsl:text>
+              <xsl:choose>
+                <xsl:when test="a:ServiceOrderReport/a:ServiceOrder/a:ADDRESS2 != ''">
+                  <xsl:value-of select="a:ServiceOrderReport/a:ServiceOrder/a:ADDRESS2" />
+                  <xsl:text>,&#160;</xsl:text>
+                </xsl:when>
+              </xsl:choose>
+              <xsl:choose>
+                <xsl:when test="a:ServiceOrderReport/a:ServiceOrder/a:ADDRESS3 != ''">
+                  <xsl:value-of select="a:ServiceOrderReport/a:ServiceOrder/a:ADDRESS3" />
+                  <xsl:text>,&#160;</xsl:text>
+                </xsl:when>
+              </xsl:choose>
+              <xsl:value-of select="a:ServiceOrderReport/a:ServiceOrder/a:CITY" />
+              <xsl:text>,&#160;</xsl:text>
+              <xsl:value-of select="a:ServiceOrderReport/a:ServiceOrder/a:STATE_PROVINCE_CODE" />
+              <xsl:text>,&#160;</xsl:text>
+              <xsl:value-of select="a:ServiceOrderReport/a:ServiceOrder/a:ZIP" />
             </td>
           </tr>
           <tr>
@@ -79,8 +95,18 @@
           </tr>
           <tr>
             <td>
-              Number:&#160;<xsl:value-of select="a:ServiceOrderReport/a:ServiceOrder/a:HOME_PHONE" /> / &#160;
-              <xsl:value-of select="a:ServiceOrderReport/a:ServiceOrder/a:MOBILE_PHONE" />
+              Number:&#160;
+              <xsl:choose>
+                <xsl:when test="a:ServiceOrderReport/a:ServiceOrder/a:HOME_PHONE != ''">
+                  <xsl:value-of select="a:ServiceOrderReport/a:ServiceOrder/a:HOME_PHONE" />
+                </xsl:when>
+              </xsl:choose>
+              <xsl:choose>
+                <xsl:when test="a:ServiceOrderReport/a:ServiceOrder/a:MOBILE_PHONE != ''">
+                  <xsl:text> / &#160;</xsl:text>
+                  <xsl:value-of select="a:ServiceOrderReport/a:ServiceOrder/a:MOBILE_PHONE" />
+                </xsl:when>
+              </xsl:choose>
             </td>
           </tr>
           <tr>
