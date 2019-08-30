@@ -1144,10 +1144,11 @@ Public Class CertificateDAL
 
     End Function
 
-    Public Function getSalesTaxDetails(ByVal certId As Guid) As DataSet
+    Public Function getSalesTaxDetails(ByVal certId As Guid, ByVal languageId As Guid) As DataSet
         Dim selectStmt As String = Me.Config("/SQL/GET_SALES_TAX_DETAIL")
         Dim parameters() As DBHelper.DBHelperParameter = New DBHelper.DBHelperParameter() _
-                 {New DBHelper.DBHelperParameter(COL_NAME_CERT_ID, certId.ToByteArray)}
+                 {New DBHelper.DBHelperParameter(COL_NAME_CERT_ID, certId.ToByteArray),
+                 New DBHelper.DBHelperParameter(COL_NAME_LANGUAGE_ID, languageId.ToByteArray)}
         Dim outParameters() As DBHelper.DBHelperParameter = New DBHelper.DBHelperParameter() {New DBHelper.DBHelperParameter("po_resultcursor", GetType(DataSet))}
         Try
             Dim ds = New DataSet
