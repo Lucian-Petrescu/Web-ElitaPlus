@@ -2467,7 +2467,7 @@
             </div>
         </div>
     </asp:Panel>
-    <asp:Panel ID="PanTaxDetails" runat="server"  BackColor="#99ccff" >
+    <asp:Panel ID="PanTaxDetails" runat="server"  BackColor="#99ccff" ScrollBars="Auto" >
          
     </asp:Panel>
     <script type="text/javascript" language="javascript">

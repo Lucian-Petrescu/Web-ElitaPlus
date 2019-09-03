@@ -8145,7 +8145,7 @@ Namespace Certificates
 
                     For Each TaxDetailsDr As DataRow In dv.ToTable.Rows
 
-                        strbuilder.Append("<tr><td colspan='3' > " & TaxDetailsDr(REPEATER_COL_TAX_TYPE) & " : </td> <td colspan='3' > " &
+                        strbuilder.Append("<tr><td colspan='2' > " & TaxDetailsDr(REPEATER_COL_TAX_TYPE) & " : </td> <td colspan='4' align='left'> " &
                                           TaxDetailsDr(REPEATER_COL_TAX_TOTAL_VALUE) & " </td></tr>")
                         strbuilder.Append("<tr><td>" & If(IsDBNull(TaxDetailsDr(REPEATER_COL_TAX1_DESCRIPTION)), TranslationBase.TranslateLabelOrMessage("TAX1"),
                                                   TaxDetailsDr(REPEATER_COL_TAX1_DESCRIPTION)) & " </td>")
