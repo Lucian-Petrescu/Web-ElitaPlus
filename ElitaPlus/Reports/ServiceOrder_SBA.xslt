@@ -27,6 +27,14 @@
           .red {color:#ff0000;}
         </style>
       </head>
+      <xsl:variable name="vDealer" select="a:ServiceOrderReport/a:ServiceOrder/a:DEALER_NAME" />
+      <xsl:variable name="isDealer0009">
+        <xsl:choose>
+          <xsl:when test="contains(vDealer, '(0009)')">1</xsl:when>
+          <xsl:when test="contains(vDealer, '(0010)')">1</xsl:when>
+          <xsl:otherwise>0</xsl:otherwise>
+      </xsl:choose>
+      </xsl:variable>
       <body>
         <div style="position:absolute;top:10;left:0;z-index:900;">
           <xsl:element name="img">
@@ -49,16 +57,41 @@
                 <tr>
                   <td>
                     <TABLE id="Table1" cellSpacing="0" cellPadding="0" width="100%" border="0">
-                      <tr>
-                        <td colspan="3" id="title" style="text-align:center;">
-                          REPARACION
-                        </td>
-                      </tr>
-                      <tr>
-                        <td colspan="3" id="title" style="text-align:center;">
-                          <br/><br/>ORDEN DE SERVICIO HOME WARRANTY&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;<span class="xtitle">HW</span>
-                        </td>
-                      </tr>
+                      <xsl:choose>
+                        <xsl:when test="isDealer0009 = '1'">
+                          <tr>
+                            <td>
+                              <xsl:element name="img">
+                                <xsl:attribute name="src">
+                                  <xsl:choose>
+                                    <xsl:when test="a:ServiceOrderReport/a:ServiceOrder/a:IMAGE_PATH">
+                                      <xsl:value-of select='concat(a:ServiceOrderReport/a:ServiceOrder/a:IMAGE_PATH,"assurant_logo_aba.jpg")'/>
+                                    </xsl:when>
+                                    <xsl:otherwise>
+                                      <xsl:text>http://w1.assurant.com/elitalogos/assurant_logo_aba.jpg</xsl:text>
+                                    </xsl:otherwise>
+                                  </xsl:choose>
+                                </xsl:attribute>
+                              </xsl:element>
+                            </td>
+                            <td id="title" colspan="2" style="vertical-align:middle">
+                              ORDEN DE SERVICIO
+                            </td>
+                          </tr>
+                        </xsl:when>
+                        <xsl:otherwise>
+                          <tr>
+                            <td colspan="3" id="title" style="text-align:center;">
+                              REPARACION
+                            </td>
+                          </tr>
+                          <tr>
+                            <td colspan="3" id="title" style="text-align:center;">
+                              <br/><br/>ORDEN DE SERVICIO HOME WARRANTY&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;<span class="xtitle">HW</span>
+                            </td>
+                          </tr>
+                        </xsl:otherwise>
+                      </xsl:choose>
                       <tr>
                         <td></td>
                         <td class="title" style="text-align:right">N° de Autorización:</td>
@@ -386,7 +419,9 @@
                                       1).  Confirmar recepción del mensaje<br />
                                       2).  Combinar visita/retiro con cliente<br />
                                       3).  Completar datos faltantes<br/>
-                                      <span class="red">4). Enviar presupuesto por e-mail a Assurant Argentina</span>
+                                      <xsl:if test="isDealer0009 = '0'">
+                                        <span class="red">4). Enviar presupuesto por e-mail a Assurant Argentina</span>
+                                      </xsl:if>
                                     </td>
                                   </tr>
                                 </table>
@@ -409,10 +444,12 @@
                         </td>
                         <td  style="height:50px;">
                           Verificar mal uso.<br/><br/>
-                          <span class="red">
-                            El precio de la visita a domicilio es $50, debe ser cobrado al cliente por el técnico en el momento del diagnostico.<br/><br/>
-                            Todos los presupuestos deben ser enviados por e-mail a Assurant Argentina, incluso cuando se trate de autorizaciones pre-aprobadas.<br/>
-                          </span>
+                          <xsl:if test="isDealer0009 = '0'">
+                            <span class="red">
+                              El precio de la visita a domicilio es $50, debe ser cobrado al cliente por el técnico en el momento del diagnostico.<br/><br/>
+                              Todos los presupuestos deben ser enviados por e-mail a Assurant Argentina, incluso cuando se trate de autorizaciones pre-aprobadas.<br/>
+                            </span>
+                          </xsl:if>
                         </td>
                       </tr>
                     </table>
