@@ -141,9 +141,6 @@ Namespace Certificates
         Public Sub PopulateGrid()
             Try
 
-                'Authentication.CurrentUser.CompanyGroup.Id
-                'Authentication.CurrentUser.NetworkId
-                '    Me.GetSelectedItem(moDealerDrop)
                 Me.State.searchDV = Certificate.GetSerialNumberList(Me.State.serialNumber,
                                                                     Authentication.CurrentUser.CompanyGroup.Id,
                                                                     Authentication.CurrentUser.NetworkId)
