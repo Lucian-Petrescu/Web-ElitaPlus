@@ -3517,7 +3517,8 @@ Public Class Certificate
         End Try
     End Function
 
-    Public Shared Function GetSerialNumberList(ByVal serialNumberMask As String) As SerialNumberSearchDV
+    Public Shared Function GetSerialNumberList(ByVal serialNumberMask As String, ByVal companyGroupId As Guid,
+                                               ByVal networkId As String) As SerialNumberSearchDV
         Try
             Dim compIds As ArrayList = ElitaPlusIdentity.Current.ActiveUser.Companies
             Dim dal As New CertificateDAL
@@ -3528,7 +3529,8 @@ Public Class Certificate
                 Throw New BOValidationException(errors, GetType(Certificate).FullName)
             End If
 
-            Return New SerialNumberSearchDV(dal.LoadSerialNumberList(serialNumberMask, compIds).Tables(0))
+            Return New SerialNumberSearchDV(dal.LoadSerialNumberList(serialNumberMask, companyGroupId, networkId
+                                                                     ).Tables(0))
 
         Catch ex As Assurant.ElitaPlus.DALObjects.DataBaseAccessException
             Throw New DataBaseAccessException(ex.ErrorType, ex)

@@ -339,6 +339,7 @@ Public Class CertificateDAL
 
     'REQ 5932
     Public Const PO_CURSOR_CUSTOMER_INFO As Integer = 0
+    Public Const PO_CURSOR_SERIAL_NUMBER As Integer = 0
     Public Const SP_PARAM_NAME_CUST_INFO As String = "po_customer_info"
     Public Const PO_CURSOR_CUSTOMER_DETAILS As Integer = 0
     Public Const SP_PARAM_NAME_CUST_DETAILS As String = "po_customer_details"
@@ -804,55 +805,27 @@ Public Class CertificateDAL
     End Function
 
     Public Function LoadSerialNumberList(ByVal serialNumberMask As String,
-                                ByVal compIds As ArrayList) As DataSet
+                                ByVal compGroupId As Guid,
+                                ByVal networkId As String) As DataSet
 
-        Dim selectStmt As String = Me.Config("/SQL/LOAD_SERIAL_NUMBER_LIST")
-        Dim whereClauseConditions As String = ""
+        Dim selectStmt As String = Me.Config("/SQL/LOAD_SERIAL_NUMBER")
         Dim ds As New DataSet
-        Dim companyParam As DBHelper.DBHelperParameter
-        Dim rowNumParam As DBHelper.DBHelperParameter
-        Dim bIsLikeClause As Boolean = False
-        Dim sortBy As String = "upper(serial_number)"
+        Dim outputParameter(PO_CURSOR_SERIAL_NUMBER) As DBHelper.DBHelperParameter
+        Dim inParameters As New Generic.List(Of DBHelper.DBHelperParameter)
+        Dim param As DBHelper.DBHelperParameter
 
-        bIsLikeClause = IsThereALikeClause(serialNumberMask)
-        If ((Not (serialNumberMask Is Nothing)) AndAlso (Me.FormatSearchMask(serialNumberMask))) Then
-            whereClauseConditions &= Environment.NewLine & " ci.search_imei_serialnumber " & serialNumberMask.ToUpper & " AND"
-        End If
+        param = New DBHelper.DBHelperParameter("pi_company_group_id", DALBase.GuidToSQLString(compGroupId))
+        inParameters.Add(param)
+        param = New DBHelper.DBHelperParameter("pi_serial_number", serialNumberMask.ToUpper)
+        inParameters.Add(param)
+        param = New DBHelper.DBHelperParameter("pi_network_id", networkId)
+        inParameters.Add(param)
 
-
-        'If bIsLikeClause = True Then
-        '    ' hextoraw
-        '    whereClauseConditions &= Environment.NewLine & "ci.company_id = " & "hextoraw( '" & Me.GuidToSQLString(compId) & "')"
-        'Else
-        '    ' It is Hardcoded
-        '    whereClauseConditions &= Environment.NewLine & "ci.company_id = '" & Me.GuidToSQLString(compId) & "'"
-        'End If
-
-        If bIsLikeClause = True Then
-            ' hextoraw
-            whereClauseConditions &= Environment.NewLine & MiscUtil.BuildListForSql("ci." & Me.COL_NAME_COMPANY_ID, compIds, True)
-        Else
-            ' not HextoRaw
-            whereClauseConditions &= Environment.NewLine & MiscUtil.BuildListForSql("ci." & Me.COL_NAME_COMPANY_ID, compIds, False)
-        End If
-
-        If Not whereClauseConditions = "" Then
-            selectStmt = selectStmt.Replace(Me.DYNAMIC_WHERE_CLAUSE_PLACE_HOLDER, whereClauseConditions)
-        Else
-            selectStmt = selectStmt.Replace(Me.DYNAMIC_WHERE_CLAUSE_PLACE_HOLDER, "")
-        End If
-
-        If Not IsNothing(sortBy) Then
-            selectStmt = selectStmt.Replace(Me.DYNAMIC_ORDER_BY_CLAUSE_PLACE_HOLDER,
-                                            Environment.NewLine & "ORDER BY " & Environment.NewLine & sortBy)
-        Else
-            selectStmt = selectStmt.Replace(Me.DYNAMIC_ORDER_BY_CLAUSE_PLACE_HOLDER, "")
-        End If
-
+        outputParameter(PO_CURSOR_SERIAL_NUMBER) = New DBHelper.DBHelperParameter("po_cursor_serial_number", GetType(DataSet))
         Try
-            rowNumParam = New DBHelper.DBHelperParameter(Me.PAR_NAME_ROW_NUMBER, Me.MAX_NUMBER_OF_ROWS)
-            DBHelper.Fetch(ds, selectStmt, Me.TABLE_NAME,
-                            New DBHelper.DBHelperParameter() {rowNumParam})
+            DBHelper.FetchSp(selectStmt, inParameters.ToArray, outputParameter, ds, "GetSerialNumList")
+            ds.Tables(0).TableName = "GetSerialNumList"
+
             Return ds
         Catch ex As Exception
             Throw New DataBaseAccessException(DataBaseAccessException.DatabaseAccessErrorType.ReadErr, ex)
