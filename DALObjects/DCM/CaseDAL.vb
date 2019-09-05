@@ -109,7 +109,8 @@ Public Class CaseDAL
         End Try
     End Function
 
-    Public Function LoadCaseList(ByVal companyId As Guid, ByVal caseNumber As String, ByVal caseStatus As String, ByVal callerFirstName As String, ByVal callerLastName As String, ByVal caseOpenDateFrom As Date?, ByVal caseOpenDateTo As Date?, ByVal casePurpose As String, ByVal certificateNumber As String, ByVal caseClosedReason As String, ByVal languageId As Guid) As DataSet
+    Public Function LoadCaseList(ByVal companyId As Guid, ByVal caseNumber As String, ByVal caseStatus As String, ByVal callerFirstName As String, ByVal callerLastName As String, ByVal caseOpenDateFrom As Date?, ByVal caseOpenDateTo As Date?, ByVal casePurpose As String, ByVal certificateNumber As String, ByVal caseClosedReason As String,
+                                 ByVal languageId As Guid, ByVal networkId As String) As DataSet
         Dim selectStmt As String = Config("/SQL/LOAD_CASE_LIST")
         Dim ds As DataSet = New DataSet
         Dim outputParameter(PoCursorCase) As DBHelper.DBHelperParameter
@@ -155,6 +156,9 @@ Public Class CaseDAL
         inParameters.Add(param)
 
         param = New DBHelper.DBHelperParameter("pi_language_id", languageId.ToByteArray)
+        inParameters.Add(param)
+
+        param = New DBHelper.DBHelperParameter("pi_network_id", networkId)
         inParameters.Add(param)
 
         outputParameter(PoCursorCase) = New DBHelper.DBHelperParameter(SpParamNameCaseList, GetType(DataSet))
