@@ -3562,11 +3562,11 @@ Public Class Certificate
         Return ds.Tables(CertificateDAL.TABLE_PREMIUM_TOTALS).DefaultView
 
     End Function
-    Public Shared Function SalesTaxDetail(ByVal certId As Guid) As DataView
+    Public Shared Function SalesTaxDetail(ByVal certId As Guid, ByVal languageId As Guid) As DataView
         Dim dal As New CertificateDAL
         Dim ds As DataSet
 
-        ds = dal.getSalesTaxDetails(certId)
+        ds = dal.getSalesTaxDetails(certId, languageId)
         Return ds.Tables(CertificateDAL.TABLE_SALES_TAX_DETAILS).DefaultView
 
     End Function

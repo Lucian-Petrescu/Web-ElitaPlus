@@ -39,7 +39,7 @@
     <script type="text/javascript">    
 
         $(function () {
-            debugger;
+         
             var initDisabledTabs = $("input[id$='hdnInitDisabledTabs']").val().split(',');
             $.each(initDisabledTabs, function () {
                 var ind = parseInt(this);
@@ -64,7 +64,7 @@
 
 
                     if (selectedTab == 9 && isCertHistLoaded == 0 && _isSubmitting == false) {
-                        debugger;
+                        
                         var prm = Sys.WebForms.PageRequestManager.getInstance();
                         if (prm != null) {
                             prm.add_endRequest(UpdatePanelLoaded);
@@ -1091,8 +1091,9 @@
                                         <asp:TextBox ID="moSalesTaxText" runat="server" SkinID="SmallTextBox" />
                                         <asp:Label ID="lblTaxDetails" runat="server" ForeColor ="Blue"  Text="Tax_Details"> </asp:Label>
                                     </td>
-                                    <ajaxToolkit:HoverMenuExtender ID="HoverMenuExtender1" runat="server" TargetControlID="lblTaxDetails"
-                                         PopupControlID="PanTaxDetails" PopupPosition="Top" PopDelay="25" HoverCssClass="popupBtnHover">
+                                    <ajaxToolkit:HoverMenuExtender  ID="HoverMenuExtender1" runat="server" TargetControlID="lblTaxDetails" 
+                                         PopupControlID="PanTaxDetails" PopupPosition="right" PopDelay="25" HoverCssClass="popupBtnHover"
+                                         DynamicControlID="PanTaxDetails"  DynamicServiceMethod="GetSalesTaxDetails">
                                      </ajaxToolkit:HoverMenuExtender>
                                 </tr>
                                 <tr>
@@ -2466,56 +2467,14 @@
             </div>
         </div>
     </asp:Panel>
-    <asp:Panel ID="PanTaxDetails" runat="server"  BackColor="#99ccff" >
-        <table width="40px" class="dataGrid">
-            <tbody>
-                <asp:Repeater runat="server" ID="moTaxDetailsRepeater">
-                   
-                    <ItemTemplate>
-                        <tr>
-                            <td nowrap="noWrap" >
-                                <asp:Label runat="server" ID="tax_type" />
-                            </td>
-                            <td nowrap="noWrap" >
-                                <table>
-                                    <tr>
-                                        <td><asp:Label ID="tax1_description" runat="server" Text="Tax1"/></td>
-                                        <td> : <asp:Label ID="tax1" runat="server"/> </td>
-                                        <td> <asp:Label ID="tax2_description" runat="server" Text="Tax2"/></td>
-                                         <td>:<asp:Label ID="tax2" runat="server"/>  </td>
-                                    </tr>
-                                    
-                                    <tr>
-                                        <td> <asp:Label ID="tax3_description" runat="server" Text="Tax3"/></td>
-                                         <td> : <asp:Label ID="tax3" runat="server"/> </td>
-                                         <td> <asp:Label ID="tax4_description" runat="server" Text="Tax4"/> </td>
-                                         <td>: <asp:Label ID="tax4" runat="server"/>  </td>
-                                    </tr>
-                                    
-                                    <tr>
-                                        <td> <asp:Label ID="tax5_description" runat="server" Text="Tax5"/></td>
-                                        <td> : <asp:Label ID="tax5" runat="server"/> </td>
-                                        <td> <asp:Label ID="tax6_description" runat="server" Text="Tax6"/></td>
-                                        <td> : <asp:Label ID="tax6" runat="server"/> </td>
-                                    </tr>
-                                     <tr>
-                                         
-                                         <td colspan="2"> <asp:Label ID="Total" runat="server" Text="Total" Font-Bold="true"/></td>
-                                         <td colspan="2"> :<asp:Label ID="tax_total" runat="server" Font-Bold="true" />  </td>
-                                         
-                                    </tr>
-                                </table>
-                               </td>
-                        </tr>
-                    </ItemTemplate>
-                   
-                </asp:Repeater>
-            </tbody>
-        </table>
+    <asp:Panel ID="PanTaxDetails" runat="server"  BackColor="#99ccff" ScrollBars="Auto" >
+         
     </asp:Panel>
     <script type="text/javascript" language="javascript">
+       
         $(document).ready(function () {
             $('#OtherCustomerInfo').slideUp();
+           
         });
 
         $("#OthCustExpander").click(function () {
@@ -2562,7 +2521,7 @@
         }
 
         function TransformToHtmlText(xmlDoc, xsltDoc) {
-            debugger;
+          
             //FOR ie11 only
             var xslt = new ActiveXObject("Msxml2.XSLTemplate");
             var xslDoc = new ActiveXObject("Msxml2.FreeThreadedDOMDocument");
