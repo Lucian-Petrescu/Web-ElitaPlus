@@ -860,7 +860,7 @@ Public Class ClaimRecordingForm
             'State.caseId = ClaimBase.GetCaseIdByCaseNumberAndCompany("2017000998", "AIF")
             '    Dim oCase As CaseBase = New CaseBase(State.caseId)
             '    NavController.Navigate(Me, FlowEvents.EVENT_DENIED_CASE_CRATED, New CaseDetailsForm.Parameters(oCase))
-
+            Dim errMsg As List(Of String) = New List(Of String)
             If Not State.CertificateId.Equals(Guid.Empty) Then
                 Dim policyRequest As CreateCaseRequest = New CreateCaseRequest()
                 policyRequest.PurposeCode = moPurposecode.SelectedValue
@@ -932,10 +932,23 @@ Public Class ClaimRecordingForm
 
                 If (callerinfo.GetType() Is GetType(PhoneCaller)) Then
                     If (String.IsNullOrEmpty(callerinfo.PhoneNumber) And String.IsNullOrEmpty(callerinfo.EmailAddress)) Then
-                        MasterPage.MessageController.AddError(ElitaPlus.Common.ErrorCodes.GUI_CALLER_PHONE_OR_EMAIL_REQUIRED_ERR, True)
-                        Exit Sub
+                        errMsg.Add(TranslationBase.TranslateLabelOrMessage(ElitaPlus.Common.ErrorCodes.GUI_CALLER_PHONE_OR_EMAIL_REQUIRED_ERR))
                     End If
                 End If
+
+                If String.IsNullOrEmpty(callerinfo.FirstName) Then
+                    errMsg.Add(TranslationBase.TranslateLabelOrMessage(ElitaPlus.Common.ErrorCodes.GUI_CALLER_FIRST_NAME_REQUIRED_ERR))
+                End If
+
+                If String.IsNullOrEmpty(callerinfo.LastName) Then
+                    errMsg.Add(TranslationBase.TranslateLabelOrMessage(ElitaPlus.Common.ErrorCodes.GUI_CALLER_LAST_NAME_REQUIRED_ERR))
+                End If
+
+                If errMsg.Count > 0 Then
+                    MasterPage.MessageController.AddError(errMsg.ToArray, True)
+                    Exit Sub
+                End If
+
                 policyRequest.Caller = callerinfo
 
                 Try
