@@ -35,7 +35,7 @@
             var windowProperties = "width = " + (screen.width - 100) + ", height = " + (screen.height - 200) + ", toolbar = no, location = no, status = yes, resizable = yes, scrollbars = yes";
             newRptWin = window.open(url, "", windowProperties);
             newRptWin.moveTo(50, 90);
-        }
+        }       
        
         $(function () {
             var disabledTabs = $("input[id$='hdnDisabledTab']").val().split(',');
@@ -567,6 +567,7 @@
                         <li><a href="#tbClaimShippingInfo"><asp:Label ID="Label3" runat="server" CssClass="tabHeaderText">CLAIM_SHIPPING</asp:Label></a></li>  
                         <li><a href="#tbClaimAuthorization"><asp:Label ID="Label6" runat="server" CssClass="tabHeaderText">CLAIM_AUTHORIZATIONS</asp:Label></a></li>                        
                         <li><a href="#tbClaimConsequentialDamage"><asp:Label ID="Label2" runat="server" CssClass="tabHeaderText">CLAIM_CONSEQUENTIAL_DAMAGE</asp:Label></a></li>  
+                        <li><a href="#tbClaimFulfillmentDetails"><asp:Label ID="lblClaimFulfillmentDetails" runat="server" CssClass="tabHeaderText">CLAIM_FULFILLMENT</asp:Label></a></li>  
                       </ul>
           
                       <div id="tbDeviceInfo">
@@ -791,8 +792,7 @@
                                 </div>
                             <%--</div>--%>
                       </div>
-                    
-                   
+                                       
                       <div id="tbClaimConsequentialDamage">
                         <Elita:UserControlConsequentialDamage ID="ucClaimConsequentialDamage" runat="server"></Elita:UserControlConsequentialDamage>
                       </div>
@@ -849,6 +849,181 @@
                                     </div>
                                 </div>
                             </div>
+                     
+                        
+                      <div id="tbClaimFulfillmentDetails">
+                          <div class="Page">
+                                    <div id="dvClaimFulfillmentDetails" runat="server">
+                                        <table class="formGrid" width="100%">
+                                            <tr>
+                                                <td align="right"  width="15%">
+                                                </td>
+                                                <td align="right" width="35%">                                                    
+                                                    <asp:Label ID="lblFwdLogistics" runat="server" Text="FORWARD_LOGISTICS" Font-Bold="True"> </asp:Label>
+                                                </td>
+                                                <td align="left" width="15%">												
+                                                </td>
+                                                <td align="left" width="35%">                                                    
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td></td>
+                                                <td></td>
+                                                <td></td>
+                                                <td></td>
+                                            </tr>
+                                            <tr>
+                                                <td align="right">
+                                                    <asp:Label ID="lblOptionDescription" runat="server" Text="DELIVERY_OPTION"> </asp:Label>
+                                                </td>
+                                                <td align="left">
+                                                    <asp:TextBox ID="txtOptionDescription" runat="server" CssClass="FLATTEXTBOX" Enabled="false" 
+                                                                     SkinID="MediumTextBox"></asp:TextBox>
+                                                </td>
+                                                <td align="right">
+												    <asp:Label ID="lblTrackingNumber" runat="server" Text="TRACKING_NUMBER"> </asp:Label>
+											    </td>
+											    <td align="left">
+												    <asp:TextBox ID="txtTrackingNumber" runat="server" CssClass="FLATTEXTBOX" Enabled="false" 
+															     SkinID="MediumTextBox"></asp:TextBox>
+											    </td>                                                 
+                                            </tr>
+                                            <tr>
+                                                <td align="right">
+                                                    <asp:Label ID="lblShippingDate" runat="server" Text="ACTUAL_SHIPPING_DATE"> </asp:Label>
+                                                </td>
+                                                <td align="left">
+                                                    <asp:TextBox ID="txtShippingDate" runat="server" CssClass="FLATTEXTBOX" Enabled="false" 
+                                                                    SkinID="MediumTextBox"></asp:TextBox>
+                                                </td> 
+											    <td align="right">
+												    <asp:Label ID="lblActualDeliveryDate" runat="server" Text="ACTUAL_DELIVERY_DATE "> </asp:Label>
+											    </td>
+											    <td align="left">
+												    <asp:TextBox ID="txtActualDeliveryDate" runat="server" CssClass="FLATTEXTBOX" Enabled="false" 
+															     SkinID="MediumTextBox"></asp:TextBox>
+											    </td>                                                
+                                            </tr>										
+										    <tr>
+                                                <td align="right">
+                                                    <asp:Label ID="lblExpectedShippingDate" runat="server" Text="EXPECTED_SHIPPING_DATE"> </asp:Label>
+                                                </td>
+                                                <td align="left">
+                                                    <asp:TextBox ID="txtExpectedShippingDate" runat="server" CssClass="FLATTEXTBOX" Enabled="false" 
+                                                                    SkinID="MediumTextBox"></asp:TextBox>
+                                                </td> 
+                                                <td align="right">
+                                                    <asp:Label ID="lblExpectedDeliveryDate" runat="server" Text="EXPECTED_DELIVERY_DATE"> </asp:Label>
+                                                </td>
+                                                <td align="left">
+                                                    <asp:TextBox ID="txtExpectedDeliveryDate" runat="server" CssClass="FLATTEXTBOX" Enabled="false" 
+                                                                 SkinID="MediumTextBox"></asp:TextBox>
+                                                </td>											                                                   
+                                            </tr>                                        
+										<tr>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                        </tr>
+                                            <tr>
+                                            <td align="right">
+                                                <asp:Label ID="lblAddress1" runat="server" Text="ADDRESS"> </asp:Label>
+                                            </td>
+                                            <td align="left">
+                                                <asp:TextBox ID="txtAddress1" runat="server" CssClass="FLATTEXTBOX" Enabled="false" 
+                                                                SkinID="LargeTextBox" TextMode="MultiLine" Rows="3"></asp:TextBox>
+                                            </td>
+                                            <td align="right">
+                                                <asp:Label ID="lblCity" runat="server" Text="CITY"> </asp:Label>
+                                            </td>
+                                            <td align="left">
+                                                <asp:TextBox ID="txtCity" runat="server" Enabled="false" CssClass="FLATTEXTBOX"
+                                                             SkinID="MediumTextBox"></asp:TextBox>
+                                            </td>                                            
+                                        </tr>
+                                        <tr>
+                                            <td align="right">
+                                                <asp:Label ID="lblAddress2" runat="server" Text="ADDRESS2"> </asp:Label>
+                                            </td>
+                                            <td align="left">
+                                                <asp:TextBox ID="txtAddress2" runat="server" CssClass="FLATTEXTBOX" Enabled="false" 
+                                                                SkinID="LargeTextBox" TextMode="MultiLine" Rows="3"></asp:TextBox>
+                                            </td>
+                                            <td align="right">
+                                                <asp:Label ID="lblState" runat="server" Text="STATE"> </asp:Label>
+                                            </td>
+                                            <td align="left">
+                                                <asp:TextBox ID="txtState" runat="server" SkinID="MediumTextBox" Enabled="false"></asp:TextBox> 
+                                            </td>                                            
+                                        </tr>
+                                        <tr>
+                                            <td align="right">
+                                                <asp:Label ID="lblAddress3" runat="server" Text="ADDRESS3"> </asp:Label>
+                                            </td>
+                                            <td align="left">
+                                                <asp:TextBox ID="txtAddress3" runat="server" CssClass="FLATTEXTBOX" Enabled="false" 
+                                                                SkinID="LargeTextBox" TextMode="MultiLine" Rows="3"></asp:TextBox>
+                                            </td>                                            
+                                            <td align="right">
+                                                <asp:Label ID="lblCountry" runat="server" Text="COUNTRY"> </asp:Label>
+                                            </td>
+                                            <td align="left">
+                                                <asp:TextBox ID="txtCountry" runat="server" SkinID="MediumTextBox" CssClass="FLATTEXTBOX"
+                                                    Enabled="false"></asp:TextBox>
+                                            </td>
+                                        </tr>
+                                        <tr>                                             											
+                                            <td></td>
+                                            <td></td>
+                                            <td align="right">
+                                                <asp:Label ID="lblPostalCode" runat="server" Text="POSTAL_CODE" > </asp:Label>
+                                            </td>
+                                            <td align="left">
+                                                <asp:TextBox ID="txtPostalCode" runat="server" CssClass="FLATTEXTBOX" Enabled="false" 
+                                                                SkinID="MediumTextBox"></asp:TextBox>
+                                            </td>
+                                        </tr>                                            
+                                        <tr>
+                                            <td align="right">
+                                                <asp:Label ID="lblStoreCode" runat="server" Text="STORE_CODE"> </asp:Label>
+                                            </td>
+                                            <td align="left">
+                                                <asp:TextBox ID="txtStoreCode" runat="server" CssClass="FLATTEXTBOX" Enabled="false" 
+                                                                SkinID="MediumTextBox"></asp:TextBox>
+                                            </td> 
+                                                <td align="right">
+                                                    <asp:Label ID="lblStoreType" runat="server" Text="STORE_TYPE"> </asp:Label>
+                                                </td>
+                                                <td align="left">
+													<asp:TextBox ID="txtStoreType" runat="server" CssClass="FLATTEXTBOX" Enabled="false" 
+                                                                SkinID="MediumTextBox"></asp:TextBox>                                                    
+                                                </td>                                                
+                                        </tr>
+                                        <tr>
+                                            <td align="right">
+                                                <asp:Label ID="lblStoreName" runat="server" Text="STORE_NAME"> </asp:Label>
+                                            </td>
+                                            <td align="left">
+                                                <asp:TextBox ID="txtStoreName" runat="server" CssClass="FLATTEXTBOX" Enabled="false" 
+                                                                SkinID="MediumTextBox"></asp:TextBox>
+                                            </td> 
+                                            <td align="right">
+                                                <asp:Label ID="lblPasscode" runat="server" Text="PASSCODE"> </asp:Label>												
+											</td>											
+                                            <td align="left">
+							                    <asp:TextBox ID="txtPasscode" runat="server" CssClass="FLATTEXTBOX" Enabled="false" 
+                                                                SkinID="MediumTextBox"></asp:TextBox>					
+
+											</td>                                            
+                                        </tr>                                        
+
+                                        </table>
+                                    </div>
+                                </div>
+                      </div>
+ 
+
                     </div>
                 </asp:Panel>                
                 <asp:Panel ID="ViewPanel_READ2" runat="server" Height="40%" Width="100%">
