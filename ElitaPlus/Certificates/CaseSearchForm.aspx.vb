@@ -268,7 +268,7 @@ Namespace Certificates
                     If (Not (State.selectedSortById.Equals(Guid.Empty))) Then
                         sortBy = LookupListNew.GetCodeFromId(LookupListNew.LK_CASE_SEARCH_FIELDS, State.selectedSortById)
                     End If
-                    State.searchDV = CaseBase.getCaseList(State.CompanyId,
+                    State.searchDV = CaseBase.GetCaseList(State.CompanyId,
                                                              State.CaseNumber,
                                                              State.CaseStatus,
                                                              State.CallerFirstName,
@@ -278,7 +278,8 @@ Namespace Certificates
                                                              State.CasePurpose,
                                                              State.CertificateNumber,
                                                              State.CaseClosedReason,
-                                                             Authentication.LangId)
+                                                             Authentication.LangId,
+                                                             Authentication.CurrentUser.NetworkId)
 
 
                     If State.searchClick Then

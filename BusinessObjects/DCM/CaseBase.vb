@@ -403,7 +403,8 @@ Public Class CaseBase
 #End Region
 
 #Region "DataView Retrieveing Methods"
-    Public Shared Function GetCaseList(ByVal companyId As Guid, ByVal caseNumber As String, ByVal caseStatus As String, ByVal callerFirstName As String, ByVal callerLastName As String, ByVal caseOpenDateFrom As String, ByVal caseOpenDateTo As String, ByVal casePurpose As String, ByVal certificateNumber As String, ByVal caseClosedReason As String, ByVal languageId As Guid) As CaseSearchDv
+    Public Shared Function GetCaseList(ByVal companyId As Guid, ByVal caseNumber As String, ByVal caseStatus As String, ByVal callerFirstName As String, ByVal callerLastName As String, ByVal caseOpenDateFrom As String, ByVal caseOpenDateTo As String, ByVal casePurpose As String, ByVal certificateNumber As String, ByVal caseClosedReason As String,
+                                       ByVal languageId As Guid, ByVal networkId As String) As CaseSearchDv
         Try
             Dim dal As New CaseDAL
             Dim fromdate As Date?
@@ -459,7 +460,7 @@ Public Class CaseBase
             End If
 
 
-            Return New CaseSearchDv(dal.LoadCaseList(companyId, caseNumber, caseStatus, callerFirstName, callerLastName, fromdate, todate, casePurpose, certificateNumber, caseClosedReason, languageId).Tables(0))
+            Return New CaseSearchDv(dal.LoadCaseList(companyId, caseNumber, caseStatus, callerFirstName, callerLastName, fromdate, todate, casePurpose, certificateNumber, caseClosedReason, languageId, networkId).Tables(0))
         Catch ex As DataBaseAccessException
             Throw New DataBaseAccessException(ex.ErrorType, ex)
         End Try
