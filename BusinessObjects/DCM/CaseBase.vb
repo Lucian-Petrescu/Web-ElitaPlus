@@ -4,7 +4,7 @@ Imports System.Globalization
 Imports System.Threading
 Imports System.Web.UI
 Imports System.Windows.Forms
-
+Imports Assurant.Elita.CommonConfiguration.DataElements
 Public Class CaseBase
     Inherits BusinessObjectBase
 #Region "Constants"
@@ -515,6 +515,7 @@ Public Class CaseBase
                                                              accountNumber,
                                                              globalCustomerNumber,
                                                              dateofbirth,
+                                                             Authentication.CurrentUser.NetworkId,
                                                              languageId).Tables(0))
         Catch ex As DataBaseAccessException
             Throw New DataBaseAccessException(ex.ErrorType, ex)
@@ -529,6 +530,43 @@ Public Class CaseBase
             Throw New DataBaseAccessException(ex.ErrorType, ex)
         End Try
     End Function
+    Public Shared Function GetDealerListByCompanyForExternalUser()
+        Try
+            Dim Description, Code As String
+            Dim dal As New DealerDAL
+            Dim ds As DataSet
+            ds = dal.LoadList(Description, Code, Authentication.CurrentUser.ScDealerId, Authentication.CurrentUser.Companies)
+
+            Dim lstItm As New ListItem()
+            Dim lstItems As List(Of ListItem) = New List(Of ListItem)()
+            Dim dlrlist As ListItem()
+            If Not ds Is Nothing Then
+                If Not ds.Tables(0) Is Nothing Then
+                    For Each dr As DataRow In ds.Tables(0).Rows
+                        If Not dr("DEALER_ID") Is DBNull.Value Then
+                            lstItm.ListItemId = New Guid(CType(dr("DEALER_ID"), Byte()))
+                        End If
+                        If Not dr("COMPANY_CODE") Is DBNull.Value Then
+                            lstItm.ExtendedCode = dr("COMPANY_CODE").ToString()
+                        End If
+                        If Not dr("DEALER") Is DBNull.Value Then
+                            lstItm.Code = dr("DEALER").ToString()
+                        End If
+                        If Not dr("DEALER_NAME") Is DBNull.Value Then
+                            lstItm.Translation = dr("DEALER_NAME").ToString()
+                        End If
+                        lstItems.Add(lstItm)
+                    Next
+                End If
+            End If
+
+            dlrlist = lstItems.ToArray()
+            Return dlrlist
+        Catch ex As DataBaseAccessException
+            Throw New DataBaseAccessException(ex.ErrorType, ex)
+        End Try
+    End Function
+
     Public Shared Function GetExclSecFieldsList(ByVal companyId As Guid, ByVal dealerId As Guid) As DataSet
         Try
             Dim dal As New CaseDAL
