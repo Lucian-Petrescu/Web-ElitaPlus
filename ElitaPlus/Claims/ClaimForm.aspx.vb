@@ -6,12 +6,17 @@ Imports System.Collections.Generic
 Imports Assurant.ElitaPlus.ElitaPlusWebApp.ClaimFulfillmentService
 Imports Assurant.Elita.ClientIntegration
 Imports Assurant.Elita.ClientIntegration.Headers
+Imports Assurant.ElitaPlus.ElitaPlusWebApp.ClaimFulfillmentWebAppGatewayService
 
 Imports Assurant.ElitaPlus.Security
 Imports Assurant.Elita.CommonConfiguration
 Imports Assurant.Elita.CommonConfiguration.DataElements
 Imports Assurant.Elita.Web.Forms
 Imports System.Threading
+Imports System.Net
+
+Imports RestSharp
+Imports Newtonsoft.Json
 
 Partial Class ClaimForm
     Inherits ElitaPlusSearchPage
@@ -93,7 +98,7 @@ Partial Class ClaimForm
         Public EditingBo As ClaimBase
         Public BoChanged As Boolean = False
         Public IsCallerAuthenticated As Boolean = False
-        Public Sub New(ByVal LastOp As DetailPageCommand, ByVal curEditingBo As ClaimBase, Optional ByVal boChanged As Boolean = False,Optional ByVal IsCallerAuthenticated As Boolean =False)
+        Public Sub New(ByVal LastOp As DetailPageCommand, ByVal curEditingBo As ClaimBase, Optional ByVal boChanged As Boolean = False, Optional ByVal IsCallerAuthenticated As Boolean = False)
             Me.LastOperation = LastOp
             Me.EditingBo = curEditingBo
             Me.BoChanged = boChanged
@@ -102,7 +107,7 @@ Partial Class ClaimForm
         Public Sub New(ByVal LastOp As DetailPageCommand)
             Me.LastOperation = LastOp
         End Sub
-        Public Sub New(ByVal LastOp As DetailPageCommand,Optional ByVal IsCallerAuthenticated As Boolean =False)
+        Public Sub New(ByVal LastOp As DetailPageCommand, Optional ByVal IsCallerAuthenticated As Boolean = False)
             Me.LastOperation = LastOp
             Me.IsCallerAuthenticated = IsCallerAuthenticated
         End Sub
@@ -146,7 +151,8 @@ Partial Class ClaimForm
         Public InboundClaimShippingId As Guid
         Public OutboundClaimShippingId As Guid
         Public FulfilmentBankinfoBo As BusinessObjectsNew.BankInfo
-        Public IsCallerAuthenticated As boolean = False
+        Public IsCallerAuthenticated As Boolean = False
+        Public FulfillmentDetailsResponse As FulfillmentDetails = Nothing
 
     End Class
 
@@ -229,8 +235,8 @@ Partial Class ClaimForm
             Me.IsCallerAuthenticated = IsCallerAuthenticated
         End Sub
 
-        Public Sub New(ByVal claimId As Guid,  Optional ByVal IsCallerAuthenticated As Boolean = False)
-            Me.claimId = claimId            
+        Public Sub New(ByVal claimId As Guid, Optional ByVal IsCallerAuthenticated As Boolean = False)
+            Me.claimId = claimId
             Me.IsCallerAuthenticated = IsCallerAuthenticated
         End Sub
 
@@ -258,7 +264,6 @@ Partial Class ClaimForm
         End If
 
         Me.MasterPage.MessageController.Clear()
-
         Try
             If Me.NavController.CurrentNavState.Name <> "CLAIM_DETAIL" Then
                 If Me.NavController.CurrentNavState.Name <> "DENIED_CLAIM_CREATED" AndAlso Me.NavController.CurrentNavState.Name <> "CLAIM_ISSUE_APPROVED_FROM_CLAIM" _
@@ -301,7 +306,7 @@ Partial Class ClaimForm
                 'Return to the calling screen if status is pending
                 If Me.State.MyBO.Status = BasicClaimStatus.Pending Then
                     Dim myBo As ClaimBase = Me.State.MyBO
-                    Dim retObj As ReturnType = New ReturnType(ElitaPlusPage.DetailPageCommand.Back, myBo,,Me.state.IsCallerAuthenticated)
+                    Dim retObj As ReturnType = New ReturnType(ElitaPlusPage.DetailPageCommand.Back, myBo,, Me.State.IsCallerAuthenticated)
                     Me.NavController = Nothing
                     Me.ReturnToCallingPage(retObj)
                 End If
@@ -352,10 +357,10 @@ Partial Class ClaimForm
                 GetDisabledTabs()
             End If
 
-
             BindBoPropertiesToLabels()
             CheckIfComingFromCreateClaimConfirm()
             CheckIfComingFromSaveConfirm()
+            BindclaimFulfillmentDetails()
 
             If Not Me.IsPostBack Then
                 Me.AddLabelDecorations(Me.State.MyBO)
@@ -430,7 +435,7 @@ Partial Class ClaimForm
                 End If
             ElseIf Me.CalledUrl = ClaimAuthorizationDetailForm.URL Then
                 Me.State.MyBO = ClaimFacade.Instance.GetClaim(Of ClaimBase)(Me.State.MyBO.Id)
-            ElseIf Me.CalledUrl = ClaimDetailsForm.URL Then
+            ElseIf Me.CalledUrl = ClaimDetailsForm.Url Then
                 Dim retObj As ClaimForm.ReturnType = CType(ReturnPar, ClaimForm.ReturnType)
                 If Not retObj Is Nothing Then
                     Me.StartNavControl()
@@ -1892,6 +1897,67 @@ Partial Class ClaimForm
         End Try
     End Sub
 
+    Sub PopulateClaimFulfillmentDetails()
+        Try
+
+            If Me.State.FulfillmentDetailsResponse.LogisticStages.Length > 0 Then
+
+                Dim logisticStage = Me.State.FulfillmentDetailsResponse.LogisticStages.Where(Function(item) item.Code = Codes.FULFILLMENT_FW_LOGISTIC_STAGE).First()
+
+                If Not logisticStage Is Nothing And logisticStage.Code = Codes.FULFILLMENT_FW_LOGISTIC_STAGE Then
+
+                    Me.PopulateControlFromBOProperty(Me.txtOptionDescription, logisticStage.OptionDescription)
+                    Me.PopulateControlFromBOProperty(Me.txtExpectedDeliveryDate, logisticStage.Shipping.ExpectedDeliveryDate)
+                    Me.PopulateControlFromBOProperty(Me.txtActualDeliveryDate, logisticStage.Shipping.ActualDeliveryDate)
+                    Me.PopulateControlFromBOProperty(Me.txtShippingDate, logisticStage.Shipping.ShippingDate)
+                    Me.PopulateControlFromBOProperty(Me.txtExpectedShippingDate, logisticStage.Shipping.ExpectedShippingDate)
+                    Me.PopulateControlFromBOProperty(Me.txtTrackingNumber, logisticStage.Shipping.TrackingNumber)
+                    Me.PopulateControlFromBOProperty(Me.txtAddress1, logisticStage.Address.Address1)
+                    Me.PopulateControlFromBOProperty(Me.txtAddress2, logisticStage.Address.Address2)
+                    Me.PopulateControlFromBOProperty(Me.txtAddress3, logisticStage.Address.Address3)
+                    Me.PopulateControlFromBOProperty(Me.txtCity, logisticStage.Address.City)
+                    Me.PopulateControlFromBOProperty(Me.txtState, logisticStage.Address.State)
+                    Me.PopulateControlFromBOProperty(Me.txtCountry, logisticStage.Address.Country)
+                    Me.PopulateControlFromBOProperty(Me.txtPostalCode, logisticStage.Address.PostalCode)
+                    Me.PopulateControlFromBOProperty(Me.txtStoreCode, logisticStage.HandlingStore.StoreCode)
+                    Me.PopulateControlFromBOProperty(Me.txtStoreName, logisticStage.HandlingStore.StoreName)
+                    Me.PopulateControlFromBOProperty(Me.txtStoreType, logisticStage.HandlingStore.StoreTypeXcd)
+
+                    If logisticStage.Shipping.TrackingNumber.ToString().Length > 0 Then
+                        Dim PasscodeResponse = GetPasscode(logisticStage.Shipping.TrackingNumber.ToString())
+                        Me.PopulateControlFromBOProperty(Me.txtPasscode, PasscodeResponse)
+                    Else
+                        Me.PopulateControlFromBOProperty(Me.txtPasscode, "")
+                    End If
+                End If
+            Else
+                ClearClaimFulfillmentDetails()
+            End If
+        Catch ex As Exception
+            ClearClaimFulfillmentDetails()
+        End Try
+    End Sub
+
+    Sub ClearClaimFulfillmentDetails()
+        Me.PopulateControlFromBOProperty(Me.txtOptionDescription, "")
+        Me.PopulateControlFromBOProperty(Me.txtExpectedDeliveryDate, "")
+        Me.PopulateControlFromBOProperty(Me.txtActualDeliveryDate, "")
+        Me.PopulateControlFromBOProperty(Me.txtShippingDate, "")
+        Me.PopulateControlFromBOProperty(Me.txtExpectedShippingDate, "")
+        Me.PopulateControlFromBOProperty(Me.txtTrackingNumber, "")
+        Me.PopulateControlFromBOProperty(Me.txtAddress1, "")
+        Me.PopulateControlFromBOProperty(Me.txtAddress2, "")
+        Me.PopulateControlFromBOProperty(Me.txtAddress3, "")
+        Me.PopulateControlFromBOProperty(Me.txtCity, "")
+        Me.PopulateControlFromBOProperty(Me.txtState, "")
+        Me.PopulateControlFromBOProperty(Me.txtCountry, "")
+        Me.PopulateControlFromBOProperty(Me.txtPostalCode, "")
+        Me.PopulateControlFromBOProperty(Me.txtStoreCode, "")
+        Me.PopulateControlFromBOProperty(Me.txtStoreName, "")
+        Me.PopulateControlFromBOProperty(Me.txtStoreType, "")
+    End Sub
+
+
     Protected Sub PopulateFormFromBOs()
 
         moClaimInfoController = Me.moClaimInfoController
@@ -2418,7 +2484,7 @@ Partial Class ClaimForm
     End Sub
 
     Protected Sub Back(ByVal cmd As ElitaPlusPage.DetailPageCommand)
-        Dim retObj As ReturnType = New ReturnType(cmd, Me.State.MyBO, CheckForChanges(Me.NavController),Me.State.IsCallerAuthenticated)
+        Dim retObj As ReturnType = New ReturnType(cmd, Me.State.MyBO, CheckForChanges(Me.NavController), Me.State.IsCallerAuthenticated)
         Me.NavController = Nothing
         Me.ReturnToCallingPage(retObj)
     End Sub
@@ -2540,13 +2606,13 @@ Partial Class ClaimForm
                 Dim myBo As ClaimBase = Me.State.MyBO
                 'for single auth claims coming from claim search form and (certificate search and then to claim form)
                 If (Me.NavController.CurrentNavState.Name = "CLAIM_ISSUE_APPROVED_FROM_CLAIM" OrElse Me.NavController.CurrentNavState.Name = "CLAIM_ISSUE_APPROVED_FROM_CERT") Then
-                    NavController.Navigate(Me, "back", New ClaimForm.Parameters(State.MyBO.Id,state.IsCallerAuthenticated))
+                    NavController.Navigate(Me, "back", New ClaimForm.Parameters(State.MyBO.Id, State.IsCallerAuthenticated))
                 ElseIf (Me.NavOriginURL = ClaimWizardForm.AbsoluteURL) Then
-                    Dim retObj As ReturnType = New ReturnType(ElitaPlusPage.DetailPageCommand.Back, myBo,,Me.State.IsCallerAuthenticated)
+                    Dim retObj As ReturnType = New ReturnType(ElitaPlusPage.DetailPageCommand.Back, myBo,, Me.State.IsCallerAuthenticated)
                     Me.NavController = Nothing
                     Me.ReturnToMaxCallingPage(retObj)
                 Else
-                    Dim retObj As ReturnType = New ReturnType(ElitaPlusPage.DetailPageCommand.Back, myBo,,Me.State.IsCallerAuthenticated)
+                    Dim retObj As ReturnType = New ReturnType(ElitaPlusPage.DetailPageCommand.Back, myBo,, Me.State.IsCallerAuthenticated)
                     Me.NavController = Nothing
                     Me.ReturnToCallingPage(retObj)
                 End If
@@ -2572,7 +2638,7 @@ Partial Class ClaimForm
                 If Not Me.State.MyBO.ContactInfo Is Nothing Then
                     If Not Me.State.MyBO.ContactInfo.Address Is Nothing Then Me.State.MyBO.ContactInfo.Address.Delete()
                     Me.State.MyBO.ContactInfo.Delete()
-                End If                
+                End If
             End If
 
             If TextboxAuthorizedAmount.Text = String.Empty Or Not IsNumeric(TextboxAuthorizedAmount.Text) Then
@@ -2933,7 +2999,7 @@ Partial Class ClaimForm
                 New List(Of Object) From {New InteractiveUserHeader() With {.LanId = Authentication.CurrentUser.NetworkId}},
                 Function(ByVal c As FulfillmentServiceClient)
                     Return c.AddServiceWarranty(wsRequest)
-                                                                                                                               End Function)
+                End Function)
         Catch ex As Exception
             blnsuccess = False
             MasterPage.MessageController.AddError(ElitaPlus.Common.ErrorCodes.GUI_CLAIM_FULFILLMENT_SERVICE_ERR, True)
@@ -2998,7 +3064,7 @@ Partial Class ClaimForm
             If (Not (Me.State.MyBO.CertificateId.Equals(Guid.Empty))) Then
                 CType(MyBase.State, BaseState).NavCtrl = Me.NavController
                 'Me.callPage(Certificates.CertificateForm.URL, Me.State.MyBO.CertificateId)
-                Me.callPage(Certificates.CertificateForm.URL, New Certificates.CertificateForm.Parameters(Me.State.MyBO.CertificateId,Me.State.IsCallerAuthenticated))               
+                Me.callPage(Certificates.CertificateForm.URL, New Certificates.CertificateForm.Parameters(Me.State.MyBO.CertificateId, Me.State.IsCallerAuthenticated))
             End If
         Catch ex As Threading.ThreadAbortException
         Catch ex As Exception
@@ -3279,7 +3345,7 @@ Partial Class ClaimForm
     Protected Sub btnClaimCaseList_Click(ByVal sender As Object, ByVal e As System.EventArgs) Handles btnClaimCaseList.Click
         Try
             params.Add(State.MyBO)
-            callPage(ClaimDetailsForm.URL, params)
+            callPage(ClaimDetailsForm.Url, params)
         Catch ex As Threading.ThreadAbortException
 
         Catch ex As Exception
@@ -3771,7 +3837,7 @@ Partial Class ClaimForm
                 End If
 
                 ''''supress the service center name if the authorization type is not Purchase Order
-                If (Not string.IsNullOrWhiteSpace(claimAuth.AuthTypeXcd) AndAlso claimAuth.AuthTypeXcd <> "AUTH_TYPE-PURCHASE_ORDER")
+                If (Not String.IsNullOrWhiteSpace(claimAuth.AuthTypeXcd) AndAlso claimAuth.AuthTypeXcd <> "AUTH_TYPE-PURCHASE_ORDER") Then
                     e.Row.Cells(GRID_COL_SERVICE_CENTER_NAME_IDX).Text = "NA"
                 End If
 
@@ -3892,6 +3958,88 @@ Partial Class ClaimForm
     '        End If
     '    End If
     'End Sub
+#End Region
+
+#Region "Call To claim Fulfillment WebAppGateway"
+
+    Public Sub BindclaimFulfillmentDetails()
+
+        Dim wsRequest As GetFulfillmentDetailsRequest = New GetFulfillmentDetailsRequest()
+        Dim wsResponse As FulfillmentDetails
+
+        wsRequest.CompanyCode = Me.State.MyBO.Company.Code
+        wsRequest.ClaimNumber = Me.State.MyBO.ClaimNumber
+
+        Try
+            wsResponse = WcfClientHelper.Execute(Of WebAppGatewayClient, WebAppGateway, FulfillmentDetails)(
+                                                       GetClaimFulfillmentWebAppGatewayClient(),
+                                                       New List(Of Object) From {New InteractiveUserHeader() With {.LanId = Authentication.CurrentUser.NetworkId}},
+                                                       Function(ByVal c As WebAppGatewayClient)
+                                                           Return c.GetFulfillmentDetails(wsRequest)
+                                                       End Function)
+
+        Catch ex As Exception
+            ClearClaimFulfillmentDetails()
+        End Try
+
+        If wsResponse IsNot Nothing Then
+            If wsResponse.GetType() Is GetType(FulfillmentDetails) Then
+                Me.State.FulfillmentDetailsResponse = wsResponse
+                PopulateClaimFulfillmentDetails()
+            End If
+        End If
+
+    End Sub
+
+
+
+    Private Shared Function GetClaimFulfillmentWebAppGatewayClient() As WebAppGatewayClient
+        Dim oWebPasswd As WebPasswd = New WebPasswd(Guid.Empty, LookupListNew.GetIdFromCode(Codes.SERVICE_TYPE, Codes.SERVICE_TYPE__CLAIM_FULFILLMENT_WEB_APP_GATEWAY_SERVICE), False)
+        Dim client = New WebAppGatewayClient("CustomBinding_WebAppGateway", oWebPasswd.Url)
+        client.ClientCredentials.UserName.UserName = oWebPasswd.UserId
+        client.ClientCredentials.UserName.Password = oWebPasswd.Password
+        Return client
+    End Function
+
+    Function GetPasscode(ByVal trackingNumber As String) As String
+        Try
+            If trackingNumber.Length > 0 Then
+                Dim oServiceClient As RestClient
+                Dim oServiceRequest As RestRequest
+                Dim oServiceResponse As IRestResponse
+                Dim jsnResult
+                Dim oWebPasswd As WebPasswd = New WebPasswd(Guid.Empty, LookupListNew.GetIdFromCode(Codes.SERVICE_TYPE, Codes.SERVICE_TYPE__WEB_API_LOCKER_PASSCODE), False)
+
+                oServiceClient = New RestClient(oWebPasswd.Url)
+                oServiceRequest = New RestRequest(Method.POST)
+
+                oServiceRequest.AddHeader(oWebPasswd.UserId, oWebPasswd.Password)
+                oServiceRequest.AddHeader("Content-type", "application/json")
+                'oServiceRequest.Resource = "api/PolicyEnroll"
+                oServiceRequest.RequestFormat = DataFormat.Json
+                oServiceRequest.AddJsonBody(New With {Key .trackingNumber = trackingNumber})
+
+                ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12 Or
+                SecurityProtocolType.Tls11 Or SecurityProtocolType.Tls Or SecurityProtocolType.Ssl3
+
+                oServiceResponse = oServiceClient.Execute(oServiceRequest)
+                jsnResult = JsonConvert.DeserializeObject(Of Dictionary(Of String, Object))(oServiceResponse.Content)
+                If jsnResult IsNot Nothing Then
+                    Return jsnResult.Item("passcode").ToString()
+                Else
+                    Return ""
+                End If
+            Else
+                Return ""
+
+            End If
+        Catch ex As Exception
+            Return ""
+        End Try
+
+    End Function
+
+
 #End Region
 End Class
 

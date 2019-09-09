@@ -19,15 +19,15 @@
     <ServiceContractMappings />
   </ClientOptions>
   <MetadataSources>
-    <MetadataSource Address="http://l16mia0d8386gr7.cead.prd/ElitaClaimFulfillment/WebAppGateway/gateway" Protocol="http" SourceId="1" />
+    <MetadataSource Address="http://localhost/ElitaClaimFulfillment/WebAppGateway/gateway" Protocol="http" SourceId="1" />
   </MetadataSources>
   <Metadata>
-    <MetadataFile FileName="gateway1.wsdl" MetadataType="Wsdl" ID="7b8379fd-69ee-4745-b371-eddafae0fb9c" SourceId="1" SourceUrl="http://l16mia0d8386gr7.cead.prd/ElitaClaimFulfillment/WebAppGateway/gateway?wsdl=wsdl0" />
-    <MetadataFile FileName="gateway3.xsd" MetadataType="Schema" ID="2c9fd020-3e4a-48a3-befe-39ee031dcdd2" SourceId="1" SourceUrl="http://l16mia0d8386gr7.cead.prd/ElitaClaimFulfillment/WebAppGateway/gateway?xsd=xsd1" />
-    <MetadataFile FileName="WebAppGateway1.wsdl" MetadataType="Wsdl" ID="342130a7-39ed-4ef7-9fb7-befc044935be" SourceId="1" SourceUrl="http://l16mia0d8386gr7.cead.prd/ElitaClaimFulfillment/WebAppGateway/gateway" />
-    <MetadataFile FileName="gateway31.xsd" MetadataType="Schema" ID="8065b3bf-73af-496e-91ec-d91e3fea1ed7" SourceId="1" SourceUrl="http://l16mia0d8386gr7.cead.prd/ElitaClaimFulfillment/WebAppGateway/gateway?xsd=xsd2" />
-    <MetadataFile FileName="gateway32.xsd" MetadataType="Schema" ID="a7dc28d3-0bde-4d1d-9da8-ab35c753fe59" SourceId="1" SourceUrl="http://l16mia0d8386gr7.cead.prd/ElitaClaimFulfillment/WebAppGateway/gateway?xsd=xsd0" />
-    <MetadataFile FileName="gateway.xsd" MetadataType="Schema" ID="16e3779c-d0e2-4739-98c8-66a94b89532d" SourceId="1" SourceUrl="http://l16mia0d8386gr7.cead.prd/ElitaClaimFulfillment/WebAppGateway/gateway?xsd=xsd3" />
+    <MetadataFile FileName="gateway.xsd" MetadataType="Schema" ID="deaba5a8-8546-437b-bb10-5814a9037bab" SourceId="1" SourceUrl="http://localhost/ElitaClaimFulfillment/WebAppGateway/gateway?xsd=xsd3" />
+    <MetadataFile FileName="gateway2.xsd" MetadataType="Schema" ID="db25e067-d6a9-49c8-8256-ce15db2fdb4f" SourceId="1" SourceUrl="http://localhost/ElitaClaimFulfillment/WebAppGateway/gateway?xsd=xsd0" />
+    <MetadataFile FileName="gateway3.xsd" MetadataType="Schema" ID="22ac26f6-01be-4e8a-ba67-7ba95985c638" SourceId="1" SourceUrl="http://localhost/ElitaClaimFulfillment/WebAppGateway/gateway?xsd=xsd1" />
+    <MetadataFile FileName="WebAppGateway1.wsdl" MetadataType="Wsdl" ID="43cfea15-9ffc-4432-8f1f-24079e4e3ab3" SourceId="1" SourceUrl="http://localhost/ElitaClaimFulfillment/WebAppGateway/gateway" />
+    <MetadataFile FileName="gateway1.wsdl" MetadataType="Wsdl" ID="c46ce3bc-8886-4c4e-9431-57ad04bc2df1" SourceId="1" SourceUrl="http://localhost/ElitaClaimFulfillment/WebAppGateway/gateway?wsdl=wsdl0" />
+    <MetadataFile FileName="gateway4.xsd" MetadataType="Schema" ID="8e7edd62-c9a0-4d81-87d6-8a1f129cc370" SourceId="1" SourceUrl="http://localhost/ElitaClaimFulfillment/WebAppGateway/gateway?xsd=xsd2" />
   </Metadata>
   <Extensions>
     <ExtensionFile FileName="configuration91.svcinfo" Name="configuration91.svcinfo" />

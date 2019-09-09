@@ -2,10 +2,10 @@
 <wsdl:definitions xmlns:wsap="http://schemas.xmlsoap.org/ws/2004/08/addressing/policy" xmlns:wsa10="http://www.w3.org/2005/08/addressing" xmlns:tns="http://assurant.com/Elita/ClaimFulfillment/WebAppGateway" xmlns:msc="http://schemas.microsoft.com/ws/2005/12/wsdl/contract" xmlns:soapenc="http://schemas.xmlsoap.org/soap/encoding/" xmlns:wsx="http://schemas.xmlsoap.org/ws/2004/09/mex" xmlns:wsp="http://schemas.xmlsoap.org/ws/2004/09/policy" xmlns:wsam="http://www.w3.org/2007/05/addressing/metadata" xmlns:wsa="http://schemas.xmlsoap.org/ws/2004/08/addressing" xmlns:wsaw="http://www.w3.org/2006/05/addressing/wsdl" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:soap12="http://schemas.xmlsoap.org/wsdl/soap12/" xmlns:wsu="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-utility-1.0.xsd" xmlns:xsd="http://www.w3.org/2001/XMLSchema" targetNamespace="http://assurant.com/Elita/ClaimFulfillment/WebAppGateway" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">
   <wsdl:types>
     <xsd:schema targetNamespace="http://assurant.com/Elita/ClaimFulfillment/WebAppGateway/Imports">
-      <xsd:import schemaLocation="http://l16mia0d8386gr7.cead.prd/ElitaClaimFulfillment/WebAppGateway/gateway?xsd=xsd0" namespace="http://assurant.com/Elita/ClaimFulfillment/WebAppGateway" />
-      <xsd:import schemaLocation="http://l16mia0d8386gr7.cead.prd/ElitaClaimFulfillment/WebAppGateway/gateway?xsd=xsd3" namespace="http://assurant.com/Elita/ClaimFulfillment/WebAppGateway/Fault" />
-      <xsd:import schemaLocation="http://l16mia0d8386gr7.cead.prd/ElitaClaimFulfillment/WebAppGateway/gateway?xsd=xsd1" namespace="http://schemas.microsoft.com/2003/10/Serialization/" />
-      <xsd:import schemaLocation="http://l16mia0d8386gr7.cead.prd/ElitaClaimFulfillment/WebAppGateway/gateway?xsd=xsd2" namespace="http://assurant.com/Elita/ClaimFulfillment/WebAppGateway/Data" />
+      <xsd:import schemaLocation="http://localhost/ElitaClaimFulfillment/WebAppGateway/gateway?xsd=xsd0" namespace="http://assurant.com/Elita/ClaimFulfillment/WebAppGateway" />
+      <xsd:import schemaLocation="http://localhost/ElitaClaimFulfillment/WebAppGateway/gateway?xsd=xsd3" namespace="http://assurant.com/Elita/ClaimFulfillment/WebAppGateway/Fault" />
+      <xsd:import schemaLocation="http://localhost/ElitaClaimFulfillment/WebAppGateway/gateway?xsd=xsd1" namespace="http://schemas.microsoft.com/2003/10/Serialization/" />
+      <xsd:import schemaLocation="http://localhost/ElitaClaimFulfillment/WebAppGateway/gateway?xsd=xsd2" namespace="http://assurant.com/Elita/ClaimFulfillment/WebAppGateway/Data" />
     </xsd:schema>
   </wsdl:types>
   <wsdl:message name="WebAppGateway_GetDeliverySlots_InputMessage">
@@ -26,6 +26,15 @@
   <wsdl:message name="WebAppGateway_CustomerDecision_OutputMessage">
     <wsdl:part name="parameters" element="tns:CustomerDecisionResponse" />
   </wsdl:message>
+  <wsdl:message name="WebAppGateway_GetFulfillmentDetails_InputMessage">
+    <wsdl:part name="parameters" element="tns:GetFulfillmentDetails" />
+  </wsdl:message>
+  <wsdl:message name="WebAppGateway_GetFulfillmentDetails_OutputMessage">
+    <wsdl:part name="parameters" element="tns:GetFulfillmentDetailsResponse" />
+  </wsdl:message>
+  <wsdl:message name="WebAppGateway_GetFulfillmentDetails_FulfillmentNotFoundFaultFault_FaultMessage">
+    <wsdl:part xmlns:q3="http://assurant.com/Elita/ClaimFulfillment/WebAppGateway/Data" name="detail" element="q3:FulfillmentNotFoundFault" />
+  </wsdl:message>
   <wsdl:portType name="WebAppGateway">
     <wsdl:operation name="GetDeliverySlots">
       <wsdl:input wsaw:Action="http://assurant.com/Elita/ClaimFulfillment/WebAppGateway/WebAppGateway/GetDeliverySlots" message="tns:WebAppGateway_GetDeliverySlots_InputMessage" />
@@ -36,6 +45,11 @@
     <wsdl:operation name="CustomerDecision">
       <wsdl:input wsaw:Action="http://assurant.com/Elita/ClaimFulfillment/WebAppGateway/WebAppGateway/CustomerDecision" message="tns:WebAppGateway_CustomerDecision_InputMessage" />
       <wsdl:output wsaw:Action="http://assurant.com/Elita/ClaimFulfillment/WebAppGateway/WebAppGateway/CustomerDecisionResponse" message="tns:WebAppGateway_CustomerDecision_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="GetFulfillmentDetails">
+      <wsdl:input wsaw:Action="http://assurant.com/Elita/ClaimFulfillment/WebAppGateway/WebAppGateway/GetFulfillmentDetails" message="tns:WebAppGateway_GetFulfillmentDetails_InputMessage" />
+      <wsdl:output wsaw:Action="http://assurant.com/Elita/ClaimFulfillment/WebAppGateway/WebAppGateway/GetFulfillmentDetailsResponse" message="tns:WebAppGateway_GetFulfillmentDetails_OutputMessage" />
+      <wsdl:fault wsaw:Action="http://assurant.com/Elita/ClaimFulfillment/WebAppGateway/WebAppGateway/GetFulfillmentDetailsFulfillmentNotFoundFaultFault" name="FulfillmentNotFoundFaultFault" message="tns:WebAppGateway_GetFulfillmentDetails_FulfillmentNotFoundFaultFault_FaultMessage" />
     </wsdl:operation>
   </wsdl:portType>
 </wsdl:definitions>

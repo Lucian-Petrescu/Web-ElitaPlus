@@ -45,7 +45,7 @@
       </wsp:All>
     </wsp:ExactlyOne>
   </wsp:Policy>
-  <wsdl:import namespace="http://assurant.com/Elita/ClaimFulfillment/WebAppGateway" location="http://l16mia0d8386gr7.cead.prd/ElitaClaimFulfillment/WebAppGateway/gateway?wsdl=wsdl0" />
+  <wsdl:import namespace="http://assurant.com/Elita/ClaimFulfillment/WebAppGateway" location="http://localhost/ElitaClaimFulfillment/WebAppGateway/gateway?wsdl=wsdl0" />
   <wsdl:types />
   <wsdl:binding name="CustomBinding_WebAppGateway" type="i0:WebAppGateway">
     <wsp:PolicyReference URI="#CustomBinding_WebAppGateway_policy" />
@@ -74,10 +74,22 @@
         <soap:body use="literal" />
       </wsdl:output>
     </wsdl:operation>
+    <wsdl:operation name="GetFulfillmentDetails">
+      <soap:operation soapAction="http://assurant.com/Elita/ClaimFulfillment/WebAppGateway/WebAppGateway/GetFulfillmentDetails" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+      <wsdl:fault name="FulfillmentNotFoundFaultFault">
+        <soap:fault use="literal" name="FulfillmentNotFoundFaultFault" namespace="" />
+      </wsdl:fault>
+    </wsdl:operation>
   </wsdl:binding>
   <wsdl:service name="WebAppGateway">
     <wsdl:port name="CustomBinding_WebAppGateway" binding="tns:CustomBinding_WebAppGateway">
-      <soap:address location="http://l16mia0d8386gr7.cead.prd/ElitaClaimFulfillment/WebAppGateway/gateway" />
+      <soap:address location="http://localhost/ElitaClaimFulfillment/WebAppGateway/gateway" />
     </wsdl:port>
   </wsdl:service>
 </wsdl:definitions>

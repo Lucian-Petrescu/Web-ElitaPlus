@@ -291,6 +291,9 @@
       <HintPath>..\packages\Oracle.ManagedDataAccess.12.2.1100\lib\net40\Oracle.ManagedDataAccess.dll</HintPath>
       <Private>True</Private>
     </Reference>
+    <Reference Include="RestSharp, Version=105.2.3.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\RestSharp.105.2.3\lib\net46\RestSharp.dll</HintPath>
+    </Reference>
     <Reference Include="System">
       <Name>System</Name>
     </Reference>
@@ -5844,25 +5847,41 @@
     <None Include="Service References\ClaimFulfillmentService\FulfillmentService8.xsd">
       <SubType>Designer</SubType>
     </None>
-    <Content Include="Service References\ClaimFulfillmentWebAppGatewayService\Assurant.ElitaPlus.ElitaPlusWebApp.ClaimFulfillmentWebAppGatewayService.GetDeliverySlotsResponse.datasource">
+    <Content Include="Service References\ClaimFulfillmentWebAppGatewayService\Assurant.ElitaPlus.ElitaPlusWebApp.ClaimFulfillmentWebAppGatewayService.CustomerDecisionResponse.datasource">
       <DependentUpon>Reference.svcmap</DependentUpon>
     </Content>
-    <Content Include="Service References\ClaimFulfillmentWebAppGatewayService\Assurant.ElitaPlus.ElitaPlusWebApp.ClaimFulfillmentWebAppGatewayService.CustomerDecisionResponse.datasource">
+    <Content Include="Service References\ClaimFulfillmentWebAppGatewayService\Assurant.ElitaPlus.ElitaPlusWebApp.ClaimFulfillmentWebAppGatewayService.FulfillmentDetails.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </Content>
+    <Content Include="Service References\ClaimFulfillmentWebAppGatewayService\Assurant.ElitaPlus.ElitaPlusWebApp.ClaimFulfillmentWebAppGatewayService.GetDeliverySlotsResponse.datasource">
       <DependentUpon>Reference.svcmap</DependentUpon>
     </Content>
     <None Include="Service References\ClaimFulfillmentWebAppGatewayService\configuration91.svcinfo" />
     <None Include="Service References\ClaimFulfillmentWebAppGatewayService\configuration.svcinfo" />
+    <None Include="Service References\ClaimFulfillmentWebAppGatewayService\gateway.wsdl" />
     <None Include="Service References\ClaimFulfillmentWebAppGatewayService\gateway.xsd">
       <SubType>Designer</SubType>
     </None>
     <None Include="Service References\ClaimFulfillmentWebAppGatewayService\gateway1.wsdl" />
+    <None Include="Service References\ClaimFulfillmentWebAppGatewayService\gateway1.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Service References\ClaimFulfillmentWebAppGatewayService\gateway11.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Service References\ClaimFulfillmentWebAppGatewayService\gateway12.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Service References\ClaimFulfillmentWebAppGatewayService\gateway13.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Service References\ClaimFulfillmentWebAppGatewayService\gateway2.xsd">
+      <SubType>Designer</SubType>
+    </None>
     <None Include="Service References\ClaimFulfillmentWebAppGatewayService\gateway3.xsd">
       <SubType>Designer</SubType>
     </None>
-    <None Include="Service References\ClaimFulfillmentWebAppGatewayService\gateway31.xsd">
-      <SubType>Designer</SubType>
-    </None>
-    <None Include="Service References\ClaimFulfillmentWebAppGatewayService\gateway32.xsd">
+    <None Include="Service References\ClaimFulfillmentWebAppGatewayService\gateway4.xsd">
       <SubType>Designer</SubType>
     </None>
     <None Include="Service References\ClaimFulfillmentWebAppGatewayService\Reference.svcmap">
@@ -5881,6 +5900,7 @@
     <Content Include="Service References\ClaimRecordingService\Assurant.ElitaPlus.ElitaPlusWebApp.ClaimRecordingService.PolicyInfo.datasource">
       <DependentUpon>Reference.svcmap</DependentUpon>
     </Content>
+    <None Include="Service References\ClaimFulfillmentWebAppGatewayService\WebAppGateway.wsdl" />
     <None Include="Service References\ClaimFulfillmentWebAppGatewayService\WebAppGateway1.wsdl" />
     <None Include="Service References\ClaimRecordingService\ClaimRecordingService1.wsdl" />
     <None Include="Service References\ClaimRecordingService\configuration91.svcinfo" />
