@@ -4040,26 +4040,6 @@ Partial Class ClaimForm
     End Function
 
 
-    'Protected Sub btnPasscode_Click(sender As Object, e As EventArgs) Handles btnPasscode.Click
-    '    Dim request As WebRequest = WebRequest.Create("https://gm-assurant-jp-np.azure-api.net/df/vendors/yamato/api/locker/passcode")
-    '    ' If required by the server, set the credentials.
-    '    request.Headers.Add("ocp-apim-subscription-key", "23944f281aaa41f6a77f51eb19a4aa0c")
-    '    'request.Headers.Add("Content-Type", "application/json")
-    '    request.ContentType = "application/json"
-
-
-    '    Try
-    '        Dim response As WebResponse = request.GetResponse()
-    '    Catch ex As Exception
-    '        Dim msg = ex.Data
-
-    '    End Try
-
-    '    ' Get the response.
-
-
-    'End Sub
-
 #End Region
 End Class
 

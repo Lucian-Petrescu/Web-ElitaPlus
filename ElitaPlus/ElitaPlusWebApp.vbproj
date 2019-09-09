@@ -5875,13 +5875,13 @@
     <None Include="Service References\ClaimFulfillmentWebAppGatewayService\gateway13.xsd">
       <SubType>Designer</SubType>
     </None>
+    <None Include="Service References\ClaimFulfillmentWebAppGatewayService\gateway2.xsd">
+      <SubType>Designer</SubType>
+    </None>
     <None Include="Service References\ClaimFulfillmentWebAppGatewayService\gateway3.xsd">
       <SubType>Designer</SubType>
     </None>
-    <None Include="Service References\ClaimFulfillmentWebAppGatewayService\gateway31.xsd">
-      <SubType>Designer</SubType>
-    </None>
-    <None Include="Service References\ClaimFulfillmentWebAppGatewayService\gateway32.xsd">
+    <None Include="Service References\ClaimFulfillmentWebAppGatewayService\gateway4.xsd">
       <SubType>Designer</SubType>
     </None>
     <None Include="Service References\ClaimFulfillmentWebAppGatewayService\Reference.svcmap">
@@ -8815,7 +8815,7 @@
           <AutoAssignPort>True</AutoAssignPort>
           <DevelopmentServerPort>2550</DevelopmentServerPort>
           <DevelopmentServerVPath>/</DevelopmentServerVPath>
-          <IISUrl>http://localhost:81/ElitaPlus</IISUrl>
+          <IISUrl>http://localhost:80/ElitaPlus</IISUrl>
           <NTLMAuthentication>False</NTLMAuthentication>
           <UseCustomServer>False</UseCustomServer>
           <CustomServerUrl>
