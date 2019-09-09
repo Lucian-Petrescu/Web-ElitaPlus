@@ -3476,7 +3476,8 @@ Public Class Certificate
 
     Public Shared Function GetCertificatesListByPhoneNum(ByVal PhoneTypeMask As String, ByVal PhoneMask As String, ByVal certNumberMask As String,
                                                          ByVal customerNameMask As String, ByVal addressMask As String,
-                                                         ByVal postalCodeMask As String, ByVal dealerName As String,
+                                                         ByVal postalCodeMask As String, ByVal dealerName As String, ByVal companyGroupId As Guid,
+                                                         ByVal networkId As String,
                                                          Optional ByVal sortBy As String = CertificateDAL.SORT_BY_PHONE_NUMBER,
                                                          Optional ByVal LimitResultset As Int32 = CertificateDAL.MAX_NUMBER_OF_ROWS) As PhoneNumberSearchDV
         Try
@@ -3510,7 +3511,7 @@ Public Class Certificate
             End If
 
             Return New PhoneNumberSearchDV(dal.LoadListByPhoneNum(PhoneTypeMask, PhoneMask, certNumberMask, customerNameMask,
-                                     addressMask, postalCodeMask, dealerName, compIds, sortBy, LimitResultset, dealerGroup).Tables(0))
+                                     addressMask, postalCodeMask, dealerName, companyGroupId, networkId, sortBy, dealerGroup).Tables(0))
 
         Catch ex As Assurant.ElitaPlus.DALObjects.DataBaseAccessException
             Throw New DataBaseAccessException(ex.ErrorType, ex)

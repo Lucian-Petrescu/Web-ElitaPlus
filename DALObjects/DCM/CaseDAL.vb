@@ -176,7 +176,7 @@ Public Class CaseDAL
                                         ByVal serialNumber As String, ByVal invoiceNumber As String, ByVal phoneNumber As String, ByVal zipcode As String,
                                         ByVal certificateStatus As String, ByVal email As String,
                                         ByVal taxId As String, ByVal serviceLineNumber As String, ByVal accountNumber As String,
-                                        ByVal globalCustomerNumber As String, ByVal dateofBirth As String,
+                                        ByVal globalCustomerNumber As String, ByVal dateofBirth As String, ByVal networkId As String,
                                         ByVal languageId As Guid) As DataSet
         Dim selectStmt As String = Config("/SQL/LOAD_AGENT_SEARCH_LIST")
         Dim ds As DataSet = New DataSet
@@ -245,6 +245,9 @@ Public Class CaseDAL
         inParameters.Add(param)
 
         param = New DBHelper.DBHelperParameter("pi_dob", dateofBirth)
+        inParameters.Add(param)
+
+        param = New DBHelper.DBHelperParameter("pi_network_id", networkId)
         inParameters.Add(param)
 
         outputParameter(PoCursorCase) = New DBHelper.DBHelperParameter("po_cursor", GetType(DataSet))

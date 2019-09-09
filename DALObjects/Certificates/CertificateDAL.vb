@@ -335,6 +335,7 @@ Public Class CertificateDAL
     Public Const PAR_I_COL_NAME_DEALER As String = "pi_Dealer"
 
     Public Const PO_CURSOR_CERT_INFO As Integer = 0
+    Public Const PO_CURSOR_CERT_PHONE_SEARCH As Integer = 0
     Public Const SP_PARAM_NAME_CERT_INFO As String = "po_cert_info"
 
     'REQ 5932
@@ -1028,63 +1029,47 @@ Public Class CertificateDAL
     Public Function LoadListByPhoneNum(ByVal PhoneTypeMask As String, ByVal PhoneNumMask As String, ByVal certNumberMask As String,
                                        ByVal customerNameMask As String, ByVal addressMask As String,
                                        ByVal postalCodeMask As String, ByVal dealerNameMask As String,
-                                       ByVal compIds As ArrayList, ByVal sortBy As String, ByVal LimitResultset As Int32, Optional ByVal dealerGroupCode As String = "") As DataSet
+                                       ByVal compGroupId As Guid, ByVal networkId As String, ByVal sortBy As String,
+                                       Optional ByVal dealerGroupCode As String = "") As DataSet
 
-        Dim selectStmt As String = Me.Config("/SQL/LOAD_LIST_BY_PHONE")
-        Dim whereClauseConditions As String = ""
+        Dim selectStmt As String = Me.Config("/SQL/LOAD_CERT_PHONE_SEARCH_LIST")
         Dim ds As New DataSet
-        Dim companyParam As DBHelper.DBHelperParameter
-        Dim rowNumParam As DBHelper.DBHelperParameter
+        'PO_CURSOR_CERT_PHONE_SEARCH
+        Dim outputParameter(PO_CURSOR_CERT_PHONE_SEARCH) As DBHelper.DBHelperParameter
+        Dim inParameters As New Generic.List(Of DBHelper.DBHelperParameter)
+        Dim param As DBHelper.DBHelperParameter
 
-        If ((Not (certNumberMask Is Nothing)) AndAlso (Me.FormatSearchMask(certNumberMask))) Then
-            whereClauseConditions &= Environment.NewLine & " AND UPPER(C.CERT_NUMBER)" & certNumberMask.ToUpper
+        If dealerNameMask Is Nothing Then
+            dealerNameMask = ""
         End If
 
-        If ((Not ((dealerNameMask Is Nothing) OrElse (dealerNameMask = NO_DEALER_SELECTED))) AndAlso (Me.FormatSearchMask(dealerNameMask))) Then
-            whereClauseConditions &= Environment.NewLine & " AND UPPER(D.dealer)" & dealerNameMask.ToUpper
-        End If
+        param = New DBHelper.DBHelperParameter("pi_company_group_id", GuidToSQLString(compGroupId))
+        inParameters.Add(param)
+        param = New DBHelper.DBHelperParameter("pi_dealer", dealerNameMask)
+        inParameters.Add(param)
+        param = New DBHelper.DBHelperParameter("pi_cert_number", certNumberMask)
+        inParameters.Add(param)
+        param = New DBHelper.DBHelperParameter("pi_customer_name", customerNameMask)
+        inParameters.Add(param)
+        param = New DBHelper.DBHelperParameter("pi_address", addressMask)
+        inParameters.Add(param)
+        param = New DBHelper.DBHelperParameter("pi_phone_number", PhoneNumMask)
+        inParameters.Add(param)
+        param = New DBHelper.DBHelperParameter("pi_postal_code", postalCodeMask)
+        inParameters.Add(param)
+        param = New DBHelper.DBHelperParameter("pi_network_id", networkId)
+        inParameters.Add(param)
+        param = New DBHelper.DBHelperParameter("pi_order_by", sortBy)
+        inParameters.Add(param)
+        param = New DBHelper.DBHelperParameter("pi_phone_type", PhoneTypeMask)
+        inParameters.Add(param)
 
-        If ((Not (customerNameMask Is Nothing)) AndAlso (Me.FormatSearchMask(customerNameMask))) Then
-            whereClauseConditions &= Environment.NewLine & " AND UPPER(CUSTOMER_NAME) " & customerNameMask.ToUpper
-        End If
 
-        'Modified for Req-610
-        If ((Not (PhoneNumMask Is Nothing)) AndAlso (Me.FormatSearchMask(PhoneNumMask))) Then
-            If (PhoneTypeMask = "HM") Then
-                whereClauseConditions &= Environment.NewLine & " AND c.HOME_PHONE " & PhoneNumMask
-            ElseIf (PhoneTypeMask = "WC") Then
-                whereClauseConditions &= Environment.NewLine & " AND c.WORK_PHONE " & PhoneNumMask
-            End If
-        End If
-
-        If ((Not (addressMask Is Nothing)) AndAlso (Me.FormatSearchMask(addressMask))) Then
-            whereClauseConditions &= Environment.NewLine & " AND C.ADDRESS_ID IN (SELECT ADDRESS_ID FROM ELP_ADDRESS WHERE UPPER(ADDRESS1) " & addressMask.ToUpper & ") "
-        End If
-
-        If ((Not (postalCodeMask Is Nothing)) AndAlso (Me.FormatSearchMask(postalCodeMask))) Then
-            whereClauseConditions &= Environment.NewLine & " AND C.ADDRESS_ID IN (SELECT ADDRESS_ID FROM ELP_ADDRESS WHERE UPPER(POSTAL_CODE) " & postalCodeMask.ToUpper & ") "
-        End If
-
-        If (dealerGroupCode <> String.Empty AndAlso (Me.FormatSearchMask(dealerGroupCode))) Then
-            whereClauseConditions &= Environment.NewLine & "AND UPPER(dg.code) " & dealerGroupCode.ToUpper & ""
-        End If
-
-        whereClauseConditions &= Environment.NewLine & " AND " & MiscUtil.BuildListForSql("c." & Me.COL_NAME_COMPANY_ID, compIds, True)
-        'whereClauseConditions &= Environment.NewLine & " AND " & MiscUtil.BuildListForSql("d." & Me.COL_NAME_COMPANY_ID, compIds, True)
-
-        If whereClauseConditions.Trim = String.Empty Then whereClauseConditions = " 1=1 "
-        selectStmt = selectStmt.Replace(Me.DYNAMIC_WHERE_CLAUSE_PLACE_HOLDER, whereClauseConditions)
-
-        If Not IsNothing(sortBy) Then
-            selectStmt = selectStmt.Replace(Me.DYNAMIC_ORDER_BY_CLAUSE_PLACE_HOLDER, Environment.NewLine & " ORDER BY " & sortBy & " ")
-        Else
-            selectStmt = selectStmt.Replace(Me.DYNAMIC_ORDER_BY_CLAUSE_PLACE_HOLDER, "")
-        End If
-
+        outputParameter(PO_CURSOR_CERT_PHONE_SEARCH) = New DBHelper.DBHelperParameter("po_cursor", GetType(DataSet))
         Try
-            rowNumParam = New DBHelper.DBHelperParameter(Me.PAR_NAME_ROW_NUMBER, LimitResultset)
-            DBHelper.Fetch(ds, selectStmt, Me.TABLE_NAME,
-                            New DBHelper.DBHelperParameter() {rowNumParam})
+            DBHelper.FetchSp(selectStmt, inParameters.ToArray, outputParameter, ds, "GetPhoneNumList")
+            ds.Tables(0).TableName = "GetPhoneNumList"
+
             Return ds
         Catch ex As Exception
             Throw New DataBaseAccessException(DataBaseAccessException.DatabaseAccessErrorType.ReadErr, ex)
