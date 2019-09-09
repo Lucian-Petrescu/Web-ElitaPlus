@@ -622,6 +622,7 @@ Public Class CertificateDAL
                                  ByVal sortBy As String,
                                  ByVal LimitResultset As Int32,
                                  ByVal inforceDate As String,
+                                 ByVal networkId As String,
                                  Optional ByVal vehicleLicenseFlagMask As String = "",
                                  Optional ByVal Service_Line_Number As String = "",
                                  Optional ByVal dealerGroupCode As String = "") As DataSet
@@ -755,6 +756,8 @@ Public Class CertificateDAL
                                                            & " and getcodefromlistitem(cic.coverage_type_id) <> 'M' "
 
         End If
+
+        whereClauseConditions &= Environment.NewLine & " AND  elp_utl_user.Has_access_to_data('" & networkId & "', d.company_id, d.dealer_id)  = 'Y'"
 
         If (Not inforceDate.Equals(String.Empty)) Or (Not (serialNumberMask.Equals(String.Empty))) Then
             If Not joinCondition = "" Then

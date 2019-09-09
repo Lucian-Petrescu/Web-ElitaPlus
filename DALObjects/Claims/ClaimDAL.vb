@@ -879,7 +879,7 @@ Public Class ClaimDAL
                              ByVal serviceCenterName As String, ByVal svcRefNumber As String,
                              ByVal authorizedAmount As String, ByVal hasPendingAuthId As Guid, ByVal sortBy As String,
                              ByVal externalUserServiceCenterIds As ArrayList, ByVal serviceCenterIds As ArrayList, ByVal dealerId As Guid,
-                             ByVal certificateNumber As String, ByVal Status As String, Optional ByVal trackingNumber As String = "", Optional ByVal dealerGroup As String = "",
+                             ByVal certificateNumber As String, ByVal Status As String, ByVal networkId As String, Optional ByVal trackingNumber As String = "", Optional ByVal dealerGroup As String = "",
                              Optional ByVal authorizationNumber As String = "", Optional ByVal claimAuthStatusId As Guid = Nothing) As DataSet
 
         Dim selectStmt As String = Me.Config("/SQL/LOAD_LIST_DYNAMIC")
@@ -952,6 +952,8 @@ Public Class ClaimDAL
         ' not HextoRaw
         whereClauseConditions &= Environment.NewLine & " AND " & MiscUtil.BuildListForSql("c." & Me.COL_NAME_COMPANY_ID, compIds, False)
 
+        whereClauseConditions &= Environment.NewLine & " AND  elp_utl_user.Has_access_to_data('" & networkId & "', d.company_id, d.dealer_id)  = 'Y'"
+
         selectStmt = selectStmt.Replace(Me.DYNAMIC_WHERE_CLAUSE_PLACE_HOLDER, whereClauseConditions)
 
         If Not IsNothing(sortBy) Then
@@ -974,14 +976,14 @@ Public Class ClaimDAL
 
     End Function
 
-    Public Function LoadClaimByIssue(ByVal userId As guid, ByVal languageId As guid,
-                            ByVal issueTypeCode As String, ByVal issueTypeId As guid,
-                            ByVal issueId As Guid?, ByVal issueStatusXcd As string,
+    Public Function LoadClaimByIssue(ByVal userId As Guid, ByVal languageId As Guid,
+                            ByVal issueTypeCode As String, ByVal issueTypeId As Guid,
+                            ByVal issueId As Guid?, ByVal issueStatusXcd As String,
                             ByVal claimStatusCode As String, ByVal dealerId As Guid?,
-                            ByVal issueAddedFromDate As date?, ByVal issueAddedToDate As date?) As DataSet
+                            ByVal issueAddedFromDate As Date?, ByVal issueAddedToDate As Date?, ByVal networkId As String) As DataSet
 
         Dim selectStmt As String = Me.Config("/SQL/LOAD_LIST_BY_ISSUE")
-        dim resultCount As integer = Me.MAX_NUMBER_OF_ROWS
+        Dim resultCount As Integer = Me.MAX_NUMBER_OF_ROWS
 
         Dim inParameters As List(Of DBHelper.DBHelperParameter) = New List(Of DBHelperParameter)()
 
@@ -989,8 +991,9 @@ Public Class ClaimDAL
         inParameters.Add(New DBHelperParameter("pi_languageId", languageId.ToByteArray()))
         inParameters.Add(New DBHelperParameter("pi_issue_Type_Id", issueTypeId.ToByteArray()))
         inParameters.Add(New DBHelperParameter("pi_rowcount", resultCount))
+        inParameters.Add(New DBHelperParameter("pi_network_id", networkId))
 
-        If (issueId.HasValue AndAlso issueId.value.Equals(guid.Empty) = false) Then
+        If (issueId.HasValue AndAlso issueId.Value.Equals(Guid.Empty) = False) Then
             inParameters.Add(New DBHelperParameter("pi_issue_id", issueId.Value.ToByteArray()))
         End If
 
@@ -1002,14 +1005,14 @@ Public Class ClaimDAL
             inParameters.Add(New DBHelper.DBHelperParameter("pi_issue_date_to", issueAddedToDate.Value))
         End If
 
-        If (string.IsNullOrEmpty(issueStatusXcd) = false) then
+        If (String.IsNullOrEmpty(issueStatusXcd) = False) Then
             inParameters.Add(New DBHelper.DBHelperParameter("pi_issue_status_xcd", issueStatusXcd))
         End If
 
-        If (string.IsNullOrEmpty(claimStatusCode) = false) then
+        If (String.IsNullOrEmpty(claimStatusCode) = False) Then
             inParameters.Add(New DBHelper.DBHelperParameter("pi_claim_status", claimStatusCode))
         End If
-        
+
         If (dealerId.HasValue) Then
             inParameters.Add(New DBHelperParameter("pi_dealer_id", dealerId.Value.ToByteArray()))
         End If
@@ -1019,7 +1022,7 @@ Public Class ClaimDAL
         Dim ds As New DataSet
 
         Try
-            DBHelper.FetchSp(selectStmt, inParameters.ToArray(), outParameters, ds, Me.TABLE_NAME, true)            
+            DBHelper.FetchSp(selectStmt, inParameters.ToArray(), outParameters, ds, Me.TABLE_NAME, True)
             Return ds
         Catch ex As Exception
             Throw New DataBaseAccessException(DataBaseAccessException.DatabaseAccessErrorType.ReadErr, ex)

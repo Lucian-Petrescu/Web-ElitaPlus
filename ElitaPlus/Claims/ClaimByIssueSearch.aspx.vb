@@ -467,7 +467,13 @@ Public Class ClaimByIssueSearch
     End Sub
     Sub PopulateDealerDropDown()
         Try
-            Dim dealerList As ListItem() = GetDealerListByCompanyForUser()
+            Dim dealerList As ListItem()
+            If Authentication.CurrentUser.IsDealerGroup Then
+                dealerList = CaseBase.GetDealerListByCompanyForExternalUser()
+            Else
+                dealerList = GetDealerListByCompanyForUser()
+            End If
+
             cboSearchDealer.Populate(dealerList, New PopulateOptions() With
                                                  {
                                                    .AddBlankItem = True,

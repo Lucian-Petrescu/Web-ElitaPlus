@@ -3339,6 +3339,7 @@ Public Class Certificate
                                                         sortBy,
                                                         LimitResultset,
                                                         inforceDate,
+                                                        Authentication.CurrentUser.NetworkId,
                                                         vehicleLicenseNumber,
                                                         Service_line_number,
                                                         dealergroup).Tables(0)
