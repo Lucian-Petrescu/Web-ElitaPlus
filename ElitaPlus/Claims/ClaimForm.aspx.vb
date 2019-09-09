@@ -264,7 +264,6 @@ Partial Class ClaimForm
         End If
 
         Me.MasterPage.MessageController.Clear()
-
         Try
             If Me.NavController.CurrentNavState.Name <> "CLAIM_DETAIL" Then
                 If Me.NavController.CurrentNavState.Name <> "DENIED_CLAIM_CREATED" AndAlso Me.NavController.CurrentNavState.Name <> "CLAIM_ISSUE_APPROVED_FROM_CLAIM" _
@@ -358,11 +357,10 @@ Partial Class ClaimForm
                 GetDisabledTabs()
             End If
 
-
             BindBoPropertiesToLabels()
             CheckIfComingFromCreateClaimConfirm()
             CheckIfComingFromSaveConfirm()
-            GetclaimFulfillmentDetails()
+            BindclaimFulfillmentDetails()
 
             If Not Me.IsPostBack Then
                 Me.AddLabelDecorations(Me.State.MyBO)
@@ -1928,15 +1926,15 @@ Partial Class ClaimForm
                     If logisticStage.Shipping.TrackingNumber.ToString().Length > 0 Then
                         Dim PasscodeResponse = GetPasscode(logisticStage.Shipping.TrackingNumber.ToString())
                         Me.PopulateControlFromBOProperty(Me.txtPasscode, PasscodeResponse)
+                    Else
+                        Me.PopulateControlFromBOProperty(Me.txtPasscode, "")
                     End If
-
                 End If
             Else
                 ClearClaimFulfillmentDetails()
             End If
         Catch ex As Exception
             ClearClaimFulfillmentDetails()
-
         End Try
     End Sub
 
@@ -1957,9 +1955,6 @@ Partial Class ClaimForm
         Me.PopulateControlFromBOProperty(Me.txtStoreCode, "")
         Me.PopulateControlFromBOProperty(Me.txtStoreName, "")
         Me.PopulateControlFromBOProperty(Me.txtStoreType, "")
-        Me.PopulateControlFromBOProperty(Me.txtPasscode, "")
-
-
     End Sub
 
 
@@ -3967,7 +3962,7 @@ Partial Class ClaimForm
 
 #Region "Call To claim Fulfillment WebAppGateway"
 
-    Public Sub GetclaimFulfillmentDetails()
+    Public Sub BindclaimFulfillmentDetails()
 
         Dim wsRequest As GetFulfillmentDetailsRequest = New GetFulfillmentDetailsRequest()
         Dim wsResponse As FulfillmentDetails
@@ -3984,7 +3979,7 @@ Partial Class ClaimForm
                                                        End Function)
 
         Catch ex As Exception
-            ' Throw
+            ClearClaimFulfillmentDetails()
         End Try
 
         If wsResponse IsNot Nothing Then
@@ -3999,41 +3994,48 @@ Partial Class ClaimForm
 
 
     Private Shared Function GetClaimFulfillmentWebAppGatewayClient() As WebAppGatewayClient
-        ' Dim oWebPasswd As WebPasswd = New WebPasswd(Guid.Empty, LookupListNew.GetIdFromCode(Codes.SERVICE_TYPE, Codes.SERVICE_TYPE__CLAIM_FULFILLMENT_WEB_APP_GATEWAY_SERVICE), False)
-        Dim client = New WebAppGatewayClient("CustomBinding_WebAppGateway", "http://l16mia0d8441fhf.cead.prd/ElitaClaimFulfillment/WebAppGateway/gateway")  'oWebPasswd.Url
-        client.ClientCredentials.UserName.UserName = "elita1"  'oWebPasswd.UserId
-        client.ClientCredentials.UserName.Password = "elita1"  ' oWebPasswd.Password
+        Dim oWebPasswd As WebPasswd = New WebPasswd(Guid.Empty, LookupListNew.GetIdFromCode(Codes.SERVICE_TYPE, Codes.SERVICE_TYPE__CLAIM_FULFILLMENT_WEB_APP_GATEWAY_SERVICE), False)
+        Dim client = New WebAppGatewayClient("CustomBinding_WebAppGateway", oWebPasswd.Url)
+        client.ClientCredentials.UserName.UserName = oWebPasswd.UserId
+        client.ClientCredentials.UserName.Password = oWebPasswd.Password
         Return client
     End Function
 
     Function GetPasscode(ByVal trackingNumber As String) As String
+        Try
+            If trackingNumber.Length > 0 Then
+                Dim oServiceClient As RestClient
+                Dim oServiceRequest As RestRequest
+                Dim oServiceResponse As IRestResponse
+                Dim jsnResult
+                Dim oWebPasswd As WebPasswd = New WebPasswd(Guid.Empty, LookupListNew.GetIdFromCode(Codes.SERVICE_TYPE, Codes.SERVICE_TYPE__WEB_API_LOCKER_PASSCODE), False)
 
-        If trackingNumber.Length > 0 Then
+                oServiceClient = New RestClient(oWebPasswd.Url)
+                oServiceRequest = New RestRequest(Method.POST)
 
-            Dim oServiceClient As RestClient
-            Dim oServiceRequest As RestRequest
-            Dim oServiceResponse As IRestResponse
-            Dim jsonResulttodict
-            Dim oWebPasswd As WebPasswd = New WebPasswd(Guid.Empty, LookupListNew.GetIdFromCode(Codes.SERVICE_TYPE, Codes.SERVICE_TYPE__WEB_API_LOCKER_PASSCODE), False)
+                oServiceRequest.AddHeader(oWebPasswd.UserId, oWebPasswd.Password)
+                oServiceRequest.AddHeader("Content-type", "application/json")
+                'oServiceRequest.Resource = "api/PolicyEnroll"
+                oServiceRequest.RequestFormat = DataFormat.Json
+                oServiceRequest.AddJsonBody(New With {Key .trackingNumber = trackingNumber})
 
-            oServiceClient = New RestClient(oWebPasswd.Url)
-            oServiceRequest = New RestRequest(Method.POST)
-            oServiceRequest.AddHeader(oWebPasswd.UserId, oWebPasswd.Password)
-            oServiceRequest.AddHeader("Content-type", "application/json")
-            'oServiceRequest.Resource = "api/PolicyEnroll"
-            oServiceRequest.RequestFormat = DataFormat.Json
-            oServiceRequest.AddJsonBody(New With {Key .trackingNumber = Convert.ToInt32(trackingNumber)})
-            oServiceResponse = oServiceClient.Execute(oServiceRequest)
-            jsonResulttodict = JsonConvert.DeserializeObject(Of Dictionary(Of String, Object))(oServiceResponse.Content)
-            If jsonResulttodict IsNot Nothing Then
-                Return jsonResulttodict.Item("passcode").ToString()
+                ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12 Or
+                SecurityProtocolType.Tls11 Or SecurityProtocolType.Tls Or SecurityProtocolType.Ssl3
+
+                oServiceResponse = oServiceClient.Execute(oServiceRequest)
+                jsnResult = JsonConvert.DeserializeObject(Of Dictionary(Of String, Object))(oServiceResponse.Content)
+                If jsnResult IsNot Nothing Then
+                    Return jsnResult.Item("passcode").ToString()
+                Else
+                    Return ""
+                End If
             Else
                 Return ""
-            End If
-        Else
-            Return ""
 
-        End If
+            End If
+        Catch ex As Exception
+            Return ""
+        End Try
 
     End Function
 

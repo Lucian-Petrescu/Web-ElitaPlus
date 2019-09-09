@@ -35,8 +35,18 @@
             var windowProperties = "width = " + (screen.width - 100) + ", height = " + (screen.height - 200) + ", toolbar = no, location = no, status = yes, resizable = yes, scrollbars = yes";
             newRptWin = window.open(url, "", windowProperties);
             newRptWin.moveTo(50, 90);
-        }       
-       
+        }
+
+        function toglePassCode() {
+            var chkBox = document.getElementById("chkPasscode");
+            var txtBox = document.getElementById("txtPasscode");
+            if (chkBox.checked == true) {
+                txtBox.style.display = "block";
+            } else {
+                txtBox.style.display = "none";
+            }
+        }
+               
         $(function () {
             var disabledTabs = $("input[id$='hdnDisabledTab']").val().split(',');
             $.each(disabledTabs, function () {
@@ -1001,30 +1011,28 @@
                                                 </td>                                                
                                         </tr>
                                         <tr>
-                                            <td align="right">
-                                                <asp:Label ID="lblStoreName" runat="server" Text="STORE_NAME"> </asp:Label>
+                                            <td align="right">                                                
+                                                <asp:Label ID="lblStoreName" runat="server" Text="STORE_NAME"> </asp:Label>                                                
                                             </td>
                                             <td align="left">
                                                 <asp:TextBox ID="txtStoreName" runat="server" CssClass="FLATTEXTBOX" Enabled="false" 
                                                                 SkinID="MediumTextBox"></asp:TextBox>
                                             </td> 
                                             <td align="right">
-                                                <asp:Label ID="lblPasscode" runat="server" Text="PASSCODE"> </asp:Label>												
-											</td>											
+                                               <input type="checkbox" id="chkPasscode" onclick="toglePassCode();" />
+                                               <label for="chkPasscode">SHOW_PASSCODE</label>
+                                            </td>											
                                             <td align="left">
-							                    <asp:TextBox ID="txtPasscode" runat="server" CssClass="FLATTEXTBOX" Enabled="false" 
-                                                                SkinID="MediumTextBox"></asp:TextBox>					
-
+							                    <asp:TextBox ID="txtPasscode" runat="server" CssClass="FLATTEXTBOX" ClientIdMode="Static" 
+                                                    Enabled="false" hidden="true" SkinID="MediumTextBox"></asp:TextBox>
 											</td>                                            
-                                        </tr>                                        
-
+                                        </tr>
                                         </table>
                                     </div>
                                 </div>
                       </div>
- 
-
                     </div>
+                    
                 </asp:Panel>                
                 <asp:Panel ID="ViewPanel_READ2" runat="server" Height="40%" Width="100%">
                     <table class="formGrid" width="100%" cellspacing="0" cellpadding="0" border="0">
@@ -1314,4 +1322,5 @@
             runat="server" /><input id="HiddenLimitExceeded" type="hidden" name="HiddenLimitExceeded"
                 runat="server" />
     </asp:Panel>
+
 </asp:Content>

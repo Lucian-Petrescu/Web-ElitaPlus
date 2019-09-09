@@ -2102,15 +2102,6 @@ Partial Public Class ClaimForm
     Protected WithEvents txtStoreName As Global.System.Web.UI.WebControls.TextBox
     
     '''<summary>
-    '''lblPasscode control.
-    '''</summary>
-    '''<remarks>
-    '''Auto-generated field.
-    '''To modify move field declaration from designer file to code-behind file.
-    '''</remarks>
-    Protected WithEvents lblPasscode As Global.System.Web.UI.WebControls.Label
-    
-    '''<summary>
     '''txtPasscode control.
     '''</summary>
     '''<remarks>
