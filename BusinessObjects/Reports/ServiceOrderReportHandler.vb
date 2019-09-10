@@ -86,6 +86,7 @@ Public Class ServiceOrderReportHandler
         soRow.CUSTOMER_NAME = cert.CustomerName
         soRow.ADDRESS1 = cert.AddressChild.Address1
         soRow.ADDRESS2 = cert.AddressChild.Address2
+        soRow.ADDRESS3 = cert.AddressChild.Address3
         soRow.CITY = cert.AddressChild.City
         soRow.ADDR_MAILING_LABEL = cert.AddressChild.MailingAddressLabel
 
