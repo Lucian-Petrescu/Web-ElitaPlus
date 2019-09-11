@@ -907,7 +907,7 @@
                                                                     SkinID="MediumTextBox"></asp:TextBox>
                                                 </td> 
 											    <td align="right">
-												    <asp:Label ID="lblActualDeliveryDate" runat="server" Text="ACTUAL_DELIVERY_DATE "> </asp:Label>
+												    <asp:Label ID="lblActualDeliveryDate" runat="server" Text="ACTUAL_DELIVERY_DATE"> </asp:Label>
 											    </td>
 											    <td align="left">
 												    <asp:TextBox ID="txtActualDeliveryDate" runat="server" CssClass="FLATTEXTBOX" Enabled="false" 
