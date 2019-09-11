@@ -10,7 +10,7 @@
 				table_name,
 				vendor_sku,
 				vendor_sku_description,
-				quantity,
+				case when nvl(quantity,0) – nvl(RESERVE_QTY,0)  < 1 then 0 else nvl(quantity,0) – nvl(RESERVE_QTY,0) end   as quantity,
 				created_by,
 				modified_by,
 				created_date,
