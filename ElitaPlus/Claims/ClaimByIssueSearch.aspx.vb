@@ -148,6 +148,12 @@ Public Class ClaimByIssueSearch
                 TranslateGridHeader(Me.Grid)
 
                 PopulateDropdowns()
+
+                If Authentication.CurrentUser.IsDealer Then
+                    SetSelectedItem(cboSearchDealer, Authentication.CurrentUser.ScDealerId)
+                    ControlMgr.SetEnableControl(Me, cboSearchDealer, False)
+                End If
+
                 InitializePageSize()
 
                 If Me.IsReturningFromChild Then
@@ -467,14 +473,14 @@ Public Class ClaimByIssueSearch
     End Sub
     Sub PopulateDealerDropDown()
         Try
-            Dim dealerList As ListItem()
+            Dim DealerList As ListItem()
             If Authentication.CurrentUser.IsDealerGroup Then
-                dealerList = CaseBase.GetDealerListByCompanyForExternalUser()
+                DealerList = CaseBase.GetDealerListByCompanyForExternalUser()
             Else
-                dealerList = GetDealerListByCompanyForUser()
+                DealerList = GetDealerListByCompanyForUser()
             End If
 
-            cboSearchDealer.Populate(dealerList, New PopulateOptions() With
+            cboSearchDealer.Populate(DealerList, New PopulateOptions() With
                                                  {
                                                    .AddBlankItem = True,
                                                    .ValueFunc = AddressOf .GetListItemId,
@@ -487,6 +493,8 @@ Public Class ClaimByIssueSearch
             'If Not Me.State.Criterias.SelectedDealerId.IsEmpty Then
             '    SetSelectedItem(Me.cboSearchDealer, Me.State.Criterias.SelectedDealerId)
             'End If
+
+
         Catch ex As Exception
             Me.HandleErrors(ex, MasterPage.MessageController)
         End Try
