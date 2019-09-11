@@ -2472,6 +2472,7 @@ Namespace Certificates
 
         Protected Sub PopulateFormFromBOs(Optional ByVal blnPremiumEdit As Boolean = False)
             Dim typeOfEquip As String
+            Dim IsDisplayMaskFlag As Boolean
 
             If Me.State.isSalutation Then
                 PopulateSalutationDropdown(cboSalutationId)
@@ -2703,7 +2704,12 @@ Namespace Certificates
                     Me.State.ReqCustomerLegalInfoId = (New Company(Me.State.MyBO.CompanyId).ReqCustomerLegalInfoId)
                 End If
 
-                Dim IsDisplayMaskFlag As Boolean = Me.State.MyBO.Dealer.DisplayDobXcd.ToUpper().Equals("YESNO-Y")
+                If Me.State.MyBO.Dealer.DisplayDobXcd Is Nothing Then
+                    IsDisplayMaskFlag = False
+                Else
+                    IsDisplayMaskFlag = Me.State.MyBO.Dealer.DisplayDobXcd.ToUpper().Equals("YESNO-Y")
+                End If
+
                 If Me.State.ReqCustomerLegalInfoId.Equals(LookupListNew.GetIdFromCode(LookupListCache.LK_CLITYP, "0")) Then '0= None
                     Me.moCustLegalInfo1.Attributes("style") = "display: none"
                     ControlMgr.SetVisibleControl(Me, moIncomeRangeLabel, False)   'Me.moCustLegalInfo2.Attributes("style") = "display: none"
@@ -2845,7 +2851,13 @@ Namespace Certificates
             End With
         End Sub
         Protected Sub DisplayMaskDob()
-            Dim IsDobDisplay As Boolean = Me.State.MyBO.Dealer.DisplayDobXcd.ToUpper().Equals("YESNO-Y")
+            Dim IsDobDisplay As Boolean
+            If Me.State.MyBO.Dealer.DisplayDobXcd Is Nothing Then
+                IsDobDisplay = False
+            Else
+                IsDobDisplay = Me.State.MyBO.Dealer.DisplayDobXcd.ToUpper().Equals("YESNO-Y")
+            End If
+
             Dim IsCustomerLglInfo As Boolean = Me.State.ReqCustomerLegalInfoId.Equals(LookupListNew.GetIdFromCode(LookupListCache.LK_CLITYP, "0"))
 
             If (Not IsDobDisplay And IsCustomerLglInfo) Then
