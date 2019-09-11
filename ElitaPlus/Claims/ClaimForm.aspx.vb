@@ -4034,6 +4034,7 @@ Partial Class ClaimForm
 
             End If
         Catch ex As Exception
+            Me.HandleErrors(ex, Me.MasterPage.MessageController)
             Return ""
         End Try
 
