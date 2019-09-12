@@ -356,7 +356,6 @@ Partial Class ClaimForm
             Else
                 GetDisabledTabs()
             End If
-
             BindBoPropertiesToLabels()
             CheckIfComingFromCreateClaimConfirm()
             CheckIfComingFromSaveConfirm()
@@ -4008,8 +4007,8 @@ Partial Class ClaimForm
                 Dim oServiceRequest As RestRequest
                 Dim oServiceResponse As IRestResponse
                 Dim jsnResult
-                Dim oWebPasswd As WebPasswd = New WebPasswd(Guid.Empty, LookupListNew.GetIdFromCode(Codes.SERVICE_TYPE, Codes.SERVICE_TYPE__WEB_API_LOCKER_PASSCODE), False)
-
+                ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12
+                Dim oWebPasswd As WebPasswd = New WebPasswd(Guid.Empty, LookupListNew.GetIdFromCode(Codes.SERVICE_TYPE, Codes.SERVICE_TYPE__WEB_API_LOCKER_PASSCODE), True)
                 oServiceClient = New RestClient(oWebPasswd.Url)
                 oServiceRequest = New RestRequest(Method.POST)
 
@@ -4018,9 +4017,6 @@ Partial Class ClaimForm
                 'oServiceRequest.Resource = "api/PolicyEnroll"
                 oServiceRequest.RequestFormat = DataFormat.Json
                 oServiceRequest.AddJsonBody(New With {Key .trackingNumber = trackingNumber})
-
-                ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12 Or
-                SecurityProtocolType.Tls11 Or SecurityProtocolType.Tls Or SecurityProtocolType.Ssl3
 
                 oServiceResponse = oServiceClient.Execute(oServiceRequest)
                 jsnResult = JsonConvert.DeserializeObject(Of Dictionary(Of String, Object))(oServiceResponse.Content)
