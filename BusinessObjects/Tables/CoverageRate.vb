@@ -665,9 +665,9 @@ Public Class CoverageRate
                     oLow = Math.Round(Convert.ToDouble(oRow(LOW_PRICE)), 2)
                     oHigh = Math.Round(Convert.ToDouble(oRow(HIGH_PRICE)), 2)
                     oRenewalNo = Convert.ToInt32(oRow(RENEWAL_NUMBER))
-                    oTaxRegionId = New Guid(CType(oRow(REGION_ID), Byte()))
+                    oTaxRegionId = If(IsDBNull(oRow(REGION_ID)), Guid.Empty, New Guid(CType(oRow(REGION_ID), Byte())))
 
-                    If (oLow = oNewLow AndAlso oHigh = oNewHigh AndAlso oCoverageRate.RegionId.Equals(oTaxRegionId)) Then
+                    If (oLow = oNewLow AndAlso oHigh = oNewHigh AndAlso If(IsNothing(oCoverageRate.RegionId), Guid.Empty, oCoverageRate.RegionId).Equals(oTaxRegionId)) Then
                         If oCoverageRate.Id.Equals(oCoverageRateId) Then
                             If (oNewRenewalNo > 0 And oRenewalNo = 0) Then
                                 bValid = False
