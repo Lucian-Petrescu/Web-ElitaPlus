@@ -1897,6 +1897,128 @@ Namespace ClaimFulfillmentWebAppGatewayService
         End Sub
     End Class
     
+    <System.Diagnostics.DebuggerStepThroughAttribute(),  _
+     System.CodeDom.Compiler.GeneratedCodeAttribute("System.Runtime.Serialization", "4.0.0.0"),  _
+     System.Runtime.Serialization.DataContractAttribute(Name:="BeginFulfillmentRequest", [Namespace]:="http://assurant.com/Elita/ClaimFulfillment/WebAppGateway/Data"),  _
+     System.SerializableAttribute()>  _
+    Partial Public Class BeginFulfillmentRequest
+        Inherits Object
+        Implements System.Runtime.Serialization.IExtensibleDataObject, System.ComponentModel.INotifyPropertyChanged
+        
+        <System.NonSerializedAttribute()>  _
+        Private extensionDataField As System.Runtime.Serialization.ExtensionDataObject
+        
+        Private CompanyCodeField As String
+        
+        Private ClaimNumberField As String
+        
+        <Global.System.ComponentModel.BrowsableAttribute(false)>  _
+        Public Property ExtensionData() As System.Runtime.Serialization.ExtensionDataObject Implements System.Runtime.Serialization.IExtensibleDataObject.ExtensionData
+            Get
+                Return Me.extensionDataField
+            End Get
+            Set
+                Me.extensionDataField = value
+            End Set
+        End Property
+        
+        <System.Runtime.Serialization.DataMemberAttribute(IsRequired:=true)>  _
+        Public Property CompanyCode() As String
+            Get
+                Return Me.CompanyCodeField
+            End Get
+            Set
+                If (Object.ReferenceEquals(Me.CompanyCodeField, value) <> true) Then
+                    Me.CompanyCodeField = value
+                    Me.RaisePropertyChanged("CompanyCode")
+                End If
+            End Set
+        End Property
+        
+        <System.Runtime.Serialization.DataMemberAttribute(IsRequired:=true, Order:=1)>  _
+        Public Property ClaimNumber() As String
+            Get
+                Return Me.ClaimNumberField
+            End Get
+            Set
+                If (Object.ReferenceEquals(Me.ClaimNumberField, value) <> true) Then
+                    Me.ClaimNumberField = value
+                    Me.RaisePropertyChanged("ClaimNumber")
+                End If
+            End Set
+        End Property
+        
+        Public Event PropertyChanged As System.ComponentModel.PropertyChangedEventHandler Implements System.ComponentModel.INotifyPropertyChanged.PropertyChanged
+        
+        Protected Sub RaisePropertyChanged(ByVal propertyName As String)
+            Dim propertyChanged As System.ComponentModel.PropertyChangedEventHandler = Me.PropertyChangedEvent
+            If (Not (propertyChanged) Is Nothing) Then
+                propertyChanged(Me, New System.ComponentModel.PropertyChangedEventArgs(propertyName))
+            End If
+        End Sub
+    End Class
+    
+    <System.Diagnostics.DebuggerStepThroughAttribute(),  _
+     System.CodeDom.Compiler.GeneratedCodeAttribute("System.Runtime.Serialization", "4.0.0.0"),  _
+     System.Runtime.Serialization.DataContractAttribute(Name:="BeginFulfillmentResponse", [Namespace]:="http://assurant.com/Elita/ClaimFulfillment/WebAppGateway/Data"),  _
+     System.SerializableAttribute()>  _
+    Partial Public Class BeginFulfillmentResponse
+        Inherits Object
+        Implements System.Runtime.Serialization.IExtensibleDataObject, System.ComponentModel.INotifyPropertyChanged
+        
+        <System.NonSerializedAttribute()>  _
+        Private extensionDataField As System.Runtime.Serialization.ExtensionDataObject
+        
+        Private CompanyCodeField As String
+        
+        Private FulfillmentNumberField As String
+        
+        <Global.System.ComponentModel.BrowsableAttribute(false)>  _
+        Public Property ExtensionData() As System.Runtime.Serialization.ExtensionDataObject Implements System.Runtime.Serialization.IExtensibleDataObject.ExtensionData
+            Get
+                Return Me.extensionDataField
+            End Get
+            Set
+                Me.extensionDataField = value
+            End Set
+        End Property
+        
+        <System.Runtime.Serialization.DataMemberAttribute(IsRequired:=true)>  _
+        Public Property CompanyCode() As String
+            Get
+                Return Me.CompanyCodeField
+            End Get
+            Set
+                If (Object.ReferenceEquals(Me.CompanyCodeField, value) <> true) Then
+                    Me.CompanyCodeField = value
+                    Me.RaisePropertyChanged("CompanyCode")
+                End If
+            End Set
+        End Property
+        
+        <System.Runtime.Serialization.DataMemberAttribute(IsRequired:=true)>  _
+        Public Property FulfillmentNumber() As String
+            Get
+                Return Me.FulfillmentNumberField
+            End Get
+            Set
+                If (Object.ReferenceEquals(Me.FulfillmentNumberField, value) <> true) Then
+                    Me.FulfillmentNumberField = value
+                    Me.RaisePropertyChanged("FulfillmentNumber")
+                End If
+            End Set
+        End Property
+        
+        Public Event PropertyChanged As System.ComponentModel.PropertyChangedEventHandler Implements System.ComponentModel.INotifyPropertyChanged.PropertyChanged
+        
+        Protected Sub RaisePropertyChanged(ByVal propertyName As String)
+            Dim propertyChanged As System.ComponentModel.PropertyChangedEventHandler = Me.PropertyChangedEvent
+            If (Not (propertyChanged) Is Nothing) Then
+                propertyChanged(Me, New System.ComponentModel.PropertyChangedEventArgs(propertyName))
+            End If
+        End Sub
+    End Class
+    
     <System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0"),  _
      System.ServiceModel.ServiceContractAttribute([Namespace]:="http://assurant.com/Elita/ClaimFulfillment/WebAppGateway", ConfigurationName:="ClaimFulfillmentWebAppGatewayService.WebAppGateway")>  _
     Public Interface WebAppGateway
@@ -1936,6 +2058,16 @@ Namespace ClaimFulfillmentWebAppGatewayService
             "mentDetails", ReplyAction:="http://assurant.com/Elita/ClaimFulfillment/WebAppGateway/WebAppGateway/GetFulfill"& _ 
             "mentDetailsResponse")>  _
         Function GetFulfillmentDetailsAsync(ByVal request As ClaimFulfillmentWebAppGatewayService.GetFulfillmentDetailsRequest) As System.Threading.Tasks.Task(Of ClaimFulfillmentWebAppGatewayService.FulfillmentDetails)
+        
+        <System.ServiceModel.OperationContractAttribute(Action:="http://assurant.com/Elita/ClaimFulfillment/WebAppGateway/WebAppGateway/BeginFulfi"& _ 
+            "llment", ReplyAction:="http://assurant.com/Elita/ClaimFulfillment/WebAppGateway/WebAppGateway/BeginFulfi"& _ 
+            "llmentResponse")>  _
+        Function BeginFulfillment(ByVal request As ClaimFulfillmentWebAppGatewayService.BeginFulfillmentRequest) As ClaimFulfillmentWebAppGatewayService.BeginFulfillmentResponse
+        
+        <System.ServiceModel.OperationContractAttribute(Action:="http://assurant.com/Elita/ClaimFulfillment/WebAppGateway/WebAppGateway/BeginFulfi"& _ 
+            "llment", ReplyAction:="http://assurant.com/Elita/ClaimFulfillment/WebAppGateway/WebAppGateway/BeginFulfi"& _ 
+            "llmentResponse")>  _
+        Function BeginFulfillmentAsync(ByVal request As ClaimFulfillmentWebAppGatewayService.BeginFulfillmentRequest) As System.Threading.Tasks.Task(Of ClaimFulfillmentWebAppGatewayService.BeginFulfillmentResponse)
     End Interface
     
     <System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")>  _
@@ -1991,6 +2123,14 @@ Namespace ClaimFulfillmentWebAppGatewayService
         
         Public Function GetFulfillmentDetailsAsync(ByVal request As ClaimFulfillmentWebAppGatewayService.GetFulfillmentDetailsRequest) As System.Threading.Tasks.Task(Of ClaimFulfillmentWebAppGatewayService.FulfillmentDetails) Implements ClaimFulfillmentWebAppGatewayService.WebAppGateway.GetFulfillmentDetailsAsync
             Return MyBase.Channel.GetFulfillmentDetailsAsync(request)
+        End Function
+        
+        Public Function BeginFulfillment(ByVal request As ClaimFulfillmentWebAppGatewayService.BeginFulfillmentRequest) As ClaimFulfillmentWebAppGatewayService.BeginFulfillmentResponse Implements ClaimFulfillmentWebAppGatewayService.WebAppGateway.BeginFulfillment
+            Return MyBase.Channel.BeginFulfillment(request)
+        End Function
+        
+        Public Function BeginFulfillmentAsync(ByVal request As ClaimFulfillmentWebAppGatewayService.BeginFulfillmentRequest) As System.Threading.Tasks.Task(Of ClaimFulfillmentWebAppGatewayService.BeginFulfillmentResponse) Implements ClaimFulfillmentWebAppGatewayService.WebAppGateway.BeginFulfillmentAsync
+            Return MyBase.Channel.BeginFulfillmentAsync(request)
         End Function
     End Class
 End Namespace

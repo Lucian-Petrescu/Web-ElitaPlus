@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <xs:schema xmlns:ser="http://schemas.microsoft.com/2003/10/Serialization/" xmlns:tns="http://assurant.com/Elita/ClaimFulfillment/WebAppGateway/Data" elementFormDefault="qualified" targetNamespace="http://assurant.com/Elita/ClaimFulfillment/WebAppGateway/Data" xmlns:xs="http://www.w3.org/2001/XMLSchema">
-  <xs:import schemaLocation="http://localhost/ElitaClaimFulfillment/WebAppGateway/gateway?xsd=xsd1" namespace="http://schemas.microsoft.com/2003/10/Serialization/" />
+  <xs:import schemaLocation="http://sf-jp-east-mod.assurant.com/ElitaClaimFulfillment/modl-j1/WebAppGateway/gateway?xsd=xsd1" namespace="http://schemas.microsoft.com/2003/10/Serialization/" />
   <xs:complexType name="GetDeliverySlotsRequest">
     <xs:sequence>
       <xs:element name="ServiceCenterCode" nillable="true" type="xs:string" />
@@ -223,4 +223,18 @@
     </xs:sequence>
   </xs:complexType>
   <xs:element name="FulfillmentNotFoundFault" nillable="true" type="tns:FulfillmentNotFoundFault" />
+  <xs:complexType name="BeginFulfillmentRequest">
+    <xs:sequence>
+      <xs:element name="CompanyCode" nillable="true" type="xs:string" />
+      <xs:element name="ClaimNumber" nillable="true" type="xs:string" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="BeginFulfillmentRequest" nillable="true" type="tns:BeginFulfillmentRequest" />
+  <xs:complexType name="BeginFulfillmentResponse">
+    <xs:sequence>
+      <xs:element name="CompanyCode" nillable="true" type="xs:string" />
+      <xs:element name="FulfillmentNumber" nillable="true" type="xs:string" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="BeginFulfillmentResponse" nillable="true" type="tns:BeginFulfillmentResponse" />
 </xs:schema>

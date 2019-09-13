@@ -1108,4 +1108,6 @@ Public Class ErrorCodes
 
     Public Const GUI_SINGLE_AUTH_CLAIM_WITH_DATA_PRIVACY_NOT_SUPPORTED_ERR As String = "GUI_SINGLE_AUTH_CLAIM_WITH_DATA_PRIVACY_NOT_SUPPORTED_ERR" ' Error while calling Case Management WebAppGateway service
     Public Const INVALID_TAX_TYPE_FOR_DEALER As String = "INVALID_TAX_TYPE_FOR_DEALER"
+    Public Const GUI_CREATE_BEGIN_FULFILLMENT_SERVICE_ERR As String = "GUI_CREATE_BEGIN_FULFILLMENT_SERVICE_ERR" ' Error while calling Create and begin fulfillment WebAppGateway service
+
 End Class
