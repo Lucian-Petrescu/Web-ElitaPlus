@@ -681,6 +681,7 @@ Public Class Codes
     ' Claim Image Codes
     Public Const CLAIM_IMAGE_PROCESSED As String = "PRC"
     Public Const CLAIM_IMAGE_PENDING As String = "PND"
+    Public Const HND_STORE_TYPE As String = "HND_STR_TYPE"
 
     'Customer Identifier Types
     Public Const CUSTOMER_IDENTIFIER_TYPE__SERIAL_NUMBER As String = "SERIALNUMBER"
