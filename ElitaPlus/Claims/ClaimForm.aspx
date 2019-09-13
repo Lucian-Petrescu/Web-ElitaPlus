@@ -1020,7 +1020,7 @@
                                             </td> 
                                             <td align="right">
                                                <input type="checkbox" id="chkPasscode" onclick="toglePassCode();" />
-                                               <label for="chkPasscode">SHOW_PASSCODE</label>
+                                               <label for="chkPasscode">Show Passcode</label>
                                             </td>											
                                             <td align="left">
 							                    <asp:TextBox ID="txtPasscode" runat="server" CssClass="FLATTEXTBOX" ClientIdMode="Static" 
