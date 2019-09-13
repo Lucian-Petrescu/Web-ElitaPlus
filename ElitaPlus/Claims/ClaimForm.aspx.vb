@@ -1926,7 +1926,14 @@ Partial Class ClaimForm
 
                     Me.PopulateControlFromBOProperty(Me.txtStoreCode, logisticStage.HandlingStore.StoreCode)
                     Me.PopulateControlFromBOProperty(Me.txtStoreName, logisticStage.HandlingStore.StoreName)
-                    Me.PopulateControlFromBOProperty(Me.txtStoreType, logisticStage.HandlingStore.StoreTypeXcd)
+
+                    Dim storeTypeList As ListItem() = CommonConfigManager.Current.ListManager.GetList(Codes.HND_STORE_TYPE, Thread.CurrentPrincipal.GetLanguageCode())
+                    For Each item As ListItem In storeTypeList
+                        If (item.ExtendedCode = logisticStage.HandlingStore.StoreTypeXcd) Then
+                            Me.PopulateControlFromBOProperty(Me.txtStoreType, item.Translation)
+                            Exit For
+                        End If
+                    Next
 
                     If logisticStage.Shipping.TrackingNumber.ToString().Length > 0 Then
                             Dim PasscodeResponse = GetPasscode(logisticStage.Shipping.TrackingNumber.ToString())
@@ -2987,7 +2994,6 @@ Partial Class ClaimForm
         client.ClientCredentials.UserName.UserName = oWebPasswd.UserId
         client.ClientCredentials.UserName.Password = oWebPasswd.Password
         Return client
-
     End Function
     Private Sub DisplayWsErrorMessage(ByVal errCode As String, ByVal errDescription As String)
         MasterPage.MessageController.AddError(errCode & " - " & errDescription, False)
