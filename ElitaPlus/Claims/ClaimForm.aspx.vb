@@ -1929,7 +1929,7 @@ Partial Class ClaimForm
 
                     Dim storeTypeList As ListItem() = CommonConfigManager.Current.ListManager.GetList(Codes.HND_STORE_TYPE, Thread.CurrentPrincipal.GetLanguageCode())
                     Dim storeTypeItem = storeTypeList.Where(
-                        Function(item) item.ExtendedCode = "HND_STR_TYPE-LOCKER").FirstOrDefault()
+                        Function(item) item.ExtendedCode = logisticStage.HandlingStore.StoreTypeXcd).FirstOrDefault()
                     Me.PopulateControlFromBOProperty(Me.txtStoreType, storeTypeItem.Translation)
 
                     If logisticStage.Shipping.TrackingNumber.ToString().Length > 0 Then
@@ -4003,11 +4003,18 @@ Partial Class ClaimForm
 
 
     Private Shared Function GetClaimFulfillmentWebAppGatewayClient() As WebAppGatewayClient
-        Dim oWebPasswd As WebPasswd = New WebPasswd(Guid.Empty, LookupListNew.GetIdFromCode(Codes.SERVICE_TYPE, Codes.SERVICE_TYPE__CLAIM_FULFILLMENT_WEB_APP_GATEWAY_SERVICE), False)
-        Dim client = New WebAppGatewayClient("CustomBinding_WebAppGateway", oWebPasswd.Url)
-        client.ClientCredentials.UserName.UserName = oWebPasswd.UserId
-        client.ClientCredentials.UserName.Password = oWebPasswd.Password
+        'Dim oWebPasswd As WebPasswd = New WebPasswd(Guid.Empty, LookupListNew.GetIdFromCode(Codes.SERVICE_TYPE, Codes.SERVICE_TYPE__CLAIM_FULFILLMENT_WEB_APP_GATEWAY_SERVICE), False)
+        'Dim client = New WebAppGatewayClient("CustomBinding_WebAppGateway", oWebPasswd.Url)
+        'client.ClientCredentials.UserName.UserName = oWebPasswd.UserId
+        'client.ClientCredentials.UserName.Password = oWebPasswd.Password
+        'Return client
+
+        'Dim oWebPasswd As WebPasswd = New WebPasswd(Guid.Empty, LookupListNew.GetIdFromCode(Codes.SERVICE_TYPE, Codes.SERVICE_TYPE__CLAIM_FULFILLMENT_WEB_APP_GATEWAY_SERVICE), False)
+        Dim client = New WebAppGatewayClient("CustomBinding_WebAppGateway", "http://l16mia0d8441fhf.cead.prd/ElitaClaimFulfillment/WebAppGateway/gateway")  'oWebPasswd.Url
+        client.ClientCredentials.UserName.UserName = "elita1"  'oWebPasswd.UserId
+        client.ClientCredentials.UserName.Password = "elita1"  ' oWebPasswd.Password
         Return client
+
     End Function
 
     Function GetPasscode(ByVal trackingNumber As String) As String
