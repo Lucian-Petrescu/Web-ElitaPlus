@@ -1911,29 +1911,35 @@ Partial Class ClaimForm
                     Me.PopulateControlFromBOProperty(Me.txtShippingDate, logisticStage.Shipping.ShippingDate)
                     Me.PopulateControlFromBOProperty(Me.txtExpectedShippingDate, logisticStage.Shipping.ExpectedShippingDate)
                     Me.PopulateControlFromBOProperty(Me.txtTrackingNumber, logisticStage.Shipping.TrackingNumber)
-                    Me.PopulateControlFromBOProperty(Me.txtAddress1, Me.moUserControlAddress.MyBO.Address1)
-                    Me.PopulateControlFromBOProperty(Me.txtAddress2, Me.moUserControlAddress.MyBO.Address2)
-                    Me.PopulateControlFromBOProperty(Me.txtAddress3, Me.moUserControlAddress.MyBO.Address3)
-                    Me.PopulateControlFromBOProperty(Me.txtCity, Me.moUserControlAddress.MyBO.City)
-                    Me.PopulateControlFromBOProperty(Me.txtState, Me.moUserControlAddress.RegionText)
-                    Me.PopulateControlFromBOProperty(Me.txtCountry, Me.moUserControlAddress.MyBO.countryBO.Description)
-                    Me.PopulateControlFromBOProperty(Me.txtPostalCode, Me.moUserControlAddress.MyBO.PostalCode)
+
+                    Me.PopulateControlFromBOProperty(Me.txtAddress1, logisticStage.Address.Address1)
+                    Me.PopulateControlFromBOProperty(Me.txtAddress2, logisticStage.Address.Address2)
+                    Me.PopulateControlFromBOProperty(Me.txtAddress3, logisticStage.Address.Address3)
+                    Me.PopulateControlFromBOProperty(Me.txtCity, logisticStage.Address.City)
+                    Me.PopulateControlFromBOProperty(Me.txtPostalCode, logisticStage.Address.PostalCode)
+                    Me.PopulateControlFromBOProperty(Me.txtState, LookupListNew.GetDescriptionFromCode(
+                                                     LookupListNew.DataView(LookupListNew.LK_REGIONS),
+                                                     logisticStage.Address.State))
+                    Me.PopulateControlFromBOProperty(Me.txtCountry, LookupListNew.GetDescriptionFromCode(
+                                                     LookupListNew.DataView(LookupListNew.LK_COUNTRIES),
+                                                     logisticStage.Address.Country))
+
                     Me.PopulateControlFromBOProperty(Me.txtStoreCode, logisticStage.HandlingStore.StoreCode)
                     Me.PopulateControlFromBOProperty(Me.txtStoreName, logisticStage.HandlingStore.StoreName)
                     Me.PopulateControlFromBOProperty(Me.txtStoreType, logisticStage.HandlingStore.StoreTypeXcd)
 
                     If logisticStage.Shipping.TrackingNumber.ToString().Length > 0 Then
-                        Dim PasscodeResponse = GetPasscode(logisticStage.Shipping.TrackingNumber.ToString())
-                        Me.PopulateControlFromBOProperty(Me.txtPasscode, PasscodeResponse)
-                    Else
-                        Me.PopulateControlFromBOProperty(Me.txtPasscode, "")
+                            Dim PasscodeResponse = GetPasscode(logisticStage.Shipping.TrackingNumber.ToString())
+                            Me.PopulateControlFromBOProperty(Me.txtPasscode, PasscodeResponse)
+                        Else
+                            Me.PopulateControlFromBOProperty(Me.txtPasscode, "")
+                        End If
                     End If
-                End If
-            Else
+                Else
                 ClearClaimFulfillmentDetails()
             End If
         Catch ex As Exception
-            ClearClaimFulfillmentDetails()
+            Me.HandleErrors(ex, Me.MasterPage.MessageController)
         End Try
     End Sub
 
@@ -2981,6 +2987,7 @@ Partial Class ClaimForm
         client.ClientCredentials.UserName.UserName = oWebPasswd.UserId
         client.ClientCredentials.UserName.Password = oWebPasswd.Password
         Return client
+
     End Function
     Private Sub DisplayWsErrorMessage(ByVal errCode As String, ByVal errDescription As String)
         MasterPage.MessageController.AddError(errCode & " - " & errDescription, False)
