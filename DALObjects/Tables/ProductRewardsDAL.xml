@@ -7,18 +7,20 @@
     <![CDATA[	
 			SELECT 
 				 product_code_id,
-         reward_name,
-         prod_reward_id,
-         reward_type,
-         reward_amount,
-         min_purchase_price,
-         days_to_redeem,
-         effective_date,
-         expiration_date,
-         created_date,
-				  created_by,
-				  modified_date,
-				  modified_by
+				 reward_name,
+				 prod_reward_id,
+				 reward_type,
+				 reward_amount,
+				 min_purchase_price,
+				 days_to_redeem,
+				 from_renewal,
+				 to_renewal,
+				 effective_date,
+				 expiration_date,
+				 created_date,
+				 created_by,
+				 modified_date,
+				 modified_by
 			FROM elp_prod_rewards 
 			WHERE
 				prod_reward_id = :prod_reward_id
@@ -33,7 +35,9 @@
       PR.REWARD_TYPE,
       PR.REWARD_AMOUNT,
       PR.min_purchase_price,
-      PR.DAYS_TO_REDEEM,     
+      PR.DAYS_TO_REDEEM, 
+	  PR.from_renewal,
+      PR.to_renewal,
       PR.EFFECTIVE_DATE,
       PR.Expiration_Date,
       PR.created_date,
@@ -70,50 +74,65 @@
                
 		]]>
   </VALIDATE_OVERLAPPING>
+  <VALIDATE_RENEWAL_OVERLAPPING>
+	  <![CDATA[	
+     Select max(to_renewal)
+     from elp_prod_rewards pr, elp_product_code pc
+     where pr.product_code_id = pc.product_code_id
+     and pc.product_code_id = :product_code_id
+	 and pr.prod_reward_id not in (:prod_reward_id)
+	 ]]>
+  </VALIDATE_RENEWAL_OVERLAPPING>
   <UPDATE>
     <![CDATA[	
-			UPDATE ELP_PROD_REWARDS SET
-				 product_code_id = :product_code_id,
+		 UPDATE ELP_PROD_REWARDS SET
+		 product_code_id = :product_code_id,
          reward_name = :reward_name,
          prod_reward_id = :prod_reward_id,
          reward_type = :reward_type,
          reward_amount = :reward_amount,
          min_purchase_price = :min_purchase_price,
          days_to_redeem = :days_to_redeem,
+         from_renewal = :from_renewal,
+		 to_renewal = :to_renewal,		 
          effective_date = :effective_date,
          expiration_date = :expiration_date,
          modified_by = :modified_by
-			WHERE
-				prod_reward_id = :prod_reward_id
+		 WHERE
+		 prod_reward_id = :prod_reward_id
 		]]>
   </UPDATE>
   <INSERT>
-    INSERT INTO ELP_PROD_REWARDS
-    (
-    product_code_id,
-    reward_name,
-    prod_reward_id,
-    reward_type,
-    reward_amount,
-    min_purchase_price,
-    days_to_redeem,
-    effective_date,
-    expiration_date,
-    created_by
-    )
-    VALUES
-    (
-    :product_code_id,
-    :reward_name,
-    :prod_reward_id,
-    :reward_type,
-    :reward_amount,
-    :min_purchase_price,
-    :days_to_redeem,
-    :effective_date,
-    :expiration_date,
-    :created_by
-    )
+	  INSERT INTO ELP_PROD_REWARDS
+	  (
+	  product_code_id,
+	  reward_name,
+	  prod_reward_id,
+	  reward_type,
+	  reward_amount,
+	  min_purchase_price,
+	  days_to_redeem,
+	  from_renewal,
+	  to_renewal,
+	  effective_date,
+	  expiration_date,
+	  created_by
+	  )
+	  VALUES
+	  (
+	  :product_code_id,
+	  :reward_name,
+	  :prod_reward_id,
+	  :reward_type,
+	  :reward_amount,
+	  :min_purchase_price,
+	  :days_to_redeem,
+	  :from_renewal,
+	  :to_renewal,
+	  :effective_date,
+	  :expiration_date,
+	  :created_by
+	  )
   </INSERT>
   <DELETE>
     DELETE FROM ELP_PROD_REWARDS
