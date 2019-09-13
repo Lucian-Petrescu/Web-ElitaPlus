@@ -370,6 +370,7 @@ Public Class UserControlDeliverySlot
                 Exit Sub
             End If
         Else ' populate the courier product dropdown
+            ddlCourierProduct.Items.Clear()
             For Each de As DeliveryEstimate In State.DeliveryDateList
                 ddlCourierProduct.Items.Add(New ListItem() With {.Text = $"{de.CourierCode} - {de.CourierProductCode}", .Value = $"{de.CourierCode}{de.CourierProductCode}"})
             Next
@@ -377,7 +378,6 @@ Public Class UserControlDeliverySlot
         End If
 
         ShowDeliveryEstimate()
-
     End Sub
     Private Sub ShowFaultException(ByVal fex As FaultException)
         If fex IsNot Nothing Then

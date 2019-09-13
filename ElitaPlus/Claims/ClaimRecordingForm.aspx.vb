@@ -103,6 +103,7 @@ Public Class ClaimRecordingForm
 
         Public BestReplacementDeviceSelected As BestReplacementDeviceInfo = Nothing
         Public LogisticsStage As Integer = 0 ' 0 is first stage
+        Public LogisticsOption As LogisticOption = Nothing
     End Class
 
     Public Sub New()
@@ -1632,6 +1633,8 @@ Public Class ClaimRecordingForm
             With UserControlDeliverySlot
                 .CountryCode = userSelectedShippingAddress.Country
                 .ServiceCenter = defaultServiceCenter.Code
+                .CourierCode = State.LogisticsOption.DeliveryOptions.CourierCode
+                .CourierProductCode = State.LogisticsOption.DeliveryOptions.CourierProductCode
                 .DeliveryAddress = New UserControlDeliverySlot.DeliveryAddressInfo() With {
                     .CountryCode = userSelectedShippingAddress.Country,
                     .RegionShortDesc = userSelectedShippingAddress.State,
@@ -2236,6 +2239,7 @@ Public Class ClaimRecordingForm
             lb = CType(gridViewTarget.Rows(i).FindControl(GridLoCodeLblCtrl), Label)
             Dim logisticsOptionItem As LogisticOption = logisticsStage.Options.FirstOrDefault(Function(q) q.Code = lb.Text)
 
+
             Dim rb As RadioButton
             rb = CType(gridViewTarget.Rows(i).FindControl(GridLogisticsOptionsRdoCtrl), RadioButton)
             ControlMgr.SetEnableControl(Me, rb, True)
@@ -2279,8 +2283,10 @@ Public Class ClaimRecordingForm
                 Dim btnEstimateDeliveryDate As Button = CType(gridViewTarget.Rows(i).FindControl(GridLoEstimateDeliveryDateBtnCtrl), Button)
                 ControlMgr.SetEnableControl(Me, btnEstimateDeliveryDate, isEnableControl)
 
+                If isEnableControl Then
+                    State.LogisticsOption = logisticsOptionItem
+                End If
             End If
-
         Next
     End Sub
     Private Function ConvertToAddressControllerField(ByVal sourceAddress As ClaimRecordingService.Address) As BusinessObjectsNew.Address
@@ -2425,7 +2431,6 @@ Public Class ClaimRecordingForm
                                 lOption.LogisticOptionInfo.EstimatedChangedDeliveryDate = selectedDeliveryDate
                             End If
                         End If
-
                     End If
 
                 End If
@@ -2545,6 +2550,8 @@ Public Class ClaimRecordingForm
             With ucDeliverySlots
                 .CountryCode = countryCode
                 .ServiceCenter = serviceCenterCode
+                .CourierCode = State.LogisticsOption.DeliveryOptions.CourierCode
+                .CourierProductCode = State.LogisticsOption.DeliveryOptions.CourierProductCode
                 .DeliveryAddress = New UserControlDeliverySlot.DeliveryAddressInfo() With {
                     .CountryCode = deliveryAddress.Country,
                     .RegionShortDesc = deliveryAddress.State,
