@@ -945,6 +945,15 @@ Public Class CertItemCoverage
             Me.SetValue(CertItemCoverageDAL.COL_NAME_DEDUCTIBLE_EXPRESSION_ID, Value)
         End Set
     End Property
+    Public ReadOnly Property FulfillmentProfileCode() As String
+        Get
+            If Row(CertItemCoverageDAL.COL_NAME_FULFILLMENT_PROFILE_CODE) Is DBNull.Value Then
+                Return Nothing
+            Else
+                Return New String(CType(Row(CertItemCoverageDAL.COL_NAME_FULFILLMENT_PROFILE_CODE), String))
+            End If
+        End Get
+    End Property
 
 #End Region
 

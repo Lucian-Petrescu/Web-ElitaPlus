@@ -3977,30 +3977,61 @@ Public Class ClaimWizardForm
         client.ClientCredentials.UserName.Password = oWebPasswd.Password
         Return client
     End Function
+    Private Shared Function GetClaimFulfillmentWebAppGatewayClient() As Assurant.ElitaPlus.ElitaPlusWebApp.ClaimFulfillmentWebAppGatewayService.WebAppGatewayClient
+        Dim oWebPasswd As WebPasswd = New WebPasswd(Guid.Empty, LookupListNew.GetIdFromCode(Codes.SERVICE_TYPE, Codes.SERVICE_TYPE__CLAIM_FULFILLMENT_WEB_APP_GATEWAY_SERVICE), False)
+        Dim client = New Assurant.ElitaPlus.ElitaPlusWebApp.ClaimFulfillmentWebAppGatewayService.WebAppGatewayClient("CustomBinding_WebAppGateway", oWebPasswd.Url)
+        client.ClientCredentials.UserName.UserName = oWebPasswd.UserId
+        client.ClientCredentials.UserName.Password = oWebPasswd.Password
+        Return client
+    End Function
+
     Private Function CallStartFulfillmentProcess() As Boolean
         Dim wsRequest As BaseFulfillmentRequest = New BaseFulfillmentRequest()
+        Dim wsCBFRequest As New Assurant.ElitaPlus.ElitaPlusWebApp.ClaimFulfillmentWebAppGatewayService.BeginFulfillmentRequest()
         Dim blnSuccess As Boolean = True
         wsRequest.CompanyCode = State.ClaimBO.Company.Code
         wsRequest.ClaimNumber = State.ClaimBO.ClaimNumber
-        Dim wsResponse As BaseFulfillmentResponse
-        Try
+        wsCBFRequest.CompanyCode = State.ClaimBO.Company.Code
+        wsCBFRequest.ClaimNumber = State.ClaimBO.ClaimNumber
+        Dim wsResponseObject As Object
 
-            wsResponse = WcfClientHelper.Execute(Of FulfillmentServiceClient, IFulfillmentService, BaseFulfillmentResponse)(
-                GetClient(),
-                New List(Of Object) From {New Headers.InteractiveUserHeader() With {.LanId = Authentication.CurrentUser.NetworkId}},
-                Function(ByVal c As FulfillmentServiceClient)
-                    Return c.StartFulfillmentProcess(wsRequest)
-                                                                                                                               End Function)
+
+        Try
+            If (Not String.IsNullOrWhiteSpace(Me.State.CertItemCoverageBO.FulfillmentProfileCode)) Then
+
+                wsResponseObject = WcfClientHelper.Execute(Of Assurant.ElitaPlus.ElitaPlusWebApp.ClaimFulfillmentWebAppGatewayService.WebAppGatewayClient, Assurant.ElitaPlus.ElitaPlusWebApp.ClaimFulfillmentWebAppGatewayService.WebAppGateway, Assurant.ElitaPlus.ElitaPlusWebApp.ClaimFulfillmentWebAppGatewayService.BeginFulfillmentResponse)(
+                                    GetClaimFulfillmentWebAppGatewayClient(),
+                                New List(Of Object) From {New InteractiveUserHeader() With {.LanId = Authentication.CurrentUser.NetworkId}},
+                                Function(ByVal c As Assurant.ElitaPlus.ElitaPlusWebApp.ClaimFulfillmentWebAppGatewayService.WebAppGatewayClient)
+                                    Return c.BeginFulfillment(wsCBFRequest)
+                                End Function)
+
+            Else
+
+                wsResponseObject = WcfClientHelper.Execute(Of FulfillmentServiceClient, IFulfillmentService, BaseFulfillmentResponse)(
+                                GetClient(),
+                            New List(Of Object) From {New Headers.InteractiveUserHeader() With {.LanId = Authentication.CurrentUser.NetworkId}},
+                            Function(ByVal c As FulfillmentServiceClient)
+                                Return c.StartFulfillmentProcess(wsRequest)
+                            End Function)
+
+            End If
 
         Catch ex As Exception
             Throw
         End Try
-        If wsResponse IsNot Nothing Then
-            If wsResponse.GetType() Is GetType(BaseFulfillmentResponse) Then
-                Dim wsResponseList As BaseFulfillmentResponse = DirectCast(wsResponse, BaseFulfillmentResponse)
+        If wsResponseObject IsNot Nothing Then
+            If wsResponseObject.GetType() Is GetType(BaseFulfillmentResponse) Then
+                Dim wsResponseList As BaseFulfillmentResponse = DirectCast(wsResponseObject, BaseFulfillmentResponse)
                 If wsResponseList.ResponseStatus.Equals("Failure") Then
-                    'MasterPage.MessageController.MessageType.Error
                     Me.MasterPage.MessageController.AddError(wsResponseList.Error.ErrorCode & " - " & wsResponseList.Error.ErrorMessage, False)
+                    blnSuccess = False
+                End If
+            End If
+            If wsResponseObject.GetType() Is GetType(Assurant.ElitaPlus.ElitaPlusWebApp.ClaimFulfillmentWebAppGatewayService.BeginFulfillmentResponse) Then
+                Dim wsResponseList As Assurant.ElitaPlus.ElitaPlusWebApp.ClaimFulfillmentWebAppGatewayService.BeginFulfillmentResponse = DirectCast(wsResponseObject, Assurant.ElitaPlus.ElitaPlusWebApp.ClaimFulfillmentWebAppGatewayService.BeginFulfillmentResponse)
+                If IsNothing(wsResponseList.FulfillmentNumber) Or IsNothing(wsResponseList.CompanyCode) Then
+                    Me.MasterPage.MessageController.AddError(ElitaPlus.Common.ErrorCodes.GUI_CLAIM_FULFILLMENT_SERVICE_ERR, False)
                     blnSuccess = False
                 End If
             End If
