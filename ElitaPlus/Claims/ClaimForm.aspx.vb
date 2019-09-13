@@ -1928,12 +1928,9 @@ Partial Class ClaimForm
                     Me.PopulateControlFromBOProperty(Me.txtStoreName, logisticStage.HandlingStore.StoreName)
 
                     Dim storeTypeList As ListItem() = CommonConfigManager.Current.ListManager.GetList(Codes.HND_STORE_TYPE, Thread.CurrentPrincipal.GetLanguageCode())
-                    For Each item As ListItem In storeTypeList
-                        If (item.ExtendedCode = logisticStage.HandlingStore.StoreTypeXcd) Then
-                            Me.PopulateControlFromBOProperty(Me.txtStoreType, item.Translation)
-                            Exit For
-                        End If
-                    Next
+                    Dim storeTypeItem = storeTypeList.Where(
+                        Function(item) item.ExtendedCode = "HND_STR_TYPE-LOCKER").FirstOrDefault()
+                    Me.PopulateControlFromBOProperty(Me.txtStoreType, storeTypeItem.Translation)
 
                     If logisticStage.Shipping.TrackingNumber.ToString().Length > 0 Then
                             Dim PasscodeResponse = GetPasscode(logisticStage.Shipping.TrackingNumber.ToString())
