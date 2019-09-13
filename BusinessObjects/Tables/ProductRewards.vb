@@ -6,6 +6,8 @@
     Private Const PRODUCT_EQUIPMENT_FORM003 As String = "PRODUCT_EQUIPMENT_FORM003" ' Effective date can not be in the past or today
     Private Const PRODUCT_REWARDS_FORM002 As String = "PRODUCT_REWARDS_FORM002" ' Duplicate Record : Reward Type, Effective Date and Expiration Date Combination must be unique
     Private Const PRODUCT_REWARDS_FORM004 As String = "PRODUCT_REWARDS_FORM004" ' Overlap reccord
+    Private Const PRODUCT_REWARDS_FORM005 As String = "PRODUCT_REWARDS_FORM005" 'To Renewal must be greater than or equal to From Renewal
+    Private Const PRODUCT_REWARDS_FORM006 As String = "PRODUCT_REWARDS_FORM006" 'Overlapping not allowed for From Renewal and To Renewal
 #End Region
 
 #Region "Constructors"
@@ -249,6 +251,38 @@
         End Set
     End Property
 
+    <ValueMandatory(""), ValidNumericRange("", Min:=0, Max:=99), ValidateFromRenewal("")>
+    Public Property FromRenewal() As LongType
+        Get
+            CheckDeleted()
+            If Row(ProductRewardsDAL.COL_NAME_FROM_RENEWAL) Is DBNull.Value Then
+                Return Nothing
+            Else
+                Return CType(Row(ProductRewardsDAL.COL_NAME_FROM_RENEWAL), Long)
+            End If
+        End Get
+        Set(ByVal Value As LongType)
+            CheckDeleted()
+            Me.SetValue(ProductRewardsDAL.COL_NAME_FROM_RENEWAL, Value)
+        End Set
+    End Property
+
+    <ValueMandatory(""), ValidNumericRange("", Min:=0, Max:=99), ValidateToRenewal("")>
+    Public Property ToRenewal() As LongType
+        Get
+            CheckDeleted()
+            If Row(ProductRewardsDAL.COL_NAME_TO_RENEWAL) Is DBNull.Value Then
+                Return Nothing
+            Else
+                Return CType(Row(ProductRewardsDAL.COL_NAME_TO_RENEWAL), Long)
+            End If
+        End Get
+        Set(ByVal Value As LongType)
+            CheckDeleted()
+            Me.SetValue(ProductRewardsDAL.COL_NAME_TO_RENEWAL, Value)
+        End Set
+    End Property
+
 #End Region
 
 #Region "ProductRewardsSearchDV"
@@ -267,7 +301,8 @@
         Public Const COL_NAME_DAYS_TO_REDEEM As String = "days_to_redeem"
         Public Const COL_NAME_EFFECTIVE_DATE As String = "effective_date"
         Public Const COL_NAME_EXPIRATION_DATE As String = "expiration_date"
-
+        Public Const COL_NAME_FROM_RENEWAL As String = "from_renewal"
+        Public Const COL_NAME_TO_RENEWAL As String = "to_renewal"
 #End Region
 
         Public Sub New()
@@ -288,6 +323,8 @@
             row(ProductRewardsSearchDV.COL_NAME_REWARD_AMOUNT) = DBNull.Value
             row(ProductRewardsSearchDV.COL_NAME_MIN_PURCHASE_PRICE) = DBNull.Value
             row(ProductRewardsSearchDV.COL_NAME_DAYS_TO_REDEEM) = DBNull.Value
+            row(ProductRewardsSearchDV.COL_NAME_FROM_RENEWAL) = DBNull.Value
+            row(ProductRewardsSearchDV.COL_NAME_TO_RENEWAL) = DBNull.Value
             row(ProductRewardsSearchDV.COL_NAME_EFFECTIVE_DATE) = DBNull.Value
             row(ProductRewardsSearchDV.COL_NAME_EXPIRATION_DATE) = DBNull.Value
             dt.Rows.Add(row)
@@ -343,6 +380,15 @@
         Try
             Dim dal As New ProductRewardsDAL
             Return New DataView(dal.ValidateOverlap(ProductId, RewardType, EffectiveDate, ExpirationDate).Tables(0))
+        Catch ex As Assurant.ElitaPlus.DALObjects.DataBaseAccessException
+            Throw New DataBaseAccessException(ex.ErrorType, ex)
+        End Try
+    End Function
+
+    Private Function ValidateRenewalOverlap(ByVal ProductId As Guid, ByVal ProductRewardId As Guid) As DataView
+        Try
+            Dim dal As New ProductRewardsDAL
+            Return New DataView(dal.ValidateRenewalOverlap(ProductId, ProductRewardId).Tables(0))
         Catch ex As Assurant.ElitaPlus.DALObjects.DataBaseAccessException
             Throw New DataBaseAccessException(ex.ErrorType, ex)
         End Try
@@ -470,7 +516,7 @@
                     Dim ProductRewardsRows As DataRowCollection = oProductRewards.Table.Rows
                     Dim ProductRewardsRow As DataRow
 
-                    If ProductRewardsRows.Count >= 1 Then
+                    If ProductRewardsRows.Count > 1 Then
                         bValid = False
                     Else
                         'only one record for the combination
@@ -501,7 +547,7 @@
                     Dim ProductRewardsRows As DataRowCollection = oProductRewards.Table.Rows
                     Dim ProductRewardsRow As DataRow
 
-                    If ProductRewardsRows.Count >= 1 Then
+                    If ProductRewardsRows.Count > 1 Then
 
                         bValid = False
                     Else
@@ -515,6 +561,66 @@
         End Function
     End Class
 
+    <AttributeUsage(AttributeTargets.Property Or AttributeTargets.Field)>
+    Public NotInheritable Class ValidateToRenewal
+        Inherits ValidBaseAttribute
 
+        Public Sub New(ByVal fieldDisplayName As String)
+            MyBase.New(fieldDisplayName, PRODUCT_REWARDS_FORM005)
+        End Sub
+
+        Public Overrides Function IsValid(ByVal valueToCheck As Object, ByVal objectToValidate As Object) As Boolean
+            Dim obj As ProductRewards = CType(objectToValidate, ProductRewards)
+
+            Dim bValid As Boolean = True
+
+            If Not obj.FromRenewal Is Nothing And Not obj.ToRenewal Is Nothing Then
+                If obj.FromRenewal.Value > obj.ToRenewal.Value Then
+                    Me.Message = PRODUCT_REWARDS_FORM005
+                    bValid = False
+
+                End If
+            End If
+            Return bValid
+
+        End Function
+
+    End Class
+
+    <AttributeUsage(AttributeTargets.Property Or AttributeTargets.Field)>
+    Public NotInheritable Class ValidateFromRenewal
+        Inherits ValidBaseAttribute
+
+        Public Sub New(ByVal fieldDisplayName As String)
+            MyBase.New(fieldDisplayName, PRODUCT_REWARDS_FORM006)
+        End Sub
+
+        Public Overrides Function IsValid(ByVal valueToCheck As Object, ByVal objectToValidate As Object) As Boolean
+            Dim obj As ProductRewards = CType(objectToValidate, ProductRewards)
+
+            Dim bValid As Boolean = True
+            Dim oProductRewards As DataView = obj.ValidateRenewalOverlap(obj.ProductCodeId, obj.Id)
+            Dim ProductRewardsRows As DataRowCollection = oProductRewards.Table.Rows
+            Dim ProductRewardsRow As DataRow
+
+            If oProductRewards.Count = 1 And Not obj.FromRenewal Is Nothing Then
+                If oProductRewards.Item(0)(0).ToString = String.Empty Then
+                    bValid = True
+                Else
+                    If CType(oProductRewards.Item(0)(0), Long) >= obj.FromRenewal.Value Then
+                        bValid = False
+                    Else
+                        'No Overlap
+                        bValid = True
+                    End If
+                End If
+            Else
+                bValid = True
+            End If
+            Return bValid
+
+        End Function
+
+    End Class
 #End Region
 End Class

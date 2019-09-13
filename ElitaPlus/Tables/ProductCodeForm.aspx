@@ -996,6 +996,26 @@
                                     <asp:TextBox ID="txtDaysToRedeem" runat="server"></asp:TextBox>
                                 </EditItemTemplate>
                             </asp:TemplateField>
+                            <asp:TemplateField HeaderText="From_Renewal">
+                                <ItemStyle HorizontalAlign="Left"></ItemStyle>
+                                <ItemTemplate>
+                                    <asp:Label ID="lblFromRenewal" runat="server" Visible="True">
+                                    </asp:Label>
+                                </ItemTemplate>
+                                <EditItemTemplate>
+                                    <asp:TextBox ID="txtFromRenewal" runat="server"></asp:TextBox>
+                                </EditItemTemplate>
+                            </asp:TemplateField>
+                            <asp:TemplateField HeaderText="To_Renewal">
+                                <ItemStyle HorizontalAlign="Left"></ItemStyle>
+                                <ItemTemplate>
+                                    <asp:Label ID="lblToRenewal" runat="server" Visible="True">
+                                    </asp:Label>
+                                </ItemTemplate>
+                                <EditItemTemplate>
+                                    <asp:TextBox ID="txtToRenewal" runat="server"></asp:TextBox>
+                                </EditItemTemplate>
+                            </asp:TemplateField>
                             <asp:TemplateField Visible="True" HeaderText="Start_Date" ItemStyle-Wrap="false"
                                 ItemStyle-HorizontalAlign="Left">
                                 <ItemTemplate>
@@ -1003,7 +1023,7 @@
                                 </ItemTemplate>
                                 <EditItemTemplate>
                                     <asp:TextBox ID="txtStartDate" runat="server" Visible="True" SkinID="exSmallTextBox"></asp:TextBox>
-                                    <asp:ImageButton ID="btnStartDate" runat="server" ImageUrl="~/App_Themes/Default/Images/calendar.png"></asp:ImageButton>
+                                    <asp:ImageButton ID="btnStartDate" runat="server" align="AbsMiddle" ImageUrl="~/App_Themes/Default/Images/calendar.png"></asp:ImageButton>
                                 </EditItemTemplate>
                             </asp:TemplateField>
                             <asp:TemplateField Visible="True" HeaderText="End_Date" ItemStyle-Wrap="false"
@@ -1013,7 +1033,7 @@
                                 </ItemTemplate>
                                 <EditItemTemplate>
                                     <asp:TextBox ID="txtEndDate" runat="server" Visible="True" SkinID="exSmallTextBox"></asp:TextBox>
-                                    <asp:ImageButton ID="btnEndDate" runat="server" ImageUrl="~/App_Themes/Default/Images/calendar.png"></asp:ImageButton>
+                                    <asp:ImageButton ID="btnEndDate" runat="server" align="AbsMiddle" ImageUrl="~/App_Themes/Default/Images/calendar.png"></asp:ImageButton>
                                 </EditItemTemplate>
                             </asp:TemplateField>
                             <asp:TemplateField Visible="False" HeaderText="Prod_Reward_Id">
