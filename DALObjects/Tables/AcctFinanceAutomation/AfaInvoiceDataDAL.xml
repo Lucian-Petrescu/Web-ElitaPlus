@@ -98,9 +98,6 @@
     WHERE
     afa_invoice_data_id = :afa_invoice_data_id
   </DELETE>
-  <RERUN_INVOICE>
-    elita.ELP_AFA_GEN_INVOICE_DATA.ReRunInvoice
-  </RERUN_INVOICE>
 </SQL>
 
 

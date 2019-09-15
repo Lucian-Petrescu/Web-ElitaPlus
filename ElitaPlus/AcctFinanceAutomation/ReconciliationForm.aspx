@@ -204,7 +204,5 @@
    <div class="btnZone">
         <asp:Button ID="BtnOverRideRecon" runat="server" Text="OverRide_Recon" SkinID="AlternateLeftButton">
         </asp:Button>
-        <asp:Button ID="BtnReRunRecon" runat="server" Text="RERUN_RECON" SkinID="AlternateLeftButton">
-        </asp:Button>
    </div>
 </asp:Content>

@@ -99,7 +99,6 @@ Public Class ReconciliationForm
                 TranslateGridHeader(GridViewMHP)
                 TranslateGridHeader(GridViewBLGS)
                 BtnOverRideRecon.Enabled = False
-                ControlMgr.SetVisibleControl(Me, BtnReRunRecon, True)
                 divDataContainer.Visible = False
                 cboPageSize.SelectedValue = CType(Me.State.PageSize, String)
                 'cboResPageSize.SelectedValue = CType(Me.State.PageSize, String)
@@ -629,27 +628,6 @@ Public Class ReconciliationForm
                 Me.MasterPage.MessageController.AddSuccess(Message.MSG_RECON_OVERRIDEN_SUCCESSFULLY, True)
             Else
                 Me.MasterPage.MessageController.AddErrorAndShow(Message.MSG_COULD_NOT_OVERRIDE_RECON, True)
-            End If
-
-        Catch ex As Exception
-            Me.HandleErrors(ex, Me.MasterPage.MessageController)
-        End Try
-    End Sub
-
-    Private Sub BtnReRunRecon_Click(ByVal sender As Object, ByVal e As System.EventArgs) Handles BtnReRunRecon.Click
-        Dim Result As Boolean
-        Try
-            If Me.GetSelectedItem(ddlDealer) = Guid.Empty Then
-                Me.MasterPage.MessageController.AddInformation(Message.MSG_DEALER_REQUIRED)
-                Exit Sub
-            End If
-
-            Result = Reconciliation.ReloadReconcillation(Me.State.DealerIdInSearch, Me.State.firstDayOfMonth, ElitaPlusIdentity.Current.ActiveUser.UserName)
-
-            If Result Then
-                Me.MasterPage.MessageController.AddSuccess(Message.MSG_RECONCILLATION_REQUEUE_SUCCESS, True)
-            Else
-                Me.MasterPage.MessageController.AddErrorAndShow(Message.MSG_RECONCILLATION_REQUEUE_FAILED, True)
             End If
 
         Catch ex As Exception

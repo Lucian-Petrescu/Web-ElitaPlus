@@ -151,33 +151,6 @@ Public Class AfaInvoiceDataDAL
         End If
     End Sub
 
-
-    ' Execute Store Procedure
-    Public Function ReRunInvoice(ByVal dealerId As Guid, ByVal SelectedMonthYear As String, ByVal userName As String) As Boolean
-
-        Dim inputParameters(2) As DBHelper.DBHelperParameter
-        Dim selectStmt As String = Me.Config("/SQL/RERUN_INVOICE")
-
-        inputParameters(0) = New DBHelper.DBHelperParameter("pi_dealer_id", dealerId.ToByteArray)
-        inputParameters(1) = New DBHelper.DBHelperParameter("pi_billingMonthYear", SelectedMonthYear)
-        inputParameters(2) = New DBHelper.DBHelperParameter("pi_userName", userName)
-
-        Dim outputParameters() As DBHelper.DBHelperParameter = New DBHelper.DBHelperParameter() {
-                            New DBHelper.DBHelperParameter("po_Result", GetType(String))}
-
-        Try
-            ' Call DBHelper Store Procedure
-            DBHelper.ExecuteSp(selectStmt, inputParameters, outputParameters)
-            If CType(outputParameters(0).Value, String).Trim = "N" Then
-                Return False
-            ElseIf CType(outputParameters(0).Value, String).Trim = "Y" Then
-                Return True
-            End If
-
-        Catch ex As Exception
-            Throw New DataBaseAccessException(DataBaseAccessException.DatabaseAccessErrorType.ReadErr, ex)
-        End Try
-    End Function
 #End Region
 
 
