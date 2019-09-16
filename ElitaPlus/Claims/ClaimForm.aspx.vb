@@ -1899,7 +1899,8 @@ Partial Class ClaimForm
     Sub PopulateClaimFulfillmentDetails()
         Try
 
-            If Me.State.FulfillmentDetailsResponse.LogisticStages IsNot Nothing AndAlso
+            If Me.State.FulfillmentDetailsResponse IsNot Nothing AndAlso
+                Me.State.FulfillmentDetailsResponse.LogisticStages IsNot Nothing AndAlso
                 Me.State.FulfillmentDetailsResponse.LogisticStages.Length > 0 Then
 
                 Dim logisticStage = Me.State.FulfillmentDetailsResponse.LogisticStages.Where(Function(item) item.Code = Codes.FULFILLMENT_FW_LOGISTIC_STAGE).First()
