@@ -4005,18 +4005,11 @@ Partial Class ClaimForm
     End Sub
 
     Private Shared Function GetClaimFulfillmentWebAppGatewayClient() As WebAppGatewayClient
-        'Dim oWebPasswd As WebPasswd = New WebPasswd(Guid.Empty, LookupListNew.GetIdFromCode(Codes.SERVICE_TYPE, Codes.SERVICE_TYPE__CLAIM_FULFILLMENT_WEB_APP_GATEWAY_SERVICE), False)
-        'Dim client = New WebAppGatewayClient("CustomBinding_WebAppGateway", oWebPasswd.Url)
-        'client.ClientCredentials.UserName.UserName = oWebPasswd.UserId
-        'client.ClientCredentials.UserName.Password = oWebPasswd.Password
-        'Return client
-
-        'Dim oWebPasswd As WebPasswd = New WebPasswd(Guid.Empty, LookupListNew.GetIdFromCode(Codes.SERVICE_TYPE, Codes.SERVICE_TYPE__CLAIM_FULFILLMENT_WEB_APP_GATEWAY_SERVICE), False)
-        Dim client = New WebAppGatewayClient("CustomBinding_WebAppGateway", "http://l16mia0d8441fhf.cead.prd/ElitaClaimFulfillment/WebAppGateway/gateway")  'oWebPasswd.Url
-        client.ClientCredentials.UserName.UserName = "elita1"  'oWebPasswd.UserId
-        client.ClientCredentials.UserName.Password = "elita1"  ' oWebPasswd.Password
+        Dim oWebPasswd As WebPasswd = New WebPasswd(Guid.Empty, LookupListNew.GetIdFromCode(Codes.SERVICE_TYPE, Codes.SERVICE_TYPE__CLAIM_FULFILLMENT_WEB_APP_GATEWAY_SERVICE), False)
+        Dim client = New WebAppGatewayClient("CustomBinding_WebAppGateway", oWebPasswd.Url)
+        client.ClientCredentials.UserName.UserName = oWebPasswd.UserId
+        client.ClientCredentials.UserName.Password = oWebPasswd.Password
         Return client
-
     End Function
 
     Function GetPasscode(ByVal trackingNumber As String) As String
