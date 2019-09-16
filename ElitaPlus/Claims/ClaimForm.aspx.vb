@@ -1899,11 +1899,13 @@ Partial Class ClaimForm
     Sub PopulateClaimFulfillmentDetails()
         Try
 
-            If Me.State.FulfillmentDetailsResponse.LogisticStages.Length > 0 Then
+            If Me.State.FulfillmentDetailsResponse IsNot Nothing AndAlso
+                Me.State.FulfillmentDetailsResponse.LogisticStages IsNot Nothing AndAlso
+                Me.State.FulfillmentDetailsResponse.LogisticStages.Length > 0 Then
 
                 Dim logisticStage = Me.State.FulfillmentDetailsResponse.LogisticStages.Where(Function(item) item.Code = Codes.FULFILLMENT_FW_LOGISTIC_STAGE).First()
 
-                If Not logisticStage Is Nothing And logisticStage.Code = Codes.FULFILLMENT_FW_LOGISTIC_STAGE Then
+                If logisticStage IsNot Nothing AndAlso logisticStage.Code = Codes.FULFILLMENT_FW_LOGISTIC_STAGE Then
 
                     Me.PopulateControlFromBOProperty(Me.txtOptionDescription, logisticStage.OptionDescription)
                     Me.PopulateControlFromBOProperty(Me.txtExpectedDeliveryDate, logisticStage.Shipping.ExpectedDeliveryDate)
@@ -1932,14 +1934,15 @@ Partial Class ClaimForm
                         Function(item) item.ExtendedCode = logisticStage.HandlingStore.StoreTypeXcd).FirstOrDefault()
                     Me.PopulateControlFromBOProperty(Me.txtStoreType, storeTypeItem.Translation)
 
-                    If logisticStage.Shipping.TrackingNumber.ToString().Length > 0 Then
-                            Dim PasscodeResponse = GetPasscode(logisticStage.Shipping.TrackingNumber.ToString())
-                            Me.PopulateControlFromBOProperty(Me.txtPasscode, PasscodeResponse)
-                        Else
-                            Me.PopulateControlFromBOProperty(Me.txtPasscode, "")
-                        End If
+                    If logisticStage.Shipping.TrackingNumber IsNot Nothing AndAlso
+                        Not String.IsNullOrEmpty(logisticStage.Shipping.TrackingNumber.ToString()) Then
+                        Dim PasscodeResponse = GetPasscode(logisticStage.Shipping.TrackingNumber.ToString())
+                        Me.PopulateControlFromBOProperty(Me.txtPasscode, PasscodeResponse)
+                    Else
+                        Me.PopulateControlFromBOProperty(Me.txtPasscode, "")
                     End If
-                Else
+                End If
+            Else
                 ClearClaimFulfillmentDetails()
             End If
         Catch ex As Exception
@@ -3987,20 +3990,20 @@ Partial Class ClaimForm
                                                            Return c.GetFulfillmentDetails(wsRequest)
                                                        End Function)
 
+            If wsResponse IsNot Nothing Then
+                If wsResponse.GetType() Is GetType(FulfillmentDetails) Then
+                    Me.State.FulfillmentDetailsResponse = wsResponse
+                    PopulateClaimFulfillmentDetails()
+                End If
+            End If
+
         Catch ex As Exception
             ClearClaimFulfillmentDetails()
         End Try
 
-        If wsResponse IsNot Nothing Then
-            If wsResponse.GetType() Is GetType(FulfillmentDetails) Then
-                Me.State.FulfillmentDetailsResponse = wsResponse
-                PopulateClaimFulfillmentDetails()
-            End If
-        End If
+
 
     End Sub
-
-
 
     Private Shared Function GetClaimFulfillmentWebAppGatewayClient() As WebAppGatewayClient
         Dim oWebPasswd As WebPasswd = New WebPasswd(Guid.Empty, LookupListNew.GetIdFromCode(Codes.SERVICE_TYPE, Codes.SERVICE_TYPE__CLAIM_FULFILLMENT_WEB_APP_GATEWAY_SERVICE), False)
