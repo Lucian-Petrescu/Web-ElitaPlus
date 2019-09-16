@@ -76,10 +76,6 @@
    <OVERRIDE_RECON>
     elita.elp_afa_reconcile.OverRideReconciliation
   </OVERRIDE_RECON>
-  <RELOAD_RECON>
-    elita.elp_afa_reconcile.ReRunReconciliation
-  </RELOAD_RECON>
-  
   <UPDATE>
     <![CDATA[	
 			UPDATE elp_afa_enroll_recon_discrep SET
