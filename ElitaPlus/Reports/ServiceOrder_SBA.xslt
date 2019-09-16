@@ -28,28 +28,7 @@
         </style>
       </head>
       <xsl:variable name="vDealer" select="a:ServiceOrderReport/a:ServiceOrder/a:DEALER_NAME" />
-      <xsl:variable name="isDealer0009">
-        <xsl:choose>
-          <xsl:when test="contains(vDealer, '(0009)')">1</xsl:when>
-          <xsl:when test="contains(vDealer, '(0010)')">1</xsl:when>
-          <xsl:otherwise>0</xsl:otherwise>
-      </xsl:choose>
-      </xsl:variable>
       <body>
-        <div style="position:absolute;top:10;left:0;z-index:900;">
-          <xsl:element name="img">
-            <xsl:attribute name="src">
-              <xsl:choose>
-                <xsl:when test="a:ServiceOrderReport/a:ServiceOrder/a:IMAGE_PATH">
-                  <xsl:value-of select='concat(a:ServiceOrderReport/a:ServiceOrder/a:IMAGE_PATH,"assurant_logo_aba.jpg")'/>
-                </xsl:when>
-                <xsl:otherwise>
-                  <xsl:text>http://w1.assurant.com/elitalogos/assurant_logo_aba.jpg</xsl:text>
-                </xsl:otherwise>
-              </xsl:choose>
-            </xsl:attribute>
-          </xsl:element>
-        </div>
         <table cellpadding="0" cellspacing="0" border="0" style="PADDING-RIGHT:25px;PADDING-LEFT:25px;width:100%;z-index:1000">
           <tr>
             <td>
@@ -58,7 +37,7 @@
                   <td>
                     <TABLE id="Table1" cellSpacing="0" cellPadding="0" width="100%" border="0">
                       <xsl:choose>
-                        <xsl:when test="isDealer0009 = '1'">
+                        <xsl:when test="contains($vDealer,'(0009)')">
                           <tr>
                             <td>
                               <xsl:element name="img">
@@ -74,13 +53,50 @@
                                 </xsl:attribute>
                               </xsl:element>
                             </td>
-                            <td id="title" colspan="2" style="vertical-align:middle">
+                            <td id="title" colspan="1" style="vertical-align:middle">
+                              ORDEN DE SERVICIO
+                            </td>
+                          </tr>
+                        </xsl:when>
+                        <xsl:when test="contains($vDealer,'(0010)')">
+                          <tr>
+                            <td>
+                              <xsl:element name="img">
+                                <xsl:attribute name="src">
+                                  <xsl:choose>
+                                    <xsl:when test="a:ServiceOrderReport/a:ServiceOrder/a:IMAGE_PATH">
+                                      <xsl:value-of select='concat(a:ServiceOrderReport/a:ServiceOrder/a:IMAGE_PATH,"assurant_logo_aba.jpg")'/>
+                                    </xsl:when>
+                                    <xsl:otherwise>
+                                      <xsl:text>http://w1.assurant.com/elitalogos/assurant_logo_aba.jpg</xsl:text>
+                                    </xsl:otherwise>
+                                  </xsl:choose>
+                                </xsl:attribute>
+                              </xsl:element>
+                            </td>
+                            <td id="title" colspan="1" style="vertical-align:middle">
                               ORDEN DE SERVICIO
                             </td>
                           </tr>
                         </xsl:when>
                         <xsl:otherwise>
                           <tr>
+                            <td>
+                              <div style="position:absolute;top:10;left:0;z-index:900;">
+                                <xsl:element name="img">
+                                  <xsl:attribute name="src">
+                                    <xsl:choose>
+                                      <xsl:when test="a:ServiceOrderReport/a:ServiceOrder/a:IMAGE_PATH">
+                                        <xsl:value-of select='concat(a:ServiceOrderReport/a:ServiceOrder/a:IMAGE_PATH,"assurant_logo_aba.jpg")'/>
+                                      </xsl:when>
+                                      <xsl:otherwise>
+                                        <xsl:text>http://w1.assurant.com/elitalogos/assurant_logo_aba.jpg</xsl:text>
+                                      </xsl:otherwise>
+                                    </xsl:choose>
+                                  </xsl:attribute>
+                                </xsl:element>
+                              </div>
+                            </td>
                             <td colspan="3" id="title" style="text-align:center;">
                               REPARACION
                             </td>
