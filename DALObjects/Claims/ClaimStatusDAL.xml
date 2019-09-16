@@ -159,7 +159,7 @@
               sgroup.list_item_id,
               sgroup.group_number,
               'Y' Enabled,
-              code
+              item.code
       from elp_claim_status status
 	      join elp_claim_status_by_group sgroup on status.claim_status_by_group_id = sgroup.claim_status_by_group_id
 	      join elp_list_item item on item.list_item_id = sgroup.list_item_id
