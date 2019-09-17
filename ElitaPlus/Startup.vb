@@ -93,9 +93,10 @@ Public Class Startup
                             If (String.Equals(n.ProtocolMessage.Error, "access_denied", StringComparison.Ordinal)) Then
                                 n.HandleResponse()
 
-                                Dim sLoginMessage As String = TranslationBase.TranslateLabelOrMessage(ELPWebConstants.UI_INVALID_LOGIN_ERR_MSG, TranslationBase.Get_EnglishLanguageID)
-                                HttpContext.Current.Session(ELPWebConstants.SESSION_LOGIN_ERROR_MESSAGE) = sLoginMessage
-
+                                'Dim sLoginMessage As String = TranslationBase.TranslateLabelOrMessage(ELPWebConstants.UI_INVALID_LOGIN_ERR_MSG, TranslationBase.Get_EnglishLanguageID)
+                                'This case should happen only if inside the Okta configuration (which is done by the Assurant Okta team), the user is not expected to be able to use the Elita application.
+                                'So even if the user is existing in Elita and has rights, it won't work unless this user has the right to use Elita from the Okta side.
+                                HttpContext.Current.Session(ELPWebConstants.SESSION_LOGIN_ERROR_MESSAGE) = "Authentication failed, please see with your administrator to get access through Okta."
                                 n.Response.Redirect(postLogoutRedirectUri)
                             End If
 
