@@ -44,7 +44,24 @@ namespace Assurant.ElitaPlus.External.Falabella
                      precioProducto = request.AuthorizedAmount
                 }
             };
+            Logger.AddInfo("OrdenTrabajoEstadoModificarOp WorkOrderNumber " + request.WorkOrderNumber);
+            Logger.AddInfo("OrdenTrabajoEstadoModificarOp ClaimStatus " + (request.ClaimStatus == "D" ? ordenDeTrabajo_TYPEEstadoOrdenTrabajo.Anulada : ordenDeTrabajo_TYPEEstadoOrdenTrabajo.ReemplazoAutorizado));
+            Logger.AddInfo("OrdenTrabajoEstadoModificarOp StatusChangeDate " + request.StatusChangeDate.ToString());
+            Logger.AddInfo("OrdenTrabajoEstadoModificarOp ClaimStatus " + (request.ClaimStatus == "D" ? request.DenialReason : string.Empty));
+            Logger.AddInfo("OrdenTrabajoEstadoModificarOp ClaimNumber " + request.ClaimNumber);
 
+
+
+            reference.ClientService = new ClientService_TYPE
+            {
+                country = Country_TYPE.CL,
+                commerce = Commerce_TYPE.Falabella,
+                channel = Channel_TYPE.Cardif,
+                date = DateTime.Now,
+                hour = DateTime.Now,
+                dateSpecified = true,
+                hourSpecified = true
+            };
 
             var output = reference.OrdenTrabajoEstadoModificarOp(input);
 
