@@ -450,22 +450,25 @@ Public Class CaseBase
                     Dim errors() As ValidationError = {New ValidationError(TranslationBase.TranslateLabelOrMessage("CASE_OPEN_DATE_FROM") & " : " & TranslationBase.TranslateLabelOrMessage("CASE_OPEN_DATE_RANGE_ERR"), GetType(CaseBase), Nothing, "Case Open Date", Nothing)}
                     Throw New BOValidationException(errors, GetType(CaseBase).FullName)
                 End If
-                fromdate = DateTime.Parse(caseOpenDateFrom.ToString(),
+
+                If (CultureInfo.CurrentCulture.Name.Equals("ja-JP")) Then
+                    fromdate = Common.DateHelper.convertDateFrmt(caseOpenDateFrom)
+                    todate = Common.DateHelper.convertDateFrmt(caseOpenDateTo)
+                Else
+                    fromdate = DateTime.Parse(caseOpenDateFrom.ToString(),
                                           Thread.CurrentThread.CurrentCulture,
                                           DateTimeStyles.NoCurrentDateDefault)
 
-                todate = DateTime.Parse(caseOpenDateTo.ToString(),
+                    todate = DateTime.Parse(caseOpenDateTo.ToString(),
                                         Thread.CurrentThread.CurrentCulture,
                                         DateTimeStyles.NoCurrentDateDefault)
+                End If
             End If
-
-
             Return New CaseSearchDv(dal.LoadCaseList(companyId, caseNumber, caseStatus, callerFirstName, callerLastName, fromdate, todate, casePurpose, certificateNumber, caseClosedReason, languageId, networkId).Tables(0))
         Catch ex As DataBaseAccessException
             Throw New DataBaseAccessException(ex.ErrorType, ex)
         End Try
     End Function
-
     Public Shared Function GetAgentList(ByVal companyId As Guid, ByVal dealerId As Guid, ByVal customerFirstName As String, ByVal customerLastName As String,
                                         ByVal caseNumber As String, ByVal claimNumber As String, ByVal certificateNumber As String,
                                         ByVal serialNumber As String, ByVal invoiceNumber As String, ByVal phoneNumber As String, ByVal zipcode As String,
