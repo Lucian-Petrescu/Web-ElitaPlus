@@ -994,7 +994,7 @@ Namespace Tables
                     End If
                 End If
 
-                If TheCoverage.DealerMarkupId = LookupListNew.GetIdFromCode(LookupListNew.LK_YESNO, YES) Then
+                If Not IsNothing(TheCoverage.DealerMarkupId) AndAlso TheCoverage.DealerMarkupId = LookupListNew.GetIdFromCode(LookupListNew.LK_YESNO, YES) Then
                     If Not selectedTaxType.Equals(Guid.Empty.ToString) And Not selectedTaxType.Equals(POS_TAX_TYPE_XCD) Then
                         Throw New GUIException(Message.MSG_ERR_WHEN_DEALER_MARKUP_ALLOWED_TAX_TYPE_SHOULD_BE_EMPTY_OR_POS, Assurant.ElitaPlus.Common.ErrorCodes.INVALID_TAX_TYPE_FOR_DEALER)
                     End If

@@ -59,7 +59,7 @@
                 and item.RISK_TYPE_ID = risk.RISK_TYPE_ID
                 and coverage_id = :coverage_id
                 and edealer.dealer_id = cn.dealer_id
-                and cn.effective = cov.effective
+                and cov.effective   between cn.effective and cn.expiration
                
 		]]>
 	</LOAD>
