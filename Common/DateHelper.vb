@@ -23,7 +23,7 @@ Public NotInheritable Class DateHelper
             Else
                 If Thread.CurrentThread.CurrentCulture.ToString() = "ja-JP" Then
                     strChkDateFormat = convertDateFrmt(inputDate)
-                    dt = strChkDateFormat
+                    dt = Date.Parse(strChkDateFormat)
                 Else
                     strChkDateFormat = DATE_FORMAT
                     dt = Date.Parse(inputDate)
@@ -35,6 +35,7 @@ Public NotInheritable Class DateHelper
         End Try
         Return dt
     End Function
+
     Public Shared Function convertDateFrmt(txtDate As String) As String
         If Not (String.IsNullOrEmpty(txtDate)) Then
             If (CultureInfo.CurrentCulture.Name.Equals("ja-JP")) Then
@@ -46,6 +47,7 @@ Public NotInheritable Class DateHelper
         End If
         Return txtDate
     End Function
+
     Public Shared Function GetDateInMonddyyyy(ByVal inputDate As String) As DateTime
         Dim strChkDateFormat As String = String.Empty
         Dim dt As DateTime
