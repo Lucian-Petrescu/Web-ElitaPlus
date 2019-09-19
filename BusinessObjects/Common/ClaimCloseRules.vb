@@ -148,19 +148,33 @@ Public Class ClaimCloseRules
         End Set
     End Property
 
-    <ValueMandatory("")> _
     Public Property ClaimStatusByGroupId() As Guid
         Get
             CheckDeleted()
-            If row(ClaimCloseRulesDAL.COL_NAME_CLAIM_STATUS_BY_GROUP_ID) Is DBNull.Value Then
+            If Row(ClaimCloseRulesDAL.COL_NAME_CLAIM_STATUS_BY_GROUP_ID) Is DBNull.Value Then
                 Return Nothing
             Else
-                Return New Guid(CType(row(ClaimCloseRulesDAL.COL_NAME_CLAIM_STATUS_BY_GROUP_ID), Byte()))
+                Return New Guid(CType(Row(ClaimCloseRulesDAL.COL_NAME_CLAIM_STATUS_BY_GROUP_ID), Byte()))
             End If
         End Get
         Set(ByVal Value As Guid)
             CheckDeleted()
             Me.SetValue(ClaimCloseRulesDAL.COL_NAME_CLAIM_STATUS_BY_GROUP_ID, Value)
+        End Set
+    End Property
+
+    Public Property ClaimIssueId() As Guid
+        Get
+            CheckDeleted()
+            If Row(ClaimCloseRulesDAL.COL_NAME_CLAIM_ISSUE_ID) Is DBNull.Value Then
+                Return Nothing
+            Else
+                Return New Guid(CType(Row(ClaimCloseRulesDAL.COL_NAME_CLAIM_ISSUE_ID), Byte()))
+            End If
+        End Get
+        Set(ByVal Value As Guid)
+            CheckDeleted()
+            Me.SetValue(ClaimCloseRulesDAL.COL_NAME_CLAIM_ISSUE_ID, Value)
         End Set
     End Property
 
@@ -271,9 +285,9 @@ Public Class ClaimCloseRules
     End Function
 
     'Def-25716: Added function to validate if the claim close rules is already exists.
-    Public Shared Function ValidateClaimCloseRule(ByVal companyId As Guid, ByVal dealerId As Guid, ByVal closeRuleBasedOnId As Guid, ByVal claimStatusByGroupId As Guid, ByVal entityType As String) As Integer
+    Public Shared Function ValidateClaimCloseRule(ByVal companyId As Guid, ByVal dealerId As Guid, ByVal closeRuleBasedOnId As Guid, ByVal claimStatusByGroupId As Guid, ByVal entityType As String, ByVal claimIssueId As Guid) As Integer
         Dim claimcloseRulesDAL As New ClaimCloseRulesDAL
-        Return claimcloseRulesDAL.ValidateClaimRule(companyId, dealerId, closeRuleBasedOnId, claimStatusByGroupId, entityType)
+        Return claimcloseRulesDAL.ValidateClaimRule(companyId, dealerId, closeRuleBasedOnId, claimStatusByGroupId, entityType, claimIssueId)
 
     End Function
     Public Shared Function CopyClaimCloseRulesToNewCompany(ByVal OldcompanyId As Guid, ByVal NewCompanyId As Guid) As Integer
@@ -305,6 +319,8 @@ Public Class ClaimCloseRules
         Public Const COL_CLOSE_RULE_BASED_ON As String = "close_rule_based_on"
         Public Const COL_CLAIM_STATUS_BY_GROUP_ID As String = "claim_status_by_group_id"
         Public Const COL_CLAIM_STATUS_BY_GROUP As String = "claim_status_by_group"
+        Public Const COL_CLAIM_ISSUE_ID As String = "claim_issue_id"
+        Public Const COL_CLAIM_ISSUE As String = "claim_issue"
         Public Const COL_TIME_PERIOD As String = "time_period"
         Public Const COL_REASON_CLOSED_ID As String = "reason_closed_id"
         Public Const COL_REASON_CLOSED As String = "reason_closed"
@@ -339,6 +355,8 @@ Public Class ClaimCloseRules
                 dt.Columns.Add(CloseClaimRulesDV.COL_CLOSE_RULE_BASED_ON, GetType(String))
                 dt.Columns.Add(CloseClaimRulesDV.COL_CLAIM_STATUS_BY_GROUP_ID, guidTemp.ToByteArray.GetType)
                 dt.Columns.Add(CloseClaimRulesDV.COL_CLAIM_STATUS_BY_GROUP, GetType(String))
+                dt.Columns.Add(CloseClaimRulesDV.COL_CLAIM_ISSUE_ID, guidTemp.ToByteArray.GetType)
+                dt.Columns.Add(CloseClaimRulesDV.COL_CLAIM_ISSUE, GetType(String))
                 dt.Columns.Add(CloseClaimRulesDV.COL_TIME_PERIOD, GetType(String))
                 dt.Columns.Add(CloseClaimRulesDV.COL_REASON_CLOSED_ID, guidTemp.ToByteArray.GetType)
                 dt.Columns.Add(CloseClaimRulesDV.COL_REASON_CLOSED, GetType(String))
@@ -354,6 +372,7 @@ Public Class ClaimCloseRules
             row(CloseClaimRulesDV.COL_DEALER_ID) = NewBO.DealerId.ToByteArray
             row(CloseClaimRulesDV.COL_CLOSE_RULE_BASED_ON_ID) = NewBO.CloseRuleBasedOnId.ToByteArray
             row(CloseClaimRulesDV.COL_CLAIM_STATUS_BY_GROUP_ID) = NewBO.ClaimStatusByGroupId.ToByteArray
+            row(CloseClaimRulesDV.COL_CLAIM_ISSUE_ID) = NewBO.ClaimIssueId.ToByteArray
             row(CloseClaimRulesDV.COL_REASON_CLOSED_ID) = NewBO.ReasonClosedId.ToByteArray
             row(CloseClaimRulesDV.COL_PARENT_CLAIM_CLOSE_RULE_ID) = NewBO.ParentClaimCloseRuleId.ToByteArray
 
@@ -382,6 +401,9 @@ Public Class ClaimCloseRules
 
             row(CloseClaimRulesDV.COL_CLAIM_STATUS_BY_GROUP_ID) = Guid.NewGuid.ToByteArray
             row.Item(CloseClaimRulesDV.COL_CLAIM_STATUS_BY_GROUP) = String.Empty
+
+            row(CloseClaimRulesDV.COL_CLAIM_ISSUE_ID) = Guid.NewGuid.ToByteArray
+            row.Item(CloseClaimRulesDV.COL_CLAIM_ISSUE) = String.Empty
 
             row(CloseClaimRulesDV.COL_TIME_PERIOD) = 0D
 

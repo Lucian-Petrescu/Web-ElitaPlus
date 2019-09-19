@@ -13,8 +13,9 @@ Public Class ClaimCloseRulesDAL
 	Public Const COL_NAME_COMPANY_ID As String = "company_id"
     Public Const COL_NAME_DEALER_ID As String = "dealer_id"
     Public Const COL_NAME_CLOSE_RULE_BASED_ON_ID As String = "close_rule_based_on_id"
-	Public Const COL_NAME_CLAIM_STATUS_BY_GROUP_ID As String = "claim_status_by_group_id"
-	Public Const COL_NAME_TIME_PERIOD As String = "time_period"
+    Public Const COL_NAME_CLAIM_STATUS_BY_GROUP_ID As String = "claim_status_by_group_id"
+    Public Const COL_NAME_CLAIM_ISSUE_ID As String = "claim_issue_id"
+    Public Const COL_NAME_TIME_PERIOD As String = "time_period"
     Public Const COL_NAME_REASON_CLOSED_ID As String = "reason_closed_id"
     Public Const COL_NAME_PARENT_CLAIM_CLOSE_RULE_ID As String = "parent_claim_close_rule_id"
     Public Const COL_NAME_ACTIVE_FLAG As String = "active_flag"
@@ -133,24 +134,26 @@ Public Class ClaimCloseRulesDAL
     End Function
 
     'Def-25716: Added function to validate if the claim close rules is already exists.
-    Public Function ValidateClaimRule(ByVal companyId As Guid, ByVal dealerId As Guid, ByVal closeRuleBasedOnId As Guid, ByVal claimStatusByGroupId As Guid, ByVal entityType As String) As Integer
+    Public Function ValidateClaimRule(ByVal companyId As Guid, ByVal dealerId As Guid, ByVal closeRuleBasedOnId As Guid, ByVal claimStatusByGroupId As Guid, ByVal entityType As String, claimIssueId As Guid) As Integer
         Try
             Dim selectStmt As String
 
             Dim parameters() As DBHelper.DBHelperParameter
             If entityType = "Dealer" Then
                 selectStmt = Me.Config("/SQL/VALIDATE_DEALER_CLAIM_CLOSE_RULES")
-                parameters = New DBHelper.DBHelperParameter() {New DBHelper.DBHelperParameter(Me.COL_NAME_COMPANY_ID, companyId.ToByteArray), _
-                                                New DBHelper.DBHelperParameter(Me.COL_NAME_DEALER_ID, dealerId.ToByteArray), _
-                                                New DBHelper.DBHelperParameter(Me.COL_NAME_CLAIM_STATUS_BY_GROUP_ID, claimStatusByGroupId.ToByteArray), _
-                                                New DBHelper.DBHelperParameter(Me.COL_NAME_CLOSE_RULE_BASED_ON_ID, closeRuleBasedOnId.ToByteArray)}
+                parameters = New DBHelper.DBHelperParameter() {New DBHelper.DBHelperParameter(Me.COL_NAME_COMPANY_ID, companyId.ToByteArray),
+                                                New DBHelper.DBHelperParameter(Me.COL_NAME_DEALER_ID, dealerId.ToByteArray),
+                                                New DBHelper.DBHelperParameter(Me.COL_NAME_CLAIM_STATUS_BY_GROUP_ID, claimStatusByGroupId.ToByteArray),
+                                                New DBHelper.DBHelperParameter(Me.COL_NAME_CLOSE_RULE_BASED_ON_ID, closeRuleBasedOnId.ToByteArray),
+                                                New DBHelper.DBHelperParameter(Me.COL_NAME_CLAIM_ISSUE_ID, claimIssueId.ToByteArray)}
             End If
 
             If entityType = "Company" Then
                 selectStmt = Me.Config("/SQL/VALIDATE_COMPANY_CLAIM_CLOSE_RULES")
-                parameters = New DBHelper.DBHelperParameter() {New DBHelper.DBHelperParameter(Me.COL_NAME_COMPANY_ID, companyId.ToByteArray), _
-                                                New DBHelper.DBHelperParameter(Me.COL_NAME_CLAIM_STATUS_BY_GROUP_ID, claimStatusByGroupId.ToByteArray), _
-                                                New DBHelper.DBHelperParameter(Me.COL_NAME_CLOSE_RULE_BASED_ON_ID, closeRuleBasedOnId.ToByteArray)}
+                parameters = New DBHelper.DBHelperParameter() {New DBHelper.DBHelperParameter(Me.COL_NAME_COMPANY_ID, companyId.ToByteArray),
+                                                New DBHelper.DBHelperParameter(Me.COL_NAME_CLAIM_STATUS_BY_GROUP_ID, claimStatusByGroupId.ToByteArray),
+                                                New DBHelper.DBHelperParameter(Me.COL_NAME_CLOSE_RULE_BASED_ON_ID, closeRuleBasedOnId.ToByteArray),
+                                                New DBHelper.DBHelperParameter(Me.COL_NAME_CLAIM_ISSUE_ID, claimIssueId.ToByteArray)}
             End If
 
 
