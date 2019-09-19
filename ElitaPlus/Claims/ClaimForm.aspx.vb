@@ -40,6 +40,7 @@ Partial Class ClaimForm
     Public Const SELECT_ACTION_COMMAND As String = "SelectAction"
     Public Const GRID_COL_SERVICE_CENTER_NAME_IDX As Integer = 1
     Public Const GRID_COL_AMOUNT_IDX As Integer = 2
+    Public Const GRID_COL_CREATED_DATE As Integer = 3
     Public Const GRID_COL_STATUS_CODE_IDX As Integer = 4
     Public params As New ArrayList
 
@@ -1924,8 +1925,8 @@ Partial Class ClaimForm
                     Me.PopulateControlFromBOProperty(Me.txtStoreType, logisticStage.HandlingStore.StoreTypeXcd)
 
                     If logisticStage.Shipping.TrackingNumber.ToString().Length > 0 Then
-                        Dim PasscodeResponse = GetPasscode(logisticStage.Shipping.TrackingNumber.ToString())
-                        Me.PopulateControlFromBOProperty(Me.txtPasscode, PasscodeResponse)
+                        'Dim PasscodeResponse = GetPasscode(logisticStage.Shipping.TrackingNumber.ToString())
+                        Me.PopulateControlFromBOProperty(Me.txtPasscode, "")
                     Else
                         Me.PopulateControlFromBOProperty(Me.txtPasscode, "")
                     End If
@@ -3842,8 +3843,11 @@ Partial Class ClaimForm
                 End If
 
                 ' Convert short status codes to full description with css
-                e.Row.Cells(Me.GRID_COL_STATUS_CODE_IDX).Text = LookupListNew.GetDescriptionFromCode(Codes.CLAIM_AUTHORIZATION_STATUS, claimAuth.ClaimAuthorizationStatusCode)
-                e.Row.Cells(Me.GRID_COL_AMOUNT_IDX).Text = Me.GetAmountFormattedString(claimAuth.AuthorizedAmount.Value)
+                e.Row.Cells(GRID_COL_STATUS_CODE_IDX).Text = LookupListNew.GetDescriptionFromCode(Codes.CLAIM_AUTHORIZATION_STATUS, claimAuth.ClaimAuthorizationStatusCode)
+                e.Row.Cells(GRID_COL_AMOUNT_IDX).Text = GetAmountFormattedString(claimAuth.AuthorizedAmount.Value)
+                'Sridhar Added Removed Me from above
+                e.Row.Cells(GRID_COL_CREATED_DATE).Text = GetLongDate12FormattedString(claimAuth.CreatedDateTime.Value)
+
             End If
         Catch ex As Exception
             Me.HandleErrors(ex, Me.MasterPage.MessageController)
@@ -4001,43 +4005,43 @@ Partial Class ClaimForm
         Return client
     End Function
 
-    Function GetPasscode(ByVal trackingNumber As String) As String
-        Try
-            If trackingNumber.Length > 0 Then
-                Dim oServiceClient As RestClient
-                Dim oServiceRequest As RestRequest
-                Dim oServiceResponse As IRestResponse
-                Dim jsnResult
-                Dim oWebPasswd As WebPasswd = New WebPasswd(Guid.Empty, LookupListNew.GetIdFromCode(Codes.SERVICE_TYPE, Codes.SERVICE_TYPE__WEB_API_LOCKER_PASSCODE), False)
+    'Function GetPasscode(ByVal trackingNumber As String) As String
+    '    Try
+    '        If trackingNumber.Length > 0 Then
+    '            Dim oServiceClient As RestClient
+    '            Dim oServiceRequest As RestRequest
+    '            Dim oServiceResponse As IRestResponse
+    '            Dim jsnResult
+    '            Dim oWebPasswd As WebPasswd = New WebPasswd(Guid.Empty, LookupListNew.GetIdFromCode(Codes.SERVICE_TYPE, Codes.SERVICE_TYPE__WEB_API_LOCKER_PASSCODE), False)
 
-                oServiceClient = New RestClient(oWebPasswd.Url)
-                oServiceRequest = New RestRequest(Method.POST)
+    '            oServiceClient = New RestClient(oWebPasswd.Url)
+    '            oServiceRequest = New RestRequest(Method.POST)
 
-                oServiceRequest.AddHeader(oWebPasswd.UserId, oWebPasswd.Password)
-                oServiceRequest.AddHeader("Content-type", "application/json")
-                'oServiceRequest.Resource = "api/PolicyEnroll"
-                oServiceRequest.RequestFormat = DataFormat.Json
-                oServiceRequest.AddJsonBody(New With {Key .trackingNumber = trackingNumber})
+    '            oServiceRequest.AddHeader(oWebPasswd.UserId, oWebPasswd.Password)
+    '            oServiceRequest.AddHeader("Content-type", "application/json")
+    '            'oServiceRequest.Resource = "api/PolicyEnroll"
+    '            oServiceRequest.RequestFormat = DataFormat.Json
+    '            oServiceRequest.AddJsonBody(New With {Key .trackingNumber = trackingNumber})
 
-                ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12 Or
-                SecurityProtocolType.Tls11 Or SecurityProtocolType.Tls Or SecurityProtocolType.Ssl3
+    '            ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12 Or
+    '            SecurityProtocolType.Tls11 Or SecurityProtocolType.Tls Or SecurityProtocolType.Ssl3
 
-                oServiceResponse = oServiceClient.Execute(oServiceRequest)
-                jsnResult = JsonConvert.DeserializeObject(Of Dictionary(Of String, Object))(oServiceResponse.Content)
-                If jsnResult IsNot Nothing Then
-                    Return jsnResult.Item("passcode").ToString()
-                Else
-                    Return ""
-                End If
-            Else
-                Return ""
+    '            oServiceResponse = oServiceClient.Execute(oServiceRequest)
+    '            jsnResult = JsonConvert.DeserializeObject(Of Dictionary(Of String, Object))(oServiceResponse.Content)
+    '            If jsnResult IsNot Nothing Then
+    '                Return jsnResult.Item("passcode").ToString()
+    '            Else
+    '                Return ""
+    '            End If
+    '        Else
+    '            Return ""
 
-            End If
-        Catch ex As Exception
-            Return ""
-        End Try
+    '        End If
+    '    Catch ex As Exception
+    '        Return ""
+    '    End Try
 
-    End Function
+    'End Function
 
 
 #End Region

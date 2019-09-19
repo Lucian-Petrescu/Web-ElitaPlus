@@ -281,22 +281,26 @@ Public Class FieldSearchCriteriaControl
                 Case DataTypeEnum.Date
                     With DirectCast(value, SearchCriteriaStructType(Of Date))
                         If (.FromValue.HasValue) Then
-                            Me.FromValue = .FromValue.Value.ToString(Me.ParentPage.DATE_FORMAT)
+                            'Sridhar Me.FromValue = .FromValue.Value.ToString(Me.ParentPage.DATE_FORMAT)
+                            Me.FromValue = ElitaPlusPage.GetDateFormattedString(.FromValue.Value)
                         End If
                         If (Me.SearchType = SearchTypeEnum.Between) Then
                             If (.ToValue.HasValue) Then
-                                Me.ToValue = .ToValue.Value.ToString(Me.ParentPage.DATE_FORMAT)
+                                'Sridhar Me.ToValue = .ToValue.Value.ToString(Me.ParentPage.DATE_FORMAT)
+                                Me.ToValue = ElitaPlusPage.GetDateFormattedString(.ToValue.Value)
                             End If
                         End If
                     End With
                 Case DataTypeEnum.DateTime
                     With DirectCast(value, SearchCriteriaStructType(Of Date))
                         If (.FromValue.HasValue) Then
-                            Me.FromValue = .FromValue.Value.ToString(Me.ParentPage.DATE_TIME_FORMAT_12)
+                            'Sridhar Me.FromValue = .FromValue.Value.ToString(Me.ParentPage.DATE_TIME_FORMAT_12)
+                            Me.FromValue = ElitaPlusPage.GetLongDate12FormattedString(.FromValue.Value)
                         End If
                         If (Me.SearchType = SearchTypeEnum.Between) Then
                             If (.ToValue.HasValue) Then
-                                Me.ToValue = .ToValue.Value.ToString(Me.ParentPage.DATE_TIME_FORMAT_12)
+                                'Sridhar Me.ToValue = .ToValue.Value.ToString(Me.ParentPage.DATE_TIME_FORMAT_12)
+                                Me.ToValue = ElitaPlusPage.GetLongDate12FormattedString(.ToValue.Value)
                             End If
                         End If
                     End With

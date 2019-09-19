@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ReferenceGroup xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" ID="daffa640-a76b-4664-965c-797fc1b6a434" xmlns="urn:schemas-microsoft-com:xml-wcfservicemap">
+<ReferenceGroup xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" ID="b054733d-1be8-4e00-a938-60fa38673b24" xmlns="urn:schemas-microsoft-com:xml-wcfservicemap">
   <ClientOptions>
     <GenerateAsynchronousMethods>false</GenerateAsynchronousMethods>
     <GenerateTaskBasedAsynchronousMethod>true</GenerateTaskBasedAsynchronousMethod>
@@ -19,10 +19,23 @@
     <ServiceContractMappings />
   </ClientOptions>
   <MetadataSources>
-    <MetadataSource Address="https://elitaplus-modl.j2.assurant.com/ElitaClaimService2/ClaimRecordingService.svc?singleWsdl" Protocol="http" SourceId="1" />
+    <MetadataSource Address="http://localhost/ElitaClaimService/ClaimRecordingService.svc" Protocol="http" SourceId="1" />
   </MetadataSources>
   <Metadata>
-    <MetadataFile FileName="ClaimRecordingService13.wsdl" MetadataType="Wsdl" ID="db905f56-84ec-4d77-b0fc-4ccd65d009fa" SourceId="1" SourceUrl="https://elitaplus-modl.j2.assurant.com/ElitaClaimService2/ClaimRecordingService.svc?singleWsdl" />
+    <MetadataFile FileName="ClaimRecordingService.wsdl" MetadataType="Wsdl" ID="3d2bcd7e-cf15-4391-9639-d062b4883f42" SourceId="1" SourceUrl="http://localhost/ElitaClaimService/ClaimRecordingService.svc?wsdl=wsdl0" />
+    <MetadataFile FileName="ClaimRecordingService.xsd" MetadataType="Schema" ID="29885432-3b7e-4890-bdce-4721f40bafb1" SourceId="1" SourceUrl="http://localhost/ElitaClaimService/ClaimRecordingService.svc?xsd=xsd8" />
+    <MetadataFile FileName="ClaimRecordingService1.xsd" MetadataType="Schema" ID="b7a4a9ea-ac3f-4228-8ddf-937ba1f8d6f8" SourceId="1" SourceUrl="http://localhost/ElitaClaimService/ClaimRecordingService.svc?xsd=xsd9" />
+    <MetadataFile FileName="ClaimRecordingService2.xsd" MetadataType="Schema" ID="6a350100-6b56-4bc7-a26c-a5d064e470b8" SourceId="1" SourceUrl="http://localhost/ElitaClaimService/ClaimRecordingService.svc?xsd=xsd6" />
+    <MetadataFile FileName="ClaimRecordingService3.xsd" MetadataType="Schema" ID="f6fd6cc9-da02-48d1-bee9-5f05971797a6" SourceId="1" SourceUrl="http://localhost/ElitaClaimService/ClaimRecordingService.svc?xsd=xsd7" />
+    <MetadataFile FileName="ClaimRecordingService4.xsd" MetadataType="Schema" ID="342cf086-2ac1-42c5-872f-29ed1dd4f87d" SourceId="1" SourceUrl="http://localhost/ElitaClaimService/ClaimRecordingService.svc?xsd=xsd4" />
+    <MetadataFile FileName="ClaimRecordingService5.xsd" MetadataType="Schema" ID="54fc18dd-35b6-4c01-a3e5-947fb1262e00" SourceId="1" SourceUrl="http://localhost/ElitaClaimService/ClaimRecordingService.svc?xsd=xsd5" />
+    <MetadataFile FileName="ClaimRecordingService6.xsd" MetadataType="Schema" ID="3428345e-268d-4197-8d57-6eb30a963619" SourceId="1" SourceUrl="http://localhost/ElitaClaimService/ClaimRecordingService.svc?xsd=xsd2" />
+    <MetadataFile FileName="ClaimRecordingService7.xsd" MetadataType="Schema" ID="52710a70-7a5f-4e4f-aa89-c61cb54eb5de" SourceId="1" SourceUrl="http://localhost/ElitaClaimService/ClaimRecordingService.svc?xsd=xsd3" />
+    <MetadataFile FileName="ClaimRecordingService8.xsd" MetadataType="Schema" ID="74cf01aa-97a0-4da2-b025-dec049c1b658" SourceId="1" SourceUrl="http://localhost/ElitaClaimService/ClaimRecordingService.svc?xsd=xsd0" />
+    <MetadataFile FileName="ClaimRecordingService9.xsd" MetadataType="Schema" ID="045a86bb-5777-42a1-b012-e88b0ae1b928" SourceId="1" SourceUrl="http://localhost/ElitaClaimService/ClaimRecordingService.svc?xsd=xsd1" />
+    <MetadataFile FileName="ClaimRecordingService1.wsdl" MetadataType="Wsdl" ID="d4184b47-3532-40f9-933c-801069eabe6e" SourceId="1" SourceUrl="http://localhost/ElitaClaimService/ClaimRecordingService.svc?wsdl" />
+    <MetadataFile FileName="ClaimRecordingService10.xsd" MetadataType="Schema" ID="42d774b7-1e0a-4470-8238-813fd7868247" SourceId="1" SourceUrl="http://localhost/ElitaClaimService/ClaimRecordingService.svc?xsd=xsd10" />
+    <MetadataFile FileName="ClaimRecordingService.disco" MetadataType="Disco" ID="b5e38df8-ad40-48af-84b6-6e6b37219b4e" SourceId="1" SourceUrl="http://localhost/ElitaClaimService/ClaimRecordingService.svc?disco" />
   </Metadata>
   <Extensions>
     <ExtensionFile FileName="configuration91.svcinfo" Name="configuration91.svcinfo" />

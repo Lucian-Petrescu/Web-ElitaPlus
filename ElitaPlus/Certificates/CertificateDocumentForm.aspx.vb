@@ -303,7 +303,8 @@ Public Class CertificateDocumentForm
 
     Private Sub ClearForm()
         Me.PopulateControlFromBOProperty(Me.DocumentTypeDropDown, LookupListNew.GetIdFromCode(LookupListNew.LK_DOCUMENT_TYPES, Codes.DOCUMENT_TYPE__OTHER))
-        Me.PopulateControlFromBOProperty(Me.ScanDateTextBox, DateTime.Now, Me.DATE_TIME_FORMAT)
+        'Sridhar Me.PopulateControlFromBOProperty(Me.ScanDateTextBox, DateTime.Now, Me.DATE_TIME_FORMAT)
+        Me.PopulateControlFromBOProperty(Me.ScanDateTextBox, GetLongDateFormattedString(DateTime.Now))
         Me.CommentTextBox.Text = String.Empty
     End Sub
 

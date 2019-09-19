@@ -14,7 +14,9 @@ Namespace Certificates
 
         Private Const DefaultItem As Integer = 0
         Public Const GridColCaseIdIdx As Integer = 0
+        Public Const GridColCaseOpenDateIdx As Integer = 1
         Public Const GridColCaseStatusCodeIdx As Integer = 2
+        Public Const GridColCaseCloseDateIdx As Integer = 3
         Public Const GridColCaseNumberCtrl As String = "btnEditCase"
         Public Const SelectActionCommand As String = "SelectAction"
         Public Const Url As String = "~/Certificates/CaseSearchForm.aspx"
@@ -449,6 +451,23 @@ Namespace Certificates
                     Else
                         e.Row.Cells(GridColCaseStatusCodeIdx).CssClass = "StatInactive"
                     End If
+                    'Added By Sridhar
+                    Dim strOpenDate As String = Convert.ToString(e.Row.Cells(GridColCaseOpenDateIdx).Text)
+                    strOpenDate = strOpenDate.Replace("&nbsp;", "")
+                    If String.IsNullOrWhiteSpace(strOpenDate) = False Then
+                        Dim tempOpenDate = Convert.ToDateTime(e.Row.Cells(GridColCaseOpenDateIdx).Text.Trim())
+                        Dim formattedOpenDate = GetDateFormattedString(tempOpenDate)
+                        e.Row.Cells(GridColCaseOpenDateIdx).Text = Convert.ToString(formattedOpenDate)
+                    End If
+                    Dim strCloseDate As String = Convert.ToString(e.Row.Cells(GridColCaseCloseDateIdx).Text)
+                    strCloseDate = strCloseDate.Replace("&nbsp;", "")
+                    If String.IsNullOrEmpty(strCloseDate) = False Then
+                        Dim tempCloseDate = Convert.ToString(e.Row.Cells(GridColCaseCloseDateIdx).Text.Trim())
+                        Dim formattedCloseDate = GetDateFormattedString(tempCloseDate)
+                        e.Row.Cells(GridColCaseCloseDateIdx).Text = Convert.ToString(formattedCloseDate)
+                    End If
+
+
                 End If
             Catch ex As Exception
                 HandleErrors(ex, MasterPage.MessageController)

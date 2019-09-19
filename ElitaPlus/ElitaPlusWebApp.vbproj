@@ -142,9 +142,8 @@
       <HintPath>..\packages\Elita.Common.AppNavigationControl.2.0.0\lib\net462\Assurant.Common.AppNavigationControl.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="Assurant.Common.Ftp, Version=2.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Elita.Assurant.Common.Ftp.2.0.0\lib\net40\Assurant.Common.Ftp.dll</HintPath>
-      <Private>True</Private>
+    <Reference Include="Assurant.Common.Ftp">
+      <HintPath>..\packages\Elita.Assurant.Common.Ftp.2.0.0\lib\net462\Assurant.Common.Ftp.dll</HintPath>
     </Reference>
     <Reference Include="Assurant.Common.Localization, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\Elita.Assurant.Common.Localization.2.0.0\lib\net462\Assurant.Common.Localization.dll</HintPath>
@@ -166,9 +165,8 @@
       <HintPath>..\packages\Elita.Assurant.Common.Zip.2.0.0\lib\net462\Assurant.Common.Zip.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="Assurant.Elita.AddressValidationProvider, Version=1.0.1.0, Culture=neutral, processorArchitecture=MSIL">
+    <Reference Include="Assurant.Elita.AddressValidationProvider">
       <HintPath>..\packages\Assurant.Elita.AddressvalidationProvider.1.0.2\lib\net46\Assurant.Elita.AddressValidationProvider.dll</HintPath>
-	  <Private>True</Private>
     </Reference>
     <Reference Include="Assurant.Elita.Base.DataAccess">
       <HintPath>..\packages\Assurant.Elita.Base.DataAccess.5.0.2\lib\net462\Assurant.Elita.Base.DataAccess.dll</HintPath>
@@ -180,9 +178,8 @@
       <HintPath>..\packages\Assurant.Elita.ClientIntegration.4.0.0\lib\net462\Assurant.Elita.ClientIntegration.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="Assurant.Elita.CommonConfiguration, Version=2.1.6.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\Assurant.Elita.CommonConfiguration.2.1.5\lib\net46\Assurant.Elita.CommonConfiguration.dll</HintPath>
+    <Reference Include="Assurant.Elita.CommonConfiguration">
+      <HintPath>..\..\US344337\Libraries4.0\CommonConfiguration\CommonConfiguration\bin\Debug\Assurant.Elita.CommonConfiguration.dll</HintPath>
     </Reference>
     <Reference Include="Assurant.Elita.Configuration, Version=4.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
@@ -290,9 +287,6 @@
     <Reference Include="Oracle.ManagedDataAccess, Version=4.122.1.0, Culture=neutral, PublicKeyToken=89b483f429c47342, processorArchitecture=MSIL">
       <HintPath>..\packages\Oracle.ManagedDataAccess.12.2.1100\lib\net40\Oracle.ManagedDataAccess.dll</HintPath>
       <Private>True</Private>
-    </Reference>
-    <Reference Include="RestSharp, Version=105.2.3.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\RestSharp.105.2.3\lib\net46\RestSharp.dll</HintPath>
     </Reference>
     <Reference Include="System">
       <Name>System</Name>
@@ -962,20 +956,6 @@
       <DependentUpon>ARPaymentReconWrkForm.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
-    <Compile Include="Interfaces\ClaimFileManagementDetailForm.aspx.designer.vb">
-      <DependentUpon>ClaimFileManagementDetailForm.aspx</DependentUpon>
-    </Compile>
-    <Compile Include="Interfaces\ClaimFileManagementDetailForm.aspx.vb">
-      <DependentUpon>ClaimFileManagementDetailForm.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="Interfaces\ClaimFileManagementSearchForm.aspx.designer.vb">
-      <DependentUpon>ClaimFileManagementSearchForm.aspx</DependentUpon>
-    </Compile>
-    <Compile Include="Interfaces\ClaimFileManagementSearchForm.aspx.vb">
-      <DependentUpon>ClaimFileManagementSearchForm.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
     <Compile Include="Interfaces\ClaimFulfillmentMileStonesFileForm.aspx.designer.vb">
       <DependentUpon>ClaimFulfillmentMileStonesFileForm.aspx</DependentUpon>
     </Compile>
@@ -1237,17 +1217,17 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Reference.svcmap</DependentUpon>
     </Compile>
+    <Compile Include="Service References\ClaimRecordingService_bk\Reference.vb">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </Compile>
     <Compile Include="Service References\ClaimService\Reference.vb">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>Reference.svcmap</DependentUpon>
     </Compile>
     <Compile Include="Service References\FileAdminService\Reference.vb">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>Reference.svcmap</DependentUpon>
-    </Compile>
-    <Compile Include="Service References\FileManagerAdminService\Reference.vb">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>Reference.svcmap</DependentUpon>
@@ -5634,8 +5614,6 @@
     <Content Include="Interfaces\AppleGBIFileFormDetail.aspx" />
     <Content Include="Interfaces\ARInvoiceReconWrkForm.aspx" />
     <Content Include="Interfaces\ARPaymentReconWrkForm.aspx" />
-    <Content Include="Interfaces\ClaimFileManagementDetailForm.aspx" />
-    <Content Include="Interfaces\ClaimFileManagementSearchForm.aspx" />
     <Content Include="Interfaces\ClaimFulfillmentMileStonesFileForm.aspx" />
     <Content Include="Interfaces\ClaimFulfillmentMilestonesReconWrkForm.aspx" />
     <Content Include="Interfaces\DealerInvoiceFileForm.aspx" />
@@ -5664,8 +5642,6 @@
     <Content Include="Navigation\images\flags\jp_Flag.png" />
     <Content Include="Navigation\images\flags\pg_Flag.png" />
     <Content Include="Navigation\images\flags\sk_Flag.png" />
-    <Content Include="Navigation\images\icons\minus.png" />
-    <Content Include="Navigation\images\icons\plus.png" />
     <Content Include="Navigation\images\icons\radioButtonOff.png" />
     <Content Include="Navigation\images\icons\radioButtonOn.png" />
     <Content Include="Navigation\scripts\jquery-1.12.4.min.js" />
@@ -5691,11 +5667,9 @@
     <Content Include="Reports\LossSummaryAndPaymentsReportForm.aspx" />
     <Content Include="Reports\NewCertificatesChinaReportForm.aspx" />
     <Content Include="Reports\PremiumReconciliationForChildCertificates.aspx" />
-    <Content Include="Reports\ReplacementOrder_AAU.xslt" />
     <Content Include="Reports\ReportCeProgressForm_New.aspx" />
     <Content Include="Reports\ReportExtractInputControl.ascx" />
     <Content Include="Reports\RequestReportForm.aspx" />
-    <Content Include="Reports\ServiceOrder_AAU.xslt" />
     <Content Include="Reports\SummaryPaymentByCertificate.aspx" />
     <Content Include="Reports\UpgradeReconciliationReportForm.aspx" />
     <Content Include="Reports\TIMMCertificateExtractForm.aspx" />
@@ -5847,47 +5821,32 @@
     <None Include="Service References\ClaimFulfillmentService\FulfillmentService8.xsd">
       <SubType>Designer</SubType>
     </None>
-    <Content Include="Service References\ClaimFulfillmentWebAppGatewayService\Assurant.ElitaPlus.ElitaPlusWebApp.ClaimFulfillmentWebAppGatewayService.CustomerDecisionResponse.datasource">
-      <DependentUpon>Reference.svcmap</DependentUpon>
-    </Content>
-    <Content Include="Service References\ClaimFulfillmentWebAppGatewayService\Assurant.ElitaPlus.ElitaPlusWebApp.ClaimFulfillmentWebAppGatewayService.FulfillmentDetails.datasource">
-      <DependentUpon>Reference.svcmap</DependentUpon>
-    </Content>
     <Content Include="Service References\ClaimFulfillmentWebAppGatewayService\Assurant.ElitaPlus.ElitaPlusWebApp.ClaimFulfillmentWebAppGatewayService.GetDeliverySlotsResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </Content>
+    <Content Include="Service References\ClaimFulfillmentWebAppGatewayService\Assurant.ElitaPlus.ElitaPlusWebApp.ClaimFulfillmentWebAppGatewayService.CustomerDecisionResponse.datasource">
       <DependentUpon>Reference.svcmap</DependentUpon>
     </Content>
     <None Include="Service References\ClaimFulfillmentWebAppGatewayService\configuration91.svcinfo" />
     <None Include="Service References\ClaimFulfillmentWebAppGatewayService\configuration.svcinfo" />
-    <None Include="Service References\ClaimFulfillmentWebAppGatewayService\gateway.wsdl" />
     <None Include="Service References\ClaimFulfillmentWebAppGatewayService\gateway.xsd">
       <SubType>Designer</SubType>
     </None>
     <None Include="Service References\ClaimFulfillmentWebAppGatewayService\gateway1.wsdl" />
-    <None Include="Service References\ClaimFulfillmentWebAppGatewayService\gateway1.xsd">
-      <SubType>Designer</SubType>
-    </None>
-    <None Include="Service References\ClaimFulfillmentWebAppGatewayService\gateway11.xsd">
-      <SubType>Designer</SubType>
-    </None>
-    <None Include="Service References\ClaimFulfillmentWebAppGatewayService\gateway12.xsd">
-      <SubType>Designer</SubType>
-    </None>
-    <None Include="Service References\ClaimFulfillmentWebAppGatewayService\gateway13.xsd">
-      <SubType>Designer</SubType>
-    </None>
-    <None Include="Service References\ClaimFulfillmentWebAppGatewayService\gateway2.xsd">
-      <SubType>Designer</SubType>
-    </None>
     <None Include="Service References\ClaimFulfillmentWebAppGatewayService\gateway3.xsd">
       <SubType>Designer</SubType>
     </None>
-    <None Include="Service References\ClaimFulfillmentWebAppGatewayService\gateway4.xsd">
+    <None Include="Service References\ClaimFulfillmentWebAppGatewayService\gateway31.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Service References\ClaimFulfillmentWebAppGatewayService\gateway32.xsd">
       <SubType>Designer</SubType>
     </None>
     <None Include="Service References\ClaimFulfillmentWebAppGatewayService\Reference.svcmap">
       <Generator>WCF Proxy Generator</Generator>
       <LastGenOutput>Reference.vb</LastGenOutput>
     </None>
+    <None Include="Service References\ClaimFulfillmentWebAppGatewayService\WebAppGateway1.wsdl" />
     <Content Include="Service References\ClaimRecordingService\Assurant.ElitaPlus.ElitaPlusWebApp.ClaimRecordingService.BaseClaimRecordingResponse.datasource">
       <DependentUpon>Reference.svcmap</DependentUpon>
     </Content>
@@ -5900,9 +5859,49 @@
     <Content Include="Service References\ClaimRecordingService\Assurant.ElitaPlus.ElitaPlusWebApp.ClaimRecordingService.PolicyInfo.datasource">
       <DependentUpon>Reference.svcmap</DependentUpon>
     </Content>
-    <None Include="Service References\ClaimFulfillmentWebAppGatewayService\WebAppGateway.wsdl" />
-    <None Include="Service References\ClaimFulfillmentWebAppGatewayService\WebAppGateway1.wsdl" />
+    <None Include="Service References\ClaimRecordingService\ClaimRecordingService.wsdl" />
+    <None Include="Service References\ClaimRecordingService\ClaimRecordingService.xsd">
+      <SubType>Designer</SubType>
+    </None>
     <None Include="Service References\ClaimRecordingService\ClaimRecordingService1.wsdl" />
+    <None Include="Service References\ClaimRecordingService\ClaimRecordingService1.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Service References\ClaimRecordingService\ClaimRecordingService10.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Service References\ClaimRecordingService\ClaimRecordingService2.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Service References\ClaimRecordingService\ClaimRecordingService3.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Service References\ClaimRecordingService\ClaimRecordingService4.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Service References\ClaimRecordingService\ClaimRecordingService5.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Service References\ClaimRecordingService\ClaimRecordingService6.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Service References\ClaimRecordingService\ClaimRecordingService7.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Service References\ClaimRecordingService\ClaimRecordingService8.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Service References\ClaimRecordingService\ClaimRecordingService9.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Service References\ClaimRecordingService_bk\ClaimRecordingService1.wsdl" />
+    <None Include="Service References\ClaimRecordingService_bk\configuration91.svcinfo" />
+    <None Include="Service References\ClaimRecordingService_bk\configuration.svcinfo" />
+    <None Include="Service References\ClaimRecordingService_bk\Reference.svcmap">
+      <Generator>WCF Proxy Generator</Generator>
+      <LastGenOutput>Reference.vb</LastGenOutput>
+    </None>
+    <None Include="Service References\ClaimRecordingService\ClaimRecordingService.disco" />
     <None Include="Service References\ClaimRecordingService\configuration91.svcinfo" />
     <None Include="Service References\ClaimRecordingService\configuration.svcinfo" />
     <None Include="Service References\ClaimRecordingService\Reference.svcmap">
@@ -5958,35 +5957,6 @@
     <None Include="Service References\FileAdminService\configuration91.svcinfo" />
     <None Include="Service References\FileAdminService\configuration.svcinfo" />
     <None Include="Service References\FileAdminService\Reference.svcmap">
-      <Generator>WCF Proxy Generator</Generator>
-      <LastGenOutput>Reference.vb</LastGenOutput>
-    </None>
-    <Content Include="Service References\FileManagerAdminService\Assurant.ElitaPlus.ElitaPlusWebApp.FileManagerAdminService.FileDetailsRecordDto.datasource">
-      <DependentUpon>Reference.svcmap</DependentUpon>
-    </Content>
-    <Content Include="Service References\FileManagerAdminService\Assurant.ElitaPlus.ElitaPlusWebApp.FileManagerAdminService.FileInfoDto.datasource">
-      <DependentUpon>Reference.svcmap</DependentUpon>
-    </Content>
-    <None Include="Service References\FileManagerAdminService\admin1.wsdl" />
-    <None Include="Service References\FileManagerAdminService\admin5.xsd">
-      <SubType>Designer</SubType>
-    </None>
-    <None Include="Service References\FileManagerAdminService\admin51.xsd">
-      <SubType>Designer</SubType>
-    </None>
-    <None Include="Service References\FileManagerAdminService\admin52.xsd">
-      <SubType>Designer</SubType>
-    </None>
-    <None Include="Service References\FileManagerAdminService\admin53.xsd">
-      <SubType>Designer</SubType>
-    </None>
-    <None Include="Service References\FileManagerAdminService\admin54.xsd">
-      <SubType>Designer</SubType>
-    </None>
-    <None Include="Service References\FileManagerAdminService\configuration91.svcinfo" />
-    <None Include="Service References\FileManagerAdminService\configuration.svcinfo" />
-    <None Include="Service References\FileManagerAdminService\FileManagerRelay1.wsdl" />
-    <None Include="Service References\FileManagerAdminService\Reference.svcmap">
       <Generator>WCF Proxy Generator</Generator>
       <LastGenOutput>Reference.vb</LastGenOutput>
     </None>
@@ -8742,14 +8712,14 @@
     <Content Include="Web.config">
       <SubType>Designer</SubType>
     </Content>
-    <WebReferenceUrl Include="http://localhost/ElitaInternalWS/MyTest.asmx">
+    <WebReferenceUrl Include="http://localhost:81/ElitaInternalWS/MyTest.asmx">
       <RelPath>Web References\MyTestWSRef\</RelPath>
       <UrlBehavior>Static</UrlBehavior>
     </WebReferenceUrl>
-    <WebReferenceUrl Include="http://localhost/ElitaInternalWS/Olita/OlitaWS.asmx">
+    <WebReferenceUrl Include="http://localhost:81/ElitaInternalWS/Olita/OlitaWS.asmx">
       <UrlBehavior>Dynamic</UrlBehavior>
       <RelPath>Web References\OlitaWSRef\</RelPath>
-      <UpdateFromURL>http://localhost/ElitaInternalWS/Olita/OlitaWS.asmx</UpdateFromURL>
+      <UpdateFromURL>http://localhost:81/ElitaInternalWS/Olita/OlitaWS.asmx</UpdateFromURL>
       <ServiceLocationURL>
       </ServiceLocationURL>
       <CachedDynamicPropName>
@@ -8757,10 +8727,10 @@
       <CachedAppSettingsObjectName>MySettings</CachedAppSettingsObjectName>
       <CachedSettingsPropName>Assurant_ElitaPlus_WebApp_OlitaWSRef_OlitaWS</CachedSettingsPropName>
     </WebReferenceUrl>
-    <WebReferenceUrl Include="http://localhost/ElitaInternalWS/Vsc/VscWS.asmx">
+    <WebReferenceUrl Include="http://localhost:81/ElitaInternalWS/Vsc/VscWS.asmx">
       <RelPath>Web References\VscWSRef\</RelPath>
       <UrlBehavior>Dynamic</UrlBehavior>
-      <UpdateFromURL>http://localhost/ElitaInternalWS/Vsc/VscWS.asmx</UpdateFromURL>
+      <UpdateFromURL>http://localhost:81/ElitaInternalWS/Vsc/VscWS.asmx</UpdateFromURL>
       <ServiceLocationURL>
       </ServiceLocationURL>
       <CachedDynamicPropName>
@@ -8781,9 +8751,9 @@
     <WCFMetadataStorage Include="Service References\ClaimFulfillmentService\" />
     <WCFMetadataStorage Include="Service References\ClaimFulfillmentWebAppGatewayService\" />
     <WCFMetadataStorage Include="Service References\ClaimRecordingService\" />
+    <WCFMetadataStorage Include="Service References\ClaimRecordingService_bk\" />
     <WCFMetadataStorage Include="Service References\ClaimService\" />
     <WCFMetadataStorage Include="Service References\FileAdminService\" />
-    <WCFMetadataStorage Include="Service References\FileManagerAdminService\" />
     <WCFMetadataStorage Include="Service References\GalaxyWcfRef\" />
     <WCFMetadataStorage Include="Service References\GiftCardService\" />
     <WCFMetadataStorage Include="Service References\OlitaWcfRef\" />
@@ -8815,7 +8785,7 @@
           <AutoAssignPort>True</AutoAssignPort>
           <DevelopmentServerPort>2550</DevelopmentServerPort>
           <DevelopmentServerVPath>/</DevelopmentServerVPath>
-          <IISUrl>http://localhost:80/ElitaPlus</IISUrl>
+          <IISUrl>http://localhost:81/ElitaPlus</IISUrl>
           <NTLMAuthentication>False</NTLMAuthentication>
           <UseCustomServer>False</UseCustomServer>
           <CustomServerUrl>

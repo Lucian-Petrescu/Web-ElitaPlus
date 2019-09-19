@@ -978,7 +978,8 @@ Public Class WorkQueueForm
                         moTextBox.Visible = True
                         moImageButton = CType(e.Row.Cells(Me.GRID_COL_EFFECTIVE_IDX).FindControl(Me.GRID_COL_EFFECTIVE_IMAGE), ImageButton)
                         moImageButton.Visible = True
-                        moTextBox.Text = Me.GetLongDateFormattedString(DirectCast(dvRow(EntitySchedule.ScheduleSelectionView.COL_NAME_EFFECTIVE), Date))
+                        'Sridhar moTextBox.Text = Me.GetLongDateFormattedString(DirectCast(dvRow(EntitySchedule.ScheduleSelectionView.COL_NAME_EFFECTIVE), Date))
+                        moTextBox.Text = GetLongDateFormattedString(DirectCast(dvRow(EntitySchedule.ScheduleSelectionView.COL_NAME_EFFECTIVE), Date))
                         Me.AddCalendarwithTime_New(moImageButton, moTextBox)
                     Else
                         moLabel = CType(e.Row.Cells(Me.GRID_COL_CODE_IDX).FindControl(Me.GRID_COL_CODE_LABEL), Label)
@@ -991,7 +992,8 @@ Public Class WorkQueueForm
 
                         moLabel = CType(e.Row.Cells(Me.GRID_COL_EFFECTIVE_IDX).FindControl(Me.GRID_COL_EFFECTIVE_LABEL), Label)
                         moLabel.Visible = True
-                        moLabel.Text = Me.GetLongDateFormattedString(DirectCast(dvRow(EntitySchedule.ScheduleSelectionView.COL_NAME_EFFECTIVE), Date))
+                        'Sridhar moLabel.Text = Me.GetLongDateFormattedString(DirectCast(dvRow(EntitySchedule.ScheduleSelectionView.COL_NAME_EFFECTIVE), Date))
+                        moLabel.Text = GetLongDateFormattedString(DirectCast(dvRow(EntitySchedule.ScheduleSelectionView.COL_NAME_EFFECTIVE), Date))
                     End If
 
                     Dim expirationDate As DateTime = WorkQueue.DEFAULT_EXPIRATION_DATE
@@ -1003,12 +1005,14 @@ Public Class WorkQueueForm
                         moTextBox.Visible = True
                         moImageButton = CType(e.Row.Cells(Me.GRID_COL_EXPIRATION_IDX).FindControl(Me.GRID_COL_EXPIRATION_IMAGE), ImageButton)
                         moImageButton.Visible = True
-                        moTextBox.Text = Me.GetLongDateFormattedString(expirationDate)
+                        'Sridhar moTextBox.Text = Me.GetLongDateFormattedString(expirationDate)
+                        moTextBox.Text = GetLongDateFormattedString(expirationDate)
                         Me.AddCalendarwithTime_New(moImageButton, moTextBox)
                     Else
                         moLabel = CType(e.Row.Cells(Me.GRID_COL_EXPIRATION_IDX).FindControl(Me.GRID_COL_EXPIRATION_LABEL), Label)
                         moLabel.Visible = True
-                        moLabel.Text = Me.GetLongDateFormattedString(expirationDate)
+                        'Sridhar moLabel.Text = Me.GetLongDateFormattedString(expirationDate)
+                        moLabel.Text = GetLongDateFormattedString(expirationDate)
                     End If
                 Else
                     moLabel = CType(e.Row.Cells(Me.GRID_COL_CODE_IDX).FindControl(Me.GRID_COL_CODE_LABEL), Label)
@@ -1021,7 +1025,8 @@ Public Class WorkQueueForm
 
                     moLabel = CType(e.Row.Cells(Me.GRID_COL_EFFECTIVE_IDX).FindControl(Me.GRID_COL_EFFECTIVE_LABEL), Label)
                     moLabel.Visible = True
-                    moLabel.Text = Me.GetLongDateFormattedString(DirectCast(dvRow(EntitySchedule.ScheduleSelectionView.COL_NAME_EFFECTIVE), Date))
+                    'Sridhar moLabel.Text = Me.GetLongDateFormattedString(DirectCast(dvRow(EntitySchedule.ScheduleSelectionView.COL_NAME_EFFECTIVE), Date))
+                    moLabel.Text = GetLongDateFormattedString(DirectCast(dvRow(EntitySchedule.ScheduleSelectionView.COL_NAME_EFFECTIVE), Date))
 
                     Dim expirationDate As DateTime = WorkQueue.DEFAULT_EXPIRATION_DATE
                     If (Not dvRow(EntitySchedule.ScheduleSelectionView.COL_NAME_EXPIRATION) Is DBNull.Value) Then
@@ -1029,7 +1034,8 @@ Public Class WorkQueueForm
                     End If
                     moLabel = CType(e.Row.Cells(Me.GRID_COL_EXPIRATION_IDX).FindControl(Me.GRID_COL_EXPIRATION_LABEL), Label)
                     moLabel.Visible = True
-                    moLabel.Text = Me.GetLongDateFormattedString(expirationDate)
+                    'Sridhar moLabel.Text = Me.GetLongDateFormattedString(expirationDate)
+                    moLabel.Text = GetLongDateFormattedString(expirationDate)
 
                     If (Me.State.IsScheduleEditing) Then
                         moImageButton = CType(e.Row.Cells(Me.GRID_COL_CODE_IDX).FindControl(Me.GRID_COL_EDIT_IMAGE_BUTTON), ImageButton)

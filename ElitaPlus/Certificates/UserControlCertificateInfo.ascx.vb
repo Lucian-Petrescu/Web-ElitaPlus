@@ -74,7 +74,8 @@ Namespace Certificates
             With oCertificateCtrl
                 Me.moCertificateText.Text = .CertNumber
                 Me.moWarrantySoldOnText.Text = CType(.WarrantySalesDate.Value, String)
-                Me.moWarrantySoldOnText.Text = .WarrantySalesDate.Value.ToString(DATE_FORMAT, System.Threading.Thread.CurrentThread.CurrentCulture)
+                Me.moWarrantySoldOnText.Text = ElitaPlusPage.GetDateFormattedString(.WarrantySalesDate.Value)
+                'Sridhar Me.moWarrantySoldOnText.Text = .WarrantySalesDate.Value.ToString(DATE_FORMAT, System.Threading.Thread.CurrentThread.CurrentCulture)
                 Me.moStatusText.Text = .StatusCode
                 If Not (.SubscriberStatus.Equals(Guid.Empty)) Then
                     Me.moSubStatusText.Text = LookupListNew.GetCodeFromId("SUBSTAT", .SubscriberStatus)

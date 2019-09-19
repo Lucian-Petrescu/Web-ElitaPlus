@@ -236,7 +236,8 @@ Public Class InvoiceSearchForm
                     .CommandArgument = Invoice.InvoiceSearchDV.InvoiceId(invoiceDr).ToString()
                     .CommandName = "Invoice"
                 End With
-                DirectCast(e.Item.FindControl("moInvoiceDate"), Label).Text = Invoice.InvoiceSearchDV.InvoiceDate(invoiceDr).Value.ToString(DATE_FORMAT, CultureInfo.CurrentCulture)
+                DirectCast(e.Item.FindControl("moInvoiceDate"), Label).Text = GetDateFormattedString(Invoice.InvoiceSearchDV.InvoiceDate(invoiceDr).Value)
+                'Sridhar DirectCast(e.Item.FindControl("moInvoiceDate"), Label).Text = Invoice.InvoiceSearchDV.InvoiceDate(invoiceDr).Value.ToString(DATE_FORMAT, CultureInfo.CurrentCulture)
                 DirectCast(e.Item.FindControl("moInvoiceAmount"), Label).Text = GetAmountFormattedString(Invoice.InvoiceSearchDV.InvoiceAmount(invoiceDr).Value)
                 With DirectCast(e.Item.FindControl("moInvoiceStatus"), Label)
                     .Text = Invoice.InvoiceSearchDV.InvoiceStatus(invoiceDr)

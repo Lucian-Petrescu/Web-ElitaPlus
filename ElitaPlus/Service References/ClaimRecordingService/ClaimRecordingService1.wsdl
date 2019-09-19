@@ -1,0 +1,259 @@
+<?xml version="1.0" encoding="utf-8"?>
+<wsdl:definitions xmlns:wsap="http://schemas.xmlsoap.org/ws/2004/08/addressing/policy" xmlns:wsa10="http://www.w3.org/2005/08/addressing" xmlns:tns="http://tempuri.org/" xmlns:msc="http://schemas.microsoft.com/ws/2005/12/wsdl/contract" xmlns:soapenc="http://schemas.xmlsoap.org/soap/encoding/" xmlns:wsx="http://schemas.xmlsoap.org/ws/2004/09/mex" xmlns:wsp="http://schemas.xmlsoap.org/ws/2004/09/policy" xmlns:i0="http://elita.assurant.com/Elita/Claim/RecordingService" xmlns:wsam="http://www.w3.org/2007/05/addressing/metadata" xmlns:wsa="http://schemas.xmlsoap.org/ws/2004/08/addressing" xmlns:wsaw="http://www.w3.org/2006/05/addressing/wsdl" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:soap12="http://schemas.xmlsoap.org/wsdl/soap12/" xmlns:wsu="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-utility-1.0.xsd" xmlns:xsd="http://www.w3.org/2001/XMLSchema" name="ClaimRecordingService" targetNamespace="http://tempuri.org/" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">
+  <wsp:Policy wsu:Id="CustomBinding_IClaimRecordingService_policy">
+    <wsp:ExactlyOne>
+      <wsp:All>
+        <sp:TransportBinding xmlns:sp="http://schemas.xmlsoap.org/ws/2005/07/securitypolicy">
+          <wsp:Policy>
+            <sp:TransportToken>
+              <wsp:Policy>
+                <sp:HttpsToken RequireClientCertificate="false" />
+              </wsp:Policy>
+            </sp:TransportToken>
+            <sp:AlgorithmSuite>
+              <wsp:Policy>
+                <sp:Basic256 />
+              </wsp:Policy>
+            </sp:AlgorithmSuite>
+            <sp:Layout>
+              <wsp:Policy>
+                <sp:Strict />
+              </wsp:Policy>
+            </sp:Layout>
+            <sp:IncludeTimestamp />
+          </wsp:Policy>
+        </sp:TransportBinding>
+        <sp:SignedSupportingTokens xmlns:sp="http://schemas.xmlsoap.org/ws/2005/07/securitypolicy">
+          <wsp:Policy>
+            <sp:UsernameToken sp:IncludeToken="http://schemas.xmlsoap.org/ws/2005/07/securitypolicy/IncludeToken/AlwaysToRecipient">
+              <wsp:Policy>
+                <sp:WssUsernameToken10 />
+              </wsp:Policy>
+            </sp:UsernameToken>
+          </wsp:Policy>
+        </sp:SignedSupportingTokens>
+        <sp:Wss11 xmlns:sp="http://schemas.xmlsoap.org/ws/2005/07/securitypolicy">
+          <wsp:Policy />
+        </sp:Wss11>
+        <sp:Trust10 xmlns:sp="http://schemas.xmlsoap.org/ws/2005/07/securitypolicy">
+          <wsp:Policy>
+            <sp:MustSupportIssuedTokens />
+            <sp:RequireClientEntropy />
+            <sp:RequireServerEntropy />
+          </wsp:Policy>
+        </sp:Trust10>
+      </wsp:All>
+    </wsp:ExactlyOne>
+  </wsp:Policy>
+  <wsdl:import namespace="http://elita.assurant.com/Elita/Claim/RecordingService" location="http://localhost/ElitaClaimService/ClaimRecordingService.svc?wsdl=wsdl0" />
+  <wsdl:types />
+  <wsdl:binding name="CustomBinding_IClaimRecordingService" type="i0:IClaimRecordingService">
+    <wsp:PolicyReference URI="#CustomBinding_IClaimRecordingService_policy" />
+    <soap:binding transport="http://schemas.xmlsoap.org/soap/http" />
+    <wsdl:operation name="BeginClaim">
+      <soap:operation soapAction="http://elita.assurant.com/Elita/Claim/RecordingService/IClaimRecordingService/BeginClaim" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+      <wsdl:fault name="InvalidPolicyNumberFaultFault">
+        <soap:fault use="literal" name="InvalidPolicyNumberFaultFault" namespace="" />
+        <soap:fault use="literal" name="InvalidPolicyNumberFaultFault" namespace="" />
+      </wsdl:fault>
+      <wsdl:fault name="InvalidCompanyCodeFaultFault">
+        <soap:fault use="literal" name="InvalidCompanyCodeFaultFault" namespace="" />
+        <soap:fault use="literal" name="InvalidCompanyCodeFaultFault" namespace="" />
+      </wsdl:fault>
+      <wsdl:fault name="InvalidDealerCodeFaultFault">
+        <soap:fault use="literal" name="InvalidDealerCodeFaultFault" namespace="" />
+        <soap:fault use="literal" name="InvalidDealerCodeFaultFault" namespace="" />
+      </wsdl:fault>
+      <wsdl:fault name="InvalidClaimNumberFaultFault">
+        <soap:fault use="literal" name="InvalidClaimNumberFaultFault" namespace="" />
+        <soap:fault use="literal" name="InvalidClaimNumberFaultFault" namespace="" />
+      </wsdl:fault>
+      <wsdl:fault name="InvalidPurposeCodeFaultFault">
+        <soap:fault use="literal" name="InvalidPurposeCodeFaultFault" namespace="" />
+        <soap:fault use="literal" name="InvalidPurposeCodeFaultFault" namespace="" />
+      </wsdl:fault>
+      <wsdl:fault name="InvalidChannelFaultFault">
+        <soap:fault use="literal" name="InvalidChannelFaultFault" namespace="" />
+        <soap:fault use="literal" name="InvalidChannelFaultFault" namespace="" />
+      </wsdl:fault>
+      <wsdl:fault name="InvalidCultureCodeFaultFault">
+        <soap:fault use="literal" name="InvalidCultureCodeFaultFault" namespace="" />
+        <soap:fault use="literal" name="InvalidCultureCodeFaultFault" namespace="" />
+      </wsdl:fault>
+      <wsdl:fault name="InvalidRelationshipTypeCodeFaultFault">
+        <soap:fault use="literal" name="InvalidRelationshipTypeCodeFaultFault" namespace="" />
+        <soap:fault use="literal" name="InvalidRelationshipTypeCodeFaultFault" namespace="" />
+      </wsdl:fault>
+      <wsdl:fault name="ValidationFaultFault">
+        <soap:fault use="literal" name="ValidationFaultFault" namespace="" />
+        <soap:fault use="literal" name="ValidationFaultFault" namespace="" />
+      </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="BeginInteraction">
+      <soap:operation soapAction="http://elita.assurant.com/Elita/Claim/RecordingService/IClaimRecordingService/BeginInteraction" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+      <wsdl:fault name="InvalidCompanyCodeFaultFault">
+        <soap:fault use="literal" name="InvalidCompanyCodeFaultFault" namespace="" />
+        <soap:fault use="literal" name="InvalidCompanyCodeFaultFault" namespace="" />
+      </wsdl:fault>
+      <wsdl:fault name="InvalidCaseNumberFaultFault">
+        <soap:fault use="literal" name="InvalidCaseNumberFaultFault" namespace="" />
+        <soap:fault use="literal" name="InvalidCaseNumberFaultFault" namespace="" />
+      </wsdl:fault>
+      <wsdl:fault name="InvalidPurposeCodeFaultFault">
+        <soap:fault use="literal" name="InvalidPurposeCodeFaultFault" namespace="" />
+        <soap:fault use="literal" name="InvalidPurposeCodeFaultFault" namespace="" />
+      </wsdl:fault>
+      <wsdl:fault name="InvalidChannelFaultFault">
+        <soap:fault use="literal" name="InvalidChannelFaultFault" namespace="" />
+        <soap:fault use="literal" name="InvalidChannelFaultFault" namespace="" />
+      </wsdl:fault>
+      <wsdl:fault name="InvalidCultureCodeFaultFault">
+        <soap:fault use="literal" name="InvalidCultureCodeFaultFault" namespace="" />
+        <soap:fault use="literal" name="InvalidCultureCodeFaultFault" namespace="" />
+      </wsdl:fault>
+      <wsdl:fault name="InvalidRelationshipTypeCodeFaultFault">
+        <soap:fault use="literal" name="InvalidRelationshipTypeCodeFaultFault" namespace="" />
+        <soap:fault use="literal" name="InvalidRelationshipTypeCodeFaultFault" namespace="" />
+      </wsdl:fault>
+      <wsdl:fault name="QuestionSetCodeNotFoundFaultFault">
+        <soap:fault use="literal" name="QuestionSetCodeNotFoundFaultFault" namespace="" />
+        <soap:fault use="literal" name="QuestionSetCodeNotFoundFaultFault" namespace="" />
+      </wsdl:fault>
+      <wsdl:fault name="ValidationFaultFault">
+        <soap:fault use="literal" name="ValidationFaultFault" namespace="" />
+        <soap:fault use="literal" name="ValidationFaultFault" namespace="" />
+      </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="Submit">
+      <soap:operation soapAction="http://elita.assurant.com/Elita/Claim/RecordingService/IClaimRecordingService/Submit" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+      <wsdl:fault name="InvalidCompanyCodeFaultFault">
+        <soap:fault use="literal" name="InvalidCompanyCodeFaultFault" namespace="" />
+        <soap:fault use="literal" name="InvalidCompanyCodeFaultFault" namespace="" />
+      </wsdl:fault>
+      <wsdl:fault name="InvalidCaseNumberFaultFault">
+        <soap:fault use="literal" name="InvalidCaseNumberFaultFault" namespace="" />
+        <soap:fault use="literal" name="InvalidCaseNumberFaultFault" namespace="" />
+      </wsdl:fault>
+      <wsdl:fault name="InvalidRegisteredItemsFaultFault">
+        <soap:fault use="literal" name="InvalidRegisteredItemsFaultFault" namespace="" />
+        <soap:fault use="literal" name="InvalidRegisteredItemsFaultFault" namespace="" />
+      </wsdl:fault>
+      <wsdl:fault name="ManufacturerNotFoundFaultFault">
+        <soap:fault use="literal" name="ManufacturerNotFoundFaultFault" namespace="" />
+        <soap:fault use="literal" name="ManufacturerNotFoundFaultFault" namespace="" />
+      </wsdl:fault>
+      <wsdl:fault name="PolicyCancelRequestDeniedFaultFault">
+        <soap:fault use="literal" name="PolicyCancelRequestDeniedFaultFault" namespace="" />
+        <soap:fault use="literal" name="PolicyCancelRequestDeniedFaultFault" namespace="" />
+      </wsdl:fault>
+      <wsdl:fault name="FulfillmentServiceFaultFault">
+        <soap:fault use="literal" name="FulfillmentServiceFaultFault" namespace="" />
+        <soap:fault use="literal" name="FulfillmentServiceFaultFault" namespace="" />
+      </wsdl:fault>
+      <wsdl:fault name="TranslationNotFoundFaultFault">
+        <soap:fault use="literal" name="TranslationNotFoundFaultFault" namespace="" />
+        <soap:fault use="literal" name="TranslationNotFoundFaultFault" namespace="" />
+      </wsdl:fault>
+      <wsdl:fault name="ValidationFaultFault">
+        <soap:fault use="literal" name="ValidationFaultFault" namespace="" />
+        <soap:fault use="literal" name="ValidationFaultFault" namespace="" />
+      </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="Save">
+      <soap:operation soapAction="http://elita.assurant.com/Elita/Claim/RecordingService/IClaimRecordingService/Save" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+      <wsdl:fault name="ValidationFaultFault">
+        <soap:fault use="literal" name="ValidationFaultFault" namespace="" />
+        <soap:fault use="literal" name="ValidationFaultFault" namespace="" />
+      </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="GetClaimSummary">
+      <soap:operation soapAction="http://elita.assurant.com/Elita/Claim/RecordingService/IClaimRecordingService/GetClaimSummary" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+      <wsdl:fault name="ValidationFaultFault">
+        <soap:fault use="literal" name="ValidationFaultFault" namespace="" />
+        <soap:fault use="literal" name="ValidationFaultFault" namespace="" />
+      </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="ReEvaluateQuestions">
+      <soap:operation soapAction="http://elita.assurant.com/Elita/Claim/RecordingService/IClaimRecordingService/ReEvaluateQuestions" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+      <wsdl:fault name="ValidationFaultFault">
+        <soap:fault use="literal" name="ValidationFaultFault" namespace="" />
+        <soap:fault use="literal" name="ValidationFaultFault" namespace="" />
+      </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="UpdateCaseAction">
+      <soap:operation soapAction="http://elita.assurant.com/Elita/Claim/RecordingService/IClaimRecordingService/UpdateCaseAction" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+      <wsdl:fault name="ValidationFaultFault">
+        <soap:fault use="literal" name="ValidationFaultFault" namespace="" />
+        <soap:fault use="literal" name="ValidationFaultFault" namespace="" />
+      </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="GetPolicySummaryInfo">
+      <soap:operation soapAction="http://elita.assurant.com/Elita/Claim/RecordingService/IClaimRecordingService/GetPolicySummaryInfo" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetCourierDurations">
+      <soap:operation soapAction="http://elita.assurant.com/Elita/Claim/RecordingService/IClaimRecordingService/GetCourierDurations" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:service name="ClaimRecordingService">
+    <wsdl:port name="CustomBinding_IClaimRecordingService" binding="tns:CustomBinding_IClaimRecordingService">
+      <soap:address location="http://localhost/ElitaClaimService/ClaimRecordingService.svc" />
+    </wsdl:port>
+    <wsdl:port name="CustomBinding_IClaimRecordingService1" binding="tns:CustomBinding_IClaimRecordingService">
+      <soap:address location="http://localhost/ElitaClaimService/ClaimRecordingService.svc/Secure" />
+    </wsdl:port>
+  </wsdl:service>
+</wsdl:definitions>

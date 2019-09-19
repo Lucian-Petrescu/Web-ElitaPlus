@@ -403,38 +403,40 @@ Public Class UserControlDeliverySlot
         Dim fastestDeliveryDate As DeliveryDay = (From delDay As DeliveryDay In de.AvailableDeliveryDays Select delDay Order By delDay.DeliveryDate Ascending).First()
         If fastestDeliveryDate IsNot Nothing Then
             Dim fDeliveryDate As String
-            If Thread.CurrentThread.CurrentCulture.ToString() = "ja-JP" Then
-                fDeliveryDate = fastestDeliveryDate.DeliveryDate.ToString("dd-MMM-yyyy", DateTimeFormatInfo.InvariantInfo)
-            Else
-                fDeliveryDate = ElitaPlusPage.GetDateFormattedStringNullable(fastestDeliveryDate.DeliveryDate)
-            End If
-
-            If de.Behavior.UseDeliverySlot Then 'add slot information 
-                If fastestDeliveryDate.DeliverySlots IsNot Nothing AndAlso fastestDeliveryDate.DeliverySlots.Length > 0 AndAlso de.Behavior.SelectionAllowed Then
-                    Dim fastestDeliveryTimeSlot As DeliverySlot = (From delSlot As DeliverySlot In fastestDeliveryDate.DeliverySlots Select delSlot Order By delSlot.Sequence Ascending).First()
-                    If fastestDeliveryTimeSlot IsNot Nothing Then
-                        fastestDeliveryDateTime = If(LookupListNew.GetDescriptionFromCode(LookupListNew.LK_DESIRED_DELIVERY_TIME_SLOT, fastestDeliveryTimeSlot.Description, Authentication.CurrentUser.LanguageId), fastestDeliveryTimeSlot.Description) + " " + fDeliveryDate
+            'Sridhar Commented 
+            'If Thread.CurrentThread.CurrentCulture.ToString() = "ja-JP" Then
+            '    fDeliveryDate = fastestDeliveryDate.DeliveryDate.ToString("dd-MMM-yyyy", DateTimeFormatInfo.InvariantInfo)
+            'Else
+            '    fDeliveryDate = ElitaPlusPage.GetDateFormattedStringNullable(fastestDeliveryDate.DeliveryDate)
+            'End If
+            fDeliveryDate = ElitaPlusPage.GetDateFormattedStringNullable(fastestDeliveryDate.DeliveryDate)
+                If de.Behavior.UseDeliverySlot Then 'add slot information 
+                    If fastestDeliveryDate.DeliverySlots IsNot Nothing AndAlso fastestDeliveryDate.DeliverySlots.Length > 0 AndAlso de.Behavior.SelectionAllowed Then
+                        Dim fastestDeliveryTimeSlot As DeliverySlot = (From delSlot As DeliverySlot In fastestDeliveryDate.DeliverySlots Select delSlot Order By delSlot.Sequence Ascending).First()
+                        If fastestDeliveryTimeSlot IsNot Nothing Then
+                            fastestDeliveryDateTime = If(LookupListNew.GetDescriptionFromCode(LookupListNew.LK_DESIRED_DELIVERY_TIME_SLOT, fastestDeliveryTimeSlot.Description, Authentication.CurrentUser.LanguageId), fastestDeliveryTimeSlot.Description) + " " + fDeliveryDate
+                        Else
+                            fastestDeliveryDateTime = TranslationBase.TranslateLabelOrMessage("TIME_SLOT_NOT_APPLICABLE") + " " + fDeliveryDate
+                        End If
                     Else
                         fastestDeliveryDateTime = TranslationBase.TranslateLabelOrMessage("TIME_SLOT_NOT_APPLICABLE") + " " + fDeliveryDate
                     End If
                 Else
-                    fastestDeliveryDateTime = TranslationBase.TranslateLabelOrMessage("TIME_SLOT_NOT_APPLICABLE") + " " + fDeliveryDate
+                    fastestDeliveryDateTime = fDeliveryDate
                 End If
-            Else
-                fastestDeliveryDateTime = fDeliveryDate
             End If
-        End If
 
-        Dim lastDeliveryDateTime As String = String.Empty
+            Dim lastDeliveryDateTime As String = String.Empty
         Dim lastDeliveryDate As DeliveryDay = (From delDay As DeliveryDay In de.AvailableDeliveryDays Select delDay Order By delDay.DeliveryDate Ascending).Last()
         If lastDeliveryDate IsNot Nothing Then
             Dim lDeliveryDate As String
-            If Thread.CurrentThread.CurrentCulture.ToString() = "ja-JP" Then
-                lDeliveryDate = lastDeliveryDate.DeliveryDate.ToString("dd-MMM-yyyy", DateTimeFormatInfo.InvariantInfo)
-            Else
-                lDeliveryDate = ElitaPlusPage.GetDateFormattedStringNullable(lastDeliveryDate.DeliveryDate)
-            End If
-
+            'Sridhar Commented 
+            'If Thread.CurrentThread.CurrentCulture.ToString() = "ja-JP" Then
+            '    lDeliveryDate = lastDeliveryDate.DeliveryDate.ToString("dd-MMM-yyyy", DateTimeFormatInfo.InvariantInfo)
+            'Else
+            '    lDeliveryDate = ElitaPlusPage.GetDateFormattedStringNullable(lastDeliveryDate.DeliveryDate)
+            'End If
+            lDeliveryDate = ElitaPlusPage.GetDateFormattedStringNullable(lastDeliveryDate.DeliveryDate)
             If de.Behavior.UseDeliverySlot Then 'add slot information 
                 If lastDeliveryDate.DeliverySlots IsNot Nothing AndAlso lastDeliveryDate.DeliverySlots.Length > 0 AndAlso de.Behavior.SelectionAllowed Then
                     Dim lastDeliveryTimeSlot As DeliverySlot = (From delSlot As DeliverySlot In lastDeliveryDate.DeliverySlots Select delSlot Order By delSlot.Sequence Ascending).Last()

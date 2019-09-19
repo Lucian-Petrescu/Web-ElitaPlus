@@ -214,7 +214,8 @@ Partial Class CommentListForm
                 '    e.Item.Cells(Me.GRID_COL_COMMENT_TEXT).Text = dvRow(Comment.CommentSearchDV.COL_COMMENTS).ToString
                 'End If
                 Dim createdDate As Date = CType(dvRow(Comment.CommentSearchDV.COL_CREATED_DATE), Date)
-                e.Item.Cells(Me.GRID_COL_TIME_STAMP).Text = Me.GetLongDateFormattedString(createdDate)
+                'Sridhar e.Item.Cells(Me.GRID_COL_TIME_STAMP).Text = Me.GetLongDateFormattedString(createdDate)
+                e.Item.Cells(Me.GRID_COL_TIME_STAMP).Text = GetLongDateFormattedString(createdDate)
             End If
 
             '''e.Item.Attributes.Add("onmouseover", "this.style.backgroundColor='#99CCFF'")

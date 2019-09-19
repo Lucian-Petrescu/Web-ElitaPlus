@@ -222,7 +222,8 @@ Partial Class LocateServiceCenterForm
             moProtectionAndEventDetails.ClaimStatus = NO_DATA
             moProtectionAndEventDetails.CallerName = CType(Me.NavController.FlowSession(FlowSessionKeys.SESSION_CALLER_NAME), String)
 
-            If dateOfLoss > Date.MinValue Then moProtectionAndEventDetails.DateOfLoss = dateOfLoss.ToString(Me.DATE_FORMAT)
+            'Sridhar If dateOfLoss > Date.MinValue Then moProtectionAndEventDetails.DateOfLoss = dateOfLoss.ToString(Me.DATE_FORMAT)
+            If dateOfLoss > Date.MinValue Then moProtectionAndEventDetails.DateOfLoss = GetDateFormattedString(dateOfLoss)
             moProtectionAndEventDetails.ProtectionStatus = LookupListNew.GetDescriptionFromId("SUBSTAT", cert.SubscriberStatus)
             If (LookupListNew.GetCodeFromId("SUBSTAT", cert.SubscriberStatus) = Codes.SUBSCRIBER_STATUS__ACTIVE) Then
                 cssClassName = "StatActive"
@@ -243,7 +244,8 @@ Partial Class LocateServiceCenterForm
             End If
             moProtectionAndEventDetails.ProtectionStatusCss = cssClassName
             moProtectionAndEventDetails.TypeOfLoss = LookupListNew.GetDescriptionFromId(LookupListNew.LK_RISKTYPES, certItem.RiskTypeId)
-            moProtectionAndEventDetails.DateOfLoss = dateOfLoss.ToString(Me.DATE_FORMAT)
+            'moProtectionAndEventDetails.DateOfLoss = dateOfLoss.ToString(Me.DATE_FORMAT)
+            moProtectionAndEventDetails.DateOfLoss = GetDateFormattedString(dateOfLoss)
         Catch ex As Exception
             Me.HandleErrors(ex, Me.MasterPage.MessageController)
         End Try

@@ -1,0 +1,132 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xs:schema xmlns:tns="http://elita.assurant.com/Elita/Claim/RecordingService" elementFormDefault="qualified" targetNamespace="http://elita.assurant.com/Elita/Claim/RecordingService" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+  <xs:import schemaLocation="http://localhost/ElitaClaimService/ClaimRecordingService.svc?xsd=xsd1" namespace="http://elita.assurant.com/Elita/Claim/RecordingService/DataContracts" />
+  <xs:import schemaLocation="http://localhost/ElitaClaimService/ClaimRecordingService.svc?xsd=xsd0" namespace="http://schemas.microsoft.com/2003/10/Serialization/" />
+  <xs:import schemaLocation="http://localhost/ElitaClaimService/ClaimRecordingService.svc?xsd=xsd10" namespace="http://schemas.datacontract.org/2004/07/Assurant.Elita.ClaimService.BusinessRulesEngineInterface.Contracts" />
+  <xs:element name="BeginClaim">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element xmlns:q1="http://elita.assurant.com/Elita/Claim/RecordingService/DataContracts" minOccurs="0" name="request" nillable="true" type="q1:CreateCaseRequest" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="BeginClaimResponse">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element xmlns:q2="http://elita.assurant.com/Elita/Claim/RecordingService/DataContracts" minOccurs="0" name="BeginClaimResult" nillable="true" type="q2:BaseClaimRecordingResponse" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="BeginInteraction">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element xmlns:q3="http://elita.assurant.com/Elita/Claim/RecordingService/DataContracts" minOccurs="0" name="request" nillable="true" type="q3:BeginInteractionRequest" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="BeginInteractionResponse">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element xmlns:q4="http://elita.assurant.com/Elita/Claim/RecordingService/DataContracts" minOccurs="0" name="BeginInteractionResult" nillable="true" type="q4:BaseClaimRecordingResponse" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="Submit">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element xmlns:q5="http://elita.assurant.com/Elita/Claim/RecordingService/DataContracts" minOccurs="0" name="request" nillable="true" type="q5:BaseClaimRecordingRequest" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="SubmitResponse">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element xmlns:q6="http://elita.assurant.com/Elita/Claim/RecordingService/DataContracts" minOccurs="0" name="SubmitResult" nillable="true" type="q6:BaseClaimRecordingResponse" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="Save">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element xmlns:q7="http://elita.assurant.com/Elita/Claim/RecordingService/DataContracts" minOccurs="0" name="request" nillable="true" type="q7:BaseClaimRecordingRequest" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="SaveResponse">
+    <xs:complexType>
+      <xs:sequence />
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="GetClaimSummary">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element xmlns:q8="http://elita.assurant.com/Elita/Claim/RecordingService/DataContracts" minOccurs="0" name="request" nillable="true" type="q8:GetClaimSummaryRequest" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="GetClaimSummaryResponse">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element xmlns:q9="http://elita.assurant.com/Elita/Claim/RecordingService/DataContracts" minOccurs="0" name="GetClaimSummaryResult" nillable="true" type="q9:GetClaimSummaryResponse" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="ReEvaluateQuestions">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element xmlns:q10="http://elita.assurant.com/Elita/Claim/RecordingService/DataContracts" minOccurs="0" name="question" nillable="true" type="q10:ArrayOfQuestion" />
+        <xs:element xmlns:q11="http://elita.assurant.com/Elita/Claim/RecordingService/DataContracts" minOccurs="0" name="parameters" nillable="true" type="q11:ArrayOfQuestionSetParameter" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="ReEvaluateQuestionsResponse">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element xmlns:q12="http://elita.assurant.com/Elita/Claim/RecordingService/DataContracts" minOccurs="0" name="ReEvaluateQuestionsResult" nillable="true" type="q12:ArrayOfQuestion" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="UpdateCaseAction">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" name="caseNumber" nillable="true" type="xs:string" />
+        <xs:element minOccurs="0" name="companyCode" nillable="true" type="xs:string" />
+        <xs:element minOccurs="0" name="actionCode" nillable="true" type="xs:string" />
+        <xs:element minOccurs="0" name="actionStatus" nillable="true" type="xs:string" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="UpdateCaseActionResponse">
+    <xs:complexType>
+      <xs:sequence />
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="GetPolicySummaryInfo">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element xmlns:q13="http://schemas.microsoft.com/2003/10/Serialization/" minOccurs="0" name="claimId" type="q13:guid" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="GetPolicySummaryInfoResponse">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element xmlns:q14="http://schemas.datacontract.org/2004/07/Assurant.Elita.ClaimService.BusinessRulesEngineInterface.Contracts" minOccurs="0" name="GetPolicySummaryInfoResult" nillable="true" type="q14:PolicyInfo" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="GetCourierDurations">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element xmlns:q15="http://elita.assurant.com/Elita/Claim/RecordingService/DataContracts" minOccurs="0" name="request" nillable="true" type="q15:GetDurationRequest" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="GetCourierDurationsResponse">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element xmlns:q16="http://elita.assurant.com/Elita/Claim/RecordingService/DataContracts" minOccurs="0" name="GetCourierDurationsResult" nillable="true" type="q16:ArrayOfGetDurationResponse" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+</xs:schema>

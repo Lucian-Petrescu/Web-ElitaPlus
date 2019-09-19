@@ -1047,7 +1047,8 @@ Public Class ClaimWizardForm
 
     Private Sub ClearForm()
         Me.PopulateControlFromBOProperty(Me.DocumentTypeDropDown, LookupListNew.GetIdFromCode(LookupListNew.LK_DOCUMENT_TYPES, Codes.DOCUMENT_TYPE__OTHER))
-        Me.PopulateControlFromBOProperty(Me.ScanDateTextBox, DateTime.Now, Me.DATE_TIME_FORMAT)
+        'Sridhar Me.PopulateControlFromBOProperty(Me.ScanDateTextBox, DateTime.Now, Me.DATE_TIME_FORMAT)
+        Me.PopulateControlFromBOProperty(Me.ScanDateTextBox, GetLongDateFormattedString(DateTime.Now))
         Me.CommentTextBox.Text = String.Empty
     End Sub
 #End Region
@@ -1579,7 +1580,8 @@ Public Class ClaimWizardForm
                 moProtectionAndEventDetails.CallerName = Me.State.CallerName
             End If
 
-            If State.DateOfLoss > Date.MinValue Then moProtectionAndEventDetails.DateOfLoss = State.DateOfLoss.ToString(Me.DATE_FORMAT)
+            'Sridhar If State.DateOfLoss > Date.MinValue Then moProtectionAndEventDetails.DateOfLoss = State.DateOfLoss.ToString(Me.DATE_FORMAT)
+            If State.DateOfLoss > Date.MinValue Then moProtectionAndEventDetails.DateOfLoss = GetDateFormattedString(State.DateOfLoss)
 
             moProtectionAndEventDetails.ProtectionStatus = LookupListNew.GetDescriptionFromCode("CSTAT", Me.State.CertBO.StatusCode)
             If (Me.State.CertBO.StatusCode = Codes.CERTIFICATE_STATUS__ACTIVE) Then
@@ -1592,7 +1594,8 @@ Public Class ClaimWizardForm
         moProtectionAndEventDetails.ProtectionStatusCss = cssClassName
 
         If (Me.State.DateOfLoss > Date.MinValue) Then
-            moProtectionAndEventDetails.DateOfLoss = Me.State.DateOfLoss.ToString(Me.DATE_FORMAT)
+            'Sridhar moProtectionAndEventDetails.DateOfLoss = Me.State.DateOfLoss.ToString(Me.DATE_FORMAT)
+            moProtectionAndEventDetails.DateOfLoss = GetDateFormattedString(Me.State.DateOfLoss)
         End If
 
         If (Not Me.State.CertItemBO Is Nothing) Then
@@ -1608,7 +1611,8 @@ Public Class ClaimWizardForm
             moProtectionAndEventDetails.ClaimNumber = Me.State.ClaimBO.ClaimNumber
             moProtectionAndEventDetails.ClaimStatus = LookupListNew.GetClaimStatusFromCode(ElitaPlusIdentity.Current.ActiveUser.LanguageId, Me.State.ClaimBO.StatusCode)
             moProtectionAndEventDetails.ClaimStatusCss = If(Me.State.ClaimBO.Status = BasicClaimStatus.Active, "StatActive", "StatClosed")
-            moProtectionAndEventDetails.DateOfLoss = Me.State.ClaimBO.LossDate.Value.ToString(Me.DATE_FORMAT)
+            'Sridhar moProtectionAndEventDetails.DateOfLoss = Me.State.ClaimBO.LossDate.Value.ToString(Me.DATE_FORMAT)
+            moProtectionAndEventDetails.DateOfLoss = GetDateFormattedString(Me.State.ClaimBO.LossDate.Value)
 
             If Not Me.State.ClaimBO.ClaimedEquipment Is Nothing Then
                 moProtectionAndEventDetails.ClaimedMake = Me.State.ClaimBO.ClaimedEquipment.Manufacturer
@@ -1859,8 +1863,11 @@ Public Class ClaimWizardForm
                 If (Not Page.IsPostBack) Then
                     Me.State.DateReported = Date.Today
                 End If
-                If State.DateReported > Date.MinValue Then PopulateControlFromBOProperty(step1_txtDateReported, New DateType(State.DateReported), Me.DATE_FORMAT)
-                If State.DateOfLoss > Date.MinValue Then PopulateControlFromBOProperty(step1_moDateOfLossText, New DateType(State.DateOfLoss), Me.DATE_FORMAT)
+                'Sridhar If State.DateReported > Date.MinValue Then PopulateControlFromBOProperty(step1_txtDateReported, New DateType(State.DateReported), Me.DATE_FORMAT)
+                'Sridhar If State.DateOfLoss > Date.MinValue Then PopulateControlFromBOProperty(step1_moDateOfLossText, New DateType(State.DateOfLoss), Me.DATE_FORMAT)
+                If State.DateReported > Date.MinValue Then PopulateControlFromBOProperty(step1_txtDateReported, GetDateFormattedString(New DateType(State.DateReported)))
+                If State.DateOfLoss > Date.MinValue Then PopulateControlFromBOProperty(step1_moDateOfLossText, GetDateFormattedString(New DateType(State.DateOfLoss)))
+
                 If (Me.State.CallerName Is Nothing) Then
                     step1_textCallerName.Text = Me.State.CertBO.CustomerName
                 Else
@@ -1900,7 +1907,8 @@ Public Class ClaimWizardForm
                 Me.PopulateControlFromBOProperty(Me.step5_cboCommentType, Me.State.CommentBO.CommentTypeId)
 
                 If Not Me.State.CommentBO.CreatedDate Is Nothing Then
-                    Me.PopulateControlFromBOProperty(Me.step5_TextboxDateTime, Me.GetLongDateFormattedString(Me.State.CommentBO.CreatedDate.Value))
+                    'Sridhar Me.PopulateControlFromBOProperty(Me.step5_TextboxDateTime, Me.GetLongDateFormattedString(Me.State.CommentBO.CreatedDate.Value))
+                    Me.PopulateControlFromBOProperty(Me.step5_TextboxDateTime, GetLongDateFormattedString(Me.State.CommentBO.CreatedDate.Value))
                 Else
                     Me.PopulateControlFromBOProperty(Me.step5_TextboxDateTime, Nothing)
                 End If
@@ -2149,11 +2157,15 @@ Public Class ClaimWizardForm
         Me.step2_TextboxMethodOfRepair.ReadOnly = True
 
         Me.PopulateControlFromBOProperty(Me.step2_TextboxSerialNumber, Me.State.CertItemBO.SerialNumber)
-        Me.PopulateControlFromBOProperty(Me.step2_TextboxBeginDate, Me.State.CertItemCoverageBO.BeginDate, Me.DATE_FORMAT)
-        Me.PopulateControlFromBOProperty(Me.step2_TextboxEndDate, Me.State.CertItemCoverageBO.EndDate, Me.DATE_FORMAT)
+        'Sridhar Me.PopulateControlFromBOProperty(Me.step2_TextboxBeginDate, Me.State.CertItemCoverageBO.BeginDate, Me.DATE_FORMAT)
+        'Me.PopulateControlFromBOProperty(Me.step2_TextboxEndDate, Me.State.CertItemCoverageBO.EndDate, Me.DATE_FORMAT)
+        Me.PopulateControlFromBOProperty(Me.step2_TextboxBeginDate, GetDateFormattedString(Me.State.CertItemCoverageBO.BeginDate))
+        Me.PopulateControlFromBOProperty(Me.step2_TextboxEndDate, GetDateFormattedString(Me.State.CertItemCoverageBO.EndDate))
+
         Me.PopulateControlFromBOProperty(Me.step2_TextboxLiabilityLimit, Me.State.CertItemCoverageBO.LiabilityLimits, Me.DECIMAL_FORMAT)
         Me.PopulateControlFromBOProperty(Me.step2_TextboxCoverageType, Me.State.CertItemBO.GetCoverageTypeDescription(Me.State.CertItemCoverageBO.CoverageTypeId))
-        Me.PopulateControlFromBOProperty(Me.step2_TextboxDateAdded, Me.State.CertItemCoverageBO.CreatedDate, Me.DATE_FORMAT)
+        'Sridhar Me.PopulateControlFromBOProperty(Me.step2_TextboxDateAdded, Me.State.CertItemCoverageBO.CreatedDate, Me.DATE_FORMAT)
+        Me.PopulateControlFromBOProperty(Me.step2_TextboxDateAdded, GetDateFormattedString(Me.State.CertItemCoverageBO.CreatedDate))
         Me.PopulateControlFromBOProperty(Me.step2_TextboxDealerItemDesc, Me.State.CertItemBO.ItemDescription)
         Me.PopulateControlFromBOProperty(Me.step2_TextboxInvNum, Me.State.CertBO.InvoiceNumber)
         Me.PopulateControlFromBOProperty(Me.step2_TextboxProductCode, Me.State.CertItemBO.CertProductCode)
@@ -3441,14 +3453,17 @@ Public Class ClaimWizardForm
                     End If
                 End If
             Case ClaimWizardSteps.Step3
+                'Sridhar Commented this
+                'Dim reportDate As Date
+                'Dim cultureName As String = Thread.CurrentThread.CurrentCulture.Name
+                'If cultureName.Equals("ja-JP") Then
+                '    Dim dateFragments() As String = step3_TextboxReportDate.Text.Split("-")
+                '    reportDate = New DateTime(Integer.Parse(dateFragments(2)), Integer.Parse(dateFragments(1)), Integer.Parse(dateFragments(0))).Date
+                'Else
+                '    reportDate = step3_TextboxReportDate.Text
+                'End If
                 Dim reportDate As Date
-                Dim cultureName As String = Thread.CurrentThread.CurrentCulture.Name
-                If cultureName.Equals("ja-JP") Then
-                    Dim dateFragments() As String = step3_TextboxReportDate.Text.Split("-")
-                    reportDate = New DateTime(Integer.Parse(dateFragments(2)), Integer.Parse(dateFragments(1)), Integer.Parse(dateFragments(0))).Date
-                Else
-                    reportDate = step3_TextboxReportDate.Text
-                End If
+                reportDate = step3_TextboxReportDate.Text
                 flag = Me.State.CertItemCoverageBO.IsCoverageValidToOpenClaim(errMsg, warningMsg, reportDate)
 
                 If Me.State.CertItemBO.IsEquipmentRequired Then

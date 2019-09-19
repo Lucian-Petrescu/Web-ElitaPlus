@@ -335,7 +335,8 @@ Namespace Certificates
                     Me.PopulateControlFromBOProperty(Me.TextboxMethodOfRepair, getMethodOfRepairDesc)
                     Me.PopulateControlFromBOProperty(Me.TextboxInvNum, moCertificate.InvoiceNumber)
                     Me.PopulateControlFromBOProperty(Me.TextboxProductCode, moCertificate.ProductCode)
-                    Me.PopulateControlFromBOProperty(Me.TextboxDateAdded, New DateType(System.DateTime.Today), Me.DATE_FORMAT)
+                    'Sridhar Me.PopulateControlFromBOProperty(Me.TextboxDateAdded, New DateType(System.DateTime.Today), Me.DATE_FORMAT)
+                    Me.PopulateControlFromBOProperty(Me.TextboxDateAdded, GetDateFormattedString(DateTime.Today))
                 End With
             Catch ex As Exception
                 Me.HandleErrors(ex, Me.ErrorCtrl)
@@ -443,8 +444,10 @@ Namespace Certificates
             Dim dvCov As CertItemCoverage.CertItemCoverageSearchDV = CertItemCoverage.GetItemCoverages(Me.State.certificateId)
             For i = 0 To dvCov.Count - 1
                 If New Guid(CType(dvCov(i)("cert_item_coverage_id"), Byte())).Equals(Me.GetSelectedItem(cboCoverageType)) Then
-                    Me.PopulateControlFromBOProperty(Me.TextboxBeginDate, New DateType(CType(dvCov(i)(CertItemCoverageDAL.COL_NAME_BEGIN_DATE), Date)), Me.DATE_FORMAT)
-                    Me.PopulateControlFromBOProperty(Me.TextboxEndDate, New DateType(CType(dvCov(i)(CertItemCoverageDAL.COL_NAME_END_DATE), Date)), Me.DATE_FORMAT)
+                    'Sridhar Me.PopulateControlFromBOProperty(Me.TextboxBeginDate, New DateType(CType(dvCov(i)(CertItemCoverageDAL.COL_NAME_BEGIN_DATE), Date)), Me.DATE_FORMAT)
+                    'Sridhar Me.PopulateControlFromBOProperty(Me.TextboxEndDate, New DateType(CType(dvCov(i)(CertItemCoverageDAL.COL_NAME_END_DATE), Date)), Me.DATE_FORMAT)
+                    Me.PopulateControlFromBOProperty(Me.TextboxBeginDate, GetDateFormattedString(New DateType(CType(dvCov(i)(CertItemCoverageDAL.COL_NAME_BEGIN_DATE), Date))))
+                    Me.PopulateControlFromBOProperty(Me.TextboxEndDate, GetDateFormattedString(New DateType(CType(dvCov(i)(CertItemCoverageDAL.COL_NAME_END_DATE), Date))))
                     Me.PopulateControlFromBOProperty(Me.TextboxLiabilityLimit, CType(dvCov(i)(CertItemCoverageDAL.COL_NAME_LIABILITY_LIMITS), Decimal), Me.DECIMAL_FORMAT)
                     Me.PopulateControlFromBOProperty(Me.TextboxDeductible, CType(dvCov(i)(CertItemCoverageDAL.COL_NAME_DEDUCTIBLE), Decimal), Me.DECIMAL_FORMAT)
                     Me.PopulateControlFromBOProperty(Me.TextboxComputeDeductible, LookupListNew.GetDescriptionFromId(LookupListNew.LK_DEDUCTIBLE_BASED_ON, New Guid(GetGuidStringFromByteArray(CType(dvCov(i)(CertItemCoverageDAL.COL_NAME_DEDUCTIBLE_BASED_ON_ID), Byte())))))
