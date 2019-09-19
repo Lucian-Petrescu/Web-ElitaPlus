@@ -1,7 +1,7 @@
 ﻿<%@ Control Language="vb" AutoEventWireup="false" CodeBehind="UserControlDeliverySlot.ascx.vb" Inherits="Assurant.ElitaPlus.ElitaPlusWebApp.UserControlDeliverySlot" %>
 <tr runat="server" id="trCourierProduct">
     <td align="right" nowrap="nowrap">
-        <asp:Label runat="server" ID="lblCourierProduct" Visible="false">COURIER_PRODUCT</asp:Label>:
+        <asp:Label runat="server" ID="lblCourierProduct" Visible="false">COURIER_PRODUCT</asp:Label>
     </td>
     <td align="left" nowrap="nowrap">
         <asp:DropDownList ID="ddlCourierProduct" runat="server" Visible="false" SkinID="MediumDropDown" AutoPostBack="true" OnSelectedIndexChanged="ddlCourierProduct_SelectedIndexChanged">
