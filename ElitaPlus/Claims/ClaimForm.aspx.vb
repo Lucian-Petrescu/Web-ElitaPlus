@@ -1934,8 +1934,11 @@ Partial Class ClaimForm
                         Function(item) item.ExtendedCode = logisticStage.HandlingStore.StoreTypeXcd).FirstOrDefault()
                     Me.PopulateControlFromBOProperty(Me.txtStoreType, storeTypeItem.Translation)
 
+
+
                     If logisticStage.Shipping.TrackingNumber IsNot Nothing AndAlso
-                        Not String.IsNullOrEmpty(logisticStage.Shipping.TrackingNumber.ToString()) Then
+                        Not String.IsNullOrEmpty(logisticStage.Shipping.TrackingNumber.ToString()) AndAlso
+                        Not String.IsNullOrEmpty(storeTypeItem.Translation) Then
                         Dim PasscodeResponse = GetPasscode(logisticStage.Shipping.TrackingNumber.ToString())
                         Me.PopulateControlFromBOProperty(Me.txtPasscode, PasscodeResponse)
                     Else
