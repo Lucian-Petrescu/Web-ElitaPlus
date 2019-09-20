@@ -30,7 +30,7 @@
             </table>
         </div>
     </div>
-    <asp:GridView ID="CloseRulesGrid" runat="server" Width="100%" DataKeyNames="claim_close_rule_id,company_id, dealer_id, claim_status_by_group_id, reason_closed_id, parent_claim_close_rule_id"
+    <asp:GridView ID="CloseRulesGrid" runat="server" Width="100%" DataKeyNames="claim_close_rule_id,company_id, dealer_id, claim_status_by_group_id, reason_closed_id, parent_claim_close_rule_id, claim_issue_id, close_rule_based_on_id"
         AllowPaging="True" AllowSorting="False" AutoGenerateColumns="False" SkinID="DetailPageGridView" CssClass = "grid-view"
         PageSize="2">
         <SelectedRowStyle Wrap="True"></SelectedRowStyle>
@@ -55,7 +55,7 @@
                     <asp:Label ID="lblCloseRuleBasedOn" runat="server" Text='<%#Container.DataItem("close_rule_based_on")%>'></asp:Label>
                 </ItemTemplate>
                 <EditItemTemplate>
-                    <asp:DropDownList ID="cboRuleBasedOn" runat="server" Visible="True" SkinID="SmallDropDown">
+                    <asp:DropDownList ID="cboRuleBasedOn" runat="server" Visible="True" SkinID="SmallDropDown" AutoPostBack="true" OnSelectedIndexChanged="cboRuleBasedOn_SelectedIndexChanged">
                     </asp:DropDownList>
                 </EditItemTemplate>
             </asp:TemplateField>
@@ -65,6 +65,15 @@
                 </ItemTemplate>
                 <EditItemTemplate>
                     <asp:DropDownList ID="cboClaimStatusByGroup" runat="server" Visible="True" SkinID="SmallDropDown">
+                    </asp:DropDownList>
+                </EditItemTemplate>
+            </asp:TemplateField>
+            <asp:TemplateField Visible="True" HeaderText="CLAIM_ISSUES">
+                <ItemTemplate>
+                    <asp:Label ID="lblClaimIssue" runat="server" Text='<%#Container.DataItem("claim_issue")%>'></asp:Label>
+                </ItemTemplate>
+                <EditItemTemplate>
+                    <asp:DropDownList ID="cboClaimIssue" runat="server" Visible="True" SkinID="SmallDropDown">
                     </asp:DropDownList>
                 </EditItemTemplate>
             </asp:TemplateField>

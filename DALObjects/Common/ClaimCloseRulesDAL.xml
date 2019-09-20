@@ -18,7 +18,8 @@
 				modified_date,
 				modified_by,
 				claim_close_rule_id,
-        parent_claim_close_rule_id
+        parent_claim_close_rule_id,
+        claim_issue_id
 			FROM elp_claim_close_rules 
 			WHERE
 				claim_close_rule_id = :claim_close_rule_id
@@ -37,7 +38,8 @@
 				reason_closed_id = :reason_closed_id,
 				active_flag = :active_flag,
 				modified_by = :modified_by,
-        parent_claim_close_rule_id = :parent_claim_close_rule_id
+        parent_claim_close_rule_id = :parent_claim_close_rule_id,
+        claim_issue_id = :claim_issue_id
 			WHERE
 				claim_close_rule_id = :claim_close_rule_id
 		]]>
@@ -54,7 +56,8 @@
     active_flag,
     created_by,
     claim_close_rule_id,
-    parent_claim_close_rule_id
+    parent_claim_close_rule_id,
+    claim_issue_id
     )
     VALUES
     (
@@ -67,7 +70,8 @@
     :active_flag,
     :created_by,
     :claim_close_rule_id,
-    :parent_claim_close_rule_id
+    :parent_claim_close_rule_id,
+    :claim_issue_id
     )
   </INSERT>
 	<DELETE>
@@ -88,7 +92,8 @@
               ccr.time_period,
               ccr.reason_closed_id,
               getenglishdescfromlistitem(ccr.reason_closed_id) reason_closed,
-              ccr.active_flag
+              ccr.active_flag,
+              ccr.claim_issue_id
       from    elp_company comp inner join elp_claim_close_rules ccr on ccr.company_id = comp.company_id
               left join elp_dealer d on ccr.dealer_id =d.dealer_id
               inner join elp_claim_status_by_group csg on csg.claim_status_by_group_id = ccr.claim_status_by_group_id
@@ -108,6 +113,7 @@
       And   ccr.claim_status_by_group_id = :claimStatusByGroupId
       And   ccr.close_rule_based_on_id = :closeRuleBasedOnId
       And   ccr.active_flag = 'Y'
+      And   ccr.claim_issue_id = :claimIssueId
 		]]>
   </VALIDATE_DEALER_CLAIM_CLOSE_RULES>
 
@@ -120,6 +126,7 @@
       And   ccr.close_rule_based_on_id = :closeRuleBasedOnId
       And   ccr.active_flag = 'Y'
       And   ccr.dealer_id Is Null
+      And   ccr.claim_issue_id = :claimIssueId
 		]]>
   </VALIDATE_COMPANY_CLAIM_CLOSE_RULES>
   

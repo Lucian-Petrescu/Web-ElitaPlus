@@ -32,14 +32,14 @@ Public Class ClaimCloseRules
         Me.Dataset = familyDS
         Me.Load()
     End Sub
-    
+
     Public Sub New(ByVal row As DataRow)
         MyBase.New(False)
         Me.Dataset = row.Table.DataSet
         Me.Row = row
     End Sub
 
-    Protected Sub Load()             
+    Protected Sub Load()
         Try
             Dim dal As New ClaimCloseRulesDAL
             If Me.Dataset.Tables.IndexOf(dal.TABLE_NAME) < 0 Then
@@ -49,13 +49,13 @@ Public Class ClaimCloseRules
             Me.Dataset.Tables(dal.TABLE_NAME).Rows.Add(newRow)
             Me.Row = newRow
             setvalue(dal.TABLE_KEY_NAME, Guid.NewGuid)
-            Initialize() 
+            Initialize()
         Catch ex As Assurant.ElitaPlus.DALObjects.DataBaseAccessException
             Throw New DataBaseAccessException(DataBaseAccessException.DatabaseAccessErrorType.ReadErr, ex)
         End Try
     End Sub
 
-    Protected Sub Load(ByVal id As Guid)               
+    Protected Sub Load(ByVal id As Guid)
         Try
             Dim dal As New ClaimCloseRulesDAL
             If Me._isDSCreator Then
@@ -81,8 +81,8 @@ Public Class ClaimCloseRules
 #End Region
 
 #Region "Private Members"
-	'Initialization code for new objects
-    Private Sub Initialize()        
+    'Initialization code for new objects
+    Private Sub Initialize()
     End Sub
 #End Region
 
@@ -100,8 +100,8 @@ Public Class ClaimCloseRules
             End If
         End Get
     End Property
-	
-    <ValueMandatory("")> _
+
+    <ValueMandatory("")>
     Public Property CompanyId() As Guid
         Get
             CheckDeleted()
@@ -116,7 +116,7 @@ Public Class ClaimCloseRules
             Me.SetValue(ClaimCloseRulesDAL.COL_NAME_COMPANY_ID, Value)
         End Set
     End Property
-	
+
     Public Property DealerId() As Guid
         Get
             CheckDeleted()
@@ -132,7 +132,7 @@ Public Class ClaimCloseRules
         End Set
     End Property
 
-    <ValueMandatory("")> _
+    <ValueMandatory("")>
     Public Property CloseRuleBasedOnId() As Guid
         Get
             CheckDeleted()
@@ -148,14 +148,14 @@ Public Class ClaimCloseRules
         End Set
     End Property
 
-    <ValueMandatory("")> _
+    <ValidClaimStatusByGroup("")>
     Public Property ClaimStatusByGroupId() As Guid
         Get
             CheckDeleted()
-            If row(ClaimCloseRulesDAL.COL_NAME_CLAIM_STATUS_BY_GROUP_ID) Is DBNull.Value Then
+            If Row(ClaimCloseRulesDAL.COL_NAME_CLAIM_STATUS_BY_GROUP_ID) Is DBNull.Value Then
                 Return Nothing
             Else
-                Return New Guid(CType(row(ClaimCloseRulesDAL.COL_NAME_CLAIM_STATUS_BY_GROUP_ID), Byte()))
+                Return New Guid(CType(Row(ClaimCloseRulesDAL.COL_NAME_CLAIM_STATUS_BY_GROUP_ID), Byte()))
             End If
         End Get
         Set(ByVal Value As Guid)
@@ -164,7 +164,23 @@ Public Class ClaimCloseRules
         End Set
     End Property
 
-    <ValueMandatory("")> _
+    <ValidClaimIssue("")>
+    Public Property ClaimIssueId() As Guid
+        Get
+            CheckDeleted()
+            If Row(ClaimCloseRulesDAL.COL_NAME_CLAIM_ISSUE_ID) Is DBNull.Value Then
+                Return Nothing
+            Else
+                Return New Guid(CType(Row(ClaimCloseRulesDAL.COL_NAME_CLAIM_ISSUE_ID), Byte()))
+            End If
+        End Get
+        Set(ByVal Value As Guid)
+            CheckDeleted()
+            Me.SetValue(ClaimCloseRulesDAL.COL_NAME_CLAIM_ISSUE_ID, Value)
+        End Set
+    End Property
+
+    <ValueMandatory("")>
     Public Property TimePeriod() As LongType
         Get
             CheckDeleted()
@@ -180,7 +196,7 @@ Public Class ClaimCloseRules
         End Set
     End Property
 
-    <ValueMandatory("")> _
+    <ValueMandatory("")>
     Public Property ReasonClosedId() As Guid
         Get
             CheckDeleted()
@@ -211,7 +227,7 @@ Public Class ClaimCloseRules
         End Set
     End Property
 
-	
+
     Public Property ActiveFlag() As String
         Get
             CheckDeleted()
@@ -226,9 +242,9 @@ Public Class ClaimCloseRules
             Me.SetValue(ClaimCloseRulesDAL.COL_NAME_ACTIVE_FLAG, Value)
         End Set
     End Property
-	
-	
-   
+
+
+
 
 #End Region
 
@@ -271,9 +287,9 @@ Public Class ClaimCloseRules
     End Function
 
     'Def-25716: Added function to validate if the claim close rules is already exists.
-    Public Shared Function ValidateClaimCloseRule(ByVal companyId As Guid, ByVal dealerId As Guid, ByVal closeRuleBasedOnId As Guid, ByVal claimStatusByGroupId As Guid, ByVal entityType As String) As Integer
+    Public Shared Function ValidateClaimCloseRule(ByVal companyId As Guid, ByVal dealerId As Guid, ByVal closeRuleBasedOnId As Guid, ByVal claimStatusByGroupId As Guid, ByVal entityType As String, ByVal claimIssueId As Guid) As Integer
         Dim claimcloseRulesDAL As New ClaimCloseRulesDAL
-        Return claimcloseRulesDAL.ValidateClaimRule(companyId, dealerId, closeRuleBasedOnId, claimStatusByGroupId, entityType)
+        Return claimcloseRulesDAL.ValidateClaimRule(companyId, dealerId, closeRuleBasedOnId, claimStatusByGroupId, entityType, claimIssueId)
 
     End Function
     Public Shared Function CopyClaimCloseRulesToNewCompany(ByVal OldcompanyId As Guid, ByVal NewCompanyId As Guid) As Integer
@@ -290,7 +306,7 @@ Public Class ClaimCloseRules
 #End Region
 
 #Region "DataView Retrieveing Methods"
-    
+
 #End Region
 
     Public Class CloseClaimRulesDV
@@ -305,6 +321,8 @@ Public Class ClaimCloseRules
         Public Const COL_CLOSE_RULE_BASED_ON As String = "close_rule_based_on"
         Public Const COL_CLAIM_STATUS_BY_GROUP_ID As String = "claim_status_by_group_id"
         Public Const COL_CLAIM_STATUS_BY_GROUP As String = "claim_status_by_group"
+        Public Const COL_CLAIM_ISSUE_ID As String = "claim_issue_id"
+        Public Const COL_CLAIM_ISSUE As String = "claim_issue"
         Public Const COL_TIME_PERIOD As String = "time_period"
         Public Const COL_REASON_CLOSED_ID As String = "reason_closed_id"
         Public Const COL_REASON_CLOSED As String = "reason_closed"
@@ -339,6 +357,8 @@ Public Class ClaimCloseRules
                 dt.Columns.Add(CloseClaimRulesDV.COL_CLOSE_RULE_BASED_ON, GetType(String))
                 dt.Columns.Add(CloseClaimRulesDV.COL_CLAIM_STATUS_BY_GROUP_ID, guidTemp.ToByteArray.GetType)
                 dt.Columns.Add(CloseClaimRulesDV.COL_CLAIM_STATUS_BY_GROUP, GetType(String))
+                dt.Columns.Add(CloseClaimRulesDV.COL_CLAIM_ISSUE_ID, guidTemp.ToByteArray.GetType)
+                dt.Columns.Add(CloseClaimRulesDV.COL_CLAIM_ISSUE, GetType(String))
                 dt.Columns.Add(CloseClaimRulesDV.COL_TIME_PERIOD, GetType(String))
                 dt.Columns.Add(CloseClaimRulesDV.COL_REASON_CLOSED_ID, guidTemp.ToByteArray.GetType)
                 dt.Columns.Add(CloseClaimRulesDV.COL_REASON_CLOSED, GetType(String))
@@ -354,6 +374,7 @@ Public Class ClaimCloseRules
             row(CloseClaimRulesDV.COL_DEALER_ID) = NewBO.DealerId.ToByteArray
             row(CloseClaimRulesDV.COL_CLOSE_RULE_BASED_ON_ID) = NewBO.CloseRuleBasedOnId.ToByteArray
             row(CloseClaimRulesDV.COL_CLAIM_STATUS_BY_GROUP_ID) = NewBO.ClaimStatusByGroupId.ToByteArray
+            row(CloseClaimRulesDV.COL_CLAIM_ISSUE_ID) = NewBO.ClaimIssueId.ToByteArray
             row(CloseClaimRulesDV.COL_REASON_CLOSED_ID) = NewBO.ReasonClosedId.ToByteArray
             row(CloseClaimRulesDV.COL_PARENT_CLAIM_CLOSE_RULE_ID) = NewBO.ParentClaimCloseRuleId.ToByteArray
 
@@ -383,6 +404,9 @@ Public Class ClaimCloseRules
             row(CloseClaimRulesDV.COL_CLAIM_STATUS_BY_GROUP_ID) = Guid.NewGuid.ToByteArray
             row.Item(CloseClaimRulesDV.COL_CLAIM_STATUS_BY_GROUP) = String.Empty
 
+            row(CloseClaimRulesDV.COL_CLAIM_ISSUE_ID) = Guid.NewGuid.ToByteArray
+            row.Item(CloseClaimRulesDV.COL_CLAIM_ISSUE) = String.Empty
+
             row(CloseClaimRulesDV.COL_TIME_PERIOD) = 0D
 
             row(CloseClaimRulesDV.COL_REASON_CLOSED_ID) = Guid.NewGuid.ToByteArray
@@ -396,8 +420,45 @@ Public Class ClaimCloseRules
             Throw New DataBaseAccessException(ex.ErrorType, ex)
         End Try
     End Function
-
-
 End Class
+
+<AttributeUsage(AttributeTargets.Property Or AttributeTargets.Field)>
+Public NotInheritable Class ValidClaimIssue
+    Inherits ValidBaseAttribute
+
+    Public Sub New(ByVal fieldDisplayName As String)
+        MyBase.New(fieldDisplayName, Common.ErrorCodes.INVALID_CLAIM_STATUS_ISSUE_COMBINATION_ERR)
+    End Sub
+
+    Public Overrides Function IsValid(ByVal valueToCheck As Object, ByVal objectToValidate As Object) As Boolean
+        Dim obj As ClaimCloseRules = CType(objectToValidate, ClaimCloseRules)
+
+        Return ClaimCloseRulesHelper.IsValidClaimStatusIssueCombination(obj.ClaimStatusByGroupId, obj.ClaimIssueId)
+    End Function
+End Class
+
+<AttributeUsage(AttributeTargets.Property Or AttributeTargets.Field)>
+Public NotInheritable Class ValidClaimStatusByGroup
+    Inherits ValidBaseAttribute
+
+    Public Sub New(ByVal fieldDisplayName As String)
+        MyBase.New(fieldDisplayName, Common.ErrorCodes.INVALID_CLAIM_STATUS_ISSUE_COMBINATION_ERR)
+    End Sub
+
+    Public Overrides Function IsValid(ByVal valueToCheck As Object, ByVal objectToValidate As Object) As Boolean
+        Dim obj As ClaimCloseRules = CType(objectToValidate, ClaimCloseRules)
+
+        Return ClaimCloseRulesHelper.IsValidClaimStatusIssueCombination(obj.ClaimStatusByGroupId, obj.ClaimIssueId)
+    End Function
+End Class
+
+Friend Class ClaimCloseRulesHelper
+    Friend Shared Function IsValidClaimStatusIssueCombination(ByVal ClaimStatusByGroupId As Guid, ByVal ClaimIssueId As Guid) As Boolean
+        Return _
+            (ClaimStatusByGroupId = Guid.Empty And Not ClaimIssueId = Guid.Empty) Or
+            (ClaimIssueId = Guid.Empty And Not ClaimStatusByGroupId = Guid.Empty)
+    End Function
+End Class
+
 
 
