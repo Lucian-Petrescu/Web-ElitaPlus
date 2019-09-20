@@ -2608,14 +2608,14 @@ Public Class ClaimRecordingForm
             Dim logisticsStage As LogisticStage
             logisticsStage = wsResponse.Stages(State.LogisticsStage)
 
-            Dim lb As Label
-            lb = CType(gvr.Cells(GridLoColLoRdoIdx).FindControl(GridLoCodeLblCtrl), Label)
+            Dim shippingCodeLabel As Label
+            shippingCodeLabel = CType(gvr.Cells(GridLoColLoRdoIdx).FindControl(GridLoCodeLblCtrl), Label)
 
             Dim ucDeliverySlots As UserControlDeliverySlot = CType(gvr.Cells(GridLoColLoDetailIdx).FindControl(LogisticsOptionsEstimateDeliveryDateCtrl), UserControlDeliverySlot)
             ucDeliverySlots.Visible = True
             Dim deliveryAddress As ClaimRecordingService.Address
 
-            Dim lOption As LogisticOption = logisticsStage.Options.FirstOrDefault(Function(q) q.Code = lb.Text)
+            Dim lOption As LogisticOption = logisticsStage.Options.FirstOrDefault(Function(q) q.Code = shippingCodeLabel.Text)
             ' Logistics Options
             If lOption.Type = LogisticOptionType.DealerBranchAddress Then
                 CType(lOption.LogisticOptionInfo, LogisticOptionInfoDealerBranchAddress).Address = PopulateAddressFromAddressController(CType(gvr.Cells(GridLoColLoDetailIdx).FindControl("ucAddressControllerLogisticsOptions"), UserControlAddress_New))
@@ -2628,7 +2628,7 @@ Public Class ClaimRecordingForm
 
             GetEstimatedDeliveryDate(ucDeliverySlots, deliveryAddress, lOption.DeliveryOptions)
 
-            If lb.Text = "X" Then
+            If shippingCodeLabel.Text.ToUpper() = "X" Then
                 If ucDeliverySlots.IsDeliverySlotAvailable Then
                     ControlMgr.SetEnableControl(Me, btnLogisticsOptionsContinue, True)
                     UserControlDeliverySlot.Visible = True
