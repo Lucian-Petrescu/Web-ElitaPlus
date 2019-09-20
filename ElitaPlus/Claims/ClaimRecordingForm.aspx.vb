@@ -2428,10 +2428,21 @@ Public Class ClaimRecordingForm
                             Return False
                         Else
                             If Not lOption.LogisticOptionInfo Is Nothing Then
-                                lOption.LogisticOptionInfo.EstimatedChangedDeliveryDate = selectedDeliveryDate
+                                If State.LogisticsOption.Code.ToUpper().Equals("X") Then
+                                    Dim DeliverySlotDescr As String = ucDeliverySlots.DeliverySlotDescription
+
+                                    Select Case DeliverySlotDescr.ToUpper()
+                                        Case "EXP_DEL4"
+                                            lOption.LogisticOptionInfo.EstimatedChangedDeliveryDate = Date.Now.AddHours(4)
+                                        Case "EXP_DEL3"
+                                            lOption.LogisticOptionInfo.EstimatedChangedDeliveryDate = Date.Now.AddHours(3)
+                                    End Select
+                                Else
+                                    lOption.LogisticOptionInfo.EstimatedChangedDeliveryDate = selectedDeliveryDate
+                                End If
                             End If
                         End If
-                        End If
+                    End If
 
                     End If
                 islogisticsOptionSelected = True

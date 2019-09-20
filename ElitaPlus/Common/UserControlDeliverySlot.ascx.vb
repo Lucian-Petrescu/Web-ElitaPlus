@@ -328,20 +328,29 @@ Public Class UserControlDeliverySlot
                                                                             Function(ByVal c As WebAppGatewayClient)
                                                                                 Return c.GetDeliverySlots(wsRequest)
                                                                             End Function)
-            If wsResponse IsNot Nothing AndAlso wsResponse.DeliveryEstimates IsNot Nothing AndAlso wsResponse.DeliveryEstimates.Length > 0 _
-               AndAlso wsResponse.DeliveryEstimates.Any(Function(e As DeliveryEstimate)
-                                                            Return e.AvailableDeliveryDays.Any(Function(d As DeliveryDay)
-                                                                                                   Return d.DeliverySlots?.Length > 0
-                                                                                               End Function)
-                                                        End Function) Then
+
+
+            If wsResponse IsNot Nothing AndAlso wsResponse.DeliveryEstimates IsNot Nothing AndAlso wsResponse.DeliveryEstimates.Length > 0 Then
+
+                If wsResponse.DeliveryEstimates.Any(Function(e As DeliveryEstimate)
+                                                        Return e.AvailableDeliveryDays.Any(Function(d As DeliveryDay)
+                                                                                               Return d.DeliverySlots?.Length < 1
+                                                                                           End Function)
+                                                    End Function) Then
+                    State.IsDeliverySlotAvailable = False
+                    ClearDisableAll()
+                    Page.MasterPage.MessageController.AddInformation("Message.MSG_ERR_ESTIMATED_DELIVERY_SLOT_NOT_FOUND", True)
+                    Exit Sub
+                End If
+
                 State.DeliveryDateList = wsResponse.DeliveryEstimates
-                ShowInitDeliveryEstimates()
-                State.IsDeliverySlotAvailable = True
-            Else
-                ClearDisableAll()
-                                                        Page.MasterPage.MessageController.AddInformation(Message.MSG_ERR_ESTIMATED_DELIVERY_DATE_NOT_FOUND, True)
-                                                        Exit Sub
-                                                    End If
+                    ShowInitDeliveryEstimates()
+                    State.IsDeliverySlotAvailable = True
+                Else
+                    ClearDisableAll()
+                Page.MasterPage.MessageController.AddInformation(Message.MSG_ERR_ESTIMATED_DELIVERY_DATE_NOT_FOUND, True)
+                Exit Sub
+            End If
         Catch fex As FaultException
             ClearDisableAll()
             ShowFaultException(fex)
