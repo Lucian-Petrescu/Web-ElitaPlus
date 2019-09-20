@@ -2642,15 +2642,15 @@ Public Class ClaimRecordingForm
             If shippingCodeLabel.Text.ToUpper() = "X" Then
                 If ucDeliverySlots.IsDeliverySlotAvailable Then
                     ControlMgr.SetEnableControl(Me, btnLogisticsOptionsContinue, True)
-                    UserControlDeliverySlot.Visible = True
+                    ucDeliverySlots.Visible = True
                 Else
                     ControlMgr.SetEnableControl(Me, btnLogisticsOptionsContinue, False)
-                    UserControlDeliverySlot.Visible = False
+                    ucDeliverySlots.Visible = False
                 End If
 
             Else
                 ControlMgr.SetEnableControl(Me, btnLogisticsOptionsContinue, True)
-                UserControlDeliverySlot.Visible = True
+                ucDeliverySlots.Visible = True
             End If
 
         Catch ex As Exception
