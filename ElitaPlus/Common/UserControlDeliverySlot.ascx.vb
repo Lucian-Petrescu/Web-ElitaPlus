@@ -100,6 +100,14 @@ Public Class UserControlDeliverySlot
             State.CourierProductCode = value
         End Set
     End Property
+    Public Property DeliverySlotDescription() As String
+        Get
+            Return State.DeliverySlotDescription
+        End Get
+        Set(ByVal value As String)
+            State.DeliverySlotDescription = value
+        End Set
+    End Property
 
     Public Property DeliveryAddress() As DeliveryAddressInfo
         Get
@@ -107,6 +115,16 @@ Public Class UserControlDeliverySlot
         End Get
         Set(ByVal value As DeliveryAddressInfo)
             State.DeliveryAddress = value
+        End Set
+    End Property
+
+    Public Property IsDeliverySlotAvailable() As Boolean
+
+        Get
+            Return State.IsDeliverySlotAvailable
+        End Get
+        Set(ByVal value As Boolean)
+            State.IsDeliverySlotAvailable = value
         End Set
     End Property
 #End Region
@@ -123,7 +141,9 @@ Public Class UserControlDeliverySlot
         Public DefaultDeliveryDay As DeliveryDay
         Public DeliveryDateSelected As Nullable(Of Date)
         Public CurrentEstimate As DeliveryEstimate
-        Public EnableNotSepecifyCheck as Boolean
+        Public EnableNotSepecifyCheck As Boolean
+        Public IsDeliverySlotAvailable As Boolean
+        Public DeliverySlotDescription As String
     End Class
 
 
@@ -308,14 +328,20 @@ Public Class UserControlDeliverySlot
                                                                             Function(ByVal c As WebAppGatewayClient)
                                                                                 Return c.GetDeliverySlots(wsRequest)
                                                                             End Function)
-            If wsResponse IsNot Nothing AndAlso wsResponse.DeliveryEstimates IsNot Nothing AndAlso wsResponse.DeliveryEstimates.Length > 0 Then
+            If wsResponse IsNot Nothing AndAlso wsResponse.DeliveryEstimates IsNot Nothing AndAlso wsResponse.DeliveryEstimates.Length > 0 _
+               AndAlso wsResponse.DeliveryEstimates.Any(Function(e As DeliveryEstimate)
+                                                            Return e.AvailableDeliveryDays.Any(Function(d As DeliveryDay)
+                                                                                                   Return d.DeliverySlots?.Length > 0
+                                                                                               End Function)
+                                                        End Function) Then
                 State.DeliveryDateList = wsResponse.DeliveryEstimates
                 ShowInitDeliveryEstimates()
+                State.IsDeliverySlotAvailable = True
             Else
                 ClearDisableAll()
-                Page.MasterPage.MessageController.AddInformation(Message.MSG_ERR_ESTIMATED_DELIVERY_DATE_NOT_FOUND, True)
-                Exit Sub
-            End If
+                                                        Page.MasterPage.MessageController.AddInformation(Message.MSG_ERR_ESTIMATED_DELIVERY_DATE_NOT_FOUND, True)
+                                                        Exit Sub
+                                                    End If
         Catch fex As FaultException
             ClearDisableAll()
             ShowFaultException(fex)
@@ -414,6 +440,7 @@ Public Class UserControlDeliverySlot
                     Dim fastestDeliveryTimeSlot As DeliverySlot = (From delSlot As DeliverySlot In fastestDeliveryDate.DeliverySlots Select delSlot Order By delSlot.Sequence Ascending).First()
                     If fastestDeliveryTimeSlot IsNot Nothing Then
                         fastestDeliveryDateTime = If(LookupListNew.GetDescriptionFromCode(LookupListNew.LK_DESIRED_DELIVERY_TIME_SLOT, fastestDeliveryTimeSlot.Description, Authentication.CurrentUser.LanguageId), fastestDeliveryTimeSlot.Description) + " " + fDeliveryDate
+                        State.DeliverySlotDescription = fastestDeliveryTimeSlot.Description
                     Else
                         fastestDeliveryDateTime = TranslationBase.TranslateLabelOrMessage("TIME_SLOT_NOT_APPLICABLE") + " " + fDeliveryDate
                     End If
