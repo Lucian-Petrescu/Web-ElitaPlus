@@ -403,6 +403,7 @@ Public Class Message
     Public Const MSG_ERR_GET_DELIVERY_DATE As String = "MSG_ERR_GET_DELIVERY_DATE" ' Country/Postal code is changed, please get the delivery date again
     Public Const MSG_ERR_DEFAULT_SERVICE_CENTER_ADDRESS As String = "MSG_ERR_DEFAULT_SERVICE_CENTER_ADDRESS" ' Address of the default service center for the select country is not set up
     Public Const MSG_ERR_ESTIMATED_DELIVERY_DATE_NOT_FOUND As String = "MSG_ERR_ESTIMATED_DELIVERY_DATE_NOT_FOUND" ' Estimated delivery date is not found for the country/zip code
+    Public Const MSG_ERR_ESTIMATED_DELIVERY_SLOT_NOT_FOUND As String = "MSG_ERR_ESTIMATED_DELIVERY_SLOT_NOT_FOUND" ' Estimated delivery date is not found for the TimeSlot
     Public Const MSG_PROMPT_COUNTRY_REQUIRED As String = "MSG_PROMPT_COUNTRY_REQUIRED"
     Public Const MSG_PROMPT_STATE_NOT_CONFIGURED As String = "MSG_PROMPT_STATE_NOT_CONFIGURED"
     Public Const MSG_PROMPT_ZIPCODE_REQUIRED As String = "MSG_PROMPT_ZIPCODE_REQUIRED"
