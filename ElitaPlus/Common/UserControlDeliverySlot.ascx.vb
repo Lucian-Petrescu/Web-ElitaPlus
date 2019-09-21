@@ -339,7 +339,7 @@ Public Class UserControlDeliverySlot
                                                     End Function) Then
                     State.IsDeliverySlotAvailable = False
                     ClearDisableAll()
-                    Page.MasterPage.MessageController.AddInformation("Message.MSG_ERR_ESTIMATED_DELIVERY_SLOT_NOT_FOUND", True)
+                    Page.MasterPage.MessageController.AddInformation(Message.MSG_ERR_ESTIMATED_DELIVERY_SLOT_NOT_FOUND, True)
                     Exit Sub
                 End If
 
