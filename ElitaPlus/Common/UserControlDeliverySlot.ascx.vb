@@ -446,8 +446,6 @@ Public Class UserControlDeliverySlot
                 fDeliveryDate = ElitaPlusPage.GetDateFormattedStringNullable(fastestDeliveryDate.DeliveryDate)
             End If
 
-
-
             If de.Behavior.UseDeliverySlot Then 'add slot information 
                 If fastestDeliveryDate.DeliverySlots IsNot Nothing AndAlso fastestDeliveryDate.DeliverySlots.Length > 0 AndAlso de.Behavior.SelectionAllowed Then
                     Dim fastestDeliveryTimeSlot As DeliverySlot = (From delSlot As DeliverySlot In fastestDeliveryDate.DeliverySlots Select delSlot Order By delSlot.Sequence Ascending).First()
@@ -456,10 +454,9 @@ Public Class UserControlDeliverySlot
                         State.DeliverySlotDescription = fastestDeliveryTimeSlot.Description
 
                         If State.DeliverySlotDescription.ToUpper() = "EXP_DEL4" Or State.DeliverySlotDescription.ToUpper() = "EXP_DEL3" Then
-                            'Dim timezne As TimeZoneInfo = TimeZoneInfo.FindSystemTimeZoneById("Tokyo Standard Time")
-                            'Dim localDateTime As Date = TimeZoneInfo.ConvertTime(Date.Now, TimeZoneInfo.Local, timezne)
+
                             Dim curTime = New TimeSpan(DateTime.Now.Hour, DateTime.Now.Minute, 0)
-                            If curTime < fastestDeliveryTimeSlot.BeginTime AndAlso curTime > fastestDeliveryTimeSlot.EndTime Then
+                            If curTime < fastestDeliveryTimeSlot.BeginTime Or curTime > fastestDeliveryTimeSlot.EndTime Then
                                 State.IsDeliverySlotAvailable = False
                             End If
 
