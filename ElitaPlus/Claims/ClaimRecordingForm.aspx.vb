@@ -2430,18 +2430,21 @@ Public Class ClaimRecordingForm
                             If Not lOption.LogisticOptionInfo Is Nothing Then
                                 If State.LogisticsOption.Code.ToUpper().Equals("X") Then
                                     Dim DeliverySlotDescr As String = ucDeliverySlots.DeliverySlotDescription
-                                    Dim thisTime As Date = Date.Now
-                                    Dim timezne As TimeZoneInfo = TimeZoneInfo.FindSystemTimeZoneById("Tokyo Standard Time")
-                                    Dim localExpectedDeliveryTime As Date
+                                    Dim thisTime = DateTime.Now
+                                    Dim localExpectedDeliveryTime
 
-                                    Select Case DeliverySlotDescr.ToUpper()
-                                        Case "EXP_DEL4"      ' For Japan Expected delivery time is 4 hrs from current Japan time
-                                            localExpectedDeliveryTime = TimeZoneInfo.ConvertTime(thisTime.AddHours(4), TimeZoneInfo.Local, timezne)
-                                            lOption.LogisticOptionInfo.EstimatedChangedDeliveryDate = localExpectedDeliveryTime
-                                        Case "EXP_DEL3"      ' For KDDI Expected delivery time is 3 hrs from current Japan time
-                                            localExpectedDeliveryTime = TimeZoneInfo.ConvertTime(thisTime.AddHours(3), TimeZoneInfo.Local, timezne)
-                                            lOption.LogisticOptionInfo.EstimatedChangedDeliveryDate = localExpectedDeliveryTime
-                                    End Select
+                                    If Not DeliverySlotDescr Is Nothing Then
+
+                                        Select Case DeliverySlotDescr.ToUpper()
+                                            Case "EXP_DEL4"      ' For Japan Expected delivery time is 4 hrs from current Japan time
+                                                localExpectedDeliveryTime = thisTime.AddHours(4)
+                                                lOption.LogisticOptionInfo.EstimatedChangedDeliveryDate = localExpectedDeliveryTime
+                                            Case "EXP_DEL3"      ' For KDDI Expected delivery time is 3 hrs from current apan time
+                                                localExpectedDeliveryTime = thisTime.AddHours(3)
+                                                lOption.LogisticOptionInfo.EstimatedChangedDeliveryDate = localExpectedDeliveryTime
+                                        End Select
+
+                                    End If
                                 Else
                                     lOption.LogisticOptionInfo.EstimatedChangedDeliveryDate = selectedDeliveryDate
                                 End If
