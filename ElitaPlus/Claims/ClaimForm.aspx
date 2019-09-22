@@ -887,14 +887,14 @@
                                                     <asp:Label ID="lblOptionDescription" runat="server" Text="DELIVERY_OPTION"> </asp:Label>
                                                 </td>
                                                 <td align="left">
-                                                    <asp:TextBox ID="txtOptionDescription" runat="server" CssClass="FLATTEXTBOX" Enabled="false" 
+                                                    <asp:TextBox ID="txtOptionDescription" runat="server" ReadOnly="true"
                                                                      SkinID="MediumTextBox"></asp:TextBox>
                                                 </td>
                                                 <td align="right">
 												    <asp:Label ID="lblTrackingNumber" runat="server" Text="TRACKING_NUMBER"> </asp:Label>
 											    </td>
 											    <td align="left">
-												    <asp:TextBox ID="txtTrackingNumber" runat="server" CssClass="FLATTEXTBOX" Enabled="false" 
+												    <asp:TextBox ID="txtTrackingNumber" runat="server" ReadOnly="true" 
 															     SkinID="MediumTextBox"></asp:TextBox>
 											    </td>                                                 
                                             </tr>
@@ -903,14 +903,14 @@
                                                     <asp:Label ID="lblShippingDate" runat="server" Text="ACTUAL_SHIPPING_DATE"> </asp:Label>
                                                 </td>
                                                 <td align="left">
-                                                    <asp:TextBox ID="txtShippingDate" runat="server" CssClass="FLATTEXTBOX" Enabled="false" 
+                                                    <asp:TextBox ID="txtShippingDate" runat="server" ReadOnly="true" 
                                                                     SkinID="MediumTextBox"></asp:TextBox>
                                                 </td> 
 											    <td align="right">
 												    <asp:Label ID="lblActualDeliveryDate" runat="server" Text="ACTUAL_DELIVERY_DATE"> </asp:Label>
 											    </td>
 											    <td align="left">
-												    <asp:TextBox ID="txtActualDeliveryDate" runat="server" CssClass="FLATTEXTBOX" Enabled="false" 
+												    <asp:TextBox ID="txtActualDeliveryDate" runat="server" ReadOnly="true"
 															     SkinID="MediumTextBox"></asp:TextBox>
 											    </td>                                                
                                             </tr>										
@@ -919,14 +919,14 @@
                                                     <asp:Label ID="lblExpectedShippingDate" runat="server" Text="EXPECTED_SHIPPING_DATE"> </asp:Label>
                                                 </td>
                                                 <td align="left">
-                                                    <asp:TextBox ID="txtExpectedShippingDate" runat="server" CssClass="FLATTEXTBOX" Enabled="false" 
+                                                    <asp:TextBox ID="txtExpectedShippingDate" runat="server" ReadOnly="true" 
                                                                     SkinID="MediumTextBox"></asp:TextBox>
                                                 </td> 
                                                 <td align="right">
                                                     <asp:Label ID="lblExpectedDeliveryDate" runat="server" Text="EXPECTED_DELIVERY_DATE"> </asp:Label>
                                                 </td>
                                                 <td align="left">
-                                                    <asp:TextBox ID="txtExpectedDeliveryDate" runat="server" CssClass="FLATTEXTBOX" Enabled="false" 
+                                                    <asp:TextBox ID="txtExpectedDeliveryDate" runat="server" ReadOnly="true" 
                                                                  SkinID="MediumTextBox"></asp:TextBox>
                                                 </td>											                                                   
                                             </tr>                                        
@@ -941,14 +941,14 @@
                                                 <asp:Label ID="lblAddress1" runat="server" Text="ADDRESS"> </asp:Label>
                                             </td>
                                             <td align="left">
-                                                <asp:TextBox ID="txtAddress1" runat="server" CssClass="FLATTEXTBOX" Enabled="false" 
+                                                <asp:TextBox ID="txtAddress1" runat="server" ReadOnly="true" 
                                                                 SkinID="LargeTextBox" TextMode="MultiLine" Rows="3"></asp:TextBox>
                                             </td>
                                             <td align="right">
                                                 <asp:Label ID="lblCity" runat="server" Text="CITY"> </asp:Label>
                                             </td>
                                             <td align="left">
-                                                <asp:TextBox ID="txtCity" runat="server" Enabled="false" CssClass="FLATTEXTBOX"
+                                                <asp:TextBox ID="txtCity" runat="server" ReadOnly="true"
                                                              SkinID="MediumTextBox"></asp:TextBox>
                                             </td>                                            
                                         </tr>
@@ -957,14 +957,14 @@
                                                 <asp:Label ID="lblAddress2" runat="server" Text="ADDRESS2"> </asp:Label>
                                             </td>
                                             <td align="left">
-                                                <asp:TextBox ID="txtAddress2" runat="server" CssClass="FLATTEXTBOX" Enabled="false" 
+                                                <asp:TextBox ID="txtAddress2" runat="server" ReadOnly="true" 
                                                                 SkinID="LargeTextBox" TextMode="MultiLine" Rows="3"></asp:TextBox>
                                             </td>
                                             <td align="right">
                                                 <asp:Label ID="lblState" runat="server" Text="STATE"> </asp:Label>
                                             </td>
                                             <td align="left">
-                                                <asp:TextBox ID="txtState" runat="server" SkinID="MediumTextBox" Enabled="false"></asp:TextBox> 
+                                                <asp:TextBox ID="txtState" runat="server" SkinID="MediumTextBox" ReadOnly="true"></asp:TextBox> 
                                             </td>                                            
                                         </tr>
                                         <tr>
@@ -972,15 +972,14 @@
                                                 <asp:Label ID="lblAddress3" runat="server" Text="ADDRESS3"> </asp:Label>
                                             </td>
                                             <td align="left">
-                                                <asp:TextBox ID="txtAddress3" runat="server" CssClass="FLATTEXTBOX" Enabled="false" 
+                                                <asp:TextBox ID="txtAddress3" runat="server" ReadOnly="true" 
                                                                 SkinID="LargeTextBox" TextMode="MultiLine" Rows="3"></asp:TextBox>
                                             </td>                                            
                                             <td align="right">
                                                 <asp:Label ID="lblCountry" runat="server" Text="COUNTRY"> </asp:Label>
                                             </td>
-                                            <td align="left">
-                                                <asp:TextBox ID="txtCountry" runat="server" SkinID="MediumTextBox" CssClass="FLATTEXTBOX"
-                                                    Enabled="false"></asp:TextBox>
+                                            <td align="left" nowrap="nowrap">
+                                                <asp:TextBox ID="txtCountry" runat="server" SkinID="MediumTextBox" ReadOnly="true"></asp:TextBox>
                                             </td>
                                         </tr>
                                         <tr>                                             											
@@ -989,8 +988,8 @@
                                             <td align="right">
                                                 <asp:Label ID="lblPostalCode" runat="server" Text="POSTAL_CODE" > </asp:Label>
                                             </td>
-                                            <td align="left">
-                                                <asp:TextBox ID="txtPostalCode" runat="server" CssClass="FLATTEXTBOX" Enabled="false" 
+                                            <td align="left" nowrap="nowrap">
+                                                <asp:TextBox ID="txtPostalCode" runat="server" ReadOnly="true" 
                                                                 SkinID="MediumTextBox"></asp:TextBox>
                                             </td>
                                         </tr>                                            
@@ -999,14 +998,14 @@
                                                 <asp:Label ID="lblStoreCode" runat="server" Text="STORE_CODE"> </asp:Label>
                                             </td>
                                             <td align="left">
-                                                <asp:TextBox ID="txtStoreCode" runat="server" CssClass="FLATTEXTBOX" Enabled="false" 
+                                                <asp:TextBox ID="txtStoreCode" runat="server" ReadOnly="true" 
                                                                 SkinID="MediumTextBox"></asp:TextBox>
                                             </td> 
                                                 <td align="right">
                                                     <asp:Label ID="lblStoreType" runat="server" Text="STORE_TYPE"> </asp:Label>
                                                 </td>
-                                                <td align="left">
-													<asp:TextBox ID="txtStoreType" runat="server" CssClass="FLATTEXTBOX" Enabled="false" 
+                                                <td align="left" nowrap="nowrap">
+													<asp:TextBox ID="txtStoreType" runat="server" ReadOnly="true" 
                                                                 SkinID="MediumTextBox"></asp:TextBox>                                                    
                                                 </td>                                                
                                         </tr>
@@ -1014,8 +1013,8 @@
                                             <td align="right">                                                
                                                 <asp:Label ID="lblStoreName" runat="server" Text="STORE_NAME"> </asp:Label>                                                
                                             </td>
-                                            <td align="left">
-                                                <asp:TextBox ID="txtStoreName" runat="server" CssClass="FLATTEXTBOX" Enabled="false" 
+                                            <td align="left" >
+                                                <asp:TextBox ID="txtStoreName" runat="server" ReadOnly="true" 
                                                                 SkinID="MediumTextBox"></asp:TextBox>
                                             </td> 
                                             <td align="right">
@@ -1023,8 +1022,8 @@
                                                <label for="chkPasscode">Show Passcode</label>
                                             </td>											
                                             <td align="left">
-							                    <asp:TextBox ID="txtPasscode" runat="server" CssClass="FLATTEXTBOX" ClientIdMode="Static" 
-                                                    Enabled="false" hidden="true" SkinID="MediumTextBox"></asp:TextBox>
+							                    <asp:TextBox ID="txtPasscode" runat="server" ClientIdMode="Static" 
+                                                    ReadOnly="true" hidden="true" SkinID="MediumTextBox"></asp:TextBox>
 											</td>                                            
                                         </tr>
                                         </table>
