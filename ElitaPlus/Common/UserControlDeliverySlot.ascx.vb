@@ -458,6 +458,8 @@ Public Class UserControlDeliverySlot
                             Dim curTime = New TimeSpan(Assurant.Elita.ApplicationDateTime.Now.Hour, Assurant.Elita.ApplicationDateTime.Now.Minute, 0)
                             If curTime < fastestDeliveryTimeSlot.BeginTime Or curTime > fastestDeliveryTimeSlot.EndTime Then
                                 State.IsDeliverySlotAvailable = False
+                                Page.MasterPage.MessageController.AddInformation(Message.MSG_ERR_ESTIMATED_DELIVERY_SLOT_NOT_FOUND, True)
+                                Exit Sub
                             End If
 
                         End If
