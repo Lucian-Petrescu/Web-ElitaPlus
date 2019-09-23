@@ -2228,6 +2228,7 @@ Public Class ClaimRecordingForm
         ' get the selected device into the state
         EnableControlinGridview(GridViewLogisticsOptions)
         State.IsExpeditedBtnClicked = False
+        ControlMgr.SetEnableControl(Me, btnLogisticsOptionsContinue, True)
     End Sub
     Private Sub EnableControlinGridview(ByVal gridViewTarget As GridView)
 
