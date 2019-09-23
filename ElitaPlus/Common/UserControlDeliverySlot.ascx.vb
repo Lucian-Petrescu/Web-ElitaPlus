@@ -346,10 +346,8 @@ Public Class UserControlDeliverySlot
 
                 State.DeliveryDateList = wsResponse.DeliveryEstimates
                 ShowInitDeliveryEstimates()
-
-
             Else
-                    ClearDisableAll()
+                ClearDisableAll()
                 Page.MasterPage.MessageController.AddInformation(Message.MSG_ERR_ESTIMATED_DELIVERY_DATE_NOT_FOUND, True)
                 Exit Sub
             End If
@@ -528,6 +526,7 @@ Public Class UserControlDeliverySlot
         ResetToDefaultSetting()
         AvailableDeliveryDateTiming = String.Empty
         Page.ChangeEnabledControlProperty(chkNotSpecify, False)
+        State.IsDeliverySlotAvailable = False
     End Sub
 
     Protected Sub ddlCourierProduct_SelectedIndexChanged(sender As Object, e As EventArgs) Handles ddlCourierProduct.SelectedIndexChanged
