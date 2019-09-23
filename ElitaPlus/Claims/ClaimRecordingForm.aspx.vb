@@ -2673,6 +2673,7 @@ Public Class ClaimRecordingForm
             End If
 
         Catch ex As Exception
+            State.IsExpeditedBtnClicked = False
             HandleErrors(ex, MasterPage.MessageController)
         End Try
     End Sub
