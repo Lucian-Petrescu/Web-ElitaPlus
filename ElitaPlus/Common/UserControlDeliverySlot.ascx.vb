@@ -455,7 +455,7 @@ Public Class UserControlDeliverySlot
 
                         If State.DeliverySlotDescription.ToUpper() = "EXP_DEL4" Or State.DeliverySlotDescription.ToUpper() = "EXP_DEL3" Then
 
-                            Dim curTime = New TimeSpan(DateTime.Now.Hour, DateTime.Now.Minute, 0)
+                            Dim curTime = New TimeSpan(Assurant.Elita.ApplicationDateTime.Now.Hour, Assurant.Elita.ApplicationDateTime.Now.Minute, 0)
                             If curTime < fastestDeliveryTimeSlot.BeginTime Or curTime > fastestDeliveryTimeSlot.EndTime Then
                                 State.IsDeliverySlotAvailable = False
                             End If

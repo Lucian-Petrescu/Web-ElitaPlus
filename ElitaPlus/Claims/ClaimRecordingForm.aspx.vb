@@ -88,6 +88,7 @@ Public Class ClaimRecordingForm
         Public DeliveryDate As Nullable(Of Date)
         Public DefaultDeliveryDay As DeliveryDay
         Public DeliverySlotTimeSpan As TimeSpan
+        Public IsExpeditedBtnClicked As Boolean = False
 
 #Region "SubmitWsBaseClaimRecordingResponse"
         Private _mSubmitWsBaseClaimRecordingResponse As BaseClaimRecordingResponse = Nothing
@@ -2226,6 +2227,7 @@ Public Class ClaimRecordingForm
         senderRb.Checked = True
         ' get the selected device into the state
         EnableControlinGridview(GridViewLogisticsOptions)
+        State.IsExpeditedBtnClicked = False
     End Sub
     Private Sub EnableControlinGridview(ByVal gridViewTarget As GridView)
 
@@ -2429,8 +2431,14 @@ Public Class ClaimRecordingForm
                         Else
                             If Not lOption.LogisticOptionInfo Is Nothing Then
                                 If State.LogisticsOption.Code.ToUpper().Equals("X") Then
+
+                                    If Not State.IsExpeditedBtnClicked Then
+                                        MasterPage.MessageController.AddError(Message.MSG_ERR_SELECT_EXPEDITED_DELIVERY_BUTTON, True)
+                                        Return False
+                                    End If
+
                                     Dim DeliverySlotDescr As String = ucDeliverySlots.DeliverySlotDescription
-                                    Dim thisTime = DateTime.Now
+                                    Dim thisTime = Assurant.Elita.ApplicationDateTime.Now       ' DateTime.Now
                                     Dim localExpectedDeliveryTime
 
                                     If Not DeliverySlotDescr Is Nothing Then
@@ -2648,6 +2656,7 @@ Public Class ClaimRecordingForm
             GetEstimatedDeliveryDate(ucDeliverySlots, deliveryAddress, lOption.DeliveryOptions)
 
             If shippingCodeLabel.Text.ToUpper() = "X" Then
+                State.IsExpeditedBtnClicked = True
                 If ucDeliverySlots.IsDeliverySlotAvailable Then
                     ControlMgr.SetEnableControl(Me, btnLogisticsOptionsContinue, True)
                     ucDeliverySlots.Visible = True
@@ -2659,6 +2668,7 @@ Public Class ClaimRecordingForm
             Else
                 ControlMgr.SetEnableControl(Me, btnLogisticsOptionsContinue, True)
                 ucDeliverySlots.Visible = True
+                State.IsExpeditedBtnClicked = False
             End If
 
         Catch ex As Exception
