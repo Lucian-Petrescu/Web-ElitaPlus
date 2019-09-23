@@ -168,7 +168,7 @@
     </Reference>
     <Reference Include="Assurant.Elita.AddressValidationProvider, Version=1.0.1.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\Assurant.Elita.AddressvalidationProvider.1.0.2\lib\net46\Assurant.Elita.AddressValidationProvider.dll</HintPath>
-	  <Private>True</Private>
+      <Private>True</Private>
     </Reference>
     <Reference Include="Assurant.Elita.Base.DataAccess">
       <HintPath>..\packages\Assurant.Elita.Base.DataAccess.5.0.2\lib\net462\Assurant.Elita.Base.DataAccess.dll</HintPath>
@@ -194,6 +194,9 @@
     </Reference>
     <Reference Include="Assurant.Elita.Logging.OracleLogger">
       <HintPath>..\packages\Assurant.Elita.Logging.OracleLogger.1.0.1\lib\net462\Assurant.Elita.Logging.OracleLogger.dll</HintPath>
+    </Reference>
+    <Reference Include="Assurant.Elita.Primitives, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Assurant.Elita.Primitives.2.0.0\lib\netstandard2.0\Assurant.Elita.Primitives.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.Azure.KeyVault.Core, Version=1.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>..\packages\Microsoft.Azure.KeyVault.Core.1.0.0\lib\net40\Microsoft.Azure.KeyVault.Core.dll</HintPath>

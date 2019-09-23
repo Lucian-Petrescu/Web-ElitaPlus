@@ -34,7 +34,45 @@ Public Class [Global]
 
     Sub Application_Start(ByVal sender As Object, ByVal e As EventArgs)
         ' Fires when the application is started
+        'Set TimeZone for Application
+        Assurant.Elita.ApplicationDateTime.ApplicationTimeZoneFunc = AddressOf GetTimeZoneInfo
     End Sub
+
+    Private applicationTimeZoneInfo As TimeZoneInfo
+    Private SyncRoot As Object = New Object
+
+    ''' <summary>
+    ''' Reads TimeZone information from web.config
+    ''' </summary>
+    ''' <returns> returns Instance of <cref="TimezoneInfo"></returns>
+
+    Private Function GetTimeZoneInfo() As TimeZoneInfo
+        If (Not applicationTimeZoneInfo Is Nothing) Then
+            Return applicationTimeZoneInfo
+        End If
+
+        Dim localApplicationTimeZoneInfo As TimeZoneInfo
+        Dim timeZoneID As String = ConfigurationManager.AppSettings("Assurant.Elita.TimeZoneId")
+
+        If (String.IsNullOrWhiteSpace(timeZoneID)) Then
+            localApplicationTimeZoneInfo = System.TimeZoneInfo.Local
+        Else
+            Try
+                localApplicationTimeZoneInfo = System.TimeZoneInfo.FindSystemTimeZoneById(timeZoneID)
+            Catch ex As Exception
+                localApplicationTimeZoneInfo = System.TimeZoneInfo.Local
+            End Try
+        End If
+
+        SyncLock SyncRoot
+            If (applicationTimeZoneInfo Is Nothing) Then
+                applicationTimeZoneInfo = localApplicationTimeZoneInfo
+            End If
+        End SyncLock
+        Return applicationTimeZoneInfo
+
+    End Function
+
 
     Sub Session_OnStart(ByVal sender As Object, ByVal e As EventArgs)
         'Dim cookie As HttpCookie = Me.Request.Cookies.Item(ELPWebConstants.ELITA_PLUS_AUTHENTICATION_COOKIE)
