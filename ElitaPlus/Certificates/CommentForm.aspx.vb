@@ -260,7 +260,6 @@ Partial Class CommentForm
                 Me.PopulateControlFromBOProperty(Me.cboCommentType, .CommentTypeId)
 
                 If Not .CreatedDate Is Nothing Then
-                    'Sridhar Me.PopulateControlFromBOProperty(Me.TextboxDateTime, Me.GetLongDateFormattedString(.CreatedDate.Value))
                     Me.PopulateControlFromBOProperty(Me.TextboxDateTime, GetLongDateFormattedString(.CreatedDate.Value))
                 Else
                     Me.PopulateControlFromBOProperty(Me.TextboxDateTime, Nothing)

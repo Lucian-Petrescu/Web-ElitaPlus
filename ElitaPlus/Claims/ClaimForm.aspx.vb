@@ -3845,7 +3845,6 @@ Partial Class ClaimForm
                 ' Convert short status codes to full description with css
                 e.Row.Cells(GRID_COL_STATUS_CODE_IDX).Text = LookupListNew.GetDescriptionFromCode(Codes.CLAIM_AUTHORIZATION_STATUS, claimAuth.ClaimAuthorizationStatusCode)
                 e.Row.Cells(GRID_COL_AMOUNT_IDX).Text = GetAmountFormattedString(claimAuth.AuthorizedAmount.Value)
-                'Sridhar Added Removed Me from above
                 e.Row.Cells(GRID_COL_CREATED_DATE).Text = GetLongDate12FormattedString(claimAuth.CreatedDateTime.Value)
 
             End If

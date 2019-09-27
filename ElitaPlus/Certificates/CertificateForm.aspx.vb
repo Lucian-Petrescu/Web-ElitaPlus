@@ -4045,25 +4045,20 @@ Namespace Certificates
         Public Sub populateFormFromCertCancellationBO()
 
             If Not Me.State.certCancellationBO Is Nothing AndAlso Not Me.State.certCancellationBO.CancellationRequestedDate Is Nothing Then
-                'Sridhar Me.CancelCertReqDateTextbox.Text = Me.State.certCancellationBO.CancellationRequestedDate.Value.ToString(DATE_FORMAT, System.Threading.Thread.CurrentThread.CurrentCulture)
-                Me.CancelCertReqDateTextbox.Text = GetDateFormattedString(Me.State.certCancellationBO.CancellationRequestedDate.Value)
+                Me.CancelCertReqDateTextbox.Text = GetDateFormattedStringNullable(Me.State.certCancellationBO.CancellationRequestedDate.Value)
             Else
-                'Sridhar Me.CancelCertReqDateTextbox.Text = System.DateTime.Today.ToString(DATE_FORMAT, System.Threading.Thread.CurrentThread.CurrentCulture)
-                Me.CancelCertReqDateTextbox.Text = GetDateFormattedString(System.DateTime.Today)
+                Me.CancelCertReqDateTextbox.Text = GetDateFormattedStringNullable(System.DateTime.Today)
             End If
             Me.AddCalendar(Me.CancelCertReqDateImageButton, Me.CancelCertReqDateTextbox)
 
             If Not Me.State.certCancellationBO Is Nothing AndAlso Not Me.State.certCancellationBO.CancellationDate Is Nothing Then
-                'Sridhar Me.CancelCertDateTextbox.Text = Me.State.certCancellationBO.CancellationDate.Value.ToString(DATE_FORMAT, System.Threading.Thread.CurrentThread.CurrentCulture)
-                Me.CancelCertDateTextbox.Text = GetDateFormattedString(Me.State.certCancellationBO.CancellationDate.Value)
+                Me.CancelCertDateTextbox.Text = GetDateFormattedStringNullable(Me.State.certCancellationBO.CancellationDate.Value)
             Else
                 If Not Me.State.MyBO.PreviousCertificateId.Equals(Guid.Empty) And Me.State.MyBO.WarrantySalesDate.Value > System.DateTime.Today Then
-                    'Sridhar Me.CancelCertDateTextbox.Text = Me.State.MyBO.WarrantySalesDate.Value.ToString(DATE_FORMAT, System.Threading.Thread.CurrentThread.CurrentCulture)
-                    Me.CancelCertDateTextbox.Text = GetDateFormattedString(Me.State.MyBO.WarrantySalesDate.Value)
+                    Me.CancelCertDateTextbox.Text = GetDateFormattedStringNullable(Me.State.MyBO.WarrantySalesDate.Value)
                     ControlMgr.SetEnableControl(Me, CancelCertDateTextbox, False)
                     ControlMgr.SetVisibleControl(Me, CancelCertDateImagebutton, False)
                 Else
-                    'Sridhar Me.CancelCertDateTextbox.Text = System.DateTime.Today.ToString(DATE_FORMAT, System.Threading.Thread.CurrentThread.CurrentCulture)
                     Me.CancelCertDateTextbox.Text = GetDateFormattedString(System.DateTime.Today)
                 End If
             End If
@@ -4156,8 +4151,6 @@ Namespace Certificates
                             Me.moCancelDateTextBox.Text = String.Empty
                             Me.moCancelRequestDateTextBox.Text = String.Empty
                         Else
-                            'Sridhar Me.moCancelDateTextBox.Text = System.DateTime.Now.ToString(DATE_FORMAT, System.Threading.Thread.CurrentThread.CurrentCulture)
-                            'Sridhar Me.moCancelRequestDateTextBox.Text = System.DateTime.Now.ToString(DATE_FORMAT, System.Threading.Thread.CurrentThread.CurrentCulture)
                             Me.moCancelDateTextBox.Text = GetDateFormattedString(System.DateTime.Now)
                             Me.moCancelRequestDateTextBox.Text = GetDateFormattedString(System.DateTime.Now)
                         End If
@@ -4316,15 +4309,13 @@ Namespace Certificates
                 If ((Not String.IsNullOrEmpty(.Finance_Tab_Amount)) AndAlso Convert.ToDecimal(.Finance_Tab_Amount) > 0) OrElse blnIncomingAmount Then
                     Me.PopulateControlFromBOProperty(Me.moCurrentOutstandingBalanceText, CType(.GetFinancialAmountprodcode, Decimal), Me.DECIMAL_FORMAT)
                     If blnIncomingAmount Then
-                        'Sridhar Me.PopulateControlFromBOProperty(Me.moOutstandingBalanceDueDateText, .OutstandingBalanceDueDate, Me.DATE_FORMAT)
-                        Me.PopulateControlFromBOProperty(Me.moOutstandingBalanceDueDateText, GetDateFormattedString(.OutstandingBalanceDueDate))
+                        Me.PopulateControlFromBOProperty(Me.moOutstandingBalanceDueDateText, GetDateFormattedStringNullable(.OutstandingBalanceDueDate))
                     Else
                         ControlMgr.SetVisibleControl(Me, moOutstandingBalanceDueDateLabel, False)
                         ControlMgr.SetVisibleControl(Me, moOutstandingBalanceDueDateText, False)
                     End If
 
-                    'Sridhar Me.PopulateControlFromBOProperty(Me.moFinanceDateText, .FinanceDate, Me.DATE_FORMAT)
-                    Me.PopulateControlFromBOProperty(Me.moFinanceDateText, GetDateFormattedString(.FinanceDate))
+                    Me.PopulateControlFromBOProperty(Me.moFinanceDateText, GetDateFormattedStringNullable(.FinanceDate))
                     Me.PopulateControlFromBOProperty(Me.moDownPaymentText, .DownPayment, Me.DECIMAL_FORMAT)
                     Me.PopulateControlFromBOProperty(Me.moAdvancePaymentText, .AdvancePayment, Me.DECIMAL_FORMAT)
                     Me.PopulateControlFromBOProperty(Me.moUpgradeFixedTermText, .UpgradeFixedTerm, Me.DECIMAL_FORMAT)
@@ -5432,8 +5423,8 @@ Namespace Certificates
                 If itemType = ListItemType.Item Or itemType = ListItemType.AlternatingItem Or itemType = ListItemType.SelectedItem Then
 
                     e.Item.Cells(Me.GRID_COL_RISK_TYPE_DESCRIPTION_IDX).Text = dvRow(CertItemCoverage.CertItemCoverageSearchDV.COL_RISK_TYPE).ToString
-                    e.Item.Cells(Me.GRID_COL_BEGIN_DATE_IDX).Text = Me.GetDateFormattedString(CType(dvRow(CertItemCoverage.CertItemCoverageSearchDV.COL_BEGIN_DATE), Date))
-                    e.Item.Cells(Me.GRID_COL_END_DATE_IDX).Text = Me.GetDateFormattedString(CType(dvRow(CertItemCoverage.CertItemCoverageSearchDV.COL_END_DATE), Date))
+                    e.Item.Cells(Me.GRID_COL_BEGIN_DATE_IDX).Text = Me.GetDateFormattedStringNullable(CType(dvRow(CertItemCoverage.CertItemCoverageSearchDV.COL_BEGIN_DATE), Date))
+                    e.Item.Cells(Me.GRID_COL_END_DATE_IDX).Text = Me.GetDateFormattedStringNullable(CType(dvRow(CertItemCoverage.CertItemCoverageSearchDV.COL_END_DATE), Date))
                     e.Item.Cells(Me.GRID_COL_SEQUENCE_IDX).Text = dvRow(CertItemCoverage.CertItemCoverageSearchDV.COL_CERT_ITEM_COVERAGE_SEQUENCE).ToString
 
                     e.Item.Cells(Me.GRID_COL_COVERAGE_DURATION_IDX).Text = dvRow(CertItemCoverage.CertItemCoverageSearchDV.COL_CERT_ITEM_COVERAGE_COVERAGE_DURATION).ToString
@@ -5558,8 +5549,8 @@ Namespace Certificates
                 Dim btnEditCoverage As LinkButton
                 If itemType = ListItemType.Item Or itemType = ListItemType.AlternatingItem Or itemType = ListItemType.SelectedItem Then
                     e.Item.Cells(Me.GRID_COL_RISK_TYPE_DESCRIPTION_IDX).Text = dvRow(CertItemCoverage.CertItemCoverageSearchDV.COL_RISK_TYPE).ToString
-                    e.Item.Cells(Me.GRID_COL_BEGIN_DATE_IDX).Text = Me.GetDateFormattedString(CType(dvRow(CertItemCoverage.CertItemCoverageSearchDV.COL_BEGIN_DATE), Date))
-                    e.Item.Cells(Me.GRID_COL_END_DATE_IDX).Text = Me.GetDateFormattedString(CType(dvRow(CertItemCoverage.CertItemCoverageSearchDV.COL_END_DATE), Date))
+                    e.Item.Cells(Me.GRID_COL_BEGIN_DATE_IDX).Text = Me.GetDateFormattedStringNullable(CType(dvRow(CertItemCoverage.CertItemCoverageSearchDV.COL_BEGIN_DATE), Date))
+                    e.Item.Cells(Me.GRID_COL_END_DATE_IDX).Text = Me.GetDateFormattedStringNullable(CType(dvRow(CertItemCoverage.CertItemCoverageSearchDV.COL_END_DATE), Date))
                     e.Item.Cells(Me.GRID_COL_SEQUENCE_IDX).Text = dvRow(CertItemCoverage.CertItemCoverageSearchDV.COL_CERT_ITEM_COVERAGE_SEQUENCE).ToString
                     If (Not e.Item.Cells(Me.GRID_COL_COVERAGE_TYPE_DESCRIPTION_IDX).FindControl(GRID_COL_COVERAGE_TYPE_DESCRIPTION_CTRL) Is Nothing) Then
                         btnEditCoverage = CType(e.Item.Cells(Me.GRID_COL_COVERAGE_TYPE_DESCRIPTION_IDX).FindControl(GRID_COL_COVERAGE_TYPE_DESCRIPTION_CTRL), LinkButton)
@@ -5679,7 +5670,7 @@ Namespace Certificates
                         btnEditClaim.CommandName = SELECT_ACTION_COMMAND
                     End If
 
-                    e.Item.Cells(Me.GRID_COL_CREATED_DATE).Text = Me.GetDateFormattedString(CType(dvRow(Certificate.CertificateClaimsDV.COL_CREATED_DATE), Date))
+                    e.Item.Cells(Me.GRID_COL_CREATED_DATE).Text = Me.GetDateFormattedStringNullable(CType(dvRow(Certificate.CertificateClaimsDV.COL_CREATED_DATE), Date))
                     e.Item.Cells(Me.GRID_COL_STATUS_CODE).Text = dvRow(Certificate.CertificateClaimsDV.COL_STATUS_CODE).ToString
 
                     If Not dvRow.Row.IsNull(Certificate.CertificateClaimsDV.COL_AUTHORIZED_AMOUNT) Then
@@ -5865,7 +5856,7 @@ Namespace Certificates
                     e.Row.Cells(Me.ITEMS_GRID_COL_MAKE_IDX).Text = dvRow(CertItem.CertItemSearchDV.COL_MAKE).ToString
                     e.Row.Cells(Me.ITEMS_GRID_COL_MODEL_IDX).Text = dvRow(CertItem.CertItemSearchDV.COL_MODEL).ToString
                     If (Not dvRow(CertItem.CertItemSearchDV.COL_EXPIRATION_DATE) Is DBNull.Value) Then
-                        e.Row.Cells(Me.ITEMS_GRID_COL_EXPIRATION_DATE_IDX).Text = Me.GetDateFormattedString(CType(dvRow(CertItem.CertItemSearchDV.COL_EXPIRATION_DATE), Date))
+                        e.Row.Cells(Me.ITEMS_GRID_COL_EXPIRATION_DATE_IDX).Text = Me.GetDateFormattedStringNullable(CType(dvRow(CertItem.CertItemSearchDV.COL_EXPIRATION_DATE), Date))
                     End If
                     e.Row.Cells(ITEMS_GRID_COL_BENEFIT_STATUS_IDX).Text = dvRow(CertItem.CertItemSearchDV.COL_BENEFIT_STATUS).ToString()
                 End If
@@ -5961,13 +5952,13 @@ Namespace Certificates
                     e.Row.Cells(REG_ITEMS_COL_MAKE_IDX).Text = dvRow(CertItem.CertRegItemSearchDV.COL_MAKE).ToString
                     e.Row.Cells(REG_ITEMS_COL_MODEL_IDX).Text = dvRow(CertItem.CertRegItemSearchDV.COL_MODEL).ToString
                     If (Not dvRow(CertItem.CertRegItemSearchDV.COL_PURCHASE_DATE) Is DBNull.Value) Then
-                        e.Row.Cells(REG_ITEMS_COL_PURCHASE_DATE_IDX).Text = GetDateFormattedString(CType(dvRow(CertItem.CertRegItemSearchDV.COL_PURCHASE_DATE), Date))
+                        e.Row.Cells(REG_ITEMS_COL_PURCHASE_DATE_IDX).Text = GetDateFormattedStringNullable(CType(dvRow(CertItem.CertRegItemSearchDV.COL_PURCHASE_DATE), Date))
                     End If
                     e.Row.Cells(REG_ITEMS_COL_PURCHASE_PRICE_IDX).Text = dvRow(CertItem.CertRegItemSearchDV.COL_PURCHASE_PRICE).ToString
                     e.Row.Cells(REG_ITEMS_COL_SERIAL_NUMBER_IDX).Text = dvRow(CertItem.CertRegItemSearchDV.COL_SERIAL_NUMBER).ToString
                     'REQ-6002
                     If (Not dvRow(CertItem.CertRegItemSearchDV.COL_REGISTRATION_DATE) Is DBNull.Value) Then
-                        e.Row.Cells(REG_ITEMS_COL_REGISTRATION_DATE_IDX).Text = GetDateFormattedString(CType(dvRow(CertItem.CertRegItemSearchDV.COL_REGISTRATION_DATE), Date))
+                        e.Row.Cells(REG_ITEMS_COL_REGISTRATION_DATE_IDX).Text = GetDateFormattedStringNullable(CType(dvRow(CertItem.CertRegItemSearchDV.COL_REGISTRATION_DATE), Date))
                     End If
                     If (Not dvRow(CertItem.CertRegItemSearchDV.COL_RETAIL_PRICE) Is DBNull.Value) Then
                         e.Row.Cells(REG_ITEMS_COL_RETAIL_PRICE_IDX).Text = GetAmountFormattedString(CType(dvRow(CertItem.CertRegItemSearchDV.COL_RETAIL_PRICE), Decimal))
@@ -6053,7 +6044,6 @@ Namespace Certificates
                         btnEditItem.CommandArgument = GetGuidStringFromByteArray(CType(dvRow(Comment.CommentSearchDV.COL_COMMENT_ID), Byte()))
                         btnEditItem.CommandName = SELECT_ACTION_COMMAND
                         Dim createdDate As Date = CType(dvRow(Comment.CommentSearchDV.COL_CREATED_DATE), Date)
-                        'Sridhar btnEditItem.Text = Me.GetLongDateFormattedString(createdDate)
                         btnEditItem.Text = GetLongDateFormattedString(createdDate)
                     End If
                     e.Item.Cells(Me.GRID_COL_CALLER_NAME).Text = dvRow(Comment.CommentSearchDV.COL_CALLER_NAME).ToString
@@ -6534,10 +6524,8 @@ Namespace Certificates
                         btnEditItem.CommandName = SELECT_ACTION_COMMAND
                         btnEditItem.Text = dvRow(CertEndorse.EndorseSearchDV.COL_ENDORSE_NUMB).ToString
                     End If
-                    'e.Item.Cells(Me.GRID_COL_ENDORSE_NUMBER).Text = dvRow(CertEndorse.EndorseSearchDV.COL_ENDORSE_NUMB).ToString
                     e.Item.Cells(Me.GRID_COL_ENDORSE_CREATED_BY).Text = dvRow(CertEndorse.EndorseSearchDV.COL_ADDED_BY).ToString
                     Dim createdDate As Date = CType(dvRow(CertEndorse.EndorseSearchDV.COL_CREATED_DATE), Date)
-                    'Sridhar e.Item.Cells(Me.GRID_COL_ENDORSE_CREATED_DATE).Text = Me.GetLongDateFormattedString(createdDate)
                     e.Item.Cells(Me.GRID_COL_ENDORSE_CREATED_DATE).Text = GetLongDateFormattedString(createdDate)
                     e.Item.Cells(Me.GRID_COL_ENDORSE_TYPE).Text = dvRow(CertEndorse.EndorseSearchDV.COL_ENDORSEMENT_TYPE).ToString
                     e.Item.Cells(Me.GRID_COL_ENDORSE_ENDORSEMENT_REASON).Text = dvRow(CertEndorse.EndorseSearchDV.COL_ENDORSEMENT_REASON).ToString
@@ -7853,7 +7841,6 @@ Namespace Certificates
                 ViewState("SortDirection") = value
             End Set
         End Property
-        'Added by Sridhar
         Private Sub CertHistoryGrid_RowDataBound(ByVal sender As Object, ByVal e As GridViewRowEventArgs) Handles CertHistoryGrid.RowDataBound
             Try
                 If (e.Row.RowType = DataControlRowType.DataRow) _
@@ -7869,14 +7856,14 @@ Namespace Certificates
                     strProcessedDate = strProcessedDate.Replace("&nbsp;", "")
                     If String.IsNullOrEmpty(strProcessedDate) = False Then
                         Dim tempProcessedDate = Convert.ToString(e.Row.Cells(CertHistoryGridColProcessedDateIdx).Text.Trim())
-                        Dim formattedProcessedDate = GetDateFormattedString(tempProcessedDate)
+                        Dim formattedProcessedDate = GetDateFormattedStringNullable(tempProcessedDate)
                         e.Row.Cells(CertHistoryGridColProcessedDateIdx).Text = Convert.ToString(formattedProcessedDate)
                     End If
                     Dim strStatusChangeDate As String = Convert.ToString(e.Row.Cells(CertHistoryGridColStatusChangeDateIdx).Text)
                     strStatusChangeDate = strStatusChangeDate.Replace("&nbsp;", "")
                     If String.IsNullOrEmpty(strStatusChangeDate) = False Then
                         Dim tempStatusChangeDate = Convert.ToString(e.Row.Cells(CertHistoryGridColStatusChangeDateIdx).Text.Trim())
-                        Dim formattedStatusChangeDate = GetDateFormattedString(tempStatusChangeDate)
+                        Dim formattedStatusChangeDate = GetDateFormattedStringNullable(tempStatusChangeDate)
                         e.Row.Cells(CertHistoryGridColStatusChangeDateIdx).Text = Convert.ToString(formattedStatusChangeDate)
                     End If
                 End If
@@ -8130,21 +8117,12 @@ Namespace Certificates
             Try
                 If String.IsNullOrEmpty(CancelCertReqDateTextbox.Text) Then
                     endOfMonth = ComputeEndOfMonth(Date.Today)
-                    'Sridhar CancelCertDateTextbox.Text = endOfMonth.ToString(DATE_FORMAT, System.Threading.Thread.CurrentThread.CurrentCulture)
-                    CancelCertDateTextbox.Text = GetDateFormattedString(endOfMonth)
+                    CancelCertDateTextbox.Text = GetDateFormattedStringNullable(endOfMonth)
                 Else
                     Dim userDate As Date
-                    'Sridhar Date.TryParseExact(Me.CancelCertReqDateTextbox.Text,
-                    '                   DATE_FORMAT,
-                    '                   System.Globalization.CultureInfo.InvariantCulture,
-                    '                   System.Globalization.DateTimeStyles.None,
-                    '                   userDate)
-
-                    userDate = GetDateFormattedString(Convert.ToDateTime(Me.CancelCertReqDateTextbox.Text))
-
+                    userDate = GetDateFormattedStringNullable(Convert.ToDateTime(Me.CancelCertReqDateTextbox.Text))
                     endOfMonth = ComputeEndOfMonth(userDate)
-                    'Sridhar CancelCertDateTextbox.Text = endOfMonth.ToString(DATE_FORMAT, System.Threading.Thread.CurrentThread.CurrentCulture)
-                    CancelCertDateTextbox.Text = GetDateFormattedString(endOfMonth)
+                    CancelCertDateTextbox.Text = GetDateFormattedStringNullable(endOfMonth)
                 End If
             Catch ex As Exception
                 Me.HandleErrors(ex, Me.MasterPage.MessageController)

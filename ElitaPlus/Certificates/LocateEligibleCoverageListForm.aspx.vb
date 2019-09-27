@@ -109,10 +109,8 @@ Namespace Certificates
                     Me.AddCalendar_New(Me.BtnDateOfLoss, Me.moDateOfLossText)
                     Me.AddCalendar_New(Me.BtnDateReported, txtDateReported)
 
-                    'Sridhar If State.DateReported > Date.MinValue Then PopulateControlFromBOProperty(txtDateReported, New DateType(State.DateReported), Me.DATE_FORMAT)
-                    'Sridhar If State.DateOfLoss > Date.MinValue Then PopulateControlFromBOProperty(moDateOfLossText, New DateType(State.DateOfLoss), Me.DATE_FORMAT)
-                    If State.DateReported > Date.MinValue Then PopulateControlFromBOProperty(txtDateReported, GetDateFormattedString(New DateType(State.DateReported)))
-                    If State.DateOfLoss > Date.MinValue Then PopulateControlFromBOProperty(moDateOfLossText, GetDateFormattedString(New DateType(State.DateOfLoss)))
+                    If State.DateReported > Date.MinValue Then PopulateControlFromBOProperty(txtDateReported, GetDateFormattedStringNullable(New DateType(State.DateReported)))
+                    If State.DateOfLoss > Date.MinValue Then PopulateControlFromBOProperty(moDateOfLossText, GetDateFormattedStringNullable(New DateType(State.DateOfLoss)))
 
                     Me.PopulateProtectionAndEventDetail()
 
@@ -287,8 +285,7 @@ Namespace Certificates
                     moProtectionAndEventDetails.CallerName = Me.NavController.FlowSession(FlowSessionKeys.SESSION_CALLER_NAME).ToString
                     TextCallerName.Text = Me.NavController.FlowSession(FlowSessionKeys.SESSION_CALLER_NAME).ToString
                 End If
-                'Sridhar If State.DateOfLoss > Date.MinValue Then moProtectionAndEventDetails.DateOfLoss = State.DateOfLoss.ToString(Me.DATE_FORMAT)
-                If State.DateOfLoss > Date.MinValue Then moProtectionAndEventDetails.DateOfLoss = GetDateFormattedString(State.DateOfLoss)
+                If State.DateOfLoss > Date.MinValue Then moProtectionAndEventDetails.DateOfLoss = GetDateFormattedStringNullable(State.DateOfLoss)
                 moProtectionAndEventDetails.ProtectionStatus = LookupListNew.GetDescriptionFromId("SUBSTAT", Me.State.MyBO.SubscriberStatus)
                 If (LookupListNew.GetCodeFromId("SUBSTAT", Me.State.MyBO.SubscriberStatus) = Codes.SUBSCRIBER_STATUS__ACTIVE) Then
                     cssClassName = "StatActive"

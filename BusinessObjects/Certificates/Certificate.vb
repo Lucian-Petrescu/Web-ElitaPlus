@@ -5212,16 +5212,18 @@ Public Class Certificate
     End Function
 
     Public Function MaskDatePart(txtDate As String, Optional noMask As Boolean = True) As String
-        System.Threading.Thread.CurrentThread.CurrentCulture = New CultureInfo("ja-JP")
+        ' System.Threading.Thread.CurrentThread.CurrentCulture = New CultureInfo("ja-JP")
         If Not (String.IsNullOrEmpty(txtDate)) Then
             If (CultureInfo.CurrentCulture.Name.Equals("ja-JP")) Then
                 Dim parsedDate As DateTime
-                parsedDate = DateTime.ParseExact(txtDate, "yyyy年M月dd日", CultureInfo.InvariantCulture).ToString("MM/dd/yyyy", CultureInfo.InvariantCulture)
+                parsedDate = DateTime.ParseExact(txtDate, "yyyy年M月dd日", CultureInfo.InvariantCulture)
+                '.ToString("MM/dd/yyyy", CultureInfo.InvariantCulture)
                 txtDate = parsedDate.ToString("D", CultureInfo.CurrentCulture)
                 If (noMask) Then
                     Return txtDate
                 Else
-                    Return txtDate.Replace(txtDate.Substring(0, 4), "XXXX")
+                    txtDate = txtDate.Replace(txtDate.Substring(0, 4), "XXXX")
+                    Return txtDate
                 End If
             Else
                 If (Not noMask) Then

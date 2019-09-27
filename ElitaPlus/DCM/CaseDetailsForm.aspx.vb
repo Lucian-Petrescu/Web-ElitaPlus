@@ -249,7 +249,6 @@
             HandleErrors(ex, MasterPage.MessageController)
         End Try
     End Sub
-    'Added by Sridhar
     Private Sub CaseInteractionGrid_RowDataBound(ByVal sender As Object, ByVal e As GridViewRowEventArgs) Handles CaseInteractionGrid.RowDataBound
         Try
             If (e.Row.RowType = DataControlRowType.DataRow) _
@@ -297,7 +296,6 @@
             HandleErrors(ex, MasterPage.MessageController)
         End Try
     End Sub
-    'Added by Sridhar
     Private Sub CaseActionGrid_RowDataBound(ByVal sender As Object, ByVal e As GridViewRowEventArgs) Handles CaseActionGrid.RowDataBound
         Try
             If (e.Row.RowType = DataControlRowType.DataRow) _
@@ -343,7 +341,6 @@
             HandleErrors(ex, MasterPage.MessageController)
         End Try
     End Sub
-    'Added by Sridhar
     Private Sub CaseQuestionAnswerGrid_RowDataBound(ByVal sender As Object, ByVal e As GridViewRowEventArgs) Handles CaseQuestionAnswerGrid.RowDataBound
         Try
             If (e.Row.RowType = DataControlRowType.DataRow) _
@@ -372,7 +369,7 @@
             If State.CaseDeniedReasonsListDV.Count = 0 Then
                 'lblDeniedReasonsRecordFound.Text = State.CaseDeniedReasonsListDV.Count & " " & TranslationBase.TranslateLabelOrMessage(Message.MSG_RECORDS_FOUND)
                 'ControlMgr.SetVisibleControl(Me, CaseDeniedReasonsGrid, False)
-                EnableTab(CaseDenedReasonInfoTab, false)
+                EnableTab(CaseDenedReasonInfoTab, False)
             Else
                 CaseDeniedReasonsGrid.DataSource = State.CaseDeniedReasonsListDV
                 State.CaseDeniedReasonsListDV.Sort = State.SortExpression
@@ -381,7 +378,7 @@
                 lblDeniedReasonsRecordFound.Text = State.CaseDeniedReasonsListDV.Count & OneSpace & TranslationBase.TranslateLabelOrMessage(Message.MSG_RECORDS_FOUND)
                 ControlMgr.SetVisibleControl(Me, CaseDeniedReasonsGrid, True)
             End If
-            
+
 
         Catch ex As Exception
             Dim getExceptionType As String = ex.GetBaseException.GetType().Name
@@ -392,7 +389,6 @@
             HandleErrors(ex, MasterPage.MessageController)
         End Try
     End Sub
-    'Added by Sridhar
     Private Sub CaseDeniedReasonsGrid_RowDataBound(ByVal sender As Object, ByVal e As GridViewRowEventArgs) Handles CaseDeniedReasonsGrid.RowDataBound
         Try
             If (e.Row.RowType = DataControlRowType.DataRow) _

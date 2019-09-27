@@ -372,8 +372,7 @@ Public Class ClaimByIssueSearch
                 Try
                     DateTime.TryParseExact(txtIssueAddedFromDate.Text.Trim(), DATE_FORMAT, System.Threading.Thread.CurrentThread.CurrentCulture, DateTimeStyles.None, dt)
                     If (dt <> DateTime.MinValue) Then
-                        'Sridhar Me.State.Criterias.IssueAddedFromDate = dt
-                        Me.State.Criterias.IssueAddedFromDate = GetDateFormattedString(dt)
+                        Me.State.Criterias.IssueAddedFromDate = GetDateFormattedStringNullable(dt)
                     End If
                 Catch ex As Exception
                     ElitaPlusPage.SetLabelError(Me.Label2)
@@ -385,8 +384,7 @@ Public Class ClaimByIssueSearch
                 Try
                     DateTime.TryParseExact(txtIssueAddedToDate.Text.Trim(), DATE_FORMAT, System.Threading.Thread.CurrentThread.CurrentCulture, DateTimeStyles.None, dt)
                     If (dt <> DateTime.MinValue) Then
-                        'Sridhar Me.State.Criterias.IssueAddedToDate = dt
-                        Me.State.Criterias.IssueAddedToDate = GetDateFormattedString(dt)
+                        Me.State.Criterias.IssueAddedToDate = GetDateFormattedStringNullable(dt)
                     End If
                 Catch ex As Exception
                     ElitaPlusPage.SetLabelError(Me.Label4)

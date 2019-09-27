@@ -406,11 +406,9 @@ Public Class ClaimPaymentGroupForm
                 DirectCast(e.Item.FindControl("lblInvoiceNumber"), Label).Text = ClaimPaymentGroupDetail.PaymentGroupDetailSearchDV.InvoiceNumber(pymntDR)
                 DirectCast(e.Item.FindControl("lblItemCount"), Label).Text = ClaimPaymentGroupDetail.PaymentGroupDetailSearchDV.Count(pymntDR)
                 DirectCast(e.Item.FindControl("lblTotalAmount"), Label).Text = GetAmountFormattedDoubleString(ClaimPaymentGroupDetail.PaymentGroupDetailSearchDV.InvoiceReconciledAmount(pymntDR).Value.ToString)
-                DirectCast(e.Item.FindControl("lblInvoiceDate"), Label).Text = GetDateFormattedString(ClaimPaymentGroupDetail.PaymentGroupDetailSearchDV.InvoiceDate(pymntDR).Value)
-                'Sridhar DirectCast(e.Item.FindControl("lblInvoiceDate"), Label).Text = ClaimPaymentGroupDetail.PaymentGroupDetailSearchDV.InvoiceDate(pymntDR).Value.ToString(DATE_FORMAT, CultureInfo.CurrentCulture)
+                DirectCast(e.Item.FindControl("lblInvoiceDate"), Label).Text = GetDateFormattedStringNullable(ClaimPaymentGroupDetail.PaymentGroupDetailSearchDV.InvoiceDate(pymntDR).Value)
                 If Not ClaimPaymentGroupDetail.PaymentGroupDetailSearchDV.DueDate(pymntDR) Is Nothing Then
-                    'Sridhar DirectCast(e.Item.FindControl("lblInvoiceDueDate"), Label).Text = ClaimPaymentGroupDetail.PaymentGroupDetailSearchDV.DueDate(pymntDR).Value.ToString(DATE_FORMAT, CultureInfo.CurrentCulture)
-                    DirectCast(e.Item.FindControl("lblInvoiceDueDate"), Label).Text = GetDateFormattedString(ClaimPaymentGroupDetail.PaymentGroupDetailSearchDV.DueDate(pymntDR).Value)
+                    DirectCast(e.Item.FindControl("lblInvoiceDueDate"), Label).Text = GetDateFormattedStringNullable(ClaimPaymentGroupDetail.PaymentGroupDetailSearchDV.DueDate(pymntDR).Value)
                 Else
                     DirectCast(e.Item.FindControl("lblInvoiceDueDate"), Label).Text = String.Empty
                 End If

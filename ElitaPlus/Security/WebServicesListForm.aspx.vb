@@ -691,7 +691,6 @@ Namespace Security
 
                         If Not dvRow("last_operation_date").Equals(DBNull.Value) Then
                             Dim lastOperationDate As Date = CType(dvRow(Me.State.boWebservice.WebServicesSearchDV.COL_LAST_OPERATION_DATE), Date)
-                            'Sridhar CType(e.Row.Cells(Me.GRID_COL_LAST_OPERATION_DATE_IDX).FindControl(Me.GRID_CTRL_LAST_OPERATION_DATE_LABLE_NAME), Label).Text = Me.GetLongDateFormattedString(lastOperationDate)
                             CType(e.Row.Cells(Me.GRID_COL_LAST_OPERATION_DATE_IDX).FindControl(Me.GRID_CTRL_LAST_OPERATION_DATE_LABLE_NAME), Label).Text = GetLongDateFormattedString(lastOperationDate)
                         End If
 

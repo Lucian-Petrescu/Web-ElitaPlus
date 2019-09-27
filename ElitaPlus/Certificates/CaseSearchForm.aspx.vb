@@ -451,19 +451,18 @@ Namespace Certificates
                     Else
                         e.Row.Cells(GridColCaseStatusCodeIdx).CssClass = "StatInactive"
                     End If
-                    'Added By Sridhar
                     Dim strOpenDate As String = Convert.ToString(e.Row.Cells(GridColCaseOpenDateIdx).Text)
                     strOpenDate = strOpenDate.Replace("&nbsp;", "")
                     If String.IsNullOrWhiteSpace(strOpenDate) = False Then
                         Dim tempOpenDate = Convert.ToDateTime(e.Row.Cells(GridColCaseOpenDateIdx).Text.Trim())
-                        Dim formattedOpenDate = GetDateFormattedString(tempOpenDate)
+                        Dim formattedOpenDate = GetDateFormattedStringNullable(tempOpenDate)
                         e.Row.Cells(GridColCaseOpenDateIdx).Text = Convert.ToString(formattedOpenDate)
                     End If
                     Dim strCloseDate As String = Convert.ToString(e.Row.Cells(GridColCaseCloseDateIdx).Text)
                     strCloseDate = strCloseDate.Replace("&nbsp;", "")
                     If String.IsNullOrEmpty(strCloseDate) = False Then
-                        Dim tempCloseDate = Convert.ToString(e.Row.Cells(GridColCaseCloseDateIdx).Text.Trim())
-                        Dim formattedCloseDate = GetDateFormattedString(tempCloseDate)
+                        Dim tempCloseDate = Convert.ToDateTime(e.Row.Cells(GridColCaseCloseDateIdx).Text.Trim())
+                        Dim formattedCloseDate = GetDateFormattedStringNullable(tempCloseDate)
                         e.Row.Cells(GridColCaseCloseDateIdx).Text = Convert.ToString(formattedCloseDate)
                     End If
 

@@ -474,8 +474,7 @@ Namespace Certificates
                 moProtectionAndEventDetails.ClaimStatus = NO_DATA
                 moProtectionAndEventDetails.CallerName = CType(Me.NavController.FlowSession(FlowSessionKeys.SESSION_CALLER_NAME), String)
 
-                'Sridhar If dateOfLoss > Date.MinValue Then moProtectionAndEventDetails.DateOfLoss = dateOfLoss.ToString(DATE_FORMAT)
-                If dateOfLoss > Date.MinValue Then moProtectionAndEventDetails.DateOfLoss = GetDateFormattedString(dateOfLoss)
+                If dateOfLoss > Date.MinValue Then moProtectionAndEventDetails.DateOfLoss = GetDateFormattedStringNullable(dateOfLoss)
                 moProtectionAndEventDetails.ProtectionStatus = LookupListNew.GetDescriptionFromId("SUBSTAT", cert.SubscriberStatus)
                 If (LookupListNew.GetCodeFromId("SUBSTAT", cert.SubscriberStatus) = Codes.SUBSCRIBER_STATUS__ACTIVE) Then
                     cssClassName = "StatActive"
@@ -493,8 +492,7 @@ Namespace Certificates
                     End If
                 End If
                 moProtectionAndEventDetails.TypeOfLoss = LookupListNew.GetDescriptionFromId(LookupListNew.LK_RISKTYPES, certItem.RiskTypeId)
-                'Sridhar moProtectionAndEventDetails.DateOfLoss = dateOfLoss.ToString(DATE_FORMAT)
-                moProtectionAndEventDetails.DateOfLoss = GetDateFormattedString(dateOfLoss)
+                moProtectionAndEventDetails.DateOfLoss = GetDateFormattedStringNullable(dateOfLoss)
             Catch ex As Exception
                 Me.HandleErrors(ex, Me.MasterPage.MessageController)
             End Try
@@ -875,16 +873,12 @@ Namespace Certificates
                     Me.TextboxMethodOfRepair.ReadOnly = True
                     Me.PopulateControlFromBOProperty(Me.TextboxSerialNumber, .SerialNumber)
                     Me.PopulateControlFromBOProperty(Me.TextboxIMEINumber, .IMEINumber)
-                    'Sridhar Me.PopulateControlFromBOProperty(Me.TextboxBeginDate, Me.moCertItemCoverage.BeginDate, DATE_FORMAT)
-                    'Sridhar Me.PopulateControlFromBOProperty(Me.TextboxEndDate, Me.moCertItemCoverage.EndDate, DATE_FORMAT)
-                    Me.PopulateControlFromBOProperty(Me.TextboxBeginDate, GetDateFormattedString(Me.moCertItemCoverage.BeginDate))
-                    Me.PopulateControlFromBOProperty(Me.TextboxEndDate, GetDateFormattedString(Me.moCertItemCoverage.EndDate))
+                    Me.PopulateControlFromBOProperty(Me.TextboxBeginDate, GetDateFormattedStringNullable(Me.moCertItemCoverage.BeginDate))
+                    Me.PopulateControlFromBOProperty(Me.TextboxEndDate, GetDateFormattedStringNullable(Me.moCertItemCoverage.EndDate))
                     Me.PopulateControlFromBOProperty(Me.TextboxLiabilityLimit, Me.moCertItemCoverage.LiabilityLimits, DECIMAL_FORMAT)
                     Me.PopulateControlFromBOProperty(Me.TextboxCoverageType, Me.State.MyBO.GetCoverageTypeDescription(Me.moCertItemCoverage.CoverageTypeId))
-                    'Sridhar Me.PopulateControlFromBOProperty(Me.TextboxDateAdded, Me.moCertItemCoverage.CreatedDate, DATE_FORMAT)
-                    Me.PopulateControlFromBOProperty(Me.TextboxDateAdded, GetDateFormattedString(Me.moCertItemCoverage.CreatedDate))
+                    Me.PopulateControlFromBOProperty(Me.TextboxDateAdded, GetDateFormattedStringNullable(Me.moCertItemCoverage.CreatedDate))
                     Me.PopulateControlFromBOProperty(Me.TextboxDealerItemDesc, Me.State.MyBO.ItemDescription)
-                    'Me.PopulateControlFromBOProperty(Me.TextboxDescription, moCertificate.DealerItemDescription)
 
                     PopulateFormDeductibleFormBOs(MethodOfRepairId)
 

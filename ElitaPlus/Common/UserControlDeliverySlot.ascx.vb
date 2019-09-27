@@ -403,12 +403,6 @@ Public Class UserControlDeliverySlot
         Dim fastestDeliveryDate As DeliveryDay = (From delDay As DeliveryDay In de.AvailableDeliveryDays Select delDay Order By delDay.DeliveryDate Ascending).First()
         If fastestDeliveryDate IsNot Nothing Then
             Dim fDeliveryDate As String
-            'Sridhar Commented 
-            'If Thread.CurrentThread.CurrentCulture.ToString() = "ja-JP" Then
-            '    fDeliveryDate = fastestDeliveryDate.DeliveryDate.ToString("dd-MMM-yyyy", DateTimeFormatInfo.InvariantInfo)
-            'Else
-            '    fDeliveryDate = ElitaPlusPage.GetDateFormattedStringNullable(fastestDeliveryDate.DeliveryDate)
-            'End If
             fDeliveryDate = ElitaPlusPage.GetDateFormattedStringNullable(fastestDeliveryDate.DeliveryDate)
                 If de.Behavior.UseDeliverySlot Then 'add slot information 
                     If fastestDeliveryDate.DeliverySlots IsNot Nothing AndAlso fastestDeliveryDate.DeliverySlots.Length > 0 AndAlso de.Behavior.SelectionAllowed Then
@@ -430,12 +424,6 @@ Public Class UserControlDeliverySlot
         Dim lastDeliveryDate As DeliveryDay = (From delDay As DeliveryDay In de.AvailableDeliveryDays Select delDay Order By delDay.DeliveryDate Ascending).Last()
         If lastDeliveryDate IsNot Nothing Then
             Dim lDeliveryDate As String
-            'Sridhar Commented 
-            'If Thread.CurrentThread.CurrentCulture.ToString() = "ja-JP" Then
-            '    lDeliveryDate = lastDeliveryDate.DeliveryDate.ToString("dd-MMM-yyyy", DateTimeFormatInfo.InvariantInfo)
-            'Else
-            '    lDeliveryDate = ElitaPlusPage.GetDateFormattedStringNullable(lastDeliveryDate.DeliveryDate)
-            'End If
             lDeliveryDate = ElitaPlusPage.GetDateFormattedStringNullable(lastDeliveryDate.DeliveryDate)
             If de.Behavior.UseDeliverySlot Then 'add slot information 
                 If lastDeliveryDate.DeliverySlots IsNot Nothing AndAlso lastDeliveryDate.DeliverySlots.Length > 0 AndAlso de.Behavior.SelectionAllowed Then

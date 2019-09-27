@@ -2006,8 +2006,8 @@ Public Class ElitaPlusPage
 
     Public Shared Function GetDateFormattedString(ByVal value As Date) As String
         'Return value.ToString(DATE_FORMAT, LocalizationMgr.CurrentCulture)
-        'Dim LanguageCode = ElitaPlusIdentity.Current.ActiveUser.LanguageCode
-        Dim LanguageCode = "JP"
+        Dim LanguageCode = ElitaPlusIdentity.Current.ActiveUser.LanguageCode
+        'Dim LanguageCode = "JP"
         Dim formattedValue = CommonConfigManager.Current.LanguageManager.Get(LanguageCode).GetAwaiter().GetResult()?.FormatDate(value)
         Return formattedValue.ToString()
         'Return value.ToString(DATE_FORMAT, System.Threading.Thread.CurrentThread.CurrentCulture)
@@ -2016,8 +2016,8 @@ Public Class ElitaPlusPage
     Public Shared Function GetLongDateFormattedString(ByVal value As Date) As String
         'Return value.ToString(DATE_FORMAT, LocalizationMgr.CurrentCulture)
         'Return value.ToString(DATE_TIME_FORMAT, System.Threading.Thread.CurrentThread.CurrentCulture)
-        'Dim LanguageCode = ElitaPlusIdentity.Current.ActiveUser.LanguageCode
-        Dim LanguageCode = "JP"
+        Dim LanguageCode = ElitaPlusIdentity.Current.ActiveUser.LanguageCode
+        'Dim LanguageCode = "JP"
         Dim formattedDate = CommonConfigManager.Current.LanguageManager.Get(LanguageCode).GetAwaiter().GetResult()?.FormatDate(value)
         Dim MeridianTime = CommonConfigManager.Current.LanguageManager.Get(LanguageCode).GetAwaiter().GetResult()?.FormatTime(value)
         Dim FullDateTimeValue = formattedDate + " " + MeridianTime
@@ -2029,8 +2029,8 @@ Public Class ElitaPlusPage
     Public Shared Function GetLongDate12FormattedString(ByVal value As Date) As String
         'Return value.ToString(DATE_FORMAT, LocalizationMgr.CurrentCulture)
         'Return value.ToString(DATE_TIME_FORMAT_12, System.Threading.Thread.CurrentThread.CurrentCulture)
-        'Dim LanguageCode = ElitaPlusIdentity.Current.ActiveUser.LanguageCode
-        Dim LanguageCode = "JP"
+        Dim LanguageCode = ElitaPlusIdentity.Current.ActiveUser.LanguageCode
+        ' Dim LanguageCode = "JP"
         Dim formattedDate = CommonConfigManager.Current.LanguageManager.Get(LanguageCode).GetAwaiter().GetResult()?.FormatDate(value)
         Dim FormattedTime = CommonConfigManager.Current.LanguageManager.Get(LanguageCode).GetAwaiter().GetResult()?.FormatTime(value)
         Dim FormattedValue = formattedDate + " " + FormattedTime

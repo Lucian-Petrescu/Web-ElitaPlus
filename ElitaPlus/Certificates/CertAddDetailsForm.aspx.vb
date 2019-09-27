@@ -607,20 +607,17 @@ Partial Public Class CertAddDetailsForm
 
             Me.txtCertNum.Text = .CertNum
             If .WarrantySalesDate > Date.MinValue Then
-                'Sridhar Me.txtWarrSalesDate.Text = .WarrantySalesDate.ToString(DATE_FORMAT, CultureInfo.CurrentCulture)
                 Me.txtWarrSalesDate.Text = GetDateFormattedString(.WarrantySalesDate)
             Else
                 Me.txtWarrSalesDate.Text = ""
             End If
             If .ProductSalesDate > Date.MinValue Then
-                'Sridhar Me.txtProdSalesDate.Text = .ProductSalesDate.ToString(DATE_FORMAT, CultureInfo.CurrentCulture)
                 Me.txtProdSalesDate.Text = GetDateFormattedString(.ProductSalesDate)
             Else
                 Me.txtProdSalesDate.Text = ""
             End If
 
             If .DateOfBirth > Date.MinValue Then
-                'Sridhar Me.txtDateOfBirth.Text = .DateOfBirth.ToString(DATE_FORMAT, CultureInfo.CurrentCulture)
                 Me.txtDateOfBirth.Text = GetDateFormattedString(.DateOfBirth)
             Else
                 Me.txtDateOfBirth.Text = ""

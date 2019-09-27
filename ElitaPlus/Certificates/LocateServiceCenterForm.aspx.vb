@@ -222,8 +222,7 @@ Partial Class LocateServiceCenterForm
             moProtectionAndEventDetails.ClaimStatus = NO_DATA
             moProtectionAndEventDetails.CallerName = CType(Me.NavController.FlowSession(FlowSessionKeys.SESSION_CALLER_NAME), String)
 
-            'Sridhar If dateOfLoss > Date.MinValue Then moProtectionAndEventDetails.DateOfLoss = dateOfLoss.ToString(Me.DATE_FORMAT)
-            If dateOfLoss > Date.MinValue Then moProtectionAndEventDetails.DateOfLoss = GetDateFormattedString(dateOfLoss)
+            If dateOfLoss > Date.MinValue Then moProtectionAndEventDetails.DateOfLoss = GetDateFormattedStringNullable(dateOfLoss)
             moProtectionAndEventDetails.ProtectionStatus = LookupListNew.GetDescriptionFromId("SUBSTAT", cert.SubscriberStatus)
             If (LookupListNew.GetCodeFromId("SUBSTAT", cert.SubscriberStatus) = Codes.SUBSCRIBER_STATUS__ACTIVE) Then
                 cssClassName = "StatActive"

@@ -452,12 +452,10 @@ Public Class PublishedTaskForm
             End If
 
             If Not (PublishedTaskSearchDV.LockDate(row) Is Nothing) Then
-                'Sridhar strB.AppendFormat(.LabelExecutionInfoA(1), PublishedTaskSearchDV.LockDate(row).Value.ToString(DATE_TIME_FORMAT_12, System.Threading.Thread.CurrentThread.CurrentCulture))
                 strB.AppendFormat(.LabelExecutionInfoA(1), GetLongDate12FormattedString(PublishedTaskSearchDV.LockDate(row).Value))
             End If
 
             If Not (PublishedTaskSearchDV.LastAttemptDate(row) Is Nothing) Then
-                'Sridhar strB.AppendFormat(.LabelExecutionInfoA(2), PublishedTaskSearchDV.LastAttemptDate(row).Value.ToString(DATE_TIME_FORMAT_12, System.Threading.Thread.CurrentThread.CurrentCulture))
                 strB.AppendFormat(.LabelExecutionInfoA(2), GetLongDate12FormattedString(PublishedTaskSearchDV.LastAttemptDate(row).Value))
             End If
 
@@ -523,7 +521,6 @@ Public Class PublishedTaskForm
         If PublishedTaskSearchDV.EventDate(row) Is Nothing Then
             valueArray(4) = ""
         Else
-            'Sridhar valueArray(4) = PublishedTaskSearchDV.EventDate(row).Value.ToString(DATE_TIME_FORMAT_12, System.Threading.Thread.CurrentThread.CurrentCulture)
             valueArray(4) = GetLongDate12FormattedString(PublishedTaskSearchDV.EventDate(row).Value)
         End If
 
