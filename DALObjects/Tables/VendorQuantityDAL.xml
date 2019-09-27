@@ -10,7 +10,7 @@
 				table_name,
 				vendor_sku,
 				vendor_sku_description,
-				quantity,
+				(nvl(quantity, 0) - nvl(reserve_qty, 0)) as quantity,
 				created_by,
 				modified_by,
 				created_date,

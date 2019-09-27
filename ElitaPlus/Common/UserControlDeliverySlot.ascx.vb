@@ -100,6 +100,14 @@ Public Class UserControlDeliverySlot
             State.CourierProductCode = value
         End Set
     End Property
+    Public Property DeliverySlotDescription() As String
+        Get
+            Return State.DeliverySlotDescription
+        End Get
+        Set(ByVal value As String)
+            State.DeliverySlotDescription = value
+        End Set
+    End Property
 
     Public Property DeliveryAddress() As DeliveryAddressInfo
         Get
@@ -107,6 +115,16 @@ Public Class UserControlDeliverySlot
         End Get
         Set(ByVal value As DeliveryAddressInfo)
             State.DeliveryAddress = value
+        End Set
+    End Property
+
+    Public Property IsDeliverySlotAvailable() As Boolean
+
+        Get
+            Return State.IsDeliverySlotAvailable
+        End Get
+        Set(ByVal value As Boolean)
+            State.IsDeliverySlotAvailable = value
         End Set
     End Property
 #End Region
@@ -123,7 +141,9 @@ Public Class UserControlDeliverySlot
         Public DefaultDeliveryDay As DeliveryDay
         Public DeliveryDateSelected As Nullable(Of Date)
         Public CurrentEstimate As DeliveryEstimate
-        Public EnableNotSepecifyCheck as Boolean
+        Public EnableNotSepecifyCheck As Boolean
+        Public IsDeliverySlotAvailable As Boolean
+        Public DeliverySlotDescription As String
     End Class
 
 
@@ -278,6 +298,7 @@ Public Class UserControlDeliverySlot
         'clear old values when get new
         State.CurrentEstimate = Nothing
         State.DeliveryDateList = Nothing
+        State.IsDeliverySlotAvailable = True
 
         ResetToDefaultSetting()
 
@@ -308,7 +329,20 @@ Public Class UserControlDeliverySlot
                                                                             Function(ByVal c As WebAppGatewayClient)
                                                                                 Return c.GetDeliverySlots(wsRequest)
                                                                             End Function)
+
+
             If wsResponse IsNot Nothing AndAlso wsResponse.DeliveryEstimates IsNot Nothing AndAlso wsResponse.DeliveryEstimates.Length > 0 Then
+
+                If wsResponse.DeliveryEstimates.Any(Function(e As DeliveryEstimate)
+                                                        Return e.AvailableDeliveryDays.Any(Function(d As DeliveryDay)
+                                                                                               Return d.DeliverySlots?.Length < 1
+                                                                                           End Function)
+                                                    End Function) Then
+                    ClearDisableAll()
+                    Page.MasterPage.MessageController.AddInformation(Message.MSG_ERR_ESTIMATED_DELIVERY_SLOT_NOT_FOUND, True)
+                    Exit Sub
+                End If
+
                 State.DeliveryDateList = wsResponse.DeliveryEstimates
                 ShowInitDeliveryEstimates()
             Else
@@ -370,6 +404,7 @@ Public Class UserControlDeliverySlot
                 Exit Sub
             End If
         Else ' populate the courier product dropdown
+            ddlCourierProduct.Items.Clear()
             For Each de As DeliveryEstimate In State.DeliveryDateList
                 ddlCourierProduct.Items.Add(New ListItem() With {.Text = $"{de.CourierCode} - {de.CourierProductCode}", .Value = $"{de.CourierCode}{de.CourierProductCode}"})
             Next
@@ -377,7 +412,6 @@ Public Class UserControlDeliverySlot
         End If
 
         ShowDeliveryEstimate()
-
     End Sub
     Private Sub ShowFaultException(ByVal fex As FaultException)
         If fex IsNot Nothing Then
@@ -414,10 +448,24 @@ Public Class UserControlDeliverySlot
                     Dim fastestDeliveryTimeSlot As DeliverySlot = (From delSlot As DeliverySlot In fastestDeliveryDate.DeliverySlots Select delSlot Order By delSlot.Sequence Ascending).First()
                     If fastestDeliveryTimeSlot IsNot Nothing Then
                         fastestDeliveryDateTime = If(LookupListNew.GetDescriptionFromCode(LookupListNew.LK_DESIRED_DELIVERY_TIME_SLOT, fastestDeliveryTimeSlot.Description, Authentication.CurrentUser.LanguageId), fastestDeliveryTimeSlot.Description) + " " + fDeliveryDate
+                        State.DeliverySlotDescription = fastestDeliveryTimeSlot.Description
+
+                        If State.DeliverySlotDescription.ToUpper() = "EXP_DEL4" Or State.DeliverySlotDescription.ToUpper() = "EXP_DEL3" Then
+
+                            Dim curTime = New TimeSpan(Assurant.Elita.ApplicationDateTime.Now.Hour, Assurant.Elita.ApplicationDateTime.Now.Minute, 0)
+                            If curTime < fastestDeliveryTimeSlot.BeginTime Or curTime > fastestDeliveryTimeSlot.EndTime Then
+                                ClearDisableAll()
+                                Page.MasterPage.MessageController.AddInformation(Message.MSG_ERR_ESTIMATED_DELIVERY_SLOT_NOT_FOUND, True)
+                                Exit Sub
+                            End If
+
+                        End If
+
+
                     Else
-                        fastestDeliveryDateTime = TranslationBase.TranslateLabelOrMessage("TIME_SLOT_NOT_APPLICABLE") + " " + fDeliveryDate
-                    End If
-                Else
+                            fastestDeliveryDateTime = TranslationBase.TranslateLabelOrMessage("TIME_SLOT_NOT_APPLICABLE") + " " + fDeliveryDate
+                        End If
+                    Else
                     fastestDeliveryDateTime = TranslationBase.TranslateLabelOrMessage("TIME_SLOT_NOT_APPLICABLE") + " " + fDeliveryDate
                 End If
             Else
@@ -477,6 +525,7 @@ Public Class UserControlDeliverySlot
         ResetToDefaultSetting()
         AvailableDeliveryDateTiming = String.Empty
         Page.ChangeEnabledControlProperty(chkNotSpecify, False)
+        State.IsDeliverySlotAvailable = False
     End Sub
 
     Protected Sub ddlCourierProduct_SelectedIndexChanged(sender As Object, e As EventArgs) Handles ddlCourierProduct.SelectedIndexChanged

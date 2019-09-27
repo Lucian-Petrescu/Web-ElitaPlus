@@ -3339,6 +3339,7 @@ Public Class Certificate
                                                         sortBy,
                                                         LimitResultset,
                                                         inforceDate,
+                                                        Authentication.CurrentUser.NetworkId,
                                                         vehicleLicenseNumber,
                                                         Service_line_number,
                                                         dealergroup).Tables(0)
@@ -3476,7 +3477,8 @@ Public Class Certificate
 
     Public Shared Function GetCertificatesListByPhoneNum(ByVal PhoneTypeMask As String, ByVal PhoneMask As String, ByVal certNumberMask As String,
                                                          ByVal customerNameMask As String, ByVal addressMask As String,
-                                                         ByVal postalCodeMask As String, ByVal dealerName As String,
+                                                         ByVal postalCodeMask As String, ByVal dealerName As String, ByVal companyGroupId As Guid,
+                                                         ByVal networkId As String,
                                                          Optional ByVal sortBy As String = CertificateDAL.SORT_BY_PHONE_NUMBER,
                                                          Optional ByVal LimitResultset As Int32 = CertificateDAL.MAX_NUMBER_OF_ROWS) As PhoneNumberSearchDV
         Try
@@ -3510,14 +3512,15 @@ Public Class Certificate
             End If
 
             Return New PhoneNumberSearchDV(dal.LoadListByPhoneNum(PhoneTypeMask, PhoneMask, certNumberMask, customerNameMask,
-                                     addressMask, postalCodeMask, dealerName, compIds, sortBy, LimitResultset, dealerGroup).Tables(0))
+                                     addressMask, postalCodeMask, dealerName, companyGroupId, networkId, sortBy, dealerGroup).Tables(0))
 
         Catch ex As Assurant.ElitaPlus.DALObjects.DataBaseAccessException
             Throw New DataBaseAccessException(ex.ErrorType, ex)
         End Try
     End Function
 
-    Public Shared Function GetSerialNumberList(ByVal serialNumberMask As String) As SerialNumberSearchDV
+    Public Shared Function GetSerialNumberList(ByVal serialNumberMask As String, ByVal companyGroupId As Guid,
+                                               ByVal networkId As String) As SerialNumberSearchDV
         Try
             Dim compIds As ArrayList = ElitaPlusIdentity.Current.ActiveUser.Companies
             Dim dal As New CertificateDAL
@@ -3528,7 +3531,8 @@ Public Class Certificate
                 Throw New BOValidationException(errors, GetType(Certificate).FullName)
             End If
 
-            Return New SerialNumberSearchDV(dal.LoadSerialNumberList(serialNumberMask, compIds).Tables(0))
+            Return New SerialNumberSearchDV(dal.LoadSerialNumberList(serialNumberMask, companyGroupId, networkId
+                                                                     ).Tables(0))
 
         Catch ex As Assurant.ElitaPlus.DALObjects.DataBaseAccessException
             Throw New DataBaseAccessException(ex.ErrorType, ex)
@@ -3558,6 +3562,14 @@ Public Class Certificate
 
         ds = dal.getPremiumTotals(certId)
         Return ds.Tables(CertificateDAL.TABLE_PREMIUM_TOTALS).DefaultView
+
+    End Function
+    Public Shared Function SalesTaxDetail(ByVal certId As Guid, ByVal languageId As Guid) As DataView
+        Dim dal As New CertificateDAL
+        Dim ds As DataSet
+
+        ds = dal.getSalesTaxDetails(certId, languageId)
+        Return ds.Tables(CertificateDAL.TABLE_SALES_TAX_DETAILS).DefaultView
 
     End Function
 

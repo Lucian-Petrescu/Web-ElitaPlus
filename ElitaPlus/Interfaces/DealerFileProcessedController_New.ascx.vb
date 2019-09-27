@@ -59,6 +59,7 @@ Namespace Interfaces
         Public Const VSCCode As String = "2"
         Public Const DealerType_VSC As String = "VSC"
         Public Const DealerType_ESC As String = "ESC"
+        Public Const DealerType_WEPP As String = "WEPP"
 
         Public Const SHOW_COMMAND_REJECTED As String = "ShowRecordRej"
         Public Const SHOW_COMMAND_REMAINING_REJECTED As String = "ShowRecordRemRej"
@@ -1531,7 +1532,7 @@ Namespace Interfaces
                         If Not EscVscDealer Is Nothing AndAlso EscVscDealer.DealerTypeDesc = DealerType_VSC Then
                             TheState.msUrlDetailPage = DealerVSCReconWrkForm.URL
                             Me.TheState.DealerType = EscVscDealer.DealerTypeDesc
-                        ElseIf Not EscVscDealer Is Nothing AndAlso EscVscDealer.DealerTypeDesc = DealerType_ESC Then
+                        ElseIf Not EscVscDealer Is Nothing AndAlso (EscVscDealer.DealerTypeDesc = DealerType_ESC OrElse EscVscDealer.DealerTypeDesc = DealerType_WEPP) Then
                             TheState.msUrlDetailPage = DealerReconWrkForm.URL
                             Me.TheState.DealerType = EscVscDealer.DealerTypeDesc
                         End If

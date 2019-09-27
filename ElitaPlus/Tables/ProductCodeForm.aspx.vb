@@ -9,6 +9,7 @@ Imports Assurant.Elita.Web.Forms
 Imports System.Threading
 Imports Microsoft.Web.Services3.Referral
 
+
 Namespace Tables
 
     Partial Class ProductCodeForm
@@ -96,7 +97,7 @@ Namespace Tables
             Public MyProductBenefitsBO As ProductEquipment = Nothing
             Public ProductRewardsId As Guid = Guid.Empty
             Public MyProductRewardsBO As ProductRewards
-            Public ProductRewardsSortExpression As String = ProductRewards.ProductRewardsSearchDV.COL_NAME_REWARD_NAME
+            Public ProductRewardsSortExpression As String = ProductRewards.ProductRewardsSearchDV.COL_NAME_FROM_RENEWAL
             Public IsProductRewardsAfterSave As Boolean
             Public IsProductRewardsDelete As Boolean = False
             Public AddingProductRewardsNewRow As Boolean
@@ -141,7 +142,7 @@ Namespace Tables
             Public CompanyCode As String
             Public DealerCode As String
             Public ProductCodeDetailId As Guid = Guid.Empty
-            Public MyProductChildBO As ProductCodeDetail            
+            Public MyProductChildBO As ProductCodeDetail
 
             Public ProductEquipmentId As Guid = Guid.Empty
             Public ProductBenefitsId As Guid = Guid.Empty
@@ -279,9 +280,11 @@ Namespace Tables
         Private Const REWARD_AMOUNT As Integer = 2
         Private Const MIN_PURCHASE_PRICE As Integer = 3
         Private Const DAYS_TO_REDEEM As Integer = 4
-        Private Const START_DATE As Integer = 5
-        Private Const END_DATE As Integer = 6
-        Private Const PRODUCT_REWARDS_ID As Integer = 7
+        Private Const FROM_RENEWAL As Integer = 5
+        Private Const TO_RENEWAL As Integer = 6
+        Private Const START_DATE As Integer = 7
+        Private Const END_DATE As Integer = 8
+        Private Const PRODUCT_REWARDS_ID As Integer = 9
 
         Private Const BENEFIT_CELL_ID As Integer = 0
         Private Const BENEFIT_CELL_MAKE As Integer = 1
@@ -321,6 +324,10 @@ Namespace Tables
         Private Const MIN_PURCHASE_PRICE_TEXTBOX_CONTROL_NAME As String = "txtMinPurchasePrice"
         Private Const DAYS_TO_REDEEM_LABEL_CONTROL_NAME As String = "lblDaysToRedeem"
         Private Const DAYS_TO_REDEEM_TEXTBOX_CONTROL_NAME As String = "txtDaysToRedeem"
+        Private Const FROM_RENEWAL_LABEL_CONTROL_NAME As String = "lblFromRenewal"
+        Private Const FROM_RENEWAL_TEXTBOX_CONTROL_NAME As String = "txtFromRenewal"
+        Private Const TO_RENEWAL_LABEL_CONTROL_NAME As String = "lblToRenewal"
+        Private Const TO_RENEWAL_TEXTBOX_CONTROL_NAME As String = "txtToRenewal"
         Private Const START_DATE_IMAGE_BUTTON As String = "btnStartDate"
         Private Const END_DATE_IMAGE_BUTTON As String = "btnEndDate"
         Private Const START_DATE_TEXTBOX As String = "txtStartDate"
@@ -406,6 +413,9 @@ Namespace Tables
         Private Const PRODUCT_EQUIPMENT_VALIDATION_PROPERTY As String = "ProductEquipmentValidation"
 
         Private Const FulfillmentReimThresholdProperty As String = "FullillmentReimburesementThreshold"
+        Private Const INTEGRITY_CONSTRAINT_VIOLATION_MSG As String = "Integrity Constraint Violation"
+        Private Const PRICE_MATRIX_USES_WP_XCD_PROPERTY As String = "PriceMatrixUsesWpXcd"
+        Private Const EXPECTED_PREMIUM_IS_WP_XCD_PROPERTY As String = "ExpectedPremiumIsWpXcd"
 
 
 
@@ -986,6 +996,9 @@ Namespace Tables
 
             ClearList(ddlClaimProfile)
             ClearList(ddlCalcCovgEndDateBasedOn)
+            cboPriceMatrixUsesWpXcd.ClearSelection()
+            cboExpectedPremiumIsWpXcd.ClearSelection()
+
         End Sub
         Private Sub ClearProductEquipment()
             If Me.State.IsProductCodeNew Then
@@ -1306,6 +1319,21 @@ Namespace Tables
                                                        })
 
                 Me.State.PaymentSplitRuleLkl = CommonConfigManager.Current.ListManager.GetList("PAYSPLITRULE", Thread.CurrentPrincipal.GetLanguageCode())
+
+
+                cboExpectedPremiumIsWpXcd.Populate(yesNoLkl, New PopulateOptions() With
+                                                      {
+                                                        .AddBlankItem = True,
+                                                        .BlankItemValue = String.Empty,
+                                                        .ValueFunc = AddressOf PopulateOptions.GetExtendedCode
+                                                       })
+                cboPriceMatrixUsesWpXcd.Populate(yesNoLkl, New PopulateOptions() With
+                                                      {
+                                                        .AddBlankItem = True,
+                                                        .BlankItemValue = String.Empty,
+                                                        .ValueFunc = AddressOf PopulateOptions.GetExtendedCode
+                                                       })
+
             Catch ex As Exception
                 Me.MasterPage.MessageController.AddError(PRODUCTCODE_FORM001)
                 Me.MasterPage.MessageController.AddError(ex.Message, False)
@@ -1387,6 +1415,8 @@ Namespace Tables
                         BindSelectItem(Nothing, ddlDepSchCashReimbursement)
 
                         BindSelectItem(Nothing, ddlClaimProfile)
+                        BindSelectItem(.PriceMatrixUsesWpXcd, cboPriceMatrixUsesWpXcd)
+                        BindSelectItem(.ExpectedPremiumIsWpXcd, cboExpectedPremiumIsWpXcd)
                     Else
                         BindSelectItem(.RiskGroupId.ToString, moRiskGroupDrop)
                         BindSelectItem(.MethodOfRepairId.ToString, moMethodOfRepairDrop)
@@ -1587,6 +1617,8 @@ Namespace Tables
                         PopulateControlFromBOProperty(TextBoxFulfillmentReimThresholdValue, .FullillmentReimburesementThreshold)
                         BindSelectItem(TheDepreciationSchedule.DepreciationScheduleId.ToString, ddlDepSchCashReimbursement)
                         BindSelectItem(.ClaimProfile, ddlClaimProfile)
+                        BindSelectItem(.PriceMatrixUsesWpXcd, cboPriceMatrixUsesWpXcd)
+                        BindSelectItem(.ExpectedPremiumIsWpXcd, cboExpectedPremiumIsWpXcd)
                     End If
 
                     ShowHideBenefitsControls(Me.TheProductCode.BenefitEligibleFlagXCD = Codes.EXT_YESNO_Y)
@@ -1758,6 +1790,8 @@ Namespace Tables
                 PopulateBOProperty(TheProductCode, FulfillmentReimThresholdProperty, TextBoxFulfillmentReimThresholdValue)
                 PopulateBOProperty(TheProductCode, "ClaimProfile", Me.ddlClaimProfile, False, True)
                 Me.PopulateBOProperty(TheProductCode, "PerIncidentLiabilityLimitCap", Me.moPerIncidentLiabilityLimitCapText)
+                Me.PopulateBOProperty(TheProductCode, "ExpectedPremiumIsWpXcd", Me.cboExpectedPremiumIsWpXcd, False, True)
+                Me.PopulateBOProperty(TheProductCode, "PriceMatrixUsesWpXcd", Me.cboPriceMatrixUsesWpXcd, False, True)
             End With
             If Not TheDepreciationSchedule.IsDeleted Then
                 PopulateBOProperty(TheDepreciationSchedule, "DepreciationScheduleId", ddlDepSchCashReimbursement)
@@ -2109,11 +2143,17 @@ Namespace Tables
                     .Delete()
                     .Save()
                 End With
+
             Catch ex As Exception
-                Me.MasterPage.MessageController.AddError(PRODUCTCODE_FORM002)
-                Me.MasterPage.MessageController.AddError(ex.Message, False)
-                Me.MasterPage.MessageController.Show()
+                If ex.Message = INTEGRITY_CONSTRAINT_VIOLATION_MSG Then
+                    Me.MasterPage.MessageController.AddError(Assurant.ElitaPlus.Common.ErrorCodes.DB_INTEGRITY_CONSTRAINT_VIOLATED, True)
+                    TheProductCode.RejectChanges()
+                Else
+                    Me.MasterPage.MessageController.AddError(PRODUCTCODE_FORM002)
+                    Me.MasterPage.MessageController.AddError(ex.Message, False)
+                End If
                 bIsOk = False
+                Me.MasterPage.MessageController.Show()
             End Try
             Return bIsOk
         End Function
@@ -3140,6 +3180,8 @@ Namespace Tables
                             CType(e.Row.Cells(REWARD_AMOUNT).FindControl(REWARD_AMOUNT_TEXTBOX_CONTROL_NAME), TextBox).Text = dvRow(ProductRewards.ProductRewardsSearchDV.COL_NAME_REWARD_AMOUNT).ToString
                             CType(e.Row.Cells(MIN_PURCHASE_PRICE).FindControl(MIN_PURCHASE_PRICE_TEXTBOX_CONTROL_NAME), TextBox).Text = dvRow(ProductRewards.ProductRewardsSearchDV.COL_NAME_MIN_PURCHASE_PRICE).ToString
                             CType(e.Row.Cells(DAYS_TO_REDEEM).FindControl(DAYS_TO_REDEEM_TEXTBOX_CONTROL_NAME), TextBox).Text = dvRow(ProductRewards.ProductRewardsSearchDV.COL_NAME_DAYS_TO_REDEEM).ToString
+                            CType(e.Row.Cells(FROM_RENEWAL).FindControl(FROM_RENEWAL_TEXTBOX_CONTROL_NAME), TextBox).Text = dvRow(ProductRewards.ProductRewardsSearchDV.COL_NAME_FROM_RENEWAL).ToString
+                            CType(e.Row.Cells(TO_RENEWAL).FindControl(TO_RENEWAL_TEXTBOX_CONTROL_NAME), TextBox).Text = dvRow(ProductRewards.ProductRewardsSearchDV.COL_NAME_TO_RENEWAL).ToString
                             If Not DBNull.Value.Equals(dvRow.Row(ProductRewards.ProductRewardsSearchDV.COL_NAME_EFFECTIVE_DATE)) Then
                                 CType(e.Row.Cells(START_DATE).FindControl(START_DATE_TEXTBOX), TextBox).Text = GetDateFormattedString(CType(dvRow.Row(ProductRewards.ProductRewardsSearchDV.COL_NAME_EFFECTIVE_DATE), Date))
                             End If
@@ -3155,6 +3197,8 @@ Namespace Tables
                             CType(e.Row.Cells(REWARD_AMOUNT).FindControl(REWARD_AMOUNT_LABEL_CONTROL_NAME), Label).Text = dvRow(ProductRewards.ProductRewardsSearchDV.COL_NAME_REWARD_AMOUNT).ToString
                             CType(e.Row.Cells(MIN_PURCHASE_PRICE).FindControl(MIN_PURCHASE_PRICE_LABEL_CONTROL_NAME), Label).Text = dvRow(ProductRewards.ProductRewardsSearchDV.COL_NAME_MIN_PURCHASE_PRICE).ToString
                             CType(e.Row.Cells(DAYS_TO_REDEEM).FindControl(DAYS_TO_REDEEM_LABEL_CONTROL_NAME), Label).Text = dvRow(ProductRewards.ProductRewardsSearchDV.COL_NAME_DAYS_TO_REDEEM).ToString
+                            CType(e.Row.Cells(FROM_RENEWAL).FindControl(FROM_RENEWAL_LABEL_CONTROL_NAME), Label).Text = dvRow(ProductRewards.ProductRewardsSearchDV.COL_NAME_FROM_RENEWAL).ToString
+                            CType(e.Row.Cells(TO_RENEWAL).FindControl(TO_RENEWAL_LABEL_CONTROL_NAME), Label).Text = dvRow(ProductRewards.ProductRewardsSearchDV.COL_NAME_TO_RENEWAL).ToString
                             CType(e.Row.Cells(START_DATE).FindControl(STRAT_DATE_LABEL_CONTROL_NAME), Label).Text = GetDateFormattedString(CType(dvRow.Row(ProductRewards.ProductRewardsSearchDV.COL_NAME_EFFECTIVE_DATE), Date))
                             CType(e.Row.Cells(END_DATE).FindControl(END_DATE_LABEL_CONTROL_NAME), Label).Text = GetDateFormattedString(CType(dvRow.Row(ProductRewards.ProductRewardsSearchDV.COL_NAME_EXPIRATION_DATE), Date))
 
@@ -3243,6 +3287,8 @@ Namespace Tables
                 Me.BindBOPropertyToGridHeader(Me.State.MyProductRewardsBO, "RewardAmount", Me.ProductRewardsGridView.Columns(Me.REWARD_AMOUNT))
                 Me.BindBOPropertyToGridHeader(Me.State.MyProductRewardsBO, "MinPurchasePrice", Me.ProductRewardsGridView.Columns(Me.MIN_PURCHASE_PRICE))
                 Me.BindBOPropertyToGridHeader(Me.State.MyProductRewardsBO, "DaysToRedeem", Me.ProductRewardsGridView.Columns(Me.DAYS_TO_REDEEM))
+                Me.BindBOPropertyToGridHeader(Me.State.MyProductRewardsBO, "FromRenewal", Me.ProductRewardsGridView.Columns(Me.FROM_RENEWAL))
+                Me.BindBOPropertyToGridHeader(Me.State.MyProductRewardsBO, "ToRenewal", Me.ProductRewardsGridView.Columns(Me.TO_RENEWAL))
                 Me.BindBOPropertyToGridHeader(Me.State.MyProductRewardsBO, "EffectiveDate", Me.ProductRewardsGridView.Columns(Me.START_DATE))
                 Me.BindBOPropertyToGridHeader(Me.State.MyProductRewardsBO, "ExpirationDate", Me.ProductRewardsGridView.Columns(Me.END_DATE))
             End If
@@ -3298,6 +3344,12 @@ Namespace Tables
 
                     Dim txtDaysToRedeem As TextBox = CType(Me.ProductRewardsGridView.Rows(gridRowIdx).Cells(DAYS_TO_REDEEM).FindControl(DAYS_TO_REDEEM_TEXTBOX_CONTROL_NAME), TextBox)
                     Me.PopulateControlFromBOProperty(txtDaysToRedeem, .DaysToRedeem)
+
+                    Dim txtFromRenewal As TextBox = CType(Me.ProductRewardsGridView.Rows(gridRowIdx).Cells(FROM_RENEWAL).FindControl(FROM_RENEWAL_TEXTBOX_CONTROL_NAME), TextBox)
+                    Me.PopulateControlFromBOProperty(txtFromRenewal, .FromRenewal)
+
+                    Dim txtToRenewal As TextBox = CType(Me.ProductRewardsGridView.Rows(gridRowIdx).Cells(TO_RENEWAL).FindControl(TO_RENEWAL_TEXTBOX_CONTROL_NAME), TextBox)
+                    Me.PopulateControlFromBOProperty(txtToRenewal, .ToRenewal)
 
                     Dim txtStartDate As TextBox = CType(Me.ProductRewardsGridView.Rows(gridRowIdx).Cells(START_DATE).FindControl(START_DATE_TEXTBOX), TextBox)
                     Me.PopulateControlFromBOProperty(txtStartDate, .EffectiveDate)
@@ -3517,6 +3569,8 @@ Namespace Tables
             Dim txtRewardAmount As TextBox = CType(Me.ProductRewardsGridView.Rows(Me.ProductRewardsGridView.EditIndex).Cells(REWARD_AMOUNT).FindControl(Me.REWARD_AMOUNT_TEXTBOX_CONTROL_NAME), TextBox)
             Dim txtMinPurchasePrice As TextBox = CType(Me.ProductRewardsGridView.Rows(Me.ProductRewardsGridView.EditIndex).Cells(MIN_PURCHASE_PRICE).FindControl(Me.MIN_PURCHASE_PRICE_TEXTBOX_CONTROL_NAME), TextBox)
             Dim txtDaysToRedeem As TextBox = CType(Me.ProductRewardsGridView.Rows(Me.ProductRewardsGridView.EditIndex).Cells(DAYS_TO_REDEEM).FindControl(Me.DAYS_TO_REDEEM_TEXTBOX_CONTROL_NAME), TextBox)
+            Dim txtFromRenewal As TextBox = CType(Me.ProductRewardsGridView.Rows(Me.ProductRewardsGridView.EditIndex).Cells(FROM_RENEWAL).FindControl(Me.FROM_RENEWAL_TEXTBOX_CONTROL_NAME), TextBox)
+            Dim txtToRenewal As TextBox = CType(Me.ProductRewardsGridView.Rows(Me.ProductRewardsGridView.EditIndex).Cells(TO_RENEWAL).FindControl(Me.TO_RENEWAL_TEXTBOX_CONTROL_NAME), TextBox)
             Dim txtStartDate As TextBox = CType(Me.ProductRewardsGridView.Rows(Me.ProductRewardsGridView.EditIndex).Cells(START_DATE).FindControl(Me.START_DATE_TEXTBOX), TextBox)
             Dim txtEndDate As TextBox = CType(Me.ProductRewardsGridView.Rows(Me.ProductRewardsGridView.EditIndex).Cells(END_DATE).FindControl(Me.END_DATE_TEXTBOX), TextBox)
 
@@ -3526,6 +3580,8 @@ Namespace Tables
             PopulateBOProperty(Me.State.MyProductRewardsBO, "RewardAmount", txtRewardAmount)
             PopulateBOProperty(Me.State.MyProductRewardsBO, "MinPurchasePrice", txtMinPurchasePrice)
             PopulateBOProperty(Me.State.MyProductRewardsBO, "DaysToRedeem", txtDaysToRedeem)
+            PopulateBOProperty(Me.State.MyProductRewardsBO, "FromRenewal", txtFromRenewal)
+            PopulateBOProperty(Me.State.MyProductRewardsBO, "ToRenewal", txtToRenewal)
             PopulateBOProperty(Me.State.MyProductRewardsBO, "EffectiveDate", txtStartDate)
             PopulateBOProperty(Me.State.MyProductRewardsBO, "ExpirationDate", txtEndDate)
 

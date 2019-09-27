@@ -95,11 +95,6 @@ Public Class ProcessServiceOrder
             Me.NavController.FlowSession(FlowSessionKeys.SESSION_NEXT_SERVICEORDER) = ServiceOrderBO
 
             Dim oServiceCenter As ServiceCenter
-            If claimBO.LoanerCenterId.Equals(Guid.Empty) Then
-                oServiceCenter = New ServiceCenter(claimBO.ServiceCenterId)
-            Else
-                oServiceCenter = New ServiceCenter(claimBO.LoanerCenterId)
-            End If
 
             Dim isCustomerEmail As Boolean = False
             Dim isServiceCenterEmail As Boolean = False
@@ -112,6 +107,12 @@ Public Class ProcessServiceOrder
             If (claimBO.ClaimAuthorizationType = ClaimAuthorizationType.Multiple) Then
                 isPreview = True
             Else
+                If claimBO.LoanerCenterId.Equals(Guid.Empty) Then
+                    oServiceCenter = New ServiceCenter(claimBO.ServiceCenterId)
+                Else
+                    oServiceCenter = New ServiceCenter(claimBO.LoanerCenterId)
+                End If
+
                 If oServiceCenter.DefaultToEmailFlag Then
                 Dim strMsg As String
                 Dim strCcMsg As String

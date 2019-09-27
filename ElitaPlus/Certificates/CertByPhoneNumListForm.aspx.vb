@@ -192,8 +192,13 @@ Namespace Certificates
                 'populate dealer list
                 'Dim dvDealer As DataView = LookupListNew.GetDealerLookupList(ElitaPlusIdentity.Current.ActiveUser.Companies, False, "Code")
                 'Me.BindListControlToDataView(ddlDealer, dvDealer, , , True)
+                Dim oDealerList
+                If Authentication.CurrentUser.IsDealerGroup Then
+                    oDealerList = CaseBase.GetDealerListByCompanyForExternalUser()
+                Else
+                    oDealerList = GetDealerListByCompanyForUser()
+                End If
 
-                Dim oDealerList = GetDealerListByCompanyForUser()
                 ddlDealer.Populate(oDealerList, New PopulateOptions() With
                                            {
                                             .AddBlankItem = True
@@ -313,7 +318,8 @@ Namespace Certificates
                     End If
                     Me.State.searchDV = Certificate.GetCertificatesListByPhoneNum(State.PhoneType, State.PhoneNum, Me.State.certificateNumber,
                                                                             Me.State.customerName, Me.State.address,
-                                                                            Me.State.zip, Me.State.dealerName,
+                                                                            Me.State.zip, Me.State.dealerName, Authentication.CurrentUser.CompanyGroup.Id,
+                                                                            Authentication.CurrentUser.NetworkId,
                                                                             sortBy)
                     If Me.State.searchClick Then
                         Me.ValidSearchResultCount(Me.State.searchDV.Count, True)

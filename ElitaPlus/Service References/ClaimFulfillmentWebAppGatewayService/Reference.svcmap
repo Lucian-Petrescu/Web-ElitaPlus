@@ -19,15 +19,15 @@
     <ServiceContractMappings />
   </ClientOptions>
   <MetadataSources>
-    <MetadataSource Address="http://l16mia0d8386gr7.cead.prd/ElitaClaimFulfillment/WebAppGateway/gateway" Protocol="http" SourceId="1" />
+    <MetadataSource Address="http://sf-jp-east-mod.assurant.com/ElitaClaimFulfillment/modl-j1/WebAppGateway/gateway " Protocol="http" SourceId="1" />
   </MetadataSources>
   <Metadata>
-    <MetadataFile FileName="gateway1.wsdl" MetadataType="Wsdl" ID="7b8379fd-69ee-4745-b371-eddafae0fb9c" SourceId="1" SourceUrl="http://l16mia0d8386gr7.cead.prd/ElitaClaimFulfillment/WebAppGateway/gateway?wsdl=wsdl0" />
-    <MetadataFile FileName="gateway3.xsd" MetadataType="Schema" ID="2c9fd020-3e4a-48a3-befe-39ee031dcdd2" SourceId="1" SourceUrl="http://l16mia0d8386gr7.cead.prd/ElitaClaimFulfillment/WebAppGateway/gateway?xsd=xsd1" />
-    <MetadataFile FileName="WebAppGateway1.wsdl" MetadataType="Wsdl" ID="342130a7-39ed-4ef7-9fb7-befc044935be" SourceId="1" SourceUrl="http://l16mia0d8386gr7.cead.prd/ElitaClaimFulfillment/WebAppGateway/gateway" />
-    <MetadataFile FileName="gateway31.xsd" MetadataType="Schema" ID="8065b3bf-73af-496e-91ec-d91e3fea1ed7" SourceId="1" SourceUrl="http://l16mia0d8386gr7.cead.prd/ElitaClaimFulfillment/WebAppGateway/gateway?xsd=xsd2" />
-    <MetadataFile FileName="gateway32.xsd" MetadataType="Schema" ID="a7dc28d3-0bde-4d1d-9da8-ab35c753fe59" SourceId="1" SourceUrl="http://l16mia0d8386gr7.cead.prd/ElitaClaimFulfillment/WebAppGateway/gateway?xsd=xsd0" />
-    <MetadataFile FileName="gateway.xsd" MetadataType="Schema" ID="16e3779c-d0e2-4739-98c8-66a94b89532d" SourceId="1" SourceUrl="http://l16mia0d8386gr7.cead.prd/ElitaClaimFulfillment/WebAppGateway/gateway?xsd=xsd3" />
+    <MetadataFile FileName="gateway14.xsd" MetadataType="Schema" ID="3135340e-16d2-4a1c-9604-c4502366da48" SourceId="1" SourceUrl="http://sf-jp-east-mod.assurant.com/ElitaClaimFulfillment/modl-j1/WebAppGateway/gateway?xsd=xsd2" />
+    <MetadataFile FileName="gateway1.wsdl" MetadataType="Wsdl" ID="2aa567cf-2d27-4603-b465-567e303f5ccd" SourceId="1" SourceUrl="http://sf-jp-east-mod.assurant.com/ElitaClaimFulfillment/modl-j1/WebAppGateway/gateway?wsdl=wsdl0" />
+    <MetadataFile FileName="WebAppGateway1.wsdl" MetadataType="Wsdl" ID="31e2342b-1cef-4f12-a664-679996459a85" SourceId="1" SourceUrl="http://sf-jp-east-mod.assurant.com/ElitaClaimFulfillment/modl-j1/WebAppGateway/gateway" />
+    <MetadataFile FileName="gateway15.xsd" MetadataType="Schema" ID="3720b770-318a-4879-a6bc-3588a6162642" SourceId="1" SourceUrl="http://sf-jp-east-mod.assurant.com/ElitaClaimFulfillment/modl-j1/WebAppGateway/gateway?xsd=xsd0" />
+    <MetadataFile FileName="gateway16.xsd" MetadataType="Schema" ID="38dc089e-cdb8-4d74-92a0-b5ddc3f31c50" SourceId="1" SourceUrl="http://sf-jp-east-mod.assurant.com/ElitaClaimFulfillment/modl-j1/WebAppGateway/gateway?xsd=xsd3" />
+    <MetadataFile FileName="gateway17.xsd" MetadataType="Schema" ID="8b7d3b97-8651-4be7-a58b-81eed92f3b4c" SourceId="1" SourceUrl="http://sf-jp-east-mod.assurant.com/ElitaClaimFulfillment/modl-j1/WebAppGateway/gateway?xsd=xsd1" />
   </Metadata>
   <Extensions>
     <ExtensionFile FileName="configuration91.svcinfo" Name="configuration91.svcinfo" />

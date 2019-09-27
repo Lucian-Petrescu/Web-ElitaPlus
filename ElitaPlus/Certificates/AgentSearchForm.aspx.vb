@@ -489,7 +489,13 @@ Namespace Certificates
             PopulateDealerDropdown()
         End Sub
         Private Sub PopulateDealerDropdown()
-            Dim oDealerList = GetDealerListByCompanyForUser()
+            Dim oDealerList
+            If Authentication.CurrentUser.IsDealerGroup Then
+                oDealerList = CaseBase.GetDealerListByCompanyForExternalUser()
+            Else
+                oDealerList = GetDealerListByCompanyForUser()
+            End If
+
             Dim dealerTextFunc As Func(Of ListItem, String) = Function(li As ListItem)
                                                                   Return li.Translation + OneSpace + "(" + li.Code + ")"
                                                               End Function

@@ -924,6 +924,1101 @@ Namespace ClaimFulfillmentWebAppGatewayService
         End Sub
     End Class
     
+    <System.Diagnostics.DebuggerStepThroughAttribute(),  _
+     System.CodeDom.Compiler.GeneratedCodeAttribute("System.Runtime.Serialization", "4.0.0.0"),  _
+     System.Runtime.Serialization.DataContractAttribute(Name:="GetFulfillmentDetailsRequest", [Namespace]:="http://assurant.com/Elita/ClaimFulfillment/WebAppGateway/Data"),  _
+     System.SerializableAttribute()>  _
+    Partial Public Class GetFulfillmentDetailsRequest
+        Inherits Object
+        Implements System.Runtime.Serialization.IExtensibleDataObject, System.ComponentModel.INotifyPropertyChanged
+        
+        <System.NonSerializedAttribute()>  _
+        Private extensionDataField As System.Runtime.Serialization.ExtensionDataObject
+        
+        Private CompanyCodeField As String
+        
+        Private ClaimNumberField As String
+        
+        <Global.System.ComponentModel.BrowsableAttribute(false)>  _
+        Public Property ExtensionData() As System.Runtime.Serialization.ExtensionDataObject Implements System.Runtime.Serialization.IExtensibleDataObject.ExtensionData
+            Get
+                Return Me.extensionDataField
+            End Get
+            Set
+                Me.extensionDataField = value
+            End Set
+        End Property
+        
+        <System.Runtime.Serialization.DataMemberAttribute(IsRequired:=true)>  _
+        Public Property CompanyCode() As String
+            Get
+                Return Me.CompanyCodeField
+            End Get
+            Set
+                If (Object.ReferenceEquals(Me.CompanyCodeField, value) <> true) Then
+                    Me.CompanyCodeField = value
+                    Me.RaisePropertyChanged("CompanyCode")
+                End If
+            End Set
+        End Property
+        
+        <System.Runtime.Serialization.DataMemberAttribute(IsRequired:=true, Order:=1)>  _
+        Public Property ClaimNumber() As String
+            Get
+                Return Me.ClaimNumberField
+            End Get
+            Set
+                If (Object.ReferenceEquals(Me.ClaimNumberField, value) <> true) Then
+                    Me.ClaimNumberField = value
+                    Me.RaisePropertyChanged("ClaimNumber")
+                End If
+            End Set
+        End Property
+        
+        Public Event PropertyChanged As System.ComponentModel.PropertyChangedEventHandler Implements System.ComponentModel.INotifyPropertyChanged.PropertyChanged
+        
+        Protected Sub RaisePropertyChanged(ByVal propertyName As String)
+            Dim propertyChanged As System.ComponentModel.PropertyChangedEventHandler = Me.PropertyChangedEvent
+            If (Not (propertyChanged) Is Nothing) Then
+                propertyChanged(Me, New System.ComponentModel.PropertyChangedEventArgs(propertyName))
+            End If
+        End Sub
+    End Class
+    
+    <System.Diagnostics.DebuggerStepThroughAttribute(),  _
+     System.CodeDom.Compiler.GeneratedCodeAttribute("System.Runtime.Serialization", "4.0.0.0"),  _
+     System.Runtime.Serialization.DataContractAttribute(Name:="FulfillmentDetails", [Namespace]:="http://assurant.com/Elita/ClaimFulfillment/WebAppGateway/Data"),  _
+     System.SerializableAttribute()>  _
+    Partial Public Class FulfillmentDetails
+        Inherits Object
+        Implements System.Runtime.Serialization.IExtensibleDataObject, System.ComponentModel.INotifyPropertyChanged
+        
+        <System.NonSerializedAttribute()>  _
+        Private extensionDataField As System.Runtime.Serialization.ExtensionDataObject
+        
+        Private OptionCodeField As String
+        
+        Private OptionDescriptionField As String
+        
+        <System.Runtime.Serialization.OptionalFieldAttribute()>  _
+        Private LogisticStagesField() As ClaimFulfillmentWebAppGatewayService.SelectedLogisticStage
+        
+        <System.Runtime.Serialization.OptionalFieldAttribute()>  _
+        Private FeesField() As ClaimFulfillmentWebAppGatewayService.Fee
+        
+        <System.Runtime.Serialization.OptionalFieldAttribute()>  _
+        Private ChargesField() As ClaimFulfillmentWebAppGatewayService.Charge
+        
+        <Global.System.ComponentModel.BrowsableAttribute(false)>  _
+        Public Property ExtensionData() As System.Runtime.Serialization.ExtensionDataObject Implements System.Runtime.Serialization.IExtensibleDataObject.ExtensionData
+            Get
+                Return Me.extensionDataField
+            End Get
+            Set
+                Me.extensionDataField = value
+            End Set
+        End Property
+        
+        <System.Runtime.Serialization.DataMemberAttribute(IsRequired:=true)>  _
+        Public Property OptionCode() As String
+            Get
+                Return Me.OptionCodeField
+            End Get
+            Set
+                If (Object.ReferenceEquals(Me.OptionCodeField, value) <> true) Then
+                    Me.OptionCodeField = value
+                    Me.RaisePropertyChanged("OptionCode")
+                End If
+            End Set
+        End Property
+        
+        <System.Runtime.Serialization.DataMemberAttribute(IsRequired:=true)>  _
+        Public Property OptionDescription() As String
+            Get
+                Return Me.OptionDescriptionField
+            End Get
+            Set
+                If (Object.ReferenceEquals(Me.OptionDescriptionField, value) <> true) Then
+                    Me.OptionDescriptionField = value
+                    Me.RaisePropertyChanged("OptionDescription")
+                End If
+            End Set
+        End Property
+        
+        <System.Runtime.Serialization.DataMemberAttribute(Order:=2)>  _
+        Public Property LogisticStages() As ClaimFulfillmentWebAppGatewayService.SelectedLogisticStage()
+            Get
+                Return Me.LogisticStagesField
+            End Get
+            Set
+                If (Object.ReferenceEquals(Me.LogisticStagesField, value) <> true) Then
+                    Me.LogisticStagesField = value
+                    Me.RaisePropertyChanged("LogisticStages")
+                End If
+            End Set
+        End Property
+        
+        <System.Runtime.Serialization.DataMemberAttribute(Order:=3)>  _
+        Public Property Fees() As ClaimFulfillmentWebAppGatewayService.Fee()
+            Get
+                Return Me.FeesField
+            End Get
+            Set
+                If (Object.ReferenceEquals(Me.FeesField, value) <> true) Then
+                    Me.FeesField = value
+                    Me.RaisePropertyChanged("Fees")
+                End If
+            End Set
+        End Property
+        
+        <System.Runtime.Serialization.DataMemberAttribute(Order:=4)>  _
+        Public Property Charges() As ClaimFulfillmentWebAppGatewayService.Charge()
+            Get
+                Return Me.ChargesField
+            End Get
+            Set
+                If (Object.ReferenceEquals(Me.ChargesField, value) <> true) Then
+                    Me.ChargesField = value
+                    Me.RaisePropertyChanged("Charges")
+                End If
+            End Set
+        End Property
+        
+        Public Event PropertyChanged As System.ComponentModel.PropertyChangedEventHandler Implements System.ComponentModel.INotifyPropertyChanged.PropertyChanged
+        
+        Protected Sub RaisePropertyChanged(ByVal propertyName As String)
+            Dim propertyChanged As System.ComponentModel.PropertyChangedEventHandler = Me.PropertyChangedEvent
+            If (Not (propertyChanged) Is Nothing) Then
+                propertyChanged(Me, New System.ComponentModel.PropertyChangedEventArgs(propertyName))
+            End If
+        End Sub
+    End Class
+    
+    <System.Diagnostics.DebuggerStepThroughAttribute(),  _
+     System.CodeDom.Compiler.GeneratedCodeAttribute("System.Runtime.Serialization", "4.0.0.0"),  _
+     System.Runtime.Serialization.DataContractAttribute(Name:="SelectedLogisticStage", [Namespace]:="http://assurant.com/Elita/ClaimFulfillment/WebAppGateway/Data"),  _
+     System.SerializableAttribute()>  _
+    Partial Public Class SelectedLogisticStage
+        Inherits Object
+        Implements System.Runtime.Serialization.IExtensibleDataObject, System.ComponentModel.INotifyPropertyChanged
+        
+        <System.NonSerializedAttribute()>  _
+        Private extensionDataField As System.Runtime.Serialization.ExtensionDataObject
+        
+        Private CodeField As String
+        
+        Private DescriptionField As String
+        
+        Private DirectionCodeField As String
+        
+        Private OptionCodeField As String
+        
+        Private OptionDescriptionField As String
+        
+        Private TypeField As String
+        
+        <System.Runtime.Serialization.OptionalFieldAttribute()>  _
+        Private ShippingField As ClaimFulfillmentWebAppGatewayService.ShippingInfo
+        
+        <System.Runtime.Serialization.OptionalFieldAttribute()>  _
+        Private AddressField As ClaimFulfillmentWebAppGatewayService.FulfillmentAddress
+        
+        <System.Runtime.Serialization.OptionalFieldAttribute()>  _
+        Private HandlingStoreField As ClaimFulfillmentWebAppGatewayService.HandlingStore
+        
+        <Global.System.ComponentModel.BrowsableAttribute(false)>  _
+        Public Property ExtensionData() As System.Runtime.Serialization.ExtensionDataObject Implements System.Runtime.Serialization.IExtensibleDataObject.ExtensionData
+            Get
+                Return Me.extensionDataField
+            End Get
+            Set
+                Me.extensionDataField = value
+            End Set
+        End Property
+        
+        <System.Runtime.Serialization.DataMemberAttribute(IsRequired:=true)>  _
+        Public Property Code() As String
+            Get
+                Return Me.CodeField
+            End Get
+            Set
+                If (Object.ReferenceEquals(Me.CodeField, value) <> true) Then
+                    Me.CodeField = value
+                    Me.RaisePropertyChanged("Code")
+                End If
+            End Set
+        End Property
+        
+        <System.Runtime.Serialization.DataMemberAttribute(IsRequired:=true)>  _
+        Public Property Description() As String
+            Get
+                Return Me.DescriptionField
+            End Get
+            Set
+                If (Object.ReferenceEquals(Me.DescriptionField, value) <> true) Then
+                    Me.DescriptionField = value
+                    Me.RaisePropertyChanged("Description")
+                End If
+            End Set
+        End Property
+        
+        <System.Runtime.Serialization.DataMemberAttribute(IsRequired:=true)>  _
+        Public Property DirectionCode() As String
+            Get
+                Return Me.DirectionCodeField
+            End Get
+            Set
+                If (Object.ReferenceEquals(Me.DirectionCodeField, value) <> true) Then
+                    Me.DirectionCodeField = value
+                    Me.RaisePropertyChanged("DirectionCode")
+                End If
+            End Set
+        End Property
+        
+        <System.Runtime.Serialization.DataMemberAttribute(IsRequired:=true)>  _
+        Public Property OptionCode() As String
+            Get
+                Return Me.OptionCodeField
+            End Get
+            Set
+                If (Object.ReferenceEquals(Me.OptionCodeField, value) <> true) Then
+                    Me.OptionCodeField = value
+                    Me.RaisePropertyChanged("OptionCode")
+                End If
+            End Set
+        End Property
+        
+        <System.Runtime.Serialization.DataMemberAttribute(IsRequired:=true)>  _
+        Public Property OptionDescription() As String
+            Get
+                Return Me.OptionDescriptionField
+            End Get
+            Set
+                If (Object.ReferenceEquals(Me.OptionDescriptionField, value) <> true) Then
+                    Me.OptionDescriptionField = value
+                    Me.RaisePropertyChanged("OptionDescription")
+                End If
+            End Set
+        End Property
+        
+        <System.Runtime.Serialization.DataMemberAttribute(IsRequired:=true)>  _
+        Public Property Type() As String
+            Get
+                Return Me.TypeField
+            End Get
+            Set
+                If (Object.ReferenceEquals(Me.TypeField, value) <> true) Then
+                    Me.TypeField = value
+                    Me.RaisePropertyChanged("Type")
+                End If
+            End Set
+        End Property
+        
+        <System.Runtime.Serialization.DataMemberAttribute(Order:=6)>  _
+        Public Property Shipping() As ClaimFulfillmentWebAppGatewayService.ShippingInfo
+            Get
+                Return Me.ShippingField
+            End Get
+            Set
+                If (Object.ReferenceEquals(Me.ShippingField, value) <> true) Then
+                    Me.ShippingField = value
+                    Me.RaisePropertyChanged("Shipping")
+                End If
+            End Set
+        End Property
+        
+        <System.Runtime.Serialization.DataMemberAttribute(Order:=7)>  _
+        Public Property Address() As ClaimFulfillmentWebAppGatewayService.FulfillmentAddress
+            Get
+                Return Me.AddressField
+            End Get
+            Set
+                If (Object.ReferenceEquals(Me.AddressField, value) <> true) Then
+                    Me.AddressField = value
+                    Me.RaisePropertyChanged("Address")
+                End If
+            End Set
+        End Property
+        
+        <System.Runtime.Serialization.DataMemberAttribute(Order:=8)>  _
+        Public Property HandlingStore() As ClaimFulfillmentWebAppGatewayService.HandlingStore
+            Get
+                Return Me.HandlingStoreField
+            End Get
+            Set
+                If (Object.ReferenceEquals(Me.HandlingStoreField, value) <> true) Then
+                    Me.HandlingStoreField = value
+                    Me.RaisePropertyChanged("HandlingStore")
+                End If
+            End Set
+        End Property
+        
+        Public Event PropertyChanged As System.ComponentModel.PropertyChangedEventHandler Implements System.ComponentModel.INotifyPropertyChanged.PropertyChanged
+        
+        Protected Sub RaisePropertyChanged(ByVal propertyName As String)
+            Dim propertyChanged As System.ComponentModel.PropertyChangedEventHandler = Me.PropertyChangedEvent
+            If (Not (propertyChanged) Is Nothing) Then
+                propertyChanged(Me, New System.ComponentModel.PropertyChangedEventArgs(propertyName))
+            End If
+        End Sub
+    End Class
+    
+    <System.Diagnostics.DebuggerStepThroughAttribute(),  _
+     System.CodeDom.Compiler.GeneratedCodeAttribute("System.Runtime.Serialization", "4.0.0.0"),  _
+     System.Runtime.Serialization.DataContractAttribute(Name:="Fee", [Namespace]:="http://assurant.com/Elita/ClaimFulfillment/WebAppGateway/Data"),  _
+     System.SerializableAttribute()>  _
+    Partial Public Class Fee
+        Inherits Object
+        Implements System.Runtime.Serialization.IExtensibleDataObject, System.ComponentModel.INotifyPropertyChanged
+        
+        <System.NonSerializedAttribute()>  _
+        Private extensionDataField As System.Runtime.Serialization.ExtensionDataObject
+        
+        <System.Runtime.Serialization.OptionalFieldAttribute()>  _
+        Private ServiceClassXcdField As String
+        
+        <System.Runtime.Serialization.OptionalFieldAttribute()>  _
+        Private ServiceTypeXcdField As String
+        
+        <System.Runtime.Serialization.OptionalFieldAttribute()>  _
+        Private AmountField As Decimal
+        
+        <Global.System.ComponentModel.BrowsableAttribute(false)>  _
+        Public Property ExtensionData() As System.Runtime.Serialization.ExtensionDataObject Implements System.Runtime.Serialization.IExtensibleDataObject.ExtensionData
+            Get
+                Return Me.extensionDataField
+            End Get
+            Set
+                Me.extensionDataField = value
+            End Set
+        End Property
+        
+        <System.Runtime.Serialization.DataMemberAttribute()>  _
+        Public Property ServiceClassXcd() As String
+            Get
+                Return Me.ServiceClassXcdField
+            End Get
+            Set
+                If (Object.ReferenceEquals(Me.ServiceClassXcdField, value) <> true) Then
+                    Me.ServiceClassXcdField = value
+                    Me.RaisePropertyChanged("ServiceClassXcd")
+                End If
+            End Set
+        End Property
+        
+        <System.Runtime.Serialization.DataMemberAttribute()>  _
+        Public Property ServiceTypeXcd() As String
+            Get
+                Return Me.ServiceTypeXcdField
+            End Get
+            Set
+                If (Object.ReferenceEquals(Me.ServiceTypeXcdField, value) <> true) Then
+                    Me.ServiceTypeXcdField = value
+                    Me.RaisePropertyChanged("ServiceTypeXcd")
+                End If
+            End Set
+        End Property
+        
+        <System.Runtime.Serialization.DataMemberAttribute(Order:=2)>  _
+        Public Property Amount() As Decimal
+            Get
+                Return Me.AmountField
+            End Get
+            Set
+                If (Me.AmountField.Equals(value) <> true) Then
+                    Me.AmountField = value
+                    Me.RaisePropertyChanged("Amount")
+                End If
+            End Set
+        End Property
+        
+        Public Event PropertyChanged As System.ComponentModel.PropertyChangedEventHandler Implements System.ComponentModel.INotifyPropertyChanged.PropertyChanged
+        
+        Protected Sub RaisePropertyChanged(ByVal propertyName As String)
+            Dim propertyChanged As System.ComponentModel.PropertyChangedEventHandler = Me.PropertyChangedEvent
+            If (Not (propertyChanged) Is Nothing) Then
+                propertyChanged(Me, New System.ComponentModel.PropertyChangedEventArgs(propertyName))
+            End If
+        End Sub
+    End Class
+    
+    <System.Diagnostics.DebuggerStepThroughAttribute(),  _
+     System.CodeDom.Compiler.GeneratedCodeAttribute("System.Runtime.Serialization", "4.0.0.0"),  _
+     System.Runtime.Serialization.DataContractAttribute(Name:="Charge", [Namespace]:="http://assurant.com/Elita/ClaimFulfillment/WebAppGateway/Data"),  _
+     System.SerializableAttribute()>  _
+    Partial Public Class Charge
+        Inherits Object
+        Implements System.Runtime.Serialization.IExtensibleDataObject, System.ComponentModel.INotifyPropertyChanged
+        
+        <System.NonSerializedAttribute()>  _
+        Private extensionDataField As System.Runtime.Serialization.ExtensionDataObject
+        
+        <System.Runtime.Serialization.OptionalFieldAttribute()>  _
+        Private ServiceClassXcdField As String
+        
+        <System.Runtime.Serialization.OptionalFieldAttribute()>  _
+        Private ServiceTypeXcdField As String
+        
+        <System.Runtime.Serialization.OptionalFieldAttribute()>  _
+        Private AmountField As Decimal
+        
+        <Global.System.ComponentModel.BrowsableAttribute(false)>  _
+        Public Property ExtensionData() As System.Runtime.Serialization.ExtensionDataObject Implements System.Runtime.Serialization.IExtensibleDataObject.ExtensionData
+            Get
+                Return Me.extensionDataField
+            End Get
+            Set
+                Me.extensionDataField = value
+            End Set
+        End Property
+        
+        <System.Runtime.Serialization.DataMemberAttribute()>  _
+        Public Property ServiceClassXcd() As String
+            Get
+                Return Me.ServiceClassXcdField
+            End Get
+            Set
+                If (Object.ReferenceEquals(Me.ServiceClassXcdField, value) <> true) Then
+                    Me.ServiceClassXcdField = value
+                    Me.RaisePropertyChanged("ServiceClassXcd")
+                End If
+            End Set
+        End Property
+        
+        <System.Runtime.Serialization.DataMemberAttribute()>  _
+        Public Property ServiceTypeXcd() As String
+            Get
+                Return Me.ServiceTypeXcdField
+            End Get
+            Set
+                If (Object.ReferenceEquals(Me.ServiceTypeXcdField, value) <> true) Then
+                    Me.ServiceTypeXcdField = value
+                    Me.RaisePropertyChanged("ServiceTypeXcd")
+                End If
+            End Set
+        End Property
+        
+        <System.Runtime.Serialization.DataMemberAttribute(Order:=2)>  _
+        Public Property Amount() As Decimal
+            Get
+                Return Me.AmountField
+            End Get
+            Set
+                If (Me.AmountField.Equals(value) <> true) Then
+                    Me.AmountField = value
+                    Me.RaisePropertyChanged("Amount")
+                End If
+            End Set
+        End Property
+        
+        Public Event PropertyChanged As System.ComponentModel.PropertyChangedEventHandler Implements System.ComponentModel.INotifyPropertyChanged.PropertyChanged
+        
+        Protected Sub RaisePropertyChanged(ByVal propertyName As String)
+            Dim propertyChanged As System.ComponentModel.PropertyChangedEventHandler = Me.PropertyChangedEvent
+            If (Not (propertyChanged) Is Nothing) Then
+                propertyChanged(Me, New System.ComponentModel.PropertyChangedEventArgs(propertyName))
+            End If
+        End Sub
+    End Class
+    
+    <System.Diagnostics.DebuggerStepThroughAttribute(),  _
+     System.CodeDom.Compiler.GeneratedCodeAttribute("System.Runtime.Serialization", "4.0.0.0"),  _
+     System.Runtime.Serialization.DataContractAttribute(Name:="ShippingInfo", [Namespace]:="http://assurant.com/Elita/ClaimFulfillment/WebAppGateway/Data"),  _
+     System.SerializableAttribute()>  _
+    Partial Public Class ShippingInfo
+        Inherits Object
+        Implements System.Runtime.Serialization.IExtensibleDataObject, System.ComponentModel.INotifyPropertyChanged
+        
+        <System.NonSerializedAttribute()>  _
+        Private extensionDataField As System.Runtime.Serialization.ExtensionDataObject
+        
+        Private CourierCodeField As String
+        
+        Private CourierDescriptionField As String
+        
+        Private CourierProductCodeField As String
+        
+        Private CourierProductDescriptionField As String
+        
+        <System.Runtime.Serialization.OptionalFieldAttribute()>  _
+        Private CourierVoucherNumberField As String
+        
+        <System.Runtime.Serialization.OptionalFieldAttribute()>  _
+        Private ShippingDateField As System.Nullable(Of Date)
+        
+        <System.Runtime.Serialization.OptionalFieldAttribute()>  _
+        Private ExpectedDeliveryDateField As System.Nullable(Of Date)
+        
+        <System.Runtime.Serialization.OptionalFieldAttribute()>  _
+        Private ActualDeliveryDateField As System.Nullable(Of Date)
+        
+        <System.Runtime.Serialization.OptionalFieldAttribute()>  _
+        Private TrackingNumberField As String
+        
+        <System.Runtime.Serialization.OptionalFieldAttribute()>  _
+        Private OrderNumberField As String
+        
+        <System.Runtime.Serialization.OptionalFieldAttribute()>  _
+        Private ExpectedShippingDateField As System.Nullable(Of Date)
+        
+        <Global.System.ComponentModel.BrowsableAttribute(false)>  _
+        Public Property ExtensionData() As System.Runtime.Serialization.ExtensionDataObject Implements System.Runtime.Serialization.IExtensibleDataObject.ExtensionData
+            Get
+                Return Me.extensionDataField
+            End Get
+            Set
+                Me.extensionDataField = value
+            End Set
+        End Property
+        
+        <System.Runtime.Serialization.DataMemberAttribute(IsRequired:=true)>  _
+        Public Property CourierCode() As String
+            Get
+                Return Me.CourierCodeField
+            End Get
+            Set
+                If (Object.ReferenceEquals(Me.CourierCodeField, value) <> true) Then
+                    Me.CourierCodeField = value
+                    Me.RaisePropertyChanged("CourierCode")
+                End If
+            End Set
+        End Property
+        
+        <System.Runtime.Serialization.DataMemberAttribute(IsRequired:=true)>  _
+        Public Property CourierDescription() As String
+            Get
+                Return Me.CourierDescriptionField
+            End Get
+            Set
+                If (Object.ReferenceEquals(Me.CourierDescriptionField, value) <> true) Then
+                    Me.CourierDescriptionField = value
+                    Me.RaisePropertyChanged("CourierDescription")
+                End If
+            End Set
+        End Property
+        
+        <System.Runtime.Serialization.DataMemberAttribute(IsRequired:=true)>  _
+        Public Property CourierProductCode() As String
+            Get
+                Return Me.CourierProductCodeField
+            End Get
+            Set
+                If (Object.ReferenceEquals(Me.CourierProductCodeField, value) <> true) Then
+                    Me.CourierProductCodeField = value
+                    Me.RaisePropertyChanged("CourierProductCode")
+                End If
+            End Set
+        End Property
+        
+        <System.Runtime.Serialization.DataMemberAttribute(IsRequired:=true)>  _
+        Public Property CourierProductDescription() As String
+            Get
+                Return Me.CourierProductDescriptionField
+            End Get
+            Set
+                If (Object.ReferenceEquals(Me.CourierProductDescriptionField, value) <> true) Then
+                    Me.CourierProductDescriptionField = value
+                    Me.RaisePropertyChanged("CourierProductDescription")
+                End If
+            End Set
+        End Property
+        
+        <System.Runtime.Serialization.DataMemberAttribute()>  _
+        Public Property CourierVoucherNumber() As String
+            Get
+                Return Me.CourierVoucherNumberField
+            End Get
+            Set
+                If (Object.ReferenceEquals(Me.CourierVoucherNumberField, value) <> true) Then
+                    Me.CourierVoucherNumberField = value
+                    Me.RaisePropertyChanged("CourierVoucherNumber")
+                End If
+            End Set
+        End Property
+        
+        <System.Runtime.Serialization.DataMemberAttribute()>  _
+        Public Property ShippingDate() As System.Nullable(Of Date)
+            Get
+                Return Me.ShippingDateField
+            End Get
+            Set
+                If (Me.ShippingDateField.Equals(value) <> true) Then
+                    Me.ShippingDateField = value
+                    Me.RaisePropertyChanged("ShippingDate")
+                End If
+            End Set
+        End Property
+        
+        <System.Runtime.Serialization.DataMemberAttribute(Order:=6)>  _
+        Public Property ExpectedDeliveryDate() As System.Nullable(Of Date)
+            Get
+                Return Me.ExpectedDeliveryDateField
+            End Get
+            Set
+                If (Me.ExpectedDeliveryDateField.Equals(value) <> true) Then
+                    Me.ExpectedDeliveryDateField = value
+                    Me.RaisePropertyChanged("ExpectedDeliveryDate")
+                End If
+            End Set
+        End Property
+        
+        <System.Runtime.Serialization.DataMemberAttribute(Order:=7)>  _
+        Public Property ActualDeliveryDate() As System.Nullable(Of Date)
+            Get
+                Return Me.ActualDeliveryDateField
+            End Get
+            Set
+                If (Me.ActualDeliveryDateField.Equals(value) <> true) Then
+                    Me.ActualDeliveryDateField = value
+                    Me.RaisePropertyChanged("ActualDeliveryDate")
+                End If
+            End Set
+        End Property
+        
+        <System.Runtime.Serialization.DataMemberAttribute(Order:=8)>  _
+        Public Property TrackingNumber() As String
+            Get
+                Return Me.TrackingNumberField
+            End Get
+            Set
+                If (Object.ReferenceEquals(Me.TrackingNumberField, value) <> true) Then
+                    Me.TrackingNumberField = value
+                    Me.RaisePropertyChanged("TrackingNumber")
+                End If
+            End Set
+        End Property
+        
+        <System.Runtime.Serialization.DataMemberAttribute(Order:=9)>  _
+        Public Property OrderNumber() As String
+            Get
+                Return Me.OrderNumberField
+            End Get
+            Set
+                If (Object.ReferenceEquals(Me.OrderNumberField, value) <> true) Then
+                    Me.OrderNumberField = value
+                    Me.RaisePropertyChanged("OrderNumber")
+                End If
+            End Set
+        End Property
+        
+        <System.Runtime.Serialization.DataMemberAttribute(Order:=10)>  _
+        Public Property ExpectedShippingDate() As System.Nullable(Of Date)
+            Get
+                Return Me.ExpectedShippingDateField
+            End Get
+            Set
+                If (Me.ExpectedShippingDateField.Equals(value) <> true) Then
+                    Me.ExpectedShippingDateField = value
+                    Me.RaisePropertyChanged("ExpectedShippingDate")
+                End If
+            End Set
+        End Property
+        
+        Public Event PropertyChanged As System.ComponentModel.PropertyChangedEventHandler Implements System.ComponentModel.INotifyPropertyChanged.PropertyChanged
+        
+        Protected Sub RaisePropertyChanged(ByVal propertyName As String)
+            Dim propertyChanged As System.ComponentModel.PropertyChangedEventHandler = Me.PropertyChangedEvent
+            If (Not (propertyChanged) Is Nothing) Then
+                propertyChanged(Me, New System.ComponentModel.PropertyChangedEventArgs(propertyName))
+            End If
+        End Sub
+    End Class
+    
+    <System.Diagnostics.DebuggerStepThroughAttribute(),  _
+     System.CodeDom.Compiler.GeneratedCodeAttribute("System.Runtime.Serialization", "4.0.0.0"),  _
+     System.Runtime.Serialization.DataContractAttribute(Name:="FulfillmentAddress", [Namespace]:="http://assurant.com/Elita/ClaimFulfillment/WebAppGateway/Data"),  _
+     System.SerializableAttribute()>  _
+    Partial Public Class FulfillmentAddress
+        Inherits Object
+        Implements System.Runtime.Serialization.IExtensibleDataObject, System.ComponentModel.INotifyPropertyChanged
+        
+        <System.NonSerializedAttribute()>  _
+        Private extensionDataField As System.Runtime.Serialization.ExtensionDataObject
+        
+        Private Address1Field As String
+        
+        Private Address2Field As String
+        
+        Private Address3Field As String
+        
+        Private CityField As String
+        
+        Private StateField As String
+        
+        Private CountryField As String
+        
+        Private PostalCodeField As String
+        
+        <Global.System.ComponentModel.BrowsableAttribute(false)>  _
+        Public Property ExtensionData() As System.Runtime.Serialization.ExtensionDataObject Implements System.Runtime.Serialization.IExtensibleDataObject.ExtensionData
+            Get
+                Return Me.extensionDataField
+            End Get
+            Set
+                Me.extensionDataField = value
+            End Set
+        End Property
+        
+        <System.Runtime.Serialization.DataMemberAttribute(IsRequired:=true)>  _
+        Public Property Address1() As String
+            Get
+                Return Me.Address1Field
+            End Get
+            Set
+                If (Object.ReferenceEquals(Me.Address1Field, value) <> true) Then
+                    Me.Address1Field = value
+                    Me.RaisePropertyChanged("Address1")
+                End If
+            End Set
+        End Property
+        
+        <System.Runtime.Serialization.DataMemberAttribute(IsRequired:=true)>  _
+        Public Property Address2() As String
+            Get
+                Return Me.Address2Field
+            End Get
+            Set
+                If (Object.ReferenceEquals(Me.Address2Field, value) <> true) Then
+                    Me.Address2Field = value
+                    Me.RaisePropertyChanged("Address2")
+                End If
+            End Set
+        End Property
+        
+        <System.Runtime.Serialization.DataMemberAttribute(IsRequired:=true)>  _
+        Public Property Address3() As String
+            Get
+                Return Me.Address3Field
+            End Get
+            Set
+                If (Object.ReferenceEquals(Me.Address3Field, value) <> true) Then
+                    Me.Address3Field = value
+                    Me.RaisePropertyChanged("Address3")
+                End If
+            End Set
+        End Property
+        
+        <System.Runtime.Serialization.DataMemberAttribute(IsRequired:=true)>  _
+        Public Property City() As String
+            Get
+                Return Me.CityField
+            End Get
+            Set
+                If (Object.ReferenceEquals(Me.CityField, value) <> true) Then
+                    Me.CityField = value
+                    Me.RaisePropertyChanged("City")
+                End If
+            End Set
+        End Property
+        
+        <System.Runtime.Serialization.DataMemberAttribute(IsRequired:=true)>  _
+        Public Property State() As String
+            Get
+                Return Me.StateField
+            End Get
+            Set
+                If (Object.ReferenceEquals(Me.StateField, value) <> true) Then
+                    Me.StateField = value
+                    Me.RaisePropertyChanged("State")
+                End If
+            End Set
+        End Property
+        
+        <System.Runtime.Serialization.DataMemberAttribute(IsRequired:=true, Order:=5)>  _
+        Public Property Country() As String
+            Get
+                Return Me.CountryField
+            End Get
+            Set
+                If (Object.ReferenceEquals(Me.CountryField, value) <> true) Then
+                    Me.CountryField = value
+                    Me.RaisePropertyChanged("Country")
+                End If
+            End Set
+        End Property
+        
+        <System.Runtime.Serialization.DataMemberAttribute(IsRequired:=true, Order:=6)>  _
+        Public Property PostalCode() As String
+            Get
+                Return Me.PostalCodeField
+            End Get
+            Set
+                If (Object.ReferenceEquals(Me.PostalCodeField, value) <> true) Then
+                    Me.PostalCodeField = value
+                    Me.RaisePropertyChanged("PostalCode")
+                End If
+            End Set
+        End Property
+        
+        Public Event PropertyChanged As System.ComponentModel.PropertyChangedEventHandler Implements System.ComponentModel.INotifyPropertyChanged.PropertyChanged
+        
+        Protected Sub RaisePropertyChanged(ByVal propertyName As String)
+            Dim propertyChanged As System.ComponentModel.PropertyChangedEventHandler = Me.PropertyChangedEvent
+            If (Not (propertyChanged) Is Nothing) Then
+                propertyChanged(Me, New System.ComponentModel.PropertyChangedEventArgs(propertyName))
+            End If
+        End Sub
+    End Class
+    
+    <System.Diagnostics.DebuggerStepThroughAttribute(),  _
+     System.CodeDom.Compiler.GeneratedCodeAttribute("System.Runtime.Serialization", "4.0.0.0"),  _
+     System.Runtime.Serialization.DataContractAttribute(Name:="HandlingStore", [Namespace]:="http://assurant.com/Elita/ClaimFulfillment/WebAppGateway/Data"),  _
+     System.SerializableAttribute()>  _
+    Partial Public Class HandlingStore
+        Inherits Object
+        Implements System.Runtime.Serialization.IExtensibleDataObject, System.ComponentModel.INotifyPropertyChanged
+        
+        <System.NonSerializedAttribute()>  _
+        Private extensionDataField As System.Runtime.Serialization.ExtensionDataObject
+        
+        Private StoreCodeField As String
+        
+        Private StoreNameField As String
+        
+        Private StoreTypeXcdField As String
+        
+        <Global.System.ComponentModel.BrowsableAttribute(false)>  _
+        Public Property ExtensionData() As System.Runtime.Serialization.ExtensionDataObject Implements System.Runtime.Serialization.IExtensibleDataObject.ExtensionData
+            Get
+                Return Me.extensionDataField
+            End Get
+            Set
+                Me.extensionDataField = value
+            End Set
+        End Property
+        
+        <System.Runtime.Serialization.DataMemberAttribute(IsRequired:=true)>  _
+        Public Property StoreCode() As String
+            Get
+                Return Me.StoreCodeField
+            End Get
+            Set
+                If (Object.ReferenceEquals(Me.StoreCodeField, value) <> true) Then
+                    Me.StoreCodeField = value
+                    Me.RaisePropertyChanged("StoreCode")
+                End If
+            End Set
+        End Property
+        
+        <System.Runtime.Serialization.DataMemberAttribute(IsRequired:=true)>  _
+        Public Property StoreName() As String
+            Get
+                Return Me.StoreNameField
+            End Get
+            Set
+                If (Object.ReferenceEquals(Me.StoreNameField, value) <> true) Then
+                    Me.StoreNameField = value
+                    Me.RaisePropertyChanged("StoreName")
+                End If
+            End Set
+        End Property
+        
+        <System.Runtime.Serialization.DataMemberAttribute(IsRequired:=true)>  _
+        Public Property StoreTypeXcd() As String
+            Get
+                Return Me.StoreTypeXcdField
+            End Get
+            Set
+                If (Object.ReferenceEquals(Me.StoreTypeXcdField, value) <> true) Then
+                    Me.StoreTypeXcdField = value
+                    Me.RaisePropertyChanged("StoreTypeXcd")
+                End If
+            End Set
+        End Property
+        
+        Public Event PropertyChanged As System.ComponentModel.PropertyChangedEventHandler Implements System.ComponentModel.INotifyPropertyChanged.PropertyChanged
+        
+        Protected Sub RaisePropertyChanged(ByVal propertyName As String)
+            Dim propertyChanged As System.ComponentModel.PropertyChangedEventHandler = Me.PropertyChangedEvent
+            If (Not (propertyChanged) Is Nothing) Then
+                propertyChanged(Me, New System.ComponentModel.PropertyChangedEventArgs(propertyName))
+            End If
+        End Sub
+    End Class
+    
+    <System.Diagnostics.DebuggerStepThroughAttribute(),  _
+     System.CodeDom.Compiler.GeneratedCodeAttribute("System.Runtime.Serialization", "4.0.0.0"),  _
+     System.Runtime.Serialization.DataContractAttribute(Name:="FulfillmentNotFoundFault", [Namespace]:="http://assurant.com/Elita/ClaimFulfillment/WebAppGateway/Data"),  _
+     System.SerializableAttribute()>  _
+    Partial Public Class FulfillmentNotFoundFault
+        Inherits Object
+        Implements System.Runtime.Serialization.IExtensibleDataObject, System.ComponentModel.INotifyPropertyChanged
+        
+        <System.NonSerializedAttribute()>  _
+        Private extensionDataField As System.Runtime.Serialization.ExtensionDataObject
+        
+        Private CompanyCodeField As String
+        
+        Private ClaimNumberField As String
+        
+        <Global.System.ComponentModel.BrowsableAttribute(false)>  _
+        Public Property ExtensionData() As System.Runtime.Serialization.ExtensionDataObject Implements System.Runtime.Serialization.IExtensibleDataObject.ExtensionData
+            Get
+                Return Me.extensionDataField
+            End Get
+            Set
+                Me.extensionDataField = value
+            End Set
+        End Property
+        
+        <System.Runtime.Serialization.DataMemberAttribute(IsRequired:=true)>  _
+        Public Property CompanyCode() As String
+            Get
+                Return Me.CompanyCodeField
+            End Get
+            Set
+                If (Object.ReferenceEquals(Me.CompanyCodeField, value) <> true) Then
+                    Me.CompanyCodeField = value
+                    Me.RaisePropertyChanged("CompanyCode")
+                End If
+            End Set
+        End Property
+        
+        <System.Runtime.Serialization.DataMemberAttribute(IsRequired:=true, Order:=1)>  _
+        Public Property ClaimNumber() As String
+            Get
+                Return Me.ClaimNumberField
+            End Get
+            Set
+                If (Object.ReferenceEquals(Me.ClaimNumberField, value) <> true) Then
+                    Me.ClaimNumberField = value
+                    Me.RaisePropertyChanged("ClaimNumber")
+                End If
+            End Set
+        End Property
+        
+        Public Event PropertyChanged As System.ComponentModel.PropertyChangedEventHandler Implements System.ComponentModel.INotifyPropertyChanged.PropertyChanged
+        
+        Protected Sub RaisePropertyChanged(ByVal propertyName As String)
+            Dim propertyChanged As System.ComponentModel.PropertyChangedEventHandler = Me.PropertyChangedEvent
+            If (Not (propertyChanged) Is Nothing) Then
+                propertyChanged(Me, New System.ComponentModel.PropertyChangedEventArgs(propertyName))
+            End If
+        End Sub
+    End Class
+    
+    <System.Diagnostics.DebuggerStepThroughAttribute(),  _
+     System.CodeDom.Compiler.GeneratedCodeAttribute("System.Runtime.Serialization", "4.0.0.0"),  _
+     System.Runtime.Serialization.DataContractAttribute(Name:="BeginFulfillmentRequest", [Namespace]:="http://assurant.com/Elita/ClaimFulfillment/WebAppGateway/Data"),  _
+     System.SerializableAttribute()>  _
+    Partial Public Class BeginFulfillmentRequest
+        Inherits Object
+        Implements System.Runtime.Serialization.IExtensibleDataObject, System.ComponentModel.INotifyPropertyChanged
+        
+        <System.NonSerializedAttribute()>  _
+        Private extensionDataField As System.Runtime.Serialization.ExtensionDataObject
+        
+        Private CompanyCodeField As String
+        
+        Private ClaimNumberField As String
+        
+        <Global.System.ComponentModel.BrowsableAttribute(false)>  _
+        Public Property ExtensionData() As System.Runtime.Serialization.ExtensionDataObject Implements System.Runtime.Serialization.IExtensibleDataObject.ExtensionData
+            Get
+                Return Me.extensionDataField
+            End Get
+            Set
+                Me.extensionDataField = value
+            End Set
+        End Property
+        
+        <System.Runtime.Serialization.DataMemberAttribute(IsRequired:=true)>  _
+        Public Property CompanyCode() As String
+            Get
+                Return Me.CompanyCodeField
+            End Get
+            Set
+                If (Object.ReferenceEquals(Me.CompanyCodeField, value) <> true) Then
+                    Me.CompanyCodeField = value
+                    Me.RaisePropertyChanged("CompanyCode")
+                End If
+            End Set
+        End Property
+        
+        <System.Runtime.Serialization.DataMemberAttribute(IsRequired:=true, Order:=1)>  _
+        Public Property ClaimNumber() As String
+            Get
+                Return Me.ClaimNumberField
+            End Get
+            Set
+                If (Object.ReferenceEquals(Me.ClaimNumberField, value) <> true) Then
+                    Me.ClaimNumberField = value
+                    Me.RaisePropertyChanged("ClaimNumber")
+                End If
+            End Set
+        End Property
+        
+        Public Event PropertyChanged As System.ComponentModel.PropertyChangedEventHandler Implements System.ComponentModel.INotifyPropertyChanged.PropertyChanged
+        
+        Protected Sub RaisePropertyChanged(ByVal propertyName As String)
+            Dim propertyChanged As System.ComponentModel.PropertyChangedEventHandler = Me.PropertyChangedEvent
+            If (Not (propertyChanged) Is Nothing) Then
+                propertyChanged(Me, New System.ComponentModel.PropertyChangedEventArgs(propertyName))
+            End If
+        End Sub
+    End Class
+    
+    <System.Diagnostics.DebuggerStepThroughAttribute(),  _
+     System.CodeDom.Compiler.GeneratedCodeAttribute("System.Runtime.Serialization", "4.0.0.0"),  _
+     System.Runtime.Serialization.DataContractAttribute(Name:="BeginFulfillmentResponse", [Namespace]:="http://assurant.com/Elita/ClaimFulfillment/WebAppGateway/Data"),  _
+     System.SerializableAttribute()>  _
+    Partial Public Class BeginFulfillmentResponse
+        Inherits Object
+        Implements System.Runtime.Serialization.IExtensibleDataObject, System.ComponentModel.INotifyPropertyChanged
+        
+        <System.NonSerializedAttribute()>  _
+        Private extensionDataField As System.Runtime.Serialization.ExtensionDataObject
+        
+        Private CompanyCodeField As String
+        
+        Private FulfillmentNumberField As String
+        
+        <Global.System.ComponentModel.BrowsableAttribute(false)>  _
+        Public Property ExtensionData() As System.Runtime.Serialization.ExtensionDataObject Implements System.Runtime.Serialization.IExtensibleDataObject.ExtensionData
+            Get
+                Return Me.extensionDataField
+            End Get
+            Set
+                Me.extensionDataField = value
+            End Set
+        End Property
+        
+        <System.Runtime.Serialization.DataMemberAttribute(IsRequired:=true)>  _
+        Public Property CompanyCode() As String
+            Get
+                Return Me.CompanyCodeField
+            End Get
+            Set
+                If (Object.ReferenceEquals(Me.CompanyCodeField, value) <> true) Then
+                    Me.CompanyCodeField = value
+                    Me.RaisePropertyChanged("CompanyCode")
+                End If
+            End Set
+        End Property
+        
+        <System.Runtime.Serialization.DataMemberAttribute(IsRequired:=true)>  _
+        Public Property FulfillmentNumber() As String
+            Get
+                Return Me.FulfillmentNumberField
+            End Get
+            Set
+                If (Object.ReferenceEquals(Me.FulfillmentNumberField, value) <> true) Then
+                    Me.FulfillmentNumberField = value
+                    Me.RaisePropertyChanged("FulfillmentNumber")
+                End If
+            End Set
+        End Property
+        
+        Public Event PropertyChanged As System.ComponentModel.PropertyChangedEventHandler Implements System.ComponentModel.INotifyPropertyChanged.PropertyChanged
+        
+        Protected Sub RaisePropertyChanged(ByVal propertyName As String)
+            Dim propertyChanged As System.ComponentModel.PropertyChangedEventHandler = Me.PropertyChangedEvent
+            If (Not (propertyChanged) Is Nothing) Then
+                propertyChanged(Me, New System.ComponentModel.PropertyChangedEventArgs(propertyName))
+            End If
+        End Sub
+    End Class
+    
     <System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0"),  _
      System.ServiceModel.ServiceContractAttribute([Namespace]:="http://assurant.com/Elita/ClaimFulfillment/WebAppGateway", ConfigurationName:="ClaimFulfillmentWebAppGatewayService.WebAppGateway")>  _
     Public Interface WebAppGateway
@@ -951,6 +2046,28 @@ Namespace ClaimFulfillmentWebAppGatewayService
             "cision", ReplyAction:="http://assurant.com/Elita/ClaimFulfillment/WebAppGateway/WebAppGateway/CustomerDe"& _ 
             "cisionResponse")>  _
         Function CustomerDecisionAsync(ByVal request As ClaimFulfillmentWebAppGatewayService.CustomerDecisionRequest) As System.Threading.Tasks.Task(Of ClaimFulfillmentWebAppGatewayService.CustomerDecisionResponse)
+        
+        <System.ServiceModel.OperationContractAttribute(Action:="http://assurant.com/Elita/ClaimFulfillment/WebAppGateway/WebAppGateway/GetFulfill"& _ 
+            "mentDetails", ReplyAction:="http://assurant.com/Elita/ClaimFulfillment/WebAppGateway/WebAppGateway/GetFulfill"& _ 
+            "mentDetailsResponse"),  _
+         System.ServiceModel.FaultContractAttribute(GetType(ClaimFulfillmentWebAppGatewayService.FulfillmentNotFoundFault), Action:="http://assurant.com/Elita/ClaimFulfillment/WebAppGateway/WebAppGateway/GetFulfill"& _ 
+            "mentDetailsFulfillmentNotFoundFaultFault", Name:="FulfillmentNotFoundFault", [Namespace]:="http://assurant.com/Elita/ClaimFulfillment/WebAppGateway/Data")>  _
+        Function GetFulfillmentDetails(ByVal request As ClaimFulfillmentWebAppGatewayService.GetFulfillmentDetailsRequest) As ClaimFulfillmentWebAppGatewayService.FulfillmentDetails
+        
+        <System.ServiceModel.OperationContractAttribute(Action:="http://assurant.com/Elita/ClaimFulfillment/WebAppGateway/WebAppGateway/GetFulfill"& _ 
+            "mentDetails", ReplyAction:="http://assurant.com/Elita/ClaimFulfillment/WebAppGateway/WebAppGateway/GetFulfill"& _ 
+            "mentDetailsResponse")>  _
+        Function GetFulfillmentDetailsAsync(ByVal request As ClaimFulfillmentWebAppGatewayService.GetFulfillmentDetailsRequest) As System.Threading.Tasks.Task(Of ClaimFulfillmentWebAppGatewayService.FulfillmentDetails)
+        
+        <System.ServiceModel.OperationContractAttribute(Action:="http://assurant.com/Elita/ClaimFulfillment/WebAppGateway/WebAppGateway/BeginFulfi"& _ 
+            "llment", ReplyAction:="http://assurant.com/Elita/ClaimFulfillment/WebAppGateway/WebAppGateway/BeginFulfi"& _ 
+            "llmentResponse")>  _
+        Function BeginFulfillment(ByVal request As ClaimFulfillmentWebAppGatewayService.BeginFulfillmentRequest) As ClaimFulfillmentWebAppGatewayService.BeginFulfillmentResponse
+        
+        <System.ServiceModel.OperationContractAttribute(Action:="http://assurant.com/Elita/ClaimFulfillment/WebAppGateway/WebAppGateway/BeginFulfi"& _ 
+            "llment", ReplyAction:="http://assurant.com/Elita/ClaimFulfillment/WebAppGateway/WebAppGateway/BeginFulfi"& _ 
+            "llmentResponse")>  _
+        Function BeginFulfillmentAsync(ByVal request As ClaimFulfillmentWebAppGatewayService.BeginFulfillmentRequest) As System.Threading.Tasks.Task(Of ClaimFulfillmentWebAppGatewayService.BeginFulfillmentResponse)
     End Interface
     
     <System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")>  _
@@ -998,6 +2115,22 @@ Namespace ClaimFulfillmentWebAppGatewayService
         
         Public Function CustomerDecisionAsync(ByVal request As ClaimFulfillmentWebAppGatewayService.CustomerDecisionRequest) As System.Threading.Tasks.Task(Of ClaimFulfillmentWebAppGatewayService.CustomerDecisionResponse) Implements ClaimFulfillmentWebAppGatewayService.WebAppGateway.CustomerDecisionAsync
             Return MyBase.Channel.CustomerDecisionAsync(request)
+        End Function
+        
+        Public Function GetFulfillmentDetails(ByVal request As ClaimFulfillmentWebAppGatewayService.GetFulfillmentDetailsRequest) As ClaimFulfillmentWebAppGatewayService.FulfillmentDetails Implements ClaimFulfillmentWebAppGatewayService.WebAppGateway.GetFulfillmentDetails
+            Return MyBase.Channel.GetFulfillmentDetails(request)
+        End Function
+        
+        Public Function GetFulfillmentDetailsAsync(ByVal request As ClaimFulfillmentWebAppGatewayService.GetFulfillmentDetailsRequest) As System.Threading.Tasks.Task(Of ClaimFulfillmentWebAppGatewayService.FulfillmentDetails) Implements ClaimFulfillmentWebAppGatewayService.WebAppGateway.GetFulfillmentDetailsAsync
+            Return MyBase.Channel.GetFulfillmentDetailsAsync(request)
+        End Function
+        
+        Public Function BeginFulfillment(ByVal request As ClaimFulfillmentWebAppGatewayService.BeginFulfillmentRequest) As ClaimFulfillmentWebAppGatewayService.BeginFulfillmentResponse Implements ClaimFulfillmentWebAppGatewayService.WebAppGateway.BeginFulfillment
+            Return MyBase.Channel.BeginFulfillment(request)
+        End Function
+        
+        Public Function BeginFulfillmentAsync(ByVal request As ClaimFulfillmentWebAppGatewayService.BeginFulfillmentRequest) As System.Threading.Tasks.Task(Of ClaimFulfillmentWebAppGatewayService.BeginFulfillmentResponse) Implements ClaimFulfillmentWebAppGatewayService.WebAppGateway.BeginFulfillmentAsync
+            Return MyBase.Channel.BeginFulfillmentAsync(request)
         End Function
     End Class
 End Namespace

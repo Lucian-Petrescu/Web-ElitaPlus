@@ -374,6 +374,9 @@ SELECT
   <GET_TOTALS>
     elita.ELP_TBL_CERTIFICATE_PREMIUM
   </GET_TOTALS>
+  <GET_SALES_TAX_DETAIL>
+    elita.elp_tbl_certificate.elp_tbl_sales_tax_detail
+  </GET_SALES_TAX_DETAIL>
   <GET_COMMISSION_FOR_ENTITIES>
     ELP_INSTALLMENT.GetEntityWiseCommDetails
   </GET_COMMISSION_FOR_ENTITIES>
@@ -1188,6 +1191,12 @@ group  by c.cert_number
   <Get_Certificate_By_IMEI>
     elita.elp_ws_getCertificate.Search_PolicyByIMEI
   </Get_Certificate_By_IMEI>
+  <LOAD_SERIAL_NUMBER>
+    elita.elp_serialnumber_search
+  </LOAD_SERIAL_NUMBER>
+  <LOAD_CERT_PHONE_SEARCH_LIST>
+			elita.elp_cert_phone_search
+  </LOAD_CERT_PHONE_SEARCH_LIST>
   <GET_CERT_TERM>
     select (max(coverage_duration))
     from elp_cert_item_coverage
@@ -1204,5 +1213,5 @@ group  by c.cert_number
   </Update_IMEI_AddEvent>
   <GET_CERT_PYMT_PASSED_DUE_EXT_INFO>
     Elita.elp_certificate.getCertPaymentPassedDueExtInfo
-  </GET_CERT_PYMT_PASSED_DUE_EXT_INFO>  
+  </GET_CERT_PYMT_PASSED_DUE_EXT_INFO>
 </SQL>

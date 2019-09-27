@@ -4,7 +4,7 @@ Imports System.Globalization
 Imports System.Threading
 Imports System.Web.UI
 Imports System.Windows.Forms
-
+Imports Assurant.Elita.CommonConfiguration.DataElements
 Public Class CaseBase
     Inherits BusinessObjectBase
 #Region "Constants"
@@ -403,7 +403,8 @@ Public Class CaseBase
 #End Region
 
 #Region "DataView Retrieveing Methods"
-    Public Shared Function GetCaseList(ByVal companyId As Guid, ByVal caseNumber As String, ByVal caseStatus As String, ByVal callerFirstName As String, ByVal callerLastName As String, ByVal caseOpenDateFrom As String, ByVal caseOpenDateTo As String, ByVal casePurpose As String, ByVal certificateNumber As String, ByVal caseClosedReason As String, ByVal languageId As Guid) As CaseSearchDv
+    Public Shared Function GetCaseList(ByVal companyId As Guid, ByVal caseNumber As String, ByVal caseStatus As String, ByVal callerFirstName As String, ByVal callerLastName As String, ByVal caseOpenDateFrom As String, ByVal caseOpenDateTo As String, ByVal casePurpose As String, ByVal certificateNumber As String, ByVal caseClosedReason As String,
+                                       ByVal languageId As Guid, ByVal networkId As String) As CaseSearchDv
         Try
             Dim dal As New CaseDAL
             Dim fromdate As Date?
@@ -449,22 +450,25 @@ Public Class CaseBase
                     Dim errors() As ValidationError = {New ValidationError(TranslationBase.TranslateLabelOrMessage("CASE_OPEN_DATE_FROM") & " : " & TranslationBase.TranslateLabelOrMessage("CASE_OPEN_DATE_RANGE_ERR"), GetType(CaseBase), Nothing, "Case Open Date", Nothing)}
                     Throw New BOValidationException(errors, GetType(CaseBase).FullName)
                 End If
-                fromdate = DateTime.Parse(caseOpenDateFrom.ToString(),
+
+                If (CultureInfo.CurrentCulture.Name.Equals("ja-JP")) Then
+                    fromdate = Common.DateHelper.convertDateFrmt(caseOpenDateFrom)
+                    todate = Common.DateHelper.convertDateFrmt(caseOpenDateTo)
+                Else
+                    fromdate = DateTime.Parse(caseOpenDateFrom.ToString(),
                                           Thread.CurrentThread.CurrentCulture,
                                           DateTimeStyles.NoCurrentDateDefault)
 
-                todate = DateTime.Parse(caseOpenDateTo.ToString(),
+                    todate = DateTime.Parse(caseOpenDateTo.ToString(),
                                         Thread.CurrentThread.CurrentCulture,
                                         DateTimeStyles.NoCurrentDateDefault)
+                End If
             End If
-
-
-            Return New CaseSearchDv(dal.LoadCaseList(companyId, caseNumber, caseStatus, callerFirstName, callerLastName, fromdate, todate, casePurpose, certificateNumber, caseClosedReason, languageId).Tables(0))
+            Return New CaseSearchDv(dal.LoadCaseList(companyId, caseNumber, caseStatus, callerFirstName, callerLastName, fromdate, todate, casePurpose, certificateNumber, caseClosedReason, languageId, networkId).Tables(0))
         Catch ex As DataBaseAccessException
             Throw New DataBaseAccessException(ex.ErrorType, ex)
         End Try
     End Function
-
     Public Shared Function GetAgentList(ByVal companyId As Guid, ByVal dealerId As Guid, ByVal customerFirstName As String, ByVal customerLastName As String,
                                         ByVal caseNumber As String, ByVal claimNumber As String, ByVal certificateNumber As String,
                                         ByVal serialNumber As String, ByVal invoiceNumber As String, ByVal phoneNumber As String, ByVal zipcode As String,
@@ -473,25 +477,24 @@ Public Class CaseBase
                                         ByVal globalCustomerNumber As String, ByVal dateofbirth As String,
                                         ByVal languageId As Guid) As AgentSearchDv
 
-        If (dealerId.Equals(Guid.Empty) AndAlso
-             customerFirstName.Equals(String.Empty) AndAlso
-             customerLastName.Equals(String.Empty) AndAlso
-             caseNumber.Equals(String.Empty) AndAlso
-             claimNumber.Equals(String.Empty) AndAlso
-             certificateNumber.Equals(String.Empty) AndAlso
-             serialNumber.Equals(String.Empty) AndAlso
-             invoiceNumber.Equals(String.Empty) AndAlso
-             phoneNumber.Equals(String.Empty) AndAlso
-             zipcode.Equals(String.Empty) AndAlso
-             certificateStatus = "" AndAlso
-             email.Equals(String.Empty) AndAlso
-             taxId.Equals(String.Empty) AndAlso
-             accountNumber.Equals(String.Empty) AndAlso
-             globalCustomerNumber.Equals(String.Empty) AndAlso
-             Not dateofbirth.Equals(String.Empty)
-                 ) Then
-            Dim errors() As ValidationError = {New ValidationError(TranslationBase.TranslateLabelOrMessage(MinimumSearchCriterion), GetType(CaseBase), Nothing, "Search", Nothing)}
+        If (customerFirstName.Equals(String.Empty) AndAlso
+            customerLastName.Equals(String.Empty) AndAlso
+            caseNumber.Equals(String.Empty) AndAlso
+            claimNumber.Equals(String.Empty) AndAlso
+            certificateNumber.Equals(String.Empty) AndAlso
+            serialNumber.Equals(String.Empty) AndAlso
+            invoiceNumber.Equals(String.Empty) AndAlso
+            phoneNumber.Equals(String.Empty) AndAlso
+            zipcode.Equals(String.Empty) AndAlso
+            certificateStatus = "" AndAlso
+            email.Equals(String.Empty) AndAlso
+            taxId.Equals(String.Empty) AndAlso
+            accountNumber.Equals(String.Empty) AndAlso
+            globalCustomerNumber.Equals(String.Empty) AndAlso
+            Not dateofbirth.Equals(String.Empty)) Then
+            Dim errors() As ValidationError = {New ValidationError(MinimumSearchCriterion, GetType(CaseBase), Nothing, "Search", Nothing)}
             Throw New BOValidationException(errors, GetType(CaseBase).FullName)
+
         End If
 
         Try
@@ -515,6 +518,7 @@ Public Class CaseBase
                                                              accountNumber,
                                                              globalCustomerNumber,
                                                              dateofbirth,
+                                                             Authentication.CurrentUser.NetworkId,
                                                              languageId).Tables(0))
         Catch ex As DataBaseAccessException
             Throw New DataBaseAccessException(ex.ErrorType, ex)
@@ -529,6 +533,43 @@ Public Class CaseBase
             Throw New DataBaseAccessException(ex.ErrorType, ex)
         End Try
     End Function
+    Public Shared Function GetDealerListByCompanyForExternalUser()
+        Try
+            Dim Description, Code As String
+            Dim dal As New DealerDAL
+            Dim ds As DataSet
+            ds = dal.LoadList(Description, Code, Authentication.CurrentUser.ScDealerId, Authentication.CurrentUser.Companies)
+
+            Dim lstItm As New ListItem()
+            Dim lstItems As List(Of ListItem) = New List(Of ListItem)()
+            Dim dlrlist As ListItem()
+            If Not ds Is Nothing Then
+                If Not ds.Tables(0) Is Nothing Then
+                    For Each dr As DataRow In ds.Tables(0).Rows
+                        If Not dr("DEALER_ID") Is DBNull.Value Then
+                            lstItm.ListItemId = New Guid(CType(dr("DEALER_ID"), Byte()))
+                        End If
+                        If Not dr("COMPANY_CODE") Is DBNull.Value Then
+                            lstItm.ExtendedCode = dr("COMPANY_CODE").ToString()
+                        End If
+                        If Not dr("DEALER") Is DBNull.Value Then
+                            lstItm.Code = dr("DEALER").ToString()
+                        End If
+                        If Not dr("DEALER_NAME") Is DBNull.Value Then
+                            lstItm.Translation = dr("DEALER_NAME").ToString()
+                        End If
+                        lstItems.Add(lstItm)
+                    Next
+                End If
+            End If
+
+            dlrlist = lstItems.ToArray()
+            Return dlrlist
+        Catch ex As DataBaseAccessException
+            Throw New DataBaseAccessException(ex.ErrorType, ex)
+        End Try
+    End Function
+
     Public Shared Function GetExclSecFieldsList(ByVal companyId As Guid, ByVal dealerId As Guid) As DataSet
         Try
             Dim dal As New CaseDAL

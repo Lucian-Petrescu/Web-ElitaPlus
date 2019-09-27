@@ -8,6 +8,7 @@ Imports Assurant.Elita.CommonConfiguration
 Imports Assurant.Elita.CommonConfiguration.DataElements
 Imports Assurant.Elita.Web.Forms
 Imports Assurant.Elita
+Imports System.Text
 
 Namespace Certificates
     Partial Class CertificateForm
@@ -165,6 +166,27 @@ Namespace Certificates
         Public Const GRID_COL_ENDORSE_EXPIRATION_DATE As Integer = 6
 #End Region
 
+#Region "Sales Tax Details Repeater"
+        Public Const REPEATER_COL_TAX_TYPE As String = "tax_type"
+        Public Const REPEATER_COL_TAX1_DESCRIPTION As String = "tax1_description"
+        Public Const REPEATER_COL_TAX1 As String = "tax1"
+        Public Const REPEATER_COL_TAX2_DESCRIPTION As String = "tax2_description"
+        Public Const REPEATER_COL_TAX2 As String = "tax2"
+        Public Const REPEATER_COL_TAX3_DESCRIPTION As String = "tax3_description"
+        Public Const REPEATER_COL_TAX3 As String = "tax3"
+        Public Const REPEATER_COL_TAX4_DESCRIPTION As String = "tax4_description"
+        Public Const REPEATER_COL_TAX4 As String = "tax4"
+        Public Const REPEATER_COL_TAX5_DESCRIPTION As String = "tax5_description"
+        Public Const REPEATER_COL_TAX5 As String = "tax5"
+        Public Const REPEATER_COL_TAX6_DESCRIPTION As String = "tax6_description"
+        Public Const REPEATER_COL_TAX6 As String = "tax6"
+        Public Const REPEATER_COL_TAX_TOTAL_VALUE As String = "tax_total"
+        Public Const PARAM_CERTICATE_ID As Integer = 0
+        Public Const PARAM_LANGAUGE_ID As Integer = 1
+
+
+#End Region
+
 #Region "Installment History Grid"
         Public Const INSTALLMENT_HISTORY_GRID_COL_START_DATE As Integer = 0
         Public Const INSTALLMENT_HISTORY_GRID_COL_END_DATE As Integer = 1
@@ -204,6 +226,21 @@ Namespace Certificates
         'Public Const INVALID_AMOUNT_ENTERED As String = "INVALID_AMOUNT_ENTERED"
         'Public Const REFUND_AMT_BELOW_TOLERANCE As String = "REFUND_AMT_BELOW_TOLERANCE"
         Public Const IDENTIFICATION_NUMBER_TYPE_DEFAULT = "IDENTIFICATION_NUMBER"
+
+#Region "SalesTaxesDetail"
+        Private Const COL_SALES_TAX1 As String = "tax1"
+        Private Const COL_SALES_TAX2 As String = "tax2"
+        Private Const COL_SALES_TAX3 As String = "tax3"
+        Private Const COL_SALES_TAX4 As String = "tax4"
+        Private Const COL_SALES_TAX5 As String = "tax5"
+        Private Const COL_SALES_TAX6 As String = "tax6"
+        Private Const COL_SALES_TAX1_DESCRIPTION As String = "tax1_description"
+        Private Const COL_SALES_TAX2_DESCRIPTION As String = "tax2_description"
+        Private Const COL_SALES_TAX3_DESCRIPTION As String = "tax3_description"
+        Private Const COL_SALES_TAX4_DESCRIPTION As String = "tax4_description"
+        Private Const COL_SALES_TAX5_DESCRIPTION As String = "tax5_description"
+        Private Const COL_SALES_TAX6_DESCRIPTION As String = "tax6_description"
+#End Region
 
 #End Region
 
@@ -826,6 +863,10 @@ Namespace Certificates
                     Session("SourceCertificateId") = SourceCertificateId
                     Me.State.PreviousCertificate = Nothing
                     Me.State.OriginalCertificate = Nothing
+                End If
+
+                If Not Me.State.MyBO Is Nothing AndAlso Not ElitaPlusIdentity.Current.ActiveUser.LanguageId.Equals(Guid.Empty) Then
+                    HoverMenuExtender1.DynamicContextKey = Me.State.MyBO.Id.ToString & ":" & ElitaPlusIdentity.Current.ActiveUser.LanguageId.ToString
                 End If
 
                 Me.State.selectedTab = 0
@@ -2431,6 +2472,7 @@ Namespace Certificates
 
         Protected Sub PopulateFormFromBOs(Optional ByVal blnPremiumEdit As Boolean = False)
             Dim typeOfEquip As String
+            Dim IsDisplayMaskFlag As Boolean
 
             If Me.State.isSalutation Then
                 PopulateSalutationDropdown(cboSalutationId)
@@ -2662,7 +2704,12 @@ Namespace Certificates
                     Me.State.ReqCustomerLegalInfoId = (New Company(Me.State.MyBO.CompanyId).ReqCustomerLegalInfoId)
                 End If
 
-                Dim IsDisplayMaskFlag As Boolean = Me.State.MyBO.Dealer.DisplayDobXcd.ToUpper().Equals("YESNO-Y")
+                If Me.State.MyBO.Dealer.DisplayDobXcd Is Nothing Then
+                    IsDisplayMaskFlag = False
+                Else
+                    IsDisplayMaskFlag = Me.State.MyBO.Dealer.DisplayDobXcd.ToUpper().Equals("YESNO-Y")
+                End If
+
                 If Me.State.ReqCustomerLegalInfoId.Equals(LookupListNew.GetIdFromCode(LookupListCache.LK_CLITYP, "0")) Then '0= None
                     Me.moCustLegalInfo1.Attributes("style") = "display: none"
                     ControlMgr.SetVisibleControl(Me, moIncomeRangeLabel, False)   'Me.moCustLegalInfo2.Attributes("style") = "display: none"
@@ -2804,7 +2851,13 @@ Namespace Certificates
             End With
         End Sub
         Protected Sub DisplayMaskDob()
-            Dim IsDobDisplay As Boolean = Me.State.MyBO.Dealer.DisplayDobXcd.ToUpper().Equals("YESNO-Y")
+            Dim IsDobDisplay As Boolean
+            If Me.State.MyBO.Dealer.DisplayDobXcd Is Nothing Then
+                IsDobDisplay = False
+            Else
+                IsDobDisplay = Me.State.MyBO.Dealer.DisplayDobXcd.ToUpper().Equals("YESNO-Y")
+            End If
+
             Dim IsCustomerLglInfo As Boolean = Me.State.ReqCustomerLegalInfoId.Equals(LookupListNew.GetIdFromCode(LookupListCache.LK_CLITYP, "0"))
 
             If (Not IsDobDisplay And IsCustomerLglInfo) Then
@@ -3189,8 +3242,10 @@ Namespace Certificates
             ' Total Sales Tax
             If dv.Table.Rows(0).IsNull(Certificate.COL_TOTAL_SALES_TAX) Then
                 Me.PopulateControlFromBOProperty(Me.moSalesTaxText, 0, Me.DECIMAL_FORMAT)
+
             Else
                 Me.PopulateControlFromBOProperty(Me.moSalesTaxText, CType(dv.Table.Rows(0).Item(Certificate.COL_TOTAL_SALES_TAX), Decimal), Me.DECIMAL_FORMAT)
+
             End If
 
             ' Total MTD Payments
@@ -3665,6 +3720,7 @@ Namespace Certificates
 
         End Sub
 
+
 #Region "DropDowns"
 
         Private Sub PopulateSalutationDropdown(ByVal salutationDropDownList As DropDownList)
@@ -4071,6 +4127,8 @@ Namespace Certificates
                                 ElseIf State.CancReasonIsLawful = Codes.EXT_YESNO_Y Then
                                     If State.CancReasonCode = Codes.SFR_CR_CHATELLAW And State.certCancelRequestBO.CancellationRequestDate.Value < DateAdd("M", State.CertTerm, Me.State.MyBO.WarrantySalesDate.Value) Then
                                         dtCancellationDate = DateAdd("D", -1, DateAdd("M", State.CertTerm, Me.State.MyBO.WarrantySalesDate.Value))
+                                    ElseIf State.CancReasonCode = Codes.SFR_CR_HAMONLAW And State.certCancelRequestBO.CancellationRequestDate.Value > DateAdd("M", State.CertTerm, Me.State.MyBO.WarrantySalesDate.Value) Then
+                                        dtCancellationDate = DateAdd("D", +30, State.certCancelRequestBO.CancellationRequestDate.Value)
                                     Else
                                         dtCancellationDate = State.certCancelRequestBO.CancellationRequestDate.Value
                                     End If
@@ -6721,7 +6779,7 @@ Namespace Certificates
                     Me.State.ActionInProgress = ElitaPlusPage.DetailPageCommand.Back
                 Else
                     Dim myBo As Certificate = Me.State.MyBO
-                    Dim retObj As ReturnType = New ReturnType(ElitaPlusPage.DetailPageCommand.Back, myBo, Me.State.certificateChanged, Me.state.IsCallerAuthenticated)
+                    Dim retObj As ReturnType = New ReturnType(ElitaPlusPage.DetailPageCommand.Back, myBo, Me.State.certificateChanged, Me.State.IsCallerAuthenticated)
                     Me.State.selectedTab = 0
                     Me.State.CertHistoryDV = Nothing
                     Me.NavController = Nothing
@@ -6733,7 +6791,7 @@ Namespace Certificates
                 Try
                     If Me.AddressCtr.MyBO Is Nothing Then
                         Dim myBo As Certificate = Me.State.MyBO
-                        Dim retObj As ReturnType = New ReturnType(ElitaPlusPage.DetailPageCommand.Back, myBo, Me.State.certificateChanged, Me.state.IsCallerAuthenticated)
+                        Dim retObj As ReturnType = New ReturnType(ElitaPlusPage.DetailPageCommand.Back, myBo, Me.State.certificateChanged, Me.State.IsCallerAuthenticated)
                         Me.NavController = Nothing
                         Session(Me.SESSION_KEY_BACKUP_STATE) = New MyState
                         Me.ReturnToCallingPage(retObj)
@@ -6771,7 +6829,7 @@ Namespace Certificates
                     Else
                         Dim certId As Guid = Me.State.MyBO.Id
                         Me.NavController = Nothing
-                        Me.callPage(ClaimWizardForm.URL, New ClaimWizardForm.Parameters(ClaimWizardForm.ClaimWizardSteps.Step1, certId, Nothing, Nothing, True,, Me.state.IsCallerAuthenticated))
+                        Me.callPage(ClaimWizardForm.URL, New ClaimWizardForm.Parameters(ClaimWizardForm.ClaimWizardSteps.Step1, certId, Nothing, Nothing, True,, Me.State.IsCallerAuthenticated))
                     End If
                 End If
 
@@ -8078,6 +8136,57 @@ Namespace Certificates
             Session("SourceCertificateId") = SourceCertificateId
             Me.callPage(CertificateForm.URL, Me.State.MyBO.OriginalCertificateId)
         End Sub
+#End Region
+#Region "Tax Details WebService"
+
+        <WebMethod(), Script.Services.ScriptMethod()>
+        Public Shared Function GetSalesTaxDetails(contextKey As String) As String
+
+            Try
+                Dim strbuilder As StringBuilder = New StringBuilder
+                Dim inputParam = contextKey.Split(":")
+                strbuilder.Append("<table width='40px' class='dataGrid'><tbody>")
+
+                If Not IsNothing(inputParam) AndAlso Not IsNothing(inputParam(PARAM_CERTICATE_ID)) AndAlso Not IsNothing(inputParam(PARAM_LANGAUGE_ID)) Then
+
+                    Dim dv As DataView = Certificate.SalesTaxDetail(Guid.Parse(inputParam(PARAM_CERTICATE_ID)), Guid.Parse(inputParam(PARAM_LANGAUGE_ID)))
+
+                    If IsNothing(dv) Then
+                        Return String.Empty
+                    End If
+
+                    For Each TaxDetailsDr As DataRow In dv.ToTable.Rows
+
+                        strbuilder.Append("<tr><td colspan='2' > " & TaxDetailsDr(REPEATER_COL_TAX_TYPE) & " : </td> <td colspan='4' align='left'> " &
+                                          TaxDetailsDr(REPEATER_COL_TAX_TOTAL_VALUE) & " </td></tr>")
+                        strbuilder.Append("<tr><td>" & If(IsDBNull(TaxDetailsDr(REPEATER_COL_TAX1_DESCRIPTION)), TranslationBase.TranslateLabelOrMessage("TAX1"),
+                                                  TaxDetailsDr(REPEATER_COL_TAX1_DESCRIPTION)) & " </td>")
+                        strbuilder.Append("<td> " & If(IsDBNull(TaxDetailsDr(REPEATER_COL_TAX2_DESCRIPTION)), TranslationBase.TranslateLabelOrMessage("TAX2"),
+                                                  TaxDetailsDr(REPEATER_COL_TAX2_DESCRIPTION)) & " </td>")
+                        strbuilder.Append("<td>" & If(IsDBNull(TaxDetailsDr(REPEATER_COL_TAX3_DESCRIPTION)), TranslationBase.TranslateLabelOrMessage("TAX3"),
+                                              TaxDetailsDr(REPEATER_COL_TAX3_DESCRIPTION)) & " </td>")
+                        strbuilder.Append("<td> " & If(IsDBNull(TaxDetailsDr(REPEATER_COL_TAX4_DESCRIPTION)), TranslationBase.TranslateLabelOrMessage("TAX4"),
+                                              TaxDetailsDr(REPEATER_COL_TAX4_DESCRIPTION)) & " </td>")
+                        strbuilder.Append("<td>" & If(IsDBNull(TaxDetailsDr(REPEATER_COL_TAX5_DESCRIPTION)), TranslationBase.TranslateLabelOrMessage("TAX5"),
+                                              TaxDetailsDr(REPEATER_COL_TAX5_DESCRIPTION)) & " </td>")
+                        strbuilder.Append("<td> " & If(IsDBNull(TaxDetailsDr(REPEATER_COL_TAX6_DESCRIPTION)), TranslationBase.TranslateLabelOrMessage("TAX6"),
+                                              TaxDetailsDr(REPEATER_COL_TAX6_DESCRIPTION)) & "  </td></tr>")
+                        strbuilder.Append("<tr> <td>" & TaxDetailsDr(REPEATER_COL_TAX1) & "</td>" & "<td> " & TaxDetailsDr(REPEATER_COL_TAX2) & "</td>")
+                        strbuilder.Append("<td>" & TaxDetailsDr(REPEATER_COL_TAX3) & "</td>" & "<td> " & TaxDetailsDr(REPEATER_COL_TAX4) & "</td>")
+                        strbuilder.Append("<td>" & TaxDetailsDr(REPEATER_COL_TAX5) & "</td>" & "<td> " & TaxDetailsDr(REPEATER_COL_TAX6) & "</td></tr>")
+
+                    Next
+                End If
+
+                strbuilder.Append("</tbody></table>")
+
+                Return strbuilder.ToString
+
+            Catch ex As Exception
+                Return TranslationBase.TranslateLabelOrMessage(Message.MSG_TAX_DETAILS_POPUP_ERROR)
+            End Try
+        End Function
+
 #End Region
 
     End Class

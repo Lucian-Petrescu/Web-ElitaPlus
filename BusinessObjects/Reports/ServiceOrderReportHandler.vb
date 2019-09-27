@@ -86,11 +86,13 @@ Public Class ServiceOrderReportHandler
         soRow.CUSTOMER_NAME = cert.CustomerName
         soRow.ADDRESS1 = cert.AddressChild.Address1
         soRow.ADDRESS2 = cert.AddressChild.Address2
+        soRow.ADDRESS3 = cert.AddressChild.Address3
         soRow.CITY = cert.AddressChild.City
         soRow.ADDR_MAILING_LABEL = cert.AddressChild.MailingAddressLabel
 
         If Not cert.AddressChild.RegionId.Equals(Guid.Empty) Then
             soRow.STATE_PROVINCE = New Region(cert.AddressChild.RegionId).Description
+            soRow.STATE_PROVINCE_CODE = New Region(cert.AddressChild.RegionId).ShortDesc
         End If
         soRow.ZIP = cert.AddressChild.PostalCode
         soRow.HOME_PHONE = cert.HomePhone

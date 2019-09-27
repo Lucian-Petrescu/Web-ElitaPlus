@@ -102,6 +102,7 @@ Partial Class DealerInvoiceForm
     '        Me.HandleErrors(ex, Me.MasterPage.MessageController)
     '    End Try
     'End Sub
+
 #End Region
 
 #Region "Method Logic"

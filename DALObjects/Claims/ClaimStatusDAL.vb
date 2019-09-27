@@ -154,9 +154,8 @@ Public Class ClaimStatusDAL
     Public Function GetClaimStatusHistoryOnly(ByVal claimId As Guid, ByVal languageId As Guid, ByVal companyGroupId As Guid) As DataSet
         Dim selectStmt As String = Me.Config("/SQL/CLAIM_STATUS_HISTORY_ONLY")
         Dim parameters() As OracleParameter = New OracleParameter() _
-                                            {New OracleParameter(COL_NAME_PARAM_LANGUAGE_ID, languageId.ToByteArray), _
-                                             New OracleParameter(COL_NAME_PARAM_CLAIM_ID, claimId.ToByteArray), _
-                                             New OracleParameter(COL_NAME_PARAM_COMPANY_GROUP_ID, companyGroupId.ToByteArray)}
+                                            {New OracleParameter(COL_NAME_PARAM_LANGUAGE_ID, languageId.ToByteArray),
+                                             New OracleParameter(COL_NAME_PARAM_CLAIM_ID, claimId.ToByteArray)}
 
         Try
             Return DBHelper.Fetch(selectStmt, DSNAME, Me.TABLE_NAME, parameters)

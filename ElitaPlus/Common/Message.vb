@@ -395,6 +395,7 @@ Public Class Message
 
     Public Const MSG_ERR_SELECT_A_FULFILLMENT_OPTIONS As String = "SELECT_A_FULFILLMENT_OPTIONS"
     Public Const MSG_ERR_SELECT_A_LOGISTIC_OPTION As String = "SELECT_A_LOGISTIC_OPTION"
+    Public Const MSG_ERR_SELECT_EXPEDITED_DELIVERY_BUTTON As String = "MSG_ERR_SELECT_EXPEDITED_DELIVERY_BUTTON"
     Public Const MSG_ERR_STORE_NUMBER_MANDATORY As String = "MSG_ERR_STORE_NUMBER_MANDATORY" ' Store number is mandatory
     Public Const MSG_ERR_DELIVERY_DATE_MANDATORY As String = "MSG_ERR_DELIVERY_DATE_MANDATORY" ' Delivery date is mandatory
     Public Const MSG_ERR_COUNTRY_POSTAL_MANDATORY As String = "MSG_ERR_COUNTRY_POSTAL_MANDATORY" ' Country and Postal code is mandatory to get the estimated delivery date
@@ -403,6 +404,7 @@ Public Class Message
     Public Const MSG_ERR_GET_DELIVERY_DATE As String = "MSG_ERR_GET_DELIVERY_DATE" ' Country/Postal code is changed, please get the delivery date again
     Public Const MSG_ERR_DEFAULT_SERVICE_CENTER_ADDRESS As String = "MSG_ERR_DEFAULT_SERVICE_CENTER_ADDRESS" ' Address of the default service center for the select country is not set up
     Public Const MSG_ERR_ESTIMATED_DELIVERY_DATE_NOT_FOUND As String = "MSG_ERR_ESTIMATED_DELIVERY_DATE_NOT_FOUND" ' Estimated delivery date is not found for the country/zip code
+    Public Const MSG_ERR_ESTIMATED_DELIVERY_SLOT_NOT_FOUND As String = "MSG_ERR_ESTIMATED_DELIVERY_SLOT_NOT_FOUND" ' Estimated delivery date is not found for the TimeSlot
     Public Const MSG_PROMPT_COUNTRY_REQUIRED As String = "MSG_PROMPT_COUNTRY_REQUIRED"
     Public Const MSG_PROMPT_STATE_NOT_CONFIGURED As String = "MSG_PROMPT_STATE_NOT_CONFIGURED"
     Public Const MSG_PROMPT_ZIPCODE_REQUIRED As String = "MSG_PROMPT_ZIPCODE_REQUIRED"
@@ -419,7 +421,10 @@ Public Class Message
     Public Const MSG_INVALID_PER_INCIDENT_LIABILITY_LIMIT As String = "MSG_INVALID_PER_INCIDENT_LIABILITY_LIMIT"
 
     Public Const MSG_ERR_ESTIMATED_DELIVERY_DATE_TIME_NOT_SELECTABLE As String = "MSG_ERR_ESTIMATED_DELIVERY_DATE_TIME_NOT_SELECTABLE" ' Estimated delivery date/time is not available for selection
+    Public Const MSG_ERR_WHEN_DEALER_MARKUP_ALLOWED_TAX_TYPE_SHOULD_BE_EMPTY_OR_POS As String = "MSG_ERR_WHEN_DEALER_MARKUP_ALLOWED_TAX_TYPE_SHOULD_BE_EMPTY_OR_POS_TYPE"
+    Public Const MSG_TAX_METHOD_COMPUTE_ON_GROSS_NOT_ALLOWED_ON_1ST_BRACKET As String = "MSG_TAX_METHOD_COMPUTE_ON_GROSS_NOT_ALLOWED_ON_1ST_BRACKET"
 
+    Public Const MSG_TAX_DETAILS_POPUP_ERROR As String = "MSG_TAX_DETAILS_POPUP_ERROR"
 
 
 

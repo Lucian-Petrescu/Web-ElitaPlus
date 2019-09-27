@@ -60,6 +60,7 @@ Namespace Tables
             Public selectedRecoverDeviceId As Guid
             Public selectedClaimLimitCount As String
             Public selectedPerIncidentLiabilityLimitCap As String
+            Public selectedTaxTypeXCD As String
         End Class
 #End Region
 
@@ -169,6 +170,8 @@ Namespace Tables
         Private Const CLAIM_LIMIT_COUNT_PROPERTY As String = "CoverageClaimLimit"
 
         Public Const ConfigurationSuperUserRole As String = "CONSU"
+        Public Const POS_TAX_TYPE_XCD As String = "TTYP-1"
+
 
 #End Region
 
@@ -198,6 +201,7 @@ Namespace Tables
         Private Const LOSS_COST_PERCENT As Integer = 10
         Private Const GROSS_AMOUNT_PERCENT As Integer = 11
         Private Const RENEWAL_NUMBER As Integer = 12
+        Private Const REGION_ID As Integer = 13
 
         ' DataView Elements
         Private Const DBCOVERAGE_RATE_ID As Integer = 0
@@ -213,7 +217,7 @@ Namespace Tables
         Private Const LOSS_COST_PERCENT_PROPERTY As String = "LossCostPercent"
         Private Const GROSS_AMOUNT_PERCENT_PROPERTY As String = "GrossAmountPercent"
         Private Const RENEWAL_NUMBER_PROPERTY As String = "RenewalNumber"
-
+        Private Const REGION_ID_PROPERTY As String = "RegionID"
         'Actions
         Private Const ACTION_NONE As String = "ACTION_NONE"
         Private Const ACTION_SAVE As String = "ACTION_SAVE"
@@ -749,6 +753,7 @@ Namespace Tables
             Me.State.selectedRecoverDeviceId = GetSelectedItem(moRecoverDeciveDrop)
             Me.State.selectedClaimLimitCount = Me.moClaimLimitCountText.Text
             Me.State.selectedPerIncidentLiabilityLimitCap = Me.moPerIncidentLiabilityLimitCapText.Text
+            Me.State.selectedTaxTypeXCD = GetSelectedValue(moTaxTypeDrop)
 
         End Sub
 
@@ -884,6 +889,7 @@ Namespace Tables
                 Dim sVal As String
                 Dim langId As Guid = ElitaPlusIdentity.Current.ActiveUser.LanguageId
                 Dim yesNoLkL As DataView = LookupListNew.DropdownLookupList("YESNO", langId, True)
+                Dim selectedTaxType As String = GetSelectedValue(moTaxTypeDrop)
                 sVal = LookupListNew.GetCodeFromDescription(yesNoLkL, Me.moCovDeductibleText.Text)
                 If sVal = YES Then
                     If IsNumeric(moDeductiblePercentText.Text) And IsNumeric(moDeductibleText.Text) Then
@@ -987,6 +993,15 @@ Namespace Tables
                         Throw New GUIException(Message.INVALID_ATTRIBUTE, Assurant.ElitaPlus.Common.ErrorCodes.CANNOT_SET_ATTRIBUTE_WITHOUT_REINSURED_FLAG)
                     End If
                 End If
+
+                If Not IsNothing(TheCoverage.DealerMarkupId) AndAlso TheCoverage.DealerMarkupId = LookupListNew.GetIdFromCode(LookupListNew.LK_YESNO, YES) Then
+                    If Not selectedTaxType.Equals(Guid.Empty.ToString) And Not selectedTaxType.Equals(POS_TAX_TYPE_XCD) Then
+                        Throw New GUIException(Message.MSG_ERR_WHEN_DEALER_MARKUP_ALLOWED_TAX_TYPE_SHOULD_BE_EMPTY_OR_POS, Assurant.ElitaPlus.Common.ErrorCodes.INVALID_TAX_TYPE_FOR_DEALER)
+                    End If
+
+                End If
+
+
                 ValidateCoverage()
                 SaveChanges()
                 SetLabelColor(Me.moDeductiblePercentLabel)
@@ -1087,6 +1102,7 @@ Namespace Tables
             Me.State.selectedCoverageLiabilityLimitPercent = Nothing
             Me.State.selectedRecoverDeviceId = Guid.Empty
             Me.State.selectedClaimLimitCount = Nothing
+            Me.State.selectedTaxTypeXCD = Nothing
         End Sub
 
         Private Sub btnNew_WRITE_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnNew_WRITE.Click
@@ -1219,6 +1235,12 @@ Namespace Tables
                         Me.PopulateBOProperty(oCoverageRate(i), "RenewalNumber", CType(moGridView.Rows(i).Cells(RENEWAL_NUMBER).Controls(1), TextBox).Text)
                     End If
 
+                    If moGridView.Rows(i).Cells(REGION_ID).Controls(0).GetType().ToString = "System.Web.UI.WebControls.Label" Then
+                        Me.PopulateBOProperty(oCoverageRate(i), "TaxRegion", CType(moGridView.Rows(i).Cells(REGION_ID).Controls(0), Label).Text)
+                    Else
+                        Me.PopulateBOProperty(oCoverageRate(i), "TaxRegion", CType(moGridView.Rows(i).Cells(REGION_ID).Controls(1), DropDownList).SelectedValue)
+                    End If
+
                 Next
                 Me.State.moCoverageRateList = oCoverageRate
             End If
@@ -1317,9 +1339,11 @@ Namespace Tables
 
         Private Sub btnDelete_WRITE_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnDelete_WRITE.Click
             Try
+                Me.DisplayMessage(Message.DELETE_RECORD_PROMPT, "", MSG_BTN_YES_NO, MSG_TYPE_CONFIRM, Me.HiddenSaveChangesPromptResponse)
+                Dim retType As New CoverageSearchForm.ReturnType(ElitaPlusPage.DetailPageCommand.Delete, Me.State.moCoverageId)
                 If DeleteCoverage() = True Then
-                    Me.DisplayMessage(Message.DELETE_RECORD_PROMPT, "", MSG_BTN_YES_NO, MSG_TYPE_CONFIRM, Me.HiddenSaveChangesPromptResponse)
-                    Me.State.ActionInProgress = ElitaPlusPage.DetailPageCommand.Delete
+                    retType.BoChanged = True
+                    Me.ReturnToCallingPage(retType)
                 End If
             Catch ex As Threading.ThreadAbortException
             Catch ex As Exception
@@ -1426,6 +1450,7 @@ Namespace Tables
             Me.BindBOPropertyToGridHeader(TheCoverageRate, LOSS_COST_PERCENT_PROPERTY, moGridView.Columns(LOSS_COST_PERCENT))
             Me.BindBOPropertyToGridHeader(TheCoverageRate, GROSS_AMOUNT_PERCENT_PROPERTY, moGridView.Columns(GROSS_AMOUNT_PERCENT))
             Me.BindBOPropertyToGridHeader(TheCoverageRate, RENEWAL_NUMBER_PROPERTY, moGridView.Columns(RENEWAL_NUMBER))
+            Me.BindBOPropertyToGridHeader(TheCoverageRate, REGION_ID_PROPERTY, moGridView.Columns(REGION_ID))
         End Sub
         Private Sub BindBoPropertiesToDeductibleGridHeader()
             Me.BindBOPropertyToGridHeader(TheCoverageDeductible, COVERAGE_DED_ID_PROPERTY, dedGridView.Columns(COVERAGE_DED_ID))
@@ -1487,6 +1512,7 @@ Namespace Tables
                     moGridView.SelectedIndex = nIndex
                     '      EnableForEditRateButtons(True)
                     PopulateCoverageRateList(ACTION_EDIT)
+                    Me.FillDropdownList()
                     PopulateCoverageRate()
                     SetGridControls(moGridView, False)
                     Me.SetFocusInGrid(moGridView, nIndex, LOW_PRICE)
@@ -1567,6 +1593,7 @@ Namespace Tables
                 IsNewRate = True
                 CoverageRateId = Guid.Empty.ToString
                 PopulateCoverageRateList(ACTION_NEW)
+                FillDropdownList()
                 SetGridControls(moGridView, False)
                 Me.SetFocusInGrid(moGridView, moGridView.SelectedIndex, LOW_PRICE)
                 EnableDisableControls(Me.moCoverageEditPanel, True)
@@ -2261,6 +2288,7 @@ Namespace Tables
             PopulateCoverageDeductibleList()
             PopulateCoverageConseqDamageList()
             EnableUniqueFields()
+            PopulateTaxTypeCode()
         End Sub
 
         Private Sub PopulateDealer()
@@ -2495,6 +2523,34 @@ Namespace Tables
                 Else
                     BindSelectItem(TheCoverage.EarningCodeId.ToString, moEarningCodeDrop)
                 End If
+            Catch ex As Exception
+                Me.MasterPage.MessageController.AddError(COVERAGE_FORM002 & " " & ex.Message, True)
+            End Try
+        End Sub
+
+        Private Sub PopulateTaxTypeCode()
+            Try
+
+                moTaxTypeDrop.Populate(CommonConfigManager.Current.ListManager.GetList("TTYP", Thread.CurrentPrincipal.GetLanguageCode()), New PopulateOptions() With
+                 {
+                    .AddBlankItem = True,
+                    .ValueFunc = AddressOf .GetExtendedCode
+                })
+
+                If IsPostBack And Not Me.State.IsUndo Then
+                    ' JLR - Restore Presviously Selected Values
+                    BindSelectItem(Me.State.selectedTaxTypeXCD.ToString, moTaxTypeDrop)
+                    Me.State.IsUndo = False
+                Else
+
+                    If TheCoverage.TaxTypeXCD Is Nothing Then
+                        BindSelectItem(String.Empty, moTaxTypeDrop)
+                    Else
+
+                        BindSelectItem(TheCoverage.TaxTypeXCD.ToString, moTaxTypeDrop)
+                    End If
+                End If
+
             Catch ex As Exception
                 Me.MasterPage.MessageController.AddError(COVERAGE_FORM002 & " " & ex.Message, True)
             End Try
@@ -2936,6 +2992,8 @@ Namespace Tables
 
                 If moEarningCodeDrop.SelectedIndex > NO_ITEM_SELECTED_INDEX Then Me.PopulateBOProperty(TheCoverage, "EarningCodeId", moEarningCodeDrop)
                 If moRecoverDeciveDrop.SelectedIndex > NO_ITEM_SELECTED_INDEX Then Me.PopulateBOProperty(TheCoverage, "RecoverDeviceId", moRecoverDeciveDrop)
+                Me.PopulateBOProperty(TheCoverage, "TaxTypeXCD", Me.moTaxTypeDrop, False, True)
+
             End With
 
             If Me.ErrCollection.Count > 0 Then
@@ -3333,6 +3391,7 @@ Namespace Tables
                     Me.SetSelectedGridText(moGridView, LOW_PRICE, .LowPrice.ToString)
                     Me.SetSelectedGridText(moGridView, GROSS_AMOUNT_PERCENT, .GrossAmountPercent.ToString)
                     Me.SetSelectedGridText(moGridView, RENEWAL_NUMBER, .RenewalNumber.ToString)
+
                 End With
             Else
                 With TheCoverageRate
@@ -3347,9 +3406,78 @@ Namespace Tables
                     Me.SetSelectedGridText(moGridView, LOW_PRICE, .LowPrice.ToString)
                     Me.SetSelectedGridText(moGridView, GROSS_AMOUNT_PERCENT, .GrossAmountPercent.ToString)
                     Me.SetSelectedGridText(moGridView, RENEWAL_NUMBER, .RenewalNumber.ToString)
+
                 End With
             End If
+            PopulateTaxRegionFromCoverageRateBO()
 
+        End Sub
+
+        Private Sub PopulateTaxRegionFromCoverageRateBO()
+            'ensure that grid's edit index is set before this gets a call
+            If moGridView.EditIndex = -1 Then Exit Sub
+            Dim gRow As GridViewRow = moGridView.Rows(moGridView.EditIndex)
+            Dim ddltaxregion As DropDownList = CType(gRow.Cells(REGION_ID).FindControl("ddlTax_Region"), DropDownList)
+
+            If Me.State.IsNewWithCopy Then
+                With Me.State.moCoverageRateList(moGridView.SelectedIndex)
+                    If Not .RegionId = Guid.Empty Then
+                        Me.PopulateControlFromBOProperty(ddltaxregion, .RegionId)
+                    End If
+                End With
+            Else
+                With TheCoverageRate
+                    If Not .RegionId = Guid.Empty Then
+                        Me.PopulateControlFromBOProperty(ddltaxregion, .RegionId)
+                    End If
+                End With
+            End If
+        End Sub
+
+        Private Sub FillDropdownList()
+
+            'fill the drop downs
+            If moGridView.EditIndex = -1 Then Exit Sub
+            Dim gRow As GridViewRow = moGridView.Rows(moGridView.EditIndex)
+            Dim moIsCoveredDrop As DropDownList = DirectCast(gRow.Cells(REGION_ID).FindControl("ddlTax_Region"), DropDownList)
+
+            With Me.State.moCoverageRateList
+                If Not moIsCoveredDrop Is Nothing Then
+                    PopulateRegionDropdown(moIsCoveredDrop)
+
+                End If
+            End With
+        End Sub
+
+        Private Sub PopulateRegionDropdown(ByVal oDropDownList As DropDownList)
+            Try
+                Dim RegionList As New Collections.Generic.List(Of DataElements.ListItem)
+
+                For Each Country_id As Guid In ElitaPlusIdentity.Current.ActiveUser.Countries
+                    Dim Regions As DataElements.ListItem() =
+                            CommonConfigManager.Current.ListManager.GetList(listCode:=ListCodes.RegionsByCountry,
+                                                                            context:=New ListContext() With
+                                                                            {
+                                                                              .CountryId = Country_id
+                                                                            })
+
+                    If Regions.Count > 0 Then
+                        If Not RegionList Is Nothing Then
+                            RegionList.AddRange(Regions)
+                        Else
+                            RegionList = Regions.Clone()
+                        End If
+                    End If
+                Next
+
+                oDropDownList.Populate(RegionList.ToArray(),
+                                        New PopulateOptions() With
+                                        {
+                                            .AddBlankItem = True
+                                        })
+
+            Catch ex As Exception
+            End Try
         End Sub
 
 
@@ -3510,6 +3638,7 @@ Namespace Tables
                     Me.PopulateBOProperty(TheCoverageRate, "LossCostPercent", CType(Me.GetSelectedGridControl(moGridView, LOSS_COST_PERCENT), TextBox))
                 End If
                 Me.PopulateBOProperty(TheCoverageRate, "RenewalNumber", CType(Me.GetSelectedGridControl(moGridView, RENEWAL_NUMBER), TextBox))
+                Me.PopulateBOProperty(TheCoverageRate, "RegionId", CType(Me.GetDropDownControlFromGrid(moGridView, REGION_ID), DropDownList))
             End With
 
             ValidateCoverage()
@@ -3772,6 +3901,20 @@ Namespace Tables
                 Throw New PopulateBOErrorException
             End If
         End Sub
+
+        Private Function GetDropDownControlFromGrid(ByVal oDataGrid As GridView, ByVal cellPosition As Integer) As Control
+            Dim oItem As GridViewRow = oDataGrid.Rows(oDataGrid.SelectedIndex)
+            Dim oControl As Control
+
+            For Each gridControl As Control In oItem.Cells(cellPosition).Controls
+
+                If gridControl.GetType().FullName.Equals("System.Web.UI.WebControls.DropDownList") Then
+                    oControl = gridControl
+                End If
+            Next
+
+            Return oControl
+        End Function
 #End Region
 
 #End Region

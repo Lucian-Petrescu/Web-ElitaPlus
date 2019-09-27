@@ -112,7 +112,7 @@
                 <table width="100%" style="margin:0px;padding:0px;">
                   <tr>
                     <td style="width:55%;padding-bottom:10px;text-wrap:none;" class="rightAlign">
-                      <span class="label">Nombre del Centro de Atención a Clientes:</span>
+                      <span class="label">Nombre del Centro de Atención Autorizado:</span>
                     </td>
                     <td class="leftAlign" style="padding-bottom:10px;text-wrap:none;">
                       <span class="data">

@@ -123,6 +123,7 @@ Public Class CoverageRate
     Private Const LOSS_COST_PERCENT As Integer = 8
     Private Const GROSS_AMOUNT_PERCENT As Integer = 13
     Private Const RENEWAL_NUMBER As Integer = 10
+    Private Const REGION_ID As Integer = 11
 #End Region
 
 #Region "Properties"
@@ -319,6 +320,34 @@ Public Class CoverageRate
         Set(ByVal Value As LongType)
             CheckDeleted()
             Me.SetValue(CoverageRateDAL.COL_NAME_RENEWAL_NUMBER, Value)
+        End Set
+    End Property
+    Public Property RegionId() As Guid
+        Get
+            CheckDeleted()
+            If Row(CoverageRateDAL.COL_NAME_REGION_ID) Is DBNull.Value Then
+                Return Nothing
+            Else
+                Return New Guid(CType(Row(CoverageRateDAL.COL_NAME_REGION_ID), Byte()))
+            End If
+        End Get
+        Set(ByVal Value As Guid)
+            CheckDeleted()
+            Me.SetValue(CoverageRateDAL.COL_NAME_REGION_ID, Value)
+        End Set
+    End Property
+    Public Property TaxRegion() As String
+        Get
+            CheckDeleted()
+            If Row(CoverageRateDAL.COL_NAME_TAX_REGION) Is DBNull.Value Then
+                Return Nothing
+            Else
+                Return CType(Row(CoverageRateDAL.COL_NAME_TAX_REGION), String)
+            End If
+        End Get
+        Set(ByVal Value As String)
+            CheckDeleted()
+            Me.SetValue(CoverageRateDAL.COL_NAME_TAX_REGION, Value)
         End Set
     End Property
 
@@ -608,6 +637,7 @@ Public Class CoverageRate
             Dim oNewLow As Double = Math.Round(Convert.ToDouble(sNewLow.Value), 2)
             Dim oNewHigh As Double = Math.Round(Convert.ToDouble(sNewHigh.Value), 2)
             Dim oCoverageRateId As Guid = oCoverageRate.Id
+            Dim oTaxRegionId As Guid = Guid.Empty
             Dim oLow, oHigh As Double
 
             Dim oCoverageRates As DataView = oCoverageRate.GetList(oCoverageRate.CoverageId)
@@ -635,8 +665,9 @@ Public Class CoverageRate
                     oLow = Math.Round(Convert.ToDouble(oRow(LOW_PRICE)), 2)
                     oHigh = Math.Round(Convert.ToDouble(oRow(HIGH_PRICE)), 2)
                     oRenewalNo = Convert.ToInt32(oRow(RENEWAL_NUMBER))
+                    oTaxRegionId = If(IsDBNull(oRow(REGION_ID)), Guid.Empty, New Guid(CType(oRow(REGION_ID), Byte())))
 
-                    If (oLow = oNewLow And oHigh = oNewHigh) Then
+                    If (oLow = oNewLow AndAlso oHigh = oNewHigh AndAlso If(IsNothing(oCoverageRate.RegionId), Guid.Empty, oCoverageRate.RegionId).Equals(oTaxRegionId)) Then
                         If oCoverageRate.Id.Equals(oCoverageRateId) Then
                             If (oNewRenewalNo > 0 And oRenewalNo = 0) Then
                                 bValid = False

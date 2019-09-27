@@ -13,6 +13,7 @@ Public Class CertificateDAL
     Public Const TABLE_NAME As String = "ELP_CERT"
     Public Const TABLE_KEY_NAME As String = "cert_id"
     Public Const TABLE_PREMIUM_TOTALS As String = "Premium_Totals"
+    Public Const TABLE_SALES_TAX_DETAILS As String = "Sales_Taxes"
     Public Const TABLE_CANCEL_ID As String = "Cert_Cancel_Id"
     Public Const TABLE_CANCEL_REQUEST_ID As String = "Cert_Cancel_Request_Id"
     Public Const TABLE_CANCEL_DATE As String = "Cert_Cancel_Date"
@@ -334,10 +335,12 @@ Public Class CertificateDAL
     Public Const PAR_I_COL_NAME_DEALER As String = "pi_Dealer"
 
     Public Const PO_CURSOR_CERT_INFO As Integer = 0
+    Public Const PO_CURSOR_CERT_PHONE_SEARCH As Integer = 0
     Public Const SP_PARAM_NAME_CERT_INFO As String = "po_cert_info"
 
     'REQ 5932
     Public Const PO_CURSOR_CUSTOMER_INFO As Integer = 0
+    Public Const PO_CURSOR_SERIAL_NUMBER As Integer = 0
     Public Const SP_PARAM_NAME_CUST_INFO As String = "po_customer_info"
     Public Const PO_CURSOR_CUSTOMER_DETAILS As Integer = 0
     Public Const SP_PARAM_NAME_CUST_DETAILS As String = "po_customer_details"
@@ -621,6 +624,7 @@ Public Class CertificateDAL
                                  ByVal sortBy As String,
                                  ByVal LimitResultset As Int32,
                                  ByVal inforceDate As String,
+                                 ByVal networkId As String,
                                  Optional ByVal vehicleLicenseFlagMask As String = "",
                                  Optional ByVal Service_Line_Number As String = "",
                                  Optional ByVal dealerGroupCode As String = "") As DataSet
@@ -755,6 +759,8 @@ Public Class CertificateDAL
 
         End If
 
+        whereClauseConditions &= Environment.NewLine & " AND  elp_utl_user.Has_access_to_data('" & networkId & "', d.company_id, d.dealer_id)  = 'Y'"
+
         If (Not inforceDate.Equals(String.Empty)) Or (Not (serialNumberMask.Equals(String.Empty))) Then
             If Not joinCondition = "" Then
                 selectStmt = selectStmt.Replace(Me.DYNAMIC_JOIN_CLAUSE_PLACE_HOLDER, joinCondition)
@@ -803,55 +809,27 @@ Public Class CertificateDAL
     End Function
 
     Public Function LoadSerialNumberList(ByVal serialNumberMask As String,
-                                ByVal compIds As ArrayList) As DataSet
+                                ByVal compGroupId As Guid,
+                                ByVal networkId As String) As DataSet
 
-        Dim selectStmt As String = Me.Config("/SQL/LOAD_SERIAL_NUMBER_LIST")
-        Dim whereClauseConditions As String = ""
+        Dim selectStmt As String = Me.Config("/SQL/LOAD_SERIAL_NUMBER")
         Dim ds As New DataSet
-        Dim companyParam As DBHelper.DBHelperParameter
-        Dim rowNumParam As DBHelper.DBHelperParameter
-        Dim bIsLikeClause As Boolean = False
-        Dim sortBy As String = "upper(serial_number)"
+        Dim outputParameter(PO_CURSOR_SERIAL_NUMBER) As DBHelper.DBHelperParameter
+        Dim inParameters As New Generic.List(Of DBHelper.DBHelperParameter)
+        Dim param As DBHelper.DBHelperParameter
 
-        bIsLikeClause = IsThereALikeClause(serialNumberMask)
-        If ((Not (serialNumberMask Is Nothing)) AndAlso (Me.FormatSearchMask(serialNumberMask))) Then
-            whereClauseConditions &= Environment.NewLine & " ci.search_imei_serialnumber " & serialNumberMask.ToUpper & " AND"
-        End If
+        param = New DBHelper.DBHelperParameter("pi_company_group_id", DALBase.GuidToSQLString(compGroupId))
+        inParameters.Add(param)
+        param = New DBHelper.DBHelperParameter("pi_serial_number", serialNumberMask.ToUpper)
+        inParameters.Add(param)
+        param = New DBHelper.DBHelperParameter("pi_network_id", networkId)
+        inParameters.Add(param)
 
-
-        'If bIsLikeClause = True Then
-        '    ' hextoraw
-        '    whereClauseConditions &= Environment.NewLine & "ci.company_id = " & "hextoraw( '" & Me.GuidToSQLString(compId) & "')"
-        'Else
-        '    ' It is Hardcoded
-        '    whereClauseConditions &= Environment.NewLine & "ci.company_id = '" & Me.GuidToSQLString(compId) & "'"
-        'End If
-
-        If bIsLikeClause = True Then
-            ' hextoraw
-            whereClauseConditions &= Environment.NewLine & MiscUtil.BuildListForSql("ci." & Me.COL_NAME_COMPANY_ID, compIds, True)
-        Else
-            ' not HextoRaw
-            whereClauseConditions &= Environment.NewLine & MiscUtil.BuildListForSql("ci." & Me.COL_NAME_COMPANY_ID, compIds, False)
-        End If
-
-        If Not whereClauseConditions = "" Then
-            selectStmt = selectStmt.Replace(Me.DYNAMIC_WHERE_CLAUSE_PLACE_HOLDER, whereClauseConditions)
-        Else
-            selectStmt = selectStmt.Replace(Me.DYNAMIC_WHERE_CLAUSE_PLACE_HOLDER, "")
-        End If
-
-        If Not IsNothing(sortBy) Then
-            selectStmt = selectStmt.Replace(Me.DYNAMIC_ORDER_BY_CLAUSE_PLACE_HOLDER,
-                                            Environment.NewLine & "ORDER BY " & Environment.NewLine & sortBy)
-        Else
-            selectStmt = selectStmt.Replace(Me.DYNAMIC_ORDER_BY_CLAUSE_PLACE_HOLDER, "")
-        End If
-
+        outputParameter(PO_CURSOR_SERIAL_NUMBER) = New DBHelper.DBHelperParameter("po_cursor_serial_number", GetType(DataSet))
         Try
-            rowNumParam = New DBHelper.DBHelperParameter(Me.PAR_NAME_ROW_NUMBER, Me.MAX_NUMBER_OF_ROWS)
-            DBHelper.Fetch(ds, selectStmt, Me.TABLE_NAME,
-                            New DBHelper.DBHelperParameter() {rowNumParam})
+            DBHelper.FetchSp(selectStmt, inParameters.ToArray, outputParameter, ds, "GetSerialNumList")
+            ds.Tables(0).TableName = "GetSerialNumList"
+
             Return ds
         Catch ex As Exception
             Throw New DataBaseAccessException(DataBaseAccessException.DatabaseAccessErrorType.ReadErr, ex)
@@ -1054,63 +1032,47 @@ Public Class CertificateDAL
     Public Function LoadListByPhoneNum(ByVal PhoneTypeMask As String, ByVal PhoneNumMask As String, ByVal certNumberMask As String,
                                        ByVal customerNameMask As String, ByVal addressMask As String,
                                        ByVal postalCodeMask As String, ByVal dealerNameMask As String,
-                                       ByVal compIds As ArrayList, ByVal sortBy As String, ByVal LimitResultset As Int32, Optional ByVal dealerGroupCode As String = "") As DataSet
+                                       ByVal compGroupId As Guid, ByVal networkId As String, ByVal sortBy As String,
+                                       Optional ByVal dealerGroupCode As String = "") As DataSet
 
-        Dim selectStmt As String = Me.Config("/SQL/LOAD_LIST_BY_PHONE")
-        Dim whereClauseConditions As String = ""
+        Dim selectStmt As String = Me.Config("/SQL/LOAD_CERT_PHONE_SEARCH_LIST")
         Dim ds As New DataSet
-        Dim companyParam As DBHelper.DBHelperParameter
-        Dim rowNumParam As DBHelper.DBHelperParameter
+        'PO_CURSOR_CERT_PHONE_SEARCH
+        Dim outputParameter(PO_CURSOR_CERT_PHONE_SEARCH) As DBHelper.DBHelperParameter
+        Dim inParameters As New Generic.List(Of DBHelper.DBHelperParameter)
+        Dim param As DBHelper.DBHelperParameter
 
-        If ((Not (certNumberMask Is Nothing)) AndAlso (Me.FormatSearchMask(certNumberMask))) Then
-            whereClauseConditions &= Environment.NewLine & " AND UPPER(C.CERT_NUMBER)" & certNumberMask.ToUpper
+        If dealerNameMask Is Nothing Then
+            dealerNameMask = ""
         End If
 
-        If ((Not ((dealerNameMask Is Nothing) OrElse (dealerNameMask = NO_DEALER_SELECTED))) AndAlso (Me.FormatSearchMask(dealerNameMask))) Then
-            whereClauseConditions &= Environment.NewLine & " AND UPPER(D.dealer)" & dealerNameMask.ToUpper
-        End If
+        param = New DBHelper.DBHelperParameter("pi_company_group_id", GuidToSQLString(compGroupId))
+        inParameters.Add(param)
+        param = New DBHelper.DBHelperParameter("pi_dealer", dealerNameMask)
+        inParameters.Add(param)
+        param = New DBHelper.DBHelperParameter("pi_cert_number", certNumberMask)
+        inParameters.Add(param)
+        param = New DBHelper.DBHelperParameter("pi_customer_name", customerNameMask)
+        inParameters.Add(param)
+        param = New DBHelper.DBHelperParameter("pi_address", addressMask)
+        inParameters.Add(param)
+        param = New DBHelper.DBHelperParameter("pi_phone_number", PhoneNumMask)
+        inParameters.Add(param)
+        param = New DBHelper.DBHelperParameter("pi_postal_code", postalCodeMask)
+        inParameters.Add(param)
+        param = New DBHelper.DBHelperParameter("pi_network_id", networkId)
+        inParameters.Add(param)
+        param = New DBHelper.DBHelperParameter("pi_order_by", sortBy)
+        inParameters.Add(param)
+        param = New DBHelper.DBHelperParameter("pi_phone_type", PhoneTypeMask)
+        inParameters.Add(param)
 
-        If ((Not (customerNameMask Is Nothing)) AndAlso (Me.FormatSearchMask(customerNameMask))) Then
-            whereClauseConditions &= Environment.NewLine & " AND UPPER(CUSTOMER_NAME) " & customerNameMask.ToUpper
-        End If
 
-        'Modified for Req-610
-        If ((Not (PhoneNumMask Is Nothing)) AndAlso (Me.FormatSearchMask(PhoneNumMask))) Then
-            If (PhoneTypeMask = "HM") Then
-                whereClauseConditions &= Environment.NewLine & " AND c.HOME_PHONE " & PhoneNumMask
-            ElseIf (PhoneTypeMask = "WC") Then
-                whereClauseConditions &= Environment.NewLine & " AND c.WORK_PHONE " & PhoneNumMask
-            End If
-        End If
-
-        If ((Not (addressMask Is Nothing)) AndAlso (Me.FormatSearchMask(addressMask))) Then
-            whereClauseConditions &= Environment.NewLine & " AND C.ADDRESS_ID IN (SELECT ADDRESS_ID FROM ELP_ADDRESS WHERE UPPER(ADDRESS1) " & addressMask.ToUpper & ") "
-        End If
-
-        If ((Not (postalCodeMask Is Nothing)) AndAlso (Me.FormatSearchMask(postalCodeMask))) Then
-            whereClauseConditions &= Environment.NewLine & " AND C.ADDRESS_ID IN (SELECT ADDRESS_ID FROM ELP_ADDRESS WHERE UPPER(POSTAL_CODE) " & postalCodeMask.ToUpper & ") "
-        End If
-
-        If (dealerGroupCode <> String.Empty AndAlso (Me.FormatSearchMask(dealerGroupCode))) Then
-            whereClauseConditions &= Environment.NewLine & "AND UPPER(dg.code) " & dealerGroupCode.ToUpper & ""
-        End If
-
-        whereClauseConditions &= Environment.NewLine & " AND " & MiscUtil.BuildListForSql("c." & Me.COL_NAME_COMPANY_ID, compIds, True)
-        'whereClauseConditions &= Environment.NewLine & " AND " & MiscUtil.BuildListForSql("d." & Me.COL_NAME_COMPANY_ID, compIds, True)
-
-        If whereClauseConditions.Trim = String.Empty Then whereClauseConditions = " 1=1 "
-        selectStmt = selectStmt.Replace(Me.DYNAMIC_WHERE_CLAUSE_PLACE_HOLDER, whereClauseConditions)
-
-        If Not IsNothing(sortBy) Then
-            selectStmt = selectStmt.Replace(Me.DYNAMIC_ORDER_BY_CLAUSE_PLACE_HOLDER, Environment.NewLine & " ORDER BY " & sortBy & " ")
-        Else
-            selectStmt = selectStmt.Replace(Me.DYNAMIC_ORDER_BY_CLAUSE_PLACE_HOLDER, "")
-        End If
-
+        outputParameter(PO_CURSOR_CERT_PHONE_SEARCH) = New DBHelper.DBHelperParameter("po_cursor", GetType(DataSet))
         Try
-            rowNumParam = New DBHelper.DBHelperParameter(Me.PAR_NAME_ROW_NUMBER, LimitResultset)
-            DBHelper.Fetch(ds, selectStmt, Me.TABLE_NAME,
-                            New DBHelper.DBHelperParameter() {rowNumParam})
+            DBHelper.FetchSp(selectStmt, inParameters.ToArray, outputParameter, ds, "GetPhoneNumList")
+            ds.Tables(0).TableName = "GetPhoneNumList"
+
             Return ds
         Catch ex As Exception
             Throw New DataBaseAccessException(DataBaseAccessException.DatabaseAccessErrorType.ReadErr, ex)
@@ -1143,7 +1105,21 @@ Public Class CertificateDAL
 
     End Function
 
+    Public Function getSalesTaxDetails(ByVal certId As Guid, ByVal languageId As Guid) As DataSet
+        Dim selectStmt As String = Me.Config("/SQL/GET_SALES_TAX_DETAIL")
+        Dim parameters() As DBHelper.DBHelperParameter = New DBHelper.DBHelperParameter() _
+                 {New DBHelper.DBHelperParameter(COL_NAME_CERT_ID, certId.ToByteArray),
+                 New DBHelper.DBHelperParameter(COL_NAME_LANGUAGE_ID, languageId.ToByteArray)}
+        Dim outParameters() As DBHelper.DBHelperParameter = New DBHelper.DBHelperParameter() {New DBHelper.DBHelperParameter("po_resultcursor", GetType(DataSet))}
+        Try
+            Dim ds = New DataSet
+            DBHelper.FetchSp(selectStmt, parameters, outParameters, ds, Me.TABLE_SALES_TAX_DETAILS)
+            Return ds
+        Catch ex As Exception
+            Throw New DataBaseAccessException(DataBaseAccessException.DatabaseAccessErrorType.ReadErr, ex)
+        End Try
 
+    End Function
 
     Public Function ValidateProductForSpecialServices(ByVal prodCodeId As Guid) As DataSet
         Dim ds As New DataSet

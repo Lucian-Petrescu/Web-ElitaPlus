@@ -88,6 +88,7 @@ Public Class ClaimRecordingForm
         Public DeliveryDate As Nullable(Of Date)
         Public DefaultDeliveryDay As DeliveryDay
         Public DeliverySlotTimeSpan As TimeSpan
+        Public IsExpeditedBtnClicked As Boolean = False
 
 #Region "SubmitWsBaseClaimRecordingResponse"
         Private _mSubmitWsBaseClaimRecordingResponse As BaseClaimRecordingResponse = Nothing
@@ -103,6 +104,7 @@ Public Class ClaimRecordingForm
 
         Public BestReplacementDeviceSelected As BestReplacementDeviceInfo = Nothing
         Public LogisticsStage As Integer = 0 ' 0 is first stage
+        Public LogisticsOption As LogisticOption = Nothing
     End Class
 
     Public Sub New()
@@ -860,7 +862,7 @@ Public Class ClaimRecordingForm
             'State.caseId = ClaimBase.GetCaseIdByCaseNumberAndCompany("2017000998", "AIF")
             '    Dim oCase As CaseBase = New CaseBase(State.caseId)
             '    NavController.Navigate(Me, FlowEvents.EVENT_DENIED_CASE_CRATED, New CaseDetailsForm.Parameters(oCase))
-
+            Dim errMsg As List(Of String) = New List(Of String)
             If Not State.CertificateId.Equals(Guid.Empty) Then
                 Dim policyRequest As CreateCaseRequest = New CreateCaseRequest()
                 policyRequest.PurposeCode = moPurposecode.SelectedValue
@@ -932,10 +934,23 @@ Public Class ClaimRecordingForm
 
                 If (callerinfo.GetType() Is GetType(PhoneCaller)) Then
                     If (String.IsNullOrEmpty(callerinfo.PhoneNumber) And String.IsNullOrEmpty(callerinfo.EmailAddress)) Then
-                        MasterPage.MessageController.AddError(ElitaPlus.Common.ErrorCodes.GUI_CALLER_PHONE_OR_EMAIL_REQUIRED_ERR, True)
-                        Exit Sub
+                        errMsg.Add(TranslationBase.TranslateLabelOrMessage(ElitaPlus.Common.ErrorCodes.GUI_CALLER_PHONE_OR_EMAIL_REQUIRED_ERR))
                     End If
                 End If
+
+                If String.IsNullOrEmpty(callerinfo.FirstName) Then
+                    errMsg.Add(TranslationBase.TranslateLabelOrMessage(ElitaPlus.Common.ErrorCodes.GUI_CALLER_FIRST_NAME_REQUIRED_ERR))
+                End If
+
+                If String.IsNullOrEmpty(callerinfo.LastName) Then
+                    errMsg.Add(TranslationBase.TranslateLabelOrMessage(ElitaPlus.Common.ErrorCodes.GUI_CALLER_LAST_NAME_REQUIRED_ERR))
+                End If
+
+                If errMsg.Count > 0 Then
+                    MasterPage.MessageController.AddError(errMsg.ToArray, True)
+                    Exit Sub
+                End If
+
                 policyRequest.Caller = callerinfo
 
                 Try
@@ -1619,6 +1634,8 @@ Public Class ClaimRecordingForm
             With UserControlDeliverySlot
                 .CountryCode = userSelectedShippingAddress.Country
                 .ServiceCenter = defaultServiceCenter.Code
+                .CourierCode = State.LogisticsOption.DeliveryOptions.CourierCode
+                .CourierProductCode = State.LogisticsOption.DeliveryOptions.CourierProductCode
                 .DeliveryAddress = New UserControlDeliverySlot.DeliveryAddressInfo() With {
                     .CountryCode = userSelectedShippingAddress.Country,
                     .RegionShortDesc = userSelectedShippingAddress.State,
@@ -2210,6 +2227,8 @@ Public Class ClaimRecordingForm
         senderRb.Checked = True
         ' get the selected device into the state
         EnableControlinGridview(GridViewLogisticsOptions)
+        State.IsExpeditedBtnClicked = False
+        ControlMgr.SetEnableControl(Me, btnLogisticsOptionsContinue, True)
     End Sub
     Private Sub EnableControlinGridview(ByVal gridViewTarget As GridView)
 
@@ -2222,6 +2241,7 @@ Public Class ClaimRecordingForm
             Dim lb As Label
             lb = CType(gridViewTarget.Rows(i).FindControl(GridLoCodeLblCtrl), Label)
             Dim logisticsOptionItem As LogisticOption = logisticsStage.Options.FirstOrDefault(Function(q) q.Code = lb.Text)
+
 
             Dim rb As RadioButton
             rb = CType(gridViewTarget.Rows(i).FindControl(GridLogisticsOptionsRdoCtrl), RadioButton)
@@ -2266,8 +2286,10 @@ Public Class ClaimRecordingForm
                 Dim btnEstimateDeliveryDate As Button = CType(gridViewTarget.Rows(i).FindControl(GridLoEstimateDeliveryDateBtnCtrl), Button)
                 ControlMgr.SetEnableControl(Me, btnEstimateDeliveryDate, isEnableControl)
 
+                If isEnableControl Then
+                    State.LogisticsOption = logisticsOptionItem
+                End If
             End If
-
         Next
     End Sub
     Private Function ConvertToAddressControllerField(ByVal sourceAddress As ClaimRecordingService.Address) As BusinessObjectsNew.Address
@@ -2409,13 +2431,37 @@ Public Class ClaimRecordingForm
                             Return False
                         Else
                             If Not lOption.LogisticOptionInfo Is Nothing Then
-                                lOption.LogisticOptionInfo.EstimatedChangedDeliveryDate = selectedDeliveryDate
+                                If State.LogisticsOption.Code.ToUpper().Equals("X") Then
+
+                                    If Not State.IsExpeditedBtnClicked Then
+                                        MasterPage.MessageController.AddError(Message.MSG_ERR_SELECT_EXPEDITED_DELIVERY_BUTTON, True)
+                                        Return False
+                                    End If
+
+                                    Dim DeliverySlotDescr As String = ucDeliverySlots.DeliverySlotDescription
+                                    Dim thisTime = Assurant.Elita.ApplicationDateTime.Now       ' DateTime.Now
+                                    Dim localExpectedDeliveryTime
+
+                                    If Not DeliverySlotDescr Is Nothing Then
+
+                                        Select Case DeliverySlotDescr.ToUpper()
+                                            Case "EXP_DEL4"      ' For Japan Expected delivery time is 4 hrs from current Japan time
+                                                localExpectedDeliveryTime = thisTime.AddHours(4)
+                                                lOption.LogisticOptionInfo.EstimatedChangedDeliveryDate = localExpectedDeliveryTime
+                                            Case "EXP_DEL3"      ' For KDDI Expected delivery time is 3 hrs from current apan time
+                                                localExpectedDeliveryTime = thisTime.AddHours(3)
+                                                lOption.LogisticOptionInfo.EstimatedChangedDeliveryDate = localExpectedDeliveryTime
+                                        End Select
+
+                                    End If
+                                Else
+                                    lOption.LogisticOptionInfo.EstimatedChangedDeliveryDate = selectedDeliveryDate
+                                End If
                             End If
                         End If
-
                     End If
 
-                End If
+                    End If
                 islogisticsOptionSelected = True
                 Exit For
             End If
@@ -2532,6 +2578,8 @@ Public Class ClaimRecordingForm
             With ucDeliverySlots
                 .CountryCode = countryCode
                 .ServiceCenter = serviceCenterCode
+                .CourierCode = State.LogisticsOption.DeliveryOptions.CourierCode
+                .CourierProductCode = State.LogisticsOption.DeliveryOptions.CourierProductCode
                 .DeliveryAddress = New UserControlDeliverySlot.DeliveryAddressInfo() With {
                     .CountryCode = deliveryAddress.Country,
                     .RegionShortDesc = deliveryAddress.State,
@@ -2588,15 +2636,14 @@ Public Class ClaimRecordingForm
             Dim logisticsStage As LogisticStage
             logisticsStage = wsResponse.Stages(State.LogisticsStage)
 
-            Dim lb As Label
-            lb = CType(gvr.Cells(GridLoColLoRdoIdx).FindControl(GridLoCodeLblCtrl), Label)
+            Dim shippingCodeLabel As Label
+            shippingCodeLabel = CType(gvr.Cells(GridLoColLoRdoIdx).FindControl(GridLoCodeLblCtrl), Label)
 
             Dim ucDeliverySlots As UserControlDeliverySlot = CType(gvr.Cells(GridLoColLoDetailIdx).FindControl(LogisticsOptionsEstimateDeliveryDateCtrl), UserControlDeliverySlot)
             ucDeliverySlots.Visible = True
-
             Dim deliveryAddress As ClaimRecordingService.Address
 
-            Dim lOption As LogisticOption = logisticsStage.Options.FirstOrDefault(Function(q) q.Code = lb.Text)
+            Dim lOption As LogisticOption = logisticsStage.Options.FirstOrDefault(Function(q) q.Code = shippingCodeLabel.Text)
             ' Logistics Options
             If lOption.Type = LogisticOptionType.DealerBranchAddress Then
                 CType(lOption.LogisticOptionInfo, LogisticOptionInfoDealerBranchAddress).Address = PopulateAddressFromAddressController(CType(gvr.Cells(GridLoColLoDetailIdx).FindControl("ucAddressControllerLogisticsOptions"), UserControlAddress_New))
@@ -2609,7 +2656,24 @@ Public Class ClaimRecordingForm
 
             GetEstimatedDeliveryDate(ucDeliverySlots, deliveryAddress, lOption.DeliveryOptions)
 
+            If shippingCodeLabel.Text.ToUpper() = "X" Then
+                State.IsExpeditedBtnClicked = True
+                If ucDeliverySlots.IsDeliverySlotAvailable Then
+                    ControlMgr.SetEnableControl(Me, btnLogisticsOptionsContinue, True)
+                    ucDeliverySlots.Visible = True
+                Else
+                    ControlMgr.SetEnableControl(Me, btnLogisticsOptionsContinue, False)
+                    ucDeliverySlots.Visible = False
+                End If
+
+            Else
+                ControlMgr.SetEnableControl(Me, btnLogisticsOptionsContinue, True)
+                ucDeliverySlots.Visible = True
+                State.IsExpeditedBtnClicked = False
+            End If
+
         Catch ex As Exception
+            State.IsExpeditedBtnClicked = False
             HandleErrors(ex, MasterPage.MessageController)
         End Try
     End Sub
