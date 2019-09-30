@@ -1217,11 +1217,6 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Reference.svcmap</DependentUpon>
     </Compile>
-    <Compile Include="Service References\ClaimRecordingService_bk\Reference.vb">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>Reference.svcmap</DependentUpon>
-    </Compile>
     <Compile Include="Service References\ClaimService\Reference.vb">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -5847,61 +5842,7 @@
       <LastGenOutput>Reference.vb</LastGenOutput>
     </None>
     <None Include="Service References\ClaimFulfillmentWebAppGatewayService\WebAppGateway1.wsdl" />
-    <Content Include="Service References\ClaimRecordingService\Assurant.ElitaPlus.ElitaPlusWebApp.ClaimRecordingService.BaseClaimRecordingResponse.datasource">
-      <DependentUpon>Reference.svcmap</DependentUpon>
-    </Content>
-    <Content Include="Service References\ClaimRecordingService\Assurant.ElitaPlus.ElitaPlusWebApp.ClaimRecordingService.GetClaimSummaryResponse.datasource">
-      <DependentUpon>Reference.svcmap</DependentUpon>
-    </Content>
-    <Content Include="Service References\ClaimRecordingService\Assurant.ElitaPlus.ElitaPlusWebApp.ClaimRecordingService.GetDurationResponse.datasource">
-      <DependentUpon>Reference.svcmap</DependentUpon>
-    </Content>
-    <Content Include="Service References\ClaimRecordingService\Assurant.ElitaPlus.ElitaPlusWebApp.ClaimRecordingService.PolicyInfo.datasource">
-      <DependentUpon>Reference.svcmap</DependentUpon>
-    </Content>
-    <None Include="Service References\ClaimRecordingService\ClaimRecordingService.wsdl" />
-    <None Include="Service References\ClaimRecordingService\ClaimRecordingService.xsd">
-      <SubType>Designer</SubType>
-    </None>
     <None Include="Service References\ClaimRecordingService\ClaimRecordingService1.wsdl" />
-    <None Include="Service References\ClaimRecordingService\ClaimRecordingService1.xsd">
-      <SubType>Designer</SubType>
-    </None>
-    <None Include="Service References\ClaimRecordingService\ClaimRecordingService10.xsd">
-      <SubType>Designer</SubType>
-    </None>
-    <None Include="Service References\ClaimRecordingService\ClaimRecordingService2.xsd">
-      <SubType>Designer</SubType>
-    </None>
-    <None Include="Service References\ClaimRecordingService\ClaimRecordingService3.xsd">
-      <SubType>Designer</SubType>
-    </None>
-    <None Include="Service References\ClaimRecordingService\ClaimRecordingService4.xsd">
-      <SubType>Designer</SubType>
-    </None>
-    <None Include="Service References\ClaimRecordingService\ClaimRecordingService5.xsd">
-      <SubType>Designer</SubType>
-    </None>
-    <None Include="Service References\ClaimRecordingService\ClaimRecordingService6.xsd">
-      <SubType>Designer</SubType>
-    </None>
-    <None Include="Service References\ClaimRecordingService\ClaimRecordingService7.xsd">
-      <SubType>Designer</SubType>
-    </None>
-    <None Include="Service References\ClaimRecordingService\ClaimRecordingService8.xsd">
-      <SubType>Designer</SubType>
-    </None>
-    <None Include="Service References\ClaimRecordingService\ClaimRecordingService9.xsd">
-      <SubType>Designer</SubType>
-    </None>
-    <None Include="Service References\ClaimRecordingService_bk\ClaimRecordingService1.wsdl" />
-    <None Include="Service References\ClaimRecordingService_bk\configuration91.svcinfo" />
-    <None Include="Service References\ClaimRecordingService_bk\configuration.svcinfo" />
-    <None Include="Service References\ClaimRecordingService_bk\Reference.svcmap">
-      <Generator>WCF Proxy Generator</Generator>
-      <LastGenOutput>Reference.vb</LastGenOutput>
-    </None>
-    <None Include="Service References\ClaimRecordingService\ClaimRecordingService.disco" />
     <None Include="Service References\ClaimRecordingService\configuration91.svcinfo" />
     <None Include="Service References\ClaimRecordingService\configuration.svcinfo" />
     <None Include="Service References\ClaimRecordingService\Reference.svcmap">
@@ -8751,7 +8692,6 @@
     <WCFMetadataStorage Include="Service References\ClaimFulfillmentService\" />
     <WCFMetadataStorage Include="Service References\ClaimFulfillmentWebAppGatewayService\" />
     <WCFMetadataStorage Include="Service References\ClaimRecordingService\" />
-    <WCFMetadataStorage Include="Service References\ClaimRecordingService_bk\" />
     <WCFMetadataStorage Include="Service References\ClaimService\" />
     <WCFMetadataStorage Include="Service References\FileAdminService\" />
     <WCFMetadataStorage Include="Service References\GalaxyWcfRef\" />
