@@ -137,7 +137,8 @@ Public Class ClaimIssueForm
             Me.PopulateControlFromBOProperty(Me.lblDealerNameValue, .DealerName)
             Me.PopulateControlFromBOProperty(Me.lblCertificateNumberValue, .CertificateNumber)
             Me.PopulateControlFromBOProperty(Me.lblClaimStatusValue, LookupListNew.GetClaimStatusFromCode(langId, .StatusCode))
-            Me.PopulateControlFromBOProperty(Me.lblDateOfLossValue, .LossDate.Value.ToString("dd-MMM-yyyy"))
+            'Me.PopulateControlFromBOProperty(Me.lblDateOfLossValue, .LossDate.Value.ToString("dd-MMM-yyyy"))
+            Me.PopulateControlFromBOProperty(Me.lblDateOfLossValue, GetDateFormattedStringNullable(.LossDate.Value))
             Me.PopulateControlFromBOProperty(Me.lblSerialNumberImeiValue, .SerialNumber)
             Me.PopulateControlFromBOProperty(Me.lblWorkPhoneNumberValue, .MobileNumber)
 
