@@ -201,7 +201,7 @@ Public Class FalabellaIntegration
                 request.StatusChangeDate = StatusChangeDate
                 'request.WorkOrderFor = If(OClaim.Status.ToString() = BasicClaimStatus.Denied.ToString(), "Anulada", "Reemplazo Autorizado")
                 request.WorkOrderNumber = OClaim.RemAuthNumber
-
+                request.ClaimStatus = OClaim.Status.ToString()
             End With
 
             Try
