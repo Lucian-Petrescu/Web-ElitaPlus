@@ -354,6 +354,11 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Reference.svcmap</DependentUpon>
     </Compile>
+    <Compile Include="Service References\WebDeClaimsServiceRef\Reference.vb">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </Compile>
     <Compile Include="Tables\Accounting\AcctEventDetailIncExc.vb" />
     <Compile Include="Tables\AcctFinanceAutomation\AfaAcctAmtSrc.vb" />
     <Compile Include="Tables\AcctFinanceAutomation\AfaAcctAmtSrcMapping.vb" />
@@ -668,16 +673,6 @@
     <Compile Include="Security\Webservices.vb" />
     <Compile Include="Security\WsFunctions.vb" />
     <Compile Include="Service References\Felita\Reference.vb">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>Reference.svcmap</DependentUpon>
-    </Compile>
-    <Compile Include="Service References\GvsWSProdRef\Reference.vb">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>Reference.svcmap</DependentUpon>
-    </Compile>
-    <Compile Include="Service References\GvsWSRef\Reference.vb">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>Reference.svcmap</DependentUpon>
@@ -1574,6 +1569,16 @@
       <DependentUpon>Reference.svcmap</DependentUpon>
     </None>
     <None Include="Service References\VSCBrazilDBSCreditCardAuth\BillingServiceBeanService.wsdl" />
+    <None Include="Service References\WebDeClaimsServiceRef\Assurant.ElitaPlus.BusinessObjectsNew.WebDeClaimsServiceRef.HelloResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\WebDeClaimsServiceRef\Assurant.ElitaPlus.BusinessObjectsNew.WebDeClaimsServiceRef.LoginResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\WebDeClaimsServiceRef\Assurant.ElitaPlus.BusinessObjectsNew.WebDeClaimsServiceRef.ProcessRequestResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\WebDeClaimsServiceRef\WSElitaServiceOrder.wsdl" />
     <None Include="Service References\WrkQueue\Assurant.ElitaPlus.BusinessObjectsNew.WrkQueue.WorkQueue.datasource">
       <DependentUpon>Reference.svcmap</DependentUpon>
     </None>
@@ -1638,8 +1643,6 @@
     <WCFMetadataStorage Include="Service References\Doc\" />
     <WCFMetadataStorage Include="Service References\DRPSystem\" />
     <WCFMetadataStorage Include="Service References\Felita\" />
-    <WCFMetadataStorage Include="Service References\GvsWSProdRef\" />
-    <WCFMetadataStorage Include="Service References\GvsWSRef\" />
     <WCFMetadataStorage Include="Service References\LegacyBridgeService\" />
     <WCFMetadataStorage Include="Service References\PolicyService\" />
     <WCFMetadataStorage Include="Service References\SmartStream.AP\" />
@@ -1648,6 +1651,7 @@
     <WCFMetadataStorage Include="Service References\TestBatchService\" />
     <WCFMetadataStorage Include="Service References\VSCBrazilCreditCardAuth\" />
     <WCFMetadataStorage Include="Service References\VSCBrazilDBSCreditCardAuth\" />
+    <WCFMetadataStorage Include="Service References\WebDeClaimsServiceRef\" />
     <WCFMetadataStorage Include="Service References\WrkQueue\" />
   </ItemGroup>
   <ItemGroup>
@@ -1700,25 +1704,11 @@
     </None>
   </ItemGroup>
   <ItemGroup>
-    <None Include="Service References\GvsWSRef\WSElitaServiceOrder.disco" />
-    <None Include="Service References\GvsWSRef\WSElitaServiceOrder.wsdl" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Service References\GvsWSRef\configuration91.svcinfo" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Service References\GvsWSRef\configuration.svcinfo" />
-  </ItemGroup>
-  <ItemGroup>
     <None Include="Service References\Felita\FelitaConnectService.wsdl" />
     <None Include="Service References\Felita\FelitaConnectService.xsd" />
     <None Include="Service References\Felita\FelitaConnectService1.xsd" />
     <None Include="Service References\Felita\FelitaConnectService2.xsd" />
     <None Include="Service References\Felita\FelitaConnectService3.xsd" />
-    <None Include="Service References\GvsWSRef\Reference.svcmap">
-      <Generator>WCF Proxy Generator</Generator>
-      <LastGenOutput>Reference.vb</LastGenOutput>
-    </None>
   </ItemGroup>
   <ItemGroup>
     <None Include="Service References\Felita\dsJournalInfo.xsd">
@@ -1745,20 +1735,6 @@
     </None>
   </ItemGroup>
   <ItemGroup>
-    <None Include="Service References\GvsWSProdRef\WSElitaServiceOrder.disco" />
-    <None Include="Service References\GvsWSProdRef\WSElitaServiceOrder.wsdl" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Service References\GvsWSProdRef\configuration91.svcinfo" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Service References\GvsWSProdRef\configuration.svcinfo" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Service References\GvsWSProdRef\Reference.svcmap">
-      <Generator>WCF Proxy Generator</Generator>
-      <LastGenOutput>Reference.vb</LastGenOutput>
-    </None>
     <None Include="Service References\SmartStream.AP\Assurant.ElitaPlus.BusinessObjectsNew.SmartStream.AP.VendorSummaryType.datasource">
       <DependentUpon>Reference.svcmap</DependentUpon>
     </None>
@@ -2136,6 +2112,12 @@
     </None>
     <None Include="Service References\PolicyService\PolicyService1.disco" />
     <Compile Include="DataProtection\CertForgotRequest.vb" />
+    <None Include="Service References\WebDeClaimsServiceRef\configuration91.svcinfo" />
+    <None Include="Service References\WebDeClaimsServiceRef\configuration.svcinfo" />
+    <None Include="Service References\WebDeClaimsServiceRef\Reference.svcmap">
+      <Generator>WCF Proxy Generator</Generator>
+      <LastGenOutput>Reference.vb</LastGenOutput>
+    </None>
     <Content Include="Settings.xml">
       <SubType>Designer</SubType>
     </Content>

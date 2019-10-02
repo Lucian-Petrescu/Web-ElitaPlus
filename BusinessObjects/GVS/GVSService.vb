@@ -1,10 +1,12 @@
-﻿Imports System.ServiceModel
+﻿Imports System.Net
+Imports System.ServiceModel
 
 Public Class GVSService
 
 #Region "Constants"
     Private Const LOGIN_OK As String = "Ok"
     Private Const PROCESS_REQUEST_ERROR As String = "ERROR"
+    Private Const LOGIN_FAILED As String = "FALHA NO LOGIN : USUARIO OU SENHA INVALIDOS"
 
 #End Region
 
@@ -52,21 +54,22 @@ Public Class GVSService
         Return eab.ToEndpointAddress
     End Function
 
-    Private Shared Function Get_ServiceClient(ByVal url As String) As GvsWSRef.WSElitaServiceOrderSoapClient
+    Private Shared Function Get_ServiceClient(ByVal url As String) As WebDeClaimsServiceRef.WSElitaServiceOrderSoapClient
         Dim bind As BasicHttpBinding
         Dim ea As EndpointAddress
-        Dim sc As GvsWSRef.WSElitaServiceOrderSoapClient
+        Dim sc As WebDeClaimsServiceRef.WSElitaServiceOrderSoapClient
 
         bind = Bind_WSElitaServiceOrderSoap()
+        ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12
         ea = Get_EndPoint(url)
-        sc = New GvsWSRef.WSElitaServiceOrderSoapClient(bind, ea)
+        sc = New WebDeClaimsServiceRef.WSElitaServiceOrderSoapClient(bind, ea)
         sc.Endpoint.Name = "WSElitaServiceOrderSoap"
 
         Return sc
     End Function
 
     Public Shared Function SendToGvs(ByVal xmlIn As String, ByVal functionToProcess As String) As String
-        Dim wsGvs As GvsWSRef.WSElitaServiceOrderSoapClient
+        Dim wsGvs As WebDeClaimsServiceRef.WSElitaServiceOrderSoapClient
         Dim gvsToken As String
         Dim sLoginMsg As String
         Dim xmlOut As String
@@ -96,9 +99,9 @@ Public Class GVSService
             oWebPasswd = New WebPasswd(Authentication.CompanyGroupId, LookupListNew.GetIdFromCode(Codes.SERVICE_TYPE, Codes.SERVICE_TYPE__SERVICE_NETWORK_GVS), True)
             url = oWebPasswd.Url
             wsGvs = Get_ServiceClient(url)
-            gvsToken = wsGvs.Login(oWebPasswd.UserId, oWebPasswd.Password, sLoginMsg)
+            gvsToken = wsGvs.Login(oWebPasswd.UserId, oWebPasswd.Password)
 
-            
+
             If gvsToken Is Nothing Then
                 errMsg = TranslationBase.TranslateLabelOrMessage(Common.ErrorCodes.WS_ERR_NO_TOKEN_RETURNED)
                 If Not (ElitaPlusIdentity.Current Is Nothing Or ElitaPlusIdentity.Current.ActiveUser Is Nothing Or ElitaPlusIdentity.Current.ActiveUser.NetworkId Is Nothing) Then
@@ -106,24 +109,22 @@ Public Class GVSService
                 End If
                 xmlOut = XMLHelper.FromErrorCodeToXML(Common.ErrorCodes.WS_ERR_NO_TOKEN_RETURNED, errMsg, userNetworkId)
                 wsGvs.Close()
+            ElseIf gvsToken.ToUpperInvariant = LOGIN_FAILED Then
+                errMsg = TranslationBase.TranslateLabelOrMessage(Common.ErrorCodes.WS_ACCESS_DENIED)
+
+                If Not (ElitaPlusIdentity.Current Is Nothing Or ElitaPlusIdentity.Current.ActiveUser Is Nothing Or ElitaPlusIdentity.Current.ActiveUser.NetworkId Is Nothing) Then
+                    userNetworkId = ElitaPlusIdentity.Current.ActiveUser.NetworkId
+                End If
+                xmlOut = XMLHelper.FromErrorCodeToXML(Common.ErrorCodes.WS_ACCESS_DENIED, errMsg, userNetworkId)
+                wsGvs.Close()
             Else
-                If Trim(sLoginMsg) = LOGIN_OK Then
-                    xmlOut = wsGvs.ProcessRequest(gvsToken, functionToProcess, xmlIn)
-                    wsGvs.Close()
-                    If (xmlOut.ToUpper).Contains(PROCESS_REQUEST_ERROR) Then
-                        AppConfig.Log(xmlOut)
-                    End If
-                Else
-                    wsGvs.Close()
-                    'xmlOut = Common.ErrorCodes.WS_ACCESS_DENIED
-                    If Not (ElitaPlusIdentity.Current Is Nothing Or ElitaPlusIdentity.Current.ActiveUser Is Nothing Or ElitaPlusIdentity.Current.ActiveUser.NetworkId Is Nothing) Then
-                        userNetworkId = ElitaPlusIdentity.Current.ActiveUser.NetworkId
-                    End If
-                    sLoginMsg = If(sLoginMsg Is Nothing, String.Empty, sLoginMsg)
-                    xmlOut = If((sLoginMsg.Contains("</") Or sLoginMsg.Contains("/>")), sLoginMsg, XMLHelper.FromErrorCodeToXML(sLoginMsg, sLoginMsg, userNetworkId))
+
+                xmlOut = wsGvs.ProcessRequest(gvsToken, functionToProcess, xmlIn)
+                wsGvs.Close()
+                If (xmlOut.ToUpper).Contains(PROCESS_REQUEST_ERROR) Then
+                    AppConfig.Log(xmlOut)
                 End If
             End If
-
             Return xmlOut
 
         Catch ex As Exception
