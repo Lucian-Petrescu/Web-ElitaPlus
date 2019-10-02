@@ -8794,6 +8794,7 @@
     <WCFMetadataStorage Include="Service References\TestWcfRef\" />
   </ItemGroup>
   <ItemGroup>
+    <Folder Include="Claims\AccountPayable\" />
     <Folder Include="Common\Editor\fckeditor\editor\filemanager\connectors\aspx\" />
   </ItemGroup>
   <PropertyGroup>

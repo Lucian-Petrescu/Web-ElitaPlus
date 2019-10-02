@@ -1,0 +1,82 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+
+<!-- ********************** THIS FILE HAS BEEN GENERATED FROM TEMPLATE SQLObject.cst (10/2/2019)********************** -->
+
+<SQL>
+  <LOAD>
+    <![CDATA[	
+			SELECT 
+				batch_number,
+				vendor_id,
+				vendor_address_id,
+				amount,
+				accounting_period,
+				payment_status_xcd,
+				distributed,
+				posted,
+				paymentsource,
+				created_date,
+				modified_date,
+				created_by,
+				modified_by,
+				ap_payment_batch_id
+			FROM elp_ap_payment_batch 
+			WHERE
+				ap_payment_batch_id = :ap_payment_batch_id
+		]]>
+  </LOAD>
+  <LOAD_LIST>
+  </LOAD_LIST>
+  <UPDATE>
+    <![CDATA[	
+			UPDATE elp_ap_payment_batch SET
+				batch_number = :batch_number,
+				vendor_id = :vendor_id,
+				vendor_address_id = :vendor_address_id,
+				amount = :amount,
+				accounting_period = :accounting_period,
+				payment_status_xcd = :payment_status_xcd,
+				distributed = :distributed,
+				posted = :posted,
+				paymentsource = :paymentsource,
+				modified_by = :modified_by
+			WHERE
+				ap_payment_batch_id = :ap_payment_batch_id
+		]]>
+  </UPDATE>
+  <INSERT>
+    INSERT INTO elp_ap_payment_batch
+    (
+    batch_number,
+    vendor_id,
+    vendor_address_id,
+    amount,
+    accounting_period,
+    payment_status_xcd,
+    distributed,
+    posted,
+    paymentsource,
+    created_by,
+    ap_payment_batch_id
+    )
+    VALUES
+    (
+    :batch_number,
+    :vendor_id,
+    :vendor_address_id,
+    :amount,
+    :accounting_period,
+    :payment_status_xcd,
+    :distributed,
+    :posted,
+    :paymentsource,
+    :created_by,
+    :ap_payment_batch_id
+    )
+  </INSERT>
+  <DELETE>
+    DELETE FROM elp_ap_payment_batch
+    WHERE
+    ap_payment_batch_id = :ap_payment_batch_id
+  </DELETE>
+</SQL>

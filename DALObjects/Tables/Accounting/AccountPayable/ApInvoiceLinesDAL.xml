@@ -1,0 +1,120 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+
+<!-- ********************** THIS FILE HAS BEEN GENERATED FROM TEMPLATE SQLObject.cst (10/2/2019)********************** -->
+
+<SQL>
+  <LOAD>
+    <![CDATA[	
+			SELECT 
+				ap_invoice_header_id,
+				line_number,
+				line_type,
+				vendor_item_code,
+				description,
+				quantity,
+				uom_xcd,
+				matched_quantity,
+				paid_quantity,
+				unit_price,
+				total_price,
+				parent_line_number,
+				po_number,
+				po_date,
+				billing_period_start_date,
+				billing_period_end_date,
+				reference_number,
+				created_by,
+				created_date,
+				modified_by,
+				modified_date,
+				vendor_transaction_type,
+				ap_invoice_lines_id
+			FROM elp_ap_invoice_lines 
+			WHERE
+				ap_invoice_lines_id = :ap_invoice_lines_id
+		]]>
+  </LOAD>
+  <LOAD_LIST>
+  </LOAD_LIST>
+  <UPDATE>
+    <![CDATA[	
+			UPDATE elp_ap_invoice_lines SET
+				ap_invoice_header_id = :ap_invoice_header_id,
+				line_number = :line_number,
+				line_type = :line_type,
+				vendor_item_code = :vendor_item_code,
+				description = :description,
+				quantity = :quantity,
+				uom_xcd = :uom_xcd,
+				matched_quantity = :matched_quantity,
+				paid_quantity = :paid_quantity,
+				unit_price = :unit_price,
+				total_price = :total_price,
+				parent_line_number = :parent_line_number,
+				po_number = :po_number,
+				po_date = :po_date,
+				billing_period_start_date = :billing_period_start_date,
+				billing_period_end_date = :billing_period_end_date,
+				reference_number = :reference_number,
+				vendor_transaction_type = :vendor_transaction_type,
+				modified_by = :modified_by
+			WHERE
+				ap_invoice_lines_id = :ap_invoice_lines_id
+		]]>
+  </UPDATE>
+  <INSERT>
+    INSERT INTO elp_ap_invoice_lines
+    (
+    ap_invoice_header_id,
+    line_number,
+    line_type,
+    vendor_item_code,
+    description,
+    quantity,
+    uom_xcd,
+    matched_quantity,
+    paid_quantity,
+    unit_price,
+    total_price,
+    parent_line_number,
+    po_number,
+    po_date,
+    billing_period_start_date,
+    billing_period_end_date,
+    reference_number,
+    vendor_transaction_type,
+    created_by,
+    ap_invoice_lines_id
+    )
+    VALUES
+    (
+    :ap_invoice_header_id,
+    :line_number,
+    :line_type,
+    :vendor_item_code,
+    :description,
+    :quantity,
+    :uom_xcd,
+    :matched_quantity,
+    :paid_quantity,
+    :unit_price,
+    :total_price,
+    :parent_line_number,
+    :po_number,
+    :po_date,
+    :billing_period_start_date,
+    :billing_period_end_date,
+    :reference_number,
+    :vendor_transaction_type,
+    :created_by,
+    :ap_invoice_lines_id
+    )
+  </INSERT>
+  <DELETE>
+    DELETE FROM elp_ap_invoice_lines
+    WHERE
+    ap_invoice_lines_id = :ap_invoice_lines_id
+  </DELETE>
+</SQL>
+
+
