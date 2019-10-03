@@ -31,7 +31,7 @@
 				<tr>
 					<td nowrap vAlign="top" bgcolor="#d5d7e4" width="100%" background="Navigation/images/login_spacer.gif"
 						height="92"><asp:Label id="lblApplicationInstanceName" style="LEFT: 100px; POSITION: absolute; TOP: 20px"
-							runat="server"  ForeColor="#63648d">(Development Environment)</asp:Label><IMG height="92" src="Navigation/images/trans_spacer.gif" width="100%"></td>
+							runat="server"  ForeColor="#63648d"><%--(Development Environment)--%></asp:Label><IMG height="92" src="Navigation/images/trans_spacer.gif" width="100%"></td>
 					<td nowrap vAlign="top" align="right"><IMG height="92" src="Navigation/images/login_header.gif"></td>
 				</tr>
 				<tr>
@@ -56,7 +56,7 @@
 											<TD>
 												<table cellSpacing="0" cellPadding="0" width="100%" border="0">
 													<tr>
-														<td><asp:label id="lblLogin" runat="server"  >Development Environment Login</asp:label></td>
+														<td><asp:label id="lblLogin" runat="server"><%--Development Environment Login--%></asp:label></td>
 														<td align="right">&nbsp;</td>
 													</tr>
 												</table>
@@ -64,23 +64,23 @@
 										</TR>
 										<tr>
 											<td align="center">
-												<table cellSpacing="2" cellPadding="2" width="50%" border="0">
-													<tr>
+												<table cellSpacing="2" cellPadding="2" width="80%" border="0">
+													<%--<tr>
 														<td align="right" nowrap><asp:label id="lblUserName" runat="server">User Id:&nbsp;&nbsp;</asp:label></td>
 														<td><asp:textbox id="TextBoxUserId" runat="server" Width="165px"></asp:textbox></td>
-													</tr>
+													</tr>--%>
 													<!--<tr>
 														<td align="right"><asp:label id="lblPassword" runat="server">Password:&nbsp;&nbsp;</asp:label></td>
 														<td><asp:textbox id="txtPassword" runat="server" Width="165px" TextMode="Password"></asp:textbox></td>
 													</tr>-->
 													<tr>
 														<td>&nbsp;</td>
-														<td align="center">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<asp:imagebutton id="ButtonOk" runat="server" style="cursor:hand;" ImageUrl="Navigation/images/loginBtnUp.gif"></asp:imagebutton></td>
+														<td><asp:label id="lblMessage" runat="server" ForeColor="red" ></asp:label></td>
 													</tr>
 													<tr>
 														<td>&nbsp;</td>
-														<td><asp:label id="lblMessage" runat="server" ForeColor="red" ></asp:label></td>
-													</tr>
+														<td align="center">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<asp:imagebutton id="ButtonOk" runat="server" style="cursor:hand;" ImageUrl="Navigation/images/loginBtnUp.gif"></asp:imagebutton></td>
+													</tr>													
 												</table>
 											</td>
 										</tr>

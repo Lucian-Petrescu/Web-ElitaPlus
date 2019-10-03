@@ -149,10 +149,8 @@
     <Reference Include="Assurant.Elita.ClientIntegration, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\Assurant.Elita.ClientIntegration.4.0.1\lib\net462\Assurant.Elita.ClientIntegration.dll</HintPath>
     </Reference>
-    <Reference Include="Assurant.Elita.Configuration, Version=4.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\Assurant.Elita.Configuration.4.0.2\lib\net462\Assurant.Elita.Configuration.dll</HintPath>
-      <Private>True</Private>
+    <Reference Include="Assurant.Elita.Configuration, Version=5.0.1.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Assurant.Elita.Configuration.5.0.1\lib\net462\Assurant.Elita.Configuration.dll</HintPath>
     </Reference>
     <Reference Include="Assurant.Elita.Fulfillment.BusinessRules, Version=14.6.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
