@@ -193,9 +193,9 @@
           </tr>
           <tr>
             <td>
-              Date Of Purchase:&#160;<xsl:value-of select="substring(a:ServiceOrderReport/a:ServiceOrder/a:PRODUCT_SALES_DATE,6,2)" />
+              Date Of Purchase:&#160;<xsl:value-of select="substring(a:ServiceOrderReport/a:ServiceOrder/a:PRODUCT_SALES_DATE, 9, 2)" />
               <xsl:text>/</xsl:text>
-              <xsl:value-of select="substring(a:ServiceOrderReport/a:ServiceOrder/a:PRODUCT_SALES_DATE, 9, 2)" />
+              <xsl:value-of select="substring(a:ServiceOrderReport/a:ServiceOrder/a:PRODUCT_SALES_DATE, 6, 2)" />
               <xsl:text>/</xsl:text>
               <xsl:value-of select="substring(a:ServiceOrderReport/a:ServiceOrder/a:PRODUCT_SALES_DATE, 1, 4)" />
             </td>
@@ -269,7 +269,7 @@
           </tr>
           <tr>
             <td colspan="2">
-              Excess to collect before returning repaired device to customer:$<xsl:value-of select="a:ServiceOrderReport/a:ServiceOrder/a:DEDUCTIBLE" />
+              Excess to collect before returning repaired device to customer:$<xsl:value-of select="a:ServiceOrderReport/a:ServiceOrder/a:DEDUCTIBLE_AMOUNT" />
             </td>
           </tr>
           <tr>
