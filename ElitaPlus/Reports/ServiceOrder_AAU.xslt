@@ -269,7 +269,7 @@
           </tr>
           <tr>
             <td colspan="2">
-              Excess to collect before returning repaired device to customer:$<xsl:value-of select="a:ServiceOrderReport/a:ServiceOrder/a:DEDUCTIBLE" />
+              Excess to collect before returning repaired device to customer:$<xsl:value-of select="a:ServiceOrderReport/a:ServiceOrder/a:DEDUCTIBLE_AMOUNT" />
             </td>
           </tr>
           <tr>
