@@ -115,6 +115,10 @@
     WHERE
     ap_invoice_header_id = :ap_invoice_header_id
   </DELETE>
+
+  <SEARCH_AP_INVOICES>
+    elita.elp_ap_invoice_processing.search_invoices
+  </SEARCH_AP_INVOICES>
 </SQL>
 
 

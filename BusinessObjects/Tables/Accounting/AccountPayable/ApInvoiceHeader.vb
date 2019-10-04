@@ -432,7 +432,64 @@ Public Class ApInvoiceHeader
 #End Region
 
 #Region "DataView Retrieveing Methods"
+    Public Shared Function GetAPInvoices(ByVal vendorCode As String, ByVal invoiceNum As string,
+                                         ByVal source As String, ByVal invoiceDate As Date?,
+                                         ByVal dueDateFrom As Date?, ByVal dueDateTo As Date?,
+                                         ByVal rowCount As Integer   
+                                         ) As APInvoiceSearchDV
+
+        Dim dal As New ApInvoiceHeaderDAL
+        Dim userId, languageId As Guid
+        Dim errCode As Integer
+        Dim errMsg As String
+        Dim searchResults As New DataSet
+
+        With ElitaPlusIdentity.Current.ActiveUser
+            userId = .Id
+            languageId = .LanguageId
+        End With
+
+        dal.SearchAPInvoices(vendorCode,invoiceNum, source, invoiceDate, dueDateFrom, dueDateTo, rowCount, userId, errCode, errMsg,searchResults)
+        If errCode = 0 Then ' successful
+            Return New APInvoiceSearchDV(searchResults.Tables(0))
+        End If
+        
+    End Function
     
+#End Region
+#Region "Invoice search view class"
+
+    Public Class APInvoiceSearchDV
+        Inherits DataView
+
+        Public Const COL_INVOICE_HEADER_ID As String = "ap_invoice_header_id"
+        Public Const COL_INVOICE_NUMBER As String = "invoice_number"
+        Public Const COL_INVOICE_DATE As String = "invoice_date"
+        Public Const COL_DUE_DATE As String = "due_date"
+        Public Const COL_SOURCE As String = "source"
+        Public Const COL_INVOICE_AMOUNT As String = "invoice_amount"
+        Public Const COL_MATCHED_AMOUNT As String = "matched_amount"
+        Public Const COL_PAID_AMOUNT As String = "paid_amount"
+        Public Const COL_PAYMENT_DATE As String = "payment_date"
+        Public Const COL_UNMATCHED_LINES_COUNT As String = "unmatched_lines_count"
+        Public Const COL_VENDOR As String = "vendor"
+
+        Public Const COL_TOTAL_COUNT As String = "total_count"
+        Public Sub New(ByVal table As DataTable)
+            MyBase.New(table)
+        End Sub
+
+        Public ReadOnly Property TotalCount() As Integer
+            Get
+                If Count > 0 Then
+                    Return Me(0)("COL_TOTAL_COUNT")
+                Else
+                    Return 0
+
+                End If
+            End Get
+        End Property
+    End Class
 #End Region
 
 End Class

@@ -809,6 +809,13 @@
       <DependentUpon>ChangeCompany.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
+    <Compile Include="Claims\AccountPayable\APInvoiceListForm.aspx.designer.vb">
+      <DependentUpon>APInvoiceListForm.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Claims\AccountPayable\APInvoiceListForm.aspx.vb">
+      <DependentUpon>APInvoiceListForm.aspx</DependentUpon>
+      <SubType>ASPXCodebehind</SubType>
+    </Compile>
     <Compile Include="Claims\ClaimIndixSearchForm.aspx.designer.vb">
       <DependentUpon>ClaimIndixSearchForm.aspx</DependentUpon>
     </Compile>
@@ -5609,6 +5616,7 @@
     <Content Include="Certificates\UserControlServiceCenterInfo.ascx" />
     <Content Include="Certificates\VSCCertificateListForm.aspx" />
     <Content Include="Change_Company\ChangeCompany.aspx" />
+    <Content Include="Claims\AccountPayable\APInvoiceListForm.aspx" />
     <Content Include="Claims\ClaimIndixSearchForm.aspx" />
     <Content Include="Claims\InventorySearchForm.aspx" />
     <Content Include="Claims\ClaimByIssueSearch.aspx" />
@@ -8794,7 +8802,6 @@
     <WCFMetadataStorage Include="Service References\TestWcfRef\" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Claims\AccountPayable\" />
     <Folder Include="Common\Editor\fckeditor\editor\filemanager\connectors\aspx\" />
   </ItemGroup>
   <PropertyGroup>
