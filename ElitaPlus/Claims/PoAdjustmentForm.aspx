@@ -79,7 +79,7 @@
                                                             </tr>
                                                             <tr>
                                                                 <td style="width: 200px" nowrap align="left">
-                                                                    <asp:TextBox ID="txtVendorNumber" runat="server" Width="50%" AutoPostBack="False"
+                                                                    <asp:TextBox ID="txtVendorcode" runat="server" Width="50%" AutoPostBack="False"
                                                                         CssClass="FLATTEXTBOX"></asp:TextBox>
                                                                 </td>
                                                                 <td style="width: 200px" nowrap align="left">

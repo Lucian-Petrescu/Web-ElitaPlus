@@ -1,10 +1,4 @@
-﻿Imports System.Threading
-Imports Assurant.Elita.CommonConfiguration
-Imports Assurant.Elita.CommonConfiguration.DataElements
-Imports Assurant.Elita.Web.Forms
-Imports Assurant.ElitaPlus.BusinessObjectsNew.Tables.Accounting.AccountPayable
-Imports Assurant.ElitaPlus.ElitaPlusWebApp.Tables
-Imports Assurant.ElitaPlus.Security
+﻿Imports Assurant.ElitaPlus.BusinessObjectsNew.Tables.Accounting.AccountPayable
 
 Namespace Claims.AccountPayable
     Public Class PoAdjustmentForm
@@ -48,16 +42,46 @@ Namespace Claims.AccountPayable
 
 #Region "Form Events"
 
-        Protected Sub Page_Load(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Load
+        Private Sub SetStateProperties()
 
+        State.PoNumber = txtPoNumber.Text
+        State.VendorMask =txtVendorcode.Text
+        State.CompanyId = ElitaPlusIdentity.Current.ActiveUser.FirstCompanyID
+            
+    End Sub
+
+        Protected Sub Page_Load(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Load
+            Try 
+                POAdjustmentErrorController.Clear_Hide()
+                SetStateProperties()
+                If Not Page.IsPostBack Then
+                    SortDirection = PoAdjustment.PO_NUMBER_COL
+                    ControlMgr.SetVisibleControl(Me, trPageSize, False)
+                    SetDefaultButton(txtVendorcode, SearchButton)
+                    SetDefaultButton(txtPoNumber, SearchButton)
+                    SetGridItemStyleColor(PoGrid)
+                    If State.PoAdjustmentBo Is Nothing Then
+                        State.PoAdjustmentBo = New PoAdjustment
+                    End If
+                   SetButtonsState()
+                    State.PageIndex = 0
+                    TranslateGridHeader(PoGrid)
+                    TranslateGridControls(PoGrid)
+                End If
+                BindBoPropertiesToGridHeaders()
+            Catch ex As Exception
+                HandleErrors(ex, POAdjustmentErrorController)
+            End Try
+            ShowMissingTranslations(POAdjustmentErrorController)
         End Sub
 
 #End Region
 
+
 #Region "Properties"
         Public ReadOnly Property IsEditing() As Boolean
             Get
-                IsEditing = (Me.PoGrid.EditIndex > NO_ROW_SELECTED_INDEX)
+                IsEditing = (PoGrid.EditIndex > NO_ROW_SELECTED_INDEX)
             End Get
         End Property
 
@@ -85,12 +109,12 @@ Namespace Claims.AccountPayable
         End Class
 
         Public Sub New()
-            MyBase.New(New PoAdjustmentForm.MyState)
+            MyBase.New(New MyState)
         End Sub
 
-        Protected Shadows ReadOnly Property State() As PoAdjustmentForm.MyState
+        Protected Shadows ReadOnly Property State() As MyState
             Get
-                Return CType(MyBase.State, PoAdjustmentForm.MyState)
+                Return CType(MyBase.State, MyState)
             End Get
         End Property
 
@@ -99,34 +123,34 @@ Namespace Claims.AccountPayable
 #Region "Control"
         Private Sub SetButtonsState()
 
-            If (Me.State.IsEditMode) Then
+            If (State.IsEditMode) Then
                 ControlMgr.SetVisibleControl(Me, SaveButton_WRITE, True)
                 ControlMgr.SetVisibleControl(Me, CancelButton, True)
                 ControlMgr.SetEnableControl(Me, SearchButton, False)
                 ControlMgr.SetEnableControl(Me, ClearButton, False)
-                Me.MenuEnabled = False
+                MenuEnabled = False
             Else
                 ControlMgr.SetVisibleControl(Me, SaveButton_WRITE, False)
                 ControlMgr.SetVisibleControl(Me, CancelButton, False)
                 ControlMgr.SetEnableControl(Me, SearchButton, True)
                 ControlMgr.SetEnableControl(Me, ClearButton, True)
-                Me.MenuEnabled = True
+                MenuEnabled = True
             End If
 
         End Sub
 
-        Protected Sub BindBoPropertiesToGridHeaders()
+       Protected Sub BindBoPropertiesToGridHeaders()
 
-            Me.BindBOPropertyToGridHeader(State.PoAdjustmentBo, "Vendor", Me.PoGrid.Columns(VENDOR_COL))
-            Me.BindBOPropertyToGridHeader(State.PoAdjustmentBo, "PoNumber", Me.PoGrid.Columns(PO_NUMBER_COL))
-            Me.BindBOPropertyToGridHeader(State.PoAdjustmentBo, "LineNumber", Me.PoGrid.Columns(LINE_NO_COL))
-            Me.BindBOPropertyToGridHeader(State.PoAdjustmentBo, "ItemCode", Me.PoGrid.Columns(ITEM_CODE_COL))
-            Me.BindBOPropertyToGridHeader(State.PoAdjustmentBo, "Quantity", Me.PoGrid.Columns(QUANTITY_COL))
-            Me.BindBOPropertyToGridHeader(State.PoAdjustmentBo, "UnitPrice", Me.PoGrid.Columns(UNIT_PRICE_COL))
-            Me.BindBOPropertyToGridHeader(State.PoAdjustmentBo, "ExtendedPrice", Me.PoGrid.Columns(EXTENDED_PRICE_COL))
-            Me.BindBOPropertyToGridHeader(State.PoAdjustmentBo, "Description", Me.PoGrid.Columns(DESCRIPTION_COL))
+            BindBOPropertyToGridHeader(State.PoAdjustmentBo, "Vendor", PoGrid.Columns(VENDOR_COL))
+            BindBOPropertyToGridHeader(State.PoAdjustmentBo, "PoNumber", PoGrid.Columns(PO_NUMBER_COL))
+            BindBOPropertyToGridHeader(State.PoAdjustmentBo, "LineNumber", PoGrid.Columns(LINE_NO_COL))
+            BindBOPropertyToGridHeader(State.PoAdjustmentBo, "ItemCode", PoGrid.Columns(ITEM_CODE_COL))
+            BindBOPropertyToGridHeader(State.PoAdjustmentBo, "Quantity", PoGrid.Columns(QUANTITY_COL))
+            BindBOPropertyToGridHeader(State.PoAdjustmentBo, "UnitPrice", PoGrid.Columns(UNIT_PRICE_COL))
+            BindBOPropertyToGridHeader(State.PoAdjustmentBo, "ExtendedPrice", PoGrid.Columns(EXTENDED_PRICE_COL))
+            BindBOPropertyToGridHeader(State.PoAdjustmentBo, "Description", PoGrid.Columns(DESCRIPTION_COL))
             
-            Me.ClearGridViewHeadersAndLabelsErrSign()
+           ClearGridViewHeadersAndLabelsErrorSign()
         End Sub
 
         Private Sub SetFocusOnEditableFieldInGrid(ByVal grid As GridView, ByVal cellPosition As Integer, ByVal controlName As String, ByVal itemIndex As Integer)
@@ -154,32 +178,32 @@ Namespace Claims.AccountPayable
             Dim dv As DataView
             Try
                
-                If (Me.State.searchDV Is Nothing) Then
-                    Me.State.searchDV = GetDV()
+                If (State.searchDV Is Nothing) Then
+                    State.searchDV = GetDV()
                 End If
-                Me.State.searchDV.Sort = Me.SortDirection
-                If (Me.State.IsAfterSave) Then
-                    Me.State.IsAfterSave = False
-                    Me.SetPageAndSelectedIndexFromGuid(Me.State.searchDV, Me.State.PoLineId, Me.PoGrid, Me.State.PageIndex)
-                ElseIf (Me.State.IsEditMode) Then
-                    Me.SetPageAndSelectedIndexFromGuid(Me.State.searchDV, Me.State.PoLineId, Me.PoGrid, Me.State.PageIndex, Me.State.IsEditMode)
+                State.searchDV.Sort = SortDirection
+                If (State.IsAfterSave) Then
+                    State.IsAfterSave = False
+                    SetPageAndSelectedIndexFromGuid(State.searchDV, State.PoLineId, PoGrid, State.PageIndex)
+                ElseIf (State.IsEditMode) Then
+                    SetPageAndSelectedIndexFromGuid(State.searchDV, State.PoLineId, PoGrid, State.PageIndex, State.IsEditMode)
                 Else
-                    Me.SetPageAndSelectedIndexFromGuid(Me.State.searchDV, Guid.Empty, Me.PoGrid, Me.State.PageIndex)
+                    SetPageAndSelectedIndexFromGuid(State.searchDV, Guid.Empty, PoGrid, State.PageIndex)
                 End If
 
-                Me.PoGrid.AutoGenerateColumns = False
-                Me.PoGrid.Columns(VENDOR_COL).SortExpression = PoAdjustment.VENDOR_COL
-                Me.PoGrid.Columns(PO_NUMBER_COL).SortExpression = PoAdjustment.PO_NUMBER_COL
-                Me.PoGrid.Columns(LINE_NO_COL).SortExpression = PoAdjustment.LINE_NUMBER_COL
-                Me.PoGrid.Columns(ITEM_CODE_COL).SortExpression = PoAdjustment.ITEM_CODE_COL
-                Me.PoGrid.Columns(DESCRIPTION_COL).SortExpression = PoAdjustment.DESCRIPTION_COL
-                Me.PoGrid.Columns(QUANTITY_COL).SortExpression = PoAdjustment.QUANTITY_COL
-                Me.PoGrid.Columns(UNIT_PRICE_COL).SortExpression = PoAdjustment.UNIT_PRICE_COL
-                Me.PoGrid.Columns(EXTENDED_PRICE_COL).SortExpression = PoAdjustment.EXTENDED_PRICE_COL
+                PoGrid.AutoGenerateColumns = False
+                PoGrid.Columns(VENDOR_COL).SortExpression = PoAdjustment.VENDOR_COL
+                PoGrid.Columns(PO_NUMBER_COL).SortExpression = PoAdjustment.PO_NUMBER_COL
+                PoGrid.Columns(LINE_NO_COL).SortExpression = PoAdjustment.LINE_NUMBER_COL
+                PoGrid.Columns(ITEM_CODE_COL).SortExpression = PoAdjustment.ITEM_CODE_COL
+                PoGrid.Columns(DESCRIPTION_COL).SortExpression = PoAdjustment.DESCRIPTION_COL
+                PoGrid.Columns(QUANTITY_COL).SortExpression = PoAdjustment.QUANTITY_COL
+                PoGrid.Columns(UNIT_PRICE_COL).SortExpression = PoAdjustment.UNIT_PRICE_COL
+                PoGrid.Columns(EXTENDED_PRICE_COL).SortExpression = PoAdjustment.EXTENDED_PRICE_COL
 
                 SortAndBindGrid()
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.POAdjustmentErrorController)
+                HandleErrors(ex, POAdjustmentErrorController)
             End Try
 
         End Sub
@@ -188,11 +212,11 @@ Namespace Claims.AccountPayable
 
             Dim dv As DataView
 
-            Me.State.searchDV = GetPoGridDataView()
-            Me.State.searchDV.Sort = PoGrid.DataMember()
-            PoGrid.DataSource = Me.State.searchDV
+            State.searchDV = GetPoGridDataView()
+            State.searchDV.Sort = PoGrid.DataMember()
+            PoGrid.DataSource = State.searchDV
 
-            Return (Me.State.searchDV)
+            Return (State.searchDV)
 
         End Function
 
@@ -203,58 +227,59 @@ Namespace Claims.AccountPayable
             End With
 
         End Function
-        Private Sub PopulateBoFromForm()
+
+     Private Sub PopulateBoFromForm()
             Try
                 With State.PoAdjustmentBo
-                    .PoLineId = Guid.Parse( CType(Me.PoGrid.Rows(Me.PoGrid.EditIndex).Cells(PO_LINE_ID_COL).FindControl(PO_LINE_ID_CONTROL_LABEL), Label).Text)
-                    .Vendor = CType(Me.PoGrid.Rows(Me.PoGrid.EditIndex).Cells(VENDOR_COL).FindControl(VENDOR_CONTROL_LABEL), Label).Text
-                    .PoNumber = CType(Me.PoGrid.Rows(Me.PoGrid.EditIndex).Cells(PO_NUMBER_COL).FindControl(PO_NUMBER_CONTROL_LABEL), Label).Text
-                    .LineNumber = CType(Me.PoGrid.Rows(Me.PoGrid.EditIndex).Cells(LINE_NO_COL).FindControl(LINE_NO_CONTROL_LABEL), Label).Text
-                    .ItemCode = CType(Me.PoGrid.Rows(Me.PoGrid.EditIndex).Cells(ITEM_CODE_COL).FindControl(ITEM_CODE_CONTROL_LABEL), Label).Text
-                    .Description = CType(Me.PoGrid.Rows(Me.PoGrid.EditIndex).Cells(DESCRIPTION_COL).FindControl(DESCRIPTION_CONTROL_LABEL), Label).Text
-                    .Quantity = CType(Me.PoGrid.Rows(Me.PoGrid.EditIndex).Cells(QUANTITY_COL).FindControl(QUANTITY_CONTROL_NAME), TextBox).Text
-                    .UnitPrice = CType(Me.PoGrid.Rows(Me.PoGrid.EditIndex).Cells(UNIT_PRICE_COL).FindControl(UNIT_PRICE_CONTROL_LABEL), Label).Text
-                    .ExtendedPrice = CType(Me.PoGrid.Rows(Me.PoGrid.EditIndex).Cells(EXTENDED_PRICE_COL).FindControl(EXTENDED_PRICE_CONTROL_LABEL), Label).Text
+                    .PoLineId = Guid.Parse( CType(PoGrid.Rows(PoGrid.EditIndex).Cells(PO_LINE_ID_COL).FindControl(PO_LINE_ID_CONTROL_LABEL), Label).Text)
+                    .Vendor = CType(PoGrid.Rows(PoGrid.EditIndex).Cells(VENDOR_COL).FindControl(VENDOR_CONTROL_LABEL), Label).Text
+                    .PoNumber = CType(PoGrid.Rows(PoGrid.EditIndex).Cells(PO_NUMBER_COL).FindControl(PO_NUMBER_CONTROL_LABEL), Label).Text
+                    .LineNumber = CType(PoGrid.Rows(PoGrid.EditIndex).Cells(LINE_NO_COL).FindControl(LINE_NO_CONTROL_LABEL), Label).Text
+                    .ItemCode = CType(PoGrid.Rows(PoGrid.EditIndex).Cells(ITEM_CODE_COL).FindControl(ITEM_CODE_CONTROL_LABEL), Label).Text
+                    .Description = CType(PoGrid.Rows(PoGrid.EditIndex).Cells(DESCRIPTION_COL).FindControl(DESCRIPTION_CONTROL_LABEL), Label).Text
+                    .Quantity = CType(PoGrid.Rows(PoGrid.EditIndex).Cells(QUANTITY_COL).FindControl(QUANTITY_CONTROL_NAME), TextBox).Text
+                    .UnitPrice = CType(PoGrid.Rows(PoGrid.EditIndex).Cells(UNIT_PRICE_COL).FindControl(UNIT_PRICE_CONTROL_LABEL), Label).Text
+                    .ExtendedPrice = CType(PoGrid.Rows(PoGrid.EditIndex).Cells(EXTENDED_PRICE_COL).FindControl(EXTENDED_PRICE_CONTROL_LABEL), Label).Text
                     .CompanyId = ElitaPlusIdentity.Current.ActiveUser.FirstCompanyID
                 End With
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.POAdjustmentErrorController)
+                HandleErrors(ex, POAdjustmentErrorController)
             End Try
 
         End Sub
 
         Private Sub PopulateFormFromBo()
 
-            Dim gridRowIdx As Integer = Me.PoGrid.EditIndex
+            Dim gridRowIdx As Integer = PoGrid.EditIndex
             Try
-                With Me.State.PoAdjustmentBo
+                With State.PoAdjustmentBo
                     If (Not .vendor Is Nothing) Then
-                        CType(Me.PoGrid.Rows(gridRowIdx).Cells(VENDOR_COL).FindControl(VENDOR_CONTROL_LABEL), Label).Text = .Vendor
+                        CType(PoGrid.Rows(gridRowIdx).Cells(VENDOR_COL).FindControl(VENDOR_CONTROL_LABEL), Label).Text = .Vendor
                     End If
 
                     If (Not .Ponumber Is Nothing) Then
-                        CType(Me.PoGrid.Rows(gridRowIdx).Cells(PO_NUMBER_COL).FindControl(PO_NUMBER_CONTROL_LABEL), Label).Text = .PoNumber
+                        CType(PoGrid.Rows(gridRowIdx).Cells(PO_NUMBER_COL).FindControl(PO_NUMBER_CONTROL_LABEL), Label).Text = .PoNumber
                     End If
 
                     If (Not .LineNumber Is Nothing) Then
-                        CType(Me.PoGrid.Rows(gridRowIdx).Cells(LINE_NO_COL).FindControl(LINE_NO_CONTROL_LABEL), Label).Text = .LineNumber
+                        CType(PoGrid.Rows(gridRowIdx).Cells(LINE_NO_COL).FindControl(LINE_NO_CONTROL_LABEL), Label).Text = .LineNumber
                     End If
 
                     If (Not .Itemcode Is Nothing) Then
-                        CType(Me.PoGrid.Rows(gridRowIdx).Cells(ITEM_CODE_COL).FindControl(ITEM_CODE_CONTROL_LABEL), Label).Text = .ItemCode
+                        CType(PoGrid.Rows(gridRowIdx).Cells(ITEM_CODE_COL).FindControl(ITEM_CODE_CONTROL_LABEL), Label).Text = .ItemCode
                     End If
 
                     If (Not .Description Is Nothing) Then
-                        CType(Me.PoGrid.Rows(gridRowIdx).Cells(DESCRIPTION_COL).FindControl(DESCRIPTION_CONTROL_LABEL), Label).Text = .Description
+                        CType(PoGrid.Rows(gridRowIdx).Cells(DESCRIPTION_COL).FindControl(DESCRIPTION_CONTROL_LABEL), Label).Text = .Description
                     End If
 
-                   CType(Me.PoGrid.Rows(gridRowIdx).Cells(QUANTITY_COL).FindControl(QUANTITY_CONTROL_NAME), textbox).Text = .Quantity
-                   CType(Me.PoGrid.Rows(gridRowIdx).Cells(UNIT_PRICE_COL).FindControl(UNIT_PRICE_CONTROL_LABEL), label).Text = .UnitPrice
-                   CType(Me.PoGrid.Rows(gridRowIdx).Cells(EXTENDED_PRICE_COL).FindControl(EXTENDED_PRICE_CONTROL_LABEL), label).Text = .ExtendedPrice
-                   CType(Me.PoGrid.Rows(gridRowIdx).Cells(PO_LINE_ID_COL).FindControl(PO_LINE_ID_CONTROL_LABEL), Label).Text = .PoLineId.ToString
+                   CType(PoGrid.Rows(gridRowIdx).Cells(QUANTITY_COL).FindControl(QUANTITY_CONTROL_NAME), textbox).Text = .Quantity
+                   CType(PoGrid.Rows(gridRowIdx).Cells(UNIT_PRICE_COL).FindControl(UNIT_PRICE_CONTROL_LABEL), label).Text = .UnitPrice
+                   CType(PoGrid.Rows(gridRowIdx).Cells(EXTENDED_PRICE_COL).FindControl(EXTENDED_PRICE_CONTROL_LABEL), label).Text = .ExtendedPrice
+                   CType(PoGrid.Rows(gridRowIdx).Cells(PO_LINE_ID_COL).FindControl(PO_LINE_ID_CONTROL_LABEL), Label).Text = .PoLineId.ToString
                 End With
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.POAdjustmentErrorController)
+                HandleErrors(ex, POAdjustmentErrorController)
             End Try
 
         End Sub
@@ -278,7 +303,7 @@ Namespace Claims.AccountPayable
             Try
                 BaseItemCreated(sender, e)
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.POAdjustmentErrorController)
+                HandleErrors(ex, POAdjustmentErrorController)
             End Try
         End Sub
 
@@ -287,52 +312,52 @@ Namespace Claims.AccountPayable
             Try
                 Dim index As Integer
 
-                If (e.CommandName = Me.EDIT_COMMAND) Then
+                If (e.CommandName = EDIT_COMMAND) Then
                     index = CInt(e.CommandArgument)
                     'Do the Edit here
 
                     'Set the IsEditMode flag to TRUE
                     State.IsEditMode = True
 
-                    State.PoLineId = New Guid(CType(Me.PoGrid.Rows(index).Cells(PO_LINE_ID_COL).FindControl(PO_LINE_ID_CONTROL_LABEL), Label).Text)
+                    State.PoLineId = New Guid(CType(PoGrid.Rows(index).Cells(PO_LINE_ID_COL).FindControl(PO_LINE_ID_CONTROL_LABEL), Label).Text)
                     State.PoAdjustmentBo = New PoAdjustment(State.VendorMask,State.PoNumber,State.PoLineId,State.CompanyId)
 
                     PopulatePoGrid()
                     State.PageIndex = PoGrid.PageIndex
-                    SetGridControls(Me.PoGrid, False)
-                    SetFocusOnEditableFieldInGrid(Me.PoGrid, QUANTITY_COL, QUANTITY_CONTROL_NAME, index)
+                    SetGridControls(PoGrid, False)
+                    SetFocusOnEditableFieldInGrid(PoGrid, QUANTITY_COL, QUANTITY_CONTROL_NAME, index)
                     PopulateFormFromBO()
                     SetButtonsState()
 
                 End If
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.POAdjustmentErrorController)
+                HandleErrors(ex, POAdjustmentErrorController)
             End Try
 
         End Sub
         Private Sub SortAndBindGrid()
-            Me.TranslateGridControls(PoGrid)
+            TranslateGridControls(PoGrid)
 
-            If (Me.State.searchDV.Count = 0) Then
+            If (State.searchDV.Count = 0) Then
 
-                Me.State.bnoRow = True
-                CreateHeaderForEmptyGrid(PoGrid, Me.SortDirection)
+                State.bnoRow = True
+                CreateHeaderForEmptyGrid(PoGrid, SortDirection)
             Else
-                Me.State.bnoRow = False
-                Me.PoGrid.Enabled = True
-                Me.PoGrid.DataSource = Me.State.searchDV
-                HighLightSortColumn(PoGrid, Me.SortDirection)
-                Me.PoGrid.DataBind()
+                State.bnoRow = False
+                PoGrid.Enabled = True
+                PoGrid.DataSource = State.searchDV
+                HighLightSortColumn(PoGrid, SortDirection)
+                PoGrid.DataBind()
             End If
             If Not PoGrid.BottomPagerRow.Visible Then PoGrid.BottomPagerRow.Visible = True
-            ControlMgr.SetVisibleControl(Me, PoGrid, Me.State.IsGridVisible)
-            ControlMgr.SetVisibleControl(Me, trPageSize, Me.PoGrid.Visible)
+            ControlMgr.SetVisibleControl(Me, PoGrid, State.IsGridVisible)
+            ControlMgr.SetVisibleControl(Me, trPageSize, PoGrid.Visible)
 
-            Session("recCount") = Me.State.searchDV.Count
+            Session("recCount") = State.searchDV.Count
 
-            If Me.PoGrid.Visible Then
-                    Me.lblRecordCount.Text =
-                        $"{Me.State.searchDV.Count} {TranslationBase.TranslateLabelOrMessage(Message.MSG_RECORDS_FOUND) }"
+            If PoGrid.Visible Then
+                    lblRecordCount.Text =
+                        $"{State.searchDV.Count} {TranslationBase.TranslateLabelOrMessage(Message.MSG_RECORDS_FOUND) }"
             End If
             ControlMgr.DisableEditDeleteGridIfNotEditAuth(Me, PoGrid)
         End Sub
@@ -340,24 +365,24 @@ Namespace Claims.AccountPayable
         Private Sub Grid_PageSizeChanged(ByVal source As Object, ByVal e As System.EventArgs) Handles cboPageSize.SelectedIndexChanged
             Try
                 PoGrid.PageIndex = NewCurrentPageIndex(PoGrid, CType(Session("recCount"), Int32), CType(cboPageSize.SelectedValue, Int32))
-                Me.State.selectedPageSize = CType(cboPageSize.SelectedValue, Integer)
-                Me.PopulatePoGrid()
+                State.selectedPageSize = CType(cboPageSize.SelectedValue, Integer)
+                PopulatePoGrid()
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.POAdjustmentErrorController)
+                HandleErrors(ex, POAdjustmentErrorController)
             End Try
         End Sub
 
         Private Sub POGrid_PageIndexChanged(ByVal source As Object, ByVal e As System.Web.UI.WebControls.GridViewPageEventArgs) Handles PoGrid.PageIndexChanging
 
             Try
-                If (Not (Me.State.IsEditMode)) Then
-                    Me.State.PageIndex = e.NewPageIndex
-                    Me.PoGrid.PageIndex = Me.State.PageIndex
-                    Me.PopulatePoGrid()
-                    Me.PoGrid.SelectedIndex = NO_ITEM_SELECTED_INDEX
+                If (Not (State.IsEditMode)) Then
+                    State.PageIndex = e.NewPageIndex
+                    PoGrid.PageIndex = State.PageIndex
+                    PopulatePoGrid()
+                    PoGrid.SelectedIndex = NO_ITEM_SELECTED_INDEX
                 End If
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.POAdjustmentErrorController)
+                HandleErrors(ex, POAdjustmentErrorController)
             End Try
 
         End Sub
@@ -368,12 +393,12 @@ Namespace Claims.AccountPayable
                 Dim itemType As ListItemType = CType(e.Row.RowType, ListItemType)
                 Dim dvRow As DataRowView = CType(e.Row.DataItem, DataRowView)
 
-                If Not dvRow Is Nothing And Not Me.State.bnoRow Then
+                If Not dvRow Is Nothing And Not State.bnoRow Then
 
                     If itemType = ListItemType.Item Or itemType = ListItemType.AlternatingItem Or itemType = ListItemType.SelectedItem Then
                         CType(e.Row.Cells(PO_LINE_ID_COL).FindControl(PO_LINE_ID_CONTROL_LABEL), Label).Text = GetGuidStringFromByteArray(CType(dvRow(PoAdjustment.PO_LINE_ID_COL), Byte()))
 
-                        If (Me.State.IsEditMode = True _
+                        If (State.IsEditMode = True _
                                 AndAlso State.PoLineId.ToString.Equals(GetGuidStringFromByteArray(CType(dvRow(PoAdjustment.PO_LINE_ID_COL), Byte())))) Then
                             CType(e.Row.Cells(QUANTITY_COL).FindControl(QUANTITY_CONTROL_NAME), TextBox).Text = dvRow(PoAdjustment.QUANTITY_COL).ToString
                         Else
@@ -391,39 +416,39 @@ Namespace Claims.AccountPayable
                     End If
                 End If
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.POAdjustmentErrorController)
+                HandleErrors(ex, POAdjustmentErrorController)
             End Try
         End Sub
         Private Sub Grid_SortCommand(ByVal source As Object, ByVal e As System.Web.UI.WebControls.GridViewSortEventArgs) Handles PoGrid.Sorting
             Try
-                Dim spaceIndex As Integer = Me.SortDirection.LastIndexOf(" ", StringComparison.Ordinal)
+                Dim spaceIndex As Integer = SortDirection.LastIndexOf(" ", StringComparison.Ordinal)
 
 
-                If spaceIndex > 0 AndAlso Me.SortDirection.Substring(0, spaceIndex).Equals(e.SortExpression) Then
-                    If Me.SortDirection.EndsWith(" ASC") Then
-                        Me.SortDirection = e.SortExpression + " DESC"
+                If spaceIndex > 0 AndAlso SortDirection.Substring(0, spaceIndex).Equals(e.SortExpression) Then
+                    If SortDirection.EndsWith(" ASC") Then
+                        SortDirection = e.SortExpression + " DESC"
                     Else
-                        Me.SortDirection = e.SortExpression + " ASC"
+                        SortDirection = e.SortExpression + " ASC"
                     End If
                 Else
-                    Me.SortDirection = e.SortExpression + " ASC"
+                    SortDirection = e.SortExpression + " ASC"
                 End If
 
-                Me.State.PageIndex = 0
-                Me.PopulatePoGrid()
+                State.PageIndex = 0
+                PopulatePoGrid()
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.POAdjustmentErrorController)
+                HandleErrors(ex, POAdjustmentErrorController)
             End Try
         End Sub
         Protected Sub ItemBound(ByVal source As Object, ByVal e As GridViewRowEventArgs) Handles PoGrid.RowDataBound
 
             Try
-                If Not Me.State.bnoRow Then
+                If Not State.bnoRow Then
                     BaseItemBound(source, e)
                 End If
 
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.POAdjustmentErrorController)
+                HandleErrors(ex, POAdjustmentErrorController)
             End Try
         End Sub
 
@@ -431,18 +456,79 @@ Namespace Claims.AccountPayable
 
 #Region "Button Click Events"
         Protected Sub ClearButton_Click(sender As Object, e As EventArgs) Handles ClearButton.Click
-
+            ClearSearchCriteria()
         End Sub
 
         Protected Sub SearchButton_Click(sender As Object, e As EventArgs) Handles SearchButton.Click
-
+            Try
+                State.IsGridVisible = True
+                State.searchDV = Nothing
+                PopulatePogrid()
+                State.PageIndex = PoGrid.PageIndex
+            Catch ex As Exception
+                HandleErrors(ex, Me.POAdjustmentErrorController)
+            End Try
         End Sub
 
         Protected Sub SaveButton_WRITE_Click(sender As Object, e As EventArgs) Handles SaveButton_WRITE.Click
-
+            Try
+                PopulateBOFromForm()
+                If (State.PoAdjustmentBo.IsDirty) Then
+                    State.PoAdjustmentBo.Save()
+                    State.IsAfterSave = True
+                   
+                    AddInfoMsg(MSG_RECORD_SAVED_OK)
+                    State.searchDV = Nothing
+                    ReturnFromEditing()
+                Else
+                    AddInfoMsg(MSG_RECORD_NOT_SAVED)
+                    ReturnFromEditing()
+                End If
+            Catch ex As Exception
+                Me.HandleErrors(ex, POAdjustmentErrorController)
+            End Try
         End Sub
 
         Protected Sub CancelButton_Click(sender As Object, e As EventArgs) Handles CancelButton.Click
+            Try
+                Me.PoGrid.SelectedIndex = NO_ITEM_SELECTED_INDEX
+                Me.State.Canceling = True
+                ReturnFromEditing()
+            Catch ex As Exception
+                Me.HandleErrors(ex, POAdjustmentErrorController)
+            End Try
+        End Sub
+
+        Private Sub ClearSearchCriteria()
+
+            Try
+                txtVendorcode.Text = String.Empty
+                txtPoNumber.Text = String.Empty
+               'Update Page State
+                With Me.State
+                    .VendorMask = txtVendorcode.Text
+                    .PoNumber = txtPoNumber.Text
+                End With
+            Catch ex As Exception
+                Me.HandleErrors(ex, POAdjustmentErrorController)
+            End Try
+
+        End Sub
+
+        Private Sub ReturnFromEditing()
+
+            PoGrid.EditIndex = NO_ROW_SELECTED_INDEX
+
+            If (Me.PoGrid.PageCount = 0) Then
+               ControlMgr.SetVisibleControl(Me, PoGrid, False)
+            Else
+                ControlMgr.SetVisibleControl(Me, PoGrid, True)
+            End If
+
+            State.IsEditMode = False
+            PopulatePoGrid()
+            State.PageIndex = PoGrid.PageIndex
+            SetButtonsState()
 
         End Sub
 

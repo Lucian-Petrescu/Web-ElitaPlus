@@ -6,7 +6,6 @@ Namespace Tables.Accounting.AccountPayable
 
 #Region "Constants"
 
-       Public Const PO_LINES_TABLE_NAME As String  = "elp_ap_po_line"
         Public Const PO_LINE_ID_COL As String = "po_line_id"
         Public Const VENDOR_COL As String = "Vendor"
         Public Const PO_NUMBER_COL As String = "PO_Number"
@@ -248,5 +247,6 @@ Namespace Tables.Accounting.AccountPayable
 
 
 #End Region
+
     End Class
 End Namespace

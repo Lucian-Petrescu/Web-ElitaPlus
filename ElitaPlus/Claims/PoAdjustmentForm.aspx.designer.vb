@@ -11,9 +11,9 @@ Option Strict On
 Option Explicit On
 
 Namespace Claims.AccountPayable
-
+    
     Partial Public Class POAdjustmentForm
-
+        
         '''<summary>
         '''form1 control.
         '''</summary>
@@ -22,7 +22,7 @@ Namespace Claims.AccountPayable
         '''To modify move field declaration from designer file to code-behind file.
         '''</remarks>
         Protected WithEvents form1 As Global.System.Web.UI.HtmlControls.HtmlForm
-
+        
         '''<summary>
         '''Label7 control.
         '''</summary>
@@ -31,7 +31,7 @@ Namespace Claims.AccountPayable
         '''To modify move field declaration from designer file to code-behind file.
         '''</remarks>
         Protected WithEvents Label7 As Global.System.Web.UI.WebControls.Label
-
+        
         '''<summary>
         '''Label3 control.
         '''</summary>
@@ -40,7 +40,7 @@ Namespace Claims.AccountPayable
         '''To modify move field declaration from designer file to code-behind file.
         '''</remarks>
         Protected WithEvents Label3 As Global.System.Web.UI.WebControls.Label
-
+        
         '''<summary>
         '''WorkingPanel control.
         '''</summary>
@@ -49,7 +49,7 @@ Namespace Claims.AccountPayable
         '''To modify move field declaration from designer file to code-behind file.
         '''</remarks>
         Protected WithEvents WorkingPanel As Global.System.Web.UI.WebControls.Panel
-
+        
         '''<summary>
         '''POAdjustmentErrorController control.
         '''</summary>
@@ -58,7 +58,7 @@ Namespace Claims.AccountPayable
         '''To modify move field declaration from designer file to code-behind file.
         '''</remarks>
         Protected WithEvents POAdjustmentErrorController As Global.Assurant.ElitaPlus.ElitaPlusWebApp.ErrorController
-
+        
         '''<summary>
         '''DescriptionLabel control.
         '''</summary>
@@ -67,7 +67,7 @@ Namespace Claims.AccountPayable
         '''To modify move field declaration from designer file to code-behind file.
         '''</remarks>
         Protected WithEvents DescriptionLabel As Global.System.Web.UI.WebControls.Label
-
+        
         '''<summary>
         '''RiskTypeEnglishLabel control.
         '''</summary>
@@ -76,16 +76,16 @@ Namespace Claims.AccountPayable
         '''To modify move field declaration from designer file to code-behind file.
         '''</remarks>
         Protected WithEvents RiskTypeEnglishLabel As Global.System.Web.UI.WebControls.Label
-
+        
         '''<summary>
-        '''txtVendorNumber control.
+        '''txtVendorcode control.
         '''</summary>
         '''<remarks>
         '''Auto-generated field.
         '''To modify move field declaration from designer file to code-behind file.
         '''</remarks>
-        Protected WithEvents txtVendorNumber As Global.System.Web.UI.WebControls.TextBox
-
+        Protected WithEvents txtVendorcode As Global.System.Web.UI.WebControls.TextBox
+        
         '''<summary>
         '''txtPoNumber control.
         '''</summary>
@@ -94,7 +94,7 @@ Namespace Claims.AccountPayable
         '''To modify move field declaration from designer file to code-behind file.
         '''</remarks>
         Protected WithEvents txtPoNumber As Global.System.Web.UI.WebControls.TextBox
-
+        
         '''<summary>
         '''ClearButton control.
         '''</summary>
@@ -103,7 +103,7 @@ Namespace Claims.AccountPayable
         '''To modify move field declaration from designer file to code-behind file.
         '''</remarks>
         Protected WithEvents ClearButton As Global.System.Web.UI.WebControls.Button
-
+        
         '''<summary>
         '''SearchButton control.
         '''</summary>
@@ -112,7 +112,7 @@ Namespace Claims.AccountPayable
         '''To modify move field declaration from designer file to code-behind file.
         '''</remarks>
         Protected WithEvents SearchButton As Global.System.Web.UI.WebControls.Button
-
+        
         '''<summary>
         '''trPageSize control.
         '''</summary>
@@ -121,7 +121,7 @@ Namespace Claims.AccountPayable
         '''To modify move field declaration from designer file to code-behind file.
         '''</remarks>
         Protected WithEvents trPageSize As Global.System.Web.UI.HtmlControls.HtmlTableRow
-
+        
         '''<summary>
         '''lblPageSize control.
         '''</summary>
@@ -130,7 +130,7 @@ Namespace Claims.AccountPayable
         '''To modify move field declaration from designer file to code-behind file.
         '''</remarks>
         Protected WithEvents lblPageSize As Global.System.Web.UI.WebControls.Label
-
+        
         '''<summary>
         '''cboPageSize control.
         '''</summary>
@@ -139,7 +139,7 @@ Namespace Claims.AccountPayable
         '''To modify move field declaration from designer file to code-behind file.
         '''</remarks>
         Protected WithEvents cboPageSize As Global.System.Web.UI.WebControls.DropDownList
-
+        
         '''<summary>
         '''lblRecordCount control.
         '''</summary>
@@ -148,7 +148,7 @@ Namespace Claims.AccountPayable
         '''To modify move field declaration from designer file to code-behind file.
         '''</remarks>
         Protected WithEvents lblRecordCount As Global.System.Web.UI.WebControls.Label
-
+        
         '''<summary>
         '''PoGrid control.
         '''</summary>
@@ -157,7 +157,7 @@ Namespace Claims.AccountPayable
         '''To modify move field declaration from designer file to code-behind file.
         '''</remarks>
         Protected WithEvents PoGrid As Global.System.Web.UI.WebControls.GridView
-
+        
         '''<summary>
         '''HiddenDeletePromptResponse control.
         '''</summary>
@@ -166,7 +166,7 @@ Namespace Claims.AccountPayable
         '''To modify move field declaration from designer file to code-behind file.
         '''</remarks>
         Protected WithEvents HiddenDeletePromptResponse As Global.System.Web.UI.HtmlControls.HtmlInputHidden
-
+        
         '''<summary>
         '''SaveButton_WRITE control.
         '''</summary>
@@ -175,7 +175,7 @@ Namespace Claims.AccountPayable
         '''To modify move field declaration from designer file to code-behind file.
         '''</remarks>
         Protected WithEvents SaveButton_WRITE As Global.System.Web.UI.WebControls.Button
-
+        
         '''<summary>
         '''CancelButton control.
         '''</summary>
