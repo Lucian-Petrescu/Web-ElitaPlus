@@ -422,6 +422,7 @@
     <Compile Include="Security\SpUserClaimPropertiesDAL.vb" />
     <Compile Include="Security\SpUserClaimsDAL.vb" />
     <Compile Include="Security\UserNotificationDAL.vb" />
+    <Compile Include="Tables\Accounting\AccountPayable\PoAdjustmentDAL.vb" />
     <Compile Include="Tables\Accounting\AcctEventDetailIncexcDAL.vb" />
     <Compile Include="Tables\AcctFinanceAutomation\AfaAcctAmtSrcDAL.vb" />
     <Compile Include="Tables\AcctFinanceAutomation\AfaAcctAmtSrcMappingDAL.vb" />
@@ -1466,6 +1467,7 @@
     <EmbeddedResource Include="Tables\CountryLineOfBusinessDAL.xml">
       <SubType>Designer</SubType>
     </EmbeddedResource>
+    <Content Include="Tables\Accounting\AccountPayable\PoAdjustment.xml" />
     <Content Include="Tables\CoverageMfgDAL.xml" />
     <EmbeddedResource Include="Tables\ProductSpecialServiceDAL.xml" />
     <EmbeddedResource Include="Tables\SpecialServiceDAL.xml">

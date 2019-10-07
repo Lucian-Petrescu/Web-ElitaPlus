@@ -354,6 +354,7 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Reference.svcmap</DependentUpon>
     </Compile>
+    <Compile Include="Tables\Accounting\AccountPayable\PoAdjustment.vb" />
     <Compile Include="Tables\Accounting\AcctEventDetailIncExc.vb" />
     <Compile Include="Tables\AcctFinanceAutomation\AfaAcctAmtSrc.vb" />
     <Compile Include="Tables\AcctFinanceAutomation\AfaAcctAmtSrcMapping.vb" />

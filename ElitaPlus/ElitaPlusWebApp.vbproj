@@ -809,6 +809,13 @@
       <DependentUpon>ChangeCompany.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
+    <Compile Include="Claims\PoAdjustmentForm.aspx.designer.vb">
+      <DependentUpon>PoAdjustmentForm.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Claims\PoAdjustmentForm.aspx.vb">
+      <DependentUpon>PoAdjustmentForm.aspx</DependentUpon>
+      <SubType>ASPXCodebehind</SubType>
+    </Compile>
     <Compile Include="Claims\ClaimIndixSearchForm.aspx.designer.vb">
       <DependentUpon>ClaimIndixSearchForm.aspx</DependentUpon>
     </Compile>
@@ -5609,6 +5616,7 @@
     <Content Include="Certificates\UserControlServiceCenterInfo.ascx" />
     <Content Include="Certificates\VSCCertificateListForm.aspx" />
     <Content Include="Change_Company\ChangeCompany.aspx" />
+    <Content Include="Claims\PoAdjustmentForm.aspx" />
     <Content Include="Claims\ClaimIndixSearchForm.aspx" />
     <Content Include="Claims\InventorySearchForm.aspx" />
     <Content Include="Claims\ClaimByIssueSearch.aspx" />
