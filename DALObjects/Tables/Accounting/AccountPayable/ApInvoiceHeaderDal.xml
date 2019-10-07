@@ -119,6 +119,16 @@
   <SEARCH_AP_INVOICES>
     elita.elp_ap_invoice_processing.search_invoices
   </SEARCH_AP_INVOICES>
+
+  <DELETE_AP_INVOICE>
+    elita.elp_ap_invoice_processing.delete_invoice
+  </DELETE_AP_INVOICE>
+  <PAY_AP_INVOICE>
+    elita.elp_ap_invoice_processing.pay_invoice
+  </PAY_AP_INVOICE>
+  <MATCH_AP_INVOICE>
+    elita.elp_ap_invoice_match_process.match_invoice
+  </MATCH_AP_INVOICE>
 </SQL>
 
 

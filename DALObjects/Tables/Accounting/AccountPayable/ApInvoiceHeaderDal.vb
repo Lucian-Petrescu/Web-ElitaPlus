@@ -95,7 +95,7 @@ Public Class ApInvoiceHeaderDAL
                                 ByRef searchResult As DataSet
                                 )
 
-        Dim selectStmt As String = Me.Config("/SQL/SEARCH_AP_INVOICES")
+        Dim selectStmt As String = Config("/SQL/SEARCH_AP_INVOICES")
         Dim ds As New DataSet
         Dim da As OracleDataAdapter
 
@@ -155,6 +155,130 @@ Public Class ApInvoiceHeaderDAL
     End sub
 #End Region
 
+#Region "Invoice processing methods"
+    Public Sub DeleteInvoices(ByVal invoiceIds As Generic.List(Of Guid))
+        'Dim strStmt As String = Config("/SQL/DELETE_AP_INVOICE")
+        Dim strStmt As String = "begin elita.elp_ap_invoice_processing.delete_invoice(:pi_invoice_header_id); end;"
+
+        Dim tr As OracleTransaction = Nothing
+        Try
+            Using conn As OracleConnection = DBHelper.GetConnection()
+                Using  command As OracleCommand = conn.CreateCommand
+                    
+                    Dim batchCnt As Integer = 0
+                    Dim strInvoiceIds(invoiceIds.Count - 1) As String
+
+                    For Each guidTemp As guid In invoiceIds
+                
+                        strInvoiceIds(batchCnt) = GuidControl.GuidToHexString(guidTemp)                
+                        batchCnt = batchCnt + 1
+                    Next
+            
+                    Dim paranInvIds As OracleParameter = New OracleParameter("pi_invoice_header_id", OracleDbType.Varchar2, 100)
+                    paranInvIds.Value = strInvoiceIds
+            
+                    tr = conn.BeginTransaction
+                    command.CommandText = strStmt
+
+                    command.ArrayBindCount = strInvoiceIds.Count()
+
+                    command.Parameters.Add(paranInvIds)
+                    command.ExecuteNonQuery()
+            
+                    tr.Commit
+                    conn.Close()
+                End Using
+            End Using                        
+        Catch ex As Exception
+            If not tr Is Nothing Then
+                tr.Rollback
+            End If 
+            Throw New DataBaseAccessException(DataBaseAccessException.DatabaseAccessErrorType.ReadErr, ex)
+        End Try
+    End Sub
+
+    Public sub MatchInvoice(ByVal invoiceId As Guid)
+        Dim strStmt As String = Config("/SQL/MATCH_AP_INVOICE")
+        Try
+            Using conn As IDbConnection = New OracleConnection(DBHelper.ConnectString)
+                Using cmd As OracleCommand = conn.CreateCommand()
+                    cmd.CommandText = strStmt
+                    cmd.CommandType = CommandType.StoredProcedure
+                    cmd.BindByName = True
+                    
+                    'input parameters
+                    cmd.Parameters.Add("pi_invoice_header_id", OracleDbType.Raw).Value = invoiceId.ToByteArray
+                    cmd.Parameters.Add("pi_commit", OracleDbType.Varchar2, 10).Value = "Y"
+                    cmd.ExecuteNonQuery
+                    
+                    conn.Close
+                End Using
+            End Using
+        Catch ex As Exception
+            Throw New DataBaseAccessException(DataBaseAccessException.DatabaseAccessErrorType.ReadErr, ex)
+        End Try
+    End sub
+
+    Public sub PayInvoices(ByVal strBatchNumber As String, ByVal invoiceIds As List(Of Guid), ByRef errCode As Integer, ByRef errMsg As String)
+        Dim strStmt As String = Config("/SQL/PAY_AP_INVOICE")
+        Dim tr As OracleTransaction = Nothing
+
+        errCode = 0
+        errMsg = String.Empty
+        Dim blnSuccess As Boolean = True
+        Try
+            Using conn As IDbConnection = New OracleConnection(DBHelper.ConnectString)
+                Using cmd As OracleCommand = conn.CreateCommand()
+                    cmd.CommandText = strStmt
+                    cmd.CommandType = CommandType.StoredProcedure
+                    cmd.BindByName = True
+
+                    For ind As Integer = 0 to invoiceIds.Count - 1
+                        cmd.Parameters.Clear
+
+                        'output parameters
+                        cmd.Parameters.Add("po_error_code", OracleDbType.Int32, ParameterDirection.Output)
+                        cmd.Parameters.Add("po_error_msg", OracleDbType.Varchar2, 500, nothing, ParameterDirection.Output)
+                    
+                        'input parameters
+                        cmd.Parameters.Add("pi_invoice_header_id", OracleDbType.Raw).Value = invoiceIds(ind).ToByteArray
+                        cmd.Parameters.Add("pi_batch_num", OracleDbType.Varchar2, 100).Value = strBatchNumber
+                        cmd.Parameters.Add("pi_commit", OracleDbType.Varchar2, 10).Value = "N"
+
+                        If ind = invoiceIds.Count - 1 Then
+                            cmd.Parameters.Add("pi_close_batch", OracleDbType.Varchar2, 10).Value = "Y" 'Close the batch if it is last one
+                        Else
+                            cmd.Parameters.Add("pi_close_batch", OracleDbType.Varchar2, 10).Value = "N"
+                        End If
+
+                        cmd.ExecuteNonQuery
+
+                        'if error out, rollback transaction and return
+                        If  String.IsNullOrEmpty(cmd.Parameters("po_error_msg").Value) Then
+                            errCode = cmd.Parameters("po_error_code").Value
+                            errMsg = cmd.Parameters("po_error_msg").Value     
+                            blnSuccess = False
+                            tr.Rollback
+                            Exit For
+                        End If
+                    Next
+
+                    'all invoices paid successfully, commit transaction
+                    If blnSuccess Then
+                        tr.Commit
+                    End If
+                    
+                End Using
+            End Using
+
+        Catch ex As Exception
+            If not tr Is Nothing Then
+                tr.Rollback
+            End If 
+            Throw New DataBaseAccessException(DataBaseAccessException.DatabaseAccessErrorType.ReadErr, ex)
+        End Try        
+    End sub
+#End Region
 End Class
 
 

@@ -161,11 +161,17 @@
                     <asp:BoundField DataField="PaidAmount" HeaderText="PAID_AMOUNT" HtmlEncode="false"></asp:BoundField>
                     <asp:BoundField DataField="PaymentDate" HeaderText="PAYMENT_DATE" HtmlEncode="false"></asp:BoundField>
                     <asp:BoundField DataField="UnMatchedLineCnt" HeaderText="UNMATCHED_LINES" HtmlEncode="false"></asp:BoundField>
+                    <asp:BoundField Visible="False" DataField="ap_invoice_header_id"></asp:BoundField>                    
                 </Columns>
                 <PagerSettings PageButtonCount="30" Mode="Numeric" Position="TopAndBottom" />
                 <PagerStyle />
             </asp:GridView>
         </div>
-    </div>
-    
+        <div class="btnZone" id="divButtons" runat="server">
+            <asp:Button ID="btnDelete_WRITE" runat="server" SkinID="AlternateLeftButton" Text="DELETE_INVOICES"></asp:Button>&nbsp;&nbsp;&nbsp;
+            <asp:Label ID="lblBatchNum" runat="server">BATCH_NUMBER</asp:Label>:
+            <asp:TextBox ID="txtBatchNum" runat="server" SkinID="MediumTextBox" AutoPostBack="False"></asp:TextBox>
+            <asp:Button ID="btnCreatePaymentBatch_WRITE" runat="server" SkinID="AlternateLeftButton" Text="CREATE_PAYMENT"></asp:Button>            
+        </div>
+    </div>    
 </asp:Content>

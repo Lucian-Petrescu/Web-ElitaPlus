@@ -429,6 +429,22 @@ Public Class ApInvoiceHeader
             Throw New DataBaseAccessException(DataBaseAccessException.DatabaseAccessErrorType.WriteErr, ex)
         End Try
     End Sub
+
+    Public Shared Sub DeleteInvoices(ByVal invoiceIds As Generic.List(Of Guid))
+        Dim dal As New ApInvoiceHeaderDAL
+        dal.DeleteInvoices(invoiceIds)
+    End Sub
+
+    Public Shared Sub PayInvoices(ByVal strBatchNumber As String, ByVal invoiceIds As Generic.List(Of Guid), ByRef errCode As Integer, ByRef errMsg As String)
+        Dim dal As New ApInvoiceHeaderDAL
+        dal.PayInvoices(strBatchNumber, invoiceIds, errCode, errMsg)
+    End Sub
+
+    Public Shared Sub MatchInvoice(ByVal invoiceId As Guid)
+        Dim dal As New ApInvoiceHeaderDAL
+        dal.MatchInvoice(invoiceId)
+    End Sub
+
 #End Region
 
 #Region "DataView Retrieveing Methods"

@@ -228,4 +228,49 @@ Partial Public Class APInvoiceListForm
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
     Protected WithEvents Grid As Global.System.Web.UI.WebControls.GridView
+    
+    '''<summary>
+    '''divButtons control.
+    '''</summary>
+    '''<remarks>
+    '''Auto-generated field.
+    '''To modify move field declaration from designer file to code-behind file.
+    '''</remarks>
+    Protected WithEvents divButtons As Global.System.Web.UI.HtmlControls.HtmlGenericControl
+    
+    '''<summary>
+    '''btnDelete_WRITE control.
+    '''</summary>
+    '''<remarks>
+    '''Auto-generated field.
+    '''To modify move field declaration from designer file to code-behind file.
+    '''</remarks>
+    Protected WithEvents btnDelete_WRITE As Global.System.Web.UI.WebControls.Button
+    
+    '''<summary>
+    '''lblBatchNum control.
+    '''</summary>
+    '''<remarks>
+    '''Auto-generated field.
+    '''To modify move field declaration from designer file to code-behind file.
+    '''</remarks>
+    Protected WithEvents lblBatchNum As Global.System.Web.UI.WebControls.Label
+    
+    '''<summary>
+    '''txtBatchNum control.
+    '''</summary>
+    '''<remarks>
+    '''Auto-generated field.
+    '''To modify move field declaration from designer file to code-behind file.
+    '''</remarks>
+    Protected WithEvents txtBatchNum As Global.System.Web.UI.WebControls.TextBox
+    
+    '''<summary>
+    '''btnCreatePaymentBatch_WRITE control.
+    '''</summary>
+    '''<remarks>
+    '''Auto-generated field.
+    '''To modify move field declaration from designer file to code-behind file.
+    '''</remarks>
+    Protected WithEvents btnCreatePaymentBatch_WRITE As Global.System.Web.UI.WebControls.Button
 End Class
