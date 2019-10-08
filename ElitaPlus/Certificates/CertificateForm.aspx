@@ -352,6 +352,16 @@
                                         <asp:TextBox ID="moPlaceOfBirthText" TabIndex="4" runat="server" SkinID="MediumTextBox"></asp:TextBox>
                                     </td>
                                 </tr>
+                                <tr runat="server" id="moAMLRegulations4">
+                                    <td align="right"></td>
+                                    <td align="left"></td>
+                                    <td align="right">
+                                        <asp:Label ID="mocityOfBirthLabel" runat="server">CITY_OF_BIRTH</asp:Label>
+                                    </td>
+                                    <td align="left">
+                                        <asp:TextBox ID="moCityOfBirthText" TabIndex="4" runat="server" SkinID="MediumTextBox"></asp:TextBox>
+                                    </td>
+                                </tr>
                                 <tr runat="server" id="moAMLRegulations2">
                                     <td align="right">
                                         <asp:Label ID="moGenderLabel" runat="server">GENDER</asp:Label>

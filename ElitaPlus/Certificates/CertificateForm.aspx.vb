@@ -1588,6 +1588,9 @@ Namespace Certificates
                     ControlMgr.SetEnableControl(Me, ddlPlaceOfBirth, False)
                     ControlMgr.SetVisibleControl(Me, moPlaceOfBirthText, True)
                     ControlMgr.SetEnableControl(Me, moPlaceOfBirthText, True)
+                    'City of Birth
+                    ControlMgr.SetVisibleControl(Me, moCityOfBirthText, True)
+                    ControlMgr.SetEnableControl(Me, moCityOfBirthText, True)
                     'Gender
                     ControlMgr.SetVisibleControl(Me, ddlGender, False)
                     ControlMgr.SetEnableControl(Me, ddlGender, False)
@@ -1617,6 +1620,9 @@ Namespace Certificates
                     ControlMgr.SetEnableControl(Me, ddlPlaceOfBirth, False)
                     ControlMgr.SetVisibleControl(Me, moPlaceOfBirthText, False)
                     ControlMgr.SetEnableControl(Me, moPlaceOfBirthText, False)
+                    'City of Birth
+                    ControlMgr.SetVisibleControl(Me, moCityOfBirthText, False)
+                    ControlMgr.SetEnableControl(Me, moCityOfBirthText, False)
                     'Gender
                     ControlMgr.SetVisibleControl(Me, ddlGender, False)
                     ControlMgr.SetEnableControl(Me, ddlGender, False)
@@ -1769,6 +1775,9 @@ Namespace Certificates
                     ControlMgr.SetEnableControl(Me, ddlPlaceOfBirth, True)
                     ControlMgr.SetVisibleControl(Me, moPlaceOfBirthText, False)
                     ControlMgr.SetEnableControl(Me, moPlaceOfBirthText, False)
+                    'City of Birth
+                    ControlMgr.SetVisibleControl(Me, moCityOfBirthText, True)
+                    ControlMgr.SetEnableControl(Me, moCityOfBirthText, True)
                     'Gender
                     ControlMgr.SetVisibleControl(Me, ddlGender, True)
                     ControlMgr.SetEnableControl(Me, ddlGender, True)
@@ -1798,6 +1807,9 @@ Namespace Certificates
                     ControlMgr.SetEnableControl(Me, ddlPlaceOfBirth, False)
                     ControlMgr.SetVisibleControl(Me, moPlaceOfBirthText, False)
                     ControlMgr.SetEnableControl(Me, moPlaceOfBirthText, False)
+                    'City of Birth
+                    ControlMgr.SetVisibleControl(Me, moCityOfBirthText, False)
+                    ControlMgr.SetEnableControl(Me, moCityOfBirthText, False)
                     'Gender
                     ControlMgr.SetVisibleControl(Me, ddlGender, False)
                     ControlMgr.SetEnableControl(Me, ddlGender, False)
@@ -2088,6 +2100,11 @@ Namespace Certificates
             'End If
             'DEF-21659 - END
 
+            If Not Me.State.MyBO.CustomerId.Equals(Guid.Empty) Then
+                Me.moCityOfBirthText.Enabled = True
+                Me.moCityOfBirthText.ReadOnly = False
+            End If
+
             ControlMgr.SetVisibleControl(Me, cboLangPref, True)
             ControlMgr.SetEnableControl(Me, cboLangPref, True)
             ControlMgr.SetVisibleControl(Me, moLangPrefText, False)
@@ -2372,6 +2389,8 @@ Namespace Certificates
             Me.BindBOPropertyToLabel(Me.State.MyBO, "MaritalStatus", Me.moMaritalStatusLabel)
             Me.BindBOPropertyToLabel(Me.State.MyBO, "Nationality", Me.moNationalityLabel)
             Me.BindBOPropertyToLabel(Me.State.MyBO, "PlaceOfBirth", Me.moPlaceOfBirthLabel)
+            Me.BindBOPropertyToLabel(Me.State.MyBO, "CityOfBirth", Me.mocityOfBirthLabel)
+            Me.BindBOPropertyToLabel(Me.State.MyBO, "PersonType", Me.moPerson_typeLabel)
             Me.BindBOPropertyToLabel(Me.State.MyBO, "Gender", Me.moGenderLabel)
             Me.BindBOPropertyToLabel(Me.State.MyBO, "CUIT_CUIL", Me.moCUIT_CUILLabel)
             'REQ-1255 - AML Regulations - END
@@ -2741,6 +2760,7 @@ Namespace Certificates
                     Me.moAMLRegulations1.Attributes("style") = "display: none"
                     Me.moAMLRegulations2.Attributes("style") = "display: none"
                     Me.moAMLRegulations3.Attributes("style") = "display: none"
+                    Me.moAMLRegulations4.Attributes("style") = "display: none"
                 Else
                     'populate the dropdowns
                     'Marital Status
@@ -2755,19 +2775,23 @@ Namespace Certificates
                     PopulatePlaceOfBirthDropdown(ddlPlaceOfBirth)
                     Me.SetSelectedItem(Me.ddlPlaceOfBirth, .PlaceOfBirth)
                     Me.PopulateControlFromBOProperty(Me.moPlaceOfBirthText, Me.ddlPlaceOfBirth.SelectedItem.Text) '.PlaceOfBirth
+                    'CityOfBirth
+                    If Not .CustomerId.Equals(Guid.Empty) Then
+                        Me.PopulateControlFromBOProperty(Me.moCityOfBirthText, .CityOfBirth)
+                    End If
                     'Gender
                     PopulateGenderDropdown(ddlGender)
-                    Me.SetSelectedItem(Me.ddlGender, .Gender)
-                    Me.PopulateControlFromBOProperty(Me.moGenderText, Me.ddlGender.SelectedItem.Text) '.Gender
-                    'CUIT_CUIL
-                    Me.PopulateControlFromBOProperty(Me.moCUIT_CUILText, .CUIT_CUIL)
-                    'Person Type
-                    PopulatePersonTypeDropdown(ddlPersonType)
-                    Me.SetSelectedItem(Me.ddlPersonType, .PersonTypeId)
-                    Me.PopulateControlFromBOProperty(Me.moPersonTypeText, Me.ddlPersonType.SelectedItem.Text)
-                End If
-                'REQ-1255 - AML Regulations - END
-                If Not .ReinsuranceStatusId.Equals(Guid.Empty) Then
+                        Me.SetSelectedItem(Me.ddlGender, .Gender)
+                        Me.PopulateControlFromBOProperty(Me.moGenderText, Me.ddlGender.SelectedItem.Text) '.Gender
+                        'CUIT_CUIL
+                        Me.PopulateControlFromBOProperty(Me.moCUIT_CUILText, .CUIT_CUIL)
+                        'Person Type
+                        PopulatePersonTypeDropdown(ddlPersonType)
+                        Me.SetSelectedItem(Me.ddlPersonType, .PersonTypeId)
+                        Me.PopulateControlFromBOProperty(Me.moPersonTypeText, Me.ddlPersonType.SelectedItem.Text)
+                    End If
+                    'REQ-1255 - AML Regulations - END
+                    If Not .ReinsuranceStatusId.Equals(Guid.Empty) Then
                     ControlMgr.SetVisibleControl(Me, moReinsuranceStatusLabel, True)
                     ControlMgr.SetVisibleControl(Me, moReinsuranceStatusText, True)
                     Me.PopulateControlFromBOProperty(Me.moReinsuranceStatusText, LookupListNew.GetDescriptionFromId(LookupListNew.LK_REINSURANCE_STATUSES, .ReinsuranceStatusId))
@@ -3115,12 +3139,15 @@ Namespace Certificates
                     Me.PopulateBOProperty(Me.State.MyBO, "MaritalStatus", Me.ddlMaritalStatus)
                     Me.PopulateBOProperty(Me.State.MyBO, "Nationality", Me.ddlNationality)
                     Me.PopulateBOProperty(Me.State.MyBO, "PlaceOfBirth", Me.ddlPlaceOfBirth)
+                    If Not .CustomerId.Equals(Guid.Empty) Then
+                        Me.PopulateBOProperty(Me.State.MyBO, "CityOfBirth", Me.moCityOfBirthText)
+                    End If
                     Me.PopulateBOProperty(Me.State.MyBO, "Gender", Me.ddlGender)
-                    Me.PopulateBOProperty(Me.State.MyBO, "PersonTypeId", Me.ddlPersonType)
-                    Me.PopulateBOProperty(Me.State.MyBO, "CUIT_CUIL", Me.moCUIT_CUILText)
-                End If
-                'REQ-1255 - AML Regulations - END
-                If Not .CustomerId.Equals(Guid.Empty) Then
+                        Me.PopulateBOProperty(Me.State.MyBO, "PersonTypeId", Me.ddlPersonType)
+                        Me.PopulateBOProperty(Me.State.MyBO, "CUIT_CUIL", Me.moCUIT_CUILText)
+                    End If
+                    'REQ-1255 - AML Regulations - END
+                    If Not .CustomerId.Equals(Guid.Empty) Then
                     Me.PopulateBOProperty(Me.State.MyBO, "CustomerFirstName", Me.moCustomerFirstNameText)
                     Me.PopulateBOProperty(Me.State.MyBO, "CustomerMiddleName", Me.moCustomerMiddleNameText)
                     Me.PopulateBOProperty(Me.State.MyBO, "CustomerLastName", Me.moCustomerLastNameText)
