@@ -99,7 +99,12 @@ Public Class GVSService
             oWebPasswd = New WebPasswd(Authentication.CompanyGroupId, LookupListNew.GetIdFromCode(Codes.SERVICE_TYPE, Codes.SERVICE_TYPE__SERVICE_NETWORK_GVS), True)
             url = oWebPasswd.Url
             wsGvs = Get_ServiceClient(url)
-            gvsToken = wsGvs.Login(oWebPasswd.UserId, oWebPasswd.Password)
+            Try
+                gvsToken = wsGvs.Login(oWebPasswd.UserId, oWebPasswd.Password)
+            Catch ex As Exception
+                AppConfig.Debug("SendToGvs exception: Error while calling webservice : " & url & "Login Method : Exception Message : " & ex.Message & " | Stack Trace : " & ex.StackTrace)
+                Throw
+            End Try
 
 
             If gvsToken Is Nothing Then
@@ -118,9 +123,14 @@ Public Class GVSService
                 xmlOut = XMLHelper.FromErrorCodeToXML(Common.ErrorCodes.WS_ACCESS_DENIED, errMsg, userNetworkId)
                 wsGvs.Close()
             Else
+                Try
+                    xmlOut = wsGvs.ProcessRequest(gvsToken, functionToProcess, xmlIn)
+                Catch ex As Exception
+                    AppConfig.Debug(xmlIn)
+                    AppConfig.Debug("SendToGvs exception: Error while calling webservice : " & url & "ProcessRequest Method : ProcessRequest Exception Message : " & ex.Message & " | Stack Trace : " & ex.StackTrace)
+                    Throw
+                End Try
 
-                xmlOut = wsGvs.ProcessRequest(gvsToken, functionToProcess, xmlIn)
-                wsGvs.Close()
                 If (xmlOut.ToUpper).Contains(PROCESS_REQUEST_ERROR) Then
                     AppConfig.Log(xmlOut)
                 End If
@@ -133,10 +143,12 @@ Public Class GVSService
             Dim iex As Exception
             iex = ex
             Do While (Not iex.InnerException Is Nothing)
-                iex = ex.InnerException
+                iex = iex.InnerException
                 AppConfig.Debug("SendToGvs exception:" & iex.StackTrace)
             Loop
             Throw ex
+        Finally
+            wsGvs.Close()
         End Try
 
     End Function
