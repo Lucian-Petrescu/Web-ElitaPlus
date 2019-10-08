@@ -366,9 +366,7 @@
 
             lblDeniedReasonsRecordFound.Visible = True
 
-            If State.CaseDeniedReasonsListDV.Count = 0 Then
-                'lblDeniedReasonsRecordFound.Text = State.CaseDeniedReasonsListDV.Count & " " & TranslationBase.TranslateLabelOrMessage(Message.MSG_RECORDS_FOUND)
-                'ControlMgr.SetVisibleControl(Me, CaseDeniedReasonsGrid, False)
+            If State.CaseDeniedReasonsListDv.Count = 0 Then
                 EnableTab(CaseDenedReasonInfoTab, False)
             Else
                 CaseDeniedReasonsGrid.DataSource = State.CaseDeniedReasonsListDV

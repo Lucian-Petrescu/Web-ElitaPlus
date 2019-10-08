@@ -243,7 +243,6 @@ Partial Class LocateServiceCenterForm
             End If
             moProtectionAndEventDetails.ProtectionStatusCss = cssClassName
             moProtectionAndEventDetails.TypeOfLoss = LookupListNew.GetDescriptionFromId(LookupListNew.LK_RISKTYPES, certItem.RiskTypeId)
-            'moProtectionAndEventDetails.DateOfLoss = dateOfLoss.ToString(Me.DATE_FORMAT)
             moProtectionAndEventDetails.DateOfLoss = GetDateFormattedString(dateOfLoss)
         Catch ex As Exception
             Me.HandleErrors(ex, Me.MasterPage.MessageController)

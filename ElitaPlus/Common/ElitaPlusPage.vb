@@ -2005,19 +2005,13 @@ Public Class ElitaPlusPage
     End Function
 
     Public Shared Function GetDateFormattedString(ByVal value As Date) As String
-        'Return value.ToString(DATE_FORMAT, LocalizationMgr.CurrentCulture)
         Dim LanguageCode = ElitaPlusIdentity.Current.ActiveUser.LanguageCode
-        'Dim LanguageCode = "JP"
         Dim formattedValue = CommonConfigManager.Current.LanguageManager.Get(LanguageCode).GetAwaiter().GetResult()?.FormatDate(value)
         Return formattedValue.ToString()
-        'Return value.ToString(DATE_FORMAT, System.Threading.Thread.CurrentThread.CurrentCulture)
     End Function
 
     Public Shared Function GetLongDateFormattedString(ByVal value As Date) As String
-        'Return value.ToString(DATE_FORMAT, LocalizationMgr.CurrentCulture)
-        'Return value.ToString(DATE_TIME_FORMAT, System.Threading.Thread.CurrentThread.CurrentCulture)
         Dim LanguageCode = ElitaPlusIdentity.Current.ActiveUser.LanguageCode
-        'Dim LanguageCode = "JP"
         Dim formattedDate = CommonConfigManager.Current.LanguageManager.Get(LanguageCode).GetAwaiter().GetResult()?.FormatDate(value)
         Dim MeridianTime = CommonConfigManager.Current.LanguageManager.Get(LanguageCode).GetAwaiter().GetResult()?.FormatTime(value)
         Dim FullDateTimeValue = formattedDate + " " + MeridianTime
@@ -2027,19 +2021,15 @@ Public Class ElitaPlusPage
     End Function
 
     Public Shared Function GetLongDate12FormattedString(ByVal value As Date) As String
-        'Return value.ToString(DATE_FORMAT, LocalizationMgr.CurrentCulture)
-        'Return value.ToString(DATE_TIME_FORMAT_12, System.Threading.Thread.CurrentThread.CurrentCulture)
         Dim LanguageCode = ElitaPlusIdentity.Current.ActiveUser.LanguageCode
-        ' Dim LanguageCode = "JP"
         Dim formattedDate = CommonConfigManager.Current.LanguageManager.Get(LanguageCode).GetAwaiter().GetResult()?.FormatDate(value)
         Dim FormattedTime = CommonConfigManager.Current.LanguageManager.Get(LanguageCode).GetAwaiter().GetResult()?.FormatTime(value)
         Dim FormattedValue = formattedDate + " " + FormattedTime
-        Return formattedValue.ToString()
+        Return FormattedValue.ToString()
     End Function
 
     Public Shared Function GetAmountFormattedString(ByVal value As Decimal, Optional ByVal format As String = Nothing) As String
         If format Is Nothing Then format = DECIMAL_FORMAT
-        'Return value.ToString(format, LocalizationMgr.CurrentCulture)
         Return value.ToString(format, System.Threading.Thread.CurrentThread.CurrentCulture)
     End Function
 
@@ -2051,8 +2041,6 @@ Public Class ElitaPlusPage
 
     End Function
     Public Shared Function GetAmountFormattedToString(ByVal value As String) As String
-
-        'Return value.ToString(format, LocalizationMgr.CurrentCulture)
         Return Convert.ToString(value, System.Threading.Thread.CurrentThread.CurrentCulture)
     End Function
 

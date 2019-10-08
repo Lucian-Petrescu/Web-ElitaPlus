@@ -3,7 +3,7 @@
 '  AA      SSS  SSS  UU  UU RRRRR      AA    NN   NN  TTTTTTTT
 'A    A   SS    SS   UU  UU RR   RR  A    A  NNN  NN     TT 
 'AAAAAA   SSS   SSS  UU  UU RRRR     AAAAAA  NN N NN     TT
-'AA  AA     SS    SS UU  UU RR RR    AA  AA  NN  NNN     TTF
+'AA  AA     SS    SS UU  UU RR RR    AA  AA  NN  NNN     TT
 'AA  AA  SSSSS SSSSS  UUUU  RR   RR  AA  AA  NN  NNN     TT
 
 'Copyright 2004, Assurant Group Inc..  All Rights Reserved.
@@ -108,7 +108,6 @@ Partial Class CalendarForm_New
 
             If Not dateParam Is Nothing AndAlso dateParam <> "" Then
                 'Fix for Japan date control-------------------------------
-                'Dim formatProvider = LocalizationMgr.CurrentFormatProvider
                 System.Threading.Thread.CurrentThread.CurrentCulture = New CultureInfo("ja-JP")
                 Dim formatProvider = System.Threading.Thread.CurrentThread.CurrentCulture
                 If formatProvider.Name.Equals("ja-JP") Then
@@ -308,18 +307,12 @@ Partial Class CalendarForm_New
 
         If Not selectedDate Is Nothing AndAlso selectedDate <> "" Then
             'Fix for Japan date control-------------------------------
-            'Dim formatProvider = LocalizationMgr.CurrentFormatProvider
             System.Threading.Thread.CurrentThread.CurrentCulture = New CultureInfo("ja-JP")
             Dim formatProvider = System.Threading.Thread.CurrentThread.CurrentCulture
             If formatProvider.Name.Equals("ja-JP") Then
                 selectedDate = Convert.ToDateTime(selectedDate, System.Globalization.CultureInfo.GetCultureInfo("ja-JP").DateTimeFormat)
                 Dim dateFragments() As String = selectedDate.Split("/")
-
-                'dim v1 As DateTime = New DateTime(Integer.Parse(dateFragments(2)), Integer.Parse(dateFragments(1)), Integer.Parse(dateFragments(0)))
-                'Dim v2 = v1.Date.ToString("MMM", formatProvider)
-
                 cboMonthList.Items.FindByText(New DateTime(Integer.Parse(dateFragments(0)), Integer.Parse(dateFragments(1)), Integer.Parse(dateFragments(2))).Date.ToString("MMM", formatProvider)).Selected = True
-                'cboMonthList.Items.FindByText(v2).Selected = True
             Else
                 Me.cboMonthList.Items.FindByText(DateHelper.GetDateValue(selectedDate).ToString("MMM", LocalizationMgr.CurrentFormatProvider)).Selected = True
             End If
