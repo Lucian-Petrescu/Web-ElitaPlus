@@ -435,6 +435,32 @@ Public Class ApInvoiceLines
     
 #End Region
 
+#Region "APInvoiceLinesDV Dataview"
+    Public Class APInvoiceLinesDV
+        Inherits DataView
+
+        Public Const COL_INVOICE_lines_ID As String = "ap_invoice_lines_id"
+        Public Const COL_LINE_NUMBER As String = "line_number"
+        Public Const COL_LINE_TYPE As String = "line_type"
+        Public Const COL_VENDOR_ITEM_CODE As String = "vendor_item_code"
+        Public Const COL_DESCRIPTION As String = "description"
+        Public Const COL_QUANTITY As String = "quantity"
+        Public Const COL_UNIT_PRICE As String = "unit_price"
+        Public Const COL_TOTAL_PRICE As String = "total_price"
+        Public Const COL_MATCHED_QUANTITY As String = "matched_quantity"
+        Public Const COL_PAID_QUANTITY As String = "paid_quantity"
+        Public Const COL_PO_NUMBER As String = "po_number"
+        Public Const COL_PO_QUANTITY As String = "po_line_quantity"
+        Public Const COL_PAYMENT_STATUS As String = "payment_status"
+        Public Const COL_PAYMENT_SOURCE As String = "payment_source"
+        Public Const COL_PAYMENT_DATE As String = "payment_date"
+
+        Public Sub New(ByVal table As DataTable)
+            MyBase.New(table)
+        End Sub
+
+    End Class
+#End Region
 End Class
 
 

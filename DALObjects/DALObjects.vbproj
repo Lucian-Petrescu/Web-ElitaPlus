@@ -422,7 +422,7 @@
     <Compile Include="Security\SpUserClaimPropertiesDAL.vb" />
     <Compile Include="Security\SpUserClaimsDAL.vb" />
     <Compile Include="Security\UserNotificationDAL.vb" />
-    <Compile Include="Tables\Accounting\AccountPayable\ApInvoiceHeaderDal.vb" />
+    <Compile Include="Tables\Accounting\AccountPayable\ApInvoiceHeaderDAL.vb" />
     <Compile Include="Tables\Accounting\AccountPayable\ApInvoiceLinesDAL.vb" />
     <Compile Include="Tables\Accounting\AccountPayable\ApInvoiceMatchingDAL.vb" />
     <Compile Include="Tables\Accounting\AccountPayable\ApPaymentBatchDAL.vb" />
@@ -1470,7 +1470,7 @@
     <EmbeddedResource Include="Tables\CountryLineOfBusinessDAL.xml">
       <SubType>Designer</SubType>
     </EmbeddedResource>
-    <EmbeddedResource Include="Tables\Accounting\AccountPayable\ApInvoiceHeaderDal.xml" />
+    <EmbeddedResource Include="Tables\Accounting\AccountPayable\ApInvoiceHeaderDAL.xml" />
     <EmbeddedResource Include="Tables\Accounting\AccountPayable\ApInvoiceLinesDAL.xml" />
     <EmbeddedResource Include="Tables\Accounting\AccountPayable\ApInvoiceMatchingDAL.xml" />
     <EmbeddedResource Include="Tables\Accounting\AccountPayable\ApPaymentBatchDAL.xml" />

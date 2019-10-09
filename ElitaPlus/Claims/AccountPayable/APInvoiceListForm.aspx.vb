@@ -171,10 +171,11 @@ Partial Class APInvoiceListForm
         Try
             MenuEnabled = True
             IsReturningFromChild = True
-            'Dim retObj As PayClaimForm.ReturnType = CType(Me.ReturnedValues, PayClaimForm.ReturnType)
-            'If Not retObj Is Nothing AndAlso retObj.BoChanged Then
-            '    Me.State.searchDV = Nothing
-            'End If
+            Dim retObj As APInvoiceDetailForm.ReturnType = CType(Me.ReturnedValues, APInvoiceDetailForm.ReturnType)
+            If Not retObj Is Nothing AndAlso retObj.DataChanged Then 
+                'refresh the search since invoice data changed
+                Me.State.searchDV = Nothing
+            End If
         Catch ex As Exception
             HandleErrors(ex, ErrControllerMaster)
         End Try
@@ -182,7 +183,7 @@ Partial Class APInvoiceListForm
 
     Private Sub APInvoiceListForm_PreRender(sender As Object, e As EventArgs) Handles Me.PreRender
         'sysn buttons' visibility with the grid's visibility
-        'divButtons.Visible = State.IsGridVisible
+        divButtons.Visible = State.IsGridVisible
     End Sub
 #End Region
 
@@ -359,6 +360,10 @@ Partial Class APInvoiceListForm
             'high search results
             ControlMgr.SetVisibleControl(Me, Grid, False)
             ControlMgr.SetVisibleControl(Me, trPageSize, False)
+
+            'debug code, delete before checking
+            callPage(APInvoiceDetailForm.URL, New Guid("5afec772-417e-cb48-e053-4307640a2d37"))
+
         Catch ex As Exception
             Me.HandleErrors(ex, Me.MasterPage.MessageController)
         End Try
@@ -410,12 +415,12 @@ Partial Class APInvoiceListForm
                 ApInvoiceHeader.DeleteInvoices(invoiceToBeDeleted)
             End If
 
-            ' test delete functions.
-            Dim testlist As new List(Of Guid)
-            testlist.Add(Guid.NewGuid)
-            testlist.Add(Guid.NewGuid)
-            testlist.Add(Guid.NewGuid)
-            ApInvoiceHeader.DeleteInvoices(testlist)
+            '' test delete functions.
+            'Dim testlist As new List(Of Guid)
+            'testlist.Add(Guid.NewGuid)
+            'testlist.Add(Guid.NewGuid)
+            'testlist.Add(Guid.NewGuid)
+            'ApInvoiceHeader.DeleteInvoices(testlist)
 
         Catch ex As Exception
             HandleErrors(ex, MasterPage.MessageController)
@@ -509,7 +514,7 @@ Partial Class APInvoiceListForm
                 Me.State.SelectedInvoiceId = New Guid(invoiceHeaderId)
 
                 'to do, calling AP invoice detail pages
-                'callPage(APInvoiceDetailForm.URL, Me.State.SelectedInvoiceId)
+                callPage(APInvoiceDetailForm.URL, Me.State.SelectedInvoiceId)
 
             End If
         Catch ex As Threading.ThreadAbortException

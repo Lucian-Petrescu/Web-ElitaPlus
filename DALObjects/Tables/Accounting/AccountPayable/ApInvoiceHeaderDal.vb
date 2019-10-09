@@ -91,7 +91,6 @@ Public Class ApInvoiceHeaderDAL
                                 ByVal source As String, ByVal invoiceDate As Date?,
                                 ByVal dueDateFrom As Date?, ByVal dueDateTo As Date?,
                                 ByVal rowCountReturn As Integer, ByVal userId As Guid,
-                                ByRef errCode As Integer, ByRef errMsg As String,
                                 ByRef searchResult As DataSet
                                 )
 
@@ -103,8 +102,8 @@ Public Class ApInvoiceHeaderDAL
             Dim cmd As OracleCommand = DB_OracleCommand(selectStmt, CommandType.StoredProcedure)
             cmd.BindByName = True
             'output parameters
-            cmd.Parameters.Add("po_error_code", OracleDbType.Int32, ParameterDirection.Output)
-            cmd.Parameters.Add("po_error_msg", OracleDbType.Varchar2, 500, nothing, ParameterDirection.Output)
+            'cmd.Parameters.Add("po_error_code", OracleDbType.Int32, ParameterDirection.Output)
+            'cmd.Parameters.Add("po_error_msg", OracleDbType.Varchar2, 500, nothing, ParameterDirection.Output)
             cmd.Parameters.Add("po_results", OracleDbType.RefCursor, ParameterDirection.Output)
             
             'input parameters
@@ -139,13 +138,13 @@ Public Class ApInvoiceHeaderDAL
             da.Fill(searchResult, "SEARCH_RESULT")
             ds.Locale = Globalization.CultureInfo.InvariantCulture
             
-            If  String.IsNullOrEmpty(cmd.Parameters("po_error_msg").Value) Then
-                errCode = cmd.Parameters("po_error_code").Value
-                errMsg = cmd.Parameters("po_error_msg").Value
-            Else
-                errCode = 0
-                errMsg = String.Empty
-            End If            
+            'If  String.IsNullOrEmpty(cmd.Parameters("po_error_msg").Value) Then
+            '    errCode = cmd.Parameters("po_error_code").Value
+            '    errMsg = cmd.Parameters("po_error_msg").Value
+            'Else
+            '    errCode = 0
+            '    errMsg = String.Empty
+            'End If            
 
         Catch ex As Exception
             Throw New DataBaseAccessException(DataBaseAccessException.DatabaseAccessErrorType.ReadErr, ex)
@@ -153,6 +152,72 @@ Public Class ApInvoiceHeaderDAL
 
         
     End sub
+
+
+    Public sub LoadAPInvoiceExtendedInfo(ByVal invoiceId As guid, ByRef searchResult As DataSet)
+
+        Dim selectStmt As String = Config("/SQL/GET_AP_INVOICE_EXTENDED_INFO")
+        Dim ds As New DataSet
+        Dim da As OracleDataAdapter
+
+        Try
+            Dim cmd As OracleCommand = DB_OracleCommand(selectStmt, CommandType.StoredProcedure)
+            cmd.BindByName = True
+            cmd.Parameters.Add("po_cur_result", OracleDbType.RefCursor, ParameterDirection.Output)
+            
+            'input parameters
+            cmd.Parameters.Add("pi_invoice_header_id", OracleDbType.Raw).Value = invoiceId.ToByteArray
+            
+            da = New OracleDataAdapter(cmd)
+            da.Fill(searchResult, "AP_INVOICE_HEADER_EXT")
+            ds.Locale = Globalization.CultureInfo.InvariantCulture
+
+        Catch ex As Exception
+            Throw New DataBaseAccessException(DataBaseAccessException.DatabaseAccessErrorType.ReadErr, ex)
+        End Try
+        
+    End sub
+
+    Public sub LoadAPInvoiceLines(ByVal invoiceId As guid, 
+                                  ByVal minLineNum  As Integer,
+                                  ByVal maxLineNum  As Integer,
+                                  ByVal UnMatchedLineOnly   As Boolean,
+                                  ByVal languageId As Guid,
+                                  ByVal rowCountReturn As Integer,
+                                  ByRef searchResult As DataSet)
+
+        Dim selectStmt As String = Config("/SQL/GET_AP_INVOICE_LINES")
+        Dim ds As New DataSet
+        Dim da As OracleDataAdapter
+
+        Try
+            Dim cmd As OracleCommand = DB_OracleCommand(selectStmt, CommandType.StoredProcedure)
+            cmd.BindByName = True
+            cmd.Parameters.Add("po_cur_lines", OracleDbType.RefCursor, ParameterDirection.Output)
+            
+            'input parameters
+            cmd.Parameters.Add("pi_invoice_header_id", OracleDbType.Raw).Value = invoiceId.ToByteArray
+            cmd.Parameters.Add("pi_rowcount", OracleDbType.Int32).Value = rowCountReturn
+            cmd.Parameters.Add("pi_min_line_number", OracleDbType.Int32).Value = minLineNum
+            cmd.Parameters.Add("pi_max_line_number", OracleDbType.Int32).Value = maxLineNum
+            cmd.Parameters.Add("pi_language_id", OracleDbType.Raw).Value = languageId.ToByteArray
+                    
+            If UnMatchedLineOnly = True Then
+                cmd.Parameters.Add("pi_unmatched_line", OracleDbType.Varchar2).Value = "Y"
+            Else
+                cmd.Parameters.Add("pi_unmatched_line", OracleDbType.Varchar2).Value = "N"
+            End If
+
+            da = New OracleDataAdapter(cmd)
+            da.Fill(searchResult, "AP_INVOICE_LINES")
+            ds.Locale = Globalization.CultureInfo.InvariantCulture
+
+        Catch ex As Exception
+            Throw New DataBaseAccessException(DataBaseAccessException.DatabaseAccessErrorType.ReadErr, ex)
+        End Try
+        
+    End sub
+
 #End Region
 
 #Region "Invoice processing methods"
@@ -201,6 +266,7 @@ Public Class ApInvoiceHeaderDAL
         Dim strStmt As String = Config("/SQL/MATCH_AP_INVOICE")
         Try
             Using conn As IDbConnection = New OracleConnection(DBHelper.ConnectString)
+                conn.Open
                 Using cmd As OracleCommand = conn.CreateCommand()
                     cmd.CommandText = strStmt
                     cmd.CommandType = CommandType.StoredProcedure
@@ -210,9 +276,8 @@ Public Class ApInvoiceHeaderDAL
                     cmd.Parameters.Add("pi_invoice_header_id", OracleDbType.Raw).Value = invoiceId.ToByteArray
                     cmd.Parameters.Add("pi_commit", OracleDbType.Varchar2, 10).Value = "Y"
                     cmd.ExecuteNonQuery
-                    
-                    conn.Close
                 End Using
+                conn.Close
             End Using
         Catch ex As Exception
             Throw New DataBaseAccessException(DataBaseAccessException.DatabaseAccessErrorType.ReadErr, ex)

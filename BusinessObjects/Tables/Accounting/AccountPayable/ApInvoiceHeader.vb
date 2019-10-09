@@ -100,17 +100,17 @@ Public Class ApInvoiceHeader
         End Get
     End Property
 	
-    <ValueMandatory("")> _
-    Public Property InvoiceNumber() As Guid
+    <ValueMandatory(""),ValidStringLength("", Max:=100)> _
+    Public Property InvoiceNumber() As String
         Get
             CheckDeleted()
             If row(ApInvoiceHeaderDAL.COL_NAME_INVOICE_NUMBER) Is DBNull.Value Then
                 Return Nothing
             Else
-                Return New Guid(CType(row(ApInvoiceHeaderDAL.COL_NAME_INVOICE_NUMBER), Byte()))
+                Return CType(row(ApInvoiceHeaderDAL.COL_NAME_INVOICE_NUMBER), String)
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set(ByVal Value As String)
             CheckDeleted()
             Me.SetValue(ApInvoiceHeaderDAL.COL_NAME_INVOICE_NUMBER, Value)
         End Set
@@ -151,7 +151,7 @@ Public Class ApInvoiceHeader
     End Property
 	
 	
-    <ValueMandatory(""),ValidStringLength("", Max:=400)> _
+    <ValueMandatory(""),ValidStringLength("", Max:=100)> _
     Public Property TermXcd() As String
         Get
             CheckDeleted()
@@ -185,7 +185,7 @@ Public Class ApInvoiceHeader
     End Property
 	
 	
-    <ValueMandatory(""),ValidStringLength("", Max:=400)> _
+    <ValueMandatory(""),ValidStringLength("", Max:=100)> _
     Public Property PaymentStatusXcd() As String
         Get
             CheckDeleted()
@@ -202,7 +202,7 @@ Public Class ApInvoiceHeader
     End Property
 	
 	
-    <ValueMandatory(""),ValidStringLength("", Max:=1000)> _
+    <ValueMandatory(""),ValidStringLength("", Max:=250)> _
     Public Property Source() As String
         Get
             CheckDeleted()
@@ -270,7 +270,7 @@ Public Class ApInvoiceHeader
     End Property
 	
 	
-    <ValueMandatory(""),ValidStringLength("", Max:=40)> _
+    <ValueMandatory(""),ValidStringLength("", Max:=10)> _
     Public Property CurrencyIsoCode() As String
         Get
             CheckDeleted()
@@ -304,7 +304,7 @@ Public Class ApInvoiceHeader
     End Property
 	
 	
-    <ValueMandatory(""),ValidStringLength("", Max:=400)> _
+    <ValueMandatory(""),ValidStringLength("", Max:=100)> _
     Public Property ApprovedXcd() As String
         Get
             CheckDeleted()
@@ -321,7 +321,7 @@ Public Class ApInvoiceHeader
     End Property
 	
 	
-    <ValueMandatory(""),ValidStringLength("", Max:=200)> _
+    <ValueMandatory(""),ValidStringLength("", Max:=50)> _
     Public Property AccountingPeriod() As String
         Get
             CheckDeleted()
@@ -338,7 +338,7 @@ Public Class ApInvoiceHeader
     End Property
 	
 	
-    <ValueMandatory(""),ValidStringLength("", Max:=4)> _
+    <ValueMandatory(""),ValidStringLength("", Max:=1)> _
     Public Property Distributed() As String
         Get
             CheckDeleted()
@@ -355,7 +355,7 @@ Public Class ApInvoiceHeader
     End Property
 	
 	
-    <ValueMandatory(""),ValidStringLength("", Max:=4)> _
+    <ValueMandatory(""),ValidStringLength("", Max:=1)> _
     Public Property Posted() As String
         Get
             CheckDeleted()
@@ -465,11 +465,34 @@ Public Class ApInvoiceHeader
             languageId = .LanguageId
         End With
 
-        dal.SearchAPInvoices(vendorCode,invoiceNum, source, invoiceDate, dueDateFrom, dueDateTo, rowCount, userId, errCode, errMsg,searchResults)
-        If errCode = 0 Then ' successful
-            Return New APInvoiceSearchDV(searchResults.Tables(0))
-        End If
+        dal.SearchAPInvoices(vendorCode,invoiceNum, source, invoiceDate, dueDateFrom, dueDateTo, rowCount, userId,searchResults)
+
+        Return New APInvoiceSearchDV(searchResults.Tables(0))
         
+    End Function
+
+    Public Function GetInvoiceExtendedInfo() As DataView
+
+        Dim dal As New ApInvoiceHeaderDAL
+        Dim dsResults As New DataSet
+
+        dal.LoadAPInvoiceExtendedInfo(Me.Id, dsResults)
+
+        Return dsResults.Tables(0).DefaultView        
+    End Function
+
+    Public Function GetInvoiceLines(ByVal minLineNum  As Integer,
+                                    ByVal maxLineNum  As Integer,
+                                    ByVal UnMatchedLineOnly   As Boolean,
+                                    ByVal rowCountReturn As Integer) As ApInvoiceLines.APInvoiceLinesDV
+
+        Dim dal As New ApInvoiceHeaderDAL
+        Dim dsResults As New DataSet
+
+        dal.LoadAPInvoiceLines(Me.Id, minLineNum, maxLineNum, UnMatchedLineOnly, ElitaPlusIdentity.Current.ActiveUser.LanguageId, rowCountReturn, dsResults)
+        
+        Return New ApInvoiceLines.APInvoiceLinesDV(dsResults.Tables(0))
+
     End Function
     
 #End Region
@@ -488,7 +511,10 @@ Public Class ApInvoiceHeader
         Public Const COL_PAID_AMOUNT As String = "paid_amount"
         Public Const COL_PAYMENT_DATE As String = "payment_date"
         Public Const COL_UNMATCHED_LINES_COUNT As String = "unmatched_lines_count"
+        Public Const COL_TOTAL_LINE_COUNT As String = "total_line_count"
         Public Const COL_VENDOR As String = "vendor"
+        Public Const COL_VENDOR_ADDRESS As String = "vendor_address"
+        
 
         Public Const COL_TOTAL_COUNT As String = "total_count"
         Public Sub New(ByVal table As DataTable)

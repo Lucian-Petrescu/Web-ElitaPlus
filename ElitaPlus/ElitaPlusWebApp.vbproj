@@ -809,6 +809,13 @@
       <DependentUpon>ChangeCompany.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
+    <Compile Include="Claims\AccountPayable\APInvoiceDetailForm.aspx.designer.vb">
+      <DependentUpon>APInvoiceDetailForm.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Claims\AccountPayable\APInvoiceDetailForm.aspx.vb">
+      <DependentUpon>APInvoiceDetailForm.aspx</DependentUpon>
+      <SubType>ASPXCodebehind</SubType>
+    </Compile>
     <Compile Include="Claims\AccountPayable\APInvoiceListForm.aspx.designer.vb">
       <DependentUpon>APInvoiceListForm.aspx</DependentUpon>
     </Compile>
@@ -5644,6 +5651,7 @@
     <Content Include="Certificates\UserControlServiceCenterInfo.ascx" />
     <Content Include="Certificates\VSCCertificateListForm.aspx" />
     <Content Include="Change_Company\ChangeCompany.aspx" />
+    <Content Include="Claims\AccountPayable\APInvoiceDetailForm.aspx" />
     <Content Include="Claims\AccountPayable\APInvoiceListForm.aspx" />
     <Content Include="Claims\ClaimIndixSearchForm.aspx" />
     <Content Include="Claims\InventorySearchForm.aspx" />
