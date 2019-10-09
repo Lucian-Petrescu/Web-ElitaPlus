@@ -1,10 +1,10 @@
-﻿<%@ Page Language="vb" AutoEventWireup="false" CodeBehind="PoAdjustmentForm.aspx.vb" 
+﻿<%@ Page Language="vb" AutoEventWireup="false" CodeBehind="PoAdjustmentForm.aspx.vb" EnableSessionState="True"
     Inherits="Assurant.ElitaPlus.ElitaPlusWebApp.Claims.AccountPayable.POAdjustmentForm" MasterPageFile="../Navigation/masters/ElitaBase.Master" 
     Theme="Default" %>
 
 <%@ Register TagPrefix="asp" Namespace="AjaxControlToolkit" Assembly="AjaxControlToolkit" %>
-<asp:Content ID="HeaderContent" ContentPlaceHolderID="HeadPlaceHolder" runat="server">
-   <script language="JavaScript" type="text/javascript">
+<asp:Content ID="Content1" ContentPlaceHolderID="HeadPlaceHolder" runat="server">
+    <script language="JavaScript" type="text/javascript">
         window.latestClick = '';
 
         function isNotDblClick() {
@@ -15,12 +15,12 @@
                 return false;
             }
         }
-    </script> 
+    </script>
 </asp:Content>
-<asp:Content ID="MessageContent" ContentPlaceHolderID="MessagePlaceHolder" runat="server">
+<asp:Content ID="Content2" ContentPlaceHolderID="MessagePlaceHolder" runat="server">
 </asp:Content>
 
-<asp:Content ID="SummaryContent" ContentPlaceHolderID="SummaryPlaceHolder" runat="server">
+<asp:Content ID="Content3" ContentPlaceHolderID="SummaryPlaceHolder" runat="server">
     <asp:ScriptManager ID="ScriptManager1" runat="server" EnablePageMethods="true" ScriptMode="Auto">
         <Scripts>
             <asp:ScriptReference Path="~/Navigation/scripts/ComunaSuggest.js" />
@@ -28,36 +28,36 @@
     </asp:ScriptManager>
      <table width="100%" border="0" class="searchGrid" id="searchTable" runat="server" >
             <tr>
-                <td style="width: 200px" align="left">
+                <td style="width: 200px; text-align: left;" >
                     <asp:Label ID="lblvendorcode" runat="server">Vendor_Code</asp:Label>:
                 </td>
-                <td style="width: 200px" align="left">
+                <td style="width: 200px; text-align: left;">
                     <asp:Label ID="lblponumber" runat="server">PO_Number</asp:Label>:
                 </td>
-                <td style="width: 200px" align="left"> </td>
+                <td style="width: 200px; text-align: left;"> </td>
             </tr>
             <tr>
-                <td style="width: 200px" nowrap align="left">
+                <td style="width: 200px; text-align: left;" >
                     <asp:TextBox ID="txtVendorcode" runat="server" Width="50%" AutoPostBack="False"
                         CssClass="FLATTEXTBOX"></asp:TextBox>
                 </td>
-                <td style="width: 200px" nowrap align="left">
+                <td style="width: 200px; text-align: left;">
                     <asp:TextBox ID="txtPoNumber" runat="server" Width="50%" AutoPostBack="False"
                         CssClass="FLATTEXTBOX"></asp:TextBox>
                 </td>
-                <td style="width: 200px" nowrap align="left"> </td>
+                <td style="width: 200px" > </td>
             </tr>
             <tr>
                 <td>
                     &nbsp;
                 </td>
-                <td align="right" colspan="2">
+                <td style="text-align: right;" colspan="2">
                     &nbsp;&nbsp;
                     <asp:Button ID="ClearButton" Style="background-image: url('../Navigation/images/icons/clear_icon.gif');
-                        cursor: hand; background-repeat: no-repeat" runat="server" Font-Bold="false"
+                        cursor: hand ; background-repeat: no-repeat" runat="server" Font-Bold="false"
                         Width="90px" Text="Clear" Height="20px" CssClass="FLATBUTTON"></asp:Button>&nbsp;&nbsp;
                     <asp:Button ID="SearchButton" Style="background-image: url('../Navigation/images/icons/search_icon.gif');
-                        cursor: hand; background-repeat: no-repeat" runat="server" Font-Bold="false"
+                        cursor: hand ; background-repeat: no-repeat" runat="server" Font-Bold="false"
                         Width="90px" Text="Search" Height="20px" CssClass="FLATBUTTON"></asp:Button>
                 </td>
             </tr>
@@ -65,7 +65,7 @@
      </table>
 
 </asp:Content>
-<asp:Content ID="Body" ContentPlaceHolderID="BodyPlaceHolder" runat="server">
+<asp:Content ID="Content4" ContentPlaceHolderID="BodyPlaceHolder" runat="server">
 <!-- new layout start -->
 <div class="dataContainer">
 <h2 class="dataGridHeader">
@@ -73,7 +73,7 @@
 <div>
     <table width="100%" class="dataGrid">
     <tr id="tr1" runat="server">
-        <td class="bor" align="left">
+        <td class="bor" style="text-align: left;">
             <asp:Label ID="Label1" runat="server">Page_Size</asp:Label><asp:Label ID="Label2" runat="server">:</asp:Label>
       
             <asp:Label ID="Label4" runat="server"></asp:Label> &nbsp;
@@ -91,7 +91,7 @@
             </asp:DropDownList>
 
         </td>
-        <td style="height: 22px" align="right">
+        <td style="height: 22px; text-align: right;">
             <asp:Label ID="lblRecordCount" runat="server"></asp:Label>
         </td>
     </tr>
@@ -194,7 +194,7 @@
     <div>
         <table width="100%">
         <tr>
-            <td align="left">
+            <td style="text-align: left;">
                 <asp:Button ID="SaveButton_WRITE" Style="background-image: url('../Navigation/images/icons/save_icon.gif');
                  cursor: hand; background-repeat: no-repeat" runat="server" Font-Bold="false"
                  Width="100px" Text="Save" Height="20px" CssClass="FLATBUTTON"></asp:Button>&nbsp;
