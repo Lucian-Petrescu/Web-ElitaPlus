@@ -61,7 +61,7 @@ Namespace Tables.Accounting.AccountPayable
             Dim newRow As DataRow = Me.Dataset.Tables(PoAdjustmentDAL.PO_LINES_TABLE_NAME).NewRow
             Me.Dataset.Tables(PoAdjustmentDAL.PO_LINES_TABLE_NAME).Rows.Add(newRow)
             Me.Row = newRow
-            SetValue(PoAdjustmentDAL.AP_PO_LINE_ID, Guid.NewGuid)
+            SetValue(PoAdjustmentDAL.PO_LINE_ID_COL, Guid.NewGuid)
         End Sub
 
       Protected Sub Load(ByVal vendorCode As String , ByVal apPoNumber As string, ByVal apPoLineId As Guid,ByVal poCompany As Guid)
@@ -76,12 +76,12 @@ Namespace Tables.Accounting.AccountPayable
                 Me.Row = Nothing
                 If Not Me.Dataset Is Nothing Then
                     If Me.Dataset.Tables.IndexOf(PoAdjustmentDAL.PO_LINES_TABLE_NAME) >= 0 Then
-                        Me.Row = FindRow(poLineId, PoAdjustmentDAL.PO_LINE_ID_COL, Me.Dataset.Tables(PoAdjustmentDAL.PO_LINES_TABLE_NAME))
+                        Me.Row = FindRow(apPoLineId.ToByteArray(), PoAdjustmentDAL.PO_LINE_ID_COL, Me.Dataset.Tables(PoAdjustmentDAL.PO_LINES_TABLE_NAME))
                     End If
                 End If
                 If Me.Row Is Nothing Then 
                     dal.Load(Me.Dataset, vendorCode,apPoNumber,poCompany)
-                    Me.Row = FindRow(poLineId, PoAdjustmentDAL.PO_LINE_ID_COL, Me.Dataset.Tables(PoAdjustmentDAL.PO_LINES_TABLE_NAME))
+                    Me.Row = FindRow(apPoLineId, PoAdjustmentDAL.PO_LINE_ID_COL, Me.Dataset.Tables(PoAdjustmentDAL.PO_LINES_TABLE_NAME))
                 End If
                 If Me.Row Is Nothing Then
                     Throw New DataNotFoundException
@@ -133,7 +133,7 @@ Namespace Tables.Accounting.AccountPayable
                 Me.SetValue(PoAdjustmentDAL.VENDOR_COL, value)
             End Set
         End Property
-        <ValueMandatory(""), ValidStringLength("", Max:=10)>
+        <ValueMandatory(""), ValidStringLength("", Max:=100)>
         Public Property PoNumber() As String
             Get
                 If Row(PoAdjustmentDAL.PO_NUMBER_COL) Is DBNull.Value Then Return Nothing
@@ -221,9 +221,6 @@ Namespace Tables.Accounting.AccountPayable
                     dal.UpdatePoLineQuantity(PoNumber,PoLineId,CompanyId,Quantity,ModifiedBy)
                     'Reload the Data from the DB
                     If Me.Row.RowState <> DataRowState.Detached Then
-                        Dim objId As Guid = Me.PoLineId
-                        Me.Dataset = New DataSet
-                        Me.Row = Nothing
                         Me.Load(Vendor,PoNumber,PoLineId,CompanyId)
                     End If
                 End If
@@ -235,7 +232,7 @@ Namespace Tables.Accounting.AccountPayable
        Public Function GetApPoLines( ByVal vendorCode As String , ByVal apPoNumber As string,ByVal companyGroupId As Guid) As DataView
            Try
                Dim dal As New PoAdjustmentDAL
-               Dim ds As Dataset
+               Dim ds As Dataset = new DataSet
 
                ds = dal.Load(ds, vendorCode, apPoNumber, CompanyGroupId)
                Return ds.Tables(PoAdjustmentDAL.PO_LINES_TABLE_NAME).DefaultView

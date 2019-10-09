@@ -15,67 +15,40 @@ Namespace Claims.AccountPayable
     Partial Public Class POAdjustmentForm
         
         '''<summary>
-        '''form1 control.
+        '''ScriptManager1 control.
         '''</summary>
         '''<remarks>
         '''Auto-generated field.
         '''To modify move field declaration from designer file to code-behind file.
         '''</remarks>
-        Protected WithEvents form1 As Global.System.Web.UI.HtmlControls.HtmlForm
+        Protected WithEvents ScriptManager1 As Global.System.Web.UI.ScriptManager
         
         '''<summary>
-        '''Label7 control.
+        '''searchTable control.
         '''</summary>
         '''<remarks>
         '''Auto-generated field.
         '''To modify move field declaration from designer file to code-behind file.
         '''</remarks>
-        Protected WithEvents Label7 As Global.System.Web.UI.WebControls.Label
+        Protected WithEvents searchTable As Global.System.Web.UI.HtmlControls.HtmlTable
         
         '''<summary>
-        '''Label3 control.
+        '''lblvendorcode control.
         '''</summary>
         '''<remarks>
         '''Auto-generated field.
         '''To modify move field declaration from designer file to code-behind file.
         '''</remarks>
-        Protected WithEvents Label3 As Global.System.Web.UI.WebControls.Label
+        Protected WithEvents lblvendorcode As Global.System.Web.UI.WebControls.Label
         
         '''<summary>
-        '''WorkingPanel control.
+        '''lblponumber control.
         '''</summary>
         '''<remarks>
         '''Auto-generated field.
         '''To modify move field declaration from designer file to code-behind file.
         '''</remarks>
-        Protected WithEvents WorkingPanel As Global.System.Web.UI.WebControls.Panel
-        
-        '''<summary>
-        '''POAdjustmentErrorController control.
-        '''</summary>
-        '''<remarks>
-        '''Auto-generated field.
-        '''To modify move field declaration from designer file to code-behind file.
-        '''</remarks>
-        Protected WithEvents POAdjustmentErrorController As Global.Assurant.ElitaPlus.ElitaPlusWebApp.ErrorController
-        
-        '''<summary>
-        '''DescriptionLabel control.
-        '''</summary>
-        '''<remarks>
-        '''Auto-generated field.
-        '''To modify move field declaration from designer file to code-behind file.
-        '''</remarks>
-        Protected WithEvents DescriptionLabel As Global.System.Web.UI.WebControls.Label
-        
-        '''<summary>
-        '''RiskTypeEnglishLabel control.
-        '''</summary>
-        '''<remarks>
-        '''Auto-generated field.
-        '''To modify move field declaration from designer file to code-behind file.
-        '''</remarks>
-        Protected WithEvents RiskTypeEnglishLabel As Global.System.Web.UI.WebControls.Label
+        Protected WithEvents lblponumber As Global.System.Web.UI.WebControls.Label
         
         '''<summary>
         '''txtVendorcode control.
@@ -114,22 +87,40 @@ Namespace Claims.AccountPayable
         Protected WithEvents SearchButton As Global.System.Web.UI.WebControls.Button
         
         '''<summary>
-        '''trPageSize control.
+        '''tr1 control.
         '''</summary>
         '''<remarks>
         '''Auto-generated field.
         '''To modify move field declaration from designer file to code-behind file.
         '''</remarks>
-        Protected WithEvents trPageSize As Global.System.Web.UI.HtmlControls.HtmlTableRow
+        Protected WithEvents tr1 As Global.System.Web.UI.HtmlControls.HtmlTableRow
         
         '''<summary>
-        '''lblPageSize control.
+        '''Label1 control.
         '''</summary>
         '''<remarks>
         '''Auto-generated field.
         '''To modify move field declaration from designer file to code-behind file.
         '''</remarks>
-        Protected WithEvents lblPageSize As Global.System.Web.UI.WebControls.Label
+        Protected WithEvents Label1 As Global.System.Web.UI.WebControls.Label
+        
+        '''<summary>
+        '''Label2 control.
+        '''</summary>
+        '''<remarks>
+        '''Auto-generated field.
+        '''To modify move field declaration from designer file to code-behind file.
+        '''</remarks>
+        Protected WithEvents Label2 As Global.System.Web.UI.WebControls.Label
+        
+        '''<summary>
+        '''Label4 control.
+        '''</summary>
+        '''<remarks>
+        '''Auto-generated field.
+        '''To modify move field declaration from designer file to code-behind file.
+        '''</remarks>
+        Protected WithEvents Label4 As Global.System.Web.UI.WebControls.Label
         
         '''<summary>
         '''cboPageSize control.
@@ -159,15 +150,6 @@ Namespace Claims.AccountPayable
         Protected WithEvents PoGrid As Global.System.Web.UI.WebControls.GridView
         
         '''<summary>
-        '''HiddenDeletePromptResponse control.
-        '''</summary>
-        '''<remarks>
-        '''Auto-generated field.
-        '''To modify move field declaration from designer file to code-behind file.
-        '''</remarks>
-        Protected WithEvents HiddenDeletePromptResponse As Global.System.Web.UI.HtmlControls.HtmlInputHidden
-        
-        '''<summary>
         '''SaveButton_WRITE control.
         '''</summary>
         '''<remarks>
@@ -184,5 +166,14 @@ Namespace Claims.AccountPayable
         '''To modify move field declaration from designer file to code-behind file.
         '''</remarks>
         Protected WithEvents CancelButton As Global.System.Web.UI.WebControls.Button
+        
+        '''<summary>
+        '''HiddenDeletePromptResponse control.
+        '''</summary>
+        '''<remarks>
+        '''Auto-generated field.
+        '''To modify move field declaration from designer file to code-behind file.
+        '''</remarks>
+        Protected WithEvents HiddenDeletePromptResponse As Global.System.Web.UI.HtmlControls.HtmlInputHidden
     End Class
 End Namespace

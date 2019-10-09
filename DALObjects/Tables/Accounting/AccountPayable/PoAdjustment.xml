@@ -1,9 +1,0 @@
-﻿<?xml version="1.0" encoding="utf-8" ?>
-<SQL>
-   <UPDATE>
-     elita.elp_ap_po_update.update_ap_po_line
-   </UPDATE>
-  <LOAD_PO_LINES>
-    elita.elp_ap_po_update.search
-  </LOAD_PO_LINES>
-</SQL>

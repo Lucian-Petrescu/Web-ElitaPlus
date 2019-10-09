@@ -4,7 +4,7 @@
 
 #Region "Constants"
 
-        public Const TOTAL_PARAM_PO_UPDATE As Integer = 5
+        public Const TOTAL_PARAM_PO_UPDATE As Integer = 4
         Public Const PO_LINES_TABLE_NAME As String  = "elp_ap_po_line"
         Public Const PO_LINE_ID_COL As String = "po_line_id"
         Public Const VENDOR_COL As String = "Vendor"
@@ -26,6 +26,7 @@
         Public Const PI_AP_PO_LINE_QTY As String = "pi_ap_po_line_qty"
         Public Const PI_MODIFIED_BY_COL As String ="pi_modified_by"
         Public Const PI_COMPANY_ID_COL As String = "pi_company_id"
+        public Const PO_PO_LINES As String ="po_ap_lines"
        
         Public Const AP_PO_NUMBER = 0    
         Public Const AP_PO_LINE_ID = 1   
@@ -47,13 +48,15 @@
 
     Public Function Load(ByVal ds As DataSet, ByVal vendorCode As String , ByVal poNumber As string,companyGroupId As Guid) As DataSet
 
-        Dim selectStmt As String = Me.Config("/SQL/LOAD_PO_LINES")
-        Dim parameters() As OracleParameter = New OracleParameter() {New OracleParameter(PI_VENDOR, vendorCode), 
-                                                                     New OracleParameter ( PI_AP_PO_NUMBER,poNumber),
-                                                                     New OracleParameter (PI_COMPANY_ID_COL,companyGroupId)
-                                                                    }
-        
-        Return (DBHelper.Fetch(ds, selectStmt, PO_LINES_TABLE_NAME, parameters))
+        Dim selectStmt As String ="elita.elp_ap_po_update.search"
+        Dim parameters() As DBHelper.DBHelperParameter = New DBHelper.DBHelperParameter() {New DBHelper.DBHelperParameter(PI_VENDOR, vendorCode), _ 
+                                                                     New DBHelper.DBHelperParameter ( PI_AP_PO_NUMBER,poNumber), _
+                                                                     New DBHelper.DBHelperParameter (PI_COMPANY_ID_COL,companyGroupId.ToByteArray)}
+        Dim outputParameter(0) As DBHelper.DBHelperParameter
+        outputParameter(0) = New DBHelper.DBHelperParameter(PO_PO_LINES, GetType(DataSet))
+        DBHelper.FetchSp(selectStmt,parameters, outputParameter,ds, PO_LINES_TABLE_NAME)
+
+        Return ds
 
     End Function
 
@@ -64,13 +67,13 @@
     End Function
 
     Public Function UpdatePoLineQuantity(ByVal poNumber As string, ByVal poLineId As Guid, ByVal companyId As Guid, ByVal  poLineQuantity As Decimal,ByVal modifiedBy As string) As Integer
-        Dim selectStmt As String = Me.Config("/SQL/UPDATE")
+        Dim selectStmt As String = "elita.elp_ap_po_update.update_ap_po_line"
         Dim inputParameters(TOTAL_PARAM_PO_UPDATE) As DBHelper.DBHelperParameter
         Dim outputParameter(0) As DBHelper.DBHelperParameter
 
         inputParameters(AP_PO_NUMBER) = New DBHelper.DBHelperParameter(PI_AP_PO_NUMBER, poNumber)
-        inputParameters(AP_PO_LINE_ID) = New DBHelper.DBHelperParameter(PI_AP_PO_LINE_ID, poLineId)
-        inputParameters(AP_PO_COMPANY) = New DBHelper.DBHelperParameter(PI_COMPANY_ID_COL, companyId)
+        inputParameters(AP_PO_LINE_ID) = New DBHelper.DBHelperParameter(PI_AP_PO_LINE_ID, poLineId.ToByteArray())
+        inputParameters(AP_PO_COMPANY) = New DBHelper.DBHelperParameter(PI_COMPANY_ID_COL, companyId.ToByteArray())
         inputParameters(AP_PO_LINE_QTY) = New DBHelper.DBHelperParameter(PI_AP_PO_LINE_QTY, poLineQuantity)
         inputParameters(MODIFIED_BY) = New DBHelper.DBHelperParameter(PI_MODIFIED_BY_COL, modifiedBy)
         outputParameter(0) = New DBHelper.DBHelperParameter(COL_NAME_RETURN, GetType(Integer))
@@ -78,7 +81,7 @@
         ' Call DBHelper Store Procedure 
         DBHelper.ExecuteSp(selectStmt, inputParameters, outputParameter)
 
-        If outputParameter(0).Value <> 0 And outputParameter(0).Value <> -1 Then
+        If  outputParameter(0).Value <> 1 Then
             Dim e As New ApplicationException("Return Value = " & outputParameter(0).Value)
             Throw New DataBaseAccessException(DataBaseAccessException.DatabaseAccessErrorType.WriteErr, e)
         Else

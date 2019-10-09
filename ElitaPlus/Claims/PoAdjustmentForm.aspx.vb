@@ -33,9 +33,8 @@ Namespace Claims.AccountPayable
 
         Private Const EDIT_COMMAND As String = "EditRecord"
         Private Const SORT_COMMAND As String = "Sort"
-
-
-
+        Public Const PAGETITLE As String = "PO ADJUSTMENT"
+        Public Const PAGETAB As String = "CLAIM"
         Private Const NO_ROW_SELECTED_INDEX As Integer = -1
 
 #End Region
@@ -52,27 +51,35 @@ Namespace Claims.AccountPayable
 
         Protected Sub Page_Load(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Load
             Try 
-                POAdjustmentErrorController.Clear_Hide()
-                SetStateProperties()
+               SetStateProperties()
                 If Not Page.IsPostBack Then
+                    SetFormTitle(PAGETITLE)
+                    SetFormTab(PAGETAB)
                     SortDirection = PoAdjustment.PO_NUMBER_COL
-                    ControlMgr.SetVisibleControl(Me, trPageSize, False)
+                    ControlMgr.SetVisibleControl(Me, tr1, False)
                     SetDefaultButton(txtVendorcode, SearchButton)
                     SetDefaultButton(txtPoNumber, SearchButton)
                     SetGridItemStyleColor(PoGrid)
                     If State.PoAdjustmentBo Is Nothing Then
                         State.PoAdjustmentBo = New PoAdjustment
                     End If
-                   SetButtonsState()
+                    If Me.State.IsGridVisible Then
+                        If Not (Me.State.selectedPageSize = DEFAULT_PAGE_SIZE) Then
+                            cboPageSize.SelectedValue = CType(Me.State.selectedPageSize, String)
+                            PoGrid.PageSize = Me.State.selectedPageSize
+                        End If
+                        PopulatepoGrid()
+                    End If
+                    SetButtonsState()
                     State.PageIndex = 0
-                    TranslateGridHeader(PoGrid)
+                    'TranslateGridHeader(PoGrid)
                     TranslateGridControls(PoGrid)
                 End If
                 BindBoPropertiesToGridHeaders()
             Catch ex As Exception
-                HandleErrors(ex, POAdjustmentErrorController)
+                Me.HandleErrors(ex, Me.MasterPage.MessageController)
             End Try
-            ShowMissingTranslations(POAdjustmentErrorController)
+            ShowMissingTranslations(Me.MasterPage.MessageController)
         End Sub
 
 #End Region
@@ -203,7 +210,7 @@ Namespace Claims.AccountPayable
 
                 SortAndBindGrid()
             Catch ex As Exception
-                HandleErrors(ex, POAdjustmentErrorController)
+                HandleErrors(ex, Me.MasterPage.MessageController)
             End Try
 
         End Sub
@@ -228,7 +235,7 @@ Namespace Claims.AccountPayable
 
         End Function
 
-     Private Sub PopulateBoFromForm()
+        Private Sub PopulateBoFromForm()
             Try
                 With State.PoAdjustmentBo
                     .PoLineId = Guid.Parse( CType(PoGrid.Rows(PoGrid.EditIndex).Cells(PO_LINE_ID_COL).FindControl(PO_LINE_ID_CONTROL_LABEL), Label).Text)
@@ -243,7 +250,7 @@ Namespace Claims.AccountPayable
                     .CompanyId = ElitaPlusIdentity.Current.ActiveUser.FirstCompanyID
                 End With
             Catch ex As Exception
-                HandleErrors(ex, POAdjustmentErrorController)
+                HandleErrors(ex, Me.MasterPage.MessageController)
             End Try
 
         End Sub
@@ -279,7 +286,7 @@ Namespace Claims.AccountPayable
                    CType(PoGrid.Rows(gridRowIdx).Cells(PO_LINE_ID_COL).FindControl(PO_LINE_ID_CONTROL_LABEL), Label).Text = .PoLineId.ToString
                 End With
             Catch ex As Exception
-                HandleErrors(ex, POAdjustmentErrorController)
+                HandleErrors(ex, Me.MasterPage.MessageController)
             End Try
 
         End Sub
@@ -303,7 +310,7 @@ Namespace Claims.AccountPayable
             Try
                 BaseItemCreated(sender, e)
             Catch ex As Exception
-                HandleErrors(ex, POAdjustmentErrorController)
+                HandleErrors(ex, Me.MasterPage.MessageController)
             End Try
         End Sub
 
@@ -331,10 +338,11 @@ Namespace Claims.AccountPayable
 
                 End If
             Catch ex As Exception
-                HandleErrors(ex, POAdjustmentErrorController)
+                HandleErrors(ex, Me.MasterPage.MessageController)
             End Try
 
         End Sub
+
         Private Sub SortAndBindGrid()
             TranslateGridControls(PoGrid)
 
@@ -351,12 +359,12 @@ Namespace Claims.AccountPayable
             End If
             If Not PoGrid.BottomPagerRow.Visible Then PoGrid.BottomPagerRow.Visible = True
             ControlMgr.SetVisibleControl(Me, PoGrid, State.IsGridVisible)
-            ControlMgr.SetVisibleControl(Me, trPageSize, PoGrid.Visible)
+            ControlMgr.SetVisibleControl(Me, tr1, PoGrid.Visible)
 
             Session("recCount") = State.searchDV.Count
 
             If PoGrid.Visible Then
-                    lblRecordCount.Text =
+                lblRecordCount.Text =
                         $"{State.searchDV.Count} {TranslationBase.TranslateLabelOrMessage(Message.MSG_RECORDS_FOUND) }"
             End If
             ControlMgr.DisableEditDeleteGridIfNotEditAuth(Me, PoGrid)
@@ -368,7 +376,7 @@ Namespace Claims.AccountPayable
                 State.selectedPageSize = CType(cboPageSize.SelectedValue, Integer)
                 PopulatePoGrid()
             Catch ex As Exception
-                HandleErrors(ex, POAdjustmentErrorController)
+                HandleErrors(ex, Me.MasterPage.MessageController)
             End Try
         End Sub
 
@@ -382,14 +390,14 @@ Namespace Claims.AccountPayable
                     PoGrid.SelectedIndex = NO_ITEM_SELECTED_INDEX
                 End If
             Catch ex As Exception
-                HandleErrors(ex, POAdjustmentErrorController)
+                HandleErrors(ex, Me.MasterPage.MessageController)
             End Try
 
         End Sub
 
         Private Sub Grid_ItemDataBound(ByVal sender As Object, ByVal e As System.Web.UI.WebControls.GridViewRowEventArgs) Handles PoGrid.RowDataBound
             Try
-                'BaseItemBound(source, e)
+                
                 Dim itemType As ListItemType = CType(e.Row.RowType, ListItemType)
                 Dim dvRow As DataRowView = CType(e.Row.DataItem, DataRowView)
 
@@ -402,7 +410,7 @@ Namespace Claims.AccountPayable
                                 AndAlso State.PoLineId.ToString.Equals(GetGuidStringFromByteArray(CType(dvRow(PoAdjustment.PO_LINE_ID_COL), Byte())))) Then
                             CType(e.Row.Cells(QUANTITY_COL).FindControl(QUANTITY_CONTROL_NAME), TextBox).Text = dvRow(PoAdjustment.QUANTITY_COL).ToString
                         Else
-                            CType(e.Row.Cells(UNIT_PRICE_COL).FindControl(UNIT_PRICE_CONTROL_LABEL), label).Text = dvRow(PoAdjustment.UNIT_PRICE_COL).ToString
+                            CType(e.Row.Cells(QUANTITY_COL).FindControl(QUANTITY_CONTROL_LABEL), label).Text = dvRow(PoAdjustment.QUANTITY_COL).ToString
                         End If
 
                         CType(e.Row.Cells(VENDOR_COL).FindControl(VENDOR_CONTROL_LABEL), label).Text = dvRow(PoAdjustment.VENDOR_COL).ToString
@@ -416,9 +424,10 @@ Namespace Claims.AccountPayable
                     End If
                 End If
             Catch ex As Exception
-                HandleErrors(ex, POAdjustmentErrorController)
+                HandleErrors(ex, Me.MasterPage.MessageController)
             End Try
         End Sub
+
         Private Sub Grid_SortCommand(ByVal source As Object, ByVal e As System.Web.UI.WebControls.GridViewSortEventArgs) Handles PoGrid.Sorting
             Try
                 Dim spaceIndex As Integer = SortDirection.LastIndexOf(" ", StringComparison.Ordinal)
@@ -437,9 +446,10 @@ Namespace Claims.AccountPayable
                 State.PageIndex = 0
                 PopulatePoGrid()
             Catch ex As Exception
-                HandleErrors(ex, POAdjustmentErrorController)
+                HandleErrors(ex, Me.MasterPage.MessageController)
             End Try
         End Sub
+
         Protected Sub ItemBound(ByVal source As Object, ByVal e As GridViewRowEventArgs) Handles PoGrid.RowDataBound
 
             Try
@@ -448,7 +458,7 @@ Namespace Claims.AccountPayable
                 End If
 
             Catch ex As Exception
-                HandleErrors(ex, POAdjustmentErrorController)
+                HandleErrors(ex, Me.MasterPage.MessageController)
             End Try
         End Sub
 
@@ -466,7 +476,7 @@ Namespace Claims.AccountPayable
                 PopulatePogrid()
                 State.PageIndex = PoGrid.PageIndex
             Catch ex As Exception
-                HandleErrors(ex, Me.POAdjustmentErrorController)
+                HandleErrors(ex, Me.MasterPage.MessageController)
             End Try
         End Sub
 
@@ -485,7 +495,7 @@ Namespace Claims.AccountPayable
                     ReturnFromEditing()
                 End If
             Catch ex As Exception
-                Me.HandleErrors(ex, POAdjustmentErrorController)
+                HandleErrors(ex, Me.MasterPage.MessageController)
             End Try
         End Sub
 
@@ -495,7 +505,7 @@ Namespace Claims.AccountPayable
                 Me.State.Canceling = True
                 ReturnFromEditing()
             Catch ex As Exception
-                Me.HandleErrors(ex, POAdjustmentErrorController)
+                HandleErrors(ex, Me.MasterPage.MessageController)
             End Try
         End Sub
 
@@ -510,7 +520,7 @@ Namespace Claims.AccountPayable
                     .PoNumber = txtPoNumber.Text
                 End With
             Catch ex As Exception
-                Me.HandleErrors(ex, POAdjustmentErrorController)
+                HandleErrors(ex, Me.MasterPage.MessageController)
             End Try
 
         End Sub
