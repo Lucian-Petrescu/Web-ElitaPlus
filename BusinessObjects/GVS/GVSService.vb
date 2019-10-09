@@ -10,66 +10,66 @@ Public Class GVSService
 
 #End Region
 
-    Private Shared Function Bind_WSElitaServiceOrderSoap() As BasicHttpBinding
-        Dim bind As New BasicHttpBinding()
+    'Private Shared Function Bind_WSElitaServiceOrderSoap() As BasicHttpBinding
+    '    Dim bind As New BasicHttpBinding()
 
-        bind.Name = "WSElitaServiceOrderSoap"
-        bind.CloseTimeout = TimeSpan.Parse("00:01:00")
-        bind.OpenTimeout = TimeSpan.Parse("00:01:00")
-        bind.ReceiveTimeout = TimeSpan.Parse("00:10:00")
-        bind.SendTimeout = TimeSpan.Parse("00:01:00")
-        bind.AllowCookies = False
-        bind.BypassProxyOnLocal = False
-        bind.HostNameComparisonMode = HostNameComparisonMode.StrongWildcard
-        bind.MaxBufferSize = 262144
-        bind.MaxBufferPoolSize = 524288
-        bind.MaxReceivedMessageSize = 262144
-        bind.MessageEncoding = WSMessageEncoding.Text
-        bind.TextEncoding = Text.Encoding.UTF8
-        bind.TransferMode = TransferMode.Buffered
-        bind.UseDefaultWebProxy = True
-        ' readerQuotas
-        bind.ReaderQuotas.MaxDepth = 32
-        bind.ReaderQuotas.MaxStringContentLength = 262144
-        bind.ReaderQuotas.MaxArrayLength = 262144
-        bind.ReaderQuotas.MaxBytesPerRead = 4096
-        bind.ReaderQuotas.MaxNameTableCharCount = 16384
-        ' Security
-        bind.Security.Mode = SecurityMode.Transport
-        '   Transport
-        bind.Security.Transport.ClientCredentialType = HttpClientCredentialType.None
-        bind.Security.Transport.ProxyCredentialType = HttpProxyCredentialType.None
-        '   Message
-        bind.Security.Message.AlgorithmSuite = ServiceModel.Security.SecurityAlgorithmSuite.Default
+    '    bind.Name = "WSElitaServiceOrderSoap"
+    '    bind.CloseTimeout = TimeSpan.Parse("00:01:00")
+    '    bind.OpenTimeout = TimeSpan.Parse("00:01:00")
+    '    bind.ReceiveTimeout = TimeSpan.Parse("00:10:00")
+    '    bind.SendTimeout = TimeSpan.Parse("00:01:00")
+    '    bind.AllowCookies = False
+    '    bind.BypassProxyOnLocal = False
+    '    bind.HostNameComparisonMode = HostNameComparisonMode.StrongWildcard
+    '    bind.MaxBufferSize = 262144
+    '    bind.MaxBufferPoolSize = 524288
+    '    bind.MaxReceivedMessageSize = 262144
+    '    bind.MessageEncoding = WSMessageEncoding.Text
+    '    bind.TextEncoding = Text.Encoding.UTF8
+    '    bind.TransferMode = TransferMode.Buffered
+    '    bind.UseDefaultWebProxy = True
+    '    ' readerQuotas
+    '    bind.ReaderQuotas.MaxDepth = 32
+    '    bind.ReaderQuotas.MaxStringContentLength = 262144
+    '    bind.ReaderQuotas.MaxArrayLength = 262144
+    '    bind.ReaderQuotas.MaxBytesPerRead = 4096
+    '    bind.ReaderQuotas.MaxNameTableCharCount = 16384
+    '    ' Security
+    '    bind.Security.Mode = SecurityMode.Transport
+    '    '   Transport
+    '    bind.Security.Transport.ClientCredentialType = HttpClientCredentialType.None
+    '    bind.Security.Transport.ProxyCredentialType = HttpProxyCredentialType.None
+    '    '   Message
+    '    bind.Security.Message.AlgorithmSuite = ServiceModel.Security.SecurityAlgorithmSuite.Default
 
-        Return bind
-    End Function
+    '    Return bind
+    'End Function
 
-    Private Shared Function Get_EndPoint(ByVal url As String) As EndpointAddress
-        Dim eab As EndpointAddressBuilder
+    'Private Shared Function Get_EndPoint(ByVal url As String) As EndpointAddress
+    '    Dim eab As EndpointAddressBuilder
 
-        eab = New EndpointAddressBuilder
-        eab.Uri = New Uri(url)
+    '    eab = New EndpointAddressBuilder
+    '    eab.Uri = New Uri(url)
 
-        Return eab.ToEndpointAddress
-    End Function
+    '    Return eab.ToEndpointAddress
+    'End Function
 
-    Private Shared Function Get_ServiceClient(ByVal url As String) As WebDeClaimsServiceRef.WSElitaServiceOrderSoapClient
-        Dim bind As BasicHttpBinding
-        Dim ea As EndpointAddress
-        Dim sc As WebDeClaimsServiceRef.WSElitaServiceOrderSoapClient
+    'Private Shared Function Get_ServiceClient(ByVal url As String) As WebDeClaimsServiceRef.WSElitaServiceOrderSoapClient
+    '    Dim bind As BasicHttpBinding
+    '    Dim ea As EndpointAddress
+    '    Dim sc As WebDeClaimsServiceRef.WSElitaServiceOrderSoapClient
 
-        bind = Bind_WSElitaServiceOrderSoap()
-        ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12
-        ea = Get_EndPoint(url)
-        sc = New WebDeClaimsServiceRef.WSElitaServiceOrderSoapClient(bind, ea)
-        sc.Endpoint.Name = "WSElitaServiceOrderSoap"
+    '    bind = Bind_WSElitaServiceOrderSoap()
+    '    ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12
+    '    ea = Get_EndPoint(url)
+    '    sc = New WebDeClaimsServiceRef.WSElitaServiceOrderSoapClient(bind, ea)
+    '    sc.Endpoint.Name = "WSElitaServiceOrderSoap"
 
-        Return sc
-    End Function
+    '    Return sc
+    'End Function
 
     Public Shared Function SendToGvs(ByVal xmlIn As String, ByVal functionToProcess As String) As String
-        Dim wsGvs As WebDeClaimsServiceRef.WSElitaServiceOrderSoapClient
+        Dim wsGvs As WebDeClaimsServiceReference.WSElitaServiceOrder
         Dim gvsToken As String
         Dim sLoginMsg As String
         Dim xmlOut As String
@@ -98,7 +98,8 @@ Public Class GVSService
 
             oWebPasswd = New WebPasswd(Authentication.CompanyGroupId, LookupListNew.GetIdFromCode(Codes.SERVICE_TYPE, Codes.SERVICE_TYPE__SERVICE_NETWORK_GVS), True)
             url = oWebPasswd.Url
-            wsGvs = Get_ServiceClient(url)
+            wsGvs = New WebDeClaimsServiceReference.WSElitaServiceOrder()
+            wsGvs.Url = url
             Try
                 gvsToken = wsGvs.Login(oWebPasswd.UserId, oWebPasswd.Password)
             Catch ex As Exception
@@ -113,7 +114,6 @@ Public Class GVSService
                     userNetworkId = ElitaPlusIdentity.Current.ActiveUser.NetworkId
                 End If
                 xmlOut = XMLHelper.FromErrorCodeToXML(Common.ErrorCodes.WS_ERR_NO_TOKEN_RETURNED, errMsg, userNetworkId)
-                wsGvs.Close()
             ElseIf gvsToken.ToUpperInvariant = LOGIN_FAILED Then
                 errMsg = TranslationBase.TranslateLabelOrMessage(Common.ErrorCodes.WS_ACCESS_DENIED)
 
@@ -121,7 +121,6 @@ Public Class GVSService
                     userNetworkId = ElitaPlusIdentity.Current.ActiveUser.NetworkId
                 End If
                 xmlOut = XMLHelper.FromErrorCodeToXML(Common.ErrorCodes.WS_ACCESS_DENIED, errMsg, userNetworkId)
-                wsGvs.Close()
             Else
                 Try
                     xmlOut = wsGvs.ProcessRequest(gvsToken, functionToProcess, xmlIn)
@@ -148,7 +147,7 @@ Public Class GVSService
             Loop
             Throw ex
         Finally
-            wsGvs.Close()
+            wsGvs.Dispose()
         End Try
 
     End Function

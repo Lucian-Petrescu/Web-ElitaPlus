@@ -53,16 +53,6 @@ Namespace My
                 Return defaultInstance
             End Get
         End Property
-        
-        <Global.System.Configuration.ApplicationScopedSettingAttribute(),  _
-         Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
-         Global.System.Configuration.SpecialSettingAttribute(Global.System.Configuration.SpecialSetting.WebServiceUrl),  _
-         Global.System.Configuration.DefaultSettingValueAttribute("http://10.210.12.44:8080/webclaims/WSElitaServiceOrder")>  _
-        Public ReadOnly Property ElitaInternalWS_WebDeClaims_WSElitaServiceOrder() As String
-            Get
-                Return CType(Me("ElitaInternalWS_WebDeClaims_WSElitaServiceOrder"),String)
-            End Get
-        End Property
     End Class
 End Namespace
 
