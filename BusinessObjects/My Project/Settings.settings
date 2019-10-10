@@ -5,5 +5,8 @@
     <Setting Name="Assurant_ElitaPlus_BusinessObjectsNew_AcselXWSRef_CancelamentoElita" Type="(Web Service URL)" Scope="Application">
       <Value Profile="(Default)">http://javades.delphos.com.br:80/CancelamentoElita/CancelamentoElita</Value>
     </Setting>
+    <Setting Name="Assurant_ElitaPlus_BusinessObjectsNew_WebDeClaimsServiceReference_WSElitaServiceOrder" Type="(Web Service URL)" Scope="Application">
+      <Value Profile="(Default)">http://10.210.12.44:8080/webclaims/WSElitaServiceOrder</Value>
+    </Setting>
   </Settings>
 </SettingsFile>

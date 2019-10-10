@@ -63,6 +63,17 @@ Namespace My
                 Return CType(Me("Assurant_ElitaPlus_BusinessObjectsNew_AcselXWSRef_CancelamentoElita"),String)
             End Get
         End Property
+
+        <Global.System.Configuration.ApplicationScopedSettingAttribute(),
+         Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),
+         Global.System.Configuration.SpecialSettingAttribute(Global.System.Configuration.SpecialSetting.WebServiceUrl),
+         Global.System.Configuration.DefaultSettingValueAttribute("http://10.210.12.44:8080/webclaims/WSElitaServiceOrder")>
+        Public ReadOnly Property Assurant_ElitaPlus_BusinessObjectsNew_WebDeClaimsServiceReference_WSElitaServiceOrder() As String
+            Get
+                Return CType(Me("Assurant_ElitaPlus_BusinessObjectsNew_WebDeClaimsServiceReference_WSElitaServiceO" &
+                    "rder"), String)
+            End Get
+        End Property
     End Class
 End Namespace
 

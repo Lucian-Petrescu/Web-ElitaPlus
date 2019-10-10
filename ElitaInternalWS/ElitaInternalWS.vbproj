@@ -780,16 +780,6 @@
     <Compile Include="Test\WcfTest.svc.vb" Condition=" '$(NET_FRAMEWORK)' == '3.5' ">
       <DependentUpon>WcfTest.svc</DependentUpon>
     </Compile>
-    <Compile Include="Web References\GAPWebServiceProdRef\Reference.vb">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>Reference.map</DependentUpon>
-    </Compile>
-    <Compile Include="Web References\GAPWebServiceRef\Reference.vb">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>Reference.map</DependentUpon>
-    </Compile>
     <Content Include="Accounting\1.0\AccountingService.svc" />
     <Content Include="Accounting\2.0\AccountingService.svc" />
     <Content Include="Accounting\FelitaWS.asmx" />
@@ -961,16 +951,6 @@
     </Content>
     <Content Include="SpecializedServices\GOOW\DataContracts\CreateClaim.cd" />
     <Content Include="SpecializedServices\GOOW\DataContracts\BaseClaim.cd" />
-    <None Include="Web References\GAPWebServiceProdRef\Reference.map">
-      <Generator>MSDiscoCodeGenerator</Generator>
-      <LastGenOutput>Reference.vb</LastGenOutput>
-    </None>
-    <None Include="Web References\GAPWebServiceProdRef\WSElitaServiceOrder.wsdl" />
-    <None Include="Web References\GAPWebServiceRef\Reference.map">
-      <Generator>MSDiscoCodeGenerator</Generator>
-      <LastGenOutput>Reference.vb</LastGenOutput>
-    </None>
-    <None Include="Web References\GAPWebServiceRef\WSElitaServiceOrder.disco" />
     <EmbeddedResource Include="Common\ElitaWebService.resx">
       <DependentUpon>ElitaWebService.vb</DependentUpon>
       <SubType>Designer</SubType>
@@ -1220,8 +1200,6 @@
     <None Include="Schemas\VSC\VSCQuote.xsx">
       <DependentUpon>VSCQuote.xsd</DependentUpon>
     </None>
-    <None Include="Web References\GAPWebServiceRef\WSElitaServiceOrder.wsdl" />
-    <None Include="Web References\GAPWebServiceProdRef\WSElitaServiceOrder.disco" />
     <Content Include="Web.config">
       <SubType>Designer</SubType>
     </Content>
@@ -1230,32 +1208,11 @@
     <WebReferences Include="Web References\" />
   </ItemGroup>
   <ItemGroup>
-    <WebReferenceUrl Include="https://b2b.gapnetworks.com/assurant/ws/production/WSElitaServiceOrder.asmx">
-      <UrlBehavior>Dynamic</UrlBehavior>
-      <RelPath>Web References\GAPWebServiceProdRef\</RelPath>
-      <UpdateFromURL>https://b2b.gapnetworks.com/assurant/ws/production/WSElitaServiceOrder.asmx</UpdateFromURL>
-      <ServiceLocationURL>
-      </ServiceLocationURL>
-      <CachedDynamicPropName>
-      </CachedDynamicPropName>
-      <CachedAppSettingsObjectName>MySettings</CachedAppSettingsObjectName>
-      <CachedSettingsPropName>ElitaInternalWS_GAPWebServiceProdRef_WSElitaServiceOrder</CachedSettingsPropName>
-    </WebReferenceUrl>
-    <WebReferenceUrl Include="https://b2b.gapnetworks.com/assurant/ws/staging/WSElitaServiceOrder.asmx">
-      <UrlBehavior>Dynamic</UrlBehavior>
-      <RelPath>Web References\GAPWebServiceRef\</RelPath>
-      <UpdateFromURL>https://b2b.gapnetworks.com/assurant/ws/staging/WSElitaServiceOrder.asmx</UpdateFromURL>
-      <ServiceLocationURL>
-      </ServiceLocationURL>
-      <CachedDynamicPropName>
-      </CachedDynamicPropName>
-      <CachedAppSettingsObjectName>MySettings</CachedAppSettingsObjectName>
-      <CachedSettingsPropName>ElitaInternalWS_GAPWebServiceRef_WSElitaServiceOrder</CachedSettingsPropName>
-    </WebReferenceUrl>
-  </ItemGroup>
-  <ItemGroup>
     <Folder Include="Contracts\DataContracts\GeographicServices\" />
     <Folder Include="Schemas\AcselX\" />
+  </ItemGroup>
+  <ItemGroup>
+    <WCFMetadata Include="Connected Services\" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">14.0</VisualStudioVersion>
