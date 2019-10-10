@@ -10,64 +10,6 @@ Public Class GVSService
 
 #End Region
 
-    'Private Shared Function Bind_WSElitaServiceOrderSoap() As BasicHttpBinding
-    '    Dim bind As New BasicHttpBinding()
-
-    '    bind.Name = "WSElitaServiceOrderSoap"
-    '    bind.CloseTimeout = TimeSpan.Parse("00:01:00")
-    '    bind.OpenTimeout = TimeSpan.Parse("00:01:00")
-    '    bind.ReceiveTimeout = TimeSpan.Parse("00:10:00")
-    '    bind.SendTimeout = TimeSpan.Parse("00:01:00")
-    '    bind.AllowCookies = False
-    '    bind.BypassProxyOnLocal = False
-    '    bind.HostNameComparisonMode = HostNameComparisonMode.StrongWildcard
-    '    bind.MaxBufferSize = 262144
-    '    bind.MaxBufferPoolSize = 524288
-    '    bind.MaxReceivedMessageSize = 262144
-    '    bind.MessageEncoding = WSMessageEncoding.Text
-    '    bind.TextEncoding = Text.Encoding.UTF8
-    '    bind.TransferMode = TransferMode.Buffered
-    '    bind.UseDefaultWebProxy = True
-    '    ' readerQuotas
-    '    bind.ReaderQuotas.MaxDepth = 32
-    '    bind.ReaderQuotas.MaxStringContentLength = 262144
-    '    bind.ReaderQuotas.MaxArrayLength = 262144
-    '    bind.ReaderQuotas.MaxBytesPerRead = 4096
-    '    bind.ReaderQuotas.MaxNameTableCharCount = 16384
-    '    ' Security
-    '    bind.Security.Mode = SecurityMode.Transport
-    '    '   Transport
-    '    bind.Security.Transport.ClientCredentialType = HttpClientCredentialType.None
-    '    bind.Security.Transport.ProxyCredentialType = HttpProxyCredentialType.None
-    '    '   Message
-    '    bind.Security.Message.AlgorithmSuite = ServiceModel.Security.SecurityAlgorithmSuite.Default
-
-    '    Return bind
-    'End Function
-
-    'Private Shared Function Get_EndPoint(ByVal url As String) As EndpointAddress
-    '    Dim eab As EndpointAddressBuilder
-
-    '    eab = New EndpointAddressBuilder
-    '    eab.Uri = New Uri(url)
-
-    '    Return eab.ToEndpointAddress
-    'End Function
-
-    'Private Shared Function Get_ServiceClient(ByVal url As String) As WebDeClaimsServiceRef.WSElitaServiceOrderSoapClient
-    '    Dim bind As BasicHttpBinding
-    '    Dim ea As EndpointAddress
-    '    Dim sc As WebDeClaimsServiceRef.WSElitaServiceOrderSoapClient
-
-    '    bind = Bind_WSElitaServiceOrderSoap()
-    '    ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12
-    '    ea = Get_EndPoint(url)
-    '    sc = New WebDeClaimsServiceRef.WSElitaServiceOrderSoapClient(bind, ea)
-    '    sc.Endpoint.Name = "WSElitaServiceOrderSoap"
-
-    '    Return sc
-    'End Function
-
     Public Shared Function SendToGvs(ByVal xmlIn As String, ByVal functionToProcess As String) As String
         Dim wsGvs As WebDeClaimsServiceReference.WSElitaServiceOrder
         Dim gvsToken As String
