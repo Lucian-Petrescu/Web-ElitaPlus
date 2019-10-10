@@ -1,5 +1,4 @@
-﻿Namespace Tables.Accounting.AccountPayable
-    Public Class PoAdjustmentDAL
+﻿    Public Class PoAdjustmentDAL
         Inherits DALBase
 
 #Region "Constants"
@@ -48,7 +47,7 @@
 
     Public Function Load(ByVal ds As DataSet, ByVal vendorCode As String , ByVal poNumber As string,companyGroupId As Guid) As DataSet
 
-        Dim selectStmt As String ="elita.elp_ap_po_update.search"
+        Dim selectStmt As String = Config("/SQL/LOAD_PO_LINES")'"elita.elp_ap_po_update.search"
         Dim parameters() As DBHelper.DBHelperParameter = New DBHelper.DBHelperParameter() {New DBHelper.DBHelperParameter(PI_VENDOR, vendorCode), _ 
                                                                      New DBHelper.DBHelperParameter ( PI_AP_PO_NUMBER,poNumber), _
                                                                      New DBHelper.DBHelperParameter (PI_COMPANY_ID_COL,companyGroupId.ToByteArray)}
@@ -67,7 +66,7 @@
     End Function
 
     Public Function UpdatePoLineQuantity(ByVal poNumber As string, ByVal poLineId As Guid, ByVal companyId As Guid, ByVal  poLineQuantity As Decimal,ByVal modifiedBy As string) As Integer
-        Dim selectStmt As String = "elita.elp_ap_po_update.update_ap_po_line"
+        Dim selectStmt As String = Config("/SQL/UPDATE") '"elita.elp_ap_po_update.update_ap_po_line"
         Dim inputParameters(TOTAL_PARAM_PO_UPDATE) As DBHelper.DBHelperParameter
         Dim outputParameter(0) As DBHelper.DBHelperParameter
 
@@ -93,4 +92,3 @@
    #End Region
 
     End Class
-End NameSpace

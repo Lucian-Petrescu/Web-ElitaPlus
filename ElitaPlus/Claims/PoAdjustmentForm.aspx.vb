@@ -347,7 +347,7 @@ Namespace Claims.AccountPayable
 
                 State.bnoRow = True
                 CreateHeaderForEmptyGrid(PoGrid, SortDirection)
-                TranslateGridHeader(PoGrid)
+                
             Else
                 State.bnoRow = False
                 PoGrid.Enabled = True

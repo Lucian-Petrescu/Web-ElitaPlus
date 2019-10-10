@@ -1467,7 +1467,7 @@
     <EmbeddedResource Include="Tables\CountryLineOfBusinessDAL.xml">
       <SubType>Designer</SubType>
     </EmbeddedResource>
-    <Content Include="Tables\Accounting\AccountPayable\PoAdjustmentDAL.xml" />
+    <EmbeddedResource Include="Tables\Accounting\AccountPayable\PoAdjustmentDAL.xml" />
     <Content Include="Tables\CoverageMfgDAL.xml" />
     <EmbeddedResource Include="Tables\ProductSpecialServiceDAL.xml" />
     <EmbeddedResource Include="Tables\SpecialServiceDAL.xml">
