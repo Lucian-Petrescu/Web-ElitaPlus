@@ -354,11 +354,6 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Reference.svcmap</DependentUpon>
     </Compile>
-    <Compile Include="Service References\WebDeClaimsServiceRef\Reference.vb">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>Reference.svcmap</DependentUpon>
-    </Compile>
     <Compile Include="Tables\Accounting\AcctEventDetailIncExc.vb" />
     <Compile Include="Tables\AcctFinanceAutomation\AfaAcctAmtSrc.vb" />
     <Compile Include="Tables\AcctFinanceAutomation\AfaAcctAmtSrcMapping.vb" />
@@ -1090,6 +1085,11 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Reference.map</DependentUpon>
     </Compile>
+    <Compile Include="Web References\WebDeClaimsServiceReference\Reference.vb">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Reference.map</DependentUpon>
+    </Compile>
     <Compile Include="WorkQueue\FaultExtention.vb" />
     <Compile Include="WorkQueue\WorkQueue.vb" />
     <Compile Include="Tables\WorkQueueAssign.vb" />
@@ -1569,16 +1569,6 @@
       <DependentUpon>Reference.svcmap</DependentUpon>
     </None>
     <None Include="Service References\VSCBrazilDBSCreditCardAuth\BillingServiceBeanService.wsdl" />
-    <None Include="Service References\WebDeClaimsServiceRef\Assurant.ElitaPlus.BusinessObjectsNew.WebDeClaimsServiceRef.HelloResponse.datasource">
-      <DependentUpon>Reference.svcmap</DependentUpon>
-    </None>
-    <None Include="Service References\WebDeClaimsServiceRef\Assurant.ElitaPlus.BusinessObjectsNew.WebDeClaimsServiceRef.LoginResponse.datasource">
-      <DependentUpon>Reference.svcmap</DependentUpon>
-    </None>
-    <None Include="Service References\WebDeClaimsServiceRef\Assurant.ElitaPlus.BusinessObjectsNew.WebDeClaimsServiceRef.ProcessRequestResponse.datasource">
-      <DependentUpon>Reference.svcmap</DependentUpon>
-    </None>
-    <None Include="Service References\WebDeClaimsServiceRef\WSElitaServiceOrder.wsdl" />
     <None Include="Service References\WrkQueue\Assurant.ElitaPlus.BusinessObjectsNew.WrkQueue.WorkQueue.datasource">
       <DependentUpon>Reference.svcmap</DependentUpon>
     </None>
@@ -1636,6 +1626,11 @@
     <None Include="Web References\AcselXWSRef\retornoCancelamentoElita.datasource">
       <DependentUpon>Reference.map</DependentUpon>
     </None>
+    <None Include="Web References\WebDeClaimsServiceReference\Reference.map">
+      <Generator>MSDiscoCodeGenerator</Generator>
+      <LastGenOutput>Reference.vb</LastGenOutput>
+    </None>
+    <None Include="Web References\WebDeClaimsServiceReference\WSElitaServiceOrder.wsdl" />
   </ItemGroup>
   <ItemGroup>
     <WCFMetadataStorage Include="Service References\Auth\" />
@@ -1651,7 +1646,6 @@
     <WCFMetadataStorage Include="Service References\TestBatchService\" />
     <WCFMetadataStorage Include="Service References\VSCBrazilCreditCardAuth\" />
     <WCFMetadataStorage Include="Service References\VSCBrazilDBSCreditCardAuth\" />
-    <WCFMetadataStorage Include="Service References\WebDeClaimsServiceRef\" />
     <WCFMetadataStorage Include="Service References\WrkQueue\" />
   </ItemGroup>
   <ItemGroup>
@@ -1855,6 +1849,17 @@
     <WebReferences Include="Web References\" />
   </ItemGroup>
   <ItemGroup>
+    <WebReferenceUrl Include="http://179.184.234.199/webclaims/WSElitaServiceOrder%3fwsdl">
+      <UrlBehavior>Dynamic</UrlBehavior>
+      <RelPath>Web References\WebDeClaimsServiceReference\</RelPath>
+      <UpdateFromURL>http://179.184.234.199/webclaims/WSElitaServiceOrder%3fwsdl</UpdateFromURL>
+      <ServiceLocationURL>
+      </ServiceLocationURL>
+      <CachedDynamicPropName>
+      </CachedDynamicPropName>
+      <CachedAppSettingsObjectName>MySettings</CachedAppSettingsObjectName>
+      <CachedSettingsPropName>Assurant_ElitaPlus_BusinessObjectsNew_WebDeClaimsServiceReference_WSElitaServiceOrder</CachedSettingsPropName>
+    </WebReferenceUrl>
     <WebReferenceUrl Include="http://javades.delphos.com.br/CancelamentoElita/CancelamentoElita%3fwsdl">
       <UrlBehavior>Dynamic</UrlBehavior>
       <RelPath>Web References\AcselXWSRef\</RelPath>
@@ -2112,12 +2117,6 @@
     </None>
     <None Include="Service References\PolicyService\PolicyService1.disco" />
     <Compile Include="DataProtection\CertForgotRequest.vb" />
-    <None Include="Service References\WebDeClaimsServiceRef\configuration91.svcinfo" />
-    <None Include="Service References\WebDeClaimsServiceRef\configuration.svcinfo" />
-    <None Include="Service References\WebDeClaimsServiceRef\Reference.svcmap">
-      <Generator>WCF Proxy Generator</Generator>
-      <LastGenOutput>Reference.vb</LastGenOutput>
-    </None>
     <Content Include="Settings.xml">
       <SubType>Designer</SubType>
     </Content>
