@@ -34,7 +34,7 @@ namespace Assurant.ElitaPlus.External.Falabella
                 ordenDeTrabajo = new ordenDeTrabajo_TYPE
                 {
                     numeroServicioTecnico = request.WorkOrderNumber,
-                    estadoOrdenTrabajo = (request.ClaimStatus == "D" ? ordenDeTrabajo_TYPEEstadoOrdenTrabajo.Anulada : ordenDeTrabajo_TYPEEstadoOrdenTrabajo.ReemplazoAutorizado),
+                    estadoOrdenTrabajo = (request.ClaimStatus == BasicClaimStatus.Denied.ToString() ? ordenDeTrabajo_TYPEEstadoOrdenTrabajo.Anulada : ordenDeTrabajo_TYPEEstadoOrdenTrabajo.ReemplazoAutorizado),
                     fechaModificacionEstado = request.StatusChangeDate,
                     descripcionRechazoOReparacion = (request.ClaimStatus == "D" ? request.DenialReason : string.Empty),
                     numeroOTServicioTecnico = request.ClaimNumber
