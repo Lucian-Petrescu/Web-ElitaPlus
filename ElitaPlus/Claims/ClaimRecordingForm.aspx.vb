@@ -88,7 +88,6 @@ Public Class ClaimRecordingForm
         Public DeliveryDate As Nullable(Of Date)
         Public DefaultDeliveryDay As DeliveryDay
         Public DeliverySlotTimeSpan As TimeSpan
-        Public IsExpeditedBtnClicked As Boolean = False
 
 #Region "SubmitWsBaseClaimRecordingResponse"
         Private _mSubmitWsBaseClaimRecordingResponse As BaseClaimRecordingResponse = Nothing
@@ -2227,8 +2226,6 @@ Public Class ClaimRecordingForm
         senderRb.Checked = True
         ' get the selected device into the state
         EnableControlinGridview(GridViewLogisticsOptions)
-        State.IsExpeditedBtnClicked = False
-        ControlMgr.SetEnableControl(Me, btnLogisticsOptionsContinue, True)
     End Sub
     Private Sub EnableControlinGridview(ByVal gridViewTarget As GridView)
 
@@ -2431,32 +2428,8 @@ Public Class ClaimRecordingForm
                             Return False
                         Else
                             If Not lOption.LogisticOptionInfo Is Nothing Then
-                                If State.LogisticsOption.Code.ToUpper().Equals("X") Then
 
-                                    If Not State.IsExpeditedBtnClicked Then
-                                        MasterPage.MessageController.AddError(Message.MSG_ERR_SELECT_EXPEDITED_DELIVERY_BUTTON, True)
-                                        Return False
-                                    End If
-
-                                    Dim DeliverySlotDescr As String = ucDeliverySlots.DeliverySlotDescription
-                                    Dim thisTime = Assurant.Elita.ApplicationDateTime.Now       ' DateTime.Now
-                                    Dim localExpectedDeliveryTime
-
-                                    If Not DeliverySlotDescr Is Nothing Then
-
-                                        Select Case DeliverySlotDescr.ToUpper()
-                                            Case "EXP_DEL4"      ' For Japan Expected delivery time is 4 hrs from current Japan time
-                                                localExpectedDeliveryTime = thisTime.AddHours(4)
-                                                lOption.LogisticOptionInfo.EstimatedChangedDeliveryDate = localExpectedDeliveryTime
-                                            Case "EXP_DEL3"      ' For KDDI Expected delivery time is 3 hrs from current apan time
-                                                localExpectedDeliveryTime = thisTime.AddHours(3)
-                                                lOption.LogisticOptionInfo.EstimatedChangedDeliveryDate = localExpectedDeliveryTime
-                                        End Select
-
-                                    End If
-                                Else
-                                    lOption.LogisticOptionInfo.EstimatedChangedDeliveryDate = selectedDeliveryDate
-                                End If
+                                lOption.LogisticOptionInfo.EstimatedChangedDeliveryDate = selectedDeliveryDate
                             End If
                         End If
                     End If
@@ -2656,24 +2629,7 @@ Public Class ClaimRecordingForm
 
             GetEstimatedDeliveryDate(ucDeliverySlots, deliveryAddress, lOption.DeliveryOptions)
 
-            If shippingCodeLabel.Text.ToUpper() = "X" Then
-                State.IsExpeditedBtnClicked = True
-                If ucDeliverySlots.IsDeliverySlotAvailable Then
-                    ControlMgr.SetEnableControl(Me, btnLogisticsOptionsContinue, True)
-                    ucDeliverySlots.Visible = True
-                Else
-                    ControlMgr.SetEnableControl(Me, btnLogisticsOptionsContinue, False)
-                    ucDeliverySlots.Visible = False
-                End If
-
-            Else
-                ControlMgr.SetEnableControl(Me, btnLogisticsOptionsContinue, True)
-                ucDeliverySlots.Visible = True
-                State.IsExpeditedBtnClicked = False
-            End If
-
         Catch ex As Exception
-            State.IsExpeditedBtnClicked = False
             HandleErrors(ex, MasterPage.MessageController)
         End Try
     End Sub
