@@ -17,6 +17,15 @@ Partial Class APInvoiceDetailForm
 
 #Region "Page State"
 
+    Class LineBatch
+        Public LineNumberMin As Integer
+        Public LineNumberMax As Integer  
+        
+        Public Sub New(ByVal intMin As Integer, ByVal intMax As Integer)
+            LineNumberMin = intMin
+            LineNumberMax = intMax
+        End Sub
+    End Class
     Class MyState
         Public HasDataChanged As Boolean =False
  
@@ -26,10 +35,14 @@ Partial Class APInvoiceDetailForm
         Public myBOExtendedInfo As DataView = Nothing
         Public myBOLines As ApInvoiceLines.APInvoiceLinesDV = Nothing
         Public selectedPageSize As Integer = DEFAULT_GRID_PAGE_SIZE
-        Public minLineNumber As Integer = 0
-        Public maxLineNumber As Integer = MaxLineNumberAllowed
+        Public PrviousLineNumberMin As Integer = 0
+        Public PrviousLineNumberMax As Integer = 0        
+        Public UnMatchedLineOnly As Boolean = False
+        Public LineBatches As Collections.Generic.Stack(Of LineBatch)
+        Public CurrentMaxLineNumber As Integer = 0
 
         Public Sub New()
+            LineBatches = new Collections.Generic.Stack(Of LineBatch)
         End Sub
 
         Public ReadOnly Property TotalLineCount As Integer
@@ -110,15 +123,14 @@ Partial Class APInvoiceDetailForm
 
                 TranslateGridHeader(Grid)
                 cboPageSize.SelectedValue = CType(Me.State.selectedPageSize, String)
-                Grid.PageSize = Me.State.selectedPageSize
-                populateLinesGrid()
+                populateLinesGrid(1, LineBatchSize)
                 SetGridItemStyleColor(Grid)            
             End If
-            SetControlStatus()
+            
         Catch ex As Exception
             HandleErrors(ex, MasterPage.MessageController)
         End Try
-        'ShowMissingTranslations(MasterPage.MessageController)
+        ShowMissingTranslations(MasterPage.MessageController)
     End Sub
 
     Private Sub APInvoiceDetailForm_PageCall(CallFromUrl As String, CallingPar As Object) Handles MyBase.PageCall
@@ -129,10 +141,14 @@ Partial Class APInvoiceDetailForm
             Me.HandleErrors(ex, Me.MasterPage.MessageController)
         End Try
     End Sub
+
+    Private Sub APInvoiceDetailForm_PreRender(sender As Object, e As EventArgs) Handles Me.PreRender
+        ShowButtons()
+    End Sub
 #End Region
 
 #Region "Controlling logic"
-    Private sub SetControlStatus()
+    Private sub ShowButtons()
         'show Run Match button only if the invoice has unmatched lines and also not paid yet            
         If State.UnMatchedLineCount > 0 And State.PaidAmount = 0 Then
             ControlMgr.SetVisibleControl(Me, btnRunMatch_WRITE, True)
@@ -143,16 +159,16 @@ Partial Class APInvoiceDetailForm
             ControlMgr.SetVisibleControl(Me, btnGetNextBatch, False)
             ControlMgr.SetVisibleControl(Me, btnPreviousBatch, False)
         Else
-            If State.minLineNumber > 1 Then 
-                ControlMgr.SetVisibleControl(Me, btnPreviousBatch, true)
-            Else
-                ControlMgr.SetVisibleControl(Me, btnPreviousBatch, true)
-            End If
-            
-            If State.maxLineNumber < State.TotalLineCount Then ' there is more to get after max line number in current batch
-                ControlMgr.SetVisibleControl(Me, btnPreviousBatch, true)
+            If State.LineBatches.Count > 1 Then 
+                ControlMgr.SetVisibleControl(Me, btnPreviousBatch, True)
             Else
                 ControlMgr.SetVisibleControl(Me, btnPreviousBatch, False)
+            End If
+            
+            If State.myBOLines.Count >= LineBatchSize andalso State.CurrentMaxLineNumber < State.TotalLineCount Then ' there is more to get after max line number in current batch
+                ControlMgr.SetVisibleControl(Me, btnGetNextBatch, true)
+            Else
+                ControlMgr.SetVisibleControl(Me, btnGetNextBatch, False)
             End If
         End If
     End sub
@@ -173,7 +189,7 @@ Partial Class APInvoiceDetailForm
         Next
         Return String.Empty
     End Function
-    Private Sub populateFormFromBO()
+    Private Sub PopulateFormFromBO()
         With Me.State.myBO
             PopulateControlFromBOProperty(txtInvoiceNumber, .InvoiceNumber)
             PopulateControlFromBOProperty(txtInvoiceAmount, .InvoiceAmount)
@@ -193,7 +209,7 @@ Partial Class APInvoiceDetailForm
         End With
     End Sub
 
-    Private Sub populateFormFromBOExtendedInfo()
+    Private Sub PopulateFormFromBOExtendedInfo()
         If State.myBOExtendedInfo Is Nothing Then
             State.myBOExtendedInfo = State.myBO.GetInvoiceExtendedInfo
         End If
@@ -205,19 +221,25 @@ Partial Class APInvoiceDetailForm
         txtMatchedAmount.Text = State.myBOExtendedInfo(0)(ApInvoiceHeader.APInvoiceSearchDV.COL_MATCHED_AMOUNT)
     End Sub
 
-    Private Sub populateLinesGrid()
+    Private Sub PopulateLinesGrid(ByVal intMinLineNum As Integer, ByVal intMaxLineNum As Integer)
         If State.myBOLines Is Nothing Then
-            If State.maxLineNumber = 0 Then State.maxLineNumber = MaxLineNumberAllowed
-            State.myBOLines = State.myBO.GetInvoiceLines(State.minLineNumber, State.maxLineNumber, False, LineBatchSize)
+            State.myBOLines = State.myBO.GetInvoiceLines(intMinLineNum, intMaxLineNum, State.UnMatchedLineOnly, LineBatchSize)
 
-            State.minLineNumber = State.myBOLines.Table.Compute("Min(line_number)", String.Empty)
-            State.maxLineNumber = State.myBOLines.Table.Compute("Max(line_number)", String.Empty)
+            Dim intMin As Integer, intMax As Integer
+            intMin = State.myBOLines.Table.Compute("Min(line_number)", String.Empty)
+            intMax = State.myBOLines.Table.Compute("Max(line_number)", String.Empty)
+            State.CurrentMaxLineNumber = intMax
+
+            If State.LineBatches Is Nothing Then
+                State.LineBatches = new Collections.Generic.Stack(Of LineBatch)
+            End If
+            State.LineBatches.Push(New LineBatch(intMin, intMax))
         End If
 
         Grid.PageSize = State.selectedPageSize
 
         Grid.DataSource = State.myBOLines
-        State.PageIndex = Grid.PageIndex
+        Grid.PageIndex = State.PageIndex
 
         HighLightSortColumn(Grid, String.Empty, IsNewUI)
 
@@ -230,7 +252,12 @@ Partial Class APInvoiceDetailForm
         Session("recCount") = State.myBOLines.Count
 
         If Grid.Visible Then
-            lblRecordCount.Text = State.TotalLineCount & " " & TranslationBase.TranslateLabelOrMessage(Message.MSG_RECORDS_FOUND) & " " & State.myBOLines.Count & " " & TranslationBase.TranslateLabelOrMessage("MSG_RECORDS_DISPLAYED")
+            If State.UnMatchedLineOnly = True Then
+                lblRecordCount.Text = State.UnMatchedLineCount & " " & TranslationBase.TranslateLabelOrMessage(Message.MSG_RECORDS_FOUND) & " " & State.myBOLines.Count & " " & TranslationBase.TranslateLabelOrMessage("MSG_RECORDS_DISPLAYED")
+            Else
+                lblRecordCount.Text = State.TotalLineCount & " " & TranslationBase.TranslateLabelOrMessage(Message.MSG_RECORDS_FOUND) & " " & State.myBOLines.Count & " " & TranslationBase.TranslateLabelOrMessage("MSG_RECORDS_DISPLAYED")
+            End If
+            
         End If
     End Sub
 #End Region
@@ -252,7 +279,7 @@ Partial Class APInvoiceDetailForm
             State.selectedPageSize = CType(cboPageSize.SelectedValue, Integer)
             State.PageIndex = NewCurrentPageIndex(Grid, State.myBOLines.Count, State.selectedPageSize)
             Grid.PageIndex = NewCurrentPageIndex(Grid, Session("recCount"),cboPageSize.SelectedValue)
-            populateLinesGrid()
+            populateLinesGrid(0, 0)
         Catch ex As Exception
             HandleErrors(ex, MasterPage.MessageController)
         End Try
@@ -270,7 +297,7 @@ Partial Class APInvoiceDetailForm
     Private Sub Grid_PageIndexChanged(ByVal source As Object, ByVal e As System.EventArgs) Handles Grid.PageIndexChanged
         Try
             State.PageIndex = Grid.PageIndex
-            populateLinesGrid()
+            populateLinesGrid(0, 0)
         Catch ex As Exception
             HandleErrors(ex, MasterPage.MessageController)
         End Try
@@ -286,14 +313,93 @@ Partial Class APInvoiceDetailForm
             Me.HandleErrors(ex, Me.MasterPage.MessageController)
         End Try
     End Sub
+    private Sub RefreshScreen()
+        State.myBO = New ApInvoiceHeader(State.myBO.id)
+        State.myBOExtendedInfo = Nothing
+        State.myBOLines = Nothing
+        State.PageIndex = 0 'show first page after refresh
+        State.LineBatches = Nothing
 
+        populateFormFromBO
+        populateFormFromBOExtendedInfo
+        If State.UnMatchedLineOnly = True Then
+            populateLinesGrid(1, MaxLineNumberAllowed)
+        Else
+            populateLinesGrid(1, LineBatchSize)
+        End If
+        
+    End Sub
     Private Sub btnRunMatch_WRITE_Click(sender As Object, e As EventArgs) Handles btnRunMatch_WRITE.Click
         Try
             'call delete invoice method for each invoices
-            ApInvoiceHeader.MatchInvoice(State.myBO.id)
+            dim matchedCnt As Integer = ApInvoiceHeader.MatchInvoice(State.myBO.id)
+
+            Dim strSuccessMsg As String = TranslationBase.TranslateLabelOrMessage("AP_INVOICE_MATCH_SUCCESS") & ": " & matchedCnt
+            MasterPage.MessageController.AddSuccess(strSuccessMsg, False)
+
+            If matchedCnt > 0 Then
+                State.HasDataChanged = True
+                RefreshScreen()
+            End If
         Catch ex As Exception
             HandleErrors(ex, MasterPage.MessageController)
         End Try
     End Sub
+
+    Private Sub btnGetNextBatch_Click(sender As Object, e As EventArgs) Handles btnGetNextBatch.Click
+        Try
+            State.myBOLines = Nothing
+            State.PageIndex = 0
+
+            Dim intMin As Integer, intMax As Integer
+
+            intMin = State.CurrentMaxLineNumber + 1                
+            If State.UnMatchedLineOnly = true then
+                intMax = MaxLineNumberAllowed
+            Else
+                intMax = intMin + LineBatchSize
+            End If
+            
+            PopulateLinesGrid(intMin, intMax)
+        Catch ex As Exception
+            HandleErrors(ex, MasterPage.MessageController)
+        End Try
+    End Sub
+
+    Private Sub btnPreviousBatch_Click(sender As Object, e As EventArgs) Handles btnPreviousBatch.Click
+        Try
+            State.myBOLines = Nothing
+            State.PageIndex = 0 
+            State.LineBatches.Pop() 'remove the current batch
+            dim previousBatch As LineBatch = State.LineBatches.Pop() 'also remove previous batch since it will be added back again
+            PopulateLinesGrid(previousBatch.LineNumberMin, previousBatch.LineNumberMax)
+        Catch ex As Exception
+            HandleErrors(ex, MasterPage.MessageController)
+        End Try
+    End Sub
+
+    Private Sub rbGetAll_CheckedChanged(sender As Object, e As EventArgs) Handles rbGetAll.CheckedChanged
+        If rbGetAll.Checked = True Then
+            State.myBOLines = Nothing
+            State.PageIndex = 0
+            State.LineBatches = Nothing
+
+            State.UnMatchedLineOnly = False
+            populateLinesGrid(1, LineBatchSize)
+        End If
+    End Sub
+
+    Private Sub rbGetUnmatched_CheckedChanged(sender As Object, e As EventArgs) Handles rbGetUnmatched.CheckedChanged
+        If rbGetUnmatched.Checked = True Then
+            State.myBOLines = Nothing
+            State.PageIndex = 0
+            State.LineBatches = Nothing
+
+            State.UnMatchedLineOnly = True
+            populateLinesGrid(1, MaxLineNumberAllowed)
+        End If
+    End Sub
+
+    
 #End Region
 End Class

@@ -95,7 +95,6 @@ Public Class ApInvoiceHeaderDAL
                                 )
 
         Dim selectStmt As String = Config("/SQL/SEARCH_AP_INVOICES")
-        Dim ds As New DataSet
         Dim da As OracleDataAdapter
 
         Try
@@ -136,7 +135,7 @@ Public Class ApInvoiceHeaderDAL
 
             da = New OracleDataAdapter(cmd)
             da.Fill(searchResult, "SEARCH_RESULT")
-            ds.Locale = Globalization.CultureInfo.InvariantCulture
+            searchResult.Locale = Globalization.CultureInfo.InvariantCulture
             
             'If  String.IsNullOrEmpty(cmd.Parameters("po_error_msg").Value) Then
             '    errCode = cmd.Parameters("po_error_code").Value
@@ -157,7 +156,6 @@ Public Class ApInvoiceHeaderDAL
     Public sub LoadAPInvoiceExtendedInfo(ByVal invoiceId As guid, ByRef searchResult As DataSet)
 
         Dim selectStmt As String = Config("/SQL/GET_AP_INVOICE_EXTENDED_INFO")
-        Dim ds As New DataSet
         Dim da As OracleDataAdapter
 
         Try
@@ -170,7 +168,7 @@ Public Class ApInvoiceHeaderDAL
             
             da = New OracleDataAdapter(cmd)
             da.Fill(searchResult, "AP_INVOICE_HEADER_EXT")
-            ds.Locale = Globalization.CultureInfo.InvariantCulture
+            searchResult.Locale = Globalization.CultureInfo.InvariantCulture
 
         Catch ex As Exception
             Throw New DataBaseAccessException(DataBaseAccessException.DatabaseAccessErrorType.ReadErr, ex)
@@ -187,7 +185,6 @@ Public Class ApInvoiceHeaderDAL
                                   ByRef searchResult As DataSet)
 
         Dim selectStmt As String = Config("/SQL/GET_AP_INVOICE_LINES")
-        Dim ds As New DataSet
         Dim da As OracleDataAdapter
 
         Try
@@ -210,7 +207,7 @@ Public Class ApInvoiceHeaderDAL
 
             da = New OracleDataAdapter(cmd)
             da.Fill(searchResult, "AP_INVOICE_LINES")
-            ds.Locale = Globalization.CultureInfo.InvariantCulture
+            searchResult.Locale = Globalization.CultureInfo.InvariantCulture
 
         Catch ex As Exception
             Throw New DataBaseAccessException(DataBaseAccessException.DatabaseAccessErrorType.ReadErr, ex)
@@ -249,8 +246,7 @@ Public Class ApInvoiceHeaderDAL
 
                     command.Parameters.Add(paranInvIds)
                     command.ExecuteNonQuery()
-            
-                    tr.Commit
+                    tr.Commit                    
                     conn.Close()
                 End Using
             End Using                        
@@ -262,7 +258,7 @@ Public Class ApInvoiceHeaderDAL
         End Try
     End Sub
 
-    Public sub MatchInvoice(ByVal invoiceId As Guid)
+    Public sub MatchInvoice(ByVal invoiceId As Guid, ByRef matchedCount As Integer)
         Dim strStmt As String = Config("/SQL/MATCH_AP_INVOICE")
         Try
             Using conn As IDbConnection = New OracleConnection(DBHelper.ConnectString)
@@ -275,7 +271,14 @@ Public Class ApInvoiceHeaderDAL
                     'input parameters
                     cmd.Parameters.Add("pi_invoice_header_id", OracleDbType.Raw).Value = invoiceId.ToByteArray
                     cmd.Parameters.Add("pi_commit", OracleDbType.Varchar2, 10).Value = "Y"
+                    'output parameters
+                    dim param_match_count As OracleParameter = new OracleParameter()
+                    param_match_count = cmd.Parameters.Add("po_matched_count", OracleDbType.Int32, ParameterDirection.Output)
+                    param_match_count.Size = 25
+
                     cmd.ExecuteNonQuery
+
+                    matchedCount = CType(param_match_count.Value.ToString, Integer)
                 End Using
                 conn.Close
             End Using

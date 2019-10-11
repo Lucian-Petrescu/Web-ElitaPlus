@@ -46,7 +46,7 @@ Partial Class APInvoiceListForm
         Private _DueDateFrom As Date?
         
         Private _DueDateToString As String = String.Empty
-        Private _DueDateTo As Date
+        Private _DueDateTo As Date?
 
         Public Property DueDateFromString As String
             Set(value As String)
@@ -464,20 +464,29 @@ Partial Class APInvoiceListForm
 
     Private Sub Grid_RowDataBound(ByVal sender As Object, ByVal e As System.Web.UI.WebControls.GridViewRowEventArgs) Handles Grid.RowDataBound
         Dim dvRow As DataRowView = CType(e.Row.DataItem, DataRowView)
-        Dim btnEditClaimItem As LinkButton
+        Dim btnEditItem As LinkButton
 
         Try
             If e.Row.RowType = DataControlRowType.DataRow OrElse (e.Row.RowType = DataControlRowType.Separator) Then
-                If (Not e.Row.Cells(GRID_COL_INVOICE_NUMBER_CTRL).FindControl(GRID_COL_INVOICE_NUMBER_CTRL) Is Nothing) Then
-                    btnEditClaimItem = CType(e.Row.Cells(GRID_COL_INVOICE_NUMBER_CTRL).FindControl(GRID_COL_INVOICE_NUMBER_CTRL), LinkButton)
-                    btnEditClaimItem.CommandArgument = e.Row.RowIndex.ToString
-                    btnEditClaimItem.CommandName = SELECT_COMMAND_NAME
-                    btnEditClaimItem.Text = dvRow(ApInvoiceHeader.APInvoiceSearchDV.COL_INVOICE_NUMBER).ToString
+                If (Not e.Row.Cells(GRID_COL_INVOICE_NUMBER_IDX).FindControl(GRID_COL_INVOICE_NUMBER_CTRL) Is Nothing) Then
+                    btnEditItem = CType(e.Row.Cells(GRID_COL_INVOICE_NUMBER_IDX).FindControl(GRID_COL_INVOICE_NUMBER_CTRL), LinkButton)
+                    btnEditItem.CommandArgument = e.Row.RowIndex.ToString
+                    btnEditItem.CommandName = SELECT_COMMAND_NAME
+                    btnEditItem.Text = dvRow(ApInvoiceHeader.APInvoiceSearchDV.COL_INVOICE_NUMBER).ToString
                 End If
                 ' populate dates fields
-                PopulateControlFromBOProperty(e.Row.Cells(GRID_COL_INVOICE_DATE_IDX), GetLongDateFormattedString(CType(dvRow(ApInvoiceHeader.APInvoiceSearchDV.COL_INVOICE_DATE), Date)))
-                PopulateControlFromBOProperty(e.Row.Cells(GRID_COL_DUE_DATE_IDX), GetLongDateFormattedString(CType(dvRow(ApInvoiceHeader.APInvoiceSearchDV.COL_DUE_DATE), Date)))
-                PopulateControlFromBOProperty(e.Row.Cells(GRID_COL_PYMT_DATE_IDX), GetLongDateFormattedString(CType(dvRow(ApInvoiceHeader.APInvoiceSearchDV.COL_PAYMENT_DATE), Date)))                
+                If not dvRow(ApInvoiceHeader.APInvoiceSearchDV.COL_INVOICE_DATE) Is DBNull.Value Then
+                    PopulateControlFromBOProperty(e.Row.Cells(GRID_COL_INVOICE_DATE_IDX), GetLongDateFormattedString(CType(dvRow(ApInvoiceHeader.APInvoiceSearchDV.COL_INVOICE_DATE), Date)))                
+                End If
+
+                If not dvRow(ApInvoiceHeader.APInvoiceSearchDV.COL_DUE_DATE) Is DBNull.Value Then
+                    PopulateControlFromBOProperty(e.Row.Cells(GRID_COL_DUE_DATE_IDX), GetLongDateFormattedString(CType(dvRow(ApInvoiceHeader.APInvoiceSearchDV.COL_DUE_DATE), Date)))
+                End If
+                
+                If not dvRow(ApInvoiceHeader.APInvoiceSearchDV.COL_PAYMENT_DATE) Is DBNull.Value Then
+                    PopulateControlFromBOProperty(e.Row.Cells(GRID_COL_PYMT_DATE_IDX), GetLongDateFormattedString(CType(dvRow(ApInvoiceHeader.APInvoiceSearchDV.COL_PAYMENT_DATE), Date)))                                
+                End If
+
                 'populate the id field
                 PopulateControlFromBOProperty(e.Row.Cells(GRID_COL_INVOICE_HEADER_ID_IDX), dvRow(ApInvoiceHeader.APInvoiceSearchDV.COL_INVOICE_HEADER_ID))
 

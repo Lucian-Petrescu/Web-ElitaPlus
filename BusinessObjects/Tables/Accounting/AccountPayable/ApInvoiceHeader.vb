@@ -440,10 +440,11 @@ Public Class ApInvoiceHeader
         dal.PayInvoices(strBatchNumber, invoiceIds, errCode, errMsg)
     End Sub
 
-    Public Shared Sub MatchInvoice(ByVal invoiceId As Guid)
-        Dim dal As New ApInvoiceHeaderDAL
-        dal.MatchInvoice(invoiceId)
-    End Sub
+    Public Shared function MatchInvoice(ByVal invoiceId As Guid) As Integer
+        Dim dal As New ApInvoiceHeaderDAL, recordsMatched As Integer
+        dal.MatchInvoice(invoiceId, recordsMatched)
+        Return recordsMatched
+    End function
 
 #End Region
 
@@ -524,7 +525,7 @@ Public Class ApInvoiceHeader
         Public ReadOnly Property TotalCount() As Integer
             Get
                 If Count > 0 Then
-                    Return Me(0)("COL_TOTAL_COUNT")
+                    Return Me(0)(COL_TOTAL_COUNT)
                 Else
                     Return 0
 

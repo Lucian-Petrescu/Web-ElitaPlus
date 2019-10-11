@@ -68,22 +68,22 @@ Partial Public Class APInvoiceDetailForm
     Protected WithEvents txtInvoiceNumber As Global.System.Web.UI.WebControls.TextBox
     
     '''<summary>
-    '''lblInvoiceAmount control.
+    '''lblSource control.
     '''</summary>
     '''<remarks>
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents lblInvoiceAmount As Global.System.Web.UI.WebControls.Label
+    Protected WithEvents lblSource As Global.System.Web.UI.WebControls.Label
     
     '''<summary>
-    '''txtInvoiceAmount control.
+    '''txtSource control.
     '''</summary>
     '''<remarks>
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents txtInvoiceAmount As Global.System.Web.UI.WebControls.TextBox
+    Protected WithEvents txtSource As Global.System.Web.UI.WebControls.TextBox
     
     '''<summary>
     '''lblInvoiceDate control.
@@ -104,22 +104,22 @@ Partial Public Class APInvoiceDetailForm
     Protected WithEvents txtInvoiceDate As Global.System.Web.UI.WebControls.TextBox
     
     '''<summary>
-    '''lblSource control.
+    '''lblInvoiceAmount control.
     '''</summary>
     '''<remarks>
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents lblSource As Global.System.Web.UI.WebControls.Label
+    Protected WithEvents lblInvoiceAmount As Global.System.Web.UI.WebControls.Label
     
     '''<summary>
-    '''txtSource control.
+    '''txtInvoiceAmount control.
     '''</summary>
     '''<remarks>
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents txtSource As Global.System.Web.UI.WebControls.TextBox
+    Protected WithEvents txtInvoiceAmount As Global.System.Web.UI.WebControls.TextBox
     
     '''<summary>
     '''lblAccountingPeriod control.
@@ -140,60 +140,6 @@ Partial Public Class APInvoiceDetailForm
     Protected WithEvents txtAccountingPeriod As Global.System.Web.UI.WebControls.TextBox
     
     '''<summary>
-    '''lblTerm control.
-    '''</summary>
-    '''<remarks>
-    '''Auto-generated field.
-    '''To modify move field declaration from designer file to code-behind file.
-    '''</remarks>
-    Protected WithEvents lblTerm As Global.System.Web.UI.WebControls.Label
-    
-    '''<summary>
-    '''txtTerm control.
-    '''</summary>
-    '''<remarks>
-    '''Auto-generated field.
-    '''To modify move field declaration from designer file to code-behind file.
-    '''</remarks>
-    Protected WithEvents txtTerm As Global.System.Web.UI.WebControls.TextBox
-    
-    '''<summary>
-    '''lblTotalLineCnt control.
-    '''</summary>
-    '''<remarks>
-    '''Auto-generated field.
-    '''To modify move field declaration from designer file to code-behind file.
-    '''</remarks>
-    Protected WithEvents lblTotalLineCnt As Global.System.Web.UI.WebControls.Label
-    
-    '''<summary>
-    '''txtTotalLineCnt control.
-    '''</summary>
-    '''<remarks>
-    '''Auto-generated field.
-    '''To modify move field declaration from designer file to code-behind file.
-    '''</remarks>
-    Protected WithEvents txtTotalLineCnt As Global.System.Web.UI.WebControls.TextBox
-    
-    '''<summary>
-    '''lblUnMatchedLineCnt control.
-    '''</summary>
-    '''<remarks>
-    '''Auto-generated field.
-    '''To modify move field declaration from designer file to code-behind file.
-    '''</remarks>
-    Protected WithEvents lblUnMatchedLineCnt As Global.System.Web.UI.WebControls.Label
-    
-    '''<summary>
-    '''txtUnMatchedLineCnt control.
-    '''</summary>
-    '''<remarks>
-    '''Auto-generated field.
-    '''To modify move field declaration from designer file to code-behind file.
-    '''</remarks>
-    Protected WithEvents txtUnMatchedLineCnt As Global.System.Web.UI.WebControls.TextBox
-    
-    '''<summary>
     '''lblMatchedAmount control.
     '''</summary>
     '''<remarks>
@@ -210,6 +156,24 @@ Partial Public Class APInvoiceDetailForm
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
     Protected WithEvents txtMatchedAmount As Global.System.Web.UI.WebControls.TextBox
+    
+    '''<summary>
+    '''lblTerm control.
+    '''</summary>
+    '''<remarks>
+    '''Auto-generated field.
+    '''To modify move field declaration from designer file to code-behind file.
+    '''</remarks>
+    Protected WithEvents lblTerm As Global.System.Web.UI.WebControls.Label
+    
+    '''<summary>
+    '''txtTerm control.
+    '''</summary>
+    '''<remarks>
+    '''Auto-generated field.
+    '''To modify move field declaration from designer file to code-behind file.
+    '''</remarks>
+    Protected WithEvents txtTerm As Global.System.Web.UI.WebControls.TextBox
     
     '''<summary>
     '''lblPaidAmount control.
@@ -248,6 +212,24 @@ Partial Public Class APInvoiceDetailForm
     Protected WithEvents txtCurrency As Global.System.Web.UI.WebControls.TextBox
     
     '''<summary>
+    '''lblTotalLineCnt control.
+    '''</summary>
+    '''<remarks>
+    '''Auto-generated field.
+    '''To modify move field declaration from designer file to code-behind file.
+    '''</remarks>
+    Protected WithEvents lblTotalLineCnt As Global.System.Web.UI.WebControls.Label
+    
+    '''<summary>
+    '''txtTotalLineCnt control.
+    '''</summary>
+    '''<remarks>
+    '''Auto-generated field.
+    '''To modify move field declaration from designer file to code-behind file.
+    '''</remarks>
+    Protected WithEvents txtTotalLineCnt As Global.System.Web.UI.WebControls.TextBox
+    
+    '''<summary>
     '''lblApproved control.
     '''</summary>
     '''<remarks>
@@ -264,6 +246,24 @@ Partial Public Class APInvoiceDetailForm
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
     Protected WithEvents txtApproved As Global.System.Web.UI.WebControls.TextBox
+    
+    '''<summary>
+    '''lblUnMatchedLineCnt control.
+    '''</summary>
+    '''<remarks>
+    '''Auto-generated field.
+    '''To modify move field declaration from designer file to code-behind file.
+    '''</remarks>
+    Protected WithEvents lblUnMatchedLineCnt As Global.System.Web.UI.WebControls.Label
+    
+    '''<summary>
+    '''txtUnMatchedLineCnt control.
+    '''</summary>
+    '''<remarks>
+    '''Auto-generated field.
+    '''To modify move field declaration from designer file to code-behind file.
+    '''</remarks>
+    Protected WithEvents txtUnMatchedLineCnt As Global.System.Web.UI.WebControls.TextBox
     
     '''<summary>
     '''lblDistributed control.
@@ -327,6 +327,24 @@ Partial Public Class APInvoiceDetailForm
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
     Protected WithEvents Label4 As Global.System.Web.UI.WebControls.Label
+    
+    '''<summary>
+    '''rbGetAll control.
+    '''</summary>
+    '''<remarks>
+    '''Auto-generated field.
+    '''To modify move field declaration from designer file to code-behind file.
+    '''</remarks>
+    Protected WithEvents rbGetAll As Global.System.Web.UI.WebControls.RadioButton
+    
+    '''<summary>
+    '''rbGetUnmatched control.
+    '''</summary>
+    '''<remarks>
+    '''Auto-generated field.
+    '''To modify move field declaration from designer file to code-behind file.
+    '''</remarks>
+    Protected WithEvents rbGetUnmatched As Global.System.Web.UI.WebControls.RadioButton
     
     '''<summary>
     '''trPageSize control.

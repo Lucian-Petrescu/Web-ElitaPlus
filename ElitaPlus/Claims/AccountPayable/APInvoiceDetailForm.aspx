@@ -42,11 +42,12 @@
                     <asp:TextBox ID="txtInvoiceNumber" runat="server" ReadOnly="true"  SkinID="MediumTextBox" AutoPostBack="False" ></asp:TextBox>
                 </td>
                 <td align="right" nowrap="nowrap">
-                    <asp:Label ID="lblInvoiceAmount" runat="server">INVOICE_AMOUNT</asp:Label>:
+                    <asp:Label ID="lblSource" runat="server">SOURCE</asp:Label>:
                 </td>
                 <td align="left" nowrap="nowrap">
-                    <asp:TextBox ID="txtInvoiceAmount" runat="server" ReadOnly="true"  SkinID="MediumTextBox" AutoPostBack="False" ></asp:TextBox>
+                    <asp:TextBox ID="txtSource" runat="server" ReadOnly="true" SkinID="LargeTextBox" AutoPostBack="False" ></asp:TextBox>
                 </td>
+                
             </tr>
             <tr>
                 <td align="right" class="borderLeft" nowrap="nowrap">
@@ -56,10 +57,10 @@
                     <asp:TextBox ID="txtInvoiceDate" runat="server" ReadOnly="true" SkinID="MediumTextBox" AutoPostBack="False" ></asp:TextBox>
                 </td>
                 <td align="right" nowrap="nowrap">
-                    <asp:Label ID="lblSource" runat="server">SOURCE</asp:Label>:
+                    <asp:Label ID="lblInvoiceAmount" runat="server">INVOICE_AMOUNT</asp:Label>:
                 </td>
                 <td align="left" nowrap="nowrap">
-                    <asp:TextBox ID="txtSource" runat="server" ReadOnly="true" SkinID="LargeTextBox" AutoPostBack="False" ></asp:TextBox>
+                    <asp:TextBox ID="txtInvoiceAmount" runat="server" ReadOnly="true"  SkinID="MediumTextBox" AutoPostBack="False" ></asp:TextBox>
                 </td>
             </tr>
             <tr>
@@ -70,32 +71,19 @@
                     <asp:TextBox ID="txtAccountingPeriod" runat="server" ReadOnly="true" SkinID="MediumTextBox" AutoPostBack="False" ></asp:TextBox>
                 </td>
                 <td align="right" nowrap="nowrap">
-                    <asp:Label ID="lblTerm" runat="server">TERM</asp:Label>:
-                </td>
-                <td align="left" nowrap="nowrap">
-                    <asp:TextBox ID="txtTerm" runat="server" ReadOnly="true" SkinID="MediumTextBox" AutoPostBack="False" ></asp:TextBox>
-                </td>
-            </tr>
-            <tr>
-                <td align="right" class="borderLeft" nowrap="nowrap">
-                    <asp:Label ID="lblTotalLineCnt" runat="server">TOTAL_LINE_COUNT</asp:Label>:
-                </td>
-                <td align="left" nowrap="nowrap">
-                    <asp:TextBox ID="txtTotalLineCnt" runat="server" ReadOnly="true" SkinID="MediumTextBox" AutoPostBack="False" ></asp:TextBox>
-                </td>
-                <td align="right" nowrap="nowrap">
-                    <asp:Label ID="lblUnMatchedLineCnt" runat="server">UNMATCHED_LINE_COUNT</asp:Label>:
-                </td>
-                <td align="left" nowrap="nowrap">
-                    <asp:TextBox ID="txtUnMatchedLineCnt" runat="server" ReadOnly="true" SkinID="MediumTextBox" AutoPostBack="False" ></asp:TextBox>
-                </td>
-            </tr>
-            <tr>
-                <td align="right" class="borderLeft" nowrap="nowrap">
                     <asp:Label ID="lblMatchedAmount" runat="server">MATCHED_AMOUNT</asp:Label>:
                 </td>
                 <td align="left" nowrap="nowrap">
                     <asp:TextBox ID="txtMatchedAmount" runat="server" ReadOnly="true" SkinID="MediumTextBox" AutoPostBack="False" ></asp:TextBox>
+                </td>                
+                
+            </tr>
+            <tr>
+                <td align="right" nowrap="nowrap" class="borderLeft">
+                    <asp:Label ID="lblTerm" runat="server">TERM</asp:Label>:
+                </td>
+                <td align="left" nowrap="nowrap">
+                    <asp:TextBox ID="txtTerm" runat="server" ReadOnly="true" SkinID="MediumTextBox" AutoPostBack="False" ></asp:TextBox>
                 </td>
                 <td align="right" nowrap="nowrap">
                     <asp:Label ID="lblPaidAmount" runat="server">PAID AMOUNT</asp:Label>:
@@ -103,6 +91,8 @@
                 <td align="left" nowrap="nowrap">
                     <asp:TextBox ID="txtPaidAmount" runat="server" ReadOnly="true" SkinID="MediumTextBox" AutoPostBack="False" ></asp:TextBox>
                 </td>                
+                
+                
             </tr>
             <tr>
                 <td align="right" class="borderLeft" nowrap="nowrap">
@@ -112,10 +102,24 @@
                     <asp:TextBox ID="txtCurrency" runat="server" ReadOnly="true" SkinID="MediumTextBox" AutoPostBack="False" ></asp:TextBox>
                 </td>
                 <td align="right" nowrap="nowrap">
+                    <asp:Label ID="lblTotalLineCnt" runat="server">TOTAL_LINE_COUNT</asp:Label>:
+                </td>
+                <td align="left" nowrap="nowrap">
+                    <asp:TextBox ID="txtTotalLineCnt" runat="server" ReadOnly="true" SkinID="MediumTextBox" AutoPostBack="False" ></asp:TextBox>
+                </td>
+            </tr>
+            <tr>                
+                <td align="right" nowrap="nowrap" class="borderLeft">
                     <asp:Label ID="lblApproved" runat="server">APPROVED</asp:Label>:
                 </td>
                 <td align="left" nowrap="nowrap">
                     <asp:TextBox ID="txtApproved" runat="server" ReadOnly="true" SkinID="MediumTextBox" AutoPostBack="False" ></asp:TextBox>
+                </td>
+                <td align="right" nowrap="nowrap">
+                    <asp:Label ID="lblUnMatchedLineCnt" runat="server">UNMATCHED_LINE_COUNT</asp:Label>:
+                </td>
+                <td align="left" nowrap="nowrap">
+                    <asp:TextBox ID="txtUnMatchedLineCnt" runat="server" ReadOnly="true" SkinID="MediumTextBox" AutoPostBack="False" ></asp:TextBox>
                 </td>
             </tr>
             <tr>
@@ -143,6 +147,12 @@
                             </ul>
                             <div id="tabInvoiceLines">
                                 <table width="100%" class="dataGrid" border="0" cellspacing="0" cellpadding="0" style="margin-bottom:5px;">
+                                    <tr>
+                                        <td>
+                                            <asp:RadioButton ID="rbGetAll" runat="server" AutoPostBack="true" Checked="true" Text="ALL" GroupName="InvoiceLineType" />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                            <asp:RadioButton ID="rbGetUnmatched" runat="server" AutoPostBack="true" Checked="false" Text="UNMATCHED_LINES_ONLY" GroupName="InvoiceLineType"/>
+                                        </td>
+                                    </tr>
                                     <tr id="trPageSize" runat="server">
                                         <td class="bor">
                                             <asp:Label ID="lblPageSize" runat="server">Page_Size</asp:Label>
@@ -190,7 +200,7 @@
                                 <table width="100%" border="0" cellspacing="0" cellpadding="0">
                                     <tr>
                                         <td>
-                                            <asp:Button ID="btnPreviousBatch" runat="server" SkinID="CenterButton" Text="PREVIOUS_BATCH"></asp:Button>
+                                            <asp:Button ID="btnPreviousBatch" runat="server" SkinID="CenterButton" Text="PREVIOUS_BATCH"></asp:Button>&nbsp;&nbsp;&nbsp;
                                             <asp:Button ID="btnGetNextBatch" runat="server" SkinID="CenterButton" Text="Next_BATCH"></asp:Button>
                                         </td>
                                     </tr>

@@ -6,6 +6,17 @@
     Theme="Default"%>
 
 <asp:Content ID="Content1" ContentPlaceHolderID="HeadPlaceHolder" runat="server">
+    <%--<script language="javascript" type="text/javascript" src="../Navigation/scripts/jquery-1.12.4.min.js"> </script>    --%>
+    <style type="text/css">
+        .checkboxLine { 
+          margin-left:auto;
+        }
+
+        .checkboxHeader { 
+          margin-left:auto;
+        }
+    </style>
+    
     <script language="JavaScript" type="text/javascript">
         window.latestClick = '';
         function isNotDblClick() {
@@ -17,17 +28,23 @@
             }
         }
 
-        var gridViewId = '#<%= Grid.ClientID %>';
         function checkAll(selectAllCheckbox) {
-                //get all checkboxes within item rows and select/deselect based on select all checked status
-                //:checkbox is jquery selector to get all checkboxes
-                $('td :checkbox', gridViewId).prop("checked", selectAllCheckbox.checked);
+            //get all checkboxes within item rows and select/deselect based on select all checked status
+            //:checkbox is jquery selector to get all checkboxes
+            //alert("call checkAll");
+            //$('td :checkbox', gridViewId).prop("checked", selectAllCheckbox.checked);
+           $('.checkboxLine input:checkbox').prop("checked", selectAllCheckbox.checked);
         }
 
         function unCheckSelectAll(selectCheckbox) {
             //if any item is unchecked, uncheck header checkbox as well
-            if (!selectCheckbox.checked)
-                $('th :checkbox', gridViewId).prop("checked", false);
+            //alert("call unCheckSelectAll");            
+            if (!selectCheckbox.checked) {
+                //$('th :checkbox', gridViewId).prop("checked", false);
+                //alert("Uncheck header checkbox");            
+                $('.checkboxHeader input:checkbox').prop("checked", false);
+            }
+                
         }
     </script>
 </asp:Content>
@@ -139,28 +156,28 @@
                 <AlternatingRowStyle Wrap="True" />
                 <RowStyle Wrap="True" />
                 <Columns>
-                    <asp:TemplateField HeaderText="Check">
+                    <asp:TemplateField>
                         <HeaderTemplate>
-                            <asp:CheckBox ID="checkBoxAll" runat="server" class="checkbox" onclick="checkAll(this);"/>
+                            <asp:CheckBox ID="checkBoxAll" runat="server" CssClass="checkboxHeader" onclick="checkAll(this);"/>
                         </HeaderTemplate>
                         <ItemTemplate>
-                            <asp:CheckBox ID="checkBoxSelected" runat="server" class="checkbox" onclick="unCheckSelectAll(this);" />
+                            <asp:CheckBox ID="checkBoxSelected" runat="server" CssClass="checkboxLine" onclick="unCheckSelectAll(this);" />
                         </ItemTemplate>
                     </asp:TemplateField>
-                    <asp:BoundField HeaderText="VENDOR" HtmlEncode="false" DataField="Vendor" ></asp:BoundField>
+                    <asp:BoundField HeaderText="VENDOR" HtmlEncode="false" DataField="vendor" ></asp:BoundField>
                     <asp:TemplateField HeaderText="INVOICE_NUMBER">
                         <ItemTemplate>
                             <asp:LinkButton ID="btnInvoiceDetails" runat="server" OnClientClick="document.body.style.cursor = 'wait'; if(isNotDblClick()) {return true;} else return false;"></asp:LinkButton>
                         </ItemTemplate>
                     </asp:TemplateField>
-                    <asp:BoundField DataField="InvoiceDate" HeaderText="INVOICE_DATE" HtmlEncode="false"></asp:BoundField>
-                    <asp:BoundField DataField="DueDate" HeaderText="DUE_DATE" HtmlEncode="false"></asp:BoundField>
-                    <asp:BoundField DataField="Source" HeaderText="SOURCE" HtmlEncode="false"></asp:BoundField>
-                    <asp:BoundField DataField="InvoiceAmt" HeaderText="INVOICE_AMOUNT" HtmlEncode="false"></asp:BoundField>
-                    <asp:BoundField DataField="MatchedAmount" HeaderText="MATCHED_AMOUNT" HtmlEncode="false"></asp:BoundField>
-                    <asp:BoundField DataField="PaidAmount" HeaderText="PAID_AMOUNT" HtmlEncode="false"></asp:BoundField>
-                    <asp:BoundField DataField="PaymentDate" HeaderText="PAYMENT_DATE" HtmlEncode="false"></asp:BoundField>
-                    <asp:BoundField DataField="UnMatchedLineCnt" HeaderText="UNMATCHED_LINES" HtmlEncode="false"></asp:BoundField>
+                    <asp:BoundField DataField="invoice_date" HeaderText="INVOICE_DATE" HtmlEncode="false"></asp:BoundField>
+                    <asp:BoundField DataField="due_date" HeaderText="DUE_DATE" HtmlEncode="false"></asp:BoundField>
+                    <asp:BoundField DataField="source" HeaderText="SOURCE" HtmlEncode="false"></asp:BoundField>
+                    <asp:BoundField DataField="invoice_amount" HeaderText="INVOICE_AMOUNT" HtmlEncode="false"></asp:BoundField>
+                    <asp:BoundField DataField="matched_Amount" HeaderText="MATCHED_AMOUNT" HtmlEncode="false"></asp:BoundField>
+                    <asp:BoundField DataField="paid_amount" HeaderText="PAID_AMOUNT" HtmlEncode="false"></asp:BoundField>
+                    <asp:BoundField DataField="payment_date" HeaderText="PAYMENT_DATE" HtmlEncode="false"></asp:BoundField>
+                    <asp:BoundField DataField="unmatched_line_count" HeaderText="UNMATCHED_LINES" HtmlEncode="false"></asp:BoundField>
                     <asp:BoundField Visible="False" DataField="ap_invoice_header_id"></asp:BoundField>                    
                 </Columns>
                 <PagerSettings PageButtonCount="30" Mode="Numeric" Position="TopAndBottom" />
