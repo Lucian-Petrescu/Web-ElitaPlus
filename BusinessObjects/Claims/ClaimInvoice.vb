@@ -619,7 +619,7 @@ Public Class ClaimInvoice
 
         objclaimAuth = DirectCast(New ClaimAuthorization(Me.ClaimAuthorizationId, Me.Dataset), ClaimAuthorization)
 
-        If objclaimAuth.ContainsDeductible And objclaimAuth.PayDeductibleId = LookupListNew.GetIdFromCode(LookupListNew.LK_YESNO, Codes.YESNO_Y) Then
+        If objclaimAuth.ContainsDeductible And objclaimAuth.PayDeductibleId = LookupListNew.GetIdFromCode(LookupListNew.LK_CLAIM_PAY_DEDUCTIBLE, Codes.AUTH_LESS_DEDUCT_Y) Then
 
             'The Payment Amount and the IVA Tax Calculation should not contain PayDeductible Amount
             Me.Amount = Me.ReconciledAmount.Value - objclaimAuth.PayDeductibleAmount
@@ -2021,7 +2021,8 @@ Public Class ClaimInvoice
             Dim objclaimAuth As ClaimAuthorization
             'For MultiAuth Claims, if the Authorization contains deductible then Invoiceable.Deductible.Value would contain the deductible value at claim level 
             Dim deductiblePaidByAssurant As Decimal = 0D
-            If (Invoiceable.PayDeductibleId = LookupListNew.GetIdFromCode(LookupListNew.LK_YESNO, Codes.YESNO_Y)) Then
+            If (Invoiceable.PayDeductibleId = LookupListNew.GetIdFromCode(LookupListNew.LK_CLAIM_PAY_DEDUCTIBLE, Codes.AUTH_LESS_DEDUCT_Y)) Or
+                   (Invoiceable.PayDeductibleId = LookupListNew.GetIdFromCode(LookupListNew.LK_CLAIM_PAY_DEDUCTIBLE, Codes.FULL_INVOICE_Y)) Then
                 If Me.ClaimAuthorizationId.Equals(Guid.Empty) Then
                     If Invoiceable.ConsumerPays.Value > Invoiceable.Deductible.Value Then
                         'Check Contains Deductible
@@ -2283,7 +2284,8 @@ Public Class ClaimInvoice
 
         If (taxOnDeductible) Then
             Dim oDealer As New Dealer(oCert.DealerId)
-            If (oDealer.PayDeductibleId = LookupListNew.GetIdFromCode(LookupListNew.LK_YESNO, "N")) Then
+            If (oDealer.PayDeductibleId = LookupListNew.GetIdFromCode(LookupListNew.LK_CLAIM_PAY_DEDUCTIBLE, Codes.YESNO_N)) Or
+                (oDealer.PayDeductibleId = LookupListNew.GetIdFromCode(LookupListNew.LK_CLAIM_PAY_DEDUCTIBLE, Codes.FULL_INVOICE_Y)) Then
                 Return retval
             End If
         End If

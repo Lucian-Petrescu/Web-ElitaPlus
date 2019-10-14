@@ -1110,4 +1110,9 @@ Public Class Codes
     Public Const CONTRACT_POLGEN_AUTOGENERATE As String = "AG"
     Public Const CONTRACT_POLGEN_MANUALENTER As String = "ME"
 
+    'claim payment based on deductible flag
+    Public Const FULL_INVOICE_Y As String = "Y_FULL_INVOICE"
+    Public Const AUTH_LESS_DEDUCT_Y As String = "Y_AUTH_LESS_DEDUCT"
+
+
 End Class

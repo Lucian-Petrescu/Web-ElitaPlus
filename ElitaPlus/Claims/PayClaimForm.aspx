@@ -1196,7 +1196,7 @@
                     }
 
                     //DEF-1631
-                    if (PayDeductible == "Y") {
+                    if (PayDeductible == "Y_AUTH_LESS_DEDUCT") {
                         remDed = parseFloat(setJsFormat(document.getElementById("ctl00_SummaryPlaceHolder_txtDeductibleAmount").value, decSep));
                         remDedTax = parseFloat(setJsFormat(document.getElementById("ctl00_SummaryPlaceHolder_txtDeductibleTaxAmount").value, decSep));
                         if (hdDeductAmtByUser.value == "" || hdDeductAmtByUser.value != remDed) {
@@ -1366,7 +1366,7 @@
                          taxRate = hdTaxRateClaimOther.value;
                      }
 
-                     if (PayDeductible == "Y") {
+                     if (PayDeductible == "Y_AUTH_LESS_DEDUCT") {
                          if (alreadyPaidAmt + totalAmt - assurantAmt > 0) {
                              if (alreadyPaidAmt + totalAmt - assurantAmt > remainingDeductibleAmount) {
                                  deductiblePaymentByAssurant = remainingDeductibleAmount;
@@ -1490,7 +1490,7 @@
                     //else
                     //var subTotal = round_num(assurantAmt - alreadyPaidAmt - totalAmt - salvageAmt, 2);
 
-                    if (PayDeductible == "Y") {
+                    if (PayDeductible == "Y_AUTH_LESS_DEDUCT") {
                         subTotal = subTotal + totalDeductibleAmt;
                     }
 

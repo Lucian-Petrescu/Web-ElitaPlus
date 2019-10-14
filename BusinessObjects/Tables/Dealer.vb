@@ -565,7 +565,7 @@ Public Class Dealer
         Get
             CheckDeleted()
             If Row(DealerDAL.COL_NAME_PAY_DEDUCTIBLE_ID) Is DBNull.Value Then
-                Return LookupListNew.GetIdFromCode(LookupListNew.LK_YESNO, "N")
+                Return LookupListNew.GetIdFromCode(LookupListNew.LK_CLAIM_PAY_DEDUCTIBLE, Codes.YESNO_N)
             Else
                 Return New Guid(CType(Row(DealerDAL.COL_NAME_PAY_DEDUCTIBLE_ID), Byte()))
             End If

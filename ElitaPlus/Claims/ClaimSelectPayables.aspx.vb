@@ -320,8 +320,9 @@ Public Class ClaimSelectPayables
                             ControlMgr.SetEnableControl(Me, chkExcludeDed, False)
                             chkExcludeDed.ToolTip = "Claim Auth does not contain Deductble"
                         End If
-                        Dim noId As Guid = LookupListNew.GetIdFromCode(LookupListNew.LK_LANG_INDEPENDENT_YES_NO, Codes.YESNO_N)
-                        If chkExcludeDed.ToolTip.Equals(String.Empty) AndAlso objclaimAuth.PayDeductibleId.Equals(noId) Then
+                        Dim noId As Guid = LookupListNew.GetIdFromCode(LookupListNew.LK_CLAIM_PAY_DEDUCTIBLE, Codes.YESNO_N)
+                        Dim yFullId As Guid = LookupListNew.GetIdFromCode(LookupListNew.LK_CLAIM_PAY_DEDUCTIBLE, Codes.FULL_INVOICE_Y)
+                        If chkExcludeDed.ToolTip.Equals(String.Empty) AndAlso (objclaimAuth.PayDeductibleId.Equals(noId) Or objclaimAuth.PayDeductibleId.Equals(yFullId)) Then
                             ControlMgr.SetEnableControl(Me, chkExcludeDed, False)
                             chkExcludeDed.ToolTip = "Dealer Does Not Pay Deductble"
                         End If

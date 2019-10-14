@@ -1752,7 +1752,8 @@ Partial Class NewClaimForm
             Me.PopulateControlFromBOProperty(Me.TextboxAssurantPays, .AssurantPays)
             Me.PopulateControlFromBOProperty(Me.TextboxConsumerPays, .ConsumerPays)
             Me.PopulateControlFromBOProperty(Me.TextboxDueToSCFromAssurant, .DueToSCFromAssurant)
-            If (moDealer.PayDeductibleId = LookupListNew.GetIdFromCode(LookupListNew.LK_YESNO, "N")) Then
+            If (moDealer.PayDeductibleId = LookupListNew.GetIdFromCode(LookupListNew.LK_CLAIM_PAY_DEDUCTIBLE, Codes.YESNO_N)) Or
+                (moDealer.PayDeductibleId = LookupListNew.GetIdFromCode(LookupListNew.LK_CLAIM_PAY_DEDUCTIBLE, Codes.FULL_INVOICE_Y)) Then
                 ControlMgr.SetVisibleControl(Me, LabelDueToSCFromAssurant, False)
                 ControlMgr.SetVisibleControl(Me, TextboxDueToSCFromAssurant, False)
                 ControlMgr.SetVisibleControl(Me, TextboxDueToSCFromAssurantShadow, False)

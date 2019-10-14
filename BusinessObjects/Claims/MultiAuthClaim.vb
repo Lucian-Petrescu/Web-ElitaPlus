@@ -197,7 +197,7 @@ Public NotInheritable Class MultiAuthClaim
             If Me.DeductibleType.DeductibleBasedOn = Codes.DEDUCTIBLE_BASED_ON__PERCENT_OF_AUTHORIZED_AMOUNT Then
                 Me.PrepopulateDeductible()
             End If
-            If Me.Dealer.PayDeductibleId = LookupListNew.GetIdFromCode(LookupListNew.GetYesNoLookupList(Authentication.LangId), "Y") And
+            If Me.Dealer.PayDeductibleId = LookupListNew.GetIdFromCode(LookupListNew.GetPayDeductLookupList(Authentication.LangId), Codes.AUTH_LESS_DEDUCT_Y) And
                 newClaimAuth.ContainsDeductible Then
                 newClaimAuth.AddDeductibleLineItem()
             End If
@@ -496,7 +496,7 @@ Public NotInheritable Class MultiAuthClaim
 
     Private Sub UpdateDeductibleAmountOnLineItems()
 
-        If Me.Dealer.PayDeductibleId = LookupListNew.GetIdFromCode(LookupListNew.GetYesNoLookupList(Authentication.LangId), "Y") Then
+        If Me.Dealer.PayDeductibleId = LookupListNew.GetIdFromCode(LookupListNew.GetPayDeductLookupList(Authentication.LangId), Codes.AUTH_LESS_DEDUCT_Y) Then
 
             For Each item As ClaimAuthorization In Me.NonVoidClaimAuthorizationList
                 If item.ContainsDeductible Then
