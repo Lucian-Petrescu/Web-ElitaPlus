@@ -134,6 +134,7 @@ Public Class FalabellaIntegration
 
             If (OClaim.CertificateItemCoverage.CoverageTypeCode = Codes.COVERAGE_TYPE__THEFT AndAlso String.IsNullOrEmpty(OClaim.RemAuthNumber)) Then
                 Dim oCountry As New Country(OClaim.Company.CountryId)
+                Dim name As String
 
                 With OClaim
                     request.CertificateNumber = .Certificate.CertNumber
@@ -154,6 +155,19 @@ Public Class FalabellaIntegration
                     request.VerificationNumber = If(.Certificate.IdentificationNumber.Length > 0, .Certificate.IdentificationNumber.Substring(Len(.Certificate.IdentificationNumber) - 1), String.Empty)
                     request.WarrantySalesDate = .Certificate.WarrantySalesDate.Value.ToShortDateString()
                     request.WorkPhone = .Certificate.WorkPhone
+
+                    name = .Certificate.CustomerName
+
+                    If (Not name Is Nothing And Not name Is DBNull.Value And name.IndexOf(" ") > 0) Then
+
+                        request.FirstName = name.Substring(0, name.IndexOf(" "))
+                        request.LastName = name.Substring(name.IndexOf(" "))
+
+                    Else
+                        request.FirstName = ""
+                        request.LastName = ""
+                    End If
+
                 End With
 
             End If
@@ -260,7 +274,7 @@ Public Class FalabellaIntegration
     Private Function GetNationalityFromCounty(countryCode As String) As String
         If (countryCode = "CL") Then
             Return "Chilena"
-        ElseIf (CountryCode = "AR") Then
+        ElseIf (countryCode = "AR") Then
             Return "Argentina"
         ElseIf (countryCode = "CO") Then
             Return "Colombiana"
