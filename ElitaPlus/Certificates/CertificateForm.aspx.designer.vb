@@ -798,6 +798,33 @@ Namespace Certificates
         Protected WithEvents moPlaceOfBirthText As Global.System.Web.UI.WebControls.TextBox
         
         '''<summary>
+        '''moAMLRegulations4 control.
+        '''</summary>
+        '''<remarks>
+        '''Auto-generated field.
+        '''To modify move field declaration from designer file to code-behind file.
+        '''</remarks>
+        Protected WithEvents moAMLRegulations4 As Global.System.Web.UI.HtmlControls.HtmlTableRow
+        
+        '''<summary>
+        '''mocityOfBirthLabel control.
+        '''</summary>
+        '''<remarks>
+        '''Auto-generated field.
+        '''To modify move field declaration from designer file to code-behind file.
+        '''</remarks>
+        Protected WithEvents mocityOfBirthLabel As Global.System.Web.UI.WebControls.Label
+        
+        '''<summary>
+        '''moCityOfBirthText control.
+        '''</summary>
+        '''<remarks>
+        '''Auto-generated field.
+        '''To modify move field declaration from designer file to code-behind file.
+        '''</remarks>
+        Protected WithEvents moCityOfBirthText As Global.System.Web.UI.WebControls.TextBox
+        
+        '''<summary>
         '''moAMLRegulations2 control.
         '''</summary>
         '''<remarks>

@@ -1844,7 +1844,7 @@ Public NotInheritable Class ClaimAuthorization
             Dim obj As ClaimAuthorization = CType(objectToValidate, ClaimAuthorization)
             If obj.ClaimAuthStatus <> ClaimAuthorizationStatus.Void Then
                 obj.ContainsDeductible = obj.ContainsDeductibleLineItem
-                If obj.ContainsDeductible AndAlso obj.Claim.Dealer.PayDeductibleId = LookupListNew.GetIdFromCode(LookupListNew.GetYesNoLookupList(Authentication.LangId), "Y") Then
+                If obj.ContainsDeductible AndAlso obj.Claim.Dealer.PayDeductibleId = LookupListNew.GetIdFromCode(LookupListNew.GetPayDeductLookupList(Authentication.LangId), Codes.AUTH_LESS_DEDUCT_Y) Then
                     Dim hasDeductibleLineItem As Boolean = obj.ClaimAuthorizationItemChildren.Where(Function(i) i.IsDeleted = False AndAlso
                                                                                                        (i.ServiceClassCode = Codes.SERVICE_CLASS__DEDUCTIBLE And
                                                                                                         i.ServiceTypeCode = Codes.SERVICE_TYPE__PAY_DEDUCTIBLE)).Count > 0
@@ -1867,7 +1867,7 @@ Public NotInheritable Class ClaimAuthorization
 
             If obj.ClaimAuthStatus <> ClaimAuthorizationStatus.Void Then
                 obj.ContainsDeductible = obj.ContainsDeductibleLineItem
-                If obj.ContainsDeductible AndAlso obj.Claim.Dealer.PayDeductibleId = LookupListNew.GetIdFromCode(LookupListNew.GetYesNoLookupList(Authentication.LangId), "Y") Then
+                If obj.ContainsDeductible AndAlso obj.Claim.Dealer.PayDeductibleId = LookupListNew.GetIdFromCode(LookupListNew.GetPayDeductLookupList(Authentication.LangId), Codes.AUTH_LESS_DEDUCT_Y) Then
                     Dim flag As Boolean = obj.ClaimAuthorizationItemChildren.Where(Function(i) i.IsDeleted = False AndAlso
                                                                                                        (i.ServiceClassCode = Codes.SERVICE_CLASS__DEDUCTIBLE And
                                                                                                         i.ServiceTypeCode = Codes.SERVICE_TYPE__PAY_DEDUCTIBLE) _

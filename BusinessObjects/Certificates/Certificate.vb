@@ -1807,6 +1807,21 @@ Public Class Certificate
         End Set
     End Property
 
+    <ValidStringLength("", Max:=50)>
+    Public Property CityOfBirth() As String
+        Get
+            CheckDeleted()
+            If Row(CertificateDAL.COL_NAME_CITYOFBIRTH) Is DBNull.Value Then
+                Return Nothing
+            Else
+                Return CType(Row(CertificateDAL.COL_NAME_CITYOFBIRTH), String)
+            End If
+        End Get
+        Set(ByVal value As String)
+            CheckDeleted()
+            Me.SetValue(CertificateDAL.COL_NAME_CITYOFBIRTH, value)
+        End Set
+    End Property
     Public Property Gender() As Guid
         Get
             CheckDeleted()
@@ -2691,7 +2706,7 @@ Public Class Certificate
                 'Start: Update customer information in Customer table
                 ' Note: In future this should be moved to Customer DAL when Certificate screen is revamped
                 If Not Me.CustomerId.Equals(Guid.Empty) Then
-                    dal.UpdateCustomerDetails(Me.Id, Me.CustomerId, Me.SalutationId, Me.CustomerFirstName, Me.CustomerMiddleName, Me.CustomerLastName, modified_by, Me.Email, Me.HomePhone, Me.IdentificationNumber, Me.IdentificationNumberType, Me.WorkPhone, Me.MaritalStatus, Me.Nationality, Me.PlaceOfBirth, Me.Gender, Me.CorporateName, Me.AlternativeFirstName, Me.AlternativeLastName, Me.DateOfBirth)
+                    dal.UpdateCustomerDetails(Me.Id, Me.CustomerId, Me.SalutationId, Me.CustomerFirstName, Me.CustomerMiddleName, Me.CustomerLastName, modified_by, Me.Email, Me.HomePhone, Me.IdentificationNumber, Me.IdentificationNumberType, Me.WorkPhone, Me.MaritalStatus, Me.Nationality, Me.PlaceOfBirth, Me.Gender, Me.CorporateName, Me.AlternativeFirstName, Me.AlternativeLastName, Me.CityOfBirth, Me.DateOfBirth)
                 End If
                 'END: Update customer information in Customer table
                 'Reload the Data from the DB

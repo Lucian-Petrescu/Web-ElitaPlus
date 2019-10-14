@@ -791,7 +791,8 @@ Partial Class ClaimForm
             ControlMgr.SetVisibleControl(Me, Me.LabelPolicyNumber, False)
         End If
 
-        If (Me.State.MyBO.Dealer.PayDeductibleId = LookupListNew.GetIdFromCode(LookupListNew.LK_YESNO, "N")) Then
+        If (Me.State.MyBO.Dealer.PayDeductibleId = LookupListNew.GetIdFromCode(LookupListNew.LK_CLAIM_PAY_DEDUCTIBLE, Codes.YESNO_N)) Or
+                (Me.State.MyBO.Dealer.PayDeductibleId = LookupListNew.GetIdFromCode(LookupListNew.LK_CLAIM_PAY_DEDUCTIBLE, Codes.FULL_INVOICE_Y)) Then
             trDueToSCFromAssurant.Visible = False
         End If
 

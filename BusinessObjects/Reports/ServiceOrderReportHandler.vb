@@ -130,10 +130,23 @@ Public Class ServiceOrderReportHandler
         Dim certCov As CertItemCoverage = New CertItemCoverage(ClaimBO.CertItemCoverageId)
         Dim oCertItem As CertItem = New CertItem(certCov.CertItemId)
         Dim certRegItemId As Guid = ClaimBO.GetCertRegisterItemIdByMasterNumber(ClaimBO.MasterClaimNumber, ClaimBO.CompanyId)
+        Dim claimInvoice As ClaimInvoice = New ClaimInvoice()
+        Dim taxRateData As ClaimInvoiceDAL.TaxRateData = New ClaimInvoiceDAL.TaxRateData()
+        Dim claimTaxRateData As ClaimInvoiceDAL.TaxRateData = New ClaimInvoiceDAL.TaxRateData()
+        Dim oCompany As Company = New Company(ClaimBO.CompanyId)
+        Dim oDealer As Dealer = New Dealer(cert.DealerId)
+        taxRateData.countryID = oCompany.CountryId
+        taxRateData.regionID = svc.Address.RegionId
+        taxRateData.dealerID = oDealer.Id
+        taxRateData.salesDate = cert.ProductSalesDate
+        taxRateData.taxtypeID = LookupListNew.GetIdFromCode(LookupListNew.LK_TAX_TYPES, "7")
+        claimTaxRateData = ClaimInvoice.GetTaxRate(taxRateData)
+
         Dim CertificateRegisteredItem As CertRegisteredItem
         If Not certRegItemId.Equals(Guid.Empty) Then
             CertificateRegisteredItem = New CertRegisteredItem(certRegItemId)
         End If
+
 
 
         Dim ManufacturerDescription As String = String.Empty 'DEF-3565
@@ -168,19 +181,22 @@ Public Class ServiceOrderReportHandler
         soRow.IMEI = oCertItem.IMEINumber
         soRow.PRODUCT_SALES_DATE = cert.ProductSalesDate.Value
 
-        Dim oDealer As Dealer = New Dealer(cert.DealerId)
+
         soRow.DEALER_NAME = oDealer.DealerName
 
         soRow.NAME_OF_CONTACT = ClaimBO.ContactName
         soRow.DEDUCTIBLE_AMOUNT = ClaimBO.Deductible.Value
         soRow.AUTHORIZATION_AMOUNT = ClaimBO.AuthorizedAmount.Value
+        If claimTaxRateData.taxRate = 0 Then
+            soRow.TAX_AMOUNT = 0
+        Else
+            soRow.TAX_AMOUNT = ClaimBO.AuthorizedAmount.Value - (ClaimBO.AuthorizedAmount.Value * 100 / (100 + claimTaxRateData.taxRate))
+        End If
         soRow.AUTHORIZED_BY = ClaimBO.ClaimsAdjusterName
         soRow.CLAIM_NUMBER = ClaimBO.ClaimNumber
         soRow.MASTER_CLAIM_NUMBER = ClaimBO.MasterClaimNumber
 
         soRow.DEDUCTIBLE_AMT_DISCLAIMER_ON = "N"
-
-        Dim oCompany As Company = New Company(ClaimBO.CompanyId)
 
         ' Exception by Company
         Dim compCode As String = oCompany.Code
