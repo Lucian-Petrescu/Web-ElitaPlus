@@ -64,7 +64,43 @@ Public Class ApPaymentBatchDAL
     End Sub
 #End Region
 
+#Region "public methods"
+    Public Sub ValidatePaymentBatch(ByVal vendorId As Guid, ByVal batchNumber As String, ByRef errCode As Integer, ByRef errMsg As String)
+        Dim strStmt As String = Config("/SQL/VALIDATE_PAYMENT_BATCH_NUMBER")
+        
+        Try
+            Using conn As IDbConnection = New OracleConnection(DBHelper.ConnectString)
+                conn.Open
+                Using cmd As OracleCommand = conn.CreateCommand()
+                    cmd.CommandText = strStmt
+                    cmd.CommandType = CommandType.StoredProcedure
+                    cmd.BindByName = True
+                    
+                    'input parameters
+                    cmd.Parameters.Add("pi_vendor_id", OracleDbType.Raw).Value = vendorId.ToByteArray
+                    cmd.Parameters.Add("pi_batch_num", OracleDbType.Varchar2, 100).Value = batchNumber
 
+                    'output parameters
+                    dim param_err_code As OracleParameter = new OracleParameter()
+                    param_err_code = cmd.Parameters.Add("po_error_code", OracleDbType.Int32, ParameterDirection.Output)
+                    param_err_code.Size = 25
+                    
+                    dim param_err_msg As OracleParameter = new OracleParameter()
+                    param_err_msg = cmd.Parameters.Add("po_error_msg", OracleDbType.Varchar2, ParameterDirection.Output)
+                    param_err_msg.Size = 500
+
+                    cmd.ExecuteNonQuery
+
+                    errCode = CType(param_err_code.Value.ToString, Integer)
+                    errMsg = param_err_msg.Value.ToString
+                End Using
+                conn.Close
+            End Using
+        Catch ex As Exception
+            Throw New DataBaseAccessException(DataBaseAccessException.DatabaseAccessErrorType.ReadErr, ex)
+        End Try
+    End Sub
+#End Region
 End Class
 
 

@@ -79,4 +79,8 @@
     WHERE
     ap_payment_batch_id = :ap_payment_batch_id
   </DELETE>
+
+  <VALIDATE_PAYMENT_BATCH_NUMBER>
+    elita.elp_ap_invoice_processing.validate_payment_batch
+  </VALIDATE_PAYMENT_BATCH_NUMBER>
 </SQL>

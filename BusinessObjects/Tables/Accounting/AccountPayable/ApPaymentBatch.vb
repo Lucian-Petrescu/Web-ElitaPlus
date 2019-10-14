@@ -276,6 +276,11 @@ Public Class ApPaymentBatch
             Throw New DataBaseAccessException(DataBaseAccessException.DatabaseAccessErrorType.WriteErr, ex)
         End Try
     End Sub
+
+    Public Shared sub ValidatePaymentBatch(ByVal vendorId As Guid, ByVal batchNumber As String, ByRef errCode As Integer, ByRef errMsg As String)
+        Dim dal As New ApPaymentBatchDAL
+        dal.ValidatePaymentBatch(vendorId, batchNumber, errCode, errMsg)
+    End sub
 #End Region
 
 #Region "DataView Retrieveing Methods"

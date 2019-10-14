@@ -296,6 +296,7 @@ Public Class ApInvoiceHeaderDAL
         Dim blnSuccess As Boolean = True
         Try
             Using conn As IDbConnection = New OracleConnection(DBHelper.ConnectString)
+                conn.Open
                 Using cmd As OracleCommand = conn.CreateCommand()
                     cmd.CommandText = strStmt
                     cmd.CommandType = CommandType.StoredProcedure
@@ -305,8 +306,14 @@ Public Class ApInvoiceHeaderDAL
                         cmd.Parameters.Clear
 
                         'output parameters
-                        cmd.Parameters.Add("po_error_code", OracleDbType.Int32, ParameterDirection.Output)
-                        cmd.Parameters.Add("po_error_msg", OracleDbType.Varchar2, 500, nothing, ParameterDirection.Output)
+                        dim param_err_code As OracleParameter = new OracleParameter()
+                        param_err_code = cmd.Parameters.Add("po_error_code", OracleDbType.Int32, ParameterDirection.Output)
+                        param_err_code.Size = 25
+                    
+                        dim param_err_msg As OracleParameter = new OracleParameter()
+                        param_err_msg = cmd.Parameters.Add("po_error_msg", OracleDbType.Varchar2, ParameterDirection.Output)
+                        param_err_msg.Size = 500
+
                     
                         'input parameters
                         cmd.Parameters.Add("pi_invoice_header_id", OracleDbType.Raw).Value = invoiceIds(ind).ToByteArray
@@ -321,10 +328,11 @@ Public Class ApInvoiceHeaderDAL
 
                         cmd.ExecuteNonQuery
 
+                        errCode = CType(param_err_code.Value.ToString, Integer)
+                        errMsg = param_err_msg.Value.ToString
+
                         'if error out, rollback transaction and return
-                        If  String.IsNullOrEmpty(cmd.Parameters("po_error_msg").Value) Then
-                            errCode = cmd.Parameters("po_error_code").Value
-                            errMsg = cmd.Parameters("po_error_msg").Value     
+                        If  errCode > 0 Then
                             blnSuccess = False
                             tr.Rollback
                             Exit For

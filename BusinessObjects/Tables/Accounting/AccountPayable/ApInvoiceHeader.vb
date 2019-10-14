@@ -511,11 +511,11 @@ Public Class ApInvoiceHeader
         Public Const COL_MATCHED_AMOUNT As String = "matched_amount"
         Public Const COL_PAID_AMOUNT As String = "paid_amount"
         Public Const COL_PAYMENT_DATE As String = "payment_date"
-        Public Const COL_UNMATCHED_LINES_COUNT As String = "unmatched_lines_count"
+        Public Const COL_UNMATCHED_LINES_COUNT As String = "unmatched_line_count"
         Public Const COL_TOTAL_LINE_COUNT As String = "total_line_count"
         Public Const COL_VENDOR As String = "vendor"
         Public Const COL_VENDOR_ADDRESS As String = "vendor_address"
-        
+        Public Const COL_VENDOR_ID As String = "vendor_id"
 
         Public Const COL_TOTAL_COUNT As String = "total_count"
         Public Sub New(ByVal table As DataTable)

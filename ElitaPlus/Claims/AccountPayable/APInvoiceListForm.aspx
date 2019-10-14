@@ -15,6 +15,10 @@
         .checkboxHeader { 
           margin-left:auto;
         }
+
+        .formFont{
+            font-size:13px;
+        }
     </style>
     
     <script language="JavaScript" type="text/javascript">
@@ -184,9 +188,9 @@
                 <PagerStyle />
             </asp:GridView>
         </div>
-        <div class="btnZone" id="divButtons" runat="server">
-            <asp:Button ID="btnDelete_WRITE" runat="server" SkinID="AlternateLeftButton" Text="DELETE_INVOICES"></asp:Button>&nbsp;&nbsp;&nbsp;
-            <asp:Label ID="lblBatchNum" runat="server">BATCH_NUMBER</asp:Label>:
+        <div class="btnZone" id="divButtons" runat="server" style="text-align:center">
+            <asp:Button ID="btnDelete_WRITE" runat="server" SkinID="AlternateLeftButton" Text="DELETE_INVOICE"></asp:Button>&nbsp;&nbsp;&nbsp;
+            <asp:Label ID="lblBatchNum" runat="server" CssClass="formFont">BATCH_NUMBER:</asp:Label>
             <asp:TextBox ID="txtBatchNum" runat="server" SkinID="MediumTextBox" AutoPostBack="False"></asp:TextBox>
             <asp:Button ID="btnCreatePaymentBatch_WRITE" runat="server" SkinID="AlternateLeftButton" Text="CREATE_PAYMENT"></asp:Button>            
         </div>

@@ -217,8 +217,25 @@ Partial Class APInvoiceDetailForm
         txtVendorAddress.Text = State.myBOExtendedInfo(0)(ApInvoiceHeader.APInvoiceSearchDV.COL_VENDOR_ADDRESS)
         txtTotalLineCnt.Text = State.myBOExtendedInfo(0)(ApInvoiceHeader.APInvoiceSearchDV.COL_TOTAL_LINE_COUNT)
         txtUnMatchedLineCnt.Text = State.myBOExtendedInfo(0)(ApInvoiceHeader.APInvoiceSearchDV.COL_UNMATCHED_LINES_COUNT)
-        txtPaidAmount.Text = State.myBOExtendedInfo(0)(ApInvoiceHeader.APInvoiceSearchDV.COL_PAID_AMOUNT)
-        txtMatchedAmount.Text = State.myBOExtendedInfo(0)(ApInvoiceHeader.APInvoiceSearchDV.COL_MATCHED_AMOUNT)
+        
+        If not State.myBOExtendedInfo(0)(ApInvoiceHeader.APInvoiceSearchDV.COL_PAID_AMOUNT) Is DBNull.Value Then
+            txtPaidAmount.Text = State.myBOExtendedInfo(0)(ApInvoiceHeader.APInvoiceSearchDV.COL_PAID_AMOUNT)
+        Else
+            txtPaidAmount.Text = String.Empty
+        End If
+
+        If not State.myBOExtendedInfo(0)(ApInvoiceHeader.APInvoiceSearchDV.COL_PAID_AMOUNT) Is DBNull.Value Then
+            txtPaidAmount.Text = State.myBOExtendedInfo(0)(ApInvoiceHeader.APInvoiceSearchDV.COL_PAID_AMOUNT)
+        Else
+            txtPaidAmount.Text = String.Empty
+        End If
+
+        If not State.myBOExtendedInfo(0)(ApInvoiceHeader.APInvoiceSearchDV.COL_MATCHED_AMOUNT) Is DBNull.Value Then
+            txtMatchedAmount.Text = State.myBOExtendedInfo(0)(ApInvoiceHeader.APInvoiceSearchDV.COL_MATCHED_AMOUNT)
+        Else
+            txtMatchedAmount.Text = String.Empty
+        End If
+        
     End Sub
 
     Private Sub PopulateLinesGrid(ByVal intMinLineNum As Integer, ByVal intMaxLineNum As Integer)

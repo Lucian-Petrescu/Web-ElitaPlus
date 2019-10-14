@@ -138,6 +138,8 @@ Partial Class APInvoiceListForm
         'Put user code to initialize the page here
         Page.RegisterHiddenField("__EVENTTARGET", Me.btnSearch.ClientID)
         MasterPage.MessageController.Clear_Hide()
+        lblBatchNum.ForeColor = Color.Empty
+
         Try
             If Not IsPostBack Then
                 UpdateBreadCrum()
@@ -151,8 +153,9 @@ Partial Class APInvoiceListForm
                 SetFormTab(PAGETAB)
                 PopulateSearchFieldsFromState()
 
+                TranslateGridHeader(Grid)
+
                 If State.IsGridVisible Then
-                    TranslateGridHeader(Grid)
                     cboPageSize.SelectedValue = CType(Me.State.selectedPageSize, String)
                     Grid.PageSize = Me.State.selectedPageSize
                     PopulateGrid()
@@ -183,7 +186,12 @@ Partial Class APInvoiceListForm
 
     Private Sub APInvoiceListForm_PreRender(sender As Object, e As EventArgs) Handles Me.PreRender
         'sysn buttons' visibility with the grid's visibility
-        divButtons.Visible = State.IsGridVisible
+        If State.IsGridVisible = True AndAlso not State.SearchDv Is nothing andalso State.SearchDv.Count > 0 Then
+            divButtons.Visible = True
+        Else
+            divButtons.Visible = False
+        End If
+        
     End Sub
 #End Region
 
@@ -210,7 +218,7 @@ Partial Class APInvoiceListForm
             Me.HandleErrors(ex, Me.MasterPage.MessageController)
         End Try
     End Sub
-    Public Sub PopulateSearchFieldsFromState()
+    Private Sub PopulateSearchFieldsFromState()
 
         Try
             If Not State.Criterias Is Nothing Then
@@ -226,7 +234,7 @@ Partial Class APInvoiceListForm
         End Try
     End Sub
 
-    Public Sub PopulateGrid()
+    Private Sub PopulateGrid()
 
         Try
 
@@ -269,7 +277,7 @@ Partial Class APInvoiceListForm
 
     End Sub
 
-    Public Function PopulateStateFromSearchFields() As Boolean
+    Private Function PopulateStateFromSearchFields() As Boolean
         Dim dt As Date, blnSuccess as boolean = True
 
         Try
@@ -315,6 +323,21 @@ Partial Class APInvoiceListForm
                 End If
             End If            
 
+            if blnSuccess = True Then
+                Dim hasValue As Boolean = False
+                With State.Criterias
+                    If .DueDateFrom.HasValue = True Then hasValue = True
+                    If .DueDateTo.HasValue = True Then hasValue = True
+                    If .InvoiceDate.HasValue = True Then hasValue = True
+                    If string.IsNullOrWhiteSpace(.VendorCode) = False Then hasValue = True
+                    If string.IsNullOrWhiteSpace(.InvoiceNumber) = False Then hasValue = True
+                    If string.IsNullOrWhiteSpace(.Source) = False Then hasValue = True
+                End With
+                If hasValue = False Then
+                    blnSuccess = False
+                    MasterPage.MessageController.AddErrorAndShow("SEARCH_CRITERION_001", true)
+                End If
+            End If
         Catch ex As Exception
             blnSuccess = False
             HandleErrors(ex, MasterPage.MessageController)
@@ -323,7 +346,7 @@ Partial Class APInvoiceListForm
         Return blnSuccess
     End Function
     
-    Public function GetSelectedInvoices() as List(Of Guid)
+    Private function GetSelectedInvoices() as List(Of Guid)
         Dim chkbox As CheckBox, invoiceHeaderIdstr As String
         Dim selectedInvoices As List(Of Guid) = New List(Of Guid)
 
@@ -339,6 +362,133 @@ Partial Class APInvoiceListForm
             End If
         Next
         Return selectedInvoices
+    End function
+
+    Private Sub RefreshSearchGrid()
+        State.PageIndex = 0
+        State.SelectedInvoiceId = Guid.Empty
+        State.IsGridVisible = True
+        State.SearchDv = Nothing
+        PopulateGrid()
+    End Sub
+
+    Private function validInvoiceSelectionForDelete(ByVal invoiceList as List(Of Guid)) As Boolean
+        Dim isSelectionValid As Boolean = True
+        If invoiceList.Count > 0 Then
+            Dim dv As DataView = State.SearchDv
+            dv.Sort = ApInvoiceHeader.APInvoiceSearchDV.COL_INVOICE_HEADER_ID
+            
+            Dim strInvoiceNum As String, index As Integer
+            For each guidtemp As Guid In invoiceList
+                index = dv.Find(guidtemp.ToByteArray)
+                If index <> -1 Then 'found the record
+                    strInvoiceNum = dv(index)(ApInvoiceHeader.APInvoiceSearchDV.COL_INVOICE_NUMBER)
+
+                    if dv(index)(ApInvoiceHeader.APInvoiceSearchDV.COL_PAID_AMOUNT) > 0 Then 'invoice paid already, can not be deleted
+                        MasterPage.MessageController.AddError(string.Format("{0} - {1}", strInvoiceNum, TranslationBase.TranslateLabelOrMessage("INVOICE PAID")), False)
+                        isSelectionValid = False
+                    End If
+                End If
+            Next                
+        Else
+            'must select at least one invoice to delete
+            MasterPage.MessageController.AddError("MSG_NO_RECORD_SELECTED", true)
+            isSelectionValid = False
+        End If
+
+        If isSelectionValid = False Then
+            MasterPage.MessageController.Show
+        End If
+
+        Return isSelectionValid
+    End function
+
+    Private function validInvoiceSelectionForPayment(Byval strBatchNumber As String, ByVal invoiceList as List(Of Guid)) As Boolean
+        Dim isSelectionValid As Boolean = True, blnVendorErr As Boolean = False
+        Dim guidVendorId As Guid = Guid.Empty
+
+        'validate selected invoices
+        If invoiceList.Count > 0 Then
+            Dim dv As DataView = State.SearchDv
+            dv.Sort = ApInvoiceHeader.APInvoiceSearchDV.COL_INVOICE_HEADER_ID
+            
+            Dim strInvoiceNum As String, index As Integer
+            dim guidVendorIdNext As Guid
+
+            For each guidtemp As Guid In invoiceList
+                index = dv.Find(guidtemp.ToByteArray)
+                If index <> -1 Then 'found the record
+                    strInvoiceNum = dv(index)(ApInvoiceHeader.APInvoiceSearchDV.COL_INVOICE_NUMBER)
+                    guidVendorIdNext = New Guid(CType(dv(index)(ApInvoiceHeader.APInvoiceSearchDV.COL_VENDOR_ID), Byte()))
+                    
+                    If guidVendorId = Guid.Empty Then 'first value
+                        guidVendorId = guidVendorIdNext
+                    Else
+                        If blnVendorErr = False AndAlso guidVendorId <> guidVendorIdNext Then
+                            blnVendorErr = True ' add the error only once
+                            isSelectionValid = False
+                        End If
+                    End If
+
+                    if dv(index)(ApInvoiceHeader.APInvoiceSearchDV.COL_PAID_AMOUNT) > 0 Then 'invoice paid already, can not be paid again
+                        MasterPage.MessageController.AddError(string.Format("{0} - {1}", strInvoiceNum, TranslationBase.TranslateLabelOrMessage("INVOICE_ALREADY_PAID")), False)
+                        isSelectionValid = False
+                    End If
+
+                    if dv(index)(ApInvoiceHeader.APInvoiceSearchDV.COL_UNMATCHED_LINES_COUNT) > 0 Then 'invoice has unmatched lines
+                        MasterPage.MessageController.AddError(string.Format("{0} - {1}", strInvoiceNum, TranslationBase.TranslateLabelOrMessage("INVOICE_HAS_UNMATCHED_LINES")), False)
+                        isSelectionValid = False
+                    End If
+
+                End If
+            Next          
+            
+            If blnVendorErr = True Then ' add the message after the loop
+                MasterPage.MessageController.AddError("INVOICES_NOT_FOR_SAME_VENDOR", True)                            
+            End If
+        Else
+            'must select at least one invoice to delete
+            MasterPage.MessageController.AddError("MSG_NO_RECORD_SELECTED", true)
+            isSelectionValid = False
+        End If
+
+        
+
+        'validate batch Number only if invoice selections are valid
+        Dim blnValidBatchNum As Boolean = True
+        If isSelectionValid = True AndAlso guidVendorId <> Guid.Empty Then
+            If String.IsNullOrWhiteSpace(strBatchNumber) Then 'validate batch number is provided
+                MasterPage.MessageController.AddError("BATCH_NUMBER_REQUIRED", True)
+                isSelectionValid = False
+                blnValidBatchNum = False
+            Else
+                'validate payment batch is not exists for the vendor or the payment batch is still open for
+                Dim intErrCode As Integer, strErrMsg As String
+                ApPaymentBatch.ValidatePaymentBatch(guidVendorId, strBatchNumber, intErrCode, strErrMsg)
+
+                'batch number is valid if the number doesn't exist or exists but the payment batch is in open status
+                If intErrCode <> 0 AndAlso intErrCode <> 100 Then                     
+                    If intErrCode = 200 Then
+                        'batch number exists but the payment batch is NOT in open status
+                        MasterPage.MessageController.AddError("DUPLICATE_BATCH_NUMBER", true)
+                    Else 'unknown error, show error message returned from database
+                        MasterPage.MessageController.AddError(string.Format("Validate batch number error: {0} - {1}", intErrCode, strErrMsg), False)
+                    End If
+                    isSelectionValid = False
+                    blnValidBatchNum = False
+                End If
+            End If
+
+            If blnValidBatchNum = False Then
+                lblBatchNum.ForeColor = Color.Red
+            End If
+            
+            If isSelectionValid = False Then
+                MasterPage.MessageController.Show
+            End If
+        End If
+        
+        Return isSelectionValid
     End function
 #End Region
 
@@ -360,10 +510,7 @@ Partial Class APInvoiceListForm
             'high search results
             ControlMgr.SetVisibleControl(Me, Grid, False)
             ControlMgr.SetVisibleControl(Me, trPageSize, False)
-
-            'debug code, delete before checking
-            callPage(APInvoiceDetailForm.URL, New Guid("5afec772-417e-cb48-e053-4307640a2d37"))
-
+           
         Catch ex As Exception
             Me.HandleErrors(ex, Me.MasterPage.MessageController)
         End Try
@@ -377,58 +524,44 @@ Partial Class APInvoiceListForm
             State.IsGridVisible = False
 
             If PopulateStateFromSearchFields() Then
-                State.PageIndex = 0
-                State.SelectedInvoiceId = Guid.Empty
-                State.IsGridVisible = True
-                State.SearchDv = Nothing
-                PopulateGrid()
+                RefreshSearchGrid()
             End If
         Catch ex As Exception
             HandleErrors(ex, MasterPage.MessageController)
         End Try
     End Sub
 
-    Private function validInvoiceSelectionForDelete(ByVal invoiceList as List(Of Guid)) As Boolean
-        Dim isSelectionValid As Boolean = True
-        If invoiceList.Count > 0 Then
-            Dim dv As DataView = State.SearchDv
-            dv.Sort = ApInvoiceHeader.APInvoiceSearchDV.COL_INVOICE_HEADER_ID
-                    
-            For each guidtemp As Guid In invoiceList
-                dim index As Integer = dv.Find(guidtemp)
-                If index <> -1 Then 'found the record
-                    if dv(index)(ApInvoiceHeader.APInvoiceSearchDV.COL_PAID_AMOUNT) > 0 Then 'invoice paid already, can not be deleted
-                        MasterPage.MessageController.AddErrorAndShow("CAN_NOT_DELETE_PAID_INVOICE", true)
-                    End If
-                End If
-            Next                
-        Else
-            'must select at least one invoice to delete
-            MasterPage.MessageController.AddErrorAndShow("NO_INVOICE_SELECTED", true)
-        End If
-    End function
+    
     Private Sub btnDelete_WRITE_Click(sender As Object, e As EventArgs) Handles btnDelete_WRITE.Click
         Try
             Dim invoiceToBeDeleted as List(Of Guid) = GetSelectedInvoices
             If validInvoiceSelectionForDelete(invoiceToBeDeleted) Then
                 'call delete invoice method for each invoices
                 ApInvoiceHeader.DeleteInvoices(invoiceToBeDeleted)
-            End If
-
-            '' test delete functions.
-            'Dim testlist As new List(Of Guid)
-            'testlist.Add(Guid.NewGuid)
-            'testlist.Add(Guid.NewGuid)
-            'testlist.Add(Guid.NewGuid)
-            'ApInvoiceHeader.DeleteInvoices(testlist)
-
+                MasterPage.MessageController.AddSuccess("MSG_RECORD_DELETED_OK")
+                RefreshSearchGrid()
+            End If            
         Catch ex As Exception
             HandleErrors(ex, MasterPage.MessageController)
         End Try
     End Sub
 
     Private Sub btnCreatePaymentBatch_WRITE_Click(sender As Object, e As EventArgs) Handles btnCreatePaymentBatch_WRITE.Click
-
+        Try
+            Dim invoiceToBePaid as List(Of Guid) = GetSelectedInvoices
+            Dim strBatchNum As String = txtBatchNum.Text.Trim.ToUpper
+            If validInvoiceSelectionForPayment(strBatchNum, invoiceToBePaid) Then
+                'call delete invoice method for each invoices
+                Dim errCode As Integer, errMsg As String
+                ApInvoiceHeader.PayInvoices(strBatchNum, invoiceToBePaid, errCode, errMsg)
+                If errCode > 0 Then
+                    MasterPage.MessageController.AddErrorAndShow(String.Format("{0} - {1}", errCode.ToString, errMsg), False)
+                End If
+                RefreshSearchGrid()            
+            End If            
+        Catch ex As Exception
+            HandleErrors(ex, MasterPage.MessageController)
+        End Try
     End Sub
 #End Region
 
