@@ -393,6 +393,8 @@ Partial Public Class ServiceOrderReport
 
         Private columnAUTHORIZATION_AMOUNT As Global.System.Data.DataColumn
 
+        Private columnTAX_AMOUNT As Global.System.Data.DataColumn
+
         Private columnAUTHORIZED_BY As Global.System.Data.DataColumn
 
         Private columnCLAIM_NUMBER As Global.System.Data.DataColumn
@@ -981,6 +983,14 @@ Partial Public Class ServiceOrderReport
         Public ReadOnly Property AUTHORIZATION_AMOUNTColumn() As Global.System.Data.DataColumn
             Get
                 Return Me.columnAUTHORIZATION_AMOUNT
+            End Get
+        End Property
+
+        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),
+         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")>
+        Public ReadOnly Property TAX_AMOUNTColumn() As Global.System.Data.DataColumn
+            Get
+                Return Me.columnTAX_AMOUNT
             End Get
         End Property
 
@@ -2938,6 +2948,21 @@ Partial Public Class ServiceOrderReport
 
         <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),
          Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")>
+        Public Property TAX_AMOUNT() As Decimal
+            Get
+                Try
+                    Return CType(Me(Me.tableServiceOrder.TAX_AMOUNTColumn), Decimal)
+                Catch e As Global.System.InvalidCastException
+                    Throw New Global.System.Data.StrongTypingException("The value for column 'TAX_AMOUNT' in table 'ServiceOrder' is DBNull.", e)
+                End Try
+            End Get
+            Set
+                Me(Me.tableServiceOrder.TAX_AMOUNTColumn) = Value
+            End Set
+        End Property
+
+        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),
+         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")>
         Public Property AUTHORIZED_BY() As String
             Get
                 Try
@@ -4466,6 +4491,18 @@ Partial Public Class ServiceOrderReport
          Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")>
         Public Sub SetAUTHORIZATION_AMOUNTNull()
             Me(Me.tableServiceOrder.AUTHORIZATION_AMOUNTColumn) = Global.System.Convert.DBNull
+        End Sub
+
+        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),
+         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")>
+        Public Function IsTAX_AMOUNTNull() As Boolean
+            Return Me.IsNull(Me.tableServiceOrder.TAX_AMOUNTColumn)
+        End Function
+
+        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),
+         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")>
+        Public Sub SetTAX_AMOUNTNull()
+            Me(Me.tableServiceOrder.TAX_AMOUNTColumn) = Global.System.Convert.DBNull
         End Sub
 
         <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),
