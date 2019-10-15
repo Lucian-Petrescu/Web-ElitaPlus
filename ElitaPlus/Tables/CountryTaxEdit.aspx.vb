@@ -647,12 +647,16 @@ Partial Class CountryTaxEdit
         Me.PopulateBOProperty(objBO, PRODUCT_TAX_TYPE_ID_PROPERTY, Me.cboProductTaxType)
         Me.PopulateBOProperty(objBO, "CountryId", Me.cboCountry)
         Me.PopulateBOProperty(objBO, "DealerId", Me.moDealerMultipleDrop.SelectedGuid)
-        If claimTaxTypes.Contains(State.TaxTypeCode) AndAlso Me.CheckBoxApplyWithholding.Checked Then
-            Me.PopulateBOProperty(objBO, "ApplyWithholdingFlag", "Y")
-        Else
-            Me.PopulateBOProperty(objBO, "ApplyWithholdingFlag", "N")
-        End If
 
+        If claimTaxTypes.Contains(Me.State.TaxTypeCode) Then
+            If Me.tdWithholdingCheck.Visible Then
+                If Me.CheckBoxApplyWithholding.Checked Then
+                    Me.PopulateBOProperty(objBO, "ApplyWithholdingFlag", "Y")
+                Else
+                    Me.PopulateBOProperty(objBO, "ApplyWithholdingFlag", "N")
+                End If
+            End If
+        End If
 
         LoadTaxGroupUserControls(False)
 
