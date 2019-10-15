@@ -449,7 +449,7 @@ Partial Class InvoiceGroupDetailForm
     Protected Sub PopulateFormFromBOs()
 
         If Me.State.IsNew Then
-            Me.txtReceiptdate.Text = Date.Today.ToString()
+            Me.txtReceiptdate.Text = GetDateFormattedString(Date.Today)
             Me.txtgrpnumber.Text = String.Empty
         Else
             With Me.State.InvgrpBO

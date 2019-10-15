@@ -4,6 +4,7 @@ Imports System.Reflection
 Imports System.ComponentModel
 Imports System.Collections.Generic
 Imports System.Globalization
+Imports Assurant.Elita.CommonConfiguration
 
 
 Public Class ElitaPlusPage
@@ -1448,12 +1449,12 @@ Public Class ElitaPlusPage
                                                     ByVal textBox As System.Web.UI.WebControls.WebControl,
                                                     Optional ByVal caller As String = "",
                                                     Optional ByVal setDateTime As String = "N",
-                                                    Optional ByVal enabledDates As List(of Date) = nothing)
+                                                    Optional ByVal enabledDates As List(Of Date) = Nothing)
         Dim url As String = ELPWebConstants.APPLICATION_PATH & "/Common/CalendarForm_New.aspx"
         Dim textId As String = textBox.UniqueID.Replace(":", "_").Replace("$", "_")
-        dim strEnabledDates as String = string.Empty
-        if Not enabledDates Is nothing AndAlso enabledDates.Count > 0 then
-            enabledDates.ForEach(sub(d) strEnabledDates = $"{strEnabledDates}{d.ToString("yyyyMMdd")}|")
+        Dim strEnabledDates As String = String.Empty
+        If Not enabledDates Is Nothing AndAlso enabledDates.Count > 0 Then
+            enabledDates.ForEach(Sub(d) strEnabledDates = $"{strEnabledDates}{d.ToString("yyyyMMdd")}|")
         End If
         control.Attributes.Add("onclick", $"javascript:return openCalendar_New_enableDates('{textId}', '{caller}', '{url}', '{setDateTime}', '{strEnabledDates}')")
     End Sub
@@ -1462,13 +1463,13 @@ Public Class ElitaPlusPage
                                                           ByVal textBox As System.Web.UI.WebControls.WebControl,
                                                           Optional ByVal caller As String = "",
                                                           Optional ByVal setDateTime As String = "N",
-                                                          Optional ByVal disableBeforeDate As Date = nothing)
+                                                          Optional ByVal disableBeforeDate As Date = Nothing)
         Dim url As String = ELPWebConstants.APPLICATION_PATH & "/Common/CalendarForm_New.aspx"
         Dim textId As String = textBox.UniqueID.Replace(":", "_").Replace("$", "_")
-        dim strDisabledBeforeDate as String = string.Empty
-        if disableBeforeDate = nothing then
+        Dim strDisabledBeforeDate As String = String.Empty
+        If disableBeforeDate = Nothing Then
             strDisabledBeforeDate = DateTime.Now.ToString("yyyyMMdd")
-        else
+        Else
             strDisabledBeforeDate = disableBeforeDate.ToString("yyyyMMdd")
         End If
         control.Attributes.Add("onclick", $"javascript:return openCalendar_New_disableBeforeDate('{textId}', '{caller}', '{url}', '{setDateTime}', '{strDisabledBeforeDate}')")
@@ -2004,23 +2005,31 @@ Public Class ElitaPlusPage
     End Function
 
     Public Shared Function GetDateFormattedString(ByVal value As Date) As String
-        'Return value.ToString(DATE_FORMAT, LocalizationMgr.CurrentCulture)
-        Return value.ToString(DATE_FORMAT, System.Threading.Thread.CurrentThread.CurrentCulture)
+        Dim LanguageCode = ElitaPlusIdentity.Current.ActiveUser.LanguageCode
+        Dim formattedValue = CommonConfigManager.Current.LanguageManager.Get(LanguageCode).GetAwaiter().GetResult()?.FormatDate(value)
+        Return formattedValue.ToString()
     End Function
 
     Public Shared Function GetLongDateFormattedString(ByVal value As Date) As String
-        'Return value.ToString(DATE_FORMAT, LocalizationMgr.CurrentCulture)
-        Return value.ToString(DATE_TIME_FORMAT, System.Threading.Thread.CurrentThread.CurrentCulture)
+        Dim LanguageCode = ElitaPlusIdentity.Current.ActiveUser.LanguageCode
+        Dim formattedDate = CommonConfigManager.Current.LanguageManager.Get(LanguageCode).GetAwaiter().GetResult()?.FormatDate(value)
+        Dim MeridianTime = CommonConfigManager.Current.LanguageManager.Get(LanguageCode).GetAwaiter().GetResult()?.FormatTime(value)
+        Dim FullDateTimeValue = formattedDate + " " + MeridianTime
+        Dim formattedValue =
+            FullDateTimeValue.ToString().Substring(0, FullDateTimeValue.ToString().Length - 3)
+        Return formattedValue.ToString()
     End Function
 
     Public Shared Function GetLongDate12FormattedString(ByVal value As Date) As String
-        'Return value.ToString(DATE_FORMAT, LocalizationMgr.CurrentCulture)
-        Return value.ToString(DATE_TIME_FORMAT_12, System.Threading.Thread.CurrentThread.CurrentCulture)
+        Dim LanguageCode = ElitaPlusIdentity.Current.ActiveUser.LanguageCode
+        Dim formattedDate = CommonConfigManager.Current.LanguageManager.Get(LanguageCode).GetAwaiter().GetResult()?.FormatDate(value)
+        Dim FormattedTime = CommonConfigManager.Current.LanguageManager.Get(LanguageCode).GetAwaiter().GetResult()?.FormatTime(value)
+        Dim FormattedValue = formattedDate + " " + FormattedTime
+        Return FormattedValue.ToString()
     End Function
 
     Public Shared Function GetAmountFormattedString(ByVal value As Decimal, Optional ByVal format As String = Nothing) As String
         If format Is Nothing Then format = DECIMAL_FORMAT
-        'Return value.ToString(format, LocalizationMgr.CurrentCulture)
         Return value.ToString(format, System.Threading.Thread.CurrentThread.CurrentCulture)
     End Function
 
@@ -2032,8 +2041,6 @@ Public Class ElitaPlusPage
 
     End Function
     Public Shared Function GetAmountFormattedToString(ByVal value As String) As String
-
-        'Return value.ToString(format, LocalizationMgr.CurrentCulture)
         Return Convert.ToString(value, System.Threading.Thread.CurrentThread.CurrentCulture)
     End Function
 

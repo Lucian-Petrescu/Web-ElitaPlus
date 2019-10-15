@@ -86,7 +86,7 @@ Namespace Certificates
                 Me.ProductRemainLiabilityLimitTD.InnerText = .ProductRemainLiabilityLimit
                 Me.ProductTotalPaidAmountTD.InnerText = .ProductTotalPaidAmount
                 Me.CustomerNameTD.InnerText = getSalutation(oCertificateCtrl) & .CustomerName
-                Me.WarrantySalesDateTD.InnerText = .WarrantySalesDate.Value.ToString(DATE_FORMAT, System.Threading.Thread.CurrentThread.CurrentCulture)
+                Me.WarrantySalesDateTD.InnerText = ElitaPlusPage.GetDateFormattedStringNullable(.WarrantySalesDate.Value)
 
                 Me.ScrutinyRequiredLabelTD.InnerText = LookupListNew.GetDescriptionFromCode(LookupListCache.LK_YESNO_XCD, scrutinyRequiredCode, ElitaPlusIdentity.Current.ActiveUser.LanguageId)
                 cssClassName = If(scrutinyRequired, "StatClosed", "StatActive")
@@ -103,7 +103,7 @@ Namespace Certificates
                 Me.StatusTD.Attributes.Item("Class") = cssClassName
 
                 If Not (.CustReqCancelDate Is Nothing) Then
-                    Me.CustCancelDateTD.InnerText = "(Cancellation Request Date:" + .CustReqCancelDate.Value.ToString(DATE_FORMAT, System.Threading.Thread.CurrentThread.CurrentCulture) + ")"
+                    Me.CustCancelDateTD.InnerText = "(Cancellation Request Date:" + ElitaPlusPage.GetDateFormattedStringNullable(.CustReqCancelDate.Value) + ")"
                     Me.CustCancelDateTD.Attributes.Item("Class") = Me.CustCancelDateTD.Attributes.Item("Class") & " " & "Orange"
                 End If
 

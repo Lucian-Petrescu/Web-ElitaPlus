@@ -512,7 +512,7 @@ Public Class ClaimRecordingForm
             moProtectionEvtDtl.ClaimStatus = LookupListNew.GetClaimStatusFromCode(Authentication.CurrentUser.LanguageId, State.ClaimBo.StatusCode)
             moProtectionEvtDtl.ClaimStatusCss = If(State.ClaimBo.Status = BasicClaimStatus.Active, "StatActive", "StatClosed")
             moProtectionEvtDtl.ClaimStatus = State.ClaimBo.Status
-            moProtectionEvtDtl.DateOfLoss = State.ClaimBo.LossDate.Value.ToString(DATE_FORMAT)
+            moProtectionEvtDtl.DateOfLoss = GetDateFormattedStringNullable(State.ClaimBo.LossDate.Value)
             moProtectionEvtDtl.TypeOfLoss = LookupListNew.GetDescriptionFromId(LookupListNew.LK_RISKTYPES, State.ClaimBo.CertificateItem.RiskTypeId)
         End If
 
@@ -523,11 +523,10 @@ Public Class ClaimRecordingForm
     ''' </summary>
     ''' <returns>Instance of <see cref="ClaimRecordingServiceClient"/></returns>
     Private Shared Function GetClient() As ClaimRecordingServiceClient
-        'ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12
+        ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12
         Dim client = New ClaimRecordingServiceClient(EndPointName, ConfigurationManager.AppSettings(ServiceUrl))
         client.ClientCredentials.UserName.UserName = ConfigurationManager.AppSettings(UserName)
         client.ClientCredentials.UserName.Password = ConfigurationManager.AppSettings(Password)
-
         Return client
     End Function
 
@@ -1256,7 +1255,7 @@ Public Class ClaimRecordingForm
                                 moProtectionEvtDtl.ClaimNumber = oClaimBase.ClaimNumber
                                 moProtectionEvtDtl.ClaimStatus = LookupListNew.GetClaimStatusFromCode(Authentication.CurrentUser.LanguageId, oClaimBase.StatusCode)
                                 moProtectionEvtDtl.ClaimStatusCss = If(oClaimBase.Status = BasicClaimStatus.Active, "StatActive", "StatClosed")
-                                moProtectionEvtDtl.DateOfLoss = oClaimBase.LossDate.Value.ToString(DATE_FORMAT)
+                                moProtectionEvtDtl.DateOfLoss = GetDateFormattedStringNullable(oClaimBase.LossDate.Value)
                                 moProtectionEvtDtl.TypeOfLoss = LookupListNew.GetDescriptionFromId(LookupListNew.LK_RISKTYPES, oClaimBase.CertificateItem.RiskTypeId)
                             End If
                         End If

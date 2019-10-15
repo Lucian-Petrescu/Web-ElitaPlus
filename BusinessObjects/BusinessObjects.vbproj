@@ -145,8 +145,7 @@
       <Private>True</Private>
     </Reference>
     <Reference Include="Assurant.Elita.CommonConfiguration, Version=2.1.7.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\Assurant.Elita.CommonConfiguration.2.1.5\lib\net46\Assurant.Elita.CommonConfiguration.dll</HintPath>
+      <HintPath>..\packages\Assurant.Elita.CommonConfiguration.2.1.8\lib\net46\Assurant.Elita.CommonConfiguration.dll</HintPath>
     </Reference>
     <Reference Include="Assurant.Elita.Configuration">
       <HintPath>..\packages\Assurant.Elita.Configuration.4.0.2\lib\net462\Assurant.Elita.Configuration.dll</HintPath>
