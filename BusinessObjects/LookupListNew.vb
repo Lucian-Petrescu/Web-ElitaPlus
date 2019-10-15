@@ -3869,4 +3869,10 @@ Public NotInheritable Class LookupListNew
         Return (dv)
 
     End Function
+
+    Public Shared Function GetPayDeductLookupList(ByVal languageId As Guid, Optional ByVal displayNothingSelected As Boolean = True) As DataView
+
+        Return DropdownLookupList("CLAIM_PAY_DEDUCTIBLE", languageId, displayNothingSelected)
+
+    End Function
 End Class
