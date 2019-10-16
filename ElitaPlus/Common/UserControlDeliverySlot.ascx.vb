@@ -109,6 +109,16 @@ Public Class UserControlDeliverySlot
         End Set
     End Property
 
+    Public Property IsDeliverySlotAvailable() As Boolean
+
+        Get
+            Return State.IsDeliverySlotAvailable
+        End Get
+        Set(ByVal value As Boolean)
+            State.IsDeliverySlotAvailable = value
+        End Set
+    End Property
+
 #End Region
 #Region "Control State"
 
@@ -124,6 +134,7 @@ Public Class UserControlDeliverySlot
         Public DeliveryDateSelected As Nullable(Of Date)
         Public CurrentEstimate As DeliveryEstimate
         Public EnableNotSepecifyCheck As Boolean
+        Public IsDeliverySlotAvailable As Boolean
     End Class
 
 
@@ -278,6 +289,7 @@ Public Class UserControlDeliverySlot
         'clear old values when get new
         State.CurrentEstimate = Nothing
         State.DeliveryDateList = Nothing
+        State.IsDeliverySlotAvailable = True
 
         ResetToDefaultSetting()
 
@@ -480,6 +492,7 @@ Public Class UserControlDeliverySlot
         ResetToDefaultSetting()
         AvailableDeliveryDateTiming = String.Empty
         Page.ChangeEnabledControlProperty(chkNotSpecify, False)
+        State.IsDeliverySlotAvailable = False
     End Sub
 
     Protected Sub ddlCourierProduct_SelectedIndexChanged(sender As Object, e As EventArgs) Handles ddlCourierProduct.SelectedIndexChanged
