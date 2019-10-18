@@ -66,8 +66,8 @@
     <Reference Include="Assurant.Elita.Base.DataAccess, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\Assurant.Elita.Base.DataAccess.5.0.2\lib\net462\Assurant.Elita.Base.DataAccess.dll</HintPath>
     </Reference>
-    <Reference Include="Assurant.Elita.CommonConfiguration, Version=2.1.5.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Assurant.Elita.CommonConfiguration.2.1.5\lib\net46\Assurant.Elita.CommonConfiguration.dll</HintPath>
+    <Reference Include="Assurant.Elita.CommonConfiguration, Version=2.1.7.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Assurant.Elita.CommonConfiguration.2.1.8\lib\net46\Assurant.Elita.CommonConfiguration.dll</HintPath>
     </Reference>
     <Reference Include="Assurant.Elita.Configuration, Version=4.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>

@@ -98,8 +98,7 @@
     </div>
     <div id="footer">
         <div class="AFooter">
-            <h4>
-                2018 Assurant Solutions. All rights reserved</h4>
+            <h4><asp:Label ID ="lblCopyrights" runat="server" Visible="True" ></asp:Label></h4>
             <ul><li><a target="_blank" href="http://www.assurant.com/inc/assurant/notice.html">Notice</a></li>
                 <li>|</li>
                 <li><a target="_blank" href="http://www.assurant.com/inc/assurant/privacy.html">Privacy Policy</a></li>

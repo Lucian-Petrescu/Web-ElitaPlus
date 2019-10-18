@@ -68,7 +68,7 @@
             <td valign="top">
                 <div id="Navigation_Header" class="header">
                     <div class="logo">
-                        <asp:Image ID="Image1" ImageUrl="~/Navigation/Images/logo.png" AlternateText="The mark, Assurant, is a trademark of Assurant, Inc., and may not be copied, reproduced, transmitted, displayed, performed, distributed, sublicensed, altered, stored for subsequent use or otherwise used in whole or in part in any manner without Assurant's prior written consent."
+                        <asp:Image ID="Image1" ImageUrl="~/Navigation/Images/Assurant_horz_logo_RGB JPG.jpg" AlternateText="The mark, Assurant, is a trademark of Assurant, Inc., and may not be copied, reproduced, transmitted, displayed, performed, distributed, sublicensed, altered, stored for subsequent use or otherwise used in whole or in part in any manner without Assurant's prior written consent."
                             Width="176" Height="60" runat="server" />
                     </div>
                     <div class="globalNav">
