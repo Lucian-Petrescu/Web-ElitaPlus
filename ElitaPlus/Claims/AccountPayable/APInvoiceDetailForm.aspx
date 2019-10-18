@@ -1,6 +1,6 @@
 ﻿<%@ Page Title="" Language="vb" 
     AutoEventWireup="false" 
-    MasterPageFile="~/Navigation/masters/ElitaBase.Master" 
+    MasterPageFile="../../Navigation/masters/ElitaBase.Master" 
     CodeBehind="APInvoiceDetailForm.aspx.vb" 
     Inherits="Assurant.ElitaPlus.ElitaPlusWebApp.APInvoiceDetailForm" 
     Theme="Default"%>
@@ -11,8 +11,8 @@
 </asp:Content>
 <asp:Content ID="Content3" ContentPlaceHolderID="SummaryPlaceHolder" runat="server">
     <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
-    <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
-    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+    <script language="javascript" type="text/javascript" src="../../Navigation/scripts/jquery-1.12.4.min.js"> </script>    
+    <script language="javascript" type="text/javascript" src="../../Navigation/scripts/jquery-ui.min.js"> </script>    
     <script type="text/javascript">
       $( function() {
         $('#tabs').tabs();

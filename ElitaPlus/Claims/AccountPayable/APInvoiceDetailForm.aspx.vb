@@ -152,9 +152,13 @@ Partial Class APInvoiceDetailForm
         'show Run Match button only if the invoice has unmatched lines and also not paid yet            
         If State.UnMatchedLineCount > 0 And State.PaidAmount = 0 Then
             ControlMgr.SetVisibleControl(Me, btnRunMatch_WRITE, True)
+            ControlMgr.SetVisibleControl(Me, rbGetUnmatched, True)
         Else
             ControlMgr.SetVisibleControl(Me, btnRunMatch_WRITE, False)
+            ControlMgr.SetVisibleControl(Me, rbGetUnmatched, False)
         End If
+
+        'enable disable the previous/next batch buttons
         If State.TotalLineCount = State.myBOLines.Count Then 'all lines had been returned
             ControlMgr.SetVisibleControl(Me, btnGetNextBatch, False)
             ControlMgr.SetVisibleControl(Me, btnPreviousBatch, False)
@@ -171,6 +175,7 @@ Partial Class APInvoiceDetailForm
                 ControlMgr.SetVisibleControl(Me, btnGetNextBatch, False)
             End If
         End If
+
     End sub
     Private Function GetDescriptionFromExtendedCode(ByVal list As DataElements.ListItem(), ByVal lookupValue As String) As String
         For Each item As DataElements.ListItem In list
@@ -243,8 +248,13 @@ Partial Class APInvoiceDetailForm
             State.myBOLines = State.myBO.GetInvoiceLines(intMinLineNum, intMaxLineNum, State.UnMatchedLineOnly, LineBatchSize)
 
             Dim intMin As Integer, intMax As Integer
-            intMin = State.myBOLines.Table.Compute("Min(line_number)", String.Empty)
-            intMax = State.myBOLines.Table.Compute("Max(line_number)", String.Empty)
+            If State.myBOLines.Count > 0 Then
+                intMin = State.myBOLines.Table.Compute("Min(line_number)", String.Empty)
+                intMax = State.myBOLines.Table.Compute("Max(line_number)", String.Empty)
+            Else
+                intMin = 0
+                intMax = MaxLineNumberAllowed
+            End If
             State.CurrentMaxLineNumber = intMax
 
             If State.LineBatches Is Nothing Then
@@ -336,6 +346,9 @@ Partial Class APInvoiceDetailForm
         State.myBOLines = Nothing
         State.PageIndex = 0 'show first page after refresh
         State.LineBatches = Nothing
+        State.UnMatchedLineOnly = False 'get all lines after match
+        rbGetAll.Checked = True
+        rbGetUnmatched.Checked = False
 
         populateFormFromBO
         populateFormFromBOExtendedInfo

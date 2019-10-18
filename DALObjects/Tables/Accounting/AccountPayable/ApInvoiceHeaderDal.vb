@@ -232,7 +232,7 @@ Public Class ApInvoiceHeaderDAL
 
                     For Each guidTemp As guid In invoiceIds
                 
-                        strInvoiceIds(batchCnt) = GuidControl.GuidToHexString(guidTemp)                
+                        strInvoiceIds(batchCnt) = GuidControl.GuidToHexString(guidTemp)
                         batchCnt = batchCnt + 1
                     Next
             
@@ -289,8 +289,7 @@ Public Class ApInvoiceHeaderDAL
 
     Public sub PayInvoices(ByVal strBatchNumber As String, ByVal invoiceIds As List(Of Guid), ByRef errCode As Integer, ByRef errMsg As String)
         Dim strStmt As String = Config("/SQL/PAY_AP_INVOICE")
-        Dim tr As OracleTransaction = Nothing
-
+        
         errCode = 0
         errMsg = String.Empty
         Dim blnSuccess As Boolean = True
@@ -298,59 +297,98 @@ Public Class ApInvoiceHeaderDAL
             Using conn As IDbConnection = New OracleConnection(DBHelper.ConnectString)
                 conn.Open
                 Using cmd As OracleCommand = conn.CreateCommand()
-                    cmd.CommandText = strStmt
-                    cmd.CommandType = CommandType.StoredProcedure
-                    cmd.BindByName = True
+                    Using tran As OracleTransaction = conn.BeginTransaction(IsolationLevel.ReadCommitted)
+                        cmd.Transaction = tran
+                    
+                        cmd.CommandText = strStmt
+                        cmd.CommandType = CommandType.StoredProcedure
+                        cmd.BindByName = True
 
-                    For ind As Integer = 0 to invoiceIds.Count - 1
-                        cmd.Parameters.Clear
+                        'input parameters
+                        cmd.Parameters.Add("pi_batch_num", OracleDbType.Varchar2, 100).Value = strBatchNumber
+                        cmd.Parameters.Add("pi_close_batch", OracleDbType.Varchar2, 10).Value = "Y" 'Close the payment batch 
+                        cmd.Parameters.Add("pi_commit", OracleDbType.Varchar2, 10).Value = "Y" ' Commit changes
 
+                        'id array parameters
+                        
+                        ' Setup the values for PL/SQL Associative Array
+                        Dim arrayIds(invoiceIds.Count - 1) As String
+                        Dim arrayIdsSize(invoiceIds.Count - 1) As Integer
+                        Dim batchCnt As Integer = 0                        
+                        For Each guidTemp As guid In invoiceIds                
+                            arrayIds(batchCnt) = GuidControl.GuidToHexString(guidTemp)
+                            arrayIdsSize(batchCnt) = 50
+                            batchCnt = batchCnt + 1
+                        Next
+
+                        dim paramIds As OracleParameter = new OracleParameter()
+                        paramIds = cmd.Parameters.Add("pi_invoice_header_ids", OracleDbType.Varchar2)
+                        paramIds.Direction = ParameterDirection.Input
+                        paramIds.CollectionType = OracleCollectionType.PLSQLAssociativeArray
+                        paramIds.Value = arrayIds
+                        paramIds.Size = invoiceIds.Count                        
+                        paramIds.ArrayBindSize = arrayIdsSize
+                        
                         'output parameters
                         dim param_err_code As OracleParameter = new OracleParameter()
                         param_err_code = cmd.Parameters.Add("po_error_code", OracleDbType.Int32, ParameterDirection.Output)
                         param_err_code.Size = 25
-                    
+
                         dim param_err_msg As OracleParameter = new OracleParameter()
                         param_err_msg = cmd.Parameters.Add("po_error_msg", OracleDbType.Varchar2, ParameterDirection.Output)
                         param_err_msg.Size = 500
-
-                    
-                        'input parameters
-                        cmd.Parameters.Add("pi_invoice_header_id", OracleDbType.Raw).Value = invoiceIds(ind).ToByteArray
-                        cmd.Parameters.Add("pi_batch_num", OracleDbType.Varchar2, 100).Value = strBatchNumber
-                        cmd.Parameters.Add("pi_commit", OracleDbType.Varchar2, 10).Value = "N"
-
-                        If ind = invoiceIds.Count - 1 Then
-                            cmd.Parameters.Add("pi_close_batch", OracleDbType.Varchar2, 10).Value = "Y" 'Close the batch if it is last one
-                        Else
-                            cmd.Parameters.Add("pi_close_batch", OracleDbType.Varchar2, 10).Value = "N"
-                        End If
 
                         cmd.ExecuteNonQuery
 
                         errCode = CType(param_err_code.Value.ToString, Integer)
                         errMsg = param_err_msg.Value.ToString
 
-                        'if error out, rollback transaction and return
-                        If  errCode > 0 Then
-                            blnSuccess = False
-                            tr.Rollback
-                            Exit For
-                        End If
-                    Next
-
-                    'all invoices paid successfully, commit transaction
-                    If blnSuccess Then
-                        tr.Commit
-                    End If
+                        'For ind As Integer = 0 to invoiceIds.Count - 1
+                        '    cmd.Parameters.Clear
+                        '    'output parameters
+                        '    dim param_err_code As OracleParameter = new OracleParameter()
+                        '    param_err_code = cmd.Parameters.Add("po_error_code", OracleDbType.Int32, ParameterDirection.Output)
+                        '    param_err_code.Size = 25
                     
+                        '    dim param_err_msg As OracleParameter = new OracleParameter()
+                        '    param_err_msg = cmd.Parameters.Add("po_error_msg", OracleDbType.Varchar2, ParameterDirection.Output)
+                        '    param_err_msg.Size = 500
+
+                    
+                        '    'input parameters
+                        '    cmd.Parameters.Add("pi_invoice_header_id", OracleDbType.Raw).Value = invoiceIds(ind).ToByteArray
+                        '    cmd.Parameters.Add("pi_batch_num", OracleDbType.Varchar2, 100).Value = strBatchNumber
+                            
+                        '    If ind = invoiceIds.Count - 1 Then
+                        '        cmd.Parameters.Add("pi_close_batch", OracleDbType.Varchar2, 10).Value = "Y" 'Close the batch if it is last one
+                        '        cmd.Parameters.Add("pi_commit", OracleDbType.Varchar2, 10).Value = "Y"
+                        '    Else
+                        '        cmd.Parameters.Add("pi_close_batch", OracleDbType.Varchar2, 10).Value = "N"
+                        '        cmd.Parameters.Add("pi_commit", OracleDbType.Varchar2, 10).Value = "N"
+                        '    End If
+
+                        '    cmd.ExecuteNonQuery
+
+                        '    errCode = CType(param_err_code.Value.ToString, Integer)
+                        '    errMsg = param_err_msg.Value.ToString
+
+                        '    'if error out, rollback transaction and return
+                        '    If  errCode > 0 Then
+                        '        blnSuccess = False
+                        '        tran.Rollback
+                        '        Exit For
+                        '    End If
+                        'Next
+
+                        ''all invoices paid successfully, commit transaction
+                        'If blnSuccess Then
+                        '    tran.Commit
+                        'End If
+                    End Using
                 End Using
             End Using
 
-        Catch ex As Exception
-            If not tr Is Nothing Then
-                tr.Rollback
-            End If 
+        Catch ex As Exception            
             Throw New DataBaseAccessException(DataBaseAccessException.DatabaseAccessErrorType.ReadErr, ex)
         End Try        
     End sub

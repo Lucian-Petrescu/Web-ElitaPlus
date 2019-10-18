@@ -1,12 +1,12 @@
 ﻿<%@ Page Language="vb" 
     AutoEventWireup="false" 
-    MasterPageFile="~/Navigation/masters/ElitaBase.Master" 
+    MasterPageFile="../../Navigation/masters/ElitaBase.Master" 
     CodeBehind="APInvoiceListForm.aspx.vb" 
     Inherits="Assurant.ElitaPlus.ElitaPlusWebApp.APInvoiceListForm"
     Theme="Default"%>
 
-<asp:Content ID="Content1" ContentPlaceHolderID="HeadPlaceHolder" runat="server">
-    <%--<script language="javascript" type="text/javascript" src="../Navigation/scripts/jquery-1.12.4.min.js"> </script>    --%>
+<asp:Content ID="HeaderContent" ContentPlaceHolderID="HeadPlaceHolder" runat="server">
+    <script language="javascript" type="text/javascript" src="../../Navigation/scripts/jquery-1.12.4.min.js"> </script>    
     <style type="text/css">
         .checkboxLine { 
           margin-left:auto;
@@ -32,21 +32,20 @@
             }
         }
 
+        jQuery.noConflict();            
+
         function checkAll(selectAllCheckbox) {
-            //get all checkboxes within item rows and select/deselect based on select all checked status
-            //:checkbox is jquery selector to get all checkboxes
-            //alert("call checkAll");
-            //$('td :checkbox', gridViewId).prop("checked", selectAllCheckbox.checked);
-           $('.checkboxLine input:checkbox').prop("checked", selectAllCheckbox.checked);
+            (function( $jq ) {
+                $jq('.checkboxLine').prop("checked", selectAllCheckbox.checked);
+            })(jQuery);           
         }
 
         function unCheckSelectAll(selectCheckbox) {
-            //if any item is unchecked, uncheck header checkbox as well
-            //alert("call unCheckSelectAll");            
             if (!selectCheckbox.checked) {
-                //$('th :checkbox', gridViewId).prop("checked", false);
-                //alert("Uncheck header checkbox");            
-                $('.checkboxHeader input:checkbox').prop("checked", false);
+                (function( $jq ) {
+                    $jq('.checkboxHeader').prop("checked", false);
+                })(jQuery);     
+                
             }
                 
         }
@@ -162,10 +161,10 @@
                 <Columns>
                     <asp:TemplateField>
                         <HeaderTemplate>
-                            <asp:CheckBox ID="checkBoxAll" runat="server" CssClass="checkboxHeader" onclick="checkAll(this);"/>
+                            <asp:CheckBox ID="checkBoxAll" runat="server" onclick="checkAll(this);"/>
                         </HeaderTemplate>
                         <ItemTemplate>
-                            <asp:CheckBox ID="checkBoxSelected" runat="server" CssClass="checkboxLine" onclick="unCheckSelectAll(this);" />
+                            <asp:CheckBox ID="checkBoxSelected" runat="server" onclick="unCheckSelectAll(this);" />
                         </ItemTemplate>
                     </asp:TemplateField>
                     <asp:BoundField HeaderText="VENDOR" HtmlEncode="false" DataField="vendor" ></asp:BoundField>
@@ -191,7 +190,7 @@
         <div class="btnZone" id="divButtons" runat="server" style="text-align:center">
             <asp:Button ID="btnDelete_WRITE" runat="server" SkinID="AlternateLeftButton" Text="DELETE_INVOICE"></asp:Button>&nbsp;&nbsp;&nbsp;
             <asp:Label ID="lblBatchNum" runat="server" CssClass="formFont">BATCH_NUMBER:</asp:Label>
-            <asp:TextBox ID="txtBatchNum" runat="server" SkinID="MediumTextBox" AutoPostBack="False"></asp:TextBox>
+            <asp:TextBox ID="txtBatchNum" runat="server" SkinID="LargeTextBox" AutoPostBack="False" style="width:300px;"></asp:TextBox>
             <asp:Button ID="btnCreatePaymentBatch_WRITE" runat="server" SkinID="AlternateLeftButton" Text="CREATE_PAYMENT"></asp:Button>            
         </div>
     </div>    

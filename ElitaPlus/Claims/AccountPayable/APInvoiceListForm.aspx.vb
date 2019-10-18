@@ -13,7 +13,7 @@ Partial Class APInvoiceListForm
     Public Const GRID_COL_INVOICE_NUMBER_CTRL As String = "btnInvoiceDetails"
     Public Const GRID_COL_SELECT_CTRL As String = "checkBoxSelected"
 
-    Public Const GRID_COL_SELECT_IDX As Integer = 0
+    Public Const GRID_COL_CHECKBOX_IDX As Integer = 0
     Public Const GRID_COL_VENDOR_IDX As Integer = 1
     Public Const GRID_COL_INVOICE_NUMBER_IDX As Integer = 2
     Public Const GRID_COL_INVOICE_DATE_IDX As Integer = 3
@@ -352,7 +352,7 @@ Partial Class APInvoiceListForm
 
         For each row As GridViewRow In Grid.Rows
             If row.RowType = DataControlRowType.DataRow Then
-                chkbox = CType(row.Cells(GRID_COL_SELECT_IDX).FindControl(GRID_COL_SELECT_CTRL), CheckBox)
+                chkbox = CType(row.Cells(GRID_COL_CHECKBOX_IDX).FindControl(GRID_COL_SELECT_CTRL), CheckBox)
                 If chkbox.Checked Then
                    invoiceHeaderIdstr = row.Cells(GRID_COL_INVOICE_HEADER_ID_IDX).Text.Trim
                    If String.IsNullOrEmpty(invoiceHeaderIdstr) = False Then
@@ -507,10 +507,13 @@ Partial Class APInvoiceListForm
             txtInvoiceDueDateFrom.Text = String.Empty
             txtInvoiceDueDateTo.Text = String.Empty
 
-            'high search results
+            'hide search results
             ControlMgr.SetVisibleControl(Me, Grid, False)
             ControlMgr.SetVisibleControl(Me, trPageSize, False)
-           
+            
+            'clear batch number textbox
+            txtBatchNum.Text = String.Empty
+
         Catch ex As Exception
             Me.HandleErrors(ex, Me.MasterPage.MessageController)
         End Try
@@ -522,6 +525,7 @@ Partial Class APInvoiceListForm
             ControlMgr.SetVisibleControl(Me, Grid, False)
             ControlMgr.SetVisibleControl(Me, trPageSize, False)
             State.IsGridVisible = False
+            txtBatchNum.Text = String.Empty
 
             If PopulateStateFromSearchFields() Then
                 RefreshSearchGrid()
@@ -598,15 +602,31 @@ Partial Class APInvoiceListForm
     Private Sub Grid_RowDataBound(ByVal sender As Object, ByVal e As System.Web.UI.WebControls.GridViewRowEventArgs) Handles Grid.RowDataBound
         Dim dvRow As DataRowView = CType(e.Row.DataItem, DataRowView)
         Dim btnEditItem As LinkButton
-
+        Dim chkbox As CheckBox
+                    
         Try
-            If e.Row.RowType = DataControlRowType.DataRow OrElse (e.Row.RowType = DataControlRowType.Separator) Then
+            If e.Row.RowType = DataControlRowType.Header Then
+                If (Not e.Row.Cells(GRID_COL_CHECKBOX_IDX).FindControl("checkBoxAll") Is Nothing) Then
+                    chkbox = CType(e.Row.Cells(GRID_COL_CHECKBOX_IDX).FindControl("checkBoxAll"), CheckBox)
+                    chkbox.InputAttributes("class") = "checkboxHeader"
+                End If
+            End If
+
+            'If e.Row.RowType = DataControlRowType.DataRow OrElse (e.Row.RowType = DataControlRowType.Separator) Then
+            If e.Row.RowType = DataControlRowType.DataRow Then
                 If (Not e.Row.Cells(GRID_COL_INVOICE_NUMBER_IDX).FindControl(GRID_COL_INVOICE_NUMBER_CTRL) Is Nothing) Then
                     btnEditItem = CType(e.Row.Cells(GRID_COL_INVOICE_NUMBER_IDX).FindControl(GRID_COL_INVOICE_NUMBER_CTRL), LinkButton)
                     btnEditItem.CommandArgument = e.Row.RowIndex.ToString
                     btnEditItem.CommandName = SELECT_COMMAND_NAME
                     btnEditItem.Text = dvRow(ApInvoiceHeader.APInvoiceSearchDV.COL_INVOICE_NUMBER).ToString
                 End If
+
+                If (Not e.Row.Cells(GRID_COL_CHECKBOX_IDX).FindControl(GRID_COL_SELECT_CTRL) Is Nothing) Then
+                    chkbox = CType(e.Row.Cells(GRID_COL_CHECKBOX_IDX).FindControl(GRID_COL_SELECT_CTRL), CheckBox)
+                    'chkbox.Attributes("class") = "checkboxDetails"
+                    chkbox.InputAttributes("class") = "checkboxLine"
+                End If
+                
                 ' populate dates fields
                 If not dvRow(ApInvoiceHeader.APInvoiceSearchDV.COL_INVOICE_DATE) Is DBNull.Value Then
                     PopulateControlFromBOProperty(e.Row.Cells(GRID_COL_INVOICE_DATE_IDX), GetLongDateFormattedString(CType(dvRow(ApInvoiceHeader.APInvoiceSearchDV.COL_INVOICE_DATE), Date)))                
@@ -655,7 +675,7 @@ Partial Class APInvoiceListForm
                 invoiceHeaderId = Grid.Rows(rowIndex).Cells(GRID_COL_INVOICE_HEADER_ID_IDX).Text
                 Me.State.SelectedInvoiceId = New Guid(invoiceHeaderId)
 
-                'to do, calling AP invoice detail pages
+                'calling AP invoice detail pages
                 callPage(APInvoiceDetailForm.URL, Me.State.SelectedInvoiceId)
 
             End If
