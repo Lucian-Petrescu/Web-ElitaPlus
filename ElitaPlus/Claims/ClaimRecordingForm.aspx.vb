@@ -2314,35 +2314,32 @@ Public Class ClaimRecordingForm
         Dim txt As TextBox
         Dim txtPostalCode As TextBox
         Dim ddl As DropDownList
-
         txt = CType(addressCtrl.FindControl("moAddress1Text"), TextBox)
         shippingAdd.Address1 = txt.Text
-        txt = CType(addressCtrl.FindControl("moAddress2Text"), TextBox)
-        shippingAdd.Address2 = txt.Text
-        txt = CType(addressCtrl.FindControl("moAddress3Text"), TextBox)
-        shippingAdd.Address3 = txt.Text
-        txt = CType(addressCtrl.FindControl("moCityText"), TextBox)
+            txt = CType(addressCtrl.FindControl("moAddress2Text"), TextBox)
+            shippingAdd.Address2 = txt.Text
+            txt = CType(addressCtrl.FindControl("moAddress3Text"), TextBox)
+            shippingAdd.Address3 = txt.Text
+            txt = CType(addressCtrl.FindControl("moCityText"), TextBox)
         shippingAdd.City = txt.Text
-
 
         txtPostalCode = CType(addressCtrl.FindControl("moPostalText"), TextBox)
 
-        ' Country value
-        ddl = CType(addressCtrl.FindControl("moCountryDrop_WRITE"), DropDownList)
-        If (ddl.Items.Count > 0 AndAlso ddl.SelectedIndex > -1) Then
-            shippingAdd.Country = LookupListNew.GetCodeFromId(LookupListNew.LK_COUNTRIES, New Guid(ddl.SelectedValue.ToString()))
-        End If
-        ''validate zip code
-        Dim zd As New ZipDistrict()
-        zd.CountryId = New Guid(ddl.SelectedValue.ToString())
-        zd.ValidateZipCode(txtPostalCode.Text)
-        ' Region/ State Drop down value
-        ddl = CType(addressCtrl.FindControl("moRegionDrop_WRITE"), DropDownList)
-        If (ddl.Items.Count > 0 AndAlso ddl.SelectedIndex > -1) Then
-            shippingAdd.State = LookupListNew.GetCodeFromId(LookupListNew.LK_REGIONS, New Guid(ddl.SelectedValue.ToString()))
-        End If
-
-        shippingAdd.PostalCode = txtPostalCode.Text
+            ' Country value
+            ddl = CType(addressCtrl.FindControl("moCountryDrop_WRITE"), DropDownList)
+            If (ddl.Items.Count > 0 AndAlso ddl.SelectedIndex > -1) Then
+                shippingAdd.Country = LookupListNew.GetCodeFromId(LookupListNew.LK_COUNTRIES, New Guid(ddl.SelectedValue.ToString()))
+            End If
+            ''validate zip code
+            Dim zd As New ZipDistrict()
+            zd.CountryId = New Guid(ddl.SelectedValue.ToString())
+            zd.ValidateZipCode(txtPostalCode.Text)
+            ' Region/ State Drop down value
+            ddl = CType(addressCtrl.FindControl("moRegionDrop_WRITE"), DropDownList)
+            If (ddl.Items.Count > 0 AndAlso ddl.SelectedIndex > -1) Then
+                shippingAdd.State = LookupListNew.GetCodeFromId(LookupListNew.LK_REGIONS, New Guid(ddl.SelectedValue.ToString()))
+            End If
+            shippingAdd.PostalCode = txtPostalCode.Text
 
         Return shippingAdd
     End Function
@@ -2385,66 +2382,72 @@ Public Class ClaimRecordingForm
                     Dim addressSelected As ClaimRecordingService.Address = PopulateAddressFromAddressController(CType(gvr.Cells(GridLoColLoDetailIdx).FindControl("ucAddressControllerLogisticsOptions"), UserControlAddress_New))
                     Dim postalCodeOld As String
                     Dim countryCodeOld As String
-                    If lOption.Type = LogisticOptionType.DealerBranchAddress Then
-                        Dim storeNumber As String = CType(gvr.Cells(GridLoColLoDetailIdx).FindControl(GridLoStoreNumberTxtCtrl), TextBox).Text
-                        If String.IsNullOrWhiteSpace(storeNumber) Then
-                            MasterPage.MessageController.AddError(Message.MSG_ERR_STORE_NUMBER_MANDATORY, True)
-                            Return False
-                        End If
-                        If Not lOption.LogisticOptionInfo Is Nothing _
-                           AndAlso Not CType(lOption.LogisticOptionInfo, LogisticOptionInfoDealerBranchAddress).Address Is Nothing Then
-                            postalCodeOld = CType(lOption.LogisticOptionInfo, LogisticOptionInfoDealerBranchAddress).Address.PostalCode
-                            countryCodeOld = CType(lOption.LogisticOptionInfo, LogisticOptionInfoDealerBranchAddress).Address.Country
-                        End If
-                        CType(lOption.LogisticOptionInfo, LogisticOptionInfoDealerBranchAddress).BranchCode = storeNumber
-                        CType(lOption.LogisticOptionInfo, LogisticOptionInfoDealerBranchAddress).Address = addressSelected
 
-                    ElseIf lOption.Type = LogisticOptionType.CustomerAddress Then
-                        If Not lOption.LogisticOptionInfo Is Nothing _
-                           AndAlso Not CType(lOption.LogisticOptionInfo, LogisticOptionInfoCustomerAddress).Address Is Nothing Then
-                            postalCodeOld = CType(lOption.LogisticOptionInfo, LogisticOptionInfoCustomerAddress).Address.PostalCode
-                            countryCodeOld = CType(lOption.LogisticOptionInfo, LogisticOptionInfoCustomerAddress).Address.Country
-                        End If
-
-                        CType(lOption.LogisticOptionInfo, LogisticOptionInfoCustomerAddress).Address = addressSelected
+                    If addressSelected.Address1 Is Nothing OrElse addressSelected.Address1.Trim() = String.Empty Then
+                        MasterPage.MessageController.AddError(Message.MSG_PROMPT_ADDRESS1_FIELD_IS_REQUIRED, True)
+                        Return False
                     End If
 
-                    If Not lOption Is Nothing _
+                    If lOption.Type = LogisticOptionType.DealerBranchAddress Then
+                            Dim storeNumber As String = CType(gvr.Cells(GridLoColLoDetailIdx).FindControl(GridLoStoreNumberTxtCtrl), TextBox).Text
+                            If String.IsNullOrWhiteSpace(storeNumber) Then
+                                MasterPage.MessageController.AddError(Message.MSG_ERR_STORE_NUMBER_MANDATORY, True)
+                                Return False
+                            End If
+                            If Not lOption.LogisticOptionInfo Is Nothing _
+                           AndAlso Not CType(lOption.LogisticOptionInfo, LogisticOptionInfoDealerBranchAddress).Address Is Nothing Then
+                                postalCodeOld = CType(lOption.LogisticOptionInfo, LogisticOptionInfoDealerBranchAddress).Address.PostalCode
+                                countryCodeOld = CType(lOption.LogisticOptionInfo, LogisticOptionInfoDealerBranchAddress).Address.Country
+                            End If
+                            CType(lOption.LogisticOptionInfo, LogisticOptionInfoDealerBranchAddress).BranchCode = storeNumber
+                            CType(lOption.LogisticOptionInfo, LogisticOptionInfoDealerBranchAddress).Address = addressSelected
+
+                        ElseIf lOption.Type = LogisticOptionType.CustomerAddress Then
+                            If Not lOption.LogisticOptionInfo Is Nothing _
+                           AndAlso Not CType(lOption.LogisticOptionInfo, LogisticOptionInfoCustomerAddress).Address Is Nothing Then
+                                postalCodeOld = CType(lOption.LogisticOptionInfo, LogisticOptionInfoCustomerAddress).Address.PostalCode
+                                countryCodeOld = CType(lOption.LogisticOptionInfo, LogisticOptionInfoCustomerAddress).Address.Country
+                            End If
+
+                            CType(lOption.LogisticOptionInfo, LogisticOptionInfoCustomerAddress).Address = addressSelected
+                        End If
+
+                        If Not lOption Is Nothing _
                        AndAlso Not lOption.DeliveryOptions Is Nothing _
                        AndAlso lOption.DeliveryOptions.DisplayEstimatedDeliveryDate Then
 
-                        If (Not String.IsNullOrWhiteSpace(countryCodeOld) AndAlso addressSelected.Country <> countryCodeOld) _
+                            If (Not String.IsNullOrWhiteSpace(countryCodeOld) AndAlso addressSelected.Country <> countryCodeOld) _
                            OrElse (Not String.IsNullOrWhiteSpace(postalCodeOld) AndAlso addressSelected.PostalCode <> postalCodeOld) Then
-                            MasterPage.MessageController.AddError(Message.MSG_ERR_GET_DELIVERY_DATE, True)
-                            Return False
-                        End If
+                                MasterPage.MessageController.AddError(Message.MSG_ERR_GET_DELIVERY_DATE, True)
+                                Return False
+                            End If
 
-                        Dim ucDeliverySlots As UserControlDeliverySlot = CType(gvr.Cells(GridLoColLoDetailIdx).FindControl(LogisticsOptionsEstimateDeliveryDateCtrl), UserControlDeliverySlot)
-                        Dim selectedDeliveryDate As Nullable(Of Date) = ucDeliverySlots.DeliveryDate
+                            Dim ucDeliverySlots As UserControlDeliverySlot = CType(gvr.Cells(GridLoColLoDetailIdx).FindControl(LogisticsOptionsEstimateDeliveryDateCtrl), UserControlDeliverySlot)
+                            Dim selectedDeliveryDate As Nullable(Of Date) = ucDeliverySlots.DeliveryDate
 
-                        State.DeliveryDate = ucDeliverySlots.DeliveryDate
-                        State.DefaultDeliveryDay = ucDeliverySlots.DefaultDeliveryDay
-                        State.DeliverySlotTimeSpan = If(ucDeliverySlots.DeliverySlotTimeSpan Is Nothing, TimeSpan.Zero, ucDeliverySlots.DeliverySlotTimeSpan)
+                            State.DeliveryDate = ucDeliverySlots.DeliveryDate
+                            State.DefaultDeliveryDay = ucDeliverySlots.DefaultDeliveryDay
+                            State.DeliverySlotTimeSpan = If(ucDeliverySlots.DeliverySlotTimeSpan Is Nothing, TimeSpan.Zero, ucDeliverySlots.DeliverySlotTimeSpan)
 
-                        If lOption.DeliveryOptions.DesiredDeliveryDateMandatory AndAlso Not selectedDeliveryDate.HasValue Then
-                            MasterPage.MessageController.AddError(Message.MSG_ERR_DELIVERY_DATE_MANDATORY, True)
-                            Return False
-                        Else
-                            If Not lOption.LogisticOptionInfo Is Nothing Then
-                                If State.LogisticsOption.Code.ToUpper().Equals("X") Then
+                            If lOption.DeliveryOptions.DesiredDeliveryDateMandatory AndAlso Not selectedDeliveryDate.HasValue Then
+                                MasterPage.MessageController.AddError(Message.MSG_ERR_DELIVERY_DATE_MANDATORY, True)
+                                Return False
+                            Else
+                                If Not lOption.LogisticOptionInfo Is Nothing Then
+                                    If State.LogisticsOption.Code.ToUpper().Equals("X") Then
 
-                                    If Not State.IsExpeditedBtnClicked Then
-                                        MasterPage.MessageController.AddError(Message.MSG_ERR_SELECT_EXPEDITED_DELIVERY_BUTTON, True)
-                                        Return False
+                                        If Not State.IsExpeditedBtnClicked Then
+                                            MasterPage.MessageController.AddError(Message.MSG_ERR_SELECT_EXPEDITED_DELIVERY_BUTTON, True)
+                                            Return False
+                                        End If
                                     End If
+                                    lOption.LogisticOptionInfo.EstimatedChangedDeliveryDate = selectedDeliveryDate
                                 End If
-                                lOption.LogisticOptionInfo.EstimatedChangedDeliveryDate = selectedDeliveryDate
                             End If
                         End If
-                    End If
 
                     End If
-                islogisticsOptionSelected = True
+                    islogisticsOptionSelected = True
                 Exit For
             End If
         Next
