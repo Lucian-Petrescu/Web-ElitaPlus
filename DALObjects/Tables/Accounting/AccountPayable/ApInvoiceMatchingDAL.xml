@@ -3,80 +3,8 @@
 <!-- ********************** THIS FILE HAS BEEN GENERATED FROM TEMPLATE SQLObject.cst (10/2/2019)********************** -->
 
 <SQL>
-  <LOAD>
-    <![CDATA[	
-			SELECT 
-				po_line_id,
-				invoice_line_id,
-				qty,
-				amount,
-				extended_qty,
-				extended_uom,
-				extended_unit_price,
-				created_date,
-				modified_date,
-				created_by,
-				modified_by,
-				ap_payment_batch_id,
-				match_type_xcd,
-				invoice_matching_id
-			FROM elp_ap_invoice_matching 
-			WHERE
-				invoice_matching_id = :invoice_matching_id
-		]]>
-  </LOAD>
-  <LOAD_LIST>
-  </LOAD_LIST>
-  <UPDATE>
-    <![CDATA[	
-			UPDATE elp_ap_invoice_matching SET
-				po_line_id = :po_line_id,
-				invoice_line_id = :invoice_line_id,
-				qty = :qty,
-				amount = :amount,
-				extended_qty = :extended_qty,
-				extended_uom = :extended_uom,
-				extended_unit_price = :extended_unit_price,
-				ap_payment_batch_id = :ap_payment_batch_id,
-				match_type_xcd = :match_type_xcd,
-				modified_by = :modified_by
-			WHERE
-				invoice_matching_id = :invoice_matching_id
-		]]>
-  </UPDATE>
-  <INSERT>
-    INSERT INTO elp_ap_invoice_matching
-    (
-    po_line_id,
-    invoice_line_id,
-    qty,
-    amount,
-    extended_qty,
-    extended_uom,
-    extended_unit_price,
-    ap_payment_batch_id,
-    match_type_xcd,
-    created_by,
-    invoice_matching_id
-    )
-    VALUES
-    (
-    :po_line_id,
-    :invoice_line_id,
-    :qty,
-    :amount,
-    :extended_qty,
-    :extended_uom,
-    :extended_unit_price,
-    :ap_payment_batch_id,
-    :match_type_xcd,
-    :created_by,
-    :invoice_matching_id
-    )
-  </INSERT>
-  <DELETE>
-    DELETE FROM elp_ap_invoice_matching
-    WHERE
-    invoice_matching_id = :invoice_matching_id
-  </DELETE>
+  <LOAD>elp_tbl_ap_invoice_matching.Load</LOAD>
+  <LOAD_LIST>elp_tbl_ap_invoice_matching.LoadList</LOAD_LIST>
+  <INSERT>elp_tbl_ap_invoice_matching.Add</INSERT>
+  <UPDATE>elp_tbl_ap_invoice_matching.Modify</UPDATE>
 </SQL>

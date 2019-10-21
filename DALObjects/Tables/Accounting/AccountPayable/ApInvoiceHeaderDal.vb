@@ -1,16 +1,15 @@
-﻿'************* THIS CODE HAS BEEN GENERATED FROM TEMPLATE DALObject.cst (10/2/2019)********************
+﻿'************* THIS CODE HAS BEEN GENERATED FROM TEMPLATE DALObject v2.cst (10/21/2019)********************
 
 
 Imports System.Collections.Generic
-Imports Assurant.ElitaPlus.DALObjects.DBHelper
 
 Public Class ApInvoiceHeaderDAL
-    Inherits DALBase
-
+    Inherits OracleDALBase
 
 #Region "Constants"
+    Private Const supportChangesFilter As DataRowState = DataRowState.Added Or DataRowState.Modified
     Public Const TABLE_NAME As String = "ELP_AP_INVOICE_HEADER"
-    Public Const TABLE_KEY_NAME As String = "ap_invoice_header_id"
+    Public Const TABLE_KEY_NAME As String = COL_NAME_AP_INVOICE_HEADER_ID
 
     Public Const COL_NAME_AP_INVOICE_HEADER_ID As String = "ap_invoice_header_id"
     Public Const COL_NAME_INVOICE_NUMBER As String = "invoice_number"
@@ -32,6 +31,26 @@ Public Class ApInvoiceHeaderDAL
     Public Const COL_NAME_DEALER_ID As String = "dealer_id"
     Public Const COL_NAME_COMPANY_ID As String = "company_id"
 
+    Public Const PAR_I_NAME_AP_INVOICE_HEADER_ID As String = "pi_ap_invoice_header_id"
+    Public Const PAR_I_NAME_INVOICE_NUMBER As String = "pi_invoice_number"
+    Public Const PAR_I_NAME_INVOICE_DATE As String = "pi_invoice_date"
+    Public Const PAR_I_NAME_INVOICE_AMOUNT As String = "pi_invoice_amount"
+    Public Const PAR_I_NAME_TERM_XCD As String = "pi_term_xcd"
+    Public Const PAR_I_NAME_PAID_AMOUNT As String = "pi_paid_amount"
+    Public Const PAR_I_NAME_PAYMENT_STATUS_XCD As String = "pi_payment_status_xcd"
+    Public Const PAR_I_NAME_SOURCE As String = "pi_source"
+    Public Const PAR_I_NAME_VENDOR_ID As String = "pi_vendor_id"
+    Public Const PAR_I_NAME_VENDOR_ADDRESS_ID As String = "pi_vendor_address_id"
+    Public Const PAR_I_NAME_SHIP_TO_ADDRESS_ID As String = "pi_ship_to_address_id"
+    Public Const PAR_I_NAME_CURRENCY_ISO_CODE As String = "pi_currency_iso_code"
+    Public Const PAR_I_NAME_EXCHANGE_RATE As String = "pi_exchange_rate"
+    Public Const PAR_I_NAME_APPROVED_XCD As String = "pi_approved_xcd"
+    Public Const PAR_I_NAME_ACCOUNTING_PERIOD As String = "pi_accounting_period"
+    Public Const PAR_I_NAME_DISTRIBUTED As String = "pi_distributed"
+    Public Const PAR_I_NAME_POSTED As String = "pi_posted"
+    Public Const PAR_I_NAME_DEALER_ID As String = "pi_dealer_id"
+    Public Const PAR_I_NAME_COMPANY_ID As String = "pi_company_id"
+
 #End Region
 
 #Region "Constructors"
@@ -48,33 +67,104 @@ Public Class ApInvoiceHeaderDAL
     End Sub
 
     Public Sub Load(ByVal familyDS As DataSet, ByVal id As Guid)
-        Dim selectStmt As String = Me.Config("/SQL/LOAD")
-        Dim parameters() As DBHelper.DBHelperParameter = New DBHelper.DBHelperParameter() {New DBHelper.DBHelperParameter("ap_invoice_header_id", id.ToByteArray)}
         Try
-            DBHelper.Fetch(familyDS, selectStmt, Me.TABLE_NAME, parameters)
+            Using cmd As OracleCommand = OracleDbHelper.CreateCommand(Me.Config("/SQL/LOAD"))
+                cmd.AddParameter(TABLE_KEY_NAME, OracleDbType.Raw, id.ToByteArray())
+                cmd.AddParameter(PAR_O_NAME_RESULTCURSOR, OracleDbType.RefCursor, direction:=ParameterDirection.Output)
+                OracleDbHelper.Fetch(cmd, Me.TABLE_NAME, familyDS)
+            End Using
         Catch ex As Exception
             Throw New DataBaseAccessException(DataBaseAccessException.DatabaseAccessErrorType.ReadErr, ex)
         End Try
     End Sub
 
     Public Function LoadList() As DataSet
-        Dim selectStmt As String = Me.Config("/SQL/LOAD_LIST")
-        Return DBHelper.Fetch(selectStmt, Me.TABLE_NAME)
+        Try
+            Using cmd As OracleCommand = OracleDbHelper.CreateCommand(Me.Config("/SQL/LOAD_LIST"))
+                cmd.AddParameter(PAR_O_NAME_RESULTCURSOR, OracleDbType.RefCursor, direction:=ParameterDirection.Output)
+                Return OracleDbHelper.Fetch(cmd, Me.TABLE_NAME)
+            End Using
+        Catch ex As Exception
+            Throw New DataBaseAccessException(DataBaseAccessException.DatabaseAccessErrorType.ReadErr, ex)
+        End Try
     End Function
 
 
 #End Region
 
 #Region "Overloaded Methods"
-    Public Overloads Sub Update(ByVal ds As DataSet, Optional ByVal Transaction As IDbTransaction = Nothing, Optional ByVal changesFilter As DataRowState = Nothing)
+    Public Overloads Sub Update(ByVal ds As DataSet, Optional ByVal Transaction As IDbTransaction = Nothing, Optional ByVal changesFilter As DataRowState = supportChangesFilter)
         If ds Is Nothing Then
             Return
+        End If
+        If (changesFilter Or (supportChangesFilter)) <> (supportChangesFilter) Then
+            Throw New NotSupportedException()
         End If
         If Not ds.Tables(Me.TABLE_NAME) Is Nothing Then
             MyBase.Update(ds.Tables(Me.TABLE_NAME), Transaction, changesFilter)
         End If
     End Sub
+
+    Protected Overrides Sub ConfigureDeleteCommand(ByRef command As OracleCommand, tableName As String)
+        Throw New NotSupportedException()
+    End Sub
+
+    Protected Overrides Sub ConfigureInsertCommand(ByRef command As OracleCommand, tableName As String)
+        With command
+            .AddParameter(PAR_I_NAME_AP_INVOICE_HEADER_ID, OracleDbType.Raw, sourceColumn:=COL_NAME_AP_INVOICE_HEADER_ID)
+            .AddParameter(PAR_I_NAME_INVOICE_NUMBER, OracleDbType.Varchar2, sourceColumn:=COL_NAME_INVOICE_NUMBER)
+            .AddParameter(PAR_I_NAME_INVOICE_DATE, OracleDbType.Date, sourceColumn:=COL_NAME_INVOICE_DATE)
+            .AddParameter(PAR_I_NAME_INVOICE_AMOUNT, OracleDbType.Decimal, sourceColumn:=COL_NAME_INVOICE_AMOUNT)
+            .AddParameter(PAR_I_NAME_TERM_XCD, OracleDbType.Varchar2, sourceColumn:=COL_NAME_TERM_XCD)
+            .AddParameter(PAR_I_NAME_PAID_AMOUNT, OracleDbType.Decimal, sourceColumn:=COL_NAME_PAID_AMOUNT)
+            .AddParameter(PAR_I_NAME_PAYMENT_STATUS_XCD, OracleDbType.Varchar2, sourceColumn:=COL_NAME_PAYMENT_STATUS_XCD)
+            .AddParameter(PAR_I_NAME_SOURCE, OracleDbType.Varchar2, sourceColumn:=COL_NAME_SOURCE)
+            .AddParameter(PAR_I_NAME_VENDOR_ID, OracleDbType.Raw, sourceColumn:=COL_NAME_VENDOR_ID)
+            .AddParameter(PAR_I_NAME_VENDOR_ADDRESS_ID, OracleDbType.Raw, sourceColumn:=COL_NAME_VENDOR_ADDRESS_ID)
+            .AddParameter(PAR_I_NAME_SHIP_TO_ADDRESS_ID, OracleDbType.Raw, sourceColumn:=COL_NAME_SHIP_TO_ADDRESS_ID)
+            .AddParameter(PAR_I_NAME_CURRENCY_ISO_CODE, OracleDbType.Varchar2, sourceColumn:=COL_NAME_CURRENCY_ISO_CODE)
+            .AddParameter(PAR_I_NAME_EXCHANGE_RATE, OracleDbType.Decimal, sourceColumn:=COL_NAME_EXCHANGE_RATE)
+            .AddParameter(PAR_I_NAME_APPROVED_XCD, OracleDbType.Varchar2, sourceColumn:=COL_NAME_APPROVED_XCD)
+            .AddParameter(PAR_I_NAME_ACCOUNTING_PERIOD, OracleDbType.Varchar2, sourceColumn:=COL_NAME_ACCOUNTING_PERIOD)
+            .AddParameter(PAR_I_NAME_DISTRIBUTED, OracleDbType.Varchar2, sourceColumn:=COL_NAME_DISTRIBUTED)
+            .AddParameter(PAR_I_NAME_POSTED, OracleDbType.Varchar2, sourceColumn:=COL_NAME_POSTED)
+            .AddParameter(PAR_I_NAME_DEALER_ID, OracleDbType.Raw, sourceColumn:=COL_NAME_DEALER_ID)
+            .AddParameter(PAR_I_NAME_COMPANY_ID, OracleDbType.Raw, sourceColumn:=COL_NAME_COMPANY_ID)
+            .AddParameter(PAR_I_NAME_CREATED_BY, OracleDbType.Varchar2, sourceColumn:=COL_NAME_CREATED_BY)
+            .AddParameter(PAR_I_NAME_CREATED_DATE, OracleDbType.Date, sourceColumn:=COL_NAME_CREATED_DATE)
+        End With
+
+    End Sub
+
+    Protected Overrides Sub ConfigureUpdateCommand(ByRef command As OracleCommand, tableName As String)
+        With command
+            .AddParameter(PAR_I_NAME_AP_INVOICE_HEADER_ID, OracleDbType.Raw, sourceColumn:=COL_NAME_AP_INVOICE_HEADER_ID)
+            .AddParameter(PAR_I_NAME_INVOICE_NUMBER, OracleDbType.Varchar2, sourceColumn:=COL_NAME_INVOICE_NUMBER)
+            .AddParameter(PAR_I_NAME_INVOICE_DATE, OracleDbType.Date, sourceColumn:=COL_NAME_INVOICE_DATE)
+            .AddParameter(PAR_I_NAME_INVOICE_AMOUNT, OracleDbType.Decimal, sourceColumn:=COL_NAME_INVOICE_AMOUNT)
+            .AddParameter(PAR_I_NAME_TERM_XCD, OracleDbType.Varchar2, sourceColumn:=COL_NAME_TERM_XCD)
+            .AddParameter(PAR_I_NAME_PAID_AMOUNT, OracleDbType.Decimal, sourceColumn:=COL_NAME_PAID_AMOUNT)
+            .AddParameter(PAR_I_NAME_PAYMENT_STATUS_XCD, OracleDbType.Varchar2, sourceColumn:=COL_NAME_PAYMENT_STATUS_XCD)
+            .AddParameter(PAR_I_NAME_SOURCE, OracleDbType.Varchar2, sourceColumn:=COL_NAME_SOURCE)
+            .AddParameter(PAR_I_NAME_VENDOR_ID, OracleDbType.Raw, sourceColumn:=COL_NAME_VENDOR_ID)
+            .AddParameter(PAR_I_NAME_VENDOR_ADDRESS_ID, OracleDbType.Raw, sourceColumn:=COL_NAME_VENDOR_ADDRESS_ID)
+            .AddParameter(PAR_I_NAME_SHIP_TO_ADDRESS_ID, OracleDbType.Raw, sourceColumn:=COL_NAME_SHIP_TO_ADDRESS_ID)
+            .AddParameter(PAR_I_NAME_CURRENCY_ISO_CODE, OracleDbType.Varchar2, sourceColumn:=COL_NAME_CURRENCY_ISO_CODE)
+            .AddParameter(PAR_I_NAME_EXCHANGE_RATE, OracleDbType.Decimal, sourceColumn:=COL_NAME_EXCHANGE_RATE)
+            .AddParameter(PAR_I_NAME_APPROVED_XCD, OracleDbType.Varchar2, sourceColumn:=COL_NAME_APPROVED_XCD)
+            .AddParameter(PAR_I_NAME_ACCOUNTING_PERIOD, OracleDbType.Varchar2, sourceColumn:=COL_NAME_ACCOUNTING_PERIOD)
+            .AddParameter(PAR_I_NAME_DISTRIBUTED, OracleDbType.Varchar2, sourceColumn:=COL_NAME_DISTRIBUTED)
+            .AddParameter(PAR_I_NAME_POSTED, OracleDbType.Varchar2, sourceColumn:=COL_NAME_POSTED)
+            .AddParameter(PAR_I_NAME_DEALER_ID, OracleDbType.Raw, sourceColumn:=COL_NAME_DEALER_ID)
+            .AddParameter(PAR_I_NAME_COMPANY_ID, OracleDbType.Raw, sourceColumn:=COL_NAME_COMPANY_ID)
+            .AddParameter(PAR_I_NAME_MODIFIED_BY, OracleDbType.Varchar2, sourceColumn:=COL_NAME_MODIFIED_BY)
+            .AddParameter(PAR_I_NAME_MODIFIED_DATE, OracleDbType.Date, sourceColumn:=COL_NAME_MODIFIED_DATE)
+        End With
+
+    End Sub
+
 #End Region
+
 
 #Region "Data query methods"
     Private Function DB_OracleCommand(ByVal p_SqlStatement As String, ByVal p_CommandType As CommandType) As OracleCommand
@@ -87,7 +177,7 @@ Public Class ApInvoiceHeaderDAL
         Return cmd
     End Function
 
-    Public sub SearchAPInvoices(ByVal vendorCode As String, ByVal invoiceNum As String,
+    Public Sub SearchAPInvoices(ByVal vendorCode As String, ByVal invoiceNum As String,
                                 ByVal source As String, ByVal invoiceDate As Date?,
                                 ByVal dueDateFrom As Date?, ByVal dueDateTo As Date?,
                                 ByVal rowCountReturn As Integer, ByVal userId As Guid,
@@ -101,15 +191,13 @@ Public Class ApInvoiceHeaderDAL
             Dim cmd As OracleCommand = DB_OracleCommand(selectStmt, CommandType.StoredProcedure)
             cmd.BindByName = True
             'output parameters
-            'cmd.Parameters.Add("po_error_code", OracleDbType.Int32, ParameterDirection.Output)
-            'cmd.Parameters.Add("po_error_msg", OracleDbType.Varchar2, 500, nothing, ParameterDirection.Output)
             cmd.Parameters.Add("po_results", OracleDbType.RefCursor, ParameterDirection.Output)
-            
+
             'input parameters
             cmd.Parameters.Add("pi_user_id", OracleDbType.Raw).Value = userId.ToByteArray
             cmd.Parameters.Add("pi_rowcount", OracleDbType.Int32).Value = rowCountReturn
-            
-            If not String.IsNullOrWhiteSpace(vendorCode) Then
+
+            If Not String.IsNullOrWhiteSpace(vendorCode) Then
                 cmd.Parameters.Add("pi_vendor_code", OracleDbType.Varchar2).Value = vendorCode.Trim
             End If
 
@@ -136,24 +224,16 @@ Public Class ApInvoiceHeaderDAL
             da = New OracleDataAdapter(cmd)
             da.Fill(searchResult, "SEARCH_RESULT")
             searchResult.Locale = Globalization.CultureInfo.InvariantCulture
-            
-            'If  String.IsNullOrEmpty(cmd.Parameters("po_error_msg").Value) Then
-            '    errCode = cmd.Parameters("po_error_code").Value
-            '    errMsg = cmd.Parameters("po_error_msg").Value
-            'Else
-            '    errCode = 0
-            '    errMsg = String.Empty
-            'End If            
 
         Catch ex As Exception
             Throw New DataBaseAccessException(DataBaseAccessException.DatabaseAccessErrorType.ReadErr, ex)
         End Try
 
-        
-    End sub
+
+    End Sub
 
 
-    Public sub LoadAPInvoiceExtendedInfo(ByVal invoiceId As guid, ByRef searchResult As DataSet)
+    Public Sub LoadAPInvoiceExtendedInfo(ByVal invoiceId As Guid, ByRef searchResult As DataSet)
 
         Dim selectStmt As String = Config("/SQL/GET_AP_INVOICE_EXTENDED_INFO")
         Dim da As OracleDataAdapter
@@ -162,10 +242,10 @@ Public Class ApInvoiceHeaderDAL
             Dim cmd As OracleCommand = DB_OracleCommand(selectStmt, CommandType.StoredProcedure)
             cmd.BindByName = True
             cmd.Parameters.Add("po_cur_result", OracleDbType.RefCursor, ParameterDirection.Output)
-            
+
             'input parameters
             cmd.Parameters.Add("pi_invoice_header_id", OracleDbType.Raw).Value = invoiceId.ToByteArray
-            
+
             da = New OracleDataAdapter(cmd)
             da.Fill(searchResult, "AP_INVOICE_HEADER_EXT")
             searchResult.Locale = Globalization.CultureInfo.InvariantCulture
@@ -173,13 +253,13 @@ Public Class ApInvoiceHeaderDAL
         Catch ex As Exception
             Throw New DataBaseAccessException(DataBaseAccessException.DatabaseAccessErrorType.ReadErr, ex)
         End Try
-        
-    End sub
 
-    Public sub LoadAPInvoiceLines(ByVal invoiceId As guid, 
-                                  ByVal minLineNum  As Integer,
-                                  ByVal maxLineNum  As Integer,
-                                  ByVal UnMatchedLineOnly   As Boolean,
+    End Sub
+
+    Public Sub LoadAPInvoiceLines(ByVal invoiceId As Guid,
+                                  ByVal minLineNum As Integer,
+                                  ByVal maxLineNum As Integer,
+                                  ByVal UnMatchedLineOnly As Boolean,
                                   ByVal languageId As Guid,
                                   ByVal rowCountReturn As Integer,
                                   ByRef searchResult As DataSet)
@@ -191,14 +271,14 @@ Public Class ApInvoiceHeaderDAL
             Dim cmd As OracleCommand = DB_OracleCommand(selectStmt, CommandType.StoredProcedure)
             cmd.BindByName = True
             cmd.Parameters.Add("po_cur_lines", OracleDbType.RefCursor, ParameterDirection.Output)
-            
+
             'input parameters
             cmd.Parameters.Add("pi_invoice_header_id", OracleDbType.Raw).Value = invoiceId.ToByteArray
             cmd.Parameters.Add("pi_rowcount", OracleDbType.Int32).Value = rowCountReturn
             cmd.Parameters.Add("pi_min_line_number", OracleDbType.Int32).Value = minLineNum
             cmd.Parameters.Add("pi_max_line_number", OracleDbType.Int32).Value = maxLineNum
             cmd.Parameters.Add("pi_language_id", OracleDbType.Raw).Value = languageId.ToByteArray
-                    
+
             If UnMatchedLineOnly = True Then
                 cmd.Parameters.Add("pi_unmatched_line", OracleDbType.Varchar2).Value = "Y"
             Else
@@ -212,8 +292,8 @@ Public Class ApInvoiceHeaderDAL
         Catch ex As Exception
             Throw New DataBaseAccessException(DataBaseAccessException.DatabaseAccessErrorType.ReadErr, ex)
         End Try
-        
-    End sub
+
+    End Sub
 
 #End Region
 
@@ -225,20 +305,20 @@ Public Class ApInvoiceHeaderDAL
         Dim tr As OracleTransaction = Nothing
         Try
             Using conn As OracleConnection = DBHelper.GetConnection()
-                Using  command As OracleCommand = conn.CreateCommand
-                    
+                Using command As OracleCommand = conn.CreateCommand
+
                     Dim batchCnt As Integer = 0
                     Dim strInvoiceIds(invoiceIds.Count - 1) As String
 
-                    For Each guidTemp As guid In invoiceIds
-                
+                    For Each guidTemp As Guid In invoiceIds
+
                         strInvoiceIds(batchCnt) = GuidControl.GuidToHexString(guidTemp)
                         batchCnt = batchCnt + 1
                     Next
-            
+
                     Dim paranInvIds As OracleParameter = New OracleParameter("pi_invoice_header_id", OracleDbType.Varchar2, 100)
                     paranInvIds.Value = strInvoiceIds
-            
+
                     tr = conn.BeginTransaction
                     command.CommandText = strStmt
 
@@ -246,19 +326,19 @@ Public Class ApInvoiceHeaderDAL
 
                     command.Parameters.Add(paranInvIds)
                     command.ExecuteNonQuery()
-                    tr.Commit                    
+                    tr.Commit
                     conn.Close()
                 End Using
-            End Using                        
+            End Using
         Catch ex As Exception
-            If not tr Is Nothing Then
+            If Not tr Is Nothing Then
                 tr.Rollback
-            End If 
+            End If
             Throw New DataBaseAccessException(DataBaseAccessException.DatabaseAccessErrorType.ReadErr, ex)
         End Try
     End Sub
 
-    Public sub MatchInvoice(ByVal invoiceId As Guid, ByRef matchedCount As Integer)
+    Public Sub MatchInvoice(ByVal invoiceId As Guid, ByRef matchedCount As Integer)
         Dim strStmt As String = Config("/SQL/MATCH_AP_INVOICE")
         Try
             Using conn As IDbConnection = New OracleConnection(DBHelper.ConnectString)
@@ -267,12 +347,12 @@ Public Class ApInvoiceHeaderDAL
                     cmd.CommandText = strStmt
                     cmd.CommandType = CommandType.StoredProcedure
                     cmd.BindByName = True
-                    
+
                     'input parameters
                     cmd.Parameters.Add("pi_invoice_header_id", OracleDbType.Raw).Value = invoiceId.ToByteArray
                     cmd.Parameters.Add("pi_commit", OracleDbType.Varchar2, 10).Value = "Y"
                     'output parameters
-                    dim param_match_count As OracleParameter = new OracleParameter()
+                    Dim param_match_count As OracleParameter = New OracleParameter()
                     param_match_count = cmd.Parameters.Add("po_matched_count", OracleDbType.Int32, ParameterDirection.Output)
                     param_match_count.Size = 25
 
@@ -285,11 +365,11 @@ Public Class ApInvoiceHeaderDAL
         Catch ex As Exception
             Throw New DataBaseAccessException(DataBaseAccessException.DatabaseAccessErrorType.ReadErr, ex)
         End Try
-    End sub
+    End Sub
 
-    Public sub PayInvoices(ByVal strBatchNumber As String, ByVal invoiceIds As List(Of Guid), ByRef errCode As Integer, ByRef errMsg As String)
+    Public Sub PayInvoices(ByVal strBatchNumber As String, ByVal invoiceIds As List(Of Guid), ByRef errCode As Integer, ByRef errMsg As String)
         Dim strStmt As String = Config("/SQL/PAY_AP_INVOICE")
-        
+
         errCode = 0
         errMsg = String.Empty
         Dim blnSuccess As Boolean = True
@@ -299,7 +379,7 @@ Public Class ApInvoiceHeaderDAL
                 Using cmd As OracleCommand = conn.CreateCommand()
                     Using tran As OracleTransaction = conn.BeginTransaction(IsolationLevel.ReadCommitted)
                         cmd.Transaction = tran
-                    
+
                         cmd.CommandText = strStmt
                         cmd.CommandType = CommandType.StoredProcedure
                         cmd.BindByName = True
@@ -310,31 +390,31 @@ Public Class ApInvoiceHeaderDAL
                         cmd.Parameters.Add("pi_commit", OracleDbType.Varchar2, 10).Value = "Y" ' Commit changes
 
                         'id array parameters
-                        
+
                         ' Setup the values for PL/SQL Associative Array
                         Dim arrayIds(invoiceIds.Count - 1) As String
                         Dim arrayIdsSize(invoiceIds.Count - 1) As Integer
-                        Dim batchCnt As Integer = 0                        
-                        For Each guidTemp As guid In invoiceIds                
+                        Dim batchCnt As Integer = 0
+                        For Each guidTemp As Guid In invoiceIds
                             arrayIds(batchCnt) = GuidControl.GuidToHexString(guidTemp)
                             arrayIdsSize(batchCnt) = 50
                             batchCnt = batchCnt + 1
                         Next
 
-                        dim paramIds As OracleParameter = new OracleParameter()
+                        Dim paramIds As OracleParameter = New OracleParameter()
                         paramIds = cmd.Parameters.Add("pi_invoice_header_ids", OracleDbType.Varchar2)
                         paramIds.Direction = ParameterDirection.Input
                         paramIds.CollectionType = OracleCollectionType.PLSQLAssociativeArray
                         paramIds.Value = arrayIds
-                        paramIds.Size = invoiceIds.Count                        
+                        paramIds.Size = invoiceIds.Count
                         paramIds.ArrayBindSize = arrayIdsSize
-                        
+
                         'output parameters
-                        dim param_err_code As OracleParameter = new OracleParameter()
+                        Dim param_err_code As OracleParameter = New OracleParameter()
                         param_err_code = cmd.Parameters.Add("po_error_code", OracleDbType.Int32, ParameterDirection.Output)
                         param_err_code.Size = 25
 
-                        dim param_err_msg As OracleParameter = new OracleParameter()
+                        Dim param_err_msg As OracleParameter = New OracleParameter()
                         param_err_msg = cmd.Parameters.Add("po_error_msg", OracleDbType.Varchar2, ParameterDirection.Output)
                         param_err_msg.Size = 500
 
@@ -343,56 +423,16 @@ Public Class ApInvoiceHeaderDAL
                         errCode = CType(param_err_code.Value.ToString, Integer)
                         errMsg = param_err_msg.Value.ToString
 
-                        'For ind As Integer = 0 to invoiceIds.Count - 1
-                        '    cmd.Parameters.Clear
-                        '    'output parameters
-                        '    dim param_err_code As OracleParameter = new OracleParameter()
-                        '    param_err_code = cmd.Parameters.Add("po_error_code", OracleDbType.Int32, ParameterDirection.Output)
-                        '    param_err_code.Size = 25
-                    
-                        '    dim param_err_msg As OracleParameter = new OracleParameter()
-                        '    param_err_msg = cmd.Parameters.Add("po_error_msg", OracleDbType.Varchar2, ParameterDirection.Output)
-                        '    param_err_msg.Size = 500
-
-                    
-                        '    'input parameters
-                        '    cmd.Parameters.Add("pi_invoice_header_id", OracleDbType.Raw).Value = invoiceIds(ind).ToByteArray
-                        '    cmd.Parameters.Add("pi_batch_num", OracleDbType.Varchar2, 100).Value = strBatchNumber
-                            
-                        '    If ind = invoiceIds.Count - 1 Then
-                        '        cmd.Parameters.Add("pi_close_batch", OracleDbType.Varchar2, 10).Value = "Y" 'Close the batch if it is last one
-                        '        cmd.Parameters.Add("pi_commit", OracleDbType.Varchar2, 10).Value = "Y"
-                        '    Else
-                        '        cmd.Parameters.Add("pi_close_batch", OracleDbType.Varchar2, 10).Value = "N"
-                        '        cmd.Parameters.Add("pi_commit", OracleDbType.Varchar2, 10).Value = "N"
-                        '    End If
-
-                        '    cmd.ExecuteNonQuery
-
-                        '    errCode = CType(param_err_code.Value.ToString, Integer)
-                        '    errMsg = param_err_msg.Value.ToString
-
-                        '    'if error out, rollback transaction and return
-                        '    If  errCode > 0 Then
-                        '        blnSuccess = False
-                        '        tran.Rollback
-                        '        Exit For
-                        '    End If
-                        'Next
-
-                        ''all invoices paid successfully, commit transaction
-                        'If blnSuccess Then
-                        '    tran.Commit
-                        'End If
                     End Using
                 End Using
             End Using
 
-        Catch ex As Exception            
+        Catch ex As Exception
             Throw New DataBaseAccessException(DataBaseAccessException.DatabaseAccessErrorType.ReadErr, ex)
-        End Try        
-    End sub
+        End Try
+    End Sub
 #End Region
+
 End Class
 
 
