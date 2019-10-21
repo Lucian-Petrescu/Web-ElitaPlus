@@ -218,7 +218,7 @@ Namespace Tables.Accounting.AccountPayable
                 MyBase.Save()
                 If Me._isDSCreator AndAlso Me.IsDirty AndAlso Me.Row.RowState <> DataRowState.Detached Then
                     Dim dal As New PoAdjustmentDAL
-                    dal.UpdatePoLineQuantity(PoNumber,PoLineId,CompanyId,Quantity,ModifiedBy)
+                    dal.UpdateApLine(PoNumber,PoLineId,CompanyId,Quantity,ModifiedBy)
                     'Reload the Data from the DB
                     If Me.Row.RowState <> DataRowState.Detached Then
                         Me.Load(Vendor,PoNumber,PoLineId,CompanyId)

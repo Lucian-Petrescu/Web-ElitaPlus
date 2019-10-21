@@ -16,7 +16,6 @@ Namespace Claims.AccountPayable
         Private Const QUANTITY_COL As Integer = 7
         Private Const UNIT_PRICE_COL As Integer = 8
         Private Const EXTENDED_PRICE_COL As Integer = 9
-        Private Const MSG_CONFIRM_PROMPT As String = "MSG_CONFIRM_PROMPT"
         Private Const MSG_RECORD_SAVED_OK As String = "MSG_RECORD_SAVED_OK"
         Private Const MSG_RECORD_NOT_SAVED As String = "MSG_RECORD_NOT_SAVED"
 
