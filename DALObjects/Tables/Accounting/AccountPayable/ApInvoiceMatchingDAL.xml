@@ -1,0 +1,10 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+
+<!-- ********************** THIS FILE HAS BEEN GENERATED FROM TEMPLATE SQLObject.cst (10/2/2019)********************** -->
+
+<SQL>
+  <LOAD>elp_tbl_ap_invoice_matching.Load</LOAD>
+  <LOAD_LIST>elp_tbl_ap_invoice_matching.LoadList</LOAD_LIST>
+  <INSERT>elp_tbl_ap_invoice_matching.Add</INSERT>
+  <UPDATE>elp_tbl_ap_invoice_matching.Modify</UPDATE>
+</SQL>

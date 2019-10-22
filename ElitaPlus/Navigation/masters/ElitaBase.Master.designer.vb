@@ -12,7 +12,7 @@ Option Explicit On
 
 
 Partial Public Class ElitaBase
-
+    
     '''<summary>
     '''HeadPlaceHolder control.
     '''</summary>
@@ -21,7 +21,7 @@ Partial Public Class ElitaBase
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
     Protected WithEvents HeadPlaceHolder As Global.System.Web.UI.WebControls.ContentPlaceHolder
-
+    
     '''<summary>
     '''form1 control.
     '''</summary>
@@ -30,7 +30,7 @@ Partial Public Class ElitaBase
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
     Protected WithEvents form1 As Global.System.Web.UI.HtmlControls.HtmlForm
-
+    
     '''<summary>
     '''modalTitleText control.
     '''</summary>
@@ -39,7 +39,7 @@ Partial Public Class ElitaBase
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
     Protected WithEvents modalTitleText As Global.System.Web.UI.WebControls.Label
-
+    
     '''<summary>
     '''imgMsgIcon control.
     '''</summary>
@@ -48,7 +48,7 @@ Partial Public Class ElitaBase
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
     Protected WithEvents imgMsgIcon As Global.System.Web.UI.HtmlControls.HtmlImage
-
+    
     '''<summary>
     '''tdModalMessage control.
     '''</summary>
@@ -57,7 +57,7 @@ Partial Public Class ElitaBase
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
     Protected WithEvents tdModalMessage As Global.System.Web.UI.HtmlControls.HtmlTableCell
-
+    
     '''<summary>
     '''tdBtnArea control.
     '''</summary>
@@ -66,7 +66,7 @@ Partial Public Class ElitaBase
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
     Protected WithEvents tdBtnArea As Global.System.Web.UI.HtmlControls.HtmlTableCell
-
+    
     '''<summary>
     '''BreadCrumDiv control.
     '''</summary>
@@ -75,7 +75,7 @@ Partial Public Class ElitaBase
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
     Protected WithEvents BreadCrumDiv As Global.System.Web.UI.HtmlControls.HtmlGenericControl
-
+    
     '''<summary>
     '''moMessageController control.
     '''</summary>
@@ -84,7 +84,7 @@ Partial Public Class ElitaBase
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
     Protected WithEvents moMessageController As Global.Assurant.ElitaPlus.ElitaPlusWebApp.MessageController
-
+    
     '''<summary>
     '''MessagePlaceHolder control.
     '''</summary>
@@ -93,7 +93,7 @@ Partial Public Class ElitaBase
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
     Protected WithEvents MessagePlaceHolder As Global.System.Web.UI.WebControls.ContentPlaceHolder
-
+    
     '''<summary>
     '''PageHeader control.
     '''</summary>
@@ -102,7 +102,7 @@ Partial Public Class ElitaBase
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
     Protected WithEvents PageHeader As Global.System.Web.UI.HtmlControls.HtmlGenericControl
-
+    
     '''<summary>
     '''SummaryPlaceHolder control.
     '''</summary>
@@ -111,7 +111,7 @@ Partial Public Class ElitaBase
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
     Protected WithEvents SummaryPlaceHolder As Global.System.Web.UI.WebControls.ContentPlaceHolder
-
+    
     '''<summary>
     '''BodyPlaceHolder control.
     '''</summary>
@@ -120,4 +120,13 @@ Partial Public Class ElitaBase
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
     Protected WithEvents BodyPlaceHolder As Global.System.Web.UI.WebControls.ContentPlaceHolder
+    
+    '''<summary>
+    '''lblCopyrights control.
+    '''</summary>
+    '''<remarks>
+    '''Auto-generated field.
+    '''To modify move field declaration from designer file to code-behind file.
+    '''</remarks>
+    Protected WithEvents lblCopyrights As Global.System.Web.UI.WebControls.Label
 End Class

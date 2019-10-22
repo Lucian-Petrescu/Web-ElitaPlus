@@ -180,9 +180,8 @@
       <HintPath>..\packages\Assurant.Elita.ClientIntegration.4.0.0\lib\net462\Assurant.Elita.ClientIntegration.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="Assurant.Elita.CommonConfiguration, Version=2.1.6.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\Assurant.Elita.CommonConfiguration.2.1.5\lib\net46\Assurant.Elita.CommonConfiguration.dll</HintPath>
+    <Reference Include="Assurant.Elita.CommonConfiguration, Version=2.1.7.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Assurant.Elita.CommonConfiguration.2.1.8\lib\net46\Assurant.Elita.CommonConfiguration.dll</HintPath>
     </Reference>
     <Reference Include="Assurant.Elita.Configuration, Version=4.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
@@ -809,6 +808,20 @@
       <DependentUpon>ChangeCompany.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
+    <Compile Include="Claims\AccountPayable\APInvoiceDetailForm.aspx.designer.vb">
+      <DependentUpon>APInvoiceDetailForm.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Claims\AccountPayable\APInvoiceDetailForm.aspx.vb">
+      <DependentUpon>APInvoiceDetailForm.aspx</DependentUpon>
+      <SubType>ASPXCodebehind</SubType>
+    </Compile>
+    <Compile Include="Claims\AccountPayable\APInvoiceListForm.aspx.designer.vb">
+      <DependentUpon>APInvoiceListForm.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Claims\AccountPayable\APInvoiceListForm.aspx.vb">
+      <DependentUpon>APInvoiceListForm.aspx</DependentUpon>
+      <SubType>ASPXCodebehind</SubType>
+    </Compile>
     <Compile Include="Claims\PoAdjustmentForm.aspx.designer.vb">
       <DependentUpon>PoAdjustmentForm.aspx</DependentUpon>
     </Compile>
@@ -1049,6 +1062,13 @@
       <DependentUpon>VendorInventoryReconWrkForm.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
+    <Compile Include="Reports\ActiveClaimsReInsuranceEnglishUSAReportForm.aspx.designer.vb">
+      <DependentUpon>ActiveClaimsReInsuranceEnglishUSAReportForm.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Reports\ActiveClaimsReInsuranceEnglishUSAReportForm.aspx.vb">
+      <DependentUpon>ActiveClaimsReInsuranceEnglishUSAReportForm.aspx</DependentUpon>
+      <SubType>ASPXCodebehind</SubType>
+    </Compile>
     <Compile Include="Reports\AMLRegulatoryReportForm.aspx.designer.vb">
       <DependentUpon>AMLRegulatoryReportForm.aspx</DependentUpon>
     </Compile>
@@ -1068,6 +1088,13 @@
     </Compile>
     <Compile Include="Reports\BillingAmdocsReportForm.aspx.vb">
       <DependentUpon>BillingAmdocsReportForm.aspx</DependentUpon>
+      <SubType>ASPXCodebehind</SubType>
+    </Compile>
+    <Compile Include="Reports\BillingRegisterReInsuranceReportForm.aspx.designer.vb">
+      <DependentUpon>BillingRegisterReInsuranceReportForm.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Reports\BillingRegisterReInsuranceReportForm.aspx.vb">
+      <DependentUpon>BillingRegisterReInsuranceReportForm.aspx</DependentUpon>
       <SubType>ASPXCodebehind</SubType>
     </Compile>
     <Compile Include="Reports\ClaimDetailByExtendedStatusByDealerReportForm.aspx.designer.vb">
@@ -1104,6 +1131,13 @@
     <Compile Include="Reports\ExportFileProcessedNewForm.aspx.vb">
       <DependentUpon>ExportFileProcessedNewForm.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Reports\InvoicesToBePaidReInsuranceForm.aspx.designer.vb">
+      <DependentUpon>InvoicesToBePaidReInsuranceForm.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Reports\InvoicesToBePaidReInsuranceForm.aspx.vb">
+      <DependentUpon>InvoicesToBePaidReInsuranceForm.aspx</DependentUpon>
+      <SubType>ASPXCodebehind</SubType>
     </Compile>
     <Compile Include="Reports\LossSummaryArgForm.aspx.designer.vb">
       <DependentUpon>LossSummaryArgForm.aspx</DependentUpon>
@@ -1153,6 +1187,13 @@
     <Compile Include="Reports\NewCertificatesChinaReportForm.aspx.vb">
       <DependentUpon>NewCertificatesChinaReportForm.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Reports\PremiumAmortizationReInsuranceForm.aspx.designer.vb">
+      <DependentUpon>PremiumAmortizationReInsuranceForm.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Reports\PremiumAmortizationReInsuranceForm.aspx.vb">
+      <DependentUpon>PremiumAmortizationReInsuranceForm.aspx</DependentUpon>
+      <SubType>ASPXCodebehind</SubType>
     </Compile>
     <Compile Include="Reports\PremiumReconciliationForChildCertificates.aspx.designer.vb">
       <DependentUpon>PremiumReconciliationForChildCertificates.aspx</DependentUpon>
@@ -5616,6 +5657,8 @@
     <Content Include="Certificates\UserControlServiceCenterInfo.ascx" />
     <Content Include="Certificates\VSCCertificateListForm.aspx" />
     <Content Include="Change_Company\ChangeCompany.aspx" />
+    <Content Include="Claims\AccountPayable\APInvoiceDetailForm.aspx" />
+    <Content Include="Claims\AccountPayable\APInvoiceListForm.aspx" />
     <Content Include="Claims\PoAdjustmentForm.aspx" />
     <Content Include="Claims\ClaimIndixSearchForm.aspx" />
     <Content Include="Claims\InventorySearchForm.aspx" />
@@ -5687,13 +5730,16 @@
     <Content Include="Navigation\styles\font-awesome.css" />
     <Content Include="Navigation\styles\jquery-ui.elita.css" />
     <Content Include="Navigation\styles\jquery-ui.min.css" />
+    <Content Include="Reports\ActiveClaimsReInsuranceEnglishUSAReportForm.aspx" />
     <Content Include="Reports\AMLRegulatoryReportForm.aspx" />
     <Content Include="Reports\AMLRegulatoryUIFForm.aspx" />
     <Content Include="Reports\BillingAmdocsReportForm.aspx" />
+    <Content Include="Reports\BillingRegisterReInsuranceReportForm.aspx" />
     <Content Include="Reports\ClaimDetailByExtendedStatusByDealerReportForm.aspx" />
     <Content Include="Reports\CertificatesBillingBrazilReportForm.aspx" />
     <Content Include="Reports\CollectionAmdocsReportForm.aspx" />
     <Content Include="Reports\ExportFileProcessedNewForm.aspx" />
+    <Content Include="Reports\InvoicesToBePaidReInsuranceForm.aspx" />
     <Content Include="Reports\LossSummaryArgForm.aspx" />
     <Content Include="Reports\PaymentDetailReportForm.aspx" />
     <Content Include="Reports\PaymentsByCreditCardType.aspx" />
@@ -5701,6 +5747,7 @@
     <Content Include="Reports\FileReconciliationReportForm.aspx" />
     <Content Include="Reports\LossSummaryAndPaymentsReportForm.aspx" />
     <Content Include="Reports\NewCertificatesChinaReportForm.aspx" />
+    <Content Include="Reports\PremiumAmortizationReInsuranceForm.aspx" />
     <Content Include="Reports\PremiumReconciliationForChildCertificates.aspx" />
     <Content Include="Reports\ReplacementOrder_AAU.xslt" />
     <Content Include="Reports\ReportCeProgressForm_New.aspx" />

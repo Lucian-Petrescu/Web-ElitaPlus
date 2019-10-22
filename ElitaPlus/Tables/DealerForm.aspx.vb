@@ -811,6 +811,7 @@ Namespace Tables
             Dim langId As Guid = ElitaPlusIdentity.Current.ActiveUser.LanguageId
             'Dim yesNoLkL As DataView = LookupListNew.DropdownLookupList("YESNO", langId, True)
             Dim oYesNoList As DataElements.ListItem() = CommonConfigManager.Current.ListManager.GetList(listCode:="YESNO", languageCode:=Thread.CurrentPrincipal.GetLanguageCode())
+            Dim oYesNoPayDeductList As DataElements.ListItem() = CommonConfigManager.Current.ListManager.GetList(listCode:="CLAIM_PAY_DEDUCTIBLE", languageCode:=Thread.CurrentPrincipal.GetLanguageCode())
             Dim textFun As Func(Of DataElements.ListItem, String) = Function(li As DataElements.ListItem)
                 Return li.Code + " - " + li.Translation
                     End Function
@@ -880,7 +881,7 @@ Namespace Tables
             'BindListControlToDataView(Me.moUseClaimAutorization, yesNoLkL, "DESCRIPTION", "ID", False)
             Me.moUseClaimAutorization.Populate(oYesNoList, populateOptions1)
             'BindListControlToDataView(Me.moPayDeductible, LookupListNew.GetYesNoLookupList(ElitaPlusIdentity.Current.ActiveUser.LanguageId))
-            Me.moPayDeductible.Populate(oYesNoList, populateOptions)
+            Me.moPayDeductible.Populate(oYesNoPayDeductList, populateOptions)
             'BindListControlToDataView(Me.moBankInfoMandatory, LookupListNew.GetYesNoLookupList(ElitaPlusIdentity.Current.ActiveUser.LanguageId), , , False)
             Me.moBankInfoMandatory.Populate(oYesNoList, populateOptions1)
             'BindListControlToDataView(Me.moCollectDeductible, LookupListNew.GetYesNoLookupList(ElitaPlusIdentity.Current.ActiveUser.LanguageId), , , False)

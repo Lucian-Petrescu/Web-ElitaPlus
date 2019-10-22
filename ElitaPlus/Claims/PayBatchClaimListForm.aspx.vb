@@ -1285,8 +1285,9 @@ Partial Class PayBatchClaimListForm
                             If Not ClaimBO.CertificateId.Equals(Guid.Empty) Then
                                 Dim oCert As New Certificate(ClaimBO.CertificateId)
                                 Dim oDealer As New Dealer(oCert.DealerId)
-                                Dim noId As Guid = LookupListNew.GetIdFromCode(LookupListNew.LK_LANG_INDEPENDENT_YES_NO, Codes.YESNO_N)
-                                If oDealer.PayDeductibleId.Equals(noId) Then
+                                Dim noId As Guid = LookupListNew.GetIdFromCode(LookupListNew.LK_CLAIM_PAY_DEDUCTIBLE, Codes.YESNO_N)
+                                Dim yFullId As Guid = LookupListNew.GetIdFromCode(LookupListNew.LK_CLAIM_PAY_DEDUCTIBLE, Codes.FULL_INVOICE_Y)
+                                If oDealer.PayDeductibleId.Equals(noId) Or oDealer.PayDeductibleId.Equals(yFullId) Then
                                     ControlMgr.SetEnableControl(Me, chk1, False)
                                     chk1.ToolTip = "Dealer does not pay deductble"
                                 End If

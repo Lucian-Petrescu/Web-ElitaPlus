@@ -104,21 +104,12 @@
 							<tr height="1">
 								<td colspan="2" width="100%" bgcolor="whitesmoke"></td>
 							</tr>
-							<tr>
-								<td colspan="2" valign="top" align="center">
-									<p><font color="darkgray">* This&nbsp;application has been&nbsp;designed for Internet 
-											Explorer v5.5 or higher.</font> 
-										<!--<br>
-								<br>
-								<img alt="IE" src="images/IElogo.gif" border="0"></p>
-							<p align="center">&nbsp;</p>--></p>
-								</td>
-							</tr>
 						</table>
 						<table cellSpacing="0" cellPadding="0" width="100%">
 							<tr>
 								<td align="center"><div style="MARGIN-TOP: 5px; MARGIN-BOTTOM: 15px; MARGIN-LEFT: 10px"><br>
-										© 2018 Assurant. All rights reserved. <a target="_blank" href="http://www.assurant.com/inc/assurant/notice.html">
+										<asp:Label id="lblCopyright" runat="server" Visible="True" ></asp:Label>
+                                    <a target="_blank" href="http://www.assurant.com/inc/assurant/notice.html">
 											<font color="#0066cc">Notice</font></a> | <a target="_blank" href="http://www.assurant.com/inc/assurant/privacy.html">
 											<font color="#0066cc">Privacy Policy</font></a></div>
 									<DIV></DIV>

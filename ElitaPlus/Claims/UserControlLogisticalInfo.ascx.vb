@@ -138,7 +138,8 @@
             Dim dvRow As DataRowView = CType(e.Row.DataItem, DataRowView)
             Dim selectedId As Guid = Guid.Empty
             If e.Row.RowType = DataControlRowType.DataRow Then
-                CType(e.Row.Cells(GRID_COL_SHIPPING_DATE_IDX).FindControl("TextboxShippingDate"), TextBox).Text = CType(dvRow("shipping_date"), Date).ToString(ElitaPlusPage.DATE_FORMAT)
+
+                CType(e.Row.Cells(GRID_COL_SHIPPING_DATE_IDX).FindControl("TextboxShippingDate"), TextBox).Text = ElitaPlusPage.GetDateFormattedStringNullable(CType(dvRow("shipping_date"), Date))
 
                 If Me.TheState.IsEditMode Then
                     selectedId = GuidControl.ByteArrayToGuid(dvRow(ClaimShipping.ClaimShippingDV.COL_CLAIM_SHIPPING_ID))
@@ -146,7 +147,7 @@
                     If (TheState.IsEditMode AndAlso TheState.SelectedClaimShippingID.Equals(selectedId)) Then
                         CType(e.Row.Cells(GRID_COL_TRACKING_NUMBER_IDX).FindControl("TextboxTrackingNumber"), TextBox).Text = dvRow("tracking_number").ToString
                         CType(e.Row.Cells(GRID_COL_RECEIVED_DATE_IDX).FindControl("TextboxReceivedDate"), TextBox).Text = If(dvRow("received_date").ToString() <> String.Empty _
-                        , CType(dvRow("received_date"), Date).ToString(ElitaPlusPage.DATE_TIME_FORMAT), "")
+                        , ElitaPlusPage.GetLongDateFormattedString(CType(dvRow("received_date"), Date)), "")
                         Dim oRecdDateImage As ImageButton = CType(e.Row.Cells(GRID_COL_RECEIVED_DATE_IDX).FindControl("ImageButtonRecdDate"), ImageButton)
                         'once received date is populated, value cannot be updated
                         If (dvRow("received_date") Is Nothing Or dvRow("received_date").ToString() = String.Empty) Then
@@ -162,12 +163,12 @@
                     Else 'format the rows that are not being edited
                         CType(e.Row.Cells(GRID_COL_TRACKING_NUMBER_IDX).FindControl("lblTrackingNumber"), Label).Text = dvRow("tracking_number").ToString
                         CType(e.Row.Cells(GRID_COL_RECEIVED_DATE_IDX).FindControl("lblReceivedDate"), Label).Text = If(dvRow("received_date").ToString() <> String.Empty _
-                            , CType(dvRow("received_date"), Date).ToString("dd-MMM-yyyy"), "")
+                           , ElitaPlusPage.GetDateFormattedStringNullable(CType(dvRow("received_date"), Date)), "")
                     End If
                 Else 'view mode
                     CType(e.Row.Cells(GRID_COL_TRACKING_NUMBER_IDX).FindControl("lblTrackingNumber"), Label).Text = dvRow("tracking_number").ToString
                     CType(e.Row.Cells(GRID_COL_RECEIVED_DATE_IDX).FindControl("lblReceivedDate"), Label).Text = If(dvRow("received_date").ToString() <> String.Empty _
-                        , CType(dvRow("received_date"), Date).ToString("dd-MMM-yyyy"), "")
+                        , ElitaPlusPage.GetDateFormattedStringNullable(CType(dvRow("received_date"), Date)), "")
                 End If
             End If
         Catch ex As Exception

@@ -764,7 +764,8 @@ Partial Class PayClaimForm
             ControlMgr.SetVisibleControl(Me, cboRegionDropID, False)
             ControlMgr.SetVisibleControl(Me, lblRigion, False)
 
-            If (Me.oDealer.PayDeductibleId = LookupListNew.GetIdFromCode(LookupListNew.LK_YESNO, "N")) Then
+            If (Me.oDealer.PayDeductibleId = LookupListNew.GetIdFromCode(LookupListNew.LK_CLAIM_PAY_DEDUCTIBLE, Codes.YESNO_N)) Or
+                (Me.oDealer.PayDeductibleId = LookupListNew.GetIdFromCode(LookupListNew.LK_CLAIM_PAY_DEDUCTIBLE, Codes.FULL_INVOICE_Y)) Then
                 trDeductibleAmount.Visible = False
                 trDeductibleTaxAmount.Visible = False
             End If
@@ -1347,10 +1348,12 @@ Partial Class PayClaimForm
                     End If
                 End If
 
-                If (Me.oDealer.PayDeductibleId = LookupListNew.GetIdFromCode(LookupListNew.LK_YESNO, "Y")) Then
-                    PayDeductible.Value = "Y"
+                If (Me.oDealer.PayDeductibleId = LookupListNew.GetIdFromCode(LookupListNew.LK_CLAIM_PAY_DEDUCTIBLE, Codes.AUTH_LESS_DEDUCT_Y)) Then
+                    PayDeductible.Value = "Y_AUTH_LESS_DEDUCT"
                     RemainingDeductible.Value = (.Invoiceable.Deductible.Value - .AlreadyPaidDeductible.Value).ToString()
                     Me.PopulateControlFromBOProperty(Me.txtDeductibleAmount, .DeductibleAmount)
+                ElseIf (Me.oDealer.PayDeductibleId = LookupListNew.GetIdFromCode(LookupListNew.LK_CLAIM_PAY_DEDUCTIBLE, Codes.FULL_INVOICE_Y)) Then
+                    PayDeductible.Value = "Y_FULL_INVOICE"
                 Else
                     PayDeductible.Value = "N"
                 End If
@@ -1798,7 +1801,8 @@ Partial Class PayClaimForm
             Double.TryParse(Me.txtDeductibleAmount.Text, DeductibleAmount)
             Double.TryParse(Me.txtDeductibleTaxAmount.Text, DeductibleTaxAmount)
 
-            If (oDealer.PayDeductibleId = LookupListNew.GetIdFromCode(LookupListNew.LK_YESNO, "Y")) Then
+            If (oDealer.PayDeductibleId = LookupListNew.GetIdFromCode(LookupListNew.LK_CLAIM_PAY_DEDUCTIBLE, Codes.AUTH_LESS_DEDUCT_Y)) Then
+
                 'Me.PopulateBOProperty(Me.State.ClaimInvoiceBO, "DeductibleAmount", (Convert.ToDouble(Me.txtDeductibleAmount.Text) + Convert.ToDouble(Me.txtDeductibleTaxAmount.Text)).ToString)
                 Me.PopulateBOProperty(Me.State.ClaimInvoiceBO, "DeductibleAmount", (DeductibleAmount + DeductibleTaxAmount).ToString)
                 If (Me.State.ClaimInvoiceBO.IsIvaResponsibleFlag) Then

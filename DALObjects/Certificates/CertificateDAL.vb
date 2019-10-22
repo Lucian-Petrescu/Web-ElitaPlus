@@ -305,6 +305,7 @@ Public Class CertificateDAL
     Public Const COL_NAME_MARITALSTATUS As String = "MaritalStatusId"
     Public Const COL_NAME_NATIONALITY As String = "NationalityId"
     Public Const COL_NAME_PLACEOFBIRTH As String = "PlaceOfBirthId"
+    Public Const COL_NAME_CITYOFBIRTH As String = "CityOfBirth"
     Public Const COL_NAME_GENDER As String = "GenderId"
     Public Const COL_NAME_CUIT_CUIL As String = "CUIT_CUIL"
     'REQ-1255 - END
@@ -2827,7 +2828,7 @@ Public Class CertificateDAL
     End Function
     Public Sub UpdateCustomerDetails(ByVal CertId As Guid, ByVal CustomerId As Guid, ByVal SalutationId As Guid, ByVal CustomerFirstName As String, ByVal CustomerMiddleName As String, ByVal CustomerLastName As String, ByVal Modified_By As String,
                                           ByVal Email As String, ByVal HomePhone As String, ByVal IdentificationNumber As String, ByVal IdentificationNumberType As String, ByVal WorkPhone As String,
-                                          ByVal MartialStatus As Guid, ByVal Nationality As Guid, ByVal PlaceOfBirth As Guid, ByVal Gender As Guid, ByVal CorporateName As String, ByVal AltFirstName As String, ByVal AltLastName As String,
+                                          ByVal MartialStatus As Guid, ByVal Nationality As Guid, ByVal PlaceOfBirth As Guid, ByVal Gender As Guid, ByVal CorporateName As String, ByVal AltFirstName As String, ByVal AltLastName As String, ByVal CityofBirth As String,
                                           Optional ByVal DateOfBirth As DateType = Nothing)
         Dim selectStmt As String = Me.Config("/SQL/UPDATE_CUSTOMER_DETAILS")
         Dim outputParameter(Me.PO_CURSOR_UPDATE_CUSTOMER) As DBHelper.DBHelperParameter
@@ -2934,6 +2935,11 @@ Public Class CertificateDAL
 
         If AltLastName <> String.Empty Then
             param = New DBHelper.DBHelperParameter("pi_customer_alt_last_name", AltLastName)
+            inParameters.Add(param)
+        End If
+
+        If CityofBirth <> String.Empty Then
+            param = New DBHelper.DBHelperParameter("pi_city_of_birth", CityofBirth)
             inParameters.Add(param)
         End If
 

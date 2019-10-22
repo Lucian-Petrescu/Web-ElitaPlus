@@ -16,17 +16,17 @@ Option Explicit On
 '''<summary>
 '''Represents a strongly typed in-memory cache of data.
 '''</summary>
-<Global.System.Serializable(),  _
- Global.System.ComponentModel.DesignerCategoryAttribute("code"),  _
- Global.System.ComponentModel.ToolboxItem(true),  _
- Global.System.Xml.Serialization.XmlSchemaProviderAttribute("GetTypedDataSetSchema"),  _
- Global.System.Xml.Serialization.XmlRootAttribute("ServiceOrderReport"),  _
- Global.System.ComponentModel.Design.HelpKeywordAttribute("vs.data.DataSet")>  _
+<Global.System.Serializable(),
+ Global.System.ComponentModel.DesignerCategoryAttribute("code"),
+ Global.System.ComponentModel.ToolboxItem(True),
+ Global.System.Xml.Serialization.XmlSchemaProviderAttribute("GetTypedDataSetSchema"),
+ Global.System.Xml.Serialization.XmlRootAttribute("ServiceOrderReport"),
+ Global.System.ComponentModel.Design.HelpKeywordAttribute("vs.data.DataSet")>
 Partial Public Class ServiceOrderReport
     Inherits Global.System.Data.DataSet
-    
+
     Private tableServiceOrder As ServiceOrderDataTable
-    
+
     Private _schemaSerializationMode As Global.System.Data.SchemaSerializationMode = Global.System.Data.SchemaSerializationMode.IncludeSchema
 
     <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),
@@ -392,6 +392,8 @@ Partial Public Class ServiceOrderReport
         Private columnDEDUCTIBLE_AMOUNT As Global.System.Data.DataColumn
 
         Private columnAUTHORIZATION_AMOUNT As Global.System.Data.DataColumn
+
+        Private columnTAX_AMOUNT As Global.System.Data.DataColumn
 
         Private columnAUTHORIZED_BY As Global.System.Data.DataColumn
 
@@ -986,6 +988,14 @@ Partial Public Class ServiceOrderReport
 
         <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),
          Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")>
+        Public ReadOnly Property TAX_AMOUNTColumn() As Global.System.Data.DataColumn
+            Get
+                Return Me.columnTAX_AMOUNT
+            End Get
+        End Property
+
+        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),
+         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")>
         Public ReadOnly Property AUTHORIZED_BYColumn() As Global.System.Data.DataColumn
             Get
                 Return Me.columnAUTHORIZED_BY
@@ -1541,6 +1551,7 @@ Partial Public Class ServiceOrderReport
                     ByVal NAME_OF_CONTACT As String,
                     ByVal DEDUCTIBLE_AMOUNT As Decimal,
                     ByVal AUTHORIZATION_AMOUNT As Decimal,
+                    ByVal TAX_AMOUNT As Decimal,
                     ByVal AUTHORIZED_BY As String,
                     ByVal CLAIM_NUMBER As String,
                     ByVal COMPANY_NAME As String,
@@ -1600,7 +1611,7 @@ Partial Public Class ServiceOrderReport
                     ByVal STATE_PROVINCE_CODE As String,
                     ByVal ADDRESS3 As String) As ServiceOrderRow
             Dim rowServiceOrderRow As ServiceOrderRow = CType(Me.NewRow, ServiceOrderRow)
-            Dim columnValuesArray() As Object = New Object() {COMPANY_ID, CLAIM_ID, SERVICE_CENTER_ID, LOSS_DATE, SVC_NAME, SVC_CODE, SVC_ADDRESS1, SVC_ADDRESS2, SVC_CITY, SVC_CONTACT, SVC_STATE_PROVINCE, SVC_ZIP, SVC_PHONE, SVC_FAX, SVC_EMAIL, SVC_ADDR_MAILING_LABEL, LC_NAME, LC_CODE, LC_ADDRESS1, LC_ADDRESS2, LC_CITY, LC_STATE_PROVINCE, LC_ZIP, LC_PHONE, LC_FAX, LC_EMAIL, LC_ADDR_MAILING_LABEL, REPAIR_METHOD, DATE_CREATED, CERTIFICATE, IDENTIFICATION_NUMBER, PROBLEM_DESCRIPTION, SPECIAL_INSTRUCTION, CUSTOMER_NAME, ADDRESS1, ADDRESS2, CITY, STATE_PROVINCE, ZIP, HOME_PHONE, MOBILE_PHONE, CUSTOMER_EMAIL, ADDR_MAILING_LABEL, RETAILER, INVOICE_NUMBER, PRODUCT_DESCRIPTION, COVERAGE_TYPE, MANUFACTURER, MODEL, SERIAL_NUMBER, PRODUCT_SALES_DATE, DEALER_NAME, NAME_OF_CONTACT, DEDUCTIBLE_AMOUNT, AUTHORIZATION_AMOUNT, AUTHORIZED_BY, CLAIM_NUMBER, COMPANY_NAME, COMPANY_ADDRESS1, COMPANY_ADDRESS2, COMPANY_CITY, COMPANY_STATE, COMPANY_ZIP, COMPANY_PHONE, COMPANY_FAX, COMPANY_EMAIL, COMPANY_ADDR_MAILING_LABEL, WARRANTY_SALES_DATE, WARRANTY_END_DATE, LIABILITY_LIMIT, RPC_NAME, RPC_CODE, RPC_ADDRESS1, RPC_ADDRESS2, RPC_CITY, RPC_STATE_PROVINCE, RPC_ZIP, RPC_PHONE, RPC_FAX, RPC_EMAIL, RPC_ADDR_MAILING_LABEL, CLAIM_REASON_CLOSED, CLAIM_ACTIVITY, ASSURANT_AMOUNT, CONSUMER_AMOUNT, CAMPAIGN_NUMBER, COMPANY_CODE, SALES_PRICE, TOTAL_PAID, TAX_ID, CAUSE_OF_LOSS, AUTHORIZATION_NUMBER, IMAGE_PATH, IMEI, SHIPPING_SALUTATIONID, SHIPPING_NAME, SHIPPING_ADDRESS1, SHIPPING_ADDRESS2, SHIPPING_ADDRESS3, SHIPPING_POSTALCODE, SHIPPING_REGION, SHIPPING_CITY, SHIPPING_COUNTRY, SHIPPING_HOMEPHONE, SHIPPING_WORKPHONE, SHIPPING_CELLPHONE, SHIPPING_EMAIL, RISK_TYPE, MASTER_CLAIM_NUMBER, DEDUCTIBLE_AMT_DISCLAIMER_ON, EXTENDED_CLAIM_STATUS, STATE_PROVINCE_CODE, ADDRESS3}
+            Dim columnValuesArray() As Object = New Object() {COMPANY_ID, CLAIM_ID, SERVICE_CENTER_ID, LOSS_DATE, SVC_NAME, SVC_CODE, SVC_ADDRESS1, SVC_ADDRESS2, SVC_CITY, SVC_CONTACT, SVC_STATE_PROVINCE, SVC_ZIP, SVC_PHONE, SVC_FAX, SVC_EMAIL, SVC_ADDR_MAILING_LABEL, LC_NAME, LC_CODE, LC_ADDRESS1, LC_ADDRESS2, LC_CITY, LC_STATE_PROVINCE, LC_ZIP, LC_PHONE, LC_FAX, LC_EMAIL, LC_ADDR_MAILING_LABEL, REPAIR_METHOD, DATE_CREATED, CERTIFICATE, IDENTIFICATION_NUMBER, PROBLEM_DESCRIPTION, SPECIAL_INSTRUCTION, CUSTOMER_NAME, ADDRESS1, ADDRESS2, CITY, STATE_PROVINCE, ZIP, HOME_PHONE, MOBILE_PHONE, CUSTOMER_EMAIL, ADDR_MAILING_LABEL, RETAILER, INVOICE_NUMBER, PRODUCT_DESCRIPTION, COVERAGE_TYPE, MANUFACTURER, MODEL, SERIAL_NUMBER, PRODUCT_SALES_DATE, DEALER_NAME, NAME_OF_CONTACT, DEDUCTIBLE_AMOUNT, AUTHORIZATION_AMOUNT, TAX_AMOUNT, AUTHORIZED_BY, CLAIM_NUMBER, COMPANY_NAME, COMPANY_ADDRESS1, COMPANY_ADDRESS2, COMPANY_CITY, COMPANY_STATE, COMPANY_ZIP, COMPANY_PHONE, COMPANY_FAX, COMPANY_EMAIL, COMPANY_ADDR_MAILING_LABEL, WARRANTY_SALES_DATE, WARRANTY_END_DATE, LIABILITY_LIMIT, RPC_NAME, RPC_CODE, RPC_ADDRESS1, RPC_ADDRESS2, RPC_CITY, RPC_STATE_PROVINCE, RPC_ZIP, RPC_PHONE, RPC_FAX, RPC_EMAIL, RPC_ADDR_MAILING_LABEL, CLAIM_REASON_CLOSED, CLAIM_ACTIVITY, ASSURANT_AMOUNT, CONSUMER_AMOUNT, CAMPAIGN_NUMBER, COMPANY_CODE, SALES_PRICE, TOTAL_PAID, TAX_ID, CAUSE_OF_LOSS, AUTHORIZATION_NUMBER, IMAGE_PATH, IMEI, SHIPPING_SALUTATIONID, SHIPPING_NAME, SHIPPING_ADDRESS1, SHIPPING_ADDRESS2, SHIPPING_ADDRESS3, SHIPPING_POSTALCODE, SHIPPING_REGION, SHIPPING_CITY, SHIPPING_COUNTRY, SHIPPING_HOMEPHONE, SHIPPING_WORKPHONE, SHIPPING_CELLPHONE, SHIPPING_EMAIL, RISK_TYPE, MASTER_CLAIM_NUMBER, DEDUCTIBLE_AMT_DISCLAIMER_ON, EXTENDED_CLAIM_STATUS, STATE_PROVINCE_CODE, ADDRESS3}
             rowServiceOrderRow.ItemArray = columnValuesArray
             Me.Rows.Add(rowServiceOrderRow)
             Return rowServiceOrderRow
@@ -1678,6 +1689,7 @@ Partial Public Class ServiceOrderReport
             Me.columnNAME_OF_CONTACT = MyBase.Columns("NAME_OF_CONTACT")
             Me.columnDEDUCTIBLE_AMOUNT = MyBase.Columns("DEDUCTIBLE_AMOUNT")
             Me.columnAUTHORIZATION_AMOUNT = MyBase.Columns("AUTHORIZATION_AMOUNT")
+            Me.columnTAX_AMOUNT = MyBase.Columns("TAX_AMOUNT")
             Me.columnAUTHORIZED_BY = MyBase.Columns("AUTHORIZED_BY")
             Me.columnCLAIM_NUMBER = MyBase.Columns("CLAIM_NUMBER")
             Me.columnCOMPANY_NAME = MyBase.Columns("COMPANY_NAME")
@@ -1851,6 +1863,8 @@ Partial Public Class ServiceOrderReport
             MyBase.Columns.Add(Me.columnDEDUCTIBLE_AMOUNT)
             Me.columnAUTHORIZATION_AMOUNT = New Global.System.Data.DataColumn("AUTHORIZATION_AMOUNT", GetType(Decimal), Nothing, Global.System.Data.MappingType.Element)
             MyBase.Columns.Add(Me.columnAUTHORIZATION_AMOUNT)
+            Me.columnTAX_AMOUNT = New Global.System.Data.DataColumn("TAX_AMOUNT", GetType(Decimal), Nothing, Global.System.Data.MappingType.Element)
+            MyBase.Columns.Add(Me.columnTAX_AMOUNT)
             Me.columnAUTHORIZED_BY = New Global.System.Data.DataColumn("AUTHORIZED_BY", GetType(String), Nothing, Global.System.Data.MappingType.Element)
             MyBase.Columns.Add(Me.columnAUTHORIZED_BY)
             Me.columnCLAIM_NUMBER = New Global.System.Data.DataColumn("CLAIM_NUMBER", GetType(String), Nothing, Global.System.Data.MappingType.Element)
@@ -2933,6 +2947,21 @@ Partial Public Class ServiceOrderReport
             End Get
             Set
                 Me(Me.tableServiceOrder.AUTHORIZATION_AMOUNTColumn) = Value
+            End Set
+        End Property
+
+        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),
+         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")>
+        Public Property TAX_AMOUNT() As Decimal
+            Get
+                Try
+                    Return CType(Me(Me.tableServiceOrder.TAX_AMOUNTColumn), Decimal)
+                Catch e As Global.System.InvalidCastException
+                    Throw New Global.System.Data.StrongTypingException("The value for column 'TAX_AMOUNT' in table 'ServiceOrder' is DBNull.", e)
+                End Try
+            End Get
+            Set
+                Me(Me.tableServiceOrder.TAX_AMOUNTColumn) = Value
             End Set
         End Property
 
@@ -4466,6 +4495,18 @@ Partial Public Class ServiceOrderReport
          Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")>
         Public Sub SetAUTHORIZATION_AMOUNTNull()
             Me(Me.tableServiceOrder.AUTHORIZATION_AMOUNTColumn) = Global.System.Convert.DBNull
+        End Sub
+
+        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),
+         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")>
+        Public Function IsTAX_AMOUNTNull() As Boolean
+            Return Me.IsNull(Me.tableServiceOrder.TAX_AMOUNTColumn)
+        End Function
+
+        <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),
+         Global.System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "4.0.0.0")>
+        Public Sub SetTAX_AMOUNTNull()
+            Me(Me.tableServiceOrder.TAX_AMOUNTColumn) = Global.System.Convert.DBNull
         End Sub
 
         <Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),
