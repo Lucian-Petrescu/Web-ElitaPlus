@@ -30,6 +30,10 @@
                             <asp:Button ID="btnLoadFile_WRITE" runat="server" Text="UPLOAD_FILE" width="100" SkinID="ActionButton">
                             </asp:Button>
                         </td>
+                        <td style="text-align: left;">
+                            <asp:Button ID="btnExtract_Report" runat="server" Text="EXTRACT_REPORT" width="100" SkinID="ActionButton" Visible="false">
+                            </asp:Button>
+                        </td>
                     </tr>
                 </table>
             </td>

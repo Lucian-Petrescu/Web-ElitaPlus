@@ -173,6 +173,7 @@ Public Class ReactivateUploadForm
         Dim ErrList As New Collections.Generic.List(Of String)
 
         panelResult.Visible = False
+        btnExtract_Report.Visible = True
         Try
             If InputFile.PostedFile.FileName.Trim = String.Empty Then
                 ErrList.Add("FILE_NAME_IS_REQUIRED")
@@ -225,6 +226,21 @@ Public Class ReactivateUploadForm
             Me.PopulateGrid()
         Catch ex As Exception
             Me.HandleErrors(ex, Me.MasterPage.MessageController)
+        End Try
+    End Sub
+
+    Protected Sub btnExtract_Report_Click(sender As Object, e As EventArgs) Handles btnExtract_Report.Click
+
+        Dim strUploadType As String
+        strUploadType = ddlUploadType.SelectedValue.Trim
+
+        Try
+            Dim strEmailAddress As String
+            strEmailAddress = ElitaPlusIdentity.Current.EmailAddress
+            commonUpload.ExtractReport(strUploadType, strEmailAddress)
+
+        Catch ex As Exception
+            HandleErrors(ex, Me.MasterPage.MessageController)
         End Try
     End Sub
 #End Region
