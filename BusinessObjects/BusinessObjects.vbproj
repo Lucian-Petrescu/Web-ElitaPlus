@@ -353,6 +353,10 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Reference.svcmap</DependentUpon>
     </Compile>
+    <Compile Include="Tables\Accounting\AccountPayable\ApInvoiceHeader.vb" />
+    <Compile Include="Tables\Accounting\AccountPayable\ApInvoiceLines.vb" />
+    <Compile Include="Tables\Accounting\AccountPayable\ApInvoiceMatching.vb" />
+    <Compile Include="Tables\Accounting\AccountPayable\ApPaymentBatch.vb" />
     <Compile Include="Tables\Accounting\AcctEventDetailIncExc.vb" />
     <Compile Include="Tables\AcctFinanceAutomation\AfaAcctAmtSrc.vb" />
     <Compile Include="Tables\AcctFinanceAutomation\AfaAcctAmtSrcMapping.vb" />
