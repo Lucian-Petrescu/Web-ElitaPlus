@@ -295,10 +295,19 @@
             <td></td>
           </tr>
           <tr>
-            <td colspan="2">
-              Total autorizado para reparaciones es: $<xsl:value-of select="a:ServiceOrderReport/a:ServiceOrder/a:AUTHORIZATION_AMOUNT" />
-            </td>
-          </tr>
+            <xsl:choose>
+              <xsl:when test="a:ServiceOrderReport/a:ServiceOrder/a:TAX_AMOUNT">
+                <td colspan="2">
+                  Total autorizado para reparaciones es: $<xsl:value-of select="a:ServiceOrderReport/a:ServiceOrder/a:AUTHORIZATION_AMOUNT - a:ServiceOrderReport/a:ServiceOrder/a:TAX_AMOUNT" />
+                </td>
+              </xsl:when>
+              <xsl:otherwise>
+                <td colspan="2">
+                  Total autorizado para reparaciones es: $<xsl:value-of select="a:ServiceOrderReport/a:ServiceOrder/a:AUTHORIZATION_AMOUNT" />
+                </td>
+              </xsl:otherwise>
+            </xsl:choose>
+          </tr> 
           <tr>
             <td>&#160;</td>
             <td></td>

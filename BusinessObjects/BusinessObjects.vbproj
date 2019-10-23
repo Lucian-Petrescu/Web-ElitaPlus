@@ -672,16 +672,6 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Reference.svcmap</DependentUpon>
     </Compile>
-    <Compile Include="Service References\GvsWSProdRef\Reference.vb">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>Reference.svcmap</DependentUpon>
-    </Compile>
-    <Compile Include="Service References\GvsWSRef\Reference.vb">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>Reference.svcmap</DependentUpon>
-    </Compile>
     <Compile Include="Service References\SmartStream.AP\Reference.vb">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -1091,6 +1081,11 @@
     <Compile Include="VSC\CancelCreditCardAuthVSCBrazil.vb" />
     <Compile Include="VSC\CancelCreditCardAuthVSCBrazilDs.vb" />
     <Compile Include="Web References\AcselXWSRef\Reference.vb">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Reference.map</DependentUpon>
+    </Compile>
+    <Compile Include="Web References\WebDeClaimsServiceReference\Reference.vb">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>Reference.map</DependentUpon>
@@ -1631,6 +1626,11 @@
     <None Include="Web References\AcselXWSRef\retornoCancelamentoElita.datasource">
       <DependentUpon>Reference.map</DependentUpon>
     </None>
+    <None Include="Web References\WebDeClaimsServiceReference\Reference.map">
+      <Generator>MSDiscoCodeGenerator</Generator>
+      <LastGenOutput>Reference.vb</LastGenOutput>
+    </None>
+    <None Include="Web References\WebDeClaimsServiceReference\WSElitaServiceOrder.wsdl" />
   </ItemGroup>
   <ItemGroup>
     <WCFMetadataStorage Include="Service References\Auth\" />
@@ -1638,8 +1638,6 @@
     <WCFMetadataStorage Include="Service References\Doc\" />
     <WCFMetadataStorage Include="Service References\DRPSystem\" />
     <WCFMetadataStorage Include="Service References\Felita\" />
-    <WCFMetadataStorage Include="Service References\GvsWSProdRef\" />
-    <WCFMetadataStorage Include="Service References\GvsWSRef\" />
     <WCFMetadataStorage Include="Service References\LegacyBridgeService\" />
     <WCFMetadataStorage Include="Service References\PolicyService\" />
     <WCFMetadataStorage Include="Service References\SmartStream.AP\" />
@@ -1700,25 +1698,11 @@
     </None>
   </ItemGroup>
   <ItemGroup>
-    <None Include="Service References\GvsWSRef\WSElitaServiceOrder.disco" />
-    <None Include="Service References\GvsWSRef\WSElitaServiceOrder.wsdl" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Service References\GvsWSRef\configuration91.svcinfo" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Service References\GvsWSRef\configuration.svcinfo" />
-  </ItemGroup>
-  <ItemGroup>
     <None Include="Service References\Felita\FelitaConnectService.wsdl" />
     <None Include="Service References\Felita\FelitaConnectService.xsd" />
     <None Include="Service References\Felita\FelitaConnectService1.xsd" />
     <None Include="Service References\Felita\FelitaConnectService2.xsd" />
     <None Include="Service References\Felita\FelitaConnectService3.xsd" />
-    <None Include="Service References\GvsWSRef\Reference.svcmap">
-      <Generator>WCF Proxy Generator</Generator>
-      <LastGenOutput>Reference.vb</LastGenOutput>
-    </None>
   </ItemGroup>
   <ItemGroup>
     <None Include="Service References\Felita\dsJournalInfo.xsd">
@@ -1745,20 +1729,6 @@
     </None>
   </ItemGroup>
   <ItemGroup>
-    <None Include="Service References\GvsWSProdRef\WSElitaServiceOrder.disco" />
-    <None Include="Service References\GvsWSProdRef\WSElitaServiceOrder.wsdl" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Service References\GvsWSProdRef\configuration91.svcinfo" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Service References\GvsWSProdRef\configuration.svcinfo" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Service References\GvsWSProdRef\Reference.svcmap">
-      <Generator>WCF Proxy Generator</Generator>
-      <LastGenOutput>Reference.vb</LastGenOutput>
-    </None>
     <None Include="Service References\SmartStream.AP\Assurant.ElitaPlus.BusinessObjectsNew.SmartStream.AP.VendorSummaryType.datasource">
       <DependentUpon>Reference.svcmap</DependentUpon>
     </None>
@@ -1879,6 +1849,17 @@
     <WebReferences Include="Web References\" />
   </ItemGroup>
   <ItemGroup>
+    <WebReferenceUrl Include="http://179.184.234.199/webclaims/WSElitaServiceOrder%3fwsdl">
+      <UrlBehavior>Dynamic</UrlBehavior>
+      <RelPath>Web References\WebDeClaimsServiceReference\</RelPath>
+      <UpdateFromURL>http://179.184.234.199/webclaims/WSElitaServiceOrder%3fwsdl</UpdateFromURL>
+      <ServiceLocationURL>
+      </ServiceLocationURL>
+      <CachedDynamicPropName>
+      </CachedDynamicPropName>
+      <CachedAppSettingsObjectName>MySettings</CachedAppSettingsObjectName>
+      <CachedSettingsPropName>Assurant_ElitaPlus_BusinessObjectsNew_WebDeClaimsServiceReference_WSElitaServiceOrder</CachedSettingsPropName>
+    </WebReferenceUrl>
     <WebReferenceUrl Include="http://javades.delphos.com.br/CancelamentoElita/CancelamentoElita%3fwsdl">
       <UrlBehavior>Dynamic</UrlBehavior>
       <RelPath>Web References\AcselXWSRef\</RelPath>

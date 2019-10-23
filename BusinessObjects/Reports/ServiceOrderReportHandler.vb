@@ -15,6 +15,7 @@ Public Class ServiceOrderReportHandler
 
         Dim ClaimAuthorizationBO As ClaimAuthorization
         Dim soRow As ServiceOrderReport.ServiceOrderRow = SODataSet.ServiceOrder.NewServiceOrderRow()
+
         soRow.COMPANY_ID = ClaimBO.CompanyId.ToByteArray()
         soRow.CLAIM_ID = ClaimBO.Id.ToByteArray()
         soRow.SERVICE_CENTER_ID = ClaimBO.ServiceCenterId.ToByteArray()
@@ -50,12 +51,12 @@ Public Class ServiceOrderReportHandler
         If Not svc.Address.RegionId.Equals(Guid.Empty) Then
             soRow.SVC_STATE_PROVINCE = New Region(svc.Address.RegionId).Description
         End If
+
         soRow.SVC_ZIP = svc.Address.PostalCode
         soRow.SVC_ADDR_MAILING_LABEL = svc.Address.MailingAddressLabel
 
         If Not (ClaimBO.LoanerCenterId.Equals(Guid.Empty)) Then
             Dim lc As ServiceCenter = New ServiceCenter(ClaimBO.LoanerCenterId)
-
             soRow.LC_CODE = lc.Code
             soRow.LC_ADDRESS1 = lc.Address.Address1
             soRow.LC_ADDRESS2 = lc.Address.Address2
@@ -67,22 +68,16 @@ Public Class ServiceOrderReportHandler
             soRow.LC_STATE_PROVINCE = New Region(lc.Address.RegionId).Description
             soRow.LC_ZIP = lc.Address.PostalCode
             soRow.LC_ADDR_MAILING_LABEL = lc.Address.MailingAddressLabel
-
         End If
 
-
-        'soRow.REPAIR_METHOD = ClaimBO.MethodOfRepairCode
         soRow.REPAIR_METHOD = ClaimBO.MethodOfRepairDescription
-
         soRow.DATE_CREATED = System.DateTime.Now
 
         Dim cert As Certificate = New Certificate(ClaimBO.CertificateId)
         soRow.CERTIFICATE = cert.CertNumber
         soRow.IDENTIFICATION_NUMBER = cert.IdentificationNumber
-
         soRow.PROBLEM_DESCRIPTION = ClaimBO.ProblemDescription
         soRow.SPECIAL_INSTRUCTION = ClaimBO.SpecialInstruction
-
         soRow.CUSTOMER_NAME = cert.CustomerName
         soRow.ADDRESS1 = cert.AddressChild.Address1
         soRow.ADDRESS2 = cert.AddressChild.Address2
@@ -94,6 +89,7 @@ Public Class ServiceOrderReportHandler
             soRow.STATE_PROVINCE = New Region(cert.AddressChild.RegionId).Description
             soRow.STATE_PROVINCE_CODE = New Region(cert.AddressChild.RegionId).ShortDesc
         End If
+
         soRow.ZIP = cert.AddressChild.PostalCode
         soRow.HOME_PHONE = cert.HomePhone
         soRow.RETAILER = cert.Retailer
@@ -111,6 +107,7 @@ Public Class ServiceOrderReportHandler
             soRow.SHIPPING_WORKPHONE = ContactInfo.WorkPhone
             soRow.SHIPPING_CELLPHONE = ContactInfo.CellPhone
             soRow.SHIPPING_EMAIL = ContactInfo.Email
+
             If Not ContactInfo Is Nothing Then
                 Dim Address As Address = New Address(ContactInfo.AddressId)
                 soRow.SHIPPING_ADDRESS1 = Address.Address1
@@ -127,16 +124,36 @@ Public Class ServiceOrderReportHandler
             End If
         End If
         ' EndReqs-784
+
         Dim certCov As CertItemCoverage = New CertItemCoverage(ClaimBO.CertItemCoverageId)
         Dim oCertItem As CertItem = New CertItem(certCov.CertItemId)
         Dim certRegItemId As Guid = ClaimBO.GetCertRegisterItemIdByMasterNumber(ClaimBO.MasterClaimNumber, ClaimBO.CompanyId)
+        Dim claimInvoice As ClaimInvoice = New ClaimInvoice()
+        Dim taxRateData As ClaimInvoiceDAL.TaxRateData = New ClaimInvoiceDAL.TaxRateData()
+        Dim claimTaxRateData As ClaimInvoiceDAL.TaxRateData = New ClaimInvoiceDAL.TaxRateData()
+        Dim oCompany As Company = New Company(ClaimBO.CompanyId)
+        Dim oDealer As Dealer = New Dealer(cert.DealerId)
+
+        taxRateData.countryID = oCompany.CountryId
+        taxRateData.regionID = svc.Address.RegionId
+        taxRateData.dealerID = oDealer.Id
+        taxRateData.salesDate = cert.ProductSalesDate
+
+        taxRateData.taxtypeID = LookupListNew.GetIdFromCode(LookupListNew.LK_TAX_TYPES, "7")
+
+        If oDealer.PayDeductibleId = LookupListNew.GetIdFromCode(LookupListNew.LK_CLAIM_PAY_DEDUCTIBLE, Codes.FULL_INVOICE_Y) Then
+            claimTaxRateData = ClaimInvoice.GetTaxRate(taxRateData)
+        Else
+            claimTaxRateData.taxRate = 0
+        End If
+
+
         Dim CertificateRegisteredItem As CertRegisteredItem
         If Not certRegItemId.Equals(Guid.Empty) Then
             CertificateRegisteredItem = New CertRegisteredItem(certRegItemId)
         End If
 
-
-        Dim ManufacturerDescription As String = String.Empty 'DEF-3565
+        Dim ManufacturerDescription As String = String.Empty
         If Not oCertItem.ManufacturerId.Equals(Guid.Empty) Then
             Dim oManufacturer As Manufacturer = New Manufacturer(oCertItem.ManufacturerId)
             ManufacturerDescription = oManufacturer.Description
@@ -158,75 +175,65 @@ Public Class ServiceOrderReportHandler
             soRow.SERIAL_NUMBER = String.Empty
         End If
 
-        soRow.MANUFACTURER = ManufacturerDescription 'oManufacturer.Description
-        '?????? prod desc from where????
+        soRow.MANUFACTURER = ManufacturerDescription
         soRow.CAMPAIGN_NUMBER = cert.CampaignNumber
-        'soRow.PRODUCT_DESCRIPTION = cert.DealerItemDescription
-
         soRow.COVERAGE_TYPE = ClaimBO.CoverageTypeDescription
-
         soRow.IMEI = oCertItem.IMEINumber
         soRow.PRODUCT_SALES_DATE = cert.ProductSalesDate.Value
-
-        Dim oDealer As Dealer = New Dealer(cert.DealerId)
         soRow.DEALER_NAME = oDealer.DealerName
-
         soRow.NAME_OF_CONTACT = ClaimBO.ContactName
         soRow.DEDUCTIBLE_AMOUNT = ClaimBO.Deductible.Value
         soRow.AUTHORIZATION_AMOUNT = ClaimBO.AuthorizedAmount.Value
+
+        If claimTaxRateData.taxRate = 0 Then
+            soRow.TAX_AMOUNT = 0
+        Else
+            soRow.TAX_AMOUNT = ClaimBO.AuthorizedAmount.Value - (ClaimBO.AuthorizedAmount.Value * 100 / (100 + claimTaxRateData.taxRate))
+        End If
+
         soRow.AUTHORIZED_BY = ClaimBO.ClaimsAdjusterName
         soRow.CLAIM_NUMBER = ClaimBO.ClaimNumber
         soRow.MASTER_CLAIM_NUMBER = ClaimBO.MasterClaimNumber
-
         soRow.DEDUCTIBLE_AMT_DISCLAIMER_ON = "N"
-
-        Dim oCompany As Company = New Company(ClaimBO.CompanyId)
 
         ' Exception by Company
         Dim compCode As String = oCompany.Code
         Dim compDesc As String = oCompany.Description
 
         Dim dealerCode As String = ClaimBO.DealerCode
-        ' Dim dv As DataView
 
-        '  dv = LookupListNew.GetCompanyLookupList()
-        ' compDesc = LookupListNew.
         Select Case compCode
             Case Codes.COMPANY__TBR
                 ' Exception by Dealer of a Company
                 Select Case dealerCode
                     Case Codes.DEALER__DUDR
-                        compDesc = "Assurant Services Brasil Ltda" 'COMPANY__ABR"
+                        compDesc = "Assurant Services Brasil Ltda"
                 End Select
             Case Codes.COMPANY__APR
                 If dealerCode = Codes.DEALER__TMOBIL Or dealerCode = Codes.DEALER__CLARO Then
-                    'If ClaimBO.Deductible.Value = 0 Then
                     soRow.DEDUCTIBLE_AMT_DISCLAIMER_ON = "Y"
-                    'End If
                 End If
             Case Codes.COMPANY__PRC
                 If dealerCode = Codes.DEALER__CLAC Then
                     soRow.DEDUCTIBLE_AMT_DISCLAIMER_ON = "Y"
                 End If
         End Select
-        '  soRow.COMPANY_NAME = oCompany.Description
+
         soRow.COMPANY_NAME = compDesc
         soRow.COMPANY_PHONE = oCompany.Phone
         soRow.COMPANY_FAX = oCompany.Fax
         soRow.COMPANY_EMAIL = oCompany.Email
         soRow.COMPANY_CODE = oCompany.Code
-
-        'Dim oCompAddr As Address = New Address(oCompany.AddressId)
         soRow.COMPANY_ADDRESS1 = oCompany.Address1
         soRow.COMPANY_ADDRESS2 = oCompany.Address2
         soRow.COMPANY_CITY = oCompany.City
         soRow.COMPANY_ZIP = oCompany.PostalCode
+
         If Not oCompany.RegionId.Equals(Guid.Empty) Then
             soRow.COMPANY_STATE = New Region(oCompany.RegionId).Description
         End If
-        soRow.COMPANY_ADDR_MAILING_LABEL = "Not in used. Please contact the development department."
-        'soRow.COMPANY_ADDR_MAILING_LABEL = oCompany.MailingAddressLabel
 
+        soRow.COMPANY_ADDR_MAILING_LABEL = "Not in used. Please contact the development department."
         soRow.WARRANTY_SALES_DATE = cert.WarrantySalesDate.Value
         soRow.LIABILITY_LIMIT = ClaimBO.LiabilityLimit.Value
         soRow.CLAIM_REASON_CLOSED = ClaimBO.ReasonClosed
@@ -241,21 +248,19 @@ Public Class ServiceOrderReportHandler
             soRow.RPC_FAX = svc.Fax
             soRow.RPC_NAME = svc.Description
             soRow.RPC_PHONE = svc.Phone1
+
             If Not svc.Address.RegionId.Equals(Guid.Empty) Then
                 soRow.RPC_STATE_PROVINCE = New Region(svc.Address.RegionId).Description
             End If
+
             soRow.RPC_ZIP = svc.Address.PostalCode
             soRow.RPC_ADDR_MAILING_LABEL = svc.Address.MailingAddressLabel
 
             Dim oldClaimNumber = ClaimBO.ClaimNumber.Remove(ClaimBO.ClaimNumber.Length - 1, 1)
-
-            'Dim claimDV As Claim.ClaimSearchDV = Claim.getList(oldClaimNumber, "", svc.Id, "", Nothing)
-
             Dim claimDV As Claim.ClaimSearchDV = Claim.getList(oldClaimNumber, "", Nothing, "", Nothing)
 
             If claimDV.Table.Rows.Count = 1 Then
                 Dim oldSeviceCenterID As Guid = ClaimBO.ServiceCenterId
-
                 Dim oldSvcCenter As ServiceCenter = New ServiceCenter(oldSeviceCenterID)
 
                 soRow.SVC_CODE = oldSvcCenter.Code
@@ -266,23 +271,14 @@ Public Class ServiceOrderReportHandler
                 soRow.SVC_FAX = oldSvcCenter.Fax
                 soRow.SVC_NAME = oldSvcCenter.Description
                 soRow.SVC_PHONE = oldSvcCenter.Phone1
+
                 If Not oldSvcCenter.Address.RegionId.Equals(Guid.Empty) Then
                     soRow.SVC_STATE_PROVINCE = New Region(oldSvcCenter.Address.RegionId).Description
                 End If
+
                 soRow.SVC_ZIP = oldSvcCenter.Address.PostalCode
                 soRow.SVC_ADDR_MAILING_LABEL = oldSvcCenter.Address.MailingAddressLabel
-                'Else
-                '  soRow.SVC_CODE = Nothing
-                '  soRow.SVC_ADDRESS1 = Nothing
-                '  soRow.SVC_ADDRESS2 = Nothing
-                ' soRow.SVC_CITY = Nothing
-                ' soRow.SVC_EMAIL = Nothing
-                ' soRow.SVC_FAX = Nothing
-                ' soRow.SVC_NAME = Nothing
-                ' soRow.SVC_PHONE = Nothing
-                ' soRow.SVC_STATE_PROVINCE = Nothing
-                ' soRow.SVC_ZIP = Nothing
-                '  soRow.SVC_ADDR_MAILING_LABEL = Nothing
+
             End If
 
         End If
@@ -309,23 +305,6 @@ Public Class ServiceOrderReportHandler
             End If
         End If
 
-        'Dim authAmt As Decimal = ClaimBO.AuthorizedAmount.Value
-        'Dim liability As Decimal = ClaimBO.LiabilityLimit.Value
-        'Dim deductible As Decimal = ClaimBO.Deductible.Value
-        'Dim assurantAmt As Decimal = 0
-        'Dim consumerAmt As Decimal = 0
-
-        'If liability = 0 Then
-        '    liability = 999999999.99
-        'End If
-
-        'If authAmt > liability Then
-        '    assurantAmt = liability - deductible
-        'ElseIf authAmt > deductible Then
-        '    assurantAmt = authAmt - deductible
-        'End If
-
-        'consumerAmt = authAmt - assurantAmt
         soRow.ASSURANT_AMOUNT = ClaimBO.AssurantPays.Value
         soRow.CONSUMER_AMOUNT = ClaimBO.ConsumerPays.Value
 
@@ -338,10 +317,8 @@ Public Class ServiceOrderReportHandler
         soRow.TAX_ID = oCompany.TaxIdNumber
         soRow.WARRANTY_END_DATE = certCov.EndDate.Value
 
-        'Service Orders by Dealer WR#778303 (ITG #41282)
         Dim yesValueId As Guid = LookupListNew.GetIdFromCode("YES_NO", "Y")
 
-        'ALR 1/21/2009 - Added image path for ITG#62885 
         soRow.IMAGE_PATH = ElitaPlusIdentity.CurrentParameters.ServiceOrderImageHostName
 
         If oCompany.ServiceOrdersByDealerId.Equals(yesValueId) AndAlso Not oDealer.SvcOrdersAddress Is Nothing Then
@@ -366,7 +343,6 @@ Public Class ServiceOrderReportHandler
         soRow.RISK_TYPE = ClaimBO.RiskType
 
         SODataSet.ServiceOrder.AddServiceOrderRow(soRow)
-
 
     End Sub
 
