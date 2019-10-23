@@ -68,13 +68,13 @@ Partial Public Class ReactivateUploadForm
     Protected WithEvents btnLoadFile_WRITE As Global.System.Web.UI.WebControls.Button
     
     '''<summary>
-    '''lblFileFormat control.
+    '''btnExtract_Report control.
     '''</summary>
     '''<remarks>
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents lblFileFormat As Global.System.Web.UI.WebControls.Label
+    Protected WithEvents btnExtract_Report As Global.System.Web.UI.WebControls.Button
     
     '''<summary>
     '''panelIntProgControl control.
