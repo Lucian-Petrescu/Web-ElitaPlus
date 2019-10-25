@@ -330,6 +330,7 @@ Namespace Claims.AccountPayable
                     SetGridControls(PoGrid, False)
                     SetFocusOnEditableFieldInGrid(PoGrid, QUANTITY_COL, QUANTITY_CONTROL_NAME, index)
                     PopulateFormFromBO()
+                    SetGridControls(PoGrid, False)
                     SetButtonsState()
 
                 End If
