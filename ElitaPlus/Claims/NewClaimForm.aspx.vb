@@ -2599,14 +2599,26 @@ Partial Class NewClaimForm
                                                                     Function(ByVal lc As LegacyBridgeServiceClient)
                                                                         Return lc.BenefitClaimPreCheck(GuidControl.ByteArrayToGuid(hasBenefit(0)("case_Id")).ToString())
                                                                     End Function)
-
-                                'benefitCheckResponse = client.BenefitClaimPreCheck(GuidControl.GuidToHexString(GuidControl.ByteArrayToGuid(hasBenefit(0)("case_Id"))))
                             Catch ex As Exception
                                 Log(ex)
+                                Me.State.MyBO.Status = BasicClaimStatus.Pending
+                                Dim issueId As Guid = LookupListNew.GetIssueTypeIdFromCode(LookupListNew.LK_ISSUE_TYPE_CODE_LIST, "PRECK")
+                                Dim newClaimIssue As ClaimIssue = CType(Me.State.MyBO.ClaimIssuesList.GetNewChild, BusinessObjectsNew.ClaimIssue)
+                                newClaimIssue.SaveNewIssue(Me.State.MyBO.Id, issueId, Me.State.MyBO.Certificate.Id, True)
                             End Try
 
                             If (Not benefitCheckResponse Is Nothing) Then
-                                Me.State.MyBO.StatusCode = If(benefitCheckResponse.StatusDecision = LegacyBridgeStatusDecisionEnum.Approve, Codes.CLAIM_STATUS__ACTIVE, Codes.CLAIM_STATUS__DENIED)
+                                Me.State.MyBO.Status = If(benefitCheckResponse.StatusDecision = LegacyBridgeStatusDecisionEnum.Approve, BasicClaimStatus.Active, BasicClaimStatus.Pending)
+                                If (benefitCheckResponse.StatusDecision = LegacyBridgeStatusDecisionEnum.Deny) Then
+                                    Dim issueId As Guid = LookupListNew.GetIssueTypeIdFromCode(LookupListNew.LK_ISSUE_TYPE_CODE_LIST, "PRECKFAIL")
+                                    Dim newClaimIssue As ClaimIssue = CType(Me.State.MyBO.ClaimIssuesList.GetNewChild, BusinessObjectsNew.ClaimIssue)
+                                    newClaimIssue.SaveNewIssue(Me.State.MyBO.Id, issueId, Me.State.MyBO.Certificate.Id, True)
+                                End If
+                            Else
+                                Me.State.MyBO.Status = BasicClaimStatus.Pending
+                                Dim issueId As Guid = LookupListNew.GetIssueTypeIdFromCode(LookupListNew.LK_ISSUE_TYPE_CODE_LIST, "PRECK")
+                                Dim newClaimIssue As ClaimIssue = CType(Me.State.MyBO.ClaimIssuesList.GetNewChild, BusinessObjectsNew.ClaimIssue)
+                                newClaimIssue.SaveNewIssue(Me.State.MyBO.Id, issueId, Me.State.MyBO.Certificate.Id, True)
                             End If
 
                         End If
