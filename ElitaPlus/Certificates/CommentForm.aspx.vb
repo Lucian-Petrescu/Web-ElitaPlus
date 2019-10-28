@@ -439,10 +439,10 @@ Partial Class CommentForm
                 Me.State.MyBO.Save()
                 If (Me.State.MyBO.Claim.Status = BasicClaimStatus.Pending) Then
                     Me.NavController.Navigate(Me, FlowEvents.EVENT_BACK)
+                    Exit Sub
                 Else
                     Me.NavController.Navigate(Me, FlowEvents.EVENT_ADD, Message.MSG_COMMENT_ADDED)
                 End If
-
             Else
                 If Me.State.MyBO.IsNew Then
                     Me.DisplayMessage(Message.MSG_RECORD_NOT_SAVED, "", Me.MSG_BTN_OK, Me.MSG_TYPE_INFO)
