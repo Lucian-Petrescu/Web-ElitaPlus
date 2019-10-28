@@ -107,11 +107,14 @@
             <RowStyle CssClass="ROW"></RowStyle>
             <HeaderStyle CssClass="HEADER"></HeaderStyle>
             <Columns>
-                <asp:ButtonField ButtonType="Image" CommandName="EditRecord" ImageUrl="~/Navigation/images/icons/edit2.gif"
-                    HeaderStyle-HorizontalAlign="Center" ItemStyle-HorizontalAlign="Center" ItemStyle-Width="30px">
-                    <HeaderStyle HorizontalAlign="Center" />
-                    <ItemStyle HorizontalAlign="Center" Width="5%" />
-                </asp:ButtonField>
+                <asp:TemplateField ShowHeader="false">
+                    <ItemStyle HorizontalAlign="Center" Width="3%"></ItemStyle>
+                    <ItemTemplate>
+                        <asp:ImageButton ID="EditButton_WRITE" Style="cursor: hand" runat="server" ImageUrl="~/Navigation/images/icons/edit2.gif"
+                                         CommandName="EditRecord" CommandArgument="<%#Container.DisplayIndex %>"></asp:ImageButton>
+                    </ItemTemplate>
+                </asp:TemplateField>
+
                 <asp:TemplateField Visible="False" HeaderText="po_line_id">
                 <ItemTemplate>
                     &gt;
