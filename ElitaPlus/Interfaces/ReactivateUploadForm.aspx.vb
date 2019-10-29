@@ -237,7 +237,6 @@ Public Class ReactivateUploadForm
         Try
             Dim strEmailAddress As String
             strEmailAddress = ElitaPlusIdentity.Current.EmailAddress
-            strEmailAddress = "amir.tamboli@assurant.com"
 
             If String.IsNullOrEmpty(strEmailAddress) Then
                 Me.DisplayMessage(Message.MSG_Email_not_configured, "", Me.MSG_BTN_OK, Me.MSG_TYPE_ALERT, , True)
