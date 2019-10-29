@@ -643,6 +643,7 @@ Namespace Tables
             Me.BindBOPropertyToLabel(Me.State.MyBO, "DealerName", Me.lblDealerName)
             Me.BindBOPropertyToLabel(Me.State.MyBO, "RetailerId", Me.lblDealerIsRetailer)
             Me.BindBOPropertyToLabel(Me.State.MyBO, "TaxIdNumber", Me.lblTaxId)
+            Me.BindBOPropertyToLabel(Me.State.MyBO, "PendingClaimsDenyDays", Me.lbltxtPendingClaimsDenyDays)
             Me.BindBOPropertyToLabel(Me.State.MyBO, "DealerGroupId", Me.lblDealerGroupel)
             Me.BindBOPropertyToLabel(Me.State.MyBO, "ContactName", Me.lblContactName)
             Me.BindBOPropertyToLabel(Me.State.MyBO, "ContactPhone", Me.lblContactPhone)
@@ -1188,8 +1189,10 @@ Namespace Tables
                     moMultipleColumnDrop.DescriptionTextBox.Text = LookupListNew.GetDescriptionFromId(Me.State.companyDV, .CompanyId)
                 End If
 
+                Me.PopulateControlFromBOProperty(Me. txtPendingClaimsDenyDays, .PendingClaimsDenyDays)
                 Me.PopulateControlFromBOProperty(Me.txtTaxIdNumber, .TaxIdNumber)
                 Me.PopulateControlFromBOProperty(Me.txtDealerCode, .Dealer)
+               
                 Me.PopulateControlFromBOProperty(Me.txtClientDealerCode, .ClientDealerCode)
                 Me.PopulateControlFromBOProperty(Me.txtDealerName, .DealerName)
                 Me.PopulateControlFromBOProperty(Me.txtContactName, .ContactName)
@@ -1500,6 +1503,7 @@ Namespace Tables
                 Me.PopulateBOProperty(Me.State.MyBO, "DealerName", Me.txtDealerName)
                 Me.PopulateBOProperty(Me.State.MyBO, "RetailerId", Me.dlstRetailerID)
                 Me.PopulateBOProperty(Me.State.MyBO, "TaxIdNumber", Me.txtTaxIdNumber)
+                Me.PopulateBOProperty(Me.State.MyBO, "PendingClaimsDenyDays", Me.txtPendingClaimsDenyDays)
                 Me.PopulateBOProperty(Me.State.MyBO, "DealerGroupId", Me.moDealerGroupDrop)
                 Me.PopulateBOProperty(Me.State.MyBO, "DealerTypeId", Me.moDealerTypeDrop)
                 Me.PopulateBOProperty(Me.State.MyBO, "OlitaSearch", Me.moOlitaSearchDrop)

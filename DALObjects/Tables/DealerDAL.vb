@@ -15,6 +15,7 @@ Public Class DealerDAL
     Public Const COL_NAME_DEALER As String = "dealer"
     Public Const COL_NAME_CLIENT_DEALER_CODE As String = "client_dealer_code"
     Public Const COL_NAME_DEALER_NAME As String = "dealer_name"
+    Public Const COL_NAME_PENDING_CLAIM_DENY_DAYS As String = "pend_claim_created_days_deny"
     Public Const COL_NAME_TAX_ID_NUMBER As String = "tax_id_number"
     Public Const COL_NAME_COMPANY_ID As String = "company_id"
     Public Const COL_NAME_COUNT_LEVEL As String = "count_level"

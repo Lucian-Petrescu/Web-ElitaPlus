@@ -63,10 +63,10 @@ MasterPageFile="../Navigation/masters/ElitaBase.Master" %>
         <asp:TextBox ID="txtClientDealerCode" runat="server" Width="205px"></asp:TextBox>
     </td>
     <td align="right" nowrap="nowrap">
-                   
+        <asp:Label ID="lbltxtPendingClaimsDenyDays" runat="server">Pending_Claims_Denial_Days</asp:Label>
     </td>
     <td align="left" nowrap="nowrap">
-                   
+        <asp:TextBox ID="txtPendingClaimsDenyDays" runat="server" Width="205px"></asp:TextBox>        
     </td>
 </tr>
 <tr>

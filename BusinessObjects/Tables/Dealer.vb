@@ -333,6 +333,21 @@ Public Class Dealer
         End Set
     End Property
 
+    <ValidNumericRange("", Max:=999, Min:=0)>
+    Public Property PendingClaimsDenyDays () As LongType
+        Get
+            CheckDeleted()
+            If Row(DealerDAL.COL_NAME_PENDING_CLAIM_DENY_DAYS) Is DBNull.Value Then
+                Return Nothing
+            Else
+                Return  New LongType (CType(Row(DealerDAL.COL_NAME_PENDING_CLAIM_DENY_DAYS), long))
+            End If
+        End Get
+        Set(ByVal Value As LongType)
+            CheckDeleted()
+            Me.SetValue(DealerDAL.COL_NAME_PENDING_CLAIM_DENY_DAYS, Value)
+        End Set
+    End Property
 
     <MandatoryForVscAttribute(""), ValidStringLength("", Max:=15), CNPJ_TaxIdValidation("")>
     Public Property TaxIdNumber() As String

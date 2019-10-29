@@ -116,7 +116,7 @@
         require_customer_aml_info_id, 
         grace_period_months,
         grace_period_days,
-     max_commission_percent,
+        max_commission_percent,
         auto_process_pymt_file_id,
         max_commission_percent,
         vsc_vin_restric_id,
@@ -148,7 +148,8 @@
         case_profile_code,
         close_case_grace_period_days,
         show_prev_caller_info_xcd,
-        display_mask_dob_xcd
+        display_mask_dob_xcd,
+        pend_claim_created_days_deny
 			FROM elp_dealer
 			WHERE
 				dealer_id = :dealer_id
@@ -292,7 +293,8 @@
         case_profile_code,
         close_case_grace_period_days,
         show_prev_caller_info_xcd,
-        display_mask_dob_xcd
+        display_mask_dob_xcd,
+        pend_claim_created_days_deny
       FROM elp_dealer 
 			WHERE
 				company_id= :company_id
@@ -489,7 +491,8 @@
         case_profile_code = :case_profile_code,
         close_case_grace_period_days = :close_case_grace_period_days,
         show_prev_caller_info_xcd = :show_prev_caller_info_xcd,
-        display_mask_dob_xcd = :display_mask_dob_xcd
+        display_mask_dob_xcd = :display_mask_dob_xcd,
+        pend_claim_created_days_deny = :pend_claim_created_days_deny
         WHERE
 				dealer_id = :dealer_id
 		]]>
@@ -634,7 +637,8 @@
     case_profile_code,
     close_case_grace_period_days,
     show_prev_caller_info_xcd,
-    display_mask_dob_xcd
+    display_mask_dob_xcd,
+    pend_claim_created_days_deny
     )
     VALUES
     (
@@ -775,7 +779,8 @@
     :case_profile_code,
     :close_case_grace_period_days,
     :show_prev_caller_info_xcd,
-    :display_mask_dob_xcd
+    :display_mask_dob_xcd,
+    :pend_claim_created_days_deny
     )
   </INSERT>
   <DELETE>
