@@ -910,7 +910,7 @@ Namespace Certificates
                     Dim certificateBo As Certificate = Nothing
                     certificateBo = New Certificate(New Guid(CType(certId, Byte())))
                     Dim cancelQuestionSetCode As String
-                    cancelQuestionSetCode = CaseBase.GetQuestionSetCode(Guid.Empty, Guid.Empty, Guid.Empty, certificateBo.Product.Id, Guid.Empty,
+                    cancelQuestionSetCode = CaseBase.GetQuestionSetCode(Guid.Empty, Guid.Empty, Guid.Empty, Guid.Empty, certificateBo.Product.Id, Guid.Empty,
                                                                         Guid.Empty, Guid.Empty, Guid.Empty, PurposeCancelCertRequest)
 
                     If (Not certificateBo Is Nothing AndAlso certificateBo.StatusCode <> Codes.CERTIFICATE_STATUS__CANCELLED _

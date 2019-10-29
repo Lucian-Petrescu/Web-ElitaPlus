@@ -639,13 +639,13 @@ Public Class CaseBase
         End Try
     End Function
 
-    Public Shared Function GetQuestionSetCode(companyGroupId As Guid, companyId As Guid, dealerId As Guid, productCodeId As Guid,
+    Public Shared Function GetQuestionSetCode(companyGroupId As Guid, companyId As Guid, dealerId As Guid, dealerGroupID As Guid, productCodeId As Guid,
                                               riskTypeId As Guid, deviceTypeId As Guid,
                                               coverageTypeId As Guid, coverageConseqDamageId As Guid, purposeCode As String) As String
         Try
             Dim dal As New CaseDAL
 
-            Return dal.GetQuestionSetCode(companyGroupId, companyId, dealerId, productCodeId, riskTypeId,
+            Return dal.GetQuestionSetCode(companyGroupId, companyId, dealerId, dealerGroupID, productCodeId, riskTypeId,
                                           deviceTypeId, coverageTypeId, coverageConseqDamageId, purposeCode)
 
         Catch ex As DataBaseAccessException
