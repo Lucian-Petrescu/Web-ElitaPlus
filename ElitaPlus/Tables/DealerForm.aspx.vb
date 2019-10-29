@@ -812,6 +812,7 @@ Namespace Tables
             'Dim yesNoLkL As DataView = LookupListNew.DropdownLookupList("YESNO", langId, True)
             Dim oYesNoList As DataElements.ListItem() = CommonConfigManager.Current.ListManager.GetList(listCode:="YESNO", languageCode:=Thread.CurrentPrincipal.GetLanguageCode())
             Dim oYesNoPayDeductList As DataElements.ListItem() = CommonConfigManager.Current.ListManager.GetList(listCode:="CLAIM_PAY_DEDUCTIBLE", languageCode:=Thread.CurrentPrincipal.GetLanguageCode())
+            Dim oYesNoFraudMonitorList As DataElements.ListItem() = CommonConfigManager.Current.ListManager.GetList(listCode:="FRAUD_MONITOR_BY", languageCode:=Thread.CurrentPrincipal.GetLanguageCode())
             Dim textFun As Func(Of DataElements.ListItem, String) = Function(li As DataElements.ListItem)
                 Return li.Code + " - " + li.Translation
                     End Function
@@ -941,7 +942,7 @@ Namespace Tables
             Me.moAcceptPaymentByCheckDrop.Populate(oYesNoList, populateOptions2)
             'Me.moClaimRecordingDrop.PopulateOld("CLMREC", ListValueType.Description, ListValueType.ExtendedCode, PopulateBehavior.None, String.Empty, ListValueType.Description)
             Me.moClaimRecordingDrop.Populate(CommonConfigManager.Current.ListManager.GetList("CLMREC", Thread.CurrentPrincipal.GetLanguageCode()), populateOptions2)
-            Me.ddlUseFraudMonitoring.Populate(oYesNoList, populateOptions2)
+            Me.ddlUseFraudMonitoring.Populate(oYesNoFraudMonitorList, populateOptions2)
             'Me.cboImeiNoUse.PopulateOld("IMEI_USE_LST", ListValueType.Description, ListValueType.ExtendedCode, PopulateBehavior.None, String.Empty, ListValueType.Description)
             Me.cboImeiNoUse.Populate(CommonConfigManager.Current.ListManager.GetList("IMEI_USE_LST", Thread.CurrentPrincipal.GetLanguageCode()), populateOptions2)
 
