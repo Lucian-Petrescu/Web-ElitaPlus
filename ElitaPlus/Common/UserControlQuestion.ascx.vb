@@ -482,15 +482,8 @@ Public Class UserControlQuestion
                         If (Not String.IsNullOrEmpty(answer)) Then
                             Dim dateAnswer As DateAnswer = New DateAnswer()
                             Try
-                                'Fix for Japan date control-------------------------------
                                 Dim formatProvider = LocalizationMgr.CurrentFormatProvider
-                                If formatProvider.Name.Equals("ja-JP") Then
-                                    Dim dateFragments() As String = answer.Split("-")
-                                    dateAnswer.Answer = New DateTime(Integer.Parse(dateFragments(2)), Integer.Parse(dateFragments(1)), Integer.Parse(dateFragments(0))).Date
-                                Else
-                                    dateAnswer.Answer = Convert.ToDateTime(answer, formatProvider)
-                                End If
-                                '--------------------------------------------------------
+                                dateAnswer.Answer = Convert.ToDateTime(answer, formatProvider)
                             Catch ex As Exception
                                 errorQuestionCodes.AppendLine(questionObject.Text)
                             End Try

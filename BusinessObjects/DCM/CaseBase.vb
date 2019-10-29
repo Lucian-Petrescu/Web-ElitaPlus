@@ -454,6 +454,9 @@ Public Class CaseBase
                 If (CultureInfo.CurrentCulture.Name.Equals("ja-JP")) Then
                     fromdate = Common.DateHelper.convertDateFrmt(caseOpenDateFrom)
                     todate = Common.DateHelper.convertDateFrmt(caseOpenDateTo)
+                ElseIf (CultureInfo.CurrentCulture.Name.Equals("zh-CN")) Then
+                    fromdate = Common.DateHelper.convertDateFrmt(caseOpenDateFrom)
+                    todate = Common.DateHelper.convertDateFrmt(caseOpenDateTo)
                 Else
                     fromdate = DateTime.Parse(caseOpenDateFrom.ToString(),
                                           Thread.CurrentThread.CurrentCulture,
