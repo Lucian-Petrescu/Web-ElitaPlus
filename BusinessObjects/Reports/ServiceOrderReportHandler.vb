@@ -138,8 +138,15 @@ Public Class ServiceOrderReportHandler
         taxRateData.regionID = svc.Address.RegionId
         taxRateData.dealerID = oDealer.Id
         taxRateData.salesDate = cert.ProductSalesDate
+
         taxRateData.taxtypeID = LookupListNew.GetIdFromCode(LookupListNew.LK_TAX_TYPES, "7")
-        claimTaxRateData = ClaimInvoice.GetTaxRate(taxRateData)
+
+        If oDealer.PayDeductibleId = LookupListNew.GetIdFromCode(LookupListNew.LK_CLAIM_PAY_DEDUCTIBLE, Codes.FULL_INVOICE_Y) Then
+            claimTaxRateData = claimInvoice.GetTaxRate(taxRateData)
+        Else
+            claimTaxRateData.taxRate = 0
+        End If
+
 
         Dim CertificateRegisteredItem As CertRegisteredItem
         If Not certRegItemId.Equals(Guid.Empty) Then

@@ -496,20 +496,28 @@ Public Class ClaimWizardForm
                                                 New List(Of Object) From {New Headers.InteractiveUserHeader() With {.LanId = Authentication.CurrentUser.NetworkId}},
                                                 Function(ByVal lc As LegacyBridgeServiceClient)
                                                     Return lc.BenefitClaimPreCheck(GuidControl.ByteArrayToGuid(hasBenefit(0)("case_Id")).ToString())
-                                                                                                                                                                        End Function)
-
-                                            'benefitCheckResponse = client.BenefitClaimPreCheck(GuidControl.GuidToHexString(GuidControl.ByteArrayToGuid(hasBenefit(0)("case_Id"))))
+                                                End Function)
                                         Catch ex As Exception
                                             Log(ex)
+                                            Me.State.ClaimBO.Status = BasicClaimStatus.Pending
+                                            Dim issueId As Guid = LookupListNew.GetIssueTypeIdFromCode(LookupListNew.LK_ISSUE_TYPE_CODE_LIST, "PRECK")
+                                            Dim newClaimIssue As ClaimIssue = CType(Me.State.ClaimBO.ClaimIssuesList.GetNewChild, BusinessObjectsNew.ClaimIssue)
+                                            newClaimIssue.SaveNewIssue(Me.State.ClaimBO.Id, issueId, Me.State.ClaimBO.Certificate.Id, True)
                                         End Try
 
                                         If (Not benefitCheckResponse Is Nothing) Then
-                                            Me.State.ClaimBO.Status = If(benefitCheckResponse.StatusDecision = LegacyBridgeStatusDecisionEnum.Approve, BasicClaimStatus.Active, BasicClaimStatus.Denied)
-                                            If (benefitCheckResponse.StatusDecision = LegacyBridgeStatusDecisionEnum.Deny AndAlso Not String.IsNullOrWhiteSpace(benefitCheckResponse.DenialCode)) Then
-                                                Me.State.ClaimBO.DeniedReasonId = LookupListNew.GetIdFromCode(LookupListNew.LK_DENIED_REASON, Codes.REASON_DENIED__PRE_CHECK_FAILED)
+                                            Me.State.ClaimBO.Status = If(benefitCheckResponse.StatusDecision = LegacyBridgeStatusDecisionEnum.Approve, BasicClaimStatus.Active, BasicClaimStatus.Pending)
+                                            If (benefitCheckResponse.StatusDecision = LegacyBridgeStatusDecisionEnum.Deny) Then
+                                                Dim issueId As Guid = LookupListNew.GetIssueTypeIdFromCode(LookupListNew.LK_ISSUE_TYPE_CODE_LIST, "PRECKFAIL")
+                                                Dim newClaimIssue As ClaimIssue = CType(Me.State.ClaimBO.ClaimIssuesList.GetNewChild, BusinessObjectsNew.ClaimIssue)
+                                                newClaimIssue.SaveNewIssue(Me.State.ClaimBO.Id, issueId, Me.State.ClaimBO.Certificate.Id, True)
                                             End If
+                                        Else
+                                            Me.State.ClaimBO.Status = BasicClaimStatus.Pending
+                                            Dim issueId As Guid = LookupListNew.GetIssueTypeIdFromCode(LookupListNew.LK_ISSUE_TYPE_CODE_LIST, "PRECK")
+                                            Dim newClaimIssue As ClaimIssue = CType(Me.State.ClaimBO.ClaimIssuesList.GetNewChild, BusinessObjectsNew.ClaimIssue)
+                                            newClaimIssue.SaveNewIssue(Me.State.ClaimBO.Id, issueId, Me.State.ClaimBO.Certificate.Id, True)
                                         End If
-
 
                                     End If
                                 End If
