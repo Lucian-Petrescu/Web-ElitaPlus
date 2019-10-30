@@ -21,10 +21,7 @@ Public NotInheritable Class DateHelper
                 strChkDateFormat = DATE_TIME_FORMAT
                 dt = DateTime.Parse(inputDate)
             Else
-                If Thread.CurrentThread.CurrentCulture.ToString() = "ja-JP" Then
-                    strChkDateFormat = convertDateFrmt(inputDate)
-                    dt = Date.Parse(strChkDateFormat)
-                ElseIf Thread.CurrentThread.CurrentCulture.ToString() = "zh-CN" Then
+                If Thread.CurrentThread.CurrentCulture.ToString() = "ja-JP" OrElse Thread.CurrentThread.CurrentCulture.ToString() = "zh-CN" Then
                     strChkDateFormat = convertDateFrmt(inputDate)
                     dt = Date.Parse(strChkDateFormat)
                 Else
