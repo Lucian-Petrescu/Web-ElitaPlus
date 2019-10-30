@@ -451,7 +451,7 @@ Public Class CaseBase
                     Throw New BOValidationException(errors, GetType(CaseBase).FullName)
                 End If
 
-                If (CultureInfo.CurrentCulture.Name.Equals("ja-JP")) Then
+                If (CultureInfo.CurrentCulture.Name.Equals("ja-JP")) OrElse (CultureInfo.CurrentCulture.Name.Equals("zh-CN")) Then
                     fromdate = Common.DateHelper.convertDateFrmt(caseOpenDateFrom)
                     todate = Common.DateHelper.convertDateFrmt(caseOpenDateTo)
                 Else
