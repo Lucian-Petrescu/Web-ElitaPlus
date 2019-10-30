@@ -169,21 +169,28 @@
                 <tr id="moWarrantyInformation1" runat="server">
                     <td align="right" width="13%" colspan="1" height="20">
                         <asp:Label ID="LabelManufacturerTerm" runat="server" Font-Bold="false">MANUFACTURER_TERM</asp:Label>
-                        <asp:Label ID="LabelWarrantySalesDate" runat="server" Font-Bold="false">WARRANTY_SALES_DATE</asp:Label>&nbsp;
                     </td>
                     <td height="20" width="37%">
                         <asp:TextBox ID="TextboxManufacturerTerm" TabIndex="45" runat="server" SkinID="SmallTextBox"></asp:TextBox>
+                        &nbsp;<asp:Label ID="LabelClaimsExist" runat="server" Font-Bold="False" ForeColor="#CC0000" Visible="False">CLAIMS_EXIST</asp:Label>
+                    </td>
+                    <td colspan="2">
+                    </td>
+                </tr>
+                <tr id="moWarrantyInformation11" runat="server">
+                    <td align="right" width="13%" colspan="1" height="20">
+                        <asp:Label ID="LabelWarrantySalesDate" runat="server" Font-Bold="false">WARRANTY_SALES_DATE</asp:Label>&nbsp;
+                    </td>
+                    <td height="20" width="37%">
                         <asp:TextBox ID="TextboxWarrantySalesDate" TabIndex="60" runat="server" SkinID="SmallTextBox"
                             ReadOnly="True"></asp:TextBox>
                         <asp:ImageButton ID="ImageButtonWarrantySaleDate" runat="server" SkinID="ImageButton" ImageUrl="../Common/Images/calendarIcon2.jpg">
                         </asp:ImageButton>
                     </td>
-                    <td colspan="2">
-                    </td>
                 </tr>
                 <tr id="moWarrantyInformation2" runat="server">
                     <td valign="middle" align="right" colspan="1" height="20" rowspan="1">
-                        <asp:Label ID="LabelProductSaleDate" runat="server" Font-Bold="false" Width="116px">PRODUCT_SALES_DATE</asp:Label>&nbsp;
+                        <asp:Label ID="LabelProductSaleDate" runat="server" Font-Bold="false" >PRODUCT_SALES_DATE</asp:Label>&nbsp;
                     </td>
                     <td valign="middle" height="20">
                         <asp:TextBox ID="TextboxProductSaleDate" TabIndex="65" runat="server" SkinID="SmallTextBox"

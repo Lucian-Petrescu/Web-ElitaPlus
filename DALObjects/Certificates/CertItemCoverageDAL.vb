@@ -48,6 +48,7 @@ Public Class CertItemCoverageDAL
     Public Const COL_NAME_METHOD_OF_REPAIR_ID As String = "method_of_repair_id"
 
     Public Const COL_NAME_CERT_ID As String = "cert_id"
+    Public Const COL_NAME_CERT_ID_1 As String = "cert_id1"
     Public Const COL_NAME_COMPANY_ID As String = "company_id"
     Public Const COL_NAME_MASTER_CLAIM_NUMBER As String = "master_claim_number"
 
@@ -227,6 +228,15 @@ Public Class CertItemCoverageDAL
         Dim parameters() As OracleParameter
         Dim selectStmt As String = Me.Config("/SQL/LOAD_LIST_FOR_CERTIFICATE")
         parameters = New OracleParameter() {New OracleParameter(Me.COL_NAME_CERT_ID, certId.ToByteArray)}
+        DBHelper.Fetch(ds, selectStmt, Me.TABLE_NAME, parameters)
+    End Sub
+
+    Public Sub LoadAllItemCoveragesWithChildOrParentForCertificate(ByVal certId As Guid, ByVal familyDataset As DataSet)
+        Dim ds As DataSet = familyDataset
+        Dim parameters() As OracleParameter
+        Dim selectStmt As String = Me.Config("/SQL/LOAD_LIST_FOR_CERTIFICATE_WCP")
+        parameters = New OracleParameter() {New OracleParameter(Me.COL_NAME_CERT_ID, certId.ToByteArray),
+                                            New OracleParameter(Me.COL_NAME_CERT_ID_1, certId.ToByteArray)}
         DBHelper.Fetch(ds, selectStmt, Me.TABLE_NAME, parameters)
     End Sub
 
