@@ -560,6 +560,8 @@ Partial Class APInvoiceListForm
                 ApInvoiceHeader.PayInvoices(strBatchNum, invoiceToBePaid, errCode, errMsg)
                 If errCode > 0 Then
                     MasterPage.MessageController.AddErrorAndShow(String.Format("{0} - {1}", errCode.ToString, errMsg), False)
+                Else
+                    MasterPage.MessageController.AddSuccess("CREATE_PYMT_BATCH_SUCCESS", True)
                 End If
                 RefreshSearchGrid()            
             End If            
