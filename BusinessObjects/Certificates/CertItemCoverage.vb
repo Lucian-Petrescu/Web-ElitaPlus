@@ -1202,6 +1202,15 @@ Public Class CertItemCoverage
         Return New ItemCovList(parent)
     End Function
 
+    Public Shared Function GetItemCovListWithChildOrParentForCertificate(ByVal certId As Guid, ByVal parent As BusinessObjectBase) As ItemCovList
+        If parent.Dataset.Tables.IndexOf(CertItemCoverageDAL.TABLE_NAME) < 0 Then
+            Dim dal As New CertItemCoverageDAL
+            dal.LoadAllItemCoveragesWithChildOrParentForCertificate(certId, parent.Dataset)
+        End If
+        Return New ItemCovList(parent)
+    End Function
+
+
     Public Shared Function LoadAllItemCoveragesForGalaxyCertificate(ByVal certId As Guid) As DataSet
         Dim compId As Guid = ElitaPlusIdentity.Current.ActiveUser.CompanyId
         Dim dal As New CertItemCoverageDAL

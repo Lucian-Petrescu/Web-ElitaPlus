@@ -221,6 +221,9 @@ SELECT
     AND 	pic.cert_item_coverage_id = cl.cert_item_coverage_id
     AND  (NOT (cl.loss_date) Between :begin_date and :end_date)
   </GET_ACTIVE_CLAIMS_BY_COVERAGEID_CLAIMLOSSDATE>
+  <GET_CLAIMS_PARENT_CHILD_CERTS>
+     elp_claims.ClaimCountParentChildCert
+  </GET_CLAIMS_PARENT_CHILD_CERTS>
   <GET_Dealer_Attribute_Value>
     elp_utl_attribute.GetAttributeValue
   </GET_Dealer_Attribute_Value>

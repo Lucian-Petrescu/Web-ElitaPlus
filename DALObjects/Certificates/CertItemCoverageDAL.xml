@@ -433,6 +433,97 @@
 				cert_id = :cert_id
 		]]>
   </LOAD_LIST_FOR_CERTIFICATE>
+  <LOAD_LIST_FOR_CERTIFICATE_WCP>
+    <![CDATA[	
+			SELECT 
+				cert_item_id,
+				coverage_type_id,
+				original_region_id,
+				begin_date,
+				end_date,
+				liability_limits,
+				deductible,
+        deductible_percent,    
+				gross_amt_received,
+				premium_written,
+				original_premium,
+				loss_cost,
+				commission,
+				admin_expense,
+				marketing_expense,
+				other,
+				sales_tax,
+				tax1,
+				tax2,
+				tax3,
+				tax4,
+				tax5,
+				tax6,
+				mtd_payments,
+				ytd_payments,
+				assurant_gwp,
+				markup_commission,
+				created_by,
+				created_date,
+				modified_by,
+				modified_date,
+				cert_item_coverage_id,
+				cert_id,
+				repair_discount_pct,
+				replacement_discount_pct,
+				markup_commission_vat,
+        company_id,
+        method_of_repair_id,
+        deductible_based_on_id
+			FROM elp_cert_item_coverage 
+			WHERE
+				cert_id = :cert_id
+      UNION ALL
+      SELECT 
+				cert_item_id,
+				coverage_type_id,
+				original_region_id,
+				begin_date,
+				end_date,
+				liability_limits,
+				deductible,
+        deductible_percent,    
+				gross_amt_received,
+				premium_written,
+				original_premium,
+				loss_cost,
+				commission,
+				admin_expense,
+				marketing_expense,
+				other,
+				sales_tax,
+				tax1,
+				tax2,
+				tax3,
+				tax4,
+				tax5,
+				tax6,
+				mtd_payments,
+				ytd_payments,
+				assurant_gwp,
+				markup_commission,
+				created_by,
+				created_date,
+				modified_by,
+				modified_date,
+				cert_item_coverage_id,
+				cert_id,
+				repair_discount_pct,
+				replacement_discount_pct,
+				markup_commission_vat,
+        company_id,
+        method_of_repair_id,
+        deductible_based_on_id
+			FROM elp_cert_item_coverage 
+			WHERE
+				cert_id in (select child_cert_id from elp_cert_relation where parent_cert_id = :cert_id1)
+		]]>
+  </LOAD_LIST_FOR_CERTIFICATE_WCP>
   <LOAD_LIST_FOR_GALAXY_CERTIFICATE>
     <![CDATA[
           select getcodefromlistitem(cic.coverage_type_id) as coverage_type_code,
