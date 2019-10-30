@@ -40,6 +40,7 @@ Partial Class ClaimForm
     Public Const SELECT_ACTION_COMMAND As String = "SelectAction"
     Public Const GRID_COL_SERVICE_CENTER_NAME_IDX As Integer = 1
     Public Const GRID_COL_AMOUNT_IDX As Integer = 2
+    Public Const GRID_COL_CREATED_DATETIME_IDX As Integer = 3
     Public Const GRID_COL_STATUS_CODE_IDX As Integer = 4
     Public params As New ArrayList
 
@@ -3860,6 +3861,7 @@ Partial Class ClaimForm
                 ' Convert short status codes to full description with css
                 e.Row.Cells(Me.GRID_COL_STATUS_CODE_IDX).Text = LookupListNew.GetDescriptionFromCode(Codes.CLAIM_AUTHORIZATION_STATUS, claimAuth.ClaimAuthorizationStatusCode)
                 e.Row.Cells(Me.GRID_COL_AMOUNT_IDX).Text = Me.GetAmountFormattedString(claimAuth.AuthorizedAmount.Value)
+                e.Row.Cells(Me.GRID_COL_CREATED_DATETIME_IDX).Text = Me.GetLongDate12FormattedStringNullable(claimAuth.CreatedDateTime.Value)
             End If
         Catch ex As Exception
             Me.HandleErrors(ex, Me.MasterPage.MessageController)
