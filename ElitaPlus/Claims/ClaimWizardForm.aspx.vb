@@ -77,9 +77,11 @@ Public Class ClaimWizardForm
     Public Const Active As String = "A"
     Public Const Manufacture As String = "M"
     Public Const PDF_URL As String = "DisplayPdf.aspx?ImageId="
+    Public Const GRID_COL_CREATED_DATE_IDX As Integer = 1
     Public Const GRIDCLA_COL_STATUS_CODE_IDX As Integer = 4
     Public Const GRIDCLA_COL_AMOUNT_IDX As Integer = 2
     Public Const GRID_COL_STATUS_CODE_IDX As Integer = 5
+    Public Const CaseQuestionAnswerGridColCreationDateIdx As Integer = 4
     Public Const CLAIM_ISSUE_LIST As String = "CLMISSUESTATUS"
     Public Const SELECT_ACTION_COMMAND As String = "SelectAction"
     Public Const SELECT_ACTION_IMAGE As String = "SelectActionImage"
@@ -3716,6 +3718,7 @@ Public Class ClaimWizardForm
                     btnEditItem.Text = dvRow(Claim.ClaimIssuesView.COL_ISSUE_DESC).ToString
                 End If
 
+                e.Row.Cells(Me.GRID_COL_CREATED_DATE_IDX).Text = GetLongDate12FormattedStringNullable(dvRow(Claim.ClaimIssuesView.COL_CREATED_DATE).ToString)
                 ' Convert short status codes to full description with css
                 e.Row.Cells(Me.GRID_COL_STATUS_CODE_IDX).Text = LookupListNew.GetDescriptionFromCode(CLAIM_ISSUE_LIST, dvRow(Claim.ClaimIssuesView.COL_STATUS_CODE).ToString)
                 If (dvRow(Claim.ClaimIssuesView.COL_STATUS_CODE).ToString = Codes.CLAIMISSUE_STATUS__RESOLVED Or
@@ -3959,6 +3962,22 @@ Public Class ClaimWizardForm
                 lblQuestionRecordFound.Visible = False
             End If
             Me.HandleErrors(ex, Me.MasterPage.MessageController)
+        End Try
+    End Sub
+    Private Sub CaseQuestionAnswerGrid_RowDataBound(ByVal sender As Object, ByVal e As System.Web.UI.WebControls.GridViewRowEventArgs) Handles CaseQuestionAnswerGrid.RowDataBound
+        Try
+            If (e.Row.RowType = DataControlRowType.DataRow) _
+                OrElse (e.Row.RowType = DataControlRowType.Separator) Then
+                Dim strCreationDate As String = Convert.ToString(e.Row.Cells(CaseQuestionAnswerGridColCreationDateIdx).Text)
+                strCreationDate = strCreationDate.Replace("&nbsp;", "")
+                If String.IsNullOrWhiteSpace(strCreationDate) = False Then
+                    Dim tempCreationDate = Convert.ToDateTime(e.Row.Cells(CaseQuestionAnswerGridColCreationDateIdx).Text.Trim())
+                    Dim formattedCreationDate = GetLongDate12FormattedString(tempCreationDate)
+                    e.Row.Cells(CaseQuestionAnswerGridColCreationDateIdx).Text = Convert.ToString(formattedCreationDate)
+                End If
+            End If
+        Catch ex As Exception
+            HandleErrors(ex, MasterPage.MessageController)
         End Try
     End Sub
 #End Region

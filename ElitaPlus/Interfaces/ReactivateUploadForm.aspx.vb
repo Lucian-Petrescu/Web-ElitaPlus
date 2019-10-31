@@ -237,7 +237,14 @@ Public Class ReactivateUploadForm
         Try
             Dim strEmailAddress As String
             strEmailAddress = ElitaPlusIdentity.Current.EmailAddress
-            commonUpload.ExtractReport(strUploadType, strEmailAddress)
+
+            If String.IsNullOrEmpty(strEmailAddress) Then
+                Me.DisplayMessage(Message.MSG_Email_not_configured, "", Me.MSG_BTN_OK, Me.MSG_TYPE_ALERT, , True)
+            Else
+                commonUpload.ExtractReport(strUploadType, strEmailAddress)
+                Me.DisplayMessage(Message.MSG_REPORT_REQUEST_IS_GENERATED, "", Me.MSG_BTN_OK, Me.MSG_TYPE_ALERT, , True)
+            End If
+
 
         Catch ex As Exception
             HandleErrors(ex, Me.MasterPage.MessageController)

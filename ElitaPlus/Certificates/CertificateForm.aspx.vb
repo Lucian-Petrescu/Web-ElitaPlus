@@ -1025,9 +1025,9 @@ Namespace Certificates
                         Me.State.ComputeCancellationDateEOfM = attValueComputeCancellation.Value
                     End If
 
+                    'PopulateCancelRequestReasonDropdown(Me.moCancelRequestReasonDrop)
+                    Me.State.CertCancelRequestId = Me.State.MyBO.getCertCancelRequestID
                     If Me.State.MyBO.getCancelationRequestFlag = YES Then
-                        'PopulateCancelRequestReasonDropdown(Me.moCancelRequestReasonDrop)
-                        Me.State.CertCancelRequestId = Me.State.MyBO.getCertCancelRequestID
                         If Not Me.State.CertCancelRequestId.Equals(Guid.Empty) Then
                             Me.State.certCancelRequestBO = New CertCancelRequest(Me.State.CertCancelRequestId)
                             If Me.State.CancelRulesForSFR = Codes.YESNO_Y AndAlso Me.State.certCancelRequestBO.Status = CERT_CAN_REQ_ACCEPTED Or Me.State.certCancelRequestBO.Status = CERT_CAN_REQ_DENIED Then
@@ -1036,6 +1036,10 @@ Namespace Certificates
                         Else
                             Me.State.certCancelRequestBO = New CertCancelRequest
                         End If
+                        populateCancelRequestInfoTab()
+                    ElseIf Not Me.State.CertCancelRequestId.Equals(Guid.Empty) Then
+                        Me.State.certCancelRequestBO = New CertCancelRequest(Me.State.CertCancelRequestId)
+                        ControlMgr.SetEnableControl(Me, btnCancelRequestEdit_WRITE, False)
                         populateCancelRequestInfoTab()
                     End If
 
@@ -1427,6 +1431,10 @@ Namespace Certificates
                         Else
                             ControlMgr.SetEnableControl(Me, btnCancelRequestEdit_WRITE, True)
                         End If
+                    ElseIf Me.State.certCancelRequestBO Is Nothing And Not Me.State.MyBO.getCertCancelRequestID.Equals(guid.Empty) Then
+                        Me.State.CertCancelRequestId = Me.State.MyBO.getCertCancelRequestID
+                        Me.State.certCancelRequestBO = New CertCancelRequest(Me.State.CertCancelRequestId)
+                        ControlMgr.SetVisibleControl(Me, btnCreateNewRequest_WRITE, False)
                     Else
                         If Me.State.CancelRulesForSFR = Codes.YESNO_Y Then
                             If Me.State.certCancelRequestBO.Status = CERT_CAN_REQ_ACCEPTED Then
@@ -1545,16 +1553,11 @@ Namespace Certificates
                     Me.PopulateRegisterItemsGrid()
                 End If
 
-                If Me.State.MyBO.getCancelationRequestFlag = YES Then
-                    If Me.State.MyBO.IsChildCertificate Then
-                        'ControlMgr.SetEnableTabStrip(Me, tsHoriz.Items(Me.CERT_CANCEL_REQUEST_INFO_TAB), False)
-                        EnableTab(CERT_CANCEL_REQUEST_INFO_TAB, False)
-                    Else
-                        'ControlMgr.SetEnableTabStrip(Me, tsHoriz.Items(Me.CERT_CANCEL_REQUEST_INFO_TAB), True)
-                        EnableTab(CERT_CANCEL_REQUEST_INFO_TAB, True)
-                    End If
+                If Me.State.MyBO.IsChildCertificate Then
+                    EnableTab(CERT_CANCEL_REQUEST_INFO_TAB, False)
+                ElseIf Me.State.MyBO.getCancelationRequestFlag = YES Or Not Me.State.CertCancelRequestId.Equals(Guid.Empty) Then
+                    EnableTab(CERT_CANCEL_REQUEST_INFO_TAB, True)
                 Else
-                    'ControlMgr.SetEnableTabStrip(Me, tsHoriz.Items(Me.CERT_CANCEL_REQUEST_INFO_TAB), False)
                     EnableTab(CERT_CANCEL_REQUEST_INFO_TAB, False)
                 End If
                 'AA REQ-910 new fields added BEGIN
@@ -1699,7 +1702,13 @@ Namespace Certificates
                     Case Me.CERT_ITEMS_INFO_TAB
                         Me.EnableDisableTabs(Me.State.IsEdit)
                     Case Me.CERT_CANCEL_REQUEST_INFO_TAB
-                        Me.EnableDisableTabs(Me.State.IsEdit)
+                        If Me.State.MyBO.getCancelationRequestFlag = YES Then
+                            Me.EnableDisableTabs(Me.State.IsEdit)
+                        ElseIf Not Me.State.CertCancelRequestId.Equals(Guid.Empty) Then
+                            Me.EnableDisableTabs(True)
+                        Else
+                            Me.EnableDisableTabs(Me.State.IsEdit)
+                        End If
                         Me.setCancelRequestTab()
                     Case Me.CERT_PREMIUM_INFO_TAB
                         Me.EnableDisableTabs(Me.State.IsEdit)
@@ -4310,6 +4319,10 @@ Namespace Certificates
                             Ibanoperation(False)
                         End If
                     End If
+                End If
+
+                If Not Me.State.CertCancelRequestId.Equals(Guid.Empty) And Not Me.State.MyBO.getCancelationRequestFlag = YES Then
+                    ControlMgr.SetEnableControl(Me, moUseExistingBankDetailsDrop, False)
                 End If
 
                 ClearCommentsControls()

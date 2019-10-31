@@ -1259,11 +1259,25 @@ Partial Class ClaimIssueActionAnswerForm
 
     Private Sub PopulatePaymentMethodDropdown()
         Try
-            Dim paymentMethodDv As DataView = LookupListNew.GetPaymentMethodLookupList(Authentication.LangId, , (Authentication.CurrentUser.Id).ToString, State.ClaimIssueBo.Claim.CompanyId.ToString, True)
-            If (paymentMethodDv.Count > 0) Then
-                paymentMethodDv.RowFilter = " Code in ('" & Codes.PAYMENT_METHOD__BANK_TRANSFER & "','" & Codes.PAYMENT_METHOD__DARTY_GIFT_CARD & "')"
-            End If
-            BindListControlToDataView(ddlPaymentList, paymentMethodDv, "DESCRIPTION", "ID", True)
+
+            Dim listcontextForMgList As ListContext = New ListContext()
+            listcontextForMgList.CompanyGroupId = State.ClaimIssueBo.Claim.Company.CompanyGroupId
+            listcontextForMgList.DealerId = State.ClaimIssueBo.Claim.Dealer.Id
+            listcontextForMgList.CompanyId = State.ClaimIssueBo.Claim.Dealer.CompanyId
+            listcontextForMgList.DealerGroupId = State.ClaimIssueBo.Claim.Dealer.DealerGroupId
+
+
+            Dim paymentMethod As ListItem() = CommonConfigManager.Current.ListManager.GetList("PMTHD", ElitaPlusIdentity.Current.ActiveUser.LanguageCode, listcontextForMgList)
+
+            Dim filterpaymentMethod As DataElements.ListItem() = (From lst In paymentMethod
+                                                                  Where lst.Code = "CTT" Or lst.Code = "DGFT"
+                                                                  Select lst).ToArray()
+
+            ddlPaymentList.Populate(filterpaymentMethod, New PopulateOptions() With
+                       {
+                         .AddBlankItem = True
+                        })
+
         Catch ex As Exception
             HandleErrors(ex, MasterPage.MessageController)
         End Try

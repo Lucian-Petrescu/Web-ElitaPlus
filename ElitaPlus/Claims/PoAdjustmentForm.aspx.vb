@@ -484,12 +484,12 @@ Namespace Claims.AccountPayable
                 If (State.PoAdjustmentBo.IsDirty) Then
                     State.PoAdjustmentBo.Save()
                     State.IsAfterSave = True
-                   
-                    AddInfoMsg(MSG_RECORD_SAVED_OK)
+                    
+                    Me.MasterPage.MessageController.AddSuccess(Message.SAVE_RECORD_CONFIRMATION)
                     State.searchDV = Nothing
                     ReturnFromEditing()
                 Else
-                    AddInfoMsg(MSG_RECORD_NOT_SAVED)
+                    Me.MasterPage.MessageController.AddInformation(Message.MSG_RECORD_NOT_SAVED)
                     ReturnFromEditing()
                 End If
             Catch ex As Exception
