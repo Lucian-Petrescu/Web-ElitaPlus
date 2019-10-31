@@ -70,8 +70,9 @@ Public Class CertEndorseDAL
     Public Const po_reject_code As String = "po_reject_code"
     Public Const po_reject_reason As String = "po_reject_reason"
 
-
-
+    Public Const PAR_NAME_RETURN As String = "p_return"
+    Public Const PAR_NAME_EXCEPTION_MSG As String = "p_exception_msg"
+    Public Const PAR_NAME_CLAIM_COUNT As String = "p_claim_count"
 #End Region
 
 #Region "Constructors"
@@ -210,11 +211,31 @@ Public Class CertEndorseDAL
     Public Function LoadListByCovIdClaimLossDate(ByVal certItemCoverageId As Guid, ByVal begin_date As Date, ByVal end_date As Date) As DataSet
         Dim ds As New DataSet
         Dim selectStmt As String = Me.Config("/SQL/GET_ACTIVE_CLAIMS_BY_COVERAGEID_CLAIMLOSSDATE")
-        Dim parameters = New OracleParameter() {New OracleParameter(COL_NAME_CERT_ITEM_COVERAGE_ID, certItemCoverageId.ToByteArray), _
-                                            New OracleParameter(COL_NAME_BEGIN_DATE, begin_date), _
+        Dim parameters = New OracleParameter() {New OracleParameter(COL_NAME_CERT_ITEM_COVERAGE_ID, certItemCoverageId.ToByteArray),
+                                            New OracleParameter(COL_NAME_BEGIN_DATE, begin_date),
                                             New OracleParameter(COL_NAME_END_DATE, end_date)}
 
         Return DBHelper.Fetch(ds, selectStmt, Me.TABLE_NAME, parameters)
+    End Function
+
+    Public Function ClaimCountForParentAndChildCert(ByVal cert_Id As Guid) As Integer
+        Dim ds As New DataSet
+        Dim selectStmt As String = Me.Config("/SQL/GET_CLAIMS_PARENT_CHILD_CERTS")
+        Dim inputParameters = New DBHelperParameter() {New DBHelperParameter(Me.COL_NAME_CERT_ID, cert_Id.ToByteArray)}
+
+        Dim outputParameters() As DBHelper.DBHelperParameter = New DBHelper.DBHelperParameter() {
+                            New DBHelper.DBHelperParameter(Me.PAR_NAME_CLAIM_COUNT, GetType(Integer)),
+                            New DBHelper.DBHelperParameter(Me.PAR_NAME_RETURN, GetType(Integer)),
+                            New DBHelper.DBHelperParameter(Me.PAR_NAME_EXCEPTION_MSG, GetType(String), 100)}
+
+        DBHelper.ExecuteSp(selectStmt, inputParameters, outputParameters)
+        If CType(outputParameters(1).Value, Integer) <> 0 Then
+            Dim e As New ApplicationException("Return Value = " & outputParameters(2).Value)
+            Throw New DataBaseAccessException(DataBaseAccessException.DatabaseAccessErrorType.ReadErr, e)
+        Else
+            Return CType(outputParameters(0).Value, Integer)
+        End If
+
     End Function
 #End Region
 

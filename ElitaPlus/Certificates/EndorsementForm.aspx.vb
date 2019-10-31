@@ -157,6 +157,9 @@ Namespace Certificates
             Public CovTerm As Long
             Public MyCovBO As CertItemCoverage
             Public IsDealerEndorsementFlagOn As String
+            Public ClaimCountForParentAndChildCert As Integer
+            Public AttValueEnableChangingMFG As AttributeValue
+
         End Class
 
         Public Sub New()
@@ -195,6 +198,7 @@ Namespace Certificates
                     'Get the id from the parent
                     'Me.State.MyBO = New CertEndorse(CType(Me.CallingParameters, Guid))
                     Me.State.boChanged = False
+
                 End If
             Catch ex As Exception
                 Me.HandleErrors(ex, Me.MasterPage.MessageController)
@@ -387,11 +391,13 @@ Namespace Certificates
                 'REQ-1162
                 If Me.State.MyBO.DealerTypeCode = Codes.DEALER_TYPES__VSC Then
                     Me.moWarrantyInformation1.Attributes("style") = "display: none"
+                    Me.moWarrantyInformation11.Attributes("style") = "display: none"
                     Me.moWarrantyInformation2.Attributes("style") = "display: none"
                     Me.moWarrantyInformation3.Attributes("style") = "display: none"
                     Me.moWarrantyInformation4.Attributes("style") = "display: none"
                 Else
                     Me.moWarrantyInformation1.Attributes("style") = ""
+                    Me.moWarrantyInformation11.Attributes("style") = ""
                     Me.moWarrantyInformation2.Attributes("style") = ""
                     Me.moWarrantyInformation3.Attributes("style") = ""
                     Me.moWarrantyInformation4.Attributes("style") = ""
@@ -414,6 +420,13 @@ Namespace Certificates
                     Me.TextboxCustomerName.Visible = True
                 End If
 
+                If Me.State.ClaimCountForParentAndChildCert > 0 Then
+                    Me.ChangeEnabledProperty(Me.TextboxManufacturerTerm, False)
+                    ControlMgr.SetVisibleControl(Me, Me.LabelClaimsExist, True)
+                Else
+                    Me.ChangeEnabledProperty(Me.TextboxManufacturerTerm, True)
+                    ControlMgr.SetVisibleControl(Me, Me.LabelClaimsExist, False)
+                End If
                 Me.btnBack.Enabled = True
             Catch ex As Exception
                 Me.HandleErrors(ex, Me.MasterPage.MessageController)
@@ -585,6 +598,19 @@ Namespace Certificates
                     If Not Me.moDocumentIssueDateLabel.Text.EndsWith(":") Then Me.moDocumentIssueDateLabel.Text &= ":"
 
                     AddressCtr.Bind(.AddressChild)
+
+                    If Me.State.AttValueEnableChangingMFG Is Nothing Then
+                        Dim oDealer As New Dealer(Me.State.MyBO.Cert.DealerId)
+                        Me.State.AttValueEnableChangingMFG = oDealer.AttributeValues.Where(Function(i) i.Attribute.UiProgCode = Codes.ATTR_ENABLE_CHANGING_MFG_TERM_If_NO_CLAIMS_EXIST_In_PARENT_CHILD).FirstOrDefault
+                    End If
+
+                    If Not Me.State.AttValueEnableChangingMFG Is Nothing AndAlso Me.State.AttValueEnableChangingMFG.Value = Codes.YESNO_Y Then
+                        Me.State.ClaimCountForParentAndChildCert = CertEndorse.GetClaimCountForParentAndChildCert(.Id)
+                    Else
+                        Me.State.ClaimCountForParentAndChildCert = 0 ' not applicalble 
+                    End If
+
+
                 End With
             Catch ex As Exception
                 Me.HandleErrors(ex, Me.MasterPage.MessageController)
