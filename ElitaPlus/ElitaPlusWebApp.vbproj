@@ -170,7 +170,7 @@
       <HintPath>..\packages\Assurant.Elita.AddressvalidationProvider.1.0.2\lib\net46\Assurant.Elita.AddressValidationProvider.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="Assurant.Elita.Base.DataAccess">
+    <Reference Include="Assurant.Elita.Base.DataAccess, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\Assurant.Elita.Base.DataAccess.5.0.2\lib\net462\Assurant.Elita.Base.DataAccess.dll</HintPath>
     </Reference>
     <Reference Include="Assurant.Elita.Caching, Version=1.0.18.18085, Culture=neutral, processorArchitecture=MSIL">
@@ -180,13 +180,11 @@
       <HintPath>..\packages\Assurant.Elita.ClientIntegration.4.0.0\lib\net462\Assurant.Elita.ClientIntegration.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="Assurant.Elita.CommonConfiguration, Version=2.1.7.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Assurant.Elita.CommonConfiguration.2.1.8\lib\net46\Assurant.Elita.CommonConfiguration.dll</HintPath>
+    <Reference Include="Assurant.Elita.CommonConfiguration, Version=2.1.9.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Assurant.Elita.CommonConfiguration.2.1.9\lib\net46\Assurant.Elita.CommonConfiguration.dll</HintPath>
     </Reference>
     <Reference Include="Assurant.Elita.Configuration, Version=4.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
       <HintPath>..\packages\Assurant.Elita.Configuration.4.0.2\lib\net462\Assurant.Elita.Configuration.dll</HintPath>
-      <Private>True</Private>
     </Reference>
     <Reference Include="Assurant.Elita.Logging.Interface">
       <HintPath>..\packages\Assurant.Elita.Logging.Interface.1.0.1\lib\netstandard2.0\Assurant.Elita.Logging.Interface.dll</HintPath>
@@ -196,6 +194,12 @@
     </Reference>
     <Reference Include="Assurant.Elita.Primitives, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\Assurant.Elita.Primitives.2.0.0\lib\netstandard2.0\Assurant.Elita.Primitives.dll</HintPath>
+    </Reference>
+    <Reference Include="EntityFramework, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <HintPath>..\packages\EntityFramework.5.0.0\lib\net45\EntityFramework.dll</HintPath>
+    </Reference>
+    <Reference Include="JetBrains.Annotations, Version=11.1.0.0, Culture=neutral, PublicKeyToken=1010a0d8d6380325, processorArchitecture=MSIL">
+      <HintPath>..\packages\JetBrains.Annotations.11.1.0\lib\net20\JetBrains.Annotations.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.Azure.KeyVault.Core, Version=1.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>..\packages\Microsoft.Azure.KeyVault.Core.1.0.0\lib\net40\Microsoft.Azure.KeyVault.Core.dll</HintPath>
@@ -236,9 +240,6 @@
       <Private>True</Private>
     </Reference>
     <Reference Include="Assurant.ElitaPlus.BusinessObjectsNew, Version=2.0.6640.20857, Culture=neutral, processorArchitecture=MSIL" />
-    <Reference Include="EntityFramework, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
-      <HintPath>..\packages\EntityFramework.5.0.0\lib\net45\EntityFramework.dll</HintPath>
-    </Reference>
     <Reference Include="FredCK.FCKeditorV2">
       <HintPath>..\Common Components\FredCK.FCKeditorV2.dll</HintPath>
     </Reference>
@@ -253,11 +254,6 @@
     <Reference Include="itextsharp, Version=5.3.2.0, Culture=neutral, PublicKeyToken=8354ae6d2174ddca, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\Common Components\itextsharp.dll</HintPath>
-    </Reference>
-    <Reference Include="JetBrains.Annotations, Version=11.1.0.0, Culture=neutral, PublicKeyToken=1010a0d8d6380325, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\JetBrains.Annotations.11.1.0\lib\net20\JetBrains.Annotations.dll</HintPath>
-      <Private>True</Private>
     </Reference>
     <Reference Include="Microsoft.Practices.ServiceLocation, Version=1.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
@@ -291,7 +287,6 @@
     </Reference>
     <Reference Include="Oracle.ManagedDataAccess, Version=4.122.1.0, Culture=neutral, PublicKeyToken=89b483f429c47342, processorArchitecture=MSIL">
       <HintPath>..\packages\Oracle.ManagedDataAccess.12.2.1100\lib\net40\Oracle.ManagedDataAccess.dll</HintPath>
-      <Private>True</Private>
     </Reference>
     <Reference Include="RestSharp, Version=105.2.3.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\RestSharp.105.2.3\lib\net46\RestSharp.dll</HintPath>
@@ -878,6 +873,7 @@
       <DependentUpon>UserControlConsequentialDamage.ascx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
+    <Compile Include="Common\ServiceCenterSelected.vb" />
     <Compile Include="Common\UserControlCallerInfo.ascx.designer.vb">
       <DependentUpon>UserControlCallerInfo.ascx</DependentUpon>
     </Compile>
@@ -904,6 +900,13 @@
     </Compile>
     <Compile Include="Common\UserControlQuestion.ascx.vb">
       <DependentUpon>UserControlQuestion.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Common\UserControlServiceCenterSelection.ascx.designer.vb">
+      <DependentUpon>UserControlServiceCenterSelection.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="Common\UserControlServiceCenterSelection.ascx.vb">
+      <DependentUpon>UserControlServiceCenterSelection.ascx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="DataProtection\CustomerReportForm.aspx.designer.vb">
@@ -5671,6 +5674,7 @@
     <Content Include="Common\UserControlCaseHeaderInfo.ascx" />
     <Content Include="Common\UserControlDeliverySlot.ascx" />
     <Content Include="Common\UserControlQuestion.ascx" />
+    <Content Include="Common\UserControlServiceCenterSelection.ascx" />
     <Content Include="Content\font-awesome.css" />
     <Content Include="Content\font-awesome.min.css" />
     <Content Include="Content\fonts\fontawesome-webfont.svg" />
@@ -8800,14 +8804,14 @@
     <Content Include="Web.config">
       <SubType>Designer</SubType>
     </Content>
-    <WebReferenceUrl Include="http://localhost/ElitaInternalWS/MyTest.asmx">
+    <WebReferenceUrl Include="http://localhost:80/ElitaInternalWS/MyTest.asmx">
       <RelPath>Web References\MyTestWSRef\</RelPath>
       <UrlBehavior>Static</UrlBehavior>
     </WebReferenceUrl>
-    <WebReferenceUrl Include="http://localhost/ElitaInternalWS/Olita/OlitaWS.asmx">
+    <WebReferenceUrl Include="http://localhost:80/ElitaInternalWS/Olita/OlitaWS.asmx">
       <UrlBehavior>Dynamic</UrlBehavior>
       <RelPath>Web References\OlitaWSRef\</RelPath>
-      <UpdateFromURL>http://localhost/ElitaInternalWS/Olita/OlitaWS.asmx</UpdateFromURL>
+      <UpdateFromURL>http://localhost:80/ElitaInternalWS/Olita/OlitaWS.asmx</UpdateFromURL>
       <ServiceLocationURL>
       </ServiceLocationURL>
       <CachedDynamicPropName>
@@ -8815,10 +8819,10 @@
       <CachedAppSettingsObjectName>MySettings</CachedAppSettingsObjectName>
       <CachedSettingsPropName>Assurant_ElitaPlus_WebApp_OlitaWSRef_OlitaWS</CachedSettingsPropName>
     </WebReferenceUrl>
-    <WebReferenceUrl Include="http://localhost/ElitaInternalWS/Vsc/VscWS.asmx">
+    <WebReferenceUrl Include="http://localhost:80/ElitaInternalWS/Vsc/VscWS.asmx">
       <RelPath>Web References\VscWSRef\</RelPath>
       <UrlBehavior>Dynamic</UrlBehavior>
-      <UpdateFromURL>http://localhost/ElitaInternalWS/Vsc/VscWS.asmx</UpdateFromURL>
+      <UpdateFromURL>http://localhost:80/ElitaInternalWS/Vsc/VscWS.asmx</UpdateFromURL>
       <ServiceLocationURL>
       </ServiceLocationURL>
       <CachedDynamicPropName>
