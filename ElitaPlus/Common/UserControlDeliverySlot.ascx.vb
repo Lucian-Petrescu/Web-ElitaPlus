@@ -174,13 +174,7 @@ Public Class UserControlDeliverySlot
             Dim desiredDeliveryDate As Date
             Try
                 Dim formatProvider = LocalizationMgr.CurrentFormatProvider
-                If formatProvider.Name.Equals("ja-JP") Then
-                    Dim dateFragments() As String = dtvalue.Split("-")
-                    desiredDeliveryDate = New DateTime(Integer.Parse(dateFragments(2)), Integer.Parse(dateFragments(1)), Integer.Parse(dateFragments(0))).Date
-                Else
-                    desiredDeliveryDate = Convert.ToDateTime(dtvalue, formatProvider)
-                End If
-
+                desiredDeliveryDate = Convert.ToDateTime(dtvalue, formatProvider)
             Catch ex As Exception
                 Page.MasterPage.MessageController.AddError(TranslationBase.TranslateLabelOrMessage("DESIRED_DELIVERY_DATE") & " - " & txtDeliveryDate.Text & " : " & TranslationBase.TranslateLabelOrMessage(Messages.INVALID_DATE_ERR), False)
                 DeliveryDate = Nothing 'clear selection
