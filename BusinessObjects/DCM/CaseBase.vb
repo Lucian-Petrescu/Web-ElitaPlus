@@ -694,6 +694,8 @@ Public Class CaseBase
         Public Const ColCaseId As String = "case_id"
         Public Const ColCaseNumber As String = "case_number"
         Public Const ColCaseStatusCode As String = "case_status_code"
+        Public Const ColCaseOpenDate As String = "case_open_date"
+        Public Const ColCaseCloseDate As String = "case_close_date"
 #End Region
 
 
