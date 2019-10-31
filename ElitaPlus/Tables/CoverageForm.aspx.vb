@@ -155,6 +155,7 @@ Namespace Tables
         Public Const LABEL_REPLACEMENT_DISCOUNT_PCT As String = "ReplacementDiscountPct"
         Public Const USE_COVERAGE_START_DATE As String = "UseCoverageStartDateId"
         Public Const METHOD_OF_REPAIR_ID As String = "MethodOfRepairId"
+        Public Const FULFILLMENT_OPTION_CODE As String = "FulfillmentOptionCode"
         Public Const DEDUCTIBLE_BASED_ON_ID As String = "DeductibleBasedOnId"
         Public Const AGENT_CODE As String = "AgentCode"
         Public Const NO As String = "N"
@@ -1378,6 +1379,7 @@ Namespace Tables
             Me.BindBOPropertyToLabel(TheCoverage, CLAIM_ALLOWED_ID_PROPERTY, moIsClaimAllowedLabel)
             Me.BindBOPropertyToLabel(TheCoverage, USE_COVERAGE_START_DATE, moUseCoverageStartDateLable)
             Me.BindBOPropertyToLabel(TheCoverage, METHOD_OF_REPAIR_ID, moMethodOfRepairLabel)
+            Me.BindBOPropertyToLabel(TheCoverage, FULFILLMENT_OPTION_CODE, moFulfillmentProfileLabel)
             Me.BindBOPropertyToLabel(TheCoverage, DEDUCTIBLE_BASED_ON_ID, moDeductibleBasedOnLabel)
             Me.BindBOPropertyToLabel(TheCoverage, Is_REINSURED_PROPERTY, moReInsuredLabel)
             Me.BindBOPropertyToLabel(TheCoverage, CLAIM_LIMIT_COUNT_PROPERTY, moClaimLimitCountLabel)
@@ -1430,6 +1432,7 @@ Namespace Tables
             Me.ClearLabelErrSign(moOffsetLabel)
             Me.ClearLabelErrSign(moOffsetMethodLabel)
             Me.ClearLabelErrSign(moMethodOfRepairLabel)
+            Me.ClearLabelErrSign(moFulfillmentProfileLabel)
             Me.ClearLabelErrSign(moDeductibleBasedOnLabel)
             Me.ClearLabelErrSign(moCoverageLiabilityLimitLabel)
             Me.ClearLabelErrSign(moCoverageLiabilityLimitPercentLabel)
@@ -2249,6 +2252,7 @@ Namespace Tables
 
         Private Sub ClearForDealer()
             ClearList(moMethodOfRepairDrop)
+            ClearList(moFulfillmentProfileDrop)
             ClearForProduct()
             ClearList(moProductDrop)
         End Sub
@@ -2700,6 +2704,18 @@ Namespace Tables
 
             SetSelectedItem(Me.moMethodOfRepairDrop, TheCoverage.MethodOfRepairId)
 
+
+            '
+            Dim fulfillmentProfileList = CommonConfigManager.Current.ListManager.GetList(ListCodes.FulfillmentProfile, Thread.CurrentPrincipal.GetLanguageCode())
+
+            moFulfillmentProfileDrop.Populate(fulfillmentProfileList, New PopulateOptions() With
+                                             {.AddBlankItem = True, .ValueFunc = AddressOf PopulateOptions.GetCode})
+
+            ControlMgr.SetEnableControl(Me, moFulfillmentProfileDrop, True)
+            If Not String.IsNullOrEmpty(TheCoverage.FulfillmentProfileCode) Then
+                SetSelectedItem(Me.moFulfillmentProfileDrop, TheCoverage.FulfillmentProfileCode)
+            End If
+
             'BindListControlToDataView(cboDeductibleBasedOn, LookupListNew.GetComputeDeductibleBasedOnAndExpressions(oLanguageId), , , True)
             Dim listcontext As ListContext = New ListContext()
             listcontext.LanguageId = ElitaPlusIdentity.Current.ActiveUser.LanguageId
@@ -2932,6 +2948,12 @@ Namespace Tables
                     Me.PopulateBOProperty(TheCoverage, "MethodOfRepairId", moMethodOfRepairDrop)
                 Else
                     TheCoverage.MethodOfRepairId = Nothing
+                End If
+
+                If moFulfillmentProfileDrop.SelectedIndex > NO_ITEM_SELECTED_INDEX Then
+                    Me.PopulateBOProperty(TheCoverage, "FulfillmentProfileCode", moFulfillmentProfileDrop,isGuidValue := False, isStringValue:=True)
+                Else
+                    TheCoverage.FulfillmentProfileCode = Nothing
                 End If
 
                 .ItemId = Me.State.selectedItemId

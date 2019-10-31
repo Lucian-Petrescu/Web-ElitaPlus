@@ -1863,6 +1863,9 @@ Namespace ClaimRecordingService
         
         Private OptionsField() As ClaimRecordingService.LogisticOption
         
+        <System.Runtime.Serialization.OptionalFieldAttribute()>  _
+        Private ServiceCenterCodeField As String
+        
         <Global.System.ComponentModel.BrowsableAttribute(false)>  _
         Public Property ExtensionData() As System.Runtime.Serialization.ExtensionDataObject Implements System.Runtime.Serialization.IExtensibleDataObject.ExtensionData
             Get
@@ -1934,6 +1937,19 @@ Namespace ClaimRecordingService
                 If (Object.ReferenceEquals(Me.OptionsField, value) <> true) Then
                     Me.OptionsField = value
                     Me.RaisePropertyChanged("Options")
+                End If
+            End Set
+        End Property
+        
+        <System.Runtime.Serialization.DataMemberAttribute(Order:=5)>  _
+        Public Property ServiceCenterCode() As String
+            Get
+                Return Me.ServiceCenterCodeField
+            End Get
+            Set
+                If (Object.ReferenceEquals(Me.ServiceCenterCodeField, value) <> true) Then
+                    Me.ServiceCenterCodeField = value
+                    Me.RaisePropertyChanged("ServiceCenterCode")
                 End If
             End Set
         End Property
@@ -2140,7 +2156,8 @@ Namespace ClaimRecordingService
      System.Runtime.Serialization.KnownTypeAttribute(GetType(ClaimRecordingService.LogisticOptionInfoCustomerAddress)),  _
      System.Runtime.Serialization.KnownTypeAttribute(GetType(ClaimRecordingService.LogisticOptionInfoDealerBranchAddress)),  _
      System.Runtime.Serialization.KnownTypeAttribute(GetType(ClaimRecordingService.LogisticOptionInfoElectronicDelivery)),  _
-     System.Runtime.Serialization.KnownTypeAttribute(GetType(ClaimRecordingService.LogisticOptionInfoUnspecified))>  _
+     System.Runtime.Serialization.KnownTypeAttribute(GetType(ClaimRecordingService.LogisticOptionInfoUnspecified)),  _
+     System.Runtime.Serialization.KnownTypeAttribute(GetType(ClaimRecordingService.LogisticOptionInfoHandlingStore))>  _
     Partial Public Class LogisticOptionInfoBase
         Inherits Object
         Implements System.Runtime.Serialization.IExtensibleDataObject, System.ComponentModel.INotifyPropertyChanged
@@ -2153,6 +2170,9 @@ Namespace ClaimRecordingService
         
         <System.Runtime.Serialization.OptionalFieldAttribute()>  _
         Private EstimatedChangedDeliveryDateField As System.Nullable(Of Date)
+        
+        <System.Runtime.Serialization.OptionalFieldAttribute()>  _
+        Private EstimatedShippingDateField As System.Nullable(Of Date)
         
         <Global.System.ComponentModel.BrowsableAttribute(false)>  _
         Public Property ExtensionData() As System.Runtime.Serialization.ExtensionDataObject Implements System.Runtime.Serialization.IExtensibleDataObject.ExtensionData
@@ -2186,6 +2206,19 @@ Namespace ClaimRecordingService
                 If (Me.EstimatedChangedDeliveryDateField.Equals(value) <> true) Then
                     Me.EstimatedChangedDeliveryDateField = value
                     Me.RaisePropertyChanged("EstimatedChangedDeliveryDate")
+                End If
+            End Set
+        End Property
+        
+        <System.Runtime.Serialization.DataMemberAttribute(Order:=2)>  _
+        Public Property EstimatedShippingDate() As System.Nullable(Of Date)
+            Get
+                Return Me.EstimatedShippingDateField
+            End Get
+            Set
+                If (Me.EstimatedShippingDateField.Equals(value) <> true) Then
+                    Me.EstimatedShippingDateField = value
+                    Me.RaisePropertyChanged("EstimatedShippingDate")
                 End If
             End Set
         End Property
@@ -2371,6 +2404,12 @@ Namespace ClaimRecordingService
         
         <System.Runtime.Serialization.EnumMemberAttribute()>  _
         Unspecified = 3
+        
+        <System.Runtime.Serialization.EnumMemberAttribute()>  _
+        HandlingStore = 4
+        
+        <System.Runtime.Serialization.EnumMemberAttribute()>  _
+        ServiceCenter = 5
     End Enum
     
     <System.Diagnostics.DebuggerStepThroughAttribute(),  _
@@ -2448,6 +2487,44 @@ Namespace ClaimRecordingService
      System.SerializableAttribute()>  _
     Partial Public Class LogisticOptionInfoUnspecified
         Inherits ClaimRecordingService.LogisticOptionInfoBase
+    End Class
+    
+    <System.Diagnostics.DebuggerStepThroughAttribute(),  _
+     System.CodeDom.Compiler.GeneratedCodeAttribute("System.Runtime.Serialization", "4.0.0.0"),  _
+     System.Runtime.Serialization.DataContractAttribute(Name:="LogisticOptionInfoHandlingStore", [Namespace]:="http://assurant.com/Elita/ClaimFulfillment/Shared/Data"),  _
+     System.SerializableAttribute()>  _
+    Partial Public Class LogisticOptionInfoHandlingStore
+        Inherits ClaimRecordingService.LogisticOptionInfoBase
+        
+        Private AddressField As ClaimRecordingService.Address
+        
+        Private HandlingStoreField As ClaimRecordingService.HandlingStore
+        
+        <System.Runtime.Serialization.DataMemberAttribute(IsRequired:=true)>  _
+        Public Property Address() As ClaimRecordingService.Address
+            Get
+                Return Me.AddressField
+            End Get
+            Set
+                If (Object.ReferenceEquals(Me.AddressField, value) <> true) Then
+                    Me.AddressField = value
+                    Me.RaisePropertyChanged("Address")
+                End If
+            End Set
+        End Property
+        
+        <System.Runtime.Serialization.DataMemberAttribute(IsRequired:=true)>  _
+        Public Property HandlingStore() As ClaimRecordingService.HandlingStore
+            Get
+                Return Me.HandlingStoreField
+            End Get
+            Set
+                If (Object.ReferenceEquals(Me.HandlingStoreField, value) <> true) Then
+                    Me.HandlingStoreField = value
+                    Me.RaisePropertyChanged("HandlingStore")
+                End If
+            End Set
+        End Property
     End Class
     
     <System.Diagnostics.DebuggerStepThroughAttribute(),  _
@@ -2585,6 +2662,96 @@ Namespace ClaimRecordingService
             End If
         End Sub
     End Class
+    
+    <System.Diagnostics.DebuggerStepThroughAttribute(),  _
+     System.CodeDom.Compiler.GeneratedCodeAttribute("System.Runtime.Serialization", "4.0.0.0"),  _
+     System.Runtime.Serialization.DataContractAttribute(Name:="HandlingStore", [Namespace]:="http://assurant.com/Elita/ClaimFulfillment/Shared/Data"),  _
+     System.SerializableAttribute()>  _
+    Partial Public Class HandlingStore
+        Inherits Object
+        Implements System.Runtime.Serialization.IExtensibleDataObject, System.ComponentModel.INotifyPropertyChanged
+        
+        <System.NonSerializedAttribute()>  _
+        Private extensionDataField As System.Runtime.Serialization.ExtensionDataObject
+        
+        Private StoreCodeField As String
+        
+        Private StoreNameField As String
+        
+        Private StoreTypeField As ClaimRecordingService.HandlingStoreType
+        
+        <Global.System.ComponentModel.BrowsableAttribute(false)>  _
+        Public Property ExtensionData() As System.Runtime.Serialization.ExtensionDataObject Implements System.Runtime.Serialization.IExtensibleDataObject.ExtensionData
+            Get
+                Return Me.extensionDataField
+            End Get
+            Set
+                Me.extensionDataField = value
+            End Set
+        End Property
+        
+        <System.Runtime.Serialization.DataMemberAttribute(IsRequired:=true)>  _
+        Public Property StoreCode() As String
+            Get
+                Return Me.StoreCodeField
+            End Get
+            Set
+                If (Object.ReferenceEquals(Me.StoreCodeField, value) <> true) Then
+                    Me.StoreCodeField = value
+                    Me.RaisePropertyChanged("StoreCode")
+                End If
+            End Set
+        End Property
+        
+        <System.Runtime.Serialization.DataMemberAttribute(IsRequired:=true)>  _
+        Public Property StoreName() As String
+            Get
+                Return Me.StoreNameField
+            End Get
+            Set
+                If (Object.ReferenceEquals(Me.StoreNameField, value) <> true) Then
+                    Me.StoreNameField = value
+                    Me.RaisePropertyChanged("StoreName")
+                End If
+            End Set
+        End Property
+        
+        <System.Runtime.Serialization.DataMemberAttribute(IsRequired:=true)>  _
+        Public Property StoreType() As ClaimRecordingService.HandlingStoreType
+            Get
+                Return Me.StoreTypeField
+            End Get
+            Set
+                If (Me.StoreTypeField.Equals(value) <> true) Then
+                    Me.StoreTypeField = value
+                    Me.RaisePropertyChanged("StoreType")
+                End If
+            End Set
+        End Property
+        
+        Public Event PropertyChanged As System.ComponentModel.PropertyChangedEventHandler Implements System.ComponentModel.INotifyPropertyChanged.PropertyChanged
+        
+        Protected Sub RaisePropertyChanged(ByVal propertyName As String)
+            Dim propertyChanged As System.ComponentModel.PropertyChangedEventHandler = Me.PropertyChangedEvent
+            If (Not (propertyChanged) Is Nothing) Then
+                propertyChanged(Me, New System.ComponentModel.PropertyChangedEventArgs(propertyName))
+            End If
+        End Sub
+    End Class
+    
+    <System.CodeDom.Compiler.GeneratedCodeAttribute("System.Runtime.Serialization", "4.0.0.0"),  _
+     System.Runtime.Serialization.DataContractAttribute(Name:="HandlingStoreType", [Namespace]:="http://assurant.com/Elita/ClaimFulfillment/Shared/Data")>  _
+    Public Enum HandlingStoreType As Integer
+        
+        <System.Runtime.Serialization.EnumMemberAttribute()>  _
+        BranchOffice = 0
+        
+        <System.Runtime.Serialization.EnumMemberAttribute()>  _
+        ConvenienceStore = 1
+        
+        <System.Runtime.Serialization.EnumMemberAttribute()>  _
+        Locker = 2
+    End Enum
     
     <System.Diagnostics.DebuggerStepThroughAttribute(),  _
      System.CodeDom.Compiler.GeneratedCodeAttribute("System.Runtime.Serialization", "4.0.0.0"),  _
@@ -2759,6 +2926,9 @@ Namespace ClaimRecordingService
         <System.Runtime.Serialization.OptionalFieldAttribute()>  _
         Private StandardCodeField As String
         
+        <System.Runtime.Serialization.OptionalFieldAttribute()>  _
+        Private DisplayOptionField As ClaimRecordingService.FulfillmentDisplayOptionTypes
+        
         <Global.System.ComponentModel.BrowsableAttribute(false)>  _
         Public Property ExtensionData() As System.Runtime.Serialization.ExtensionDataObject Implements System.Runtime.Serialization.IExtensibleDataObject.ExtensionData
             Get
@@ -2873,6 +3043,19 @@ Namespace ClaimRecordingService
             End Set
         End Property
         
+        <System.Runtime.Serialization.DataMemberAttribute(Order:=8)>  _
+        Public Property DisplayOption() As ClaimRecordingService.FulfillmentDisplayOptionTypes
+            Get
+                Return Me.DisplayOptionField
+            End Get
+            Set
+                If (Me.DisplayOptionField.Equals(value) <> true) Then
+                    Me.DisplayOptionField = value
+                    Me.RaisePropertyChanged("DisplayOption")
+                End If
+            End Set
+        End Property
+        
         Public Event PropertyChanged As System.ComponentModel.PropertyChangedEventHandler Implements System.ComponentModel.INotifyPropertyChanged.PropertyChanged
         
         Protected Sub RaisePropertyChanged(ByVal propertyName As String)
@@ -2958,6 +3141,17 @@ Namespace ClaimRecordingService
             End If
         End Sub
     End Class
+    
+    <System.CodeDom.Compiler.GeneratedCodeAttribute("System.Runtime.Serialization", "4.0.0.0"),  _
+     System.Runtime.Serialization.DataContractAttribute(Name:="FulfillmentDisplayOptionTypes", [Namespace]:="http://assurant.com/Elita/ClaimFulfillment/Shared/Data")>  _
+    Public Enum FulfillmentDisplayOptionTypes As Integer
+        
+        <System.Runtime.Serialization.EnumMemberAttribute()>  _
+        WhenMultipleOptionsNotAvailable = 0
+        
+        <System.Runtime.Serialization.EnumMemberAttribute()>  _
+        Always = 1
+    End Enum
     
     <System.Diagnostics.DebuggerStepThroughAttribute(),  _
      System.CodeDom.Compiler.GeneratedCodeAttribute("System.Runtime.Serialization", "4.0.0.0"),  _
@@ -3941,6 +4135,9 @@ Namespace ClaimRecordingService
         Private CoverageSummaryField() As ClaimRecordingService.CertificateItemCoverage
         
         <System.Runtime.Serialization.OptionalFieldAttribute()>  _
+        Private ItemEffectiveDateField As System.Nullable(Of Date)
+        
+        <System.Runtime.Serialization.OptionalFieldAttribute()>  _
         Private NumberOfClaimsAllowedField As Integer
         
         <System.Runtime.Serialization.OptionalFieldAttribute()>  _
@@ -3981,6 +4178,9 @@ Namespace ClaimRecordingService
         
         <System.Runtime.Serialization.OptionalFieldAttribute()>  _
         Private SubsriberStatusField As String
+        
+        <System.Runtime.Serialization.OptionalFieldAttribute()>  _
+        Private UseClaimAuthorizationCodeField As String
         
         <System.Runtime.Serialization.OptionalFieldAttribute()>  _
         Private WarrantySalesDateField As Date
@@ -4043,6 +4243,19 @@ Namespace ClaimRecordingService
                 If (Object.ReferenceEquals(Me.CoverageSummaryField, value) <> true) Then
                     Me.CoverageSummaryField = value
                     Me.RaisePropertyChanged("CoverageSummary")
+                End If
+            End Set
+        End Property
+        
+        <System.Runtime.Serialization.DataMemberAttribute()>  _
+        Public Property ItemEffectiveDate() As System.Nullable(Of Date)
+            Get
+                Return Me.ItemEffectiveDateField
+            End Get
+            Set
+                If (Me.ItemEffectiveDateField.Equals(value) <> true) Then
+                    Me.ItemEffectiveDateField = value
+                    Me.RaisePropertyChanged("ItemEffectiveDate")
                 End If
             End Set
         End Property
@@ -4230,6 +4443,19 @@ Namespace ClaimRecordingService
         End Property
         
         <System.Runtime.Serialization.DataMemberAttribute()>  _
+        Public Property UseClaimAuthorizationCode() As String
+            Get
+                Return Me.UseClaimAuthorizationCodeField
+            End Get
+            Set
+                If (Object.ReferenceEquals(Me.UseClaimAuthorizationCodeField, value) <> true) Then
+                    Me.UseClaimAuthorizationCodeField = value
+                    Me.RaisePropertyChanged("UseClaimAuthorizationCode")
+                End If
+            End Set
+        End Property
+        
+        <System.Runtime.Serialization.DataMemberAttribute()>  _
         Public Property WarrantySalesDate() As Date
             Get
                 Return Me.WarrantySalesDateField
@@ -4266,6 +4492,9 @@ Namespace ClaimRecordingService
         
         <System.Runtime.Serialization.OptionalFieldAttribute()>  _
         Private AauthorizedAmountSpecifiedField As Boolean
+        
+        <System.Runtime.Serialization.OptionalFieldAttribute()>  _
+        Private AuthorizationCountField As System.Nullable(Of Integer)
         
         <System.Runtime.Serialization.OptionalFieldAttribute()>  _
         Private AuthorizationNumberField As String
@@ -4397,6 +4626,19 @@ Namespace ClaimRecordingService
                 If (Me.AauthorizedAmountSpecifiedField.Equals(value) <> true) Then
                     Me.AauthorizedAmountSpecifiedField = value
                     Me.RaisePropertyChanged("AauthorizedAmountSpecified")
+                End If
+            End Set
+        End Property
+        
+        <System.Runtime.Serialization.DataMemberAttribute()>  _
+        Public Property AuthorizationCount() As System.Nullable(Of Integer)
+            Get
+                Return Me.AuthorizationCountField
+            End Get
+            Set
+                If (Me.AuthorizationCountField.Equals(value) <> true) Then
+                    Me.AuthorizationCountField = value
+                    Me.RaisePropertyChanged("AuthorizationCount")
                 End If
             End Set
         End Property

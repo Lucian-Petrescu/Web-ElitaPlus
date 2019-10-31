@@ -65,14 +65,23 @@ Public Class ClaimRecordingForm
 #Region "Page State"
     Private _isReturningFromChild As Boolean = False
     Class MyState
-
-        Public ClaimBo As ClaimBase
+#Region "ClaimBo"
+        Private _ClaimBo As ClaimBase
+        Public Property ClaimBo As ClaimBase
+            Get
+                Return _ClaimBo
+            End Get
+            Set(ByVal value As ClaimBase)
+                _ClaimBo = value
+            End Set
+        End Property
+#End Region
         Public InputParameters As Parameters
         Friend PageSize As Integer = 5
         Friend IsGridVisible As Boolean = True
         Friend PageIndex As Integer = 0
         Public CertificateId As Guid = Guid.Empty
-        Public CertificateNumber As String
+        Public Property CertificateNumber As String
         Public CaseId As Guid = Guid.Empty
         Public IncomingCasePurpose As String
 
@@ -100,7 +109,8 @@ Public Class ClaimRecordingForm
             End Set
         End Property
 #End Region
-
+        Public ClaimedDevice As DeviceInfo = Nothing
+        Public FulfillmentOption As FulfillmentOption = Nothing
         Public BestReplacementDeviceSelected As BestReplacementDeviceInfo = Nothing
         Public LogisticsStage As Integer = 0 ' 0 is first stage
         Public LogisticsOption As LogisticOption = Nothing
@@ -269,11 +279,27 @@ Public Class ClaimRecordingForm
             End If
         End If
     End Sub
+
+    Private Sub ReWireUserControl()
+        For i As Integer = 0 To GridViewLogisticsOptions.Rows.Count - 1
+            Dim rb As System.Web.UI.WebControls.RadioButton
+            rb = CType(GridViewLogisticsOptions.Rows(i).FindControl("rdoLogisticsOption"), System.Web.UI.WebControls.RadioButton)
+            If rb.Checked Then
+                Dim uc As UserControlServiceCenterSelection
+                uc = CType(GridViewLogisticsOptions.Rows(i).FindControl("ucServiceCenterUserControl"), UserControlServiceCenterSelection)
+
+                If uc IsNot Nothing Then
+                    ServiceCenterSelectionHandler(uc)
+                End If
+            End If
+        Next
+    End Sub
     Protected Sub Page_Load(ByVal sender As Object, ByVal e As EventArgs) Handles Me.Load
         MasterPage.MessageController.Clear()
 
         AddHandler UcExistingCallerInfo.GridSelectionHandler, AddressOf UcExistingCallerInfo_GridSelectionHandler
         AddHandler UcPreviousCallerInfo.GridSelectionHandler, AddressOf UcPreviousCallerInfo_GridSelectionHandler
+        ReWireUserControl()
 
         Try
             If Not (IsPostBack) Then
@@ -1065,6 +1091,7 @@ Public Class ClaimRecordingForm
                             claimdevice.ImeiNumber = DirectCast(row.FindControl("lblImeiNo"), Label).Text
                             claimdevice.SerialNumber = DirectCast(row.FindControl("lblSerialNo"), Label).Text
                             claimdevice.RegisteredItemName = DirectCast(row.FindControl("lblRegisteredItem"), Label).Text
+                            claimdevice.RiskTypeCode = DirectCast(row.FindControl("HiddenRiskType"), HiddenField).Value
 
                             If (String.IsNullOrWhiteSpace(claimdevice.Manufacturer)) Then
                                 MasterPage.MessageController.AddError(ElitaPlus.Common.ErrorCodes.GUI_MANUFACTURER_NAME_IS_MISSING_ERR, True)
@@ -1088,6 +1115,7 @@ Public Class ClaimRecordingForm
                                 Return c.Submit(itemSelectionRequest)
                             End Function)
                         If wsResponse IsNot Nothing Then
+                            State.ClaimedDevice = claimdevice
                             State.SubmitWsBaseClaimRecordingResponse = wsResponse
                         End If
                     Catch ex As FaultException
@@ -1253,6 +1281,7 @@ Public Class ClaimRecordingForm
                            AndAlso Not String.IsNullOrEmpty(State.SubmitWsBaseClaimRecordingResponse.CompanyCode) Then
                             Dim oClaimBase As ClaimBase = ClaimFacade.Instance.GetClaimByClaimNumber(Of ClaimBase)(State.SubmitWsBaseClaimRecordingResponse.CompanyCode, State.SubmitWsBaseClaimRecordingResponse.ClaimNumber)
                             If Not oClaimBase Is Nothing Then
+                                State.ClaimBo = oClaimBase
                                 moProtectionEvtDtl.ClaimNumber = oClaimBase.ClaimNumber
                                 moProtectionEvtDtl.ClaimStatus = LookupListNew.GetClaimStatusFromCode(Authentication.CurrentUser.LanguageId, oClaimBase.StatusCode)
                                 moProtectionEvtDtl.ClaimStatusCss = If(oClaimBase.Status = BasicClaimStatus.Active, "StatActive", "StatClosed")
@@ -2101,6 +2130,8 @@ Public Class ClaimRecordingForm
             Exit Sub
         End If
 
+        State.FulfillmentOption = wsPreviousResponse.Options.FirstOrDefault(Function(opt) opt.Code = fulfillmentProfileCode)
+
         fulfillmentOptionQuestions.GetQuestionAnswer()
 
         wsRequest.CaseNumber = wsPreviousResponse.CaseNumber
@@ -2192,13 +2223,23 @@ Public Class ClaimRecordingForm
     Private Const GridLogisticsOptionsRdoCtrl As String = "rdoLogisticsOption"
     Private Const GridLoCodeLblCtrl As String = "lblLogisticsOptionCode"
     Private Const GridLoStoreNumberTxtCtrl As String = "txtStoreNumber"
+    Private Const GridLoServiceCenterCodeTxtCtrl As String = "txtServiceCenterCode"
     Private Const GridLoStoreNumberLblCtrl As String = "lblStoreNumber"
+    Private Const GridLoServiceCenterCodeLblCtrl As String = "moServiceCenterCodeLabel"
+    Private Const GridLoServiceCenterNameLblCtrl As String = "moServiceCenterNameLabel"
+    Private Const GridLoServiceCenterSelectedLblCtrl As String = "moServiceCenterSelectedLabel"
     Private Const GridLoShippingAddressLblCtrl As String = "lblLoShippingAddress"
+    Private Const GridLoShippingServiceCenterLblCtrl As String = "lblLoServiceCenter"
     Private Const GridLoAddressCtrl As String = "ucAddressControllerLogisticsOptions"
+    Private Const GridLoServiceCenterCtrl As String = "ucServiceCenterUserControl"
     Private Const GridLoDeliveryDateLblCtrl As String = "lblDeliveryDate"
     Private Const GridLoEstimateDeliveryDateBtnCtrl As String = "btnEstimateDeliveryDate"
     Private Const LogisticsOptionsQuestionsCtrl As String = "logisticsOptionsQuestions"
     Private Const LogisticsOptionsEstimateDeliveryDateCtrl As String = "UCDeliverySlotLogisticOptions"
+    Private Const LogisticsOptionsServiceCenterCtrl As String = "ucServiceCenterUserControl"
+    Private Const LogisticsOptionsServiceCenterCodeTxtCtrl As String = "txtServiceCenterCode"
+    Private Const LogisticsOptionsServiceCenterNameTxtCtrl As String = "txtServiceCenterName"
+    Private Const GridLoServiceCenterTr As String = "trServiceCenter"
     'KDDI
     Private Const ValidateAddressButton As String = "btnValidate_Address"
 
@@ -2286,6 +2327,15 @@ Public Class ClaimRecordingForm
                 If isEnableControl Then
                     State.LogisticsOption = logisticsOptionItem
                 End If
+            End If
+
+            ' Service Center
+            Dim serviceCenterTableRow As System.Web.UI.HtmlControls.HtmlTableRow = CType(gridViewTarget.Rows(i).FindControl(GridLoServiceCenterTr), System.Web.UI.HtmlControls.HtmlTableRow)
+            If Not logisticsOptionItem Is Nothing _
+               AndAlso logisticsOptionItem.Type = LogisticOptionType.ServiceCenter Then
+                ControlMgr.SetVisibleControl(Me, serviceCenterTableRow, True)
+            Else
+                ControlMgr.SetVisibleControl(Me, serviceCenterTableRow, False)
             End If
         Next
     End Sub
@@ -2433,8 +2483,27 @@ Public Class ClaimRecordingForm
                             End If
                         End If
                     End If
+                End If
 
+                ' Service Center
+                If Not lOption Is Nothing _
+                    AndAlso lOption.Type = LogisticOptionType.ServiceCenter Then
+
+                    Dim uc As UserControlServiceCenterSelection
+                    uc = CType(gvr.FindControl("ucServiceCenterUserControl"), UserControlServiceCenterSelection)
+
+                    Dim logisticStage As LogisticStage
+                    logisticStage = wsResponse.Stages(State.LogisticsStage)
+
+                    If uc IsNot Nothing AndAlso uc.SelectedServiceCenter IsNot Nothing Then
+                        logisticStage.ServiceCenterCode = uc.SelectedServiceCenter.ServiceCenterCode
+                    Else
+                        MasterPage.MessageController.AddError(Message.MSG_ERR_DEFAULT_SERVICE_CENTER, True)
+                        Return False
                     End If
+
+                End If
+
                 islogisticsOptionSelected = True
                 Exit For
             End If
@@ -2697,7 +2766,7 @@ Public Class ClaimRecordingForm
                     ControlMgr.SetVisibleControl(Me, btnValidateAddress, False)
                 End If
 
-
+                
                 Dim oCertificate As Certificate = New Certificate(State.CertificateId)
 
                 If logisticsOptionItem.Type = LogisticOptionType.CustomerAddress Then
@@ -2746,11 +2815,70 @@ Public Class ClaimRecordingForm
                 If logisticsStage.Code = "RV" AndAlso (logisticsOptionItem.Code = "ST" OrElse logisticsOptionItem.Code = "E") AndAlso logisticsOptionItem.Type = LogisticOptionType.CustomerAddress Then
                     moAddressController.EnableControls(True, True)
                 End If
-
-
             Else
                 Dim trShippingAddress As HtmlTableRow = CType(e.Row.FindControl("trShippingAddress"), HtmlTableRow)
+                If trShippingAddress Is Nothing Then Throw New ArgumentNullException("TableRow for Shipping Address not found")
                 trShippingAddress.Attributes("style") = "display: none"
+            End If
+
+            ' Logistic Options - Service Center
+
+            If Not logisticsOptionItem Is Nothing _
+                   AndAlso (logisticsOptionItem.Type = LogisticOptionType.ServiceCenter) Then
+
+                Dim oCertificate As Certificate = New Certificate(State.CertificateId)
+                Dim oCountry As Country = New Country(oCertificate.Company.CountryId)
+
+                Dim lblLoServiceCenter As Label = CType(e.Row.FindControl(GridLoShippingServiceCenterLblCtrl), Label)
+
+                Dim moServiceCenterCtrl As UserControlServiceCenterSelection = CType(e.Row.FindControl(GridLoServiceCenterCtrl), UserControlServiceCenterSelection)
+                moServiceCenterCtrl.Visible = True
+
+                ServiceCenterSelectionHandler(moServiceCenterCtrl)
+
+                moServiceCenterCtrl.CountryId = oCertificate.Company.CountryId
+                moServiceCenterCtrl.CountryCode = oCountry.Code
+                moServiceCenterCtrl.CompanyCode = oCertificate.Company.Code
+                moServiceCenterCtrl.Dealer = oCertificate.Dealer.Dealer
+                moServiceCenterCtrl.Make = State.ClaimedDevice.Manufacturer
+                moServiceCenterCtrl.RiskTypeEnglish = State.ClaimBo.RiskType
+                moServiceCenterCtrl.MethodOfRepairXcd = State.FulfillmentOption.StandardCode
+
+                moServiceCenterCtrl.InitializeComponent()
+
+                Dim lblServiceCenterSelected As Label = CType(e.Row.FindControl(GridLoServiceCenterSelectedLblCtrl), Label)
+                lblServiceCenterSelected.Text = TranslationBase.TranslateLabelOrMessage("SERVICE_CENTER_SELECTED")
+
+                Dim lblServiceCenterCode As Label = CType(e.Row.FindControl(GridLoServiceCenterCodeLblCtrl), Label)
+                lblServiceCenterCode.Text = TranslationBase.TranslateLabelOrMessage("SERVICE_CENTER_CODE")
+
+                Dim lblServiceCenterName As Label = CType(e.Row.FindControl(GridLoServiceCenterNameLblCtrl), Label)
+                lblServiceCenterName.Text = TranslationBase.TranslateLabelOrMessage("SERVICE_CENTER_NAME")
+
+                Dim txtStoreNumber As TextBox = CType(e.Row.FindControl(GridLoServiceCenterCodeTxtCtrl), TextBox)
+                ControlMgr.SetEnableControl(Me, txtStoreNumber, isEnableControl)
+            Else
+                Dim trServiceCenter As HtmlTableRow = CType(e.Row.FindControl("trServiceCenter"), HtmlTableRow)
+                If trServiceCenter Is Nothing Then Throw New ArgumentNullException("TableRow for Service Center not found")
+                trServiceCenter.Attributes("style") = "display: none"
+            End If
+
+            ' Delivery Options
+            If Not logisticsOptionItem Is Nothing _
+               AndAlso Not logisticsOptionItem.DeliveryOptions Is Nothing _
+               AndAlso logisticsOptionItem.DeliveryOptions.DisplayEstimatedDeliveryDate Then
+
+                ' TODO: Assign the delivery code/description when it comes in the contract
+                Dim lblDeliveryDate As Label = CType(e.Row.FindControl(GridLoDeliveryDateLblCtrl), Label)
+                lblDeliveryDate.Text = TranslationBase.TranslateLabelOrMessage("EXPECTED_DELIVERY_DATE")
+
+                Dim btnEstimateDeliveryDate As Button = CType(e.Row.FindControl(GridLoEstimateDeliveryDateBtnCtrl), Button)
+                ControlMgr.SetEnableControl(Me, btnEstimateDeliveryDate, isEnableControl)
+                btnEstimateDeliveryDate.Text = TranslationBase.TranslateLabelOrMessage("GET_DELIVERY_DATE")
+            Else
+                Dim trDeliveryOptions As HtmlTableRow = CType(e.Row.FindControl("trDeliveryOptions"), HtmlTableRow)
+                If trDeliveryOptions Is Nothing Then Throw New ArgumentNullException("TableRow for Delivery Options not found")
+                trDeliveryOptions.Attributes("style") = "display: none"
             End If
 
             ' Questions
@@ -2776,26 +2904,61 @@ Public Class ClaimRecordingForm
                     ControlMgr.SetVisibleControl(Me, logisticsOptionsQuestionsItemCtrl, False)
                 End If
             End If
-
-            ' Delivery Options
-            If Not logisticsOptionItem Is Nothing _
-               AndAlso Not logisticsOptionItem.DeliveryOptions Is Nothing _
-               AndAlso logisticsOptionItem.DeliveryOptions.DisplayEstimatedDeliveryDate Then
-
-                ' TODO: Assign the delivery code/description when it comes in the contract
-
-                Dim lblDeliveryDate As Label = CType(e.Row.FindControl(GridLoDeliveryDateLblCtrl), Label)
-                lblDeliveryDate.Text = TranslationBase.TranslateLabelOrMessage("EXPECTED_DELIVERY_DATE")
-
-
-                Dim btnEstimateDeliveryDate As Button = CType(e.Row.FindControl(GridLoEstimateDeliveryDateBtnCtrl), Button)
-                ControlMgr.SetEnableControl(Me, btnEstimateDeliveryDate, isEnableControl)
-                btnEstimateDeliveryDate.Text = TranslationBase.TranslateLabelOrMessage("GET_DELIVERY_DATE")
-            Else
-                Dim trDeliveryOptions As HtmlTableRow = CType(e.Row.FindControl("trDeliveryOptions"), HtmlTableRow)
-                trDeliveryOptions.Attributes("style") = "display: none"
-            End If
         End If
+    End Sub
+
+    Private Sub ServiceCenterSelectionHandler(userControl As UserControlServiceCenterSelection)
+        userControl.TranslationFunc = Function(value As String)
+                                          Return TranslationBase.TranslateLabelOrMessage(value)
+                                      End Function
+
+        userControl.TranslateGridHeaderFunc = Sub(grid As System.Web.UI.WebControls.GridView)
+                                                  TranslateGridHeader(grid)
+                                              End Sub
+
+        userControl.ServiceCenterSelectedFunc = Sub(selected As ServiceCenterSelected)
+                                                    LogisticServiceCenterSelected(selected)
+                                                End Sub
+
+        userControl.HighLightSortColumnFunc = Sub(grid As System.Web.UI.WebControls.GridView, sortExp As String)
+                                                  HighLightSortColumn(grid, sortExp, False)
+                                              End Sub
+
+        userControl.NewCurrentPageIndexFunc = Function(grid As System.Web.UI.WebControls.GridView, ByVal intRecordCount As Integer, ByVal intNewPageSize As Integer)
+                                                  Return NewCurrentPageIndex(grid, intRecordCount, intNewPageSize)
+                                              End Function
+    End Sub
+
+    Private Sub LogisticServiceCenterSelected(selected As ServiceCenterSelected)
+
+        Try
+            If selected IsNot Nothing Then
+                SetSelectedServiceCenterInfo(selected.ServiceCenterCode, selected.Name)
+            Else
+                SetSelectedServiceCenterInfo(String.Empty, String.Empty)
+            End If
+        Catch ex As Exception
+
+        End Try
+    End Sub
+
+    Private Sub SetSelectedServiceCenterInfo(serviceCenterCode As String, serviceCenterName As String)
+        For i As Integer = 0 To GridViewLogisticsOptions.Rows.Count - 1
+            Dim rdo As System.Web.UI.WebControls.RadioButton
+            rdo = CType(GridViewLogisticsOptions.Rows(i).FindControl(GridLogisticsOptionsRdoCtrl), System.Web.UI.WebControls.RadioButton)
+            If rdo IsNot Nothing AndAlso rdo.Checked Then
+                Dim codeTxt As System.Web.UI.WebControls.TextBox
+                codeTxt = CType(GridViewLogisticsOptions.Rows(i).FindControl(LogisticsOptionsServiceCenterCodeTxtCtrl), System.Web.UI.WebControls.TextBox)
+                If codeTxt IsNot Nothing Then
+                    codeTxt.Text = serviceCenterCode
+                End If
+                Dim nameTxt As System.Web.UI.WebControls.TextBox
+                nameTxt = CType(GridViewLogisticsOptions.Rows(i).FindControl(LogisticsOptionsServiceCenterNameTxtCtrl), System.Web.UI.WebControls.TextBox)
+                If nameTxt IsNot Nothing Then
+                    nameTxt.Text = serviceCenterName
+                End If
+            End If
+        Next
     End Sub
 #End Region
 #End Region
