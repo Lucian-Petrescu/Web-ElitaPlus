@@ -527,7 +527,7 @@ Namespace Certificates
         Protected Sub PopulateFormFromBOs()
 
             Try
-                Me.GetDefaultTerm()
+                Me.GetDefaultTerm(True)
                 PopulateLangPrefDropdown(Me.moLangPrefDropdown)
 
                 moCertificateInfoController = Me.UserCertificateCtr
@@ -661,14 +661,14 @@ Namespace Certificates
             End Try
 
         End Sub
-        Protected Sub GetDefaultTerm()
+        Protected Sub GetDefaultTerm(Optional blnParentOnly As Boolean = False)
 
             Try
                 Me.State.MyBO.TermPre = NO_TERM
                 Me.State.MyBO.TermPos = NO_TERM
 
                 If Me.State.StatemanufaturerWarranty Then
-                    For Each cov As CertItemCoverage In Me.State.MyBO.AssociatedItemCoverages
+                    For Each cov As CertItemCoverage In Me.State.MyBO.AssociatedItemCoverages(blnParentOnly)
                         If cov.CoverageTypeCode = Codes.COVERAGE_TYPE__MANUFACTURER Then
                             Me.State.MyBO.TermPre = CType(DateDiff(DateInterval.Month, cov.BeginDate.Value, DateAdd("d", 1, cov.EndDate.Value)), Integer)
                             Me.State.MyBO.TermPos = Me.State.MyBO.TermPre
