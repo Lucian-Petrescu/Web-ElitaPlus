@@ -211,7 +211,7 @@
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\BusinessObjects\BusinessObjects.vbproj">
-      <Project>{24AF00EF-6626-4D29-BEFB-F899C2A85AAD}</Project>
+      <Project>{24af00ef-6626-4d29-befb-f899c2a85aad}</Project>
       <Name>BusinessObjects</Name>
     </ProjectReference>
     <ProjectReference Include="..\Common\Common.vbproj">
