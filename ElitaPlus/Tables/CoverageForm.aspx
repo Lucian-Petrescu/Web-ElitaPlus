@@ -413,6 +413,18 @@
                                 <tr>
                                     <td style="width: 1px" width="1"></td>
                                     <td style="height: 12px" align="right" colspan="1">&nbsp;
+                                        <asp:Label ID="moFulfillmentProfileLabel" runat="server" Font-Bold="false">Fulfillment_Profile</asp:Label>&nbsp;
+                                    </td>
+                                    <td nowrap colspan="1" align="left">
+                                        <asp:DropDownList ID="moFulfillmentProfileDrop" TabIndex="19" runat="server" SkinID="SmallDropDown">
+                                        </asp:DropDownList>
+                                    </td>
+                                    <td align="right"></td>
+                                    <td align="left"></td>
+                                </tr>
+                                <tr>
+                                    <td style="width: 1px" width="1"></td>
+                                    <td style="height: 12px" align="right" colspan="1">&nbsp;
                                         <asp:Label ID="moCoverageLiabilityLimitLabel" runat="server" Font-Bold="false">COV_LIABILITY_LIMIT</asp:Label>&nbsp;
                                     </td>
                                     <td nowrap colspan="1" align="left">

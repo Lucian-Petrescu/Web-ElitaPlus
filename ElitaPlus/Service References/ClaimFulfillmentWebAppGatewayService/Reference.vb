@@ -2019,6 +2019,456 @@ Namespace ClaimFulfillmentWebAppGatewayService
         End Sub
     End Class
     
+    <System.Diagnostics.DebuggerStepThroughAttribute(),  _
+     System.CodeDom.Compiler.GeneratedCodeAttribute("System.Runtime.Serialization", "4.0.0.0"),  _
+     System.Runtime.Serialization.DataContractAttribute(Name:="FulfillmentServiceCentersRequest", [Namespace]:="http://assurant.com/Elita/ClaimFulfillment/Data"),  _
+     System.SerializableAttribute(),  _
+     System.Runtime.Serialization.KnownTypeAttribute(GetType(ClaimFulfillmentWebAppGatewayService.FulfillmentServiceCentersByCityRequest)),  _
+     System.Runtime.Serialization.KnownTypeAttribute(GetType(ClaimFulfillmentWebAppGatewayService.FulfillmentServiceCentersByPostalCodeRequest)),  _
+     System.Runtime.Serialization.KnownTypeAttribute(GetType(ClaimFulfillmentWebAppGatewayService.FulfillmentAllServiceCentersRequest)),  _
+     System.Runtime.Serialization.KnownTypeAttribute(GetType(ClaimFulfillmentWebAppGatewayService.FulfillmentDefaultServiceCentersRequest))>  _
+    Partial Public Class FulfillmentServiceCentersRequest
+        Inherits Object
+        Implements System.Runtime.Serialization.IExtensibleDataObject, System.ComponentModel.INotifyPropertyChanged
+        
+        <System.NonSerializedAttribute()>  _
+        Private extensionDataField As System.Runtime.Serialization.ExtensionDataObject
+        
+        <System.Runtime.Serialization.OptionalFieldAttribute()>  _
+        Private CompanyCodeField As String
+        
+        <System.Runtime.Serialization.OptionalFieldAttribute()>  _
+        Private CountryCodeField As String
+        
+        <System.Runtime.Serialization.OptionalFieldAttribute()>  _
+        Private DealerField As String
+        
+        <System.Runtime.Serialization.OptionalFieldAttribute()>  _
+        Private RiskTypeEnglishField As String
+        
+        <System.Runtime.Serialization.OptionalFieldAttribute()>  _
+        Private MakeField As String
+        
+        <System.Runtime.Serialization.OptionalFieldAttribute()>  _
+        Private MethodOfRepairXcdField As String
+        
+        <Global.System.ComponentModel.BrowsableAttribute(false)>  _
+        Public Property ExtensionData() As System.Runtime.Serialization.ExtensionDataObject Implements System.Runtime.Serialization.IExtensibleDataObject.ExtensionData
+            Get
+                Return Me.extensionDataField
+            End Get
+            Set
+                Me.extensionDataField = value
+            End Set
+        End Property
+        
+        <System.Runtime.Serialization.DataMemberAttribute()>  _
+        Public Property CompanyCode() As String
+            Get
+                Return Me.CompanyCodeField
+            End Get
+            Set
+                If (Object.ReferenceEquals(Me.CompanyCodeField, value) <> true) Then
+                    Me.CompanyCodeField = value
+                    Me.RaisePropertyChanged("CompanyCode")
+                End If
+            End Set
+        End Property
+        
+        <System.Runtime.Serialization.DataMemberAttribute()>  _
+        Public Property CountryCode() As String
+            Get
+                Return Me.CountryCodeField
+            End Get
+            Set
+                If (Object.ReferenceEquals(Me.CountryCodeField, value) <> true) Then
+                    Me.CountryCodeField = value
+                    Me.RaisePropertyChanged("CountryCode")
+                End If
+            End Set
+        End Property
+        
+        <System.Runtime.Serialization.DataMemberAttribute()>  _
+        Public Property Dealer() As String
+            Get
+                Return Me.DealerField
+            End Get
+            Set
+                If (Object.ReferenceEquals(Me.DealerField, value) <> true) Then
+                    Me.DealerField = value
+                    Me.RaisePropertyChanged("Dealer")
+                End If
+            End Set
+        End Property
+        
+        <System.Runtime.Serialization.DataMemberAttribute()>  _
+        Public Property RiskTypeEnglish() As String
+            Get
+                Return Me.RiskTypeEnglishField
+            End Get
+            Set
+                If (Object.ReferenceEquals(Me.RiskTypeEnglishField, value) <> true) Then
+                    Me.RiskTypeEnglishField = value
+                    Me.RaisePropertyChanged("RiskTypeEnglish")
+                End If
+            End Set
+        End Property
+        
+        <System.Runtime.Serialization.DataMemberAttribute(Order:=4)>  _
+        Public Property Make() As String
+            Get
+                Return Me.MakeField
+            End Get
+            Set
+                If (Object.ReferenceEquals(Me.MakeField, value) <> true) Then
+                    Me.MakeField = value
+                    Me.RaisePropertyChanged("Make")
+                End If
+            End Set
+        End Property
+        
+        <System.Runtime.Serialization.DataMemberAttribute(Order:=5)>  _
+        Public Property MethodOfRepairXcd() As String
+            Get
+                Return Me.MethodOfRepairXcdField
+            End Get
+            Set
+                If (Object.ReferenceEquals(Me.MethodOfRepairXcdField, value) <> true) Then
+                    Me.MethodOfRepairXcdField = value
+                    Me.RaisePropertyChanged("MethodOfRepairXcd")
+                End If
+            End Set
+        End Property
+        
+        Public Event PropertyChanged As System.ComponentModel.PropertyChangedEventHandler Implements System.ComponentModel.INotifyPropertyChanged.PropertyChanged
+        
+        Protected Sub RaisePropertyChanged(ByVal propertyName As String)
+            Dim propertyChanged As System.ComponentModel.PropertyChangedEventHandler = Me.PropertyChangedEvent
+            If (Not (propertyChanged) Is Nothing) Then
+                propertyChanged(Me, New System.ComponentModel.PropertyChangedEventArgs(propertyName))
+            End If
+        End Sub
+    End Class
+    
+    <System.Diagnostics.DebuggerStepThroughAttribute(),  _
+     System.CodeDom.Compiler.GeneratedCodeAttribute("System.Runtime.Serialization", "4.0.0.0"),  _
+     System.Runtime.Serialization.DataContractAttribute(Name:="FulfillmentServiceCentersByCityRequest", [Namespace]:="http://assurant.com/Elita/ClaimFulfillment/Data"),  _
+     System.SerializableAttribute()>  _
+    Partial Public Class FulfillmentServiceCentersByCityRequest
+        Inherits ClaimFulfillmentWebAppGatewayService.FulfillmentServiceCentersRequest
+        
+        <System.Runtime.Serialization.OptionalFieldAttribute()>  _
+        Private CityNameField As String
+        
+        <System.Runtime.Serialization.DataMemberAttribute()>  _
+        Public Property CityName() As String
+            Get
+                Return Me.CityNameField
+            End Get
+            Set
+                If (Object.ReferenceEquals(Me.CityNameField, value) <> true) Then
+                    Me.CityNameField = value
+                    Me.RaisePropertyChanged("CityName")
+                End If
+            End Set
+        End Property
+    End Class
+    
+    <System.Diagnostics.DebuggerStepThroughAttribute(),  _
+     System.CodeDom.Compiler.GeneratedCodeAttribute("System.Runtime.Serialization", "4.0.0.0"),  _
+     System.Runtime.Serialization.DataContractAttribute(Name:="FulfillmentServiceCentersByPostalCodeRequest", [Namespace]:="http://assurant.com/Elita/ClaimFulfillment/Data"),  _
+     System.SerializableAttribute()>  _
+    Partial Public Class FulfillmentServiceCentersByPostalCodeRequest
+        Inherits ClaimFulfillmentWebAppGatewayService.FulfillmentServiceCentersRequest
+        
+        <System.Runtime.Serialization.OptionalFieldAttribute()>  _
+        Private PostalCodeField As String
+        
+        <System.Runtime.Serialization.DataMemberAttribute()>  _
+        Public Property PostalCode() As String
+            Get
+                Return Me.PostalCodeField
+            End Get
+            Set
+                If (Object.ReferenceEquals(Me.PostalCodeField, value) <> true) Then
+                    Me.PostalCodeField = value
+                    Me.RaisePropertyChanged("PostalCode")
+                End If
+            End Set
+        End Property
+    End Class
+    
+    <System.Diagnostics.DebuggerStepThroughAttribute(),  _
+     System.CodeDom.Compiler.GeneratedCodeAttribute("System.Runtime.Serialization", "4.0.0.0"),  _
+     System.Runtime.Serialization.DataContractAttribute(Name:="FulfillmentAllServiceCentersRequest", [Namespace]:="http://assurant.com/Elita/ClaimFulfillment/Data"),  _
+     System.SerializableAttribute()>  _
+    Partial Public Class FulfillmentAllServiceCentersRequest
+        Inherits ClaimFulfillmentWebAppGatewayService.FulfillmentServiceCentersRequest
+    End Class
+    
+    <System.Diagnostics.DebuggerStepThroughAttribute(),  _
+     System.CodeDom.Compiler.GeneratedCodeAttribute("System.Runtime.Serialization", "4.0.0.0"),  _
+     System.Runtime.Serialization.DataContractAttribute(Name:="FulfillmentDefaultServiceCentersRequest", [Namespace]:="http://assurant.com/Elita/ClaimFulfillment/Data"),  _
+     System.SerializableAttribute()>  _
+    Partial Public Class FulfillmentDefaultServiceCentersRequest
+        Inherits ClaimFulfillmentWebAppGatewayService.FulfillmentServiceCentersRequest
+    End Class
+    
+    <System.Diagnostics.DebuggerStepThroughAttribute(),  _
+     System.CodeDom.Compiler.GeneratedCodeAttribute("System.Runtime.Serialization", "4.0.0.0"),  _
+     System.Runtime.Serialization.DataContractAttribute(Name:="FulfillmentServicesCenter", [Namespace]:="http://assurant.com/Elita/ClaimFulfillment/Data"),  _
+     System.SerializableAttribute()>  _
+    Partial Public Class FulfillmentServicesCenter
+        Inherits Object
+        Implements System.Runtime.Serialization.IExtensibleDataObject, System.ComponentModel.INotifyPropertyChanged
+        
+        <System.NonSerializedAttribute()>  _
+        Private extensionDataField As System.Runtime.Serialization.ExtensionDataObject
+        
+        <System.Runtime.Serialization.OptionalFieldAttribute()>  _
+        Private CountryCodeField As String
+        
+        <System.Runtime.Serialization.OptionalFieldAttribute()>  _
+        Private ServiceCenterIdField As System.Guid
+        
+        <System.Runtime.Serialization.OptionalFieldAttribute()>  _
+        Private ServiceCenterCodeField As String
+        
+        <System.Runtime.Serialization.OptionalFieldAttribute()>  _
+        Private NameField As String
+        
+        <System.Runtime.Serialization.OptionalFieldAttribute()>  _
+        Private Address1Field As String
+        
+        <System.Runtime.Serialization.OptionalFieldAttribute()>  _
+        Private Address2Field As String
+        
+        <System.Runtime.Serialization.OptionalFieldAttribute()>  _
+        Private Address3Field As String
+        
+        <System.Runtime.Serialization.OptionalFieldAttribute()>  _
+        Private RegionCodeField As String
+        
+        <System.Runtime.Serialization.OptionalFieldAttribute()>  _
+        Private CityField As String
+        
+        <System.Runtime.Serialization.OptionalFieldAttribute()>  _
+        Private PostalCodeField As String
+        
+        <System.Runtime.Serialization.OptionalFieldAttribute()>  _
+        Private ManufacturerField As String
+        
+        <System.Runtime.Serialization.OptionalFieldAttribute()>  _
+        Private PrefField As String
+        
+        <System.Runtime.Serialization.OptionalFieldAttribute()>  _
+        Private RankField As String
+        
+        <System.Runtime.Serialization.OptionalFieldAttribute()>  _
+        Private SelectedField As Boolean
+        
+        <Global.System.ComponentModel.BrowsableAttribute(false)>  _
+        Public Property ExtensionData() As System.Runtime.Serialization.ExtensionDataObject Implements System.Runtime.Serialization.IExtensibleDataObject.ExtensionData
+            Get
+                Return Me.extensionDataField
+            End Get
+            Set
+                Me.extensionDataField = value
+            End Set
+        End Property
+        
+        <System.Runtime.Serialization.DataMemberAttribute()>  _
+        Public Property CountryCode() As String
+            Get
+                Return Me.CountryCodeField
+            End Get
+            Set
+                If (Object.ReferenceEquals(Me.CountryCodeField, value) <> true) Then
+                    Me.CountryCodeField = value
+                    Me.RaisePropertyChanged("CountryCode")
+                End If
+            End Set
+        End Property
+        
+        <System.Runtime.Serialization.DataMemberAttribute()>  _
+        Public Property ServiceCenterId() As System.Guid
+            Get
+                Return Me.ServiceCenterIdField
+            End Get
+            Set
+                If (Me.ServiceCenterIdField.Equals(value) <> true) Then
+                    Me.ServiceCenterIdField = value
+                    Me.RaisePropertyChanged("ServiceCenterId")
+                End If
+            End Set
+        End Property
+        
+        <System.Runtime.Serialization.DataMemberAttribute(Order:=2)>  _
+        Public Property ServiceCenterCode() As String
+            Get
+                Return Me.ServiceCenterCodeField
+            End Get
+            Set
+                If (Object.ReferenceEquals(Me.ServiceCenterCodeField, value) <> true) Then
+                    Me.ServiceCenterCodeField = value
+                    Me.RaisePropertyChanged("ServiceCenterCode")
+                End If
+            End Set
+        End Property
+        
+        <System.Runtime.Serialization.DataMemberAttribute(Order:=3)>  _
+        Public Property Name() As String
+            Get
+                Return Me.NameField
+            End Get
+            Set
+                If (Object.ReferenceEquals(Me.NameField, value) <> true) Then
+                    Me.NameField = value
+                    Me.RaisePropertyChanged("Name")
+                End If
+            End Set
+        End Property
+        
+        <System.Runtime.Serialization.DataMemberAttribute(Order:=4)>  _
+        Public Property Address1() As String
+            Get
+                Return Me.Address1Field
+            End Get
+            Set
+                If (Object.ReferenceEquals(Me.Address1Field, value) <> true) Then
+                    Me.Address1Field = value
+                    Me.RaisePropertyChanged("Address1")
+                End If
+            End Set
+        End Property
+        
+        <System.Runtime.Serialization.DataMemberAttribute(Order:=5)>  _
+        Public Property Address2() As String
+            Get
+                Return Me.Address2Field
+            End Get
+            Set
+                If (Object.ReferenceEquals(Me.Address2Field, value) <> true) Then
+                    Me.Address2Field = value
+                    Me.RaisePropertyChanged("Address2")
+                End If
+            End Set
+        End Property
+        
+        <System.Runtime.Serialization.DataMemberAttribute(Order:=6)>  _
+        Public Property Address3() As String
+            Get
+                Return Me.Address3Field
+            End Get
+            Set
+                If (Object.ReferenceEquals(Me.Address3Field, value) <> true) Then
+                    Me.Address3Field = value
+                    Me.RaisePropertyChanged("Address3")
+                End If
+            End Set
+        End Property
+        
+        <System.Runtime.Serialization.DataMemberAttribute(Order:=7)>  _
+        Public Property RegionCode() As String
+            Get
+                Return Me.RegionCodeField
+            End Get
+            Set
+                If (Object.ReferenceEquals(Me.RegionCodeField, value) <> true) Then
+                    Me.RegionCodeField = value
+                    Me.RaisePropertyChanged("RegionCode")
+                End If
+            End Set
+        End Property
+        
+        <System.Runtime.Serialization.DataMemberAttribute(Order:=8)>  _
+        Public Property City() As String
+            Get
+                Return Me.CityField
+            End Get
+            Set
+                If (Object.ReferenceEquals(Me.CityField, value) <> true) Then
+                    Me.CityField = value
+                    Me.RaisePropertyChanged("City")
+                End If
+            End Set
+        End Property
+        
+        <System.Runtime.Serialization.DataMemberAttribute(Order:=9)>  _
+        Public Property PostalCode() As String
+            Get
+                Return Me.PostalCodeField
+            End Get
+            Set
+                If (Object.ReferenceEquals(Me.PostalCodeField, value) <> true) Then
+                    Me.PostalCodeField = value
+                    Me.RaisePropertyChanged("PostalCode")
+                End If
+            End Set
+        End Property
+        
+        <System.Runtime.Serialization.DataMemberAttribute(Order:=10)>  _
+        Public Property Manufacturer() As String
+            Get
+                Return Me.ManufacturerField
+            End Get
+            Set
+                If (Object.ReferenceEquals(Me.ManufacturerField, value) <> true) Then
+                    Me.ManufacturerField = value
+                    Me.RaisePropertyChanged("Manufacturer")
+                End If
+            End Set
+        End Property
+        
+        <System.Runtime.Serialization.DataMemberAttribute(Order:=11)>  _
+        Public Property Pref() As String
+            Get
+                Return Me.PrefField
+            End Get
+            Set
+                If (Object.ReferenceEquals(Me.PrefField, value) <> true) Then
+                    Me.PrefField = value
+                    Me.RaisePropertyChanged("Pref")
+                End If
+            End Set
+        End Property
+        
+        <System.Runtime.Serialization.DataMemberAttribute(Order:=12)>  _
+        Public Property Rank() As String
+            Get
+                Return Me.RankField
+            End Get
+            Set
+                If (Object.ReferenceEquals(Me.RankField, value) <> true) Then
+                    Me.RankField = value
+                    Me.RaisePropertyChanged("Rank")
+                End If
+            End Set
+        End Property
+        
+        <System.Runtime.Serialization.DataMemberAttribute(Order:=13)>  _
+        Public Property Selected() As Boolean
+            Get
+                Return Me.SelectedField
+            End Get
+            Set
+                If (Me.SelectedField.Equals(value) <> true) Then
+                    Me.SelectedField = value
+                    Me.RaisePropertyChanged("Selected")
+                End If
+            End Set
+        End Property
+        
+        Public Event PropertyChanged As System.ComponentModel.PropertyChangedEventHandler Implements System.ComponentModel.INotifyPropertyChanged.PropertyChanged
+        
+        Protected Sub RaisePropertyChanged(ByVal propertyName As String)
+            Dim propertyChanged As System.ComponentModel.PropertyChangedEventHandler = Me.PropertyChangedEvent
+            If (Not (propertyChanged) Is Nothing) Then
+                propertyChanged(Me, New System.ComponentModel.PropertyChangedEventArgs(propertyName))
+            End If
+        End Sub
+    End Class
+    
     <System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0"),  _
      System.ServiceModel.ServiceContractAttribute([Namespace]:="http://assurant.com/Elita/ClaimFulfillment/WebAppGateway", ConfigurationName:="ClaimFulfillmentWebAppGatewayService.WebAppGateway")>  _
     Public Interface WebAppGateway
@@ -2068,6 +2518,16 @@ Namespace ClaimFulfillmentWebAppGatewayService
             "llment", ReplyAction:="http://assurant.com/Elita/ClaimFulfillment/WebAppGateway/WebAppGateway/BeginFulfi"& _ 
             "llmentResponse")>  _
         Function BeginFulfillmentAsync(ByVal request As ClaimFulfillmentWebAppGatewayService.BeginFulfillmentRequest) As System.Threading.Tasks.Task(Of ClaimFulfillmentWebAppGatewayService.BeginFulfillmentResponse)
+        
+        <System.ServiceModel.OperationContractAttribute(Action:="http://assurant.com/Elita/ClaimFulfillment/WebAppGateway/WebAppGateway/SearchServ"& _ 
+            "iceCenters", ReplyAction:="http://assurant.com/Elita/ClaimFulfillment/WebAppGateway/WebAppGateway/SearchServ"& _ 
+            "iceCentersResponse")>  _
+        Function SearchServiceCenters(ByVal request As ClaimFulfillmentWebAppGatewayService.FulfillmentServiceCentersRequest) As ClaimFulfillmentWebAppGatewayService.FulfillmentServicesCenter()
+        
+        <System.ServiceModel.OperationContractAttribute(Action:="http://assurant.com/Elita/ClaimFulfillment/WebAppGateway/WebAppGateway/SearchServ"& _ 
+            "iceCenters", ReplyAction:="http://assurant.com/Elita/ClaimFulfillment/WebAppGateway/WebAppGateway/SearchServ"& _ 
+            "iceCentersResponse")>  _
+        Function SearchServiceCentersAsync(ByVal request As ClaimFulfillmentWebAppGatewayService.FulfillmentServiceCentersRequest) As System.Threading.Tasks.Task(Of ClaimFulfillmentWebAppGatewayService.FulfillmentServicesCenter())
     End Interface
     
     <System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")>  _
@@ -2131,6 +2591,14 @@ Namespace ClaimFulfillmentWebAppGatewayService
         
         Public Function BeginFulfillmentAsync(ByVal request As ClaimFulfillmentWebAppGatewayService.BeginFulfillmentRequest) As System.Threading.Tasks.Task(Of ClaimFulfillmentWebAppGatewayService.BeginFulfillmentResponse) Implements ClaimFulfillmentWebAppGatewayService.WebAppGateway.BeginFulfillmentAsync
             Return MyBase.Channel.BeginFulfillmentAsync(request)
+        End Function
+        
+        Public Function SearchServiceCenters(ByVal request As ClaimFulfillmentWebAppGatewayService.FulfillmentServiceCentersRequest) As ClaimFulfillmentWebAppGatewayService.FulfillmentServicesCenter() Implements ClaimFulfillmentWebAppGatewayService.WebAppGateway.SearchServiceCenters
+            Return MyBase.Channel.SearchServiceCenters(request)
+        End Function
+        
+        Public Function SearchServiceCentersAsync(ByVal request As ClaimFulfillmentWebAppGatewayService.FulfillmentServiceCentersRequest) As System.Threading.Tasks.Task(Of ClaimFulfillmentWebAppGatewayService.FulfillmentServicesCenter()) Implements ClaimFulfillmentWebAppGatewayService.WebAppGateway.SearchServiceCentersAsync
+            Return MyBase.Channel.SearchServiceCentersAsync(request)
         End Function
     End Class
 End Namespace

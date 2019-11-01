@@ -21,6 +21,7 @@ Public Class CoverageDAL
     Public Const COL_NAME_COVERAGE_TYPE_ID As String = "coverage_type_id"
     Public Const COL_NAME_ITEM_ID As String = "item_id"
     Public Const COL_NAME_METHOD_OF_REPAIR_ID As String = "method_of_repair_id"
+    Public Const COL_NAME_FULFILLMENT_PROFILE_CODE As String = "fulfillment_profile_code"
     Public Const COL_NAME_PRODUCT_ITEM_ID As String = "product_item_id"
     Public Const COL_NAME_CERTIFICATE_DURATION As String = "certificate_duration"
     Public Const COL_NAME_COVERAGE_DURATION As String = "coverage_duration"
