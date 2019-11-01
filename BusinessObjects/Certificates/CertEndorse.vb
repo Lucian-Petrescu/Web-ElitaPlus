@@ -953,7 +953,7 @@ Public Class CertEndorse
     '    End Get
     'End Property
 
-    Public ReadOnly Property AssociatedItemCoverages() As BusinessObjectListBase
+    Public ReadOnly Property AssociatedItemCoverages(Optional blnParentOnly As Boolean = False) As BusinessObjectListBase
         Get
 
             Dim oDealer As New Dealer(Me.Cert.DealerId)

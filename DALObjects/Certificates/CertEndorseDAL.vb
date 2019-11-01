@@ -266,9 +266,10 @@ Public Class CertEndorseDAL
 
             If IsDealerEndorsementAttributeFlagOn(dealerId) <> "Y" Then
                 Update(familyDataset.Tables(Me.TABLE_NAME), tr, DataRowState.Added Or DataRowState.Modified)
-                itemcoverageDA.Update(familyDataset, tr, DataRowState.Added Or DataRowState.Modified)
                 endorsecovDAL.Update(familyDataset, tr, DataRowState.Added Or DataRowState.Modified)
             End If
+
+            itemcoverageDA.Update(familyDataset, tr, DataRowState.Added Or DataRowState.Modified)
 
             If Transaction Is Nothing Then
                 'We are the creator of the transaction we shoul commit it  and close the connection
