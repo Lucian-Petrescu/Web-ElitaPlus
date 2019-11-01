@@ -78,9 +78,12 @@ Public Class ClaimWizardForm
     Public Const Manufacture As String = "M"
     Public Const PDF_URL As String = "DisplayPdf.aspx?ImageId="
     Public Const GRID_COL_CREATED_DATE_IDX As Integer = 1
+    Public Const GRID_COL_PROCESSED_DATE_IDX As Integer = 3
     Public Const GRIDCLA_COL_STATUS_CODE_IDX As Integer = 4
     Public Const GRIDCLA_COL_AMOUNT_IDX As Integer = 2
     Public Const GRID_COL_STATUS_CODE_IDX As Integer = 5
+    Public Const CaseQuestionAnswerGridColQuestionIdx As Integer = 2
+    Public Const CaseQuestionAnswerGridColAnswerIdx As Integer = 3
     Public Const CaseQuestionAnswerGridColCreationDateIdx As Integer = 4
     Public Const CLAIM_ISSUE_LIST As String = "CLMISSUESTATUS"
     Public Const SELECT_ACTION_COMMAND As String = "SelectAction"
@@ -3717,18 +3720,22 @@ Public Class ClaimWizardForm
                     btnEditItem.CommandName = SELECT_ACTION_COMMAND
                     btnEditItem.Text = dvRow(Claim.ClaimIssuesView.COL_ISSUE_DESC).ToString
                 End If
-
-                e.Row.Cells(Me.GRID_COL_CREATED_DATE_IDX).Text = GetLongDate12FormattedStringNullable(dvRow(Claim.ClaimIssuesView.COL_CREATED_DATE).ToString)
+                If String.IsNullOrWhiteSpace(dvRow(Claim.ClaimIssuesView.COL_CREATED_DATE).ToString) = False Then
+                    e.Row.Cells(Me.GRID_COL_CREATED_DATE_IDX).Text = GetLongDate12FormattedStringNullable(dvRow(Claim.ClaimIssuesView.COL_CREATED_DATE).ToString)
+                End If
+                If String.IsNullOrWhiteSpace(dvRow(Claim.ClaimIssuesView.COL_PROCESSED_DATE).ToString) = False Then
+                    e.Row.Cells(Me.GRID_COL_PROCESSED_DATE_IDX).Text = GetLongDate12FormattedStringNullable(dvRow(Claim.ClaimIssuesView.COL_PROCESSED_DATE).ToString)
+                End If
                 ' Convert short status codes to full description with css
                 e.Row.Cells(Me.GRID_COL_STATUS_CODE_IDX).Text = LookupListNew.GetDescriptionFromCode(CLAIM_ISSUE_LIST, dvRow(Claim.ClaimIssuesView.COL_STATUS_CODE).ToString)
-                If (dvRow(Claim.ClaimIssuesView.COL_STATUS_CODE).ToString = Codes.CLAIMISSUE_STATUS__RESOLVED Or
+                    If (dvRow(Claim.ClaimIssuesView.COL_STATUS_CODE).ToString = Codes.CLAIMISSUE_STATUS__RESOLVED Or
                     dvRow(Claim.ClaimIssuesView.COL_STATUS_CODE).ToString = Codes.CLAIMISSUE_STATUS__WAIVED) Then
-                    e.Row.Cells(Me.GRID_COL_STATUS_CODE_IDX).CssClass = "StatActive"
-                Else
-                    e.Row.Cells(Me.GRID_COL_STATUS_CODE_IDX).CssClass = "StatInactive"
-                End If
+                        e.Row.Cells(Me.GRID_COL_STATUS_CODE_IDX).CssClass = "StatActive"
+                    Else
+                        e.Row.Cells(Me.GRID_COL_STATUS_CODE_IDX).CssClass = "StatInactive"
+                    End If
 
-            End If
+                End If
         Catch ex As Exception
             Me.HandleErrors(ex, Me.MasterPage.MessageController)
         End Try
@@ -3975,11 +3982,33 @@ Public Class ClaimWizardForm
                     Dim formattedCreationDate = GetLongDate12FormattedString(tempCreationDate)
                     e.Row.Cells(CaseQuestionAnswerGridColCreationDateIdx).Text = Convert.ToString(formattedCreationDate)
                 End If
-            End If
+
+                Dim answerValue = e.Row.Cells(CaseQuestionAnswerGridColAnswerIdx).Text
+                    If String.IsNullOrWhiteSpace(answerValue) = False Then
+                    If (CheckDateAnswer(answerValue) = True) Then
+                        e.Row.Cells(CaseQuestionAnswerGridColAnswerIdx).Text = GetDateFormattedStringNullable(e.Row.Cells(CaseQuestionAnswerGridColAnswerIdx).Text)
+                    End If
+                End If
+
+                End If
         Catch ex As Exception
             HandleErrors(ex, MasterPage.MessageController)
         End Try
     End Sub
+
+    Private Function CheckDateAnswer(strInput As String) As Boolean
+
+        Dim formatProvider = LocalizationMgr.CurrentFormatProvider
+        Dim strOutput As String = Nothing
+        If IsDate(strInput) Then
+            CheckDateAnswer = True
+        Else
+            CheckDateAnswer = False
+        End If
+
+        Return CheckDateAnswer
+
+    End Function
 #End Region
 
 #Region "Claim Consequential Damage Related Functions"

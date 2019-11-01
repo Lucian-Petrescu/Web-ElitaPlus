@@ -5541,6 +5541,7 @@
     <Content Include="Admin\InterfaceSplitRuleListForm.aspx" />
     <Content Include="App_Themes\Default\Images\ajax-loader.gif" />
     <Content Include="App_Themes\Default\Images\altBtnBg.png" />
+    <Content Include="App_Themes\Default\Images\Assurant_horz_logo_RGB.png" />
     <Content Include="App_Themes\Default\Images\bg_select.gif" />
     <Content Include="App_Themes\Default\Images\bg_success.png" />
     <Content Include="App_Themes\Default\Images\Bread_arrow.png" />
@@ -5705,6 +5706,7 @@
     <Content Include="Interfaces\VendorInventoryFileForm.aspx" />
     <Content Include="Interfaces\VendorInventoryReconWrkForm.aspx" />
     <Content Include="Navigation\fonts\fontawesome-webfont.svg" />
+    <Content Include="Navigation\images\Assurant_horz_logo_RGB.png" />
     <Content Include="Navigation\images\countries\new2_DomicanRepublicSplash.jpg" />
     <Content Include="Navigation\images\countries\new2_FranceSplash.jpg" />
     <Content Include="Navigation\images\countries\new2_HungarySplash.jpg" />
