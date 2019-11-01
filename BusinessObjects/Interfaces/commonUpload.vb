@@ -45,9 +45,9 @@
         Return dal.LoadProcessingError(strUploadType).Tables(0).DefaultView
     End Function
 
-    Public Shared Sub ExtractReport(strUploadType As String, ByVal strUserEmailAddress As String)
+    Public Shared Sub ExtractReport(strUploadType As String, ByVal strUserEmailAddress As String, ByVal strCompanyGroupCode As String)
         Dim dal As New commonUploadDAL
-        dal.ExtractReportFile(strUploadType, strUserEmailAddress)
+        dal.ExtractReportFile(strUploadType, strUserEmailAddress, strCompanyGroupCode)
 
     End Sub
 End Class

@@ -235,13 +235,13 @@ Public Class ReactivateUploadForm
         strUploadType = ddlUploadType.SelectedValue.Trim
 
         Try
-            Dim strEmailAddress As String
-            strEmailAddress = ElitaPlusIdentity.Current.EmailAddress
+            Dim strEmailAddress As String = ElitaPlusIdentity.Current.EmailAddress
+            Dim strCompanyGroupCode As String = ElitaPlusIdentity.Current.ActiveUser.CompanyGroup.Code
 
             If String.IsNullOrEmpty(strEmailAddress) Then
                 Me.DisplayMessage(Message.MSG_Email_not_configured, "", Me.MSG_BTN_OK, Me.MSG_TYPE_ALERT, , True)
             Else
-                commonUpload.ExtractReport(strUploadType, strEmailAddress)
+                commonUpload.ExtractReport(strUploadType, strEmailAddress, strCompanyGroupCode)
                 Me.DisplayMessage(Message.MSG_REPORT_REQUEST_IS_GENERATED, "", Me.MSG_BTN_OK, Me.MSG_TYPE_ALERT, , True)
             End If
 
