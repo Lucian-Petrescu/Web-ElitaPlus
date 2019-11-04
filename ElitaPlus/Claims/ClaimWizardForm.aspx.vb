@@ -168,7 +168,7 @@ Public Class ClaimWizardForm
         Public ClaimActionListDV As CaseAction.CaseActionDV = Nothing
         Public ClaimCaseDeviceInfoDV As DataView = Nothing
 
-        Public IsCallerAuthenticated As boolean = False
+        Public IsCallerAuthenticated As Boolean = False
     End Class
 
     Public Enum LocateServiceCenterSearchType
@@ -199,7 +199,7 @@ Public Class ClaimWizardForm
                 Me.State.InputParameters = CType(Me.CallingParameters, Parameters)
                 Me.State.StepName = Me.State.InputParameters.StepNumber
                 Me.State.EntryStep = Me.State.StepName
-                Me.State.IsCallerAuthenticated = Me.State.InputParameters.isCallerAuthenticated
+                Me.State.IsCallerAuthenticated = Me.State.InputParameters.IsCallerAuthenticated
             End If
         Catch ex As Exception
             Me.HandleErrors(ex, Me.MasterPage.MessageController)
@@ -215,7 +215,7 @@ Public Class ClaimWizardForm
 
                     If (Me.State.ClaimBO.Status = BasicClaimStatus.Active OrElse Me.State.ClaimBO.Status = BasicClaimStatus.Denied) Then
                         '//TO-DO: Navigate to Claim Details page (ClaimForm.aspx)                        
-                        Me.callPage(ClaimForm.URL, New ClaimForm.Parameters(Me.State.ClaimBO.Id,Me.State.IsCallerAuthenticated))
+                        Me.callPage(ClaimForm.URL, New ClaimForm.Parameters(Me.State.ClaimBO.Id, Me.State.IsCallerAuthenticated))
                     End If
                 End If
             End If
@@ -230,7 +230,7 @@ Public Class ClaimWizardForm
         Public EditingBo As Certificate
         Public BoChanged As Boolean = False
         Public IsCallerAuthenticated As Boolean = False
-        Public Sub New(ByVal LastOp As DetailPageCommand, ByVal curEditingBo As Certificate, Optional ByVal boChanged As Boolean = False,Optional byval IsCallerAuthenticated As Boolean = False)
+        Public Sub New(ByVal LastOp As DetailPageCommand, ByVal curEditingBo As Certificate, Optional ByVal boChanged As Boolean = False, Optional ByVal IsCallerAuthenticated As Boolean = False)
             Me.LastOperation = LastOp
             Me.EditingBo = curEditingBo
             Me.BoChanged = boChanged
@@ -251,7 +251,7 @@ Public Class ClaimWizardForm
         Public ComingFromDenyClaim As Boolean = False
         Public ClaimBo As ClaimBase = Nothing
         Public claimId As Guid = Guid.Empty
-        Public IsCallerAuthenticated As boolean = False
+        Public IsCallerAuthenticated As Boolean = False
 
         Public Sub New(ByVal stepNumber As ClaimWizardSteps, ByVal certificateId As Guid, ByVal claimId As Guid, ByVal claim As ClaimBase, Optional ByVal showWizard As Boolean = False, Optional ByVal comingFromDenyClaim As Boolean = False, Optional IsCallerAuthenticated As Boolean = False)
             Me.StepNumber = stepNumber
@@ -502,6 +502,21 @@ Public Class ClaimWizardForm
                                                 Function(ByVal lc As LegacyBridgeServiceClient)
                                                     Return lc.BenefitClaimPreCheck(GuidControl.ByteArrayToGuid(hasBenefit(0)("case_Id")).ToString())
                                                 End Function)
+
+                                            If (Not benefitCheckResponse Is Nothing) Then
+                                                Me.State.ClaimBO.Status = If(benefitCheckResponse.StatusDecision = LegacyBridgeStatusDecisionEnum.Approve, BasicClaimStatus.Active, BasicClaimStatus.Pending)
+                                                If (benefitCheckResponse.StatusDecision = LegacyBridgeStatusDecisionEnum.Deny) Then
+                                                    Dim issueId As Guid = LookupListNew.GetIssueTypeIdFromCode(LookupListNew.LK_ISSUES, "PRECKFAIL")
+                                                    Dim newClaimIssue As ClaimIssue = CType(Me.State.ClaimBO.ClaimIssuesList.GetNewChild, BusinessObjectsNew.ClaimIssue)
+                                                    newClaimIssue.SaveNewIssue(Me.State.ClaimBO.Id, issueId, Me.State.ClaimBO.Certificate.Id, True)
+                                                End If
+                                            Else
+                                                Me.State.ClaimBO.Status = BasicClaimStatus.Pending
+                                                Dim issueId As Guid = LookupListNew.GetIssueTypeIdFromCode(LookupListNew.LK_ISSUES, "PRECK")
+                                                Dim newClaimIssue As ClaimIssue = CType(Me.State.ClaimBO.ClaimIssuesList.GetNewChild, BusinessObjectsNew.ClaimIssue)
+                                                newClaimIssue.SaveNewIssue(Me.State.ClaimBO.Id, issueId, Me.State.ClaimBO.Certificate.Id, True)
+                                            End If
+
                                         Catch ex As Exception
                                             Log(ex)
                                             Me.State.ClaimBO.Status = BasicClaimStatus.Pending
@@ -509,20 +524,6 @@ Public Class ClaimWizardForm
                                             Dim newClaimIssue As ClaimIssue = CType(Me.State.ClaimBO.ClaimIssuesList.GetNewChild, BusinessObjectsNew.ClaimIssue)
                                             newClaimIssue.SaveNewIssue(Me.State.ClaimBO.Id, issueId, Me.State.ClaimBO.Certificate.Id, True)
                                         End Try
-
-                                        If (Not benefitCheckResponse Is Nothing) Then
-                                            Me.State.ClaimBO.Status = If(benefitCheckResponse.StatusDecision = LegacyBridgeStatusDecisionEnum.Approve, BasicClaimStatus.Active, BasicClaimStatus.Pending)
-                                            If (benefitCheckResponse.StatusDecision = LegacyBridgeStatusDecisionEnum.Deny) Then
-                                                Dim issueId As Guid = LookupListNew.GetIssueTypeIdFromCode(LookupListNew.LK_ISSUES, "PRECKFAIL")
-                                                Dim newClaimIssue As ClaimIssue = CType(Me.State.ClaimBO.ClaimIssuesList.GetNewChild, BusinessObjectsNew.ClaimIssue)
-                                                newClaimIssue.SaveNewIssue(Me.State.ClaimBO.Id, issueId, Me.State.ClaimBO.Certificate.Id, True)
-                                            End If
-                                        Else
-                                            Me.State.ClaimBO.Status = BasicClaimStatus.Pending
-                                            Dim issueId As Guid = LookupListNew.GetIssueTypeIdFromCode(LookupListNew.LK_ISSUES, "PRECK")
-                                            Dim newClaimIssue As ClaimIssue = CType(Me.State.ClaimBO.ClaimIssuesList.GetNewChild, BusinessObjectsNew.ClaimIssue)
-                                            newClaimIssue.SaveNewIssue(Me.State.ClaimBO.Id, issueId, Me.State.ClaimBO.Certificate.Id, True)
-                                        End If
                                     End If
                                 End If
                             End If
@@ -552,7 +553,7 @@ Public Class ClaimWizardForm
                                 New List(Of Object) From {New InteractiveUserHeader() With {.LanId = Authentication.CurrentUser.NetworkId}},
                                 Function(ByVal c As ClaimServiceClient)
                                     Return c.NewClaimEntitled(wsRequest)
-                                                                                                                                    End Function)
+                                End Function)
 
                             If wsResponse.IsNewClaimEntitled = False Then 'deny the claim with the denial reason returned
                                 State.ClaimBO.Status = BasicClaimStatus.Denied
@@ -2066,7 +2067,7 @@ Public Class ClaimWizardForm
     End Sub
 
     Private Sub ReturnBackToCallingPage()
-        Dim retObj As ReturnType = New ReturnType(ElitaPlusPage.DetailPageCommand.Back, Me.State.CertBO,,State.IsCallerAuthenticated)
+        Dim retObj As ReturnType = New ReturnType(ElitaPlusPage.DetailPageCommand.Back, Me.State.CertBO,, State.IsCallerAuthenticated)
         MyBase.ReturnToCallingPage(retObj)
     End Sub
 
@@ -2388,11 +2389,11 @@ Public Class ClaimWizardForm
             State.ClaimCaseDeviceInfoDV = ClaimBase.GetClaimCaseDeviceInfo(State.ClaimBO.Id)
         End If
         If State.ClaimCaseDeviceInfoDV.Count > 0 Then
-            Me.gridClaimCaseDeviceInfo.visible = True
+            Me.gridClaimCaseDeviceInfo.Visible = True
             gridClaimCaseDeviceInfo.DataSource = State.ClaimCaseDeviceInfoDV
-            gridClaimCaseDeviceInfo.DataBind
+            gridClaimCaseDeviceInfo.DataBind()
         End If
-        
+
         If Me.State.ClaimBO.CertificateItem.IsEquipmentRequired Then
             If Not Me.State.ClaimBO.EnrolledEquipment Is Nothing Then
                 With Me.State.ClaimBO.EnrolledEquipment
@@ -3727,14 +3728,14 @@ Public Class ClaimWizardForm
                 End If
                 ' Convert short status codes to full description with css
                 e.Row.Cells(Me.GRID_COL_STATUS_CODE_IDX).Text = LookupListNew.GetDescriptionFromCode(CLAIM_ISSUE_LIST, dvRow(Claim.ClaimIssuesView.COL_STATUS_CODE).ToString)
-                    If (dvRow(Claim.ClaimIssuesView.COL_STATUS_CODE).ToString = Codes.CLAIMISSUE_STATUS__RESOLVED Or
-                    dvRow(Claim.ClaimIssuesView.COL_STATUS_CODE).ToString = Codes.CLAIMISSUE_STATUS__WAIVED) Then
-                        e.Row.Cells(Me.GRID_COL_STATUS_CODE_IDX).CssClass = "StatActive"
-                    Else
-                        e.Row.Cells(Me.GRID_COL_STATUS_CODE_IDX).CssClass = "StatInactive"
-                    End If
-
+                If (dvRow(Claim.ClaimIssuesView.COL_STATUS_CODE).ToString = Codes.CLAIMISSUE_STATUS__RESOLVED Or
+                dvRow(Claim.ClaimIssuesView.COL_STATUS_CODE).ToString = Codes.CLAIMISSUE_STATUS__WAIVED) Then
+                    e.Row.Cells(Me.GRID_COL_STATUS_CODE_IDX).CssClass = "StatActive"
+                Else
+                    e.Row.Cells(Me.GRID_COL_STATUS_CODE_IDX).CssClass = "StatInactive"
                 End If
+
+            End If
         Catch ex As Exception
             Me.HandleErrors(ex, Me.MasterPage.MessageController)
         End Try
@@ -3983,13 +3984,13 @@ Public Class ClaimWizardForm
                 End If
 
                 Dim answerValue = e.Row.Cells(CaseQuestionAnswerGridColAnswerIdx).Text
-                    If String.IsNullOrWhiteSpace(answerValue) = False Then
+                If String.IsNullOrWhiteSpace(answerValue) = False Then
                     If (CheckDateAnswer(answerValue) = True) Then
                         e.Row.Cells(CaseQuestionAnswerGridColAnswerIdx).Text = GetDateFormattedStringNullable(e.Row.Cells(CaseQuestionAnswerGridColAnswerIdx).Text)
                     End If
                 End If
 
-                End If
+            End If
         Catch ex As Exception
             HandleErrors(ex, MasterPage.MessageController)
         End Try
