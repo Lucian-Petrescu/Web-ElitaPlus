@@ -983,8 +983,11 @@
                                             </td>
                                         </tr>
                                         <tr>                                             											
-                                            <td></td>
-                                            <td></td>
+                                            <td align="right">
+                                                <asp:Label ID="lblServiceCenter" runat="server" Text="SERVICE_CENTER"> </asp:Label>
+                                            </td>
+                                            <td><asp:TextBox ID="txtServiceCenter" runat="server" ReadOnly="true" 
+                                                             SkinID="MediumTextBox"></asp:TextBox></td>
                                             <td align="right">
                                                 <asp:Label ID="lblPostalCode" runat="server" Text="POSTAL_CODE" > </asp:Label>
                                             </td>
