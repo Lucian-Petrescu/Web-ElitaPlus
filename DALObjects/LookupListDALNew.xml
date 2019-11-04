@@ -4105,6 +4105,17 @@
       ORDER by cg.code  
      ]]>
   </GET_COMPANY_GROUPS>
+  
+   <CLAIM_PAY_DEDUCTIBLE>
+      SELECT
+      i.list_item_id id, i.code description, i.code
+      FROM
+      elita.elp_list_item i, elita.elp_list l
+      WHERE
+      i.list_id = l.list_id
+      AND upper(l.code)= 'CLAIM_PAY_DEDUCTIBLE'
+    </CLAIM_PAY_DEDUCTIBLE>
+
   </LOOKUP_LIST>
   
 

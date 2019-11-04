@@ -476,7 +476,7 @@ Public NotInheritable Class VendorAuthorizationFileLoad
                         End If
                         oClaimAuthItem.Amount = Math.Min(reconRecord.LaborAmount.Value, originalAuthorizedAmount)
                         oClaimAuthItem.Save()
-                        If (claimAuthorization.ContainsDeductible AndAlso claimAuthorization.Claim.Dealer.PayDeductibleId = LookupListNew.GetIdFromCode(LookupListNew.GetYesNoLookupList(Authentication.LangId), "Y")) Then
+                        If (claimAuthorization.ContainsDeductible AndAlso claimAuthorization.Claim.Dealer.PayDeductibleId = LookupListNew.GetIdFromCode(LookupListNew.GetPayDeductLookupList(Authentication.LangId), Codes.AUTH_LESS_DEDUCT_Y)) Then
                             claimAuthorization.AddDeductibleLineItem()
                         End If
                         UpdateClaimAuthorization(claimAuthorization, reconRecord)
@@ -531,7 +531,7 @@ Public NotInheritable Class VendorAuthorizationFileLoad
                         End If
                         oClaimAuthItem.Amount = Math.Min(reconRecord.LaborAmount.Value, originalAuthorizedAmount)
                         oClaimAuthItem.Save()
-                        If (claimAuthorization.ContainsDeductible AndAlso claimAuthorization.Claim.Dealer.PayDeductibleId = LookupListNew.GetIdFromCode(LookupListNew.GetYesNoLookupList(Authentication.LangId), "Y")) Then
+                        If (claimAuthorization.ContainsDeductible AndAlso claimAuthorization.Claim.Dealer.PayDeductibleId = LookupListNew.GetIdFromCode(LookupListNew.GetPayDeductLookupList(Authentication.LangId), Codes.AUTH_LESS_DEDUCT_Y)) Then
                             claimAuthorization.AddDeductibleLineItem()
                         End If
                         UpdateClaimAuthorization(claimAuthorization, reconRecord)
@@ -598,7 +598,7 @@ Public NotInheritable Class VendorAuthorizationFileLoad
                         End If
                         oClaimAuthItem.Amount = Math.Min(reconRecord.LaborAmount.Value, originalAuthorizedAmount)
                         oClaimAuthItem.Save()
-                        If (claimAuthorization.ContainsDeductible AndAlso claimAuthorization.Claim.Dealer.PayDeductibleId = LookupListNew.GetIdFromCode(LookupListNew.GetYesNoLookupList(Authentication.LangId), "Y")) Then
+                        If (claimAuthorization.ContainsDeductible AndAlso claimAuthorization.Claim.Dealer.PayDeductibleId = LookupListNew.GetIdFromCode(LookupListNew.GetPayDeductLookupList(Authentication.LangId), Codes.AUTH_LESS_DEDUCT_Y)) Then
                             claimAuthorization.AddDeductibleLineItem()
                         End If
                         UpdateClaimAuthorization(claimAuthorization, reconRecord)

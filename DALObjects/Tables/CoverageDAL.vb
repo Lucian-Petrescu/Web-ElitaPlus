@@ -21,6 +21,7 @@ Public Class CoverageDAL
     Public Const COL_NAME_COVERAGE_TYPE_ID As String = "coverage_type_id"
     Public Const COL_NAME_ITEM_ID As String = "item_id"
     Public Const COL_NAME_METHOD_OF_REPAIR_ID As String = "method_of_repair_id"
+    Public Const COL_NAME_FULFILLMENT_PROFILE_CODE As String = "fulfillment_profile_code"
     Public Const COL_NAME_PRODUCT_ITEM_ID As String = "product_item_id"
     Public Const COL_NAME_CERTIFICATE_DURATION As String = "certificate_duration"
     Public Const COL_NAME_COVERAGE_DURATION As String = "coverage_duration"
@@ -64,6 +65,8 @@ Public Class CoverageDAL
     Public Const COL_NAME_INUSEFLAG As String = "inuseflag"
     Public Const COL_NAME_COVERAGE_CLAIM_LIMIT As String = "cov_claim_limit"
     Public Const COL_NAME_PER_INCIDENT_LIABILITY_LIMIT_CAP As String = "liability_limit_per_incident"
+    Public Const COL_NAME_TAX_TYPE_XCD As String = "tax_type_XCD"
+    Public Const COL_NAME_DEALER_MARKUP As String = "dealer_markup_id"
 #End Region
 
 #Region "Constructors"

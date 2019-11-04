@@ -647,6 +647,7 @@ Public Class Codes
     Public Const SERVICE_TYPE_ISHOP_MEXICO As String = "ISHOP_MEXICO"
     Public Const SERVICE_TYPE_MAC_STORE As String = "MAC_STORE_MEXICO"
     Public Const SERVICE_TYPE__CLAIMS_FULFILLMENT_SERVICE As String = "CLAIM_FULFILLMENT_SERVICE"
+    Public Const SERVICE_TYPE__WEB_API_LOCKER_PASSCODE As String = "WEB_API_LOCKER_PASSCODE"
     Public Const SERVICE_TYPE__CLAIM_SERVICE As String = "CLAIM_SERVICE"
     Public Const SERVICE_TYPE__SVC_CERT_ENROLL As String = "SVC_CERT_ENROLL"
     Public Const SERVICE_TYPE__CLAIM_LEGACY_BRIDGE_SERVICE As String = "CLAIM_LEGACY_BRIDGE_SERVICE"
@@ -655,6 +656,7 @@ Public Class Codes
     Public Const SERVICE_TYPE__CLAIM_FULFILLMENT_WEB_APP_GATEWAY_SERVICE As String = "WEB_APP_GATEWAY_SERVICE"
     Public Const SERVICE_TYPE__FILE_ADMIN_SERVICE As String = "FILE_ADMIN_SERVICE"
     Public Const SERVICE_TYPE__CASE_MANAGEMENT_WEB_APP_GATEWAY_SERVICE As String = "CASE_MANAGEMENT_WEB_APP_GATEWAY_SERVICE"
+    Public Const SERVICE_TYPE__FILE_MANAGEMENT_ADMIN_SERVICE As String = "FILE_MANAGEMENT_ADMIN_SERVICE"
 
     'REQ-6230
     Public Const SERVICE_TYPE__CLAIMS_INDIX_SERVICE_PRODUCT_SEARCH As String = "INDIX_SERVICE_PRODUCT_SEARCH"
@@ -679,6 +681,7 @@ Public Class Codes
     ' Claim Image Codes
     Public Const CLAIM_IMAGE_PROCESSED As String = "PRC"
     Public Const CLAIM_IMAGE_PENDING As String = "PND"
+    Public Const HND_STORE_TYPE As String = "HND_STR_TYPE"
 
     'Customer Identifier Types
     Public Const CUSTOMER_IDENTIFIER_TYPE__SERIAL_NUMBER As String = "SERIALNUMBER"
@@ -917,6 +920,7 @@ Public Class Codes
     Public Const SFR_CR_DEATH As String = "104"
     Public Const SFR_CR_MOVINGABROAD As String = "105"
     Public Const SFR_CR_CHATELLAW As String = "106"
+    Public Const SFR_CR_HAMONLAW As String = "107"
 
     'Company Attributes
     Public Const COMP_ATTR__RPT_EXP_NOTIFY_EMAIL As String = "RPT_EXP_NOTIFY_EMAIL"
@@ -1061,6 +1065,8 @@ Public Class Codes
     ' Provider Types
     Public Const PROVIDER_TYPE__FULFILLMENT As String = "FULFILLMENT"
 
+    Public Const FULFILLMENT_FW_LOGISTIC_STAGE As String = "FW"
+
     ' Provider Types
     Public Const PROVIDER_CLASS_CODE__FULPROVORAEBS As String = "FULPROVORAEBS"
 
@@ -1104,5 +1110,10 @@ Public Class Codes
     'Dealer Contract Policy Number Generation Type (Auto or Mannual)
     Public Const CONTRACT_POLGEN_AUTOGENERATE As String = "AG"
     Public Const CONTRACT_POLGEN_MANUALENTER As String = "ME"
+
+    'claim payment based on deductible flag
+    Public Const FULL_INVOICE_Y As String = "Y_FULL_INVOICE"
+    Public Const AUTH_LESS_DEDUCT_Y As String = "Y_AUTH_LESS_DEDUCT"
+
 
 End Class

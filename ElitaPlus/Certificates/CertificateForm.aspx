@@ -39,7 +39,7 @@
     <script type="text/javascript">    
 
         $(function () {
-            debugger;
+         
             var initDisabledTabs = $("input[id$='hdnInitDisabledTabs']").val().split(',');
             $.each(initDisabledTabs, function () {
                 var ind = parseInt(this);
@@ -64,7 +64,7 @@
 
 
                     if (selectedTab == 9 && isCertHistLoaded == 0 && _isSubmitting == false) {
-                        debugger;
+                        
                         var prm = Sys.WebForms.PageRequestManager.getInstance();
                         if (prm != null) {
                             prm.add_endRequest(UpdatePanelLoaded);
@@ -350,6 +350,16 @@
                                         <asp:DropDownList ID="ddlPlaceOfBirth" runat="server" TabIndex="3" SkinID="MediumDropDown">
                                         </asp:DropDownList>
                                         <asp:TextBox ID="moPlaceOfBirthText" TabIndex="4" runat="server" SkinID="MediumTextBox"></asp:TextBox>
+                                    </td>
+                                </tr>
+                                <tr runat="server" id="moAMLRegulations4">
+                                    <td align="right"></td>
+                                    <td align="left"></td>
+                                    <td align="right">
+                                        <asp:Label ID="mocityOfBirthLabel" runat="server">CITY_OF_BIRTH</asp:Label>
+                                    </td>
+                                    <td align="left">
+                                        <asp:TextBox ID="moCityOfBirthText" TabIndex="4" runat="server" SkinID="MediumTextBox"></asp:TextBox>
                                     </td>
                                 </tr>
                                 <tr runat="server" id="moAMLRegulations2">
@@ -1089,7 +1099,12 @@
                                     </td>
                                     <td align="left">
                                         <asp:TextBox ID="moSalesTaxText" runat="server" SkinID="SmallTextBox" />
+                                        <asp:Label ID="lblTaxDetails" runat="server" ForeColor ="Blue"  Text="Tax_Details"> </asp:Label>
                                     </td>
+                                    <ajaxToolkit:HoverMenuExtender  ID="HoverMenuExtender1" runat="server" TargetControlID="lblTaxDetails" 
+                                         PopupControlID="PanTaxDetails" PopupPosition="right" PopDelay="25" HoverCssClass="popupBtnHover"
+                                         DynamicControlID="PanTaxDetails"  DynamicServiceMethod="GetSalesTaxDetails">
+                                     </ajaxToolkit:HoverMenuExtender>
                                 </tr>
                                 <tr>
                                     <td align="right">
@@ -2462,9 +2477,14 @@
             </div>
         </div>
     </asp:Panel>
+    <asp:Panel ID="PanTaxDetails" runat="server"  BackColor="#99ccff" ScrollBars="Auto" >
+         
+    </asp:Panel>
     <script type="text/javascript" language="javascript">
+       
         $(document).ready(function () {
             $('#OtherCustomerInfo').slideUp();
+           
         });
 
         $("#OthCustExpander").click(function () {
@@ -2511,7 +2531,7 @@
         }
 
         function TransformToHtmlText(xmlDoc, xsltDoc) {
-            debugger;
+          
             //FOR ie11 only
             var xslt = new ActiveXObject("Msxml2.XSLTemplate");
             var xslDoc = new ActiveXObject("Msxml2.FreeThreadedDOMDocument");

@@ -17,7 +17,8 @@
 				created_by,
 				modified_by,
 				region_tax_id,
-        dealer_id
+        dealer_id,
+        company_type_xcd
 			FROM elp_region_tax 
 			WHERE
 				region_tax_id = :region_tax_id
@@ -58,7 +59,8 @@
 				description = :description,
         product_tax_type_id = :product_tax_type_id,
 				modified_by = :modified_by,
-        dealer_id = :dealer_id
+        dealer_id = :dealer_id,
+        company_type_xcd =:company_type_xcd
 			WHERE
 				region_tax_id = :region_tax_id
 		]]>
@@ -74,7 +76,8 @@
     product_tax_type_id,
     created_by,
     region_tax_id,
-    dealer_id
+    dealer_id,
+    company_type_xcd
     )
     VALUES
     (
@@ -86,7 +89,8 @@
     :product_tax_type_id,
     :created_by,
     :region_tax_id,
-    :dealer_id
+    :dealer_id,
+    :company_type_xcd
     )
   </INSERT>
   <DELETE>

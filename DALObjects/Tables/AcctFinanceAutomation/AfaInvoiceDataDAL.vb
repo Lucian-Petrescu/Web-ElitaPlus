@@ -150,6 +150,7 @@ Public Class AfaInvoiceDataDAL
             MyBase.Update(ds.Tables(Me.TABLE_NAME), Transaction, changesFilter)
         End If
     End Sub
+
 #End Region
 
 

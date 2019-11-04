@@ -16,7 +16,7 @@ Public Class FalabellaIntegration
     Private _claimAuthorizationId As Guid
     Private Const EXT_STAT_COM_FB_CLM_UPD_THFT = "COM_FB_CLM_UPD_THFT"
     Private Const EXT_STAT_COM_FB_CLM_UPD_DMG = "COM_FB_CLM_UPD_DMG"
-    Private Const EXT_STAT_COMPENSATION_PROCESS_INITIATED = "COMPENSATION PROCESS INITIATED"
+    Private Const EXT_STAT_COMPENSATION_PROCESS_INITIATED = "CHLCOM1"
 
 
 
@@ -45,6 +45,8 @@ Public Class FalabellaIntegration
             OClaimId = GuidControl.ByteArrayToGuid(GuidControl.HexToByteArray(MyBase.PublishedTask(PublishedTask.CLAIM_ID)))
         End If
 
+        Logger.AddInfo("InvokeFalabellaService ClaimID: " + PublishedTask.CLAIM_ID)
+
         If (Not OClaimId.Equals(Guid.Empty)) Then
             OClaim = ClaimFacade.Instance.GetClaim(Of ClaimBase)(OClaimId)
             OCertificate = OClaim.Certificate
@@ -61,14 +63,14 @@ Public Class FalabellaIntegration
         If (OClaim.Status = BasicClaimStatus.Active OrElse OClaim.Status = BasicClaimStatus.Denied) Then
 
             'check whether the update has already happened from the extended status history
-            Dim dvClaimStatuses = ClaimStatus.GetClaimStatus(OClaim.Id)
+            Dim dvClaimStatuses = ClaimStatus.GetClaimStatusHistoryOnly(OClaim.Id)
 
             If (Not dvClaimStatuses Is Nothing) Then
                 'check whether the SLA extended status has already updated
                 If (OClaim.CertificateItemCoverage.CoverageTypeCode = Codes.COVERAGE_TYPE__THEFT) Then
-                    dvClaimStatuses.RowFilter = "extended_claim_status= '" & EXT_STAT_COM_FB_CLM_UPD_THFT & "'"
+                    dvClaimStatuses.RowFilter = "code= '" & EXT_STAT_COM_FB_CLM_UPD_THFT & "'"
                 Else
-                    dvClaimStatuses.RowFilter = "extended_claim_status= '" & EXT_STAT_COM_FB_CLM_UPD_DMG & "'"
+                    dvClaimStatuses.RowFilter = "code= '" & EXT_STAT_COM_FB_CLM_UPD_DMG & "'"
                 End If
 
                 'if no SLA status found
@@ -76,8 +78,12 @@ Public Class FalabellaIntegration
                     'get the status change date when the status is approved or denied
                     'If denied , get the latest  modified date from the claim
                     'if approved, get the extended status date 
+                    Dim statusChangeDate = If(OClaim.ModifiedDate = Nothing, OClaim.CreatedDate, OClaim.ModifiedDate)
+
                     If (OClaim.Status = BasicClaimStatus.Denied) Then
-                        If (Not UpdateFalabella(OClaim.ModifiedDate.Value) = String.Empty) Then
+                        Logger.AddInfo("InvokeFalabellaService denied statusChangeDate: " + statusChangeDate.ToString())
+
+                        If (Not UpdateFalabella(statusChangeDate) = String.Empty) Then
                             Return
                         Else
                             'update the final extended status for SLA
@@ -85,14 +91,27 @@ Public Class FalabellaIntegration
                         End If
 
                     ElseIf (OClaim.Status = BasicClaimStatus.Active) Then
+                        Logger.AddInfo("InvokeFalabellaService active statusChangeDate: " + statusChangeDate.ToString())
+
                         'if compensation process initiated extended status found then call 2nd web service
-                        dvClaimStatuses.RowFilter = "extended_claim_status= '" & EXT_STAT_COMPENSATION_PROCESS_INITIATED & "'"
+                        dvClaimStatuses.RowFilter = "code= '" & EXT_STAT_COMPENSATION_PROCESS_INITIATED & "'"
                         If (dvClaimStatuses.Count > 0) Then
-                            If (Not UpdateFalabella(CType(dvClaimStatuses(0)("status_date"), Date)) = String.Empty) Then
+                            Dim tDate As Date
+                            If (Not dvClaimStatuses(0)("status_date") Is Nothing And Not dvClaimStatuses(0)("status_date") Is DBNull.Value) Then
+                                'If (dvClaimStatuses(0)("status_date") Is Nothing Or Not dvClaimStatuses(0)("status_date") Is DBNull.Value) Then
+                                tDate = CType(dvClaimStatuses(0)("status_date"), Date)
+                            Else
+                                tDate = DateTime.MinValue
+
+                            End If
+
+                            If (Not UpdateFalabella(tDate) = String.Empty) Then
                                 Return
                             Else
                                 'update the final extended status for SLA
                                 UpdateClaimExtendedStatus(OClaim)
+                                Logger.AddInfo("InvokeFalabellaService UpdateClaimExtendedStatus: " + statusChangeDate.ToString())
+
                             End If
                         End If
 
@@ -115,6 +134,7 @@ Public Class FalabellaIntegration
 
             If (OClaim.CertificateItemCoverage.CoverageTypeCode = Codes.COVERAGE_TYPE__THEFT AndAlso String.IsNullOrEmpty(OClaim.RemAuthNumber)) Then
                 Dim oCountry As New Country(OClaim.Company.CountryId)
+                Dim name As String
 
                 With OClaim
                     request.CertificateNumber = .Certificate.CertNumber
@@ -135,6 +155,19 @@ Public Class FalabellaIntegration
                     request.VerificationNumber = If(.Certificate.IdentificationNumber.Length > 0, .Certificate.IdentificationNumber.Substring(Len(.Certificate.IdentificationNumber) - 1), String.Empty)
                     request.WarrantySalesDate = .Certificate.WarrantySalesDate.Value.ToShortDateString()
                     request.WorkPhone = .Certificate.WorkPhone
+
+                    name = .Certificate.CustomerName
+
+                    If (Not name Is Nothing And Not name Is DBNull.Value And name.IndexOf(" ") > 0) Then
+
+                        request.FirstName = name.Substring(0, name.IndexOf(" "))
+                        request.LastName = name.Substring(name.IndexOf(" "))
+
+                    Else
+                        request.FirstName = ""
+                        request.LastName = ""
+                    End If
+
                 End With
 
             End If
@@ -167,6 +200,7 @@ Public Class FalabellaIntegration
     End Function
 
     Private Function UpdateFalabella(StatusChangeDate As Date) As String
+        Logger.AddInfo("UpdateFalabella Status date: " + StatusChangeDate.ToString())
 
         Dim falabellaManager As IFalabellaServiceManager = New FalabellaServiceManager()
         Dim request As UpdateClaimInfoRequest = New UpdateClaimInfoRequest()
@@ -177,11 +211,11 @@ Public Class FalabellaIntegration
             With OClaim
                 request.AuthorizedAmount = If(OClaim.Status.ToString() = BasicClaimStatus.Denied.ToString(), "0", (CType(OCertificate.SalesPrice, Decimal) - CType(.Deductible, Decimal)).ToString())
                 request.ClaimNumber = OClaim.ClaimNumber
-                request.DenialReason = If(OClaim.Status.ToString() = BasicClaimStatus.Denied.ToString(), LookupListNew.GetCodeFromId(LookupListCache.LK_DENIED_REASON, .DeniedReasonId), String.Empty)
+                request.DenialReason = If(OClaim.Status.ToString() = BasicClaimStatus.Denied.ToString(), LookupListNew.GetDescriptionFromId(LookupListCache.LK_DENIED_REASON, .DeniedReasonId, True), String.Empty)
                 request.StatusChangeDate = StatusChangeDate
                 'request.WorkOrderFor = If(OClaim.Status.ToString() = BasicClaimStatus.Denied.ToString(), "Anulada", "Reemplazo Autorizado")
                 request.WorkOrderNumber = OClaim.RemAuthNumber
-
+                request.ClaimStatus = OClaim.Status.ToString()
             End With
 
             Try
@@ -240,7 +274,7 @@ Public Class FalabellaIntegration
     Private Function GetNationalityFromCounty(countryCode As String) As String
         If (countryCode = "CL") Then
             Return "Chilena"
-        ElseIf (CountryCode = "AR") Then
+        ElseIf (countryCode = "AR") Then
             Return "Argentina"
         ElseIf (countryCode = "CO") Then
             Return "Colombiana"

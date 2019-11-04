@@ -61,6 +61,7 @@ Namespace Certificates
         Public Const END_DATE_CONTROL_NAME As String = "lblEndDate"
         Private Const MONTH As String = "M"
         Private Const YES As String = "Y"
+        Private Const PAR As String = " "
 #End Region
 
 #Region "Parameters"
@@ -792,12 +793,11 @@ Namespace Certificates
 
                 With Me.State.MyBO
                     If .TermisDirty Or .ProductSalesDatesisDirty Or .WarrantySalesDatesisDirty Or
-                        .NameisDirty Or .SalesPriceisDirty Or .LanguageisDirty Or .AddressisDirty Or
+                        .SalesPriceisDirty Or .LanguageisDirty Or .AddressisDirty Or
                         .EmailisDirty Or .HomePhoneisDirty Or .WorkPhoneisDirty Or
                         .DocTypeisDirty Or .IDTypeisDirty Or .DocAgencyisDirty Or .DocNumberisDirty Or
                         .RGNumberisDirty Or .DocIssueDateisDirty Then
                         .PopulateWithDefaultValues(Me.State.MyBO.Cert.Id, Me.State.StatemanufaturerWarranty)
-                        Me.PopulateBOProperty(Me.State.MyBO, "CustNamePost", Me.TextboxCustomerName)
                         Me.PopulateBOProperty(Me.State.MyBO, "TermPos", Me.TextboxManufacturerTerm)
                         Me.PopulateBOProperty(Me.State.MyBO, "ProductSalesDatePost", Me.TextboxProductSaleDate)
                         Me.PopulateBOProperty(Me.State.MyBO, "WarrantySalesDatePost", Me.TextboxWarrantySalesDate)

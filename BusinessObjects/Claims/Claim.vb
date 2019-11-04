@@ -2319,7 +2319,7 @@ Public NotInheritable Class Claim
             '    Me.State.selectedServiceCenterIds = oAppUser.DealerOrSvcList
             Return New ClaimSearchDV(dal.LoadList(compIds, claimNumber, customerName, serviceCenterName,
                                                   svcRefNumber, authorizedAmount, hasPendingAuthId, sortBy,
-                                                  externalUserServiceCenterIds, serviceCenterIds, dealerid, certNumber, Status, trackingNumber, dealerGroupCode,
+                                                  externalUserServiceCenterIds, serviceCenterIds, dealerid, certNumber, Status, Authentication.CurrentUser.NetworkId, trackingNumber, dealerGroupCode,
                                                   authorizationNumber, claimAuthStatusId).Tables(0))
 
         Catch ex As Assurant.ElitaPlus.DALObjects.DataBaseAccessException
@@ -2346,7 +2346,7 @@ Public NotInheritable Class Claim
                                                         issueTypeCode, issueTypeId,
                                                         issueId, issueStatusXcd,
                                                         claimStatusCode, dealerId,
-                                                        issueAddedFromDate, issueAddedToDate).Tables(0))
+                                                        issueAddedFromDate, issueAddedToDate, Authentication.CurrentUser.NetworkId).Tables(0))
     End Function
 
     Public Shared Function getAdjusterList(ByVal claimNumber As String, ByVal serviceCenterName As String, ByVal authorizationNumber As String,

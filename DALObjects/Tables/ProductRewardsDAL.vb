@@ -15,6 +15,8 @@
     Public Const COL_NAME_DAYS_TO_REDEEM As String = "days_to_redeem"
     Public Const COL_NAME_EFFECTIVE_DATE As String = "effective_date"
     Public Const COL_NAME_EXPIRATION_DATE As String = "expiration_date"
+    Public Const COL_NAME_FROM_RENEWAL As String = "from_renewal"
+    Public Const COL_NAME_TO_RENEWAL As String = "to_renewal"
 
     Public Const COL_NAME_DEALER_ID As String = "dealer_id"
 
@@ -130,6 +132,18 @@
                                                                  New DBHelper.DBHelperParameter(Me.COL_NAME_REWARD_TYPE, RewardType),
                                                                  New DBHelper.DBHelperParameter(Me.COL_NAME_EFFECTIVE_DATE, EffectiveDate),
                                                                  New DBHelper.DBHelperParameter(Me.COL_NAME_EXPIRATION_DATE, ExpirationDate)
+                                                                }
+
+        DBHelper.Fetch(ds, selectStmt, Me.TABLE_NAME, inputparameters)
+        Return ds
+    End Function
+
+    Public Function ValidateRenewalOverlap(ByVal ProductId As Guid, ByVal ProductRewardId As Guid) As DataSet
+        Dim selectStmt As String = Me.Config("/SQL/VALIDATE_RENEWAL_OVERLAPPING")
+        Dim ds As New DataSet
+        Dim inputparameters() As DBHelper.DBHelperParameter = New DBHelper.DBHelperParameter() _
+                                                                {New DBHelper.DBHelperParameter(Me.COL_NAME_PRODUCT_CODE_ID, ProductId),
+                                                                 New DBHelper.DBHelperParameter(Me.COL_NAME_PROD_REWARD_ID, ProductRewardId)
                                                                 }
 
         DBHelper.Fetch(ds, selectStmt, Me.TABLE_NAME, inputparameters)

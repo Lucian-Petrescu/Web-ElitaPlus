@@ -1,4 +1,4 @@
-'************* THIS CODE HAS BEEN GENERATED FROM TEMPLATE BusinessObject.cst (10/12/2004)  ********************
+﻿'************* THIS CODE HAS BEEN GENERATED FROM TEMPLATE BusinessObject.cst (10/12/2004)  ********************
 Imports Assurant.ElitaPlus.Common
 Imports System.Math
 Imports Assurant.ElitaPlus.BusinessObjectsNew.CertItem
@@ -1443,7 +1443,7 @@ Public Class Certificate
         End Set
     End Property
 
-    <ValidStringLength("", Max:=25)>
+    <ValidStringLength("", Max:=50)>
     Public Property ServiceLineNumber() As String
         Get
             CheckDeleted()
@@ -1807,6 +1807,21 @@ Public Class Certificate
         End Set
     End Property
 
+    <ValidStringLength("", Max:=50)>
+    Public Property CityOfBirth() As String
+        Get
+            CheckDeleted()
+            If Row(CertificateDAL.COL_NAME_CITYOFBIRTH) Is DBNull.Value Then
+                Return Nothing
+            Else
+                Return CType(Row(CertificateDAL.COL_NAME_CITYOFBIRTH), String)
+            End If
+        End Get
+        Set(ByVal value As String)
+            CheckDeleted()
+            Me.SetValue(CertificateDAL.COL_NAME_CITYOFBIRTH, value)
+        End Set
+    End Property
     Public Property Gender() As Guid
         Get
             CheckDeleted()
@@ -2691,7 +2706,7 @@ Public Class Certificate
                 'Start: Update customer information in Customer table
                 ' Note: In future this should be moved to Customer DAL when Certificate screen is revamped
                 If Not Me.CustomerId.Equals(Guid.Empty) Then
-                    dal.UpdateCustomerDetails(Me.Id, Me.CustomerId, Me.SalutationId, Me.CustomerFirstName, Me.CustomerMiddleName, Me.CustomerLastName, modified_by, Me.Email, Me.HomePhone, Me.IdentificationNumber, Me.IdentificationNumberType, Me.WorkPhone, Me.MaritalStatus, Me.Nationality, Me.PlaceOfBirth, Me.Gender, Me.CorporateName, Me.AlternativeFirstName, Me.AlternativeLastName, Me.DateOfBirth)
+                    dal.UpdateCustomerDetails(Me.Id, Me.CustomerId, Me.SalutationId, Me.CustomerFirstName, Me.CustomerMiddleName, Me.CustomerLastName, modified_by, Me.Email, Me.HomePhone, Me.IdentificationNumber, Me.IdentificationNumberType, Me.WorkPhone, Me.MaritalStatus, Me.Nationality, Me.PlaceOfBirth, Me.Gender, Me.CorporateName, Me.AlternativeFirstName, Me.AlternativeLastName, Me.CityOfBirth, Me.DateOfBirth)
                 End If
                 'END: Update customer information in Customer table
                 'Reload the Data from the DB
@@ -3339,6 +3354,7 @@ Public Class Certificate
                                                         sortBy,
                                                         LimitResultset,
                                                         inforceDate,
+                                                        Authentication.CurrentUser.NetworkId,
                                                         vehicleLicenseNumber,
                                                         Service_line_number,
                                                         dealergroup).Tables(0)
@@ -3476,7 +3492,8 @@ Public Class Certificate
 
     Public Shared Function GetCertificatesListByPhoneNum(ByVal PhoneTypeMask As String, ByVal PhoneMask As String, ByVal certNumberMask As String,
                                                          ByVal customerNameMask As String, ByVal addressMask As String,
-                                                         ByVal postalCodeMask As String, ByVal dealerName As String,
+                                                         ByVal postalCodeMask As String, ByVal dealerName As String, ByVal companyGroupId As Guid,
+                                                         ByVal networkId As String,
                                                          Optional ByVal sortBy As String = CertificateDAL.SORT_BY_PHONE_NUMBER,
                                                          Optional ByVal LimitResultset As Int32 = CertificateDAL.MAX_NUMBER_OF_ROWS) As PhoneNumberSearchDV
         Try
@@ -3510,14 +3527,15 @@ Public Class Certificate
             End If
 
             Return New PhoneNumberSearchDV(dal.LoadListByPhoneNum(PhoneTypeMask, PhoneMask, certNumberMask, customerNameMask,
-                                     addressMask, postalCodeMask, dealerName, compIds, sortBy, LimitResultset, dealerGroup).Tables(0))
+                                     addressMask, postalCodeMask, dealerName, companyGroupId, networkId, sortBy, dealerGroup).Tables(0))
 
         Catch ex As Assurant.ElitaPlus.DALObjects.DataBaseAccessException
             Throw New DataBaseAccessException(ex.ErrorType, ex)
         End Try
     End Function
 
-    Public Shared Function GetSerialNumberList(ByVal serialNumberMask As String) As SerialNumberSearchDV
+    Public Shared Function GetSerialNumberList(ByVal serialNumberMask As String, ByVal companyGroupId As Guid,
+                                               ByVal networkId As String) As SerialNumberSearchDV
         Try
             Dim compIds As ArrayList = ElitaPlusIdentity.Current.ActiveUser.Companies
             Dim dal As New CertificateDAL
@@ -3528,7 +3546,8 @@ Public Class Certificate
                 Throw New BOValidationException(errors, GetType(Certificate).FullName)
             End If
 
-            Return New SerialNumberSearchDV(dal.LoadSerialNumberList(serialNumberMask, compIds).Tables(0))
+            Return New SerialNumberSearchDV(dal.LoadSerialNumberList(serialNumberMask, companyGroupId, networkId
+                                                                     ).Tables(0))
 
         Catch ex As Assurant.ElitaPlus.DALObjects.DataBaseAccessException
             Throw New DataBaseAccessException(ex.ErrorType, ex)
@@ -3558,6 +3577,14 @@ Public Class Certificate
 
         ds = dal.getPremiumTotals(certId)
         Return ds.Tables(CertificateDAL.TABLE_PREMIUM_TOTALS).DefaultView
+
+    End Function
+    Public Shared Function SalesTaxDetail(ByVal certId As Guid, ByVal languageId As Guid) As DataView
+        Dim dal As New CertificateDAL
+        Dim ds As DataSet
+
+        ds = dal.getSalesTaxDetails(certId, languageId)
+        Return ds.Tables(CertificateDAL.TABLE_SALES_TAX_DETAILS).DefaultView
 
     End Function
 
@@ -5202,21 +5229,28 @@ Public Class Certificate
     Public Function MaskDatePart(txtDate As String, Optional noMask As Boolean = True) As String
         If Not (String.IsNullOrEmpty(txtDate)) Then
             If (CultureInfo.CurrentCulture.Name.Equals("ja-JP")) Then
-                Dim parsedDate As DateTime
-                parsedDate = DateTime.ParseExact(txtDate, "dd-M-yyyy", CultureInfo.InvariantCulture).ToString("MM/dd/yyyy", CultureInfo.InvariantCulture)
-                txtDate = parsedDate.ToString("D", CultureInfo.CurrentCulture)
                 If (noMask) Then
                     Return txtDate
                 Else
-                    Return txtDate.Replace(txtDate.Substring(0, 4), "XXXX")
+                    txtDate = txtDate.Replace(txtDate.Substring(0, 4), "XXXX")
+                    Return txtDate
+                End If
+            ElseIf (CultureInfo.CurrentCulture.Name.Equals("zh-CN")) Then
+                If (noMask) Then
+                    Return txtDate
+                Else
+                    txtDate = txtDate.Replace(txtDate.Substring(6, 4), "XXXX")
+                    Return txtDate
                 End If
             Else
                 If (Not noMask) Then
                     Dim dateofbirth As Date = txtDate
                     Return dateofbirth.ToString("dd-MMM-xxxx")
+                Else
+                    Return txtDate
                 End If
             End If
-                Return txtDate
+            Return txtDate
         End If
     End Function
 

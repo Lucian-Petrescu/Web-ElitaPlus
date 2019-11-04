@@ -621,7 +621,7 @@ Public Class ReconciliationForm
     Private Sub BtnOverRideRecon_Click(ByVal sender As Object, ByVal e As System.EventArgs) Handles BtnOverRideRecon.Click
         Dim Result As Boolean
         Try
-            Result = Reconciliation.OverRideReconciliation(Me.State.DealerIdInSearch, Me.State.firstDayOfMonth, _
+            Result = Reconciliation.OverRideReconciliation(Me.State.DealerIdInSearch, Me.State.firstDayOfMonth,
                                                            Me.State.lastDayOfMonth, ElitaPlusIdentity.Current.ActiveUser.UserName)
 
             If Result Then

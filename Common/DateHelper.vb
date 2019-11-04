@@ -1,6 +1,7 @@
 ﻿Imports System.Configuration
+Imports System.Globalization
 Imports System.Reflection
-
+Imports System.Threading
 
 Public NotInheritable Class DateHelper
 
@@ -20,13 +21,36 @@ Public NotInheritable Class DateHelper
                 strChkDateFormat = DATE_TIME_FORMAT
                 dt = DateTime.Parse(inputDate)
             Else
-                strChkDateFormat = DATE_FORMAT
-                dt = Date.Parse(inputDate)
+                If Thread.CurrentThread.CurrentCulture.ToString() = "ja-JP" OrElse Thread.CurrentThread.CurrentCulture.ToString() = "zh-CN" Then
+                    strChkDateFormat = convertDateFrmt(inputDate)
+                    dt = Date.Parse(strChkDateFormat)
+                Else
+                    strChkDateFormat = DATE_FORMAT
+                    dt = Date.Parse(inputDate)
+                End If
+
             End If
         Catch ex As Exception
             DateTime.TryParseExact(inputDate, strChkDateFormat, System.Threading.Thread.CurrentThread.CurrentCulture, Globalization.DateTimeStyles.None, dt)
         End Try
         Return dt
+    End Function
+
+    Public Shared Function convertDateFrmt(txtDate As String) As String
+        If Not (String.IsNullOrEmpty(txtDate)) Then
+            If (CultureInfo.CurrentCulture.Name.Equals("ja-JP")) Then
+                Dim parsedDate As DateTime
+                parsedDate = DateTime.ParseExact(txtDate, "yyyy年M月d日", CultureInfo.InvariantCulture).ToString("MM/dd/yyyy", CultureInfo.InvariantCulture)
+                txtDate = parsedDate.ToString("dd-MMM-yyyy", CultureInfo.CreateSpecificCulture("en-US"))
+                Return txtDate
+            ElseIf (CultureInfo.CurrentCulture.Name.Equals("zh-CN")) Then
+                Dim parsedDate As DateTime
+                parsedDate = DateTime.ParseExact(txtDate, "d-M月-yyyy", CultureInfo.InvariantCulture).ToString("MM/dd/yyyy", CultureInfo.InvariantCulture)
+                txtDate = parsedDate.ToString("dd-MMM-yyyy", CultureInfo.CreateSpecificCulture("en-US"))
+                Return txtDate
+            End If
+        End If
+        Return txtDate
     End Function
 
     Public Shared Function GetDateInMonddyyyy(ByVal inputDate As String) As DateTime

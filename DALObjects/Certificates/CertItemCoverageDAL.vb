@@ -83,7 +83,7 @@ Public Class CertItemCoverageDAL
     Public Const COL_NAME_REINSURANCE_STATUS_ID As String = "reinsurance_status_id"
     Public Const COL_NAME_REINSURANCE_REJECT_REASON As String = "reinsurance_reject_reason"
     Public Const COL_NAME_DEDUCTIBLE_EXPRESSION_ID As String = "Deductible_Expression_Id"
-
+    Public Const COL_NAME_FULFILLMENT_PROFILE_CODE As String = "Fulfillment_Profile_Code"
     Public Const PAR_NAME_CLAIM_WAITING_PERIOD As String = "p_claim_waiting_period"
     Public Const PAR_NAME_IGNORE_WAITING_PERIOD As String = "p_ignore_waiting_period_id"
     Public Const PAR_NAME_CERT_ITEM_COVERAGE_ID As String = "p_certItemCoverageId"

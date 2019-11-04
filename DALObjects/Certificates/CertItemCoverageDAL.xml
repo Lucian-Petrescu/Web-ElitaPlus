@@ -58,7 +58,8 @@
         END as Cov_Remain_Liability_Limit,
         cic.reinsurance_status_id,
         cic.reinsurance_reject_reason,
-        cic.deductible_expression_id
+        cic.deductible_expression_id,
+        cic.fulfillment_profile_code
 			FROM elp_cert_item_coverage cic
 			WHERE
 				cert_item_coverage_id = :cert_item_coverage_id

@@ -148,6 +148,12 @@ Public Class ClaimByIssueSearch
                 TranslateGridHeader(Me.Grid)
 
                 PopulateDropdowns()
+
+                If Authentication.CurrentUser.IsDealer Then
+                    SetSelectedItem(cboSearchDealer, Authentication.CurrentUser.ScDealerId)
+                    ControlMgr.SetEnableControl(Me, cboSearchDealer, False)
+                End If
+
                 InitializePageSize()
 
                 If Me.IsReturningFromChild Then
@@ -372,7 +378,7 @@ Public Class ClaimByIssueSearch
                 Try
                     DateTime.TryParseExact(txtIssueAddedFromDate.Text.Trim(), DATE_FORMAT, System.Threading.Thread.CurrentThread.CurrentCulture, DateTimeStyles.None, dt)
                     If (dt <> DateTime.MinValue) Then
-                        Me.State.Criterias.IssueAddedFromDate = dt
+                        Me.State.Criterias.IssueAddedFromDate = GetDateFormattedStringNullable(dt)
                     End If
                 Catch ex As Exception
                     ElitaPlusPage.SetLabelError(Me.Label2)
@@ -384,7 +390,7 @@ Public Class ClaimByIssueSearch
                 Try
                     DateTime.TryParseExact(txtIssueAddedToDate.Text.Trim(), DATE_FORMAT, System.Threading.Thread.CurrentThread.CurrentCulture, DateTimeStyles.None, dt)
                     If (dt <> DateTime.MinValue) Then
-                        Me.State.Criterias.IssueAddedToDate = dt
+                        Me.State.Criterias.IssueAddedToDate = GetDateFormattedStringNullable(dt)
                     End If
                 Catch ex As Exception
                     ElitaPlusPage.SetLabelError(Me.Label4)
@@ -467,8 +473,14 @@ Public Class ClaimByIssueSearch
     End Sub
     Sub PopulateDealerDropDown()
         Try
-            Dim dealerList As ListItem() = GetDealerListByCompanyForUser()
-            cboSearchDealer.Populate(dealerList, New PopulateOptions() With
+            Dim DealerList As ListItem()
+            If Authentication.CurrentUser.IsDealerGroup Then
+                DealerList = CaseBase.GetDealerListByCompanyForExternalUser()
+            Else
+                DealerList = GetDealerListByCompanyForUser()
+            End If
+
+            cboSearchDealer.Populate(DealerList, New PopulateOptions() With
                                                  {
                                                    .AddBlankItem = True,
                                                    .ValueFunc = AddressOf .GetListItemId,
@@ -481,6 +493,8 @@ Public Class ClaimByIssueSearch
             'If Not Me.State.Criterias.SelectedDealerId.IsEmpty Then
             '    SetSelectedItem(Me.cboSearchDealer, Me.State.Criterias.SelectedDealerId)
             'End If
+
+
         Catch ex As Exception
             Me.HandleErrors(ex, MasterPage.MessageController)
         End Try

@@ -190,7 +190,7 @@ Public Class ImagingIndexingForm
             Me.HandleErrors(ex, Me.MasterPage.MessageController)
         End Try
         txtImage.Text = Me.State.ImageName
-        txtScanDate.Text = If(Me.State.WorkQueueItem.ImageScanDate.HasValue, Me.State.WorkQueueItem.ImageScanDate.Value.ToString(DATE_FORMAT), String.Empty)
+        txtScanDate.Text = If(Me.State.WorkQueueItem.ImageScanDate.HasValue, GetDateFormattedStringNullable(Me.State.WorkQueueItem.ImageScanDate.Value), String.Empty)
         pdfIframe.Attributes(ATTRIB_SRC) = PDF_URL + xid.ToString
     End Sub
 

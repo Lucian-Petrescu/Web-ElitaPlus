@@ -30,22 +30,25 @@ Partial Class UserControlClaimCloseRules
     Private Const GRID_COL_DEALER_ID_IDX As Integer = 2
     Private Const GRID_COL_CLOSE_RULE_BASED_ON_ID_IDX As Integer = 3
     Private Const GRID_COL_CLAIM_STATUS_BY_GROUP_ID_IDX As Integer = 4
-    Private Const GRID_COL_TIME_PERIOD_IDX As Integer = 5
-    Private Const GRID_COL_REASON_CLOSED_ID_IDX As Integer = 6
-    Private Const GRID_COL_ACTIVE_FLAG_IDX As Integer = 7
-    Private Const GRID_COL_EDIT_IDX As Integer = 8
-    Private Const GRID_COL_DELETE_IDX As Integer = 9
+    Private Const GRID_COL_CLAIM_ISSUE_ID_IDX As Integer = 5
+    Private Const GRID_COL_TIME_PERIOD_IDX As Integer = 6
+    Private Const GRID_COL_REASON_CLOSED_ID_IDX As Integer = 7
+    Private Const GRID_COL_ACTIVE_FLAG_IDX As Integer = 8
+    Private Const GRID_COL_EDIT_IDX As Integer = 9
+    Private Const GRID_COL_DELETE_IDX As Integer = 10
 
     Private Const GRID_CTRL_NAME_LABEL_CLOSE_RULE_ID As String = "lblCloseClaimRuleID"
     Private Const GRID_CTRL_NAME_LABEL_COMPANY As String = "lblCompany"
     Private Const GRID_CTRL_NAME_LABLE_DEALER As String = "lblDealer"
     Private Const GRID_CTRL_NAME_LABEL_CLOSE_RULE_BASED_ON As String = "lblCloseRuleBasedOn"
     Private Const GRID_CTRL_NAME_LABEL_CLAIM_STATUS_BY_GROUP As String = "lblClaimStatusByGroup"
+    Private Const GRID_CTRL_NAME_LABEL_CLAIM_ISSUE As String = "lblClaimIssue"
     Private Const GRID_CTRL_NAME_LABEL_TIME_PERIOD As String = "lblTimePeriod"
-    Private Const GRID_CTRL_NAME_LABLE_REASON_CLOSED As String = "lblReasonClosed"
+    Private Const GRID_CTRL_NAME_LABEL_REASON_CLOSED As String = "lblReasonClosed"
 
     Private Const GRID_CTRL_NAME_EDIT_CLOSE_RULE_BASED_ON As String = "cboRuleBasedOn"
     Private Const GRID_CTRL_NAME_EDIT_CLM_STAT_BY_GRP As String = "cboClaimStatusByGroup"
+    Private Const GRID_CTRL_NAME_EDIT_CLM_ISSUE As String = "cboClaimIssue"
     Private Const GRID_CTRL_NAME_EDIT_REASON_CLOSED As String = "cboReasonClosed"
     Private Const GRID_CTRL_NAME_EDIT_TIME_PERIOD As String = "txtTimePeriod"
     Private Const GRID_CTRL_NAME_EDIT_ACTIVE_FLAG As String = "txtActiveFlag"
@@ -147,7 +150,7 @@ Partial Class UserControlClaimCloseRules
     End Sub
 
     Private Sub MyPropertyChanged(ByVal sender As Object, ByVal e As PropertyChangedEventArgs)
-        If (e.PropertyName = "") OrElse _
+        If (e.PropertyName = "") OrElse
             (e.PropertyName = "") Then
             '' Hide Grid Data
         End If
@@ -336,6 +339,9 @@ Partial Class UserControlClaimCloseRules
             objDropDownList = CType(CloseRulesGrid.Rows((Me.CloseRulesGrid.EditIndex)).Cells(GRID_COL_CLAIM_STATUS_BY_GROUP_ID_IDX).FindControl(GRID_CTRL_NAME_EDIT_CLM_STAT_BY_GRP), DropDownList)
             Me.ThePage.PopulateBOProperty(TheState.MyBO, "ClaimStatusByGroupId", objDropDownList)
 
+            objDropDownList = CType(CloseRulesGrid.Rows((Me.CloseRulesGrid.EditIndex)).Cells(GRID_COL_CLAIM_ISSUE_ID_IDX).FindControl(GRID_CTRL_NAME_EDIT_CLM_ISSUE), DropDownList)
+            Me.ThePage.PopulateBOProperty(TheState.MyBO, "ClaimIssueId", objDropDownList)
+
             objDropDownList = CType(CloseRulesGrid.Rows((Me.CloseRulesGrid.EditIndex)).Cells(GRID_COL_REASON_CLOSED_ID_IDX).FindControl(GRID_CTRL_NAME_EDIT_REASON_CLOSED), DropDownList)
             Me.ThePage.PopulateBOProperty(TheState.MyBO, "ReasonClosedId", objDropDownList)
 
@@ -499,30 +505,43 @@ Partial Class UserControlClaimCloseRules
                     Else
                         CloseRulesGrid.Columns(Me.GRID_COL_DEALER_ID_IDX).Visible = False
                     End If
+
                     ''Close Rule Based On dropdown
-                    Dim moCloseRuleBasedOnDropDown As DropDownList = CType(e.Row.Cells(Me.GRID_COL_CLOSE_RULE_BASED_ON_ID_IDX).FindControl(Me.GRID_CTRL_NAME_EDIT_CLOSE_RULE_BASED_ON), DropDownList)
-                    ElitaPlusPage.BindListControlToDataView(moCloseRuleBasedOnDropDown, LookupListNew.GetClaimCloseRuleBasedOnList(ElitaPlusIdentity.Current.ActiveUser.LanguageId))
-                    If (moCloseRuleBasedOnDropDown.Items.Count = 2) Then
-                        moCloseRuleBasedOnDropDown.SelectedIndex = 1
+                    Dim cboRuleBasedOn As DropDownList = CType(e.Row.Cells(Me.GRID_COL_CLOSE_RULE_BASED_ON_ID_IDX).FindControl(Me.GRID_CTRL_NAME_EDIT_CLOSE_RULE_BASED_ON), DropDownList)
+                    ElitaPlusPage.BindListControlToDataView(cboRuleBasedOn, LookupListNew.GetClaimCloseRuleBasedOnList(ElitaPlusIdentity.Current.ActiveUser.LanguageId))
+                    If (Not String.IsNullOrWhiteSpace(dvRow(ClaimCloseRules.CloseClaimRulesDV.COL_CLOSE_RULE_BASED_ON_ID).ToString())) Then
+                        Me.ThePage.SetSelectedItem(cboRuleBasedOn, GuidControl.ByteArrayToGuid(CloseRulesGrid.DataKeys(e.Row.RowIndex).Values(7)))
                     End If
+
                     ''Claim Extended status dropdown
                     Dim moClaimStatusByGroupDropDown As DropDownList = CType(e.Row.Cells(Me.GRID_COL_CLAIM_STATUS_BY_GROUP_ID_IDX).FindControl(Me.GRID_CTRL_NAME_EDIT_CLM_STAT_BY_GRP), DropDownList)
+                    moClaimStatusByGroupDropDown.Enabled = False
                     ElitaPlusPage.BindListControlToDataView(moClaimStatusByGroupDropDown, LookupListNew.GetExtendedStatusByGroupLookupList(ElitaPlusIdentity.Current.ActiveUser.CompanyGroup.Id, ElitaPlusIdentity.Current.ActiveUser.LanguageId))
-                    If (New Guid(CType(dvRow(ClaimCloseRules.CloseClaimRulesDV.COL_CLAIM_STATUS_BY_GROUP_ID), Byte())) <> Guid.Empty) Then
+                    If (Not String.IsNullOrWhiteSpace(dvRow(ClaimCloseRules.CloseClaimRulesDV.COL_CLAIM_STATUS_BY_GROUP_ID).ToString())) Then
                         Me.ThePage.SetSelectedItem(moClaimStatusByGroupDropDown, GuidControl.ByteArrayToGuid(CloseRulesGrid.DataKeys(e.Row.RowIndex).Values(3)))
                     End If
+
+                    ''Claim Issue dropdown
+                    Dim moClaimIssueDropDown As DropDownList = CType(e.Row.Cells(Me.GRID_COL_CLAIM_ISSUE_ID_IDX).FindControl(Me.GRID_CTRL_NAME_EDIT_CLM_ISSUE), DropDownList)
+                    moClaimIssueDropDown.Enabled = False
+                    ElitaPlusPage.BindListControlToDataView(moClaimIssueDropDown, Issue.GetList("%", String.Empty, String.Empty), "DESCRIPTION", "ISSUE_ID")
+                    If (Not String.IsNullOrWhiteSpace(dvRow(ClaimCloseRules.CloseClaimRulesDV.COL_CLAIM_ISSUE_ID).ToString())) Then
+                        Me.ThePage.SetSelectedItem(moClaimIssueDropDown, GuidControl.ByteArrayToGuid(CloseRulesGrid.DataKeys(e.Row.RowIndex).Values(6)))
+                    End If
+
+                    'time period text box
+                    CType(e.Row.Cells(Me.GRID_COL_TIME_PERIOD_IDX).FindControl(Me.GRID_CTRL_NAME_EDIT_TIME_PERIOD), TextBox).Text = dvRow("time_period").ToString
 
                     ''Reason Closed dropdown
                     Dim moReasonClosedDropDown As DropDownList = CType(e.Row.Cells(Me.GRID_COL_CLOSE_CLAIM_RULE_ID).FindControl(Me.GRID_CTRL_NAME_EDIT_REASON_CLOSED), DropDownList)
                     ElitaPlusPage.BindListControlToDataView(moReasonClosedDropDown, LookupListNew.GetReasonClosedLookupList(ElitaPlusIdentity.Current.ActiveUser.LanguageId))
-                    If (New Guid(CType(dvRow(ClaimCloseRules.CloseClaimRulesDV.COL_REASON_CLOSED_ID), Byte())) <> Guid.Empty) Then
+                    If (Not String.IsNullOrWhiteSpace(dvRow(ClaimCloseRules.CloseClaimRulesDV.COL_REASON_CLOSED_ID).ToString())) Then
                         Me.ThePage.SetSelectedItem(moReasonClosedDropDown, GuidControl.ByteArrayToGuid(CloseRulesGrid.DataKeys(e.Row.RowIndex).Values(4)))
                     End If
-                    'time period text box
-                    CType(e.Row.Cells(Me.GRID_COL_TIME_PERIOD_IDX).FindControl(Me.GRID_CTRL_NAME_EDIT_TIME_PERIOD), TextBox).Text = dvRow("time_period").ToString
 
                 Else
                     CType(e.Row.Cells(Me.GRID_COL_COMPANY_ID_IDX).FindControl(Me.GRID_CTRL_NAME_LABEL_COMPANY), Label).Text = dvRow("company_code").ToString
+
                     If (Me.EntityType = CloseRuleEntityType.Dealer) Then
                         CType(e.Row.Cells(Me.GRID_COL_DEALER_ID_IDX).FindControl(Me.GRID_CTRL_NAME_LABLE_DEALER), Label).Text = dvRow("dealer").ToString
                         CloseRulesGrid.Columns(Me.GRID_COL_DEALER_ID_IDX).Visible = True
@@ -539,7 +558,8 @@ Partial Class UserControlClaimCloseRules
                     End If
                     CType(e.Row.Cells(Me.GRID_COL_CLOSE_RULE_BASED_ON_ID_IDX).FindControl(Me.GRID_CTRL_NAME_LABEL_CLOSE_RULE_BASED_ON), Label).Text = dvRow("close_rule_based_on").ToString
                     CType(e.Row.Cells(Me.GRID_COL_CLAIM_STATUS_BY_GROUP_ID_IDX).FindControl(Me.GRID_CTRL_NAME_LABEL_CLAIM_STATUS_BY_GROUP), Label).Text = dvRow("claim_status_by_group").ToString
-                    CType(e.Row.Cells(Me.GRID_COL_CLAIM_STATUS_BY_GROUP_ID_IDX).FindControl(Me.GRID_CTRL_NAME_LABLE_REASON_CLOSED), Label).Text = dvRow("reason_closed").ToString
+                    CType(e.Row.Cells(Me.GRID_COL_CLAIM_ISSUE_ID_IDX).FindControl(Me.GRID_CTRL_NAME_LABEL_CLAIM_ISSUE), Label).Text = dvRow("claim_issue").ToString
+                    CType(e.Row.Cells(Me.GRID_COL_REASON_CLOSED_ID_IDX).FindControl(Me.GRID_CTRL_NAME_LABEL_REASON_CLOSED), Label).Text = dvRow("reason_closed").ToString
                     CType(e.Row.Cells(Me.GRID_COL_TIME_PERIOD_IDX).FindControl(Me.GRID_CTRL_NAME_LABEL_TIME_PERIOD), Label).Text = dvRow("time_period").ToString
 
                 End If
@@ -665,7 +685,7 @@ Partial Class UserControlClaimCloseRules
             PopulateBOFromForm()
             '25716: Check if the claim close rule already exits  before saving claim close rules.
             Dim objClaimCloseRules As New ClaimCloseRules
-            Dim isClaimCloseRulesExists As Integer = objClaimCloseRules.ValidateClaimCloseRule(Me.TheState.companyId, Me.TheState.dealerId, TheState.MyBO.CloseRuleBasedOnId, TheState.MyBO.ClaimStatusByGroupId, Me.EntityType.ToString())
+            Dim isClaimCloseRulesExists As Integer = objClaimCloseRules.ValidateClaimCloseRule(Me.TheState.companyId, Me.TheState.dealerId, TheState.MyBO.CloseRuleBasedOnId, TheState.MyBO.ClaimStatusByGroupId, Me.EntityType.ToString(), TheState.MyBO.ClaimIssueId)
 
             If isClaimCloseRulesExists > 0 Then
                 Me.ThePage.MasterPage.MessageController.AddWarning(Assurant.ElitaPlus.Common.ErrorCodes.INVALID_CLAIM_CLOASE_RULE, True)
@@ -798,4 +818,45 @@ Partial Class UserControlClaimCloseRules
 
     End Sub
 
+    Protected Sub cboRuleBasedOn_SelectedIndexChanged(sender As Object, e As EventArgs)
+        Try
+            Dim dvRuleBasedOn As DataView = LookupListNew.GetClaimCloseRuleBasedOnList(ElitaPlusIdentity.Current.ActiveUser.LanguageId)
+            dvRuleBasedOn.RowFilter += String.Format("And Description='{0}'", CType(sender, DropDownList).SelectedItem.Text)
+
+            Dim selectedCode As String = "CLEXTSTAT"
+
+            If (dvRuleBasedOn.Count = 1) Then
+                selectedCode = dvRuleBasedOn.Item(0).Item("code").ToString()
+            End If
+
+            Dim SelectedRow As GridViewRow = CloseRulesGrid.Rows(Me.CloseRulesGrid.EditIndex)
+
+            'CLMISSUE and CLEXTSTAT are mutually exclusive - there can be only one.
+            Select Case selectedCode
+                Case "CLMISSUE"
+                    CType(SelectedRow.Cells(GRID_COL_CLAIM_STATUS_BY_GROUP_ID_IDX).FindControl(GRID_CTRL_NAME_EDIT_CLM_ISSUE), DropDownList).Enabled = True
+
+                    'Reset the claim extended status selection to nothing
+                    Dim moClaimStatusByGroupDropDown As DropDownList = CType(SelectedRow.Cells(GRID_COL_CLAIM_STATUS_BY_GROUP_ID_IDX).FindControl(GRID_CTRL_NAME_EDIT_CLM_STAT_BY_GRP), DropDownList)
+                    moClaimStatusByGroupDropDown.SelectedIndex = 0
+                    moClaimStatusByGroupDropDown.Enabled = False
+
+                Case "CLEXTSTAT"
+                    CType(SelectedRow.Cells(GRID_COL_CLAIM_STATUS_BY_GROUP_ID_IDX).FindControl(GRID_CTRL_NAME_EDIT_CLM_STAT_BY_GRP), DropDownList).Enabled = True
+
+                    'Reset the claim issue selection to nothing
+                    Dim moClaimIssueDropDown As DropDownList = CType(SelectedRow.Cells(GRID_COL_CLAIM_ISSUE_ID_IDX).FindControl(GRID_CTRL_NAME_EDIT_CLM_ISSUE), DropDownList)
+                    moClaimIssueDropDown.SelectedIndex = 0
+                    moClaimIssueDropDown.Enabled = False
+            End Select
+
+            'Reset the other values
+            CType(SelectedRow.Cells(GRID_COL_TIME_PERIOD_IDX).FindControl(GRID_CTRL_NAME_EDIT_TIME_PERIOD), TextBox).Text = String.Empty
+            CType(SelectedRow.Cells(GRID_COL_REASON_CLOSED_ID_IDX).FindControl(GRID_CTRL_NAME_EDIT_REASON_CLOSED), DropDownList).SelectedIndex = 0
+
+        Catch ex As Exception
+            Me.ThePage.HandleErrors(ex, Me.ThePage.MasterPage.MessageController)
+
+        End Try
+    End Sub
 End Class

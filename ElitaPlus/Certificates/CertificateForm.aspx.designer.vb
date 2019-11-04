@@ -798,6 +798,33 @@ Namespace Certificates
         Protected WithEvents moPlaceOfBirthText As Global.System.Web.UI.WebControls.TextBox
         
         '''<summary>
+        '''moAMLRegulations4 control.
+        '''</summary>
+        '''<remarks>
+        '''Auto-generated field.
+        '''To modify move field declaration from designer file to code-behind file.
+        '''</remarks>
+        Protected WithEvents moAMLRegulations4 As Global.System.Web.UI.HtmlControls.HtmlTableRow
+        
+        '''<summary>
+        '''mocityOfBirthLabel control.
+        '''</summary>
+        '''<remarks>
+        '''Auto-generated field.
+        '''To modify move field declaration from designer file to code-behind file.
+        '''</remarks>
+        Protected WithEvents mocityOfBirthLabel As Global.System.Web.UI.WebControls.Label
+        
+        '''<summary>
+        '''moCityOfBirthText control.
+        '''</summary>
+        '''<remarks>
+        '''Auto-generated field.
+        '''To modify move field declaration from designer file to code-behind file.
+        '''</remarks>
+        Protected WithEvents moCityOfBirthText As Global.System.Web.UI.WebControls.TextBox
+        
+        '''<summary>
         '''moAMLRegulations2 control.
         '''</summary>
         '''<remarks>
@@ -2398,6 +2425,24 @@ Namespace Certificates
         '''To modify move field declaration from designer file to code-behind file.
         '''</remarks>
         Protected WithEvents moSalesTaxText As Global.System.Web.UI.WebControls.TextBox
+        
+        '''<summary>
+        '''lblTaxDetails control.
+        '''</summary>
+        '''<remarks>
+        '''Auto-generated field.
+        '''To modify move field declaration from designer file to code-behind file.
+        '''</remarks>
+        Protected WithEvents lblTaxDetails As Global.System.Web.UI.WebControls.Label
+        
+        '''<summary>
+        '''HoverMenuExtender1 control.
+        '''</summary>
+        '''<remarks>
+        '''Auto-generated field.
+        '''To modify move field declaration from designer file to code-behind file.
+        '''</remarks>
+        Protected WithEvents HoverMenuExtender1 As Global.AjaxControlToolkit.HoverMenuExtender
         
         '''<summary>
         '''moLossCostLabel control.
@@ -5332,6 +5377,15 @@ Namespace Certificates
         '''To modify move field declaration from designer file to code-behind file.
         '''</remarks>
         Protected WithEvents BackCancelCertButton As Global.System.Web.UI.WebControls.Button
+        
+        '''<summary>
+        '''PanTaxDetails control.
+        '''</summary>
+        '''<remarks>
+        '''Auto-generated field.
+        '''To modify move field declaration from designer file to code-behind file.
+        '''</remarks>
+        Protected WithEvents PanTaxDetails As Global.System.Web.UI.WebControls.Panel
         
         '''<summary>
         '''HiddenSavePromptResponse control.

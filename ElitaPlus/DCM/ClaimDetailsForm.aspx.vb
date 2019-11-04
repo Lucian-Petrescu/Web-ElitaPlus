@@ -4,7 +4,9 @@
 #Region "Constants"
 
     Public Const ClaimCaseGridColCaseIdIdx As Integer = 0
+    Public Const GridColCaseOpenDateIdx As Integer = 2
     Public Const GridColCaseStatusCodeIdx As Integer = 3
+    Public Const GridColCaseCloseDateIdx As Integer = 4
 
     Public Const ClaimCaseGridColCaseNumberCtrl As String = "btnSelectCase"
     Public Const SelectActionCommand As String = "SelectAction"
@@ -131,7 +133,7 @@
             PopulateControlFromBOProperty(lblDealerNameValue, .Dealer.DealerName)
             PopulateControlFromBOProperty(lblCertificateNumberValue, .Certificate.CertNumber)
             PopulateControlFromBOProperty(lblClaimStatusValue, LookupListNew.GetClaimStatusFromCode(langId, .StatusCode))
-            PopulateControlFromBOProperty(lblDateOfLossValue, .LossDate.Value.ToString("dd-MMM-yyyy"))
+            PopulateControlFromBOProperty(lblDateOfLossValue, GetDateFormattedString(.LossDate.Value))
             PopulateControlFromBOProperty(lblSerialNumberImeiValue, .SerialNumber)
             PopulateControlFromBOProperty(lblWorkPhoneNumberValue, .MobileNumber)
 
@@ -223,10 +225,16 @@
                     btnSelectCase.CommandName = SelectActionCommand
                     btnSelectCase.Text = dvRow(CaseBase.CaseSearchDV.ColCaseNumber).ToString
                 End If
-                If (dvRow(CaseBase.CaseSearchDV.ColCaseStatusCode).ToString = Codes.CASE_STATUS__OPEN) Then
+                If (String.IsNullOrWhiteSpace(dvRow(CaseBase.CaseSearchDv.ColCaseOpenDate).ToString) = False) Then
+                    e.Row.Cells(GridColCaseOpenDateIdx).Text = GetLongDate12FormattedString(dvRow(CaseBase.CaseSearchDv.ColCaseOpenDate))
+                End If
+                If (dvRow(CaseBase.CaseSearchDv.ColCaseStatusCode).ToString = Codes.CASE_STATUS__OPEN) Then
                     e.Row.Cells(GridColCaseStatusCodeIdx).CssClass = "StatActive"
                 Else
                     e.Row.Cells(GridColCaseStatusCodeIdx).CssClass = "StatInactive"
+                End If
+                If (String.IsNullOrWhiteSpace(dvRow(CaseBase.CaseSearchDv.ColCaseCloseDate).ToString) = False) Then
+                    e.Row.Cells(GridColCaseCloseDateIdx).Text = GetLongDate12FormattedString(dvRow(CaseBase.CaseSearchDv.ColCaseCloseDate))
                 End If
             End If
         Catch ex As Exception

@@ -170,8 +170,13 @@
                                         <asp:DropDownList ID="moEarningCodeDrop" TabIndex="10" runat="server" SkinID="SmallDropDown">
                                         </asp:DropDownList>
                                     </td>
-                                    <td style="height: 17px" colspan="1"></td>
-                                    <td style="height: 17px" colspan="1"></td>
+                                    <td style="height: 17px" align="right" colspan="1">
+                                        <asp:Label ID="lblTaxType" runat="server" Font-Bold="false">TAX_TYPE:</asp:Label>&nbsp;
+                                    </td>
+                                    <td style="height: 17px"  align="left" colspan="1">
+                                        <asp:DropDownList ID="moTaxTypeDrop" TabIndex="10" runat="server" SkinID="SmallDropDown">
+                                        </asp:DropDownList>
+                                    </td>
                                 </tr>
                                 <tr>
                                     <td colspan="5">
@@ -404,6 +409,18 @@
                                             <asp:TextBox ID="moAgentcodeText" TabIndex="20" runat="server" SkinID="SmallTextBox"></asp:TextBox>
                                         </p>
                                     </td>
+                                </tr>
+                                <tr>
+                                    <td style="width: 1px" width="1"></td>
+                                    <td style="height: 12px" align="right" colspan="1">&nbsp;
+                                        <asp:Label ID="moFulfillmentProfileLabel" runat="server" Font-Bold="false">Fulfillment_Profile</asp:Label>&nbsp;
+                                    </td>
+                                    <td nowrap colspan="1" align="left">
+                                        <asp:DropDownList ID="moFulfillmentProfileDrop" TabIndex="19" runat="server" SkinID="SmallDropDown">
+                                        </asp:DropDownList>
+                                    </td>
+                                    <td align="right"></td>
+                                    <td align="left"></td>
                                 </tr>
                                 <tr>
                                     <td style="width: 1px" width="1"></td>
@@ -664,6 +681,13 @@
                                             </ItemTemplate>
                                             <EditItemTemplate>
                                                 <asp:TextBox ID="moRenewal_NumberText" runat="server" Visible="True" Width="75" MaxLength="3" Text="0"></asp:TextBox>
+                                            </EditItemTemplate>
+                                        </asp:TemplateField>
+                                        <asp:TemplateField Visible ="true" HeaderText="TAX_REGION">
+                                            <ItemStyle HorizontalAlign="Center"> </ItemStyle>
+                                            <ItemTemplate><asp:Label ID="lblTaxRegion" Text='<%#Container.DataItem("TAX_REGION")%>' runat="server"> </asp:Label>
+                                             </ItemTemplate>
+                                            <EditItemTemplate><asp:DropDownList ID="ddlTax_Region" runat="server"  Visible="True" Width="75"></asp:DropDownList>
                                             </EditItemTemplate>
                                         </asp:TemplateField>
                                     </Columns>

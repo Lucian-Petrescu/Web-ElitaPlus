@@ -260,7 +260,7 @@ Partial Class CommentForm
                 Me.PopulateControlFromBOProperty(Me.cboCommentType, .CommentTypeId)
 
                 If Not .CreatedDate Is Nothing Then
-                    Me.PopulateControlFromBOProperty(Me.TextboxDateTime, Me.GetLongDateFormattedString(.CreatedDate.Value))
+                    Me.PopulateControlFromBOProperty(Me.TextboxDateTime, GetLongDateFormattedString(.CreatedDate.Value))
                 Else
                     Me.PopulateControlFromBOProperty(Me.TextboxDateTime, Nothing)
                 End If
@@ -400,7 +400,6 @@ Partial Class CommentForm
                             Dim benefitCheckResponse As LegacyBridgeResponse
                             Try
                                 Dim client As LegacyBridgeServiceClient = Claim.GetLegacyBridgeServiceClient()
-                                'benefitCheckResponse = client.BenefitClaimPreCheck(hasBenefit(0)("case_Id"))
                                 benefitCheckResponse = WcfClientHelper.Execute(Of LegacyBridgeServiceClient, ILegacyBridgeService, LegacyBridgeResponse)(
                                                                                 client,
                                                                                 New List(Of Object) From {New Headers.InteractiveUserHeader() With {.LanId = Authentication.CurrentUser.NetworkId}},
@@ -409,17 +408,26 @@ Partial Class CommentForm
                                                                                 End Function)
                             Catch ex As Exception
                                 Log(ex)
+                                Me.State.MyBO.Claim.Status = BasicClaimStatus.Pending
+                                Dim issueId As Guid = LookupListNew.GetIssueTypeIdFromCode(LookupListNew.LK_ISSUES, "PRECK")
+                                Dim newClaimIssue As ClaimIssue = CType(Me.State.MyBO.Claim.ClaimIssuesList.GetNewChild, BusinessObjectsNew.ClaimIssue)
+                                newClaimIssue.SaveNewIssue(Me.State.MyBO.Claim.Id, issueId, Me.State.MyBO.Claim.Certificate.Id, True)
                             End Try
+
                             If (Not benefitCheckResponse Is Nothing) Then
-                                Me.State.MyBO.Claim.Status = If(benefitCheckResponse.StatusDecision = LegacyBridgeStatusDecisionEnum.Approve, Codes.CLAIM_STATUS__ACTIVE, Codes.CLAIM_STATUS__DENIED)
-                                If (benefitCheckResponse.StatusDecision = LegacyBridgeStatusDecisionEnum.Deny AndAlso Not String.IsNullOrWhiteSpace(benefitCheckResponse.DenialCode)) Then
-                                    Me.State.MyBO.Claim.DeniedReasonId = LookupListNew.GetIdFromCode(LookupListNew.LK_DENIED_REASON, Codes.REASON_DENIED__PRE_CHECK_FAILED)
+                                Me.State.MyBO.Claim.Status = If(benefitCheckResponse.StatusDecision = LegacyBridgeStatusDecisionEnum.Approve, BasicClaimStatus.Active, BasicClaimStatus.Pending)
+                                If (benefitCheckResponse.StatusDecision = LegacyBridgeStatusDecisionEnum.Deny) Then
+                                    Dim issueId As Guid = LookupListNew.GetIssueTypeIdFromCode(LookupListNew.LK_ISSUES, "PRECKFAIL")
+                                    Dim newClaimIssue As ClaimIssue = CType(Me.State.MyBO.Claim.ClaimIssuesList.GetNewChild, BusinessObjectsNew.ClaimIssue)
+                                    newClaimIssue.SaveNewIssue(Me.State.MyBO.Claim.Id, issueId, Me.State.MyBO.Claim.Certificate.Id, True)
                                 End If
-
+                            Else
+                                Me.State.MyBO.Claim.Status = BasicClaimStatus.Pending
+                                Dim issueId As Guid = LookupListNew.GetIssueTypeIdFromCode(LookupListNew.LK_ISSUES, "PRECK")
+                                Dim newClaimIssue As ClaimIssue = CType(Me.State.MyBO.Claim.ClaimIssuesList.GetNewChild, BusinessObjectsNew.ClaimIssue)
+                                newClaimIssue.SaveNewIssue(Me.State.MyBO.Claim.Id, issueId, Me.State.MyBO.Claim.Certificate.Id, True)
                             End If
-
                         End If
-
                     End If
                 End If
             End If
@@ -427,7 +435,12 @@ Partial Class CommentForm
             If Me.State.MyBO.IsDirty Then
                 Me.State.MyBO.EndEdit()
                 Me.State.MyBO.Save()
-                Me.NavController.Navigate(Me, FlowEvents.EVENT_ADD, Message.MSG_COMMENT_ADDED)
+                If (Me.State.MyBO.Claim.Status = BasicClaimStatus.Pending) Then
+                    Me.NavController.Navigate(Me, FlowEvents.EVENT_BACK)
+                    Exit Sub
+                Else
+                    Me.NavController.Navigate(Me, FlowEvents.EVENT_ADD, Message.MSG_COMMENT_ADDED)
+                End If
             Else
                 If Me.State.MyBO.IsNew Then
                     Me.DisplayMessage(Message.MSG_RECORD_NOT_SAVED, "", Me.MSG_BTN_OK, Me.MSG_TYPE_INFO)

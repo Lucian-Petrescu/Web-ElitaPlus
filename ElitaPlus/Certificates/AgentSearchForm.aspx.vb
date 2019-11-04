@@ -191,12 +191,9 @@ Namespace Certificates
             Form.DefaultButton = btnSearch.UniqueID
             Try
                 If Not IsPostBack Then
-
                     UpdateBreadCrum()
                     PopulateSearchDropDownControls()
                     PopulateUserPermission()
-                    GetDynamicSearchCriteria()
-
                     If Authentication.CurrentUser.IsDealer Then
                         State.DealerId = Authentication.CurrentUser.ScDealerId
                         ControlMgr.SetEnableControl(Me, ddlCompany, False)
@@ -212,6 +209,8 @@ Namespace Certificates
                     End If
 
                     SetFocus(ddlCompany)
+                    GetDynamicSearchCriteria()
+
                 Else
                     DisplayDynamicSearchCriteria()
                 End If
@@ -301,9 +300,8 @@ Namespace Certificates
 
             ' Dynamic controls - drop down
             State.CertificateStatus = GetSearchDropDownValue(CodeSearchFieldCertificateStatus)
-
             State.ShowAdditionalSearchFields = checkboxAdditionalSearchCriteria.Checked
-            State.Dob = GetSearchTextBoxValue(CodeSearchFieldDob)
+
         End Sub
 
         Protected Sub SetSearchSettingToDefault(Optional ByVal setCompanyDealerValue As Boolean = False)
@@ -490,7 +488,13 @@ Namespace Certificates
             PopulateDealerDropdown()
         End Sub
         Private Sub PopulateDealerDropdown()
-            Dim oDealerList = GetDealerListByCompanyForUser()
+            Dim oDealerList
+            If Authentication.CurrentUser.IsDealerGroup Then
+                oDealerList = CaseBase.GetDealerListByCompanyForExternalUser()
+            Else
+                oDealerList = GetDealerListByCompanyForUser()
+            End If
+
             Dim dealerTextFunc As Func(Of ListItem, String) = Function(li As ListItem)
                                                                   Return li.Translation + OneSpace + "(" + li.Code + ")"
                                                               End Function
@@ -894,7 +898,7 @@ Namespace Certificates
                     Dim certificateBo As Certificate = Nothing
                     certificateBo = New Certificate(New Guid(CType(certId, Byte())))
                     Dim cancelQuestionSetCode As String
-                    cancelQuestionSetCode = CaseBase.GetQuestionSetCode(Guid.Empty, Guid.Empty, Guid.Empty, certificateBo.Product.Id, Guid.Empty,
+                    cancelQuestionSetCode = CaseBase.GetQuestionSetCode(Guid.Empty, Guid.Empty, Guid.Empty, Guid.Empty, certificateBo.Product.Id, Guid.Empty,
                                                                         Guid.Empty, Guid.Empty, Guid.Empty, PurposeCancelCertRequest)
 
                     If (Not certificateBo Is Nothing AndAlso certificateBo.StatusCode <> Codes.CERTIFICATE_STATUS__CANCELLED _

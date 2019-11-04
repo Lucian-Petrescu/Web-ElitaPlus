@@ -154,7 +154,7 @@ Public Class Branch
     End Property
 
 
-    <ValidStringLength("", Max:=50)> _
+    <ValidStringLength("", Max:=100)>
     Public Property Address1() As String
         Get
             CheckDeleted()
@@ -171,7 +171,7 @@ Public Class Branch
     End Property
 
 
-    <ValidStringLength("", Max:=50)> _
+    <ValidStringLength("", Max:=100)>
     Public Property Address2() As String
         Get
             CheckDeleted()
@@ -188,7 +188,7 @@ Public Class Branch
     End Property
 
     ''Def-1574
-    <ValidStringLength("", Max:=50)> _
+    <ValidStringLength("", Max:=100)>
     Public Property Address3() As String
         Get
             CheckDeleted()
@@ -269,7 +269,7 @@ Public Class Branch
         End Set
     End Property
 
-    <ValueMandatory(""), ValidStringLength("", Max:=100)> _
+    <ValueMandatory(""), ValidStringLength("", Max:=130)>
     Public Property BranchName() As String
         Get
             CheckDeleted()

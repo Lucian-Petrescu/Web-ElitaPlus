@@ -1,5 +1,6 @@
 ﻿Imports System.Collections.Generic
 Imports System.Diagnostics
+Imports System.Net
 Imports System.ServiceModel
 Imports System.Text
 Imports System.Threading
@@ -8,7 +9,9 @@ Imports Assurant.Elita.ClientIntegration.Headers
 Imports Assurant.Elita.CommonConfiguration
 Imports Assurant.Elita.ServiceIntegration.Validation
 Imports Assurant.ElitaPlus.ElitaPlusWebApp.Certificates
+Imports Assurant.ElitaPlus.ElitaPlusWebApp.ClaimFulfillmentWebAppGatewayService
 Imports Assurant.ElitaPlus.ElitaPlusWebApp.ClaimRecordingService
+Imports Microsoft.Practices.ObjectBuilder2
 
 Public Class ClaimRecordingForm
     Inherits ElitaPlusSearchPage
@@ -62,27 +65,40 @@ Public Class ClaimRecordingForm
 #Region "Page State"
     Private _isReturningFromChild As Boolean = False
     Class MyState
-
-        Public ClaimBo As ClaimBase
+#Region "ClaimBo"
+        Private _ClaimBo As ClaimBase
+        Public Property ClaimBo As ClaimBase
+            Get
+                Return _ClaimBo
+            End Get
+            Set(ByVal value As ClaimBase)
+                _ClaimBo = value
+            End Set
+        End Property
+#End Region
         Public InputParameters As Parameters
         Friend PageSize As Integer = 5
         Friend IsGridVisible As Boolean = True
         Friend PageIndex As Integer = 0
         Public CertificateId As Guid = Guid.Empty
-        Public CertificateNumber As String
+        Public Property CertificateNumber As String
         Public CaseId As Guid = Guid.Empty
         Public IncomingCasePurpose As String
 
         Public PolicyAddressBo As BusinessObjectsNew.Address = Nothing
         Public OtherAddressBo As BusinessObjectsNew.Address = Nothing
         Public CertRegisteredItem As CertRegisteredItem = Nothing
-        Public IsCallerAuthenticated As boolean = False
-        Public CallerAuthenticationNeeded as Boolean = False
-        
+        Public IsCallerAuthenticated As Boolean = False
+        Public CallerAuthenticationNeeded As Boolean = False
+
         Public ExclSecFieldsDt As DataTable = Nothing
-        Public ExistingUserControlItemSelected as boolean  = True
-        public IsOriginalEquipmentSelectedAndOutOfQuantity as Boolean = false
-        
+        Public ExistingUserControlItemSelected As Boolean = True
+
+        Public DeliveryDate As Nullable(Of Date)
+        Public DefaultDeliveryDay As DeliveryDay
+        Public DeliverySlotTimeSpan As TimeSpan
+        Public IsExpeditedBtnClicked As Boolean = False
+
 #Region "SubmitWsBaseClaimRecordingResponse"
         Private _mSubmitWsBaseClaimRecordingResponse As BaseClaimRecordingResponse = Nothing
         Public Property SubmitWsBaseClaimRecordingResponse As BaseClaimRecordingResponse
@@ -94,9 +110,11 @@ Public Class ClaimRecordingForm
             End Set
         End Property
 #End Region
-
+        Public ClaimedDevice As DeviceInfo = Nothing
+        Public FulfillmentOption As FulfillmentOption = Nothing
         Public BestReplacementDeviceSelected As BestReplacementDeviceInfo = Nothing
         Public LogisticsStage As Integer = 0 ' 0 is first stage
+        Public LogisticsOption As LogisticOption = Nothing
     End Class
 
     Public Sub New()
@@ -159,12 +177,12 @@ Public Class ClaimRecordingForm
         Public CasePurpose As String = String.Empty
         Public IsCallerAuthenticated As Boolean = False
 
-        Public Sub New(ByVal certificateId As Guid, ByVal claimId As Guid, ByVal caseId As Guid, Optional ByVal casePurpose As String = "",optional IsCallerAuthenticated As boolean = False)
+        Public Sub New(ByVal certificateId As Guid, ByVal claimId As Guid, ByVal caseId As Guid, Optional ByVal casePurpose As String = "", Optional IsCallerAuthenticated As Boolean = False)
             Me.CertificateId = certificateId
             Me.CaseId = caseId
             Me.ClaimId = claimId
             Me.CasePurpose = casePurpose
-            Me.IsCallerAuthenticated=IsCallerAuthenticated
+            Me.IsCallerAuthenticated = IsCallerAuthenticated
         End Sub
 
     End Class
@@ -174,8 +192,8 @@ Public Class ClaimRecordingForm
     Public Class ReturnType
         Public LastOperation As DetailPageCommand
         Public CertificateId As Guid
-        public IsCallerAuthenticated as Boolean = False
-        Public Sub New(ByVal lastOp As DetailPageCommand, ByVal certId As Guid,Optional byval IsCallerAuthenticated As boolean = False)
+        Public IsCallerAuthenticated As Boolean = False
+        Public Sub New(ByVal lastOp As DetailPageCommand, ByVal certId As Guid, Optional ByVal IsCallerAuthenticated As Boolean = False)
             Me.LastOperation = lastOp
             Me.CertificateId = certId
             Me.IsCallerAuthenticated = IsCallerAuthenticated
@@ -197,7 +215,7 @@ Public Class ClaimRecordingForm
         End Get
     End Property
     Public ReadOnly Property UcExistingCallerInfo() As UserControlCallerInfo
-        Get            
+        Get
             Return ucCallerInfo
         End Get
     End Property
@@ -253,7 +271,7 @@ Public Class ClaimRecordingForm
         End Try
     End Sub
     Private Sub Page_PreRender(sender As Object, e As EventArgs) Handles Me.PreRender
-        
+
         If mvClaimsRecording.ActiveViewIndex = ClaimRecordingViewIndexShippingAddress Then
             If RadioButtonBillingAddress.Checked Then
                 UserControlAddress.EnableControls(True) 'disable the address controls
@@ -262,36 +280,52 @@ Public Class ClaimRecordingForm
             End If
         End If
     End Sub
+
+    Private Sub ReWireUserControl()
+        For i As Integer = 0 To GridViewLogisticsOptions.Rows.Count - 1
+            Dim rb As System.Web.UI.WebControls.RadioButton
+            rb = CType(GridViewLogisticsOptions.Rows(i).FindControl("rdoLogisticsOption"), System.Web.UI.WebControls.RadioButton)
+            If rb.Checked Then
+                Dim uc As UserControlServiceCenterSelection
+                uc = CType(GridViewLogisticsOptions.Rows(i).FindControl("ucServiceCenterUserControl"), UserControlServiceCenterSelection)
+
+                If uc IsNot Nothing Then
+                    ServiceCenterSelectionHandler(uc)
+                End If
+            End If
+        Next
+    End Sub
     Protected Sub Page_Load(ByVal sender As Object, ByVal e As EventArgs) Handles Me.Load
         MasterPage.MessageController.Clear()
 
-        AddHandler  UcExistingCallerInfo.GridSelectionHandler, AddressOf  UcExistingCallerInfo_GridSelectionHandler
-        AddHandler  UcPreviousCallerInfo.GridSelectionHandler, AddressOf  UcPreviousCallerInfo_GridSelectionHandler
+        AddHandler UcExistingCallerInfo.GridSelectionHandler, AddressOf UcExistingCallerInfo_GridSelectionHandler
+        AddHandler UcPreviousCallerInfo.GridSelectionHandler, AddressOf UcPreviousCallerInfo_GridSelectionHandler
+        ReWireUserControl()
 
         Try
             If Not (IsPostBack) Then
                 lblCancelMessage.Text = TranslationBase.TranslateLabelOrMessage("MSG_CONFIRM_CANCEL")
 
-                SetUpQuestionUserControl()                
-                If Not _isReturningFromChild then
+                SetUpQuestionUserControl()
+                If Not _isReturningFromChild Then
                     'State.IsCallerAuthenticated = True
                     PopulateExclSecFields()
                     PopulateUserPermission()
-                End If      
+                End If
                 PopulateClaimHeaderDetails()
                 UpdateBreadCrum()
-                
+
                 ShowCallerView()
-                dim oDealer as Dealer                
+                Dim oDealer As Dealer
                 If (Not State.CertificateId.Equals(Guid.Empty)) Then
-                    oDealer =  new Dealer(New Certificate(me.State.CertificateId).Dealer.Id)
+                    oDealer = New Dealer(New Certificate(Me.State.CertificateId).Dealer.Id)
                 ElseIf (Not State.CaseId.Equals(Guid.Empty)) Then
                     Dim oCase As CaseBase = New CaseBase(State.CaseId)
-                    oDealer =  new Dealer( New Certificate(oCase.CertId).Dealer.Id)
+                    oDealer = New Dealer(New Certificate(oCase.CertId).Dealer.Id)
                 End If
-                
+
                 If oDealer.Show_Previous_Caller_Info = FlagYes AndAlso Not Session("PrevCallerFirstName") = String.Empty Then
-                    ShowPrevCallerView()                   
+                    ShowPrevCallerView()
                 End If
 
                 TranslateGridHeader(GridItems)
@@ -391,37 +425,37 @@ Public Class ClaimRecordingForm
             .TypeOfLoss = protectionInfo.TypeOfLoss
         End With
     End Sub
-    
+
     Private Sub PopulateUserPermission()
         Dim oUser As User = New User()
-        State.CallerAuthenticationNeeded  = oUser.NeedPERMtoViewPrivacyData()
-    End Sub 
+        State.CallerAuthenticationNeeded = oUser.NeedPERMtoViewPrivacyData()
+    End Sub
 
     Private Sub PopulateExclSecFields()
         Try
-            Dim certId as Guid 
+            Dim certId As Guid
             If (Not State.CertificateId.Equals(Guid.Empty)) Then
-                certId = State.CertificateId                
+                certId = State.CertificateId
             ElseIf (Not State.CaseId.Equals(Guid.Empty)) Then
                 Dim oCase As CaseBase = New CaseBase(State.CaseId)
-                certId = oCase.CertId                
+                certId = oCase.CertId
             End If
 
             Dim oCertificate As Certificate = New Certificate(certId)
-            If Not oCertificate Is Nothing then              
-                Dim exclSecFieldsDt As DataTable                
+            If Not oCertificate Is Nothing Then
+                Dim exclSecFieldsDt As DataTable
                 Dim objList As List(Of CaseBase.ExclSecFields)
-                If State.ExclSecFieldsDt Is Nothing then                                                                        
-                    objList = CaseBase.LoadExclSecFieldsConfig(Guid.Empty,oCertificate.DealerId)
-                    If objList.count > 0 then
-                        exclSecFieldsDt= ConvertToDataTable(of CaseBase.ExclSecFields) (objList)
-                        If Not ExclSecFieldsdt Is nothing and ExclSecFieldsDt.Rows.Count > 0 then
-                            State.ExclSecFieldsDt = ExclSecFieldsDt
+                If State.ExclSecFieldsDt Is Nothing Then
+                    objList = CaseBase.LoadExclSecFieldsConfig(Guid.Empty, oCertificate.DealerId)
+                    If objList.Count > 0 Then
+                        exclSecFieldsDt = ConvertToDataTable(Of CaseBase.ExclSecFields)(objList)
+                        If Not exclSecFieldsDt Is Nothing And exclSecFieldsDt.Rows.Count > 0 Then
+                            State.ExclSecFieldsDt = exclSecFieldsDt
                             'State.IsCallerAuthenticated = False                   
-                        End If                
+                        End If
                     End If
-                End If       
-            End If            
+                End If
+            End If
 
         Catch ex As ThreadAbortException
         Catch ex As Exception
@@ -478,8 +512,8 @@ Public Class ClaimRecordingForm
 
         State.CertificateNumber = oCertificate.CertNumber
         ' If  State.IsCallerAuthenticated = False AndAlso Not State.ExclSecFieldsDt Is Nothing AndAlso (State.ExclSecFieldsDt.AsEnumerable().Where(Function(p) p.Field(Of String)("table_name") = "ELP_CERT" and p.Field(Of String)("column_name") = "CUSTOMER_NAME").Count > 0 ) then
-        If Not CaseBase.DisplaySecField(State.ExclSecFieldsDt, State.CallerAuthenticationNeeded, "ELP_CERT", "CUSTOMER_NAME", State.IsCallerAuthenticated) then            
-            moProtectionEvtDtl.CustomerName = string.Empty
+        If Not CaseBase.DisplaySecField(State.ExclSecFieldsDt, State.CallerAuthenticationNeeded, "ELP_CERT", "CUSTOMER_NAME", State.IsCallerAuthenticated) Then
+            moProtectionEvtDtl.CustomerName = String.Empty
         Else
             moProtectionEvtDtl.CustomerName = oCertificate.CustomerName
         End If
@@ -505,7 +539,7 @@ Public Class ClaimRecordingForm
             moProtectionEvtDtl.ClaimStatus = LookupListNew.GetClaimStatusFromCode(Authentication.CurrentUser.LanguageId, State.ClaimBo.StatusCode)
             moProtectionEvtDtl.ClaimStatusCss = If(State.ClaimBo.Status = BasicClaimStatus.Active, "StatActive", "StatClosed")
             moProtectionEvtDtl.ClaimStatus = State.ClaimBo.Status
-            moProtectionEvtDtl.DateOfLoss = State.ClaimBo.LossDate.Value.ToString(DATE_FORMAT)
+            moProtectionEvtDtl.DateOfLoss = GetDateFormattedStringNullable(State.ClaimBo.LossDate.Value)
             moProtectionEvtDtl.TypeOfLoss = LookupListNew.GetDescriptionFromId(LookupListNew.LK_RISKTYPES, State.ClaimBo.CertificateItem.RiskTypeId)
         End If
 
@@ -516,12 +550,13 @@ Public Class ClaimRecordingForm
     ''' </summary>
     ''' <returns>Instance of <see cref="ClaimRecordingServiceClient"/></returns>
     Private Shared Function GetClient() As ClaimRecordingServiceClient
+        ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12
         Dim client = New ClaimRecordingServiceClient(EndPointName, ConfigurationManager.AppSettings(ServiceUrl))
         client.ClientCredentials.UserName.UserName = ConfigurationManager.AppSettings(UserName)
         client.ClientCredentials.UserName.Password = ConfigurationManager.AppSettings(Password)
-        Return client        
+        Return client
     End Function
-    
+
     Private Sub DisplayNextView()
         If State.SubmitWsBaseClaimRecordingResponse IsNot Nothing Then
 
@@ -599,7 +634,7 @@ Public Class ClaimRecordingForm
                         If oClaimBase.Status = BasicClaimStatus.Pending Then
                             If (oClaimBase.ClaimAuthorizationType = ClaimAuthorizationType.Multiple) Then
                                 NavController = Nothing
-                                callPage(ClaimWizardForm.URL, New ClaimWizardForm.Parameters(ClaimWizardForm.ClaimWizardSteps.Step3, Nothing, oClaimBase.Id, Nothing,,,state.IsCallerAuthenticated))
+                                callPage(ClaimWizardForm.URL, New ClaimWizardForm.Parameters(ClaimWizardForm.ClaimWizardSteps.Step3, Nothing, oClaimBase.Id, Nothing,,, State.IsCallerAuthenticated))
                             Else
                                 NavController.FlowSession(FlowSessionKeys.SESSION_CLAIM) = oClaimBase
                                 NavController.Navigate(Me, FlowEvents.EVENT_CLAIM_SELECTED)
@@ -613,7 +648,7 @@ Public Class ClaimRecordingForm
                                 NavController.Navigate(Me, FlowEvents.EVENT_NEXT, New ClaimForm.Parameters(State.ClaimBo.Id))
                             Else
                                 ' for others
-                                callPage(ClaimForm.URL, new claimform.Parameters(oClaimBase.Id, Me.State.IsCallerAuthenticated))
+                                callPage(ClaimForm.URL, New ClaimForm.Parameters(oClaimBase.Id, Me.State.IsCallerAuthenticated))
                             End If
                         End If
                     End If
@@ -640,12 +675,12 @@ Public Class ClaimRecordingForm
         ElseIf (Not State.InputParameters.CertificateId.Equals(Guid.Empty)) Then
             Dim certId As Guid
             certId = State.CertificateId
-            Dim retObj As ReturnType = New ReturnType(DetailPageCommand.Cancel, certId,state.IsCallerAuthenticated)
+            Dim retObj As ReturnType = New ReturnType(DetailPageCommand.Cancel, certId, State.IsCallerAuthenticated)
             NavController = Nothing
             ReturnToCallingPage(retObj)
         ElseIf (Not State.InputParameters.CaseId.Equals(Guid.Empty)) Then
             Dim oCase As CaseBase = New CaseBase(State.InputParameters.CaseId)
-            Dim retType As ReturnType = New ReturnType(DetailPageCommand.Cancel, oCase.CertId,state.IsCallerAuthenticated)
+            Dim retType As ReturnType = New ReturnType(DetailPageCommand.Cancel, oCase.CertId, State.IsCallerAuthenticated)
             NavController = Nothing
             ReturnToCallingPage(retType)
         End If
@@ -698,22 +733,22 @@ Public Class ClaimRecordingForm
 
 #End Region
 #Region "Caller View"
-#Region "Caller View - Load data"   
+#Region "Caller View - Load data"
 
     Private Sub ShowCallerView()
 
         Dim callersDataTable As DataTable
         Dim emptyDataRow As DataRow
 
-        PopulateDropdowns()  
+        PopulateDropdowns()
 
-        If (Not State.CertificateId.Equals(Guid.Empty)) Then           
+        If (Not State.CertificateId.Equals(Guid.Empty)) Then
             'check and assign the incoming purpose code
             If (Not String.IsNullOrEmpty(State.IncomingCasePurpose)) Then
                 SetSelectedItem(moPurposecode, State.IncomingCasePurpose)
                 moPurposecode.Enabled = False
             End If
-        ElseIf (Not State.CaseId.Equals(Guid.Empty)) Then          
+        ElseIf (Not State.CaseId.Equals(Guid.Empty)) Then
 
             Dim oCase As CaseBase = New CaseBase(State.CaseId)
             SetSelectedItem(moPurposecode, oCase.CasePurposeCode)
@@ -729,21 +764,21 @@ Public Class ClaimRecordingForm
         Me.State.ExistingUserControlItemSelected = True
     End Sub
 
-    Private Sub ShowPrevCallerView()        
-        ucPrevCallerInfo.PopulateGridViewPrevCaller(State.CertificateId, State.CaseId, State.IsCallerAuthenticated)        
+    Private Sub ShowPrevCallerView()
+        ucPrevCallerInfo.PopulateGridViewPrevCaller(State.CertificateId, State.CaseId, State.IsCallerAuthenticated)
     End Sub
     Private Sub PopulateDropdowns()
 
         Dim purposeList As ListItem()
 
         purposeList = (From llItem As DataRow In LookupListNew.GetPurposeList(Authentication.CurrentUser.LanguageId).ToTable().AsEnumerable()
-            Select New ListItem(llItem.Field(Of String)(LookupListNew.COL_DESCRIPTION_NAME), llItem.Field(Of String)(LookupListNew.COL_CODE_NAME))).Distinct().ToArray()
+                       Select New ListItem(llItem.Field(Of String)(LookupListNew.COL_DESCRIPTION_NAME), llItem.Field(Of String)(LookupListNew.COL_CODE_NAME))).Distinct().ToArray()
         _relationlist = (From llItem As DataRow In LookupListNew.GetRelationshipList(Authentication.CurrentUser.LanguageId).ToTable().AsEnumerable()
-            Select New ListItem(llItem.Field(Of String)(LookupListNew.COL_DESCRIPTION_NAME), llItem.Field(Of String)(LookupListNew.COL_CODE_NAME))).Distinct().ToArray()
+                         Select New ListItem(llItem.Field(Of String)(LookupListNew.COL_DESCRIPTION_NAME), llItem.Field(Of String)(LookupListNew.COL_CODE_NAME))).Distinct().ToArray()
 
         BindListControlToArray(moPurposecode, purposeList)
     End Sub
-   
+
 
 #End Region
 #Region "Caller View - Other Function"
@@ -761,55 +796,55 @@ Public Class ClaimRecordingForm
             caseRequest.CaseNumber = oCase.CaseNumber
 
             Dim callerinfo As New PhoneCaller()
-            If Me.State.ExistingUserControlItemSelected = True
+            If Me.State.ExistingUserControlItemSelected = True Then
                 UcExistingCallerInfo.GetCallerInformation()
 
                 callerinfo.FirstName = UcExistingCallerInfo.FirstName
                 callerinfo.LastName = UcExistingCallerInfo.LastName
-                callerinfo.RelationshipTypeCode = UcExistingCallerInfo.RelationshipCode    
-                
-                Session("PrevCallerRelationshipCode") = UcExistingCallerInfo.RelationshipDesc    
+                callerinfo.RelationshipTypeCode = UcExistingCallerInfo.RelationshipCode
+
+                Session("PrevCallerRelationshipCode") = UcExistingCallerInfo.RelationshipDesc
                 callerinfo.ChannelCode = "CSR"
                 callerinfo.EmailAddress = UcExistingCallerInfo.Email
                 callerinfo.CultureCode = Thread.CurrentThread.CurrentCulture.ToString().ToUpper()
                 'For Optus , if Agent is CSR Enable the Authetication Sceen always.
-                If Not State.ExclSecFieldsDt is Nothing AndAlso State.ExclSecFieldsDt.Rows.Count > 0 then
+                If Not State.ExclSecFieldsDt Is Nothing AndAlso State.ExclSecFieldsDt.Rows.Count > 0 Then
                     callerinfo.IsAuthenticated = False
                     'Else
                     '  callerinfo.IsAuthenticated = State.IsCallerAuthenticated
                 End If
 
                 callerinfo.PhoneNumber = UcExistingCallerInfo.WorkPhoneNumber
-                
+
             Else
                 UcPreviousCallerInfo.GetCallerInformation()
 
                 callerinfo.FirstName = UcPreviousCallerInfo.FirstName
                 callerinfo.LastName = UcPreviousCallerInfo.LastName
-                callerinfo.RelationshipTypeCode = UcPreviousCallerInfo.RelationshipCode      
-                
-                Session("PrevCallerRelationshipCode") = UcPreviousCallerInfo.RelationshipDesc    
+                callerinfo.RelationshipTypeCode = UcPreviousCallerInfo.RelationshipCode
+
+                Session("PrevCallerRelationshipCode") = UcPreviousCallerInfo.RelationshipDesc
                 callerinfo.ChannelCode = "CSR"
-                callerinfo.EmailAddress = UcPreviousCallerInfo.Email                
+                callerinfo.EmailAddress = UcPreviousCallerInfo.Email
                 callerinfo.CultureCode = Thread.CurrentThread.CurrentCulture.ToString().ToUpper()
                 'For Optus , if Agent is CSR Enable the Authetication Sceen always.
-                If Not State.ExclSecFieldsDt is Nothing AndAlso State.ExclSecFieldsDt.Rows.Count > 0 then
+                If Not State.ExclSecFieldsDt Is Nothing AndAlso State.ExclSecFieldsDt.Rows.Count > 0 Then
                     callerinfo.IsAuthenticated = False
                     'Else
                     '   callerinfo.IsAuthenticated = State.IsCallerAuthenticated
                 End If
                 callerinfo.PhoneNumber = UcPreviousCallerInfo.WorkPhoneNumber
-                
+
             End If
-                
+
             Session("PrevCallerFirstName") = callerinfo.FirstName
             Session("PrevCallerLastName") = callerinfo.LastName
-            
+
             Session("PrevCallerWorkPhoneNumber") = callerinfo.PhoneNumber
             Session("PrevCallerEmail") = callerinfo.EmailAddress
 
             caseRequest.Caller = callerinfo
-            
+
             caseRequest.PurposeCode = moPurposecode.SelectedValue 'oCase.CasePurposeXcd
 
             If (callerinfo.GetType() Is GetType(PhoneCaller)) Then
@@ -818,14 +853,14 @@ Public Class ClaimRecordingForm
                     Exit Sub
                 End If
             End If
-            
+
             Try
                 Dim wsResponse = WcfClientHelper.Execute(Of ClaimRecordingServiceClient, IClaimRecordingService, BaseClaimRecordingResponse)(
                     GetClient(),
                     New List(Of Object) From {New InteractiveUserHeader() With {.LanId = Authentication.CurrentUser.NetworkId}},
                     Function(ByVal c As ClaimRecordingServiceClient)
                         Return c.BeginInteraction(caseRequest)
-                                                                                                                                                End Function)
+                    End Function)
                 If wsResponse IsNot Nothing Then
                     State.SubmitWsBaseClaimRecordingResponse = wsResponse
                 End If
@@ -852,7 +887,7 @@ Public Class ClaimRecordingForm
             'State.caseId = ClaimBase.GetCaseIdByCaseNumberAndCompany("2017000998", "AIF")
             '    Dim oCase As CaseBase = New CaseBase(State.caseId)
             '    NavController.Navigate(Me, FlowEvents.EVENT_DENIED_CASE_CRATED, New CaseDetailsForm.Parameters(oCase))
-
+            Dim errMsg As List(Of String) = New List(Of String)
             If Not State.CertificateId.Equals(Guid.Empty) Then
                 Dim policyRequest As CreateCaseRequest = New CreateCaseRequest()
                 policyRequest.PurposeCode = moPurposecode.SelectedValue
@@ -877,33 +912,33 @@ Public Class ClaimRecordingForm
                 End Select
 
                 Dim callerinfo As New PhoneCaller()
-                
-                If Me.State.ExistingUserControlItemSelected  = True
+
+                If Me.State.ExistingUserControlItemSelected = True Then
                     UcExistingCallerInfo.GetCallerInformation()
 
                     callerinfo.FirstName = UcExistingCallerInfo.FirstName
                     callerinfo.LastName = UcExistingCallerInfo.LastName
-                    callerinfo.RelationshipTypeCode = UcExistingCallerInfo.RelationshipCode                
-                    Session("PrevCallerRelationshipCode") = UcExistingCallerInfo.RelationshipDesc                                                
-                    callerinfo.ChannelCode = "CSR"                            
+                    callerinfo.RelationshipTypeCode = UcExistingCallerInfo.RelationshipCode
+                    Session("PrevCallerRelationshipCode") = UcExistingCallerInfo.RelationshipDesc
+                    callerinfo.ChannelCode = "CSR"
                     callerinfo.EmailAddress = UcExistingCallerInfo.Email
                     callerinfo.CultureCode = Thread.CurrentThread.CurrentCulture.ToString().ToUpper()
                     'For Optus , if Agent is CSR Enable the Authetication Sceen always.
-                    If Not State.ExclSecFieldsDt is Nothing AndAlso State.ExclSecFieldsDt.Rows.Count > 0 then
+                    If Not State.ExclSecFieldsDt Is Nothing AndAlso State.ExclSecFieldsDt.Rows.Count > 0 Then
                         callerinfo.IsAuthenticated = False
                         'Else
                         '   callerinfo.IsAuthenticated = State.IsCallerAuthenticated
                     End If
                     callerinfo.PhoneNumber = UcExistingCallerInfo.WorkPhoneNumber
-                    
+
                 Else
                     UcPreviousCallerInfo.GetCallerInformation()
 
                     callerinfo.FirstName = UcPreviousCallerInfo.FirstName
                     callerinfo.LastName = UcPreviousCallerInfo.LastName
-                    callerinfo.RelationshipTypeCode = UcPreviousCallerInfo.RelationshipCode        
-                    Session("PrevCallerRelationshipCode") = UcPreviousCallerInfo.RelationshipDesc                                        
-                    callerinfo.ChannelCode = "CSR"                            
+                    callerinfo.RelationshipTypeCode = UcPreviousCallerInfo.RelationshipCode
+                    Session("PrevCallerRelationshipCode") = UcPreviousCallerInfo.RelationshipDesc
+                    callerinfo.ChannelCode = "CSR"
                     callerinfo.EmailAddress = UcPreviousCallerInfo.Email
                     callerinfo.CultureCode = Thread.CurrentThread.CurrentCulture.ToString().ToUpper()
                     'For Optus , if Agent is CSR Enable the Authetication Sceen always.
@@ -914,20 +949,33 @@ Public Class ClaimRecordingForm
                     'End If
                     callerinfo.IsAuthenticated = State.IsCallerAuthenticated
                     callerinfo.PhoneNumber = UcPreviousCallerInfo.WorkPhoneNumber
-                    
+
                 End If
-                
+
                 Session("PrevCallerFirstName") = callerinfo.FirstName
-                Session("PrevCallerLastName") = callerinfo.LastName                
+                Session("PrevCallerLastName") = callerinfo.LastName
                 Session("PrevCallerWorkPhoneNumber") = callerinfo.PhoneNumber
                 Session("PrevCallerEmail") = callerinfo.EmailAddress
-                                
+
                 If (callerinfo.GetType() Is GetType(PhoneCaller)) Then
                     If (String.IsNullOrEmpty(callerinfo.PhoneNumber) And String.IsNullOrEmpty(callerinfo.EmailAddress)) Then
-                        MasterPage.MessageController.AddError(ElitaPlus.Common.ErrorCodes.GUI_CALLER_PHONE_OR_EMAIL_REQUIRED_ERR, True)
-                        Exit Sub
+                        errMsg.Add(TranslationBase.TranslateLabelOrMessage(ElitaPlus.Common.ErrorCodes.GUI_CALLER_PHONE_OR_EMAIL_REQUIRED_ERR))
                     End If
                 End If
+
+                If String.IsNullOrEmpty(callerinfo.FirstName) Then
+                    errMsg.Add(TranslationBase.TranslateLabelOrMessage(ElitaPlus.Common.ErrorCodes.GUI_CALLER_FIRST_NAME_REQUIRED_ERR))
+                End If
+
+                If String.IsNullOrEmpty(callerinfo.LastName) Then
+                    errMsg.Add(TranslationBase.TranslateLabelOrMessage(ElitaPlus.Common.ErrorCodes.GUI_CALLER_LAST_NAME_REQUIRED_ERR))
+                End If
+
+                If errMsg.Count > 0 Then
+                    MasterPage.MessageController.AddError(errMsg.ToArray, True)
+                    Exit Sub
+                End If
+
                 policyRequest.Caller = callerinfo
 
                 Try
@@ -937,7 +985,7 @@ Public Class ClaimRecordingForm
                         New List(Of Object) From {New InteractiveUserHeader() With {.LanId = Authentication.CurrentUser.NetworkId}},
                         Function(ByVal c As ClaimRecordingServiceClient)
                             Return c.BeginClaim(policyRequest)
-                                                                                                                                                    End Function)
+                        End Function)
 
                     If wsResponse IsNot Nothing Then
                         State.SubmitWsBaseClaimRecordingResponse = wsResponse
@@ -1043,6 +1091,7 @@ Public Class ClaimRecordingForm
                             claimdevice.ImeiNumber = DirectCast(row.FindControl("lblImeiNo"), Label).Text
                             claimdevice.SerialNumber = DirectCast(row.FindControl("lblSerialNo"), Label).Text
                             claimdevice.RegisteredItemName = DirectCast(row.FindControl("lblRegisteredItem"), Label).Text
+                            claimdevice.RiskTypeCode = DirectCast(row.FindControl("HiddenRiskType"), HiddenField).Value
 
                             If (String.IsNullOrWhiteSpace(claimdevice.Manufacturer)) Then
                                 MasterPage.MessageController.AddError(ElitaPlus.Common.ErrorCodes.GUI_MANUFACTURER_NAME_IS_MISSING_ERR, True)
@@ -1064,8 +1113,9 @@ Public Class ClaimRecordingForm
                             New List(Of Object) From {New InteractiveUserHeader() With {.LanId = Authentication.CurrentUser.NetworkId}},
                             Function(ByVal c As ClaimRecordingServiceClient)
                                 Return c.Submit(itemSelectionRequest)
-                                                                                                                                                        End Function)
+                            End Function)
                         If wsResponse IsNot Nothing Then
+                            State.ClaimedDevice = claimdevice
                             State.SubmitWsBaseClaimRecordingResponse = wsResponse
                         End If
                     Catch ex As FaultException
@@ -1122,7 +1172,7 @@ Public Class ClaimRecordingForm
                             New List(Of Object) From {New InteractiveUserHeader() With {.LanId = Authentication.CurrentUser.NetworkId}},
                             Sub(ByVal c As ClaimRecordingServiceClient)
                                 c.Save(itemSelectionRequest)
-                                                                                                           End Sub)
+                            End Sub)
                     Catch ex As FaultException
                         ThrowWsFaultExceptions(ex)
                         Exit Sub
@@ -1185,15 +1235,15 @@ Public Class ClaimRecordingForm
                 End If
 
                 questionUserControl.GetQuestionAnswer()
-                
+
                 If (Not String.IsNullOrEmpty(questionUserControl.ErrAnswerMandatory.ToString())) Then
-                    MasterPage.MessageController.AddError(ElitaPlus.Common.ErrorCodes.GUI_ANSWER_IS_REQUIRED_ERR, true)
+                    MasterPage.MessageController.AddError(ElitaPlus.Common.ErrorCodes.GUI_ANSWER_IS_REQUIRED_ERR, True)
                     Exit Sub
                 ElseIf (Not String.IsNullOrEmpty(questionUserControl.ErrorQuestionCodes.ToString())) Then
                     MasterPage.MessageController.AddError(ElitaPlus.Common.ErrorCodes.GUI_ANSWER_TO_QUESTION_INVALID_ERR, True)
                     Exit Sub
                 ElseIf (Not String.IsNullOrEmpty(questionUserControl.ErrTextAnswerLength.ToString())) Then
-                    MasterPage.MessageController.AddError(ElitaPlus.Common.ErrorCodes.GUI_ANSWER_LENGTH_TO_QUESTION_TOO_LONG_ERR, true)
+                    MasterPage.MessageController.AddError(ElitaPlus.Common.ErrorCodes.GUI_ANSWER_LENGTH_TO_QUESTION_TOO_LONG_ERR, True)
                     Exit Sub
                 End If
 
@@ -1208,19 +1258,19 @@ Public Class ClaimRecordingForm
                         wsRequest = New CallerAuthenticationRequest()
                     End If
                 End If
-                
+
                 wsRequest.CaseNumber = questionSubmitObj.CaseNumber
                 wsRequest.CompanyCode = questionSubmitObj.CompanyCode
                 wsRequest.InteractionNumber = questionSubmitObj.InteractionNumber
                 wsRequest.Questions = questionSubmitObj.Questions
-                
+
                 Try
                     Dim wsResponse = WcfClientHelper.Execute(Of ClaimRecordingServiceClient, IClaimRecordingService, BaseClaimRecordingResponse)(
                         GetClient(),
                         New List(Of Object) From {New InteractiveUserHeader() With {.LanId = Authentication.CurrentUser.NetworkId}},
                         Function(ByVal c As ClaimRecordingServiceClient)
                             Return c.Submit(wsRequest)
-                                                                                                                                                    End Function)
+                        End Function)
                     If wsResponse IsNot Nothing Then
                         State.SubmitWsBaseClaimRecordingResponse = wsResponse
 
@@ -1231,10 +1281,11 @@ Public Class ClaimRecordingForm
                            AndAlso Not String.IsNullOrEmpty(State.SubmitWsBaseClaimRecordingResponse.CompanyCode) Then
                             Dim oClaimBase As ClaimBase = ClaimFacade.Instance.GetClaimByClaimNumber(Of ClaimBase)(State.SubmitWsBaseClaimRecordingResponse.CompanyCode, State.SubmitWsBaseClaimRecordingResponse.ClaimNumber)
                             If Not oClaimBase Is Nothing Then
+                                State.ClaimBo = oClaimBase
                                 moProtectionEvtDtl.ClaimNumber = oClaimBase.ClaimNumber
                                 moProtectionEvtDtl.ClaimStatus = LookupListNew.GetClaimStatusFromCode(Authentication.CurrentUser.LanguageId, oClaimBase.StatusCode)
                                 moProtectionEvtDtl.ClaimStatusCss = If(oClaimBase.Status = BasicClaimStatus.Active, "StatActive", "StatClosed")
-                                moProtectionEvtDtl.DateOfLoss = oClaimBase.LossDate.Value.ToString(DATE_FORMAT)
+                                moProtectionEvtDtl.DateOfLoss = GetDateFormattedStringNullable(oClaimBase.LossDate.Value)
                                 moProtectionEvtDtl.TypeOfLoss = LookupListNew.GetDescriptionFromId(LookupListNew.LK_RISKTYPES, oClaimBase.CertificateItem.RiskTypeId)
                             End If
                         End If
@@ -1252,21 +1303,21 @@ Public Class ClaimRecordingForm
                     Dim oCertificate As Certificate = New Certificate(State.CertificateId)
                     State.IsCallerAuthenticated = True
                     'If  State.IsCallerAuthenticated = False AndAlso Not State.ExclSecFieldsDt Is Nothing AndAlso (State.ExclSecFieldsDt.AsEnumerable().Where(Function(p) p.Field(Of String)("table_name") = "ELP_CERT" and p.Field(Of String)("column_name") = "CUSTOMER_NAME").Count > 0 ) then
-                    If Not CaseBase.DisplaySecField(State.ExclSecFieldsDt, State.CallerAuthenticationNeeded, "ELP_CERT", "CUSTOMER_NAME", State.IsCallerAuthenticated) then            
+                    If Not CaseBase.DisplaySecField(State.ExclSecFieldsDt, State.CallerAuthenticationNeeded, "ELP_CERT", "CUSTOMER_NAME", State.IsCallerAuthenticated) Then
                         moProtectionEvtDtl.CustomerName = String.Empty
                     Else
                         moProtectionEvtDtl.CustomerName = oCertificate.CustomerName
                     End If
                     'If  State.IsCallerAuthenticated = False AndAlso Not State.ExclSecFieldsDt Is Nothing AndAlso (State.ExclSecFieldsDt.AsEnumerable().Where(Function(p) p.Field(Of String)("table_name") = "ELP_ADDRESS" and p.Field(Of String)("column_name") = "ADDRESS1").Count > 0 ) then
-                    If Not CaseBase.DisplaySecField(State.ExclSecFieldsDt, State.CallerAuthenticationNeeded, "ELP_ADDRESS" ,"ADDRESS1", State.IsCallerAuthenticated) then            
+                    If Not CaseBase.DisplaySecField(State.ExclSecFieldsDt, State.CallerAuthenticationNeeded, "ELP_ADDRESS", "ADDRESS1", State.IsCallerAuthenticated) Then
                         moProtectionEvtDtl.ShowCustomerAddress = False
                         moProtectionEvtDtl.CustomerAddress = String.Empty
                     Else
                         moProtectionEvtDtl.ShowCustomerAddress = True
                         moProtectionEvtDtl.CustomerAddress = getCustomerAddress(oCertificate.AddressChild)
-                    End If                    
+                    End If
                 End If
-                
+
                 DisplayNextView()
             End If
         Catch ex As ThreadAbortException
@@ -1330,7 +1381,7 @@ Public Class ClaimRecordingForm
                 End If
 
                 questionUserControl.GetQuestionAnswer()
-                
+
                 Dim wsRequest
                 If State.SubmitWsBaseClaimRecordingResponse IsNot Nothing Then
                     If State.SubmitWsBaseClaimRecordingResponse.GetType() Is GetType(QuestionResponse) Then
@@ -1353,7 +1404,7 @@ Public Class ClaimRecordingForm
                         New List(Of Object) From {New InteractiveUserHeader() With {.LanId = Authentication.CurrentUser.NetworkId}},
                         Sub(ByVal c As ClaimRecordingServiceClient)
                             c.Save(wsRequest)
-                                                                                                       End Sub)
+                        End Sub)
                 Catch ex As FaultException
                     ThrowWsFaultExceptions(ex)
                     Exit Sub
@@ -1478,13 +1529,13 @@ Public Class ClaimRecordingForm
         If RadioButtonOtherAddress.Checked Then
             If Not UserControlAddress Is Nothing Then
                 EnableDisableAddressValidation(moAddressController)
-                
+
                 If State.OtherAddressBo Is Nothing Then
                     State.OtherAddressBo = New BusinessObjectsNew.Address()
-                    
+
                     Dim countryDrop As DropDownList = moAddressController.FindControl("moCountryDrop_WRITE")
                     State.OtherAddressBo.CountryId = New Guid(countryDrop.SelectedValue)
-                
+
                 End If
 
                 Dim oCertificate As Certificate = New Certificate(State.CertificateId)
@@ -1499,7 +1550,7 @@ Public Class ClaimRecordingForm
         If RadioButtonBillingAddress.Checked Then
             If Not UserControlAddress Is Nothing Then
                 'save the current values on other address
-                If not State.OtherAddressBo Is Nothing Then
+                If Not State.OtherAddressBo Is Nothing Then
                     UserControlAddress.PopulateBOFromAddressControl(State.OtherAddressBo)
                 End If
                 UserControlAddress.Bind(State.PolicyAddressBo)
@@ -1554,7 +1605,7 @@ Public Class ClaimRecordingForm
                         New List(Of Object) From {New InteractiveUserHeader() With {.LanId = Authentication.CurrentUser.NetworkId}},
                         Function(ByVal c As ClaimRecordingServiceClient)
                             Return c.Submit(shippingAddRequest)
-                                                                                                                                                    End Function)
+                        End Function)
 
                     If wsResponse IsNot Nothing Then
                         State.SubmitWsBaseClaimRecordingResponse = wsResponse
@@ -1588,31 +1639,33 @@ Public Class ClaimRecordingForm
                 MasterPage.MessageController.AddError(Message.MSG_ERR_DEFAULT_SERVICE_CENTER, True)
                 Exit Sub
             End If
-	    
-	    
-            Dim defaultServiceCenter As ServiceCenter
-            if State.ClaimBo is nothing AndAlso string.IsNullOrEmpty(State.SubmitWsBaseClaimRecordingResponse.ClaimNumber) = False then
-                Dim companyId as Guid = ElitaPlusIdentity.Current.ActiveUser.CompanyId
 
-                for each cid as Guid in ElitaPlusIdentity.Current.ActiveUser.Companies()
-                    dim comobj as new Company(cid)
-                    if comobj.Code = State.SubmitWsBaseClaimRecordingResponse.CompanyCode then
+
+            Dim defaultServiceCenter As ServiceCenter
+            If State.ClaimBo Is Nothing AndAlso String.IsNullOrEmpty(State.SubmitWsBaseClaimRecordingResponse.ClaimNumber) = False Then
+                Dim companyId As Guid = ElitaPlusIdentity.Current.ActiveUser.CompanyId
+
+                For Each cid As Guid In ElitaPlusIdentity.Current.ActiveUser.Companies()
+                    Dim comobj As New Company(cid)
+                    If comobj.Code = State.SubmitWsBaseClaimRecordingResponse.CompanyCode Then
                         companyId = cid
-                        exit for
+                        Exit For
                     End If
                 Next
-                
-                state.ClaimBo = ClaimFacade.Instance.GetClaim(Of ClaimBase)(State.SubmitWsBaseClaimRecordingResponse.ClaimNumber,companyId)
+
+                State.ClaimBo = ClaimFacade.Instance.GetClaim(Of ClaimBase)(State.SubmitWsBaseClaimRecordingResponse.ClaimNumber, companyId)
                 defaultServiceCenter = New ServiceCenter(State.ClaimBo.ServiceCenterId)
-            else
+            Else
                 defaultServiceCenter = New ServiceCenter(countryBo.DefaultSCId)
             End If
 
             With UserControlDeliverySlot
                 .CountryCode = userSelectedShippingAddress.Country
-                .ServiceCenter= defaultServiceCenter.Code
-                .DeliveryAddress = New UserControlDeliverySlot.DeliveryAddressInfo () with {
-                    .CountryCode= userSelectedShippingAddress.Country,
+                .ServiceCenter = defaultServiceCenter.Code
+                .CourierCode = State.LogisticsOption.DeliveryOptions.CourierCode
+                .CourierProductCode = State.LogisticsOption.DeliveryOptions.CourierProductCode
+                .DeliveryAddress = New UserControlDeliverySlot.DeliveryAddressInfo() With {
+                    .CountryCode = userSelectedShippingAddress.Country,
                     .RegionShortDesc = userSelectedShippingAddress.State,
                     .PostalCode = userSelectedShippingAddress.PostalCode,
                     .City = userSelectedShippingAddress.City,
@@ -1735,7 +1788,7 @@ Public Class ClaimRecordingForm
                 New List(Of Object) From {New InteractiveUserHeader() With {.LanId = Authentication.CurrentUser.NetworkId}},
                 Function(ByVal c As ClaimRecordingServiceClient)
                     Return c.Submit(wsRequest)
-                                                                                                                                            End Function)
+                End Function)
             If wsResponse IsNot Nothing Then
                 State.SubmitWsBaseClaimRecordingResponse = wsResponse
             End If
@@ -1790,7 +1843,7 @@ Public Class ClaimRecordingForm
                     .OrderBy("ClaimedDevice", LinqExtentions.SortDirection.Descending) _
                     .ThenBy(Function(d) d.Priority)
 
-            
+
             If replacements Is Nothing OrElse replacements.Count = 0 Then
                 ControlMgr.SetVisibleControl(Me, rep, False)
                 ControlMgr.SetEnableControl(Me, btnBestReplacementNotSelectedContinue, True)
@@ -1876,19 +1929,13 @@ Public Class ClaimRecordingForm
             wsRequest.ReplacementDevice = State.BestReplacementDeviceSelected
         End If
 
-        'set the flag to true when the original equipment is selected as replacement and it is out of stock 
-        If(Not wsRequest.ReplacementDevice is nothing AndAlso Not bestReplacement.OriginalDevice is Nothing _
-                AndAlso wsRequest.ReplacementDevice is bestReplacement.OriginalDevice AndAlso bestReplacement.OriginalDevice.InventoryQuantity = 0)
-            State.IsOriginalEquipmentSelectedAndOutOfQuantity = true
-        End If
-
         Try
             Dim wsResponse = WcfClientHelper.Execute(Of ClaimRecordingServiceClient, IClaimRecordingService, BaseClaimRecordingResponse)(
                 GetClient(),
                 New List(Of Object) From {New InteractiveUserHeader() With {.LanId = Authentication.CurrentUser.NetworkId}},
                 Function(ByVal c As ClaimRecordingServiceClient)
                     Return c.Submit(wsRequest)
-                                                                                                                                            End Function)
+                End Function)
             If wsResponse IsNot Nothing Then
                 State.SubmitWsBaseClaimRecordingResponse = wsResponse
             End If
@@ -2083,6 +2130,8 @@ Public Class ClaimRecordingForm
             Exit Sub
         End If
 
+        State.FulfillmentOption = wsPreviousResponse.Options.FirstOrDefault(Function(opt) opt.Code = fulfillmentProfileCode)
+
         fulfillmentOptionQuestions.GetQuestionAnswer()
 
         wsRequest.CaseNumber = wsPreviousResponse.CaseNumber
@@ -2096,7 +2145,7 @@ Public Class ClaimRecordingForm
         If wsPreviousResponse.QuestionsByStage IsNot Nothing Then
             wsRequest.Questions = wsPreviousResponse.QuestionsByStage.FirstOrDefault().Value
         End If
-        
+
         Try
             'State.SubmitWsBaseClaimRecordingResponse = LoadLogisticsOptions()
             Dim wsResponse = WcfClientHelper.Execute(Of ClaimRecordingServiceClient, IClaimRecordingService, BaseClaimRecordingResponse)(
@@ -2104,7 +2153,7 @@ Public Class ClaimRecordingForm
                 New List(Of Object) From {New InteractiveUserHeader() With {.LanId = Authentication.CurrentUser.NetworkId}},
                 Function(ByVal c As ClaimRecordingServiceClient)
                     Return c.Submit(wsRequest)
-                                                                                                                                            End Function)
+                End Function)
             If wsResponse IsNot Nothing Then
                 State.SubmitWsBaseClaimRecordingResponse = wsResponse
             End If
@@ -2173,16 +2222,24 @@ Public Class ClaimRecordingForm
 #Region "Logistics Options View"
     Private Const GridLogisticsOptionsRdoCtrl As String = "rdoLogisticsOption"
     Private Const GridLoCodeLblCtrl As String = "lblLogisticsOptionCode"
-    'Private Const GridLoEstimateDeliveryDateDdlCtrl As String = "ddlDeliveryDates"
     Private Const GridLoStoreNumberTxtCtrl As String = "txtStoreNumber"
+    Private Const GridLoServiceCenterCodeTxtCtrl As String = "txtServiceCenterCode"
     Private Const GridLoStoreNumberLblCtrl As String = "lblStoreNumber"
+    Private Const GridLoServiceCenterCodeLblCtrl As String = "moServiceCenterCodeLabel"
+    Private Const GridLoServiceCenterNameLblCtrl As String = "moServiceCenterNameLabel"
+    Private Const GridLoServiceCenterSelectedLblCtrl As String = "moServiceCenterSelectedLabel"
     Private Const GridLoShippingAddressLblCtrl As String = "lblLoShippingAddress"
+    Private Const GridLoShippingServiceCenterLblCtrl As String = "lblLoServiceCenter"
     Private Const GridLoAddressCtrl As String = "ucAddressControllerLogisticsOptions"
-    'Private Const GridLoDeliveryOptionsLblCtrl As String = "lblDeliveryOptions"
+    Private Const GridLoServiceCenterCtrl As String = "ucServiceCenterUserControl"
     Private Const GridLoDeliveryDateLblCtrl As String = "lblDeliveryDate"
     Private Const GridLoEstimateDeliveryDateBtnCtrl As String = "btnEstimateDeliveryDate"
     Private Const LogisticsOptionsQuestionsCtrl As String = "logisticsOptionsQuestions"
     Private Const LogisticsOptionsEstimateDeliveryDateCtrl As String = "UCDeliverySlotLogisticOptions"
+    Private Const LogisticsOptionsServiceCenterCtrl As String = "ucServiceCenterUserControl"
+    Private Const LogisticsOptionsServiceCenterCodeTxtCtrl As String = "txtServiceCenterCode"
+    Private Const LogisticsOptionsServiceCenterNameTxtCtrl As String = "txtServiceCenterName"
+    Private Const GridLoServiceCenterTr As String = "trServiceCenter"
     'KDDI
     Private Const ValidateAddressButton As String = "btnValidate_Address"
 
@@ -2196,7 +2253,7 @@ Public Class ClaimRecordingForm
                     DisplayWsErrorMessage(wsResponse.ClaimRecordingMessages)
                 End If
                 PopulateLogisticsOptionsGrid()
-                
+
                 mvClaimsRecording.ActiveViewIndex = ClaimRecordingViewIndexLogisticsOptions
             End If
         End If
@@ -2210,6 +2267,8 @@ Public Class ClaimRecordingForm
         senderRb.Checked = True
         ' get the selected device into the state
         EnableControlinGridview(GridViewLogisticsOptions)
+        State.IsExpeditedBtnClicked = False
+        ControlMgr.SetEnableControl(Me, btnLogisticsOptionsContinue, True)
     End Sub
     Private Sub EnableControlinGridview(ByVal gridViewTarget As GridView)
 
@@ -2222,6 +2281,7 @@ Public Class ClaimRecordingForm
             Dim lb As Label
             lb = CType(gridViewTarget.Rows(i).FindControl(GridLoCodeLblCtrl), Label)
             Dim logisticsOptionItem As LogisticOption = logisticsStage.Options.FirstOrDefault(Function(q) q.Code = lb.Text)
+
 
             Dim rb As RadioButton
             rb = CType(gridViewTarget.Rows(i).FindControl(GridLogisticsOptionsRdoCtrl), RadioButton)
@@ -2244,10 +2304,10 @@ Public Class ClaimRecordingForm
 
             ' Logistics Options - Address
             If Not logisticsOptionItem Is Nothing _
-               AndAlso (logisticsOptionItem.Type = LogisticOptionType.CustomerAddress OrElse logisticsOptionItem.Type = LogisticOptionType.DealerBranchAddress) Then                
+               AndAlso (logisticsOptionItem.Type = LogisticOptionType.CustomerAddress OrElse logisticsOptionItem.Type = LogisticOptionType.DealerBranchAddress) Then
                 moAddressController.EnableControls(Not isEnableControl, True)
                 If logisticsStage.Code = "RV" AndAlso (logisticsOptionItem.Code = "ST" OrElse logisticsOptionItem.Code = "E") AndAlso logisticsOptionItem.Type = LogisticOptionType.CustomerAddress Then
-                    moAddressController.EnableControls(True, True)   
+                    moAddressController.EnableControls(True, True)
                     Dim btnValidateAddress As Button = moAddressController.FindControl(ValidateAddressButton)
                     ControlMgr.SetVisibleControl(Me, btnValidateAddress, False)
                 End If
@@ -2265,12 +2325,23 @@ Public Class ClaimRecordingForm
 
                 Dim btnEstimateDeliveryDate As Button = CType(gridViewTarget.Rows(i).FindControl(GridLoEstimateDeliveryDateBtnCtrl), Button)
                 ControlMgr.SetEnableControl(Me, btnEstimateDeliveryDate, isEnableControl)
-                
+
+                If isEnableControl Then
+                    State.LogisticsOption = logisticsOptionItem
+                End If
             End If
 
+            ' Service Center
+            Dim serviceCenterTableRow As System.Web.UI.HtmlControls.HtmlTableRow = CType(gridViewTarget.Rows(i).FindControl(GridLoServiceCenterTr), System.Web.UI.HtmlControls.HtmlTableRow)
+            If Not logisticsOptionItem Is Nothing _
+               AndAlso logisticsOptionItem.Type = LogisticOptionType.ServiceCenter Then
+                ControlMgr.SetVisibleControl(Me, serviceCenterTableRow, True)
+            Else
+                ControlMgr.SetVisibleControl(Me, serviceCenterTableRow, False)
+            End If
         Next
     End Sub
-    Private Function ConvertToAddressControllerField(ByVal sourceAddress As Address) As BusinessObjectsNew.Address
+    Private Function ConvertToAddressControllerField(ByVal sourceAddress As ClaimRecordingService.Address) As BusinessObjectsNew.Address
 
         Dim convertAddress As New BusinessObjectsNew.Address()
 
@@ -2283,16 +2354,15 @@ Public Class ClaimRecordingForm
         convertAddress.RegionId = LookupListNew.GetIdFromDescription(LookupListNew.DataView(LookupListNew.LK_REGIONS), sourceAddress.State)
         Return convertAddress
     End Function
-    Private Function PopulateAddressFromAddressController(ByVal addressCtrl As UserControlAddress_New) As Address
+    Private Function PopulateAddressFromAddressController(ByVal addressCtrl As UserControlAddress_New) As ClaimRecordingService.Address
         If addressCtrl Is Nothing Then
             Throw New ArgumentNullException(NameOf(addressCtrl))
         End If
 
-        Dim shippingAdd As Address = New Address()
+        Dim shippingAdd As ClaimRecordingService.Address = New ClaimRecordingService.Address()
         Dim txt As TextBox
         Dim txtPostalCode As TextBox
         Dim ddl As DropDownList
-
         txt = CType(addressCtrl.FindControl("moAddress1Text"), TextBox)
         shippingAdd.Address1 = txt.Text
         txt = CType(addressCtrl.FindControl("moAddress2Text"), TextBox)
@@ -2301,7 +2371,6 @@ Public Class ClaimRecordingForm
         shippingAdd.Address3 = txt.Text
         txt = CType(addressCtrl.FindControl("moCityText"), TextBox)
         shippingAdd.City = txt.Text
-
 
         txtPostalCode = CType(addressCtrl.FindControl("moPostalText"), TextBox)
 
@@ -2319,7 +2388,6 @@ Public Class ClaimRecordingForm
         If (ddl.Items.Count > 0 AndAlso ddl.SelectedIndex > -1) Then
             shippingAdd.State = LookupListNew.GetCodeFromId(LookupListNew.LK_REGIONS, New Guid(ddl.SelectedValue.ToString()))
         End If
-
         shippingAdd.PostalCode = txtPostalCode.Text
 
         Return shippingAdd
@@ -2360,9 +2428,15 @@ Public Class ClaimRecordingForm
                 If Not lOption Is Nothing _
                    AndAlso (lOption.Type = LogisticOptionType.DealerBranchAddress OrElse lOption.Type = LogisticOptionType.CustomerAddress) Then
 
-                    Dim addressSelected As Address = PopulateAddressFromAddressController(CType(gvr.Cells(GridLoColLoDetailIdx).FindControl("ucAddressControllerLogisticsOptions"), UserControlAddress_New))
+                    Dim addressSelected As ClaimRecordingService.Address = PopulateAddressFromAddressController(CType(gvr.Cells(GridLoColLoDetailIdx).FindControl("ucAddressControllerLogisticsOptions"), UserControlAddress_New))
                     Dim postalCodeOld As String
                     Dim countryCodeOld As String
+
+                    If addressSelected.Address1 Is Nothing OrElse addressSelected.Address1.Trim() = String.Empty Then
+                        MasterPage.MessageController.AddError(Message.MSG_PROMPT_ADDRESS1_FIELD_IS_REQUIRED, True)
+                        Return False
+                    End If
+
                     If lOption.Type = LogisticOptionType.DealerBranchAddress Then
                         Dim storeNumber As String = CType(gvr.Cells(GridLoColLoDetailIdx).FindControl(GridLoStoreNumberTxtCtrl), TextBox).Text
                         If String.IsNullOrWhiteSpace(storeNumber) Then
@@ -2370,7 +2444,7 @@ Public Class ClaimRecordingForm
                             Return False
                         End If
                         If Not lOption.LogisticOptionInfo Is Nothing _
-                           AndAlso Not CType(lOption.LogisticOptionInfo, LogisticOptionInfoDealerBranchAddress).Address Is Nothing Then
+                       AndAlso Not CType(lOption.LogisticOptionInfo, LogisticOptionInfoDealerBranchAddress).Address Is Nothing Then
                             postalCodeOld = CType(lOption.LogisticOptionInfo, LogisticOptionInfoDealerBranchAddress).Address.PostalCode
                             countryCodeOld = CType(lOption.LogisticOptionInfo, LogisticOptionInfoDealerBranchAddress).Address.Country
                         End If
@@ -2379,7 +2453,7 @@ Public Class ClaimRecordingForm
 
                     ElseIf lOption.Type = LogisticOptionType.CustomerAddress Then
                         If Not lOption.LogisticOptionInfo Is Nothing _
-                           AndAlso Not CType(lOption.LogisticOptionInfo, LogisticOptionInfoCustomerAddress).Address Is Nothing Then
+                       AndAlso Not CType(lOption.LogisticOptionInfo, LogisticOptionInfoCustomerAddress).Address Is Nothing Then
                             postalCodeOld = CType(lOption.LogisticOptionInfo, LogisticOptionInfoCustomerAddress).Address.PostalCode
                             countryCodeOld = CType(lOption.LogisticOptionInfo, LogisticOptionInfoCustomerAddress).Address.Country
                         End If
@@ -2388,30 +2462,60 @@ Public Class ClaimRecordingForm
                     End If
 
                     If Not lOption Is Nothing _
-                       AndAlso Not lOption.DeliveryOptions Is Nothing _
-                       AndAlso lOption.DeliveryOptions.DisplayEstimatedDeliveryDate Then
+                   AndAlso Not lOption.DeliveryOptions Is Nothing _
+                   AndAlso lOption.DeliveryOptions.DisplayEstimatedDeliveryDate Then
 
                         If (Not String.IsNullOrWhiteSpace(countryCodeOld) AndAlso addressSelected.Country <> countryCodeOld) _
-                           OrElse (Not String.IsNullOrWhiteSpace(postalCodeOld) AndAlso addressSelected.PostalCode <> postalCodeOld) Then
+                       OrElse (Not String.IsNullOrWhiteSpace(postalCodeOld) AndAlso addressSelected.PostalCode <> postalCodeOld) Then
                             MasterPage.MessageController.AddError(Message.MSG_ERR_GET_DELIVERY_DATE, True)
                             Return False
                         End If
 
-                        dim ucDeliverySlots as UserControlDeliverySlot = CType(gvr.Cells(GridLoColLoDetailIdx).FindControl(LogisticsOptionsEstimateDeliveryDateCtrl), UserControlDeliverySlot)
+                        Dim ucDeliverySlots As UserControlDeliverySlot = CType(gvr.Cells(GridLoColLoDetailIdx).FindControl(LogisticsOptionsEstimateDeliveryDateCtrl), UserControlDeliverySlot)
                         Dim selectedDeliveryDate As Nullable(Of Date) = ucDeliverySlots.DeliveryDate
+
+                        State.DeliveryDate = ucDeliverySlots.DeliveryDate
+                        State.DefaultDeliveryDay = ucDeliverySlots.DefaultDeliveryDay
+                        State.DeliverySlotTimeSpan = If(ucDeliverySlots.DeliverySlotTimeSpan Is Nothing, TimeSpan.Zero, ucDeliverySlots.DeliverySlotTimeSpan)
 
                         If lOption.DeliveryOptions.DesiredDeliveryDateMandatory AndAlso Not selectedDeliveryDate.HasValue Then
                             MasterPage.MessageController.AddError(Message.MSG_ERR_DELIVERY_DATE_MANDATORY, True)
                             Return False
                         Else
                             If Not lOption.LogisticOptionInfo Is Nothing Then
+                                If State.LogisticsOption.Code.ToUpper().Equals("X") Then
+
+                                    If Not State.IsExpeditedBtnClicked Then
+                                        MasterPage.MessageController.AddError(Message.MSG_ERR_SELECT_EXPEDITED_DELIVERY_BUTTON, True)
+                                        Return False
+                                    End If
+                                End If
                                 lOption.LogisticOptionInfo.EstimatedChangedDeliveryDate = selectedDeliveryDate
                             End If
                         End If
-
                     End If
 
                 End If
+
+                ' Service Center
+                If Not lOption Is Nothing _
+                    AndAlso lOption.Type = LogisticOptionType.ServiceCenter Then
+
+                    Dim uc As UserControlServiceCenterSelection
+                    uc = CType(gvr.FindControl("ucServiceCenterUserControl"), UserControlServiceCenterSelection)
+
+                    Dim logisticStage As LogisticStage
+                    logisticStage = wsResponse.Stages(State.LogisticsStage)
+
+                    If uc IsNot Nothing AndAlso uc.SelectedServiceCenter IsNot Nothing Then
+                        logisticStage.ServiceCenterCode = uc.SelectedServiceCenter.ServiceCenterCode
+                    Else
+                        MasterPage.MessageController.AddError(Message.MSG_ERR_DEFAULT_SERVICE_CENTER, True)
+                        Return False
+                    End If
+
+                End If
+
                 islogisticsOptionSelected = True
                 Exit For
             End If
@@ -2438,23 +2542,34 @@ Public Class ClaimRecordingForm
         Else
             Exit Sub
         End If
-        
+
         wsRequest.CaseNumber = wsPreviousResponse.CaseNumber
         wsRequest.CompanyCode = wsPreviousResponse.CompanyCode
         wsRequest.InteractionNumber = wsPreviousResponse.InteractionNumber
         wsRequest.Stages = wsPreviousResponse.Stages
-        wsRequest.QuestionVersion = 1
 
+        wsRequest.QuestionVersion = 1
         wsRequest.QuestionSetCode = wsPreviousResponse.Stages(State.LogisticsStage)?.Options.SingleOrDefault(Function(opt) opt.Selected = True)?.QuestionSetCode
         wsRequest.Questions = wsPreviousResponse.Stages(State.LogisticsStage)?.Options.SingleOrDefault(Function(opt) opt.Selected = True)?.Questions
-        
+
         Try
+            If State.DeliveryDate IsNot Nothing Then
+                Dim estimatedDeliveryDate As Nullable(Of Date) = State.DefaultDeliveryDay.DeliveryDate.Add(TimeSpan.Zero)
+                Dim estimatedChangedDeliveryDate As Nullable(Of Date) = If(Not State.DeliveryDate.HasValue, estimatedDeliveryDate, State.DeliveryDate.Value.Add(State.DeliverySlotTimeSpan))
+                wsRequest.Stages.Where(Function(s) s.Code = "FW").ForEach(Sub(ls As LogisticStage)
+                                                                              ls.Options.Where(Function(lo) TypeOf lo.LogisticOptionInfo Is LogisticOptionInfoCustomerAddress).ForEach(Sub(o As LogisticOption)
+                                                                                                                                                                                           o.LogisticOptionInfo.EstimatedDeliveryDate = estimatedDeliveryDate
+                                                                                                                                                                                           o.LogisticOptionInfo.EstimatedChangedDeliveryDate = estimatedChangedDeliveryDate
+                                                                                                                                                                                       End Sub)
+                                                                          End Sub)
+            End If
+
             Dim wsResponse = WcfClientHelper.Execute(Of ClaimRecordingServiceClient, IClaimRecordingService, BaseClaimRecordingResponse)(
                 GetClient(),
                 New List(Of Object) From {New InteractiveUserHeader() With {.LanId = Authentication.CurrentUser.NetworkId}},
                 Function(ByVal c As ClaimRecordingServiceClient)
                     Return c.Submit(wsRequest)
-                                                                                                                                            End Function)
+                End Function)
             If wsResponse IsNot Nothing Then
                 State.SubmitWsBaseClaimRecordingResponse = wsResponse
             End If
@@ -2463,7 +2578,8 @@ Public Class ClaimRecordingForm
             Exit Sub
         End Try
     End Sub
-    Private Sub GetEstimatedDeliveryDate(ByRef ucDeliverySlots as UserControlDeliverySlot, ByVal deliveryAddress As Address, ByVal deliveryOptions As DeliveryOptions)
+
+    Private Sub GetEstimatedDeliveryDate(ByRef ucDeliverySlots As UserControlDeliverySlot, ByVal deliveryAddress As ClaimRecordingService.Address, ByVal deliveryOptions As DeliveryOptions)
         Try
             'get the service center
             Dim defaultServiceCenter As ServiceCenter = Nothing
@@ -2516,6 +2632,8 @@ Public Class ClaimRecordingForm
             With ucDeliverySlots
                 .CountryCode = countryCode
                 .ServiceCenter = serviceCenterCode
+                .CourierCode = State.LogisticsOption.DeliveryOptions.CourierCode
+                .CourierProductCode = State.LogisticsOption.DeliveryOptions.CourierProductCode
                 .DeliveryAddress = New UserControlDeliverySlot.DeliveryAddressInfo() With {
                     .CountryCode = deliveryAddress.Country,
                     .RegionShortDesc = deliveryAddress.State,
@@ -2532,7 +2650,7 @@ Public Class ClaimRecordingForm
         Catch ex As Exception
             HandleErrors(ex, MasterPage.MessageController)
         End Try
-        
+
     End Sub
 #End Region
 #Region "Logistics Options -  Button event"
@@ -2572,28 +2690,45 @@ Public Class ClaimRecordingForm
             Dim logisticsStage As LogisticStage
             logisticsStage = wsResponse.Stages(State.LogisticsStage)
 
-            Dim lb As Label
-            lb = CType(gvr.Cells(GridLoColLoRdoIdx).FindControl(GridLoCodeLblCtrl), Label)
-            
-            dim ucDeliverySlots as UserControlDeliverySlot = CType(gvr.Cells(GridLoColLoDetailIdx).FindControl(LogisticsOptionsEstimateDeliveryDateCtrl), UserControlDeliverySlot)
-            ucDeliverySlots.Visible = True            
-           
-            dim deliveryAddress As Address
-            
-           Dim lOption As LogisticOption = logisticsStage.Options.FirstOrDefault(Function(q) q.Code = lb.Text)
+            Dim shippingCodeLabel As Label
+            shippingCodeLabel = CType(gvr.Cells(GridLoColLoRdoIdx).FindControl(GridLoCodeLblCtrl), Label)
+
+            Dim ucDeliverySlots As UserControlDeliverySlot = CType(gvr.Cells(GridLoColLoDetailIdx).FindControl(LogisticsOptionsEstimateDeliveryDateCtrl), UserControlDeliverySlot)
+            ucDeliverySlots.Visible = True
+            Dim deliveryAddress As ClaimRecordingService.Address
+
+            Dim lOption As LogisticOption = logisticsStage.Options.FirstOrDefault(Function(q) q.Code = shippingCodeLabel.Text)
             ' Logistics Options
             If lOption.Type = LogisticOptionType.DealerBranchAddress Then
                 CType(lOption.LogisticOptionInfo, LogisticOptionInfoDealerBranchAddress).Address = PopulateAddressFromAddressController(CType(gvr.Cells(GridLoColLoDetailIdx).FindControl("ucAddressControllerLogisticsOptions"), UserControlAddress_New))
                 deliveryAddress = CType(lOption.LogisticOptionInfo, LogisticOptionInfoDealerBranchAddress).Address
-           
+
             ElseIf lOption.Type = LogisticOptionType.CustomerAddress Then
                 CType(lOption.LogisticOptionInfo, LogisticOptionInfoCustomerAddress).Address = PopulateAddressFromAddressController(CType(gvr.Cells(GridLoColLoDetailIdx).FindControl("ucAddressControllerLogisticsOptions"), UserControlAddress_New))
                 deliveryAddress = CType(lOption.LogisticOptionInfo, LogisticOptionInfoCustomerAddress).Address
-           End If
+            End If
 
             GetEstimatedDeliveryDate(ucDeliverySlots, deliveryAddress, lOption.DeliveryOptions)
-           
+
+            If shippingCodeLabel.Text.ToUpper() = "X" Then
+                State.IsExpeditedBtnClicked = True
+                If ucDeliverySlots.IsDeliverySlotAvailable Then
+                    ControlMgr.SetEnableControl(Me, btnLogisticsOptionsContinue, True)
+                    ucDeliverySlots.Visible = True
+                Else
+                    ControlMgr.SetEnableControl(Me, btnLogisticsOptionsContinue, False)
+                    ucDeliverySlots.Visible = False
+                End If
+
+            Else
+                ControlMgr.SetEnableControl(Me, btnLogisticsOptionsContinue, True)
+                ucDeliverySlots.Visible = True
+                State.IsExpeditedBtnClicked = False
+            End If
+
+
         Catch ex As Exception
+            State.IsExpeditedBtnClicked = False
             HandleErrors(ex, MasterPage.MessageController)
         End Try
     End Sub
@@ -2700,7 +2835,7 @@ Public Class ClaimRecordingForm
                         End If
                     End If
                 End If
-                
+
                 moAddressController.TranslateAllLabelControl()
 
                 'KDDI
@@ -2708,13 +2843,72 @@ Public Class ClaimRecordingForm
                 moAddressController.EnableControls(Not isEnableControl, True)
 
                 If logisticsStage.Code = "RV" AndAlso (logisticsOptionItem.Code = "ST" OrElse logisticsOptionItem.Code = "E") AndAlso logisticsOptionItem.Type = LogisticOptionType.CustomerAddress Then
-                    moAddressController.EnableControls(True, True)                               
+                    moAddressController.EnableControls(True, True)
                 End If
-                
-
             Else
                 Dim trShippingAddress As HtmlTableRow = CType(e.Row.FindControl("trShippingAddress"), HtmlTableRow)
+                If trShippingAddress Is Nothing Then Throw New ArgumentNullException("TableRow for Shipping Address not found")
                 trShippingAddress.Attributes("style") = "display: none"
+            End If
+
+            ' Logistic Options - Service Center
+
+            If Not logisticsOptionItem Is Nothing _
+                   AndAlso (logisticsOptionItem.Type = LogisticOptionType.ServiceCenter) Then
+
+                Dim oCertificate As Certificate = New Certificate(State.CertificateId)
+                Dim oCountry As Country = New Country(oCertificate.Company.CountryId)
+
+                Dim lblLoServiceCenter As Label = CType(e.Row.FindControl(GridLoShippingServiceCenterLblCtrl), Label)
+
+                Dim moServiceCenterCtrl As UserControlServiceCenterSelection = CType(e.Row.FindControl(GridLoServiceCenterCtrl), UserControlServiceCenterSelection)
+                moServiceCenterCtrl.Visible = True
+
+                ServiceCenterSelectionHandler(moServiceCenterCtrl)
+
+                moServiceCenterCtrl.CountryId = oCertificate.Company.CountryId
+                moServiceCenterCtrl.CountryCode = oCountry.Code
+                moServiceCenterCtrl.CompanyCode = oCertificate.Company.Code
+                moServiceCenterCtrl.Dealer = oCertificate.Dealer.Dealer
+                moServiceCenterCtrl.Make = State.ClaimedDevice.Manufacturer
+                moServiceCenterCtrl.RiskTypeEnglish = State.ClaimBo.RiskType
+                moServiceCenterCtrl.MethodOfRepairXcd = State.FulfillmentOption.StandardCode
+
+                moServiceCenterCtrl.InitializeComponent()
+
+                Dim lblServiceCenterSelected As Label = CType(e.Row.FindControl(GridLoServiceCenterSelectedLblCtrl), Label)
+                lblServiceCenterSelected.Text = TranslationBase.TranslateLabelOrMessage("SERVICE_CENTER_SELECTED")
+
+                Dim lblServiceCenterCode As Label = CType(e.Row.FindControl(GridLoServiceCenterCodeLblCtrl), Label)
+                lblServiceCenterCode.Text = TranslationBase.TranslateLabelOrMessage("SERVICE_CENTER_CODE")
+
+                Dim lblServiceCenterName As Label = CType(e.Row.FindControl(GridLoServiceCenterNameLblCtrl), Label)
+                lblServiceCenterName.Text = TranslationBase.TranslateLabelOrMessage("SERVICE_CENTER_NAME")
+
+                Dim txtStoreNumber As TextBox = CType(e.Row.FindControl(GridLoServiceCenterCodeTxtCtrl), TextBox)
+                ControlMgr.SetEnableControl(Me, txtStoreNumber, isEnableControl)
+            Else
+                Dim trServiceCenter As HtmlTableRow = CType(e.Row.FindControl("trServiceCenter"), HtmlTableRow)
+                If trServiceCenter Is Nothing Then Throw New ArgumentNullException("TableRow for Service Center not found")
+                trServiceCenter.Attributes("style") = "display: none"
+            End If
+
+            ' Delivery Options
+            If Not logisticsOptionItem Is Nothing _
+               AndAlso Not logisticsOptionItem.DeliveryOptions Is Nothing _
+               AndAlso logisticsOptionItem.DeliveryOptions.DisplayEstimatedDeliveryDate Then
+
+                ' TODO: Assign the delivery code/description when it comes in the contract
+                Dim lblDeliveryDate As Label = CType(e.Row.FindControl(GridLoDeliveryDateLblCtrl), Label)
+                lblDeliveryDate.Text = TranslationBase.TranslateLabelOrMessage("EXPECTED_DELIVERY_DATE")
+
+                Dim btnEstimateDeliveryDate As Button = CType(e.Row.FindControl(GridLoEstimateDeliveryDateBtnCtrl), Button)
+                ControlMgr.SetEnableControl(Me, btnEstimateDeliveryDate, isEnableControl)
+                btnEstimateDeliveryDate.Text = TranslationBase.TranslateLabelOrMessage("GET_DELIVERY_DATE")
+            Else
+                Dim trDeliveryOptions As HtmlTableRow = CType(e.Row.FindControl("trDeliveryOptions"), HtmlTableRow)
+                If trDeliveryOptions Is Nothing Then Throw New ArgumentNullException("TableRow for Delivery Options not found")
+                trDeliveryOptions.Attributes("style") = "display: none"
             End If
 
             ' Questions
@@ -2740,26 +2934,61 @@ Public Class ClaimRecordingForm
                     ControlMgr.SetVisibleControl(Me, logisticsOptionsQuestionsItemCtrl, False)
                 End If
             End If
-
-            ' Delivery Options
-            If Not logisticsOptionItem Is Nothing _
-               AndAlso Not logisticsOptionItem.DeliveryOptions Is Nothing _
-               AndAlso logisticsOptionItem.DeliveryOptions.DisplayEstimatedDeliveryDate AndAlso State.IsOriginalEquipmentSelectedAndOutOfQuantity Then
-                
-                ' TODO: Assign the delivery code/description when it comes in the contract
-                
-                Dim lblDeliveryDate As Label = CType(e.Row.FindControl(GridLoDeliveryDateLblCtrl), Label)
-                lblDeliveryDate.Text = TranslationBase.TranslateLabelOrMessage("EXPECTED_DELIVERY_DATE")
-
-                
-                Dim btnEstimateDeliveryDate As Button = CType(e.Row.FindControl(GridLoEstimateDeliveryDateBtnCtrl), Button)
-                ControlMgr.SetEnableControl(Me, btnEstimateDeliveryDate, isEnableControl)
-                btnEstimateDeliveryDate.Text = TranslationBase.TranslateLabelOrMessage("GET_DELIVERY_DATE")
-            Else
-                Dim trDeliveryOptions As HtmlTableRow = CType(e.Row.FindControl("trDeliveryOptions"), HtmlTableRow)
-                trDeliveryOptions.Attributes("style") = "display: none"
-            End If
         End If
+    End Sub
+
+    Private Sub ServiceCenterSelectionHandler(userControl As UserControlServiceCenterSelection)
+        userControl.TranslationFunc = Function(value As String)
+                                          Return TranslationBase.TranslateLabelOrMessage(value)
+                                      End Function
+
+        userControl.TranslateGridHeaderFunc = Sub(grid As System.Web.UI.WebControls.GridView)
+                                                  TranslateGridHeader(grid)
+                                              End Sub
+
+        userControl.ServiceCenterSelectedFunc = Sub(selected As ServiceCenterSelected)
+                                                    LogisticServiceCenterSelected(selected)
+                                                End Sub
+
+        userControl.HighLightSortColumnFunc = Sub(grid As System.Web.UI.WebControls.GridView, sortExp As String)
+                                                  HighLightSortColumn(grid, sortExp, False)
+                                              End Sub
+
+        userControl.NewCurrentPageIndexFunc = Function(grid As System.Web.UI.WebControls.GridView, ByVal intRecordCount As Integer, ByVal intNewPageSize As Integer)
+                                                  Return NewCurrentPageIndex(grid, intRecordCount, intNewPageSize)
+                                              End Function
+    End Sub
+
+    Private Sub LogisticServiceCenterSelected(selected As ServiceCenterSelected)
+
+        Try
+            If selected IsNot Nothing Then
+                SetSelectedServiceCenterInfo(selected.ServiceCenterCode, selected.Name)
+            Else
+                SetSelectedServiceCenterInfo(String.Empty, String.Empty)
+            End If
+        Catch ex As Exception
+
+        End Try
+    End Sub
+
+    Private Sub SetSelectedServiceCenterInfo(serviceCenterCode As String, serviceCenterName As String)
+        For i As Integer = 0 To GridViewLogisticsOptions.Rows.Count - 1
+            Dim rdo As System.Web.UI.WebControls.RadioButton
+            rdo = CType(GridViewLogisticsOptions.Rows(i).FindControl(GridLogisticsOptionsRdoCtrl), System.Web.UI.WebControls.RadioButton)
+            If rdo IsNot Nothing AndAlso rdo.Checked Then
+                Dim codeTxt As System.Web.UI.WebControls.TextBox
+                codeTxt = CType(GridViewLogisticsOptions.Rows(i).FindControl(LogisticsOptionsServiceCenterCodeTxtCtrl), System.Web.UI.WebControls.TextBox)
+                If codeTxt IsNot Nothing Then
+                    codeTxt.Text = serviceCenterCode
+                End If
+                Dim nameTxt As System.Web.UI.WebControls.TextBox
+                nameTxt = CType(GridViewLogisticsOptions.Rows(i).FindControl(LogisticsOptionsServiceCenterNameTxtCtrl), System.Web.UI.WebControls.TextBox)
+                If nameTxt IsNot Nothing Then
+                    nameTxt.Text = serviceCenterName
+                End If
+            End If
+        Next
     End Sub
 #End Region
 #End Region

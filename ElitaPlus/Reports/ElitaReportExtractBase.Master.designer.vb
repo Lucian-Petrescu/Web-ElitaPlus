@@ -120,7 +120,7 @@ Partial Public Class ElitaReportExtractBase
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
     Protected WithEvents PageHeader As Global.System.Web.UI.HtmlControls.HtmlGenericControl
-
+    
     '''<summary>
     '''moReportCeInputControl control.
     '''</summary>
@@ -129,7 +129,7 @@ Partial Public Class ElitaReportExtractBase
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
     Protected WithEvents moReportCeInputControl As Global.Assurant.ElitaPlus.ElitaPlusWebApp.Reports.ReportExtractInputControl
-
+    
     '''<summary>
     '''SummaryPlaceHolder control.
     '''</summary>
@@ -147,4 +147,13 @@ Partial Public Class ElitaReportExtractBase
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
     Protected WithEvents BodyPlaceHolder As Global.System.Web.UI.WebControls.ContentPlaceHolder
+    
+    '''<summary>
+    '''lblCopyrights control.
+    '''</summary>
+    '''<remarks>
+    '''Auto-generated field.
+    '''To modify move field declaration from designer file to code-behind file.
+    '''</remarks>
+    Protected WithEvents lblCopyrights As Global.System.Web.UI.WebControls.Label
 End Class

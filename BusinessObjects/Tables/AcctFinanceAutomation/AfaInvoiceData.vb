@@ -283,6 +283,7 @@ Public Class AfaInvoiceData
     '        Throw New DataBaseAccessException(DataBaseAccessException.DatabaseAccessErrorType.WriteErr, ex)
     '    End Try
     'End Sub
+
 #End Region
 
 #Region "DataView Retrieveing Methods"

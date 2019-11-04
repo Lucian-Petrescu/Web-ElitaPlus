@@ -6,56 +6,62 @@
 	<LOAD>
 		<![CDATA[	
 			SELECT 
-				cov.item_id item_id,
-				product_item_id,
-				coverage_type_id,
-				certificate_duration,
-				coverage_duration,
-				effective,
-				expiration,
+        cov.item_id item_id,
+        product_item_id,
+        coverage_type_id,
+        certificate_duration,
+        coverage_duration,
+        cov.effective,
+        cov.expiration,
         offset_method_id,
         getcodefromlistitem(offset_method_id) as offset_method,
         offset_to_start,
         offset_to_start_days,
-				optional_id,
-				liability_limit,
+        optional_id,
+        liability_limit,
         liability_limit_percent,    
-				deductible,
+        cov.deductible,
         cov.deductible_percent,
-				cov.created_date created_date,
-				cov.modified_date modified_date,
-				cov.created_by created_by,
-				cov.modified_by modified_by,
+        cov.created_date created_date,
+        cov.modified_date modified_date,
+        cov.created_by created_by,
+        cov.modified_by modified_by,
         cov.is_claim_allowed_id,    
-				coverage_id,
-				edealer.dealer_id dealer_id,
-				item.product_code_id product_code_id,
-				risk.risk_type_id risk_type_id,
-				earning_code_id,
-				repair_discount_pct,
-				replacement_discount_pct,
+        coverage_id,
+        edealer.dealer_id dealer_id,
+        item.product_code_id product_code_id,
+        risk.risk_type_id risk_type_id,
+        earning_code_id,
+        cov.repair_discount_pct,
+        cov.replacement_discount_pct,
         use_coverage_start_date_id,
         cov.method_of_repair_id,
-        deductible_based_on_id,
+        cov.deductible_based_on_id,
         agent_code,
         markup_distribution_percent,
         nvl(cov.cov_liability_limit,0) As cov_liability_limit,
         cov.cov_liability_limit_percent,
         pc.prod_liability_limit_base_id,
         cov.recover_device_id as recover_device_id,
-        deductible_expression_id,
+        cov.deductible_expression_id,
         cov.is_reinsured_id,
         cov.inuseflag,
         cov.cov_claim_limit,
-        cov.liability_limit_per_incident
-			FROM elp_coverage cov, elp_dealer edealer, elp_product_code pc, 
-				 elp_item item, elp_risk_type risk
-			WHERE
-				cov.ITEM_ID = item.ITEM_ID
-				and item.product_code_id = pc.product_code_id
-				and edealer.dealer_id = pc.dealer_id
-				and item.RISK_TYPE_ID = risk.RISK_TYPE_ID
-				and coverage_id = :coverage_id
+        cov.liability_limit_per_incident,
+        tax_type_xcd,
+        cn.dealer_markup_id,
+        cov.fulfillment_profile_code
+            FROM elp_coverage cov, elp_dealer edealer, elp_product_code pc, 
+                 elp_item item, elp_risk_type risk, elp_contract cn
+            WHERE
+                cov.ITEM_ID = item.ITEM_ID
+                and item.product_code_id = pc.product_code_id
+                and edealer.dealer_id = pc.dealer_id
+                and item.RISK_TYPE_ID = risk.RISK_TYPE_ID
+                and coverage_id = :coverage_id
+                and edealer.dealer_id = cn.dealer_id
+                and cov.effective   between cn.effective and cn.expiration
+               
 		]]>
 	</LOAD>
 	<LOAD_LIST>		
@@ -192,7 +198,9 @@
         is_reinsured_id= :is_reinsured_id,
         inuseflag = :inuseflag,
         cov_claim_limit = :cov_claim_limit,
-        liability_limit_per_incident = :liability_limit_per_incident
+        liability_limit_per_incident = :liability_limit_per_incident,
+        tax_type_xcd = :tax_type_xcd,
+        fulfillment_profile_code = :fulfillment_profile_code
 			WHERE
 				coverage_id = :coverage_id
 		]]>
@@ -233,7 +241,9 @@
     is_reinsured_id,
     inuseflag,
     cov_claim_limit,
-    liability_limit_per_incident
+    liability_limit_per_incident,
+    tax_type_xcd,
+    fulfillment_profile_code
     )
     VALUES
     (
@@ -270,7 +280,9 @@
     :is_reinsured_id,
     :inuseflag,
     :cov_claim_limit,
-    :liability_limit_per_incident
+    :liability_limit_per_incident,
+    :tax_type_xcd,
+    :fulfillment_profile_code
     )
   </INSERT>
 	<DELETE>

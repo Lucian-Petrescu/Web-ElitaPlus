@@ -430,7 +430,12 @@ Namespace Certificates
         Private Sub PopulateDealerDropdown(ByVal dealerDropDownList As DropDownList, ByVal setvalue As Guid)
             Try
                 'Me.BindCodeNameToListControl(dealerDropDownList, dvListData, , , , True)
-                Dim oDealerList = GetDealerListByCompanyForUser()
+                Dim oDealerList
+                If Authentication.CurrentUser.IsDealerGroup Then
+                    oDealerList = CaseBase.GetDealerListByCompanyForExternalUser()
+                Else
+                    oDealerList = GetDealerListByCompanyForUser()
+                End If
                 Dim dealerTextFunc As Func(Of DataElements.ListItem, String) = Function(li As DataElements.ListItem)
                                                                                    Return li.Translation + " " + "(" + li.Code + ")"
                                                                                End Function

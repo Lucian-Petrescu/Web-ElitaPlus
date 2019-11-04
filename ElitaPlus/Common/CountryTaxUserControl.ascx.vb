@@ -15,6 +15,8 @@ Partial Class CountryTaxUserControl
     Private mComputeMethodID As Guid
     Private mPercentFlagID As Guid
     Private mIsRegion As Boolean
+    Private mComputeMethodDescription As String
+
 
 #End Region
 
@@ -130,6 +132,7 @@ Partial Class CountryTaxUserControl
         UseRegion = UseState()
         Description = Me.txtTaxDescription.Text
         ComputeMethodID = LoadMethodID()
+        ComputeMethodDescription = LoadMethodDescription()
         PercentFlagID = LoadPercentFlagID()
         Percent = CheckForNumericNull()
     End Sub
@@ -172,6 +175,13 @@ Partial Class CountryTaxUserControl
         Return CType(Me.Page, ElitaPlusPage).GetSelectedItem(Me.dlstTaxComputeMethod)
 
     End Function
+
+    Private Function LoadMethodDescription() As String
+
+        Return CType(Me.Page, ElitaPlusPage).GetSelectedDescription(Me.dlstTaxComputeMethod)
+
+    End Function
+
 
     Private Function LoadPercentFlagID() As Guid
 
@@ -254,6 +264,15 @@ Partial Class CountryTaxUserControl
             mDescription = Value
         End Set
     End Property
+    Public Property ComputeMethodDescription() As String
+        Get
+            Return mComputeMethodDescription
+        End Get
+        Set(ByVal Value As String)
+            mComputeMethodDescription = Value
+        End Set
+    End Property
+
 
     Public Property Percent() As Object
         Get

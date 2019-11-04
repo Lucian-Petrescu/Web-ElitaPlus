@@ -340,9 +340,7 @@ Public Class UserControlQuestion
                 Case AnswerTypes.NumberAnswer, AnswerTypes.TextAnswer
                     Dim txt As TextBox = CType(e.Row.FindControl("txtNo"), TextBox)
                     txt.Visible = True
-                    If oAnswerType.Trim().ToUpper().Equals(AnswerTypes.NumberAnswer) Then
-                        txt.TextMode = TextBoxMode.Number
-                    End If
+
                     If isReEvaulateOnChange Then
                         txt.AutoPostBack = isReEvaulateOnChange
                     End If
@@ -378,7 +376,7 @@ Public Class UserControlQuestion
                         Dim da As DateAnswer = CType(source.First(Function(f) f.Code = DirectCast(e.Row.DataItem, Question).Code).Answer, DateAnswer)
 
                         If (Not da Is Nothing AndAlso Not da.Answer Is Nothing AndAlso da.Answer.HasValue) Then
-                            textBoxDate.Text = da.Answer.Value.ToString("dd-MMM-yyyy")
+                            textBoxDate.Text = ElitaPlusPage.GetDateFormattedString(da.Answer.Value)
                         End If
                     End If
 
@@ -484,15 +482,8 @@ Public Class UserControlQuestion
                         If (Not String.IsNullOrEmpty(answer)) Then
                             Dim dateAnswer As DateAnswer = New DateAnswer()
                             Try
-                                'Fix for Japan date control-------------------------------
                                 Dim formatProvider = LocalizationMgr.CurrentFormatProvider
-                                If formatProvider.Name.Equals("ja-JP") Then
-                                    Dim dateFragments() As String = answer.Split("-")
-                                    dateAnswer.Answer = New DateTime(Integer.Parse(dateFragments(2)), Integer.Parse(dateFragments(1)), Integer.Parse(dateFragments(0))).Date
-                                Else
-                                    dateAnswer.Answer = Convert.ToDateTime(answer, formatProvider)
-                                End If
-                                '--------------------------------------------------------
+                                dateAnswer.Answer = Convert.ToDateTime(answer, formatProvider)
                             Catch ex As Exception
                                 errorQuestionCodes.AppendLine(questionObject.Text)
                             End Try
@@ -612,6 +603,11 @@ Public Class UserControlQuestion
                         ElseIf (Not String.IsNullOrEmpty(answer)) Then
                             If answerType.Trim().ToUpper().Equals(AnswerTypes.NumberAnswer) Then
                                 Dim numberValue As NumberAnswer = New NumberAnswer()
+                                Dim numbRegExp As New RegularExpressions.Regex("^\d+$")
+                                Dim isValidNumb As Boolean = numbRegExp.Match(answer).Success
+                                If (Not isValidNumb) Then
+                                    ErrorQuestionCodes.AppendLine(questionObject.Text)
+                                End If
                                 Try
                                     numberValue.Answer = Convert.ToDecimal(answer)
                                 Catch ex As Exception
@@ -652,15 +648,8 @@ Public Class UserControlQuestion
                         ElseIf (Not String.IsNullOrEmpty(answer)) Then
                             Dim dateAnswer As DateAnswer = New DateAnswer()
                             Try
-                                'Fix for Japan date control-------------------------------
                                 Dim formatProvider = LocalizationMgr.CurrentFormatProvider
-                                If formatProvider.Name.Equals("ja-JP") Then
-                                    Dim dateFragments() As String = answer.Split("-")
-                                    dateAnswer.Answer = New DateTime(Integer.Parse(dateFragments(2)), Integer.Parse(dateFragments(1)), Integer.Parse(dateFragments(0))).Date
-                                Else
-                                    dateAnswer.Answer = Convert.ToDateTime(answer, formatProvider)
-                                End If
-                                '--------------------------------------------------------
+                                dateAnswer.Answer = Convert.ToDateTime(answer, formatProvider)
                             Catch ex As Exception
                                 ErrorQuestionCodes.AppendLine(questionObject.Text)
                             End Try

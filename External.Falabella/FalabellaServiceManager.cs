@@ -34,9 +34,9 @@ namespace Assurant.ElitaPlus.External.Falabella
                 ordenDeTrabajo = new ordenDeTrabajo_TYPE
                 {
                     numeroServicioTecnico = request.WorkOrderNumber,
-                    estadoOrdenTrabajo = (request.ClaimStatus == "D" ? ordenDeTrabajo_TYPEEstadoOrdenTrabajo.Anulada : ordenDeTrabajo_TYPEEstadoOrdenTrabajo.ReemplazoAutorizado),
+                    estadoOrdenTrabajo = (request.ClaimStatus == BasicClaimStatus.Denied.ToString() ? ordenDeTrabajo_TYPEEstadoOrdenTrabajo.Anulada : ordenDeTrabajo_TYPEEstadoOrdenTrabajo.ReemplazoAutorizado),
                     fechaModificacionEstado = request.StatusChangeDate,
-                    descripcionRechazoOReparacion = (request.ClaimStatus == "D" ? request.DenialReason : string.Empty),
+                    descripcionRechazoOReparacion = (request.ClaimStatus == BasicClaimStatus.Denied.ToString() ? request.DenialReason : string.Empty),
                     numeroOTServicioTecnico = request.ClaimNumber
                 },
                 producto = new producto_TYPE
@@ -44,7 +44,24 @@ namespace Assurant.ElitaPlus.External.Falabella
                      precioProducto = request.AuthorizedAmount
                 }
             };
+            Logger.AddInfo("OrdenTrabajoEstadoModificarOp WorkOrderNumber " + request.WorkOrderNumber);
+            Logger.AddInfo("OrdenTrabajoEstadoModificarOp ClaimStatus " + (request.ClaimStatus == "D" ? ordenDeTrabajo_TYPEEstadoOrdenTrabajo.Anulada : ordenDeTrabajo_TYPEEstadoOrdenTrabajo.ReemplazoAutorizado));
+            Logger.AddInfo("OrdenTrabajoEstadoModificarOp StatusChangeDate " + request.StatusChangeDate.ToString());
+            Logger.AddInfo("OrdenTrabajoEstadoModificarOp ClaimStatus " + (request.ClaimStatus == "D" ? request.DenialReason : string.Empty));
+            Logger.AddInfo("OrdenTrabajoEstadoModificarOp ClaimNumber " + request.ClaimNumber);
 
+
+
+            reference.ClientService = new ClientService_TYPE
+            {
+                country = Country_TYPE.CL,
+                commerce = Commerce_TYPE.Falabella,
+                channel = Channel_TYPE.Cardif,
+                date = DateTime.Now,
+                hour = DateTime.Now,
+                dateSpecified = true,
+                hourSpecified = true
+            };
 
             var output = reference.OrdenTrabajoEstadoModificarOp(input);
 
@@ -84,40 +101,41 @@ namespace Assurant.ElitaPlus.External.Falabella
             {
                 ListaSolicitudServicioTecnicoRequest = new ListaSolicitudServicioTecnicoRequest_TYPE()
             };
-            
-            
-            //Email
-            var email = new Email_TYPE[0];
 
-            email.ToList().Add(new Email_TYPE
+
+            //Email
+            Email_TYPE[] email = new Email_TYPE[1];
+
+            email[0] = new Email_TYPE
             {
                 email = request.Email
-            });
+            };
 
 
             //Phone
-            var phone = new Telefono_TYPE[0];
-            phone.ToList().Add(new Telefono_TYPE
+            Telefono_TYPE[] phone = new Telefono_TYPE[1];
+            phone[0] = new Telefono_TYPE
             {
                 tipo = "PRINCIPAL",
                 codigoArea = "56",
                 numeroTelefono = request.WorkPhone
-            });
+            };
+
 
             //phone[0].tipo = "PRINCIPAL";
             //phone[0].codigoPais = "56";
             //phone[0].numeroTelefono = request.WorkPhone;
 
             //Direction
-            var direction = new Direccion_TYPE[0];
-            direction.ToList().Add(new Direccion_TYPE
+            Direccion_TYPE[] direction = new Direccion_TYPE[1];
+            direction[0] = new Direccion_TYPE
             {
                 tipo = "PARTICULAR",
                 ciudad = request.City,
                 pais = request.Country,
                 comuna = request.ComunaCode,
                 calle = request.Address1
-            });
+            };
 
 
             //Service Technico
@@ -138,8 +156,8 @@ namespace Assurant.ElitaPlus.External.Falabella
             serviceList.ServicioTecnico = serviceTechnico;
 
             //Active 
-            var activo = new Activo_TYPE[0];
-            activo.ToList().Add(new Activo_TYPE
+            Activo_TYPE[] activo = new Activo_TYPE[1];
+            activo[0] = new Activo_TYPE
             {
                 numeroActivo = request.CertificateNumber,
                 serialProducto = request.SerialNumber,
@@ -148,8 +166,8 @@ namespace Assurant.ElitaPlus.External.Falabella
                 fechaCompra = request.WarrantySalesDate,
                 nombreGarantia = request.ProductDescription,
                 tipoGarantia = "Connect"
-            });
-            
+            };
+
 
             input.ListaSolicitudServicioTecnicoRequest = new ListaSolicitudServicioTecnicoRequest_TYPE()
             {
@@ -168,6 +186,17 @@ namespace Assurant.ElitaPlus.External.Falabella
                     ListaServicioTecnico = serviceList,
                     ListaActivo = activo
                 }
+            };
+
+            reference.ClientService = new ClientService_TYPE
+            {
+                country = Country_TYPE.CL,
+                commerce = Commerce_TYPE.Falabella,
+                channel = Channel_TYPE.Cardif,
+                date = DateTime.Now,
+                hour = DateTime.Now,
+                dateSpecified = true,
+                hourSpecified = true
             };
 
             try

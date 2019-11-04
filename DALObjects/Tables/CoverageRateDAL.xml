@@ -15,28 +15,32 @@
 				admin_expense,
 				profit_expense,
 				loss_cost_percent,
-				created_date,
-				modified_date,
-				created_by,
-				modified_by,
+				cr.created_date,
+				cr.modified_date,
+				cr.created_by,
+				cr.modified_by,
 				coverage_rate_id,
         gross_amount_percent,
-        NVL(renewal_number, 0) as renewal_number
-			FROM elp_coverage_rate 
+        NVL(renewal_number, 0) as renewal_number,
+        cr.region_id as region_id,
+        r.description as tax_region
+			FROM elp_coverage_rate cr
+      Left Outer Join elp_region r on cr.region_id=r.region_id
 			WHERE
 				coverage_rate_id = :coverage_rate_id
 		]]>
   </LOAD>
   <LOAD_LIST>
     <![CDATA[	
-			 select	
+			 select  
         COVERAGE_RATE_ID, LOW_PRICE, HIGH_PRICE, NVL(GROSS_AMT, 0) AS GROSS_AMT, NVL(COMMISSIONS_PERCENT, 0) AS COMMISSION_PERCENT,
-				NVL(MARKETING_PERCENT, 0) AS MARKETING_PERCENT, NVL(ADMIN_EXPENSE, 0) AS ADMIN_EXPENSE, NVL(PROFIT_EXPENSE, 0) AS PROFIT_EXPENSE, NVL(LOSS_COST_PERCENT, 0) AS LOSS_COST_PERCENT,
+        NVL(MARKETING_PERCENT, 0) AS MARKETING_PERCENT, NVL(ADMIN_EXPENSE, 0) AS ADMIN_EXPENSE, NVL(PROFIT_EXPENSE, 0) AS PROFIT_EXPENSE, NVL(LOSS_COST_PERCENT, 0) AS LOSS_COST_PERCENT,
         NVL(GROSS_AMOUNT_PERCENT, 0) AS GROSS_AMOUNT_PERCENT,
-        NVL(renewal_number, 0) AS RENEWAL_NUMBER
-				FROM	elp_coverage_rate
-				WHERE	COVERAGE_ID = :COVERAGE_ID
-				order by LOW_PRICE,RENEWAL_NUMBER
+        NVL(renewal_number, 0) AS RENEWAL_NUMBER,CR.REGION_ID as REGION_ID,R.DESCRIPTION AS TAX_REGION
+        FROM    elp_coverage_rate cr
+        LEFT OUTER JOIN  elp_region r on cr.region_id=r.region_id
+        WHERE COVERAGE_ID = :COVERAGE_ID
+        order by LOW_PRICE,RENEWAL_NUMBER
 		]]>
   </LOAD_LIST>
   <LOAD_COVRATE_LIST_DELETE>
@@ -45,7 +49,7 @@
         COVERAGE_RATE_ID, LOW_PRICE, HIGH_PRICE, NVL(GROSS_AMT, 0) AS GROSS_AMT, NVL(COMMISSIONS_PERCENT, 0) AS COMMISSION_PERCENT,
 				NVL(MARKETING_PERCENT, 0) AS MARKETING_PERCENT, NVL(ADMIN_EXPENSE, 0) AS ADMIN_EXPENSE, NVL(PROFIT_EXPENSE, 0) AS PROFIT_EXPENSE, NVL(LOSS_COST_PERCENT, 0) AS LOSS_COST_PERCENT,
         NVL(GROSS_AMOUNT_PERCENT, 0) AS GROSS_AMOUNT_PERCENT,
-        NVL(renewal_number, 0) AS RENEWAL_NUMBER
+        NVL(renewal_number, 0) AS RENEWAL_NUMBER,Region_id
 				FROM	elp_coverage_rate
 				WHERE	COVERAGE_ID = :COVERAGE_ID
 				order by LOW_PRICE asc,RENEWAL_NUMBER desc
@@ -87,7 +91,8 @@
 				loss_cost_percent = :loss_cost_percent,
 				modified_by = :modified_by,
         gross_amount_percent = :gross_amount_percent,
-        renewal_number = :renewal_number
+        renewal_number = :renewal_number,
+        region_id = :region_id
 			WHERE
 				coverage_rate_id = :coverage_rate_id
 		]]>
@@ -107,7 +112,8 @@
     created_by,
     coverage_rate_id,
     gross_amount_percent,
-    renewal_number
+    renewal_number,
+    region_id
     )
     VALUES
     (
@@ -123,7 +129,8 @@
     :created_by,
     :coverage_rate_id,
     :gross_amount_percent,
-    :renewal_number
+    :renewal_number,
+    :region_id
     )
   </INSERT>
   <DELETE>

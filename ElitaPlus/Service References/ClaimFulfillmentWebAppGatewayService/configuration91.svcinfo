@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<SavedWcfConfigurationInformation xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" Version="9.1" CheckSum="izJU/iw+5eMsPeXQTi/66rrJ25E=">
+<SavedWcfConfigurationInformation xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" Version="9.1" CheckSum="82WIrqB4w3ijojcdJDAnn4hpOq8=">
   <bindingConfigurations>
     <bindingConfiguration bindingType="customBinding" name="CustomBinding_WebAppGateway">
       <properties>
@@ -719,10 +719,10 @@
     </bindingConfiguration>
   </bindingConfigurations>
   <endpoints>
-    <endpoint name="CustomBinding_WebAppGateway1" contract="ClaimFulfillmentWebAppGatewayService.WebAppGateway" bindingType="customBinding" address="http://l16mia0d8386gr7.cead.prd/ElitaClaimFulfillment/WebAppGateway/gateway" bindingConfiguration="CustomBinding_WebAppGateway">
+    <endpoint name="CustomBinding_WebAppGateway1" contract="ClaimFulfillmentWebAppGatewayService.WebAppGateway" bindingType="customBinding" address="http://l16mia0d8113qr8/ElitaClaimFulfillment/WebAppGateway/gateway" bindingConfiguration="CustomBinding_WebAppGateway">
       <properties>
         <property path="/address" isComplexType="false" isExplicitlyDefined="true" clrType="System.Uri, System, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
-          <serializedValue>http://l16mia0d8386gr7.cead.prd/ElitaClaimFulfillment/WebAppGateway/gateway</serializedValue>
+          <serializedValue>http://l16mia0d8113qr8/ElitaClaimFulfillment/WebAppGateway/gateway</serializedValue>
         </property>
         <property path="/behaviorConfiguration" isComplexType="false" isExplicitlyDefined="false" clrType="System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
           <serializedValue />

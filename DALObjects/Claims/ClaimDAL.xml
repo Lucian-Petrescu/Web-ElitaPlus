@@ -115,7 +115,7 @@
         ri.Purchase_Price,
         ri.IndixId,
         cview.is_claim_readonly,
-        (select rem_auth_number from elp_claim where claim_id ='FA5EB640425B54E6E0340003BA5D2202') rem_auth_number
+        cview.rem_auth_number
 			FROM elita.elp_claim_extended_v cview,
 				 elp_cert_item_coverage cicov,
 				 elp_risk_type rt,
@@ -245,7 +245,7 @@
         cview.bank_info_id,
         cview.account_number,
         cview.is_claim_readonly,
-        (select rem_auth_number from elp_claim where claim_id ='FA5EB640425B54E6E0340003BA5D2202') rem_auth_number
+        cview.rem_auth_number
 			FROM elita.elp_claim_extended_v cview,
 				 elp_cert_item_coverage cicov,
 				 elp_risk_type rt,
