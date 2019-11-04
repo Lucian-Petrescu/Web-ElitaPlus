@@ -149,6 +149,8 @@
       <xs:element minOccurs="0" name="Shipping" nillable="true" type="tns:ShippingInfo" />
       <xs:element minOccurs="0" name="Address" nillable="true" type="tns:FulfillmentAddress" />
       <xs:element minOccurs="0" name="HandlingStore" nillable="true" type="tns:HandlingStore" />
+      <xs:element minOccurs="0" name="ServiceCenterCode" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="ServiceCenterDescription" nillable="true" type="xs:string" />
     </xs:sequence>
   </xs:complexType>
   <xs:element name="SelectedLogisticStage" nillable="true" type="tns:SelectedLogisticStage" />

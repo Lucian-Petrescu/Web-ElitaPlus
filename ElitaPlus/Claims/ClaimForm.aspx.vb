@@ -1905,7 +1905,7 @@ Partial Class ClaimForm
                 Me.State.FulfillmentDetailsResponse.LogisticStages IsNot Nothing AndAlso
                 Me.State.FulfillmentDetailsResponse.LogisticStages.Length > 0 Then
 
-                Dim logisticStage = Me.State.FulfillmentDetailsResponse.LogisticStages.Where(Function(item) item.Code = Codes.FULFILLMENT_FW_LOGISTIC_STAGE).First()
+                Dim logisticStage as SelectedLogisticStage = Me.State.FulfillmentDetailsResponse.LogisticStages.Where(Function(item) item.Code = Codes.FULFILLMENT_FW_LOGISTIC_STAGE).First()
 
                 If logisticStage IsNot Nothing AndAlso logisticStage.Code = Codes.FULFILLMENT_FW_LOGISTIC_STAGE Then
 
@@ -1920,6 +1920,7 @@ Partial Class ClaimForm
                     Me.PopulateControlFromBOProperty(Me.txtAddress2, logisticStage.Address.Address2)
                     Me.PopulateControlFromBOProperty(Me.txtAddress3, logisticStage.Address.Address3)
                     Me.PopulateControlFromBOProperty(Me.txtCity, logisticStage.Address.City)
+                    Me.PopulateControlFromBOProperty(Me.txtServiceCenter, $"{logisticStage.ServiceCenterCode} - {logisticStage.ServiceCenterDescription}")
                     Me.PopulateControlFromBOProperty(Me.txtPostalCode, logisticStage.Address.PostalCode)
                     Me.PopulateControlFromBOProperty(Me.txtState, LookupListNew.GetDescriptionFromCode(
                                                      LookupListNew.DataView(LookupListNew.LK_REGIONS),

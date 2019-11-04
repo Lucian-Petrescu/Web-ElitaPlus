@@ -1126,6 +1126,12 @@ Namespace ClaimFulfillmentWebAppGatewayService
         <System.Runtime.Serialization.OptionalFieldAttribute()>  _
         Private HandlingStoreField As ClaimFulfillmentWebAppGatewayService.HandlingStore
         
+        <System.Runtime.Serialization.OptionalFieldAttribute()>  _
+        Private ServiceCenterCodeField As String
+        
+        <System.Runtime.Serialization.OptionalFieldAttribute()>  _
+        Private ServiceCenterDescriptionField As String
+        
         <Global.System.ComponentModel.BrowsableAttribute(false)>  _
         Public Property ExtensionData() As System.Runtime.Serialization.ExtensionDataObject Implements System.Runtime.Serialization.IExtensibleDataObject.ExtensionData
             Get
@@ -1249,6 +1255,32 @@ Namespace ClaimFulfillmentWebAppGatewayService
                 If (Object.ReferenceEquals(Me.HandlingStoreField, value) <> true) Then
                     Me.HandlingStoreField = value
                     Me.RaisePropertyChanged("HandlingStore")
+                End If
+            End Set
+        End Property
+        
+        <System.Runtime.Serialization.DataMemberAttribute(Order:=9)>  _
+        Public Property ServiceCenterCode() As String
+            Get
+                Return Me.ServiceCenterCodeField
+            End Get
+            Set
+                If (Object.ReferenceEquals(Me.ServiceCenterCodeField, value) <> true) Then
+                    Me.ServiceCenterCodeField = value
+                    Me.RaisePropertyChanged("ServiceCenterCode")
+                End If
+            End Set
+        End Property
+        
+        <System.Runtime.Serialization.DataMemberAttribute(Order:=10)>  _
+        Public Property ServiceCenterDescription() As String
+            Get
+                Return Me.ServiceCenterDescriptionField
+            End Get
+            Set
+                If (Object.ReferenceEquals(Me.ServiceCenterDescriptionField, value) <> true) Then
+                    Me.ServiceCenterDescriptionField = value
+                    Me.RaisePropertyChanged("ServiceCenterDescription")
                 End If
             End Set
         End Property
