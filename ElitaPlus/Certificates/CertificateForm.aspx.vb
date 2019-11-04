@@ -648,7 +648,7 @@ Namespace Certificates
             Public AddressFlag As Boolean = True
             'Authentication
             Public IsCallerAuthenticated As Boolean = False
-
+            Public blnMFGChanged As Boolean = False
 
 #End Region
 #Region "MyState Constructor"
@@ -809,6 +809,7 @@ Namespace Certificates
                 If (Not Me.NavController Is Nothing) AndAlso (Not Me.NavController.PrevNavState Is Nothing) AndAlso (Me.NavController.PrevNavState.Name = "CREATE_NEW_ENDORSEMENT") Then
                     Dim enParamObj As Object = Me.NavController.ParametersPassed
                     Dim enRetObj As Assurant.ElitaPlus.ElitaPlusWebApp.Certificates.EndorsementForm.ReturnType = CType(enParamObj, Assurant.ElitaPlus.ElitaPlusWebApp.Certificates.EndorsementForm.ReturnType)
+                    Me.State.blnMFGChanged = enRetObj.HasMFGCoverageChanged
                     If enRetObj.HasDataChanged Then
                         Me.State.MyBO = New Certificate(Me.State.MyBO.Id)
                     Else
@@ -5181,7 +5182,7 @@ Namespace Certificates
             Dim Row As DataRowView
 
             ' Check if the Coverages Data is already fetched from the DB, else get the data from the DB 
-            If (Me.State.CoveragesearchDV Is Nothing) Then
+            If (Me.State.CoveragesearchDV Is Nothing) Or Me.State.blnMFGChanged Then
                 Me.State.CoveragesearchDV = CertItemCoverage.GetCurrentProductCodeCoverages(Me.State.MyBO.Id)
             End If
 
