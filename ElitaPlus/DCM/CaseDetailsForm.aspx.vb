@@ -9,6 +9,8 @@
     Public Const CaseQuestionAnswerGridColCreationDateIdx As Integer = 3
     Public Const CaseDeniedReasonsGridGridColCreatedDateIdx As Integer = 2
     Public Const CaseActionGridColCreationDateIdx As Integer = 3
+    Public Const CaseQuestionAnswerGridColAnswerIdx As Integer = 2
+
 #End Region
 #Region "Variables"
     Private _listDisabledTabs As New Collections.Generic.List(Of Integer)
@@ -351,6 +353,12 @@
                     Dim tempCreationDate = Convert.ToDateTime(e.Row.Cells(CaseQuestionAnswerGridColCreationDateIdx).Text.Trim())
                     Dim formattedCreationDate = GetDateFormattedString(tempCreationDate)
                     e.Row.Cells(CaseQuestionAnswerGridColCreationDateIdx).Text = Convert.ToString(formattedCreationDate)
+                End If
+                Dim answerValue = e.Row.Cells(CaseQuestionAnswerGridColAnswerIdx).Text
+                If String.IsNullOrWhiteSpace(answerValue) = False Then
+                    If (DateHelper.CheckDateAnswer(answerValue) = True) Then
+                        e.Row.Cells(CaseQuestionAnswerGridColAnswerIdx).Text = GetDateFormattedStringNullable(e.Row.Cells(CaseQuestionAnswerGridColAnswerIdx).Text)
+                    End If
                 End If
             End If
         Catch ex As Exception

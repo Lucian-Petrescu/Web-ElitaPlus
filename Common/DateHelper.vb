@@ -144,6 +144,18 @@ Public NotInheritable Class DateHelper
         End If
 
     End Function
+    Public Shared Function CheckDateAnswer(strInput As String) As Boolean
 
+        Dim formatProvider = System.Threading.Thread.CurrentThread.CurrentCulture
+        Dim strOutput As String = Nothing
+        If IsDate(strInput) Then
+            CheckDateAnswer = True
+        Else
+            CheckDateAnswer = False
+        End If
+
+        Return CheckDateAnswer
+
+    End Function
 
 End Class

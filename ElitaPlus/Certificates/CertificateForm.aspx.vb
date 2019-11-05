@@ -6583,9 +6583,15 @@ Namespace Certificates
                     e.Item.Cells(Me.GRID_COL_ENDORSE_TYPE).Text = dvRow(CertEndorse.EndorseSearchDV.COL_ENDORSEMENT_TYPE).ToString
                     e.Item.Cells(Me.GRID_COL_ENDORSE_ENDORSEMENT_REASON).Text = dvRow(CertEndorse.EndorseSearchDV.COL_ENDORSEMENT_REASON).ToString
 
-                    e.Item.Cells(Me.GRID_COL_ENDORSE_EFFECTIVE_DATE).Text = dvRow(CertEndorse.EndorseSearchDV.COL_EFFECTIVE_DATE).ToString
+                    If (String.IsNullOrWhiteSpace(dvRow(CertEndorse.EndorseSearchDV.COL_EFFECTIVE_DATE).ToString) = False) Then
+                        Dim effectiveDate As Date = CType(dvRow(CertEndorse.EndorseSearchDV.COL_EFFECTIVE_DATE), Date)
+                        e.Item.Cells(Me.GRID_COL_ENDORSE_EFFECTIVE_DATE).Text = GetLongDateFormattedString(effectiveDate)
+                    End If
+                    If (String.IsNullOrWhiteSpace(dvRow(CertEndorse.EndorseSearchDV.COL_EXPIRATION_DATE).ToString) = False) Then
+                        Dim expirationDate As Date = CType(dvRow(CertEndorse.EndorseSearchDV.COL_EXPIRATION_DATE), Date)
+                        e.Item.Cells(Me.GRID_COL_ENDORSE_EXPIRATION_DATE).Text = GetLongDateFormattedString(expirationDate)
+                    End If
 
-                    e.Item.Cells(Me.GRID_COL_ENDORSE_EXPIRATION_DATE).Text = dvRow(CertEndorse.EndorseSearchDV.COL_EXPIRATION_DATE).ToString
                 End If
             Catch ex As Exception
                 Me.HandleErrors(ex, MasterPage.MessageController)
