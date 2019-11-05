@@ -2020,6 +2020,11 @@ Public Class ElitaPlusPage
         Return formattedValue.ToString()
     End Function
 
+    Public Shared Function GetLongDateFormattedStringWithFormat(ByVal value As Date, ByVal Format As String) As String
+        'Return value.ToString(DATE_FORMAT, LocalizationMgr.CurrentCulture)
+        Return value.ToString(Format, System.Threading.Thread.CurrentThread.CurrentCulture)
+    End Function
+
     Public Shared Function GetLongDate12FormattedString(ByVal value As Date) As String
         Dim LanguageCode = ElitaPlusIdentity.Current.ActiveUser.LanguageCode
         Dim formattedDate = CommonConfigManager.Current.LanguageManager.Get(LanguageCode).GetAwaiter().GetResult()?.FormatDate(value)
@@ -2436,6 +2441,8 @@ Public Class ElitaPlusPage
             formattedValue = propertyValue.ToString.ToString(LocalizationMgr.CurrentFormatProvider)
             If (propertyValue.GetType Is GetType(DateType)) Then
                 formattedValue = Me.GetDateFormattedString(CType(propertyValue, DateType).Value)
+            ElseIf (propertyValue.GetType Is GetType(DateTimeType) And format IsNot Nothing) Then
+                formattedValue = Me.GetLongDateFormattedStringWithFormat(CType(propertyValue, DateTimeType).Value, format)
             ElseIf (propertyValue.GetType Is GetType(DateTimeType)) Then
                 formattedValue = Me.GetLongDateFormattedString(CType(propertyValue, DateTimeType).Value)
             ElseIf (propertyValue.GetType Is GetType(DateTime)) Then
