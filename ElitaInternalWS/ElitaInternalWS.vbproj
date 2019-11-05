@@ -139,9 +139,11 @@
     <Reference Include="Assurant.Elita.Audit, Version=3.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\Assurant.Elita.Audit.3.0.0\lib\net462\Assurant.Elita.Audit.dll</HintPath>
     </Reference>
-    <Reference Include="Assurant.Elita.Base.DataAccess">
-      <HintPath>..\packages\Assurant.Elita.Base.DataAccess.5.0.2\lib\net462\Assurant.Elita.Base.DataAccess.dll</HintPath>
-	  <Private>True</Private>
+    <Reference Include="Assurant.Elita.Audit.Interface, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Assurant.Elita.Audit.Interface.1.0.0\lib\netstandard2.0\Assurant.Elita.Audit.Interface.dll</HintPath>
+    </Reference>
+    <Reference Include="Assurant.Elita.Base.DataAccess, Version=4.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Assurant.Elita.Base.DataAccess.4.0.0\lib\net462\Assurant.Elita.Base.DataAccess.dll</HintPath>
     </Reference>
     <Reference Include="Assurant.Elita.ClientIntegration, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\Assurant.Elita.ClientIntegration.4.0.1\lib\net462\Assurant.Elita.ClientIntegration.dll</HintPath>
@@ -164,6 +166,9 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\packages\Assurant.Elita.Fulfillment.BusinessRules.14.6.0.1\lib\net46\Assurant.Elita.Fulfillment.ElitaRulesEngine.dll</HintPath>
       <Private>True</Private>
+    </Reference>
+    <Reference Include="Assurant.Elita.Logging.Interface, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Assurant.Elita.Logging.Interface.1.0.0\lib\netstandard2.0\Assurant.Elita.Logging.Interface.dll</HintPath>
     </Reference>
     <Reference Include="Assurant.Elita.Security, Version=4.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\Assurant.Elita.Security.4.0.1\lib\net46\Assurant.Elita.Security.dll</HintPath>
@@ -1230,7 +1235,7 @@
           <AutoAssignPort>True</AutoAssignPort>
           <DevelopmentServerPort>2551</DevelopmentServerPort>
           <DevelopmentServerVPath>/</DevelopmentServerVPath>
-          <IISUrl>http://localhost/ElitaInternalWS</IISUrl>
+          <IISUrl>http://localhost:81/ElitaInternalWS</IISUrl>
           <NTLMAuthentication>False</NTLMAuthentication>
           <UseCustomServer>False</UseCustomServer>
           <CustomServerUrl>
