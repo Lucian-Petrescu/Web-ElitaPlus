@@ -249,7 +249,7 @@ Partial Public Class ClaimHistoryForm
             btnEditItem.CommandName = SELECT_ACTION_COMMAND
             Dim date1 As Date
             date1 = CType(dvRow("CREATED_DATE"), Date)
-            btnEditItem.Text = date1.ToString("dd-MMM-yyyy  HH:mm:ss", CultureInfo.CurrentCulture)
+            btnEditItem.Text = GetLongDate12FormattedString(date1)
         End If
 
         If (e.Item.ItemType <> ListItemType.Header And e.Item.ItemType <> ListItemType.Footer) Then

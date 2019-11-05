@@ -8,6 +8,8 @@ Public Class ClaimIssueForm
     Public Const SELECT_ACTION_COMMAND As String = "SelectAction"
     Public Const NO_DATA As String = " - "
     Public Const GRID_COL_STATUS_CODE_IDX As Integer = 5
+    Public Const GRID_COL_PROCESS_DATE_IDX As Integer = 3
+    Public Const GRID_COL_CREATE_DATE_IDX As Integer = 1
     Public Const CLAIM_ISSUE_LIST As String = "CLMISSUESTATUS"
 #End Region
 
@@ -318,6 +320,22 @@ Public Class ClaimIssueForm
                     btnEditItem.CommandArgument = GetGuidStringFromByteArray(CType(dvRow(Claim.ClaimIssuesView.COL_CLAIM_ISSUE_ID), Byte()))
                     btnEditItem.CommandName = SELECT_ACTION_COMMAND
                     btnEditItem.Text = dvRow(Claim.ClaimIssuesView.COL_ISSUE_DESC).ToString
+                End If
+
+                Dim strCreationDate As String = Convert.ToString(e.Row.Cells(GRID_COL_CREATE_DATE_IDX).Text)
+                strCreationDate = strCreationDate.Replace("&nbsp;", "")
+                If String.IsNullOrWhiteSpace(strCreationDate) = False Then
+                    Dim tempCreationDate = Convert.ToDateTime(e.Row.Cells(GRID_COL_CREATE_DATE_IDX).Text.Trim())
+                    Dim formattedCreationDate = GetLongDate12FormattedString(tempCreationDate)
+                    e.Row.Cells(GRID_COL_CREATE_DATE_IDX).Text = Convert.ToString(formattedCreationDate)
+                End If
+
+                Dim strProcessDate As String = Convert.ToString(e.Row.Cells(GRID_COL_PROCESS_DATE_IDX).Text)
+                strProcessDate = strProcessDate.Replace("&nbsp;", "")
+                If String.IsNullOrWhiteSpace(strProcessDate) = False Then
+                    Dim tempProcessDate = Convert.ToDateTime(e.Row.Cells(GRID_COL_PROCESS_DATE_IDX).Text.Trim())
+                    Dim formattedProcessDate = GetLongDate12FormattedString(tempProcessDate)
+                    e.Row.Cells(GRID_COL_PROCESS_DATE_IDX).Text = Convert.ToString(formattedProcessDate)
                 End If
 
                 ' Convert short status codes to full description with css
