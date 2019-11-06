@@ -168,6 +168,11 @@
               <xsl:text disable-output-escaping="yes">&amp;</xsl:text>nbsp;
             </td>
           </tr>
+          <tr>            
+            <td colspan="4" style="text-align:left;">
+              The total premium includes the surcharge required by KRS 136.392
+            </td>            
+          </tr>          
           <tr>
             <td colspan="4">
               <xsl:text disable-output-escaping="yes">&amp;</xsl:text>nbsp;
