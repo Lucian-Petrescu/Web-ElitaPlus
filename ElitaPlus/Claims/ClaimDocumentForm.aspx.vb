@@ -11,6 +11,7 @@ Public Class ClaimDocumentForm
     Public Const GRID_COL_IMAGE_ID_IDX As Integer = 0
     Public Const GRID_COL_FILE_SIZE_IDX As Integer = 2
     Public Const GRID_COL_IMAGE_STATUS_IDX As Integer = 6
+    Public Const GRID_COL_SCAN_DATE_IDX As Integer = 3
     Public Const NO_DATA As String = " - "
 
     Public Const ATTRIB_SRC As String = "src"
@@ -224,15 +225,18 @@ Public Class ClaimDocumentForm
                         ' Display in Bytes
                         fileSizeLabel.Text = String.Format("{0} {1}", fileSize.ToString(), " Byte(s)")
                     End If
+                End If
 
+                If (Not e.Row.Cells(GRID_COL_SCAN_DATE_IDX).Text Is Nothing) Then
+                    e.Row.Cells(GRID_COL_SCAN_DATE_IDX).Text = GetLongDate12FormattedString(e.Row.Cells(GRID_COL_SCAN_DATE_IDX).Text)
                 End If
 
                 If (dvRow(Claim.ClaimImagesView.COL_STATUS_CODE).ToString = Codes.CLAIM_IMAGE_PROCESSED) Then
-                    e.Row.Cells(GRID_COL_IMAGE_STATUS_IDX).CssClass = "StatActive"
-                Else
-                    e.Row.Cells(GRID_COL_IMAGE_STATUS_IDX).CssClass = "StatInactive"
+                        e.Row.Cells(GRID_COL_IMAGE_STATUS_IDX).CssClass = "StatActive"
+                    Else
+                        e.Row.Cells(GRID_COL_IMAGE_STATUS_IDX).CssClass = "StatInactive"
+                    End If
                 End If
-            End If
         Catch ex As Exception
             Me.HandleErrors(ex, Me.MasterPage.MessageController)
         End Try
