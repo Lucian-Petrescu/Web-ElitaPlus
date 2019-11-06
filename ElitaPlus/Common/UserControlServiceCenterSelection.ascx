@@ -125,7 +125,7 @@
                 </asp:TemplateField>
                 <asp:TemplateField HeaderText="SERVICE_CENTER_MANUFACTURER">
                     <ItemTemplate>
-                        <asp:Label ID="lblManufacturer" runat="server" Text='<%#Eval("Manufacturer")%>'></asp:Label>
+                        <asp:Label ID="lblManufacturer" runat="server" Text='<%#Eval("ManufacturerAuthFlag")%>'></asp:Label>
                     </ItemTemplate>
                 </asp:TemplateField>
                 <asp:TemplateField HeaderText="SERVICE_CENTER_PREF">

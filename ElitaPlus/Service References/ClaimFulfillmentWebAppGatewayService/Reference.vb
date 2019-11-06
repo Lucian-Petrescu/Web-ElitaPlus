@@ -2288,7 +2288,7 @@ Namespace ClaimFulfillmentWebAppGatewayService
         Private PostalCodeField As String
         
         <System.Runtime.Serialization.OptionalFieldAttribute()>  _
-        Private ManufacturerField As String
+        Private ManufacturerAuthFlagField As String
         
         <System.Runtime.Serialization.OptionalFieldAttribute()>  _
         Private PrefField As String
@@ -2440,14 +2440,14 @@ Namespace ClaimFulfillmentWebAppGatewayService
         End Property
         
         <System.Runtime.Serialization.DataMemberAttribute(Order:=10)>  _
-        Public Property Manufacturer() As String
+        Public Property ManufacturerAuthFlag() As String
             Get
-                Return Me.ManufacturerField
+                Return Me.ManufacturerAuthFlagField
             End Get
             Set
-                If (Object.ReferenceEquals(Me.ManufacturerField, value) <> true) Then
-                    Me.ManufacturerField = value
-                    Me.RaisePropertyChanged("Manufacturer")
+                If (Object.ReferenceEquals(Me.ManufacturerAuthFlagField, value) <> true) Then
+                    Me.ManufacturerAuthFlagField = value
+                    Me.RaisePropertyChanged("ManufacturerAuthFlag")
                 End If
             End Set
         End Property
