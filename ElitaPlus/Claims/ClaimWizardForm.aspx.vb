@@ -92,6 +92,7 @@ Public Class ClaimWizardForm
     Public Const GRIDMC_COL_MSTR_CLAIM_IDX As Integer = 1
     Public Const GRIDMC_COL_CLAIM_NUMBER_IDX As Integer = 2
     Public Const GRIDMC_COL_DATE_OF_LOSS_IDX As Integer = 3
+    Public Const gridClaimCaseDeviceInfoPurchasedDate As Integer = 3
     Private Const LABEL_SERVICE_CENTER As String = "SERVICE_CENTER"
     Public Const SESSION_KEY_CLAIM_WIZARD_BACKUP_STATE As String = "SESSION_KEY_CLAIM_WIZARD_BACKUP_STATE"
 
@@ -3619,7 +3620,24 @@ Public Class ClaimWizardForm
     End Sub
 
 #End Region
-
+#Region "DeviceInfoGrid"
+    Private Sub gridClaimCaseDeviceInfo_RowDataBound(ByVal sender As Object, ByVal e As GridViewRowEventArgs) Handles gridClaimCaseDeviceInfo.RowDataBound
+        Try
+            If (e.Row.RowType = DataControlRowType.DataRow) _
+                OrElse (e.Row.RowType = DataControlRowType.Separator) Then
+                Dim strPurchasedDate As String = Convert.ToString(e.Row.Cells(gridClaimCaseDeviceInfoPurchasedDate).Text)
+                strPurchasedDate = strPurchasedDate.Replace("&nbsp;", "")
+                If String.IsNullOrWhiteSpace(strPurchasedDate) = False Then
+                    Dim tempPurchasedDate = Convert.ToDateTime(e.Row.Cells(gridClaimCaseDeviceInfoPurchasedDate).Text.Trim())
+                    Dim formattedPurchasedDate = GetDateFormattedString(tempPurchasedDate)
+                    e.Row.Cells(gridClaimCaseDeviceInfoPurchasedDate).Text = Convert.ToString(formattedPurchasedDate)
+                End If
+            End If
+        Catch ex As Exception
+            HandleErrors(ex, MasterPage.MessageController)
+        End Try
+    End Sub
+#End Region
 #Region "Claim Issues Grid related"
 
     Public Sub PopulateClaimIssuesGrid()

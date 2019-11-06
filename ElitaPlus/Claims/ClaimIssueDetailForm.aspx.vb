@@ -594,7 +594,7 @@ Partial Class ClaimIssueDetailForm
             strProcessedDate = strProcessedDate.Replace("&nbsp;", "")
             If String.IsNullOrWhiteSpace(strProcessedDate) = False Then
                 Dim tempProcessedDate = Convert.ToDateTime(e.Row.Cells(Q_GRID_COL_PROCESSED_DATE_IDX).Text.Trim())
-                Dim formattedProcessedDate = GetDateFormattedString(tempProcessedDate)
+                Dim formattedProcessedDate = GetLongDate12FormattedString(tempProcessedDate)
                 e.Row.Cells(Q_GRID_COL_PROCESSED_DATE_IDX).Text = Convert.ToString(formattedProcessedDate)
             End If
         End If

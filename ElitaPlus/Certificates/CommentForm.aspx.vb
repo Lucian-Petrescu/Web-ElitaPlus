@@ -506,7 +506,7 @@ Partial Class CommentForm
                 moProtectionEvtDtl.DealerName = newClaim.DealerName
                 moProtectionEvtDtl.CallerName = newClaim.CallerName
                 moProtectionEvtDtl.ClaimNumber = newClaim.ClaimNumber
-                moProtectionEvtDtl.DateOfLoss = newClaim.LossDate.Value.ToString("dd-MMM-yyyy")
+                moProtectionEvtDtl.DateOfLoss = GetDateFormattedStringNullable(newClaim.LossDate.Value)
                 moProtectionEvtDtl.ProtectionStatus = LookupListNew.GetClaimStatusFromCode(langId, oCerticate.StatusCode)
 
                 If (oCerticate.StatusCode = Codes.CLAIM_STATUS__ACTIVE) Then
