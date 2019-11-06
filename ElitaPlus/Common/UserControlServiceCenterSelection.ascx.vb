@@ -236,8 +236,8 @@ Public Class UserControlServiceCenterSelection
         ControlMgr.SetVisibleControl(ElitaHostPage, moPostalCodeLabel, showPostalCodeFields)
         ControlMgr.SetVisibleControl(ElitaHostPage, tdPostalCodeText, showPostalCodeFields)
         ' Buttons
-        ControlMgr.SetVisibleControl(ElitaHostPage, tdClearButton, showCityFields)
-        ControlMgr.SetVisibleControl(ElitaHostPage, btnClearSearch, showCityFields)
+        ControlMgr.SetVisibleControl(ElitaHostPage, tdClearButton, showCityFields Or showPostalCodeFields)
+        ControlMgr.SetVisibleControl(ElitaHostPage, btnClearSearch, showCityFields Or showPostalCodeFields)
 
         ' All
         ControlMgr.SetVisibleControl(ElitaHostPage, btnSearch, Not showAllFields)
@@ -316,6 +316,14 @@ Public Class UserControlServiceCenterSelection
         Debug.WriteLine($"btnSearch_Click")
         PopulateGrid()
     End Sub
+
+    Protected Sub btnClearSearch_Click(sender As Object, e As EventArgs) Handles btnClearSearch.Click
+        Debug.WriteLine($"btnClearSearch")
+        moPostalCodeTextbox.Text = String.Empty
+        moCityTextbox.Text = String.Empty
+        GridServiceCenter.DataSource = Nothing
+    End Sub
+
 
     Protected Sub GridServiceCenter_RowDataBound(sender As Object, e As GridViewRowEventArgs) Handles GridServiceCenter.RowDataBound
         Dim source As IEnumerable(Of FulfillmentServicesCenter) = CType(sender, GridView).DataSource

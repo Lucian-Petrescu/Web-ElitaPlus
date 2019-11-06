@@ -12,7 +12,7 @@
         <asp:Label runat="server" ID="moSearchServiceCenterLabel" Text="SEARCH_SERVICE_CENTER" />
     </h2>
     <div class="dataGridHeader">
-        <table width="100%" border="0" class="searchGrid" runat="server">
+        <table border="0" class="searchGrid" runat="server">
             <tbody>
                 <tr>
                     <td align="right" nowrap="nowrap">
