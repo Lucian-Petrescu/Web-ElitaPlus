@@ -12,7 +12,7 @@
         <asp:Label runat="server" ID="moSearchServiceCenterLabel" Text="SEARCH_SERVICE_CENTER" />
     </h2>
     <div class="dataGridHeader">
-        <table width="100%" border="0" class="searchGrid" runat="server">
+        <table border="0" class="searchGrid" runat="server">
             <tbody>
                 <tr>
                     <td align="right" nowrap="nowrap">
@@ -125,7 +125,7 @@
                 </asp:TemplateField>
                 <asp:TemplateField HeaderText="SERVICE_CENTER_MANUFACTURER">
                     <ItemTemplate>
-                        <asp:Label ID="lblManufacturer" runat="server" Text='<%#Eval("Manufacturer")%>'></asp:Label>
+                        <asp:Label ID="lblManufacturer" runat="server" Text='<%#Eval("ManufacturerAuthFlag")%>'></asp:Label>
                     </ItemTemplate>
                 </asp:TemplateField>
                 <asp:TemplateField HeaderText="SERVICE_CENTER_PREF">
