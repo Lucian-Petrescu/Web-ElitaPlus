@@ -240,8 +240,10 @@ Public Class UserControlServiceCenterSelection
         ControlMgr.SetVisibleControl(ElitaHostPage, btnClearSearch, showCityFields)
 
         ' All
-        'ControlMgr.SetVisibleForControlFamily(ElitaHostPage, moMultipleColumnDrop, showAllFields)
         ControlMgr.SetVisibleControl(ElitaHostPage, btnSearch, Not showAllFields)
+        If showAllFields Then
+            PopulateGrid()
+        End If
 
         'NO_SVC_OPTION
         'ControlMgr.SetVisibleControl(ElitaHostPage, tdRightPanel, Not noSvcOption)
@@ -386,7 +388,6 @@ Public Class UserControlServiceCenterSelection
 #Region "User Control Methods"
     Sub InitializeComponent()
         Try
-            PageSize = 1
             SortExpression = String.Empty
             PopulateCountryDropdown()
             PopulateSearchFilterDropdown()
@@ -482,11 +483,9 @@ Public Class UserControlServiceCenterSelection
             Dim oWebPassword As WebPasswd = New WebPasswd(Guid.Empty, serviceTypeId, False)
             If oWebPassword Is Nothing Then Throw New ArgumentNullException($"Web Password information for service {Codes.SERVICE_TYPE__CLAIM_FULFILLMENT_WEB_APP_GATEWAY_SERVICE} does not exists.")
 
-
-            Dim client = New WebAppGatewayClient("CustomBinding_WebAppGateway", "http://l16mia0d8113qr8.cead.prd/ElitaClaimFulfillment/WebAppGateway/gateway")
-            REM Dim client = New WebAppGatewayClient("CustomBinding_WebAppGateway", oWebPassword.Url)
-            client.ClientCredentials.UserName.UserName = "InternalUsers\JN3421" 'oWebPassword.UserId
-            client.ClientCredentials.UserName.Password = "quitoPichincha2019" 'oWebPassword.Password
+            Dim client = New WebAppGatewayClient("CustomBinding_WebAppGateway", oWebPassword.Url)
+            client.ClientCredentials.UserName.UserName = oWebPassword.UserId
+            client.ClientCredentials.UserName.Password = oWebPassword.Password
             Return client
         Catch ex As Exception
             Throw ex

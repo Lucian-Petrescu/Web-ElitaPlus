@@ -295,6 +295,16 @@ Public Class ClaimRecordingForm
             End If
         Next
     End Sub
+
+    Private Sub EnableServiceCenterSelection(value As Boolean, gridRow As GridViewRow)
+        Dim trServiceCenter As HtmlTableRow = CType(gridRow.FindControl(GridLoServiceCenterTr), HtmlTableRow)
+        If trServiceCenter Is Nothing Then Throw New ArgumentNullException("TableRow for Service Center not found")
+        If Not value Then
+            trServiceCenter.Attributes("style") = "display: none"
+        Else
+            trServiceCenter.Attributes("style") = "display: block"
+        End If
+    End Sub
     Protected Sub Page_Load(ByVal sender As Object, ByVal e As EventArgs) Handles Me.Load
         MasterPage.MessageController.Clear()
 
@@ -2268,6 +2278,7 @@ Public Class ClaimRecordingForm
         ' get the selected device into the state
         EnableControlinGridview(GridViewLogisticsOptions)
         State.IsExpeditedBtnClicked = False
+
         ControlMgr.SetEnableControl(Me, btnLogisticsOptionsContinue, True)
     End Sub
     Private Sub EnableControlinGridview(ByVal gridViewTarget As GridView)
@@ -2863,9 +2874,11 @@ Public Class ClaimRecordingForm
 
                 Dim moServiceCenterCtrl As UserControlServiceCenterSelection = CType(e.Row.FindControl(GridLoServiceCenterCtrl), UserControlServiceCenterSelection)
                 moServiceCenterCtrl.Visible = True
+                
 
                 ServiceCenterSelectionHandler(moServiceCenterCtrl)
 
+                moServiceCenterCtrl.PageSize = 30
                 moServiceCenterCtrl.CountryId = oCertificate.Company.CountryId
                 moServiceCenterCtrl.CountryCode = oCountry.Code
                 moServiceCenterCtrl.CompanyCode = oCertificate.Company.Code
@@ -2888,7 +2901,7 @@ Public Class ClaimRecordingForm
                 Dim txtStoreNumber As TextBox = CType(e.Row.FindControl(GridLoServiceCenterCodeTxtCtrl), TextBox)
                 ControlMgr.SetEnableControl(Me, txtStoreNumber, isEnableControl)
             Else
-                Dim trServiceCenter As HtmlTableRow = CType(e.Row.FindControl("trServiceCenter"), HtmlTableRow)
+                Dim trServiceCenter As HtmlTableRow = CType(e.Row.FindControl(GridLoServiceCenterTr), HtmlTableRow)
                 If trServiceCenter Is Nothing Then Throw New ArgumentNullException("TableRow for Service Center not found")
                 trServiceCenter.Attributes("style") = "display: none"
             End If
