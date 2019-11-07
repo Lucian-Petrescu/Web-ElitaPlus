@@ -6,6 +6,7 @@ Imports System.IO
 Imports System.Text
 Imports System.Data
 Imports System.Data.OleDb
+Imports System.Net
 Imports System.Reflection
 Imports System.Threading
 Imports Assurant.ElitaPlus.BusinessObjectsNew.LegacyBridgeService
@@ -3867,6 +3868,7 @@ Public NotInheritable Class Claim
 
 #Region "External References"
     Public Shared Function GetLegacyBridgeServiceClient() As LegacyBridgeServiceClient
+        ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12
         Dim oWebPasswd As WebPasswd = New WebPasswd(Guid.Empty, LookupListNew.GetIdFromCode(Codes.SERVICE_TYPE, Codes.SERVICE_TYPE__CLAIM_LEGACY_BRIDGE_SERVICE), False)
         Dim client = New LegacyBridgeServiceClient("CustomBinding_ILegacyBridgeService", oWebPasswd.Url)
         client.ClientCredentials.UserName.UserName = oWebPasswd.UserId
