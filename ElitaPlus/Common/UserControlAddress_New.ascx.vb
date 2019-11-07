@@ -231,6 +231,22 @@ Partial Class UserControlAddress_New
         moRegionDrop_WRITE.Enabled = True
 
     End Sub
+
+    Public Sub EnableControl(ByVal bvalue As Boolean)
+
+        moCityText.Enabled = bvalue
+        moAddress1Text.Enabled = bvalue
+        moAddress2Text.Enabled = bvalue
+        moAddress3Text.Enabled = bvalue
+        moPostalText.Enabled = bvalue
+        'Country
+        moCountryDrop_WRITE.Enabled = bvalue
+        moCountryText.Enabled = bvalue
+        'Region
+        moRegionDrop_WRITE.Enabled = bvalue
+
+    End Sub
+
     Public Sub ReAssignTabIndex(Optional ByVal TabIndexStartingNumber As Int16 = 0)
         If TabIndexStartingNumber > 0 Then
             Me.moAddress1Text.TabIndex = TabIndexStartingNumber
