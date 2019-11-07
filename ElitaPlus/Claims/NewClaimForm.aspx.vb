@@ -2855,7 +2855,7 @@ Partial Class NewClaimForm
             moProtectionEvtDtl.CallerName = Me.State.MyBO.CallerName
             moProtectionEvtDtl.ClaimNumber = Me.State.MyBO.ClaimNumber
             If Not Me.State.MyBO.LossDate Is Nothing Then
-                moProtectionEvtDtl.DateOfLoss = Me.State.MyBO.LossDate.Value.ToString("dd-MMM-yyyy")
+                moProtectionEvtDtl.DateOfLoss = GetDateFormattedString(Me.State.MyBO.LossDate.Value)
             Else
                 moProtectionEvtDtl.DateOfLoss = String.Empty
             End If

@@ -7915,14 +7915,14 @@ Namespace Certificates
                     strProcessedDate = strProcessedDate.Replace("&nbsp;", "")
                     If String.IsNullOrEmpty(strProcessedDate) = False Then
                         Dim tempProcessedDate = Convert.ToString(e.Row.Cells(CertHistoryGridColProcessedDateIdx).Text.Trim())
-                        Dim formattedProcessedDate = GetDateFormattedStringNullable(tempProcessedDate)
+                        Dim formattedProcessedDate = GetDateFormattedString(tempProcessedDate)
                         e.Row.Cells(CertHistoryGridColProcessedDateIdx).Text = Convert.ToString(formattedProcessedDate)
                     End If
                     Dim strStatusChangeDate As String = Convert.ToString(e.Row.Cells(CertHistoryGridColStatusChangeDateIdx).Text)
                     strStatusChangeDate = strStatusChangeDate.Replace("&nbsp;", "")
                     If String.IsNullOrEmpty(strStatusChangeDate) = False Then
                         Dim tempStatusChangeDate = Convert.ToString(e.Row.Cells(CertHistoryGridColStatusChangeDateIdx).Text.Trim())
-                        Dim formattedStatusChangeDate = GetDateFormattedStringNullable(tempStatusChangeDate)
+                        Dim formattedStatusChangeDate = GetDateFormattedString(tempStatusChangeDate)
                         e.Row.Cells(CertHistoryGridColStatusChangeDateIdx).Text = Convert.ToString(formattedStatusChangeDate)
                     End If
                 End If
