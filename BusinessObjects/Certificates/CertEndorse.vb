@@ -132,6 +132,7 @@ Public Class CertEndorse
                     dOrgCoverageEndate = cov.EndDate.Value
                     cov.EndDate = New DateType(DateAdd("d", -1, DateAdd(MONTH, Me.TermPos, cov.BeginDate.Value)))
                     dNewCoverageEndate = cov.EndDate.Value
+                    cov.ModifiedById = ElitaPlusIdentity.Current.ActiveUser.NetworkId
                     updateEndorseCov(cov)
                 End If
             End If
@@ -145,6 +146,7 @@ Public Class CertEndorse
                         cov.BeginDate = New DateType(DateAdd("D", 1, dNewCoverageEndate))
                         If isECSDurationFix Then
                             cov.EndDate = New DateType(DateAdd("d", -1, DateAdd(MONTH, CInt(intDuration), cov.BeginDate.Value)))
+                            cov.ModifiedById = ElitaPlusIdentity.Current.ActiveUser.NetworkId
                         End If
                     End If
                 Else
@@ -152,6 +154,7 @@ Public Class CertEndorse
                         cov.BeginDate = New DateType(dNewCoverageEndate)
                         If isECSDurationFix Then
                             cov.EndDate = New DateType(DateAdd(MONTH, CInt(intDuration), dNewCoverageEndate))
+                            cov.ModifiedById = ElitaPlusIdentity.Current.ActiveUser.NetworkId
                         End If
                     End If
                 End If
@@ -164,6 +167,7 @@ Public Class CertEndorse
             If cov.CoverageTypeCode <> Codes.COVERAGE_TYPE__MANUFACTURER AndAlso cov.CoverageTypeCode <> Codes.COVERAGE_TYPE__EXTENDED Then
                 If isECSDurationFix Then
                     cov.EndDate = New DateType(dNewExtendedEndate)
+                    cov.ModifiedById = ElitaPlusIdentity.Current.ActiveUser.NetworkId
                     updateEndorseCov(cov)
                 End If
             End If
