@@ -205,6 +205,24 @@ Public Class UserControlContactInfo_New
         End If
     End Sub
 
+    Public Sub EnableControl(ByVal bvalue As Boolean)
+
+        cboSalutationId.Enabled = bvalue
+        moAddressTypeDrop_WRITE.Enabled = bvalue
+        moAddressTypeText.Enabled = bvalue
+        moContactNameText.Enabled = bvalue
+        moHomePhoneText.Enabled = bvalue
+        moEmailAddressText.Enabled = bvalue
+        moWorkPhoneText.Enabled = bvalue
+        moCellPhoneText.Enabled = bvalue
+        moCompanyText.Enabled = bvalue
+        moJobTitleText.Enabled = bvalue
+
+    End Sub
+
+
+
+
 
 #End Region
 

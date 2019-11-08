@@ -2309,6 +2309,9 @@ Public Class ClaimWizardForm
             End If
         End If
 
+        Dim isNewFulfillment = (Not String.IsNullOrWhiteSpace(Me.State.CertItemCoverageBO.FulfillmentProfileCode))
+
+
         If Not Me.State.ClaimBO.ContactInfoId.Equals(Guid.Empty) Then
             Dim YesId As Guid = LookupListNew.GetIdFromCode(LookupListNew.LK_LANG_INDEPENDENT_YES_NO, Codes.YESNO_Y)
             SetSelectedItem(Me.step3_cboUseShipAddress, YesId)
@@ -2316,6 +2319,14 @@ Public Class ClaimWizardForm
 
             Me.UserControlAddress.ClaimDetailsBind(Me.State.ClaimBO.ContactInfo.Address)
             Me.UserControlContactInfo.Bind(Me.State.ClaimBO.ContactInfo)
+            'This makes all child controls inside UserControlAddress as ReadOnly 
+            If isNewFulfillment = True Then
+                Me.UserControlAddress.ControlEnabled = False
+                Me.UserControlAddress.EnableControl(False)
+                Me.UserControlContactInfo.EnableControl(False)
+            Else
+                Me.UserControlAddress.ControlEnabled = True
+            End If
         End If
 
         If Not State.ClaimBO.LossDate Is Nothing AndAlso Not State.ClaimBO.ReportedDate Is Nothing Then
