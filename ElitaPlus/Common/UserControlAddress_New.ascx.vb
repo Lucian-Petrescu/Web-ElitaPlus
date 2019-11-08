@@ -81,6 +81,16 @@ Partial Class UserControlAddress_New
             _profile_code = value
         End Set
     End Property
+
+    Private _ControlEnabled As Boolean
+    Public Property ControlEnabled As Boolean
+        Get
+            Return _ControlEnabled
+        End Get
+        Set(ByVal value As Boolean)
+            _ControlEnabled = value
+        End Set
+    End Property
 #End Region
 
 #Region "Handlers"
@@ -234,6 +244,7 @@ Partial Class UserControlAddress_New
 
     Public Sub EnableControl(ByVal bvalue As Boolean)
 
+
         moCityText.Enabled = bvalue
         moAddress1Text.Enabled = bvalue
         moAddress2Text.Enabled = bvalue
@@ -244,6 +255,7 @@ Partial Class UserControlAddress_New
         moCountryText.Enabled = bvalue
         'Region
         moRegionDrop_WRITE.Enabled = bvalue
+        moRegionText.Enabled = bvalue
 
     End Sub
 
@@ -363,8 +375,8 @@ Partial Class UserControlAddress_New
                     LabelStateText.Text = String.Empty
                     LabelCityText.Text = String.Empty
                 End If
-                SetValidatedAddressSectionVisibility(true)
-                
+                SetValidatedAddressSectionVisibility(True)
+
             End If
         Catch ex As Threading.ThreadAbortException
         Catch ex As Exception
@@ -381,12 +393,24 @@ Partial Class UserControlAddress_New
         moAddress3Text.ReadOnly = blnIsVisible
         moCityText.ReadOnly = blnIsVisible
         moPostalText.ReadOnly = blnIsVisible
-        'Country
-        moCountryDrop_WRITE.Enabled = Not blnIsVisible
-        moCountryText.ReadOnly = blnIsVisible
-        'Region
-        moRegionText.ReadOnly = blnIsVisible
-        moRegionDrop_WRITE.Enabled = Not blnIsVisible
+
+        If ControlEnabled Then
+            'Country
+            moCountryDrop_WRITE.Enabled = Not blnIsVisible
+            moCountryText.ReadOnly = blnIsVisible
+            'Region
+            moRegionText.ReadOnly = blnIsVisible
+            moRegionDrop_WRITE.Enabled = Not blnIsVisible
+        Else
+            'Country
+            moCountryDrop_WRITE.Enabled = False
+            moCountryText.ReadOnly = True
+            'Region
+            moRegionDrop_WRITE.Enabled = False
+            moRegionText.ReadOnly = True
+
+        End If
+
     End Sub
 
     Private Function AddressService(ByVal keiyakusha_address As String, ByVal keiyakusha_post_no As String) As AddressValidationProvider.BusinessObjects.ValidateAddressResponse
@@ -459,7 +483,7 @@ Partial Class UserControlAddress_New
         Catch ex As Exception
             Me.ParentPage.DisplayMessage(Message.MSG_PROMPT_STATE_NOT_CONFIGURED, "", Me.ParentPage.MSG_BTN_OK, Me.ParentPage.MSG_TYPE_INFO)
         End Try
-        SetValidatedAddressSectionVisibility(false)
+        SetValidatedAddressSectionVisibility(False)
     End Sub
     Private Sub btnDecline_Address_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnDecline.Click
         Try
@@ -468,7 +492,7 @@ Partial Class UserControlAddress_New
                 Me.Page.AddLabelDecorations(Me.MyGenBO)
             End If
             Me.PopulateControlFromBO()
-            SetValidatedAddressSectionVisibility(false)
+            SetValidatedAddressSectionVisibility(False)
         Catch ex As Threading.ThreadAbortException
         Catch ex As Exception
 
@@ -524,7 +548,6 @@ Partial Class UserControlAddress_New
                                            {
                                            .AddBlankItem = True
                                            })
-
     End Sub
 
     Private Sub LoadCountryList(Optional ByVal nothingSelcted As Boolean = True)
