@@ -38,7 +38,7 @@
                         <asp:TextBox ID="moCityTextbox" runat="server" SkinID="MediumTextBox"></asp:TextBox>
                     </td>
                     <td nowrap="nowrap" runat="server" id="tdPostalCodeLabel">
-                        <asp:Label runat="server" ID="moPostalCodeLabel" Text="POSTAL_CODE" />
+                        <asp:Label runat="server" ID="moPostalCodeLabel" Text="CUST_POSTAL_CODE" />
                         :
                     </td>
                     <td nowrap="nowrap" runat="server" id="tdPostalCodeText">

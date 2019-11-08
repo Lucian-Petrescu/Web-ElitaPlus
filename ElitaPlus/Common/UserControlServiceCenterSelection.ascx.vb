@@ -7,6 +7,7 @@ Imports Assurant.Elita.ClientIntegration.Headers
 Imports Assurant.Elita.CommonConfiguration
 Imports Assurant.Elita.CommonConfiguration.DataElements
 Imports Assurant.Elita.Web.Forms
+Imports Assurant.ElitaPlus.Business
 Imports Assurant.ElitaPlus.ElitaPlusWebApp.ClaimFulfillmentWebAppGatewayService
 Imports Assurant.ElitaPlus.ElitaPlusWebApp.ClaimRecordingService
 Imports Assurant.ElitaPlus.Security
@@ -192,7 +193,7 @@ Public Class UserControlServiceCenterSelection
         moSearchByLabel.Text = TranslationFunc("SEARCH_BY")
         moCountryLabel.Text = TranslationFunc("COUNTRY")
         moCityLabel.Text = TranslationFunc("CITY")
-        moPostalCodeLabel.Text = TranslationFunc("POSTAL_CODE")
+        moPostalCodeLabel.Text = TranslationFunc("CUST_POSTAL_CODE")
         '
         btnClearSearch.Text = TranslationFunc("Clear")
         btnSearch.Text = TranslationFunc("Search")
@@ -246,6 +247,8 @@ Public Class UserControlServiceCenterSelection
         ControlMgr.SetVisibleControl(ElitaHostPage, btnSearch, Not showAllFields)
         If showAllFields Then
             PopulateGrid()
+        Else
+            ClearResultList()
         End If
 
         'NO_SVC_OPTION
@@ -259,7 +262,11 @@ Public Class UserControlServiceCenterSelection
             HostMessageController.AddError(errorMessage, True)
         End If
     End Sub
-
+    Sub ShowMessage(message As string)
+        If HostMessageController IsNot Nothing Then
+            HostMessageController.AddError(message, True)
+        End If
+    End Sub
     Function ParseManufacturerAuthFlagToBoolean(flagValue As String) As Boolean
         If String.IsNullOrEmpty(flagValue) Then Return False
 
@@ -322,6 +329,7 @@ Public Class UserControlServiceCenterSelection
         Try
             Debug.WriteLine("Index Changed")
             EnableDisableFields()
+
         Catch ex As Exception
             HandleLocalException(ex)
         End Try
@@ -335,7 +343,7 @@ Public Class UserControlServiceCenterSelection
         Debug.WriteLine($"btnClearSearch")
         moPostalCodeTextbox.Text = String.Empty
         moCityTextbox.Text = String.Empty
-        GridServiceCenter.DataSource = Nothing
+        ClearResultList()
     End Sub
 
 
@@ -447,9 +455,7 @@ Public Class UserControlServiceCenterSelection
             If wsResponse IsNot Nothing Then
                 ServiceCenters = wsResponse
                 '
-                If Me.GridServiceCenter.Visible Then
-                    Me.lblRecordCount.Text = $"{wsResponse.Count} {TranslationBase.TranslateLabelOrMessage(Message.MSG_RECORDS_FOUND)}"
-                End If
+                UpdateRecordCount(wsResponse.Count)
                 '
                 GridServiceCenter.PageSize = PageSize
                 GridServiceCenter.DataSource = wsResponse
@@ -460,8 +466,11 @@ Public Class UserControlServiceCenterSelection
                 PageIndex = GridServiceCenter.PageIndex
 
             End If
+        Catch notFoundEx As FaultException(of ServiceCenterNotFoundFault)
+            ShowMessage($"No Services Center found for RiskType: {RiskTypeEnglish}, Method: {MethodOfRepairXcd}, Make: {Make}")
         Catch fex As FaultException
-            HandleLocalException(fex)
+            ShowMessage($"No Services Center found for RiskType: {RiskTypeEnglish}, Method: {MethodOfRepairXcd}, Make: {Make}")
+            'HandleLocalException(fex)
         Catch ex As Exception
             HandleLocalException(ex)
         End Try
@@ -499,6 +508,17 @@ Public Class UserControlServiceCenterSelection
             End If
         Next
     End Sub
+
+    Private Sub ClearResultList()
+        GridServiceCenter.DataSource = Nothing
+        GridServiceCenter.DataBind()
+        UpdateRecordCount(0)
+    End Sub
+    Private sub UpdateRecordCount(records As Integer)
+        If Me.GridServiceCenter.Visible Then
+            Me.lblRecordCount.Text = $"{records} {TranslationBase.TranslateLabelOrMessage(Message.MSG_RECORDS_FOUND)}"
+        End If
+    End sub
 #End Region
 
 #Region "Web Service"

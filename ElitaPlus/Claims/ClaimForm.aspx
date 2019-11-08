@@ -9,8 +9,7 @@
 <%@ Register Assembly="Microsoft.Web.UI.WebControls" Namespace="Microsoft.Web.UI.WebControls" TagPrefix="iewc" %>
 <asp:Content ID="Content1" ContentPlaceHolderID="HeadPlaceHolder" runat="server">
     <style type="text/css">
-        .style1 
-        {
+        .style1 {
             height: 20px;
         }
 
@@ -63,7 +62,8 @@
                 <asp:Label ID="lblChangeServiceCenterPrompt" runat="server" Text="CONFIRM"></asp:Label>
                 <a href="javascript:void(0)" onclick="hideModal('ModalChangeServiceCenter');">
                     <img id="Img2" src="~/App_Themes/Default/Images/icon_modalClose.png" runat="server"
-                        width="16" height="18" align="absmiddle" class="floatR" /></a></p>
+                        width="16" height="18" align="absmiddle" class="floatR" /></a>
+            </p>
             <table class="formGrid" width="100%" cellspacing="0" cellpadding="0" border="0">
                 <tbody>
                     <tr>
@@ -76,8 +76,7 @@
                         </td>
                     </tr>
                     <tr>
-                        <td>
-                            &nbsp;
+                        <td>&nbsp;
                         </td>
                         <td id="tdBtnArea" nowrap="nowrap" runat="server" colspan="2">
                             <asp:Button ID="btnModalSelectServiceCenterYes" runat="server" Text="YES" SkinID="PrimaryRightButton" />
@@ -96,7 +95,8 @@
                 <asp:Label ID="lblModalTitle" runat="server" Text="SEARCH_SERVICE_CENTER"></asp:Label>
                 <a href="javascript:void(0)" onclick="hideModal('ModalServiceCenter');">
                     <img id="Img1" src="~/App_Themes/Default/Images/icon_modalClose.png" runat="server"
-                        width="16" height="18" align="absmiddle" class="floatR" /></a></p>
+                        width="16" height="18" align="absmiddle" class="floatR" /></a>
+            </p>
             <Elita:UserControlSelectServiceCenter ID="ucSelectServiceCenter" runat="server" />
         </div>
         <div id="fade" class="black_overlay">
@@ -127,8 +127,7 @@
                         </td>
                     </tr>
                     <tr>
-                        <td>
-                            &nbsp;
+                        <td>&nbsp;
                         </td>
                         <td id="td2" nowrap="nowrap" runat="server" colspan="2">
                             <input id="btnModalReopenClaimYes" class="primaryBtn floatR" runat="server" type="button"
@@ -577,11 +576,16 @@
                     <asp:HiddenField ID="hdnDisabledTab" runat="server" />
                     <div id="tabs" class="style-tabs">
                         <ul>
-                            <li><a href="#tbDeviceInfo"><asp:Label ID="Label4" runat="server" CssClass="tabHeaderText">DEVICE_INFORMATION</asp:Label></a></li>
-                            <li><a href="#tbClaimShippingInfo"><asp:Label ID="Label3" runat="server" CssClass="tabHeaderText">CLAIM_SHIPPING</asp:Label></a></li>
-                            <li><a href="#tbClaimAuthorization"><asp:Label ID="Label6" runat="server" CssClass="tabHeaderText">CLAIM_AUTHORIZATIONS</asp:Label></a></li>
-                            <li><a href="#tbClaimConsequentialDamage"><asp:Label ID="Label2" runat="server" CssClass="tabHeaderText">CLAIM_CONSEQUENTIAL_DAMAGE</asp:Label></a></li>
-                            <li><a href="#tbClaimFulfillmentDetails"><asp:Label ID="lblClaimFulfillmentDetails" runat="server" CssClass="tabHeaderText">CLAIM_FULFILLMENT</asp:Label></a></li>
+                            <li><a href="#tbDeviceInfo">
+                                <asp:Label ID="Label4" runat="server" CssClass="tabHeaderText">DEVICE_INFORMATION</asp:Label></a></li>
+                            <li><a href="#tbClaimShippingInfo">
+                                <asp:Label ID="Label3" runat="server" CssClass="tabHeaderText">CLAIM_SHIPPING</asp:Label></a></li>
+                            <li><a href="#tbClaimAuthorization">
+                                <asp:Label ID="Label6" runat="server" CssClass="tabHeaderText">CLAIM_AUTHORIZATIONS</asp:Label></a></li>
+                            <li><a href="#tbClaimConsequentialDamage">
+                                <asp:Label ID="Label2" runat="server" CssClass="tabHeaderText">CLAIM_CONSEQUENTIAL_DAMAGE</asp:Label></a></li>
+                            <li><a href="#tbClaimFulfillmentDetails">
+                                <asp:Label ID="lblClaimFulfillmentDetails" runat="server" CssClass="tabHeaderText">CLAIM_FULFILLMENT</asp:Label></a></li>
                         </ul>
 
                         <div id="tbDeviceInfo">
@@ -982,15 +986,9 @@
                                             <td align="right">
                                                 <asp:Label ID="lblServiceCenter" runat="server" Text="SERVICE_CENTER"> </asp:Label>
                                             </td>
-                                            <td>
-                                                <div style="display: flex; justify-content: center">
-                                                    <div style="display: inline">
-                                                        <asp:TextBox ID="txtServiceCenterCode" runat="server" ReadOnly="true" SkinID="MediumTextBox" Width="50px"></asp:TextBox>&nbsp;&nbsp
-                                                    </div>
-                                                    <div style="display: inline">
-                                                        <asp:TextBox ID="txtServiceCenter" runat="server" ReadOnly="true" SkinID="MediumTextBox" Width="240px"></asp:TextBox>
-                                                    </div>
-                                                </div>
+                                            <td align="left" nowrap="nowrap">
+                                                <asp:TextBox ID="txtServiceCenterCode" runat="server" ReadOnly="true" SkinID="MediumTextBox" Width="50px"></asp:TextBox>&nbsp;&nbsp
+                                                <asp:TextBox ID="txtServiceCenter" runat="server" ReadOnly="true" SkinID="MediumTextBox" Width="240px"></asp:TextBox>
                                             </td>
                                             <td align="right">
                                                 <asp:Label ID="lblPostalCode" runat="server" Text="POSTAL_CODE"> </asp:Label>
