@@ -2039,6 +2039,15 @@ Partial Public Class ClaimForm
     Protected WithEvents lblServiceCenter As Global.System.Web.UI.WebControls.Label
 
     '''<summary>
+    '''txtServiceCenterCode control.
+    '''</summary>
+    '''<remarks>
+    '''Auto-generated field.
+    '''To modify move field declaration from designer file to code-behind file.
+    '''</remarks>
+    Protected WithEvents txtServiceCenterCode As Global.System.Web.UI.WebControls.TextBox
+
+    '''<summary>
     '''txtServiceCenter control.
     '''</summary>
     '''<remarks>

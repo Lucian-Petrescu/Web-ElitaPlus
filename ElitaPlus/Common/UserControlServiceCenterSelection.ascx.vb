@@ -63,7 +63,7 @@ Public Class UserControlServiceCenterSelection
 
     End Sub
 #Region "Properties"
-
+    Public Property HostMessageController As IMessageController
     Public Property ServiceCenterSelectedFunc As Action(Of ServiceCenterSelected)
     Public Property TranslateGridHeaderFunc As Action(Of System.Web.UI.WebControls.GridView)
     Public Property TranslationFunc As Func(Of String, String)
@@ -227,6 +227,9 @@ Public Class UserControlServiceCenterSelection
         Dim showAllFields As Boolean = IsSearchBy(SearchByCodes.All)
         Dim showPostalCodeFields As Boolean = IsSearchBy(SearchByCodes.PostalCode)
 
+        moCityTextbox.Text = String.Empty
+        moPostalCodeTextbox.Text = String.Empty
+
         ' City
         ControlMgr.SetVisibleControl(ElitaHostPage, tdCityLabel, showCityFields)
         ControlMgr.SetVisibleControl(ElitaHostPage, moCityLabel, showCityFields)
@@ -251,10 +254,21 @@ Public Class UserControlServiceCenterSelection
     End Sub
 
     Sub HandleLocalException(ex As Exception)
-
-
+        Dim errorMessage As String = $"{ex.Message} {ex.StackTrace}"
+        If HostMessageController IsNot Nothing Then
+            HostMessageController.AddError(errorMessage, True)
+        End If
     End Sub
 
+    Function ParseManufacturerAuthFlagToBoolean(flagValue As String) As Boolean
+        If String.IsNullOrEmpty(flagValue) Then Return False
+
+        If flagValue.Equals("y", StringComparison.InvariantCultureIgnoreCase) Then Return True
+        If flagValue.Equals("yes", StringComparison.InvariantCultureIgnoreCase) Then Return True
+        If flagValue.Equals("true", StringComparison.InvariantCultureIgnoreCase) Then Return True
+
+        Return False
+    End Function
 #End Region
 
 #Region "Control Events"
@@ -329,8 +343,11 @@ Public Class UserControlServiceCenterSelection
         Dim source As IEnumerable(Of FulfillmentServicesCenter) = CType(sender, GridView).DataSource
 
         If (e.Row.RowType = DataControlRowType.DataRow) Then
-
-
+            Dim moManufacturerAuthFlagImage As HtmlImage = CType(e.Row.FindControl("moManufacturerAuthFlagImage"), HtmlImage)
+            Dim dataItem As FulfillmentServicesCenter = CType(e.Row.DataItem, FulfillmentServicesCenter)
+            If dataItem IsNot Nothing Then
+                ControlMgr.SetVisibleControl(ElitaHostPage, moManufacturerAuthFlagImage, ParseManufacturerAuthFlagToBoolean(dataItem.ManufacturerAuthFlag))
+            End If
         End If
     End Sub
 
