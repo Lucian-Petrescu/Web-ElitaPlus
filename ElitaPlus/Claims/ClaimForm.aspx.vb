@@ -1920,7 +1920,8 @@ Partial Class ClaimForm
                     Me.PopulateControlFromBOProperty(Me.txtAddress2, logisticStage.Address.Address2)
                     Me.PopulateControlFromBOProperty(Me.txtAddress3, logisticStage.Address.Address3)
                     Me.PopulateControlFromBOProperty(Me.txtCity, logisticStage.Address.City)
-                    Me.PopulateControlFromBOProperty(Me.txtServiceCenter, $"{logisticStage.ServiceCenterCode} - {logisticStage.ServiceCenterDescription}")
+                    Me.PopulateControlFromBOProperty(Me.txtServiceCenterCode, $"{logisticStage.ServiceCenterCode}")
+                    Me.PopulateControlFromBOProperty(Me.txtServiceCenter, $"{logisticStage.ServiceCenterDescription}")
                     Me.PopulateControlFromBOProperty(Me.txtPostalCode, logisticStage.Address.PostalCode)
                     Me.PopulateControlFromBOProperty(Me.txtState, LookupListNew.GetDescriptionFromCode(
                                                      LookupListNew.DataView(LookupListNew.LK_REGIONS),

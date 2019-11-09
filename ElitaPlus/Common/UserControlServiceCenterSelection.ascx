@@ -38,7 +38,7 @@
                         <asp:TextBox ID="moCityTextbox" runat="server" SkinID="MediumTextBox"></asp:TextBox>
                     </td>
                     <td nowrap="nowrap" runat="server" id="tdPostalCodeLabel">
-                        <asp:Label runat="server" ID="moPostalCodeLabel" Text="POSTAL_CODE" />
+                        <asp:Label runat="server" ID="moPostalCodeLabel" Text="CUST_POSTAL_CODE" />
                         :
                     </td>
                     <td nowrap="nowrap" runat="server" id="tdPostalCodeText">
@@ -82,7 +82,7 @@
     <div style="width: 100%">
 
         <asp:GridView ID="GridServiceCenter" runat="server" Width="100%" AutoGenerateColumns="False" AllowPaging="True" SkinID="DetailPageGridView"
-            AllowSorting="False" EnableModelValidation="True">
+            AllowSorting="True" EnableModelValidation="True">
             <SelectedRowStyle Wrap="True" />
             <EditRowStyle Wrap="True" />
             <AlternatingRowStyle Wrap="True" />
@@ -123,9 +123,9 @@
                         <asp:Label ID="lblCode" runat="server" Text='<%#Eval("ServiceCenterCode")%>'></asp:Label>
                     </ItemTemplate>
                 </asp:TemplateField>
-                <asp:TemplateField HeaderText="SERVICE_CENTER_MANUFACTURER">
+                <asp:TemplateField HeaderText="SERVICE_CENTER_MANUF_AUTH">
                     <ItemTemplate>
-                        <asp:Label ID="lblManufacturer" runat="server" Text='<%#Eval("ManufacturerAuthFlag")%>'></asp:Label>
+                        <img id="moManufacturerAuthFlagImage" runat="server" width="14" height="13" src="..\App_Themes\Default\Images\tickIcon.png" complete="complete"/>
                     </ItemTemplate>
                 </asp:TemplateField>
                 <asp:TemplateField HeaderText="SERVICE_CENTER_PREF">
