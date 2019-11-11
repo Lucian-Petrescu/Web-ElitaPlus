@@ -166,7 +166,7 @@ Public Class ClaimIssueForm
         BindListControlToDataView(ddlIssueCode, Me.State.MyBO.Load_Filtered_Issues(), "CODE", "ISSUE_ID", False, , True)
         BindListControlToDataView(ddlIssueDescription, Me.State.MyBO.Load_Filtered_Issues(), "DESCRIPTION", "ISSUE_ID", False, , True)
         txtCreatedBy.Text = ElitaPlusIdentity.Current.ActiveUser.UserName
-        txtCreatedDate.Text = DateTime.Now.ToString(LocalizationMgr.CurrentCulture)
+        txtCreatedDate.Text = GetLongDate12FormattedString(DateTime.Now)
 
         'If No issues to Add to claim hide the Save and Cancel Button
         If (Me.State.MyBO.Load_Filtered_Issues().Count = 0) Then
