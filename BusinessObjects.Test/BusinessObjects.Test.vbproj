@@ -63,26 +63,21 @@
       <HintPath>..\packages\Elita.Assurant.Common.Types.2.0.0\lib\net462\Assurant.Common.Types.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="Assurant.Elita.Base.DataAccess, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+    <Reference Include="Assurant.Elita.Base.DataAccess">
       <HintPath>..\packages\Assurant.Elita.Base.DataAccess.5.0.2\lib\net462\Assurant.Elita.Base.DataAccess.dll</HintPath>
+	  <Private>True</Private>      
     </Reference>
-    <Reference Include="Assurant.Elita.CommonConfiguration, Version=2.1.7.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Assurant.Elita.CommonConfiguration.2.1.8\lib\net46\Assurant.Elita.CommonConfiguration.dll</HintPath>
+    <Reference Include="Assurant.Elita.CommonConfiguration, Version=2.1.9.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Assurant.Elita.CommonConfiguration.2.1.9\lib\net46\Assurant.Elita.CommonConfiguration.dll</HintPath>
     </Reference>
-    <Reference Include="Assurant.Elita.Configuration, Version=4.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
+    <Reference Include="Assurant.Elita.Configuration">
       <HintPath>..\packages\Assurant.Elita.Configuration.4.0.2\lib\net462\Assurant.Elita.Configuration.dll</HintPath>
-      <Private>True</Private>
     </Reference>
     <Reference Include="EntityFramework, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
       <HintPath>..\packages\EntityFramework.5.0.0\lib\net45\EntityFramework.dll</HintPath>
-      <Private>True</Private>
     </Reference>
     <Reference Include="JetBrains.Annotations, Version=11.1.0.0, Culture=neutral, PublicKeyToken=1010a0d8d6380325, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
       <HintPath>..\packages\JetBrains.Annotations.11.1.0\lib\net20\JetBrains.Annotations.dll</HintPath>
-      <Private>True</Private>
     </Reference>
     <Reference Include="Microsoft.VisualStudio.QualityTools.UnitTestFramework, Version=10.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
       <SpecificVersion>True</SpecificVersion>
@@ -94,7 +89,6 @@
     </Reference>
     <Reference Include="Oracle.ManagedDataAccess, Version=4.122.1.0, Culture=neutral, PublicKeyToken=89b483f429c47342, processorArchitecture=MSIL">
       <HintPath>..\packages\Oracle.ManagedDataAccess.12.2.1100\lib\net40\Oracle.ManagedDataAccess.dll</HintPath>
-      <Private>True</Private>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.DataAnnotations" />

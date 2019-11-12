@@ -15,6 +15,7 @@ Public Class RepositoryListForm
     Private Const GRID_COL_DESCRIPTION_IDX As Integer = 1
     Private Const GRID_COL_STORAGE_PATH_IDX As Integer = 2
     Private Const GRID_COL_BUTTON_IDX As Integer = 3
+    Private Const GRID_COL_REPOSITORY_TYPE_IDX As Integer = 4
 
 
     Private Const MSG_CONFIRM_PROMPT As String = "MSG_CONFIRM_PROMPT"
@@ -26,10 +27,12 @@ Public Class RepositoryListForm
     Private Const GRID_CTRL_NAME_LABLE_CODE As String = "CodeLabel"
     Private Const GRID_CTRL_NAME_LABLE_DESCRIPTION As String = "DescriptionLabel"
     Private Const GRID_CTRL_NAME_LABEL_STORAGE_PATH As String = "StoragePathLabel"
+    Private Const GRID_CTRL_NAME_LABEL_REPOSITORY_TYPE As String = "RepositoryTypeLabel"
 
     Private Const GRID_CTRL_NAME_EDIT_CODE As String = "CodeTextBox"
     Private Const GRID_CTRL_NAME_EDIT_DESCRIPTION As String = "DescriptionTextBox"
     Private Const GRID_CTRL_NAME_EDIT_STORAGE_PATH As String = "StoragePathTextBox"
+    Private Const GRID_CTRL_NAME_EDIT_REPOSITORY_TYPE As String = "RepositoryTypeTextBox"
 
     Private Const GRID_CTRL_NAME_BUTTON_SAVE As String = "SaveButton"
     Private Const GRID_CTRL_NAME_BUTTON_CANCEL As String = "CancelButton"
@@ -150,6 +153,7 @@ Public Class RepositoryListForm
         Me.BindBOPropertyToGridHeader(Me.State.MyBO, "Code", Me.Grid.Columns(Me.GRID_COL_CODE_IDX))
         Me.BindBOPropertyToGridHeader(Me.State.MyBO, "Description", Me.Grid.Columns(Me.GRID_COL_DESCRIPTION_IDX))
         Me.BindBOPropertyToGridHeader(Me.State.MyBO, "StoragePath", Me.Grid.Columns(Me.GRID_COL_STORAGE_PATH_IDX))
+        Me.BindBOPropertyToGridHeader(Me.State.MyBO, "RepositoryType", Me.Grid.Columns(Me.GRID_COL_REPOSITORY_TYPE_IDX))
         Me.ClearGridViewHeadersAndLabelsErrSign()
     End Sub
 
@@ -179,6 +183,7 @@ Public Class RepositoryListForm
             .Code = CType(Grid.Rows((Me.Grid.EditIndex)).Cells(GRID_COL_CODE_IDX).FindControl(GRID_CTRL_NAME_EDIT_CODE), TextBox).Text.Trim.ToUpper
             .Description = CType(Grid.Rows((Me.Grid.EditIndex)).Cells(GRID_COL_DESCRIPTION_IDX).FindControl(GRID_CTRL_NAME_EDIT_DESCRIPTION), TextBox).Text.Trim
             .StoragePath = CType(Grid.Rows((Me.Grid.EditIndex)).Cells(GRID_COL_STORAGE_PATH_IDX).FindControl(GRID_CTRL_NAME_EDIT_STORAGE_PATH), TextBox).Text.Trim.ToUpper
+            .RepositoryTypeXcd = CType(Grid.Rows((Me.Grid.EditIndex)).Cells(GRID_COL_REPOSITORY_TYPE_IDX).FindControl(GRID_CTRL_NAME_EDIT_REPOSITORY_TYPE), TextBox).Text.Trim.ToUpper
         End With
         If Me.ErrCollection.Count > 0 Then
             Throw New PopulateBOErrorException
@@ -253,18 +258,21 @@ Public Class RepositoryListForm
                 CType(e.Row.Cells(Me.GRID_COL_CODE_IDX).FindControl(Me.GRID_CTRL_NAME_EDIT_CODE), TextBox).Text = ft.Code
                 CType(e.Row.Cells(Me.GRID_COL_DESCRIPTION_IDX).FindControl(Me.GRID_CTRL_NAME_EDIT_DESCRIPTION), TextBox).Text = ft.Description
                 CType(e.Row.Cells(Me.GRID_COL_STORAGE_PATH_IDX).FindControl(Me.GRID_CTRL_NAME_EDIT_STORAGE_PATH), TextBox).Text = ft.StoragePath
+                CType(e.Row.Cells(Me.GRID_COL_REPOSITORY_TYPE_IDX).FindControl(Me.GRID_CTRL_NAME_EDIT_REPOSITORY_TYPE), TextBox).Text = ft.RepositoryTypeXcd
                 CType(e.Row.Cells(Me.GRID_COL_BUTTON_IDX).FindControl(Me.GRID_CTRL_NAME_BUTTON_CANCEL), ImageButton).CommandArgument = ft.Id.ToString()
                 CType(e.Row.Cells(Me.GRID_COL_BUTTON_IDX).FindControl(Me.GRID_CTRL_NAME_BUTTON_SAVE), ImageButton).CommandArgument = ft.Id.ToString()
 
                 CType(e.Row.Cells(Me.GRID_COL_CODE_IDX).FindControl(Me.GRID_CTRL_NAME_EDIT_CODE), TextBox).ReadOnly = Not Me.State.IsGridAddNew
                 CType(e.Row.Cells(Me.GRID_COL_STORAGE_PATH_IDX).FindControl(Me.GRID_CTRL_NAME_EDIT_STORAGE_PATH), TextBox).ReadOnly = Not Me.State.IsGridAddNew
+                CType(e.Row.Cells(Me.GRID_COL_REPOSITORY_TYPE_IDX).FindControl(Me.GRID_CTRL_NAME_EDIT_REPOSITORY_TYPE), TextBox).ReadOnly = Not Me.State.IsGridAddNew
 
             Else
             Dim ft As Repository = CType(e.Row.DataItem, Repository)
             CType(e.Row.Cells(Me.GRID_COL_CODE_IDX).FindControl(Me.GRID_CTRL_NAME_LABLE_CODE), Label).Text = ft.Code
             CType(e.Row.Cells(Me.GRID_COL_DESCRIPTION_IDX).FindControl(Me.GRID_CTRL_NAME_LABLE_DESCRIPTION), Label).Text = ft.Description
-            CType(e.Row.Cells(Me.GRID_COL_STORAGE_PATH_IDX).FindControl(Me.GRID_CTRL_NAME_LABEL_STORAGE_PATH), Label).Text = ft.StoragePath
-            CType(e.Row.Cells(Me.GRID_COL_BUTTON_IDX).FindControl(Me.GRID_CTRL_NAME_BUTTON_EDIT), ImageButton).CommandArgument = ft.Id.ToString()
+                CType(e.Row.Cells(Me.GRID_COL_STORAGE_PATH_IDX).FindControl(Me.GRID_CTRL_NAME_LABEL_STORAGE_PATH), Label).Text = ft.StoragePath
+                CType(e.Row.Cells(Me.GRID_COL_BUTTON_IDX).FindControl(Me.GRID_CTRL_NAME_BUTTON_EDIT), ImageButton).CommandArgument = ft.Id.ToString()
+                CType(e.Row.Cells(Me.GRID_COL_REPOSITORY_TYPE_IDX).FindControl(Me.GRID_CTRL_NAME_LABEL_REPOSITORY_TYPE), Label).Text = ft.RepositoryTypeXcd
             End If
 
         Catch ex As Exception
@@ -346,6 +354,8 @@ Public Class RepositoryListForm
             Return pRepository.Description
         ElseIf (Me.SortDirection.Contains("STORAGE_PATH")) Then
             Return pRepository.StoragePath
+        ElseIf (Me.SortDirection.Contains("REPOSITORY_TYPE")) Then
+            Return pRepository.RepositoryTypeXcd
         End If
     End Function
 
@@ -512,11 +522,11 @@ Public Class RepositoryListForm
         State.IsGridAddNew = True
         PopulateGrid()
         'Set focus on the Code TextBox for the EditItemIndex row
-        Me.SetPageAndSelectedIndexFromGuid(Of Repository)( _
-            Me.State.RepositoryList, _
-            Function(ft) ft.Id = Me.State.RepositoryId, _
-            Me.Grid, _
-            Me.State.PageIndex, _
+        Me.SetPageAndSelectedIndexFromGuid(Of Repository)(
+            Me.State.RepositoryList,
+            Function(ft) ft.Id = Me.State.RepositoryId,
+            Me.Grid,
+            Me.State.PageIndex,
             Me.State.IsEditMode)
         ControlMgr.DisableEditDeleteGridIfNotEditAuth(Me, Grid)
         SetGridControls(Me.Grid, False)

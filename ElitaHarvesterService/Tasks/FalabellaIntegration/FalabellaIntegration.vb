@@ -211,7 +211,7 @@ Public Class FalabellaIntegration
             With OClaim
                 request.AuthorizedAmount = If(OClaim.Status.ToString() = BasicClaimStatus.Denied.ToString(), "0", (CType(OCertificate.SalesPrice, Decimal) - CType(.Deductible, Decimal)).ToString())
                 request.ClaimNumber = OClaim.ClaimNumber
-                request.DenialReason = If(OClaim.Status.ToString() = BasicClaimStatus.Denied.ToString(), LookupListNew.GetCodeFromId(LookupListCache.LK_DENIED_REASON, .DeniedReasonId), String.Empty)
+                request.DenialReason = If(OClaim.Status.ToString() = BasicClaimStatus.Denied.ToString(), LookupListNew.GetDescriptionFromId(LookupListCache.LK_DENIED_REASON, .DeniedReasonId, True), String.Empty)
                 request.StatusChangeDate = StatusChangeDate
                 'request.WorkOrderFor = If(OClaim.Status.ToString() = BasicClaimStatus.Denied.ToString(), "Anulada", "Reemplazo Autorizado")
                 request.WorkOrderNumber = OClaim.RemAuthNumber

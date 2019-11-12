@@ -163,12 +163,12 @@
                     Else 'format the rows that are not being edited
                         CType(e.Row.Cells(GRID_COL_TRACKING_NUMBER_IDX).FindControl("lblTrackingNumber"), Label).Text = dvRow("tracking_number").ToString
                         CType(e.Row.Cells(GRID_COL_RECEIVED_DATE_IDX).FindControl("lblReceivedDate"), Label).Text = If(dvRow("received_date").ToString() <> String.Empty _
-                           , ElitaPlusPage.GetDateFormattedStringNullable(CType(dvRow("received_date"), Date)), "")
+                           , ElitaPlusPage.GetDateFormattedString(CType(dvRow("received_date"), Date)), "")
                     End If
                 Else 'view mode
                     CType(e.Row.Cells(GRID_COL_TRACKING_NUMBER_IDX).FindControl("lblTrackingNumber"), Label).Text = dvRow("tracking_number").ToString
                     CType(e.Row.Cells(GRID_COL_RECEIVED_DATE_IDX).FindControl("lblReceivedDate"), Label).Text = If(dvRow("received_date").ToString() <> String.Empty _
-                        , ElitaPlusPage.GetDateFormattedStringNullable(CType(dvRow("received_date"), Date)), "")
+                        , ElitaPlusPage.GetDateFormattedString(CType(dvRow("received_date"), Date)), "")
                 End If
             End If
         Catch ex As Exception

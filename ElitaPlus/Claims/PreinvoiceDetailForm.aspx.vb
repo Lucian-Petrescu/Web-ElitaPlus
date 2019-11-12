@@ -245,8 +245,8 @@ Partial Class PreinvoiceDetailForm
     Private Sub LoadTopLevelData()
         Me.State.BatchNumber = Me.State.preInvBO.BatchNumber 'Me.State.pageParameters.BatchNumber
         Me.State.Status = LookupListNew.GetDescriptionFromId(LookupListNew.LK_PRE_INVOICE_STATUS, Me.State.preInvBO.PreInvoiceStatusId) 'Me.State.pageParameters.Status
-        Me.State.CreatedDate = Me.State.preInvBO.CreatedDate.Value.ToString("dd-MMM-yyyy") 'Me.State.pageParameters.CreatedDate
-        Me.State.DisplayDate = Me.State.preInvBO.ScDisplayDate.Value.ToString("dd-MMM-yyyy") 'Me.State.pageParameters.DisplayDate
+        Me.State.CreatedDate = GetDateFormattedStringNullable(Me.State.preInvBO.CreatedDate.Value) 'Me.State.pageParameters.CreatedDate
+        Me.State.DisplayDate = GetDateFormattedStringNullable(Me.State.preInvBO.ScDisplayDate.Value) 'Me.State.pageParameters.DisplayDate
         Me.State.ClaimsCount = Me.State.preInvBO.TotalClaims.ToString() 'Me.State.pageParameters.ClaimsCount
         If (Not Me.State.preInvBO.TotalAmount Is Nothing) Then
             Me.State.TotalAmount = Me.State.preInvBO.TotalAmount.ToString() 'Me.State.pageParameters.TotalAmount

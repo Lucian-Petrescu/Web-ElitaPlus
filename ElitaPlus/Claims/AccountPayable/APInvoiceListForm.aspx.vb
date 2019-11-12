@@ -12,6 +12,7 @@ Partial Class APInvoiceListForm
 
     Public Const GRID_COL_INVOICE_NUMBER_CTRL As String = "btnInvoiceDetails"
     Public Const GRID_COL_SELECT_CTRL As String = "checkBoxSelected"
+    Public Const GRID_COL_SELECT_ALL_CTRL As String = "checkBoxAll"
 
     Public Const GRID_COL_CHECKBOX_IDX As Integer = 0
     Public Const GRID_COL_VENDOR_IDX As Integer = 1
@@ -188,6 +189,21 @@ Partial Class APInvoiceListForm
         'sysn buttons' visibility with the grid's visibility
         If State.IsGridVisible = True AndAlso not State.SearchDv Is nothing andalso State.SearchDv.Count > 0 Then
             divButtons.Visible = True
+
+            Dim chkbox As CheckBox
+            chkbox = CType(Grid.HeaderRow.FindControl(GRID_COL_SELECT_ALL_CTRL), CheckBox)
+            If (Not chkbox Is Nothing) Then
+                chkbox.InputAttributes("class") = "checkboxHeader"
+            End If
+
+            For each row As GridViewRow In Grid.Rows
+                If row.RowType = DataControlRowType.DataRow Then
+                    chkbox = CType(row.Cells(GRID_COL_CHECKBOX_IDX).FindControl(GRID_COL_SELECT_CTRL), CheckBox)
+                    If (Not chkbox Is Nothing) Then
+                        chkbox.InputAttributes("class") = "checkboxLine"
+                    End If                    
+                End If                               
+            Next
         Else
             divButtons.Visible = False
         End If
@@ -560,6 +576,8 @@ Partial Class APInvoiceListForm
                 ApInvoiceHeader.PayInvoices(strBatchNum, invoiceToBePaid, errCode, errMsg)
                 If errCode > 0 Then
                     MasterPage.MessageController.AddErrorAndShow(String.Format("{0} - {1}", errCode.ToString, errMsg), False)
+                Else
+                    MasterPage.MessageController.AddSuccess("CREATE_PYMT_BATCH_SUCCESS", True)
                 End If
                 RefreshSearchGrid()            
             End If            
@@ -605,13 +623,7 @@ Partial Class APInvoiceListForm
         Dim chkbox As CheckBox
                     
         Try
-            If e.Row.RowType = DataControlRowType.Header Then
-                If (Not e.Row.Cells(GRID_COL_CHECKBOX_IDX).FindControl("checkBoxAll") Is Nothing) Then
-                    chkbox = CType(e.Row.Cells(GRID_COL_CHECKBOX_IDX).FindControl("checkBoxAll"), CheckBox)
-                    chkbox.InputAttributes("class") = "checkboxHeader"
-                End If
-            End If
-
+            
             'If e.Row.RowType = DataControlRowType.DataRow OrElse (e.Row.RowType = DataControlRowType.Separator) Then
             If e.Row.RowType = DataControlRowType.DataRow Then
                 If (Not e.Row.Cells(GRID_COL_INVOICE_NUMBER_IDX).FindControl(GRID_COL_INVOICE_NUMBER_CTRL) Is Nothing) Then
@@ -621,12 +633,6 @@ Partial Class APInvoiceListForm
                     btnEditItem.Text = dvRow(ApInvoiceHeader.APInvoiceSearchDV.COL_INVOICE_NUMBER).ToString
                 End If
 
-                If (Not e.Row.Cells(GRID_COL_CHECKBOX_IDX).FindControl(GRID_COL_SELECT_CTRL) Is Nothing) Then
-                    chkbox = CType(e.Row.Cells(GRID_COL_CHECKBOX_IDX).FindControl(GRID_COL_SELECT_CTRL), CheckBox)
-                    'chkbox.Attributes("class") = "checkboxDetails"
-                    chkbox.InputAttributes("class") = "checkboxLine"
-                End If
-                
                 ' populate dates fields
                 If not dvRow(ApInvoiceHeader.APInvoiceSearchDV.COL_INVOICE_DATE) Is DBNull.Value Then
                     PopulateControlFromBOProperty(e.Row.Cells(GRID_COL_INVOICE_DATE_IDX), GetLongDateFormattedString(CType(dvRow(ApInvoiceHeader.APInvoiceSearchDV.COL_INVOICE_DATE), Date)))                

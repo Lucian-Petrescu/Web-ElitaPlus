@@ -199,7 +199,20 @@ Public Class Coverage
             Me.SetValue(CoverageDAL.COL_NAME_METHOD_OF_REPAIR_ID, value)
         End Set
     End Property
-
+    Public Property FulfillmentProfileCode() As string
+        Get
+            CheckDeleted()
+            If Row(CoverageDAL.COL_NAME_FULFILLMENT_PROFILE_CODE) Is DBNull.Value Then
+                Return Nothing
+            Else
+                Return CType(Row(CoverageDAL.COL_NAME_FULFILLMENT_PROFILE_CODE), string)
+            End If
+        End Get
+        Set(ByVal value As string)
+            CheckDeleted()
+            Me.SetValue(CoverageDAL.COL_NAME_FULFILLMENT_PROFILE_CODE, value)
+        End Set
+    End Property
     '<ValueMandatory("")> _
     Public Property ItemId() As Guid
         Get

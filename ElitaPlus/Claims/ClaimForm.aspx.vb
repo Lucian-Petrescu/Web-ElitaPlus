@@ -40,6 +40,7 @@ Partial Class ClaimForm
     Public Const SELECT_ACTION_COMMAND As String = "SelectAction"
     Public Const GRID_COL_SERVICE_CENTER_NAME_IDX As Integer = 1
     Public Const GRID_COL_AMOUNT_IDX As Integer = 2
+    Public Const GRID_COL_CREATED_DATETIME_IDX As Integer = 3
     Public Const GRID_COL_STATUS_CODE_IDX As Integer = 4
     Public params As New ArrayList
 
@@ -1904,21 +1905,23 @@ Partial Class ClaimForm
                 Me.State.FulfillmentDetailsResponse.LogisticStages IsNot Nothing AndAlso
                 Me.State.FulfillmentDetailsResponse.LogisticStages.Length > 0 Then
 
-                Dim logisticStage = Me.State.FulfillmentDetailsResponse.LogisticStages.Where(Function(item) item.Code = Codes.FULFILLMENT_FW_LOGISTIC_STAGE).First()
+                Dim logisticStage as SelectedLogisticStage = Me.State.FulfillmentDetailsResponse.LogisticStages.Where(Function(item) item.Code = Codes.FULFILLMENT_FW_LOGISTIC_STAGE).First()
 
                 If logisticStage IsNot Nothing AndAlso logisticStage.Code = Codes.FULFILLMENT_FW_LOGISTIC_STAGE Then
 
                     Me.PopulateControlFromBOProperty(Me.txtOptionDescription, logisticStage.OptionDescription)
-                    Me.PopulateControlFromBOProperty(Me.txtExpectedDeliveryDate, logisticStage.Shipping.ExpectedDeliveryDate)
-                    Me.PopulateControlFromBOProperty(Me.txtActualDeliveryDate, logisticStage.Shipping.ActualDeliveryDate)
-                    Me.PopulateControlFromBOProperty(Me.txtShippingDate, logisticStage.Shipping.ShippingDate)
-                    Me.PopulateControlFromBOProperty(Me.txtExpectedShippingDate, logisticStage.Shipping.ExpectedShippingDate)
+                    Me.PopulateControlFromBOProperty(Me.txtExpectedDeliveryDate, logisticStage.Shipping.ExpectedDeliveryDate, DATE_TIME_FORMAT)
+                    Me.PopulateControlFromBOProperty(Me.txtActualDeliveryDate, logisticStage.Shipping.ActualDeliveryDate, DATE_TIME_FORMAT)
+                    Me.PopulateControlFromBOProperty(Me.txtShippingDate, logisticStage.Shipping.ShippingDate, DATE_TIME_FORMAT)
+                    Me.PopulateControlFromBOProperty(Me.txtExpectedShippingDate, logisticStage.Shipping.ExpectedShippingDate, DATE_TIME_FORMAT)
                     Me.PopulateControlFromBOProperty(Me.txtTrackingNumber, logisticStage.Shipping.TrackingNumber)
 
                     Me.PopulateControlFromBOProperty(Me.txtAddress1, logisticStage.Address.Address1)
                     Me.PopulateControlFromBOProperty(Me.txtAddress2, logisticStage.Address.Address2)
                     Me.PopulateControlFromBOProperty(Me.txtAddress3, logisticStage.Address.Address3)
                     Me.PopulateControlFromBOProperty(Me.txtCity, logisticStage.Address.City)
+                    Me.PopulateControlFromBOProperty(Me.txtServiceCenterCode, $"{logisticStage.ServiceCenterCode}")
+                    Me.PopulateControlFromBOProperty(Me.txtServiceCenter, $"{logisticStage.ServiceCenterDescription}")
                     Me.PopulateControlFromBOProperty(Me.txtPostalCode, logisticStage.Address.PostalCode)
                     Me.PopulateControlFromBOProperty(Me.txtState, LookupListNew.GetDescriptionFromCode(
                                                      LookupListNew.DataView(LookupListNew.LK_REGIONS),
@@ -1934,7 +1937,6 @@ Partial Class ClaimForm
                     Dim storeTypeItem = storeTypeList.Where(
                         Function(item) item.ExtendedCode = logisticStage.HandlingStore.StoreTypeXcd).FirstOrDefault()
                     Me.PopulateControlFromBOProperty(Me.txtStoreType, storeTypeItem.Translation)
-
 
 
                     If logisticStage.Shipping.TrackingNumber IsNot Nothing AndAlso
@@ -3860,6 +3862,7 @@ Partial Class ClaimForm
                 ' Convert short status codes to full description with css
                 e.Row.Cells(Me.GRID_COL_STATUS_CODE_IDX).Text = LookupListNew.GetDescriptionFromCode(Codes.CLAIM_AUTHORIZATION_STATUS, claimAuth.ClaimAuthorizationStatusCode)
                 e.Row.Cells(Me.GRID_COL_AMOUNT_IDX).Text = Me.GetAmountFormattedString(claimAuth.AuthorizedAmount.Value)
+                e.Row.Cells(Me.GRID_COL_CREATED_DATETIME_IDX).Text = Me.GetLongDate12FormattedStringNullable(claimAuth.CreatedDateTime.Value)
             End If
         Catch ex As Exception
             Me.HandleErrors(ex, Me.MasterPage.MessageController)

@@ -49,7 +49,8 @@
         cov.cov_claim_limit,
         cov.liability_limit_per_incident,
         tax_type_xcd,
-        cn.dealer_markup_id
+        cn.dealer_markup_id,
+        cov.fulfillment_profile_code
             FROM elp_coverage cov, elp_dealer edealer, elp_product_code pc, 
                  elp_item item, elp_risk_type risk, elp_contract cn
             WHERE
@@ -198,7 +199,8 @@
         inuseflag = :inuseflag,
         cov_claim_limit = :cov_claim_limit,
         liability_limit_per_incident = :liability_limit_per_incident,
-        tax_type_xcd = :tax_type_xcd
+        tax_type_xcd = :tax_type_xcd,
+        fulfillment_profile_code = :fulfillment_profile_code
 			WHERE
 				coverage_id = :coverage_id
 		]]>
@@ -240,7 +242,8 @@
     inuseflag,
     cov_claim_limit,
     liability_limit_per_incident,
-    tax_type_xcd
+    tax_type_xcd,
+    fulfillment_profile_code
     )
     VALUES
     (
@@ -278,7 +281,8 @@
     :inuseflag,
     :cov_claim_limit,
     :liability_limit_per_incident,
-    :tax_type_xcd
+    :tax_type_xcd,
+    :fulfillment_profile_code
     )
   </INSERT>
 	<DELETE>

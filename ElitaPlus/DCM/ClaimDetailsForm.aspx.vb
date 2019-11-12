@@ -4,7 +4,10 @@
 #Region "Constants"
 
     Public Const ClaimCaseGridColCaseIdIdx As Integer = 0
+    Public Const GridColCaseOpenDateIdx As Integer = 2
     Public Const GridColCaseStatusCodeIdx As Integer = 3
+    Public Const GridColCaseCloseDateIdx As Integer = 4
+    Public Const GridColCreatedDateIdx As Integer = 3
 
     Public Const ClaimCaseGridColCaseNumberCtrl As String = "btnSelectCase"
     Public Const SelectActionCommand As String = "SelectAction"
@@ -131,7 +134,7 @@
             PopulateControlFromBOProperty(lblDealerNameValue, .Dealer.DealerName)
             PopulateControlFromBOProperty(lblCertificateNumberValue, .Certificate.CertNumber)
             PopulateControlFromBOProperty(lblClaimStatusValue, LookupListNew.GetClaimStatusFromCode(langId, .StatusCode))
-            PopulateControlFromBOProperty(lblDateOfLossValue, .LossDate.Value.ToString("dd-MMM-yyyy"))
+            PopulateControlFromBOProperty(lblDateOfLossValue, GetDateFormattedString(.LossDate.Value))
             PopulateControlFromBOProperty(lblSerialNumberImeiValue, .SerialNumber)
             PopulateControlFromBOProperty(lblWorkPhoneNumberValue, .MobileNumber)
 
@@ -188,6 +191,19 @@
             HandleErrors(ex, MasterPage.MessageController)
         End Try
     End Sub
+    Private Sub ClaimActionGrid_RowDataBound(ByVal sender As Object, ByVal e As GridViewRowEventArgs) Handles ClaimActionGrid.RowDataBound
+        Try
+            Dim dvRow As DataRowView = CType(e.Row.DataItem, DataRowView)
+            If (e.Row.RowType = DataControlRowType.DataRow) _
+               OrElse (e.Row.RowType = DataControlRowType.Separator) Then
+                If (String.IsNullOrWhiteSpace(dvRow(CaseAction.CaseActionDV.ColActionCreatedDate).ToString) = False) Then
+                    e.Row.Cells(GridColCreatedDateIdx).Text = GetLongDate12FormattedString(dvRow(CaseAction.CaseActionDV.ColActionCreatedDate))
+                End If
+            End If
+        Catch ex As Exception
+            HandleErrors(ex, MasterPage.MessageController)
+        End Try
+    End Sub
     Public Sub PopulateClaimCaseListGrid()
 
         Try
@@ -223,10 +239,16 @@
                     btnSelectCase.CommandName = SelectActionCommand
                     btnSelectCase.Text = dvRow(CaseBase.CaseSearchDV.ColCaseNumber).ToString
                 End If
-                If (dvRow(CaseBase.CaseSearchDV.ColCaseStatusCode).ToString = Codes.CASE_STATUS__OPEN) Then
+                If (String.IsNullOrWhiteSpace(dvRow(CaseBase.CaseSearchDv.ColCaseOpenDate).ToString) = False) Then
+                    e.Row.Cells(GridColCaseOpenDateIdx).Text = GetLongDate12FormattedString(dvRow(CaseBase.CaseSearchDv.ColCaseOpenDate))
+                End If
+                If (dvRow(CaseBase.CaseSearchDv.ColCaseStatusCode).ToString = Codes.CASE_STATUS__OPEN) Then
                     e.Row.Cells(GridColCaseStatusCodeIdx).CssClass = "StatActive"
                 Else
                     e.Row.Cells(GridColCaseStatusCodeIdx).CssClass = "StatInactive"
+                End If
+                If (String.IsNullOrWhiteSpace(dvRow(CaseBase.CaseSearchDv.ColCaseCloseDate).ToString) = False) Then
+                    e.Row.Cells(GridColCaseCloseDateIdx).Text = GetLongDate12FormattedString(dvRow(CaseBase.CaseSearchDv.ColCaseCloseDate))
                 End If
             End If
         Catch ex As Exception

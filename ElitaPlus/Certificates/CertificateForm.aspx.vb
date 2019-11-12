@@ -688,7 +688,7 @@ Namespace Certificates
             Public AddressFlag As Boolean = True
             'Authentication
             Public IsCallerAuthenticated As Boolean = False
-
+            Public blnMFGChanged As Boolean = False
 
 #End Region
 #Region "MyState Constructor"
@@ -849,6 +849,7 @@ Namespace Certificates
                 If (Not Me.NavController Is Nothing) AndAlso (Not Me.NavController.PrevNavState Is Nothing) AndAlso (Me.NavController.PrevNavState.Name = "CREATE_NEW_ENDORSEMENT") Then
                     Dim enParamObj As Object = Me.NavController.ParametersPassed
                     Dim enRetObj As Assurant.ElitaPlus.ElitaPlusWebApp.Certificates.EndorsementForm.ReturnType = CType(enParamObj, Assurant.ElitaPlus.ElitaPlusWebApp.Certificates.EndorsementForm.ReturnType)
+                    Me.State.blnMFGChanged = enRetObj.HasMFGCoverageChanged
                     If enRetObj.HasDataChanged Then
                         Me.State.MyBO = New Certificate(Me.State.MyBO.Id)
                     Else
@@ -1025,9 +1026,9 @@ Namespace Certificates
                         Me.State.ComputeCancellationDateEOfM = attValueComputeCancellation.Value
                     End If
 
+                    'PopulateCancelRequestReasonDropdown(Me.moCancelRequestReasonDrop)
+                    Me.State.CertCancelRequestId = Me.State.MyBO.getCertCancelRequestID
                     If Me.State.MyBO.getCancelationRequestFlag = YES Then
-                        'PopulateCancelRequestReasonDropdown(Me.moCancelRequestReasonDrop)
-                        Me.State.CertCancelRequestId = Me.State.MyBO.getCertCancelRequestID
                         If Not Me.State.CertCancelRequestId.Equals(Guid.Empty) Then
                             Me.State.certCancelRequestBO = New CertCancelRequest(Me.State.CertCancelRequestId)
                             If Me.State.CancelRulesForSFR = Codes.YESNO_Y AndAlso Me.State.certCancelRequestBO.Status = CERT_CAN_REQ_ACCEPTED Or Me.State.certCancelRequestBO.Status = CERT_CAN_REQ_DENIED Then
@@ -1036,6 +1037,10 @@ Namespace Certificates
                         Else
                             Me.State.certCancelRequestBO = New CertCancelRequest
                         End If
+                        populateCancelRequestInfoTab()
+                    ElseIf Not Me.State.CertCancelRequestId.Equals(Guid.Empty) Then
+                        Me.State.certCancelRequestBO = New CertCancelRequest(Me.State.CertCancelRequestId)
+                        ControlMgr.SetEnableControl(Me, btnCancelRequestEdit_WRITE, False)
                         populateCancelRequestInfoTab()
                     End If
 
@@ -1427,6 +1432,10 @@ Namespace Certificates
                         Else
                             ControlMgr.SetEnableControl(Me, btnCancelRequestEdit_WRITE, True)
                         End If
+                    ElseIf Me.State.certCancelRequestBO Is Nothing And Not Me.State.MyBO.getCertCancelRequestID.Equals(guid.Empty) Then
+                        Me.State.CertCancelRequestId = Me.State.MyBO.getCertCancelRequestID
+                        Me.State.certCancelRequestBO = New CertCancelRequest(Me.State.CertCancelRequestId)
+                        ControlMgr.SetVisibleControl(Me, btnCreateNewRequest_WRITE, False)
                     Else
                         If Me.State.CancelRulesForSFR = Codes.YESNO_Y Then
                             If Me.State.certCancelRequestBO.Status = CERT_CAN_REQ_ACCEPTED Then
@@ -1545,16 +1554,11 @@ Namespace Certificates
                     Me.PopulateRegisterItemsGrid()
                 End If
 
-                If Me.State.MyBO.getCancelationRequestFlag = YES Then
-                    If Me.State.MyBO.IsChildCertificate Then
-                        'ControlMgr.SetEnableTabStrip(Me, tsHoriz.Items(Me.CERT_CANCEL_REQUEST_INFO_TAB), False)
-                        EnableTab(CERT_CANCEL_REQUEST_INFO_TAB, False)
-                    Else
-                        'ControlMgr.SetEnableTabStrip(Me, tsHoriz.Items(Me.CERT_CANCEL_REQUEST_INFO_TAB), True)
-                        EnableTab(CERT_CANCEL_REQUEST_INFO_TAB, True)
-                    End If
+                If Me.State.MyBO.IsChildCertificate Then
+                    EnableTab(CERT_CANCEL_REQUEST_INFO_TAB, False)
+                ElseIf Me.State.MyBO.getCancelationRequestFlag = YES Or Not Me.State.CertCancelRequestId.Equals(Guid.Empty) Then
+                    EnableTab(CERT_CANCEL_REQUEST_INFO_TAB, True)
                 Else
-                    'ControlMgr.SetEnableTabStrip(Me, tsHoriz.Items(Me.CERT_CANCEL_REQUEST_INFO_TAB), False)
                     EnableTab(CERT_CANCEL_REQUEST_INFO_TAB, False)
                 End If
                 'AA REQ-910 new fields added BEGIN
@@ -1699,7 +1703,13 @@ Namespace Certificates
                     Case Me.CERT_ITEMS_INFO_TAB
                         Me.EnableDisableTabs(Me.State.IsEdit)
                     Case Me.CERT_CANCEL_REQUEST_INFO_TAB
-                        Me.EnableDisableTabs(Me.State.IsEdit)
+                        If Me.State.MyBO.getCancelationRequestFlag = YES Then
+                            Me.EnableDisableTabs(Me.State.IsEdit)
+                        ElseIf Not Me.State.CertCancelRequestId.Equals(Guid.Empty) Then
+                            Me.EnableDisableTabs(True)
+                        Else
+                            Me.EnableDisableTabs(Me.State.IsEdit)
+                        End If
                         Me.setCancelRequestTab()
                     Case Me.CERT_PREMIUM_INFO_TAB
                         Me.EnableDisableTabs(Me.State.IsEdit)
@@ -4312,6 +4322,10 @@ Namespace Certificates
                     End If
                 End If
 
+                If Not Me.State.CertCancelRequestId.Equals(Guid.Empty) And Not Me.State.MyBO.getCancelationRequestFlag = YES Then
+                    ControlMgr.SetEnableControl(Me, moUseExistingBankDetailsDrop, False)
+                End If
+
                 ClearCommentsControls()
             Catch ex As Exception
                 Me.HandleErrors(ex, Me.MasterPage.MessageController)
@@ -4348,13 +4362,13 @@ Namespace Certificates
                 If ((Not String.IsNullOrEmpty(.Finance_Tab_Amount)) AndAlso Convert.ToDecimal(.Finance_Tab_Amount) > 0) OrElse blnIncomingAmount Then
                     Me.PopulateControlFromBOProperty(Me.moCurrentOutstandingBalanceText, CType(.GetFinancialAmountprodcode, Decimal), Me.DECIMAL_FORMAT)
                     If blnIncomingAmount Then
-                        Me.PopulateControlFromBOProperty(Me.moOutstandingBalanceDueDateText, GetDateFormattedStringNullable(.OutstandingBalanceDueDate))
+                        Me.PopulateControlFromBOProperty(Me.moOutstandingBalanceDueDateText, GetDateFormattedStringNullable(Convert.ToDateTime(.OutstandingBalanceDueDate)))
                     Else
                         ControlMgr.SetVisibleControl(Me, moOutstandingBalanceDueDateLabel, False)
                         ControlMgr.SetVisibleControl(Me, moOutstandingBalanceDueDateText, False)
                     End If
 
-                    Me.PopulateControlFromBOProperty(Me.moFinanceDateText, GetDateFormattedStringNullable(.FinanceDate))
+                    Me.PopulateControlFromBOProperty(Me.moOutstandingBalanceDueDateText, GetDateFormattedStringNullable(Convert.ToDateTime(.FinanceDate)))
                     Me.PopulateControlFromBOProperty(Me.moDownPaymentText, .DownPayment, Me.DECIMAL_FORMAT)
                     Me.PopulateControlFromBOProperty(Me.moAdvancePaymentText, .AdvancePayment, Me.DECIMAL_FORMAT)
                     Me.PopulateControlFromBOProperty(Me.moUpgradeFixedTermText, .UpgradeFixedTerm, Me.DECIMAL_FORMAT)
@@ -5269,7 +5283,7 @@ Namespace Certificates
             Dim Row As DataRowView
 
             ' Check if the Coverages Data is already fetched from the DB, else get the data from the DB 
-            If (Me.State.CoveragesearchDV Is Nothing) Then
+            If (Me.State.CoveragesearchDV Is Nothing) Or Me.State.blnMFGChanged Then
                 Me.State.CoveragesearchDV = CertItemCoverage.GetCurrentProductCodeCoverages(Me.State.MyBO.Id)
             End If
 
@@ -6569,9 +6583,15 @@ Namespace Certificates
                     e.Item.Cells(Me.GRID_COL_ENDORSE_TYPE).Text = dvRow(CertEndorse.EndorseSearchDV.COL_ENDORSEMENT_TYPE).ToString
                     e.Item.Cells(Me.GRID_COL_ENDORSE_ENDORSEMENT_REASON).Text = dvRow(CertEndorse.EndorseSearchDV.COL_ENDORSEMENT_REASON).ToString
 
-                    e.Item.Cells(Me.GRID_COL_ENDORSE_EFFECTIVE_DATE).Text = dvRow(CertEndorse.EndorseSearchDV.COL_EFFECTIVE_DATE).ToString
+                    If (String.IsNullOrWhiteSpace(dvRow(CertEndorse.EndorseSearchDV.COL_EFFECTIVE_DATE).ToString) = False) Then
+                        Dim effectiveDate As Date = CType(dvRow(CertEndorse.EndorseSearchDV.COL_EFFECTIVE_DATE), Date)
+                        e.Item.Cells(Me.GRID_COL_ENDORSE_EFFECTIVE_DATE).Text = GetLongDateFormattedString(effectiveDate)
+                    End If
+                    If (String.IsNullOrWhiteSpace(dvRow(CertEndorse.EndorseSearchDV.COL_EXPIRATION_DATE).ToString) = False) Then
+                        Dim expirationDate As Date = CType(dvRow(CertEndorse.EndorseSearchDV.COL_EXPIRATION_DATE), Date)
+                        e.Item.Cells(Me.GRID_COL_ENDORSE_EXPIRATION_DATE).Text = GetLongDateFormattedString(expirationDate)
+                    End If
 
-                    e.Item.Cells(Me.GRID_COL_ENDORSE_EXPIRATION_DATE).Text = dvRow(CertEndorse.EndorseSearchDV.COL_EXPIRATION_DATE).ToString
                 End If
             Catch ex As Exception
                 Me.HandleErrors(ex, MasterPage.MessageController)
@@ -7895,14 +7915,14 @@ Namespace Certificates
                     strProcessedDate = strProcessedDate.Replace("&nbsp;", "")
                     If String.IsNullOrEmpty(strProcessedDate) = False Then
                         Dim tempProcessedDate = Convert.ToString(e.Row.Cells(CertHistoryGridColProcessedDateIdx).Text.Trim())
-                        Dim formattedProcessedDate = GetDateFormattedStringNullable(tempProcessedDate)
+                        Dim formattedProcessedDate = GetDateFormattedString(tempProcessedDate)
                         e.Row.Cells(CertHistoryGridColProcessedDateIdx).Text = Convert.ToString(formattedProcessedDate)
                     End If
                     Dim strStatusChangeDate As String = Convert.ToString(e.Row.Cells(CertHistoryGridColStatusChangeDateIdx).Text)
                     strStatusChangeDate = strStatusChangeDate.Replace("&nbsp;", "")
                     If String.IsNullOrEmpty(strStatusChangeDate) = False Then
                         Dim tempStatusChangeDate = Convert.ToString(e.Row.Cells(CertHistoryGridColStatusChangeDateIdx).Text.Trim())
-                        Dim formattedStatusChangeDate = GetDateFormattedStringNullable(tempStatusChangeDate)
+                        Dim formattedStatusChangeDate = GetDateFormattedString(tempStatusChangeDate)
                         e.Row.Cells(CertHistoryGridColStatusChangeDateIdx).Text = Convert.ToString(formattedStatusChangeDate)
                     End If
                 End If

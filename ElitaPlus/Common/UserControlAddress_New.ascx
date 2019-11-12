@@ -24,12 +24,12 @@
         <asp:TextBox ID="moAddress2Text" TabIndex="2" runat="server" SkinID="LargeTextBox" TextMode="MultiLine" Rows="2" Style="white-space: pre-wrap; width: 540px;" Columns="50"></asp:TextBox>
     </td>
     <td nowrap="nowrap" align="right">
-        <asp:Label ID="moRegionLabel" runat="server" Width="120px">State_Province</asp:Label>
+        <asp:Label ID="moRegionLabel" runat="server">State_Province</asp:Label>
     </td>
     <td nowrap="nowrap">
         <asp:TextBox ID="moRegionText" runat="server" ReadOnly="True" TabIndex="6" SkinID="SmallTextBox"></asp:TextBox>
         <asp:DropDownList ID="moRegionDrop_WRITE" TabIndex="7" runat="server">
-        </asp:DropDownList>
+        </asp:DropDownList>        
     </td>
 </tr>
 <tr>

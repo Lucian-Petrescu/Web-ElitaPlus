@@ -244,6 +244,16 @@ Public Class CertItemCoverage
         End Get
     End Property
 
+    Public Property ModifiedById() As String
+        Get
+            If Row(DALBase.COL_NAME_MODIFIED_BY) Is DBNull.Value Then Return Nothing
+            Return CType(Row(DALBase.COL_NAME_MODIFIED_BY), String)
+        End Get
+        Set(ByVal Value As String)
+            CheckDeleted()
+            Me.SetValue(CertItemCoverageDAL.COL_NAME_MODIFIED_BY, Value)
+        End Set
+    End Property
 
     Public Property OriginalRegionId() As Guid
         Get
@@ -1210,6 +1220,15 @@ Public Class CertItemCoverage
         End If
         Return New ItemCovList(parent)
     End Function
+
+    Public Shared Function GetItemCovListWithChildOrParentForCertificate(ByVal certId As Guid, ByVal parent As BusinessObjectBase) As ItemCovList
+        If parent.Dataset.Tables.IndexOf(CertItemCoverageDAL.TABLE_NAME) < 0 Then
+            Dim dal As New CertItemCoverageDAL
+            dal.LoadAllItemCoveragesWithChildOrParentForCertificate(certId, parent.Dataset)
+        End If
+        Return New ItemCovList(parent)
+    End Function
+
 
     Public Shared Function LoadAllItemCoveragesForGalaxyCertificate(ByVal certId As Guid) As DataSet
         Dim compId As Guid = ElitaPlusIdentity.Current.ActiveUser.CompanyId
