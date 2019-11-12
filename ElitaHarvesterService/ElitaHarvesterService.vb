@@ -27,7 +27,8 @@ Public Class ElitaHarvesterService
     Protected Overrides Sub OnStart(ByVal args() As String)
         Try
             'Debugger.Launch()
-            Logger.AddInfo("ElitaHarvetserService has been started successfully")
+            Logger.Initialize("ElitaHarvesterService")
+            Logger.AddInfo("ElitaHarvesterService has been started successfully")
             _threadingManager.InitializeThreads()
             WorkersManager.Current.Logger = New LoggerAdapter()
             WorkersManager.Current.Start()

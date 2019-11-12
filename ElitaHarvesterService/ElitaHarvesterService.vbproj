@@ -86,10 +86,19 @@
       <HintPath>..\packages\Elita.Assurant.Common.Types.2.0.0\lib\net462\Assurant.Common.Types.dll</HintPath>
       <Private>True</Private>
     </Reference>
+    <Reference Include="Assurant.Elita.Base.DataAccess, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Assurant.Elita.Base.DataAccess.5.0.4\lib\net462\Assurant.Elita.Base.DataAccess.dll</HintPath>
+    </Reference>
+    <Reference Include="Assurant.Elita.BaseDataElements, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Assurant.Elita.Base.DataElements.1.0.0\lib\net462\Assurant.Elita.BaseDataElements.dll</HintPath>
+    </Reference>
     <Reference Include="Assurant.Elita.Configuration, Version=4.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\packages\Assurant.Elita.Configuration.4.0.2\lib\net462\Assurant.Elita.Configuration.dll</HintPath>
       <Private>True</Private>
+    </Reference>
+    <Reference Include="Assurant.Elita.Premitives, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Assurant.Elita.Premitives.1.2.1\lib\netstandard2.0\Assurant.Elita.Premitives.dll</HintPath>
     </Reference>
     <Reference Include="Assurant.Elita.WorkerFramework, Version=2.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\Assurant.Elita.WorkerFramework.2.0.0\lib\net462\Assurant.Elita.WorkerFramework.dll</HintPath>
