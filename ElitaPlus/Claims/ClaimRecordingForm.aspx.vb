@@ -2903,7 +2903,7 @@ Public Class ClaimRecordingForm
                 moServiceCenterCtrl.Make = State.ClaimedDevice.Manufacturer
                 moServiceCenterCtrl.RiskTypeEnglish = State.ClaimBo.RiskType
                 moServiceCenterCtrl.MethodOfRepairXcd = State.FulfillmentOption.StandardCode
-
+                moServiceCenterCtrl.HostMessageController = MasterPage.MessageController
                 moServiceCenterCtrl.InitializeComponent()
 
                 Dim lblServiceCenterSelected As Label = CType(e.Row.FindControl(GridLoServiceCenterSelectedLblCtrl), Label)
@@ -2987,6 +2987,7 @@ Public Class ClaimRecordingForm
         userControl.NewCurrentPageIndexFunc = Function(grid As System.Web.UI.WebControls.GridView, ByVal intRecordCount As Integer, ByVal intNewPageSize As Integer)
                                                   Return NewCurrentPageIndex(grid, intRecordCount, intNewPageSize)
                                               End Function
+        userControl.HostMessageController = MasterPage.MessageController
     End Sub
 
     Private Sub LogisticServiceCenterSelected(selected As ServiceCenterSelected)
