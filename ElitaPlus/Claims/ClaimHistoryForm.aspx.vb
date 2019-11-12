@@ -249,7 +249,7 @@ Partial Public Class ClaimHistoryForm
             btnEditItem.CommandName = SELECT_ACTION_COMMAND
             Dim date1 As Date
             date1 = CType(dvRow("CREATED_DATE"), Date)
-            btnEditItem.Text = date1.ToString("dd-MMM-yyyy  HH:mm:ss", CultureInfo.CurrentCulture)
+            btnEditItem.Text = GetLongDate12FormattedString(date1)
         End If
 
         If (e.Item.ItemType <> ListItemType.Header And e.Item.ItemType <> ListItemType.Footer) Then
@@ -294,22 +294,22 @@ Partial Public Class ClaimHistoryForm
 
                 If IsDate(e.Item.Cells(GRID_COL_CLAIM_CLOSED_DATE_OLD).Text.ToString.Replace("&nbsp;", " ").ToString.Trim()) Then
                     date1 = CDate(e.Item.Cells(GRID_COL_CLAIM_CLOSED_DATE_OLD).Text.ToString.Replace("&nbsp;", " "))
-                    TextboxClaimClosedDateOld.Text = date1.ToString("dd-MMM-yyyy", CultureInfo.CurrentCulture)
+                    TextboxClaimClosedDateOld.Text = GetDateFormattedStringNullable(date1)
                 End If
 
                 If IsDate(e.Item.Cells(GRID_COL_CLAIM_CLOSED_DATE_NEW).Text.ToString.Replace("&nbsp;", " ").ToString.Trim()) Then
                     date1 = CDate(e.Item.Cells(GRID_COL_CLAIM_CLOSED_DATE_NEW).Text.ToString.Replace("&nbsp;", " "))
-                    TextboxClaimClosedDateNew.Text = date1.ToString("dd-MMM-yyyy", CultureInfo.CurrentCulture)
+                    TextboxClaimClosedDateNew.Text = GetDateFormattedStringNullable(date1)
                 End If
 
                 If IsDate(e.Item.Cells(GRID_COL_REPAIR_DATE_OLD).Text.ToString.Replace("&nbsp;", " ").ToString.Trim()) Then
                     date1 = CDate(e.Item.Cells(GRID_COL_REPAIR_DATE_OLD).Text.ToString.Replace("&nbsp;", " "))
-                    TextboxRepairDateOld.Text = date1.ToString("dd-MMM-yyyy", CultureInfo.CurrentCulture)
+                    TextboxRepairDateOld.Text = GetDateFormattedStringNullable(date1)
                 End If
 
                 If IsDate(e.Item.Cells(GRID_COL_REPAIR_DATE_NEW).Text.ToString.Replace("&nbsp;", " ").ToString.Trim()) Then
                     date1 = CDate(e.Item.Cells(GRID_COL_REPAIR_DATE_NEW).Text.ToString.Replace("&nbsp;", " "))
-                    TextboxRepairDateNew.Text = date1.ToString("dd-MMM-yyyy", CultureInfo.CurrentCulture)
+                    TextboxRepairDateNew.Text = GetDateFormattedStringNullable(date1)
                 End If
 
                 TextboxLiabilityLimitOld.Text = e.Item.Cells(GRID_COL_LIABILITY_LIMIT_OLD).Text.ToString.Replace("&nbsp;", " ").Trim
@@ -331,7 +331,7 @@ Partial Public Class ClaimHistoryForm
 
                 If IsDate(e.Item.Cells(GRID_COL_CLAIM_MODIFIED_DATE_NEW).Text.ToString.Replace("&nbsp;", " ").ToString.Trim()) Then
                     date1 = CDate(e.Item.Cells(GRID_COL_CLAIM_MODIFIED_DATE_NEW).Text.ToString.Replace("&nbsp;", " "))
-                    TextboxClaimModifyDateNew.Text = date1.ToString("dd-MMM-yyyy", CultureInfo.CurrentCulture)
+                    TextboxClaimModifyDateNew.Text = GetDateFormattedStringNullable(date1)
                 End If
 
                 TextboxClaimModifyByNew.Text = e.Item.Cells(GRID_COL_CLAIM_MODIFIED_BY_NEW).Text.ToString.Replace("&nbsp;", " ")
@@ -339,7 +339,7 @@ Partial Public Class ClaimHistoryForm
 
                 If IsDate(e.Item.Cells(GRID_COL_CLAIM_MODIFIED_DATE_OLD).Text.ToString.Replace("&nbsp;", " ").ToString.Trim()) Then
                     date1 = CDate(e.Item.Cells(GRID_COL_CLAIM_MODIFIED_DATE_OLD).Text.ToString.Replace("&nbsp;", " "))
-                    TextboxClaimModifyDateOld.Text = date1.ToString("dd-MMM-yyyy", CultureInfo.CurrentCulture)
+                    TextboxClaimModifyDateOld.Text = GetDateFormattedStringNullable(date1)
                 End If
 
                 TextboxDeductibleNew.Text = e.Item.Cells(GRID_COL_DEDUCTIBLE_NEW).Text.ToString.Replace("&nbsp;", " ").Trim

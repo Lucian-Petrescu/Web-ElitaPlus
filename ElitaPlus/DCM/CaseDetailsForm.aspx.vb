@@ -7,8 +7,11 @@
     Private Const OneSpace As String = " "
     Public Const CaseInteractionGridColInteractionDateIdx As Integer = 9
     Public Const CaseQuestionAnswerGridColCreationDateIdx As Integer = 3
-    Public Const CaseDeniedReasonsGridGridColCreatedDateIdx As Integer = 2
+    Public Const CaseDeniedReasonsGridColCreatedDateIdx As Integer = 2
     Public Const CaseActionGridColCreationDateIdx As Integer = 3
+    Public Const CaseQuestionAnswerGridColAnswerIdx As Integer = 2
+    Public Const CaseNotesGridColCreatedDateIdx As Integer = 1
+
 #End Region
 #Region "Variables"
     Private _listDisabledTabs As New Collections.Generic.List(Of Integer)
@@ -352,6 +355,12 @@
                     Dim formattedCreationDate = GetDateFormattedString(tempCreationDate)
                     e.Row.Cells(CaseQuestionAnswerGridColCreationDateIdx).Text = Convert.ToString(formattedCreationDate)
                 End If
+                Dim answerValue = e.Row.Cells(CaseQuestionAnswerGridColAnswerIdx).Text
+                If String.IsNullOrWhiteSpace(answerValue) = False Then
+                    If (DateHelper.CheckDateAnswer(answerValue) = True) Then
+                        e.Row.Cells(CaseQuestionAnswerGridColAnswerIdx).Text = GetDateFormattedStringNullable(e.Row.Cells(CaseQuestionAnswerGridColAnswerIdx).Text)
+                    End If
+                End If
             End If
         Catch ex As Exception
             HandleErrors(ex, MasterPage.MessageController)
@@ -391,12 +400,12 @@
         Try
             If (e.Row.RowType = DataControlRowType.DataRow) _
                 OrElse (e.Row.RowType = DataControlRowType.Separator) Then
-                Dim strCreatedDate As String = Convert.ToString(e.Row.Cells(CaseDeniedReasonsGridGridColCreatedDateIdx).Text)
+                Dim strCreatedDate As String = Convert.ToString(e.Row.Cells(CaseDeniedReasonsGridColCreatedDateIdx).Text)
                 strCreatedDate = strCreatedDate.Replace("&nbsp;", "")
                 If String.IsNullOrWhiteSpace(strCreatedDate) = False Then
-                    Dim tempCreatedDate = Convert.ToDateTime(e.Row.Cells(CaseDeniedReasonsGridGridColCreatedDateIdx).Text.Trim())
+                    Dim tempCreatedDate = Convert.ToDateTime(e.Row.Cells(CaseDeniedReasonsGridColCreatedDateIdx).Text.Trim())
                     Dim formattedCreatedDate = GetDateFormattedString(tempCreatedDate)
-                    e.Row.Cells(CaseDeniedReasonsGridGridColCreatedDateIdx).Text = Convert.ToString(formattedCreatedDate)
+                    e.Row.Cells(CaseDeniedReasonsGridColCreatedDateIdx).Text = Convert.ToString(formattedCreatedDate)
                 End If
             End If
         Catch ex As Exception
@@ -430,6 +439,22 @@
                 ControlMgr.SetVisibleControl(Me, GridViewCaseNotes, False)
                 LabelCaseNotesRecordFound.Visible = False
             End If
+            HandleErrors(ex, MasterPage.MessageController)
+        End Try
+    End Sub
+    Private Sub GridViewCaseNotes_RowDataBound(ByVal sender As Object, ByVal e As GridViewRowEventArgs) Handles GridViewCaseNotes.RowDataBound
+        Try
+            If (e.Row.RowType = DataControlRowType.DataRow) _
+                OrElse (e.Row.RowType = DataControlRowType.Separator) Then
+                Dim strCreatedDate As String = Convert.ToString(e.Row.Cells(CaseNotesGridColCreatedDateIdx).Text)
+                strCreatedDate = strCreatedDate.Replace("&nbsp;", "")
+                If String.IsNullOrWhiteSpace(strCreatedDate) = False Then
+                    Dim tempCreatedDate = Convert.ToDateTime(e.Row.Cells(CaseNotesGridColCreatedDateIdx).Text.Trim())
+                    Dim formattedCreatedDate = GetDateFormattedString(tempCreatedDate)
+                    e.Row.Cells(CaseNotesGridColCreatedDateIdx).Text = Convert.ToString(formattedCreatedDate)
+                End If
+            End If
+        Catch ex As Exception
             HandleErrors(ex, MasterPage.MessageController)
         End Try
     End Sub

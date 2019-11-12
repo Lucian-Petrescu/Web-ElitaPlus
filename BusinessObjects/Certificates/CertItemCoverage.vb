@@ -244,6 +244,16 @@ Public Class CertItemCoverage
         End Get
     End Property
 
+    Public Property ModifiedById() As String
+        Get
+            If Row(DALBase.COL_NAME_MODIFIED_BY) Is DBNull.Value Then Return Nothing
+            Return CType(Row(DALBase.COL_NAME_MODIFIED_BY), String)
+        End Get
+        Set(ByVal Value As String)
+            CheckDeleted()
+            Me.SetValue(CertItemCoverageDAL.COL_NAME_MODIFIED_BY, Value)
+        End Set
+    End Property
 
     Public Property OriginalRegionId() As Guid
         Get

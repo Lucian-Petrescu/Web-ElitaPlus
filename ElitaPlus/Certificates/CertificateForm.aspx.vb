@@ -688,7 +688,7 @@ Namespace Certificates
             Public AddressFlag As Boolean = True
             'Authentication
             Public IsCallerAuthenticated As Boolean = False
-
+            Public blnMFGChanged As Boolean = False
 
 #End Region
 #Region "MyState Constructor"
@@ -849,6 +849,7 @@ Namespace Certificates
                 If (Not Me.NavController Is Nothing) AndAlso (Not Me.NavController.PrevNavState Is Nothing) AndAlso (Me.NavController.PrevNavState.Name = "CREATE_NEW_ENDORSEMENT") Then
                     Dim enParamObj As Object = Me.NavController.ParametersPassed
                     Dim enRetObj As Assurant.ElitaPlus.ElitaPlusWebApp.Certificates.EndorsementForm.ReturnType = CType(enParamObj, Assurant.ElitaPlus.ElitaPlusWebApp.Certificates.EndorsementForm.ReturnType)
+                    Me.State.blnMFGChanged = enRetObj.HasMFGCoverageChanged
                     If enRetObj.HasDataChanged Then
                         Me.State.MyBO = New Certificate(Me.State.MyBO.Id)
                     Else
@@ -5282,7 +5283,7 @@ Namespace Certificates
             Dim Row As DataRowView
 
             ' Check if the Coverages Data is already fetched from the DB, else get the data from the DB 
-            If (Me.State.CoveragesearchDV Is Nothing) Then
+            If (Me.State.CoveragesearchDV Is Nothing) Or Me.State.blnMFGChanged Then
                 Me.State.CoveragesearchDV = CertItemCoverage.GetCurrentProductCodeCoverages(Me.State.MyBO.Id)
             End If
 
@@ -6582,9 +6583,15 @@ Namespace Certificates
                     e.Item.Cells(Me.GRID_COL_ENDORSE_TYPE).Text = dvRow(CertEndorse.EndorseSearchDV.COL_ENDORSEMENT_TYPE).ToString
                     e.Item.Cells(Me.GRID_COL_ENDORSE_ENDORSEMENT_REASON).Text = dvRow(CertEndorse.EndorseSearchDV.COL_ENDORSEMENT_REASON).ToString
 
-                    e.Item.Cells(Me.GRID_COL_ENDORSE_EFFECTIVE_DATE).Text = dvRow(CertEndorse.EndorseSearchDV.COL_EFFECTIVE_DATE).ToString
+                    If (String.IsNullOrWhiteSpace(dvRow(CertEndorse.EndorseSearchDV.COL_EFFECTIVE_DATE).ToString) = False) Then
+                        Dim effectiveDate As Date = CType(dvRow(CertEndorse.EndorseSearchDV.COL_EFFECTIVE_DATE), Date)
+                        e.Item.Cells(Me.GRID_COL_ENDORSE_EFFECTIVE_DATE).Text = GetLongDateFormattedString(effectiveDate)
+                    End If
+                    If (String.IsNullOrWhiteSpace(dvRow(CertEndorse.EndorseSearchDV.COL_EXPIRATION_DATE).ToString) = False) Then
+                        Dim expirationDate As Date = CType(dvRow(CertEndorse.EndorseSearchDV.COL_EXPIRATION_DATE), Date)
+                        e.Item.Cells(Me.GRID_COL_ENDORSE_EXPIRATION_DATE).Text = GetLongDateFormattedString(expirationDate)
+                    End If
 
-                    e.Item.Cells(Me.GRID_COL_ENDORSE_EXPIRATION_DATE).Text = dvRow(CertEndorse.EndorseSearchDV.COL_EXPIRATION_DATE).ToString
                 End If
             Catch ex As Exception
                 Me.HandleErrors(ex, MasterPage.MessageController)
@@ -7908,14 +7915,14 @@ Namespace Certificates
                     strProcessedDate = strProcessedDate.Replace("&nbsp;", "")
                     If String.IsNullOrEmpty(strProcessedDate) = False Then
                         Dim tempProcessedDate = Convert.ToString(e.Row.Cells(CertHistoryGridColProcessedDateIdx).Text.Trim())
-                        Dim formattedProcessedDate = GetDateFormattedStringNullable(tempProcessedDate)
+                        Dim formattedProcessedDate = GetDateFormattedString(tempProcessedDate)
                         e.Row.Cells(CertHistoryGridColProcessedDateIdx).Text = Convert.ToString(formattedProcessedDate)
                     End If
                     Dim strStatusChangeDate As String = Convert.ToString(e.Row.Cells(CertHistoryGridColStatusChangeDateIdx).Text)
                     strStatusChangeDate = strStatusChangeDate.Replace("&nbsp;", "")
                     If String.IsNullOrEmpty(strStatusChangeDate) = False Then
                         Dim tempStatusChangeDate = Convert.ToString(e.Row.Cells(CertHistoryGridColStatusChangeDateIdx).Text.Trim())
-                        Dim formattedStatusChangeDate = GetDateFormattedStringNullable(tempStatusChangeDate)
+                        Dim formattedStatusChangeDate = GetDateFormattedString(tempStatusChangeDate)
                         e.Row.Cells(CertHistoryGridColStatusChangeDateIdx).Text = Convert.ToString(formattedStatusChangeDate)
                     End If
                 End If

@@ -332,8 +332,8 @@ Partial Class Questionform
 
             Me.PopulateControlFromBOProperty(txtDescription, .Description)
             Me.PopulateControlFromBOProperty(txtCode, .Code)
-            Me.PopulateControlFromBOProperty(txtEffective, .Effective)
-            Me.PopulateControlFromBOProperty(txtExpirationDate, .Expiration)
+            Me.PopulateControlFromBOProperty(txtEffective, .Effective, "dd-MMM-yyyy HH:mm:ss tt")
+            Me.PopulateControlFromBOProperty(txtExpirationDate, .Expiration, "dd-MMM-yyyy HH:mm:ss tt")
             Me.PopulateControlFromBOProperty(txtCustomerMessage, .CustomerMessage)
             Me.PopulateControlFromBOProperty(txtSearchTags, .SearchTags)
 

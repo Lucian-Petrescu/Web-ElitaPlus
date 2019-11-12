@@ -406,30 +406,28 @@ Partial Class CommentForm
                                                                                 Function(ByVal lc As LegacyBridgeServiceClient)
                                                                                     Return lc.BenefitClaimPreCheck(GuidControl.ByteArrayToGuid(hasBenefit(0)("case_Id")).ToString())
                                                                                 End Function)
-                            Catch ex As Exception
-                                Log(ex)
-                                Me.State.MyBO.Claim.Status = BasicClaimStatus.Pending
-                                Dim issueId As Guid = LookupListNew.GetIssueTypeIdFromCode(LookupListNew.LK_ISSUE_TYPE_CODE_LIST, "PRECK")
-                                Dim newClaimIssue As ClaimIssue = CType(Me.State.MyBO.Claim.ClaimIssuesList.GetNewChild, BusinessObjectsNew.ClaimIssue)
-                                newClaimIssue.SaveNewIssue(Me.State.MyBO.Claim.Id, issueId, Me.State.MyBO.Claim.Certificate.Id, True)
-                            End Try
-
-                            If (Not benefitCheckResponse Is Nothing) Then
-                                Me.State.MyBO.Claim.Status = If(benefitCheckResponse.StatusDecision = LegacyBridgeStatusDecisionEnum.Approve, BasicClaimStatus.Active, BasicClaimStatus.Pending)
-                                If (benefitCheckResponse.StatusDecision = LegacyBridgeStatusDecisionEnum.Deny) Then
-                                    Dim issueId As Guid = LookupListNew.GetIssueTypeIdFromCode(LookupListNew.LK_ISSUE_TYPE_CODE_LIST, "PRECKFAIL")
+                                If (Not benefitCheckResponse Is Nothing) Then
+                                    Me.State.MyBO.Claim.Status = If(benefitCheckResponse.StatusDecision = LegacyBridgeStatusDecisionEnum.Approve, BasicClaimStatus.Active, BasicClaimStatus.Pending)
+                                    If (benefitCheckResponse.StatusDecision = LegacyBridgeStatusDecisionEnum.Deny) Then
+                                        Dim issueId As Guid = LookupListNew.GetIssueTypeIdFromCode(LookupListNew.LK_ISSUES, "PRECKFAIL")
+                                        Dim newClaimIssue As ClaimIssue = CType(Me.State.MyBO.Claim.ClaimIssuesList.GetNewChild, BusinessObjectsNew.ClaimIssue)
+                                        newClaimIssue.SaveNewIssue(Me.State.MyBO.Claim.Id, issueId, Me.State.MyBO.Claim.Certificate.Id, True)
+                                    End If
+                                Else
+                                    Me.State.MyBO.Claim.Status = BasicClaimStatus.Pending
+                                    Dim issueId As Guid = LookupListNew.GetIssueTypeIdFromCode(LookupListNew.LK_ISSUES, "PRECK")
                                     Dim newClaimIssue As ClaimIssue = CType(Me.State.MyBO.Claim.ClaimIssuesList.GetNewChild, BusinessObjectsNew.ClaimIssue)
                                     newClaimIssue.SaveNewIssue(Me.State.MyBO.Claim.Id, issueId, Me.State.MyBO.Claim.Certificate.Id, True)
                                 End If
-                            Else
+
+                            Catch ex As Exception
+                                Log(ex)
                                 Me.State.MyBO.Claim.Status = BasicClaimStatus.Pending
-                                Dim issueId As Guid = LookupListNew.GetIssueTypeIdFromCode(LookupListNew.LK_ISSUE_TYPE_CODE_LIST, "PRECK")
+                                Dim issueId As Guid = LookupListNew.GetIssueTypeIdFromCode(LookupListNew.LK_ISSUES, "PRECK")
                                 Dim newClaimIssue As ClaimIssue = CType(Me.State.MyBO.Claim.ClaimIssuesList.GetNewChild, BusinessObjectsNew.ClaimIssue)
                                 newClaimIssue.SaveNewIssue(Me.State.MyBO.Claim.Id, issueId, Me.State.MyBO.Claim.Certificate.Id, True)
-                            End If
-
+                            End Try
                         End If
-
                     End If
                 End If
             End If
@@ -508,7 +506,7 @@ Partial Class CommentForm
                 moProtectionEvtDtl.DealerName = newClaim.DealerName
                 moProtectionEvtDtl.CallerName = newClaim.CallerName
                 moProtectionEvtDtl.ClaimNumber = newClaim.ClaimNumber
-                moProtectionEvtDtl.DateOfLoss = newClaim.LossDate.Value.ToString("dd-MMM-yyyy")
+                moProtectionEvtDtl.DateOfLoss = GetDateFormattedStringNullable(newClaim.LossDate.Value)
                 moProtectionEvtDtl.ProtectionStatus = LookupListNew.GetClaimStatusFromCode(langId, oCerticate.StatusCode)
 
                 If (oCerticate.StatusCode = Codes.CLAIM_STATUS__ACTIVE) Then

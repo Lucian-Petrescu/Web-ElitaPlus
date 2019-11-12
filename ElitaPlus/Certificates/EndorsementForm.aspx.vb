@@ -122,10 +122,12 @@ Namespace Certificates
             Public LastOperation As DetailPageCommand
             Public EditingBo As Certificate
             Public HasDataChanged As Boolean
-            Public Sub New(ByVal LastOp As DetailPageCommand, ByVal curEditingBo As Certificate, ByVal hasDataChanged As Boolean)
+            Public HasMFGCoverageChanged As Boolean
+            Public Sub New(ByVal LastOp As DetailPageCommand, ByVal curEditingBo As Certificate, ByVal hasDataChanged As Boolean, Optional hasMFGCoverageChanged As Boolean = False)
                 Me.LastOperation = LastOp
                 Me.EditingBo = curEditingBo
                 Me.HasDataChanged = hasDataChanged
+                Me.HasMFGCoverageChanged = hasMFGCoverageChanged
             End Sub
         End Class
 #End Region
@@ -148,6 +150,7 @@ Namespace Certificates
             Public ActionInProgress As DetailPageCommand = DetailPageCommand.Nothing_
             Public LastErrMsg As String
             Public boChanged As Boolean = False
+            Public blnMFGChanged As Boolean = False
             Public _IsEdit As Boolean
             Public _moCertificate As Certificate
             Public companyCode As String
@@ -527,7 +530,7 @@ Namespace Certificates
         Protected Sub PopulateFormFromBOs()
 
             Try
-                Me.GetDefaultTerm()
+                Me.GetDefaultTerm(True)
                 PopulateLangPrefDropdown(Me.moLangPrefDropdown)
 
                 moCertificateInfoController = Me.UserCertificateCtr
@@ -661,14 +664,14 @@ Namespace Certificates
             End Try
 
         End Sub
-        Protected Sub GetDefaultTerm()
+        Protected Sub GetDefaultTerm(Optional blnParentOnly As Boolean = False)
 
             Try
                 Me.State.MyBO.TermPre = NO_TERM
                 Me.State.MyBO.TermPos = NO_TERM
 
                 If Me.State.StatemanufaturerWarranty Then
-                    For Each cov As CertItemCoverage In Me.State.MyBO.AssociatedItemCoverages
+                    For Each cov As CertItemCoverage In Me.State.MyBO.AssociatedItemCoverages(blnParentOnly)
                         If cov.CoverageTypeCode = Codes.COVERAGE_TYPE__MANUFACTURER Then
                             Me.State.MyBO.TermPre = CType(DateDiff(DateInterval.Month, cov.BeginDate.Value, DateAdd("d", 1, cov.EndDate.Value)), Integer)
                             Me.State.MyBO.TermPos = Me.State.MyBO.TermPre
@@ -705,6 +708,8 @@ Namespace Certificates
 
                     If CType(Me.State.MyBO.TermPos, String) <> Me.TextboxManufacturerTerm.Text Then
                         Me.State.MyBO.TermisDirty = True
+                        Me.State.blnMFGChanged = True
+
                     End If
 
                     Me.PopulateControlFromBOProperty(Me.txtSaleDate, .ProductSalesDate)
@@ -717,14 +722,17 @@ Namespace Certificates
                         Me.State.MyBO.WarrantySalesDatesisDirty = True
                     End If
 
-                    If .CustomerName <> Me.TextboxCustomerName.Text Then
-                        If .CustomerName <> (Me.moCustomerFirstNameText.Text + PAR + Me.moCustomerMiddleNameText.Text + PAR + Me.moCustomerLastNameText.Text) Then
+                    If CheckCertUseCustomer() Then
+                        If (.CustomerFirstName <> Me.moCustomerFirstNameText.Text) Or (.CustomerMiddleName <> Me.moCustomerMiddleNameText.Text) Or (.CustomerLastName <> Me.moCustomerLastNameText.Text) Then
                             Me.State.MyBO.NameisDirty = True
-                            Me.PopulateBOProperty(Me.State.MyBO, "CustNamePost", Me.TextboxCustomerName)
+                        End If
+                    Else
+                        If .CustomerName <> Me.TextboxCustomerName.Text Then
+                            Me.State.MyBO.NameisDirty = True
                         End If
                     End If
 
-                        If .Email <> Me.TextboxEmailAddress.Text Then
+                    If .Email <> Me.TextboxEmailAddress.Text Then
                         Me.State.MyBO.EmailisDirty = True
                     End If
 
@@ -845,16 +853,16 @@ Namespace Certificates
                     Select Case Me.State.ActionInProgress
                         Case ElitaPlusPage.DetailPageCommand.Back
                             Me.State.boChanged = True
-                            Dim retObj As ReturnType = New ReturnType(ElitaPlusPage.DetailPageCommand.Back, Me.State.MyBO.Cert, Me.State.boChanged)
+                            Dim retObj As ReturnType = New ReturnType(ElitaPlusPage.DetailPageCommand.Back, Me.State.MyBO.Cert, Me.State.boChanged, Me.State.blnMFGChanged)
                             Me.NavController.Navigate(Me, "back", retObj) 'arf 12-20-04  
                         Case ElitaPlusPage.DetailPageCommand.BackOnErr
-                            Dim retObj As ReturnType = New ReturnType(ElitaPlusPage.DetailPageCommand.Back, Me.State.MyBO.Cert, Me.State.boChanged)
+                            Dim retObj As ReturnType = New ReturnType(ElitaPlusPage.DetailPageCommand.Back, Me.State.MyBO.Cert, Me.State.boChanged, Me.State.blnMFGChanged)
                             Me.NavController.Navigate(Me, "back", retObj) 'arf 12-20-04  
                     End Select
                 ElseIf Not confResponse Is Nothing AndAlso confResponse = Me.MSG_VALUE_NO Then
                     Select Case Me.State.ActionInProgress
                         Case ElitaPlusPage.DetailPageCommand.Back
-                            Dim retObj As ReturnType = New ReturnType(ElitaPlusPage.DetailPageCommand.Back, Me.State.MyBO.Cert, Me.State.boChanged)
+                            Dim retObj As ReturnType = New ReturnType(ElitaPlusPage.DetailPageCommand.Back, Me.State.MyBO.Cert, Me.State.boChanged, Me.State.blnMFGChanged)
                             Me.NavController.Navigate(Me, "back", retObj) 'arf 12-20-04  
                         Case ElitaPlusPage.DetailPageCommand.BackOnErr
                             Me.MasterPage.MessageController.AddErrorAndShow(Me.State.LastErrMsg)
@@ -862,7 +870,7 @@ Namespace Certificates
                 ElseIf Not confResponse Is Nothing AndAlso confResponse = Me.MSG_VALUE_OK Then
                     Select Case Me.State.ActionInProgress
                         Case ElitaPlusPage.DetailPageCommand.Back
-                            Dim retObj As ReturnType = New ReturnType(ElitaPlusPage.DetailPageCommand.Back, Me.State.MyBO.Cert, Me.State.boChanged)
+                            Dim retObj As ReturnType = New ReturnType(ElitaPlusPage.DetailPageCommand.Back, Me.State.MyBO.Cert, Me.State.boChanged, Me.State.blnMFGChanged)
                             Me.NavController.Navigate(Me, "back", retObj) 'arf 12-20-04  
                         Case ElitaPlusPage.DetailPageCommand.New_
                             '        ValidateAndSaveBO()
@@ -956,7 +964,7 @@ Namespace Certificates
 
             Try
                 If MyBase.PagePermissionType = FormAuthorization.enumPermissionType.VIEWONLY Then
-                    Dim retObj As ReturnType = New ReturnType(ElitaPlusPage.DetailPageCommand.Back, Me.State.MyBO.Cert, Me.State.boChanged)
+                    Dim retObj As ReturnType = New ReturnType(ElitaPlusPage.DetailPageCommand.Back, Me.State.MyBO.Cert, Me.State.boChanged, Me.State.blnMFGChanged)
                     Me.NavController.Navigate(Me, "back", retObj)
                 Else
                     Me.PopulateBOsFormFrom()
@@ -964,7 +972,7 @@ Namespace Certificates
                         Me.DisplayMessage(Message.SAVE_CHANGES_PROMPT, "", Me.MSG_BTN_YES_NO_CANCEL, Me.MSG_TYPE_CONFIRM, Me.HiddenSaveChangesPromptResponse)
                         Me.State.ActionInProgress = ElitaPlusPage.DetailPageCommand.Back
                     Else
-                        Dim retObj As ReturnType = New ReturnType(ElitaPlusPage.DetailPageCommand.Back, Me.State.MyBO.Cert, Me.State.boChanged)
+                        Dim retObj As ReturnType = New ReturnType(ElitaPlusPage.DetailPageCommand.Back, Me.State.MyBO.Cert, Me.State.boChanged, Me.State.blnMFGChanged)
                         Me.NavController.Navigate(Me, "back", retObj)
                     End If
                 End If

@@ -54,6 +54,7 @@ Public Class ClaimRecordingForm
     Private Const ClaimRecordingViewIndexFulfillmentOptions = 5
     Private Const ClaimRecordingViewIndexLogisticsOptions = 6
     Private Const ClaimRecordingViewIndexShippingAddress = 7
+    Private Const gridItemDeviceInfoPurchasedDate = 4
 
     Private Const DoubleSpaceString As String = "  "
     Private Const NoData As String = " - "
@@ -1078,6 +1079,22 @@ Public Class ClaimRecordingForm
         End If
     End Sub
 
+    Protected Sub GridItems_RowDataBound(sender As Object, e As GridViewRowEventArgs) Handles GridItems.RowDataBound
+        Try
+            If (e.Row.RowType = DataControlRowType.DataRow) Then
+                If e.Row.RowType <> DataControlRowType.Header AndAlso e.Row.RowType <> DataControlRowType.Footer Then
+                    If DirectCast(GridItems.DataSource, IEnumerable(Of DeviceInfo))(e.Row.RowIndex).PurchasedDate IsNot Nothing Then
+                        Dim PurchasedDate = DirectCast(GridItems.DataSource, IEnumerable(Of DeviceInfo))(e.Row.RowIndex).PurchasedDate
+                        If (String.IsNullOrEmpty(PurchasedDate.ToString) = False) Then
+                            e.Row.Cells(gridItemDeviceInfoPurchasedDate).Text = GetDateFormattedString(PurchasedDate)
+                        End If
+                    End If
+                End If
+            End If
+        Catch ex As Exception
+            Me.HandleErrors(ex, Me.MasterPage.MessageController)
+        End Try
+    End Sub
 #End Region
 #Region "Device View - Button Click"
 
