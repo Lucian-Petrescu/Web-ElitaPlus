@@ -70,6 +70,7 @@ Public Class ClaimAuthorizationDAL
     Public Const COL_SUB_STATUS_REASON As String = "sub_status_reason"
     Public Const COL_LINKED_CLAIM_AUTH_ID As String = "linked_claim_auth_id"
     Public Const COL_NAME_SUB_STATUS_XCD As String = "sub_status_xcd"
+    Public Const COL_NAME_AUTHORIZAION_AMOUNT As String = "authorization_amount"
 
 
 #End Region
