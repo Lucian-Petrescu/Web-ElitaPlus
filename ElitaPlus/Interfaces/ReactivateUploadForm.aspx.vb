@@ -39,6 +39,7 @@ Public Class ReactivateUploadForm
         Public PageSize As Integer = DEFAULT_PAGE_SIZE
         Public searchDV As DataView = Nothing
         Public UploadType As String = String.Empty
+        Public extractFilename As String = String.Empty
     End Class
 
     Public Sub New()
@@ -174,6 +175,7 @@ Public Class ReactivateUploadForm
 
         panelResult.Visible = False
         btnExtract_Report.Visible = True
+        State.extractFilename = InputFile.PostedFile.FileName.Trim
         Try
             If InputFile.PostedFile.FileName.Trim = String.Empty Then
                 ErrList.Add("FILE_NAME_IS_REQUIRED")
@@ -232,7 +234,9 @@ Public Class ReactivateUploadForm
     Protected Sub btnExtract_Report_Click(sender As Object, e As EventArgs) Handles btnExtract_Report.Click
 
         Dim strUploadType As String
+        Dim extractFile As String
         strUploadType = ddlUploadType.SelectedValue.Trim
+        extractFile = State.extractFilename
 
         Try
             Dim strEmailAddress As String = ElitaPlusIdentity.Current.EmailAddress
@@ -241,7 +245,7 @@ Public Class ReactivateUploadForm
             If String.IsNullOrEmpty(strEmailAddress) Then
                 Me.DisplayMessage(Message.MSG_Email_not_configured, "", Me.MSG_BTN_OK, Me.MSG_TYPE_ALERT, , True)
             Else
-                commonUpload.ExtractReport(strUploadType, strEmailAddress, strCompanyGroupCode)
+                commonUpload.ExtractReport(strUploadType, strEmailAddress, strCompanyGroupCode, extractFile)
                 Me.DisplayMessage(Message.MSG_REPORT_REQUEST_IS_GENERATED, "", Me.MSG_BTN_OK, Me.MSG_TYPE_ALERT, , True)
             End If
 
