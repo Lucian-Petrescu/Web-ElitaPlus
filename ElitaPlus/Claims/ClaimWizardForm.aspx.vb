@@ -494,9 +494,12 @@ Public Class ClaimWizardForm
                                 If preCheckError Is Nothing Then
 
                                     Dim hasBenefit As DataRow() = dsCaseFields.Tables(0).Select("field_code='HASBENEFIT'")
-                                    If (Not hasBenefit Is Nothing AndAlso hasBenefit.Length > 0) Then
+                                    Dim benefitCheckError As DataRow() = dsCaseFields.Tables(0).Select("field_code='BENEFITCHECKERROR'")
+                                    If (Not hasBenefit Is Nothing AndAlso hasBenefit.Length > 0 Or
+                                        Not benefitCheckError Is Nothing AndAlso benefitCheckError.Length > 0) Then
 
-                                        If (Not hasBenefit(0)("field_value") Is Nothing AndAlso hasBenefit(0)("field_value").ToString().ToUpper() = Boolean.TrueString.ToUpper()) Then
+                                        If (Not hasBenefit(0)("field_value") Is Nothing AndAlso hasBenefit(0)("field_value").ToString().ToUpper() = Boolean.TrueString.ToUpper() Or
+                                            Not benefitCheckError(0)("field_value") Is Nothing AndAlso benefitCheckError(0)("field_value").ToString().ToUpper() <> "NO ERROR") Then
 
                                             Dim benefitCheckResponse As LegacyBridgeResponse
                                             Try
