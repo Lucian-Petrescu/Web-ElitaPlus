@@ -1139,7 +1139,7 @@
         device_activation_date = :device_activation_date,
 		    employee_number = :employee_number,
         fulfilment_method_xcd = :fulfilment_method_xcd,
-        bank_info_id = :bank_info_id
+        bank_info_id = :bank_info_id,
         rem_auth_number = :rem_auth_number
 			WHERE
 				claim_id = :claim_id
