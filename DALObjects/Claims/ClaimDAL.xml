@@ -1139,7 +1139,8 @@
         device_activation_date = :device_activation_date,
 		    employee_number = :employee_number,
         fulfilment_method_xcd = :fulfilment_method_xcd,
-        bank_info_id = :bank_info_id
+        bank_info_id = :bank_info_id,
+        rem_auth_number = :rem_auth_number
 			WHERE
 				claim_id = :claim_id
 				AND NVL(modified_date,created_date) = NVL(:modified_date,created_date)
@@ -1223,7 +1224,8 @@
     tracking_number,
     REG_ITEM_CURRENT_RETAIL_PRICE,
     device_activation_date,
-		employee_number
+    employee_number,
+    rem_auth_number
     )
     VALUES
     (
@@ -1302,7 +1304,8 @@
     :tracking_number,
     :current_retail_price,
     :device_activation_date,
-		:employee_number
+    :employee_number,
+    :rem_auth_number
     )
   </INSERT>
   <DELETE>

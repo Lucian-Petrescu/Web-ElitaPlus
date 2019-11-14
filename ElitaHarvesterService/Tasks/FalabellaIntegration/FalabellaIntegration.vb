@@ -16,7 +16,7 @@ Public Class FalabellaIntegration
     Private _claimAuthorizationId As Guid
     Private Const EXT_STAT_COM_FB_CLM_UPD_THFT = "COM_FB_CLM_UPD_THFT"
     Private Const EXT_STAT_COM_FB_CLM_UPD_DMG = "COM_FB_CLM_UPD_DMG"
-    Private Const EXT_STAT_COMPENSATION_PROCESS_INITIATED = "CHLCOM1"
+    Private Const EXT_STAT_COMPENSATION_PROCESS_INITIATED = "INDSTA"
 
 
 
@@ -183,7 +183,7 @@ Public Class FalabellaIntegration
 
 
             'Save error code and error message to claim comments 
-            If (Not String.IsNullOrEmpty(response.ErrorCode)) Then
+            If (Not String.IsNullOrEmpty(response.ErrorCode) And Not Convert.ToString(response.ErrorCode) = "0") Then
                 AddCommentToClaim(response.ErrorCode + ";" + response.ErrorMessage, OClaim)
                 Return response.ErrorMessage
 
@@ -191,6 +191,7 @@ Public Class FalabellaIntegration
                 OClaim.RemAuthNumber = response.WorkOrderNumber
                 OClaim.Save()
             End If
+
 
         End If
 
@@ -228,7 +229,7 @@ Public Class FalabellaIntegration
             End Try
 
             'Save error code and error message to claim comments 
-            If (Not String.IsNullOrEmpty(response.ErrorCode)) Then
+            If (Not String.IsNullOrEmpty(response.ErrorCode) And Not Convert.ToString(response.ErrorCode) = "0") Then
                 AddCommentToClaim(response.ErrorCode + ";" + response.ErrorMessage, OClaim)
                 Return response.ErrorMessage
             End If
