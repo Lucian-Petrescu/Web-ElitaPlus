@@ -7,6 +7,7 @@ Imports Assurant.Elita.ClientIntegration.Headers
 Imports Assurant.Elita.CommonConfiguration
 Imports Assurant.Elita.CommonConfiguration.DataElements
 Imports Assurant.Elita.Web.Forms
+Imports Assurant.ElitaPlus.Business
 Imports Assurant.ElitaPlus.ElitaPlusWebApp.ClaimFulfillmentWebAppGatewayService
 Imports Assurant.ElitaPlus.ElitaPlusWebApp.ClaimRecordingService
 Imports Assurant.ElitaPlus.Security
@@ -63,7 +64,7 @@ Public Class UserControlServiceCenterSelection
 
     End Sub
 #Region "Properties"
-
+    Public Property HostMessageController As IMessageController
     Public Property ServiceCenterSelectedFunc As Action(Of ServiceCenterSelected)
     Public Property TranslateGridHeaderFunc As Action(Of System.Web.UI.WebControls.GridView)
     Public Property TranslationFunc As Func(Of String, String)
@@ -192,7 +193,7 @@ Public Class UserControlServiceCenterSelection
         moSearchByLabel.Text = TranslationFunc("SEARCH_BY")
         moCountryLabel.Text = TranslationFunc("COUNTRY")
         moCityLabel.Text = TranslationFunc("CITY")
-        moPostalCodeLabel.Text = TranslationFunc("POSTAL_CODE")
+        moPostalCodeLabel.Text = TranslationFunc("CUST_POSTAL_CODE")
         '
         btnClearSearch.Text = TranslationFunc("Clear")
         btnSearch.Text = TranslationFunc("Search")
@@ -227,6 +228,9 @@ Public Class UserControlServiceCenterSelection
         Dim showAllFields As Boolean = IsSearchBy(SearchByCodes.All)
         Dim showPostalCodeFields As Boolean = IsSearchBy(SearchByCodes.PostalCode)
 
+        moCityTextbox.Text = String.Empty
+        moPostalCodeTextbox.Text = String.Empty
+
         ' City
         ControlMgr.SetVisibleControl(ElitaHostPage, tdCityLabel, showCityFields)
         ControlMgr.SetVisibleControl(ElitaHostPage, moCityLabel, showCityFields)
@@ -243,6 +247,8 @@ Public Class UserControlServiceCenterSelection
         ControlMgr.SetVisibleControl(ElitaHostPage, btnSearch, Not showAllFields)
         If showAllFields Then
             PopulateGrid()
+        Else
+            ClearResultList()
         End If
 
         'NO_SVC_OPTION
@@ -251,10 +257,25 @@ Public Class UserControlServiceCenterSelection
     End Sub
 
     Sub HandleLocalException(ex As Exception)
-
-
+        Dim errorMessage As String = $"{ex.Message} {ex.StackTrace}"
+        If HostMessageController IsNot Nothing Then
+            HostMessageController.AddError(errorMessage, True)
+        End If
     End Sub
+    Sub ShowMessage(message As string)
+        If HostMessageController IsNot Nothing Then
+            HostMessageController.AddError(message, True)
+        End If
+    End Sub
+    Function ParseManufacturerAuthFlagToBoolean(flagValue As String) As Boolean
+        If String.IsNullOrEmpty(flagValue) Then Return False
 
+        If flagValue.Equals("y", StringComparison.InvariantCultureIgnoreCase) Then Return True
+        If flagValue.Equals("yes", StringComparison.InvariantCultureIgnoreCase) Then Return True
+        If flagValue.Equals("true", StringComparison.InvariantCultureIgnoreCase) Then Return True
+
+        Return False
+    End Function
 #End Region
 
 #Region "Control Events"
@@ -308,6 +329,7 @@ Public Class UserControlServiceCenterSelection
         Try
             Debug.WriteLine("Index Changed")
             EnableDisableFields()
+
         Catch ex As Exception
             HandleLocalException(ex)
         End Try
@@ -321,7 +343,7 @@ Public Class UserControlServiceCenterSelection
         Debug.WriteLine($"btnClearSearch")
         moPostalCodeTextbox.Text = String.Empty
         moCityTextbox.Text = String.Empty
-        GridServiceCenter.DataSource = Nothing
+        ClearResultList()
     End Sub
 
 
@@ -329,8 +351,11 @@ Public Class UserControlServiceCenterSelection
         Dim source As IEnumerable(Of FulfillmentServicesCenter) = CType(sender, GridView).DataSource
 
         If (e.Row.RowType = DataControlRowType.DataRow) Then
-
-
+            Dim moManufacturerAuthFlagImage As HtmlImage = CType(e.Row.FindControl("moManufacturerAuthFlagImage"), HtmlImage)
+            Dim dataItem As FulfillmentServicesCenter = CType(e.Row.DataItem, FulfillmentServicesCenter)
+            If dataItem IsNot Nothing Then
+                ControlMgr.SetVisibleControl(ElitaHostPage, moManufacturerAuthFlagImage, ParseManufacturerAuthFlagToBoolean(dataItem.ManufacturerAuthFlag))
+            End If
         End If
     End Sub
 
@@ -430,9 +455,7 @@ Public Class UserControlServiceCenterSelection
             If wsResponse IsNot Nothing Then
                 ServiceCenters = wsResponse
                 '
-                If Me.GridServiceCenter.Visible Then
-                    Me.lblRecordCount.Text = $"{wsResponse.Count} {TranslationBase.TranslateLabelOrMessage(Message.MSG_RECORDS_FOUND)}"
-                End If
+                UpdateRecordCount(wsResponse.Count)
                 '
                 GridServiceCenter.PageSize = PageSize
                 GridServiceCenter.DataSource = wsResponse
@@ -443,8 +466,11 @@ Public Class UserControlServiceCenterSelection
                 PageIndex = GridServiceCenter.PageIndex
 
             End If
+        Catch notFoundEx As FaultException(of ServiceCenterNotFoundFault)
+            ShowMessage($"No Services Center found for RiskType: {RiskTypeEnglish}, Method: {MethodOfRepairXcd}, Make: {Make}")
         Catch fex As FaultException
-            HandleLocalException(fex)
+            ShowMessage($"No Services Center found for RiskType: {RiskTypeEnglish}, Method: {MethodOfRepairXcd}, Make: {Make}")
+            'HandleLocalException(fex)
         Catch ex As Exception
             HandleLocalException(ex)
         End Try
@@ -482,6 +508,17 @@ Public Class UserControlServiceCenterSelection
             End If
         Next
     End Sub
+
+    Private Sub ClearResultList()
+        GridServiceCenter.DataSource = Nothing
+        GridServiceCenter.DataBind()
+        UpdateRecordCount(0)
+    End Sub
+    Private sub UpdateRecordCount(records As Integer)
+        If Me.GridServiceCenter.Visible Then
+            Me.lblRecordCount.Text = $"{records} {TranslationBase.TranslateLabelOrMessage(Message.MSG_RECORDS_FOUND)}"
+        End If
+    End sub
 #End Region
 
 #Region "Web Service"

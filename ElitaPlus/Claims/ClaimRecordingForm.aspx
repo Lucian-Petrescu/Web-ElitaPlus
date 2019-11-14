@@ -529,19 +529,19 @@
                                                                 <div class="dataGridHeader">
                                                                     <table border="0" class="searchGrid" runat="server">
                                                                         <tbody>
-                                                                            <tr>
+                                                                            <tr style="width: 100%">
                                                                                 <td align="right" nowrap="nowrap">
                                                                                     <asp:Label runat="server" ID="moServiceCenterCodeLabel" Text="SERVICE_CENTER_CODE" />
                                                                                     :
                                                                                 </td>
                                                                                 <td align="left" nowrap="nowrap">
-                                                                                    <asp:TextBox ID="txtServiceCenterCode" runat="server" ReadOnly="true" SkinID="smallTextBox"></asp:TextBox>
+                                                                                    <asp:TextBox ID="txtServiceCenterCode" runat="server" ReadOnly="true" SkinID="smallTextBox" style="width: 100px"></asp:TextBox>
                                                                                 </td>
                                                                                 <td align="right" nowrap="nowrap">
                                                                                     <asp:Label runat="server" ID="moServiceCenterNameLabel" Text="SERVICE_CENTER_NAME" />
                                                                                     :
                                                                                 </td>
-                                                                                <td align="left" nowrap="nowrap">
+                                                                                <td align="left" nowrap="nowrap" style="width: 100%">
                                                                                     <asp:TextBox ID="txtServiceCenterName" runat="server" ReadOnly="true" SkinID="smallTextBox"></asp:TextBox>
                                                                                 </td>
                                                                             </tr>
