@@ -147,7 +147,7 @@ Public Class commonUploadDAL
         End Try
     End Sub
 
-    Public Sub ExtractReportFile(strUploadType As String, ByVal strUserEmailAddress As String, ByVal strCompanyGroupCode As String, ByVal extractFile As String)
+    Public Sub ExtractReportFile(strUploadType As String, ByVal strUserEmailAddress As String, ByVal strCompanyGroupCode As String)
         Dim sqlStmt As String
         Try
             Dim inParameters As New Generic.List(Of DBHelper.DBHelperParameter)
@@ -161,9 +161,6 @@ Public Class commonUploadDAL
             inParameters.Add(param)
 
             param = New DBHelper.DBHelperParameter("pi_CompanyGroupCode", strCompanyGroupCode)
-            inParameters.Add(param)
-
-            param = New DBHelper.DBHelperParameter("pi_extractFile", extractFile)
             inParameters.Add(param)
 
             DBHelper.ExecuteSpParamBindByName(sqlStmt, inParameters.ToArray, Nothing)
