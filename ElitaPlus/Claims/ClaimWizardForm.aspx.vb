@@ -2991,7 +2991,9 @@ Public Class ClaimWizardForm
         Dim oldStatus As BasicClaimStatus = Me.State.ClaimBO.Status
         Try
             Me.State.ClaimBO.CreateClaim()
-            Me.State.ClaimBO.PrepopulateDeductible()
+            If Not State.DealerBO.ClaimRecordingXcd.Equals(Codes.DEALER_CLAIM_RECORDING_DYNAMIC_QUESTIONS) Then
+                Me.State.ClaimBO.PrepopulateDeductible()
+            End If
         Catch ex As Exception
             Me.State.ClaimBO.Status = oldStatus
             Throw ex
