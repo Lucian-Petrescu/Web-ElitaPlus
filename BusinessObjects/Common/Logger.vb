@@ -3,11 +3,6 @@ Imports System.Globalization
 Imports System.Threading
 Imports System.Reflection
 Imports System.Text
-Imports Assurant.Elita.Base.DataAccess
-Imports Assurant.Elita.Configuration
-Imports Assurant.Elita.Logging.Interface
-Imports Oracle.ManagedDataAccess.Client
-Imports Assurant.Elita.Logging.OracleLogger
 
 Public Module Logger
 
@@ -16,19 +11,6 @@ Public Module Logger
     Public Delegate Sub AddMessageDelegate(ByVal message As String)
     Public Delegate Sub AddExceptionDelegate(ByVal exception As Exception)
     Public Delegate Sub AddErrorDelegate(ByVal message As String, ByVal exception As Exception)
-    Private Property _loggerClient As ILoggerClient
-
-    Public Sub Initialize(ByVal applicationName As String)
-
-        Dim OracleHelper As OracleHelper = New OracleHelper(Function() New OracleConnectionStringBuilder() With {
-        .UserID = ElitaConfig.Current.Database.UserName,
-        .Password = ElitaConfig.Current.Database.Password,
-        .DataSource = ElitaConfig.Current.Database.DataSourceName
-    })
-
-        _loggerClient = New OracleLogger(OracleHelper, applicationName, Environment.MachineName)
-
-    End Sub
 
     Sub New()
         For Each listener As TraceListener In traceSource.Listeners
@@ -45,37 +27,20 @@ Public Module Logger
     End Sub
 
     Public Sub AddInfo(ByVal message As String)
-        'TraceLine(TraceEventType.Information, message)
-        _loggerClient.LogTrace(New TraceLogItem() With {
-        .Message = message,
-        .Timestamp = DateTime.Now
-         })
+        TraceLine(TraceEventType.Information, message)
     End Sub
 
     Public Sub AddError(ByVal exception As Exception)
-
-        _loggerClient.LogException(New ExceptionLogItem() With {
-        .Exception = exception,
-        .Timestamp = DateTime.Now
-         })
-
-        'Dim sb As New StringBuilder
-        'BuildExceptionString(exception, sb)
-        'AddError(sb.ToString())
+        Dim sb As New StringBuilder
+        BuildExceptionString(exception, sb)
+        AddError(sb.ToString())
     End Sub
 
     Public Sub AddError(ByVal message As String, ByVal exception As Exception)
-
-        _loggerClient.LogException(New ExceptionLogItem() With {
-        .Exception = exception,
-        .Message = message,
-        .Timestamp = DateTime.Now
-         })
-
-        'Dim sb As New StringBuilder
-        'sb.AppendLine(message)
-        'BuildExceptionString(exception, sb)
-        'AddError(sb.ToString())
+        Dim sb As New StringBuilder
+        sb.AppendLine(message)
+        BuildExceptionString(exception, sb)
+        AddError(sb.ToString())
     End Sub
 
     Private Sub BuildExceptionString(ByVal exception As Exception, ByVal sb As StringBuilder)
@@ -90,27 +55,23 @@ Public Module Logger
     End Sub
 
     Public Sub AddError(ByVal message As String)
-
-        _loggerClient.LogException(New ExceptionLogItem() With {
-        .Message = message,
-        .Timestamp = DateTime.Now
-         })
+        TraceLine(TraceEventType.Error, message)
     End Sub
 
     Public Sub AddWarning(ByVal message As String)
-        AddInfo(message)
+        TraceLine(TraceEventType.Warning, message)
     End Sub
 
     Public Sub AddDebugLog(ByVal message As String)
-        AddInfo(message)
+        TraceLine(TraceEventType.Verbose, message)
     End Sub
 
     Public Sub AddDebugLogEnter()
-        AddInfo("Enter")
+        TraceLine(TraceEventType.Verbose, "Enter")
     End Sub
 
     Public Sub AddDebugLogExit()
-        AddInfo("Exit")
+        TraceLine(TraceEventType.Verbose, "Exit")
     End Sub
 
     Private Sub TraceLine(ByVal level As TraceEventType, ByVal message As String)
@@ -137,7 +98,7 @@ Public Module Logger
         Dim finalMessage As String = String.Format(CultureInfo.InvariantCulture,
             "{0}Environment - {4} | {1}.{2} | {3}", traceLevel, stackframe.GetMethod.DeclaringType.Name, stackframe.GetMethod.Name, message, Thread.CurrentThread.Name)
 
-        'traceSource.TraceEvent(level, 0, finalMessage)
+        traceSource.TraceEvent(level, 0, finalMessage)
 
     End Sub
 
