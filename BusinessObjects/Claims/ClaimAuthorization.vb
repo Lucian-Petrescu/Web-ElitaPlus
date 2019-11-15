@@ -498,6 +498,17 @@ Public NotInheritable Class ClaimAuthorization
         End Get
     End Property
 
+    Public ReadOnly Property ServiceOrderType() As String
+        Get
+            CheckDeleted()
+            If Row(ClaimAuthorizationDAL.COL_NAME_SERVICE_ORDER_TYPE) Is DBNull.Value Then
+                Return Nothing
+            Else
+                Return CType(Row(ClaimAuthorizationDAL.COL_NAME_SERVICE_ORDER_TYPE), String)
+            End If
+        End Get
+    End Property
+
     Public Property ClaimAuthStatus() As ClaimAuthorizationStatus
         Get
             Select Case Me.ClaimAuthorizationStatusCode
