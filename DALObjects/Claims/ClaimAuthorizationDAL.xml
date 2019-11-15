@@ -42,6 +42,13 @@
                 ca.auth_type_xcd,
                 ca.party_type_xcd,
                 ca.party_reference_id,
+                (select li.code
+                 from   elp_claim_auth_item cai
+                 join   elp_list_item li on li.list_item_id = cai.service_class_id
+                 where  cai.claim_authorization_id = ca.claim_authorization_id
+                 and    code in ('REPAIR','REPLACEMENT')
+                 and    rownum = 1
+                ) as service_order_Type,
                 (select sum(cai.amount) from elp_claim_auth_item cai where cai.claim_authorization_id = ca.claim_authorization_id) as authorization_amount
         FROM    elp_claim_authorization ca
 			  WHERE   ca.claim_authorization_id = hextoraw(:claim_authorization_id)
@@ -86,6 +93,13 @@
                 ca.auth_type_xcd,
                 ca.party_type_xcd,
                 ca.party_reference_id,
+                (select li.code
+                 from   elp_claim_auth_item cai
+                 join   elp_list_item li on li.list_item_id = cai.service_class_id
+                 where  cai.claim_authorization_id = ca.claim_authorization_id
+                 and    code in ('REPAIR','REPLACEMENT')
+                 and    rownum = 1
+                ) as service_order_Type,
                 (select sum(cai.amount) from elp_claim_auth_item cai where cai.claim_authorization_id = ca.claim_authorization_id) as authorization_amount
         FROM    elp_claim_authorization ca 
         WHERE		ca.claim_id = hextoraw(:claim_id)
@@ -126,6 +140,13 @@
                ca.auth_type_xcd,
                ca.party_type_xcd,
                ca.party_reference_id,
+               (select li.code
+                from   elp_claim_auth_item cai
+                join   elp_list_item li on li.list_item_id = cai.service_class_id
+                where  cai.claim_authorization_id = ca.claim_authorization_id
+                and    code in ('REPAIR','REPLACEMENT')
+                and    rownum = 1
+               ) as service_order_Type,
                (select sum(cai.amount) from elp_claim_auth_item cai where cai.claim_authorization_id = ca.claim_authorization_id) as authorization_amount
          FROM  elp_claim_authorization ca
          WHERE ca.claim_authorization_id in (select ii.claim_authorization_id from elp_invoice_item ii where ii.invoice_id = hextoraw(:invoice_id))
