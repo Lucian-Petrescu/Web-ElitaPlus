@@ -2013,11 +2013,13 @@ Public Class ElitaPlusPage
     Public Shared Function GetLongDateFormattedString(ByVal value As Date) As String
         Dim LanguageCode = ElitaPlusIdentity.Current.ActiveUser.LanguageCode
         Dim formattedDate = CommonConfigManager.Current.LanguageManager.Get(LanguageCode).GetAwaiter().GetResult()?.FormatDate(value)
-        Dim MeridianTime = CommonConfigManager.Current.LanguageManager.Get(LanguageCode).GetAwaiter().GetResult()?.FormatTime(value)
-        Dim FullDateTimeValue = formattedDate + " " + MeridianTime
-        Dim formattedValue =
-            FullDateTimeValue.ToString().Substring(0, FullDateTimeValue.ToString().Length - 3)
-        Return formattedValue.ToString()
+        Dim FormattedTime = CommonConfigManager.Current.LanguageManager.Get(LanguageCode).GetAwaiter().GetResult()?.FormatTime(value)
+        Dim LongDateTimeValue = formattedDate + " " + FormattedTime
+        Dim i As String = LongDateTimeValue.IndexOf(" ")
+        If i <> -1 Then
+            LongDateTimeValue = LongDateTimeValue.Substring(0, i + 9)
+        End If
+        Return LongDateTimeValue.ToString()
     End Function
 
     Public Shared Function GetLongDateFormattedStringWithFormat(ByVal value As Date, ByVal Format As String) As String
