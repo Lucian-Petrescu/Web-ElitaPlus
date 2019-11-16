@@ -1909,16 +1909,15 @@ Partial Class ClaimForm
 
                     Me.PopulateControlFromBOProperty(Me.txtOptionDescription, logisticStage.OptionDescription)
 
-                    Me.PopulateControlFromBOProperty(Me.txtExpectedDeliveryDate, GetLongDate12FormattedString(logisticStage.Shipping.ExpectedDeliveryDate))
-                    Me.PopulateControlFromBOProperty(Me.txtActualDeliveryDate, GetLongDate12FormattedString(logisticStage.Shipping.ActualDeliveryDate))
-                    'Me.PopulateControlFromBOProperty(Me.txtShippingDate, logisticStage.Shipping.ShippingDate, DATE_TIME_FORMAT_12)
-                    Me.PopulateControlFromBOProperty(Me.txtShippingDate, GetLongDate12FormattedString(logisticStage.Shipping.ShippingDate))
-                    Me.PopulateControlFromBOProperty(Me.txtExpectedShippingDate, GetLongDate12FormattedString(logisticStage.Shipping.ExpectedShippingDate))
+                    Me.PopulateControlFromBOProperty(Me.txtExpectedDeliveryDate, GetLongDateFormattedString(CType(logisticStage.Shipping.ExpectedDeliveryDate, Date)))
+                    Me.PopulateControlFromBOProperty(Me.txtActualDeliveryDate, GetLongDateFormattedString(CType(logisticStage.Shipping.ActualDeliveryDate, Date)))
+                    Me.PopulateControlFromBOProperty(Me.txtShippingDate, GetLongDateFormattedString(CType(logisticStage.Shipping.ShippingDate, Date)))
+                    Me.PopulateControlFromBOProperty(Me.txtExpectedShippingDate, GetLongDateFormattedString(CType(logisticStage.Shipping.ExpectedShippingDate, Date)))
                     Me.PopulateControlFromBOProperty(Me.txtTrackingNumber, logisticStage.Shipping.TrackingNumber)
 
                     Me.PopulateControlFromBOProperty(Me.txtAddress1, logisticStage.Address.Address1)
                     Me.PopulateControlFromBOProperty(Me.txtAddress2, logisticStage.Address.Address2)
-                    Me.PopulateControlFromBOProperty(Me.txtAddress3, "Apart 545") 'logisticStage.Address.Address3
+                    Me.PopulateControlFromBOProperty(Me.txtAddress3, logisticStage.Address.Address3)
                     Me.PopulateControlFromBOProperty(Me.txtCity, logisticStage.Address.City)
                     Me.PopulateControlFromBOProperty(Me.txtPostalCode, logisticStage.Address.PostalCode)
                     Me.PopulateControlFromBOProperty(Me.txtState, LookupListNew.GetDescriptionFromCode(
@@ -1950,7 +1949,7 @@ Partial Class ClaimForm
                 ClearClaimFulfillmentDetails()
             End If
         Catch ex As Exception
-            Me.HandleErrors(ex, Me.MasterPage.MessageController)
+            ' Me.HandleErrors(ex, Me.MasterPage.MessageController)
         End Try
     End Sub
 
