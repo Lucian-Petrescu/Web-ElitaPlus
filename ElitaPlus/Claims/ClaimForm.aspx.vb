@@ -1908,10 +1908,12 @@ Partial Class ClaimForm
                 If logisticStage IsNot Nothing AndAlso logisticStage.Code = Codes.FULFILLMENT_FW_LOGISTIC_STAGE Then
 
                     Me.PopulateControlFromBOProperty(Me.txtOptionDescription, logisticStage.OptionDescription)
-                    Me.PopulateControlFromBOProperty(Me.txtExpectedDeliveryDate, logisticStage.Shipping.ExpectedDeliveryDate, DATE_TIME_FORMAT_12)
-                    Me.PopulateControlFromBOProperty(Me.txtActualDeliveryDate, logisticStage.Shipping.ActualDeliveryDate, DATE_TIME_FORMAT_12)
-                    Me.PopulateControlFromBOProperty(Me.txtShippingDate, logisticStage.Shipping.ShippingDate, DATE_TIME_FORMAT_12)
-                    Me.PopulateControlFromBOProperty(Me.txtExpectedShippingDate, logisticStage.Shipping.ExpectedShippingDate, DATE_TIME_FORMAT_12)
+
+                    Me.PopulateControlFromBOProperty(Me.txtExpectedDeliveryDate, GetLongDate12FormattedString(logisticStage.Shipping.ExpectedDeliveryDate))
+                    Me.PopulateControlFromBOProperty(Me.txtActualDeliveryDate, GetLongDate12FormattedString(logisticStage.Shipping.ActualDeliveryDate))
+                    'Me.PopulateControlFromBOProperty(Me.txtShippingDate, logisticStage.Shipping.ShippingDate, DATE_TIME_FORMAT_12)
+                    Me.PopulateControlFromBOProperty(Me.txtShippingDate, GetLongDate12FormattedString(logisticStage.Shipping.ShippingDate))
+                    Me.PopulateControlFromBOProperty(Me.txtExpectedShippingDate, GetLongDate12FormattedString(logisticStage.Shipping.ExpectedShippingDate))
                     Me.PopulateControlFromBOProperty(Me.txtTrackingNumber, logisticStage.Shipping.TrackingNumber)
 
                     Me.PopulateControlFromBOProperty(Me.txtAddress1, logisticStage.Address.Address1)
