@@ -903,14 +903,14 @@
                                                 <asp:Label ID="lblShippingDate" runat="server" Text="ACTUAL_SHIPPING_DATE"> </asp:Label>
                                             </td>
                                             <td align="left">
-                                                <asp:TextBox ID="txtShippingDate" runat="server" ReadOnly="true"
+                                                <asp:TextBox ID="txtShippingDate" runat="server" Enabled="false" CssClass="FLATTEXTBOX"
                                                     SkinID="MediumTextBox"></asp:TextBox>
                                             </td>
                                             <td align="right">
                                                 <asp:Label ID="lblActualDeliveryDate" runat="server" Text="ACTUAL_DELIVERY_DATE"> </asp:Label>
                                             </td>
                                             <td align="left">
-                                                <asp:TextBox ID="txtActualDeliveryDate" runat="server" ReadOnly="true"
+                                                <asp:TextBox ID="txtActualDeliveryDate" runat="server" Enabled="false" CssClass="FLATTEXTBOX"
                                                     SkinID="MediumTextBox"></asp:TextBox>
                                             </td>
                                         </tr>
@@ -919,14 +919,14 @@
                                                 <asp:Label ID="lblExpectedShippingDate" runat="server" Text="EXPECTED_SHIPPING_DATE"> </asp:Label>
                                             </td>
                                             <td align="left">
-                                                <asp:TextBox ID="txtExpectedShippingDate" runat="server" ReadOnly="true"
+                                                <asp:TextBox ID="txtExpectedShippingDate" runat="server" Enabled="false" CssClass="FLATTEXTBOX"
                                                     SkinID="MediumTextBox"></asp:TextBox>
                                             </td>
                                             <td align="right">
                                                 <asp:Label ID="lblExpectedDeliveryDate" runat="server" Text="EXPECTED_DELIVERY_DATE"> </asp:Label>
                                             </td>
                                             <td align="left">
-                                                <asp:TextBox ID="txtExpectedDeliveryDate" runat="server" ReadOnly="true"
+                                                <asp:TextBox ID="txtExpectedDeliveryDate" runat="server" Enabled="false" CssClass="FLATTEXTBOX"
                                                     SkinID="MediumTextBox"></asp:TextBox>
                                             </td>
                                         </tr>
