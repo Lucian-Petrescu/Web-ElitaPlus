@@ -19,10 +19,10 @@
     <ServiceContractMappings />
   </ClientOptions>
   <MetadataSources>
-    <MetadataSource Address="http://localhost:81/ElitaClaimService/ClaimRecordingService.svc?singleWsdl" Protocol="http" SourceId="1" />
+    <MetadataSource Address="http://localhost/ElitaClaimService/ClaimRecordingService.svc?singleWsdl" Protocol="http" SourceId="1" />
   </MetadataSources>
   <Metadata>
-    <MetadataFile FileName="ClaimRecordingService2.wsdl" MetadataType="Wsdl" ID="ed20509a-8025-487e-a592-db4f744b955d" SourceId="1" SourceUrl="http://localhost:81/ElitaClaimService/ClaimRecordingService.svc?singleWsdl" />
+    <MetadataFile FileName="ClaimRecordingService2.wsdl" MetadataType="Wsdl" ID="7b46d607-e078-47d7-b6a3-0d465529ffa1" SourceId="1" SourceUrl="http://localhost/ElitaClaimService/ClaimRecordingService.svc?singleWsdl" />
   </Metadata>
   <Extensions>
     <ExtensionFile FileName="configuration91.svcinfo" Name="configuration91.svcinfo" />

@@ -40,11 +40,11 @@
     </UpgradeBackupLocation>
     <OldToolsVersion>4.0</OldToolsVersion>
     <TargetFrameworkVersion>v4.6.2</TargetFrameworkVersion>
-    <UseIISExpress>false</UseIISExpress>
-    <IISExpressSSLPort />
+    <UseIISExpress>true</UseIISExpress>
+    <IISExpressSSLPort>44337</IISExpressSSLPort>
     <IISExpressAnonymousAuthentication />
     <IISExpressWindowsAuthentication />
-    <IISExpressUseClassicPipelineMode />
+    <IISExpressUseClassicPipelineMode>true</IISExpressUseClassicPipelineMode>
     <TargetFrameworkProfile />
     <UseGlobalApplicationHostFile />
     <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..\</SolutionDir>
@@ -872,6 +872,13 @@
     </Compile>
     <Compile Include="Claims\UserControlConsequentialDamage.ascx.vb">
       <DependentUpon>UserControlConsequentialDamage.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Common\DynamicFulfillmentUI.ascx.designer.vb">
+      <DependentUpon>DynamicFulfillmentUI.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="Common\DynamicFulfillmentUI.ascx.vb">
+      <DependentUpon>DynamicFulfillmentUI.ascx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="Common\ServiceCenterSelected.vb" />
@@ -5672,6 +5679,7 @@
     <Content Include="Claims\ClaimRecordingForm.aspx" />
     <Content Include="Claims\ClaimReimbursementForm.aspx" />
     <Content Include="Claims\UserControlConsequentialDamage.ascx" />
+    <Content Include="Common\DynamicFulfillmentUI.ascx" />
     <Content Include="Common\UserControlCallerInfo.ascx" />
     <Content Include="Common\UserControlCaseHeaderInfo.ascx" />
     <Content Include="Common\UserControlDeliverySlot.ascx" />
@@ -5974,6 +5982,7 @@
     <None Include="Service References\ClaimFulfillmentWebAppGatewayService\WebAppGateway.wsdl" />
     <None Include="Service References\ClaimFulfillmentWebAppGatewayService\WebAppGateway1.wsdl" />
     <None Include="Service References\ClaimRecordingService\ClaimRecordingService1.wsdl" />
+    <None Include="Service References\ClaimRecordingService\ClaimRecordingService2.wsdl" />
     <None Include="Service References\ClaimRecordingService\configuration91.svcinfo" />
     <None Include="Service References\ClaimRecordingService\configuration.svcinfo" />
     <None Include="Service References\ClaimRecordingService\Reference.svcmap">
@@ -8886,7 +8895,7 @@
           <AutoAssignPort>True</AutoAssignPort>
           <DevelopmentServerPort>2550</DevelopmentServerPort>
           <DevelopmentServerVPath>/</DevelopmentServerVPath>
-          <IISUrl>http://localhost:80/ElitaPlus</IISUrl>
+          <IISUrl>http://localhost:8081/ElitaPlus</IISUrl>
           <NTLMAuthentication>False</NTLMAuthentication>
           <UseCustomServer>False</UseCustomServer>
           <CustomServerUrl>

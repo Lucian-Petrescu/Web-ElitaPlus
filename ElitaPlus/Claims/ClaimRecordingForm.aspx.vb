@@ -54,6 +54,7 @@ Public Class ClaimRecordingForm
     Private Const ClaimRecordingViewIndexFulfillmentOptions = 5
     Private Const ClaimRecordingViewIndexLogisticsOptions = 6
     Private Const ClaimRecordingViewIndexShippingAddress = 7
+    Private Const ClaimRecordingViewIndexDynamicFulfillment = 8
     Private Const gridItemDeviceInfoPurchasedDate = 4
 
     Private Const DoubleSpaceString As String = "  "
@@ -593,6 +594,8 @@ Public Class ClaimRecordingForm
                 Case GetType(DecisionResponse)
                     'Decision  response object
                     ShowDecisionView()
+                Case GetType(DynamicFulFillmentResponse)
+                    ShowDynamicFulfillmentView()
                 Case GetType(ItemSelectionResponse)
                     mvClaimsRecording.ActiveViewIndex = ClaimRecordingViewIndexDevice
                     Dim item As ItemSelectionResponse = DirectCast(State.SubmitWsBaseClaimRecordingResponse, ItemSelectionResponse)
@@ -2104,6 +2107,27 @@ Public Class ClaimRecordingForm
             End If
         End If
     End Sub
+
+    Private Sub ShowDynamicFulfillmentView()
+        If State.SubmitWsBaseClaimRecordingResponse IsNot Nothing Then
+            If State.SubmitWsBaseClaimRecordingResponse.GetType() Is GetType(DynamicFulFillmentResponse) Then
+                mvClaimsRecording.ActiveViewIndex = ClaimRecordingViewIndexDynamicFulfillment
+                Dim wsResponse As DynamicFulFillmentResponse = DirectCast(State.SubmitWsBaseClaimRecordingResponse, DynamicFulFillmentResponse)
+                Dim dfControl As DynamicFulfillmentUI = Page.LoadControl("~/Common/DynamicFulfillmentUI.ascx")
+                dfControl.SourceSystem = "Eprism"
+                dfControl.ApiKey = wsResponse.ApiKey
+                dfControl.SubscriptionKey = wsResponse.SubscriptionKey
+                dfControl.BaseAddresss = wsResponse.BaseAddresss
+                dfControl.CssUri = wsResponse.CssUri
+                dfControl.ScriptUri = wsResponse.ScriptUri
+                dfControl.AccessToken = wsResponse.AccessToken
+                dfControl.IsLoadError = wsResponse.IsLoadError
+                dfControl.ClaimNumber = wsResponse.ClaimNumber
+                phDynamicFulfillmentUI.Controls.Add(dfControl)
+            End If
+        End If
+
+    End Sub
     Private Sub PopulateFulfillmentOptionsGrid()
         Dim wsResponse As FulfillmentOptionsResponse
         If State.SubmitWsBaseClaimRecordingResponse.GetType() Is GetType(FulfillmentOptionsResponse) Then
@@ -2652,7 +2676,7 @@ Public Class ClaimRecordingForm
                 .CourierCode = State.LogisticsOption.DeliveryOptions.CourierCode
                 .CourierProductCode = State.LogisticsOption.DeliveryOptions.CourierProductCode
                 .DeliveryAddress = New UserControlDeliverySlot.DeliveryAddressInfo() With {
-                    .CountryCode = deliveryAddress.Country,
+                    .countryCode = deliveryAddress.Country,
                     .RegionShortDesc = deliveryAddress.State,
                     .PostalCode = deliveryAddress.PostalCode,
                     .City = deliveryAddress.City,

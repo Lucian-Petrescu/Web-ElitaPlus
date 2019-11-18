@@ -8,6 +8,7 @@
 <%@ Register TagPrefix="Elita" TagName="UserControlAddressInfo" Src="../Common/UserControlAddress_New.ascx" %>
 <%@ Register TagPrefix="Elita" TagName="UserControlQuestion" Src="../Common/UserControlQuestion.ascx" %>
 <%@ Register TagPrefix="Elita" TagName="UserControlDeliverySlot" Src="../Common/UserControlDeliverySlot.ascx" %>
+<%@ Register TagPrefix="Elita" TagName="UserControlDynamicFulfillment" Src="../Common/DynamicFulfillmentUI.ascx" %>
 <%@ Register TagPrefix="Elita" TagName="UserControlServiceCenterSelection" Src="../Common/UserControlServiceCenterSelection.ascx" %>
 
 <asp:Content ID="Content1" ContentPlaceHolderID="HeadPlaceHolder" runat="server">
@@ -628,6 +629,16 @@
                 <asp:Button ID="ButtonShippingAddressSaveExit" TabIndex="190" runat="server" Text="Save_Exit" SkinID="PrimaryRightButton" Visible="false" />
                 <asp:LinkButton ID="LinkButtonShippingAddressCancel" runat="server" SkinID="TabZoneAddButton" Text="Cancel"
                     OnClientClick="return revealModal('ModalCancel');" />
+            </div>
+        </asp:View>
+        <asp:View ID="vDynamicFulfillment" runat="server">
+            <div class="dataContainer">
+                <asp:PlaceHolder runat="server" ID="phDynamicFulfillmentUI"></asp:PlaceHolder>
+            </div>
+            <div class="btnZone">
+                <asp:Button ID="Button1" runat="server" SkinID="PrimaryRightButton" Text="Continue" />
+                <asp:LinkButton ID="LinkButton1" runat="server" SkinID="TabZoneAddButton" Text="Cancel"
+                                OnClientClick="return revealModal('ModalCancel');" />
             </div>
         </asp:View>
     </asp:MultiView>

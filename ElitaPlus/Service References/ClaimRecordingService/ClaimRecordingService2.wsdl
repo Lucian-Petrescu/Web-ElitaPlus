@@ -605,6 +605,7 @@
           <xs:element minOccurs="0" name="CompanyCode" nillable="true" type="xs:string" />
           <xs:element minOccurs="0" name="CaseNumber" nillable="true" type="xs:string" />
           <xs:element minOccurs="0" name="InteractionNumber" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="IsDynamicFulfillment" type="xs:boolean" />
         </xs:sequence>
       </xs:complexType>
       <xs:element name="BaseClaimRecordingRequest" nillable="true" type="tns:BaseClaimRecordingRequest" />
@@ -805,14 +806,31 @@
         </xs:complexContent>
       </xs:complexType>
       <xs:element name="FulfillmentOptionsResponse" nillable="true" type="tns:FulfillmentOptionsResponse" />
+      <xs:complexType name="DynamicFulFillmentResponse">
+        <xs:complexContent mixed="false">
+          <xs:extension xmlns:q4="http://elita.assurant.com/Elita/Claim/RecordingService/DataContracts" base="q4:BaseClaimRecordingResponse">
+            <xs:sequence>
+              <xs:element name="SourceSystem" nillable="true" type="xs:string" />
+              <xs:element name="AccessToken" nillable="true" type="xs:string" />
+              <xs:element name="SubscriptionKey" nillable="true" type="xs:string" />
+              <xs:element name="ApiKey" nillable="true" type="xs:string" />
+              <xs:element name="BaseAddresss" nillable="true" type="xs:string" />
+              <xs:element name="CssUri" nillable="true" type="xs:string" />
+              <xs:element name="ScriptUri" nillable="true" type="xs:string" />
+              <xs:element name="IsLoadError" type="xs:boolean" />
+            </xs:sequence>
+          </xs:extension>
+        </xs:complexContent>
+      </xs:complexType>
+      <xs:element name="DynamicFulFillmentResponse" nillable="true" type="tns:DynamicFulFillmentResponse" />
       <xs:complexType name="LogisticStagesRequest">
         <xs:complexContent mixed="false">
-          <xs:extension xmlns:q4="http://elita.assurant.com/Elita/Claim/RecordingService/DataContracts" base="q4:BaseClaimRecordingRequest">
+          <xs:extension xmlns:q5="http://elita.assurant.com/Elita/Claim/RecordingService/DataContracts" base="q5:BaseClaimRecordingRequest">
             <xs:sequence>
-              <xs:element xmlns:q5="http://assurant.com/Elita/ClaimFulfillment/Shared/Data" name="Stages" nillable="true" type="q5:ArrayOfLogisticStage" />
+              <xs:element xmlns:q6="http://assurant.com/Elita/ClaimFulfillment/Shared/Data" name="Stages" nillable="true" type="q6:ArrayOfLogisticStage" />
               <xs:element minOccurs="0" name="QuestionSetCode" nillable="true" type="xs:string" />
               <xs:element minOccurs="0" name="QuestionVersion" type="xs:int" />
-              <xs:element minOccurs="0" name="Questions" nillable="true" type="q4:ArrayOfQuestion" />
+              <xs:element minOccurs="0" name="Questions" nillable="true" type="q5:ArrayOfQuestion" />
             </xs:sequence>
           </xs:extension>
         </xs:complexContent>
@@ -881,7 +899,6 @@
           <xs:element name="Description" nillable="true" type="xs:string" />
           <xs:element name="Order" type="xs:int" />
           <xs:element name="Options" nillable="true" type="tns:ArrayOfLogisticOption" />
-          <xs:element minOccurs="0" name="ServiceCenterCode" nillable="true" type="xs:string" />
         </xs:sequence>
       </xs:complexType>
       <xs:element name="LogisticStage" nillable="true" type="tns:LogisticStage" />
@@ -913,7 +930,6 @@
           <xs:enumeration value="ElectronicDelivery" />
           <xs:enumeration value="Unspecified" />
           <xs:enumeration value="HandlingStore" />
-          <xs:enumeration value="ServiceCenter" />
         </xs:restriction>
       </xs:simpleType>
       <xs:element name="LogisticOptionType" nillable="true" type="tns:LogisticOptionType" />
@@ -1927,10 +1943,10 @@
   </wsdl:binding>
   <wsdl:service name="ClaimRecordingService">
     <wsdl:port name="CustomBinding_IClaimRecordingService" binding="tns:CustomBinding_IClaimRecordingService">
-      <soap:address location="http://localhost:81/ElitaClaimService/ClaimRecordingService.svc" />
+      <soap:address location="http://localhost/ElitaClaimService/ClaimRecordingService.svc" />
     </wsdl:port>
     <wsdl:port name="CustomBinding_IClaimRecordingService1" binding="tns:CustomBinding_IClaimRecordingService">
-      <soap:address location="http://localhost:81/ElitaClaimService/ClaimRecordingService.svc/Secure" />
+      <soap:address location="http://localhost/ElitaClaimService/ClaimRecordingService.svc/Secure" />
     </wsdl:port>
   </wsdl:service>
 </wsdl:definitions>

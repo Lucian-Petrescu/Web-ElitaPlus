@@ -719,10 +719,10 @@
     </bindingConfiguration>
   </bindingConfigurations>
   <endpoints>
-    <endpoint name="CustomBinding_IClaimRecordingService" contract="ClaimRecordingService.IClaimRecordingService" bindingType="customBinding" address="http://localhost:81/ElitaClaimService/ClaimRecordingService.svc" bindingConfiguration="CustomBinding_IClaimRecordingService">
+    <endpoint name="CustomBinding_IClaimRecordingService" contract="ClaimRecordingService.IClaimRecordingService" bindingType="customBinding" address="http://localhost/ElitaClaimService/ClaimRecordingService.svc" bindingConfiguration="CustomBinding_IClaimRecordingService">
       <properties>
         <property path="/address" isComplexType="false" isExplicitlyDefined="true" clrType="System.Uri, System, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
-          <serializedValue>http://localhost:81/ElitaClaimService/ClaimRecordingService.svc</serializedValue>
+          <serializedValue>http://localhost/ElitaClaimService/ClaimRecordingService.svc</serializedValue>
         </property>
         <property path="/behaviorConfiguration" isComplexType="false" isExplicitlyDefined="false" clrType="System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
           <serializedValue />
@@ -804,10 +804,10 @@
         </property>
       </properties>
     </endpoint>
-    <endpoint name="CustomBinding_IClaimRecordingService1" contract="ClaimRecordingService.IClaimRecordingService" bindingType="customBinding" address="http://localhost:81/ElitaClaimService/ClaimRecordingService.svc/Secure" bindingConfiguration="CustomBinding_IClaimRecordingService">
+    <endpoint name="CustomBinding_IClaimRecordingService1" contract="ClaimRecordingService.IClaimRecordingService" bindingType="customBinding" address="http://localhost/ElitaClaimService/ClaimRecordingService.svc/Secure" bindingConfiguration="CustomBinding_IClaimRecordingService">
       <properties>
         <property path="/address" isComplexType="false" isExplicitlyDefined="true" clrType="System.Uri, System, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
-          <serializedValue>http://localhost:81/ElitaClaimService/ClaimRecordingService.svc/Secure</serializedValue>
+          <serializedValue>http://localhost/ElitaClaimService/ClaimRecordingService.svc/Secure</serializedValue>
         </property>
         <property path="/behaviorConfiguration" isComplexType="false" isExplicitlyDefined="false" clrType="System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
           <serializedValue />
