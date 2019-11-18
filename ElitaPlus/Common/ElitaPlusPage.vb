@@ -2027,6 +2027,15 @@ Public Class ElitaPlusPage
         Return value.ToString(Format, System.Threading.Thread.CurrentThread.CurrentCulture)
     End Function
 
+    Public Shared Function GetLongDateFormattedStringWithFormat(ByVal value As Date?, ByVal format As String) As String
+        'Return value.ToString(DATE_FORMAT, LocalizationMgr.CurrentCulture)
+        If Not value.HasValue Then
+            Return String.Empty
+        End If
+
+        Return GetLongDateFormattedStringWithFormat(CType(value.Value, Date), format)
+    End Function
+
     Public Shared Function GetLongDate12FormattedString(ByVal value As Date) As String
         Dim LanguageCode = ElitaPlusIdentity.Current.ActiveUser.LanguageCode
         Dim formattedDate = CommonConfigManager.Current.LanguageManager.Get(LanguageCode).GetAwaiter().GetResult()?.FormatDate(value)
