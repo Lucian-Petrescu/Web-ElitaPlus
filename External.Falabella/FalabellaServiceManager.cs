@@ -1,9 +1,11 @@
 ﻿using Assurant.ElitaPlus.BusinessObjectsNew;
 using Assurant.ElitaPlus.External.Interfaces;
 using System;
+using System.IO;
 using System.Linq;
 using System.ServiceModel;
-
+using System.Xml;
+using System.Xml.Serialization;
 
 namespace Assurant.ElitaPlus.External.Falabella
 {
@@ -62,6 +64,21 @@ namespace Assurant.ElitaPlus.External.Falabella
                 dateSpecified = true,
                 hourSpecified = true
             };
+
+            XmlSerializer xsSubmit = new XmlSerializer(input.GetType());
+            var subReq = input;
+            var xml = "";
+
+            using (var sww = new StringWriter())
+            {
+                using (XmlWriter writer = XmlWriter.Create(sww))
+                {
+                    xsSubmit.Serialize(writer, subReq);
+                    xml = sww.ToString(); // Your XML
+                }
+            }
+
+            Logger.AddInfo(xml);
 
             var output = reference.OrdenTrabajoEstadoModificarOp(input);
 
@@ -201,6 +218,21 @@ namespace Assurant.ElitaPlus.External.Falabella
 
             try
             {
+                XmlSerializer xsSubmit = new XmlSerializer(input.GetType());
+                var subReq = input;
+                var xml = "";
+
+                using (var sww = new StringWriter())
+                {
+                    using (XmlWriter writer = XmlWriter.Create(sww))
+                    {
+                        xsSubmit.Serialize(writer, subReq);
+                        xml = sww.ToString(); // Your XML
+                    }
+                }
+
+                Logger.AddInfo(xml);
+
                 //web service call
                 Logger.AddInfo("InvokeFalabellaService new claim Calling web service");
                 var output = reference.ServicioTecnicoDatosCrearOp(input);
