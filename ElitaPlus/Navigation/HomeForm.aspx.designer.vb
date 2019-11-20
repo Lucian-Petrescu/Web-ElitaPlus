@@ -12,7 +12,7 @@ Option Explicit On
 
 
 Partial Public Class HomeForm
-
+    
     '''<summary>
     '''Form1 control.
     '''</summary>
@@ -21,7 +21,7 @@ Partial Public Class HomeForm
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
     Protected WithEvents Form1 As Global.System.Web.UI.HtmlControls.HtmlForm
-
+    
     '''<summary>
     '''txtNextPageID control.
     '''</summary>
@@ -30,7 +30,7 @@ Partial Public Class HomeForm
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
     Protected WithEvents txtNextPageID As Global.System.Web.UI.HtmlControls.HtmlInputHidden
-
+    
     '''<summary>
     '''imgCountryFlag control.
     '''</summary>
@@ -39,7 +39,7 @@ Partial Public Class HomeForm
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
     Protected WithEvents imgCountryFlag As Global.System.Web.UI.WebControls.Image
-
+    
     '''<summary>
     '''btnExit control.
     '''</summary>
@@ -48,7 +48,7 @@ Partial Public Class HomeForm
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
     Protected WithEvents btnExit As Global.System.Web.UI.WebControls.Button
-
+    
     '''<summary>
     '''cboLanguage control.
     '''</summary>
@@ -57,7 +57,7 @@ Partial Public Class HomeForm
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
     Protected WithEvents cboLanguage As Global.System.Web.UI.WebControls.DropDownList
-
+    
     '''<summary>
     '''lblLanguageTitle control.
     '''</summary>
@@ -66,7 +66,7 @@ Partial Public Class HomeForm
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
     Protected WithEvents lblLanguageTitle As Global.System.Web.UI.WebControls.Label
-
+    
     '''<summary>
     '''lblEnvTitle control.
     '''</summary>
@@ -75,7 +75,7 @@ Partial Public Class HomeForm
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
     Protected WithEvents lblEnvTitle As Global.System.Web.UI.WebControls.Label
-
+    
     '''<summary>
     '''lblEnvValue control.
     '''</summary>
@@ -84,7 +84,7 @@ Partial Public Class HomeForm
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
     Protected WithEvents lblEnvValue As Global.System.Web.UI.WebControls.Label
-
+    
     '''<summary>
     '''lblBuildTitle control.
     '''</summary>
@@ -93,7 +93,7 @@ Partial Public Class HomeForm
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
     Protected WithEvents lblBuildTitle As Global.System.Web.UI.WebControls.Label
-
+    
     '''<summary>
     '''lblBuildValue control.
     '''</summary>
@@ -102,7 +102,7 @@ Partial Public Class HomeForm
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
     Protected WithEvents lblBuildValue As Global.System.Web.UI.WebControls.Label
-
+    
     '''<summary>
     '''imgHomeSplash control.
     '''</summary>
@@ -111,7 +111,7 @@ Partial Public Class HomeForm
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
     Protected WithEvents imgHomeSplash As Global.System.Web.UI.WebControls.Image
-
+    
     '''<summary>
     '''Label12 control.
     '''</summary>
@@ -120,7 +120,16 @@ Partial Public Class HomeForm
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
     Protected WithEvents Label12 As Global.System.Web.UI.WebControls.Label
-
+    
+    '''<summary>
+    '''lblCopyright control.
+    '''</summary>
+    '''<remarks>
+    '''Auto-generated field.
+    '''To modify move field declaration from designer file to code-behind file.
+    '''</remarks>
+    Protected WithEvents lblCopyright As Global.System.Web.UI.WebControls.Label
+    
     '''<summary>
     '''Label1 control.
     '''</summary>

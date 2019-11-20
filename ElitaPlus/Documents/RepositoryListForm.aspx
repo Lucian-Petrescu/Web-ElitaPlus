@@ -17,6 +17,11 @@
                     <asp:Label ID="DescriptionLabel" runat="server">DESCRIPTION</asp:Label><br />
                     <asp:TextBox ID="DescriptionTextBox" runat="server" SkinID="MediumTextBox" />
                 </td>
+                <td>
+                    <asp:Label ID="RepositoryTypeLabel" runat="server">REPOSITORY TYPE</asp:Label><br />
+                    <asp:TextBox ID="RepositoryTypeTextBox" runat="server" SkinID="MediumTextBox" />
+                </td>
+
             </tr>
             <tr>
                 <td>
@@ -84,6 +89,14 @@
                     </ItemTemplate>
                     <EditItemTemplate>
                         <asp:TextBox ID="StoragePathTextBox" runat="server" SkinID="LargeTextBox" />
+                    </EditItemTemplate>
+                    </asp:TemplateField>
+                <asp:TemplateField Visible="True" HeaderText="REPOSITORY_TYPE" SortExpression="REPOSITORY_TYPE">
+                    <ItemTemplate>
+                         <asp:Label ID="RepositoryTypeLabel" runat="server" />
+                    </ItemTemplate>
+                    <EditItemTemplate>
+                        <asp:TextBox ID="RepositoryTypeTextBox" runat="server" SkinID="MediumTextBox" />
                     </EditItemTemplate>
                 </asp:TemplateField>
                 <asp:TemplateField ItemStyle-Width="50px">

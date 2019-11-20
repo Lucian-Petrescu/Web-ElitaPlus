@@ -20,7 +20,7 @@ Public Class ElitaReportBase
         cs.RegisterClientScriptInclude(SCRIPT_BLOCK, Request.ApplicationPath + REPORT_SCRIPTS)
 
         RegisterClientServerIds()
-
+        lblCopyrights.Text = "&copy;" + Date.Now.Year.ToString() + " Assurant. All rights reserved. "
     End Sub
 
     Public Overrides ReadOnly Property ErrController() As ErrorController

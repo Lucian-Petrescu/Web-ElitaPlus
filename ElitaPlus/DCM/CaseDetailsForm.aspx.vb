@@ -5,6 +5,10 @@
     Public Const NoData As String = " - "
     Public Const CaseDenedReasonInfoTab As Integer = 3
     Private Const OneSpace As String = " "
+    Public Const CaseInteractionGridColInteractionDateIdx As Integer = 9
+    Public Const CaseQuestionAnswerGridColCreationDateIdx As Integer = 3
+    Public Const CaseDeniedReasonsGridGridColCreatedDateIdx As Integer = 2
+    Public Const CaseActionGridColCreationDateIdx As Integer = 3
 #End Region
 #Region "Variables"
     Private _listDisabledTabs As New Collections.Generic.List(Of Integer)
@@ -245,6 +249,22 @@
             HandleErrors(ex, MasterPage.MessageController)
         End Try
     End Sub
+    Private Sub CaseInteractionGrid_RowDataBound(ByVal sender As Object, ByVal e As GridViewRowEventArgs) Handles CaseInteractionGrid.RowDataBound
+        Try
+            If (e.Row.RowType = DataControlRowType.DataRow) _
+                OrElse (e.Row.RowType = DataControlRowType.Separator) Then
+                Dim strInteractionDate As String = Convert.ToString(e.Row.Cells(CaseInteractionGridColInteractionDateIdx).Text)
+                strInteractionDate = strInteractionDate.Replace("&nbsp;", "")
+                If String.IsNullOrWhiteSpace(strInteractionDate) = False Then
+                    Dim tempInteractionDate = Convert.ToDateTime(e.Row.Cells(CaseInteractionGridColInteractionDateIdx).Text.Trim())
+                    Dim formattedInteractionDate = GetDateFormattedString(tempInteractionDate)
+                    e.Row.Cells(CaseInteractionGridColInteractionDateIdx).Text = Convert.ToString(formattedInteractionDate)
+                End If
+            End If
+        Catch ex As Exception
+            HandleErrors(ex, MasterPage.MessageController)
+        End Try
+    End Sub
     Private Sub PopulateActionGrid()
         Try
 
@@ -256,7 +276,7 @@
             lblActionRecordFound.Visible = True
 
             If State.CaseActionListDV.Count = 0 Then
-                lblActionRecordFound.Text = State.CaseActionListDV.Count & OneSpace  & TranslationBase.TranslateLabelOrMessage(Message.MSG_RECORDS_FOUND)
+                lblActionRecordFound.Text = State.CaseActionListDv.Count & OneSpace & TranslationBase.TranslateLabelOrMessage(Message.MSG_RECORDS_FOUND)
             Else
                 CaseActionGrid.DataSource = State.CaseActionListDV
                 State.CaseActionListDV.Sort = State.SortExpression
@@ -273,6 +293,22 @@
                 ControlMgr.SetVisibleControl(Me, CaseActionGrid, False)
                 lblActionRecordFound.Visible = False
             End If
+            HandleErrors(ex, MasterPage.MessageController)
+        End Try
+    End Sub
+    Private Sub CaseActionGrid_RowDataBound(ByVal sender As Object, ByVal e As GridViewRowEventArgs) Handles CaseActionGrid.RowDataBound
+        Try
+            If (e.Row.RowType = DataControlRowType.DataRow) _
+                OrElse (e.Row.RowType = DataControlRowType.Separator) Then
+                Dim strCreationDate As String = Convert.ToString(e.Row.Cells(CaseActionGridColCreationDateIdx).Text)
+                strCreationDate = strCreationDate.Replace("&nbsp;", "")
+                If String.IsNullOrWhiteSpace(strCreationDate) = False Then
+                    Dim tempCreationDate = Convert.ToDateTime(e.Row.Cells(CaseActionGridColCreationDateIdx).Text.Trim())
+                    Dim formattedCreationDate = GetDateFormattedString(tempCreationDate)
+                    e.Row.Cells(CaseActionGridColCreationDateIdx).Text = Convert.ToString(formattedCreationDate)
+                End If
+            End If
+        Catch ex As Exception
             HandleErrors(ex, MasterPage.MessageController)
         End Try
     End Sub
@@ -305,7 +341,22 @@
             HandleErrors(ex, MasterPage.MessageController)
         End Try
     End Sub
-
+    Private Sub CaseQuestionAnswerGrid_RowDataBound(ByVal sender As Object, ByVal e As GridViewRowEventArgs) Handles CaseQuestionAnswerGrid.RowDataBound
+        Try
+            If (e.Row.RowType = DataControlRowType.DataRow) _
+                OrElse (e.Row.RowType = DataControlRowType.Separator) Then
+                Dim strCreationDate As String = Convert.ToString(e.Row.Cells(CaseQuestionAnswerGridColCreationDateIdx).Text)
+                strCreationDate = strCreationDate.Replace("&nbsp;", "")
+                If String.IsNullOrWhiteSpace(strCreationDate) = False Then
+                    Dim tempCreationDate = Convert.ToDateTime(e.Row.Cells(CaseQuestionAnswerGridColCreationDateIdx).Text.Trim())
+                    Dim formattedCreationDate = GetDateFormattedString(tempCreationDate)
+                    e.Row.Cells(CaseQuestionAnswerGridColCreationDateIdx).Text = Convert.ToString(formattedCreationDate)
+                End If
+            End If
+        Catch ex As Exception
+            HandleErrors(ex, MasterPage.MessageController)
+        End Try
+    End Sub
     Private Sub PopulateDeniedReasonsGrid()
         Try
 
@@ -315,10 +366,8 @@
 
             lblDeniedReasonsRecordFound.Visible = True
 
-            If State.CaseDeniedReasonsListDV.Count = 0 Then
-                'lblDeniedReasonsRecordFound.Text = State.CaseDeniedReasonsListDV.Count & " " & TranslationBase.TranslateLabelOrMessage(Message.MSG_RECORDS_FOUND)
-                'ControlMgr.SetVisibleControl(Me, CaseDeniedReasonsGrid, False)
-                EnableTab(CaseDenedReasonInfoTab, false)
+            If State.CaseDeniedReasonsListDv.Count = 0 Then
+                EnableTab(CaseDenedReasonInfoTab, False)
             Else
                 CaseDeniedReasonsGrid.DataSource = State.CaseDeniedReasonsListDV
                 State.CaseDeniedReasonsListDV.Sort = State.SortExpression
@@ -327,7 +376,7 @@
                 lblDeniedReasonsRecordFound.Text = State.CaseDeniedReasonsListDV.Count & OneSpace & TranslationBase.TranslateLabelOrMessage(Message.MSG_RECORDS_FOUND)
                 ControlMgr.SetVisibleControl(Me, CaseDeniedReasonsGrid, True)
             End If
-            
+
 
         Catch ex As Exception
             Dim getExceptionType As String = ex.GetBaseException.GetType().Name
@@ -338,22 +387,39 @@
             HandleErrors(ex, MasterPage.MessageController)
         End Try
     End Sub
+    Private Sub CaseDeniedReasonsGrid_RowDataBound(ByVal sender As Object, ByVal e As GridViewRowEventArgs) Handles CaseDeniedReasonsGrid.RowDataBound
+        Try
+            If (e.Row.RowType = DataControlRowType.DataRow) _
+                OrElse (e.Row.RowType = DataControlRowType.Separator) Then
+                Dim strCreatedDate As String = Convert.ToString(e.Row.Cells(CaseDeniedReasonsGridGridColCreatedDateIdx).Text)
+                strCreatedDate = strCreatedDate.Replace("&nbsp;", "")
+                If String.IsNullOrWhiteSpace(strCreatedDate) = False Then
+                    Dim tempCreatedDate = Convert.ToDateTime(e.Row.Cells(CaseDeniedReasonsGridGridColCreatedDateIdx).Text.Trim())
+                    Dim formattedCreatedDate = GetDateFormattedString(tempCreatedDate)
+                    e.Row.Cells(CaseDeniedReasonsGridGridColCreatedDateIdx).Text = Convert.ToString(formattedCreatedDate)
+                End If
+            End If
+        Catch ex As Exception
+            HandleErrors(ex, MasterPage.MessageController)
+        End Try
+    End Sub
+
     Private Sub PopulateCaseNotesGrid()
         Try
-            If (State.CaseNotesListDV Is Nothing) Then
-                State.CaseNotesListDV = CaseBase.GetCaseNotesList(State.MyBO.Id)
+            If (State.CaseNotesListDv Is Nothing) Then
+                State.CaseNotesListDv = CaseBase.GetCaseNotesList(State.MyBo.Id)
             End If
 
             LabelCaseNotesRecordFound.Visible = True
 
-            If State.CaseNotesListDV.Count = 0 Then
-                LabelCaseNotesRecordFound.Text = State.CaseNotesListDV.Count & OneSpace & TranslationBase.TranslateLabelOrMessage(Message.MSG_RECORDS_FOUND)
+            If State.CaseNotesListDv.Count = 0 Then
+                LabelCaseNotesRecordFound.Text = State.CaseNotesListDv.Count & OneSpace & TranslationBase.TranslateLabelOrMessage(Message.MSG_RECORDS_FOUND)
             Else
-                GridViewCaseNotes.DataSource = State.CaseNotesListDV
-                State.CaseNotesListDV.Sort = State.SortExpression
+                GridViewCaseNotes.DataSource = State.CaseNotesListDv
+                State.CaseNotesListDv.Sort = State.SortExpression
                 HighLightSortColumn(GridViewCaseNotes, State.SortExpression, IsNewUI)
                 GridViewCaseNotes.DataBind()
-                LabelCaseNotesRecordFound.Text = State.CaseNotesListDV.Count & OneSpace & TranslationBase.TranslateLabelOrMessage(Message.MSG_RECORDS_FOUND)
+                LabelCaseNotesRecordFound.Text = State.CaseNotesListDv.Count & OneSpace & TranslationBase.TranslateLabelOrMessage(Message.MSG_RECORDS_FOUND)
             End If
 
             ControlMgr.SetVisibleControl(Me, GridViewCaseNotes, True)

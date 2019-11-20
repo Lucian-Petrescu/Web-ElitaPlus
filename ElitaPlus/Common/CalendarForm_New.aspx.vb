@@ -107,11 +107,12 @@ Partial Class CalendarForm_New
             End If
 
             If Not dateParam Is Nothing AndAlso dateParam <> "" Then
-                'Fix for Japan date control-------------------------------
-                Dim formatProvider = LocalizationMgr.CurrentFormatProvider
+                'Fix for Japan date control-------------------------------               
+                Dim formatProvider = System.Threading.Thread.CurrentThread.CurrentCulture
                 If formatProvider.Name.Equals("ja-JP") Then
-                    Dim dateFragments() As String = dateParam.Split("-")
-                    MyCalendar.SelectedDate = New DateTime(Integer.Parse(dateFragments(2)), Integer.Parse(dateFragments(1)), Integer.Parse(dateFragments(0))).Date
+                    dateParam = Convert.ToDateTime(dateParam, System.Globalization.CultureInfo.GetCultureInfo("ja-JP").DateTimeFormat)
+                    Dim dateFragments() As String = dateParam.Split("/")
+                    MyCalendar.SelectedDate = New DateTime(Integer.Parse(dateFragments(0)), Integer.Parse(dateFragments(1)), Integer.Parse(dateFragments(2))).Date
                 Else
                     Me.MyCalendar.SelectedDate = DateHelper.GetDateValue(dateParam)
                 End If
@@ -280,10 +281,12 @@ Partial Class CalendarForm_New
 
         If Not selectedDate Is Nothing AndAlso selectedDate <> "" Then
             'Fix for Japan date control-------------------------------
-            Dim formatProvider = LocalizationMgr.CurrentFormatProvider
+            Dim formatProvider = System.Threading.Thread.CurrentThread.CurrentCulture
+
             If formatProvider.Name.Equals("ja-JP") Then
-                Dim dateFragments() As String = selectedDate.Split("-")
-                ValidateYear(New DateTime(Integer.Parse(dateFragments(2)), Integer.Parse(dateFragments(1)), Integer.Parse(dateFragments(0))).Year.ToString())
+                selectedDate = Convert.ToDateTime(selectedDate, System.Globalization.CultureInfo.GetCultureInfo("ja-JP").DateTimeFormat)
+                Dim dateFragments() As String = selectedDate.Split("/")
+                ValidateYear(New DateTime(Integer.Parse(dateFragments(0)), Integer.Parse(dateFragments(1)), Integer.Parse(dateFragments(2))).Year.ToString())
             Else
                 'vcp commented out the original code because it will cause exception if the year is beyond the range.
                 ValidateYear(DateHelper.GetDateValue(selectedDate).Year.ToString())
@@ -301,15 +304,11 @@ Partial Class CalendarForm_New
 
         If Not selectedDate Is Nothing AndAlso selectedDate <> "" Then
             'Fix for Japan date control-------------------------------
-            Dim formatProvider = LocalizationMgr.CurrentFormatProvider
+            Dim formatProvider = System.Threading.Thread.CurrentThread.CurrentCulture
             If formatProvider.Name.Equals("ja-JP") Then
-                Dim dateFragments() As String = selectedDate.Split("-")
-
-                'dim v1 As DateTime = New DateTime(Integer.Parse(dateFragments(2)), Integer.Parse(dateFragments(1)), Integer.Parse(dateFragments(0)))
-                'Dim v2 = v1.Date.ToString("MMM", formatProvider)
-
-                cboMonthList.Items.FindByText(New DateTime(Integer.Parse(dateFragments(2)), Integer.Parse(dateFragments(1)), Integer.Parse(dateFragments(0))).Date.ToString("MMM", formatProvider)).Selected = True
-                'cboMonthList.Items.FindByText(v2).Selected = True
+                selectedDate = Convert.ToDateTime(selectedDate, System.Globalization.CultureInfo.GetCultureInfo("ja-JP").DateTimeFormat)
+                Dim dateFragments() As String = selectedDate.Split("/")
+                cboMonthList.Items.FindByText(New DateTime(Integer.Parse(dateFragments(0)), Integer.Parse(dateFragments(1)), Integer.Parse(dateFragments(2))).Date.ToString("MMM", formatProvider)).Selected = True
             Else
                 Me.cboMonthList.Items.FindByText(DateHelper.GetDateValue(selectedDate).ToString("MMM", LocalizationMgr.CurrentFormatProvider)).Selected = True
             End If

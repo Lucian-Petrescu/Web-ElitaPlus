@@ -3417,6 +3417,7 @@ Public NotInheritable Class LookupListNew
         Dim dv As DataView = FilteredParamView(LK_ISSUE_TYPE_LIST, String.Empty, params)
         Return (dv)
     End Function
+
     Public Shared Function GetIssueTypeCodeFromId(ByVal listName As String, ByVal id As Guid) As String
         Dim dv As DataView = DataView(listName)
         Dim i As Integer
@@ -3424,6 +3425,19 @@ Public NotInheritable Class LookupListNew
         For i = 0 To dv.Count - 1
             If New Guid(CType(dv(i)(LookupListNew.COL_ID_NAME), Byte())).Equals(id) Then
                 Return dv(i)(LookupListNew.COL_CODE_NAME).ToString
+            End If
+        Next
+
+        Return Nothing
+    End Function
+
+    Public Shared Function GetIssueTypeIdFromCode(ByVal listName As String, ByVal code As String) As Guid
+        Dim dv As DataView = DataView(listName)
+        Dim i As Integer
+
+        For i = 0 To dv.Count - 1
+            If dv(i)(LookupListNew.COL_CODE_NAME).ToString.Equals(code) Then
+                Return New Guid(CType(dv(i)(LookupListNew.COL_ID_NAME), Byte()))
             End If
         Next
 
@@ -3867,6 +3881,12 @@ Public NotInheritable Class LookupListNew
         Dim dv As DataView = FilteredParamView(LK_GET_COMPANY_GROUPS, Nothing, params)
 
         Return (dv)
+
+    End Function
+
+    Public Shared Function GetPayDeductLookupList(ByVal languageId As Guid, Optional ByVal displayNothingSelected As Boolean = True) As DataView
+
+        Return DropdownLookupList("CLAIM_PAY_DEDUCTIBLE", languageId, displayNothingSelected)
 
     End Function
 End Class

@@ -478,13 +478,35 @@ Public NotInheritable Class ClaimAuthorization
         End Set
     End Property
     Public _reversed As boolean = False
-    Public Property Reversed() As boolean    
+    Public Property Reversed() As Boolean
         Get
             Return _reversed
         End Get
-        Set(ByVal value As boolean)
+        Set(ByVal value As Boolean)
             _reversed = value
-        End Set   
+        End Set
+    End Property
+
+    Public ReadOnly Property AuthorizationAmount() As DecimalType
+        Get
+            CheckDeleted()
+            If Row(ClaimAuthorizationDAL.COL_NAME_AUTHORIZAION_AMOUNT) Is DBNull.Value Then
+                Return Nothing
+            Else
+                Return New DecimalType(CType(Row(ClaimAuthorizationDAL.COL_NAME_AUTHORIZAION_AMOUNT), Decimal))
+            End If
+        End Get
+    End Property
+
+    Public ReadOnly Property ServiceOrderType() As String
+        Get
+            CheckDeleted()
+            If Row(ClaimAuthorizationDAL.COL_NAME_SERVICE_ORDER_TYPE) Is DBNull.Value Then
+                Return Nothing
+            Else
+                Return CType(Row(ClaimAuthorizationDAL.COL_NAME_SERVICE_ORDER_TYPE), String)
+            End If
+        End Get
     End Property
 
     Public Property ClaimAuthStatus() As ClaimAuthorizationStatus
@@ -1844,7 +1866,7 @@ Public NotInheritable Class ClaimAuthorization
             Dim obj As ClaimAuthorization = CType(objectToValidate, ClaimAuthorization)
             If obj.ClaimAuthStatus <> ClaimAuthorizationStatus.Void Then
                 obj.ContainsDeductible = obj.ContainsDeductibleLineItem
-                If obj.ContainsDeductible AndAlso obj.Claim.Dealer.PayDeductibleId = LookupListNew.GetIdFromCode(LookupListNew.GetYesNoLookupList(Authentication.LangId), "Y") Then
+                If obj.ContainsDeductible AndAlso obj.Claim.Dealer.PayDeductibleId = LookupListNew.GetIdFromCode(LookupListNew.GetPayDeductLookupList(Authentication.LangId), Codes.AUTH_LESS_DEDUCT_Y) Then
                     Dim hasDeductibleLineItem As Boolean = obj.ClaimAuthorizationItemChildren.Where(Function(i) i.IsDeleted = False AndAlso
                                                                                                        (i.ServiceClassCode = Codes.SERVICE_CLASS__DEDUCTIBLE And
                                                                                                         i.ServiceTypeCode = Codes.SERVICE_TYPE__PAY_DEDUCTIBLE)).Count > 0
@@ -1867,7 +1889,7 @@ Public NotInheritable Class ClaimAuthorization
 
             If obj.ClaimAuthStatus <> ClaimAuthorizationStatus.Void Then
                 obj.ContainsDeductible = obj.ContainsDeductibleLineItem
-                If obj.ContainsDeductible AndAlso obj.Claim.Dealer.PayDeductibleId = LookupListNew.GetIdFromCode(LookupListNew.GetYesNoLookupList(Authentication.LangId), "Y") Then
+                If obj.ContainsDeductible AndAlso obj.Claim.Dealer.PayDeductibleId = LookupListNew.GetIdFromCode(LookupListNew.GetPayDeductLookupList(Authentication.LangId), Codes.AUTH_LESS_DEDUCT_Y) Then
                     Dim flag As Boolean = obj.ClaimAuthorizationItemChildren.Where(Function(i) i.IsDeleted = False AndAlso
                                                                                                        (i.ServiceClassCode = Codes.SERVICE_CLASS__DEDUCTIBLE And
                                                                                                         i.ServiceTypeCode = Codes.SERVICE_TYPE__PAY_DEDUCTIBLE) _

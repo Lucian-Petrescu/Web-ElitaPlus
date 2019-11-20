@@ -323,7 +323,7 @@ Public Class ProcessEmail
 
 
                 Dim soController As New ServiceOrderController
-                Dim strReportName As String = HttpContext.Current.Request.ApplicationPath + "/Reports/" + soController.GenerateReportName(ServiceOrderBO.ClaimId) + ".xslt"
+                Dim strReportName As String = HttpContext.Current.Request.ApplicationPath + "/Reports/" + soController.GenerateReportName(ServiceOrderBO.ClaimId, ServiceOrderBO.ClaimAuthorizationId) + ".xslt"
 
                 If Not System.IO.File.Exists(HttpContext.Current.Server.MapPath(strReportName)) Then
                     'To Do - Display error message on UI.
@@ -354,7 +354,7 @@ Public Class ProcessEmail
 
 
                 Dim soController As New ServiceOrderController
-                Dim strReportName As String = HttpContext.Current.Request.ApplicationPath + "/Reports/" + soController.GenerateReportName(ServiceOrderBO.ClaimId) + ".xslt"
+                Dim strReportName As String = HttpContext.Current.Request.ApplicationPath + "/Reports/" + soController.GenerateReportName(ServiceOrderBO.ClaimId, ServiceOrderBO.ClaimAuthorizationId) + ".xslt"
 
                 If Not System.IO.File.Exists(HttpContext.Current.Server.MapPath(strReportName)) Then
                     'To Do - Display error message on UI.
@@ -584,7 +584,7 @@ Public Class ProcessCustomerEmail
 
 
                 Dim soController As New ServiceOrderController
-                Dim strReportName As String = HttpContext.Current.Request.ApplicationPath + "/Reports/" + soController.GenerateReportName(ServiceOrderBO.ClaimId) + ".xslt"
+                Dim strReportName As String = HttpContext.Current.Request.ApplicationPath + "/Reports/" + soController.GenerateReportName(ServiceOrderBO.ClaimId, ServiceOrderBO.ClaimAuthorizationId) + ".xslt"
 
                 If Not System.IO.File.Exists(HttpContext.Current.Server.MapPath(strReportName)) Then
                     'To Do - Display error message on UI.
@@ -613,7 +613,7 @@ Public Class ProcessCustomerEmail
 
 
                 Dim soController As New ServiceOrderController
-                Dim strReportName As String = HttpContext.Current.Request.ApplicationPath + "/Reports/" + soController.GenerateReportName(ServiceOrderBO.ClaimId) + ".xslt"
+                Dim strReportName As String = HttpContext.Current.Request.ApplicationPath + "/Reports/" + soController.GenerateReportName(ServiceOrderBO.ClaimId, ServiceOrderBO.ClaimAuthorizationId) + ".xslt"
 
                 If Not System.IO.File.Exists(HttpContext.Current.Server.MapPath(strReportName)) Then
                     'To Do - Display error message on UI.
@@ -844,7 +844,7 @@ Public Class ProcessSalvageCenterEmail
 
 
                 Dim soController As New ServiceOrderController
-                Dim strReportName As String = HttpContext.Current.Request.ApplicationPath + "/Reports/" + soController.GenerateReportName(ServiceOrderBO.ClaimId) + ".xslt"
+                Dim strReportName As String = HttpContext.Current.Request.ApplicationPath + "/Reports/" + soController.GenerateReportName(ServiceOrderBO.ClaimId, ServiceOrderBO.ClaimAuthorizationId) + ".xslt"
 
                 If Not System.IO.File.Exists(HttpContext.Current.Server.MapPath(strReportName)) Then
                     'To Do - Display error message on UI.
@@ -875,7 +875,7 @@ Public Class ProcessSalvageCenterEmail
 
 
                 Dim soController As New ServiceOrderController
-                Dim strReportName As String = HttpContext.Current.Request.ApplicationPath + "/Reports/" + soController.GenerateReportName(ServiceOrderBO.ClaimId) + ".xslt"
+                Dim strReportName As String = HttpContext.Current.Request.ApplicationPath + "/Reports/" + soController.GenerateReportName(ServiceOrderBO.ClaimId, ServiceOrderBO.ClaimAuthorizationId) + ".xslt"
 
                 If Not System.IO.File.Exists(HttpContext.Current.Server.MapPath(strReportName)) Then
                     'To Do - Display error message on UI.

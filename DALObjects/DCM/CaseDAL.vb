@@ -400,7 +400,7 @@ Public Class CaseDAL
     End Function
 
 
-    Public Function GetQuestionSetCode(companyGroupId As Guid, companyId As Guid, dealerId As Guid, productCodeId As Guid,
+    Public Function GetQuestionSetCode(companyGroupId As Guid, companyId As Guid, dealerId As Guid, dealerGroupID As Guid, productCodeId As Guid,
                                        riskTypeId As Guid, deviceTypeId As Guid,
                                        coverageTypeId As Guid, coverageConseqDamageId As Guid, purposeCode As String) As String
         Dim selectStmt As String = Config("/SQL/GET_QUESTION_SET_CODE")
@@ -415,6 +415,8 @@ Public Class CaseDAL
         param = New DBHelper.DBHelperParameter("pi_company_id", companyId.ToByteArray)
         inParameters.Add(param)
         param = New DBHelper.DBHelperParameter("pi_dealer_id", dealerId.ToByteArray)
+        inParameters.Add(param)
+        param = New DBHelper.DBHelperParameter("pi_dealer_group_id", dealerGroupID.ToByteArray)
         inParameters.Add(param)
         param = New DBHelper.DBHelperParameter("pi_product_code_id", productCodeId.ToByteArray)
         inParameters.Add(param)

@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xs:schema xmlns:tns="http://assurant.com/Elita/ClaimFulfillment/WebAppGateway" elementFormDefault="qualified" targetNamespace="http://assurant.com/Elita/ClaimFulfillment/WebAppGateway" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+  <xs:import schemaLocation="http://l16mia0d8113qr8/ElitaClaimFulfillment/WebAppGateway/gateway?xsd=xsd2" namespace="http://assurant.com/Elita/ClaimFulfillment/WebAppGateway/Data" />
+  <xs:import schemaLocation="http://l16mia0d8113qr8/ElitaClaimFulfillment/WebAppGateway/gateway?xsd=xsd4" namespace="http://assurant.com/Elita/ClaimFulfillment/Data" />
+  <xs:element name="GetDeliverySlots">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element xmlns:q1="http://assurant.com/Elita/ClaimFulfillment/WebAppGateway/Data" minOccurs="0" name="request" nillable="true" type="q1:GetDeliverySlotsRequest" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="GetDeliverySlotsResponse">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element xmlns:q2="http://assurant.com/Elita/ClaimFulfillment/WebAppGateway/Data" minOccurs="0" name="GetDeliverySlotsResult" nillable="true" type="q2:GetDeliverySlotsResponse" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="CustomerDecision">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element xmlns:q3="http://assurant.com/Elita/ClaimFulfillment/WebAppGateway/Data" minOccurs="0" name="request" nillable="true" type="q3:CustomerDecisionRequest" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="CustomerDecisionResponse">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element xmlns:q4="http://assurant.com/Elita/ClaimFulfillment/WebAppGateway/Data" minOccurs="0" name="CustomerDecisionResult" nillable="true" type="q4:CustomerDecisionResponse" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="GetFulfillmentDetails">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element xmlns:q5="http://assurant.com/Elita/ClaimFulfillment/WebAppGateway/Data" minOccurs="0" name="request" nillable="true" type="q5:GetFulfillmentDetailsRequest" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="GetFulfillmentDetailsResponse">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element xmlns:q6="http://assurant.com/Elita/ClaimFulfillment/WebAppGateway/Data" minOccurs="0" name="GetFulfillmentDetailsResult" nillable="true" type="q6:FulfillmentDetails" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="BeginFulfillment">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element xmlns:q7="http://assurant.com/Elita/ClaimFulfillment/WebAppGateway/Data" minOccurs="0" name="request" nillable="true" type="q7:BeginFulfillmentRequest" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="BeginFulfillmentResponse">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element xmlns:q8="http://assurant.com/Elita/ClaimFulfillment/WebAppGateway/Data" minOccurs="0" name="BeginFulfillmentResult" nillable="true" type="q8:BeginFulfillmentResponse" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="SearchServiceCenters">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element xmlns:q9="http://assurant.com/Elita/ClaimFulfillment/Data" minOccurs="0" name="request" nillable="true" type="q9:FulfillmentServiceCentersRequest" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="SearchServiceCentersResponse">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element xmlns:q10="http://assurant.com/Elita/ClaimFulfillment/Data" minOccurs="0" name="SearchServiceCentersResult" nillable="true" type="q10:ArrayOfFulfillmentServicesCenter" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+</xs:schema>

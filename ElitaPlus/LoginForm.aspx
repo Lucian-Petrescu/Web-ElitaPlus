@@ -31,7 +31,7 @@
                 <td nowrap valign="top" bgcolor="#d5d7e4" width="100%" background="Navigation/images/login_spacer.gif"
                     height="92">
                     <asp:Label ID="lblApplicationInstanceName" Style="left: 100px; position: absolute; top: 20px"
-                        runat="server" ForeColor="#63648d"><%--(Development Environment)--%></asp:Label>
+                        runat="server" ForeColor="#63648d">(Development Environment)</asp:Label>
                     <img height="92" src="Navigation/images/trans_spacer.gif" width="100%"></td>
                 <td nowrap valign="top" align="right">
                     <img height="92" src="Navigation/images/login_header.gif"></td>
@@ -60,7 +60,7 @@
                                             <table cellspacing="0" cellpadding="0" width="100%" border="0">
                                                 <tr>
                                                     <td>
-                                                        <asp:Label ID="lblLogin" runat="server"><%--Development Environment Login--%></asp:Label></td>
+                                                        <asp:Label ID="lblLogin" runat="server">Development Environment Login</asp:Label></td>
                                                     <td align="right">&nbsp;</td>
                                                 </tr>
                                             </table>
@@ -68,42 +68,31 @@
                                     </tr>
                                     <tr>
                                         <td align="center">
-                                            <table cellspacing="2" cellpadding="2" width="80%" border="0">
-                                                <%--<tr>
-                                                        <td align="right" nowrap><asp:label id="lblUserName" runat="server">User Id:&nbsp;&nbsp;</asp:label></td>
-                                                        <td><asp:textbox id="TextBoxUserId" runat="server" Width="165px"></asp:textbox></td>
-                                                    </tr>--%>
+                                            <table cellspacing="2" cellpadding="2" width="50%" border="0">
+                                                <tr>
+                                                    <td align="right" nowrap>
+                                                        <asp:Label ID="lblUserName" runat="server">User Id:&nbsp;&nbsp;</asp:Label></td>
+                                                    <td>
+                                                        <asp:TextBox ID="TextBoxUserId" runat="server" Width="165px"></asp:TextBox></td>
+                                                </tr>
                                                 <!--<tr>
                                                         <td align="right"><asp:label id="lblPassword" runat="server">Password:&nbsp;&nbsp;</asp:label></td>
                                                         <td><asp:textbox id="txtPassword" runat="server" Width="165px" TextMode="Password"></asp:textbox></td>
                                                     </tr>-->
                                                 <tr>
                                                     <td>&nbsp;</td>
-                                                    <td>
-                                                        <asp:Label ID="lblMessage" runat="server" ForeColor="red"></asp:Label></td>
+                                                    <td align="center">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<asp:ImageButton ID="ButtonOk" runat="server" Style="cursor: hand;" ImageUrl="Navigation/images/loginBtnUp.gif"></asp:ImageButton></td>
                                                 </tr>
                                                 <tr>
                                                     <td>&nbsp;</td>
-                                                    <td align="center">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<asp:ImageButton ID="ButtonOk" runat="server" Style="cursor: hand;" ImageUrl="Navigation/images/loginBtnUp.gif"></asp:ImageButton></td>
+                                                    <td>
+                                                        <asp:Label ID="lblMessage" runat="server" ForeColor="red"></asp:Label></td>
                                                 </tr>
                                             </table>
                                         </td>
                                     </tr>
                                 </table>
                                 <br>
-                                <table cellspacing="0" cellpadding="0" align="center" border="0">
-                                    <tr>
-                                        <td align="center">
-                                            <p>
-                                                <font color="gray">* This site has been optimized for Internet Explorer.</font>
-                                                <!--<br>
-                                                    <br>
-                                                    <img alt="IE" src="images/IElogo.gif" border="0"></p>
-                                                <p align="center">&nbsp;</p>-->
-                                            </p>
-                                        </td>
-                                    </tr>
-                                </table>
                             </td>
                         </tr>
                         <!--<tr>
@@ -130,8 +119,7 @@
             <tr>
                 <td align="right" valign="bottom" colspan="2">
                     <img src="Navigation/images/trans_spacer.gif" width="1">
-                    <font color="gray">All 
-                            rights reserved. ©2018 Assurant Solutions.</font>
+                    <font color="gray"><%="&copy;" & DateTime.Now.Year %> Assurant. All rights reserved.</font>
                 </td>
             </tr>
         </table>

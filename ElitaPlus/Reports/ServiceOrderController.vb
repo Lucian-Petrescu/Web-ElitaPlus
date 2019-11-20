@@ -54,7 +54,7 @@ Public Class ServiceOrderController
 
     '08/28/2006 - ALR - Added method to get the required report name if we are using an xml transformation
     '                   rather than creating the PDF report
-    Public Function GenerateReportName(ByVal claimId As Guid) As String
+    Public Function GenerateReportName(ByVal claimId As Guid, ByVal claimAuthorizationId As Guid) As String
 
         Dim claimBO As ClaimBase = ClaimFacade.Instance.GetClaim(Of ClaimBase)(claimId)
         Dim sActivityCode As String
@@ -62,6 +62,14 @@ Public Class ServiceOrderController
         Dim companyId As Guid = oCompany.Id
         Dim compCode As String = LookupListNew.GetCodeFromId("COMPANIES", companyId)
         Dim rprCode As String = claimBO.MethodOfRepairCode
+
+        Dim claimAuthorizationBO As ClaimAuthorization
+        Dim serviceOrderType As String
+
+        If Not (claimAuthorizationId.Equals(Guid.Empty)) Then
+            claimAuthorizationBO = New ClaimAuthorization(claimAuthorizationId)
+            serviceOrderType = claimAuthorizationBO.ServiceOrderType
+        End If
 
         'TODO -- FIX THIS!!!!!  REMOVE HARD_CODING IN CODE-BEHIND!
         ' Exception by Company
@@ -77,22 +85,35 @@ Public Class ServiceOrderController
 
         sActivityCode = claimBO.ClaimActivityCode
 
-        Return GenerateReportName(sActivityCode, compCode, rprCode)
+        Return GenerateReportName(sActivityCode, compCode, rprCode, serviceOrderType)
 
     End Function
 
-    Private Function GenerateReportName(ByVal sActivityCode As String, ByVal compCode As String, Optional ByVal RepairCode As String = "") As String
+    Private Function GenerateReportName(ByVal sActivityCode As String,
+                                        ByVal compCode As String,
+                                        Optional ByVal RepairCode As String = "",
+                                        Optional ByVal ServiceOrderType As String = Nothing) As String
 
         Dim strReportType, strReport As String
 
-        Select Case sActivityCode
-            Case CLAIM_ACTIVITY__REWORK
-                strReportType = SERVICE_WARRANTY
-            Case CLAIM_ACTIVITY__REPLACED, CLAIM_ACTIVITY__PENDING_REPLACEMENT
-                strReportType = REPLACEMENT_ORDER
-            Case Else
-                strReportType = SERVICE_ORDER
-        End Select
+        If ServiceOrderType.Trim.Length > 0 Then
+            Select Case ServiceOrderType
+                Case CLAIM_SERVICE_ORDER_TYPE_REPLACEMENT
+                    strReportType = REPLACEMENT_ORDER
+                Case Else
+                    strReportType = SERVICE_ORDER
+            End Select
+        Else
+            Select Case sActivityCode
+                Case CLAIM_ACTIVITY__REWORK
+                    strReportType = SERVICE_WARRANTY
+                Case CLAIM_ACTIVITY__REPLACED, CLAIM_ACTIVITY__PENDING_REPLACEMENT
+                    strReportType = REPLACEMENT_ORDER
+                Case Else
+                    strReportType = SERVICE_ORDER
+            End Select
+
+        End If
 
         strReport = strReportType & "_" & compCode
         If RepairCode.Trim.Length > 0 Then

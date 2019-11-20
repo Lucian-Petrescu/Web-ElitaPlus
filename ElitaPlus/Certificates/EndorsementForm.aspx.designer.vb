@@ -49,7 +49,79 @@ Namespace Certificates
         '''To modify move field declaration from designer file to code-behind file.
         '''</remarks>
         Protected WithEvents TextboxCustomerName As Global.System.Web.UI.WebControls.TextBox
-
+        
+        '''<summary>
+        '''moCustName1 control.
+        '''</summary>
+        '''<remarks>
+        '''Auto-generated field.
+        '''To modify move field declaration from designer file to code-behind file.
+        '''</remarks>
+        Protected WithEvents moCustName1 As Global.System.Web.UI.HtmlControls.HtmlTableRow
+        
+        '''<summary>
+        '''moCustomerFirstNameLabel control.
+        '''</summary>
+        '''<remarks>
+        '''Auto-generated field.
+        '''To modify move field declaration from designer file to code-behind file.
+        '''</remarks>
+        Protected WithEvents moCustomerFirstNameLabel As Global.System.Web.UI.WebControls.Label
+        
+        '''<summary>
+        '''moCustomerFirstNameText control.
+        '''</summary>
+        '''<remarks>
+        '''Auto-generated field.
+        '''To modify move field declaration from designer file to code-behind file.
+        '''</remarks>
+        Protected WithEvents moCustomerFirstNameText As Global.System.Web.UI.WebControls.TextBox
+        
+        '''<summary>
+        '''moCustomerMiddleNameLabel control.
+        '''</summary>
+        '''<remarks>
+        '''Auto-generated field.
+        '''To modify move field declaration from designer file to code-behind file.
+        '''</remarks>
+        Protected WithEvents moCustomerMiddleNameLabel As Global.System.Web.UI.WebControls.Label
+        
+        '''<summary>
+        '''moCustomerMiddleNameText control.
+        '''</summary>
+        '''<remarks>
+        '''Auto-generated field.
+        '''To modify move field declaration from designer file to code-behind file.
+        '''</remarks>
+        Protected WithEvents moCustomerMiddleNameText As Global.System.Web.UI.WebControls.TextBox
+        
+        '''<summary>
+        '''moCustName2 control.
+        '''</summary>
+        '''<remarks>
+        '''Auto-generated field.
+        '''To modify move field declaration from designer file to code-behind file.
+        '''</remarks>
+        Protected WithEvents moCustName2 As Global.System.Web.UI.HtmlControls.HtmlTableRow
+        
+        '''<summary>
+        '''moCustomerLastNameLabel control.
+        '''</summary>
+        '''<remarks>
+        '''Auto-generated field.
+        '''To modify move field declaration from designer file to code-behind file.
+        '''</remarks>
+        Protected WithEvents moCustomerLastNameLabel As Global.System.Web.UI.WebControls.Label
+        
+        '''<summary>
+        '''moCustomerLastNameText control.
+        '''</summary>
+        '''<remarks>
+        '''Auto-generated field.
+        '''To modify move field declaration from designer file to code-behind file.
+        '''</remarks>
+        Protected WithEvents moCustomerLastNameText As Global.System.Web.UI.WebControls.TextBox
+        
         '''<summary>
         '''LabelHomePhone control.
         '''</summary>
@@ -57,14 +129,6 @@ Namespace Certificates
         '''Auto-generated field.
         '''To modify move field declaration from designer file to code-behind file.
         '''</remarks>
-        '''
-        Protected WithEvents moCustomerFirstNameLabel As Global.System.Web.UI.WebControls.Label
-        Protected WithEvents moCustomerFirstNameText As Global.System.Web.UI.WebControls.TextBox
-        Protected WithEvents moCustomerMiddleNameLabel As Global.System.Web.UI.WebControls.Label
-        Protected WithEvents moCustomerMiddleNameText As Global.System.Web.UI.WebControls.TextBox
-        Protected WithEvents moCustomerLastNameLabel As Global.System.Web.UI.WebControls.Label
-        Protected WithEvents moCustomerLastNameText As Global.System.Web.UI.WebControls.TextBox
-
         Protected WithEvents LabelHomePhone As Global.System.Web.UI.WebControls.Label
         
         '''<summary>
@@ -293,15 +357,6 @@ Namespace Certificates
         Protected WithEvents LabelManufacturerTerm As Global.System.Web.UI.WebControls.Label
         
         '''<summary>
-        '''LabelWarrantySalesDate control.
-        '''</summary>
-        '''<remarks>
-        '''Auto-generated field.
-        '''To modify move field declaration from designer file to code-behind file.
-        '''</remarks>
-        Protected WithEvents LabelWarrantySalesDate As Global.System.Web.UI.WebControls.Label
-        
-        '''<summary>
         '''TextboxManufacturerTerm control.
         '''</summary>
         '''<remarks>
@@ -309,6 +364,33 @@ Namespace Certificates
         '''To modify move field declaration from designer file to code-behind file.
         '''</remarks>
         Protected WithEvents TextboxManufacturerTerm As Global.System.Web.UI.WebControls.TextBox
+        
+        '''<summary>
+        '''LabelClaimsExist control.
+        '''</summary>
+        '''<remarks>
+        '''Auto-generated field.
+        '''To modify move field declaration from designer file to code-behind file.
+        '''</remarks>
+        Protected WithEvents LabelClaimsExist As Global.System.Web.UI.WebControls.Label
+        
+        '''<summary>
+        '''moWarrantyInformation11 control.
+        '''</summary>
+        '''<remarks>
+        '''Auto-generated field.
+        '''To modify move field declaration from designer file to code-behind file.
+        '''</remarks>
+        Protected WithEvents moWarrantyInformation11 As Global.System.Web.UI.HtmlControls.HtmlTableRow
+        
+        '''<summary>
+        '''LabelWarrantySalesDate control.
+        '''</summary>
+        '''<remarks>
+        '''Auto-generated field.
+        '''To modify move field declaration from designer file to code-behind file.
+        '''</remarks>
+        Protected WithEvents LabelWarrantySalesDate As Global.System.Web.UI.WebControls.Label
         
         '''<summary>
         '''TextboxWarrantySalesDate control.

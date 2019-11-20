@@ -451,7 +451,7 @@ Public Class CaseBase
                     Throw New BOValidationException(errors, GetType(CaseBase).FullName)
                 End If
 
-                If (CultureInfo.CurrentCulture.Name.Equals("ja-JP")) Then
+                If (CultureInfo.CurrentCulture.Name.Equals("ja-JP")) OrElse (CultureInfo.CurrentCulture.Name.Equals("zh-CN")) Then
                     fromdate = Common.DateHelper.convertDateFrmt(caseOpenDateFrom)
                     todate = Common.DateHelper.convertDateFrmt(caseOpenDateTo)
                 Else
@@ -642,13 +642,13 @@ Public Class CaseBase
         End Try
     End Function
 
-    Public Shared Function GetQuestionSetCode(companyGroupId As Guid, companyId As Guid, dealerId As Guid, productCodeId As Guid,
+    Public Shared Function GetQuestionSetCode(companyGroupId As Guid, companyId As Guid, dealerId As Guid, dealerGroupID As Guid, productCodeId As Guid,
                                               riskTypeId As Guid, deviceTypeId As Guid,
                                               coverageTypeId As Guid, coverageConseqDamageId As Guid, purposeCode As String) As String
         Try
             Dim dal As New CaseDAL
 
-            Return dal.GetQuestionSetCode(companyGroupId, companyId, dealerId, productCodeId, riskTypeId,
+            Return dal.GetQuestionSetCode(companyGroupId, companyId, dealerId, dealerGroupID, productCodeId, riskTypeId,
                                           deviceTypeId, coverageTypeId, coverageConseqDamageId, purposeCode)
 
         Catch ex As DataBaseAccessException
@@ -694,6 +694,8 @@ Public Class CaseBase
         Public Const ColCaseId As String = "case_id"
         Public Const ColCaseNumber As String = "case_number"
         Public Const ColCaseStatusCode As String = "case_status_code"
+        Public Const ColCaseOpenDate As String = "case_open_date"
+        Public Const ColCaseCloseDate As String = "case_close_date"
 #End Region
 
 

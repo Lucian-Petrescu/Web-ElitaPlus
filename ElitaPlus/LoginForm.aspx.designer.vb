@@ -50,6 +50,24 @@ Partial Public Class LoginForm
     Protected WithEvents lblLogin As Global.System.Web.UI.WebControls.Label
     
     '''<summary>
+    '''lblUserName control.
+    '''</summary>
+    '''<remarks>
+    '''Auto-generated field.
+    '''To modify move field declaration from designer file to code-behind file.
+    '''</remarks>
+    Protected WithEvents lblUserName As Global.System.Web.UI.WebControls.Label
+    
+    '''<summary>
+    '''TextBoxUserId control.
+    '''</summary>
+    '''<remarks>
+    '''Auto-generated field.
+    '''To modify move field declaration from designer file to code-behind file.
+    '''</remarks>
+    Protected WithEvents TextBoxUserId As Global.System.Web.UI.WebControls.TextBox
+    
+    '''<summary>
     '''lblPassword control.
     '''</summary>
     '''<remarks>
