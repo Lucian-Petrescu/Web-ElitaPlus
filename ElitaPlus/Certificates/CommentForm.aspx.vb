@@ -416,9 +416,13 @@ Partial Class CommentForm
             If Me.State.MyBO.IsDirty Then
                 Me.State.MyBO.EndEdit()
                 Me.State.MyBO.Save()
-                If (Me.State.MyBO.Claim.Status = BasicClaimStatus.Pending) Then
-                    Me.NavController.Navigate(Me, FlowEvents.EVENT_BACK)
-                    Exit Sub
+                If State.MyBO.Claim IsNot Nothing Then
+                    If (Me.State.MyBO.Claim.Status = BasicClaimStatus.Pending) Then
+                        Me.NavController.Navigate(Me, FlowEvents.EVENT_BACK)
+                        Exit Sub
+                    Else
+                        Me.NavController.Navigate(Me, FlowEvents.EVENT_ADD, Message.MSG_COMMENT_ADDED)
+                    End If
                 Else
                     Me.NavController.Navigate(Me, FlowEvents.EVENT_ADD, Message.MSG_COMMENT_ADDED)
                 End If
