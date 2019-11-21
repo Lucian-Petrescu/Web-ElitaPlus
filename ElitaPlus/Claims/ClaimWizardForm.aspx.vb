@@ -2333,12 +2333,16 @@ Public Class ClaimWizardForm
             Me.UserControlAddress.ClaimDetailsBind(Me.State.ClaimBO.ContactInfo.Address)
             Me.UserControlContactInfo.Bind(Me.State.ClaimBO.ContactInfo)
             'This makes all child controls inside UserControlAddress as ReadOnly 
+            Dim moRegionDropDown As DropDownList
+            Dim moCountryDropDown As DropDownList
+            moRegionDropDown = CType(Me.UserControlAddress.FindControl("moRegionDrop_WRITE"), DropDownList)
+            moCountryDropDown = CType(Me.UserControlAddress.FindControl("moCountryDrop_WRITE"), DropDownList)
+
             If isNewFulfillment = True Then
-                Me.UserControlAddress.ControlEnabled = False
                 Me.UserControlAddress.EnableControl(False)
                 Me.UserControlContactInfo.EnableControl(False)
-            Else
-                Me.UserControlAddress.ControlEnabled = True
+                moRegionDropDown.Enabled = False
+                moCountryDropDown.Enabled = False
             End If
         End If
 

@@ -82,15 +82,6 @@ Partial Class UserControlAddress_New
         End Set
     End Property
 
-    Private _ControlEnabled As Boolean
-    Public Property ControlEnabled As Boolean
-        Get
-            Return _ControlEnabled
-        End Get
-        Set(ByVal value As Boolean)
-            _ControlEnabled = value
-        End Set
-    End Property
 #End Region
 
 #Region "Handlers"
@@ -255,7 +246,7 @@ Partial Class UserControlAddress_New
         moCountryText.Enabled = bvalue
         'Region
         moRegionDrop_WRITE.Enabled = bvalue
-        moRegionText.Enabled = bvalue
+
 
     End Sub
 
@@ -394,22 +385,14 @@ Partial Class UserControlAddress_New
         moCityText.ReadOnly = blnIsVisible
         moPostalText.ReadOnly = blnIsVisible
 
-        If ControlEnabled Then
-            'Country
-            moCountryDrop_WRITE.Enabled = Not blnIsVisible
-            moCountryText.ReadOnly = blnIsVisible
-            'Region
-            moRegionText.ReadOnly = blnIsVisible
-            moRegionDrop_WRITE.Enabled = Not blnIsVisible
-        Else
-            'Country
-            moCountryDrop_WRITE.Enabled = False
-            moCountryText.ReadOnly = True
-            'Region
-            moRegionDrop_WRITE.Enabled = False
-            moRegionText.ReadOnly = True
 
-        End If
+        'Country
+        moCountryDrop_WRITE.Enabled = Not blnIsVisible
+        moCountryText.ReadOnly = blnIsVisible
+        'Region
+        moRegionText.ReadOnly = blnIsVisible
+        moRegionDrop_WRITE.Enabled = Not blnIsVisible
+
 
     End Sub
 
