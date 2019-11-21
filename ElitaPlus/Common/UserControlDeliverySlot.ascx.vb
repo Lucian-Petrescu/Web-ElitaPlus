@@ -260,15 +260,15 @@ Public Class UserControlDeliverySlot
     ''' </summary>
     ''' <returns>Instance of <see cref="WebAppGatewayClient"/></returns>
     Private Shared Function GetClaimFulfillmentWebAppGatewayClient() As WebAppGatewayClient
-        'Dim oWebPasswd As WebPasswd = New WebPasswd(Guid.Empty, LookupListNew.GetIdFromCode(Codes.SERVICE_TYPE, Codes.SERVICE_TYPE__CLAIM_FULFILLMENT_WEB_APP_GATEWAY_SERVICE), False)
-        'Dim client = New WebAppGatewayClient("CustomBinding_WebAppGateway", oWebPasswd.Url)
-        'client.ClientCredentials.UserName.UserName = oWebPasswd.UserId
-        'client.ClientCredentials.UserName.Password = oWebPasswd.Password
+        Dim oWebPasswd As WebPasswd = New WebPasswd(Guid.Empty, LookupListNew.GetIdFromCode(Codes.SERVICE_TYPE, Codes.SERVICE_TYPE__CLAIM_FULFILLMENT_WEB_APP_GATEWAY_SERVICE), False)
+        Dim client = New WebAppGatewayClient("CustomBinding_WebAppGateway", oWebPasswd.Url)
+        client.ClientCredentials.UserName.UserName = oWebPasswd.UserId
+        client.ClientCredentials.UserName.Password = oWebPasswd.Password
 
-        Dim client = New WebAppGatewayClient("CustomBinding_WebAppGateway", "http://localhost/ElitaClaimFulfillment/WebAppGateway/gateway")
+        'Dim client = New WebAppGatewayClient("CustomBinding_WebAppGateway", "http://sf-au-southeast-mod.assurant.com/ElitaClaimFulfillment/modl-p1/WebAppGateway/gateway")
 
-        client.ClientCredentials.UserName.UserName = "InternalUsers\ga0pah"
-        client.ClientCredentials.UserName.Password = "AizAzureCamar16"
+        'client.ClientCredentials.UserName.UserName = "InternalUsers\os0iej"
+        'client.ClientCredentials.UserName.Password = "XXXX"
 
         Return client
     End Function
