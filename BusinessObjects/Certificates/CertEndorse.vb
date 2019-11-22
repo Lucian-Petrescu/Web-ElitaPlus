@@ -132,6 +132,7 @@ Public Class CertEndorse
                     dOrgCoverageEndate = cov.EndDate.Value
                     cov.EndDate = New DateType(DateAdd("d", -1, DateAdd(MONTH, Me.TermPos, cov.BeginDate.Value)))
                     dNewCoverageEndate = cov.EndDate.Value
+                    cov.ModifiedById = ElitaPlusIdentity.Current.ActiveUser.NetworkId
                     updateEndorseCov(cov)
                 End If
             End If
@@ -145,6 +146,7 @@ Public Class CertEndorse
                         cov.BeginDate = New DateType(DateAdd("D", 1, dNewCoverageEndate))
                         If isECSDurationFix Then
                             cov.EndDate = New DateType(DateAdd("d", -1, DateAdd(MONTH, CInt(intDuration), cov.BeginDate.Value)))
+                            cov.ModifiedById = ElitaPlusIdentity.Current.ActiveUser.NetworkId
                         End If
                     End If
                 Else
@@ -152,6 +154,7 @@ Public Class CertEndorse
                         cov.BeginDate = New DateType(dNewCoverageEndate)
                         If isECSDurationFix Then
                             cov.EndDate = New DateType(DateAdd(MONTH, CInt(intDuration), dNewCoverageEndate))
+                            cov.ModifiedById = ElitaPlusIdentity.Current.ActiveUser.NetworkId
                         End If
                     End If
                 End If
@@ -164,6 +167,7 @@ Public Class CertEndorse
             If cov.CoverageTypeCode <> Codes.COVERAGE_TYPE__MANUFACTURER AndAlso cov.CoverageTypeCode <> Codes.COVERAGE_TYPE__EXTENDED Then
                 If isECSDurationFix Then
                     cov.EndDate = New DateType(dNewExtendedEndate)
+                    cov.ModifiedById = ElitaPlusIdentity.Current.ActiveUser.NetworkId
                     updateEndorseCov(cov)
                 End If
             End If
@@ -953,9 +957,23 @@ Public Class CertEndorse
     '    End Get
     'End Property
 
-    Public ReadOnly Property AssociatedItemCoverages() As BusinessObjectListBase
+    Public ReadOnly Property AssociatedItemCoverages(Optional blnParentOnly As Boolean = False) As BusinessObjectListBase
         Get
-            Return CertItemCoverage.GetItemCovListForCertificate(Me.CertId, Me.Cert)
+
+            Dim oDealer As New Dealer(Me.Cert.DealerId)
+            Dim attValueEnableChangingMFG As AttributeValue = oDealer.AttributeValues.Where(Function(i) i.Attribute.UiProgCode = Codes.ATTR_ENABLE_CHANGING_MFG_TERM_If_NO_CLAIMS_EXIST_In_PARENT_CHILD).FirstOrDefault
+            If Not attValueEnableChangingMFG Is Nothing AndAlso attValueEnableChangingMFG.Value = Codes.YESNO_Y Then
+                Return CertItemCoverage.GetItemCovListWithChildOrParentForCertificate(Me.CertId, Me.Cert)
+            Else
+                Return CertItemCoverage.GetItemCovListForCertificate(Me.CertId, Me.Cert)
+            End If
+
+        End Get
+    End Property
+
+    Public ReadOnly Property AssociatedItemCoveragesWithChildOrParent() As BusinessObjectListBase
+        Get
+
         End Get
     End Property
 
@@ -1540,6 +1558,18 @@ Public Class CertEndorse
         c.SetValue(DALBase.COL_NAME_CREATED_BY, original.CreatedById)
         c.SetValue(DALBase.COL_NAME_CREATED_DATE, original.CreatedDate)
         Return c
+    End Function
+
+    Public Shared Function GetClaimCountForParentAndChildCert(ByVal cert_Id As Guid) As Integer
+        Try
+            Dim dal As New CertEndorseDAL
+            Dim dv As New DataView
+
+            Return dal.ClaimCountForParentAndChildCert(cert_Id)
+
+        Catch ex As Assurant.ElitaPlus.DALObjects.DataBaseAccessException
+            Throw New DataBaseAccessException(ex.ErrorType, ex)
+        End Try
     End Function
 
 #End Region

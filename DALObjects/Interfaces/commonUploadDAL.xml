@@ -32,9 +32,11 @@
   <PROCESS_CANCEL_AND_RENAME_FILE>
     elita.elp_cancel_certificate
   </PROCESS_CANCEL_AND_RENAME_FILE>
-
   <PROCESS_CANCEL_FILE>
     elita.elp_cancel_certificate
   </PROCESS_CANCEL_FILE>
+  <PROCESS_EXTRACT_REPORT>
+    elita.r_upload_report.extract
+  </PROCESS_EXTRACT_REPORT>
 
 </SQL>

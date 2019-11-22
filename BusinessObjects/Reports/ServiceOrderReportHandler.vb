@@ -34,8 +34,12 @@ Public Class ServiceOrderReportHandler
 
         If (ClaimBO.ClaimAuthorizationType = ClaimAuthorizationType.Multiple) AndAlso Not (ClaimAuthorizationId.Equals(Guid.Empty)) Then
             svc = New ServiceCenter(ClaimAuthorizationBO.ServiceCenterId)
+            soRow.SPECIAL_INSTRUCTION = ClaimAuthorizationBO.SpecialInstruction
+            soRow.AUTHORIZATION_AMOUNT = ClaimAuthorizationBO.AuthorizationAmount.Value
         Else
             svc = New ServiceCenter(ClaimBO.ServiceCenterId)
+            soRow.SPECIAL_INSTRUCTION = ClaimBO.SpecialInstruction
+            soRow.AUTHORIZATION_AMOUNT = ClaimBO.AuthorizedAmount.Value
         End If
 
         soRow.SVC_CODE = svc.Code
@@ -77,7 +81,6 @@ Public Class ServiceOrderReportHandler
         soRow.CERTIFICATE = cert.CertNumber
         soRow.IDENTIFICATION_NUMBER = cert.IdentificationNumber
         soRow.PROBLEM_DESCRIPTION = ClaimBO.ProblemDescription
-        soRow.SPECIAL_INSTRUCTION = ClaimBO.SpecialInstruction
         soRow.CUSTOMER_NAME = cert.CustomerName
         soRow.ADDRESS1 = cert.AddressChild.Address1
         soRow.ADDRESS2 = cert.AddressChild.Address2
@@ -142,7 +145,7 @@ Public Class ServiceOrderReportHandler
         taxRateData.taxtypeID = LookupListNew.GetIdFromCode(LookupListNew.LK_TAX_TYPES, "7")
 
         If oDealer.PayDeductibleId = LookupListNew.GetIdFromCode(LookupListNew.LK_CLAIM_PAY_DEDUCTIBLE, Codes.FULL_INVOICE_Y) Then
-            claimTaxRateData = ClaimInvoice.GetTaxRate(taxRateData)
+            claimTaxRateData = claimInvoice.GetTaxRate(taxRateData)
         Else
             claimTaxRateData.taxRate = 0
         End If
@@ -183,7 +186,6 @@ Public Class ServiceOrderReportHandler
         soRow.DEALER_NAME = oDealer.DealerName
         soRow.NAME_OF_CONTACT = ClaimBO.ContactName
         soRow.DEDUCTIBLE_AMOUNT = ClaimBO.Deductible.Value
-        soRow.AUTHORIZATION_AMOUNT = ClaimBO.AuthorizedAmount.Value
 
         If claimTaxRateData.taxRate = 0 Then
             soRow.TAX_AMOUNT = 0

@@ -21,7 +21,7 @@ Public NotInheritable Class DateHelper
                 strChkDateFormat = DATE_TIME_FORMAT
                 dt = DateTime.Parse(inputDate)
             Else
-                If Thread.CurrentThread.CurrentCulture.ToString() = "ja-JP" Then
+                If Thread.CurrentThread.CurrentCulture.ToString() = "ja-JP" OrElse Thread.CurrentThread.CurrentCulture.ToString() = "zh-CN" Then
                     strChkDateFormat = convertDateFrmt(inputDate)
                     dt = Date.Parse(strChkDateFormat)
                 Else
@@ -40,7 +40,12 @@ Public NotInheritable Class DateHelper
         If Not (String.IsNullOrEmpty(txtDate)) Then
             If (CultureInfo.CurrentCulture.Name.Equals("ja-JP")) Then
                 Dim parsedDate As DateTime
-                parsedDate = DateTime.ParseExact(txtDate, "dd-M-yyyy", CultureInfo.InvariantCulture).ToString("MM/dd/yyyy", CultureInfo.InvariantCulture)
+                parsedDate = DateTime.ParseExact(txtDate, "yyyy年M月d日", CultureInfo.InvariantCulture).ToString("MM/dd/yyyy", CultureInfo.InvariantCulture)
+                txtDate = parsedDate.ToString("dd-MMM-yyyy", CultureInfo.CreateSpecificCulture("en-US"))
+                Return txtDate
+            ElseIf (CultureInfo.CurrentCulture.Name.Equals("zh-CN")) Then
+                Dim parsedDate As DateTime
+                parsedDate = DateTime.ParseExact(txtDate, "d-M月-yyyy", CultureInfo.InvariantCulture).ToString("MM/dd/yyyy", CultureInfo.InvariantCulture)
                 txtDate = parsedDate.ToString("dd-MMM-yyyy", CultureInfo.CreateSpecificCulture("en-US"))
                 Return txtDate
             End If
@@ -139,6 +144,18 @@ Public NotInheritable Class DateHelper
         End If
 
     End Function
+    Public Shared Function CheckDateAnswer(strInput As String) As Boolean
 
+        Dim formatProvider = System.Threading.Thread.CurrentThread.CurrentCulture
+        Dim strOutput As String = Nothing
+        If IsDate(strInput) Then
+            CheckDateAnswer = True
+        Else
+            CheckDateAnswer = False
+        End If
+
+        Return CheckDateAnswer
+
+    End Function
 
 End Class

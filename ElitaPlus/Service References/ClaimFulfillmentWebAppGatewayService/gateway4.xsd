@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <xs:schema xmlns:ser="http://schemas.microsoft.com/2003/10/Serialization/" xmlns:tns="http://assurant.com/Elita/ClaimFulfillment/WebAppGateway/Data" elementFormDefault="qualified" targetNamespace="http://assurant.com/Elita/ClaimFulfillment/WebAppGateway/Data" xmlns:xs="http://www.w3.org/2001/XMLSchema">
-  <xs:import schemaLocation="http://sf-jp-east-mod.assurant.com/ElitaClaimFulfillment/modl-j1/WebAppGateway/gateway?xsd=xsd1" namespace="http://schemas.microsoft.com/2003/10/Serialization/" />
+  <xs:import schemaLocation="http://l16mia0d8113qr8/ElitaClaimFulfillment/WebAppGateway/gateway?xsd=xsd1" namespace="http://schemas.microsoft.com/2003/10/Serialization/" />
   <xs:complexType name="GetDeliverySlotsRequest">
     <xs:sequence>
       <xs:element name="ServiceCenterCode" nillable="true" type="xs:string" />
@@ -149,6 +149,8 @@
       <xs:element minOccurs="0" name="Shipping" nillable="true" type="tns:ShippingInfo" />
       <xs:element minOccurs="0" name="Address" nillable="true" type="tns:FulfillmentAddress" />
       <xs:element minOccurs="0" name="HandlingStore" nillable="true" type="tns:HandlingStore" />
+      <xs:element minOccurs="0" name="ServiceCenterCode" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="ServiceCenterDescription" nillable="true" type="xs:string" />
     </xs:sequence>
   </xs:complexType>
   <xs:element name="SelectedLogisticStage" nillable="true" type="tns:SelectedLogisticStage" />

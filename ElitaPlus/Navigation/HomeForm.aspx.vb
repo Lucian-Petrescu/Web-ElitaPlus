@@ -63,6 +63,8 @@ Partial Class HomeForm
 
             Me.lblBuildValue.Text = sBuildNum
 
+            Me.lblCopyright.Text = "&copy;" + DateTime.Now.Year.ToString() + " Assurant. All rights reserved. "
+
             'If AppConfig.CurrentEnvironment.ToUpper.Equals("PROD") Then
             '    Me.lblEnvValue.Text = ""
             '    Me.lblEnvTitle.Text = ""

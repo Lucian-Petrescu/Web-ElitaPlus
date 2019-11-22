@@ -208,18 +208,10 @@ Partial Class CommentListForm
                 e.Item.Cells(Me.GRID_COL_ADDED_BY).Text = dvRow(Comment.CommentSearchDV.COL_ADDED_BY).ToString
                 e.Item.Cells(Me.GRID_COL_CALLER_NAME).Text = dvRow(Comment.CommentSearchDV.COL_CALLER_NAME).ToString
                 e.Item.Cells(Me.GRID_COL_COMMENT_TEXT).Text = dvRow(Comment.CommentSearchDV.COL_COMMENTS).ToString
-                'If dvRow(Comment.CommentSearchDV.COL_COMMENTS).ToString.Length > 85 Then
-                '    e.Item.Cells(Me.GRID_COL_COMMENT_TEXT).Text = dvRow(Comment.CommentSearchDV.COL_COMMENTS).ToString.Substring(0, 85)
-                'Else
-                '    e.Item.Cells(Me.GRID_COL_COMMENT_TEXT).Text = dvRow(Comment.CommentSearchDV.COL_COMMENTS).ToString
-                'End If
                 Dim createdDate As Date = CType(dvRow(Comment.CommentSearchDV.COL_CREATED_DATE), Date)
-                e.Item.Cells(Me.GRID_COL_TIME_STAMP).Text = Me.GetLongDateFormattedString(createdDate)
+                e.Item.Cells(Me.GRID_COL_TIME_STAMP).Text = GetLongDateFormattedString(createdDate)
             End If
 
-            '''e.Item.Attributes.Add("onmouseover", "this.style.backgroundColor='#99CCFF'")
-
-            '''e.Item.Attributes.Add("onmouseout", "this.style.backgroundColor='#FFFFFF'")
         Catch ex As Exception
             Me.HandleErrors(ex, Me.ErrorCtrl)
         End Try

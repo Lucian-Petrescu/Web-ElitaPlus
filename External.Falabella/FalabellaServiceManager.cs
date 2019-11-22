@@ -90,7 +90,7 @@ namespace Assurant.ElitaPlus.External.Falabella
             {
                 throw new FaultException($"Url {oWebPasswd.Url} not found or invalid");
             }
-
+            Logger.AddInfo("InvokeFalabellaService new claim URL: " + oWebPasswd.Url);
             var reference = new ServicioTecnicoDatosCrearService
             {
                 Url = oWebPasswd.Url
@@ -101,40 +101,41 @@ namespace Assurant.ElitaPlus.External.Falabella
             {
                 ListaSolicitudServicioTecnicoRequest = new ListaSolicitudServicioTecnicoRequest_TYPE()
             };
-            
-            
-            //Email
-            var email = new Email_TYPE[0];
 
-            email.ToList().Add(new Email_TYPE
+
+            //Email
+            Email_TYPE[] email = new Email_TYPE[1];
+
+            email[0] = new Email_TYPE
             {
                 email = request.Email
-            });
+            };
 
 
             //Phone
-            var phone = new Telefono_TYPE[0];
-            phone.ToList().Add(new Telefono_TYPE
+            Telefono_TYPE[] phone = new Telefono_TYPE[1];
+            phone[0] = new Telefono_TYPE
             {
                 tipo = "PRINCIPAL",
                 codigoArea = "56",
                 numeroTelefono = request.WorkPhone
-            });
+            };
+
 
             //phone[0].tipo = "PRINCIPAL";
             //phone[0].codigoPais = "56";
             //phone[0].numeroTelefono = request.WorkPhone;
 
             //Direction
-            var direction = new Direccion_TYPE[0];
-            direction.ToList().Add(new Direccion_TYPE
+            Direccion_TYPE[] direction = new Direccion_TYPE[1];
+            direction[0] = new Direccion_TYPE
             {
                 tipo = "PARTICULAR",
                 ciudad = request.City,
                 pais = request.Country,
                 comuna = request.ComunaCode,
                 calle = request.Address1
-            });
+            };
 
 
             //Service Technico
@@ -155,8 +156,8 @@ namespace Assurant.ElitaPlus.External.Falabella
             serviceList.ServicioTecnico = serviceTechnico;
 
             //Active 
-            var activo = new Activo_TYPE[0];
-            activo.ToList().Add(new Activo_TYPE
+            Activo_TYPE[] activo = new Activo_TYPE[1];
+            activo[0] = new Activo_TYPE
             {
                 numeroActivo = request.CertificateNumber,
                 serialProducto = request.SerialNumber,
@@ -165,8 +166,8 @@ namespace Assurant.ElitaPlus.External.Falabella
                 fechaCompra = request.WarrantySalesDate,
                 nombreGarantia = request.ProductDescription,
                 tipoGarantia = "Connect"
-            });
-            
+            };
+
 
             input.ListaSolicitudServicioTecnicoRequest = new ListaSolicitudServicioTecnicoRequest_TYPE()
             {
@@ -187,9 +188,21 @@ namespace Assurant.ElitaPlus.External.Falabella
                 }
             };
 
+            reference.ClientService = new ClientService_TYPE
+            {
+                country = Country_TYPE.CL,
+                commerce = Commerce_TYPE.Falabella,
+                channel = Channel_TYPE.Cardif,
+                date = DateTime.Now,
+                hour = DateTime.Now,
+                dateSpecified = true,
+                hourSpecified = true
+            };
+
             try
             {
                 //web service call
+                Logger.AddInfo("InvokeFalabellaService new claim Calling web service");
                 var output = reference.ServicioTecnicoDatosCrearOp(input);
 
                 var workOrderResponse = output.ListaSolicitudServicioTecnicoResponse;
@@ -203,6 +216,8 @@ namespace Assurant.ElitaPlus.External.Falabella
                         ErrorMessage = workOrderResponse[0].mensajerError
                     };
 
+                    Logger.AddInfo("InvokeFalabellaService new claim request Fill Work order: " + response.WorkOrderNumber);
+
                     return response;
                 }
                
@@ -210,6 +225,7 @@ namespace Assurant.ElitaPlus.External.Falabella
 
             catch (Exception ex)
             {
+                Logger.AddError("InvokeFalabellaService claim request error", ex);
                 throw;
             }
 

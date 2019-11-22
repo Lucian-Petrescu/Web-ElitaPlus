@@ -20,6 +20,9 @@
         Optional ByVal messageType As IMessageController.MessageType = IMessageController.MessageType.None) _
         Implements IMessageController.AddMessage
         Dim i As Integer
+
+        if message Is Nothing Then Return
+
         For i = 0 To message.Length - 1
             Dim translatedMessage As String
             If translate Then

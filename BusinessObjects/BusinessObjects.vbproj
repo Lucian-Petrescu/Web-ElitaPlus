@@ -140,26 +140,43 @@
       <HintPath>..\packages\Elita.Assurant.Common.Validation.2.0.0\lib\net462\Assurant.Common.Validation.dll</HintPath>
       <Private>True</Private>
     </Reference>
+    <Reference Include="Assurant.Elita.Base.DataAccess, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Assurant.Elita.Base.DataAccess.5.0.4\lib\net462\Assurant.Elita.Base.DataAccess.dll</HintPath>
+    </Reference>
+    <Reference Include="Assurant.Elita.BaseDataElements, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Assurant.Elita.Base.DataElements.1.0.0\lib\net462\Assurant.Elita.BaseDataElements.dll</HintPath>
+    </Reference>
     <Reference Include="Assurant.Elita.ClientIntegration">
       <HintPath>..\packages\Assurant.Elita.ClientIntegration.4.0.0\lib\net462\Assurant.Elita.ClientIntegration.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="Assurant.Elita.CommonConfiguration, Version=2.1.7.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\Assurant.Elita.CommonConfiguration.2.1.5\lib\net46\Assurant.Elita.CommonConfiguration.dll</HintPath>
+    <Reference Include="Assurant.Elita.CommonConfiguration, Version=2.1.9.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Assurant.Elita.CommonConfiguration.2.1.9\lib\net46\Assurant.Elita.CommonConfiguration.dll</HintPath>
     </Reference>
     <Reference Include="Assurant.Elita.Configuration">
       <HintPath>..\packages\Assurant.Elita.Configuration.4.0.2\lib\net462\Assurant.Elita.Configuration.dll</HintPath>
-      <Private>True</Private>
+    </Reference>
+    <Reference Include="Assurant.Elita.Logging.Interface, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Assurant.Elita.Logging.Interface.1.0.0\lib\netstandard2.0\Assurant.Elita.Logging.Interface.dll</HintPath>
+    </Reference>
+    <Reference Include="Assurant.Elita.Logging.OracleLogger, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Assurant.Elita.Logging.OracleLogger.1.0.1\lib\net462\Assurant.Elita.Logging.OracleLogger.dll</HintPath>
     </Reference>
     <Reference Include="Assurant.Elita.PciSecure, Version=1.0.0.3, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\packages\Assurant.Elita.PciSecure.1.0.0.3\lib\net46\Assurant.Elita.PciSecure.dll</HintPath>
       <Private>True</Private>
     </Reference>
+    <Reference Include="EntityFramework, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <HintPath>..\packages\EntityFramework.5.0.0\lib\net45\EntityFramework.dll</HintPath>
+    </Reference>
+    <Reference Include="JetBrains.Annotations, Version=11.1.0.0, Culture=neutral, PublicKeyToken=1010a0d8d6380325, processorArchitecture=MSIL">
+    </Reference>
+    <Reference Include="Assurant.Elita.Premitives, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Assurant.Elita.Premitives.1.2.1\lib\netstandard2.0\Assurant.Elita.Premitives.dll</HintPath>
+    </Reference>
     <Reference Include="JetBrains.Annotations">
       <HintPath>..\packages\JetBrains.Annotations.11.1.0\lib\net20\JetBrains.Annotations.dll</HintPath>
-      <Private>True</Private>
     </Reference>
     <Reference Include="Microsoft.Azure.KeyVault.Core, Version=1.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>..\packages\Microsoft.Azure.KeyVault.Core.1.0.0\lib\net40\Microsoft.Azure.KeyVault.Core.dll</HintPath>
@@ -177,7 +194,6 @@
     </Reference>
     <Reference Include="Oracle.ManagedDataAccess, Version=4.122.1.0, Culture=neutral, PublicKeyToken=89b483f429c47342, processorArchitecture=MSIL">
       <HintPath>..\packages\Oracle.ManagedDataAccess.12.2.1100\lib\net40\Oracle.ManagedDataAccess.dll</HintPath>
-      <Private>True</Private>
     </Reference>
     <Reference Include="RMEncryptor, Version=1.0.1920.15592, Culture=neutral">
       <SpecificVersion>False</SpecificVersion>
@@ -186,6 +202,7 @@
     <Reference Include="System">
       <Name>System</Name>
     </Reference>
+    <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Configuration" />
     <Reference Include="System.Core">
       <RequiredTargetFramework>3.5</RequiredTargetFramework>
@@ -354,6 +371,11 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Reference.svcmap</DependentUpon>
     </Compile>
+    <Compile Include="Tables\Accounting\AccountPayable\ApInvoiceHeader.vb" />
+    <Compile Include="Tables\Accounting\AccountPayable\ApInvoiceLines.vb" />
+    <Compile Include="Tables\Accounting\AccountPayable\ApInvoiceMatching.vb" />
+    <Compile Include="Tables\Accounting\AccountPayable\ApPaymentBatch.vb" />
+    <Compile Include="Tables\Accounting\AccountPayable\PoAdjustment.vb" />
     <Compile Include="Tables\Accounting\AcctEventDetailIncExc.vb" />
     <Compile Include="Tables\AcctFinanceAutomation\AfaAcctAmtSrc.vb" />
     <Compile Include="Tables\AcctFinanceAutomation\AfaAcctAmtSrcMapping.vb" />

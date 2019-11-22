@@ -478,13 +478,35 @@ Public NotInheritable Class ClaimAuthorization
         End Set
     End Property
     Public _reversed As boolean = False
-    Public Property Reversed() As boolean    
+    Public Property Reversed() As Boolean
         Get
             Return _reversed
         End Get
-        Set(ByVal value As boolean)
+        Set(ByVal value As Boolean)
             _reversed = value
-        End Set   
+        End Set
+    End Property
+
+    Public ReadOnly Property AuthorizationAmount() As DecimalType
+        Get
+            CheckDeleted()
+            If Row(ClaimAuthorizationDAL.COL_NAME_AUTHORIZAION_AMOUNT) Is DBNull.Value Then
+                Return Nothing
+            Else
+                Return New DecimalType(CType(Row(ClaimAuthorizationDAL.COL_NAME_AUTHORIZAION_AMOUNT), Decimal))
+            End If
+        End Get
+    End Property
+
+    Public ReadOnly Property ServiceOrderType() As String
+        Get
+            CheckDeleted()
+            If Row(ClaimAuthorizationDAL.COL_NAME_SERVICE_ORDER_TYPE) Is DBNull.Value Then
+                Return Nothing
+            Else
+                Return CType(Row(ClaimAuthorizationDAL.COL_NAME_SERVICE_ORDER_TYPE), String)
+            End If
+        End Get
     End Property
 
     Public Property ClaimAuthStatus() As ClaimAuthorizationStatus

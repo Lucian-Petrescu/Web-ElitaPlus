@@ -147,6 +147,32 @@ Public Class commonUploadDAL
         End Try
     End Sub
 
+    Public Sub ExtractReportFile(strUploadType As String, ByVal strUserEmailAddress As String, ByVal strCompanyGroupCode As String, ByVal extractFile As String)
+        Dim sqlStmt As String
+        Try
+            Dim inParameters As New Generic.List(Of DBHelper.DBHelperParameter)
+            Dim param As DBHelper.DBHelperParameter
+            sqlStmt = Me.Config("/SQL/PROCESS_EXTRACT_REPORT")
+
+            param = New DBHelper.DBHelperParameter("pi_UploadType", strUploadType)
+            inParameters.Add(param)
+
+            param = New DBHelper.DBHelperParameter("pi_Useremail", strUserEmailAddress)
+            inParameters.Add(param)
+
+            param = New DBHelper.DBHelperParameter("pi_CompanyGroupCode", strCompanyGroupCode)
+            inParameters.Add(param)
+
+            param = New DBHelper.DBHelperParameter("pi_extractFile", extractFile)
+            inParameters.Add(param)
+
+            DBHelper.ExecuteSpParamBindByName(sqlStmt, inParameters.ToArray, Nothing)
+        Catch ex As Exception
+            Throw New DataBaseAccessException(DataBaseAccessException.DatabaseAccessErrorType.ReadErr, ex)
+        End Try
+
+    End Sub
+
     Public Sub InsertUploadFileLinesNew(ByVal strUploadType As String, ByVal FileLines As Generic.List(Of String), ByVal fileName As String)
         Dim selectStmt As String = Me.Config("/SQL/LOAD_FILE_LINE")
         Dim intLineNum As Integer

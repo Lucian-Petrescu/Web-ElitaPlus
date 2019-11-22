@@ -174,13 +174,7 @@ Public Class UserControlDeliverySlot
             Dim desiredDeliveryDate As Date
             Try
                 Dim formatProvider = LocalizationMgr.CurrentFormatProvider
-                If formatProvider.Name.Equals("ja-JP") Then
-                    Dim dateFragments() As String = dtvalue.Split("-")
-                    desiredDeliveryDate = New DateTime(Integer.Parse(dateFragments(2)), Integer.Parse(dateFragments(1)), Integer.Parse(dateFragments(0))).Date
-                Else
-                    desiredDeliveryDate = Convert.ToDateTime(dtvalue, formatProvider)
-                End If
-
+                desiredDeliveryDate = Convert.ToDateTime(dtvalue, formatProvider)
             Catch ex As Exception
                 Page.MasterPage.MessageController.AddError(TranslationBase.TranslateLabelOrMessage("DESIRED_DELIVERY_DATE") & " - " & txtDeliveryDate.Text & " : " & TranslationBase.TranslateLabelOrMessage(Messages.INVALID_DATE_ERR), False)
                 DeliveryDate = Nothing 'clear selection
@@ -417,11 +411,7 @@ Public Class UserControlDeliverySlot
         Dim fastestDeliveryDate As DeliveryDay = (From delDay As DeliveryDay In de.AvailableDeliveryDays Select delDay Order By delDay.DeliveryDate Ascending).First()
         If fastestDeliveryDate IsNot Nothing Then
             Dim fDeliveryDate As String
-            If Thread.CurrentThread.CurrentCulture.ToString() = "ja-JP" Then
-                fDeliveryDate = fastestDeliveryDate.DeliveryDate.ToString("dd-MMM-yyyy", DateTimeFormatInfo.InvariantInfo)
-            Else
-                fDeliveryDate = ElitaPlusPage.GetDateFormattedStringNullable(fastestDeliveryDate.DeliveryDate)
-            End If
+            fDeliveryDate = ElitaPlusPage.GetDateFormattedStringNullable(fastestDeliveryDate.DeliveryDate)
 
             If de.Behavior.UseDeliverySlot Then 'add slot information 
                 If fastestDeliveryDate.DeliverySlots IsNot Nothing AndAlso fastestDeliveryDate.DeliverySlots.Length > 0 AndAlso de.Behavior.SelectionAllowed Then
@@ -444,11 +434,7 @@ Public Class UserControlDeliverySlot
         Dim lastDeliveryDate As DeliveryDay = (From delDay As DeliveryDay In de.AvailableDeliveryDays Select delDay Order By delDay.DeliveryDate Ascending).Last()
         If lastDeliveryDate IsNot Nothing Then
             Dim lDeliveryDate As String
-            If Thread.CurrentThread.CurrentCulture.ToString() = "ja-JP" Then
-                lDeliveryDate = lastDeliveryDate.DeliveryDate.ToString("dd-MMM-yyyy", DateTimeFormatInfo.InvariantInfo)
-            Else
-                lDeliveryDate = ElitaPlusPage.GetDateFormattedStringNullable(lastDeliveryDate.DeliveryDate)
-            End If
+            lDeliveryDate = ElitaPlusPage.GetDateFormattedStringNullable(lastDeliveryDate.DeliveryDate)
 
             If de.Behavior.UseDeliverySlot Then 'add slot information 
                 If lastDeliveryDate.DeliverySlots IsNot Nothing AndAlso lastDeliveryDate.DeliverySlots.Length > 0 AndAlso de.Behavior.SelectionAllowed Then

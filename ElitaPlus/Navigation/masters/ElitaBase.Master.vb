@@ -13,6 +13,7 @@ Public Class ElitaBase
 
     Protected Sub Page_Load(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Load
         ''<link href="../Styles2.css" type="text/css" rel="STYLESHEET" />
+        lblCopyrights.Text = "&copy;" + Date.Now.Year.ToString() + " Assurant. All rights reserved. "
     End Sub
 
     Public Overrides ReadOnly Property ErrController() As ErrorController

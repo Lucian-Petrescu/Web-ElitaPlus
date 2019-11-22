@@ -112,6 +112,10 @@ Public Class Codes
     Public Const CLAIM_ACTIVITY__REWORK As String = "REWRK"
     Public Const CLAIM_ACTIVITY__LEGAL_GENERAL As String = "LGGL"
 
+    'Claim ServiceOrder Type
+    Public Const CLAIM_SERVICE_ORDER_TYPE_REPLACEMENT As String = "REPLACEMENT"
+    Public Const CLAIM_SERVICE_ORDER_TYPE_REPAIR As String = "REPAIR"
+
     'Cause of Loss
     Public Const CAUSE_OF_LOSS__BREAKAGE As String = "BREAK"
     Public Const CAUSE_OF_LOSS__THEFT As String = "THEFT"
@@ -916,6 +920,7 @@ Public Class Codes
     Public Const ATTRIBUTE__DEFAULT_REINSURANCE_STATUS As String = "DEFAULT_REINSURANCE_STATUS"
     Public Const ATTR_CANCEL_RULES_FOR_SFR As String = "CANCEL_RULES_FOR_SFR"
     Public Const ATTR_COMPUTE_CANCELLATION_DATE_AS_EOFMONTH As String = "COMPUTE_CANCELLATION_DATE_AS_EOFMONTH"
+    Public Const ATTR_ENABLE_CHANGING_MFG_TERM_If_NO_CLAIMS_EXIST_In_PARENT_CHILD As String = "ECMFGTNC"
     Public Const SFR_CR_DEATH As String = "104"
     Public Const SFR_CR_MOVINGABROAD As String = "105"
     Public Const SFR_CR_CHATELLAW As String = "106"

@@ -647,12 +647,16 @@ Partial Class CountryTaxEdit
         Me.PopulateBOProperty(objBO, PRODUCT_TAX_TYPE_ID_PROPERTY, Me.cboProductTaxType)
         Me.PopulateBOProperty(objBO, "CountryId", Me.cboCountry)
         Me.PopulateBOProperty(objBO, "DealerId", Me.moDealerMultipleDrop.SelectedGuid)
-        If claimTaxTypes.Contains(State.TaxTypeCode) AndAlso Me.CheckBoxApplyWithholding.Checked Then
-            Me.PopulateBOProperty(objBO, "ApplyWithholdingFlag", "Y")
-        Else
-            Me.PopulateBOProperty(objBO, "ApplyWithholdingFlag", "N")
-        End If
 
+        If claimTaxTypes.Contains(Me.State.TaxTypeCode) Then
+            If Me.tdWithholdingCheck.Visible Then
+                If Me.CheckBoxApplyWithholding.Checked Then
+                    Me.PopulateBOProperty(objBO, "ApplyWithholdingFlag", "Y")
+                Else
+                    Me.PopulateBOProperty(objBO, "ApplyWithholdingFlag", "N")
+                End If
+            End If
+        End If
 
         LoadTaxGroupUserControls(False)
 
@@ -913,8 +917,8 @@ Partial Class CountryTaxEdit
                 (Not oExistingCountryTax.CountryId.Equals(Guid.Empty)) AndAlso _
                  (Not oExistingCountryTax.ProductTaxTypeId.Equals(Guid.Empty)) Then
                     oExistingCountryTax.SetEffectiveExpirationDates()
-                    Me.txtEffectiveDate.Text = oExistingCountryTax.EffectiveDate.Value.ToString(DATE_FORMAT, CultureInfo.CurrentCulture)
-                    Me.txtExpirationDate.Text = oExistingCountryTax.ExpirationDate.Value.ToString(DATE_FORMAT, CultureInfo.CurrentCulture)
+                    Me.txtEffectiveDate.Text = GetDateFormattedStringNullable(oExistingCountryTax.EffectiveDate.Value)
+                    Me.txtExpirationDate.Text = GetDateFormattedStringNullable(oExistingCountryTax.ExpirationDate.Value)
                 End If
             End If
             oTaxTypeId = GetSelectedItem(dlstTaxType_WRITE)
@@ -960,8 +964,8 @@ Partial Class CountryTaxEdit
                 (Not oExistingCountryTax.CountryId.Equals(Guid.Empty)) AndAlso _
                  (Not oExistingCountryTax.ProductTaxTypeId.Equals(Guid.Empty)) Then
                     oExistingCountryTax.SetEffectiveExpirationDates()
-                    Me.txtEffectiveDate.Text = oExistingCountryTax.EffectiveDate.Value.ToString(DATE_FORMAT, CultureInfo.CurrentCulture)
-                    Me.txtExpirationDate.Text = oExistingCountryTax.ExpirationDate.Value.ToString(DATE_FORMAT, CultureInfo.CurrentCulture)
+                    Me.txtEffectiveDate.Text = GetDateFormattedStringNullable(oExistingCountryTax.EffectiveDate.Value)
+                    Me.txtExpirationDate.Text = GetDateFormattedStringNullable(oExistingCountryTax.ExpirationDate.Value)
                 End If
             End If
         Catch ex As Exception
@@ -979,8 +983,8 @@ Partial Class CountryTaxEdit
                     (Not oExistingCountryTax.CountryId.Equals(Guid.Empty)) AndAlso _
                    (Not oExistingCountryTax.ProductTaxTypeId.Equals(Guid.Empty)) Then
                     oExistingCountryTax.SetEffectiveExpirationDates()
-                    Me.txtEffectiveDate.Text = oExistingCountryTax.EffectiveDate.Value.ToString(DATE_FORMAT, CultureInfo.CurrentCulture)
-                    Me.txtExpirationDate.Text = oExistingCountryTax.ExpirationDate.Value.ToString(DATE_FORMAT, CultureInfo.CurrentCulture)
+                    Me.txtEffectiveDate.Text = GetDateFormattedStringNullable(oExistingCountryTax.EffectiveDate.Value)
+                    Me.txtExpirationDate.Text = GetDateFormattedStringNullable(oExistingCountryTax.ExpirationDate.Value)
                 End If
             End If
         Catch ex As Exception
@@ -998,8 +1002,8 @@ Partial Class CountryTaxEdit
                 (Not oExistingCountryTax.CountryId.Equals(Guid.Empty)) AndAlso _
                  (Not oExistingCountryTax.ProductTaxTypeId.Equals(Guid.Empty)) Then
                     oExistingCountryTax.SetEffectiveExpirationDates()
-                    Me.txtEffectiveDate.Text = oExistingCountryTax.EffectiveDate.Value.ToString(DATE_FORMAT, CultureInfo.CurrentCulture)
-                    Me.txtExpirationDate.Text = oExistingCountryTax.ExpirationDate.Value.ToString(DATE_FORMAT, CultureInfo.CurrentCulture)
+                    Me.txtEffectiveDate.Text = GetDateFormattedStringNullable(oExistingCountryTax.EffectiveDate.Value)
+                    Me.txtExpirationDate.Text = GetDateFormattedStringNullable(oExistingCountryTax.ExpirationDate.Value)
                 End If
             End If
         Catch ex As Exception
@@ -1018,8 +1022,8 @@ Partial Class CountryTaxEdit
                 (Not oExistingCountryTax.CountryId.Equals(Guid.Empty)) AndAlso _
                  (Not oExistingCountryTax.ProductTaxTypeId.Equals(Guid.Empty)) Then
                     oExistingCountryTax.SetEffectiveExpirationDates()
-                    Me.txtEffectiveDate.Text = oExistingCountryTax.EffectiveDate.Value.ToString(DATE_FORMAT, CultureInfo.CurrentCulture)
-                    Me.txtExpirationDate.Text = oExistingCountryTax.ExpirationDate.Value.ToString(DATE_FORMAT, CultureInfo.CurrentCulture)
+                    Me.txtEffectiveDate.Text = GetDateFormattedStringNullable(oExistingCountryTax.EffectiveDate.Value)
+                    Me.txtExpirationDate.Text = GetDateFormattedStringNullable(oExistingCountryTax.ExpirationDate.Value)
                 End If
             End If
         Catch ex As Exception
