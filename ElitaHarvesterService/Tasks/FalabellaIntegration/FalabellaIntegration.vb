@@ -146,7 +146,7 @@ Public Class FalabellaIntegration
                     request.ClaimNumber = .ClaimNumber
                     request.ComunaCode = .Certificate.AddressChild.PostalCode
                     request.Country = oCountry.Code
-                    request.DateOfLoss = .LossDate.Value.ToShortDateString()
+                    request.DateOfLoss = Format(.LossDate.Value, "MM/dd/yyyy") '.LossDate.Value.ToShortDateString()
                     request.Email = .Certificate.Email
                     request.FirstName = .Certificate.CustomerFirstName
                     request.IdentificationNumber = If(.Certificate.IdentificationNumber.Length > 0, .Certificate.IdentificationNumber.Substring(0, Len(.Certificate.IdentificationNumber) - 1), String.Empty)
@@ -156,7 +156,7 @@ Public Class FalabellaIntegration
                     request.ProductDescription = .Certificate.Product.Description
                     request.SerialNumber = .ClaimedEquipment.SerialNumber
                     request.VerificationNumber = If(.Certificate.IdentificationNumber.Length > 0, .Certificate.IdentificationNumber.Substring(Len(.Certificate.IdentificationNumber) - 1), String.Empty)
-                    request.WarrantySalesDate = .Certificate.WarrantySalesDate.Value.ToShortDateString()
+                    request.WarrantySalesDate = Format(.Certificate.WarrantySalesDate.Value, "MM/dd/yyyy") '.Certificate.WarrantySalesDate.Value.ToShortDateString()
                     request.WorkPhone = .Certificate.WorkPhone
 
                     name = .Certificate.CustomerName
