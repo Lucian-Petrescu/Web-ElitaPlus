@@ -5801,6 +5801,7 @@
     <Content Include="Navigation\fonts\fontawesome-webfont.woff2" />
     <Content Include="Navigation\fonts\FontAwesome.otf" />
     <None Include="Scripts\jquery-1.4.4-vsdoc.js" />
+    <Content Include="Scripts\df_ui.js" />
     <Content Include="Scripts\jquery-1.4.4.js" />
     <Content Include="Scripts\jquery-1.4.4.min.js" />
     <None Include="Scripts\jquery-3.1.1.intellisense.js" />

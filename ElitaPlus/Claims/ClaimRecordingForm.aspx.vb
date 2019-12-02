@@ -366,6 +366,16 @@ Public Class ClaimRecordingForm
                         GridItems.DataBind()
                     End If
                 End If
+            Else 'Dynamicfulfillment page reload
+                Dim response As FulfillmentOptionsResponse = GetFulfillmentOptionsSession()
+                If response IsNot Nothing AndAlso response.DynamicFulFillmentResponse IsNot Nothing Then
+                    response.DynamicFulFillmentResponse = Nothing
+                    State.SubmitWsBaseClaimRecordingResponse = response
+                    Button1.Visible = True
+                    ShowFulfillmentOptionsView()
+                    ResetFulfillmentOptionsSession()
+                End If
+
             End If
         Catch ex As Exception
             HandleErrors(ex, MasterPage.MessageController)
@@ -582,7 +592,13 @@ Public Class ClaimRecordingForm
                     ShowTroubleShootingView()
                 Case GetType(FulfillmentOptionsResponse)
                     ' TroubleShooting response object
-                    ShowFulfillmentOptionsView()
+                    Dim response As FulfillmentOptionsResponse = State.SubmitWsBaseClaimRecordingResponse
+                    If (response.DynamicFulFillmentResponse IsNot Nothing) Then
+                        ShowDynamicFulfillmentView()
+                    Else
+                        ShowFulfillmentOptionsView()
+                    End If
+
                 Case GetType(LogisticStagesResponse)
                     ShowLogisticsOptionsView()
                 Case GetType(BestReplacementResponse)
@@ -2110,9 +2126,11 @@ Public Class ClaimRecordingForm
 
     Private Sub ShowDynamicFulfillmentView()
         If State.SubmitWsBaseClaimRecordingResponse IsNot Nothing Then
-            If State.SubmitWsBaseClaimRecordingResponse.GetType() Is GetType(DynamicFulFillmentResponse) Then
+            If State.SubmitWsBaseClaimRecordingResponse.GetType() Is GetType(FulfillmentOptionsResponse) Then
                 mvClaimsRecording.ActiveViewIndex = ClaimRecordingViewIndexDynamicFulfillment
-                Dim wsResponse As DynamicFulFillmentResponse = DirectCast(State.SubmitWsBaseClaimRecordingResponse, DynamicFulFillmentResponse)
+                SetFulfillmentOptionsSession()
+                Dim response As FulfillmentOptionsResponse = State.SubmitWsBaseClaimRecordingResponse
+                Dim wsResponse As DynamicFulFillmentResponse = response.DynamicFulFillmentResponse
                 Dim dfControl As DynamicFulfillmentUI = Page.LoadControl("~/Common/DynamicFulfillmentUI.ascx")
                 dfControl.SourceSystem = "Eprism"
                 dfControl.ApiKey = wsResponse.ApiKey
@@ -2126,8 +2144,20 @@ Public Class ClaimRecordingForm
                 phDynamicFulfillmentUI.Controls.Add(dfControl)
             End If
         End If
-
     End Sub
+    Private Sub SetFulfillmentOptionsSession()
+        Session("FulfillmentOptionsResponse") = State.SubmitWsBaseClaimRecordingResponse
+    End Sub
+    Private Sub ResetFulfillmentOptionsSession()
+        Session("FulfillmentOptionsResponse") = Nothing
+    End Sub
+    Private Function GetFulfillmentOptionsSession() As FulfillmentOptionsResponse
+        If Session("FulfillmentOptionsResponse") IsNot Nothing Then
+            Dim response As FulfillmentOptionsResponse = Session("FulfillmentOptionsResponse")
+            Return response
+        End If
+        Return Nothing
+    End Function
     Private Sub PopulateFulfillmentOptionsGrid()
         Dim wsResponse As FulfillmentOptionsResponse
         If State.SubmitWsBaseClaimRecordingResponse.GetType() Is GetType(FulfillmentOptionsResponse) Then

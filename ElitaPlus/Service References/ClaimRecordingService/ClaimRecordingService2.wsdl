@@ -605,7 +605,6 @@
           <xs:element minOccurs="0" name="CompanyCode" nillable="true" type="xs:string" />
           <xs:element minOccurs="0" name="CaseNumber" nillable="true" type="xs:string" />
           <xs:element minOccurs="0" name="InteractionNumber" nillable="true" type="xs:string" />
-          <xs:element minOccurs="0" name="IsDynamicFulfillment" type="xs:boolean" />
         </xs:sequence>
       </xs:complexType>
       <xs:element name="BaseClaimRecordingRequest" nillable="true" type="tns:BaseClaimRecordingRequest" />
@@ -801,6 +800,7 @@
             <xs:sequence>
               <xs:element xmlns:q2="http://assurant.com/Elita/ClaimFulfillment/Shared/Data" name="Options" nillable="true" type="q2:ArrayOfFulfillmentOption" />
               <xs:element xmlns:q3="http://schemas.microsoft.com/2003/10/Serialization/Arrays" minOccurs="0" name="QuestionsByStage" nillable="true" type="q3:ArrayOfKeyValueOfstringArrayOfQuestionKjP37BP8" />
+              <xs:element minOccurs="0" name="DynamicFulFillmentResponse" nillable="true" type="tns:DynamicFulFillmentResponse" />
             </xs:sequence>
           </xs:extension>
         </xs:complexContent>
@@ -899,6 +899,7 @@
           <xs:element name="Description" nillable="true" type="xs:string" />
           <xs:element name="Order" type="xs:int" />
           <xs:element name="Options" nillable="true" type="tns:ArrayOfLogisticOption" />
+          <xs:element minOccurs="0" name="ServiceCenterCode" nillable="true" type="xs:string" />
         </xs:sequence>
       </xs:complexType>
       <xs:element name="LogisticStage" nillable="true" type="tns:LogisticStage" />
@@ -930,6 +931,7 @@
           <xs:enumeration value="ElectronicDelivery" />
           <xs:enumeration value="Unspecified" />
           <xs:enumeration value="HandlingStore" />
+          <xs:enumeration value="ServiceCenter" />
         </xs:restriction>
       </xs:simpleType>
       <xs:element name="LogisticOptionType" nillable="true" type="tns:LogisticOptionType" />
@@ -1337,6 +1339,7 @@
           <xs:element minOccurs="0" name="ClaimWaitingPeriod" type="xs:int" />
           <xs:element minOccurs="0" name="ContractSigned" type="xs:boolean" />
           <xs:element minOccurs="0" name="CoverageSummary" nillable="true" type="tns:ArrayOfCertificateItemCoverage" />
+          <xs:element minOccurs="0" name="GadgetSummary" nillable="true" type="tns:ArrayOfGadgetCertItem" />
           <xs:element minOccurs="0" name="ItemEffectiveDate" nillable="true" type="xs:dateTime" />
           <xs:element minOccurs="0" name="NumberOfClaimsAllowed" type="xs:int" />
           <xs:element minOccurs="0" name="NumberOfRepairClaimsAllowed" type="xs:int" />
@@ -1530,6 +1533,24 @@
         </xs:sequence>
       </xs:complexType>
       <xs:element name="ArrayOfCertificateItemCoverage" nillable="true" type="tns:ArrayOfCertificateItemCoverage" />
+      <xs:complexType name="ArrayOfGadgetCertItem">
+        <xs:sequence>
+          <xs:element minOccurs="0" maxOccurs="unbounded" name="GadgetCertItem" nillable="true" type="tns:GadgetCertItem" />
+        </xs:sequence>
+      </xs:complexType>
+      <xs:element name="ArrayOfGadgetCertItem" nillable="true" type="tns:ArrayOfGadgetCertItem" />
+      <xs:complexType name="GadgetCertItem">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="EffectiveDate" nillable="true" type="xs:dateTime" />
+          <xs:element minOccurs="0" name="ExpirationDate" nillable="true" type="xs:dateTime" />
+          <xs:element minOccurs="0" name="PolicyLiabilityLimit" nillable="true" type="xs:decimal" />
+          <xs:element minOccurs="0" name="ProductClaimLimit" nillable="true" type="xs:int" />
+          <xs:element minOccurs="0" name="ProductClaimLimitPerDevice" nillable="true" type="xs:int" />
+          <xs:element minOccurs="0" name="ProductCode" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="ProductLiabilityLimitBasedon" nillable="true" type="xs:string" />
+        </xs:sequence>
+      </xs:complexType>
+      <xs:element name="GadgetCertItem" nillable="true" type="tns:GadgetCertItem" />
     </xs:schema>
   </wsdl:types>
   <wsdl:message name="IClaimRecordingService_BeginClaim_InputMessage">
@@ -1943,10 +1964,10 @@
   </wsdl:binding>
   <wsdl:service name="ClaimRecordingService">
     <wsdl:port name="CustomBinding_IClaimRecordingService" binding="tns:CustomBinding_IClaimRecordingService">
-      <soap:address location="http://localhost/ElitaClaimService/ClaimRecordingService.svc" />
+      <soap:address location="http://localhost:8083/ElitaClaimService/ClaimRecordingService.svc" />
     </wsdl:port>
     <wsdl:port name="CustomBinding_IClaimRecordingService1" binding="tns:CustomBinding_IClaimRecordingService">
-      <soap:address location="http://localhost/ElitaClaimService/ClaimRecordingService.svc/Secure" />
+      <soap:address location="http://localhost:8083/ElitaClaimService/ClaimRecordingService.svc/Secure" />
     </wsdl:port>
   </wsdl:service>
 </wsdl:definitions>

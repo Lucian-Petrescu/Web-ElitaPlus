@@ -632,11 +632,12 @@
             </div>
         </asp:View>
         <asp:View ID="vDynamicFulfillment" runat="server">
+            <script type="text/javascript" src="../Scripts/df_ui.js"></script>
             <div class="dataContainer">
                 <asp:PlaceHolder runat="server" ID="phDynamicFulfillmentUI"></asp:PlaceHolder>
             </div>
             <div class="btnZone">
-                <asp:Button ID="Button1" runat="server" SkinID="PrimaryRightButton" Text="Continue" />
+                <asp:Button ID="Button1" runat="server" SkinID="PrimaryRightButton" Visible="false" Text="Continue" />
                 <asp:LinkButton ID="LinkButton1" runat="server" SkinID="TabZoneAddButton" Text="Cancel"
                                 OnClientClick="return revealModal('ModalCancel');" />
             </div>
