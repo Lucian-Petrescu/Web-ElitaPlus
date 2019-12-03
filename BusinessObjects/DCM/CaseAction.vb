@@ -315,7 +315,7 @@ Public Class CaseAction
         Inherits DataView
 
 #Region "Constants"
-
+        Public Const ColActionCreatedDate As String = "created_date"
 #End Region
         Public Sub New()
             MyBase.New()

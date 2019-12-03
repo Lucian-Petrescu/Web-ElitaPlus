@@ -7,6 +7,7 @@
     Public Const GridColCaseOpenDateIdx As Integer = 2
     Public Const GridColCaseStatusCodeIdx As Integer = 3
     Public Const GridColCaseCloseDateIdx As Integer = 4
+    Public Const GridColCreatedDateIdx As Integer = 3
 
     Public Const ClaimCaseGridColCaseNumberCtrl As String = "btnSelectCase"
     Public Const SelectActionCommand As String = "SelectAction"
@@ -186,6 +187,19 @@
             End If
             ControlMgr.SetVisibleControl(Me, ClaimActionGrid, True)
 
+        Catch ex As Exception
+            HandleErrors(ex, MasterPage.MessageController)
+        End Try
+    End Sub
+    Private Sub ClaimActionGrid_RowDataBound(ByVal sender As Object, ByVal e As GridViewRowEventArgs) Handles ClaimActionGrid.RowDataBound
+        Try
+            Dim dvRow As DataRowView = CType(e.Row.DataItem, DataRowView)
+            If (e.Row.RowType = DataControlRowType.DataRow) _
+               OrElse (e.Row.RowType = DataControlRowType.Separator) Then
+                If (String.IsNullOrWhiteSpace(dvRow(CaseAction.CaseActionDV.ColActionCreatedDate).ToString) = False) Then
+                    e.Row.Cells(GridColCreatedDateIdx).Text = GetLongDate12FormattedString(dvRow(CaseAction.CaseActionDV.ColActionCreatedDate))
+                End If
+            End If
         Catch ex As Exception
             HandleErrors(ex, MasterPage.MessageController)
         End Try

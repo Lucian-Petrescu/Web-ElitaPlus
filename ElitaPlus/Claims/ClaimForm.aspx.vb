@@ -1899,61 +1899,57 @@ Partial Class ClaimForm
     End Sub
 
     Sub PopulateClaimFulfillmentDetails()
-        Try
+        If Me.State.FulfillmentDetailsResponse IsNot Nothing AndAlso
+            Me.State.FulfillmentDetailsResponse.LogisticStages IsNot Nothing AndAlso
+            Me.State.FulfillmentDetailsResponse.LogisticStages.Length > 0 Then
 
-            If Me.State.FulfillmentDetailsResponse IsNot Nothing AndAlso
-                Me.State.FulfillmentDetailsResponse.LogisticStages IsNot Nothing AndAlso
-                Me.State.FulfillmentDetailsResponse.LogisticStages.Length > 0 Then
+            Dim logisticStage As SelectedLogisticStage = Me.State.FulfillmentDetailsResponse.LogisticStages.Where(Function(item) item.Code = Codes.FULFILLMENT_FW_LOGISTIC_STAGE).First()
 
-                Dim logisticStage as SelectedLogisticStage = Me.State.FulfillmentDetailsResponse.LogisticStages.Where(Function(item) item.Code = Codes.FULFILLMENT_FW_LOGISTIC_STAGE).First()
+            If logisticStage IsNot Nothing AndAlso logisticStage.Code = Codes.FULFILLMENT_FW_LOGISTIC_STAGE Then
 
-                If logisticStage IsNot Nothing AndAlso logisticStage.Code = Codes.FULFILLMENT_FW_LOGISTIC_STAGE Then
+                Me.PopulateControlFromBOProperty(Me.txtOptionDescription, logisticStage.OptionDescription)
 
-                    Me.PopulateControlFromBOProperty(Me.txtOptionDescription, logisticStage.OptionDescription)
-                    Me.PopulateControlFromBOProperty(Me.txtExpectedDeliveryDate, logisticStage.Shipping.ExpectedDeliveryDate)
-                    Me.PopulateControlFromBOProperty(Me.txtActualDeliveryDate, logisticStage.Shipping.ActualDeliveryDate)
-                    Me.PopulateControlFromBOProperty(Me.txtShippingDate, logisticStage.Shipping.ShippingDate)
-                    Me.PopulateControlFromBOProperty(Me.txtExpectedShippingDate, logisticStage.Shipping.ExpectedShippingDate)
-                    Me.PopulateControlFromBOProperty(Me.txtTrackingNumber, logisticStage.Shipping.TrackingNumber)
+                Me.PopulateControlFromBOProperty(Me.txtExpectedDeliveryDate, GetLongDateFormattedStringWithFormat(logisticStage.Shipping.ExpectedDeliveryDate, DATE_TIME_FORMAT))
+                Me.PopulateControlFromBOProperty(Me.txtActualDeliveryDate, GetLongDateFormattedStringWithFormat(logisticStage.Shipping.ActualDeliveryDate, DATE_TIME_FORMAT))
+                Me.PopulateControlFromBOProperty(Me.txtShippingDate, GetLongDateFormattedStringWithFormat(logisticStage.Shipping.ShippingDate, DATE_TIME_FORMAT))
+                Me.PopulateControlFromBOProperty(Me.txtExpectedShippingDate, GetLongDateFormattedStringWithFormat(logisticStage.Shipping.ExpectedShippingDate, DATE_TIME_FORMAT))
+                Me.PopulateControlFromBOProperty(Me.txtTrackingNumber, logisticStage.Shipping.TrackingNumber)
 
-                    Me.PopulateControlFromBOProperty(Me.txtAddress1, logisticStage.Address.Address1)
-                    Me.PopulateControlFromBOProperty(Me.txtAddress2, logisticStage.Address.Address2)
-                    Me.PopulateControlFromBOProperty(Me.txtAddress3, logisticStage.Address.Address3)
-                    Me.PopulateControlFromBOProperty(Me.txtCity, logisticStage.Address.City)
-                    Me.PopulateControlFromBOProperty(Me.txtServiceCenter, $"{logisticStage.ServiceCenterCode} - {logisticStage.ServiceCenterDescription}")
-                    Me.PopulateControlFromBOProperty(Me.txtPostalCode, logisticStage.Address.PostalCode)
-                    Me.PopulateControlFromBOProperty(Me.txtState, LookupListNew.GetDescriptionFromCode(
-                                                     LookupListNew.DataView(LookupListNew.LK_REGIONS),
-                                                     logisticStage.Address.State))
-                    Me.PopulateControlFromBOProperty(Me.txtCountry, LookupListNew.GetDescriptionFromCode(
-                                                     LookupListNew.DataView(LookupListNew.LK_COUNTRIES),
-                                                     logisticStage.Address.Country))
+                Me.PopulateControlFromBOProperty(Me.txtAddress1, logisticStage.Address.Address1)
+                Me.PopulateControlFromBOProperty(Me.txtAddress2, logisticStage.Address.Address2)
+                Me.PopulateControlFromBOProperty(Me.txtAddress3, logisticStage.Address.Address3)
+                Me.PopulateControlFromBOProperty(Me.txtCity, logisticStage.Address.City)
+                Me.PopulateControlFromBOProperty(Me.txtServiceCenterCode, $"{logisticStage.ServiceCenterCode}")
+                Me.PopulateControlFromBOProperty(Me.txtServiceCenter, $"{logisticStage.ServiceCenterDescription}")
+                Me.PopulateControlFromBOProperty(Me.txtPostalCode, logisticStage.Address.PostalCode)
+                Me.PopulateControlFromBOProperty(Me.txtState, LookupListNew.GetDescriptionFromCode(
+                                                 LookupListNew.DataView(LookupListNew.LK_REGIONS),
+                                                 logisticStage.Address.State))
+                Me.PopulateControlFromBOProperty(Me.txtCountry, LookupListNew.GetDescriptionFromCode(
+                                                 LookupListNew.DataView(LookupListNew.LK_COUNTRIES),
+                                                 logisticStage.Address.Country))
 
-                    Me.PopulateControlFromBOProperty(Me.txtStoreCode, logisticStage.HandlingStore.StoreCode)
-                    Me.PopulateControlFromBOProperty(Me.txtStoreName, logisticStage.HandlingStore.StoreName)
+                Me.PopulateControlFromBOProperty(Me.txtStoreCode, logisticStage.HandlingStore.StoreCode)
+                Me.PopulateControlFromBOProperty(Me.txtStoreName, logisticStage.HandlingStore.StoreName)
 
-                    Dim storeTypeList As ListItem() = CommonConfigManager.Current.ListManager.GetList(Codes.HND_STORE_TYPE, Thread.CurrentPrincipal.GetLanguageCode())
-                    Dim storeTypeItem = storeTypeList.Where(
-                        Function(item) item.ExtendedCode = logisticStage.HandlingStore.StoreTypeXcd).FirstOrDefault()
-                    Me.PopulateControlFromBOProperty(Me.txtStoreType, storeTypeItem.Translation)
+                Dim storeTypeList As ListItem() = CommonConfigManager.Current.ListManager.GetList(Codes.HND_STORE_TYPE, Thread.CurrentPrincipal.GetLanguageCode())
+                Dim storeTypeItem = storeTypeList.Where(
+                    Function(item) item.ExtendedCode = logisticStage.HandlingStore.StoreTypeXcd).FirstOrDefault()
+                Me.PopulateControlFromBOProperty(Me.txtStoreType, storeTypeItem.Translation)
 
 
-
-                    If logisticStage.Shipping.TrackingNumber IsNot Nothing AndAlso
-                        Not String.IsNullOrEmpty(logisticStage.Shipping.TrackingNumber.ToString()) AndAlso
-                        Not String.IsNullOrEmpty(storeTypeItem.Translation) Then
-                        Dim PasscodeResponse = GetPasscode(logisticStage.Shipping.TrackingNumber.ToString())
-                        Me.PopulateControlFromBOProperty(Me.txtPasscode, PasscodeResponse)
-                    Else
-                        Me.PopulateControlFromBOProperty(Me.txtPasscode, "")
-                    End If
+                If logisticStage.Shipping.TrackingNumber IsNot Nothing AndAlso
+                    Not String.IsNullOrEmpty(logisticStage.Shipping.TrackingNumber.ToString()) AndAlso
+                    Not String.IsNullOrEmpty(storeTypeItem.Translation) Then
+                    Dim PasscodeResponse = GetPasscode(logisticStage.Shipping.TrackingNumber.ToString())
+                    Me.PopulateControlFromBOProperty(Me.txtPasscode, PasscodeResponse)
+                Else
+                    Me.PopulateControlFromBOProperty(Me.txtPasscode, "")
                 End If
-            Else
-                ClearClaimFulfillmentDetails()
             End If
-        Catch ex As Exception
-            Me.HandleErrors(ex, Me.MasterPage.MessageController)
-        End Try
+        Else
+            ClearClaimFulfillmentDetails()
+        End If
     End Sub
 
     Sub ClearClaimFulfillmentDetails()

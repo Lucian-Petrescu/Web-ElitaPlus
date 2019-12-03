@@ -16,7 +16,7 @@ Public Class FalabellaIntegration
     Private _claimAuthorizationId As Guid
     Private Const EXT_STAT_COM_FB_CLM_UPD_THFT = "COM_FB_CLM_UPD_THFT"
     Private Const EXT_STAT_COM_FB_CLM_UPD_DMG = "COM_FB_CLM_UPD_DMG"
-    Private Const EXT_STAT_COMPENSATION_PROCESS_INITIATED = "CHLCOM1"
+    Private Const EXT_STAT_COMPENSATION_PROCESS_INITIATED = "INDSTA"
 
 
 
@@ -54,6 +54,7 @@ Public Class FalabellaIntegration
 
         'Retrieve Work Order Number for Theft Claim
         If (OClaim.CertificateItemCoverage.CoverageTypeCode = Codes.COVERAGE_TYPE__THEFT AndAlso String.IsNullOrEmpty(OClaim.RemAuthNumber)) Then
+            Logger.AddInfo("InvokeFalabellaService New claim: " + PublishedTask.CLAIM_ID)
             If (Not RetrieveWorkOrderFromFalabella() = String.Empty) Then
                 Return
             End If
@@ -66,6 +67,7 @@ Public Class FalabellaIntegration
             Dim dvClaimStatuses = ClaimStatus.GetClaimStatusHistoryOnly(OClaim.Id)
 
             If (Not dvClaimStatuses Is Nothing) Then
+
                 'check whether the SLA extended status has already updated
                 If (OClaim.CertificateItemCoverage.CoverageTypeCode = Codes.COVERAGE_TYPE__THEFT) Then
                     dvClaimStatuses.RowFilter = "code= '" & EXT_STAT_COM_FB_CLM_UPD_THFT & "'"
@@ -133,6 +135,7 @@ Public Class FalabellaIntegration
         If (Not OClaim Is Nothing) Then
 
             If (OClaim.CertificateItemCoverage.CoverageTypeCode = Codes.COVERAGE_TYPE__THEFT AndAlso String.IsNullOrEmpty(OClaim.RemAuthNumber)) Then
+                Logger.AddInfo("InvokeFalabellaService new claim Fill claim request: " + PublishedTask.CLAIM_ID)
                 Dim oCountry As New Country(OClaim.Company.CountryId)
                 Dim name As String
 
@@ -143,7 +146,7 @@ Public Class FalabellaIntegration
                     request.ClaimNumber = .ClaimNumber
                     request.ComunaCode = .Certificate.AddressChild.PostalCode
                     request.Country = oCountry.Code
-                    request.DateOfLoss = .LossDate.Value.ToShortDateString()
+                    request.DateOfLoss = Format(.LossDate.Value, "MM/dd/yyyy") '.LossDate.Value.ToShortDateString()
                     request.Email = .Certificate.Email
                     request.FirstName = .Certificate.CustomerFirstName
                     request.IdentificationNumber = If(.Certificate.IdentificationNumber.Length > 0, .Certificate.IdentificationNumber.Substring(0, Len(.Certificate.IdentificationNumber) - 1), String.Empty)
@@ -153,7 +156,7 @@ Public Class FalabellaIntegration
                     request.ProductDescription = .Certificate.Product.Description
                     request.SerialNumber = .ClaimedEquipment.SerialNumber
                     request.VerificationNumber = If(.Certificate.IdentificationNumber.Length > 0, .Certificate.IdentificationNumber.Substring(Len(.Certificate.IdentificationNumber) - 1), String.Empty)
-                    request.WarrantySalesDate = .Certificate.WarrantySalesDate.Value.ToShortDateString()
+                    request.WarrantySalesDate = Format(.Certificate.WarrantySalesDate.Value, "MM/dd/yyyy") '.Certificate.WarrantySalesDate.Value.ToShortDateString()
                     request.WorkPhone = .Certificate.WorkPhone
 
                     name = .Certificate.CustomerName
@@ -177,20 +180,24 @@ Public Class FalabellaIntegration
 
             Catch ex As Exception
                 'Save any unhandled exception to claim comments 
+                Logger.AddError("InvokeFalabellaService new claim claim request error ", ex)
                 AddCommentToClaim(ex.Message.ToString(), OClaim)
                 Return ex.Message.ToString()
             End Try
 
 
             'Save error code and error message to claim comments 
-            If (Not String.IsNullOrEmpty(response.ErrorCode)) Then
+            If (Not String.IsNullOrEmpty(response.ErrorCode) And Not Convert.ToString(response.ErrorCode) = "0") Then
+                Logger.AddInfo("InvokeFalabellaService new claim Fill error code " + response.ErrorCode + "   " + response.ErrorMessage)
                 AddCommentToClaim(response.ErrorCode + ";" + response.ErrorMessage, OClaim)
                 Return response.ErrorMessage
 
             ElseIf (Not String.IsNullOrEmpty(response.WorkOrderNumber)) Then
+                Logger.AddInfo("InvokeFalabellaService new claim Fill Work order: " + response.WorkOrderNumber)
                 OClaim.RemAuthNumber = response.WorkOrderNumber
                 OClaim.Save()
             End If
+
 
         End If
 
@@ -200,7 +207,7 @@ Public Class FalabellaIntegration
     End Function
 
     Private Function UpdateFalabella(StatusChangeDate As Date) As String
-        Logger.AddInfo("UpdateFalabella Status date: " + StatusChangeDate.ToString())
+        Logger.AddInfo("UpdateFalabella Status date: " + StatusChangeDate.ToString() + " Claim ID " + PublishedTask.CLAIM_ID)
 
         Dim falabellaManager As IFalabellaServiceManager = New FalabellaServiceManager()
         Dim request As UpdateClaimInfoRequest = New UpdateClaimInfoRequest()
@@ -228,7 +235,7 @@ Public Class FalabellaIntegration
             End Try
 
             'Save error code and error message to claim comments 
-            If (Not String.IsNullOrEmpty(response.ErrorCode)) Then
+            If (Not String.IsNullOrEmpty(response.ErrorCode) And Not Convert.ToString(response.ErrorCode) = "0") Then
                 AddCommentToClaim(response.ErrorCode + ";" + response.ErrorMessage, OClaim)
                 Return response.ErrorMessage
             End If

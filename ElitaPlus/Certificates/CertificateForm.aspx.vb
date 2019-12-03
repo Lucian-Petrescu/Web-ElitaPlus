@@ -4362,13 +4362,13 @@ Namespace Certificates
                 If ((Not String.IsNullOrEmpty(.Finance_Tab_Amount)) AndAlso Convert.ToDecimal(.Finance_Tab_Amount) > 0) OrElse blnIncomingAmount Then
                     Me.PopulateControlFromBOProperty(Me.moCurrentOutstandingBalanceText, CType(.GetFinancialAmountprodcode, Decimal), Me.DECIMAL_FORMAT)
                     If blnIncomingAmount Then
-                        Me.PopulateControlFromBOProperty(Me.moOutstandingBalanceDueDateText, GetDateFormattedStringNullable(Convert.ToDateTime(.OutstandingBalanceDueDate)))
+                        Me.PopulateControlFromBOProperty(Me.moOutstandingBalanceDueDateText, .OutstandingBalanceDueDate)
                     Else
                         ControlMgr.SetVisibleControl(Me, moOutstandingBalanceDueDateLabel, False)
                         ControlMgr.SetVisibleControl(Me, moOutstandingBalanceDueDateText, False)
                     End If
 
-                    Me.PopulateControlFromBOProperty(Me.moOutstandingBalanceDueDateText, GetDateFormattedStringNullable(Convert.ToDateTime(.FinanceDate)))
+                    Me.PopulateControlFromBOProperty(Me.moFinanceDateText, .FinanceDate)
                     Me.PopulateControlFromBOProperty(Me.moDownPaymentText, .DownPayment, Me.DECIMAL_FORMAT)
                     Me.PopulateControlFromBOProperty(Me.moAdvancePaymentText, .AdvancePayment, Me.DECIMAL_FORMAT)
                     Me.PopulateControlFromBOProperty(Me.moUpgradeFixedTermText, .UpgradeFixedTerm, Me.DECIMAL_FORMAT)
@@ -7915,14 +7915,14 @@ Namespace Certificates
                     strProcessedDate = strProcessedDate.Replace("&nbsp;", "")
                     If String.IsNullOrEmpty(strProcessedDate) = False Then
                         Dim tempProcessedDate = Convert.ToString(e.Row.Cells(CertHistoryGridColProcessedDateIdx).Text.Trim())
-                        Dim formattedProcessedDate = GetDateFormattedStringNullable(tempProcessedDate)
+                        Dim formattedProcessedDate = GetDateFormattedString(tempProcessedDate)
                         e.Row.Cells(CertHistoryGridColProcessedDateIdx).Text = Convert.ToString(formattedProcessedDate)
                     End If
                     Dim strStatusChangeDate As String = Convert.ToString(e.Row.Cells(CertHistoryGridColStatusChangeDateIdx).Text)
                     strStatusChangeDate = strStatusChangeDate.Replace("&nbsp;", "")
                     If String.IsNullOrEmpty(strStatusChangeDate) = False Then
                         Dim tempStatusChangeDate = Convert.ToString(e.Row.Cells(CertHistoryGridColStatusChangeDateIdx).Text.Trim())
-                        Dim formattedStatusChangeDate = GetDateFormattedStringNullable(tempStatusChangeDate)
+                        Dim formattedStatusChangeDate = GetDateFormattedString(tempStatusChangeDate)
                         e.Row.Cells(CertHistoryGridColStatusChangeDateIdx).Text = Convert.ToString(formattedStatusChangeDate)
                     End If
                 End If

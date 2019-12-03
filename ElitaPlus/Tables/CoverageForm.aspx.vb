@@ -2709,7 +2709,7 @@ Namespace Tables
             Dim fulfillmentProfileList = CommonConfigManager.Current.ListManager.GetList(ListCodes.FulfillmentProfile, Thread.CurrentPrincipal.GetLanguageCode())
 
             moFulfillmentProfileDrop.Populate(fulfillmentProfileList, New PopulateOptions() With
-                                             {.AddBlankItem = True, .ValueFunc = AddressOf PopulateOptions.GetCode})
+                                             {.AddBlankItem = True, .BlankItemValue = string.Empty, .ValueFunc = AddressOf PopulateOptions.GetCode})
 
             ControlMgr.SetEnableControl(Me, moFulfillmentProfileDrop, True)
             If Not String.IsNullOrEmpty(TheCoverage.FulfillmentProfileCode) Then

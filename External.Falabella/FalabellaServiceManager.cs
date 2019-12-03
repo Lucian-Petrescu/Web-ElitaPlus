@@ -1,9 +1,11 @@
 ﻿using Assurant.ElitaPlus.BusinessObjectsNew;
 using Assurant.ElitaPlus.External.Interfaces;
 using System;
+using System.IO;
 using System.Linq;
 using System.ServiceModel;
-
+using System.Xml;
+using System.Xml.Serialization;
 
 namespace Assurant.ElitaPlus.External.Falabella
 {
@@ -63,6 +65,21 @@ namespace Assurant.ElitaPlus.External.Falabella
                 hourSpecified = true
             };
 
+
+            XmlSerializer xsSubmit = new XmlSerializer(input.GetType());
+            var subReq = input;
+            var xml = "";
+            using (var sww = new StringWriter())
+            {
+                using (XmlWriter writer = XmlWriter.Create(sww))
+                {
+                    xsSubmit.Serialize(writer, subReq);
+                    xml = sww.ToString(); // Your XML
+                }
+            }
+            Logger.AddInfo(xml);
+
+
             var output = reference.OrdenTrabajoEstadoModificarOp(input);
 
             var outputInfo = output.estadoConsulta;
@@ -90,7 +107,7 @@ namespace Assurant.ElitaPlus.External.Falabella
             {
                 throw new FaultException($"Url {oWebPasswd.Url} not found or invalid");
             }
-
+            Logger.AddInfo("InvokeFalabellaService new claim URL: " + oWebPasswd.Url);
             var reference = new ServicioTecnicoDatosCrearService
             {
                 Url = oWebPasswd.Url
@@ -202,6 +219,22 @@ namespace Assurant.ElitaPlus.External.Falabella
             try
             {
                 //web service call
+                Logger.AddInfo("InvokeFalabellaService new claim Calling web service");
+
+                XmlSerializer xsSubmit = new XmlSerializer(input.GetType());
+                var subReq = input;
+                var xml = "";
+                using (var sww = new StringWriter())
+                {
+                    using (XmlWriter writer = XmlWriter.Create(sww))
+                    {
+                        xsSubmit.Serialize(writer, subReq);
+                        xml = sww.ToString(); // Your XML
+                    }
+                }
+                Logger.AddInfo(xml);
+
+
                 var output = reference.ServicioTecnicoDatosCrearOp(input);
 
                 var workOrderResponse = output.ListaSolicitudServicioTecnicoResponse;
@@ -215,6 +248,8 @@ namespace Assurant.ElitaPlus.External.Falabella
                         ErrorMessage = workOrderResponse[0].mensajerError
                     };
 
+                    Logger.AddInfo("InvokeFalabellaService new claim request Fill Work order: " + response.WorkOrderNumber);
+
                     return response;
                 }
                
@@ -222,6 +257,7 @@ namespace Assurant.ElitaPlus.External.Falabella
 
             catch (Exception ex)
             {
+                Logger.AddError("InvokeFalabellaService claim request error", ex);
                 throw;
             }
 

@@ -107,8 +107,7 @@ Partial Class CalendarForm_New
             End If
 
             If Not dateParam Is Nothing AndAlso dateParam <> "" Then
-                'Fix for Japan date control-------------------------------
-                System.Threading.Thread.CurrentThread.CurrentCulture = New CultureInfo("ja-JP")
+                'Fix for Japan date control-------------------------------               
                 Dim formatProvider = System.Threading.Thread.CurrentThread.CurrentCulture
                 If formatProvider.Name.Equals("ja-JP") Then
                     dateParam = Convert.ToDateTime(dateParam, System.Globalization.CultureInfo.GetCultureInfo("ja-JP").DateTimeFormat)
@@ -282,8 +281,6 @@ Partial Class CalendarForm_New
 
         If Not selectedDate Is Nothing AndAlso selectedDate <> "" Then
             'Fix for Japan date control-------------------------------
-            'Dim formatProvider = LocalizationMgr.CurrentFormatProvider
-            System.Threading.Thread.CurrentThread.CurrentCulture = New CultureInfo("ja-JP")
             Dim formatProvider = System.Threading.Thread.CurrentThread.CurrentCulture
 
             If formatProvider.Name.Equals("ja-JP") Then
@@ -307,7 +304,6 @@ Partial Class CalendarForm_New
 
         If Not selectedDate Is Nothing AndAlso selectedDate <> "" Then
             'Fix for Japan date control-------------------------------
-            System.Threading.Thread.CurrentThread.CurrentCulture = New CultureInfo("ja-JP")
             Dim formatProvider = System.Threading.Thread.CurrentThread.CurrentCulture
             If formatProvider.Name.Equals("ja-JP") Then
                 selectedDate = Convert.ToDateTime(selectedDate, System.Globalization.CultureInfo.GetCultureInfo("ja-JP").DateTimeFormat)

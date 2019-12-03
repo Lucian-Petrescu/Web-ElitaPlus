@@ -5765,10 +5765,12 @@
     <Content Include="Reports\PremiumAmortizationReInsuranceForm.aspx" />
     <Content Include="Reports\PremiumReconciliationForChildCertificates.aspx" />
     <Content Include="Reports\ReplacementOrder_AAU.xslt" />
+    <Content Include="Reports\ReplacementOrder_ANZ.xslt" />
     <Content Include="Reports\ReportCeProgressForm_New.aspx" />
     <Content Include="Reports\ReportExtractInputControl.ascx" />
     <Content Include="Reports\RequestReportForm.aspx" />
     <Content Include="Reports\ServiceOrder_AAU.xslt" />
+    <Content Include="Reports\ServiceOrder_ANZ.xslt" />
     <Content Include="Reports\SummaryPaymentByCertificate.aspx" />
     <Content Include="Reports\UpgradeReconciliationReportForm.aspx" />
     <Content Include="Reports\TIMMCertificateExtractForm.aspx" />

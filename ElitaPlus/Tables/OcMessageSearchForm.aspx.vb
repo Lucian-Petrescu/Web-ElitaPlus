@@ -459,7 +459,9 @@ Namespace Tables
 
                         e.Row.Cells(Me.GRID_COL_SENDER_REASON).Text = dvRow(OcMessage.MessageSearchDV.COL_SENDER_REASON).ToString
                         e.Row.Cells(Me.GRID_COL_RECIPIENT_ADDRESS).Text = dvRow(OcMessage.MessageSearchDV.COL_RECIPIENT_ADDRESS).ToString
-                        e.Row.Cells(Me.GRID_COL_LAST_ATTEMPTED_ON).Text = dvRow(OcMessage.MessageSearchDV.COL_LAST_ATTEMPTED_ON).ToString
+                        If (Not dvRow(OcMessage.MessageSearchDV.COL_LAST_ATTEMPTED_ON) Is DBNull.Value) Then
+                            e.Row.Cells(Me.GRID_COL_LAST_ATTEMPTED_ON).Text = GetLongDate12FormattedStringNullable(CType(dvRow(OcMessage.MessageSearchDV.COL_LAST_ATTEMPTED_ON), Date))
+                        End If
                         e.Row.Cells(Me.GRID_COL_LAST_ATTEMPTED_STATUS).Text = dvRow(OcMessage.MessageSearchDV.COL_LAST_ATTEMPTED_STATUS).ToString
 
                         e.Row.Cells(Me.GRID_COL_CERT_NUMBER).Text = dvRow(OcMessage.MessageSearchDV.COL_CERT_NUMBER).ToString

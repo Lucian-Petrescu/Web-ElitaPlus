@@ -95,7 +95,7 @@ Public Module Logger
         End Select
 
         Dim stackframe As New Diagnostics.StackFrame(2)
-        Dim finalMessage As String = String.Format(CultureInfo.InvariantCulture, _
+        Dim finalMessage As String = String.Format(CultureInfo.InvariantCulture,
             "{0}Environment - {4} | {1}.{2} | {3}", traceLevel, stackframe.GetMethod.DeclaringType.Name, stackframe.GetMethod.Name, message, Thread.CurrentThread.Name)
 
         traceSource.TraceEvent(level, 0, finalMessage)

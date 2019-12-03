@@ -112,6 +112,10 @@ Public Class Codes
     Public Const CLAIM_ACTIVITY__REWORK As String = "REWRK"
     Public Const CLAIM_ACTIVITY__LEGAL_GENERAL As String = "LGGL"
 
+    'Claim ServiceOrder Type
+    Public Const CLAIM_SERVICE_ORDER_TYPE_REPLACEMENT As String = "REPLACEMENT"
+    Public Const CLAIM_SERVICE_ORDER_TYPE_REPAIR As String = "REPAIR"
+
     'Cause of Loss
     Public Const CAUSE_OF_LOSS__BREAKAGE As String = "BREAK"
     Public Const CAUSE_OF_LOSS__THEFT As String = "THEFT"

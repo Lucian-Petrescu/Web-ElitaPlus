@@ -58,7 +58,7 @@ Partial Class ServiceOrderPreview
             '08/24/2006 - ALR - Added to create the PDF if it does not exist
             Dim pdfImg() As Byte
             Dim soController As New ServiceOrderController
-            Dim strReportName As String = soController.GenerateReportName(oServiceOrder.ClaimId) + EXTENSION_XSLT
+            Dim strReportName As String = soController.GenerateReportName(oServiceOrder.ClaimId, oServiceOrder.ClaimAuthorizationId) + EXTENSION_XSLT
 
             If oServiceOrder.ServiceOrderImage Is Nothing And System.IO.File.Exists(Server.MapPath(strReportName)) Then 'XSLT Report exists 
 

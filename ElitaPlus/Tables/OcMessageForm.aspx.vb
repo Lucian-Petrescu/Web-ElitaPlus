@@ -698,7 +698,7 @@ Namespace Tables
                             End If
                             CType(e.Row.Cells(2).FindControl("lblRecipientAddress"), Label).Text = dvRow(OcMessageAttempts.MessageAttemptsDV.COL_RECIPIENT_ADDRESS).ToString
                             CType(e.Row.Cells(3).FindControl("lblRecipientDescription"), Label).Text = dvRow(OcMessageAttempts.MessageAttemptsDV.COL_RECIPIENT_DESCRIPTION).ToString
-                            CType(e.Row.Cells(4).FindControl("lblAttemptedOn"), Label).Text = dvRow(OcMessageAttempts.MessageAttemptsDV.COL_MESSAGE_ATTEMPTED_ON).ToString
+                            CType(e.Row.Cells(4).FindControl("lblAttemptedOn"), Label).Text = GetLongDate12FormattedStringNullable(CType(dvRow(OcMessageAttempts.MessageAttemptsDV.COL_MESSAGE_ATTEMPTED_ON), Date))
                             CType(e.Row.Cells(5).FindControl("lblAttemptedBy"), Label).Text = dvRow(OcMessageAttempts.MessageAttemptsDV.COL_MESSAGE_ATTEMPTED_BY).ToString
                             CType(e.Row.Cells(6).FindControl("lblStatus"), Label).Text = dvRow(OcMessageAttempts.MessageAttemptsDV.COL_PROCESS_STATUS_DESCRIPTION).ToString
                             CType(e.Row.Cells(7).FindControl("lblErrorMessage"), Label).Text = dvRow(OcMessageAttempts.MessageAttemptsDV.COL_MESSAGE_ERROR).ToString
