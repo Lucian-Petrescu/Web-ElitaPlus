@@ -5,7 +5,7 @@
 <script type="text/javascript">
       
     window.bootstrapDynamicFulfillmentApp = {
-        claimNumber: '441016',// '<%= ClaimNumber %>',
+        claimNumber: '<%= ClaimNumber %>',
         sourceSystem: '<%= SourceSystem %>',
         accessToken: '<%= AccessToken %>',
         subscriptionKey: '<%= SubscriptionKey %>'
