@@ -2143,7 +2143,7 @@ Public Class ClaimRecordingForm
                 Dim response As FulfillmentOptionsResponse = State.SubmitWsBaseClaimRecordingResponse
                 Dim wsResponse As DynamicFulFillmentResponse = response.DynamicFulFillmentResponse
                 Dim dfControl As DynamicFulfillmentUI = Page.LoadControl("~/Common/DynamicFulfillmentUI.ascx")
-                dfControl.SourceSystem = "Eprism"
+                dfControl.SourceSystem = "Elita"
                 dfControl.ApiKey = wsResponse.ApiKey
                 dfControl.SubscriptionKey = wsResponse.SubscriptionKey
                 dfControl.BaseAddresss = wsResponse.BaseAddresss
@@ -2719,7 +2719,7 @@ Public Class ClaimRecordingForm
                 .CourierCode = State.LogisticsOption.DeliveryOptions.CourierCode
                 .CourierProductCode = State.LogisticsOption.DeliveryOptions.CourierProductCode
                 .DeliveryAddress = New UserControlDeliverySlot.DeliveryAddressInfo() With {
-                    .countryCode = deliveryAddress.Country,
+                    .CountryCode = deliveryAddress.Country,
                     .RegionShortDesc = deliveryAddress.State,
                     .PostalCode = deliveryAddress.PostalCode,
                     .City = deliveryAddress.City,
