@@ -25,14 +25,14 @@ window.addEventListener('dynamicFulfillmentWorkCompletedEvent', function (e) {
     //instanceIdField.value = e.detail.authorizationId;
     //ticketIdField.value = e.detail.offerId;
     //isLegacy.checked = e.detail.isLegacy;
-    //if (e.detail.isLegacy) {
-    //    //needToConfirm = false;
-    //    __doPostBack('', 'dynamicFulfillmentChange');
-    //}
-    //else {
-    //    //needToConfirm = false;
-    //    //showNextButton(true);
-    //    __doPostBack('cmdNext', 'OnClick');
-    //}
-    __doPostBack('', 'dynamicFulfillmentChange');
+    if (e.detail.isLegacy) {
+        //needToConfirm = false;
+        __doPostBack('', 'LegacyFulfillment');
+    }
+    else {
+        ////needToConfirm = false;
+        ////showNextButton(true);
+        //__doPostBack('cmdNext', 'OnClick');
+    }
+   
 });

@@ -377,15 +377,16 @@ Public Class ClaimRecordingForm
                     End If
                 End If
             Else 'Dynamicfulfillment page reload
-                Dim response As FulfillmentOptionsResponse = GetFulfillmentOptionsSession()
-                If response IsNot Nothing AndAlso response.DynamicFulFillmentResponse IsNot Nothing Then
-                    response.DynamicFulFillmentResponse = Nothing
-                    State.SubmitWsBaseClaimRecordingResponse = response
-                    Button1.Visible = True
-                    ShowFulfillmentOptionsView()
-                    ResetFulfillmentOptionsSession()
+                If Request("__EVENTARGUMENT").Equals("LegacyFulfillment") Then
+                    Dim response As FulfillmentOptionsResponse = GetFulfillmentOptionsSession()
+                    If response IsNot Nothing AndAlso response.DynamicFulFillmentResponse IsNot Nothing Then
+                        response.DynamicFulFillmentResponse = Nothing
+                        State.SubmitWsBaseClaimRecordingResponse = response
+                        Button1.Visible = True
+                        ShowFulfillmentOptionsView()
+                        ResetFulfillmentOptionsSession()
+                    End If
                 End If
-
             End If
         Catch ex As Exception
             HandleErrors(ex, MasterPage.MessageController)
@@ -2152,6 +2153,7 @@ Public Class ClaimRecordingForm
                 dfControl.IsLoadError = wsResponse.IsLoadError
                 dfControl.ClaimNumber = wsResponse.ClaimNumber
                 phDynamicFulfillmentUI.Controls.Add(dfControl)
+                Button1.Visible = False
             End If
         End If
     End Sub
