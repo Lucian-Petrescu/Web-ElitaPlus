@@ -382,7 +382,7 @@ Public Class ClaimRecordingForm
                     If response IsNot Nothing AndAlso response.DynamicFulFillmentResponse IsNot Nothing Then
                         response.DynamicFulFillmentResponse = Nothing
                         State.SubmitWsBaseClaimRecordingResponse = response
-                        Button1.Visible = True
+                        btnContinue.Visible = True
                         ShowFulfillmentOptionsView()
                         ResetFulfillmentOptionsSession()
                     End If
@@ -2143,7 +2143,7 @@ Public Class ClaimRecordingForm
                 Dim response As FulfillmentOptionsResponse = State.SubmitWsBaseClaimRecordingResponse
                 Dim wsResponse As DynamicFulFillmentResponse = response.DynamicFulFillmentResponse
                 Dim dfControl As DynamicFulfillmentUI = Page.LoadControl("~/Common/DynamicFulfillmentUI.ascx")
-                dfControl.SourceSystem = "Elita"
+                dfControl.SourceSystem = "Eprism"
                 dfControl.ApiKey = wsResponse.ApiKey
                 dfControl.SubscriptionKey = wsResponse.SubscriptionKey
                 dfControl.BaseAddresss = wsResponse.BaseAddresss
@@ -2153,7 +2153,7 @@ Public Class ClaimRecordingForm
                 dfControl.IsLoadError = wsResponse.IsLoadError
                 dfControl.ClaimNumber = wsResponse.ClaimNumber
                 phDynamicFulfillmentUI.Controls.Add(dfControl)
-                Button1.Visible = False
+                btnContinue.Visible = False
             End If
         End If
     End Sub

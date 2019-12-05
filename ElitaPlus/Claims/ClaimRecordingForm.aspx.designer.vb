@@ -815,20 +815,20 @@ Partial Public Class ClaimRecordingForm
     Protected WithEvents phDynamicFulfillmentUI As Global.System.Web.UI.WebControls.PlaceHolder
 
     '''<summary>
-    '''Button1 control.
+    '''btnContinue control.
     '''</summary>
     '''<remarks>
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents Button1 As Global.System.Web.UI.WebControls.Button
+    Protected WithEvents btnContinue As Global.System.Web.UI.WebControls.Button
 
     '''<summary>
-    '''LinkButton1 control.
+    '''lnkCancel control.
     '''</summary>
     '''<remarks>
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents LinkButton1 As Global.System.Web.UI.WebControls.LinkButton
+    Protected WithEvents lnkCancel As Global.System.Web.UI.WebControls.LinkButton
 End Class
