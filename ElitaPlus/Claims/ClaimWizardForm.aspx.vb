@@ -2334,12 +2334,10 @@ Public Class ClaimWizardForm
             Me.UserControlContactInfo.Bind(Me.State.ClaimBO.ContactInfo)
             'This makes all child controls inside UserControlAddress as ReadOnly 
             If isNewFulfillment = True Then
-                Me.UserControlAddress.ControlEnabled = False
                 Me.UserControlAddress.EnableControl(False)
                 Me.UserControlContactInfo.EnableControl(False)
-            Else
-                Me.UserControlAddress.ControlEnabled = True
             End If
+
         End If
 
         If Not State.ClaimBO.LossDate Is Nothing AndAlso Not State.ClaimBO.ReportedDate Is Nothing Then
