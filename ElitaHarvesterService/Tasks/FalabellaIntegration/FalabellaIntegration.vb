@@ -264,10 +264,14 @@ Public Class FalabellaIntegration
         Dim oClaimStatus As ClaimStatus
         Dim ClaimStatusByGroupID As Guid
 
+        Dim companyList = ClaimStatusByGroup.LoadListByCompanyGroup(oClaim.Company.CompanyGroupId).Tables(0).AsDataView
+
         If (oClaim.Status = BasicClaimStatus.Pending AndAlso oClaim.CertificateItemCoverage.CoverageTypeCode = Codes.COVERAGE_TYPE__THEFT) Then
-            ClaimStatusByGroupID = ClaimStatusByGroup.GetClaimStatusByGroupID(EXT_STAT_COM_FB_CLM_UPD_THFT)
+            companyList.RowFilter = "code= '" & EXT_STAT_COM_FB_CLM_UPD_THFT & "'"
+            ClaimStatusByGroupID = GuidControl.ByteArrayToGuid(companyList(0)("claim_status_by_group_id"))
         Else
-            ClaimStatusByGroupID = ClaimStatusByGroup.GetClaimStatusByGroupID(EXT_STAT_COM_FB_CLM_UPD_DMG)
+            companyList.RowFilter = "code= '" & EXT_STAT_COM_FB_CLM_UPD_DMG & "'"
+            ClaimStatusByGroupID = GuidControl.ByteArrayToGuid(companyList(0)("claim_status_by_group_id"))
         End If
 
         oClaimStatus = oClaim.AddExtendedClaimStatus(Guid.Empty)
