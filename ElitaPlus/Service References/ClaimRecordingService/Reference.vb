@@ -3168,6 +3168,7 @@ Namespace ClaimRecordingService
      System.Runtime.Serialization.KnownTypeAttribute(GetType(ClaimRecordingService.RegisteredItemsNotFoundFault)),  _
      System.Runtime.Serialization.KnownTypeAttribute(GetType(ClaimRecordingService.ManufacturerNotFoundFault)),  _
      System.Runtime.Serialization.KnownTypeAttribute(GetType(ClaimRecordingService.PolicyCancelRequestDeniedFault)),  _
+     System.Runtime.Serialization.KnownTypeAttribute(GetType(ClaimRecordingService.CallerAuthenticationFailedFault)),  _
      System.Runtime.Serialization.KnownTypeAttribute(GetType(ClaimRecordingService.FulfillmentServiceFault)),  _
      System.Runtime.Serialization.KnownTypeAttribute(GetType(ClaimRecordingService.TranslationNotFoundFault)),  _
      System.Runtime.Serialization.KnownTypeAttribute(GetType(ClaimRecordingService.InvalidPolicyNumberFault))>  _
@@ -3313,6 +3314,14 @@ Namespace ClaimRecordingService
      System.Runtime.Serialization.DataContractAttribute(Name:="PolicyCancelRequestDeniedFault", [Namespace]:="http://elita.assurant.com/Elita/ClaimService/Faults"),  _
      System.SerializableAttribute()>  _
     Partial Public Class PolicyCancelRequestDeniedFault
+        Inherits ClaimRecordingService.BaseFault
+    End Class
+    
+    <System.Diagnostics.DebuggerStepThroughAttribute(),  _
+     System.CodeDom.Compiler.GeneratedCodeAttribute("System.Runtime.Serialization", "4.0.0.0"),  _
+     System.Runtime.Serialization.DataContractAttribute(Name:="CallerAuthenticationFailedFault", [Namespace]:="http://elita.assurant.com/Elita/ClaimService/Faults"),  _
+     System.SerializableAttribute()>  _
+    Partial Public Class CallerAuthenticationFailedFault
         Inherits ClaimRecordingService.BaseFault
     End Class
     
@@ -4135,6 +4144,9 @@ Namespace ClaimRecordingService
         Private CoverageSummaryField() As ClaimRecordingService.CertificateItemCoverage
         
         <System.Runtime.Serialization.OptionalFieldAttribute()>  _
+        Private GadgetSummaryField() As ClaimRecordingService.GadgetCertItem
+        
+        <System.Runtime.Serialization.OptionalFieldAttribute()>  _
         Private ItemEffectiveDateField As System.Nullable(Of Date)
         
         <System.Runtime.Serialization.OptionalFieldAttribute()>  _
@@ -4243,6 +4255,19 @@ Namespace ClaimRecordingService
                 If (Object.ReferenceEquals(Me.CoverageSummaryField, value) <> true) Then
                     Me.CoverageSummaryField = value
                     Me.RaisePropertyChanged("CoverageSummary")
+                End If
+            End Set
+        End Property
+        
+        <System.Runtime.Serialization.DataMemberAttribute()>  _
+        Public Property GadgetSummary() As ClaimRecordingService.GadgetCertItem()
+            Get
+                Return Me.GadgetSummaryField
+            End Get
+            Set
+                If (Object.ReferenceEquals(Me.GadgetSummaryField, value) <> true) Then
+                    Me.GadgetSummaryField = value
+                    Me.RaisePropertyChanged("GadgetSummary")
                 End If
             End Set
         End Property
@@ -5408,6 +5433,150 @@ Namespace ClaimRecordingService
     
     <System.Diagnostics.DebuggerStepThroughAttribute(),  _
      System.CodeDom.Compiler.GeneratedCodeAttribute("System.Runtime.Serialization", "4.0.0.0"),  _
+     System.Runtime.Serialization.DataContractAttribute(Name:="GadgetCertItem", [Namespace]:="http://schemas.datacontract.org/2004/07/Assurant.Elita.ClaimService.BusinessRules"& _ 
+        "EngineInterface.Contracts"),  _
+     System.SerializableAttribute()>  _
+    Partial Public Class GadgetCertItem
+        Inherits Object
+        Implements System.Runtime.Serialization.IExtensibleDataObject, System.ComponentModel.INotifyPropertyChanged
+        
+        <System.NonSerializedAttribute()>  _
+        Private extensionDataField As System.Runtime.Serialization.ExtensionDataObject
+        
+        <System.Runtime.Serialization.OptionalFieldAttribute()>  _
+        Private EffectiveDateField As System.Nullable(Of Date)
+        
+        <System.Runtime.Serialization.OptionalFieldAttribute()>  _
+        Private ExpirationDateField As System.Nullable(Of Date)
+        
+        <System.Runtime.Serialization.OptionalFieldAttribute()>  _
+        Private PolicyLiabilityLimitField As System.Nullable(Of Decimal)
+        
+        <System.Runtime.Serialization.OptionalFieldAttribute()>  _
+        Private ProductClaimLimitField As System.Nullable(Of Integer)
+        
+        <System.Runtime.Serialization.OptionalFieldAttribute()>  _
+        Private ProductClaimLimitPerDeviceField As System.Nullable(Of Integer)
+        
+        <System.Runtime.Serialization.OptionalFieldAttribute()>  _
+        Private ProductCodeField As String
+        
+        <System.Runtime.Serialization.OptionalFieldAttribute()>  _
+        Private ProductLiabilityLimitBasedonField As String
+        
+        <Global.System.ComponentModel.BrowsableAttribute(false)>  _
+        Public Property ExtensionData() As System.Runtime.Serialization.ExtensionDataObject Implements System.Runtime.Serialization.IExtensibleDataObject.ExtensionData
+            Get
+                Return Me.extensionDataField
+            End Get
+            Set
+                Me.extensionDataField = value
+            End Set
+        End Property
+        
+        <System.Runtime.Serialization.DataMemberAttribute()>  _
+        Public Property EffectiveDate() As System.Nullable(Of Date)
+            Get
+                Return Me.EffectiveDateField
+            End Get
+            Set
+                If (Me.EffectiveDateField.Equals(value) <> true) Then
+                    Me.EffectiveDateField = value
+                    Me.RaisePropertyChanged("EffectiveDate")
+                End If
+            End Set
+        End Property
+        
+        <System.Runtime.Serialization.DataMemberAttribute()>  _
+        Public Property ExpirationDate() As System.Nullable(Of Date)
+            Get
+                Return Me.ExpirationDateField
+            End Get
+            Set
+                If (Me.ExpirationDateField.Equals(value) <> true) Then
+                    Me.ExpirationDateField = value
+                    Me.RaisePropertyChanged("ExpirationDate")
+                End If
+            End Set
+        End Property
+        
+        <System.Runtime.Serialization.DataMemberAttribute()>  _
+        Public Property PolicyLiabilityLimit() As System.Nullable(Of Decimal)
+            Get
+                Return Me.PolicyLiabilityLimitField
+            End Get
+            Set
+                If (Me.PolicyLiabilityLimitField.Equals(value) <> true) Then
+                    Me.PolicyLiabilityLimitField = value
+                    Me.RaisePropertyChanged("PolicyLiabilityLimit")
+                End If
+            End Set
+        End Property
+        
+        <System.Runtime.Serialization.DataMemberAttribute()>  _
+        Public Property ProductClaimLimit() As System.Nullable(Of Integer)
+            Get
+                Return Me.ProductClaimLimitField
+            End Get
+            Set
+                If (Me.ProductClaimLimitField.Equals(value) <> true) Then
+                    Me.ProductClaimLimitField = value
+                    Me.RaisePropertyChanged("ProductClaimLimit")
+                End If
+            End Set
+        End Property
+        
+        <System.Runtime.Serialization.DataMemberAttribute()>  _
+        Public Property ProductClaimLimitPerDevice() As System.Nullable(Of Integer)
+            Get
+                Return Me.ProductClaimLimitPerDeviceField
+            End Get
+            Set
+                If (Me.ProductClaimLimitPerDeviceField.Equals(value) <> true) Then
+                    Me.ProductClaimLimitPerDeviceField = value
+                    Me.RaisePropertyChanged("ProductClaimLimitPerDevice")
+                End If
+            End Set
+        End Property
+        
+        <System.Runtime.Serialization.DataMemberAttribute()>  _
+        Public Property ProductCode() As String
+            Get
+                Return Me.ProductCodeField
+            End Get
+            Set
+                If (Object.ReferenceEquals(Me.ProductCodeField, value) <> true) Then
+                    Me.ProductCodeField = value
+                    Me.RaisePropertyChanged("ProductCode")
+                End If
+            End Set
+        End Property
+        
+        <System.Runtime.Serialization.DataMemberAttribute()>  _
+        Public Property ProductLiabilityLimitBasedon() As String
+            Get
+                Return Me.ProductLiabilityLimitBasedonField
+            End Get
+            Set
+                If (Object.ReferenceEquals(Me.ProductLiabilityLimitBasedonField, value) <> true) Then
+                    Me.ProductLiabilityLimitBasedonField = value
+                    Me.RaisePropertyChanged("ProductLiabilityLimitBasedon")
+                End If
+            End Set
+        End Property
+        
+        Public Event PropertyChanged As System.ComponentModel.PropertyChangedEventHandler Implements System.ComponentModel.INotifyPropertyChanged.PropertyChanged
+        
+        Protected Sub RaisePropertyChanged(ByVal propertyName As String)
+            Dim propertyChanged As System.ComponentModel.PropertyChangedEventHandler = Me.PropertyChangedEvent
+            If (Not (propertyChanged) Is Nothing) Then
+                propertyChanged(Me, New System.ComponentModel.PropertyChangedEventArgs(propertyName))
+            End If
+        End Sub
+    End Class
+    
+    <System.Diagnostics.DebuggerStepThroughAttribute(),  _
+     System.CodeDom.Compiler.GeneratedCodeAttribute("System.Runtime.Serialization", "4.0.0.0"),  _
      System.Runtime.Serialization.DataContractAttribute(Name:="ClaimEquipment", [Namespace]:="http://schemas.datacontract.org/2004/07/Assurant.Elita.ClaimService.BusinessRules"& _ 
         "EngineInterface.Contracts"),  _
      System.SerializableAttribute()>  _
@@ -6380,6 +6549,8 @@ Namespace ClaimRecordingService
             "mitManufacturerNotFoundFaultFault", Name:="ManufacturerNotFoundFault", [Namespace]:="http://elita.assurant.com/Elita/ClaimService/Faults"),  _
          System.ServiceModel.FaultContractAttribute(GetType(ClaimRecordingService.PolicyCancelRequestDeniedFault), Action:="http://elita.assurant.com/Elita/Claim/RecordingService/IClaimRecordingService/Sub"& _ 
             "mitPolicyCancelRequestDeniedFaultFault", Name:="PolicyCancelRequestDeniedFault", [Namespace]:="http://elita.assurant.com/Elita/ClaimService/Faults"),  _
+         System.ServiceModel.FaultContractAttribute(GetType(ClaimRecordingService.CallerAuthenticationFailedFault), Action:="http://elita.assurant.com/Elita/Claim/RecordingService/IClaimRecordingService/Sub"& _ 
+            "mitCallerAuthenticationFailedFaultFault", Name:="CallerAuthenticationFailedFault", [Namespace]:="http://elita.assurant.com/Elita/ClaimService/Faults"),  _
          System.ServiceModel.FaultContractAttribute(GetType(ClaimRecordingService.FulfillmentServiceFault), Action:="http://elita.assurant.com/Elita/Claim/RecordingService/IClaimRecordingService/Sub"& _ 
             "mitFulfillmentServiceFaultFault", Name:="FulfillmentServiceFault", [Namespace]:="http://elita.assurant.com/Elita/ClaimService/Faults"),  _
          System.ServiceModel.FaultContractAttribute(GetType(ClaimRecordingService.TranslationNotFoundFault), Action:="http://elita.assurant.com/Elita/Claim/RecordingService/IClaimRecordingService/Sub"& _ 
