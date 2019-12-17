@@ -336,7 +336,8 @@ Partial Public Class ComunaCodeForm
         Try
             Me.moRegionDrop.Populate(REGIONLIST.ToArray(), New PopulateOptions() With
                 {
-                    .AddBlankItem = True
+                    .AddBlankItem = True,
+                    .SortFunc = AddressOf PopulateOptions.GetExtendedCode
                 })
 
             'Dim dv As DataView = REGIONLIST

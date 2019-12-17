@@ -232,6 +232,16 @@
                                                             <asp:TextBox ID="TextBoxInvoiceTaxGL" runat="server" Visible="True"></asp:TextBox>
                                                         </EditItemTemplate>
                                                     </asp:TemplateField>
+                                                    <asp:TemplateField SortExpression="EXTENDED_CODE" HeaderText="EXTENDED_CODE">
+                                                        <ItemStyle HorizontalAlign="Left" Width="18%"></ItemStyle>
+                                                        <ItemTemplate>
+                                                            <asp:Label ID="ExtendedCodeLabel" runat="server" Visible="True">
+                                                            </asp:Label>
+                                                        </ItemTemplate>
+                                                        <EditItemTemplate>
+                                                            <asp:TextBox ID="TextBoxExtendedCode" runat="server" Visible="True"></asp:TextBox>
+                                                        </EditItemTemplate>
+                                                    </asp:TemplateField>
                                                 </Columns>
                                                 <PagerSettings PageButtonCount="15" Mode="Numeric" />
                                                 <PagerStyle HorizontalAlign="Center" CssClass="PAGER"></PagerStyle>
