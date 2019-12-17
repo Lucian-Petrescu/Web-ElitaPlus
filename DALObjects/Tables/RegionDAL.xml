@@ -12,7 +12,8 @@
 				modified_date,
 				short_desc,
         accounting_code,
-        invoicetax_gl_acct,        extended_code,
+        invoicetax_gl_acct,
+        extended_code,
 				created_by,
 				modified_by,
 				region_id
@@ -45,7 +46,7 @@
 				r.short_desc,
         r.accounting_code,
         r.invoicetax_gl_acct,
-        nvl(extended_code,upper(r.description)) extended_code
+        nvl(extended_code,upper(r.description)) as extended_code
 			FROM elp_region r , elp_country c 
 			WHERE
 				r.country_id  = c.country_id
