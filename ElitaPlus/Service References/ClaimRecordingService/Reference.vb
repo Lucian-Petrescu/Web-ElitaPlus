@@ -3313,6 +3313,7 @@ Namespace ClaimRecordingService
      System.Runtime.Serialization.KnownTypeAttribute(GetType(ClaimRecordingService.RegisteredItemsNotFoundFault)),  _
      System.Runtime.Serialization.KnownTypeAttribute(GetType(ClaimRecordingService.ManufacturerNotFoundFault)),  _
      System.Runtime.Serialization.KnownTypeAttribute(GetType(ClaimRecordingService.PolicyCancelRequestDeniedFault)),  _
+     System.Runtime.Serialization.KnownTypeAttribute(GetType(ClaimRecordingService.CallerAuthenticationFailedFault)),  _
      System.Runtime.Serialization.KnownTypeAttribute(GetType(ClaimRecordingService.FulfillmentServiceFault)),  _
      System.Runtime.Serialization.KnownTypeAttribute(GetType(ClaimRecordingService.TranslationNotFoundFault)),  _
      System.Runtime.Serialization.KnownTypeAttribute(GetType(ClaimRecordingService.InvalidPolicyNumberFault))>  _
@@ -3458,6 +3459,14 @@ Namespace ClaimRecordingService
      System.Runtime.Serialization.DataContractAttribute(Name:="PolicyCancelRequestDeniedFault", [Namespace]:="http://elita.assurant.com/Elita/ClaimService/Faults"),  _
      System.SerializableAttribute()>  _
     Partial Public Class PolicyCancelRequestDeniedFault
+        Inherits ClaimRecordingService.BaseFault
+    End Class
+    
+    <System.Diagnostics.DebuggerStepThroughAttribute(),  _
+     System.CodeDom.Compiler.GeneratedCodeAttribute("System.Runtime.Serialization", "4.0.0.0"),  _
+     System.Runtime.Serialization.DataContractAttribute(Name:="CallerAuthenticationFailedFault", [Namespace]:="http://elita.assurant.com/Elita/ClaimService/Faults"),  _
+     System.SerializableAttribute()>  _
+    Partial Public Class CallerAuthenticationFailedFault
         Inherits ClaimRecordingService.BaseFault
     End Class
     
@@ -6685,6 +6694,8 @@ Namespace ClaimRecordingService
             "mitManufacturerNotFoundFaultFault", Name:="ManufacturerNotFoundFault", [Namespace]:="http://elita.assurant.com/Elita/ClaimService/Faults"),  _
          System.ServiceModel.FaultContractAttribute(GetType(ClaimRecordingService.PolicyCancelRequestDeniedFault), Action:="http://elita.assurant.com/Elita/Claim/RecordingService/IClaimRecordingService/Sub"& _ 
             "mitPolicyCancelRequestDeniedFaultFault", Name:="PolicyCancelRequestDeniedFault", [Namespace]:="http://elita.assurant.com/Elita/ClaimService/Faults"),  _
+         System.ServiceModel.FaultContractAttribute(GetType(ClaimRecordingService.CallerAuthenticationFailedFault), Action:="http://elita.assurant.com/Elita/Claim/RecordingService/IClaimRecordingService/Sub"& _ 
+            "mitCallerAuthenticationFailedFaultFault", Name:="CallerAuthenticationFailedFault", [Namespace]:="http://elita.assurant.com/Elita/ClaimService/Faults"),  _
          System.ServiceModel.FaultContractAttribute(GetType(ClaimRecordingService.FulfillmentServiceFault), Action:="http://elita.assurant.com/Elita/Claim/RecordingService/IClaimRecordingService/Sub"& _ 
             "mitFulfillmentServiceFaultFault", Name:="FulfillmentServiceFault", [Namespace]:="http://elita.assurant.com/Elita/ClaimService/Faults"),  _
          System.ServiceModel.FaultContractAttribute(GetType(ClaimRecordingService.TranslationNotFoundFault), Action:="http://elita.assurant.com/Elita/Claim/RecordingService/IClaimRecordingService/Sub"& _ 

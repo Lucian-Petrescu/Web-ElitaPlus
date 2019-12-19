@@ -155,8 +155,8 @@ Public Class Region
         End Set
     End Property
 
-    <ValidStringLength("", Max:=15)> _
-      Public Property InvoiceTaxGLAcct() As String
+    <ValidStringLength("", Max:=15)>
+    Public Property InvoiceTaxGLAcct() As String
         Get
             CheckDeleted()
             If Row(RegionDAL.COL_NAME_INVOICE_TAX_GL) Is DBNull.Value Then
@@ -176,6 +176,26 @@ Public Class Region
         End Set
     End Property
 
+    <ValidStringLength("", Max:=15)>
+    Public Property ExtendedCode() As String
+        Get
+            CheckDeleted()
+            If Row(RegionDAL.COL_NAME_EXTENDED_CODE) Is DBNull.Value Then
+                Return Nothing
+            Else
+                Return CType(Row(RegionDAL.COL_NAME_EXTENDED_CODE), String)
+            End If
+        End Get
+        Set(ByVal Value As String)
+            CheckDeleted()
+            If Not Value Is Nothing Then
+                Me.SetValue(RegionDAL.COL_NAME_EXTENDED_CODE, Value.Trim())
+            Else
+                Me.SetValue(RegionDAL.COL_NAME_EXTENDED_CODE, Value)
+            End If
+
+        End Set
+    End Property
 
 #End Region
 
@@ -361,6 +381,7 @@ Public Class Region
         Public Const COL_COUNTRY_NAME As String = RegionDAL.COL_NAME_COUNTRY_NAME
         Public Const COL_ACCOUNTING_CODE As String = RegionDAL.COL_NAME_ACCOUNTING_CODE
         Public Const COL_INVOICE_TAX_GL As String = RegionDAL.COL_NAME_INVOICE_TAX_GL
+        Public Const COL_EXTENDED_CODE As String = RegionDAL.COL_NAME_EXTENDED_CODE
 
 #End Region
 

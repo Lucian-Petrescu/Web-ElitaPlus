@@ -717,17 +717,24 @@ Public Class ClaimRecordingForm
         End If
     End Sub
     Private Sub ThrowWsFaultExceptions(fex As FaultException)
+
+        Dim errClaimRecordingWs As String = TranslationBase.TranslateLabelOrMessage(ElitaPlus.Common.ErrorCodes.GUI_CLAIM_RECORDING_SERVICE_ERR)
+
         If fex.GetType() Is GetType(FaultException(Of ValidationFault)) AndAlso (DirectCast(fex, FaultException(Of ValidationFault)).Detail.Items.Count > 0) Then
             Dim items As List(Of ValidationFaultItem) = DirectCast(fex, FaultException(Of ValidationFault)).Detail.Items.ToList()
-            Dim errClaimRecordingWs As String = TranslationBase.TranslateLabelOrMessage(ElitaPlus.Common.ErrorCodes.GUI_CLAIM_RECORDING_SERVICE_ERR)
+
             For Each vf As ValidationFaultItem In items
                 MasterPage.MessageController.AddError(errClaimRecordingWs & " - " & vf.Message, False)
             Next
+        ElseIf fex.GetType() = GetType(FaultException(Of CallerAuthenticationFailedFault)) Then
+            Dim errorMessage As String = DirectCast(fex, FaultException(Of CallerAuthenticationFailedFault)).Detail.FaultMessage.ToString()
+            MasterPage.MessageController.AddError(errClaimRecordingWs & " - " & errorMessage, False)
         Else
             Log(fex)
-            MasterPage.MessageController.AddError(TranslationBase.TranslateLabelOrMessage(ElitaPlus.Common.ErrorCodes.GUI_CLAIM_RECORDING_SERVICE_ERR) & " - " & fex.Message, False)
+            MasterPage.MessageController.AddError(errClaimRecordingWs & " - " & fex.Message, False)
             'Throw New GUIException(TranslationBase.TranslateLabelOrMessage(ElitaPlus.Common.ErrorCodes.GUI_CLAIM_RECORDING_SERVICE_ERR) & " - " & fex.Message, ElitaPlus.Common.ErrorCodes.GUI_CLAIM_RECORDING_SERVICE_ERR, If(fex.InnerException, Nothing))
         End If
+
     End Sub
     Private Sub DeselectRadioButtonGridview(ByVal gridViewTarget As GridView, ByVal rdobuttonName As String)
         'deselect all radiobutton in gridview
