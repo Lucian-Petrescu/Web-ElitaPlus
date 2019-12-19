@@ -1143,7 +1143,9 @@
     <EmbeddedResource Include="Tables\ProductCodeDAL.xml">
       <SubType>Designer</SubType>
     </EmbeddedResource>
-    <EmbeddedResource Include="Tables\RegionDAL.xml" />
+    <EmbeddedResource Include="Tables\RegionDAL.xml">
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
     <EmbeddedResource Include="Tables\RegionStandardizationDAL.xml" />
     <EmbeddedResource Include="Tables\RepairCodeDAL.xml" />
     <EmbeddedResource Include="Tables\RiskTypeDAL.xml" />
@@ -1170,7 +1172,9 @@
     <EmbeddedResource Include="Translation\DictItemTranslationDAL.xml" />
     <EmbeddedResource Include="Translation\DropdownDAL.xml" />
     <EmbeddedResource Include="Translation\DropdownItemDAL.xml" />
-    <EmbeddedResource Include="Translation\TranslationDAL.xml" />
+    <EmbeddedResource Include="Translation\TranslationDAL.xml">
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
     <EmbeddedResource Include="VSC\VSCClassCodeDAL.xml" />
     <EmbeddedResource Include="VSC\VSCCoverageDAL.xml" />
     <EmbeddedResource Include="VSC\VSCCoverageLimitDAL.xml" />
