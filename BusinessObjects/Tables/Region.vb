@@ -155,8 +155,8 @@ Public Class Region
         End Set
     End Property
 
-    <ValidStringLength("", Max:=15)> _
-      Public Property InvoiceTaxGLAcct() As String
+    <ValidStringLength("", Max:=15)>
+    Public Property InvoiceTaxGLAcct() As String
         Get
             CheckDeleted()
             If Row(RegionDAL.COL_NAME_INVOICE_TAX_GL) Is DBNull.Value Then
@@ -175,6 +175,7 @@ Public Class Region
 
         End Set
     End Property
+
     <ValidStringLength("", Max:=15)>
     Public Property ExtendedCode() As String
         Get

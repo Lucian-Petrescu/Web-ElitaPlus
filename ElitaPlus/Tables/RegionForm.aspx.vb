@@ -77,7 +77,7 @@ Partial Class RegionForm
     Private Const REGION_CODE As Integer = 5
     Private Const ACCOUNTING_CODE As Integer = 6
     Private Const INVOICE_TAX As Integer = 7
-    Private Const EXTENDED_CODE As Integer = 8
+    Private Const SORT_VALUE As Integer = 8
 
     'Actions
     Private Const ACTION_NONE As String = "ACTION_NONE"
@@ -91,7 +91,7 @@ Partial Class RegionForm
     Private Const SHORT_DESC_IN_GRID_CONTROL_NAME As String = "TextBoxShortDesc"
     Private Const ACCT_CODE_IN_GRID_CONTROL_NAME As String = "TextBoxAcctCode"
     Private Const INVOICE_TAX_IN_GRID_CONTROL_NAME As String = "TextBoxInvoiceTaxGL"
-    Private Const EXT_CODE_IN_GRID_CONTROL_NAME As String = "TextBoxExtendedCode"
+    Private Const EXTENDED_CODE_IN_GRID_CONTROL_NAME As String = "TextBoxExtendedCode"
     Private Const REGION_ID_LABEL As String = "LABELRegionId"
     Private Const LABEL_DESCRIPTION As String = "DescriptionLabel"
     Private Const LABEL_SHORTDESCRIPTION As String = "ShortDescriptionLabel"
@@ -426,7 +426,7 @@ Partial Class RegionForm
                     CType(e.Row.Cells(Me.ACCOUNTING_CODE).FindControl(LABEL_ACCTCODE), Label).Text = dvRow(BusinessObjectsNew.Region.RegionSearchDV.COL_ACCOUNTING_CODE).ToString
                     CType(e.Row.Cells(Me.COUNTRY_ID).FindControl(LABEL_COUNTRY), Label).Text = dvRow(BusinessObjectsNew.Region.RegionSearchDV.COL_COUNTRY_NAME).ToString
                     CType(e.Row.Cells(Me.INVOICE_TAX).FindControl(LABEL_INVOICE_TAX), Label).Text = dvRow(BusinessObjectsNew.Region.RegionSearchDV.COL_INVOICE_TAX_GL).ToString
-                    CType(e.Row.Cells(Me.EXTENDED_CODE).FindControl(LABEL_EXTENDED_CODE), Label).Text = dvRow(BusinessObjectsNew.Region.RegionSearchDV.COL_EXTENDED_CODE).ToString
+                    CType(e.Row.Cells(Me.SORT_VALUE).FindControl(LABEL_EXTENDED_CODE), Label).Text = dvRow(BusinessObjectsNew.Region.RegionSearchDV.COL_EXTENDED_CODE).ToString
 
                 End If
             End If
@@ -529,12 +529,9 @@ Partial Class RegionForm
                     End If
                 End If
 
-                txtExtendedCode = CType(Me.Grid.Rows(gridRowIdx).Cells(Me.EXTENDED_CODE).FindControl(EXT_CODE_IN_GRID_CONTROL_NAME), TextBox)
-                If (Not .AccountingCode Is Nothing) Then
-                    'Def-26691: Added condition to check if the value for InvoiceTaxGLAcct is not null.
-                    If (Not .ExtendedCode Is Nothing) Then
-                        txtExtendedCode.Text = .ExtendedCode
-                    End If
+                txtExtendedCode = CType(Me.Grid.Rows(gridRowIdx).Cells(Me.SORT_VALUE).FindControl(EXTENDED_CODE_IN_GRID_CONTROL_NAME), TextBox)
+                If (Not .ExtendedCode Is Nothing) Then
+                    txtExtendedCode.Text = .ExtendedCode
                 End If
 
                 txtShortDesc.Attributes.Add("onBlur", "populateAcctCode(this, getElementById('" + txtAcctCode.ClientID + "'));")
@@ -729,7 +726,7 @@ Partial Class RegionForm
                 .Description = CType(Me.Grid.Rows(Me.Grid.EditIndex).Cells(Me.DESCRIPTION).FindControl(Me.DESCRIPTION_IN_GRID_CONTROL_NAME), TextBox).Text
                 .ShortDesc = CType(Me.Grid.Rows(Me.Grid.EditIndex).Cells(Me.REGION_CODE).FindControl(Me.SHORT_DESC_IN_GRID_CONTROL_NAME), TextBox).Text
                 .AccountingCode = CType(Me.Grid.Rows(Me.Grid.EditIndex).Cells(Me.ACCOUNTING_CODE).FindControl(Me.ACCT_CODE_IN_GRID_CONTROL_NAME), TextBox).Text
-                .ExtendedCode = CType(Me.Grid.Rows(Me.Grid.EditIndex).Cells(Me.EXTENDED_CODE).FindControl(Me.EXT_CODE_IN_GRID_CONTROL_NAME), TextBox).Text
+                .ExtendedCode = CType(Me.Grid.Rows(Me.Grid.EditIndex).Cells(Me.SORT_VALUE).FindControl(Me.EXTENDED_CODE_IN_GRID_CONTROL_NAME), TextBox).Text
 
                 'Def-26691: Added condition to check if the value for invoice tax is not empty.
                 If Not (CType(Me.Grid.Rows(Me.Grid.EditIndex).Cells(Me.INVOICE_TAX).FindControl(Me.INVOICE_TAX_IN_GRID_CONTROL_NAME), TextBox).Text = String.Empty) AndAlso _

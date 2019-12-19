@@ -232,7 +232,7 @@
                                                             <asp:TextBox ID="TextBoxInvoiceTaxGL" runat="server" Visible="True"></asp:TextBox>
                                                         </EditItemTemplate>
                                                     </asp:TemplateField>
-                                                    <asp:TemplateField SortExpression="EXTENDED_CODE" HeaderText="EXTENDED_CODE">
+                                                    <asp:TemplateField SortExpression="Extended_Code" HeaderText="EXTENDED_CODE">
                                                         <ItemStyle HorizontalAlign="Left" Width="18%"></ItemStyle>
                                                         <ItemTemplate>
                                                             <asp:Label ID="ExtendedCodeLabel" runat="server" Visible="True">

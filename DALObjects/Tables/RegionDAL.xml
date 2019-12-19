@@ -13,7 +13,7 @@
 				short_desc,
         accounting_code,
         invoicetax_gl_acct,
-        extended_code,
+        sort_value extended_code,
 				created_by,
 				modified_by,
 				region_id
@@ -46,14 +46,14 @@
 				r.short_desc,
         r.accounting_code,
         r.invoicetax_gl_acct,
-        nvl(extended_code,upper(r.description)) as extended_code
+        r.sort_value extended_code
 			FROM elp_region r , elp_country c 
 			WHERE
 				r.country_id  = c.country_id
 				AND r.country_id = :country_id
 				AND UPPER(r.short_desc) LIKE :short_desc	
 				AND UPPER(r.description) LIKE :description
-        ORDER BY upper(extended_code)
+        ORDER BY nvl (extended_code, upper(r.description))
 		]]>	
 	</LOAD_LIST>
 	<LOAD_LIST_FOR_USER_COUNTRIES>		
@@ -112,7 +112,7 @@
 				short_desc = :short_desc,
         accounting_code = :accounting_code,
         invoicetax_gl_acct = :invoicetax_gl_acct,
-        extended_code = :extended_code,
+        sort_value = :extended_code,
 				modified_by = :modified_by
 			WHERE
 				region_id = :region_id
@@ -129,7 +129,7 @@
     invoicetax_gl_acct,
     created_by,
     region_id,
-    extended_code
+    sort_value
     )
     VALUES
     (
