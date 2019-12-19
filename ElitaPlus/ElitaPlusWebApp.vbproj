@@ -40,11 +40,11 @@
     </UpgradeBackupLocation>
     <OldToolsVersion>4.0</OldToolsVersion>
     <TargetFrameworkVersion>v4.6.2</TargetFrameworkVersion>
-    <UseIISExpress>false</UseIISExpress>
+    <UseIISExpress>true</UseIISExpress>
     <IISExpressSSLPort />
     <IISExpressAnonymousAuthentication />
     <IISExpressWindowsAuthentication />
-    <IISExpressUseClassicPipelineMode />
+    <IISExpressUseClassicPipelineMode>true</IISExpressUseClassicPipelineMode>
     <TargetFrameworkProfile />
     <UseGlobalApplicationHostFile />
     <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..\</SolutionDir>
@@ -5985,7 +5985,7 @@
     <None Include="Service References\ClaimFulfillmentWebAppGatewayService\WebAppGateway.wsdl" />
     <None Include="Service References\ClaimFulfillmentWebAppGatewayService\WebAppGateway1.wsdl" />
     <None Include="Service References\ClaimRecordingService\ClaimRecordingService1.wsdl" />
-    <None Include="Service References\ClaimRecordingService\ClaimRecordingService3.wsdl" />
+    <None Include="Service References\ClaimRecordingService\-ClaimRecordingService3.wsdl" />
     <None Include="Service References\ClaimRecordingService\configuration91.svcinfo" />
     <None Include="Service References\ClaimRecordingService\configuration.svcinfo" />
     <None Include="Service References\ClaimRecordingService\Reference.svcmap">

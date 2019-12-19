@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<wsdl:definitions xmlns:wsap="http://schemas.xmlsoap.org/ws/2004/08/addressing/policy" xmlns:wsa10="http://www.w3.org/2005/08/addressing" xmlns:tns="http://elita.assurant.com/Elita/Claim/RecordingService" xmlns:msc="http://schemas.microsoft.com/ws/2005/12/wsdl/contract" xmlns:soapenc="http://schemas.xmlsoap.org/soap/encoding/" xmlns:wsx="http://schemas.xmlsoap.org/ws/2004/09/mex" xmlns:wsp="http://schemas.xmlsoap.org/ws/2004/09/policy" xmlns:wsam="http://www.w3.org/2007/05/addressing/metadata" xmlns:wsa="http://schemas.xmlsoap.org/ws/2004/08/addressing" xmlns:soap12="http://schemas.xmlsoap.org/wsdl/soap12/" xmlns:wsaw="http://www.w3.org/2006/05/addressing/wsdl" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:wsu="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-utility-1.0.xsd" xmlns:xsd="http://www.w3.org/2001/XMLSchema" name="ClaimRecordingService" targetNamespace="http://elita.assurant.com/Elita/Claim/RecordingService" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">
+<wsdl:definitions xmlns:wsap="http://schemas.xmlsoap.org/ws/2004/08/addressing/policy" xmlns:wsa10="http://www.w3.org/2005/08/addressing" xmlns:tns="http://elita.assurant.com/Elita/Claim/RecordingService" xmlns:msc="http://schemas.microsoft.com/ws/2005/12/wsdl/contract" xmlns:soapenc="http://schemas.xmlsoap.org/soap/encoding/" xmlns:wsx="http://schemas.xmlsoap.org/ws/2004/09/mex" xmlns:wsp="http://schemas.xmlsoap.org/ws/2004/09/policy" xmlns:wsam="http://www.w3.org/2007/05/addressing/metadata" xmlns:wsa="http://schemas.xmlsoap.org/ws/2004/08/addressing" xmlns:wsaw="http://www.w3.org/2006/05/addressing/wsdl" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:soap12="http://schemas.xmlsoap.org/wsdl/soap12/" xmlns:wsu="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-utility-1.0.xsd" xmlns:xsd="http://www.w3.org/2001/XMLSchema" name="ClaimRecordingService" targetNamespace="http://elita.assurant.com/Elita/Claim/RecordingService" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">
   <wsp:Policy wsu:Id="CustomBinding_IClaimRecordingService_policy">
     <wsp:ExactlyOne>
       <wsp:All>
@@ -690,7 +690,6 @@
               <xs:element minOccurs="0" name="QuestionSetCode" nillable="true" type="xs:string" />
               <xs:element minOccurs="0" name="QuestionVersion" type="xs:int" />
               <xs:element minOccurs="0" name="Questions" nillable="true" type="tns:ArrayOfQuestion" />
-              <xs:element minOccurs="0" name="IsExternalFulfillment" type="xs:boolean" />
             </xs:sequence>
           </xs:extension>
         </xs:complexContent>
@@ -801,37 +800,19 @@
             <xs:sequence>
               <xs:element xmlns:q2="http://assurant.com/Elita/ClaimFulfillment/Shared/Data" name="Options" nillable="true" type="q2:ArrayOfFulfillmentOption" />
               <xs:element xmlns:q3="http://schemas.microsoft.com/2003/10/Serialization/Arrays" minOccurs="0" name="QuestionsByStage" nillable="true" type="q3:ArrayOfKeyValueOfstringArrayOfQuestionKjP37BP8" />
-              <xs:element minOccurs="0" name="DynamicFulFillmentResponse" nillable="true" type="tns:DynamicFulFillmentResponse" />
             </xs:sequence>
           </xs:extension>
         </xs:complexContent>
       </xs:complexType>
       <xs:element name="FulfillmentOptionsResponse" nillable="true" type="tns:FulfillmentOptionsResponse" />
-      <xs:complexType name="DynamicFulFillmentResponse">
-        <xs:complexContent mixed="false">
-          <xs:extension xmlns:q4="http://elita.assurant.com/Elita/Claim/RecordingService/DataContracts" base="q4:BaseClaimRecordingResponse">
-            <xs:sequence>
-              <xs:element name="SourceSystem" nillable="true" type="xs:string" />
-              <xs:element name="AccessToken" nillable="true" type="xs:string" />
-              <xs:element name="SubscriptionKey" nillable="true" type="xs:string" />
-              <xs:element name="ApiKey" nillable="true" type="xs:string" />
-              <xs:element name="BaseAddresss" nillable="true" type="xs:string" />
-              <xs:element name="CssUri" nillable="true" type="xs:string" />
-              <xs:element name="ScriptUri" nillable="true" type="xs:string" />
-              <xs:element name="IsLoadError" type="xs:boolean" />
-            </xs:sequence>
-          </xs:extension>
-        </xs:complexContent>
-      </xs:complexType>
-      <xs:element name="DynamicFulFillmentResponse" nillable="true" type="tns:DynamicFulFillmentResponse" />
       <xs:complexType name="LogisticStagesRequest">
         <xs:complexContent mixed="false">
-          <xs:extension xmlns:q5="http://elita.assurant.com/Elita/Claim/RecordingService/DataContracts" base="q5:BaseClaimRecordingRequest">
+          <xs:extension xmlns:q4="http://elita.assurant.com/Elita/Claim/RecordingService/DataContracts" base="q4:BaseClaimRecordingRequest">
             <xs:sequence>
-              <xs:element xmlns:q6="http://assurant.com/Elita/ClaimFulfillment/Shared/Data" name="Stages" nillable="true" type="q6:ArrayOfLogisticStage" />
+              <xs:element xmlns:q5="http://assurant.com/Elita/ClaimFulfillment/Shared/Data" name="Stages" nillable="true" type="q5:ArrayOfLogisticStage" />
               <xs:element minOccurs="0" name="QuestionSetCode" nillable="true" type="xs:string" />
               <xs:element minOccurs="0" name="QuestionVersion" type="xs:int" />
-              <xs:element minOccurs="0" name="Questions" nillable="true" type="q5:ArrayOfQuestion" />
+              <xs:element minOccurs="0" name="Questions" nillable="true" type="q4:ArrayOfQuestion" />
             </xs:sequence>
           </xs:extension>
         </xs:complexContent>
@@ -1294,6 +1275,14 @@
         </xs:complexContent>
       </xs:complexType>
       <xs:element name="PolicyCancelRequestDeniedFault" nillable="true" type="tns:PolicyCancelRequestDeniedFault" />
+      <xs:complexType name="CallerAuthenticationFailedFault">
+        <xs:complexContent mixed="false">
+          <xs:extension base="tns:BaseFault">
+            <xs:sequence />
+          </xs:extension>
+        </xs:complexContent>
+      </xs:complexType>
+      <xs:element name="CallerAuthenticationFailedFault" nillable="true" type="tns:CallerAuthenticationFailedFault" />
       <xs:complexType name="FulfillmentServiceFault">
         <xs:complexContent mixed="false">
           <xs:extension base="tns:BaseFault">
@@ -1638,14 +1627,17 @@
   <wsdl:message name="IClaimRecordingService_Submit_PolicyCancelRequestDeniedFaultFault_FaultMessage">
     <wsdl:part xmlns:q22="http://elita.assurant.com/Elita/ClaimService/Faults" name="detail" element="q22:PolicyCancelRequestDeniedFault" />
   </wsdl:message>
+  <wsdl:message name="IClaimRecordingService_Submit_CallerAuthenticationFailedFaultFault_FaultMessage">
+    <wsdl:part xmlns:q23="http://elita.assurant.com/Elita/ClaimService/Faults" name="detail" element="q23:CallerAuthenticationFailedFault" />
+  </wsdl:message>
   <wsdl:message name="IClaimRecordingService_Submit_FulfillmentServiceFaultFault_FaultMessage">
-    <wsdl:part xmlns:q23="http://elita.assurant.com/Elita/ClaimService/Faults" name="detail" element="q23:FulfillmentServiceFault" />
+    <wsdl:part xmlns:q24="http://elita.assurant.com/Elita/ClaimService/Faults" name="detail" element="q24:FulfillmentServiceFault" />
   </wsdl:message>
   <wsdl:message name="IClaimRecordingService_Submit_TranslationNotFoundFaultFault_FaultMessage">
-    <wsdl:part xmlns:q24="http://elita.assurant.com/Elita/ClaimService/Faults" name="detail" element="q24:TranslationNotFoundFault" />
+    <wsdl:part xmlns:q25="http://elita.assurant.com/Elita/ClaimService/Faults" name="detail" element="q25:TranslationNotFoundFault" />
   </wsdl:message>
   <wsdl:message name="IClaimRecordingService_Submit_ValidationFaultFault_FaultMessage">
-    <wsdl:part xmlns:q25="http://assurant.com/Elita/ServiceIntegration/Faults" name="detail" element="q25:ValidationFault" />
+    <wsdl:part xmlns:q26="http://assurant.com/Elita/ServiceIntegration/Faults" name="detail" element="q26:ValidationFault" />
   </wsdl:message>
   <wsdl:message name="IClaimRecordingService_Save_InputMessage">
     <wsdl:part name="parameters" element="tns:Save" />
@@ -1654,7 +1646,7 @@
     <wsdl:part name="parameters" element="tns:SaveResponse" />
   </wsdl:message>
   <wsdl:message name="IClaimRecordingService_Save_ValidationFaultFault_FaultMessage">
-    <wsdl:part xmlns:q26="http://assurant.com/Elita/ServiceIntegration/Faults" name="detail" element="q26:ValidationFault" />
+    <wsdl:part xmlns:q27="http://assurant.com/Elita/ServiceIntegration/Faults" name="detail" element="q27:ValidationFault" />
   </wsdl:message>
   <wsdl:message name="IClaimRecordingService_GetClaimSummary_InputMessage">
     <wsdl:part name="parameters" element="tns:GetClaimSummary" />
@@ -1663,7 +1655,7 @@
     <wsdl:part name="parameters" element="tns:GetClaimSummaryResponse" />
   </wsdl:message>
   <wsdl:message name="IClaimRecordingService_GetClaimSummary_ValidationFaultFault_FaultMessage">
-    <wsdl:part xmlns:q27="http://assurant.com/Elita/ServiceIntegration/Faults" name="detail" element="q27:ValidationFault" />
+    <wsdl:part xmlns:q28="http://assurant.com/Elita/ServiceIntegration/Faults" name="detail" element="q28:ValidationFault" />
   </wsdl:message>
   <wsdl:message name="IClaimRecordingService_ReEvaluateQuestions_InputMessage">
     <wsdl:part name="parameters" element="tns:ReEvaluateQuestions" />
@@ -1672,7 +1664,7 @@
     <wsdl:part name="parameters" element="tns:ReEvaluateQuestionsResponse" />
   </wsdl:message>
   <wsdl:message name="IClaimRecordingService_ReEvaluateQuestions_ValidationFaultFault_FaultMessage">
-    <wsdl:part xmlns:q28="http://assurant.com/Elita/ServiceIntegration/Faults" name="detail" element="q28:ValidationFault" />
+    <wsdl:part xmlns:q29="http://assurant.com/Elita/ServiceIntegration/Faults" name="detail" element="q29:ValidationFault" />
   </wsdl:message>
   <wsdl:message name="IClaimRecordingService_UpdateCaseAction_InputMessage">
     <wsdl:part name="parameters" element="tns:UpdateCaseAction" />
@@ -1681,7 +1673,7 @@
     <wsdl:part name="parameters" element="tns:UpdateCaseActionResponse" />
   </wsdl:message>
   <wsdl:message name="IClaimRecordingService_UpdateCaseAction_ValidationFaultFault_FaultMessage">
-    <wsdl:part xmlns:q29="http://assurant.com/Elita/ServiceIntegration/Faults" name="detail" element="q29:ValidationFault" />
+    <wsdl:part xmlns:q30="http://assurant.com/Elita/ServiceIntegration/Faults" name="detail" element="q30:ValidationFault" />
   </wsdl:message>
   <wsdl:message name="IClaimRecordingService_GetPolicySummaryInfo_InputMessage">
     <wsdl:part name="parameters" element="tns:GetPolicySummaryInfo" />
@@ -1729,6 +1721,7 @@
       <wsdl:fault wsaw:Action="http://elita.assurant.com/Elita/Claim/RecordingService/IClaimRecordingService/SubmitInvalidRegisteredItemsFaultFault" name="InvalidRegisteredItemsFaultFault" message="tns:IClaimRecordingService_Submit_InvalidRegisteredItemsFaultFault_FaultMessage" />
       <wsdl:fault wsaw:Action="http://elita.assurant.com/Elita/Claim/RecordingService/IClaimRecordingService/SubmitManufacturerNotFoundFaultFault" name="ManufacturerNotFoundFaultFault" message="tns:IClaimRecordingService_Submit_ManufacturerNotFoundFaultFault_FaultMessage" />
       <wsdl:fault wsaw:Action="http://elita.assurant.com/Elita/Claim/RecordingService/IClaimRecordingService/SubmitPolicyCancelRequestDeniedFaultFault" name="PolicyCancelRequestDeniedFaultFault" message="tns:IClaimRecordingService_Submit_PolicyCancelRequestDeniedFaultFault_FaultMessage" />
+      <wsdl:fault wsaw:Action="http://elita.assurant.com/Elita/Claim/RecordingService/IClaimRecordingService/SubmitCallerAuthenticationFailedFaultFault" name="CallerAuthenticationFailedFaultFault" message="tns:IClaimRecordingService_Submit_CallerAuthenticationFailedFaultFault_FaultMessage" />
       <wsdl:fault wsaw:Action="http://elita.assurant.com/Elita/Claim/RecordingService/IClaimRecordingService/SubmitFulfillmentServiceFaultFault" name="FulfillmentServiceFaultFault" message="tns:IClaimRecordingService_Submit_FulfillmentServiceFaultFault_FaultMessage" />
       <wsdl:fault wsaw:Action="http://elita.assurant.com/Elita/Claim/RecordingService/IClaimRecordingService/SubmitTranslationNotFoundFaultFault" name="TranslationNotFoundFaultFault" message="tns:IClaimRecordingService_Submit_TranslationNotFoundFaultFault_FaultMessage" />
       <wsdl:fault wsaw:Action="http://elita.assurant.com/Elita/Claim/RecordingService/IClaimRecordingService/SubmitValidationFaultFault" name="ValidationFaultFault" message="tns:IClaimRecordingService_Submit_ValidationFaultFault_FaultMessage" />
@@ -1879,6 +1872,10 @@
         <soap:fault use="literal" name="PolicyCancelRequestDeniedFaultFault" namespace="" />
         <soap:fault use="literal" name="PolicyCancelRequestDeniedFaultFault" namespace="" />
       </wsdl:fault>
+      <wsdl:fault name="CallerAuthenticationFailedFaultFault">
+        <soap:fault use="literal" name="CallerAuthenticationFailedFaultFault" namespace="" />
+        <soap:fault use="literal" name="CallerAuthenticationFailedFaultFault" namespace="" />
+      </wsdl:fault>
       <wsdl:fault name="FulfillmentServiceFaultFault">
         <soap:fault use="literal" name="FulfillmentServiceFaultFault" namespace="" />
         <soap:fault use="literal" name="FulfillmentServiceFaultFault" namespace="" />
@@ -1965,10 +1962,10 @@
   </wsdl:binding>
   <wsdl:service name="ClaimRecordingService">
     <wsdl:port name="CustomBinding_IClaimRecordingService" binding="tns:CustomBinding_IClaimRecordingService">
-      <soap:address location="http://localhost:8085/ElitaClaimService/ClaimRecordingService.svc" />
+      <soap:address location="http://localhost/ElitaClaimService/ClaimRecordingService.svc" />
     </wsdl:port>
     <wsdl:port name="CustomBinding_IClaimRecordingService1" binding="tns:CustomBinding_IClaimRecordingService">
-      <soap:address location="http://localhost:8085/ElitaClaimService/ClaimRecordingService.svc/Secure" />
+      <soap:address location="http://localhost/ElitaClaimService/ClaimRecordingService.svc/Secure" />
     </wsdl:port>
   </wsdl:service>
 </wsdl:definitions>
