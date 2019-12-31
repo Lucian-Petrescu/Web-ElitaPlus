@@ -637,7 +637,10 @@
                 <asp:PlaceHolder runat="server" ID="phDynamicFulfillmentUI"></asp:PlaceHolder>
             </div>
             <div class="btnZone">
-                <asp:Button ID="btnContinue" runat="server" SkinID="PrimaryRightButton" Text="Continue" />
+                <div style="visibility:hidden">
+                    <asp:Button ID="btnContinue" runat="server" SkinID="PrimaryRightButton" Text="Continue" />
+                    <asp:Button ID="btnLegacyContinue" runat="server" SkinID="PrimaryRightButton" Text="Continue" />
+                </div>                
                 <asp:LinkButton ID="lnkCancel" runat="server" SkinID="TabZoneAddButton" Text="Cancel"
                                 OnClientClick="return revealModal('ModalCancel');" />
             </div>

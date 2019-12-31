@@ -27,12 +27,12 @@ window.addEventListener('dynamicFulfillmentWorkCompletedEvent', function (e) {
     //isLegacy.checked = e.detail.isLegacy;
     if (e.detail.isLegacy) {
         //needToConfirm = false;
-        __doPostBack('', 'LegacyFulfillment');
+        __doPostBack('ctl00$BodyPlaceHolder$btnLegacyContinue', 'OnClick');
     }
     else {
         ////needToConfirm = false;
         ////showNextButton(true);
-        //__doPostBack('cmdNext', 'OnClick');
+        __doPostBack('ctl00$BodyPlaceHolder$btnContinue', 'OnClick');
     }
    
 });

@@ -154,6 +154,9 @@ Partial Class ClaimForm
         Public FulfilmentBankinfoBo As BusinessObjectsNew.BankInfo
         Public IsCallerAuthenticated As Boolean = False
         Public FulfillmentDetailsResponse As FulfillmentDetails = Nothing
+        Public ExternalFulfillmentResponse As ClaimService.ExternalFulfillmentResponse = Nothing
+        Public IsExternalFulfillment As Boolean = False
+        Public CaseNumber As String = Nothing
 
     End Class
 
@@ -192,6 +195,8 @@ Partial Class ClaimForm
                 Catch ex As Exception
                     Me.State.MyBO = ClaimFacade.Instance.GetClaim(Of ClaimBase)(CType(Me.CallingParameters, Parameters).claimId)
                     Me.State.IsCallerAuthenticated = CType(Me.CallingParameters, Parameters).IsCallerAuthenticated
+                    Me.State.IsExternalFulfillment = CType(Me.CallingParameters, Parameters).IsExternalFulfillment
+                    Me.State.CaseNumber = CType(Me.CallingParameters, Parameters).caseNumber
                 End Try
                 If (Me.State.MyBO.ClaimAuthorizationType = ClaimAuthorizationType.Multiple) Then Me.State.IsMultiAuthClaim = True
             End If
@@ -224,6 +229,8 @@ Partial Class ClaimForm
         Public claimId As Guid
         Public updatedClaimAuthDetail As ClaimAuthDetailForm.ReturnType 'DEF-17426
         Public IsCallerAuthenticated As Boolean = True
+        Public IsExternalFulfillment As Boolean = False
+        Public caseNumber As String
 
         Public Sub New(ByVal claimId As Guid)
             Me.claimId = claimId
@@ -236,9 +243,11 @@ Partial Class ClaimForm
             Me.IsCallerAuthenticated = IsCallerAuthenticated
         End Sub
 
-        Public Sub New(ByVal claimId As Guid, Optional ByVal IsCallerAuthenticated As Boolean = False)
+        Public Sub New(ByVal claimId As Guid, Optional ByVal IsCallerAuthenticated As Boolean = False, Optional ByVal IsExternalFulfillment As Boolean = False, Optional ByVal CaseNumber As String = Nothing)
             Me.claimId = claimId
             Me.IsCallerAuthenticated = IsCallerAuthenticated
+            Me.IsExternalFulfillment = IsExternalFulfillment
+            Me.caseNumber = CaseNumber
         End Sub
 
     End Class
@@ -1946,10 +1955,30 @@ Partial Class ClaimForm
                 Else
                     Me.PopulateControlFromBOProperty(Me.txtPasscode, "")
                 End If
+                dvClaimFulfillmentDetails.Visible = True
             End If
         Else
             ClearClaimFulfillmentDetails()
         End If
+    End Sub
+
+    Sub ShowExternalFulfillmentDetails()
+        If Me.State.ExternalFulfillmentResponse IsNot Nothing Then
+            Dim wsResponse As ClaimService.ExternalFulfillmentResponse = Me.State.ExternalFulfillmentResponse
+            Dim dfControl As DynamicFulfillmentUI = Page.LoadControl("~/Common/DynamicFulfillmentUI.ascx")
+            dfControl.SourceSystem = "Eprism"
+            dfControl.ApiKey = wsResponse.ApiKey
+            dfControl.SubscriptionKey = wsResponse.SubscriptionKey
+            'dfControl.BaseAddresss = wsResponse.BaseAddresss
+            dfControl.CssUri = wsResponse.CssUri
+            dfControl.ScriptUri = wsResponse.ScriptUri
+            'dfControl.AccessToken = wsResponse.AccessToken
+            dfControl.IsLoadError = wsResponse.IsLoadError
+            dfControl.ClaimNumber = wsResponse.ClaimNumber
+            phDynamicFulfillmentUI.Controls.Add(dfControl)
+            dvClaimFulfillmentDetails.Visible = False
+        End If
+
     End Sub
 
     Sub ClearClaimFulfillmentDetails()
@@ -3978,7 +4007,14 @@ Partial Class ClaimForm
 #Region "Call To claim Fulfillment WebAppGateway"
 
     Public Sub BindclaimFulfillmentDetails()
+        If Me.State.IsExternalFulfillment Then
+            BindExternalClaimFulfillmentDetails()
+        Else
+            BindElitaClaimFulfillmentDetails()
+        End If
 
+    End Sub
+    Private Sub BindElitaClaimFulfillmentDetails()
         Dim wsRequest As GetFulfillmentDetailsRequest = New GetFulfillmentDetailsRequest()
         Dim wsResponse As FulfillmentDetails
 
@@ -4003,10 +4039,42 @@ Partial Class ClaimForm
         Catch ex As Exception
             ClearClaimFulfillmentDetails()
         End Try
-
-
-
     End Sub
+
+    Private Sub BindExternalClaimFulfillmentDetails()
+        Dim wsRequest As ClaimService.SearchCaseRequest = New ClaimService.SearchCaseRequest()
+        'Dim wsResponse As FulfillmentDetails
+
+        wsRequest.CompanyCode = Me.State.MyBO.Company.Code
+        wsRequest.CaseNumber = Me.State.CaseNumber
+
+        Try
+            Dim wsResponse = WcfClientHelper.Execute(Of ClaimService.ClaimServiceClient, ClaimService.IClaimService, ClaimService.ExternalFulfillmentResponse)(
+                                GetClientClaimService(),
+                                New List(Of Object) From {New InteractiveUserHeader() With {.LanId = Authentication.CurrentUser.NetworkId}},
+                                Function(ByVal c As ClaimService.ClaimServiceClient)
+                                    Return c.GetExternalFulfillmentDetails(wsRequest)
+                                End Function)
+
+            If wsResponse IsNot Nothing Then
+                If wsResponse.GetType() Is GetType(ClaimService.ExternalFulfillmentResponse) Then
+                    Me.State.ExternalFulfillmentResponse = wsResponse
+                    ShowExternalFulfillmentDetails()
+                End If
+            End If
+
+        Catch ex As Exception
+
+        End Try
+    End Sub
+
+    Private Shared Function GetClientClaimService() As ClaimService.ClaimServiceClient
+        Dim oWebPasswd As WebPasswd = New WebPasswd(Guid.Empty, LookupListNew.GetIdFromCode(Codes.SERVICE_TYPE, Codes.SERVICE_TYPE__CLAIM_SERVICE), False)
+        Dim client = New ClaimService.ClaimServiceClient("CustomBinding_IClaimService", oWebPasswd.Url)
+        client.ClientCredentials.UserName.UserName = oWebPasswd.UserId
+        client.ClientCredentials.UserName.Password = oWebPasswd.Password
+        Return client
+    End Function
 
     Private Shared Function GetClaimFulfillmentWebAppGatewayClient() As WebAppGatewayClient
         Dim oWebPasswd As WebPasswd = New WebPasswd(Guid.Empty, LookupListNew.GetIdFromCode(Codes.SERVICE_TYPE, Codes.SERVICE_TYPE__CLAIM_FULFILLMENT_WEB_APP_GATEWAY_SERVICE), False)
