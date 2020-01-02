@@ -5763,6 +5763,8 @@
     <Content Include="Reports\RequestReportForm.aspx" />
     <Content Include="Reports\ServiceOrder_AAU.xslt" />
     <Content Include="Reports\ServiceOrder_ANZ.xslt" />
+    <Content Include="Reports\ServiceOrder_DE_AAU .xslt" />
+    <Content Include="Reports\ServiceOrder_EW_AAU.xslt" />
     <Content Include="Reports\SummaryPaymentByCertificate.aspx" />
     <Content Include="Reports\UpgradeReconciliationReportForm.aspx" />
     <Content Include="Reports\TIMMCertificateExtractForm.aspx" />
