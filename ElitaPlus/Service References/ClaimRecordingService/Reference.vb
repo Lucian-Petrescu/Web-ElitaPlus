@@ -500,7 +500,7 @@ Namespace ClaimRecordingService
      System.Runtime.Serialization.KnownTypeAttribute(GetType(ClaimRecordingService.ShippingAddressResponse)),  _
      System.Runtime.Serialization.KnownTypeAttribute(GetType(ClaimRecordingService.ActionResponse)),  _
      System.Runtime.Serialization.KnownTypeAttribute(GetType(ClaimRecordingService.FulfillmentOptionsResponse)),  _
-     System.Runtime.Serialization.KnownTypeAttribute(GetType(ClaimRecordingService.DynamicFulFillmentResponse))>  _
+     System.Runtime.Serialization.KnownTypeAttribute(GetType(ClaimRecordingService.DynamicFulfillmentResponse))>  _
     Partial Public Class BaseClaimRecordingResponse
         Inherits Object
         Implements System.Runtime.Serialization.IExtensibleDataObject, System.ComponentModel.INotifyPropertyChanged
@@ -1176,7 +1176,7 @@ Namespace ClaimRecordingService
         Private QuestionsByStageField As System.Collections.Generic.Dictionary(Of String, Assurant.Elita.Questions.Contracts.Question())
         
         <System.Runtime.Serialization.OptionalFieldAttribute()>  _
-        Private DynamicFulFillmentResponseField As ClaimRecordingService.DynamicFulFillmentResponse
+        Private DynamicFulfillmentResponseField As ClaimRecordingService.DynamicFulfillmentResponse
         
         <System.Runtime.Serialization.DataMemberAttribute(IsRequired:=true)>  _
         Public Property Options() As ClaimRecordingService.FulfillmentOption()
@@ -1205,14 +1205,14 @@ Namespace ClaimRecordingService
         End Property
         
         <System.Runtime.Serialization.DataMemberAttribute(Order:=2)>  _
-        Public Property DynamicFulFillmentResponse() As ClaimRecordingService.DynamicFulFillmentResponse
+        Public Property DynamicFulfillmentResponse() As ClaimRecordingService.DynamicFulfillmentResponse
             Get
-                Return Me.DynamicFulFillmentResponseField
+                Return Me.DynamicFulfillmentResponseField
             End Get
             Set
-                If (Object.ReferenceEquals(Me.DynamicFulFillmentResponseField, value) <> true) Then
-                    Me.DynamicFulFillmentResponseField = value
-                    Me.RaisePropertyChanged("DynamicFulFillmentResponse")
+                If (Object.ReferenceEquals(Me.DynamicFulfillmentResponseField, value) <> true) Then
+                    Me.DynamicFulfillmentResponseField = value
+                    Me.RaisePropertyChanged("DynamicFulfillmentResponse")
                 End If
             End Set
         End Property
@@ -1220,10 +1220,12 @@ Namespace ClaimRecordingService
     
     <System.Diagnostics.DebuggerStepThroughAttribute(),  _
      System.CodeDom.Compiler.GeneratedCodeAttribute("System.Runtime.Serialization", "4.0.0.0"),  _
-     System.Runtime.Serialization.DataContractAttribute(Name:="DynamicFulFillmentResponse", [Namespace]:="http://assurant.com/Elita/ClaimFulfillment"),  _
+     System.Runtime.Serialization.DataContractAttribute(Name:="DynamicFulfillmentResponse", [Namespace]:="http://assurant.com/Elita/ClaimFulfillment"),  _
      System.SerializableAttribute()>  _
-    Partial Public Class DynamicFulFillmentResponse
+    Partial Public Class DynamicFulfillmentResponse
         Inherits ClaimRecordingService.BaseClaimRecordingResponse
+        
+        Private FulfillmentProviderField As ClaimRecordingService.FulfillmentProviderType
         
         Private SourceSystemField As String
         
@@ -1233,13 +1235,26 @@ Namespace ClaimRecordingService
         
         Private ApiKeyField As String
         
-        Private BaseAddresssField As String
+        Private BaseAddressField As String
         
         Private CssUriField As String
         
         Private ScriptUriField As String
         
         Private IsLoadErrorField As Boolean
+        
+        <System.Runtime.Serialization.DataMemberAttribute(IsRequired:=true)>  _
+        Public Property FulfillmentProvider() As ClaimRecordingService.FulfillmentProviderType
+            Get
+                Return Me.FulfillmentProviderField
+            End Get
+            Set
+                If (Me.FulfillmentProviderField.Equals(value) <> true) Then
+                    Me.FulfillmentProviderField = value
+                    Me.RaisePropertyChanged("FulfillmentProvider")
+                End If
+            End Set
+        End Property
         
         <System.Runtime.Serialization.DataMemberAttribute(IsRequired:=true)>  _
         Public Property SourceSystem() As String
@@ -1254,7 +1269,7 @@ Namespace ClaimRecordingService
             End Set
         End Property
         
-        <System.Runtime.Serialization.DataMemberAttribute(IsRequired:=true, Order:=1)>  _
+        <System.Runtime.Serialization.DataMemberAttribute(IsRequired:=true, Order:=2)>  _
         Public Property AccessToken() As String
             Get
                 Return Me.AccessTokenField
@@ -1267,7 +1282,7 @@ Namespace ClaimRecordingService
             End Set
         End Property
         
-        <System.Runtime.Serialization.DataMemberAttribute(IsRequired:=true, Order:=2)>  _
+        <System.Runtime.Serialization.DataMemberAttribute(IsRequired:=true, Order:=3)>  _
         Public Property SubscriptionKey() As String
             Get
                 Return Me.SubscriptionKeyField
@@ -1280,7 +1295,7 @@ Namespace ClaimRecordingService
             End Set
         End Property
         
-        <System.Runtime.Serialization.DataMemberAttribute(IsRequired:=true, Order:=3)>  _
+        <System.Runtime.Serialization.DataMemberAttribute(IsRequired:=true, Order:=4)>  _
         Public Property ApiKey() As String
             Get
                 Return Me.ApiKeyField
@@ -1293,20 +1308,20 @@ Namespace ClaimRecordingService
             End Set
         End Property
         
-        <System.Runtime.Serialization.DataMemberAttribute(IsRequired:=true, Order:=4)>  _
-        Public Property BaseAddresss() As String
+        <System.Runtime.Serialization.DataMemberAttribute(IsRequired:=true, Order:=5)>  _
+        Public Property BaseAddress() As String
             Get
-                Return Me.BaseAddresssField
+                Return Me.BaseAddressField
             End Get
             Set
-                If (Object.ReferenceEquals(Me.BaseAddresssField, value) <> true) Then
-                    Me.BaseAddresssField = value
-                    Me.RaisePropertyChanged("BaseAddresss")
+                If (Object.ReferenceEquals(Me.BaseAddressField, value) <> true) Then
+                    Me.BaseAddressField = value
+                    Me.RaisePropertyChanged("BaseAddress")
                 End If
             End Set
         End Property
         
-        <System.Runtime.Serialization.DataMemberAttribute(IsRequired:=true, Order:=5)>  _
+        <System.Runtime.Serialization.DataMemberAttribute(IsRequired:=true, Order:=6)>  _
         Public Property CssUri() As String
             Get
                 Return Me.CssUriField
@@ -1319,7 +1334,7 @@ Namespace ClaimRecordingService
             End Set
         End Property
         
-        <System.Runtime.Serialization.DataMemberAttribute(IsRequired:=true, Order:=6)>  _
+        <System.Runtime.Serialization.DataMemberAttribute(IsRequired:=true, Order:=7)>  _
         Public Property ScriptUri() As String
             Get
                 Return Me.ScriptUriField
@@ -1332,7 +1347,7 @@ Namespace ClaimRecordingService
             End Set
         End Property
         
-        <System.Runtime.Serialization.DataMemberAttribute(IsRequired:=true, Order:=7)>  _
+        <System.Runtime.Serialization.DataMemberAttribute(IsRequired:=true, Order:=8)>  _
         Public Property IsLoadError() As Boolean
             Get
                 Return Me.IsLoadErrorField
@@ -3298,6 +3313,17 @@ Namespace ClaimRecordingService
         Always = 1
     End Enum
     
+    <System.CodeDom.Compiler.GeneratedCodeAttribute("System.Runtime.Serialization", "4.0.0.0"),  _
+     System.Runtime.Serialization.DataContractAttribute(Name:="FulfillmentProviderType", [Namespace]:="http://assurant.com/Elita/ClaimFulfillment")>  _
+    Public Enum FulfillmentProviderType As Integer
+        
+        <System.Runtime.Serialization.EnumMemberAttribute()>  _
+        Elita = 0
+        
+        <System.Runtime.Serialization.EnumMemberAttribute()>  _
+        DynamicFulfillment = 1
+    End Enum
+    
     <System.Diagnostics.DebuggerStepThroughAttribute(),  _
      System.CodeDom.Compiler.GeneratedCodeAttribute("System.Runtime.Serialization", "4.0.0.0"),  _
      System.Runtime.Serialization.DataContractAttribute(Name:="BaseFault", [Namespace]:="http://elita.assurant.com/Elita/ClaimService/Faults"),  _
@@ -3630,7 +3656,8 @@ Namespace ClaimRecordingService
      System.Runtime.Serialization.KnownTypeAttribute(GetType(ClaimRecordingService.TroubleShootingRequest)),  _
      System.Runtime.Serialization.KnownTypeAttribute(GetType(ClaimRecordingService.CallerAuthenticationRequest)),  _
      System.Runtime.Serialization.KnownTypeAttribute(GetType(ClaimRecordingService.FulfillmentOptionsRequest)),  _
-     System.Runtime.Serialization.KnownTypeAttribute(GetType(ClaimRecordingService.LogisticStagesRequest))>  _
+     System.Runtime.Serialization.KnownTypeAttribute(GetType(ClaimRecordingService.LogisticStagesRequest)),  _
+     System.Runtime.Serialization.KnownTypeAttribute(GetType(ClaimRecordingService.DynamicFulfillmentRequest))>  _
     Partial Public Class BaseClaimRecordingRequest
         Inherits Object
         Implements System.Runtime.Serialization.IExtensibleDataObject, System.ComponentModel.INotifyPropertyChanged
@@ -4097,6 +4124,92 @@ Namespace ClaimRecordingService
         End Property
         
         <System.Runtime.Serialization.DataMemberAttribute(Order:=3)>  _
+        Public Property Questions() As Assurant.Elita.Questions.Contracts.Question()
+            Get
+                Return Me.QuestionsField
+            End Get
+            Set
+                If (Object.ReferenceEquals(Me.QuestionsField, value) <> true) Then
+                    Me.QuestionsField = value
+                    Me.RaisePropertyChanged("Questions")
+                End If
+            End Set
+        End Property
+    End Class
+    
+    <System.Diagnostics.DebuggerStepThroughAttribute(),  _
+     System.CodeDom.Compiler.GeneratedCodeAttribute("System.Runtime.Serialization", "4.0.0.0"),  _
+     System.Runtime.Serialization.DataContractAttribute(Name:="DynamicFulfillmentRequest", [Namespace]:="http://assurant.com/Elita/ClaimFulfillment"),  _
+     System.SerializableAttribute()>  _
+    Partial Public Class DynamicFulfillmentRequest
+        Inherits ClaimRecordingService.BaseClaimRecordingRequest
+        
+        Private FallbackOptionField As Boolean
+        
+        Private OptionCodeField As String
+        
+        <System.Runtime.Serialization.OptionalFieldAttribute()>  _
+        Private QuestionSetCodeField As String
+        
+        <System.Runtime.Serialization.OptionalFieldAttribute()>  _
+        Private QuestionVersionField As Integer
+        
+        <System.Runtime.Serialization.OptionalFieldAttribute()>  _
+        Private QuestionsField() As Assurant.Elita.Questions.Contracts.Question
+        
+        <System.Runtime.Serialization.DataMemberAttribute(IsRequired:=true)>  _
+        Public Property FallbackOption() As Boolean
+            Get
+                Return Me.FallbackOptionField
+            End Get
+            Set
+                If (Me.FallbackOptionField.Equals(value) <> true) Then
+                    Me.FallbackOptionField = value
+                    Me.RaisePropertyChanged("FallbackOption")
+                End If
+            End Set
+        End Property
+        
+        <System.Runtime.Serialization.DataMemberAttribute(IsRequired:=true)>  _
+        Public Property OptionCode() As String
+            Get
+                Return Me.OptionCodeField
+            End Get
+            Set
+                If (Object.ReferenceEquals(Me.OptionCodeField, value) <> true) Then
+                    Me.OptionCodeField = value
+                    Me.RaisePropertyChanged("OptionCode")
+                End If
+            End Set
+        End Property
+        
+        <System.Runtime.Serialization.DataMemberAttribute()>  _
+        Public Property QuestionSetCode() As String
+            Get
+                Return Me.QuestionSetCodeField
+            End Get
+            Set
+                If (Object.ReferenceEquals(Me.QuestionSetCodeField, value) <> true) Then
+                    Me.QuestionSetCodeField = value
+                    Me.RaisePropertyChanged("QuestionSetCode")
+                End If
+            End Set
+        End Property
+        
+        <System.Runtime.Serialization.DataMemberAttribute()>  _
+        Public Property QuestionVersion() As Integer
+            Get
+                Return Me.QuestionVersionField
+            End Get
+            Set
+                If (Me.QuestionVersionField.Equals(value) <> true) Then
+                    Me.QuestionVersionField = value
+                    Me.RaisePropertyChanged("QuestionVersion")
+                End If
+            End Set
+        End Property
+        
+        <System.Runtime.Serialization.DataMemberAttribute()>  _
         Public Property Questions() As Assurant.Elita.Questions.Contracts.Question()
             Get
                 Return Me.QuestionsField
