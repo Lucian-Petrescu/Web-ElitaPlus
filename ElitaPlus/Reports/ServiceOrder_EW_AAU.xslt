@@ -7,7 +7,7 @@
       <head>
         <style>
           BODY { width:auto }
-          TD { FONT-SIZE:8.5px;font-family:"Trebuchet MS";font-weight:bolder;height:5px;}
+          TD { FONT-SIZE:8.5pt;font-family:"Trebuchet MS";font-weight:bolder;height:5px;}
           .Header {background-color:#000;color:#fff; TEXT-ALIGN:LEFT;text-decoration: underline}
           .esp {font-weight:normal;}
         </style>

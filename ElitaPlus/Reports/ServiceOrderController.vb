@@ -116,7 +116,7 @@ Public Class ServiceOrderController
 
         End If
 
-        if  Not String.IsNullOrEmpty(CoverageType) AndAlso strReportType = SERVICE_ORDER AndAlso compCode ="AAU" Then
+        if  Not String.IsNullOrEmpty(CoverageType) AndAlso strReportType = SERVICE_ORDER AndAlso compCode = AUS_COMPANY_CODE Then
             Select Case CoverageType
                 Case COVERAGE_TYPE__EXTENDED
                     strReportType &= "_EW"

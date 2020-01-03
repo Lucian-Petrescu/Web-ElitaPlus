@@ -7,7 +7,7 @@
       <head>
         <style>
           BODY { width:auto }
-          TD { FONT-SIZE:8.5px;font-family:"Trebuchet MS";font-weight:bolder;height:5px;}
+          TD { FONT-SIZE:8.5pt;font-family:"Trebuchet MS";font-weight:bolder;height:5px;}
           .Header {background-color:#000;color:#fff; TEXT-ALIGN:LEFT;text-decoration: underline}
           .esp {font-weight:normal;}
         </style>
@@ -184,8 +184,8 @@
           </tr>
           <tr>
             <td>
-              Purchase Price:&#160;$<xsl:value-of select="a:ServiceOrderReport/a:ServiceOrder/a:SALES_PRICE" />
-            </td>
+              Purchase Price:&#160;$<xsl:value-of select="a:ServiceOrderReport/a:ServiceOrder/a:SALES_PRICE" />&#160;(Incl GST)
+          </td>
           </tr>
           <tr>
             <td>&#160;</td>
@@ -193,7 +193,7 @@
           </tr>
           <tr>
             <td>
-              Date Of Purchase:&#160;<xsl:value-of select="substring(a:ServiceOrderReport/a:ServiceOrder/a:PRODUCT_SALES_DATE, 9, 2)" />&#160;(Incl GST)
+              Date Of Purchase:&#160;<xsl:value-of select="substring(a:ServiceOrderReport/a:ServiceOrder/a:PRODUCT_SALES_DATE, 9, 2)" />
               <xsl:text>/</xsl:text>
               <xsl:value-of select="substring(a:ServiceOrderReport/a:ServiceOrder/a:PRODUCT_SALES_DATE, 6, 2)" />
               <xsl:text>/</xsl:text>
@@ -300,9 +300,14 @@
             <td colspan="2" >&#160;</td>
           </tr>
           <tr>
-            <td colspan="2" style="border-color:black; border-width: medium;" >
-              Insurance issued by Virginia Surety Company, Inc ARBN 080 339 957 AFSL 245579. 
-              Insurance administered by The Warranty Group Australasia Pty Ltd ABN 37 005 004 446. PO Box 246, Balwyn. VIC. 3103.
+            <td colspan="2" >&#160;</td>
+          </tr>
+          <tr>
+            <td colspan="2" style="border: thin solid #000000;text-align: center" >
+                <br></br>
+                &#160;Insurance issued by Virginia Surety Company, Inc ARBN 080 339 957 AFSL 245579.
+                Insurance administered by The Warranty Group Australasia Pty Ltd ABN 37 005 004 446,PO Box 246, Balwyn. VIC. 3103.<br></br>
+             
             </td>
           </tr>
         </table>
