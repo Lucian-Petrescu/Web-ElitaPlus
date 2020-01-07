@@ -262,13 +262,13 @@ Public Class CertEndorseDAL
             ' if endorsement flag on dealer is on then dont insert endorsement as that is done by trigger
             ' US 258702 Ind. Policy
 
-            Dim dealerId As Guid = New Guid(CType(familyDataset.Tables("ELP_CERT").Rows(0)("Dealer_Id"), Byte()))
+            'Dim dealerId As Guid = New Guid(CType(familyDataset.Tables("ELP_CERT").Rows(0)("Dealer_Id"), Byte()))
 
-            If IsDealerEndorsementAttributeFlagOn(dealerId) <> "Y" Then
-                Update(familyDataset.Tables(Me.TABLE_NAME), tr, DataRowState.Added Or DataRowState.Modified)
-                itemcoverageDA.Update(familyDataset, tr, DataRowState.Added Or DataRowState.Modified)
-                endorsecovDAL.Update(familyDataset, tr, DataRowState.Added Or DataRowState.Modified)
-            End If
+            'If IsDealerEndorsementAttributeFlagOn(dealerId) <> "Y" Then
+            Update(familyDataset.Tables(Me.TABLE_NAME), tr, DataRowState.Added Or DataRowState.Modified)
+            endorsecovDAL.Update(familyDataset, tr, DataRowState.Added Or DataRowState.Modified)
+            ' End If
+            itemcoverageDA.Update(familyDataset, tr, DataRowState.Added Or DataRowState.Modified)
 
             If Transaction Is Nothing Then
                 'We are the creator of the transaction we shoul commit it  and close the connection

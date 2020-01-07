@@ -36,7 +36,7 @@
     elita.elp_cancel_certificate
   </PROCESS_CANCEL_FILE>
   <PROCESS_EXTRACT_REPORT>
-    elita.r_upload_report.upload_report_extract
+    elita.r_upload_report.extract
   </PROCESS_EXTRACT_REPORT>
 
 </SQL>

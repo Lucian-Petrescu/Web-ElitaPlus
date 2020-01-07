@@ -589,6 +589,14 @@ Partial Class ClaimIssueDetailForm
         If (e.Row.RowType = DataControlRowType.DataRow) Then
             Dim gClaimIssueStatusID As New Guid(CType(e.Row.Cells(Me.Q_GRID_COL_CLAIM_ISSUE_STATUS_ID_IDX).FindControl(Me.CLAIM_ISSUE_STATUS_ID), Label).Text)
             CType(e.Row.Cells(Me.Q_GRID_COL_CLAIM_ISSUE_STATUS_DESC_IDX).FindControl(Me.CLAIM_ISSUE_STATUS_DESC), Label).Text = LookupListNew.GetDescriptionFromId(LookupListCache.LK_CLAIM_ISSUE_STATUS, gClaimIssueStatusID).ToString()
+
+            Dim strProcessedDate As String = Convert.ToString(e.Row.Cells(Q_GRID_COL_PROCESSED_DATE_IDX).Text)
+            strProcessedDate = strProcessedDate.Replace("&nbsp;", "")
+            If String.IsNullOrWhiteSpace(strProcessedDate) = False Then
+                Dim tempProcessedDate = Convert.ToDateTime(e.Row.Cells(Q_GRID_COL_PROCESSED_DATE_IDX).Text.Trim())
+                Dim formattedProcessedDate = GetLongDate12FormattedString(tempProcessedDate)
+                e.Row.Cells(Q_GRID_COL_PROCESSED_DATE_IDX).Text = Convert.ToString(formattedProcessedDate)
+            End If
         End If
     End Sub
 

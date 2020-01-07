@@ -2013,11 +2013,27 @@ Public Class ElitaPlusPage
     Public Shared Function GetLongDateFormattedString(ByVal value As Date) As String
         Dim LanguageCode = ElitaPlusIdentity.Current.ActiveUser.LanguageCode
         Dim formattedDate = CommonConfigManager.Current.LanguageManager.Get(LanguageCode).GetAwaiter().GetResult()?.FormatDate(value)
-        Dim MeridianTime = CommonConfigManager.Current.LanguageManager.Get(LanguageCode).GetAwaiter().GetResult()?.FormatTime(value)
-        Dim FullDateTimeValue = formattedDate + " " + MeridianTime
-        Dim formattedValue =
-            FullDateTimeValue.ToString().Substring(0, FullDateTimeValue.ToString().Length - 3)
-        Return formattedValue.ToString()
+        Dim FormattedTime = CommonConfigManager.Current.LanguageManager.Get(LanguageCode).GetAwaiter().GetResult()?.FormatTime(value)
+        Dim LongDateTimeValue = formattedDate + " " + FormattedTime
+        Dim i As String = LongDateTimeValue.IndexOf(" ")
+        If i <> -1 Then
+            LongDateTimeValue = LongDateTimeValue.Substring(0, i + 9)
+        End If
+        Return LongDateTimeValue.ToString()
+    End Function
+
+    Public Shared Function GetLongDateFormattedStringWithFormat(ByVal value As Date, ByVal Format As String) As String
+        'Return value.ToString(DATE_FORMAT, LocalizationMgr.CurrentCulture)
+        Return value.ToString(Format, System.Threading.Thread.CurrentThread.CurrentCulture)
+    End Function
+
+    Public Shared Function GetLongDateFormattedStringWithFormat(ByVal value As Date?, ByVal format As String) As String
+        'Return value.ToString(DATE_FORMAT, LocalizationMgr.CurrentCulture)
+        If Not value.HasValue Then
+            Return String.Empty
+        End If
+
+        Return GetLongDateFormattedStringWithFormat(CType(value.Value, Date), format)
     End Function
 
     Public Shared Function GetLongDate12FormattedString(ByVal value As Date) As String
@@ -2436,6 +2452,8 @@ Public Class ElitaPlusPage
             formattedValue = propertyValue.ToString.ToString(LocalizationMgr.CurrentFormatProvider)
             If (propertyValue.GetType Is GetType(DateType)) Then
                 formattedValue = Me.GetDateFormattedString(CType(propertyValue, DateType).Value)
+            ElseIf (propertyValue.GetType Is GetType(DateTimeType) And format IsNot Nothing) Then
+                formattedValue = Me.GetLongDateFormattedStringWithFormat(CType(propertyValue, DateTimeType).Value, format)
             ElseIf (propertyValue.GetType Is GetType(DateTimeType)) Then
                 formattedValue = Me.GetLongDateFormattedString(CType(propertyValue, DateTimeType).Value)
             ElseIf (propertyValue.GetType Is GetType(DateTime)) Then

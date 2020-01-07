@@ -2511,16 +2511,16 @@ Partial Class NewClaimForm
                     c.Comments = TranslationBase.TranslateLabelOrMessage("MSG_CLAIM_PENDING_ISSUE_OPEN")
                 Case Codes.CLAIMISSUE_STATUS__REJECTED
                     Me.State.MyBO.StatusCode = Codes.CLAIM_STATUS__DENIED
-                    If Not Me.State.MyBO.ClaimIssuesList Is nothing then                                            
+                    If Not Me.State.MyBO.ClaimIssuesList Is Nothing Then
                         For Each Item As ClaimIssue In Me.State.MyBO.ClaimIssuesList
                             If (Item.StatusCode = Codes.CLAIMISSUE_STATUS__REJECTED) Then
-                                If Not item.Issue.DeniedReason is Nothing then
-                                    Me.State.MyBO.DeniedReasonId = LookupListNew.GetIdFromExtCode(LookupListNew.LK_DENIED_REASON, item.Issue.DeniedReason)                  
+                                If Not Item.Issue.DeniedReason Is Nothing Then
+                                    Me.State.MyBO.DeniedReasonId = LookupListNew.GetIdFromExtCode(LookupListNew.LK_DENIED_REASON, Item.Issue.DeniedReason)
                                 Else
                                     Me.State.MyBO.DeniedReasonId = LookupListNew.GetIdFromCode(LookupListNew.LK_DENIED_REASON, Codes.REASON_DENIED_CLAIM_ISSUE_REJECTED)
-                                End if
+                                End If
                                 Exit For
-                            End If            
+                            End If
                         Next
                     Else
                         Me.State.MyBO.DeniedReasonId = LookupListNew.GetIdFromCode(LookupListNew.LK_DENIED_REASON, Codes.REASON_DENIED_CLAIM_ISSUE_REJECTED)
@@ -2586,47 +2586,25 @@ Partial Class NewClaimForm
                 'user story 192764 - Task-199011--Start------
                 Dim dsCaseFields As DataSet = CaseBase.GetCaseFieldsList(State.MyBO.Id, ElitaPlusIdentity.Current.ActiveUser.LanguageId)
                 If (Not dsCaseFields Is Nothing AndAlso dsCaseFields.Tables.Count > 0 AndAlso dsCaseFields.Tables(0).Rows.Count > 0) Then
-                    Dim hasBenefit As DataRow() = dsCaseFields.Tables(0).Select("field_code='HASBENEFIT'")
-                    If (Not hasBenefit Is Nothing AndAlso hasBenefit.Length > 0) Then
-                        If (Not hasBenefit(0)("field_value") Is Nothing AndAlso hasBenefit(0)("field_value").ToString().ToUpper() = Boolean.TrueString.ToUpper()) Then
 
-                            Dim benefitCheckResponse As LegacyBridgeResponse
-                            Try
-                                Dim client As LegacyBridgeServiceClient = Claim.GetLegacyBridgeServiceClient()
-                                benefitCheckResponse = WcfClientHelper.Execute(Of LegacyBridgeServiceClient, ILegacyBridgeService, LegacyBridgeResponse)(
-                                                                    client,
-                                                                    New List(Of Object) From {New Headers.InteractiveUserHeader() With {.LanId = Authentication.CurrentUser.NetworkId}},
-                                                                    Function(ByVal lc As LegacyBridgeServiceClient)
-                                                                        Return lc.BenefitClaimPreCheck(GuidControl.ByteArrayToGuid(hasBenefit(0)("case_Id")).ToString())
-                                                                    End Function)
-                            Catch ex As Exception
-                                Log(ex)
-                                Me.State.MyBO.Status = BasicClaimStatus.Pending
-                                Dim issueId As Guid = LookupListNew.GetIssueTypeIdFromCode(LookupListNew.LK_ISSUE_TYPE_CODE_LIST, "PRECK")
-                                Dim newClaimIssue As ClaimIssue = CType(Me.State.MyBO.ClaimIssuesList.GetNewChild, BusinessObjectsNew.ClaimIssue)
-                                newClaimIssue.SaveNewIssue(Me.State.MyBO.Id, issueId, Me.State.MyBO.Certificate.Id, True)
-                            End Try
+                    Dim preCheckError As DataRow() = dsCaseFields.Tables(0).Select("field_code='PRECHECKERROR'")
+                    If Not preCheckError Is Nothing AndAlso preCheckError.Length = 0 Then
 
-                            If (Not benefitCheckResponse Is Nothing) Then
-                                Me.State.MyBO.Status = If(benefitCheckResponse.StatusDecision = LegacyBridgeStatusDecisionEnum.Approve, BasicClaimStatus.Active, BasicClaimStatus.Pending)
-                                If (benefitCheckResponse.StatusDecision = LegacyBridgeStatusDecisionEnum.Deny) Then
-                                    Dim issueId As Guid = LookupListNew.GetIssueTypeIdFromCode(LookupListNew.LK_ISSUE_TYPE_CODE_LIST, "PRECKFAIL")
-                                    Dim newClaimIssue As ClaimIssue = CType(Me.State.MyBO.ClaimIssuesList.GetNewChild, BusinessObjectsNew.ClaimIssue)
-                                    newClaimIssue.SaveNewIssue(Me.State.MyBO.Id, issueId, Me.State.MyBO.Certificate.Id, True)
-                                End If
-                            Else
-                                Me.State.MyBO.Status = BasicClaimStatus.Pending
-                                Dim issueId As Guid = LookupListNew.GetIssueTypeIdFromCode(LookupListNew.LK_ISSUE_TYPE_CODE_LIST, "PRECK")
-                                Dim newClaimIssue As ClaimIssue = CType(Me.State.MyBO.ClaimIssuesList.GetNewChild, BusinessObjectsNew.ClaimIssue)
-                                newClaimIssue.SaveNewIssue(Me.State.MyBO.Id, issueId, Me.State.MyBO.Certificate.Id, True)
+                        Dim hasBenefit As DataRow() = dsCaseFields.Tables(0).Select("field_code='HASBENEFIT'")
+                        Dim benefitCheckError As DataRow() = dsCaseFields.Tables(0).Select("field_code='BENEFITCHECKERROR'")
+                        If Not hasBenefit Is Nothing AndAlso hasBenefit.Length > 0 Then
+                            If Not hasBenefit(0)("field_value") Is Nothing AndAlso hasBenefit(0)("field_value").ToString().ToUpper() = Boolean.TrueString.ToUpper() Then
+                                RunPreCheck(hasBenefit)
                             End If
-
+                        ElseIf Not benefitCheckError Is Nothing AndAlso benefitCheckError.Length > 0 Then
+                            If Not benefitCheckError(0)("field_value") Is Nothing AndAlso benefitCheckError(0)("field_value").ToString().ToUpper() <> "NO ERROR" Then
+                                RunPreCheck(benefitCheckError)
+                            End If
                         End If
-
                     End If
+
                 End If
             End If
-
 
             'user story 192764 - Task-199011--End------
             Me.State.MyBO.Validate()
@@ -2725,6 +2703,41 @@ Partial Class NewClaimForm
                 Me.NavController.Navigate(Me, "create_claim", Message.MSG_CLAIM_ADDED)
             End If
         End If
+    End Sub
+
+    Private Sub RunPreCheck(ByVal caseRecord As DataRow())
+        Try
+            Dim benefitCheckResponse As LegacyBridgeResponse
+            Dim client As LegacyBridgeServiceClient = Claim.GetLegacyBridgeServiceClient()
+
+            benefitCheckResponse = WcfClientHelper.Execute(Of LegacyBridgeServiceClient, ILegacyBridgeService, LegacyBridgeResponse)(
+                client,
+                New List(Of Object) From {New Headers.InteractiveUserHeader() With {.LanId = Authentication.CurrentUser.NetworkId}},
+                Function(ByVal lc As LegacyBridgeServiceClient)
+                    Return lc.BenefitClaimPreCheck(GuidControl.ByteArrayToGuid(caseRecord(0)("case_Id")).ToString())
+                End Function)
+
+                If (Not benefitCheckResponse Is Nothing) Then
+                    Me.State.MyBO.Status = If(benefitCheckResponse.StatusDecision = LegacyBridgeStatusDecisionEnum.Approve, BasicClaimStatus.Active, BasicClaimStatus.Pending)
+                    If (benefitCheckResponse.StatusDecision = LegacyBridgeStatusDecisionEnum.Deny) Then
+                        Dim issueId As Guid = LookupListNew.GetIssueTypeIdFromCode(LookupListNew.LK_ISSUES, "PRECKFAIL")
+                        Dim newClaimIssue As ClaimIssue = CType(Me.State.MyBO.ClaimIssuesList.GetNewChild, BusinessObjectsNew.ClaimIssue)
+                        newClaimIssue.SaveNewIssue(Me.State.MyBO.Id, issueId, Me.State.MyBO.Certificate.Id, True)
+                    End If
+                Else
+                    Me.State.MyBO.Status = BasicClaimStatus.Pending
+                    Dim issueId As Guid = LookupListNew.GetIssueTypeIdFromCode(LookupListNew.LK_ISSUES, "PRECK")
+                    Dim newClaimIssue As ClaimIssue = CType(Me.State.MyBO.ClaimIssuesList.GetNewChild, BusinessObjectsNew.ClaimIssue)
+                    newClaimIssue.SaveNewIssue(Me.State.MyBO.Id, issueId, Me.State.MyBO.Certificate.Id, True)
+                End If
+
+            Catch ex As Exception
+                Log(ex)
+                Me.State.MyBO.Status = BasicClaimStatus.Pending
+                Dim issueId As Guid = LookupListNew.GetIssueTypeIdFromCode(LookupListNew.LK_ISSUES, "PRECK")
+                Dim newClaimIssue As ClaimIssue = CType(Me.State.MyBO.ClaimIssuesList.GetNewChild, BusinessObjectsNew.ClaimIssue)
+                newClaimIssue.SaveNewIssue(Me.State.MyBO.Id, issueId, Me.State.MyBO.Certificate.Id, True)
+            End Try
     End Sub
 
     'Sets the Service Center to the Default Service Center for Denied Claims.                                   
@@ -2857,7 +2870,7 @@ Partial Class NewClaimForm
             moProtectionEvtDtl.CallerName = Me.State.MyBO.CallerName
             moProtectionEvtDtl.ClaimNumber = Me.State.MyBO.ClaimNumber
             If Not Me.State.MyBO.LossDate Is Nothing Then
-                moProtectionEvtDtl.DateOfLoss = Me.State.MyBO.LossDate.Value.ToString("dd-MMM-yyyy")
+                moProtectionEvtDtl.DateOfLoss = GetDateFormattedString(Me.State.MyBO.LossDate.Value)
             Else
                 moProtectionEvtDtl.DateOfLoss = String.Empty
             End If

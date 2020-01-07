@@ -90,7 +90,7 @@ namespace Assurant.ElitaPlus.External.Falabella
             {
                 throw new FaultException($"Url {oWebPasswd.Url} not found or invalid");
             }
-
+            Logger.AddInfo("InvokeFalabellaService new claim URL: " + oWebPasswd.Url);
             var reference = new ServicioTecnicoDatosCrearService
             {
                 Url = oWebPasswd.Url
@@ -202,6 +202,7 @@ namespace Assurant.ElitaPlus.External.Falabella
             try
             {
                 //web service call
+                Logger.AddInfo("InvokeFalabellaService new claim Calling web service");
                 var output = reference.ServicioTecnicoDatosCrearOp(input);
 
                 var workOrderResponse = output.ListaSolicitudServicioTecnicoResponse;
@@ -215,6 +216,8 @@ namespace Assurant.ElitaPlus.External.Falabella
                         ErrorMessage = workOrderResponse[0].mensajerError
                     };
 
+                    Logger.AddInfo("InvokeFalabellaService new claim request Fill Work order: " + response.WorkOrderNumber);
+
                     return response;
                 }
                
@@ -222,6 +225,7 @@ namespace Assurant.ElitaPlus.External.Falabella
 
             catch (Exception ex)
             {
+                Logger.AddError("InvokeFalabellaService claim request error", ex);
                 throw;
             }
 

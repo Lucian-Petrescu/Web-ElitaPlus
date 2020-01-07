@@ -96,7 +96,7 @@ Public Class ServiceOrderController
 
         Dim strReportType, strReport As String
 
-        If ServiceOrderType.Trim.Length > 0 Then
+        If Not String.IsNullOrEmpty(ServiceOrderType) Then
             Select Case ServiceOrderType
                 Case CLAIM_SERVICE_ORDER_TYPE_REPLACEMENT
                     strReportType = REPLACEMENT_ORDER

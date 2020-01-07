@@ -92,6 +92,7 @@ Public Class ClaimWizardForm
     Public Const GRIDMC_COL_MSTR_CLAIM_IDX As Integer = 1
     Public Const GRIDMC_COL_CLAIM_NUMBER_IDX As Integer = 2
     Public Const GRIDMC_COL_DATE_OF_LOSS_IDX As Integer = 3
+    Public Const gridClaimCaseDeviceInfoPurchasedDate As Integer = 3
     Private Const LABEL_SERVICE_CENTER As String = "SERVICE_CENTER"
     Public Const SESSION_KEY_CLAIM_WIZARD_BACKUP_STATE As String = "SESSION_KEY_CLAIM_WIZARD_BACKUP_STATE"
 
@@ -488,44 +489,23 @@ Public Class ClaimWizardForm
                             'user story 192764 - Task-199011--Start------
                             Dim dsCaseFields As DataSet = CaseBase.GetCaseFieldsList(State.ClaimBO.Id, ElitaPlusIdentity.Current.ActiveUser.LanguageId)
                             If (Not dsCaseFields Is Nothing AndAlso dsCaseFields.Tables.Count > 0 AndAlso dsCaseFields.Tables(0).Rows.Count > 0) Then
-                                Dim hasBenefit As DataRow() = dsCaseFields.Tables(0).Select("field_code='HASBENEFIT'")
-                                If (Not hasBenefit Is Nothing AndAlso hasBenefit.Length > 0) Then
 
-                                    If (Not hasBenefit(0)("field_value") Is Nothing AndAlso hasBenefit(0)("field_value").ToString().ToUpper() = Boolean.TrueString.ToUpper()) Then
+                                Dim preCheckError As DataRow() = dsCaseFields.Tables(0).Select("field_code='PRECHECKERROR'")
+                                If Not preCheckError Is Nothing AndAlso preCheckError.Length = 0 Then
 
-                                        Dim benefitCheckResponse As LegacyBridgeResponse
-                                        Try
-                                            Dim client As LegacyBridgeServiceClient = Claim.GetLegacyBridgeServiceClient()
-                                            benefitCheckResponse = WcfClientHelper.Execute(Of LegacyBridgeServiceClient, ILegacyBridgeService, LegacyBridgeResponse)(
-                                                client,
-                                                New List(Of Object) From {New Headers.InteractiveUserHeader() With {.LanId = Authentication.CurrentUser.NetworkId}},
-                                                Function(ByVal lc As LegacyBridgeServiceClient)
-                                                    Return lc.BenefitClaimPreCheck(GuidControl.ByteArrayToGuid(hasBenefit(0)("case_Id")).ToString())
-                                                End Function)
-                                        Catch ex As Exception
-                                            Log(ex)
-                                            Me.State.ClaimBO.Status = BasicClaimStatus.Pending
-                                            Dim issueId As Guid = LookupListNew.GetIssueTypeIdFromCode(LookupListNew.LK_ISSUE_TYPE_CODE_LIST, "PRECK")
-                                            Dim newClaimIssue As ClaimIssue = CType(Me.State.ClaimBO.ClaimIssuesList.GetNewChild, BusinessObjectsNew.ClaimIssue)
-                                            newClaimIssue.SaveNewIssue(Me.State.ClaimBO.Id, issueId, Me.State.ClaimBO.Certificate.Id, True)
-                                        End Try
-
-                                        If (Not benefitCheckResponse Is Nothing) Then
-                                            Me.State.ClaimBO.Status = If(benefitCheckResponse.StatusDecision = LegacyBridgeStatusDecisionEnum.Approve, BasicClaimStatus.Active, BasicClaimStatus.Pending)
-                                            If (benefitCheckResponse.StatusDecision = LegacyBridgeStatusDecisionEnum.Deny) Then
-                                                Dim issueId As Guid = LookupListNew.GetIssueTypeIdFromCode(LookupListNew.LK_ISSUE_TYPE_CODE_LIST, "PRECKFAIL")
-                                                Dim newClaimIssue As ClaimIssue = CType(Me.State.ClaimBO.ClaimIssuesList.GetNewChild, BusinessObjectsNew.ClaimIssue)
-                                                newClaimIssue.SaveNewIssue(Me.State.ClaimBO.Id, issueId, Me.State.ClaimBO.Certificate.Id, True)
-                                            End If
-                                        Else
-                                            Me.State.ClaimBO.Status = BasicClaimStatus.Pending
-                                            Dim issueId As Guid = LookupListNew.GetIssueTypeIdFromCode(LookupListNew.LK_ISSUE_TYPE_CODE_LIST, "PRECK")
-                                            Dim newClaimIssue As ClaimIssue = CType(Me.State.ClaimBO.ClaimIssuesList.GetNewChild, BusinessObjectsNew.ClaimIssue)
-                                            newClaimIssue.SaveNewIssue(Me.State.ClaimBO.Id, issueId, Me.State.ClaimBO.Certificate.Id, True)
+                                    Dim hasBenefit As DataRow() = dsCaseFields.Tables(0).Select("field_code='HASBENEFIT'")
+                                    Dim benefitCheckError As DataRow() = dsCaseFields.Tables(0).Select("field_code='BENEFITCHECKERROR'")
+                                    If Not hasBenefit Is Nothing AndAlso hasBenefit.Length > 0 Then
+                                        If Not hasBenefit(0)("field_value") Is Nothing AndAlso hasBenefit(0)("field_value").ToString().ToUpper() = Boolean.TrueString.ToUpper() Then
+                                            RunPreCheck(hasBenefit)
                                         End If
-
+                                    ElseIf Not benefitCheckError Is Nothing AndAlso benefitCheckError.Length > 0 Then
+                                        If Not benefitCheckError(0)("field_value") Is Nothing AndAlso benefitCheckError(0)("field_value").ToString().ToUpper() <> "NO ERROR" Then
+                                            RunPreCheck(benefitCheckError)
+                                        End If
                                     End If
                                 End If
+
                             End If
                             'user story 192764 - Task-199011--End------
                         End If
@@ -594,7 +574,41 @@ Public Class ClaimWizardForm
         Catch ex As Exception
             Me.HandleErrors(ex, Me.MasterPage.MessageController)
         End Try
+    End Sub
 
+    Private Sub RunPreCheck(ByVal caseRecord As DataRow())
+        Try
+            Dim benefitCheckResponse As LegacyBridgeResponse
+            Dim client As LegacyBridgeServiceClient = Claim.GetLegacyBridgeServiceClient()
+
+            benefitCheckResponse = WcfClientHelper.Execute(Of LegacyBridgeServiceClient, ILegacyBridgeService, LegacyBridgeResponse)(
+                client,
+                New List(Of Object) From {New Headers.InteractiveUserHeader() With {.LanId = Authentication.CurrentUser.NetworkId}},
+                Function(ByVal lc As LegacyBridgeServiceClient)
+                    Return lc.BenefitClaimPreCheck(GuidControl.ByteArrayToGuid(caseRecord(0)("case_Id")).ToString())
+                End Function)
+
+            If (Not benefitCheckResponse Is Nothing) Then
+                Me.State.ClaimBO.Status = If(benefitCheckResponse.StatusDecision = LegacyBridgeStatusDecisionEnum.Approve, BasicClaimStatus.Active, BasicClaimStatus.Pending)
+                If (benefitCheckResponse.StatusDecision = LegacyBridgeStatusDecisionEnum.Deny) Then
+                    Dim issueId As Guid = LookupListNew.GetIssueTypeIdFromCode(LookupListNew.LK_ISSUES, "PRECKFAIL")
+                    Dim newClaimIssue As ClaimIssue = CType(Me.State.ClaimBO.ClaimIssuesList.GetNewChild, BusinessObjectsNew.ClaimIssue)
+                    newClaimIssue.SaveNewIssue(Me.State.ClaimBO.Id, issueId, Me.State.ClaimBO.Certificate.Id, True)
+                End If
+            Else
+                Me.State.ClaimBO.Status = BasicClaimStatus.Pending
+                Dim issueId As Guid = LookupListNew.GetIssueTypeIdFromCode(LookupListNew.LK_ISSUES, "PRECK")
+                Dim newClaimIssue As ClaimIssue = CType(Me.State.ClaimBO.ClaimIssuesList.GetNewChild, BusinessObjectsNew.ClaimIssue)
+                newClaimIssue.SaveNewIssue(Me.State.ClaimBO.Id, issueId, Me.State.ClaimBO.Certificate.Id, True)
+            End If
+
+        Catch ex As Exception
+            Log(ex)
+            Me.State.ClaimBO.Status = BasicClaimStatus.Pending
+            Dim issueId As Guid = LookupListNew.GetIssueTypeIdFromCode(LookupListNew.LK_ISSUES, "PRECK")
+            Dim newClaimIssue As ClaimIssue = CType(Me.State.ClaimBO.ClaimIssuesList.GetNewChild, BusinessObjectsNew.ClaimIssue)
+            newClaimIssue.SaveNewIssue(Me.State.ClaimBO.Id, issueId, Me.State.ClaimBO.Certificate.Id, True)
+        End Try
     End Sub
 
     'Protected Sub BtnVerifyEquipment_WRITE_Click(sender As Object, e As EventArgs) Handles BtnVerifyEquipment_WRITE.Click
@@ -2308,6 +2322,9 @@ Public Class ClaimWizardForm
             End If
         End If
 
+        Dim isNewFulfillment = (Not String.IsNullOrWhiteSpace(Me.State.CertItemCoverageBO.FulfillmentProfileCode))
+
+
         If Not Me.State.ClaimBO.ContactInfoId.Equals(Guid.Empty) Then
             Dim YesId As Guid = LookupListNew.GetIdFromCode(LookupListNew.LK_LANG_INDEPENDENT_YES_NO, Codes.YESNO_Y)
             SetSelectedItem(Me.step3_cboUseShipAddress, YesId)
@@ -2315,6 +2332,12 @@ Public Class ClaimWizardForm
 
             Me.UserControlAddress.ClaimDetailsBind(Me.State.ClaimBO.ContactInfo.Address)
             Me.UserControlContactInfo.Bind(Me.State.ClaimBO.ContactInfo)
+            'This makes all child controls inside UserControlAddress as ReadOnly 
+            If isNewFulfillment = True Then
+                Me.UserControlAddress.EnableControl(False)
+                Me.UserControlContactInfo.EnableControl(False)
+            End If
+
         End If
 
         If Not State.ClaimBO.LossDate Is Nothing AndAlso Not State.ClaimBO.ReportedDate Is Nothing Then
@@ -3621,7 +3644,24 @@ Public Class ClaimWizardForm
     End Sub
 
 #End Region
-
+#Region "DeviceInfoGrid"
+    Private Sub gridClaimCaseDeviceInfo_RowDataBound(ByVal sender As Object, ByVal e As GridViewRowEventArgs) Handles gridClaimCaseDeviceInfo.RowDataBound
+        Try
+            If (e.Row.RowType = DataControlRowType.DataRow) _
+                OrElse (e.Row.RowType = DataControlRowType.Separator) Then
+                Dim strPurchasedDate As String = Convert.ToString(e.Row.Cells(gridClaimCaseDeviceInfoPurchasedDate).Text)
+                strPurchasedDate = strPurchasedDate.Replace("&nbsp;", "")
+                If String.IsNullOrWhiteSpace(strPurchasedDate) = False Then
+                    Dim tempPurchasedDate = Convert.ToDateTime(e.Row.Cells(gridClaimCaseDeviceInfoPurchasedDate).Text.Trim())
+                    Dim formattedPurchasedDate = GetDateFormattedString(tempPurchasedDate)
+                    e.Row.Cells(gridClaimCaseDeviceInfoPurchasedDate).Text = Convert.ToString(formattedPurchasedDate)
+                End If
+            End If
+        Catch ex As Exception
+            HandleErrors(ex, MasterPage.MessageController)
+        End Try
+    End Sub
+#End Region
 #Region "Claim Issues Grid related"
 
     Public Sub PopulateClaimIssuesGrid()
