@@ -169,7 +169,6 @@ Public Class ClaimRecordingForm
     Dim _selectText As String
     Dim _currentDeviceText As String
     Dim _deviceShippedText As String
-    Dim _isExternalFulfillment As Boolean
 #End Region
 #Region "Parameters"
     Public Class Parameters
@@ -665,7 +664,7 @@ Public Class ClaimRecordingForm
                                 NavController.Navigate(Me, FlowEvents.EVENT_NEXT, New ClaimForm.Parameters(State.ClaimBo.Id))
                             Else
                                 ' for others
-                                callPage(ClaimForm.URL, New ClaimForm.Parameters(oClaimBase.Id, Me.State.IsCallerAuthenticated, _isExternalFulfillment, caseNumber))
+                                callPage(ClaimForm.URL, New ClaimForm.Parameters(oClaimBase.Id, Me.State.IsCallerAuthenticated))
                             End If
                         End If
                     End If
@@ -3118,7 +3117,6 @@ Public Class ClaimRecordingForm
                 End Function)
             If wsResponse IsNot Nothing Then
                 State.SubmitWsBaseClaimRecordingResponse = wsResponse
-                _isExternalFulfillment = True
                 MoveToNextPage()
             End If
         Catch ex As FaultException

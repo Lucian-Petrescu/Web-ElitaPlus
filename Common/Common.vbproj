@@ -169,6 +169,7 @@
     <Compile Include="DalLookupTable.vb">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="XcdAttribute.vb" />
     <Compile Include="DateHelper.vb" />
     <Compile Include="ElitaPlusParameters.vb">
       <SubType>Code</SubType>
@@ -207,6 +208,7 @@
     </Compile>
     <Compile Include="SearchCriteriaType.vb" />
     <Compile Include="Services.vb" />
+    <Compile Include="XcdEnumHelpers.vb" />
     <Compile Include="XMLHelper.vb">
       <SubType>Code</SubType>
     </Compile>

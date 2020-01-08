@@ -19,7 +19,7 @@ Imports Assurant.Elita.CommonConfiguration
 Imports Assurant.ElitaPlus.Security
 Imports Assurant.Elita.CommonConfiguration.DataElements
 Imports Assurant.Elita.Web.Forms
-'Imports Assurant.ElitaPlus.ElitaPlusWebApp.ClaimService
+Imports Assurant.ElitaPlus.ElitaPlusWebApp.ClaimService
 
 Public Class ClaimWizardForm
     Inherits ElitaPlusSearchPage
@@ -399,9 +399,9 @@ Public Class ClaimWizardForm
         End Try
     End Sub
 
-    Private Shared Function GetClientClaimService() As ClaimService.ClaimServiceClient
+    Private Shared Function GetClientClaimService() As ClaimServiceClient
         Dim oWebPasswd As WebPasswd = New WebPasswd(Guid.Empty, LookupListNew.GetIdFromCode(Codes.SERVICE_TYPE, Codes.SERVICE_TYPE__CLAIM_SERVICE), False)
-        Dim client = New ClaimService.ClaimServiceClient("CustomBinding_IClaimService", oWebPasswd.Url)
+        Dim client = New ClaimServiceClient("CustomBinding_IClaimService", oWebPasswd.Url)
         client.ClientCredentials.UserName.UserName = oWebPasswd.UserId
         client.ClientCredentials.UserName.Password = oWebPasswd.Password
 
@@ -520,18 +520,18 @@ Public Class ClaimWizardForm
                         Next
                         If blnClaimInProgress Then
                             ' re-validate the claim limit and claim count
-                            Dim wsRequest As ClaimService.NewClaimEntitledRequest = New ClaimService.NewClaimEntitledRequest()
+                            Dim wsRequest As NewClaimEntitledRequest = New NewClaimEntitledRequest()
 
                             wsRequest.DealerCode = State.ClaimBO.Dealer.Dealer
                             wsRequest.CertificateNumber = State.ClaimBO.Certificate.CertNumber
                             wsRequest.LossDate = State.ClaimBO.LossDate.Value
                             wsRequest.CoverageTypeCode = State.ClaimBO.CoverageTypeCode
 
-                            Dim wsResponse As ClaimService.NewClaimEntitledResponse
-                            wsResponse = WcfClientHelper.Execute(Of ClaimService.ClaimServiceClient, ClaimService.IClaimService, ClaimService.NewClaimEntitledResponse)(
+                            Dim wsResponse As NewClaimEntitledResponse
+                            wsResponse = WcfClientHelper.Execute(Of ClaimServiceClient, IClaimService, NewClaimEntitledResponse)(
                                 GetClientClaimService(),
                                 New List(Of Object) From {New InteractiveUserHeader() With {.LanId = Authentication.CurrentUser.NetworkId}},
-                                Function(ByVal c As ClaimService.ClaimServiceClient)
+                                Function(ByVal c As ClaimServiceClient)
                                     Return c.NewClaimEntitled(wsRequest)
                                 End Function)
 

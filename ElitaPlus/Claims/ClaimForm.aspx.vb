@@ -17,6 +17,9 @@ Imports System.Net
 
 Imports RestSharp
 Imports Newtonsoft.Json
+Imports System.Net.Http
+Imports System.Net.Http.Headers
+Imports Newtonsoft.Json.Linq
 
 Partial Class ClaimForm
     Inherits ElitaPlusSearchPage
@@ -154,8 +157,6 @@ Partial Class ClaimForm
         Public FulfilmentBankinfoBo As BusinessObjectsNew.BankInfo
         Public IsCallerAuthenticated As Boolean = False
         Public FulfillmentDetailsResponse As FulfillmentDetails = Nothing
-        Public ExternalFulfillmentResponse As ClaimService.ExternalFulfillmentResponse = Nothing
-        Public IsExternalFulfillment As Boolean = False
         Public CaseNumber As String = Nothing
 
     End Class
@@ -195,8 +196,6 @@ Partial Class ClaimForm
                 Catch ex As Exception
                     Me.State.MyBO = ClaimFacade.Instance.GetClaim(Of ClaimBase)(CType(Me.CallingParameters, Parameters).claimId)
                     Me.State.IsCallerAuthenticated = CType(Me.CallingParameters, Parameters).IsCallerAuthenticated
-                    Me.State.IsExternalFulfillment = CType(Me.CallingParameters, Parameters).IsExternalFulfillment
-                    Me.State.CaseNumber = CType(Me.CallingParameters, Parameters).caseNumber
                 End Try
                 If (Me.State.MyBO.ClaimAuthorizationType = ClaimAuthorizationType.Multiple) Then Me.State.IsMultiAuthClaim = True
             End If
@@ -1960,25 +1959,6 @@ Partial Class ClaimForm
         Else
             ClearClaimFulfillmentDetails()
         End If
-    End Sub
-
-    Sub ShowExternalFulfillmentDetails()
-        If Me.State.ExternalFulfillmentResponse IsNot Nothing Then
-            Dim wsResponse As ClaimService.ExternalFulfillmentResponse = Me.State.ExternalFulfillmentResponse
-            Dim dfControl As DynamicFulfillmentUI = Page.LoadControl("~/Common/DynamicFulfillmentUI.ascx")
-            dfControl.SourceSystem = "Eprism"
-            dfControl.ApiKey = wsResponse.ApiKey
-            dfControl.SubscriptionKey = wsResponse.SubscriptionKey
-            'dfControl.BaseAddresss = wsResponse.BaseAddresss
-            dfControl.CssUri = wsResponse.CssUri
-            dfControl.ScriptUri = wsResponse.ScriptUri
-            'dfControl.AccessToken = wsResponse.AccessToken
-            dfControl.IsLoadError = wsResponse.IsLoadError
-            dfControl.ClaimNumber = wsResponse.ClaimNumber
-            phDynamicFulfillmentUI.Controls.Add(dfControl)
-            dvClaimFulfillmentDetails.Visible = False
-        End If
-
     End Sub
 
     Sub ClearClaimFulfillmentDetails()
@@ -4007,7 +3987,7 @@ Partial Class ClaimForm
 #Region "Call To claim Fulfillment WebAppGateway"
 
     Public Sub BindclaimFulfillmentDetails()
-        If Me.State.IsExternalFulfillment Then
+        If Me.State.MyBO.FulfillmentProviderType = FulfillmentProviderType.DynamicFulfillment Then
             BindExternalClaimFulfillmentDetails()
         Else
             BindElitaClaimFulfillmentDetails()
@@ -4042,26 +4022,35 @@ Partial Class ClaimForm
     End Sub
 
     Private Sub BindExternalClaimFulfillmentDetails()
-        Dim wsRequest As ClaimService.SearchCaseRequest = New ClaimService.SearchCaseRequest()
-        'Dim wsResponse As FulfillmentDetails
-
-        wsRequest.CompanyCode = Me.State.MyBO.Company.Code
-        wsRequest.CaseNumber = Me.State.CaseNumber
-
         Try
-            Dim wsResponse = WcfClientHelper.Execute(Of ClaimService.ClaimServiceClient, ClaimService.IClaimService, ClaimService.ExternalFulfillmentResponse)(
-                                GetClientClaimService(),
-                                New List(Of Object) From {New InteractiveUserHeader() With {.LanId = Authentication.CurrentUser.NetworkId}},
-                                Function(ByVal c As ClaimService.ClaimServiceClient)
-                                    Return c.GetExternalFulfillmentDetails(wsRequest)
-                                End Function)
-
-            If wsResponse IsNot Nothing Then
-                If wsResponse.GetType() Is GetType(ClaimService.ExternalFulfillmentResponse) Then
-                    Me.State.ExternalFulfillmentResponse = wsResponse
-                    ShowExternalFulfillmentDetails()
-                End If
+            Dim oWebPasswd As WebPasswd = New WebPasswd(Guid.Empty, LookupListNew.GetIdFromCode(Codes.SERVICE_TYPE, Codes.SERVICE_TYPE_DF_API_URL), False)
+            If String.IsNullOrEmpty(oWebPasswd.Url) Then
+                Throw New ArgumentNullException($"Web Password entry not found or Dynamic Fulfillment Api Url not configured for Service Type {Codes.SERVICE_TYPE_DF_API_URL}")
+            ElseIf String.IsNullOrEmpty(oWebPasswd.UserId) Or String.IsNullOrEmpty(oWebPasswd.Password) Then
+                Throw New ArgumentNullException($"Web Password username or password not configured for Service Type {Codes.SERVICE_TYPE_DF_API_URL}")
             End If
+
+            Dim uri As String = String.Format(oWebPasswd.Url, "Elita", Me.State.MyBO.ClaimNumber)
+            System.Net.ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls Or SecurityProtocolType.Tls11 Or SecurityProtocolType.Tls12
+            Dim client As HttpClient = New HttpClient()
+            client.DefaultRequestHeaders.Accept.Clear()
+            client.DefaultRequestHeaders.Add(oWebPasswd.UserId, oWebPasswd.Password)
+            client.DefaultRequestHeaders.Accept.Add(New MediaTypeWithQualityHeaderValue("application/json"))
+
+            Dim response As HttpResponseMessage = client.GetAsync(uri).GetAwaiter().GetResult()
+            If Not response.IsSuccessStatusCode Then
+                Throw New Exception($"There is an error in displaying the DF UI. {response.ReasonPhrase}")
+            End If
+
+            Dim userInterfaceSettings = JsonConvert.DeserializeObject(Of JObject)(response.Content.ReadAsStringAsync().GetAwaiter.GetResult())
+            Dim dfControl As DynamicFulfillmentUI = Page.LoadControl("~/Common/DynamicFulfillmentUI.ascx")
+            dfControl.SourceSystem = "Eprism"
+            dfControl.SubscriptionKey = oWebPasswd.Password
+            dfControl.CssUri = userInterfaceSettings("resourceUris")("cssUri")
+            dfControl.ScriptUri = userInterfaceSettings("resourceUris")("scriptUri")
+            dfControl.ClaimNumber = Me.State.MyBO.ClaimNumber
+            phDynamicFulfillmentUI.Controls.Add(dfControl)
+            dvClaimFulfillmentDetails.Visible = False
 
         Catch ex As Exception
 
