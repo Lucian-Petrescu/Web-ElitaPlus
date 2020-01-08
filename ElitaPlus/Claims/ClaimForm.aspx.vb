@@ -4039,7 +4039,7 @@ Partial Class ClaimForm
 
             Dim userInterfaceSettings = JsonConvert.DeserializeObject(Of JObject)(response.Content.ReadAsStringAsync().GetAwaiter.GetResult())
             Dim dfControl As DynamicFulfillmentUI = Page.LoadControl("~/Common/DynamicFulfillmentUI.ascx")
-            dfControl.SourceSystem = "Eprism"
+            dfControl.SourceSystem = "Elita"
             dfControl.SubscriptionKey = oWebPasswd.Password
             dfControl.CssUri = userInterfaceSettings("resourceUris")("cssUri")
             dfControl.ScriptUri = userInterfaceSettings("resourceUris")("scriptUri")
