@@ -157,7 +157,6 @@ Partial Class ClaimForm
         Public FulfilmentBankinfoBo As BusinessObjectsNew.BankInfo
         Public IsCallerAuthenticated As Boolean = False
         Public FulfillmentDetailsResponse As FulfillmentDetails = Nothing
-        Public CaseNumber As String = Nothing
 
     End Class
 
@@ -228,6 +227,7 @@ Partial Class ClaimForm
         Public claimId As Guid
         Public updatedClaimAuthDetail As ClaimAuthDetailForm.ReturnType 'DEF-17426
         Public IsCallerAuthenticated As Boolean = True
+
         Public Sub New(ByVal claimId As Guid)
             Me.claimId = claimId
         End Sub
@@ -239,7 +239,7 @@ Partial Class ClaimForm
             Me.IsCallerAuthenticated = IsCallerAuthenticated
         End Sub
 
-        Public Sub New(ByVal claimId As Guid, Optional ByVal IsCallerAuthenticated As Boolean = False, Optional ByVal IsExternalFulfillment As Boolean = False, Optional ByVal CaseNumber As String = Nothing)
+        Public Sub New(ByVal claimId As Guid, Optional ByVal IsCallerAuthenticated As Boolean = False)
             Me.claimId = claimId
             Me.IsCallerAuthenticated = IsCallerAuthenticated
         End Sub
