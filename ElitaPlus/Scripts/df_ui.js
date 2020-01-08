@@ -20,18 +20,11 @@
     window.CustomEvent = CustomEvent;
 })();
 
-window.addEventListener('dynamicFulfillmentWorkCompletedEvent', function (e) {
-    //selectedOption.value = e.detail.fulfillmentOption;
-    //instanceIdField.value = e.detail.authorizationId;
-    //ticketIdField.value = e.detail.offerId;
-    //isLegacy.checked = e.detail.isLegacy;
-    if (e.detail.isLegacy) {
-        //needToConfirm = false;
+window.addEventListener('dynamicFulfillmentWorkCompletedEvent', function (e) {    
+    if (e.detail.isLegacy) {        
         __doPostBack('ctl00$BodyPlaceHolder$btnLegacyContinue', 'OnClick');
     }
-    else {
-        ////needToConfirm = false;
-        ////showNextButton(true);
+    else {        
         __doPostBack('ctl00$BodyPlaceHolder$btnContinue', 'OnClick');
     }
    

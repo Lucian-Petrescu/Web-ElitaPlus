@@ -604,8 +604,6 @@ Public Class ClaimRecordingForm
                 Case GetType(DecisionResponse)
                     'Decision  response object
                     ShowDecisionView()
-                Case GetType(DynamicFulFillmentResponse)
-                    ShowDynamicFulfillmentView()
                 Case GetType(ItemSelectionResponse)
                     mvClaimsRecording.ActiveViewIndex = ClaimRecordingViewIndexDevice
                     Dim item As ItemSelectionResponse = DirectCast(State.SubmitWsBaseClaimRecordingResponse, ItemSelectionResponse)
@@ -1302,8 +1300,6 @@ Public Class ClaimRecordingForm
                 wsRequest.CompanyCode = questionSubmitObj.CompanyCode
                 wsRequest.InteractionNumber = questionSubmitObj.InteractionNumber
                 wsRequest.Questions = questionSubmitObj.Questions
-
-                SetQuestionsSession(wsRequest)
 
                 Try
                     Dim wsResponse = WcfClientHelper.Execute(Of ClaimRecordingServiceClient, IClaimRecordingService, BaseClaimRecordingResponse)(
@@ -2135,32 +2131,16 @@ Public Class ClaimRecordingForm
                 mvClaimsRecording.ActiveViewIndex = ClaimRecordingViewIndexDynamicFulfillment
                 Dim wsResponse As DynamicFulfillmentResponse = State.SubmitWsBaseClaimRecordingResponse
                 Dim dfControl As DynamicFulfillmentUI = Page.LoadControl("~/Common/DynamicFulfillmentUI.ascx")
-                dfControl.SourceSystem = "Eprism"
+                dfControl.SourceSystem = "Elita"
                 dfControl.ApiKey = wsResponse.ApiKey
                 dfControl.SubscriptionKey = wsResponse.SubscriptionKey
-                'dfControl.BaseAddresss = wsResponse.BaseAddresss
                 dfControl.CssUri = wsResponse.CssUri
                 dfControl.ScriptUri = wsResponse.ScriptUri
-                'dfControl.AccessToken = wsResponse.AccessToken
-                dfControl.IsLoadError = wsResponse.IsLoadError
                 dfControl.ClaimNumber = wsResponse.ClaimNumber
                 phDynamicFulfillmentUI.Controls.Add(dfControl)
             End If
         End If
     End Sub
-    Private Sub SetQuestionsSession(wsRequest As QuestionRequest)
-        Session("QuestionResponse") = wsRequest
-    End Sub
-    Private Sub ResetQuestionsSession()
-        Session("QuestionResponse") = Nothing
-    End Sub
-    Private Function GetQuestions() As QuestionRequest
-        If Session("QuestionResponse") IsNot Nothing Then
-            Dim response As QuestionRequest = Session("QuestionResponse")
-            Return response
-        End If
-        Return Nothing
-    End Function
     Private Sub PopulateFulfillmentOptionsGrid()
         Dim wsResponse As FulfillmentOptionsResponse
         If State.SubmitWsBaseClaimRecordingResponse.GetType() Is GetType(FulfillmentOptionsResponse) Then

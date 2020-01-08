@@ -228,9 +228,6 @@ Partial Class ClaimForm
         Public claimId As Guid
         Public updatedClaimAuthDetail As ClaimAuthDetailForm.ReturnType 'DEF-17426
         Public IsCallerAuthenticated As Boolean = True
-        Public IsExternalFulfillment As Boolean = False
-        Public caseNumber As String
-
         Public Sub New(ByVal claimId As Guid)
             Me.claimId = claimId
         End Sub
@@ -245,8 +242,6 @@ Partial Class ClaimForm
         Public Sub New(ByVal claimId As Guid, Optional ByVal IsCallerAuthenticated As Boolean = False, Optional ByVal IsExternalFulfillment As Boolean = False, Optional ByVal CaseNumber As String = Nothing)
             Me.claimId = claimId
             Me.IsCallerAuthenticated = IsCallerAuthenticated
-            Me.IsExternalFulfillment = IsExternalFulfillment
-            Me.caseNumber = CaseNumber
         End Sub
 
     End Class
@@ -4056,14 +4051,6 @@ Partial Class ClaimForm
 
         End Try
     End Sub
-
-    Private Shared Function GetClientClaimService() As ClaimService.ClaimServiceClient
-        Dim oWebPasswd As WebPasswd = New WebPasswd(Guid.Empty, LookupListNew.GetIdFromCode(Codes.SERVICE_TYPE, Codes.SERVICE_TYPE__CLAIM_SERVICE), False)
-        Dim client = New ClaimService.ClaimServiceClient("CustomBinding_IClaimService", oWebPasswd.Url)
-        client.ClientCredentials.UserName.UserName = oWebPasswd.UserId
-        client.ClientCredentials.UserName.Password = oWebPasswd.Password
-        Return client
-    End Function
 
     Private Shared Function GetClaimFulfillmentWebAppGatewayClient() As WebAppGatewayClient
         Dim oWebPasswd As WebPasswd = New WebPasswd(Guid.Empty, LookupListNew.GetIdFromCode(Codes.SERVICE_TYPE, Codes.SERVICE_TYPE__CLAIM_FULFILLMENT_WEB_APP_GATEWAY_SERVICE), False)
