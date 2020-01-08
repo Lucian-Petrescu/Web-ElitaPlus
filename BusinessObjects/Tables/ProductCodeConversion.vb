@@ -117,7 +117,7 @@ Public Class ProductCodeConversion
     End Property
 
 
-    <ValueMandatory(""), ValidStringLength("", Max:=20)> _
+    <ValueMandatory(""), ValidStringLength("", Max:=100)>
     Public Property ExternalProdCode() As String
         Get
             CheckDeleted()
