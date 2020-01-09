@@ -32,6 +32,9 @@ Public Interface ICertificateManager
                             ByVal pNumberOfRecords As Integer,
                             ByRef totalRecordFound As Long) As DataSet
 
+    Function GWGetCertificateByCertNumber(ByVal pDealerCode As String,
+                            ByVal pCertNumber As String) As Collections.Generic.List(Of Guid)
+
     Function GetCertificate(ByVal pCertId As Guid, Optional pIncludedList As String = "Item, Item.Itemcoverages") As Certificate
 
     Sub GetCertificateGrossAmtByProductCode(ByVal pCertId As Guid,

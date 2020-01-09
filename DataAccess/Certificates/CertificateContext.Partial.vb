@@ -82,6 +82,30 @@ Public Class CertificateContext
         Return dsCertList
     End Function
 
+    Friend Function GWSearchCertificateByCertNumber(ByVal pDealerCode As String,
+                                 ByVal pCertNumber As String) As DataSet
+
+        Dim dbCommand As OracleCommand = DirectCast(Me.Database.Connection.CreateCommand(), OracleCommand)
+        dbCommand.CommandType = CommandType.StoredProcedure
+
+        dbCommand.CommandText = "elp_ws_getCertificate.Search_CertByCertNbr_GWPIL"
+
+        dbCommand.BindByName = True
+        dbCommand.Parameters.Add(New OracleParameter() With {.ParameterName = "pi_dealer_code", .OracleDbType = OracleDbType.Varchar2, .Value = pDealerCode.Trim.ToUpper, .Size = 5})
+        dbCommand.Parameters.Add(New OracleParameter() With {.ParameterName = "pi_cert_number", .OracleDbType = OracleDbType.Varchar2, .Value = pCertNumber.Trim, .Size = 20})
+        dbCommand.Parameters.Add(New OracleParameter() With {.ParameterName = "po_cert_table", .OracleDbType = OracleDbType.RefCursor, .Direction = ParameterDirection.Output})
+
+        Dim dbAdapter As OracleDataAdapter = New OracleDataAdapter(dbCommand)
+        Dim dsCertList As New DataSet
+        Try
+            CheckDBConnection()
+            dbAdapter.Fill(dsCertList)
+        Catch ex As Exception
+            Throw ex
+        End Try
+        Return dsCertList
+    End Function
+
     Friend Sub GetCertificateCoverageRate(ByVal pCertId As Guid,
                                  ByVal pCoverageDate As Date,
                                  ByRef poGWP As Decimal,

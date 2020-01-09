@@ -73,6 +73,10 @@ Public Class SpecializedCertificateManager
         Throw New NotImplementedException()
     End Function
 
+    Public Function GWGetCertificateByCertNumber(pDealerCode As String, pCertNumber As String) As Collections.Generic.List(Of Guid) Implements ICertificateManager.GWGetCertificateByCertNumber
+        Throw New NotImplementedException()
+    End Function
+
     Public Function GetCertificateForGwPil(pDealerCode As String, pCertificateNumber As String) As Certificate Implements ICertificateManager.GetCertificateForGwPil
         Throw New NotImplementedException()
     End Function
