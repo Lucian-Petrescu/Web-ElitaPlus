@@ -6004,6 +6004,7 @@
     <Content Include="Service References\ClaimService\Assurant.ElitaPlus.ElitaPlusWebApp.ClaimService.NewClaimEntitledResponse.datasource">
       <DependentUpon>Reference.svcmap</DependentUpon>
     </Content>
+	<None Include="Service References\ClaimService\ClaimService.disco" />
     <None Include="Service References\ClaimService\ClaimService4.xsd">
       <SubType>Designer</SubType>
     </None>
@@ -6018,8 +6019,7 @@
     <None Include="Service References\ClaimService\Reference.svcmap">
       <Generator>WCF Proxy Generator</Generator>
       <LastGenOutput>Reference.vb</LastGenOutput>
-    </None>
-    <None Include="Service References\ClaimService\ClaimService.disco" />
+    </None>    
     <Content Include="Service References\FileAdminService\Assurant.ElitaPlus.ElitaPlusWebApp.FileAdminService.GetFileRecordsResponse.datasource">
       <DependentUpon>Reference.svcmap</DependentUpon>
     </Content>
@@ -8898,7 +8898,7 @@
           <AutoAssignPort>True</AutoAssignPort>
           <DevelopmentServerPort>2550</DevelopmentServerPort>
           <DevelopmentServerVPath>/</DevelopmentServerVPath>
-          <IISUrl>http://localhost:63876/ElitaPlus2</IISUrl>
+          <IISUrl>http://localhost:80/ElitaPlus</IISUrl>
           <NTLMAuthentication>False</NTLMAuthentication>
           <UseCustomServer>False</UseCustomServer>
           <CustomServerUrl>
