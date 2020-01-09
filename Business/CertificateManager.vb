@@ -39,8 +39,11 @@ Public Class CertificateManager
         If (dealer Is Nothing) Then
             Throw New DealerNotFoundException(Guid.Empty, pDealerCode)
         End If
+
+        Dim searchResultIdList As Collections.Generic.List(Of Guid)
+        searchResultIdList = GWGetCertificateByCertNumber(pDealerCode, pCertificateNumber)
         Dim objCert As Certificate, objCertEndorse As Certificate
-        objCert = m_CertificateRepository.Get(Function(c) c.DealerId = dealer.DealerId And c.CertificateNumber = pCertificateNumber, Nothing, "Item, Item.ItemCoverages, Item.ItemCoverages.ItemCoverageDeductibles, Cancellations,BillingDetails, CertificateInstallments").FirstOrDefault()
+        objCert = m_CertificateRepository.Get(Function(c) searchResultIdList.Contains(c.CertificateId), Nothing, "Item, Item.ItemCoverages, Item.ItemCoverages.ItemCoverageDeductibles, Cancellations,BillingDetails, CertificateInstallments").FirstOrDefault()
 
         'load endorsement separately to avoid error "Oracle 11.2.0.4.0 does not support APPLY" when add the Item.Endorsements to the include list
         If Not objCert Is Nothing Then
@@ -107,6 +110,11 @@ Public Class CertificateManager
                                                          pPhoneNumber,
                                                          pNumberOfRecords,
                                                          totalRecordFound)
+    End Function
+
+    Public Function GWGetCertificateByCertNumber(pDealerCode As String, pCertNumber As String) As Collections.Generic.List(Of Guid) Implements ICertificateManager.GWGetCertificateByCertNumber
+        Return m_CertificateRepository.GWSearchCertificateByCertNumber(pDealerCode,
+                                                         pCertNumber)
     End Function
 
     Public Function GetCertificate(pCertId As Guid, Optional pIncludedList As String = "Item, Item.Itemcoverages") As Certificate Implements ICertificateManager.GetCertificate
