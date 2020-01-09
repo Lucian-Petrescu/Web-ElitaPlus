@@ -120,7 +120,7 @@ Public Class ServiceOrderController
             Select Case CoverageType
                 Case COVERAGE_TYPE__EXTENDED
                     strReportType &= "_EW"
-                Case COVERAGE_TYPE__ACCIDENTAL
+                Case COVERAGE_TYPE__ACCIDENTAL, COVERAGE_TYPE__THEFTLOSS
                     strReportType &= "_DE"
             End Select
         End If
