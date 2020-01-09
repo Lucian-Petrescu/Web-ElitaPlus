@@ -118,6 +118,21 @@
 						    </asp:Label>
 						</ItemTemplate>
 					</asp:TemplateField>
+                    <asp:TemplateField Visible="False" HeaderText="PRODUCT_CODE_ID"></asp:TemplateField>
+                    <asp:TemplateField SortExpression="EFFECTIVE_DATE" HeaderText="EFFECTIVE_DATE">
+                        <HeaderStyle></HeaderStyle>
+                        <ItemTemplate>
+                            <asp:Label ID="moEffectiveDateProductCodeLabelGrid" runat="server" Visible="True">
+                            </asp:Label>
+                        </ItemTemplate> 
+                    </asp:TemplateField>
+                    <asp:TemplateField SortExpression="EXPIRATION_DATE" HeaderText="EXPIRATION_DATE">
+                        <HeaderStyle></HeaderStyle>
+                        <ItemTemplate>
+                            <asp:Label ID="moExpirationDateProductCodeLabelGrid" runat="server" Visible="True">
+                            </asp:Label>
+                        </ItemTemplate> 
+                    </asp:TemplateField>
                 </Columns>
                <PagerSettings PageButtonCount="15" Mode="Numeric" Position ="TopAndBottom"></PagerSettings>
                <PagerStyle />

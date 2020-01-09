@@ -4,56 +4,41 @@
 
 <SQL>
 	<LOAD>
-		<![CDATA[	
-			SELECT 
-				dealer_id,
-				external_prod_code,
-				product_code_id,
-				created_by,
-				created_date,
-				modified_by,
-				modified_date,
-				product_conversion_id,
-				certificate_duration,
-        manufacturer_warranty, 
-        gross_amount,
-        manufacturer,
-        model,
-        sales_price
-			FROM elp_product_conversion 
-			WHERE
-				product_conversion_id = :product_conversion_id
-		]]>
-	</LOAD>
-	<LOAD_LIST>
-			SELECT  pcc.PRODUCT_CONVERSION_ID, d.dealer_name, EXTERNAL_PROD_CODE,
-					pc.product_code, pcc.certificate_duration,
-                    pcc.manufacturer_warranty, pcc.gross_amount, pcc.manufacturer, pcc.model
-			FROM	elp_product_conversion pcc, elp_dealer d, elp_product_code pc
-			WHERE   d.dealer_id LIKE :dealer_id and
-					pc.dealer_id = d.dealer_id and
-					pc.product_code_id LIKE :product_code_id and 
-					pcc.product_code_id = pc.product_code_id and 
-					pcc.external_prod_code LIKE :external_product_code
-					--dynamic_in_clause
-			ORDER BY UPPER(d.dealer_name), UPPER(pcc.external_prod_code), UPPER(pc.product_code) 
-				  				
-	</LOAD_LIST>
-	<LOAD_LIST_MULTIPLE_COMPANIES>
-			SELECT  pcc.PRODUCT_CONVERSION_ID, c.code || ' - ' || d.dealer_name dealer_name, EXTERNAL_PROD_CODE,
-					pc.product_code, c.code company_code, pcc.certificate_duration,
-                    pcc.manufacturer_warranty, pcc.gross_amount, pcc.manufacturer, pcc.model
-			FROM	elp_product_conversion pcc, elp_dealer d, elp_product_code pc, elp_company c
-			WHERE   d.company_id = c.company_id and
-					d.dealer_id LIKE :dealer_id and
-					pc.dealer_id = d.dealer_id and
-					pc.product_code_id LIKE :product_code_id and 
-					pcc.product_code_id = pc.product_code_id and 
-					pcc.external_prod_code LIKE :external_product_code
-					--dynamic_in_clause
-			ORDER BY UPPER(d.dealer_name), UPPER(pcc.external_prod_code), UPPER(pc.product_code) 
-				  				
-	</LOAD_LIST_MULTIPLE_COMPANIES>
+    elita.elp_tbl_ProductCode_Conv.load
+  </LOAD>
+  <LOAD_LIST>
+    SELECT  pcc.PRODUCT_CONVERSION_ID, d.dealer_name, EXTERNAL_PROD_CODE,
+    pc.product_code, pcc.certificate_duration,
+    pcc.manufacturer_warranty, pcc.gross_amount, pcc.manufacturer, pcc.model,
+    to_char(pcc.effective_date,'dd-mon-yyyy') effective_date,
+    to_char(pcc.expiration_date,'dd-mon-yyyy') expiration_date
+    FROM	elp_product_conversion pcc, elp_dealer d, elp_product_code pc
+    WHERE   d.dealer_id LIKE :dealer_id and
+    pc.dealer_id = d.dealer_id and
+    pc.product_code_id LIKE :product_code_id and
+    pcc.product_code_id = pc.product_code_id and
+    pcc.external_prod_code LIKE :external_product_code
+    --dynamic_in_clause
+    ORDER BY UPPER(d.dealer_name), UPPER(pcc.external_prod_code), UPPER(pc.product_code)
+
+  </LOAD_LIST>
+  <LOAD_LIST_MULTIPLE_COMPANIES>
+    SELECT  pcc.PRODUCT_CONVERSION_ID, c.code || ' - ' || d.dealer_name dealer_name, EXTERNAL_PROD_CODE,
+    pc.product_code, c.code company_code, pcc.certificate_duration,
+    pcc.manufacturer_warranty, pcc.gross_amount, pcc.manufacturer, pcc.model,
+    to_char(pcc.effective_date,'dd-mon-yyyy') effective_date,
+    to_char(pcc.expiration_date,'dd-mon-yyyy') expiration_date
+    FROM	elp_product_conversion pcc, elp_dealer d, elp_product_code pc, elp_company c
+    WHERE   d.company_id = c.company_id and
+    d.dealer_id LIKE :dealer_id and
+    pc.dealer_id = d.dealer_id and
+    pc.product_code_id LIKE :product_code_id and
+    pcc.product_code_id = pc.product_code_id and
+    pcc.external_prod_code LIKE :external_product_code
+    --dynamic_in_clause
+    ORDER BY UPPER(d.dealer_name), UPPER(pcc.external_prod_code), UPPER(pc.product_code)
+
+  </LOAD_LIST_MULTIPLE_COMPANIES>
   <LOAD_LIST_WITH_DESC>
     select p.Product_code_id, ep.EXTERNAL_PROD_CODE , p.PRODUCT_CODE, p.DESCRIPTION,
     EXTERNAL_PROD_CODE || ' - ' || PRODUCT_CODE All_PROD_CODE, GetYesNo(p.BUNDLED_ITEM_ID)BUNDLED_ITEM
@@ -61,70 +46,22 @@
     inner join elp_product_code p on ep.product_code_id = p.product_code_id
     where ep.dealer_id = :dealer_id
     and  not exists (Select pcd.product_code_id
-                      from  elp_product_code_detail pcd
-                      where pcd.product_code_id = p.product_code_id)
+    from  elp_product_code_detail pcd
+    where pcd.product_code_id = p.product_code_id)
     order by EXTERNAL_PROD_CODE
   </LOAD_LIST_WITH_DESC>
 	<UPDATE>
-		<![CDATA[	
-			UPDATE elp_product_conversion SET
-				dealer_id = :dealer_id,
-				external_prod_code = :external_prod_code,
-				product_code_id = :product_code_id,
-				modified_by = :modified_by,
-				certificate_duration = :certificate_duration,
-                manufacturer_warranty = :manufacturer_warranty, 
-                gross_amount = :gross_amount,
-                manufacturer = :manufacturer,
-                model = :model,
-                sales_price = :sales_price
-			WHERE
-				product_conversion_id = :product_conversion_id
-		]]>
-	</UPDATE>
+    elita.elp_tbl_ProductCode_Conv.Modify
+  </UPDATE>
 	<INSERT>
-    INSERT INTO elp_product_conversion
-    (
-    dealer_id,
-    external_prod_code,
-    product_code_id,
-    created_by,
-    product_conversion_id,
-    certificate_duration,
-    manufacturer_warranty,
-    gross_amount,
-    manufacturer,
-    model,
-    sales_price
-    )
-    VALUES
-    (
-    :dealer_id,
-    :external_prod_code,
-    :product_code_id,
-    :created_by,
-    :product_conversion_id,
-    :certificate_duration,
-    :manufacturer_warranty,
-    :gross_amount,
-    :manufacturer,
-    :model,
-    :sales_price
-    )
+    elita.elp_tbl_ProductCode_Conv.Add
   </INSERT>
 	<DELETE>
-			DELETE FROM elp_product_conversion
-			WHERE
-				product_conversion_id = :product_conversion_id
-	</DELETE>
+    elita.elp_tbl_ProductCode_Conv.DeleteProductCodeConv
+  </DELETE>
 
   <CHK_DEALER_PRODCODE_MFG_COMBINATION>
-    select *
-    from elp_product_conversion
-    where dealer_id = :dealer_id
-    and external_prod_code = :external_prod_code
-    --dynamic_where_clause
-    and product_conversion_id not in ( :product_conversion_id )
+    elita.elp_tbl_ProductCode_Conv.Check_dealer_prodcode_mgf_comb
   </CHK_DEALER_PRODCODE_MFG_COMBINATION>
 </SQL> 
 
