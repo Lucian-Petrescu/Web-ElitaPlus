@@ -1300,6 +1300,7 @@ Public Class ClaimRecordingForm
                 wsRequest.CompanyCode = questionSubmitObj.CompanyCode
                 wsRequest.InteractionNumber = questionSubmitObj.InteractionNumber
                 wsRequest.Questions = questionSubmitObj.Questions
+                SetQuestionsSession(wsRequest)
 
                 Try
                     Dim wsResponse = WcfClientHelper.Execute(Of ClaimRecordingServiceClient, IClaimRecordingService, BaseClaimRecordingResponse)(
@@ -2141,6 +2142,21 @@ Public Class ClaimRecordingForm
             End If
         End If
     End Sub
+    Private Sub SetQuestionsSession(wsRequest As QuestionRequest)
+        Session("QuestionResponse") = wsRequest
+    End Sub
+    Private Sub ResetQuestionsSession()
+        If Session("QuestionResponse") IsNot Nothing Then
+            Session("QuestionResponse") = Nothing
+        End If
+    End Sub
+    Private Function GetQuestions() As QuestionRequest
+        If Session("QuestionResponse") IsNot Nothing Then
+            Dim response As QuestionRequest = Session("QuestionResponse")
+            Return response
+        End If
+        Return Nothing
+    End Function
     Private Sub PopulateFulfillmentOptionsGrid()
         Dim wsResponse As FulfillmentOptionsResponse
         If State.SubmitWsBaseClaimRecordingResponse.GetType() Is GetType(FulfillmentOptionsResponse) Then
@@ -3097,9 +3113,11 @@ Public Class ClaimRecordingForm
                 End Function)
             If wsResponse IsNot Nothing Then
                 State.SubmitWsBaseClaimRecordingResponse = wsResponse
+                ResetQuestionsSession()
                 MoveToNextPage()
             End If
         Catch ex As FaultException
+            ResetQuestionsSession()
             ThrowWsFaultExceptions(ex)
             Exit Sub
         End Try
@@ -3137,9 +3155,11 @@ Public Class ClaimRecordingForm
                 End Function)
             If wsResponse IsNot Nothing Then
                 State.SubmitWsBaseClaimRecordingResponse = wsResponse
+                ResetQuestionsSession()
                 DisplayNextView()
             End If
         Catch ex As FaultException
+            ResetQuestionsSession()
             ThrowWsFaultExceptions(ex)
             Exit Sub
         End Try

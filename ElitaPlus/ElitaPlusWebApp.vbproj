@@ -40,11 +40,11 @@
     </UpgradeBackupLocation>
     <OldToolsVersion>4.0</OldToolsVersion>
     <TargetFrameworkVersion>v4.6.2</TargetFrameworkVersion>
-    <UseIISExpress>true</UseIISExpress>
+    <UseIISExpress>false</UseIISExpress>
     <IISExpressSSLPort />
     <IISExpressAnonymousAuthentication />
     <IISExpressWindowsAuthentication />
-    <IISExpressUseClassicPipelineMode>true</IISExpressUseClassicPipelineMode>
+    <IISExpressUseClassicPipelineMode />
     <TargetFrameworkProfile />
     <UseGlobalApplicationHostFile />
     <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..\</SolutionDir>
@@ -5985,7 +5985,7 @@
     <None Include="Service References\ClaimFulfillmentWebAppGatewayService\WebAppGateway.wsdl" />
     <None Include="Service References\ClaimFulfillmentWebAppGatewayService\WebAppGateway1.wsdl" />
     <None Include="Service References\ClaimRecordingService\ClaimRecordingService1.wsdl" />
-    <None Include="Service References\ClaimRecordingService\-ClaimRecordingService3.wsdl" />
+    <None Include="Service References\ClaimRecordingService\ClaimRecordingService3.wsdl" />
     <None Include="Service References\ClaimRecordingService\configuration91.svcinfo" />
     <None Include="Service References\ClaimRecordingService\configuration.svcinfo" />
     <None Include="Service References\ClaimRecordingService\Reference.svcmap">
@@ -6004,7 +6004,6 @@
     <Content Include="Service References\ClaimService\Assurant.ElitaPlus.ElitaPlusWebApp.ClaimService.NewClaimEntitledResponse.datasource">
       <DependentUpon>Reference.svcmap</DependentUpon>
     </Content>
-    <None Include="Service References\ClaimService\ClaimService.disco" />
     <None Include="Service References\ClaimService\ClaimService4.xsd">
       <SubType>Designer</SubType>
     </None>
@@ -6020,6 +6019,7 @@
       <Generator>WCF Proxy Generator</Generator>
       <LastGenOutput>Reference.vb</LastGenOutput>
     </None>
+    <None Include="Service References\ClaimService\ClaimService.disco" />
     <Content Include="Service References\FileAdminService\Assurant.ElitaPlus.ElitaPlusWebApp.FileAdminService.GetFileRecordsResponse.datasource">
       <DependentUpon>Reference.svcmap</DependentUpon>
     </Content>
@@ -8898,7 +8898,7 @@
           <AutoAssignPort>True</AutoAssignPort>
           <DevelopmentServerPort>2550</DevelopmentServerPort>
           <DevelopmentServerVPath>/</DevelopmentServerVPath>
-          <IISUrl>http://localhost:80/ElitaPlus</IISUrl>
+          <IISUrl>http://localhost:63876/ElitaPlus2</IISUrl>
           <NTLMAuthentication>False</NTLMAuthentication>
           <UseCustomServer>False</UseCustomServer>
           <CustomServerUrl>
