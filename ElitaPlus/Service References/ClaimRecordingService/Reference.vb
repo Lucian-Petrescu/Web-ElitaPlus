@@ -1174,45 +1174,29 @@ Namespace ClaimRecordingService
         
         <System.Runtime.Serialization.OptionalFieldAttribute()>  _
         Private QuestionsByStageField As System.Collections.Generic.Dictionary(Of String, Assurant.Elita.Questions.Contracts.Question())
-        
-        <System.Runtime.Serialization.OptionalFieldAttribute()>  _
-        Private DynamicFulfillmentResponseField As ClaimRecordingService.DynamicFulfillmentResponse
-        
-        <System.Runtime.Serialization.DataMemberAttribute(IsRequired:=true)>  _
+
+        <System.Runtime.Serialization.DataMemberAttribute(IsRequired:=True)>
         Public Property Options() As ClaimRecordingService.FulfillmentOption()
             Get
                 Return Me.OptionsField
             End Get
             Set
-                If (Object.ReferenceEquals(Me.OptionsField, value) <> true) Then
-                    Me.OptionsField = value
+                If (Object.ReferenceEquals(Me.OptionsField, Value) <> True) Then
+                    Me.OptionsField = Value
                     Me.RaisePropertyChanged("Options")
                 End If
             End Set
         End Property
-        
-        <System.Runtime.Serialization.DataMemberAttribute()>  _
+
+        <System.Runtime.Serialization.DataMemberAttribute()>
         Public Property QuestionsByStage() As System.Collections.Generic.Dictionary(Of String, Assurant.Elita.Questions.Contracts.Question())
             Get
                 Return Me.QuestionsByStageField
             End Get
             Set
-                If (Object.ReferenceEquals(Me.QuestionsByStageField, value) <> true) Then
+                If (Object.ReferenceEquals(Me.QuestionsByStageField, value) <> True) Then
                     Me.QuestionsByStageField = value
                     Me.RaisePropertyChanged("QuestionsByStage")
-                End If
-            End Set
-        End Property
-        
-        <System.Runtime.Serialization.DataMemberAttribute(Order:=2)>  _
-        Public Property DynamicFulfillmentResponse() As ClaimRecordingService.DynamicFulfillmentResponse
-            Get
-                Return Me.DynamicFulfillmentResponseField
-            End Get
-            Set
-                If (Object.ReferenceEquals(Me.DynamicFulfillmentResponseField, value) <> true) Then
-                    Me.DynamicFulfillmentResponseField = value
-                    Me.RaisePropertyChanged("DynamicFulfillmentResponse")
                 End If
             End Set
         End Property

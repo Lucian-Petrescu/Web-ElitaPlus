@@ -2002,10 +2002,10 @@
   </wsdl:binding>
   <wsdl:service name="ClaimRecordingService">
     <wsdl:port name="CustomBinding_IClaimRecordingService" binding="tns:CustomBinding_IClaimRecordingService">
-      <soap:address location="http://localhost:8085/ElitaClaimService/ClaimRecordingService.svc" />
+      <soap:address location="http://localhost/ElitaClaimService/ClaimRecordingService.svc" />
     </wsdl:port>
     <wsdl:port name="CustomBinding_IClaimRecordingService1" binding="tns:CustomBinding_IClaimRecordingService">
-      <soap:address location="http://localhost:8085/ElitaClaimService/ClaimRecordingService.svc/Secure" />
+      <soap:address location="http://localhost/ElitaClaimService/ClaimRecordingService.svc/Secure" />
     </wsdl:port>
   </wsdl:service>
 </wsdl:definitions>
