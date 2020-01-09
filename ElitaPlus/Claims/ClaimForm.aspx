@@ -1033,6 +1033,7 @@
                                         </tr>
                                     </table>
                                 </div>
+                                <script type="text/javascript" src="../Scripts/df_ui.js"></script>
                                 <asp:PlaceHolder runat="server" ID="phDynamicFulfillmentUI"></asp:PlaceHolder>
                             </div>
                         </div>

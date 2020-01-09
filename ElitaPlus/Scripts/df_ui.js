@@ -21,6 +21,9 @@
 })();
 
 window.addEventListener('dynamicFulfillmentWorkCompletedEvent', function (e) {    
+    if (document.getElementById('ctl00$BodyPlaceHolder$btnLegacyContinue') === null || document.getElementById('ctl00$BodyPlaceHolder$btnContinue') === null) {
+        __doPostBack('', '');
+    }
     if (e.detail.isLegacy) {        
         __doPostBack('ctl00$BodyPlaceHolder$btnLegacyContinue', 'OnClick');
     }
