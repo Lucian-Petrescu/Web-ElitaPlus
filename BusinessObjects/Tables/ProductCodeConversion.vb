@@ -260,7 +260,7 @@ Public Class ProductCodeConversion
             Me.SetValue(ProductCodeConversionDAL.COL_NAME_SALES_PRICE, Value)
         End Set
     End Property
-    <ValueMandatory("")> 
+    <ValueMandatory(""),NonOverlappingProductCodeConversion("")> 
     Public Property EffectiveDate() As DateType
         Get
             CheckDeleted()
@@ -431,7 +431,28 @@ Public Class ProductCodeConversion
         End Function
 
     End Class
+    <AttributeUsage(AttributeTargets.Property Or AttributeTargets.Field)> _
+    public NotInheritable Class NonOverlappingProductCodeConversion 
+        Inherits ValidBaseAttribute
 
+        Public Sub New(ByVal fieldDisplayName As String)
+            MyBase.New(fieldDisplayName, Common.ErrorCodes.ERR_BO_OVERLAPPING_PRODUCT_CODE_CONVERSION)
+        End Sub
+        Public Overrides Function IsValid(objectToCheck As Object, objectToValidate As Object) As Boolean
+            Dim obj As ProductCodeConversion = CType(objectToValidate, ProductCodeConversion)
+            Dim dal As New ProductCodeConversionDAL
+          
+            If  obj.IsSaveNew Then
+                If dal.CheckOverlappingProductCodeConversion(obj.DealerId, obj.ExternalProdCode, obj.Manufacturer, obj.Id,obj.EffectiveDate).Tables(0).Rows.Count = 1 Then
+                        Return false
+                Else
+                        Return true
+                End If
+            Else 
+                  Return  true
+            end if
+        End Function
+    End Class
 
 #End Region
 

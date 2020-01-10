@@ -63,6 +63,9 @@
   <CHK_DEALER_PRODCODE_MFG_COMBINATION>
     elita.elp_tbl_ProductCode_Conv.Check_dealer_prodcode_mgf_comb
   </CHK_DEALER_PRODCODE_MFG_COMBINATION>
+  <CHK_OVERLAPPING_PROD_CODE_CONVERSION>
+    elita.elp_tbl_ProductCode_Conv.ProductCodeConversionOverlap
+  </CHK_OVERLAPPING_PROD_CODE_CONVERSION>
 </SQL> 
 
 
