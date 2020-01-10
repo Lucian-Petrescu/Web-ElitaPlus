@@ -17,6 +17,9 @@ Imports System.Net
 
 Imports RestSharp
 Imports Newtonsoft.Json
+Imports System.Net.Http
+Imports System.Net.Http.Headers
+Imports Newtonsoft.Json.Linq
 
 Partial Class ClaimForm
     Inherits ElitaPlusSearchPage
@@ -1946,6 +1949,7 @@ Partial Class ClaimForm
                 Else
                     Me.PopulateControlFromBOProperty(Me.txtPasscode, "")
                 End If
+                dvClaimFulfillmentDetails.Visible = True
             End If
         Else
             ClearClaimFulfillmentDetails()
@@ -3978,7 +3982,14 @@ Partial Class ClaimForm
 #Region "Call To claim Fulfillment WebAppGateway"
 
     Public Sub BindclaimFulfillmentDetails()
+        If Me.State.MyBO.FulfillmentProviderType = FulfillmentProviderType.DynamicFulfillment Then
+            BindExternalClaimFulfillmentDetails()
+        Else
+            BindElitaClaimFulfillmentDetails()
+        End If
 
+    End Sub
+    Private Sub BindElitaClaimFulfillmentDetails()
         Dim wsRequest As GetFulfillmentDetailsRequest = New GetFulfillmentDetailsRequest()
         Dim wsResponse As FulfillmentDetails
 
@@ -4003,9 +4014,42 @@ Partial Class ClaimForm
         Catch ex As Exception
             ClearClaimFulfillmentDetails()
         End Try
+    End Sub
 
+    Private Sub BindExternalClaimFulfillmentDetails()
+        Try
+            Dim oWebPasswd As WebPasswd = New WebPasswd(Guid.Empty, LookupListNew.GetIdFromCode(Codes.SERVICE_TYPE, Codes.SERVICE_TYPE_DF_API_URL), False)
+            If String.IsNullOrEmpty(oWebPasswd.Url) Then
+                Throw New ArgumentNullException($"Web Password entry not found or Dynamic Fulfillment Api Url not configured for Service Type {Codes.SERVICE_TYPE_DF_API_URL}")
+            ElseIf String.IsNullOrEmpty(oWebPasswd.UserId) Or String.IsNullOrEmpty(oWebPasswd.Password) Then
+                Throw New ArgumentNullException($"Web Password username or password not configured for Service Type {Codes.SERVICE_TYPE_DF_API_URL}")
+            End If
 
+            Dim uri As String = String.Format(oWebPasswd.Url, "Elita", Me.State.MyBO.ClaimNumber)
+            System.Net.ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls Or SecurityProtocolType.Tls11 Or SecurityProtocolType.Tls12
+            Dim client As HttpClient = New HttpClient()
+            client.DefaultRequestHeaders.Accept.Clear()
+            client.DefaultRequestHeaders.Add(oWebPasswd.UserId, oWebPasswd.Password)
+            client.DefaultRequestHeaders.Accept.Add(New MediaTypeWithQualityHeaderValue("application/json"))
 
+            Dim response As HttpResponseMessage = client.GetAsync(uri).GetAwaiter().GetResult()
+            If Not response.IsSuccessStatusCode Then
+                Throw New Exception($"There is an error in displaying the DF UI. {response.ReasonPhrase}")
+            End If
+
+            Dim userInterfaceSettings = JsonConvert.DeserializeObject(Of JObject)(response.Content.ReadAsStringAsync().GetAwaiter.GetResult())
+            Dim dfControl As DynamicFulfillmentUI = Page.LoadControl("~/Common/DynamicFulfillmentUI.ascx")
+            dfControl.SourceSystem = "Elita"
+            dfControl.SubscriptionKey = oWebPasswd.Password
+            dfControl.CssUri = userInterfaceSettings("resourceUris")("cssUri")
+            dfControl.ScriptUri = userInterfaceSettings("resourceUris")("scriptUri")
+            dfControl.ClaimNumber = Me.State.MyBO.ClaimNumber
+            phDynamicFulfillmentUI.Controls.Add(dfControl)
+            dvClaimFulfillmentDetails.Visible = False
+
+        Catch ex As Exception
+
+        End Try
     End Sub
 
     Private Shared Function GetClaimFulfillmentWebAppGatewayClient() As WebAppGatewayClient

@@ -874,6 +874,13 @@
       <DependentUpon>UserControlConsequentialDamage.ascx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
+    <Compile Include="Common\DynamicFulfillmentUI.ascx.designer.vb">
+      <DependentUpon>DynamicFulfillmentUI.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="Common\DynamicFulfillmentUI.ascx.vb">
+      <DependentUpon>DynamicFulfillmentUI.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
     <Compile Include="Common\ServiceCenterSelected.vb" />
     <Compile Include="Common\UserControlCallerInfo.ascx.designer.vb">
       <DependentUpon>UserControlCallerInfo.ascx</DependentUpon>
@@ -5672,6 +5679,7 @@
     <Content Include="Claims\ClaimRecordingForm.aspx" />
     <Content Include="Claims\ClaimReimbursementForm.aspx" />
     <Content Include="Claims\UserControlConsequentialDamage.ascx" />
+    <Content Include="Common\DynamicFulfillmentUI.ascx" />
     <Content Include="Common\UserControlCallerInfo.ascx" />
     <Content Include="Common\UserControlCaseHeaderInfo.ascx" />
     <Content Include="Common\UserControlDeliverySlot.ascx" />
@@ -5795,6 +5803,7 @@
     <Content Include="Navigation\fonts\fontawesome-webfont.woff2" />
     <Content Include="Navigation\fonts\FontAwesome.otf" />
     <None Include="Scripts\jquery-1.4.4-vsdoc.js" />
+    <Content Include="Scripts\df_ui.js" />
     <Content Include="Scripts\jquery-1.4.4.js" />
     <Content Include="Scripts\jquery-1.4.4.min.js" />
     <None Include="Scripts\jquery-3.1.1.intellisense.js" />
@@ -5995,7 +6004,7 @@
     <Content Include="Service References\ClaimService\Assurant.ElitaPlus.ElitaPlusWebApp.ClaimService.NewClaimEntitledResponse.datasource">
       <DependentUpon>Reference.svcmap</DependentUpon>
     </Content>
-    <None Include="Service References\ClaimService\ClaimService.disco" />
+	<None Include="Service References\ClaimService\ClaimService.disco" />
     <None Include="Service References\ClaimService\ClaimService4.xsd">
       <SubType>Designer</SubType>
     </None>
@@ -6010,7 +6019,7 @@
     <None Include="Service References\ClaimService\Reference.svcmap">
       <Generator>WCF Proxy Generator</Generator>
       <LastGenOutput>Reference.vb</LastGenOutput>
-    </None>
+    </None>    
     <Content Include="Service References\FileAdminService\Assurant.ElitaPlus.ElitaPlusWebApp.FileAdminService.GetFileRecordsResponse.datasource">
       <DependentUpon>Reference.svcmap</DependentUpon>
     </Content>

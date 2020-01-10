@@ -2138,6 +2138,15 @@ Partial Public Class ClaimForm
     Protected WithEvents txtPasscode As Global.System.Web.UI.WebControls.TextBox
 
     '''<summary>
+    '''phDynamicFulfillmentUI control.
+    '''</summary>
+    '''<remarks>
+    '''Auto-generated field.
+    '''To modify move field declaration from designer file to code-behind file.
+    '''</remarks>
+    Protected WithEvents phDynamicFulfillmentUI As Global.System.Web.UI.WebControls.PlaceHolder
+
+    '''<summary>
     '''ViewPanel_READ2 control.
     '''</summary>
     '''<remarks>

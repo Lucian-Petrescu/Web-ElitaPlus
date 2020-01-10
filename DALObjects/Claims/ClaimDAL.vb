@@ -275,6 +275,8 @@ Public Class ClaimDAL
 
     Public Const COL_NAME_IS_CLAIM_READ_ONLY As String = "is_claim_readonly"
 
+    Public Const COL_NAME_FULFILLMENT_PROVIDER_TYP As String = "fulfillment_provider_xcd"
+
     'SP Parameter Names
     Public Const PAR_NAME_COMPANY As String = "p_company_id"
     Public Const PAR_NAME_CLAIM_NUMBER As String = "p_claim_number"
@@ -601,6 +603,19 @@ Public Class ClaimDAL
             End If
         End Get
 
+    End Property
+
+    Public Property FulfillmentProviderType(ByVal Row As DataRow) As String
+        Get
+            If Row(ClaimDAL.COL_NAME_FULFILLMENT_PROVIDER_TYP) Is DBNull.Value Then
+                Return Nothing
+            Else
+                Return CType(Row(ClaimDAL.COL_NAME_FULFILLMENT_PROVIDER_TYP), String)
+            End If
+        End Get
+        Set(ByVal Value As String)
+            Me.SetValue(Row, ClaimDAL.COL_NAME_FULFILLMENT_PROVIDER_TYP, Value)
+        End Set
     End Property
 
 
