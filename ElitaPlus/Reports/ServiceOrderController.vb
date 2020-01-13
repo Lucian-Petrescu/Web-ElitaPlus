@@ -85,14 +85,15 @@ Public Class ServiceOrderController
 
         sActivityCode = claimBO.ClaimActivityCode
 
-        Return GenerateReportName(sActivityCode, compCode, rprCode, serviceOrderType)
+        Return GenerateReportName(sActivityCode, compCode, rprCode, serviceOrderType,claimBO.CoverageTypeCode)
 
     End Function
 
     Private Function GenerateReportName(ByVal sActivityCode As String,
                                         ByVal compCode As String,
                                         Optional ByVal RepairCode As String = "",
-                                        Optional ByVal ServiceOrderType As String = Nothing) As String
+                                        Optional ByVal ServiceOrderType As String = Nothing,
+                                        Optional ByVal CoverageType As String = Nothing) As String
 
         Dim strReportType, strReport As String
 
@@ -113,6 +114,15 @@ Public Class ServiceOrderController
                     strReportType = SERVICE_ORDER
             End Select
 
+        End If
+
+        if  Not String.IsNullOrEmpty(CoverageType) AndAlso strReportType = SERVICE_ORDER AndAlso compCode = AUS_COMPANY_CODE Then
+            Select Case CoverageType
+                Case COVERAGE_TYPE__EXTENDED
+                    strReportType &= "_EW"
+                Case COVERAGE_TYPE__ACCIDENTAL, COVERAGE_TYPE__THEFTLOSS
+                    strReportType &= "_DE"
+            End Select
         End If
 
         strReport = strReportType & "_" & compCode

@@ -7,7 +7,7 @@
       <head>
         <style>
           BODY { width:auto }
-          TD { FONT-SIZE:13px;font-family:"Trebuchet MS";font-weight:bolder;height:5px;}
+          TD { FONT-SIZE:8.5pt;font-family:"Trebuchet MS";font-weight:bolder;height:5px;}
           .Header {background-color:#000;color:#fff; TEXT-ALIGN:LEFT;text-decoration: underline}
           .esp {font-weight:normal;}
         </style>
@@ -184,7 +184,7 @@
           </tr>
           <tr>
             <td>
-              Purchase Price:&#160;$<xsl:value-of select="a:ServiceOrderReport/a:ServiceOrder/a:SALES_PRICE" />
+              Purchase Price:&#160;$<xsl:value-of select="a:ServiceOrderReport/a:ServiceOrder/a:SALES_PRICE" />&#160;(Incl GST)
             </td>
           </tr>
           <tr>
@@ -242,15 +242,15 @@
           </tr>
           <tr>
             <td colspan="2">
-              Repair Authority Limit: $<xsl:value-of select="a:ServiceOrderReport/a:ServiceOrder/a:AUTHORIZATION_AMOUNT" />
-            </td>
+              Repair Authority Limit: $<xsl:value-of select="a:ServiceOrderReport/a:ServiceOrder/a:AUTHORIZATION_AMOUNT" />&#160;(Excl GST)
+          </td>
           </tr>
           <tr>
             <td>&#160;</td>
             <td></td>
           </tr>
           <tr>
-            <td colspan="2">If the repair costs (including parts and labor) DO NOT exceed the Repair Authority Limit, please email us with an<br />
+            <td colspan="2">If the repair costs (including parts and labor excl GST) DO NOT exceed the Repair Authority Limit, please email us with an<br />
             itemized invoice repair has been completed.
             </td>
           </tr>
@@ -259,7 +259,7 @@
             <td></td>
           </tr>
           <tr>
-            <td colspan="2">If the repair costs (including parts and labor) EXCEED the Repair Authority Limit, please email us with an<br />
+            <td colspan="2">If the repair costs (including parts and labor excl GST) EXCEED the Repair Authority Limit, please email us with an<br />
             itemized quote and await further advice before proceeding with repair.
             </td>
           </tr>
