@@ -211,9 +211,10 @@ Public Class ProductCodeConversionDAL
            If rowState = DataRowState.Deleted Then
                Dim inParametersdel() As DBHelper.DBHelperParameter = New DBHelper.DBHelperParameter() _
                        {
-                           New DBHelper.DBHelperParameter("pi_"& Me.COL_NAME_PRODUCT_CONVERSION_ID.ToLower(), row(Me.COL_NAME_PRODUCT_CONVERSION_ID))
+                           New DBHelper.DBHelperParameter("pi_"& Me.COL_NAME_PRODUCT_CONVERSION_ID.ToLower(),   row(Me.COL_NAME_PRODUCT_CONVERSION_ID,DataRowVersion.Original))
                        }
                DBHelper.ExecuteSp(stmtToExecute, inParametersdel, outputParameters)
+               row.AcceptChanges()
            Else 
                Dim inParameters() As DBHelper.DBHelperParameter = New DBHelper.DBHelperParameter() _
                        {New DBHelper.DBHelperParameter("pi_"& Me.COL_NAME_DEALER_ID.ToLower(), row(Me.COL_NAME_DEALER_ID)),
@@ -231,6 +232,7 @@ Public Class ProductCodeConversionDAL
                         New DBHelper.DBHelperParameter("pi_" & Me.COL_NAME_EXPIRATION_DATE.ToLower(), row(Me.COL_NAME_EXPIRATION_DATE))
                        }
                DBHelper.ExecuteSp(stmtToExecute, inParameters, outputParameters)
+               row.AcceptChanges()
            End If
            
 
