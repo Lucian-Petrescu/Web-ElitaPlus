@@ -1112,4 +1112,6 @@ Public Class ErrorCodes
     Public Const INVALID_TAX_TYPE_FOR_DEALER As String = "INVALID_TAX_TYPE_FOR_DEALER"
     Public Const GUI_CREATE_BEGIN_FULFILLMENT_SERVICE_ERR As String = "GUI_CREATE_BEGIN_FULFILLMENT_SERVICE_ERR" ' Error while calling Create and begin fulfillment WebAppGateway service
 
+    '#444515 
+    Public Const MSG_GUI_ISSUE_IS_ASSIGNED_TO_QUESTION_OR_RULE_OR_NOTE As String = "MSG_GUI_ISSUE_ASSIGN_TO_QUESTION_OR_RULE_OR_NOTE"
 End Class
