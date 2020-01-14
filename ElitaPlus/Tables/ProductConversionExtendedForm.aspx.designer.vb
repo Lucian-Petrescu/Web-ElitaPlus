@@ -231,6 +231,60 @@ Namespace Tables
         Protected WithEvents txtSalesPrice As Global.System.Web.UI.WebControls.TextBox
 
         '''<summary>
+        '''lblEffectiveDate control.
+        '''</summary>
+        '''<remarks>
+        '''Auto-generated field.
+        '''To modify move field declaration from designer file to code-behind file.
+        '''</remarks>
+        Protected WithEvents lblEffectiveDate As Global.System.Web.UI.WebControls.Label
+
+        '''<summary>
+        '''txtEffectiveDate control.
+        '''</summary>
+        '''<remarks>
+        '''Auto-generated field.
+        '''To modify move field declaration from designer file to code-behind file.
+        '''</remarks>
+        Protected WithEvents txtEffectiveDate As Global.System.Web.UI.WebControls.TextBox
+
+        '''<summary>
+        '''btnEffectiveDate control.
+        '''</summary>
+        '''<remarks>
+        '''Auto-generated field.
+        '''To modify move field declaration from designer file to code-behind file.
+        '''</remarks>
+        Protected WithEvents btnEffectiveDate As Global.System.Web.UI.WebControls.ImageButton
+
+        '''<summary>
+        '''lblExpirationDate control.
+        '''</summary>
+        '''<remarks>
+        '''Auto-generated field.
+        '''To modify move field declaration from designer file to code-behind file.
+        '''</remarks>
+        Protected WithEvents lblExpirationDate As Global.System.Web.UI.WebControls.Label
+
+        '''<summary>
+        '''txtExpirationDate control.
+        '''</summary>
+        '''<remarks>
+        '''Auto-generated field.
+        '''To modify move field declaration from designer file to code-behind file.
+        '''</remarks>
+        Protected WithEvents txtExpirationDate As Global.System.Web.UI.WebControls.TextBox
+
+        '''<summary>
+        '''btnExpirationDate control.
+        '''</summary>
+        '''<remarks>
+        '''Auto-generated field.
+        '''To modify move field declaration from designer file to code-behind file.
+        '''</remarks>
+        Protected WithEvents btnExpirationDate As Global.System.Web.UI.WebControls.ImageButton
+
+        '''<summary>
         '''HiddenSaveChangesPromptResponse control.
         '''</summary>
         '''<remarks>
@@ -249,15 +303,6 @@ Namespace Tables
         Protected WithEvents HiddenDeletePromptResponse As Global.System.Web.UI.HtmlControls.HtmlInputHidden
 
         '''<summary>
-        '''btnBack control.
-        '''</summary>
-        '''<remarks>
-        '''Auto-generated field.
-        '''To modify move field declaration from designer file to code-behind file.
-        '''</remarks>
-        Protected WithEvents btnBack As Global.System.Web.UI.WebControls.Button
-
-        '''<summary>
         '''btnApply_WRITE control.
         '''</summary>
         '''<remarks>
@@ -274,6 +319,15 @@ Namespace Tables
         '''To modify move field declaration from designer file to code-behind file.
         '''</remarks>
         Protected WithEvents btnUndo_WRITE As Global.System.Web.UI.WebControls.Button
+
+        '''<summary>
+        '''btnBack control.
+        '''</summary>
+        '''<remarks>
+        '''Auto-generated field.
+        '''To modify move field declaration from designer file to code-behind file.
+        '''</remarks>
+        Protected WithEvents btnBack As Global.System.Web.UI.WebControls.Button
 
         '''<summary>
         '''btnNew_WRITE control.

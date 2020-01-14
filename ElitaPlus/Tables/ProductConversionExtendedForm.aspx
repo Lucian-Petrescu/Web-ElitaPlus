@@ -96,6 +96,26 @@
                                     <asp:TextBox ID="txtSalesPrice" runat="server" SkinID="MediumTextBox"></asp:TextBox>                                    
                                 </td>
                             </tr>
+                            <tr>
+                                <td nowrap="nowrap" align="right">
+                                    <asp:Label ID="lblEffectiveDate" runat="server" Font-Bold="false">EFFECTIVE_DATE</asp:Label>
+                                </td>
+                                <td nowrap="nowrap" align="left" >
+                                    <asp:TextBox ID="txtEffectiveDate" runat="server" SkinID="SmallTextBox" onKeyDown="preventBackspace();"></asp:TextBox>&nbsp;
+                                    <asp:ImageButton ID="btnEffectiveDate" runat="server" ImageUrl="../Common/Images/calendarIcon2.jpg">
+                                    </asp:ImageButton>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td nowrap="nowrap" align="right">
+                                    <asp:Label ID="lblExpirationDate" runat="server" Font-Bold="false">EXPIRATION_DATE</asp:Label>
+                                </td>
+                                <td nowrap="nowrap" align="left">
+                                    <asp:TextBox ID="txtExpirationDate" runat="server" SkinID="SmallTextBox" onKeyDown="preventBackspace();"></asp:TextBox>&nbsp;
+                                    <asp:ImageButton ID="btnExpirationDate" runat="server" ImageUrl="../Common/Images/calendarIcon2.jpg">
+                                    </asp:ImageButton>
+                                </td>
+                            </tr>
                         </table>
                     </td>
                 </tr>

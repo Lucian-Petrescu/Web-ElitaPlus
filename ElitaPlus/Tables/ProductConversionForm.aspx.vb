@@ -53,6 +53,8 @@ Namespace Tables
         Private Const GRID_COL_EXTERNAL_PRODUCT_CODE As Integer = 1
         Private Const GRID_COL_PRODUCT_CODE As Integer = 2
         Private Const GRID_COL_PRODUCT_CODE_CONVERSION_ID As Integer = 3
+        Public Const  GRID_COL_EFFECTIVE_DATE As Integer = 5
+        Public Const  GRID_COL_EXPIRATION_DATE As Integer = 6
 
         'Actions
         Private Const ACTION_NONE As String = "ACTION_NONE"
@@ -67,6 +69,9 @@ Namespace Tables
         Public Const COL_DEALER_NAME As String = "DEALER_NAME"
         Public Const COL_PRODUCT_CODE As String = "PRODUCT_CODE"
         Public Const COL_EXT_PRODUCT_CODE As String = "EXTERNAL_PROD_CODE"
+        Public Const COL_EFFECTIVE_DATE As String = "EFFECTIVE_DATE"
+        Public Const COL_EXPIRATION_DATE As String = "EXPIRATION_DATE"
+
 
 #End Region
 
@@ -387,6 +392,8 @@ Namespace Tables
                         e.Row.Cells(Me.GRID_COL_PRODUCT_CODE).Text = dvRow(COL_PRODUCT_CODE).ToString
                         e.Row.Cells(Me.GRID_COL_EXTERNAL_PRODUCT_CODE).Text = dvRow(COL_EXT_PRODUCT_CODE).ToString
                         e.Row.Cells(Me.GRID_COL_PRODUCT_CODE_CONVERSION_ID).Text = GetGuidStringFromByteArray(CType(dvRow(COL_ProductConversion_ID), Byte()))
+                        e.Row.Cells(Me.GRID_COL_EFFECTIVE_DATE).Text = dvRow(COL_EFFECTIVE_DATE).ToString
+                        e.Row.Cells(Me.GRID_COL_EXPIRATION_DATE).Text = dvRow(COL_EXPIRATION_DATE).ToString
                     End If
                 End If
             Catch ex As Exception
@@ -477,6 +484,8 @@ Namespace Tables
                     Grid.Columns(Me.GRID_COL_DEALER_NAME).SortExpression = COL_DEALER_NAME
                     Grid.Columns(Me.GRID_COL_PRODUCT_CODE).SortExpression = COL_PRODUCT_CODE
                     Grid.Columns(Me.GRID_COL_EXTERNAL_PRODUCT_CODE).SortExpression = COL_EXT_PRODUCT_CODE
+                    Grid.Columns(Me.GRID_COL_EFFECTIVE_DATE).SortExpression = COL_EFFECTIVE_DATE
+                    Grid.Columns(Me.GRID_COL_EXPIRATION_DATE).SortExpression = COL_EXPIRATION_DATE
                     HighLightSortColumn(Grid, Me.State.SortExpression)
                     ' BasePopulateGrid(Grid, Me.State.searchDV, Me.State.moProductCodeId, oAction)
 
