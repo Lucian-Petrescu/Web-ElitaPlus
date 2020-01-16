@@ -337,7 +337,7 @@ Namespace Tables
         Private Sub btnDelete_WRITE_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnDelete_WRITE.Click
             Try
                 If (Me.State.MyBO.CheckIfIssueIsAssignedToQuestionNoteOrRule(Me.State.MyBO.Id)) Then
-                    Throw New GUIException(Message.MSG_GUI_LIST_CODE_ASSIGNED_TO_DEALER_NO_DELETE, Assurant.ElitaPlus.Common.ErrorCodes.GUI_LIST_CODE_ERR)
+                    Throw New GUIException(Message.MSG_GUI_LIST_CODE_ASSIGNED_TO_DEALER_NO_DELETE, Assurant.ElitaPlus.Common.ErrorCodes.MSG_GUI_ISSUE_IS_ASSIGNED_TO_QUESTION_OR_RULE_OR_NOTE)
                 Else
                     Me.PopulateChildern()
                     Me.State.MyBO.Delete()
