@@ -716,17 +716,24 @@
     </DEALER_COMMISSION_BREAKDOWN_DUAL_COLUMNS>
     <DEALERS_MONTHLY_BILLING>
       <![CDATA[
-			SELECT distinct
-				d.dealer_id id,  rawtohex(company_id) company_id, dealer code, dealer_name description
-			FROM
-				ELP_DEALER d,
-				Elp_CONTRACT c,
-				ELP_LIST_ITEM li
-			WHERE d.dealer_id = c.dealer_id
-				and c.effective <= sysdate
-				and c.recurring_premium_id = li.list_item_id
-				and (li.code <> '0' or elp_utl_attribute.GetAttributeValue('ELP_DEALER',d.dealer_id,'NEW_INVOICE_PAYMENT',sysdate)='Y' )
-			ORDER BY description
+		with tmp as (select distinct av.reference_id as dealer_id
+             from elp_attribute             a
+             inner join elp_attribute_value av on a.attribute_id = av.attribute_id
+             where a.ui_prog_code                                = 'NEW_INVOICE_PAYMENT' --upper(pi_ui_prog_code)
+               and a.table_name                                  = 'ELP_DEALER'
+             union 
+             select dealer_id
+             from elita.elp_contract c
+             where recurring_premium_id = elp_utl_lov.id('PERIODRENEW','0')
+            )
+    select 
+        d.dealer_id                  as id
+        ,rawtohex (d.company_id)     as company_id
+        ,d.dealer                    as code
+        ,d.dealer_name               as description
+    from tmp            t
+    join elp_dealer     d on d.dealer_id = t.dealer_id
+
 			]]>
     </DEALERS_MONTHLY_BILLING>
 
