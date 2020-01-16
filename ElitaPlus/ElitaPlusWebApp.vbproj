@@ -5715,16 +5715,20 @@
     <Content Include="Interfaces\VendorInventoryReconWrkForm.aspx" />
     <Content Include="Navigation\fonts\fontawesome-webfont.svg" />
     <Content Include="Navigation\images\Assurant_horz_logo_RGB.png" />
+    <Content Include="Navigation\images\countries\new2_AustraliaSplash.jpg" />
     <Content Include="Navigation\images\countries\new2_DomicanRepublicSplash.jpg" />
     <Content Include="Navigation\images\countries\new2_FranceSplash.jpg" />
     <Content Include="Navigation\images\countries\new2_HungarySplash.jpg" />
     <Content Include="Navigation\images\countries\new2_JapanSplash.jpg" />
+    <Content Include="Navigation\images\countries\new2_NewZealandSplash.jpg" />
     <Content Include="Navigation\images\countries\new2_PortugalSplash.jpg" />
     <Content Include="Navigation\images\countries\new2_SouthKoreaSplash.jpg" />
+    <Content Include="Navigation\images\countries\new_AustraliaFlag.gif" />
     <Content Include="Navigation\images\countries\new_DominicanRepublicFlag.gif" />
     <Content Include="Navigation\images\countries\new_FranceFlag.gif" />
     <Content Include="Navigation\images\countries\new_HungaryFlag.gif" />
     <Content Include="Navigation\images\countries\new_JapanFlag.gif" />
+    <Content Include="Navigation\images\countries\new_NewZealandFlag.gif" />
     <Content Include="Navigation\images\countries\new_PortugalFlag.gif" />
     <Content Include="Navigation\images\countries\new_SouthKoreaFlag.gif" />
     <Content Include="Navigation\images\flags\do_Flag.png" />
@@ -6006,7 +6010,7 @@
     <Content Include="Service References\ClaimService\Assurant.ElitaPlus.ElitaPlusWebApp.ClaimService.NewClaimEntitledResponse.datasource">
       <DependentUpon>Reference.svcmap</DependentUpon>
     </Content>
-	<None Include="Service References\ClaimService\ClaimService.disco" />
+    <None Include="Service References\ClaimService\ClaimService.disco" />
     <None Include="Service References\ClaimService\ClaimService4.xsd">
       <SubType>Designer</SubType>
     </None>
@@ -6021,7 +6025,7 @@
     <None Include="Service References\ClaimService\Reference.svcmap">
       <Generator>WCF Proxy Generator</Generator>
       <LastGenOutput>Reference.vb</LastGenOutput>
-    </None>    
+    </None>
     <Content Include="Service References\FileAdminService\Assurant.ElitaPlus.ElitaPlusWebApp.FileAdminService.GetFileRecordsResponse.datasource">
       <DependentUpon>Reference.svcmap</DependentUpon>
     </Content>
