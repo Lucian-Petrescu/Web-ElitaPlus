@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<wsdl:definitions xmlns:wsap="http://schemas.xmlsoap.org/ws/2004/08/addressing/policy" xmlns:wsa10="http://www.w3.org/2005/08/addressing" xmlns:tns="http://elita.assurant.com/Elita/Claim/RecordingService" xmlns:msc="http://schemas.microsoft.com/ws/2005/12/wsdl/contract" xmlns:soapenc="http://schemas.xmlsoap.org/soap/encoding/" xmlns:wsx="http://schemas.xmlsoap.org/ws/2004/09/mex" xmlns:wsp="http://schemas.xmlsoap.org/ws/2004/09/policy" xmlns:wsam="http://www.w3.org/2007/05/addressing/metadata" xmlns:wsa="http://schemas.xmlsoap.org/ws/2004/08/addressing" xmlns:wsaw="http://www.w3.org/2006/05/addressing/wsdl" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:soap12="http://schemas.xmlsoap.org/wsdl/soap12/" xmlns:wsu="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-utility-1.0.xsd" xmlns:xsd="http://www.w3.org/2001/XMLSchema" name="ClaimRecordingService" targetNamespace="http://elita.assurant.com/Elita/Claim/RecordingService" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">
+<wsdl:definitions xmlns:wsap="http://schemas.xmlsoap.org/ws/2004/08/addressing/policy" xmlns:wsa10="http://www.w3.org/2005/08/addressing" xmlns:tns="http://elita.assurant.com/Elita/Claim/RecordingService" xmlns:msc="http://schemas.microsoft.com/ws/2005/12/wsdl/contract" xmlns:soapenc="http://schemas.xmlsoap.org/soap/encoding/" xmlns:wsx="http://schemas.xmlsoap.org/ws/2004/09/mex" xmlns:wsp="http://schemas.xmlsoap.org/ws/2004/09/policy" xmlns:wsam="http://www.w3.org/2007/05/addressing/metadata" xmlns:wsa="http://schemas.xmlsoap.org/ws/2004/08/addressing" xmlns:soap12="http://schemas.xmlsoap.org/wsdl/soap12/" xmlns:wsaw="http://www.w3.org/2006/05/addressing/wsdl" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:wsu="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-utility-1.0.xsd" xmlns:xsd="http://www.w3.org/2001/XMLSchema" name="ClaimRecordingService" targetNamespace="http://elita.assurant.com/Elita/Claim/RecordingService" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">
   <wsp:Policy wsu:Id="CustomBinding_IClaimRecordingService_policy">
     <wsp:ExactlyOne>
       <wsp:All>
@@ -800,24 +800,64 @@
             <xs:sequence>
               <xs:element xmlns:q2="http://assurant.com/Elita/ClaimFulfillment/Shared/Data" name="Options" nillable="true" type="q2:ArrayOfFulfillmentOption" />
               <xs:element xmlns:q3="http://schemas.microsoft.com/2003/10/Serialization/Arrays" minOccurs="0" name="QuestionsByStage" nillable="true" type="q3:ArrayOfKeyValueOfstringArrayOfQuestionKjP37BP8" />
+              <xs:element minOccurs="0" name="DynamicFulfillmentResponse" nillable="true" type="tns:DynamicFulfillmentResponse" />
             </xs:sequence>
           </xs:extension>
         </xs:complexContent>
       </xs:complexType>
       <xs:element name="FulfillmentOptionsResponse" nillable="true" type="tns:FulfillmentOptionsResponse" />
+      <xs:complexType name="DynamicFulfillmentResponse">
+        <xs:complexContent mixed="false">
+          <xs:extension xmlns:q4="http://elita.assurant.com/Elita/Claim/RecordingService/DataContracts" base="q4:BaseClaimRecordingResponse">
+            <xs:sequence>
+              <xs:element name="FulfillmentProvider" type="tns:FulfillmentProviderType" />
+              <xs:element name="SourceSystem" nillable="true" type="xs:string" />
+              <xs:element name="AccessToken" nillable="true" type="xs:string" />
+              <xs:element name="SubscriptionKey" nillable="true" type="xs:string" />
+              <xs:element name="ApiKey" nillable="true" type="xs:string" />
+              <xs:element name="BaseAddress" nillable="true" type="xs:string" />
+              <xs:element name="CssUri" nillable="true" type="xs:string" />
+              <xs:element name="ScriptUri" nillable="true" type="xs:string" />
+              <xs:element name="IsLoadError" type="xs:boolean" />
+            </xs:sequence>
+          </xs:extension>
+        </xs:complexContent>
+      </xs:complexType>
+      <xs:element name="DynamicFulfillmentResponse" nillable="true" type="tns:DynamicFulfillmentResponse" />
+      <xs:simpleType name="FulfillmentProviderType">
+        <xs:restriction base="xs:string">
+          <xs:enumeration value="Elita" />
+          <xs:enumeration value="DynamicFulfillment" />
+        </xs:restriction>
+      </xs:simpleType>
+      <xs:element name="FulfillmentProviderType" nillable="true" type="tns:FulfillmentProviderType" />
       <xs:complexType name="LogisticStagesRequest">
         <xs:complexContent mixed="false">
-          <xs:extension xmlns:q4="http://elita.assurant.com/Elita/Claim/RecordingService/DataContracts" base="q4:BaseClaimRecordingRequest">
+          <xs:extension xmlns:q5="http://elita.assurant.com/Elita/Claim/RecordingService/DataContracts" base="q5:BaseClaimRecordingRequest">
             <xs:sequence>
-              <xs:element xmlns:q5="http://assurant.com/Elita/ClaimFulfillment/Shared/Data" name="Stages" nillable="true" type="q5:ArrayOfLogisticStage" />
+              <xs:element xmlns:q6="http://assurant.com/Elita/ClaimFulfillment/Shared/Data" name="Stages" nillable="true" type="q6:ArrayOfLogisticStage" />
               <xs:element minOccurs="0" name="QuestionSetCode" nillable="true" type="xs:string" />
               <xs:element minOccurs="0" name="QuestionVersion" type="xs:int" />
-              <xs:element minOccurs="0" name="Questions" nillable="true" type="q4:ArrayOfQuestion" />
+              <xs:element minOccurs="0" name="Questions" nillable="true" type="q5:ArrayOfQuestion" />
             </xs:sequence>
           </xs:extension>
         </xs:complexContent>
       </xs:complexType>
       <xs:element name="LogisticStagesRequest" nillable="true" type="tns:LogisticStagesRequest" />
+      <xs:complexType name="DynamicFulfillmentRequest">
+        <xs:complexContent mixed="false">
+          <xs:extension xmlns:q7="http://elita.assurant.com/Elita/Claim/RecordingService/DataContracts" base="q7:BaseClaimRecordingRequest">
+            <xs:sequence>
+              <xs:element name="FallbackOption" type="xs:boolean" />
+              <xs:element name="OptionCode" nillable="true" type="xs:string" />
+              <xs:element minOccurs="0" name="QuestionSetCode" nillable="true" type="xs:string" />
+              <xs:element minOccurs="0" name="QuestionVersion" type="xs:int" />
+              <xs:element minOccurs="0" name="Questions" nillable="true" type="q7:ArrayOfQuestion" />
+            </xs:sequence>
+          </xs:extension>
+        </xs:complexContent>
+      </xs:complexType>
+      <xs:element name="DynamicFulfillmentRequest" nillable="true" type="tns:DynamicFulfillmentRequest" />
     </xs:schema>
     <xs:schema xmlns:tns="http://assurant.com/Elita/ClaimFulfillment/Shared/Data" elementFormDefault="qualified" targetNamespace="http://assurant.com/Elita/ClaimFulfillment/Shared/Data" xmlns:xs="http://www.w3.org/2001/XMLSchema">
       <xs:import namespace="http://elita.assurant.com/Elita/Claim/RecordingService/DataContracts" />

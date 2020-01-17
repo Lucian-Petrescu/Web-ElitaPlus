@@ -139,8 +139,10 @@
 #End Region
 #Region "Caller View - Other Private Sub/Function"
     Private Sub BindData()
-        GridViewCaller.DataSource = State.callersDataTable
-        GridViewCaller.DataBind()        
+        If (State.CallersDataTable IsNot Nothing) Then
+            GridViewCaller.DataSource = State.CallersDataTable
+            GridViewCaller.DataBind()
+        End If
     End Sub
     Private Sub GridViewCaller_RowDataBound(ByVal sender As System.Object, ByVal e As GridViewRowEventArgs) Handles GridViewCaller.RowDataBound
         Try

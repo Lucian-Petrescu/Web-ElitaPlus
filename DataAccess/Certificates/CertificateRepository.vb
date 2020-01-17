@@ -44,6 +44,17 @@ Public NotInheritable Class CertificateRepository(Of TType As {BaseEntity, IReco
         Return certlist
     End Function
 
+    Public Function GWSearchCertificateByCertNumber(pDealerCode As String, pCertNumber As String) As Collections.Generic.List(Of Guid) Implements ICertificateRepository(Of TType).GWSearchCertificateByCertNumber
+        Dim certlist As DataSet = MyBase.Context.GWSearchCertificateByCertNumber(pDealerCode, pCertNumber)
+        Dim IdList As New Collections.Generic.List(Of Guid)
+        If certlist.Tables(0).Rows.Count > 0 Then
+            For Each r As DataRow In certlist.Tables(0).Rows
+                IdList.Add(New Guid(CType(r("cert_id"), Byte())))
+            Next
+        End If
+        Return IdList
+    End Function
+
     Friend Sub GetGrossAmountByProductCode(ByVal pCertId As Guid,
                                     ByRef pCurrencyCode As String,
                                     ByRef pGrossAmt As Decimal) Implements ICertificateRepository(Of TType).GetGrossAmountByProductCode

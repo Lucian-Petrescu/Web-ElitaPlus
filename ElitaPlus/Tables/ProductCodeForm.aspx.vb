@@ -4159,8 +4159,6 @@ Namespace Tables
                         SetProductPolicyButtonsState(True)
                     Case ACTION_EDIT
                         Me.State.ProductEquipmentId = GetGuidFromString(Me.GetSelectedGridText(ProductEquipmentGridView, GRID_COL_PE_ID_IDX))
-                        Me.SetPageAndSelectedIndexFromGuid(oDataView, Me.State.ProductEquipmentId, ProductEquipmentGridView,
-                                    ProductEquipmentGridView.PageIndex, True)
                         EnableEditRateButtons(True)
                         SetProductPolicyButtonsState(False)
                     Case ACTION_CANCEL

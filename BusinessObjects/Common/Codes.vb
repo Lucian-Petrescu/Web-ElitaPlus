@@ -661,6 +661,7 @@ Public Class Codes
     Public Const SERVICE_TYPE__FILE_ADMIN_SERVICE As String = "FILE_ADMIN_SERVICE"
     Public Const SERVICE_TYPE__CASE_MANAGEMENT_WEB_APP_GATEWAY_SERVICE As String = "CASE_MANAGEMENT_WEB_APP_GATEWAY_SERVICE"
     Public Const SERVICE_TYPE__FILE_MANAGEMENT_ADMIN_SERVICE As String = "FILE_MANAGEMENT_ADMIN_SERVICE"
+    Public Const SERVICE_TYPE_DF_API_URL As String = "DF_UI_API"
 
     'REQ-6230
     Public Const SERVICE_TYPE__CLAIMS_INDIX_SERVICE_PRODUCT_SEARCH As String = "INDIX_SERVICE_PRODUCT_SEARCH"
@@ -1118,6 +1119,9 @@ Public Class Codes
     'claim payment based on deductible flag
     Public Const FULL_INVOICE_Y As String = "Y_FULL_INVOICE"
     Public Const AUTH_LESS_DEDUCT_Y As String = "Y_AUTH_LESS_DEDUCT"
+    
+    'Company codes
+    Public Const AUS_COMPANY_CODE As String = "AAU"
 
 
 End Class

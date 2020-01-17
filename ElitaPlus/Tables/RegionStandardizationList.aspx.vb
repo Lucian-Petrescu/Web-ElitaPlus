@@ -442,7 +442,8 @@ Namespace Tables
                 oDropDownList.Populate(RegionList.ToArray(),
                                         New PopulateOptions() With
                                         {
-                                            .AddBlankItem = True
+                                            .AddBlankItem = True,
+                                            .SortFunc = AddressOf PopulateOptions.GetExtendedCode
                                         })
 
             Catch ex As Exception

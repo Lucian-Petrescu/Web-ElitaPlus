@@ -54,6 +54,7 @@ Public Class ClaimRecordingForm
     Private Const ClaimRecordingViewIndexFulfillmentOptions = 5
     Private Const ClaimRecordingViewIndexLogisticsOptions = 6
     Private Const ClaimRecordingViewIndexShippingAddress = 7
+    Private Const ClaimRecordingViewIndexDynamicFulfillment = 8
     Private Const gridItemDeviceInfoPurchasedDate = 4
 
     Private Const DoubleSpaceString As String = "  "
@@ -610,6 +611,8 @@ Public Class ClaimRecordingForm
                     GridItems.DataBind()
                 Case GetType(ActionResponse)
                     MoveToNextPage()
+                Case GetType(DynamicFulfillmentResponse)
+                    ShowDynamicFulfillmentView()
                 Case Else
                     ReturnBackToCallingPage()
             End Select
@@ -2121,6 +2124,23 @@ Public Class ClaimRecordingForm
             End If
         End If
     End Sub
+
+    Private Sub ShowDynamicFulfillmentView()
+        If State.SubmitWsBaseClaimRecordingResponse IsNot Nothing Then
+            If State.SubmitWsBaseClaimRecordingResponse.GetType() Is GetType(DynamicFulfillmentResponse) Then
+                mvClaimsRecording.ActiveViewIndex = ClaimRecordingViewIndexDynamicFulfillment
+                Dim wsResponse As DynamicFulfillmentResponse = State.SubmitWsBaseClaimRecordingResponse
+                Dim dfControl As DynamicFulfillmentUI = Page.LoadControl("~/Common/DynamicFulfillmentUI.ascx")
+                dfControl.SourceSystem = "Elita"
+                dfControl.ApiKey = wsResponse.ApiKey
+                dfControl.SubscriptionKey = wsResponse.SubscriptionKey
+                dfControl.CssUri = wsResponse.CssUri
+                dfControl.ScriptUri = wsResponse.ScriptUri
+                dfControl.ClaimNumber = wsResponse.ClaimNumber
+                phDynamicFulfillmentUI.Controls.Add(dfControl)
+            End If
+        End If
+    End Sub
     Private Sub PopulateFulfillmentOptionsGrid()
         Dim wsResponse As FulfillmentOptionsResponse
         If State.SubmitWsBaseClaimRecordingResponse.GetType() Is GetType(FulfillmentOptionsResponse) Then
@@ -3050,6 +3070,73 @@ Public Class ClaimRecordingForm
             Dim oCase As CaseBase = New CaseBase(State.SubmitWsBaseClaimRecordingResponse.CaseNumber, State.SubmitWsBaseClaimRecordingResponse.CompanyCode)
             NavController.Navigate(Me, FlowEvents.EVENT_DENIED_CERT_CANCEL_CRATED, New CaseDetailsForm.Parameters(oCase.Id))
         End If
+    End Sub
+
+    Protected Sub btnContinue_Click(sender As Object, e As EventArgs) Handles btnContinue.Click
+        Dim wsRequest As DynamicFulfillmentRequest = New DynamicFulfillmentRequest()
+        Dim wsPreviousResponse As DynamicFulfillmentResponse
+
+        If State.SubmitWsBaseClaimRecordingResponse.GetType() Is GetType(DynamicFulfillmentResponse) Then
+            wsPreviousResponse = DirectCast(State.SubmitWsBaseClaimRecordingResponse, DynamicFulfillmentResponse)
+        Else
+            Exit Sub
+        End If
+
+        wsRequest.CaseNumber = wsPreviousResponse.CaseNumber
+        wsRequest.CompanyCode = wsPreviousResponse.CompanyCode
+        wsRequest.InteractionNumber = wsPreviousResponse.InteractionNumber
+        wsRequest.OptionCode = "1"
+        wsRequest.FallbackOption = False
+
+        Try
+            Dim wsResponse = WcfClientHelper.Execute(Of ClaimRecordingServiceClient, IClaimRecordingService, BaseClaimRecordingResponse)(
+                GetClient(),
+                New List(Of Object) From {New InteractiveUserHeader() With {.LanId = Authentication.CurrentUser.NetworkId}},
+                Function(ByVal c As ClaimRecordingServiceClient)
+                    Return c.Submit(wsRequest)
+                End Function)
+            If wsResponse IsNot Nothing Then
+                State.SubmitWsBaseClaimRecordingResponse = wsResponse
+                MoveToNextPage()
+            End If
+        Catch ex As FaultException
+            ThrowWsFaultExceptions(ex)
+            Exit Sub
+        End Try
+    End Sub
+
+    Protected Sub btnLegacyContinue_Click(sender As Object, e As EventArgs) Handles btnLegacyContinue.Click
+        Dim wsRequest As DynamicFulfillmentRequest = New DynamicFulfillmentRequest()
+        Dim wsPreviousResponse As DynamicFulfillmentResponse
+        Dim wsQuestionRequest As QuestionRequest
+
+        If State.SubmitWsBaseClaimRecordingResponse.GetType() Is GetType(DynamicFulfillmentResponse) Then
+            wsPreviousResponse = DirectCast(State.SubmitWsBaseClaimRecordingResponse, DynamicFulfillmentResponse)
+        Else
+            Exit Sub
+        End If
+
+        wsRequest.OptionCode = "AX"
+        wsRequest.CaseNumber = wsPreviousResponse.CaseNumber
+        wsRequest.CompanyCode = wsPreviousResponse.CompanyCode
+        wsRequest.InteractionNumber = wsPreviousResponse.InteractionNumber
+        wsRequest.FallbackOption = True
+
+        Try
+            Dim wsResponse = WcfClientHelper.Execute(Of ClaimRecordingServiceClient, IClaimRecordingService, BaseClaimRecordingResponse)(
+                GetClient(),
+                New List(Of Object) From {New InteractiveUserHeader() With {.LanId = Authentication.CurrentUser.NetworkId}},
+                Function(ByVal c As ClaimRecordingServiceClient)
+                    Return c.Submit(wsRequest)
+                End Function)
+            If wsResponse IsNot Nothing Then
+                State.SubmitWsBaseClaimRecordingResponse = wsResponse
+                DisplayNextView()
+            End If
+        Catch ex As FaultException
+            ThrowWsFaultExceptions(ex)
+            Exit Sub
+        End Try
     End Sub
 
 
