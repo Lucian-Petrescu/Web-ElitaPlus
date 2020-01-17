@@ -2707,7 +2707,7 @@ Partial Class ClaimForm
                     Dim dv As DataView, oClm As ClaimBase
                     dv = oClm.GetOriginalLiabilityLimit(Me.State.MyBO.Id)
                     Dim dLiabilityLimit As Decimal
-                    If dv.Count > 0 Then
+                    If dv.Count > 0 AndAlso Not IsDBNull(dv(0)(0)) Then
                         dLiabilityLimit = CType(dv(0)(0), Decimal)
                         If CType(TextboxLiabilityLimit.Text, Decimal) > dLiabilityLimit Then
                             'display error
