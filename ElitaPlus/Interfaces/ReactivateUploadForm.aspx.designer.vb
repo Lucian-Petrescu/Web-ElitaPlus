@@ -41,6 +41,24 @@ Partial Public Class ReactivateUploadForm
     Protected WithEvents ddlUploadType As Global.System.Web.UI.WebControls.DropDownList
     
     '''<summary>
+    '''lblHelpText control.
+    '''</summary>
+    '''<remarks>
+    '''Auto-generated field.
+    '''To modify move field declaration from designer file to code-behind file.
+    '''</remarks>
+    Protected WithEvents lblHelpText As Global.System.Web.UI.WebControls.Label
+    
+    '''<summary>
+    '''btnExtract_Report control.
+    '''</summary>
+    '''<remarks>
+    '''Auto-generated field.
+    '''To modify move field declaration from designer file to code-behind file.
+    '''</remarks>
+    Protected WithEvents btnExtract_Report As Global.System.Web.UI.WebControls.Button
+    
+    '''<summary>
     '''lblFileName control.
     '''</summary>
     '''<remarks>
@@ -68,13 +86,13 @@ Partial Public Class ReactivateUploadForm
     Protected WithEvents btnLoadFile_WRITE As Global.System.Web.UI.WebControls.Button
     
     '''<summary>
-    '''btnExtract_Report control.
+    '''btnHelp control.
     '''</summary>
     '''<remarks>
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents btnExtract_Report As Global.System.Web.UI.WebControls.Button
+    Protected WithEvents btnHelp As Global.System.Web.UI.WebControls.Button
     
     '''<summary>
     '''panelIntProgControl control.

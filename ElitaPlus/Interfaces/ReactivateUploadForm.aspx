@@ -4,35 +4,49 @@
 
 <%@ Register TagPrefix="uc1" TagName="InterfaceProgressControl" Src="InterfaceProgressControl.ascx" %>
 <%@ Register TagPrefix="Elita" TagName="MessageController" Src="~/Common/MessageController.ascx" %>
+
 <asp:Content ID="Content1" ContentPlaceHolderID="HeadPlaceHolder" runat="server">
 </asp:Content>
 <asp:Content ID="Content2" ContentPlaceHolderID="SummaryPlaceHolder" runat="server">
+    <script type="text/javascript">
+        function showHelpButton() {
+            var e = document.getElementById('<%=ddlUploadType.ClientID %>');
+            var strUser = e.options[e.selectedIndex].value;
+            if (strUser == 'CLAIMUPDATE') {
+                document.getElementById('<%=btnHelp.ClientID %>').style.visibility = "visible";
+            }
+            else {
+                document.getElementById('<%=btnHelp.ClientID %>').style.visibility = "hidden";
+            }
+        }
+    </script>
     <table width="100%" border="0" class="searchGrid" id="searchTable" runat="server">
         <tr>
-            <td style="text-align: center" align="center">
-                <table style="width: 75%;" class="formGrid">
+            <td>
+                <table class="formGrid">
                     <tr>
-                        <td style="text-align: right">
+                        <td style="text-align: right; width: 10%;">
                             *<asp:Label ID="lblUploadType" runat="server">UPLOAD_TYPE</asp:Label>:
                         </td>
-                        <td style="text-align: left">
-                            <asp:DropDownList ID="ddlUploadType" runat="server" SkinID="MediumDropDown">
+                        <td style="text-align: left; width: 50%;">
+                            <asp:DropDownList ID="ddlUploadType" runat="server" SkinID="MediumDropDown" onchange="showHelpButton()">
                             </asp:DropDownList>
+                        </td>
+                        <td rowspan="2" style="text-align: left; width: 40%">
+                            <asp:Label ID="lblHelpText" runat="server" Visible="false" ForeColor="Red"></asp:Label>
+                            <asp:Button ID="btnExtract_Report" runat="server" Text="EXTRACT_REPORT" Width="100" SkinID="ActionButton" Visible="false"></asp:Button>
                         </td>
                     </tr>
                     <tr>
-                        <td style="text-align: right">
+                        <td style="text-align: right; width: 10%;">
                             *<asp:Label ID="lblFileName" runat="server">Filename</asp:Label>:
                         </td>
-                        <td style="text-align: left;">
+                        <td style="text-align: left; width: 50%;">
                             <asp:FileUpload ID="InputFile" CssClass="popupBtn" Width="350" runat="server"></asp:FileUpload>
                             &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                            <asp:Button ID="btnLoadFile_WRITE" runat="server" Text="UPLOAD_FILE" width="100" SkinID="ActionButton">
-                            </asp:Button>
-                        </td>
-                        <td style="text-align: left;">
-                            <asp:Button ID="btnExtract_Report" runat="server" Text="EXTRACT_REPORT" width="100" SkinID="ActionButton" Visible="false">
-                            </asp:Button>
+                            <asp:Button ID="btnLoadFile_WRITE" runat="server" Text="UPLOAD_FILE" Width="100" SkinID="ActionButton"></asp:Button>
+                            &nbsp;   
+                            <asp:Button ID="btnHelp" runat="server" Text="Help" Width="100" SkinID="ActionButton" style="visibility:hidden"></asp:Button>
                         </td>
                     </tr>
                 </table>

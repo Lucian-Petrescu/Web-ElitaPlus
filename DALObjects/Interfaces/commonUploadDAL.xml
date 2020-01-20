@@ -38,5 +38,10 @@
   <PROCESS_EXTRACT_REPORT>
     elita.r_upload_report.extract
   </PROCESS_EXTRACT_REPORT>
-
+  <PROCESS_UPDATE_CLAIM>
+    elita.elp_utl_custom_upload.elp_utl_claim_update
+  </PROCESS_UPDATE_CLAIM>
+  <PROCESS_SCREEN_HELP>
+    select comments from elp_screen_help where form_code = UPPER(':pi_formname')
+  </PROCESS_SCREEN_HELP>
 </SQL>
