@@ -724,7 +724,7 @@
              union 
              select dealer_id
              from elita.elp_contract c
-             where recurring_premium_id = elp_utl_lov.id('PERIODRENEW','0')
+             where recurring_premium_id <> elp_utl_lov.id('PERIODRENEW','0')
             )
     select 
         d.dealer_id                  as id
