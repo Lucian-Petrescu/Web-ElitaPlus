@@ -106,6 +106,7 @@ Namespace Tables
         Public Const Tab_MerchantCode As String = "4"
         Public Const Tab_ClaimCloseRules As String = "5"
         Public Const Tab_Attributes As String = "6"
+        Public Const Tab_DealerInflation as string ="7"
 
         Dim DisabledTabsList As New List(Of String)()
 
