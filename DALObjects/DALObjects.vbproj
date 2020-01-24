@@ -264,6 +264,7 @@
     <Compile Include="Common\ClaimCloseRulesDAL.vb" />
     <Compile Include="Common\ContactInfoDAL.vb" />
     <Compile Include="Common\CreditCardInfoDAL.vb" />
+    <Compile Include="Common\DealerInflationDAL.vb" />
     <Compile Include="Common\TranslateDropdownDAL.vb" />
     <Compile Include="Common\DSHelper.vb" />
     <Compile Include="Common\NonBusinessCalendarDAL.vb" />
@@ -1351,6 +1352,7 @@
     <EmbeddedResource Include="DataProtection\CertificateDataProtectionDAL.xml" />
     <Compile Include="DataProtection\CertForgotRequestDAL.vb" />
     <EmbeddedResource Include="DataProtection\CertForgotRequestDAL.xml" />
+    <Content Include="Common\DealerInflationDAL.xml" />
     <Content Include="DataProtection\ConsumerSearchRequestsDAL.xml" />
     <EmbeddedResource Include="DataProtection\DataProtectionHistoryDAL.xml" />
     <EmbeddedResource Include="Interfaces\AppleGBIFileReconWrkDAL.xml">

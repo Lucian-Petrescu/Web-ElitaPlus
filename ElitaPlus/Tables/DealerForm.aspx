@@ -1176,7 +1176,7 @@ MasterPageFile="../Navigation/masters/ElitaBase.Master" %>
                     <li><a href="#tabmoMerchantCodeTabPanelWRITE"><asp:Label ID="Label7" runat="server" CssClass="tabHeaderText">Merchant_Code</asp:Label></a></li>
                     <li><a href="#tabmoClaimCloseRulesTabPanelWRITE"><asp:Label ID="Label9" runat="server" CssClass="tabHeaderText">CLAIM_CLOSE_RULES</asp:Label></a></li>
                     <li><a href="#tabmoAttributesWRITE"><asp:Label ID="Label10" runat="server" CssClass="tabHeaderText">ATTRIBUTES</asp:Label></a></li>
-                    <li><a href="#tabDealerInflationWrite"><asp:Label ID="lblDealerInflationTab" runat="server"  CssClass="tabHeaderText"> DEALER_INFLATION</asp:Label></a></li>
+                    <li><a href="#tabDealerInflationWrite"><asp:Label ID="lblDealerInflationTab" runat="server"  CssClass="tabHeaderText">DEALER_INFLATION</asp:Label></a></li>
                 </ul>
 
                 <div id="tabmoAddressTabPanelWRITE">

@@ -1,0 +1,15 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<SQL>
+  <LOAD_DEALER_INFLATION>
+    elita.elp_tbl_dealer_inflation.Load
+  </LOAD_DEALER_INFLATION>
+  <UPDATE>
+   
+  </UPDATE>
+  <INSERT>
+    
+  </INSERT>
+  <DELETE>
+   
+  </DELETE>
+</SQL>

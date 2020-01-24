@@ -30,7 +30,7 @@ Inherits="Assurant.ElitaPlus.ElitaPlusWebApp.UserControlDealerInflation" %>
             </table>
         </div>
     </div>
-    <asp:GridView ID="DealerInflationGrid" runat="server" Width="100%" DataKeyNames="claim_close_rule_id,company_id, dealer_id, claim_status_by_group_id, reason_closed_id, parent_claim_close_rule_id, claim_issue_id, close_rule_based_on_id"
+    <asp:GridView ID="DealerInflationGrid" runat="server" Width="100%" DataKeyNames="DEALER_INFLATION_ID,DEALER_ID,INFLATION_MONTH,INFLATION_YEAR,INFLATION_PCT"
         AllowPaging="True" AllowSorting="False" AutoGenerateColumns="False" SkinID="DetailPageGridView" CssClass = "grid-view"
         PageSize="2">
         <SelectedRowStyle Wrap="True"></SelectedRowStyle>
