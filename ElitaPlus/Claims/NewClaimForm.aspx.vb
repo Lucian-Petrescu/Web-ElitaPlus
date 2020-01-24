@@ -2587,11 +2587,21 @@ Partial Class NewClaimForm
                 Dim dsCaseFields As DataSet = CaseBase.GetCaseFieldsList(State.MyBO.Id, ElitaPlusIdentity.Current.ActiveUser.LanguageId)
                 If (Not dsCaseFields Is Nothing AndAlso dsCaseFields.Tables.Count > 0 AndAlso dsCaseFields.Tables(0).Rows.Count > 0) Then
 
+                    Dim hasBenefit As DataRow() = dsCaseFields.Tables(0).Select("field_code='HASBENEFIT'")
+                    Dim benefitCheckError As DataRow() = dsCaseFields.Tables(0).Select("field_code='BENEFITCHECKERROR'")
                     Dim preCheckError As DataRow() = dsCaseFields.Tables(0).Select("field_code='PRECHECKERROR'")
-                    If Not preCheckError Is Nothing AndAlso preCheckError.Length = 0 Then
 
-                        Dim hasBenefit As DataRow() = dsCaseFields.Tables(0).Select("field_code='HASBENEFIT'")
-                        Dim benefitCheckError As DataRow() = dsCaseFields.Tables(0).Select("field_code='BENEFITCHECKERROR'")
+                    If Not hasBenefit Is Nothing AndAlso hasBenefit.Length > 0 Then
+                        If Not hasBenefit(0)("field_value") Is Nothing AndAlso String.Equals(hasBenefit(0)("field_value").ToString(), Boolean.FalseString, StringComparison.CurrentCultureIgnoreCase) Then
+                            UpdateCaseFieldValues(hasBenefit)
+                        End If
+                    ElseIf Not benefitCheckError Is Nothing AndAlso benefitCheckError.Length > 0 Then
+                        If Not benefitCheckError(0)("field_value") Is Nothing AndAlso Not String.Equals(benefitCheckError(0)("field_value").ToString(), "NO ERROR", StringComparison.CurrentCultureIgnoreCase) Then
+                            UpdateCaseFieldValues(benefitCheckError)
+                        End If
+                    End If
+
+                    If Not preCheckError Is Nothing AndAlso preCheckError.Length = 0 Then
                         If Not hasBenefit Is Nothing AndAlso hasBenefit.Length > 0 Then
                             If Not hasBenefit(0)("field_value") Is Nothing AndAlso hasBenefit(0)("field_value").ToString().ToUpper() = Boolean.TrueString.ToUpper() Then
                                 RunPreCheck(hasBenefit)
@@ -2602,7 +2612,6 @@ Partial Class NewClaimForm
                             End If
                         End If
                     End If
-
                 End If
             End If
 
@@ -2738,6 +2747,13 @@ Partial Class NewClaimForm
                 Dim newClaimIssue As ClaimIssue = CType(Me.State.MyBO.ClaimIssuesList.GetNewChild, BusinessObjectsNew.ClaimIssue)
                 newClaimIssue.SaveNewIssue(Me.State.MyBO.Id, issueId, Me.State.MyBO.Certificate.Id, True)
             End Try
+    End Sub
+
+    Private Shared Sub UpdateCaseFieldValues(ByRef caseFiledRow As DataRow())
+        Dim caseFieldXcds() As String = {"HASBENEFIT", "ADCOVERAGEREMAINING", "LOSSTYPE"}
+        Dim caseFieldValues() As String = {Boolean.TrueString.ToUpper(), Boolean.TrueString.ToUpper(), "ADH1234"}
+
+        CaseBase.UpdateCaseFieldValues(GuidControl.ByteArrayToGuid(caseFiledRow(0)("case_Id")), caseFieldXcds, caseFieldValues)
     End Sub
 
     'Sets the Service Center to the Default Service Center for Denied Claims.                                   
