@@ -402,7 +402,8 @@ Partial Class CommentForm
                         If Not hasBenefit(0)("field_value") Is Nothing AndAlso String.Equals(hasBenefit(0)("field_value").ToString(), Boolean.FalseString, StringComparison.CurrentCultureIgnoreCase) Then
                             UpdateCaseFieldValues(hasBenefit)
                         End If
-                    ElseIf Not benefitCheckError Is Nothing AndAlso benefitCheckError.Length > 0 Then
+                    End If
+                    If Not benefitCheckError Is Nothing AndAlso benefitCheckError.Length > 0 Then
                         If Not benefitCheckError(0)("field_value") Is Nothing AndAlso Not String.Equals(benefitCheckError(0)("field_value").ToString(), "NO ERROR", StringComparison.CurrentCultureIgnoreCase) Then
                             UpdateCaseFieldValues(benefitCheckError)
                         End If
