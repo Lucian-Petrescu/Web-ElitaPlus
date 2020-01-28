@@ -115,8 +115,7 @@
         ri.Purchase_Price,
         ri.IndixId,
         cview.is_claim_readonly,
-        cview.rem_auth_number,
-        cview.fulfillment_provider_xcd
+        cview.rem_auth_number
 			FROM elita.elp_claim_extended_v cview,
 				 elp_cert_item_coverage cicov,
 				 elp_risk_type rt,
