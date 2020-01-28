@@ -1352,7 +1352,7 @@
     <EmbeddedResource Include="DataProtection\CertificateDataProtectionDAL.xml" />
     <Compile Include="DataProtection\CertForgotRequestDAL.vb" />
     <EmbeddedResource Include="DataProtection\CertForgotRequestDAL.xml" />
-    <Content Include="Common\DealerInflationDAL.xml" />
+    <EmbeddedResource Include="Common\DealerInflationDAL.xml" />
     <Content Include="DataProtection\ConsumerSearchRequestsDAL.xml" />
     <EmbeddedResource Include="DataProtection\DataProtectionHistoryDAL.xml" />
     <EmbeddedResource Include="Interfaces\AppleGBIFileReconWrkDAL.xml">

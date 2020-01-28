@@ -11,6 +11,7 @@ MasterPageFile="../Navigation/masters/ElitaBase.Master" %>
 <%@ Register TagPrefix="Elita" TagName="UserControlClaimCloseRules" Src="~/Common/UserControlClaimCloseRules.ascx" %>
 <%@ Register TagPrefix="Elita" TagName="UserControlAttrtibutes" Src="~/Common/UserControlAttrtibutes.ascx" %>
 <%@ Register assembly="Microsoft.Web.UI.WebControls" namespace="Microsoft.Web.UI.WebControls" tagprefix="iewc" %>
+<%@ Register TagPrefix="Elita" TagName="UserControlDealerInflation" src="../Common/UserControlDealerInflation.ascx" %>
 <asp:Content ID="Content1" ContentPlaceHolderID="HeadPlaceHolder" runat="server">   
 </asp:Content>
 <asp:Content ID="Content2" ContentPlaceHolderID="SummaryPlaceHolder" runat="server">
@@ -1175,7 +1176,7 @@ MasterPageFile="../Navigation/masters/ElitaBase.Master" %>
                     <li><a href="#tabmoMerchantCodeTabPanelWRITE"><asp:Label ID="Label7" runat="server" CssClass="tabHeaderText">Merchant_Code</asp:Label></a></li>
                     <li><a href="#tabmoClaimCloseRulesTabPanelWRITE"><asp:Label ID="Label9" runat="server" CssClass="tabHeaderText">CLAIM_CLOSE_RULES</asp:Label></a></li>
                     <li><a href="#tabmoAttributesWRITE"><asp:Label ID="Label10" runat="server" CssClass="tabHeaderText">ATTRIBUTES</asp:Label></a></li>
-                    <li><a href="#tabDealerInflationWrite"><asp:Label ID="lblDealerInflationTab" runat="server"  CssClass="tabHeaderText">DEALER_INFLATION</asp:Label></a></li>
+                    <li><a href="#tabmoDealerInflationWrite"><asp:Label ID="lblDealerInflationTab" runat="server"  CssClass="tabHeaderText">DEALER_INFLATION</asp:Label></a></li>
                 </ul>
 
                 <div id="tabmoAddressTabPanelWRITE">
@@ -1342,8 +1343,9 @@ MasterPageFile="../Navigation/masters/ElitaBase.Master" %>
                     <Elita:UserControlAttrtibutes runat="server" ID="AttributeValues" />
                 </div>
                 
-                <div id ="tabDealerInflationWrite">
-                  
+                <div id ="tabmoDealerInflationWrite">
+                  <Elita:UserControlDealerInflation runat="server" ID="DealerInflation" 
+                                                    RequestCloseClaimData="DealerInflation_RequestDealerInflationData"></Elita:UserControlDealerInflation>
                 </div>
             </div>
         </asp:Panel>

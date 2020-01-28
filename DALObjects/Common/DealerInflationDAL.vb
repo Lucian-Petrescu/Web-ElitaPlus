@@ -19,6 +19,7 @@
     Public Const PAR_NAME_INFLATION_MONTH As String = "PI_INFLATION_MONTH"
     Public Const PAR_NAME_INFLATION_YEAR As String = "PI_INFLATION_YEAR"
     Public Const PAR_NAME_RETURN_CODE As String = "po_return_code"
+    public Const PAR_NAME_REF_CURSOR As string ="po_dealer_inflation"
 
 #End Region
 
@@ -36,10 +37,12 @@
     End Sub
 
     Public Sub Load(ByVal familyDS As DataSet, ByVal id As Guid)
-        Dim selectStmt As String = Me.Config("/SQL/LOAD")
-        Dim parameters() As DBHelper.DBHelperParameter = New DBHelper.DBHelperParameter() {New DBHelper.DBHelperParameter("claim_close_rule_id", id.ToByteArray)}
+        Dim selectStmt As String = Me.Config("/SQL/LOAD_DEALER_INFLATION")
+        Dim parameters() As DBHelper.DBHelperParameter = New DBHelper.DBHelperParameter() {New DBHelper.DBHelperParameter(Me.PAR_NAME_DEALER, id.ToByteArray)}
+        Dim outParameters() As DBHelper.DBHelperParameter = New DBHelper.DBHelperParameter(){New DBHelper.DBHelperParameter(Me.PAR_NAME_REF_CURSOR, GetType(DataSet))}
         Try
-            DBHelper.Fetch(familyDS, selectStmt, Me.TABLE_NAME, parameters)
+            DBHelper.FetchSp(selectStmt, parameters, outParameters, familyDS, Me.TABLE_NAME)
+
         Catch ex As Exception
             Throw New DataBaseAccessException(DataBaseAccessException.DatabaseAccessErrorType.ReadErr, ex)
         End Try
@@ -48,13 +51,14 @@
     Public Function LoadDealerInflation(ByVal companyId As Guid, ByVal dealerId As Guid) As DataSet
         Try
             Dim selectStmt As String = Me.Config("/SQL/LOAD_DEALER_INFLATION")
-            Dim inParameters(0) As DBHelper.DBHelperParameter
-            inParameters(0) = New DBHelper.DBHelperParameter(Me.PAR_NAME_DEALER, dealerId.ToByteArray)
+           
+            Dim inparameters() As DBHelper.DBHelperParameter = New DBHelper.DBHelperParameter() {New DBHelper.DBHelperParameter(Me.PAR_NAME_DEALER, dealerId.ToByteArray)}
+            Dim outParameters() As DBHelper.DBHelperParameter = New DBHelper.DBHelperParameter(){New DBHelper.DBHelperParameter(Me.PAR_NAME_REF_CURSOR, GetType(DataSet))}
 
             Dim ds As New DataSet
             Dim tbl As String = Me.TABLE_NAME
 
-            DBHelper.FetchSp(selectStmt, inParameters, nothing, ds, tbl)
+            DBHelper.FetchSp(selectStmt, inParameters, outParameters, ds, tbl)
             Return ds
 
         Catch ex As Exception

@@ -1,5 +1,4 @@
 ﻿ Imports System.ComponentModel
- Imports Assurant.ElitaPlus.BusinessObjects.Common
  Imports Assurant.ElitaPlus.DALObjects
 Partial Class UserControlDealerInflation
     Inherits System.Web.UI.UserControl
@@ -13,7 +12,7 @@ Partial Class UserControlDealerInflation
 
     Public Delegate Sub RequestData(ByVal sender As Object, ByRef e As RequestDataEventArgs)
 
-    Public Event RequestClaimCloseRulesData As RequestData
+    Public Event RequestDealerInflationData As RequestData
     Public Event PropertyChanged As PropertyChangedEventHandler
 
     Private _companyId As Guid
@@ -160,6 +159,8 @@ Partial Class UserControlDealerInflation
                    Me.TheState.ActionInProgress = ElitaPlusPage.DetailPageCommand.Nothing_
                    Me.HiddenDIDeletePromptResponse.Value = ""
                End If
+           Else 
+               PopulateGrid()
            End If
        Catch ex As Exception
            Me.ThePage.HandleErrors(ex, Me.ThePage.MasterPage.MessageController)
@@ -176,7 +177,7 @@ Partial Class UserControlDealerInflation
             Throw New GUIException("You must select a dealer first", Assurant.ElitaPlus.Common.ErrorCodes.GUI_DEALER_MUST_BE_SELECTED_ERR)
         end if
 
-        RaiseEvent RequestClaimCloseRulesData(Me, e)
+        RaiseEvent RequestDealerInflationData(Me, e)
         Me.TheState.DealerInflationDV = e.Data
         Me.PopulateGrid()
 
@@ -187,7 +188,7 @@ Partial Class UserControlDealerInflation
             Me.ThePage.TranslateGridHeader(DealerInflationGrid)
         End If
         Dim blnNewSearch As Boolean = False
-        cboPageSize.SelectedValue = CType(Me.TheState.PageSize, String)
+        cboDiPageSize.SelectedValue = CType(Me.TheState.PageSize, String)
         Dim objDealerInflation As New DealerInflation
        
         Try
@@ -216,11 +217,11 @@ Partial Class UserControlDealerInflation
                     gvRow.Controls.Clear()
                 Next
                 lblPageSize.Visible = False
-                cboPageSize.Visible = False
+                cboDiPageSize.Visible = False
                 colonSepertor.Visible = False
             Else
                 lblPageSize.Visible = True
-                cboPageSize.Visible = True
+                cboDiPageSize.Visible = True
                 colonSepertor.Visible = True
             End If
             Me.DealerInflationGrid.AutoGenerateColumns = False
@@ -396,13 +397,13 @@ Partial Class UserControlDealerInflation
     Private Sub SetControlState()
         If (Me.TheState.IsEditMode) Then
             ControlMgr.SetVisibleControl(Me.ThePage, NewButton_WRITE, False)
-            If (Me.cboPageSize.Enabled) Then
-                ControlMgr.SetEnableControl(Me.ThePage, cboPageSize, False)
+            If (Me.cboDiPageSize.Enabled) Then
+                ControlMgr.SetEnableControl(Me.ThePage, cboDiPageSize, False)
             End If
         Else
             ControlMgr.SetVisibleControl(Me.ThePage, NewButton_WRITE, True)
-            If Not (Me.cboPageSize.Enabled) Then
-                ControlMgr.SetEnableControl(Me.ThePage, Me.cboPageSize, True)
+            If Not (Me.cboDiPageSize.Enabled) Then
+                ControlMgr.SetEnableControl(Me.ThePage, Me.cboDiPageSize, True)
             End If
         End If
     End Sub
@@ -433,5 +434,69 @@ Partial Class UserControlDealerInflation
         If rowind <> Me.ThePage.NO_ITEM_SELECTED_INDEX Then TheState.DealerInflationDV.Delete(rowind)
     End Sub
 
+    Protected Sub NewButton_WRITE_Click(sender As Object, e As EventArgs) Handles NewButton_WRITE.Click
+
+    End Sub
+
+#End Region
+
+#Region "Control Event Handlers"
+    Protected Sub btnSave_Click(ByVal sender As Object, ByVal e As EventArgs)
+
+        Try
+           ' PopulateBOFromForm()
+            '25716: Check if the claim close rule already exits  before saving claim close rules.
+            Dim objDealerInflation As New DealerInflation
+            'Dim isClaimCloseRulesExists As Integer = objClaimCloseRules.ValidateClaimCloseRule(Me.TheState.companyId, Me.TheState.dealerId, TheState.MyBO.CloseRuleBasedOnId, TheState.MyBO.ClaimStatusByGroupId, Me.EntityType.ToString(), TheState.MyBO.ClaimIssueId)
+
+            'If isClaimCloseRulesExists > 0 Then
+            '    Me.ThePage.MasterPage.MessageController.AddWarning(Assurant.ElitaPlus.Common.ErrorCodes.INVALID_CLAIM_CLOASE_RULE, True)
+            '    Return
+            'End If
+            '25716-End
+            If (Me.TheState.MyBO.IsDirty) Then
+                Try
+                    Me.TheState.MyBO.Save()
+                Catch ex As DataBaseUniqueKeyConstraintViolationException
+                    Throw New GUIException("Unique constraint violation", Assurant.ElitaPlus.Common.ErrorCodes.DUPLICATE_KEY_CONSTRAINT_VIOLATED)
+                End Try
+
+                Me.TheState.IsAfterSave = True
+                Me.TheState.IsGridAddNew = False
+                Me.ThePage.MasterPage.MessageController.AddSuccess(Me.MSG_RECORD_SAVED_OK, True)
+                Me.TheState.DealerInflationDV = Nothing
+                Me.TheState.MyBO = Nothing
+                Me.ReturnFromEditing()
+            Else
+                Me.ThePage.MasterPage.MessageController.AddWarning(Me.MSG_RECORD_NOT_SAVED, True)
+                Me.ReturnFromEditing()
+            End If
+        Catch ex As Exception
+            Me.ThePage.HandleErrors(ex, Me.ThePage.MasterPage.MessageController)
+        End Try
+
+    End Sub
+
+    Protected Sub btnCancel_Click(ByVal sender As Object, ByVal e As EventArgs)
+        Try
+            With TheState
+                If .IsGridAddNew Then
+                    RemoveNewRowFromSearchDV()
+                    .IsGridAddNew = False
+                    DealerInflationGrid.PageIndex = .PageIndex
+                End If
+                .DefaultDealerInflationID = Guid.Empty
+                Me.TheState.MyBO = Nothing
+                .IsEditMode = False
+            End With
+            DealerInflationGrid.EditIndex = Me.ThePage.NO_ITEM_SELECTED_INDEX
+
+            PopulateGrid()
+            SetControlState()
+            Me.DealerInflationGrid.Focus()
+        Catch ex As Exception
+            Me.ThePage.HandleErrors(ex, Me.ThePage.MasterPage.MessageController)
+        End Try
+    End Sub
 #End Region
 End Class

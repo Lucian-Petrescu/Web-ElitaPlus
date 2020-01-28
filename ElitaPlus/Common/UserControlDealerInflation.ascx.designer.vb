@@ -50,13 +50,13 @@ Partial Public Class UserControlDealerInflation
     Protected WithEvents colonSepertor As Global.System.Web.UI.WebControls.Label
 
     '''<summary>
-    '''cboPageSize control.
+    '''cboDiPageSize control.
     '''</summary>
     '''<remarks>
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents cboPageSize As Global.System.Web.UI.WebControls.DropDownList
+    Protected WithEvents cboDiPageSize As Global.System.Web.UI.WebControls.DropDownList
 
     '''<summary>
     '''lblRecordCount control.

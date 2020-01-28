@@ -1393,7 +1393,10 @@ Namespace Tables
                     ClaimCloseRules.Dealer = Me.State.MyBO.Dealer
                     ClaimCloseRules.Populate()
                 End If
-
+                
+                ' Dealer Inflation user control
+                DealerInflation.DealerId =Me.State.MyBO.Id
+                DealerInflation.Populate()
 
                 If Not Me.State.MyBO.ClaimAutoApproveId.Equals(Guid.Empty) Then
                     Me.PopulateControlFromBOProperty(Me.moClaimAutoApproveDrop, .ClaimAutoApproveId)
@@ -3133,6 +3136,13 @@ Namespace Tables
             e.Data = claimCloseRules.GetClaimCloseRules()
         End Sub
 
+#End Region
+#Region "Dealer Inflation Delegate Handler"
+        Private Sub DealerInflation_RequestDealerInflationData(ByVal sender As Object, ByRef e As UserControlDealerInflation.RequestDataEventArgs) Handles DealerInflation.RequestDealerInflationData
+            Dim dlInflation As New DealerInflation
+            dlInflation.DealerId = Me.State.MyBO.Id
+            e.Data = dlInflation.GetDealerInflation()
+        End Sub
 #End Region
 
 #Region "Ajax Autocomplete"
