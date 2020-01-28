@@ -77,13 +77,13 @@ Partial Public Class UserControlDealerInflation
     Protected WithEvents DealerInflationGrid As Global.System.Web.UI.WebControls.GridView
 
     '''<summary>
-    '''HiddenDeletePromptResponse control.
+    '''HiddenDIDeletePromptResponse control.
     '''</summary>
     '''<remarks>
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents HiddenDeletePromptResponse As Global.System.Web.UI.HtmlControls.HtmlInputHidden
+    Protected WithEvents HiddenDIDeletePromptResponse As Global.System.Web.UI.HtmlControls.HtmlInputHidden
 
     '''<summary>
     '''NewButton_WRITE control.

@@ -11,7 +11,6 @@ MasterPageFile="../Navigation/masters/ElitaBase.Master" %>
 <%@ Register TagPrefix="Elita" TagName="UserControlClaimCloseRules" Src="~/Common/UserControlClaimCloseRules.ascx" %>
 <%@ Register TagPrefix="Elita" TagName="UserControlAttrtibutes" Src="~/Common/UserControlAttrtibutes.ascx" %>
 <%@ Register assembly="Microsoft.Web.UI.WebControls" namespace="Microsoft.Web.UI.WebControls" tagprefix="iewc" %>
-<%@ Register TagPrefix="Elita" Namespace="Assurant.ElitaPlus.ElitaPlusWebApp" Assembly="Assurant.ElitaPlus.WebApp" %>
 <asp:Content ID="Content1" ContentPlaceHolderID="HeadPlaceHolder" runat="server">   
 </asp:Content>
 <asp:Content ID="Content2" ContentPlaceHolderID="SummaryPlaceHolder" runat="server">
@@ -1344,7 +1343,7 @@ MasterPageFile="../Navigation/masters/ElitaBase.Master" %>
                 </div>
                 
                 <div id ="tabDealerInflationWrite">
-                    <Elita:UserControlDealerInflation runat="server" ID="DealerInflation" />
+                  
                 </div>
             </div>
         </asp:Panel>

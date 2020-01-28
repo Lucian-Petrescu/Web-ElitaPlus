@@ -9,7 +9,7 @@ Inherits="Assurant.ElitaPlus.ElitaPlusWebApp.UserControlDealerInflation" %>
                         <asp:Label ID="lblPageSize" runat="server">Page_Size</asp:Label><asp:Label ID="colonSepertor"
                             runat="server">:</asp:Label>
                         &nbsp;
-                        <asp:DropDownList ID="cboPageSize" runat="server" Width="50px" AutoPostBack="true"
+                        <asp:DropDownList ID="cboDiPageSize" runat="server" Width="50px" AutoPostBack="true"
                             SkinID="SmallDropDown">
                             <asp:ListItem Value="5">5</asp:ListItem>
                             <asp:ListItem Value="10">10</asp:ListItem>
@@ -39,12 +39,7 @@ Inherits="Assurant.ElitaPlus.ElitaPlusWebApp.UserControlDealerInflation" %>
         <RowStyle Wrap="True"></RowStyle>
         <Columns>
             <asp:BoundField Visible="false" DataField="DEALER_INFLATION_ID" />
-            <asp:TemplateField Visible="True" HeaderText="DEALER CODE">
-                <ItemTemplate>
-                    <asp:Label ID="lblDealer" runat="server">
-                    </asp:Label>
-                </ItemTemplate>
-            </asp:TemplateField>
+            <asp:BoundField Visible="false" DataField="DEALER_ID" />
             <asp:TemplateField Visible="True" HeaderText="INFLATION MONTH">
                 <ItemTemplate>
                     <asp:Label ID="lblInflationMonth" runat="server" Text='<%#Container.DataItem("INFLATION_MONTH")%>'></asp:Label>
@@ -90,7 +85,7 @@ Inherits="Assurant.ElitaPlus.ElitaPlusWebApp.UserControlDealerInflation" %>
         </Columns>
         <PagerSettings PageButtonCount="30" Mode="Numeric" Position="TopAndBottom" />
     </asp:GridView>
-    <input id="HiddenDeletePromptResponse" type="hidden" runat="server" designtimedragdrop="261" />
+    <input id="HiddenDIDeletePromptResponse" type="hidden" runat="server" designtimedragdrop="261" />
     <asp:Button ID="NewButton_WRITE" Style="background-image: url(../Navigation/images/icons/add_icon.gif);
         cursor: hand; background-repeat: no-repeat" runat="server" Width="100px" Text="New"
         Height="20px" CssClass="FLATBUTTON"></asp:Button>

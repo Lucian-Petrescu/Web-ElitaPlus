@@ -152,7 +152,7 @@
 #End Region
 
 #Region "Public Members"
-
+    
     Public Function GetDealerInflation() As DealerInflationDV
         Dim dealerInflationDAL As New DealerInflationDAL
 
@@ -164,6 +164,7 @@
 
 #End Region
 
+#Region "Dealer Search Dataset"
     Public Class DealerInflationDV
         Inherits DataView
 
@@ -183,5 +184,56 @@
         End Sub
 
     End Class
+#End Region
 
+#Region "Grid Data Related"
+    Public Shared Function GetEmptyList(ByVal dv As DataView) As System.Data.DataView
+        Try
+
+            Dim dsv As DataSet
+            dsv = dv.Table().DataSet
+
+            Dim row As DataRow = dsv.Tables(0).NewRow()
+            row.Item(DealerInflationDV.COL_dealer_inflation_id) = Guid.NewGuid.ToByteArray
+            row(DealerInflationDV.COL_DEALER_ID) = Guid.NewGuid.ToByteArray
+            row.Item(DealerInflationDV.COL_inflation_month) = String.Empty
+            row.Item(DealerInflationDV.COL_inflation_year) = String.Empty
+            row(DealerInflationDV.COL_inflation_pct) = 0D
+            dsv.Tables(0).Rows.Add(row)
+
+            Return New System.Data.DataView(dsv.Tables(0))
+        Catch ex As Assurant.ElitaPlus.DALObjects.DataBaseAccessException
+            Throw New DataBaseAccessException(ex.ErrorType, ex)
+        End Try
+    End Function
+
+    Public Shared Sub AddNewRowToSearchDV(ByRef dv As DealerInflationDV, ByVal NewBO As DealerInflation)
+        Dim dt As DataTable, blnEmptyTbl As Boolean = False
+
+        If NewBO.IsNew Then
+            Dim row As DataRow
+            If dv Is Nothing Then
+                Dim guidTemp As New Guid
+                blnEmptyTbl = True
+                dt = New DataTable
+                dt.Columns.Add(DealerInflationDV.COL_dealer_inflation_id, guidTemp.ToByteArray.GetType)
+                dt.Columns.Add(DealerInflationDV.COL_DEALER_ID, guidTemp.ToByteArray.GetType)
+                dt.Columns.Add(DealerInflationDV.COL_inflation_month, GetType(String))
+                dt.Columns.Add(DealerInflationDV.COL_inflation_year, GetType(String))
+                dt.Columns.Add(DealerInflationDV.COL_inflation_pct, GetType(String))
+             
+
+            Else
+                dt = dv.Table
+            End If
+            row = dt.NewRow
+            row(DealerInflationDV.COL_dealer_inflation_id) = NewBO.Id.ToByteArray
+            row(DealerInflationDV.COL_DEALER_ID) = NewBO.DealerId.ToByteArray
+            dt.Rows.Add(row)
+
+            If blnEmptyTbl Then dv = New DealerInflationDV(dt)
+        End If
+    End Sub
+
+#End Region
 End Class
