@@ -45,7 +45,7 @@
         End Set
     End Property
     
-    
+    <ValueMandatory("")>
     Public Property InflationMonth() As String
         Get
             CheckDeleted()
@@ -61,7 +61,7 @@
         End Set
     End Property
 
-    
+    <ValueMandatory("")>
     Public Property InflationYear() As String
         Get
             CheckDeleted()

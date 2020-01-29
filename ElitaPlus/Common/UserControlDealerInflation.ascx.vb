@@ -194,13 +194,12 @@ Partial Class UserControlDealerInflation
         Try
             With TheState
                 If (.DealerInflationDV Is Nothing) Then
-                    objDealerInflation.CompanyId = Me.TheState.companyId
                     objDealerInflation.DealerId = Me.TheState.dealerId
                     .DealerInflationDV = objDealerInflation.GetDealerInflation()
                     blnNewSearch = True
                 End If
             End With
-            Me.TheState.DealerInflationDV.Sort = Me.SortDirection
+            'Me.TheState.DealerInflationDV.Sort = Me.SortDirection
 
             If (Me.TheState.IsAfterSave) Then
                 Me.TheState.IsAfterSave = False
@@ -208,10 +207,12 @@ Partial Class UserControlDealerInflation
             ElseIf (Me.TheState.IsEditMode) Then
                 Me.ThePage.SetPageAndSelectedIndexFromGuid(Me.TheState.DealerInflationDV, Me.TheState.DefaultDealerInflationID, Me.DealerInflationGrid, Me.TheState.PageIndex, Me.TheState.IsEditMode)
             Else
-                Me.ThePage.SetPageAndSelectedIndexFromGuid(Me.TheState.DealerInflationDV, Guid.Empty, Me.DealerInflationGrid, Me.TheState.PageIndex)
+                If Not TheState.DealerInflationDV Is Nothing
+                    Me.ThePage.SetPageAndSelectedIndexFromGuid(Me.TheState.DealerInflationDV, Guid.Empty, Me.DealerInflationGrid, Me.TheState.PageIndex)
+                End if
             End If
 
-            If Me.TheState.DealerInflationDV.Count = 0 Then
+            If Not TheState.DealerInflationDV is Nothing AndAlso Me.TheState.DealerInflationDV.Count = 0 Then
                 For Each gvRow As GridViewRow In DealerInflationGrid.Rows
                     gvRow.Visible = False
                     gvRow.Controls.Clear()
@@ -316,7 +317,7 @@ Partial Class UserControlDealerInflation
         Dim objDealerInflation As New DealerInflation
         Me.TheState.PageIndex = Me.DealerInflationGrid.PageIndex
 
-        If (Me.TheState.DealerInflationDV.Count = 0) Then
+        If (Not Me.TheState.DealerInflationDV is Nothing AndAlso  Me.TheState.DealerInflationDV.Count = 0) Then
             dv = objDealerInflation.GetDealerInflation()
 
             Me.TheState.bnoRow = True
@@ -343,15 +344,16 @@ Partial Class UserControlDealerInflation
             Me.TheState.IsGridVisible = True
             Me.ThePage.HighLightSortColumn(DealerInflationGrid, Me.SortDirection, True)
             Me.DealerInflationGrid.DataBind()
-            If Not DealerInflationGrid.BottomPagerRow.Visible Then DealerInflationGrid.BottomPagerRow.Visible = True
+           
         End If
 
         ControlMgr.SetVisibleControl(Me.ThePage, DealerInflationGrid, Me.TheState.IsGridVisible)
 
-        Session("recCount") = Me.TheState.DealerInflationDV.Count
+        If Me.DealerInflationGrid.Visible AndAlso  Not Me.TheState.DealerInflationDV Is Nothing Then
 
-        If Me.DealerInflationGrid.Visible Then
-            If (Me.TheState.IsGridAddNew) Then
+            Session("recCount") = Me.TheState.DealerInflationDV.Count
+            If Not DealerInflationGrid.BottomPagerRow.Visible Then DealerInflationGrid.BottomPagerRow.Visible = True
+            If (Me.TheState.IsGridAddNew ) Then
                 Me.lblRecordCount.Text = String.Format("{0} {1}", (Me.TheState.DealerInflationDV.Count - 1), TranslationBase.TranslateLabelOrMessage(Message.MSG_RECORDS_FOUND))
             Else
                 Me.lblRecordCount.Text = String.Format("{0} {1}", Me.TheState.DealerInflationDV.Count, TranslationBase.TranslateLabelOrMessage(Message.MSG_RECORDS_FOUND))
