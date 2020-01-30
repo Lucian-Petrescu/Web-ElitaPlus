@@ -401,15 +401,21 @@ Partial Class CommentForm
                     If Not hasBenefit Is Nothing AndAlso hasBenefit.Length > 0 Then
                         If Not hasBenefit(0)("field_value") Is Nothing AndAlso String.Equals(hasBenefit(0)("field_value").ToString(), Boolean.FalseString, StringComparison.CurrentCultureIgnoreCase) Then
                             UpdateCaseFieldValues(hasBenefit)
+
+                            dsCaseFields = CaseBase.GetCaseFieldsList(Me.State.MyBO.Claim.Id, ElitaPlusIdentity.Current.ActiveUser.LanguageId)
+                            hasBenefit = dsCaseFields.Tables(0).Select("field_code='HASBENEFIT'")
                         End If
                     End If
                     If Not benefitCheckError Is Nothing AndAlso benefitCheckError.Length > 0 Then
                         If Not benefitCheckError(0)("field_value") Is Nothing AndAlso Not String.Equals(benefitCheckError(0)("field_value").ToString(), "NO ERROR", StringComparison.CurrentCultureIgnoreCase) Then
                             UpdateCaseFieldValues(benefitCheckError)
+
+                            dsCaseFields = CaseBase.GetCaseFieldsList(Me.State.MyBO.Claim.Id, ElitaPlusIdentity.Current.ActiveUser.LanguageId)
+                            hasBenefit = dsCaseFields.Tables(0).Select("field_code='HASBENEFIT'")
                         End If
                     End If
 
-                    If Not preCheckError Is Nothing AndAlso preCheckError.Length = 0 Then
+                    If preCheckError Is Nothing Then
                         If Not hasBenefit Is Nothing AndAlso hasBenefit.Length > 0 Then
                             If Not hasBenefit(0)("field_value") Is Nothing AndAlso hasBenefit(0)("field_value").ToString().ToUpper() = Boolean.TrueString.ToUpper() Then
                                 RunPreCheck(hasBenefit)
@@ -485,8 +491,8 @@ Partial Class CommentForm
     End Sub
 
     Private Shared Sub UpdateCaseFieldValues(ByRef caseFiledRow As DataRow())
-        Dim caseFieldXcds() As String = { "CASEFLD-HASBENEFIT", "CASEFLD-ADCOVERAGEREMAINING", "CASEFLD-LOSSTYPE" }
-        Dim caseFieldValues() As String = { Boolean.TrueString.ToUpper(), Boolean.TrueString.ToUpper(), "ADH1234" }
+        Dim caseFieldXcds() As String = { "CASEFLD-HASBENEFIT", "CASEFLD-ADCOVERAGEREMAINING" }
+        Dim caseFieldValues() As String = { Boolean.TrueString.ToUpper(), Boolean.TrueString.ToUpper() }
 
         CaseBase.UpdateCaseFieldValues(GuidControl.ByteArrayToGuid(caseFiledRow(0)("case_Id")), caseFieldXcds, caseFieldValues)
     End Sub
