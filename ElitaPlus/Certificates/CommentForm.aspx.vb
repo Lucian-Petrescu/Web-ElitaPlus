@@ -485,8 +485,8 @@ Partial Class CommentForm
     End Sub
 
     Private Shared Sub UpdateCaseFieldValues(ByRef caseFiledRow As DataRow())
-        Dim caseFieldXcds() As String = {"HASBENEFIT", "ADCOVERAGEREMAINING", "LOSSTYPE"}
-        Dim caseFieldValues() As String = {Boolean.TrueString.ToUpper(), Boolean.TrueString.ToUpper(), "ADH1234"}
+        Dim caseFieldXcds() As String = { "CASEFLD-HASBENEFIT", "CASEFLD-ADCOVERAGEREMAINING", "CASEFLD-LOSSTYPE" }
+        Dim caseFieldValues() As String = { Boolean.TrueString.ToUpper(), Boolean.TrueString.ToUpper(), "ADH1234" }
 
         CaseBase.UpdateCaseFieldValues(GuidControl.ByteArrayToGuid(caseFiledRow(0)("case_Id")), caseFieldXcds, caseFieldValues)
     End Sub
