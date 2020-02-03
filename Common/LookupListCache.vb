@@ -648,6 +648,9 @@ Public Class LookupListCache
     Public Const LK_DESIRED_DELIVERY_TIME_SLOT As String = "LK_DESIRED_DELIVERY_TIME_SLOT"
 
     Public Const LK_CLAIM_PAY_DEDUCTIBLE As String = "CLAIM_PAY_DEDUCTIBLE"
+
+    Public Const LK_JOURNALLEVEL As String = "JOURNALLEVEL"
+
 #End Region
 
 End Class
