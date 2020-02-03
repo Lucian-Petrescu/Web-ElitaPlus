@@ -4376,13 +4376,12 @@ Namespace Certificates
                 If ((Not String.IsNullOrEmpty(.Finance_Tab_Amount)) AndAlso Convert.ToDecimal(.Finance_Tab_Amount) > 0) OrElse blnIncomingAmount Then
                     Me.PopulateControlFromBOProperty(Me.moCurrentOutstandingBalanceText, CType(.GetFinancialAmountprodcode, Decimal), Me.DECIMAL_FORMAT)
                     If blnIncomingAmount Then
-                        Me.PopulateControlFromBOProperty(Me.moOutstandingBalanceDueDateText, GetDateFormattedStringNullable(Convert.ToDateTime(.OutstandingBalanceDueDate)))
+                        Me.PopulateControlFromBOProperty(Me.moOutstandingBalanceDueDateText, .OutstandingBalanceDueDate)
                     Else
                         ControlMgr.SetVisibleControl(Me, moOutstandingBalanceDueDateLabel, False)
                         ControlMgr.SetVisibleControl(Me, moOutstandingBalanceDueDateText, False)
                     End If
-
-                    Me.PopulateControlFromBOProperty(Me.moOutstandingBalanceDueDateText, GetDateFormattedStringNullable(Convert.ToDateTime(.FinanceDate)))
+                    Me.PopulateControlFromBOProperty(Me.moFinanceDateText, .FinanceDate)
                     Me.PopulateControlFromBOProperty(Me.moDownPaymentText, .DownPayment, Me.DECIMAL_FORMAT)
                     Me.PopulateControlFromBOProperty(Me.moAdvancePaymentText, .AdvancePayment, Me.DECIMAL_FORMAT)
                     Me.PopulateControlFromBOProperty(Me.moUpgradeFixedTermText, .UpgradeFixedTerm, Me.DECIMAL_FORMAT)

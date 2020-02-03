@@ -39,6 +39,9 @@ xmlns:a="http://tempuri.org/AssurantElitaFelita.xsd" exclude-result-prefixes="a"
             <Line_Number>
               <xsl:value-of select="a:LINE_NUM"/>
             </Line_Number>
+            <Line_Description>
+              <xsl:value-of select="a:DESCRIPTION"/>
+            </Line_Description>
             <Line_Amount>
               <xsl:value-of select="a:TRANSACTIONAMOUNT"/>
             </Line_Amount>
@@ -84,7 +87,14 @@ xmlns:a="http://tempuri.org/AssurantElitaFelita.xsd" exclude-result-prefixes="a"
               <xsl:value-of select="a:ANALYSISCODE7"/>
             </Distribution_Channel>
             <Invoice_Description>
-              <xsl:value-of select="a:DESCRIPTION"/>
+              <xsl:choose>
+                <xsl:when test="a:TRANSACTIONREFERENCE">
+                  <xsl:value-of select="a:TRANSACTIONREFERENCE"/>
+                </xsl:when>
+                <xsl:otherwise>
+                  <xsl:value-of select="a:GENERALDESCRIPTION24"/>
+                </xsl:otherwise>
+              </xsl:choose>
             </Invoice_Description>
             <xsl:if test='a:GENERALDESCRIPTION24 = "REFUNDS"'>
               <Remittance_Message>

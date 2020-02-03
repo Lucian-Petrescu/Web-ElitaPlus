@@ -1370,7 +1370,7 @@ Namespace Tables
 
             If Me.State.IsPeriodNew = True Then
                 Dim FirstPayeeType As String
-                FirstPayeeType = GuidControl.ByteArrayToGuid(FilteredPayeeType1List.First().ListItemId).ToString()
+                FirstPayeeType = FilteredPayeeType1List.First().ListItemId.ToString()
                 'BindSelectItem(GuidControl.ByteArrayToGuid(dvPayeeType1.Item(0)(LookupListNew.COL_ID_NAME)).ToString, cboPayeeType1)
                 'BindSelectItem(GuidControl.ByteArrayToGuid(dvPayeeType1.Item(0)(LookupListNew.COL_ID_NAME)).ToString, cboPayeeType2)
                 'BindSelectItem(GuidControl.ByteArrayToGuid(dvPayeeType1.Item(0)(LookupListNew.COL_ID_NAME)).ToString, cboPayeeType3)
