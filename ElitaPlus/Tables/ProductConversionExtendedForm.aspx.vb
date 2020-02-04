@@ -670,7 +670,7 @@ Namespace Tables
 
             If Not String.IsNullOrEmpty(txtExpirationDate.Text.Trim) AndAlso Not String.IsNullOrEmpty(txtEffectiveDate.Text.Trim) Then
                 If DateHelper.GetDateValue(txtExpirationDate.Text.Trim) <  DateHelper.GetDateValue(txtEffectiveDate.Text.Trim) Then
-                    err = TranslationBase.TranslateLabelOrMessage(ElitaPlus.Common.ErrorCodes.GUI_EXIPRATION_DATE_CAN_NOT_LESS_THAN_EFFECTIVE_DATE)
+                    err = TranslationBase.TranslateLabelOrMessage(ElitaPlus.Common.ErrorCodes.GUI_EXPIRATION_DATE_CAN_NOT_LESS_THAN_EFFECTIVE_DATE)
                     Me.MasterPage.MessageController.AddError(Me.lbldealerProdCode.Text + ": " + err, False)
                     bIsOk = False
                 End If
