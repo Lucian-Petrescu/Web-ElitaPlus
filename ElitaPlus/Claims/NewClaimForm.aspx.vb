@@ -2608,7 +2608,7 @@ Partial Class NewClaimForm
                         End If
                     End If
 
-                    If preCheckError Is Nothing Then
+                    If Not preCheckError Is Nothing And preCheckError.Length = 0 Then
                         If Not hasBenefit Is Nothing AndAlso hasBenefit.Length > 0 Then
                             If Not hasBenefit(0)("field_value") Is Nothing AndAlso hasBenefit(0)("field_value").ToString().ToUpper() = Boolean.TrueString.ToUpper() Then
                                 RunPreCheck(hasBenefit)
