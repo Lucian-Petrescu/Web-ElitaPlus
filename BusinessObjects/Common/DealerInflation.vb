@@ -14,23 +14,7 @@
         End Get
     End Property
 
-    <ValueMandatory("")>
-    Public Property CompanyId() As Guid
-        Get
-            CheckDeleted()
-            If row(DealerInflationDAL.COL_NAME_COMPANY_ID) Is DBNull.Value Then
-                Return Nothing
-            Else
-                Return New Guid(CType(row(DealerInflationDAL.COL_NAME_COMPANY_ID), Byte()))
-            End If
-        End Get
-        Set(ByVal Value As Guid)
-            CheckDeleted()
-            Me.SetValue(DealerInflationDAL.COL_NAME_COMPANY_ID, Value)
-        End Set
-    End Property
-
-    Public Property DealerId() As Guid
+   Public Property DealerId() As Guid
         Get
             CheckDeleted()
             If Row(DealerInflationDAL.COL_NAME_DEALER_ID) Is DBNull.Value Then
@@ -157,7 +141,7 @@
         Dim dealerInflationDAL As New DealerInflationDAL
 
         If Not (Me.DealerId.Equals(Guid.Empty)) Then
-            Return New DealerInflationDV(DealerInflationDAL.LoadDealerInflation(Me.CompanyId, Me.DealerId).Tables(0))
+            Return New DealerInflationDV(DealerInflationDAL.LoadDealerInflation(Me.DealerId).Tables(0))
         End If
 
     End Function

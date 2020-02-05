@@ -27,8 +27,6 @@ Partial Class UserControlDealerInflation
     Private Const GRID_COL_INFLATION_YEAR As Integer = 3
     Private Const GRID_COL_INFLATION_PCT As Integer = 4
   
-
-    Private Const GRID_CTRL_NAME_LABEL__DEALER As String = "lblDealer"
     Private Const GRID_CTRL_NAME_LABEL_INFLATION_MONTH As String = "lblInflationMonth"
     Private Const GRID_CTRL_NAME_LABLE_INFLATION_YEAR As String = "lblInflationYear"
     Private Const GRID_CTRL_NAME_LABEL_INFLATION_PCT As String = "lblInflationPct"
@@ -50,6 +48,8 @@ Partial Class UserControlDealerInflation
 
     Private Const NO_ROW_SELECTED_INDEX As Integer = -1
     Private Const CONST_ACTIVE_FLAG_YES As String = "Y"
+    Private Const COL_NAME_INFLATION_YEAR_ID AS string ="ID"
+    Private Const COL_NAME_INFLATION_YEAR_DESC AS string ="DESCRIPTION"
 
     Public Const SESSION_LOCALSTATE_KEY As String = "DEALERINFLATION_SESSION_LOCALSTATE_KEY"
     
@@ -247,15 +247,13 @@ Partial Class UserControlDealerInflation
 
 
                     Dim moInflationMonthDropDown As DropDownList = CType(e.Row.Cells(Me.GRID_COL_INFLATION_MONTH).FindControl(Me.GRID_CTRL_NAME_EDIT_INFLATION_MONTH), DropDownList)
-                    moInflationMonthDropDown.Enabled = False
-                    ElitaPlusPage.BindListControlToDataView(moInflationMonthDropDown, LookupListNew.GetMonthsLookupList(ElitaPlusIdentity.Current.ActiveUser.LanguageId))
+                    ElitaPlusPage.BindListControlToDataView(moInflationMonthDropDown, LookupListNew.GetMonthsLookupList(ElitaPlusIdentity.Current.ActiveUser.LanguageId),"CODE",,false)
                     If (Not String.IsNullOrWhiteSpace(dvRow(DealerInflation.DealerInflationDV.COL_inflation_month).ToString())) Then
                         Me.ThePage.SetSelectedItem(moInflationMonthDropDown, GuidControl.ByteArrayToGuid(DealerInflationGrid.DataKeys(e.Row.RowIndex).Values(2)))
                     End If
 
                     Dim moInflationYearDropDown As DropDownList = CType(e.Row.Cells(Me.GRID_COL_INFLATION_YEAR).FindControl(Me.GRID_CTRL_NAME_EDIT_INFLATION_YEAR), DropDownList)
-                    moInflationYearDropDown.Enabled = False
-                    ElitaPlusPage.BindListControlToDataView(moInflationYearDropDown, LookupListNew.GetMonthsLookupList(ElitaPlusIdentity.Current.ActiveUser.LanguageId))
+                    ElitaPlusPage.BindListControlToDataView(moInflationYearDropDown, GetInflationYears(),,,false)
                     If (Not String.IsNullOrWhiteSpace(dvRow(DealerInflation.DealerInflationDV.COL_inflation_month).ToString())) Then
                         Me.ThePage.SetSelectedItem(moInflationYearDropDown, GuidControl.ByteArrayToGuid(DealerInflationGrid.DataKeys(e.Row.RowIndex).Values(3)))
                     End If
@@ -312,16 +310,16 @@ Partial Class UserControlDealerInflation
     End Sub
 
     Private Sub SortAndBindGrid(Optional ByVal blnShowErr As Boolean = True)
-
-        Dim dv As New DataView
+       
         Dim objDealerInflation As New DealerInflation
         Me.TheState.PageIndex = Me.DealerInflationGrid.PageIndex
 
         If (Not Me.TheState.DealerInflationDV is Nothing AndAlso  Me.TheState.DealerInflationDV.Count = 0) Then
-            dv = objDealerInflation.GetDealerInflation()
-
+            Dim dv As DataView = objDealerInflation.GetDealerInflation()
             Me.TheState.bnoRow = True
-            dv = objDealerInflation.GetEmptyList(dv)
+            if not dv is Nothing Then
+                objDealerInflation.GetEmptyList(dv)
+            End If
             Me.TheState.DealerInflationDV = Nothing
             Me.TheState.MyBO = New DealerInflation
             TheState.MyBO.AddNewRowToSearchDV(Me.TheState.DealerInflationDV, Me.TheState.MyBO)
@@ -436,13 +434,61 @@ Partial Class UserControlDealerInflation
         If rowind <> Me.ThePage.NO_ITEM_SELECTED_INDEX Then TheState.DealerInflationDV.Delete(rowind)
     End Sub
 
-    Protected Sub NewButton_WRITE_Click(sender As Object, e As EventArgs) Handles NewButton_WRITE.Click
+    Private Sub AddNew()
+        If TheState.MyBO Is Nothing OrElse Me.TheState.MyBO.IsNew = False Then
+            TheState.MyBO = New Dealerinflation
+            TheState.MyBO.AddNewRowToSearchDV(Me.TheState.DealerInflationDV, Me.TheState.MyBO)
+        End If
+        TheState.DefaultDealerInflationID = Me.TheState.MyBO.Id
+        TheState.IsGridAddNew = True
+        PopulateGrid()
+        'Set focus on the Code TextBox for the EditItemIndex row
+        ThePage.SetPageAndSelectedIndexFromGuid(Me.TheState.DealerInflationDV, Me.TheState.DefaultDealerInflationID, Me.DealerInflationGrid, _
+                                                TheState.PageIndex, Me.TheState.IsEditMode)
+        ControlMgr.DisableEditDeleteGridIfNotEditAuth(Me.ThePage, DealerInflationGrid)
+        ThePage.SetGridControls(Me.DealerInflationGrid, False)
+
+        Try
+            Me.DealerInflationGrid.Rows(Me.DealerInflationGrid.SelectedIndex).Focus()
+        Catch ex As Exception
+            Me.DealerInflationGrid.Focus()
+        End Try
 
     End Sub
+
+    private Shared function GetInflationYears() As DataView
+        Dim dt As DataTable =New DataTable
+        
+        dt.Columns.Add(COL_NAME_INFLATION_YEAR_ID, Guid.NewGuid.ToByteArray.GetType)
+        dt.Columns.Add(COL_NAME_INFLATION_YEAR_DESC, GetType(String))
+
+        Dim row As DataRow
+        
+        For i As Integer = 0 To 10
+            row = dt.NewRow
+            row(COL_NAME_INFLATION_YEAR_ID) = Guid.NewGuid.ToByteArray
+            row(COL_NAME_INFLATION_YEAR_DESC) = DateTime.Now.Year +i
+            dt.Rows.Add(row)
+        Next
+        Dim inflationYearDataview As DataView = new DataView(dt)
+        return inflationYearDataview
+    End function
 
 #End Region
 
 #Region "Control Event Handlers"
+    Protected Sub NewButton_WRITE_Click(sender As Object, e As EventArgs) Handles NewButton_WRITE.Click
+        Try
+            TheState.IsEditMode = True
+            TheState.IsGridVisible = True
+            TheState.IsGridAddNew = True
+            AddNew()
+            Me.SetControlState()
+
+        Catch ex As Exception
+            Me.ThePage.HandleErrors(ex, Me.ThePage.MasterPage.MessageController)
+        End Try
+    End Sub
     Protected Sub btnSave_Click(ByVal sender As Object, ByVal e As EventArgs)
 
         Try

@@ -30,7 +30,7 @@ Inherits="Assurant.ElitaPlus.ElitaPlusWebApp.UserControlDealerInflation" %>
             </table>
         </div>
     </div>
-    <asp:GridView ID="DealerInflationGrid" runat="server" Width="100%" DataKeyNames="DEALER_INFLATION_ID,DEALER_ID,INFLATION_MONTH,INFLATION_YEAR,INFLATION_PCT"
+    <asp:GridView ID="DealerInflationGrid" runat="server" Width="51%" DataKeyNames="DEALER_INFLATION_ID,DEALER_ID,INFLATION_MONTH,INFLATION_YEAR,INFLATION_PCT"
         AllowPaging="True" AllowSorting="False" AutoGenerateColumns="False" SkinID="DetailPageGridView" CssClass = "grid-view"
         PageSize="2">
         <SelectedRowStyle Wrap="True"></SelectedRowStyle>
@@ -64,7 +64,7 @@ Inherits="Assurant.ElitaPlus.ElitaPlusWebApp.UserControlDealerInflation" %>
                 </ItemTemplate>
                 <EditItemTemplate>
                     <asp:TextBox ID="txtInflationPct" runat="server" Visible="true" SkinID="exSmallTextBox"
-                        onkeypress="return isNumber(event)" onblur="return chkForZero(this)"></asp:TextBox><br />
+                        onkeypress="return numericOnly(this)" onblur="return chkForZero(this)"></asp:TextBox><br />
                     <asp:Label ID="lblValidPctMsg" runat="server"></asp:Label>
                 </EditItemTemplate>
             </asp:TemplateField>
@@ -76,7 +76,7 @@ Inherits="Assurant.ElitaPlus.ElitaPlusWebApp.UserControlDealerInflation" %>
                         runat="server" CommandName="DeleteRecord" CommandArgument="<%#Container.DisplayIndex %>" />
                 </ItemTemplate>
                 <EditItemTemplate>
-                    <table><tr><td>
+                    <table><tr><td style=" align-items: end ">
                     <asp:Button ID="btnSave" runat="server" Text="Save" OnClick="btnSave_Click" SkinID="PrimaryRightButton"></asp:Button></td>
                     <td><asp:LinkButton ID="btnCancel" runat="server" Text="Cancel" OnClick="btnCancel_Click" SkinID="AlternateRightButton"></asp:LinkButton>
                     </td></tr></table>
@@ -91,21 +91,11 @@ Inherits="Assurant.ElitaPlus.ElitaPlusWebApp.UserControlDealerInflation" %>
         Height="20px" CssClass="FLATBUTTON"></asp:Button>
 </asp:Panel>
 <script type="text/javascript">
-    function isNumber(evt) {
-        evt = (evt) ? evt : window.event;
-        var charCode = (evt.which) ? evt.which : evt.keyCode;
-        if (charCode > 31 && (charCode < 48 || charCode > 57)) {
-            return false;
-        }
-
-        return true;
-    }
-
     function chkForZero(obj) {
         var obj1 = obj.id.replace('txtInflationPct', 'lblValidPctMsg');
-        
-        if (obj.value < 0) {
-            document.getElementById(obj1).innerText = "Please number between 0 and 9999.99";
+
+        if (obj.value < 0 || obj.value > 9999.99) {
+            document.getElementById(obj1).innerText = "Please enter number between 0 and 9999.99";
             document.getElementById(obj1).style.color = "Red";
         }
         else {
@@ -113,4 +103,32 @@ Inherits="Assurant.ElitaPlus.ElitaPlusWebApp.UserControlDealerInflation" %>
         }
         return true;
     }
+
+    function numericOnly(elementRef) {
+        var keyCodeEntered = (event.which) ? event.which : (window.event.keyCode) ? window.event.keyCode : -1;
+        if ((keyCodeEntered >= 48) && (keyCodeEntered <= 57)) {
+            return true;
+        }
+        else if (keyCodeEntered == 43) {
+            if ((elementRef.value) && (elementRef.value.indexOf('+') >= 0))
+                return false;
+            else
+                return true;
+        }
+        else if (keyCodeEntered == 45) {
+            if ((elementRef.value) && (elementRef.value.indexOf('-') >= 0))
+                return false;
+            else
+                return true;
+        }
+        else if (keyCodeEntered == 46) {
+            if ((elementRef.value) && (elementRef.value.indexOf('.') >= 0))
+                return false;
+            else
+                return true;
+        }
+
+        return false;
+    }
+
 </script>

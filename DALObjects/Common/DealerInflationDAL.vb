@@ -48,7 +48,7 @@
         End Try
     End Sub
 
-    Public Function LoadDealerInflation(ByVal companyId As Guid, ByVal dealerId As Guid) As DataSet
+    Public Function LoadDealerInflation(ByVal dealerId As Guid) As DataSet
         Try
             Dim selectStmt As String = Me.Config("/SQL/LOAD_DEALER_INFLATION")
            
