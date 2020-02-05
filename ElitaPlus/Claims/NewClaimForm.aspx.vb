@@ -2590,10 +2590,11 @@ Partial Class NewClaimForm
                     Dim hasBenefit As DataRow() = dsCaseFields.Tables(0).Select("field_code='HASBENEFIT'")
                     Dim benefitCheckError As DataRow() = dsCaseFields.Tables(0).Select("field_code='BENEFITCHECKERROR'")
                     Dim preCheckError As DataRow() = dsCaseFields.Tables(0).Select("field_code='PRECHECKERROR'")
+                    Dim lossType As DataRow() = dsCaseFields.Tables(0).Select("field_code='LOSSTYPE'")
 
                     If Not hasBenefit Is Nothing AndAlso hasBenefit.Length > 0 Then
                         If Not hasBenefit(0)("field_value") Is Nothing AndAlso String.Equals(hasBenefit(0)("field_value").ToString(), Boolean.FalseString, StringComparison.CurrentCultureIgnoreCase) Then
-                            UpdateCaseFieldValues(hasBenefit)
+                            UpdateCaseFieldValues(hasBenefit, lossType)
 
                             dsCaseFields = CaseBase.GetCaseFieldsList(State.MyBO.Id, ElitaPlusIdentity.Current.ActiveUser.LanguageId)
                             hasBenefit = dsCaseFields.Tables(0).Select("field_code='HASBENEFIT'")
@@ -2601,7 +2602,7 @@ Partial Class NewClaimForm
                     End If
                     If Not benefitCheckError Is Nothing AndAlso benefitCheckError.Length > 0 Then
                         If Not benefitCheckError(0)("field_value") Is Nothing AndAlso Not String.Equals(benefitCheckError(0)("field_value").ToString(), "NO ERROR", StringComparison.CurrentCultureIgnoreCase) Then
-                            UpdateCaseFieldValues(benefitCheckError)
+                            UpdateCaseFieldValues(benefitCheckError, lossType)
 
                             dsCaseFields = CaseBase.GetCaseFieldsList(State.MyBO.Id, ElitaPlusIdentity.Current.ActiveUser.LanguageId)
                             hasBenefit = dsCaseFields.Tables(0).Select("field_code='HASBENEFIT'")
@@ -2756,11 +2757,21 @@ Partial Class NewClaimForm
             End Try
     End Sub
 
-    Private Shared Sub UpdateCaseFieldValues(ByRef caseFiledRow As DataRow())
-        Dim caseFieldXcds() As String = { "CASEFLD-HASBENEFIT", "CASEFLD-ADCOVERAGEREMAINING" }
-        Dim caseFieldValues() As String = { Boolean.TrueString.ToUpper(), Boolean.TrueString.ToUpper() }
+    Private Shared Sub UpdateCaseFieldValues(ByRef caseFieldRow As DataRow(), ByRef lossType As DataRow())
+        Dim caseFieldXcds() As String
+        Dim caseFieldValues() As String
 
-        CaseBase.UpdateCaseFieldValues(GuidControl.ByteArrayToGuid(caseFiledRow(0)("case_Id")), caseFieldXcds, caseFieldValues)
+        If Not lossType Is Nothing AndAlso lossType.Length > 0 Then
+            If Not lossType(0)("field_value") Is Nothing AndAlso (lossType(0)("field_value").ToString().ToUpper() = "ADH1234" Or lossType(0)("field_value").ToString().ToUpper() = "ADH5") Then
+                caseFieldXcds = { "CASEFLD-HASBENEFIT", "CASEFLD-ADCOVERAGEREMAINING" }
+                caseFieldValues = { Boolean.TrueString.ToUpper(), Boolean.TrueString.ToUpper() }
+            Else If Not lossType(0)("field_value") Is Nothing AndAlso lossType(0)("field_value").ToString().ToUpper() = "THEFT/LOSS" Then
+                caseFieldXcds = { "CASEFLD-HASBENEFIT" }
+                caseFieldValues = { Boolean.TrueString.ToUpper() }
+            End If
+        End If
+
+        CaseBase.UpdateCaseFieldValues(GuidControl.ByteArrayToGuid(caseFieldRow(0)("case_Id")), caseFieldXcds, caseFieldValues)
     End Sub
 
     'Sets the Service Center to the Default Service Center for Denied Claims.                                   
