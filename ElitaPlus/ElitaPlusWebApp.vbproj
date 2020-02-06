@@ -167,7 +167,7 @@
       <Private>True</Private>
     </Reference>
     <Reference Include="Assurant.Elita.AddressValidationProvider, Version=1.0.1.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Assurant.Elita.AddressvalidationProvider.1.0.2\lib\net46\Assurant.Elita.AddressValidationProvider.dll</HintPath>
+      <HintPath>..\packages\Assurant.Elita.AddressvalidationProvider.1.0.3\lib\net46\Assurant.Elita.AddressValidationProvider.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="Assurant.Elita.Base.DataAccess">
