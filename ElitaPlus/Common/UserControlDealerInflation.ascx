@@ -33,14 +33,15 @@ Inherits="Assurant.ElitaPlus.ElitaPlusWebApp.UserControlDealerInflation" %>
     <asp:GridView ID="DealerInflationGrid" runat="server" Width="51%" DataKeyNames="DEALER_INFLATION_ID,DEALER_ID,INFLATION_MONTH,INFLATION_YEAR,INFLATION_PCT"
         AllowPaging="True" AllowSorting="False" AutoGenerateColumns="False" SkinID="DetailPageGridView" CssClass = "grid-view"
         PageSize="2">
-        <SelectedRowStyle Wrap="True"></SelectedRowStyle>
-        <EditRowStyle Wrap="True"></EditRowStyle>
-        <AlternatingRowStyle Wrap="True"></AlternatingRowStyle>
-        <RowStyle Wrap="True"></RowStyle>
+        <SelectedRowStyle CssClass="SELECTED"></SelectedRowStyle>
+        <EditRowStyle CssClass="EDITROW"></EditRowStyle>
+        <AlternatingRowStyle Wrap="False" CssClass="ALTROW"></AlternatingRowStyle>
+        <RowStyle CssClass="ROW"></RowStyle>
+        <HeaderStyle CssClass="HEADER"></HeaderStyle>
         <Columns>
             <asp:BoundField Visible="false" DataField="DEALER_INFLATION_ID" />
             <asp:BoundField Visible="false" DataField="DEALER_ID" />
-            <asp:TemplateField Visible="True" HeaderText="INFLATION MONTH">
+            <asp:TemplateField Visible="True" HeaderText="INFLATION_MONTH">
                 <ItemTemplate>
                     <asp:Label ID="lblInflationMonth" runat="server" Text='<%#Container.DataItem("INFLATION_MONTH")%>'></asp:Label>
                 </ItemTemplate>
@@ -49,7 +50,7 @@ Inherits="Assurant.ElitaPlus.ElitaPlusWebApp.UserControlDealerInflation" %>
                     </asp:DropDownList>
                 </EditItemTemplate>
             </asp:TemplateField>
-            <asp:TemplateField Visible="True" HeaderText="INFLATION YEAR">
+            <asp:TemplateField Visible="True" HeaderText="INFLATION_YEAR">
                 <ItemTemplate>
                     <asp:Label ID="lblInflationYear" runat="server" Text='<%#Container.DataItem("INFLATION_YEAR")%>'></asp:Label>
                 </ItemTemplate>
@@ -58,7 +59,7 @@ Inherits="Assurant.ElitaPlus.ElitaPlusWebApp.UserControlDealerInflation" %>
                     </asp:DropDownList>
                 </EditItemTemplate>
             </asp:TemplateField>
-            <asp:TemplateField Visible="True" HeaderText="INFLATION PCT">
+            <asp:TemplateField Visible="True" HeaderText="INFLATION_PCT">
                 <ItemTemplate>
                     <asp:Label ID="lblInflationPct" runat="server" Text='<%#Container.DataItem("INFLATION_PCT")%>'></asp:Label>
                 </ItemTemplate>
@@ -86,6 +87,7 @@ Inherits="Assurant.ElitaPlus.ElitaPlusWebApp.UserControlDealerInflation" %>
         <PagerSettings PageButtonCount="30" Mode="Numeric" Position="TopAndBottom" />
     </asp:GridView>
     <input id="HiddenDIDeletePromptResponse" type="hidden" runat="server" designtimedragdrop="261" />
+    <br/>
     <asp:Button ID="NewButton_WRITE" Style="background-image: url(../Navigation/images/icons/add_icon.gif);
         cursor: hand; background-repeat: no-repeat" runat="server" Width="100px" Text="New"
         Height="20px" CssClass="FLATBUTTON"></asp:Button>

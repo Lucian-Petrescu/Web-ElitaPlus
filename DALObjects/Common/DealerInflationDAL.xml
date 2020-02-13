@@ -4,12 +4,12 @@
     elita.elp_tbl_dealer_inflation.Load
   </LOAD_DEALER_INFLATION>
   <UPDATE>
-   
+    elita.elp_tbl_dealer_inflation.Modify
   </UPDATE>
   <INSERT>
-    
+    elita.elp_tbl_dealer_inflation.Add
   </INSERT>
   <DELETE>
-   
+    elita.elp_tbl_dealer_inflation.DeleteDealerInflation
   </DELETE>
 </SQL>

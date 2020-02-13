@@ -14,7 +14,22 @@
         End Get
     End Property
 
-   Public Property DealerId() As Guid
+    Public Property DealerInflationId() As Guid
+        Get
+            CheckDeleted()
+            If Row(DealerInflationDAL.COL_NAME_DEALER_INFLATION_ID) Is DBNull.Value Then
+                Return Nothing
+            Else
+                Return New Guid(CType(Row(DealerInflationDAL.COL_NAME_DEALER_INFLATION_ID), Byte()))
+            End If
+        End Get
+        Set(ByVal Value As Guid)
+            CheckDeleted()
+            Me.SetValue(DealerInflationDAL.COL_NAME_DEALER_INFLATION_ID, Value)
+        End Set
+    End Property
+
+    Public Property DealerId() As Guid
         Get
             CheckDeleted()
             If Row(DealerInflationDAL.COL_NAME_DEALER_ID) Is DBNull.Value Then
@@ -46,33 +61,34 @@
     End Property
 
     <ValueMandatory("")>
-    Public Property InflationYear() As String
+    Public Property InflationYear() As string
         Get
             CheckDeleted()
             If Row(DealerInflationDAL.COL_NAME_INFLATION_YEAR) Is DBNull.Value Then
                 Return Nothing
             Else
-                Return CType(Row(DealerInflationDAL.COL_NAME_INFLATION_YEAR), String)
+                Return CType(Row(DealerInflationDAL.COL_NAME_INFLATION_YEAR), string)
             End If
         End Get
-        Set(ByVal Value As String)
+        Set(ByVal Value As string)
             CheckDeleted()
             Me.SetValue(DealerInflationDAL.COL_NAME_INFLATION_YEAR, Value)
         End Set
     End Property
+
     <ValueMandatory("")>
-    Public Property InflationPct() As LongType
+    Public Property InflationPct() As DecimalType
         Get
             CheckDeleted()
-            If Row(DealerInflationDAL.PAR_NAME_INFLATION_PCT) Is DBNull.Value Then
+            If Row(DealerInflationDAL.COL_NAME_INFLATION_PCT) Is DBNull.Value Then
                 Return Nothing
             Else
-                Return New LongType(CType(Row(DealerInflationDAL.PAR_NAME_INFLATION_PCT), Long))
+                Return New DecimalType(CType(Row(DealerInflationDAL.COL_NAME_INFLATION_PCT), Decimal))
             End If
         End Get
-        Set(ByVal Value As LongType)
+        Set(ByVal Value As DecimalType)
             CheckDeleted()
-            Me.SetValue(DealerInflationDAL.PAR_NAME_INFLATION_PCT, Value)
+            Me.SetValue(DealerInflationDAL.COL_NAME_INFLATION_PCT, Value)
         End Set
     End Property
 
@@ -91,6 +107,12 @@
         MyBase.New()
         Me.Dataset = New DataSet
         Me.Load(id)
+    End Sub
+
+    public Sub New (ByVal id As Guid, ByVal key As Guid)
+        MyBase.New()
+        Me.Dataset = New DataSet
+        Me.Load(id,key)
     End Sub
 
     Protected Sub Load()
@@ -121,9 +143,32 @@
             If Me.Dataset.Tables.IndexOf(dal.TABLE_NAME) >= 0 Then
                 Me.Row = Me.FindRow(id, dal.TABLE_KEY_NAME, Me.Dataset.Tables(dal.TABLE_NAME))
             End If
-            If Me.Row Is Nothing Then 'it is not in the dataset, so will bring it from the db
+            If Me.Row Is Nothing Then '
                 dal.Load(Me.Dataset, id)
                 Me.Row = Me.FindRow(id, dal.TABLE_KEY_NAME, Me.Dataset.Tables(dal.TABLE_NAME))
+            End If
+            If Me.Row Is Nothing Then
+                Throw New DataNotFoundException
+            End If
+        Catch ex As Assurant.ElitaPlus.DALObjects.DataBaseAccessException
+            Throw New DataBaseAccessException(DataBaseAccessException.DatabaseAccessErrorType.ReadErr, ex)
+        End Try
+    End Sub
+    Protected Sub Load(ByVal searchid As Guid,ByVal key As Guid)
+        Try
+            Dim dal As New DealerInflationDAL
+            If Me._isDSCreator Then
+                If Not Me.Row Is Nothing Then
+                    Me.Dataset.Tables(dal.TABLE_NAME).Rows.Remove(Me.Row)
+                End If
+            End If
+            Me.Row = Nothing
+            If Me.Dataset.Tables.IndexOf(dal.TABLE_NAME) >= 0 Then
+                Me.Row = Me.FindRow(key, dal.TABLE_KEY_NAME, Me.Dataset.Tables(dal.TABLE_NAME))
+            End If
+            If Me.Row Is Nothing Then 
+                dal.Load(Me.Dataset, searchid)
+                Me.Row = Me.FindRow(key, dal.TABLE_KEY_NAME, Me.Dataset.Tables(dal.TABLE_NAME))
             End If
             If Me.Row Is Nothing Then
                 Throw New DataNotFoundException
@@ -136,12 +181,44 @@
 #End Region
 
 #Region "Public Members"
+
+    Public Overrides Sub Save()
+        Try
+            MyBase.Save()
+            If Me._isDSCreator AndAlso Me.IsDirty AndAlso Me.Row.RowState <> DataRowState.Detached Then
+                Dim dal As New DealerInflationDAL
+                dal.SaveDealerInflation(Me.Row)
+                'Reload the Data from the DB
+                If Me.Row.RowState <> DataRowState.Detached Then
+                    Dim searchid As Guid = Me.DealerId
+                    Dim lookupkey As Guid = Me.DealerInflationId
+                    Me.Dataset = New DataSet
+                    Me.Row = Nothing 
+                    Me.Load( searchid,lookupkey)
+                End If
+            End If
+        Catch ex As Assurant.ElitaPlus.DALObjects.DataBaseAccessException
+            Throw New DataBaseAccessException(DataBaseAccessException.DatabaseAccessErrorType.WriteErr, ex)
+        End Try
+    End Sub
     
     Public Function GetDealerInflation() As DealerInflationDV
         Dim dealerInflationDAL As New DealerInflationDAL
 
         If Not (Me.DealerId.Equals(Guid.Empty)) Then
             Return New DealerInflationDV(DealerInflationDAL.LoadDealerInflation(Me.DealerId).Tables(0))
+        End If
+
+    End Function
+
+    Public Function ValidateNewDealerInflation(ByVal DealerInflations As DealerInflationDV) As Boolean
+
+        Dim dealerInflation()  = DealerInflations.ToTable().Select("INFLATION_YEAR=" & Me.InflationYear & " And INFLATION_MONTH=" & Me.InflationMonth)
+                               
+        If dealerInflation.Length >0 Then
+            Return true
+        Else 
+            Return false
         End If
 
     End Function
@@ -220,4 +297,5 @@
     End Sub
 
 #End Region
+
 End Class
