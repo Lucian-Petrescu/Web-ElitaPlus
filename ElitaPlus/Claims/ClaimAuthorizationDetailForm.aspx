@@ -4,7 +4,9 @@
 
 <%@ Register TagPrefix="Elita" TagName="MessageController" Src="~/Common/MessageController.ascx" %>
 <%@ Register TagPrefix="Elita" TagName="UserControlAuthorizationInfo" Src="UserControlAuthorizationInfo.ascx" %>
-<%@ Register TagPrefix="Elita" TagName="UserControlSelectServiceCenter" Src="~/Certificates/UserControlSelectServiceCenter.ascx" %>
+<%--<%@ Register TagPrefix="Elita" TagName="UserControlSelectServiceCenter" Src="~/Certificates/UserControlSelectServiceCenter.ascx" %>--%>
+<%@ Register TagPrefix="Elita" TagName="UserControlServiceCenterSelection" Src="../Common/UserControlServiceCenterSelection.ascx" %>
+
 <asp:Content ID="Content1" ContentPlaceHolderID="HeadPlaceHolder" runat="server">    
 </asp:Content>
 <asp:Content ID="Content2" ContentPlaceHolderID="SummaryPlaceHolder" runat="server">
@@ -64,19 +66,59 @@
 </asp:Content>
 <asp:Content ID="Content4" ContentPlaceHolderID="BodyPlaceHolder" runat="server">
     <asp:ScriptManager ID="ScriptManagerMaster" runat="server" />
+    <asp:HiddenField ID="HiddenFieldShowNewSC" runat="server" Value="N" />
+    <script type="text/javascript">
+        function SetShowNewSCValue(newValue) {
+            $('#<% =HiddenFieldShowNewSC.ClientID%>').val(newValue); 
+        }        
+    </script>
     <div id="ModalServiceCenter" class="overlay">
         <div id="light" class="overlay_message_content" style="left: 5%; right: 5%; top: 5%; max-height: 80%">
-            <p class="modalTitle">
+            <%--<p class="modalTitle">
                 <asp:Label ID="lblModalTitle" runat="server" Text="SEARCH_SERVICE_CENTER"></asp:Label>
                 <a href="javascript:void(0)" onclick="hideModal('ModalServiceCenter');">
                     <img id="Img1" src="~/App_Themes/Default/Images/icon_modalClose.png" runat="server"
                         width="16" height="18" align="absmiddle" class="floatR" /></a>
-            </p>
-            <Elita:UserControlSelectServiceCenter ID="ucSelectServiceCenter" runat="server" />
+
+            </p>--%>
+            <table width="100%" style="border:none;margin-bottom:10px;">
+                <tr>
+                    <td>
+                        <asp:Label ID="lblNewSCError" runat="server" Visible="false" ForeColor="Red"></asp:Label>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <asp:Label ID="Label4" runat="server" Text="SEARCH_SERVICE_CENTER" CssClass="modalTitle"></asp:Label>
+                    </td>
+                </tr>
+                <tr>
+                    <td><Elita:UserControlServiceCenterSelection ID="ucSelectServiceCenter" runat="server" /></td>
+                </tr>
+                <tr style="padding-bottom:20px;">
+                    <td>
+                        <asp:Label ID="lblNewSCAmt" runat="server" Text="AMOUNT"></asp:Label>:
+                        <asp:TextBox ID="txtNewSCAmt" runat="server" SkinID="MediumTextBox"></asp:TextBox>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                        <asp:Button ID="btnNewSCCancel" runat="server" SkinID="SearchButton" Text="Cancel"
+                            OnClientClick="SetShowNewSCValue('N'); hideModal('ModalServiceCenter'); return false;"/>&nbsp;&nbsp;&nbsp;
+                        <asp:Button ID="btnNewSCSave" runat="server" SkinID="SearchButton" Text="Save" />                        
+                    </td>
+                </tr>                
+            </table>
+            
         </div>
         <div id="fade" class="black_overlay">
         </div>
     </div>
+
+    <script type="text/javascript">
+        //debugger;
+        if ($('#<% =HiddenFieldShowNewSC.ClientID%>').val() == "Y") {
+            revealModal("ModalServiceCenter");
+        } else {
+            hideModal('ModalServiceCenter');
+        };
+    </script>
 
     <div class="dataContainer" id="dvClaimAuthorizationDetails" runat="server">
         <div class="dataContainer">
