@@ -1119,6 +1119,9 @@ Public Class Codes
     'claim payment based on deductible flag
     Public Const FULL_INVOICE_Y As String = "Y_FULL_INVOICE"
     Public Const AUTH_LESS_DEDUCT_Y As String = "Y_AUTH_LESS_DEDUCT"
+    
+    'Company codes
+    Public Const AUS_COMPANY_CODE As String = "AAU"
 
 
 End Class

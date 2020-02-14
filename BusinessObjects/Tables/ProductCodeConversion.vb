@@ -260,6 +260,35 @@ Public Class ProductCodeConversion
             Me.SetValue(ProductCodeConversionDAL.COL_NAME_SALES_PRICE, Value)
         End Set
     End Property
+    <ValueMandatory(""),NonOverlappingProductCodeConversion("")> 
+    Public Property EffectiveDate() As DateType
+        Get
+            CheckDeleted()
+            If Row(ProductCodeConversionDAL.COL_NAME_EFFECTIVE_DATE) Is DBNull.Value Then
+                Return Nothing
+            Else
+                Return New DateType(CType(Row(ProductCodeConversionDAL.COL_NAME_EFFECTIVE_DATE), Date))
+            End If
+        End Get
+        Set(ByVal Value As DateType)
+            CheckDeleted()
+            Me.SetValue(ProductCodeConversionDAL.COL_NAME_EFFECTIVE_DATE, Value)
+        End Set
+    End Property
+   Public Property ExpirationDate() As DateType
+        Get
+            CheckDeleted()
+            If Row(ProductCodeConversionDAL.COL_NAME_EXPIRATION_DATE) Is DBNull.Value Then
+                Return Nothing
+            Else
+                Return New DateType(CType(Row(ProductCodeConversionDAL.COL_NAME_EXPIRATION_DATE), Date))
+            End If
+        End Get
+        Set(ByVal Value As DateType)
+            CheckDeleted()
+            Me.SetValue(ProductCodeConversionDAL.COL_NAME_EXPIRATION_DATE, Value)
+        End Set
+    End Property
 
 #End Region
 
@@ -269,7 +298,8 @@ Public Class ProductCodeConversion
             MyBase.Save()
             If Me._isDSCreator AndAlso Me.IsDirty AndAlso Me.Row.RowState <> DataRowState.Detached Then
                 Dim dal As New ProductCodeConversionDAL
-                dal.Update(Me.Row)
+                'dal.Update(Me.Row)
+                dal.SaveProductCodeConversion(Me.Row)
                 'Reload the Data from the DB
                 If Me.Row.RowState <> DataRowState.Detached Then Me.Load(Me.Id)
             End If
@@ -359,7 +389,7 @@ Public Class ProductCodeConversion
 
             If LookupListNew.GetCodeFromId(LookupListNew.DropdownLanguageLookupList(LookupListCache.LK_PROD_CONV_TYPE, ElitaPlusIdentity.Current.ActiveUser.LanguageId), odealer.ConvertProductCodeId) = "EXT" Then
 
-                If dal.CheckForDealerProdCodeMfgCombination(obj.DealerId, obj.ExternalProdCode, obj.Manufacturer, obj.Id).Tables(0).Rows.Count = 1 Then
+                If dal.CheckForDealerProdCodeMfgCombination(obj.DealerId, obj.ExternalProdCode, obj.Manufacturer, obj.Id,obj.EffectiveDate).Tables(0).Rows.Count = 1 Then
                     Return False
                 Else
                     Return True
@@ -390,7 +420,7 @@ Public Class ProductCodeConversion
 
                 'If LookupListNew.GetCodeFromId(LookupListNew.LK_USE_FULLFILE_PROCESS, odealer.UseFullFileProcessId) <> Codes.FULLFILE_NONE Then
 
-                If dal.CheckForDealerProdCodeMfgCombination(obj.DealerId, obj.ExternalProdCode, obj.Manufacturer, obj.Id).Tables(0).Rows.Count = 1 Then
+                If dal.CheckForDealerProdCodeMfgCombination(obj.DealerId, obj.ExternalProdCode, obj.Manufacturer, obj.Id,obj.EffectiveDate).Tables(0).Rows.Count = 1 Then
                     Return False
                 Else
                     Return True
@@ -401,7 +431,28 @@ Public Class ProductCodeConversion
         End Function
 
     End Class
+    <AttributeUsage(AttributeTargets.Property Or AttributeTargets.Field)> _
+    public NotInheritable Class NonOverlappingProductCodeConversion 
+        Inherits ValidBaseAttribute
 
+        Public Sub New(ByVal fieldDisplayName As String)
+            MyBase.New(fieldDisplayName, Common.ErrorCodes.ERR_BO_OVERLAPPING_PRODUCT_CODE_CONVERSION)
+        End Sub
+        Public Overrides Function IsValid(objectToCheck As Object, objectToValidate As Object) As Boolean
+            Dim obj As ProductCodeConversion = CType(objectToValidate, ProductCodeConversion)
+            Dim dal As New ProductCodeConversionDAL
+          
+            If  obj.IsSaveNew Then
+                If dal.CheckOverlappingProductCodeConversion(obj.DealerId, obj.ExternalProdCode, obj.Manufacturer, obj.Id,obj.EffectiveDate).Tables(0).Rows.Count = 1 Then
+                        Return false
+                Else
+                        Return true
+                End If
+            Else 
+                  Return  true
+            end if
+        End Function
+    End Class
 
 #End Region
 

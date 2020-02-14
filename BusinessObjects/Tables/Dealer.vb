@@ -2492,6 +2492,22 @@ Public Class Dealer
             Me.SetValue(DealerDAL.COL_NAME_DISPLAY_DOB, Value)
         End Set
     End Property
+
+    <ValueMandatory("")>
+    Public Property AllowCertCancellationWithClaimXCd() As String
+        Get
+            CheckDeleted()
+            If Row(DealerDAL.COL_NAME_ALLOW_CERT_CNL_WITH_CLAIM_XCD) Is DBNull.Value Then
+                Return Nothing
+            Else
+                Return CType(Row(DealerDAL.COL_NAME_ALLOW_CERT_CNL_WITH_CLAIM_XCD), String)
+            End If
+        End Get
+        Set(ByVal Value As String)
+            CheckDeleted()
+            Me.SetValue(DealerDAL.COL_NAME_ALLOW_CERT_CNL_WITH_CLAIM_XCD, Value)
+        End Set
+    End Property
     <ValidateBasedOnCancelShipment("")>
     Public Property Validate_Address() As String
         Get

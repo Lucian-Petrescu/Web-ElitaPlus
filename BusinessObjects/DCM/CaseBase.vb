@@ -685,6 +685,15 @@ Public Class CaseBase
         End Try
     End Function
 
+    Public Shared Sub UpdateCaseFieldValues(ByVal caseId As Guid, ByRef caseFieldXcds() As String, ByRef caseFieldValues() As String)
+        Try
+            Dim dal As New CaseDAL
+            dal.UpdateCaseFieldValues(caseId, caseFieldXcds, caseFieldValues)
+        Catch ex As DataBaseAccessException
+            Throw New DataBaseAccessException(ex.ErrorType, ex)
+        End Try
+    End Sub
+
 #End Region
 #Region "CaseSearchDV"
     Public Class CaseSearchDv

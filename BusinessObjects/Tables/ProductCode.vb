@@ -1188,21 +1188,7 @@ Public Class ProductCode
             Me.SetValue(ProductCodeDAL.COL_NAME_REGISTERED_ITEMS_LIMIT, Value)
         End Set
     End Property
-    <ValueMandatory(""), RequiredConditionally("")>
-    Public Property InitialQuestionSet() As String
-        Get
-            CheckDeleted()
-            If Row(ProductCodeDAL.COL_NAME_INITIAL_QUESTION_SET) Is DBNull.Value Then
-                Return Nothing
-            Else
-                Return CType(Row(ProductCodeDAL.COL_NAME_INITIAL_QUESTION_SET), String)
-            End If
-        End Get
-        Set(ByVal Value As String)
-            CheckDeleted()
-            Me.SetValue(ProductCodeDAL.COL_NAME_INITIAL_QUESTION_SET, Value)
-        End Set
-    End Property
+
     Public Property _ClaimRecordingXcd() As String
         Get
             Return mClaimRecordingXcd
@@ -2329,25 +2315,7 @@ Public Class ProductCode
         End Function
     End Class
 
-    <AttributeUsage(AttributeTargets.Property Or AttributeTargets.Field)>
-    Public NotInheritable Class RequiredConditionally
-        Inherits ValidBaseAttribute
 
-        Public Sub New(ByVal fieldDisplayName As String)
-            MyBase.New(fieldDisplayName, Common.ErrorCodes.GUI_VALUE_MANDATORY_ERR)
-        End Sub
-
-        Public Overrides Function IsValid(ByVal valueToCheck As Object, ByVal objectToValidate As Object) As Boolean
-
-            Dim obj As ProductCode = CType(objectToValidate, ProductCode)
-            If Not String.IsNullOrEmpty(obj._ClaimRecordingXcd) AndAlso obj._ClaimRecordingXcd.Equals(Codes.DEALER_CLAIM_RECORDING_DYNAMIC_QUESTIONS) Then
-                If obj.InitialQuestionSet Is Nothing Or obj.InitialQuestionSet = "0" Then
-                    Return False
-                End If
-            End If
-            Return True
-        End Function
-    End Class
 
     'REQ-6289
     <AttributeUsage(AttributeTargets.Property Or AttributeTargets.Field)>

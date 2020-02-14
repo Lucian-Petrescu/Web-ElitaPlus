@@ -1649,21 +1649,28 @@ Namespace Certificates
                 EnableDisableControls(Me.moCertificateDetailPanel, True)
                 EnableDisableControls(Me.moItemsTabPanel_WRITE, True)
                 'Calling the method EnableDisableControls to disable the Premium Tab contents.
-                EnableDisableControls(Me.moPremiumInformationTabPanel_WRITE, True)
 
+                EnableDisableControls(Me.moPremiumInformationTabPanel_WRITE, True)
                 ' Start - REQ:5932
                 If Not Me.State.MyBO.CustomerId.Equals(Guid.Empty) Then
+                    If (Me.State.MyBO.CustomerFirstName Is Nothing) And (Me.State.MyBO.CustomerLastName Is Nothing) Then
+                        Me.moCustName1.Attributes("style") = "display: none"
+                        Me.moCustName2.Attributes("style") = "display: none"
+                        moAltCustLasName.Attributes("style") = "display: none"
+                        moAltCustFirstName.Attributes("style") = "display: none"
+                        Me.AdditionalCustomer.Attributes("style") = "display: none"
+                    Else
+                        Me.moCustName01.Attributes("style") = "display: none"
+                        Me.moCustName02.Attributes("style") = "display: none"
+                        'Me.moCustLegalInfo1.Attributes("style") = "display: none"
+                        Me.moAMLRegulations3.Attributes("style") = "display: none"
 
-                    Me.moCustName.Attributes("style") = "display: none"
-                    'Me.moCustLegalInfo1.Attributes("style") = "display: none"
-                    Me.moAMLRegulations3.Attributes("style") = "display: none"
-
-                    ControlMgr.SetVisibleControl(Me, moIncomeRangeLabel, False)
-                    ControlMgr.SetVisibleControl(Me, moIncomeRangeText, False)
-                    ControlMgr.SetVisibleControl(Me, cboIncomeRangeId, False)
-                    ControlMgr.SetVisibleControl(Me, moCUIT_CUILLabel, False)
-                    ControlMgr.SetVisibleControl(Me, moCUIT_CUILText, False)
-
+                        ControlMgr.SetVisibleControl(Me, moIncomeRangeLabel, False)
+                        ControlMgr.SetVisibleControl(Me, moIncomeRangeText, False)
+                        ControlMgr.SetVisibleControl(Me, cboIncomeRangeId, False)
+                        ControlMgr.SetVisibleControl(Me, moCUIT_CUILLabel, False)
+                        ControlMgr.SetVisibleControl(Me, moCUIT_CUILText, False)
+                    End If
                 Else
                     Me.moCustName1.Attributes("style") = "display: none"
                     Me.moCustName2.Attributes("style") = "display: none"
@@ -1840,35 +1847,42 @@ Namespace Certificates
                 'REQ-1255 - END
                 ' Start - REQ:5932
                 If Not Me.State.MyBO.CustomerId.Equals(Guid.Empty) Then
-
-                    Me.moCustName.Attributes("style") = "display: none"
-                    'Me.moCustLegalInfo1.Attributes("style") = "display: none"
-                    Me.moAMLRegulations3.Attributes("style") = "display: none"
-
-                    ControlMgr.SetVisibleControl(Me, moIncomeRangeLabel, False)
-                    ControlMgr.SetVisibleControl(Me, moIncomeRangeText, False)
-                    ControlMgr.SetVisibleControl(Me, cboIncomeRangeId, False)
-                    ControlMgr.SetVisibleControl(Me, moCUIT_CUILLabel, False)
-                    ControlMgr.SetVisibleControl(Me, moCUIT_CUILText, False)
-
-                    'To Check if Transfer Of Ownership flag is true, then disable Customer name and TAX ID
-                    Dim objComp As New Company(Me.State.MyBO.CompanyId)
-                    Dim strTranferOfOwnership As String
-                    If Not objComp.UseTransferOfOwnership.Equals(Guid.Empty) Then
-                        strTranferOfOwnership = LookupListNew.GetCodeFromId(LookupListNew.GetYesNoLookupList(ElitaPlusIdentity.Current.ActiveUser.LanguageId), objComp.UseTransferOfOwnership)
+                    If (Me.State.MyBO.CustomerFirstName Is Nothing) And (Me.State.MyBO.CustomerLastName Is Nothing) Then
+                        Me.moCustName1.Attributes("style") = "display: none"
+                        Me.moCustName2.Attributes("style") = "display: none"
+                        moAltCustLasName.Attributes("style") = "display: none"
+                        moAltCustFirstName.Attributes("style") = "display: none"
+                        Me.AdditionalCustomer.Attributes("style") = "display: none"
                     Else
-                        strTranferOfOwnership = String.Empty
-                    End If
-                    If strTranferOfOwnership = YES And Me.State.MyBO.StatusCode = CERT_STATUS Then
-                        ControlMgr.SetEnableControl(Me, moTaxIdText, False)
-                        ControlMgr.SetEnableControl(Me, moCustomerFirstNameText, False)
-                        ControlMgr.SetEnableControl(Me, moCustomerMiddleNameText, False)
-                        ControlMgr.SetEnableControl(Me, moCustomerLastNameText, False)
-                        ControlMgr.SetEnableControl(Me, moAlternativeLastNameText, False)
-                        ControlMgr.SetEnableControl(Me, moAlternativeFirstNameText, False)
-                        ControlMgr.SetEnableControl(Me, moCorporateNameText, False)
-                    End If
+                        Me.moCustName01.Attributes("style") = "display: none"
+                        Me.moCustName02.Attributes("style") = "display: none"
+                        'Me.moCustLegalInfo1.Attributes("style") = "display: none"
+                        Me.moAMLRegulations3.Attributes("style") = "display: none"
 
+                        ControlMgr.SetVisibleControl(Me, moIncomeRangeLabel, False)
+                        ControlMgr.SetVisibleControl(Me, moIncomeRangeText, False)
+                        ControlMgr.SetVisibleControl(Me, cboIncomeRangeId, False)
+                        ControlMgr.SetVisibleControl(Me, moCUIT_CUILLabel, False)
+                        ControlMgr.SetVisibleControl(Me, moCUIT_CUILText, False)
+
+                        'To Check if Transfer Of Ownership flag is true, then disable Customer name and TAX ID
+                        Dim objComp As New Company(Me.State.MyBO.CompanyId)
+                        Dim strTranferOfOwnership As String
+                        If Not objComp.UseTransferOfOwnership.Equals(Guid.Empty) Then
+                            strTranferOfOwnership = LookupListNew.GetCodeFromId(LookupListNew.GetYesNoLookupList(ElitaPlusIdentity.Current.ActiveUser.LanguageId), objComp.UseTransferOfOwnership)
+                        Else
+                            strTranferOfOwnership = String.Empty
+                        End If
+                        If strTranferOfOwnership = YES And Me.State.MyBO.StatusCode = CERT_STATUS Then
+                            ControlMgr.SetEnableControl(Me, moTaxIdText, False)
+                            ControlMgr.SetEnableControl(Me, moCustomerFirstNameText, False)
+                            ControlMgr.SetEnableControl(Me, moCustomerMiddleNameText, False)
+                            ControlMgr.SetEnableControl(Me, moCustomerLastNameText, False)
+                            ControlMgr.SetEnableControl(Me, moAlternativeLastNameText, False)
+                            ControlMgr.SetEnableControl(Me, moAlternativeFirstNameText, False)
+                            ControlMgr.SetEnableControl(Me, moCorporateNameText, False)
+                        End If
+                    End If
                 Else
                     Me.moCustName1.Attributes("style") = "display: none"
                     Me.moCustName2.Attributes("style") = "display: none"
@@ -4367,7 +4381,6 @@ Namespace Certificates
                         ControlMgr.SetVisibleControl(Me, moOutstandingBalanceDueDateLabel, False)
                         ControlMgr.SetVisibleControl(Me, moOutstandingBalanceDueDateText, False)
                     End If
-
                     Me.PopulateControlFromBOProperty(Me.moFinanceDateText, .FinanceDate)
                     Me.PopulateControlFromBOProperty(Me.moDownPaymentText, .DownPayment, Me.DECIMAL_FORMAT)
                     Me.PopulateControlFromBOProperty(Me.moAdvancePaymentText, .AdvancePayment, Me.DECIMAL_FORMAT)
@@ -6583,15 +6596,9 @@ Namespace Certificates
                     e.Item.Cells(Me.GRID_COL_ENDORSE_TYPE).Text = dvRow(CertEndorse.EndorseSearchDV.COL_ENDORSEMENT_TYPE).ToString
                     e.Item.Cells(Me.GRID_COL_ENDORSE_ENDORSEMENT_REASON).Text = dvRow(CertEndorse.EndorseSearchDV.COL_ENDORSEMENT_REASON).ToString
 
-                    If (String.IsNullOrWhiteSpace(dvRow(CertEndorse.EndorseSearchDV.COL_EFFECTIVE_DATE).ToString) = False) Then
-                        Dim effectiveDate As Date = CType(dvRow(CertEndorse.EndorseSearchDV.COL_EFFECTIVE_DATE), Date)
-                        e.Item.Cells(Me.GRID_COL_ENDORSE_EFFECTIVE_DATE).Text = GetLongDateFormattedString(effectiveDate)
-                    End If
-                    If (String.IsNullOrWhiteSpace(dvRow(CertEndorse.EndorseSearchDV.COL_EXPIRATION_DATE).ToString) = False) Then
-                        Dim expirationDate As Date = CType(dvRow(CertEndorse.EndorseSearchDV.COL_EXPIRATION_DATE), Date)
-                        e.Item.Cells(Me.GRID_COL_ENDORSE_EXPIRATION_DATE).Text = GetLongDateFormattedString(expirationDate)
-                    End If
+                    e.Item.Cells(Me.GRID_COL_ENDORSE_EFFECTIVE_DATE).Text = dvRow(CertEndorse.EndorseSearchDV.COL_EFFECTIVE_DATE).ToString
 
+                    e.Item.Cells(Me.GRID_COL_ENDORSE_EXPIRATION_DATE).Text = dvRow(CertEndorse.EndorseSearchDV.COL_EXPIRATION_DATE).ToString
                 End If
             Catch ex As Exception
                 Me.HandleErrors(ex, MasterPage.MessageController)
@@ -7915,14 +7922,14 @@ Namespace Certificates
                     strProcessedDate = strProcessedDate.Replace("&nbsp;", "")
                     If String.IsNullOrEmpty(strProcessedDate) = False Then
                         Dim tempProcessedDate = Convert.ToString(e.Row.Cells(CertHistoryGridColProcessedDateIdx).Text.Trim())
-                        Dim formattedProcessedDate = GetDateFormattedString(tempProcessedDate)
+                        Dim formattedProcessedDate = GetDateFormattedStringNullable(tempProcessedDate)
                         e.Row.Cells(CertHistoryGridColProcessedDateIdx).Text = Convert.ToString(formattedProcessedDate)
                     End If
                     Dim strStatusChangeDate As String = Convert.ToString(e.Row.Cells(CertHistoryGridColStatusChangeDateIdx).Text)
                     strStatusChangeDate = strStatusChangeDate.Replace("&nbsp;", "")
                     If String.IsNullOrEmpty(strStatusChangeDate) = False Then
                         Dim tempStatusChangeDate = Convert.ToString(e.Row.Cells(CertHistoryGridColStatusChangeDateIdx).Text.Trim())
-                        Dim formattedStatusChangeDate = GetDateFormattedString(tempStatusChangeDate)
+                        Dim formattedStatusChangeDate = GetDateFormattedStringNullable(tempStatusChangeDate)
                         e.Row.Cells(CertHistoryGridColStatusChangeDateIdx).Text = Convert.ToString(formattedStatusChangeDate)
                     End If
                 End If
