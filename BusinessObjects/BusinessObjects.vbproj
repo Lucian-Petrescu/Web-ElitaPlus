@@ -153,8 +153,9 @@
     <Reference Include="Assurant.Elita.CommonConfiguration, Version=2.1.9.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\Assurant.Elita.CommonConfiguration.2.1.9\lib\net46\Assurant.Elita.CommonConfiguration.dll</HintPath>
     </Reference>
-    <Reference Include="Assurant.Elita.Configuration">
-      <HintPath>..\packages\Assurant.Elita.Configuration.4.0.2\lib\net462\Assurant.Elita.Configuration.dll</HintPath>
+    <Reference Include="Assurant.Elita.Configuration, Version=5.0.1.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Assurant.Elita.Configuration.5.0.1\lib\net462\Assurant.Elita.Configuration.dll</HintPath>
+      <Private>True</Private>
     </Reference>
     <Reference Include="Assurant.Elita.Logging.Interface, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\Assurant.Elita.Logging.Interface.1.0.0\lib\netstandard2.0\Assurant.Elita.Logging.Interface.dll</HintPath>
@@ -182,8 +183,7 @@
       <HintPath>..\packages\Microsoft.Azure.KeyVault.Core.1.0.0\lib\net40\Microsoft.Azure.KeyVault.Core.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.Web.Services3, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\..\..\Program Files (x86)\Microsoft WSE\v3.0\Microsoft.Web.Services3.dll</HintPath>
+      <HintPath>..\packages\Microsoft.Web.Services3.3.0.0.0\lib\net20\Microsoft.Web.Services3.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.WindowsAzure.Storage, Version=9.3.2.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>..\packages\WindowsAzure.Storage.9.3.3\lib\net45\Microsoft.WindowsAzure.Storage.dll</HintPath>
