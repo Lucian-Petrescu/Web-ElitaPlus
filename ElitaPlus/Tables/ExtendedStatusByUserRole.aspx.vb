@@ -163,14 +163,14 @@ Public Class ExtendedStatusByUserRole
     'xyAxisValue e.g BRZ-IHQ,ARG-IHQ
     <System.Web.Services.WebMethod()>
     <ScriptMethod(ResponseFormat:=ResponseFormat.Json)>
-    Public Shared Function SaveGrants(ByVal xAxisName As String, ByVal yAxisName As String, ByVal zAxisName As String, ByVal xyAxisValue As String, ByVal zAxisValue As String) As Object
+    Public Shared Function SaveGrants(ByVal xAxisName As String, ByVal yAxisName As String, ByVal zAxisName As String, ByVal xyAxisValue As String, ByVal zAxisValue As Guid) As Object
         Try
             Dim xmlDoc As XmlDocument = GetGrantData()
             'Dim fileName As String = HttpContext.Current.Server.MapPath("Data.xml")
             'Dim xmlDoc As New XmlDocument()
             'xmlDoc.Load(fileName)
 
-            Dim grantsNode As XmlNodeList = xmlDoc.SelectNodes("RoleCompanyStatus/Grants/Grant[" & zAxisName & "Id = '" & zAxisValue & "']")
+            Dim grantsNode As XmlNodeList = xmlDoc.SelectNodes("RoleCompanyStatus/Grants/Grant[" & zAxisName & "Id = '" & zAxisValue.ToString() & "']")
 
             Dim newGrants() As String = xyAxisValue.Split(New Char() {","})
             Dim newGrantList As New List(Of String)
@@ -181,14 +181,16 @@ Public Class ExtendedStatusByUserRole
 
                     Dim axisValues As New Dictionary(Of String, String)
                     Dim grantInfo() As String = grant.Split(New Char() {"-"})
+                    Dim grantInfo_xAxis As String = grantInfo(0)
+                    Dim grantInfo_yAxis As String = grantInfo(1)
 
-                    Dim xAxisNode As XmlNode = xmlDoc.SelectSingleNode(GetNodePath(xAxisName) & "[Code='" & grantInfo(0) & "']/Id")
+                    Dim xAxisNode As XmlNode = xmlDoc.SelectSingleNode(GetNodePath(xAxisName) & "[Code='" & grantInfo_xAxis & "']/Id")
                     Dim xAxisId As String = xAxisNode.InnerText
-                    Dim yAxisNode As XmlNode = xmlDoc.SelectSingleNode(GetNodePath(yAxisName) & "[Code='" & grantInfo(1) & "']/Id")
+                    Dim yAxisNode As XmlNode = xmlDoc.SelectSingleNode(GetNodePath(yAxisName) & "[Code='" & grantInfo_yAxis & "']/Id")
                     Dim yAxisId As String = yAxisNode.InnerText
                     'Dim zAxisNode As XmlNode = xmlDoc.SelectSingleNode(GetNodePath(zAxisName) & "[Id='" & zAxisValue & "']/Id")
                     'Dim zAxisId As String = zAxisNode.InnerText
-                    Dim zAxisId As String = zAxisValue
+                    Dim zAxisId As String = zAxisValue.ToString()
 
                     axisValues.Add(xAxisName, xAxisId)
                     axisValues.Add(yAxisName, yAxisId)
@@ -201,7 +203,7 @@ Public Class ExtendedStatusByUserRole
     axisValues.Item("Role") & "' and ExtendedStatusId = '" & axisValues.Item("ExtendedStatus") & "']")
                     'new grant
                     If grantExist Is Nothing Then
-           
+
 
                         Dim bo As New ClaimStatusByUserRole()
                         bo.CompanyId = New Guid(axisValues.Item("Company"))
