@@ -5,7 +5,7 @@ Public Class commonUploadDAL
 
 #Region "Constructors"
     Public Sub New()
-        MyBase.new()
+        MyBase.New()
     End Sub
 
 #End Region
@@ -147,6 +147,29 @@ Public Class commonUploadDAL
         End Try
     End Sub
 
+    Public Function getScreenHelpData(FormName As String)
+        Dim sqlStmt As String
+        Try
+            Dim inParameters As New Generic.List(Of DBHelper.DBHelperParameter)
+            Dim param As DBHelper.DBHelperParameter
+
+            sqlStmt = Me.Config("/SQL/PROCESS_SCREEN_HELP")
+            param = New DBHelper.DBHelperParameter("pi_formname", FormName)
+
+            sqlStmt = sqlStmt.Replace(":pi_formname", FormName)
+            inParameters.Add(param)
+
+            Dim ds As DataSet
+            ds = DBHelper.Fetch(sqlStmt, "elp_screen_help")
+
+            Dim helpData As String = ds.Tables(0).Rows(0).Item(0).ToString()
+            Return helpData
+
+        Catch ex As Exception
+            Throw New DataBaseAccessException(DataBaseAccessException.DatabaseAccessErrorType.ReadErr, ex)
+        End Try
+    End Function
+
     Public Sub ExtractReportFile(strUploadType As String, ByVal strUserEmailAddress As String, ByVal strCompanyGroupCode As String, ByVal extractFile As String)
         Dim sqlStmt As String
         Try
@@ -277,6 +300,18 @@ Public Class commonUploadDAL
 
             ElseIf String.Equals(strUploadType, "CANCELRENAME") Then
                 sqlStmt = Me.Config("/SQL/PROCESS_CANCEL_AND_RENAME_FILE")
+
+
+                param = New DBHelper.DBHelperParameter("pi_Uploadtype", strUploadType)
+                inParameters.Add(param)
+
+                param = New DBHelper.DBHelperParameter("pi_User", strUser)
+                inParameters.Add(param)
+
+                '//Changes Here(Dhruv) 
+
+            ElseIf String.Equals(strUploadType, "CLAIMUPDATE") Then
+                sqlStmt = Me.Config("/SQL/PROCESS_UPDATE_CLAIM")
 
 
                 param = New DBHelper.DBHelperParameter("pi_Uploadtype", strUploadType)

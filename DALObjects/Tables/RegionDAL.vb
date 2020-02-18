@@ -17,6 +17,7 @@ Public Class RegionDAL
     Public Const COL_NAME_ACCOUNTING_CODE = "accounting_code"
     Public Const COL_NAME_COMPANY_ID = "company_id"
     Public Const COL_NAME_INVOICE_TAX_GL = "invoicetax_gl_acct"
+    Public Const COL_NAME_EXTENDED_CODE = "extended_code"
 
     Private Const DSNAME As String = "LIST"
 

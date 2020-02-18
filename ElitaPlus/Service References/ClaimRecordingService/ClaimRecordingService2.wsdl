@@ -800,19 +800,37 @@
             <xs:sequence>
               <xs:element xmlns:q2="http://assurant.com/Elita/ClaimFulfillment/Shared/Data" name="Options" nillable="true" type="q2:ArrayOfFulfillmentOption" />
               <xs:element xmlns:q3="http://schemas.microsoft.com/2003/10/Serialization/Arrays" minOccurs="0" name="QuestionsByStage" nillable="true" type="q3:ArrayOfKeyValueOfstringArrayOfQuestionKjP37BP8" />
+              <xs:element minOccurs="0" name="DynamicFulFillmentResponse" nillable="true" type="tns:DynamicFulFillmentResponse" />
             </xs:sequence>
           </xs:extension>
         </xs:complexContent>
       </xs:complexType>
       <xs:element name="FulfillmentOptionsResponse" nillable="true" type="tns:FulfillmentOptionsResponse" />
+      <xs:complexType name="DynamicFulFillmentResponse">
+        <xs:complexContent mixed="false">
+          <xs:extension xmlns:q4="http://elita.assurant.com/Elita/Claim/RecordingService/DataContracts" base="q4:BaseClaimRecordingResponse">
+            <xs:sequence>
+              <xs:element name="SourceSystem" nillable="true" type="xs:string" />
+              <xs:element name="AccessToken" nillable="true" type="xs:string" />
+              <xs:element name="SubscriptionKey" nillable="true" type="xs:string" />
+              <xs:element name="ApiKey" nillable="true" type="xs:string" />
+              <xs:element name="BaseAddresss" nillable="true" type="xs:string" />
+              <xs:element name="CssUri" nillable="true" type="xs:string" />
+              <xs:element name="ScriptUri" nillable="true" type="xs:string" />
+              <xs:element name="IsLoadError" type="xs:boolean" />
+            </xs:sequence>
+          </xs:extension>
+        </xs:complexContent>
+      </xs:complexType>
+      <xs:element name="DynamicFulFillmentResponse" nillable="true" type="tns:DynamicFulFillmentResponse" />
       <xs:complexType name="LogisticStagesRequest">
         <xs:complexContent mixed="false">
-          <xs:extension xmlns:q4="http://elita.assurant.com/Elita/Claim/RecordingService/DataContracts" base="q4:BaseClaimRecordingRequest">
+          <xs:extension xmlns:q5="http://elita.assurant.com/Elita/Claim/RecordingService/DataContracts" base="q5:BaseClaimRecordingRequest">
             <xs:sequence>
-              <xs:element xmlns:q5="http://assurant.com/Elita/ClaimFulfillment/Shared/Data" name="Stages" nillable="true" type="q5:ArrayOfLogisticStage" />
+              <xs:element xmlns:q6="http://assurant.com/Elita/ClaimFulfillment/Shared/Data" name="Stages" nillable="true" type="q6:ArrayOfLogisticStage" />
               <xs:element minOccurs="0" name="QuestionSetCode" nillable="true" type="xs:string" />
               <xs:element minOccurs="0" name="QuestionVersion" type="xs:int" />
-              <xs:element minOccurs="0" name="Questions" nillable="true" type="q4:ArrayOfQuestion" />
+              <xs:element minOccurs="0" name="Questions" nillable="true" type="q5:ArrayOfQuestion" />
             </xs:sequence>
           </xs:extension>
         </xs:complexContent>
@@ -1320,7 +1338,7 @@
           <xs:element minOccurs="0" name="ClaimSummary" nillable="true" type="tns:ArrayOfClaimInfo" />
           <xs:element minOccurs="0" name="ClaimWaitingPeriod" type="xs:int" />
           <xs:element minOccurs="0" name="ContractSigned" type="xs:boolean" />
-          <xs:element minOccurs="0" name="CoverageSummary" nillable="true" type="tns:ArrayOfCertificateItemCoverage" />
+          <xs:element minOccurs="0" name="CoverageSummary" nillable="true" type="tns:ArrayOfCertificateItemCoverage" />          
           <xs:element minOccurs="0" name="ItemEffectiveDate" nillable="true" type="xs:dateTime" />
           <xs:element minOccurs="0" name="NumberOfClaimsAllowed" type="xs:int" />
           <xs:element minOccurs="0" name="NumberOfRepairClaimsAllowed" type="xs:int" />
@@ -1513,7 +1531,7 @@
           <xs:element minOccurs="0" maxOccurs="unbounded" name="CertificateItemCoverage" nillable="true" type="tns:CertificateItemCoverage" />
         </xs:sequence>
       </xs:complexType>
-      <xs:element name="ArrayOfCertificateItemCoverage" nillable="true" type="tns:ArrayOfCertificateItemCoverage" />
+      <xs:element name="ArrayOfCertificateItemCoverage" nillable="true" type="tns:ArrayOfCertificateItemCoverage" />     
     </xs:schema>
   </wsdl:types>
   <wsdl:message name="IClaimRecordingService_BeginClaim_InputMessage">

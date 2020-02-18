@@ -36,6 +36,8 @@ Public Class CaseDAL
     Public Const ParINameCertId As String = "pi_cert_id"
     Public Const ParINameLastActivityDate As String = "pi_last_activity_date"
     Public Const ParINameCaseCloseDate As String = "pi_case_close_date"
+    Public Const ParINameCaseFieldXcds As String = "pi_case_field_xcds"
+    Public Const ParINameCaseFieldValues As String = "pi_case_field_values"
 
 
     Public Const PoCursorCase As Integer = 0
@@ -464,6 +466,42 @@ Public Class CaseDAL
             Throw New DataBaseAccessException(DataBaseAccessException.DatabaseAccessErrorType.ReadErr, ex)
         End Try
     End Function
+
+    Public Sub UpdateCaseFieldValues(ByVal caseId As Guid, ByRef caseFieldXcds() As String, ByRef caseFieldValues() As String)
+        Using command As OracleCommand = CreateCommand("elp_case_utility.UpdateCaseFieldValues", CommandType.StoredProcedure)
+            Dim caseFieldXcdsParameter As New OracleParameter
+            Dim caseFieldValuesParameter As New OracleParameter
+
+            With caseFieldXcdsParameter
+                .ParameterName = ParINameCaseFieldXcds
+                .OracleDbType = OracleDbType.Varchar2
+                .CollectionType = OracleCollectionType.PLSQLAssociativeArray
+                .Value = caseFieldXcds
+                .Size = caseFieldXcds.Length
+                .Direction = ParameterDirection.Input
+            End With
+
+            With caseFieldValuesParameter
+                .ParameterName = ParINameCaseFieldValues
+                .OracleDbType = OracleDbType.Varchar2
+                .CollectionType = OracleCollectionType.PLSQLAssociativeArray
+                .Value = caseFieldValues
+                .Size = caseFieldValues.Length
+                .Direction = ParameterDirection.Input
+            End With
+
+            command.BindByName = True
+            command.AddParameter(ParINameCaseId, OracleDbType.Raw, 16, caseId, ParameterDirection.Input)
+            command.Parameters.Add(caseFieldXcdsParameter)
+            command.Parameters.Add(caseFieldValuesParameter)
+
+            Try
+                OracleDbHelper.ExecuteNonQuery(command)
+            Catch ex As Exception
+                Throw New DataBaseAccessException(DataBaseAccessException.DatabaseAccessErrorType.ReadErr, ex)
+            End Try
+        End Using
+    End Sub
 
 #End Region
 

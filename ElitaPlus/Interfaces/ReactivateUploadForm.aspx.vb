@@ -8,6 +8,7 @@ Public Class ReactivateUploadForm
     Public Const URL As String = "Interfaces/ReactivateUploadForm.aspx"
     'Public Const PAGETITLE As String = "REACTIVATEUPLOADTYPE"
     Public Const PAGETITLE As String = "UPLOADTYPE"
+    Public Const FORMCODE As String = "REACTIVATEUPLOADFORM"
     Public Const PAGETAB As String = "INTERFACES"
 #End Region
 
@@ -174,7 +175,10 @@ Public Class ReactivateUploadForm
         Dim ErrList As New Collections.Generic.List(Of String)
 
         panelResult.Visible = False
-        btnExtract_Report.Visible = True
+        lblHelpText.Visible = False
+        If ddlUploadType.SelectedValue <> "CLAIMUPDATE" Then
+            btnExtract_Report.Visible = True
+        End If
         State.extractFilename = InputFile.PostedFile.FileName.Trim
         Try
             If InputFile.PostedFile.FileName.Trim = String.Empty Then
@@ -232,7 +236,6 @@ Public Class ReactivateUploadForm
     End Sub
 
     Protected Sub btnExtract_Report_Click(sender As Object, e As EventArgs) Handles btnExtract_Report.Click
-
         Dim strUploadType As String
         Dim extractFile As String
         strUploadType = ddlUploadType.SelectedValue.Trim
@@ -249,13 +252,16 @@ Public Class ReactivateUploadForm
                 Me.DisplayMessage(Message.MSG_REPORT_REQUEST_IS_GENERATED, "", Me.MSG_BTN_OK, Me.MSG_TYPE_ALERT, , True)
             End If
 
-
         Catch ex As Exception
             HandleErrors(ex, Me.MasterPage.MessageController)
         End Try
     End Sub
-#End Region
 
+    Protected Sub btnHelp_Click(sender As Object, e As EventArgs) Handles btnHelp.Click
+        lblHelpText.Text = commonUpload.getScreenHelp(FORMCODE)
+        lblHelpText.Visible = True
+    End Sub
+#End Region
 
 #End Region
 

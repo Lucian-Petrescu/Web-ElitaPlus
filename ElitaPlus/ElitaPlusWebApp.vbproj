@@ -167,7 +167,7 @@
       <Private>True</Private>
     </Reference>
     <Reference Include="Assurant.Elita.AddressValidationProvider, Version=1.0.1.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Assurant.Elita.AddressvalidationProvider.1.0.2\lib\net46\Assurant.Elita.AddressValidationProvider.dll</HintPath>
+      <HintPath>..\packages\Assurant.Elita.AddressvalidationProvider.1.0.3\lib\net46\Assurant.Elita.AddressValidationProvider.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="Assurant.Elita.Base.DataAccess">
@@ -872,6 +872,13 @@
     </Compile>
     <Compile Include="Claims\UserControlConsequentialDamage.ascx.vb">
       <DependentUpon>UserControlConsequentialDamage.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Common\DynamicFulfillmentUI.ascx.designer.vb">
+      <DependentUpon>DynamicFulfillmentUI.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="Common\DynamicFulfillmentUI.ascx.vb">
+      <DependentUpon>DynamicFulfillmentUI.ascx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="Common\ServiceCenterSelected.vb" />
@@ -5672,6 +5679,7 @@
     <Content Include="Claims\ClaimRecordingForm.aspx" />
     <Content Include="Claims\ClaimReimbursementForm.aspx" />
     <Content Include="Claims\UserControlConsequentialDamage.ascx" />
+    <Content Include="Common\DynamicFulfillmentUI.ascx" />
     <Content Include="Common\UserControlCallerInfo.ascx" />
     <Content Include="Common\UserControlCaseHeaderInfo.ascx" />
     <Content Include="Common\UserControlDeliverySlot.ascx" />
@@ -5707,16 +5715,20 @@
     <Content Include="Interfaces\VendorInventoryReconWrkForm.aspx" />
     <Content Include="Navigation\fonts\fontawesome-webfont.svg" />
     <Content Include="Navigation\images\Assurant_horz_logo_RGB.png" />
+    <Content Include="Navigation\images\countries\new2_AustraliaSplash.jpg" />
     <Content Include="Navigation\images\countries\new2_DomicanRepublicSplash.jpg" />
     <Content Include="Navigation\images\countries\new2_FranceSplash.jpg" />
     <Content Include="Navigation\images\countries\new2_HungarySplash.jpg" />
     <Content Include="Navigation\images\countries\new2_JapanSplash.jpg" />
+    <Content Include="Navigation\images\countries\new2_NewZealandSplash.jpg" />
     <Content Include="Navigation\images\countries\new2_PortugalSplash.jpg" />
     <Content Include="Navigation\images\countries\new2_SouthKoreaSplash.jpg" />
+    <Content Include="Navigation\images\countries\new_AustraliaFlag.gif" />
     <Content Include="Navigation\images\countries\new_DominicanRepublicFlag.gif" />
     <Content Include="Navigation\images\countries\new_FranceFlag.gif" />
     <Content Include="Navigation\images\countries\new_HungaryFlag.gif" />
     <Content Include="Navigation\images\countries\new_JapanFlag.gif" />
+    <Content Include="Navigation\images\countries\new_NewZealandFlag.gif" />
     <Content Include="Navigation\images\countries\new_PortugalFlag.gif" />
     <Content Include="Navigation\images\countries\new_SouthKoreaFlag.gif" />
     <Content Include="Navigation\images\flags\do_Flag.png" />
@@ -5763,6 +5775,8 @@
     <Content Include="Reports\RequestReportForm.aspx" />
     <Content Include="Reports\ServiceOrder_AAU.xslt" />
     <Content Include="Reports\ServiceOrder_ANZ.xslt" />
+    <Content Include="Reports\ServiceOrder_DE_AAU.xslt" />
+    <Content Include="Reports\ServiceOrder_EW_AAU.xslt" />
     <Content Include="Reports\SummaryPaymentByCertificate.aspx" />
     <Content Include="Reports\UpgradeReconciliationReportForm.aspx" />
     <Content Include="Reports\TIMMCertificateExtractForm.aspx" />
@@ -5795,6 +5809,7 @@
     <Content Include="Navigation\fonts\fontawesome-webfont.woff2" />
     <Content Include="Navigation\fonts\FontAwesome.otf" />
     <None Include="Scripts\jquery-1.4.4-vsdoc.js" />
+    <Content Include="Scripts\df_ui.js" />
     <Content Include="Scripts\jquery-1.4.4.js" />
     <Content Include="Scripts\jquery-1.4.4.min.js" />
     <None Include="Scripts\jquery-3.1.1.intellisense.js" />
@@ -5976,6 +5991,7 @@
     <None Include="Service References\ClaimFulfillmentWebAppGatewayService\WebAppGateway.wsdl" />
     <None Include="Service References\ClaimFulfillmentWebAppGatewayService\WebAppGateway1.wsdl" />
     <None Include="Service References\ClaimRecordingService\ClaimRecordingService1.wsdl" />
+    <None Include="Service References\ClaimRecordingService\ClaimRecordingService3.wsdl" />
     <None Include="Service References\ClaimRecordingService\configuration91.svcinfo" />
     <None Include="Service References\ClaimRecordingService\configuration.svcinfo" />
     <None Include="Service References\ClaimRecordingService\Reference.svcmap">

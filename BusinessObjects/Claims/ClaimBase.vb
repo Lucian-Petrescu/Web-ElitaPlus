@@ -5,6 +5,7 @@ Imports Assurant.ElitaPlus.Business
 Imports Assurant.ElitaPlus.DataEntities
 Imports Assurant.ElitaPlus.DataAccess
 Imports Assurant.ElitaPlus.DataAccessInterface
+Imports Assurant.Common
 
 ''' <summary>
 ''' Claim Base class acts as base class for Creating the Claim Objects. The class encapsulates common properties from SingleAuthorization Claim and 
@@ -571,6 +572,25 @@ Public MustInherit Class ClaimBase
         Set(ByVal Value As String)
             CheckDeleted()
             Me.SetValue(ClaimDAL.COL_NAME_FULFILMENT_METHOD_XCD, Value)
+        End Set
+    End Property
+    Public Property FulfillmentProviderType() As FulfillmentProviderType
+        Get
+            CheckDeleted()
+            If Row(ClaimDAL.COL_NAME_FULFILLMENT_PROVIDER_TYP) Is DBNull.Value Then
+                Return Nothing
+            Else
+                Dim result As FulfillmentProviderType
+                If [Enum].TryParse(Of FulfillmentProviderType)(Row(ClaimDAL.COL_NAME_FULFILLMENT_PROVIDER_TYP).ToString().GetXcdEnum(Of FulfillmentProviderType)(), result) Then
+                    Return result
+                Else
+                    Return FulfillmentProviderType.Elita
+                End If
+            End If
+        End Get
+        Set(ByVal Value As FulfillmentProviderType)
+            CheckDeleted()
+            Me.SetValue(ClaimDAL.COL_NAME_FULFILLMENT_PROVIDER_TYP, Value)
         End Set
     End Property
     Public Property BankInfoId() As Guid

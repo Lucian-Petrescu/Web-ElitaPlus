@@ -402,7 +402,7 @@ Namespace Tables
         Private Const MAX_REGISTRATIONS_ALLOWED_PROPERTY As String = "MaxRegistrationsAllowed"
         Private Const LIST_FOR_DEVICE_GROUP_PROPERTY As String = "ListForDeviceGroups"
         'REQ
-        Private Const INITIAL_QUESTION_SET_PROPERTY As String = "InitialQuestionSet"
+
         Private Const CLAIM_LIMIT_PER_REG_ITEM As String = "ClaimLimitPerRegisteredItem"
         Private Const CANCELLATION_WITHIN_TERM_PROPERTY As String = "CancellationWithinTerm"
         Private Const EXPIRATION_NOTIFICATION_DAYS_PROPERTY As String = "ExpirationNotificationDays"
@@ -703,7 +703,7 @@ Namespace Tables
                 If Not Me.IsPostBack Then
                     Me.AddLabelDecorations(TheProductCode)
                 End If
-                PopulateInitialQuestionSetSelectedDealer()
+
 
             Catch ex As Exception
                 Me.HandleErrors(ex, Me.MasterPage.MessageController)
@@ -985,7 +985,7 @@ Namespace Tables
             cboProductEquipmentValidation.ClearSelection()
             cboAllowRegisteredItems.ClearSelection()
             ClearList(cboListForDeviceGroup)
-            cboInitialQuestionSet.ClearSelection()
+
             'REQ-6002
             ClearList(cboUpdateReplaceRegItemsId)
 
@@ -1293,13 +1293,6 @@ Namespace Tables
 
                 'REQ
                 'BindListTextToDataView(Me.cboInitialQuestionSet, LookupListNew.GetDcmQuestionSetLookupList(), "DESCRIPTION", "code", True)
-                Dim DcmQuestionSet As ListItem() = CommonConfigManager.Current.ListManager.GetList("DcmQuestionSet", Thread.CurrentPrincipal.GetLanguageCode())
-                cboInitialQuestionSet.Populate(DcmQuestionSet, New PopulateOptions() With
-                                                      {
-                                                        .AddBlankItem = True,
-                                                        .BlankItemValue = "0",
-                                                        .ValueFunc = AddressOf .GetCode
-                                                       })
 
                 'Me.cboCancellationWithinTerm.PopulateOld("YESNO", ListValueType.Description, ListValueType.ExtendedCode, PopulateBehavior.AddBlankListItem, String.Empty, ListValueType.Description)
                 cboCancellationWithinTerm.Populate(yesNoLkl, New PopulateOptions() With
@@ -1400,7 +1393,7 @@ Namespace Tables
                         BindSelectItem(.AllowRegisteredItems, cboAllowRegisteredItems)
                         BindSelectItem(Nothing, cboListForDeviceGroup)
                         'REQ
-                        BindSelectItem(Nothing, cboInitialQuestionSet)
+
                         'REQ-6289
                         BindSelectItem(Nothing, moProdLimitApplicableToXCDDrop)
                         'REQ-6289-END
@@ -1608,7 +1601,7 @@ Namespace Tables
                         BindSelectItem(.ListForDeviceGroups.ToString, cboListForDeviceGroup)
                         Me.PopulateControlFromBOProperty(Me.moUpgFeeText, .UpgradeFee)
                         'REQ
-                        BindSelectItem(.InitialQuestionSet, cboInitialQuestionSet)
+
                         'REQ-6002
                         BindSelectItem(.UpdateReplaceRegItemsId.ToString, cboUpdateReplaceRegItemsId)
                         Me.PopulateControlFromBOProperty(Me.txtRegisteredItemsLimit, .RegisteredItemsLimit)
@@ -1779,7 +1772,7 @@ Namespace Tables
                 Me.PopulateBOProperty(TheProductCode, "MaxRegistrationsAllowed", Me.moMaxRegistrationsAllowedText)
                 Me.PopulateBOProperty(TheProductCode, "ListForDeviceGroups", Me.cboListForDeviceGroup)
                 'REQ
-                Me.PopulateBOProperty(TheProductCode, "InitialQuestionSet", Me.cboInitialQuestionSet, False, True)
+
                 Me.PopulateBOProperty(TheProductCode, "MaxClaimsAllowedPerRegisteredItem", Me.moClaimLimitPerRegisteredItemText)
                 'REQ-6002
                 Me.PopulateBOProperty(TheProductCode, "UpdateReplaceRegItemsId", Me.cboUpdateReplaceRegItemsId)
@@ -2233,7 +2226,7 @@ Namespace Tables
             Me.BindBOPropertyToLabel(TheProductCode, ALLOW_REGISTERED_ITEM_PROPERTY, Me.lblAllowRegisteredItems)
             Me.BindBOPropertyToLabel(TheProductCode, LIST_FOR_DEVICE_GROUP_PROPERTY, Me.lblListForDeviceGroup)
             'REQ
-            Me.BindBOPropertyToLabel(TheProductCode, INITIAL_QUESTION_SET_PROPERTY, Me.moInitialQuestionSetLabel)
+
             'REQ-6002
             Me.BindBOPropertyToLabel(TheProductCode, UPDATE_REPLACE_REG_ITEMS_ID_PROPERTY, Me.lblUpdateReplaceRegItemsId)
             Me.BindBOPropertyToLabel(TheProductCode, REGISTERED_ITEMS_LIMIT_PROPERTY, Me.lblRegisteredItemsLimit)
@@ -2291,7 +2284,7 @@ Namespace Tables
             Me.ClearLabelError(Me.moMaxAgeOfRegisteredItemLabel)
             Me.ClearLabelError(Me.moMaxRegistrationsAllowedLabel)
             'REQ
-            Me.ClearLabelErrSign(Me.moInitialQuestionSetLabel)
+
             Me.ClearLabelError(Me.moClaimLimitPerRegisteredItemlabel)
             Me.ClearLabelErrSign(Me.moCancellationWithinTermLabel)
             Me.ClearLabelErrSign(Me.moExpNotificationDaysLabel)
@@ -4159,8 +4152,6 @@ Namespace Tables
                         SetProductPolicyButtonsState(True)
                     Case ACTION_EDIT
                         Me.State.ProductEquipmentId = GetGuidFromString(Me.GetSelectedGridText(ProductEquipmentGridView, GRID_COL_PE_ID_IDX))
-                        Me.SetPageAndSelectedIndexFromGuid(oDataView, Me.State.ProductEquipmentId, ProductEquipmentGridView,
-                                    ProductEquipmentGridView.PageIndex, True)
                         EnableEditRateButtons(True)
                         SetProductPolicyButtonsState(False)
                     Case ACTION_CANCEL
@@ -4691,26 +4682,7 @@ Namespace Tables
 #End Region
 
 #Region ""
-        Sub PopulateInitialQuestionSetSelectedDealer()
-            Me.moInitialQuestionSetLabel.Attributes("style") = "display: none"
-            Me.cboInitialQuestionSet.Attributes("style") = "display: none"
-            Try
-                If Not (TheDealerControl.SelectedGuid = Guid.Empty) Then
-                    Me.State.oDealer = New Dealer(TheDealerControl.SelectedGuid)
-                    Me.State.moClaimRecordingXcd = Me.State.oDealer.ClaimRecordingXcd
-                    With TheProductCode
-                        ._ClaimRecordingXcd = Me.State.moClaimRecordingXcd
-                    End With
-                    If Not String.IsNullOrEmpty(Me.State.moClaimRecordingXcd) AndAlso Me.State.moClaimRecordingXcd.Equals(Codes.DEALER_CLAIM_RECORDING_DYNAMIC_QUESTIONS) Then
-                        Me.moInitialQuestionSetLabel.Attributes("style") = ""
-                        Me.cboInitialQuestionSet.Attributes("style") = ""
-                    End If
-                End If
 
-            Catch ex As Exception
-                Me.HandleErrors(ex, Me.MasterPage.MessageController)
-            End Try
-        End Sub
 #End Region
 #End Region
 #Region "Device Types Tab"

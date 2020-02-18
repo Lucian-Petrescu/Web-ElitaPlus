@@ -38,5 +38,10 @@
   <PROCESS_EXTRACT_REPORT>
     elita.r_upload_report.extract
   </PROCESS_EXTRACT_REPORT>
-
+  <PROCESS_UPDATE_CLAIM>
+    elita.elp_utl_custom_upload.elp_utl_claim_update
+  </PROCESS_UPDATE_CLAIM>
+  <PROCESS_SCREEN_HELP>
+    elita.elp_utl_custom_upload.get_screen_help    
+  </PROCESS_SCREEN_HELP>
 </SQL>

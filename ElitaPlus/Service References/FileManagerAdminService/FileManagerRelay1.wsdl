@@ -42,6 +42,7 @@
             <sp:RequireServerEntropy />
           </wsp:Policy>
         </sp:Trust10>
+        <wsoma:OptimizedMimeSerialization xmlns:wsoma="http://schemas.xmlsoap.org/ws/2004/09/policy/optimizedmimeserialization" />
       </wsp:All>
     </wsp:ExactlyOne>
   </wsp:Policy>
