@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <xs:schema xmlns:ser="http://schemas.microsoft.com/2003/10/Serialization/" xmlns:tns="http://assurant.com/Elita/ClaimFulfillment/WebAppGateway/Data" elementFormDefault="qualified" targetNamespace="http://assurant.com/Elita/ClaimFulfillment/WebAppGateway/Data" xmlns:xs="http://www.w3.org/2001/XMLSchema">
-  <xs:import schemaLocation="http://l16mia0d8113qr8/ElitaClaimFulfillment/WebAppGateway/gateway?xsd=xsd1" namespace="http://schemas.microsoft.com/2003/10/Serialization/" />
+  <xs:import schemaLocation="http://l16mia0d8386gr7.cead.prd/ElitaClaimFulfillment/WebAppGateway/gateway?xsd=xsd1" namespace="http://schemas.microsoft.com/2003/10/Serialization/" />
   <xs:complexType name="GetDeliverySlotsRequest">
     <xs:sequence>
       <xs:element name="ServiceCenterCode" nillable="true" type="xs:string" />
@@ -239,4 +239,29 @@
     </xs:sequence>
   </xs:complexType>
   <xs:element name="BeginFulfillmentResponse" nillable="true" type="tns:BeginFulfillmentResponse" />
+  <xs:complexType name="ChangeServiceCenterRequest">
+    <xs:sequence>
+      <xs:element name="CompanyCode" nillable="true" type="xs:string" />
+      <xs:element name="ClaimNumber" nillable="true" type="xs:string" />
+      <xs:element name="AuthorizationLocator" nillable="true" type="xs:string" />
+      <xs:element name="NewServiceCenterCountryCode" nillable="true" type="xs:string" />
+      <xs:element name="NewServiceCenterCode" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="Amount" nillable="true" type="xs:decimal">
+        <xs:annotation>
+          <xs:appinfo>
+            <DefaultValue EmitDefaultValue="false" xmlns="http://schemas.microsoft.com/2003/10/Serialization/" />
+          </xs:appinfo>
+        </xs:annotation>
+      </xs:element>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="ChangeServiceCenterRequest" nillable="true" type="tns:ChangeServiceCenterRequest" />
+  <xs:complexType name="ChangeServiceCenterResponse">
+    <xs:sequence>
+      <xs:element name="CompanyCode" nillable="true" type="xs:string" />
+      <xs:element name="ClaimNumber" nillable="true" type="xs:string" />
+      <xs:element name="AuthorizationLocator" nillable="true" type="xs:string" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="ChangeServiceCenterResponse" nillable="true" type="tns:ChangeServiceCenterResponse" />
 </xs:schema>
