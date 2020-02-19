@@ -271,7 +271,7 @@ Public Class InvoiceTrans
             End If
         End Get
     End Property
-    <ValidStringLength("", Max:=10)> _
+    <ValidStringLength("", Max:=15)>
     Public Property BatchNumber() As String
         Get
             CheckDeleted()
