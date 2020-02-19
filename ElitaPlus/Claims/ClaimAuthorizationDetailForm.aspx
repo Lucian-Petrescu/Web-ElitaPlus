@@ -489,12 +489,13 @@
             </ajaxToolkit:HoverMenuExtender>
             <asp:Panel ID="PanButtonsHidden" runat="server" SkinID="PopUpMenuPanel">
                 <asp:Button ID="btnRefundFee" runat="server" Text="Refund_Fee" SkinID="PopMenuButton" />
+                <asp:Button ID="btnResendShippingLabel" runat="server" Text="Resend_Shipping_Label" SkinID="PopMenuButton"/>
                 <asp:Button ID="btnServiceCenterInfo" runat="server" Text="Center_Info" SkinID="PopMenuButton" />
-                 <asp:Button ID="btnCancelShipment" runat="server" Text="Cancel_Shipment" SkinID="PopMenuButton"  />
+                <asp:Button ID="btnCancelShipment" runat="server" Text="Cancel_Shipment" SkinID="PopMenuButton"  />
                 <asp:Button ID="btnNewServiceCenter" runat="server" Text="New_Center" SkinID="PopMenuButton" />
                 <asp:Button ID="btnClaimAuthHistory" runat="server" Text="History" SkinID="PopMenuButton" />
                 <asp:Button ID="btnPrint" runat="server" Text="SO_PRINT" SkinID="PopMenuButton" />
-                 <asp:Button ID="btnReshipment" runat="server" Text="RESHIPMENT" SkinID="PopMenuButton" />
+                <asp:Button ID="btnReshipment" runat="server" Text="RESHIPMENT" SkinID="PopMenuButton" />
                 <asp:Button ID="btnPayCash" runat="server" Text="PAY_CASH" SkinID="PopMenuButton" />
             </asp:Panel>
         </div>

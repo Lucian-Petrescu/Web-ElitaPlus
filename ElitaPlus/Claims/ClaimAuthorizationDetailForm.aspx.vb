@@ -19,6 +19,8 @@ Partial Class ClaimAuthorizationDetailForm
     Private Const GridColDeviceIdx As Integer = 6
     Private Const GridColDeviceRdoCtrl As String = "rdoDevice"
     Private Const AuthType_SalesOrder As String = "AUTH_TYPE-SALES_ORDER"
+    Private Const RESEND_SHIPPING_LABEL As String = "Resend Shipping Label"
+    Private Const ADDR_DTL_CERT = "CERT"
 #End Region
 
 #Region "Page State"
@@ -138,6 +140,7 @@ Partial Class ClaimAuthorizationDetailForm
                 InitializeData()
                 InitializeUI()
                 CheckReshipmentStatus()
+                CheckResendShippingLabelStatus()
                 CheckCancelStatus()
                 PopulateDropDowns()
                 PopulateReshipmentReason()
@@ -319,14 +322,14 @@ Partial Class ClaimAuthorizationDetailForm
     End Sub
     Private Sub HandleButtons()
         Me.btnBack.Visible = Not Me.State.IsEditMode
-        Me.btnSave_WRITE.Visible = Me.State.IsEditMode Andalso Not Me.State.ShowHistory
-        Me.btnUndo_Write.Visible = Me.State.IsEditMode Andalso Not Me.State.ShowHistory
-        Me.btnEdit_WRITE.Visible = Not Me.State.IsEditMode Andalso Me.State.MyBO.CanVoidClaimAuthorization Andalso Not Me.State.ShowHistory
-        Me.PanButtonsHidden.Visible = Not Me.State.IsEditMode Andalso Not Me.State.ShowHistory
-        Me.ActionButton.Visible = Not Me.State.IsEditMode Andalso Not Me.State.ShowHistory
-        Me.btnNewServiceCenter.Visible = Not Me.State.IsEditMode AndAlso State.ClaimBO.Status = BasicClaimStatus.Active Andalso Me.State.MyBO.CanVoidClaimAuthorization Andalso Not Me.State.ShowHistory Andalso Not (State.ClaimBO.Dealer.DealerFulfillmentProviderClassCode = Codes.PROVIDER_CLASS_CODE__FULPROVORAEBS)
+        Me.btnSave_WRITE.Visible = Me.State.IsEditMode AndAlso Not Me.State.ShowHistory
+        Me.btnUndo_Write.Visible = Me.State.IsEditMode AndAlso Not Me.State.ShowHistory
+        Me.btnEdit_WRITE.Visible = Not Me.State.IsEditMode AndAlso Me.State.MyBO.CanVoidClaimAuthorization AndAlso Not Me.State.ShowHistory
+        Me.PanButtonsHidden.Visible = Not Me.State.IsEditMode AndAlso Not Me.State.ShowHistory
+        Me.ActionButton.Visible = Not Me.State.IsEditMode AndAlso Not Me.State.ShowHistory
+        Me.btnNewServiceCenter.Visible = Not Me.State.IsEditMode AndAlso State.ClaimBO.Status = BasicClaimStatus.Active AndAlso Me.State.MyBO.CanVoidClaimAuthorization AndAlso Not Me.State.ShowHistory AndAlso Not (State.ClaimBO.Dealer.DealerFulfillmentProviderClassCode = Codes.PROVIDER_CLASS_CODE__FULPROVORAEBS)
         'Me.btnrefundFee.Visible =  Me.State.MyBO.ClaimAuthStatus  =  ClaimAuthorizationStatus.Authorized 'ClaimAuthorizationStatus.Collected  
-        Me.btnRefundFee.Visible = Me.State.MyBO.ClaimAuthStatus = ClaimAuthorizationStatus.Authorized AndAlso State.MyBO.AuthTypeXcd.Equals(AuthType_SalesOrder) 
+        Me.btnRefundFee.Visible = Me.State.MyBO.ClaimAuthStatus = ClaimAuthorizationStatus.Authorized AndAlso State.MyBO.AuthTypeXcd.Equals(AuthType_SalesOrder)
     End Sub
 
     Private Sub PopulateDropDowns()
@@ -473,10 +476,10 @@ Partial Class ClaimAuthorizationDetailForm
         End Try
     End Sub
 
-    
+
     Private Sub btnRefundFee_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnRefundFee.Click
         Try
-            
+
             Dim refundReason As DataElements.ListItem() = CommonConfigManager.Current.ListManager.GetList("ADJ_RESN", Thread.CurrentPrincipal.GetLanguageCode())
             cboRefundReason.Populate(refundReason, New PopulateOptions() With
                                         {
@@ -486,10 +489,10 @@ Partial Class ClaimAuthorizationDetailForm
             'Me.PopulateBOProperty(Me.State.MyBO, "DeniedReasonId", Me.cboRefundReason)
             Dim x As String = "<script language='JavaScript'> revealModal('ModalRefundFee') </script>"
             Me.RegisterStartupScript("Startup", x)
-        Catch ex As Threading.ThreadAbortException       
+        Catch ex As Threading.ThreadAbortException
         Catch ex As Exception
             Me.HandleErrors(ex, Me.MasterPage.MessageController)
-          End Try
+        End Try
     End Sub
 
     Private Sub btnClaimAuthHistory_Click(ByVal sebder As System.Object, ByVal e As System.EventArgs) Handles btnClaimAuthHistory.Click
@@ -597,6 +600,44 @@ Partial Class ClaimAuthorizationDetailForm
         End Try
     End Sub
 #End Region
+
+#Region "Claim Authorization - Resend Shipping Label"
+    Private Sub ResendShippingLabel()
+        Dim wsRequest As UpdateServiceOrderRequest = New UpdateServiceOrderRequest()
+        Dim ordInfo As OrderInfo = New OrderInfo()
+        wsRequest.CompanyCode = Me.State.ClaimBO.Company.Code
+        wsRequest.ClaimNumber = Me.State.ClaimBO.ClaimNumber
+        ordInfo.OperationInstruction = RESEND_SHIPPING_LABEL
+        ordInfo.OperationInstructionReason = RESEND_SHIPPING_LABEL
+        ordInfo.AuthorizationNumber = Me.State.MyBO.AuthorizationNumber
+        ordInfo.ExternalOrderNumber = Me.State.MyBO.ServiceCenterReferenceNumber
+        wsRequest.OrderUpdate = ordInfo
+        wsRequest.addrDetails = ADDR_DTL_CERT
+
+        Try
+            Dim wsResponse = WcfClientHelper.Execute(Of FulfillmentServiceClient, IFulfillmentService, ProcessServiceOrderResponse)(
+                                                        GetClient(),
+                                                        New List(Of Object) From {New Headers.InteractiveUserHeader() With {.LanId = Authentication.CurrentUser.NetworkId}},
+                                                        Function(ByVal c As FulfillmentServiceClient)
+                                                            Return c.UpdateServiceOrder(wsRequest)
+                                                        End Function)
+            If wsResponse IsNot Nothing Then
+                If wsResponse.GetType() Is GetType(ProcessServiceOrderResponse) Then
+                    Dim wsResponseList As ProcessServiceOrderResponse = DirectCast(wsResponse, ProcessServiceOrderResponse)
+                    If wsResponseList.ResponseStatus.Equals("Failure") Then
+                        'MasterPage.MessageController.MessageType.Error
+                        Me.MasterPage.MessageController.AddError(wsResponseList.Error.ErrorCode & " - " & wsResponseList.Error.ErrorMessage, False)
+                        Exit Sub
+                    End If
+                End If
+            End If
+        Catch ex As Exception
+            MasterPage.MessageController.AddError(ElitaPlus.Common.ErrorCodes.GUI_CLAIM_FULFILLMENT_SERVICE_ERR, True)
+            Throw
+        End Try
+    End Sub
+#End Region
+
 #Region "Claim Authorization - Fulfillment Authorization Status History"
     Private Function CreateTableFulFillmentStatusHistory() As DataTable
         ' Create a new table.
@@ -649,7 +690,7 @@ Partial Class ClaimAuthorizationDetailForm
             HandleErrors(ex, MasterPage.MessageController)
         End Try
     End Sub
- 
+
 #End Region
 #Region "Claim Authorization - Fulfillment Authorization Issues"
 #Region "Constants"
@@ -862,6 +903,17 @@ Partial Class ClaimAuthorizationDetailForm
 
         End If
     End Sub
+    Private Sub CheckResendShippingLabelStatus()
+        If (Not Me.State.MyBO Is Nothing AndAlso Me.State.ClaimBO.Status = BasicClaimStatus.Active _
+            AndAlso (Me.State.MyBO.ClaimAuthfulfillmentTypeXcd = Codes.AUTH_FULFILLMENT_TYPE_REPAIR) _
+            AndAlso (Me.State.MyBO.AuthSubStatus = Codes.CLM_AUTH_SUBSTAT_AWR) _
+            AndAlso (State.ClaimBO.Dealer.DealerFulfillmentProviderClassCode = Codes.PROVIDER_CLASS_CODE__FULPROVORAEBS)) Then
+            btnResendShippingLabel.Visible = True
+            ControlMgr.SetVisibleControl(Me, btnResendShippingLabel, True)
+        Else
+            ControlMgr.SetVisibleControl(Me, btnResendShippingLabel, False)
+        End If
+    End Sub
 
     Private Sub PopulateBOFromFormForSubStatus()
         Me.PopulateBOProperty(Me.State.MyBO, "SubStatusReason", Me.reshipmentReasonDrop, False, True)
@@ -1007,44 +1059,44 @@ Partial Class ClaimAuthorizationDetailForm
         Me.RegisterStartupScript("Startup", x)
 
     End Sub
-     Private Sub CheckPayCashStatus()
+    Private Sub CheckPayCashStatus()
 
-        Dim blnEnabled As Boolean = false
+        Dim blnEnabled As Boolean = False
         Dim dealerBO As Dealer = Me.State.ClaimBO.Dealer
-        
-        ' Check dealer attribute
-        If dealerBO.AttributeValues.Contains(Codes.DLR_ATTR_MANUAL_CLAIM_CASH_PYMT) Andalso dealerBO.AttributeValues.Value(Codes.DLR_ATTR_MANUAL_CLAIM_CASH_PYMT) = Codes.YESNO_Y then
-            If (State.MyBO.ClaimAuthfulfillmentTypeXcd = Codes.AUTH_FULFILLMENT_TYPE_REPLACEMENT Orelse State.MyBO.ClaimAuthfulfillmentTypeXcd = Codes.AUTH_FULFILLMENT_TYPE_REPAIR Orelse State.MyBO.ClaimAuthfulfillmentTypeXcd = Codes.AUTH_FULFILLMENT_TYPE_SERVICE_WARRANTY_REPAIR Orelse State.MyBO.ClaimAuthfulfillmentTypeXcd = Codes.AUTH_FULFILLMENT_TYPE_SERVICE_WARRANTY_REPLACEMENT) then
-                if (State.MyBO.ClaimAuthorizationStatusCode = Codes.CLAIM_AUTHORIZATION_STATUS__AUTHORIZED OrElse State.MyBO.ClaimAuthorizationStatusCode = Codes.CLAIM_AUTHORIZATION_STATUS__PENDING OrElse State.MyBO.ClaimAuthorizationStatusCode = Codes.CLAIM_AUTHORIZATION_STATUS__SENT) Then
-                    blnEnabled = true
-                End if
-            End If
-        End If  
 
-         If blnEnabled Then
-             'check whether pay cash before
+        ' Check dealer attribute
+        If dealerBO.AttributeValues.Contains(Codes.DLR_ATTR_MANUAL_CLAIM_CASH_PYMT) AndAlso dealerBO.AttributeValues.Value(Codes.DLR_ATTR_MANUAL_CLAIM_CASH_PYMT) = Codes.YESNO_Y Then
+            If (State.MyBO.ClaimAuthfulfillmentTypeXcd = Codes.AUTH_FULFILLMENT_TYPE_REPLACEMENT OrElse State.MyBO.ClaimAuthfulfillmentTypeXcd = Codes.AUTH_FULFILLMENT_TYPE_REPAIR OrElse State.MyBO.ClaimAuthfulfillmentTypeXcd = Codes.AUTH_FULFILLMENT_TYPE_SERVICE_WARRANTY_REPAIR OrElse State.MyBO.ClaimAuthfulfillmentTypeXcd = Codes.AUTH_FULFILLMENT_TYPE_SERVICE_WARRANTY_REPLACEMENT) Then
+                If (State.MyBO.ClaimAuthorizationStatusCode = Codes.CLAIM_AUTHORIZATION_STATUS__AUTHORIZED OrElse State.MyBO.ClaimAuthorizationStatusCode = Codes.CLAIM_AUTHORIZATION_STATUS__PENDING OrElse State.MyBO.ClaimAuthorizationStatusCode = Codes.CLAIM_AUTHORIZATION_STATUS__SENT) Then
+                    blnEnabled = True
+                End If
+            End If
+        End If
+
+        If blnEnabled Then
+            'check whether pay cash before
             For Each auth As ClaimAuthorization In State.ClaimBO.ClaimAuthorizationChildren
                 If auth.LinkedClaimAurthID = State.MyBO.Id AndAlso auth.ClaimAuthfulfillmentTypeXcd = Codes.AUTH_FULFILLMENT_TYPE_CASH_REIMBURSEMENT Then
                     blnEnabled = False
                 End If
-            Next             
-         End If
+            Next
+        End If
 
         ControlMgr.SetVisibleControl(Me, btnPayCash, blnEnabled)
     End Sub
     Protected Sub btnPayCash_Click(sender As Object, e As EventArgs) Handles btnPayCash.Click
-        dim errCode as integer
-        dim errMsg as string
-        if State.MyBO.ManualCashpayRequest(State.MyBO.ClaimAuthorizationId, State.ClaimBO.BankInfoId, errCode, errMsg) then
+        Dim errCode As Integer
+        Dim errMsg As String
+        If State.MyBO.ManualCashpayRequest(State.MyBO.ClaimAuthorizationId, State.ClaimBO.BankInfoId, errCode, errMsg) Then
             Me.MasterPage.MessageController.AddSuccess("NEW_AUTHORIZATION_ADD")
-        else
-            Me.MasterPage.MessageController.AddError("Error Code: " & errCode & " - " & errMsg, false)
-        End If                
+        Else
+            Me.MasterPage.MessageController.AddError("Error Code: " & errCode & " - " & errMsg, False)
+        End If
     End Sub
 
     Private Sub btnRefundFeeSave_Click(sender As Object, e As EventArgs) Handles btnRefundFeeSave.Click
-        dim errCode as integer
-        dim errMsg as string
+        Dim errCode As Integer
+        Dim errMsg As String
         If GetSelectedItem(Me.cboRefundReason).Equals(Guid.Empty) Then
             ElitaPlusPage.SetLabelError(Me.lblRefundReason)
             Me.MasterPage.MessageController.AddError("Refund Reason is Required")
@@ -1052,29 +1104,29 @@ Partial Class ClaimAuthorizationDetailForm
         Else
             Try
                 Me.State.MyBO.Reversed = True
-                Me.State.MyBO.RevAdjustmentReasonId= GetSelectedItem(Me.cboRefundReason)
+                Me.State.MyBO.RevAdjustmentReasonId = GetSelectedItem(Me.cboRefundReason)
                 Me.State.MyBO.RefundAmount()
-                Me.State.MyBO.Reversed = False               
-                Me.State.ClaimBO = ClaimFacade.Instance.GetClaim(Of MultiAuthClaim)(Me.State.ClaimBO.Id)
-                Me.State.MyBO = CType(Me.State.ClaimBO.ClaimAuthorizationChildren.GetChild(Me.State.MyBO.Id), ClaimAuthorization)                
-                Me.PopulateFormFromBO()
-                Me.EnableDisablePageControls()
-                Me.MasterPage.MessageController.AddSuccess("AMT_REFUNDED_NEW_AUTH_ITEM_ADD")
-                Me.State.ActionInProgress = ElitaPlusPage.DetailPageCommand.Nothing_
-                
-            Catch ex As Exception   
+                Me.State.MyBO.Reversed = False
                 Me.State.ClaimBO = ClaimFacade.Instance.GetClaim(Of MultiAuthClaim)(Me.State.ClaimBO.Id)
                 Me.State.MyBO = CType(Me.State.ClaimBO.ClaimAuthorizationChildren.GetChild(Me.State.MyBO.Id), ClaimAuthorization)
                 Me.PopulateFormFromBO()
                 Me.EnableDisablePageControls()
-                Me.MasterPage.MessageController.AddError("AMT_NOT_REFUNDED")               
+                Me.MasterPage.MessageController.AddSuccess("AMT_REFUNDED_NEW_AUTH_ITEM_ADD")
+                Me.State.ActionInProgress = ElitaPlusPage.DetailPageCommand.Nothing_
+
+            Catch ex As Exception
+                Me.State.ClaimBO = ClaimFacade.Instance.GetClaim(Of MultiAuthClaim)(Me.State.ClaimBO.Id)
+                Me.State.MyBO = CType(Me.State.ClaimBO.ClaimAuthorizationChildren.GetChild(Me.State.MyBO.Id), ClaimAuthorization)
+                Me.PopulateFormFromBO()
+                Me.EnableDisablePageControls()
+                Me.MasterPage.MessageController.AddError("AMT_NOT_REFUNDED")
             End Try
-            
+
         End If
-        
-        
+
+
     End Sub
-#region "Change Service Center"
+#Region "Change Service Center"
     Private Shared Function GetClaimFulfillmentWebAppGatewayClient() As WebAppGatewayClient
         Try
             Dim serviceTypeId As Guid = LookupListNew.GetIdFromCode(Codes.SERVICE_TYPE, Codes.SERVICE_TYPE__CLAIM_FULFILLMENT_WEB_APP_GATEWAY_SERVICE)
@@ -1091,42 +1143,42 @@ Partial Class ClaimAuthorizationDetailForm
         End Try
     End Function
 
-    Private sub InitNewServiceCenterUserControl()
+    Private Sub InitNewServiceCenterUserControl()
         'return if the control already initialized
-        if string.IsNullOrEmpty(ucSelectServiceCenter.MethodOfRepairXcd) = False Then exit Sub
+        If String.IsNullOrEmpty(ucSelectServiceCenter.MethodOfRepairXcd) = False Then Exit Sub
 
         'Set up the service center start
         ucSelectServiceCenter.HostMessageController = MasterPage.MessageController
 
         ucSelectServiceCenter.TranslationFunc = Function(value As String)
-            Return TranslationBase.TranslateLabelOrMessage(value)
-        End Function
+                                                    Return TranslationBase.TranslateLabelOrMessage(value)
+                                                End Function
 
         ucSelectServiceCenter.TranslateGridHeaderFunc = Sub(grid As System.Web.UI.WebControls.GridView)
-            TranslateGridHeader(grid)
-        End Sub
+                                                            TranslateGridHeader(grid)
+                                                        End Sub
 
         ucSelectServiceCenter.HighLightSortColumnFunc = Sub(grid As System.Web.UI.WebControls.GridView, sortExp As String)
-            HighLightSortColumn(grid, sortExp, False)
-        End Sub
+                                                            HighLightSortColumn(grid, sortExp, False)
+                                                        End Sub
 
         ucSelectServiceCenter.NewCurrentPageIndexFunc = Function(grid As System.Web.UI.WebControls.GridView, ByVal intRecordCount As Integer, ByVal intNewPageSize As Integer)
-            Return NewCurrentPageIndex(grid, intRecordCount, intNewPageSize)
-        End Function
+                                                            Return NewCurrentPageIndex(grid, intRecordCount, intNewPageSize)
+                                                        End Function
         'Set up the service center end
 
-        Dim oCountry As Country = New Country(state.ClaimBO.Company.CountryId)
+        Dim oCountry As Country = New Country(State.ClaimBO.Company.CountryId)
 
         ucSelectServiceCenter.PageSize = 30
-        ucSelectServiceCenter.CountryId = oCountry.id
+        ucSelectServiceCenter.CountryId = oCountry.Id
         ucSelectServiceCenter.CountryCode = oCountry.Code
-        ucSelectServiceCenter.CompanyCode = state.ClaimBO.Company.Code
-        ucSelectServiceCenter.Dealer = state.ClaimBO.Certificate.Dealer.Dealer
+        ucSelectServiceCenter.CompanyCode = State.ClaimBO.Company.Code
+        ucSelectServiceCenter.Dealer = State.ClaimBO.Certificate.Dealer.Dealer
         ucSelectServiceCenter.Make = State.ClaimBO.ClaimedEquipment.Manufacturer
-        ucSelectServiceCenter.RiskTypeEnglish = State.ClaimBo.RiskType
+        ucSelectServiceCenter.RiskTypeEnglish = State.ClaimBO.RiskType
         ucSelectServiceCenter.MethodOfRepairXcd = "METHR-" + State.ClaimBO.MethodOfRepairCode
         ucSelectServiceCenter.InitializeComponent()
-    End sub
+    End Sub
     Private Sub btnNewServiceCenter_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnNewServiceCenter.Click
         Try
             InitNewServiceCenterUserControl()
@@ -1142,46 +1194,46 @@ Partial Class ClaimAuthorizationDetailForm
 
 
     Private Sub btnNewSCSave_Click(sender As Object, e As EventArgs) Handles btnNewSCSave.Click
-        dim blnValid as Boolean = True, strErrMsg as string = string.Empty
-        dim decAmount as Decimal = 0, strErrMsgAmt as String = string.Empty
+        Dim blnValid As Boolean = True, strErrMsg As String = String.Empty
+        Dim decAmount As Decimal = 0, strErrMsgAmt As String = String.Empty
 
-        if ucSelectServiceCenter.SelectedServiceCenter is nothing Then
-            blnValid =False
+        If ucSelectServiceCenter.SelectedServiceCenter Is Nothing Then
+            blnValid = False
             strErrMsg = "SERVICE_CENTER_MUST_BE_SELECTED_ERR"
-        else
+        Else
             If ucSelectServiceCenter.SelectedServiceCenter.ServiceCenterId = State.MyBO.ServiceCenterId Then
-                blnValid =False
+                blnValid = False
                 strErrMsg = "EXISTING_SERVICE_CENTER_SELECTED"
             End If
         End If
 
-        if String.IsNullOrEmpty(txtNewSCAmt.Text.Trim()) = False then
-            if Decimal.TryParse(txtNewSCAmt.Text.Trim(), decAmount) = False Then
-                blnValid =False
+        If String.IsNullOrEmpty(txtNewSCAmt.Text.Trim()) = False Then
+            If Decimal.TryParse(txtNewSCAmt.Text.Trim(), decAmount) = False Then
+                blnValid = False
                 strErrMsgAmt = "INVALID_AMOUNT_ENTERED"
             End If
         End If
 
-        if blnValid Then
+        If blnValid Then
             'dismiss the popup window
             HiddenFieldShowNewSC.Value = "N"
             lblNewSCError.Visible = False
             lblNewSCError.Text = String.Empty
 
             'call web gateway service to process the change service center request
-            dim wsRequest as New ChangeServiceCenterRequest 
+            Dim wsRequest As New ChangeServiceCenterRequest
             With wsRequest
-                .CompanyCode = state.ClaimBO.Company.Code
-                .ClaimNumber = state.ClaimBO.ClaimNumber
-                .AuthorizationLocator = state.MyBO.Locator
+                .CompanyCode = State.ClaimBO.Company.Code
+                .ClaimNumber = State.ClaimBO.ClaimNumber
+                .AuthorizationLocator = State.MyBO.Locator
                 .NewServiceCenterCountryCode = ucSelectServiceCenter.CountryCode
                 .NewServiceCenterCode = ucSelectServiceCenter.SelectedServiceCenter.ServiceCenterCode
-                if decAmount <> 0 Then
+                If decAmount <> 0 Then
                     .Amount = decAmount
                 End If
             End With
             Try
-                dim wsResponse as ChangeServiceCenterResponse = WcfClientHelper.Execute(Of WebAppGatewayClient, WebAppGateway, ChangeServiceCenterResponse)(
+                Dim wsResponse As ChangeServiceCenterResponse = WcfClientHelper.Execute(Of WebAppGatewayClient, WebAppGateway, ChangeServiceCenterResponse)(
                     GetClaimFulfillmentWebAppGatewayClient(),
                     New List(Of Object) From {New InteractiveUserHeader() With {.LanId = Authentication.CurrentUser.NetworkId}},
                     Function(ByVal c As WebAppGatewayClient)
@@ -1190,7 +1242,7 @@ Partial Class ClaimAuthorizationDetailForm
 
                 'success, close the pop-up windows and refresh the screen and show successful message
                 HiddenFieldShowNewSC.Value = "N"
-                state.MyBO = new ClaimAuthorization(state.MyBO.Id)
+                State.MyBO = New ClaimAuthorization(State.MyBO.Id)
                 'Me.State.MyBO = CType(Me.State.ClaimBO.ClaimAuthorizationChildren.GetChild(Me.State.MyBO.Id), ClaimAuthorization)
                 Me.PopulateFormFromBO()
                 Me.EnableDisablePageControls()
@@ -1200,20 +1252,28 @@ Partial Class ClaimAuthorizationDetailForm
                 lblNewSCError.Visible = True
                 lblNewSCError.Text = "Calling Web Gateway service ChangeServiceCenter failed. error message: " + ex.Message
             End Try
-        else
+        Else
             'show error and keep the popup window open
             lblNewSCError.Visible = True
             lblNewSCError.Text = String.Empty
 
-            if string.IsNullOrEmpty(strErrMsg)  = False Then
+            If String.IsNullOrEmpty(strErrMsg) = False Then
                 lblNewSCError.Text = TranslationBase.TranslateLabelOrMessage(strErrMsg) + ". "
             End If
-            if string.IsNullOrEmpty(strErrMsgAmt) = False Then
-                lblNewSCError.Text = lblNewSCError.Text + TranslationBase.TranslateLabelOrMessage(strErrMsgAmt)+ "."
+            If String.IsNullOrEmpty(strErrMsgAmt) = False Then
+                lblNewSCError.Text = lblNewSCError.Text + TranslationBase.TranslateLabelOrMessage(strErrMsgAmt) + "."
             End If
         End If
     End Sub
 
 #End Region
+    Private Sub btnResendShippingLabel_Click(sender As Object, e As EventArgs) Handles btnResendShippingLabel.Click
+        Try
+            ResendShippingLabel()
+        Catch ex As Threading.ThreadAbortException
+        Catch ex As Exception
+            Me.HandleErrors(ex, Me.MasterPage.MessageController)
+        End Try
+    End Sub
 
 End Class
