@@ -19,6 +19,8 @@ Partial Class ClaimAuthorizationDetailForm
     Private Const GridColDeviceIdx As Integer = 6
     Private Const GridColDeviceRdoCtrl As String = "rdoDevice"
     Private Const AuthType_SalesOrder As String = "AUTH_TYPE-SALES_ORDER"
+    Private Const RESEND_SHIPPING_LABEL As String = "Resend Shipping Label"
+    Private Const ADDR_DTL_CERT = "CERT"
 #End Region
 
 #Region "Page State"
@@ -140,6 +142,7 @@ Partial Class ClaimAuthorizationDetailForm
                 InitializeData()
                 InitializeUI()
                 CheckReshipmentStatus()
+                CheckResendShippingLabelStatus()
                 CheckCancelStatus()
                 PopulateDropDowns()
                 PopulateReshipmentReason()
@@ -326,7 +329,7 @@ Partial Class ClaimAuthorizationDetailForm
         Me.ActionButton.Visible = Not Me.State.IsEditMode And Not Me.State.ShowHistory
         Me.btnNewServiceCenter.Visible = Not Me.State.IsEditMode And Me.State.MyBO.CanVoidClaimAuthorization And Not Me.State.ShowHistory And Not (State.ClaimBO.Dealer.DealerFulfillmentProviderClassCode = Codes.PROVIDER_CLASS_CODE__FULPROVORAEBS)
         'Me.btnrefundFee.Visible =  Me.State.MyBO.ClaimAuthStatus  =  ClaimAuthorizationStatus.Authorized 'ClaimAuthorizationStatus.Collected  
-        Me.btnRefundFee.Visible = Me.State.MyBO.ClaimAuthStatus = ClaimAuthorizationStatus.Authorized AndAlso State.MyBO.AuthTypeXcd.Equals(AuthType_SalesOrder) 
+        Me.btnRefundFee.Visible = Me.State.MyBO.ClaimAuthStatus = ClaimAuthorizationStatus.Authorized AndAlso State.MyBO.AuthTypeXcd.Equals(AuthType_SalesOrder)
     End Sub
 
     Private Sub PopulateDropDowns()
@@ -486,7 +489,7 @@ Partial Class ClaimAuthorizationDetailForm
 
     Private Sub btnRefundFee_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnRefundFee.Click
         Try
-            
+
             Dim refundReason As ListItem() = CommonConfigManager.Current.ListManager.GetList("ADJ_RESN", Thread.CurrentPrincipal.GetLanguageCode())
             cboRefundReason.Populate(refundReason, New PopulateOptions() With
                                         {
@@ -496,10 +499,10 @@ Partial Class ClaimAuthorizationDetailForm
             'Me.PopulateBOProperty(Me.State.MyBO, "DeniedReasonId", Me.cboRefundReason)
             Dim x As String = "<script language='JavaScript'> revealModal('ModalRefundFee') </script>"
             Me.RegisterStartupScript("Startup", x)
-        Catch ex As Threading.ThreadAbortException       
+        Catch ex As Threading.ThreadAbortException
         Catch ex As Exception
             Me.HandleErrors(ex, Me.MasterPage.MessageController)
-          End Try
+        End Try
     End Sub
 
     Protected Sub SelectServiceCenter(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles ucSelectServiceCenter.SelectServiceCenter
@@ -627,6 +630,45 @@ Partial Class ClaimAuthorizationDetailForm
         End Try
     End Sub
 #End Region
+
+
+#Region "Claim Authorization - Resend Shipping Label"
+    Private Sub ResendShippingLabel()
+        Dim wsRequest As UpdateServiceOrderRequest = New UpdateServiceOrderRequest()
+        Dim ordInfo As OrderInfo = New OrderInfo()
+        wsRequest.CompanyCode = Me.State.ClaimBO.Company.Code
+        wsRequest.ClaimNumber = Me.State.ClaimBO.ClaimNumber
+        ordInfo.OperationInstruction = RESEND_SHIPPING_LABEL
+        ordInfo.OperationInstructionReason = RESEND_SHIPPING_LABEL
+        ordInfo.AuthorizationNumber = Me.State.MyBO.AuthorizationNumber
+        ordInfo.ExternalOrderNumber = Me.State.MyBO.ServiceCenterReferenceNumber
+        wsRequest.OrderUpdate = ordInfo
+        wsRequest.addrDetails = ADDR_DTL_CERT
+
+        Try
+            Dim wsResponse = WcfClientHelper.Execute(Of FulfillmentServiceClient, IFulfillmentService, ProcessServiceOrderResponse)(
+                                                        GetClient(),
+                                                        New List(Of Object) From {New Headers.InteractiveUserHeader() With {.LanId = Authentication.CurrentUser.NetworkId}},
+                                                        Function(ByVal c As FulfillmentServiceClient)
+                                                            Return c.UpdateServiceOrder(wsRequest)
+                                                        End Function)
+            If wsResponse IsNot Nothing Then
+                If wsResponse.GetType() Is GetType(ProcessServiceOrderResponse) Then
+                    Dim wsResponseList As ProcessServiceOrderResponse = DirectCast(wsResponse, ProcessServiceOrderResponse)
+                    If wsResponseList.ResponseStatus.Equals("Failure") Then
+                        'MasterPage.MessageController.MessageType.Error
+                        Me.MasterPage.MessageController.AddError(wsResponseList.Error.ErrorCode & " - " & wsResponseList.Error.ErrorMessage, False)
+                        Exit Sub
+                    End If
+                End If
+            End If
+        Catch ex As Exception
+            MasterPage.MessageController.AddError(ElitaPlus.Common.ErrorCodes.GUI_CLAIM_FULFILLMENT_SERVICE_ERR, True)
+            Throw
+        End Try
+    End Sub
+#End Region
+
 #Region "Claim Authorization - Fulfillment Authorization Status History"
     Private Function CreateTableFulFillmentStatusHistory() As DataTable
         ' Create a new table.
@@ -912,6 +954,18 @@ Partial Class ClaimAuthorizationDetailForm
         End If
     End Sub
 
+    Private Sub CheckResendShippingLabelStatus()
+        If (Not Me.State.MyBO Is Nothing AndAlso Me.State.ClaimBO.Status = BasicClaimStatus.Active _
+            AndAlso (Me.State.MyBO.ClaimAuthfulfillmentTypeXcd = Codes.AUTH_FULFILLMENT_TYPE_REPAIR) _
+            AndAlso (Me.State.MyBO.AuthSubStatus = Codes.CLM_AUTH_SUBSTAT_AWR) _
+            AndAlso (State.ClaimBO.Dealer.DealerFulfillmentProviderClassCode = Codes.PROVIDER_CLASS_CODE__FULPROVORAEBS)) Then
+            btnResendShippingLabel.Visible = True
+            ControlMgr.SetVisibleControl(Me, btnResendShippingLabel, True)
+        Else
+            ControlMgr.SetVisibleControl(Me, btnResendShippingLabel, False)
+        End If
+    End Sub
+
     Private Sub PopulateBOFromFormForSubStatus()
         Me.PopulateBOProperty(Me.State.MyBO, "SubStatusReason", Me.reshipmentReasonDrop, False, True)
     End Sub
@@ -1056,44 +1110,44 @@ Partial Class ClaimAuthorizationDetailForm
         Me.RegisterStartupScript("Startup", x)
 
     End Sub
-     Private Sub CheckPayCashStatus()
+    Private Sub CheckPayCashStatus()
 
-        Dim blnEnabled As Boolean = false
+        Dim blnEnabled As Boolean = False
         Dim dealerBO As Dealer = Me.State.ClaimBO.Dealer
-        
-        ' Check dealer attribute
-        If dealerBO.AttributeValues.Contains(Codes.DLR_ATTR_MANUAL_CLAIM_CASH_PYMT) Andalso dealerBO.AttributeValues.Value(Codes.DLR_ATTR_MANUAL_CLAIM_CASH_PYMT) = Codes.YESNO_Y then
-            If (State.MyBO.ClaimAuthfulfillmentTypeXcd = Codes.AUTH_FULFILLMENT_TYPE_REPLACEMENT Orelse State.MyBO.ClaimAuthfulfillmentTypeXcd = Codes.AUTH_FULFILLMENT_TYPE_REPAIR Orelse State.MyBO.ClaimAuthfulfillmentTypeXcd = Codes.AUTH_FULFILLMENT_TYPE_SERVICE_WARRANTY_REPAIR Orelse State.MyBO.ClaimAuthfulfillmentTypeXcd = Codes.AUTH_FULFILLMENT_TYPE_SERVICE_WARRANTY_REPLACEMENT) then
-                if (State.MyBO.ClaimAuthorizationStatusCode = Codes.CLAIM_AUTHORIZATION_STATUS__AUTHORIZED OrElse State.MyBO.ClaimAuthorizationStatusCode = Codes.CLAIM_AUTHORIZATION_STATUS__PENDING OrElse State.MyBO.ClaimAuthorizationStatusCode = Codes.CLAIM_AUTHORIZATION_STATUS__SENT) Then
-                    blnEnabled = true
-                End if
-            End If
-        End If  
 
-         If blnEnabled Then
-             'check whether pay cash before
+        ' Check dealer attribute
+        If dealerBO.AttributeValues.Contains(Codes.DLR_ATTR_MANUAL_CLAIM_CASH_PYMT) AndAlso dealerBO.AttributeValues.Value(Codes.DLR_ATTR_MANUAL_CLAIM_CASH_PYMT) = Codes.YESNO_Y Then
+            If (State.MyBO.ClaimAuthfulfillmentTypeXcd = Codes.AUTH_FULFILLMENT_TYPE_REPLACEMENT OrElse State.MyBO.ClaimAuthfulfillmentTypeXcd = Codes.AUTH_FULFILLMENT_TYPE_REPAIR OrElse State.MyBO.ClaimAuthfulfillmentTypeXcd = Codes.AUTH_FULFILLMENT_TYPE_SERVICE_WARRANTY_REPAIR OrElse State.MyBO.ClaimAuthfulfillmentTypeXcd = Codes.AUTH_FULFILLMENT_TYPE_SERVICE_WARRANTY_REPLACEMENT) Then
+                If (State.MyBO.ClaimAuthorizationStatusCode = Codes.CLAIM_AUTHORIZATION_STATUS__AUTHORIZED OrElse State.MyBO.ClaimAuthorizationStatusCode = Codes.CLAIM_AUTHORIZATION_STATUS__PENDING OrElse State.MyBO.ClaimAuthorizationStatusCode = Codes.CLAIM_AUTHORIZATION_STATUS__SENT) Then
+                    blnEnabled = True
+                End If
+            End If
+        End If
+
+        If blnEnabled Then
+            'check whether pay cash before
             For Each auth As ClaimAuthorization In State.ClaimBO.ClaimAuthorizationChildren
                 If auth.LinkedClaimAurthID = State.MyBO.Id AndAlso auth.ClaimAuthfulfillmentTypeXcd = Codes.AUTH_FULFILLMENT_TYPE_CASH_REIMBURSEMENT Then
                     blnEnabled = False
                 End If
-            Next             
-         End If
+            Next
+        End If
 
         ControlMgr.SetVisibleControl(Me, btnPayCash, blnEnabled)
     End Sub
     Protected Sub btnPayCash_Click(sender As Object, e As EventArgs) Handles btnPayCash.Click
-        dim errCode as integer
-        dim errMsg as string
-        if State.MyBO.ManualCashpayRequest(State.MyBO.ClaimAuthorizationId, State.ClaimBO.BankInfoId, errCode, errMsg) then
+        Dim errCode As Integer
+        Dim errMsg As String
+        If State.MyBO.ManualCashpayRequest(State.MyBO.ClaimAuthorizationId, State.ClaimBO.BankInfoId, errCode, errMsg) Then
             Me.MasterPage.MessageController.AddSuccess("NEW_AUTHORIZATION_ADD")
-        else
-            Me.MasterPage.MessageController.AddError("Error Code: " & errCode & " - " & errMsg, false)
-        End If                
+        Else
+            Me.MasterPage.MessageController.AddError("Error Code: " & errCode & " - " & errMsg, False)
+        End If
     End Sub
 
     Private Sub btnRefundFeeSave_Click(sender As Object, e As EventArgs) Handles btnRefundFeeSave.Click
-        dim errCode as integer
-        dim errMsg as string
+        Dim errCode As Integer
+        Dim errMsg As String
         If GetSelectedItem(Me.cboRefundReason).Equals(Guid.Empty) Then
             ElitaPlusPage.SetLabelError(Me.lblRefundReason)
             Me.MasterPage.MessageController.AddError("Refund Reason is Required")
@@ -1101,26 +1155,26 @@ Partial Class ClaimAuthorizationDetailForm
         Else
             Try
                 Me.State.MyBO.Reversed = True
-                Me.State.MyBO.RevAdjustmentReasonId= GetSelectedItem(Me.cboRefundReason)
+                Me.State.MyBO.RevAdjustmentReasonId = GetSelectedItem(Me.cboRefundReason)
                 Me.State.MyBO.RefundAmount()
-                Me.State.MyBO.Reversed = False               
-                Me.State.ClaimBO = ClaimFacade.Instance.GetClaim(Of MultiAuthClaim)(Me.State.ClaimBO.Id)
-                Me.State.MyBO = CType(Me.State.ClaimBO.ClaimAuthorizationChildren.GetChild(Me.State.MyBO.Id), ClaimAuthorization)                
-                Me.PopulateFormFromBO()
-                Me.EnableDisablePageControls()
-                Me.MasterPage.MessageController.AddSuccess("AMT_REFUNDED_NEW_AUTH_ITEM_ADD")
-                Me.State.ActionInProgress = ElitaPlusPage.DetailPageCommand.Nothing_
-                
-            Catch ex As Exception   
+                Me.State.MyBO.Reversed = False
                 Me.State.ClaimBO = ClaimFacade.Instance.GetClaim(Of MultiAuthClaim)(Me.State.ClaimBO.Id)
                 Me.State.MyBO = CType(Me.State.ClaimBO.ClaimAuthorizationChildren.GetChild(Me.State.MyBO.Id), ClaimAuthorization)
                 Me.PopulateFormFromBO()
                 Me.EnableDisablePageControls()
-                Me.MasterPage.MessageController.AddError("AMT_NOT_REFUNDED")               
+                Me.MasterPage.MessageController.AddSuccess("AMT_REFUNDED_NEW_AUTH_ITEM_ADD")
+                Me.State.ActionInProgress = ElitaPlusPage.DetailPageCommand.Nothing_
+
+            Catch ex As Exception
+                Me.State.ClaimBO = ClaimFacade.Instance.GetClaim(Of MultiAuthClaim)(Me.State.ClaimBO.Id)
+                Me.State.MyBO = CType(Me.State.ClaimBO.ClaimAuthorizationChildren.GetChild(Me.State.MyBO.Id), ClaimAuthorization)
+                Me.PopulateFormFromBO()
+                Me.EnableDisablePageControls()
+                Me.MasterPage.MessageController.AddError("AMT_NOT_REFUNDED")
             End Try
-            
+
         End If
-        
+
         'Dim oClaimAuthItem As New ClaimAuthItem
         'oClaimAuthItem = (From item As ClaimAuthItem In Me.State.MyBO.ClaimAuthorizationItemChildren Select item Order By item.CreatedDate Descending).FirstOrDefault()
 
@@ -1135,7 +1189,7 @@ Partial Class ClaimAuthorizationDetailForm
         '            .VendorSkuDescription = oClaimAuthItem.VendorSkuDescription
         '            .AdjustmentReasonId = GetSelectedItem(Me.cboRefundReason)
         '            .Save()
-                    
+
         '            Me.State.MyBO.Reversed = True
         '            Me.State.MyBO.RevAdjustmentReasonId= GetSelectedItem(Me.cboRefundReason)
         '            Me.State.MyBO.Save()
@@ -1147,5 +1201,14 @@ Partial Class ClaimAuthorizationDetailForm
         '        End If               
         '    End With
 
+    End Sub
+
+    Private Sub btnResendShippingLabel_Click(sender As Object, e As EventArgs) Handles btnResendShippingLabel.Click
+        Try
+            ResendShippingLabel()
+        Catch ex As Threading.ThreadAbortException
+        Catch ex As Exception
+            Me.HandleErrors(ex, Me.MasterPage.MessageController)
+        End Try
     End Sub
 End Class

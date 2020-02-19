@@ -1107,6 +1107,7 @@ Public Class Codes
     Public Const CLM_AUTH_SUBSTAT_RESHIPMENT_REQ As String = "CLM_AUTH_SUBSTAT-RESHIPREQ"
     Public Const CLM_AUTH_SUBSTAT_SOSUBMIT As String = "CLM_AUTH_SUBSTAT-SOSUBMIT"
     Public Const CLM_AUTH_SUBSTAT_CANCEL_SENT As String = "CLM_AUTH_SUBSTAT-CNLSENT"
+    Public Const CLM_AUTH_SUBSTAT_AWR As String = "CLM_AUTH_SUBSTAT-AWR"
 
     'Dealer Contract Policy Type (Collective or Individual)
     Public Const CONTRACT_POLTYPE_COLLECTIVE As String = "CP"
@@ -1119,7 +1120,7 @@ Public Class Codes
     'claim payment based on deductible flag
     Public Const FULL_INVOICE_Y As String = "Y_FULL_INVOICE"
     Public Const AUTH_LESS_DEDUCT_Y As String = "Y_AUTH_LESS_DEDUCT"
-    
+
     'Company codes
     Public Const AUS_COMPANY_CODE As String = "AAU"
 

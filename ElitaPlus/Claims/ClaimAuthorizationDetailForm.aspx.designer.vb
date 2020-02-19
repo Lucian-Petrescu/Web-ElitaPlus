@@ -824,6 +824,15 @@ Partial Public Class ClaimAuthorizationDetailForm
     Protected WithEvents btnRefundFee As Global.System.Web.UI.WebControls.Button
     
     '''<summary>
+    '''btnResendShippingLabel control.
+    '''</summary>
+    '''<remarks>
+    '''Auto-generated field.
+    '''To modify move field declaration from designer file to code-behind file.
+    '''</remarks>
+    Protected WithEvents btnResendShippingLabel As Global.System.Web.UI.WebControls.Button
+    
+    '''<summary>
     '''btnServiceCenterInfo control.
     '''</summary>
     '''<remarks>
