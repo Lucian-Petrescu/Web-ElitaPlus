@@ -148,9 +148,10 @@
         case_profile_code,
         close_case_grace_period_days,
         show_prev_caller_info_xcd,
-        display_mask_dob_xcd
-			FROM elp_dealer
-			WHERE
+        display_mask_dob_xcd,
+        allow_cert_cnl_with_claim_xcd
+			  FROM elp_dealer
+			  WHERE
 				dealer_id = :dealer_id
 		]]>
   </LOAD>
@@ -292,9 +293,10 @@
         case_profile_code,
         close_case_grace_period_days,
         show_prev_caller_info_xcd,
-        display_mask_dob_xcd
-      FROM elp_dealer 
-			WHERE
+        display_mask_dob_xcd,
+        allow_cert_cnl_with_claim_xcd
+        FROM elp_dealer 
+			  WHERE
 				company_id= :company_id
 				And	dealer = :dealer
 		]]>
@@ -489,7 +491,8 @@
         case_profile_code = :case_profile_code,
         close_case_grace_period_days = :close_case_grace_period_days,
         show_prev_caller_info_xcd = :show_prev_caller_info_xcd,
-        display_mask_dob_xcd = :display_mask_dob_xcd
+        display_mask_dob_xcd = :display_mask_dob_xcd,
+        allow_cert_cnl_with_claim_xcd = :allow_cert_cnl_with_claim_xcd
         WHERE
 				dealer_id = :dealer_id
 		]]>
@@ -634,7 +637,8 @@
     case_profile_code,
     close_case_grace_period_days,
     show_prev_caller_info_xcd,
-    display_mask_dob_xcd
+    display_mask_dob_xcd,
+    allow_cert_cnl_with_claim_xcd
     )
     VALUES
     (
@@ -775,7 +779,8 @@
     :case_profile_code,
     :close_case_grace_period_days,
     :show_prev_caller_info_xcd,
-    :display_mask_dob_xcd
+    :display_mask_dob_xcd,
+    :allow_cert_cnl_with_claim_xcd
     )
   </INSERT>
   <DELETE>

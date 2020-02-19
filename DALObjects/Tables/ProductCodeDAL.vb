@@ -103,7 +103,7 @@ Public Class ProductCodeDAL
     Public Const COMPANY_CODE = 0
     Public Const TODAY_DATE = 1
     Public Const DEALER_ID = 0
-    Public Const COL_NAME_INITIAL_QUESTION_SET = "initial_question_set"
+
     Public Const COL_NAME_CLAIM_LIMIT_PER_REG_ITEM = "CLAIM_LIMIT_PER_REG_ITEM"
 
     Public Const ColNameClaimProfileCode = "claim_profile_code"

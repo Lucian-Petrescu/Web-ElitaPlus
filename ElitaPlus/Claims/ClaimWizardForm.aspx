@@ -870,6 +870,24 @@
                                             SkinID="MediumTextBox"></asp:TextBox>
                                     </td>
                                 </tr>
+                            <tr>
+                                <td nowrap="nowrap" align="right">
+                                    <asp:Label ID="step3_lblPickupDate" runat="server">PickUp_Date</asp:Label>
+                                </td>
+                                <td nowrap="nowrap">
+                                    <asp:TextBox ID="step3_txtPickupDate" TabIndex="76" runat="server" AutoPostBack="true"
+                                                 SkinID="MediumTextBox"></asp:TextBox>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td nowrap="nowrap" align="right">
+                                    <asp:Label ID="step3_lblVisitDate" runat="server">Visit_Date</asp:Label>
+                                </td>
+                                <td nowrap="nowrap">
+                                    <asp:TextBox ID="step3_txtVisitDate" TabIndex="88" runat="server" AutoPostBack="true"
+                                                 SkinID="MediumTextBox"></asp:TextBox>   
+                                </td>
+                            </tr>
                             </tbody>
                         </table>
                     </div>
