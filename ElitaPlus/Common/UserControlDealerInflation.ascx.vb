@@ -1,4 +1,5 @@
 ﻿ Imports System.ComponentModel
+ Imports System.Web.UI.WebControls.Expressions
  Imports Assurant.ElitaPlus.DALObjects
 Partial Class UserControlDealerInflation
     Inherits System.Web.UI.UserControl
@@ -47,7 +48,6 @@ Partial Class UserControlDealerInflation
     Private Const SORT_COMMAND As String = "Sort"
 
     Private Const NO_ROW_SELECTED_INDEX As Integer = -1
-    Private Const CONST_ACTIVE_FLAG_YES As String = "Y"
     Private Const COL_NAME_INFLATION_YEAR_ID AS string ="ID"
     Private Const COL_NAME_INFLATION_YEAR_DESC AS string ="DESCRIPTION"
 
@@ -122,7 +122,7 @@ Partial Class UserControlDealerInflation
             If Not ViewState("SortDirection") Is Nothing Then
                 Return ViewState("SortDirection").ToString
             Else
-                Return String.Empty
+                Return dealerinflation.COL_NAME_INFLATION_YEAR
             End If
 
         End Get
@@ -157,7 +157,9 @@ Partial Class UserControlDealerInflation
                    Me.TheState.ActionInProgress = ElitaPlusPage.DetailPageCommand.Nothing_
                    Me.HiddenDIDeletePromptResponse.Value = ""
                End If
-          End If
+           Else     
+               SortDirection = DealerInflation.COL_NAME_INFLATION_YEAR
+           End If
        Catch ex As Exception
            Me.ThePage.HandleErrors(ex, Me.ThePage.MasterPage.MessageController)
        End Try
@@ -166,6 +168,7 @@ Partial Class UserControlDealerInflation
 
     #Region "Grid related"
 
+   
     Public Sub Populate()
 
         Dim e As New RequestDataEventArgs
@@ -188,6 +191,8 @@ Partial Class UserControlDealerInflation
         Dim blnNewSearch As Boolean = False
         cboDiPageSize.SelectedValue = CType(Me.TheState.PageSize, String)
         Dim objDealerInflation As New DealerInflation
+
+        
        
         Try
             With TheState
@@ -197,6 +202,10 @@ Partial Class UserControlDealerInflation
                     blnNewSearch = True
                 End If
             End With
+
+            If Not TheState.DealerInflationDV Is Nothing Then
+                TheState.DealerInflationDV.Sort = SortDirection
+            End If
             
             If (Me.TheState.IsAfterSave) Then
                 Me.TheState.IsAfterSave = False
@@ -208,6 +217,10 @@ Partial Class UserControlDealerInflation
                     Me.ThePage.SetPageAndSelectedIndexFromGuid(Me.TheState.DealerInflationDV, Guid.Empty, Me.DealerInflationGrid, Me.TheState.PageIndex)
                 End if
             End If
+
+            DealerInflationGrid.Columns(GRID_COL_INFLATION_YEAR).SortExpression = DealerInflation.COL_NAME_INFLATION_YEAR
+            DealerInflationGrid.Columns(GRID_COL_INFLATION_MONTH).SortExpression = DealerInflation.COL_NAME_INFLATION_MONTH
+            DealerInflationGrid.Columns(GRID_COL_INFLATION_PCT).SortExpression = DealerInflation.COL_NAME_INFLATION_PCT
 
             If Not TheState.DealerInflationDV is Nothing AndAlso Me.TheState.DealerInflationDV.Count = 0 Then
                 For Each gvRow As GridViewRow In DealerInflationGrid.Rows
@@ -249,13 +262,22 @@ Partial Class UserControlDealerInflation
                         Me.ThePage.SetSelectedItemByText(moInflationMonthDropDown, DealerInflationGrid.DataKeys(e.Row.RowIndex).Values(GRID_COL_INFLATION_MONTH))
                     End If
 
+                    
+
                     Dim moInflationYearDropDown As DropDownList = CType(e.Row.Cells(Me.GRID_COL_INFLATION_YEAR).FindControl(Me.GRID_CTRL_NAME_EDIT_INFLATION_YEAR), DropDownList)
                     ElitaPlusPage.BindListControlToDataView(moInflationYearDropDown, GetInflationYears(),,,false)
                     If (Not String.IsNullOrWhiteSpace(dvRow(DealerInflation.DealerInflationDV.COL_inflation_month).ToString())) Then
                         Me.ThePage.SetSelectedItemByText(moInflationYearDropDown, DealerInflationGrid.DataKeys(e.Row.RowIndex).Values(GRID_COL_INFLATION_YEAR))
                     End If
 
-                   'time period text box
+                   If TheState.IsGridAddNew = True Then
+                       ControlMgr.SetEnableControl(Me.ThePage, moInflationYearDropDown, true)
+                       ControlMgr.SetEnableControl(Me.ThePage, moInflationMonthDropDown, true)
+                   Else 
+                       ControlMgr.SetEnableControl(Me.ThePage, moInflationYearDropDown, false)
+                       ControlMgr.SetEnableControl(Me.ThePage, moInflationMonthDropDown, false)
+                   End If
+
                     CType(e.Row.Cells(Me.GRID_COL_INFLATION_PCT).FindControl(Me.GRID_CTRL_NAME_EDIT_INFLATION_PCT), TextBox).Text = dvRow(DealerInflation.DealerInflationDV.COL_inflation_pct).ToString
                     
                 Else
@@ -397,6 +419,29 @@ Partial Class UserControlDealerInflation
         End Try
     End Sub
 
+    Private Sub Grid_SortCommand(ByVal source As Object, ByVal e As GridViewSortEventArgs) Handles DealerInflationGrid.Sorting
+        Try
+            Dim spaceIndex As Integer = SortDirection.LastIndexOf(" ", StringComparison.Ordinal)
+
+
+            If spaceIndex > 0 AndAlso SortDirection.Substring(0, spaceIndex).Equals(e.SortExpression) Then
+                If SortDirection.EndsWith(" ASC") Then
+                    SortDirection = e.SortExpression + " DESC"
+                Else
+                    SortDirection = e.SortExpression + " ASC"
+                End If
+            Else
+                SortDirection = e.SortExpression + " ASC"
+            End If
+
+            Me.TheState.PageIndex = 0
+            PopulateGrid()
+        Catch ex As Exception
+            Me.ThePage.HandleErrors(ex, Me.ThePage.MasterPage.MessageController)
+        End Try
+    End Sub
+
+    
 #End Region
 
     #Region "Helper functions"
@@ -407,6 +452,7 @@ Partial Class UserControlDealerInflation
             If (Me.cboDiPageSize.Enabled) Then
                 ControlMgr.SetEnableControl(Me.ThePage, cboDiPageSize, False)
             End If
+
         Else
             ControlMgr.SetVisibleControl(Me.ThePage, NewButton_WRITE, True)
             If Not (Me.cboDiPageSize.Enabled) Then
@@ -541,7 +587,12 @@ Partial Class UserControlDealerInflation
                 Me.ThePage.MasterPage.MessageController.AddWarning(Assurant.ElitaPlus.Common.ErrorCodes.INVALID_DEALER_INFLATION, True)
                 Return
             End If
-        
+            If  TheState.MyBO.DealerId = Guid.Empty  Then
+                Me.ThePage.MasterPage.MessageController.AddWarning(Assurant.ElitaPlus.Common.ErrorCodes.DEALER_IS_REQUIRED, True)
+                Return
+            End If
+
+
             If (Me.TheState.MyBO.IsDirty) Then
                 Try
                     Me.TheState.MyBO.Save()

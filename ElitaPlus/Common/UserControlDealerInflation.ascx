@@ -31,8 +31,7 @@ Inherits="Assurant.ElitaPlus.ElitaPlusWebApp.UserControlDealerInflation" %>
         </div>
     </div>
     <asp:GridView ID="DealerInflationGrid" runat="server" Width="51%" DataKeyNames="DEALER_INFLATION_ID,DEALER_ID,INFLATION_MONTH,INFLATION_YEAR,INFLATION_PCT"
-        AllowPaging="True" AllowSorting="False" AutoGenerateColumns="False" SkinID="DetailPageGridView" CssClass = "grid-view"
-        PageSize="2">
+        AllowPaging="True" AllowSorting="true" AutoGenerateColumns="False" SkinID="DetailPageGridView">
         <SelectedRowStyle CssClass="SELECTED"></SelectedRowStyle>
         <EditRowStyle CssClass="EDITROW"></EditRowStyle>
         <AlternatingRowStyle Wrap="False" CssClass="ALTROW"></AlternatingRowStyle>

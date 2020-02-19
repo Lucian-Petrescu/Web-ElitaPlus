@@ -1,7 +1,12 @@
 ﻿Public Class DealerInflation
     Inherits BusinessObjectBase
 
+#Region "Constant"
+    public Const COL_NAME_INFLATION_MONTH As String = "INFLATION_MONTH"
+    public Const COL_NAME_INFLATION_YEAR As String = "INFLATION_YEAR"
+    public Const COL_NAME_INFLATION_PCT As String = "INFLATION_PCT"
 
+#End Region
 
 #Region "Properties"
     Public ReadOnly Property Id() As Guid
@@ -213,7 +218,7 @@
 
     Public Function ValidateNewDealerInflation(ByVal DealerInflations As DealerInflationDV) As Boolean
 
-        Dim dealerInflation()  = DealerInflations.ToTable().Select("INFLATION_YEAR=" & Me.InflationYear & " And INFLATION_MONTH=" & Me.InflationMonth)
+        Dim dealerInflation() = DealerInflations.ToTable().Select(COL_NAME_INFLATION_YEAR & "=" & Me.InflationYear &  " And " & COL_NAME_INFLATION_MONTH  &"=" & Me.InflationMonth)
                                
         If dealerInflation.Length >0 Then
             Return true
