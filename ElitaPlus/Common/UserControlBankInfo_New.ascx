@@ -124,6 +124,8 @@
     <td align="left">
         <asp:Label ID="lblBankSortCode" runat="server"></asp:Label>
         <asp:TextBox ID="txtBankSortCode" runat="server" SkinID="MediumTextBox" MaxLength="15"></asp:TextBox>
+        <asp:DropDownList ID="cboBankSortCodes" runat="server" SkinID="MediumDropDown" Visible="false">
+        </asp:DropDownList>
     </td>
     <td align="right">
         <asp:Label ID="labelTranslimit" runat="server">TRANSACTION_LIMIT:</asp:Label>
