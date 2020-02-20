@@ -88,6 +88,7 @@ Partial Class AccountingEventForm
     Public Const SUPPRESSSUBSTITUTEDMESSAGES_PROPERTY As String = "SuppressSubstitutedMessages"
     Public Const SUSPENSEACCOUNT_PROPERTY As String = "SuspenseAccount"
     Public Const TRANSACTIONAMOUNTACCOUNT_PROPERTY As String = "TransactionAmountAccount"
+    Public Const JOURNALLEVEL_PROPERTY As String = "JournalLevel"
     Public Const ALLOWBALTRANSFER_PROPERTY As String = "AllowBalTran"
     Public Const ALLOWOVERBUDGET_PROPERTY As String = "AllowOverBudget"
     Public Const ALLOWPOSTTOSUSPENDED_PROPERTY As String = "AllowPostToSuspended"
@@ -100,6 +101,9 @@ Partial Class AccountingEventForm
     Public Const GRIDCOL_ACCOUNTCODE As Integer = 3
     Public Const GRIDCOL_FIELDTYPE As Integer = 5
     Public Const GRIDCOL_EVENTDETAIL_ID As Integer = 6
+
+    Private Const AcctSystemFelita As String = "FEL"
+    Private Const ACCTEVENTTYPE_PREMIUM As String = "PREM"
 
     Private Const YESNO As String = "YESNO"
 
@@ -245,6 +249,12 @@ Partial Class AccountingEventForm
         Me.moPostProvisionalDDL.Populate(YesNoList.ToArray(), populateOptions)
         Me.moSuppressSubstitutedMessagesDDL.Populate(YesNoList.ToArray(), populateOptions)
 
+        Dim JournalLevel As DataElements.ListItem() =
+           CommonConfigManager.Current.ListManager.GetList(listCode:="JOURNALLEVEL",
+                                                           languageCode:=ElitaPlusIdentity.Current.ActiveUser.LanguageCode)
+
+        Me.moJournalLevelDDL.Populate(JournalLevel.ToArray(), populateOptions)
+
         Dim EventType As DataElements.ListItem() =
            CommonConfigManager.Current.ListManager.GetList(listCode:="ACCTTRANSTYP",
                                                            languageCode:=ElitaPlusIdentity.Current.ActiveUser.LanguageCode)
@@ -308,6 +318,7 @@ Partial Class AccountingEventForm
             Me.PopulateControlFromBOProperty(Me.moAllowPostToSuspendedDDL, ElitaPlus.BusinessObjectsNew.LookupListNew.GetIdFromCode(YesNodv, .AllowPostToSuspended))
             Me.PopulateControlFromBOProperty(Me.moBalancingOptionsDDL, ElitaPlus.BusinessObjectsNew.LookupListNew.GetIdFromCode(LookupListNew.DropdownLookupList(LookupListNew.LK_ACCTBO, ElitaPlusIdentity.Current.ActiveUser.LanguageId, True), .BalancingOptions))
             Me.PopulateControlFromBOProperty(Me.moPostingTypeDDL, ElitaPlus.BusinessObjectsNew.LookupListNew.GetIdFromCode(LookupListNew.DropdownLookupList(LookupListNew.LK_POSTINGTYPE, ElitaPlusIdentity.Current.ActiveUser.LanguageId, True), .PostingType))
+            Me.PopulateControlFromBOProperty(Me.moJournalLevelDDL, ElitaPlus.BusinessObjectsNew.LookupListNew.GetIdFromCode(LookupListNew.DropdownLookupList(LookupListNew.LK_JOURNALLEVEL, ElitaPlusIdentity.Current.ActiveUser.LanguageId, True), .JournalLevel))
 
             Me.PopulateControlFromBOProperty(Me.moEventTypeDDL, .AcctEventTypeId)
 
@@ -346,6 +357,7 @@ Partial Class AccountingEventForm
             Me.BindBOPropertyToLabel(.MyBO, SUPPRESSSUBSTITUTEDMESSAGES_PROPERTY, Me.moSuppressSubstitutedMessagesLABEL)
             Me.BindBOPropertyToLabel(.MyBO, SUSPENSEACCOUNT_PROPERTY, Me.moSuspenseAccountLABEL)
             Me.BindBOPropertyToLabel(.MyBO, TRANSACTIONAMOUNTACCOUNT_PROPERTY, Me.moTransactionAmountAccountLABEL)
+            Me.BindBOPropertyToLabel(.MyBO, JOURNALLEVEL_PROPERTY, Me.moJournalLevelLABEL)
             Me.BindBOPropertyToLabel(.MyBO, ACCTCOMPANY_PROPERTY, Me.moAccountingCompanyLABEL)
             Me.BindBOPropertyToLabel(.MyBO, ALLOWBALTRANSFER_PROPERTY, Me.moAllowBalTranLABEL)
             Me.BindBOPropertyToLabel(.MyBO, ALLOWOVERBUDGET_PROPERTY, Me.moAllowOverBudgetLABEL)
@@ -362,6 +374,7 @@ Partial Class AccountingEventForm
 
     Protected Sub EnableDisableFields()
         'Enabled by Default
+
         ControlMgr.SetEnableControl(Me, btnDelete_WRITE, True)
         ControlMgr.SetEnableControl(Me, Me.btnBack, True)
         ControlMgr.SetEnableControl(Me, Me.btnSave_WRITE, True)
@@ -374,6 +387,27 @@ Partial Class AccountingEventForm
         Else
             ControlMgr.SetEnableControl(Me, Me.moAccountingCompanyDropDown, False)
         End If
+
+        Dim AcctCompanyBO As AcctCompany = New AcctCompany(Me.State.MyBO.AcctCompanyId)
+        If LookupListNew.GetCodeFromId(LookupListNew.DropdownLookupList(LookupListNew.LK_ACCT_SYSTEM,
+                      ElitaPlusIdentity.Current.ActiveUser.LanguageId, True), AcctCompanyBO.AcctSystemId) = AcctSystemFelita AndAlso
+                      LookupListNew.GetCodeFromId(LookupListNew.DropdownLookupList(LookupListNew.LK_ACCOUNTING_EVENT_TYPE,
+                      ElitaPlusIdentity.Current.ActiveUser.LanguageId, True), GetSelectedItem(moEventTypeDDL)) = ACCTEVENTTYPE_PREMIUM Then
+
+            'moJournalLevelDDL.SelectedIndex = -1
+            ControlMgr.SetVisibleControl(Me, Me.moJournalLevelDDL, True)
+            ControlMgr.SetVisibleControl(Me, Me.moJournalLevelLABEL, True)
+        Else
+            moJournalLevelDDL.SelectedIndex = -1
+            ControlMgr.SetVisibleControl(Me, Me.moJournalLevelDDL, False)
+            ControlMgr.SetVisibleControl(Me, Me.moJournalLevelLABEL, False)
+        End If
+
+        'If LookupListNew.GetCodeFromId(LookupListNew.DropdownLookupList(LookupListNew.LK_ACCT_SYSTEM,
+        '               ElitaPlusIdentity.Current.ActiveUser.LanguageId, True), AcctCompanyBO.AcctSystemId) <> AcctSystemFelita Then
+        '    ControlMgr.SetVisibleControl(Me, Me.moJournalLevelDDL, False)
+        '    ControlMgr.SetVisibleControl(Me, Me.moJournalLevelLABEL, False)
+        'End If
 
     End Sub
 
@@ -430,6 +464,8 @@ Partial Class AccountingEventForm
 
             'Fill Drop Down Lists
             Me.PopulateBOProperty(.MyBO, SUPPRESSSUBSTITUTEDMESSAGES_PROPERTY, ElitaPlus.BusinessObjectsNew.LookupListNew.GetCodeFromId(.YESNOdv, New Guid(Me.moSuppressSubstitutedMessagesDDL.SelectedValue)))
+            Me.PopulateBOProperty(.MyBO, JOURNALLEVEL_PROPERTY, ElitaPlus.BusinessObjectsNew.LookupListNew.GetCodeFromId(LookupListNew.DropdownLookupList(LookupListNew.LK_JOURNALLEVEL, ElitaPlusIdentity.Current.ActiveUser.LanguageId, True), New Guid(Me.moJournalLevelDDL.SelectedValue)))
+
             Me.PopulateBOProperty(.MyBO, POSTPROVISIONAL_PROPERTY, ElitaPlus.BusinessObjectsNew.LookupListNew.GetCodeFromId(.YESNOdv, New Guid(Me.moPostProvisionalDDL.SelectedValue)))
             Me.PopulateBOProperty(.MyBO, LOADONLY_PROPERTY, ElitaPlus.BusinessObjectsNew.LookupListNew.GetCodeFromId(.YESNOdv, New Guid(Me.moLoadOnlyDDL.SelectedValue)))
             Me.PopulateBOProperty(.MyBO, ALLOWBALTRANSFER_PROPERTY, ElitaPlus.BusinessObjectsNew.LookupListNew.GetCodeFromId(.YESNOdv, New Guid(Me.moAllowBalTranDDL.SelectedValue)))
@@ -654,6 +690,30 @@ Partial Class AccountingEventForm
 
         Me.moAccountingEventGrid.CurrentPageIndex = e.NewPageIndex
         PopulateEventDetails()
+
+    End Sub
+
+    Private Sub moEventTypeDDL_SelectedIndexChanged(sender As Object, e As EventArgs) Handles moEventTypeDDL.SelectedIndexChanged
+        Dim AcctCompanyBO As AcctCompany = New AcctCompany(Me.State.MyBO.AcctCompanyId)
+        'If LookupListNew.GetCodeFromId(LookupListNew.DropdownLookupList(LookupListNew.LK_ACCT_SYSTEM,
+        '              ElitaPlusIdentity.Current.ActiveUser.LanguageId, True), AcctCompanyBO.AcctSystemId) <> AcctSystemFelita Then
+        '    ControlMgr.SetVisibleControl(Me, Me.moJournalLevelDDL, False)
+        '    ControlMgr.SetVisibleControl(Me, Me.moJournalLevelLABEL, False)
+
+        'Else
+        If LookupListNew.GetCodeFromId(LookupListNew.DropdownLookupList(LookupListNew.LK_ACCT_SYSTEM,
+                      ElitaPlusIdentity.Current.ActiveUser.LanguageId, True), AcctCompanyBO.AcctSystemId) = AcctSystemFelita AndAlso
+                      LookupListNew.GetCodeFromId(LookupListNew.DropdownLookupList(LookupListNew.LK_ACCOUNTING_EVENT_TYPE,
+                      ElitaPlusIdentity.Current.ActiveUser.LanguageId, True), GetSelectedItem(moEventTypeDDL)) = ACCTEVENTTYPE_PREMIUM Then
+
+            moJournalLevelDDL.SelectedIndex = -1
+            ControlMgr.SetVisibleControl(Me, Me.moJournalLevelDDL, True)
+            ControlMgr.SetVisibleControl(Me, Me.moJournalLevelLABEL, True)
+        Else
+            moJournalLevelDDL.SelectedIndex = -1
+            ControlMgr.SetVisibleControl(Me, Me.moJournalLevelDDL, False)
+            ControlMgr.SetVisibleControl(Me, Me.moJournalLevelLABEL, False)
+        End If
 
     End Sub
 

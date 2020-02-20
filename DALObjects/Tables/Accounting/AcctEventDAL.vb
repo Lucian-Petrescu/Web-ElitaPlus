@@ -34,12 +34,13 @@ Public Class AcctEventDAL
     Public Const COL_NAME_LAYOUT_CODE As String = "layout_code"
     Public Const COL_NAME_EVENT_NAME As String = "event_name"
     Public Const COL_NAME_EVENT_DESCRIPTION As String = "event_description"
+    Public Const COL_NAME_JOURNAL_LEVEL As String = "journal_level"
 
 #End Region
 
 #Region "Constructors"
     Public Sub New()
-        MyBase.new()
+        MyBase.New()
     End Sub
 
 #End Region

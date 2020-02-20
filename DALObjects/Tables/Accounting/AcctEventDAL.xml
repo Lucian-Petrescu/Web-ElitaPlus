@@ -3,8 +3,8 @@
 <!-- ********************** THIS FILE HAS BEEN GENERATED FROM TEMPLATE SQLObject.cst (4/19/2007)********************** -->
 
 <SQL>
-	<LOAD>
-		<![CDATA[	
+  <LOAD>
+    <![CDATA[	
 			SELECT 
 				acct_company_id,
 				dealer_id,
@@ -34,14 +34,15 @@
 				acct_event_id,
 				layout_code,
 				event_name,
-                event_description
+        event_description,
+        journal_level
 			FROM elp_acct_event 
 			WHERE
 				acct_event_id = :acct_event_id
 		]]>
-	</LOAD>
-	<LOAD_LIST>	
-		<![CDATA[	
+  </LOAD>
+  <LOAD_LIST>
+    <![CDATA[	
 			SELECT
         elp_acct_event.acct_event_id,
 				elp_acct_event.acct_company_id,
@@ -71,9 +72,10 @@
 				elp_acct_event.created_by,
 				layout_code,
 				event_name, 
-                dit.translation AS event_type,
-                event_description
-             FROM elp_acct_event, 
+        dit.translation AS event_type,
+        event_description,
+        journal_level
+     FROM elp_acct_event, 
                 elp_list_item li,
                 elp_dictionary_item di,
                 elp_dict_item_translation dit
@@ -82,9 +84,9 @@
 			and dit.dict_item_id = di.dict_item_id
 			--dynamic_where_clause
 		]]>
-            </LOAD_LIST>
-            <UPDATE>
-                <![CDATA[	
+  </LOAD_LIST>
+  <UPDATE>
+    <![CDATA[	
 			UPDATE elp_acct_event SET
 				acct_company_id = :acct_company_id,
 				dealer_id = :dealer_id,
@@ -110,76 +112,79 @@
 				modified_by = :modified_by,
 				layout_code = :layout_code,
 				event_name = :event_name,
-                event_description = :event_description
+        event_description = :event_description,
+        journal_level	= :journal_level
 			WHERE
 				acct_event_id = :acct_event_id
 		]]>
-	</UPDATE>
-	<INSERT>
-        INSERT INTO elp_acct_event
-        (
-        acct_company_id,
-        dealer_id,
-        service_center_id,
-        acct_event_type_id,
-        event_condition,
-        last_run_date,
-        last_complete_date,
-        dyn_sql,
-        allow_bal_tran,
-        allow_over_budget,
-        allow_post_to_suspended,
-        balancing_options,
-        journal_type,
-        load_only,
-        posting_type,
-        post_provisional,
-        post_to_hold,
-        reporting_account,
-        suppress_substituted_messages,
-        suspense_account,
-        transaction_amount_account,
-        created_by,
-        acct_event_id,
-        layout_code,
-        event_name,
-        event_description
-        )
-        VALUES
-        (
-        :acct_company_id,
-        :dealer_id,
-        :service_center_id,
-        :acct_event_type_id,
-        :event_condition,
-        :last_run_date,
-        :last_complete_date,
-        :dyn_sql,
-        :allow_bal_tran,
-        :allow_over_budget,
-        :allow_post_to_suspended,
-        :balancing_options,
-        :journal_type,
-        :load_only,
-        :posting_type,
-        :post_provisional,
-        :post_to_hold,
-        :reporting_account,
-        :suppress_substituted_messages,
-        :suspense_account,
-        :transaction_amount_account,
-        :created_by,
-        :acct_event_id,
-        :layout_code,
-        :event_name,
-        :event_description
-        )
-    </INSERT>
-	<DELETE>
-			DELETE FROM elp_acct_event
-			WHERE
-				acct_event_id = :acct_event_id
-	</DELETE>
-</SQL> 
+  </UPDATE>
+  <INSERT>
+    INSERT INTO elp_acct_event
+    (
+    acct_company_id,
+    dealer_id,
+    service_center_id,
+    acct_event_type_id,
+    event_condition,
+    last_run_date,
+    last_complete_date,
+    dyn_sql,
+    allow_bal_tran,
+    allow_over_budget,
+    allow_post_to_suspended,
+    balancing_options,
+    journal_type,
+    load_only,
+    posting_type,
+    post_provisional,
+    post_to_hold,
+    reporting_account,
+    suppress_substituted_messages,
+    suspense_account,
+    transaction_amount_account,
+    created_by,
+    acct_event_id,
+    layout_code,
+    event_name,
+    event_description,
+    journal_level
+    )
+    VALUES
+    (
+    :acct_company_id,
+    :dealer_id,
+    :service_center_id,
+    :acct_event_type_id,
+    :event_condition,
+    :last_run_date,
+    :last_complete_date,
+    :dyn_sql,
+    :allow_bal_tran,
+    :allow_over_budget,
+    :allow_post_to_suspended,
+    :balancing_options,
+    :journal_type,
+    :load_only,
+    :posting_type,
+    :post_provisional,
+    :post_to_hold,
+    :reporting_account,
+    :suppress_substituted_messages,
+    :suspense_account,
+    :transaction_amount_account,
+    :created_by,
+    :acct_event_id,
+    :layout_code,
+    :event_name,
+    :event_description,
+    :journal_level
+    )
+  </INSERT>
+  <DELETE>
+    DELETE FROM elp_acct_event
+    WHERE
+    acct_event_id = :acct_event_id
+  </DELETE>
+</SQL>
 
 
