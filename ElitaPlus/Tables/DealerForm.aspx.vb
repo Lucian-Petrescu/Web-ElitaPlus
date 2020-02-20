@@ -107,6 +107,7 @@ Namespace Tables
         Public Const Tab_ClaimCloseRules As String = "5"
         Public Const Tab_Attributes As String = "6"
         Public Const Tab_DealerInflation as string ="7"
+        Public Const Tab_RiskTypeTolerance as string ="8"
 
         Dim DisabledTabsList As New List(Of String)()
 
@@ -1394,9 +1395,13 @@ Namespace Tables
                     ClaimCloseRules.Populate()
                 End If
                 
-                ' Dealer Inflation user control
+                'Load Dealer Inflation user control
                 DealerInflation.DealerId =Me.State.MyBO.Id
                 DealerInflation.Populate()
+
+                'Load Risk Type Tolerance
+                RiskTypeTolerance.DealerId = Me.State.MyBO.Id
+                RiskTypeTolerance.Populate()
 
                 If Not Me.State.MyBO.ClaimAutoApproveId.Equals(Guid.Empty) Then
                     Me.PopulateControlFromBOProperty(Me.moClaimAutoApproveDrop, .ClaimAutoApproveId)
@@ -3137,12 +3142,18 @@ Namespace Tables
         End Sub
 
 #End Region
-#Region "Dealer Inflation Delegate Handler"
+#Region "Dealer Inflation and Risk Type Tolerance Delegate Handler"
         Private Sub DealerInflation_RequestDealerInflationData(ByVal sender As Object, ByRef e As UserControlDealerInflation.RequestDataEventArgs) Handles DealerInflation.RequestDealerInflationData
             Dim dlInflation As New DealerInflation
             dlInflation.DealerId = Me.State.MyBO.Id
             e.Data = dlInflation.GetDealerInflation()
         End Sub
+        Private Sub RiskTypeTolerance_RequestRiskTypeTolerance(ByVal sender As Object, ByRef e As UserControlRiskTypeTolerance.RequestDataEventArgs) Handles RiskTypeTolerance.RequestRiskTypeToleranceData
+            Dim riskTolerance As New RiskTypeTolerance
+            riskTolerance.DealerId = Me.State.MyBO.Id
+            e.Data = riskTolerance.GetRiskTypeTolerance()
+        End Sub
+
 #End Region
 
 #Region "Ajax Autocomplete"

@@ -1,37 +1,35 @@
-﻿ Imports System.ComponentModel
- Imports System.Web.UI.WebControls.Expressions
- Imports Assurant.ElitaPlus.DALObjects
-Partial Class UserControlDealerInflation
+﻿Imports System.ComponentModel
+Imports Assurant.ElitaPlus.DALObjects
+Partial Class UserControlRiskTypeTolerance
     Inherits System.Web.UI.UserControl
 
-    Public Class RequestDataEventArgs
+     Public Class RequestDataEventArgs
         Inherits EventArgs
 
-        Public Data As  DealerInflation.DealerInflationDV
+        Public Data As  RiskTypeTolerance.RiskTypeToleranceDV
 
     End Class
 
     Public Delegate Sub RequestData(ByVal sender As Object, ByRef e As RequestDataEventArgs)
 
-    Public Event RequestDealerInflationData As RequestData
+    Public Event RequestRiskTypeToleranceData As RequestData
     Public Event PropertyChanged As PropertyChangedEventHandler
 
-    #Region "Constants"
-   
-    Private Const GRID_COL_DEALER_INFLATION_ID As Integer = 0
+  #Region "Constants"
+
+    Private Const GRID_COL_DLR_RK_TYP_TOLERANCE_ID As Integer = 0
     Private Const GRID_COL_DEALER_ID As Integer = 1
-    Private Const GRID_COL_INFLATION_MONTH As Integer = 2
-    Private Const GRID_COL_INFLATION_YEAR As Integer = 3
-    Private Const GRID_COL_INFLATION_PCT As Integer = 4
+    Private Const GRID_COL_RISK_TYPE As Integer = 2
+    Private Const GRID_COL_TOLERANCE_PCT As Integer = 3
   
-    Private Const GRID_CTRL_NAME_LABEL_INFLATION_MONTH As String = "lblInflationMonth"
-    Private Const GRID_CTRL_NAME_LABLE_INFLATION_YEAR As String = "lblInflationYear"
-    Private Const GRID_CTRL_NAME_LABEL_INFLATION_PCT As String = "lblInflationPct"
+    Private Const GRID_CTRL_NAME_LABEL_RISK_TYPE As String = "lblRiskType"
+    Private Const GRID_CTRL_NAME_LABEL_TOLERANCE_PCT As String = "lblInflationPct"
     
-    Private Const GRID_CTRL_NAME_EDIT_INFLATION_MONTH As String = "cboInflationMonth"
-    Private Const GRID_CTRL_NAME_EDIT_INFLATION_YEAR As String = "cboInflationYear"
-    Private Const GRID_CTRL_NAME_EDIT_INFLATION_PCT As String = "txtInflationPct"
+    Private Const GRID_CTRL_NAME_EDIT_RISK_TYPE As String = "cboRiskType"
+    Private Const GRID_CTRL_NAME_EDIT_TOLERANCE_PCT As String = "txtTolerancePct"
    
+    Private Const GRID_CTRL_NAME_DELETE_RISK_TYPE As String = "DeleteButton_WRITE"
+
     Private Const MSG_CONFIRM_PROMPT As String = "MSG_CONFIRM_PROMPT"
     Private Const MSG_RECORD_DELETED_OK As String = "MSG_RECORD_DELETED_OK"
     Private Const MSG_RECORD_SAVED_OK As String = "MSG_RECORD_SAVED_OK"
@@ -42,9 +40,7 @@ Partial Class UserControlDealerInflation
     Private Const SORT_COMMAND As String = "Sort"
 
     Private Const NO_ROW_SELECTED_INDEX As Integer = -1
-    Private Const COL_NAME_INFLATION_YEAR_ID AS string ="ID"
-    Private Const COL_NAME_INFLATION_YEAR_DESC AS string ="DESCRIPTION"
-
+   
 #End Region
 
     Public Property DealerId As Nullable(Of Guid)
@@ -59,18 +55,18 @@ Partial Class UserControlDealerInflation
 
     #Region "Page State"
   Class MyState
-        Public MyBO As DealerInflation
-        Public DefaultDealerInflationID As Guid
+        Public MyBO As RiskTypeTolerance
+        Public DefaultRiskTypeToleranceID As Guid
         Public PageIndex As Integer = 0
         Public PageSize As Integer = 10
-        Public DealerInflationDV As DealerInflation.DealerInflationDV = Nothing
+        Public RiskTypeToleranceDV As RiskTypeTolerance.RiskTypeToleranceDV = Nothing
         Public HasDataChanged As Boolean
         Public IsGridAddNew As Boolean = False
         Public IsEditMode As Boolean = False
         Public IsGridVisible As Boolean
         Public IsAfterSave As Boolean
         Public ActionInProgress As Integer = ElitaPlusPage.DetailPageCommand.Nothing_
-        Public SortExpression As String = DealerInflation.DealerInflationDV.COL_DEALER_ID
+        Public SortExpression As String = RiskTypeTolerance.RiskTypeToleranceDV.COL_DEALER_ID
         Public bnoRow As Boolean = False
         Public companyId As Guid = Guid.Empty
         Public companyCode As String = String.Empty
@@ -103,7 +99,7 @@ Partial Class UserControlDealerInflation
 
     Public ReadOnly Property IsGridInEditMode() As Boolean
         Get
-            Return Me.DealerInflationGrid.EditIndex > Me.ThePage.NO_ITEM_SELECTED_INDEX
+            Return Me.RiskTypeToleranceGrid.EditIndex > Me.ThePage.NO_ITEM_SELECTED_INDEX
         End Get
     End Property
 
@@ -112,7 +108,7 @@ Partial Class UserControlDealerInflation
             If Not ViewState("SortDirection") Is Nothing Then
                 Return ViewState("SortDirection").ToString
             Else
-                Return dealerinflation.COL_NAME_INFLATION_YEAR
+                Return RiskTypeTolerance.COL_NAME_RISK_TYPE
             End If
 
         End Get
@@ -126,18 +122,18 @@ Partial Class UserControlDealerInflation
     Protected Sub Page_Load(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Load
        Try
            If Page.IsPostBack Then
-             
+               Dim confResponse As String = Me.HiddenDIDeletePromptResponse.Value
                Dim confResponseDel As String = Me.HiddenDIDeletePromptResponse.Value
              
                If Not confResponseDel Is Nothing AndAlso confResponseDel = Me.ThePage.MSG_VALUE_YES Then
                    If Me.TheState.ActionInProgress = ElitaPlusPage.DetailPageCommand.Delete Then
-                       Me.TheState.DefaultDealerInflationID = GuidControl.ByteArrayToGuid(dealerinflationGrid.DataKeys(Me.TheState.deleteRowIndex).Values(0))
+                       Me.TheState.DefaultRiskTypeToleranceID = GuidControl.ByteArrayToGuid(RiskTypeToleranceGrid.DataKeys(Me.TheState.deleteRowIndex).Values(0))
                        Me.ThePage.MasterPage.MessageController.AddSuccess(Me.MSG_RECORD_DELETED_OK, True)
-                       Me.TheState.PageIndex = dealerinflationGrid.PageIndex
+                       Me.TheState.PageIndex = RiskTypeToleranceGrid.PageIndex
                        Me.TheState.IsAfterSave = True
-                       Me.TheState.DealerInflationDV = Nothing
+                       Me.TheState.RiskTypeToleranceDV = Nothing
                        PopulateGrid()
-                       Me.TheState.PageIndex = dealerinflationGrid.PageIndex
+                       Me.TheState.PageIndex = RiskTypeToleranceGrid.PageIndex
                        Me.TheState.IsEditMode = False
                        SetControlState()
                        Me.TheState.ActionInProgress = ElitaPlusPage.DetailPageCommand.Nothing_
@@ -148,7 +144,7 @@ Partial Class UserControlDealerInflation
                    Me.HiddenDIDeletePromptResponse.Value = ""
                End If
            Else     
-               SortDirection = DealerInflation.COL_NAME_INFLATION_YEAR
+               SortDirection = RiskTypeTolerance.COL_NAME_RISK_TYPE
            End If
        Catch ex As Exception
            Me.ThePage.HandleErrors(ex, Me.ThePage.MasterPage.MessageController)
@@ -166,8 +162,8 @@ Partial Class UserControlDealerInflation
             Throw New GUIException("You must select a dealer first", Assurant.ElitaPlus.Common.ErrorCodes.GUI_DEALER_MUST_BE_SELECTED_ERR)
         end if
 
-        RaiseEvent RequestDealerInflationData(Me, e)
-        Me.TheState.DealerInflationDV = e.Data
+        RaiseEvent RequestRiskTypeToleranceData(Me, e)
+        Me.TheState.RiskTypeToleranceDV = e.Data
         Me.PopulateGrid()
 
     End Sub
@@ -175,45 +171,44 @@ Partial Class UserControlDealerInflation
     Public Sub PopulateGrid()
         
         If (Not Page.IsPostBack) Then
-            Me.ThePage.TranslateGridHeader(DealerInflationGrid)
+            Me.ThePage.TranslateGridHeader(RiskTypeToleranceGrid)
         End If
        
         Dim blnNewSearch As Boolean = False
         cboDiPageSize.SelectedValue = CType(Me.TheState.PageSize, String)
-        Dim objDealerInflation As New DealerInflation
+        Dim objRiskTypeTolerance As New RiskTypeTolerance
 
         
        
         Try
             With TheState
-                If (.DealerInflationDV Is Nothing) Then
-                    objDealerInflation.DealerId = Me.TheState.dealerId
-                    .DealerInflationDV = objDealerInflation.GetDealerInflation()
+                If (.RiskTypeToleranceDV Is Nothing) Then
+                    objRiskTypeTolerance.DealerId = Me.TheState.dealerId
+                    .RiskTypeToleranceDV = objRiskTypeTolerance.GetRiskTypeTolerance()
                     blnNewSearch = True
                 End If
             End With
 
-            If Not TheState.DealerInflationDV Is Nothing Then
-                TheState.DealerInflationDV.Sort = SortDirection
+            If Not TheState.RiskTypeToleranceDV Is Nothing Then
+                TheState.RiskTypeToleranceDV.Sort = SortDirection
             End If
             
             If (Me.TheState.IsAfterSave) Then
                 Me.TheState.IsAfterSave = False
-                Me.ThePage.SetPageAndSelectedIndexFromGuid(Me.TheState.DealerInflationDV, Me.TheState.DefaultDealerInflationID, Me.DealerInflationGrid, Me.TheState.PageIndex)
+                Me.ThePage.SetPageAndSelectedIndexFromGuid(Me.TheState.RiskTypeToleranceDV, Me.TheState.DefaultRiskTypeToleranceID, Me.RiskTypeToleranceGrid, Me.TheState.PageIndex)
             ElseIf (Me.TheState.IsEditMode) Then
-                Me.ThePage.SetPageAndSelectedIndexFromGuid(Me.TheState.DealerInflationDV, Me.TheState.DefaultDealerInflationID, Me.DealerInflationGrid, Me.TheState.PageIndex, Me.TheState.IsEditMode)
+                Me.ThePage.SetPageAndSelectedIndexFromGuid(Me.TheState.RiskTypeToleranceDV, Me.TheState.DefaultRiskTypeToleranceID, Me.RiskTypeToleranceGrid, Me.TheState.PageIndex, Me.TheState.IsEditMode)
             Else
-                If Not TheState.DealerInflationDV Is Nothing
-                    Me.ThePage.SetPageAndSelectedIndexFromGuid(Me.TheState.DealerInflationDV, Guid.Empty, Me.DealerInflationGrid, Me.TheState.PageIndex)
+                If Not TheState.RiskTypeToleranceDV Is Nothing
+                    Me.ThePage.SetPageAndSelectedIndexFromGuid(Me.TheState.RiskTypeToleranceDV, Guid.Empty, Me.RiskTypeToleranceGrid, Me.TheState.PageIndex)
                 End if
             End If
 
-            DealerInflationGrid.Columns(GRID_COL_INFLATION_YEAR).SortExpression = DealerInflation.COL_NAME_INFLATION_YEAR
-            DealerInflationGrid.Columns(GRID_COL_INFLATION_MONTH).SortExpression = DealerInflation.COL_NAME_INFLATION_MONTH
-            DealerInflationGrid.Columns(GRID_COL_INFLATION_PCT).SortExpression = DealerInflation.COL_NAME_INFLATION_PCT
+            RiskTypeToleranceGrid.Columns(GRID_COL_RISK_TYPE).SortExpression = RiskTypeTolerance.COL_NAME_RISK_TYPE
+            RiskTypeToleranceGrid.Columns(GRID_COL_TOLERANCE_PCT).SortExpression = RiskTypeTolerance.COL_NAME_TOLERANCE_PCT
 
-            If Not TheState.DealerInflationDV is Nothing AndAlso Me.TheState.DealerInflationDV.Count = 0 Then
-                For Each gvRow As GridViewRow In DealerInflationGrid.Rows
+            If Not TheState.RiskTypeToleranceDV is Nothing AndAlso Me.TheState.RiskTypeToleranceDV.Count = 0 Then
+                For Each gvRow As GridViewRow In RiskTypeToleranceGrid.Rows
                     gvRow.Visible = False
                     gvRow.Controls.Clear()
                 Next
@@ -225,7 +220,7 @@ Partial Class UserControlDealerInflation
                 cboDiPageSize.Visible = True
                 colonSepertor.Visible = True
             End If
-            Me.DealerInflationGrid.AutoGenerateColumns = False
+            Me.RiskTypeToleranceGrid.AutoGenerateColumns = False
             SortAndBindGrid(blnNewSearch)
 
         Catch ex As Exception
@@ -234,47 +229,37 @@ Partial Class UserControlDealerInflation
 
     End Sub
 
-    Private Sub Grid_RowDataBound(ByVal sender As Object, ByVal e As System.Web.UI.WebControls.GridViewRowEventArgs) Handles DealerInflationGrid.RowDataBound
+    Private Sub Grid_RowDataBound(ByVal sender As Object, ByVal e As System.Web.UI.WebControls.GridViewRowEventArgs) Handles RiskTypeToleranceGrid.RowDataBound
         Try
             Dim itemType As ListItemType = CType(e.Row.RowType, ListItemType)
             Dim dvRow As DataRowView = CType(e.Row.DataItem, DataRowView)
             Dim strID As String
 
             If Not dvRow Is Nothing And Not Me.TheState.bnoRow Then
-                strID = Me.ThePage.GetGuidStringFromByteArray(CType(dvRow(DealerInflation.DealerInflationDV.COL_dealer_inflation_id), Byte()))
+                strID = Me.ThePage.GetGuidStringFromByteArray(CType(dvRow(RiskTypeTolerance.RiskTypeToleranceDV.COL_DLR_RK_TYP_TOLERANCE_ID), Byte()))
 
-                If (Me.TheState.IsEditMode = True AndAlso Me.TheState.DefaultDealerInflationID.ToString.Equals(strID)) Then
+                If (Me.TheState.IsEditMode = True AndAlso Me.TheState.DefaultRiskTypeToleranceID.ToString.Equals(strID)) Then
 
 
-                    Dim moInflationMonthDropDown As DropDownList = CType(e.Row.Cells(Me.GRID_COL_INFLATION_MONTH).FindControl(Me.GRID_CTRL_NAME_EDIT_INFLATION_MONTH), DropDownList)
-                    ElitaPlusPage.BindListControlToDataView(moInflationMonthDropDown, LookupListNew.GetMonthsLookupList(ElitaPlusIdentity.Current.ActiveUser.LanguageId),"CODE",,false)
-                    If (Not String.IsNullOrWhiteSpace(dvRow(DealerInflation.DealerInflationDV.COL_inflation_month).ToString())) Then
-                        Me.ThePage.SetSelectedItemByText(moInflationMonthDropDown, DealerInflationGrid.DataKeys(e.Row.RowIndex).Values(GRID_COL_INFLATION_MONTH))
-                    End If
-
-                    
-
-                    Dim moInflationYearDropDown As DropDownList = CType(e.Row.Cells(Me.GRID_COL_INFLATION_YEAR).FindControl(Me.GRID_CTRL_NAME_EDIT_INFLATION_YEAR), DropDownList)
-                    ElitaPlusPage.BindListControlToDataView(moInflationYearDropDown, GetInflationYears(),,,false)
-                    If (Not String.IsNullOrWhiteSpace(dvRow(DealerInflation.DealerInflationDV.COL_inflation_month).ToString())) Then
-                        Me.ThePage.SetSelectedItemByText(moInflationYearDropDown, DealerInflationGrid.DataKeys(e.Row.RowIndex).Values(GRID_COL_INFLATION_YEAR))
+                    Dim moRiskTypeDropDown As DropDownList = CType(e.Row.Cells(Me.GRID_COL_RISK_TYPE).FindControl(Me.GRID_CTRL_NAME_EDIT_RISK_TYPE), DropDownList)
+                    ElitaPlusPage.BindListControlToDataView(moRiskTypeDropDown, LookupListNew.GetRiskTypeLookupList(ElitaPlusIdentity.Current.ActiveUser.CompanyGroup.Id),"DESCRIPTION",,false)
+                    If (Not String.IsNullOrWhiteSpace(dvRow(RiskTypeTolerance.RiskTypeToleranceDV.COL_RISK_TYPE).ToString())) Then
+                        Me.ThePage.SetSelectedItemByText(moRiskTypeDropDown, RiskTypeToleranceGrid.DataKeys(e.Row.RowIndex).Values(GRID_COL_RISK_TYPE))
                     End If
 
                    If TheState.IsGridAddNew = True Then
-                       ControlMgr.SetEnableControl(Me.ThePage, moInflationYearDropDown, true)
-                       ControlMgr.SetEnableControl(Me.ThePage, moInflationMonthDropDown, true)
+                       ControlMgr.SetEnableControl(Me.ThePage, moRiskTypeDropDown, true)
                    Else 
-                       ControlMgr.SetEnableControl(Me.ThePage, moInflationYearDropDown, false)
-                       ControlMgr.SetEnableControl(Me.ThePage, moInflationMonthDropDown, false)
+                      ControlMgr.SetEnableControl(Me.ThePage, moRiskTypeDropDown, false)
                    End If
 
-                    CType(e.Row.Cells(Me.GRID_COL_INFLATION_PCT).FindControl(Me.GRID_CTRL_NAME_EDIT_INFLATION_PCT), TextBox).Text = dvRow(DealerInflation.DealerInflationDV.COL_inflation_pct).ToString
+                    CType(e.Row.Cells(Me.GRID_COL_TOLERANCE_PCT).FindControl(Me.GRID_CTRL_NAME_EDIT_TOLERANCE_PCT), TextBox).Text = dvRow(RiskTypeTolerance.RiskTypeToleranceDV.COL_TOLERANCE_PCT).ToString
                     
                 Else
                     
-                    CType(e.Row.Cells(Me.GRID_COL_INFLATION_MONTH).FindControl(Me.GRID_CTRL_NAME_LABEL_INFLATION_MONTH), Label).Text = dvRow(DealerInflation.DealerInflationDV.COL_inflation_month).ToString
-                    CType(e.Row.Cells(Me.GRID_COL_INFLATION_YEAR).FindControl(Me.GRID_CTRL_NAME_LABLE_INFLATION_YEAR), Label).Text = dvRow(DealerInflation.DealerInflationDV.COL_inflation_year).ToString
-                    CType(e.Row.Cells(Me.GRID_COL_INFLATION_PCT).FindControl(Me.GRID_CTRL_NAME_LABEL_INFLATION_PCT), Label).Text = dvRow(DealerInflation.DealerInflationDV.COL_inflation_pct).ToString
+                    CType(e.Row.Cells(Me.GRID_COL_RISK_TYPE).FindControl(Me.GRID_CTRL_NAME_LABEL_RISK_TYPE), Label).Text = dvRow(RiskTypeTolerance.RiskTypeToleranceDV.COL_RISK_TYPE).ToString
+                    CType(e.Row.Cells(Me.GRID_COL_TOLERANCE_PCT).FindControl(Me.GRID_CTRL_NAME_EDIT_TOLERANCE_PCT), Label).Text = dvRow(RiskTypeTolerance.RiskTypeToleranceDV.COL_TOLERANCE_PCT).ToString
+                   
            
                 End If
             End If
@@ -285,37 +270,37 @@ Partial Class UserControlDealerInflation
 
     End Sub
 
-    Public Sub RowCommand(ByVal source As System.Object, ByVal e As System.Web.UI.WebControls.GridViewCommandEventArgs) Handles DealerInflationGrid.RowCommand
+    Public Sub RowCommand(ByVal source As System.Object, ByVal e As System.Web.UI.WebControls.GridViewCommandEventArgs) Handles RiskTypeToleranceGrid.RowCommand
 
         Try
             Dim index As Integer
             If (e.CommandName = Me.EDIT_COMMAND) Then
                 index = CInt(e.CommandArgument)
                 Me.TheState.IsEditMode = True
-                Me.TheState.DefaultDealerInflationID = GuidControl.ByteArrayToGuid(DealerInflationGrid.DataKeys(index).Values(0))
-                Me.TheState.MyBO = New DealerInflation(Me.TheState.dealerId,Me.TheState.DefaultDealerInflationID)
+                Me.TheState.DefaultRiskTypeToleranceID = GuidControl.ByteArrayToGuid(RiskTypeToleranceGrid.DataKeys(index).Values(0))
+                Me.TheState.MyBO = New RiskTypeTolerance(Me.TheState.dealerId,Me.TheState.DefaultRiskTypeToleranceID)
                 Me.Populate()
-                Me.TheState.PageIndex = DealerInflationGrid.PageIndex
+                Me.TheState.PageIndex = RiskTypeToleranceGrid.PageIndex
                 Me.SetControlState()
 
                 Try
-                    Me.DealerInflationGrid.Rows(index).Focus()
+                    Me.RiskTypeToleranceGrid.Rows(index).Focus()
                 Catch ex As Exception
-                    Me.DealerInflationGrid.Focus()
+                    Me.RiskTypeToleranceGrid.Focus()
                 End Try
 
             ElseIf (e.CommandName = Me.DELETE_COMMAND) Then
                
                 Try
                     index = CInt(e.CommandArgument)
-                    Me.TheState.DefaultDealerInflationID = GuidControl.ByteArrayToGuid(DealerInflationGrid.DataKeys(index).Values(0))
-                    Me.TheState.MyBO = New DealerInflation(Me.TheState.dealerId, Me.TheState.DefaultDealerInflationID)
+                    Me.TheState.DefaultRiskTypeToleranceID = GuidControl.ByteArrayToGuid(RiskTypeToleranceGrid.DataKeys(index).Values(0))
+                    Me.TheState.MyBO = New RiskTypeTolerance(Me.TheState.dealerId, Me.TheState.DefaultRiskTypeToleranceID)
                     Me.TheState.MyBO.Delete()
                     Me.TheState.ActionInProgress = ElitaPlusPage.DetailPageCommand.Delete
                     Me.TheState.MyBO.Save()
                     Me.TheState.IsAfterSave = True
                     Populate()
-                    Me.DealerInflationGrid.Focus()
+                    Me.RiskTypeToleranceGrid.Focus()
                 Catch ex As Exception
                     Me.TheState.MyBO.RejectChanges()
                     Throw ex
@@ -330,23 +315,23 @@ Partial Class UserControlDealerInflation
 
     Private Sub SortAndBindGrid(Optional ByVal blnShowErr As Boolean = True)
        
-        Dim objDealerInflation As New DealerInflation
-        Me.TheState.PageIndex = Me.DealerInflationGrid.PageIndex
+        Dim objRiskTypeTolerance As New RiskTypeTolerance
+        Me.TheState.PageIndex = Me.RiskTypeToleranceGrid.PageIndex
 
-        If (Not Me.TheState.DealerInflationDV is Nothing AndAlso  Me.TheState.DealerInflationDV.Count = 0) Then
-            Dim dv As DataView = objDealerInflation.GetDealerInflation()
+        If (Not Me.TheState.RiskTypeToleranceDV is Nothing AndAlso  Me.TheState.RiskTypeToleranceDV.Count = 0) Then
+            Dim dv As DataView = objRiskTypeTolerance.GetRiskTypeTolerance()
             Me.TheState.bnoRow = True
             if not dv is Nothing Then
-                objDealerInflation.GetEmptyList(dv)
+                objRiskTypeTolerance.GetEmptyList(dv)
             End If
-            Me.TheState.DealerInflationDV = Nothing
-            Me.TheState.MyBO = New DealerInflation
-            TheState.MyBO.AddNewRowToSearchDV(Me.TheState.DealerInflationDV, Me.TheState.MyBO)
-            Me.DealerInflationGrid.DataSource = Me.TheState.DealerInflationDV
-            Me.ThePage.HighLightSortColumn(DealerInflationGrid, Me.SortDirection, True)
-            Me.DealerInflationGrid.DataBind()
-            If Not DealerInflationGrid.BottomPagerRow.Visible Then DealerInflationGrid.BottomPagerRow.Visible = True
-            Me.DealerInflationGrid.Rows(0).Visible = False
+            Me.TheState.RiskTypeToleranceDV = Nothing
+            Me.TheState.MyBO = New RiskTypeTolerance
+            TheState.MyBO.AddNewRowToSearchDV(Me.TheState.RiskTypeToleranceDV, Me.TheState.MyBO)
+            Me.RiskTypeToleranceGrid.DataSource = Me.TheState.RiskTypeToleranceDV
+            Me.ThePage.HighLightSortColumn(RiskTypeToleranceGrid, Me.SortDirection, True)
+            Me.RiskTypeToleranceGrid.DataBind()
+            If Not RiskTypeToleranceGrid.BottomPagerRow.Visible Then RiskTypeToleranceGrid.BottomPagerRow.Visible = True
+            Me.RiskTypeToleranceGrid.Rows(0).Visible = False
             Me.TheState.IsGridAddNew = True
             Me.TheState.IsGridVisible = False
             Me.lblRecordCount.Text = "0 " & TranslationBase.TranslateLabelOrMessage(Message.MSG_RECORDS_FOUND)
@@ -355,36 +340,36 @@ Partial Class UserControlDealerInflation
             End If
         Else
             Me.TheState.bnoRow = False
-            Me.DealerInflationGrid.Enabled = True
-            Me.DealerInflationGrid.PageSize = Me.TheState.PageSize
-            Me.DealerInflationGrid.DataSource = Me.TheState.DealerInflationDV
+            Me.RiskTypeToleranceGrid.Enabled = True
+            Me.RiskTypeToleranceGrid.PageSize = Me.TheState.PageSize
+            Me.RiskTypeToleranceGrid.DataSource = Me.TheState.RiskTypeToleranceDV
             Me.TheState.IsGridVisible = True
-            Me.ThePage.HighLightSortColumn(DealerInflationGrid, Me.SortDirection, True)
-            Me.DealerInflationGrid.DataBind()
-            If Not DealerInflationGrid.BottomPagerRow.Visible Then DealerInflationGrid.BottomPagerRow.Visible = True
+            Me.ThePage.HighLightSortColumn(RiskTypeToleranceGrid, Me.SortDirection, True)
+            Me.RiskTypeToleranceGrid.DataBind()
+            If Not RiskTypeToleranceGrid.BottomPagerRow.Visible Then RiskTypeToleranceGrid.BottomPagerRow.Visible = True
         End If
 
-        ControlMgr.SetVisibleControl(Me.ThePage, DealerInflationGrid, Me.TheState.IsGridVisible)
+        ControlMgr.SetVisibleControl(Me.ThePage, RiskTypeToleranceGrid, Me.TheState.IsGridVisible)
 
-        If Me.DealerInflationGrid.Visible AndAlso  Not Me.TheState.DealerInflationDV Is Nothing Then
+        If Me.RiskTypeToleranceGrid.Visible AndAlso  Not Me.TheState.RiskTypeToleranceDV Is Nothing Then
 
-            Session("recCount") = Me.TheState.DealerInflationDV.Count
-            If Not DealerInflationGrid.BottomPagerRow.Visible Then DealerInflationGrid.BottomPagerRow.Visible = True
+            Session("recCount") = Me.TheState.RiskTypeToleranceDV.Count
+            If Not RiskTypeToleranceGrid.BottomPagerRow.Visible Then RiskTypeToleranceGrid.BottomPagerRow.Visible = True
             If (Me.TheState.IsGridAddNew ) Then
-                Me.lblRecordCount.Text = String.Format("{0} {1}", (Me.TheState.DealerInflationDV.Count - 1), TranslationBase.TranslateLabelOrMessage(Message.MSG_RECORDS_FOUND))
+                Me.lblRecordCount.Text = String.Format("{0} {1}", (Me.TheState.RiskTypeToleranceDV.Count - 1), TranslationBase.TranslateLabelOrMessage(Message.MSG_RECORDS_FOUND))
             Else
-                Me.lblRecordCount.Text = String.Format("{0} {1}", Me.TheState.DealerInflationDV.Count, TranslationBase.TranslateLabelOrMessage(Message.MSG_RECORDS_FOUND))
+                Me.lblRecordCount.Text = String.Format("{0} {1}", Me.TheState.RiskTypeToleranceDV.Count, TranslationBase.TranslateLabelOrMessage(Message.MSG_RECORDS_FOUND))
             End If
         End If
-        ControlMgr.DisableEditDeleteGridIfNotEditAuth(Me.ThePage, DealerInflationGrid)
+        ControlMgr.DisableEditDeleteGridIfNotEditAuth(Me.ThePage, RiskTypeToleranceGrid)
 
     End Sub
 
-    Private Sub Grid_PageIndexChanged(ByVal sender As Object, ByVal e As System.EventArgs) Handles DealerInflationGrid.PageIndexChanged
+    Private Sub Grid_PageIndexChanged(ByVal sender As Object, ByVal e As System.EventArgs) Handles RiskTypeToleranceGrid.PageIndexChanged
         Try
             If (Not (Me.TheState.IsEditMode)) Then
-                Me.TheState.PageIndex = DealerInflationGrid.PageIndex
-                Me.TheState.DefaultDealerInflationID = Guid.Empty
+                Me.TheState.PageIndex = RiskTypeToleranceGrid.PageIndex
+                Me.TheState.DefaultRiskTypeToleranceID = Guid.Empty
                 Me.PopulateGrid()
             End If
         Catch ex As Exception
@@ -392,16 +377,16 @@ Partial Class UserControlDealerInflation
         End Try
     End Sub
 
-    Private Sub Grid_PageIndexChanging(ByVal sender As Object, ByVal e As System.Web.UI.WebControls.GridViewPageEventArgs) Handles DealerInflationGrid.PageIndexChanging
+    Private Sub Grid_PageIndexChanging(ByVal sender As Object, ByVal e As System.Web.UI.WebControls.GridViewPageEventArgs) Handles RiskTypeToleranceGrid.PageIndexChanging
         Try
-            DealerInflationGrid.PageIndex = e.NewPageIndex
-            TheState.PageIndex = DealerInflationGrid.PageIndex
+            RiskTypeToleranceGrid.PageIndex = e.NewPageIndex
+            TheState.PageIndex = RiskTypeToleranceGrid.PageIndex
         Catch ex As Exception
             Me.ThePage.HandleErrors(ex, Me.ThePage.MasterPage.MessageController)
         End Try
     End Sub
 
-    Public Sub RowCreated(ByVal sender As Object, ByVal e As System.Web.UI.WebControls.GridViewRowEventArgs) Handles DealerInflationGrid.RowCreated
+    Public Sub RowCreated(ByVal sender As Object, ByVal e As System.Web.UI.WebControls.GridViewRowEventArgs) Handles RiskTypeToleranceGrid.RowCreated
         Try
             ThePage.BaseItemCreated(sender, e)
         Catch ex As Exception
@@ -409,7 +394,7 @@ Partial Class UserControlDealerInflation
         End Try
     End Sub
 
-    Private Sub Grid_SortCommand(ByVal source As Object, ByVal e As GridViewSortEventArgs) Handles DealerInflationGrid.Sorting
+    Private Sub Grid_SortCommand(ByVal source As Object, ByVal e As GridViewSortEventArgs) Handles RiskTypeToleranceGrid.Sorting
         Try
             Dim spaceIndex As Integer = SortDirection.LastIndexOf(" ", StringComparison.Ordinal)
 
@@ -453,98 +438,76 @@ Partial Class UserControlDealerInflation
 
     Private Sub ReturnFromEditing()
 
-        DealerInflationGrid.EditIndex = NO_ROW_SELECTED_INDEX
+        RiskTypeToleranceGrid.EditIndex = NO_ROW_SELECTED_INDEX
 
-        If (Me.DealerInflationGrid.PageCount = 0) Then
-            ControlMgr.SetVisibleControl(Me.ThePage, DealerInflationGrid, False)
+        If (Me.RiskTypeToleranceGrid.PageCount = 0) Then
+            ControlMgr.SetVisibleControl(Me.ThePage, RiskTypeToleranceGrid, False)
         Else
-            ControlMgr.SetVisibleControl(Me.ThePage, DealerInflationGrid, True)
+            ControlMgr.SetVisibleControl(Me.ThePage, RiskTypeToleranceGrid, True)
         End If
 
         Me.TheState.IsEditMode = False
         Me.PopulateGrid()
-        Me.TheState.PageIndex = DealerInflationGrid.PageIndex
+        Me.TheState.PageIndex = RiskTypeToleranceGrid.PageIndex
         SetControlState()
     End Sub
 
     Private Sub RemoveNewRowFromSearchDV()
         Dim rowind As Integer = Me.ThePage.NO_ITEM_SELECTED_INDEX
         With TheState
-            If Not .DealerInflationDV Is Nothing Then
-                rowind = Me.ThePage.FindSelectedRowIndexFromGuid(.DealerInflationDV, .DefaultDealerInflationID)
+            If Not .RiskTypeToleranceDV Is Nothing Then
+                rowind = Me.ThePage.FindSelectedRowIndexFromGuid(.RiskTypeToleranceDV, .DefaultRiskTypeToleranceID)
             End If
         End With
-        If rowind <> Me.ThePage.NO_ITEM_SELECTED_INDEX Then TheState.DealerInflationDV.Delete(rowind)
+        If rowind <> Me.ThePage.NO_ITEM_SELECTED_INDEX Then TheState.RiskTypeToleranceDV.Delete(rowind)
     End Sub
 
     Private Sub AddNew()
         If TheState.MyBO Is Nothing OrElse Me.TheState.MyBO.IsNew = False Then
-            TheState.MyBO = New Dealerinflation
-            TheState.MyBO.AddNewRowToSearchDV(Me.TheState.DealerInflationDV, Me.TheState.MyBO)
+            TheState.MyBO = New RiskTypeTolerance
+            TheState.MyBO.AddNewRowToSearchDV(Me.TheState.RiskTypeToleranceDV, Me.TheState.MyBO)
         End If
-        TheState.DefaultDealerInflationID = Me.TheState.MyBO.Id
+        TheState.DefaultRiskTypeToleranceID = Me.TheState.MyBO.Id
         TheState.IsGridAddNew = True
         PopulateGrid()
         'Set focus on the Code TextBox for the EditItemIndex row
-        ThePage.SetPageAndSelectedIndexFromGuid(Me.TheState.DealerInflationDV, Me.TheState.DefaultDealerInflationID, Me.DealerInflationGrid, _
+        ThePage.SetPageAndSelectedIndexFromGuid(Me.TheState.RiskTypeToleranceDV, Me.TheState.DefaultRiskTypeToleranceID, Me.RiskTypeToleranceGrid, _
                                                 TheState.PageIndex, Me.TheState.IsEditMode)
-        ControlMgr.DisableEditDeleteGridIfNotEditAuth(Me.ThePage, DealerInflationGrid)
-        ThePage.SetGridControls(Me.DealerInflationGrid, False)
+        ControlMgr.DisableEditDeleteGridIfNotEditAuth(Me.ThePage, RiskTypeToleranceGrid)
+        ThePage.SetGridControls(Me.RiskTypeToleranceGrid, False)
 
         Try
-            Me.DealerInflationGrid.Rows(Me.DealerInflationGrid.SelectedIndex).Focus()
+            Me.RiskTypeToleranceGrid.Rows(Me.RiskTypeToleranceGrid.SelectedIndex).Focus()
         Catch ex As Exception
-            Me.DealerInflationGrid.Focus()
+            Me.RiskTypeToleranceGrid.Focus()
         End Try
 
     End Sub
-
-    private Shared function GetInflationYears() As DataView
-        Dim dt As DataTable =New DataTable
-        
-        dt.Columns.Add(COL_NAME_INFLATION_YEAR_ID, Guid.NewGuid.ToByteArray.GetType)
-        dt.Columns.Add(COL_NAME_INFLATION_YEAR_DESC, GetType(String))
-
-        Dim row As DataRow
-        
-        For i As Integer = 0 To 10
-            row = dt.NewRow
-            row(COL_NAME_INFLATION_YEAR_ID) = Guid.NewGuid.ToByteArray
-            row(COL_NAME_INFLATION_YEAR_DESC) = DateTime.Now.Year +i
-            dt.Rows.Add(row)
-        Next
-        Dim inflationYearDataview As DataView = new DataView(dt)
-        return inflationYearDataview
-    End function
-
     Private Function PopulateBOFromForm() As Boolean
         Dim objDropDownList As DropDownList
-        Dim dealerInflationPct As TextBox
+        Dim RiskTypeTolerancePct As TextBox
        
         With Me.TheState.MyBO
 
-            dealerInflationPct = CType(DealerInflationGrid.Rows(Me.DealerInflationGrid.EditIndex).Cells(GRID_COL_INFLATION_PCT).FindControl(GRID_CTRL_NAME_EDIT_INFLATION_PCT), TextBox)
+            RiskTypeTolerancePct = CType(RiskTypeToleranceGrid.Rows(Me.RiskTypeToleranceGrid.EditIndex).Cells(GRID_COL_TOLERANCE_PCT).FindControl(GRID_CTRL_NAME_EDIT_TOLERANCE_PCT), TextBox)
            
             If (Me.TheState.IsEditMode = True AndAlso Me.TheState.IsGridAddNew = False) Then
 
-                Me.ThePage.PopulateBOProperty(TheState.MyBO, "DealerInflationId", New Guid(CType(DealerInflationGrid.DataKeys(DealerInflationGrid.EditIndex).Values(GRID_COL_DEALER_INFLATION_ID), Byte())))
+                Me.ThePage.PopulateBOProperty(TheState.MyBO, "RiskTypeToleranceId", New Guid(CType(RiskTypeToleranceGrid.DataKeys(RiskTypeToleranceGrid.EditIndex).Values(GRID_COL_DLR_RK_TYP_TOLERANCE_ID), Byte())))
             Elseif  Me.TheState.IsGridAddNew = true
-                Me.ThePage.PopulateBOProperty(TheState.MyBO, "DealerInflationId", Guid.NewGuid())
+                Me.ThePage.PopulateBOProperty(TheState.MyBO, "RiskTypeToleranceId", Guid.NewGuid())
             End If
            
             Me.ThePage.PopulateBOProperty(TheState.MyBO, "DealerId", Me.TheState.dealerId)
            
-            objDropDownList = CType(DealerInflationGrid.Rows((Me.DealerInflationGrid.EditIndex)).Cells(GRID_COL_INFLATION_MONTH).FindControl(GRID_CTRL_NAME_EDIT_INFLATION_MONTH), DropDownList)
-            Me.ThePage.PopulateBOProperty(TheState.MyBO, "InflationMonth", objDropDownList,false)
+            objDropDownList = CType(RiskTypeToleranceGrid.Rows((Me.RiskTypeToleranceGrid.EditIndex)).Cells(GRID_COL_RISK_TYPE).FindControl(GRID_CTRL_NAME_EDIT_RISK_TYPE), DropDownList)
+            Me.ThePage.PopulateBOProperty(TheState.MyBO, "RiskType", objDropDownList,false)
+            Me.ThePage.PopulateBOProperty(TheState.MyBO, "RiskTypeId", objDropDownList,true)
 
-            objDropDownList = CType(DealerInflationGrid.Rows((Me.DealerInflationGrid.EditIndex)).Cells(GRID_COL_INFLATION_YEAR).FindControl(GRID_CTRL_NAME_EDIT_INFLATION_YEAR), DropDownList)
-            Me.ThePage.PopulateBOProperty(TheState.MyBO, "InflationYear", objDropDownList,False)
-
-           
-            If (dealerInflationPct.Text = String.Empty) Then
-                dealerInflationPct.Text = 0
+           If (RiskTypeTolerancePct.Text = String.Empty) Then
+                RiskTypeTolerancePct.Text = 0
             End If
-            Me.ThePage.PopulateBOProperty(TheState.MyBO, "InflationPct", dealerInflationPct)
+            Me.ThePage.PopulateBOProperty(TheState.MyBO, "TolerancePct", RiskTypeTolerancePct) 
 
             
         End With
@@ -573,7 +536,7 @@ Partial Class UserControlDealerInflation
         Try
             PopulateBOFromForm()
            
-            If Me.TheState.IsGridAddNew AndAlso TheState.MyBO.ValidateNewDealerInflation(Me.TheState.DealerInflationDV) Then
+            If Me.TheState.IsGridAddNew AndAlso TheState.MyBO.ValidateNewRiskTypeTolerance(Me.TheState.RiskTypeToleranceDV) Then
                 Me.ThePage.MasterPage.MessageController.AddWarning(Assurant.ElitaPlus.Common.ErrorCodes.INVALID_DEALER_INFLATION, True)
                 Return
             End If
@@ -593,7 +556,7 @@ Partial Class UserControlDealerInflation
                 Me.TheState.IsAfterSave = True
                 Me.TheState.IsGridAddNew = False
                 Me.ThePage.MasterPage.MessageController.AddSuccess(Me.MSG_RECORD_SAVED_OK, True)
-                Me.TheState.DealerInflationDV = Nothing
+                Me.TheState.RiskTypeToleranceDV = Nothing
                 Me.TheState.MyBO = Nothing
                 Me.ReturnFromEditing()
             Else
@@ -612,20 +575,22 @@ Partial Class UserControlDealerInflation
                 If .IsGridAddNew Then
                     RemoveNewRowFromSearchDV()
                     .IsGridAddNew = False
-                    DealerInflationGrid.PageIndex = .PageIndex
+                    RiskTypeToleranceGrid.PageIndex = .PageIndex
                 End If
-                .DefaultDealerInflationID = Guid.Empty
+                .DefaultRiskTypeToleranceID = Guid.Empty
                 Me.TheState.MyBO = Nothing
                 .IsEditMode = False
             End With
-            DealerInflationGrid.EditIndex = Me.ThePage.NO_ITEM_SELECTED_INDEX
+            RiskTypeToleranceGrid.EditIndex = Me.ThePage.NO_ITEM_SELECTED_INDEX
 
             PopulateGrid()
             SetControlState()
-            Me.DealerInflationGrid.Focus()
+            Me.RiskTypeToleranceGrid.Focus()
         Catch ex As Exception
             Me.ThePage.HandleErrors(ex, Me.ThePage.MasterPage.MessageController)
         End Try
     End Sub
 #End Region
+
+
 End Class

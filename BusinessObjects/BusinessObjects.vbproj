@@ -295,6 +295,7 @@
     <Compile Include="Common\IPriceListSearch.vb" />
     <Compile Include="Claims\DefaultClaimStatus.vb" />
     <Compile Include="Common\PaymentOrderInfo.vb" />
+    <Compile Include="Common\RiskTypeTolerance.vb" />
     <Compile Include="DataProtection\CertificateDataProtection.vb" />
     <Compile Include="DataProtection\ConsumerSearchRequest.vb" />
     <Compile Include="DataProtection\DataProtectionHistory.vb" />

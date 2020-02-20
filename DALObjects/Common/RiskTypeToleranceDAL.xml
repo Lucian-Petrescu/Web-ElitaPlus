@@ -1,0 +1,15 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<SQL>
+  <LOAD_RISK_TYPE_TOLERANCE>
+    elita.elp_tbl_rk_typ_tolerance.Load
+  </LOAD_RISK_TYPE_TOLERANCE>
+  <UPDATE>
+    elita.elp_tbl_rk_typ_tolerance.Modify
+  </UPDATE>
+  <INSERT>
+    elita.elp_tbl_rk_typ_tolerance.Add
+  </INSERT>
+  <DELETE>
+    elita.elp_tbl_rk_typ_tolerance.DeleteRiskTypeTolerance
+  </DELETE>
+</SQL>
