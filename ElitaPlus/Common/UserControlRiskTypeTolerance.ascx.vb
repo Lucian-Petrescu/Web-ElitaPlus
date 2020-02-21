@@ -23,7 +23,7 @@ Partial Class UserControlRiskTypeTolerance
     Private Const GRID_COL_TOLERANCE_PCT As Integer = 3
   
     Private Const GRID_CTRL_NAME_LABEL_RISK_TYPE As String = "lblRiskType"
-    Private Const GRID_CTRL_NAME_LABEL_TOLERANCE_PCT As String = "lblInflationPct"
+    Private Const GRID_CTRL_NAME_LABEL_TOLERANCE_PCT As String = "lblTolerancePct"
     
     Private Const GRID_CTRL_NAME_EDIT_RISK_TYPE As String = "cboRiskType"
     Private Const GRID_CTRL_NAME_EDIT_TOLERANCE_PCT As String = "txtTolerancePct"
@@ -258,7 +258,7 @@ Partial Class UserControlRiskTypeTolerance
                 Else
                     
                     CType(e.Row.Cells(Me.GRID_COL_RISK_TYPE).FindControl(Me.GRID_CTRL_NAME_LABEL_RISK_TYPE), Label).Text = dvRow(RiskTypeTolerance.RiskTypeToleranceDV.COL_RISK_TYPE).ToString
-                    CType(e.Row.Cells(Me.GRID_COL_TOLERANCE_PCT).FindControl(Me.GRID_CTRL_NAME_EDIT_TOLERANCE_PCT), Label).Text = dvRow(RiskTypeTolerance.RiskTypeToleranceDV.COL_TOLERANCE_PCT).ToString
+                    CType(e.Row.Cells(Me.GRID_COL_TOLERANCE_PCT).FindControl(Me.GRID_CTRL_NAME_LABEL_TOLERANCE_PCT), Label).Text = dvRow(RiskTypeTolerance.RiskTypeToleranceDV.COL_TOLERANCE_PCT).ToString
                    
            
                 End If
@@ -537,7 +537,7 @@ Partial Class UserControlRiskTypeTolerance
             PopulateBOFromForm()
            
             If Me.TheState.IsGridAddNew AndAlso TheState.MyBO.ValidateNewRiskTypeTolerance(Me.TheState.RiskTypeToleranceDV) Then
-                Me.ThePage.MasterPage.MessageController.AddWarning(Assurant.ElitaPlus.Common.ErrorCodes.INVALID_DEALER_INFLATION, True)
+                Me.ThePage.MasterPage.MessageController.AddWarning(Assurant.ElitaPlus.Common.ErrorCodes.INVALID_RISK_TYPE_TOLERANCE, True)
                 Return
             End If
             If  TheState.MyBO.DealerId = Guid.Empty  Then

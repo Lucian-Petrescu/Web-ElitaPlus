@@ -214,7 +214,7 @@
 
     Public Function ValidateNewRiskTypeTolerance(ByVal DealerInflations As RiskTypeToleranceDV) As Boolean
 
-        Dim dealerInflation() = DealerInflations.ToTable().Select(COL_NAME_RISK_TYPE & "=" & "'" & Me.RiskType & "'" & " And " & COL_NAME_TOLERANCE_PCT  &"=" & Me.TolerancePct.ToString())
+        Dim dealerInflation() = DealerInflations.ToTable().Select(COL_NAME_RISK_TYPE & "=" & "'" & Me.RiskType & "'")
                                
         If dealerInflation.Length >0 Then
             Return true

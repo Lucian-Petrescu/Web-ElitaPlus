@@ -109,13 +109,13 @@
            If rowState = DataRowState.Deleted Then
                Dim inParameter() As DBHelper.DBHelperParameter = New DBHelper.DBHelperParameter() _
                        {
-                           New DBHelper.DBHelperParameter( Me.PAR_NAME_DLR_RK_TYP_TOLERANCE_ID.ToLower(),   row(Me.PAR_NAME_DLR_RK_TYP_TOLERANCE_ID,DataRowVersion.Original))
+                           New DBHelper.DBHelperParameter( Me.PAR_NAME_DLR_RK_TYP_TOLERANCE_ID.ToLower(),   row(Me.COL_NAME_DLR_RK_TYP_TOLERANCE_ID,DataRowVersion.Original))
                        }
                DBHelper.ExecuteSp(sqlstatement, inParameter, outputParameters)
                row.AcceptChanges()
            Else 
                Dim inParameters() As DBHelper.DBHelperParameter = New DBHelper.DBHelperParameter() _
-                       {New DBHelper.DBHelperParameter( Me.PAR_NAME_DLR_RK_TYP_TOLERANCE_ID, row(Me.PAR_NAME_DLR_RK_TYP_TOLERANCE_ID)),
+                       {New DBHelper.DBHelperParameter( Me.PAR_NAME_DLR_RK_TYP_TOLERANCE_ID, row(Me.COL_NAME_DLR_RK_TYP_TOLERANCE_ID)),
                         New DBHelper.DBHelperParameter( Me.PAR_NAME_DEALER, row(Me.COL_NAME_DEALER_ID)),
                         New DBHelper.DBHelperParameter( Me.PAR_NAME_RISK_TYPE_ID, row(Me.COL_NAME_RISK_TYPE_ID)),
                         New DBHelper.DBHelperParameter( Me.PAR_NAME_TOLERANCE_PCT, row(Me.COL_NAME_TOLERANCE_PCT)),
