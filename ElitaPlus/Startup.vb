@@ -54,7 +54,12 @@ Public Class Startup
                             Dim identity As ClaimsIdentity = context.AuthenticationTicket.Identity
                             identity.AddClaim(New Claim("id_token", context.ProtocolMessage.IdToken))
 
-                            Dim networkId As String = identity.Claims.FirstOrDefault(Function(claim) claim.Type = "preferred_username").Value.Substring(0, 6)
+                            'Dim networkId As String = identity.Claims.FirstOrDefault(Function(claim) claim.Type = "preferred_username").Value.Substring(0, 6)
+                            Dim networkId As String = identity.Claims.FirstOrDefault(Function(claim) claim.Type = "preferred_username").Value
+                            If networkId.IndexOf("@") > 0 Then
+                                networkId = networkId.Substring(0, networkId.IndexOf("@"))
+                            End If
+
                             ' Get the OKTA groups for this user
                             Dim groups As List(Of String) = identity.Claims.Where(Function(claim) claim.Type = "groups").Select(Function(claim) claim.Value).ToList()
 
