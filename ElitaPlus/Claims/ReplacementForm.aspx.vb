@@ -339,46 +339,34 @@ Namespace Claims
 
                 moClaimInfoController.InitController(Me.State.ClaimBO)
 
-                ' Populate Old Item
-                If Not Me.State.ClaimBO.ClaimedEquipment Is Nothing Then
-
-                    With Me.State.ClaimBO
-                        OldManufacturerTextBox.Text = Manufacturer.GetDescription(.ClaimedEquipment.ManufacturerId)
-                        OldModelTextBox.Text = .ClaimedEquipment.Model
-                        OldSerialNumberTextBox.Text = .ClaimedEquipment.SerialNumber
-                        OldImeiNumberTextBox.Text = .ClaimedEquipment.IMEINumber
-                    End With
-
-                Else
-
-                    With Me.State.ClaimBO
-                        OldManufacturerTextBox.Text = Manufacturer.GetDescription(.CertificateItem.ManufacturerId)
-                        OldModelTextBox.Text = .CertificateItem.Model
-                        OldSerialNumberTextBox.Text = .CertificateItem.SerialNumber
+                With Me.State.ClaimBO
+                    OldManufacturerTextBox.Text = Manufacturer.GetDescription(.CertificateItem.ManufacturerId)
+                    EnableDisableControls(OldManufacturerTextBox, True)
+                    OldModelTextBox.Text = .CertificateItem.Model
+                    EnableDisableControls(OldModelTextBox, True)
+                    OldRiskTypeTextBox.Text = New RiskType(.CertificateItem.RiskTypeId).Description
+                    NewRiskTypeTextBox.Text = OldRiskTypeTextBox.Text
+                    EnableDisableControls(OldRiskTypeTextBox, True)
+                    OldSerialNumberTextBox.Text = .CertificateItem.SerialNumber
+                    EnableDisableControls(OldSerialNumberTextBox, True)
+                    supportsImei = (Not Me.State.ClaimBO.Dealer.ImeiUseXcd.Equals("IMEI_USE_LST-NOTINUSE"))
+                    If (supportsImei) Then
                         OldImeiNumberTextBox.Text = .CertificateItem.IMEINumber
-                    End With
+                        EnableDisableControls(OldImeiNumberTextBox, True)
 
-                End If
+                        OldSerialNumberLabel.Text = TranslationBase.TranslateLabelOrMessage("SERIAL_NO_LABEL")
+                        NewSerialNumberLabel.Text = OldSerialNumberLabel.Text
+                    Else
+                        OldSerialNumberLabel.Text = TranslationBase.TranslateLabelOrMessage("SERIAL_NUMBER")
+                        NewSerialNumberLabel.Text = OldSerialNumberLabel.Text
+                    End If
 
-                OldRiskTypeTextBox.Text = New RiskType(Me.State.ClaimBO.CertificateItem.RiskTypeId).Description
-                NewRiskTypeTextBox.Text = OldRiskTypeTextBox.Text
-                supportsImei = (Not Me.State.ClaimBO.Dealer.ImeiUseXcd.Equals("IMEI_USE_LST-NOTINUSE"))
-                EnableDisableControls(OldManufacturerTextBox, True)
-                EnableDisableControls(OldModelTextBox, True)
-                EnableDisableControls(OldRiskTypeTextBox, True)
-                EnableDisableControls(OldSerialNumberTextBox, True)
-                If (supportsImei) Then
-                    EnableDisableControls(OldImeiNumberTextBox, True)
-                    OldSerialNumberLabel.Text = TranslationBase.TranslateLabelOrMessage("SERIAL_NO_LABEL")
-                    NewSerialNumberLabel.Text = OldSerialNumberLabel.Text
-                Else
-                    OldSerialNumberLabel.Text = TranslationBase.TranslateLabelOrMessage("SERIAL_NUMBER")
-                    NewSerialNumberLabel.Text = OldSerialNumberLabel.Text
-                End If
-                OldImeiNumberLabel.Visible = supportsImei
-                OldImeiNumberTextBox.Visible = supportsImei
-                NewImeiNumberLabel.Visible = supportsImei
-                NewImeiNumberTextBox.Visible = supportsImei
+                    OldImeiNumberLabel.Visible = supportsImei
+                    OldImeiNumberTextBox.Visible = supportsImei
+
+                    NewImeiNumberLabel.Visible = supportsImei
+                    NewImeiNumberTextBox.Visible = supportsImei
+                End With
 
                 ' Populate New Item
                 ' Populate Manufacturer
@@ -422,7 +410,6 @@ Namespace Claims
             End Try
 
         End Sub
-
 #End Region
 
 #Region "Clear"

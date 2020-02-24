@@ -2607,6 +2607,24 @@ Namespace Tables
         Protected WithEvents ddlDealerNameFlag As Global.System.Web.UI.WebControls.DropDownList
 
         '''<summary>
+        '''lblAllowCertCancellationWithClaim control.
+        '''</summary>
+        '''<remarks>
+        '''Auto-generated field.
+        '''To modify move field declaration from designer file to code-behind file.
+        '''</remarks>
+        Protected WithEvents lblAllowCertCancellationWithClaim As Global.System.Web.UI.WebControls.Label
+
+        '''<summary>
+        '''ddlAllowCertCancellationWithClaim control.
+        '''</summary>
+        '''<remarks>
+        '''Auto-generated field.
+        '''To modify move field declaration from designer file to code-behind file.
+        '''</remarks>
+        Protected WithEvents ddlAllowCertCancellationWithClaim As Global.System.Web.UI.WebControls.DropDownList
+
+        '''<summary>
         '''EditPanel_WRITE control.
         '''</summary>
         '''<remarks>

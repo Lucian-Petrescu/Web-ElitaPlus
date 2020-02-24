@@ -804,6 +804,7 @@ Namespace Tables
             Me.BindBOPropertyToLabel(Me.State.MyBO, "BenefitSoldToAccount", Me.lblBenefitSoldToAccount)
 
             Me.BindBOPropertyToLabel(Me.State.MyBO, "CloseCaseGracePeriodDays", Me.lblClosecaseperiod)
+            Me.BindBOPropertyToLabel(Me.State.MyBO, "AllowCertCancellationWithClaimXCd", Me.lblAllowCertCancellationWithClaim)
 
             Me.ClearGridViewHeadersAndLabelsErrorSign()
         End Sub
@@ -1039,6 +1040,8 @@ Namespace Tables
             Me.moValidateAddress.Populate(oYesNoList, populateOptions2)
             Me.moShowPrevCallerInfo.Populate(oYesNoList, populateOptions2)
             Me.ddlDealerNameFlag.Populate(oYesNoList, populateOptions3)
+
+            Me.ddlAllowCertCancellationWithClaim.Populate(CommonConfigManager.Current.ListManager.GetList("ALLOW_CERT_CANCELLATION_WITH_CLAIM", Thread.CurrentPrincipal.GetLanguageCode()), populateOptions2)
             'ddlCaseProfile.Populate(CommonConfigManager.Current.ListManager.GetList("CaseProfile", Thread.CurrentPrincipal.GetLanguageCode()), New PopulateOptions() With
             '                           {
             '                           .AddBlankItem = True,
@@ -1145,6 +1148,7 @@ Namespace Tables
             ddlCaseProfile.ClearSelection()
             moShowPrevCallerInfo.ClearSelection()
             ddlDealerNameFlag.ClearSelection()
+            ddlAllowCertCancellationWithClaim.ClearSelection()
         End Sub
 
         Private Sub SetAssurantIsObligor()
@@ -1455,6 +1459,8 @@ Namespace Tables
                 Me.PopulateControlFromBOProperty(Me.txtCancelShipmentGracePeriod, .Cancel_Shipment_Grace_Period)
 
                 BindSelectItem(.CaseProfileCode, Me.ddlCaseProfile)
+
+                BindSelectItem(Me.State.MyBO.AllowCertCancellationWithClaimXCd, Me.ddlAllowCertCancellationWithClaim)
 
                 ControlMgr.SetVisibleControl(Me, trBenefitDlrTypeCtls4, True)
                 Me.PopulateControlFromBOProperty(Me.txtBenefitSoldToAccount, .BenefitSoldToAccount)
@@ -1776,6 +1782,7 @@ Namespace Tables
                 Me.PopulateBOProperty(Me.State.MyBO, "CloseCaseGracePeriodDays", Me.txtClosecaseperiod)
                 Me.PopulateBOProperty(Me.State.MyBO, "Show_Previous_Caller_Info", Me.moShowPrevCallerInfo, False, True)
                 Me.PopulateBOProperty(Me.State.MyBO, "DisplayDobXcd", Me.ddlDealerNameFlag, False, True)
+                Me.PopulateBOProperty(Me.State.MyBO, "AllowCertCancellationWithClaimXCd", Me.ddlAllowCertCancellationWithClaim, False, True)
 
             End With
             If Me.ErrCollection.Count > 0 Then

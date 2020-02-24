@@ -942,24 +942,6 @@ Namespace Tables
         Protected WithEvents cboListForDeviceGroup As Global.System.Web.UI.WebControls.DropDownList
         
         '''<summary>
-        '''moInitialQuestionSetLabel control.
-        '''</summary>
-        '''<remarks>
-        '''Auto-generated field.
-        '''To modify move field declaration from designer file to code-behind file.
-        '''</remarks>
-        Protected WithEvents moInitialQuestionSetLabel As Global.System.Web.UI.WebControls.Label
-        
-        '''<summary>
-        '''cboInitialQuestionSet control.
-        '''</summary>
-        '''<remarks>
-        '''Auto-generated field.
-        '''To modify move field declaration from designer file to code-behind file.
-        '''</remarks>
-        Protected WithEvents cboInitialQuestionSet As Global.System.Web.UI.WebControls.DropDownList
-        
-        '''<summary>
         '''moMaxAgeOfRegisteredItemLabel control.
         '''</summary>
         '''<remarks>

@@ -420,16 +420,7 @@
                                     <asp:DropDownList ID="cboListForDeviceGroup" runat="server" SkinID="MediumDropDown" AutoPostBack="true"></asp:DropDownList>
                                 </td>
                             </tr>
-                            <tr>
-                                <td align="right" nowrap="nowrap">
-                                    <asp:Label ID="moInitialQuestionSetLabel" runat="server">INITIAL_QUESTION_SET</asp:Label>
-                                </td>
-                                <td align="left" nowrap="nowrap">
-                                    <asp:DropDownList ID="cboInitialQuestionSet" runat="server" SkinID="MediumDropDown"></asp:DropDownList>
-                                </td>
-                                <td align="right" nowrap="nowrap"></td>
-                                <td align="left" nowrap="nowrap"></td>
-                            </tr>
+                            
                             <tr>
                                 <td align="right">
                                     <asp:Label ID="moMaxAgeOfRegisteredItemLabel" runat="server">MAX_AGE_OF_REGISTERED_ITEM</asp:Label>

@@ -1690,6 +1690,21 @@ Public MustInherit Class ClaimBase
         End Set
     End Property
 
+    Protected Property VisitDate As DateType
+        Get
+            CheckDeleted()
+            If Row(ClaimDAL.COL_NAME_VISIT_DATE) Is DBNull.Value Then
+                Return Nothing
+            Else
+                Return New DateType(DateHelper.GetDateValue(Row(ClaimDAL.COL_NAME_VISIT_DATE).ToString()))
+            End If
+        End Get
+        Set
+            CheckDeleted()
+            SetValue(ClaimDAL.COL_NAME_VISIT_DATE, Value)
+        End Set
+    End Property
+
     Protected Property RepairDate() As DateType
         Get
             CheckDeleted()

@@ -454,7 +454,7 @@
             End Set
         End Property
 
-        <ValidStringLength("", Max:=10)> _
+        <ValidStringLength("", Max:=15)>
         Public Property BatchNumberNew() As String
             Get
                 CheckDeleted()

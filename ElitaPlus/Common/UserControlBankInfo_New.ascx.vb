@@ -199,6 +199,7 @@ Partial Class UserControlBankInfo_New
             Me.txtBankSubcode.TabIndex = CType(TabIndexStartingNumber + 13, Int16)
             Me.txtBankSortCode.TabIndex = CType(TabIndexStartingNumber + 14, Int16)
             Me.txtTransLimit.TabIndex = CType(TabIndexStartingNumber + 15, Int16)
+            Me.cboBankSortCodes.TabIndex = CType(TabIndexStartingNumber + 16, Int16)
         End If
     End Sub
 
@@ -305,6 +306,10 @@ Partial Class UserControlBankInfo_New
                 If .IsNew AndAlso .BankSortCode <> txtBankSortCode.Text Then State.IsNewObjDirty = True
                 Me.Page.PopulateBOProperty(Me.State.myBankInfoBo, "BankSortCode", txtBankSortCode)
 
+                If cboBankSortCodes.Visible = True Then
+                    Me.Page.PopulateBOProperty(Me.State.myBankInfoBo, "BankSortCode", cboBankSortCodes, False)
+                    If .IsNew AndAlso cboBankSortCodes.SelectedIndex <> -1 Then State.IsNewObjDirty = True
+                End If
 
                 If .IsNew AndAlso .BranchDigit Is Nothing AndAlso .BranchDigit <> LongType.Parse(txtBranchDigit.Text) Then State.IsNewObjDirty = True
                 Me.Page.PopulateBOProperty(Me.State.myBankInfoBo, "BranchDigit", txtBranchDigit)
@@ -368,7 +373,6 @@ Partial Class UserControlBankInfo_New
                     Me.Page.PopulateControlFromBOProperty(Me.textboxIBAN_Number, .IbanNumber)
                 End If
 
-
                 Me.Page.PopulateControlFromBOProperty(Me.textboxBankID, .Bank_Id)
 
                 Me.Page.PopulateControlFromBOProperty(Me.textboxSwiftCode, .SwiftCode)
@@ -399,6 +403,15 @@ Partial Class UserControlBankInfo_New
                 'Page.PopulateControlFromBOProperty(Me.txtBankName, .BankName)
                 Page.PopulateControlFromBOProperty(Me.txtBankBranchName, .BranchName)
                 Page.PopulateControlFromBOProperty(Me.txtBankSortCode, .BankSortCode)
+
+                If cboBankSortCodes.Visible Then
+                    If Not .BankSortCode Is Nothing Then
+                        Me.Page.SetSelectedItemByText(Me.cboBankSortCodes, .BankName)
+                    ElseIf (cboBankSortCodes.Items.Count > 0) Then
+                        Me.Page.SetSelectedItemByText(Me.cboBankSortCodes, .BankName)
+                    End If
+                End If
+
                 Page.PopulateControlFromBOProperty(Me.txtBranchDigit, .BranchDigit)
                 Page.PopulateControlFromBOProperty(Me.txtAcctDigit, .AccountDigit)
                 Page.PopulateControlFromBOProperty(Me.txtBranchNumber, .BranchNumber)
@@ -412,8 +425,6 @@ Partial Class UserControlBankInfo_New
             End With
         End If
     End Sub
-
-
 
     Public Sub SetCountryValue(ByVal oCountryID As Guid)
         Me.Page.SetSelectedItem(moCountryDrop_WRITE, oCountryID)
@@ -447,15 +458,45 @@ Partial Class UserControlBankInfo_New
 
 
     End Sub
+    Public Sub LoadBankSortCodeList(ByVal oCompany As Company, ByVal certTaxIdNumber As String)
+        If oCompany.AttributeValues.Value(Codes.DEFAULT_CLAIM_BANK_SORT_CODE) = Codes.YESNO_Y Then
+            DisplayCboBankSortCode()
+            Dim oBankSortCodeList As Assurant.Elita.CommonConfiguration.DataElements.ListItem() = CommonConfigManager.Current.ListManager.GetList(listCode:="BANK_SORT_CODE")
+            cboBankSortCodes.Populate(oBankSortCodeList, New PopulateOptions() With
+                                            {
+                                            .AddBlankItem = True,
+                                            .TextFunc = AddressOf PopulateOptions.GetCode,
+                                            .ValueFunc = AddressOf PopulateOptions.GetDescription
+                                            })
+        End If
+        If Not oCompany.AttributeValues.Value(Codes.DEFAULT_CLAIM_BANK_SUB_CODE) Is Nothing Then
+            txtBankSubcode.Text = oCompany.AttributeValues.Value(Codes.DEFAULT_CLAIM_BANK_SUB_CODE)
+        End If
 
+        If (Not String.IsNullOrEmpty(certTaxIdNumber) And Not oCompany.AttributeValues.Value(Codes.AUTO_POPULATE_CERT_TAX_ID) Is Nothing And oCompany.AttributeValues.Value(Codes.AUTO_POPULATE_CERT_TAX_ID) = Codes.YESNO_Y) Then
+            txtTaxId.Text = certTaxIdNumber
+        End If
+
+
+    End Sub
+    Public Sub SetFieldsEmpty()
+        txtBankSubcode.Text = String.Empty
+        txtTaxId.Text = String.Empty
+    End Sub
     Private Sub PopulateAccountTypeDropdown()
         Dim AcctType As Assurant.Elita.CommonConfiguration.DataElements.ListItem() = CommonConfigManager.Current.ListManager.GetList("ACCTTYPE", Thread.CurrentPrincipal.GetLanguageCode())
         moAccountTypeDrop.Populate(AcctType, New PopulateOptions() With
                                            {
                                            .AddBlankItem = True
                                            })
+    End Sub
 
-
+    Public Sub SetRequiredFieldsForDealerWithGiftCard1(ByVal dealer As Dealer)
+        If (dealer.AttributeValues.Where(Function(i) i.Attribute.UiProgCode = Codes.ATTR_DARTY_GIFT_CARD_TYPE).Count > 0) Then
+            If labelAddress1.Text.IndexOf("*") <> 0 Then Me.labelAddress1.Text = "* " & Me.labelAddress1.Text
+            If labelCity.Text.IndexOf("*") <> 0 Then Me.labelCity.Text = "* " & Me.labelCity.Text
+            If labelPostalCode.Text.IndexOf("*") <> 0 Then Me.labelPostalCode.Text = "* " & Me.labelPostalCode.Text
+        End If
     End Sub
 
     Private Sub PopulateBankNameDropdown(ByVal SelectedCountryID As Guid)
@@ -619,6 +660,19 @@ Partial Class UserControlBankInfo_New
         ControlMgr.SetVisibleControl(Me.Page, labelBankSortCode, True)
         ControlMgr.SetVisibleControl(Me.Page, txtBankSortCode, True)
         ControlMgr.SetVisibleControl(Me.Page, lblBankSortCode, True)
+        ControlMgr.SetVisibleControl(Me.Page, cboBankSortCodes, False)
+    End Sub
+    Public Sub HideCboBankSortCode()
+        ControlMgr.SetVisibleControl(Me.Page, labelBankSortCode, True)
+        ControlMgr.SetVisibleControl(Me.Page, txtBankSortCode, True)
+        ControlMgr.SetVisibleControl(Me.Page, lblBankSortCode, True)
+        ControlMgr.SetVisibleControl(Me.Page, cboBankSortCodes, False)
+    End Sub
+    Private Sub DisplayCboBankSortCode()
+        ControlMgr.SetVisibleControl(Me.Page, labelBankSortCode, True)
+        ControlMgr.SetVisibleControl(Me.Page, cboBankSortCodes, True)
+        ControlMgr.SetVisibleControl(Me.Page, txtBankSortCode, False)
+        ControlMgr.SetVisibleControl(Me.Page, lblBankSortCode, False)
     End Sub
     Private Sub HideBranchName()
         ControlMgr.SetVisibleControl(Me.Page, lblBranchName, False)
@@ -783,6 +837,7 @@ Partial Class UserControlBankInfo_New
 
                 DisplayBankLookupCode()
                 HideBankSortCode()
+
                 HideBankSubCode()
                 HideTranslimit()
                 HideBranchName()
@@ -812,6 +867,7 @@ Partial Class UserControlBankInfo_New
                 HideBranchNumber()
                 HideBanklookupCode()
                 HideBankSortCode()
+
                 HideBankSubCode()
                 HideTranslimit()
                 HideTaxId()

@@ -1161,6 +1161,12 @@ MasterPageFile="../Navigation/masters/ElitaBase.Master" %>
     <td align="left" nowrap="nowrap">
         <asp:DropDownList ID="ddlDealerNameFlag" runat="server" SkinID="MediumDropDown"></asp:DropDownList>
     </td>
+    <td align="right" nowrap="nowrap">
+        <asp:Label ID="lblAllowCertCancellationWithClaim" runat="server">ALLOW_CERT_CANCELLATION_WITH_CLAIM</asp:Label>
+    </td>
+    <td align="left" nowrap="nowrap">
+        <asp:DropDownList ID="ddlAllowCertCancellationWithClaim" runat="server" SkinID="MediumDropDown"></asp:DropDownList>
+    </td>
     </tr>
            
 <tr> <td colspan="4" class="borderLeft"> 

@@ -1670,6 +1670,42 @@ Partial Public Class ClaimWizardForm
     Protected WithEvents step3_txtNewDeviceSKU As Global.System.Web.UI.WebControls.TextBox
     
     '''<summary>
+    '''step3_lblPickupDate control.
+    '''</summary>
+    '''<remarks>
+    '''Auto-generated field.
+    '''To modify move field declaration from designer file to code-behind file.
+    '''</remarks>
+    Protected WithEvents step3_lblPickupDate As Global.System.Web.UI.WebControls.Label
+    
+    '''<summary>
+    '''step3_txtPickupDate control.
+    '''</summary>
+    '''<remarks>
+    '''Auto-generated field.
+    '''To modify move field declaration from designer file to code-behind file.
+    '''</remarks>
+    Protected WithEvents step3_txtPickupDate As Global.System.Web.UI.WebControls.TextBox
+    
+    '''<summary>
+    '''step3_lblVisitDate control.
+    '''</summary>
+    '''<remarks>
+    '''Auto-generated field.
+    '''To modify move field declaration from designer file to code-behind file.
+    '''</remarks>
+    Protected WithEvents step3_lblVisitDate As Global.System.Web.UI.WebControls.Label
+    
+    '''<summary>
+    '''step3_txtVisitDate control.
+    '''</summary>
+    '''<remarks>
+    '''Auto-generated field.
+    '''To modify move field declaration from designer file to code-behind file.
+    '''</remarks>
+    Protected WithEvents step3_txtVisitDate As Global.System.Web.UI.WebControls.TextBox
+    
+    '''<summary>
     '''step3_ReplacementOption control.
     '''</summary>
     '''<remarks>
