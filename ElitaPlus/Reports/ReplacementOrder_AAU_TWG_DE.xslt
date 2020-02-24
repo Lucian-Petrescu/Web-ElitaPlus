@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="UTF-8" ?>
+﻿<?xml version="1.0" encoding="UTF-8" ?>
 <xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform" version="1.0" xmlns:a="http://tempuri.org/ServiceOrderReport.xsd"
 	exclude-result-prefixes="a">
   <xsl:output indent="yes" method="html" encoding="utf-8"/>
@@ -7,7 +7,7 @@
       <head>
         <style>
           BODY { width:auto }
-          TD { FONT-SIZE:8.5pt;font-family:"Trebuchet MS";font-weight:bolder;height:5px;}
+          td {font-size:10pt;font-family:"Trebuchet MS";font-weight:bolder;height:5px;}
           .Header {background-color:#000;color:#fff; TEXT-ALIGN:LEFT;text-decoration: underline}
           .esp {font-weight:normal;}
         </style>
@@ -36,7 +36,10 @@
                 </tr>
                 <tr>
                   <td>
-                    Replacement Request Order - Claim Number: &#160;<xsl:value-of select="a:ServiceOrderReport/a:ServiceOrder/a:CLAIM_NUMBER" />-<xsl:value-of select="a:ServiceOrderReport/a:ServiceOrder/a:AUTHORIZATION_NUMBER" />
+                    Replacement Request Order - Claim Number: &#160;
+                    <span style="font-size:14pt;">
+                      <xsl:value-of select="a:ServiceOrderReport/a:ServiceOrder/a:CLAIM_NUMBER" />-<xsl:value-of select="a:ServiceOrderReport/a:ServiceOrder/a:AUTHORIZATION_NUMBER" />
+                    </span>
                   </td>
                 </tr>
               </table>
@@ -96,7 +99,7 @@
           <tr>
             <td>
               Number:&#160;
-               <xsl:choose>
+              <xsl:choose>
                 <xsl:when test="a:ServiceOrderReport/a:ServiceOrder/a:HOME_PHONE != ''">
                   <xsl:value-of select="a:ServiceOrderReport/a:ServiceOrder/a:HOME_PHONE" />
                 </xsl:when>
@@ -185,7 +188,7 @@
           <tr>
             <td>
               Purchase Price:&#160;$<xsl:value-of select="a:ServiceOrderReport/a:ServiceOrder/a:SALES_PRICE" />&#160;(Incl GST)
-          </td>
+            </td>
           </tr>
           <tr>
             <td>&#160;</td>
@@ -236,7 +239,7 @@
           <tr>
             <td colspan="2">
               Replacement Authority Limit: $<xsl:value-of select="a:ServiceOrderReport/a:ServiceOrder/a:AUTHORIZATION_AMOUNT" />&#160;(Incl GST)
-          </td>
+            </td>
           </tr>
           <tr>
             <td>&#160;</td>
@@ -245,6 +248,24 @@
           <tr>
             <td colspan="2">
               Additional comments:<xsl:value-of select="a:ServiceOrderReport/a:ServiceOrder/a:SPECIAL_INSTRUCTION" />
+            </td>
+          </tr>
+          <tr>
+            <td colspan="2">&#160;</td>
+          </tr>
+          <tr>
+            <td colspan="2" >&#160;</td>
+          </tr>
+          <tr>
+            <td colspan="2" >&#160;</td>
+          </tr>
+          <tr>
+            <td colspan="2" >&#160;</td>
+          </tr>
+          <tr>
+            <td colspan="2" style="border: thin solid #000000;text-align: center;font-size:9pt;" >
+              <br></br>
+              &#160;Insurance issued by Virginia Surety Company, Inc ARBN 080 339 957 AFSL 245579. Insurance administered by The Warranty Group Australasia Pty Ltd ABN 37 005 004 446. PO Box 246, Balwyn. VIC. 3103.
             </td>
           </tr>
         </table>

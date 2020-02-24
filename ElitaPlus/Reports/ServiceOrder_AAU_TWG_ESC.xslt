@@ -7,7 +7,7 @@
       <head>
         <style>
           BODY { width:auto }
-          TD { FONT-SIZE:8.5pt;font-family:"Trebuchet MS";font-weight:bolder;height:5px;}
+          TD {font-size:10pt;font-family:"Trebuchet MS";font-weight:bolder;height:5px;}
           .Header {background-color:#000;color:#fff; TEXT-ALIGN:LEFT;text-decoration: underline}
           .esp {font-weight:normal;}
         </style>
@@ -36,7 +36,10 @@
                 </tr>
                 <tr>
                   <td>
-                    Repair Service Request - Claim Number: &#160;<xsl:value-of select="a:ServiceOrderReport/a:ServiceOrder/a:CLAIM_NUMBER" />-<xsl:value-of select="a:ServiceOrderReport/a:ServiceOrder/a:AUTHORIZATION_NUMBER" />
+                    Repair Service Request - Claim Number: &#160;
+                    <span style="font-size:14pt;">
+                      <xsl:value-of select="a:ServiceOrderReport/a:ServiceOrder/a:CLAIM_NUMBER" />-<xsl:value-of select="a:ServiceOrderReport/a:ServiceOrder/a:AUTHORIZATION_NUMBER" />
+                    </span>
                   </td>
                 </tr>
               </table>
@@ -58,7 +61,7 @@
             <td></td>
           </tr>
           <tr>
-            <td >
+            <td>
               Name:&#160;<xsl:value-of select="a:ServiceOrderReport/a:ServiceOrder/a:CUSTOMER_NAME" />
             </td>
           </tr>
@@ -185,7 +188,7 @@
           <tr>
             <td>
               Purchase Price:&#160;$<xsl:value-of select="a:ServiceOrderReport/a:ServiceOrder/a:SALES_PRICE" />&#160;(Incl GST)
-          </td>
+            </td>
           </tr>
           <tr>
             <td>&#160;</td>
@@ -242,15 +245,15 @@
           </tr>
           <tr>
             <td colspan="2">
-              Repair Authority Limit: $<xsl:value-of select="a:ServiceOrderReport/a:ServiceOrder/a:AUTHORIZATION_AMOUNT" />&#160;(Incl GST)
-            </td>
+              Repair Authority Limit: $<xsl:value-of select="a:ServiceOrderReport/a:ServiceOrder/a:AUTHORIZATION_AMOUNT" />&#160;(Excl GST)
+          </td>
           </tr>
           <tr>
             <td>&#160;</td>
             <td></td>
           </tr>
           <tr>
-            <td colspan="2">If the repair costs (including parts and labor) DO NOT exceed the Repair Authority Limit, please email us with an<br />
+            <td colspan="2">If the repair costs (including parts and labor excl GST) DO NOT exceed the Repair Authority Limit, please email us with an<br />
             itemized invoice repair has been completed.
             </td>
           </tr>
@@ -259,7 +262,7 @@
             <td></td>
           </tr>
           <tr>
-            <td colspan="2">If the repair costs (including parts and labor) EXCEED the Repair Authority Limit, please email us with an<br />
+            <td colspan="2">If the repair costs (including parts and labor excl GST) EXCEED the Repair Authority Limit, please email us with an<br />
             itemized quote and await further advice before proceeding with repair.
             </td>
           </tr>
@@ -288,26 +291,6 @@
           <tr>
             <td colspan="2">
               Additional comments:<xsl:value-of select="a:ServiceOrderReport/a:ServiceOrder/a:SPECIAL_INSTRUCTION" />
-            </td>
-          </tr>
-          <tr>
-            <td colspan="2">&#160;</td>
-          </tr>
-          <tr>
-            <td colspan="2" >&#160;</td>
-           </tr>
-          <tr>
-            <td colspan="2" >&#160;</td>
-          </tr>
-          <tr>
-            <td colspan="2" >&#160;</td>
-          </tr>
-          <tr>
-            <td colspan="2" style="border: thin solid #000000;text-align: center" >
-                <br></br>
-                &#160;Insurance issued by Virginia Surety Company, Inc ARBN 080 339 957 AFSL 245579.
-                Insurance administered by The Warranty Group Australasia Pty Ltd ABN 37 005 004 446,PO Box 246, Balwyn. VIC. 3103.<br></br>
-             
             </td>
           </tr>
         </table>
