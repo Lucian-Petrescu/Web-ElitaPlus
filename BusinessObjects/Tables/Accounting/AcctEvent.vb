@@ -48,7 +48,7 @@ Public Class AcctEvent
             Dim newRow As DataRow = Me.Dataset.Tables(dal.TABLE_NAME).NewRow
             Me.Dataset.Tables(dal.TABLE_NAME).Rows.Add(newRow)
             Me.Row = newRow
-            setvalue(dal.TABLE_KEY_NAME, Guid.NewGuid)
+            SetValue(dal.TABLE_KEY_NAME, Guid.NewGuid)
             Initialize()
         Catch ex As Assurant.ElitaPlus.DALObjects.DataBaseAccessException
             Throw New DataBaseAccessException(DataBaseAccessException.DatabaseAccessErrorType.ReadErr, ex)
@@ -92,22 +92,22 @@ Public Class AcctEvent
     'Key Property
     Public ReadOnly Property Id() As Guid
         Get
-            If row(AcctEventDAL.TABLE_KEY_NAME) Is DBNull.Value Then
+            If Row(AcctEventDAL.TABLE_KEY_NAME) Is DBNull.Value Then
                 Return Nothing
             Else
-                Return New Guid(CType(row(AcctEventDAL.COL_NAME_ACCT_EVENT_ID), Byte()))
+                Return New Guid(CType(Row(AcctEventDAL.COL_NAME_ACCT_EVENT_ID), Byte()))
             End If
         End Get
     End Property
 
-    <ValueMandatory("")> _
+    <ValueMandatory("")>
     Public Property AcctCompanyId() As Guid
         Get
             CheckDeleted()
-            If row(AcctEventDAL.COL_NAME_ACCT_COMPANY_ID) Is DBNull.Value Then
+            If Row(AcctEventDAL.COL_NAME_ACCT_COMPANY_ID) Is DBNull.Value Then
                 Return Nothing
             Else
-                Return New Guid(CType(row(AcctEventDAL.COL_NAME_ACCT_COMPANY_ID), Byte()))
+                Return New Guid(CType(Row(AcctEventDAL.COL_NAME_ACCT_COMPANY_ID), Byte()))
             End If
         End Get
         Set(ByVal Value As Guid)
@@ -121,10 +121,10 @@ Public Class AcctEvent
     Public Property DealerId() As Guid
         Get
             CheckDeleted()
-            If row(AcctEventDAL.COL_NAME_DEALER_ID) Is DBNull.Value Then
+            If Row(AcctEventDAL.COL_NAME_DEALER_ID) Is DBNull.Value Then
                 Return Nothing
             Else
-                Return New Guid(CType(row(AcctEventDAL.COL_NAME_DEALER_ID), Byte()))
+                Return New Guid(CType(Row(AcctEventDAL.COL_NAME_DEALER_ID), Byte()))
             End If
         End Get
         Set(ByVal Value As Guid)
@@ -138,10 +138,10 @@ Public Class AcctEvent
     Public Property ServiceCenterId() As Guid
         Get
             CheckDeleted()
-            If row(AcctEventDAL.COL_NAME_SERVICE_CENTER_ID) Is DBNull.Value Then
+            If Row(AcctEventDAL.COL_NAME_SERVICE_CENTER_ID) Is DBNull.Value Then
                 Return Nothing
             Else
-                Return New Guid(CType(row(AcctEventDAL.COL_NAME_SERVICE_CENTER_ID), Byte()))
+                Return New Guid(CType(Row(AcctEventDAL.COL_NAME_SERVICE_CENTER_ID), Byte()))
             End If
         End Get
         Set(ByVal Value As Guid)
@@ -151,14 +151,14 @@ Public Class AcctEvent
     End Property
 
 
-    <ValueMandatory("")> _
+    <ValueMandatory("")>
     Public Property AcctEventTypeId() As Guid
         Get
             CheckDeleted()
-            If row(AcctEventDAL.COL_NAME_ACCT_EVENT_TYPE_ID) Is DBNull.Value Then
+            If Row(AcctEventDAL.COL_NAME_ACCT_EVENT_TYPE_ID) Is DBNull.Value Then
                 Return Nothing
             Else
-                Return New Guid(CType(row(AcctEventDAL.COL_NAME_ACCT_EVENT_TYPE_ID), Byte()))
+                Return New Guid(CType(Row(AcctEventDAL.COL_NAME_ACCT_EVENT_TYPE_ID), Byte()))
             End If
         End Get
         Set(ByVal Value As Guid)
@@ -231,7 +231,7 @@ Public Class AcctEvent
         End Set
     End Property
 
-    <ValidStringLength("", Max:=1)> _
+    <ValidStringLength("", Max:=1)>
     Public Property AllowBalTran() As String
         Get
             CheckDeleted()
@@ -248,7 +248,7 @@ Public Class AcctEvent
     End Property
 
 
-    <ValidStringLength("", Max:=1)> _
+    <ValidStringLength("", Max:=1)>
     Public Property AllowOverBudget() As String
         Get
             CheckDeleted()
@@ -265,7 +265,7 @@ Public Class AcctEvent
     End Property
 
 
-    <ValidStringLength("", Max:=1)> _
+    <ValidStringLength("", Max:=1)>
     Public Property AllowPostToSuspended() As String
         Get
             CheckDeleted()
@@ -282,7 +282,7 @@ Public Class AcctEvent
     End Property
 
 
-    <ValidStringLength("", Max:=2)> _
+    <ValidStringLength("", Max:=2)>
     Public Property BalancingOptions() As String
         Get
             CheckDeleted()
@@ -299,7 +299,7 @@ Public Class AcctEvent
     End Property
 
 
-    <ValidStringLength("", Max:=5)> _
+    <ValidStringLength("", Max:=5)>
     Public Property JournalType() As String
         Get
             CheckDeleted()
@@ -316,7 +316,7 @@ Public Class AcctEvent
     End Property
 
 
-    <ValidStringLength("", Max:=1)> _
+    <ValidStringLength("", Max:=1)>
     Public Property LoadOnly() As String
         Get
             CheckDeleted()
@@ -333,7 +333,7 @@ Public Class AcctEvent
     End Property
 
 
-    <ValidStringLength("", Max:=1)> _
+    <ValidStringLength("", Max:=1)>
     Public Property PostingType() As String
         Get
             CheckDeleted()
@@ -350,7 +350,7 @@ Public Class AcctEvent
     End Property
 
 
-    <ValidStringLength("", Max:=1)> _
+    <ValidStringLength("", Max:=1)>
     Public Property PostProvisional() As String
         Get
             CheckDeleted()
@@ -367,7 +367,7 @@ Public Class AcctEvent
     End Property
 
 
-    <ValidStringLength("", Max:=1)> _
+    <ValidStringLength("", Max:=1)>
     Public Property PostToHold() As String
         Get
             CheckDeleted()
@@ -384,7 +384,7 @@ Public Class AcctEvent
     End Property
 
 
-    <ValidStringLength("", Max:=15)> _
+    <ValidStringLength("", Max:=15)>
     Public Property ReportingAccount() As String
         Get
             CheckDeleted()
@@ -401,7 +401,7 @@ Public Class AcctEvent
     End Property
 
 
-    <ValidStringLength("", Max:=1)> _
+    <ValidStringLength("", Max:=1)>
     Public Property SuppressSubstitutedMessages() As String
         Get
             CheckDeleted()
@@ -418,7 +418,7 @@ Public Class AcctEvent
     End Property
 
 
-    <ValidStringLength("", Max:=15)> _
+    <ValidStringLength("", Max:=15)>
     Public Property SuspenseAccount() As String
         Get
             CheckDeleted()
@@ -435,7 +435,7 @@ Public Class AcctEvent
     End Property
 
 
-    <ValidStringLength("", Max:=15)> _
+    <ValidStringLength("", Max:=15)>
     Public Property TransactionAmountAccount() As String
         Get
             CheckDeleted()
@@ -451,8 +451,8 @@ Public Class AcctEvent
         End Set
     End Property
 
-    <ValidStringLength("", Max:=5)> _
-        Public Property LayoutCode() As String
+    <ValidStringLength("", Max:=5)>
+    Public Property LayoutCode() As String
         Get
             CheckDeleted()
             If Row(AcctEventDAL.COL_NAME_LAYOUT_CODE) Is DBNull.Value Then
@@ -467,8 +467,8 @@ Public Class AcctEvent
         End Set
     End Property
 
-    <ValidStringLength("", Max:=100)> _
-        Public Property EventName() As String
+    <ValidStringLength("", Max:=100)>
+    Public Property EventName() As String
         Get
             CheckDeleted()
             If Row(AcctEventDAL.COL_NAME_EVENT_NAME) Is DBNull.Value Then
@@ -483,8 +483,8 @@ Public Class AcctEvent
         End Set
     End Property
 
-    <ValidStringLength("", Max:=20)> _
-        Public Property EventDescription() As String
+    <ValidStringLength("", Max:=20)>
+    Public Property EventDescription() As String
         Get
             CheckDeleted()
             If Row(AcctEventDAL.COL_NAME_EVENT_DESCRIPTION) Is DBNull.Value Then
@@ -498,7 +498,21 @@ Public Class AcctEvent
             Me.SetValue(AcctEventDAL.COL_NAME_EVENT_DESCRIPTION, Value)
         End Set
     End Property
-
+    <ValidStringLength("", Max:=100)>
+    Public Property JournalLevel() As String
+        Get
+            CheckDeleted()
+            If Row(AcctEventDAL.COL_NAME_JOURNAL_LEVEL) Is DBNull.Value Then
+                Return Nothing
+            Else
+                Return CType(Row(AcctEventDAL.COL_NAME_JOURNAL_LEVEL), String)
+            End If
+        End Get
+        Set(ByVal Value As String)
+            CheckDeleted()
+            Me.SetValue(AcctEventDAL.COL_NAME_JOURNAL_LEVEL, Value)
+        End Set
+    End Property
 
 #End Region
 

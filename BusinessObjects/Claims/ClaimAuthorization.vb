@@ -688,11 +688,11 @@ Public NotInheritable Class ClaimAuthorization
 
     Public ReadOnly Property CanVoidClaimAuthorization() As Boolean
         Get
-            Dim flag As Boolean = False
-            If (Me.ClaimAuthStatus = ClaimAuthorizationStatus.Authorized Or Me.ClaimAuthStatus = ClaimAuthorizationStatus.Pending) Then
-                flag = True
+            If ClaimAuthStatus = ClaimAuthorizationStatus.Authorized OrElse ClaimAuthStatus = ClaimAuthorizationStatus.Pending OrElse ClaimAuthStatus = ClaimAuthorizationStatus.Sent Then
+                return True
+            Else 
+                Return False
             End If
-            Return flag
         End Get
     End Property
 
@@ -1269,6 +1269,21 @@ Public NotInheritable Class ClaimAuthorization
         End Get
     End Property
 
+    <ValidStringLength("", Max:=10)> _
+    Public Property Locator() As String
+        Get
+            CheckDeleted()
+            If row(ClaimAuthorizationDAL.COL_NAME_LOCATOR) Is DBNull.Value Then
+                Return Nothing
+            Else
+                Return CType(row(ClaimAuthorizationDAL.COL_NAME_LOCATOR), String)
+            End If
+        End Get
+        Set(ByVal Value As String)
+            CheckDeleted()
+            Me.SetValue(ClaimAuthorizationDAL.COL_NAME_LOCATOR, Value)
+        End Set
+    End Property
 #End Region
 
 #Region "Invoiceable Methods"
