@@ -175,7 +175,7 @@
           </tr>
           <tr>
             <td>
-              IMEI:&#160;<xsl:value-of select="a:ServiceOrderReport/a:ServiceOrder/a:IMEI_NUMBER" />
+              IMEI:&#160;<xsl:value-of select="a:ServiceOrderReport/a:ServiceOrder/a:IMEI" />
             </td>
           </tr>
           <tr>
