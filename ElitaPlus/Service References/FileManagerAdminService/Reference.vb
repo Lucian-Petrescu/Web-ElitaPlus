@@ -245,6 +245,9 @@ Namespace FileManagerAdminService
         Private extensionDataField As System.Runtime.Serialization.ExtensionDataObject
         
         <System.Runtime.Serialization.OptionalFieldAttribute()>  _
+        Private LifeCycleRecordStateField As FileManagerAdminService.LifeCycleRecordStateType
+        
+        <System.Runtime.Serialization.OptionalFieldAttribute()>  _
         Private RecordStateField As FileManagerAdminService.RecordStateType
         
         <Global.System.ComponentModel.BrowsableAttribute(false)>  _
@@ -254,6 +257,19 @@ Namespace FileManagerAdminService
             End Get
             Set
                 Me.extensionDataField = value
+            End Set
+        End Property
+        
+        <System.Runtime.Serialization.DataMemberAttribute()>  _
+        Public Property LifeCycleRecordState() As FileManagerAdminService.LifeCycleRecordStateType
+            Get
+                Return Me.LifeCycleRecordStateField
+            End Get
+            Set
+                If (Me.LifeCycleRecordStateField.Equals(value) <> true) Then
+                    Me.LifeCycleRecordStateField = value
+                    Me.RaisePropertyChanged("LifeCycleRecordState")
+                End If
             End Set
         End Property
         
@@ -279,6 +295,36 @@ Namespace FileManagerAdminService
             End If
         End Sub
     End Class
+    
+    <System.CodeDom.Compiler.GeneratedCodeAttribute("System.Runtime.Serialization", "4.0.0.0"),  _
+     System.Runtime.Serialization.DataContractAttribute(Name:="LifeCycleRecordStateType", [Namespace]:="http://schemas.datacontract.org/2004/07/Assurant.Elita.ClaimManagement.Extension."& _ 
+        "FileManager.Contracts")>  _
+    Public Enum LifeCycleRecordStateType As Integer
+        
+        <System.Runtime.Serialization.EnumMemberAttribute()>  _
+        [New] = 0
+        
+        <System.Runtime.Serialization.EnumMemberAttribute()>  _
+        Active = 1
+        
+        <System.Runtime.Serialization.EnumMemberAttribute()>  _
+        Stale = 2
+        
+        <System.Runtime.Serialization.EnumMemberAttribute()>  _
+        FrequentAccess = 3
+        
+        <System.Runtime.Serialization.EnumMemberAttribute()>  _
+        Backup = 4
+        
+        <System.Runtime.Serialization.EnumMemberAttribute()>  _
+        InfrequentAccess = 5
+        
+        <System.Runtime.Serialization.EnumMemberAttribute()>  _
+        ColdAccess = 6
+        
+        <System.Runtime.Serialization.EnumMemberAttribute()>  _
+        Purge = 7
+    End Enum
     
     <System.CodeDom.Compiler.GeneratedCodeAttribute("System.Runtime.Serialization", "4.0.0.0"),  _
      System.Runtime.Serialization.DataContractAttribute(Name:="RecordStateType", [Namespace]:="http://schemas.datacontract.org/2004/07/Assurant.Elita.ClaimManagement.Extension."& _ 
@@ -1079,46 +1125,16 @@ Namespace FileManagerAdminService
     Public Enum FileStateType As Integer
         
         <System.Runtime.Serialization.EnumMemberAttribute()>  _
-        Initialized = 0
+        Pending = 0
         
         <System.Runtime.Serialization.EnumMemberAttribute()>  _
-        Validated = 1
+        Running = 1
         
         <System.Runtime.Serialization.EnumMemberAttribute()>  _
-        Rejected = 2
+        Failure = 2
         
         <System.Runtime.Serialization.EnumMemberAttribute()>  _
-        Processed = 3
-    End Enum
-    
-    <System.CodeDom.Compiler.GeneratedCodeAttribute("System.Runtime.Serialization", "4.0.0.0"),  _
-     System.Runtime.Serialization.DataContractAttribute(Name:="LifeCycleRecordStateType", [Namespace]:="http://schemas.datacontract.org/2004/07/Assurant.Elita.ClaimManagement.Extension."& _ 
-        "FileManager.Contracts")>  _
-    Public Enum LifeCycleRecordStateType As Integer
-        
-        <System.Runtime.Serialization.EnumMemberAttribute()>  _
-        [New] = 0
-        
-        <System.Runtime.Serialization.EnumMemberAttribute()>  _
-        Active = 1
-        
-        <System.Runtime.Serialization.EnumMemberAttribute()>  _
-        Stale = 2
-        
-        <System.Runtime.Serialization.EnumMemberAttribute()>  _
-        FrequentAccess = 3
-        
-        <System.Runtime.Serialization.EnumMemberAttribute()>  _
-        Backup = 4
-        
-        <System.Runtime.Serialization.EnumMemberAttribute()>  _
-        InfrequentAccess = 5
-        
-        <System.Runtime.Serialization.EnumMemberAttribute()>  _
-        ColdAccess = 6
-        
-        <System.Runtime.Serialization.EnumMemberAttribute()>  _
-        Purge = 7
+        Success = 3
     End Enum
     
     <System.Diagnostics.DebuggerStepThroughAttribute(),  _
