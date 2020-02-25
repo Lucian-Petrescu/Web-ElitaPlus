@@ -1054,6 +1054,15 @@ Public Class CertItem
         Return Nothing
     End Function
 
+    Public Function AddClaimExtendedStatus(ByVal claimStatusID As Guid) As ClaimStatus
+        If claimStatusID.Equals(Guid.Empty) Then
+            Dim objClaimStatus As New ClaimStatus(Me.Dataset)
+            Return objClaimStatus
+        Else
+            Dim objClaimStatus As New ClaimStatus(claimStatusID, Me.Dataset)
+            Return objClaimStatus
+        End If
+    End Function
 #End Region
 
 #Region "Functions"
