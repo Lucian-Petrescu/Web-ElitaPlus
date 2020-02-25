@@ -23,6 +23,8 @@ Public Class ClaimStatusByGroupDAL
     Public Const COL_NAME_DEALER_NAME As String = "dealer_name"
     Public Const COL_NAME_DEALER_CODE As String = "dealer_code"
     Public Const COL_NAME_GROUP_NUMBER As String = "group_number"
+    Public Const COL_NAME_TURNAROUND_DAYS As String = "turnaround_time_days"
+    Public Const COL_NAME_TAT_REMINDER_HOURS As String = "tat_reminder_hours"
     Public Const DYNAMIC_LANGUAGE_JOIN_CLAUSE_PLACE_HOLDER = "--dynamic language id"
     Public Const DYNAMIC_GROUP_JOIN_CLAUSE_PLACE_HOLDER = "--dynamic company group id or dealer id"
     Public Const COL_NAME_LANGUAGE_ID As String = "language_id"
