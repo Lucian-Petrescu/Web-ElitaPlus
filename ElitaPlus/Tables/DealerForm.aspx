@@ -1033,11 +1033,12 @@ MasterPageFile="../Navigation/masters/ElitaBase.Master" %>
                           SkinID="MediumDropDown">
         </asp:DropDownList>
     </td>
-    <td align="right" nowrap="nowrap">                   
+    <td align="right" nowrap="nowrap">
+        <asp:Label ID="lblUseTatNotification" runat="server">USE_TAT_NOTIFICATION</asp:Label>
     </td>
-    <td align="left">
-                   
-    </td>          
+    <td align="left" nowrap="nowrap">
+        <asp:DropDownList ID="moUseTatNotification" runat="server" SkinID="SmallDropDown" Width="205px" ></asp:DropDownList>
+    </td>         
 </tr>
 <tr id="trBenefitDlrTypeCtls1" runat="server">
     <td align="right" class="borderLeft" nowrap="nowrap">

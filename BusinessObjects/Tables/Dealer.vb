@@ -2478,6 +2478,20 @@ Public Class Dealer
             Me.SetValue(DealerDAL.COL_NAME_SHOW_PREV_CALLER_INFO, Value)
         End Set
     End Property
+    Public Property UseTurnaroundTimeNotification() As String
+        Get
+            CheckDeleted()
+            If Row(DealerDAL.COL_NAME_USE_TAT_NOTIFICATION) Is DBNull.Value Then
+                Return Nothing
+            Else
+                Return CType(Row(DealerDAL.COL_NAME_USE_TAT_NOTIFICATION), String)
+            End If
+        End Get
+        Set(ByVal Value As String)
+            CheckDeleted()
+            Me.SetValue(DealerDAL.COL_NAME_USE_TAT_NOTIFICATION, Value)
+        End Set
+    End Property
     Public Property DisplayDobXcd() As String
         Get
             CheckDeleted()

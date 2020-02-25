@@ -1037,6 +1037,7 @@ Namespace Tables
             Me.reshipmentAllowedDrop.Populate(oYesNoList, populateOptions2)
             Me.moValidateAddress.Populate(oYesNoList, populateOptions2)
             Me.moShowPrevCallerInfo.Populate(oYesNoList, populateOptions2)
+            Me.moUseTatNotification.Populate(oYesNoList,populateOptions2)
             Me.ddlDealerNameFlag.Populate(oYesNoList, populateOptions3)
 
             Me.ddlAllowCertCancellationWithClaim.Populate(CommonConfigManager.Current.ListManager.GetList("ALLOW_CERT_CANCELLATION_WITH_CLAIM", Thread.CurrentPrincipal.GetLanguageCode()), populateOptions2)
@@ -1145,6 +1146,7 @@ Namespace Tables
             txtCancelShipmentGracePeriod.Text = String.Empty
             ddlCaseProfile.ClearSelection()
             moShowPrevCallerInfo.ClearSelection()
+            moUseTatNotification.ClearSelection()
             ddlDealerNameFlag.ClearSelection()
             ddlAllowCertCancellationWithClaim.ClearSelection()
         End Sub
@@ -1445,6 +1447,8 @@ Namespace Tables
 
                 BindSelectItem(Me.State.MyBO.Show_Previous_Caller_Info, Me.moShowPrevCallerInfo)
 
+                BindSelectItem(Me.State.MyBO.UseTurnaroundTimeNotification, Me.moUseTatNotification)
+               
                 BindSelectItem(Me.State.MyBO.DisplayDobXcd, Me.ddlDealerNameFlag)
 
                 Me.PopulateControlFromBOProperty(Me.txtCancelShipmentGracePeriod, .Cancel_Shipment_Grace_Period)
@@ -1772,6 +1776,7 @@ Namespace Tables
 
                 Me.PopulateBOProperty(Me.State.MyBO, "CloseCaseGracePeriodDays", Me.txtClosecaseperiod)
                 Me.PopulateBOProperty(Me.State.MyBO, "Show_Previous_Caller_Info", Me.moShowPrevCallerInfo, False, True)
+                Me.PopulateBOProperty(Me.State.MyBO, "UseTurnaroundTimeNotification", Me.moUseTatNotification, False, True)
                 Me.PopulateBOProperty(Me.State.MyBO, "DisplayDobXcd", Me.ddlDealerNameFlag, False, True)
                 Me.PopulateBOProperty(Me.State.MyBO, "AllowCertCancellationWithClaimXCd", Me.ddlAllowCertCancellationWithClaim, False, True)
 
