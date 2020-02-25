@@ -11,7 +11,7 @@
         'dal.InsertUploadFileLinesNew(strUploadType, fileLines, fileName)
         'Improve performance by inserting lines in bulk.
         dal.InsertUploadFileLinesBulk(strUploadType, fileLines, fileName)
-        
+
     End Sub
 
     Public Shared Function InitUpload(ByVal strFileName As String, ByVal strUploadType As String, ByVal strErrMsg As String) As String
@@ -48,6 +48,12 @@
     Public Shared Sub ExtractReport(strUploadType As String, ByVal strUserEmailAddress As String, ByVal strCompanyGroupCode As String, ByVal extractFile As String)
         Dim dal As New commonUploadDAL
         dal.ExtractReportFile(strUploadType, strUserEmailAddress, strCompanyGroupCode, extractFile)
-
     End Sub
+
+    Public Shared Function getScreenHelp(FormName As String)
+        Dim dal As New commonUploadDAL
+        Dim helpData As String
+        helpData = dal.getScreenHelpData(FormName)
+        Return helpData
+    End Function
 End Class

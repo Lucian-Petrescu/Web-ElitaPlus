@@ -687,7 +687,7 @@ Namespace Interfaces
             objStream = dealerFileInput.PostedFile.InputStream
             objStream.Read(fileBytes, 0, fileLen)
 
-            Dim webServerPath As String = GetUniqueDirectory(AppConfig.UnixServer.InterfaceDirectory, ElitaPlusPrincipal.Current.Identity.Name)
+            Dim webServerPath As String = GetUniqueDirectory(AppConfig.UnixServer.InterfaceDirectory, ElitaPlusPrincipal.Current.ActiveUser.NetworkId)
             Dim webServerFile As String = webServerPath & "\" & System.IO.Path.GetFileName(dealerFileName)
             layoutFileName = webServerPath & "\" & _
                 System.IO.Path.GetFileNameWithoutExtension(webServerFile) & AppConfig.UnixServer.FtpTriggerExtension

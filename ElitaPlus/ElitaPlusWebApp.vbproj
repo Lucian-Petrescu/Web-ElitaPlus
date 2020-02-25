@@ -167,7 +167,7 @@
       <Private>True</Private>
     </Reference>
     <Reference Include="Assurant.Elita.AddressValidationProvider, Version=1.0.1.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Assurant.Elita.AddressvalidationProvider.1.0.2\lib\net46\Assurant.Elita.AddressValidationProvider.dll</HintPath>
+      <HintPath>..\packages\Assurant.Elita.AddressvalidationProvider.1.0.3\lib\net46\Assurant.Elita.AddressValidationProvider.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="Assurant.Elita.Base.DataAccess">
@@ -5773,7 +5773,9 @@
     <Content Include="Reports\ReportCeProgressForm_New.aspx" />
     <Content Include="Reports\ReportExtractInputControl.ascx" />
     <Content Include="Reports\RequestReportForm.aspx" />
-    <Content Include="Reports\ServiceOrder_AAU.xslt" />
+    <Content Include="Reports\ServiceOrder_AAU.xslt">
+      <SubType>Designer</SubType>
+    </Content>
     <Content Include="Reports\ServiceOrder_ANZ.xslt" />
     <Content Include="Reports\ServiceOrder_DE_AAU.xslt" />
     <Content Include="Reports\ServiceOrder_EW_AAU.xslt" />
@@ -5944,16 +5946,13 @@
     <Content Include="Service References\ClaimFulfillmentWebAppGatewayService\Assurant.ElitaPlus.ElitaPlusWebApp.ClaimFulfillmentWebAppGatewayService.FulfillmentServicesCenter1.datasource">
       <DependentUpon>Reference.svcmap</DependentUpon>
     </Content>
+    <Content Include="Service References\ClaimFulfillmentWebAppGatewayService\Assurant.ElitaPlus.ElitaPlusWebApp.ClaimFulfillmentWebAppGatewayService.ChangeServiceCenterResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </Content>
     <None Include="Service References\ClaimFulfillmentWebAppGatewayService\configuration91.svcinfo" />
     <None Include="Service References\ClaimFulfillmentWebAppGatewayService\configuration.svcinfo" />
-    <None Include="Service References\ClaimFulfillmentWebAppGatewayService\gateway.wsdl" />
-    <None Include="Service References\ClaimFulfillmentWebAppGatewayService\gateway.xsd">
-      <SubType>Designer</SubType>
-    </None>
     <None Include="Service References\ClaimFulfillmentWebAppGatewayService\gateway1.wsdl" />
-    <None Include="Service References\ClaimFulfillmentWebAppGatewayService\gateway1.xsd">
-      <SubType>Designer</SubType>
-    </None>
+    <None Include="Service References\ClaimFulfillmentWebAppGatewayService\gateway11.wsdl" />
     <None Include="Service References\ClaimFulfillmentWebAppGatewayService\gateway11.xsd">
       <SubType>Designer</SubType>
     </None>
@@ -5963,13 +5962,19 @@
     <None Include="Service References\ClaimFulfillmentWebAppGatewayService\gateway13.xsd">
       <SubType>Designer</SubType>
     </None>
-    <None Include="Service References\ClaimFulfillmentWebAppGatewayService\gateway2.xsd">
+    <None Include="Service References\ClaimFulfillmentWebAppGatewayService\gateway5.xsd">
       <SubType>Designer</SubType>
     </None>
-    <None Include="Service References\ClaimFulfillmentWebAppGatewayService\gateway3.xsd">
+    <None Include="Service References\ClaimFulfillmentWebAppGatewayService\gateway51.xsd">
       <SubType>Designer</SubType>
     </None>
-    <None Include="Service References\ClaimFulfillmentWebAppGatewayService\gateway4.xsd">
+    <None Include="Service References\ClaimFulfillmentWebAppGatewayService\gateway52.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Service References\ClaimFulfillmentWebAppGatewayService\gateway53.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Service References\ClaimFulfillmentWebAppGatewayService\gateway54.xsd">
       <SubType>Designer</SubType>
     </None>
     <None Include="Service References\ClaimFulfillmentWebAppGatewayService\Reference.svcmap">
@@ -5988,8 +5993,8 @@
     <Content Include="Service References\ClaimRecordingService\Assurant.ElitaPlus.ElitaPlusWebApp.ClaimRecordingService.PolicyInfo.datasource">
       <DependentUpon>Reference.svcmap</DependentUpon>
     </Content>
-    <None Include="Service References\ClaimFulfillmentWebAppGatewayService\WebAppGateway.wsdl" />
     <None Include="Service References\ClaimFulfillmentWebAppGatewayService\WebAppGateway1.wsdl" />
+    <None Include="Service References\ClaimFulfillmentWebAppGatewayService\WebAppGateway11.wsdl" />
     <None Include="Service References\ClaimRecordingService\ClaimRecordingService1.wsdl" />
     <None Include="Service References\ClaimRecordingService\ClaimRecordingService3.wsdl" />
     <None Include="Service References\ClaimRecordingService\configuration91.svcinfo" />

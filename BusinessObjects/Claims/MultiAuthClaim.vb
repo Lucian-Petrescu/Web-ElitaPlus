@@ -146,6 +146,12 @@ Public NotInheritable Class MultiAuthClaim
         End Get
     End Property
 
+    Public ReadOnly Property VisitDate As DateType
+        Get
+            Return MyBase.VisitDate
+        End Get
+    End Property
+
     Public ReadOnly Property HasMultipleServiceCenters() As Boolean
         Get
             Return Not Me.EvaluateForSingleServiceCenter()
@@ -263,6 +269,9 @@ Public NotInheritable Class MultiAuthClaim
                 End If
             End If
         Next
+        If pickUpDate Is Nothing Then
+            Return MyBase.PickUpDate
+        End If
         Return pickUpDate
     End Function
 

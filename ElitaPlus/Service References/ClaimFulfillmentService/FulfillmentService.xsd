@@ -254,7 +254,7 @@
       <xs:element minOccurs="0" name="EquipmentDescription" nillable="true" type="xs:string" />
       <xs:element minOccurs="0" name="EquipmentId" nillable="true" type="ser:guid" />
       <xs:element minOccurs="0" name="InventoryId" nillable="true" type="ser:guid" />
-      <xs:element minOccurs="0" name="InventoryQuantity" type="xs:int" />
+      <xs:element minOccurs="0" name="InventoryQuantity" type="xs:long" />
       <xs:element minOccurs="0" name="Make" nillable="true" type="xs:string" />
       <xs:element minOccurs="0" name="Memory" nillable="true" type="xs:string" />
       <xs:element minOccurs="0" name="Model" nillable="true" type="xs:string" />

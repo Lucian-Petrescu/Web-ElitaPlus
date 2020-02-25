@@ -49,7 +49,8 @@
                  and    code in ('REPAIR','REPLACEMENT')
                  and    rownum = 1
                 ) as service_order_Type,
-                (select sum(cai.amount) from elp_claim_auth_item cai where cai.claim_authorization_id = ca.claim_authorization_id) as authorization_amount
+                (select sum(cai.amount) from elp_claim_auth_item cai where cai.claim_authorization_id = ca.claim_authorization_id) as authorization_amount,
+                ca.locator				
         FROM    elp_claim_authorization ca
 			  WHERE   ca.claim_authorization_id = hextoraw(:claim_authorization_id)
 		]]>
@@ -100,7 +101,8 @@
                  and    code in ('REPAIR','REPLACEMENT')
                  and    rownum = 1
                 ) as service_order_Type,
-                (select sum(cai.amount) from elp_claim_auth_item cai where cai.claim_authorization_id = ca.claim_authorization_id) as authorization_amount
+                (select sum(cai.amount) from elp_claim_auth_item cai where cai.claim_authorization_id = ca.claim_authorization_id) as authorization_amount,
+                ca.locator				
         FROM    elp_claim_authorization ca 
         WHERE		ca.claim_id = hextoraw(:claim_id)
         --dynamic_where_clause
@@ -147,7 +149,8 @@
                 and    code in ('REPAIR','REPLACEMENT')
                 and    rownum = 1
                ) as service_order_Type,
-               (select sum(cai.amount) from elp_claim_auth_item cai where cai.claim_authorization_id = ca.claim_authorization_id) as authorization_amount
+               (select sum(cai.amount) from elp_claim_auth_item cai where cai.claim_authorization_id = ca.claim_authorization_id) as authorization_amount,
+               ca.locator				
          FROM  elp_claim_authorization ca
          WHERE ca.claim_authorization_id in (select ii.claim_authorization_id from elp_invoice_item ii where ii.invoice_id = hextoraw(:invoice_id))
 		]]>
@@ -185,7 +188,8 @@
         verification_number = :verification_number,
         auth_type_xcd = :auth_type_xcd,
         party_type_xcd = :party_type_xcd,
-        party_reference_id = :party_reference_id
+        party_reference_id = :party_reference_id,
+        locator = :locator
 			WHERE
 				claim_authorization_id = hextoraw(:claim_authorization_id)
 		]]>
@@ -221,7 +225,8 @@
     verification_number,
     auth_type_xcd,
     party_type_xcd,
-    party_reference_id
+    party_reference_id,
+    locator
     )
     VALUES
     (
@@ -253,7 +258,8 @@
     :verification_number,
     :auth_type_xcd,
     :party_type_xcd,
-    :party_reference_id
+    :party_reference_id,
+    :locator
     )
   </INSERT>
   <DELETE>

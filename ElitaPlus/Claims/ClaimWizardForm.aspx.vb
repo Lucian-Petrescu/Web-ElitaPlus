@@ -490,11 +490,29 @@ Public Class ClaimWizardForm
                             Dim dsCaseFields As DataSet = CaseBase.GetCaseFieldsList(State.ClaimBO.Id, ElitaPlusIdentity.Current.ActiveUser.LanguageId)
                             If (Not dsCaseFields Is Nothing AndAlso dsCaseFields.Tables.Count > 0 AndAlso dsCaseFields.Tables(0).Rows.Count > 0) Then
 
+                                Dim hasBenefit As DataRow() = dsCaseFields.Tables(0).Select("field_code='HASBENEFIT'")
+                                Dim benefitCheckError As DataRow() = dsCaseFields.Tables(0).Select("field_code='BENEFITCHECKERROR'")
                                 Dim preCheckError As DataRow() = dsCaseFields.Tables(0).Select("field_code='PRECHECKERROR'")
-                                If Not preCheckError Is Nothing AndAlso preCheckError.Length = 0 Then
+                                Dim lossType As DataRow() = dsCaseFields.Tables(0).Select("field_code='LOSSTYPE'")
 
-                                    Dim hasBenefit As DataRow() = dsCaseFields.Tables(0).Select("field_code='HASBENEFIT'")
-                                    Dim benefitCheckError As DataRow() = dsCaseFields.Tables(0).Select("field_code='BENEFITCHECKERROR'")
+                                If Not hasBenefit Is Nothing AndAlso hasBenefit.Length > 0 Then
+                                    If Not hasBenefit(0)("field_value") Is Nothing AndAlso String.Equals(hasBenefit(0)("field_value").ToString(), Boolean.FalseString, StringComparison.CurrentCultureIgnoreCase) Then
+                                        UpdateCaseFieldValues(hasBenefit, lossType)
+
+                                        dsCaseFields = CaseBase.GetCaseFieldsList(State.ClaimBO.Id, ElitaPlusIdentity.Current.ActiveUser.LanguageId)
+                                        hasBenefit = dsCaseFields.Tables(0).Select("field_code='HASBENEFIT'")
+                                    End If
+                                End If
+                                If Not benefitCheckError Is Nothing AndAlso benefitCheckError.Length > 0 Then
+                                    If Not benefitCheckError(0)("field_value") Is Nothing AndAlso Not String.Equals(benefitCheckError(0)("field_value").ToString(), "NO ERROR", StringComparison.CurrentCultureIgnoreCase) Then
+                                        UpdateCaseFieldValues(benefitCheckError, lossType)
+
+                                        dsCaseFields = CaseBase.GetCaseFieldsList(State.ClaimBO.Id, ElitaPlusIdentity.Current.ActiveUser.LanguageId)
+                                        hasBenefit = dsCaseFields.Tables(0).Select("field_code='HASBENEFIT'")
+                                    End If
+                                End If
+
+                                If Not preCheckError Is Nothing And preCheckError.Length = 0 Then
                                     If Not hasBenefit Is Nothing AndAlso hasBenefit.Length > 0 Then
                                         If Not hasBenefit(0)("field_value") Is Nothing AndAlso hasBenefit(0)("field_value").ToString().ToUpper() = Boolean.TrueString.ToUpper() Then
                                             RunPreCheck(hasBenefit)
@@ -505,7 +523,6 @@ Public Class ClaimWizardForm
                                         End If
                                     End If
                                 End If
-
                             End If
                             'user story 192764 - Task-199011--End------
                         End If
@@ -574,6 +591,23 @@ Public Class ClaimWizardForm
         Catch ex As Exception
             Me.HandleErrors(ex, Me.MasterPage.MessageController)
         End Try
+    End Sub
+
+    Private Shared Sub UpdateCaseFieldValues(ByRef caseFieldRow As DataRow(), ByRef lossType As DataRow())
+        Dim caseFieldXcds() As String
+        Dim caseFieldValues() As String
+
+        If Not lossType Is Nothing AndAlso lossType.Length > 0 Then
+            If Not lossType(0)("field_value") Is Nothing AndAlso (lossType(0)("field_value").ToString().ToUpper() = "ADH1234" Or lossType(0)("field_value").ToString().ToUpper() = "ADH5") Then
+                caseFieldXcds = { "CASEFLD-HASBENEFIT", "CASEFLD-ADCOVERAGEREMAINING" }
+                caseFieldValues = { Boolean.TrueString.ToUpper(), Boolean.TrueString.ToUpper() }
+            Else If Not lossType(0)("field_value") Is Nothing AndAlso lossType(0)("field_value").ToString().ToUpper() = "THEFT/LOSS" Then
+                caseFieldXcds = { "CASEFLD-HASBENEFIT" }
+                caseFieldValues = { Boolean.TrueString.ToUpper() }
+            End If
+        End If
+
+        CaseBase.UpdateCaseFieldValues(GuidControl.ByteArrayToGuid(caseFieldRow(0)("case_Id")), caseFieldXcds, caseFieldValues)
     End Sub
 
     Private Sub RunPreCheck(ByVal caseRecord As DataRow())
@@ -2305,6 +2339,9 @@ Public Class ClaimWizardForm
         Me.PopulateControlFromBOProperty(Me.step3_TextboxOutstandingPremAmt, Me.State.ClaimBO.OutstandingPremiumAmount)
         Me.PopulateControlFromBOProperty(Me.step3_TextboxCALLER_TAX_NUMBER, Me.State.ClaimBO.CallerTaxNumber)
         Me.PopulateControlFromBOProperty(Me.step3_txtNewDeviceSKU, Me.State.ClaimBO.NewDeviceSku)
+        Me.PopulateControlFromBOProperty(Me.step3_txtPickupDate, Me.State.ClaimBO.PickUpDate)
+        Me.PopulateControlFromBOProperty(Me.step3_txtVisitDate, Me.State.ClaimBO.VisitDate)
+
         Me.SetSelectedItem(Me.step3_cboLawsuitId, Me.State.ClaimBO.IsLawsuitId)
         Me.PopulateControlFromBOProperty(Me.step3_TxtSpecialInstruction, Me.State.ClaimBO.SpecialInstruction)
 
@@ -2645,6 +2682,8 @@ Public Class ClaimWizardForm
             Me.PopulateBOProperty(Me.State.ClaimBO, "NewDeviceSku", Me.step3_txtNewDeviceSKU)
             Me.PopulateBOProperty(Me.State.ClaimBO, "IsLawsuitId", Me.step3_cboLawsuitId)
             Me.PopulateBOProperty(Me.State.ClaimBO, "SpecialInstruction", Me.step3_TxtSpecialInstruction)
+            Me.PopulateBOProperty(Me.State.ClaimBO, "PickUpDate", Me.step3_txtPickupDate)
+            Me.PopulateBOProperty(Me.State.ClaimBO, "VisitDate", Me.step3_txtVisitDate)
 
             If Me.State.ClaimBO.MethodOfRepairCode <> Codes.METHOD_OF_REPAIR__RECOVERY Then
                 Me.PopulateBOProperty(Me.State.ClaimBO, "LiabilityLimit", Me.step3_TextboxLiabilityLimit)
@@ -2762,6 +2801,8 @@ Public Class ClaimWizardForm
         Me.ChangeEnabledProperty(Me.step3_TextboxLiabilityLimit, False)
         Me.ChangeEnabledProperty(Me.step3_TextboxDeductible_WRITE, True)
         Me.ChangeEnabledProperty(Me.step3_TextBoxDiscount, False)
+        Me.ChangeEnabledProperty(Me.step3_txtPickupDate, False)
+        Me.ChangeEnabledProperty(Me.step3_txtVisitDate, False)
 
         'Make Invisible for Service Warranty
         If Me.State.ClaimBO.ClaimActivityCode = Codes.CLAIM_ACTIVITY__REWORK Then
@@ -2924,6 +2965,9 @@ Public Class ClaimWizardForm
                 Me.BindBOPropertyToLabel(Me.State.ClaimBO.ClaimedEquipment, "SerialNumber", Me.lblClaimedSerialNumber)
                 Me.BindBOPropertyToLabel(Me.State.ClaimBO.EnrolledEquipment, "SKU", Me.lblEnrolledSKu)
                 Me.BindBOPropertyToLabel(Me.State.ClaimBO.ClaimedEquipment, "SKU", Me.lblClaimedSKu)
+                Me.BindBOPropertyToLabel(Me.State.ClaimBO, "PickUpDate", Me.step3_lblPickupDate)
+                Me.BindBOPropertyToLabel(Me.State.ClaimBO, "VisitDate", Me.step3_lblVisitDate)
+
 
             Case ClaimWizardSteps.Step5
                 Me.BindBOPropertyToLabel(Me.State.CommentBO, "CreatedDate", Me.step5_LabelDateTime)
