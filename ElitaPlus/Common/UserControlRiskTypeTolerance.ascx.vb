@@ -300,7 +300,7 @@ Partial Class UserControlRiskTypeTolerance
                     Me.TheState.MyBO.Save()
                     Me.TheState.IsAfterSave = True
                     Populate()
-                    Me.RiskTypeToleranceGrid.Focus()
+                    Me.ThePage.MasterPage.MessageController.AddSuccess(Assurant.ElitaPlus.Common.ErrorCodes.MSG_RECORD_DELETED_OK, True)
                 Catch ex As Exception
                     Me.TheState.MyBO.RejectChanges()
                     Throw ex

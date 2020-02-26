@@ -10,6 +10,6 @@
     elita.elp_tbl_dealer_inflation.Add
   </INSERT>
   <DELETE>
-    elita.elp_tbl_dealer_inflation.DeleteDealerInflation
+    elita.elp_tbl_dealer_inflation.DeactivateDealerInflation
   </DELETE>
 </SQL>

@@ -36,7 +36,7 @@ Partial Class UserControlDealerInflation
     Private Const MSG_RECORD_DELETED_OK As String = "MSG_RECORD_DELETED_OK"
     Private Const MSG_RECORD_SAVED_OK As String = "MSG_RECORD_SAVED_OK"
     Private Const MSG_RECORD_NOT_SAVED As String = "MSG_RECORD_NOT_SAVED"
-
+   
     Private Const EDIT_COMMAND As String = "SelectAction"
     Private Const DELETE_COMMAND As String = "DeleteRecord"
     Private Const SORT_COMMAND As String = "Sort"
@@ -315,7 +315,7 @@ Partial Class UserControlDealerInflation
                     Me.TheState.MyBO.Save()
                     Me.TheState.IsAfterSave = True
                     Populate()
-                    Me.DealerInflationGrid.Focus()
+                    Me.ThePage.MasterPage.MessageController.AddSuccess(Assurant.ElitaPlus.Common.ErrorCodes.MSG_RECORD_DELETED_OK, True)
                 Catch ex As Exception
                     Me.TheState.MyBO.RejectChanges()
                     Throw ex

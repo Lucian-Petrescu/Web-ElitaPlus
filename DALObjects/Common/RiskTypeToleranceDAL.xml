@@ -10,6 +10,6 @@
     elita.elp_tbl_rk_typ_tolerance.Add
   </INSERT>
   <DELETE>
-    elita.elp_tbl_rk_typ_tolerance.DeleteRiskTypeTolerance
+    elita.elp_tbl_rk_typ_tolerance.DeactivateRiskTypeTolerance
   </DELETE>
 </SQL>
