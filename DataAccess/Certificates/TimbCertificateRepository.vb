@@ -43,4 +43,9 @@ Public NotInheritable Class TimbCertificateRepository(Of TType As {BaseEntity, I
     Public Function SearchCertificateByTaxId(pCountryCode As String, pIdentificationNumber As String, pPhoneNumber As String, numberOfRecords As Integer, ByRef totalRecordFound As Long) As DataSet Implements ICertificateRepository(Of TType).SearchCertificateByTaxId
         Throw New NotImplementedException()
     End Function
+
+    Public Function GWSearchCertificateByCertNumber(ByVal pDealerCode As String,
+                             ByVal pCertNumber As String) As Collections.Generic.List(Of Guid) Implements ICertificateRepository(Of TType).GWSearchCertificateByCertNumber
+        Throw New NotImplementedException()
+    End Function
 End Class

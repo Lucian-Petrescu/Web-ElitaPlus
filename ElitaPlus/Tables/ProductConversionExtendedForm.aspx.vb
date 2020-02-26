@@ -108,7 +108,10 @@ Namespace Tables
             DealerDropControl.ChangeEnabledControlProperty(bIsNew)
             'ControlMgr.SetEnableControl(Me, moDealerDrop, bIsNew)
             ControlMgr.SetEnableControl(Me, moProductCode, bIsNew)
+            ControlMgr.SetEnableControl(Me, txtEffectiveDate, bIsNew)
+            ControlMgr.SetEnableControl(Me, btnEffectiveDate, bIsNew)
 
+            
         End Sub
 
 #End Region
@@ -204,6 +207,8 @@ Namespace Tables
                     Me.MasterPage.MessageController.Clear()
                     Me.MasterPage.UsePageTabTitleInBreadCrum = False
                     Me.MasterPage.PageTitle = TranslationBase.TranslateLabelOrMessage("Tables")
+                    Me.AddCalendar(Me.btnEffectiveDate, Me.txtEffectiveDate)
+                    Me.AddCalendar(Me.btnExpirationDate, Me.txtExpirationDate)
                     UpdateBreadCrum()
                     Me.SetStateProperties()
 
@@ -451,6 +456,8 @@ Namespace Tables
             Me.BindBOPropertyToLabel(TheProductConv, "ManufacturerWarranty", Me.lblMfgwarranty)
             Me.BindBOPropertyToLabel(TheProductConv, "Model", Me.lblModel)
             Me.BindBOPropertyToLabel(TheProductConv, "SalesPrice", Me.lblSalesPrice)
+            Me.BindBOPropertyToLabel(TheProductConv, "EffectiveDate", Me.lblEffectiveDate)
+            Me.BindBOPropertyToLabel(TheProductConv, "ExpirationDate", Me.lblExpirationDate)
             Me.ClearGridHeadersAndLabelsErrSign()
 
         End Sub
@@ -465,6 +472,8 @@ Namespace Tables
             Me.ClearLabelErrSign(Me.lblMfgwarranty)
             Me.ClearLabelErrSign(Me.lblModel)
             Me.ClearLabelErrSign(Me.lblSalesPrice)
+            Me.ClearLabelErrSign(Me.lblEffectiveDate)
+            Me.ClearLabelErrSign(Me.lblExpirationDate)
         End Sub
 #End Region
 
@@ -551,6 +560,8 @@ Namespace Tables
                 PopulateControlFromBOProperty(Me.txtModel, .Model)
                 PopulateControlFromBOProperty(Me.txtGrossAmt, .GrossAmount)
                 PopulateControlFromBOProperty(Me.txtSalesPrice, .SalesPrice)
+                PopulateControlFromBOProperty(Me.txtEffectiveDate,.EffectiveDate)
+                PopulateControlFromBOProperty(me.txtExpirationDate,.ExpirationDate)
 
 
             End With
@@ -588,6 +599,8 @@ Namespace Tables
                     Me.PopulateBOProperty(TheProductConv, "GrossAmount", Me.txtGrossAmt)
                     Me.PopulateBOProperty(TheProductConv, "ManufacturerWarranty", Me.txtMfgwarranty)
                     Me.PopulateBOProperty(TheProductConv, "SalesPrice", Me.txtSalesPrice)
+                    Me.PopulateBOProperty(TheProductConv, "EffectiveDate", Me.txtEffectiveDate)
+                    Me.PopulateBOProperty(TheProductConv, "ExpirationDate", Me.txtExpirationDate)
                 Catch ex As Exception
                     If Me.ErrCollection.Count > 0 Then
                         Throw New PopulateBOErrorException
@@ -655,6 +668,14 @@ Namespace Tables
                 End If
             End If
 
+            If Not String.IsNullOrEmpty(txtExpirationDate.Text.Trim) AndAlso Not String.IsNullOrEmpty(txtEffectiveDate.Text.Trim) Then
+                If DateHelper.GetDateValue(txtExpirationDate.Text.Trim) <  DateHelper.GetDateValue(txtEffectiveDate.Text.Trim) Then
+                    err = TranslationBase.TranslateLabelOrMessage(ElitaPlus.Common.ErrorCodes.GUI_EXPIRATION_DATE_CAN_NOT_LESS_THAN_EFFECTIVE_DATE)
+                    Me.MasterPage.MessageController.AddError(Me.lbldealerProdCode.Text + ": " + err, False)
+                    bIsOk = False
+                End If
+                
+            End If
 
             If bIsOk = False Then
                 Me.MasterPage.MessageController.Show()

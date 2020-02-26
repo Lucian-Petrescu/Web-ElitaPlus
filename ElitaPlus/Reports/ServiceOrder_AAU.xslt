@@ -24,7 +24,7 @@
                       <xsl:attribute name="src">
                         <xsl:choose>
                           <xsl:when test="a:ServiceOrderReport/a:ServiceOrder/a:IMAGE_PATH">
-                            <xsl:value-of select='concat(a:ServiceOrderReport/a:ServiceOrder/a:IMAGE_PATH,"assurant_logo_aau.jpg")'/>
+                            <xsl:value-of select='concat(a:ServiceOrderReport/a:ServiceOrder/a:IMAGE_PATH,"assurant_logo_twg.jpg")'/>
                           </xsl:when>
                           <xsl:otherwise>
                             <xsl:text>http://w1.assurant.com/elitalogos/assurant_logo_apr.jpg</xsl:text>
@@ -175,7 +175,7 @@
           </tr>
           <tr>
             <td>
-              IMEI:&#160;<xsl:value-of select="a:ServiceOrderReport/a:ServiceOrder/a:IMEI_NUMBER" />
+              IMEI:&#160;<xsl:value-of select="a:ServiceOrderReport/a:ServiceOrder/a:IMEI" />
             </td>
           </tr>
           <tr>

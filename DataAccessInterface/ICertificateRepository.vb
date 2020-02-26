@@ -29,7 +29,10 @@ Public Interface ICertificateRepository(Of TEntity As {BaseEntity, ICertificateE
                                     ByRef pCurrencyCode As String,
                                     ByRef pGrossAmt As Decimal)
 
-   Function SearchCertificateBYCustomerInfo(ByVal pCompanyCode As String, ByVal pDealerCode As String, ByVal pDealerGrp As String, ByVal pCustomerFirstName As String, ByVal pCustomerLastName As String,
-                                                ByVal pWorkPhone As String, ByVal pEmail As String, ByVal pPostalCode As String, ByVal pAccountNumber As String) As DataSet
+    Function SearchCertificateBYCustomerInfo(ByVal pCompanyCode As String, ByVal pDealerCode As String, ByVal pDealerGrp As String, ByVal pCustomerFirstName As String, ByVal pCustomerLastName As String,
+                                                 ByVal pWorkPhone As String, ByVal pEmail As String, ByVal pPostalCode As String, ByVal pAccountNumber As String) As DataSet
+
+    Function GWSearchCertificateByCertNumber(ByVal pDealerCode As String,
+                             ByVal pCertNumber As String) As Collections.Generic.List(Of Guid)
 
 End Interface

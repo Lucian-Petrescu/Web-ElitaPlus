@@ -320,7 +320,8 @@ Partial Class UserControlAddress_New
         Dim oRegionList As Assurant.Elita.CommonConfiguration.DataElements.ListItem() = CommonConfigManager.Current.ListManager.GetList(listCode:="RegionsByCountry", context:=oListContext)
         moRegionDrop_WRITE.Populate(oRegionList, New PopulateOptions() With
                                        {
-                                       .AddBlankItem = True
+                                       .AddBlankItem = True,
+                                       .SortFunc = AddressOf PopulateOptions.GetExtendedCode
                                        })
 
         EnableControls(False, True)
@@ -527,7 +528,8 @@ Partial Class UserControlAddress_New
         Dim oRegionList As Assurant.Elita.CommonConfiguration.DataElements.ListItem() = CommonConfigManager.Current.ListManager.GetList(listCode:="RegionsByCountry", context:=oListContext)
         moRegionDrop_WRITE.Populate(oRegionList, New PopulateOptions() With
                                            {
-                                           .AddBlankItem = True
+                                           .AddBlankItem = True,
+                                           .SortFunc = AddressOf PopulateOptions.GetExtendedCode
                                            })
     End Sub
 

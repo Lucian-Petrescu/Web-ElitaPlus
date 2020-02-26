@@ -146,7 +146,7 @@ Public Class FalabellaIntegration
                     request.ClaimNumber = .ClaimNumber
                     request.ComunaCode = .Certificate.AddressChild.PostalCode
                     request.Country = oCountry.Code
-                    request.DateOfLoss = .LossDate.Value.ToShortDateString()
+                    request.DateOfLoss = Format(.LossDate.Value, "MM/dd/yyyy") '.LossDate.Value.ToShortDateString()
                     request.Email = .Certificate.Email
                     request.FirstName = .Certificate.CustomerFirstName
                     request.IdentificationNumber = If(.Certificate.IdentificationNumber.Length > 0, .Certificate.IdentificationNumber.Substring(0, Len(.Certificate.IdentificationNumber) - 1), String.Empty)
@@ -156,7 +156,7 @@ Public Class FalabellaIntegration
                     request.ProductDescription = .Certificate.Product.Description
                     request.SerialNumber = .ClaimedEquipment.SerialNumber
                     request.VerificationNumber = If(.Certificate.IdentificationNumber.Length > 0, .Certificate.IdentificationNumber.Substring(Len(.Certificate.IdentificationNumber) - 1), String.Empty)
-                    request.WarrantySalesDate = .Certificate.WarrantySalesDate.Value.ToShortDateString()
+                    request.WarrantySalesDate = Format(.Certificate.WarrantySalesDate.Value, "MM/dd/yyyy") '.Certificate.WarrantySalesDate.Value.ToShortDateString()
                     request.WorkPhone = .Certificate.WorkPhone
 
                     name = .Certificate.CustomerName
@@ -264,10 +264,14 @@ Public Class FalabellaIntegration
         Dim oClaimStatus As ClaimStatus
         Dim ClaimStatusByGroupID As Guid
 
+        Dim companyList = ClaimStatusByGroup.LoadListByCompanyGroup(oClaim.Company.CompanyGroupId).Tables(0).AsDataView
+
         If (oClaim.Status = BasicClaimStatus.Pending AndAlso oClaim.CertificateItemCoverage.CoverageTypeCode = Codes.COVERAGE_TYPE__THEFT) Then
-            ClaimStatusByGroupID = ClaimStatusByGroup.GetClaimStatusByGroupID(EXT_STAT_COM_FB_CLM_UPD_THFT)
+            companyList.RowFilter = "code= '" & EXT_STAT_COM_FB_CLM_UPD_THFT & "'"
+            ClaimStatusByGroupID = GuidControl.ByteArrayToGuid(companyList(0)("claim_status_by_group_id"))
         Else
-            ClaimStatusByGroupID = ClaimStatusByGroup.GetClaimStatusByGroupID(EXT_STAT_COM_FB_CLM_UPD_DMG)
+            companyList.RowFilter = "code= '" & EXT_STAT_COM_FB_CLM_UPD_DMG & "'"
+            ClaimStatusByGroupID = GuidControl.ByteArrayToGuid(companyList(0)("claim_status_by_group_id"))
         End If
 
         oClaimStatus = oClaim.AddExtendedClaimStatus(Guid.Empty)

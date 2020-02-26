@@ -489,7 +489,8 @@ Public Class PriceListDetailDAL
                               New OracleParameter(PAR_IN_NAME_RISK_TYPE_ID, OracleDbType.Raw, If(IsNothing(risktypeId) OrElse risktypeId.Equals(Guid.Empty), Nothing, risktypeId.ToByteArray), ParameterDirection.Input),
                               New OracleParameter(PAR_IN_NAME_PART_ID, OracleDbType.Raw, If(IsNothing(PartId) OrElse PartId.Equals(Guid.Empty), Nothing, PartId.ToByteArray), ParameterDirection.Input),
                               New OracleParameter(PAR_IN_NAME_MANUFACTURER_ID, OracleDbType.Raw, If(IsNothing(MakeId) OrElse MakeId.Equals(Guid.Empty), Nothing, MakeId.ToByteArray), ParameterDirection.Input),
-                              New OracleParameter(PAR_IN_NAME_MANUFACTURER_ORIGIN, OracleDbType.Varchar2, If(string.IsNullOrEmpty(ManufacturerOrigin), Nothing, ManufacturerOrigin), ParameterDirection.Input),
+                              New OracleParameter(PAR_IN_NAME_MANUFACTURER_ORIGIN, OracleDbType.Varchar2, If(String.IsNullOrEmpty(ManufacturerOrigin), Nothing, ManufacturerOrigin), ParameterDirection.Input),
+                              New OracleParameter(PAR_IN_NAME_VENDOR_SKU, OracleDbType.Varchar2, If(String.IsNullOrEmpty(Sku), Nothing, Sku), ParameterDirection.Input),
                               New OracleParameter("po_price_list_detail_table", OracleDbType.RefCursor, ParameterDirection.Output),
                               New OracleParameter(PAR_OUT_NAME_RETURN_CODE, OracleDbType.Int16, ParameterDirection.Output)}
 
