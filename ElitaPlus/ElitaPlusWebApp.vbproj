@@ -1213,6 +1213,13 @@
       <DependentUpon>ReportCeProgressForm_New.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
+    <Compile Include="Reports\ReconciliationReportForm.aspx.designer.vb">
+      <DependentUpon>ReconciliationReportForm.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Reports\ReconciliationReportForm.aspx.vb">
+      <DependentUpon>ReconciliationReportForm.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
     <Compile Include="Reports\ReportExtractBase.vb">
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
@@ -5759,6 +5766,7 @@
     <Content Include="Reports\ReplacementOrder_AAU.xslt" />
     <Content Include="Reports\ReplacementOrder_ANZ.xslt" />
     <Content Include="Reports\ReportCeProgressForm_New.aspx" />
+    <Content Include="Reports\ReconciliationReportForm.aspx" />
     <Content Include="Reports\ReportExtractInputControl.ascx" />
     <Content Include="Reports\RequestReportForm.aspx" />
     <Content Include="Reports\ServiceOrder_AAU.xslt" />
@@ -8888,7 +8896,7 @@
           <AutoAssignPort>True</AutoAssignPort>
           <DevelopmentServerPort>2550</DevelopmentServerPort>
           <DevelopmentServerVPath>/</DevelopmentServerVPath>
-          <IISUrl>http://localhost:80/ElitaPlus</IISUrl>
+          <IISUrl>http://localhost/ElitaPlusWebApp</IISUrl>
           <NTLMAuthentication>False</NTLMAuthentication>
           <UseCustomServer>False</UseCustomServer>
           <CustomServerUrl>
