@@ -2715,6 +2715,24 @@ Namespace Tables
         Protected WithEvents Label10 As Global.System.Web.UI.WebControls.Label
 
         '''<summary>
+        '''lblDealerInflationTab control.
+        '''</summary>
+        '''<remarks>
+        '''Auto-generated field.
+        '''To modify move field declaration from designer file to code-behind file.
+        '''</remarks>
+        Protected WithEvents lblDealerInflationTab As Global.System.Web.UI.WebControls.Label
+
+        '''<summary>
+        '''lblRiskTypeTolerance control.
+        '''</summary>
+        '''<remarks>
+        '''Auto-generated field.
+        '''To modify move field declaration from designer file to code-behind file.
+        '''</remarks>
+        Protected WithEvents lblRiskTypeTolerance As Global.System.Web.UI.WebControls.Label
+
+        '''<summary>
         '''moAddressTabPanel_WRITE control.
         '''</summary>
         '''<remarks>
@@ -2875,6 +2893,24 @@ Namespace Tables
         '''To modify move field declaration from designer file to code-behind file.
         '''</remarks>
         Protected WithEvents AttributeValues As Global.Assurant.ElitaPlus.ElitaPlusWebApp.UserControlAttrtibutes
+
+        '''<summary>
+        '''DealerInflation control.
+        '''</summary>
+        '''<remarks>
+        '''Auto-generated field.
+        '''To modify move field declaration from designer file to code-behind file.
+        '''</remarks>
+        Protected WithEvents DealerInflation As Global.Assurant.ElitaPlus.ElitaPlusWebApp.UserControlDealerInflation
+
+        '''<summary>
+        '''RiskTypeTolerance control.
+        '''</summary>
+        '''<remarks>
+        '''Auto-generated field.
+        '''To modify move field declaration from designer file to code-behind file.
+        '''</remarks>
+        Protected WithEvents RiskTypeTolerance As Global.Assurant.ElitaPlus.ElitaPlusWebApp.UserControlRiskTypeTolerance
 
         '''<summary>
         '''btnApply_WRITE control.
