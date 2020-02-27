@@ -1015,7 +1015,9 @@ Namespace Interfaces
                 objUnixFTP.UploadFile(layoutFileName)
 
             Catch ex As Exception
-                Throw New GUIException("FTP File transfer failed", Assurant.ElitaPlus.Common.ErrorCodes.GUI_FTP_FILE_PROCESS_FAILED)
+                ThePage.HandleErrors(ex, ThePage.MasterPage.MessageController)
+
+                'Throw New GUIException("FTP File transfer failed", Assurant.ElitaPlus.Common.ErrorCodes.GUI_FTP_FILE_PROCESS_FAILED)
             End Try
 
         End Sub
