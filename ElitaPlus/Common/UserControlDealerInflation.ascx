@@ -30,7 +30,7 @@ Inherits="Assurant.ElitaPlus.ElitaPlusWebApp.UserControlDealerInflation" %>
             </table>
         </div>
     </div>
-    <asp:GridView ID="DealerInflationGrid" runat="server" Width="51%" DataKeyNames="DEALER_INFLATION_ID,DEALER_ID,INFLATION_MONTH,INFLATION_YEAR,INFLATION_PCT"
+    <asp:GridView ID="DealerInflationGrid" runat="server" Width="51%" DataKeyNames="DEALER_INFLATION_ID,DEALER_ID,DEALER,INFLATION_MONTH,INFLATION_YEAR,INFLATION_PCT"
         AllowPaging="True" AllowSorting="true" AutoGenerateColumns="False" SkinID="DetailPageGridView">
         <SelectedRowStyle CssClass="SELECTED"></SelectedRowStyle>
         <EditRowStyle CssClass="EDITROW"></EditRowStyle>
@@ -40,6 +40,12 @@ Inherits="Assurant.ElitaPlus.ElitaPlusWebApp.UserControlDealerInflation" %>
         <Columns>
             <asp:BoundField Visible="false" DataField="DEALER_INFLATION_ID" />
             <asp:BoundField Visible="false" DataField="DEALER_ID" />
+            <asp:TemplateField Visible="True" HeaderText="DEALER CODE">
+                <ItemTemplate>
+                    <asp:Label ID="lblDealer" runat="server">
+                    </asp:Label>
+                </ItemTemplate>
+            </asp:TemplateField>
             <asp:TemplateField Visible="True" HeaderText="INFLATION_MONTH">
                 <ItemTemplate>
                     <asp:Label ID="lblInflationMonth" runat="server" Text='<%#Container.DataItem("INFLATION_MONTH")%>'></asp:Label>

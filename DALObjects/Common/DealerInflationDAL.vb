@@ -8,6 +8,7 @@
     Public Const COL_NAME_DEALER_INFLATION_ID As String = "DEALER_INFLATION_ID"
     Public Const COL_NAME_COMPANY_ID As String = "COMPANY_ID"
     Public Const COL_NAME_DEALER_ID As String = "DEALER_ID"
+    Public Const COL_NAME_DEALER As String = "DEALER"
     Public Const COL_NAME_INFLATION_MONTH As String = "INFLATION_MONTH"
     Public Const COL_NAME_INFLATION_YEAR As String = "INFLATION_YEAR"
     Public Const COL_NAME_INFLATION_PCT As String = "INFLATION_PCT"

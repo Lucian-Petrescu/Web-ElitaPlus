@@ -20,13 +20,15 @@ Partial Class UserControlDealerInflation
    
     Private Const GRID_COL_DEALER_INFLATION_ID As Integer = 0
     Private Const GRID_COL_DEALER_ID As Integer = 1
-    Private Const GRID_COL_INFLATION_MONTH As Integer = 2
-    Private Const GRID_COL_INFLATION_YEAR As Integer = 3
-    Private Const GRID_COL_INFLATION_PCT As Integer = 4
+    Private Const GRID_COL_DEALER As Integer = 2
+    Private Const GRID_COL_INFLATION_MONTH As Integer = 3
+    Private Const GRID_COL_INFLATION_YEAR As Integer = 4
+    Private Const GRID_COL_INFLATION_PCT As Integer = 5
   
     Private Const GRID_CTRL_NAME_LABEL_INFLATION_MONTH As String = "lblInflationMonth"
     Private Const GRID_CTRL_NAME_LABLE_INFLATION_YEAR As String = "lblInflationYear"
     Private Const GRID_CTRL_NAME_LABEL_INFLATION_PCT As String = "lblInflationPct"
+    Private Const GRID_CTRL_NAME_LABLE_DEALER As String = "lblDealer"
     
     Private Const GRID_CTRL_NAME_EDIT_INFLATION_MONTH As String = "cboInflationMonth"
     Private Const GRID_CTRL_NAME_EDIT_INFLATION_YEAR As String = "cboInflationYear"
@@ -120,7 +122,14 @@ Partial Class UserControlDealerInflation
             ViewState("SortDirection") = value
         End Set
     End Property
-
+    Public Property Dealer As String
+        Get
+            Return Me.TheState.dealer
+        End Get
+        Set(ByVal value As String)
+            Me.TheState.dealer = value
+        End Set
+    End Property
 #End Region
     
     Protected Sub Page_Load(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Load
@@ -193,7 +202,7 @@ Partial Class UserControlDealerInflation
                 End If
             End With
 
-            If Not TheState.DealerInflationDV Is Nothing Then
+            If Not TheState.DealerInflationDV Is Nothing  AndAlso Not TheState.IsGridAddNew Then
                 TheState.DealerInflationDV.Sort = SortDirection
             End If
             
@@ -245,7 +254,8 @@ Partial Class UserControlDealerInflation
 
                 If (Me.TheState.IsEditMode = True AndAlso Me.TheState.DefaultDealerInflationID.ToString.Equals(strID)) Then
 
-
+                    CType(e.Row.Cells(Me.GRID_COL_DEALER).FindControl(Me.GRID_CTRL_NAME_LABLE_DEALER), Label).Text =  Me.TheState.dealer
+                   
                     Dim moInflationMonthDropDown As DropDownList = CType(e.Row.Cells(Me.GRID_COL_INFLATION_MONTH).FindControl(Me.GRID_CTRL_NAME_EDIT_INFLATION_MONTH), DropDownList)
                     ElitaPlusPage.BindListControlToDataView(moInflationMonthDropDown, LookupListNew.GetMonthsLookupList(ElitaPlusIdentity.Current.ActiveUser.LanguageId),"CODE",,false)
                     If (Not String.IsNullOrWhiteSpace(dvRow(DealerInflation.DealerInflationDV.COL_inflation_month).ToString())) Then
@@ -271,7 +281,7 @@ Partial Class UserControlDealerInflation
                     CType(e.Row.Cells(Me.GRID_COL_INFLATION_PCT).FindControl(Me.GRID_CTRL_NAME_EDIT_INFLATION_PCT), TextBox).Text = dvRow(DealerInflation.DealerInflationDV.COL_inflation_pct).ToString
                     
                 Else
-                    
+                    CType(e.Row.Cells(Me.GRID_COL_DEALER).FindControl(Me.GRID_CTRL_NAME_LABLE_DEALER), Label).Text = dvRow(DealerInflation.DealerInflationDV.COL_DEALER).ToString
                     CType(e.Row.Cells(Me.GRID_COL_INFLATION_MONTH).FindControl(Me.GRID_CTRL_NAME_LABEL_INFLATION_MONTH), Label).Text = dvRow(DealerInflation.DealerInflationDV.COL_inflation_month).ToString
                     CType(e.Row.Cells(Me.GRID_COL_INFLATION_YEAR).FindControl(Me.GRID_CTRL_NAME_LABLE_INFLATION_YEAR), Label).Text = dvRow(DealerInflation.DealerInflationDV.COL_inflation_year).ToString
                     CType(e.Row.Cells(Me.GRID_COL_INFLATION_PCT).FindControl(Me.GRID_CTRL_NAME_LABEL_INFLATION_PCT), Label).Text = dvRow(DealerInflation.DealerInflationDV.COL_inflation_pct).ToString
@@ -342,8 +352,8 @@ Partial Class UserControlDealerInflation
             Me.TheState.DealerInflationDV = Nothing
             Me.TheState.MyBO = New DealerInflation
             TheState.MyBO.AddNewRowToSearchDV(Me.TheState.DealerInflationDV, Me.TheState.MyBO)
-            Me.DealerInflationGrid.DataSource = Me.TheState.DealerInflationDV
-            Me.ThePage.HighLightSortColumn(DealerInflationGrid, Me.SortDirection, True)
+           Me.DealerInflationGrid.DataSource = Me.TheState.DealerInflationDV
+            Me.ThePage.HighLightSortColumn(DealerInflationGrid,   Me.SortDirection, True)
             Me.DealerInflationGrid.DataBind()
             If Not DealerInflationGrid.BottomPagerRow.Visible Then DealerInflationGrid.BottomPagerRow.Visible = True
             Me.DealerInflationGrid.Rows(0).Visible = False
@@ -359,7 +369,7 @@ Partial Class UserControlDealerInflation
             Me.DealerInflationGrid.PageSize = Me.TheState.PageSize
             Me.DealerInflationGrid.DataSource = Me.TheState.DealerInflationDV
             Me.TheState.IsGridVisible = True
-            Me.ThePage.HighLightSortColumn(DealerInflationGrid, Me.SortDirection, True)
+            Me.ThePage.HighLightSortColumn(DealerInflationGrid,   Me.SortDirection , True)
             Me.DealerInflationGrid.DataBind()
             If Not DealerInflationGrid.BottomPagerRow.Visible Then DealerInflationGrid.BottomPagerRow.Visible = True
         End If

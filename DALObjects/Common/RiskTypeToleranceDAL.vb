@@ -8,6 +8,7 @@
     Public Const COL_NAME_DLR_RK_TYP_TOLERANCE_ID As String = "DLR_RK_TYP_TOLERANCE_ID"
     Public Const COL_NAME_COMPANY_ID As String = "COMPANY_ID"
     Public Const COL_NAME_DEALER_ID As String = "DEALER_ID"
+    Public Const COL_NAME_DEALER As String = "DEALER"
     Public Const COL_NAME_RISK_TYPE As String = "RISK_TYPE"
     Public Const COL_NAME_RISK_TYPE_ID As String = "RISK_TYPE_ID"
     Public Const COL_NAME_TOLERANCE_PCT As String = "TOLERANCE_PCT"

@@ -5,6 +5,7 @@
     public Const COL_NAME_INFLATION_MONTH As String = "INFLATION_MONTH"
     public Const COL_NAME_INFLATION_YEAR As String = "INFLATION_YEAR"
     public Const COL_NAME_INFLATION_PCT As String = "INFLATION_PCT"
+    public Const COL_NAME_DEALER As String = "DEALER"
 
 #End Region
 
@@ -31,6 +32,20 @@
         Set(ByVal Value As Guid)
             CheckDeleted()
             Me.SetValue(DealerInflationDAL.COL_NAME_DEALER_INFLATION_ID, Value)
+        End Set
+    End Property
+    Public Property Dealer() As String
+        Get
+            CheckDeleted()
+            If Row(DealerInflationDAL.COL_NAME_INFLATION_MONTH) Is DBNull.Value Then
+                Return Nothing
+            Else
+                Return CType(Row(DealerInflationDAL.COL_NAME_INFLATION_MONTH), String)
+            End If
+        End Get
+        Set(ByVal Value As String)
+            CheckDeleted()
+            Me.SetValue(DealerInflationDAL.COL_NAME_INFLATION_MONTH, Value)
         End Set
     End Property
 
@@ -237,6 +252,7 @@
         Public Const COL_dealer_inflation_id As String = "dealer_inflation_id"
         Public Const COL_COMPANY_ID As String = "company_id"
         Public Const COL_DEALER_ID As String = "dealer_id"
+        Public Const COL_DEALER As String = "dealer"
         Public Const COL_inflation_month As String = "inflation_month"
         Public Const COL_inflation_year As String = "inflation_year"
         Public Const COL_inflation_pct As String = "inflation_pct"
@@ -295,9 +311,9 @@
             row = dt.NewRow
             row(DealerInflationDV.COL_dealer_inflation_id) = NewBO.Id.ToByteArray
             row(DealerInflationDV.COL_DEALER_ID) = NewBO.DealerId.ToByteArray
-            dt.Rows.Add(row)
-
+            dt.Rows.add(row)
             If blnEmptyTbl Then dv = New DealerInflationDV(dt)
+            dv.Sort = COL_NAME_INFLATION_YEAR & " DESC"
         End If
     End Sub
 

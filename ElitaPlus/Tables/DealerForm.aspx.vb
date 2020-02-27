@@ -1401,10 +1401,12 @@ Namespace Tables
                 
                 'Load Dealer Inflation user control
                 DealerInflation.DealerId =Me.State.MyBO.Id
+                DealerInflation.Dealer =Me.State.MyBO.Dealer
                 DealerInflation.Populate()
 
                 'Load Risk Type Tolerance
                 RiskTypeTolerance.DealerId = Me.State.MyBO.Id
+                RiskTypeTolerance.Dealer = Me.State.MyBO.Dealer
                 RiskTypeTolerance.Populate()
 
                 If Not Me.State.MyBO.ClaimAutoApproveId.Equals(Guid.Empty) Then

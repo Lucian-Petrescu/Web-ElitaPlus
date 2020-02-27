@@ -30,7 +30,7 @@ Inherits="Assurant.ElitaPlus.ElitaPlusWebApp.UserControlRiskTypeTolerance" %>
             </table>
         </div>
     </div>
-    <asp:GridView ID="RiskTypeToleranceGrid" runat="server" Width="51%" DataKeyNames="DLR_RK_TYP_TOLERANCE_ID,DEALER_ID,RISK_TYPE,TOLERANCE_PCT"
+    <asp:GridView ID="RiskTypeToleranceGrid" runat="server" Width="51%" DataKeyNames="DLR_RK_TYP_TOLERANCE_ID,DEALER_ID,DEALER,RISK_TYPE,TOLERANCE_PCT"
         AllowPaging="True" AllowSorting="true" AutoGenerateColumns="False" SkinID="DetailPageGridView">
         <SelectedRowStyle CssClass="SELECTED"></SelectedRowStyle>
         <EditRowStyle CssClass="EDITROW"></EditRowStyle>
@@ -40,6 +40,12 @@ Inherits="Assurant.ElitaPlus.ElitaPlusWebApp.UserControlRiskTypeTolerance" %>
         <Columns>
             <asp:BoundField Visible="false" DataField="DLR_RK_TYP_TOLERANCE_ID" />
             <asp:BoundField Visible="false" DataField="DEALER_ID" />
+            <asp:TemplateField Visible="True" HeaderText="DEALER CODE">
+            <ItemTemplate>
+                <asp:Label ID="lblDealer" runat="server">
+                </asp:Label>
+            </ItemTemplate>
+            </asp:TemplateField>
             <asp:TemplateField Visible="True" HeaderText="RISK TYPE">
                 <ItemTemplate>
                     <asp:Label ID="lblRiskType" runat="server" Text='<%#Container.DataItem("RISK_TYPE")%>'></asp:Label>

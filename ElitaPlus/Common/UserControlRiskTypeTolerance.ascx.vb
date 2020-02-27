@@ -19,11 +19,13 @@ Partial Class UserControlRiskTypeTolerance
 
     Private Const GRID_COL_DLR_RK_TYP_TOLERANCE_ID As Integer = 0
     Private Const GRID_COL_DEALER_ID As Integer = 1
-    Private Const GRID_COL_RISK_TYPE As Integer = 2
-    Private Const GRID_COL_TOLERANCE_PCT As Integer = 3
+     Private Const GRID_COL_DEALER As Integer = 2
+    Private Const GRID_COL_RISK_TYPE As Integer = 3
+    Private Const GRID_COL_TOLERANCE_PCT As Integer = 4
   
     Private Const GRID_CTRL_NAME_LABEL_RISK_TYPE As String = "lblRiskType"
     Private Const GRID_CTRL_NAME_LABEL_TOLERANCE_PCT As String = "lblTolerancePct"
+     Private Const GRID_CTRL_NAME_LABLE_DEALER As String = "lblDealer"
     
     Private Const GRID_CTRL_NAME_EDIT_RISK_TYPE As String = "cboRiskType"
     Private Const GRID_CTRL_NAME_EDIT_TOLERANCE_PCT As String = "txtTolerancePct"
@@ -52,6 +54,14 @@ Partial Class UserControlRiskTypeTolerance
             RaiseEvent PropertyChanged(Me, New PropertyChangedEventArgs("DealerId"))
         End Set
     End Property
+    Public Property Dealer As String
+         Get
+             Return Me.TheState.dealer
+         End Get
+         Set(ByVal value As String)
+             Me.TheState.dealer = value
+         End Set
+     End Property
 
     #Region "Page State"
   Class MyState
@@ -189,7 +199,7 @@ Partial Class UserControlRiskTypeTolerance
                 End If
             End With
 
-            If Not TheState.RiskTypeToleranceDV Is Nothing Then
+            If Not TheState.RiskTypeToleranceDV Is Nothing AndAlso  Not TheState.IsGridAddNew = True Then
                 TheState.RiskTypeToleranceDV.Sort = SortDirection
             End If
             
@@ -240,6 +250,7 @@ Partial Class UserControlRiskTypeTolerance
 
                 If (Me.TheState.IsEditMode = True AndAlso Me.TheState.DefaultRiskTypeToleranceID.ToString.Equals(strID)) Then
 
+                    CType(e.Row.Cells(Me.GRID_COL_DEALER).FindControl(Me.GRID_CTRL_NAME_LABLE_DEALER), Label).Text =  Me.TheState.dealer
 
                     Dim moRiskTypeDropDown As DropDownList = CType(e.Row.Cells(Me.GRID_COL_RISK_TYPE).FindControl(Me.GRID_CTRL_NAME_EDIT_RISK_TYPE), DropDownList)
                     ElitaPlusPage.BindListControlToDataView(moRiskTypeDropDown, LookupListNew.GetRiskTypeLookupList(ElitaPlusIdentity.Current.ActiveUser.CompanyGroup.Id),"DESCRIPTION",,false)
@@ -256,7 +267,7 @@ Partial Class UserControlRiskTypeTolerance
                     CType(e.Row.Cells(Me.GRID_COL_TOLERANCE_PCT).FindControl(Me.GRID_CTRL_NAME_EDIT_TOLERANCE_PCT), TextBox).Text = dvRow(RiskTypeTolerance.RiskTypeToleranceDV.COL_TOLERANCE_PCT).ToString
                     
                 Else
-                    
+                    CType(e.Row.Cells(Me.GRID_COL_DEALER).FindControl(Me.GRID_CTRL_NAME_LABLE_DEALER), Label).Text = dvRow(RiskTypeTolerance.RiskTypeToleranceDV.COL_DEALER).ToString
                     CType(e.Row.Cells(Me.GRID_COL_RISK_TYPE).FindControl(Me.GRID_CTRL_NAME_LABEL_RISK_TYPE), Label).Text = dvRow(RiskTypeTolerance.RiskTypeToleranceDV.COL_RISK_TYPE).ToString
                     CType(e.Row.Cells(Me.GRID_COL_TOLERANCE_PCT).FindControl(Me.GRID_CTRL_NAME_LABEL_TOLERANCE_PCT), Label).Text = dvRow(RiskTypeTolerance.RiskTypeToleranceDV.COL_TOLERANCE_PCT).ToString
                    

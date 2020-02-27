@@ -3,6 +3,7 @@
     #Region "Constant"
     public Const COL_NAME_RISK_TYPE As String = "RISK_TYPE"
     public Const COL_NAME_TOLERANCE_PCT As String = "TOLERANCE_PCT"
+    public Const COL_NAME_DEALER As String = "DEALER"
 
 #End Region
 
@@ -59,6 +60,20 @@
         Set(ByVal Value As Guid)
             CheckDeleted()
             Me.SetValue(RiskTypeToleranceDAL.COL_NAME_DEALER_ID, Value)
+        End Set
+    End Property
+    Public Property Dealer() As String
+        Get
+            CheckDeleted()
+            If Row(RiskTypeToleranceDAL.COL_NAME_DEALER) Is DBNull.Value Then
+                Return Nothing
+            Else
+                Return CType(Row(RiskTypeToleranceDAL.COL_NAME_DEALER), String)
+            End If
+        End Get
+        Set(ByVal Value As String)
+            CheckDeleted()
+            Me.SetValue(RiskTypeToleranceDAL.COL_NAME_DEALER, Value)
         End Set
     End Property
     
@@ -233,6 +248,7 @@
         Public Const COL_DLR_RK_TYP_TOLERANCE_ID As String = "dlr_rk_typ_tolerance_id"
         Public Const COL_COMPANY_ID As String = "company_id"
         Public Const COL_DEALER_ID As String = "dealer_id"
+        Public Const COL_DEALER As String = "dealer"
         Public Const COL_RISK_TYPE As String = "risk_type"
         Public Const COL_TOLERANCE_PCT As String = "tolerance_pct"
         Public Sub New()
@@ -289,6 +305,8 @@
             dt.Rows.Add(row)
 
             If blnEmptyTbl Then dv = New RiskTypeToleranceDV(dt)
+            dv.Sort = COL_NAME_TOLERANCE_PCT & " DESC"
+
         End If
     End Sub
 
