@@ -300,6 +300,7 @@
                 dt = New DataTable
                 dt.Columns.Add(DealerInflationDV.COL_dealer_inflation_id, guidTemp.ToByteArray.GetType)
                 dt.Columns.Add(DealerInflationDV.COL_DEALER_ID, guidTemp.ToByteArray.GetType)
+                dt.Columns.Add(DealerInflationDV.COL_DEALER, guidTemp.ToByteArray.GetType)
                 dt.Columns.Add(DealerInflationDV.COL_inflation_month, GetType(String))
                 dt.Columns.Add(DealerInflationDV.COL_inflation_year, GetType(String))
                 dt.Columns.Add(DealerInflationDV.COL_inflation_pct, GetType(String))

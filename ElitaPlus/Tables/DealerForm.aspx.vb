@@ -110,7 +110,7 @@ Namespace Tables
         Public Const Tab_RiskTypeTolerance as string ="8"
 
         Dim DisabledTabsList As New List(Of String)()
-
+       
 #End Region
 
 #Region "ENUMERATIONS"
@@ -503,6 +503,10 @@ Namespace Tables
             ControlMgr.SetVisibleControl(Me, trHid2, False)
             AddressCtr.EnableControls(False, True)
             DisabledTabsList.Add(Tab_MailingAddress)
+            If GetSelectedItem(Me.moClaimAutoApproveDrop).Equals(LookupListNew.GetIdFromCode(LookupListNew.LK_YESNO, Codes.YESNO_N)) Then
+                DisabledTabsList.Add(Tab_DealerInflation)
+                DisabledTabsList.Add(Tab_RiskTypeTolerance)
+            end if
 
             Me.State.MyBO.Address.AddressIsRequire = False
             'Req-1142 start
@@ -2222,12 +2226,16 @@ Namespace Tables
                 'ControlMgr.SetVisibleControl(Me, Me.CoverageTypesRow, True)
                 ControlMgr.SetVisibleControl(Me, Me.pnlTypesRow, True)
                 Me.PopulateClaimAutoApproveControls()
+                DisabledTabsList.RemoveAll(Function(i) Tab_DealerInflation.Contains(i))
+                DisabledTabsList.RemoveAll(Function(i) Tab_RiskTypeTolerance.Contains(i))
             Else
                 'ControlMgr.SetVisibleControl(Me, Me.ClaimTypesRow, False)
                 'ControlMgr.SetVisibleControl(Me, Me.CoverageTypesRow, False)
                 ControlMgr.SetVisibleControl(Me, Me.pnlTypesRow, False)
                 Me.State.MyBO.DetachClaimType(Me.UserControlAvailableSelectedClaimTypes.SelectedList)
                 Me.State.MyBO.DetachCoverageType(Me.UserControlAvailableSelectedCoverageTypes.SelectedList)
+                DisabledTabsList.Add(Tab_DealerInflation)
+                DisabledTabsList.Add(Tab_RiskTypeTolerance)
             End If
 
         End Sub
