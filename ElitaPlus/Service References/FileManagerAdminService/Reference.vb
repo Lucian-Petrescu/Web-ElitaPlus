@@ -1125,16 +1125,28 @@ Namespace FileManagerAdminService
     Public Enum FileStateType As Integer
         
         <System.Runtime.Serialization.EnumMemberAttribute()>  _
-        Pending = 0
+        Initialized = 0
         
         <System.Runtime.Serialization.EnumMemberAttribute()>  _
-        Running = 1
+        Validated = 1
         
         <System.Runtime.Serialization.EnumMemberAttribute()>  _
-        Failure = 2
+        Rejected = 2
         
         <System.Runtime.Serialization.EnumMemberAttribute()>  _
-        Success = 3
+        Processed = 3
+        
+        <System.Runtime.Serialization.EnumMemberAttribute()>  _
+        Pending = 4
+        
+        <System.Runtime.Serialization.EnumMemberAttribute()>  _
+        Running = 5
+        
+        <System.Runtime.Serialization.EnumMemberAttribute()>  _
+        Failure = 6
+        
+        <System.Runtime.Serialization.EnumMemberAttribute()>  _
+        Success = 7
     End Enum
     
     <System.Diagnostics.DebuggerStepThroughAttribute(),  _
