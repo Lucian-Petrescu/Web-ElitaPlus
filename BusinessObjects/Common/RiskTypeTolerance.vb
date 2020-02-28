@@ -293,6 +293,7 @@
                 dt = New DataTable
                 dt.Columns.Add(RiskTypeToleranceDV.COL_DLR_RK_TYP_TOLERANCE_ID, guidTemp.ToByteArray.GetType)
                 dt.Columns.Add(RiskTypeToleranceDV.COL_DEALER_ID, guidTemp.ToByteArray.GetType)
+                dt.Columns.Add(RiskTypeToleranceDV.COL_DEALER, guidTemp.ToByteArray.GetType)
                 dt.Columns.Add(RiskTypeToleranceDV.COL_RISK_TYPE, GetType(String))
                 dt.Columns.Add(RiskTypeToleranceDV.COL_TOLERANCE_PCT, GetType(String))
                
