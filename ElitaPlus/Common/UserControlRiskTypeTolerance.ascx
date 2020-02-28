@@ -61,8 +61,8 @@ Inherits="Assurant.ElitaPlus.ElitaPlusWebApp.UserControlRiskTypeTolerance" %>
                 </ItemTemplate>
                 <EditItemTemplate>
                     <asp:TextBox ID="txtTolerancePct" runat="server" Visible="true" SkinID="exSmallTextBox"
-                        onkeypress="return numericOnly(this)" onblur="return chkForZero(this)"></asp:TextBox><br />
-                    <asp:Label ID="lblValidPctMsg" runat="server"></asp:Label>
+                        onkeypress="return numericOnly(this)" onblur="return chkForZeroForRiskTolerance(this)"></asp:TextBox><br />
+                    <asp:Label ID="lblValidRiskPctMsg" runat="server"></asp:Label>
                 </EditItemTemplate>
             </asp:TemplateField>
             <asp:TemplateField ShowHeader="false">
@@ -89,8 +89,8 @@ Inherits="Assurant.ElitaPlus.ElitaPlusWebApp.UserControlRiskTypeTolerance" %>
         Height="20px" CssClass="FLATBUTTON"></asp:Button>
 </asp:Panel>
 <script type="text/javascript">
-    function chkForZero(obj) {
-        var obj1 = obj.id.replace('txtTolerancePct', 'lblValidPctMsg');
+    function chkForZeroForRiskTolerance(obj) {
+        var obj1 = obj.id.replace('txtTolerancePct', 'lblValidRiskPctMsg');
 
         if (obj.value < 0 || obj.value > 9999.99) {
             document.getElementById(obj1).innerText = "Please enter number between 0 and 9999.99";
