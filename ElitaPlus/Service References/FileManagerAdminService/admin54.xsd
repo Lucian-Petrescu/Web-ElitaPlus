@@ -44,6 +44,10 @@
   <xs:element name="FileType" nillable="true" type="tns:FileType" />
   <xs:simpleType name="FileStateType">
     <xs:restriction base="xs:string">
+      <xs:enumeration value="Initialized" />
+      <xs:enumeration value="Validated" />
+      <xs:enumeration value="Rejected" />
+      <xs:enumeration value="Processed" />
       <xs:enumeration value="Pending" />
       <xs:enumeration value="Running" />
       <xs:enumeration value="Failure" />
