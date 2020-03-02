@@ -7,8 +7,8 @@
       <head>
         <style>
           BODY { width:auto }
-          TD { FONT-SIZE:13px;font-family:"Trebuchet MS";font-weight:bolder;height:5px;}
-          .Header {background-color:#000;color:#fff; TEXT-ALIGN:LEFT;text-decoration: underline}
+          td {font-size:10pt;font-family:"Trebuchet MS";height:5px;}
+          .Header {color:Gray;TEXT-ALIGN:LEFT;text-decoration:underline;font-weight:bold;}
           .esp {font-weight:normal;}
         </style>
       </head>
@@ -24,7 +24,7 @@
                       <xsl:attribute name="src">
                         <xsl:choose>
                           <xsl:when test="a:ServiceOrderReport/a:ServiceOrder/a:IMAGE_PATH">
-                            <xsl:value-of select='concat(a:ServiceOrderReport/a:ServiceOrder/a:IMAGE_PATH,"assurant_logo_aau.jpg")'/>
+                            <xsl:value-of select='concat(a:ServiceOrderReport/a:ServiceOrder/a:IMAGE_PATH,"assurant_logo_twg.jpg")'/>
                           </xsl:when>
                           <xsl:otherwise>
                             <xsl:text>http://w1.assurant.com/elitalogos/assurant_logo_apr.jpg</xsl:text>
@@ -36,15 +36,14 @@
                 </tr>
                 <tr>
                   <td>
-                    Replacement Request Order - Claim Number: &#160;<xsl:value-of select="a:ServiceOrderReport/a:ServiceOrder/a:CLAIM_NUMBER" />-<xsl:value-of select="a:ServiceOrderReport/a:ServiceOrder/a:AUTHORIZATION_NUMBER" />
+                    Repair Service Request<br/>Claim Number: &#160;
+                    <span style="font-size:14pt;">
+                      <xsl:value-of select="a:ServiceOrderReport/a:ServiceOrder/a:CLAIM_NUMBER" />-<xsl:value-of select="a:ServiceOrderReport/a:ServiceOrder/a:AUTHORIZATION_NUMBER" />
+                    </span>
                   </td>
                 </tr>
               </table>
             </td>
-          </tr>
-          <tr>
-            <td>&#160;</td>
-            <td></td>
           </tr>
           <tr>
             <td>&#160;</td>
@@ -96,7 +95,7 @@
           <tr>
             <td>
               Number:&#160;
-               <xsl:choose>
+              <xsl:choose>
                 <xsl:when test="a:ServiceOrderReport/a:ServiceOrder/a:HOME_PHONE != ''">
                   <xsl:value-of select="a:ServiceOrderReport/a:ServiceOrder/a:HOME_PHONE" />
                 </xsl:when>
@@ -128,10 +127,6 @@
           </tr>
           <tr>
             <td colspan="2" class="Header">Product Information</td>
-          </tr>
-          <tr>
-            <td>&#160;</td>
-            <td></td>
           </tr>
           <tr>
             <td>&#160;</td>
@@ -175,7 +170,7 @@
           </tr>
           <tr>
             <td>
-              IMEI:&#160;<xsl:value-of select="a:ServiceOrderReport/a:ServiceOrder/a:IMEI_NUMBER" />
+              IMEI:&#160;<xsl:value-of select="a:ServiceOrderReport/a:ServiceOrder/a:IMEI" />
             </td>
           </tr>
           <tr>
@@ -184,8 +179,8 @@
           </tr>
           <tr>
             <td>
-              Purchase Price:&#160;$<xsl:value-of select="a:ServiceOrderReport/a:ServiceOrder/a:SALES_PRICE" />
-            </td>
+              Purchase Price:&#160;$<xsl:value-of select="a:ServiceOrderReport/a:ServiceOrder/a:SALES_PRICE" />&#160;(Incl GST)
+          </td>
           </tr>
           <tr>
             <td>&#160;</td>
@@ -234,8 +229,53 @@
             <td></td>
           </tr>
           <tr>
+            <td colspan="2">Please contact customer to arrange service.</td>
+          </tr>
+          <tr>
+            <td>&#160;</td>
+            <td></td>
+          </tr>
+          <tr>
             <td colspan="2">
-              Replacement Authority Limit: $<xsl:value-of select="a:ServiceOrderReport/a:ServiceOrder/a:AUTHORIZATION_AMOUNT" />
+              <span style="font-size:12pt;font-weight: bold;">
+                Repair Authority Limit: $<xsl:value-of select="a:ServiceOrderReport/a:ServiceOrder/a:AUTHORIZATION_AMOUNT" />&#160;(Excl GST)
+              </span>
+          </td>
+          </tr>
+          <tr>
+            <td>&#160;</td>
+            <td></td>
+          </tr>
+          <tr>
+            <td colspan="2">
+              If the repair costs (including parts and labor) DO NOT exceed the Repair Authority Limit, please email us with an itemized invoice repair has been completed.
+            </td>
+          </tr>
+          <tr>
+            <td>&#160;</td>
+            <td></td>
+          </tr>
+          <tr>
+            <td colspan="2">
+              If the repair costs (including parts and labor) EXCEED the Repair Authority Limit, please email us with an itemized quote and await further advice before proceeding with repair.
+            </td>
+          </tr>
+          <tr>
+            <td>&#160;</td>
+            <td></td>
+          </tr>
+          <tr>
+            <td colspan="2">
+              Excess to collect before returning repaired device to customer:$<xsl:value-of select="a:ServiceOrderReport/a:ServiceOrder/a:DEDUCTIBLE_AMOUNT" />
+            </td>
+          </tr>
+          <tr>
+            <td>&#160;</td>
+            <td></td>
+          </tr>
+          <tr>
+            <td colspan="2">
+              Please submit a report to us if you are unable to repair the device, outlining the reasons why and we will complete the settlement of this claim.
             </td>
           </tr>
           <tr>
