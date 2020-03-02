@@ -134,10 +134,9 @@ Public Class ServiceOrderController
         End If
 
         strReport = strReportType & "_" & compCode
-        
 
         if String.IsNullOrEmpty(strSuffix) = false Then
-            strReport = strReportType & "_" & strSuffix
+            strReport = strReport & "_" & strSuffix
         End If
 
         If RepairCode.Trim.Length > 0 Then 'Check whether service order by method of repair exists

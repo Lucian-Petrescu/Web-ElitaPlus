@@ -7,8 +7,8 @@
       <head>
         <style>
           BODY { width:auto }
-          TD {font-size:10pt;font-family:"Trebuchet MS";font-weight:bolder;height:5px;}
-          .Header {background-color:#000;color:#fff; TEXT-ALIGN:LEFT;text-decoration: underline}
+          td {font-size:10pt;font-family:"Trebuchet MS";height:5px;}
+          .Header {color:Gray;TEXT-ALIGN:LEFT;text-decoration:underline;font-weight:bold;}
           .esp {font-weight:normal;}
         </style>
       </head>
@@ -36,7 +36,7 @@
                 </tr>
                 <tr>
                   <td>
-                    Replacement Request Order - Claim Number: &#160;
+                    Replacement Request Order<br/>Claim Number: &#160;
                     <span style="font-size:14pt;">
                       <xsl:value-of select="a:ServiceOrderReport/a:ServiceOrder/a:CLAIM_NUMBER" />-<xsl:value-of select="a:ServiceOrderReport/a:ServiceOrder/a:AUTHORIZATION_NUMBER" />
                     </span>
@@ -131,10 +131,6 @@
           </tr>
           <tr>
             <td colspan="2" class="Header">Product Information</td>
-          </tr>
-          <tr>
-            <td>&#160;</td>
-            <td></td>
           </tr>
           <tr>
             <td>&#160;</td>
@@ -238,8 +234,10 @@
           </tr>
           <tr>
             <td colspan="2">
-              Replacement Authority Limit: $<xsl:value-of select="a:ServiceOrderReport/a:ServiceOrder/a:AUTHORIZATION_AMOUNT" />&#160;(Incl GST)
-          </td>
+              <span style="font-size:12pt;font-weight: bold;">
+                Replacement Authority Limit: $<xsl:value-of select="a:ServiceOrderReport/a:ServiceOrder/a:AUTHORIZATION_AMOUNT" />&#160;(Incl GST)
+              </span>
+            </td>
           </tr>
           <tr>
             <td>&#160;</td>
