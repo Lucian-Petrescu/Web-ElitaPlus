@@ -896,6 +896,13 @@
       <DependentUpon>UserControlCaseHeaderInfo.ascx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
+    <Compile Include="Common\UserControlDealerInflation.ascx.designer.vb">
+      <DependentUpon>UserControlDealerInflation.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="Common\UserControlDealerInflation.ascx.vb">
+      <DependentUpon>UserControlDealerInflation.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
     <Compile Include="Common\UserControlDeliverySlot.ascx.designer.vb">
       <DependentUpon>UserControlDeliverySlot.ascx</DependentUpon>
     </Compile>
@@ -908,6 +915,13 @@
     </Compile>
     <Compile Include="Common\UserControlQuestion.ascx.vb">
       <DependentUpon>UserControlQuestion.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Common\UserControlRiskTypeTolerance.ascx.designer.vb">
+      <DependentUpon>UserControlRiskTypeTolerance.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="Common\UserControlRiskTypeTolerance.ascx.vb">
+      <DependentUpon>UserControlRiskTypeTolerance.ascx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="Common\UserControlServiceCenterSelection.ascx.designer.vb">
@@ -5682,8 +5696,10 @@
     <Content Include="Common\DynamicFulfillmentUI.ascx" />
     <Content Include="Common\UserControlCallerInfo.ascx" />
     <Content Include="Common\UserControlCaseHeaderInfo.ascx" />
+    <Content Include="Common\UserControlDealerInflation.ascx" />
     <Content Include="Common\UserControlDeliverySlot.ascx" />
     <Content Include="Common\UserControlQuestion.ascx" />
+    <Content Include="Common\UserControlRiskTypeTolerance.ascx" />
     <Content Include="Common\UserControlServiceCenterSelection.ascx" />
     <Content Include="Content\font-awesome.css" />
     <Content Include="Content\font-awesome.min.css" />

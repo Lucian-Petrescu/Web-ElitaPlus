@@ -18,16 +18,24 @@ Namespace Interfaces
 
         Public Class ClaimFileInfoParams
             Private ReadOnly mRecordState As RecordStateType
+            Private ReadOnly mLifeCycleRecordState As LifeCycleRecordStateType
             Private ReadOnly mRecordCount As Integer
 
-            Public Sub New(ByVal RecordState As RecordStateType, ByVal RecordCount As Integer)
+            Public Sub New(ByVal RecordState As RecordStateType, ByVal LifeCycleRecordState As LifeCycleRecordStateType, ByVal RecordCount As Integer)
                 mRecordState = RecordState
+                mLifeCycleRecordState = LifeCycleRecordState
                 mRecordCount = RecordCount
             End Sub
 
             Public ReadOnly Property RecordState As RecordStateType
                 Get
                     Return mRecordState
+                End Get
+            End Property
+
+            Public ReadOnly Property LifeCycleRecordState As LifeCycleRecordStateType
+                Get
+                    Return mLifeCycleRecordState
                 End Get
             End Property
 
@@ -1255,7 +1263,9 @@ Namespace Interfaces
 
                     SearchInfo = New SearchCriteria With
                     {
-                        .RecordFilter = New RecordFilter With {.RecordState = State.CallingPageParams.FileInfoParams.RecordState},
+                        .RecordFilter = New RecordFilter With {
+                            .RecordState = State.CallingPageParams.FileInfoParams.RecordState,
+                            .LifeCycleRecordState = State.CallingPageParams.FileInfoParams.LifeCycleRecordState},
                         .PagingFilter = State.PagingInfo
                     }
                 End If

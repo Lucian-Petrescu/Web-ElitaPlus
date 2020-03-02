@@ -2682,8 +2682,6 @@ Public Class ClaimWizardForm
             Me.PopulateBOProperty(Me.State.ClaimBO, "NewDeviceSku", Me.step3_txtNewDeviceSKU)
             Me.PopulateBOProperty(Me.State.ClaimBO, "IsLawsuitId", Me.step3_cboLawsuitId)
             Me.PopulateBOProperty(Me.State.ClaimBO, "SpecialInstruction", Me.step3_TxtSpecialInstruction)
-            Me.PopulateBOProperty(Me.State.ClaimBO, "PickUpDate", Me.step3_txtPickupDate)
-            Me.PopulateBOProperty(Me.State.ClaimBO, "VisitDate", Me.step3_txtVisitDate)
 
             If Me.State.ClaimBO.MethodOfRepairCode <> Codes.METHOD_OF_REPAIR__RECOVERY Then
                 Me.PopulateBOProperty(Me.State.ClaimBO, "LiabilityLimit", Me.step3_TextboxLiabilityLimit)

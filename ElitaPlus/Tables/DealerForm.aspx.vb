@@ -106,9 +106,11 @@ Namespace Tables
         Public Const Tab_MerchantCode As String = "4"
         Public Const Tab_ClaimCloseRules As String = "5"
         Public Const Tab_Attributes As String = "6"
+        Public Const Tab_DealerInflation as string ="7"
+        Public Const Tab_RiskTypeTolerance as string ="8"
 
         Dim DisabledTabsList As New List(Of String)()
-
+       
 #End Region
 
 #Region "ENUMERATIONS"
@@ -501,6 +503,10 @@ Namespace Tables
             ControlMgr.SetVisibleControl(Me, trHid2, False)
             AddressCtr.EnableControls(False, True)
             DisabledTabsList.Add(Tab_MailingAddress)
+            If GetSelectedItem(Me.moClaimAutoApproveDrop).Equals(LookupListNew.GetIdFromCode(LookupListNew.LK_YESNO, Codes.YESNO_N)) Then
+                DisabledTabsList.Add(Tab_DealerInflation)
+                DisabledTabsList.Add(Tab_RiskTypeTolerance)
+            end if
 
             Me.State.MyBO.Address.AddressIsRequire = False
             'Req-1142 start
@@ -1396,7 +1402,16 @@ Namespace Tables
                     ClaimCloseRules.Dealer = Me.State.MyBO.Dealer
                     ClaimCloseRules.Populate()
                 End If
+                
+                'Load Dealer Inflation user control
+                DealerInflation.DealerId =Me.State.MyBO.Id
+                DealerInflation.Dealer =Me.State.MyBO.Dealer
+                DealerInflation.Populate()
 
+                'Load Risk Type Tolerance
+                RiskTypeTolerance.DealerId = Me.State.MyBO.Id
+                RiskTypeTolerance.Dealer = Me.State.MyBO.Dealer
+                RiskTypeTolerance.Populate()
 
                 If Not Me.State.MyBO.ClaimAutoApproveId.Equals(Guid.Empty) Then
                     Me.PopulateControlFromBOProperty(Me.moClaimAutoApproveDrop, .ClaimAutoApproveId)
@@ -2211,12 +2226,16 @@ Namespace Tables
                 'ControlMgr.SetVisibleControl(Me, Me.CoverageTypesRow, True)
                 ControlMgr.SetVisibleControl(Me, Me.pnlTypesRow, True)
                 Me.PopulateClaimAutoApproveControls()
+                DisabledTabsList.RemoveAll(Function(i) Tab_DealerInflation.Contains(i))
+                DisabledTabsList.RemoveAll(Function(i) Tab_RiskTypeTolerance.Contains(i))
             Else
                 'ControlMgr.SetVisibleControl(Me, Me.ClaimTypesRow, False)
                 'ControlMgr.SetVisibleControl(Me, Me.CoverageTypesRow, False)
                 ControlMgr.SetVisibleControl(Me, Me.pnlTypesRow, False)
                 Me.State.MyBO.DetachClaimType(Me.UserControlAvailableSelectedClaimTypes.SelectedList)
                 Me.State.MyBO.DetachCoverageType(Me.UserControlAvailableSelectedCoverageTypes.SelectedList)
+                DisabledTabsList.Add(Tab_DealerInflation)
+                DisabledTabsList.Add(Tab_RiskTypeTolerance)
             End If
 
         End Sub
@@ -3137,6 +3156,19 @@ Namespace Tables
             claimCloseRules.CompanyId = Me.State.Ocompany.Id
             claimCloseRules.DealerId = Me.State.MyBO.Id
             e.Data = claimCloseRules.GetClaimCloseRules()
+        End Sub
+
+#End Region
+#Region "Dealer Inflation and Risk Type Tolerance Delegate Handler"
+        Private Sub DealerInflation_RequestDealerInflationData(ByVal sender As Object, ByRef e As UserControlDealerInflation.RequestDataEventArgs) Handles DealerInflation.RequestDealerInflationData
+            Dim dlInflation As New DealerInflation
+            dlInflation.DealerId = Me.State.MyBO.Id
+            e.Data = dlInflation.GetDealerInflation()
+        End Sub
+        Private Sub RiskTypeTolerance_RequestRiskTypeTolerance(ByVal sender As Object, ByRef e As UserControlRiskTypeTolerance.RequestDataEventArgs) Handles RiskTypeTolerance.RequestRiskTypeToleranceData
+            Dim riskTolerance As New RiskTypeTolerance
+            riskTolerance.DealerId = Me.State.MyBO.Id
+            e.Data = riskTolerance.GetRiskTypeTolerance()
         End Sub
 
 #End Region
