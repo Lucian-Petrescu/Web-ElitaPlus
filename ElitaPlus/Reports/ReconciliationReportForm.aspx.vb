@@ -256,7 +256,6 @@ Namespace Reports
 
         Private Sub GenerateReport()
             Dim reportParams As New System.Text.StringBuilder
-            Dim userId As String = GuidControl.GuidToHexString(ElitaPlusIdentity.Current.ActiveUser.Id)
             Dim langId As String = GuidControl.GuidToHexString(ElitaPlusIdentity.Current.ActiveUser.LanguageId)
             Dim reportBasedOn As String = Me.rdReportBasedOn.SelectedValue()
             If UserCompanyMultipleDrop.SelectedGuid.Equals(Guid.Empty) Then
@@ -264,11 +263,8 @@ Namespace Reports
                 Throw New GUIException(Message.MSG_BEGIN_END_DATE, Assurant.ElitaPlus.Common.ErrorCodes.GUI_COMPANY_IS_REQUIRED)
             Else
                 compCode = UserCompanyMultipleDrop.SelectedCode
-                compDesc = UserCompanyMultipleDrop.SelectedDesc
-                compId = UserCompanyMultipleDrop.SelectedGuid
             End If
 
-            Dim culturecode As String = GuidControl.GuidToHexString(compId)
             Dim selectedYear As String = Me.GetSelectedDescription(Me.moYearList)
             Dim selectedMonthID As Guid = Me.GetSelectedItem(Me.moMonthList)
             Dim selectedMonth As String = LookupListNew.GetCodeFromId(LookupListNew.LK_MONTHS, selectedMonthID)
@@ -277,10 +273,8 @@ Namespace Reports
             Dim dealerID As Guid = DealerMultipleDrop.SelectedGuid
             Dim dealerCode As String = DealerMultipleDrop.SelectedCode
 
-            Dim selectionType As Integer
             Dim endDate As String
             Dim beginDate As String
-            Dim createdby As String
 
             'Validating the month and year
             If (selectedMonthID.Equals(Guid.Empty) AndAlso selectedYear.Equals(String.Empty) AndAlso txtBeginDate.Text.Equals(String.Empty) AndAlso txtEndDate.Text.Equals(String.Empty)) Then
@@ -318,21 +312,22 @@ Namespace Reports
                 End If
             End If
 
-            reportParams.AppendFormat("V_LANG_CULTURE_CODE => '{0}',", culturecode)
-            reportParams.AppendFormat("v_begin_date => '{0}',", beginDate)
-            reportParams.AppendFormat("v_end_date => '{0}',", endDate)
-            reportParams.AppendFormat("v_year_month => '{0}',", selectedYearMonth)
-            reportParams.AppendFormat("v_report_based_on => '{0}',", reportBasedOn)
-            reportParams.AppendFormat("v_company => '{0}',", compCode)
+            reportParams.AppendFormat("pi_company => '{0}', ", compCode)
             If dealerID.Equals(Guid.Empty) Then
-                reportParams.AppendFormat("v_dealer => '{0}'", "*")
+                reportParams.AppendFormat("pi_dealer => '{0}', ", "*")
             Else
-                reportParams.AppendFormat("v_dealer => '{0}'", dealerCode)
+                reportParams.AppendFormat("pi_dealer => '{0}', ", dealerCode)
             End If
+            reportParams.AppendFormat("pi_year_month => '{0}', ", selectedYearMonth)
+            reportParams.AppendFormat("pi_begin_date => '{0}', ", beginDate)
+            reportParams.AppendFormat("pi_end_date => '{0}',", endDate)
+            reportParams.AppendFormat("pi_report_based_on => '{0}',", reportBasedOn)
+            reportParams.AppendFormat("pi_language_id => '{0}'", langId)
+
             Me.State.MyBO = New ReportRequests
             Me.State.ForEdit = True
             Me.PopulateBOProperty(Me.State.MyBO, "ReportType", "RECONCILIATION_REPORT")
-            Me.PopulateBOProperty(Me.State.MyBO, "ReportProc", "r_Reconciliation_Report.Report")
+            Me.PopulateBOProperty(Me.State.MyBO, "ReportProc", "r_Reconciliation_Report.export")
             Me.PopulateBOProperty(Me.State.MyBO, "ReportParameters", reportParams.ToString())
             Me.PopulateBOProperty(Me.State.MyBO, "UserEmailAddress", ElitaPlusIdentity.Current.EmailAddress)
             ScheduleReport()
