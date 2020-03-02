@@ -351,8 +351,8 @@ Namespace Certificates
             Me.PopulateBOProperty(Me.State.MyBO, "MaxReplacementCost", Me.MaxReplacementCostText)
             Me.PopulateBOProperty(Me.State.MyBO, "SerialNumber", Me.SerialNumberText)
             Me.PopulateBOProperty(Me.State.MyBO, "IMEINumber", Me.IMEINumberText)
-            If Me.State.MyBO.Cert.Dealer.ImeiUseXcd.Equals("IMEI_USE_LST-NOTINUSE") Then
-                Me.State.MyBO.IMEINumber = Me.State.MyBO.SerialNumber
+            If Not Me.State.MyBO.Cert.Dealer.ImeiUseXcd Is Nothing AndAlso Me.State.MyBO.Cert.Dealer.ImeiUseXcd.Equals("IMEI_USE_LST-NOTINUSE") Then
+                Me.PopulateBOProperty(Me.State.MyBO, "IMEINumber", Me.SerialNumberText)
             End If
             Me.PopulateBOProperty(Me.State.MyBO, "Model", Me.ModelText)
             Me.PopulateBOProperty(Me.State.MyBO, "ItemRetailPrice", Me.RetailPriceText)
