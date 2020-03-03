@@ -1022,6 +1022,7 @@ Public Class ClaimInvoice
             Me.DiagnosticsAmount = .DiagnosticsAmount
             Me.WithholdingAmount = .WithholdingAmount
             Me.TotalTaxAmount = .TotalTaxAmount
+            Me.RegionId = .RegionId
 
         End With
 
