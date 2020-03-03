@@ -19,15 +19,17 @@ Public Module Logger
     Private Property _loggerClient As ILoggerClient
 
     Public Sub Initialize(ByVal applicationName As String)
+        Try
+            Dim OracleHelper As OracleHelper = New OracleHelper(Function() New OracleConnectionStringBuilder() With {
+            .UserID = ElitaConfig.Current.Database.UserName,
+            .Password = ElitaConfig.Current.Database.Password,
+            .DataSource = ElitaConfig.Current.Database.DataSourceName
+          })
 
-        Dim OracleHelper As OracleHelper = New OracleHelper(Function() New OracleConnectionStringBuilder() With {
-        .UserID = ElitaConfig.Current.Database.UserName,
-        .Password = ElitaConfig.Current.Database.Password,
-        .DataSource = ElitaConfig.Current.Database.DataSourceName
-    })
-
-        _loggerClient = New OracleLogger(OracleHelper, applicationName, Environment.MachineName)
-
+            _loggerClient = New OracleLogger(OracleHelper, applicationName, Environment.MachineName)
+        Catch ex As Exception
+            AddEventException(ex)
+        End Try
     End Sub
 
     Sub New()
@@ -53,35 +55,44 @@ Public Module Logger
         .Timestamp = DateTime.Now
          })
         Catch ex As Exception
-            AddError(ex)
+            AddEventException(ex)
         End Try
 
     End Sub
 
     Public Sub AddError(ByVal exception As Exception)
-
-        _loggerClient.LogException(New ExceptionLogItem() With {
+        Try
+            _loggerClient.LogException(New ExceptionLogItem() With {
         .Exception = exception,
         .Timestamp = DateTime.Now
          })
+        Catch ex As Exception
+            AddEventException(ex)
+        End Try
 
+    End Sub
+
+    Public Sub AddEventException(ByVal exception As Exception)
         Dim sb As New StringBuilder
         BuildExceptionString(exception, sb)
         AddError(sb.ToString())
     End Sub
 
     Public Sub AddError(ByVal message As String, ByVal exception As Exception)
-
-        _loggerClient.LogException(New ExceptionLogItem() With {
+        Try
+            _loggerClient.LogException(New ExceptionLogItem() With {
         .Exception = exception,
         .Message = message,
         .Timestamp = DateTime.Now
          })
 
-        Dim sb As New StringBuilder
-        sb.AppendLine(message)
-        BuildExceptionString(exception, sb)
-        AddError(sb.ToString())
+
+        Catch ex As Exception
+            Dim sb As New StringBuilder
+            sb.AppendLine(message)
+            BuildExceptionString(exception, sb)
+            AddError(sb.ToString())
+        End Try
     End Sub
 
     Private Sub BuildExceptionString(ByVal exception As Exception, ByVal sb As StringBuilder)
@@ -96,14 +107,16 @@ Public Module Logger
     End Sub
 
     Public Sub AddError(ByVal message As String)
-
-        _loggerClient.LogException(New ExceptionLogItem() With {
+        Try
+            _loggerClient.LogException(New ExceptionLogItem() With {
         .Message = message,
         .Timestamp = DateTime.Now
          })
 
-        TraceLine(TraceEventType.Error, message)
-
+            TraceLine(TraceEventType.Error, message)
+        Catch ex As Exception
+            AddEventException(ex)
+        End Try
     End Sub
 
     Public Sub AddWarning(ByVal message As String)
