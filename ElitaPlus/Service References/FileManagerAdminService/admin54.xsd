@@ -9,6 +9,19 @@
     </xs:sequence>
   </xs:complexType>
   <xs:element name="DataItemLocator" nillable="true" type="tns:DataItemLocator" />
+  <xs:simpleType name="LifeCycleRecordStateType">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="New" />
+      <xs:enumeration value="Active" />
+      <xs:enumeration value="Stale" />
+      <xs:enumeration value="FrequentAccess" />
+      <xs:enumeration value="Backup" />
+      <xs:enumeration value="InfrequentAccess" />
+      <xs:enumeration value="ColdAccess" />
+      <xs:enumeration value="Purge" />
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:element name="LifeCycleRecordStateType" nillable="true" type="tns:LifeCycleRecordStateType" />
   <xs:simpleType name="RecordStateType">
     <xs:restriction base="xs:string">
       <xs:enumeration value="Initialized" />
@@ -23,19 +36,6 @@
     </xs:restriction>
   </xs:simpleType>
   <xs:element name="RecordStateType" nillable="true" type="tns:RecordStateType" />
-  <xs:simpleType name="LifeCycleRecordStateType">
-    <xs:restriction base="xs:string">
-      <xs:enumeration value="New" />
-      <xs:enumeration value="Active" />
-      <xs:enumeration value="Stale" />
-      <xs:enumeration value="FrequentAccess" />
-      <xs:enumeration value="Backup" />
-      <xs:enumeration value="InfrequentAccess" />
-      <xs:enumeration value="ColdAccess" />
-      <xs:enumeration value="Purge" />
-    </xs:restriction>
-  </xs:simpleType>
-  <xs:element name="LifeCycleRecordStateType" nillable="true" type="tns:LifeCycleRecordStateType" />
   <xs:simpleType name="FileType">
     <xs:restriction base="xs:string">
       <xs:enumeration value="ClaimUpFile" />
@@ -48,6 +48,10 @@
       <xs:enumeration value="Validated" />
       <xs:enumeration value="Rejected" />
       <xs:enumeration value="Processed" />
+      <xs:enumeration value="Pending" />
+      <xs:enumeration value="Running" />
+      <xs:enumeration value="Failure" />
+      <xs:enumeration value="Success" />
     </xs:restriction>
   </xs:simpleType>
   <xs:element name="FileStateType" nillable="true" type="tns:FileStateType" />

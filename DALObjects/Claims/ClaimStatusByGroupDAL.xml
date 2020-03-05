@@ -18,7 +18,9 @@
         owner_id,
         skipping_allowed_id,
         active_id,
-        group_number
+        group_number,
+        turnaround_time_days,
+        tat_reminder_hours
 			FROM elp_claim_status_by_group 
 			WHERE
 				claim_status_by_group_id = :claim_status_by_group_id
@@ -62,7 +64,9 @@
         		g.claim_status_by_group_id,
         		g.active_id,
         decode(g.claim_status_by_group_id, null, 'Y', 'N') as ISNEW,
-        g.group_number
+        g.group_number,
+        g.turnaround_time_days,
+        g.tat_reminder_hours
 			FROM 	elp_list l join elp_list_item i on l.list_id = i.list_id
 					join elp_dict_item_translation t on i.dict_item_id = t.dict_item_id --dynamic language id
 				 	left join elp_claim_status_by_group g on i.list_item_id = g.list_item_id --dynamic company group id or dealer id
@@ -107,7 +111,9 @@
         owner_id = :owner_id,
         skipping_allowed_id = :skipping_allowed_id,
         active_id = :active_id,
-        group_number = :group_number
+        group_number = :group_number,
+        turnaround_time_days = :turnaround_time_days,
+        tat_reminder_hours = :tat_reminder_hours
 			WHERE
 				claim_status_by_group_id = :claim_status_by_group_id
 		]]>
@@ -124,7 +130,9 @@
     owner_id,
     skipping_allowed_id,
     active_id,
-    group_number
+    group_number,
+    turnaround_time_days,
+    tat_reminder_hours
     )
     VALUES
     (
@@ -137,7 +145,9 @@
     :owner_id,
     :skipping_allowed_id,
     :active_id,
-    :group_number
+    :group_number,
+    :turnaround_time_days,
+    :tat_reminder_hours
     )
   </INSERT>
   <DELETE>
@@ -154,7 +164,9 @@
            getcodefromlistitem(g.owner_id) owner_code,
            g.status_order order_number,
            getcodefromlistitem(g.skipping_allowed_id) skipping_allowed_code,
-           g.group_number 
+           g.group_number,
+           g.turnaround_time_days,
+           g.tat_reminder_hours,
       from elp_claim_status_by_group g 
       where g.company_group_id = :company_group_id
       order by g.status_order
