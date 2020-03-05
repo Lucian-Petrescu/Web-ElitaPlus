@@ -12,7 +12,7 @@ Option Explicit On
 
 
 Partial Public Class ServiceCenterForm
-    
+
     '''<summary>
     '''moMessageController control.
     '''</summary>
@@ -21,7 +21,7 @@ Partial Public Class ServiceCenterForm
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
     Protected WithEvents moMessageController As Global.Assurant.ElitaPlus.ElitaPlusWebApp.MessageController
-    
+
     '''<summary>
     '''ScriptManager1 control.
     '''</summary>
@@ -30,7 +30,7 @@ Partial Public Class ServiceCenterForm
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
     Protected WithEvents ScriptManager1 As Global.System.Web.UI.ScriptManager
-    
+
     '''<summary>
     '''EditPanel control.
     '''</summary>
@@ -39,7 +39,7 @@ Partial Public Class ServiceCenterForm
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
     Protected WithEvents EditPanel As Global.System.Web.UI.WebControls.Panel
-    
+
     '''<summary>
     '''moCountryLabel control.
     '''</summary>
@@ -48,7 +48,7 @@ Partial Public Class ServiceCenterForm
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
     Protected WithEvents moCountryLabel As Global.System.Web.UI.WebControls.Label
-    
+
     '''<summary>
     '''moCountryLabel_NO_TRANSLATE control.
     '''</summary>
@@ -57,7 +57,7 @@ Partial Public Class ServiceCenterForm
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
     Protected WithEvents moCountryLabel_NO_TRANSLATE As Global.System.Web.UI.WebControls.TextBox
-    
+
     '''<summary>
     '''moCountryDrop control.
     '''</summary>
@@ -66,7 +66,7 @@ Partial Public Class ServiceCenterForm
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
     Protected WithEvents moCountryDrop As Global.System.Web.UI.WebControls.DropDownList
-    
+
     '''<summary>
     '''LabelStatusCode control.
     '''</summary>
@@ -75,7 +75,7 @@ Partial Public Class ServiceCenterForm
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
     Protected WithEvents LabelStatusCode As Global.System.Web.UI.WebControls.Label
-    
+
     '''<summary>
     '''cboStatusCode control.
     '''</summary>
@@ -84,7 +84,7 @@ Partial Public Class ServiceCenterForm
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
     Protected WithEvents cboStatusCode As Global.System.Web.UI.WebControls.DropDownList
-    
+
     '''<summary>
     '''LabelCode control.
     '''</summary>
@@ -93,7 +93,7 @@ Partial Public Class ServiceCenterForm
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
     Protected WithEvents LabelCode As Global.System.Web.UI.WebControls.Label
-    
+
     '''<summary>
     '''TextboxCode control.
     '''</summary>
@@ -102,7 +102,7 @@ Partial Public Class ServiceCenterForm
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
     Protected WithEvents TextboxCode As Global.System.Web.UI.WebControls.TextBox
-    
+
     '''<summary>
     '''LabelDescription control.
     '''</summary>
@@ -111,7 +111,7 @@ Partial Public Class ServiceCenterForm
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
     Protected WithEvents LabelDescription As Global.System.Web.UI.WebControls.Label
-    
+
     '''<summary>
     '''TextboxDescription control.
     '''</summary>
@@ -120,7 +120,7 @@ Partial Public Class ServiceCenterForm
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
     Protected WithEvents TextboxDescription As Global.System.Web.UI.WebControls.TextBox
-    
+
     '''<summary>
     '''LabelDateAdded control.
     '''</summary>
@@ -129,7 +129,7 @@ Partial Public Class ServiceCenterForm
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
     Protected WithEvents LabelDateAdded As Global.System.Web.UI.WebControls.Label
-    
+
     '''<summary>
     '''TextboxDateAdded control.
     '''</summary>
@@ -138,7 +138,7 @@ Partial Public Class ServiceCenterForm
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
     Protected WithEvents TextboxDateAdded As Global.System.Web.UI.WebControls.TextBox
-    
+
     '''<summary>
     '''lblPriceList control.
     '''</summary>
@@ -147,7 +147,7 @@ Partial Public Class ServiceCenterForm
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
     Protected WithEvents lblPriceList As Global.System.Web.UI.WebControls.Label
-    
+
     '''<summary>
     '''ddlPriceList control.
     '''</summary>
@@ -156,7 +156,52 @@ Partial Public Class ServiceCenterForm
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
     Protected WithEvents ddlPriceList As Global.System.Web.UI.WebControls.DropDownList
-    
+
+    '''<summary>
+    '''PL_APPROVE_SEC control.
+    '''</summary>
+    '''<remarks>
+    '''Auto-generated field.
+    '''To modify move field declaration from designer file to code-behind file.
+    '''</remarks>
+    Protected WithEvents PL_APPROVE_SEC As Global.System.Web.UI.HtmlControls.HtmlTableRow
+
+    '''<summary>
+    '''lblPriceListPending control.
+    '''</summary>
+    '''<remarks>
+    '''Auto-generated field.
+    '''To modify move field declaration from designer file to code-behind file.
+    '''</remarks>
+    Protected WithEvents lblPriceListPending As Global.System.Web.UI.WebControls.Label
+
+    '''<summary>
+    '''txtPriceListPending control.
+    '''</summary>
+    '''<remarks>
+    '''Auto-generated field.
+    '''To modify move field declaration from designer file to code-behind file.
+    '''</remarks>
+    Protected WithEvents txtPriceListPending As Global.System.Web.UI.WebControls.TextBox
+
+    '''<summary>
+    '''lblPriceListPendingStatus control.
+    '''</summary>
+    '''<remarks>
+    '''Auto-generated field.
+    '''To modify move field declaration from designer file to code-behind file.
+    '''</remarks>
+    Protected WithEvents lblPriceListPendingStatus As Global.System.Web.UI.WebControls.Label
+
+    '''<summary>
+    '''txtPriceListPendingStatus control.
+    '''</summary>
+    '''<remarks>
+    '''Auto-generated field.
+    '''To modify move field declaration from designer file to code-behind file.
+    '''</remarks>
+    Protected WithEvents txtPriceListPendingStatus As Global.System.Web.UI.WebControls.TextBox
+
     '''<summary>
     '''LabelDateLastMaintained control.
     '''</summary>
@@ -165,7 +210,7 @@ Partial Public Class ServiceCenterForm
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
     Protected WithEvents LabelDateLastMaintained As Global.System.Web.UI.WebControls.Label
-    
+
     '''<summary>
     '''TextboxDateLastMaintained control.
     '''</summary>
@@ -174,7 +219,7 @@ Partial Public Class ServiceCenterForm
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
     Protected WithEvents TextboxDateLastMaintained As Global.System.Web.UI.WebControls.TextBox
-    
+
     '''<summary>
     '''LabelServiceGroupId control.
     '''</summary>
@@ -183,7 +228,7 @@ Partial Public Class ServiceCenterForm
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
     Protected WithEvents LabelServiceGroupId As Global.System.Web.UI.WebControls.Label
-    
+
     '''<summary>
     '''cboServiceGroupId control.
     '''</summary>
@@ -192,7 +237,7 @@ Partial Public Class ServiceCenterForm
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
     Protected WithEvents cboServiceGroupId As Global.System.Web.UI.WebControls.DropDownList
-    
+
     '''<summary>
     '''labelRoute control.
     '''</summary>
@@ -201,7 +246,7 @@ Partial Public Class ServiceCenterForm
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
     Protected WithEvents labelRoute As Global.System.Web.UI.WebControls.Label
-    
+
     '''<summary>
     '''TextboxRoute control.
     '''</summary>
@@ -210,7 +255,7 @@ Partial Public Class ServiceCenterForm
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
     Protected WithEvents TextboxRoute As Global.System.Web.UI.WebControls.TextBox
-    
+
     '''<summary>
     '''LabelBusinessHours control.
     '''</summary>
@@ -219,7 +264,7 @@ Partial Public Class ServiceCenterForm
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
     Protected WithEvents LabelBusinessHours As Global.System.Web.UI.WebControls.Label
-    
+
     '''<summary>
     '''TextboxBusinessHours control.
     '''</summary>
@@ -228,7 +273,7 @@ Partial Public Class ServiceCenterForm
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
     Protected WithEvents TextboxBusinessHours As Global.System.Web.UI.WebControls.TextBox
-    
+
     '''<summary>
     '''LabelFtpAddress control.
     '''</summary>
@@ -237,7 +282,7 @@ Partial Public Class ServiceCenterForm
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
     Protected WithEvents LabelFtpAddress As Global.System.Web.UI.WebControls.Label
-    
+
     '''<summary>
     '''TextboxFtpAddress control.
     '''</summary>
@@ -246,7 +291,7 @@ Partial Public Class ServiceCenterForm
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
     Protected WithEvents TextboxFtpAddress As Global.System.Web.UI.WebControls.TextBox
-    
+
     '''<summary>
     '''LabelOwnerName control.
     '''</summary>
@@ -255,7 +300,7 @@ Partial Public Class ServiceCenterForm
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
     Protected WithEvents LabelOwnerName As Global.System.Web.UI.WebControls.Label
-    
+
     '''<summary>
     '''TextboxOwnerName control.
     '''</summary>
@@ -264,7 +309,7 @@ Partial Public Class ServiceCenterForm
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
     Protected WithEvents TextboxOwnerName As Global.System.Web.UI.WebControls.TextBox
-    
+
     '''<summary>
     '''LabelTaxId control.
     '''</summary>
@@ -273,7 +318,7 @@ Partial Public Class ServiceCenterForm
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
     Protected WithEvents LabelTaxId As Global.System.Web.UI.WebControls.Label
-    
+
     '''<summary>
     '''TextboxTaxId control.
     '''</summary>
@@ -282,7 +327,7 @@ Partial Public Class ServiceCenterForm
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
     Protected WithEvents TextboxTaxId As Global.System.Web.UI.WebControls.TextBox
-    
+
     '''<summary>
     '''LabelContactName control.
     '''</summary>
@@ -291,7 +336,7 @@ Partial Public Class ServiceCenterForm
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
     Protected WithEvents LabelContactName As Global.System.Web.UI.WebControls.Label
-    
+
     '''<summary>
     '''TextboxContactName control.
     '''</summary>
@@ -300,7 +345,7 @@ Partial Public Class ServiceCenterForm
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
     Protected WithEvents TextboxContactName As Global.System.Web.UI.WebControls.TextBox
-    
+
     '''<summary>
     '''LabelServiceWarrantyDays control.
     '''</summary>
@@ -309,7 +354,7 @@ Partial Public Class ServiceCenterForm
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
     Protected WithEvents LabelServiceWarrantyDays As Global.System.Web.UI.WebControls.Label
-    
+
     '''<summary>
     '''TextboxServiceWarrantyDays control.
     '''</summary>
@@ -318,7 +363,7 @@ Partial Public Class ServiceCenterForm
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
     Protected WithEvents TextboxServiceWarrantyDays As Global.System.Web.UI.WebControls.TextBox
-    
+
     '''<summary>
     '''LabelPhone1 control.
     '''</summary>
@@ -327,7 +372,7 @@ Partial Public Class ServiceCenterForm
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
     Protected WithEvents LabelPhone1 As Global.System.Web.UI.WebControls.Label
-    
+
     '''<summary>
     '''TextboxPhone1 control.
     '''</summary>
@@ -336,7 +381,7 @@ Partial Public Class ServiceCenterForm
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
     Protected WithEvents TextboxPhone1 As Global.System.Web.UI.WebControls.TextBox
-    
+
     '''<summary>
     '''LabelRatingCode control.
     '''</summary>
@@ -345,7 +390,7 @@ Partial Public Class ServiceCenterForm
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
     Protected WithEvents LabelRatingCode As Global.System.Web.UI.WebControls.Label
-    
+
     '''<summary>
     '''TextboxRatingCode control.
     '''</summary>
@@ -354,7 +399,7 @@ Partial Public Class ServiceCenterForm
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
     Protected WithEvents TextboxRatingCode As Global.System.Web.UI.WebControls.TextBox
-    
+
     '''<summary>
     '''LabelPhone2 control.
     '''</summary>
@@ -363,7 +408,7 @@ Partial Public Class ServiceCenterForm
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
     Protected WithEvents LabelPhone2 As Global.System.Web.UI.WebControls.Label
-    
+
     '''<summary>
     '''TextboxPhone2 control.
     '''</summary>
@@ -372,7 +417,7 @@ Partial Public Class ServiceCenterForm
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
     Protected WithEvents TextboxPhone2 As Global.System.Web.UI.WebControls.TextBox
-    
+
     '''<summary>
     '''LabelFreeZone control.
     '''</summary>
@@ -381,7 +426,7 @@ Partial Public Class ServiceCenterForm
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
     Protected WithEvents LabelFreeZone As Global.System.Web.UI.WebControls.Label
-    
+
     '''<summary>
     '''CheckBoxFreeZone control.
     '''</summary>
@@ -390,7 +435,7 @@ Partial Public Class ServiceCenterForm
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
     Protected WithEvents CheckBoxFreeZone As Global.System.Web.UI.WebControls.CheckBox
-    
+
     '''<summary>
     '''LabelFax control.
     '''</summary>
@@ -399,7 +444,7 @@ Partial Public Class ServiceCenterForm
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
     Protected WithEvents LabelFax As Global.System.Web.UI.WebControls.Label
-    
+
     '''<summary>
     '''TextboxFax control.
     '''</summary>
@@ -408,7 +453,7 @@ Partial Public Class ServiceCenterForm
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
     Protected WithEvents TextboxFax As Global.System.Web.UI.WebControls.TextBox
-    
+
     '''<summary>
     '''LabelIvaResponsible control.
     '''</summary>
@@ -417,7 +462,7 @@ Partial Public Class ServiceCenterForm
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
     Protected WithEvents LabelIvaResponsible As Global.System.Web.UI.WebControls.Label
-    
+
     '''<summary>
     '''CheckBoxIvaResponsible control.
     '''</summary>
@@ -426,7 +471,7 @@ Partial Public Class ServiceCenterForm
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
     Protected WithEvents CheckBoxIvaResponsible As Global.System.Web.UI.WebControls.CheckBox
-    
+
     '''<summary>
     '''LabelDefaultToEmail control.
     '''</summary>
@@ -435,7 +480,7 @@ Partial Public Class ServiceCenterForm
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
     Protected WithEvents LabelDefaultToEmail As Global.System.Web.UI.WebControls.Label
-    
+
     '''<summary>
     '''CheckBoxDefaultToEmail control.
     '''</summary>
@@ -444,7 +489,7 @@ Partial Public Class ServiceCenterForm
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
     Protected WithEvents CheckBoxDefaultToEmail As Global.System.Web.UI.WebControls.CheckBox
-    
+
     '''<summary>
     '''LabelShipping control.
     '''</summary>
@@ -453,7 +498,7 @@ Partial Public Class ServiceCenterForm
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
     Protected WithEvents LabelShipping As Global.System.Web.UI.WebControls.Label
-    
+
     '''<summary>
     '''CheckBoxShipping control.
     '''</summary>
@@ -462,7 +507,7 @@ Partial Public Class ServiceCenterForm
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
     Protected WithEvents CheckBoxShipping As Global.System.Web.UI.WebControls.CheckBox
-    
+
     '''<summary>
     '''LabelEmail control.
     '''</summary>
@@ -471,7 +516,7 @@ Partial Public Class ServiceCenterForm
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
     Protected WithEvents LabelEmail As Global.System.Web.UI.WebControls.Label
-    
+
     '''<summary>
     '''TextboxEmail control.
     '''</summary>
@@ -480,7 +525,7 @@ Partial Public Class ServiceCenterForm
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
     Protected WithEvents TextboxEmail As Global.System.Web.UI.WebControls.TextBox
-    
+
     '''<summary>
     '''LabelProcessingFee control.
     '''</summary>
@@ -489,7 +534,7 @@ Partial Public Class ServiceCenterForm
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
     Protected WithEvents LabelProcessingFee As Global.System.Web.UI.WebControls.Label
-    
+
     '''<summary>
     '''TextboxPROCESSING_FEE control.
     '''</summary>
@@ -498,7 +543,7 @@ Partial Public Class ServiceCenterForm
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
     Protected WithEvents TextboxPROCESSING_FEE As Global.System.Web.UI.WebControls.TextBox
-    
+
     '''<summary>
     '''LabelCcEmail control.
     '''</summary>
@@ -507,7 +552,7 @@ Partial Public Class ServiceCenterForm
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
     Protected WithEvents LabelCcEmail As Global.System.Web.UI.WebControls.Label
-    
+
     '''<summary>
     '''TextboxCcEmail control.
     '''</summary>
@@ -516,7 +561,7 @@ Partial Public Class ServiceCenterForm
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
     Protected WithEvents TextboxCcEmail As Global.System.Web.UI.WebControls.TextBox
-    
+
     '''<summary>
     '''IntegratedWithLabel control.
     '''</summary>
@@ -525,7 +570,7 @@ Partial Public Class ServiceCenterForm
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
     Protected WithEvents IntegratedWithLabel As Global.System.Web.UI.WebControls.Label
-    
+
     '''<summary>
     '''cboIntegratedWithId control.
     '''</summary>
@@ -534,7 +579,7 @@ Partial Public Class ServiceCenterForm
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
     Protected WithEvents cboIntegratedWithId As Global.System.Web.UI.WebControls.DropDownList
-    
+
     '''<summary>
     '''IntegratedAsOfLabel control.
     '''</summary>
@@ -543,7 +588,7 @@ Partial Public Class ServiceCenterForm
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
     Protected WithEvents IntegratedAsOfLabel As Global.System.Web.UI.WebControls.Label
-    
+
     '''<summary>
     '''TextboxIntegratedAsOf control.
     '''</summary>
@@ -552,7 +597,7 @@ Partial Public Class ServiceCenterForm
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
     Protected WithEvents TextboxIntegratedAsOf As Global.System.Web.UI.WebControls.TextBox
-    
+
     '''<summary>
     '''PaymentMethodDrpLabel control.
     '''</summary>
@@ -561,7 +606,7 @@ Partial Public Class ServiceCenterForm
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
     Protected WithEvents PaymentMethodDrpLabel As Global.System.Web.UI.WebControls.Label
-    
+
     '''<summary>
     '''cboPaymentMethodId control.
     '''</summary>
@@ -570,7 +615,7 @@ Partial Public Class ServiceCenterForm
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
     Protected WithEvents cboPaymentMethodId As Global.System.Web.UI.WebControls.DropDownList
-    
+
     '''<summary>
     '''LabelMasterCenterId control.
     '''</summary>
@@ -579,7 +624,7 @@ Partial Public Class ServiceCenterForm
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
     Protected WithEvents LabelMasterCenterId As Global.System.Web.UI.WebControls.Label
-    
+
     '''<summary>
     '''TextBoxMasterCenter control.
     '''</summary>
@@ -588,7 +633,7 @@ Partial Public Class ServiceCenterForm
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
     Protected WithEvents TextBoxMasterCenter As Global.System.Web.UI.WebControls.TextBox
-    
+
     '''<summary>
     '''inpMasterCenterId control.
     '''</summary>
@@ -597,7 +642,7 @@ Partial Public Class ServiceCenterForm
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
     Protected WithEvents inpMasterCenterId As Global.System.Web.UI.HtmlControls.HtmlInputHidden
-    
+
     '''<summary>
     '''inpMasterCenterDesc control.
     '''</summary>
@@ -606,7 +651,7 @@ Partial Public Class ServiceCenterForm
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
     Protected WithEvents inpMasterCenterDesc As Global.System.Web.UI.HtmlControls.HtmlInputHidden
-    
+
     '''<summary>
     '''aCompMasterCenter control.
     '''</summary>
@@ -615,7 +660,7 @@ Partial Public Class ServiceCenterForm
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
     Protected WithEvents aCompMasterCenter As Global.AjaxControlToolkit.AutoCompleteExtender
-    
+
     '''<summary>
     '''tMasterCenter control.
     '''</summary>
@@ -624,7 +669,7 @@ Partial Public Class ServiceCenterForm
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
     Protected WithEvents tMasterCenter As Global.AjaxControlToolkit.TextBoxWatermarkExtender
-    
+
     '''<summary>
     '''lblDealer control.
     '''</summary>
@@ -633,7 +678,7 @@ Partial Public Class ServiceCenterForm
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
     Protected WithEvents lblDealer As Global.System.Web.UI.WebControls.Label
-    
+
     '''<summary>
     '''cboOriginalDealer_WRITE control.
     '''</summary>
@@ -642,7 +687,7 @@ Partial Public Class ServiceCenterForm
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
     Protected WithEvents cboOriginalDealer_WRITE As Global.System.Web.UI.WebControls.DropDownList
-    
+
     '''<summary>
     '''LabelLoanerCenterId control.
     '''</summary>
@@ -651,7 +696,7 @@ Partial Public Class ServiceCenterForm
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
     Protected WithEvents LabelLoanerCenterId As Global.System.Web.UI.WebControls.Label
-    
+
     '''<summary>
     '''TextBoxLoanerCenter control.
     '''</summary>
@@ -660,7 +705,7 @@ Partial Public Class ServiceCenterForm
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
     Protected WithEvents TextBoxLoanerCenter As Global.System.Web.UI.WebControls.TextBox
-    
+
     '''<summary>
     '''inpLoanerCenterId control.
     '''</summary>
@@ -669,7 +714,7 @@ Partial Public Class ServiceCenterForm
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
     Protected WithEvents inpLoanerCenterId As Global.System.Web.UI.HtmlControls.HtmlInputHidden
-    
+
     '''<summary>
     '''inpLoanerCenterDesc control.
     '''</summary>
@@ -678,7 +723,7 @@ Partial Public Class ServiceCenterForm
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
     Protected WithEvents inpLoanerCenterDesc As Global.System.Web.UI.HtmlControls.HtmlInputHidden
-    
+
     '''<summary>
     '''aCompLoanerCenter control.
     '''</summary>
@@ -687,7 +732,7 @@ Partial Public Class ServiceCenterForm
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
     Protected WithEvents aCompLoanerCenter As Global.AjaxControlToolkit.AutoCompleteExtender
-    
+
     '''<summary>
     '''tLoanerCenter control.
     '''</summary>
@@ -696,7 +741,7 @@ Partial Public Class ServiceCenterForm
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
     Protected WithEvents tLoanerCenter As Global.AjaxControlToolkit.TextBoxWatermarkExtender
-    
+
     '''<summary>
     '''lblPayMaster control.
     '''</summary>
@@ -705,7 +750,7 @@ Partial Public Class ServiceCenterForm
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
     Protected WithEvents lblPayMaster As Global.System.Web.UI.WebControls.Label
-    
+
     '''<summary>
     '''chkPayMaster control.
     '''</summary>
@@ -714,7 +759,7 @@ Partial Public Class ServiceCenterForm
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
     Protected WithEvents chkPayMaster As Global.System.Web.UI.WebControls.CheckBox
-    
+
     '''<summary>
     '''lblReverseLogistics control.
     '''</summary>
@@ -723,7 +768,7 @@ Partial Public Class ServiceCenterForm
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
     Protected WithEvents lblReverseLogistics As Global.System.Web.UI.WebControls.Label
-    
+
     '''<summary>
     '''cboReverseLogisticsId control.
     '''</summary>
@@ -732,7 +777,7 @@ Partial Public Class ServiceCenterForm
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
     Protected WithEvents cboReverseLogisticsId As Global.System.Web.UI.WebControls.DropDownList
-    
+
     '''<summary>
     '''lblWithholdingRate control.
     '''</summary>
@@ -741,7 +786,7 @@ Partial Public Class ServiceCenterForm
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
     Protected WithEvents lblWithholdingRate As Global.System.Web.UI.WebControls.Label
-    
+
     '''<summary>
     '''TextBoxWithholdingRate control.
     '''</summary>
@@ -750,7 +795,7 @@ Partial Public Class ServiceCenterForm
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
     Protected WithEvents TextBoxWithholdingRate As Global.System.Web.UI.WebControls.TextBox
-    
+
     '''<summary>
     '''lblDistributionMethod control.
     '''</summary>
@@ -759,7 +804,7 @@ Partial Public Class ServiceCenterForm
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
     Protected WithEvents lblDistributionMethod As Global.System.Web.UI.WebControls.Label
-    
+
     '''<summary>
     '''ddlDistributionMethod control.
     '''</summary>
@@ -768,7 +813,7 @@ Partial Public Class ServiceCenterForm
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
     Protected WithEvents ddlDistributionMethod As Global.System.Web.UI.WebControls.DropDownList
-    
+
     '''<summary>
     '''lblFulFillingTimeZone control.
     '''</summary>
@@ -777,7 +822,7 @@ Partial Public Class ServiceCenterForm
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
     Protected WithEvents lblFulFillingTimeZone As Global.System.Web.UI.WebControls.Label
-    
+
     '''<summary>
     '''ddlFulFillingTimeZone control.
     '''</summary>
@@ -786,7 +831,7 @@ Partial Public Class ServiceCenterForm
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
     Protected WithEvents ddlFulFillingTimeZone As Global.System.Web.UI.WebControls.DropDownList
-    
+
     '''<summary>
     '''lblDiscountPercent control.
     '''</summary>
@@ -795,7 +840,7 @@ Partial Public Class ServiceCenterForm
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
     Protected WithEvents lblDiscountPercent As Global.System.Web.UI.WebControls.Label
-    
+
     '''<summary>
     '''TextBoxDiscountPercent control.
     '''</summary>
@@ -804,7 +849,7 @@ Partial Public Class ServiceCenterForm
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
     Protected WithEvents TextBoxDiscountPercent As Global.System.Web.UI.WebControls.TextBox
-    
+
     '''<summary>
     '''lblNetDays control.
     '''</summary>
@@ -813,7 +858,7 @@ Partial Public Class ServiceCenterForm
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
     Protected WithEvents lblNetDays As Global.System.Web.UI.WebControls.Label
-    
+
     '''<summary>
     '''TextBoxNetDays control.
     '''</summary>
@@ -822,7 +867,7 @@ Partial Public Class ServiceCenterForm
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
     Protected WithEvents TextBoxNetDays As Global.System.Web.UI.WebControls.TextBox
-    
+
     '''<summary>
     '''lblDiscountDays control.
     '''</summary>
@@ -831,7 +876,7 @@ Partial Public Class ServiceCenterForm
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
     Protected WithEvents lblDiscountDays As Global.System.Web.UI.WebControls.Label
-    
+
     '''<summary>
     '''TextBoxDiscountDays control.
     '''</summary>
@@ -840,7 +885,7 @@ Partial Public Class ServiceCenterForm
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
     Protected WithEvents TextBoxDiscountDays As Global.System.Web.UI.WebControls.TextBox
-    
+
     '''<summary>
     '''lblPreInvoice control.
     '''</summary>
@@ -849,7 +894,7 @@ Partial Public Class ServiceCenterForm
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
     Protected WithEvents lblPreInvoice As Global.System.Web.UI.WebControls.Label
-    
+
     '''<summary>
     '''ddlPreInvoice control.
     '''</summary>
@@ -858,7 +903,7 @@ Partial Public Class ServiceCenterForm
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
     Protected WithEvents ddlPreInvoice As Global.System.Web.UI.WebControls.DropDownList
-    
+
     '''<summary>
     '''lblAutoProcessInventoryFile control.
     '''</summary>
@@ -867,7 +912,7 @@ Partial Public Class ServiceCenterForm
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
     Protected WithEvents lblAutoProcessInventoryFile As Global.System.Web.UI.WebControls.Label
-    
+
     '''<summary>
     '''ddlAutoProcessInventoryFile control.
     '''</summary>
@@ -876,7 +921,7 @@ Partial Public Class ServiceCenterForm
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
     Protected WithEvents ddlAutoProcessInventoryFile As Global.System.Web.UI.WebControls.DropDownList
-    
+
     '''<summary>
     '''hdnSelectedTab control.
     '''</summary>
@@ -885,7 +930,7 @@ Partial Public Class ServiceCenterForm
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
     Protected WithEvents hdnSelectedTab As Global.System.Web.UI.WebControls.HiddenField
-    
+
     '''<summary>
     '''hdnDisabledTabs control.
     '''</summary>
@@ -894,7 +939,7 @@ Partial Public Class ServiceCenterForm
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
     Protected WithEvents hdnDisabledTabs As Global.System.Web.UI.WebControls.HiddenField
-    
+
     '''<summary>
     '''Label4 control.
     '''</summary>
@@ -903,7 +948,7 @@ Partial Public Class ServiceCenterForm
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
     Protected WithEvents Label4 As Global.System.Web.UI.WebControls.Label
-    
+
     '''<summary>
     '''Label6 control.
     '''</summary>
@@ -912,7 +957,7 @@ Partial Public Class ServiceCenterForm
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
     Protected WithEvents Label6 As Global.System.Web.UI.WebControls.Label
-    
+
     '''<summary>
     '''Label8 control.
     '''</summary>
@@ -921,7 +966,7 @@ Partial Public Class ServiceCenterForm
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
     Protected WithEvents Label8 As Global.System.Web.UI.WebControls.Label
-    
+
     '''<summary>
     '''Label1 control.
     '''</summary>
@@ -930,7 +975,7 @@ Partial Public Class ServiceCenterForm
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
     Protected WithEvents Label1 As Global.System.Web.UI.WebControls.Label
-    
+
     '''<summary>
     '''Label2 control.
     '''</summary>
@@ -939,7 +984,7 @@ Partial Public Class ServiceCenterForm
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
     Protected WithEvents Label2 As Global.System.Web.UI.WebControls.Label
-    
+
     '''<summary>
     '''Label3 control.
     '''</summary>
@@ -948,7 +993,7 @@ Partial Public Class ServiceCenterForm
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
     Protected WithEvents Label3 As Global.System.Web.UI.WebControls.Label
-    
+
     '''<summary>
     '''Label5 control.
     '''</summary>
@@ -957,7 +1002,7 @@ Partial Public Class ServiceCenterForm
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
     Protected WithEvents Label5 As Global.System.Web.UI.WebControls.Label
-    
+
     '''<summary>
     '''Label7 control.
     '''</summary>
@@ -966,7 +1011,7 @@ Partial Public Class ServiceCenterForm
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
     Protected WithEvents Label7 As Global.System.Web.UI.WebControls.Label
-    
+
     '''<summary>
     '''Label9 control.
     '''</summary>
@@ -975,7 +1020,7 @@ Partial Public Class ServiceCenterForm
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
     Protected WithEvents Label9 As Global.System.Web.UI.WebControls.Label
-    
+
     '''<summary>
     '''Label10 control.
     '''</summary>
@@ -984,7 +1029,7 @@ Partial Public Class ServiceCenterForm
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
     Protected WithEvents Label10 As Global.System.Web.UI.WebControls.Label
-    
+
     '''<summary>
     '''Label11 control.
     '''</summary>
@@ -993,7 +1038,7 @@ Partial Public Class ServiceCenterForm
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
     Protected WithEvents Label11 As Global.System.Web.UI.WebControls.Label
-    
+
     '''<summary>
     '''moAddressTabPanel_WRITE control.
     '''</summary>
@@ -1002,7 +1047,7 @@ Partial Public Class ServiceCenterForm
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
     Protected WithEvents moAddressTabPanel_WRITE As Global.System.Web.UI.WebControls.Panel
-    
+
     '''<summary>
     '''moMfg_Auth_Svc_CtrTabPanel_WRITE control.
     '''</summary>
@@ -1011,7 +1056,7 @@ Partial Public Class ServiceCenterForm
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
     Protected WithEvents moMfg_Auth_Svc_CtrTabPanel_WRITE As Global.System.Web.UI.WebControls.Panel
-    
+
     '''<summary>
     '''moCovered_DistrictTabPanel_WRITE control.
     '''</summary>
@@ -1020,7 +1065,7 @@ Partial Public Class ServiceCenterForm
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
     Protected WithEvents moCovered_DistrictTabPanel_WRITE As Global.System.Web.UI.WebControls.Panel
-    
+
     '''<summary>
     '''moDealer_PreferredTabPanel_WRITE control.
     '''</summary>
@@ -1029,7 +1074,7 @@ Partial Public Class ServiceCenterForm
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
     Protected WithEvents moDealer_PreferredTabPanel_WRITE As Global.System.Web.UI.WebControls.Panel
-    
+
     '''<summary>
     '''moServiceNetworkTabPanel_WRITE control.
     '''</summary>
@@ -1038,7 +1083,7 @@ Partial Public Class ServiceCenterForm
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
     Protected WithEvents moServiceNetworkTabPanel_WRITE As Global.System.Web.UI.WebControls.Panel
-    
+
     '''<summary>
     '''moCommentsInformationTabPanel_WRITE control.
     '''</summary>
@@ -1047,7 +1092,7 @@ Partial Public Class ServiceCenterForm
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
     Protected WithEvents moCommentsInformationTabPanel_WRITE As Global.System.Web.UI.WebControls.Panel
-    
+
     '''<summary>
     '''LabelComment1 control.
     '''</summary>
@@ -1056,7 +1101,7 @@ Partial Public Class ServiceCenterForm
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
     Protected WithEvents LabelComment1 As Global.System.Web.UI.WebControls.Label
-    
+
     '''<summary>
     '''TextboxComment control.
     '''</summary>
@@ -1065,7 +1110,7 @@ Partial Public Class ServiceCenterForm
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
     Protected WithEvents TextboxComment As Global.System.Web.UI.WebControls.TextBox
-    
+
     '''<summary>
     '''Label13 control.
     '''</summary>
@@ -1074,7 +1119,7 @@ Partial Public Class ServiceCenterForm
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
     Protected WithEvents Label13 As Global.System.Web.UI.WebControls.Label
-    
+
     '''<summary>
     '''ddlMethodOfRepairAvailable control.
     '''</summary>
@@ -1083,7 +1128,7 @@ Partial Public Class ServiceCenterForm
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
     Protected WithEvents ddlMethodOfRepairAvailable As Global.System.Web.UI.WebControls.DropDownList
-    
+
     '''<summary>
     '''btnAddMethodOfRepair control.
     '''</summary>
@@ -1092,7 +1137,7 @@ Partial Public Class ServiceCenterForm
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
     Protected WithEvents btnAddMethodOfRepair As Global.System.Web.UI.WebControls.Button
-    
+
     '''<summary>
     '''GridViewMethodOfRepair control.
     '''</summary>
@@ -1101,7 +1146,7 @@ Partial Public Class ServiceCenterForm
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
     Protected WithEvents GridViewMethodOfRepair As Global.System.Web.UI.WebControls.GridView
-    
+
     '''<summary>
     '''moContactsTabPanel_WRITE control.
     '''</summary>
@@ -1110,7 +1155,7 @@ Partial Public Class ServiceCenterForm
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
     Protected WithEvents moContactsTabPanel_WRITE As Global.System.Web.UI.WebControls.Panel
-    
+
     '''<summary>
     '''panelContactGrid control.
     '''</summary>
@@ -1119,7 +1164,7 @@ Partial Public Class ServiceCenterForm
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
     Protected WithEvents panelContactGrid As Global.System.Web.UI.WebControls.Panel
-    
+
     '''<summary>
     '''moContactsGridView control.
     '''</summary>
@@ -1128,7 +1173,7 @@ Partial Public Class ServiceCenterForm
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
     Protected WithEvents moContactsGridView As Global.System.Web.UI.WebControls.GridView
-    
+
     '''<summary>
     '''btnNewContactInfo control.
     '''</summary>
@@ -1137,7 +1182,7 @@ Partial Public Class ServiceCenterForm
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
     Protected WithEvents btnNewContactInfo As Global.System.Web.UI.WebControls.Button
-    
+
     '''<summary>
     '''btnSearchContactInfo control.
     '''</summary>
@@ -1146,7 +1191,7 @@ Partial Public Class ServiceCenterForm
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
     Protected WithEvents btnSearchContactInfo As Global.System.Web.UI.WebControls.Button
-    
+
     '''<summary>
     '''LinkButton1 control.
     '''</summary>
@@ -1155,7 +1200,7 @@ Partial Public Class ServiceCenterForm
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
     Protected WithEvents LinkButton1 As Global.System.Web.UI.WebControls.LinkButton
-    
+
     '''<summary>
     '''AttributeValues control.
     '''</summary>
@@ -1164,7 +1209,7 @@ Partial Public Class ServiceCenterForm
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
     Protected WithEvents AttributeValues As Global.Assurant.ElitaPlus.ElitaPlusWebApp.UserControlAttrtibutes
-    
+
     '''<summary>
     '''moQuantityTabPanel_WRITE control.
     '''</summary>
@@ -1173,7 +1218,7 @@ Partial Public Class ServiceCenterForm
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
     Protected WithEvents moQuantityTabPanel_WRITE As Global.System.Web.UI.WebControls.Panel
-    
+
     '''<summary>
     '''moQuantityGridView control.
     '''</summary>
@@ -1182,7 +1227,7 @@ Partial Public Class ServiceCenterForm
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
     Protected WithEvents moQuantityGridView As Global.System.Web.UI.WebControls.GridView
-    
+
     '''<summary>
     '''moScheduleTabPanel_WRITE control.
     '''</summary>
@@ -1191,7 +1236,7 @@ Partial Public Class ServiceCenterForm
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
     Protected WithEvents moScheduleTabPanel_WRITE As Global.System.Web.UI.WebControls.Panel
-    
+
     '''<summary>
     '''divScheduleDetails control.
     '''</summary>
@@ -1200,7 +1245,7 @@ Partial Public Class ServiceCenterForm
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
     Protected WithEvents divScheduleDetails As Global.System.Web.UI.HtmlControls.HtmlGenericControl
-    
+
     '''<summary>
     '''moAddScheduleGridView control.
     '''</summary>
@@ -1209,7 +1254,7 @@ Partial Public Class ServiceCenterForm
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
     Protected WithEvents moAddScheduleGridView As Global.System.Web.UI.WebControls.GridView
-    
+
     '''<summary>
     '''btnAddNewSchedule control.
     '''</summary>
@@ -1218,7 +1263,7 @@ Partial Public Class ServiceCenterForm
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
     Protected WithEvents btnAddNewSchedule As Global.System.Web.UI.WebControls.Button
-    
+
     '''<summary>
     '''btnCancelNewSchedule control.
     '''</summary>
@@ -1227,7 +1272,7 @@ Partial Public Class ServiceCenterForm
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
     Protected WithEvents btnCancelNewSchedule As Global.System.Web.UI.WebControls.Button
-    
+
     '''<summary>
     '''divAddNewSchedule control.
     '''</summary>
@@ -1236,7 +1281,7 @@ Partial Public Class ServiceCenterForm
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
     Protected WithEvents divAddNewSchedule As Global.System.Web.UI.HtmlControls.HtmlGenericControl
-    
+
     '''<summary>
     '''moScheduleGridView control.
     '''</summary>
@@ -1245,7 +1290,7 @@ Partial Public Class ServiceCenterForm
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
     Protected WithEvents moScheduleGridView As Global.System.Web.UI.WebControls.GridView
-    
+
     '''<summary>
     '''btnNewSchedule control.
     '''</summary>
@@ -1254,7 +1299,7 @@ Partial Public Class ServiceCenterForm
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
     Protected WithEvents btnNewSchedule As Global.System.Web.UI.WebControls.Button
-    
+
     '''<summary>
     '''btnSave_WRITE control.
     '''</summary>
@@ -1263,7 +1308,7 @@ Partial Public Class ServiceCenterForm
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
     Protected WithEvents btnSave_WRITE As Global.System.Web.UI.WebControls.Button
-    
+
     '''<summary>
     '''btnUndo_Write control.
     '''</summary>
@@ -1272,7 +1317,7 @@ Partial Public Class ServiceCenterForm
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
     Protected WithEvents btnUndo_Write As Global.System.Web.UI.WebControls.Button
-    
+
     '''<summary>
     '''btnCopy_WRITE control.
     '''</summary>
@@ -1281,7 +1326,7 @@ Partial Public Class ServiceCenterForm
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
     Protected WithEvents btnCopy_WRITE As Global.System.Web.UI.WebControls.Button
-    
+
     '''<summary>
     '''btnBack control.
     '''</summary>
@@ -1290,7 +1335,7 @@ Partial Public Class ServiceCenterForm
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
     Protected WithEvents btnBack As Global.System.Web.UI.WebControls.Button
-    
+
     '''<summary>
     '''btnNew_WRITE control.
     '''</summary>
@@ -1299,7 +1344,7 @@ Partial Public Class ServiceCenterForm
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
     Protected WithEvents btnNew_WRITE As Global.System.Web.UI.WebControls.Button
-    
+
     '''<summary>
     '''btnDelete_WRITE control.
     '''</summary>
@@ -1308,7 +1353,7 @@ Partial Public Class ServiceCenterForm
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
     Protected WithEvents btnDelete_WRITE As Global.System.Web.UI.WebControls.Button
-    
+
     '''<summary>
     '''HiddenSaveChangesPromptResponse control.
     '''</summary>
@@ -1317,7 +1362,7 @@ Partial Public Class ServiceCenterForm
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
     Protected WithEvents HiddenSaveChangesPromptResponse As Global.System.Web.UI.HtmlControls.HtmlInputHidden
-    
+
     '''<summary>
     '''mdlPopup control.
     '''</summary>
@@ -1326,7 +1371,7 @@ Partial Public Class ServiceCenterForm
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
     Protected WithEvents mdlPopup As Global.AjaxControlToolkit.ModalPopupExtender
-    
+
     '''<summary>
     '''pnlPopup control.
     '''</summary>
@@ -1335,7 +1380,7 @@ Partial Public Class ServiceCenterForm
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
     Protected WithEvents pnlPopup As Global.System.Web.UI.WebControls.Panel
-    
+
     '''<summary>
     '''UpdatePanel1 control.
     '''</summary>
@@ -1344,7 +1389,7 @@ Partial Public Class ServiceCenterForm
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
     Protected WithEvents UpdatePanel1 As Global.System.Web.UI.UpdatePanel
-    
+
     '''<summary>
     '''lblModalTitle control.
     '''</summary>
@@ -1353,7 +1398,7 @@ Partial Public Class ServiceCenterForm
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
     Protected WithEvents lblModalTitle As Global.System.Web.UI.WebControls.Label
-    
+
     '''<summary>
     '''modalClose control.
     '''</summary>
@@ -1362,7 +1407,7 @@ Partial Public Class ServiceCenterForm
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
     Protected WithEvents modalClose As Global.System.Web.UI.WebControls.ImageButton
-    
+
     '''<summary>
     '''moUserControlContactInfo control.
     '''</summary>
@@ -1371,7 +1416,7 @@ Partial Public Class ServiceCenterForm
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
     Protected WithEvents moUserControlContactInfo As Global.Assurant.ElitaPlus.ElitaPlusWebApp.UserControlContactInfo_New
-    
+
     '''<summary>
     '''lblEffectiveDate control.
     '''</summary>
@@ -1380,7 +1425,7 @@ Partial Public Class ServiceCenterForm
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
     Protected WithEvents lblEffectiveDate As Global.System.Web.UI.WebControls.Label
-    
+
     '''<summary>
     '''txtEffective control.
     '''</summary>
@@ -1389,7 +1434,7 @@ Partial Public Class ServiceCenterForm
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
     Protected WithEvents txtEffective As Global.System.Web.UI.WebControls.TextBox
-    
+
     '''<summary>
     '''ibtnEffective control.
     '''</summary>
@@ -1398,7 +1443,7 @@ Partial Public Class ServiceCenterForm
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
     Protected WithEvents ibtnEffective As Global.System.Web.UI.WebControls.ImageButton
-    
+
     '''<summary>
     '''lblExpirationDate control.
     '''</summary>
@@ -1407,7 +1452,7 @@ Partial Public Class ServiceCenterForm
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
     Protected WithEvents lblExpirationDate As Global.System.Web.UI.WebControls.Label
-    
+
     '''<summary>
     '''txtExpiration control.
     '''</summary>
@@ -1416,7 +1461,7 @@ Partial Public Class ServiceCenterForm
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
     Protected WithEvents txtExpiration As Global.System.Web.UI.WebControls.TextBox
-    
+
     '''<summary>
     '''ibtnExpiration control.
     '''</summary>
@@ -1425,7 +1470,7 @@ Partial Public Class ServiceCenterForm
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
     Protected WithEvents ibtnExpiration As Global.System.Web.UI.WebControls.ImageButton
-    
+
     '''<summary>
     '''btnNewItemSave control.
     '''</summary>
@@ -1434,7 +1479,7 @@ Partial Public Class ServiceCenterForm
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
     Protected WithEvents btnNewItemSave As Global.System.Web.UI.WebControls.Button
-    
+
     '''<summary>
     '''btnNewItemCancel control.
     '''</summary>

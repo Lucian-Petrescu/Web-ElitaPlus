@@ -10,8 +10,8 @@
         Dim dal As New commonUploadDAL
         'dal.InsertUploadFileLinesNew(strUploadType, fileLines, fileName)
         'Improve performance by inserting lines in bulk.
-        dal.InsertUploadFileLinesBulk(strUploadType, fileLines, fileName)
-        
+        dal.InsertUploadFileLinesBulk(strUploadType, fileLines, fileName, ElitaPlusIdentity.Current.ActiveUser.NetworkId)
+
     End Sub
 
     Public Shared Function InitUpload(ByVal strFileName As String, ByVal strUploadType As String, ByVal strErrMsg As String) As String

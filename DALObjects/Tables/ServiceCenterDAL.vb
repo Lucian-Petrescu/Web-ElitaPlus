@@ -65,6 +65,12 @@ Public Class ServiceCenterDAL
     Public Const COL_NAME_DISTRIBUTION_METHOD_ID As String = "distribution_method_id"
     Public Const COL_NAME_FULFILLMENT_TIME_ZONE_ID As String = "fulfillment_time_zone_id"
     Public Const COL_NAME_PRICE_LIST_CODE As String = "PRICE_LIST_CODE"
+
+
+    Public Const COL_NAME_PRICE_LIST_CODE_INPROGRESS As String = "PRICE_LIST_CODE_INPROGRESS"
+    Public Const COL_NAME_PRICE_LIST_CODE_INPROGRESS_STATUS As String = "PL_CODE_INPROGRESS_STATUS"
+
+
     Public Const COL_NAME_DISCOUNT_PCT As String = "discount_pct"
     Public Const COL_NAME_DISCOUNT_DAYS As String = "discount_days"
     Public Const COL_NAME_NET_DAYS As String = "net_days"
@@ -105,7 +111,9 @@ Public Class ServiceCenterDAL
 
     Public Sub Load(ByVal familyDS As DataSet, ByVal id As Guid)
         Dim selectStmt As String = Me.Config("/SQL/LOAD")
-        Dim parameters() As DBHelper.DBHelperParameter = New DBHelper.DBHelperParameter() {New DBHelper.DBHelperParameter("service_center_id", id.ToByteArray)}
+
+        Dim parameters() As DBHelper.DBHelperParameter
+        parameters = New DBHelper.DBHelperParameter() {New DBHelper.DBHelperParameter("service_center_id", id.ToByteArray)}
         Try
             DBHelper.Fetch(familyDS, selectStmt, Me.TABLE_NAME, parameters)
         Catch ex As Exception
@@ -212,44 +220,52 @@ Public Class ServiceCenterDAL
         Dim ScheduleDetailDAL As New ScheduleDetailDAL
         Dim oAttributeValueDAL As New AttributeValueDAL
 
+        Dim oSVCPlRecon As New SVCPLReconDAL
+
         Dim tr As IDbTransaction = Transaction
         If tr Is Nothing Then
             tr = DBHelper.GetNewTransaction
         End If
         Try
             'First Pass updates Deletions
-           
-            svcCtrMfrDal.Update(familyDataset, tr, DataRowState.Deleted)
-            svcCtrDlrDal.Update(familyDataset, tr, DataRowState.Deleted)
-            svcCtrZipDstDal.Update(familyDataset, tr, DataRowState.Deleted)
-            svcCtrNetworkDal.Update(familyDataset, tr, DataRowState.Deleted)
-            svcCtrMorDal.Update(familyDataset, tr, DataRowState.Deleted)
-            VendorQuantityDAL.Update(familyDataset, tr, DataRowState.Deleted)
-            VendorContactDAL.Update(familyDataset, tr, DataRowState.Deleted)
-            ContactInfoDAL.Update(familyDataset, tr, DataRowState.Deleted)
-            ServiceScheduleDAL.Update(familyDataset, tr, DataRowState.Deleted)
+
+            'svcCtrMfrDal.Update(familyDataset, tr, DataRowState.Deleted)
+            'svcCtrDlrDal.Update(familyDataset, tr, DataRowState.Deleted)
+            'svcCtrZipDstDal.Update(familyDataset, tr, DataRowState.Deleted)
+            'svcCtrNetworkDal.Update(familyDataset, tr, DataRowState.Deleted)
+            'svcCtrMorDal.Update(familyDataset, tr, DataRowState.Deleted)
+            'VendorQuantityDAL.Update(familyDataset, tr, DataRowState.Deleted)
+            'VendorContactDAL.Update(familyDataset, tr, DataRowState.Deleted)
+            'ContactInfoDAL.Update(familyDataset, tr, DataRowState.Deleted)
+            'ServiceScheduleDAL.Update(familyDataset, tr, DataRowState.Deleted)
             'ScheduleDAL.Update(familyDataset, tr, DataRowState.Deleted)
             'ScheduleDetailDAL.Update(familyDataset, tr, DataRowState.Deleted)
+
+            'oSVCPlRecon.Update(familyDataset.Tables(Me.TABLE_NAME), tr, DataRowState.Deleted)
+
             MyBase.Update(familyDataset.Tables(Me.TABLE_NAME).GetChanges(DataRowState.Deleted), tr, DataRowState.Deleted)
 
             'Second Pass updates additions and changes
-            oAttributeValueDAL.Update(familyDataset.GetChanges(), tr)
-            AddressDAL.Update(familyDataset.GetChanges(DataRowState.Added Or DataRowState.Modified), tr, DataRowState.Added Or DataRowState.Modified)
-            If blnBankInfoSave Then
-                BankInfoDAL.Update(familyDataset.GetChanges(DataRowState.Added Or DataRowState.Modified), tr, DataRowState.Added Or DataRowState.Modified)
-            End If
-            Update(familyDataset.Tables(Me.TABLE_NAME).GetChanges(DataRowState.Added Or DataRowState.Modified), tr, DataRowState.Added Or DataRowState.Modified)
-            svcCtrMfrDal.Update(familyDataset.GetChanges(DataRowState.Added Or DataRowState.Modified), tr, DataRowState.Added Or DataRowState.Modified)
-            svcCtrDlrDal.Update(familyDataset.GetChanges(DataRowState.Added Or DataRowState.Modified), tr, DataRowState.Added Or DataRowState.Modified)
-            svcCtrZipDstDal.Update(familyDataset.GetChanges(DataRowState.Added Or DataRowState.Modified), tr, DataRowState.Added Or DataRowState.Modified)
-            svcCtrNetworkDal.Update(familyDataset.GetChanges(DataRowState.Added Or DataRowState.Modified), tr, DataRowState.Added Or DataRowState.Modified)
-            svcCtrMorDal.Update(familyDataset.GetChanges(DataRowState.Added Or DataRowState.Modified), tr, DataRowState.Added Or DataRowState.Modified)
-            VendorQuantityDAL.UpdateVendorQuantityForServiceCenter(familyDataset.GetChanges(DataRowState.Added Or DataRowState.Modified), tr, DataRowState.Added Or DataRowState.Modified)
-            ContactInfoDAL.Update(familyDataset.GetChanges(DataRowState.Added Or DataRowState.Modified), tr, DataRowState.Added Or DataRowState.Modified)
-            VendorContactDAL.Update(familyDataset.GetChanges(DataRowState.Added Or DataRowState.Modified), tr, DataRowState.Added Or DataRowState.Modified)
-            ServiceScheduleDAL.Update(familyDataset.GetChanges(DataRowState.Added Or DataRowState.Modified), tr, DataRowState.Added Or DataRowState.Modified)
-            'ScheduleDAL.Update(familyDataset.GetChanges(DataRowState.Added Or DataRowState.Modified), tr, DataRowState.Added Or DataRowState.Modified)
-            'ScheduleDetailDAL.Update(familyDataset.GetChanges(DataRowState.Added Or DataRowState.Modified), tr, DataRowState.Added Or DataRowState.Modified)
+            'oAttributeValueDAL.Update(familyDataset.GetChanges(), tr)
+            'AddressDAL.Update(familyDataset.GetChanges(DataRowState.Added Or DataRowState.Modified), tr, DataRowState.Added Or DataRowState.Modified)
+            'If blnBankInfoSave Then
+            '    BankInfoDAL.Update(familyDataset.GetChanges(DataRowState.Added Or DataRowState.Modified), tr, DataRowState.Added Or DataRowState.Modified)
+            'End If
+
+            oSVCPlRecon.Update(familyDataset, tr, DataRowState.Added Or DataRowState.Modified)
+
+
+            'svcCtrMfrDal.Update(familyDataset.GetChanges(DataRowState.Added Or DataRowState.Modified), tr, DataRowState.Added Or DataRowState.Modified)
+            'svcCtrDlrDal.Update(familyDataset.GetChanges(DataRowState.Added Or DataRowState.Modified), tr, DataRowState.Added Or DataRowState.Modified)
+            'svcCtrZipDstDal.Update(familyDataset.GetChanges(DataRowState.Added Or DataRowState.Modified), tr, DataRowState.Added Or DataRowState.Modified)
+            'svcCtrNetworkDal.Update(familyDataset.GetChanges(DataRowState.Added Or DataRowState.Modified), tr, DataRowState.Added Or DataRowState.Modified)
+            'svcCtrMorDal.Update(familyDataset.GetChanges(DataRowState.Added Or DataRowState.Modified), tr, DataRowState.Added Or DataRowState.Modified)
+            'VendorQuantityDAL.UpdateVendorQuantityForServiceCenter(familyDataset.GetChanges(DataRowState.Added Or DataRowState.Modified), tr, DataRowState.Added Or DataRowState.Modified)
+            'ContactInfoDAL.Update(familyDataset.GetChanges(DataRowState.Added Or DataRowState.Modified), tr, DataRowState.Added Or DataRowState.Modified)
+            'VendorContactDAL.Update(familyDataset.GetChanges(DataRowState.Added Or DataRowState.Modified), tr, DataRowState.Added Or DataRowState.Modified)
+            'ServiceScheduleDAL.Update(familyDataset.GetChanges(DataRowState.Added Or DataRowState.Modified), tr, DataRowState.Added Or DataRowState.Modified)
+
+
 
             'At the end delete the Address
             AddressDAL.Update(familyDataset.GetChanges(DataRowState.Deleted), tr, DataRowState.Deleted)
