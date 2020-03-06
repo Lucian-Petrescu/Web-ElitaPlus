@@ -27,6 +27,8 @@ Public Class ClaimStatusByGroup
         Public Const COL_NAME_STATUS_DATE As String = "status_date"
         Public Const COL_NAME_ACTIVE_ID As String = "active_id"
         Public Const COL_NAME_GROUP_NUMBER As String = "group_number"
+        Public Const COL_NAME_TURNAROUND_DAYS As String = "turnaround_time_days"
+        Public Const COL_NAME_TAT_REMINDER_HOURS As String = "tat_reminder_hours"
 
         Public Const COL_NAME_COMPANY_GROUP_NAME As String = "company_group_name"
         Public Const COL_NAME_COMPANY_GROUP_CODE As String = "company_group_code"
@@ -263,6 +265,35 @@ Public Class ClaimStatusByGroup
         Set(ByVal Value As LongType)
             CheckDeleted()
             Me.SetValue(ClaimStatusByGroupDAL.COL_NAME_GROUP_NUMBER, Value)
+        End Set
+    End Property
+
+    Public Property TurnaroundDays() As DecimalType
+        Get
+            CheckDeleted()
+            If Row(ClaimStatusByGroupDAL.COL_NAME_TURNAROUND_DAYS) Is DBNull.Value Then
+                Return Nothing
+            Else
+                Return New DecimalType(CType(Row(ClaimStatusByGroupDAL.COL_NAME_TURNAROUND_DAYS), Decimal))
+            End If
+        End Get
+        Set(ByVal Value As DecimalType)
+            CheckDeleted()
+            Me.SetValue(ClaimStatusByGroupDAL.COL_NAME_TURNAROUND_DAYS, Value)
+        End Set
+    End Property
+    Public Property TurnaroundTimeReminderHours() As DecimalType
+        Get
+            CheckDeleted()
+            If Row(ClaimStatusByGroupDAL.COL_NAME_TAT_REMINDER_HOURS) Is DBNull.Value Then
+                Return Nothing
+            Else
+                Return New DecimalType(CType(Row(ClaimStatusByGroupDAL.COL_NAME_TAT_REMINDER_HOURS), Decimal))
+            End If
+        End Get
+        Set(ByVal Value As DecimalType)
+            CheckDeleted()
+            Me.SetValue(ClaimStatusByGroupDAL.COL_NAME_TAT_REMINDER_HOURS, Value)
         End Set
     End Property
 

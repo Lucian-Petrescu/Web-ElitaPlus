@@ -148,6 +148,7 @@
         case_profile_code,
         close_case_grace_period_days,
         show_prev_caller_info_xcd,
+        use_tat_notification_xcd,
         display_mask_dob_xcd,
         allow_cert_cnl_with_claim_xcd
 			  FROM elp_dealer
@@ -293,6 +294,7 @@
         case_profile_code,
         close_case_grace_period_days,
         show_prev_caller_info_xcd,
+        use_tat_notification_xcd,
         display_mask_dob_xcd,
         allow_cert_cnl_with_claim_xcd
         FROM elp_dealer 
@@ -491,6 +493,7 @@
         case_profile_code = :case_profile_code,
         close_case_grace_period_days = :close_case_grace_period_days,
         show_prev_caller_info_xcd = :show_prev_caller_info_xcd,
+        use_tat_notification_xcd = :use_tat_notification_xcd,
         display_mask_dob_xcd = :display_mask_dob_xcd,
         allow_cert_cnl_with_claim_xcd = :allow_cert_cnl_with_claim_xcd
         WHERE
@@ -637,6 +640,7 @@
     case_profile_code,
     close_case_grace_period_days,
     show_prev_caller_info_xcd,
+    use_tat_notification_xcd,
     display_mask_dob_xcd,
     allow_cert_cnl_with_claim_xcd
     )
@@ -779,6 +783,7 @@
     :case_profile_code,
     :close_case_grace_period_days,
     :show_prev_caller_info_xcd,
+    :use_tat_notification_xcd,
     :display_mask_dob_xcd,
     :allow_cert_cnl_with_claim_xcd
     )

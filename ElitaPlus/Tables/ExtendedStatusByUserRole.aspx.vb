@@ -5,6 +5,7 @@ Imports System.Xml
 Imports System.Xml.Linq
 Imports System.Text
 Imports System.IO
+Imports System.Text.RegularExpressions
 
 Public Class ExtendedStatusByUserRole
     ' Inherits System.Web.UI.Page
@@ -130,7 +131,7 @@ Public Class ExtendedStatusByUserRole
 
         Dim xmlDoc As New XmlDocument
         Using xreader As XmlReader = xmlRoot.CreateReader()
-            xmlDoc.Load(xreader)
+            xmlDoc.Load(HttpUtility.HtmlEncode(xreader))
         End Using
         Return xmlDoc
     End Function
@@ -163,14 +164,14 @@ Public Class ExtendedStatusByUserRole
     'xyAxisValue e.g BRZ-IHQ,ARG-IHQ
     <System.Web.Services.WebMethod()>
     <ScriptMethod(ResponseFormat:=ResponseFormat.Json)>
-    Public Shared Function SaveGrants(ByVal xAxisName As String, ByVal yAxisName As String, ByVal zAxisName As String, ByVal xyAxisValue As String, ByVal zAxisValue As Guid) As Object
+    Public Shared Function SaveGrants(ByVal xAxisName As String, ByVal yAxisName As String, ByVal zAxisName As String, ByVal xyAxisValue As String, ByVal zAxisValue As String) As Object
         Try
             Dim xmlDoc As XmlDocument = GetGrantData()
             'Dim fileName As String = HttpContext.Current.Server.MapPath("Data.xml")
             'Dim xmlDoc As New XmlDocument()
             'xmlDoc.Load(fileName)
 
-            Dim grantsNode As XmlNodeList = xmlDoc.SelectNodes("RoleCompanyStatus/Grants/Grant[" & zAxisName & "Id = '" & zAxisValue.ToString() & "']")
+            Dim grantsNode As XmlNodeList = xmlDoc.SelectNodes("RoleCompanyStatus/Grants/Grant[" & zAxisName & "Id = '" & IsValidGuid(zAxisValue) & "']")
 
             Dim newGrants() As String = xyAxisValue.Split(New Char() {","})
             Dim newGrantList As New List(Of String)
@@ -184,13 +185,14 @@ Public Class ExtendedStatusByUserRole
                     Dim grantInfo_xAxis As String = grantInfo(0)
                     Dim grantInfo_yAxis As String = grantInfo(1)
 
-                    Dim xAxisNode As XmlNode = xmlDoc.SelectSingleNode(GetNodePath(xAxisName) & "[Code='" & grantInfo_xAxis & "']/Id")
+
+                    Dim xAxisNode As XmlNode = xmlDoc.SelectSingleNode(GetNodePath(xAxisName) & "[Code='" & IsValidValue(grantInfo_xAxis) & "']/Id")
                     Dim xAxisId As String = xAxisNode.InnerText
-                    Dim yAxisNode As XmlNode = xmlDoc.SelectSingleNode(GetNodePath(yAxisName) & "[Code='" & grantInfo_yAxis & "']/Id")
+                    Dim yAxisNode As XmlNode = xmlDoc.SelectSingleNode(GetNodePath(yAxisName) & "[Code='" & IsValidValue(grantInfo_yAxis) & "']/Id")
                     Dim yAxisId As String = yAxisNode.InnerText
                     'Dim zAxisNode As XmlNode = xmlDoc.SelectSingleNode(GetNodePath(zAxisName) & "[Id='" & zAxisValue & "']/Id")
                     'Dim zAxisId As String = zAxisNode.InnerText
-                    Dim zAxisId As String = zAxisValue.ToString()
+                    Dim zAxisId As String = zAxisValue
 
                     axisValues.Add(xAxisName, xAxisId)
                     axisValues.Add(yAxisName, yAxisId)
@@ -199,8 +201,8 @@ Public Class ExtendedStatusByUserRole
 
 
                     'check grant already exist
-                    Dim grantExist As XmlNode = xmlDoc.SelectSingleNode("RoleCompanyStatus/Grants/Grant[CompanyId = '" & axisValues.Item("Company") & "' and RoleId = '" &
-    axisValues.Item("Role") & "' and ExtendedStatusId = '" & axisValues.Item("ExtendedStatus") & "']")
+                    Dim grantExist As XmlNode = xmlDoc.SelectSingleNode("RoleCompanyStatus/Grants/Grant[CompanyId = '" & IsValidGuid(axisValues.Item("Company")) & "' and RoleId = '" &
+                    IsValidGuid(axisValues.Item("Role")) & "' and ExtendedStatusId = '" & IsValidGuid(axisValues.Item("ExtendedStatus")) & "']")
                     'new grant
                     If grantExist Is Nothing Then
 
@@ -235,6 +237,23 @@ Public Class ExtendedStatusByUserRole
         Catch ex As Exception
             Return New With {.Status = Message.MSG_RECORD_NOT_SAVED, .Message = TranslationBase.TranslateLabelOrMessage(Message.MSG_RECORD_NOT_SAVED)}
         End Try
+    End Function
+    Public Shared Function IsValidValue(ByRef grantValue As String) As String
+        If Regex.IsMatch(grantValue, "^[a-zA-Z0-9]*$") Then
+            Return grantValue
+        Else
+            grantValue = ""
+            Return grantValue
+        End If
+    End Function
+    Private Shared Function IsValidGuid(ByRef axisValue As String) As String
+        Dim axisToParse As Guid
+        If Guid.TryParse(axisValue, axisToParse) Then
+            Return axisValue
+        Else
+            axisValue = ""
+            Return axisValue
+        End If
     End Function
 
     <System.Web.Services.WebMethod()>

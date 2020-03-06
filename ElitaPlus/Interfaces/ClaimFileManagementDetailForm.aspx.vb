@@ -109,64 +109,67 @@ Namespace Interfaces
         Private Const RECORD_QUALIFIER_AIF As String = "AIF"
 
         Private Const GRID_RECORD_IDENTIFIER As String = "RecordIdentifier"
-        Private Const GRID_RECORD_CERTIFICATE_QUALIFIER As String = "RecordCertificateQualifier"
-        Private Const GRID_RECORD_CERTIFICATE_CODE As String = "RecordCertificateCode"
-        Private Const GRID_RECORD_CERTIFICATE_SUB_QUALIFIER As String = "RecordCertificateSubQualifier"
-        Private Const GRID_RECORD_CERTIFICATE_SUB_CODE As String = "RecordCertificateSubCode"
-        Private Const GRID_RECORD_CERTIFICATE_ADDITIONAL_QUALIFIER As String = "RecordCertificateAdditionalQualifier"
-        Private Const GRID_RECORD_CERTIFICATE_ADDITIONAL_CODE As String = "RecordCertificateAdditionalCode"
-        Private Const GRID_RECORD_LOSS_DATE As String = "RecordLossDate"
-        Private Const GRID_RECORD_LOSS_DATE_FORMAT As String = "RecordLossDateFormat"
-        Private Const GRID_RECORD_LOSS_TIME_START As String = "RecordLossTimeStart"
-        Private Const GRID_RECORD_LOSS_TIME_END As String = "RecordLossTimeEnd"
-        Private Const GRID_RECORD_LOSS_TIMEZONE As String = "RecordLossTimezone"
-        Private Const GRID_RECORD_ITEM_QUALIFIER As String = "RecordItemQualifier"
-        Private Const GRID_RECORD_ITEM_CODE As String = "RecordItemCode"
-        Private Const GRID_RECORD_ITEM_SUB_QUALIFIER As String = "RecordItemSubQualifier"
-        Private Const GRID_RECORD_ITEM_SUB_CODE As String = "RecordItemSubCode"
-        Private Const GRID_RECORD_ITEM_ADDITIONAL_QUALIFIER As String = "RecordItemAdditionalQualifier"
-        Private Const GRID_RECORD_ITEM_ADDITIONAL_CODE As String = "RecordItemAdditionalCode"
-        Private Const GRID_RECORD_COVERAGE_TYPE_QUALIFIER As String = "RecordCoverageTypeQualifier"
-        Private Const GRID_RECORD_COVERAGE_TYPE_CODE As String = "RecordCoverageTypeCode"
-        Private Const GRID_RECORD_COVERAGE_TYPE_SUB_QUALIFIER As String = "RecordCoverageTypeSubQualifier"
-        Private Const GRID_RECORD_COVERAGE_TYPE_SUB_CODE As String = "RecordCoverageTypeSubCode"
-        Private Const GRID_RECORD_COVERAGE_TYPE_ADDITIONAL_QUALIFIER As String = "RecordCoverageTypeAdditionalQualifier"
-        Private Const GRID_RECORD_COVERAGE_TYPE_ADDITIONAL_CODE As String = "RecordCoverageTypeAdditionalCode"
-        Private Const GRID_RECORD_CLAIM_ITEM_SKU As String = "RecordClaimItemSku"
-        Private Const GRID_RECORD_CLAIM_ITEM_MAKE As String = "RecordClaimItemMake"
-        Private Const GRID_RECORD_CLAIM_ITEM_MODEL As String = "RecordClaimItemModel"
-        Private Const GRID_RECORD_CLAIM_ITEM_COLOR As String = "RecordClaimItemColor"
-        Private Const GRID_RECORD_CLAIM_ITEM_CAPACITY As String = "RecordClaimItemCapacity"
-        Private Const GRID_RECORD_CLAIM_ITEM_CARRIER As String = "RecordClaimItemCarrier"
-        Private Const GRID_RECORD_CLAIM_ITEM_QUALIFIER As String = "RecordClaimItemQualifier"
-        Private Const GRID_RECORD_CLAIM_ITEM_CODE As String = "RecordClaimItemCode"
-        Private Const GRID_RECORD_CLAIM_ITEM_ADDITIONAL_QUALIFIER As String = "RecordClaimItemAdditionalQualifier"
-        Private Const GRID_RECORD_CLAIM_ITEM_ADDITIONAL_CODE As String = "RecordClaimItemAdditionalCode"
-        Private Const GRID_RECORD_PROBLEM_STATEMENT As String = "RecordProblemStatement"
+        Private Const GRID_RECORD_CERTIFICATE_IDENTIFIER As String = "CertificateIdentifier"
+        Private Const GRID_RECORD_CERTIFICATE_IDENTIFIER_QUALIFIER As String = "CertificateIdentifierQualifier"
+        Private Const GRID_RECORD_CERTIFICATE_SUB_IDENTIFIER As String = "CertificateSubIdentifier"
+        Private Const GRID_RECORD_CERTIFICATE_SUB_IDENTIFIER_QUALIFIER As String = "CertificateSubIdentifierQualifier"
+        Private Const GRID_RECORD_CERTIFICATE_ADDITIONAL_IDENTIFIER As String = "CertificateAdditionalIdentifier"
+        Private Const GRID_RECORD_CERTIFICATE_ADDITIONAL_IDENTIFIER_QUALIFIER As String = "CertificateAdditionalIdentifierQualifier"
+        Private Const GRID_RECORD_LOSS_DATE As String = "LossDate"
+        Private Const GRID_RECORD_LOSS_DATE_FORMAT As String = "LossDateFormat"
+        Private Const GRID_RECORD_LOSS_TIME_START As String = "LossTimeStart"
+        Private Const GRID_RECORD_LOSS_TIME_END As String = "LossTimeEnd"
+        Private Const GRID_RECORD_LOSS_TIME_ZONE_CODE As String = "LossTimeZoneCode"
+        Private Const GRID_RECORD_ITEM_IDENTIFIER As String = "ItemIdentifier"
+        Private Const GRID_RECORD_ITEM_IDENTIFIER_QUALIFIER As String = "ItemIdentifierQualifier"
+        Private Const GRID_RECORD_ITEM_SUB_IDENTIFIER As String = "ItemSubIdentifier"
+        Private Const GRID_RECORD_ITEM_SUB_IDENTIFIER_QUALIFIER As String = "ItemSubIdentifierQualifier"
+        Private Const GRID_RECORD_ITEM_ADDITIONAL_IDENTIFIER As String = "ItemAdditionalIdentifier"
+        Private Const GRID_RECORD_ITEM_ADDITIONAL_IDENTIFIER_QUALIFIER As String = "ItemAdditionalIdentifierQualifier"
+        Private Const GRID_RECORD_COVERAGE_TYPE_IDENTIFIER As String = "CoverageTypeIdentifier"
+        Private Const GRID_RECORD_COVERAGE_TYPE_IDENTIFIER_QUALIFIER As String = "CoverageTypeIdentifierQualifier"
+        Private Const GRID_RECORD_COVERAGE_TYPE_SUB_IDENTIFIER As String = "CoverageTypeSubIdentifier"
+        Private Const GRID_RECORD_COVERAGE_TYPE_SUB_IDENTIFIER_QUALIFIER As String = "CoverageTypeSubIdentifierQualifier"
+        Private Const GRID_RECORD_COVERAGE_TYPE_ADDITIONAL_IDENTIFIER As String = "CoverageTypeAdditionalIdentifier"
+        Private Const GRID_RECORD_COVERAGE_TYPE_ADDITIONAL_IDENTIFIER_QUALIFIER As String = "CoverageTypeAdditionalIdentifierQualifier"
+        Private Const GRID_RECORD_CLAIMED_ITEM_SKU As String = "ClaimedItemSku"
+        Private Const GRID_RECORD_CLAIMED_ITEM_MAKE As String = "ClaimedItemMake"
+        Private Const GRID_RECORD_CLAIMED_ITEM_MODEL As String = "ClaimedItemModel"
+        Private Const GRID_RECORD_CLAIMED_ITEM_COLOR As String = "ClaimedItemColor"
+        Private Const GRID_RECORD_CLAIMED_ITEM_CAPACITY As String = "ClaimedItemCapacity"
+        Private Const GRID_RECORD_CLAIMED_ITEM_CARRIER As String = "ClaimedItemCarrier"
+        Private Const GRID_RECORD_CLAIMED_ITEM_IDENTIFICATION As String = "ClaimedItemIdentification"
+        Private Const GRID_RECORD_CLAIMED_ITEM_IDENTIFICATION_QUALIFIER As String = "ClaimedItemIdentificationQualifier"
+        Private Const GRID_RECORD_CLAIMED_ITEM_ADDITIONAL_IDENTIFICATION As String = "ClaimedItemAdditionalIdentification"
+        Private Const GRID_RECORD_CLAIMED_ITEM_ADDITIONAL_IDENTIFICATION_QUALIFIER As String = "ClaimedItemAdditionalIdentificationQualifier"
+        Private Const GRID_RECORD_PROBLEM_STATEMENT As String = "ProblemStatement"
+
         Private Const GRID_RECORD_ERROR_CODE As String = "RecordErrorCode"
         Private Const GRID_RECORD_ERROR_MESSAGE As String = "RecordErrorMesage"
 
-        Private Const GRID_FLI_QUALIFIER As String = "FliItemQualifier"
-        Private Const GRID_FLI_CODE As String = "FliItemCode"
-        Private Const GRID_FLI_SUB_QUALIFIER As String = "FliItemSubQualifier"
-        Private Const GRID_FLI_SUB_CODE As String = "FliItemSubCode"
-        Private Const GRID_FLI_ADDITIONAL_QUALIFIER As String = "FliItemAdditionalQualifier"
-        Private Const GRID_FLI_ADDITIONAL_CODE As String = "FliItemAdditionalCode"
-        Private Const GRID_FLI_CURRENCY As String = "FliCurrency"
-        Private Const GRID_FLI_AMOUNT As String = "FliAmount"
-        Private Const GRID_FLI_DECIMAL_SEPARATOR As String = "FliDecimalSeparator"
-        Private Const GRID_FLI_ORIGINAL_CURRENCY As String = "FliOriginalCurrency"
-        Private Const GRID_FLI_ORIGINAL_AMOUNT As String = "FliOriginalAmount"
-        Private Const GRID_FLI_CONVERSION_RATE As String = "FliConversionRate"
-        Private Const GRID_FLI_CONVERSION_DATE As String = "FliConversionDate"
-        Private Const GRID_FLI_CONVERSION_DATE_FORMAT As String = "FliConversionDateFormat"
-        Private Const GRID_FLI_CONVERSION_TIME As String = "FliConversionTime"
-        Private Const GRID_FLI_CONVERSION_TIME_TIMEZONE As String = "FliConversionTimeTimezone"
+        Private Const GRID_FLI_FINANCIAL_ITEM_IDENTIFICATION As String = "FinancialItemIdentification"
+        Private Const GRID_FLI_FINANCIAL_ITEM_IDENTIFICATION_QUALIFIER As String = "FinancialItemIdentificationQualifier"
+        Private Const GRID_FLI_FINANCIAL_ITEM_SUB_IDENTIFICATION As String = "FinancialItemSubIdentification"
+        Private Const GRID_FLI_FINANCIAL_ITEM_SUB_IDENTIFICATION_QUALIFIER As String = "FinancialItemSubIdentificationQualifier"
+        Private Const GRID_FLI_FINANCIAL_ITEM_ADDITIONAL_IDENTIFICATION As String = "FinancialItemAdditionalIdentification"
+        Private Const GRID_FLI_FINANCIAL_ITEM_ADDITIONAL_IDENTIFICATION_QUALIFIER As String = "FinancialItemAdditionalIdentificationQualifier"
+        Private Const GRID_FLI_AMOUNT As String = "Amount"
+        Private Const GRID_FLI_CURRENCY_CODE As String = "CurrencyCode"
+        Private Const GRID_FLI_AMOUNT_DECIMAL_SEPARATOR As String = "AmountDecimalSeparator"
+        Private Const GRID_FLI_ORIGINAL_AMOUNT As String = "OriginalAmount"
+        Private Const GRID_FLI_ORIGINAL_CURRENCY_CODE As String = "OriginalCurrencyCode"
+        Private Const GRID_FLI_CONVERSION_RATE As String = "ConversionRate"
+        Private Const GRID_FLI_CONVERSION_DATE As String = "ConversionDate"
+        Private Const GRID_FLI_CONVERSION_DATE_FORMAT As String = "ConversionDateFormat"
+        Private Const GRID_FLI_CONVERSION_TIME As String = "ConversionTime"
+        Private Const GRID_FLI_CONVERSION_TIME_TIMEZONE As String = "ConversionTimeTimezone"
+
         Private Const GRID_FLI_ERROR_CODE As String = "FliErrorCode"
         Private Const GRID_FLI_ERROR_MESSAGE As String = "FliErrorMesage"
 
-        Private Const GRID_AIF_QUALIFIER As String = "AifQualifier"
-        Private Const GRID_AIF_INFORMATION As String = "AifInformation"
+        Private Const GRID_AIF_ADDITIONAL_INFORMATION As String = "AdditionalInformation"
+        Private Const GRID_AIF_ADDITIONAL_INFORMATION_QUALIFIER As String = "AdditionalInformationQualifier"
+
         Private Const GRID_AIF_ERROR_CODE As String = "AifErrorCode"
         Private Const GRID_AIF_ERROR_MESS As String = "AifErrorMesage"
 
@@ -485,22 +488,22 @@ Namespace Interfaces
             Dim ClaimInfo As ReportClaim = TryCast(FileDetailsRecord.RecordContents, ReportClaim)
 
             If (ClaimInfo IsNot Nothing) Then
-                TextValue = TextBoxValue(Row, GRID_RECORD_CERTIFICATE_QUALIFIER)
+                TextValue = TextBoxValue(Row, GRID_RECORD_CERTIFICATE_IDENTIFIER)
                 PopulateBO(ClaimInfo.CertificateIdentifier.Qualifier, TextValue)
 
-                TextValue = TextBoxValue(Row, GRID_RECORD_CERTIFICATE_CODE)
+                TextValue = TextBoxValue(Row, GRID_RECORD_CERTIFICATE_IDENTIFIER_QUALIFIER)
                 PopulateBO(ClaimInfo.CertificateIdentifier.Code, TextValue)
 
-                TextValue = TextBoxValue(Row, GRID_RECORD_CERTIFICATE_SUB_QUALIFIER)
+                TextValue = TextBoxValue(Row, GRID_RECORD_CERTIFICATE_SUB_IDENTIFIER)
                 PopulateBO(ClaimInfo.CertificateSubIdentifier.Qualifier, TextValue)
 
-                TextValue = TextBoxValue(Row, GRID_RECORD_CERTIFICATE_SUB_CODE)
+                TextValue = TextBoxValue(Row, GRID_RECORD_CERTIFICATE_SUB_IDENTIFIER_QUALIFIER)
                 PopulateBO(ClaimInfo.CertificateSubIdentifier.Code, TextValue)
 
-                TextValue = TextBoxValue(Row, GRID_RECORD_CERTIFICATE_ADDITIONAL_QUALIFIER)
+                TextValue = TextBoxValue(Row, GRID_RECORD_CERTIFICATE_ADDITIONAL_IDENTIFIER)
                 PopulateBO(ClaimInfo.CertificateAdditionalIdentifier.Qualifier, TextValue)
 
-                TextValue = TextBoxValue(Row, GRID_RECORD_CERTIFICATE_ADDITIONAL_CODE)
+                TextValue = TextBoxValue(Row, GRID_RECORD_CERTIFICATE_ADDITIONAL_IDENTIFIER_QUALIFIER)
                 PopulateBO(ClaimInfo.CertificateAdditionalIdentifier.Code, TextValue)
 
                 TextValue = TextBoxValue(Row, GRID_RECORD_LOSS_DATE)
@@ -516,74 +519,74 @@ Namespace Interfaces
                 PopulateBO(ClaimInfo.LossTimeEnd.Time, TextValue)
 
                 ' make sure that time sone information is consistent
-                TextValue = TextBoxValue(Row, GRID_RECORD_LOSS_TIMEZONE)
+                TextValue = TextBoxValue(Row, GRID_RECORD_LOSS_TIME_ZONE_CODE)
                 PopulateBO(ClaimInfo.LossTimeStart.TimeZoneCode, TextValue)
                 PopulateBO(ClaimInfo.LossTimeEnd.TimeZoneCode, TextValue)
 
-                TextValue = TextBoxValue(Row, GRID_RECORD_ITEM_QUALIFIER)
+                TextValue = TextBoxValue(Row, GRID_RECORD_ITEM_IDENTIFIER)
                 PopulateBO(ClaimInfo.ItemIdentifier.Qualifier, TextValue)
 
-                TextValue = TextBoxValue(Row, GRID_RECORD_ITEM_CODE)
+                TextValue = TextBoxValue(Row, GRID_RECORD_ITEM_IDENTIFIER_QUALIFIER)
                 PopulateBO(ClaimInfo.ItemIdentifier.Code, TextValue)
 
-                TextValue = TextBoxValue(Row, GRID_RECORD_ITEM_SUB_QUALIFIER)
+                TextValue = TextBoxValue(Row, GRID_RECORD_ITEM_SUB_IDENTIFIER)
                 PopulateBO(ClaimInfo.ItemSubIdentifier.Qualifier, TextValue)
 
-                TextValue = TextBoxValue(Row, GRID_RECORD_ITEM_SUB_CODE)
+                TextValue = TextBoxValue(Row, GRID_RECORD_ITEM_SUB_IDENTIFIER_QUALIFIER)
                 PopulateBO(ClaimInfo.ItemSubIdentifier.Code, TextValue)
 
-                TextValue = TextBoxValue(Row, GRID_RECORD_ITEM_ADDITIONAL_QUALIFIER)
+                TextValue = TextBoxValue(Row, GRID_RECORD_ITEM_ADDITIONAL_IDENTIFIER)
                 PopulateBO(ClaimInfo.ItemAdditionalIdentifier.Qualifier, TextValue)
 
-                TextValue = TextBoxValue(Row, GRID_RECORD_ITEM_ADDITIONAL_CODE)
+                TextValue = TextBoxValue(Row, GRID_RECORD_ITEM_ADDITIONAL_IDENTIFIER_QUALIFIER)
                 PopulateBO(ClaimInfo.ItemAdditionalIdentifier.Code, TextValue)
 
-                TextValue = TextBoxValue(Row, GRID_RECORD_COVERAGE_TYPE_QUALIFIER)
+                TextValue = TextBoxValue(Row, GRID_RECORD_COVERAGE_TYPE_IDENTIFIER)
                 PopulateBO(ClaimInfo.CoverageTypeIdentifier.Qualifier, TextValue)
 
-                TextValue = TextBoxValue(Row, GRID_RECORD_COVERAGE_TYPE_CODE)
+                TextValue = TextBoxValue(Row, GRID_RECORD_COVERAGE_TYPE_IDENTIFIER_QUALIFIER)
                 PopulateBO(ClaimInfo.CoverageTypeIdentifier.Code, TextValue)
 
-                TextValue = TextBoxValue(Row, GRID_RECORD_COVERAGE_TYPE_SUB_QUALIFIER)
+                TextValue = TextBoxValue(Row, GRID_RECORD_COVERAGE_TYPE_SUB_IDENTIFIER)
                 PopulateBO(ClaimInfo.CoverageTypeSubIdentifier.Qualifier, TextValue)
 
-                TextValue = TextBoxValue(Row, GRID_RECORD_COVERAGE_TYPE_SUB_CODE)
+                TextValue = TextBoxValue(Row, GRID_RECORD_COVERAGE_TYPE_SUB_IDENTIFIER_QUALIFIER)
                 PopulateBO(ClaimInfo.CoverageTypeSubIdentifier.Code, TextValue)
 
-                TextValue = TextBoxValue(Row, GRID_RECORD_COVERAGE_TYPE_ADDITIONAL_QUALIFIER)
+                TextValue = TextBoxValue(Row, GRID_RECORD_COVERAGE_TYPE_ADDITIONAL_IDENTIFIER)
                 PopulateBO(ClaimInfo.CoverageTypeAdditionalIdentifier.Qualifier, TextValue)
 
-                TextValue = TextBoxValue(Row, GRID_RECORD_COVERAGE_TYPE_ADDITIONAL_CODE)
+                TextValue = TextBoxValue(Row, GRID_RECORD_COVERAGE_TYPE_ADDITIONAL_IDENTIFIER_QUALIFIER)
                 PopulateBO(ClaimInfo.CoverageTypeAdditionalIdentifier.Code, TextValue)
 
-                TextValue = TextBoxValue(Row, GRID_RECORD_CLAIM_ITEM_SKU)
+                TextValue = TextBoxValue(Row, GRID_RECORD_CLAIMED_ITEM_SKU)
                 PopulateBO(ClaimInfo.ClaimedItem.Sku, TextValue)
 
-                TextValue = TextBoxValue(Row, GRID_RECORD_CLAIM_ITEM_MAKE)
+                TextValue = TextBoxValue(Row, GRID_RECORD_CLAIMED_ITEM_MAKE)
                 PopulateBO(ClaimInfo.ClaimedItem.Make, TextValue)
 
-                TextValue = TextBoxValue(Row, GRID_RECORD_CLAIM_ITEM_MODEL)
+                TextValue = TextBoxValue(Row, GRID_RECORD_CLAIMED_ITEM_MODEL)
                 PopulateBO(ClaimInfo.ClaimedItem.Model, TextValue)
 
-                TextValue = TextBoxValue(Row, GRID_RECORD_CLAIM_ITEM_COLOR)
+                TextValue = TextBoxValue(Row, GRID_RECORD_CLAIMED_ITEM_COLOR)
                 PopulateBO(ClaimInfo.ClaimedItem.Color, TextValue)
 
-                TextValue = TextBoxValue(Row, GRID_RECORD_CLAIM_ITEM_CAPACITY)
+                TextValue = TextBoxValue(Row, GRID_RECORD_CLAIMED_ITEM_CAPACITY)
                 PopulateBO(ClaimInfo.ClaimedItem.Capacity, TextValue)
 
-                TextValue = TextBoxValue(Row, GRID_RECORD_CLAIM_ITEM_CARRIER)
+                TextValue = TextBoxValue(Row, GRID_RECORD_CLAIMED_ITEM_CARRIER)
                 PopulateBO(ClaimInfo.ClaimedItem.Carrier, TextValue)
 
-                TextValue = TextBoxValue(Row, GRID_RECORD_CLAIM_ITEM_QUALIFIER)
+                TextValue = TextBoxValue(Row, GRID_RECORD_CLAIMED_ITEM_IDENTIFICATION)
                 PopulateBO(ClaimInfo.ClaimedItem.Identification.Qualifier, TextValue)
 
-                TextValue = TextBoxValue(Row, GRID_RECORD_CLAIM_ITEM_CODE)
+                TextValue = TextBoxValue(Row, GRID_RECORD_CLAIMED_ITEM_IDENTIFICATION_QUALIFIER)
                 PopulateBO(ClaimInfo.ClaimedItem.Identification.Code, TextValue)
 
-                TextValue = TextBoxValue(Row, GRID_RECORD_CLAIM_ITEM_ADDITIONAL_QUALIFIER)
+                TextValue = TextBoxValue(Row, GRID_RECORD_CLAIMED_ITEM_ADDITIONAL_IDENTIFICATION)
                 PopulateBO(ClaimInfo.ClaimedItem.AdditionalIdentification.Qualifier, TextValue)
 
-                TextValue = TextBoxValue(Row, GRID_RECORD_CLAIM_ITEM_ADDITIONAL_CODE)
+                TextValue = TextBoxValue(Row, GRID_RECORD_CLAIMED_ITEM_ADDITIONAL_IDENTIFICATION_QUALIFIER)
                 PopulateBO(ClaimInfo.ClaimedItem.AdditionalIdentification.Code, TextValue)
 
                 TextValue = TextBoxValue(Row, GRID_RECORD_PROBLEM_STATEMENT)
@@ -715,38 +718,38 @@ Namespace Interfaces
                     .ConversionTime = New FormattedTime
                 }
 
-                TextValue = TextBoxValue(GridRow, GRID_FLI_QUALIFIER)
+                TextValue = TextBoxValue(GridRow, GRID_FLI_FINANCIAL_ITEM_IDENTIFICATION)
                 PopulateBO(Info.FinancialItemIdentification.Qualifier, TextValue)
 
-                TextValue = TextBoxValue(GridRow, GRID_FLI_CODE)
+                TextValue = TextBoxValue(GridRow, GRID_FLI_FINANCIAL_ITEM_IDENTIFICATION_QUALIFIER)
                 PopulateBO(Info.FinancialItemIdentification.Code, TextValue)
 
-                TextValue = TextBoxValue(GridRow, GRID_FLI_SUB_QUALIFIER)
+                TextValue = TextBoxValue(GridRow, GRID_FLI_FINANCIAL_ITEM_SUB_IDENTIFICATION)
                 PopulateBO(Info.FinancialItemSubIdentification.Qualifier, TextValue)
 
-                TextValue = TextBoxValue(GridRow, GRID_FLI_SUB_CODE)
+                TextValue = TextBoxValue(GridRow, GRID_FLI_FINANCIAL_ITEM_SUB_IDENTIFICATION_QUALIFIER)
                 PopulateBO(Info.FinancialItemSubIdentification.Code, TextValue)
 
-                TextValue = TextBoxValue(GridRow, GRID_FLI_ADDITIONAL_QUALIFIER)
+                TextValue = TextBoxValue(GridRow, GRID_FLI_FINANCIAL_ITEM_ADDITIONAL_IDENTIFICATION)
                 PopulateBO(Info.FinancialItemAdditionalIdentification.Qualifier, TextValue)
 
-                TextValue = TextBoxValue(GridRow, GRID_FLI_ADDITIONAL_CODE)
+                TextValue = TextBoxValue(GridRow, GRID_FLI_FINANCIAL_ITEM_ADDITIONAL_IDENTIFICATION_QUALIFIER)
                 PopulateBO(Info.FinancialItemAdditionalIdentification.Code, TextValue)
-
-                TextValue = TextBoxValue(GridRow, GRID_FLI_CURRENCY)
-                PopulateBO(Info.Amount.CurrencyCode, TextValue)
 
                 TextValue = TextBoxValue(GridRow, GRID_FLI_AMOUNT)
                 PopulateBO(Info.Amount, TextValue)
 
-                TextValue = TextBoxValue(GridRow, GRID_FLI_ORIGINAL_CURRENCY)
-                PopulateBO(Info.OriginalAmount.CurrencyCode, TextValue)
+                TextValue = TextBoxValue(GridRow, GRID_FLI_CURRENCY_CODE)
+                PopulateBO(Info.Amount.CurrencyCode, TextValue)
 
                 TextValue = TextBoxValue(GridRow, GRID_FLI_ORIGINAL_AMOUNT)
                 PopulateBO(Info.OriginalAmount, TextValue)
 
+                TextValue = TextBoxValue(GridRow, GRID_FLI_ORIGINAL_CURRENCY_CODE)
+                PopulateBO(Info.OriginalAmount.CurrencyCode, TextValue)
+
                 ' sync the decimal separator with both amount and original amount
-                TextValue = TextBoxValue(GridRow, GRID_FLI_DECIMAL_SEPARATOR)
+                TextValue = TextBoxValue(GridRow, GRID_FLI_AMOUNT_DECIMAL_SEPARATOR)
                 PopulateBO(Info.Amount.AmountDecimalSeparator, TextValue)
                 PopulateBO(Info.OriginalAmount.AmountDecimalSeparator, TextValue)
 
@@ -784,10 +787,10 @@ Namespace Interfaces
                     .RecordQualifier = RECORD_QUALIFIER_AIF
                 }
 
-                TextValue = TextBoxValue(GridRow, GRID_AIF_QUALIFIER)
+                TextValue = TextBoxValue(GridRow, GRID_AIF_ADDITIONAL_INFORMATION)
                 PopulateBO(Info.Qualifier, TextValue)
 
-                TextValue = TextBoxValue(GridRow, GRID_AIF_INFORMATION)
+                TextValue = TextBoxValue(GridRow, GRID_AIF_ADDITIONAL_INFORMATION_QUALIFIER)
                 PopulateBO(Info.Information, TextValue)
 
                 InfoList.Add(Info)
@@ -840,26 +843,26 @@ Namespace Interfaces
                             End If
 
                             If (ClaimInfo.CertificateIdentifier IsNot Nothing) Then
-                                oTextBox = CType(.FindControl(GRID_RECORD_CERTIFICATE_QUALIFIER), TextBox)
+                                oTextBox = CType(.FindControl(GRID_RECORD_CERTIFICATE_IDENTIFIER), TextBox)
                                 ThePage.PopulateControlFromBOProperty(oTextBox, ClaimInfo.CertificateIdentifier.Qualifier)
 
-                                oTextBox = CType(.FindControl(GRID_RECORD_CERTIFICATE_CODE), TextBox)
+                                oTextBox = CType(.FindControl(GRID_RECORD_CERTIFICATE_IDENTIFIER_QUALIFIER), TextBox)
                                 ThePage.PopulateControlFromBOProperty(oTextBox, ClaimInfo.CertificateIdentifier.Code)
                             End If
 
                             If (ClaimInfo.CertificateIdentifier IsNot Nothing) Then
-                                oTextBox = CType(.FindControl(GRID_RECORD_CERTIFICATE_SUB_QUALIFIER), TextBox)
+                                oTextBox = CType(.FindControl(GRID_RECORD_CERTIFICATE_SUB_IDENTIFIER), TextBox)
                                 ThePage.PopulateControlFromBOProperty(oTextBox, ClaimInfo.CertificateSubIdentifier.Qualifier)
 
-                                oTextBox = CType(.FindControl(GRID_RECORD_CERTIFICATE_SUB_CODE), TextBox)
+                                oTextBox = CType(.FindControl(GRID_RECORD_CERTIFICATE_SUB_IDENTIFIER_QUALIFIER), TextBox)
                                 ThePage.PopulateControlFromBOProperty(oTextBox, ClaimInfo.CertificateSubIdentifier.Code)
                             End If
 
                             If (ClaimInfo.CertificateIdentifier IsNot Nothing) Then
-                                oTextBox = CType(.FindControl(GRID_RECORD_CERTIFICATE_ADDITIONAL_QUALIFIER), TextBox)
+                                oTextBox = CType(.FindControl(GRID_RECORD_CERTIFICATE_ADDITIONAL_IDENTIFIER), TextBox)
                                 ThePage.PopulateControlFromBOProperty(oTextBox, ClaimInfo.CertificateAdditionalIdentifier.Qualifier)
 
-                                oTextBox = CType(.FindControl(GRID_RECORD_CERTIFICATE_ADDITIONAL_CODE), TextBox)
+                                oTextBox = CType(.FindControl(GRID_RECORD_CERTIFICATE_ADDITIONAL_IDENTIFIER_QUALIFIER), TextBox)
                                 ThePage.PopulateControlFromBOProperty(oTextBox, ClaimInfo.CertificateAdditionalIdentifier.Code)
                             End If
 
@@ -881,7 +884,7 @@ Namespace Interfaces
                                     ThePage.PopulateControlFromBOProperty(oTextBox, ClaimInfo.LossTimeStart.Time.ToString())
                                 End If
 
-                                oTextBox = CType(.FindControl(GRID_RECORD_LOSS_TIMEZONE), TextBox)
+                                oTextBox = CType(.FindControl(GRID_RECORD_LOSS_TIME_ZONE_CODE), TextBox)
                                 ThePage.PopulateControlFromBOProperty(oTextBox, ClaimInfo.LossTimeStart.TimeZoneCode)
                             End If
 
@@ -893,85 +896,85 @@ Namespace Interfaces
                             End If
 
                             If (ClaimInfo.ItemIdentifier IsNot Nothing) Then
-                                oTextBox = CType(.FindControl(GRID_RECORD_ITEM_QUALIFIER), TextBox)
+                                oTextBox = CType(.FindControl(GRID_RECORD_ITEM_IDENTIFIER), TextBox)
                                 ThePage.PopulateControlFromBOProperty(oTextBox, ClaimInfo.ItemIdentifier.Qualifier)
 
-                                oTextBox = CType(.FindControl(GRID_RECORD_ITEM_CODE), TextBox)
+                                oTextBox = CType(.FindControl(GRID_RECORD_ITEM_IDENTIFIER_QUALIFIER), TextBox)
                                 ThePage.PopulateControlFromBOProperty(oTextBox, ClaimInfo.ItemIdentifier.Code)
                             End If
 
                             If (ClaimInfo.ItemSubIdentifier IsNot Nothing) Then
-                                oTextBox = CType(.FindControl(GRID_RECORD_ITEM_SUB_QUALIFIER), TextBox)
+                                oTextBox = CType(.FindControl(GRID_RECORD_ITEM_SUB_IDENTIFIER), TextBox)
                                 ThePage.PopulateControlFromBOProperty(oTextBox, ClaimInfo.ItemSubIdentifier.Qualifier)
 
-                                oTextBox = CType(.FindControl(GRID_RECORD_ITEM_SUB_CODE), TextBox)
+                                oTextBox = CType(.FindControl(GRID_RECORD_ITEM_SUB_IDENTIFIER_QUALIFIER), TextBox)
                                 ThePage.PopulateControlFromBOProperty(oTextBox, ClaimInfo.ItemSubIdentifier.Code)
                             End If
 
                             If (ClaimInfo.ItemAdditionalIdentifier IsNot Nothing) Then
-                                oTextBox = CType(.FindControl(GRID_RECORD_ITEM_ADDITIONAL_QUALIFIER), TextBox)
+                                oTextBox = CType(.FindControl(GRID_RECORD_ITEM_ADDITIONAL_IDENTIFIER), TextBox)
                                 ThePage.PopulateControlFromBOProperty(oTextBox, ClaimInfo.ItemAdditionalIdentifier.Qualifier)
 
-                                oTextBox = CType(.FindControl(GRID_RECORD_ITEM_ADDITIONAL_CODE), TextBox)
+                                oTextBox = CType(.FindControl(GRID_RECORD_ITEM_ADDITIONAL_IDENTIFIER_QUALIFIER), TextBox)
                                 ThePage.PopulateControlFromBOProperty(oTextBox, ClaimInfo.ItemAdditionalIdentifier.Code)
                             End If
 
                             If (ClaimInfo.CoverageTypeIdentifier IsNot Nothing) Then
-                                oTextBox = CType(.FindControl(GRID_RECORD_COVERAGE_TYPE_QUALIFIER), TextBox)
+                                oTextBox = CType(.FindControl(GRID_RECORD_COVERAGE_TYPE_IDENTIFIER), TextBox)
                                 ThePage.PopulateControlFromBOProperty(oTextBox, ClaimInfo.CoverageTypeIdentifier.Qualifier)
 
-                                oTextBox = CType(.FindControl(GRID_RECORD_COVERAGE_TYPE_CODE), TextBox)
+                                oTextBox = CType(.FindControl(GRID_RECORD_COVERAGE_TYPE_IDENTIFIER_QUALIFIER), TextBox)
                                 ThePage.PopulateControlFromBOProperty(oTextBox, ClaimInfo.CoverageTypeIdentifier.Code)
                             End If
 
                             If (ClaimInfo.CoverageTypeSubIdentifier IsNot Nothing) Then
-                                oTextBox = CType(.FindControl(GRID_RECORD_COVERAGE_TYPE_SUB_QUALIFIER), TextBox)
+                                oTextBox = CType(.FindControl(GRID_RECORD_COVERAGE_TYPE_SUB_IDENTIFIER), TextBox)
                                 ThePage.PopulateControlFromBOProperty(oTextBox, ClaimInfo.CoverageTypeSubIdentifier.Qualifier)
 
-                                oTextBox = CType(.FindControl(GRID_RECORD_COVERAGE_TYPE_SUB_CODE), TextBox)
+                                oTextBox = CType(.FindControl(GRID_RECORD_COVERAGE_TYPE_SUB_IDENTIFIER_QUALIFIER), TextBox)
                                 ThePage.PopulateControlFromBOProperty(oTextBox, ClaimInfo.CoverageTypeSubIdentifier.Code)
                             End If
 
                             If (ClaimInfo.CoverageTypeAdditionalIdentifier IsNot Nothing) Then
-                                oTextBox = CType(.FindControl(GRID_RECORD_COVERAGE_TYPE_ADDITIONAL_QUALIFIER), TextBox)
+                                oTextBox = CType(.FindControl(GRID_RECORD_COVERAGE_TYPE_ADDITIONAL_IDENTIFIER), TextBox)
                                 ThePage.PopulateControlFromBOProperty(oTextBox, ClaimInfo.CoverageTypeAdditionalIdentifier.Qualifier)
 
-                                oTextBox = CType(.FindControl(GRID_RECORD_COVERAGE_TYPE_ADDITIONAL_CODE), TextBox)
+                                oTextBox = CType(.FindControl(GRID_RECORD_COVERAGE_TYPE_ADDITIONAL_IDENTIFIER_QUALIFIER), TextBox)
                                 ThePage.PopulateControlFromBOProperty(oTextBox, ClaimInfo.CoverageTypeAdditionalIdentifier.Code)
                             End If
 
                             If (ClaimInfo.ClaimedItem IsNot Nothing) Then
-                                oTextBox = CType(.FindControl(GRID_RECORD_CLAIM_ITEM_SKU), TextBox)
+                                oTextBox = CType(.FindControl(GRID_RECORD_CLAIMED_ITEM_SKU), TextBox)
                                 ThePage.PopulateControlFromBOProperty(oTextBox, ClaimInfo.ClaimedItem.Sku)
 
-                                oTextBox = CType(.FindControl(GRID_RECORD_CLAIM_ITEM_MAKE), TextBox)
+                                oTextBox = CType(.FindControl(GRID_RECORD_CLAIMED_ITEM_MAKE), TextBox)
                                 ThePage.PopulateControlFromBOProperty(oTextBox, ClaimInfo.ClaimedItem.Make)
 
-                                oTextBox = CType(.FindControl(GRID_RECORD_CLAIM_ITEM_MODEL), TextBox)
+                                oTextBox = CType(.FindControl(GRID_RECORD_CLAIMED_ITEM_MODEL), TextBox)
                                 ThePage.PopulateControlFromBOProperty(oTextBox, ClaimInfo.ClaimedItem.Model)
 
-                                oTextBox = CType(.FindControl(GRID_RECORD_CLAIM_ITEM_COLOR), TextBox)
+                                oTextBox = CType(.FindControl(GRID_RECORD_CLAIMED_ITEM_COLOR), TextBox)
                                 ThePage.PopulateControlFromBOProperty(oTextBox, ClaimInfo.ClaimedItem.Color)
 
-                                oTextBox = CType(.FindControl(GRID_RECORD_CLAIM_ITEM_CAPACITY), TextBox)
+                                oTextBox = CType(.FindControl(GRID_RECORD_CLAIMED_ITEM_CAPACITY), TextBox)
                                 ThePage.PopulateControlFromBOProperty(oTextBox, ClaimInfo.ClaimedItem.Capacity)
 
-                                oTextBox = CType(.FindControl(GRID_RECORD_CLAIM_ITEM_CARRIER), TextBox)
+                                oTextBox = CType(.FindControl(GRID_RECORD_CLAIMED_ITEM_CARRIER), TextBox)
                                 ThePage.PopulateControlFromBOProperty(oTextBox, ClaimInfo.ClaimedItem.Carrier)
 
                                 If (ClaimInfo.ClaimedItem.Identification IsNot Nothing) Then
-                                    oTextBox = CType(.FindControl(GRID_RECORD_CLAIM_ITEM_QUALIFIER), TextBox)
+                                    oTextBox = CType(.FindControl(GRID_RECORD_CLAIMED_ITEM_IDENTIFICATION), TextBox)
                                     ThePage.PopulateControlFromBOProperty(oTextBox, ClaimInfo.ClaimedItem.Identification.Qualifier)
 
-                                    oTextBox = CType(.FindControl(GRID_RECORD_CLAIM_ITEM_CODE), TextBox)
+                                    oTextBox = CType(.FindControl(GRID_RECORD_CLAIMED_ITEM_IDENTIFICATION_QUALIFIER), TextBox)
                                     ThePage.PopulateControlFromBOProperty(oTextBox, ClaimInfo.ClaimedItem.Identification.Code)
                                 End If
 
                                 If (ClaimInfo.ClaimedItem.AdditionalIdentification IsNot Nothing) Then
-                                    oTextBox = CType(.FindControl(GRID_RECORD_CLAIM_ITEM_ADDITIONAL_QUALIFIER), TextBox)
+                                    oTextBox = CType(.FindControl(GRID_RECORD_CLAIMED_ITEM_ADDITIONAL_IDENTIFICATION), TextBox)
                                     ThePage.PopulateControlFromBOProperty(oTextBox, ClaimInfo.ClaimedItem.AdditionalIdentification.Qualifier)
 
-                                    oTextBox = CType(.FindControl(GRID_RECORD_CLAIM_ITEM_ADDITIONAL_CODE), TextBox)
+                                    oTextBox = CType(.FindControl(GRID_RECORD_CLAIMED_ITEM_ADDITIONAL_IDENTIFICATION_QUALIFIER), TextBox)
                                     ThePage.PopulateControlFromBOProperty(oTextBox, ClaimInfo.ClaimedItem.AdditionalIdentification.Code)
                                 End If
                             End If
@@ -1066,10 +1069,10 @@ Namespace Interfaces
                                 End If
                             End If
 
-                            oTextBox = CType(.FindControl(GRID_AIF_QUALIFIER), TextBox)
+                            oTextBox = CType(.FindControl(GRID_AIF_ADDITIONAL_INFORMATION), TextBox)
                             ThePage.PopulateControlFromBOProperty(oTextBox, AdditionalInfoItem.Qualifier)
 
-                            oTextBox = CType(.FindControl(GRID_AIF_INFORMATION), TextBox)
+                            oTextBox = CType(.FindControl(GRID_AIF_ADDITIONAL_INFORMATION_QUALIFIER), TextBox)
                             ThePage.PopulateControlFromBOProperty(oTextBox, AdditionalInfoItem.Information)
 
                         End With
@@ -1129,46 +1132,46 @@ Namespace Interfaces
                             End If
 
                             If (FinancialInfoItem.FinancialItemIdentification IsNot Nothing) Then
-                                oTextBox = CType(.FindControl(GRID_FLI_QUALIFIER), TextBox)
+                                oTextBox = CType(.FindControl(GRID_FLI_FINANCIAL_ITEM_IDENTIFICATION), TextBox)
                                 ThePage.PopulateControlFromBOProperty(oTextBox, FinancialInfoItem.FinancialItemIdentification.Qualifier)
 
-                                oTextBox = CType(.FindControl(GRID_FLI_CODE), TextBox)
+                                oTextBox = CType(.FindControl(GRID_FLI_FINANCIAL_ITEM_IDENTIFICATION_QUALIFIER), TextBox)
                                 ThePage.PopulateControlFromBOProperty(oTextBox, FinancialInfoItem.FinancialItemIdentification.Code)
                             End If
 
                             If (FinancialInfoItem.FinancialItemSubIdentification IsNot Nothing) Then
-                                oTextBox = CType(.FindControl(GRID_FLI_SUB_QUALIFIER), TextBox)
+                                oTextBox = CType(.FindControl(GRID_FLI_FINANCIAL_ITEM_SUB_IDENTIFICATION), TextBox)
                                 ThePage.PopulateControlFromBOProperty(oTextBox, FinancialInfoItem.FinancialItemSubIdentification.Qualifier)
 
-                                oTextBox = CType(.FindControl(GRID_FLI_SUB_CODE), TextBox)
+                                oTextBox = CType(.FindControl(GRID_FLI_FINANCIAL_ITEM_SUB_IDENTIFICATION_QUALIFIER), TextBox)
                                 ThePage.PopulateControlFromBOProperty(oTextBox, FinancialInfoItem.FinancialItemSubIdentification.Code)
                             End If
 
                             If (FinancialInfoItem.FinancialItemAdditionalIdentification IsNot Nothing) Then
-                                oTextBox = CType(.FindControl(GRID_FLI_ADDITIONAL_QUALIFIER), TextBox)
+                                oTextBox = CType(.FindControl(GRID_FLI_FINANCIAL_ITEM_ADDITIONAL_IDENTIFICATION), TextBox)
                                 ThePage.PopulateControlFromBOProperty(oTextBox, FinancialInfoItem.FinancialItemAdditionalIdentification.Qualifier)
 
-                                oTextBox = CType(.FindControl(GRID_FLI_ADDITIONAL_CODE), TextBox)
+                                oTextBox = CType(.FindControl(GRID_FLI_FINANCIAL_ITEM_ADDITIONAL_IDENTIFICATION_QUALIFIER), TextBox)
                                 ThePage.PopulateControlFromBOProperty(oTextBox, FinancialInfoItem.FinancialItemAdditionalIdentification.Code)
                             End If
 
                             If (FinancialInfoItem.Amount IsNot Nothing) Then
-                                oTextBox = CType(.FindControl(GRID_FLI_CURRENCY), TextBox)
-                                ThePage.PopulateControlFromBOProperty(oTextBox, FinancialInfoItem.Amount.CurrencyCode)
-
                                 oTextBox = CType(.FindControl(GRID_FLI_AMOUNT), TextBox)
                                 ThePage.PopulateControlFromBOProperty(oTextBox, ConvertToString(FinancialInfoItem.Amount.Amount))
 
-                                oTextBox = CType(.FindControl(GRID_FLI_DECIMAL_SEPARATOR), TextBox)
+                                oTextBox = CType(.FindControl(GRID_FLI_CURRENCY_CODE), TextBox)
+                                ThePage.PopulateControlFromBOProperty(oTextBox, FinancialInfoItem.Amount.CurrencyCode)
+
+                                oTextBox = CType(.FindControl(GRID_FLI_AMOUNT_DECIMAL_SEPARATOR), TextBox)
                                 ThePage.PopulateControlFromBOProperty(oTextBox, FinancialInfoItem.Amount.AmountDecimalSeparator)
                             End If
 
                             If (FinancialInfoItem.OriginalAmount IsNot Nothing) Then
-                                oTextBox = CType(.FindControl(GRID_FLI_ORIGINAL_CURRENCY), TextBox)
-                                ThePage.PopulateControlFromBOProperty(oTextBox, FinancialInfoItem.OriginalAmount.CurrencyCode)
-
                                 oTextBox = CType(.FindControl(GRID_FLI_ORIGINAL_AMOUNT), TextBox)
                                 ThePage.PopulateControlFromBOProperty(oTextBox, ConvertToString(FinancialInfoItem.OriginalAmount.Amount))
+
+                                oTextBox = CType(.FindControl(GRID_FLI_ORIGINAL_CURRENCY_CODE), TextBox)
+                                ThePage.PopulateControlFromBOProperty(oTextBox, FinancialInfoItem.OriginalAmount.CurrencyCode)
                             End If
 
                             If (FinancialInfoItem.ConversionRate IsNot Nothing) Then

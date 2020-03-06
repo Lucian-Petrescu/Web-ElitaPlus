@@ -107,59 +107,51 @@
 		                                        </ItemTemplate>
                                             </asp:TemplateField>
 
-                                            <asp:TemplateField HeaderText="ITEM_QUALIFIER">
+                                            <asp:TemplateField HeaderText="FINANCIAL_ITEM_IDENTIFICATION">
                                                 <HeaderStyle Wrap="True" Width="1%" HorizontalAlign="Center"></HeaderStyle>
                                                 <ItemStyle Wrap="False" HorizontalAlign="Left" Width="1%"></ItemStyle>
                                                 <ItemTemplate>
-                                                    <asp:TextBox ID="FliItemQualifier" runat="server" Visible="True"></asp:TextBox>
+                                                    <asp:TextBox ID="FinancialItemIdentification" runat="server" Visible="True"></asp:TextBox>
                                                 </ItemTemplate>
                                             </asp:TemplateField>
 
-                                            <asp:TemplateField HeaderText="ITEM_CODE">
+                                            <asp:TemplateField HeaderText="FINANCIAL_ITEM_IDENTIFICATION_QUALIFIER">
                                                 <HeaderStyle Wrap="True" Width="1%" HorizontalAlign="Center"></HeaderStyle>
                                                 <ItemStyle Wrap="False" HorizontalAlign="Left" Width="1%"></ItemStyle>
                                                 <ItemTemplate>
-                                                    <asp:TextBox ID="FliItemCode" runat="server" Visible="True"></asp:TextBox>
+                                                    <asp:TextBox ID="FinancialItemIdentificationQualifier" runat="server" Visible="True"></asp:TextBox>
                                                 </ItemTemplate>
                                             </asp:TemplateField>
 
-                                            <asp:TemplateField HeaderText="ITEM_SUB_QUALIFIER">
+                                            <asp:TemplateField HeaderText="FINANCIAL_ITEM_SUB_IDENTIFICATION">
                                                 <HeaderStyle Wrap="True" Width="1%" HorizontalAlign="Center"></HeaderStyle>
                                                 <ItemStyle Wrap="False" HorizontalAlign="Left" Width="1%"></ItemStyle>
                                                 <ItemTemplate>
-                                                    <asp:TextBox ID="FliItemSubQualifier" runat="server" Visible="True"></asp:TextBox>
+                                                    <asp:TextBox ID="FinancialItemSubIdentification" runat="server" Visible="True"></asp:TextBox>
                                                 </ItemTemplate>
                                             </asp:TemplateField>
 
-                                            <asp:TemplateField HeaderText="ITEM_SUB_CODE">
+                                            <asp:TemplateField HeaderText="FINANCIAL_ITEM_SUB_IDENTIFICATION_QUALIFIER">
                                                 <HeaderStyle Wrap="True" Width="1%" HorizontalAlign="Center"></HeaderStyle>
                                                 <ItemStyle Wrap="False" HorizontalAlign="Left" Width="1%"></ItemStyle>
                                                 <ItemTemplate>
-                                                    <asp:TextBox ID="FliItemSubCode" runat="server" Visible="True"></asp:TextBox>
+                                                    <asp:TextBox ID="FinancialItemSubIdentificationQualifier" runat="server" Visible="True"></asp:TextBox>
                                                 </ItemTemplate>
                                             </asp:TemplateField>
 
-                                            <asp:TemplateField HeaderText="ITEM_ADDITIONAL_QUALIFIER">
+                                            <asp:TemplateField HeaderText="FINANCIAL_ITEM_ADDITIONAL_IDENTIFICATION">
                                                 <HeaderStyle Wrap="True" Width="1%" HorizontalAlign="Center"></HeaderStyle>
                                                 <ItemStyle Wrap="False" HorizontalAlign="Left" Width="1%"></ItemStyle>
                                                 <ItemTemplate>
-                                                    <asp:TextBox ID="FliItemAdditionalQualifier" runat="server" Visible="True"></asp:TextBox>
+                                                    <asp:TextBox ID="FinancialItemAdditionalIdentification" runat="server" Visible="True"></asp:TextBox>
                                                 </ItemTemplate>
                                             </asp:TemplateField>
 
-                                            <asp:TemplateField HeaderText="ITEM_ADDITIONAL_CODE">
+                                            <asp:TemplateField HeaderText="FINANCIAL_ITEM_ADDITIONAL_IDENTIFICATION_QUALIFIER">
                                                 <HeaderStyle Wrap="True" Width="1%" HorizontalAlign="Center"></HeaderStyle>
                                                 <ItemStyle Wrap="False" HorizontalAlign="Left" Width="1%"></ItemStyle>
                                                 <ItemTemplate>
-                                                    <asp:TextBox ID="FliItemAdditionalCode" runat="server" Visible="True"></asp:TextBox>
-                                                </ItemTemplate>
-                                            </asp:TemplateField>
-
-                                            <asp:TemplateField HeaderText="CURRENCY">
-                                                <HeaderStyle Wrap="True" Width="1%" HorizontalAlign="Center"></HeaderStyle>
-                                                <ItemStyle Wrap="False" HorizontalAlign="Left" Width="1%"></ItemStyle>
-                                                <ItemTemplate>
-                                                    <asp:TextBox ID="FliCurrency" runat="server" Visible="True"></asp:TextBox>
+                                                    <asp:TextBox ID="FinancialItemAdditionalIdentificationQualifier" runat="server" Visible="True"></asp:TextBox>
                                                 </ItemTemplate>
                                             </asp:TemplateField>
 
@@ -167,40 +159,48 @@
                                                 <HeaderStyle Wrap="True" Width="1%" HorizontalAlign="Center"></HeaderStyle>
                                                 <ItemStyle Wrap="False" HorizontalAlign="Left" Width="1%"></ItemStyle>
                                                 <ItemTemplate>
-                                                    <asp:TextBox ID="FliAmount" runat="server" Visible="True"></asp:TextBox>
+                                                    <asp:TextBox ID="Amount" runat="server" Visible="True"></asp:TextBox>
                                                 </ItemTemplate>
                                             </asp:TemplateField>
 
-                                            <asp:TemplateField HeaderText="DECIMAL_SEPARATOR">
-                                                <HeaderStyle Wrap="False" Width="1%" HorizontalAlign="Center"></HeaderStyle>
-                                                <ItemStyle HorizontalAlign="Center"></ItemStyle>
-		                                        <ItemTemplate>
-			                                        <asp:TextBox ID="FliDecimalSeparator" runat="server" Visible="True"/>
-		                                        </ItemTemplate>
-                                            </asp:TemplateField>
-
-                                            <asp:TemplateField HeaderText="ORIGINAL_CURRENCY">
+                                            <asp:TemplateField HeaderText="CURRENCY_CODE">
                                                 <HeaderStyle Wrap="True" Width="1%" HorizontalAlign="Center"></HeaderStyle>
                                                 <ItemStyle Wrap="False" HorizontalAlign="Left" Width="1%"></ItemStyle>
                                                 <ItemTemplate>
-                                                    <asp:TextBox ID="FliOriginalCurrency" runat="server" Visible="True"></asp:TextBox>
+                                                    <asp:TextBox ID="CurrencyCode" runat="server" Visible="True"></asp:TextBox>
                                                 </ItemTemplate>
+                                            </asp:TemplateField>
+
+                                            <asp:TemplateField HeaderText="AMOUNT_DECIMAL_SEPARATOR">
+                                                <HeaderStyle Wrap="False" Width="1%" HorizontalAlign="Center"></HeaderStyle>
+                                                <ItemStyle HorizontalAlign="Center"></ItemStyle>
+		                                        <ItemTemplate>
+			                                        <asp:TextBox ID="AmountDecimalSeparator" runat="server" Visible="True"/>
+		                                        </ItemTemplate>
                                             </asp:TemplateField>
 
                                             <asp:TemplateField HeaderText="ORIGINAL_AMOUNT">
                                                 <HeaderStyle Wrap="True" Width="1%" HorizontalAlign="Center"></HeaderStyle>
                                                 <ItemStyle Wrap="False" HorizontalAlign="Left" Width="1%"></ItemStyle>
                                                 <ItemTemplate>
-                                                    <asp:TextBox ID="FliOriginalAmount" runat="server" Visible="True"></asp:TextBox>
+                                                    <asp:TextBox ID="OriginalAmount" runat="server" Visible="True"></asp:TextBox>
                                                 </ItemTemplate>
                                             </asp:TemplateField>
 
-                                            <asp:TemplateField HeaderText="CURRENCY_CONVERSION">
+                                            <asp:TemplateField HeaderText="ORIGINAL_CURRENCY_CODE">
+                                                <HeaderStyle Wrap="True" Width="1%" HorizontalAlign="Center"></HeaderStyle>
+                                                <ItemStyle Wrap="False" HorizontalAlign="Left" Width="1%"></ItemStyle>
+                                                <ItemTemplate>
+                                                    <asp:TextBox ID="OriginalCurrencyCode" runat="server" Visible="True"></asp:TextBox>
+                                                </ItemTemplate>
+                                            </asp:TemplateField>
+
+                                            <asp:TemplateField HeaderText="CONVERSION_RATE">
                                                 <HeaderStyle Wrap="False" Width="1%" HorizontalAlign="Center"></HeaderStyle>
                                                 <ItemStyle HorizontalAlign="Center"></ItemStyle>
 		                                        <ItemTemplate>
 
-			                                        <asp:TextBox ID="FliConversionRate" runat="server" Visible="True"/>
+			                                        <asp:TextBox ID="ConversionRate" runat="server" Visible="True"/>
 		                                        </ItemTemplate>
                                             </asp:TemplateField>
 
@@ -208,7 +208,7 @@
                                                 <HeaderStyle Wrap="False" Width="1%" HorizontalAlign="Center"></HeaderStyle>
                                                 <ItemStyle HorizontalAlign="Center"></ItemStyle>
 		                                        <ItemTemplate>
-			                                        <asp:TextBox ID="FliConversionDate" runat="server" Visible="True"/>
+			                                        <asp:TextBox ID="ConversionDate" runat="server" Visible="True"/>
 		                                        </ItemTemplate>
                                             </asp:TemplateField>
 
@@ -216,7 +216,7 @@
                                                 <HeaderStyle Wrap="False" Width="1%" HorizontalAlign="Center"></HeaderStyle>
                                                 <ItemStyle HorizontalAlign="Center"></ItemStyle>
 		                                        <ItemTemplate>
-			                                        <asp:TextBox ID="FliConversionDateFormat" runat="server" Visible="True"/>
+			                                        <asp:TextBox ID="ConversionDateFormat" runat="server" Visible="True"/>
 		                                        </ItemTemplate>
                                             </asp:TemplateField>
 
@@ -224,15 +224,15 @@
                                                 <HeaderStyle Wrap="False" Width="1%" HorizontalAlign="Center"></HeaderStyle>
                                                 <ItemStyle HorizontalAlign="Center"></ItemStyle>
 		                                        <ItemTemplate>
-			                                        <asp:TextBox ID="FliConversionTime" runat="server" Visible="True"/>
+			                                        <asp:TextBox ID="ConversionTime" runat="server" Visible="True"/>
 		                                        </ItemTemplate>
                                             </asp:TemplateField>
 
-                                            <asp:TemplateField HeaderText="TIME_ZONE_CODE">
+                                            <asp:TemplateField HeaderText="CONVERSION_TIME_TIMEZONE">
                                                 <HeaderStyle Wrap="False" Width="1%" HorizontalAlign="Center"></HeaderStyle>
                                                 <ItemStyle HorizontalAlign="Center"></ItemStyle>
 		                                        <ItemTemplate>
-			                                        <asp:TextBox ID="FliConversionTimeTimezone" runat="server" Visible="True"/>
+			                                        <asp:TextBox ID="ConversionTimeTimezone" runat="server" Visible="True"/>
 		                                        </ItemTemplate>
                                             </asp:TemplateField>
                                         </Columns>
@@ -272,19 +272,19 @@
 		                                        </ItemTemplate>
                                             </asp:TemplateField>
 
-                                            <asp:TemplateField HeaderText="ITEM_QUALIFIER">
+                                            <asp:TemplateField HeaderText="ADDITIONAL_INFORMATION">
                                                 <HeaderStyle Wrap="True" Width="1%" HorizontalAlign="Center"></HeaderStyle>
                                                 <ItemStyle Wrap="False" HorizontalAlign="Left" Width="1%"></ItemStyle>
                                                 <ItemTemplate>
-                                                    <asp:TextBox ID="AifQualifier" runat="server" Visible="True"></asp:TextBox>
+                                                    <asp:TextBox ID="AdditionalInformation" runat="server" Visible="True"></asp:TextBox>
                                                 </ItemTemplate>
                                             </asp:TemplateField>
 
-                                            <asp:TemplateField HeaderText="INFORMATION">
+                                            <asp:TemplateField HeaderText="ADDITIONAL_INFORMATION_QUALIFIER">
                                                 <HeaderStyle Wrap="True" Width="1%" HorizontalAlign="Center"></HeaderStyle>
                                                 <ItemStyle Wrap="False" HorizontalAlign="Left" Width="1%"></ItemStyle>
                                                 <ItemTemplate>
-                                                    <asp:TextBox ID="AifInformation" runat="server" Visible="True"></asp:TextBox>
+                                                    <asp:TextBox ID="AdditionalInformationQualifier" runat="server" Visible="True"></asp:TextBox>
                                                 </ItemTemplate>
                                             </asp:TemplateField>
                                         </Columns>
@@ -337,51 +337,51 @@
 		                    </ItemTemplate>
                         </asp:TemplateField>
 
-                        <asp:TemplateField HeaderText="CERTIFICATE_QUALIFIER">
+                        <asp:TemplateField HeaderText="CERTIFICATE_IDENTIFIER">
                             <HeaderStyle Wrap="True" Width="1%" HorizontalAlign="Center"></HeaderStyle>
                             <ItemStyle Wrap="False" HorizontalAlign="Left" Width="1%"></ItemStyle>
                             <ItemTemplate>
-                                <asp:TextBox ID="RecordCertificateQualifier" runat="server" Visible="True"></asp:TextBox>
+                                <asp:TextBox ID="CertificateIdentifier" runat="server" Visible="True"></asp:TextBox>
                             </ItemTemplate>
                         </asp:TemplateField>
 
-                        <asp:TemplateField HeaderText="CERTIFICATE">
+                        <asp:TemplateField HeaderText="CERTIFICATE_IDENTIFIER_QUALIFIER">
                             <HeaderStyle Wrap="True" Width="1%" HorizontalAlign="Center"></HeaderStyle>
                             <ItemStyle Wrap="False" HorizontalAlign="Left" Width="1%"></ItemStyle>
                             <ItemTemplate>
-                                <asp:TextBox ID="RecordCertificateCode" runat="server" Visible="True"></asp:TextBox>
+                                <asp:TextBox ID="CertificateIdentifierQualifier" runat="server" Visible="True"></asp:TextBox>
                             </ItemTemplate>
                         </asp:TemplateField>
 
-                        <asp:TemplateField HeaderText="CERTIFICATE_SUB_QUALIFIER">
+                        <asp:TemplateField HeaderText="CERTIFICATE_SUB_IDENTIFIER">
                             <HeaderStyle Wrap="True" Width="1%" HorizontalAlign="Center"></HeaderStyle>
                             <ItemStyle Wrap="False" HorizontalAlign="Left" Width="1%"></ItemStyle>
                             <ItemTemplate>
-                                <asp:TextBox ID="RecordCertificateSubQualifier" runat="server" Visible="True"></asp:TextBox>
+                                <asp:TextBox ID="CertificateSubIdentifier" runat="server" Visible="True"></asp:TextBox>
                             </ItemTemplate>
                         </asp:TemplateField>
 
-                        <asp:TemplateField HeaderText="CERTIFICATE_SUB_CODE">
+                        <asp:TemplateField HeaderText="CERTIFICATE_SUB_IDENTIFIER_QUALIFIER">
                             <HeaderStyle Wrap="True" Width="1%" HorizontalAlign="Center"></HeaderStyle>
                             <ItemStyle Wrap="False" HorizontalAlign="Left" Width="1%"></ItemStyle>
                             <ItemTemplate>
-                                <asp:TextBox ID="RecordCertificateSubCode" runat="server" Visible="True"></asp:TextBox>
+                                <asp:TextBox ID="CertificateSubIdentifierQualifier" runat="server" Visible="True"></asp:TextBox>
                             </ItemTemplate>
                         </asp:TemplateField>
 
-                        <asp:TemplateField HeaderText="CERTIFICATE_ADDITIONAL_QUALIFIER">
+                        <asp:TemplateField HeaderText="CERTIFICATE_ADDITIONAL_IDENTIFIER">
                             <HeaderStyle Wrap="True" Width="1%" HorizontalAlign="Center"></HeaderStyle>
                             <ItemStyle Wrap="False" HorizontalAlign="Left" Width="1%"></ItemStyle>
                             <ItemTemplate>
-                                <asp:TextBox ID="RecordCertificateAdditionalQualifier" runat="server" Visible="True"></asp:TextBox>
+                                <asp:TextBox ID="CertificateAdditionalIdentifier" runat="server" Visible="True"></asp:TextBox>
                             </ItemTemplate>
                         </asp:TemplateField>
 
-                        <asp:TemplateField HeaderText="CERTIFICATE_ADDITIONAL_CODE">
+                        <asp:TemplateField HeaderText="CERTIFICATE_ADDITIONAL_IDENTIFIER_QUALIFIER">
                             <HeaderStyle Wrap="True" Width="1%" HorizontalAlign="Center"></HeaderStyle>
                             <ItemStyle Wrap="False" HorizontalAlign="Left" Width="1%"></ItemStyle>
                             <ItemTemplate>
-                                <asp:TextBox ID="RecordCertificateAdditionalCode" runat="server" Visible="True"></asp:TextBox>
+                                <asp:TextBox ID="CertificateAdditionalIdentifierQualifier" runat="server" Visible="True"></asp:TextBox>
                             </ItemTemplate>
                         </asp:TemplateField>
 
@@ -389,7 +389,7 @@
                             <HeaderStyle Wrap="True" Width="1%" HorizontalAlign="Center"></HeaderStyle>
                             <ItemStyle Wrap="False" HorizontalAlign="Left" Width="1%"></ItemStyle>
                             <ItemTemplate>
-                                <asp:TextBox ID="RecordLossDate" runat="server" Visible="True"></asp:TextBox>
+                                <asp:TextBox ID="LossDate" runat="server" Visible="True"></asp:TextBox>
                             </ItemTemplate>
                         </asp:TemplateField>
 
@@ -397,31 +397,31 @@
                             <HeaderStyle Wrap="True" Width="1%" HorizontalAlign="Center"></HeaderStyle>
                             <ItemStyle Wrap="False" HorizontalAlign="Left" Width="1%"></ItemStyle>
                             <ItemTemplate>
-                                <asp:TextBox ID="RecordLossDateFormat" runat="server" Visible="True"></asp:TextBox>
+                                <asp:TextBox ID="LossDateFormat" runat="server" Visible="True"></asp:TextBox>
                             </ItemTemplate>
                         </asp:TemplateField>
 
-                        <asp:TemplateField HeaderText="START_TIME">
+                        <asp:TemplateField HeaderText="LOSS_TIME_START">
                             <HeaderStyle Wrap="True" Width="1%" HorizontalAlign="Center"></HeaderStyle>
                             <ItemStyle Wrap="False" HorizontalAlign="Left" Width="1%"></ItemStyle>
                             <ItemTemplate>
-                                <asp:TextBox ID="RecordLossTimeStart" runat="server" Visible="True"></asp:TextBox>
+                                <asp:TextBox ID="LossTimeStart" runat="server" Visible="True"></asp:TextBox>
                             </ItemTemplate>
                         </asp:TemplateField>
 
-                        <asp:TemplateField HeaderText="END_TIME">
+                        <asp:TemplateField HeaderText="LOSS_TIME_END">
                             <HeaderStyle Wrap="True" Width="1%" HorizontalAlign="Center"></HeaderStyle>
                             <ItemStyle Wrap="False" HorizontalAlign="Left" Width="1%"></ItemStyle>
                             <ItemTemplate>
-                                <asp:TextBox ID="RecordLossTimeEnd" runat="server" Visible="True"></asp:TextBox>
+                                <asp:TextBox ID="LossTimeEnd" runat="server" Visible="True"></asp:TextBox>
                             </ItemTemplate>
                         </asp:TemplateField>
 
-                        <asp:TemplateField HeaderText="TIME_ZONE_CODE">
+                        <asp:TemplateField HeaderText="LOSS_TIME_ZONE_CODE">
                             <HeaderStyle Wrap="True" Width="1%" HorizontalAlign="Center"></HeaderStyle>
                             <ItemStyle Wrap="False" HorizontalAlign="Left" Width="1%"></ItemStyle>
                             <ItemTemplate>
-                                <asp:TextBox ID="RecordLossTimezone" runat="server" Visible="True"></asp:TextBox>
+                                <asp:TextBox ID="LossTimeZoneCode" runat="server" Visible="True"></asp:TextBox>
                             </ItemTemplate>
                         </asp:TemplateField>
 
@@ -429,183 +429,191 @@
                             <HeaderStyle Wrap="True" Width="1%" HorizontalAlign="Center"></HeaderStyle>
                             <ItemStyle Wrap="False" HorizontalAlign="Left" Width="1%"></ItemStyle>
                             <ItemTemplate>
-                                <asp:TextBox ID="RecordItemQualifier" runat="server" Visible="True"></asp:TextBox>
+                                <asp:TextBox ID="ItemQualifier" runat="server" Visible="True"></asp:TextBox>
                             </ItemTemplate>
                         </asp:TemplateField>
 
-                        <asp:TemplateField HeaderText="ITEM_CODE">
+                        <asp:TemplateField HeaderText="ITEM_IDENTIFIER">
                             <HeaderStyle Wrap="True" Width="1%" HorizontalAlign="Center"></HeaderStyle>
                             <ItemStyle Wrap="False" HorizontalAlign="Left" Width="1%"></ItemStyle>
                             <ItemTemplate>
-                                <asp:TextBox ID="RecordItemCode" runat="server" Visible="True"></asp:TextBox>
+                                <asp:TextBox ID="ItemIdentifier" runat="server" Visible="True"></asp:TextBox>
                             </ItemTemplate>
                         </asp:TemplateField>
 
-                        <asp:TemplateField HeaderText="ITEM_SUB_QUALIFIER">
+                        <asp:TemplateField HeaderText="ITEM_IDENTIFIER_QUALIFIER">
                             <HeaderStyle Wrap="True" Width="1%" HorizontalAlign="Center"></HeaderStyle>
                             <ItemStyle Wrap="False" HorizontalAlign="Left" Width="1%"></ItemStyle>
                             <ItemTemplate>
-                                <asp:TextBox ID="RecordItemSubQualifier" runat="server" Visible="True"></asp:TextBox>
+                                <asp:TextBox ID="ItemIdentifierQualifier" runat="server" Visible="True"></asp:TextBox>
                             </ItemTemplate>
                         </asp:TemplateField>
 
-                        <asp:TemplateField HeaderText="ITEM_SUB_CODE">
+                        <asp:TemplateField HeaderText="ITEM_SUB_IDENTIFIER">
                             <HeaderStyle Wrap="True" Width="1%" HorizontalAlign="Center"></HeaderStyle>
                             <ItemStyle Wrap="False" HorizontalAlign="Left" Width="1%"></ItemStyle>
                             <ItemTemplate>
-                                <asp:TextBox ID="RecordItemSubCode" runat="server" Visible="True"></asp:TextBox>
+                                <asp:TextBox ID="ItemSubIdentifier" runat="server" Visible="True"></asp:TextBox>
                             </ItemTemplate>
                         </asp:TemplateField>
 
-                        <asp:TemplateField HeaderText="ITEM_ADDITIONAL_QUALIFIER">
+                        <asp:TemplateField HeaderText="ITEM_SUB_IDENTIFIER_QUALIFIER">
                             <HeaderStyle Wrap="True" Width="1%" HorizontalAlign="Center"></HeaderStyle>
                             <ItemStyle Wrap="False" HorizontalAlign="Left" Width="1%"></ItemStyle>
                             <ItemTemplate>
-                                <asp:TextBox ID="RecordItemAdditionalQualifier" runat="server" Visible="True"></asp:TextBox>
+                                <asp:TextBox ID="ItemSubIdentifierQualifier" runat="server" Visible="True"></asp:TextBox>
                             </ItemTemplate>
                         </asp:TemplateField>
 
-                        <asp:TemplateField HeaderText="ITEM_ADDITIONAL_CODE">
+                        <asp:TemplateField HeaderText="ITEM_ADDITIONAL_IDENTIFIER">
                             <HeaderStyle Wrap="True" Width="1%" HorizontalAlign="Center"></HeaderStyle>
                             <ItemStyle Wrap="False" HorizontalAlign="Left" Width="1%"></ItemStyle>
                             <ItemTemplate>
-                                <asp:TextBox ID="RecordItemAdditionalCode" runat="server" Visible="True"></asp:TextBox>
+                                <asp:TextBox ID="ItemAdditionalIdentifier" runat="server" Visible="True"></asp:TextBox>
                             </ItemTemplate>
                         </asp:TemplateField>
 
-                        <asp:TemplateField HeaderText="COVERAGE_TYPE_QUALIFIER">
+                        <asp:TemplateField HeaderText="ITEM_ADDITIONAL_IDENTIFIER_QUALIFIER">
                             <HeaderStyle Wrap="True" Width="1%" HorizontalAlign="Center"></HeaderStyle>
                             <ItemStyle Wrap="False" HorizontalAlign="Left" Width="1%"></ItemStyle>
                             <ItemTemplate>
-                                <asp:TextBox ID="RecordCoverageTypeQualifier" runat="server" Visible="True"></asp:TextBox>
+                                <asp:TextBox ID="ItemAdditionalIdentifierQualifier" runat="server" Visible="True"></asp:TextBox>
                             </ItemTemplate>
                         </asp:TemplateField>
 
-                        <asp:TemplateField HeaderText="COVERAGE_TYPE_CODE">
+                        <asp:TemplateField HeaderText="COVERAGE_TYPE_IDENTIFIER">
                             <HeaderStyle Wrap="True" Width="1%" HorizontalAlign="Center"></HeaderStyle>
                             <ItemStyle Wrap="False" HorizontalAlign="Left" Width="1%"></ItemStyle>
                             <ItemTemplate>
-                                <asp:TextBox ID="RecordCoverageTypeCode" runat="server" Visible="True"></asp:TextBox>
+                                <asp:TextBox ID="CoverageTypeIdentifier" runat="server" Visible="True"></asp:TextBox>
                             </ItemTemplate>
                         </asp:TemplateField>
 
-                        <asp:TemplateField HeaderText="COVERAGE_TYPE_SUB_QUALIFIER">
+                        <asp:TemplateField HeaderText="COVERAGE_TYPE_IDENTIFIER_QUALIFIER">
                             <HeaderStyle Wrap="True" Width="1%" HorizontalAlign="Center"></HeaderStyle>
                             <ItemStyle Wrap="False" HorizontalAlign="Left" Width="1%"></ItemStyle>
                             <ItemTemplate>
-                                <asp:TextBox ID="RecordCoverageTypeSubQualifier" runat="server" Visible="True"></asp:TextBox>
+                                <asp:TextBox ID="CoverageTypeIdentifierQualifier" runat="server" Visible="True"></asp:TextBox>
                             </ItemTemplate>
                         </asp:TemplateField>
 
-                        <asp:TemplateField HeaderText="COVERAGE_TYPE_SUB_CODE">
+                        <asp:TemplateField HeaderText="COVERAGE_TYPE_SUB_IDENTIFIER">
                             <HeaderStyle Wrap="True" Width="1%" HorizontalAlign="Center"></HeaderStyle>
                             <ItemStyle Wrap="False" HorizontalAlign="Left" Width="1%"></ItemStyle>
                             <ItemTemplate>
-                                <asp:TextBox ID="RecordCoverageTypeSubCode" runat="server" Visible="True"></asp:TextBox>
+                                <asp:TextBox ID="CoverageTypeSubIdentifier" runat="server" Visible="True"></asp:TextBox>
                             </ItemTemplate>
                         </asp:TemplateField>
 
-                        <asp:TemplateField HeaderText="COVERAGE_TYPE_ADDITIONAL_QUALIFIER">
+                        <asp:TemplateField HeaderText="COVERAGE_TYPE_SUB_IDENTIFIER_QUALIFIER">
                             <HeaderStyle Wrap="True" Width="1%" HorizontalAlign="Center"></HeaderStyle>
                             <ItemStyle Wrap="False" HorizontalAlign="Left" Width="1%"></ItemStyle>
                             <ItemTemplate>
-                                <asp:TextBox ID="RecordCoverageTypeAdditionalQualifier" runat="server" Visible="True"></asp:TextBox>
+                                <asp:TextBox ID="CoverageTypeSubIdentifierQualifier" runat="server" Visible="True"></asp:TextBox>
                             </ItemTemplate>
                         </asp:TemplateField>
 
-                        <asp:TemplateField HeaderText="COVERAGE_TYPE_ADDITIONAL_CODE">
+                        <asp:TemplateField HeaderText="COVERAGE_TYPE_ADDITIONAL_IDENTIFIER">
                             <HeaderStyle Wrap="True" Width="1%" HorizontalAlign="Center"></HeaderStyle>
                             <ItemStyle Wrap="False" HorizontalAlign="Left" Width="1%"></ItemStyle>
                             <ItemTemplate>
-                                <asp:TextBox ID="RecordCoverageTypeAdditionalCode" runat="server" Visible="True"></asp:TextBox>
+                                <asp:TextBox ID="CoverageTypeAdditionalIdentifier" runat="server" Visible="True"></asp:TextBox>
                             </ItemTemplate>
                         </asp:TemplateField>
 
-                        <asp:TemplateField HeaderText="SKU">
+                        <asp:TemplateField HeaderText="COVERAGE_TYPE_ADDITIONAL_IDENTIFIER_QUALIFIER">
                             <HeaderStyle Wrap="True" Width="1%" HorizontalAlign="Center"></HeaderStyle>
                             <ItemStyle Wrap="False" HorizontalAlign="Left" Width="1%"></ItemStyle>
                             <ItemTemplate>
-                                <asp:TextBox ID="RecordClaimItemSku" runat="server" Visible="True"></asp:TextBox>
+                                <asp:TextBox ID="CoverageTypeAdditionalIdentifierQualifier" runat="server" Visible="True"></asp:TextBox>
                             </ItemTemplate>
                         </asp:TemplateField>
 
-                        <asp:TemplateField HeaderText="MAKE">
+                        <asp:TemplateField HeaderText="CLAIMED_ITEM_SKU">
                             <HeaderStyle Wrap="True" Width="1%" HorizontalAlign="Center"></HeaderStyle>
                             <ItemStyle Wrap="False" HorizontalAlign="Left" Width="1%"></ItemStyle>
                             <ItemTemplate>
-                                <asp:TextBox ID="RecordClaimItemMake" runat="server" Visible="True"></asp:TextBox>
+                                <asp:TextBox ID="ClaimedItemSku" runat="server" Visible="True"></asp:TextBox>
                             </ItemTemplate>
                         </asp:TemplateField>
 
-                        <asp:TemplateField HeaderText="MODEL">
+                        <asp:TemplateField HeaderText="CLAIMED_ITEM_MAKE">
                             <HeaderStyle Wrap="True" Width="1%" HorizontalAlign="Center"></HeaderStyle>
                             <ItemStyle Wrap="False" HorizontalAlign="Left" Width="1%"></ItemStyle>
                             <ItemTemplate>
-                                <asp:TextBox ID="RecordClaimItemModel" runat="server" Visible="True"></asp:TextBox>
+                                <asp:TextBox ID="ClaimedItemMake" runat="server" Visible="True"></asp:TextBox>
                             </ItemTemplate>
                         </asp:TemplateField>
 
-                        <asp:TemplateField HeaderText="COLOR">
+                        <asp:TemplateField HeaderText="CLAIMED_ITEM_MODEL">
                             <HeaderStyle Wrap="True" Width="1%" HorizontalAlign="Center"></HeaderStyle>
                             <ItemStyle Wrap="False" HorizontalAlign="Left" Width="1%"></ItemStyle>
                             <ItemTemplate>
-                                <asp:TextBox ID="RecordClaimItemColor" runat="server" Visible="True"></asp:TextBox>
+                                <asp:TextBox ID="ClaimedItemModel" runat="server" Visible="True"></asp:TextBox>
                             </ItemTemplate>
                         </asp:TemplateField>
 
-                        <asp:TemplateField HeaderText="CAPACITY">
+                        <asp:TemplateField HeaderText="CLAIMED_ITEM_COLOR">
                             <HeaderStyle Wrap="True" Width="1%" HorizontalAlign="Center"></HeaderStyle>
                             <ItemStyle Wrap="False" HorizontalAlign="Left" Width="1%"></ItemStyle>
                             <ItemTemplate>
-                                <asp:TextBox ID="RecordClaimItemCapacity" runat="server" Visible="True"></asp:TextBox>
+                                <asp:TextBox ID="ClaimedItemColor" runat="server" Visible="True"></asp:TextBox>
                             </ItemTemplate>
                         </asp:TemplateField>
 
-                        <asp:TemplateField HeaderText="CARRIER">
+                        <asp:TemplateField HeaderText="CLAIMED_ITEM_CAPACITY">
                             <HeaderStyle Wrap="True" Width="1%" HorizontalAlign="Center"></HeaderStyle>
                             <ItemStyle Wrap="False" HorizontalAlign="Left" Width="1%"></ItemStyle>
                             <ItemTemplate>
-                                <asp:TextBox ID="RecordClaimItemCarrier" runat="server" Visible="True"></asp:TextBox>
+                                <asp:TextBox ID="ClaimedItemCapacity" runat="server" Visible="True"></asp:TextBox>
                             </ItemTemplate>
                         </asp:TemplateField>
 
-                        <asp:TemplateField HeaderText="CLAIM_ITEM_QUALIFIER">
+                        <asp:TemplateField HeaderText="CLAIMED_ITEM_CARRIER">
                             <HeaderStyle Wrap="True" Width="1%" HorizontalAlign="Center"></HeaderStyle>
                             <ItemStyle Wrap="False" HorizontalAlign="Left" Width="1%"></ItemStyle>
                             <ItemTemplate>
-                                <asp:TextBox ID="RecordClaimItemQualifier" runat="server" Visible="True"></asp:TextBox>
+                                <asp:TextBox ID="ClaimedItemCarrier" runat="server" Visible="True"></asp:TextBox>
                             </ItemTemplate>
                         </asp:TemplateField>
 
-                        <asp:TemplateField HeaderText="CLAIM_ITEM_CODE">
+                        <asp:TemplateField HeaderText="CLAIMED_ITEM_IDENTIFICATION">
                             <HeaderStyle Wrap="True" Width="1%" HorizontalAlign="Center"></HeaderStyle>
                             <ItemStyle Wrap="False" HorizontalAlign="Left" Width="1%"></ItemStyle>
                             <ItemTemplate>
-                                <asp:TextBox ID="RecordClaimItemCode" runat="server" Visible="True"></asp:TextBox>
+                                <asp:TextBox ID="ClaimedItemIdentification" runat="server" Visible="True"></asp:TextBox>
                             </ItemTemplate>
                         </asp:TemplateField>
 
-                        <asp:TemplateField HeaderText="CLAIM_ITEM_ADDITIONAL_QUALIFIER">
+                        <asp:TemplateField HeaderText="CLAIMED_ITEM_IDENTIFICATION_QUALIFIER">
                             <HeaderStyle Wrap="True" Width="1%" HorizontalAlign="Center"></HeaderStyle>
                             <ItemStyle Wrap="False" HorizontalAlign="Left" Width="1%"></ItemStyle>
                             <ItemTemplate>
-                                <asp:TextBox ID="RecordClaimItemAdditionalQualifier" runat="server" Visible="True"></asp:TextBox>
+                                <asp:TextBox ID="ClaimedItemIdentificationQualifier" runat="server" Visible="True"></asp:TextBox>
                             </ItemTemplate>
                         </asp:TemplateField>
 
-                        <asp:TemplateField HeaderText="CLAIM_ITEM_ADDITIONAL_CODE">
+                        <asp:TemplateField HeaderText="CLAIMED_ITEM_ADDITIONAL_IDENTIFICATION">
                             <HeaderStyle Wrap="True" Width="1%" HorizontalAlign="Center"></HeaderStyle>
                             <ItemStyle Wrap="False" HorizontalAlign="Left" Width="1%"></ItemStyle>
                             <ItemTemplate>
-                                <asp:TextBox ID="RecordClaimItemAdditionalCode" runat="server" Visible="True"></asp:TextBox>
+                                <asp:TextBox ID="ClaimedItemAdditionalIdentification" runat="server" Visible="True"></asp:TextBox>
                             </ItemTemplate>
                         </asp:TemplateField>
 
-                        <asp:TemplateField HeaderText="SOURCE_SYSTEM">
+                        <asp:TemplateField HeaderText="CLAIMED_ITEM_ADDITIONAL_IDENTIFICATION_QUALIFIER">
                             <HeaderStyle Wrap="True" Width="1%" HorizontalAlign="Center"></HeaderStyle>
                             <ItemStyle Wrap="False" HorizontalAlign="Left" Width="1%"></ItemStyle>
                             <ItemTemplate>
-                                <asp:TextBox ID="RecordProblemStatement" runat="server" Visible="True"></asp:TextBox>
+                                <asp:TextBox ID="ClaimedItemAdditionalIdentificationQualifier" runat="server" Visible="True"></asp:TextBox>
+                            </ItemTemplate>
+                        </asp:TemplateField>
+
+                        <asp:TemplateField HeaderText="PROBLEM_STATEMENT">
+                            <HeaderStyle Wrap="True" Width="1%" HorizontalAlign="Center"></HeaderStyle>
+                            <ItemStyle Wrap="False" HorizontalAlign="Left" Width="1%"></ItemStyle>
+                            <ItemTemplate>
+                                <asp:TextBox ID="ProblemStatement" runat="server" Visible="True"></asp:TextBox>
                             </ItemTemplate>
                         </asp:TemplateField>
 

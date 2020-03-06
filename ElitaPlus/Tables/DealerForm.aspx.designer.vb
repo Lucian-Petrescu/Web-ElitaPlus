@@ -2301,6 +2301,24 @@ Namespace Tables
         Protected WithEvents ddlClaimRecordingCheckInventory As Global.System.Web.UI.WebControls.DropDownList
 
         '''<summary>
+        '''lblUseTatNotification control.
+        '''</summary>
+        '''<remarks>
+        '''Auto-generated field.
+        '''To modify move field declaration from designer file to code-behind file.
+        '''</remarks>
+        Protected WithEvents lblUseTatNotification As Global.System.Web.UI.WebControls.Label
+
+        '''<summary>
+        '''moUseTatNotification control.
+        '''</summary>
+        '''<remarks>
+        '''Auto-generated field.
+        '''To modify move field declaration from designer file to code-behind file.
+        '''</remarks>
+        Protected WithEvents moUseTatNotification As Global.System.Web.UI.WebControls.DropDownList
+
+        '''<summary>
         '''trBenefitDlrTypeCtls1 control.
         '''</summary>
         '''<remarks>
