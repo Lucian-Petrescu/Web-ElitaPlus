@@ -147,23 +147,27 @@ Public Class commonUploadDAL
         End Try
     End Sub
 
-    Public Function getScreenHelpData(FormName As String)
+    Public Function getScreenHelpData(FormCode As String)
         Dim sqlStmt As String
+        sqlStmt = Me.Config("/SQL/PROCESS_SCREEN_HELP")
+        Dim strResult = String.Empty
         Try
+            Dim outParameters() As DBHelper.DBHelperParameter = New DBHelper.DBHelperParameter() {
+                            New DBHelper.DBHelperParameter("p_InitResult", strResult.GetType, 500)}
+
             Dim inParameters As New Generic.List(Of DBHelper.DBHelperParameter)
             Dim param As DBHelper.DBHelperParameter
 
-            sqlStmt = Me.Config("/SQL/PROCESS_SCREEN_HELP")
-            param = New DBHelper.DBHelperParameter("pi_formname", FormName)
-
-            sqlStmt = sqlStmt.Replace(":pi_formname", FormName)
+            param = New DBHelper.DBHelperParameter("pi_formcode", FormCode)
             inParameters.Add(param)
 
-            Dim ds As DataSet
-            ds = DBHelper.Fetch(sqlStmt, "elp_screen_help")
+            DBHelper.ExecuteSpParamBindByName(sqlStmt, inParameters.ToArray, outParameters)
 
-            Dim helpData As String = ds.Tables(0).Rows(0).Item(0).ToString()
-            Return helpData
+            If Not outParameters(0).Value Is Nothing Then
+                strResult = outParameters(0).Value.ToString().Trim
+            End If
+
+            Return strResult
 
         Catch ex As Exception
             Throw New DataBaseAccessException(DataBaseAccessException.DatabaseAccessErrorType.ReadErr, ex)
