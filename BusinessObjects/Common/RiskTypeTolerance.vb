@@ -62,6 +62,7 @@
             Me.SetValue(RiskTypeToleranceDAL.COL_NAME_DEALER_ID, Value)
         End Set
     End Property
+
     Public Property Dealer() As String
         Get
             CheckDeleted()
@@ -93,7 +94,7 @@
         End Set
     End Property
 
-  <ValueMandatory("")>
+  <ValueMandatoryRiskTypeTolerance(""),ValidNumericRange("", Min:=0, Max:=9999.99)>
     Public Property TolerancePct() As DecimalType
         Get
             CheckDeleted()
@@ -311,6 +312,28 @@
         End If
     End Sub
 
+#End Region
+
+#Region "Custom Validation"
+    <AttributeUsage(AttributeTargets.Property Or AttributeTargets.Field)> _
+    Public NotInheritable Class ValueMandatoryRiskTypeTolerance
+        Inherits ValidBaseAttribute
+
+        Public Sub New(ByVal fieldDisplayName As String)
+            MyBase.New(fieldDisplayName, Common.ErrorCodes.VALUE_REQUIRED_RISK_TOLERANCE_PERCENTAGE)
+        End Sub
+
+        Public Overrides Function IsValid(ByVal valueToCheck As Object, ByVal objectToValidate As Object) As Boolean
+            Dim obj As RiskTypeTolerance = CType(objectToValidate, RiskTypeTolerance)
+            If obj.IsNew AndAlso valueToCheck Is Nothing Then
+                Return False
+            ElseIf valueToCheck.Equals(String.Empty) Then
+                Return False
+            End If
+
+            Return True
+        End Function
+    End Class
 #End Region
 
 End Class
