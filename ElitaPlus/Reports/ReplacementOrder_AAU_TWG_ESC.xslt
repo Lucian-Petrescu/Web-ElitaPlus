@@ -6,8 +6,8 @@
     <html>
       <head>
         <style>
-          BODY { width:auto }
-          td {font-size:10pt;font-family:"Trebuchet MS";height:5px;}
+          BODY {width:auto;height:75vh;}
+          td {font-size:16pt;font-family:"Trebuchet MS";height:5px; padding-top:7px;}
           .Header {color:Gray;TEXT-ALIGN:LEFT;text-decoration:underline;font-weight:bold;}
           .esp {font-weight:normal;}
         </style>
@@ -18,8 +18,10 @@
             <td colspan="2">
               <table style="width:100%">
                 <tr>
-                  <td style="width:75%"></td>
-                  <td rowspan="3" style="text-align:right;vertical-align:middle">
+                  <td>
+                    Replacement Request Order
+                  </td>
+                  <td rowspan="2" style="text-align:right;vertical-align:top;">
                     <xsl:element name="img">
                       <xsl:attribute name="src">
                         <xsl:choose>
@@ -36,8 +38,8 @@
                 </tr>
                 <tr>
                   <td>
-                    Replacement Request Order<br/>Claim Number: &#160;
-                    <span style="font-size:14pt;">
+                    Claim Number: &#160;
+                    <span style="font-size:20pt;padding-top:7px;">
                       <xsl:value-of select="a:ServiceOrderReport/a:ServiceOrder/a:CLAIM_NUMBER" />-<xsl:value-of select="a:ServiceOrderReport/a:ServiceOrder/a:AUTHORIZATION_NUMBER" />
                     </span>
                   </td>
@@ -50,24 +52,12 @@
             <td></td>
           </tr>
           <tr>
-            <td>&#160;</td>
-            <td></td>
-          </tr>
-          <tr>
             <td colspan="2" class="Header">Customer Information</td>
-          </tr>
-          <tr>
-            <td>&#160;</td>
-            <td></td>
           </tr>
           <tr>
             <td>
               Name:&#160;<xsl:value-of select="a:ServiceOrderReport/a:ServiceOrder/a:CUSTOMER_NAME" />
             </td>
-          </tr>
-          <tr>
-            <td>&#160;</td>
-            <td></td>
           </tr>
           <tr>
             <td colspan="2">
@@ -93,10 +83,6 @@
             </td>
           </tr>
           <tr>
-            <td>&#160;</td>
-            <td></td>
-          </tr>
-          <tr>
             <td>
               Number:&#160;
                <xsl:choose>
@@ -113,10 +99,6 @@
             </td>
           </tr>
           <tr>
-            <td>&#160;</td>
-            <td></td>
-          </tr>
-          <tr>
             <td>
               Email:&#160;<xsl:value-of select="a:ServiceOrderReport/a:ServiceOrder/a:CUSTOMER_EMAIL" />
             </td>
@@ -126,15 +108,7 @@
             <td></td>
           </tr>
           <tr>
-            <td>&#160;</td>
-            <td></td>
-          </tr>
-          <tr>
             <td colspan="2" class="Header">Product Information</td>
-          </tr>
-          <tr>
-            <td>&#160;</td>
-            <td></td>
           </tr>
           <tr>
             <td>
@@ -142,17 +116,9 @@
             </td>
           </tr>
           <tr>
-            <td>&#160;</td>
-            <td></td>
-          </tr>
-          <tr>
             <td>
               Brand:&#160;<xsl:value-of select="a:ServiceOrderReport/a:ServiceOrder/a:MANUFACTURER" />
             </td>
-          </tr>
-          <tr>
-            <td>&#160;</td>
-            <td></td>
           </tr>
           <tr>
             <td>
@@ -160,17 +126,9 @@
             </td>
           </tr>
           <tr>
-            <td>&#160;</td>
-            <td></td>
-          </tr>
-          <tr>
             <td>
               Serial:&#160;<xsl:value-of select="a:ServiceOrderReport/a:ServiceOrder/a:SERIAL_NUMBER" />
             </td>
-          </tr>
-          <tr>
-            <td>&#160;</td>
-            <td></td>
           </tr>
           <tr>
             <td>
@@ -178,17 +136,9 @@
             </td>
           </tr>
           <tr>
-            <td>&#160;</td>
-            <td></td>
-          </tr>
-          <tr>
             <td>
               Purchase Price:&#160;$<xsl:value-of select="a:ServiceOrderReport/a:ServiceOrder/a:SALES_PRICE" />&#160;(Incl GST)
           </td>
-          </tr>
-          <tr>
-            <td>&#160;</td>
-            <td></td>
           </tr>
           <tr>
             <td>
@@ -200,17 +150,9 @@
             </td>
           </tr>
           <tr>
-            <td>&#160;</td>
-            <td></td>
-          </tr>
-          <tr>
             <td>
               Retailer:&#160;<xsl:value-of select="a:ServiceOrderReport/a:ServiceOrder/a:DEALER_NAME" />
             </td>
-          </tr>
-          <tr>
-            <td>&#160;</td>
-            <td></td>
           </tr>
           <tr>
             <td colspan="2">
@@ -222,29 +164,17 @@
             <td></td>
           </tr>
           <tr>
-            <td>&#160;</td>
-            <td></td>
-          </tr>
-          <tr>
             <td colspan="2" class="Header">Claim Instructions</td>
           </tr>
           <tr>
-            <td>&#160;</td>
-            <td></td>
-          </tr>
-          <tr>
-            <td colspan="2">
-              <span style="font-size:12pt;font-weight: bold;">
+            <td colspan="2" style="padding-top:15px;">
+              <span style="font-size:18pt;font-weight: bold;">
                 Replacement Authority Limit: $<xsl:value-of select="a:ServiceOrderReport/a:ServiceOrder/a:AUTHORIZATION_AMOUNT" />&#160;(Incl GST)
               </span>
           </td>
           </tr>
           <tr>
-            <td>&#160;</td>
-            <td></td>
-          </tr>
-          <tr>
-            <td colspan="2">
+            <td colspan="2" style="padding-top:15px;">
               Additional comments:<xsl:value-of select="a:ServiceOrderReport/a:ServiceOrder/a:SPECIAL_INSTRUCTION" />
             </td>
           </tr>
