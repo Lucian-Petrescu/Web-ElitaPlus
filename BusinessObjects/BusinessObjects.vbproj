@@ -425,6 +425,7 @@
     <Compile Include="Tables\PriceListSearchByServiceCenter.vb" />
     <Compile Include="Tables\ReppolicyClaimCount.vb" />
     <Compile Include="Tables\RolePermission.vb" />
+    <Compile Include="Tables\SVCPLRecon.vb" />
     <Compile Include="Tables\UserPermission.vb" />
     <Compile Include="VSC\AcselXQuoteCancelCert.vb" />
     <Compile Include="VSC\AcselXQuoteCancelCertDs.vb" />
