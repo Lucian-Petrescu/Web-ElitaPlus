@@ -36,6 +36,8 @@ Public Class CountryDAL
     Public Const COL_NAME_CERT_COUNT_SUSP_OP As String = "cert_count_susp_op"
     Public Const COL_NAME_ISO_CODE = "iso_code"
     Public Const COL_NAME_ALLOW_FORGOTTEN = "allow_forgotten"
+    Public Const COL_NAME_PRICE_LIST_APPROVAL_NEEDED = "price_list_approval_needed"
+    Public Const COL_NAME_PRICE_LIST_APPROVAL_EMAIL = "price_list_approval_email"
     Public Const COL_NAME_FULL_NAME_FORMAT = "full_name_format_xcd"
     Private Const DSNAME As String = "LIST"
     Public Const WILDCARD As Char = "%"

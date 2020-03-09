@@ -1040,6 +1040,15 @@ Partial Public Class ServiceCenterForm
     Protected WithEvents Label11 As Global.System.Web.UI.WebControls.Label
 
     '''<summary>
+    '''Label12 control.
+    '''</summary>
+    '''<remarks>
+    '''Auto-generated field.
+    '''To modify move field declaration from designer file to code-behind file.
+    '''</remarks>
+    Protected WithEvents Label12 As Global.System.Web.UI.WebControls.Label
+
+    '''<summary>
     '''moAddressTabPanel_WRITE control.
     '''</summary>
     '''<remarks>
@@ -1299,6 +1308,87 @@ Partial Public Class ServiceCenterForm
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
     Protected WithEvents btnNewSchedule As Global.System.Web.UI.WebControls.Button
+
+    '''<summary>
+    '''trPageSize control.
+    '''</summary>
+    '''<remarks>
+    '''Auto-generated field.
+    '''To modify move field declaration from designer file to code-behind file.
+    '''</remarks>
+    Protected WithEvents trPageSize As Global.System.Web.UI.HtmlControls.HtmlTableRow
+
+    '''<summary>
+    '''lblPageSize control.
+    '''</summary>
+    '''<remarks>
+    '''Auto-generated field.
+    '''To modify move field declaration from designer file to code-behind file.
+    '''</remarks>
+    Protected WithEvents lblPageSize As Global.System.Web.UI.WebControls.Label
+
+    '''<summary>
+    '''cboPageSize control.
+    '''</summary>
+    '''<remarks>
+    '''Auto-generated field.
+    '''To modify move field declaration from designer file to code-behind file.
+    '''</remarks>
+    Protected WithEvents cboPageSize As Global.System.Web.UI.WebControls.DropDownList
+
+    '''<summary>
+    '''lblRecordCount control.
+    '''</summary>
+    '''<remarks>
+    '''Auto-generated field.
+    '''To modify move field declaration from designer file to code-behind file.
+    '''</remarks>
+    Protected WithEvents lblRecordCount As Global.System.Web.UI.WebControls.Label
+
+    '''<summary>
+    '''DataGridPriceList control.
+    '''</summary>
+    '''<remarks>
+    '''Auto-generated field.
+    '''To modify move field declaration from designer file to code-behind file.
+    '''</remarks>
+    Protected WithEvents DataGridPriceList As Global.System.Web.UI.WebControls.DataGrid
+
+    '''<summary>
+    '''HiddenDeletePromptResponse control.
+    '''</summary>
+    '''<remarks>
+    '''Auto-generated field.
+    '''To modify move field declaration from designer file to code-behind file.
+    '''</remarks>
+    Protected WithEvents HiddenDeletePromptResponse As Global.System.Web.UI.HtmlControls.HtmlInputHidden
+
+    '''<summary>
+    '''btnSubmitApproval control.
+    '''</summary>
+    '''<remarks>
+    '''Auto-generated field.
+    '''To modify move field declaration from designer file to code-behind file.
+    '''</remarks>
+    Protected WithEvents btnSubmitApproval As Global.System.Web.UI.WebControls.Button
+
+    '''<summary>
+    '''btnApprove control.
+    '''</summary>
+    '''<remarks>
+    '''Auto-generated field.
+    '''To modify move field declaration from designer file to code-behind file.
+    '''</remarks>
+    Protected WithEvents btnApprove As Global.System.Web.UI.WebControls.Button
+
+    '''<summary>
+    '''btnReject control.
+    '''</summary>
+    '''<remarks>
+    '''Auto-generated field.
+    '''To modify move field declaration from designer file to code-behind file.
+    '''</remarks>
+    Protected WithEvents btnReject As Global.System.Web.UI.WebControls.Button
 
     '''<summary>
     '''btnSave_WRITE control.

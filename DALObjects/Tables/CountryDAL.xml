@@ -34,12 +34,14 @@
         abnormal_clm_frq_no, 
         cert_count_susp_op,
         default_sc_id,
-       allow_force_address_xcd,
+        allow_force_address_xcd,
         address_confidence_threshold,
-       use_address_validation_xcd,
-       iso_code,
-       allow_forgotten,
-       full_name_format_xcd
+        use_address_validation_xcd,
+        iso_code,
+        allow_forgotten,       
+        full_name_format_xcd,
+        price_list_approval_needed,
+        price_list_approval_email
 			FROM ELITA.ELP_COUNTRY_V 
 			WHERE
 				country_id = :country_id
@@ -106,8 +108,10 @@
         address_confidence_threshold = :address_confidence_threshold,
         use_address_validation_xcd = :use_address_validation_xcd,
         iso_code = :iso_code,
-        allow_forgotten = :allow_forgotten,
-        full_name_format_xcd = :full_name_format_xcd
+        allow_forgotten = :allow_forgotten,        
+        full_name_format_xcd = :full_name_format_xcd,
+        price_list_approval_needed = :price_list_approval_needed,
+        price_list_approval_email = :price_list_approval_email
 			WHERE
 				country_id = :country_id
 		]]>
@@ -145,7 +149,9 @@
     use_address_validation_xcd,
     iso_code,
     allow_forgotten,
-    full_name_format_xcd
+    full_name_format_xcd,
+    price_list_approval_needed,
+    price_list_approval_email
     )
     VALUES
     (
@@ -179,7 +185,9 @@
     :use_address_validation_xcd,
     :iso_code,
     :allow_forgotten,
-    :full_name_format_xcd
+    :full_name_format_xcd,
+    :price_list_approval_needed,
+    :price_list_approval_email
     )
   </INSERT>
 	<DELETE>

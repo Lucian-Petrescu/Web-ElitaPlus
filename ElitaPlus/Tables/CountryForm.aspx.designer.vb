@@ -572,6 +572,42 @@ Partial Public Class CountryForm
     Protected WithEvents cboAllowForget As Global.System.Web.UI.WebControls.DropDownList
 
     '''<summary>
+    '''lblPriceListApprovalNeeded control.
+    '''</summary>
+    '''<remarks>
+    '''Auto-generated field.
+    '''To modify move field declaration from designer file to code-behind file.
+    '''</remarks>
+    Protected WithEvents lblPriceListApprovalNeeded As Global.System.Web.UI.WebControls.Label
+
+    '''<summary>
+    '''cboPriceListApprovalNeeded control.
+    '''</summary>
+    '''<remarks>
+    '''Auto-generated field.
+    '''To modify move field declaration from designer file to code-behind file.
+    '''</remarks>
+    Protected WithEvents cboPriceListApprovalNeeded As Global.System.Web.UI.WebControls.DropDownList
+
+    '''<summary>
+    '''lblPriceListApprovalEmail control.
+    '''</summary>
+    '''<remarks>
+    '''Auto-generated field.
+    '''To modify move field declaration from designer file to code-behind file.
+    '''</remarks>
+    Protected WithEvents lblPriceListApprovalEmail As Global.System.Web.UI.WebControls.Label
+
+    '''<summary>
+    '''txtPriceListApprovalEmail control.
+    '''</summary>
+    '''<remarks>
+    '''Auto-generated field.
+    '''To modify move field declaration from designer file to code-behind file.
+    '''</remarks>
+    Protected WithEvents txtPriceListApprovalEmail As Global.System.Web.UI.WebControls.TextBox
+
+    '''<summary>
     '''lblAllowForceAddress control.
     '''</summary>
     '''<remarks>
@@ -687,7 +723,7 @@ Partial Public Class CountryForm
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
     Protected WithEvents Label4 As Global.System.Web.UI.WebControls.Label
-    
+
     '''<summary>
     '''ErrorControllerDS control.
     '''</summary>
@@ -696,7 +732,7 @@ Partial Public Class CountryForm
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
     Protected WithEvents ErrorControllerDS As Global.Assurant.ElitaPlus.ElitaPlusWebApp.ErrorController
-    
+
     '''<summary>
     '''moLineOfBusinessGridView control.
     '''</summary>
@@ -705,7 +741,7 @@ Partial Public Class CountryForm
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
     Protected WithEvents moLineOfBusinessGridView As Global.System.Web.UI.WebControls.GridView
-    
+
     '''<summary>
     '''btnNewBusinessInfo control.
     '''</summary>
@@ -714,7 +750,7 @@ Partial Public Class CountryForm
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
     Protected WithEvents btnNewBusinessInfo As Global.System.Web.UI.WebControls.Button
-    
+
     '''<summary>
     '''img2 control.
     '''</summary>
