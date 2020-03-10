@@ -178,12 +178,12 @@
           </tr>
           <tr>
             <td colspan="2" style="padding-top:15px;">
-              If the repair costs (including parts and labor excl GST) DO NOT exceed the Repair Authority Limit, please email us with an itemized invoice repair has been completed.
+              If the repair costs (including parts and labor) DO NOT exceed the Repair Authority Limit, please email us with an itemized invoice repair has been completed.
             </td>
           </tr>
           <tr>
             <td colspan="2" style="padding-top:15px;">
-              If the repair costs (including parts and labor excl GST) EXCEED the Repair Authority Limit, please email us with an itemized quote and await further advice before proceeding with repair.
+              If the repair costs (including parts and labor) EXCEED the Repair Authority Limit, please email us with an itemized quote and await further advice before proceeding with repair.
             </td>
           </tr>
           <tr>
