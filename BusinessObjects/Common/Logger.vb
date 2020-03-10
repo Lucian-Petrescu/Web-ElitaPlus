@@ -21,7 +21,7 @@ Public Module Logger
     Public Sub Initialize(ByVal applicationName As String)
         Try
             Dim OracleHelper As OracleHelper = New OracleHelper(Function() New OracleConnectionStringBuilder() With {
-            .UserID = ElitaConfig.Current.Database.UserName,
+            .UserID = AppConfig.DataBase.Server,
             .Password = ElitaConfig.Current.Database.Password,
             .DataSource = ElitaConfig.Current.Database.DataSourceName
           })
