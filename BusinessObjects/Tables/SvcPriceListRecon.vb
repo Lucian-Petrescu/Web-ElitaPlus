@@ -1,4 +1,7 @@
 ﻿Public Class SvcPriceListRecon
+
+    '************* THIS CODE HAS BEEN GENERATED FROM TEMPLATE BusinessObject.cst (2/12/2007)  ********************
+
     Inherits BusinessObjectBase
 
 #Region "Constructors"
@@ -84,8 +87,11 @@
     End Sub
 #End Region
 
+
 #Region "Properties"
-    Public ReadOnly Property Id As Guid
+
+    'Key Property
+    Public ReadOnly Property Id() As Guid
         Get
             If Row(SvcPriceListReconDAL.COL_NAME_SVC_PRICE_LIST_RECON_ID) Is DBNull.Value Then
                 Return Nothing
@@ -93,22 +99,6 @@
                 Return New Guid(CType(Row(SvcPriceListReconDAL.COL_NAME_SVC_PRICE_LIST_RECON_ID), Byte()))
             End If
         End Get
-
-    End Property
-
-    <ValueMandatory("")>
-    Public Property PriceListId As Guid
-        Get
-            If Row(SvcPriceListReconDAL.COL_NAME_PRICE_LIST_ID) Is DBNull.Value Then
-                Return Nothing
-            Else
-                Return New Guid(CType(Row(SvcPriceListReconDAL.COL_NAME_PRICE_LIST_ID), Byte()))
-            End If
-        End Get
-        Set(ByVal Value As Guid)
-            CheckDeleted()
-            Me.SetValue(SvcPriceListReconDAL.COL_NAME_PRICE_LIST_ID, Value)
-        End Set
     End Property
 
     <ValueMandatory("")>
@@ -127,79 +117,103 @@
         End Set
     End Property
 
-    <ValueMandatory("")>
-    Public Property StatusXcd() As String
+    Public Property PriceListId() As Guid
         Get
+            CheckDeleted()
+            If Row(SvcPriceListReconDAL.COL_NAME_PRICE_LIST_ID) Is DBNull.Value Then
+                Return Nothing
+            Else
+                Return New Guid(CType(Row(SvcPriceListReconDAL.COL_NAME_PRICE_LIST_ID), Byte()))
+            End If
+        End Get
+        Set(ByVal Value As Guid)
+            CheckDeleted()
+            Me.SetValue(SvcPriceListReconDAL.COL_NAME_PRICE_LIST_ID, Value)
+        End Set
+    End Property
+
+
+    <ValueMandatory("")>
+    Public Property Status_xcd() As String
+        Get
+            CheckDeleted()
             If Row(SvcPriceListReconDAL.COL_NAME_STATUS_XCD) Is DBNull.Value Then
                 Return Nothing
             Else
-                Return CType(Row(SvcPriceListReconDAL.COL_NAME_STATUS_XCD), String)
+                Return CType(Row(SVCPLReconDAL.COL_NAME_STATUS_XCD), String)
             End If
         End Get
-        Set(value As String)
+        Set(ByVal Value As String)
             CheckDeleted()
-            Me.SetValue(SvcPriceListReconDAL.COL_NAME_STATUS_XCD, value)
+            Me.SetValue(SvcPriceListReconDAL.COL_NAME_STATUS_XCD, Value)
         End Set
     End Property
+
 
     <ValueMandatory("")>
     Public Property RequestedBy() As String
         Get
+            CheckDeleted()
             If Row(SvcPriceListReconDAL.COL_NAME_REQUESTED_BY) Is DBNull.Value Then
                 Return Nothing
             Else
                 Return CType(Row(SvcPriceListReconDAL.COL_NAME_REQUESTED_BY), String)
             End If
         End Get
-        Set(value As String)
+        Set(ByVal Value As String)
             CheckDeleted()
-            Me.SetValue(SvcPriceListReconDAL.COL_NAME_REQUESTED_BY, value)
+            Me.SetValue(SvcPriceListReconDAL.COL_NAME_REQUESTED_BY, Value)
         End Set
     End Property
 
     <ValueMandatory("")>
-    Public Property StatusBy() As String
+    Public Property ReqestedDate() As DateType
         Get
+            CheckDeleted()
+            If Row(SvcPriceListReconDAL.COL_NAME_REQUESTED_DATE) Is DBNull.Value Then
+                Return Nothing
+            Else
+                Return New DateType(DateHelper.GetDateValue(Row(SvcPriceListReconDAL.COL_NAME_REQUESTED_DATE).ToString()))
+            End If
+        End Get
+        Set(ByVal Value As DateType)
+            CheckDeleted()
+            Me.SetValue(SvcPriceListReconDAL.COL_NAME_REQUESTED_DATE, Value)
+        End Set
+
+    End Property
+    <ValueMandatory("")>
+    Public Property StatusDate() As DateType
+        Get
+            CheckDeleted()
+            If Row(SvcPriceListReconDAL.COL_NAME_STATUS_DATE) Is DBNull.Value Then
+                Return Nothing
+            Else
+                Return New DateType(DateHelper.GetDateValue(Row(SvcPriceListReconDAL.COL_NAME_STATUS_DATE).ToString()))
+            End If
+        End Get
+        Set(ByVal Value As DateType)
+            CheckDeleted()
+            Me.SetValue(SvcPriceListReconDAL.COL_NAME_STATUS_DATE, Value)
+        End Set
+    End Property
+
+    <ValueMandatory("")>
+    Public Property StatusChangedBy() As String
+        Get
+            CheckDeleted()
             If Row(SvcPriceListReconDAL.COL_NAME_STATUS_BY) Is DBNull.Value Then
                 Return Nothing
             Else
                 Return CType(Row(SvcPriceListReconDAL.COL_NAME_STATUS_BY), String)
             End If
         End Get
-        Set(value As String)
+        Set(ByVal Value As String)
             CheckDeleted()
-            Me.SetValue(SvcPriceListReconDAL.COL_NAME_STATUS_BY, value)
+            Me.SetValue(SvcPriceListReconDAL.COL_NAME_STATUS_BY, Value)
         End Set
     End Property
 
-    <ValueMandatory("")>
-    Public Property RequestedDate() As DateType
-        Get
-            If Row(SvcPriceListReconDAL.COL_NAME_REQUESTED_DATE) Is DBNull.Value Then
-                Return Nothing
-            Else
-                Return New DateType(CType(Row(SvcPriceListReconDAL.COL_NAME_REQUESTED_DATE), Date))
-            End If
-        End Get
-        Set(value As DateType)
-            CheckDeleted()
-            Me.SetValue(SvcPriceListReconDAL.COL_NAME_REQUESTED_DATE, value)
-        End Set
-    End Property
-
-    Public Property StatusDate() As DateType
-        Get
-            If Row(SvcPriceListReconDAL.COL_NAME_STATUS_DATE) Is DBNull.Value Then
-                Return Nothing
-            Else
-                Return New DateType(CType(Row(SvcPriceListReconDAL.COL_NAME_STATUS_DATE), Date))
-            End If
-        End Get
-        Set(value As DateType)
-            CheckDeleted()
-            Me.SetValue(SvcPriceListReconDAL.COL_NAME_STATUS_DATE, value)
-        End Set
-    End Property
 #End Region
 
 #Region "Public Members"
@@ -210,22 +224,27 @@
                 Dim dal As New SvcPriceListReconDAL
                 'dal.Update(Me.Row)
 
-                'DataTable dt = New DataTable(SvcPriceListReconDAL.TABLE_NAME))
                 dal.UpdateFromSP(Me.Dataset.Tables(SvcPriceListReconDAL.TABLE_NAME))
-                'MyBase.UpdateFromSP(ds.Tables(Me.TABLE_NAME), Transaction, changesFilter)
-                'MyBase.UpdateFamily(Me.Dataset)
                 'Reload the Data from the DB
                 If Me.Row.RowState <> DataRowState.Detached Then
                     Dim objId As Guid = Me.Id
                     Me.Dataset = New DataSet
                     Me.Row = Nothing
-                    'Me.Load(objId)
+                    Me.Load(objId)
                 End If
             End If
         Catch ex As Assurant.ElitaPlus.DALObjects.DataBaseAccessException
             Throw New DataBaseAccessException(DataBaseAccessException.DatabaseAccessErrorType.WriteErr, ex)
         End Try
     End Sub
+
+
+    Public Function Add(ByVal svc_price_list_recon_id As Guid, ByVal servicenterId As Guid, ByVal price_list_id As Guid, ByVal status_xcd As String, ByVal Requested_By As String) As Integer
+        Dim dal As New SVCPLReconDAL
+        Return dal.Add(svc_price_list_recon_id, servicenterId, price_list_id, status_xcd, Requested_By)
+    End Function
+
+
 #End Region
 
 #Region "DataView Retrieveing Methods"
@@ -241,6 +260,7 @@
         Public Const COL_PRICE_LIST_ID As String = "price_list_id"
         Public Const COL_STATUS_XCD As String = "status_xcd"
         Public Const COL_REQUESTED_BY As String = "requested_by"
+        Public Const COL_REQUESTED_DATE As String = "requested_date"
         Public Const COL_STATUS_BY As String = "status_by"
         Public Const COL_STATUS_DATE As String = "status_date"
         Public Const COL_PRICE_LIST_CODE As String = "code"
@@ -253,6 +273,53 @@
         Public Sub New(ByVal table As DataTable)
             MyBase.New(table)
         End Sub
+
+        Public Shared ReadOnly Property Id(ByVal row) As Guid
+            Get
+                Return New Guid(CType(row(COL_SVC_PRICE_LIST_RECON_ID), Byte()))
+            End Get
+        End Property
+        Public Shared ReadOnly Property ServiceCenterId(ByVal row) As Guid
+            Get
+                Return New Guid(CType(row(COL_SERVICE_CENTER_ID), Byte()))
+            End Get
+        End Property
+
+        Public Shared ReadOnly Property PriceListId(ByVal row) As Guid
+            Get
+                Return New Guid(CType(row(COL_PRICE_LIST_ID), Byte()))
+            End Get
+        End Property
+
+        Public Shared ReadOnly Property Status_Xcd(ByVal row As DataRow) As String
+            Get
+                Return row(COL_STATUS_XCD).ToString
+            End Get
+        End Property
+
+        Public Shared ReadOnly Property RequestedBy(ByVal row As DataRow) As String
+            Get
+                Return row(COL_REQUESTED_BY).ToString
+            End Get
+        End Property
+
+        Public Shared ReadOnly Property Statusy(ByVal row As DataRow) As String
+            Get
+                Return row(COL_STATUS_BY).ToString
+            End Get
+        End Property
+        Public Shared ReadOnly Property RequestedDate(ByVal row As DataRow) As DateType
+            Get
+                Return New DateType(DateHelper.GetDateValue(row(COL_REQUESTED_DATE).ToString()))
+            End Get
+        End Property
+
+        Public Shared ReadOnly Property StatusDate(ByVal row As DataRow) As DateType
+            Get
+                Return New DateType(DateHelper.GetDateValue(row(COL_STATUS_DATE).ToString()))
+            End Get
+        End Property
+
     End Class
 
 #End Region
@@ -270,14 +337,25 @@
         End Try
     End Function
 
-    Public Shared Function LoadListBySvc(ByVal ServiceCenterID As Guid) As DataView
+    Public Shared Function LoadListBySvc(ByVal servicecenterid As Guid) As DataView
         Try
             Dim dal As New SvcPriceListReconDAL
-            Dim ds As DataSet
-
-            ds = dal.LoadListBySvc(ServiceCenterID)
+            Dim ds As New DataSet
+            ds = dal.LoadListBySvc(servicecenterid)
             Return (ds.Tables(SvcPriceListReconDAL.TABLE_NAME).DefaultView)
+            'Return New SvcPriceListReconSearchDV(dal.LoadListBySvc(servicecenterid).Tables(0))
 
+        Catch ex As Assurant.ElitaPlus.DALObjects.DataBaseAccessException
+            Throw New DataBaseAccessException(ex.ErrorType, ex)
+        End Try
+    End Function
+
+    Public Shared Function LoadLatestStatusList(ByVal servicecenterid As Guid) As DataSet
+        Try
+            Dim dal As New SvcPriceListReconDAL
+            Dim ds As New DataSet
+            ds = dal.GetLatestStatus(servicecenterid)
+            Return ds
         Catch ex As Assurant.ElitaPlus.DALObjects.DataBaseAccessException
             Throw New DataBaseAccessException(ex.ErrorType, ex)
         End Try
@@ -295,18 +373,6 @@
 
         End Try
     End Function
-    'Public Shared Function Load(ByVal ServiceCenterId As Guid) As DataView
-    '    Try
-    '        Dim dal As New SvcPriceListReconDAL
-    '        Dim ds As New DataSet
-
-    '        'ds = dal.Load(ServiceCenterId)
-    '        Return New SvcPriceListReconSearchDV(ds.Tables(0))
-
-    '    Catch ex As Exception
-
-    '    End Try
-    'End Function
 
     Public Shared Function GetNewDataViewRow(ByVal dv As DataView, ByVal id As Guid, ByVal bo As SvcPriceListRecon) As DataView
 
@@ -319,7 +385,7 @@
             row(SvcPriceListReconDAL.COL_NAME_SVC_PRICE_LIST_RECON_ID) = bo.Id.ToByteArray
             row(SvcPriceListReconDAL.COL_NAME_PRICE_LIST_ID) = bo.PriceListId.ToByteArray
             row(SvcPriceListReconDAL.COL_NAME_SERVICE_CENTER_ID) = bo.ServiceCenterId.ToByteArray
-            row(SvcPriceListReconDAL.COL_NAME_STATUS_XCD) = bo.StatusXcd
+            row(SvcPriceListReconDAL.COL_NAME_STATUS_XCD) = bo.Status_xcd
 
             dt.Rows.Add(row)
         End If
@@ -327,8 +393,9 @@
         Return (dv)
 
     End Function
-
 #End Region
+
+
 
 End Class
 

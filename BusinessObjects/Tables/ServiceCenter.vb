@@ -1871,25 +1871,28 @@ Public Class ServiceCenter
     End Class
 
 
-    Private _SVCPLRecon As SVCPLRecon = Nothing
+    Private _SvcPriceListRecon As SvcPriceListRecon = Nothing
 
-    Public ReadOnly Property CurrentSVCPLRecon() As SVCPLRecon
+    Public Property CurrentSVCPLRecon() As SvcPriceListRecon
 
         Get
             Dim dv As SVCPlRecoSearchDV = GetLatestRecbySVC()
             If dv.Table.Rows.Count = 1 Then
-                _SVCPLRecon = New SVCPLRecon(SVCPlRecoSearchDV.Id(dv.Table.Rows(0)), Me.Dataset)
-                Return _SVCPLRecon
+                _SvcPriceListRecon = New SvcPriceListRecon(SVCPlRecoSearchDV.Id(dv.Table.Rows(0)), Me.Dataset)
+                Return _SvcPriceListRecon
             End If
-            Return _SVCPLRecon
+            Return _SvcPriceListRecon
 
         End Get
+        Set(value As SvcPriceListRecon)
+            _SvcPriceListRecon = value
+        End Set
     End Property
 
-    Public Function Add_SVCPLRecon() As SVCPLRecon
-        _SVCPLRecon = New SVCPLRecon(Me.Dataset)
-        _SVCPLRecon.ServiceCenterId = Me.Id
-        Return _SVCPLRecon
+    Public Function Add_SVCPLRecon() As SvcPriceListRecon
+        _SvcPriceListRecon = New SvcPriceListRecon(Me.Dataset)
+        _SvcPriceListRecon.ServiceCenterId = Me.Id
+        Return _SvcPriceListRecon
     End Function
 
     Public Function GetLatestRecbySVC() As SVCPlRecoSearchDV

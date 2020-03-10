@@ -1310,6 +1310,24 @@ Partial Public Class ServiceCenterForm
     Protected WithEvents btnNewSchedule As Global.System.Web.UI.WebControls.Button
 
     '''<summary>
+    '''Panel1 control.
+    '''</summary>
+    '''<remarks>
+    '''Auto-generated field.
+    '''To modify move field declaration from designer file to code-behind file.
+    '''</remarks>
+    Protected WithEvents Panel1 As Global.System.Web.UI.WebControls.Panel
+
+    '''<summary>
+    '''panel2 control.
+    '''</summary>
+    '''<remarks>
+    '''Auto-generated field.
+    '''To modify move field declaration from designer file to code-behind file.
+    '''</remarks>
+    Protected WithEvents panel2 As Global.System.Web.UI.WebControls.Panel
+
+    '''<summary>
     '''trPageSize control.
     '''</summary>
     '''<remarks>
@@ -1352,16 +1370,7 @@ Partial Public Class ServiceCenterForm
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents DataGridPriceList As Global.System.Web.UI.WebControls.DataGrid
-
-    '''<summary>
-    '''HiddenDeletePromptResponse control.
-    '''</summary>
-    '''<remarks>
-    '''Auto-generated field.
-    '''To modify move field declaration from designer file to code-behind file.
-    '''</remarks>
-    Protected WithEvents HiddenDeletePromptResponse As Global.System.Web.UI.HtmlControls.HtmlInputHidden
+    Protected WithEvents DataGridPriceList As Global.System.Web.UI.WebControls.GridView
 
     '''<summary>
     '''btnSubmitApproval control.
@@ -1389,6 +1398,15 @@ Partial Public Class ServiceCenterForm
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
     Protected WithEvents btnReject As Global.System.Web.UI.WebControls.Button
+
+    '''<summary>
+    '''HiddenDeletePromptResponse control.
+    '''</summary>
+    '''<remarks>
+    '''Auto-generated field.
+    '''To modify move field declaration from designer file to code-behind file.
+    '''</remarks>
+    Protected WithEvents HiddenDeletePromptResponse As Global.System.Web.UI.HtmlControls.HtmlInputHidden
 
     '''<summary>
     '''btnSave_WRITE control.

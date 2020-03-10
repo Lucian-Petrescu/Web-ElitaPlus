@@ -252,9 +252,8 @@ Public Class ServiceCenterDAL
             '    BankInfoDAL.Update(familyDataset.GetChanges(DataRowState.Added Or DataRowState.Modified), tr, DataRowState.Added Or DataRowState.Modified)
             'End If
 
-            oSVCPlRecon.Update(familyDataset, tr, DataRowState.Added Or DataRowState.Modified)
 
-
+            Update(familyDataset.Tables(Me.TABLE_NAME).GetChanges(DataRowState.Added Or DataRowState.Modified), tr, DataRowState.Added Or DataRowState.Modified)
             'svcCtrMfrDal.Update(familyDataset.GetChanges(DataRowState.Added Or DataRowState.Modified), tr, DataRowState.Added Or DataRowState.Modified)
             'svcCtrDlrDal.Update(familyDataset.GetChanges(DataRowState.Added Or DataRowState.Modified), tr, DataRowState.Added Or DataRowState.Modified)
             'svcCtrZipDstDal.Update(familyDataset.GetChanges(DataRowState.Added Or DataRowState.Modified), tr, DataRowState.Added Or DataRowState.Modified)
@@ -264,7 +263,7 @@ Public Class ServiceCenterDAL
             'ContactInfoDAL.Update(familyDataset.GetChanges(DataRowState.Added Or DataRowState.Modified), tr, DataRowState.Added Or DataRowState.Modified)
             'VendorContactDAL.Update(familyDataset.GetChanges(DataRowState.Added Or DataRowState.Modified), tr, DataRowState.Added Or DataRowState.Modified)
             'ServiceScheduleDAL.Update(familyDataset.GetChanges(DataRowState.Added Or DataRowState.Modified), tr, DataRowState.Added Or DataRowState.Modified)
-
+            oSVCPlRecon.Update(familyDataset, tr, DataRowState.Added Or DataRowState.Modified)
 
 
             'At the end delete the Address
