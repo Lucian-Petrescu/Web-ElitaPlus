@@ -67,10 +67,6 @@ Public Class ServiceCenterDAL
     Public Const COL_NAME_PRICE_LIST_CODE As String = "PRICE_LIST_CODE"
 
 
-    Public Const COL_NAME_PRICE_LIST_CODE_INPROGRESS As String = "PRICE_LIST_CODE_INPROGRESS"
-    Public Const COL_NAME_PRICE_LIST_CODE_INPROGRESS_STATUS As String = "PL_CODE_INPROGRESS_STATUS"
-
-
     Public Const COL_NAME_DISCOUNT_PCT As String = "discount_pct"
     Public Const COL_NAME_DISCOUNT_DAYS As String = "discount_days"
     Public Const COL_NAME_NET_DAYS As String = "net_days"
@@ -111,7 +107,6 @@ Public Class ServiceCenterDAL
 
     Public Sub Load(ByVal familyDS As DataSet, ByVal id As Guid)
         Dim selectStmt As String = Me.Config("/SQL/LOAD")
-
         Dim parameters() As DBHelper.DBHelperParameter
         parameters = New DBHelper.DBHelperParameter() {New DBHelper.DBHelperParameter("service_center_id", id.ToByteArray)}
         Try
@@ -238,8 +233,8 @@ Public Class ServiceCenterDAL
             VendorContactDAL.Update(familyDataset, tr, DataRowState.Deleted)
             ContactInfoDAL.Update(familyDataset, tr, DataRowState.Deleted)
             ServiceScheduleDAL.Update(familyDataset, tr, DataRowState.Deleted)
-            ScheduleDAL.Update(familyDataset, tr, DataRowState.Deleted)
-            ScheduleDetailDAL.Update(familyDataset, tr, DataRowState.Deleted)
+            'ScheduleDAL.Update(familyDataset, tr, DataRowState.Deleted)
+            'ScheduleDetailDAL.Update(familyDataset, tr, DataRowState.Deleted)
 
             'oSVCPlRecon.Update(familyDataset.Tables(Me.TABLE_NAME), tr, DataRowState.Deleted)
 
@@ -263,6 +258,9 @@ Public Class ServiceCenterDAL
             ContactInfoDAL.Update(familyDataset.GetChanges(DataRowState.Added Or DataRowState.Modified), tr, DataRowState.Added Or DataRowState.Modified)
             VendorContactDAL.Update(familyDataset.GetChanges(DataRowState.Added Or DataRowState.Modified), tr, DataRowState.Added Or DataRowState.Modified)
             ServiceScheduleDAL.Update(familyDataset.GetChanges(DataRowState.Added Or DataRowState.Modified), tr, DataRowState.Added Or DataRowState.Modified)
+            'ScheduleDAL.Update(familyDataset.GetChanges(DataRowState.Added Or DataRowState.Modified), tr, DataRowState.Added Or DataRowState.Modified)
+            'ScheduleDetailDAL.Update(familyDataset.GetChanges(DataRowState.Added Or DataRowState.Modified), tr, DataRowState.Added Or DataRowState.Modified)
+
             oSVCPlRecon.Update(familyDataset, tr, DataRowState.Added Or DataRowState.Modified)
 
 
