@@ -1,6 +1,6 @@
 ﻿Public Class DealerInflation
     Inherits BusinessObjectBase
-
+ 
 #Region "Constant"
     public Const COL_NAME_INFLATION_MONTH As String = "INFLATION_MONTH"
     public Const COL_NAME_INFLATION_YEAR As String = "INFLATION_YEAR"
@@ -10,6 +10,7 @@
 #End Region
 
 #Region "Properties"
+
     Public ReadOnly Property Id() As Guid
         Get
             If row(DealerInflationDAL.TABLE_KEY_NAME) Is DBNull.Value Then
@@ -19,7 +20,7 @@
             End If
         End Get
     End Property
-
+   
     Public Property DealerInflationId() As Guid
         Get
             CheckDeleted()
@@ -34,6 +35,7 @@
             Me.SetValue(DealerInflationDAL.COL_NAME_DEALER_INFLATION_ID, Value)
         End Set
     End Property
+
     Public Property Dealer() As String
         Get
             CheckDeleted()
@@ -96,7 +98,7 @@
         End Set
     End Property
 
-    <ValueMandatory("")>
+    <ValueMandatoryDealerInflationPct(""),ValidNumericRange("", Min:=0, Max:=9999.99)>
     Public Property InflationPct() As DecimalType
         Get
             CheckDeleted()
@@ -174,6 +176,7 @@
             Throw New DataBaseAccessException(DataBaseAccessException.DatabaseAccessErrorType.ReadErr, ex)
         End Try
     End Sub
+
     Protected Sub Load(ByVal searchid As Guid,ByVal key As Guid)
         Try
             Dim dal As New DealerInflationDAL
@@ -320,4 +323,25 @@
 
 #End Region
 
+#Region "Custom Validation"
+    <AttributeUsage(AttributeTargets.Property Or AttributeTargets.Field)> _
+    Public NotInheritable Class ValueMandatoryDealerInflationPct
+        Inherits ValidBaseAttribute
+
+        Public Sub New(ByVal fieldDisplayName As String)
+            MyBase.New(fieldDisplayName, Common.ErrorCodes.VALUE_REQUIRED_DEALER_INFLATION__PERCENTAGE)
+        End Sub
+
+        Public Overrides Function IsValid(ByVal valueToCheck As Object, ByVal objectToValidate As Object) As Boolean
+            Dim obj As DealerInflation = CType(objectToValidate, DealerInflation)
+            If obj.IsNew AndAlso valueToCheck Is Nothing Then
+                Return False
+            ElseIf valueToCheck.Equals(String.Empty) Then
+                Return False
+            End If
+
+            Return True
+        End Function
+    End Class
+    #End Region
 End Class

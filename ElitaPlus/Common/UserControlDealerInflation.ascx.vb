@@ -46,6 +46,7 @@ Partial Class UserControlDealerInflation
     Private Const NO_ROW_SELECTED_INDEX As Integer = -1
     Private Const COL_NAME_INFLATION_YEAR_ID AS string ="ID"
     Private Const COL_NAME_INFLATION_YEAR_DESC AS string ="DESCRIPTION"
+    Private Const NO_INFLATION_YEAR_RANGE As Integer = 25
 
 #End Region
 
@@ -266,9 +267,11 @@ Partial Class UserControlDealerInflation
 
                     Dim moInflationYearDropDown As DropDownList = CType(e.Row.Cells(Me.GRID_COL_INFLATION_YEAR).FindControl(Me.GRID_CTRL_NAME_EDIT_INFLATION_YEAR), DropDownList)
                     ElitaPlusPage.BindListControlToDataView(moInflationYearDropDown, GetInflationYears(),,,false)
-                    If (Not String.IsNullOrWhiteSpace(dvRow(DealerInflation.DealerInflationDV.COL_inflation_month).ToString())) Then
+                   If TheState.IsGridAddNew = True then  
+                       Me.ThePage.SetSelectedItemByText(moInflationYearDropDown, DateTime.Now.Year)
+                   Elseif (Not String.IsNullOrWhiteSpace(dvRow(DealerInflation.DealerInflationDV.COL_inflation_month).ToString())) Then
                         Me.ThePage.SetSelectedItemByText(moInflationYearDropDown, DealerInflationGrid.DataKeys(e.Row.RowIndex).Values(GRID_COL_INFLATION_YEAR))
-                    End If
+                   End If
 
                    If TheState.IsGridAddNew = True Then
                        ControlMgr.SetEnableControl(Me.ThePage, moInflationYearDropDown, true)
@@ -517,7 +520,7 @@ Partial Class UserControlDealerInflation
 
         Dim row As DataRow
         
-        For i As Integer = 0 To 10
+        For i As Integer = - NO_INFLATION_YEAR_RANGE To NO_INFLATION_YEAR_RANGE
             row = dt.NewRow
             row(COL_NAME_INFLATION_YEAR_ID) = Guid.NewGuid.ToByteArray
             row(COL_NAME_INFLATION_YEAR_DESC) = DateTime.Now.Year +i
@@ -549,13 +552,8 @@ Partial Class UserControlDealerInflation
 
             objDropDownList = CType(DealerInflationGrid.Rows((Me.DealerInflationGrid.EditIndex)).Cells(GRID_COL_INFLATION_YEAR).FindControl(GRID_CTRL_NAME_EDIT_INFLATION_YEAR), DropDownList)
             Me.ThePage.PopulateBOProperty(TheState.MyBO, "InflationYear", objDropDownList,False)
-
-           
-            If (dealerInflationPct.Text = String.Empty) Then
-                dealerInflationPct.Text = 0
-            End If
+            
             Me.ThePage.PopulateBOProperty(TheState.MyBO, "InflationPct", dealerInflationPct)
-
             
         End With
         If Me.ThePage.ErrCollection.Count > 0 Then
