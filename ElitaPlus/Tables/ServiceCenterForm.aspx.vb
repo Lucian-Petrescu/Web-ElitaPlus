@@ -135,10 +135,6 @@ Partial Class ServiceCenterForm
     Private Const TAB_SCHEDULE As Integer = 10
     Private Const TAB_PRICE_LIST As Integer = 11
 
-    Private Const EDIT_COMMAND As String = "EditRecord"
-    Private Const DELETE_COMMAND As String = "DeleteRecord"
-    Private Const SORT_COMMAND As String = "Sort"
-
     Private Const SVC_PRICE_LIST_RECON_ID_COL As Integer = 0
     Private Const SVC_PRICE_LIST_ID_COL As Integer = 1
     Private Const SVC_REQUESTED_BY_COL As Integer = 2
@@ -160,8 +156,6 @@ Partial Class ServiceCenterForm
     Public Const STATUS_SVC_PL_RECON_PROCESS As String = "SVC_PL_RECON_PROCESS"
     Public Const STATUS_SVC_PL_RECON_PROCESS_PENDINGSUBMISSION As String = "SVC_PL_RECON_PROCESS-PENDINGSUBMISSION"
 
-    Private Const SVC_PL_RECON_PROCESS_PENDINGAPPROVAL As String = "SVC_PL_RECON_PROCESS-PENDINGAPPROVAL"
-    Private Const SVC_PL_RECON_PROCESS_PENDINGSUBMISSION As String = "SVC_PL_RECON_PROCESS-PENDINGSUBMISSION"
 
 #End Region
 
@@ -303,7 +297,6 @@ Partial Class ServiceCenterForm
         Public MethodOfRepairWorkingItem As ServCenterMethRepair
         Public priceListApprovalflag As String
 
-        Public MySvcBO As SvcPriceListRecon
         Public MySvcCompany As ArrayList = New ArrayList
         Public SvcPriceReconIDMask As String
         Public StatusXcdMask As String
@@ -350,7 +343,6 @@ Partial Class ServiceCenterForm
                 Me.State.pageParameters = CType(Me.CallingParameters, Parameters)
                 If Not Me.State.pageParameters.mbIsComingFromDealerform Then
                     Me.State.MyBO = New ServiceCenter(Me.State.pageParameters.SVCId)
-                    Me.State.MySvcBO = New SvcPriceListRecon(Me.State.pageParameters.SVCId)
                     If Me.State.MyBO.BankInfoId.Equals(Guid.Empty) Then
                         Me.State.MyBO.isBankInfoNeedDeletion = False
                     Else
@@ -634,13 +626,11 @@ Partial Class ServiceCenterForm
             If Not Me.State.MyBO.IsNew Then
                 'Reload from the DB
                 Me.State.MyBO = New ServiceCenter(Me.State.MyBO.Id)
-                'Me.State.MySvcBO = New SvcPriceListRecon(Me.State.MySvcBO.Id)
             ElseIf Not Me.State.ScreenSnapShotBO Is Nothing Then
                 'It was a new with copy
                 Me.State.MyBO.Clone(Me.State.ScreenSnapShotBO)
             Else
                 Me.State.MyBO = New ServiceCenter
-                'Me.State.MySvcBO = New SvcPriceListRecon
             End If
             PopulateCountry()
             Me.PopulateFormFromBOs()
@@ -976,7 +966,7 @@ Partial Class ServiceCenterForm
 
             If Not IsNothing(Me.State.MyBO.CurrentSVCPLRecon) Then
 
-                If Not String.IsNullOrEmpty(Me.State.MyBO.CurrentSVCPLRecon.Status_xcd) And Me.State.MyBO.CurrentSVCPLRecon.Status_xcd = SVC_PL_RECON_PROCESS_PENDINGAPPROVAL Then
+                If Not String.IsNullOrEmpty(Me.State.MyBO.CurrentSVCPLRecon.Status_xcd) And Me.State.MyBO.CurrentSVCPLRecon.Status_xcd = STATUS_SVC_PL_PROCESS_PENDINGAPPROVAL Then
                     ddlPriceList.Enabled = False
                 Else
                     ddlPriceList.Enabled = True
@@ -1560,13 +1550,10 @@ Partial Class ServiceCenterForm
 
     Protected Sub CreateNew()
 
-        'Me.State.MyBO.CurrentSVCPLRecon
 
         Me.State.ScreenSnapShotBO = Nothing 'Reset the backup copy
         Me.State.MyBO = New ServiceCenter
         Me.State.IsNew = True
-        Me.State.SvcPriciListDV = Nothing
-        Me.State.MyBO.CurrentSVCPLRecon = Nothing
 
         ClearMethodOfRepairState()
         PopulateCountry()
@@ -1581,12 +1568,6 @@ Partial Class ServiceCenterForm
                     })
 
         ClearPriceListReconState()
-
-        'Me.State.MyBO.CurrentSVCPLRecon = Nothing
-        'Me.txtPriceListPending.Text = Nothing
-        'Me.txtPriceListPendingStatus.Text = Nothing
-        'Me.State.SvcPriciListDV = Nothing
-
         Me.PopulateFormFromBOs()
         Me.EnableDisableFields()
     End Sub
@@ -1614,13 +1595,6 @@ Partial Class ServiceCenterForm
         PopulateCountry()
 
         ClearPriceListReconState()
-
-        'Me.State.MyBO.CurrentSVCPLRecon = Nothing
-        'Me.txtPriceListPending.Text = Nothing
-        'Me.txtPriceListPendingStatus.Text = Nothing
-        'Me.State.SvcPriciListDV = Nothing
-        'Me.State.IsCopy = True
-
         Me.PopulateFormFromBOs()
         Me.EnableDisableFields()
 
@@ -3473,38 +3447,6 @@ Partial Class ServiceCenterForm
     End Sub
 
 #End Region
-#Region "Style"
-
-    Public Overloads Sub SetGridItemStyleColor(ByVal oDataGrid As DataGrid)
-        oDataGrid.SelectedItemStyle.BackColor = Color.LightSteelBlue
-        oDataGrid.EditItemStyle.BackColor = Color.LightSteelBlue
-        'oDataGrid.SelectedItemStyle.ForeColor = Color.LimeGreen
-        'oDataGrid.HeaderStyle.ForeColor = Color.Magenta
-    End Sub
-
-    Public Overloads Sub SetGridItemStyleColor(ByVal oDataGrid As GridView)
-        oDataGrid.SelectedRowStyle.BackColor = Color.LightSteelBlue
-        oDataGrid.EditRowStyle.BackColor = Color.LightSteelBlue
-        'oDataGrid.SelectedItemStyle.ForeColor = Color.LimeGreen
-        'oDataGrid.HeaderStyle.ForeColor = Color.Magenta
-    End Sub
-
-    Public Overloads Shared Sub ClearGridHeaders(ByVal oDataGrid As DataGrid)
-        Dim oGridCol As DataGridColumn
-
-        For Each oGridCol In oDataGrid.Columns
-            oGridCol.HeaderStyle.ForeColor = Color.Empty
-        Next
-    End Sub
-
-    Public Overloads Shared Sub ClearGridHeaders(ByVal oDataGrid As GridView)
-        Dim oGridCol As DataControlField
-
-        For Each oGridCol In oDataGrid.Columns
-            oGridCol.HeaderStyle.ForeColor = Color.Empty
-        Next
-    End Sub
-#End Region
 
 #Region "New DataGrid"
     Private Sub InitializePage()
@@ -3656,21 +3598,6 @@ Partial Class ServiceCenterForm
         End If
     End Sub
 
-    'Public Sub ItemCommand(ByVal source As System.Object, ByVal e As System.Web.UI.WebControls.DataGridCommandEventArgs)
-    '    Try
-    '        If e.CommandName = "SelectAction" AndAlso DataGridPriceList.Enabled Then
-    '            Me.DataGridPriceList.SelectedIndex = e.Item.ItemIndex
-    '            Me.State.PriceListGridSelectedIndex = e.Item.ItemIndex
-    '            Me.State.selectedSvcPriceListReconId = New Guid(e.Item.Cells(Me.SVC_PRICE_LIST_RECON_ID_COL).Text)
-
-    '            Me.State.MySvcBO = New SvcPriceListRecon(Me.State.selectedSvcPriceListReconId)
-    '        End If
-    '    Catch ex As Threading.ThreadAbortException
-    '    Catch ex As Exception
-    '        Me.HandleErrors(ex, Me.ErrorCtrl)
-    '    End Try
-
-    'End Sub
 
     Public Sub ItemCreated(ByVal sender As System.Object, ByVal e As System.Web.UI.WebControls.DataGridItemEventArgs)
         BaseItemCreated(sender, e)
