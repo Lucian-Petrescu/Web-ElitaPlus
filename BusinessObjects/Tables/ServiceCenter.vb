@@ -1819,18 +1819,18 @@ Public Class ServiceCenter
 #Region "ServiceCenter-PL"
 
 
-    Public Class SVCPlRecoSearchDV
+    Public Class SVCPlReconSearchDV
         Inherits DataView
 
 #Region "Constants"
 
-        Public Const COL_SVC_PL_SERVICE_CENTER_ID As String = SVCPLReconDAL.COL_NAME_SERVICE_CENTER_ID
-        Public Const COL_SVC_PL_PRICE_LIST_ID As String = SVCPLReconDAL.COL_NAME_PRICE_LIST_ID
-        Public Const COL_SVC_PL_STATUS_XCD As String = SVCPLReconDAL.COL_NAME_STATUS_XCD
-        Public Const COL_SVC_PL_STATUS_DATE As String = SVCPLReconDAL.COL_NAME_STATUS_DATE
-        Public Const COL_SVC_PL_REQUESTED_BY As String = SVCPLReconDAL.COL_NAME_REQUESTED_BY
-        Public Const COL_SVC_PL_REQUESTED_DATE As String = SVCPLReconDAL.COL_NAME_REQUESTED_DATE
-        Public Const COL_SVC_PL_RECON_ID As String = SVCPLReconDAL.TABLE_KEY_NAME
+        Public Const COL_SVC_PL_SERVICE_CENTER_ID As String = SvcPriceListReconDAL.COL_NAME_SERVICE_CENTER_ID
+        Public Const COL_SVC_PL_PRICE_LIST_ID As String = SvcPriceListReconDAL.COL_NAME_PRICE_LIST_ID
+        Public Const COL_SVC_PL_STATUS_XCD As String = SvcPriceListReconDAL.COL_NAME_STATUS_XCD
+        Public Const COL_SVC_PL_STATUS_DATE As String = SvcPriceListReconDAL.COL_NAME_STATUS_DATE
+        Public Const COL_SVC_PL_REQUESTED_BY As String = SvcPriceListReconDAL.COL_NAME_REQUESTED_BY
+        Public Const COL_SVC_PL_REQUESTED_DATE As String = SvcPriceListReconDAL.COL_NAME_REQUESTED_DATE
+        Public Const COL_SVC_PL_RECON_ID As String = SvcPriceListReconDAL.TABLE_KEY_NAME
 
 #End Region
 
@@ -1876,9 +1876,9 @@ Public Class ServiceCenter
     Public Property CurrentSVCPLRecon() As SvcPriceListRecon
 
         Get
-            Dim dv As SVCPlRecoSearchDV = GetLatestRecbySVC()
+            Dim dv As SVCPlReconSearchDV = GetLatestRecbySVC()
             If dv.Table.Rows.Count = 1 Then
-                _SvcPriceListRecon = New SvcPriceListRecon(SVCPlRecoSearchDV.Id(dv.Table.Rows(0)), Me.Dataset)
+                _SvcPriceListRecon = New SvcPriceListRecon(SVCPlReconSearchDV.Id(dv.Table.Rows(0)), Me.Dataset)
                 Return _SvcPriceListRecon
             End If
             Return _SvcPriceListRecon
@@ -1895,10 +1895,10 @@ Public Class ServiceCenter
         Return _SvcPriceListRecon
     End Function
 
-    Public Function GetLatestRecbySVC() As SVCPlRecoSearchDV
+    Public Function GetLatestRecbySVC() As SVCPlReconSearchDV
         Try
 
-            Return New SVCPlRecoSearchDV(SVCPLRecon.LoadLatestStatusList(Me.Id).Tables(0))
+            Return New SVCPlReconSearchDV(SvcPriceListRecon.LoadLatestStatusList(Me.Id).Tables(0))
         Catch ex As Assurant.ElitaPlus.DALObjects.DataBaseAccessException
             Throw New DataBaseAccessException(ex.ErrorType, ex)
         End Try

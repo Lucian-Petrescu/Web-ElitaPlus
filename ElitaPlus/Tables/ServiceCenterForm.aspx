@@ -170,16 +170,16 @@
                 </tr>
                 <tr id ="PL_APPROVE_SEC" runat="server">
                     <td align="right" nowrap="nowrap">
-                        <asp:Label ID="lblPriceListPending" runat="server">PRICE_LIST_PENDING</asp:Label>
+                        <asp:Label ID="lblPriceListPending" runat="server">PRICE_LIST_PENDING_ASSIGNMENT</asp:Label>
                     </td>
                     <td align="left" nowrap="nowrap">
-                        <asp:TextBox ID="txtPriceListPending" TabIndex="5" runat="server" SkinID="MediumTextBox"></asp:TextBox>
+                        <asp:TextBox ID="txtPriceListPending" TabIndex="5" runat="server" SkinID="MediumTextBox" Enabled="False"></asp:TextBox>
                     </td>
                     <td align="right" nowrap="nowrap">
-                        <asp:Label ID="lblPriceListPendingStatus" runat="server">PRICE_LIST_PENDING_STATUS</asp:Label>
+                        <asp:Label ID="lblPriceListPendingStatus" runat="server">PRICE_LIST_PENDING_ASSIGNMENT_STATUS</asp:Label>
                     </td>
                     <td align="left" nowrap="nowrap">        
-                        <asp:TextBox ID="txtPriceListPendingStatus" TabIndex="5" runat="server" SkinID="MediumTextBox"></asp:TextBox>
+                        <asp:TextBox ID="txtPriceListPendingStatus" TabIndex="5" runat="server" SkinID="MediumTextBox" Enabled="False">></asp:TextBox>
                     </td>
                 </tr>
 
@@ -1233,7 +1233,7 @@
                                     <tr>
                                         <td></td>
                                         <td align="left">
-                                            <asp:Button ID="btnSubmitApproval" Text="SUBMIT_FOR_APPROVAL" runat="server" SkinID="AlternateLeftButton" />
+                                            <asp:Button ID="btnSubmitApproval" Text="SUBMIT_FOR_APPROVAL" runat="server" SkinID="PrimaryLeftButton" />
                                             <asp:Button ID="btnApprove" Text="APPROVE" runat="server" SkinID="AlternateRightButton" />
                                             <asp:Button ID="btnReject" Text="REJECT"  runat="server" SkinID="AlternateRightButton" />
                                         </td>

@@ -140,7 +140,7 @@
             If Row(SvcPriceListReconDAL.COL_NAME_STATUS_XCD) Is DBNull.Value Then
                 Return Nothing
             Else
-                Return CType(Row(SVCPLReconDAL.COL_NAME_STATUS_XCD), String)
+                Return CType(Row(SvcPriceListReconDAL.COL_NAME_STATUS_XCD), String)
             End If
         End Get
         Set(ByVal Value As String)
@@ -238,9 +238,30 @@
         End Try
     End Sub
 
+    Public Sub SaveWithoutCheckDsCreator()
+        Try
+            MyBase.Save()
+            If Me.IsDirty AndAlso Me.Row.RowState <> DataRowState.Detached Then
+                Dim dal As New SvcPriceListReconDAL
+                'dal.Update(Me.Row)
+
+                dal.UpdateFromSP(Me.Dataset.Tables(SvcPriceListReconDAL.TABLE_NAME))
+                'Reload the Data from the DB
+                If Me.Row.RowState <> DataRowState.Deleted Then
+                    Dim objId As Guid = Me.Id
+                    Me.Dataset = New DataSet
+                    Me.Row = Nothing
+                    Me.Load(objId)
+                End If
+            End If
+        Catch ex As DataBaseAccessException
+            Throw New DataBaseAccessException(DataBaseAccessException.DatabaseAccessErrorType.WriteErr, ex)
+        End Try
+    End Sub
+
 
     Public Function Add(ByVal svc_price_list_recon_id As Guid, ByVal servicenterId As Guid, ByVal price_list_id As Guid, ByVal status_xcd As String, ByVal Requested_By As String) As Integer
-        Dim dal As New SVCPLReconDAL
+        Dim dal As New SvcPriceListReconDAL
         Return dal.Add(svc_price_list_recon_id, servicenterId, price_list_id, status_xcd, Requested_By)
     End Function
 
@@ -360,6 +381,7 @@
             Throw New DataBaseAccessException(ex.ErrorType, ex)
         End Try
     End Function
+
 
     Public Shared Function GetList(ByVal DealerId As Guid, ByVal ProductData As DataSet) As DataView
         Try

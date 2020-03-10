@@ -258,7 +258,7 @@ Public Class ReactivateUploadForm
     End Sub
 
     Protected Sub btnHelp_Click(sender As Object, e As EventArgs) Handles btnHelp.Click
-        '  lblHelpText.Text = commonUpload.getScreenHelp(FORMCODE)
+        lblHelpText.Text = commonUpload.getScreenHelp(FORMCODE)
         lblHelpText.Visible = True
     End Sub
 #End Region

@@ -50,4 +50,10 @@
         dal.ExtractReportFile(strUploadType, strUserEmailAddress, strCompanyGroupCode, extractFile)
 
     End Sub
+    Public Shared Function getScreenHelp(FormName As String)
+        Dim dal As New commonUploadDAL
+        Dim helpData As String
+        helpData = dal.getScreenHelpData(FormName)
+        Return helpData
+    End Function
 End Class
