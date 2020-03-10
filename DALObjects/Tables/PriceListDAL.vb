@@ -6,7 +6,7 @@ Public Class PriceListDAL
 
 
 #Region "Constants"
-    Public Const TABLE_NAME As String = "ELP_PRICE_LIST"
+    Public Const TABLE_NAME As String = "ELP_PRICE_LIST_HEADER_RECON"
     Public Const TABLE_KEY_NAME As String = "price_list_id"
     Public Const COL_NAME_PRICE_LIST_ID As String = "price_list_id"
     Public Const COL_NAME_COUNTRY_ID As String = "country_id"
@@ -16,6 +16,7 @@ Public Class PriceListDAL
     Public Const COL_NAME_DESCRIPTION As String = "description"
     Public Const COL_NAME_MANAGE_INVENTORY_ID As String = "manage_inventory_id"
     Public Const COL_NAME_EFFECTIVE As String = "effective"
+    Public Const COL_NAME_STATUS As String = "status"
     Public Const COL_NAME_EXPIRATION As String = "expiration"
 
     Public Const COL_NAME_SERVICE_TYPE_ID = "pld.service_type_id"
@@ -29,8 +30,18 @@ Public Class PriceListDAL
     Public Const PAR_IN_NAME_CODE As String = "pi_code"
     Public Const PAR_IN_NAME_DESCRIPTION As String = "pi_description"
     Public Const PAR_IN_NAME_COUNTRY_LIST As String = "pi_country_id_list"
+    Public Const PAR_IN_NAME_COUNTRY_ID As String = "pi_country_id"
     Public Const PAR_IN_NAME_SERVICE_CENTER_DESCRIPTION As String = "pi_sc_description"
     Public Const PAR_IN_NAME_ACTIVATE_ON As String = "pi_activeon"
+    Public Const PAR_IN_NAME_PRICE_LIST_ID As String = "pi_price_list_id"
+    Public Const PAR_IN_NAME_MANAGE_INVENTORY_ID As String = "pi_manage_inventory_id"
+    Public Const PAR_IN_NAME_STATUS_XCD As String = "pi_status_xcd"
+    Public Const PAR_IN_NAME_PRICE_LIST_DETAIL_ID As String = "pi_price_list_detail_id"
+
+    Public Const PAR_IN_NAME_EFFECTIVE As String = "pi_effective"
+    Public Const PAR_IN_NAME_EXPIRATION As String = "pi_expiration"
+    Public Const PAR_IN_NAME_CREATED_BY As String = "pi_created_by"
+    Public Const PAR_IN_NAME_DEFAULT_CURRENCY_ID As String = "pi_default_currency_id"
     Public Const NULL_VALUE As String = "NULL"
 
 #End Region
@@ -50,9 +61,24 @@ Public Class PriceListDAL
 
     Public Sub Load(ByVal familyDS As DataSet, ByVal id As Guid)
         Dim selectStmt As String = Me.Config("/SQL/LOAD")
-        Dim parameters() As DBHelper.DBHelperParameter = New DBHelper.DBHelperParameter() {New DBHelper.DBHelperParameter("price_list_id", id.ToByteArray)}
+        'Dim parameters() As DBHelper.DBHelperParameter = New DBHelper.DBHelperParameter() {New DBHelper.DBHelperParameter("price_list_id", id.ToByteArray)}
         Try
-            DBHelper.Fetch(familyDS, selectStmt, Me.TABLE_NAME, parameters)
+            'Dim oraParms(parameters.Length - 1) As OracleParameter
+
+            'Dim i As Integer
+
+            'For i = 0 To parameters.Length - 1
+            '    oraParms(i) = New OracleParameter(parameters(i).Name, parameters(i).Value)
+            'Next
+            Dim params As OracleParameter()
+            params = New OracleParameter() {
+                              New OracleParameter("pi_price_list_id", OracleDbType.Raw, id.ToByteArray, ParameterDirection.Input),
+                              New OracleParameter("po_price_list", OracleDbType.RefCursor, ParameterDirection.Output),
+                              New OracleParameter(PAR_OUT_NAME_RETURN_CODE, OracleDbType.Int16, ParameterDirection.Output)}
+
+            DBHelper.InternalFetchbySP(familyDS, selectStmt, Me.TABLE_NAME, params)
+
+
         Catch ex As Exception
             Throw New DataBaseAccessException(DataBaseAccessException.DatabaseAccessErrorType.ReadErr, ex)
         End Try
@@ -67,6 +93,7 @@ Public Class PriceListDAL
                              ByVal languageId As Guid) As DataSet
 
         Dim selectStmt As String = Me.Config("/SQL/LOAD_LIST_SEARCH")
+
         'Dim whereClauseConditions As String = String.Empty
 
         'If Me.FormatSearchMask(code) Then
@@ -175,10 +202,120 @@ Public Class PriceListDAL
                               New OracleParameter(PAR_IN_NAME_COUNTRY_LIST, OracleDbType.Varchar2, If(String.IsNullOrEmpty(countryList), Nothing, countryList), ParameterDirection.Input),
                               New OracleParameter(PAR_IN_NAME_SERVICE_CENTER_DESCRIPTION, OracleDbType.Varchar2, If(String.IsNullOrEmpty(serviceCenter), serviceCenter, Nothing), ParameterDirection.Input),
                               New OracleParameter(PAR_IN_NAME_ACTIVATE_ON, OracleDbType.Varchar2, If(activeOn Is Nothing, Nothing, DateTime.Parse(activeOn).ToString("MM/dd/yyyy HH:mm:ss")), ParameterDirection.Input),
-                              New OracleParameter("po_price_table", OracleDbType.RefCursor, ParameterDirection.Output),
+                              New OracleParameter("po_all_price_list", OracleDbType.RefCursor, ParameterDirection.Output),
                               New OracleParameter(PAR_OUT_NAME_RETURN_CODE, OracleDbType.Int16, ParameterDirection.Output)}
 
         Return FetchStoredProcedure("LoadList",
+                                         selectStmt,
+                                         parameters)
+
+    End Function
+
+
+
+    Public Function InsertPriceListRecon(ByVal pricelistid As Guid,
+                             ByVal namecode As String,
+                             ByVal namedescription As String,
+                             ByVal countryid As String,
+                             ByVal createdby As String,
+                             ByVal manageinventoryid As String,
+                             ByVal effective As String,
+                             ByVal expiration As String,
+                             ByVal defaultcurrencyid As String) As DataSet
+
+        Dim selectStmt As String = Me.Config("/SQL/insert_price_list_recon")
+
+        Dim parameters() As OracleParameter
+
+        'Deleting NULL string wherever it's found
+        'If (Not String.IsNullOrEmpty(countryList)) Then
+        '    countryList = countryList.Replace("'", String.Empty)
+
+        '    Dim nullIndex As Integer = countryList.IndexOf(NULL_VALUE, StringComparison.InvariantCultureIgnoreCase)
+        '    Dim length = NULL_VALUE.Length
+
+        '    If (nullIndex <> -1) Then
+        '        If (countryList.Length > length) Then
+        '            length = length + 1
+        '        End If
+
+        '        If (nullIndex > 0) Then
+        '            nullIndex = nullIndex - 1
+        '        End If
+
+        '        countryList = countryList.Replace(countryList.Substring(nullIndex, length), String.Empty).Replace("'", String.Empty)
+        '    End If
+        'End If
+
+
+        parameters = New OracleParameter() {
+                              New OracleParameter(PAR_IN_NAME_PRICE_LIST_ID, OracleDbType.Raw, pricelistid.ToByteArray, ParameterDirection.Input),
+                              New OracleParameter(PAR_IN_NAME_CODE, OracleDbType.Varchar2, If(Not String.IsNullOrEmpty(namecode), namecode.ToUpper(), Nothing), ParameterDirection.Input),
+                              New OracleParameter(PAR_IN_NAME_DESCRIPTION, OracleDbType.Varchar2, If(Not String.IsNullOrEmpty(namedescription), namedescription.ToUpper, Nothing), ParameterDirection.Input),
+                              New OracleParameter(PAR_IN_NAME_COUNTRY_ID, OracleDbType.Varchar2, If(String.IsNullOrEmpty(countryid), Nothing, countryid), ParameterDirection.Input),
+                              New OracleParameter(PAR_IN_NAME_MANAGE_INVENTORY_ID, OracleDbType.Varchar2, If(String.IsNullOrEmpty(manageinventoryid), manageinventoryid, Nothing), ParameterDirection.Input),
+                              New OracleParameter(PAR_IN_NAME_EFFECTIVE, OracleDbType.Varchar2, If(effective Is Nothing, Nothing, DateTime.Parse(effective).ToString("MM/dd/yyyy HH:mm:ss")), ParameterDirection.Input),
+                              New OracleParameter(PAR_IN_NAME_EXPIRATION, OracleDbType.Varchar2, If(expiration Is Nothing, Nothing, DateTime.Parse(expiration).ToString("MM/dd/yyyy HH:mm:ss")), ParameterDirection.Input),
+                              New OracleParameter(PAR_IN_NAME_CREATED_BY, OracleDbType.Varchar2, OracleDbType.Varchar2, If(String.IsNullOrEmpty(createdby), createdby, Nothing), ParameterDirection.Input),
+                              New OracleParameter(PAR_IN_NAME_DEFAULT_CURRENCY_ID, OracleDbType.Varchar2, If(String.IsNullOrEmpty(createdby), createdby, Nothing), ParameterDirection.Input),
+                              New OracleParameter("po_return_code", OracleDbType.Long, ParameterDirection.Output)
+                              }
+
+        Return FetchStoredProcedure("InsertPriceList",
+                                         selectStmt,
+                                         parameters)
+
+    End Function
+
+    Public Function UpdatePriceListRecon(ByVal pricelistid As Guid,
+                             ByVal namecode As String,
+                             ByVal namedescription As String,
+                             ByVal countryid As String,
+                             ByVal createdby As String,
+                             ByVal manageinventoryid As String,
+                             ByVal effective As String,
+                             ByVal expiration As String,
+                             ByVal defaultcurrencyid As String) As DataSet
+
+        Dim selectStmt As String = Me.Config("/SQL/update_price_list_recon")
+
+        Dim parameters() As OracleParameter
+
+        'Deleting NULL string wherever it's found
+        'If (Not String.IsNullOrEmpty(countryList)) Then
+        '    countryList = countryList.Replace("'", String.Empty)
+
+        '    Dim nullIndex As Integer = countryList.IndexOf(NULL_VALUE, StringComparison.InvariantCultureIgnoreCase)
+        '    Dim length = NULL_VALUE.Length
+
+        '    If (nullIndex <> -1) Then
+        '        If (countryList.Length > length) Then
+        '            length = length + 1
+        '        End If
+
+        '        If (nullIndex > 0) Then
+        '            nullIndex = nullIndex - 1
+        '        End If
+
+        '        countryList = countryList.Replace(countryList.Substring(nullIndex, length), String.Empty).Replace("'", String.Empty)
+        '    End If
+        'End If
+
+
+        parameters = New OracleParameter() {
+                              New OracleParameter(PAR_IN_NAME_PRICE_LIST_ID, OracleDbType.Raw, pricelistid.ToByteArray, ParameterDirection.Input),
+                              New OracleParameter(PAR_IN_NAME_CODE, OracleDbType.Varchar2, If(Not String.IsNullOrEmpty(namecode), namecode.ToUpper(), Nothing), ParameterDirection.Input),
+                              New OracleParameter(PAR_IN_NAME_DESCRIPTION, OracleDbType.Varchar2, If(Not String.IsNullOrEmpty(namedescription), namedescription.ToUpper, Nothing), ParameterDirection.Input),
+                              New OracleParameter(PAR_IN_NAME_COUNTRY_ID, OracleDbType.Varchar2, If(String.IsNullOrEmpty(countryid), Nothing, countryid), ParameterDirection.Input),
+                              New OracleParameter(PAR_IN_NAME_MANAGE_INVENTORY_ID, OracleDbType.Varchar2, If(String.IsNullOrEmpty(manageinventoryid), manageinventoryid, Nothing), ParameterDirection.Input),
+                              New OracleParameter(PAR_IN_NAME_EFFECTIVE, OracleDbType.Varchar2, If(effective Is Nothing, Nothing, DateTime.Parse(effective).ToString("MM/dd/yyyy HH:mm:ss")), ParameterDirection.Input),
+                              New OracleParameter(PAR_IN_NAME_EXPIRATION, OracleDbType.Varchar2, If(expiration Is Nothing, Nothing, DateTime.Parse(expiration).ToString("MM/dd/yyyy HH:mm:ss")), ParameterDirection.Input),
+                              New OracleParameter(PAR_IN_NAME_CREATED_BY, OracleDbType.Varchar2, OracleDbType.Varchar2, If(String.IsNullOrEmpty(createdby), createdby, Nothing), ParameterDirection.Input),
+                              New OracleParameter(PAR_IN_NAME_DEFAULT_CURRENCY_ID, OracleDbType.Varchar2, If(String.IsNullOrEmpty(createdby), createdby, Nothing), ParameterDirection.Input),
+                              New OracleParameter("po_return_code", OracleDbType.Long, ParameterDirection.Output)
+                              }
+
+        Return FetchStoredProcedure("UpdatePriceList",
                                          selectStmt,
                                          parameters)
 
@@ -194,6 +331,11 @@ Public Class PriceListDAL
         If Not ds.Tables(Me.TABLE_NAME) Is Nothing Then
             MyBase.Update(ds.Tables(Me.TABLE_NAME), Transaction, changesFilter)
         End If
+    End Sub
+
+    Public Overloads Sub SubmitforApproval(ByVal familyDataset As DataSet, ByVal flag As String)
+        Dim PriceListDetails As New PriceListDetailDAL
+        PriceListDetails.SubmitForApproval(familyDataset, flag)
     End Sub
 
     Public Overloads Sub UpdateFamily(ByVal familyDataset As DataSet, Optional ByVal Transaction As IDbTransaction = Nothing)

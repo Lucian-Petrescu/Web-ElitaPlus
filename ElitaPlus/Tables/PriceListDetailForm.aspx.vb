@@ -1085,6 +1085,7 @@ Public Class PriceListDetailForm
             'Populate Selected Vendors list
             PopulateSelectedVendors()
             Me.PopulateGrid()
+            Me.PopulategvPendingApprovals()
 
             'if the rule list is expired then lock the form preventing change
             If Me.State.MyBO.Expiration.Value < DateTime.Now Then
@@ -1747,6 +1748,7 @@ Public Class PriceListDetailForm
                 ' BeginPriceListDetailChildEdit()
                 ModalPopupenabledisable()
                 mdlPopup.Show()
+                'mdlPopup2.Show()
             ElseIf e.CommandName = ElitaPlusSearchPage.DELETE_COMMAND_NAME Then
                 Me.State.IsGridInEditMode = False
                 priceListDetailId = New Guid(e.CommandArgument.ToString())
@@ -1755,6 +1757,15 @@ Public Class PriceListDetailForm
                 Me.State.ActionInProgress = ElitaPlusPage.DetailPageCommand.Delete
 
                 ' Me.MasterPage.MessageController.AddSuccess(ElitaPlus.ElitaPlusWebApp.Message.DELETE_RECORD_CONFIRMATION)
+            ElseIf e.CommandName = ElitaPlusSearchPage.VIEW_COMMAND_NAME Then
+                Me.State.IsGridInEditMode = False
+                priceListDetailId = New Guid(e.CommandArgument.ToString())
+                Me.State.PriceListDetailSelectedChildId = New Guid(e.CommandArgument.ToString())
+                Dim pld As PriceListDetail = New PriceListDetail()
+                pld.viewhistory(priceListDetailId)
+                mdlpopupHistory.Show()
+                'Me.DisplayMessage(Message.DELETE_RECORD_PROMPT, "", Me.MSG_BTN_YES_NO, Me.MSG_TYPE_CONFIRM, Me.HiddenSaveChangesPromptResponse)
+                Me.State.ActionInProgress = ElitaPlusPage.DetailPageCommand.ViewHistory
             End If
         Catch ex As Exception
             Me.HandleErrors(ex, Me.MasterPage.MessageController)
@@ -1859,6 +1870,413 @@ Public Class PriceListDetailForm
 
 #End Region
 
+#Region "Detail GRid for Approval"
+
+
+    ' <summary>
+    ' Populate the main detail lits grid
+    ' </summary>
+    ' <remarks></remarks>
+    ' 
+    Sub PopulategvPendingApprovals()
+        Try
+            Dim dv As PriceList.PriceListDetailSelectionView = Me.State.MyBO.GetPriceListSelectionView
+            dv.Sort = Me.State.SortExpression
+            Me.State.DetailSearchDV = dv
+            Me.gvPendingApprovals.AutoGenerateColumns = False
+
+            Me.gvPendingApprovals.PageSize = Me.State.PageSize
+            SetPageAndSelectedIndexFromGuid(dv, Me.State.PriceListDetailSelectedChildId, Me.gvPendingApprovals, Me.State.PageIndex)
+
+            Me.gvPendingApprovals.DataSource = dv 'Me.State.DetailSearchDV
+            Me.gvPendingApprovals.DataBind()
+            Me.State.PageIndex = Me.gvPendingApprovals.PageIndex
+            Me.ShowHideQuantity()
+
+            ControlMgr.SetVisibleControl(Me, trPageSize, Me.gvPendingApprovals.Visible)
+            ControlMgr.SetVisibleControl(Me, cboPageSize, Me.gvPendingApprovals.Visible)
+            ControlMgr.SetVisibleControl(Me, lblRecordCounts, True)
+
+            Session("recCount") = dv.Table.Rows.Count 'Me.State.DetailSearchDV.Count
+            Me.lblRecordCounts.Text = dv.Table.Rows.Count & " " & TranslationBase.TranslateLabelOrMessage(Message.MSG_RECORDS_FOUND)
+
+        Catch ex As Exception
+            Me.HandleErrors(ex, Me.MasterPage.MessageController)
+        End Try
+
+    End Sub
+
+    Private Sub gvPendingApprovals_SortCommand(ByVal source As Object, ByVal e As System.Web.UI.WebControls.GridViewSortEventArgs) Handles gvPendingApprovals.Sorting
+        Try
+            If Me.State.SortExpression.StartsWith(e.SortExpression) Then
+                If Me.State.SortExpression.EndsWith(" DESC") Then
+                    Me.State.SortExpression = e.SortExpression
+                Else
+                    Me.State.SortExpression &= " DESC"
+                End If
+            Else
+                Me.State.SortExpression = e.SortExpression
+            End If
+            Me.State.PageIndex = 0
+            Me.PopulategvPendingApprovals()
+            Me.HighLightSortColumn(gvPendingApprovals, Me.State.SortExpression, True)
+        Catch ex As Exception
+            Me.HandleErrors(ex, Me.MasterPage.MessageController)
+        End Try
+
+    End Sub
+
+    Private Sub gvPendingApprovals_PageIndexChanged(ByVal sender As Object, ByVal e As System.EventArgs) Handles gvPendingApprovals.PageIndexChanged
+        Try
+            Me.State.PageIndex = gvPendingApprovals.PageIndex
+            Me.State.PriceListId = Guid.Empty
+            PopulategvPendingApprovals()
+        Catch ex As Exception
+            Me.HandleErrors(ex, Me.MasterPage.MessageController)
+        End Try
+    End Sub
+
+    Private Sub gvPendingApprovals_PageIndexChanging(ByVal sender As Object, ByVal e As System.Web.UI.WebControls.GridViewPageEventArgs) Handles gvPendingApprovals.PageIndexChanging
+        Try
+            gvPendingApprovals.PageIndex = e.NewPageIndex
+            State.PageIndex = gvPendingApprovals.PageIndex
+            State.PriceListDetailSelectedChildId = Guid.Empty
+        Catch ex As Exception
+            Me.HandleErrors(ex, Me.MasterPage.MessageController)
+        End Try
+    End Sub
+
+    Protected Sub gvPendingApprovals_RowCommand(ByVal sender As Object, ByVal e As System.Web.UI.WebControls.GridViewCommandEventArgs) Handles gvPendingApprovals.RowCommand
+        Try
+            Dim priceListDetailId As Guid
+            Dim oDataView As PriceListDetail.PriceListDetailSearchDV
+
+            'Populate the grid with detail info
+            If e.CommandName = ElitaPlusSearchPage.EDIT_COMMAND_NAME Then
+                Me.State.IsGridInEditMode = True
+                Me.State.SelectedGridValueToEdit = New Guid(e.CommandArgument.ToString())
+                Me.State.ChildActionInProgress = DetailPageCommand.NewAndCopy
+
+                priceListDetailId = New Guid(e.CommandArgument.ToString())
+                Me.State.PriceListDetailSelectedChildId = New Guid(e.CommandArgument.ToString())
+                Me.State.MyChildBO = New PriceListDetail(Me.State.PriceListDetailSelectedChildId)
+                Me.PopulateModalControls()
+                BeginPriceListDetailChildEdit()
+                Me.PopulateDetailFromPriceListDetailChildBO()
+
+                If Not Me.State.MyChildBO.GetVendorQuantiy().Equals(Guid.Empty) Then
+                    Me.State.MyChildVendorBO = New VendorQuantity(Me.State.MyChildBO.GetVendorQuantiy())
+                End If
+
+                'condition
+                Me.PopulateControlFromBOProperty(ddlNewItemCondition, Me.State.MyChildBO.ConditionId)
+                'vendor sku
+                txtNewItemVendorSKU.Text = Me.State.MyChildBO.VendorSku
+                'description
+                txtNewItemSKUDescription.Text = Me.State.MyChildBO.VendorSkuDescription
+                'price
+                txtNewItemPrice.Text = Me.State.MyChildBO.Price.ToString()
+                'Calculation Percentage
+                If Not Me.State.MyChildBO.CalculationPercent Is Nothing Then
+                    txtcalculationpercent.Text = Me.State.MyChildBO.CalculationPercent.ToString()
+                Else
+                    txtcalculationpercent.Text = 0.0
+                End If
+                'effective Date
+                txtNewItemEffectiveDate.Text = Me.State.MyChildBO.Effective.ToString()
+                'expiration Date
+                txtNewItemExpirationDate.Text = Me.State.MyChildBO.Expiration.ToString()
+                'Low Price
+                txtNewItemLowPrice.Text = Me.State.MyChildBO.PriceBandRangeFrom.ToString()
+                'High Price
+                txtNewItemHighPrice.Text = Me.State.MyChildBO.PriceBandRangeTo.ToString()
+                'vendor quantity
+
+                If Not Me.State.MyChildBO.GetVendorQuantiy().Equals(Guid.Empty) AndAlso Not Me.State.MyChildVendorBO Is Nothing AndAlso Not Me.State.MyChildVendorBO.Quantity Is Nothing Then
+                    txtNewItemQuantity.Text = Me.State.MyChildVendorBO.Quantity.ToString()
+                Else
+                    txtNewItemQuantity.Text = String.Empty
+                End If
+
+
+                BeginPriceListDetailChildEdit()
+                ModalPopupenabledisable()
+                'mdlPopup.Show()
+            ElseIf e.CommandName = ElitaPlusSearchPage.DELETE_COMMAND_NAME Then
+                Me.State.IsGridInEditMode = False
+                priceListDetailId = New Guid(e.CommandArgument.ToString())
+                Me.State.PriceListDetailSelectedChildId = New Guid(e.CommandArgument.ToString())
+                Me.DisplayMessage(Message.DELETE_RECORD_PROMPT, "", Me.MSG_BTN_YES_NO, Me.MSG_TYPE_CONFIRM, Me.HiddenSaveChangesPromptResponse)
+                Me.State.ActionInProgress = ElitaPlusPage.DetailPageCommand.Delete
+
+                Me.MasterPage.MessageController.AddSuccess(ElitaPlus.ElitaPlusWebApp.Message.DELETE_RECORD_CONFIRMATION)
+            End If
+        Catch ex As Exception
+            Me.HandleErrors(ex, Me.MasterPage.MessageController)
+        End Try
+    End Sub
+
+    Private Sub gvPendingApprovals_RowCreated(ByVal sender As Object, ByVal e As System.Web.UI.WebControls.GridViewRowEventArgs) Handles gvPendingApprovals.RowCreated
+        Try
+            BaseItemCreated(sender, e)
+        Catch ex As Exception
+            Me.HandleErrors(ex, Me.MasterPage.MessageController)
+        End Try
+    End Sub
+
+    Private Sub gvPendingApprovals_RowDataBound(ByVal sender As Object, ByVal e As System.Web.UI.WebControls.GridViewRowEventArgs) Handles gvPendingApprovals.RowDataBound
+        If e.Row.RowType = DataControlRowType.DataRow Then
+
+            'Assign the detail id to the command agrument
+            Dim dvRow As DataRowView = CType(e.Row.DataItem, DataRowView)
+            Dim btnEditItem As ImageButton
+            Dim btnDeleteItem As ImageButton
+
+            If (Not e.Row.Cells(Me.GRID_COL_EDITID_IDX).FindControl(BTN_CONTROL_EDIT_DETAIL_LIST) Is Nothing) Then
+                'EDIT Button argument changed to id
+                btnEditItem = CType(e.Row.Cells(Me.GRID_COL_EDITID_IDX).FindControl(BTN_CONTROL_EDIT_DETAIL_LIST), ImageButton)
+                btnEditItem.CommandArgument = GetGuidStringFromByteArray(CType(dvRow(PriceListDetail.PriceListDetailSearchDV.COL_PRICE_LIST_DETAIL_ID), Byte()))
+                btnEditItem.CommandName = ElitaPlusSearchPage.EDIT_COMMAND_NAME
+
+                If Not (e.Row.Cells(Me.GRID_COL_EXPIRATION_DATEID_IDX).Text.ToString().Equals(String.Empty)) Then
+                    If (DateHelper.GetDateValue(e.Row.Cells(Me.GRID_COL_EXPIRATION_DATEID_IDX).Text.ToString()) < DateTime.Now) Then
+                        e.Row.Cells(Me.GRID_COL_EDITID_IDX).Visible = False
+                        btnEditItem.Visible = False
+                    End If
+                End If
+            End If
+
+            If (Not e.Row.Cells(Me.GRID_COL_DELETEID_IDX).FindControl(BTN_CONTROL_DELETE_DETAIL_LIST) Is Nothing) Then
+                'DELETE Button argument changed to id
+                btnDeleteItem = CType(e.Row.Cells(Me.GRID_COL_DELETEID_IDX).FindControl(BTN_CONTROL_DELETE_DETAIL_LIST), ImageButton)
+                btnDeleteItem.CommandArgument = GetGuidStringFromByteArray(CType(dvRow(PriceListDetail.PriceListDetailSearchDV.COL_PRICE_LIST_DETAIL_ID), Byte()))
+                btnDeleteItem.CommandName = ElitaPlusSearchPage.DELETE_COMMAND_NAME
+                Me.AddControlMsg(btnDeleteItem, Message.DELETE_RECORD_PROMPT, "", Me.MSG_BTN_YES_NO, Me.MSG_TYPE_CONFIRM, True)
+
+                If Not (e.Row.Cells(Me.GRID_COL_EXPIRATION_DATEID_IDX).Text.ToString().Equals(String.Empty)) Then
+                    If (DateHelper.GetDateValue(e.Row.Cells(Me.GRID_COL_EXPIRATION_DATEID_IDX).Text.ToString()) < DateTime.Now) Then
+                        btnDeleteItem.Visible = False
+                    End If
+                End If
+
+            End If
+
+            ChekAndReplaceWithParentData(e.Row, PriceListDetail.PriceListDetailSearchDV.COL_MAKE, PriceListDetail.PriceListDetailSearchDV.COL_PARENT_MAKE)
+            ChekAndReplaceWithParentData(e.Row, PriceListDetail.PriceListDetailSearchDV.COL_MODEL, PriceListDetail.PriceListDetailSearchDV.COL_PARENT_MODEL)
+            ChekAndReplaceWithParentData(e.Row, PriceListDetail.PriceListDetailSearchDV.COL_CONDITION_ID, PriceListDetail.PriceListDetailSearchDV.COL_PARENT_CONDITION_ID)
+            ChekAndReplaceWithParentText(e.Row, GRID_COL_MODEL_IDX, PriceListDetail.PriceListDetailSearchDV.COL_PARENT_MODEL_DESCRIPTION)
+            ChekAndReplaceWithParentText(e.Row, GRID_COL_CONDITIONID_IDX, PriceListDetail.PriceListDetailSearchDV.COL_PARENT_CONDITION_DESCRIPTION)
+        End If
+    End Sub
+
+#End Region
+
+#Region "View History Grid"
+
+
+    ''' <summary>
+    ''' Populate the main detail lits grid
+    ''' </summary>
+    ''' <remarks></remarks>
+    ''' 
+    Sub PopulateGridHistory()
+        Try
+            Dim dv As PriceList.PriceListDetailSelectionView = Me.State.MyBO.GetPriceListSelectionView
+            dv.Sort = Me.State.SortExpression
+            Me.State.DetailSearchDV = dv
+            Me.gvHistory.AutoGenerateColumns = False
+
+            Me.gvHistory.PageSize = Me.State.PageSize
+            SetPageAndSelectedIndexFromGuid(dv, Me.State.PriceListDetailSelectedChildId, Me.gvHistory, Me.State.PageIndex)
+
+            Me.gvHistory.DataSource = dv 'Me.State.DetailSearchDV
+            Me.gvHistory.DataBind()
+            Me.State.PageIndex = Me.gvHistory.PageIndex
+            Me.ShowHideQuantity()
+
+            ControlMgr.SetVisibleControl(Me, trPageSize, Me.gvHistory.Visible)
+            ControlMgr.SetVisibleControl(Me, cboPageSize, Me.gvHistory.Visible)
+            ControlMgr.SetVisibleControl(Me, lblRecordCounts, True)
+
+            Session("recCount") = dv.Table.Rows.Count 'Me.State.DetailSearchDV.Count
+            Me.lblRecordCounts.Text = dv.Table.Rows.Count & " " & TranslationBase.TranslateLabelOrMessage(Message.MSG_RECORDS_FOUND)
+
+        Catch ex As Exception
+            Me.HandleErrors(ex, Me.MasterPage.MessageController)
+        End Try
+
+    End Sub
+
+    Private Sub gvHistory_SortCommand(ByVal source As Object, ByVal e As System.Web.UI.WebControls.GridViewSortEventArgs) Handles gvHistory.Sorting
+        Try
+            If Me.State.SortExpression.StartsWith(e.SortExpression) Then
+                If Me.State.SortExpression.EndsWith(" DESC") Then
+                    Me.State.SortExpression = e.SortExpression
+                Else
+                    Me.State.SortExpression &= " DESC"
+                End If
+            Else
+                Me.State.SortExpression = e.SortExpression
+            End If
+            Me.State.PageIndex = 0
+            Me.PopulateGridHistory()
+            Me.HighLightSortColumn(Grid, Me.State.SortExpression, True)
+        Catch ex As Exception
+            Me.HandleErrors(ex, Me.MasterPage.MessageController)
+        End Try
+
+    End Sub
+
+    Private Sub gvHistory_PageIndexChanged(ByVal sender As Object, ByVal e As System.EventArgs) Handles gvHistory.PageIndexChanged
+        Try
+            Me.State.PageIndex = gvHistory.PageIndex
+            Me.State.PriceListId = Guid.Empty
+            PopulateGridHistory()
+        Catch ex As Exception
+            Me.HandleErrors(ex, Me.MasterPage.MessageController)
+        End Try
+    End Sub
+
+    Private Sub gvHistory_PageIndexChanging(ByVal sender As Object, ByVal e As System.Web.UI.WebControls.GridViewPageEventArgs) Handles gvHistory.PageIndexChanging
+        Try
+            gvHistory.PageIndex = e.NewPageIndex
+            State.PageIndex = gvHistory.PageIndex
+            State.PriceListDetailSelectedChildId = Guid.Empty
+        Catch ex As Exception
+            Me.HandleErrors(ex, Me.MasterPage.MessageController)
+        End Try
+    End Sub
+
+    Protected Sub gvHistory_RowCommand(ByVal sender As Object, ByVal e As System.Web.UI.WebControls.GridViewCommandEventArgs) Handles gvHistory.RowCommand
+        Try
+            Dim priceListDetailId As Guid
+            Dim oDataView As PriceListDetail.PriceListDetailSearchDV
+
+            'Populate the grid with detail info
+            If e.CommandName = ElitaPlusSearchPage.EDIT_COMMAND_NAME Then
+                Me.State.IsGridInEditMode = True
+                Me.State.SelectedGridValueToEdit = New Guid(e.CommandArgument.ToString())
+                Me.State.ChildActionInProgress = DetailPageCommand.NewAndCopy
+
+                'priceListDetailId = New Guid(e.CommandArgument.ToString())
+                Me.State.PriceListDetailSelectedChildId = New Guid(e.CommandArgument.ToString())
+                ' Me.State.MyChildBO = New PriceListDetail(Me.State.PriceListDetailSelectedChildId)
+                Me.PopulateModalControls()
+                BeginPriceListDetailChildEdit()
+                Me.PopulateDetailFromPriceListDetailChildBO()
+
+                If Not Me.State.MyChildBO.GetVendorQuantiy().Equals(Guid.Empty) Then
+                    Me.State.MyChildVendorBO = New VendorQuantity(Me.State.MyChildBO.GetVendorQuantiy())
+                End If
+
+                '' condition
+                'Me.PopulateControlFromBOProperty(ddlNewItemCondition, Me.State.MyChildBO.ConditionId)
+                ' vendor sku
+                txtNewItemVendorSKU.Text = Me.State.MyChildBO.VendorSku
+                ' description
+                txtNewItemSKUDescription.Text = Me.State.MyChildBO.VendorSkuDescription
+                ' price
+                txtNewItemPrice.Text = Me.State.MyChildBO.Price.ToString()
+                'Calculation Percentage
+                If Not Me.State.MyChildBO.CalculationPercent Is Nothing Then
+                    txtcalculationpercent.Text = Me.State.MyChildBO.CalculationPercent.ToString()
+                Else
+                    txtcalculationpercent.Text = 0.0
+                End If
+                ' effective date
+                txtNewItemEffectiveDate.Text = Me.State.MyChildBO.Effective.ToString()
+                ' expiration date
+                txtNewItemExpirationDate.Text = Me.State.MyChildBO.Expiration.ToString()
+                'Low Price
+                txtNewItemLowPrice.Text = Me.State.MyChildBO.PriceBandRangeFrom.ToString()
+                'High Price
+                txtNewItemHighPrice.Text = Me.State.MyChildBO.PriceBandRangeTo.ToString()
+                'vendor quantity
+
+                If Not Me.State.MyChildBO.GetVendorQuantiy().Equals(Guid.Empty) AndAlso Not Me.State.MyChildVendorBO Is Nothing AndAlso Not Me.State.MyChildVendorBO.Quantity Is Nothing Then
+                    txtNewItemQuantity.Text = Me.State.MyChildVendorBO.Quantity.ToString()
+                Else
+                    txtNewItemQuantity.Text = String.Empty
+                End If
+
+
+                ' BeginPriceListDetailChildEdit()
+                'ModalPopupenabledisable()
+                'mdlPopup.Show()
+                'mdlPopup2.Show()
+            ElseIf e.CommandName = ElitaPlusSearchPage.DELETE_COMMAND_NAME Then
+                Me.State.IsGridInEditMode = False
+                priceListDetailId = New Guid(e.CommandArgument.ToString())
+                Me.State.PriceListDetailSelectedChildId = New Guid(e.CommandArgument.ToString())
+                Me.DisplayMessage(Message.DELETE_RECORD_PROMPT, "", Me.MSG_BTN_YES_NO, Me.MSG_TYPE_CONFIRM, Me.HiddenSaveChangesPromptResponse)
+                Me.State.ActionInProgress = ElitaPlusPage.DetailPageCommand.Delete
+
+                ' Me.MasterPage.MessageController.AddSuccess(ElitaPlus.ElitaPlusWebApp.Message.DELETE_RECORD_CONFIRMATION)
+            ElseIf e.CommandName = ElitaPlusSearchPage.VIEW_COMMAND_NAME Then
+                Me.State.IsGridInEditMode = False
+                priceListDetailId = New Guid(e.CommandArgument.ToString())
+                Me.State.PriceListDetailSelectedChildId = New Guid(e.CommandArgument.ToString())
+                Dim pld As PriceListDetail = New PriceListDetail()
+                pld.viewhistory(priceListDetailId)
+                PopulateGridHistory()
+                ModalPopupenabledisable()
+                'Me.DisplayMessage(Message.DELETE_RECORD_PROMPT, "", Me.MSG_BTN_YES_NO, Me.MSG_TYPE_CONFIRM, Me.HiddenSaveChangesPromptResponse)
+                Me.State.ActionInProgress = ElitaPlusPage.DetailPageCommand.ViewHistory
+            End If
+        Catch ex As Exception
+            Me.HandleErrors(ex, Me.MasterPage.MessageController)
+        End Try
+    End Sub
+
+    Private Sub gvHistory_RowCreated(ByVal sender As Object, ByVal e As System.Web.UI.WebControls.GridViewRowEventArgs) Handles gvHistory.RowCreated
+        Try
+            BaseItemCreated(sender, e)
+        Catch ex As Exception
+            Me.HandleErrors(ex, Me.MasterPage.MessageController)
+        End Try
+    End Sub
+
+    Private Sub gvHistory_RowDataBound(ByVal sender As Object, ByVal e As System.Web.UI.WebControls.GridViewRowEventArgs) Handles gvHistory.RowDataBound
+        If e.Row.RowType = DataControlRowType.DataRow Then
+
+            ' Assign the detail id to the command agrument
+            Dim dvRow As DataRowView = CType(e.Row.DataItem, DataRowView)
+            Dim btnEditItem As ImageButton
+            Dim btnDeleteItem As ImageButton
+
+            If (Not e.Row.Cells(Me.GRID_COL_EDITID_IDX).FindControl(BTN_CONTROL_EDIT_DETAIL_LIST) Is Nothing) Then
+                'Edit Button argument changed to id
+                btnEditItem = CType(e.Row.Cells(Me.GRID_COL_EDITID_IDX).FindControl(BTN_CONTROL_EDIT_DETAIL_LIST), ImageButton)
+                btnEditItem.CommandArgument = GetGuidStringFromByteArray(CType(dvRow(PriceListDetail.PriceListDetailSearchDV.COL_PRICE_LIST_DETAIL_ID), Byte()))
+                btnEditItem.CommandName = ElitaPlusSearchPage.EDIT_COMMAND_NAME
+
+                If Not (e.Row.Cells(Me.GRID_COL_EXPIRATION_DATEID_IDX).Text.ToString().Equals(String.Empty)) Then
+                    If (DateHelper.GetDateValue(e.Row.Cells(Me.GRID_COL_EXPIRATION_DATEID_IDX).Text.ToString()) < DateTime.Now) Then
+                        'e.Row.Cells(Me.GRID_COL_EDITID_IDX).Visible = False
+                        btnEditItem.Visible = False
+                    End If
+                End If
+            End If
+
+            If (Not e.Row.Cells(Me.GRID_COL_DELETEID_IDX).FindControl(BTN_CONTROL_DELETE_DETAIL_LIST) Is Nothing) Then
+                'Delete Button argument changed to id
+                btnDeleteItem = CType(e.Row.Cells(Me.GRID_COL_DELETEID_IDX).FindControl(BTN_CONTROL_DELETE_DETAIL_LIST), ImageButton)
+                btnDeleteItem.CommandArgument = GetGuidStringFromByteArray(CType(dvRow(PriceListDetail.PriceListDetailSearchDV.COL_PRICE_LIST_DETAIL_ID), Byte()))
+                btnDeleteItem.CommandName = ElitaPlusSearchPage.DELETE_COMMAND_NAME
+                'Me.AddControlMsg(btnDeleteItem, Message.DELETE_RECORD_PROMPT, "", Me.MSG_BTN_YES_NO, Me.MSG_TYPE_CONFIRM, True)
+
+                If Not (e.Row.Cells(Me.GRID_COL_EXPIRATION_DATEID_IDX).Text.ToString().Equals(String.Empty)) Then
+                    If (DateHelper.GetDateValue(e.Row.Cells(Me.GRID_COL_EXPIRATION_DATEID_IDX).Text.ToString()) < DateTime.Now) Then
+                        btnDeleteItem.Visible = False
+                    End If
+                End If
+
+            End If
+
+
+        End If
+    End Sub
+#End Region
     Sub PopulateDetailFromPriceListDetailChildBO()
         ' service class
         Me.PopulateControlFromBOProperty(ddlNewItemServiceClass, Me.State.MyChildBO.ServiceClassId)
@@ -2061,5 +2479,48 @@ Public Class PriceListDetailForm
         End If
     End Function
 
+    '''Private Sub btnSave_Load(sender As Object, e As EventArgs) Handles btnSave.Load
 
+    '''End Sub
+
+    Protected Sub btnSubmitforApproval_Click(sender As Object, e As EventArgs) Handles btnSubmitforApproval.Click
+        Me.State.MyBO.SubmitforApproval("submitforapproval")
+        btnSubmitforApproval.Enabled = False
+    End Sub
+
+    Protected Sub btnApprove_Click(sender As Object, e As EventArgs) Handles btnApprove.Click
+        For Each gvrow As GridViewRow In gvPendingApprovals.Rows
+            Dim chkApproveOrReject As CheckBox = CType(gvrow.FindControl("chkApproveOrReject"), CheckBox)
+
+            If chkApproveOrReject.Checked Then
+                Dim usrid As Byte() = gvPendingApprovals.DataKeys(gvrow.RowIndex).Value
+
+            End If
+        Next
+        Me.State.MyBO.SubmitforApproval("approve")
+
+    End Sub
+
+    Protected Sub btnReject_Click(sender As Object, e As EventArgs) Handles btnReject.Click
+        For Each gvrow As GridViewRow In gvPendingApprovals.Rows
+            Dim chkApproveOrReject As CheckBox = CType(gvrow.FindControl("chkApproveOrReject"), CheckBox)
+
+            If chkApproveOrReject.Checked Then
+                Dim usrid As Byte() = gvPendingApprovals.DataKeys(gvrow.RowIndex).Value
+
+            End If
+        Next
+        Me.State.MyBO.SubmitforApproval("reject")
+    End Sub
+
+
+    Protected Sub CheckUncheckAll(sender As Object, e As System.EventArgs)
+        'Dim chk1 As CheckBox
+        'chk1 = DirectCast(GridView1.HeaderRow.Cells(0).FindControl("CheckBox1"), CheckBox)
+        'For Each row As GridViewRow In GridView1.Rows
+        '    Dim chk As CheckBox
+        '    chk = DirectCast(row.Cells(0).FindControl("CheckBox2"), CheckBox)
+        '    chk.Checked = chk1.Checked
+        'Next
+    End Sub
 End Class

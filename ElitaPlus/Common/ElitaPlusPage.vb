@@ -149,6 +149,7 @@ Public Class ElitaPlusPage
         GridPageSize
         GridColSort
         Expire
+        ViewHistory
     End Enum
 #End Region
 

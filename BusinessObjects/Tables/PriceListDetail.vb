@@ -847,6 +847,12 @@ Public Class PriceListDetail
         End Try
     End Sub
 
+    Public Sub viewhistory(ByVal pricelistdetailid As Guid)
+        Dim dal As New PriceListDetailDAL
+        dal.ViewPriceListDetailHistory(pricelistdetailid, ElitaPlusIdentity.Current.ActiveUser.LanguageId, Me.Dataset)
+
+    End Sub
+
     Public Sub SaveRow()
         Try
             MyBase.Save()

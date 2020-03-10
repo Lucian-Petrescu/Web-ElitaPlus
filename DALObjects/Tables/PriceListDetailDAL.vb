@@ -1,6 +1,7 @@
 ﻿'************* THIS CODE HAS BEEN GENERATED FROM TEMPLATE DALObject.cst (7/31/2012)********************
 Imports System.Collections.Generic
 Imports System.Linq
+Imports System.Data
 
 Public Class PriceListDetailDAL
     Inherits DALBase
@@ -10,6 +11,7 @@ Public Class PriceListDetailDAL
     Public Const TABLE_KEY_NAME As String = "price_list_detail_id"
 
     Public Const COL_NAME_PRICE_LIST_DETAIL_ID As String = "price_list_detail_id"
+    Public Const COL_NAME_STATUS_XCD As String = "status_xcd"
     Public Const COL_NAME_PRICE_LIST_ID As String = "price_list_id"
     Public Const COL_NAME_SERVICE_CLASS_ID As String = "service_class_id"
     Public Const COL_NAME_SERVICE_TYPE_ID As String = "service_type_id"
@@ -128,6 +130,7 @@ Public Class PriceListDetailDAL
     Public Const PAR_IN_NAME_PART_ID As String = "pi_part_id"
     Public Const PAR_IN_NAME_MANUFACTURER_ORIGIN As String = "pi_manufacturer_origin_xcd"
     Public Const PAR_IN_NAME_STOCK_ITEM_TYPE As String = "pi_stock_item_type_xcd"
+    Public Const PAR_IN_NAME_STATUS_XCD As String = "pi_status_xcd"
 
     'US 224089 
     Public Const PAR_IN_NAME_PARTS_LIST As String = "pi_parts_list"
@@ -893,6 +896,62 @@ Public Class PriceListDetailDAL
                                     parameters,
                                     familyDS)
     End Sub
+
+    Public Sub SubmitForApproval(ByVal familyDS As DataSet, ByVal flag As String)
+        'Dim temptablepricelist As DataTable = familyDS.Tables.Add("elp_price_list_header_recon")
+        Dim pricelistdetailidlist As String = String.Empty
+        Dim CreatedBy As String = String.Empty
+        Dim Index As Integer = 0
+        Dim PricelistID As Byte()
+        Dim status_xcd As String = String.Empty
+        If flag = "approve" Then
+            status_xcd = "PL_RECON_PROCESS-APPROVED"
+        ElseIf flag = "reject" Then
+            status_xcd = "PL_RECON_PROCESS-REJECTED"
+        Else
+            status_xcd = "PL_RECON_PROCESS-PENDINGAPPROVAL"
+            Index = 2
+        End If
+        For Each r As DataRow In familyDS.Tables(2).Rows
+            pricelistdetailidlist += r("PRICE_LIST_DETAIL_ID").ToString() + ","
+            CreatedBy = r("CREATED_BY")
+            PricelistID = r("PRICE_LIST_ID")
+        Next
+
+
+        Dim selectStmt As String = Me.Config("/SQL/SUBMIT_FOR_APPROVAL")
+        Dim parameters() As OracleParameter
+        parameters = New OracleParameter() {New OracleParameter(PAR_IN_NAME_PRICE_LIST_ID, OracleDbType.Raw, PricelistID, ParameterDirection.Input),
+                              New OracleParameter("pi_price_list_detail_id_list", OracleDbType.Varchar2, pricelistdetailidlist, ParameterDirection.Input),
+                              New OracleParameter(PAR_IN_NAME_STATUS_XCD, OracleDbType.Varchar2, status_xcd, ParameterDirection.Input),'.Value() = status_xcd,
+                              New OracleParameter("pi_status_by", OracleDbType.Varchar2, CreatedBy, ParameterDirection.Input),
+                              New OracleParameter(PAR_OUT_NAME_RETURN_CODE, OracleDbType.Decimal, ParameterDirection.Output)}
+
+        FetchStoredProcedure("SubmitforApproval",
+                                    selectStmt,
+                                    parameters,
+                                    familyDS)
+    End Sub
+
+    Public Function ViewPriceListDetailHistory(ByVal Pricelistdetaild As Guid, ByVal languageId As Guid, ByVal familyDS As DataSet) As DataSet
+        'Dim pricelistdetailidlist As Guid
+        ''For Each r As DataRow In familyDS.Tables(2).Rows
+        ''    pricelistdetailidlist += r("PRICE_LIST_DETAIL_ID")
+        ''Next
+
+        Dim selectStmt As String = Me.Config("/SQL/LOAD_PRICE_LIST_DETAIL_HISTORY")
+        Dim parameters() As OracleParameter
+        parameters = New OracleParameter() {
+                              New OracleParameter("pi_price_list_detail_id", OracleDbType.Raw, Pricelistdetaild.ToByteArray, ParameterDirection.Input),
+                              New OracleParameter(PAR_IN_NAME_LANGUAGE_ID, OracleDbType.Raw, languageId.ToByteArray, ParameterDirection.Input),
+                              New OracleParameter("po_price_list_detail_hist", OracleDbType.RefCursor, ParameterDirection.Output),
+                              New OracleParameter(PAR_OUT_NAME_RETURN_CODE, OracleDbType.Int16, ParameterDirection.Output)}
+
+        FetchStoredProcedure("ViewPriceListDetailsHistory",
+                                    selectStmt,
+                                    parameters,
+                                    familyDS)
+    End Function
 
     Public Function GetMakeModelByEquipmentId(ByVal Equipmentid As Guid, ByVal CompanyGroupId As Guid) As DataSet
         'Dim ds As New DataSet

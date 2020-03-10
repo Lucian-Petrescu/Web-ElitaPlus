@@ -259,6 +259,25 @@ Public Class PriceList
         End Try
     End Sub
 
+    Public Overrides Sub SubmitforApproval(ByVal flag As String)
+        Try
+
+            MyBase.SubmitforApproval(flag)
+            Dim dal As New PriceListDAL
+            dal.SubmitforApproval(Me.Dataset, flag)
+            'Reload the Data
+            If Me._isDSCreator AndAlso Me.Row.RowState <> DataRowState.Detached Then
+                'Reload the Data from the DB
+                Dim objId As Guid = Me.Id
+                Me.Dataset = New DataSet
+                Me.Row = Nothing
+                Me.Load(objId)
+            End If
+        Catch ex As Assurant.ElitaPlus.DALObjects.DataBaseAccessException
+            Throw New DataBaseAccessException(DataBaseAccessException.DatabaseAccessErrorType.WriteErr, ex)
+        End Try
+    End Sub
+
     Public Shared Function GetList(ByVal code As String, _
                                    ByVal description As String, _
                                    ByVal serviceType As Guid, _
@@ -414,6 +433,7 @@ Public Class PriceList
         Public Const COL_NAME_COUNTRY_ID As String = PriceListDAL.COL_NAME_COUNTRY_ID
         Public Const COL_NAME_CODE As String = PriceListDAL.COL_NAME_CODE
         Public Const COL_NAME_DESCRIPTION As String = PriceListDAL.COL_NAME_DESCRIPTION
+        Public Const COL_NAME_STATUS As String = PriceListDAL.COL_NAME_STATUS
         Public Const COL_NAME_EFFECTIVE As String = PriceListDAL.COL_NAME_EFFECTIVE
         Public Const COL_NAME_EXPIRATION As String = PriceListDAL.COL_NAME_EXPIRATION
 #End Region
@@ -783,6 +803,7 @@ Public Class PriceList
     Public Class PriceListDetailSelectionView
         Inherits DataView
         Public Const COL_NAME_PRICE_LIST_DETAIL_ID As String = PriceListDetailDAL.COL_NAME_PRICE_LIST_DETAIL_ID
+        'Public Const COL_NAME_STATUS_XCD As String = PriceListDetailDAL.COL_NAME_STATUS_XCD
         Public Const COL_NAME_PRICE_LIST_ID As String = PriceListDetailDAL.COL_NAME_PRICE_LIST_ID
         Public Const COL_NAME_EFFECTIVE As String = PriceListDetailDAL.COL_NAME_EFFECTIVE
         Public Const COL_NAME_EXPIRATION As String = PriceListDetailDAL.COL_NAME_EXPIRATION

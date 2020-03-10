@@ -865,6 +865,21 @@ Public MustInherit Class BusinessObjectBase
         End If
     End Sub
 
+    Public Overridable Sub SubmitforApproval(ByVal flag As String)
+        'Me.CheckDeleted()
+        If Row.RowState = DataRowState.Detached Then
+            Return 'Nothing to do. This is the case when something is added and delted before calling save
+        End If
+        If Not Me.IsDeleted Then
+            Me.Validate()
+        End If
+        If Me.IsNew Then
+            Me.SetCreatedAuditInfo()
+        ElseIf Not Me.IsDeleted AndAlso Me.IsDirty Then
+            Me.SetModifiedAuditInfo()
+        End If
+    End Sub
+
     Public Shared Sub UpdateFamily(ByVal ds As DataSet)
         Dim dt As DataTable
 

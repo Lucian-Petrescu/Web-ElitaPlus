@@ -21,6 +21,7 @@ Public Class ElitaPlusSearchPage
     Public Const CANCEL_COMMAND_NAME As String = "CancelRecord"
     Public Const SELECT_COMMAND_NAME As String = "SelectRecord"
     Public Const DELETE_COMMAND_NAME As String = "DeleteRecord"
+    Public Const VIEW_COMMAND_NAME As String = "ViewHistoryRecord"
     Public Const SORT_COMMAND_NAME As String = "Sort"
     Public Const PAGE_COMMAND_NAME As String = "Page"
     Public Const EDIT As String = "Edit"
