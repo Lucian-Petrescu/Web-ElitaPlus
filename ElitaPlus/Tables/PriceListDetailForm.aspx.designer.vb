@@ -410,6 +410,42 @@ Partial Public Class PriceListDetailForm
     Protected WithEvents moSelectedList As Global.System.Web.UI.WebControls.ListBox
 
     '''<summary>
+    '''trPageSizePendingApprovals control.
+    '''</summary>
+    '''<remarks>
+    '''Auto-generated field.
+    '''To modify move field declaration from designer file to code-behind file.
+    '''</remarks>
+    Protected WithEvents trPageSizePendingApprovals As Global.System.Web.UI.HtmlControls.HtmlTableRow
+
+    '''<summary>
+    '''lblPageSizePendingApprovals control.
+    '''</summary>
+    '''<remarks>
+    '''Auto-generated field.
+    '''To modify move field declaration from designer file to code-behind file.
+    '''</remarks>
+    Protected WithEvents lblPageSizePendingApprovals As Global.System.Web.UI.WebControls.Label
+
+    '''<summary>
+    '''cboPageSizePendingApproval control.
+    '''</summary>
+    '''<remarks>
+    '''Auto-generated field.
+    '''To modify move field declaration from designer file to code-behind file.
+    '''</remarks>
+    Protected WithEvents cboPageSizePendingApproval As Global.System.Web.UI.WebControls.DropDownList
+
+    '''<summary>
+    '''lblPendingApprovalRecordCounts control.
+    '''</summary>
+    '''<remarks>
+    '''Auto-generated field.
+    '''To modify move field declaration from designer file to code-behind file.
+    '''</remarks>
+    Protected WithEvents lblPendingApprovalRecordCounts As Global.System.Web.UI.WebControls.Label
+
+    '''<summary>
     '''gvPendingApprovals control.
     '''</summary>
     '''<remarks>

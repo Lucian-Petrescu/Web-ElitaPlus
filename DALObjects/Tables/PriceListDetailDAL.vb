@@ -925,7 +925,7 @@ Public Class PriceListDetailDAL
         'Next
 
         If Index = 2 Then
-            PriceListDetailIDList = vbNull
+            PriceListDetailIDList = Nothing
         End If
 
         Dim selectStmt As String = Me.Config("/SQL/SUBMIT_FOR_APPROVAL")

@@ -244,6 +244,7 @@ Public Class PriceListDetailForm
 
                 moSelectedTitle.Text = TranslationBase.TranslateLabelOrMessage("SELECTED VENDORS")
                 cboPageSize.SelectedValue = Me.State.PageSize.ToString()
+                cboPageSizePendingApproval.SelectedValue = Me.State.PageSize.ToString()
             End If
 
             Me.CheckIfComingFromSaveConfirm()
@@ -1903,18 +1904,24 @@ Public Class PriceListDetailForm
 
             Me.gvPendingApprovals.PageSize = Me.State.PageSize
             SetPageAndSelectedIndexFromGuid(dv, Me.State.PriceListDetailSelectedChildId, Me.gvPendingApprovals, Me.State.PageIndex)
-
+            'If dv.Table.Rows.Count > 0 Then
             Me.gvPendingApprovals.DataSource = dv.Table.Select("status_xcd='PL_RECON_PROCESS-PENDINGAPPROVAL'") 'Me.State.DetailSearchDV
-            Me.gvPendingApprovals.DataBind()
-            Me.State.PageIndex = Me.gvPendingApprovals.PageIndex
+                Me.gvPendingApprovals.DataBind()
+                'Else
+                '    Dim dt As DataTable = New DataTable()
+                '    Me.gvPendingApprovals.DataSource = dt
+                '    Me.gvPendingApprovals.DataBind()
+
+                'End If
+                Me.State.PageIndex = Me.gvPendingApprovals.PageIndex
             Me.ShowHideQuantity()
 
-            ControlMgr.SetVisibleControl(Me, trPageSize, Me.gvPendingApprovals.Visible)
-            ControlMgr.SetVisibleControl(Me, cboPageSize, Me.gvPendingApprovals.Visible)
-            ControlMgr.SetVisibleControl(Me, lblRecordCounts, True)
+            ControlMgr.SetVisibleControl(Me, trPageSizePendingApprovals, Me.gvPendingApprovals.Visible)
+            ControlMgr.SetVisibleControl(Me, cboPageSizePendingApproval, Me.gvPendingApprovals.Visible)
+            ControlMgr.SetVisibleControl(Me, lblPendingApprovalRecordCounts, True)
 
             Session("recCount") = dv.Table.Rows.Count 'Me.State.DetailSearchDV.Count
-            Me.lblRecordCounts.Text = dv.Table.Rows.Count & " " & TranslationBase.TranslateLabelOrMessage(Message.MSG_RECORDS_FOUND)
+            Me.lblPendingApprovalRecordCounts.Text = dv.Table.Rows.Count & " " & TranslationBase.TranslateLabelOrMessage(Message.MSG_RECORDS_FOUND)
 
         Catch ex As Exception
             Me.HandleErrors(ex, Me.MasterPage.MessageController)
@@ -2083,6 +2090,18 @@ Public Class PriceListDetailForm
             ChekAndReplaceWithParentText(e.Row, GRID_COL_MODEL_IDX, PriceListDetail.PriceListDetailSearchDV.COL_PARENT_MODEL_DESCRIPTION)
             ChekAndReplaceWithParentText(e.Row, GRID_COL_CONDITIONID_IDX, PriceListDetail.PriceListDetailSearchDV.COL_PARENT_CONDITION_DESCRIPTION)
         End If
+    End Sub
+
+    Private Sub cboPageSizePendingApproval_SelectedIndexChanged(ByVal sender As Object, ByVal e As System.EventArgs) Handles cboPageSizePendingApproval.SelectedIndexChanged
+        Try
+            Me.State.PageSize = CType(cboPageSizePendingApproval.SelectedValue, Integer)
+            Me.State.SelectedPageSize = Me.State.PageSize
+            Me.State.PageIndex = NewCurrentPageIndex(gvPendingApprovals, State.DetailSearchDV.Count, State.PageSize)
+            Me.gvPendingApprovals.PageIndex = Me.State.PageIndex
+            Me.PopulategvPendingApprovals()
+        Catch ex As Exception
+            Me.HandleErrors(ex, Me.MasterPage.MessageController)
+        End Try
     End Sub
 
 #End Region
