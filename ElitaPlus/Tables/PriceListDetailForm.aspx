@@ -239,12 +239,15 @@
                             <AlternatingRowStyle Wrap="True" />
                             <RowStyle Wrap="True" />
                             <Columns>
-                                <%--<asp:TemplateField>
+                                <asp:TemplateField>
         <ItemTemplate>
-            <asp:LinkButton ID="lnkViewhistory" runat="server" Text="View History" CommandName="ViewHistoryRecord" CommandArgument="<%#(Eval("price_list_detail_id")) %>"></asp:LinkButton>
-            
+            <%--<asp:HyperLink ID="lnkViewhistory" runat="server"></asp:HyperLink>--%>
+            <%--<asp:LinkButton ID="dummybtnhistory" runat="server"></asp:LinkButton>
+            <asp:LinkButton ID="lnkViewhistory" runat="server" Text="View History" CommandName="ViewHistoryRecord" 
+                CommandArgument='<%#Eval("price_list_detail_id") %>'></asp:LinkButton>
+            --%>
         </ItemTemplate>
-    </asp:TemplateField>--%>
+    </asp:TemplateField>
                                 <asp:TemplateField ShowHeader="false">
                                     <ItemStyle HorizontalAlign="Center"></ItemStyle>
                                     <ItemTemplate>
@@ -286,6 +289,14 @@
                                 <asp:BoundField DataField="vendor_sku_description" SortExpression="vendor_sku_description"
                                     ReadOnly="true" HeaderText="DESCRIPTION" HeaderStyle-HorizontalAlign="Center"
                                     HtmlEncode="false" />
+                                <asp:BoundField DataField="requested_by" SortExpression="requested_by" ReadOnly="true" HeaderText="REQUESTED_BY"
+                                    HeaderStyle-HorizontalAlign="Center" HtmlEncode="false" />
+                                <asp:BoundField DataField="requested_date" SortExpression="requested_date" ReadOnly="true" HeaderText="REQUESTED_DATE"
+                                    HeaderStyle-HorizontalAlign="Center" HtmlEncode="false" />
+                                <asp:BoundField DataField="status_xcd" SortExpression="status_xcd" ReadOnly="true"
+                                    HeaderText="STATUS" HeaderStyle-HorizontalAlign="Center" HtmlEncode="false" />
+                                <asp:BoundField DataField="status_date" SortExpression="status_date"
+                                    ReadOnly="true" HeaderText="STATUS_DATE" HeaderStyle-HorizontalAlign="Center" HtmlEncode="false" />
                                 <asp:BoundField DataField="manufacturer_origin_desc" SortExpression="manufacturer_origin_desc" ReadOnly="true" HeaderText="MANUFACTURER_ORIGIN"
                                     HeaderStyle-HorizontalAlign="Center" HtmlEncode="false" />
                                 <asp:BoundField DataField="price_with_symbol" SortExpression="price_with_symbol" ReadOnly="true" HeaderText="PRICE"
@@ -381,6 +392,14 @@
                                 <asp:BoundField DataField="vendor_sku_description" SortExpression="vendor_sku_description"
                                     ReadOnly="true" HeaderText="DESCRIPTION" HeaderStyle-HorizontalAlign="Center"
                                     HtmlEncode="false" />
+                                <asp:BoundField DataField="requested_by" SortExpression="requested_by" ReadOnly="true" HeaderText="REQUESTED_BY"
+                                    HeaderStyle-HorizontalAlign="Center" HtmlEncode="false" />
+                                <asp:BoundField DataField="requested_date" SortExpression="requested_date" ReadOnly="true" HeaderText="REQUESTED_DATE"
+                                    HeaderStyle-HorizontalAlign="Center" HtmlEncode="false" />
+                                <asp:BoundField DataField="status_xcd" SortExpression="status_xcd" ReadOnly="true"
+                                    HeaderText="STATUS" HeaderStyle-HorizontalAlign="Center" HtmlEncode="false" />
+                                <asp:BoundField DataField="status_date" SortExpression="status_date"
+                                    ReadOnly="true" HeaderText="STATUS_DATE" HeaderStyle-HorizontalAlign="Center" HtmlEncode="false" />
                                 <asp:BoundField DataField="manufacturer_origin_desc" SortExpression="manufacturer_origin_desc" ReadOnly="true" HeaderText="MANUFACTURER_ORIGIN"
                                     HeaderStyle-HorizontalAlign="Center" HtmlEncode="false" />
                                 <asp:BoundField DataField="price_with_symbol" SortExpression="price_with_symbol" ReadOnly="true" HeaderText="PRICE"
@@ -633,10 +652,10 @@
         </asp:Panel>
     </div>
      <div id="ViewHistoryContainer">
-        <ajaxToolkit:ModalPopupExtender runat="server" ID="mdlpopupHistory" TargetControlID="LinkButton3"
+        <%--<ajaxToolkit:ModalPopupExtender runat="server" ID="mdlpopupHistory" TargetControlID="dummybtnhistory"
             PopupControlID="pnlHistoryPopup" DropShadow="True" BackgroundCssClass="ModalBackground"
             BehaviorID="addNewModal" PopupDragHandleControlID="pnlHistoryPopup" RepositionMode="RepositionOnWindowScroll">
-        </ajaxToolkit:ModalPopupExtender>
+        </ajaxToolkit:ModalPopupExtender>--%>
         <asp:Panel ID="pnlHistoryPopup" runat="server" Style="display: none; width: 500px;">
             <div id="light" class="overlay_message_content">
                 <asp:GridView ID="gvHistory" runat="server" Width="80%" AutoGenerateColumns="False" AllowPaging="True"
@@ -694,17 +713,7 @@
                             <PagerSettings PageButtonCount="30" Mode="Numeric" Position="TopAndBottom" />
                             <PagerStyle />
                         </asp:GridView>
-                 <%--<table width="100%" border="0" class="formGrid" cellpadding="0" cellspacing="0">
-                    <tr>
-                        <td colspan="3">&nbsp;
-                        </td>
-                        <td>
-                            <asp:Button ID="Button1" runat="server" CssClass="primaryBtn floatR" Text="SAVE" CausesValidation="false" />
-                            <asp:Button ID="Button2" runat="server" CssClass="popWindowCancelbtn floatR" Text="CANCEL" />
-                        </td>
-                    </tr>
-                </table>--%>
-            </div>
+                  </div>
         </asp:Panel>
     </div>
 

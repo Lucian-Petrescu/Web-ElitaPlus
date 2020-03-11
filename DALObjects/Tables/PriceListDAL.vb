@@ -333,9 +333,9 @@ Public Class PriceListDAL
         End If
     End Sub
 
-    Public Overloads Sub SubmitforApproval(ByVal familyDataset As DataSet, ByVal flag As String)
+    Public Overloads Sub SubmitforApproval(ByVal PriceListID As Guid, ByVal PriceListDetailIDList As String, ByVal CreatedBy As String, ByVal flag As String)
         Dim PriceListDetails As New PriceListDetailDAL
-        PriceListDetails.SubmitForApproval(familyDataset, flag)
+        PriceListDetails.SubmitForApproval(PriceListID, PriceListDetailIDList, CreatedBy, flag)
     End Sub
 
     Public Overloads Sub UpdateFamily(ByVal familyDataset As DataSet, Optional ByVal Transaction As IDbTransaction = Nothing)

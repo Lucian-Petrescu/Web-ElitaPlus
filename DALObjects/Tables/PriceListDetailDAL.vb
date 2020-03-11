@@ -12,6 +12,9 @@ Public Class PriceListDetailDAL
 
     Public Const COL_NAME_PRICE_LIST_DETAIL_ID As String = "price_list_detail_id"
     Public Const COL_NAME_STATUS_XCD As String = "status_xcd"
+    Public Const COL_NAME_REQUESTED_BY As String = "requested_by"
+    Public Const COL_NAME_REQUESTED_DATE As String = "requested_date"
+    Public Const COL_NAME_STATUS_DATE As String = "status_date"
     Public Const COL_NAME_PRICE_LIST_ID As String = "price_list_id"
     Public Const COL_NAME_SERVICE_CLASS_ID As String = "service_class_id"
     Public Const COL_NAME_SERVICE_TYPE_ID As String = "service_type_id"
@@ -131,6 +134,9 @@ Public Class PriceListDetailDAL
     Public Const PAR_IN_NAME_MANUFACTURER_ORIGIN As String = "pi_manufacturer_origin_xcd"
     Public Const PAR_IN_NAME_STOCK_ITEM_TYPE As String = "pi_stock_item_type_xcd"
     Public Const PAR_IN_NAME_STATUS_XCD As String = "pi_status_xcd"
+    Public Const PAR_IN_NAME_REQUESTED_BY As String = "requested_by"
+    Public Const PAR_IN_NAME_REQUESTED_DATE As String = "requested_date"
+    Public Const PAR_IN_NAME_STATUS_DATE As String = "status_date"
 
     'US 224089 
     Public Const PAR_IN_NAME_PARTS_LIST As String = "pi_parts_list"
@@ -897,12 +903,12 @@ Public Class PriceListDetailDAL
                                     familyDS)
     End Sub
 
-    Public Sub SubmitForApproval(ByVal familyDS As DataSet, ByVal flag As String)
+    Public Sub SubmitForApproval(ByVal PriceListID As Guid, ByVal PriceListDetailIDList As String, ByVal CreatedBy As String, ByVal flag As String)
         'Dim temptablepricelist As DataTable = familyDS.Tables.Add("elp_price_list_header_recon")
-        Dim pricelistdetailidlist As String = String.Empty
-        Dim CreatedBy As String = String.Empty
+        'Dim pricelistdetailidlist As String = String.Empty
+        'Dim CreatedBy As String = String.Empty
         Dim Index As Integer = 0
-        Dim PricelistID As Byte()
+        'Dim PricelistID As Byte()
         Dim status_xcd As String = String.Empty
         If flag = "approve" Then
             status_xcd = "PL_RECON_PROCESS-APPROVED"
@@ -912,25 +918,29 @@ Public Class PriceListDetailDAL
             status_xcd = "PL_RECON_PROCESS-PENDINGAPPROVAL"
             Index = 2
         End If
-        For Each r As DataRow In familyDS.Tables(2).Rows
-            pricelistdetailidlist += r("PRICE_LIST_DETAIL_ID").ToString() + ","
-            CreatedBy = r("CREATED_BY")
-            PricelistID = r("PRICE_LIST_ID")
-        Next
+        'For Each r As DataRow In familyDS.Tables(2).Rows
+        'PriceListDetailIDList += r("PRICE_LIST_DETAIL_ID").ToString() + ","
+        'CreatedBy = r("CREATED_BY")
+        'PriceListID = r("PRICE_LIST_ID")
+        'Next
 
+        If Index = 2 Then
+            PriceListDetailIDList = vbNull
+        End If
 
         Dim selectStmt As String = Me.Config("/SQL/SUBMIT_FOR_APPROVAL")
         Dim parameters() As OracleParameter
-        parameters = New OracleParameter() {New OracleParameter(PAR_IN_NAME_PRICE_LIST_ID, OracleDbType.Raw, PricelistID, ParameterDirection.Input),
-                              New OracleParameter("pi_price_list_detail_id_list", OracleDbType.Varchar2, pricelistdetailidlist, ParameterDirection.Input),
+        parameters = New OracleParameter() {New OracleParameter(PAR_IN_NAME_PRICE_LIST_ID, OracleDbType.Raw, PriceListID, ParameterDirection.Input),
+                              New OracleParameter("pi_price_list_detail_id_list", OracleDbType.Varchar2, PriceListDetailIDList, ParameterDirection.Input),
                               New OracleParameter(PAR_IN_NAME_STATUS_XCD, OracleDbType.Varchar2, status_xcd, ParameterDirection.Input),'.Value() = status_xcd,
                               New OracleParameter("pi_status_by", OracleDbType.Varchar2, CreatedBy, ParameterDirection.Input),
                               New OracleParameter(PAR_OUT_NAME_RETURN_CODE, OracleDbType.Decimal, ParameterDirection.Output)}
 
+
+
         FetchStoredProcedure("SubmitforApproval",
                                     selectStmt,
-                                    parameters,
-                                    familyDS)
+                                    parameters)
     End Sub
 
     Public Function ViewPriceListDetailHistory(ByVal Pricelistdetaild As Guid, ByVal languageId As Guid, ByVal familyDS As DataSet) As DataSet

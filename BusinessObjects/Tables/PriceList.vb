@@ -259,12 +259,12 @@ Public Class PriceList
         End Try
     End Sub
 
-    Public Overrides Sub SubmitforApproval(ByVal flag As String)
+    Public Overrides Sub SubmitforApproval(ByVal PriceListID As Guid, ByVal PriceListDetailIDList As String, ByVal CreatedBy As String, ByVal flag As String)
         Try
 
-            MyBase.SubmitforApproval(flag)
+            MyBase.SubmitforApproval(PriceListID, PriceListDetailIDList, CreatedBy, flag)
             Dim dal As New PriceListDAL
-            dal.SubmitforApproval(Me.Dataset, flag)
+            dal.SubmitforApproval(PriceListID, PriceListDetailIDList, CreatedBy, flag)
             'Reload the Data
             If Me._isDSCreator AndAlso Me.Row.RowState <> DataRowState.Detached Then
                 'Reload the Data from the DB
@@ -766,6 +766,11 @@ Public Class PriceList
             Else
                 row(PriceListDetailSelectionView.COL_NAME_VENDOR_SKU_DESCRIPTION) = detail.VendorSkuDescription.ToString()
             End If
+
+            row(PriceListDetailSelectionView.COL_NAME_REQUESTED_BY) = detail.Row("requested_by")
+            row(PriceListDetailSelectionView.COL_NAME_REQUESTED_DATE) = detail.Row("requested_date")
+            row(PriceListDetailSelectionView.COL_NAME_STATUS_XCD) = detail.Row("status_xcd")
+            row(PriceListDetailSelectionView.COL_NAME_STATUS_DATE) = detail.Row("status_date")
             If detail.Price Is Nothing Then
                 row(PriceListDetailSelectionView.COL_NAME_PRICE) = 0
             Else
@@ -803,7 +808,10 @@ Public Class PriceList
     Public Class PriceListDetailSelectionView
         Inherits DataView
         Public Const COL_NAME_PRICE_LIST_DETAIL_ID As String = PriceListDetailDAL.COL_NAME_PRICE_LIST_DETAIL_ID
-        'Public Const COL_NAME_STATUS_XCD As String = PriceListDetailDAL.COL_NAME_STATUS_XCD
+        Public Const COL_NAME_STATUS_XCD As String = PriceListDetailDAL.COL_NAME_STATUS_XCD
+        Public Const COL_NAME_STATUS_DATE As String = PriceListDetailDAL.COL_NAME_STATUS_DATE
+        Public Const COL_NAME_REQUESTED_BY As String = PriceListDetailDAL.COL_NAME_REQUESTED_BY
+        Public Const COL_NAME_REQUESTED_DATE As String = PriceListDetailDAL.COL_NAME_REQUESTED_DATE
         Public Const COL_NAME_PRICE_LIST_ID As String = PriceListDetailDAL.COL_NAME_PRICE_LIST_ID
         Public Const COL_NAME_EFFECTIVE As String = PriceListDetailDAL.COL_NAME_EFFECTIVE
         Public Const COL_NAME_EXPIRATION As String = PriceListDetailDAL.COL_NAME_EXPIRATION
@@ -888,6 +896,10 @@ Public Class PriceList
             t.Columns.Add(COL_NAME_CONDITION_TYPE_CODE, GetType(String))
             t.Columns.Add(COL_NAME_VENDOR_SKU, GetType(String))
             t.Columns.Add(COL_NAME_VENDOR_SKU_DESCRIPTION, GetType(String))
+            t.Columns.Add(COL_NAME_REQUESTED_BY, GetType(String))
+            t.Columns.Add(COL_NAME_REQUESTED_DATE, GetType(String))
+            t.Columns.Add(COL_NAME_STATUS_XCD, GetType(String))
+            t.Columns.Add(COL_NAME_STATUS_DATE, GetType(String))
             t.Columns.Add(COL_NAME_PRICE, GetType(Decimal))
             t.Columns.Add(COL_NAME_VENDOR_QUANTITY, GetType(Int32))
             t.Columns.Add(PRICE_BAND_RANGE_FROM_COL_NAME, GetType(String))

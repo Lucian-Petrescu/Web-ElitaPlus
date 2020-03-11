@@ -1763,7 +1763,7 @@ Public Class PriceListDetailForm
                 Me.State.PriceListDetailSelectedChildId = New Guid(e.CommandArgument.ToString())
                 Dim pld As PriceListDetail = New PriceListDetail()
                 pld.viewhistory(priceListDetailId)
-                mdlpopupHistory.Show()
+                'mdlpopupHistory.Show()
                 'Me.DisplayMessage(Message.DELETE_RECORD_PROMPT, "", Me.MSG_BTN_YES_NO, Me.MSG_TYPE_CONFIRM, Me.HiddenSaveChangesPromptResponse)
                 Me.State.ActionInProgress = ElitaPlusPage.DetailPageCommand.ViewHistory
             End If
@@ -1797,6 +1797,22 @@ Public Class PriceListDetailForm
             Dim dvRow As DataRowView = CType(e.Row.DataItem, DataRowView)
             Dim btnEditItem As ImageButton
             Dim btnDeleteItem As ImageButton
+            'Dim lnkbtnhistory As LinkButton
+            'Dim lknlinkdummy As LinkButton
+
+            'If (Not e.Row.Cells(Me.GRID_COL_EDITID_IDX).FindControl(BTN_CONTROL_EDIT_DETAIL_LIST) Is Nothing) Then
+            '    'Edit Button argument changed to id
+            '    btnEditItem = CType(e.Row.Cells(Me.GRID_COL_EDITID_IDX).FindControl(BTN_CONTROL_EDIT_DETAIL_LIST), ImageButton)
+            '    btnEditItem.CommandArgument = GetGuidStringFromByteArray(CType(dvRow(PriceListDetail.PriceListDetailSearchDV.COL_PRICE_LIST_DETAIL_ID), Byte()))
+            '    btnEditItem.CommandName = ElitaPlusSearchPage.EDIT_COMMAND_NAME
+
+            '    If Not (e.Row.Cells(Me.GRID_COL_EXPIRATION_DATEID_IDX).Text.ToString().Equals(String.Empty)) Then
+            '        If (DateHelper.GetDateValue(e.Row.Cells(Me.GRID_COL_EXPIRATION_DATEID_IDX).Text.ToString()) < DateTime.Now) Then
+            '            'e.Row.Cells(Me.GRID_COL_EDITID_IDX).Visible = False
+            '            btnEditItem.Visible = False
+            '        End If
+            '    End If
+            'End If
 
             If (Not e.Row.Cells(Me.GRID_COL_EDITID_IDX).FindControl(BTN_CONTROL_EDIT_DETAIL_LIST) Is Nothing) Then
                 'Edit Button argument changed to id
@@ -1888,7 +1904,7 @@ Public Class PriceListDetailForm
             Me.gvPendingApprovals.PageSize = Me.State.PageSize
             SetPageAndSelectedIndexFromGuid(dv, Me.State.PriceListDetailSelectedChildId, Me.gvPendingApprovals, Me.State.PageIndex)
 
-            Me.gvPendingApprovals.DataSource = dv 'Me.State.DetailSearchDV
+            Me.gvPendingApprovals.DataSource = dv.Table.Select("status_xcd='PL_RECON_PROCESS-PENDINGAPPROVAL'") 'Me.State.DetailSearchDV
             Me.gvPendingApprovals.DataBind()
             Me.State.PageIndex = Me.gvPendingApprovals.PageIndex
             Me.ShowHideQuantity()
@@ -2479,38 +2495,49 @@ Public Class PriceListDetailForm
         End If
     End Function
 
-    '''Private Sub btnSave_Load(sender As Object, e As EventArgs) Handles btnSave.Load
-
-    '''End Sub
-
     Protected Sub btnSubmitforApproval_Click(sender As Object, e As EventArgs) Handles btnSubmitforApproval.Click
-        Me.State.MyBO.SubmitforApproval("submitforapproval")
+
+
+        Me.State.MyBO.SubmitforApproval(Me.State.MyBO.Id, vbNull, ElitaPlusIdentity.Current.ActiveUser.CreatedById, "submitforapproval")
         btnSubmitforApproval.Enabled = False
     End Sub
 
     Protected Sub btnApprove_Click(sender As Object, e As EventArgs) Handles btnApprove.Click
-        For Each gvrow As GridViewRow In gvPendingApprovals.Rows
-            Dim chkApproveOrReject As CheckBox = CType(gvrow.FindControl("chkApproveOrReject"), CheckBox)
+        Dim PricelistDetailIdList As String = String.Empty
 
-            If chkApproveOrReject.Checked Then
-                Dim usrid As Byte() = gvPendingApprovals.DataKeys(gvrow.RowIndex).Value
+        Dim HeaderCheckbox As CheckBox = CType(gvPendingApprovals.HeaderRow.FindControl("chkHeaderApproveOrReject"), CheckBox)
+        If HeaderCheckbox.Checked = False Then
+            For Each gvrow As GridViewRow In gvPendingApprovals.Rows
+                Dim chkApproveOrReject As CheckBox = CType(gvrow.FindControl("chkApproveOrReject"), CheckBox)
+                If chkApproveOrReject.Checked Then
+                    'Dim usrid As Byte() = gvPendingApprovals.DataKeys(gvrow.RowIndex).Value
+                    PricelistDetailIdList += gvrow.Cells(19).Text + ","
+                End If
+            Next
+        Else
+            PricelistDetailIdList = vbNull
+        End If
 
-            End If
-        Next
-        Me.State.MyBO.SubmitforApproval("approve")
+
+        Me.State.MyBO.SubmitforApproval(Me.State.MyBO.Id, PricelistDetailIdList, ElitaPlusIdentity.Current.ActiveUser.CreatedById, "approve")
 
     End Sub
 
     Protected Sub btnReject_Click(sender As Object, e As EventArgs) Handles btnReject.Click
-        For Each gvrow As GridViewRow In gvPendingApprovals.Rows
-            Dim chkApproveOrReject As CheckBox = CType(gvrow.FindControl("chkApproveOrReject"), CheckBox)
-
-            If chkApproveOrReject.Checked Then
-                Dim usrid As Byte() = gvPendingApprovals.DataKeys(gvrow.RowIndex).Value
-
-            End If
-        Next
-        Me.State.MyBO.SubmitforApproval("reject")
+        Dim PricelistDetailIdList As String = String.Empty
+        Dim HeaderCheckbox As CheckBox = CType(gvPendingApprovals.HeaderRow.FindControl("chkHeaderApproveOrReject"), CheckBox)
+        If HeaderCheckbox.Checked = False Then
+            For Each gvrow As GridViewRow In gvPendingApprovals.Rows
+                Dim chkApproveOrReject As CheckBox = CType(gvrow.FindControl("chkApproveOrReject"), CheckBox)
+                If chkApproveOrReject.Checked Then
+                    'Dim usrid As Byte() = gvPendingApprovals.DataKeys(gvrow.RowIndex).Value
+                    PricelistDetailIdList += gvrow.Cells(19).Text + ","
+                End If
+            Next
+        Else
+            PricelistDetailIdList = vbNull
+        End If
+        Me.State.MyBO.SubmitforApproval(Me.State.MyBO.Id, PricelistDetailIdList, ElitaPlusIdentity.Current.ActiveUser.CreatedById, "reject")
     End Sub
 
 

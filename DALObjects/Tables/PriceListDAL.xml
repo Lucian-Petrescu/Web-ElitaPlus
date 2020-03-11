@@ -27,7 +27,7 @@
 				price_list_id = :price_list_id
 				order by country_id, code, expiration
 		]]>-->
-    <![CDATA[ELP_PRICE_LIST_UTILITY_ABHI.load_price_list]]>
+    <![CDATA[elp_tbl_price_list.load_price_list]]>
 
   </LOAD>
   <LOAD_LIST>
@@ -48,7 +48,7 @@
 	]]>
   </LOAD_LIST>
   <LOAD_LIST_SEARCH>
-    <![CDATA[ELP_PRICE_LIST_UTILITY_ABHI.load_all_price_list]]>
+    <![CDATA[elp_tbl_price_list.load_all_price_list]]>
   </LOAD_LIST_SEARCH>
   <UPDATE>
     <!--<![CDATA[	
@@ -64,7 +64,7 @@
 				price_list_id = :price_list_id
 		]]>-->
 
-    <![CDATA[<SP>ELP_PRICE_LIST_UTILITY_ABHI.update_price_list_recon</SP>]]>
+    <![CDATA[<SP>elp_tbl_price_list.update_price_list_recon</SP>]]>
 
   </UPDATE>
   <INSERT>
@@ -94,7 +94,7 @@
     :default_currency_id
     )
 	]]>-->
-    <![CDATA[<SP>ELP_PRICE_LIST_UTILITY_ABHI.insert_price_list_recon</SP>]]>
+    <![CDATA[<SP>elp_tbl_price_list.insert_price_list_recon</SP>]]>
   </INSERT>
   <DELETE>
     <![CDATA[	

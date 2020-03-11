@@ -13,10 +13,10 @@
     ELP_PRICE_LIST_UTILITY.Load_PriceBand_List
   </LOAD_PRICEBAND_LIST>
   <SUBMIT_FOR_APPROVAL>
-    ELP_PRICE_LIST_UTILITY_ABHI.update_pl_by_status
+    elp_tbl_price_list.update_pl_by_status
   </SUBMIT_FOR_APPROVAL>
   <PENDING_APPROVAL>
-    ELP_PRICE_LIST_UTILITY_ABHI.load_price_list_detail_pa
+    elp_tbl_price_list.load_price_list_detail_pa
   </PENDING_APPROVAL>
    
 	<!--<UPDATE>
@@ -26,10 +26,10 @@
     ELP_PRICE_LIST_UTILITY_ABHI.insert_price_list_detail_recon
   </INSERT>-->
   <UPDATE>
-    ELP_PRICE_LIST_UTILITY_ABHI.insert_update_pld_recon
+    elp_tbl_price_list.insert_update_pld_recon
   </UPDATE>
 	<INSERT>
-    ELP_PRICE_LIST_UTILITY_ABHI.insert_update_pld_recon
+    elp_tbl_price_list.insert_update_pld_recon
   </INSERT>
   	<!--<UPDATE>
 		ELP_PRICE_LIST_UTILITY.Update_PriceListDetail
@@ -71,8 +71,8 @@
     ELP_PRICE_LIST_UTILITY.Load_Price_List_List
   </LOAD_PRICE_LIST_LIST>-->
     <LOAD_PRICE_LIST_LIST>
-    ELP_PRICE_LIST_UTILITY_ABHI.load_all_price_list_detail
-  </LOAD_PRICE_LIST_LIST>
+      elp_tbl_price_list.load_all_price_list_detail
+    </LOAD_PRICE_LIST_LIST>
   <FIND_MAKE_MODEL_BY_EQUIPMENT_ID>
    ELP_PRICE_LIST_UTILITY.Find_MakeModel_By_Eqpmnt_Id
   </FIND_MAKE_MODEL_BY_EQUIPMENT_ID>
@@ -83,7 +83,7 @@
     ELP_PRICE_LIST_UTILITY.GetPartsPrices
   </GET_PARTS_PRICE_LIST>
   <LOAD_PRICE_LIST_DETAIL_HISTORY>
-    ELP_PRICE_LIST_UTILITY_ABHI.load_price_list_detail_history
+    elp_tbl_price_list.load_price_list_detail_history
   </LOAD_PRICE_LIST_DETAIL_HISTORY>
 </SQL>
 

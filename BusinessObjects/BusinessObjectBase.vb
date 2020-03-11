@@ -865,7 +865,7 @@ Public MustInherit Class BusinessObjectBase
         End If
     End Sub
 
-    Public Overridable Sub SubmitforApproval(ByVal flag As String)
+    Public Overridable Sub SubmitforApproval(ByVal PriceListID As Guid, ByVal PriceListDetailIDList As String, ByVal CreatedBy As String, ByVal flag As String)
         'Me.CheckDeleted()
         If Row.RowState = DataRowState.Detached Then
             Return 'Nothing to do. This is the case when something is added and delted before calling save
