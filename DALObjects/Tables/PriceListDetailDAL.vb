@@ -12,6 +12,7 @@ Public Class PriceListDetailDAL
 
     Public Const COL_NAME_PRICE_LIST_DETAIL_ID As String = "price_list_detail_id"
     Public Const COL_NAME_STATUS_XCD As String = "status_xcd"
+    Public Const COL_NAME_STATUS As String = "status"
     Public Const COL_NAME_REQUESTED_BY As String = "requested_by"
     Public Const COL_NAME_REQUESTED_DATE As String = "requested_date"
     Public Const COL_NAME_STATUS_DATE As String = "status_date"
@@ -134,10 +135,9 @@ Public Class PriceListDetailDAL
     Public Const PAR_IN_NAME_MANUFACTURER_ORIGIN As String = "pi_manufacturer_origin_xcd"
     Public Const PAR_IN_NAME_STOCK_ITEM_TYPE As String = "pi_stock_item_type_xcd"
     Public Const PAR_IN_NAME_STATUS_XCD As String = "pi_status_xcd"
-    Public Const PAR_IN_NAME_REQUESTED_BY As String = "requested_by"
+    Public Const PAR_IN_NAME_REQUESTED_BY As String = "pi_requested_by"
     Public Const PAR_IN_NAME_REQUESTED_DATE As String = "requested_date"
     Public Const PAR_IN_NAME_STATUS_DATE As String = "status_date"
-
     'US 224089 
     Public Const PAR_IN_NAME_PARTS_LIST As String = "pi_parts_list"
     Public Const PAR_IN_NAME_CLAIM_ID As String = "pi_claim_id"
@@ -904,11 +904,7 @@ Public Class PriceListDetailDAL
     End Sub
 
     Public Sub SubmitForApproval(ByVal PriceListID As Guid, ByVal PriceListDetailIDList As String, ByVal CreatedBy As String, ByVal flag As String)
-        'Dim temptablepricelist As DataTable = familyDS.Tables.Add("elp_price_list_header_recon")
-        'Dim pricelistdetailidlist As String = String.Empty
-        'Dim CreatedBy As String = String.Empty
         Dim Index As Integer = 0
-        'Dim PricelistID As Byte()
         Dim status_xcd As String = String.Empty
         If flag = "approve" Then
             status_xcd = "PL_RECON_PROCESS-APPROVED"
@@ -916,16 +912,10 @@ Public Class PriceListDetailDAL
             status_xcd = "PL_RECON_PROCESS-REJECTED"
         Else
             status_xcd = "PL_RECON_PROCESS-PENDINGAPPROVAL"
-            Index = 2
         End If
-        'For Each r As DataRow In familyDS.Tables(2).Rows
-        'PriceListDetailIDList += r("PRICE_LIST_DETAIL_ID").ToString() + ","
-        'CreatedBy = r("CREATED_BY")
-        'PriceListID = r("PRICE_LIST_ID")
-        'Next
 
-        If Index = 2 Then
-            PriceListDetailIDList = vbNull
+        If (Not String.IsNullOrEmpty(PriceListDetailIDList)) Then
+            PriceListDetailIDList = PriceListDetailIDList.Replace("'", String.Empty)
         End If
 
         Dim selectStmt As String = Me.Config("/SQL/SUBMIT_FOR_APPROVAL")
@@ -1122,32 +1112,6 @@ Public Class PriceListDetailDAL
     End Sub
 
     Protected Overrides Sub ConfigureInsertCommand(ByRef command As OracleCommand, ByVal tableName As String)
-        'pi_price_list_id                  in  elp_price_list.price_list_id%type,
-        'pi_service_class_id          In  raw,
-        'pi_service_type_id           in  raw,
-        'pi_vendor_sku                In  elp_price_list_detail.vendor_sku%type,
-        'pi_vendor_sku_description    in  elp_price_list_detail.vendor_sku_description%type,
-        'pi_equipment_class_id        In  raw,
-        'pi_equipment_id              in  elp_equipment.equipment_id%type,
-        'pi_condition_id              In  raw,
-        'pi_risk_type_id              in  raw,
-        'pi_price                     In  elp_price_list_detail.price%type,
-        'pi_effective                 in  elp_price_list_detail.effective%type,
-        'pi_expiration                In  elp_price_list_detail.expiration%type,
-        'pi_created_by                in  elp_price_list_detail.modified_by%type,
-        'pi_modified_by               In  elp_price_list_detail.modified_by%type,
-        'pi_service_level_id          in  raw,
-        'pi_price_band_range_from     In  elp_stock_item.price_range_from%type,
-        'pi_price_band_range_to       in  elp_stock_item.price_range_to%type,
-        'pi_replacement_tax_type      In  elp_price_list_detail.replacement_tax_type%type,
-        'pi_currency_id               in  elp_price_list_detail.currency_id%type,
-        'pi_price_list_detail_type_id In  elp_price_list_detail.price_list_detail_type_id%type,
-        'pi_calculation_percentage    in  elp_price_list_detail.calculation_percentage%type,
-        'pi_manufacturer_id           In  elp_stock_item.manufacturer_id%type Default null,
-        'pi_part_id                   in  elp_stock_item.part_id%type default null,
-        'pi_manufacturer_origin_xcd   In  elp_stock_item.manufacturer_origin_xcd%type Default null,  
-        'pi_stock_item_type_xcd       in  elp_stock_item.stock_item_type_xcd%type default null,
-        'po_return_code               out number
 
         With command
             .AddParameter(PAR_IN_NAME_PRICE_LIST_DETAIL_ID, OracleDbType.Raw, sourceColumn:=COL_NAME_PRICE_LIST_DETAIL_ID)
@@ -1163,8 +1127,7 @@ Public Class PriceListDetailDAL
             .AddParameter(PAR_IN_NAME_PRICE, OracleDbType.Decimal, sourceColumn:=COL_NAME_PRICE)
             .AddParameter(PAR_IN_NAME_EFFECTIVE, OracleDbType.Date, sourceColumn:=COL_NAME_EFFECTIVE)
             .AddParameter(PAR_IN_NAME_EXPIRATION, OracleDbType.Date, sourceColumn:=COL_NAME_EXPIRATION)
-            .AddParameter(PAR_IN_NAME_CREATED_BY, OracleDbType.Varchar2, sourceColumn:=COL_NAME_CREATED_BY)
-            .AddParameter(PAR_IN_NAME_MODIFIED_BY, OracleDbType.Varchar2, sourceColumn:=COL_NAME_MODIFIED_BY)
+            .AddParameter(PAR_IN_NAME_REQUESTED_BY, OracleDbType.Varchar2, sourceColumn:=COL_NAME_CREATED_BY)
             .AddParameter(PAR_IN_NAME_SERVICE_LEVEL_ID, OracleDbType.Raw, sourceColumn:=COL_NAME_SERVICE_LEVEL_ID)
             .AddParameter(PAR_IN_NAME_PRICE_BAND_RANGE_FROM, OracleDbType.Double, sourceColumn:=COL_NAME_PRICE_BAND_RANGE_FROM)
             .AddParameter(PAR_IN_NAME_PRICE_BAND_RANGE_TO, OracleDbType.Double, sourceColumn:=COL_NAME_PRICE_BAND_RANGE_TO)
@@ -1183,34 +1146,10 @@ Public Class PriceListDetailDAL
     End Sub
 
     Protected Overrides Sub ConfigureUpdateCommand(ByRef command As OracleCommand, ByVal tableName As String)
-        'pi_price_list_detail_id      in  elp_price_list_detail.price_list_detail_id%type,
-        'pi_service_class_id          In  raw,
-        'pi_service_type_id           in  raw,
-        'pi_vendor_sku                In  elp_price_list_detail.vendor_sku%type,
-        'pi_vendor_sku_description    in  elp_price_list_detail.vendor_sku_description%type,
-        'pi_equipment_class_id        In  raw,
-        'pi_equipment_id              in  elp_equipment.equipment_id%type,
-        'pi_condition_id              In  raw,
-        'pi_risk_type_id              in  raw,
-        'pi_price                     In  elp_price_list_detail.price%type,
-        'pi_effective                 in  elp_price_list_detail.effective%type,
-        'pi_expiration                In  elp_price_list_detail.expiration%type,
-        'pi_modified_by               in  elp_price_list_detail.modified_by%type,
-        'pi_service_level_id          In  raw,
-        'pi_price_band_range_from     in  elp_stock_item.price_range_from%type,
-        'pi_price_band_range_to       In  elp_stock_item.price_range_to%type,
-        'pi_replacement_tax_type      in  elp_price_list_detail.replacement_tax_type%type,
-        'pi_currency_id               In  elp_price_list_detail.currency_id%type,
-        'pi_price_list_detail_type_id in  elp_price_list_detail.price_list_detail_type_id%type,
-        'pi_calculation_percentage    In  elp_price_list_detail.calculation_percentage%type,
-        'pi_manufacturer_id           in  elp_stock_item.manufacturer_id%type default null,
-        'pi_part_id                   In  elp_stock_item.part_id%type Default null,
-        'pi_manufacturer_origin_xcd   in  elp_stock_item.manufacturer_origin_xcd%type default null,
-        'pi_stock_item_type_xcd       In  elp_stock_item.stock_item_type_xcd%type Default null,                                                          
-        'po_return_code               out number
 
         With command
             .AddParameter(PAR_IN_NAME_PRICE_LIST_DETAIL_ID, OracleDbType.Raw, sourceColumn:=COL_NAME_PRICE_LIST_DETAIL_ID)
+            .AddParameter(PAR_IN_NAME_PRICE_LIST_ID, OracleDbType.Raw, sourceColumn:=COL_NAME_PRICE_LIST_ID)
             .AddParameter(PAR_IN_NAME_SERVICE_CLASS_ID, OracleDbType.Raw, sourceColumn:=COL_NAME_SERVICE_CLASS_ID)
             .AddParameter(PAR_IN_NAME_SERVICE_TYPE_ID, OracleDbType.Raw, sourceColumn:=COL_NAME_SERVICE_TYPE_ID)
             .AddParameter(PAR_IN_NAME_VENDOR_SKU, OracleDbType.Varchar2, sourceColumn:=COL_NAME_VENDOR_SKU)
@@ -1222,7 +1161,7 @@ Public Class PriceListDetailDAL
             .AddParameter(PAR_IN_NAME_PRICE, OracleDbType.Decimal, sourceColumn:=COL_NAME_PRICE)
             .AddParameter(PAR_IN_NAME_EFFECTIVE, OracleDbType.Date, sourceColumn:=COL_NAME_EFFECTIVE)
             .AddParameter(PAR_IN_NAME_EXPIRATION, OracleDbType.Date, sourceColumn:=COL_NAME_EXPIRATION)
-            .AddParameter(PAR_IN_NAME_MODIFIED_BY, OracleDbType.Varchar2, sourceColumn:=COL_NAME_MODIFIED_BY)
+            .AddParameter(PAR_IN_NAME_REQUESTED_BY, OracleDbType.Varchar2, sourceColumn:=COL_NAME_MODIFIED_BY)
             .AddParameter(PAR_IN_NAME_SERVICE_LEVEL_ID, OracleDbType.Raw, sourceColumn:=COL_NAME_SERVICE_LEVEL_ID)
             .AddParameter(PAR_IN_NAME_PRICE_BAND_RANGE_FROM, OracleDbType.Double, sourceColumn:=COL_NAME_PRICE_BAND_RANGE_FROM)
             .AddParameter(PAR_IN_NAME_PRICE_BAND_RANGE_TO, OracleDbType.Double, sourceColumn:=COL_NAME_PRICE_BAND_RANGE_TO)
