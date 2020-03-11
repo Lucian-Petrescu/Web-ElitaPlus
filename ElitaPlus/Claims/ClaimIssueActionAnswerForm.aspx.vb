@@ -235,6 +235,7 @@ Partial Class ClaimIssueActionAnswerForm
                 State.ClaimBo = State.InputParameters.ClaimBo
                 State.ClaimAuthorizationId = State.InputParameters.ClaimAuthorizationId
                 State.WsSubmitIssueAnswerRequest = New SubmitIssueAnswerRequest()
+                State.BankInfoBo = New BusinessObjectsNew.BankInfo(State.ClaimIssueBo.Claim.Certificate.getCertInstalBankInfoID())
             End If
 
         Catch ex As Exception
@@ -1287,9 +1288,11 @@ Partial Class ClaimIssueActionAnswerForm
             If (ddlPaymentList.SelectedIndex > 0) Then
                 If GetSelectedItem(ddlPaymentList).Equals(LookupListNew.GetIdFromCode(LookupListCache.LK_PAYMENTMETHOD, Codes.PAYMENT_METHOD__BANK_TRANSFER)) Then
                     moBankInfoController.Visible = True
-                    State.BankInfoBo = New BusinessObjectsNew.BankInfo()
+
                     moBankInfoController.State.myBankInfoBo = State.BankInfoBo
+                    moBankInfoController.DisableAllFields()
                     moBankInfoController.Bind(State.BankInfoBo)
+                    moBankInfoController.SwitchToReadOnlyView()
                     moBankInfoController.State.myBankInfoBo.SepaEUBankTransfer = True
                     moBankInfoController.SetCountryValue(State.ClaimIssueBo.Claim.Certificate.CountryPurchaseId)
 
@@ -1366,6 +1369,7 @@ Partial Class ClaimIssueActionAnswerForm
         oBankInfo.BankName = moBankInfoController.State.myBankInfoBo.BankName
         oBankInfo.BankSortCode = moBankInfoController.State.myBankInfoBo.BankSortCode
         oBankInfo.BranchName = moBankInfoController.State.myBankInfoBo.BranchName
+        oBankInfo.IbanNumber = moBankInfoController.State.myBankInfoBo.IbanNumber
         If Not moBankInfoController.State.myBankInfoBo.BranchNumber Is Nothing Then
             oBankInfo.BranchNumber = CType(moBankInfoController.State.myBankInfoBo.BranchNumber.Value, Integer)
         End If
