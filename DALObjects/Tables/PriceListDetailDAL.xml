@@ -12,14 +12,7 @@
   <LOAD_PRICEBAND_LIST>
     ELP_PRICE_LIST_UTILITY.Load_PriceBand_List
   </LOAD_PRICEBAND_LIST>
-  <SUBMIT_FOR_APPROVAL>
-    elp_tbl_price_list.update_pl_by_status
-  </SUBMIT_FOR_APPROVAL>
-  <PENDING_APPROVAL>
-    elp_tbl_price_list.load_price_list_detail_pa
-  </PENDING_APPROVAL>
-   
-	<!--<UPDATE>
+  <!--<UPDATE>
 		ELP_PRICE_LIST_UTILITY_ABHI.insert_price_list_detail_recon
 	</UPDATE>
 	<INSERT>

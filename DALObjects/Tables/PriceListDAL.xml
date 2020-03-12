@@ -108,6 +108,9 @@
 	select price_list_code from elp_service_center where UPPER(price_list_code) = UPPER(:price_list_code)
 	]]>
   </IsPriceListAssignedToServiceCenter>
+  <PROCESS_PRICE_LIST_BY_STATUS>
+    elp_tbl_price_list.update_pl_by_status
+  </PROCESS_PRICE_LIST_BY_STATUS>
 </SQL>
 
 
