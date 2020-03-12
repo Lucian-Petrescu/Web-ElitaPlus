@@ -47,8 +47,7 @@
              });
 
              $(document).ready(function () {
-                 debugger;
-                 if ($("#modataGrid").length) {
+               if ($("#modataGrid").length) {
                      var gvv = $("#modataGrid");
                      $("#GridViewContainer").css("width", $(window).width() * 0.95);
                      var gh = $(window).height() - 340;
