@@ -1022,24 +1022,6 @@ Partial Public Class PriceListDetailForm
     Protected WithEvents btnNewItemCancel As Global.System.Web.UI.WebControls.Button
 
     '''<summary>
-    '''pnlHistoryPopup control.
-    '''</summary>
-    '''<remarks>
-    '''Auto-generated field.
-    '''To modify move field declaration from designer file to code-behind file.
-    '''</remarks>
-    Protected WithEvents pnlHistoryPopup As Global.System.Web.UI.WebControls.Panel
-
-    '''<summary>
-    '''gvHistory control.
-    '''</summary>
-    '''<remarks>
-    '''Auto-generated field.
-    '''To modify move field declaration from designer file to code-behind file.
-    '''</remarks>
-    Protected WithEvents gvHistory As Global.System.Web.UI.WebControls.GridView
-
-    '''<summary>
     '''HiddenSaveChangesPromptResponse control.
     '''</summary>
     '''<remarks>
