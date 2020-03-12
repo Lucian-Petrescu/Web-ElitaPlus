@@ -278,11 +278,11 @@ Public Class PriceList
         End Try
     End Sub
 
-    Public Shared Function GetList(ByVal code As String, _
-                                   ByVal description As String, _
-                                   ByVal serviceType As Guid, _
-                                   ByVal countryList As String, _
-                                   ByVal serviceCenter As String, _
+    Public Shared Function GetList(ByVal code As String,
+                                   ByVal description As String,
+                                   ByVal serviceType As Guid,
+                                   ByVal countryList As String,
+                                   ByVal serviceCenter As String,
                                    ByVal activeOn As DateType) As PriceListSearchDV
 
 
@@ -305,11 +305,11 @@ Public Class PriceList
             'End If
 
 
-            Return New PriceListSearchDV((New PriceListDAL).LoadList(code, _
-                                                                     description, _
-                                                                     serviceType, _
-                                                                     countryList, _
-                                                                     serviceCenter, _
+            Return New PriceListSearchDV((New PriceListDAL).LoadList(code,
+                                                                     description,
+                                                                     serviceType,
+                                                                     countryList,
+                                                                     serviceCenter,
                                                                      activeOn, ElitaPlusIdentity.Current.ActiveUser.LanguageId).Tables(0))
         Catch ex As Assurant.ElitaPlus.DALObjects.DataBaseAccessException
             Throw New DataBaseAccessException(DataBaseAccessException.DatabaseAccessErrorType.WriteErr, ex)
@@ -538,20 +538,20 @@ Public Class PriceList
             'check for duplicate records.
             For Each oPriceListDetail As PriceListDetail In obj.PriceListDetailChildren.Where(Function(i) i.IsNew)
                 If (obj.PriceListDetailChildren.Where(Function(i) _
-                                                         oPriceListDetail.ServiceClassId = i.ServiceClassId AndAlso _
-                                                         oPriceListDetail.ServiceTypeId = i.ServiceTypeId AndAlso _
-                                                         oPriceListDetail.ServiceLevelId = i.ServiceLevelId AndAlso _
-                                                         oPriceListDetail.RiskTypeId = i.RiskTypeId AndAlso _
-                                                         oPriceListDetail.EquipmentClassId = i.EquipmentClassId AndAlso _
-                                                         oPriceListDetail.EquipmentId = i.EquipmentId AndAlso _
-                                                         oPriceListDetail.ConditionId = i.ConditionId AndAlso _
-                                                         oPriceListDetail.PartId = i.PartId AndAlso _
-                                                         oPriceListDetail.MakeId = i.MakeId AndAlso _
-                                                         oPriceListDetail.ManufacturerOriginCode = i.ManufacturerOriginCode AndAlso _
-                                                         oPriceListDetail.PriceBandRangeFrom = i.PriceBandRangeFrom AndAlso _
-                                                         oPriceListDetail.PriceBandRangeTo = i.PriceBandRangeTo AndAlso _
-                                                         oPriceListDetail.Effective.Value.ToShortDateString() = i.Effective.Value.ToShortDateString() AndAlso _
-                                                         oPriceListDetail.Expiration.Value.ToShortDateString() = i.Expiration.Value.ToShortDateString() AndAlso _
+                                                         oPriceListDetail.ServiceClassId = i.ServiceClassId AndAlso
+                                                         oPriceListDetail.ServiceTypeId = i.ServiceTypeId AndAlso
+                                                         oPriceListDetail.ServiceLevelId = i.ServiceLevelId AndAlso
+                                                         oPriceListDetail.RiskTypeId = i.RiskTypeId AndAlso
+                                                         oPriceListDetail.EquipmentClassId = i.EquipmentClassId AndAlso
+                                                         oPriceListDetail.EquipmentId = i.EquipmentId AndAlso
+                                                         oPriceListDetail.ConditionId = i.ConditionId AndAlso
+                                                         oPriceListDetail.PartId = i.PartId AndAlso
+                                                         oPriceListDetail.MakeId = i.MakeId AndAlso
+                                                         oPriceListDetail.ManufacturerOriginCode = i.ManufacturerOriginCode AndAlso
+                                                         oPriceListDetail.PriceBandRangeFrom = i.PriceBandRangeFrom AndAlso
+                                                         oPriceListDetail.PriceBandRangeTo = i.PriceBandRangeTo AndAlso
+                                                         oPriceListDetail.Effective.Value.ToShortDateString() = i.Effective.Value.ToShortDateString() AndAlso
+                                                         oPriceListDetail.Expiration.Value.ToShortDateString() = i.Expiration.Value.ToShortDateString() AndAlso
                                                          i.IsNew).Count() > 1) Then
 
                     Return False
@@ -574,20 +574,20 @@ Public Class PriceList
             For Each oPriceListDetail As PriceListDetail In obj.PriceListDetailChildren
                 ''''check for overlapping dates
                 If (obj.PriceListDetailChildren.Where(Function(i) _
-                                                         oPriceListDetail.ServiceClassId = i.ServiceClassId AndAlso _
-                                                         oPriceListDetail.ServiceTypeId = i.ServiceTypeId AndAlso _
-                                                         oPriceListDetail.ServiceLevelId = i.ServiceLevelId AndAlso _
-                                                         oPriceListDetail.RiskTypeId = i.RiskTypeId AndAlso _
-                                                         oPriceListDetail.EquipmentClassId = i.EquipmentClassId AndAlso _
-                                                         oPriceListDetail.EquipmentId = i.EquipmentId AndAlso _
-                                                         oPriceListDetail.ConditionId = i.ConditionId AndAlso _
-                                                         oPriceListDetail.PartId = i.PartId AndAlso _
-                                                         oPriceListDetail.MakeId = i.MakeId AndAlso _
-                                                         oPriceListDetail.ManufacturerOriginCode = i.ManufacturerOriginCode AndAlso _
-                                                         oPriceListDetail.PriceBandRangeFrom.Value <= i.PriceBandRangeTo.Value AndAlso _
-                                                         i.PriceBandRangeFrom.Value <= oPriceListDetail.PriceBandRangeTo.Value AndAlso _
-                                                         DateTime.Compare(oPriceListDetail.Effective.Value, i.Expiration.Value) <= 0 AndAlso _
-                                                         DateTime.Compare(i.Effective.Value, oPriceListDetail.Expiration.Value) <= 0 AndAlso _
+                                                         oPriceListDetail.ServiceClassId = i.ServiceClassId AndAlso
+                                                         oPriceListDetail.ServiceTypeId = i.ServiceTypeId AndAlso
+                                                         oPriceListDetail.ServiceLevelId = i.ServiceLevelId AndAlso
+                                                         oPriceListDetail.RiskTypeId = i.RiskTypeId AndAlso
+                                                         oPriceListDetail.EquipmentClassId = i.EquipmentClassId AndAlso
+                                                         oPriceListDetail.EquipmentId = i.EquipmentId AndAlso
+                                                         oPriceListDetail.ConditionId = i.ConditionId AndAlso
+                                                         oPriceListDetail.PartId = i.PartId AndAlso
+                                                         oPriceListDetail.MakeId = i.MakeId AndAlso
+                                                         oPriceListDetail.ManufacturerOriginCode = i.ManufacturerOriginCode AndAlso
+                                                         oPriceListDetail.PriceBandRangeFrom.Value <= i.PriceBandRangeTo.Value AndAlso
+                                                         i.PriceBandRangeFrom.Value <= oPriceListDetail.PriceBandRangeTo.Value AndAlso
+                                                         DateTime.Compare(oPriceListDetail.Effective.Value, i.Expiration.Value) <= 0 AndAlso
+                                                         DateTime.Compare(i.Effective.Value, oPriceListDetail.Expiration.Value) <= 0 AndAlso
                                                          Not oPriceListDetail.Id.Equals(i.Id)).Count > 0) Then
 
                     Return False
@@ -610,20 +610,20 @@ Public Class PriceList
             For Each oPriceListDetail As PriceListDetail In obj.PriceListDetailChildren
                 ''''check for overlapping prices
                 If (obj.PriceListDetailChildren.Where(Function(i) _
-                                                         oPriceListDetail.ServiceClassId = i.ServiceClassId AndAlso _
-                                                         oPriceListDetail.ServiceTypeId = i.ServiceTypeId AndAlso _
-                                                         oPriceListDetail.ServiceLevelId = i.ServiceLevelId AndAlso _
-                                                         oPriceListDetail.RiskTypeId = i.RiskTypeId AndAlso _
-                                                         oPriceListDetail.EquipmentClassId = i.EquipmentClassId AndAlso _
-                                                         oPriceListDetail.EquipmentId = i.EquipmentId AndAlso _
-                                                         oPriceListDetail.ConditionId = i.ConditionId AndAlso _
-                                                         oPriceListDetail.PartId = i.PartId AndAlso _
-                                                         oPriceListDetail.MakeId = i.MakeId AndAlso _
-                                                         oPriceListDetail.ManufacturerOriginCode = i.ManufacturerOriginCode AndAlso _
-                                                         oPriceListDetail.PriceBandRangeFrom.Value <= i.PriceBandRangeTo.Value AndAlso _
-                                                         i.PriceBandRangeFrom.Value <= oPriceListDetail.PriceBandRangeTo.Value AndAlso _
-                                                         DateTime.Compare(oPriceListDetail.Effective.Value, i.Expiration.Value) <= 0 AndAlso _
-                                                         DateTime.Compare(i.Effective.Value, oPriceListDetail.Expiration.Value) <= 0 AndAlso _
+                                                         oPriceListDetail.ServiceClassId = i.ServiceClassId AndAlso
+                                                         oPriceListDetail.ServiceTypeId = i.ServiceTypeId AndAlso
+                                                         oPriceListDetail.ServiceLevelId = i.ServiceLevelId AndAlso
+                                                         oPriceListDetail.RiskTypeId = i.RiskTypeId AndAlso
+                                                         oPriceListDetail.EquipmentClassId = i.EquipmentClassId AndAlso
+                                                         oPriceListDetail.EquipmentId = i.EquipmentId AndAlso
+                                                         oPriceListDetail.ConditionId = i.ConditionId AndAlso
+                                                         oPriceListDetail.PartId = i.PartId AndAlso
+                                                         oPriceListDetail.MakeId = i.MakeId AndAlso
+                                                         oPriceListDetail.ManufacturerOriginCode = i.ManufacturerOriginCode AndAlso
+                                                         oPriceListDetail.PriceBandRangeFrom.Value <= i.PriceBandRangeTo.Value AndAlso
+                                                         i.PriceBandRangeFrom.Value <= oPriceListDetail.PriceBandRangeTo.Value AndAlso
+                                                         DateTime.Compare(oPriceListDetail.Effective.Value, i.Expiration.Value) <= 0 AndAlso
+                                                         DateTime.Compare(i.Effective.Value, oPriceListDetail.Expiration.Value) <= 0 AndAlso
                                                          Not oPriceListDetail.Id.Equals(i.Id)).Count > 0) Then
 
                     Return False
@@ -770,6 +770,7 @@ Public Class PriceList
             row(PriceListDetailSelectionView.COL_NAME_REQUESTED_BY) = detail.Row("requested_by")
             row(PriceListDetailSelectionView.COL_NAME_REQUESTED_DATE) = detail.Row("requested_date")
             row(PriceListDetailSelectionView.COL_NAME_STATUS_XCD) = detail.Row("status_xcd")
+            row(PriceListDetailSelectionView.COL_NAME_STATUS) = detail.Row("status")
             row(PriceListDetailSelectionView.COL_NAME_STATUS_DATE) = detail.Row("status_date")
             If detail.Price Is Nothing Then
                 row(PriceListDetailSelectionView.COL_NAME_PRICE) = 0
@@ -809,6 +810,7 @@ Public Class PriceList
         Inherits DataView
         Public Const COL_NAME_PRICE_LIST_DETAIL_ID As String = PriceListDetailDAL.COL_NAME_PRICE_LIST_DETAIL_ID
         Public Const COL_NAME_STATUS_XCD As String = PriceListDetailDAL.COL_NAME_STATUS_XCD
+        Public Const COL_NAME_STATUS As String = PriceListDetailDAL.COL_NAME_STATUS
         Public Const COL_NAME_STATUS_DATE As String = PriceListDetailDAL.COL_NAME_STATUS_DATE
         Public Const COL_NAME_REQUESTED_BY As String = PriceListDetailDAL.COL_NAME_REQUESTED_BY
         Public Const COL_NAME_REQUESTED_DATE As String = PriceListDetailDAL.COL_NAME_REQUESTED_DATE
@@ -888,7 +890,7 @@ Public Class PriceList
             t.Columns.Add(COL_NAME_PART_ID, GetType(Byte()))
             t.Columns.Add(COL_NAME_PART_CODE, GetType(String))
             t.Columns.Add(COL_NAME_PART_DESC, GetType(String))
-            t.Columns.Add(COL_NAME_MANUFACTURER_ORIGIN , GetType(String))
+            t.Columns.Add(COL_NAME_MANUFACTURER_ORIGIN, GetType(String))
             t.Columns.Add(COL_NAME_MANUFACTURER_ORIGIN_DESC, GetType(String))
             't.Columns.Add(COL_NAME_STOCK_ITEM_TYPE, GetType(String))
 
@@ -899,6 +901,7 @@ Public Class PriceList
             t.Columns.Add(COL_NAME_REQUESTED_BY, GetType(String))
             t.Columns.Add(COL_NAME_REQUESTED_DATE, GetType(String))
             t.Columns.Add(COL_NAME_STATUS_XCD, GetType(String))
+            t.Columns.Add(COL_NAME_STATUS, GetType(String))
             t.Columns.Add(COL_NAME_STATUS_DATE, GetType(String))
             t.Columns.Add(COL_NAME_PRICE, GetType(Decimal))
             t.Columns.Add(COL_NAME_VENDOR_QUANTITY, GetType(Int32))

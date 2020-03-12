@@ -242,15 +242,6 @@
                             <AlternatingRowStyle Wrap="True" />
                             <RowStyle Wrap="True" />
                             <Columns>
-                                <asp:TemplateField>
-        <ItemTemplate>
-            <%--<asp:HyperLink ID="lnkViewhistory" runat="server"></asp:HyperLink>--%>
-            <%--<asp:LinkButton ID="dummybtnhistory" runat="server"></asp:LinkButton>
-            <asp:LinkButton ID="lnkViewhistory" runat="server" Text="View History" CommandName="ViewHistoryRecord" 
-                CommandArgument='<%#Eval("price_list_detail_id") %>'></asp:LinkButton>
-            --%>
-        </ItemTemplate>
-    </asp:TemplateField>
                                 <asp:TemplateField ShowHeader="false">
                                     <ItemStyle HorizontalAlign="Center"></ItemStyle>
                                     <ItemTemplate>
@@ -296,7 +287,7 @@
                                     HeaderStyle-HorizontalAlign="Center" HtmlEncode="false" />
                                 <asp:BoundField DataField="requested_date" SortExpression="requested_date" ReadOnly="true" HeaderText="REQUESTED_DATE"
                                     HeaderStyle-HorizontalAlign="Center" HtmlEncode="false" />
-                                <asp:BoundField DataField="status_xcd" SortExpression="status_xcd" ReadOnly="true"
+                                <asp:BoundField DataField="status" SortExpression="status" ReadOnly="true"
                                     HeaderText="STATUS" HeaderStyle-HorizontalAlign="Center" HtmlEncode="false" />
                                 <asp:BoundField DataField="status_date" SortExpression="status_date"
                                     ReadOnly="true" HeaderText="STATUS_DATE" HeaderStyle-HorizontalAlign="Center" HtmlEncode="false" />
@@ -311,32 +302,26 @@
                                 <asp:BoundField DataField="price_high_range_with_symbol" SortExpression="price_high_range_with_symbol"
                                     ReadOnly="true" HeaderText="HIGH_PRICE" HeaderStyle-HorizontalAlign="Center"
                                     HtmlEncode="false" />
-                               <%-- <asp:BoundField DataField="staus_xcd" SortExpression="staus_xcd" ReadOnly="true"
-                                    HeaderText="STATUS" HeaderStyle-HorizontalAlign="Center" HtmlEncode="false" />--%>
                                 <asp:BoundField DataField="effective" SortExpression="effective" ReadOnly="true"
                                     HeaderText="EFFECTIVE" HeaderStyle-HorizontalAlign="Center" HtmlEncode="false" />
                                 <asp:BoundField DataField="expiration" SortExpression="expiration" ReadOnly="true"
                                     HeaderText="EXPIRATION" HeaderStyle-HorizontalAlign="Center" HtmlEncode="false" />
                                 <asp:BoundField DataField="price_list_detail_id" ReadOnly="true" Visible="false" />
+                                 <asp:TemplateField Visible="false">
+                                    <ItemTemplate>
+                                        <asp:Label ID="lblStatusXCD" runat="server" Text='<%# Container.DataItem("status_xcd")%>'></asp:Label>
+                                    </ItemTemplate>
+                                </asp:TemplateField>
                             </Columns>
                             <PagerSettings PageButtonCount="30" Mode="Numeric" Position="TopAndBottom" />
                             <PagerStyle />
                         </asp:GridView>
 
                         <div class="btnZone">
-                            <table cellpadding="0" cellspacing="0" width="100%">
-                                <tr>
-                                    <td>
-                                        <asp:LinkButton runat="server" ID="dummybutton"></asp:LinkButton>
-                                        <asp:Button ID="addBtnNewListItem" runat="server" SkinID="AlternateLeftButton" Text="NEW" />
-                                         </td>
-                                    <td>
-                                        <asp:LinkButton runat="server" ID="dummybutton1"></asp:LinkButton>
-                                        <asp:Button ID="btnSubmitforApproval" runat="server" SkinID="AlternateLeftButton" Text="SUBMIT_FOR_APPROVAL" />
-                                    </td>                        
-                                </tr>
-                                
-                            </table>
+                            <asp:LinkButton runat="server" ID="dummybutton"></asp:LinkButton>
+                            <asp:Button ID="addBtnNewListItem" runat="server" SkinID="AlternateLeftButton" Text="NEW" />
+                            <asp:LinkButton runat="server" ID="dummybutton1"></asp:LinkButton>
+                            <asp:Button ID="btnSubmitforApproval" runat="server" SkinID="AlternateLeftButton" Text="SUBMIT_FOR_APPROVAL" />
                         </div>
                 </div>
                     </div>
@@ -454,24 +439,13 @@
                                 <PagerStyle />
                             </asp:GridView>
 
-                            <div class="btnZone">
-                                <table cellpadding="0" cellspacing="0" width="100%">
-                                    <tr>
-
-                                        <td class="auto-style1">
-                                            <asp:LinkButton runat="server" ID="LinkButton2"></asp:LinkButton>
-                                            <asp:Button ID="btnApprove" runat="server" SkinID="AlternateLeftButton" Text="PL_APPROVE" />
-                                        </td>
-                                        <td>
-                                            <asp:LinkButton runat="server" ID="LinkButton1"></asp:LinkButton>
-                                            <asp:Button ID="btnReject" runat="server" SkinID="AlternateLeftButton" Text="PL_REJECT" />
-                                        </td>
-
-                                    </tr>
-
-                                </table>
-                            </div>
+                        <div class="btnZone">
+                            <asp:LinkButton runat="server" ID="LinkButton2"></asp:LinkButton>
+                            <asp:Button ID="btnApprove" runat="server" SkinID="AlternateLeftButton" Text="PL_APPROVE" />
+                            <asp:LinkButton runat="server" ID="LinkButton1"></asp:LinkButton>
+                            <asp:Button ID="btnReject" runat="server" SkinID="AlternateLeftButton" Text="PL_REJECT" />
                         </div>
+                    </div>
                     </div>
             </div>
         </div>
