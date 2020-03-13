@@ -12,25 +12,7 @@
   <LOAD_PRICEBAND_LIST>
     ELP_PRICE_LIST_UTILITY.Load_PriceBand_List
   </LOAD_PRICEBAND_LIST>
-  <!--<UPDATE>
-		ELP_PRICE_LIST_UTILITY_ABHI.insert_price_list_detail_recon
-	</UPDATE>
-	<INSERT>
-    ELP_PRICE_LIST_UTILITY_ABHI.insert_price_list_detail_recon
-  </INSERT>-->
-  <UPDATE>
-    elp_tbl_price_list.insert_update_pld_recon
-  </UPDATE>
-	<INSERT>
-    elp_tbl_price_list.insert_update_pld_recon
-  </INSERT>
-  	<!--<UPDATE>
-		ELP_PRICE_LIST_UTILITY.Update_PriceListDetail
-	</UPDATE>
-	<INSERT>
-		ELP_PRICE_LIST_UTILITY.Insert_PriceListDetail
-	</INSERT>-->
-	<DELETE>
+ <DELETE>
 		ELP_PRICE_LIST_UTILITY.Delete_PriceListDetail
 	</DELETE>
 	<GETMAKE>
@@ -51,21 +33,12 @@
   <FIND_REPAIR_PRICE>
     ELP_PRICE_LIST_UTILITY.FIND_REPAIR_PRICE_By_SVCLvl
   </FIND_REPAIR_PRICE>
-  
   <GET_METHOD_OF_REPAIR_PRICE_LIST>
     ELP_PRICE_LIST_UTILITY.GETMETHODOFREPAIRPRICELIST
   </GET_METHOD_OF_REPAIR_PRICE_LIST>
-  
   <GET_PRICE_LIST>
     ELP_PRICE_LIST_UTILITY.GetPriceList
   </GET_PRICE_LIST>
-  
-  <!--<LOAD_PRICE_LIST_LIST>
-    ELP_PRICE_LIST_UTILITY.Load_Price_List_List
-  </LOAD_PRICE_LIST_LIST>-->
-    <LOAD_PRICE_LIST_LIST>
-      elp_tbl_price_list.load_all_price_list_detail
-    </LOAD_PRICE_LIST_LIST>
   <FIND_MAKE_MODEL_BY_EQUIPMENT_ID>
    ELP_PRICE_LIST_UTILITY.Find_MakeModel_By_Eqpmnt_Id
   </FIND_MAKE_MODEL_BY_EQUIPMENT_ID>
@@ -75,6 +48,15 @@
   <GET_PARTS_PRICE_LIST>
     ELP_PRICE_LIST_UTILITY.GetPartsPrices
   </GET_PARTS_PRICE_LIST>
+   <UPDATE>
+    elp_tbl_price_list.insert_update_pld_recon
+  </UPDATE>
+	<INSERT>
+    elp_tbl_price_list.insert_update_pld_recon
+  </INSERT>
+   <LOAD_PRICE_LIST_LIST>
+      elp_tbl_price_list.load_all_price_list_detail
+    </LOAD_PRICE_LIST_LIST>
   <LOAD_PRICE_LIST_DETAIL_HISTORY>
     elp_tbl_price_list.load_price_list_detail_history
   </LOAD_PRICE_LIST_DETAIL_HISTORY>

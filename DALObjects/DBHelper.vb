@@ -102,43 +102,6 @@ Public NotInheritable Class DBHelper
 
     End Sub
 
-    Public Shared Sub InternalFetchbySP(ByVal ds As DataSet, ByVal sql As String, ByVal tableName As String, ByVal parms() As OracleParameter)
-        Dim da As OracleDataAdapter
-
-        Using conn As New OracleConnection(DBHelper.ConnectString)
-            Using cmd As New OracleCommand(sql, conn)
-                Try
-                    With cmd
-                        If Not conn.State = ConnectionState.Open Then
-                            conn.Open()
-                        End If
-                        .Connection = conn
-                        .CommandType = CommandType.StoredProcedure
-                        If Not parms Is Nothing Then
-                            For currParm As Int32 = 0 To (parms.GetLength(0) - 1)
-                                .Parameters.Add(parms(currParm))
-                            Next currParm
-                            'cmd.Parameters.Add("po_price_list", OracleDbType.RefCursor, ParameterDirection.Output)
-                            'cmd.Parameters.Add("po_return_code", OracleDbType.Decimal, ParameterDirection.Output)
-
-                        End If
-                    End With
-
-                    da = New OracleDataAdapter(cmd)
-                    da.Fill(ds, tableName)
-                    ds.Locale = CultureInfo.InvariantCulture
-                Catch ex As Exception
-                    Throw New DataBaseAccessException(DataBaseAccessException.DatabaseAccessErrorType.ReadErr, ex)
-                Finally
-                    da.Dispose()
-                    da = Nothing
-                    If conn.State = ConnectionState.Open Then conn.Close()
-                End Try
-            End Using
-        End Using
-
-    End Sub
-
     Private Shared Sub InternalFetch(ByVal ds As DataSet, ByVal sql As String, ByVal tableName As String, _
     ByVal command As OracleCommand)
         Dim conn As IDbConnection
@@ -638,31 +601,13 @@ Public NotInheritable Class DBHelper
                 End If
         End Select
         If Not stmtToExecute Is Nothing Then
-            Dim callSP As Boolean = False
-
-
-            If stmtToExecute.IndexOf("<SP>") > -1 Then
-                callSP = True
-            End If
-
-
-            If rowState = DataRowState.Added And callSP = True Then
-                stmtToExecute = stmtToExecute.TrimStart("<", "S", "P", ">").TrimEnd("<", "/", "S", "P", ">")
-                ExecuteInsertCommandwithParameters(stmtToExecute, row)
-            ElseIf rowState = DataRowState.Modified And callSP = True Then
-                stmtToExecute = stmtToExecute.TrimStart("<", "S", "P", ">").TrimEnd("<", "/", "S", "P", ">")
-                ExecuteUpdateCommandwithParameters(stmtToExecute, row)
-            Else
-                stmtToExecute = ReplaceParameterValues(stmtToExecute, row)
-                    stmtToExecute = ReplaceParameterValues(stmtToExecute, additionalParamters)
-                    ExecuteCommand(stmtToExecute, transaction)
-                End If
-                row.AcceptChanges()
-            End If
-        '    If Not stmtToExecute Is Nothing Then
-        '    ExecuteCommand(stmtToExecute, transaction)
-        '    row.AcceptChanges()
-        'End If
+            stmtToExecute = ReplaceParameterValues(stmtToExecute, row)
+            stmtToExecute = ReplaceParameterValues(stmtToExecute, additionalParamters)
+        End If
+        If Not stmtToExecute Is Nothing Then
+            ExecuteCommand(stmtToExecute, transaction)
+            row.AcceptChanges()
+        End If
     End Sub
 
     Public Shared Sub ExecuteWithParam(ByVal row As DataRow, ByVal insSQLStmt As String, ByVal updSQLStmt As String, ByVal delSQLStmt As String, ByVal additionalParamters() As DBHelperParameter, Optional ByVal transaction As IDbTransaction = Nothing, Optional ByVal changesFilter As DataRowState = Nothing)
@@ -1007,184 +952,6 @@ Public NotInheritable Class DBHelper
         Return resultStmt
     End Function
 
-    Private Shared Function ExecuteInsertCommandwithParameters(ByVal stmt As String, ByVal row As DataRow)
-        If row IsNot Nothing Then
-            Dim con As IDbConnection = New OracleConnection(ConnectString)
-            Dim paramCollection As OracleCommand = New OracleCommand(stmt, con)
-            Dim table As DataTable = row.Table
-            Dim column As DataColumn
-            Dim resultStmt As String = stmt
-
-            Try
-                For Each column In table.Columns
-                    Dim value As Object
-                    Dim op As OracleParameter
-                    Select Case column.ColumnName
-                        Case "Code".ToUpper()
-                            op = New OracleParameter("pi_code", OracleDbType.Varchar2, ParameterDirection.Input)
-                            op.Value = row(column.ColumnName)
-                        Case "Description".ToUpper()
-                            op = New OracleParameter("pi_description", OracleDbType.Varchar2, ParameterDirection.Input)
-                            op.Value = row(column.ColumnName)
-                        Case "Country_id".ToUpper()
-                            op = New OracleParameter("pi_country_id", OracleDbType.Raw, ParameterDirection.Input)
-                            op.Value = row(column.ColumnName)
-                        Case "Manage_inventory_id".ToUpper()
-                            op = New OracleParameter("pi_manage_inventory_id", OracleDbType.Raw, ParameterDirection.Input)
-                            op.Value = row(column.ColumnName)
-                        Case "Effective".ToUpper()
-                            op = New OracleParameter("pi_effective", OracleDbType.Date, ParameterDirection.Input)
-                            op.Value = Convert.ToDateTime(row(column.ColumnName).ToString())
-                        Case "Expiration".ToUpper()
-                            op = New OracleParameter("pi_expiration", OracleDbType.Date, ParameterDirection.Input)
-                            op.Value = Convert.ToDateTime(row(column.ColumnName).ToString())
-                        Case "Created_By".ToUpper()
-                            op = New OracleParameter("pi_created_by", OracleDbType.Varchar2, ParameterDirection.Input)
-                            op.Value = row(column.ColumnName)
-                        Case "Default_Currency_Id".ToUpper()
-                            op = New OracleParameter("pi_default_currency_id", OracleDbType.Raw, ParameterDirection.Input)
-                            op.Value = row(column.ColumnName)
-
-                        Case "price_list_id".ToUpper()
-                            op = New OracleParameter("pi_price_list_id", OracleDbType.Raw, ParameterDirection.Input)
-                            op.Value = row(column.ColumnName)
-
-                    End Select
-                    If op IsNot Nothing Then
-                        paramCollection.Parameters.Add(op)
-                        op = Nothing
-                    End If
-
-
-                Next
-                Dim outParam As OracleParameter = New OracleParameter("po_return_code", OracleDbType.Decimal, ParameterDirection.Output)
-                paramCollection.Parameters.Add(outParam)
-
-                'paramCollection.ArrayBindCount = 1
-                'Dim pricelistid As OracleParameter = New OracleParameter("pi_price_list_id", OracleDbType.Raw, ParameterDirection.Input)
-                'pricelistid.Value = GuidControl.HexToByteArray(Guid.NewGuid.ToString())
-                'paramCollection.Parameters.Add(pricelistid)
-                paramCollection.BindByName = True
-                If Not con.State = ConnectionState.Open Then
-                    con.Open()
-
-                End If
-                paramCollection.CommandType = CommandType.StoredProcedure
-                paramCollection.ExecuteNonQuery()
-            Catch ex As DALConcurrencyAccessException
-                Throw ex
-            Catch ex As OracleException
-                Select Case ex.Number
-                    Case ORACLE_UNIQUE_CONSTRAINT_ERR
-                        Throw New DataBaseUniqueKeyConstraintViolationException(ex)
-                    Case ORACLE_LENGHT_EXCEEDED_ERR
-                        Throw New DataBaseLengthExceededException(ex)
-                    Case ORACLE_INTEGRITY_CONSTRAINT_VIOLATION
-                        Throw New DataBaseIntegrityConstraintViolation(ex)
-                    Case Else
-                        Throw New DataBaseAccessException(DataBaseAccessException.DatabaseAccessErrorType.WriteErr, ex)
-                End Select
-            Catch ex As Exception
-                Throw New DataBaseAccessException(DataBaseAccessException.DatabaseAccessErrorType.WriteErr, ex)
-            Finally
-                con.Close()
-                paramCollection.Parameters.Clear()
-            End Try
-        End If
-
-    End Function
-
-
-    Private Shared Function ExecuteUpdateCommandwithParameters(ByVal stmt As String, ByVal row As DataRow)
-        If row IsNot Nothing Then
-            Dim con As IDbConnection = New OracleConnection(ConnectString)
-            Dim paramCollection As OracleCommand = New OracleCommand(stmt, con)
-            Dim table As DataTable = row.Table
-            Dim column As DataColumn
-            Dim resultStmt As String = stmt
-
-            Try
-                For Each column In table.Columns
-                    Dim value As Object
-                    Dim op As OracleParameter
-                    Select Case column.ColumnName
-                        'Case "Code".ToUpper()
-                        '    op = New OracleParameter("pi_code", OracleDbType.Varchar2, ParameterDirection.Input)
-                        '    op.Value = row(column.ColumnName)
-                        Case "Description".ToUpper()
-                            op = New OracleParameter("pi_description", OracleDbType.Varchar2, ParameterDirection.Input)
-                            op.Value = row(column.ColumnName)
-                        Case "Country_id".ToUpper()
-                            op = New OracleParameter("pi_country_id", OracleDbType.Raw, ParameterDirection.Input)
-                            op.Value = row(column.ColumnName)
-                        'Case "Manage_inventory_id".ToUpper()
-                        '    op = New OracleParameter("pi_manage_inventory_id", OracleDbType.Raw, ParameterDirection.Input)
-                        '    op.Value = row(column.ColumnName)
-                        Case "Effective".ToUpper()
-                            op = New OracleParameter("pi_effective", OracleDbType.Date, ParameterDirection.Input)
-                            op.Value = Convert.ToDateTime(row(column.ColumnName).ToString())
-                        Case "Expiration".ToUpper()
-                            op = New OracleParameter("pi_expiration", OracleDbType.Date, ParameterDirection.Input)
-                            op.Value = Convert.ToDateTime(row(column.ColumnName).ToString())
-                        'Case "Created_By".ToUpper()
-                        '    op = New OracleParameter("pi_created_by", OracleDbType.Varchar2, ParameterDirection.Input)
-                        '    op.Value = row(column.ColumnName)
-                        Case "Modified_By".ToUpper()
-                            op = New OracleParameter("pi_modified_by", OracleDbType.Varchar2, ParameterDirection.Input)
-                            op.Value = row(column.ColumnName)
-                        Case "Default_Currency_Id".ToUpper()
-                            op = New OracleParameter("pi_default_currency_id", OracleDbType.Raw, ParameterDirection.Input)
-                            op.Value = row(column.ColumnName)
-
-                        Case "price_list_id".ToUpper()
-                            op = New OracleParameter("pi_price_list_id", OracleDbType.Raw, ParameterDirection.Input)
-                            op.Value = row(column.ColumnName)
-
-                    End Select
-                    If op IsNot Nothing Then
-                        paramCollection.Parameters.Add(op)
-                        op = Nothing
-                    End If
-
-
-                Next
-                Dim outParam As OracleParameter = New OracleParameter("po_return_code", OracleDbType.Decimal, ParameterDirection.Output)
-                paramCollection.Parameters.Add(outParam)
-
-                'paramCollection.ArrayBindCount = 1
-                'Dim pricelistid As OracleParameter = New OracleParameter("pi_price_list_id", OracleDbType.Raw, ParameterDirection.Input)
-                'pricelistid.Value = GuidControl.HexToByteArray(Guid.NewGuid.ToString())
-                'paramCollection.Parameters.Add(pricelistid)
-                paramCollection.BindByName = True
-                If Not con.State = ConnectionState.Open Then
-                    con.Open()
-
-                End If
-                paramCollection.CommandType = CommandType.StoredProcedure
-                paramCollection.ExecuteNonQuery()
-            Catch ex As DALConcurrencyAccessException
-                Throw ex
-            Catch ex As OracleException
-                Select Case ex.Number
-                    Case ORACLE_UNIQUE_CONSTRAINT_ERR
-                        Throw New DataBaseUniqueKeyConstraintViolationException(ex)
-                    Case ORACLE_LENGHT_EXCEEDED_ERR
-                        Throw New DataBaseLengthExceededException(ex)
-                    Case ORACLE_INTEGRITY_CONSTRAINT_VIOLATION
-                        Throw New DataBaseIntegrityConstraintViolation(ex)
-                    Case Else
-                        Throw New DataBaseAccessException(DataBaseAccessException.DatabaseAccessErrorType.WriteErr, ex)
-                End Select
-            Catch ex As Exception
-                Throw New DataBaseAccessException(DataBaseAccessException.DatabaseAccessErrorType.WriteErr, ex)
-            Finally
-                con.Close()
-                paramCollection.Parameters.Clear()
-            End Try
-        End If
-
-    End Function
-
     Private Shared Function ReplaceOneParameter(ByVal stmt As String, ByVal par As DBHelperParameter) As String
         Dim upperStmt As String = stmt.ToUpper
         Dim resultStmt As String = stmt
@@ -1307,7 +1074,6 @@ Public NotInheritable Class DBHelper
                 command.Parameters.Add(CType(commandList.GetByIndex(i), OracleParameter))
             Next
 
-            command.CommandType = CommandType.StoredProcedure
             Dim rowsAffected As Integer = command.ExecuteNonQuery()
             If rowsAffected <= 0 Then
                 Throw New DALConcurrencyAccessException

@@ -4,97 +4,16 @@
 
 <SQL>
   <LOAD>
-    <!--<![CDATA[	
-			SELECT 
-				code,
-				description,
-				country_id,
-				manage_inventory_id,
-				effective,
-				created_by,
-				modified_by,
-				created_date,
-				modified_date,
-				price_list_id,
-				created_by,
-				modified_by,
-				created_date,
-				modified_date,
-				expiration,
-        default_currency_id
-        FROM elp_price_list_header_recon 
-			WHERE
-				price_list_id = :price_list_id
-				order by country_id, code, expiration
-		]]>-->
     <![CDATA[elp_tbl_price_list.load_price_list]]>
-
   </LOAD>
-  <LOAD_LIST>
-    <![CDATA[	
-    SELECT 
-		el.price_list_id, 
-		el.country_id,
-		el.code, 
-		el.description,	
-		to_Char(el.effective,'DD-Mon-YYYY HH24:MI:SS') AS effective,
-		to_Char(el.expiration,'DD-Mon-YYYY HH24:MI:SS') AS expiration,
-		(select count(*) from elp_service_center where price_list_code = el.CODE) as vendorcount
-    FROM elp_price_list_header_recon el  
-	 
-		--dynamic_where_clause
-		order by el.country_id, el.code, el.expiration
-		
-	]]>
-  </LOAD_LIST>
   <LOAD_LIST_SEARCH>
     <![CDATA[elp_tbl_price_list.load_all_price_list]]>
   </LOAD_LIST_SEARCH>
   <UPDATE>
-    <!--<![CDATA[	
-			UPDATE elp_price_list SET
-				code = :code,
-				description = :description,
-				manage_inventory_id = :manage_inventory_id,
-				effective = :effective,
-				expiration = :expiration,
-				modified_by = :modified_by,
-        default_currency_id= :default_currency_id
-			WHERE
-				price_list_id = :price_list_id
-		]]>-->
-
-    <![CDATA[<SP>elp_tbl_price_list.update_price_list_recon</SP>]]>
-
+      <![CDATA[elp_tbl_price_list.update_price_list_recon]]>
   </UPDATE>
   <INSERT>
-    <!--<![CDATA[	
-    INSERT INTO elp_price_list
-    (
-    code,
-    description,
-    country_id,
-    manage_inventory_id,
-    effective,
-    expiration,
-    created_by,
-    price_list_id,
-    default_currency_id
-    )
-    VALUES
-    (
-    :code,
-    :description,
-    :country_id,
-    :manage_inventory_id,
-    :effective,
-    :expiration,
-    :created_by,
-    :price_list_id,
-    :default_currency_id
-    )
-	]]>-->
-    <![CDATA[<SP>elp_tbl_price_list.insert_price_list_recon</SP>]]>
+    <![CDATA[elp_tbl_price_list.insert_price_list_recon]]>
   </INSERT>
   <DELETE>
     <![CDATA[	
