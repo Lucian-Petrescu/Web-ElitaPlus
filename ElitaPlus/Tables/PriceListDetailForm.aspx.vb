@@ -48,20 +48,22 @@ Public Class PriceListDetailForm
     Public Const GRID_COL_REQUESTEDDATE_IDX As Integer = 14
     Public Const GRID_COL_STATUS_IDX As Integer = 15
     Public Const GRID_COL_STATUSDATE_IDX As Integer = 16
+    Public Const GRID_COL_STATUSBY_IDX As Integer = 17
 
-    Public Const GRID_COL_MANORI_IDX As Integer = 17
-    Public Const GRID_COL_PRICEID_IDX As Integer = 18
-    Public Const GRID_COL_QUANTITY_IDX As Integer = 19
+    Public Const GRID_COL_MANORI_IDX As Integer = 18
+    Public Const GRID_COL_PRICEID_IDX As Integer = 19
+    Public Const GRID_COL_QUANTITY_IDX As Integer = 20
 
-    Public Const GRID_COL_LOW_PRICE_IDX As Integer = 20
-    Public Const GRID_COL_HIGH_PRICE_IDX As Integer = 21
+    Public Const GRID_COL_LOW_PRICE_IDX As Integer = 21
+    Public Const GRID_COL_HIGH_PRICE_IDX As Integer = 22
 
-    Public Const GRID_COL_EFFECTIVE_DATEID_IDX As Integer = 22
-    Public Const GRID_COL_EXPIRATION_DATEID_IDX As Integer = 23
+    Public Const GRID_COL_EFFECTIVE_DATEID_IDX As Integer = 23
+    Public Const GRID_COL_EXPIRATION_DATEID_IDX As Integer = 24
     Public Const GRID_COL_EDITID_IDX As Integer = 1
     Public Const GRID_COL_DELETEID_IDX As Integer = 0
-    Public Const GRID_COL_PRICE_LIST_DETAIL_IDX As Integer = 24
-    Public Const GRID_COL_STATUS_XCD_IDX As Integer = 25
+    Public Const GRID_COL_PRICE_LIST_DETAIL_IDX As Integer = 25
+    Public Const GRID_COL_STATUS_XCD_IDX As Integer = 26
+    Public Const GRID_COL_VIEW_HISTORY_IDX As Integer = 27
 
 
 
@@ -1657,6 +1659,21 @@ Public Class PriceListDetailForm
             Session("recCount") = dv.Table.Rows.Count 'Me.State.DetailSearchDV.Count
             Me.lblRecordCounts.Text = dv.Table.Rows.Count & " " & TranslationBase.TranslateLabelOrMessage(Message.MSG_RECORDS_FOUND)
 
+            If dv.Table.Rows.Count = 0 Then
+                ControlMgr.SetVisibleControl(Me, trPageSize, False)
+                ControlMgr.SetVisibleControl(Me, cboPageSize, False)
+                ControlMgr.SetVisibleControl(Me, btnSubmitforApproval, False)
+            Else
+                dv.RowFilter = "status_xcd='PL_RECON_PROCESS-PENDINGSUBMISSION'"
+                Dim pendingSubmissionRows = dv.Count
+                If pendingSubmissionRows = 0 Then
+                    ControlMgr.SetVisibleControl(Me, btnSubmitforApproval, False)
+                Else
+                    ControlMgr.SetVisibleControl(Me, btnSubmitforApproval, True)
+                End If
+            End If
+
+
         Catch ex As Exception
             Me.HandleErrors(ex, Me.MasterPage.MessageController)
         End Try
@@ -1863,7 +1880,7 @@ Public Class PriceListDetailForm
                 End If
             End If
 
-            Dim btnViewHistory As LinkButton = CType(e.Row.Cells(26).FindControl("btnViewHistory"), LinkButton)
+            Dim btnViewHistory As LinkButton = CType(e.Row.Cells(GRID_COL_VIEW_HISTORY_IDX).FindControl("btnViewHistory"), LinkButton)
             btnViewHistory.Visible = True
             btnViewHistory.Text = TranslationBase.TranslateLabelOrMessage("VIEWHISTORY")
             btnViewHistory.CommandArgument = GetGuidStringFromByteArray(CType(dvRow(PriceListDetail.PriceListDetailSearchDV.COL_PRICE_LIST_DETAIL_ID), Byte()))
@@ -1930,27 +1947,26 @@ Public Class PriceListDetailForm
             Me.gvPendingApprovals.PageSize = Me.State.PageSize
             SetPageAndSelectedIndexFromGuid(dv, Me.State.PriceListDetailSelectedChildId, Me.gvPendingApprovals, Me.State.PageIndex)
 
-            'Me.gvPendingApprovals.DataSource = dv.Table.Select("status_xcd='PL_RECON_PROCESS-PENDINGAPPROVAL'") 'Me.State.DetailSearchDV
             dv.RowFilter = "status_xcd='PL_RECON_PROCESS-PENDINGAPPROVAL'"
             Me.gvPendingApprovals.DataSource = dv
             Me.gvPendingApprovals.DataBind()
             Me.State.PageIndex = Me.gvPendingApprovals.PageIndex
             Me.ShowHideQuantity()
 
-            ControlMgr.SetVisibleControl(Me, trPageSizePendingApprovals, Me.gvPendingApprovals.Visible)
+            ControlMgr.SetVisibleControl(Me, lblPageSizePendingApprovals, Me.gvPendingApprovals.Visible)
             ControlMgr.SetVisibleControl(Me, cboPageSizePendingApproval, Me.gvPendingApprovals.Visible)
             ControlMgr.SetVisibleControl(Me, lblPendingApprovalRecordCounts, True)
+            ControlMgr.SetVisibleControl(Me, btnApprove, True)
+            ControlMgr.SetVisibleControl(Me, btnReject, True)
 
-            Session("recCount") = dv.Table.Rows.Count 'Me.State.DetailSearchDV.Count
-            Me.lblPendingApprovalRecordCounts.Text = dv.Table.Rows.Count - 1 & " " & TranslationBase.TranslateLabelOrMessage(Message.MSG_RECORDS_FOUND)
+            Session("recCount") = dv.Count
+            Me.lblPendingApprovalRecordCounts.Text = dv.Count & " " & TranslationBase.TranslateLabelOrMessage(Message.MSG_RECORDS_FOUND)
 
-            If dv.Table.Rows.Count = 0 Then
-                ControlMgr.SetVisibleControl(Me, trPageSizePendingApprovals, False)
+            If dv.Count = 0 Then
+                ControlMgr.SetVisibleControl(Me, lblPageSizePendingApprovals, False)
                 ControlMgr.SetVisibleControl(Me, cboPageSizePendingApproval, False)
-                ControlMgr.SetVisibleControl(Me, lblPendingApprovalRecordCounts, True)
-                Me.lblPendingApprovalRecordCounts.Text = 0 & " " & TranslationBase.TranslateLabelOrMessage(Message.MSG_RECORDS_FOUND)
-                btnApprove.Visible = False
-                btnReject.Visible = False
+                ControlMgr.SetVisibleControl(Me, btnApprove, False)
+                ControlMgr.SetVisibleControl(Me, btnReject, False)
             End If
         Catch ex As Exception
             Me.HandleErrors(ex, Me.MasterPage.MessageController)
@@ -2417,10 +2433,10 @@ Public Class PriceListDetailForm
     Protected Sub btnSubmitforApproval_Click(sender As Object, e As EventArgs) Handles btnSubmitforApproval.Click
 
         Try
-            Me.State.MyBO.SubmitforApproval(Me.State.MyBO.Id, String.Empty, ElitaPlusIdentity.Current.ActiveUser.CreatedById, "submitforapproval")
-            btnSubmitforApproval.Visible = False
-            Me.MasterPage.MessageController.AddSuccess(ElitaPlus.ElitaPlusWebApp.Message.SUBMIT_RECORD_CONFIRMATION)
+            Me.State.MyBO.ProcessPriceListRequest(Me.State.MyBO.Id, String.Empty, Authentication.CurrentUser.NetworkId, "PL_RECON_PROCESS-PENDINGAPPROVAL")
             Me.PopulateGrid()
+            Me.PopulategvPendingApprovals()
+            Me.MasterPage.MessageController.AddSuccess(ElitaPlus.ElitaPlusWebApp.Message.SUBMIT_RECORD_CONFIRMATION)
         Catch ex As Exception
             Me.MasterPage.MessageController.AddError(ElitaPlus.ElitaPlusWebApp.Message.MSG_RECORD_NOT_SAVED)
             Me.HandleErrors(ex, Me.MasterPage.MessageController)
@@ -2444,10 +2460,10 @@ Public Class PriceListDetailForm
                 Next
                 PricelistDetailIdList = String.Join(",", lstPriceListDetail.ToArray())
             End If
-            Me.State.MyBO.SubmitforApproval(Me.State.MyBO.Id, PricelistDetailIdList, ElitaPlusIdentity.Current.ActiveUser.CreatedById, "approve")
-            btnApprove.Visible = False
-            Me.MasterPage.MessageController.AddSuccess(ElitaPlus.ElitaPlusWebApp.Message.APPROVE_RECORD_CONFIRMATION)
+            Me.State.MyBO.ProcessPriceListRequest(Me.State.MyBO.Id, PricelistDetailIdList, Authentication.CurrentUser.NetworkId, "PL_RECON_PROCESS-APPROVED")
+            Me.PopulateGrid()
             Me.PopulategvPendingApprovals()
+            Me.MasterPage.MessageController.AddSuccess(ElitaPlus.ElitaPlusWebApp.Message.APPROVE_RECORD_CONFIRMATION)
         Catch ex As Exception
             Me.MasterPage.MessageController.AddError(ElitaPlus.ElitaPlusWebApp.Message.MSG_RECORD_NOT_APPROVED)
             Me.HandleErrors(ex, Me.MasterPage.MessageController)
@@ -2470,10 +2486,10 @@ Public Class PriceListDetailForm
                 Next
                 PricelistDetailIdList = String.Join(",", lstPriceListDetail.ToArray())
             End If
-            Me.State.MyBO.SubmitforApproval(Me.State.MyBO.Id, PricelistDetailIdList, ElitaPlusIdentity.Current.ActiveUser.CreatedById, "reject")
-            btnApprove.Visible = False
-            Me.MasterPage.MessageController.AddSuccess(ElitaPlus.ElitaPlusWebApp.Message.REJECT_RECORD_CONFIRMATION)
+            Me.State.MyBO.ProcessPriceListRequest(Me.State.MyBO.Id, PricelistDetailIdList, Authentication.CurrentUser.NetworkId, "PL_RECON_PROCESS-REJECTED")
+            Me.PopulateGrid()
             Me.PopulategvPendingApprovals()
+            Me.MasterPage.MessageController.AddSuccess(ElitaPlus.ElitaPlusWebApp.Message.REJECT_RECORD_CONFIRMATION)
         Catch ex As Exception
             Me.MasterPage.MessageController.AddError(ElitaPlus.ElitaPlusWebApp.Message.MSG_RECORD_NOT_REJECTED)
             Me.HandleErrors(ex, Me.MasterPage.MessageController)

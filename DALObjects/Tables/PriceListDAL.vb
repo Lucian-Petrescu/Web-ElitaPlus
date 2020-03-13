@@ -44,6 +44,10 @@ Public Class PriceListDAL
     Public Const PAR_IN_NAME_DEFAULT_CURRENCY_ID As String = "pi_default_currency_id"
     Public Const NULL_VALUE As String = "NULL"
 
+    Public Const PAR_IN_NAME_STATUS_DATE As String = "status_date"
+    Public Const PAR_IN_NAME_STATUS_BY As String = "pi_status_by"
+    Public Const PAR_IN_NAME_PRICE_LIST_DETAIL_ID_LIST As String = "pi_price_list_detail_id_list"
+
 #End Region
 
 #Region "Constructors"
@@ -333,11 +337,6 @@ Public Class PriceListDAL
         End If
     End Sub
 
-    Public Overloads Sub SubmitforApproval(ByVal PriceListID As Guid, ByVal PriceListDetailIDList As String, ByVal CreatedBy As String, ByVal flag As String)
-        Dim PriceListDetails As New PriceListDetailDAL
-        PriceListDetails.SubmitForApproval(PriceListID, PriceListDetailIDList, CreatedBy, flag)
-    End Sub
-
     Public Overloads Sub UpdateFamily(ByVal familyDataset As DataSet, Optional ByVal Transaction As IDbTransaction = Nothing)
 
         Dim ServiceCenter As New ServiceCenterDAL
@@ -403,6 +402,36 @@ Public Class PriceListDAL
     End Function
 
 #End Region
+    Public Sub ProcessPriceListRequest(ByVal PriceListID As Guid, ByVal PriceListDetailIDList As String, ByVal userNetworkID As String, ByVal status_xcd As String)
+        Dim selectStmt As String = Me.Config("/SQL/PROCESS_PRICE_LIST_BY_STATUS")
+        Dim inputParameters() As DBHelper.DBHelperParameter
+        Dim outputParameter(0) As DBHelper.DBHelperParameter
+
+        If (Not String.IsNullOrEmpty(PriceListDetailIDList)) Then
+            PriceListDetailIDList = PriceListDetailIDList.Replace("'", String.Empty)
+        End If
+
+        inputParameters = New DBHelper.DBHelperParameter() _
+        {SetParameter(PAR_IN_NAME_PRICE_LIST_ID, PriceListID),
+         SetParameter(PAR_IN_NAME_PRICE_LIST_DETAIL_ID_LIST, PriceListDetailIDList),
+         SetParameter(PAR_IN_NAME_STATUS_XCD, status_xcd),
+         SetParameter(PAR_IN_NAME_STATUS_BY, userNetworkID)}
+
+        outputParameter(0) = New DBHelper.DBHelperParameter(PAR_OUT_NAME_RETURN_CODE, GetType(Integer))
+
+        Try
+            DBHelper.ExecuteSpParamBindByName(selectStmt, inputParameters, outputParameter)
+        Catch ex As Exception
+            Throw New DataBaseAccessException(DataBaseAccessException.DatabaseAccessErrorType.ReadErr, ex)
+        End Try
+    End Sub
+    Function SetParameter(ByVal name As String, ByVal value As Object) As DBHelper.DBHelperParameter
+        name = name.Trim
+        If value Is Nothing Then value = DBNull.Value
+        If value.GetType Is GetType(String) Then value = DirectCast(value, String).Trim
+
+        Return New DBHelper.DBHelperParameter(name, value, value.GetType)
+    End Function
 End Class
 
 

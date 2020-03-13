@@ -13,6 +13,7 @@ Public Class PriceListDetailDAL
     Public Const COL_NAME_PRICE_LIST_DETAIL_ID As String = "price_list_detail_id"
     Public Const COL_NAME_STATUS_XCD As String = "status_xcd"
     Public Const COL_NAME_STATUS As String = "status"
+    Public Const COL_NAME_STATUS_BY As String = "status_by"
     Public Const COL_NAME_REQUESTED_BY As String = "requested_by"
     Public Const COL_NAME_REQUESTED_DATE As String = "requested_date"
     Public Const COL_NAME_STATUS_DATE As String = "status_date"
@@ -137,7 +138,7 @@ Public Class PriceListDetailDAL
     Public Const PAR_IN_NAME_STATUS_XCD As String = "pi_status_xcd"
     Public Const PAR_IN_NAME_REQUESTED_BY As String = "pi_requested_by"
     Public Const PAR_IN_NAME_REQUESTED_DATE As String = "requested_date"
-    Public Const PAR_IN_NAME_STATUS_DATE As String = "status_date"
+
     'US 224089 
     Public Const PAR_IN_NAME_PARTS_LIST As String = "pi_parts_list"
     Public Const PAR_IN_NAME_CLAIM_ID As String = "pi_claim_id"
@@ -901,36 +902,6 @@ Public Class PriceListDetailDAL
                                     selectStmt,
                                     parameters,
                                     familyDS)
-    End Sub
-
-    Public Sub SubmitForApproval(ByVal PriceListID As Guid, ByVal PriceListDetailIDList As String, ByVal CreatedBy As String, ByVal flag As String)
-        Dim Index As Integer = 0
-        Dim status_xcd As String = String.Empty
-        If flag = "approve" Then
-            status_xcd = "PL_RECON_PROCESS-APPROVED"
-        ElseIf flag = "reject" Then
-            status_xcd = "PL_RECON_PROCESS-REJECTED"
-        Else
-            status_xcd = "PL_RECON_PROCESS-PENDINGAPPROVAL"
-        End If
-
-        If (Not String.IsNullOrEmpty(PriceListDetailIDList)) Then
-            PriceListDetailIDList = PriceListDetailIDList.Replace("'", String.Empty)
-        End If
-
-        Dim selectStmt As String = Me.Config("/SQL/SUBMIT_FOR_APPROVAL")
-        Dim parameters() As OracleParameter
-        parameters = New OracleParameter() {New OracleParameter(PAR_IN_NAME_PRICE_LIST_ID, OracleDbType.Raw, PriceListID, ParameterDirection.Input),
-                              New OracleParameter("pi_price_list_detail_id_list", OracleDbType.Varchar2, PriceListDetailIDList, ParameterDirection.Input),
-                              New OracleParameter(PAR_IN_NAME_STATUS_XCD, OracleDbType.Varchar2, status_xcd, ParameterDirection.Input),'.Value() = status_xcd,
-                              New OracleParameter("pi_status_by", OracleDbType.Varchar2, CreatedBy, ParameterDirection.Input),
-                              New OracleParameter(PAR_OUT_NAME_RETURN_CODE, OracleDbType.Decimal, ParameterDirection.Output)}
-
-
-
-        FetchStoredProcedure("SubmitforApproval",
-                                    selectStmt,
-                                    parameters)
     End Sub
 
     Public Function ViewPriceListDetailHistory(ByVal Pricelistdetaild As Guid, ByVal languageId As Guid, ByVal familyDS As DataSet) As DataSet

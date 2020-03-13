@@ -291,6 +291,8 @@
                                     HeaderText="STATUS" HeaderStyle-HorizontalAlign="Center" HtmlEncode="false" />
                                 <asp:BoundField DataField="status_date" SortExpression="status_date"
                                     ReadOnly="true" HeaderText="STATUS_DATE" HeaderStyle-HorizontalAlign="Center" HtmlEncode="false" />
+                                <asp:BoundField DataField="status_by" SortExpression="status_by"
+                                    ReadOnly="true" HeaderText="status_by" HeaderStyle-HorizontalAlign="Center" HtmlEncode="false" />
                                 <asp:BoundField DataField="manufacturer_origin_desc" SortExpression="manufacturer_origin_desc" ReadOnly="true" HeaderText="MANUFACTURER_ORIGIN"
                                     HeaderStyle-HorizontalAlign="Center" HtmlEncode="false" />
                                 <asp:BoundField DataField="price_with_symbol" SortExpression="price_with_symbol" ReadOnly="true" HeaderText="PRICE"
@@ -346,7 +348,7 @@
                 </div>
                     <div id="tabsPendingApprovals">
                           <div>
-                               <table width="100%" border="1" class="dataGrid dataGridSpacer" cellpadding="0" cellspacing="0"
+                               <table width="100%" border="0" class="dataGrid dataGridSpacer" cellpadding="0" cellspacing="0"
                         style="padding-top: 5px; padding-bottom: 5px;">
                             
                                 <tr id="trPageSizePendingApprovals" runat="server">
@@ -425,6 +427,8 @@
                                         HeaderText="STATUS" HeaderStyle-HorizontalAlign="Center" HtmlEncode="false" />
                                     <asp:BoundField DataField="status_date" SortExpression="status_date"
                                         ReadOnly="true" HeaderText="STATUS_DATE" HeaderStyle-HorizontalAlign="Center" HtmlEncode="false" />
+                                    <asp:BoundField DataField="status_by" SortExpression="status_by" ReadOnly="true" HeaderText="status_by"
+                                        HeaderStyle-HorizontalAlign="Center" HtmlEncode="false" />
                                     <asp:BoundField DataField="manufacturer_origin_desc" SortExpression="manufacturer_origin_desc" ReadOnly="true" HeaderText="MANUFACTURER_ORIGIN"
                                         HeaderStyle-HorizontalAlign="Center" HtmlEncode="false" />
                                     <asp:BoundField DataField="price_with_symbol" SortExpression="price_with_symbol" ReadOnly="true" HeaderText="PRICE"

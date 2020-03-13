@@ -259,13 +259,10 @@ Public Class PriceList
         End Try
     End Sub
 
-    Public Overrides Sub SubmitforApproval(ByVal PriceListID As Guid, ByVal PriceListDetailIDList As String, ByVal CreatedBy As String, ByVal flag As String)
+    Public Sub ProcessPriceListRequest(ByVal PriceListID As Guid, ByVal PriceListDetailIDList As String, ByVal userNetworkID As String, ByVal status_xcd As String)
         Try
-
-            MyBase.SubmitforApproval(PriceListID, PriceListDetailIDList, CreatedBy, flag)
             Dim dal As New PriceListDAL
-            dal.SubmitforApproval(PriceListID, PriceListDetailIDList, CreatedBy, flag)
-            'Reload the Data
+            dal.ProcessPriceListRequest(PriceListID, PriceListDetailIDList, userNetworkID, status_xcd)
             If Me._isDSCreator AndAlso Me.Row.RowState <> DataRowState.Detached Then
                 'Reload the Data from the DB
                 Dim objId As Guid = Me.Id
@@ -277,7 +274,6 @@ Public Class PriceList
             Throw New DataBaseAccessException(DataBaseAccessException.DatabaseAccessErrorType.WriteErr, ex)
         End Try
     End Sub
-
     Public Shared Function GetList(ByVal code As String,
                                    ByVal description As String,
                                    ByVal serviceType As Guid,
@@ -772,6 +768,7 @@ Public Class PriceList
             row(PriceListDetailSelectionView.COL_NAME_STATUS_XCD) = detail.Row("status_xcd")
             row(PriceListDetailSelectionView.COL_NAME_STATUS) = detail.Row("status")
             row(PriceListDetailSelectionView.COL_NAME_STATUS_DATE) = detail.Row("status_date")
+            row(PriceListDetailSelectionView.COL_NAME_STATUS_BY) = detail.Row("status_by")
             If detail.Price Is Nothing Then
                 row(PriceListDetailSelectionView.COL_NAME_PRICE) = 0
             Else
@@ -811,6 +808,7 @@ Public Class PriceList
         Public Const COL_NAME_PRICE_LIST_DETAIL_ID As String = PriceListDetailDAL.COL_NAME_PRICE_LIST_DETAIL_ID
         Public Const COL_NAME_STATUS_XCD As String = PriceListDetailDAL.COL_NAME_STATUS_XCD
         Public Const COL_NAME_STATUS As String = PriceListDetailDAL.COL_NAME_STATUS
+        Public Const COL_NAME_STATUS_BY As String = PriceListDetailDAL.COL_NAME_STATUS_BY
         Public Const COL_NAME_STATUS_DATE As String = PriceListDetailDAL.COL_NAME_STATUS_DATE
         Public Const COL_NAME_REQUESTED_BY As String = PriceListDetailDAL.COL_NAME_REQUESTED_BY
         Public Const COL_NAME_REQUESTED_DATE As String = PriceListDetailDAL.COL_NAME_REQUESTED_DATE
@@ -902,6 +900,7 @@ Public Class PriceList
             t.Columns.Add(COL_NAME_REQUESTED_DATE, GetType(String))
             t.Columns.Add(COL_NAME_STATUS_XCD, GetType(String))
             t.Columns.Add(COL_NAME_STATUS, GetType(String))
+            t.Columns.Add(COL_NAME_STATUS_BY, GetType(String))
             t.Columns.Add(COL_NAME_STATUS_DATE, GetType(String))
             t.Columns.Add(COL_NAME_PRICE, GetType(Decimal))
             t.Columns.Add(COL_NAME_VENDOR_QUANTITY, GetType(Int32))
