@@ -3834,9 +3834,10 @@ Public MustInherit Class ClaimBase
         '' Check if Record is New
         If Not Me.Row.HasVersion(DataRowVersion.Original) Then
             '' New Claim Record is being Created
-            If Not Me.StatusCode.Equals(Codes.CLAIM_STATUS__PENDING) Then
-                triggerEvent = True
-            End If
+            ''If Not Me.StatusCode.Equals(Codes.CLAIM_STATUS__PENDING) Then
+            '' PBI 494630 - Enabled for PENDING status 
+            triggerEvent = True
+            ''End If
         Else
             If IsClaimStatusChanged() AndAlso (Me.StatusCode.Equals(Codes.CLAIM_STATUS__ACTIVE) Or Me.StatusCode.Equals(Codes.CLAIM_STATUS__DENIED)) Then
                 '' Existing Claim is being modifed and Claim Status Changed
@@ -3947,6 +3948,8 @@ Public MustInherit Class ClaimBase
                         eventTypeID = LookupListNew.GetIdFromCode(Codes.EVNT_TYP, Codes.EVNT_TYP__CLAIM_APPROVED)
                     ElseIf Me.StatusCode.Equals(Codes.CLAIM_STATUS__DENIED) Then
                         eventTypeID = LookupListNew.GetIdFromCode(Codes.EVNT_TYP, Codes.EVNT_TYP__CLAIM_DENIED)
+                    ElseIf Me.StatusCode.Equals(Codes.CLAIM_STATUS__PENDING) Then
+                        eventTypeID = LookupListNew.GetIdFromCode(Codes.EVNT_TYP, Codes.EVNT_TYP__CLAIM_REFERRED)
                     End If
 
                     PublishedTask.AddEvent(
