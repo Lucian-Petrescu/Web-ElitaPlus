@@ -314,13 +314,13 @@
                                         <asp:Label ID="lblStatusXCD" runat="server" Text='<%# Container.DataItem("status_xcd")%>'></asp:Label>
                                     </ItemTemplate>
                                 </asp:TemplateField>
-                                <asp:TemplateField ShowHeader="false">
+                               <%-- <asp:TemplateField ShowHeader="false">
                                     <ItemStyle HorizontalAlign="Center"></ItemStyle>
                                     <ItemTemplate>
                                         <asp:LinkButton ID="btnViewHistory" runat="server" Visible="false"
                                             OnClientClick="document.body.style.cursor = 'wait'; if(isNotDblClick()) {return true;} else return false;"></asp:LinkButton>
                                     </ItemTemplate>
-                                </asp:TemplateField> 
+                                </asp:TemplateField> --%>
                             </Columns>
                             <PagerSettings PageButtonCount="30" Mode="Numeric" Position="TopAndBottom" />
                             <PagerStyle />
@@ -675,7 +675,7 @@
         </asp:Panel>
     </div>
 
-    <div id="ShowHistoryContainer">
+    <%--<div id="ShowHistoryContainer">
         <ajaxToolkit:ModalPopupExtender runat="server" ID="mpeHistory" TargetControlID="dummybutton1"
             PopupControlID="pnlHistoryPopup" DropShadow="True" BackgroundCssClass="ModalBackground"
             BehaviorID="showHistoryModal" PopupDragHandleControlID="pnlHistoryPopup" RepositionMode="RepositionOnWindowScroll">
@@ -753,7 +753,7 @@
                 </table>
             </div>
         </asp:Panel>
-    </div>
+    </div>--%>
 
     <%--</asp:Panel>--%>
     <input id="HiddenSaveChangesPromptResponse" type="hidden" name="HiddenSaveChangesPromptResponse"

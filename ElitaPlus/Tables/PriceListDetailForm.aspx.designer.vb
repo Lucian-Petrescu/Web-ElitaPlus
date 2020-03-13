@@ -1022,51 +1022,6 @@ Partial Public Class PriceListDetailForm
     Protected WithEvents btnNewItemCancel As Global.System.Web.UI.WebControls.Button
 
     '''<summary>
-    '''mpeHistory control.
-    '''</summary>
-    '''<remarks>
-    '''Auto-generated field.
-    '''To modify move field declaration from designer file to code-behind file.
-    '''</remarks>
-    Protected WithEvents mpeHistory As Global.AjaxControlToolkit.ModalPopupExtender
-
-    '''<summary>
-    '''pnlHistoryPopup control.
-    '''</summary>
-    '''<remarks>
-    '''Auto-generated field.
-    '''To modify move field declaration from designer file to code-behind file.
-    '''</remarks>
-    Protected WithEvents pnlHistoryPopup As Global.System.Web.UI.WebControls.Panel
-
-    '''<summary>
-    '''UpdatePanel2 control.
-    '''</summary>
-    '''<remarks>
-    '''Auto-generated field.
-    '''To modify move field declaration from designer file to code-behind file.
-    '''</remarks>
-    Protected WithEvents UpdatePanel2 As Global.System.Web.UI.UpdatePanel
-
-    '''<summary>
-    '''gvHistory control.
-    '''</summary>
-    '''<remarks>
-    '''Auto-generated field.
-    '''To modify move field declaration from designer file to code-behind file.
-    '''</remarks>
-    Protected WithEvents gvHistory As Global.System.Web.UI.WebControls.GridView
-
-    '''<summary>
-    '''btnHistoryCancel control.
-    '''</summary>
-    '''<remarks>
-    '''Auto-generated field.
-    '''To modify move field declaration from designer file to code-behind file.
-    '''</remarks>
-    Protected WithEvents btnHistoryCancel As Global.System.Web.UI.WebControls.Button
-
-    '''<summary>
     '''HiddenSaveChangesPromptResponse control.
     '''</summary>
     '''<remarks>
