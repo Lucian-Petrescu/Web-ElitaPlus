@@ -1053,32 +1053,6 @@ Public Class PriceListDetailDAL
     End Sub
 
     Protected Overrides Sub ConfigureInsertCommand(ByRef command As OracleCommand, ByVal tableName As String)
-        'pi_price_list_id                  in  elp_price_list.price_list_id%type,
-        'pi_service_class_id          In  raw,
-        'pi_service_type_id           in  raw,
-        'pi_vendor_sku                In  elp_price_list_detail.vendor_sku%type,
-        'pi_vendor_sku_description    in  elp_price_list_detail.vendor_sku_description%type,
-        'pi_equipment_class_id        In  raw,
-        'pi_equipment_id              in  elp_equipment.equipment_id%type,
-        'pi_condition_id              In  raw,
-        'pi_risk_type_id              in  raw,
-        'pi_price                     In  elp_price_list_detail.price%type,
-        'pi_effective                 in  elp_price_list_detail.effective%type,
-        'pi_expiration                In  elp_price_list_detail.expiration%type,
-        'pi_created_by                in  elp_price_list_detail.modified_by%type,
-        'pi_modified_by               In  elp_price_list_detail.modified_by%type,
-        'pi_service_level_id          in  raw,
-        'pi_price_band_range_from     In  elp_stock_item.price_range_from%type,
-        'pi_price_band_range_to       in  elp_stock_item.price_range_to%type,
-        'pi_replacement_tax_type      In  elp_price_list_detail.replacement_tax_type%type,
-        'pi_currency_id               in  elp_price_list_detail.currency_id%type,
-        'pi_price_list_detail_type_id In  elp_price_list_detail.price_list_detail_type_id%type,
-        'pi_calculation_percentage    in  elp_price_list_detail.calculation_percentage%type,
-        'pi_manufacturer_id           In  elp_stock_item.manufacturer_id%type Default null,
-        'pi_part_id                   in  elp_stock_item.part_id%type default null,
-        'pi_manufacturer_origin_xcd   In  elp_stock_item.manufacturer_origin_xcd%type Default null,  
-        'pi_stock_item_type_xcd       in  elp_stock_item.stock_item_type_xcd%type default null,
-        'po_return_code               out number
 
         With command
             .AddParameter(PAR_IN_NAME_PRICE_LIST_DETAIL_ID, OracleDbType.Raw, sourceColumn:=COL_NAME_PRICE_LIST_DETAIL_ID)
@@ -1114,31 +1088,6 @@ Public Class PriceListDetailDAL
     End Sub
 
     Protected Overrides Sub ConfigureUpdateCommand(ByRef command As OracleCommand, ByVal tableName As String)
-        'pi_price_list_detail_id      in  elp_price_list_detail.price_list_detail_id%type,
-        'pi_service_class_id          In  raw,
-        'pi_service_type_id           in  raw,
-        'pi_vendor_sku                In  elp_price_list_detail.vendor_sku%type,
-        'pi_vendor_sku_description    in  elp_price_list_detail.vendor_sku_description%type,
-        'pi_equipment_class_id        In  raw,
-        'pi_equipment_id              in  elp_equipment.equipment_id%type,
-        'pi_condition_id              In  raw,
-        'pi_risk_type_id              in  raw,
-        'pi_price                     In  elp_price_list_detail.price%type,
-        'pi_effective                 in  elp_price_list_detail.effective%type,
-        'pi_expiration                In  elp_price_list_detail.expiration%type,
-        'pi_modified_by               in  elp_price_list_detail.modified_by%type,
-        'pi_service_level_id          In  raw,
-        'pi_price_band_range_from     in  elp_stock_item.price_range_from%type,
-        'pi_price_band_range_to       In  elp_stock_item.price_range_to%type,
-        'pi_replacement_tax_type      in  elp_price_list_detail.replacement_tax_type%type,
-        'pi_currency_id               In  elp_price_list_detail.currency_id%type,
-        'pi_price_list_detail_type_id in  elp_price_list_detail.price_list_detail_type_id%type,
-        'pi_calculation_percentage    In  elp_price_list_detail.calculation_percentage%type,
-        'pi_manufacturer_id           in  elp_stock_item.manufacturer_id%type default null,
-        'pi_part_id                   In  elp_stock_item.part_id%type Default null,
-        'pi_manufacturer_origin_xcd   in  elp_stock_item.manufacturer_origin_xcd%type default null,
-        'pi_stock_item_type_xcd       In  elp_stock_item.stock_item_type_xcd%type Default null,                                                          
-        'po_return_code               out number
 
         With command
             .AddParameter(PAR_IN_NAME_PRICE_LIST_DETAIL_ID, OracleDbType.Raw, sourceColumn:=COL_NAME_PRICE_LIST_DETAIL_ID)

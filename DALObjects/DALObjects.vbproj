@@ -791,6 +791,8 @@
     <Compile Include="Tables\SpecialServiceDAL.vb" />
     <Compile Include="Tables\StageEndStatusDAL.vb" />
     <Compile Include="Tables\SuspendedReasonsDAL.vb" />
+    <Compile Include="Tables\SvcPriceListReconDAL.vb" />
+    <Compile Include="Tables\SVCPLReconDAL.vb" />
     <Compile Include="Tables\TransAllMappingDAL.vb" />
     <Compile Include="Tables\TransallMappingOutDAL.vb" />
     <Compile Include="Tables\TurnAroundTimeRangeDAL.vb" />
@@ -870,6 +872,8 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Translation\ListItemByEntityDAL.vb" />
+    <EmbeddedResource Include="Tables\SvcPriceListReconDAL.xml" />
+    <EmbeddedResource Include="Tables\SVCPLReconDAL.xml" />
     <EmbeddedResource Include="Tables\SearchConfigCriteriaDal.xml" />
     <EmbeddedResource Include="Tables\SearchConfigDal.xml" />
     <EmbeddedResource Include="Tables\ProducerDAL.xml">
