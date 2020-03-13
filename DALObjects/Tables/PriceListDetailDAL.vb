@@ -870,25 +870,6 @@ Public Class PriceListDetailDAL
     End Function
 
     Public Sub LoadPriceListDetailsForPriceList(ByVal familyDS As DataSet, ByVal id As Guid, ByVal languageId As Guid, ByVal User_id As Guid)
-
-        ''Try
-
-        ''    Dim selectStmt As String = Me.Config("/SQL/LOAD_PRICE_LIST_LIST")
-        ''    Dim parameters() As DBHelper.DBHelperParameter = New DBHelper.DBHelperParameter() {
-        ''    New DBHelper.DBHelperParameter(LanguageDAL.COL_NAME_LANGUAGE_ID, languageId.ToByteArray),
-        ''    New DBHelper.DBHelperParameter(LanguageDAL.COL_NAME_LANGUAGE_ID, languageId.ToByteArray),
-        ''    New DBHelper.DBHelperParameter(LanguageDAL.COL_NAME_LANGUAGE_ID, languageId.ToByteArray),
-        ''    New DBHelper.DBHelperParameter(LanguageDAL.COL_NAME_LANGUAGE_ID, languageId.ToByteArray),
-        ''    New DBHelper.DBHelperParameter("User_id", User_id.ToByteArray),
-        ''    New DBHelper.DBHelperParameter(COL_NAME_PRICE_LIST_ID, id.ToByteArray)}
-
-        ''    DBHelper.Fetch(familyDS, selectStmt, Me.TABLE_NAME, parameters)
-
-        ''Catch ex As Exception
-        ''    Throw New DataBaseAccessException(DataBaseAccessException.DatabaseAccessErrorType.ReadErr, ex)
-        ''End Try
-
-        'US 224101 - Replacing code to call stored proc
         Dim selectStmt As String = Me.Config("/SQL/LOAD_PRICE_LIST_LIST")
         Dim parameters() As OracleParameter
         parameters = New OracleParameter() {

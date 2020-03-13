@@ -682,8 +682,7 @@
         </ajaxToolkit:ModalPopupExtender>
         <asp:Panel ID="pnlHistoryPopup" runat="server" Style="display: none; width: 500px;">
             <div id="dvHistory" class="overlay_message_content" style="width: 70%; overflow-y: scroll; height: 30%;">
-                <asp:UpdatePanel ID="UpdatePanel2" runat="server" CssClass="modalPopup" UpdateMode="Always" RenderMode="inline"
-                    ChildrenAsTriggers="True">
+                <asp:UpdatePanel ID="UpdatePanel2" runat="server" CssClass="modalPopup" UpdateMode="Always" RenderMode="inline">
                     <ContentTemplate>
                 <asp:GridView ID="gvHistory" runat="server" Width="10%" AutoGenerateColumns="False" AllowPaging="True"
                             DataKeyNames="price_list_detail_id" AllowSorting="true" SkinID="DetailPageGridView"  >

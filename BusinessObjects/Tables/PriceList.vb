@@ -99,7 +99,7 @@ Public Class PriceList
     End Property
 
     'Key Property
-    <ValidateDuplicatePriceListDetail(""), ValidateOverlappingDates(""), ValidateOverlappingPrices("")> _
+    <ValidateDuplicatePriceListDetail(""), ValidateOverlappingDates(""), ValidateOverlappingPrices("")>
     Public ReadOnly Property Id() As Guid Implements IExpirable.ID
         Get
             If Row(PriceListDAL.TABLE_KEY_NAME) Is DBNull.Value Then
@@ -110,7 +110,7 @@ Public Class PriceList
         End Get
     End Property
 
-    <ValueMandatory(""), ValidStringLength("", Max:=10), ValidateDuplicateCode("")> _
+    <ValueMandatory(""), ValidStringLength("", Max:=10), ValidateDuplicateCode("")>
     Public Property Code() As String Implements IExpirable.Code
         Get
             CheckDeleted()
@@ -127,7 +127,7 @@ Public Class PriceList
     End Property
 
 
-    <ValueMandatory(""), ValidStringLength("", Max:=50)> _
+    <ValueMandatory(""), ValidStringLength("", Max:=50)>
     Public Property Description() As String
         Get
             CheckDeleted()
@@ -144,14 +144,14 @@ Public Class PriceList
     End Property
 
 
-    <ValueMandatory("")> _
+    <ValueMandatory("")>
     Public Property CountryId() As Guid
         Get
             CheckDeleted()
-            If row(PriceListDAL.COL_NAME_COUNTRY_ID) Is DBNull.Value Then
+            If Row(PriceListDAL.COL_NAME_COUNTRY_ID) Is DBNull.Value Then
                 Return Nothing
             Else
-                Return New Guid(CType(row(PriceListDAL.COL_NAME_COUNTRY_ID), Byte()))
+                Return New Guid(CType(Row(PriceListDAL.COL_NAME_COUNTRY_ID), Byte()))
             End If
         End Get
         Set(ByVal Value As Guid)
@@ -159,8 +159,8 @@ Public Class PriceList
             Me.SetValue(PriceListDAL.COL_NAME_COUNTRY_ID, Value)
         End Set
     End Property
-    
-    <ValueMandatory("")> _
+
+    <ValueMandatory("")>
     Public Property DefaultCurrencyId() As Guid
         Get
             CheckDeleted()
@@ -176,14 +176,14 @@ Public Class PriceList
     End Property
 
 
-    <ValueMandatory("")> _
+    <ValueMandatory("")>
     Public Property ManageInventoryId() As Guid
         Get
             CheckDeleted()
-            If row(PriceListDAL.COL_NAME_MANAGE_INVENTORY_ID) Is DBNull.Value Then
+            If Row(PriceListDAL.COL_NAME_MANAGE_INVENTORY_ID) Is DBNull.Value Then
                 Return Nothing
             Else
-                Return New Guid(CType(row(PriceListDAL.COL_NAME_MANAGE_INVENTORY_ID), Byte()))
+                Return New Guid(CType(Row(PriceListDAL.COL_NAME_MANAGE_INVENTORY_ID), Byte()))
             End If
         End Get
         Set(ByVal Value As Guid)
@@ -192,7 +192,7 @@ Public Class PriceList
         End Set
     End Property
 
-    <ValueMandatory(""), NonPastDateValidation(Codes.EFFECTIVE)> _
+    <ValueMandatory(""), NonPastDateValidation(Codes.EFFECTIVE)>
     Public Property Effective() As DateTimeType Implements IExpirable.Effective
         Get
             CheckDeleted()
@@ -209,7 +209,7 @@ Public Class PriceList
     End Property
 
 
-    <ValueMandatory(""), NonPastDateValidation(Codes.EXPIRATION), EffectiveExpirationDateValidation(Codes.EXPIRATION)> _
+    <ValueMandatory(""), NonPastDateValidation(Codes.EXPIRATION), EffectiveExpirationDateValidation(Codes.EXPIRATION)>
     Public Property Expiration() As DateTimeType Implements IExpirable.Expiration
         Get
             CheckDeleted()
@@ -259,10 +259,10 @@ Public Class PriceList
         End Try
     End Sub
 
-    Public Sub ProcessPriceListRequest(ByVal PriceListID As Guid, ByVal PriceListDetailIDList As String, ByVal userNetworkID As String, ByVal status_xcd As String)
+    Public Sub ProcessPriceListByStatus(ByVal PriceListID As Guid, ByVal PriceListDetailIDList As String, ByVal userNetworkID As String, ByVal status_xcd As String)
         Try
             Dim dal As New PriceListDAL
-            dal.ProcessPriceListRequest(PriceListID, PriceListDetailIDList, userNetworkID, status_xcd)
+            dal.ProcessPriceListByStatus(PriceListID, PriceListDetailIDList, userNetworkID, status_xcd)
             If Me._isDSCreator AndAlso Me.Row.RowState <> DataRowState.Detached Then
                 'Reload the Data from the DB
                 Dim objId As Guid = Me.Id
@@ -763,12 +763,6 @@ Public Class PriceList
                 row(PriceListDetailSelectionView.COL_NAME_VENDOR_SKU_DESCRIPTION) = detail.VendorSkuDescription.ToString()
             End If
 
-            row(PriceListDetailSelectionView.COL_NAME_REQUESTED_BY) = detail.Row("requested_by")
-            row(PriceListDetailSelectionView.COL_NAME_REQUESTED_DATE) = detail.Row("requested_date")
-            row(PriceListDetailSelectionView.COL_NAME_STATUS_XCD) = detail.Row("status_xcd")
-            row(PriceListDetailSelectionView.COL_NAME_STATUS) = detail.Row("status")
-            row(PriceListDetailSelectionView.COL_NAME_STATUS_DATE) = detail.Row("status_date")
-            row(PriceListDetailSelectionView.COL_NAME_STATUS_BY) = detail.Row("status_by")
             If detail.Price Is Nothing Then
                 row(PriceListDetailSelectionView.COL_NAME_PRICE) = 0
             Else
@@ -797,6 +791,14 @@ Public Class PriceList
             row(PriceListDetailSelectionView.COL_NAME_PARENT_MAKE_ID) = detail.Parent_MakeId.ToByteArray()
             row(PriceListDetailSelectionView.COL_NAME_PARENT_MODEL) = detail.Parent_Model?.ToString()
 
+
+            row(PriceListDetailSelectionView.COL_NAME_REQUESTED_BY) = detail.Row("requested_by")
+            row(PriceListDetailSelectionView.COL_NAME_REQUESTED_DATE) = detail.Row("requested_date")
+            row(PriceListDetailSelectionView.COL_NAME_STATUS_XCD) = detail.Row("status_xcd")
+            row(PriceListDetailSelectionView.COL_NAME_STATUS) = detail.Row("status")
+            row(PriceListDetailSelectionView.COL_NAME_STATUS_DATE) = detail.Row("status_date")
+            row(PriceListDetailSelectionView.COL_NAME_STATUS_BY) = detail.Row("status_by")
+
             t.Rows.Add(row)
         Next
         Return New PriceListDetailSelectionView(t)
@@ -806,12 +808,6 @@ Public Class PriceList
     Public Class PriceListDetailSelectionView
         Inherits DataView
         Public Const COL_NAME_PRICE_LIST_DETAIL_ID As String = PriceListDetailDAL.COL_NAME_PRICE_LIST_DETAIL_ID
-        Public Const COL_NAME_STATUS_XCD As String = PriceListDetailDAL.COL_NAME_STATUS_XCD
-        Public Const COL_NAME_STATUS As String = PriceListDetailDAL.COL_NAME_STATUS
-        Public Const COL_NAME_STATUS_BY As String = PriceListDetailDAL.COL_NAME_STATUS_BY
-        Public Const COL_NAME_STATUS_DATE As String = PriceListDetailDAL.COL_NAME_STATUS_DATE
-        Public Const COL_NAME_REQUESTED_BY As String = PriceListDetailDAL.COL_NAME_REQUESTED_BY
-        Public Const COL_NAME_REQUESTED_DATE As String = PriceListDetailDAL.COL_NAME_REQUESTED_DATE
         Public Const COL_NAME_PRICE_LIST_ID As String = PriceListDetailDAL.COL_NAME_PRICE_LIST_ID
         Public Const COL_NAME_EFFECTIVE As String = PriceListDetailDAL.COL_NAME_EFFECTIVE
         Public Const COL_NAME_EXPIRATION As String = PriceListDetailDAL.COL_NAME_EXPIRATION
@@ -860,6 +856,12 @@ Public Class PriceList
         Public Const COL_NAME_PARENT_MODEL_ID As String = PriceListDetailDAL.COL_NAME_PARENT_MODEL_ID
         Public Const COL_NAME_PARENT_MODEL As String = PriceListDetailDAL.COL_NAME_PARENT_MODEL
 
+        Public Const COL_NAME_STATUS_XCD As String = PriceListDetailDAL.COL_NAME_STATUS_XCD
+        Public Const COL_NAME_STATUS As String = PriceListDetailDAL.COL_NAME_STATUS
+        Public Const COL_NAME_STATUS_BY As String = PriceListDetailDAL.COL_NAME_STATUS_BY
+        Public Const COL_NAME_STATUS_DATE As String = PriceListDetailDAL.COL_NAME_STATUS_DATE
+        Public Const COL_NAME_REQUESTED_BY As String = PriceListDetailDAL.COL_NAME_REQUESTED_BY
+        Public Const COL_NAME_REQUESTED_DATE As String = PriceListDetailDAL.COL_NAME_REQUESTED_DATE
         Public Sub New(ByVal Table As DataTable)
             MyBase.New(Table)
         End Sub

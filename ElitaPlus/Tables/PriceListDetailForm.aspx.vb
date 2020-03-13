@@ -2433,7 +2433,7 @@ Public Class PriceListDetailForm
     Protected Sub btnSubmitforApproval_Click(sender As Object, e As EventArgs) Handles btnSubmitforApproval.Click
 
         Try
-            Me.State.MyBO.ProcessPriceListRequest(Me.State.MyBO.Id, String.Empty, Authentication.CurrentUser.NetworkId, "PL_RECON_PROCESS-PENDINGAPPROVAL")
+            Me.State.MyBO.ProcessPriceListByStatus(Me.State.MyBO.Id, String.Empty, Authentication.CurrentUser.NetworkId, "PL_RECON_PROCESS-PENDINGAPPROVAL")
             Me.PopulateGrid()
             Me.PopulategvPendingApprovals()
             Me.MasterPage.MessageController.AddSuccess(ElitaPlus.ElitaPlusWebApp.Message.SUBMIT_RECORD_CONFIRMATION)
@@ -2460,7 +2460,7 @@ Public Class PriceListDetailForm
                 Next
                 PricelistDetailIdList = String.Join(",", lstPriceListDetail.ToArray())
             End If
-            Me.State.MyBO.ProcessPriceListRequest(Me.State.MyBO.Id, PricelistDetailIdList, Authentication.CurrentUser.NetworkId, "PL_RECON_PROCESS-APPROVED")
+            Me.State.MyBO.ProcessPriceListByStatus(Me.State.MyBO.Id, PricelistDetailIdList, Authentication.CurrentUser.NetworkId, "PL_RECON_PROCESS-APPROVED")
             Me.PopulateGrid()
             Me.PopulategvPendingApprovals()
             Me.MasterPage.MessageController.AddSuccess(ElitaPlus.ElitaPlusWebApp.Message.APPROVE_RECORD_CONFIRMATION)
@@ -2486,7 +2486,7 @@ Public Class PriceListDetailForm
                 Next
                 PricelistDetailIdList = String.Join(",", lstPriceListDetail.ToArray())
             End If
-            Me.State.MyBO.ProcessPriceListRequest(Me.State.MyBO.Id, PricelistDetailIdList, Authentication.CurrentUser.NetworkId, "PL_RECON_PROCESS-REJECTED")
+            Me.State.MyBO.ProcessPriceListByStatus(Me.State.MyBO.Id, PricelistDetailIdList, Authentication.CurrentUser.NetworkId, "PL_RECON_PROCESS-REJECTED")
             Me.PopulateGrid()
             Me.PopulategvPendingApprovals()
             Me.MasterPage.MessageController.AddSuccess(ElitaPlus.ElitaPlusWebApp.Message.REJECT_RECORD_CONFIRMATION)
