@@ -2436,9 +2436,9 @@ Public Class PriceListDetailForm
             Me.State.MyBO.ProcessPriceListByStatus(Me.State.MyBO.Id, String.Empty, Authentication.CurrentUser.NetworkId, "PL_RECON_PROCESS-PENDINGAPPROVAL")
             Me.PopulateGrid()
             Me.PopulategvPendingApprovals()
-            Me.MasterPage.MessageController.AddSuccess(ElitaPlus.ElitaPlusWebApp.Message.SUBMIT_RECORD_CONFIRMATION)
+            Me.MasterPage.MessageController.AddSuccess(ElitaPlus.ElitaPlusWebApp.Message.PRICE_LIST_SUBMISSION_PROCESS_SUCCESS)
         Catch ex As Exception
-            Me.MasterPage.MessageController.AddError(ElitaPlus.ElitaPlusWebApp.Message.MSG_RECORD_NOT_SAVED)
+            Me.MasterPage.MessageController.AddError(ElitaPlus.ElitaPlusWebApp.Message.PRICE_LIST_SUBMISSION_PROCESS_FAILED)
             Me.HandleErrors(ex, Me.MasterPage.MessageController)
         End Try
     End Sub
@@ -2463,9 +2463,9 @@ Public Class PriceListDetailForm
             Me.State.MyBO.ProcessPriceListByStatus(Me.State.MyBO.Id, PricelistDetailIdList, Authentication.CurrentUser.NetworkId, "PL_RECON_PROCESS-APPROVED")
             Me.PopulateGrid()
             Me.PopulategvPendingApprovals()
-            Me.MasterPage.MessageController.AddSuccess(ElitaPlus.ElitaPlusWebApp.Message.APPROVE_RECORD_CONFIRMATION)
+            Me.MasterPage.MessageController.AddSuccess(ElitaPlus.ElitaPlusWebApp.Message.PRICE_LIST_APPROVAL_PROCESS_SUCCESS)
         Catch ex As Exception
-            Me.MasterPage.MessageController.AddError(ElitaPlus.ElitaPlusWebApp.Message.MSG_RECORD_NOT_APPROVED)
+            Me.MasterPage.MessageController.AddError(ElitaPlus.ElitaPlusWebApp.Message.PRICE_LIST_APPROVAL_PROCESS_FAILED)
             Me.HandleErrors(ex, Me.MasterPage.MessageController)
         End Try
     End Sub
@@ -2489,9 +2489,9 @@ Public Class PriceListDetailForm
             Me.State.MyBO.ProcessPriceListByStatus(Me.State.MyBO.Id, PricelistDetailIdList, Authentication.CurrentUser.NetworkId, "PL_RECON_PROCESS-REJECTED")
             Me.PopulateGrid()
             Me.PopulategvPendingApprovals()
-            Me.MasterPage.MessageController.AddSuccess(ElitaPlus.ElitaPlusWebApp.Message.REJECT_RECORD_CONFIRMATION)
+            Me.MasterPage.MessageController.AddSuccess(ElitaPlus.ElitaPlusWebApp.Message.PRICE_LIST_REJECTION_PROCESS_SUCCESS)
         Catch ex As Exception
-            Me.MasterPage.MessageController.AddError(ElitaPlus.ElitaPlusWebApp.Message.MSG_RECORD_NOT_REJECTED)
+            Me.MasterPage.MessageController.AddError(ElitaPlus.ElitaPlusWebApp.Message.PRICE_LIST_REJECTION_PROCESS_FAILED)
             Me.HandleErrors(ex, Me.MasterPage.MessageController)
         End Try
     End Sub
