@@ -1772,10 +1772,12 @@ Public Class PriceListDetailForm
                 Me.State.IsGridInEditMode = False
                 priceListDetailId = New Guid(e.CommandArgument.ToString())
                 Me.State.PriceListDetailSelectedChildId = New Guid(e.CommandArgument.ToString())
-                Dim pld As PriceListDetail = New PriceListDetail()
-                pld.viewhistory(priceListDetailId)
+                'Dim pld As PriceListDetail = New PriceListDetail()
+                'pld.viewhistory(priceListDetailId)
                 'Me.DisplayMessage(Message.DELETE_RECORD_PROMPT, "", Me.MSG_BTN_YES_NO, Me.MSG_TYPE_CONFIRM, Me.HiddenSaveChangesPromptResponse)
                 Me.State.ActionInProgress = ElitaPlusPage.DetailPageCommand.ViewHistory
+                Me.PopulateGridHistory()
+                mpeHistory.Show()
             End If
         Catch ex As Exception
             Me.HandleErrors(ex, Me.MasterPage.MessageController)
@@ -2132,6 +2134,84 @@ Public Class PriceListDetailForm
 
 #End Region
 
+#Region "View History Grid"
+
+
+    ''' <summary>
+    ''' Populate the main detail lits grid
+    ''' </summary>
+    ''' <remarks></remarks>
+    ''' 
+    Sub PopulateGridHistory()
+        Try
+            Dim dv As PriceList.PriceListDetailSelectionView = Me.State.MyBO.GetPriceListSelectionView
+            dv.Sort = Me.State.SortExpression
+            Me.State.DetailSearchDV = dv
+            Me.gvHistory.AutoGenerateColumns = False
+
+            Me.gvHistory.PageSize = Me.State.PageSize
+            SetPageAndSelectedIndexFromGuid(dv, Me.State.PriceListDetailSelectedChildId, Me.gvHistory, Me.State.PageIndex)
+
+            Me.gvHistory.DataSource = dv 'Me.State.DetailSearchDV
+            Me.gvHistory.DataBind()
+            Me.State.PageIndex = Me.gvHistory.PageIndex
+            Me.ShowHideQuantity()
+
+        Catch ex As Exception
+            Me.HandleErrors(ex, Me.MasterPage.MessageController)
+        End Try
+
+    End Sub
+
+    Private Sub gvHistory_SortCommand(ByVal source As Object, ByVal e As System.Web.UI.WebControls.GridViewSortEventArgs) Handles gvHistory.Sorting
+        Try
+            If Me.State.SortExpression.StartsWith(e.SortExpression) Then
+                If Me.State.SortExpression.EndsWith(" DESC") Then
+                    Me.State.SortExpression = e.SortExpression
+                Else
+                    Me.State.SortExpression &= " DESC"
+                End If
+            Else
+                Me.State.SortExpression = e.SortExpression
+            End If
+            Me.State.PageIndex = 0
+            Me.PopulateGridHistory()
+            Me.HighLightSortColumn(Grid, Me.State.SortExpression, True)
+        Catch ex As Exception
+            Me.HandleErrors(ex, Me.MasterPage.MessageController)
+        End Try
+
+    End Sub
+
+    Private Sub gvHistory_PageIndexChanged(ByVal sender As Object, ByVal e As System.EventArgs) Handles gvHistory.PageIndexChanged
+        Try
+            Me.State.PageIndex = gvHistory.PageIndex
+            Me.State.PriceListId = Guid.Empty
+            PopulateGridHistory()
+        Catch ex As Exception
+            Me.HandleErrors(ex, Me.MasterPage.MessageController)
+
+        End Try
+    End Sub
+
+    Private Sub gvHistory_PageIndexChanging(ByVal sender As Object, ByVal e As System.Web.UI.WebControls.GridViewPageEventArgs) Handles gvHistory.PageIndexChanging
+        Try
+            gvHistory.PageIndex = e.NewPageIndex
+            State.PageIndex = gvHistory.PageIndex
+            State.PriceListDetailSelectedChildId = Guid.Empty
+        Catch ex As Exception
+            Me.HandleErrors(ex, Me.MasterPage.MessageController)
+        End Try
+    End Sub
+
+    Private Sub gvHistory_RowCreated(ByVal sender As Object, ByVal e As System.Web.UI.WebControls.GridViewRowEventArgs) Handles gvHistory.RowCreated
+        Try
+            BaseItemCreated(sender, e)
+        Catch ex As Exception
+            Me.HandleErrors(ex, Me.MasterPage.MessageController)
+        End Try
+    End Sub
+#End Region
     Sub PopulateDetailFromPriceListDetailChildBO()
         ' service class
         Me.PopulateControlFromBOProperty(ddlNewItemServiceClass, Me.State.MyChildBO.ServiceClassId)
