@@ -274,6 +274,17 @@ Public Class PriceList
             Throw New DataBaseAccessException(DataBaseAccessException.DatabaseAccessErrorType.WriteErr, ex)
         End Try
     End Sub
+
+    Public Function ViewPriceListDetailHistory(ByVal Pricelistdetaild As Guid, ByVal languageId As Guid) As DataSet
+        Try
+            Dim dal As New PriceListDetailDAL
+            Return dal.ViewPriceListDetailHistory(Pricelistdetaild, languageId)
+
+        Catch ex As Assurant.ElitaPlus.DALObjects.DataBaseAccessException
+            Throw New DataBaseAccessException(DataBaseAccessException.DatabaseAccessErrorType.WriteErr, ex)
+        End Try
+    End Function
+
     Public Shared Function GetList(ByVal code As String,
                                    ByVal description As String,
                                    ByVal serviceType As Guid,

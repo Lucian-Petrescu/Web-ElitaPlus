@@ -250,6 +250,7 @@ Public Class PriceListDetailForm
 
                 Me.TranslateGridHeader(Grid)
                 Me.TranslateGridHeader(gvPendingApprovals)
+                Me.TranslateGridHeader(gvHistory)
                 Me.PopulateDropdowns()
                 Me.PopulateFormFromBOs()
                 Me.EnableDisableFields(True)
@@ -1776,7 +1777,6 @@ Public Class PriceListDetailForm
                 ' BeginPriceListDetailChildEdit()
                 ModalPopupenabledisable()
                 mdlPopup.Show()
-                'mdlpopupHistory.Show()
             ElseIf e.CommandName = ElitaPlusSearchPage.DELETE_COMMAND_NAME Then
                 Me.State.IsGridInEditMode = False
                 priceListDetailId = New Guid(e.CommandArgument.ToString())
@@ -1785,16 +1785,13 @@ Public Class PriceListDetailForm
                 Me.State.ActionInProgress = ElitaPlusPage.DetailPageCommand.Delete
 
                 ' Me.MasterPage.MessageController.AddSuccess(ElitaPlus.ElitaPlusWebApp.Message.DELETE_RECORD_CONFIRMATION)
-                'ElseIf e.CommandName = ElitaPlusSearchPage.HISTORY_COMMAND_NAME Then
-                '    Me.State.IsGridInEditMode = False
-                '    priceListDetailId = New Guid(e.CommandArgument.ToString())
-                '    Me.State.PriceListDetailSelectedChildId = New Guid(e.CommandArgument.ToString())
-                '    'Dim pld As PriceListDetail = New PriceListDetail()
-                '    'pld.viewhistory(priceListDetailId)
-                '    'Me.DisplayMessage(Message.DELETE_RECORD_PROMPT, "", Me.MSG_BTN_YES_NO, Me.MSG_TYPE_CONFIRM, Me.HiddenSaveChangesPromptResponse)
-                '    Me.State.ActionInProgress = ElitaPlusPage.DetailPageCommand.ViewHistory
-                '    Me.PopulateGridHistory()
-                '    mpeHistory.Show()
+            ElseIf e.CommandName = ElitaPlusSearchPage.HISTORY_COMMAND_NAME Then
+                Me.State.IsGridInEditMode = False
+                priceListDetailId = New Guid(e.CommandArgument.ToString())
+                Me.State.PriceListDetailSelectedChildId = New Guid(e.CommandArgument.ToString())
+                Me.State.ActionInProgress = ElitaPlusPage.DetailPageCommand.ViewHistory
+                Me.PopulateGridHistory()
+                mpeHistory.Show()
             End If
         Catch ex As Exception
             Me.HandleErrors(ex, Me.MasterPage.MessageController)
@@ -1870,7 +1867,7 @@ Public Class PriceListDetailForm
                 btnDeleteItem.CommandName = ElitaPlusSearchPage.DELETE_COMMAND_NAME
                 'Me.AddControlMsg(btnDeleteItem, Message.DELETE_RECORD_PROMPT, "", Me.MSG_BTN_YES_NO, Me.MSG_TYPE_CONFIRM, True)
 
-                If Not (e.Row.Cells(Me.GRID_COL_EXPIRATION_DATEID_IDX).Text.ToString().Equals(String.Empty))  Then
+                If Not (e.Row.Cells(Me.GRID_COL_EXPIRATION_DATEID_IDX).Text.ToString().Equals(String.Empty)) Then
                     If (DateHelper.GetDateValue(e.Row.Cells(Me.GRID_COL_EXPIRATION_DATEID_IDX).Text.ToString()) < DateTime.Now And lblStatusXCD.Text = "PL_RECON_PROCESS-APPROVED") Then
                         btnDeleteItem.Visible = False
                     End If
@@ -1880,11 +1877,11 @@ Public Class PriceListDetailForm
                 End If
             End If
 
-            'Dim btnViewHistory As LinkButton = CType(e.Row.Cells(GRID_COL_VIEW_HISTORY_IDX).FindControl("btnViewHistory"), LinkButton)
-            'btnViewHistory.Visible = True
-            'btnViewHistory.Text = TranslationBase.TranslateLabelOrMessage("VIEWHISTORY")
-            'btnViewHistory.CommandArgument = GetGuidStringFromByteArray(CType(dvRow(PriceListDetail.PriceListDetailSearchDV.COL_PRICE_LIST_DETAIL_ID), Byte()))
-            'btnViewHistory.CommandName = ElitaPlusSearchPage.HISTORY_COMMAND_NAME
+            Dim btnViewHistory As LinkButton = CType(e.Row.Cells(GRID_COL_VIEW_HISTORY_IDX).FindControl("btnViewHistory"), LinkButton)
+            btnViewHistory.Visible = True
+            btnViewHistory.Text = TranslationBase.TranslateLabelOrMessage("VIEWHISTORY")
+            btnViewHistory.CommandArgument = GetGuidStringFromByteArray(CType(dvRow(PriceListDetail.PriceListDetailSearchDV.COL_PRICE_LIST_DETAIL_ID), Byte()))
+            btnViewHistory.CommandName = ElitaPlusSearchPage.HISTORY_COMMAND_NAME
 
             ChekAndReplaceWithParentData(e.Row, PriceListDetail.PriceListDetailSearchDV.COL_MAKE, PriceListDetail.PriceListDetailSearchDV.COL_PARENT_MAKE)
             ChekAndReplaceWithParentData(e.Row, PriceListDetail.PriceListDetailSearchDV.COL_MODEL, PriceListDetail.PriceListDetailSearchDV.COL_PARENT_MODEL)
@@ -2150,84 +2147,79 @@ Public Class PriceListDetailForm
 
 #End Region
 
-    '#Region "View History Grid"
+#Region "View History Grid"
 
 
-    '    ''' <summary>
-    '    ''' Populate the main detail lits grid
-    '    ''' </summary>
-    '    ''' <remarks></remarks>
-    '    ''' 
-    '    Sub PopulateGridHistory()
-    '        Try
-    '            Dim dv As PriceList.PriceListDetailSelectionView = Me.State.MyBO.GetPriceListSelectionView
-    '            dv.Sort = Me.State.SortExpression
-    '            Me.State.DetailSearchDV = dv
-    '            Me.gvHistory.AutoGenerateColumns = False
+    ''' <summary>
+    ''' Populate the main detail lits grid
+    ''' </summary>
+    ''' <remarks></remarks>
+    ''' 
+    Sub PopulateGridHistory()
+        Try
+            Dim ds As DataSet = Me.State.MyBO.ViewPriceListDetailHistory(Me.State.PriceListDetailSelectedChildId, Authentication.CurrentUser.LanguageId)
+            Me.gvHistory.AutoGenerateColumns = False
+            Me.gvHistory.PageSize = Me.State.PageSize
+            Me.gvHistory.DataSource = ds 'Me.State.DetailSearchDV
+            Me.gvHistory.DataBind()
+            Me.State.PageIndex = Me.gvHistory.PageIndex
+            Me.ShowHideQuantity()
 
-    '            Me.gvHistory.PageSize = Me.State.PageSize
-    '            SetPageAndSelectedIndexFromGuid(dv, Me.State.PriceListDetailSelectedChildId, Me.gvHistory, Me.State.PageIndex)
+        Catch ex As Exception
+            Me.HandleErrors(ex, Me.MasterPage.MessageController)
+        End Try
 
-    '            Me.gvHistory.DataSource = dv 'Me.State.DetailSearchDV
-    '            Me.gvHistory.DataBind()
-    '            Me.State.PageIndex = Me.gvHistory.PageIndex
-    '            Me.ShowHideQuantity()
+    End Sub
 
-    '        Catch ex As Exception
-    '            Me.HandleErrors(ex, Me.MasterPage.MessageController)
-    '        End Try
+    Private Sub gvHistory_SortCommand(ByVal source As Object, ByVal e As System.Web.UI.WebControls.GridViewSortEventArgs) Handles gvHistory.Sorting
+        Try
+            If Me.State.SortExpression.StartsWith(e.SortExpression) Then
+                If Me.State.SortExpression.EndsWith(" DESC") Then
+                    Me.State.SortExpression = e.SortExpression
+                Else
+                    Me.State.SortExpression &= " DESC"
+                End If
+            Else
+                Me.State.SortExpression = e.SortExpression
+            End If
+            Me.State.PageIndex = 0
+            Me.PopulateGridHistory()
+            Me.HighLightSortColumn(Grid, Me.State.SortExpression, True)
+        Catch ex As Exception
+            Me.HandleErrors(ex, Me.MasterPage.MessageController)
+        End Try
 
-    '    End Sub
+    End Sub
 
-    '    Private Sub gvHistory_SortCommand(ByVal source As Object, ByVal e As System.Web.UI.WebControls.GridViewSortEventArgs) Handles gvHistory.Sorting
-    '        Try
-    '            If Me.State.SortExpression.StartsWith(e.SortExpression) Then
-    '                If Me.State.SortExpression.EndsWith(" DESC") Then
-    '                    Me.State.SortExpression = e.SortExpression
-    '                Else
-    '                    Me.State.SortExpression &= " DESC"
-    '                End If
-    '            Else
-    '                Me.State.SortExpression = e.SortExpression
-    '            End If
-    '            Me.State.PageIndex = 0
-    '            Me.PopulateGridHistory()
-    '            Me.HighLightSortColumn(Grid, Me.State.SortExpression, True)
-    '        Catch ex As Exception
-    '            Me.HandleErrors(ex, Me.MasterPage.MessageController)
-    '        End Try
+    Private Sub gvHistory_PageIndexChanged(ByVal sender As Object, ByVal e As System.EventArgs) Handles gvHistory.PageIndexChanged
+        Try
+            Me.State.PageIndex = gvHistory.PageIndex
+            Me.State.PriceListId = Guid.Empty
+            PopulateGridHistory()
+        Catch ex As Exception
+            Me.HandleErrors(ex, Me.MasterPage.MessageController)
 
-    '    End Sub
+        End Try
+    End Sub
 
-    '    Private Sub gvHistory_PageIndexChanged(ByVal sender As Object, ByVal e As System.EventArgs) Handles gvHistory.PageIndexChanged
-    '        Try
-    '            Me.State.PageIndex = gvHistory.PageIndex
-    '            Me.State.PriceListId = Guid.Empty
-    '            PopulateGridHistory()
-    '        Catch ex As Exception
-    '            Me.HandleErrors(ex, Me.MasterPage.MessageController)
+    Private Sub gvHistory_PageIndexChanging(ByVal sender As Object, ByVal e As System.Web.UI.WebControls.GridViewPageEventArgs) Handles gvHistory.PageIndexChanging
+        Try
+            gvHistory.PageIndex = e.NewPageIndex
+            State.PageIndex = gvHistory.PageIndex
+            State.PriceListDetailSelectedChildId = Guid.Empty
+        Catch ex As Exception
+            Me.HandleErrors(ex, Me.MasterPage.MessageController)
+        End Try
+    End Sub
 
-    '        End Try
-    '    End Sub
-
-    '    Private Sub gvHistory_PageIndexChanging(ByVal sender As Object, ByVal e As System.Web.UI.WebControls.GridViewPageEventArgs) Handles gvHistory.PageIndexChanging
-    '        Try
-    '            gvHistory.PageIndex = e.NewPageIndex
-    '            State.PageIndex = gvHistory.PageIndex
-    '            State.PriceListDetailSelectedChildId = Guid.Empty
-    '        Catch ex As Exception
-    '            Me.HandleErrors(ex, Me.MasterPage.MessageController)
-    '        End Try
-    '    End Sub
-
-    '    Private Sub gvHistory_RowCreated(ByVal sender As Object, ByVal e As System.Web.UI.WebControls.GridViewRowEventArgs) Handles gvHistory.RowCreated
-    '        Try
-    '            BaseItemCreated(sender, e)
-    '        Catch ex As Exception
-    '            Me.HandleErrors(ex, Me.MasterPage.MessageController)
-    '        End Try
-    '    End Sub
-    '#End Region
+    Private Sub gvHistory_RowCreated(ByVal sender As Object, ByVal e As System.Web.UI.WebControls.GridViewRowEventArgs) Handles gvHistory.RowCreated
+        Try
+            BaseItemCreated(sender, e)
+        Catch ex As Exception
+            Me.HandleErrors(ex, Me.MasterPage.MessageController)
+        End Try
+    End Sub
+#End Region
     Sub PopulateDetailFromPriceListDetailChildBO()
         ' service class
         Me.PopulateControlFromBOProperty(ddlNewItemServiceClass, Me.State.MyChildBO.ServiceClassId)

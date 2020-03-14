@@ -885,12 +885,7 @@ Public Class PriceListDetailDAL
                                     familyDS)
     End Sub
 
-    Public Function ViewPriceListDetailHistory(ByVal Pricelistdetaild As Guid, ByVal languageId As Guid, ByVal familyDS As DataSet) As DataSet
-        'Dim pricelistdetailidlist As Guid
-        ''For Each r As DataRow In familyDS.Tables(2).Rows
-        ''    pricelistdetailidlist += r("PRICE_LIST_DETAIL_ID")
-        ''Next
-
+    Public Function ViewPriceListDetailHistory(ByVal Pricelistdetaild As Guid, ByVal languageId As Guid) As DataSet
         Dim selectStmt As String = Me.Config("/SQL/LOAD_PRICE_LIST_DETAIL_HISTORY")
         Dim parameters() As OracleParameter
         parameters = New OracleParameter() {
@@ -899,10 +894,9 @@ Public Class PriceListDetailDAL
                               New OracleParameter("po_price_list_detail_hist", OracleDbType.RefCursor, ParameterDirection.Output),
                               New OracleParameter(PAR_OUT_NAME_RETURN_CODE, OracleDbType.Int16, ParameterDirection.Output)}
 
-        FetchStoredProcedure("ViewPriceListDetailsHistory",
+        Return FetchStoredProcedure("ViewPriceListDetailsHistory",
                                     selectStmt,
-                                    parameters,
-                                    familyDS)
+                                    parameters)
     End Function
 
     Public Function GetMakeModelByEquipmentId(ByVal Equipmentid As Guid, ByVal CompanyGroupId As Guid) As DataSet

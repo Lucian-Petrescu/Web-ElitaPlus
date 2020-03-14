@@ -849,7 +849,7 @@ Public Class PriceListDetail
 
     Public Sub viewhistory(ByVal pricelistdetailid As Guid)
         Dim dal As New PriceListDetailDAL
-        dal.ViewPriceListDetailHistory(pricelistdetailid, ElitaPlusIdentity.Current.ActiveUser.LanguageId, Me.Dataset)
+        dal.ViewPriceListDetailHistory(pricelistdetailid, ElitaPlusIdentity.Current.ActiveUser.LanguageId)
 
     End Sub
 
