@@ -1,6 +1,9 @@
 Imports System.IO.Compression
 Imports System.Net
 Imports System.Web.Routing
+Imports Microsoft.Owin.Security
+'Imports Microsoft.Owin.Security.Cookies
+Imports Microsoft.Owin.Security.OpenIdConnect
 
 Public Class [Global]
     Inherits System.Web.HttpApplication
@@ -267,7 +270,7 @@ Public Class [Global]
 
     Private Sub Global_AcquireRequestState(ByVal sender As Object, ByVal e As System.EventArgs) Handles MyBase.AcquireRequestState
         'here we are not allowing ajax nor asmx(web service) to be processed by this code
-        If Me.Request.Url.AbsolutePath.ToLower().IndexOf(".axd") < 0 AndAlso _
+        If Me.Request.Url.AbsolutePath.ToLower().IndexOf(".axd") < 0 AndAlso
             Me.Request.Url.AbsolutePath.ToLower().IndexOf(".asmx") < 0 Then
             If Me.Request.Url.AbsolutePath.ToLower().IndexOf("errorform.aspx") >= 0 Then
                 Dim cookie As HttpCookie = Me.Request.Cookies.Item(ELPWebConstants.ELITA_PLUS_ERROR_COOKIE & "-" & Session.SessionID)
@@ -285,8 +288,8 @@ Public Class [Global]
             '    System.Threading.Thread.CurrentThread.CurrentCulture = New System.Globalization.CultureInfo(cultureName)
             'End If
             Authentication.SetCulture()
-            If Me.Request.Url.AbsolutePath.ToLower().IndexOf("default.aspx") < 0 AndAlso _
-               Me.Request.Url.AbsolutePath.ToLower().IndexOf("logoutform.aspx") < 0 AndAlso _
+            If Me.Request.Url.AbsolutePath.ToLower().IndexOf("default.aspx") < 0 AndAlso
+               Me.Request.Url.AbsolutePath.ToLower().IndexOf("logoutform.aspx") < 0 AndAlso
                Session("AppInitialized") Is Nothing Then
 
                 If Me.Request.Url.AbsolutePath.ToLower().IndexOf("downloadreportdata.aspx") > 0 Then
@@ -322,8 +325,14 @@ Public Class [Global]
         End If
         AppConfig.Log(CType(logEx, Exception))
         If Not CType(System.Threading.Thread.CurrentPrincipal, Object).GetType Is GetType(ElitaPlusPrincipal) Then
-            ' The Principal has not been created yet
-            sMessage = "CONFIG VALUES CAN NOT BE OBTAINED "
+            If (EnvironmentContext.Current.Environment <> Environments.Development) Then
+                HttpContext.Current.GetOwinContext().Authentication.Challenge(New AuthenticationProperties With {
+                    .RedirectUri = ELPWebConstants.APPLICATION_PATH & "/Navigation/MainPage.aspx"
+                }, OpenIdConnectAuthenticationDefaults.AuthenticationType)
+            Else
+                ' The Principal has not been created yet
+                sMessage = "CONFIG VALUES CAN NOT BE OBTAINED "
+            End If
         ElseIf ElitaPlusIdentity.Current.FtpHostname = String.Empty Then
             sMessage = "DATABASE IS DOWN OR ELP_SERVERS RECORD NOT FOUND "
         ElseIf ElitaPlusIdentity.Current.ActiveUser Is Nothing Then
