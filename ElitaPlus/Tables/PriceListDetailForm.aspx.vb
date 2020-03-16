@@ -1648,31 +1648,42 @@ Public Class PriceListDetailForm
             Me.Grid.PageSize = Me.State.PageSize
             SetPageAndSelectedIndexFromGuid(dv, Me.State.PriceListDetailSelectedChildId, Me.Grid, Me.State.PageIndex)
 
-            Me.Grid.DataSource = dv 'Me.State.DetailSearchDV
+            If Not txtSearch.Text = "" Then 'requested_by
+                dv.RowFilter = "requested_by like '%" & txtSearch.Text & "%'"
+                Me.Grid.DataSource = dv
+            Else
+                Me.Grid.DataSource = dv 'Me.State.DetailSearchDV
+            End If
             Me.Grid.DataBind()
-            Me.State.PageIndex = Me.Grid.PageIndex
-            Me.ShowHideQuantity()
+                Me.State.PageIndex = Me.Grid.PageIndex
+                Me.ShowHideQuantity()
 
-            ControlMgr.SetVisibleControl(Me, trPageSize, Me.Grid.Visible)
-            ControlMgr.SetVisibleControl(Me, cboPageSize, Me.Grid.Visible)
-            ControlMgr.SetVisibleControl(Me, lblRecordCounts, True)
+                ControlMgr.SetVisibleControl(Me, trPageSize, Me.Grid.Visible)
+                ControlMgr.SetVisibleControl(Me, cboPageSize, Me.Grid.Visible)
+                ControlMgr.SetVisibleControl(Me, lblRecordCounts, True)
+                ControlMgr.SetVisibleControl(Me, lblsearch, True)
+                ControlMgr.SetVisibleControl(Me, txtSearch, True)
+                ControlMgr.SetVisibleControl(Me, btntxtsearch, True)
 
             Session("recCount") = dv.Table.Rows.Count 'Me.State.DetailSearchDV.Count
-            Me.lblRecordCounts.Text = dv.Table.Rows.Count & " " & TranslationBase.TranslateLabelOrMessage(Message.MSG_RECORDS_FOUND)
+                Me.lblRecordCounts.Text = dv.Table.Rows.Count & " " & TranslationBase.TranslateLabelOrMessage(Message.MSG_RECORDS_FOUND)
 
-            If dv.Table.Rows.Count = 0 Then
-                ControlMgr.SetVisibleControl(Me, trPageSize, False)
-                ControlMgr.SetVisibleControl(Me, cboPageSize, False)
+                If dv.Table.Rows.Count = 0 Then
+                    ControlMgr.SetVisibleControl(Me, trPageSize, False)
+                    ControlMgr.SetVisibleControl(Me, cboPageSize, False)
                 ControlMgr.SetVisibleControl(Me, btnSubmitforApproval, False)
+                ControlMgr.SetVisibleControl(Me, lblsearch, False)
+                ControlMgr.SetVisibleControl(Me, txtSearch, False)
+                ControlMgr.SetVisibleControl(Me, btntxtsearch, False)
             Else
-                dv.RowFilter = "status_xcd='PL_RECON_PROCESS-PENDINGSUBMISSION'"
-                Dim pendingSubmissionRows = dv.Count
-                If pendingSubmissionRows = 0 Then
-                    ControlMgr.SetVisibleControl(Me, btnSubmitforApproval, False)
-                Else
-                    ControlMgr.SetVisibleControl(Me, btnSubmitforApproval, True)
+                    dv.RowFilter = "status_xcd='PL_RECON_PROCESS-PENDINGSUBMISSION'"
+                    Dim pendingSubmissionRows = dv.Count
+                    If pendingSubmissionRows = 0 Then
+                        ControlMgr.SetVisibleControl(Me, btnSubmitforApproval, False)
+                    Else
+                        ControlMgr.SetVisibleControl(Me, btnSubmitforApproval, True)
+                    End If
                 End If
-            End If
 
 
         Catch ex As Exception
@@ -1945,6 +1956,12 @@ Public Class PriceListDetailForm
             SetPageAndSelectedIndexFromGuid(dv, Me.State.PriceListDetailSelectedChildId, Me.gvPendingApprovals, Me.State.PageIndex)
 
             dv.RowFilter = "status_xcd='PL_RECON_PROCESS-PENDINGAPPROVAL'"
+            If Not txtpaSearch.Text = "" Then
+                dv.RowFilter = "requested_by like '%" & txtpaSearch.Text & "%'"
+                Me.gvPendingApprovals.DataSource = dv
+            Else
+                Me.gvPendingApprovals.DataSource = dv
+            End If
             Me.gvPendingApprovals.DataSource = dv
             Me.gvPendingApprovals.DataBind()
             Me.State.PageIndex = Me.gvPendingApprovals.PageIndex
@@ -1955,6 +1972,9 @@ Public Class PriceListDetailForm
             ControlMgr.SetVisibleControl(Me, lblPendingApprovalRecordCounts, True)
             ControlMgr.SetVisibleControl(Me, btnApprove, True)
             ControlMgr.SetVisibleControl(Me, btnReject, True)
+            ControlMgr.SetVisibleControl(Me, txtpaSearch, True)
+            ControlMgr.SetVisibleControl(Me, btnpaSearch, True)
+            ControlMgr.SetVisibleControl(Me, lblpaSearch, True)
 
             Session("recCount") = dv.Count
             Me.lblPendingApprovalRecordCounts.Text = dv.Count & " " & TranslationBase.TranslateLabelOrMessage(Message.MSG_RECORDS_FOUND)
@@ -1964,6 +1984,9 @@ Public Class PriceListDetailForm
                 ControlMgr.SetVisibleControl(Me, cboPageSizePendingApproval, False)
                 ControlMgr.SetVisibleControl(Me, btnApprove, False)
                 ControlMgr.SetVisibleControl(Me, btnReject, False)
+                ControlMgr.SetVisibleControl(Me, txtpaSearch, False)
+                ControlMgr.SetVisibleControl(Me, btnpaSearch, False)
+                ControlMgr.SetVisibleControl(Me, lblpaSearch, False)
             End If
         Catch ex As Exception
             Me.HandleErrors(ex, Me.MasterPage.MessageController)
@@ -2486,5 +2509,13 @@ Public Class PriceListDetailForm
             Me.MasterPage.MessageController.AddError(ElitaPlus.ElitaPlusWebApp.Message.PRICE_LIST_REJECTION_PROCESS_FAILED)
             Me.HandleErrors(ex, Me.MasterPage.MessageController)
         End Try
+    End Sub
+
+    Protected Sub btntxtsearch_Click(sender As Object, e As EventArgs) Handles btntxtsearch.Click
+        Me.PopulateGrid()
+    End Sub
+
+    Protected Sub btnpaSearch_Click(sender As Object, e As EventArgs) Handles btnpaSearch.Click
+        Me.PopulategvPendingApprovals()
     End Sub
 End Class

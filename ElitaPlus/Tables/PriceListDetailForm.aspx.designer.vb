@@ -329,6 +329,33 @@ Partial Public Class PriceListDetailForm
     Protected WithEvents cboPageSize As Global.System.Web.UI.WebControls.DropDownList
 
     '''<summary>
+    '''lblsearch control.
+    '''</summary>
+    '''<remarks>
+    '''Auto-generated field.
+    '''To modify move field declaration from designer file to code-behind file.
+    '''</remarks>
+    Protected WithEvents lblsearch As Global.System.Web.UI.WebControls.Label
+
+    '''<summary>
+    '''txtSearch control.
+    '''</summary>
+    '''<remarks>
+    '''Auto-generated field.
+    '''To modify move field declaration from designer file to code-behind file.
+    '''</remarks>
+    Protected WithEvents txtSearch As Global.System.Web.UI.WebControls.TextBox
+
+    '''<summary>
+    '''btntxtsearch control.
+    '''</summary>
+    '''<remarks>
+    '''Auto-generated field.
+    '''To modify move field declaration from designer file to code-behind file.
+    '''</remarks>
+    Protected WithEvents btntxtsearch As Global.System.Web.UI.WebControls.Button
+
+    '''<summary>
     '''lblRecordCounts control.
     '''</summary>
     '''<remarks>
@@ -444,6 +471,33 @@ Partial Public Class PriceListDetailForm
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
     Protected WithEvents lblPendingApprovalRecordCounts As Global.System.Web.UI.WebControls.Label
+
+    '''<summary>
+    '''lblpaSearch control.
+    '''</summary>
+    '''<remarks>
+    '''Auto-generated field.
+    '''To modify move field declaration from designer file to code-behind file.
+    '''</remarks>
+    Protected WithEvents lblpaSearch As Global.System.Web.UI.WebControls.Label
+
+    '''<summary>
+    '''txtpaSearch control.
+    '''</summary>
+    '''<remarks>
+    '''Auto-generated field.
+    '''To modify move field declaration from designer file to code-behind file.
+    '''</remarks>
+    Protected WithEvents txtpaSearch As Global.System.Web.UI.WebControls.TextBox
+
+    '''<summary>
+    '''btnpaSearch control.
+    '''</summary>
+    '''<remarks>
+    '''Auto-generated field.
+    '''To modify move field declaration from designer file to code-behind file.
+    '''</remarks>
+    Protected WithEvents btnpaSearch As Global.System.Web.UI.WebControls.Button
 
     '''<summary>
     '''gvPendingApprovals control.
