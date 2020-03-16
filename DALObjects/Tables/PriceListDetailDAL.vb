@@ -1,6 +1,7 @@
 ﻿'************* THIS CODE HAS BEEN GENERATED FROM TEMPLATE DALObject.cst (7/31/2012)********************
 Imports System.Collections.Generic
 Imports System.Linq
+Imports System.Data
 
 Public Class PriceListDetailDAL
     Inherits DALBase
@@ -10,6 +11,12 @@ Public Class PriceListDetailDAL
     Public Const TABLE_KEY_NAME As String = "price_list_detail_id"
 
     Public Const COL_NAME_PRICE_LIST_DETAIL_ID As String = "price_list_detail_id"
+    Public Const COL_NAME_STATUS_XCD As String = "status_xcd"
+    Public Const COL_NAME_STATUS As String = "status"
+    Public Const COL_NAME_STATUS_BY As String = "status_by"
+    Public Const COL_NAME_REQUESTED_BY As String = "requested_by"
+    Public Const COL_NAME_REQUESTED_DATE As String = "requested_date"
+    Public Const COL_NAME_STATUS_DATE As String = "status_date"
     Public Const COL_NAME_PRICE_LIST_ID As String = "price_list_id"
     Public Const COL_NAME_SERVICE_CLASS_ID As String = "service_class_id"
     Public Const COL_NAME_SERVICE_TYPE_ID As String = "service_type_id"
@@ -128,6 +135,9 @@ Public Class PriceListDetailDAL
     Public Const PAR_IN_NAME_PART_ID As String = "pi_part_id"
     Public Const PAR_IN_NAME_MANUFACTURER_ORIGIN As String = "pi_manufacturer_origin_xcd"
     Public Const PAR_IN_NAME_STOCK_ITEM_TYPE As String = "pi_stock_item_type_xcd"
+    Public Const PAR_IN_NAME_STATUS_XCD As String = "pi_status_xcd"
+    Public Const PAR_IN_NAME_REQUESTED_BY As String = "pi_requested_by"
+    Public Const PAR_IN_NAME_REQUESTED_DATE As String = "requested_date"
 
     'US 224089 
     Public Const PAR_IN_NAME_PARTS_LIST As String = "pi_parts_list"
@@ -364,7 +374,7 @@ Public Class PriceListDetailDAL
 
     Public Function GetOverlap(ByVal EquipmentClassId As Guid, ByVal EquipmentId As Guid, ByVal ConditionId As Guid, ByVal risktypeId As Guid,
                                ByVal ServiceClassId As Guid, ByVal ServiceTypeId As Guid, ByVal Sku As String, ByVal PriceListId As Guid,
-                               ByVal languageId As Guid, ByVal PriceListDetailId As Guid, 
+                               ByVal languageId As Guid, ByVal PriceListDetailId As Guid,
                                ByVal PartId As Guid, ByVal MakeId As Guid, ByVal ManufacturerOrigin As String,
                                ByVal expiration As String, ByVal effective As String) As DataSet
         Dim selectStmt As String = Me.Config("/SQL/GETOVERLAP")
@@ -860,25 +870,6 @@ Public Class PriceListDetailDAL
     End Function
 
     Public Sub LoadPriceListDetailsForPriceList(ByVal familyDS As DataSet, ByVal id As Guid, ByVal languageId As Guid, ByVal User_id As Guid)
-
-        ''Try
-
-        ''    Dim selectStmt As String = Me.Config("/SQL/LOAD_PRICE_LIST_LIST")
-        ''    Dim parameters() As DBHelper.DBHelperParameter = New DBHelper.DBHelperParameter() {
-        ''    New DBHelper.DBHelperParameter(LanguageDAL.COL_NAME_LANGUAGE_ID, languageId.ToByteArray),
-        ''    New DBHelper.DBHelperParameter(LanguageDAL.COL_NAME_LANGUAGE_ID, languageId.ToByteArray),
-        ''    New DBHelper.DBHelperParameter(LanguageDAL.COL_NAME_LANGUAGE_ID, languageId.ToByteArray),
-        ''    New DBHelper.DBHelperParameter(LanguageDAL.COL_NAME_LANGUAGE_ID, languageId.ToByteArray),
-        ''    New DBHelper.DBHelperParameter("User_id", User_id.ToByteArray),
-        ''    New DBHelper.DBHelperParameter(COL_NAME_PRICE_LIST_ID, id.ToByteArray)}
-
-        ''    DBHelper.Fetch(familyDS, selectStmt, Me.TABLE_NAME, parameters)
-
-        ''Catch ex As Exception
-        ''    Throw New DataBaseAccessException(DataBaseAccessException.DatabaseAccessErrorType.ReadErr, ex)
-        ''End Try
-
-        'US 224101 - Replacing code to call stored proc
         Dim selectStmt As String = Me.Config("/SQL/LOAD_PRICE_LIST_LIST")
         Dim parameters() As OracleParameter
         parameters = New OracleParameter() {
@@ -893,6 +884,20 @@ Public Class PriceListDetailDAL
                                     parameters,
                                     familyDS)
     End Sub
+
+    Public Function ViewPriceListDetailHistory(ByVal Pricelistdetaild As Guid, ByVal languageId As Guid) As DataSet
+        Dim selectStmt As String = Me.Config("/SQL/LOAD_PRICE_LIST_DETAIL_HISTORY")
+        Dim parameters() As OracleParameter
+        parameters = New OracleParameter() {
+                              New OracleParameter("pi_price_list_detail_id", OracleDbType.Raw, Pricelistdetaild.ToByteArray, ParameterDirection.Input),
+                              New OracleParameter(PAR_IN_NAME_LANGUAGE_ID, OracleDbType.Raw, languageId.ToByteArray, ParameterDirection.Input),
+                              New OracleParameter("po_price_list_detail_hist", OracleDbType.RefCursor, ParameterDirection.Output),
+                              New OracleParameter(PAR_OUT_NAME_RETURN_CODE, OracleDbType.Int16, ParameterDirection.Output)}
+
+        Return FetchStoredProcedure("ViewPriceListDetailsHistory",
+                                    selectStmt,
+                                    parameters)
+    End Function
 
     Public Function GetMakeModelByEquipmentId(ByVal Equipmentid As Guid, ByVal CompanyGroupId As Guid) As DataSet
         'Dim ds As New DataSet
@@ -1068,8 +1073,7 @@ Public Class PriceListDetailDAL
             .AddParameter(PAR_IN_NAME_PRICE, OracleDbType.Decimal, sourceColumn:=COL_NAME_PRICE)
             .AddParameter(PAR_IN_NAME_EFFECTIVE, OracleDbType.Date, sourceColumn:=COL_NAME_EFFECTIVE)
             .AddParameter(PAR_IN_NAME_EXPIRATION, OracleDbType.Date, sourceColumn:=COL_NAME_EXPIRATION)
-            .AddParameter(PAR_IN_NAME_CREATED_BY, OracleDbType.Varchar2, sourceColumn:=COL_NAME_CREATED_BY)
-            .AddParameter(PAR_IN_NAME_MODIFIED_BY, OracleDbType.Varchar2, sourceColumn:=COL_NAME_MODIFIED_BY)
+            .AddParameter(PAR_IN_NAME_REQUESTED_BY, OracleDbType.Varchar2, sourceColumn:=COL_NAME_CREATED_BY)
             .AddParameter(PAR_IN_NAME_SERVICE_LEVEL_ID, OracleDbType.Raw, sourceColumn:=COL_NAME_SERVICE_LEVEL_ID)
             .AddParameter(PAR_IN_NAME_PRICE_BAND_RANGE_FROM, OracleDbType.Double, sourceColumn:=COL_NAME_PRICE_BAND_RANGE_FROM)
             .AddParameter(PAR_IN_NAME_PRICE_BAND_RANGE_TO, OracleDbType.Double, sourceColumn:=COL_NAME_PRICE_BAND_RANGE_TO)
@@ -1091,6 +1095,7 @@ Public Class PriceListDetailDAL
 
         With command
             .AddParameter(PAR_IN_NAME_PRICE_LIST_DETAIL_ID, OracleDbType.Raw, sourceColumn:=COL_NAME_PRICE_LIST_DETAIL_ID)
+            .AddParameter(PAR_IN_NAME_PRICE_LIST_ID, OracleDbType.Raw, sourceColumn:=COL_NAME_PRICE_LIST_ID)
             .AddParameter(PAR_IN_NAME_SERVICE_CLASS_ID, OracleDbType.Raw, sourceColumn:=COL_NAME_SERVICE_CLASS_ID)
             .AddParameter(PAR_IN_NAME_SERVICE_TYPE_ID, OracleDbType.Raw, sourceColumn:=COL_NAME_SERVICE_TYPE_ID)
             .AddParameter(PAR_IN_NAME_VENDOR_SKU, OracleDbType.Varchar2, sourceColumn:=COL_NAME_VENDOR_SKU)
@@ -1102,7 +1107,7 @@ Public Class PriceListDetailDAL
             .AddParameter(PAR_IN_NAME_PRICE, OracleDbType.Decimal, sourceColumn:=COL_NAME_PRICE)
             .AddParameter(PAR_IN_NAME_EFFECTIVE, OracleDbType.Date, sourceColumn:=COL_NAME_EFFECTIVE)
             .AddParameter(PAR_IN_NAME_EXPIRATION, OracleDbType.Date, sourceColumn:=COL_NAME_EXPIRATION)
-            .AddParameter(PAR_IN_NAME_MODIFIED_BY, OracleDbType.Varchar2, sourceColumn:=COL_NAME_MODIFIED_BY)
+            .AddParameter(PAR_IN_NAME_REQUESTED_BY, OracleDbType.Varchar2, sourceColumn:=COL_NAME_MODIFIED_BY)
             .AddParameter(PAR_IN_NAME_SERVICE_LEVEL_ID, OracleDbType.Raw, sourceColumn:=COL_NAME_SERVICE_LEVEL_ID)
             .AddParameter(PAR_IN_NAME_PRICE_BAND_RANGE_FROM, OracleDbType.Double, sourceColumn:=COL_NAME_PRICE_BAND_RANGE_FROM)
             .AddParameter(PAR_IN_NAME_PRICE_BAND_RANGE_TO, OracleDbType.Double, sourceColumn:=COL_NAME_PRICE_BAND_RANGE_TO)
