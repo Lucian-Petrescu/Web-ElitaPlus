@@ -959,8 +959,14 @@ Partial Class ServiceCenterForm
 
         Me.DisplayBankInfo()
 
-        Me.State.priceListApprovalflag = New Country(Me.State.MyBO.CountryId).PriceListApprovalNeeded.ToString()
-        If Not Me.State.priceListApprovalflag = String.Empty And Me.State.priceListApprovalflag = "YESNO-Y" Then
+        Try
+
+            Me.State.priceListApprovalflag = New Country(Me.State.MyBO.CountryId).PriceListApprovalNeeded.ToString()
+        Catch
+            Me.State.priceListApprovalflag = "YESNO-N"
+        End Try
+
+        If Not Me.State.priceListApprovalflag Is Nothing And Not Me.State.priceListApprovalflag = String.Empty And Me.State.priceListApprovalflag = "YESNO-Y" Then
 
             PL_APPROVE_SEC.Visible = True
 
