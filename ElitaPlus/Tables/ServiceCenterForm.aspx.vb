@@ -321,7 +321,7 @@ Partial Class ServiceCenterForm
         Public PageSize As Integer = 5
 
         Public SvcPriciListDV As DataView = Nothing
-        Public IsCopy As Boolean = False
+        'Public IsCopy As Boolean = False
 
         Public CurrentPriceListCode As String = Nothing
     End Class
@@ -543,9 +543,9 @@ Partial Class ServiceCenterForm
                     SaveAllRecordsMethodOfRepair(True)
                 Else
 
-                    If Not Me.State.IsCopy Or Not Me.State.IsNew Then
+                    If Not Me.State.IsNew Then
 
-                        If Not String.IsNullOrEmpty(Me.State.priceListApprovalflag) And Me.State.priceListApprovalflag = "YESNO-Y" Then
+                        If Not String.IsNullOrEmpty(Me.State.priceListApprovalflag) And Me.State.priceListApprovalflag = Codes.EXT_YESNO_Y Then
                             'Only after Approval, Price List will be associated to Service Center
                             Me.PopulateBOProperty(Me.State.MyBO, "PriceListCode", Me.State.CurrentPriceListCode)
                         End If
@@ -553,12 +553,12 @@ Partial Class ServiceCenterForm
                     End If
 
                     State.MyBO.Save()
-                        'State.MySvcBO.Save()
-                    End If
+                    'State.MySvcBO.Save()
+                End If
 
-                    Me.State.SvcPriciListDV = Nothing
+                Me.State.SvcPriciListDV = Nothing
                 PopulateSvcDataGridPriceList()
-                Me.State.IsCopy = False
+                'Me.State.IsCopy = False
                 Me.State.IsNew = False
                 Me.State.HasDataChanged = True
 
@@ -963,10 +963,10 @@ Partial Class ServiceCenterForm
 
             Me.State.priceListApprovalflag = New Country(Me.State.MyBO.CountryId).PriceListApprovalNeeded.ToString()
         Catch
-            Me.State.priceListApprovalflag = "YESNO-N"
+            Me.State.priceListApprovalflag = Codes.EXT_YESNO_N
         End Try
 
-        If Not Me.State.priceListApprovalflag Is Nothing And Not Me.State.priceListApprovalflag = String.Empty And Me.State.priceListApprovalflag = "YESNO-Y" Then
+        If Not Me.State.priceListApprovalflag Is Nothing And Not Me.State.priceListApprovalflag = String.Empty And Me.State.priceListApprovalflag = Codes.EXT_YESNO_Y Then
 
             PL_APPROVE_SEC.Visible = True
 
@@ -1521,7 +1521,7 @@ Partial Class ServiceCenterForm
 
                     Me.PopulateBOProperty(Me.State.MyBO.CurrentSVCPLRecon, "PriceListId", LookupListNew.GetIdFromCode(LookupListCache.LK_PRICE_LIST, Me.State.MyBO.PriceListCode))
 
-                    If Not Me.State.priceListApprovalflag = String.Empty And Me.State.priceListApprovalflag = "YESNO-Y" Then
+                    If Not Me.State.priceListApprovalflag = String.Empty And Me.State.priceListApprovalflag = Codes.EXT_YESNO_Y Then
                         Me.PopulateBOProperty(Me.State.MyBO.CurrentSVCPLRecon, "Status_xcd", SVCPLProcessStatusPending)
                     Else
                         Me.PopulateBOProperty(Me.State.MyBO.CurrentSVCPLRecon, "Status_xcd", SVCPLProcessStatusApproved)
@@ -1531,7 +1531,7 @@ Partial Class ServiceCenterForm
 
                 Else
 
-                    If Not Me.State.priceListApprovalflag = String.Empty And Me.State.priceListApprovalflag = "YESNO-Y" And Not State.MyBO.IsNew Then
+                    If Not Me.State.priceListApprovalflag = String.Empty And Me.State.priceListApprovalflag = Codes.EXT_YESNO_Y And Not State.MyBO.IsNew Then
                         AddSVRcReconRec(GetSelectedItem(ddlPriceList), SVCPLProcessStatusPending)
                     Else
                         AddSVRcReconRec(GetSelectedItem(ddlPriceList), SVCPLProcessStatusApproved)
