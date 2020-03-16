@@ -29,7 +29,7 @@ Partial Class LoginForm
 
 
     Private Sub Page_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
-        If EnvironmentContext.Current.Environment <> Environments.Development Then
+        If EnvironmentContext.Current.Environment <> Environments.Development Then 'for Non Local
             If Not Page.IsPostBack Then
                 Dim loginError As String = HttpContext.Current.Session(ELPWebConstants.SESSION_LOGIN_ERROR_MESSAGE)
                 If Not String.IsNullOrEmpty(loginError) Then

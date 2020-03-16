@@ -325,7 +325,7 @@ Public Class [Global]
         End If
         AppConfig.Log(CType(logEx, Exception))
         If Not CType(System.Threading.Thread.CurrentPrincipal, Object).GetType Is GetType(ElitaPlusPrincipal) Then
-            If (EnvironmentContext.Current.Environment <> Environments.Development) Then
+            If (EnvironmentContext.Current.Environment <> Environments.Development) Then ' For Non Local
                 HttpContext.Current.GetOwinContext().Authentication.Challenge(New AuthenticationProperties With {
                     .RedirectUri = ELPWebConstants.APPLICATION_PATH & "/Navigation/MainPage.aspx"
                 }, OpenIdConnectAuthenticationDefaults.AuthenticationType)

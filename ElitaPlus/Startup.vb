@@ -27,18 +27,18 @@ Public Class Startup
         'If (EnvironmentContext.Current.Environment = Environments.Development) Then
         '    requireHttpsMetadata = False
         'End If
-        If (EnvironmentContext.Current.Environment <> Environments.Development) Then
+        If (EnvironmentContext.Current.Environment <> Environments.Development) Then 'For Non Local
 
 
             app.UseOpenIdConnectAuthentication(New OpenIdConnectAuthenticationOptions With {
-                .requireHttpsMetadata = requireHttpsMetadata,
-                .clientId = clientId,
-                .clientSecret = clientSecret,
-                .authority = authority,
-                .redirectUri = redirectUri,
-                .responseType = responseType,
-                .scope = scope,
-                .postLogoutRedirectUri = postLogoutRedirectUri,
+                .RequireHttpsMetadata = requireHttpsMetadata,
+                .ClientId = clientId,
+                .ClientSecret = clientSecret,
+                .Authority = authority,
+                .RedirectUri = redirectUri,
+                .ResponseType = responseType,
+                .Scope = scope,
+                .PostLogoutRedirectUri = postLogoutRedirectUri,
                 .TokenValidationParameters = New TokenValidationParameters With {
                     .NameClaimType = "name",
                     .RoleClaimType = "groups",
