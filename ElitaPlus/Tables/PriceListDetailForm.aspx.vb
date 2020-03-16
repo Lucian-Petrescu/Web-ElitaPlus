@@ -1660,23 +1660,18 @@ Public Class PriceListDetailForm
 
                 ControlMgr.SetVisibleControl(Me, trPageSize, Me.Grid.Visible)
                 ControlMgr.SetVisibleControl(Me, cboPageSize, Me.Grid.Visible)
-                ControlMgr.SetVisibleControl(Me, lblRecordCounts, True)
-                ControlMgr.SetVisibleControl(Me, lblsearch, True)
-                ControlMgr.SetVisibleControl(Me, txtSearch, True)
-                ControlMgr.SetVisibleControl(Me, btntxtsearch, True)
+            ControlMgr.SetVisibleControl(Me, lblRecordCounts, True)
+            ControlMgr.SetVisibleControl(Me, lblPageSize, True)
 
-            Session("recCount") = dv.Table.Rows.Count 'Me.State.DetailSearchDV.Count
-                Me.lblRecordCounts.Text = dv.Table.Rows.Count & " " & TranslationBase.TranslateLabelOrMessage(Message.MSG_RECORDS_FOUND)
+            Session("recCount") = dv.Count 'Me.State.DetailSearchDV.Count
+            Me.lblRecordCounts.Text = dv.Count & " " & TranslationBase.TranslateLabelOrMessage(Message.MSG_RECORDS_FOUND)
 
-                If dv.Table.Rows.Count = 0 Then
-                    ControlMgr.SetVisibleControl(Me, trPageSize, False)
-                    ControlMgr.SetVisibleControl(Me, cboPageSize, False)
+            If dv.Count = 0 Then
+                ControlMgr.SetVisibleControl(Me, trPageSize, False)
+                'ControlMgr.SetVisibleControl(Me, cboPageSize, False)
                 ControlMgr.SetVisibleControl(Me, btnSubmitforApproval, False)
-                ControlMgr.SetVisibleControl(Me, lblsearch, False)
-                ControlMgr.SetVisibleControl(Me, txtSearch, False)
-                ControlMgr.SetVisibleControl(Me, btntxtsearch, False)
             Else
-                    dv.RowFilter = "status_xcd='PL_RECON_PROCESS-PENDINGSUBMISSION'"
+                dv.RowFilter = "status_xcd='PL_RECON_PROCESS-PENDINGSUBMISSION'"
                     Dim pendingSubmissionRows = dv.Count
                     If pendingSubmissionRows = 0 Then
                         ControlMgr.SetVisibleControl(Me, btnSubmitforApproval, False)
@@ -1967,26 +1962,19 @@ Public Class PriceListDetailForm
             Me.State.PageIndex = Me.gvPendingApprovals.PageIndex
             Me.ShowHideQuantity()
 
-            ControlMgr.SetVisibleControl(Me, lblPageSizePendingApprovals, Me.gvPendingApprovals.Visible)
+            ControlMgr.SetVisibleControl(Me, trPageSizePendingApprovals, Me.gvPendingApprovals.Visible)
             ControlMgr.SetVisibleControl(Me, cboPageSizePendingApproval, Me.gvPendingApprovals.Visible)
             ControlMgr.SetVisibleControl(Me, lblPendingApprovalRecordCounts, True)
             ControlMgr.SetVisibleControl(Me, btnApprove, True)
             ControlMgr.SetVisibleControl(Me, btnReject, True)
-            ControlMgr.SetVisibleControl(Me, txtpaSearch, True)
-            ControlMgr.SetVisibleControl(Me, btnpaSearch, True)
-            ControlMgr.SetVisibleControl(Me, lblpaSearch, True)
-
             Session("recCount") = dv.Count
             Me.lblPendingApprovalRecordCounts.Text = dv.Count & " " & TranslationBase.TranslateLabelOrMessage(Message.MSG_RECORDS_FOUND)
 
             If dv.Count = 0 Then
-                ControlMgr.SetVisibleControl(Me, lblPageSizePendingApprovals, False)
-                ControlMgr.SetVisibleControl(Me, cboPageSizePendingApproval, False)
+                ControlMgr.SetVisibleControl(Me, trPageSizePendingApprovals, False)
+                'ControlMgr.SetVisibleControl(Me, cboPageSizePendingApproval, False)
                 ControlMgr.SetVisibleControl(Me, btnApprove, False)
                 ControlMgr.SetVisibleControl(Me, btnReject, False)
-                ControlMgr.SetVisibleControl(Me, txtpaSearch, False)
-                ControlMgr.SetVisibleControl(Me, btnpaSearch, False)
-                ControlMgr.SetVisibleControl(Me, lblpaSearch, False)
             End If
         Catch ex As Exception
             Me.HandleErrors(ex, Me.MasterPage.MessageController)
@@ -2460,6 +2448,7 @@ Public Class PriceListDetailForm
 
     Protected Sub btnApprove_Click(sender As Object, e As EventArgs) Handles btnApprove.Click
         Try
+            Dim isChecked As Boolean = False
             Dim PricelistDetailIdList As String = String.Empty
             Dim HeaderCheckbox As CheckBox = CType(gvPendingApprovals.HeaderRow.FindControl("chkHeaderApproveOrReject"), CheckBox)
             If HeaderCheckbox.Checked = False Then
@@ -2470,15 +2459,21 @@ Public Class PriceListDetailForm
                         Dim lblCtrl As Label
                         lblCtrl = CType(gvrow.Cells(23).FindControl("lblPriceListDetailID"), Label)
                         lstPriceListDetail.Add(MiscUtil.GetDbStringFromGuid(New Guid(lblCtrl.Text)))
-
+                        isChecked = True
                     End If
                 Next
                 PricelistDetailIdList = String.Join(",", lstPriceListDetail.ToArray())
+            Else
+                isChecked = True
             End If
-            Me.State.MyBO.ProcessPriceListByStatus(Me.State.MyBO.Id, PricelistDetailIdList, Authentication.CurrentUser.NetworkId, "PL_RECON_PROCESS-APPROVED")
-            Me.PopulateGrid()
-            Me.PopulategvPendingApprovals()
-            Me.MasterPage.MessageController.AddSuccess(ElitaPlus.ElitaPlusWebApp.Message.PRICE_LIST_APPROVAL_PROCESS_SUCCESS)
+            If isChecked Then
+                Me.State.MyBO.ProcessPriceListByStatus(Me.State.MyBO.Id, PricelistDetailIdList, Authentication.CurrentUser.NetworkId, "PL_RECON_PROCESS-APPROVED")
+                Me.PopulateGrid()
+                Me.PopulategvPendingApprovals()
+                Me.MasterPage.MessageController.AddSuccess(ElitaPlus.ElitaPlusWebApp.Message.PRICE_LIST_APPROVAL_PROCESS_SUCCESS)
+            Else
+                Me.MasterPage.MessageController.AddError(ElitaPlus.ElitaPlusWebApp.Message.PRICE_LIST_APPROVE_OR_REJECT_CHECKBOX_NOT_SELECTED)
+            End If
         Catch ex As Exception
             Me.MasterPage.MessageController.AddError(ElitaPlus.ElitaPlusWebApp.Message.PRICE_LIST_APPROVAL_PROCESS_FAILED)
             Me.HandleErrors(ex, Me.MasterPage.MessageController)
@@ -2487,6 +2482,7 @@ Public Class PriceListDetailForm
 
     Protected Sub btnReject_Click(sender As Object, e As EventArgs) Handles btnReject.Click
         Try
+            Dim isChecked As Boolean = False
             Dim PricelistDetailIdList As String = String.Empty
             Dim HeaderCheckbox As CheckBox = CType(gvPendingApprovals.HeaderRow.FindControl("chkHeaderApproveOrReject"), CheckBox)
             If HeaderCheckbox.Checked = False Then
@@ -2497,14 +2493,21 @@ Public Class PriceListDetailForm
                         Dim lblCtrl As Label
                         lblCtrl = CType(gvrow.Cells(23).FindControl("lblPriceListDetailID"), Label)
                         lstPriceListDetail.Add(MiscUtil.GetDbStringFromGuid(New Guid(lblCtrl.Text)))
+                        isChecked = True
                     End If
                 Next
                 PricelistDetailIdList = String.Join(",", lstPriceListDetail.ToArray())
+            Else
+                isChecked = True
             End If
-            Me.State.MyBO.ProcessPriceListByStatus(Me.State.MyBO.Id, PricelistDetailIdList, Authentication.CurrentUser.NetworkId, "PL_RECON_PROCESS-REJECTED")
-            Me.PopulateGrid()
-            Me.PopulategvPendingApprovals()
-            Me.MasterPage.MessageController.AddSuccess(ElitaPlus.ElitaPlusWebApp.Message.PRICE_LIST_REJECTION_PROCESS_SUCCESS)
+            If isChecked Then
+                Me.State.MyBO.ProcessPriceListByStatus(Me.State.MyBO.Id, PricelistDetailIdList, Authentication.CurrentUser.NetworkId, "PL_RECON_PROCESS-REJECTED")
+                Me.PopulateGrid()
+                Me.PopulategvPendingApprovals()
+                Me.MasterPage.MessageController.AddSuccess(ElitaPlus.ElitaPlusWebApp.Message.PRICE_LIST_REJECTION_PROCESS_SUCCESS)
+            Else
+                Me.MasterPage.MessageController.AddError(ElitaPlus.ElitaPlusWebApp.Message.PRICE_LIST_APPROVE_OR_REJECT_CHECKBOX_NOT_SELECTED)
+            End If
         Catch ex As Exception
             Me.MasterPage.MessageController.AddError(ElitaPlus.ElitaPlusWebApp.Message.PRICE_LIST_REJECTION_PROCESS_FAILED)
             Me.HandleErrors(ex, Me.MasterPage.MessageController)

@@ -207,6 +207,22 @@
                                 <asp:TextBox ID="txtNewEquipSKUDescription" runat="server" TabIndex="5" SkinID="MediumTextBox"></asp:TextBox>
                             </td>
                         </tr>
+                        <tr>
+                            <td align="right">
+                                <asp:Label ID="lblsearch" runat="server" Text="SEARCH_REQUESTED_BY"></asp:Label>
+                            </td>
+                            <td align="left">
+                                <asp:TextBox ID="txtSearch" runat="server"></asp:TextBox>
+                                &nbsp;
+                                <asp:Button ID="btntxtsearch" runat="server" Text="Search" />
+
+                            </td>
+                            
+                            <td align="right" colspan="5">
+                                <asp:Label ID="lblRecordCounts" runat="server"></asp:Label>
+                            </td>
+                            
+                        </tr>
                         <%--</table>
                         <table width="100%" border="0">--%>
                         <tr id="trPageSize" runat="server">
@@ -228,20 +244,9 @@
                                     <asp:ListItem Value="45">45</asp:ListItem>
                                     <asp:ListItem Value="50">50</asp:ListItem>
                                 </asp:DropDownList></td>
-                            <td align="right">
-                                <asp:Label ID="lblsearch" runat="server" Text="Search:"></asp:Label>
-                            </td>
-                            <td>
-                                <asp:TextBox ID="txtSearch" runat="server"></asp:TextBox>
-                                &nbsp;
-                                <asp:Button ID="btntxtsearch" runat="server" Text="Search" />
-
-                            </td>
-
-                            <td align="right" colspan="4">
-                                <asp:Label ID="lblRecordCounts" runat="server"></asp:Label>
-                            </td>
-                            
+                  <td colspan="5">
+                      &nbsp;
+                  </td>
                         </tr>
                     </table>
                     <div style="width: 100%; overflow-y: scroll; height: 100%;">
@@ -358,45 +363,47 @@
                 </div>
                     <div id="tabsPendingApprovals">
                           <div>
-                               <table width="100%" border="0" class="dataGrid dataGridSpacer" cellpadding="0" cellspacing="0"
-                        style="padding-top: 5px; padding-bottom: 5px;">
-                            
-                                <tr id="trPageSizePendingApprovals" runat="server">
-                                    <td align="right" class="auto-style2">
-                                        <asp:Label ID="lblPageSizePendingApprovals" runat="server">Page_Size</asp:Label>: &nbsp;
-                                        
-                                    </td>
-                                    <td align="left">
-                                        <asp:DropDownList ID="cboPageSizePendingApproval" runat="server" Width="50px" AutoPostBack="true"
-                                            SkinID="SmallDropDown">
-                                            <asp:ListItem Value="5">5</asp:ListItem>
-                                            <asp:ListItem Value="10">10</asp:ListItem>
-                                            <asp:ListItem Value="15">15</asp:ListItem>
-                                            <asp:ListItem Value="20">20</asp:ListItem>
-                                            <asp:ListItem Value="25">25</asp:ListItem>
-                                            <asp:ListItem Value="30">30</asp:ListItem>
-                                            <asp:ListItem Value="35">35</asp:ListItem>
-                                            <asp:ListItem Value="40">40</asp:ListItem>
-                                            <asp:ListItem Value="45">45</asp:ListItem>
-                                            <asp:ListItem Value="50">50</asp:ListItem>
-                                        </asp:DropDownList></td>
-                                    <td>&nbsp;</td>
-                                    <td align="right" colspan="4">
-                                        <asp:Label ID="lblPendingApprovalRecordCounts" runat="server"></asp:Label>
-                                    </td>
-                                </tr>
-                                   <tr>
-                                   <td>
-                                <asp:Label ID="lblpaSearch" runat="server" Text="Search:"></asp:Label>
-                            </td>
-                            <td>
-                                <asp:TextBox ID="txtpaSearch" runat="server"></asp:TextBox>
-                                &nbsp;
-                                <asp:Button ID="btnpaSearch" runat="server" Text="Search" />
+                              <table width="100%" border="1" class="dataGrid dataGridSpacer" cellpadding="0" cellspacing="0"
+                                  style="padding-top: 5px; padding-bottom: 5px;">
+                                  <tr>
+                                      <td align="right" class="auto-style2">
+                                          <asp:Label ID="lblpaSearch" runat="server" Text="SEARCH_REQUESTED_BY"></asp:Label>
+                                      </td>
+                                      <td align="left">
+                                          <asp:TextBox ID="txtpaSearch" runat="server"></asp:TextBox>
+                                          &nbsp;
+                                          <asp:Button ID="btnpaSearch" runat="server" Text="Search" />
+                                      </td>
+                                          
 
-                            </td>
-                                       </tr>
-                            </table>
+                                      <td align="right" colspan="5">
+                                          <asp:Label ID="lblPendingApprovalRecordCounts" runat="server"></asp:Label>
+                                      </td>
+                                  </tr>
+
+                                  <tr id="trPageSizePendingApprovals" runat="server">
+                                      <td align="right" class="auto-style2">
+                                          <asp:Label ID="lblPageSizePendingApprovals" runat="server">Page_Size</asp:Label>: &nbsp;
+                                        
+                                      </td>
+                                      <td align="left" colspan="6">
+                                          <asp:DropDownList ID="cboPageSizePendingApproval" runat="server" Width="50px" AutoPostBack="true"
+                                              SkinID="SmallDropDown">
+                                              <asp:ListItem Value="5">5</asp:ListItem>
+                                              <asp:ListItem Value="10">10</asp:ListItem>
+                                              <asp:ListItem Value="15">15</asp:ListItem>
+                                              <asp:ListItem Value="20">20</asp:ListItem>
+                                              <asp:ListItem Value="25">25</asp:ListItem>
+                                              <asp:ListItem Value="30">30</asp:ListItem>
+                                              <asp:ListItem Value="35">35</asp:ListItem>
+                                              <asp:ListItem Value="40">40</asp:ListItem>
+                                              <asp:ListItem Value="45">45</asp:ListItem>
+                                              <asp:ListItem Value="50">50</asp:ListItem>
+                                          </asp:DropDownList></td>
+                                      
+                                  </tr>
+
+                              </table>
                         </div>
                         <div style="width: 100%; overflow-y: scroll; height: 100%;">
                             <asp:GridView ID="gvPendingApprovals" runat="server" Width="100%" AutoGenerateColumns="False" AllowPaging="True"

@@ -302,33 +302,6 @@ Partial Public Class PriceListDetailForm
     Protected WithEvents txtNewEquipSKUDescription As Global.System.Web.UI.WebControls.TextBox
 
     '''<summary>
-    '''trPageSize control.
-    '''</summary>
-    '''<remarks>
-    '''Auto-generated field.
-    '''To modify move field declaration from designer file to code-behind file.
-    '''</remarks>
-    Protected WithEvents trPageSize As Global.System.Web.UI.HtmlControls.HtmlTableRow
-
-    '''<summary>
-    '''lblPageSize control.
-    '''</summary>
-    '''<remarks>
-    '''Auto-generated field.
-    '''To modify move field declaration from designer file to code-behind file.
-    '''</remarks>
-    Protected WithEvents lblPageSize As Global.System.Web.UI.WebControls.Label
-
-    '''<summary>
-    '''cboPageSize control.
-    '''</summary>
-    '''<remarks>
-    '''Auto-generated field.
-    '''To modify move field declaration from designer file to code-behind file.
-    '''</remarks>
-    Protected WithEvents cboPageSize As Global.System.Web.UI.WebControls.DropDownList
-
-    '''<summary>
     '''lblsearch control.
     '''</summary>
     '''<remarks>
@@ -363,6 +336,33 @@ Partial Public Class PriceListDetailForm
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
     Protected WithEvents lblRecordCounts As Global.System.Web.UI.WebControls.Label
+
+    '''<summary>
+    '''trPageSize control.
+    '''</summary>
+    '''<remarks>
+    '''Auto-generated field.
+    '''To modify move field declaration from designer file to code-behind file.
+    '''</remarks>
+    Protected WithEvents trPageSize As Global.System.Web.UI.HtmlControls.HtmlTableRow
+
+    '''<summary>
+    '''lblPageSize control.
+    '''</summary>
+    '''<remarks>
+    '''Auto-generated field.
+    '''To modify move field declaration from designer file to code-behind file.
+    '''</remarks>
+    Protected WithEvents lblPageSize As Global.System.Web.UI.WebControls.Label
+
+    '''<summary>
+    '''cboPageSize control.
+    '''</summary>
+    '''<remarks>
+    '''Auto-generated field.
+    '''To modify move field declaration from designer file to code-behind file.
+    '''</remarks>
+    Protected WithEvents cboPageSize As Global.System.Web.UI.WebControls.DropDownList
 
     '''<summary>
     '''Grid control.
@@ -437,42 +437,6 @@ Partial Public Class PriceListDetailForm
     Protected WithEvents moSelectedList As Global.System.Web.UI.WebControls.ListBox
 
     '''<summary>
-    '''trPageSizePendingApprovals control.
-    '''</summary>
-    '''<remarks>
-    '''Auto-generated field.
-    '''To modify move field declaration from designer file to code-behind file.
-    '''</remarks>
-    Protected WithEvents trPageSizePendingApprovals As Global.System.Web.UI.HtmlControls.HtmlTableRow
-
-    '''<summary>
-    '''lblPageSizePendingApprovals control.
-    '''</summary>
-    '''<remarks>
-    '''Auto-generated field.
-    '''To modify move field declaration from designer file to code-behind file.
-    '''</remarks>
-    Protected WithEvents lblPageSizePendingApprovals As Global.System.Web.UI.WebControls.Label
-
-    '''<summary>
-    '''cboPageSizePendingApproval control.
-    '''</summary>
-    '''<remarks>
-    '''Auto-generated field.
-    '''To modify move field declaration from designer file to code-behind file.
-    '''</remarks>
-    Protected WithEvents cboPageSizePendingApproval As Global.System.Web.UI.WebControls.DropDownList
-
-    '''<summary>
-    '''lblPendingApprovalRecordCounts control.
-    '''</summary>
-    '''<remarks>
-    '''Auto-generated field.
-    '''To modify move field declaration from designer file to code-behind file.
-    '''</remarks>
-    Protected WithEvents lblPendingApprovalRecordCounts As Global.System.Web.UI.WebControls.Label
-
-    '''<summary>
     '''lblpaSearch control.
     '''</summary>
     '''<remarks>
@@ -498,6 +462,42 @@ Partial Public Class PriceListDetailForm
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
     Protected WithEvents btnpaSearch As Global.System.Web.UI.WebControls.Button
+
+    '''<summary>
+    '''lblPendingApprovalRecordCounts control.
+    '''</summary>
+    '''<remarks>
+    '''Auto-generated field.
+    '''To modify move field declaration from designer file to code-behind file.
+    '''</remarks>
+    Protected WithEvents lblPendingApprovalRecordCounts As Global.System.Web.UI.WebControls.Label
+
+    '''<summary>
+    '''trPageSizePendingApprovals control.
+    '''</summary>
+    '''<remarks>
+    '''Auto-generated field.
+    '''To modify move field declaration from designer file to code-behind file.
+    '''</remarks>
+    Protected WithEvents trPageSizePendingApprovals As Global.System.Web.UI.HtmlControls.HtmlTableRow
+
+    '''<summary>
+    '''lblPageSizePendingApprovals control.
+    '''</summary>
+    '''<remarks>
+    '''Auto-generated field.
+    '''To modify move field declaration from designer file to code-behind file.
+    '''</remarks>
+    Protected WithEvents lblPageSizePendingApprovals As Global.System.Web.UI.WebControls.Label
+
+    '''<summary>
+    '''cboPageSizePendingApproval control.
+    '''</summary>
+    '''<remarks>
+    '''Auto-generated field.
+    '''To modify move field declaration from designer file to code-behind file.
+    '''</remarks>
+    Protected WithEvents cboPageSizePendingApproval As Global.System.Web.UI.WebControls.DropDownList
 
     '''<summary>
     '''gvPendingApprovals control.
