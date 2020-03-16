@@ -302,6 +302,42 @@ Partial Public Class PriceListDetailForm
     Protected WithEvents txtNewEquipSKUDescription As Global.System.Web.UI.WebControls.TextBox
 
     '''<summary>
+    '''lblsearch control.
+    '''</summary>
+    '''<remarks>
+    '''Auto-generated field.
+    '''To modify move field declaration from designer file to code-behind file.
+    '''</remarks>
+    Protected WithEvents lblsearch As Global.System.Web.UI.WebControls.Label
+
+    '''<summary>
+    '''txtSearch control.
+    '''</summary>
+    '''<remarks>
+    '''Auto-generated field.
+    '''To modify move field declaration from designer file to code-behind file.
+    '''</remarks>
+    Protected WithEvents txtSearch As Global.System.Web.UI.WebControls.TextBox
+
+    '''<summary>
+    '''btntxtsearch control.
+    '''</summary>
+    '''<remarks>
+    '''Auto-generated field.
+    '''To modify move field declaration from designer file to code-behind file.
+    '''</remarks>
+    Protected WithEvents btntxtsearch As Global.System.Web.UI.WebControls.Button
+
+    '''<summary>
+    '''lblRecordCounts control.
+    '''</summary>
+    '''<remarks>
+    '''Auto-generated field.
+    '''To modify move field declaration from designer file to code-behind file.
+    '''</remarks>
+    Protected WithEvents lblRecordCounts As Global.System.Web.UI.WebControls.Label
+
+    '''<summary>
     '''trPageSize control.
     '''</summary>
     '''<remarks>
@@ -327,15 +363,6 @@ Partial Public Class PriceListDetailForm
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
     Protected WithEvents cboPageSize As Global.System.Web.UI.WebControls.DropDownList
-
-    '''<summary>
-    '''lblRecordCounts control.
-    '''</summary>
-    '''<remarks>
-    '''Auto-generated field.
-    '''To modify move field declaration from designer file to code-behind file.
-    '''</remarks>
-    Protected WithEvents lblRecordCounts As Global.System.Web.UI.WebControls.Label
 
     '''<summary>
     '''Grid control.
@@ -410,6 +437,42 @@ Partial Public Class PriceListDetailForm
     Protected WithEvents moSelectedList As Global.System.Web.UI.WebControls.ListBox
 
     '''<summary>
+    '''lblpaSearch control.
+    '''</summary>
+    '''<remarks>
+    '''Auto-generated field.
+    '''To modify move field declaration from designer file to code-behind file.
+    '''</remarks>
+    Protected WithEvents lblpaSearch As Global.System.Web.UI.WebControls.Label
+
+    '''<summary>
+    '''txtpaSearch control.
+    '''</summary>
+    '''<remarks>
+    '''Auto-generated field.
+    '''To modify move field declaration from designer file to code-behind file.
+    '''</remarks>
+    Protected WithEvents txtpaSearch As Global.System.Web.UI.WebControls.TextBox
+
+    '''<summary>
+    '''btnpaSearch control.
+    '''</summary>
+    '''<remarks>
+    '''Auto-generated field.
+    '''To modify move field declaration from designer file to code-behind file.
+    '''</remarks>
+    Protected WithEvents btnpaSearch As Global.System.Web.UI.WebControls.Button
+
+    '''<summary>
+    '''lblPendingApprovalRecordCounts control.
+    '''</summary>
+    '''<remarks>
+    '''Auto-generated field.
+    '''To modify move field declaration from designer file to code-behind file.
+    '''</remarks>
+    Protected WithEvents lblPendingApprovalRecordCounts As Global.System.Web.UI.WebControls.Label
+
+    '''<summary>
     '''trPageSizePendingApprovals control.
     '''</summary>
     '''<remarks>
@@ -435,15 +498,6 @@ Partial Public Class PriceListDetailForm
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
     Protected WithEvents cboPageSizePendingApproval As Global.System.Web.UI.WebControls.DropDownList
-
-    '''<summary>
-    '''lblPendingApprovalRecordCounts control.
-    '''</summary>
-    '''<remarks>
-    '''Auto-generated field.
-    '''To modify move field declaration from designer file to code-behind file.
-    '''</remarks>
-    Protected WithEvents lblPendingApprovalRecordCounts As Global.System.Web.UI.WebControls.Label
 
     '''<summary>
     '''gvPendingApprovals control.
