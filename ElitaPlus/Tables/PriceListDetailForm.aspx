@@ -705,10 +705,17 @@
             <div id="dvHistory" class="overlay_message_content" style="width: 70%; overflow-y: scroll;">
                 <asp:UpdatePanel ID="UpdatePanel2" runat="server" CssClass="modalPopup" UpdateMode="Always" RenderMode="inline">
                     <ContentTemplate>
+                        <p class="modalTitle">
+                            <asp:Label ID="Label1" runat="server" Text="PRICE_LIST_DETAIL_HISTORY"></asp:Label>
+                        </p>
                         <table width="100%" border="0" cellpadding="0" cellspacing="0">
                             <tr>
                                 <td>&nbsp;</td>
-                                 <td>
+                                <td>&nbsp;</td>
+                            </tr>
+                            <tr>
+                                <td>&nbsp;</td>
+                                <td>
 
                                     <asp:GridView ID="gvHistory" runat="server" Width="10%" AutoGenerateColumns="False" AllowPaging="True"
                                         DataKeyNames="price_list_detail_id" AllowSorting="true" SkinID="DetailPageGridView">
@@ -773,18 +780,19 @@
                                         <PagerStyle />
                                     </asp:GridView>
                                 </td>
+                            </tr>
+                            <tr>
+                                <td>&nbsp;</td>
                                 <td>&nbsp;</td>
                             </tr>
                         </table>
                     </ContentTemplate>
                 </asp:UpdatePanel>
-                <table width="100%" border="0" class="formGrid" cellpadding="0" cellspacing="0">
+                <table width="100%" border="0" cellpadding="5" cellspacing="0">
                     <tr>
-                        <td>
-
-                            <asp:Button ID="btnHistoryCancel" runat="server" CssClass="popWindowCancelbtn floatL" Text="CANCEL" />
+                         <td align="center">
+                            <asp:Button ID="btnHistoryCancel" runat="server" Text="CLOSE" />
                         </td>
-                        <td colspan="3">&nbsp;</td>
                     </tr>
                 </table>
             </div>
