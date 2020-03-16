@@ -176,6 +176,8 @@ Public Class ExtendedStatusByUserRole
 
             If Guid.TryParse(zAxisValue, zAxisParseValueId) And IsValidValue(zAxisName) Then
                 grantsNode = xmlDoc.SelectNodes("RoleCompanyStatus/Grants/Grant[" & zAxisName & "Id = '" & zAxisParseValueId.ToString() & "']")
+            Else
+                Throw New Exception()
             End If
 
 
@@ -202,6 +204,9 @@ Public Class ExtendedStatusByUserRole
                         xAxisId = xAxisNode.InnerText
                         yAxisNode = xmlDoc.SelectSingleNode(GetNodePath(yAxisName) & "[Code='" & grantInfo_yAxis & "']/Id")
                         yAxisId = yAxisNode.InnerText
+
+                    Else
+                        Throw New Exception()
 
                     End If
 
@@ -237,18 +242,20 @@ Public Class ExtendedStatusByUserRole
 
 
             'Delete missing grants
-            For i As Integer = 0 To grantsNode.Count - 1
-                Dim grant As XmlNode = grantsNode.Item(i)
-                Dim grantText As String = grant.SelectSingleNode("CompanyId").InnerText & "-" & grant.SelectSingleNode("RoleId").InnerText & "-" & grant.SelectSingleNode("ExtendedStatusId").InnerText
-                If Not newGrantList.Contains(grantText) Then
-                    'grantsNode.RemoveChild(grant)
-                    Dim id As New Guid(grant.SelectSingleNode("Id").InnerText)
+            If grantsNode.Count > 0 Then
+                For i As Integer = 0 To grantsNode.Count - 1
+                    Dim grant As XmlNode = grantsNode.Item(i)
+                    Dim grantText As String = grant.SelectSingleNode("CompanyId").InnerText & "-" & grant.SelectSingleNode("RoleId").InnerText & "-" & grant.SelectSingleNode("ExtendedStatusId").InnerText
+                    If Not newGrantList.Contains(grantText) Then
+                        'grantsNode.RemoveChild(grant)
+                        Dim id As New Guid(grant.SelectSingleNode("Id").InnerText)
 
-                    Dim bo As New ClaimStatusByUserRole(id)
-                    bo.Delete()
-                    bo.Save()
-                End If
-            Next
+                        Dim bo As New ClaimStatusByUserRole(id)
+                        bo.Delete()
+                        bo.Save()
+                    End If
+                Next
+            End If
 
             xmlDoc = Nothing
             Return New With {.Status = Message.SAVE_RECORD_CONFIRMATION, .Message = TranslationBase.TranslateLabelOrMessage(Message.SAVE_RECORD_CONFIRMATION)}
