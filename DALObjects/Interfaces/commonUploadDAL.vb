@@ -44,7 +44,7 @@ Public Class commonUploadDAL
 
     Public Sub InsertUploadFileLinesBulk(ByVal strUploadType As String, ByVal FileLines As Generic.List(Of String), ByVal fileName As String, ByVal userId As String)
         Dim cBatchSize As Integer = 200
-        Dim strStmt As String = "INSERT INTO ELP_Upload_File_Lines (file_line, line_number, upload_type, file_name, created_by) values (:file_line, :line_number, :upload_type, :file_name, :userId )"
+        Dim strStmt As String = "INSERT INTO ELP_Upload_File_Lines (file_line, line_number, upload_type) values (:file_line, :line_number, :upload_type )"
         Dim conn As OracleConnection
         Dim command As OracleCommand
         Try
