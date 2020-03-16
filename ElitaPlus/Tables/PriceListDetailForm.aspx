@@ -228,10 +228,20 @@
                                     <asp:ListItem Value="45">45</asp:ListItem>
                                     <asp:ListItem Value="50">50</asp:ListItem>
                                 </asp:DropDownList></td>
-                            <td>&nbsp;</td>
+                            <td align="right">
+                                <asp:Label ID="lblsearch" runat="server" Text="Search:"></asp:Label>
+                            </td>
+                            <td>
+                                <asp:TextBox ID="txtSearch" runat="server"></asp:TextBox>
+                                &nbsp;
+                                <asp:Button ID="btntxtsearch" runat="server" Text="Search" />
+
+                            </td>
+
                             <td align="right" colspan="4">
                                 <asp:Label ID="lblRecordCounts" runat="server"></asp:Label>
                             </td>
+                            
                         </tr>
                     </table>
                     <div style="width: 100%; overflow-y: scroll; height: 100%;">
@@ -375,6 +385,17 @@
                                         <asp:Label ID="lblPendingApprovalRecordCounts" runat="server"></asp:Label>
                                     </td>
                                 </tr>
+                                   <tr>
+                                   <td>
+                                <asp:Label ID="lblpaSearch" runat="server" Text="Search:"></asp:Label>
+                            </td>
+                            <td>
+                                <asp:TextBox ID="txtpaSearch" runat="server"></asp:TextBox>
+                                &nbsp;
+                                <asp:Button ID="btnpaSearch" runat="server" Text="Search" />
+
+                            </td>
+                                       </tr>
                             </table>
                         </div>
                         <div style="width: 100%; overflow-y: scroll; height: 100%;">
