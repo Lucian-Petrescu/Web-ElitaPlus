@@ -147,24 +147,33 @@ Public Class commonUploadDAL
         End Try
     End Sub
 
-    Public Function getScreenHelpData(FormCode As String)
+    Public Function getScreenHelpData(FormName As String)
         Dim sqlStmt As String
         sqlStmt = Me.Config("/SQL/PROCESS_SCREEN_HELP")
         Dim strResult = String.Empty
+        Dim strErrMsg = String.Empty
         Try
             Dim outParameters() As DBHelper.DBHelperParameter = New DBHelper.DBHelperParameter() {
-                            New DBHelper.DBHelperParameter("p_InitResult", strResult.GetType, 500)}
+                            New DBHelper.DBHelperParameter("p_InitResult", strResult.GetType, 500),
+                            New DBHelper.DBHelperParameter("p_ErrMsg", strErrMsg.GetType, 500)}
 
             Dim inParameters As New Generic.List(Of DBHelper.DBHelperParameter)
             Dim param As DBHelper.DBHelperParameter
 
-            param = New DBHelper.DBHelperParameter("pi_formcode", FormCode)
+            param = New DBHelper.DBHelperParameter("pi_formname", FormName)
             inParameters.Add(param)
 
             DBHelper.ExecuteSpParamBindByName(sqlStmt, inParameters.ToArray, outParameters)
 
             If Not outParameters(0).Value Is Nothing Then
                 strResult = outParameters(0).Value.ToString().Trim
+                If Not outParameters(1).Value Is Nothing Then
+                    strResult = outParameters(1).Value.ToString().Trim
+                End If
+            End If
+
+            If String.IsNullOrEmpty(strResult) Then
+                strResult = "No Screen Help Found"
             End If
 
             Return strResult
