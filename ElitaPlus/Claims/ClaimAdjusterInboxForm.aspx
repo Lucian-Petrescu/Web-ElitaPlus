@@ -46,14 +46,23 @@
                 }                 
              });
 
-             $(document).ready(function () {
+            $(document).ready(function () {
+      
                if ($("#modataGrid").length) {
                      var gvv = $("#modataGrid");
-                     $("#GridViewContainer").css("width", $(window).width() * 0.95);
+                     //$("#GridViewContainer").css("width", $(window).width() * 0.95);
+
+                     var gw = $(window).width() * 0.95;
                      var gh = $(window).height() - 340;
                      if (gh < 290) {
                          gh = 290;
+                     }    
+
+                     if (gw < 1484) {
+                         gw = 1484;
                      }
+
+                     $("#GridViewContainer").css("width", gw);
                      $("#GridViewContainer").css("height", gh);
                     //$("#GridViewContainer").css("height", $(window).height() * 0.6);
 
