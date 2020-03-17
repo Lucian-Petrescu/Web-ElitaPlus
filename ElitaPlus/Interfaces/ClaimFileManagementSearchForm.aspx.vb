@@ -128,7 +128,7 @@ Public Class ClaimFileManagementSearchForm
 
 #Region "Page State"
     Class MyState
-        Public PagingInfo As PagingFilter
+        Public PagingInfo As PagingFilter = New PagingFilter With {.PageIndex = DEFAULT_PAGE_INDEX, .PageSize = DEFAULT_PAGE_SIZE}
         Public PageSort As String
         REM ---------------
         Public IsGridVisible As Boolean
@@ -301,7 +301,6 @@ Public Class ClaimFileManagementSearchForm
                 End If
 
                 SetGridItemStyleColor(DataGridView)
-                State.PagingInfo = New PagingFilter With {.PageIndex = DEFAULT_PAGE_INDEX, .PageSize = DEFAULT_PAGE_SIZE}
 
                 If IsReturningFromChild Then
                     PopulateGrid(True)
