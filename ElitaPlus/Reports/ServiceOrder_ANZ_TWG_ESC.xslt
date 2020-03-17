@@ -6,10 +6,12 @@
     <html>
       <head>
         <style>
-          BODY {width:auto;height:75vh;}
-          td {font-size:16pt;font-family:"Trebuchet MS";height:5px; padding-top:7px;}
+          BODY {width:auto;height:auto;}
+          td {font-size:18pt;font-family:"Trebuchet MS";height:5px; padding-top:7px;}
           .Header {color:Gray;TEXT-ALIGN:LEFT;text-decoration:underline;font-weight:bold;}
           .esp {font-weight:normal;}
+          .claimNumberText {font-size:24pt;}
+          .authorityLimitText {font-size:20pt;font-weight: bold;}
         </style>
       </head>
       <body>
@@ -39,7 +41,7 @@
                 <tr>
                   <td>
                     Claim Number: &#160;
-                    <span style="font-size:20pt;">
+                    <span class="claimNumberText">
                       <xsl:value-of select="a:ServiceOrderReport/a:ServiceOrder/a:CLAIM_NUMBER" />-<xsl:value-of select="a:ServiceOrderReport/a:ServiceOrder/a:AUTHORIZATION_NUMBER" />
                     </span>
                   </td>
@@ -171,7 +173,7 @@
           </tr>
           <tr>
             <td colspan="2" style="padding-top:15px;">
-              <span style="font-size:18pt;font-weight: bold;">
+              <span class="authorityLimitText">
                 Repair Authority Limit: $<xsl:value-of select="a:ServiceOrderReport/a:ServiceOrder/a:AUTHORIZATION_AMOUNT" />&#160;(Excl GST)
               </span>
             </td>
