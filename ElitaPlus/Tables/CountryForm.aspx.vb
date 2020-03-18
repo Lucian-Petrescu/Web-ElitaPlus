@@ -570,10 +570,6 @@ Partial Class CountryForm
 
             Me.PopulateBOProperty(Me.State.MyBO, "AllowForget", Me.cboAllowForget, False, True)
 
-            'If Not Me.txtPriceListApprovalEmail.Text Is Nothing AndAlso Me.txtPriceListApprovalEmail.Text.Equals(Me.State.PriceListAprrovalEmailIsNull) Then
-            '    Me.txtPriceListApprovalEmail.Text = ""
-            'End If
-
             Me.PopulateBOProperty(Me.State.MyBO, "PriceListApprovalNeeded", Me.cboPriceListApprovalNeeded, False, True)
 
             If Me.cboPriceListApprovalNeeded.SelectedValue.Equals(Me.State.noCode) Then
@@ -582,8 +578,6 @@ Partial Class CountryForm
             Else
                 Me.PopulateControlFromBOProperty(Me.txtPriceListApprovalEmail, .PriceListApprovalEmail)
             End If
-
-            'Me.PopulateBOProperty(Me.State.MyBO, "PriceListApprovalEmail", Me.txtPriceListApprovalEmail)
 
             Me.PopulateBOProperty(Me.State.MyBO, "FullNameFormat", Me.cboFullNameFormat, False, True)
 
