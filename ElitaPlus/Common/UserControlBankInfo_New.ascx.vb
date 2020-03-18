@@ -430,6 +430,14 @@ Partial Class UserControlBankInfo_New
         Me.Page.SetSelectedItem(moCountryDrop_WRITE, oCountryID)
     End Sub
 
+    Public Sub setSwiftCode(ByVal objBankinfo As BankInfo)
+        textboxSwiftCode.Text = objBankinfo.BankLookupCode
+    End Sub
+
+    Public Sub setCustomerName(ByVal customerName As String)
+        textboxNameAccount.Text = customerName
+    End Sub
+
     Public Sub ChangeEnabledControlProperty(ByVal blnEnabledState As Boolean)
         Page.ChangeEnabledControlProperty(Me.textboxNameAccount, blnEnabledState)
         Page.ChangeEnabledControlProperty(Me.moCountryDrop_WRITE, blnEnabledState)

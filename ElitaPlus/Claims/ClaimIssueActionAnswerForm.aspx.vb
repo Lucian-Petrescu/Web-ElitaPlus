@@ -612,7 +612,7 @@ Partial Class ClaimIssueActionAnswerForm
         Return client
     End Function
     Private Sub CallSubmitCustomerDecisionWs(ByVal answerCode As String)
-        Dim wsRequest As CustomerDecisionRequest = new CustomerDecisionRequest()
+        Dim wsRequest As CustomerDecisionRequest = New CustomerDecisionRequest()
         Dim wsResponse As CustomerDecisionResponse
         wsRequest.CompanyCode = State.ClaimBo.Company.Code
         wsRequest.AuthorizationNumber = State.ClaimBo.ClaimAuthorizationChildren.FirstOrDefault(Function(a) a.Id = State.ClaimAuthorizationId).AuthorizationNumber
@@ -1291,9 +1291,12 @@ Partial Class ClaimIssueActionAnswerForm
 
                     moBankInfoController.State.myBankInfoBo = State.BankInfoBo
                     moBankInfoController.DisableAllFields()
-                    moBankInfoController.Bind(State.BankInfoBo)
-                    moBankInfoController.SwitchToReadOnlyView()
                     moBankInfoController.State.myBankInfoBo.SepaEUBankTransfer = True
+                    moBankInfoController.Bind(State.BankInfoBo)
+                    moBankInfoController.setSwiftCode(State.BankInfoBo)
+                    moBankInfoController.setCustomerName(State.ClaimIssueBo.Claim.Certificate.CustomerName)
+                    moBankInfoController.SwitchToReadOnlyView()
+
                     moBankInfoController.SetCountryValue(State.ClaimIssueBo.Claim.Certificate.CountryPurchaseId)
 
                     moBankInfoController.EnableDisableRequiredControls()
@@ -1364,7 +1367,8 @@ Partial Class ClaimIssueActionAnswerForm
         End If
 
         oBankInfo.AccountNumber = moBankInfoController.State.myBankInfoBo.Account_Number
-        oBankInfo.AccountOwnerName = moBankInfoController.State.myBankInfoBo.Account_Name
+        'oBankInfo.AccountOwnerName = moBankInfoController.State.myBankInfoBo.Account_Name
+        oBankInfo.AccountOwnerName = State.ClaimIssueBo.Claim.Certificate.CustomerName
         oBankInfo.BankLookupCode = moBankInfoController.State.myBankInfoBo.BankLookupCode
         oBankInfo.BankName = moBankInfoController.State.myBankInfoBo.BankName
         oBankInfo.BankSortCode = moBankInfoController.State.myBankInfoBo.BankSortCode
