@@ -235,6 +235,7 @@ Partial Class CountryForm
         Me.BindBOPropertyToLabel(Me.State.MyBO, "CertCountSuspOP", Me.LabelCertCountSuspOp)
         Me.BindBOPropertyToLabel(Me.State.MyBO, "DefaultSSId", Me.lblDefaultSC)
         Me.BindBOPropertyToLabel(Me.State.MyBO, "IsoCode", lblISOCode)
+        Me.BindBOPropertyToLabel(Me.State.MyBO, "PriceListApprovalEmail", Me.lblPriceListApprovalEmail)
 
         'REQ - 6155
         Me.BindBOPropertyToLabel(Me.State.MyBO, "UseAddressValidationXcd", Me.lblUseAddressValidation)
