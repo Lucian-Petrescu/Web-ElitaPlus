@@ -562,7 +562,7 @@ Public Class Country
         End Set
     End Property
 
-    <ValidStringLength("", Max:=50), PriceListApprovedEmail(""), RequiredConditionally("")>
+    <ValidStringLength("", Max:=1000), PriceListApprovedEmail(""), RequiredConditionally("")>
     Public Property PriceListApprovalEmail() As String
         Get
             CheckDeleted()
@@ -898,7 +898,12 @@ Public Class Country
         Public Overrides Function IsValid(ByVal valueToCheck As Object, ByVal objectToValidate As Object) As Boolean
             Dim obj As Country = CType(objectToValidate, Country)
 
-            If obj.PriceListApprovalEmail Is String.Empty OrElse obj.PriceListApprovalEmail Is Nothing Then
+
+            If obj.PriceListApprovalNeeded = "YESNO-Y" Then
+                If obj.PriceListApprovalEmail Is String.Empty OrElse obj.PriceListApprovalEmail Is Nothing Then
+                    Return True
+                End If
+            Else
                 Return True
             End If
 
