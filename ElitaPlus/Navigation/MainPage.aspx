@@ -69,7 +69,7 @@
             }
 
             iframe.addEventListener("load", function (a) {
-                debugger;
+                //debugger;
                 try {
                     var iframeContentDocument = iframe.contentDocument;
 
@@ -89,7 +89,7 @@
                         document.location.href = defaultPageUrl;
                     }
                 } catch (e) {
-                    debugger;
+                    //debugger;
                     if (e.description.startsWith("Access is denied")) {
                         document.location.href = defaultPageUrl;
                     } else {
