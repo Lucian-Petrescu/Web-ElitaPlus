@@ -855,7 +855,7 @@ Public Class PriceListDetailForm
             Me.PopulateBOProperty(Me.State.MyChildBO, "EquipmentCode", ddlEquipmentClass.SelectedItem.Text.ToString())
 
             ' Populate Item Quantity
-            Me.PopulateBOProperty(Me.State.MyChildBO, "Quantity", txtNewItemQuantity.Text.ToString())
+            Me.PopulateBOProperty(Me.State.MyChildBO, "VendorQuantity", txtNewItemQuantity.Text.ToString())
 
             'populate Currency
             Me.PopulateBOProperty(Me.State.MyChildBO, "CurrencyId", New Guid(ddlcurrency.SelectedValue))
@@ -1009,7 +1009,7 @@ Public Class PriceListDetailForm
         Me.BindBOPropertyToLabel(Me.State.MyChildBO, "ServiceClassId", Me.lblNewItemServiceClass)
         Me.BindBOPropertyToLabel(Me.State.MyChildBO, "Price", Me.lblNewItemPrice)
         Me.BindBOPropertyToLabel(Me.State.MyChildBO, "ServiceTypeId", Me.lblNewItemServiceType)
-        Me.BindBOPropertyToLabel(Me.State.MyChildBO, "Quantity", Me.lblNewItemQuantity)
+        Me.BindBOPropertyToLabel(Me.State.MyChildBO, "VendorQuantity", Me.lblNewItemQuantity)
         Me.BindBOPropertyToLabel(Me.State.MyChildBO, "MakeId", Me.lblNewItemMake)
         Me.BindBOPropertyToLabel(Me.State.MyChildBO, "Effective", Me.lblNewItemEffectiveDate)
         Me.BindBOPropertyToLabel(Me.State.MyChildBO, "EquipmentId", Me.lblNewItemModel)
