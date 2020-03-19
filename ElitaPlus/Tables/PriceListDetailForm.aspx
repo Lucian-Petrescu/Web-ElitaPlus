@@ -212,7 +212,8 @@
                                 <asp:Label ID="lblsearch" runat="server" Text="SEARCH_REQUESTED_BY"></asp:Label>
                             </td>
                             <td align="left">
-                                <asp:TextBox ID="txtSearch" runat="server"></asp:TextBox>
+                                <%--<asp:TextBox ID="txtSearch" runat="server"></asp:TextBox>--%>
+                                <asp:DropDownList ID="ddlsearch" runat="server"></asp:DropDownList>
                                 &nbsp;
                                 <asp:Button ID="btntxtsearch" runat="server" Text="Search" />
 
@@ -370,13 +371,15 @@
                                           <asp:Label ID="lblpaSearch" runat="server" Text="SEARCH_REQUESTED_BY"></asp:Label>
                                       </td>
                                       <td align="left">
-                                          <asp:TextBox ID="txtpaSearch" runat="server"></asp:TextBox>
+                                          <%--<asp:TextBox ID="txtpaSearch" runat="server"></asp:TextBox>--%>
+                                          <asp:DropDownList ID="ddlpasearch" runat="server"></asp:DropDownList>
                                           &nbsp;
                                           <asp:Button ID="btnpaSearch" runat="server" Text="Search" />
                                       </td>
                                           
 
                                       <td align="right" colspan="5">
+
                                           <asp:Label ID="lblPendingApprovalRecordCounts" runat="server"></asp:Label>
                                       </td>
                                   </tr>

@@ -4,6 +4,7 @@ Imports Assurant.Elita.CommonConfiguration
 Imports Assurant.ElitaPlus.Security
 Imports Assurant.Elita.Web.Forms
 Imports AjaxControlToolkit
+Imports System.Collections.Generic
 
 Public Class PriceListDetailForm
     Inherits ElitaPlusSearchPage
@@ -1645,21 +1646,30 @@ Public Class PriceListDetailForm
             Me.State.DetailSearchDV = dv
             Me.Grid.AutoGenerateColumns = False
 
+            If Not Page.IsPostBack Then
+                Dim requestedByList As New List(Of String)
+                For Each dr As DataRow In dv.Table(0).Table.Rows
+                    requestedByList.Add(dr("requested_by").ToString())
+                Next
+                ddlsearch.DataSource = requestedByList.Distinct()
+                ddlsearch.DataBind()
+                ddlsearch.Items.Insert(0, "select")
+            End If
             Me.Grid.PageSize = Me.State.PageSize
             SetPageAndSelectedIndexFromGuid(dv, Me.State.PriceListDetailSelectedChildId, Me.Grid, Me.State.PageIndex)
 
-            If Not txtSearch.Text = "" Then 'requested_by
-                dv.RowFilter = "requested_by like '%" & txtSearch.Text & "%'"
+            If Not ddlsearch.SelectedValue = "select" Then 'requested_by
+                dv.RowFilter = "requested_by = '" & ddlsearch.SelectedValue & "'"
                 Me.Grid.DataSource = dv
             Else
                 Me.Grid.DataSource = dv 'Me.State.DetailSearchDV
             End If
             Me.Grid.DataBind()
-                Me.State.PageIndex = Me.Grid.PageIndex
-                Me.ShowHideQuantity()
+            Me.State.PageIndex = Me.Grid.PageIndex
+            Me.ShowHideQuantity()
 
-                ControlMgr.SetVisibleControl(Me, trPageSize, Me.Grid.Visible)
-                ControlMgr.SetVisibleControl(Me, cboPageSize, Me.Grid.Visible)
+            ControlMgr.SetVisibleControl(Me, trPageSize, Me.Grid.Visible)
+            ControlMgr.SetVisibleControl(Me, cboPageSize, Me.Grid.Visible)
             ControlMgr.SetVisibleControl(Me, lblRecordCounts, True)
             ControlMgr.SetVisibleControl(Me, lblPageSize, True)
 
@@ -1669,16 +1679,19 @@ Public Class PriceListDetailForm
             If dv.Count = 0 Then
                 ControlMgr.SetVisibleControl(Me, trPageSize, False)
                 'ControlMgr.SetVisibleControl(Me, cboPageSize, False)
-                ControlMgr.SetVisibleControl(Me, btnSubmitforApproval, False)
+                'ControlMgr.SetVisibleControl(Me, btnSubmitforApproval, False)
+                ControlMgr.SetEnableControl(Me, btnSubmitforApproval, False)
             Else
                 dv.RowFilter = "status_xcd='PL_RECON_PROCESS-PENDINGSUBMISSION'"
-                    Dim pendingSubmissionRows = dv.Count
-                    If pendingSubmissionRows = 0 Then
-                        ControlMgr.SetVisibleControl(Me, btnSubmitforApproval, False)
-                    Else
-                        ControlMgr.SetVisibleControl(Me, btnSubmitforApproval, True)
-                    End If
+                Dim pendingSubmissionRows = dv.Count
+                If pendingSubmissionRows = 0 Then
+                    'ControlMgr.SetVisibleControl(Me, btnSubmitforApproval, False)
+                    ControlMgr.SetEnableControl(Me, btnSubmitforApproval, False)
+                Else
+                    'ControlMgr.SetVisibleControl(Me, btnSubmitforApproval, True)
+                    ControlMgr.SetEnableControl(Me, btnSubmitforApproval, True)
                 End If
+            End If
 
 
         Catch ex As Exception
@@ -1946,18 +1959,30 @@ Public Class PriceListDetailForm
             dv.Sort = Me.State.SortExpression
             Me.State.DetailSearchDV = dv
             Me.gvPendingApprovals.AutoGenerateColumns = False
+            'dv.RowFilter = "status_xcd='PL_RECON_PROCESS-PENDINGAPPROVAL'"
 
+            If Not Page.IsPostBack Then
+                Dim requestedByList As New List(Of String)
+                For Each dr As DataRow In dv.Table(0).Table.Rows
+                    If dr("status_xcd").ToString() = "PL_RECON_PROCESS-PENDINGAPPROVAL" Then
+                        requestedByList.Add(dr("requested_by").ToString())
+                    End If
+                Next
+                ddlpasearch.DataSource = requestedByList.Distinct()
+                ddlpasearch.DataBind()
+                ddlpasearch.Items.Insert(0, "select")
+            End If
             Me.gvPendingApprovals.PageSize = Me.State.PageSize
             SetPageAndSelectedIndexFromGuid(dv, Me.State.PriceListDetailSelectedChildId, Me.gvPendingApprovals, Me.State.PageIndex)
 
-            dv.RowFilter = "status_xcd='PL_RECON_PROCESS-PENDINGAPPROVAL'"
-            If Not txtpaSearch.Text = "" Then
-                dv.RowFilter = "requested_by like '%" & txtpaSearch.Text & "%'"
+
+            If Not ddlpasearch.SelectedValue = "select" Then
+                dv.RowFilter = "requested_by = '" & ddlpasearch.SelectedValue & "' and status_xcd='PL_RECON_PROCESS-PENDINGAPPROVAL'"
                 Me.gvPendingApprovals.DataSource = dv
             Else
+                dv.RowFilter = "status_xcd='PL_RECON_PROCESS-PENDINGAPPROVAL'"
                 Me.gvPendingApprovals.DataSource = dv
             End If
-            Me.gvPendingApprovals.DataSource = dv
             Me.gvPendingApprovals.DataBind()
             Me.State.PageIndex = Me.gvPendingApprovals.PageIndex
             Me.ShowHideQuantity()
@@ -1965,16 +1990,20 @@ Public Class PriceListDetailForm
             ControlMgr.SetVisibleControl(Me, trPageSizePendingApprovals, Me.gvPendingApprovals.Visible)
             ControlMgr.SetVisibleControl(Me, cboPageSizePendingApproval, Me.gvPendingApprovals.Visible)
             ControlMgr.SetVisibleControl(Me, lblPendingApprovalRecordCounts, True)
-            ControlMgr.SetVisibleControl(Me, btnApprove, True)
-            ControlMgr.SetVisibleControl(Me, btnReject, True)
+            'ControlMgr.SetVisibleControl(Me, btnApprove, True)
+            'ControlMgr.SetVisibleControl(Me, btnReject, True)
+            ControlMgr.SetEnableControl(Me, btnApprove, True)
+            ControlMgr.SetEnableControl(Me, btnReject, True)
             Session("recCount") = dv.Count
             Me.lblPendingApprovalRecordCounts.Text = dv.Count & " " & TranslationBase.TranslateLabelOrMessage(Message.MSG_RECORDS_FOUND)
 
             If dv.Count = 0 Then
                 ControlMgr.SetVisibleControl(Me, trPageSizePendingApprovals, False)
                 'ControlMgr.SetVisibleControl(Me, cboPageSizePendingApproval, False)
-                ControlMgr.SetVisibleControl(Me, btnApprove, False)
-                ControlMgr.SetVisibleControl(Me, btnReject, False)
+                'ControlMgr.SetVisibleControl(Me, btnApprove, False)
+                'ControlMgr.SetVisibleControl(Me, btnReject, False)
+                ControlMgr.SetEnableControl(Me, btnApprove, False)
+                ControlMgr.SetEnableControl(Me, btnReject, False)
             End If
         Catch ex As Exception
             Me.HandleErrors(ex, Me.MasterPage.MessageController)

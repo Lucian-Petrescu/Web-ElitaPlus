@@ -311,13 +311,13 @@ Partial Public Class PriceListDetailForm
     Protected WithEvents lblsearch As Global.System.Web.UI.WebControls.Label
 
     '''<summary>
-    '''txtSearch control.
+    '''ddlsearch control.
     '''</summary>
     '''<remarks>
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents txtSearch As Global.System.Web.UI.WebControls.TextBox
+    Protected WithEvents ddlsearch As Global.System.Web.UI.WebControls.DropDownList
 
     '''<summary>
     '''btntxtsearch control.
@@ -446,13 +446,13 @@ Partial Public Class PriceListDetailForm
     Protected WithEvents lblpaSearch As Global.System.Web.UI.WebControls.Label
 
     '''<summary>
-    '''txtpaSearch control.
+    '''ddlpasearch control.
     '''</summary>
     '''<remarks>
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents txtpaSearch As Global.System.Web.UI.WebControls.TextBox
+    Protected WithEvents ddlpasearch As Global.System.Web.UI.WebControls.DropDownList
 
     '''<summary>
     '''btnpaSearch control.
