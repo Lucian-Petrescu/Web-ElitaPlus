@@ -50,11 +50,6 @@
 
         }
 
-        function RedirectParent() {
-            debugger;
-            alert(this.contentWindow.location);
-        }
-
         if (!String.prototype.startsWith) {
             String.prototype.startsWith = function (searchString, position) {
                 position = position || 0;
@@ -66,6 +61,12 @@
             changeScrollbarColor();
 
             var iframe = document.getElementById("Navigation_Content");
+            var urlPath = location.pathname.split('/');
+
+            var defaultPageUrl = "";
+            if (urlPath.length > 1) {
+                defaultPageUrl = location.protocol + '//' + location.host + '/' + urlPath[1] + '/default.aspx';
+            }
 
             iframe.addEventListener("load", function (a) {
                 debugger;
@@ -85,12 +86,12 @@
                         (iframeContentDocument.location.port === document.location.port) &&
                         (iframeContentDocument.location.protocol === document.location.protocol) &&
                         (iframeVFolderName === documentVFolderName))) {
-                        document.location.href = iframe.src;
+                        document.location.href = defaultPageUrl;
                     }
                 } catch (e) {
                     debugger;
                     if (e.description.startsWith("Access is denied")) {
-                        document.location.href = iframe.src;
+                        document.location.href = defaultPageUrl;
                     } else {
                         throw(e);
                     }
