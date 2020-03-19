@@ -134,7 +134,7 @@ Public Class PriceListDetailForm
         Public MyChildBO As PriceListDetail
         ' Public ScreenSnapShotChildBO As PriceListDetail
 
-        Public MyChildVendorBO As VendorQuantity
+        'Public MyChildVendorBO As VendorQuantity
         Public MyChildEquipmentBO As Equipment
         'Public ScreenSnapShotChildVendorBO As ServiceCenter
 
@@ -864,31 +864,31 @@ Public Class PriceListDetailForm
             Me.PopulateBOProperty(Me.State.MyChildBO, "PriceListDetailTypeId", New Guid(ddldetailtype.SelectedValue))
 
             'Populate the vendor quantity
-            If Not Me.State.MyChildBO.GetVendorQuantiy().Equals(Guid.Empty) Then
-                Me.State.MyChildVendorBO = Me.State.MyBO.GetNewVendorQuantityChild(Me.State.MyChildBO.GetVendorQuantiy())
-                'Me.State.MyChildVendorBO = New VendorQuantity(Me.State.MyChildBO.GetVendorQuantiy())
-            Else
-                Me.State.MyChildVendorBO = Me.State.MyBO.GetNewVendorQuantityChild()
-                'Me.State.MyChildVendorBO = New VendorQuantity()
-                Me.State.MyChildVendorBO.TableName = "PRICE_LIST_DETAIL"
-                Me.State.MyChildVendorBO.ReferenceId = Me.State.MyChildBO.Id
-            End If
+            'If Not Me.State.MyChildBO.GetVendorQuantiy().Equals(Guid.Empty) Then
+            '    Me.State.MyChildVendorBO = Me.State.MyBO.GetNewVendorQuantityChild(Me.State.MyChildBO.GetVendorQuantiy())
+            '    'Me.State.MyChildVendorBO = New VendorQuantity(Me.State.MyChildBO.GetVendorQuantiy())
+            'Else
+            '    Me.State.MyChildVendorBO = Me.State.MyBO.GetNewVendorQuantityChild()
+            '    'Me.State.MyChildVendorBO = New VendorQuantity()
+            '    Me.State.MyChildVendorBO.TableName = "PRICE_LIST_DETAIL"
+            '    Me.State.MyChildVendorBO.ReferenceId = Me.State.MyChildBO.Id
+            'End If
 
             If (txtNewItemQuantity.Text <> "") Then
-                Me.State.MyChildVendorBO.Quantity = CType(Me.txtNewItemQuantity.Text.Trim(), LongType)
+                Me.State.MyChildBO.VendorQuantity = CType(Me.txtNewItemQuantity.Text.Trim(), LongType)
             End If
 
-            Me.State.MyChildVendorBO.Sku = Me.State.MyChildBO.VendorSku
-            Me.State.MyChildVendorBO.SkuDescription = Me.State.MyChildBO.VendorSkuDescription
-            Me.State.MyChildVendorBO.PriceListDetailID = Me.State.MyChildBO.Id
+            'Me.State.MyChildVendorBO.Sku = Me.State.MyChildBO.VendorSku
+            'Me.State.MyChildVendorBO.SkuDescription = Me.State.MyChildBO.VendorSkuDescription
+            'Me.State.MyChildVendorBO.PriceListDetailID = Me.State.MyChildBO.Id
 
             Me.BindChildBoPropertiesToLabels()
 
-            If Not Me.State.MyChildVendorBO.Quantity Is Nothing Then
-                Me.State.MyChildVendorBO.Validate()
-            End If
+            'If Not Me.State.MyChildVendorBO.Quantity Is Nothing Then
+            '    Me.State.MyChildVendorBO.Validate()
+            'End If
 
-            If Me.State.MyChildBO.IsDirty Or Me.State.MyChildVendorBO.IsDirty Then
+            If Me.State.MyChildBO.IsDirty Then
                 ' check if already exists
                 ' same equipment id, condition id, service_class id, service type id and sku
                 If Me.State.MyChildBO.OverlapExists(True) Then
@@ -914,19 +914,19 @@ Public Class PriceListDetailForm
                             Me.State.MyChildBO.EndEdit()
                         End If
 
-                        If Me.State.MyChildVendorBO.IsDirty Then
-                            If Not Me.State.MyChildVendorBO.Quantity Is Nothing Then
-                                Me.State.MyChildVendorBO.Save()
-                                Me.State.MyChildVendorBO.EndEdit()
-                            End If
-                        End If
+                        'If Me.State.MyChildVendorBO.IsDirty Then
+                        '    If Not Me.State.MyChildVendorBO.Quantity Is Nothing Then
+                        '        Me.State.MyChildVendorBO.Save()
+                        '        Me.State.MyChildVendorBO.EndEdit()
+                        '    End If
+                        'End If
                         Me.State.HasDataChanged = False
                     End If
 
                 Catch ex As Exception
                     Me.State.MyChildBO.RejectChanges()
                     Me.State.MyChildEquipmentBO.RejectChanges()
-                    Me.State.MyChildVendorBO.RejectChanges()
+                    'Me.State.MyChildVendorBO.RejectChanges()
                     Throw ex
                 End Try
 
@@ -958,7 +958,7 @@ Public Class PriceListDetailForm
         Me.BindBOPropertyToLabel(Me.State.MyChildBO, "Price", Me.lblNewItemPrice)
         Me.BindBOPropertyToLabel(Me.State.MyChildBO, "Effective", Me.lblNewItemEffectiveDate)
         Me.BindBOPropertyToLabel(Me.State.MyChildBO, "Expiration", Me.lblNewItemExpirationDate)
-        Me.BindBOPropertyToLabel(Me.State.MyChildVendorBO, "Quantity", Me.lblNewItemQuantity)
+        Me.BindBOPropertyToLabel(Me.State.MyChildBO, "VendorQuantity", Me.lblNewItemQuantity)
         Me.BindBOPropertyToLabel(Me.State.MyChildBO, "PriceBandRangeFrom", Me.lblNewItemLowPrice)
         Me.BindBOPropertyToLabel(Me.State.MyChildBO, "PriceBandRangeTo", Me.lblNewItemHighPrice)
         Me.BindBOPropertyToLabel(Me.State.MyChildBO, "ReplacementTaxType", Me.lblNewItemSelectTaxType)
@@ -1271,9 +1271,9 @@ Public Class PriceListDetailForm
                         BeginPriceListDetailChildEdit()
                     End If
 
-                    If Not Me.State.MyChildBO.GetVendorQuantiy().Equals(Guid.Empty) Then
-                        Me.State.MyChildVendorBO = New VendorQuantity(Me.State.MyChildBO.GetVendorQuantiy())
-                    End If
+                    'If Not Me.State.MyChildBO.GetVendorQuantiy().Equals(Guid.Empty) Then
+                    '    Me.State.MyChildVendorBO = New VendorQuantity(Me.State.MyChildBO.GetVendorQuantiy())
+                    'End If
 
                     Try
                         If (Me.State.MyChildBO.Effective.Value <= PriceListDetail.GetCurrentDateTime()) Then
@@ -1282,11 +1282,11 @@ Public Class PriceListDetailForm
                             Me.State.MyChildBO.EndEdit()
                             Me.State.MyChildBO.Save()
                         ElseIf (Me.State.MyChildBO.Effective.Value > PriceListDetail.GetCurrentDateTime()) Then
-                            If Not Me.State.MyChildBO.GetVendorQuantiy().Equals(Guid.Empty) Then
-                                Me.State.MyChildVendorBO.Delete()
-                                Me.State.MyChildVendorBO.Save()
-                                Me.State.MyChildVendorBO.EndEdit()
-                            End If
+                            'If Not Me.State.MyChildBO.GetVendorQuantiy().Equals(Guid.Empty) Then
+                            '    Me.State.MyChildVendorBO.Delete()
+                            '    Me.State.MyChildVendorBO.Save()
+                            '    Me.State.MyChildVendorBO.EndEdit()
+                            'End If
                             Me.State.MyChildBO.Delete()
                             Me.State.MyChildBO.Save()
                             Me.State.MyChildBO.EndEdit()
@@ -1294,7 +1294,7 @@ Public Class PriceListDetailForm
                         End If
                     Catch ex As Exception
                         Me.State.MyChildBO.RejectChanges()
-                        Me.State.MyChildVendorBO.RejectChanges()
+                        'Me.State.MyChildVendorBO.RejectChanges()
                         Me.MasterPage.MessageController.AddError(ElitaPlus.ElitaPlusWebApp.Message.ERR_DELETING_DATA)
                         Throw ex
                     End Try
@@ -1655,11 +1655,11 @@ Public Class PriceListDetailForm
                 Me.Grid.DataSource = dv 'Me.State.DetailSearchDV
             End If
             Me.Grid.DataBind()
-                Me.State.PageIndex = Me.Grid.PageIndex
-                Me.ShowHideQuantity()
+            Me.State.PageIndex = Me.Grid.PageIndex
+            Me.ShowHideQuantity()
 
-                ControlMgr.SetVisibleControl(Me, trPageSize, Me.Grid.Visible)
-                ControlMgr.SetVisibleControl(Me, cboPageSize, Me.Grid.Visible)
+            ControlMgr.SetVisibleControl(Me, trPageSize, Me.Grid.Visible)
+            ControlMgr.SetVisibleControl(Me, cboPageSize, Me.Grid.Visible)
             ControlMgr.SetVisibleControl(Me, lblRecordCounts, True)
             ControlMgr.SetVisibleControl(Me, lblPageSize, True)
 
@@ -1672,13 +1672,13 @@ Public Class PriceListDetailForm
                 ControlMgr.SetVisibleControl(Me, btnSubmitforApproval, False)
             Else
                 dv.RowFilter = "status_xcd='PL_RECON_PROCESS-PENDINGSUBMISSION'"
-                    Dim pendingSubmissionRows = dv.Count
-                    If pendingSubmissionRows = 0 Then
-                        ControlMgr.SetVisibleControl(Me, btnSubmitforApproval, False)
-                    Else
-                        ControlMgr.SetVisibleControl(Me, btnSubmitforApproval, True)
-                    End If
+                Dim pendingSubmissionRows = dv.Count
+                If pendingSubmissionRows = 0 Then
+                    ControlMgr.SetVisibleControl(Me, btnSubmitforApproval, False)
+                Else
+                    ControlMgr.SetVisibleControl(Me, btnSubmitforApproval, True)
                 End If
+            End If
 
 
         Catch ex As Exception
@@ -1745,9 +1745,9 @@ Public Class PriceListDetailForm
                 BeginPriceListDetailChildEdit()
                 Me.PopulateDetailFromPriceListDetailChildBO()
 
-                If Not Me.State.MyChildBO.GetVendorQuantiy().Equals(Guid.Empty) Then
-                    Me.State.MyChildVendorBO = New VendorQuantity(Me.State.MyChildBO.GetVendorQuantiy())
-                End If
+                'If Not Me.State.MyChildBO.GetVendorQuantiy().Equals(Guid.Empty) Then
+                '    Me.State.MyChildVendorBO = New VendorQuantity(Me.State.MyChildBO.GetVendorQuantiy())
+                'End If
 
                 '' condition
                 'Me.PopulateControlFromBOProperty(ddlNewItemCondition, Me.State.MyChildBO.ConditionId)
@@ -1773,8 +1773,8 @@ Public Class PriceListDetailForm
                 txtNewItemHighPrice.Text = Me.State.MyChildBO.PriceBandRangeTo.ToString()
                 'vendor quantity
 
-                If Not Me.State.MyChildBO.GetVendorQuantiy().Equals(Guid.Empty) AndAlso Not Me.State.MyChildVendorBO Is Nothing AndAlso Not Me.State.MyChildVendorBO.Quantity Is Nothing Then
-                    txtNewItemQuantity.Text = Me.State.MyChildVendorBO.Quantity.ToString()
+                If Not Me.State.MyChildBO.GetVendorQuantiy().Equals(Guid.Empty) AndAlso Not String.IsNullOrEmpty(Me.State.MyChildBO.VendorQuantity.ToString()) Then
+                    txtNewItemQuantity.Text = Me.State.MyChildBO.VendorQuantity.ToString()
                 Else
                     txtNewItemQuantity.Text = String.Empty
                 End If

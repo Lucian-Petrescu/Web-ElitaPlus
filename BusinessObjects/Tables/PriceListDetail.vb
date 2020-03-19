@@ -616,7 +616,7 @@ Public Class PriceListDetail
         End Set
     End Property
 
-    Public Property Quantity() As Integer
+    Public Property VendorQuantity() As Integer
         Get
             CheckDeleted()
             If Row(PriceListDetailDAL.COL_NAME_VENDOR_QUANTITY) Is DBNull.Value Then

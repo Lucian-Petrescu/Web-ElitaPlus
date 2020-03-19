@@ -123,6 +123,7 @@ Public Class PriceListDetailDAL
     Public Const PAR_IN_NAME_MANUFACTURER_ID As String = "pi_manufacturer_id"
     Public Const PAR_IN_NAME_VENDOR_SKU As String = "pi_vendor_sku"
     Public Const PAR_IN_NAME_VENDOR_SKU_DESCRIPTION As String = "pi_vendor_sku_description"
+    Public Const PAR_IN_NAME_VENDOR_QUANTITY As String = "pi_vendor_quantity"
     Public Const PAR_IN_NAME_PRICE = "pi_price"
     Public Const PAR_IN_NAME_CREATED_BY As String = "pi_created_by"
     Public Const PAR_IN_NAME_MODIFIED_BY As String = "pi_modified_by"
@@ -154,6 +155,7 @@ Public Class PriceListDetailDAL
     Public Const COL_NAME_PARENT_MAKE As String = "parent_make"
     Public Const COL_NAME_PARENT_MODEL_ID As String = "parent_model_id"
     Public Const COL_NAME_PARENT_MODEL As String = "parent_model"
+
 
 #End Region
 
@@ -1066,6 +1068,7 @@ Public Class PriceListDetailDAL
             .AddParameter(PAR_IN_NAME_SERVICE_TYPE_ID, OracleDbType.Raw, sourceColumn:=COL_NAME_SERVICE_TYPE_ID)
             .AddParameter(PAR_IN_NAME_VENDOR_SKU, OracleDbType.Varchar2, sourceColumn:=COL_NAME_VENDOR_SKU)
             .AddParameter(PAR_IN_NAME_VENDOR_SKU_DESCRIPTION, OracleDbType.Varchar2, sourceColumn:=COL_NAME_VENDOR_SKU_DESCRIPTION)
+            .AddParameter(PAR_IN_NAME_VENDOR_QUANTITY, OracleDbType.Int32, sourceColumn:=COL_NAME_VENDOR_QUANTITY)
             .AddParameter(PAR_IN_NAME_EQUIPMENT_CLASS_ID, OracleDbType.Raw, sourceColumn:=COL_NAME_EQUIPMENT_CLASS_ID)
             .AddParameter(PAR_IN_NAME_EQUIPMENT_ID, OracleDbType.Raw, sourceColumn:=COL_NAME_EQUIPMENT_ID)
             .AddParameter(PAR_IN_NAME_CONDITION_ID, OracleDbType.Raw, sourceColumn:=COL_NAME_CONDITION_ID)
@@ -1100,6 +1103,7 @@ Public Class PriceListDetailDAL
             .AddParameter(PAR_IN_NAME_SERVICE_TYPE_ID, OracleDbType.Raw, sourceColumn:=COL_NAME_SERVICE_TYPE_ID)
             .AddParameter(PAR_IN_NAME_VENDOR_SKU, OracleDbType.Varchar2, sourceColumn:=COL_NAME_VENDOR_SKU)
             .AddParameter(PAR_IN_NAME_VENDOR_SKU_DESCRIPTION, OracleDbType.Varchar2, sourceColumn:=COL_NAME_VENDOR_SKU_DESCRIPTION)
+            .AddParameter(PAR_IN_NAME_VENDOR_QUANTITY, OracleDbType.Int32, sourceColumn:=COL_NAME_VENDOR_QUANTITY)
             .AddParameter(PAR_IN_NAME_EQUIPMENT_CLASS_ID, OracleDbType.Raw, sourceColumn:=COL_NAME_EQUIPMENT_CLASS_ID)
             .AddParameter(PAR_IN_NAME_EQUIPMENT_ID, OracleDbType.Raw, sourceColumn:=COL_NAME_EQUIPMENT_ID)
             .AddParameter(PAR_IN_NAME_CONDITION_ID, OracleDbType.Raw, sourceColumn:=COL_NAME_CONDITION_ID)
