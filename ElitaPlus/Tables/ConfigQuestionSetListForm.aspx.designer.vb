@@ -12,7 +12,7 @@ Option Explicit On
 
 Namespace Tables
     
-    Partial Public Class QuestionSetConfigListForm
+    Partial Public Class ConfigQuestionSetListForm
         
         '''<summary>
         '''lblSearchCompanyGroup control.
@@ -177,22 +177,22 @@ Namespace Tables
         Protected WithEvents txtSearchQuestionSetCode As Global.System.Web.UI.WebControls.TextBox
         
         '''<summary>
-        '''lblPurposeCode control.
+        '''lblSearchPurposeCode control.
         '''</summary>
         '''<remarks>
         '''Auto-generated field.
         '''To modify move field declaration from designer file to code-behind file.
         '''</remarks>
-        Protected WithEvents lblPurposeCode As Global.System.Web.UI.WebControls.Label
+        Protected WithEvents lblSearchPurposeCode As Global.System.Web.UI.WebControls.Label
         
         '''<summary>
-        '''ddlPurposeCode control.
+        '''ddlSearchPurposeCode control.
         '''</summary>
         '''<remarks>
         '''Auto-generated field.
         '''To modify move field declaration from designer file to code-behind file.
         '''</remarks>
-        Protected WithEvents ddlPurposeCode As Global.System.Web.UI.WebControls.DropDownList
+        Protected WithEvents ddlSearchPurposeCode As Global.System.Web.UI.WebControls.DropDownList
         
         '''<summary>
         '''btnSearch control.

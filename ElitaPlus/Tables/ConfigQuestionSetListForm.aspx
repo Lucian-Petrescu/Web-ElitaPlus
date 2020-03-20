@@ -1,4 +1,4 @@
-﻿<%@ Page Title="" Language="vb" AutoEventWireup="false" Theme="Default" MasterPageFile="../Navigation/masters/ElitaBase.Master" CodeBehind="QuestionSetConfigListForm.aspx.vb" Inherits="Assurant.ElitaPlus.ElitaPlusWebApp.Tables.QuestionSetConfigListForm" %>
+﻿<%@ Page Title="" Language="vb" AutoEventWireup="false" Theme="Default" MasterPageFile="../Navigation/masters/ElitaBase.Master" CodeBehind="ConfigQuestionSetListForm.aspx.vb" Inherits="Assurant.ElitaPlus.ElitaPlusWebApp.Tables.ConfigQuestionSetListForm" %>
 
 <asp:Content ID="Content1" ContentPlaceHolderID="HeadPlaceHolder" runat="server">
 </asp:Content>
@@ -49,8 +49,8 @@
                     <asp:TextBox ID="txtSearchQuestionSetCode" runat="server" SkinID="MediumTextBox" TabIndex="9"></asp:TextBox>
                 </td>
                 <td>
-                    <asp:Label ID="lblPurposeCode" runat="server">PURPOSE_CODE:</asp:Label><br />
-                    <asp:DropDownList ID="ddlPurposeCode" runat="server" SkinID="MediumDropDown" AutoPostBack="False" TabIndex="10"></asp:DropDownList>
+                    <asp:Label ID="lblSearchPurposeCode" runat="server">PURPOSE_CODE:</asp:Label><br />
+                    <asp:DropDownList ID="ddlSearchPurposeCode" runat="server" SkinID="MediumDropDown" AutoPostBack="False" TabIndex="10"></asp:DropDownList>
                 </td>
                 <td>&nbsp;<br />
                     <asp:Button ID="btnSearch" runat="server" Text="Search" SkinID="SearchRightButton" TabIndex="11" />
