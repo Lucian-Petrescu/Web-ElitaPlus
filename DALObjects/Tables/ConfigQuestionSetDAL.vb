@@ -55,9 +55,9 @@
         End Try
     End Sub
 
-    Public Function LoadList(ByVal CompGrpID As Guid, ByVal CompanyID As Guid, ByVal CountryID As Guid,
-                             ByVal DealerGrpID As Guid, ByVal DealerID As Guid, ByVal strProdCode As String, ByVal EventTypeID As Guid,
-                             ByVal TaskID As Guid, ByVal CoverageTypeID As Guid, ByVal LanguageID As Guid,
+    Public Function LoadList(ByVal CompGrpID As Guid, ByVal CompanyID As Guid, ByVal DealerGrpID As Guid, ByVal DealerID As Guid,
+                             ByVal strProdCode As String, ByVal CoverageTypeID As Guid, ByVal CoverageConsqDamageID As Guid,
+                             ByVal RiskID As Guid, ByVal PurposeID As Guid, ByVal strQuestionSetCode As String, ByVal LanguageID As Guid,
                              ByVal networkID As String) As DataSet
 
         Dim selectStmt As String = Me.Config("/SQL/LOAD_LIST")
@@ -68,16 +68,12 @@
         cmd.AddParameter("pi_language_id", OracleDbType.Raw, LanguageID.ToByteArray())
         cmd.AddParameter("pi_network_id", OracleDbType.Varchar2, 8, networkID.ToUpper())
 
-        If CompanyID <> Guid.Empty Then
-            cmd.AddParameter("pi_company_id", OracleDbType.Raw, CompanyID.ToByteArray())
-        End If
-
-        If CountryID <> Guid.Empty Then
-            cmd.AddParameter("pi_country_id", OracleDbType.Raw, CountryID.ToByteArray())
-        End If
-
         If CompGrpID <> Guid.Empty Then
             cmd.AddParameter("pi_company_group_id", OracleDbType.Raw, CompGrpID.ToByteArray())
+        End If
+
+        If CompanyID <> Guid.Empty Then
+            cmd.AddParameter("pi_company_id", OracleDbType.Raw, CompanyID.ToByteArray())
         End If
 
         If DealerGrpID <> Guid.Empty Then
@@ -88,19 +84,25 @@
             cmd.AddParameter("pi_dealer_id", OracleDbType.Raw, DealerID.ToByteArray())
         End If
 
-        If EventTypeID <> Guid.Empty Then
-            cmd.AddParameter("pi_event_type_id", OracleDbType.Raw, EventTypeID.ToByteArray())
-        End If
-
-        If TaskID <> Guid.Empty Then
-            cmd.AddParameter("pi_task_id", OracleDbType.Raw, TaskID.ToByteArray())
-        End If
+        OracleDbHelper.AddParameter(cmd, "pi_product_code", OracleDbType.Varchar2, Me.GetFormattedSearchStringForSQL(strProdCode), ParameterDirection.Input)
 
         If CoverageTypeID <> Guid.Empty Then
             cmd.AddParameter("pi_coverage_type_id", OracleDbType.Raw, CoverageTypeID.ToByteArray())
         End If
 
-        OracleDbHelper.AddParameter(cmd, "pi_product_code", OracleDbType.Varchar2, Me.GetFormattedSearchStringForSQL(strProdCode), ParameterDirection.Input)
+        If CoverageConsqDamageID <> Guid.Empty Then
+            cmd.AddParameter("pi_coverage_consq_damage_id", OracleDbType.Raw, CoverageConsqDamageID.ToByteArray())
+        End If
+
+        If RiskID <> Guid.Empty Then
+            cmd.AddParameter("pi_risk_id", OracleDbType.Raw, RiskID.ToByteArray())
+        End If
+
+        If PurposeID <> Guid.Empty Then
+            cmd.AddParameter("pi_purpose_id", OracleDbType.Raw, PurposeID.ToByteArray())
+        End If
+
+        OracleDbHelper.AddParameter(cmd, "pi_question_set_code", OracleDbType.Varchar2, Me.GetFormattedSearchStringForSQL(strQuestionSetCode), ParameterDirection.Input)
 
         cmd.AddParameter("po_resultcursor", OracleDbType.RefCursor, direction:=ParameterDirection.Output)
 
@@ -126,25 +128,17 @@
     Protected Overrides Sub ConfigureUpdateCommand(ByRef command As OracleCommand, ByVal tableName As String)
         With command
             .BindByName = True
-            .AddParameter(parameterName:="pi_event_task_id", dbType:=OracleDbType.Raw, sourceColumn:=COL_NAME_EVENT_TASK_ID, direction:=ParameterDirection.Input)
+            .AddParameter(parameterName:="pi_config_question_set_id", dbType:=OracleDbType.Raw, sourceColumn:=COL_NAME_CONFIG_QUESTION_SET_ID, direction:=ParameterDirection.Input)
             .AddParameter(parameterName:="pi_company_group_id", dbType:=OracleDbType.Raw, sourceColumn:=COL_NAME_COMPANY_GROUP_ID, direction:=ParameterDirection.Input)
             .AddParameter(parameterName:="pi_company_id", dbType:=OracleDbType.Raw, sourceColumn:=COL_NAME_COMPANY_ID, direction:=ParameterDirection.Input)
-            .AddParameter(parameterName:="pi_country_id", dbType:=OracleDbType.Raw, sourceColumn:=COL_NAME_COUNTRY_ID, direction:=ParameterDirection.Input)
             .AddParameter(parameterName:="pi_dealer_group_id", dbType:=OracleDbType.Raw, sourceColumn:=COL_NAME_DEALER_GROUP_ID, direction:=ParameterDirection.Input)
             .AddParameter(parameterName:="pi_dealer_id", dbType:=OracleDbType.Raw, sourceColumn:=COL_NAME_DEALER_ID, direction:=ParameterDirection.Input)
             .AddParameter(parameterName:="pi_product_code", dbType:=OracleDbType.Varchar2, sourceColumn:=COL_NAME_PRODUCT_CODE, direction:=ParameterDirection.Input)
-            .AddParameter(parameterName:="pi_event_type_id", dbType:=OracleDbType.Raw, sourceColumn:=COL_NAME_EVENT_TYPE_ID, direction:=ParameterDirection.Input)
-            .AddParameter(parameterName:="pi_task_id", dbType:=OracleDbType.Raw, sourceColumn:=COL_NAME_TASK_ID, direction:=ParameterDirection.Input)
-
-            .AddParameter(parameterName:="pi_retry_count", dbType:=OracleDbType.Double, sourceColumn:=COL_NAME_RETRY_COUNT, direction:=ParameterDirection.Input)
-            .AddParameter(parameterName:="pi_retry_delay_seconds", dbType:=OracleDbType.Double, sourceColumn:=COL_NAME_RETRY_DELAY_SECONDS, direction:=ParameterDirection.Input)
-            .AddParameter(parameterName:="pi_timeout_seconds", dbType:=OracleDbType.Double, sourceColumn:=COL_NAME_TIMEOUT_SECONDS, direction:=ParameterDirection.Input)
-
             .AddParameter(parameterName:="pi_coverage_type_id", dbType:=OracleDbType.Raw, sourceColumn:=COL_NAME_COVERAGE_TYPE_ID, direction:=ParameterDirection.Input)
-            .AddParameter(parameterName:="pi_event_argument_id", dbType:=OracleDbType.Raw, sourceColumn:=COL_NAME_EVENT_ARGUMENT_ID, direction:=ParameterDirection.Input)
-
-            .AddParameter(parameterName:="pi_event_task_parameters", dbType:=OracleDbType.Varchar2, sourceColumn:=COL_NAME_EVENT_TASK_PARAMETERS, direction:=ParameterDirection.Input, size:=4000)
-            .AddParameter(parameterName:="pi_init_delay_minutes", dbType:=OracleDbType.Double, sourceColumn:=COL_NAME_INIT_DELAY_MINUTES, direction:=ParameterDirection.Input)
+            .AddParameter(parameterName:="pi_coverage_consq_damage_id", dbType:=OracleDbType.Raw, sourceColumn:=COL_NAME_COVERAGE_CONSEQ_DAMAGE_ID, direction:=ParameterDirection.Input)
+            .AddParameter(parameterName:="pi_risk_type_id", dbType:=OracleDbType.Raw, sourceColumn:=COL_NAME_RISK_TYPE_ID, direction:=ParameterDirection.Input)
+            .AddParameter(parameterName:="pi_purpose_id", dbType:=OracleDbType.Raw, sourceColumn:=COL_NAME_PURPOSE_ID, direction:=ParameterDirection.Input)
+            .AddParameter(parameterName:="pi_question_set_code", dbType:=OracleDbType.Varchar2, sourceColumn:=COL_NAME_QUESTION_SET_CODE, direction:=ParameterDirection.Input)
 
             .AddParameter(parameterName:="pi_modified_by", dbType:=OracleDbType.Varchar2, sourceColumn:=COL_NAME_MODIFIED_BY, direction:=ParameterDirection.Input)
         End With
@@ -153,32 +147,24 @@
     Protected Overrides Sub ConfigureDeleteCommand(ByRef command As OracleCommand, ByVal tableName As String)
         With command
             .BindByName = True
-            .AddParameter(parameterName:="pi_event_task_id", dbType:=OracleDbType.Raw, sourceColumn:=COL_NAME_EVENT_TASK_ID, direction:=ParameterDirection.Input)
+            .AddParameter(parameterName:="pi_config_question_set_id", dbType:=OracleDbType.Raw, sourceColumn:=COL_NAME_CONFIG_QUESTION_SET_ID, direction:=ParameterDirection.Input)
         End With
     End Sub
 
     Protected Overrides Sub ConfigureInsertCommand(ByRef command As OracleCommand, ByVal tableName As String)
         With command
             .BindByName = True
-            .AddParameter(parameterName:="pi_event_task_id", dbType:=OracleDbType.Raw, sourceColumn:=COL_NAME_EVENT_TASK_ID, direction:=ParameterDirection.Input)
+            .AddParameter(parameterName:="pi_config_question_set_id", dbType:=OracleDbType.Raw, sourceColumn:=COL_NAME_CONFIG_QUESTION_SET_ID, direction:=ParameterDirection.Input)
             .AddParameter(parameterName:="pi_company_group_id", dbType:=OracleDbType.Raw, sourceColumn:=COL_NAME_COMPANY_GROUP_ID, direction:=ParameterDirection.Input)
             .AddParameter(parameterName:="pi_company_id", dbType:=OracleDbType.Raw, sourceColumn:=COL_NAME_COMPANY_ID, direction:=ParameterDirection.Input)
-            .AddParameter(parameterName:="pi_country_id", dbType:=OracleDbType.Raw, sourceColumn:=COL_NAME_COUNTRY_ID, direction:=ParameterDirection.Input)
             .AddParameter(parameterName:="pi_dealer_group_id", dbType:=OracleDbType.Raw, sourceColumn:=COL_NAME_DEALER_GROUP_ID, direction:=ParameterDirection.Input)
             .AddParameter(parameterName:="pi_dealer_id", dbType:=OracleDbType.Raw, sourceColumn:=COL_NAME_DEALER_ID, direction:=ParameterDirection.Input)
             .AddParameter(parameterName:="pi_product_code", dbType:=OracleDbType.Varchar2, sourceColumn:=COL_NAME_PRODUCT_CODE, direction:=ParameterDirection.Input)
-            .AddParameter(parameterName:="pi_event_type_id", dbType:=OracleDbType.Raw, sourceColumn:=COL_NAME_EVENT_TYPE_ID, direction:=ParameterDirection.Input)
-            .AddParameter(parameterName:="pi_task_id", dbType:=OracleDbType.Raw, sourceColumn:=COL_NAME_TASK_ID, direction:=ParameterDirection.Input)
-
-            .AddParameter(parameterName:="pi_retry_count", dbType:=OracleDbType.Int16, sourceColumn:=COL_NAME_RETRY_COUNT, direction:=ParameterDirection.Input)
-            .AddParameter(parameterName:="pi_retry_delay_seconds", dbType:=OracleDbType.Int32, sourceColumn:=COL_NAME_RETRY_DELAY_SECONDS, direction:=ParameterDirection.Input)
-            .AddParameter(parameterName:="pi_timeout_seconds", dbType:=OracleDbType.Int32, sourceColumn:=COL_NAME_TIMEOUT_SECONDS, direction:=ParameterDirection.Input)
-
             .AddParameter(parameterName:="pi_coverage_type_id", dbType:=OracleDbType.Raw, sourceColumn:=COL_NAME_COVERAGE_TYPE_ID, direction:=ParameterDirection.Input)
-            .AddParameter(parameterName:="pi_event_argument_id", dbType:=OracleDbType.Raw, sourceColumn:=COL_NAME_EVENT_ARGUMENT_ID, direction:=ParameterDirection.Input)
-
-            .AddParameter(parameterName:="pi_event_task_parameters", dbType:=OracleDbType.Varchar2, sourceColumn:=COL_NAME_EVENT_TASK_PARAMETERS, direction:=ParameterDirection.Input, size:=4000)
-            .AddParameter(parameterName:="pi_init_delay_minutes", dbType:=OracleDbType.Int32, sourceColumn:=COL_NAME_INIT_DELAY_MINUTES, direction:=ParameterDirection.Input)
+            .AddParameter(parameterName:="pi_coverage_consq_damage_id", dbType:=OracleDbType.Raw, sourceColumn:=COL_NAME_COVERAGE_CONSEQ_DAMAGE_ID, direction:=ParameterDirection.Input)
+            .AddParameter(parameterName:="pi_risk_type_id", dbType:=OracleDbType.Raw, sourceColumn:=COL_NAME_RISK_TYPE_ID, direction:=ParameterDirection.Input)
+            .AddParameter(parameterName:="pi_purpose_id", dbType:=OracleDbType.Raw, sourceColumn:=COL_NAME_PURPOSE_ID, direction:=ParameterDirection.Input)
+            .AddParameter(parameterName:="pi_question_set_code", dbType:=OracleDbType.Varchar2, sourceColumn:=COL_NAME_QUESTION_SET_CODE, direction:=ParameterDirection.Input)
 
             .AddParameter(parameterName:="pi_created_by", dbType:=OracleDbType.Varchar2, sourceColumn:=COL_NAME_CREATED_BY, direction:=ParameterDirection.Input, size:=30)
         End With
