@@ -1,0 +1,29 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+
+<SQL>
+  <LOAD>
+    <![CDATA[	
+      elp_config_question_set.LoadConfigQuestionSet
+		]]>
+  </LOAD>
+  <LOAD_LIST>
+    <![CDATA[	
+      elp_config_question_set.LoadConfigQuestionSetList
+    ]]>
+  </LOAD_LIST>
+  <UPDATE>
+    <![CDATA[
+      elp_config_question_set.ModifyConfigQuestionSet
+		]]>
+  </UPDATE>
+  <INSERT>
+    <![CDATA[
+      elp_config_question_set.AddConfigQuestionSet
+		]]>
+  </INSERT>
+  <DELETE>
+    <![CDATA[
+      elp_config_question_set.DeleteConfigQuestionSet
+		]]>
+  </DELETE>
+</SQL>

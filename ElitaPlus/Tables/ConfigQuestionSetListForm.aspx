@@ -28,7 +28,7 @@
             <tr>
                 <td>
                     <asp:Label ID="lblSearchProdCode" runat="server">PRODUCT_CODE:</asp:Label>:<br />
-                    <asp:TextBox ID="txtSearchProdCode" runat="server" SkinID="MediumTextBox" TabIndex="5"></asp:TextBox>
+                    <asp:DropDownList ID="ddlSearchProductCode" runat="server" SkinID="MediumDropDown" AutoPostBack="False" TabIndex="5"></asp:DropDownList>
                 </td>
                 <td>
                     <asp:Label ID="lblSearchRiskType" runat="server">RISK_TYPE:</asp:Label><br />

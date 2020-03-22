@@ -56,8 +56,8 @@
     End Sub
 
     Public Function LoadList(ByVal CompGrpID As Guid, ByVal CompanyID As Guid, ByVal DealerGrpID As Guid, ByVal DealerID As Guid,
-                             ByVal strProdCode As String, ByVal CoverageTypeID As Guid, ByVal CoverageConsqDamageID As Guid,
-                             ByVal RiskID As Guid, ByVal PurposeID As Guid, ByVal strQuestionSetCode As String, ByVal LanguageID As Guid,
+                             ByVal strProdCode As String, ByVal CoverageTypeID As Guid, ByVal CoverageConseqDamageID As Guid,
+                             ByVal RiskTypeID As Guid, ByVal strPurposeXCD As String, ByVal strQuestionSetCode As String, ByVal LanguageID As Guid,
                              ByVal networkID As String) As DataSet
 
         Dim selectStmt As String = Me.Config("/SQL/LOAD_LIST")
@@ -90,17 +90,15 @@
             cmd.AddParameter("pi_coverage_type_id", OracleDbType.Raw, CoverageTypeID.ToByteArray())
         End If
 
-        If CoverageConsqDamageID <> Guid.Empty Then
-            cmd.AddParameter("pi_coverage_consq_damage_id", OracleDbType.Raw, CoverageConsqDamageID.ToByteArray())
+        If CoverageConseqDamageID <> Guid.Empty Then
+            cmd.AddParameter("pi_coverage_conseq_damage_id", OracleDbType.Raw, CoverageConseqDamageID.ToByteArray())
         End If
 
-        If RiskID <> Guid.Empty Then
-            cmd.AddParameter("pi_risk_id", OracleDbType.Raw, RiskID.ToByteArray())
+        If RiskTypeID <> Guid.Empty Then
+            cmd.AddParameter("pi_risk_type_id", OracleDbType.Raw, RiskTypeID.ToByteArray())
         End If
 
-        If PurposeID <> Guid.Empty Then
-            cmd.AddParameter("pi_purpose_id", OracleDbType.Raw, PurposeID.ToByteArray())
-        End If
+        OracleDbHelper.AddParameter(cmd, "pi_purpose_xcd", OracleDbType.Varchar2, Me.GetFormattedSearchStringForSQL(strPurposeXCD), ParameterDirection.Input)
 
         OracleDbHelper.AddParameter(cmd, "pi_question_set_code", OracleDbType.Varchar2, Me.GetFormattedSearchStringForSQL(strQuestionSetCode), ParameterDirection.Input)
 

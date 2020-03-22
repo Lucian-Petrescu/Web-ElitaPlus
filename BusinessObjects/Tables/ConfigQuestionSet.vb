@@ -86,8 +86,6 @@
 
 #Region "Properties"
 
-    'Key Property
-    <ValidOnlyOneEntity(""), ValidOneEntitySelected("")>
     Public ReadOnly Property Id() As Guid
         Get
             If Row(ConfigQuestionSetDAL.TABLE_KEY_NAME) Is DBNull.Value Then
@@ -143,6 +141,7 @@
         End Set
     End Property
 
+    <ValidProductCodeDealer("")>
     Public Property DealerId() As Guid
         Get
             CheckDeleted()
@@ -158,7 +157,7 @@
         End Set
     End Property
 
-    <ValidStringLength("", Max:=5), ValidProductCode("")>
+    <ValidStringLength("", Max:=5), ValidProductCodeDealer("")>
     Public Property ProductCode() As String
         Get
             CheckDeleted()
@@ -174,6 +173,7 @@
         End Set
     End Property
 
+    <ValidProductCodeDealer("")>
     Public Property ProductCodeId() As String
         Get
             CheckDeleted()
@@ -266,6 +266,7 @@
         End Set
     End Property
 
+    <ValueMandatory("")>
     Public Property QuestionSetCode() As String
         Get
             CheckDeleted()
@@ -410,10 +411,13 @@
 
     Public Shared Function getList(ByVal CompGrpID As Guid, ByVal CompanyID As Guid, ByVal DealerGrpID As Guid, ByVal DealerID As Guid,
                                    ByVal strProdCode As String, ByVal RiskTypeID As Guid, ByVal CoverageTypeID As Guid,
-                                   ByVal CoverageConsqDamageID As Guid, ByVal PurposeID As Guid, ByVal QuestionSetCoddde As String) As ConfigQuestionSetSearchDV
+                                   ByVal CoverageConsqDamageID As Guid, ByVal strPurposeXCD As String, ByVal strQuestionSetCode As String) As ConfigQuestionSetSearchDV
         Try
             Dim dal As New ConfigQuestionSetDAL
-            Return New ConfigQuestionSetSearchDV(dal.LoadList(CompGrpID, CompanyID, CountryID, DealerGrpID, DealerID, strProdCode, EventTypeID, TaskID, CoverageTypeID, ElitaPlusIdentity.Current.ActiveUser.LanguageId, ElitaPlusIdentity.Current.ActiveUser.NetworkId).Tables(0))
+            Return New ConfigQuestionSetSearchDV(dal.LoadList(CompGrpID:=CompGrpID, CompanyID:=CompanyID, DealerGrpID:=DealerGrpID, DealerID:=DealerID,
+                                                              strProdCode:=strProdCode, CoverageTypeID:=CoverageTypeID, CoverageConseqDamageID:=CoverageConsqDamageID,
+                                                              RiskTypeID:=RiskTypeID, strPurposeXCD:=strPurposeXCD, strQuestionSetCode:=strQuestionSetCode,
+                                                              LanguageID:=ElitaPlusIdentity.Current.ActiveUser.LanguageId, networkID:=ElitaPlusIdentity.Current.ActiveUser.NetworkId).Tables(0))
         Catch ex As Assurant.ElitaPlus.DALObjects.DataBaseAccessException
             Throw New DataBaseAccessException(ex.ErrorType, ex)
         End Try
@@ -421,22 +425,18 @@
 #End Region
 
 #Region "Custom Validation"
-    Public NotInheritable Class ValidProductCode
+    Public NotInheritable Class ValidProductCodeDealer
         Inherits ValidBaseAttribute
 
         Public Sub New(ByVal fieldDisplayName As String)
-            MyBase.New(fieldDisplayName, "DEALER OR DEALER GROUP IS REQUIRED")
+            MyBase.New(fieldDisplayName, "DEALER OR PRODUCT CODE IS REQUIRED")
         End Sub
 
         Public Overrides Function IsValid(ByVal valueToCheck As Object, ByVal objectToValidate As Object) As Boolean
-            Dim obj As EventTask = CType(objectToValidate, EventTask)
+            Dim obj As ConfigQuestionSet = CType(objectToValidate, ConfigQuestionSet)
 
-            If Not String.IsNullOrEmpty(obj.ProductCode) Then
-                If obj.DealerId = Guid.Empty AndAlso obj.DealerGroupId = Guid.Empty Then
-                    Return False
-                Else
-                    Return True
-                End If
+            If String.IsNullOrEmpty(obj.ProductCode) And (Guid.Empty = obj.DealerId) Then
+                Return False
             Else
                 Return True
             End If
@@ -452,10 +452,10 @@
         End Sub
 
         Public Overrides Function IsValid(ByVal valueToCheck As Object, ByVal objectToValidate As Object) As Boolean
-            Dim obj As EventTask = CType(objectToValidate, EventTask)
+            Dim obj As ConfigQuestionSet = CType(objectToValidate, ConfigQuestionSet)
 
             If Not obj.CoverageTypeId = Guid.Empty Then
-                If obj.DealerId = Guid.Empty Or obj.DealerGroupId = Guid.Empty Or String.IsNullOrEmpty(obj.ProductCode) Then
+                If obj.DealerId = Guid.Empty Or String.IsNullOrEmpty(obj.ProductCode) Then
                     Return False
                 Else
                     Return True
@@ -467,59 +467,6 @@
         End Function
     End Class
 
-    Public NotInheritable Class ValidOnlyOneEntity
-        Inherits ValidBaseAttribute
-
-        Public Sub New(ByVal fieldDisplayName As String)
-            MyBase.New(fieldDisplayName, "ONLY_ONE_ALLOWED_COMPGRP_COMANPY_COUNTRY_DEALERGRP_DEALER")
-        End Sub
-
-        Public Overrides Function IsValid(ByVal valueToCheck As Object, ByVal objectToValidate As Object) As Boolean
-            If (Not valueToCheck Is Nothing) AndAlso valueToCheck <> Guid.Empty Then
-                Dim obj As EventTask = CType(objectToValidate, EventTask)
-                If obj.CompanyGroupId <> Guid.Empty Then
-                    If obj.CompanyId <> Guid.Empty OrElse obj.CountryId <> Guid.Empty OrElse obj.DealerGroupId <> Guid.Empty OrElse obj.DealerId <> Guid.Empty Then
-                        Return False
-                    End If
-                ElseIf obj.CompanyId <> Guid.Empty Then
-                    If obj.CompanyGroupId <> Guid.Empty OrElse obj.CountryId <> Guid.Empty OrElse obj.DealerGroupId <> Guid.Empty OrElse obj.DealerId <> Guid.Empty Then
-                        Return False
-                    End If
-                ElseIf obj.CountryId <> Guid.Empty Then
-                    If obj.CompanyGroupId <> Guid.Empty OrElse obj.CompanyId <> Guid.Empty OrElse obj.DealerGroupId <> Guid.Empty OrElse obj.DealerId <> Guid.Empty Then
-                        Return False
-                    End If
-                ElseIf obj.DealerGroupId <> Guid.Empty Then
-                    If obj.CompanyGroupId <> Guid.Empty OrElse obj.CountryId <> Guid.Empty OrElse obj.CompanyId <> Guid.Empty OrElse obj.DealerId <> Guid.Empty Then
-                        Return False
-                    End If
-                ElseIf obj.DealerId <> Guid.Empty Then
-                    If obj.CompanyGroupId <> Guid.Empty OrElse obj.CountryId <> Guid.Empty OrElse obj.CompanyId <> Guid.Empty OrElse obj.DealerGroupId <> Guid.Empty Then
-                        Return False
-                    End If
-                End If
-            End If
-            Return True
-
-        End Function
-    End Class
-
-    Public NotInheritable Class ValidOneEntitySelected
-        Inherits ValidBaseAttribute
-
-        Public Sub New(ByVal fieldDisplayName As String)
-            MyBase.New(fieldDisplayName, "SELECT_ONE_COMPGRP_COMANPY_COUNTRY_DEALERGRP_DEALER")
-        End Sub
-
-        Public Overrides Function IsValid(ByVal valueToCheck As Object, ByVal objectToValidate As Object) As Boolean
-            Dim obj As EventTask = CType(objectToValidate, EventTask)
-            If obj.CompanyGroupId = Guid.Empty AndAlso obj.CompanyId = Guid.Empty AndAlso obj.CountryId = Guid.Empty AndAlso obj.DealerGroupId = Guid.Empty AndAlso obj.DealerId = Guid.Empty Then
-                Return False
-            Else
-                Return True
-            End If
-        End Function
-    End Class
 #End Region
 
 End Class

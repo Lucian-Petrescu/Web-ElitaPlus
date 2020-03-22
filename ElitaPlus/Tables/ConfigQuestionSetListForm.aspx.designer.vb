@@ -96,13 +96,13 @@ Namespace Tables
         Protected WithEvents lblSearchProdCode As Global.System.Web.UI.WebControls.Label
         
         '''<summary>
-        '''txtSearchProdCode control.
+        '''ddlSearchProductCode control.
         '''</summary>
         '''<remarks>
         '''Auto-generated field.
         '''To modify move field declaration from designer file to code-behind file.
         '''</remarks>
-        Protected WithEvents txtSearchProdCode As Global.System.Web.UI.WebControls.TextBox
+        Protected WithEvents ddlSearchProductCode As Global.System.Web.UI.WebControls.DropDownList
         
         '''<summary>
         '''lblSearchRiskType control.
