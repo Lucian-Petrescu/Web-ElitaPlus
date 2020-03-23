@@ -1307,6 +1307,13 @@ Public Class AcctSetting
         'Copy myself
         Me.CopyFrom(original)
     End Sub
+
+    Public Shared Function IsIDXAcctSettingAndCode(ByVal accountCompanyId As Guid, ByVal accountCode As String) As Boolean
+        Dim dal As New AcctSettingDAL
+
+        Return dal.IsIDXAcctSettingAndCode(accountCompanyId, accountCode)
+
+    End Function
 #End Region
 
 #Region "DataView Retrieveing Methods"

@@ -373,7 +373,14 @@
                 --dynamic_where_clause
         ]]>
     </GET_VENDOR_BY_CODE>
-
+  <GET_COUNT_BY_ACCOUNTING_COMPANY_AND_CODE>
+    <![CDATA[
+     select count(1)
+         from ELP_ACCT_SETTINGS
+         where acct_company_id = :acct_company_id
+         and account_code = :account_code
+    ]]>
+  </GET_COUNT_BY_ACCOUNTING_COMPANY_AND_CODE>
   <GET_COUNTERPART_BY_ID>
     <![CDATA[
       select ACCT_SETTINGS_ID
