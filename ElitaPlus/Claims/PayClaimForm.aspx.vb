@@ -970,11 +970,14 @@ Partial Class PayClaimForm
 
     End Sub
     Private Sub SetFieldsEmptyForBankTrf()
-        If Not oCompany Is Nothing AndAlso oCompany.AttributeValues.Value(Codes.DEFAULT_CLAIM_BANK_SORT_CODE) = Codes.YESNO_Y Then
-            If (cboPayeeSelector.SelectedItem.Text.ToUpper <> Payee_Customer Or
+        If Not oCompany Is Nothing AndAlso Not oCompany.AttributeValues.Value(Codes.DEFAULT_CLAIM_BANK_SORT_CODE) Is Nothing Then
+            If oCompany.AttributeValues.Value(Codes.DEFAULT_CLAIM_BANK_SORT_CODE) = Codes.YESNO_Y Then
+                If (cboPayeeSelector.SelectedItem.Text.ToUpper <> Payee_Customer Or
                 PaymentMethodDrop.SelectedItem.Text.ToUpper <> Bank_Transfer) Then
-                SetPayeeBankInvoiceControlsEmpty()
+                    SetPayeeBankInvoiceControlsEmpty()
+                End If
             End If
+
         End If
     End Sub
     Private Sub SetPayeeBankInvoiceControlsEmpty()
