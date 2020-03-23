@@ -319,6 +319,7 @@ Partial Class AccountingSettingForm
     Private Sub btnSave_WRITE_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnSave_WRITE.Click
         Try
             Dim blnChanged As Boolean = False
+            Dim selectedCompId As Guid = Guid.Empty
             If cboCompany.Visible = False Then
                 If moCompId.Equals(Guid.Empty) Then
                     'no account companies found for the user
@@ -326,7 +327,7 @@ Partial Class AccountingSettingForm
                     Exit Sub
                 End If
             Else
-                Dim selectedCompId As Guid = Me.GetSelectedItem(Me.cboCompany)
+                selectedCompId = Me.GetSelectedItem(Me.cboCompany)
                 If selectedCompId.Equals(Guid.Empty) Then
                     ElitaPlusPage.SetLabelError(moCompanyLABEL)
                     Me.ErrControllerMaster.AddErrorAndShow(ElitaPlus.Common.ErrorCodes.GUI_SELECT_ACCOUNTING_COMPANY_FROM_ACC_RECEIVABLE_TAB_ERR)
@@ -342,8 +343,8 @@ Partial Class AccountingSettingForm
                     Exit Sub
                 End If
             Else
-                Dim selectedCompanyId As Guid = Me.GetSelectedItem(Me.cboCompany_P)
-                If selectedCompanyId.Equals(Guid.Empty) Then
+                selectedCompId = Me.GetSelectedItem(Me.cboCompany_P)
+                If selectedCompId.Equals(Guid.Empty) Then
                     ElitaPlusPage.SetLabelError(moCompanyLABEL)
                     Me.ErrControllerMaster.AddErrorAndShow(ElitaPlus.Common.ErrorCodes.GUI_SELECT_ACCOUNTING_COMPANY_FROM_ACC_PAYABLE_TAB_ERR)
                     TabContainer1.ActiveTabIndex = 1
