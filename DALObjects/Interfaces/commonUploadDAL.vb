@@ -155,7 +155,7 @@ Public Class commonUploadDAL
         Try
             Dim outParameters() As DBHelper.DBHelperParameter = New DBHelper.DBHelperParameter() {
                             New DBHelper.DBHelperParameter("p_InitResult", strResult.GetType, 500),
-                            New DBHelper.DBHelperParameter("p_ErrMsg", strErrMsg.GetType, 500)}
+                            New DBHelper.DBHelperParameter("p_ErrCode", strErrMsg.GetType, 500)}
 
             Dim inParameters As New Generic.List(Of DBHelper.DBHelperParameter)
             Dim param As DBHelper.DBHelperParameter
@@ -172,8 +172,10 @@ Public Class commonUploadDAL
                 End If
             End If
 
-            If String.IsNullOrEmpty(strResult) Then
-                strResult = "No Screen Help Found"
+            If String.IsNullOrEmpty(strResult) Or strResult.Equals("100") Then
+                strResult = "No Help Comments Found"
+            ElseIf strResult.Equals("101") Then
+                strResult = "Please Check Oracle Logs"
             End If
 
             Return strResult
