@@ -54,6 +54,12 @@
         Dim dal As New commonUploadDAL
         Dim helpData As String
         helpData = dal.getScreenHelpData(FormName)
+        If String.IsNullOrEmpty(helpData) Or helpData.Equals("100") Then
+            helpData = Codes.HLP_COMTS_FOUND
+        ElseIf helpData.Equals("101") Then
+            helpData = Codes.PLS_CHECK_ORACLE_LOGS
+        End If
+
         Return helpData
     End Function
 End Class

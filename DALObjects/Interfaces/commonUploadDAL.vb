@@ -11,8 +11,7 @@ Public Class commonUploadDAL
         MyBase.New()
     End Sub
 
-    Public Const HLP_COMTS_FOUND As String = "HLP_COMTS_FOUND"
-    Public Const PLS_CHECK_ORACLE_LOGS As String = "PLS_CHECK_ORACLE_LOGS"
+
 
 #End Region
 #Region "Delegate Signatures"
@@ -178,11 +177,6 @@ Public Class commonUploadDAL
                 End If
             End If
 
-            If String.IsNullOrEmpty(strResult) Or strResult.Equals("100") Then
-                strResult = HLP_COMTS_FOUND
-            ElseIf strResult.Equals("101") Then
-                strResult = PLS_CHECK_ORACLE_LOGS
-            End If
 
             Return strResult
 
