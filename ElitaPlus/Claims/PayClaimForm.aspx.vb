@@ -956,21 +956,22 @@ Partial Class PayClaimForm
         'Me.SetFieldsEmptyForBankTrf()
         If (cboPayeeSelector.SelectedItem.Text.ToUpper = Payee_Customer And
                     PaymentMethodDrop.SelectedItem.Text.ToUpper = Bank_Transfer) Then
-                Me.PayeeBankInfo.LoadBankSortCodeList(Me.oCompany, oCertificate.CUIT_CUIL)
 
-            If Not oCompany.AttributeValues.Value(Codes.DEFAULT_CLAIM_INVOICE_NUMBER) Is Nothing Then
+            Me.PayeeBankInfo.LoadBankSortCodeList(Me.oCompany, oCertificate.CUIT_CUIL)
+
+            If oCompany.AttributeValues.Contains(Codes.DEFAULT_CLAIM_INVOICE_NUMBER) Then
                 txtInvoiceNumber.Text = oCompany.AttributeValues.Value(Codes.DEFAULT_CLAIM_INVOICE_NUMBER)
             End If
 
             txtInvoiceDate.Text = Me.GetDateFormattedString(DateTime.Now)
-                txtRepairDate.Text = Me.GetDateFormattedString(DateTime.Now)
-            Else
-                SetPayeeBankInvoiceControlsEmpty()
-            End If
+            txtRepairDate.Text = Me.GetDateFormattedString(DateTime.Now)
+        Else
+            SetPayeeBankInvoiceControlsEmpty()
+        End If
 
     End Sub
     Private Sub SetFieldsEmptyForBankTrf()
-        If Not oCompany Is Nothing AndAlso Not oCompany.AttributeValues.Value(Codes.DEFAULT_CLAIM_BANK_SORT_CODE) Is Nothing Then
+        If Not oCompany Is Nothing AndAlso oCompany.AttributeValues.Contains(Codes.DEFAULT_CLAIM_BANK_SORT_CODE) Then
             If oCompany.AttributeValues.Value(Codes.DEFAULT_CLAIM_BANK_SORT_CODE) = Codes.YESNO_Y Then
                 If (cboPayeeSelector.SelectedItem.Text.ToUpper <> Payee_Customer Or
                 PaymentMethodDrop.SelectedItem.Text.ToUpper <> Bank_Transfer) Then
