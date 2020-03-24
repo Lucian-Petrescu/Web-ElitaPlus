@@ -157,35 +157,50 @@
         End Set
     End Property
 
-    <ValidStringLength("", Max:=5), ValidProductCodeDealer("")>
-    Public Property ProductCode() As String
-        Get
-            CheckDeleted()
-            If Row(ConfigQuestionSetDAL.COL_NAME_PRODUCT_CODE) Is DBNull.Value Then
-                Return Nothing
-            Else
-                Return CType(Row(ConfigQuestionSetDAL.COL_NAME_PRODUCT_CODE), String)
-            End If
-        End Get
-        Set(ByVal Value As String)
-            CheckDeleted()
-            Me.SetValue(ConfigQuestionSetDAL.COL_NAME_PRODUCT_CODE, Value)
-        End Set
-    End Property
+    '<ValidStringLength("", Max:=5), ValidProductCodeDealer("")>
+    'Public Property ProductCode() As String
+    '    Get
+    '        CheckDeleted()
+    '        If Row(ConfigQuestionSetDAL.COL_NAME_PRODUCT_CODE) Is DBNull.Value Then
+    '            Return Nothing
+    '        Else
+    '            Return CType(Row(ConfigQuestionSetDAL.COL_NAME_PRODUCT_CODE), String)
+    '        End If
+    '    End Get
+    '    Set(ByVal Value As String)
+    '        CheckDeleted()
+    '        Me.SetValue(ConfigQuestionSetDAL.COL_NAME_PRODUCT_CODE, Value)
+    '    End Set
+    'End Property
 
     <ValidProductCodeDealer("")>
-    Public Property ProductCodeId() As String
+    Public Property ProductCodeId() As Guid
         Get
             CheckDeleted()
             If Row(ConfigQuestionSetDAL.COL_NAME_PRODUCT_CODE_ID) Is DBNull.Value Then
                 Return Nothing
             Else
-                Return CType(Row(ConfigQuestionSetDAL.COL_NAME_PRODUCT_CODE_ID), String)
+                Return New Guid(CType(Row(ConfigQuestionSetDAL.COL_NAME_PRODUCT_CODE_ID), Byte()))
             End If
         End Get
-        Set(ByVal Value As String)
+        Set(ByVal Value As Guid)
             CheckDeleted()
             Me.SetValue(ConfigQuestionSetDAL.COL_NAME_PRODUCT_CODE_ID, Value)
+        End Set
+    End Property
+
+    Public Property DeviceTypeId() As Guid
+        Get
+            CheckDeleted()
+            If Row(ConfigQuestionSetDAL.COL_NAME_DEVICE_TYPE_ID) Is DBNull.Value Then
+                Return Nothing
+            Else
+                Return New Guid(CType(Row(ConfigQuestionSetDAL.COL_NAME_DEVICE_TYPE_ID), Byte()))
+            End If
+        End Get
+        Set(ByVal Value As Guid)
+            CheckDeleted()
+            Me.SetValue(ConfigQuestionSetDAL.COL_NAME_DEVICE_TYPE_ID, Value)
         End Set
     End Property
 
@@ -235,36 +250,36 @@
     End Property
 
     <ValueMandatory("")>
-    Public Property PurposeId() As Guid
+    Public Property PurposeXCD() As String
         Get
             CheckDeleted()
-            If Row(ConfigQuestionSetDAL.COL_NAME_PURPOSE_ID) Is DBNull.Value Then
+            If Row(ConfigQuestionSetDAL.COL_NAME_PURPOSE_XCD) Is DBNull.Value Then
                 Return Nothing
             Else
-                Return New Guid(CType(Row(ConfigQuestionSetDAL.COL_NAME_PURPOSE_ID), Byte()))
+                Return CType(Row(ConfigQuestionSetDAL.COL_NAME_PURPOSE_XCD), String)
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set(ByVal Value As String)
             CheckDeleted()
-            Me.SetValue(ConfigQuestionSetDAL.COL_NAME_PURPOSE_ID, Value)
+            Me.SetValue(ConfigQuestionSetDAL.COL_NAME_PURPOSE_XCD, Value)
         End Set
     End Property
 
-    <ValueMandatory("")>
-    Public Property PurposeCode() As Guid
-        Get
-            CheckDeleted()
-            If Row(ConfigQuestionSetDAL.COL_NAME_PURPOSE_CODE) Is DBNull.Value Then
-                Return Nothing
-            Else
-                Return New Guid(CType(Row(ConfigQuestionSetDAL.COL_NAME_PURPOSE_CODE), Byte()))
-            End If
-        End Get
-        Set(ByVal Value As Guid)
-            CheckDeleted()
-            Me.SetValue(ConfigQuestionSetDAL.COL_NAME_PURPOSE_CODE, Value)
-        End Set
-    End Property
+    '<ValueMandatory("")>
+    'Public Property PurposeCode() As Guid
+    '    Get
+    '        CheckDeleted()
+    '        If Row(ConfigQuestionSetDAL.COL_NAME_PURPOSE_CODE) Is DBNull.Value Then
+    '            Return Nothing
+    '        Else
+    '            Return New Guid(CType(Row(ConfigQuestionSetDAL.COL_NAME_PURPOSE_CODE), Byte()))
+    '        End If
+    '    End Get
+    '    Set(ByVal Value As Guid)
+    '        CheckDeleted()
+    '        Me.SetValue(ConfigQuestionSetDAL.COL_NAME_PURPOSE_CODE, Value)
+    '    End Set
+    'End Property
 
     <ValueMandatory("")>
     Public Property QuestionSetCode() As String
@@ -327,7 +342,7 @@
     Public Class ConfigQuestionSetSearchDV
         Inherits DataView
 
-        Public Const COL_QUESTION_SET_CONFIG_ID As String = "QUESTION_SET_CONFIG_ID"
+        Public Const COL_QUESTION_SET_CONFIG_ID As String = "CONFIG_QUESTION_SET_ID"
         Public Const COL_COMPANY_GROUP_ID As String = "company_group_id"
         Public Const COL_COMPANY_GROUP_DESC As String = "company_group_desc"
         Public Const COL_COMPANY_ID As String = "company_id"
@@ -336,17 +351,18 @@
         Public Const COL_DEALER_GROUP_DESC As String = "dealer_group_desc"
         Public Const COL_DEALER_ID As String = "dealer_id"
         Public Const COL_DEALER_DESC As String = "dealer_desc"
+        Public Const COL_PRODUCT_CODE_ID As String = "product_code_id"
         Public Const COL_PRODUCT_CODE As String = "product_code"
         Public Const COL_COVERAGE_TYPE_ID As String = "coverage_type_id"
         Public Const COL_COVERAGE_TYPE_DESC As String = "coverage_type_desc"
-        Public Const COL_COVERAGE_CONSQ_DAMAGE_ID As String = "coverage_consq_damage_id"
-        Public Const COL_COVERAGE_CONSQ_DAMAGE_DESC As String = "coverage_consq_damage_desc"
+        Public Const COL_COVERAGE_CONSQ_DAMAGE_ID As String = "coverage_conseq_damage_id"
+        Public Const COL_COVERAGE_CONSQ_DAMAGE_DESC As String = "coverage_conseq_damage_desc"
         Public Const COL_RISK_TYPE_ID As String = "risk_type_id"
         Public Const COL_RISK_TYPE_DESC As String = "risk_type_desc"
-        Public Const COL_PURPOSE_ID As String = "purpose_id"
-        Public Const COL_PURPOSE_DESC As String = "purpose_desc"
-        Public Const COL_QUESTION_SET_CODE As String = "purpose_id"
-        Public Const COL_QUESTION_SET_DESC As String = "purpose_desc"
+        Public Const COL_PURPOSE_XCD As String = "PURPOSE_XCD"
+        Public Const COL_PURPOSE_DESC As String = "PURPOSE_XCD_DESC"
+        Public Const COL_QUESTION_SET_CODE As String = "QUESTION_SET_CODE"
+        Public Const COL_QUESTION_SET_DESC As String = "QUESTION_SET_DESC"
 
         Public Sub New()
             MyBase.New()
@@ -376,6 +392,7 @@
                 dt.Columns.Add(ConfigQuestionSetSearchDV.COL_DEALER_GROUP_DESC, GetType(String))
                 dt.Columns.Add(ConfigQuestionSetSearchDV.COL_DEALER_ID, guidTemp.ToByteArray.GetType)
                 dt.Columns.Add(ConfigQuestionSetSearchDV.COL_DEALER_DESC, GetType(String))
+                dt.Columns.Add(ConfigQuestionSetSearchDV.COL_PRODUCT_CODE_ID, guidTemp.ToByteArray.GetType)
                 dt.Columns.Add(ConfigQuestionSetSearchDV.COL_PRODUCT_CODE, GetType(String))
                 dt.Columns.Add(ConfigQuestionSetSearchDV.COL_COVERAGE_TYPE_ID, guidTemp.ToByteArray.GetType)
                 dt.Columns.Add(ConfigQuestionSetSearchDV.COL_COVERAGE_TYPE_DESC, GetType(String))
@@ -383,7 +400,7 @@
                 dt.Columns.Add(ConfigQuestionSetSearchDV.COL_COVERAGE_CONSQ_DAMAGE_DESC, GetType(String))
                 dt.Columns.Add(ConfigQuestionSetSearchDV.COL_RISK_TYPE_ID, guidTemp.ToByteArray.GetType)
                 dt.Columns.Add(ConfigQuestionSetSearchDV.COL_RISK_TYPE_DESC, GetType(String))
-                dt.Columns.Add(ConfigQuestionSetSearchDV.COL_PURPOSE_ID, guidTemp.ToByteArray.GetType)
+                dt.Columns.Add(ConfigQuestionSetSearchDV.COL_PURPOSE_XCD, guidTemp.ToByteArray.GetType)
                 dt.Columns.Add(ConfigQuestionSetSearchDV.COL_PURPOSE_DESC, GetType(String))
                 dt.Columns.Add(ConfigQuestionSetSearchDV.COL_QUESTION_SET_CODE, GetType(String))
                 dt.Columns.Add(ConfigQuestionSetSearchDV.COL_QUESTION_SET_DESC, GetType(String))
@@ -397,12 +414,12 @@
             row(ConfigQuestionSetSearchDV.COL_COMPANY_ID) = NewBO.CompanyId.ToByteArray
             row(ConfigQuestionSetSearchDV.COL_DEALER_GROUP_ID) = NewBO.DealerGroupId.ToByteArray
             row(ConfigQuestionSetSearchDV.COL_DEALER_ID) = NewBO.DealerId.ToByteArray
-            row(ConfigQuestionSetSearchDV.COL_PRODUCT_CODE) = NewBO.ProductCode
+            row(ConfigQuestionSetSearchDV.COL_PRODUCT_CODE_ID) = NewBO.ProductCodeId.ToByteArray
             row(ConfigQuestionSetSearchDV.COL_COVERAGE_TYPE_ID) = NewBO.CoverageTypeId.ToByteArray
             row(ConfigQuestionSetSearchDV.COL_COVERAGE_CONSQ_DAMAGE_ID) = NewBO.CoverageConsqDamageId.ToByteArray
             row(ConfigQuestionSetSearchDV.COL_RISK_TYPE_ID) = NewBO.RiskTypeId.ToByteArray
-            row(ConfigQuestionSetSearchDV.COL_PURPOSE_ID) = NewBO.CoverageTypeId.ToByteArray
-            row(ConfigQuestionSetSearchDV.COL_QUESTION_SET_CODE) = NewBO.ProductCode
+            row(ConfigQuestionSetSearchDV.COL_PURPOSE_XCD) = NewBO.PurposeXCD
+            row(ConfigQuestionSetSearchDV.COL_QUESTION_SET_CODE) = NewBO.QuestionSetCode
 
             dt.Rows.Add(row)
             If blnEmptyTbl Then dv = New ConfigQuestionSetSearchDV(dt)
@@ -410,12 +427,12 @@
     End Sub
 
     Public Shared Function getList(ByVal CompGrpID As Guid, ByVal CompanyID As Guid, ByVal DealerGrpID As Guid, ByVal DealerID As Guid,
-                                   ByVal strProdCode As String, ByVal RiskTypeID As Guid, ByVal CoverageTypeID As Guid,
+                                   ByVal ProductCodeID As Guid, ByVal RiskTypeID As Guid, ByVal CoverageTypeID As Guid,
                                    ByVal CoverageConsqDamageID As Guid, ByVal strPurposeXCD As String, ByVal strQuestionSetCode As String) As ConfigQuestionSetSearchDV
         Try
             Dim dal As New ConfigQuestionSetDAL
             Return New ConfigQuestionSetSearchDV(dal.LoadList(CompGrpID:=CompGrpID, CompanyID:=CompanyID, DealerGrpID:=DealerGrpID, DealerID:=DealerID,
-                                                              strProdCode:=strProdCode, CoverageTypeID:=CoverageTypeID, CoverageConseqDamageID:=CoverageConsqDamageID,
+                                                              ProductCodeID:=ProductCodeID, CoverageTypeID:=CoverageTypeID, CoverageConseqDamageID:=CoverageConsqDamageID,
                                                               RiskTypeID:=RiskTypeID, strPurposeXCD:=strPurposeXCD, strQuestionSetCode:=strQuestionSetCode,
                                                               LanguageID:=ElitaPlusIdentity.Current.ActiveUser.LanguageId, networkID:=ElitaPlusIdentity.Current.ActiveUser.NetworkId).Tables(0))
         Catch ex As Assurant.ElitaPlus.DALObjects.DataBaseAccessException
@@ -435,7 +452,7 @@
         Public Overrides Function IsValid(ByVal valueToCheck As Object, ByVal objectToValidate As Object) As Boolean
             Dim obj As ConfigQuestionSet = CType(objectToValidate, ConfigQuestionSet)
 
-            If String.IsNullOrEmpty(obj.ProductCode) And (Guid.Empty = obj.DealerId) Then
+            If (Guid.Empty = obj.ProductCodeId) And (Guid.Empty = obj.DealerId) Then
                 Return False
             Else
                 Return True
@@ -455,7 +472,7 @@
             Dim obj As ConfigQuestionSet = CType(objectToValidate, ConfigQuestionSet)
 
             If Not obj.CoverageTypeId = Guid.Empty Then
-                If obj.DealerId = Guid.Empty Or String.IsNullOrEmpty(obj.ProductCode) Then
+                If obj.DealerId = Guid.Empty Or obj.ProductCodeId = Guid.Empty Then
                     Return False
                 Else
                     Return True

@@ -16,7 +16,7 @@ Namespace Tables
         Public Const PAGETAB As String = "ADMIN"
         Public Const SUMMARYTITLE As String = "SEARCH"
 
-        Private Const GRID_COL_QUESTION_SET_CONFIG_ID_IDX As Integer = 0
+        Private Const GRID_COL_CONFIG_QUESTION_SET_ID_IDX As Integer = 0
 
         Private Const GRID_CTRL_NAME_LABLE_CONFIG_QUESTION_SET_ID As String = "lblConfigQuestionSetID"
 
@@ -40,7 +40,7 @@ Namespace Tables
             Public searchCompany As Guid = Guid.Empty
             Public searchDealerGrp As Guid = Guid.Empty
             Public searchDealer As Guid = Guid.Empty
-            Public searchProductCode As String = String.Empty
+            Public searchProductCode As Guid = Guid.Empty
             Public searchRiskType As Guid = Guid.Empty
             Public searchCoverageType As Guid = Guid.Empty
             Public searchCoverageConsqDamage As Guid = Guid.Empty
@@ -173,7 +173,7 @@ Namespace Tables
                     .searchCompany = Guid.Empty
                     .searchDealerGrp = Guid.Empty
                     .searchDealer = Guid.Empty
-                    .searchProductCode = String.Empty
+                    .searchProductCode = Guid.Empty
                     .searchCoverageType = Guid.Empty
                     .searchCoverageConsqDamage = Guid.Empty
                     .searchQuestionSetCode = String.Empty
@@ -197,7 +197,7 @@ Namespace Tables
                     .searchCompany = GetSelectedItem(ddlSearchCompany)
                     .searchDealerGrp = GetSelectedItem(ddlSearchDealerGroup)
                     .searchDealer = GetSelectedItem(ddlSearchDealer)
-                    .searchProductCode = GetSelectedValue(ddlSearchProductCode)
+                    .searchProductCode = GetSelectedItem(ddlSearchProductCode)
                     .searchCoverageType = GetSelectedItem(ddlSearchCoverageType)
                     .searchCoverageConsqDamage = GetSelectedItem(ddlSearchCoverageConseqDamage)
                     .searchQuestionSetCode = txtSearchQuestionSetCode.Text.Trim.Trim
@@ -213,6 +213,10 @@ Namespace Tables
 #Region "Helper Functions"
         Protected Sub PopulateSearchFieldsFromState()
             Try
+                Dim textFun As Func(Of DataElements.ListItem, String) = Function(li As DataElements.ListItem)
+                                                                            Return li.Code + " - " + li.Translation
+                                                                        End Function
+
                 'CompanyGroup
                 Dim dv As DataView = LookupListNew.GetUserCompanyGroupList()
                 ddlSearchCompanyGroup.Items.Add(New System.Web.UI.WebControls.ListItem("", Guid.Empty.ToString))
@@ -230,37 +234,38 @@ Namespace Tables
                                                   Select x).ToArray()
 
                 Me.ddlSearchCompany.Populate(filteredList, New PopulateOptions() With
-                    {
-                        .AddBlankItem = True
-                    })
+                {
+                    .AddBlankItem = True
+                })
 
                 'DealerGroup
                 Dim oDealerGroupList = GetDealerGroupListByCompanyForUser()
                 Me.ddlSearchDealerGroup.Populate(oDealerGroupList, New PopulateOptions() With
-                                                     {
-                                                     .AddBlankItem = True,
-                                                     .SortFunc = AddressOf .GetCode
-                                                     })
+                {
+                    .AddBlankItem = True,
+                    .SortFunc = AddressOf .GetCode
+                })
 
                 'Dealer
                 Dim oDealerList = GetDealerListByCompanyForUser()
                 Me.ddlSearchDealer.Populate(oDealerList, New PopulateOptions() With
-                    {
-                        .AddBlankItem = True
-                    })
+                {
+                    .AddBlankItem = True
+                })
 
                 'ProductCode
                 Dim oProductCodeList = GetProductCodeListByCompanyForUser()
                 Me.ddlSearchProductCode.Populate(oProductCodeList, New PopulateOptions() With
-                    {
-                        .AddBlankItem = True
-                    })
+                {
+                    .AddBlankItem = True,
+                    .TextFunc = textFun
+                })
 
                 'Coverage Type
                 ddlSearchCoverageType.Populate(CommonConfigManager.Current.ListManager.GetList("CTYP", Thread.CurrentPrincipal.GetLanguageCode()), New PopulateOptions() With
-                    {
-                        .AddBlankItem = True
-                    })
+                {
+                    .AddBlankItem = True
+                })
 
                 'Risk Type
                 Dim listcontext As ListContext = New ListContext()
@@ -274,15 +279,16 @@ Namespace Tables
 
                 'Coverage Consequestional Damage
                 ddlSearchCoverageConseqDamage.Populate(CommonConfigManager.Current.ListManager.GetList("PERILTYP", Thread.CurrentPrincipal.GetLanguageCode()), New PopulateOptions() With
-                    {
-                        .AddBlankItem = True
-                    })
+                {
+                    .AddBlankItem = True
+                })
 
                 'Purpose
                 ddlSearchPurposeCode.Populate(CommonConfigManager.Current.ListManager.GetList("CASEPUR", Thread.CurrentPrincipal.GetLanguageCode()), New PopulateOptions() With
                     {
+                        .BlankItemValue = String.Empty,
                         .AddBlankItem = True,
-                        .TextFunc = AddressOf .GetDescription,
+                        .TextFunc = textFun,
                         .ValueFunc = AddressOf .GetExtendedCode
                     })
 
@@ -302,7 +308,7 @@ Namespace Tables
                     SetSelectedItem(ddlSearchDealer, Me.State.searchDealer)
                 End If
 
-                If Me.State.searchProductCode <> String.Empty Then
+                If Me.State.searchProductCode <> Guid.Empty Then
                     SetSelectedItem(ddlSearchProductCode, Me.State.searchProductCode)
                 End If
 
@@ -406,7 +412,7 @@ Namespace Tables
             With State
                 If ((.searchDV Is Nothing) OrElse (.HasDataChanged)) Then
                     .searchDV = ConfigQuestionSet.getList(CompGrpID:= .searchCompanyGrp, CompanyID:= .searchCompany, DealerGrpID:= .searchDealerGrp, DealerID:= .searchDealer,
-                                                  strProdCode:= .searchProductCode, CoverageConsqDamageID:= .searchCoverageConsqDamage, CoverageTypeID:= .searchCoverageType,
+                                                  ProductCodeID:= .searchProductCode, CoverageConsqDamageID:= .searchCoverageConsqDamage, CoverageTypeID:= .searchCoverageType,
                                                   RiskTypeID:= .searchRiskType, strPurposeXCD:= .searchPurposeCode, strQuestionSetCode:= .searchQuestionSetCode)
                     blnNewSearch = True
                 End If
@@ -522,7 +528,7 @@ Namespace Tables
                 If (e.CommandName = SELECT_COMMAND) Then
                     index = CInt(e.CommandArgument)
 
-                    Me.State.QuestionSetConfigID = New Guid(CType(Me.Grid.Rows(index).Cells(GRID_COL_QUESTION_SET_CONFIG_ID_IDX).FindControl(GRID_CTRL_NAME_LABLE_CONFIG_QUESTION_SET_ID), Label).Text)
+                    Me.State.QuestionSetConfigID = New Guid(CType(Me.Grid.Rows(index).Cells(GRID_COL_CONFIG_QUESTION_SET_ID_IDX).FindControl(GRID_CTRL_NAME_LABLE_CONFIG_QUESTION_SET_ID), Label).Text)
                     Me.callPage(ConfigQuestionSetForm.URL, Me.State.QuestionSetConfigID)
                 End If
             Catch ex As Exception

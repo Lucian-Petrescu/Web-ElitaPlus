@@ -12,7 +12,7 @@ Option Explicit On
 
 Namespace Tables
     
-    Partial Public Class QuestionSetConfigForm
+    Partial Public Class ConfigQuestionSetForm
         
         '''<summary>
         '''lbl1 control.
@@ -159,13 +159,13 @@ Namespace Tables
         Protected WithEvents ddlCoverageType As Global.System.Web.UI.WebControls.DropDownList
         
         '''<summary>
-        '''lblEventType control.
+        '''lblCoverageConseqDamage control.
         '''</summary>
         '''<remarks>
         '''Auto-generated field.
         '''To modify move field declaration from designer file to code-behind file.
         '''</remarks>
-        Protected WithEvents lblEventType As Global.System.Web.UI.WebControls.Label
+        Protected WithEvents lblCoverageConseqDamage As Global.System.Web.UI.WebControls.Label
         
         '''<summary>
         '''ddlCoverageConseqDamage control.
@@ -175,6 +175,24 @@ Namespace Tables
         '''To modify move field declaration from designer file to code-behind file.
         '''</remarks>
         Protected WithEvents ddlCoverageConseqDamage As Global.System.Web.UI.WebControls.DropDownList
+        
+        '''<summary>
+        '''lblRiskType control.
+        '''</summary>
+        '''<remarks>
+        '''Auto-generated field.
+        '''To modify move field declaration from designer file to code-behind file.
+        '''</remarks>
+        Protected WithEvents lblRiskType As Global.System.Web.UI.WebControls.Label
+        
+        '''<summary>
+        '''ddlRiskType control.
+        '''</summary>
+        '''<remarks>
+        '''Auto-generated field.
+        '''To modify move field declaration from designer file to code-behind file.
+        '''</remarks>
+        Protected WithEvents ddlRiskType As Global.System.Web.UI.WebControls.DropDownList
         
         '''<summary>
         '''lblPurposeCode control.
@@ -195,13 +213,13 @@ Namespace Tables
         Protected WithEvents ddlPurpose As Global.System.Web.UI.WebControls.DropDownList
         
         '''<summary>
-        '''lblTask control.
+        '''lblQuestionSetCode control.
         '''</summary>
         '''<remarks>
         '''Auto-generated field.
         '''To modify move field declaration from designer file to code-behind file.
         '''</remarks>
-        Protected WithEvents lblTask As Global.System.Web.UI.WebControls.Label
+        Protected WithEvents lblQuestionSetCode As Global.System.Web.UI.WebControls.Label
         
         '''<summary>
         '''txtQuestionSetCode control.

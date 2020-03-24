@@ -1,4 +1,4 @@
-﻿<%@ Page Title="" Language="vb" AutoEventWireup="false" MasterPageFile="../Navigation/masters/ElitaBase.Master" Theme="Default" CodeBehind="ConfigQuestionSetForm.aspx.vb" Inherits="Assurant.ElitaPlus.ElitaPlusWebApp.Tables.QuestionSetConfigForm" %>
+﻿<%@ Page Title="" Language="vb" AutoEventWireup="false" MasterPageFile="../Navigation/masters/ElitaBase.Master" Theme="Default" CodeBehind="ConfigQuestionSetForm.aspx.vb" Inherits="Assurant.ElitaPlus.ElitaPlusWebApp.Tables.ConfigQuestionSetForm" %>
 
 <asp:Content ID="Content1" ContentPlaceHolderID="HeadPlaceHolder" runat="server">
 </asp:Content>
@@ -63,7 +63,7 @@
                             <asp:DropDownList ID="ddlCoverageType" runat="server" AutoPostBack="true" SkinID="MediumDropDown" TabIndex="7"></asp:DropDownList>
                         </td>
                         <td nowrap="nowrap" align="right">
-                            <asp:Label ID="lblEventType" runat="server" Font-Bold="False">COVERAGE_CONSEQ_DAMAGE:</asp:Label>
+                            <asp:Label ID="lblCoverageConseqDamage" runat="server" Font-Bold="False">COVERAGE_CONSEQ_DAMAGE:</asp:Label>
                         </td>
                         <td nowrap="nowrap">
                             <asp:DropDownList ID="ddlCoverageConseqDamage" runat="server" AutoPostBack="true" TabIndex="8" SkinID="MediumDropDown"></asp:DropDownList>
@@ -71,16 +71,24 @@
                     </tr>
                     <tr>
                         <td nowrap="nowrap" align="right">
+                            <asp:Label ID="lblRiskType" runat="server" Font-Bold="False">RISK_TYPE:</asp:Label>
+                        </td>
+                        <td>
+                            <asp:DropDownList ID="ddlRiskType" runat="server" AutoPostBack="true" SkinID="MediumDropDown" TabIndex="9"></asp:DropDownList>
+                        </td>
+                        <td nowrap="nowrap" align="right">
                             <asp:Label ID="lblPurposeCode" runat="server" Font-Bold="False">PURPOSE:</asp:Label>
                         </td>
                         <td>
-                            <asp:DropDownList ID="ddlPurpose" runat="server" AutoPostBack="true" SkinID="MediumDropDown" TabIndex="9"></asp:DropDownList>
+                            <asp:DropDownList ID="ddlPurpose" runat="server" AutoPostBack="true" SkinID="MediumDropDown" TabIndex="10"></asp:DropDownList>
                         </td>
+                    </tr>
+                    <tr>
                         <td nowrap="nowrap" align="right">
-                            <asp:Label ID="lblTask" runat="server" Font-Bold="False">QUESTION_SET_CODE</asp:Label>
+                            <asp:Label ID="lblQuestionSetCode" runat="server" Font-Bold="False">QUESTION_SET_CODE</asp:Label>
                         </td>
                         <td nowrap="nowrap">
-                            <asp:TextBox ID="txtQuestionSetCode" runat="server" SkinID="MediumTextBox" TabIndex="10"></asp:TextBox>
+                            <asp:TextBox ID="txtQuestionSetCode" runat="server" SkinID="MediumTextBox" TabIndex="11"></asp:TextBox>
                         </td>
                     </tr>
                 </table>

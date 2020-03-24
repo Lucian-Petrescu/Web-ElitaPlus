@@ -95,7 +95,7 @@
             <Columns>
                 <asp:TemplateField Visible="False">
                     <ItemTemplate>
-                        <asp:Label ID="lblEventTaskID" Text='<%# GetGuidStringFromByteArray(Container.DataItem("CONFIG_QUESTION_SET_ID")) %>'
+                        <asp:Label ID="lblConfigQuestionSetID" Text='<%# GetGuidStringFromByteArray(Container.DataItem("CONFIG_QUESTION_SET_ID")) %>'
                             runat="server">
                         </asp:Label>
                     </ItemTemplate>
@@ -106,14 +106,14 @@
                             ImageUrl="~/App_Themes/Default/Images/edit.png" CommandArgument="<%#Container.DisplayIndex %>" />
                     </ItemTemplate>
                 </asp:TemplateField>
-                <asp:TemplateField Visible="True" HeaderText="QUESTION_SET" SortExpression="QUESTION_SET_CODE_DESC">
+                <asp:TemplateField Visible="True" HeaderText="QUESTION_SET" SortExpression="QUESTION_SET_DESC">
                     <ItemTemplate>
-                        <asp:Label ID="lblQuestionSet" Text='<%#Container.DataItem("QUESTION_SET_CODE_DESC")%>' runat="server" />
+                        <asp:Label ID="lblQuestionSet" Text='<%#Container.DataItem("QUESTION_SET_DESC")%>' runat="server" />
                     </ItemTemplate>
                 </asp:TemplateField>
-                <asp:TemplateField Visible="True" HeaderText="PURPOSE" SortExpression="PURPOSE_DESC">
+                <asp:TemplateField Visible="True" HeaderText="PURPOSE" SortExpression="PURPOSE_XCD_DESC">
                     <ItemTemplate>
-                        <asp:Label ID="lblQuestionSet" Text='<%#Container.DataItem("PURPOSE_DESC")%>' runat="server" />
+                        <asp:Label ID="lblPurpose" Text='<%#Container.DataItem("PURPOSE_XCD_DESC")%>' runat="server" />
                     </ItemTemplate>
                 </asp:TemplateField>
                 <asp:TemplateField Visible="True" HeaderText="COMPANY_GROUP" SortExpression="COMPANY_GROUP_DESC">
@@ -144,17 +144,17 @@
                 </asp:TemplateField>
                 <asp:TemplateField Visible="True" HeaderText="RISK_TYPE" SortExpression="RISK_TYPE_DESC">
                     <ItemTemplate>
-                        <asp:Label ID="lblEventType" Text='<%#Container.DataItem("RISK_TYPE_DESC")%>' runat="server" />
+                        <asp:Label ID="lblRiskType" Text='<%#Container.DataItem("RISK_TYPE_DESC")%>' runat="server" />
                     </ItemTemplate>
                 </asp:TemplateField>
                 <asp:TemplateField Visible="True" HeaderText="COVERAGE_TYPE" SortExpression="COVERAGE_TYPE_DESC">
                     <ItemTemplate>
-                        <asp:Label ID="lblEventArgument" Text='<%#Container.DataItem("COVERAGE_TYPE_DESC")%>' runat="server" />
+                        <asp:Label ID="lblCoverageType" Text='<%#Container.DataItem("COVERAGE_TYPE_DESC")%>' runat="server" />
                     </ItemTemplate>
                 </asp:TemplateField>
                 <asp:TemplateField Visible="True" HeaderText="COVERAGE_CONSEQ_DAMAGE" SortExpression="COVERAGE_CONSEQ_DAMAGE_DESC">
                     <ItemTemplate>
-                        <asp:Label ID="lblTask" Text='<%#Container.DataItem("COVERAGE_CONSEQ_DAMAGE_DESC")%>' runat="server" />
+                        <asp:Label ID="lblCoverageConseqDamage" Text='<%#Container.DataItem("COVERAGE_CONSEQ_DAMAGE_DESC")%>' runat="server" />
                     </ItemTemplate>
                 </asp:TemplateField>
             </Columns>

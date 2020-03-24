@@ -16,8 +16,7 @@
     Public Const COL_NAME_DEVICE_TYPE_ID As String = "device_type_id"
     Public Const COL_NAME_COVERAGE_TYPE_ID As String = "coverage_type_id"
     Public Const COL_NAME_COVERAGE_CONSEQ_DAMAGE_ID As String = "coverage_conseq_damage_id"
-    Public Const COL_NAME_PURPOSE_ID As String = "purpose_id"
-    Public Const COL_NAME_PURPOSE_CODE As String = "purpose_xcd"
+    Public Const COL_NAME_PURPOSE_XCD As String = "purpose_xcd"
     Public Const COL_NAME_QUESTION_SET_CODE As String = "question_set_code"
 
     Public Const COL_NAME_CREATED_DATE As String = "created_date"
@@ -56,7 +55,7 @@
     End Sub
 
     Public Function LoadList(ByVal CompGrpID As Guid, ByVal CompanyID As Guid, ByVal DealerGrpID As Guid, ByVal DealerID As Guid,
-                             ByVal strProdCode As String, ByVal CoverageTypeID As Guid, ByVal CoverageConseqDamageID As Guid,
+                             ByVal ProductCodeID As Guid, ByVal CoverageTypeID As Guid, ByVal CoverageConseqDamageID As Guid,
                              ByVal RiskTypeID As Guid, ByVal strPurposeXCD As String, ByVal strQuestionSetCode As String, ByVal LanguageID As Guid,
                              ByVal networkID As String) As DataSet
 
@@ -84,7 +83,9 @@
             cmd.AddParameter("pi_dealer_id", OracleDbType.Raw, DealerID.ToByteArray())
         End If
 
-        OracleDbHelper.AddParameter(cmd, "pi_product_code", OracleDbType.Varchar2, Me.GetFormattedSearchStringForSQL(strProdCode), ParameterDirection.Input)
+        If ProductCodeID <> Guid.Empty Then
+            cmd.AddParameter("pi_product_code_id", OracleDbType.Raw, ProductCodeID.ToByteArray())
+        End If
 
         If CoverageTypeID <> Guid.Empty Then
             cmd.AddParameter("pi_coverage_type_id", OracleDbType.Raw, CoverageTypeID.ToByteArray())
@@ -98,9 +99,13 @@
             cmd.AddParameter("pi_risk_type_id", OracleDbType.Raw, RiskTypeID.ToByteArray())
         End If
 
-        OracleDbHelper.AddParameter(cmd, "pi_purpose_xcd", OracleDbType.Varchar2, Me.GetFormattedSearchStringForSQL(strPurposeXCD), ParameterDirection.Input)
+        If Not String.IsNullOrWhiteSpace(strPurposeXCD) Then
+            OracleDbHelper.AddParameter(cmd, "pi_purpose_xcd", OracleDbType.Varchar2, Me.GetFormattedSearchStringForSQL(strPurposeXCD), ParameterDirection.Input)
+        End If
 
-        OracleDbHelper.AddParameter(cmd, "pi_question_set_code", OracleDbType.Varchar2, Me.GetFormattedSearchStringForSQL(strQuestionSetCode), ParameterDirection.Input)
+        If Not String.IsNullOrWhiteSpace(strQuestionSetCode) Then
+            OracleDbHelper.AddParameter(cmd, "pi_question_set_code", OracleDbType.Varchar2, Me.GetFormattedSearchStringForSQL(strQuestionSetCode), ParameterDirection.Input)
+        End If
 
         cmd.AddParameter("po_resultcursor", OracleDbType.RefCursor, direction:=ParameterDirection.Output)
 
@@ -135,7 +140,7 @@
             .AddParameter(parameterName:="pi_coverage_type_id", dbType:=OracleDbType.Raw, sourceColumn:=COL_NAME_COVERAGE_TYPE_ID, direction:=ParameterDirection.Input)
             .AddParameter(parameterName:="pi_coverage_consq_damage_id", dbType:=OracleDbType.Raw, sourceColumn:=COL_NAME_COVERAGE_CONSEQ_DAMAGE_ID, direction:=ParameterDirection.Input)
             .AddParameter(parameterName:="pi_risk_type_id", dbType:=OracleDbType.Raw, sourceColumn:=COL_NAME_RISK_TYPE_ID, direction:=ParameterDirection.Input)
-            .AddParameter(parameterName:="pi_purpose_id", dbType:=OracleDbType.Raw, sourceColumn:=COL_NAME_PURPOSE_ID, direction:=ParameterDirection.Input)
+            .AddParameter(parameterName:="pi_purpose_xcd", dbType:=OracleDbType.Varchar2, sourceColumn:=COL_NAME_PURPOSE_XCD, direction:=ParameterDirection.Input)
             .AddParameter(parameterName:="pi_question_set_code", dbType:=OracleDbType.Varchar2, sourceColumn:=COL_NAME_QUESTION_SET_CODE, direction:=ParameterDirection.Input)
 
             .AddParameter(parameterName:="pi_modified_by", dbType:=OracleDbType.Varchar2, sourceColumn:=COL_NAME_MODIFIED_BY, direction:=ParameterDirection.Input)
@@ -161,7 +166,7 @@
             .AddParameter(parameterName:="pi_coverage_type_id", dbType:=OracleDbType.Raw, sourceColumn:=COL_NAME_COVERAGE_TYPE_ID, direction:=ParameterDirection.Input)
             .AddParameter(parameterName:="pi_coverage_consq_damage_id", dbType:=OracleDbType.Raw, sourceColumn:=COL_NAME_COVERAGE_CONSEQ_DAMAGE_ID, direction:=ParameterDirection.Input)
             .AddParameter(parameterName:="pi_risk_type_id", dbType:=OracleDbType.Raw, sourceColumn:=COL_NAME_RISK_TYPE_ID, direction:=ParameterDirection.Input)
-            .AddParameter(parameterName:="pi_purpose_id", dbType:=OracleDbType.Raw, sourceColumn:=COL_NAME_PURPOSE_ID, direction:=ParameterDirection.Input)
+            .AddParameter(parameterName:="pi_purpose_xcd", dbType:=OracleDbType.Varchar2, sourceColumn:=COL_NAME_PURPOSE_XCD, direction:=ParameterDirection.Input)
             .AddParameter(parameterName:="pi_question_set_code", dbType:=OracleDbType.Varchar2, sourceColumn:=COL_NAME_QUESTION_SET_CODE, direction:=ParameterDirection.Input)
 
             .AddParameter(parameterName:="pi_created_by", dbType:=OracleDbType.Varchar2, sourceColumn:=COL_NAME_CREATED_BY, direction:=ParameterDirection.Input, size:=30)
