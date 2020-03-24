@@ -4,6 +4,7 @@ Imports Assurant.Elita.CommonConfiguration
 Imports Assurant.ElitaPlus.Security
 Imports Assurant.Elita.Web.Forms
 Imports AjaxControlToolkit
+Imports System.Collections.Generic
 
 Public Class PriceListDetailForm
     Inherits ElitaPlusSearchPage
@@ -93,6 +94,7 @@ Public Class PriceListDetailForm
 
 
 #End Region
+    Public isPendingApprovalRefresh As Boolean = True
 
 #Region "Page Return Type"
     Public Class ReturnType
@@ -1612,8 +1614,26 @@ Public Class PriceListDetailForm
             Me.Grid.PageSize = Me.State.PageSize
             SetPageAndSelectedIndexFromGuid(dv, Me.State.PriceListDetailSelectedChildId, Me.Grid, Me.State.PageIndex)
 
-            If Not txtSearch.Text = "" Then 'requested_by
-                dv.RowFilter = "requested_by like '%" & txtSearch.Text & "%'"
+            If dv.Table.Rows.Count > 0 Then
+                If Not Page.IsPostBack Then
+                    Dim requestedByList As New List(Of String)
+                    For Each dr As DataRow In dv.Table(0).Table.Rows
+                        requestedByList.Add(dr("requested_by").ToString())
+                    Next
+                    ddlsearch.DataSource = requestedByList.Distinct()
+                    ddlsearch.DataBind()
+                    ddlsearch.Items.Insert(0, "select")
+                End If
+            Else
+                ddlsearch.Items.Clear()
+                ddlsearch.Items.Insert(0, "select")
+            End If
+
+            Me.Grid.PageSize = Me.State.PageSize
+            SetPageAndSelectedIndexFromGuid(dv, Me.State.PriceListDetailSelectedChildId, Me.Grid, Me.State.PageIndex)
+
+            If Not ddlsearch.SelectedValue = "select" Then 'requested_by
+                dv.RowFilter = "requested_by = '" & ddlsearch.SelectedValue & "'"
                 Me.Grid.DataSource = dv
             Else
                 Me.Grid.DataSource = dv 'Me.State.DetailSearchDV
@@ -1633,14 +1653,14 @@ Public Class PriceListDetailForm
             If dv.Count = 0 Then
                 ControlMgr.SetVisibleControl(Me, trPageSize, False)
                 'ControlMgr.SetVisibleControl(Me, cboPageSize, False)
-                ControlMgr.SetVisibleControl(Me, btnSubmitforApproval, False)
+                ControlMgr.SetEnableControl(Me, btnSubmitforApproval, False)
             Else
                 dv.RowFilter = "status_xcd='PL_RECON_PROCESS-PENDINGSUBMISSION'"
                 Dim pendingSubmissionRows = dv.Count
                 If pendingSubmissionRows = 0 Then
-                    ControlMgr.SetVisibleControl(Me, btnSubmitforApproval, False)
+                    ControlMgr.SetEnableControl(Me, btnSubmitforApproval, False)
                 Else
-                    ControlMgr.SetVisibleControl(Me, btnSubmitforApproval, True)
+                    ControlMgr.SetEnableControl(Me, btnSubmitforApproval, True)
                 End If
             End If
 
@@ -1912,10 +1932,35 @@ Public Class PriceListDetailForm
             SetPageAndSelectedIndexFromGuid(dv, Me.State.PriceListDetailSelectedChildId, Me.gvPendingApprovals, Me.State.PageIndex)
 
             dv.RowFilter = "status_xcd='PL_RECON_PROCESS-PENDINGAPPROVAL'"
-            If Not txtpaSearch.Text = "" Then
-                dv.RowFilter = "requested_by like '%" & txtpaSearch.Text & "%'"
+            If dv.Table.Rows.Count > 0 Then
+                If isPendingApprovalRefresh = True Then
+                    Dim requestedByList As New List(Of String)
+                    For Each dr As DataRow In dv.Table(0).Table.Rows
+                        If dr("status_xcd").ToString() = "PL_RECON_PROCESS-PENDINGAPPROVAL" Then
+                            requestedByList.Add(dr("requested_by").ToString())
+                        End If
+                    Next
+                    ddlpasearch.DataSource = requestedByList.Distinct()
+                    ddlpasearch.DataBind()
+                    ddlpasearch.Items.Insert(0, "select")
+                    'Else
+                    '    ddlpasearch.Items.Clear()
+                    '    ddlpasearch.Items.Insert(0, "select")
+                End If
+            Else
+                ddlpasearch.Items.Clear()
+                ddlpasearch.Items.Insert(0, "select")
+            End If
+
+            Me.gvPendingApprovals.PageSize = Me.State.PageSize
+            SetPageAndSelectedIndexFromGuid(dv, Me.State.PriceListDetailSelectedChildId, Me.gvPendingApprovals, Me.State.PageIndex)
+
+
+            If Not ddlpasearch.SelectedValue = "select" Then
+                dv.RowFilter = "requested_by = '" & ddlpasearch.SelectedValue & "' and status_xcd='PL_RECON_PROCESS-PENDINGAPPROVAL'"
                 Me.gvPendingApprovals.DataSource = dv
             Else
+                dv.RowFilter = "status_xcd='PL_RECON_PROCESS-PENDINGAPPROVAL'"
                 Me.gvPendingApprovals.DataSource = dv
             End If
             Me.gvPendingApprovals.DataSource = dv
@@ -1926,16 +1971,16 @@ Public Class PriceListDetailForm
             ControlMgr.SetVisibleControl(Me, trPageSizePendingApprovals, Me.gvPendingApprovals.Visible)
             ControlMgr.SetVisibleControl(Me, cboPageSizePendingApproval, Me.gvPendingApprovals.Visible)
             ControlMgr.SetVisibleControl(Me, lblPendingApprovalRecordCounts, True)
-            ControlMgr.SetVisibleControl(Me, btnApprove, True)
-            ControlMgr.SetVisibleControl(Me, btnReject, True)
+            ControlMgr.SetEnableControl(Me, btnApprove, True)
+            ControlMgr.SetEnableControl(Me, btnReject, True)
             Session("recCount") = dv.Count
             Me.lblPendingApprovalRecordCounts.Text = dv.Count & " " & TranslationBase.TranslateLabelOrMessage(Message.MSG_RECORDS_FOUND)
 
             If dv.Count = 0 Then
                 ControlMgr.SetVisibleControl(Me, trPageSizePendingApprovals, False)
                 'ControlMgr.SetVisibleControl(Me, cboPageSizePendingApproval, False)
-                ControlMgr.SetVisibleControl(Me, btnApprove, False)
-                ControlMgr.SetVisibleControl(Me, btnReject, False)
+                ControlMgr.SetEnableControl(Me, btnApprove, False)
+                ControlMgr.SetEnableControl(Me, btnReject, False)
             End If
         Catch ex As Exception
             Me.HandleErrors(ex, Me.MasterPage.MessageController)
@@ -2283,10 +2328,11 @@ Public Class PriceListDetailForm
     Protected Sub btnSubmitforApproval_Click(sender As Object, e As EventArgs) Handles btnSubmitforApproval.Click
 
         Try
+            isPendingApprovalRefresh = True
             Me.State.MyBO.ProcessPriceListByStatus(Me.State.MyBO.Id, String.Empty, Authentication.CurrentUser.NetworkId, "PL_RECON_PROCESS-PENDINGAPPROVAL")
             Me.PopulateGrid()
-            Me.PopulategvPendingApprovals()
             Me.MasterPage.MessageController.AddSuccess(ElitaPlus.ElitaPlusWebApp.Message.PRICE_LIST_SUBMISSION_PROCESS_SUCCESS)
+            Me.PopulategvPendingApprovals()
         Catch ex As Exception
             Me.MasterPage.MessageController.AddError(ElitaPlus.ElitaPlusWebApp.Message.PRICE_LIST_SUBMISSION_PROCESS_FAILED)
             Me.HandleErrors(ex, Me.MasterPage.MessageController)
@@ -2315,12 +2361,13 @@ Public Class PriceListDetailForm
             End If
             If isChecked Then
                 Me.State.MyBO.ProcessPriceListByStatus(Me.State.MyBO.Id, PricelistDetailIdList, Authentication.CurrentUser.NetworkId, "PL_RECON_PROCESS-APPROVED")
-                Me.PopulateGrid()
-                Me.PopulategvPendingApprovals()
                 Me.MasterPage.MessageController.AddSuccess(ElitaPlus.ElitaPlusWebApp.Message.PRICE_LIST_APPROVAL_PROCESS_SUCCESS)
             Else
                 Me.MasterPage.MessageController.AddError(ElitaPlus.ElitaPlusWebApp.Message.PRICE_LIST_APPROVE_OR_REJECT_CHECKBOX_NOT_SELECTED)
             End If
+            isPendingApprovalRefresh = True
+            Me.PopulateGrid()
+            Me.PopulategvPendingApprovals()
         Catch ex As Exception
             Me.MasterPage.MessageController.AddError(ElitaPlus.ElitaPlusWebApp.Message.PRICE_LIST_APPROVAL_PROCESS_FAILED)
             Me.HandleErrors(ex, Me.MasterPage.MessageController)
@@ -2349,12 +2396,13 @@ Public Class PriceListDetailForm
             End If
             If isChecked Then
                 Me.State.MyBO.ProcessPriceListByStatus(Me.State.MyBO.Id, PricelistDetailIdList, Authentication.CurrentUser.NetworkId, "PL_RECON_PROCESS-REJECTED")
-                Me.PopulateGrid()
-                Me.PopulategvPendingApprovals()
                 Me.MasterPage.MessageController.AddSuccess(ElitaPlus.ElitaPlusWebApp.Message.PRICE_LIST_REJECTION_PROCESS_SUCCESS)
             Else
                 Me.MasterPage.MessageController.AddError(ElitaPlus.ElitaPlusWebApp.Message.PRICE_LIST_APPROVE_OR_REJECT_CHECKBOX_NOT_SELECTED)
             End If
+            isPendingApprovalRefresh = True
+            Me.PopulateGrid()
+            Me.PopulategvPendingApprovals()
         Catch ex As Exception
             Me.MasterPage.MessageController.AddError(ElitaPlus.ElitaPlusWebApp.Message.PRICE_LIST_REJECTION_PROCESS_FAILED)
             Me.HandleErrors(ex, Me.MasterPage.MessageController)
@@ -2366,6 +2414,7 @@ Public Class PriceListDetailForm
     End Sub
 
     Protected Sub btnpaSearch_Click(sender As Object, e As EventArgs) Handles btnpaSearch.Click
+        isPendingApprovalRefresh = False
         Me.PopulategvPendingApprovals()
     End Sub
 End Class
