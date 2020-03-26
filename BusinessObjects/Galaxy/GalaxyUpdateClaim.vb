@@ -397,7 +397,7 @@ Public Class GalaxyUpdateClaim
 
                 If (IsReasonClosedCodeNull = False) Then
                     If (Me.StatusCode Is Nothing OrElse Me.StatusCode <> Codes.CLAIM_STATUS__CLOSED) Then
-                        Throw New BOValidationException("GalaxyUpdateClaim Error: ", Me.ERR_STATUS_CODE_AND_REASON_CLOSED_CODE_CONFLICT)
+                        Throw New BOValidationException("GalaxyUpdateClaim Error: ", ERR_STATUS_CODE_AND_REASON_CLOSED_CODE_CONFLICT)
                     Else
                         Dim dv As DataView = LookupListNew.GetReasonClosedLookupList(ElitaPlusIdentity.Current.ActiveUser.LanguageId)
                         claimBO.ReasonClosedId = LookupListNew.GetIdFromCode(dv, Me.ReasonClosedCode)
