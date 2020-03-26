@@ -155,13 +155,13 @@ Public Class GalaxyGetCertificateDetail
                         'remove the cert_id (guid) column from the certificate table
                         _CertificateDetailDataSet.Tables(0).Columns.Remove(Me.DATA_COL_NAME_CERT_ID)
                     Else
-                        Throw New BOValidationException("GalaxyGetCertificateDetail Error: ", Me.CERTIFICATE_COVERAGES_NOT_FOUND)
+                        Throw New BOValidationException("GalaxyGetCertificateDetail Error: ", CERTIFICATE_COVERAGES_NOT_FOUND)
                     End If
 
                     Return XMLHelper.FromDatasetToXML_Std(_CertificateDetailDataSet)
                 End If
             ElseIf _CertificateDetailDataSet Is Nothing Then
-                Throw New BOValidationException("GalaxyGetCertificateDetail Error: ", Me.ERROR_ACCESSING_DATABASE)
+                Throw New BOValidationException("GalaxyGetCertificateDetail Error: ", ERROR_ACCESSING_DATABASE)
             End If
 
         Catch ex As StoredProcedureGeneratedException

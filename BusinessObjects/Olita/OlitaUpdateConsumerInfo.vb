@@ -659,7 +659,7 @@ Public Class OlitaUpdateConsumerInfo
             If Me._countryId.Equals(Guid.Empty) Then
                 Dim objCountryDV As DataView = Country.getList("", Me.CountryCode)
                 If objCountryDV Is Nothing Then
-                    Throw New BOValidationException("OlitaUpdateConsumerInfo Error: ", Me.ERROR_ACCESSING_DATABASE)
+                    Throw New BOValidationException("OlitaUpdateConsumerInfo Error: ", ERROR_ACCESSING_DATABASE)
                 ElseIf objCountryDV.Count <> 1 Then
                     Throw New BOValidationException("OlitaUpdateConsumerInfo Error: ", Me.COUNTRY_NOT_FOUND)
                 End If
@@ -677,7 +677,7 @@ Public Class OlitaUpdateConsumerInfo
                 'Dim alUserCompanies As ArrayList = ElitaPlusIdentity.Current.ActiveUser.Companies
                 Dim regionsDV As DataView = Region.LoadList("%", Me.ShortDescription, ElitaPlusIdentity.Current.ActiveUser.Companies)
                 If regionsDV Is Nothing Then
-                    Throw New BOValidationException("OlitaUpdateConsumerInfo Error: ", Me.ERROR_ACCESSING_DATABASE)
+                    Throw New BOValidationException("OlitaUpdateConsumerInfo Error: ", ERROR_ACCESSING_DATABASE)
                 ElseIf regionsDV.Count <> 1 Then
                     Throw New BOValidationException("OlitaUpdateConsumerInfo Error: ", Me.REGION_NOT_FOUND)
                 End If
@@ -693,7 +693,7 @@ Public Class OlitaUpdateConsumerInfo
     '        If Me._mailing_countryId.Equals(Guid.Empty) Then
     '            Dim objMailingCountryDV As DataView = Country.getList("", Me.CountryCode)
     '            If objMailingCountryDV Is Nothing Then
-    '                Throw New BOValidationException("OlitaUpdateConsumerInfo Error: ", Me.ERROR_ACCESSING_DATABASE)
+    '                Throw New BOValidationException("OlitaUpdateConsumerInfo Error: ", ERROR_ACCESSING_DATABASE)
     '            ElseIf objMailingCountryDV.Count <> 1 Then
     '                Throw New BOValidationException("OlitaUpdateConsumerInfo Error: ", Me.MAILING_COUNTRY_NOT_FOUND)
     '            End If
@@ -733,7 +733,7 @@ Public Class OlitaUpdateConsumerInfo
     '        If Me._mailing_regionId.Equals(Guid.Empty) Then
     '            Dim mailing_regionsDV As DataView = Region.LoadList("%", Me.MailingRegionShortDescription, Me.MailingCountryId)
     '            If mailing_regionsDV Is Nothing Then
-    '                Throw New BOValidationException("OlitaUpdateConsumerInfo Error: ", Me.ERROR_ACCESSING_DATABASE)
+    '                Throw New BOValidationException("OlitaUpdateConsumerInfo Error: ", ERROR_ACCESSING_DATABASE)
     '            ElseIf mailing_regionsDV.Count <> 1 Then
     '                Throw New BOValidationException("OlitaUpdateConsumerInfo Error: ", Me.MAILING_REGION_NOT_FOUND)
     '            End If
@@ -892,7 +892,7 @@ Public Class OlitaUpdateConsumerInfo
                 End If
 
             ElseIf _CertListDataSet Is Nothing Then
-                Throw New BOValidationException("OlitaUpdateConsumerInfo Error: ", Me.ERROR_ACCESSING_DATABASE)
+                Throw New BOValidationException("OlitaUpdateConsumerInfo Error: ", ERROR_ACCESSING_DATABASE)
             ElseIf Not _CertListDataSet Is Nothing AndAlso _CertListDataSet.Tables.Count > 0 AndAlso _CertListDataSet.Tables(0).Rows.Count = 0 Then
                 Throw New BOValidationException("OlitaUpdateConsumerInfo Error: ", CERTIFICATE_NOT_FOUND)
             End If

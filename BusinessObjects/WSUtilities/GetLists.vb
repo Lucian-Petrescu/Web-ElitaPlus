@@ -123,7 +123,7 @@
             Me.Validate()
 
             If objLanguageDV Is Nothing Then
-                Throw New BOValidationException("GetLists Error: ", Me.ERROR_ACCESSING_DATABASE)
+                Throw New BOValidationException("GetLists Error: ", ERROR_ACCESSING_DATABASE)
             ElseIf objLanguageDV.Count <> 1 Then
                 Throw New BOValidationException("GetLists Error: ", Me.LANGUAGE_NOT_FOUND)
             Else
@@ -135,7 +135,7 @@
 
 
                 If objListsDS Is Nothing Then
-                    Throw New BOValidationException("GetLists Error: ", Me.ERROR_ACCESSING_DATABASE)
+                    Throw New BOValidationException("GetLists Error: ", ERROR_ACCESSING_DATABASE)
                 ElseIf objListsDS.Tables.Count > 0 AndAlso objListsDS.Tables(0).Rows.Count > 0 Then
                     objListsDS.Tables(0).Columns.Remove(Me.COL_NAME_LISTS_ID)
                     objListsDS.Tables(0).Columns.Remove(DALBase.SYSTEM_SEQUENCE_COL_NAME)

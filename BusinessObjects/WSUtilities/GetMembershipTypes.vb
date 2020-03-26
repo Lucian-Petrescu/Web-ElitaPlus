@@ -123,7 +123,7 @@
             Me.Validate()
 
             If objLanguageDV Is Nothing Then
-                Throw New BOValidationException("GetMembershipTypes Error: ", Me.ERROR_ACCESSING_DATABASE)
+                Throw New BOValidationException("GetMembershipTypes Error: ", ERROR_ACCESSING_DATABASE)
             ElseIf objLanguageDV.Count <> 1 Then
                 Throw New BOValidationException("GetMembershipTypes Error: ", Me.LANGUAGE_NOT_FOUND)
             Else
@@ -135,7 +135,7 @@
 
 
                 If objMembershipTypesDS Is Nothing Then
-                    Throw New BOValidationException("GetMembershipTypes Error: ", Me.ERROR_ACCESSING_DATABASE)
+                    Throw New BOValidationException("GetMembershipTypes Error: ", ERROR_ACCESSING_DATABASE)
                 ElseIf objMembershipTypesDS.Tables.Count > 0 AndAlso objMembershipTypesDS.Tables(0).Rows.Count > 0 Then
                     objMembershipTypesDS.Tables(0).Columns.Remove(Me.COL_NAME_MEMBERSHIP_TYPE_ID)
                     objMembershipTypesDS.Tables(0).Columns.Remove(DALBase.SYSTEM_SEQUENCE_COL_NAME)
