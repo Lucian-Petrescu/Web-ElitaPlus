@@ -214,11 +214,11 @@ Public Class UpdateClaimData
 
         Dim strAvailableforServiceCenter As String = LookupListNew.GetCodeFromId(LookupListNew.LK_YESNO, New Guid(CType(CoverageLossdv(0)(SpecialServiceDAL.COL_NAME_AVAILABLE_FOR_SERV_CENTER_ID), Byte())))
         If strAvailableforServiceCenter = Codes.YESNO_N Then
-            Throw New BOValidationException("UpdateClaimData Error: ", Me.INVALID_SPECIAL_SERVICE_CLAIM)
+            Throw New BOValidationException("UpdateClaimData Error: ", INVALID_SPECIAL_SERVICE_CLAIM)
         End If
 
         If CoverageLossdv Is Nothing Then
-            Throw New BOValidationException("UpdateClaimData Error: ", Me.INVALID_SPECIAL_SERVICE)
+            Throw New BOValidationException("UpdateClaimData Error: ", INVALID_SPECIAL_SERVICE)
         End If
 
         Dim CauseofLossId As Guid = New Guid(CType(CoverageLossdv(0)(CoverageLossDAL.COL_NAME_CAUSE_OF_LOSS_ID), Byte()))
@@ -227,7 +227,7 @@ Public Class UpdateClaimData
 
         '' Verify the existing cert item qualify for the change
         'If oclaim.CoverageTypeId.Equals(CoverageTypeID) Then
-        '    Throw New BOValidationException("UpdateClaimData Error: ", Me.INVALID_COVERAGE_TYPE)
+        '    Throw New BOValidationException("UpdateClaimData Error: ", INVALID_COVERAGE_TYPE)
         'End If
 
         Dim searchCoverageDV As CertItemCoverage.CertItemCoverageSearchDV
@@ -239,14 +239,14 @@ Public Class UpdateClaimData
         End If
 
         If searchCoverageDV Is Nothing Then
-            Throw New BOValidationException("UpdateClaimData Error: ", Me.INVALID_COVERAGE_TYPE)
+            Throw New BOValidationException("UpdateClaimData Error: ", INVALID_COVERAGE_TYPE)
         End If
 
         Dim coveragetypeCode As String = LookupListNew.GetCodeFromId(LookupListNew.LK_COVERAGE_TYPES, CoverageTypeID)
         searchCoverageDV.RowFilter = "coverage_type_code = '" + coveragetypeCode + "'"
 
         If searchCoverageDV.Count <> 1 Then
-            Throw New BOValidationException("UpdateClaimData Error: ", Me.INVALID_COVERAGE_TYPE)
+            Throw New BOValidationException("UpdateClaimData Error: ", INVALID_COVERAGE_TYPE)
         End If
 
         If SpecialServiceOnlyCode = Codes.YESNO_N Then  'Combined with Repair NO
@@ -312,7 +312,7 @@ Public Class UpdateClaimData
             If Not Me.ServiceCenterID.Equals(Guid.Empty) Then
                 ' Can not update service center if RepairDate exists
                 If Not ChildClaim.RepairDate Is Nothing Then
-                    Throw New BOValidationException("UpdateClaimData Error: ", Me.ERR_SERVICE_CENTER_CODE_NOT_UPDATABLE)
+                    Throw New BOValidationException("UpdateClaimData Error: ", ERR_SERVICE_CENTER_CODE_NOT_UPDATABLE)
                 Else
                     ChildClaim.ServiceCenterId = Me.ServiceCenterID
                 End If
@@ -381,7 +381,7 @@ Public Class UpdateClaimData
         End If
 
         If searchCoverageDV Is Nothing Then
-            Throw New BOValidationException("UpdateClaimData Error: ", Me.INVALID_COVERAGE_TYPE)
+            Throw New BOValidationException("UpdateClaimData Error: ", INVALID_COVERAGE_TYPE)
         End If
 
         searchCoverageDV.RowFilter = "coverage_type_code = '" + coveragetypeCode + "'"
@@ -413,7 +413,7 @@ Public Class UpdateClaimData
 
                         ' Status comments is required if extended claim status = COD; this field will be output in GetClaimInfo web service.
                         If Me.StatusComments Is Nothing Then
-                            Throw New BOValidationException("UpdateClaimData Error: ", Me.INVALID_STATUS_COMMENTS_REQUIRED_ON_COD)
+                            Throw New BOValidationException("UpdateClaimData Error: ", INVALID_STATUS_COMMENTS_REQUIRED_ON_COD)
                         Else
                             ' Copy status comments to claim comments if it is blank
                             If Me.ClaimComments Is Nothing Or Me.ClaimComments = "" Then
@@ -423,7 +423,7 @@ Public Class UpdateClaimData
 
                         ' Amount is required if extended claim status = COD
                         If Me.Amount Is Nothing Then
-                            Throw New BOValidationException("UpdateClaimData Error: ", Me.INVALID_AMOUNT_REQUIRED_ON_COD)
+                            Throw New BOValidationException("UpdateClaimData Error: ", INVALID_AMOUNT_REQUIRED_ON_COD)
                         End If
 
                         If Not oClaim.NotificationTypeId.Equals(Guid.Empty) Then
@@ -437,10 +437,10 @@ Public Class UpdateClaimData
                                 (Not maxClaimStatus Is Nothing AndAlso maxClaimStatus.StatusCode <> Me.COD_CLAIM_STATUS_CODE) Then
 
                                 Dim ccodClaimStatusByGroupId As Guid = Guid.Empty
-                                ccodClaimStatusByGroupId = ClaimStatusByGroup.GetClaimStatusByGroupID(Me.CCOD_CLAIM_STATUS_CODE)
+                                ccodClaimStatusByGroupId = ClaimStatusByGroup.GetClaimStatusByGroupID(CCOD_CLAIM_STATUS_CODE)
 
                                 If ccodClaimStatusByGroupId.Equals(Guid.Empty) Then
-                                    Throw New BOValidationException("UpdateClaimData Error: ", Me.INVALID_CCOD_CLAIM_STATUS_NOT_FOUND)
+                                    Throw New BOValidationException("UpdateClaimData Error: ", INVALID_CCOD_CLAIM_STATUS_NOT_FOUND)
                                 End If
 
                                 Dim ccodClaimStatus As ClaimStatus = Nothing
@@ -524,7 +524,7 @@ Public Class UpdateClaimData
                         ' Need to update the who pay flag to customer (CUS) in the claim 
                         Dim whoPayId As Guid = LookupListNew.GetIdFromCode(LookupListNew.GetWhoPaysLookupList(ElitaPlusIdentity.Current.ActiveUser.LanguageId, False), Me.CUSTOMER_PAYS_CODE)
                         If whoPayId.Equals(Guid.Empty) Then
-                            Throw New BOValidationException("UpdateClaimData Error: ", Me.INVALID_WHO_PAY_NOT_FOUND)
+                            Throw New BOValidationException("UpdateClaimData Error: ", INVALID_WHO_PAY_NOT_FOUND)
                         Else
                             oClaim.WhoPaysId = whoPayId
                         End If
@@ -535,13 +535,13 @@ Public Class UpdateClaimData
                         ' Verify the existing cert item qualify for the change
                         Dim accidentalCoverageTypeId As Guid = LookupListNew.GetIdFromCode(LookupListNew.GetCoverageTypeLookupList(ElitaPlusIdentity.Current.ActiveUser.LanguageId, False), Me.ACCIDENTAL_COVERAGE_TYPE_CODE)
                         If oClaim.CoverageTypeId.Equals(accidentalCoverageTypeId) Then
-                            Throw New BOValidationException("UpdateClaimData Error: ", Me.INVALID_COVERAGE_TYPE)
+                            Throw New BOValidationException("UpdateClaimData Error: ", INVALID_COVERAGE_TYPE)
                         End If
 
                         Dim searchCoverageDV As CertItemCoverage.CertItemCoverageSearchDV = Me.GetcovergeSearchDV(oClaim, Me.ACCIDENTAL_COVERAGE_TYPE_CODE)
 
                         If searchCoverageDV.Count <> 1 Then
-                            Throw New BOValidationException("UpdateClaimData Error: ", Me.INVALID_COVERAGE_TYPE)
+                            Throw New BOValidationException("UpdateClaimData Error: ", INVALID_COVERAGE_TYPE)
                         Else
                             ' Need to update the cause of loss of the claim to Accidental Damage
                             Dim dvCauseOfLoss As DataView = LookupListNew.GetCauseOfLossByCoverageTypeLookupList(Authentication.LangId, ElitaPlusIdentity.Current.ActiveUser.CompanyGroup.Id, accidentalCoverageTypeId, , True)
@@ -609,7 +609,7 @@ Public Class UpdateClaimData
                         ' Need to update the who pay flag to Assurant (AIZ) in the claim 
                         Dim whoPayId As Guid = LookupListNew.GetIdFromCode(LookupListNew.GetWhoPaysLookupList(ElitaPlusIdentity.Current.ActiveUser.LanguageId, False), Me.ASSURANT_PAYS_CODE)
                         If whoPayId.Equals(Guid.Empty) Then
-                            Throw New BOValidationException("UpdateClaimData Error: ", Me.INVALID_WHO_PAY_NOT_FOUND)
+                            Throw New BOValidationException("UpdateClaimData Error: ", INVALID_WHO_PAY_NOT_FOUND)
                         Else
                             oClaim.WhoPaysId = whoPayId
                         End If
@@ -624,13 +624,13 @@ Public Class UpdateClaimData
                                 Return XMLHelper.GetXML_OK_Response
                             End If
                         Else
-                            Throw New BOValidationException("UpdateClaimData Error: ", Me.INVALID_SPECIAL_SERVICE)
+                            Throw New BOValidationException("UpdateClaimData Error: ", INVALID_SPECIAL_SERVICE)
                         End If
                         'End REQ-603 
                     Else
                         ' Amount is ONLY required for COD
                         If Not Me.Amount Is Nothing Then
-                            Throw New BOValidationException("UpdateClaimData Error: ", Me.INVALID_AMOUNT_ONLY_REQUIRED_ON_COD)
+                            Throw New BOValidationException("UpdateClaimData Error: ", INVALID_AMOUNT_ONLY_REQUIRED_ON_COD)
                         End If
                     End If
                     oClaimStatus = oClaim.AddExtendedClaimStatus(Guid.Empty)
@@ -661,13 +661,13 @@ Public Class UpdateClaimData
                         oClaim.ClaimClosedDate = Now
                     End If
                 Else
-                    Throw New BOValidationException("UpdateClaimData Error: ", Me.INVALID_CLAIM_STATUS_REQUIRED)
+                    Throw New BOValidationException("UpdateClaimData Error: ", INVALID_CLAIM_STATUS_REQUIRED)
                 End If
 
                 If Not Me.ServiceCenterID.Equals(Guid.Empty) Then
                     ' Can not update service center if RepairDate exists
                     If Not oClaim.RepairDate Is Nothing Then
-                        Throw New BOValidationException("UpdateClaimData Error: ", Me.ERR_SERVICE_CENTER_CODE_NOT_UPDATABLE)
+                        Throw New BOValidationException("UpdateClaimData Error: ", ERR_SERVICE_CENTER_CODE_NOT_UPDATABLE)
                     Else
                         oClaim.ServiceCenterId = Me.ServiceCenterID
                     End If
@@ -996,7 +996,7 @@ Public Class UpdateClaimData
                 Me._claimStatusByGroupId = ClaimStatusByGroup.GetClaimStatusByGroupID(CType(Row(SOURCE_COL_CLAIM_STATUS), String))
 
                 If Me._claimStatusByGroupId.Equals(Guid.Empty) Then
-                    Throw New BOValidationException("UpdateClaimData Error: ", Me.INVALID_CLAIM_STATUS_NOT_FOUND)
+                    Throw New BOValidationException("UpdateClaimData Error: ", INVALID_CLAIM_STATUS_NOT_FOUND)
                 End If
             End If
 
@@ -1014,10 +1014,10 @@ Public Class UpdateClaimData
                     Me._serviceCenterId = LookupListNew.GetIdFromCode(dvServiceCenter, Me.ServiceCenterCode)
 
                     If Me._serviceCenterId.Equals(Guid.Empty) Then
-                        Throw New BOValidationException("UpdateClaimData Error: ", Me.INVALID_SERVICE_CENTER_CODE)
+                        Throw New BOValidationException("UpdateClaimData Error: ", INVALID_SERVICE_CENTER_CODE)
                     End If
                 Else
-                    Throw New BOValidationException("UpdateClaimData Error: ", Me.INVALID_SERVICE_CENTER_CODE)
+                    Throw New BOValidationException("UpdateClaimData Error: ", INVALID_SERVICE_CENTER_CODE)
                 End If
 
             End If
@@ -1034,7 +1034,7 @@ Public Class UpdateClaimData
                 Me._reasonCloseId = LookupListNew.GetIdFromCode(dv, Me.ReasonClosedCode)
 
                 If (Me._reasonCloseId.Equals(Guid.Empty)) Then
-                    Throw New BOValidationException("UpdateClaimData Error: ", Me.ERR_REASON_CLOSED_CODE_NOT_FOUND)
+                    Throw New BOValidationException("UpdateClaimData Error: ", ERR_REASON_CLOSED_CODE_NOT_FOUND)
                 End If
 
             End If

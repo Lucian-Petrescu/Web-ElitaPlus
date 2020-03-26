@@ -189,7 +189,7 @@ Public Class OlitaUpdateConsumerInfo
                         (Not _CertListDataSet.Tables(0).Rows(0).Item(Me.DATA_COL_NAME_CERT_ID) Is DBNull.Value) Then
                         oCert = New Certificate(New Guid(CType(_CertListDataSet.Tables(0).Rows(0).Item(Me.DATA_COL_NAME_CERT_ID), Byte())))
                     Else
-                        Throw New BOValidationException("OlitaUpdateConsumerInfo Error: ", Me.CERTIFICATE_NOT_FOUND)
+                        Throw New BOValidationException("OlitaUpdateConsumerInfo Error: ", CERTIFICATE_NOT_FOUND)
                     End If
                     If ((Not .Isproduct_sales_dateNull) AndAlso oCert.ProductSalesDate <> (New DateType(.product_sales_date))) Then isProdSalesDateDirty = True
                     If ((Not .Iswarranty_sales_dateNull) AndAlso oCert.WarrantySalesDate <> (New DateType(.warranty_sales_date))) Then isWarrantySalesDateDirty = True
@@ -853,7 +853,7 @@ Public Class OlitaUpdateConsumerInfo
             Dim _CertListDataSet As DataSet = Certificate.GetCertificatesList(Me.CertNumber, "", "", "", "", Me.DealerCode).Table.DataSet
             If Not _CertListDataSet Is Nothing AndAlso _CertListDataSet.Tables.Count > 0 AndAlso _CertListDataSet.Tables(0).Rows.Count > 0 Then
                 If _CertListDataSet.Tables(0).Rows(0).Item(Me.DATA_COL_NAME_CERT_ID) Is DBNull.Value Then
-                    Throw New BOValidationException("OlitaUpdateConsumerInfo Error: ", Me.CERTIFICATE_NOT_FOUND)
+                    Throw New BOValidationException("OlitaUpdateConsumerInfo Error: ", CERTIFICATE_NOT_FOUND)
                 Else
                     'if there are serial numbers to be update, then the Master BO will be the Cert_item, cert will be the child.
                     If Me.Dataset.Tables(TABLE_NAME_PRODUCT_SERIAL_NUMBER).Rows.Count > 0 Then
@@ -894,7 +894,7 @@ Public Class OlitaUpdateConsumerInfo
             ElseIf _CertListDataSet Is Nothing Then
                 Throw New BOValidationException("OlitaUpdateConsumerInfo Error: ", Me.ERROR_ACCESSING_DATABASE)
             ElseIf Not _CertListDataSet Is Nothing AndAlso _CertListDataSet.Tables.Count > 0 AndAlso _CertListDataSet.Tables(0).Rows.Count = 0 Then
-                Throw New BOValidationException("OlitaUpdateConsumerInfo Error: ", Me.CERTIFICATE_NOT_FOUND)
+                Throw New BOValidationException("OlitaUpdateConsumerInfo Error: ", CERTIFICATE_NOT_FOUND)
             End If
 
         Catch ex As BOValidationException
