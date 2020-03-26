@@ -61,9 +61,8 @@ Public Class Codes
     Public Const EVNT_COMM_CHANNEL As String = "COMM_CHANNEL"
     Public Const EVNT_COMM_CHAN_EMAIL As String = "EMAIL"
 
-    Public Const HLP_COMTS_FOUND As String = "HLP_COMTS_FOUND"
-    Public Const PLS_CHECK_ORACLE_LOGS As String = "PLS_CHECK_ORACLE_LOGS"
-
+    Public Const ERROR_FLAG As String = "100"
+    Public Const NO_HELP_COMTS_FOUND As String = "NO_HELP_COMTS_FOUND"
 
     ' Claim Issue Code
     Public Const ISSUE_CODE__TRBSHT = "TRBSHT"

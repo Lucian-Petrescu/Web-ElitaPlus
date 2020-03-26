@@ -53,11 +53,11 @@
     Public Shared Function getScreenHelp(FormName As String)
         Dim dal As New commonUploadDAL
         Dim helpData As String
+
         helpData = dal.getScreenHelpData(FormName)
-        If String.IsNullOrEmpty(helpData) Or helpData.Equals("100") Then
-            helpData = Codes.HLP_COMTS_FOUND
-        ElseIf helpData.Equals("101") Then
-            helpData = Codes.PLS_CHECK_ORACLE_LOGS
+
+        If String.IsNullOrEmpty(helpData) Or helpData.Equals(Codes.ERROR_FLAG) Then
+            helpData = Codes.NO_HELP_COMTS_FOUND
         End If
 
         Return helpData

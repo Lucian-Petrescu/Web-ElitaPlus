@@ -1,4 +1,6 @@
 ﻿Imports System.Collections.Generic
+Imports Assurant.ElitaPlus.BusinessObjectsNew
+
 
 
 
@@ -152,15 +154,15 @@ Public Class commonUploadDAL
         End Try
     End Sub
 
-    Public Function getScreenHelpData(FormName As String)
+    Public Function getScreenHelpData(FormName As String) As String
         Dim sqlStmt As String
         sqlStmt = Me.Config("/SQL/PROCESS_SCREEN_HELP")
-        Dim strResult = String.Empty
-        Dim strErrMsg = String.Empty
+
+
         Try
             Dim outParameters() As DBHelper.DBHelperParameter = New DBHelper.DBHelperParameter() {
-                            New DBHelper.DBHelperParameter("p_InitResult", strResult.GetType, 500),
-                            New DBHelper.DBHelperParameter("p_ErrCode", strErrMsg.GetType, 500)}
+                            New DBHelper.DBHelperParameter("p_InitResult", GetType(String), 500),
+                            New DBHelper.DBHelperParameter("p_ErrCode", GetType(Integer))}
 
             Dim inParameters As New Generic.List(Of DBHelper.DBHelperParameter)
             Dim param As DBHelper.DBHelperParameter
@@ -170,15 +172,12 @@ Public Class commonUploadDAL
 
             DBHelper.ExecuteSpParamBindByName(sqlStmt, inParameters.ToArray, outParameters)
 
-            If Not outParameters(0).Value Is Nothing Then
-                strResult = outParameters(0).Value.ToString().Trim
-                If Not outParameters(1).Value Is Nothing Then
-                    strResult = outParameters(1).Value.ToString().Trim
-                End If
+
+            If outParameters(1).Value = 0 Then
+                Return outParameters(0).Value.ToString()
             End If
 
-
-            Return strResult
+            Return outParameters(1).Value.ToString()
 
         Catch ex As Exception
             Throw New DataBaseAccessException(DataBaseAccessException.DatabaseAccessErrorType.ReadErr, ex)
