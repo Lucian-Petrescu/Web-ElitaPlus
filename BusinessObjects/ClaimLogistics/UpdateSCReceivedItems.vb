@@ -180,10 +180,10 @@ Public Class UpdateSCReceivedItems
                     Me._serviceCenterId = LookupListNew.GetIdFromCode(dvServiceCenter, Me.ServiceCenterCode)
 
                     If Me._serviceCenterId.Equals(Guid.Empty) Then
-                        Throw New BOValidationException("UpdateSCReceivedItems Error: ", Me.INVALID_SERVICE_CENTER_CODE)
+                        Throw New BOValidationException("UpdateSCReceivedItems Error: ", INVALID_SERVICE_CENTER_CODE)
                     End If
                 Else
-                    Throw New BOValidationException("UpdateSCReceivedItems Error: ", Me.INVALID_SERVICE_CENTER_CODE)
+                    Throw New BOValidationException("UpdateSCReceivedItems Error: ", INVALID_SERVICE_CENTER_CODE)
                 End If
 
             End If

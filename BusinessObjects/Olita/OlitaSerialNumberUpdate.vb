@@ -178,11 +178,11 @@ Public Class OlitaSerialNumberUpdate
             Dim _CertListDataSet As DataSet = Certificate.GetCertificatesList(Me.CertNumber, "", "", "", "", Me.DealerCode).Table.DataSet
             If Not _CertListDataSet Is Nothing AndAlso _CertListDataSet.Tables.Count > 0 AndAlso _CertListDataSet.Tables(0).Rows.Count > 0 Then
                 If _CertListDataSet.Tables(0).Rows(0).Item(Me.DATA_COL_NAME_CERT_ID) Is DBNull.Value Then
-                    Throw New BOValidationException("OlitaSerialNumberUpdate Error: ", Me.CERTIFICATE_NOT_FOUND)
+                    Throw New BOValidationException("OlitaSerialNumberUpdate Error: ", CERTIFICATE_NOT_FOUND)
                 Else
                     Try
                         If _CertListDataSet.Tables.Count > 1 Then
-                            Throw New BOValidationException("OlitaSerialNumberUpdate Error: ", Me.CERTIFICATE_NOT_FOUND)
+                            Throw New BOValidationException("OlitaSerialNumberUpdate Error: ", CERTIFICATE_NOT_FOUND)
                         End If
                         Dim cert_id As New Guid(CType(_CertListDataSet.Tables(0).Rows(0).Item(Me.DATA_COL_NAME_CERT_ID), Byte()))
                         Me.BuildCertItemAndSave(cert_id)
@@ -199,7 +199,7 @@ Public Class OlitaSerialNumberUpdate
             ElseIf _CertListDataSet Is Nothing Then
                 Throw New BOValidationException("OlitaSerialNumberUpdate Error: ", Me.ERROR_ACCESSING_DATABASE)
             ElseIf Not _CertListDataSet Is Nothing AndAlso _CertListDataSet.Tables.Count > 0 AndAlso _CertListDataSet.Tables(0).Rows.Count = 0 Then
-                Throw New BOValidationException("OlitaSerialNumberUpdate Error: ", Me.CERTIFICATE_NOT_FOUND)
+                Throw New BOValidationException("OlitaSerialNumberUpdate Error: ", CERTIFICATE_NOT_FOUND)
             End If
 
         Catch ex As BOValidationException
