@@ -117,7 +117,7 @@ Public Class GalaxyUpdateClaim
                 CauseOfLossId = LookupListNew.GetIdFromCode(LookupListNew.LK_CAUSES_OF_LOSS, Me.CauseOfLossCode)
 
                 If CauseOfLossId.Equals(Guid.Empty) Then
-                    Throw New BOValidationException("GalaxyUpdateClaim Error: ", Me.INVALID_CAUSE_OF_LOSS_CODE)
+                    Throw New BOValidationException("GalaxyUpdateClaim Error: ", INVALID_CAUSE_OF_LOSS_CODE)
                 End If
                 Me.LossDate = .LOSS_DATE
 
@@ -128,7 +128,7 @@ Public Class GalaxyUpdateClaim
                     If Not (Me.StatusCode.Equals(Codes.CLAIM_STATUS__PENDING) Or _
                         Me.StatusCode.Equals(Codes.CLAIM_STATUS__ACTIVE) Or _
                         Me.StatusCode.Equals(Codes.CLAIM_STATUS__CLOSED)) Then
-                        Throw New BOValidationException("GalaxyUpdateClaim Error: ", Me.INVALID_STATUS_CODE)
+                        Throw New BOValidationException("GalaxyUpdateClaim Error: ", INVALID_STATUS_CODE)
                     End If
                 End If
 
@@ -206,13 +206,13 @@ Public Class GalaxyUpdateClaim
                             companyId = New Guid(CType(dr(0)(CertItemCoverageDAL.COL_NAME_COMPANY_ID), Byte()))
                             certItemCoverageId = New Guid(CType(dr(0)(CertItemCoverageDAL.COL_NAME_CERT_ITEM_COVERAGE_ID), Byte()))
                             If certItemCoverageId.Equals(Guid.Empty) Then
-                                Throw New BOValidationException("GalaxyUpdateClaim Error: ", Me.CERTIFICATE_COVERAGES_NOT_FOUND)
+                                Throw New BOValidationException("GalaxyUpdateClaim Error: ", CERTIFICATE_COVERAGES_NOT_FOUND)
                             End If
                         Else
-                            Throw New BOValidationException("GalaxyUpdateClaim Error: ", Me.CERTIFICATE_COVERAGES_NOT_FOUND)
+                            Throw New BOValidationException("GalaxyUpdateClaim Error: ", CERTIFICATE_COVERAGES_NOT_FOUND)
                         End If
                     Else
-                        Throw New BOValidationException("GalaxyUpdateClaim Error: ", Me.CERTIFICATE_COVERAGES_NOT_FOUND)
+                        Throw New BOValidationException("GalaxyUpdateClaim Error: ", CERTIFICATE_COVERAGES_NOT_FOUND)
                     End If
 
                     Dim newRow As DataRow = dsCoverageInfo.Tables(TABLE_NAME_COVERAGE_INFO).NewRow()

@@ -197,7 +197,7 @@ Public Class OlitaSerialNumberUpdate
                 End If
 
             ElseIf _CertListDataSet Is Nothing Then
-                Throw New BOValidationException("OlitaSerialNumberUpdate Error: ", Me.ERROR_ACCESSING_DATABASE)
+                Throw New BOValidationException("OlitaSerialNumberUpdate Error: ", ERROR_ACCESSING_DATABASE)
             ElseIf Not _CertListDataSet Is Nothing AndAlso _CertListDataSet.Tables.Count > 0 AndAlso _CertListDataSet.Tables(0).Rows.Count = 0 Then
                 Throw New BOValidationException("OlitaSerialNumberUpdate Error: ", CERTIFICATE_NOT_FOUND)
             End If

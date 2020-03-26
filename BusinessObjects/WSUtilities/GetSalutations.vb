@@ -123,7 +123,7 @@
             Me.Validate()
 
             If objLanguageDV Is Nothing Then
-                Throw New BOValidationException("GetSalutations Error: ", Me.ERROR_ACCESSING_DATABASE)
+                Throw New BOValidationException("GetSalutations Error: ", ERROR_ACCESSING_DATABASE)
             ElseIf objLanguageDV.Count <> 1 Then
                 Throw New BOValidationException("GetSalutations Error: ", Me.LANGUAGE_NOT_FOUND)
             Else
@@ -135,7 +135,7 @@
 
 
                 If objSalutationDS Is Nothing Then
-                    Throw New BOValidationException("GetSalutations Error: ", Me.ERROR_ACCESSING_DATABASE)
+                    Throw New BOValidationException("GetSalutations Error: ", ERROR_ACCESSING_DATABASE)
                 ElseIf objSalutationDS.Tables.Count > 0 AndAlso objSalutationDS.Tables(0).Rows.Count > 0 Then
                     objSalutationDS.Tables(0).Columns.Remove(Me.COL_NAME_SALUTATION_ID)
                     objSalutationDS.Tables(0).Columns.Remove(DALBase.SYSTEM_SEQUENCE_COL_NAME)

@@ -620,11 +620,11 @@ Public Class CancelCertificate
                 If (Dealer.IsSkipActiveClaim(Me.DealerId)) Then
                     ' check if there is any claim in A or P status and Loss Date > cancellation date 
                     If (oCert.ActiveClaimExist(Me.DealerId, oCert.CertNumber, Me.CancellationDate)) Then
-                        Throw New BOValidationException("CancelCertificate Error: ", Me.ACTIVE_CLAIMS_EXIST)
+                        Throw New BOValidationException("CancelCertificate Error: ", ACTIVE_CLAIMS_EXIST)
                     End If
                 Else
                     If oCert.TotalClaimsNotClosedForCert(Me.DealerId, oCert.CertNumber) Then
-                        Throw New BOValidationException("CancelCertificate Error: ", Me.ACTIVE_CLAIMS_EXIST)
+                        Throw New BOValidationException("CancelCertificate Error: ", ACTIVE_CLAIMS_EXIST)
                     End If
                 End If
             End If

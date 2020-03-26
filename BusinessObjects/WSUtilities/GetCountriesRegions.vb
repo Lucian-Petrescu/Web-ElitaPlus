@@ -185,7 +185,7 @@ Public Class GetCountriesRegions
                 'Next
 
                 If objCountriesRegionsDS Is Nothing OrElse objCountriesRegionsDS.Tables.Count = 0 Then
-                    Throw New BOValidationException("GetCountriesRegions Error: ", Me.ERROR_ACCESSING_DATABASE)
+                    Throw New BOValidationException("GetCountriesRegions Error: ", ERROR_ACCESSING_DATABASE)
                 ElseIf objCountriesRegionsDS.Tables.Count > 0 Then
 
                     objCountriesRegionsDS.DataSetName = Me.DATASET_NAME

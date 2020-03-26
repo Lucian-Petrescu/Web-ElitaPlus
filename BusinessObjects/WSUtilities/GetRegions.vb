@@ -121,14 +121,14 @@ Public Class GetRegions
             Me.Validate()
 
             If objCountryDV Is Nothing Then
-                Throw New BOValidationException("GetRegions Error: ", Me.ERROR_ACCESSING_DATABASE)
+                Throw New BOValidationException("GetRegions Error: ", ERROR_ACCESSING_DATABASE)
             ElseIf objCountryDV.Count <> 1 Then
                 Throw New BOValidationException("GetRegions Error: ", Me.COUNTRY_NOT_FOUND)
             Else
                 Dim country_id As New Guid(CType(objCountryDV.Table.Rows(0).Item(Me.COL_NAME_COUNTRY_ID), Byte()))
                 Dim objregionDS As DataSet = Region.LoadList(country_id)
                 If objregionDS Is Nothing Then
-                    Throw New BOValidationException("GetRegions Error: ", Me.ERROR_ACCESSING_DATABASE)
+                    Throw New BOValidationException("GetRegions Error: ", ERROR_ACCESSING_DATABASE)
                 ElseIf objregionDS.Tables.Count > 0 AndAlso objregionDS.Tables(0).Rows.Count > 0 Then
                     objregionDS.Tables(0).Columns.Remove(Me.COL_NAME_REGION_ID)
                     Return (XMLHelper.FromDatasetToXML(objregionDS))
