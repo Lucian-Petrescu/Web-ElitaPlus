@@ -602,7 +602,7 @@ Public Class CancelCertificate
                     'List of certificates BY Certificate number                    
                     oCert = New Certificate(Me.CertID)
                     If oCert.InvoiceNumber Is Nothing OrElse oCert.InvoiceNumber.Equals(String.Empty) Then
-                        Throw New BOValidationException("CancelCertificate Error: ", Me.CERTIFICATE_INVOICE_NUM_NOT_FOUND)
+                        Throw New BOValidationException("CancelCertificate Error: ", CERTIFICATE_INVOICE_NUM_NOT_FOUND)
                     End If
                 End If
             Else
@@ -630,7 +630,7 @@ Public Class CancelCertificate
             End If
 
             If oCert.IsChildCertificate Then
-                Throw New BOValidationException("CancelCertificate Error: ", Me.NO_CANCELLATION_ALLOWED)
+                Throw New BOValidationException("CancelCertificate Error: ", NO_CANCELLATION_ALLOWED)
             End If
 
             ' Get cancellation reason code from Contract record
@@ -677,7 +677,7 @@ Public Class CancelCertificate
             ' Check if the cancellation date is within the allowed period
             ' If Me.Source.Equals("OLITA") AndAlso Me.CancellationDate > oCert.WarrantySalesDate.Value.AddDays(oContract.FullRefundDays) Then
             If Me.CancellationDate > oCert.WarrantySalesDate.Value.AddDays(oContract.FullRefundDays) Then
-                Throw New BOValidationException("CancelCertificate Error: ", Me.MSG_INVALID_CANCELLATION_DATE)
+                Throw New BOValidationException("CancelCertificate Error: ", MSG_INVALID_CANCELLATION_DATE)
             End If
 
             If Me.Action = "Q" Then

@@ -409,7 +409,7 @@ Public Class GalaxyUpdateClaim
                 Else
                     If (IsStatusCodeNull = False AndAlso Me.StatusCode = Codes.CLAIM_STATUS__CLOSED) Then
                         selfThrownException = True
-                        Throw New BOValidationException("GalaxyUpdateClaim Error: ", Me.ERR_REASON_CLOSED_CODE_REQUIRED)
+                        Throw New BOValidationException("GalaxyUpdateClaim Error: ", ERR_REASON_CLOSED_CODE_REQUIRED)
                     Else
                         If (IsStatusCodeNull = False AndAlso Me.StatusCode <> Codes.CLAIM_STATUS__CLOSED) Then
                             claimBO.ReasonClosedId = Nothing

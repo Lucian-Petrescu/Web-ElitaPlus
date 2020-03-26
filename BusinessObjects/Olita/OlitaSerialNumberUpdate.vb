@@ -187,7 +187,7 @@ Public Class OlitaSerialNumberUpdate
                         Dim cert_id As New Guid(CType(_CertListDataSet.Tables(0).Rows(0).Item(Me.DATA_COL_NAME_CERT_ID), Byte()))
                         Me.BuildCertItemAndSave(cert_id)
                     Catch ex As Exception
-                        Throw New BOValidationException("OlitaSerialNumberUpdate Error: ", Me.UPDATE_FAILED)
+                        Throw New BOValidationException("OlitaSerialNumberUpdate Error: ", UPDATE_FAILED)
                     End Try
 
                     ' Set the acknoledge OK response

@@ -125,7 +125,7 @@
             If objLanguageDV Is Nothing Then
                 Throw New BOValidationException("GetMembershipTypes Error: ", ERROR_ACCESSING_DATABASE)
             ElseIf objLanguageDV.Count <> 1 Then
-                Throw New BOValidationException("GetMembershipTypes Error: ", Me.LANGUAGE_NOT_FOUND)
+                Throw New BOValidationException("GetMembershipTypes Error: ", LANGUAGE_NOT_FOUND)
             Else
                 Dim language_id As New Guid(CType(objLanguageDV.Table.Rows(0).Item(Me.COL_NAME_LANGUAGE_ID), Byte()))
 
@@ -142,7 +142,7 @@
                     objMembershipTypesDS.Tables(0).TableName = OUTPUT_TABLE_NAME
                     Return (XMLHelper.FromDatasetToXML(objMembershipTypesDS))
                 ElseIf objMembershipTypesDS.Tables.Count > 0 AndAlso objMembershipTypesDS.Tables(0).Rows.Count = 0 Then
-                    Throw New BOValidationException("GetSalutations Error: ", Me.MEMBERSHIP_TYPE_NOT_FOUND)
+                    Throw New BOValidationException("GetSalutations Error: ", MEMBERSHIP_TYPE_NOT_FOUND)
                 End If
             End If
             objMembershipTypesDS.Tables(0).Columns.RemoveAt(1)

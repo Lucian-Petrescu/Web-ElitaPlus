@@ -125,7 +125,7 @@
             If objLanguageDV Is Nothing Then
                 Throw New BOValidationException("GetLists Error: ", ERROR_ACCESSING_DATABASE)
             ElseIf objLanguageDV.Count <> 1 Then
-                Throw New BOValidationException("GetLists Error: ", Me.LANGUAGE_NOT_FOUND)
+                Throw New BOValidationException("GetLists Error: ", LANGUAGE_NOT_FOUND)
             Else
                 Dim language_id As New Guid(CType(objLanguageDV.Table.Rows(0).Item(Me.COL_NAME_LANGUAGE_ID), Byte()))
 
@@ -142,7 +142,7 @@
                     objListsDS.Tables(0).TableName = OUTPUT_TABLE_NAME
                     Return (XMLHelper.FromDatasetToXML(objListsDS))
                 ElseIf objListsDS.Tables.Count > 0 AndAlso objListsDS.Tables(0).Rows.Count = 0 Then
-                    Throw New BOValidationException("GetLists Error: ", Me.LISTS_NOT_FOUND)
+                    Throw New BOValidationException("GetLists Error: ", LISTS_NOT_FOUND)
                 End If
             End If
             objListsDS.Tables(0).Columns.RemoveAt(1)
