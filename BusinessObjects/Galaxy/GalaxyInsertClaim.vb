@@ -196,7 +196,7 @@ Public Class GalaxyInsertClaim
                         _CertificateDetailDataSet.DataSetName = Me.TABLE_NAME
                         Cert_Id = New Guid(CType(_CertificateDetailDataSet.Tables(0).Rows(0).Item(Me.DATA_COL_NAME_CERT_ID), Byte()))
                         If Cert_Id.Equals(Guid.Empty) Then
-                            Throw New BOValidationException("GalaxyInsertClaim Error: ", Me.CERTIFICATE_NOT_FOUND)
+                            Throw New BOValidationException("GalaxyInsertClaim Error: ", CERTIFICATE_NOT_FOUND)
                         End If
 
                         dtWSD = CType(_CertificateDetailDataSet.Tables(0).Rows(0).Item(DATA_COL_NAME_WARRANTY_SALES_DATE), Date)
@@ -214,7 +214,7 @@ Public Class GalaxyInsertClaim
 
                     End If
                 Else
-                    Throw New BOValidationException("GalaxyInsertClaim Error: ", Me.CERTIFICATE_NOT_FOUND)
+                    Throw New BOValidationException("GalaxyInsertClaim Error: ", CERTIFICATE_NOT_FOUND)
                 End If
 
                 CauseOfLossId = LookupListNew.GetIdFromCode(LookupListNew.LK_CAUSES_OF_LOSS, Me.CauseOfLossCode)
