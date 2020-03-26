@@ -661,7 +661,7 @@ Public Class OlitaUpdateConsumerInfo
                 If objCountryDV Is Nothing Then
                     Throw New BOValidationException("OlitaUpdateConsumerInfo Error: ", ERROR_ACCESSING_DATABASE)
                 ElseIf objCountryDV.Count <> 1 Then
-                    Throw New BOValidationException("OlitaUpdateConsumerInfo Error: ", Me.COUNTRY_NOT_FOUND)
+                    Throw New BOValidationException("OlitaUpdateConsumerInfo Error: ", COUNTRY_NOT_FOUND)
                 End If
                 Me._countryId = New Guid(CType(objCountryDV.Table.Rows(0).Item(Me.DATA_COL_NAME_COUNTRY_ID), Byte()))
                 objCountryDV = Nothing
@@ -679,7 +679,7 @@ Public Class OlitaUpdateConsumerInfo
                 If regionsDV Is Nothing Then
                     Throw New BOValidationException("OlitaUpdateConsumerInfo Error: ", ERROR_ACCESSING_DATABASE)
                 ElseIf regionsDV.Count <> 1 Then
-                    Throw New BOValidationException("OlitaUpdateConsumerInfo Error: ", Me.REGION_NOT_FOUND)
+                    Throw New BOValidationException("OlitaUpdateConsumerInfo Error: ", REGION_NOT_FOUND)
                 End If
                 Me._regionId = New Guid(CType(regionsDV.Table.Rows(0).Item(Me.DATA_COL_NAME_REGION_ID), Byte()))
                 regionsDV = Nothing
@@ -797,7 +797,7 @@ Public Class OlitaUpdateConsumerInfo
             Dim list As DataView = LookupListNew.GetMembershipTypeLanguageLookupList(Authentication.LangId)
             _membershipTypeId = LookupListNew.GetIdFromCode(list, code)
             If _membershipTypeId.Equals(Guid.Empty) Then
-                Throw New BOValidationException("OlitaUpdateConsumerInfo Error: ", Me.MEMBERSHIP_TYPE_NOT_FOUND)
+                Throw New BOValidationException("OlitaUpdateConsumerInfo Error: ", MEMBERSHIP_TYPE_NOT_FOUND)
             End If
             '  _membershipTypeId = LookupListNew.GetIdFromCode(LookupListNew.LK_MEMBERSHIP_TYPE_LANGUAGE, code)
 
@@ -865,10 +865,10 @@ Public Class OlitaUpdateConsumerInfo
                             Dim code As String
 
                             code = exV.Code
-                            If code = String.Empty Then code = Me.UPDATE_FAILED
+                            If code = String.Empty Then code = UPDATE_FAILED
                             Throw New BOValidationException("OlitaUpdateConsumerInfo Error: ", code)
                         Catch ex As Exception
-                            Throw New BOValidationException("OlitaUpdateConsumerInfo Error: ", Me.UPDATE_FAILED)
+                            Throw New BOValidationException("OlitaUpdateConsumerInfo Error: ", UPDATE_FAILED)
                         End Try
                     Else
                         Try
@@ -878,10 +878,10 @@ Public Class OlitaUpdateConsumerInfo
                             Dim code As String
 
                             code = exV.Code
-                            If code = String.Empty Then code = Me.UPDATE_FAILED
+                            If code = String.Empty Then code = UPDATE_FAILED
                             Throw New BOValidationException("OlitaUpdateConsumerInfo Error: ", code)
                         Catch ex As Exception
-                            Throw New BOValidationException("OlitaUpdateConsumerInfo Error: ", Me.UPDATE_FAILED)
+                            Throw New BOValidationException("OlitaUpdateConsumerInfo Error: ", UPDATE_FAILED)
                         End Try
                     End If
 
@@ -1085,7 +1085,7 @@ Public Class OlitaUpdateConsumerInfo
                     objMailingAddress.PostalCode = Me.MailingPostalCode
                     objMailingAddress.CountryId = Me.MailingCountryId
                 Else
-                    Throw New BOValidationException("OlitaUpdateConsumerInfo Error: ", Me.MAILING_INCOMPLETE)
+                    Throw New BOValidationException("OlitaUpdateConsumerInfo Error: ", MAILING_INCOMPLETE)
                 End If
             ElseIf (Not certBO.MailingAddressId.Equals(Guid.Empty)) Then
                 ' Current Address Record

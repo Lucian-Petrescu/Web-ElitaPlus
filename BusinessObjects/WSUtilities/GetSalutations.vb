@@ -125,7 +125,7 @@
             If objLanguageDV Is Nothing Then
                 Throw New BOValidationException("GetSalutations Error: ", ERROR_ACCESSING_DATABASE)
             ElseIf objLanguageDV.Count <> 1 Then
-                Throw New BOValidationException("GetSalutations Error: ", Me.LANGUAGE_NOT_FOUND)
+                Throw New BOValidationException("GetSalutations Error: ", LANGUAGE_NOT_FOUND)
             Else
                 Dim language_id As New Guid(CType(objLanguageDV.Table.Rows(0).Item(Me.COL_NAME_LANGUAGE_ID), Byte()))
 
@@ -142,7 +142,7 @@
                     objSalutationDS.Tables(0).TableName = OUTPUT_TABLE_NAME
                     Return (XMLHelper.FromDatasetToXML(objSalutationDS))
                 ElseIf objSalutationDS.Tables.Count > 0 AndAlso objSalutationDS.Tables(0).Rows.Count = 0 Then
-                    Throw New BOValidationException("GetSalutations Error: ", Me.SALUTATION_NOT_FOUND)
+                    Throw New BOValidationException("GetSalutations Error: ", SALUTATION_NOT_FOUND)
                 End If
             End If
             objSalutationDS.Tables(0).Columns.RemoveAt(1)

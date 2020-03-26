@@ -124,7 +124,7 @@ Public Class GetComunas
             If objCountryDV Is Nothing Then
                 Throw New BOValidationException("GetComunas Error: ", ERROR_ACCESSING_DATABASE)
             ElseIf objCountryDV.Count <> 1 Then
-                Throw New BOValidationException("GetComunas Error: ", Me.COUNTRY_NOT_FOUND)
+                Throw New BOValidationException("GetComunas Error: ", COUNTRY_NOT_FOUND)
             Else
                 Dim country_id As New Guid(CType(objCountryDV.Table.Rows(0).Item(Me.COL_NAME_COUNTRY_ID), Byte()))
                 Dim objComunaCodeDS As DataSet = ComunaCode.LoadList(country_id)
@@ -135,7 +135,7 @@ Public Class GetComunas
                     objComunaCodeDS.Tables(0).Columns.Remove(Me.COL_NAME_COMUNA_CODE_ID)
                     Return (XMLHelper.FromDatasetToXML(objComunaCodeDS))
                 ElseIf objComunaCodeDS.Tables.Count > 0 AndAlso objComunaCodeDS.Tables(0).Rows.Count = 0 Then
-                    Throw New BOValidationException("GetComunas Error: ", Me.COMUNAS_NOT_FOUND_ERROR)
+                    Throw New BOValidationException("GetComunas Error: ", COMUNAS_NOT_FOUND_ERROR)
                 End If
             End If
 

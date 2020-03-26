@@ -220,7 +220,7 @@ Public Class GalaxyInsertClaim
                 CauseOfLossId = LookupListNew.GetIdFromCode(LookupListNew.LK_CAUSES_OF_LOSS, Me.CauseOfLossCode)
 
                 If CauseOfLossId.Equals(Guid.Empty) Then
-                    Throw New BOValidationException("GalaxyInsertClaim Error: ", INVALID_CAUSE_OF_LOSS_CODE)
+                    Throw New BOValidationException("GalaxyInsertClaim Error: ", Me.INVALID_CAUSE_OF_LOSS_CODE)
                 End If
 
                 For i = 0 To ds.COVERAGES.Count - 1
