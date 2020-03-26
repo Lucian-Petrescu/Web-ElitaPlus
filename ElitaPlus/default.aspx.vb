@@ -1,4 +1,6 @@
 Imports System.Threading
+Imports Microsoft.Owin.Security
+Imports Microsoft.Owin.Security.OpenIdConnect
 
 Partial Class _default
     Inherits ElitaPlusPage
@@ -53,7 +55,12 @@ Partial Class _default
                         'Else
                         Response.Redirect(ELPWebConstants.APPLICATION_PATH & "/LoginForm.aspx", True)
                     Else
-                        Response.Redirect(ELPWebConstants.APPLICATION_PATH & "/Navigation/MainPage.aspx", True)
+                        HttpContext.Current.GetOwinContext().Authentication.Challenge(
+                            New AuthenticationProperties With 
+                            {
+                                .RedirectUri = ELPWebConstants.APPLICATION_PATH & "/Navigation/MainPage.aspx"
+                            }, 
+                            OpenIdConnectAuthenticationDefaults.AuthenticationType)
                     End If
                 Else
                     Response.Redirect(ELPWebConstants.APPLICATION_PATH & "/Navigation/MainPage.aspx", True)
