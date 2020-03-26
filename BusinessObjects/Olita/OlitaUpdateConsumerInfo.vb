@@ -773,7 +773,7 @@ Public Class OlitaUpdateConsumerInfo
             Dim list As DataView = LookupListNew.GetManufacturerLookupList(Authentication.CompanyGroupId)
             _manufacturerId = LookupListNew.GetIdFromCode(list, description)
             If _manufacturerId.Equals(Guid.Empty) Then
-                Throw New BOValidationException("OlitaUpdateConsumerInfo Error: ", Me.MANUFACTURER_NOT_FOUND)
+                Throw New BOValidationException("OlitaUpdateConsumerInfo Error: ", MANUFACTURER_NOT_FOUND)
             End If
             '   _manufacturerId = LookupListNew.GetIdFromDescription(LookupListNew.LK_MANUFACTURERS, description)
 
