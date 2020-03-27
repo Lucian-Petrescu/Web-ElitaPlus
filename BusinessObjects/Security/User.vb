@@ -174,7 +174,7 @@ Public Class User
         End Get
     End Property
 
-    <ValueMandatory(""), ValidStringLength("", Max:=8)> _
+    <ValueMandatory(""), ValidStringLength("", Max:=20)>
     Public Property NetworkId() As String
         Get
             CheckDeleted()
