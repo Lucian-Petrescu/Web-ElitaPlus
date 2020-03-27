@@ -27,7 +27,7 @@
             </tr>
             <tr>
                 <td>
-                    <asp:Label ID="lblSearchProdCode" runat="server">PRODUCT_CODE:</asp:Label>:<br />
+                    <asp:Label ID="lblSearchProdCode" runat="server">PRODUCT_CODE:</asp:Label><br />
                     <asp:DropDownList ID="ddlSearchProductCode" runat="server" SkinID="MediumDropDown" AutoPostBack="False" TabIndex="5"></asp:DropDownList>
                 </td>
                 <td>
@@ -35,22 +35,18 @@
                     <asp:DropDownList ID="ddlSearchRiskType" runat="server" SkinID="MediumDropDown" AutoPostBack="False" TabIndex="6"></asp:DropDownList>
                 </td>
                 <td>
-                    <asp:Label ID="lblSearchCoverageType" runat="server">COVERAGE_TYPE:</asp:Label>:<br />
+                    <asp:Label ID="lblSearchCoverageType" runat="server">COVERAGE_TYPE:</asp:Label><br />
                     <asp:DropDownList ID="ddlSearchCoverageType" runat="server" SkinID="MediumDropDown" AutoPostBack="False" TabIndex="7"></asp:DropDownList>
                 </td>
                 <td>
-                    <asp:Label ID="lblSearchCoverageConseqDamage" runat="server">COVERAGE_CONSEQ_DAMAGE:</asp:Label><br />
-                    <asp:DropDownList ID="ddlSearchCoverageConseqDamage" runat="server" SkinID="MediumDropDown" AutoPostBack="False" TabIndex="8"></asp:DropDownList>
+                    <asp:Label ID="lblSearchPurposeCode" runat="server">PURPOSE:</asp:Label><br />
+                    <asp:DropDownList ID="ddlSearchPurposeCode" runat="server" SkinID="MediumDropDown" AutoPostBack="False" TabIndex="8"></asp:DropDownList>
                 </td>
             </tr>
             <tr>
                 <td>
                     <asp:Label ID="lblSearchQuestionSetCode" runat="server">QUESTION_SET_CODE:</asp:Label><br />
-                    <asp:TextBox ID="txtSearchQuestionSetCode" runat="server" SkinID="MediumTextBox" TabIndex="9"></asp:TextBox>
-                </td>
-                <td>
-                    <asp:Label ID="lblSearchPurposeCode" runat="server">PURPOSE_CODE:</asp:Label><br />
-                    <asp:DropDownList ID="ddlSearchPurposeCode" runat="server" SkinID="MediumDropDown" AutoPostBack="False" TabIndex="10"></asp:DropDownList>
+                    <asp:DropDownList ID="ddlSearchQuestionSetCode" runat="server" SkinID="MediumDropDown" AutoPostBack="False" TabIndex="9"></asp:DropDownList>
                 </td>
                 <td>&nbsp;<br />
                     <asp:Button ID="btnSearch" runat="server" Text="Search" SkinID="SearchRightButton" TabIndex="11" />
@@ -150,11 +146,6 @@
                 <asp:TemplateField Visible="True" HeaderText="COVERAGE_TYPE" SortExpression="COVERAGE_TYPE_DESC">
                     <ItemTemplate>
                         <asp:Label ID="lblCoverageType" Text='<%#Container.DataItem("COVERAGE_TYPE_DESC")%>' runat="server" />
-                    </ItemTemplate>
-                </asp:TemplateField>
-                <asp:TemplateField Visible="True" HeaderText="COVERAGE_CONSEQ_DAMAGE" SortExpression="COVERAGE_CONSEQ_DAMAGE_DESC">
-                    <ItemTemplate>
-                        <asp:Label ID="lblCoverageConseqDamage" Text='<%#Container.DataItem("COVERAGE_CONSEQ_DAMAGE_DESC")%>' runat="server" />
                     </ItemTemplate>
                 </asp:TemplateField>
             </Columns>

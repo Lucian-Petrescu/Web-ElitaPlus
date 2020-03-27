@@ -141,42 +141,6 @@ Namespace Tables
         Protected WithEvents ddlSearchCoverageType As Global.System.Web.UI.WebControls.DropDownList
         
         '''<summary>
-        '''lblSearchCoverageConseqDamage control.
-        '''</summary>
-        '''<remarks>
-        '''Auto-generated field.
-        '''To modify move field declaration from designer file to code-behind file.
-        '''</remarks>
-        Protected WithEvents lblSearchCoverageConseqDamage As Global.System.Web.UI.WebControls.Label
-        
-        '''<summary>
-        '''ddlSearchCoverageConseqDamage control.
-        '''</summary>
-        '''<remarks>
-        '''Auto-generated field.
-        '''To modify move field declaration from designer file to code-behind file.
-        '''</remarks>
-        Protected WithEvents ddlSearchCoverageConseqDamage As Global.System.Web.UI.WebControls.DropDownList
-        
-        '''<summary>
-        '''lblSearchQuestionSetCode control.
-        '''</summary>
-        '''<remarks>
-        '''Auto-generated field.
-        '''To modify move field declaration from designer file to code-behind file.
-        '''</remarks>
-        Protected WithEvents lblSearchQuestionSetCode As Global.System.Web.UI.WebControls.Label
-        
-        '''<summary>
-        '''txtSearchQuestionSetCode control.
-        '''</summary>
-        '''<remarks>
-        '''Auto-generated field.
-        '''To modify move field declaration from designer file to code-behind file.
-        '''</remarks>
-        Protected WithEvents txtSearchQuestionSetCode As Global.System.Web.UI.WebControls.TextBox
-        
-        '''<summary>
         '''lblSearchPurposeCode control.
         '''</summary>
         '''<remarks>
@@ -193,6 +157,24 @@ Namespace Tables
         '''To modify move field declaration from designer file to code-behind file.
         '''</remarks>
         Protected WithEvents ddlSearchPurposeCode As Global.System.Web.UI.WebControls.DropDownList
+        
+        '''<summary>
+        '''lblSearchQuestionSetCode control.
+        '''</summary>
+        '''<remarks>
+        '''Auto-generated field.
+        '''To modify move field declaration from designer file to code-behind file.
+        '''</remarks>
+        Protected WithEvents lblSearchQuestionSetCode As Global.System.Web.UI.WebControls.Label
+        
+        '''<summary>
+        '''ddlSearchQuestionSetCode control.
+        '''</summary>
+        '''<remarks>
+        '''Auto-generated field.
+        '''To modify move field declaration from designer file to code-behind file.
+        '''</remarks>
+        Protected WithEvents ddlSearchQuestionSetCode As Global.System.Web.UI.WebControls.DropDownList
         
         '''<summary>
         '''btnSearch control.

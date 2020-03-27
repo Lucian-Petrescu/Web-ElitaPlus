@@ -159,24 +159,6 @@ Namespace Tables
         Protected WithEvents ddlCoverageType As Global.System.Web.UI.WebControls.DropDownList
         
         '''<summary>
-        '''lblCoverageConseqDamage control.
-        '''</summary>
-        '''<remarks>
-        '''Auto-generated field.
-        '''To modify move field declaration from designer file to code-behind file.
-        '''</remarks>
-        Protected WithEvents lblCoverageConseqDamage As Global.System.Web.UI.WebControls.Label
-        
-        '''<summary>
-        '''ddlCoverageConseqDamage control.
-        '''</summary>
-        '''<remarks>
-        '''Auto-generated field.
-        '''To modify move field declaration from designer file to code-behind file.
-        '''</remarks>
-        Protected WithEvents ddlCoverageConseqDamage As Global.System.Web.UI.WebControls.DropDownList
-        
-        '''<summary>
         '''lblRiskType control.
         '''</summary>
         '''<remarks>
@@ -222,13 +204,13 @@ Namespace Tables
         Protected WithEvents lblQuestionSetCode As Global.System.Web.UI.WebControls.Label
         
         '''<summary>
-        '''txtQuestionSetCode control.
+        '''ddlQuestionSetCode control.
         '''</summary>
         '''<remarks>
         '''Auto-generated field.
         '''To modify move field declaration from designer file to code-behind file.
         '''</remarks>
-        Protected WithEvents txtQuestionSetCode As Global.System.Web.UI.WebControls.TextBox
+        Protected WithEvents ddlQuestionSetCode As Global.System.Web.UI.WebControls.DropDownList
         
         '''<summary>
         '''btnSave_WRITE control.

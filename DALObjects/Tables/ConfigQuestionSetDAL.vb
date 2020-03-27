@@ -33,6 +33,47 @@
 
 #End Region
 
+#Region "Validation Methods"
+
+    Public Function CheckForDuplicateConfiguration(ByVal ConfigQuestionSetID As Guid, ByVal DealerID As Guid, ByVal ProductCodeID As Guid,
+                                                   ByVal strPurposeXCD As String, ByVal strQuestionSetCode As String) As String
+
+        Dim errorMsg As String = String.Empty
+        Dim selectStmt As String = Me.Config("/SQL/VALIDATE")
+        Dim cmd As OracleCommand = OracleDbHelper.CreateCommand(selectStmt, CommandType.StoredProcedure, OracleDbHelper.CreateConnection())
+
+        cmd.BindByName = True
+
+        If ConfigQuestionSetID <> Guid.Empty Then
+            cmd.AddParameter("pi_config_question_set_id", OracleDbType.Raw, ConfigQuestionSetID.ToByteArray())
+        End If
+
+        If DealerID <> Guid.Empty Then
+            cmd.AddParameter("pi_dealer_id", OracleDbType.Raw, DealerID.ToByteArray())
+        End If
+
+        If ProductCodeID <> Guid.Empty Then
+            cmd.AddParameter("pi_product_code_id", OracleDbType.Raw, ProductCodeID.ToByteArray())
+        End If
+
+        OracleDbHelper.AddParameter(cmd, "pi_purpose_xcd", OracleDbType.Varchar2, Me.GetFormattedSearchStringForSQL(strPurposeXCD), ParameterDirection.Input)
+
+        OracleDbHelper.AddParameter(cmd, "pi_question_set_code", OracleDbType.Varchar2, Me.GetFormattedSearchStringForSQL(strQuestionSetCode), ParameterDirection.Input)
+
+        cmd.AddParameter("po_result", OracleDbType.Varchar2, direction:=ParameterDirection.Output, size:=200)
+
+        Try
+            OracleDbHelper.ExecuteNonQuery(cmd)
+            errorMsg = cmd.Parameters.Item("po_result").Value.ToString()
+        Catch ex As Exception
+            Throw New DataBaseAccessException(DataBaseAccessException.DatabaseAccessErrorType.ReadErr, ex)
+        End Try
+
+        Return errorMsg
+    End Function
+
+#End Region
+
 #Region "Load Methods"
 
     Public Sub LoadSchema(ByVal ds As DataSet)
@@ -55,8 +96,8 @@
     End Sub
 
     Public Function LoadList(ByVal CompGrpID As Guid, ByVal CompanyID As Guid, ByVal DealerGrpID As Guid, ByVal DealerID As Guid,
-                             ByVal ProductCodeID As Guid, ByVal CoverageTypeID As Guid, ByVal CoverageConseqDamageID As Guid,
-                             ByVal RiskTypeID As Guid, ByVal strPurposeXCD As String, ByVal strQuestionSetCode As String, ByVal LanguageID As Guid,
+                             ByVal ProductCodeID As Guid, ByVal CoverageTypeID As Guid, ByVal RiskTypeID As Guid,
+                             ByVal strPurposeXCD As String, ByVal strQuestionSetCode As String, ByVal LanguageID As Guid,
                              ByVal networkID As String) As DataSet
 
         Dim selectStmt As String = Me.Config("/SQL/LOAD_LIST")
@@ -89,10 +130,6 @@
 
         If CoverageTypeID <> Guid.Empty Then
             cmd.AddParameter("pi_coverage_type_id", OracleDbType.Raw, CoverageTypeID.ToByteArray())
-        End If
-
-        If CoverageConseqDamageID <> Guid.Empty Then
-            cmd.AddParameter("pi_coverage_conseq_damage_id", OracleDbType.Raw, CoverageConseqDamageID.ToByteArray())
         End If
 
         If RiskTypeID <> Guid.Empty Then
@@ -136,10 +173,10 @@
             .AddParameter(parameterName:="pi_company_id", dbType:=OracleDbType.Raw, sourceColumn:=COL_NAME_COMPANY_ID, direction:=ParameterDirection.Input)
             .AddParameter(parameterName:="pi_dealer_group_id", dbType:=OracleDbType.Raw, sourceColumn:=COL_NAME_DEALER_GROUP_ID, direction:=ParameterDirection.Input)
             .AddParameter(parameterName:="pi_dealer_id", dbType:=OracleDbType.Raw, sourceColumn:=COL_NAME_DEALER_ID, direction:=ParameterDirection.Input)
-            .AddParameter(parameterName:="pi_product_code", dbType:=OracleDbType.Varchar2, sourceColumn:=COL_NAME_PRODUCT_CODE, direction:=ParameterDirection.Input)
+            .AddParameter(parameterName:="pi_product_code_id", dbType:=OracleDbType.Raw, sourceColumn:=COL_NAME_PRODUCT_CODE_ID, direction:=ParameterDirection.Input)
             .AddParameter(parameterName:="pi_coverage_type_id", dbType:=OracleDbType.Raw, sourceColumn:=COL_NAME_COVERAGE_TYPE_ID, direction:=ParameterDirection.Input)
-            .AddParameter(parameterName:="pi_coverage_consq_damage_id", dbType:=OracleDbType.Raw, sourceColumn:=COL_NAME_COVERAGE_CONSEQ_DAMAGE_ID, direction:=ParameterDirection.Input)
             .AddParameter(parameterName:="pi_risk_type_id", dbType:=OracleDbType.Raw, sourceColumn:=COL_NAME_RISK_TYPE_ID, direction:=ParameterDirection.Input)
+            .AddParameter(parameterName:="pi_device_type_id", dbType:=OracleDbType.Raw, sourceColumn:=COL_NAME_DEVICE_TYPE_ID, direction:=ParameterDirection.Input)
             .AddParameter(parameterName:="pi_purpose_xcd", dbType:=OracleDbType.Varchar2, sourceColumn:=COL_NAME_PURPOSE_XCD, direction:=ParameterDirection.Input)
             .AddParameter(parameterName:="pi_question_set_code", dbType:=OracleDbType.Varchar2, sourceColumn:=COL_NAME_QUESTION_SET_CODE, direction:=ParameterDirection.Input)
 
@@ -162,10 +199,10 @@
             .AddParameter(parameterName:="pi_company_id", dbType:=OracleDbType.Raw, sourceColumn:=COL_NAME_COMPANY_ID, direction:=ParameterDirection.Input)
             .AddParameter(parameterName:="pi_dealer_group_id", dbType:=OracleDbType.Raw, sourceColumn:=COL_NAME_DEALER_GROUP_ID, direction:=ParameterDirection.Input)
             .AddParameter(parameterName:="pi_dealer_id", dbType:=OracleDbType.Raw, sourceColumn:=COL_NAME_DEALER_ID, direction:=ParameterDirection.Input)
-            .AddParameter(parameterName:="pi_product_code", dbType:=OracleDbType.Varchar2, sourceColumn:=COL_NAME_PRODUCT_CODE, direction:=ParameterDirection.Input)
+            .AddParameter(parameterName:="pi_product_code_id", dbType:=OracleDbType.Raw, sourceColumn:=COL_NAME_PRODUCT_CODE_ID, direction:=ParameterDirection.Input)
             .AddParameter(parameterName:="pi_coverage_type_id", dbType:=OracleDbType.Raw, sourceColumn:=COL_NAME_COVERAGE_TYPE_ID, direction:=ParameterDirection.Input)
-            .AddParameter(parameterName:="pi_coverage_consq_damage_id", dbType:=OracleDbType.Raw, sourceColumn:=COL_NAME_COVERAGE_CONSEQ_DAMAGE_ID, direction:=ParameterDirection.Input)
             .AddParameter(parameterName:="pi_risk_type_id", dbType:=OracleDbType.Raw, sourceColumn:=COL_NAME_RISK_TYPE_ID, direction:=ParameterDirection.Input)
+            .AddParameter(parameterName:="pi_device_type_id", dbType:=OracleDbType.Raw, sourceColumn:=COL_NAME_DEVICE_TYPE_ID, direction:=ParameterDirection.Input)
             .AddParameter(parameterName:="pi_purpose_xcd", dbType:=OracleDbType.Varchar2, sourceColumn:=COL_NAME_PURPOSE_XCD, direction:=ParameterDirection.Input)
             .AddParameter(parameterName:="pi_question_set_code", dbType:=OracleDbType.Varchar2, sourceColumn:=COL_NAME_QUESTION_SET_CODE, direction:=ParameterDirection.Input)
 

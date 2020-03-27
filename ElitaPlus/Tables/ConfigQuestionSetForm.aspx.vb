@@ -5,6 +5,7 @@ Imports System.Threading
 Imports Assurant.ElitaPlus.Security
 Imports Assurant.Elita.Web.Forms
 Imports System.Collections.Generic
+Imports System.Linq
 
 Namespace Tables
     Partial Public Class ConfigQuestionSetForm
@@ -131,7 +132,6 @@ Namespace Tables
                 BindBOPropertyToLabel(State.MyBO, "ProductCode", lblProdCode)
                 BindBOPropertyToLabel(State.MyBO, "EventTypeId", lblDeviceType)
                 BindBOPropertyToLabel(State.MyBO, "CoverageTypeId", lblCoverageType)
-                BindBOPropertyToLabel(State.MyBO, "CoverageConsqDamageId", lblCoverageConseqDamage)
                 BindBOPropertyToLabel(State.MyBO, "PurposeCode", lblPurposeCode)
                 BindBOPropertyToLabel(State.MyBO, "QuestionSetCode", lblQuestionSetCode)
                 ClearGridViewHeadersAndLabelsErrorSign()
@@ -253,18 +253,22 @@ Namespace Tables
                     .AddBlankItem = True
                 })
 
-                'Coverage Consequestional Damage
-                ddlCoverageConseqDamage.Populate(CommonConfigManager.Current.ListManager.GetList("PERILTYP", Thread.CurrentPrincipal.GetLanguageCode()), New PopulateOptions() With
-                {
-                    .AddBlankItem = True
-                })
-
                 'Purpose
                 ddlPurpose.Populate(CommonConfigManager.Current.ListManager.GetList("CASEPUR", Thread.CurrentPrincipal.GetLanguageCode()), New PopulateOptions() With
                 {
                     .AddBlankItem = True,
-                    .TextFunc = AddressOf .GetDescription,
+                    .BlankItemValue = String.Empty,
+                    .TextFunc = textFun,
                     .ValueFunc = AddressOf .GetExtendedCode
+                })
+
+                'QuestionSetCode
+                Me.ddlQuestionSetCode.Populate(CommonConfigManager.Current.ListManager.GetList("DcmQuestionSet", Thread.CurrentPrincipal.GetLanguageCode()), New PopulateOptions() With
+                {
+                    .AddBlankItem = True,
+                    .BlankItemValue = String.Empty,
+                    .ValueFunc = AddressOf .GetCode,
+                    .TextFunc = textFun
                 })
 
             Catch ex As Exception
@@ -379,11 +383,24 @@ Namespace Tables
                 Me.PopulateControlFromBOProperty(ddlDealer, .DealerId)
                 Me.PopulateControlFromBOProperty(ddlProductCode, .ProductCodeId)
                 Me.PopulateControlFromBOProperty(ddlDeviceType, .DeviceTypeId)
-                Me.PopulateControlFromBOProperty(ddlRiskType, .DeviceTypeId)
+                Me.PopulateControlFromBOProperty(ddlRiskType, .RiskTypeId)
                 Me.PopulateControlFromBOProperty(ddlCoverageType, .CoverageTypeId)
-                Me.PopulateControlFromBOProperty(ddlCoverageConseqDamage, .CoverageConsqDamageId)
-                Me.PopulateControlFromBOProperty(ddlPurpose, .PurposeXCD)
-                Me.PopulateControlFromBOProperty(Me.txtQuestionSetCode, .QuestionSetCode)
+
+                If Not .PurposeXCD Is Nothing Then
+                    Me.ddlPurpose.Items.FindByValue(.PurposeXCD).Selected = True
+                    Me.ddlPurpose.Style.Remove("background")
+                Else
+                    Me.ddlPurpose.Items.FindByText(String.Empty).Selected = True
+                    Me.ddlPurpose.Style.Remove("background")
+                End If
+
+                If Not .QuestionSetCode Is Nothing Then
+                    Me.ddlQuestionSetCode.Items.FindByValue(.QuestionSetCode).Selected = True
+                    Me.ddlQuestionSetCode.Style.Remove("background")
+                Else
+                    Me.ddlQuestionSetCode.Items.FindByText(String.Empty).Selected = True
+                    Me.ddlQuestionSetCode.Style.Remove("background")
+                End If
             End With
         End Sub
 
@@ -410,10 +427,9 @@ Namespace Tables
                 Me.PopulateBOProperty(Me.State.MyBO, "ProductCodeId", ddlProductCode)
                 Me.PopulateBOProperty(Me.State.MyBO, "DeviceTypeId", Me.ddlDeviceType)
                 Me.PopulateBOProperty(Me.State.MyBO, "CoverageTypeId", Me.ddlCoverageType)
-                Me.PopulateBOProperty(Me.State.MyBO, "CoverageConseqDamage", Me.ddlCoverageConseqDamage)
                 Me.PopulateBOProperty(Me.State.MyBO, "RiskTypeId", Me.ddlRiskType)
-                Me.PopulateBOProperty(Me.State.MyBO, "PurposeId", Me.ddlPurpose)
-                Me.PopulateBOProperty(Me.State.MyBO, "QuestionmSetCode", Me.txtQuestionSetCode)
+                Me.PopulateBOProperty(Me.State.MyBO, "PurposeXCD", Me.ddlPurpose, False, True)
+                Me.PopulateBOProperty(Me.State.MyBO, "QuestionSetCode", Me.ddlQuestionSetCode, False, True)
             End With
             If Me.ErrCollection.Count > 0 Then
                 Throw New PopulateBOErrorException
