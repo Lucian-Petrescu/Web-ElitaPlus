@@ -542,8 +542,10 @@ Namespace Tables
                     'It was a new with copy
                     Me.State.MyBO.Clone(Me.State.ScreenSnapShotBO)
                 Else
-                    CreateNew()
+                    Me.State.ScreenSnapShotBO = Nothing 'Reset the backup copy
+                    Me.State.MyBO = New ConfigQuestionSet
                 End If
+
                 Me.PopulateFormFromBOs()
                 Me.EnableDisableFields()
             Catch ex As Exception
