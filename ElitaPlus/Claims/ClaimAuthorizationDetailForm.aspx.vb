@@ -1267,6 +1267,27 @@ Partial Class ClaimAuthorizationDetailForm
     End Sub
 
 #End Region
+
+    #Region "Void Claim Authorization"
+    Private Sub btnVoidAuthorization_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnVoidAuthorization.Click
+        Try
+            InitVoidAuthorization()
+
+            'show the div in Modal mode
+            HiddenFieldVoidAuth.Value = "Y"
+
+        Catch ex As Threading.ThreadAbortException
+        Catch ex As Exception
+            Me.HandleErrors(ex, Me.MasterPage.MessageController)
+        End Try
+    End Sub
+
+    Private Sub InitVoidAuthorization()
+        ucVoidAuthorization.InitializeComponent()
+    End Sub
+
+    #End Region
+
     Private Sub btnResendShippingLabel_Click(sender As Object, e As EventArgs) Handles btnResendShippingLabel.Click
         Try
             ResendShippingLabel()

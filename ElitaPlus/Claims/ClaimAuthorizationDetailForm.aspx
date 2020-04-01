@@ -6,6 +6,7 @@
 <%@ Register TagPrefix="Elita" TagName="UserControlAuthorizationInfo" Src="UserControlAuthorizationInfo.ascx" %>
 <%--<%@ Register TagPrefix="Elita" TagName="UserControlSelectServiceCenter" Src="~/Certificates/UserControlSelectServiceCenter.ascx" %>--%>
 <%@ Register TagPrefix="Elita" TagName="UserControlServiceCenterSelection" Src="../Common/UserControlServiceCenterSelection.ascx" %>
+<% @Register TagPrefix="Elita" tagName="UserControlVoidAuthorization" src="../Common/UserControlVoidAuthorization.ascx" %>
 
 <asp:Content ID="Content1" ContentPlaceHolderID="HeadPlaceHolder" runat="server">    
 </asp:Content>
@@ -67,10 +68,16 @@
 <asp:Content ID="Content4" ContentPlaceHolderID="BodyPlaceHolder" runat="server">
     <asp:ScriptManager ID="ScriptManagerMaster" runat="server" />
     <asp:HiddenField ID="HiddenFieldShowNewSC" runat="server" Value="N" />
+    <asp:HiddenField ID="HiddenFieldVoidAuth" runat="server" Value="N" />
     <script type="text/javascript">
         function SetShowNewSCValue(newValue) {
             $('#<% =HiddenFieldShowNewSC.ClientID%>').val(newValue); 
-        }        
+        }     
+
+        function SetShowVoidAuthValue(newValue) {
+            $('#<% =HiddenFieldVoidAuth.ClientID%>').val(newValue);
+        }     
+
     </script>
     <div id="ModalServiceCenter" class="overlay">
         <div id="light" class="overlay_message_content" style="left: 5%; right: 5%; top: 5%; max-height: 80%">
@@ -111,12 +118,47 @@
         </div>
     </div>
 
+    <div id="ModalVoidAuthorization" class="overlay">
+        <div id="light" class="overlay_message_content" style="left: 5%; right: 5%; top: 5%; max-height: 80%">
+            
+            <table width="100%" style="border:none;margin-bottom:10px;">
+                <tr>
+                    <td>
+                        <asp:Label ID="lblVoidAuthErr" runat="server" Visible="false" ForeColor="Red"></asp:Label>
+                    </td>
+                </tr>
+                
+                <tr>
+                    <td><Elita:UserControlVoidAuthorization ID="ucVoidAuthorization" runat="server" /></td>
+                </tr>
+                <tr style="padding-bottom:20px;">
+                    <td align="right">
+                        <asp:Button ID="btnVoidAuthSave" runat="server" SkinID="SearchButton" Text="Save" /> &nbsp;&nbsp;&nbsp;
+                        <asp:Button ID="btnVoidAuthCancel" runat="server" SkinID="SearchButton" Text="Cancel"
+                                    OnClientClick="SetShowNewSCValue('N'); hideModal('ModalVoidAuthorization'); return false;"/>
+                                              
+                    </td>
+                </tr>                
+            </table>
+                
+        </div>
+        <div id="fade" class="black_overlay">
+        </div>
+    </div>
+
+
     <script type="text/javascript">
         //debugger;
         if ($('#<% =HiddenFieldShowNewSC.ClientID%>').val() == "Y") {
             revealModal("ModalServiceCenter");
         } else {
             hideModal('ModalServiceCenter');
+        };
+
+        if ($('#<% =HiddenFieldVoidAuth.ClientID%>').val() == "Y") {
+            revealModal("ModalVoidAuthorization");
+        } else {
+            hideModal('ModalVoidAuthorization');
         };
     </script>
 
@@ -488,6 +530,7 @@
                 PopupControlID="PanButtonsHidden" PopupPosition="top" PopDelay="25" HoverCssClass="popupBtnHover">
             </ajaxToolkit:HoverMenuExtender>
             <asp:Panel ID="PanButtonsHidden" runat="server" SkinID="PopUpMenuPanel">
+                <asp:Button ID="btnVoidAuthorization" runat="server" Text="VOID_AUTHORIZATION" SkinID="PopMenuButton" />
                 <asp:Button ID="btnRefundFee" runat="server" Text="Refund_Fee" SkinID="PopMenuButton" />
                 <asp:Button ID="btnResendShippingLabel" runat="server" Text="Resend_Shipping_Label" SkinID="PopMenuButton"/>
                 <asp:Button ID="btnServiceCenterInfo" runat="server" Text="Center_Info" SkinID="PopMenuButton" />
@@ -497,6 +540,7 @@
                 <asp:Button ID="btnPrint" runat="server" Text="SO_PRINT" SkinID="PopMenuButton" />
                 <asp:Button ID="btnReshipment" runat="server" Text="RESHIPMENT" SkinID="PopMenuButton" />
                 <asp:Button ID="btnPayCash" runat="server" Text="PAY_CASH" SkinID="PopMenuButton" />
+                
             </asp:Panel>
         </div>
     </div>
