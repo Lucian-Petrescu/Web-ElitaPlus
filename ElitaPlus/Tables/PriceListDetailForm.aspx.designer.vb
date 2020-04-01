@@ -194,13 +194,13 @@ Partial Public Class PriceListDetailForm
     Protected WithEvents Label6 As Global.System.Web.UI.WebControls.Label
 
     '''<summary>
-    '''Label2 control.
+    '''lblPendingApprovals control.
     '''</summary>
     '''<remarks>
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents Label2 As Global.System.Web.UI.WebControls.Label
+    Protected WithEvents lblPendingApprovals As Global.System.Web.UI.WebControls.Label
 
     '''<summary>
     '''lblEquipmentList control.

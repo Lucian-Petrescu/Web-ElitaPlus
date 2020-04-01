@@ -319,6 +319,7 @@ Partial Class AccountingSettingForm
     Private Sub btnSave_WRITE_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnSave_WRITE.Click
         Try
             Dim blnChanged As Boolean = False
+            Dim selectedCompId As Guid = Guid.Empty
             If cboCompany.Visible = False Then
                 If moCompId.Equals(Guid.Empty) Then
                     'no account companies found for the user
@@ -326,10 +327,27 @@ Partial Class AccountingSettingForm
                     Exit Sub
                 End If
             Else
-                Dim selectedCompId As Guid = Me.GetSelectedItem(Me.cboCompany)
+                selectedCompId = Me.GetSelectedItem(Me.cboCompany)
                 If selectedCompId.Equals(Guid.Empty) Then
                     ElitaPlusPage.SetLabelError(moCompanyLABEL)
-                    Me.ErrControllerMaster.AddErrorAndShow(ElitaPlus.Common.ErrorCodes.GUI_SELECT_ACCOUNTING_COMPANY_ERR)
+                    Me.ErrControllerMaster.AddErrorAndShow(ElitaPlus.Common.ErrorCodes.GUI_SELECT_ACCOUNTING_COMPANY_FROM_ACC_RECEIVABLE_TAB_ERR)
+                    TabContainer1.ActiveTabIndex = 0
+                    Exit Sub
+                End If
+            End If
+
+            If cboCompany_P.Visible = False Then
+                If moCompId.Equals(Guid.Empty) Then
+                    'no account companies found for the user
+                    Me.ErrControllerMaster.AddErrorAndShow(ElitaPlus.Common.ErrorCodes.GUI_ACCOUNTING_COMPANIES_NOT_FOUND_ERR)
+                    Exit Sub
+                End If
+            Else
+                selectedCompId = Me.GetSelectedItem(Me.cboCompany_P)
+                If selectedCompId.Equals(Guid.Empty) Then
+                    ElitaPlusPage.SetLabelError(moCompanyLABEL)
+                    Me.ErrControllerMaster.AddErrorAndShow(ElitaPlus.Common.ErrorCodes.GUI_SELECT_ACCOUNTING_COMPANY_FROM_ACC_PAYABLE_TAB_ERR)
+                    TabContainer1.ActiveTabIndex = 1
                     Exit Sub
                 End If
             End If
@@ -403,6 +421,9 @@ Partial Class AccountingSettingForm
             End If
 
         Catch ex As Exception
+            If ex.GetType Is GetType(BOValidationException) Then
+                TabContainer1.ActiveTabIndex = 0
+            End If
             Me.HandleErrors(ex, Me.ErrControllerMaster)
         End Try
     End Sub
@@ -638,6 +659,11 @@ Partial Class AccountingSettingForm
         With State.MyBO_R
             If (.IsNew AndAlso State.IsNewBORDirty) OrElse ((Not .IsNew) AndAlso .IsDirty) Then
                 .Validate()
+                Dim isUniqueCompanyCode As Boolean
+                isUniqueCompanyCode = ValidateIDXAcctSettingAndCode(.AcctCompanyId, .AccountCode)
+                If isUniqueCompanyCode Then
+                    Throw New GUIException(Message.ERR_SAVING_DATA, Assurant.ElitaPlus.Common.ErrorCodes.GUI_ACCOUNT_CODE_ALREADY_IN_USE_IN_ACCOUNT_RECEIVABLE_ERR)
+                End If
                 blnChanged_R = True
             End If
         End With
@@ -645,6 +671,11 @@ Partial Class AccountingSettingForm
         With State.MyBO_P
             If (.IsNew AndAlso State.IsNewBOPDirty) OrElse ((Not .IsNew) AndAlso .IsDirty) Then
                 .Validate()
+                Dim isUniqueCompanyCode As Boolean
+                isUniqueCompanyCode = ValidateIDXAcctSettingAndCode(.AcctCompanyId, .AccountCode)
+                If isUniqueCompanyCode Then
+                    Throw New GUIException(Message.ERR_SAVING_DATA, Assurant.ElitaPlus.Common.ErrorCodes.GUI_ACCOUNT_CODE_ALREADY_IN_USE_IN_ACCOUNT_PAYABLE_ERR)
+                End If
                 blnChanged_P = True
             End If
         End With
@@ -676,6 +707,14 @@ Partial Class AccountingSettingForm
         End If
 
         Return (blnChanged_R OrElse blnChanged_P OrElse blnChanged_B)
+    End Function
+
+    Public Function ValidateIDXAcctSettingAndCode(ByVal accountCompanyId As Guid, ByVal accountCode As String)
+        Try
+            Return AcctSetting.IsIDXAcctSettingAndCode(accountCompanyId, accountCode)
+        Catch ex As Exception
+
+        End Try
     End Function
 
     Private Sub UpdateObjWithBankInfoId(ByVal guidBankId As Guid)

@@ -62,6 +62,8 @@ Public Class Codes
     Public Const EVNT_COMM_CHANNEL As String = "COMM_CHANNEL"
     Public Const EVNT_COMM_CHAN_EMAIL As String = "EMAIL"
 
+    Public Const ERROR_FLAG As String = "100"
+    Public Const NO_HELP_COMTS_FOUND As String = "NO_HELP_COMTS_FOUND"
 
     ' Claim Issue Code
     Public Const ISSUE_CODE__TRBSHT = "TRBSHT"

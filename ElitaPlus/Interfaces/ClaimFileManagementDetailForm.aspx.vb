@@ -1208,7 +1208,7 @@ Namespace Interfaces
         End Sub
 
         Private Function ConvertToString(ByVal Amount As Decimal?) As String
-            If (Amount Is Nothing Or Amount = 0) Then
+            If (Amount Is Nothing) Then
                 Return String.Empty
             Else
                 Return Amount.ToString()
