@@ -1648,11 +1648,13 @@ Public Class PriceListDetailForm
 
             If Not Page.IsPostBack Then
                 Dim requestedByList As New List(Of String)
-                For Each dr As DataRow In dv.Table(0).Table.Rows
-                    requestedByList.Add(dr("requested_by").ToString())
-                Next
-                ddlsearch.DataSource = requestedByList.Distinct()
-                ddlsearch.DataBind()
+                If dv.Table.Rows.Count > 0 Then
+                    For Each dr As DataRow In dv.Table(0).Table.Rows
+                        requestedByList.Add(dr("requested_by").ToString())
+                    Next
+                    ddlsearch.DataSource = requestedByList.Distinct()
+                    ddlsearch.DataBind()
+                End If
                 ddlsearch.Items.Insert(0, "select")
             End If
             Me.Grid.PageSize = Me.State.PageSize
@@ -1946,7 +1948,7 @@ Public Class PriceListDetailForm
 #End Region
 
 #Region "Detail GRid for Approval"
-
+    Dim isfromdropdown As Boolean = False
 
     ' <summary>
     ' Populate the main detail lits grid
@@ -1959,17 +1961,18 @@ Public Class PriceListDetailForm
             dv.Sort = Me.State.SortExpression
             Me.State.DetailSearchDV = dv
             Me.gvPendingApprovals.AutoGenerateColumns = False
-            'dv.RowFilter = "status_xcd='PL_RECON_PROCESS-PENDINGAPPROVAL'"
-
-            If Not Page.IsPostBack Then
+            dv.RowFilter = "status_xcd='PL_RECON_PROCESS-PENDINGAPPROVAL'"
+            If isfromdropdown = False Then 'Not Page.IsPostBack Then
                 Dim requestedByList As New List(Of String)
-                For Each dr As DataRow In dv.Table(0).Table.Rows
-                    If dr("status_xcd").ToString() = "PL_RECON_PROCESS-PENDINGAPPROVAL" Then
-                        requestedByList.Add(dr("requested_by").ToString())
-                    End If
-                Next
-                ddlpasearch.DataSource = requestedByList.Distinct()
-                ddlpasearch.DataBind()
+                If dv.Table.Rows.Count > 0 Then
+                    For Each dr As DataRow In dv.Table(0).Table.Rows
+                        If dr("status_xcd").ToString() = "PL_RECON_PROCESS-PENDINGAPPROVAL" Then
+                            requestedByList.Add(dr("requested_by").ToString())
+                        End If
+                    Next
+                    ddlpasearch.DataSource = requestedByList.Distinct()
+                    ddlpasearch.DataBind()
+                End If
                 ddlpasearch.Items.Insert(0, "select")
             End If
             Me.gvPendingApprovals.PageSize = Me.State.PageSize
@@ -2030,12 +2033,12 @@ Public Class PriceListDetailForm
         End Try
 
     End Sub
+    Dim CheckBoxArray As ArrayList
 
     Private Sub gvPendingApprovals_PageIndexChanged(ByVal sender As Object, ByVal e As System.EventArgs) Handles gvPendingApprovals.PageIndexChanged
         Try
             Me.State.PageIndex = gvPendingApprovals.PageIndex
             Me.State.PriceListId = Guid.Empty
-            PopulategvPendingApprovals()
         Catch ex As Exception
             Me.HandleErrors(ex, Me.MasterPage.MessageController)
         End Try
@@ -2043,9 +2046,18 @@ Public Class PriceListDetailForm
 
     Private Sub gvPendingApprovals_PageIndexChanging(ByVal sender As Object, ByVal e As System.Web.UI.WebControls.GridViewPageEventArgs) Handles gvPendingApprovals.PageIndexChanging
         Try
+            Dim i As Integer = e.NewPageIndex
+            If i = 0 Then
+                i = 0
+            Else
+                i = e.NewPageIndex - 1
+            End If
+            savecheckedcheckboxes(i)
             gvPendingApprovals.PageIndex = e.NewPageIndex
             State.PageIndex = gvPendingApprovals.PageIndex
             State.PriceListDetailSelectedChildId = Guid.Empty
+            PopulategvPendingApprovals()
+            populateCheckBoxValues(i)
         Catch ex As Exception
             Me.HandleErrors(ex, Me.MasterPage.MessageController)
         End Try
@@ -2365,21 +2377,31 @@ Public Class PriceListDetailForm
         Try
             Dim isChecked As Boolean = False
             Dim PricelistDetailIdList As String = String.Empty
+            Dim lstPriceListDetail As New Collections.Generic.List(Of String)
             Dim HeaderCheckbox As CheckBox = CType(gvPendingApprovals.HeaderRow.FindControl("chkHeaderApproveOrReject"), CheckBox)
-            If HeaderCheckbox.Checked = False Then
-                Dim lstPriceListDetail As New Collections.Generic.List(Of String)
-                For Each gvrow As GridViewRow In gvPendingApprovals.Rows
-                    Dim chkApproveOrReject As CheckBox = CType(gvrow.FindControl("chkApproveOrReject"), CheckBox)
-                    If chkApproveOrReject.Checked Then
-                        Dim lblCtrl As Label
-                        lblCtrl = CType(gvrow.Cells(23).FindControl("lblPriceListDetailID"), Label)
-                        lstPriceListDetail.Add(MiscUtil.GetDbStringFromGuid(New Guid(lblCtrl.Text)))
-                        isChecked = True
-                    End If
-                Next
-                PricelistDetailIdList = String.Join(",", lstPriceListDetail.ToArray())
+
+            If ViewState("SelectedPriceListDeatilId") IsNot Nothing Then
+                lstPriceListDetail = DirectCast(ViewState("SelectedPriceListDeatilId"), Collections.Generic.List(Of String))
+                If lstPriceListDetail.Count > 0 Then
+                    PricelistDetailIdList = String.Join(",", lstPriceListDetail.ToArray())
+                    isChecked = True
+                End If
             Else
-                isChecked = True
+                If HeaderCheckbox.Checked = False Then
+                    'Dim lstPriceListDetail As New Collections.Generic.List(Of String)
+                    For Each gvrow As GridViewRow In gvPendingApprovals.Rows
+                        Dim chkApproveOrReject As CheckBox = CType(gvrow.FindControl("chkApproveOrReject"), CheckBox)
+                        If chkApproveOrReject.Checked Then
+                            Dim lblCtrl As Label
+                            lblCtrl = CType(gvrow.Cells(23).FindControl("lblPriceListDetailID"), Label)
+                            lstPriceListDetail.Add(MiscUtil.GetDbStringFromGuid(New Guid(lblCtrl.Text)))
+                            isChecked = True
+                        End If
+                    Next
+                    PricelistDetailIdList = String.Join(",", lstPriceListDetail.ToArray())
+                Else
+                    isChecked = True
+                End If
             End If
             If isChecked Then
                 Me.State.MyBO.ProcessPriceListByStatus(Me.State.MyBO.Id, PricelistDetailIdList, Authentication.CurrentUser.NetworkId, "PL_RECON_PROCESS-APPROVED")
@@ -2399,21 +2421,29 @@ Public Class PriceListDetailForm
         Try
             Dim isChecked As Boolean = False
             Dim PricelistDetailIdList As String = String.Empty
+            Dim lstPriceListDetail As New Collections.Generic.List(Of String)
             Dim HeaderCheckbox As CheckBox = CType(gvPendingApprovals.HeaderRow.FindControl("chkHeaderApproveOrReject"), CheckBox)
-            If HeaderCheckbox.Checked = False Then
-                Dim lstPriceListDetail As New Collections.Generic.List(Of String)
-                For Each gvrow As GridViewRow In gvPendingApprovals.Rows
-                    Dim chkApproveOrReject As CheckBox = CType(gvrow.FindControl("chkApproveOrReject"), CheckBox)
-                    If chkApproveOrReject.Checked Then
-                        Dim lblCtrl As Label
-                        lblCtrl = CType(gvrow.Cells(23).FindControl("lblPriceListDetailID"), Label)
-                        lstPriceListDetail.Add(MiscUtil.GetDbStringFromGuid(New Guid(lblCtrl.Text)))
-                        isChecked = True
-                    End If
-                Next
-                PricelistDetailIdList = String.Join(",", lstPriceListDetail.ToArray())
+            If ViewState("SelectedPriceListDeatilId") IsNot Nothing Then
+                lstPriceListDetail = DirectCast(ViewState("SelectedPriceListDeatilId"), Collections.Generic.List(Of String))
+                If lstPriceListDetail.Count > 0 Then
+                    PricelistDetailIdList = String.Join(",", lstPriceListDetail.ToArray())
+                    isChecked = True
+                End If
             Else
-                isChecked = True
+                If HeaderCheckbox.Checked = False Then
+                    For Each gvrow As GridViewRow In gvPendingApprovals.Rows
+                        Dim chkApproveOrReject As CheckBox = CType(gvrow.FindControl("chkApproveOrReject"), CheckBox)
+                        If chkApproveOrReject.Checked Then
+                            Dim lblCtrl As Label
+                            lblCtrl = CType(gvrow.Cells(23).FindControl("lblPriceListDetailID"), Label)
+                            lstPriceListDetail.Add(MiscUtil.GetDbStringFromGuid(New Guid(lblCtrl.Text)))
+                            isChecked = True
+                        End If
+                    Next
+                    PricelistDetailIdList = String.Join(",", lstPriceListDetail.ToArray())
+                Else
+                    isChecked = True
+                End If
             End If
             If isChecked Then
                 Me.State.MyBO.ProcessPriceListByStatus(Me.State.MyBO.Id, PricelistDetailIdList, Authentication.CurrentUser.NetworkId, "PL_RECON_PROCESS-REJECTED")
@@ -2434,6 +2464,79 @@ Public Class PriceListDetailForm
     End Sub
 
     Protected Sub btnpaSearch_Click(sender As Object, e As EventArgs) Handles btnpaSearch.Click
+        isfromdropdown = True
         Me.PopulategvPendingApprovals()
     End Sub
+    Private Function savecheckedcheckboxes(ByVal rIndex As Integer)
+        Dim boxlist As ArrayList = New ArrayList()
+        Dim index As Integer = -1
+        Dim chkHeader As CheckBox = CType(gvPendingApprovals.HeaderRow.FindControl("chkHeaderApproveOrReject"), CheckBox)
+        Dim chAll As String = "ChkAll -" + rIndex.ToString()
+        Dim lstPriceListDetail As New Collections.Generic.List(Of String)
+        If ViewState("SelectedValues") IsNot Nothing Then
+            boxlist = DirectCast(ViewState("SelectedValues"), ArrayList)
+        End If
+        If ViewState("SelectedPriceListDeatilId") IsNot Nothing Then
+            lstPriceListDetail = DirectCast(ViewState("SelectedPriceListDeatilId"), Collections.Generic.List(Of String))
+        End If
+        If boxlist.IndexOf(chAll) = -1 Then
+            boxlist.Add(chAll)
+            index = 0
+            For Each gvrow As GridViewRow In gvPendingApprovals.Rows
+                Dim chkApproveOrReject As CheckBox = CType(gvrow.FindControl("chkApproveOrReject"), CheckBox)
+                'index = CType(gvPendingApprovals.DataKeys(gvrow.RowIndex).Value, Integer)
+
+                If chkApproveOrReject.Checked Then
+                    Dim lblCtrl As Label
+                    lblCtrl = CType(gvrow.Cells(23).FindControl("lblPriceListDetailID"), Label)
+                    Dim currentListDetailId As String = MiscUtil.GetDbStringFromGuid(New Guid(lblCtrl.Text))
+                    lstPriceListDetail.Add(currentListDetailId)
+                    If boxlist.IndexOf(index) = -1 Then
+                        boxlist.Add(index.ToString())
+                    Else
+                        boxlist.Remove(index.ToString())
+                    End If
+                    If lstPriceListDetail.IndexOf(currentListDetailId) = -1 Then
+                        lstPriceListDetail.Add(currentListDetailId.ToString())
+                    Else
+                        lstPriceListDetail.Remove(currentListDetailId.ToString())
+                    End If
+                End If
+
+
+                index = index + 1
+            Next
+            If boxlist IsNot Nothing And boxlist.Count > 0 Then
+                ViewState("SelectedValues") = boxlist
+            End If
+            If lstPriceListDetail IsNot Nothing And lstPriceListDetail.Count > 0 Then
+                ViewState("SelectedPriceListDeatilId") = lstPriceListDetail
+            End If
+        End If
+        Return 0
+    End Function
+
+    Private Function populateCheckBoxValues(ByVal rIndex As Integer)
+        Dim boxlist As ArrayList = New ArrayList()
+        rIndex = gvPendingApprovals.PageIndex
+        Dim ChAll As String = "ChkAll -" + rIndex.ToString()
+        Dim index As Integer = -1
+        If ViewState("SelectedValues") IsNot Nothing Then
+            boxlist = DirectCast(ViewState("SelectedValues"), ArrayList)
+        End If
+        If boxlist.IndexOf(ChAll) <> -1 Then
+            index = 0
+            Dim chkHeader As CheckBox = CType(gvPendingApprovals.HeaderRow.FindControl("chkHeaderApproveOrReject"), CheckBox)
+            chkHeader.Checked = True
+            For Each gvrow As GridViewRow In gvPendingApprovals.Rows
+                Dim chkApproveOrReject As CheckBox = CType(gvrow.FindControl("chkApproveOrReject"), CheckBox)
+                'index = CType(gvPendingApprovals.DataKeys(gvrow.RowIndex).Value, Integer)
+                If boxlist.IndexOf(index.ToString()) <> -1 Then
+                    chkApproveOrReject.Checked = True
+                End If
+                index = index + 1
+            Next
+        End If
+        Return 0
+    End Function
 End Class
