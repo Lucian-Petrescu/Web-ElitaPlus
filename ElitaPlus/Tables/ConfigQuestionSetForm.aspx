@@ -24,7 +24,7 @@
                             <asp:Label ID="lblCompany" runat="server" Font-Bold="False">COMPANY:</asp:Label>
                         </td>
                         <td>
-                            <asp:DropDownList ID="ddlCompany" runat="server" AutoPostBack="false" TabIndex="2" SkinID="MediumDropDown"></asp:DropDownList>
+                            <asp:DropDownList ID="ddlCompany" runat="server" AutoPostBack="true" TabIndex="2" SkinID="MediumDropDown"></asp:DropDownList>
                         </td>
                     </tr>
                     <tr>
@@ -38,7 +38,7 @@
                             <asp:Label ID="lblDealer" runat="server" Font-Bold="False">DEALER:</asp:Label>
                         </td>
                         <td>
-                            <asp:DropDownList ID="ddlDealer" runat="server" AutoPostBack="false" TabIndex="5" SkinID="MediumDropDown"></asp:DropDownList>
+                            <asp:DropDownList ID="ddlDealer" runat="server" AutoPostBack="true" TabIndex="5" SkinID="MediumDropDown"></asp:DropDownList>
                         </td>
                     </tr>
                     <tr>
@@ -77,7 +77,7 @@
                             <asp:DropDownList ID="ddlPurpose" runat="server" AutoPostBack="false" SkinID="MediumDropDown" TabIndex="10"></asp:DropDownList>
                         </td>
                         <td nowrap="nowrap" align="right">
-                            <asp:Label ID="lblQuestionSetCode" runat="server" Font-Bold="False">QUESTION_SET_CODE:</asp:Label>
+                            <asp:Label ID="lblQuestionSetCode" runat="server" Font-Bold="False">QUESTION_SET:</asp:Label>
                         </td>
                         <td nowrap="nowrap">
                             <asp:DropDownList ID="ddlQuestionSetCode" runat="server" AutoPostBack="false" SkinID="MediumDropDown" TabIndex="11"></asp:DropDownList>

@@ -553,6 +553,93 @@ Namespace Tables
             End Try
         End Sub
 
+        Private Sub ddlCompany_SelectedIndexChanged(sender As Object, e As EventArgs) Handles ddlCompany.SelectedIndexChanged
+            Dim textFun As Func(Of DataElements.ListItem, String) = Function(li As DataElements.ListItem)
+                                                                        Return li.Code + " - " + li.Translation
+                                                                    End Function
+
+            If ddlCompany.SelectedIndex > NO_ITEM_SELECTED_INDEX Then
+
+                If ddlCompany.SelectedIndex = BLANK_ITEM_SELECTED Then
+                    Exit Sub
+                End If
+
+                'DealerGroup
+                Dim oDealerGroupList = GetDealerGroupListByCompany()
+                Me.ddlDealerGroup.Populate(oDealerGroupList, New PopulateOptions() With
+                {
+                    .AddBlankItem = True,
+                    .SortFunc = AddressOf .GetCode
+                })
+
+                'Dealer
+                Dim oDealerList = GetDealerListByCompany()
+                Me.ddlDealer.Populate(oDealerList, New PopulateOptions() With
+                {
+                    .AddBlankItem = True
+                })
+
+                'ProductCode
+                Dim oProductCodeList = GetProductListByCompany()
+                Me.ddlProductCode.Populate(oProductCodeList, New PopulateOptions() With
+                {
+                    .AddBlankItem = True,
+                    .TextFunc = textFun
+                })
+
+            End If
+        End Sub
+
+        Private Sub ddlDealer_SelectedIndexChanged(sender As Object, e As EventArgs) Handles ddlDealer.SelectedIndexChanged
+            Dim textFun As Func(Of DataElements.ListItem, String) = Function(li As DataElements.ListItem)
+                                                                        Return li.Code + " - " + li.Translation
+                                                                    End Function
+
+            If ddlDealer.SelectedIndex > NO_ITEM_SELECTED_INDEX Then
+
+                If ddlDealer.SelectedIndex = BLANK_ITEM_SELECTED Then
+                    Exit Sub
+                End If
+
+                'ProductCode
+                Dim oProductCodeList = GetProductListByDealer()
+                Me.ddlProductCode.Populate(oProductCodeList, New PopulateOptions() With
+                {
+                    .AddBlankItem = True,
+                    .TextFunc = textFun
+                })
+
+            End If
+        End Sub
+
+        Private Function GetDealerGroupListByCompany() As ListItem()
+            Dim oListContext As New ListContext
+            oListContext.CompanyId = Guid.Parse(ddlCompany.SelectedValue)
+            Dim oDealerGroupListForCompany As ListItem() = CommonConfigManager.Current.ListManager.GetList(listCode:="DealerGroupByCompany", context:=oListContext)
+            Return oDealerGroupListForCompany.ToArray()
+        End Function
+
+        Private Function GetDealerListByCompany() As ListItem()
+            Dim oListContext As New ListContext
+            oListContext.CompanyId = Guid.Parse(ddlCompany.SelectedValue)
+            Dim oDealerListForCompany As ListItem() = CommonConfigManager.Current.ListManager.GetList(listCode:="DealerListByCompany", context:=oListContext)
+            Return oDealerListForCompany.ToArray()
+        End Function
+
+        Private Function GetProductListByCompany() As ListItem()
+            Dim oListContext As New ListContext
+            oListContext.CompanyId = Guid.Parse(ddlCompany.SelectedValue)
+            Dim oProductListForCompany As ListItem() = CommonConfigManager.Current.ListManager.GetList(listCode:="ProductCodeByCompany", context:=oListContext)
+            Return oProductListForCompany.ToArray()
+        End Function
+
+        Private Function GetProductListByDealer() As ListItem()
+            Dim oListContext As New ListContext
+            oListContext.DealerId = Guid.Parse(ddlDealer.SelectedValue)
+            Dim oProductListForCompany As ListItem() = CommonConfigManager.Current.ListManager.GetList(listCode:="ProductCodeByDealer", context:=oListContext)
+            Return oProductListForCompany.ToArray()
+        End Function
+
 #End Region
 
     End Class

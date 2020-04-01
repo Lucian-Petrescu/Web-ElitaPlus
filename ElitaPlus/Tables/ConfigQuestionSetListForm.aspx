@@ -1,4 +1,5 @@
-﻿<%@ Page Title="" Language="vb" AutoEventWireup="false" Theme="Default" MasterPageFile="../Navigation/masters/ElitaBase.Master" CodeBehind="ConfigQuestionSetListForm.aspx.vb" Inherits="Assurant.ElitaPlus.ElitaPlusWebApp.Tables.ConfigQuestionSetListForm" %>
+﻿<%@ Page Language="vb" AutoEventWireup="false" MasterPageFile="../Navigation/masters/ElitaBase.Master" CodeBehind="ConfigQuestionSetListForm.aspx.vb" 
+    Inherits="Assurant.ElitaPlus.ElitaPlusWebApp.Tables.ConfigQuestionSetListForm" Theme="Default" %>
 
 <asp:Content ID="Content1" ContentPlaceHolderID="HeadPlaceHolder" runat="server">
 </asp:Content>
@@ -14,7 +15,7 @@
                 </td>
                 <td>
                     <asp:Label ID="lblSearchCompany" runat="server">COMPANY:</asp:Label><br />
-                    <asp:DropDownList ID="ddlSearchCompany" runat="server" SkinID="MediumDropDown" AutoPostBack="False" TabIndex="2"></asp:DropDownList>
+                    <asp:DropDownList ID="ddlSearchCompany" runat="server" SkinID="MediumDropDown" AutoPostBack="True" TabIndex="2"></asp:DropDownList>
                 </td>
                 <td>
                     <asp:Label ID="lblSearchDealerGroup" runat="server">DEALER_GROUP:</asp:Label><br />
@@ -22,7 +23,7 @@
                 </td>
                 <td>
                     <asp:Label ID="lblSearchDealer" runat="server">DEALER:</asp:Label><br />
-                    <asp:DropDownList ID="ddlSearchDealer" runat="server" SkinID="MediumDropDown" AutoPostBack="False" TabIndex="4"></asp:DropDownList>
+                    <asp:DropDownList ID="ddlSearchDealer" runat="server" SkinID="MediumDropDown" AutoPostBack="True" TabIndex="4"></asp:DropDownList>
                 </td>
             </tr>
             <tr>
@@ -45,7 +46,7 @@
             </tr>
             <tr>
                 <td>
-                    <asp:Label ID="lblSearchQuestionSetCode" runat="server">QUESTION_SET_CODE:</asp:Label><br />
+                    <asp:Label ID="lblSearchQuestionSetCode" runat="server">QUESTION_SET:</asp:Label><br />
                     <asp:DropDownList ID="ddlSearchQuestionSetCode" runat="server" SkinID="MediumDropDown" AutoPostBack="False" TabIndex="9"></asp:DropDownList>
                 </td>
                 <td>&nbsp;<br />

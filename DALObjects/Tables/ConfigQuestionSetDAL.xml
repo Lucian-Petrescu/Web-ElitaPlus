@@ -3,32 +3,27 @@
 <SQL>
   <LOAD>
     <![CDATA[	
-      elp_config_question_set.LoadConfigQuestionSet
+      elp_tbl_config_question_set.LoadConfigQuestionSet
 		]]>
   </LOAD>
   <LOAD_LIST>
     <![CDATA[	
-      elp_config_question_set.LoadConfigQuestionSetList
+      elp_tbl_config_question_set.LoadConfigQuestionSetList
     ]]>
   </LOAD_LIST>
   <UPDATE>
     <![CDATA[
-      elp_config_question_set.ModifyConfigQuestionSet
+      elp_tbl_config_question_set.ModifyConfigQuestionSet
 		]]>
   </UPDATE>
   <INSERT>
     <![CDATA[
-      elp_config_question_set.AddConfigQuestionSet
+      elp_tbl_config_question_set.AddConfigQuestionSet
 		]]>
   </INSERT>
-  <DELETE>
-    <![CDATA[
-      elp_config_question_set.DeleteConfigQuestionSet
-		]]>
-  </DELETE>
   <VALIDATE>
     <![CDATA[
-      elp_config_question_set.CheckForDuplicateConfiguration
+      elp_tbl_config_question_set.CheckForDuplicateConfiguration
 		]]>
   </VALIDATE>
 </SQL>

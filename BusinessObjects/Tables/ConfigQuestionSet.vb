@@ -260,7 +260,10 @@
                 Dim dal As New ConfigQuestionSetDAL
                 'Check for Duplicate Question Set Configuration
                 Dim rtnMessage As String
-                rtnMessage = dal.CheckForDuplicateConfiguration(Me.Id, Me.DealerId, Me.ProductCodeId, Me.PurposeXCD, Me.QuestionSetCode)
+                rtnMessage = dal.CheckForDuplicateConfiguration(ConfigQuestionSetID:=Me.Id, CompanyGroupID:=Me.CompanyGroupId, CompanyID:=Me.CompanyId,
+                                                                CoverageTypeID:=Me.CoverageTypeId, DealerGroupID:=Me.DealerGroupId, DealerID:=Me.DealerId,
+                                                                DeviceTypeID:=Me.DeviceTypeId, ProductCodeID:=Me.ProductCodeId, RiskTypeID:=Me.RiskTypeId,
+                                                                 strPurposeXCD:=Me.PurposeXCD, strQuestionSetCode:=Me.QuestionSetCode)
                 If rtnMessage <> "NO_ERROR" Then
                     Dim vErrors() As ValidationError = {New ValidationError(rtnMessage, Me.GetType(), Nothing, "QuestionSetCode", Nothing)}
                     Throw New BOValidationException(vErrors, "ConfigQuestionSet")
@@ -404,13 +407,16 @@
         Inherits ValidBaseAttribute
 
         Public Sub New(ByVal fieldDisplayName As String)
-            MyBase.New(fieldDisplayName, "Either Dealer Or Product Code Is Required")
+            MyBase.New(fieldDisplayName, "Either Company Group / Company / Dealer Group / Dealer / Product Code / Coverage Type / Risk Type Or Device Type Is Required")
         End Sub
 
         Public Overrides Function IsValid(ByVal valueToCheck As Object, ByVal objectToValidate As Object) As Boolean
             Dim obj As ConfigQuestionSet = CType(objectToValidate, ConfigQuestionSet)
 
-            If (Guid.Empty = obj.ProductCodeId) And (Guid.Empty = obj.DealerId) Then
+            If (Guid.Empty = obj.CompanyGroupId) And (Guid.Empty = obj.CompanyId) And
+                (Guid.Empty = obj.DealerGroupId) And (Guid.Empty = obj.DealerId) And
+                (Guid.Empty = obj.ProductCodeId) And (Guid.Empty = obj.CoverageTypeId) And
+                (Guid.Empty = obj.RiskTypeId) And (Guid.Empty = obj.DeviceTypeId) Then
                 Return False
             Else
                 Return True

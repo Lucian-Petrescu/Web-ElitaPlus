@@ -35,7 +35,9 @@
 
 #Region "Validation Methods"
 
-    Public Function CheckForDuplicateConfiguration(ByVal ConfigQuestionSetID As Guid, ByVal DealerID As Guid, ByVal ProductCodeID As Guid,
+    Public Function CheckForDuplicateConfiguration(ByVal ConfigQuestionSetID As Guid, ByVal CompanyGroupID As Guid, ByVal CompanyID As Guid,
+                                                   ByVal DealerGroupID As Guid, ByVal DealerID As Guid, ByVal ProductCodeID As Guid,
+                                                   ByVal CoverageTypeID As Guid, ByVal DeviceTypeID As Guid, ByVal RiskTypeID As Guid,
                                                    ByVal strPurposeXCD As String, ByVal strQuestionSetCode As String) As String
 
         Dim errorMsg As String = String.Empty
@@ -48,12 +50,36 @@
             cmd.AddParameter("pi_config_question_set_id", OracleDbType.Raw, ConfigQuestionSetID.ToByteArray())
         End If
 
+        If CompanyGroupID <> Guid.Empty Then
+            cmd.AddParameter("pi_company_group_id", OracleDbType.Raw, CompanyGroupID.ToByteArray())
+        End If
+
+        If CompanyID <> Guid.Empty Then
+            cmd.AddParameter("pi_company_id", OracleDbType.Raw, CompanyID.ToByteArray())
+        End If
+
+        If DealerGroupID <> Guid.Empty Then
+            cmd.AddParameter("pi_dealer_group_id", OracleDbType.Raw, DealerGroupID.ToByteArray())
+        End If
+
         If DealerID <> Guid.Empty Then
             cmd.AddParameter("pi_dealer_id", OracleDbType.Raw, DealerID.ToByteArray())
         End If
 
         If ProductCodeID <> Guid.Empty Then
             cmd.AddParameter("pi_product_code_id", OracleDbType.Raw, ProductCodeID.ToByteArray())
+        End If
+
+        If CoverageTypeID <> Guid.Empty Then
+            cmd.AddParameter("pi_coverage_type_id", OracleDbType.Raw, CoverageTypeID.ToByteArray())
+        End If
+
+        If DeviceTypeID <> Guid.Empty Then
+            cmd.AddParameter("pi_device_type_id", OracleDbType.Raw, DeviceTypeID.ToByteArray())
+        End If
+
+        If RiskTypeID <> Guid.Empty Then
+            cmd.AddParameter("pi_risk_type_id", OracleDbType.Raw, RiskTypeID.ToByteArray())
         End If
 
         OracleDbHelper.AddParameter(cmd, "pi_purpose_xcd", OracleDbType.Varchar2, Me.GetFormattedSearchStringForSQL(strPurposeXCD), ParameterDirection.Input)
