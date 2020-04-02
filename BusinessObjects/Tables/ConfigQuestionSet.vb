@@ -263,7 +263,7 @@
                 rtnMessage = dal.CheckForDuplicateConfiguration(ConfigQuestionSetID:=Me.Id, CompanyGroupID:=Me.CompanyGroupId, CompanyID:=Me.CompanyId,
                                                                 CoverageTypeID:=Me.CoverageTypeId, DealerGroupID:=Me.DealerGroupId, DealerID:=Me.DealerId,
                                                                 DeviceTypeID:=Me.DeviceTypeId, ProductCodeID:=Me.ProductCodeId, RiskTypeID:=Me.RiskTypeId,
-                                                                 strPurposeXCD:=Me.PurposeXCD, strQuestionSetCode:=Me.QuestionSetCode)
+                                                                LanguageID:=ElitaPlusIdentity.Current.ActiveUser.LanguageId, strPurposeXCD:=Me.PurposeXCD, strQuestionSetCode:=Me.QuestionSetCode)
                 If rtnMessage <> "NO_ERROR" Then
                     Dim vErrors() As ValidationError = {New ValidationError(rtnMessage, Me.GetType(), Nothing, "QuestionSetCode", Nothing)}
                     Throw New BOValidationException(vErrors, "ConfigQuestionSet")

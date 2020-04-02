@@ -38,7 +38,7 @@
     Public Function CheckForDuplicateConfiguration(ByVal ConfigQuestionSetID As Guid, ByVal CompanyGroupID As Guid, ByVal CompanyID As Guid,
                                                    ByVal DealerGroupID As Guid, ByVal DealerID As Guid, ByVal ProductCodeID As Guid,
                                                    ByVal CoverageTypeID As Guid, ByVal DeviceTypeID As Guid, ByVal RiskTypeID As Guid,
-                                                   ByVal strPurposeXCD As String, ByVal strQuestionSetCode As String) As String
+                                                   ByVal LanguageID As Guid, ByVal strPurposeXCD As String, ByVal strQuestionSetCode As String) As String
 
         Dim errorMsg As String = String.Empty
         Dim selectStmt As String = Me.Config("/SQL/VALIDATE")
@@ -86,7 +86,9 @@
 
         OracleDbHelper.AddParameter(cmd, "pi_question_set_code", OracleDbType.Varchar2, Me.GetFormattedSearchStringForSQL(strQuestionSetCode), ParameterDirection.Input)
 
-        cmd.AddParameter("po_result", OracleDbType.Varchar2, direction:=ParameterDirection.Output, size:=200)
+        cmd.AddParameter("pi_language_id", OracleDbType.Raw, LanguageID.ToByteArray())
+
+        cmd.AddParameter("po_result", OracleDbType.Varchar2, direction:=ParameterDirection.Output, size:=400)
 
         Try
             OracleDbHelper.ExecuteNonQuery(cmd)
