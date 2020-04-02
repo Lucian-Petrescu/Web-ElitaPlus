@@ -567,6 +567,7 @@
     <Compile Include="Tables\ProductRegionDAL.vb" />
     <Compile Include="Tables\ProductRewardsDAL.vb" />
     <Compile Include="Tables\QuestionListDAL.vb" />
+    <Compile Include="Tables\ConfigQuestionSetDAL.vb" />
     <Compile Include="Tables\ReppolicyClaimCountDAL.vb" />
     <Compile Include="Tables\ConsentActionsDAL.vb" />
     <Compile Include="Tables\RuleDAL.vb" />
@@ -1488,6 +1489,9 @@
     <EmbeddedResource Include="Tables\Accounting\AccountPayable\ApInvoiceMatchingDAL.xml" />
     <EmbeddedResource Include="Tables\Accounting\AccountPayable\ApPaymentBatchDAL.xml" />
     <EmbeddedResource Include="Tables\Accounting\AccountPayable\PoAdjustmentDAL.xml" />
+    <EmbeddedResource Include="Tables\ConfigQuestionSetDAL.xml">
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
     <Content Include="Tables\CoverageMfgDAL.xml" />
     <EmbeddedResource Include="Tables\ProductSpecialServiceDAL.xml" />
     <EmbeddedResource Include="Tables\SpecialServiceDAL.xml">
