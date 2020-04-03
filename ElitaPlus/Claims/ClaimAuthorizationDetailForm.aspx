@@ -120,20 +120,31 @@
 
     <div id="ModalVoidAuthorization" class="overlay">
         <div id="light" class="overlay_message_content" style="left: 5%; right: 5%; top: 5%; max-height: 80%">
-            
-            <table width="100%" style="border:none;margin-bottom:10px;">
+          
+            <h2 class="dataGridHeader" runat="server">
+                <asp:Label runat="server" ID="moVoidClaimAuthorizationLabel" Text="VOID_AUTHORIZATION" />
+            </h2>
+            <table width="95%" style="border:none;margin-bottom:10px;">
                 <tr>
-                    <td>
+                    <td aling="left" colspan="2">
                         <asp:Label ID="lblVoidAuthErr" runat="server" Visible="false" ForeColor="Red"></asp:Label>
                     </td>
+                    
                 </tr>
                 
                 <tr>
-                    <td><Elita:UserControlVoidAuthorization ID="ucVoidAuthorization" runat="server" /></td>
+                   
+                    <td align="right" nowrap="nowrap" style=" width:15%">
+                        
+                        <asp:Label runat="server" ID="lblVoidComment" Text="AUTH_VOID_COMMENT"  />&nbsp;:&nbsp;
+                    </td>   
+                    <td align="left" nowrap="nowrap" style=" width:85%">
+                        <asp:TextBox ID="txtAuthVoidComment" runat="server" SkinID="LargeTextBox" TextMode="MultiLine" style=" width:80%" ></asp:TextBox>
+                    </td>
                 </tr>
                 <tr style="padding-bottom:20px;">
-                    <td align="right">
-                        <asp:Button ID="btnVoidAuthSave" runat="server" SkinID="SearchButton" Text="Save" /> &nbsp;&nbsp;&nbsp;
+                    <td align="right" colspan="2">
+                        <asp:Button ID="btnVoidAuthSave" runat="server" SkinID="SearchButton" Text="Save" /> &nbsp;
                         <asp:Button ID="btnVoidAuthCancel" runat="server" SkinID="SearchButton" Text="Cancel"
                                     OnClientClick="SetShowNewSCValue('N'); hideModal('ModalVoidAuthorization'); return false;"/>
                                               

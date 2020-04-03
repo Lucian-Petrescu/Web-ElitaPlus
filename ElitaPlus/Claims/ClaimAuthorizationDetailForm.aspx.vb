@@ -1272,8 +1272,6 @@ Partial Class ClaimAuthorizationDetailForm
     Private Sub btnVoidAuthorization_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnVoidAuthorization.Click
         Try
             InitVoidAuthorization()
-
-            'show the div in Modal mode
             HiddenFieldVoidAuth.Value = "Y"
 
         Catch ex As Threading.ThreadAbortException
@@ -1283,7 +1281,8 @@ Partial Class ClaimAuthorizationDetailForm
     End Sub
 
     Private Sub InitVoidAuthorization()
-        ucVoidAuthorization.InitializeComponent()
+        txtAuthVoidComment.Text = String.Empty
+        txtAuthVoidComment.Font.Bold = true
     End Sub
 
     #End Region

@@ -248,6 +248,15 @@ Partial Public Class ClaimAuthorizationDetailForm
     Protected WithEvents btnNewSCSave As Global.System.Web.UI.WebControls.Button
 
     '''<summary>
+    '''moVoidClaimAuthorizationLabel control.
+    '''</summary>
+    '''<remarks>
+    '''Auto-generated field.
+    '''To modify move field declaration from designer file to code-behind file.
+    '''</remarks>
+    Protected WithEvents moVoidClaimAuthorizationLabel As Global.System.Web.UI.WebControls.Label
+
+    '''<summary>
     '''lblVoidAuthErr control.
     '''</summary>
     '''<remarks>
@@ -257,13 +266,22 @@ Partial Public Class ClaimAuthorizationDetailForm
     Protected WithEvents lblVoidAuthErr As Global.System.Web.UI.WebControls.Label
 
     '''<summary>
-    '''ucVoidAuthorization control.
+    '''lblVoidComment control.
     '''</summary>
     '''<remarks>
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents ucVoidAuthorization As Global.Assurant.ElitaPlus.ElitaPlusWebApp.UserControlVoidAuthorization
+    Protected WithEvents lblVoidComment As Global.System.Web.UI.WebControls.Label
+
+    '''<summary>
+    '''txtAuthVoidComment control.
+    '''</summary>
+    '''<remarks>
+    '''Auto-generated field.
+    '''To modify move field declaration from designer file to code-behind file.
+    '''</remarks>
+    Protected WithEvents txtAuthVoidComment As Global.System.Web.UI.WebControls.TextBox
 
     '''<summary>
     '''btnVoidAuthSave control.
