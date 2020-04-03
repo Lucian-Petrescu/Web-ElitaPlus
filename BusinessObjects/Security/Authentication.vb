@@ -432,13 +432,24 @@ Public Class Authentication
             ' We already have the user privacy groups
             _PrivacyUserType = getDataProtectionPrivacyLevel(oServers.PrivacyLevelXCD, userPrivacyGroups) 'PrivacyLeveXCD property will be tri-state 
             'Trace userprivacygroup issue
-            Dim logEntry As String = " Authentication_privaceygroup is not nothing; UserID=" & principal.ActiveUser.NetworkId & "; PrivacyUserType=" & _PrivacyUserType & "; Time=" & Now.ToString
+            Dim logEntry As String
+            If (Not principal.ActiveUser Is Nothing) Then
+                logEntry = " Authentication Class: _privaceygroup is not nothing; UserID=" & principal.ActiveUser.NetworkId & "; PrivacyUserType=" & _PrivacyUserType & "; Time=" & Now.ToString
+            Else
+                logEntry = " Authentication Class: _privaceygroup is not nothing; UserID= & principal.ActiveUser is still nothing & ; PrivacyUserType=" & _PrivacyUserType & "; Time=" & Now.ToString
+            End If
+
             AppConfig.DebugLog(logEntry)
         Else
             ' looking for the user privacy groups using LDAP
             IsUserPrivacyGroup(networkID, oServers.PrivacyLevelXCD) 'PrivacyLeveXCD property will be tri-state 
             'Trace userprivacygroup issue
-            Dim logEntry As String = " Authentication_privaceygroup is nothing and calling LDAP; UserID=" & principal.ActiveUser.NetworkId & "; PrivacyUserType=" & _PrivacyUserType & "; Time=" & Now.ToString
+            Dim logEntry As String
+            If (Not principal.ActiveUser Is Nothing) Then
+                logEntry = " Authentication Class: _privaceygroup is nothing and calling LDAP; UserID=" & principal.ActiveUser.NetworkId & "; PrivacyUserType=" & _PrivacyUserType & "; Time=" & Now.ToString
+            Else
+                logEntry = " Authentication Class: _privaceygroup is nothing and calling LDAP; UserID= & principal.ActiveUser is still nothing & ; PrivacyUserType=" & _PrivacyUserType & "; Time=" & Now.ToString
+            End If
             AppConfig.DebugLog(logEntry)
         End If
 
@@ -464,7 +475,7 @@ Public Class Authentication
             .DBPrivacyUserType = oServers.PrivacyLevelXCD
             .CreateUser(networkID)
         End With
-
+ 
         If bIsDebugLogin = True Then
             Dim trace As String
             If (Not userPrivacyGroups Is Nothing) Then
