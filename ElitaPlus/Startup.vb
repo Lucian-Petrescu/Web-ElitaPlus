@@ -50,7 +50,7 @@ Public Class Startup
                 .Notifications = New OpenIdConnectAuthenticationNotifications() With {
                     .SecurityTokenValidated =
                         Function(context)
-                            Try
+                            Try '
                                 Dim principal As ElitaPlusPrincipal
                                 Dim oAuthentication As New Authentication
 
@@ -95,10 +95,10 @@ Public Class Startup
                                 End If
 
                                 Return Task.CompletedTask
-                            Catch ex As Exception
-                                HttpContext.Current.Session(ELPWebConstants.SESSION_LOGIN_ERROR_MESSAGE) = "Authentication to Elita failed, please see with your administrator to get access through Elita."
-                                context.Response.Redirect(ELPWebConstants.APPLICATION_PATH & "/Common/ErrorForm.aspx")
-                            End Try
+                            Catch ex As Exception '
+                                HttpContext.Current.Session(ELPWebConstants.SESSION_LOGIN_ERROR_MESSAGE) = "Authentication to Elita failed, please see with your administrator to get access through Elita." '
+                                context.Response.Redirect(ELPWebConstants.APPLICATION_PATH & "/Common/ErrorForm.aspx") '
+                            End Try '
 
                         End Function,
                     .AuthenticationFailed =
