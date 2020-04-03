@@ -50,50 +50,56 @@ Public Class Startup
                 .Notifications = New OpenIdConnectAuthenticationNotifications() With {
                     .SecurityTokenValidated =
                         Function(context)
-                            Dim principal As ElitaPlusPrincipal
-                            Dim oAuthentication As New Authentication
+                            Try
+                                Dim principal As ElitaPlusPrincipal
+                                Dim oAuthentication As New Authentication
 
-                            Dim identity As ClaimsIdentity = context.AuthenticationTicket.Identity
-                            identity.AddClaim(New Claim("id_token", context.ProtocolMessage.IdToken))
+                                Dim identity As ClaimsIdentity = context.AuthenticationTicket.Identity
+                                identity.AddClaim(New Claim("id_token", context.ProtocolMessage.IdToken))
 
-                            'Dim networkId As String = identity.Claims.FirstOrDefault(Function(claim) claim.Type = "preferred_username").Value.Substring(0, 6)
-                            Dim networkId As String = identity.Claims.FirstOrDefault(Function(claim) claim.Type = "preferred_username").Value
-                            If networkId.IndexOf("@") > 0 Then
-                                networkId = networkId.Substring(0, networkId.IndexOf("@"))
-                            End If
+                                'Dim networkId As String = identity.Claims.FirstOrDefault(Function(claim) claim.Type = "preferred_username").Value.Substring(0, 6)
+                                Dim networkId As String = identity.Claims.FirstOrDefault(Function(claim) claim.Type = "preferred_username").Value
+                                If networkId.IndexOf("@") > 0 Then
+                                    networkId = networkId.Substring(0, networkId.IndexOf("@"))
+                                End If
 
-                            ' Get the OKTA groups for this user
-                            Dim groups As List(Of String) = identity.Claims.Where(Function(claim) claim.Type = "groups").Select(Function(claim) claim.Value).ToList()
+                                ' Get the OKTA groups for this user
+                                Dim groups As List(Of String) = identity.Claims.Where(Function(claim) claim.Type = "groups").Select(Function(claim) claim.Value).ToList()
 
-                            ' Create the principal
-                            principal = oAuthentication.CreatePrincipalBasedOnExternalGroups(networkId, groups)
-                            principal.IdToken = context.ProtocolMessage.IdToken
+                                ' Create the principal
+                                principal = oAuthentication.CreatePrincipalBasedOnExternalGroups(networkId, groups)
+                                principal.IdToken = context.ProtocolMessage.IdToken
 
-                            HttpContext.Current.Session(ElitaPlusPage.PRINCIPAL_SESSION_KEY) = principal
+                                HttpContext.Current.Session(ElitaPlusPage.PRINCIPAL_SESSION_KEY) = principal
 
-                            System.Threading.Thread.CurrentPrincipal = DirectCast(HttpContext.Current.Session(ElitaPlusPage.PRINCIPAL_SESSION_KEY), ElitaPlusPrincipal)
-                            HttpContext.Current.User = System.Threading.Thread.CurrentPrincipal
+                                System.Threading.Thread.CurrentPrincipal = DirectCast(HttpContext.Current.Session(ElitaPlusPage.PRINCIPAL_SESSION_KEY), ElitaPlusPrincipal)
+                                HttpContext.Current.User = System.Threading.Thread.CurrentPrincipal
 
-                            'will have to test if the User is part of either 'RegularGroup' or 'SecureGroup' or 'DataProtectionGroup'
-                            If groups Is Nothing OrElse (Not groups.Contains(Elita.Configuration.ElitaConfig.Current.Security.RegularGroup) _
-                                AndAlso Not groups.Contains(Elita.Configuration.ElitaConfig.Current.Security.SecureGroup) _
-                                AndAlso Not groups.Contains(Elita.Configuration.ElitaConfig.Current.Security.DataProtectionGroup)) Then
+                                'will have to test if the User is part of either 'RegularGroup' or 'SecureGroup' or 'DataProtectionGroup'
+                                If groups Is Nothing OrElse (Not groups.Contains(Elita.Configuration.ElitaConfig.Current.Security.RegularGroup) _
+                                    AndAlso Not groups.Contains(Elita.Configuration.ElitaConfig.Current.Security.SecureGroup) _
+                                    AndAlso Not groups.Contains(Elita.Configuration.ElitaConfig.Current.Security.DataProtectionGroup)) Then
 
-                                context.HandleResponse()
+                                    context.HandleResponse()
 
-                                ' Using the session to retrieve the message in the login form because okta doesn't accept 
-                                ' an url with ?key=value if Not set completely in the whitelist (okta online configuration)
-                                Dim sLoginMessage As String = TranslationBase.TranslateLabelOrMessage(ELPWebConstants.UI_INVALID_LOGIN_RIGHTS_ERR_MSG, TranslationBase.Get_EnglishLanguageID)
-                                HttpContext.Current.Session(ELPWebConstants.SESSION_LOGIN_ERROR_MESSAGE) = sLoginMessage
+                                    ' Using the session to retrieve the message in the login form because okta doesn't accept 
+                                    ' an url with ?key=value if Not set completely in the whitelist (okta online configuration)
+                                    Dim sLoginMessage As String = TranslationBase.TranslateLabelOrMessage(ELPWebConstants.UI_INVALID_LOGIN_RIGHTS_ERR_MSG, TranslationBase.Get_EnglishLanguageID)
+                                    HttpContext.Current.Session(ELPWebConstants.SESSION_LOGIN_ERROR_MESSAGE) = sLoginMessage
 
-                                ' at the end, clear okta authentification and rediret to the postLogoutRedirectUri url
-                                context.OwinContext.Authentication.SignOut(
-                                    CookieAuthenticationDefaults.AuthenticationType,
-                                    OpenIdConnectAuthenticationDefaults.AuthenticationType
-                                )
-                            End If
+                                    ' at the end, clear okta authentification and rediret to the postLogoutRedirectUri url
+                                    context.OwinContext.Authentication.SignOut(
+                                        CookieAuthenticationDefaults.AuthenticationType,
+                                        OpenIdConnectAuthenticationDefaults.AuthenticationType
+                                    )
+                                End If
 
-                            Return Task.CompletedTask
+                                Return Task.CompletedTask
+                            Catch ex As Exception
+                                HttpContext.Current.Session(ELPWebConstants.SESSION_LOGIN_ERROR_MESSAGE) = "Authentication to Elita failed, please see with your administrator to get access through Elita."
+                                context.Response.Redirect(ELPWebConstants.APPLICATION_PATH & "/Common/ErrorForm.aspx")
+                            End Try
+
                         End Function,
                     .AuthenticationFailed =
                         Function(n)
