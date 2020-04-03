@@ -1182,6 +1182,18 @@ Namespace Certificates
 
                     Dim objPrincipal As ElitaPlusIdentity
                     objPrincipal = CType(System.Threading.Thread.CurrentPrincipal, ElitaPlusPrincipal).Identity
+
+                    'Trace GDPR-OKTA issue
+                    Try
+                        Dim logEntry As String = " Certificate_Screen; UserID=" & objPrincipal.ActiveUser.NetworkId & "; PrivacyUserType=" & objPrincipal.PrivacyUserType & "; Time=" & Now.ToString
+                        AppConfig.DebugLog(logEntry)
+                    Catch ex As Exception
+                        Dim logEntry As String = "UseNew Exception(logEntry)rID=" & objPrincipal.ActiveUser.NetworkId & "; PrivacyUserType=" & objPrincipal.PrivacyUserType & "; Time=" & Now.ToString
+                        AppConfig.DebugLog(logEntry)
+
+                    End Try
+
+
                     If objPrincipal.PrivacyUserType = AppConfig.DataProtectionPrivacyLevel.Privacy_DataProtection Then
                         EnableTab(CERT_DATA_PROTECTION_TAB, True)
 

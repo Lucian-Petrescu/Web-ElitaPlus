@@ -431,9 +431,15 @@ Public Class Authentication
         If Not userPrivacyGroups Is Nothing Then
             ' We already have the user privacy groups
             _PrivacyUserType = getDataProtectionPrivacyLevel(oServers.PrivacyLevelXCD, userPrivacyGroups) 'PrivacyLeveXCD property will be tri-state 
+            'Trace userprivacygroup issue
+            Dim logEntry As String = " Authentication_privaceygroup is not nothing; UserID=" & principal.ActiveUser.NetworkId & "; PrivacyUserType=" & _PrivacyUserType & "; Time=" & Now.ToString
+            AppConfig.DebugLog(logEntry)
         Else
             ' looking for the user privacy groups using LDAP
             IsUserPrivacyGroup(networkID, oServers.PrivacyLevelXCD) 'PrivacyLeveXCD property will be tri-state 
+            'Trace userprivacygroup issue
+            Dim logEntry As String = " Authentication_privaceygroup is nothing and calling LDAP; UserID=" & principal.ActiveUser.NetworkId & "; PrivacyUserType=" & _PrivacyUserType & "; Time=" & Now.ToString
+            AppConfig.DebugLog(logEntry)
         End If
 
         With identity
@@ -460,9 +466,17 @@ Public Class Authentication
         End With
 
         If bIsDebugLogin = True Then
+            Dim trace As String
+            If (Not userPrivacyGroups Is Nothing) Then
+                trace = String.Join(",", userPrivacyGroups.ToArray())
+            End If
+
             AppConfig.Debug("CompanyGroup=" & Authentication.CompanyGroupCode &
-               "@ Language =" & GuidControl.GuidToHexString(Authentication.LangId))
+               "@ Language =" & GuidControl.GuidToHexString(Authentication.LangId) &
+               "@Groups" & trace)
         End If
+
+
 
         principal.WebServiceOffLineMessage = oServers.WebServiceOffLineMessage
         principal.WebServiceFunctionOffLineMessage = oServers.WebServiceFunctionOffLineMessage
