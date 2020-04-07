@@ -6,7 +6,7 @@
 <%@ Register TagPrefix="Elita" TagName="UserControlAuthorizationInfo" Src="UserControlAuthorizationInfo.ascx" %>
 <%--<%@ Register TagPrefix="Elita" TagName="UserControlSelectServiceCenter" Src="~/Certificates/UserControlSelectServiceCenter.ascx" %>--%>
 <%@ Register TagPrefix="Elita" TagName="UserControlServiceCenterSelection" Src="../Common/UserControlServiceCenterSelection.ascx" %>
-<% @Register TagPrefix="Elita" tagName="UserControlVoidAuthorization" src="../Common/UserControlVoidAuthorization.ascx" %>
+
 
 <asp:Content ID="Content1" ContentPlaceHolderID="HeadPlaceHolder" runat="server">    
 </asp:Content>
