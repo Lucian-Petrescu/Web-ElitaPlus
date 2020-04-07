@@ -931,13 +931,6 @@
       <DependentUpon>UserControlServiceCenterSelection.ascx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
-    <Compile Include="Common\UserControlVoidAuthorization.ascx.designer.vb">
-      <DependentUpon>UserControlVoidAuthorization.ascx</DependentUpon>
-    </Compile>
-    <Compile Include="Common\UserControlVoidAuthorization.ascx.vb">
-      <DependentUpon>UserControlVoidAuthorization.ascx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
     <Compile Include="DataProtection\CustomerReportForm.aspx.designer.vb">
       <DependentUpon>CustomerReportForm.aspx</DependentUpon>
     </Compile>
@@ -5715,7 +5708,6 @@
     <Content Include="Common\UserControlQuestion.ascx" />
     <Content Include="Common\UserControlRiskTypeTolerance.ascx" />
     <Content Include="Common\UserControlServiceCenterSelection.ascx" />
-    <Content Include="Common\UserControlVoidAuthorization.ascx" />
     <Content Include="Content\font-awesome.css" />
     <Content Include="Content\font-awesome.min.css" />
     <Content Include="Content\fonts\fontawesome-webfont.svg" />
