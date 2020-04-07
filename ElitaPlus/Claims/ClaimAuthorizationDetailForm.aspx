@@ -127,7 +127,7 @@
             <table width="95%" style="border:none;margin-bottom:10px;">
                 <tr>
                     <td aling="left" colspan="2">
-                        <asp:Label ID="lblVoidAuthErr" runat="server" Visible="false" ForeColor="Red"></asp:Label>
+                        <asp:Label ID="lblVoidAuthStatus" runat="server" Visible="false" ForeColor="Green"></asp:Label>
                     </td>
                     
                 </tr>
@@ -139,13 +139,13 @@
                         <asp:Label runat="server" ID="lblVoidComment" Text="AUTH_VOID_COMMENT"  />&nbsp;:&nbsp;
                     </td>   
                     <td align="left" nowrap="nowrap" style=" width:85%">
-                        <asp:TextBox ID="txtAuthVoidComment" runat="server" SkinID="LargeTextBox" TextMode="MultiLine" style=" width:80%" ></asp:TextBox>
+                        <asp:TextBox ID="txtAuthVoidComment" runat="server" TextMode="MultiLine" style=" width:80%"  MaxLength="100" ></asp:TextBox>
                     </td>
                 </tr>
                 <tr style="padding-bottom:20px;">
                     <td align="right" colspan="2">
                         <asp:Button ID="btnVoidAuthSave" runat="server" SkinID="SearchButton" Text="Save" /> &nbsp;
-                        <asp:Button ID="btnVoidAuthCancel" runat="server" SkinID="SearchButton" Text="Cancel"
+                        <asp:Button ID="btnVoidAuthCancel" runat="server" SkinID="SearchButton" Text="Close"
                                     OnClientClick="SetShowNewSCValue('N'); hideModal('ModalVoidAuthorization'); return false;"/>
                                               
                     </td>

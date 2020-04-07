@@ -206,6 +206,7 @@ Public Class Codes
     Public Const REASON_CLOSED_DENIED As String = "DENY"
     Public Const FLP_NO = "NO"
     Public Const REASON_CLOSED_LLE As String = "LLE"
+    Public Const REASON_CLOSED_CLAIM_VOID As String = "CVOID"
 
     'Coverage Type
     Public Const COVERAGE_TYPE__EXTENDED As String = "E"

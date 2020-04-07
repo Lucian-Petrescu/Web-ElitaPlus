@@ -257,13 +257,13 @@ Partial Public Class ClaimAuthorizationDetailForm
     Protected WithEvents moVoidClaimAuthorizationLabel As Global.System.Web.UI.WebControls.Label
 
     '''<summary>
-    '''lblVoidAuthErr control.
+    '''lblVoidAuthStatus control.
     '''</summary>
     '''<remarks>
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents lblVoidAuthErr As Global.System.Web.UI.WebControls.Label
+    Protected WithEvents lblVoidAuthStatus As Global.System.Web.UI.WebControls.Label
 
     '''<summary>
     '''lblVoidComment control.
