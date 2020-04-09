@@ -257,6 +257,15 @@ Partial Public Class ClaimAuthorizationDetailForm
     Protected WithEvents moVoidClaimAuthorizationLabel As Global.System.Web.UI.WebControls.Label
 
     '''<summary>
+    '''divVoidAuthStatus control.
+    '''</summary>
+    '''<remarks>
+    '''Auto-generated field.
+    '''To modify move field declaration from designer file to code-behind file.
+    '''</remarks>
+    Protected WithEvents divVoidAuthStatus As Global.System.Web.UI.HtmlControls.HtmlGenericControl
+
+    '''<summary>
     '''lblVoidAuthStatus control.
     '''</summary>
     '''<remarks>
@@ -264,6 +273,24 @@ Partial Public Class ClaimAuthorizationDetailForm
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
     Protected WithEvents lblVoidAuthStatus As Global.System.Web.UI.WebControls.Label
+
+    '''<summary>
+    '''divVoidAuthError control.
+    '''</summary>
+    '''<remarks>
+    '''Auto-generated field.
+    '''To modify move field declaration from designer file to code-behind file.
+    '''</remarks>
+    Protected WithEvents divVoidAuthError As Global.System.Web.UI.HtmlControls.HtmlGenericControl
+
+    '''<summary>
+    '''lblvoidAuthError control.
+    '''</summary>
+    '''<remarks>
+    '''Auto-generated field.
+    '''To modify move field declaration from designer file to code-behind file.
+    '''</remarks>
+    Protected WithEvents lblvoidAuthError As Global.System.Web.UI.WebControls.Label
 
     '''<summary>
     '''lblVoidComment control.
@@ -300,6 +327,15 @@ Partial Public Class ClaimAuthorizationDetailForm
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
     Protected WithEvents btnVoidAuthCancel As Global.System.Web.UI.WebControls.Button
+
+    '''<summary>
+    '''btnVoidAuthClose control.
+    '''</summary>
+    '''<remarks>
+    '''Auto-generated field.
+    '''To modify move field declaration from designer file to code-behind file.
+    '''</remarks>
+    Protected WithEvents btnVoidAuthClose As Global.System.Web.UI.WebControls.Button
 
     '''<summary>
     '''dvClaimAuthorizationDetails control.

@@ -119,34 +119,37 @@
     </div>
 
     <div id="ModalVoidAuthorization" class="overlay">
-        <div id="light" class="overlay_message_content" style="left: 5%; right: 5%; top: 5%; max-height: 80%">
+        <div id="light" class="overlay_message_content" style="left: 20%; top: 5%; width: 60%; max-height: 80%">
           
             <h2 class="dataGridHeader" runat="server">
                 <asp:Label runat="server" ID="moVoidClaimAuthorizationLabel" Text="VOID_AUTHORIZATION" />
             </h2>
+            
+            <div ID="divVoidAuthStatus" class="successMsg" runat="server" style="width: 99.5%" Visible="False">
+                &nbsp;&nbsp;&nbsp; <asp:Label ID="lblVoidAuthStatus" runat="server"  ForeColor="Green"></asp:Label>
+            </div>
+            <div ID="divVoidAuthError" class="errorMsg" runat="server" style="width: 99.5%" Visible="False" >
+                &nbsp;&nbsp;&nbsp;<asp:Label ID="lblvoidAuthError" runat="server"  ForeColor="Red"></asp:Label>
+            </div>
             <table width="95%" style="border:none;margin-bottom:10px;">
+                 
                 <tr>
-                    <td aling="left" colspan="2">
-                        <asp:Label ID="lblVoidAuthStatus" runat="server" Visible="false" ForeColor="Green"></asp:Label>
-                    </td>
-                    
-                </tr>
-                
-                <tr>
-                   
-                    <td align="right" nowrap="nowrap" style=" width:15%">
+                    <td align="right" nowrap="nowrap" style=" width:20%">
                         
-                        <asp:Label runat="server" ID="lblVoidComment" Text="AUTH_VOID_COMMENT"  />&nbsp;:&nbsp;
+                        <asp:Label runat="server" ID="lblVoidComment" Text="Comment"  />&nbsp;:&nbsp;
                     </td>   
-                    <td align="left" nowrap="nowrap" style=" width:85%">
-                        <asp:TextBox ID="txtAuthVoidComment" runat="server" TextMode="MultiLine" style=" width:80%"  MaxLength="100" ></asp:TextBox>
+                    <td align="left" nowrap="nowrap" style=" width:80%">
+                        <asp:TextBox ID="txtAuthVoidComment" runat="server" Rows="2"
+                                      SkinID="MediumTextBox" TextMode="MultiLine" style="width: 75%"  MaxLength="500" ></asp:TextBox>
+                        
                     </td>
                 </tr>
                 <tr style="padding-bottom:20px;">
                     <td align="right" colspan="2">
                         <asp:Button ID="btnVoidAuthSave" runat="server" SkinID="SearchButton" Text="Save" /> &nbsp;
-                        <asp:Button ID="btnVoidAuthCancel" runat="server" SkinID="SearchButton" Text="Close"
-                                    OnClientClick="SetShowNewSCValue('N'); hideModal('ModalVoidAuthorization'); return false;"/>
+                        <asp:Button ID="btnVoidAuthCancel" runat="server" SkinID="SearchButton" Text="Cancel"
+                                    OnClientClick="SetShowVoidAuthValue('N'); hideModal('ModalVoidAuthorization'); return false;"/> &nbsp;
+                        <asp:Button ID="btnVoidAuthClose" runat="server" Visible="False" SkinID="SearchButton" Text="Close" /> &nbsp;
                                               
                     </td>
                 </tr>                
