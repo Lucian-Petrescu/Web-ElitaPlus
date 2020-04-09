@@ -46,6 +46,7 @@ Partial Class ClaimIssueActionAnswerForm
     Private Const OrderType_Repair As String = "RE"
     Private Const OrderType_Replacement As String = "EX"
     Private Const CreationSource As String = "Elita CRM"
+
 #End Region
 #Region "Constants - Device Selection"
 

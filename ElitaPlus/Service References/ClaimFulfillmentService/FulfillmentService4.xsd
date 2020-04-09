@@ -87,6 +87,7 @@
       <xs:element minOccurs="0" name="CreationSource" nillable="true" type="xs:string" />
     </xs:sequence>
   </xs:complexType>
+  
   <xs:element name="SearchSKURequest" nillable="true" type="tns:SearchSKURequest" />
   <xs:complexType name="SearchSKUResponse">
     <xs:complexContent mixed="false">
