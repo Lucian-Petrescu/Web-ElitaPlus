@@ -330,7 +330,9 @@ Partial Class ClaimAuthorizationDetailForm
         Me.btnNewServiceCenter.Visible = Not Me.State.IsEditMode AndAlso State.ClaimBO.Status = BasicClaimStatus.Active AndAlso Me.State.MyBO.CanVoidClaimAuthorization AndAlso Not Me.State.ShowHistory AndAlso Not (State.ClaimBO.Dealer.DealerFulfillmentProviderClassCode = Codes.PROVIDER_CLASS_CODE__FULPROVORAEBS)
         'Me.btnrefundFee.Visible =  Me.State.MyBO.ClaimAuthStatus  =  ClaimAuthorizationStatus.Authorized 'ClaimAuthorizationStatus.Collected  
         Me.btnRefundFee.Visible = Me.State.MyBO.ClaimAuthStatus = ClaimAuthorizationStatus.Authorized AndAlso State.MyBO.AuthTypeXcd.Equals(AuthType_SalesOrder)
-        Me.btnVoidAuthorization.Visible = Me.State.MyBO.CanVoidClaimAuthorization  
+        Me.btnVoidAuthorization.Visible = Me.State.MyBO.CanVoidClaimAuthorization  AndAlso (ElitaPlusPrincipal.Current.IsInRole(Codes.USER_ROLE__CLAIMS_MANAGER) OrElse
+                                                                                            ElitaPlusPrincipal.Current.IsInRole(Codes.USER_ROLE__CSR2) OrElse
+                                                                                            ElitaPlusPrincipal.Current.IsInRole(Codes.USER_ROLE__CSR))
     End Sub
 
     Private Sub PopulateDropDowns()
@@ -1308,16 +1310,26 @@ Partial Class ClaimAuthorizationDetailForm
                
                 lblVoidAuthStatus.Visible = True
                 Dim canClaimClosed as Boolean = True
-                Dim claimPaid as Boolean = False
+                Dim claimPaid as Boolean = True
+                Dim claimVoided as Boolean = True
 
                 For Each auth As ClaimAuthorization In Me.State.ClaimBO.NonVoidClaimAuthorizationList
                     If Not auth.AuthorizationNumber.Equals(State.MyBO.AuthorizationNumber) Then
-                        canClaimClosed = False
+                        
+                        If Not auth.ClaimAuthStatus = ClaimAuthorizationStatus.Paid Or Not auth.ClaimAuthStatus = ClaimAuthorizationStatus.Void Then
+                            canClaimClosed = False
+                        End If
+                    
+                        If Not auth.ClaimAuthStatus = ClaimAuthorizationStatus.Paid Then
+                            claimPaid = False
+                        End If
+
+                        If Not auth.ClaimAuthStatus = ClaimAuthorizationStatus.Void Then
+                            claimVoided = False
+                        End If
+
                     End If
 
-                    If auth.ClaimAuthStatus = ClaimAuthorizationStatus.Paid Then
-                        claimPaid = true
-                    End If
                 Next
                 
                 State.MyBO.Void()
@@ -1333,13 +1345,15 @@ Partial Class ClaimAuthorizationDetailForm
 
                     If claimPaid Then
                         Me.State.ClaimBO.ReasonClosedId = LookupListNew.GetIdFromCode(LookupListNew.LK_REASONS_CLOSED, Codes.REASON_CLOSED__TO_BE_PAID)
-                    else
+                    Else If claimVoided Then
                         Me.State.ClaimBO.ReasonClosedId = LookupListNew.GetIdFromCode(LookupListNew.LK_REASONS_CLOSED, Codes.REASON_CLOSED_CLAIM_VOID)
                     End If
                   
-                    HandleCloseClaimLogic()
-                    Me.State.ClaimBO.Save()
-                    lblVoidAuthStatus.Text = TranslationBase.TranslateLabelOrMessage(Message.MSG_CLAIM_AUTH_VOIDED_AND_CLAIM_CLOSED)
+                    If Me.State.ClaimBO.ReasonClosedId = Guid.Empty  Or Me.State.ClaimBO.ReasonClosedId = Nothing Then
+                        HandleCloseClaimLogic() 
+                        Me.State.ClaimBO.Save()
+                        lblVoidAuthStatus.Text = TranslationBase.TranslateLabelOrMessage(Message.MSG_CLAIM_AUTH_VOIDED_AND_CLAIM_CLOSED)
+                    End If
                     
                 End If
                
