@@ -76,8 +76,20 @@
 
         function SetShowVoidAuthValue(newValue) {
             $('#<% =HiddenFieldVoidAuth.ClientID%>').val(newValue);
-        }     
+        }    
 
+        function Count(text, length) {
+            var maxlength = length;
+            var object = document.getElementById(text.id);
+            if (object.value.length > maxlength) {
+
+                object.focus();
+                object.value = text.value.substring(0, maxlength);
+                object.scrollTop = object.scrollHeight;
+                return false;
+            }
+            return true;
+        }
     </script>
     <div id="ModalServiceCenter" class="overlay">
         <div id="light" class="overlay_message_content" style="left: 5%; right: 5%; top: 5%; max-height: 80%">
@@ -139,8 +151,8 @@
                         <asp:Label runat="server" ID="lblVoidComment" Text="Comment"  />&nbsp;:&nbsp;
                     </td>   
                     <td align="left" nowrap="nowrap" style=" width:80%">
-                        <asp:TextBox ID="txtAuthVoidComment" runat="server" Rows="2"
-                                      SkinID="MediumTextBox" TextMode="MultiLine" style="width: 75%"  MaxLength="500" ></asp:TextBox>
+                        <asp:TextBox ID="txtAuthVoidComment" runat="server" Rows="2" onKeyUp="javascript:Count(this,500);" onChange="javascript:Count(this,500);"
+                                     ForeColor="black" SkinID="MediumTextBox" TextMode="MultiLine" style="width: 75%"  MaxLength="500" ></asp:TextBox>
                         
                     </td>
                 </tr>
