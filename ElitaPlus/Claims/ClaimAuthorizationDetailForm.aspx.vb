@@ -1287,10 +1287,9 @@ Partial Class ClaimAuthorizationDetailForm
 
         divVoidAuthStatus.Visible = False
         divVoidAuthError.Visible = False
-        btnVoidAuthSave.Visible = True
-        btnVoidAuthClose.Visible = False
-       
-    End Sub
+        ControlMgr.SetVisibleControl(Me,btnVoidAuthSave,True)
+        ControlMgr.SetVisibleControl(Me,btnVoidAuthClose,False)
+      End Sub
 
     private sub btnVoidAuthSave_Click (sender As Object, e As EventArgs) Handles btnVoidAuthSave.Click
         Try
@@ -1311,41 +1310,35 @@ Partial Class ClaimAuthorizationDetailForm
                 lblVoidAuthStatus.Visible = True
                 Dim canClaimClosed as Boolean = True
                 Dim claimPaid as Boolean = True
-                Dim claimVoided as Boolean = True
+                Dim claimVoid as Boolean = False
+               
+               If Me.State.ClaimBO.NonVoidClaimAuthorizationList.Any(Function (i) Not i.AuthorizationNumber.Equals(State.MyBO.AuthorizationNumber) _
+                        AndAlso Not i.ClaimAuthStatus = ClaimAuthorizationStatus.Paid) Then
+                   canClaimClosed = False
+                   claimPaid = False
+               End If
 
-                For Each auth As ClaimAuthorization In Me.State.ClaimBO.NonVoidClaimAuthorizationList
-                    If Not auth.AuthorizationNumber.Equals(State.MyBO.AuthorizationNumber) Then
-                        
-                        If Not auth.ClaimAuthStatus = ClaimAuthorizationStatus.Paid Or Not auth.ClaimAuthStatus = ClaimAuthorizationStatus.Void Then
-                            canClaimClosed = False
-                        End If
-                    
-                        If Not auth.ClaimAuthStatus = ClaimAuthorizationStatus.Paid Then
-                            claimPaid = False
-                        End If
+               If Not Me.State.ClaimBO.NonVoidClaimAuthorizationList.Any(Function (i) Not i.AuthorizationNumber.Equals(State.MyBO.AuthorizationNumber) _
+                                                                                  AndAlso Not i.ClaimAuthStatus = ClaimAuthorizationStatus.Void) Then
+                   claimVoid = True
+               End If
 
-                        If Not auth.ClaimAuthStatus = ClaimAuthorizationStatus.Void Then
-                            claimVoided = False
-                        End If
-
-                    End If
-
-                Next
                 
                 State.MyBO.Void()
                 AddCommentToClaim(txtAuthVoidComment.Text,Me.State.ClaimBO)
 
                 lblVoidAuthStatus.Text = TranslationBase.TranslateLabelOrMessage(Message.MSG_CLAIM_AUTH_VOIDED)
                 divVoidAuthStatus.Visible = True
-                btnVoidAuthSave.Visible = False
-                btnVoidAuthCancel.Visible= False
-                btnVoidAuthClose.Visible = True
+             
+                ControlMgr.SetVisibleControl(Me,btnVoidAuthSave,False)
+                ControlMgr.SetVisibleControl(Me,btnVoidAuthCancel,False)
+                ControlMgr.SetVisibleControl(Me,btnVoidAuthClose,True)
                
                 If canClaimClosed Then
 
-                    If claimPaid Then
+                    If claimPaid and Not claimVoid Then
                         Me.State.ClaimBO.ReasonClosedId = LookupListNew.GetIdFromCode(LookupListNew.LK_REASONS_CLOSED, Codes.REASON_CLOSED__TO_BE_PAID)
-                    Else If claimVoided Then
+                    Else If claimVoid 
                         Me.State.ClaimBO.ReasonClosedId = LookupListNew.GetIdFromCode(LookupListNew.LK_REASONS_CLOSED, Codes.REASON_CLOSED_CLAIM_VOID)
                     End If
                   
