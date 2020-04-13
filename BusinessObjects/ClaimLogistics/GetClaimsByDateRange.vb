@@ -147,10 +147,10 @@ Public Class GetClaimsByDateRange
                     Me._serviceCenterId = LookupListNew.GetIdFromCode(dvServiceCenter, Me.ServiceCenterCode)
 
                     If Me._serviceCenterId.Equals(Guid.Empty) Then
-                        Throw New BOValidationException("GetClaimsByDateRange Error: ", Me.INVALID_SERVICE_CENTER_CODE)
+                        Throw New BOValidationException("GetClaimsByDateRange Error: ", INVALID_SERVICE_CENTER_CODE)
                     End If
                 Else
-                    Throw New BOValidationException("GetClaimsByDateRange Error: ", Me.INVALID_SERVICE_CENTER_CODE)
+                    Throw New BOValidationException("GetClaimsByDateRange Error: ", INVALID_SERVICE_CENTER_CODE)
                 End If
 
             End If
@@ -173,7 +173,7 @@ Public Class GetClaimsByDateRange
             dsClaim.DataSetName = Me.DATASET_NAME
 
             If dsClaim.Tables(0).Rows.Count > MAX_NUM_CLAIMS Then
-                Throw New BOValidationException("GetClaimsByDateRange Error: ", Me.MAX_NUM_CLAIMS_EXCEEDED)
+                Throw New BOValidationException("GetClaimsByDateRange Error: ", MAX_NUM_CLAIMS_EXCEEDED)
             End If
 
             Dim xmlStr As String = ""

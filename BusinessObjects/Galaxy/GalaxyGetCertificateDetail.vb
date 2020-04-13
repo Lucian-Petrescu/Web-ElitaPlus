@@ -139,12 +139,12 @@ Public Class GalaxyGetCertificateDetail
             Dim _CertificateDetailDataSet As DataSet = Certificate.GalaxyGetCertificateDetail(Me.CertNumber, Me.DealerCode)
             If Not _CertificateDetailDataSet Is Nothing AndAlso _CertificateDetailDataSet.Tables.Count > 0 AndAlso _CertificateDetailDataSet.Tables(0).Rows.Count > 0 Then
                 If _CertificateDetailDataSet.Tables(0).Rows(0).Item(Me.DATA_COL_NAME_CERT_ID) Is DBNull.Value Then
-                    Throw New BOValidationException("GalaxyGetCertificateDetail Error: ", Me.CERTIFICATE_NOT_FOUND)
+                    Throw New BOValidationException("GalaxyGetCertificateDetail Error: ", CERTIFICATE_NOT_FOUND)
                 Else
                     _CertificateDetailDataSet.DataSetName = Me.TABLE_NAME
                     Dim cert_id As New Guid(CType(_CertificateDetailDataSet.Tables(0).Rows(0).Item(Me.DATA_COL_NAME_CERT_ID), Byte()))
                     If cert_id.Equals(Guid.Empty) Then
-                        Throw New BOValidationException("GalaxyGetCertificateDetail Error: ", Me.CERTIFICATE_NOT_FOUND)
+                        Throw New BOValidationException("GalaxyGetCertificateDetail Error: ", CERTIFICATE_NOT_FOUND)
                     End If
 
                     'Get Cert Item Coverages
@@ -155,13 +155,13 @@ Public Class GalaxyGetCertificateDetail
                         'remove the cert_id (guid) column from the certificate table
                         _CertificateDetailDataSet.Tables(0).Columns.Remove(Me.DATA_COL_NAME_CERT_ID)
                     Else
-                        Throw New BOValidationException("GalaxyGetCertificateDetail Error: ", Me.CERTIFICATE_COVERAGES_NOT_FOUND)
+                        Throw New BOValidationException("GalaxyGetCertificateDetail Error: ", CERTIFICATE_COVERAGES_NOT_FOUND)
                     End If
 
                     Return XMLHelper.FromDatasetToXML_Std(_CertificateDetailDataSet)
                 End If
             ElseIf _CertificateDetailDataSet Is Nothing Then
-                Throw New BOValidationException("GalaxyGetCertificateDetail Error: ", Me.ERROR_ACCESSING_DATABASE)
+                Throw New BOValidationException("GalaxyGetCertificateDetail Error: ", ERROR_ACCESSING_DATABASE)
             End If
 
         Catch ex As StoredProcedureGeneratedException

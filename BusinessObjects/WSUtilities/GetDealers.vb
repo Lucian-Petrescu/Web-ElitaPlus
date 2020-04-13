@@ -125,11 +125,11 @@ Public Class GetDealers
                         dealerList.Sort = LookupListNew.COL_DESCRIPTION_NAME
                     End If
                     If dealerList.Count <= 0 Then
-                        Throw New BOValidationException("GetDealers Error: ", Me.DEALER_NOT_FOUND)
+                        Throw New BOValidationException("GetDealers Error: ", DEALER_NOT_FOUND)
                     End If
                 End If
             Else
-                Throw New BOValidationException("GetDealers Error: ", Me.DEALER_NOT_FOUND)
+                Throw New BOValidationException("GetDealers Error: ", DEALER_NOT_FOUND)
             End If
 
             Dim ds As New DataSet
