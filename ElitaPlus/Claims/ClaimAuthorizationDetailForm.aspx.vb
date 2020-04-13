@@ -330,6 +330,9 @@ Partial Class ClaimAuthorizationDetailForm
         Me.btnNewServiceCenter.Visible = Not Me.State.IsEditMode AndAlso State.ClaimBO.Status = BasicClaimStatus.Active AndAlso Me.State.MyBO.CanVoidClaimAuthorization AndAlso Not Me.State.ShowHistory AndAlso Not (State.ClaimBO.Dealer.DealerFulfillmentProviderClassCode = Codes.PROVIDER_CLASS_CODE__FULPROVORAEBS)
         'Me.btnrefundFee.Visible =  Me.State.MyBO.ClaimAuthStatus  =  ClaimAuthorizationStatus.Authorized 'ClaimAuthorizationStatus.Collected  
         Me.btnRefundFee.Visible = Me.State.MyBO.ClaimAuthStatus = ClaimAuthorizationStatus.Authorized AndAlso State.MyBO.AuthTypeXcd.Equals(AuthType_SalesOrder)
+        Me.btnVoidAuthorization.Visible = Me.State.MyBO.CanVoidClaimAuthorization  AndAlso (ElitaPlusPrincipal.Current.IsInRole(Codes.USER_ROLE__CLAIMS_MANAGER) OrElse
+                                                                                            ElitaPlusPrincipal.Current.IsInRole(Codes.USER_ROLE__CSR2) OrElse
+                                                                                            ElitaPlusPrincipal.Current.IsInRole(Codes.USER_ROLE__CSR))
     End Sub
 
     Private Sub PopulateDropDowns()
@@ -425,7 +428,7 @@ Partial Class ClaimAuthorizationDetailForm
             If Me.State.MyBO.IsFamilyDirty Then
                 Me.State.MyBO.Save()
                 Me.State.ClaimBO.Save()
-
+              
                 If (Me.State.MyBO.ClaimAuthStatus = ClaimAuthorizationStatus.Void) Then
                     ReturnBackToCallingPage()
                 Else
@@ -1267,6 +1270,143 @@ Partial Class ClaimAuthorizationDetailForm
     End Sub
 
 #End Region
+
+    #Region "Void Claim Authorization"
+    Private Sub btnVoidAuthorization_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnVoidAuthorization.Click
+        Try
+            InitVoidAuthorization()
+            HiddenFieldVoidAuth.Value = "Y"
+
+        Catch ex As Threading.ThreadAbortException
+        Catch ex As Exception
+            Me.HandleErrors(ex, Me.MasterPage.MessageController)
+        End Try
+    End Sub
+
+    Private Sub InitVoidAuthorization()
+
+        divVoidAuthStatus.Visible = False
+        divVoidAuthError.Visible = False
+        ControlMgr.SetVisibleControl(Me,btnVoidAuthSave,True)
+        ControlMgr.SetVisibleControl(Me,btnVoidAuthClose,False)
+      End Sub
+
+    private sub btnVoidAuthSave_Click (sender As Object, e As EventArgs) Handles btnVoidAuthSave.Click
+        Try
+           
+            divVoidAuthStatus.Visible = False
+            divVoidAuthError.Visible = False
+
+            If String.IsNullOrWhiteSpace(txtAuthVoidComment.Text) Then
+
+                lblvoidAuthError.Text = TranslationBase.TranslateLabelOrMessage(Message.MSG_AUTH_VOID_COMMENT_REQUIRED)
+                divVoidAuthError.Visible = True
+                return
+            End If
+            
+            Me.State.IsEditMode = False
+           If Me.State.MyBO.IsFamilyDirty Then
+               
+                lblVoidAuthStatus.Visible = True
+                Dim canClaimClosed as Boolean = True
+                Dim claimPaid as Boolean = True
+                Dim claimVoid as Boolean = False
+               
+               If Me.State.ClaimBO.NonVoidClaimAuthorizationList.Any(Function (i) Not i.AuthorizationNumber.Equals(State.MyBO.AuthorizationNumber) _
+                        AndAlso Not i.ClaimAuthStatus = ClaimAuthorizationStatus.Paid) Then
+                   canClaimClosed = False
+                   claimPaid = False
+               End If
+
+               If Not Me.State.ClaimBO.NonVoidClaimAuthorizationList.Any(Function (i) Not i.AuthorizationNumber.Equals(State.MyBO.AuthorizationNumber) _
+                                                                                  AndAlso Not i.ClaimAuthStatus = ClaimAuthorizationStatus.Void) Then
+                   claimVoid = True
+               End If
+
+                
+                State.MyBO.Void()
+                AddCommentToClaim(txtAuthVoidComment.Text,Me.State.ClaimBO)
+
+                lblVoidAuthStatus.Text = TranslationBase.TranslateLabelOrMessage(Message.MSG_CLAIM_AUTH_VOIDED)
+                divVoidAuthStatus.Visible = True
+             
+                ControlMgr.SetVisibleControl(Me,btnVoidAuthSave,False)
+                ControlMgr.SetVisibleControl(Me,btnVoidAuthCancel,False)
+                ControlMgr.SetVisibleControl(Me,btnVoidAuthClose,True)
+               
+                If canClaimClosed Then
+
+                    If claimPaid and Not claimVoid Then
+                        Me.State.ClaimBO.ReasonClosedId = LookupListNew.GetIdFromCode(LookupListNew.LK_REASONS_CLOSED, Codes.REASON_CLOSED__TO_BE_PAID)
+                    Else If claimVoid 
+                        Me.State.ClaimBO.ReasonClosedId = LookupListNew.GetIdFromCode(LookupListNew.LK_REASONS_CLOSED, Codes.REASON_CLOSED_CLAIM_VOID)
+                    End If
+                  
+                    If Me.State.ClaimBO.ReasonClosedId = Guid.Empty  Or Me.State.ClaimBO.ReasonClosedId = Nothing Then
+                        HandleCloseClaimLogic() 
+                        Me.State.ClaimBO.Save()
+                        lblVoidAuthStatus.Text = TranslationBase.TranslateLabelOrMessage(Message.MSG_CLAIM_AUTH_VOIDED_AND_CLAIM_CLOSED)
+                    End If
+                    
+                End If
+               
+            Else
+                Me.MasterPage.MessageController.AddInformation(Message.MSG_RECORD_NOT_SAVED)
+            End If
+        Catch ex As Exception
+            lblvoidAuthError.Text = TranslationBase.TranslateLabelOrMessage(Message.MSG_CLAIM_AUTH_VOID_FAIED) & ex.Message
+            divVoidAuthError.Visible = True
+            Me.HandleErrors(ex, Me.MasterPage.MessageController)
+
+        End Try
+        
+    End sub
+    Protected Sub btnVoidAuthClose_Click(sender As Object, e As EventArgs) Handles btnVoidAuthClose.Click
+        HiddenFieldVoidAuth.Value = "N"
+        ReturnBackToCallingPage()
+    End Sub
+    Protected Sub HandleCloseClaimLogic()
+        'Try to Close the Claim
+        Select Case Me.State.ClaimBO.ClaimAuthorizationType
+            Case ClaimAuthorizationType.Single
+                Me.State.ClaimBO.CloseTheClaim()
+            Case ClaimAuthorizationType.Multiple
+                If Not ( Me.State.ClaimBO.Status = BasicClaimStatus.Closed Or Me.State.ClaimBO.Status = BasicClaimStatus.Denied) Then
+                    If Not  Me.State.ClaimBO.ReasonClosedId.Equals(Guid.Empty) Then
+                        If  Me.State.ClaimBO.ClaimAuthorizationChildren.Where(Function(item) item.ClaimAuthStatus = ClaimAuthorizationStatus.Paid Or
+                                                                                             item.ClaimAuthStatus = ClaimAuthorizationStatus.ToBePaid Or
+                                                                                             item.ClaimAuthStatus = ClaimAuthorizationStatus.Reconsiled).Count > 0 Then
+                            Throw New GUIException("CLAIM_CANNOT_BE_CLOSED_CONTAINS_RECONSILED_PAID_AUTH", "CLAIM_CANNOT_BE_CLOSED_CONTAINS_RECONSILED_PAID_AUTH")
+                        End If
+                    End If
+
+                End If
+                Me.State.ClaimBO.CloseTheClaim()
+                If  Me.State.ClaimBO.Status = BasicClaimStatus.Closed Then
+                    Me.State.ClaimBO.VoidAuthorizations()
+                End If
+            Case ClaimAuthorizationType.None
+                Throw New NotSupportedException
+        End Select
+
+    End Sub
+    Private Sub AddCommentToClaim(comments As String, oclaim As ClaimBase)
+        If (Not oclaim Is Nothing) Then
+            Dim comment As Comment = oclaim.AddNewComment()
+
+            With comment
+                .ClaimId = oclaim.Id
+                .CommentTypeId = LookupListNew.GetIdFromCode(LookupListNew.LK_COMMENT_TYPES, Codes.COMMENT_TYPE__OTHER)
+                .CertId = oclaim.Certificate.Id
+                .Comments = comments
+                .AddClaimAuthComment()
+            End With
+
+        End If
+    End Sub
+
+    #End Region
+
     Private Sub btnResendShippingLabel_Click(sender As Object, e As EventArgs) Handles btnResendShippingLabel.Click
         Try
             ResendShippingLabel()
@@ -1276,4 +1416,5 @@ Partial Class ClaimAuthorizationDetailForm
         End Try
     End Sub
 
+    
 End Class
