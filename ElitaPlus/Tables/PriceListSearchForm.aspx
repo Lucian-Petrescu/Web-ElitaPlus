@@ -133,9 +133,11 @@
                         HeaderStyle-HorizontalAlign="Center" HtmlEncode="false" />
                     <asp:BoundField DataField="VENDORCOUNT" SortExpression="VENDORCOUNT" ReadOnly="true"
                         HeaderText="vendor_Count" HeaderStyle-HorizontalAlign="Center" HtmlEncode="false" />
+                    <asp:BoundField DataField="Status" SortExpression="Status" ReadOnly="true"
+                        HeaderText="Status" HeaderStyle-HorizontalAlign="Center" HtmlEncode="false" />
                     <asp:BoundField DataField="EFFECTIVE" SortExpression="EFFECTIVE" ReadOnly="true"
                         HeaderText="EFFECTIVE" HeaderStyle-HorizontalAlign="Center" HtmlEncode="false" />
-                    <asp:BoundField SortExpression="EXPIRATION" DataField="EXPIRATION" HeaderText="EXPIRATION"
+                     <asp:BoundField SortExpression="EXPIRATION" DataField="EXPIRATION" HeaderText="EXPIRATION"
                         ReadOnly="true" HtmlEncode="false" />
                     <%--<asp:BoundField DataField="price_list_id" ReadOnly="true"  HtmlEncode="false" Visible="true"/>--%>
                     <asp:TemplateField Visible="false">

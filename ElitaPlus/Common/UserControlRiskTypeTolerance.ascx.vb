@@ -515,9 +515,6 @@ Partial Class UserControlRiskTypeTolerance
             Me.ThePage.PopulateBOProperty(TheState.MyBO, "RiskType", objDropDownList,false)
             Me.ThePage.PopulateBOProperty(TheState.MyBO, "RiskTypeId", objDropDownList,true)
 
-           If (RiskTypeTolerancePct.Text = String.Empty) Then
-                RiskTypeTolerancePct.Text = 0
-            End If
             Me.ThePage.PopulateBOProperty(TheState.MyBO, "TolerancePct", RiskTypeTolerancePct) 
 
             

@@ -52,6 +52,7 @@ Partial Class PayClaimForm
     Public Const ApplicationSource_Darty = "ASSURANT"
     Public Const Payee_Customer = "CUSTOMER"
     Public Const Bank_Transfer = "BANK TRANSFER"
+    Public Const EMPTY_GUID As String = "00000000-0000-0000-0000-000000000000"
 #End Region
 
 #Region "Private members"
@@ -953,27 +954,33 @@ Partial Class PayClaimForm
     End Sub
     Private Sub PopulateFieldsForBankTransfer()
 
-        'Me.SetFieldsEmptyForBankTrf()
-        If (cboPayeeSelector.SelectedItem.Text.ToUpper = Payee_Customer And
-                    PaymentMethodDrop.SelectedItem.Text.ToUpper = Bank_Transfer) Then
-                Me.PayeeBankInfo.LoadBankSortCodeList(Me.oCompany, oCertificate.CUIT_CUIL)
+        If ((cboPayeeSelector.SelectedValue <> Me.EMPTY_GUID AndAlso
+            LookupListNew.GetCodeFromId(LookupListNew.LK_PAYEE, GetSelectedItem(cboPayeeSelector)) = ClaimInvoice.PAYEE_OPTION_CUSTOMER) Or
+            (PaymentMethodDrop.SelectedValue <> Me.EMPTY_GUID AndAlso
+            LookupListNew.GetCodeFromId(LookupListNew.LK_PAYMENTMETHOD, GetSelectedItem(PaymentMethodDrop)) = Codes.PAYMENT_METHOD__BANK_TRANSFER)) Then
 
-            If Not oCompany.AttributeValues.Value(Codes.DEFAULT_CLAIM_INVOICE_NUMBER) Is Nothing Then
+            Me.PayeeBankInfo.LoadBankSortCodeList(Me.oCompany, oCertificate.CUIT_CUIL)
+
+            If oCompany.AttributeValues.Contains(Codes.DEFAULT_CLAIM_INVOICE_NUMBER) Then
                 txtInvoiceNumber.Text = oCompany.AttributeValues.Value(Codes.DEFAULT_CLAIM_INVOICE_NUMBER)
             End If
 
             txtInvoiceDate.Text = Me.GetDateFormattedString(DateTime.Now)
-                txtRepairDate.Text = Me.GetDateFormattedString(DateTime.Now)
-            Else
-                SetPayeeBankInvoiceControlsEmpty()
-            End If
+            txtRepairDate.Text = Me.GetDateFormattedString(DateTime.Now)
+        Else
+            SetPayeeBankInvoiceControlsEmpty()
+        End If
 
     End Sub
     Private Sub SetFieldsEmptyForBankTrf()
-        If Not oCompany Is Nothing AndAlso oCompany.AttributeValues.Value(Codes.DEFAULT_CLAIM_BANK_SORT_CODE) = Codes.YESNO_Y Then
-            If (cboPayeeSelector.SelectedItem.Text.ToUpper <> Payee_Customer Or
-                PaymentMethodDrop.SelectedItem.Text.ToUpper <> Bank_Transfer) Then
-                SetPayeeBankInvoiceControlsEmpty()
+        If Not oCompany Is Nothing AndAlso oCompany.AttributeValues.Contains(Codes.DEFAULT_CLAIM_BANK_SORT_CODE) Then
+            If oCompany.AttributeValues.Value(Codes.DEFAULT_CLAIM_BANK_SORT_CODE) = Codes.YESNO_Y Then
+                If ((cboPayeeSelector.SelectedValue <> Me.EMPTY_GUID AndAlso
+                     LookupListNew.GetCodeFromId(LookupListNew.LK_PAYEE, GetSelectedItem(cboPayeeSelector)) <> ClaimInvoice.PAYEE_OPTION_CUSTOMER) Or
+                    (PaymentMethodDrop.SelectedValue <> Me.EMPTY_GUID AndAlso
+                     LookupListNew.GetCodeFromId(LookupListNew.LK_PAYMENTMETHOD, GetSelectedItem(PaymentMethodDrop)) <> Codes.PAYMENT_METHOD__BANK_TRANSFER)) Then
+                    SetPayeeBankInvoiceControlsEmpty()
+                End If
             End If
         End If
     End Sub
@@ -1900,7 +1907,7 @@ Partial Class PayClaimForm
             Me.State.ClaimInvoiceBO.IsSalvagePayment= True
         End If
 
-        Me.CapturePayeeInfo(GetSelectedItem(cboPayeeSelector), GetSelectedItem(Me.PaymentMethodDrop), blnExcludeSaveUserControls)
+                Me.CapturePayeeInfo(GetSelectedItem(cboPayeeSelector), GetSelectedItem(Me.PaymentMethodDrop), blnExcludeSaveUserControls)
 
         PopulateManualClaimTaxes()
 

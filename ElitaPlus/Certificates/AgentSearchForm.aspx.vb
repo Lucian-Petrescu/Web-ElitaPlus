@@ -527,7 +527,13 @@ Namespace Certificates
                                    })
 
             If State IsNot Nothing AndAlso State.CompanyId <> Guid.Empty Then
-                SetSelectedItem(ddlCompany, State.CompanyId)
+                Try
+                    SetSelectedItem(ddlCompany, State.CompanyId)
+                Catch ex As Exception
+                    ddlCompany.SelectedIndex = DefaultItem
+                    State.CompanyId = GetSelectedItem(ddlCompany)
+                    State.DealerId = guid.Empty
+                End Try
             Else
                 ddlCompany.SelectedIndex = DefaultItem
                 State.CompanyId = GetSelectedItem(ddlCompany)

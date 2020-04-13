@@ -430,6 +430,14 @@ Partial Class UserControlBankInfo_New
         Me.Page.SetSelectedItem(moCountryDrop_WRITE, oCountryID)
     End Sub
 
+    Public Sub setSwiftCode(ByVal objBankinfo As BankInfo)
+        textboxSwiftCode.Text = objBankinfo.BankLookupCode
+    End Sub
+
+    Public Sub setCustomerName(ByVal customerName As String)
+        textboxNameAccount.Text = customerName
+    End Sub
+
     Public Sub ChangeEnabledControlProperty(ByVal blnEnabledState As Boolean)
         Page.ChangeEnabledControlProperty(Me.textboxNameAccount, blnEnabledState)
         Page.ChangeEnabledControlProperty(Me.moCountryDrop_WRITE, blnEnabledState)
@@ -459,22 +467,27 @@ Partial Class UserControlBankInfo_New
 
     End Sub
     Public Sub LoadBankSortCodeList(ByVal oCompany As Company, ByVal certTaxIdNumber As String)
-        If oCompany.AttributeValues.Value(Codes.DEFAULT_CLAIM_BANK_SORT_CODE) = Codes.YESNO_Y Then
-            DisplayCboBankSortCode()
-            Dim oBankSortCodeList As Assurant.Elita.CommonConfiguration.DataElements.ListItem() = CommonConfigManager.Current.ListManager.GetList(listCode:="BANK_SORT_CODE")
-            cboBankSortCodes.Populate(oBankSortCodeList, New PopulateOptions() With
+        If oCompany.AttributeValues.Contains(Codes.DEFAULT_CLAIM_BANK_SORT_CODE) Then
+            If oCompany.AttributeValues.Value(Codes.DEFAULT_CLAIM_BANK_SORT_CODE) = Codes.YESNO_Y Then
+                DisplayCboBankSortCode()
+                Dim oBankSortCodeList As Assurant.Elita.CommonConfiguration.DataElements.ListItem() = CommonConfigManager.Current.ListManager.GetList(listCode:="BANK_SORT_CODE")
+                cboBankSortCodes.Populate(oBankSortCodeList, New PopulateOptions() With
                                             {
                                             .AddBlankItem = True,
                                             .TextFunc = AddressOf PopulateOptions.GetCode,
                                             .ValueFunc = AddressOf PopulateOptions.GetDescription
                                             })
+            End If
         End If
-        If Not oCompany.AttributeValues.Value(Codes.DEFAULT_CLAIM_BANK_SUB_CODE) Is Nothing Then
+
+        If oCompany.AttributeValues.Contains(Codes.DEFAULT_CLAIM_BANK_SUB_CODE) Then
             txtBankSubcode.Text = oCompany.AttributeValues.Value(Codes.DEFAULT_CLAIM_BANK_SUB_CODE)
         End If
 
-        If (Not String.IsNullOrEmpty(certTaxIdNumber) And Not oCompany.AttributeValues.Value(Codes.AUTO_POPULATE_CERT_TAX_ID) Is Nothing And oCompany.AttributeValues.Value(Codes.AUTO_POPULATE_CERT_TAX_ID) = Codes.YESNO_Y) Then
-            txtTaxId.Text = certTaxIdNumber
+        If (Not String.IsNullOrEmpty(certTaxIdNumber) And oCompany.AttributeValues.Contains(Codes.AUTO_POPULATE_CERT_TAX_ID)) Then
+            If oCompany.AttributeValues.Value(Codes.AUTO_POPULATE_CERT_TAX_ID) = Codes.YESNO_Y Then
+                txtTaxId.Text = certTaxIdNumber
+            End If
         End If
 
 

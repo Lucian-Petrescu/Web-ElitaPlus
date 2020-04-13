@@ -23,7 +23,7 @@ Public Module Logger
             Dim OracleHelper As OracleHelper = New OracleHelper(Function() New OracleConnectionStringBuilder() With {
             .UserID = ElitaConfig.Current.Database.UserName,
             .Password = ElitaConfig.Current.Database.Password,
-            .DataSource = ElitaConfig.Current.Database.DataSourceName
+            .DataSource = AppConfig.DataBase.Server
           })
 
             _loggerClient = New OracleLogger(OracleHelper, applicationName, Environment.MachineName)

@@ -6,20 +6,25 @@
     <html>
       <head>
         <style>
-          BODY { width:auto }
-          td {font-size:10pt;font-family:"Trebuchet MS";height:5px;}
+          BODY {width:auto;height:auto;}
+          td {font-size:18pt;font-family:"Trebuchet MS";height:5px; padding-top:7px;}
           .Header {color:Gray;TEXT-ALIGN:LEFT;text-decoration:underline;font-weight:bold;}
           .esp {font-weight:normal;}
+          .claimNumberText {font-size:24pt;}
+          .authorityLimitText {font-size:20pt;font-weight: bold;}
+          .disclaimerText {font-size:16pt;}
         </style>
       </head>
       <body>
-        <table cellpadding="0" cellspacing="0" border="0" style="PADDING-RIGHT:10px;PADDING-LEFT:10px;width:100%">
+        <table cellpadding="0" cellspacing="0" border="0" style="PADDING-RIGHT:3px;PADDING-LEFT:3px;width:100%;">
           <tr>
             <td colspan="2">
               <table style="width:100%">
                 <tr>
-                  <td style="width:75%"></td>
-                  <td rowspan="3" style="text-align:right;vertical-align:middle">
+                  <td style="text-align:left;">
+                    Repair Service Request
+                  </td>
+                  <td rowspan="2" style="text-align:right;vertical-align:top;">
                     <xsl:element name="img">
                       <xsl:attribute name="src">
                         <xsl:choose>
@@ -35,9 +40,9 @@
                   </td>
                 </tr>
                 <tr>
-                  <td>
-                    Repair Service Request<br/>Claim Number: &#160;
-                    <span style="font-size:14pt;">
+                  <td style="text-align:left;">
+                    Claim Number: &#160;
+                    <span class="claimNumberText">
                       <xsl:value-of select="a:ServiceOrderReport/a:ServiceOrder/a:CLAIM_NUMBER" />-<xsl:value-of select="a:ServiceOrderReport/a:ServiceOrder/a:AUTHORIZATION_NUMBER" />
                     </span>
                   </td>
@@ -53,17 +58,9 @@
             <td colspan="2" class="Header">Customer Information</td>
           </tr>
           <tr>
-            <td>&#160;</td>
-            <td></td>
-          </tr>
-          <tr>
             <td >
               Name:&#160;<xsl:value-of select="a:ServiceOrderReport/a:ServiceOrder/a:CUSTOMER_NAME" />
             </td>
-          </tr>
-          <tr>
-            <td>&#160;</td>
-            <td></td>
           </tr>
           <tr>
             <td colspan="2">
@@ -89,10 +86,6 @@
             </td>
           </tr>
           <tr>
-            <td>&#160;</td>
-            <td></td>
-          </tr>
-          <tr>
             <td>
               Number:&#160;
               <xsl:choose>
@@ -109,10 +102,6 @@
             </td>
           </tr>
           <tr>
-            <td>&#160;</td>
-            <td></td>
-          </tr>
-          <tr>
             <td>
               Email:&#160;<xsl:value-of select="a:ServiceOrderReport/a:ServiceOrder/a:CUSTOMER_EMAIL" />
             </td>
@@ -125,17 +114,9 @@
             <td colspan="2" class="Header">Product Information</td>
           </tr>
           <tr>
-            <td>&#160;</td>
-            <td></td>
-          </tr>
-          <tr>
             <td>
               Description:&#160;<xsl:value-of select="a:ServiceOrderReport/a:ServiceOrder/a:PRODUCT_DESCRIPTION" />
             </td>
-          </tr>
-          <tr>
-            <td>&#160;</td>
-            <td></td>
           </tr>
           <tr>
             <td>
@@ -143,17 +124,9 @@
             </td>
           </tr>
           <tr>
-            <td>&#160;</td>
-            <td></td>
-          </tr>
-          <tr>
             <td>
               Model:&#160;<xsl:value-of select="a:ServiceOrderReport/a:ServiceOrder/a:MODEL" />
             </td>
-          </tr>
-          <tr>
-            <td>&#160;</td>
-            <td></td>
           </tr>
           <tr>
             <td>
@@ -161,26 +134,14 @@
             </td>
           </tr>
           <tr>
-            <td>&#160;</td>
-            <td></td>
-          </tr>
-          <tr>
             <td>
               IMEI:&#160;<xsl:value-of select="a:ServiceOrderReport/a:ServiceOrder/a:IMEI" />
             </td>
           </tr>
           <tr>
-            <td>&#160;</td>
-            <td></td>
-          </tr>
-          <tr>
             <td>
               Purchase Price:&#160;$<xsl:value-of select="a:ServiceOrderReport/a:ServiceOrder/a:SALES_PRICE" />&#160;(Incl GST)
           </td>
-          </tr>
-          <tr>
-            <td>&#160;</td>
-            <td></td>
           </tr>
           <tr>
             <td>
@@ -192,17 +153,9 @@
             </td>
           </tr>
           <tr>
-            <td>&#160;</td>
-            <td></td>
-          </tr>
-          <tr>
             <td>
               Retailer:&#160;<xsl:value-of select="a:ServiceOrderReport/a:ServiceOrder/a:DEALER_NAME" />
             </td>
-          </tr>
-          <tr>
-            <td>&#160;</td>
-            <td></td>
           </tr>
           <tr>
             <td colspan="2">
@@ -217,65 +170,37 @@
             <td colspan="2" class="Header">Claim Instructions</td>
           </tr>
           <tr>
-            <td>&#160;</td>
-            <td></td>
-          </tr>
-          <tr>
             <td colspan="2">Please contact customer to arrange service.</td>
           </tr>
           <tr>
-            <td>&#160;</td>
-            <td></td>
-          </tr>
-          <tr>
-            <td colspan="2">
-              <span style="font-size:12pt;font-weight: bold;">
+            <td colspan="2" style="padding-top:15px;">
+              <span class="authorityLimitText">
                 Repair Authority Limit: $<xsl:value-of select="a:ServiceOrderReport/a:ServiceOrder/a:AUTHORIZATION_AMOUNT" />&#160;(Incl GST)
               </span>
             </td>
           </tr>
           <tr>
-            <td>&#160;</td>
-            <td></td>
-          </tr>
-          <tr>
-            <td colspan="2">
+            <td colspan="2" style="padding-top:15px;">
               If the repair costs (including parts and labor) DO NOT exceed the Repair Authority Limit, please email us with an itemized invoice repair has been completed.
             </td>
           </tr>
           <tr>
-            <td>&#160;</td>
-            <td></td>
-          </tr>
-          <tr>
-            <td colspan="2">
+            <td colspan="2" style="padding-top:15px;">
               If the repair costs (including parts and labor) EXCEED the Repair Authority Limit, please email us with an itemized quote and await further advice before proceeding with repair.
             </td>
           </tr>
           <tr>
-            <td>&#160;</td>
-            <td></td>
-          </tr>
-          <tr>
-            <td colspan="2">
+            <td colspan="2" style="padding-top:15px;">
               Excess to collect before returning repaired device to customer:$<xsl:value-of select="a:ServiceOrderReport/a:ServiceOrder/a:DEDUCTIBLE_AMOUNT" />
             </td>
           </tr>
           <tr>
-            <td>&#160;</td>
-            <td></td>
-          </tr>
-          <tr>
-            <td colspan="2">
+            <td colspan="2" style="padding-top:15px;">
               Please submit a report to us if you are unable to repair the device, outlining the reasons why and we will complete the settlement of this claim.
             </td>
           </tr>
           <tr>
-            <td>&#160;</td>
-            <td></td>
-          </tr>
-          <tr>
-            <td colspan="2">
+            <td colspan="2" style="padding-top:15px;">
               Additional comments:<xsl:value-of select="a:ServiceOrderReport/a:ServiceOrder/a:SPECIAL_INSTRUCTION" />
             </td>
           </tr>
@@ -283,9 +208,9 @@
             <td colspan="2" >&#160;</td>
           </tr>
           <tr>
-            <td colspan="2" style="border:thin solid #000000;text-align:center;font-size:9pt;padding:5px;" >
-                Insurance issued by Virginia Surety Company, Inc ARBN 080 339 957 AFSL 245579.
-                Insurance administered by The Warranty Group Australasia Pty Ltd ABN 37 005 004 446,PO Box 246, Balwyn. VIC. 3103.
+            <td colspan="2" style="border:thin solid black;text-align:center;padding:5px;" class="disclaimerText">
+              Insurance issued by Virginia Surety Company, Inc ARBN 080 339 957 AFSL 245579.<br/>
+              Insurance administered by The Warranty Group Australasia Pty Ltd ABN 37 005 004 446,PO Box 246, Balwyn. VIC. 3103.
             </td>
           </tr>
         </table>

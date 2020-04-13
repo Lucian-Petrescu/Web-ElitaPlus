@@ -49,6 +49,7 @@ Public Class Codes
     Public Const EVNT_TYP__CLAIM_UPDATED As String = "CLAIM_UPDATE"
     Public Const EVNT_TYP__CLAIM_APPROVED As String = "CLAIM_APPROVED"
     Public Const EVNT_TYP__CLAIM_DENIED As String = "CLAIM_DENIED"
+    Public Const EVNT_TYP__CLAIM_REFERRED As String = "CLAIM_REFERRED"
     Public Const PRESERVE_AUTH_AMOUNT_AT_REPLACE_ITEM As String = "PRESERVE_AUTH_AMOUNT_AT_REPLACE_ITEM"
     Public Const EVNT_TYP_SEND_CLAIM_GIFT_CARD = "SEND_CLAIM_GIFT_CARD"
     Public Const EVNT_TYP_SEND_CERT_VOUCHER = "SEND_CERT_VOUCHER"
@@ -61,6 +62,8 @@ Public Class Codes
     Public Const EVNT_COMM_CHANNEL As String = "COMM_CHANNEL"
     Public Const EVNT_COMM_CHAN_EMAIL As String = "EMAIL"
 
+    Public Const ERROR_FLAG As String = "100"
+    Public Const NO_HELP_COMTS_FOUND As String = "NO_HELP_COMTS_FOUND"
 
     ' Claim Issue Code
     Public Const ISSUE_CODE__TRBSHT = "TRBSHT"

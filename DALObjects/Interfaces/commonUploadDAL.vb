@@ -1,5 +1,9 @@
 ﻿Imports System.Collections.Generic
 
+
+
+
+
 Public Class commonUploadDAL
     Inherits DALBase
 
@@ -7,6 +11,8 @@ Public Class commonUploadDAL
     Public Sub New()
         MyBase.New()
     End Sub
+
+
 
 #End Region
 #Region "Delegate Signatures"
@@ -42,7 +48,7 @@ Public Class commonUploadDAL
         End Try
     End Sub
 
-    Public Sub InsertUploadFileLinesBulk(ByVal strUploadType As String, ByVal FileLines As Generic.List(Of String), ByVal fileName As String)
+    Public Sub InsertUploadFileLinesBulk(ByVal strUploadType As String, ByVal FileLines As Generic.List(Of String), ByVal fileName As String, ByVal userId As String)
         Dim cBatchSize As Integer = 200
         Dim strStmt As String = "INSERT INTO ELP_Upload_File_Lines (file_line, line_number, upload_type) values (:file_line, :line_number, :upload_type)"
         Dim conn As OracleConnection
@@ -147,23 +153,30 @@ Public Class commonUploadDAL
         End Try
     End Sub
 
-    Public Function getScreenHelpData(FormName As String)
+    Public Function getScreenHelpData(FormName As String) As String
         Dim sqlStmt As String
+        sqlStmt = Me.Config("/SQL/PROCESS_SCREEN_HELP")
+
+
         Try
+            Dim outParameters() As DBHelper.DBHelperParameter = New DBHelper.DBHelperParameter() {
+                            New DBHelper.DBHelperParameter("p_InitResult", GetType(String), 500),
+                            New DBHelper.DBHelperParameter("p_ErrCode", GetType(Integer))}
+
             Dim inParameters As New Generic.List(Of DBHelper.DBHelperParameter)
             Dim param As DBHelper.DBHelperParameter
 
-            sqlStmt = Me.Config("/SQL/PROCESS_SCREEN_HELP")
             param = New DBHelper.DBHelperParameter("pi_formname", FormName)
-
-            sqlStmt = sqlStmt.Replace(":pi_formname", FormName)
             inParameters.Add(param)
 
-            Dim ds As DataSet
-            ds = DBHelper.Fetch(sqlStmt, "elp_screen_help")
+            DBHelper.ExecuteSpParamBindByName(sqlStmt, inParameters.ToArray, outParameters)
 
-            Dim helpData As String = ds.Tables(0).Rows(0).Item(0).ToString()
-            Return helpData
+
+            If outParameters(1).Value = 0 Then
+                Return outParameters(0).Value.ToString()
+            End If
+
+            Return outParameters(1).Value.ToString()
 
         Catch ex As Exception
             Throw New DataBaseAccessException(DataBaseAccessException.DatabaseAccessErrorType.ReadErr, ex)
