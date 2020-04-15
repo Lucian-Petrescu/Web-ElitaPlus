@@ -883,6 +883,8 @@ Partial Class ClaimIssueActionAnswerForm
         skuRequest.Model = State.SelectedDeviceModel
         skuRequest.Color = State.SelectedDeviceColor
         skuRequest.Memory = State.SelectedDeviceMemory
+        skuRequest.OrderType = State.SelectedOrderType
+        skuRequest.CreationSource = State.SelectedCreationSource
         skuRequest.SearchLimit = CType(SearchLimit, String)
 
         Dim skuResponse As SearchSKUResponse
