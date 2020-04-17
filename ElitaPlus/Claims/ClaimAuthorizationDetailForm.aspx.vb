@@ -1304,28 +1304,11 @@ Partial Class ClaimAuthorizationDetailForm
                 return
             End If
             
-            Me.State.IsEditMode = False
-           If Me.State.MyBO.IsFamilyDirty Then
+           If State.MyBO.IsFamilyDirty Then
                
                 lblVoidAuthStatus.Visible = True
-                Dim canClaimClosed as Boolean = True
-                Dim claimPaid as Boolean = True
-                Dim claimVoid as Boolean = False
-               
-               If Me.State.ClaimBO.NonVoidClaimAuthorizationList.Any(Function (i) Not i.AuthorizationNumber.Equals(State.MyBO.AuthorizationNumber) _
-                        AndAlso Not i.ClaimAuthStatus = ClaimAuthorizationStatus.Paid) Then
-                   canClaimClosed = False
-                   claimPaid = False
-               End If
-
-               If Not Me.State.ClaimBO.NonVoidClaimAuthorizationList.Any(Function (i) Not i.AuthorizationNumber.Equals(State.MyBO.AuthorizationNumber) _
-                                                                                  AndAlso Not i.ClaimAuthStatus = ClaimAuthorizationStatus.Void) Then
-                   claimVoid = True
-               End If
-
-                
                 State.MyBO.Void()
-                AddCommentToClaim(txtAuthVoidComment.Text,Me.State.ClaimBO)
+                AddCommentToClaim(txtAuthVoidComment.Text,State.ClaimBO)
 
                 lblVoidAuthStatus.Text = TranslationBase.TranslateLabelOrMessage(Message.MSG_CLAIM_AUTH_VOIDED)
                 divVoidAuthStatus.Visible = True
@@ -1334,46 +1317,68 @@ Partial Class ClaimAuthorizationDetailForm
                 ControlMgr.SetVisibleControl(Me,btnVoidAuthCancel,False)
                 ControlMgr.SetVisibleControl(Me,btnVoidAuthClose,True)
                
-                If canClaimClosed Then
-
-                    If claimPaid and Not claimVoid Then
-                        Me.State.ClaimBO.ReasonClosedId = LookupListNew.GetIdFromCode(LookupListNew.LK_REASONS_CLOSED, Codes.REASON_CLOSED__TO_BE_PAID)
-                    Else If claimVoid 
-                        Me.State.ClaimBO.ReasonClosedId = LookupListNew.GetIdFromCode(LookupListNew.LK_REASONS_CLOSED, Codes.REASON_CLOSED_CLAIM_VOID)
-                    End If
-                  
-                    If Me.State.ClaimBO.ReasonClosedId = Guid.Empty  Or Me.State.ClaimBO.ReasonClosedId = Nothing Then
-                        HandleCloseClaimLogic() 
-                        Me.State.ClaimBO.Save()
-                        lblVoidAuthStatus.Text = TranslationBase.TranslateLabelOrMessage(Message.MSG_CLAIM_AUTH_VOIDED_AND_CLAIM_CLOSED)
-                    End If
-                    
+                
+                If CloseClaimAsPaid() Then
+                    State.ClaimBO.ReasonClosedId = LookupListNew.GetIdFromCode(LookupListNew.LK_REASONS_CLOSED, Codes.REASON_CLOSED__TO_BE_PAID)
+                    CloseClaimWithCloseReason()
+                Else If CloseClaimAsVoid() 
+                    State.ClaimBO.ReasonClosedId = LookupListNew.GetIdFromCode(LookupListNew.LK_REASONS_CLOSED, Codes.REASON_CLOSED_CLAIM_VOID)
+                    CloseClaimWithCloseReason()
                 End If
-               
-            Else
-                Me.MasterPage.MessageController.AddInformation(Message.MSG_RECORD_NOT_SAVED)
+ 
+           Else
+                MasterPage.MessageController.AddInformation(Message.MSG_RECORD_NOT_SAVED)
             End If
         Catch ex As Exception
             lblvoidAuthError.Text = TranslationBase.TranslateLabelOrMessage(Message.MSG_CLAIM_AUTH_VOID_FAIED) & ex.Message
             divVoidAuthError.Visible = True
-            Me.HandleErrors(ex, Me.MasterPage.MessageController)
+            HandleErrors(ex, MasterPage.MessageController)
 
         End Try
         
     End sub
+
+    Private Sub CloseClaimWithCloseReason()
+        If Not State.ClaimBO.ReasonClosedId = Guid.Empty  Then
+            HandleCloseClaimLogic() 
+            State.ClaimBO.Save()
+            lblVoidAuthStatus.Text = TranslationBase.TranslateLabelOrMessage(Message.MSG_CLAIM_AUTH_VOIDED_AND_CLAIM_CLOSED)
+        End If
+    End Sub
+
+    Private Function CloseClaimAsVoid() As Boolean
+       If State.ClaimBO.NonVoidClaimAuthorizationList.Any(Function(i) i.AuthorizationNumber <> State.MyBO.AuthorizationNumber AndAlso i.ClaimAuthStatus <> ClaimAuthorizationStatus.Cancelled) Then
+            return false
+        Else 
+            Return True
+        End If
+    End Function
+
+    Private Function CloseClaimAsPaid() As Boolean
+        If State.ClaimBO.NonVoidClaimAuthorizationList.Any(Function(i) Not i.AuthorizationNumber.Equals(State.MyBO.AuthorizationNumber)) Then
+            If State.ClaimBO.NonVoidClaimAuthorizationList.Any(Function(i) i.AuthorizationNumber <> State.MyBO.AuthorizationNumber AndAlso i.ClaimAuthStatus <> ClaimAuthorizationStatus.Paid) Then
+                return false
+            Else 
+                Return True
+            End If
+        Else
+                return False
+        End If
+    End Function
+
     Protected Sub btnVoidAuthClose_Click(sender As Object, e As EventArgs) Handles btnVoidAuthClose.Click
         HiddenFieldVoidAuth.Value = "N"
         ReturnBackToCallingPage()
     End Sub
     Protected Sub HandleCloseClaimLogic()
         'Try to Close the Claim
-        Select Case Me.State.ClaimBO.ClaimAuthorizationType
+        Select Case State.ClaimBO.ClaimAuthorizationType
             Case ClaimAuthorizationType.Single
-                Me.State.ClaimBO.CloseTheClaim()
+                State.ClaimBO.CloseTheClaim()
             Case ClaimAuthorizationType.Multiple
-                If Not ( Me.State.ClaimBO.Status = BasicClaimStatus.Closed Or Me.State.ClaimBO.Status = BasicClaimStatus.Denied) Then
-                    If Not  Me.State.ClaimBO.ReasonClosedId.Equals(Guid.Empty) Then
-                        If  Me.State.ClaimBO.ClaimAuthorizationChildren.Where(Function(item) item.ClaimAuthStatus = ClaimAuthorizationStatus.Paid Or
+                If Not ( State.ClaimBO.Status = BasicClaimStatus.Closed Or State.ClaimBO.Status = BasicClaimStatus.Denied) Then
+                    If Not  State.ClaimBO.ReasonClosedId.Equals(Guid.Empty) Then
+                        If  State.ClaimBO.ClaimAuthorizationChildren.Where(Function(item) item.ClaimAuthStatus = ClaimAuthorizationStatus.Paid Or
                                                                                              item.ClaimAuthStatus = ClaimAuthorizationStatus.ToBePaid Or
                                                                                              item.ClaimAuthStatus = ClaimAuthorizationStatus.Reconsiled).Count > 0 Then
                             Throw New GUIException("CLAIM_CANNOT_BE_CLOSED_CONTAINS_RECONSILED_PAID_AUTH", "CLAIM_CANNOT_BE_CLOSED_CONTAINS_RECONSILED_PAID_AUTH")
@@ -1381,9 +1386,9 @@ Partial Class ClaimAuthorizationDetailForm
                     End If
 
                 End If
-                Me.State.ClaimBO.CloseTheClaim()
-                If  Me.State.ClaimBO.Status = BasicClaimStatus.Closed Then
-                    Me.State.ClaimBO.VoidAuthorizations()
+                State.ClaimBO.CloseTheClaim()
+                If  State.ClaimBO.Status = BasicClaimStatus.Closed Then
+                    State.ClaimBO.VoidAuthorizations()
                 End If
             Case ClaimAuthorizationType.None
                 Throw New NotSupportedException
