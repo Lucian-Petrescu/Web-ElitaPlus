@@ -72,7 +72,7 @@ Public Class ClaimAuthorizationDAL
     Public Const COL_NAME_SUB_STATUS_XCD As String = "sub_status_xcd"
     Public Const COL_NAME_AUTHORIZAION_AMOUNT As String = "authorization_amount"
     Public Const COL_NAME_SERVICE_ORDER_TYPE As String = "service_order_type"
-
+    Public Const COL_NAME_LOCATOR As String = "locator"
 
 #End Region
 

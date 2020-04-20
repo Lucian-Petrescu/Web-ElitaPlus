@@ -955,6 +955,13 @@
       <DependentUpon>UserControlCaseHeaderInfo.ascx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
+    <Compile Include="Common\UserControlDealerInflation.ascx.designer.vb">
+      <DependentUpon>UserControlDealerInflation.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="Common\UserControlDealerInflation.ascx.vb">
+      <DependentUpon>UserControlDealerInflation.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
     <Compile Include="Common\UserControlDeliverySlot.ascx.designer.vb">
       <DependentUpon>UserControlDeliverySlot.ascx</DependentUpon>
     </Compile>
@@ -967,6 +974,13 @@
     </Compile>
     <Compile Include="Common\UserControlQuestion.ascx.vb">
       <DependentUpon>UserControlQuestion.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Common\UserControlRiskTypeTolerance.ascx.designer.vb">
+      <DependentUpon>UserControlRiskTypeTolerance.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="Common\UserControlRiskTypeTolerance.ascx.vb">
+      <DependentUpon>UserControlRiskTypeTolerance.ascx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="Common\UserControlServiceCenterSelection.ascx.designer.vb">
@@ -1277,6 +1291,13 @@
     </Compile>
     <Compile Include="Reports\ReportCeProgressForm_New.aspx.vb">
       <DependentUpon>ReportCeProgressForm_New.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Reports\ReconciliationReportForm.aspx.designer.vb">
+      <DependentUpon>ReconciliationReportForm.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Reports\ReconciliationReportForm.aspx.vb">
+      <DependentUpon>ReconciliationReportForm.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="Reports\ReportExtractBase.vb">
@@ -5742,8 +5763,10 @@
     <Content Include="Common\DynamicFulfillmentUI.ascx" />
     <Content Include="Common\UserControlCallerInfo.ascx" />
     <Content Include="Common\UserControlCaseHeaderInfo.ascx" />
+    <Content Include="Common\UserControlDealerInflation.ascx" />
     <Content Include="Common\UserControlDeliverySlot.ascx" />
     <Content Include="Common\UserControlQuestion.ascx" />
+    <Content Include="Common\UserControlRiskTypeTolerance.ascx" />
     <Content Include="Common\UserControlServiceCenterSelection.ascx" />
     <Content Include="Content\font-awesome.css" />
     <Content Include="Content\font-awesome.min.css" />
@@ -5828,15 +5851,19 @@
     <Content Include="Reports\NewCertificatesChinaReportForm.aspx" />
     <Content Include="Reports\PremiumAmortizationReInsuranceForm.aspx" />
     <Content Include="Reports\PremiumReconciliationForChildCertificates.aspx" />
-    <Content Include="Reports\ReplacementOrder_AAU.xslt" />
-    <Content Include="Reports\ReplacementOrder_ANZ.xslt" />
+    <Content Include="Reports\ReplacementOrder_AAU_TWG_DE.xslt" />
+    <Content Include="Reports\ReplacementOrder_AAU_TWG_ESC.xslt" />
+    <Content Include="Reports\ReplacementOrder_ANZ_TWG_ESC.xslt" />
     <Content Include="Reports\ReportCeProgressForm_New.aspx" />
+    <Content Include="Reports\ReconciliationReportForm.aspx" />
     <Content Include="Reports\ReportExtractInputControl.ascx" />
     <Content Include="Reports\RequestReportForm.aspx" />
-    <Content Include="Reports\ServiceOrder_AAU.xslt" />
-    <Content Include="Reports\ServiceOrder_ANZ.xslt" />
-    <Content Include="Reports\ServiceOrder_DE_AAU.xslt" />
-    <Content Include="Reports\ServiceOrder_EW_AAU.xslt" />
+    <Content Include="Reports\ServiceOrder_AAU.xslt">
+      <SubType>Designer</SubType>
+    </Content>
+    <Content Include="Reports\ServiceOrder_ANZ_TWG_ESC.xslt" />
+    <Content Include="Reports\ServiceOrder_AAU_TWG_DE.xslt" />
+    <Content Include="Reports\ServiceOrder_AAU_TWG_ESC.xslt" />
     <Content Include="Reports\SummaryPaymentByCertificate.aspx" />
     <Content Include="Reports\UpgradeReconciliationReportForm.aspx" />
     <Content Include="Reports\TIMMCertificateExtractForm.aspx" />
@@ -6004,16 +6031,13 @@
     <Content Include="Service References\ClaimFulfillmentWebAppGatewayService\Assurant.ElitaPlus.ElitaPlusWebApp.ClaimFulfillmentWebAppGatewayService.FulfillmentServicesCenter1.datasource">
       <DependentUpon>Reference.svcmap</DependentUpon>
     </Content>
+    <Content Include="Service References\ClaimFulfillmentWebAppGatewayService\Assurant.ElitaPlus.ElitaPlusWebApp.ClaimFulfillmentWebAppGatewayService.ChangeServiceCenterResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </Content>
     <None Include="Service References\ClaimFulfillmentWebAppGatewayService\configuration91.svcinfo" />
     <None Include="Service References\ClaimFulfillmentWebAppGatewayService\configuration.svcinfo" />
-    <None Include="Service References\ClaimFulfillmentWebAppGatewayService\gateway.wsdl" />
-    <None Include="Service References\ClaimFulfillmentWebAppGatewayService\gateway.xsd">
-      <SubType>Designer</SubType>
-    </None>
     <None Include="Service References\ClaimFulfillmentWebAppGatewayService\gateway1.wsdl" />
-    <None Include="Service References\ClaimFulfillmentWebAppGatewayService\gateway1.xsd">
-      <SubType>Designer</SubType>
-    </None>
+    <None Include="Service References\ClaimFulfillmentWebAppGatewayService\gateway11.wsdl" />
     <None Include="Service References\ClaimFulfillmentWebAppGatewayService\gateway11.xsd">
       <SubType>Designer</SubType>
     </None>
@@ -6023,13 +6047,19 @@
     <None Include="Service References\ClaimFulfillmentWebAppGatewayService\gateway13.xsd">
       <SubType>Designer</SubType>
     </None>
-    <None Include="Service References\ClaimFulfillmentWebAppGatewayService\gateway2.xsd">
+    <None Include="Service References\ClaimFulfillmentWebAppGatewayService\gateway5.xsd">
       <SubType>Designer</SubType>
     </None>
-    <None Include="Service References\ClaimFulfillmentWebAppGatewayService\gateway3.xsd">
+    <None Include="Service References\ClaimFulfillmentWebAppGatewayService\gateway51.xsd">
       <SubType>Designer</SubType>
     </None>
-    <None Include="Service References\ClaimFulfillmentWebAppGatewayService\gateway4.xsd">
+    <None Include="Service References\ClaimFulfillmentWebAppGatewayService\gateway52.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Service References\ClaimFulfillmentWebAppGatewayService\gateway53.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Service References\ClaimFulfillmentWebAppGatewayService\gateway54.xsd">
       <SubType>Designer</SubType>
     </None>
     <None Include="Service References\ClaimFulfillmentWebAppGatewayService\Reference.svcmap">
@@ -6048,8 +6078,8 @@
     <Content Include="Service References\ClaimRecordingService\Assurant.ElitaPlus.ElitaPlusWebApp.ClaimRecordingService.PolicyInfo.datasource">
       <DependentUpon>Reference.svcmap</DependentUpon>
     </Content>
-    <None Include="Service References\ClaimFulfillmentWebAppGatewayService\WebAppGateway.wsdl" />
     <None Include="Service References\ClaimFulfillmentWebAppGatewayService\WebAppGateway1.wsdl" />
+    <None Include="Service References\ClaimFulfillmentWebAppGatewayService\WebAppGateway11.wsdl" />
     <None Include="Service References\ClaimRecordingService\ClaimRecordingService1.wsdl" />
     <None Include="Service References\ClaimRecordingService\ClaimRecordingService3.wsdl" />
     <None Include="Service References\ClaimRecordingService\configuration91.svcinfo" />

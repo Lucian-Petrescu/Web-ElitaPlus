@@ -48,6 +48,8 @@ Partial Class ClaimStatusByGroupForm
     Private Const GRID_CTL_CLAIM_STATUS_GROUP_ID As String = "lblClaimStatusGroupId"
     Private Const GRID_CTL_ISNEW As String = "lblIsNew"
     Private Const GRID_CTL_GROUP_NUMBER As String = "txtGroupNumber"
+    Private Const GRID_CTL_TURNAROUND_DAYS As String = "txtTurnaroundTimeDays"
+    Private Const GRID_CTL_TAT_REMINDER_HOURS As String = "txtTatReminderHours"
 
     Private Const GRID_COL_SELECTED_IDX As Integer = 0
     Private Const GRID_COL_SELECTED_CHK_IDX As Integer = 1
@@ -58,6 +60,8 @@ Partial Class ClaimStatusByGroupForm
     Private Const GRID_COL_ACTIVE_IDX As Integer = 6
     Private Const GRID_COL_GROUP_NUMBER_IDX As Integer = 7
     Private Const GRID_COL_ISNEW_IDX As Integer = 8
+    Private Const GRID_COL_TURNAROUND_DAYS_IDX As Integer = 9
+    Private Const GRID_COL_TAT_REMINDER_HOURS_IDX As Integer = 10
 
     Private COPY_CLAIM_STATUS_GROUP As String = "COPY_CLAIM_STATUS_GROUP"
     Private NEW_CLAIM_STATUS_GROUP As String = "NEW_CLAIM_STATUS_GROUP"
@@ -272,6 +276,14 @@ Partial Class ClaimStatusByGroupForm
                     EnableDisableControl(e.Item.Cells(Me.GRID_COL_GROUP_NUMBER_IDX).FindControl(Me.GRID_CTL_GROUP_NUMBER))
                 End If
 
+                If (Not e.Item.Cells(Me.GRID_COL_TURNAROUND_DAYS_IDX).FindControl(Me.GRID_CTL_TURNAROUND_DAYS) Is Nothing) Then
+                    EnableDisableControl(e.Item.Cells(Me.GRID_COL_TURNAROUND_DAYS_IDX).FindControl(Me.GRID_CTL_TURNAROUND_DAYS))
+                End If
+
+                If (Not e.Item.Cells(Me.GRID_COL_TAT_REMINDER_HOURS_IDX).FindControl(Me.GRID_CTL_TAT_REMINDER_HOURS) Is Nothing) Then
+                    EnableDisableControl(e.Item.Cells(Me.GRID_COL_TAT_REMINDER_HOURS_IDX).FindControl(Me.GRID_CTL_TAT_REMINDER_HOURS))
+                End If
+
             End If
 
         Catch ex As Exception
@@ -356,6 +368,9 @@ Partial Class ClaimStatusByGroupForm
                 Dim activeId As Guid = Me.GetSelectedItem(CType(Me.DataGridDropdowns.Items(i).Cells(Me.GRID_COL_ACTIVE_IDX).FindControl(Me.GRID_CTL_ACTIVE), DropDownList))
                 Dim isNew As String = CType(Me.DataGridDropdowns.Items(i).Cells(Me.GRID_COL_ISNEW_IDX).FindControl(Me.GRID_CTL_ISNEW), Label).Text
                 Dim groupNumber As String = CType(CType(Me.DataGridDropdowns.Items(i).Cells(Me.GRID_COL_GROUP_NUMBER_IDX).FindControl(Me.GRID_CTL_GROUP_NUMBER), TextBox).Text, String)
+                Dim turnaroundDays As String = CType(CType(Me.DataGridDropdowns.Items(i).Cells(Me.GRID_COL_TURNAROUND_DAYS_IDX).FindControl(Me.GRID_CTL_TURNAROUND_DAYS), TextBox).Text, String)
+                Dim tatReminderHours As String = CType(CType(Me.DataGridDropdowns.Items(i).Cells(Me.GRID_COL_TAT_REMINDER_HOURS_IDX).FindControl(Me.GRID_CTL_TAT_REMINDER_HOURS), TextBox).Text, String)
+               
 
                 Dim drStatusOrder As DataRow = dtStatusOrder.NewRow()
                 drStatusOrder(0) = statusOrder
@@ -402,6 +417,18 @@ Partial Class ClaimStatusByGroupForm
                             isDirty = isDirty Or ("" <> (CType(CType(Me.DataGridDropdowns.Items(i).Cells(Me.GRID_COL_GROUP_NUMBER_IDX).FindControl(Me.GRID_CTL_GROUP_NUMBER), TextBox).Text, String)))
                         End If
 
+                        If Not dr(DALObjects.ClaimStatusByGroupDAL.COL_NAME_TURNAROUND_DAYS) Is DBNull.Value Then
+                            isDirty = isDirty Or (CType(dr(DALObjects.ClaimStatusByGroupDAL.COL_NAME_TURNAROUND_DAYS), String) <> (CType(CType(Me.DataGridDropdowns.Items(i).Cells(Me.GRID_COL_TURNAROUND_DAYS_IDX).FindControl(Me.GRID_CTL_TURNAROUND_DAYS), TextBox).Text, String)))
+                        Else
+                            isDirty = isDirty Or ("" <> (CType(CType(Me.DataGridDropdowns.Items(i).Cells(Me.GRID_COL_TURNAROUND_DAYS_IDX).FindControl(Me.GRID_CTL_TURNAROUND_DAYS), TextBox).Text, String)))
+                        End If
+
+                        If Not dr(DALObjects.ClaimStatusByGroupDAL.COL_NAME_TAT_REMINDER_HOURS) Is DBNull.Value Then
+                            isDirty = isDirty Or (CType(dr(DALObjects.ClaimStatusByGroupDAL.COL_NAME_TAT_REMINDER_HOURS), String) <> (CType(CType(Me.DataGridDropdowns.Items(i).Cells(Me.GRID_COL_TAT_REMINDER_HOURS_IDX).FindControl(Me.GRID_CTL_TAT_REMINDER_HOURS), TextBox).Text, String)))
+                        Else
+                            isDirty = isDirty Or ("" <> (CType(CType(Me.DataGridDropdowns.Items(i).Cells(Me.GRID_COL_TAT_REMINDER_HOURS_IDX).FindControl(Me.GRID_CTL_TAT_REMINDER_HOURS), TextBox).Text, String)))
+                        End If
+
                         If isDirty Then
                             Dim curBO As ClaimStatusByGroup
 
@@ -426,6 +453,14 @@ Partial Class ClaimStatusByGroupForm
                                 curBO.GroupNumber = Nothing
                             End If
 
+                            If Not String.IsNullOrEmpty(turnaroundDays)  Then
+                                curBO.TurnaroundDays =  DecimalType.Parse(turnaroundDays)
+                            End If
+
+                            If Not String.IsNullOrEmpty(tatReminderHours)  Then
+                                curBO.TurnaroundTimeReminderHours =  DecimalType.Parse(tatReminderHours)
+                            End If
+
                             curBO.StatusOrder = statusOrderInt
                             curBO.OwnerId = ownerId
                             curBO.ActiveId = activeId
@@ -437,6 +472,8 @@ Partial Class ClaimStatusByGroupForm
                             Me.BindBOPropertyToGridHeader(curBO, "StatusOrder", Me.DataGridDropdowns.Columns(Me.GRID_COL_STATUS_ORDER_IDX))
                             Me.BindBOPropertyToGridHeader(curBO, "ActiveId", Me.DataGridDropdowns.Columns(Me.GRID_COL_ACTIVE_IDX))
                             Me.BindBOPropertyToGridHeader(curBO, "GroupNumber", Me.DataGridDropdowns.Columns(Me.GRID_COL_GROUP_NUMBER_IDX))
+                            Me.BindBOPropertyToGridHeader(curBO, "TurnaroundDays", Me.DataGridDropdowns.Columns(Me.GRID_COL_TURNAROUND_DAYS_IDX))
+                            Me.BindBOPropertyToGridHeader(curBO, "TurnaroundTimeReminderHours", Me.DataGridDropdowns.Columns(Me.GRID_COL_TAT_REMINDER_HOURS_IDX))
 
                             curBO.Validate()
 
@@ -467,6 +504,14 @@ Partial Class ClaimStatusByGroupForm
                             Integer.TryParse(groupNumber, groupNumberInt)
                         End If
 
+                        If Not String.IsNullOrEmpty(turnaroundDays)  Then
+                            curBO.TurnaroundDays =  DecimalType.Parse(turnaroundDays)
+                        End If
+
+                        If Not String.IsNullOrEmpty(tatReminderHours)  Then
+                            curBO.TurnaroundTimeReminderHours =  DecimalType.Parse(tatReminderHours)
+                        End If
+
                         curBO.StatusOrder = statusOrderInt
                         curBO.ListItemId = New Guid(listItemId)
                         curBO.OwnerId = ownerId
@@ -479,6 +524,8 @@ Partial Class ClaimStatusByGroupForm
                         Me.BindBOPropertyToGridHeader(curBO, "StatusOrder", Me.DataGridDropdowns.Columns(Me.GRID_COL_STATUS_ORDER_IDX))
                         Me.BindBOPropertyToGridHeader(curBO, "ActiveId", Me.DataGridDropdowns.Columns(Me.GRID_COL_ACTIVE_IDX))
                         Me.BindBOPropertyToGridHeader(curBO, "GroupNumber", Me.DataGridDropdowns.Columns(Me.GRID_COL_GROUP_NUMBER_IDX))
+                        Me.BindBOPropertyToGridHeader(curBO, "TurnaroundDays", Me.DataGridDropdowns.Columns(Me.GRID_COL_TURNAROUND_DAYS_IDX))
+                        Me.BindBOPropertyToGridHeader(curBO, "TurnaroundTimeReminderHours", Me.DataGridDropdowns.Columns(Me.GRID_COL_TAT_REMINDER_HOURS_IDX))
 
                         curBO.Validate()
                         DataChanged = True
@@ -507,6 +554,8 @@ Partial Class ClaimStatusByGroupForm
                             Me.BindBOPropertyToGridHeader(curBO, "StatusOrder", Me.DataGridDropdowns.Columns(Me.GRID_COL_STATUS_ORDER_IDX))
                             Me.BindBOPropertyToGridHeader(curBO, "ActiveId", Me.DataGridDropdowns.Columns(Me.GRID_COL_ACTIVE_IDX))
                             Me.BindBOPropertyToGridHeader(curBO, "GroupNumber", Me.DataGridDropdowns.Columns(Me.GRID_COL_GROUP_NUMBER_IDX))
+                            Me.BindBOPropertyToGridHeader(curBO, "TurnaroundDays", Me.DataGridDropdowns.Columns(Me.GRID_COL_TURNAROUND_DAYS_IDX))
+                            Me.BindBOPropertyToGridHeader(curBO, "TurnaroundTimeReminderHours", Me.DataGridDropdowns.Columns(Me.GRID_COL_TAT_REMINDER_HOURS_IDX))
 
                             curBO.Validate()
                             curBO.Delete()

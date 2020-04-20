@@ -616,7 +616,7 @@ Public Class PriceListDetail
         End Set
     End Property
 
-    Public Property Quantity() As Integer
+    Public Property VendorQuantity() As Integer
         Get
             CheckDeleted()
             If Row(PriceListDetailDAL.COL_NAME_VENDOR_QUANTITY) Is DBNull.Value Then
@@ -845,6 +845,12 @@ Public Class PriceListDetail
         Catch ex As Assurant.ElitaPlus.DALObjects.DataBaseAccessException
             Throw New DataBaseAccessException(DataBaseAccessException.DatabaseAccessErrorType.WriteErr, ex)
         End Try
+    End Sub
+
+    Public Sub viewhistory(ByVal pricelistdetailid As Guid)
+        Dim dal As New PriceListDetailDAL
+        dal.ViewPriceListDetailHistory(pricelistdetailid, ElitaPlusIdentity.Current.ActiveUser.LanguageId)
+
     End Sub
 
     Public Sub SaveRow()

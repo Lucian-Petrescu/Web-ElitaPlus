@@ -962,9 +962,8 @@ Public Class ServiceCenter
         End Set
     End Property
 
-
     'DEF-2818 : added the validation for ValidPriceListCode
-    <ValueMandatory(""), ValidStringLength("", Max:=40), ValidPriceListCode("")> _
+    <ValueMandatory(""), ValidStringLength("", Max:=40), ValidPriceListCode("")>
     Public Property PriceListCode() As String
         Get
             CheckDeleted()
@@ -980,6 +979,20 @@ Public Class ServiceCenter
         End Set
     End Property
 
+    Public Property PriceListCode_Current() As String
+        Get
+            CheckDeleted()
+            If Row(ServiceCenterDAL.COL_NAME_PRICE_LIST_CODE) Is DBNull.Value Then
+                Return Nothing
+            Else
+                Return CType(Row(ServiceCenterDAL.COL_NAME_PRICE_LIST_CODE), String)
+            End If
+        End Get
+        Set(ByVal Value As String)
+            CheckDeleted()
+            Me.SetValue(ServiceCenterDAL.COL_NAME_PRICE_LIST_CODE, Value)
+        End Set
+    End Property
 
     <ValidNumericRange("", MAX:=100, MIN:=0)> _
     Public Property DiscountPct() As DecimalType
@@ -1243,7 +1256,6 @@ Public Class ServiceCenter
 
 #End Region
 
-#Region "Children Related"
 
     'METHODS ADDED MANUALLY. BEGIN
 #Region "Manufacturer"
@@ -1802,7 +1814,95 @@ Public Class ServiceCenter
     End Property
 #End Region
 
-    'METHODS ADDED MANUALLY. END
+
+
+#Region "ServiceCenter-PL"
+
+
+    Public Class SVCPlReconSearchDV
+        Inherits DataView
+
+#Region "Constants"
+
+        Public Const COL_SVC_PL_SERVICE_CENTER_ID As String = SvcPriceListReconDAL.COL_NAME_SERVICE_CENTER_ID
+        Public Const COL_SVC_PL_PRICE_LIST_ID As String = SvcPriceListReconDAL.COL_NAME_PRICE_LIST_ID
+        Public Const COL_SVC_PL_STATUS_XCD As String = SvcPriceListReconDAL.COL_NAME_STATUS_XCD
+        Public Const COL_SVC_PL_STATUS_DATE As String = SvcPriceListReconDAL.COL_NAME_STATUS_DATE
+        Public Const COL_SVC_PL_REQUESTED_BY As String = SvcPriceListReconDAL.COL_NAME_REQUESTED_BY
+        Public Const COL_SVC_PL_REQUESTED_DATE As String = SvcPriceListReconDAL.COL_NAME_REQUESTED_DATE
+        Public Const COL_SVC_PL_RECON_ID As String = SvcPriceListReconDAL.TABLE_KEY_NAME
+
+#End Region
+
+        Public Sub New(ByVal table As DataTable)
+            MyBase.New(table)
+        End Sub
+
+
+        Public Shared ReadOnly Property Id(ByVal row) As Guid
+            Get
+                Return New Guid(CType(row(COL_SVC_PL_RECON_ID), Byte()))
+            End Get
+        End Property
+        Public Shared ReadOnly Property ServiceCenterId(ByVal row) As Guid
+            Get
+                Return New Guid(CType(row(COL_SVC_PL_SERVICE_CENTER_ID), Byte()))
+            End Get
+        End Property
+
+        Public Shared ReadOnly Property PriceListId(ByVal row) As Guid
+            Get
+                Return New Guid(CType(row(COL_SVC_PL_PRICE_LIST_ID), Byte()))
+            End Get
+        End Property
+
+        Public Shared ReadOnly Property Status_Xcd(ByVal row As DataRow) As String
+            Get
+                Return row(COL_SVC_PL_STATUS_XCD).ToString
+            End Get
+        End Property
+
+        Public Shared ReadOnly Property RequestedBy(ByVal row As DataRow) As String
+            Get
+                Return row(COL_SVC_PL_REQUESTED_BY).ToString
+            End Get
+        End Property
+
+    End Class
+
+
+    Private _SvcPriceListRecon As SvcPriceListRecon = Nothing
+
+    Public Property CurrentSVCPLRecon() As SvcPriceListRecon
+
+        Get
+            Dim dv As SVCPlReconSearchDV = GetLatestRecbySVC()
+            If dv.Table.Rows.Count = 1 Then
+                _SvcPriceListRecon = New SvcPriceListRecon(SVCPlReconSearchDV.Id(dv.Table.Rows(0)), Me.Dataset)
+                Return _SvcPriceListRecon
+            End If
+            Return _SvcPriceListRecon
+
+        End Get
+        Set(value As SvcPriceListRecon)
+            _SvcPriceListRecon = value
+        End Set
+    End Property
+
+    Public Function Add_SVCPLRecon() As SvcPriceListRecon
+        _SvcPriceListRecon = New SvcPriceListRecon(Me.Dataset)
+        _SvcPriceListRecon.ServiceCenterId = Me.Id
+        Return _SvcPriceListRecon
+    End Function
+
+    Public Function GetLatestRecbySVC() As SVCPlReconSearchDV
+        Try
+
+            Return New SVCPlReconSearchDV(SvcPriceListRecon.LoadLatestStatusList(Me.Id).Tables(0))
+        Catch ex As Assurant.ElitaPlus.DALObjects.DataBaseAccessException
+            Throw New DataBaseAccessException(ex.ErrorType, ex)
+        End Try
+    End Function
 
 
 #End Region
@@ -2304,6 +2404,7 @@ Public Class ServiceCenter
         Public Overrides Function IsValid(ByVal objectToCheck As Object, ByVal context As Object) As Boolean
             Dim obj As ServiceCenter = CType(context, ServiceCenter)
             Dim Statusdv As DataView = LookupListNew.GetPriceList(obj.CountryId)
+
             Dim strPriceListCode As String = obj.PriceListCode
             Dim selectedPricelistID As Guid = LookupListNew.GetIdFromCode(LookupListNew.LK_PRICE_LIST, strPriceListCode)
             'check if the price list code is selected and is not in the active price list codes
@@ -2356,8 +2457,6 @@ Public Class ServiceCenter
         End Function
 
     End Class
-
-
 
 #End Region
 

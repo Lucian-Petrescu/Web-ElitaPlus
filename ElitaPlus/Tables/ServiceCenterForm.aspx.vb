@@ -39,7 +39,7 @@ Partial Class ServiceCenterForm
     <System.Diagnostics.DebuggerStepThrough()> Private Sub InitializeComponent()
 
     End Sub
-
+    Protected WithEvents ErrorCtrl As ErrorController
     Private Sub Page_Init(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Init
         'CODEGEN: This method call is required by the Web Form Designer
         'Do not modify it using the code editor.
@@ -133,6 +133,29 @@ Partial Class ServiceCenterForm
     Private Const TAB_ATTRIBUTE As Integer = 8
     Private Const TAB_QUANTITY As Integer = 9
     Private Const TAB_SCHEDULE As Integer = 10
+    Private Const TAB_PRICE_LIST As Integer = 11
+
+    Private Const SVC_PRICE_LIST_RECON_ID_COL As Integer = 0
+    Private Const SVC_PRICE_LIST_ID_COL As Integer = 1
+    Private Const SVC_REQUESTED_BY_COL As Integer = 2
+    Private Const SVC_REQUESTED_DATE_COL As Integer = 3
+    Private Const SVC_STATUS_XCD_COL As Integer = 4
+    Private Const SVC_STATUS_MODIFIED_by_COL As Integer = 5
+    Private Const SVC_STATUS_DATE_COL As Integer = 6
+
+    Private Const PRICE_LIST_RECON_ID_LABEL As String = "lblColPriceListReconId"
+    Private Const PRICE_LIST_ID_LABEL As String = "lblColPriceListId"
+    Private Const APPROVED_BY_LABEL As String = "lblColApprovedBy"
+    Private Const STATUS_XCD_LABEL As String = "lblColStatusXcd"
+    Private Const REQUESTED_BY_LABEL As String = "lblColRequestedBy"
+    Private Const REQUESTED_DATE_LABEL As String = "lblColRequestedDate"
+
+    Public Const STATUS_SVC_PL_PROCESS_PENDINGAPPROVAL As String = "SVC_PL_RECON_PROCESS-PENDINGAPPROVAL"
+    Public Const STATUS_SVC_PL_RECON_PROCESS_APPROVED As String = "SVC_PL_RECON_PROCESS-APPROVED"
+    Public Const STATUS_SVC_PL_RECON_PROCESS_REJECTED As String = "SVC_PL_RECON_PROCESS-REJECTED"
+    Public Const STATUS_SVC_PL_RECON_PROCESS As String = "SVC_PL_RECON_PROCESS"
+    Public Const STATUS_SVC_PL_RECON_PROCESS_PENDINGSUBMISSION As String = "SVC_PL_RECON_PROCESS-PENDINGSUBMISSION"
+
 
 #End Region
 
@@ -272,7 +295,35 @@ Partial Class ServiceCenterForm
         Public MethodOfRepairList As Collections.Generic.List(Of ServCenterMethRepair)
         Public MethodOfRepairAction As Integer = MethodOfRepairNone
         Public MethodOfRepairWorkingItem As ServCenterMethRepair
+        Public priceListApprovalflag As String
 
+        Public MySvcCompany As ArrayList = New ArrayList
+        Public SvcPriceReconIDMask As String
+        Public StatusXcdMask As String
+        Public SvcPriceListMask As String
+        Public CompanyGroupId As Guid
+        Public SvcPriceListReconID As Guid   'Id As Guid
+        Public SvcServiceCenterID As Guid   'Id As Guid
+        Public IsGridVisible As Boolean
+        Public IsAfterSave As Boolean
+        Public IsEditMode As Boolean
+        Public AddingNewRow As Boolean
+        Public Canceling As Boolean
+        Public searchDV As DataView = Nothing
+        Public YESNOdv As DataView = Nothing
+        Public editRowIndex As Integer
+        'Public SortExpression As String = AcctBusinessUnit.AcctBusinessUnitSearchDV.COL_BUSINESS_UNIT
+        Public selectedPageSize As Integer = DEFAULT_PAGE_SIZE
+        Public bnoRow As Boolean = False
+        Public PriceListGridSelectedIndex As Integer = 0
+        'Public ActionInProgress As DetailPageCommand = DetailPageCommand.Nothing_
+        Public selectedSvcPriceListReconId As Guid = Guid.Empty
+        Public PageSize As Integer = 5
+
+        Public SvcPriciListDV As DataView = Nothing
+        'Public IsCopy As Boolean = False
+
+        Public CurrentPriceListCode As String = Nothing
     End Class
 
     Public Sub New()
@@ -292,7 +343,6 @@ Partial Class ServiceCenterForm
                 Me.State.pageParameters = CType(Me.CallingParameters, Parameters)
                 If Not Me.State.pageParameters.mbIsComingFromDealerform Then
                     Me.State.MyBO = New ServiceCenter(Me.State.pageParameters.SVCId)
-
                     If Me.State.MyBO.BankInfoId.Equals(Guid.Empty) Then
                         Me.State.MyBO.isBankInfoNeedDeletion = False
                     Else
@@ -372,13 +422,15 @@ Partial Class ServiceCenterForm
                                     {
                                         .AddBlankItem = False
                                     })
-
+                Me.InitializePage()
                 TranslateGridHeader(moContactsGridView)
                 TranslateGridHeader(moQuantityGridView)
                 TranslateGridHeader(moScheduleGridView)
                 TranslateGridHeader(moAddScheduleGridView)
                 SetGridItemStyleColor(GridViewMethodOfRepair)
                 TranslateGridHeader(GridViewMethodOfRepair)
+                'TranslateGridHeader(Me.Grid)
+                TranslateGridHeader(Me.DataGridPriceList)
                 AttributeValues.TranslateHeaders()
                 PopulateChildern()
                 PopulateCountry()
@@ -403,33 +455,49 @@ Partial Class ServiceCenterForm
             If Not Me.IsPostBack Then
                 Me.AddLabelDecorations(Me.State.MyBO)
             End If
-
+            'BindBoPropertiesToGridHeaders()
         Catch ex As Threading.ThreadAbortException
         Catch ex As Exception
             Me.HandleErrors(ex, Me.MasterPage.MessageController)
         End Try
         Me.ShowMissingTranslations(Me.MasterPage.MessageController)
+
+
     End Sub
 
-    Private Sub ddlPriceList_SelectedIndexChanged(ByVal sender As Object, ByVal e As System.EventArgs) Handles ddlPriceList.SelectedIndexChanged
-        Try
-            Dim strPriceListCode As String = LookupListNew.GetCodeFromId(LookupListNew.LK_PRICE_LIST, New Guid(Me.ddlPriceList.SelectedValue))
-            Me.PopulateBOProperty(Me.State.MyBO, "PriceListCode", strPriceListCode)
-            If Not String.IsNullOrEmpty(Me.State.MyBO.PriceListCode) Then
-                EnableTab(TAB_SCHEDULE, True)
-                EnableTab(TAB_QUANTITY, True)
-                'refresh the quantity based on the newly selected price list, if valid price list is selected
-                Me.PopulateQuantity()
-            Else
-                EnableTab(TAB_SCHEDULE, False)
-                EnableTab(TAB_QUANTITY, False)
-                'Set focus to Address tab, since the quantity and schedule tab is disabled
-                SelectedTabIndex = 0
-            End If
-        Catch ex As Exception
-            Me.HandleErrors(ex, Me.MasterPage.MessageController)
-        End Try
-    End Sub
+    'Private Sub ddlPriceList_SelectedIndexChanged(ByVal sender As Object, ByVal e As System.EventArgs) Handles ddlPriceList.SelectedIndexChanged
+    '    Try
+
+    '        Dim strPriceListCode As String = LookupListNew.GetCodeFromId(LookupListNew.LK_PRICE_LIST, New Guid(Me.ddlPriceList.SelectedValue))
+    '        ' Me.PopulateBOProperty(Me.State.MyBO, "PriceListCode", strPriceListCode)
+    '        Me.PopulateBOProperty(Me.State.MyBO, "PriceListCodeinprogress", strPriceListCode)
+
+    '        Dim oListContext1 As New ListContext
+    '        oListContext1.CountryId = Me.State.MyBO.CountryId
+    '        Dim SVC_PL_Process As DataElements.ListItem() =
+    '                            CommonConfigManager.Current.ListManager.GetList(listCode:="SVC_PL_RECON_PROCESS", languageCode:=Thread.CurrentPrincipal.GetLanguageCode(), context:=oListContext1)
+
+    '        Dim SVC_PL_Process_Status As String = (From lst In SVC_PL_Process
+    '                                               Where lst.Code = "PENDINGSUBMISSION"
+    '                                               Select lst.Translation).FirstOrDefault()
+
+    '        Me.PopulateBOProperty(Me.State.MyBO, "PriceListCodeStatusInProgress", SVC_PL_Process_Status)
+
+    '        If Not String.IsNullOrEmpty(Me.State.MyBO.PriceListCode) Then
+    '            EnableTab(TAB_SCHEDULE, True)
+    '            EnableTab(TAB_QUANTITY, True)
+    '            'refresh the quantity based on the newly selected price list, if valid price list is selected
+    '            Me.PopulateQuantity()
+    '        Else
+    '            EnableTab(TAB_SCHEDULE, False)
+    '            EnableTab(TAB_QUANTITY, False)
+    '            'Set focus to Address tab, since the quantity and schedule tab is disabled
+    '            SelectedTabIndex = 0
+    '        End If
+    '    Catch ex As Exception
+    '        Me.HandleErrors(ex, Me.MasterPage.MessageController)
+    '    End Try
+    'End Sub
 #End Region
 
 #Region "Button Clicks"
@@ -471,10 +539,26 @@ Partial Class ServiceCenterForm
                 Next
                 If State.MyBO.IsNew Then
                     State.MyBO.Save()
+                    'State.MySvcBO.Save()
                     SaveAllRecordsMethodOfRepair(True)
                 Else
+
+                    If Not Me.State.IsNew Then
+
+                        If Not String.IsNullOrEmpty(Me.State.priceListApprovalflag) And Me.State.priceListApprovalflag = Codes.EXT_YESNO_Y Then
+                            'Only after Approval, Price List will be associated to Service Center
+                            Me.PopulateBOProperty(Me.State.MyBO, "PriceListCode", Me.State.CurrentPriceListCode)
+                        End If
+
+                    End If
+
                     State.MyBO.Save()
+                    'State.MySvcBO.Save()
                 End If
+
+                Me.State.SvcPriciListDV = Nothing
+                PopulateSvcDataGridPriceList()
+                'Me.State.IsCopy = False
                 Me.State.IsNew = False
                 Me.State.HasDataChanged = True
 
@@ -561,6 +645,7 @@ Partial Class ServiceCenterForm
         Try
             ' Delete all Method of Repair associated with Service Center
             DeleteAllRecordsMethodOfRepair()
+            DeleteAllPriceListReconRecords()
 
             'Delete the Address
             Me.State.MyBO.DeleteAndSave()
@@ -874,6 +959,34 @@ Partial Class ServiceCenterForm
 
         Me.DisplayBankInfo()
 
+        Try
+
+            Me.State.priceListApprovalflag = New Country(Me.State.MyBO.CountryId).PriceListApprovalNeeded.ToString()
+        Catch
+            Me.State.priceListApprovalflag = Codes.EXT_YESNO_N
+        End Try
+
+        If Not Me.State.priceListApprovalflag Is Nothing And Not Me.State.priceListApprovalflag = String.Empty And Me.State.priceListApprovalflag = Codes.EXT_YESNO_Y Then
+
+            PL_APPROVE_SEC.Visible = True
+
+            If Not IsNothing(Me.State.MyBO.CurrentSVCPLRecon) Then
+
+                If Not String.IsNullOrEmpty(Me.State.MyBO.CurrentSVCPLRecon.Status_xcd) And Me.State.MyBO.CurrentSVCPLRecon.Status_xcd = STATUS_SVC_PL_PROCESS_PENDINGAPPROVAL Then
+                    ddlPriceList.Enabled = False
+                Else
+                    ddlPriceList.Enabled = True
+                End If
+            Else
+                ddlPriceList.Enabled = True
+                PL_APPROVE_SEC.Visible = False
+            End If
+
+        Else
+            ddlPriceList.Enabled = True
+            PL_APPROVE_SEC.Visible = False
+        End If
+
         'disable the controls if user has view only permission for this form
         If Me.PagePermissionType = FormAuthorization.enumPermissionType.VIEWONLY Then
             SetEnabledForControlFamily(Me.EditPanel, False)
@@ -914,6 +1027,9 @@ Partial Class ServiceCenterForm
         Me.BindBOPropertyToLabel(Me.State.MyBO, "NetDays", Me.lblNetDays)
         Me.BindBOPropertyToLabel(Me.State.MyBO, "DiscountDays", Me.lblDiscountDays)
         Me.BindBOPropertyToLabel(Me.State.MyBO, "PriceListCode", Me.lblPriceList)
+
+        Me.BindBOPropertyToLabel(Me.State.MyBO, "PriceListCodeinprogress", Me.lblPriceListPending)
+        Me.BindBOPropertyToLabel(Me.State.MyBO, "PriceListCodeStatusInProgress", Me.lblPriceListPendingStatus)
 
         AddressCtr.SetTheRequiredFields()
 
@@ -1233,6 +1349,32 @@ Partial Class ServiceCenterForm
 
         Me.PopulateControlFromBOProperty(Me.ddlPriceList, selectedItemId)
 
+        Dim oListContext1 As New ListContext
+        oListContext1.CountryId = Me.State.MyBO.CountryId
+
+        'If Me.State.IsCopy = False And Me.State.IsNew = False Then
+
+        If Not Me.State.MyBO.CurrentSVCPLRecon() Is Nothing Then
+
+            Dim PriceList As DataElements.ListItem() =
+                                CommonConfigManager.Current.ListManager.GetList(listCode:="PriceListByCountry", languageCode:=Thread.CurrentPrincipal.GetLanguageCode(), context:=oListContext1)
+            'Dim PriceListDescription As String = LookupListNew.GetCodeFromId(LookupListNew.LK_PRICE_LIST, Me.State.MyBO.CurrentSVCPLRecon.PriceListId)
+            'Me.State.MyBO.PriceListCode = PriceListCode
+
+            Me.PopulateControlFromBOProperty(Me.txtPriceListPending, LookupListNew.GetCodeFromId(LookupListNew.LK_PRICE_LIST, Me.State.MyBO.CurrentSVCPLRecon.PriceListId))
+
+            Dim SVC_PL_Process As DataElements.ListItem() =
+                                    CommonConfigManager.Current.ListManager.GetList(listCode:="SVC_PL_RECON_PROCESS", languageCode:=Thread.CurrentPrincipal.GetLanguageCode(), context:=oListContext1)
+
+            Dim SVC_PL_Process_Status As String = (From lst In SVC_PL_Process
+                                                   Where lst.ExtendedCode = Me.State.MyBO.CurrentSVCPLRecon.Status_xcd
+                                                   Select lst.Translation).FirstOrDefault()
+
+            Me.PopulateControlFromBOProperty(Me.txtPriceListPendingStatus, SVC_PL_Process_Status)
+        End If
+        'End If
+
+
         If Not Me.State.MyBO.RouteId.Equals(Guid.Empty) Then
             Me.PopulateControlFromBOProperty(Me.TextboxRoute, Me.State.oRoute.Description)
         End If
@@ -1244,7 +1386,8 @@ Partial Class ServiceCenterForm
             Me.State.MethodOfRepairList = ServCenterMethRepair.GetMethodOfRepairList(Me.State.MyBO.Id)
         End If
         PopulateMethodOfRepairGrid(State.MethodOfRepairList)
-
+        'PopulateGrid_PriceList()
+        PopulateSvcDataGridPriceList()
         If Me.ErrCollection.Count > 0 Then
             Throw New PopulateBOErrorException
         End If
@@ -1353,9 +1496,52 @@ Partial Class ServiceCenterForm
             Me.PopulateBOProperty(Me.State.MyBO, "NetDays", Me.TextBoxNetDays)
             Me.PopulateBOProperty(Me.State.MyBO, "PreInvoiceId", Me.ddlPreInvoice)
 
+            Me.State.CurrentPriceListCode = Me.State.MyBO.PriceListCode
+
             If Me.ddlPriceList.SelectedValue <> LookupListNew.GetIdFromCode(LookupListCache.LK_PRICE_LIST, Me.State.MyBO.PriceListCode).ToString() Then
                 Dim strPriceListCode As String = LookupListNew.GetCodeFromId(LookupListNew.LK_PRICE_LIST, New Guid(Me.ddlPriceList.SelectedValue))
+
                 Me.PopulateBOProperty(Me.State.MyBO, "PriceListCode", strPriceListCode)
+
+                Dim oListContext1 As New ListContext
+                oListContext1.CountryId = Me.State.MyBO.CountryId
+                Dim SVC_PL_Process As DataElements.ListItem() =
+                                    CommonConfigManager.Current.ListManager.GetList(listCode:="SVC_PL_RECON_PROCESS", languageCode:=Thread.CurrentPrincipal.GetLanguageCode(), context:=oListContext1)
+
+                Dim SVCPLProcessStatusPending As String = (From lst In SVC_PL_Process
+                                                           Where lst.Code = "PENDINGSUBMISSION"
+                                                           Select lst.ExtendedCode).FirstOrDefault()
+
+                Dim SVCPLProcessStatusApproved As String = (From lst In SVC_PL_Process
+                                                            Where lst.Code = "APPROVED"
+                                                            Select lst.ExtendedCode).FirstOrDefault()
+
+                'If Me.State.IsCopy = False And Me.State.IsNew = False Then
+                If Not Me.State.MyBO.CurrentSVCPLRecon Is Nothing Then
+
+                    Me.PopulateBOProperty(Me.State.MyBO.CurrentSVCPLRecon, "PriceListId", LookupListNew.GetIdFromCode(LookupListCache.LK_PRICE_LIST, Me.State.MyBO.PriceListCode))
+
+                    If Not Me.State.priceListApprovalflag = String.Empty And Me.State.priceListApprovalflag = Codes.EXT_YESNO_Y Then
+                        Me.PopulateBOProperty(Me.State.MyBO.CurrentSVCPLRecon, "Status_xcd", SVCPLProcessStatusPending)
+                    Else
+                        Me.PopulateBOProperty(Me.State.MyBO.CurrentSVCPLRecon, "Status_xcd", SVCPLProcessStatusApproved)
+                    End If
+
+                    Me.PopulateBOProperty(Me.State.MyBO.CurrentSVCPLRecon, "RequestedBy", ElitaPlusIdentity.Current.ActiveUser.NetworkId)
+
+                Else
+
+                    If Not Me.State.priceListApprovalflag = String.Empty And Me.State.priceListApprovalflag = Codes.EXT_YESNO_Y And Not State.MyBO.IsNew Then
+                        AddSVRcReconRec(GetSelectedItem(ddlPriceList), SVCPLProcessStatusPending)
+                    Else
+                        AddSVRcReconRec(GetSelectedItem(ddlPriceList), SVCPLProcessStatusApproved)
+                    End If
+
+                End If
+
+                'End If
+
+
             End If
 
             Me.PopulateBOProperty(Me.State.MyBO, "AutoProcessInventoryFileXcd", Me.ddlAutoProcessInventoryFile, False, True)
@@ -1369,9 +1555,12 @@ Partial Class ServiceCenterForm
     End Sub
 
     Protected Sub CreateNew()
+
+
         Me.State.ScreenSnapShotBO = Nothing 'Reset the backup copy
         Me.State.MyBO = New ServiceCenter
         Me.State.IsNew = True
+
         ClearMethodOfRepairState()
         PopulateCountry()
         'Me.BindListControlToDataView(Me.ddlPriceList, LookupListNew.GetPriceListLookupList(Me.State.MyBO.CountryId), , , True)
@@ -1383,6 +1572,8 @@ Partial Class ServiceCenterForm
                     {
                         .AddBlankItem = True
                     })
+
+        ClearPriceListReconState()
         Me.PopulateFormFromBOs()
         Me.EnableDisableFields()
     End Sub
@@ -1408,6 +1599,8 @@ Partial Class ServiceCenterForm
         Me.State.MyBO.Description = Nothing
         ClearMethodOfRepairState()
         PopulateCountry()
+
+        ClearPriceListReconState()
         Me.PopulateFormFromBOs()
         Me.EnableDisableFields()
 
@@ -1430,9 +1623,11 @@ Partial Class ServiceCenterForm
                 Next
                 If State.MyBO.IsNew Then
                     State.MyBO.Save()
+                    'State.MySvcBO.Save()
                     SaveAllRecordsMethodOfRepair(True)
                 Else
                     State.MyBO.Save()
+                    'State.MySvcBO.Save()
                 End If
             End If
             Select Case Me.State.ActionInProgress
@@ -3151,6 +3346,7 @@ Partial Class ServiceCenterForm
         End If
         State.MethodOfRepairList = Nothing
     End Sub
+
     Private Sub SaveAllRecordsMethodOfRepair(ByVal blnNewBo As Boolean)
         ' new BO, save Depreciation Schedule records in memory
         If blnNewBo Then
@@ -3187,12 +3383,337 @@ Partial Class ServiceCenterForm
         End With
 
     End Sub
+
+
     Protected Sub BindBoPropertiesToMethodOfRepairGridHeaders()
-        If not State.MethodOfRepairWorkingItem Is Nothing Then
+        If Not State.MethodOfRepairWorkingItem Is Nothing Then
             BindBOPropertyToGridHeader(State.MethodOfRepairWorkingItem, "ServiceWarrantyDays", GridViewMethodOfRepair.Columns(MorGridColServiceWarrantyDays))
         End If
     End Sub
 #End Region
+
+#Region " Price List Recon Related "
+
+#Region "Button event for upadating the price list update"
+    Private Sub btnSubmitApproval_Click(sender As Object, e As EventArgs) Handles btnSubmitApproval.Click
+
+        Me.State.MyBO.CurrentSVCPLRecon.Status_xcd = STATUS_SVC_PL_PROCESS_PENDINGAPPROVAL
+        Me.State.MyBO.CurrentSVCPLRecon.StatusChangedBy = ElitaPlusIdentity.Current.ActiveUser.NetworkId
+        SavePriceAuthRecord(False)
+    End Sub
+
+    Private Sub btnApprove_Click(sender As Object, e As EventArgs) Handles btnApprove.Click
+        Try
+            Me.State.MyBO.CurrentSVCPLRecon.Status_xcd = STATUS_SVC_PL_RECON_PROCESS_APPROVED
+            Me.State.MyBO.CurrentSVCPLRecon.StatusChangedBy = ElitaPlusIdentity.Current.ActiveUser.NetworkId
+
+            Dim oListContext1 As New ListContext
+            oListContext1.CountryId = Me.State.MyBO.CountryId
+            Dim PriceList As DataElements.ListItem() =
+                                CommonConfigManager.Current.ListManager.GetList(listCode:="PriceListByCountry", languageCode:=Thread.CurrentPrincipal.GetLanguageCode(), context:=oListContext1)
+            Dim PriceListCode As String = LookupListNew.GetCodeFromId(LookupListNew.LK_PRICE_LIST, Me.State.MyBO.CurrentSVCPLRecon.PriceListId)
+            Me.State.MyBO.PriceListCode = PriceListCode
+            SavePriceAuthRecord(True)
+
+        Catch ex As Exception
+            Me.HandleErrors(ex, Me.MasterPage.MessageController)
+
+        End Try
+    End Sub
+
+    Private Sub btnReject_Click(sender As Object, e As EventArgs) Handles btnReject.Click
+        Me.State.MyBO.CurrentSVCPLRecon.Status_xcd = STATUS_SVC_PL_RECON_PROCESS_REJECTED '"SVC_PL_RECON_PROCESS"
+        Me.State.MyBO.CurrentSVCPLRecon.StatusChangedBy = ElitaPlusIdentity.Current.ActiveUser.NetworkId
+        SavePriceAuthRecord(True)
+    End Sub
+
+    Private Sub SavePriceAuthRecord(ByVal refreshSVCPLReconBO As Boolean)
+        Try
+            Me.State.MyBO.Save()
+            If refreshSVCPLReconBO = True Then
+                Me.State.MyBO.CurrentSVCPLRecon = Nothing
+            End If
+            Me.PopulateFormFromBOs(Me.CMD_SAVE)
+            Me.EnableDisableFields()
+            EnableDisableSVCPLControls()
+
+
+        Catch ex As Exception
+            'Me.State.MySvcBO.RejectChanges()
+            Me.HandleErrors(ex, Me.MasterPage.MessageController)
+            Throw ex
+        End Try
+
+        'Me.State.PageIndex = Grid.PageIndex
+        Me.State.SvcPriciListDV = Nothing
+        Me.InitializePage()
+        'PopulateGrid_PriceList()
+        PopulateSvcDataGridPriceList()
+        'Me.State.PageIndex = DataGridPriceList.CurrentPageIndex
+    End Sub
+
+#End Region
+
+#Region "New DataGrid"
+    Private Sub InitializePage()
+        Me.SetGridItemStyleColor(Me.DataGridPriceList)
+
+        Me.LoadSvcPriceListReconDetails()
+
+        If Me.State.IsGridVisible Then
+
+            DataGridPriceList.PageIndex = NewCurrentPageIndex(DataGridPriceList, CType(Session("recCount"), Int32), CType(cboPageSize.SelectedValue, Int32))
+            Me.State.PageSize = DataGridPriceList.PageSize
+            'cboPageSize.SelectedValue = CType(Me.State.PageSize, String)
+            'Grid.PageSize = Me.State.PageSize
+        End If
+
+        Me.SetGridItemStyleColor(Me.DataGridPriceList)
+        Me.MenuEnabled = True
+    End Sub
+
+    Private Sub LoadSvcPriceListReconDetails()
+        Try
+            Me.State.PageIndex = 0
+            Me.State.selectedSvcPriceListReconId = Guid.Empty
+            Me.State.IsGridVisible = True
+            Me.State.SvcPriciListDV = Nothing
+            'Me.PopulateSvcDataGridPriceList()
+
+            'If (Not State.SvcPriciListDV Is Nothing) AndAlso State.SvcPriciListDV.Count > 0 Then
+            '    Dim guidCI As Guid = New Guid(CType(State.SvcPriciListDV.Item(0)(SvcPriceListRecon.SvcPriceListReconSearchDV.COL_SVC_PRICE_LIST_RECON_ID), Byte()))
+            'End If
+
+        Catch ex As Exception
+            Me.HandleErrors(ex, Me.ErrorCtrl)
+        End Try
+    End Sub
+
+    Private Function GetSvcDV() As DataView
+
+        Me.State.SvcPriciListDV = GetDataGridDataView()
+        Me.State.SvcPriciListDV.Sort = DataGridPriceList.DataMember()
+
+        Return (Me.State.SvcPriciListDV)
+
+    End Function
+
+    Private Function GetDataGridDataView() As DataView
+
+        With State
+            'Return (SvcPriceListRecon.LoadList(Me.State.MyBO.Code, Me.State.MyBO.PriceListCode, Me.State.MyBO.CountryId))
+            'Return (SvcPriceListRecon.LoadListBySvc(Me.State.MyBO.Id))
+            Return (SvcPriceListRecon.LoadListBySvc(Me.State.MyBO.Id))
+        End With
+
+    End Function
+    Private Sub PopulateSvcDataGridPriceList()
+        Dim foundLabel As String
+
+        Try
+
+            If (Me.State.SvcPriciListDV Is Nothing) Then
+                Me.State.SvcPriciListDV = GetSvcDV()
+            End If
+
+            Me.DataGridPriceList.DataSource = Me.State.SvcPriciListDV
+            Me.DataGridPriceList.AllowSorting = False
+            'Me.DataGridPriceList.DataBind()
+            Session("PLrecCount") = Me.State.SvcPriciListDV.Count
+
+            'DataGridPriceList.Columns(Me.SVC_PRICE_LIST_RECON_ID_COL).SortExpression = SvcPriceListRecon.SvcPriceListReconSearchDV.COL_SVC_PRICE_LIST_RECON_ID
+            DataGridPriceList.Columns(Me.SVC_PRICE_LIST_ID_COL).SortExpression = SvcPriceListRecon.SvcPriceListReconSearchDV.COL_SVC_PRICE_LIST_RECON_ID
+            DataGridPriceList.Columns(Me.SVC_REQUESTED_BY_COL).SortExpression = SvcPriceListRecon.SvcPriceListReconSearchDV.COL_REQUESTED_DATE
+            DataGridPriceList.Columns(Me.SVC_STATUS_XCD_COL).SortExpression = SvcPriceListRecon.SvcPriceListReconSearchDV.COL_STATUS_XCD
+            DataGridPriceList.Columns(Me.SVC_STATUS_MODIFIED_by_COL).SortExpression = SvcPriceListRecon.SvcPriceListReconSearchDV.COL_STATUS_BY
+
+            If Me.State.SvcPriciListDV.Count > 0 Then
+                DataGridPriceList.DataSource = Me.State.SvcPriciListDV
+                DataGridPriceList.AutoGenerateColumns = False
+                DataGridPriceList.DataBind()
+                EnableDisableSVCPLControls()
+            Else
+                Me.State.SvcPriciListDV.AddNew()
+                Me.State.SvcPriciListDV(0)(0) = Guid.Empty.ToByteArray
+                DataGridPriceList.DataSource = Me.State.SvcPriciListDV
+                DataGridPriceList.DataBind()
+                DataGridPriceList.Rows(0).Visible = False
+                DataGridPriceList.Rows(0).Controls.Clear()
+                ControlMgr.SetEnableControl(Me, btnSubmitApproval, False)
+                ControlMgr.SetEnableControl(Me, btnApprove, False)
+                ControlMgr.SetEnableControl(Me, btnReject, False)
+            End If
+
+        Catch ex As Exception
+            Me.HandleErrors(ex, Me.ErrControllerMaster)
+        End Try
+
+    End Sub
+
+#Region " Datagrid Related "
+
+    'The Binding Logic is here
+    Private Sub DataGridPriceList_RowDataBound(ByVal sender As Object, ByVal e As System.Web.UI.WebControls.GridViewRowEventArgs) Handles DataGridPriceList.RowDataBound
+
+        'Dim itemType As ListItemType = CType(e.Item.ItemType, ListItemType)
+        Dim dvRow As DataRowView = CType(e.Row.DataItem, DataRowView)
+
+        'Dim chkRow As CheckBox
+        Dim oListContext1 As New ListContext
+        oListContext1.CountryId = Me.State.MyBO.CountryId
+        Dim PriceList As DataElements.ListItem() =
+                                        CommonConfigManager.Current.ListManager.GetList(listCode:="PriceListByCountry", languageCode:=Thread.CurrentPrincipal.GetLanguageCode(), context:=oListContext1)
+
+        Dim SVC_PL_Process As DataElements.ListItem() =
+                                        CommonConfigManager.Current.ListManager.GetList(listCode:="SVC_PL_RECON_PROCESS", languageCode:=Thread.CurrentPrincipal.GetLanguageCode(), context:=oListContext1)
+
+        If (e.Row.RowType = DataControlRowType.DataRow) OrElse (e.Row.RowType = DataControlRowType.Separator) Then
+            'If itemType = ListItemType.Item Or itemType = ListItemType.AlternatingItem Or itemType = ListItemType.SelectedItem Then
+
+            If dvRow(SvcPriceListRecon.SvcPriceListReconSearchDV.COL_SVC_PRICE_LIST_RECON_ID) IsNot Nothing Then
+                e.Row.Cells(Me.SVC_PRICE_LIST_RECON_ID_COL).Text = GetGuidStringFromByteArray(CType(dvRow(SvcPriceListRecon.SvcPriceListReconSearchDV.COL_SVC_PRICE_LIST_RECON_ID), Byte()))
+            End If
+
+
+            If Not dvRow(SvcPriceListRecon.SvcPriceListReconSearchDV.COL_PRICE_LIST_ID) Is Nothing And Not dvRow(SvcPriceListRecon.SvcPriceListReconSearchDV.COL_PRICE_LIST_ID) Is DBNull.Value Then
+                e.Row.Cells(Me.SVC_PRICE_LIST_ID_COL).Text = LookupListNew.GetDescriptionFromId(LookupListNew.LK_PRICE_LIST, GetGuidFromString(GetGuidStringFromByteArray(CType(dvRow(SvcPriceListRecon.SvcPriceListReconSearchDV.COL_PRICE_LIST_ID), Byte()))))
+            End If
+
+            Me.PopulateControlFromBOProperty(e.Row.Cells(Me.SVC_REQUESTED_BY_COL), dvRow(SvcPriceListRecon.SvcPriceListReconSearchDV.COL_REQUESTED_BY))
+
+
+            If Not dvRow.Row(SvcPriceListRecon.SvcPriceListReconSearchDV.COL_REQUESTED_DATE).ToString = Nothing Then
+                e.Row.Cells(Me.SVC_REQUESTED_DATE_COL).Text = GetDateFormattedString(CType(dvRow.Row(SvcPriceListRecon.SvcPriceListReconSearchDV.COL_REQUESTED_DATE), Date))
+            End If
+
+            If dvRow(SvcPriceListRecon.SvcPriceListReconSearchDV.COL_STATUS_XCD) IsNot Nothing Then
+                e.Row.Cells(Me.SVC_STATUS_XCD_COL).Text = (From lst In SVC_PL_Process
+                                                           Where lst.ExtendedCode = dvRow(SvcPriceListRecon.SvcPriceListReconSearchDV.COL_STATUS_XCD).ToString
+                                                           Select lst.Translation).FirstOrDefault()
+            End If
+
+            'Me.PopulateControlFromBOProperty(e.Item.Cells(Me.SVC_STATUS_XCD_COL), dvRow(SvcPriceListRecon.SvcPriceListReconSearchDV.COL_STATUS_XCD))
+            Me.PopulateControlFromBOProperty(e.Row.Cells(Me.SVC_STATUS_MODIFIED_by_COL), dvRow(SvcPriceListRecon.SvcPriceListReconSearchDV.COL_STATUS_BY))
+
+            If Not dvRow.Row(SvcPriceListRecon.SvcPriceListReconSearchDV.COL_STATUS_DATE).ToString = Nothing Then
+                e.Row.Cells(Me.SVC_STATUS_DATE_COL).Text = GetDateFormattedString(CType(dvRow.Row(SvcPriceListRecon.SvcPriceListReconSearchDV.COL_STATUS_DATE), Date))
+            End If
+
+            'Me.PopulateControlFromBOProperty(e.Row.Cells(Me.SVC_STATUS_DATE_COL), dvRow(SvcPriceListRecon.SvcPriceListReconSearchDV.COL_STATUS_DATE))
+
+        End If
+    End Sub
+
+
+    Public Sub ItemCreated(ByVal sender As System.Object, ByVal e As System.Web.UI.WebControls.DataGridItemEventArgs)
+        BaseItemCreated(sender, e)
+    End Sub
+
+    Private Sub DataGridPriceList_RowCreated(ByVal sender As Object, ByVal e As System.Web.UI.WebControls.GridViewRowEventArgs) Handles DataGridPriceList.RowCreated
+        Try
+            BaseItemCreated(sender, e)
+        Catch ex As Exception
+            Me.HandleErrors(ex, Me.MasterPage.MessageController)
+        End Try
+    End Sub
+
+
+#End Region
+
+    Protected Sub AddSVRcReconRec(ByVal PriceListId As Guid, ByVal processStatus As String)
+
+        Dim _SvcPriceListRecon As SvcPriceListRecon = State.MyBO.Add_SVCPLRecon
+        _SvcPriceListRecon.PriceListId = PriceListId
+        _SvcPriceListRecon.Status_xcd = processStatus
+        _SvcPriceListRecon.RequestedBy = ElitaPlusIdentity.Current.ActiveUser.NetworkId
+
+    End Sub
+
+    Private Sub EnableDisableSVCPLControls()
+
+        If Not Me.State.MyBO.CurrentSVCPLRecon Is Nothing Then
+
+            If Me.State.MyBO.CurrentSVCPLRecon.Status_xcd = STATUS_SVC_PL_PROCESS_PENDINGAPPROVAL Then
+                'Me.State.selectedSvcPriceListReconId = New Guid(e.Item.Cells(Me.SVC_PRICE_LIST_RECON_ID_COL).Text)
+                'Me.State.MySvcBO = New SvcPriceListRecon(Me.State.selectedSvcPriceListReconId)
+                ControlMgr.SetEnableControl(Me, btnSubmitApproval, False)
+                ControlMgr.SetEnableControl(Me, btnApprove, True)
+                ControlMgr.SetEnableControl(Me, btnReject, True)
+            ElseIf Me.State.MyBO.CurrentSVCPLRecon.Status_xcd = STATUS_SVC_PL_RECON_PROCESS_PENDINGSUBMISSION Then
+                ControlMgr.SetEnableControl(Me, btnSubmitApproval, True)
+                ControlMgr.SetEnableControl(Me, btnApprove, False)
+                ControlMgr.SetEnableControl(Me, btnReject, False)
+            Else
+                ControlMgr.SetEnableControl(Me, btnSubmitApproval, False)
+                ControlMgr.SetEnableControl(Me, btnApprove, False)
+                ControlMgr.SetEnableControl(Me, btnReject, False)
+
+            End If
+
+        Else
+            ControlMgr.SetEnableControl(Me, btnSubmitApproval, False)
+            ControlMgr.SetEnableControl(Me, btnApprove, False)
+            ControlMgr.SetEnableControl(Me, btnReject, False)
+
+
+        End If
+
+
+    End Sub
+
+    Private Sub Grid_PageIndexChanged(ByVal source As System.Object, ByVal e As System.Web.UI.WebControls.GridViewPageEventArgs) Handles DataGridPriceList.PageIndexChanging
+        Try
+            Me.State.PageIndex = e.NewPageIndex
+            Me.DataGridPriceList.PageIndex = Me.State.PageIndex
+            PopulateSvcDataGridPriceList()
+            Me.DataGridPriceList.SelectedIndex = Me.NO_ITEM_SELECTED_INDEX
+
+        Catch ex As Exception
+            Me.HandleErrors(ex, Me.ErrControllerMaster)
+        End Try
+    End Sub
+
+    Private Sub Grid_PageSizeChanged(ByVal source As Object, ByVal e As System.EventArgs) Handles cboPageSize.SelectedIndexChanged
+        Try
+            DataGridPriceList.PageIndex = NewCurrentPageIndex(DataGridPriceList, CType(Session("recCount"), Int32), CType(cboPageSize.SelectedValue, Int32))
+            PopulateSvcDataGridPriceList()
+        Catch ex As Exception
+            Me.HandleErrors(ex, Me.ErrControllerMaster)
+        End Try
+    End Sub
+
+
+    Private Sub DeleteAllPriceListReconRecords()
+
+        'Dim ds As DataSet = dal.GetSelectedListMor(serviceCenterId)
+        Dim plList As New Collections.Generic.List(Of SvcPriceListRecon)
+        For Each dr As DataRow In State.SvcPriciListDV.Table.Rows
+            plList.Add(New SvcPriceListRecon(dr))
+        Next
+
+        If plList.Count > 0 Then
+            Dim i As Integer
+            For i = 0 To plList.Count - 1
+                plList.Item(i).Delete()
+                plList.Item(i).SaveWithoutCheckDsCreator()
+            Next
+        End If
+
+    End Sub
+
+    Private Sub ClearPriceListReconState()
+        Me.State.MyBO.CurrentSVCPLRecon = Nothing
+        Me.txtPriceListPending.Text = Nothing
+        Me.txtPriceListPendingStatus.Text = Nothing
+        Me.State.SvcPriciListDV = Nothing
+        'Me.State.IsCopy = True
+    End Sub
+
+
+#End Region
+
+#End Region
+
 End Class
 
 

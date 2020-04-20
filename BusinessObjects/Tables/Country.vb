@@ -516,7 +516,20 @@ Public Class Country
             Me.SetValue(CountryDAL.COL_NAME_ALLOW_FORGOTTEN, Value)
         End Set
     End Property
-
+    Public Property PriceListApprovalNeeded() As String
+        Get
+            CheckDeleted()
+            If Row(CountryDAL.COL_NAME_PRICE_LIST_APPROVAL_NEEDED) Is DBNull.Value Then
+                Return Nothing
+            Else
+                Return CType(Row(CountryDAL.COL_NAME_PRICE_LIST_APPROVAL_NEEDED), String)
+            End If
+        End Get
+        Set(ByVal Value As String)
+            CheckDeleted()
+            Me.SetValue(CountryDAL.COL_NAME_PRICE_LIST_APPROVAL_NEEDED, Value)
+        End Set
+    End Property
     <RequiredConditionallyAddressConfidenceThreshold(""), ValidNumericRange("", Min:=1, Max:=100)>
     Public Property AddressConfidenceThreshold() As LongType
         Get
@@ -546,6 +559,22 @@ Public Class Country
         Set(ByVal value As String)
             CheckDeleted()
             Me.SetValue(CountryDAL.COL_NAME_ISO_CODE, value)
+        End Set
+    End Property
+
+    <ValidStringLength("", Max:=1000), PriceListApprovedEmail(""), RequiredConditionally("")>
+    Public Property PriceListApprovalEmail() As String
+        Get
+            CheckDeleted()
+            If Row(CountryDAL.COL_NAME_PRICE_LIST_APPROVAL_EMAIL) Is DBNull.Value Then
+                Return Nothing
+            Else
+                Return CType(Row(CountryDAL.COL_NAME_PRICE_LIST_APPROVAL_EMAIL), String)
+            End If
+        End Get
+        Set(ByVal value As String)
+            CheckDeleted()
+            Me.SetValue(CountryDAL.COL_NAME_PRICE_LIST_APPROVAL_EMAIL, value)
         End Set
     End Property
     <ValueMandatory("")>
@@ -858,7 +887,43 @@ Public Class Country
         End Function
 
     End Class
+    <AttributeUsage(AttributeTargets.Property Or AttributeTargets.Field)>
+    Public NotInheritable Class PriceListApprovedEmail
+        Inherits ValidBaseAttribute
 
+        Public Sub New(ByVal fieldDisplayName As String)
+            MyBase.New(fieldDisplayName, Common.ErrorCodes.GUI_EMAIL_IS_INVALID_ERR)
+        End Sub
+
+        Public Overrides Function IsValid(ByVal valueToCheck As Object, ByVal objectToValidate As Object) As Boolean
+            Dim obj As Country = CType(objectToValidate, Country)
+
+
+            If obj.PriceListApprovalNeeded = "YESNO-Y" Then
+                If obj.PriceListApprovalEmail Is String.Empty OrElse obj.PriceListApprovalEmail Is Nothing Then
+                    Return True
+                End If
+            Else
+                Return True
+            End If
+
+            Dim arrayEmailList() As String
+            Dim isValidEmail As Boolean
+            arrayEmailList = obj.PriceListApprovalEmail.Split(";")
+
+            For Each email As String In arrayEmailList
+                isValidEmail = MiscUtil.EmailAddressValidation(email)
+
+                If (Not isValidEmail) Then
+                    Exit For
+                End If
+            Next
+
+            Return isValidEmail
+
+        End Function
+
+    End Class
     <AttributeUsage(AttributeTargets.Property Or AttributeTargets.Field)>
     Public NotInheritable Class RequiredConditionally
         Inherits ValidBaseAttribute

@@ -572,12 +572,31 @@ Public Class AcctSettingDAL
 
     Public Function GetCommissionEntityListForAcctSetting(ByVal oCompanyGroupId As Guid) As DataSet
         Dim selectStmt As String = Me.Config("/SQL/GET_COMMISION_ENTITY_FOR_ACCT_SETTINGS")
-        Dim parameters() As DBHelper.DBHelperParameter = New DBHelper.DBHelperParameter() { _
+        Dim parameters() As DBHelper.DBHelperParameter = New DBHelper.DBHelperParameter() {
                     New DBHelper.DBHelperParameter("company_group_id", oCompanyGroupId.ToByteArray)}
         Dim ds As New DataSet
         Try
             DBHelper.Fetch(ds, selectStmt, Me.TABLE_NAME, parameters)
             Return ds
+        Catch ex As Exception
+            Throw New DataBaseAccessException(DataBaseAccessException.DatabaseAccessErrorType.ReadErr, ex)
+        End Try
+    End Function
+
+    Public Function IsIDXAcctSettingAndCode(accountCompanyId As Guid, accountCode As String) As Boolean
+        Dim selectStmt As String = Me.Config("/SQL/GET_COUNT_BY_ACCOUNTING_COMPANY_AND_CODE")
+
+        Dim parameters() As DBHelper.DBHelperParameter = New DBHelper.DBHelperParameter() {New DBHelper.DBHelperParameter("acct_company_id", accountCompanyId.ToByteArray),
+                                                                                           New DBHelper.DBHelperParameter("account_code", accountCode)}
+        Dim count As Integer
+
+        Try
+            count = DBHelper.ExecuteScalar(selectStmt, parameters)
+            If count > 0 Then
+                Return True
+            Else
+                Return False
+            End If
         Catch ex As Exception
             Throw New DataBaseAccessException(DataBaseAccessException.DatabaseAccessErrorType.ReadErr, ex)
         End Try

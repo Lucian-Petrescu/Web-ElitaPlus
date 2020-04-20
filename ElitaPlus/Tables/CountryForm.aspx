@@ -207,11 +207,21 @@
                   <td align="right" nowrap="nowrap">
                     <asp:Label ID="lblAllowForget" class="borderRight" runat="server" Font-Bold="false">ALLOW_FORGET</asp:Label></td>
                 <td align="left" nowrap="nowrap">
-                    <asp:DropDownList ID="cboAllowForget" TabIndex="68" runat="server" Width="140px"></asp:DropDownList>
-
-                </td>
-
+                    <asp:DropDownList ID="cboAllowForget" TabIndex="68" runat="server" Width="140px"></asp:DropDownList>               
+				</td>
             </tr>
+			<tr>				 
+				<td align="right" nowrap="nowrap">
+                    <asp:Label ID="lblPriceListApprovalNeeded" class="borderRight" runat="server" Font-Bold="false">PRICE_LIST_APPROVAL_NEEDED</asp:Label></td>
+                <td align="left" nowrap="nowrap">
+                    <asp:DropDownList ID="cboPriceListApprovalNeeded" TabIndex="68" runat="server" Width="140px"></asp:DropDownList>
+                </td>
+				<td align="right" nowrap="nowrap">
+			        <asp:Label ID="lblPriceListApprovalEmail" class="borderRight" runat="server" Font-Bold="false">PRICE_LIST_APPROVAL_EMAIL</asp:Label></td>
+			    <td align="left" nowrap="nowrap">
+			        <asp:TextBox ID="txtPriceListApprovalEmail" runat="server" Width="280px"></asp:TextBox>
+			    </td>
+			</tr>
             <tr>
 				<td align="right" class="borderLeft" nowrap="nowrap">
 					<asp:Label ID="lblAllowForceAddress" runat="server" Font-Bold="false">ALLOW_FORCE_ADDRESS</asp:Label></td>

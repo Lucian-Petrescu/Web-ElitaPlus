@@ -168,6 +168,21 @@
                         </asp:DropDownList>
                     </td>
                 </tr>
+                <tr id ="PL_APPROVE_SEC" runat="server">
+                    <td align="right" nowrap="nowrap">
+                        <asp:Label ID="lblPriceListPending" runat="server">PRICE_LIST_PENDING_ASSIGNMENT</asp:Label>
+                    </td>
+                    <td align="left" nowrap="nowrap">
+                        <asp:TextBox ID="txtPriceListPending" TabIndex="5" runat="server" SkinID="MediumTextBox" Enabled="False"></asp:TextBox>
+                    </td>
+                    <td align="right" nowrap="nowrap">
+                        <asp:Label ID="lblPriceListPendingStatus" runat="server">PRICE_LIST_PENDING_ASSIGNMENT_STATUS</asp:Label>
+                    </td>
+                    <td align="left" nowrap="nowrap">        
+                        <asp:TextBox ID="txtPriceListPendingStatus" TabIndex="5" runat="server" SkinID="MediumTextBox" Enabled="False">></asp:TextBox>
+                    </td>
+                </tr>
+
                 <tr>
                     <td align="right" class="borderLeft" nowrap="nowrap">
                         <asp:Label ID="LabelDateLastMaintained" runat="server">DATE_LAST_MAINTAINED</asp:Label>
@@ -508,6 +523,8 @@
                     <asp:Label ID="Label10" runat="server" CssClass="tabHeaderText">Quantity</asp:Label></a></li>
                 <li><a href="#tabsSchedule">
                     <asp:Label ID="Label11" runat="server" CssClass="tabHeaderText">Schedule</asp:Label></a></li>
+                <li><a href="#tabsPriceList">
+                    <asp:Label ID="Label12" runat="server" CssClass="tabHeaderText">Price_List</asp:Label></a></li>
             </ul>
             <div id="tabsAddress">
                 <asp:Panel ID="moAddressTabPanel_WRITE" runat="server" Width="100%" Height="300px">
@@ -1134,9 +1151,110 @@
                     <!-- Tab end -->
                 </asp:Panel>
             </div>
-        </div>
-        <%--END   DEF-2818--%>
-    </div>
+                                
+            <div id="tabsPriceList">
+                <asp:Panel ID="Panel1" runat="server" Width="100%" Height="300px">
+                    <div id="Div2" style="overflow: auto; width: 99.53%;" align="center">
+                        <asp:Panel ID="panel2" runat="server">
+                            <div>
+                                <table width="100%" cellpadding="0" cellspacing="0" class="tabBtnAreaZone">
+                                    <tr id="trPageSize" runat="SERVER" visible="False">
+                                    <td align="left">
+                                        <asp:Label ID="lblPageSize" runat="server">Page_Size:</asp:Label>&nbsp;
+                                        <asp:DropDownList ID="cboPageSize" runat="server" Width="50px" AutoPostBack="true">
+                                            <asp:ListItem Selected="True" Value="5">5</asp:ListItem>
+                                            <asp:ListItem Value="10">10</asp:ListItem>                                            
+                                            <asp:ListItem Value="15">15</asp:ListItem>
+                                            <asp:ListItem Value="20">20</asp:ListItem>
+                                            <asp:ListItem Value="25">25</asp:ListItem>
+                                            <asp:ListItem Value="30">30</asp:ListItem>
+                                            <asp:ListItem Value="35">35</asp:ListItem>
+                                            <asp:ListItem Value="40">40</asp:ListItem>
+                                            <asp:ListItem Value="45">45</asp:ListItem>
+                                            <asp:ListItem Value="50">50</asp:ListItem>
+                                        </asp:DropDownList>
+                                    </td>
+                                    <td style="text-align: right">
+                                        <asp:Label ID="lblRecordCount" runat="server"></asp:Label>
+                                    </td>
+                                </tr>
+                                </table>
+                                </div>
+                            <div>
+                                <asp:GridView ID="DataGridPriceList" runat="server" Width="100%" AutoGenerateColumns="False" AllowPaging="True" SkinID="DetailPageGridView" EnableViewState="true">
+                                    <SelectedRowStyle Wrap="True" />
+                                    <EditRowStyle Wrap="True" />
+                                    <AlternatingRowStyle Wrap="True" />
+                                    <RowStyle Wrap="True" />
+                                    <HeaderStyle />
+                                    <Columns>
+                                        <asp:TemplateField Visible="false">
+                                            <ItemTemplate>
+                                                <asp:Label runat="server" ID="svc_price_list_recon_id" Visible="false" Text='<%#GetGuidStringFromByteArray(Container.DataItem("svc_price_list_recon_id"))%>' />
+                                            </ItemTemplate>
+                                        </asp:TemplateField>
+                                        <asp:TemplateField SortExpression="PRICE_LIST" HeaderText="PRICE_LIST" ItemStyle-HorizontalAlign="Left">
+                                            <ItemTemplate>
+                                                <asp:Label runat="server" ID="PRICE_LIST" Visible="true" />
+                                            </ItemTemplate>
+                                        </asp:TemplateField>
+                                        <asp:TemplateField SortExpression="REQUESTED_BY" HeaderText="REQUESTED_BY" ItemStyle-HorizontalAlign="Left">
+                                            <ItemTemplate>
+                                                <asp:Label runat="server" ID="REQUESTED_BY" Visible="true" />
+                                            </ItemTemplate>
+                                        </asp:TemplateField>
+                                        <asp:TemplateField  HeaderText="REQUESTED_DATE" ItemStyle-HorizontalAlign="Left">
+                                            <ItemTemplate>
+                                                <asp:Label runat="server" ID="REQUESTED_DATE" Visible="true" />
+                                            </ItemTemplate>
+                                        </asp:TemplateField>
+                                        <asp:TemplateField SortExpression="STATUS" HeaderText="STATUS" ItemStyle-HorizontalAlign="Left">
+                                            <ItemTemplate>
+                                                <asp:Label runat="server" ID="STATUS" Visible="true" />
+                                            </ItemTemplate>
+                                        </asp:TemplateField>
+                                        <asp:TemplateField SortExpression="STATUS_MODIFIED_BY" HeaderText="STATUS_MODIFIED_BY" ItemStyle-HorizontalAlign="Left">
+                                            <ItemTemplate>
+                                                <asp:Label runat="server" ID="STATUS_MODIFIED_BY" Visible="true" />
+                                            </ItemTemplate>
+                                        </asp:TemplateField>
+
+                                        <asp:TemplateField HeaderText="STATUS_DATE" ItemStyle-HorizontalAlign="Left">
+                                            <ItemTemplate>
+                                                <asp:Label runat="server" ID="STATUS_DATE" Visible="true" />
+                                            </ItemTemplate>
+                                        </asp:TemplateField>                              
+                                </Columns>
+                                <PagerSettings PageButtonCount="10" Mode="Numeric" Position="TopAndBottom" />
+                                </asp:GridView>
+                                </div>
+                            <div class="btnZone>
+                                <table width="100%" cellpadding="0" cellspacing="0" class="tabBtnAreaZone">
+                                    <tr>
+                                        <td></td>
+                                        <td align="left">
+                                            <asp:Button ID="btnSubmitApproval" Text="SUBMIT_FOR_APPROVAL" runat="server" SkinID="PrimaryLeftButton" />
+                                            <asp:Button ID="btnApprove" Text="APPROVE" runat="server" SkinID="AlternateRightButton" />
+                                            <asp:Button ID="btnReject" Text="REJECT"  runat="server" SkinID="AlternateRightButton" />
+                                        </td>
+                                    </tr>
+                                </table>
+                            </div>
+                        </asp:Panel>
+                    </div>
+                    <!-- Tab end -->
+                </asp:Panel>
+            </div>            
+                <input id="HiddenDeletePromptResponse" type="hidden" runat="server" designtimedragdrop="261">
+
+                <script type="text/javascript">
+                    if (document.getElementById("tdGrid")) {
+                        document.getElementById("tdGrid").style.height = parent.document.getElementById("Navigation_Content").clientHeight - 350;
+                    }
+                </script>
+               
+            </div>
+        </div>        
     <div class="btnZone">
         <asp:Button ID="btnSave_WRITE" runat="server" TabIndex="43" Text="Save" SkinID="PrimaryRightButton"></asp:Button>
         <asp:Button ID="btnUndo_Write" runat="server" TabIndex="44" Text="Undo" SkinID="AlternateRightButton"></asp:Button>

@@ -12,7 +12,7 @@ Option Explicit On
 
 
 Partial Public Class AccountingEventForm
-    
+
     '''<summary>
     '''moAccountingCompanyLABEL control.
     '''</summary>
@@ -21,7 +21,7 @@ Partial Public Class AccountingEventForm
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
     Protected WithEvents moAccountingCompanyLABEL As Global.System.Web.UI.WebControls.Label
-    
+
     '''<summary>
     '''moAccountingCompanyDropDown control.
     '''</summary>
@@ -30,7 +30,7 @@ Partial Public Class AccountingEventForm
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
     Protected WithEvents moAccountingCompanyDropDown As Global.System.Web.UI.WebControls.DropDownList
-    
+
     '''<summary>
     '''moEventTypeLABEL control.
     '''</summary>
@@ -39,7 +39,7 @@ Partial Public Class AccountingEventForm
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
     Protected WithEvents moEventTypeLABEL As Global.System.Web.UI.WebControls.Label
-    
+
     '''<summary>
     '''moEventTypeDDL control.
     '''</summary>
@@ -48,7 +48,7 @@ Partial Public Class AccountingEventForm
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
     Protected WithEvents moEventTypeDDL As Global.System.Web.UI.WebControls.DropDownList
-    
+
     '''<summary>
     '''moEventDescriptionLABEL control.
     '''</summary>
@@ -57,7 +57,7 @@ Partial Public Class AccountingEventForm
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
     Protected WithEvents moEventDescriptionLABEL As Global.System.Web.UI.WebControls.Label
-    
+
     '''<summary>
     '''moEventDescriptionTEXT control.
     '''</summary>
@@ -66,7 +66,7 @@ Partial Public Class AccountingEventForm
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
     Protected WithEvents moEventDescriptionTEXT As Global.System.Web.UI.WebControls.TextBox
-    
+
     '''<summary>
     '''moJournalTypeLABEL control.
     '''</summary>
@@ -75,7 +75,7 @@ Partial Public Class AccountingEventForm
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
     Protected WithEvents moJournalTypeLABEL As Global.System.Web.UI.WebControls.Label
-    
+
     '''<summary>
     '''moJournalTypeTEXT control.
     '''</summary>
@@ -84,7 +84,7 @@ Partial Public Class AccountingEventForm
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
     Protected WithEvents moJournalTypeTEXT As Global.System.Web.UI.WebControls.TextBox
-    
+
     '''<summary>
     '''moAllowBalTranLABEL control.
     '''</summary>
@@ -93,7 +93,7 @@ Partial Public Class AccountingEventForm
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
     Protected WithEvents moAllowBalTranLABEL As Global.System.Web.UI.WebControls.Label
-    
+
     '''<summary>
     '''moAllowBalTranDDL control.
     '''</summary>
@@ -102,7 +102,7 @@ Partial Public Class AccountingEventForm
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
     Protected WithEvents moAllowBalTranDDL As Global.System.Web.UI.WebControls.DropDownList
-    
+
     '''<summary>
     '''moAllowOverBudgetLABEL control.
     '''</summary>
@@ -111,7 +111,7 @@ Partial Public Class AccountingEventForm
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
     Protected WithEvents moAllowOverBudgetLABEL As Global.System.Web.UI.WebControls.Label
-    
+
     '''<summary>
     '''moAllowOverBudgetDDL control.
     '''</summary>
@@ -120,7 +120,7 @@ Partial Public Class AccountingEventForm
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
     Protected WithEvents moAllowOverBudgetDDL As Global.System.Web.UI.WebControls.DropDownList
-    
+
     '''<summary>
     '''moAllowPostToSuspendedLABEL control.
     '''</summary>
@@ -129,7 +129,7 @@ Partial Public Class AccountingEventForm
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
     Protected WithEvents moAllowPostToSuspendedLABEL As Global.System.Web.UI.WebControls.Label
-    
+
     '''<summary>
     '''moAllowPostToSuspendedDDL control.
     '''</summary>
@@ -138,7 +138,7 @@ Partial Public Class AccountingEventForm
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
     Protected WithEvents moAllowPostToSuspendedDDL As Global.System.Web.UI.WebControls.DropDownList
-    
+
     '''<summary>
     '''moBalancingOptionsLABEL control.
     '''</summary>
@@ -147,7 +147,7 @@ Partial Public Class AccountingEventForm
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
     Protected WithEvents moBalancingOptionsLABEL As Global.System.Web.UI.WebControls.Label
-    
+
     '''<summary>
     '''moBalancingOptionsDDL control.
     '''</summary>
@@ -156,7 +156,7 @@ Partial Public Class AccountingEventForm
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
     Protected WithEvents moBalancingOptionsDDL As Global.System.Web.UI.WebControls.DropDownList
-    
+
     '''<summary>
     '''moLayoutCodeLABEL control.
     '''</summary>
@@ -165,7 +165,7 @@ Partial Public Class AccountingEventForm
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
     Protected WithEvents moLayoutCodeLABEL As Global.System.Web.UI.WebControls.Label
-    
+
     '''<summary>
     '''moLayoutCodeTEXT control.
     '''</summary>
@@ -174,7 +174,7 @@ Partial Public Class AccountingEventForm
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
     Protected WithEvents moLayoutCodeTEXT As Global.System.Web.UI.WebControls.TextBox
-    
+
     '''<summary>
     '''moLoadOnlyLABEL control.
     '''</summary>
@@ -183,7 +183,7 @@ Partial Public Class AccountingEventForm
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
     Protected WithEvents moLoadOnlyLABEL As Global.System.Web.UI.WebControls.Label
-    
+
     '''<summary>
     '''moLoadOnlyDDL control.
     '''</summary>
@@ -192,7 +192,7 @@ Partial Public Class AccountingEventForm
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
     Protected WithEvents moLoadOnlyDDL As Global.System.Web.UI.WebControls.DropDownList
-    
+
     '''<summary>
     '''moPostingTypeLABEL control.
     '''</summary>
@@ -201,7 +201,7 @@ Partial Public Class AccountingEventForm
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
     Protected WithEvents moPostingTypeLABEL As Global.System.Web.UI.WebControls.Label
-    
+
     '''<summary>
     '''moPostingTypeDDL control.
     '''</summary>
@@ -210,7 +210,7 @@ Partial Public Class AccountingEventForm
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
     Protected WithEvents moPostingTypeDDL As Global.System.Web.UI.WebControls.DropDownList
-    
+
     '''<summary>
     '''moPostProvisionalLABEL control.
     '''</summary>
@@ -219,7 +219,7 @@ Partial Public Class AccountingEventForm
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
     Protected WithEvents moPostProvisionalLABEL As Global.System.Web.UI.WebControls.Label
-    
+
     '''<summary>
     '''moPostProvisionalDDL control.
     '''</summary>
@@ -228,7 +228,7 @@ Partial Public Class AccountingEventForm
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
     Protected WithEvents moPostProvisionalDDL As Global.System.Web.UI.WebControls.DropDownList
-    
+
     '''<summary>
     '''moPostToHoldLABEL control.
     '''</summary>
@@ -237,7 +237,7 @@ Partial Public Class AccountingEventForm
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
     Protected WithEvents moPostToHoldLABEL As Global.System.Web.UI.WebControls.Label
-    
+
     '''<summary>
     '''moPostToHoldTEXT control.
     '''</summary>
@@ -246,7 +246,7 @@ Partial Public Class AccountingEventForm
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
     Protected WithEvents moPostToHoldTEXT As Global.System.Web.UI.WebControls.TextBox
-    
+
     '''<summary>
     '''moReportingAccountLABEL control.
     '''</summary>
@@ -255,7 +255,7 @@ Partial Public Class AccountingEventForm
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
     Protected WithEvents moReportingAccountLABEL As Global.System.Web.UI.WebControls.Label
-    
+
     '''<summary>
     '''moReportingAccountTEXT control.
     '''</summary>
@@ -264,7 +264,7 @@ Partial Public Class AccountingEventForm
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
     Protected WithEvents moReportingAccountTEXT As Global.System.Web.UI.WebControls.TextBox
-    
+
     '''<summary>
     '''moSuppressSubstitutedMessagesLABEL control.
     '''</summary>
@@ -273,7 +273,7 @@ Partial Public Class AccountingEventForm
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
     Protected WithEvents moSuppressSubstitutedMessagesLABEL As Global.System.Web.UI.WebControls.Label
-    
+
     '''<summary>
     '''moSuppressSubstitutedMessagesDDL control.
     '''</summary>
@@ -282,7 +282,7 @@ Partial Public Class AccountingEventForm
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
     Protected WithEvents moSuppressSubstitutedMessagesDDL As Global.System.Web.UI.WebControls.DropDownList
-    
+
     '''<summary>
     '''moSuspenseAccountLABEL control.
     '''</summary>
@@ -291,7 +291,7 @@ Partial Public Class AccountingEventForm
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
     Protected WithEvents moSuspenseAccountLABEL As Global.System.Web.UI.WebControls.Label
-    
+
     '''<summary>
     '''moSuspenseAccountTEXT control.
     '''</summary>
@@ -300,7 +300,7 @@ Partial Public Class AccountingEventForm
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
     Protected WithEvents moSuspenseAccountTEXT As Global.System.Web.UI.WebControls.TextBox
-    
+
     '''<summary>
     '''moTransactionAmountAccountLABEL control.
     '''</summary>
@@ -309,7 +309,7 @@ Partial Public Class AccountingEventForm
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
     Protected WithEvents moTransactionAmountAccountLABEL As Global.System.Web.UI.WebControls.Label
-    
+
     '''<summary>
     '''moTransactionAmountAccountTEXT control.
     '''</summary>
@@ -318,7 +318,25 @@ Partial Public Class AccountingEventForm
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
     Protected WithEvents moTransactionAmountAccountTEXT As Global.System.Web.UI.WebControls.TextBox
-    
+
+    '''<summary>
+    '''moJournalLevelLABEL control.
+    '''</summary>
+    '''<remarks>
+    '''Auto-generated field.
+    '''To modify move field declaration from designer file to code-behind file.
+    '''</remarks>
+    Protected WithEvents moJournalLevelLABEL As Global.System.Web.UI.WebControls.Label
+
+    '''<summary>
+    '''moJournalLevelDDL control.
+    '''</summary>
+    '''<remarks>
+    '''Auto-generated field.
+    '''To modify move field declaration from designer file to code-behind file.
+    '''</remarks>
+    Protected WithEvents moJournalLevelDDL As Global.System.Web.UI.WebControls.DropDownList
+
     '''<summary>
     '''HiddenSaveChangesPromptResponse control.
     '''</summary>
@@ -327,7 +345,7 @@ Partial Public Class AccountingEventForm
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
     Protected WithEvents HiddenSaveChangesPromptResponse As Global.System.Web.UI.HtmlControls.HtmlInputHidden
-    
+
     '''<summary>
     '''Label4 control.
     '''</summary>
@@ -336,7 +354,7 @@ Partial Public Class AccountingEventForm
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
     Protected WithEvents Label4 As Global.System.Web.UI.WebControls.Label
-    
+
     '''<summary>
     '''moAccountingEventGrid control.
     '''</summary>
@@ -345,7 +363,7 @@ Partial Public Class AccountingEventForm
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
     Protected WithEvents moAccountingEventGrid As Global.System.Web.UI.WebControls.DataGrid
-    
+
     '''<summary>
     '''btnNew_WRITE control.
     '''</summary>
@@ -354,7 +372,7 @@ Partial Public Class AccountingEventForm
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
     Protected WithEvents btnNew_WRITE As Global.System.Web.UI.WebControls.Button
-    
+
     '''<summary>
     '''btnBack control.
     '''</summary>
@@ -363,7 +381,7 @@ Partial Public Class AccountingEventForm
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
     Protected WithEvents btnBack As Global.System.Web.UI.WebControls.Button
-    
+
     '''<summary>
     '''btnSave_WRITE control.
     '''</summary>
@@ -372,7 +390,7 @@ Partial Public Class AccountingEventForm
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
     Protected WithEvents btnSave_WRITE As Global.System.Web.UI.WebControls.Button
-    
+
     '''<summary>
     '''btnUndo_Write control.
     '''</summary>
@@ -381,7 +399,7 @@ Partial Public Class AccountingEventForm
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
     Protected WithEvents btnUndo_Write As Global.System.Web.UI.WebControls.Button
-    
+
     '''<summary>
     '''btnDelete_WRITE control.
     '''</summary>
@@ -390,7 +408,7 @@ Partial Public Class AccountingEventForm
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
     Protected WithEvents btnDelete_WRITE As Global.System.Web.UI.WebControls.Button
-    
+
     '''<summary>
     '''btnCopy_WRITE control.
     '''</summary>

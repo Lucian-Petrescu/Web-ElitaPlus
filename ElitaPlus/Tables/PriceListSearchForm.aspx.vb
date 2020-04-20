@@ -15,10 +15,11 @@ Namespace Tables
         Private Const GRID_COL_DESCRIPTION_IDX As Integer = 1
         Private Const GRID_COL_COUNTRY As Integer = 2
         Private Const GRID_COL_VENDOR_COUNT_IDX As Integer = 3
-        Private Const GRID_COL_EFFECTIVE_IDX As Integer = 4
-        Private Const GRID_COL_EXPIRATION_IDX As Integer = 5
+        Private Const GRID_COL_STATUS_IDX As Integer = 4
+        Private Const GRID_COL_EFFECTIVE_IDX As Integer = 5
+        Private Const GRID_COL_EXPIRATION_IDX As Integer = 6
 
-        Private Const GRID_COL_PRICE_LIST_ID_IDX As Integer = 6
+        Private Const GRID_COL_PRICE_LIST_ID_IDX As Integer = 7
 
 #End Region
 
@@ -35,6 +36,7 @@ Namespace Tables
             Public ServiceCenter As String = String.Empty
             Public ActiveOnDate As DateType = Date.Today
             Public SortExpression As String = "Country"
+            Public Status As String = String.Empty
 
             Public SearchDV As PriceList.PriceListSearchDV
             Public HasDataChanged As Boolean
@@ -259,10 +261,8 @@ Namespace Tables
             Me.Grid.DataSource = Me.State.SearchDV
             HighLightSortColumn(Grid, Me.State.SortExpression)
             Me.Grid.DataBind()
-
             ControlMgr.SetVisibleControl(Me, Grid, Me.State.IsGridVisible)
             ControlMgr.SetVisibleControl(Me, trPageSize, Me.Grid.Visible)
-
             Session("recCount") = Me.State.SearchDV.Count
             Me.lblRecordCount.Text = Me.State.SearchDV.Count & " " & TranslationBase.TranslateLabelOrMessage(Message.MSG_RECORDS_FOUND)
         End Sub
@@ -336,6 +336,7 @@ Namespace Tables
 
                     'e.Row.Cells(Me.GRID_COL_COUNTRY).Text = LookupListNew.GetDescriptionFromId(LookupListNew.LK_COUNTRIES, _
                     ' New Guid(CType(dvRow(PriceList.PriceListSearchDV.COL_NAME_COUNTRY_ID), Byte())))
+                    e.Row.Cells(Me.GRID_COL_STATUS_IDX).Text = dvRow(PriceList.PriceListSearchDV.COL_NAME_STATUS)
                     e.Row.Cells(Me.GRID_COL_EFFECTIVE_IDX).Text = Me.GetDateFormattedString(DateHelper.GetDateValue(dvRow(PriceList.PriceListSearchDV.COL_NAME_EFFECTIVE)))
                     e.Row.Cells(Me.GRID_COL_EXPIRATION_IDX).Text = Me.GetDateFormattedString(DateHelper.GetDateValue(dvRow(PriceList.PriceListSearchDV.COL_NAME_EXPIRATION)))
                 End If
@@ -374,6 +375,7 @@ Namespace Tables
                 Me.State.HasDataChanged = False
                 Me.State.SearchClick = True
                 Me.PopulateGrid()
+
             Catch ex As Exception
                 Me.HandleErrors(ex, Me.MasterPage.MessageController)
             End Try

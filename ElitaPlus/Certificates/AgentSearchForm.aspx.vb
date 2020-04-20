@@ -527,7 +527,13 @@ Namespace Certificates
                                    })
 
             If State IsNot Nothing AndAlso State.CompanyId <> Guid.Empty Then
-                SetSelectedItem(ddlCompany, State.CompanyId)
+                Try
+                    SetSelectedItem(ddlCompany, State.CompanyId)
+                Catch ex As Exception
+                    ddlCompany.SelectedIndex = DefaultItem
+                    State.CompanyId = GetSelectedItem(ddlCompany)
+                    State.DealerId = guid.Empty
+                End Try
             Else
                 ddlCompany.SelectedIndex = DefaultItem
                 State.CompanyId = GetSelectedItem(ddlCompany)
@@ -793,6 +799,8 @@ Namespace Certificates
                         State.SearchDv.Table.Columns.Add("LOSS_DATE_FORMAT", GetType(String))
                         State.SearchDv.Table.Columns.Add("REPORTED_DATE_FORMAT", GetType(String))
                         State.SearchDv.Table.Columns.Add("CASE_OPEN_DATE_FORMAT", GetType(String))
+                        State.SearchDv.Table.Columns.Add("WARRANTY_SALES_DATE_FORMAT", GetType(String))
+                        State.SearchDv.Table.Columns.Add("PRODUCT_SALES_DATE_FORMAT", GetType(String))
 
                         For Each dr As DataRow In State.SearchDv.Table.Rows
                             If Not dr("LOSS_DATE") Is DBNull.Value Then
@@ -803,6 +811,12 @@ Namespace Certificates
                             End If
                             If Not dr("CASE_OPEN_DATE") Is DBNull.Value Then
                                 dr("CASE_OPEN_DATE_FORMAT") = GetDateFormattedStringNullable(CType(dr("CASE_OPEN_DATE"), DateTime))
+                            End If
+                            If Not dr("WARRANTY_SALES_DATE") Is DBNull.Value Then
+                                dr("WARRANTY_SALES_DATE_FORMAT") = GetDateFormattedStringNullable(CType(dr("WARRANTY_SALES_DATE"), DateTime))
+                            End If
+                            If Not dr("PRODUCT_SALES_DATE") Is DBNull.Value Then
+                                dr("PRODUCT_SALES_DATE_FORMAT") = GetDateFormattedStringNullable(CType(dr("PRODUCT_SALES_DATE"), DateTime))
                             End If
                         Next
 
