@@ -86,7 +86,7 @@ Partial Class CountryForm
         Public LineOfBusinessList As List(Of CountryLineOfBusiness)
         Public LineOfBusinessWorkingItem As CountryLineOfBusiness
         Public UsedLineOfBusinessInContracts As New List(Of Guid)
-
+        Public PriceListAprrovalEmailIsNull As String = Nothing
     End Class
 
     Public Sub New()
@@ -235,6 +235,7 @@ Partial Class CountryForm
         Me.BindBOPropertyToLabel(Me.State.MyBO, "CertCountSuspOP", Me.LabelCertCountSuspOp)
         Me.BindBOPropertyToLabel(Me.State.MyBO, "DefaultSSId", Me.lblDefaultSC)
         Me.BindBOPropertyToLabel(Me.State.MyBO, "IsoCode", lblISOCode)
+        Me.BindBOPropertyToLabel(Me.State.MyBO, "PriceListApprovalEmail", Me.lblPriceListApprovalEmail)
 
         'REQ - 6155
         Me.BindBOPropertyToLabel(Me.State.MyBO, "UseAddressValidationXcd", Me.lblUseAddressValidation)
@@ -242,6 +243,9 @@ Partial Class CountryForm
         Me.BindBOPropertyToLabel(Me.State.MyBO, "AddressConfidenceThreshold", Me.lblAddressConfidenceThreshold)
         Me.BindBOPropertyToLabel(Me.State.MyBO, "AllowForget", Me.lblAllowForget)
         Me.BindBOPropertyToLabel(Me.State.MyBO, "FullNameFormat", Me.lblFullnameFormat)
+
+        'Me.BindBOPropertyToLabel(Me.State.MyBO, "PriceListApprovalEmail", Me.lblPriceListApprovalEmail)
+        'Me.BindBOPropertyToLabel(Me.State.MyBO, "PriceListApprovalNeeded", lblPriceListApprovalNeeded)
 
         Me.ClearGridHeadersAndLabelsErrSign()
     End Sub
@@ -323,9 +327,17 @@ Partial Class CountryForm
                                                         .TextFunc = AddressOf .GetDescription,
                                                         .ValueFunc = AddressOf .GetExtendedCode
                                                        })
+
+        Me.cboPriceListApprovalNeeded.Populate(yesNoLkl, New PopulateOptions() With
+                                                      {
+                                                        .AddBlankItem = False,
+                                                        .TextFunc = AddressOf .GetDescription,
+                                                        .ValueFunc = AddressOf .GetExtendedCode
+                                                       })
+
         cboFullNameFormat.Populate(fullnameformat, New PopulateOptions() With
                                            {
-                                           .AddBlankItem = False,
+                                            .AddBlankItem = False,
                                            .TextFunc = AddressOf .GetDescription,
                                            .ValueFunc = AddressOf .GetExtendedCode
                                            })
@@ -451,6 +463,12 @@ Partial Class CountryForm
                 Me.SetSelectedItem(Me.cboAllowForget, .AllowForget)
             End If
 
+            If String.IsNullOrEmpty(.PriceListApprovalNeeded) Then
+                Me.SetSelectedItem(cboPriceListApprovalNeeded, Me.State.noCode)
+            Else
+                Me.SetSelectedItem(Me.cboPriceListApprovalNeeded, .PriceListApprovalNeeded)
+            End If
+
             If String.IsNullOrEmpty(.FullNameFormat) Then
                 Me.SetSelectedItem(cboFullNameFormat, Me.State.fsmslCode)
             Else
@@ -460,6 +478,15 @@ Partial Class CountryForm
 
             Me.PopulateControlFromBOProperty(Me.TextboxAddressConfidenceThreshold, .AddressConfidenceThreshold)
             Me.PopulateControlFromBOProperty(Me.txtISOCode, .IsoCode)
+
+            If .PriceListApprovalEmail Is Nothing OrElse .PriceListApprovalEmail.Equals(String.Empty) Then
+                Me.State.PriceListAprrovalEmailIsNull = TranslationBase.TranslateLabelOrMessage("THERE_IS_NO_VALUE")
+                Me.PopulateControlFromBOProperty(Me.txtPriceListApprovalEmail, Me.State.PriceListAprrovalEmailIsNull)
+            Else
+                Me.PopulateControlFromBOProperty(Me.txtPriceListApprovalEmail, .PriceListApprovalEmail)
+            End If
+
+            'Me.PopulateControlFromBOProperty(Me.txtPriceListApprovalEmail, .PriceListApprovalEmail)
         End With
 
         'Individual Policy
@@ -542,6 +569,15 @@ Partial Class CountryForm
             Me.PopulateBOProperty(Me.State.MyBO, "IsoCode", Me.txtISOCode)
 
             Me.PopulateBOProperty(Me.State.MyBO, "AllowForget", Me.cboAllowForget, False, True)
+
+            Me.PopulateBOProperty(Me.State.MyBO, "PriceListApprovalNeeded", Me.cboPriceListApprovalNeeded, False, True)
+
+            If Me.cboPriceListApprovalNeeded.SelectedValue.Equals(Me.State.noCode) Then
+                Me.State.PriceListAprrovalEmailIsNull = TranslationBase.TranslateLabelOrMessage("THERE_IS_NO_VALUE")
+                Me.PopulateControlFromBOProperty(Me.txtPriceListApprovalEmail, Me.State.PriceListAprrovalEmailIsNull)
+            Else
+                Me.PopulateControlFromBOProperty(Me.txtPriceListApprovalEmail, .PriceListApprovalEmail)
+            End If
 
             Me.PopulateBOProperty(Me.State.MyBO, "FullNameFormat", Me.cboFullNameFormat, False, True)
 
@@ -671,6 +707,8 @@ Partial Class CountryForm
     Private Sub btnSave_WRITE_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnSave_WRITE.Click
         Try
             Me.PopulateBOsFormFrom()
+            ' Validate User Selected Required Fields
+            ValidateRequiredFields()
             If Me.State.MyBO.IsDirty Then
                 Me.State.MyBO.Save()
                 Me.State.HasDataChanged = True
@@ -685,7 +723,26 @@ Partial Class CountryForm
             Me.HandleErrors(ex, Me.MasterPage.MessageController)
         End Try
     End Sub
+    Private Sub ValidateRequiredFields()
+        Dim requiredFieldsErrorExist As Boolean = False
+        Dim strRequiredFieldSetting As String = String.Empty
 
+        If strRequiredFieldSetting.Trim().Length > 0 Then
+            ' Validating Email
+            If strRequiredFieldSetting.Contains("[EMAIL]") Then
+                If Me.State.MyBO.PriceListApprovalEmail Is Nothing OrElse Me.State.MyBO.PriceListApprovalEmail.Trim() = String.Empty Then
+                    Me.MasterPage.MessageController.AddErrorAndShow("EMAIL_IS_REQUIRED_ERR")
+                    requiredFieldsErrorExist = True
+                End If
+            End If
+
+        End If
+
+        If requiredFieldsErrorExist Then
+            Throw New GUIException(Message.MSG_GUI_INVALID_VALUE, Message.MSG_GUI_INVALID_VALUE)
+        End If
+
+    End Sub
     Private Sub btnUndo_Write_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnUndo_Write.Click
         Try
             If Not Me.State.MyBO.IsNew Then

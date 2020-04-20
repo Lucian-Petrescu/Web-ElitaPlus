@@ -545,7 +545,7 @@ Public NotInheritable Class Claim
         End Set
     End Property
 
-    <ValidStringLength("", Max:=10)>
+    <ValidStringLength("", Max:=15)>
     Public Property BatchNumber() As String
         Get
             CheckDeleted()

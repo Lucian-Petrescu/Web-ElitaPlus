@@ -5,6 +5,7 @@ Imports System.Diagnostics
 Imports Assurant.ElitaPlus.BusinessObjectsNew
 Imports System.Configuration
 Imports Assurant.Elita.WorkerFramework
+Imports Assurant.ElitaPlus.Common
 
 Public Class ElitaHarvesterService
     Inherits ServiceBase
@@ -20,15 +21,18 @@ Public Class ElitaHarvesterService
     Private _threadingManager As ThreadingManager
 
     Public Sub New()
+        Logger.Initialize("ElitaHarvesterService")
+        'AppConfig.Debug("testLog")
         Logger.AddInfo("ElitaHarvesterService has been started successfully")
         InitializeComponent()
         _threadingManager = New ThreadingManager()
+
     End Sub
 
     Protected Overrides Sub OnStart(ByVal args() As String)
         Try
             'Debugger.Launch()
-            '  Logger.Initialize("ElitaHarvesterService")
+            'Logger.Initialize("ElitaHarvesterService")
             Logger.AddInfo("ElitaHarvesterService has been started successfully")
             _threadingManager.InitializeThreads()
             WorkersManager.Current.Logger = New LoggerAdapter()

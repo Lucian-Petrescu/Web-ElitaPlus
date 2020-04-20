@@ -27,7 +27,7 @@
             </td>
             <td>
                 &nbsp;
-                <asp:DropDownList ID="moEventTypeDDL" Width="246px" AutoPostBack="false" runat="server">
+                <asp:DropDownList ID="moEventTypeDDL" Width="246px" AutoPostBack="True" runat="server">
                 </asp:DropDownList>
             </td>
             <td class="LABELCOLUMN">
@@ -159,6 +159,17 @@
                 &nbsp;
                 <asp:TextBox ID="moTransactionAmountAccountTEXT" runat="server" Width="240px"></asp:TextBox>
             </td>
+        </tr>
+
+          <tr>
+            <td class="LABELCOLUMN">
+                <asp:Label ID="moJournalLevelLABEL" runat="server">JOURNAL_LEVEL</asp:Label>
+            </td>
+            <td>
+                &nbsp;
+                 <asp:DropDownList ID="moJournalLevelDDL" Width="246px" AutoPostBack="false" runat="server"></asp:DropDownList>
+            </td>
+            <td colspan="2">&nbsp;</td>            
         </tr>
         <tr>
             <td colspan="4">

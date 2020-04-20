@@ -1284,7 +1284,9 @@ Namespace Interfaces
                     If (Not oDateCompImage Is Nothing) Then
                         Me.AddCalendar(oDateCompImage, oTextBox)
                     End If
-                    Me.PopulateControlFromBOProperty(oTextBox, dvRow(DealerReconWrk.COL_NAME_DATE_COMP))
+                    If (Not String.IsNullOrEmpty(dvRow(DealerReconWrk.COL_NAME_DATE_COMP).ToString())) Then
+                        Me.PopulateControlFromBOProperty(oTextBox, GetDateFormattedString(dvRow(DealerReconWrk.COL_NAME_DATE_COMP)))
+                    End If
                     oTextBox = CType(.FindControl("moCertificateTextGrid"), TextBox)
                     oTextBox.Attributes.Add("onchange", "setDirty()")
                     Me.PopulateControlFromBOProperty(oTextBox, dvRow(DealerReconWrk.COL_NAME_CERTIFICATE))
@@ -1314,7 +1316,9 @@ Namespace Interfaces
                     If (Not oExtWarrSaleDateImage Is Nothing) Then
                         Me.AddCalendar(oExtWarrSaleDateImage, oTextBox)
                     End If
-                    Me.PopulateControlFromBOProperty(oTextBox, dvRow(DealerReconWrk.COL_NAME_EXTWARR_SALEDATE))
+                    If (Not String.IsNullOrEmpty(dvRow(DealerReconWrk.COL_NAME_EXTWARR_SALEDATE).ToString())) Then
+                        Me.PopulateControlFromBOProperty(oTextBox, GetDateFormattedString(dvRow(DealerReconWrk.COL_NAME_EXTWARR_SALEDATE)))
+                    End If
                     oTextBox = CType(.FindControl("moTypePaymentTextGrid"), TextBox)
                     oTextBox.Attributes.Add("onchange", "setDirty()")
                     Me.PopulateControlFromBOProperty(oTextBox, dvRow(DealerReconWrk.COL_NAME_TYPE_PAYMENT))
@@ -1402,7 +1406,9 @@ Namespace Interfaces
                         If (Not oDocumentIssueDateImage Is Nothing) Then
                             Me.AddCalendar(oDocumentIssueDateImage, oTextBox)
                         End If
-                        Me.PopulateControlFromBOProperty(oTextBox, dvRow(DealerReconWrk.COL_NAME_DOCUMENT_ISSUE_DATE))
+                        If (Not String.IsNullOrEmpty(dvRow(DealerReconWrk.COL_NAME_DOCUMENT_ISSUE_DATE).ToString())) Then
+                            Me.PopulateControlFromBOProperty(oTextBox, GetDateFormattedString(dvRow(DealerReconWrk.COL_NAME_DOCUMENT_ISSUE_DATE)))
+                        End If
                         oTextBox = CType(.FindControl("moRGNumberTextGrid"), TextBox)
                         oTextBox.Attributes.Add("onchange", "setDirty()")
                         Me.PopulateControlFromBOProperty(oTextBox, dvRow(DealerReconWrk.COL_NAME_RG_NUMBER))
@@ -1475,9 +1481,10 @@ Namespace Interfaces
                         Dim oDatePaidForImage As ImageButton = CType(.FindControl("moDatePaidForImageGrid"), ImageButton)
                         If (Not oDateCompImage Is Nothing) Then
                             Me.AddCalendar(oDatePaidForImage, oTextBox)
-                            Me.PopulateControlFromBOProperty(oTextBox, dvRow(DealerReconWrk.COL_NAME_DATE_PAID_FOR))
                         End If
-
+                        If (Not String.IsNullOrEmpty(dvRow(DealerReconWrk.COL_NAME_DATE_PAID_FOR).ToString())) Then
+                            Me.PopulateControlFromBOProperty(oTextBox, GetDateFormattedString(dvRow(DealerReconWrk.COL_NAME_DATE_PAID_FOR)))
+                        End If
                         oTextBox = CType(.FindControl("moMembershipNumTextGrid"), TextBox)
                         oTextBox.Attributes.Add("onchange", "setDirty()")
                         Me.PopulateControlFromBOProperty(oTextBox, dvRow(DealerReconWrk.COL_NAME_MEMBERSHIP_NUMBER))
@@ -1511,17 +1518,19 @@ Namespace Interfaces
                         Dim oFirstUseDateImage As ImageButton = CType(.FindControl("moFirstUseDateImageGrid"), ImageButton)
                         If (Not oDateCompImage Is Nothing) Then
                             Me.AddCalendar(oFirstUseDateImage, oTextBox)
-                            Me.PopulateControlFromBOProperty(oTextBox, dvRow(DealerReconWrk.COL_NAME_FIRST_USE_DATE))
                         End If
-
+                        If (Not String.IsNullOrEmpty(dvRow(DealerReconWrk.COL_NAME_FIRST_USE_DATE).ToString())) Then
+                            Me.PopulateControlFromBOProperty(oTextBox, GetDateFormattedString(dvRow(DealerReconWrk.COL_NAME_FIRST_USE_DATE)))
+                        End If
                         oTextBox = CType(.FindControl("moLastUseDateTextGrid"), TextBox)
                         oTextBox.Attributes.Add("onchange", "setDirty()")
                         Dim oLastUseDateImage As ImageButton = CType(.FindControl("moLastUseDateImageGrid"), ImageButton)
                         If (Not oDateCompImage Is Nothing) Then
                             Me.AddCalendar(oLastUseDateImage, oTextBox)
-                            Me.PopulateControlFromBOProperty(oTextBox, dvRow(DealerReconWrk.COL_NAME_LAST_USE_DATE))
                         End If
-
+                        If (Not String.IsNullOrEmpty(dvRow(DealerReconWrk.COL_NAME_LAST_USE_DATE).ToString())) Then
+                            Me.PopulateControlFromBOProperty(oTextBox, GetDateFormattedString(dvRow(DealerReconWrk.COL_NAME_LAST_USE_DATE)))
+                        End If
                         oTextBox = CType(.FindControl("moSimCardNumTextGrid"), TextBox)
                         oTextBox.Attributes.Add("onchange", "setDirty()")
                         Me.PopulateControlFromBOProperty(oTextBox, dvRow(DealerReconWrk.COL_NAME_SIM_CARD_NUMBER))
@@ -1624,8 +1633,9 @@ Namespace Interfaces
                         If (Not oDateofbirthImage Is Nothing) Then
                             Me.AddCalendar(oDateofbirthImage, oTextBox)
                         End If
-                        Me.PopulateControlFromBOProperty(oTextBox, dvRow(DealerReconWrk.COL_NAME_BIRTH_DATE))
-
+                        If (Not String.IsNullOrEmpty(dvRow(DealerReconWrk.COL_NAME_BIRTH_DATE).ToString())) Then
+                            Me.PopulateControlFromBOProperty(oTextBox, GetDateFormattedString(dvRow(DealerReconWrk.COL_NAME_BIRTH_DATE)))
+                        End If
                         oTextBox = CType(.FindControl("moFinanceDateTextGrid"), TextBox)
                         oTextBox.Attributes.Add("onchange", "setDirty()")
                         Me.PopulateControlFromBOProperty(oTextBox, dvRow(DealerReconWrk.COL_NAME_FINANCED_DATE))
@@ -1678,17 +1688,19 @@ Namespace Interfaces
                         If (Not oUpgradeDateImage Is Nothing) Then
                             Me.AddCalendar(oUpgradeDateImage, oTextBox)
                         End If
-                        Me.PopulateControlFromBOProperty(oTextBox, dvRow(DealerReconWrk.COL_NAME_UPGRADE_DATE))
+                        If (Not String.IsNullOrEmpty(dvRow(DealerReconWrk.COL_NAME_UPGRADE_DATE).ToString())) Then
+                            Me.PopulateControlFromBOProperty(oTextBox, GetDateFormattedString(dvRow(DealerReconWrk.COL_NAME_UPGRADE_DATE)))
+                        End If
 
                         oTextBox = CType(.FindControl("moAppleCareFeeTextGrid"), TextBox)
-                        Me.PopulateControlFromBOProperty(oTextBox, dvRow(DealerReconWrk.COL_NAME_APPLECARE_FEE))
+                            Me.PopulateControlFromBOProperty(oTextBox, dvRow(DealerReconWrk.COL_NAME_APPLECARE_FEE))
 
-                        oTextBox = CType(.FindControl("moOccupationTextGrid"), TextBox)
-                        Me.PopulateControlFromBOProperty(oTextBox, dvRow(DealerReconWrk.COL_NAME_OCCUPATION))
+                            oTextBox = CType(.FindControl("moOccupationTextGrid"), TextBox)
+                            Me.PopulateControlFromBOProperty(oTextBox, dvRow(DealerReconWrk.COL_NAME_OCCUPATION))
 
-                    Else
-                        'SetColumnState(CANCELLATION_CODE_COL, False)
-                        oTextBox = CType(.FindControl("moCancelCodeTextGrid"), TextBox)
+                        Else
+                            'SetColumnState(CANCELLATION_CODE_COL, False)
+                            oTextBox = CType(.FindControl("moCancelCodeTextGrid"), TextBox)
                         oTextBox.Attributes.Add("onchange", "setDirty()")
                         Me.PopulateControlFromBOProperty(oTextBox, dvRow(DealerReconWrk.COL_NAME_CANCELLATION_CODE))
                     End If

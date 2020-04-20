@@ -51,6 +51,8 @@ Partial Class PayClaimForm
     'REQ-6171 - Darty Gift Card web service
     Public Const ApplicationSource_Darty = "ASSURANT"
     Public Const Payee_Customer = "CUSTOMER"
+    Public Const Bank_Transfer = "BANK TRANSFER"
+    Public Const EMPTY_GUID As String = "00000000-0000-0000-0000-000000000000"
 #End Region
 
 #Region "Private members"
@@ -502,7 +504,7 @@ Partial Class PayClaimForm
                         Me.LoadClaimAuthDetail()
                     End If
                 End If
-
+                '
                 PopulateDropdowns()
                 Me.PopulateFormFromBOs()
                 If Not Me.State.selectedPaymentMethodID.Equals(Guid.Empty) Then
@@ -515,6 +517,7 @@ Partial Class PayClaimForm
                 End If
                 loadTaxAmountsFromHiddenFields()
             End If
+
             'ScriptManager.RegisterStartupScript(Me, Me.GetType(), "load", "doAmtCalc(document.getElementById('txtLabor'));", True)
             CheckIfComingFromSaveConfirm()
             Me.EnableDisableFields()
@@ -949,7 +952,45 @@ Partial Class PayClaimForm
             Me.HandleErrors(ex, Me.MasterPage.MessageController)
         End Try
     End Sub
+    Private Sub PopulateFieldsForBankTransfer()
 
+        If ((cboPayeeSelector.SelectedValue <> Me.EMPTY_GUID AndAlso
+            LookupListNew.GetCodeFromId(LookupListNew.LK_PAYEE, GetSelectedItem(cboPayeeSelector)) = ClaimInvoice.PAYEE_OPTION_CUSTOMER) Or
+            (PaymentMethodDrop.SelectedValue <> Me.EMPTY_GUID AndAlso
+            LookupListNew.GetCodeFromId(LookupListNew.LK_PAYMENTMETHOD, GetSelectedItem(PaymentMethodDrop)) = Codes.PAYMENT_METHOD__BANK_TRANSFER)) Then
+
+            Me.PayeeBankInfo.LoadBankSortCodeList(Me.oCompany, oCertificate.CUIT_CUIL)
+
+            If oCompany.AttributeValues.Contains(Codes.DEFAULT_CLAIM_INVOICE_NUMBER) Then
+                txtInvoiceNumber.Text = oCompany.AttributeValues.Value(Codes.DEFAULT_CLAIM_INVOICE_NUMBER)
+            End If
+
+            txtInvoiceDate.Text = Me.GetDateFormattedString(DateTime.Now)
+            txtRepairDate.Text = Me.GetDateFormattedString(DateTime.Now)
+        Else
+            SetPayeeBankInvoiceControlsEmpty()
+        End If
+
+    End Sub
+    Private Sub SetFieldsEmptyForBankTrf()
+        If Not oCompany Is Nothing AndAlso oCompany.AttributeValues.Contains(Codes.DEFAULT_CLAIM_BANK_SORT_CODE) Then
+            If oCompany.AttributeValues.Value(Codes.DEFAULT_CLAIM_BANK_SORT_CODE) = Codes.YESNO_Y Then
+                If ((cboPayeeSelector.SelectedValue <> Me.EMPTY_GUID AndAlso
+                     LookupListNew.GetCodeFromId(LookupListNew.LK_PAYEE, GetSelectedItem(cboPayeeSelector)) <> ClaimInvoice.PAYEE_OPTION_CUSTOMER) Or
+                    (PaymentMethodDrop.SelectedValue <> Me.EMPTY_GUID AndAlso
+                     LookupListNew.GetCodeFromId(LookupListNew.LK_PAYMENTMETHOD, GetSelectedItem(PaymentMethodDrop)) <> Codes.PAYMENT_METHOD__BANK_TRANSFER)) Then
+                    SetPayeeBankInvoiceControlsEmpty()
+                End If
+            End If
+        End If
+    End Sub
+    Private Sub SetPayeeBankInvoiceControlsEmpty()
+        Me.PayeeBankInfo.SetFieldsEmpty()
+        Me.PayeeBankInfo.HideCboBankSortCode()
+        txtInvoiceNumber.Text = String.Empty
+        txtInvoiceDate.Text = String.Empty
+        txtRepairDate.Text = String.Empty
+    End Sub
     Protected Sub PopulateDropdowns()
         Try
             If Me.State.ClaimBO Is Nothing Then
@@ -1026,6 +1067,8 @@ Partial Class PayClaimForm
                                                 {
                                                     .AddBlankItem = True
                                                 })
+
+            '
 
             'Me.BindListControlToDataView(PaymentMethodDrop, LookupListNew.GetPaymentMethodLookupList(ElitaPlusIdentity.Current.ActiveUser.LanguageId, True, (ElitaPlusIdentity.Current.ActiveUser.Id).ToString, oCompany.Id.ToString, True), "DESCRIPTION", "ID", True)
             'PaymentMethod
@@ -1861,10 +1904,10 @@ Partial Class PayClaimForm
         If oCompany.InvoiceMethodId.Equals(LookupListNew.GetIdFromCode(LookupListNew.GetInvoiceMethodLookupList(), "1")) AndAlso
             (Not String.IsNullOrEmpty(Me.hdSalvageAmt.Value) AndAlso Convert.ToDouble(Me.hdSalvageAmt.Value) > 0D) AndAlso
             (Me.State.ClaimInvoiceBO.Invoiceable.SalvageAmount.Value <= Me.State.ClaimInvoiceBO.Amount.Value) Then
-            Me.State.ClaimInvoiceBO.IsSalvagePayment = True
+            Me.State.ClaimInvoiceBO.IsSalvagePayment= True
         End If
 
-        Me.CapturePayeeInfo(GetSelectedItem(cboPayeeSelector), GetSelectedItem(Me.PaymentMethodDrop), blnExcludeSaveUserControls)
+                Me.CapturePayeeInfo(GetSelectedItem(cboPayeeSelector), GetSelectedItem(Me.PaymentMethodDrop), blnExcludeSaveUserControls)
 
         PopulateManualClaimTaxes()
 
@@ -2694,12 +2737,13 @@ Partial Class PayClaimForm
         Dim PaymentMethodCode As String = LookupListNew.GetCodeFromId(LookupListNew.LK_PAYMENTMETHOD, selectedPaymentMethod)
 
         ControlMgr.SetVisibleControl(Me, Me.hrSeprator, False)
-
+        Me.SetFieldsEmptyForBankTrf()
         Try
             Select Case PaymentMethodCode
                 Case Codes.PAYMENT_METHOD__BANK_TRANSFER
                     Me.BankTransferLogic(blnClearOldBankInfo)
                     Me.PayeeBankInfo.SetRequiredFieldsForDealerWithGiftCard(oDealer)
+                    Me.PopulateFieldsForBankTransfer()
                 Case Codes.PAYMENT_METHOD__ADMIN_CHECK
                     ControlMgr.SetVisibleControl(Me, Me.PayeeAddress, False)
                     ControlMgr.SetVisibleControl(Me, Me.PayeeBankInfo, False)
@@ -2797,7 +2841,7 @@ Partial Class PayClaimForm
         ControlMgr.SetVisibleControl(Me, Me.PaymentMethodDrop, False)
         ControlMgr.SetVisibleControl(Me, Me.moPaymentMethodLabel, False)
         ControlMgr.SetVisibleControl(Me, Me.Req_Pay_MethodLabel, False)
-
+        Me.SetFieldsEmptyForBankTrf()
         ControlMgr.SetVisibleControl(Me, Me.hrSeprator, False)
 
         Me.ChangeEnabledProperty(Me.txtPayeeName, False)
@@ -2878,7 +2922,6 @@ Partial Class PayClaimForm
                     ControlMgr.SetEnableControl(Me, Me.LabelAlreadyPaid, True)
                     ControlMgr.SetEnableControl(Me, Me.txtOtherAmt, True)
                     ControlMgr.SetEnableControl(Me, Me.txtOtherTax, True)
-
                 Case ClaimInvoice.PAYEE_OPTION_SERVICE_CENTER
                     Dim claimServiceCenter As ServiceCenter = New ServiceCenter(Me.State.ClaimInvoiceBO.Invoiceable.ServiceCenterId)
                     'If the pay master is on, pay master instead
@@ -2950,7 +2993,6 @@ Partial Class PayClaimForm
                     ControlMgr.SetEnableControl(Me, Me.LabelAlreadyPaid, True)
                     ControlMgr.SetEnableControl(Me, Me.txtOtherAmt, True)
                     ControlMgr.SetEnableControl(Me, Me.txtOtherTax, True)
-
                 Case ClaimInvoice.PAYEE_OPTION_LOANER_CENTER
                     Me.State.ClaimInvoiceBO.ServiceCenterWithholdingRate = Me.State.ClaimInvoiceBO.ServiceCenterWithholdingRate.Value
                     If Not Me.State.ClaimInvoiceBO.Invoiceable.LoanerCenterId.Equals(Guid.Empty) Then
@@ -3019,7 +3061,6 @@ Partial Class PayClaimForm
                     ControlMgr.SetEnableControl(Me, Me.LabelAlreadyPaid, True)
                     ControlMgr.SetEnableControl(Me, Me.txtOtherAmt, True)
                     ControlMgr.SetEnableControl(Me, Me.txtOtherTax, True)
-
                 Case ClaimInvoice.PAYEE_OPTION_CUSTOMER
                     If State.ClaimBO.Dealer.AttributeValues.Contains(Codes.DLR_ATTRBT_PAY_TO_CUST_AMT) Then
                         If oDealer.AttributeValues.Value(Codes.DLR_ATTRBT_PAY_TO_CUST_AMT) = Codes.YESNO_Y AndAlso Me.State.ClaimBO.MethodOfRepairCode = Codes.METHOD_OF_REPAIR__REPLACEMENT Then
@@ -3159,7 +3200,6 @@ Partial Class PayClaimForm
                     ControlMgr.SetEnableControl(Me, Me.LabelAlreadyPaid, True)
                     ControlMgr.SetEnableControl(Me, Me.txtOtherAmt, True)
                     ControlMgr.SetEnableControl(Me, Me.txtOtherTax, True)
-
             End Select
 
             'If Me.IsPostBack AndAlso Me.State.ClaimInvoiceBO.ServiceCenterWithholdingRate.Value <> 0 AndAlso (PayeeOptionCode = ClaimInvoice.PAYEE_OPTION_MASTER_CENTER Or

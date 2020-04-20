@@ -19,6 +19,10 @@ Public Class Codes
     'Public Const EVENT_CODE__POLICE_REPORT_RECEIVED = "POLICE_REPORT_RESOLVED"
     'Public Const EVENT_CODE__POLICE_REPORT_NOT_RECEIVED = "POLICE_REPORT_REJECTED"
     'Public Const EVENT_CODE__POLICE_REPORT_WAVED = "POLICE_REPORT_WAVED"
+    Public Const DEFAULT_CLAIM_INVOICE_NUMBER As String = "DEFAULT_CLAIM_INVOICE_NUMBER"
+    Public Const AUTO_POPULATE_CERT_TAX_ID As String = "AUTO_POPULATE_CERT_TAX_ID"
+    Public Const DEFAULT_CLAIM_BANK_SORT_CODE As String = "DEFAULT_CLAIM_BANK_SORT_CODE"
+    Public Const DEFAULT_CLAIM_BANK_SUB_CODE As String = "DEFAULT_CLAIM_BANK_SUB_CODE"
 
     Public Const CLM_STAT__COM_FB_CLM_UPD_DMG As String = "COM_FB_CLM_UPD_DMG"
     Public Const CLM_STAT__COM_FB_CLM_UPD_THFT As String = "COM_FB_CLM_UPD_THFT"
@@ -45,6 +49,7 @@ Public Class Codes
     Public Const EVNT_TYP__CLAIM_UPDATED As String = "CLAIM_UPDATE"
     Public Const EVNT_TYP__CLAIM_APPROVED As String = "CLAIM_APPROVED"
     Public Const EVNT_TYP__CLAIM_DENIED As String = "CLAIM_DENIED"
+    Public Const EVNT_TYP__CLAIM_REFERRED As String = "CLAIM_REFERRED"
     Public Const PRESERVE_AUTH_AMOUNT_AT_REPLACE_ITEM As String = "PRESERVE_AUTH_AMOUNT_AT_REPLACE_ITEM"
     Public Const EVNT_TYP_SEND_CLAIM_GIFT_CARD = "SEND_CLAIM_GIFT_CARD"
     Public Const EVNT_TYP_SEND_CERT_VOUCHER = "SEND_CERT_VOUCHER"
@@ -57,6 +62,8 @@ Public Class Codes
     Public Const EVNT_COMM_CHANNEL As String = "COMM_CHANNEL"
     Public Const EVNT_COMM_CHAN_EMAIL As String = "EMAIL"
 
+    Public Const ERROR_FLAG As String = "100"
+    Public Const NO_HELP_COMTS_FOUND As String = "NO_HELP_COMTS_FOUND"
 
     ' Claim Issue Code
     Public Const ISSUE_CODE__TRBSHT = "TRBSHT"
@@ -1107,6 +1114,7 @@ Public Class Codes
     Public Const CLM_AUTH_SUBSTAT_RESHIPMENT_REQ As String = "CLM_AUTH_SUBSTAT-RESHIPREQ"
     Public Const CLM_AUTH_SUBSTAT_SOSUBMIT As String = "CLM_AUTH_SUBSTAT-SOSUBMIT"
     Public Const CLM_AUTH_SUBSTAT_CANCEL_SENT As String = "CLM_AUTH_SUBSTAT-CNLSENT"
+    Public Const CLM_AUTH_SUBSTAT_AWR As String = "CLM_AUTH_SUBSTAT-AWR"
 
     'Dealer Contract Policy Type (Collective or Individual)
     Public Const CONTRACT_POLTYPE_COLLECTIVE As String = "CP"
@@ -1119,7 +1127,7 @@ Public Class Codes
     'claim payment based on deductible flag
     Public Const FULL_INVOICE_Y As String = "Y_FULL_INVOICE"
     Public Const AUTH_LESS_DEDUCT_Y As String = "Y_AUTH_LESS_DEDUCT"
-    
+
     'Company codes
     Public Const AUS_COMPANY_CODE As String = "AAU"
 

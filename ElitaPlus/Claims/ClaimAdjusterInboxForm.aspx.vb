@@ -1069,41 +1069,46 @@ Partial Class ClaimAdjusterInboxForm
 
     Private Sub modataGrid_RowCreated(ByVal sender As Object, ByVal e As System.Web.UI.WebControls.GridViewRowEventArgs) Handles modataGrid.RowCreated
 
-        If e.Row.RowType = DataControlRowType.DataRow Then
-            Dim pce1 As PopupControlExtender = CType(e.Row.FindControl("PopupControlExtender1"), PopupControlExtender)
-            Dim pce2 As PopupControlExtender = CType(e.Row.FindControl("PopupControlExtender2"), PopupControlExtender)
-            Dim pce3 As PopupControlExtender = CType(e.Row.FindControl("PopupControlExtender3"), PopupControlExtender)
+        Try
+              If e.Row.RowType = DataControlRowType.DataRow Then
+                Dim pce1 As PopupControlExtender = CType(e.Row.FindControl("PopupControlExtender1"), PopupControlExtender)
+                Dim pce2 As PopupControlExtender = CType(e.Row.FindControl("PopupControlExtender2"), PopupControlExtender)
+                Dim pce3 As PopupControlExtender = CType(e.Row.FindControl("PopupControlExtender3"), PopupControlExtender)
 
-            Dim behaviorID1 As String = "pce1_" + e.Row.RowIndex.ToString
-            pce1.BehaviorID = behaviorID1
-            Dim behaviorID2 As String = "pce2_" + e.Row.RowIndex.ToString
-            pce2.BehaviorID = behaviorID2
-            Dim behaviorID3 As String = "pce3_" + e.Row.RowIndex.ToString
-            pce3.BehaviorID = behaviorID3
+                Dim behaviorID1 As String = "pce1_" + e.Row.RowIndex.ToString
+                pce1.BehaviorID = behaviorID1
+                Dim behaviorID2 As String = "pce2_" + e.Row.RowIndex.ToString
+                pce2.BehaviorID = behaviorID2
+                Dim behaviorID3 As String = "pce3_" + e.Row.RowIndex.ToString
+                pce3.BehaviorID = behaviorID3
 
-            Dim img1 As System.Web.UI.WebControls.Image = CType(e.Row.FindControl("Image1"), System.Web.UI.WebControls.Image)
-            Dim img2 As System.Web.UI.WebControls.Image = CType(e.Row.FindControl("Image2"), System.Web.UI.WebControls.Image)
-            Dim img3 As System.Web.UI.WebControls.Image = CType(e.Row.FindControl("Image3"), System.Web.UI.WebControls.Image)
+                Dim img1 As System.Web.UI.WebControls.Image = CType(e.Row.FindControl("Image1"), System.Web.UI.WebControls.Image)
+                Dim img2 As System.Web.UI.WebControls.Image = CType(e.Row.FindControl("Image2"), System.Web.UI.WebControls.Image)
+                Dim img3 As System.Web.UI.WebControls.Image = CType(e.Row.FindControl("Image3"), System.Web.UI.WebControls.Image)
 
-            Dim OnMouseOverScript1 As String = String.Format("$find('{0}').showPopup();", behaviorID1)
-            Dim OnMouseOutScript1 As String = String.Format("$find('{0}').hidePopup();", behaviorID1)
+                Dim OnMouseOverScript1 As String = String.Format("$find('{0}').showPopup();", behaviorID1)
+                Dim OnMouseOutScript1 As String = String.Format("$find('{0}').hidePopup();", behaviorID1)
 
-            Dim OnMouseOverScript2 As String = String.Format("$find('{0}').showPopup();", behaviorID2)
-            Dim OnMouseOutScript2 As String = String.Format("$find('{0}').hidePopup();", behaviorID2)
+                Dim OnMouseOverScript2 As String = String.Format("$find('{0}').showPopup();", behaviorID2)
+                Dim OnMouseOutScript2 As String = String.Format("$find('{0}').hidePopup();", behaviorID2)
 
-            Dim OnMouseOverScript3 As String = String.Format("$find('{0}').showPopup();", behaviorID3)
-            Dim OnMouseOutScript3 As String = String.Format("$find('{0}').hidePopup();", behaviorID3)
+                Dim OnMouseOverScript3 As String = String.Format("$find('{0}').showPopup();", behaviorID3)
+                Dim OnMouseOutScript3 As String = String.Format("$find('{0}').hidePopup();", behaviorID3)
 
-            img1.Attributes.Add("onmouseover", OnMouseOverScript1)
-            img1.Attributes.Add("onmouseout", OnMouseOutScript1)
+                img1.Attributes.Add("onmouseover", OnMouseOverScript1)
+                img1.Attributes.Add("onmouseout", OnMouseOutScript1)
 
-            img2.Attributes.Add("onmouseover", OnMouseOverScript2)
-            img2.Attributes.Add("onmouseout", OnMouseOutScript2)
+                img2.Attributes.Add("onmouseover", OnMouseOverScript2)
+                img2.Attributes.Add("onmouseout", OnMouseOutScript2)
 
-            img3.Attributes.Add("onmouseover", OnMouseOverScript3)
-            img3.Attributes.Add("onmouseout", OnMouseOutScript3)
+                img3.Attributes.Add("onmouseover", OnMouseOverScript3)
+                img3.Attributes.Add("onmouseout", OnMouseOutScript3)
 
-        End If
+              End If
+        Catch ex As Exception
+            Me.HandleErrors(ex, Me.ErrorCtrl)
+        End Try
+      
 
     End Sub
 

@@ -85,7 +85,17 @@ Public Class ServiceOrderController
 
         sActivityCode = claimBO.ClaimActivityCode
 
-        Return GenerateReportName(sActivityCode, compCode, rprCode, serviceOrderType,claimBO.CoverageTypeCode)
+        Dim strSOSuffixRepair as string = String.Empty, strSOSuffixReplacement as string = String.Empty
+        If claimBO.Dealer.AttributeValues.Contains("SO_FORM_SUFFIX_REPAIR") Then
+            strSOSuffixRepair = claimBO.Dealer.AttributeValues.Value("SO_FORM_SUFFIX_REPAIR")
+        End If
+
+        If claimBO.Dealer.AttributeValues.Contains("SO_FORM_SUFFIX_REPLACEMENT") Then
+            strSOSuffixReplacement = claimBO.Dealer.AttributeValues.Value("SO_FORM_SUFFIX_REPLACEMENT")
+        End If
+
+
+        Return GenerateReportName(sActivityCode, compCode, rprCode, serviceOrderType,strSOSuffixRepair, strSOSuffixReplacement)
 
     End Function
 
@@ -93,16 +103,21 @@ Public Class ServiceOrderController
                                         ByVal compCode As String,
                                         Optional ByVal RepairCode As String = "",
                                         Optional ByVal ServiceOrderType As String = Nothing,
-                                        Optional ByVal CoverageType As String = Nothing) As String
+                                        Optional ByVal soSuffixRepair As String = Nothing,
+                                        Optional ByVal soSuffixReplacement As String = Nothing) As String
 
-        Dim strReportType, strReport As String
+        Dim strReportType, strReport, strSuffix As String
+
+        strSuffix = String.Empty
 
         If Not String.IsNullOrEmpty(ServiceOrderType) Then
             Select Case ServiceOrderType
                 Case CLAIM_SERVICE_ORDER_TYPE_REPLACEMENT
                     strReportType = REPLACEMENT_ORDER
+                    strSuffix = soSuffixReplacement
                 Case Else
                     strReportType = SERVICE_ORDER
+                    strSuffix = soSuffixRepair
             End Select
         Else
             Select Case sActivityCode
@@ -110,28 +125,25 @@ Public Class ServiceOrderController
                     strReportType = SERVICE_WARRANTY
                 Case CLAIM_ACTIVITY__REPLACED, CLAIM_ACTIVITY__PENDING_REPLACEMENT
                     strReportType = REPLACEMENT_ORDER
+                    strSuffix = soSuffixReplacement
                 Case Else
                     strReportType = SERVICE_ORDER
+                    strSuffix = soSuffixRepair
             End Select
 
-        End If
-
-        if  Not String.IsNullOrEmpty(CoverageType) AndAlso strReportType = SERVICE_ORDER AndAlso compCode = AUS_COMPANY_CODE Then
-            Select Case CoverageType
-                Case COVERAGE_TYPE__EXTENDED
-                    strReportType &= "_EW"
-                Case COVERAGE_TYPE__ACCIDENTAL, COVERAGE_TYPE__THEFTLOSS
-                    strReportType &= "_DE"
-            End Select
         End If
 
         strReport = strReportType & "_" & compCode
-        If RepairCode.Trim.Length > 0 Then
-            strReport = strReport & "_" & RepairCode
+
+        if String.IsNullOrEmpty(strSuffix) = false Then
+            strReport = strReport & "_" & strSuffix
         End If
 
-        If Not System.IO.File.Exists(HttpContext.Current.Server.MapPath(strReport) & ".xslt") Then
-            strReport = strReportType & "_" & compCode
+        If RepairCode.Trim.Length > 0 Then 'Check whether service order by method of repair exists
+            Dim strReportWithMOR = strReport & "_" & RepairCode
+            If System.IO.File.Exists(HttpContext.Current.Server.MapPath(strReportWithMOR) & ".xslt") Then
+                strReport = strReportWithMOR
+            End If
         End If
 
         Return strReport

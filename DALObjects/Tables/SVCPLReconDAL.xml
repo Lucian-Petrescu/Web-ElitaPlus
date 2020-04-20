@@ -1,0 +1,25 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<SQL>
+  <LOAD>
+    elp_tbl_svc_price_list_recon.LOAD
+  </LOAD>  
+  <LOAD_LIST_SVC>
+    elp_tbl_svc_price_list_recon.loadListBySVC
+  </LOAD_LIST_SVC>  
+  <LOAD_LATEST_STATUS>
+    elp_tbl_svc_price_list_recon.loadLatestStatusBySVC
+  </LOAD_LATEST_STATUS>
+  <UPDATE>
+    elp_tbl_svc_price_list_recon.modify
+  </UPDATE>
+  <UPDATE_STATUS>
+    elp_tbl_svc_price_list_recon.modify_staus
+  </UPDATE_STATUS>
+  <INSERT>
+    elp_tbl_svc_price_list_recon.add
+  </INSERT>
+  <DELETE>
+    elp_tbl_svc_price_list_recon.delete
+  </DELETE>
+  
+</SQL>

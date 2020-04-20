@@ -94,6 +94,8 @@ Public Class AcctTransLog
 
     Public Const COL_EVENT_TYPE As String = "GeneralDescription24"
 
+    Public Const JOURNALLEVEL_SUMMARY As String = "SUMMARY"
+
 #End Region
 
 
@@ -110,7 +112,7 @@ Public Class AcctTransLog
         End Get
     End Property
 
-    <ValueMandatory("")> _
+    <ValueMandatory("")>
     Public Property CompanyId() As Guid
         Get
             CheckDeleted()
@@ -204,7 +206,7 @@ Public Class AcctTransLog
     End Property
 
 
-    <ValueMandatory("")> _
+    <ValueMandatory("")>
     Public Property AcctCompanyId() As Guid
         Get
             CheckDeleted()
@@ -221,7 +223,7 @@ Public Class AcctTransLog
     End Property
 
 
-    <ValidStringLength("", Max:=160)> _
+    <ValidStringLength("", Max:=160)>
     Public Property Country() As String
         Get
             CheckDeleted()
@@ -238,7 +240,7 @@ Public Class AcctTransLog
     End Property
 
 
-    <ValidStringLength("", Max:=16)> _
+    <ValidStringLength("", Max:=16)>
     Public Property Region() As String
         Get
             CheckDeleted()
@@ -255,7 +257,7 @@ Public Class AcctTransLog
     End Property
 
 
-    <ValidStringLength("", Max:=160)> _
+    <ValidStringLength("", Max:=160)>
     Public Property RegionDescription() As String
         Get
             CheckDeleted()
@@ -272,7 +274,7 @@ Public Class AcctTransLog
     End Property
 
 
-    <ValidStringLength("", Max:=400)> _
+    <ValidStringLength("", Max:=400)>
     Public Property TaxIdCode() As String
         Get
             CheckDeleted()
@@ -289,7 +291,7 @@ Public Class AcctTransLog
     End Property
 
 
-    <ValidStringLength("", Max:=48)> _
+    <ValidStringLength("", Max:=48)>
     Public Property Currency() As String
         Get
             CheckDeleted()
@@ -340,7 +342,7 @@ Public Class AcctTransLog
     End Property
 
 
-    <ValidStringLength("", Max:=320)> _
+    <ValidStringLength("", Max:=320)>
     Public Property Certificate() As String
         Get
             CheckDeleted()
@@ -357,7 +359,7 @@ Public Class AcctTransLog
     End Property
 
 
-    <ValidStringLength("", Max:=120)> _
+    <ValidStringLength("", Max:=120)>
     Public Property Payee() As String
         Get
             CheckDeleted()
@@ -374,7 +376,7 @@ Public Class AcctTransLog
     End Property
 
 
-    <ValidStringLength("", Max:=120)> _
+    <ValidStringLength("", Max:=120)>
     Public Property Address1() As String
         Get
             CheckDeleted()
@@ -391,7 +393,7 @@ Public Class AcctTransLog
     End Property
 
 
-    <ValidStringLength("", Max:=120)> _
+    <ValidStringLength("", Max:=120)>
     Public Property Address2() As String
         Get
             CheckDeleted()
@@ -408,7 +410,7 @@ Public Class AcctTransLog
     End Property
 
 
-    <ValidStringLength("", Max:=120)> _
+    <ValidStringLength("", Max:=120)>
     Public Property City() As String
         Get
             CheckDeleted()
@@ -425,7 +427,7 @@ Public Class AcctTransLog
     End Property
 
 
-    <ValidStringLength("", Max:=120)> _
+    <ValidStringLength("", Max:=120)>
     Public Property Zip() As String
         Get
             CheckDeleted()
@@ -442,7 +444,7 @@ Public Class AcctTransLog
     End Property
 
 
-    <ValidStringLength("", Max:=640)> _
+    <ValidStringLength("", Max:=640)>
     Public Property AuthorizationNumber() As String
         Get
             CheckDeleted()
@@ -510,7 +512,7 @@ Public Class AcctTransLog
     End Property
 
 
-    <ValidStringLength("", Max:=28)> _
+    <ValidStringLength("", Max:=28)>
     Public Property AcctPeriod() As String
         Get
             CheckDeleted()
@@ -527,7 +529,7 @@ Public Class AcctTransLog
     End Property
 
 
-    <ValidStringLength("", Max:=80)> _
+    <ValidStringLength("", Max:=80)>
     Public Property CoverageType() As String
         Get
             CheckDeleted()
@@ -544,7 +546,7 @@ Public Class AcctTransLog
     End Property
 
 
-    <ValidStringLength("", Max:=800)> _
+    <ValidStringLength("", Max:=800)>
     Public Property Description() As String
         Get
             CheckDeleted()
@@ -561,7 +563,7 @@ Public Class AcctTransLog
     End Property
 
 
-    <ValidStringLength("", Max:=160)> _
+    <ValidStringLength("", Max:=160)>
     Public Property NetworkId() As String
         Get
             CheckDeleted()
@@ -578,7 +580,7 @@ Public Class AcctTransLog
     End Property
 
 
-    <ValidStringLength("", Max:=160)> _
+    <ValidStringLength("", Max:=160)>
     Public Property PaymentNumber() As String
         Get
             CheckDeleted()
@@ -595,7 +597,7 @@ Public Class AcctTransLog
     End Property
 
 
-    <ValidStringLength("", Max:=1600)> _
+    <ValidStringLength("", Max:=1600)>
     Public Property TransactionIdNumber() As String
         Get
             CheckDeleted()
@@ -641,7 +643,7 @@ Public Class AcctTransLog
         End Set
     End Property
 
-    <ValidStringLength("", Max:=1)> _
+    <ValidStringLength("", Max:=1)>
     Public Property VendorUpdate() As String
         Get
             CheckDeleted()
@@ -657,7 +659,7 @@ Public Class AcctTransLog
         End Set
     End Property
 
-    <ValidStringLength("", Max:=1)> _
+    <ValidStringLength("", Max:=1)>
     Public Property PaymentToCustomer() As String
         Get
             CheckDeleted()
@@ -673,7 +675,7 @@ Public Class AcctTransLog
         End Set
     End Property
 
-    <ValidStringLength("", Max:=30)> _
+    <ValidStringLength("", Max:=30)>
     Public Property BankSortCode() As String
         Get
             CheckDeleted()
@@ -689,7 +691,7 @@ Public Class AcctTransLog
         End Set
     End Property
 
-    <ValidStringLength("", Max:=30)> _
+    <ValidStringLength("", Max:=30)>
     Public Property BankAddress1() As String
         Get
             CheckDeleted()
@@ -705,7 +707,7 @@ Public Class AcctTransLog
         End Set
     End Property
 
-    <ValidStringLength("", Max:=30)> _
+    <ValidStringLength("", Max:=30)>
     Public Property BankAddress2() As String
         Get
             CheckDeleted()
@@ -721,7 +723,7 @@ Public Class AcctTransLog
         End Set
     End Property
 
-    <ValidStringLength("", Max:=30)> _
+    <ValidStringLength("", Max:=30)>
     Public Property BankAddress3() As String
         Get
             CheckDeleted()
@@ -737,7 +739,7 @@ Public Class AcctTransLog
         End Set
     End Property
 
-    <ValidStringLength("", Max:=30)> _
+    <ValidStringLength("", Max:=30)>
     Public Property BankAddress4() As String
         Get
             CheckDeleted()
@@ -753,7 +755,7 @@ Public Class AcctTransLog
         End Set
     End Property
 
-    <ValidStringLength("", Max:=30)> _
+    <ValidStringLength("", Max:=30)>
     Public Property BankName1() As String
         Get
             CheckDeleted()
@@ -769,7 +771,7 @@ Public Class AcctTransLog
         End Set
     End Property
 
-    <ValidStringLength("", Max:=30)> _
+    <ValidStringLength("", Max:=30)>
     Public Property BankName2() As String
         Get
             CheckDeleted()
@@ -785,7 +787,7 @@ Public Class AcctTransLog
         End Set
     End Property
 
-    <ValidStringLength("", Max:=30)> _
+    <ValidStringLength("", Max:=30)>
     Public Property BankIBAN() As String
         Get
             CheckDeleted()
@@ -801,7 +803,7 @@ Public Class AcctTransLog
         End Set
     End Property
 
-    <ValidStringLength("", Max:=30)> _
+    <ValidStringLength("", Max:=30)>
     Public Property BankBranch() As String
         Get
             CheckDeleted()
@@ -817,7 +819,7 @@ Public Class AcctTransLog
         End Set
     End Property
 
-    <ValidStringLength("", Max:=10)> _
+    <ValidStringLength("", Max:=10)>
     Public Property WarrSalesDate() As String
         Get
             CheckDeleted()
@@ -832,7 +834,7 @@ Public Class AcctTransLog
             Me.SetValue(AcctTransLogDAL.COL_NAME_WARR_SALES_DATE, Value)
         End Set
     End Property
-    <ValidStringLength("", Max:=10)> _
+    <ValidStringLength("", Max:=10)>
     Public Property ContractInceptionDate() As String
         Get
             CheckDeleted()
@@ -847,7 +849,7 @@ Public Class AcctTransLog
             Me.SetValue(AcctTransLogDAL.COL_NAME_CONTRACT_INCEPTION_DATE, Value)
         End Set
     End Property
-    <ValidStringLength("", Max:=15)> _
+    <ValidStringLength("", Max:=15)>
     Public Property AccountCode() As String
         Get
             CheckDeleted()
@@ -925,8 +927,8 @@ Public Class AcctTransLog
             If BusinessUnitDV.Count > 0 Then
                 For Each dvRow As System.Data.DataRowView In BusinessUnitDV
                     ds = New DataSet(dal.DatasetName)
-                    If oFelitaEngineData.isVendorFile AndAlso _
-                        dvRow(AcctBusinessUnit.AcctBusinessUnitSearchDV.COL_SUPPRESS_VENDORS) = NO_STRING AndAlso _
+                    If oFelitaEngineData.isVendorFile AndAlso
+                        dvRow(AcctBusinessUnit.AcctBusinessUnitSearchDV.COL_SUPPRESS_VENDORS) = NO_STRING AndAlso
                          Not _acctExtension = FelitaEngine.SMARTSTREAM_PREFIX Then
                         ds = dal.GetVendorFiles(oFelitaEngineData.CompanyId, ds)
                     End If
@@ -944,19 +946,19 @@ Public Class AcctTransLog
                             If Not dvItem(LookupListNew.COL_CODE_NAME).ToString.Equals(VENDOR_EVENT) Then
                                 dsTemp = New DataSet(dal.DatasetName)
 
-                                dsTemp = dal.GetJournalEntries(oFelitaEngineData.CompanyId, GuidControl.ByteArrayToGuid(CType(dvItem(LookupListNew.COL_ID_NAME), Byte())), _
+                                dsTemp = dal.GetJournalEntries(oFelitaEngineData.CompanyId, GuidControl.ByteArrayToGuid(CType(dvItem(LookupListNew.COL_ID_NAME), Byte())),
                                 GuidControl.ByteArrayToGuid(CType(dvRow(BusinessUnitDV.COL_ACCT_BUSINESS_UNIT_ID), Byte())), dvItem(LookupListNew.COL_CODE_NAME), ElitaPlusIdentity.Current.ActiveUser.NetworkId, False)
 
                                 'Check if items balance before adding to our dataset.
-                                isBalanced = MergeDataSets(oFelitaEngineData.CompanyId, _acctExtension, dvItem(LookupListNew.COL_CODE_NAME).ToString, ds, dsTemp)
+                                isBalanced = MergeDataSets(oFelitaEngineData.CompanyId, _acctExtension, dvItem(LookupListNew.COL_CODE_NAME).ToString, ds, dsTemp, oFelitaEngineData.EventId)
 
                                 'ALR - added if we are smartstream AND this is claims or refunds
-                                If isBalanced AndAlso _
-                                    _acctExtension = FelitaEngine.SMARTSTREAM_PREFIX AndAlso _
-                                    (dvItem(LookupListNew.COL_CODE_NAME).ToString.Equals(EVENT_REFUNDS) OrElse _
+                                If isBalanced AndAlso
+                                    _acctExtension = FelitaEngine.SMARTSTREAM_PREFIX AndAlso
+                                    (dvItem(LookupListNew.COL_CODE_NAME).ToString.Equals(EVENT_REFUNDS) OrElse
                                      dvItem(LookupListNew.COL_CODE_NAME).ToString.Equals(EVENT_CLAIMS)) Then
 
-                                    dsTempAP = dal.GetJournalEntriesAP(oFelitaEngineData.CompanyId, GuidControl.ByteArrayToGuid(CType(dvItem(LookupListNew.COL_ID_NAME), Byte())), _
+                                    dsTempAP = dal.GetJournalEntriesAP(oFelitaEngineData.CompanyId, GuidControl.ByteArrayToGuid(CType(dvItem(LookupListNew.COL_ID_NAME), Byte())),
                                     GuidControl.ByteArrayToGuid(CType(dvRow(BusinessUnitDV.COL_ACCT_BUSINESS_UNIT_ID), Byte())), dvItem(LookupListNew.COL_CODE_NAME))
 
                                     If Not dsTempAP Is Nothing AndAlso dsTempAP.Tables.Count > 0 AndAlso dsTempAP.Tables(0).Rows.Count > 0 Then
@@ -979,7 +981,7 @@ Public Class AcctTransLog
                                     End If
 
                                     'Get Records to purge
-                                    dsTempPurge = dal.GetPurgeTable(oFelitaEngineData.CompanyId, GuidControl.ByteArrayToGuid(CType(dvItem(LookupListNew.COL_ID_NAME), Byte())), _
+                                    dsTempPurge = dal.GetPurgeTable(oFelitaEngineData.CompanyId, GuidControl.ByteArrayToGuid(CType(dvItem(LookupListNew.COL_ID_NAME), Byte())),
                                     GuidControl.ByteArrayToGuid(CType(dvRow(BusinessUnitDV.COL_ACCT_BUSINESS_UNIT_ID), Byte())), dvItem(LookupListNew.COL_CODE_NAME))
                                     If dsTempPurge IsNot Nothing AndAlso dsTempPurge.Tables(dal.Table_AP_PURGE) IsNot Nothing AndAlso dsTempPurge.Tables(dal.Table_AP_PURGE).Rows.Count > 0 Then
                                         If ds.Tables(AcctTransLogDAL.Table_AP_PURGE) Is Nothing Then
@@ -995,7 +997,7 @@ Public Class AcctTransLog
                                 boAcctExecLog.UpdateExecStatus(isBalanced)
 
                                 If ((Not dsTemp.Tables(dal.Table_LINEITEM) Is Nothing AndAlso dsTemp.Tables(dal.Table_LINEITEM).Rows.Count > 0) _
-                                    OrElse _
+                                    OrElse
                                     (Not dsTemp.Tables(dal.Table_AP_LINEITEM) Is Nothing AndAlso dsTemp.Tables(dal.Table_AP_LINEITEM).Rows.Count > 0)) Then
 
                                     If ds.Tables(dal.TABLE_POSTINGPARAMETERS) Is Nothing Then
@@ -1017,26 +1019,25 @@ Public Class AcctTransLog
                         Dim eventCode As String = LookupListNew.GetCodeFromId(LookupListNew.DropdownLookupList(LookupListNew.LK_ACCT_TRANS_TYPE, ElitaPlusIdentity.Current.ActiveUser.LanguageId, False), oFelitaEngineData.EventId)
 
                         dsTemp = New DataSet(dal.DatasetName)
-                        dsTemp = dal.GetJournalEntries(oFelitaEngineData.CompanyId, oFelitaEngineData.EventId, _
+                        dsTemp = dal.GetJournalEntries(oFelitaEngineData.CompanyId, oFelitaEngineData.EventId,
                         GuidControl.ByteArrayToGuid(CType(dvRow(BusinessUnitDV.COL_ACCT_BUSINESS_UNIT_ID), Byte())), eventCode, ElitaPlusIdentity.Current.ActiveUser.NetworkId, False)
 
                         'Check if items balance before adding to our dataset.
-                        isBalanced = MergeDataSets(oFelitaEngineData.CompanyId, _acctExtension, LookupListNew.GetCodeFromId(LookupListNew.DropdownLookupList(LookupListNew.LK_ACCT_TRANS_TYPE, ElitaPlusIdentity.Current.ActiveUser.LanguageId, False), oFelitaEngineData.EventId), ds, dsTemp)
-
+                        isBalanced = MergeDataSets(oFelitaEngineData.CompanyId, _acctExtension, LookupListNew.GetCodeFromId(LookupListNew.DropdownLookupList(LookupListNew.LK_ACCT_TRANS_TYPE, ElitaPlusIdentity.Current.ActiveUser.LanguageId, False), oFelitaEngineData.EventId), ds, dsTemp, oFelitaEngineData.EventId)
                         'Update the exec log table with a success or failure based on balancing
                         boAcctExecLog = New AcctExecLog(oFelitaEngineData.CompanyId, oFelitaEngineData.EventId)
                         boAcctExecLog.UpdateExecStatus(isBalanced)
 
 
                         'ALR - added if we are smartstream AND this is claims or refunds
-                        If isBalanced AndAlso _
-                            _acctExtension = FelitaEngine.SMARTSTREAM_PREFIX AndAlso _
-                            (eventCode.Equals(EVENT_REFUNDS) OrElse _
+                        If isBalanced AndAlso
+                            _acctExtension = FelitaEngine.SMARTSTREAM_PREFIX AndAlso
+                            (eventCode.Equals(EVENT_REFUNDS) OrElse
                              eventCode.Equals(EVENT_CLAIMS)) Then
 
                             Dim dsTempAP As New DataSet
 
-                            dsTempAP = dal.GetJournalEntriesAP(oFelitaEngineData.CompanyId, oFelitaEngineData.EventId, _
+                            dsTempAP = dal.GetJournalEntriesAP(oFelitaEngineData.CompanyId, oFelitaEngineData.EventId,
                             GuidControl.ByteArrayToGuid(CType(dvRow(BusinessUnitDV.COL_ACCT_BUSINESS_UNIT_ID), Byte())), eventCode)
 
                             If Not dsTempAP Is Nothing AndAlso dsTempAP.Tables.Count > 0 AndAlso dsTempAP.Tables(0).Rows.Count > 0 Then
@@ -1056,24 +1057,10 @@ Public Class AcctTransLog
 
                             End If
 
-
-                            Dim dsTempPurge As DataSet
-                            'Get Records to purge
-                            dsTempPurge = dal.GetPurgeTable(oFelitaEngineData.CompanyId, oFelitaEngineData.EventId, _
-                                GuidControl.ByteArrayToGuid(CType(dvRow(BusinessUnitDV.COL_ACCT_BUSINESS_UNIT_ID), Byte())), eventCode)
-
-                            If dsTempPurge IsNot Nothing AndAlso dsTempPurge.Tables(dal.Table_AP_PURGE) IsNot Nothing AndAlso dsTempPurge.Tables(dal.Table_AP_PURGE).Rows.Count > 0 Then
-                                If ds.Tables(AcctTransLogDAL.Table_AP_PURGE) Is Nothing Then
-                                    ds.Tables.Add(dsTempPurge.Tables(AcctTransLogDAL.Table_AP_PURGE).Copy)
-                                Else
-                                    ds.Tables(AcctTransLogDAL.Table_AP_PURGE).Merge(dsTempPurge.Tables(AcctTransLogDAL.Table_AP_PURGE))
-                                End If
-                            End If
-
                         End If
 
                         If ((Not dsTemp.Tables(dal.Table_LINEITEM) Is Nothing AndAlso dsTemp.Tables(dal.Table_LINEITEM).Rows.Count > 0) _
-                                   OrElse _
+                                   OrElse
                                    (Not dsTemp.Tables(dal.Table_AP_LINEITEM) Is Nothing AndAlso dsTemp.Tables(dal.Table_AP_LINEITEM).Rows.Count > 0)) Then
 
                             If ds.Tables(dal.TABLE_POSTINGPARAMETERS) Is Nothing Then
@@ -1084,6 +1071,20 @@ Public Class AcctTransLog
 
                             If ds.Relations(dal.REL_JOURNAL_TYPE) Is Nothing AndAlso ds.Tables(dal.Table_LINEITEM) IsNot Nothing Then
                                 ds.Relations.Add(New DataRelation(dal.REL_JOURNAL_TYPE, ds.Tables(dal.TABLE_POSTINGPARAMETERS).Columns(COL_EVENT_TYPE), ds.Tables(dal.Table_LINEITEM).Columns(COL_EVENT_TYPE)))
+                            End If
+                        End If
+
+
+                        Dim dsTempPurge As DataSet
+                        'Get Records to purge
+                        dsTempPurge = dal.GetPurgeTable(oFelitaEngineData.CompanyId, oFelitaEngineData.EventId,
+                            GuidControl.ByteArrayToGuid(CType(dvRow(BusinessUnitDV.COL_ACCT_BUSINESS_UNIT_ID), Byte())), eventCode)
+
+                        If dsTempPurge IsNot Nothing AndAlso dsTempPurge.Tables(dal.Table_AP_PURGE) IsNot Nothing AndAlso dsTempPurge.Tables(dal.Table_AP_PURGE).Rows.Count > 0 Then
+                            If ds.Tables(AcctTransLogDAL.Table_AP_PURGE) Is Nothing Then
+                                ds.Tables.Add(dsTempPurge.Tables(AcctTransLogDAL.Table_AP_PURGE).Copy)
+                            Else
+                                ds.Tables(AcctTransLogDAL.Table_AP_PURGE).Merge(dsTempPurge.Tables(AcctTransLogDAL.Table_AP_PURGE))
                             End If
                         End If
 
@@ -1216,7 +1217,7 @@ Public Class AcctTransLog
 
     End Sub
 
-    Private Function MergeDataSets(ByVal CompanyId As Guid, ByVal ext As String, ByVal eventType As String, ByVal ds As DataSet, ByVal newDs As DataSet) As Boolean
+    Private Function MergeDataSets(ByVal CompanyId As Guid, ByVal ext As String, ByVal eventType As String, ByVal ds As DataSet, ByVal newDs As DataSet, ByVal eventId As Guid) As Boolean
 
         Dim isBalanced As Boolean = True
         Dim dtTemp As DataTable
@@ -1262,10 +1263,10 @@ Public Class AcctTransLog
                         End If
 
 
-                        dtTemp = dsHelp.GroupBySelectandInsert(AcctTransLogDAL.Table_LINEITEM, _
-                                                               dtTempLine, _
-                                                               ("SUM(TRANSACTIONAMOUNT) TRANSACTIONAMOUNT,JOURNALTYPE,ACCOUNTINGPERIOD,JOURNAL_ID_SUFFIX,TRANSACTIONDATE,PLACEHOLDER JOURNALSEQUENCE,ACCOUNTCODE,ANALYSISCODE1,ANALYSISCODE2,ANALYSISCODE3,ANALYSISCODE4,ANALYSISCODE5,ANALYSISCODE6,ANALYSISCODE7,ANALYSISCODE8,ANALYSISCODE9,ANALYSISCODE10,BLOCK_OF_BUSINESS TRANSACTIONREFERENCE,DESCRIPTION,DEBITCREDIT,CURRENCYCODE,REV,GENERALDESCRIPTION24,COMPANY_CODE,INVOICE_REGION,ORIGINALACCOUNTCODE,TAXOVERRIDECODE,ACCT_COMPANY_CODE"), _
-                                                               "", _
+                        dtTemp = dsHelp.GroupBySelectandInsert(AcctTransLogDAL.Table_LINEITEM,
+                                                               dtTempLine,
+                                                               ("SUM(TRANSACTIONAMOUNT) TRANSACTIONAMOUNT,JOURNALTYPE,ACCOUNTINGPERIOD,JOURNAL_ID_SUFFIX,TRANSACTIONDATE,PLACEHOLDER JOURNALSEQUENCE,ACCOUNTCODE,ANALYSISCODE1,ANALYSISCODE2,ANALYSISCODE3,ANALYSISCODE4,ANALYSISCODE5,ANALYSISCODE6,ANALYSISCODE7,ANALYSISCODE8,ANALYSISCODE9,ANALYSISCODE10,BLOCK_OF_BUSINESS TRANSACTIONREFERENCE,DESCRIPTION,DEBITCREDIT,CURRENCYCODE,REV,GENERALDESCRIPTION24,COMPANY_CODE,INVOICE_REGION,ORIGINALACCOUNTCODE,TAXOVERRIDECODE,ACCT_COMPANY_CODE"),
+                                                               "",
                                                                "JOURNALTYPE,ACCOUNTINGPERIOD,JOURNAL_ID_SUFFIX,TRANSACTIONDATE,PLACEHOLDER,ACCOUNTCODE,ANALYSISCODE1,ANALYSISCODE2,ANALYSISCODE3,ANALYSISCODE4,ANALYSISCODE5,ANALYSISCODE6,ANALYSISCODE7,ANALYSISCODE8,ANALYSISCODE9,ANALYSISCODE10,BLOCK_OF_BUSINESS,DESCRIPTION,DEBITCREDIT,CURRENCYCODE,REV,GENERALDESCRIPTION24,COMPANY_CODE,INVOICE_REGION,ORIGINALACCOUNTCODE,TAXOVERRIDECODE,ACCT_COMPANY_CODE")
 
                     Else
@@ -1281,10 +1282,10 @@ Public Class AcctTransLog
 
                     'Create Control Group table for SmartStream
                     dtTemp = Nothing
-                    dtTemp = dsHelp.GroupBySelectandInsert(AcctTransLogDAL.Table_CONTROL_GROUP, _
-                                                              dtTempLine, _
-                                                              String.Format("SUM(TRANSACTIONAMOUNT) TRANSACTIONAMOUNT,JOURNALTYPE,JOURNAL_ID_SUFFIX,TRANSACTIONDATE,COMPANY_CODE,DEBITCREDIT,CREATED_DATE CURRENTDATE "), _
-                                                              "", _
+                    dtTemp = dsHelp.GroupBySelectandInsert(AcctTransLogDAL.Table_CONTROL_GROUP,
+                                                              dtTempLine,
+                                                              String.Format("SUM(TRANSACTIONAMOUNT) TRANSACTIONAMOUNT,JOURNALTYPE,JOURNAL_ID_SUFFIX,TRANSACTIONDATE,COMPANY_CODE,DEBITCREDIT,CREATED_DATE CURRENTDATE "),
+                                                              "",
                                                              String.Format("JOURNALTYPE,JOURNAL_ID_SUFFIX,TRANSACTIONDATE,COMPANY_CODE,DEBITCREDIT,CREATED_DATE"))
 
                     If ds.Tables(AcctTransLogDAL.Table_CONTROL_GROUP) Is Nothing Then
@@ -1306,10 +1307,10 @@ Public Class AcctTransLog
 
                     'Create Line table (GL Grouped by dealer)
                     dtTempLine = newDs.Tables(0).Copy
-                    dtTemp = dsHelp.GroupBySelectandInsert(AcctTransLogDAL.Table_LINEITEM, _
-                                                               dtTempLine, _
-                                                               ("SUM(ORIG_TRANSACTIONAMOUNT) TRANSACTIONAMOUNT,JOURNALTYPE,ACCOUNTINGPERIOD,JOURNAL_ID_SUFFIX,TRANSACTIONDATE,PLACEHOLDER JOURNALSEQUENCE,ACCOUNTCODE,ANALYSISCODE1,ANALYSISCODE2,ANALYSISCODE3,ANALYSISCODE4,ANALYSISCODE5,ANALYSISCODE6,ANALYSISCODE7,ANALYSISCODE8,ANALYSISCODE9,ANALYSISCODE10,BLOCK_OF_BUSINESS TRANSACTIONREFERENCE,DESCRIPTION,ORIG_DEBIT_CREDIT DEBITCREDIT,CURRENCYCODE,REV,GENERALDESCRIPTION24,COMPANY_CODE,INVOICE_REGION,ORIGINALACCOUNTCODE,TAXOVERRIDECODE"), _
-                                                               String.Format("{0} = '{1}'", AcctTransLogDAL.COL_NAME_TRANSACTION_ID_NUMBER, YES_STRING), _
+                    dtTemp = dsHelp.GroupBySelectandInsert(AcctTransLogDAL.Table_LINEITEM,
+                                                               dtTempLine,
+                                                               ("SUM(ORIG_TRANSACTIONAMOUNT) TRANSACTIONAMOUNT,JOURNALTYPE,ACCOUNTINGPERIOD,JOURNAL_ID_SUFFIX,TRANSACTIONDATE,PLACEHOLDER JOURNALSEQUENCE,ACCOUNTCODE,ANALYSISCODE1,ANALYSISCODE2,ANALYSISCODE3,ANALYSISCODE4,ANALYSISCODE5,ANALYSISCODE6,ANALYSISCODE7,ANALYSISCODE8,ANALYSISCODE9,ANALYSISCODE10,BLOCK_OF_BUSINESS TRANSACTIONREFERENCE,DESCRIPTION,ORIG_DEBIT_CREDIT DEBITCREDIT,CURRENCYCODE,REV,GENERALDESCRIPTION24,COMPANY_CODE,INVOICE_REGION,ORIGINALACCOUNTCODE,TAXOVERRIDECODE"),
+                                                               String.Format("{0} = '{1}'", AcctTransLogDAL.COL_NAME_TRANSACTION_ID_NUMBER, YES_STRING),
                                                                "JOURNALTYPE,ACCOUNTINGPERIOD,JOURNAL_ID_SUFFIX,TRANSACTIONDATE,PLACEHOLDER,ACCOUNTCODE,ANALYSISCODE1,ANALYSISCODE2,ANALYSISCODE3,ANALYSISCODE4,ANALYSISCODE5,ANALYSISCODE6,ANALYSISCODE7,ANALYSISCODE8,ANALYSISCODE9,ANALYSISCODE10,BLOCK_OF_BUSINESS,DESCRIPTION,ORIG_DEBIT_CREDIT,CURRENCYCODE,REV,GENERALDESCRIPTION24,COMPANY_CODE,INVOICE_REGION,ORIGINALACCOUNTCODE,TAXOVERRIDECODE")
 
                     If ds.Tables(AcctTransLogDAL.Table_LINEITEM) Is Nothing Then
@@ -1355,11 +1356,48 @@ Public Class AcctTransLog
                         End If
                     End If
 
-                    dtTemp = dsHelp.GroupBySelectandInsert(AcctTransLogDAL.Table_LINEITEM, _
-                                                                   dtTempLine, _
-                                                                   "SUM(TRANSACTIONAMOUNT) TRANSACTIONAMOUNT,ACCOUNTCODE,ACCOUNTINGPERIOD,ALLOCATIONMARKER,CURRENCYCODE,DEBITCREDIT,DESCRIPTION,JOURNALSOURCE,JOURNALTYPE,TRANSACTIONAMOUNTDECIMALPLACES,TRANSACTIONDATE,TRANSACTIONREFERENCE,ANALYSISCODE1,ANALYSISCODE2,ANALYSISCODE3,ANALYSISCODE4,ANALYSISCODE5,ANALYSISCODE6,ANALYSISCODE7,ANALYSISCODE8,ANALYSISCODE9,ANALYSISCODE10, GENERALDESCRIPTION1,GENERALDESCRIPTION2,GENERALDESCRIPTION3,GENERALDESCRIPTION4,GENERALDESCRIPTION5,GENERALDESCRIPTION6,GENERALDESCRIPTION7,GENERALDESCRIPTION8,GENERALDESCRIPTION9,GENERALDESCRIPTION10,GENERALDESCRIPTION12,GENERALDESCRIPTION13,GENERALDESCRIPTION14,GENERALDESCRIPTION24,GENERALDESCRIPTION25,PLACEHOLDER,REV,PAYMENT_TO_CUSTOMER,DEALER_CODE,COMPANY_CODE,INVOICE_REGION,BANK_ACCOUNT_NUMBER,BANK_ID,USE_PAYEE_SETTINGS,ACCT_COMPANY_CODE,ACCT_EVENT_MAPPING,ORIGINALACCOUNTCODE,TAXOVERRIDECODE,INVOICE_DATE,BRANCH_NAME,BANK_NAME,BANK_SORT_CODE,BANK_LOOKUP_CODE,BANK_SUB_CODE,IBAN_NUMBER,ACCOUNT_NAME,PAYMENT_METHOD", _
-                                                                    "", _
+                    dtTemp = dsHelp.GroupBySelectandInsert(AcctTransLogDAL.Table_LINEITEM,
+                                                                   dtTempLine,
+                                                                   "SUM(TRANSACTIONAMOUNT) TRANSACTIONAMOUNT,ACCOUNTCODE,ACCOUNTINGPERIOD,ALLOCATIONMARKER,CURRENCYCODE,DEBITCREDIT,DESCRIPTION,JOURNALSOURCE,JOURNALTYPE,TRANSACTIONAMOUNTDECIMALPLACES,TRANSACTIONDATE,TRANSACTIONREFERENCE,ANALYSISCODE1,ANALYSISCODE2,ANALYSISCODE3,ANALYSISCODE4,ANALYSISCODE5,ANALYSISCODE6,ANALYSISCODE7,ANALYSISCODE8,ANALYSISCODE9,ANALYSISCODE10, GENERALDESCRIPTION1,GENERALDESCRIPTION2,GENERALDESCRIPTION3,GENERALDESCRIPTION4,GENERALDESCRIPTION5,GENERALDESCRIPTION6,GENERALDESCRIPTION7,GENERALDESCRIPTION8,GENERALDESCRIPTION9,GENERALDESCRIPTION10,GENERALDESCRIPTION12,GENERALDESCRIPTION13,GENERALDESCRIPTION14,GENERALDESCRIPTION24,GENERALDESCRIPTION25,PLACEHOLDER,REV,PAYMENT_TO_CUSTOMER,DEALER_CODE,COMPANY_CODE,INVOICE_REGION,BANK_ACCOUNT_NUMBER,BANK_ID,USE_PAYEE_SETTINGS,ACCT_COMPANY_CODE,ACCT_EVENT_MAPPING,ORIGINALACCOUNTCODE,TAXOVERRIDECODE,INVOICE_DATE,BRANCH_NAME,BANK_NAME,BANK_SORT_CODE,BANK_LOOKUP_CODE,BANK_SUB_CODE,IBAN_NUMBER,ACCOUNT_NAME,PAYMENT_METHOD",
+                                                                    "",
                                                                     "ACCOUNTCODE,ACCOUNTINGPERIOD,ALLOCATIONMARKER,CURRENCYCODE,DEBITCREDIT,DESCRIPTION,JOURNALSOURCE,JOURNALTYPE,TRANSACTIONAMOUNTDECIMALPLACES,TRANSACTIONDATE,TRANSACTIONREFERENCE,ANALYSISCODE1,ANALYSISCODE2,ANALYSISCODE3,ANALYSISCODE4,ANALYSISCODE5,ANALYSISCODE6,ANALYSISCODE7,ANALYSISCODE8,ANALYSISCODE9,ANALYSISCODE10, GENERALDESCRIPTION1,GENERALDESCRIPTION2,GENERALDESCRIPTION3,GENERALDESCRIPTION4,GENERALDESCRIPTION5,GENERALDESCRIPTION6,GENERALDESCRIPTION7,GENERALDESCRIPTION8,GENERALDESCRIPTION9,GENERALDESCRIPTION10,GENERALDESCRIPTION12,GENERALDESCRIPTION13,GENERALDESCRIPTION14,GENERALDESCRIPTION24,GENERALDESCRIPTION25,PLACEHOLDER,REV,PAYMENT_TO_CUSTOMER,DEALER_CODE,COMPANY_CODE,INVOICE_REGION,BANK_ACCOUNT_NUMBER,BANK_ID,USE_PAYEE_SETTINGS,ACCT_COMPANY_CODE,ACCT_EVENT_MAPPING,ORIGINALACCOUNTCODE,TAXOVERRIDECODE,INVOICE_DATE,BRANCH_NAME,BANK_NAME,BANK_SORT_CODE,BANK_LOOKUP_CODE,BANK_SUB_CODE,IBAN_NUMBER,ACCOUNT_NAME,PAYMENT_METHOD")
+
+
+                End If
+
+            ElseIf eventType = "PREM" AndAlso newDs.Tables(0).Rows.Count > 0 AndAlso newDs.Tables(0).Rows(0)("JOURNAL_LEVEL").ToString = JOURNALLEVEL_SUMMARY Then
+
+                dtTempLine = newDs.Tables(0).Copy
+                If dtTempLine.Rows.Count > 0 Then
+
+
+                    'Create a purge table since we are omiting the translogId from the lines
+                    dtTemp = dtTempLine.Copy
+                    dtTemp.TableName = AcctTransLogDAL.Table_AP_PURGE
+                    If ds.Tables(AcctTransLogDAL.Table_AP_PURGE) Is Nothing Then
+                        ds.Tables.Add(dtTemp.Copy)
+                    Else
+                        ds.Tables(AcctTransLogDAL.Table_AP_PURGE).Merge(dtTemp)
+                    End If
+                    If Not ds.Tables(AcctTransLogDAL.Table_AP_PURGE) Is Nothing Then
+                        lsCol = New Generic.List(Of DataColumn)
+                        For Each col As DataColumn In ds.Tables(AcctTransLogDAL.Table_AP_PURGE).Columns
+                            If Not col.ColumnName.ToLower.Equals(AcctTransLogDAL.COL_NAME_ACCT_TRANS_LOG_ID.ToLower) Then
+                                lsCol.Add(col)
+                            End If
+                        Next
+                        If Not lsCol.Count = 0 Then
+                            For Each col As DataColumn In lsCol
+                                ds.Tables(AcctTransLogDAL.Table_AP_PURGE).Columns.Remove(col)
+                            Next
+                        End If
+                    End If
+
+                    dtTemp = dsHelp.GroupBySelectandInsert(AcctTransLogDAL.Table_LINEITEM,
+                                                                   dtTempLine,
+                                                                    "SUM(TRANSACTIONAMOUNT) TRANSACTIONAMOUNT,ACCOUNTCODE,ACCOUNTINGPERIOD,ALLOCATIONMARKER,CURRENCYCODE,DEBITCREDIT,DESCRIPTION,JOURNALSOURCE,JOURNALTYPE,TRANSACTIONAMOUNTDECIMALPLACES,TRANSACTIONDATE,TRANSACTIONREFERENCE,ANALYSISCODE1,ANALYSISCODE2,ANALYSISCODE3,ANALYSISCODE4,ANALYSISCODE5,ANALYSISCODE6,ANALYSISCODE7,ANALYSISCODE8,ANALYSISCODE9,ANALYSISCODE10,GENERALDESCRIPTION1,GENERALDESCRIPTION2,GENERALDESCRIPTION3,GENERALDESCRIPTION4,GENERALDESCRIPTION5,GENERALDESCRIPTION6,GENERALDESCRIPTION7,GENERALDESCRIPTION8,GENERALDESCRIPTION9,GENERALDESCRIPTION10,GENERALDESCRIPTION12,GENERALDESCRIPTION13,GENERALDESCRIPTION14,GENERALDESCRIPTION24,GENERALDESCRIPTION25,REV",
+                                                                    "",
+                                                                    "ACCOUNTCODE,ACCOUNTINGPERIOD,ALLOCATIONMARKER,CURRENCYCODE,DEBITCREDIT,DESCRIPTION,JOURNALSOURCE,JOURNALTYPE,TRANSACTIONAMOUNTDECIMALPLACES,TRANSACTIONDATE,TRANSACTIONREFERENCE,ANALYSISCODE1,ANALYSISCODE2,ANALYSISCODE3,ANALYSISCODE4,ANALYSISCODE5,ANALYSISCODE6,ANALYSISCODE7,ANALYSISCODE8,ANALYSISCODE9,ANALYSISCODE10,GENERALDESCRIPTION1,GENERALDESCRIPTION2,GENERALDESCRIPTION3,GENERALDESCRIPTION4,GENERALDESCRIPTION5,GENERALDESCRIPTION6,GENERALDESCRIPTION7,GENERALDESCRIPTION8,GENERALDESCRIPTION9,GENERALDESCRIPTION10,GENERALDESCRIPTION12,GENERALDESCRIPTION13,GENERALDESCRIPTION14,GENERALDESCRIPTION24,GENERALDESCRIPTION25,REV")
 
 
                 End If
@@ -1399,10 +1437,10 @@ Public Class AcctTransLog
         Dim dtTemp As DataTable
         Dim dsHelp As New DSHelper
 
-        dtTemp = dsHelp.GroupBySelectandInsert(AcctTransLogDAL.Table_AP_VENDORS, _
-                                               dt, _
-                                               ("VENDOR_ID,GENERALDESCRIPTION9 PAYEE,GENERALDESCRIPTION1,GENERALDESCRIPTION2,CITY,REGION,ZIP,COUNTRY,GENERALDESCRIPTION24,PAYMENT_TO_CUSTOMER,PAYMENT_METHOD,CURRENCYCODE,COMPANY_CODE"), _
-                                               "", _
+        dtTemp = dsHelp.GroupBySelectandInsert(AcctTransLogDAL.Table_AP_VENDORS,
+                                               dt,
+                                               ("VENDOR_ID,GENERALDESCRIPTION9 PAYEE,GENERALDESCRIPTION1,GENERALDESCRIPTION2,CITY,REGION,ZIP,COUNTRY,GENERALDESCRIPTION24,PAYMENT_TO_CUSTOMER,PAYMENT_METHOD,CURRENCYCODE,COMPANY_CODE"),
+                                               "",
                                                "VENDOR_ID,GENERALDESCRIPTION9,GENERALDESCRIPTION1,GENERALDESCRIPTION2,CITY,REGION,ZIP,COUNTRY,GENERALDESCRIPTION24,PAYMENT_TO_CUSTOMER,PAYMENT_METHOD,CURRENCYCODE,COMPANY_CODE")
         Return dtTemp
 

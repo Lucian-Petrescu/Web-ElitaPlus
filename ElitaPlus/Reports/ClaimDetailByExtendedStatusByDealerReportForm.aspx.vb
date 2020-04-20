@@ -187,6 +187,7 @@ Namespace Reports
 
         Private Sub GenerateReport()
             Dim reportParams As New System.Text.StringBuilder
+            Dim companyCode As String = ElitaPlusIdentity.Current.ActiveUser.Company.Code
             Dim langCode As String = ElitaPlusIdentity.Current.ActiveUser.LanguageCode
 
             Dim selectedDealerId As Guid = Me.GetSelectedItem(Me.cboDealer)
@@ -262,6 +263,7 @@ Namespace Reports
                 End If
             End If
 
+            reportParams.AppendFormat("pi_company => '{0}',", companyCode)
             reportParams.AppendFormat("pi_dealer_code => '{0}',", dealerCode)
             reportParams.AppendFormat("pi_claim_created_begin_date => '{0}',", moClaimCreatedBeginDateText.Text)
             reportParams.AppendFormat("pi_claim_created_end_date => '{0}',", moClaimCreatedEndDateText.Text)
@@ -275,7 +277,7 @@ Namespace Reports
             Me.State.MyBO = New ReportRequests
             Me.State.ForEdit = True
             Me.PopulateBOProperty(Me.State.MyBO, "ReportType", "CLAIM_DETAIL_BY_EXTENDED_STATUS_BY_DEALER")
-            Me.PopulateBOProperty(Me.State.MyBO, "ReportProc", "r_claimdetailbyExtStatusByDlr.Report")
+            Me.PopulateBOProperty(Me.State.MyBO, "ReportProc", "r_claimdetailbyExtStatusByDlr.Export")
             Me.PopulateBOProperty(Me.State.MyBO, "ReportParameters", reportParams.ToString())
             Me.PopulateBOProperty(Me.State.MyBO, "UserEmailAddress", ElitaPlusIdentity.Current.EmailAddress)
 

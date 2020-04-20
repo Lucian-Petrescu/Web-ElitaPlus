@@ -651,6 +651,7 @@ Partial Class UserControlAddress_New
         End If
     End Sub
 
+
     Public Sub PopulateBOFromControl(Optional ByVal blnIncludeCountryId As Boolean = False, Optional ByVal blnUpdateZipLocator As Boolean = False)
         If Not Me.MyGenBO Is Nothing Then
             BindBoPropertiesToLabels()

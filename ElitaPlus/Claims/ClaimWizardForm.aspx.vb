@@ -2339,6 +2339,9 @@ Public Class ClaimWizardForm
         Me.PopulateControlFromBOProperty(Me.step3_TextboxOutstandingPremAmt, Me.State.ClaimBO.OutstandingPremiumAmount)
         Me.PopulateControlFromBOProperty(Me.step3_TextboxCALLER_TAX_NUMBER, Me.State.ClaimBO.CallerTaxNumber)
         Me.PopulateControlFromBOProperty(Me.step3_txtNewDeviceSKU, Me.State.ClaimBO.NewDeviceSku)
+        Me.PopulateControlFromBOProperty(Me.step3_txtPickupDate, Me.State.ClaimBO.PickUpDate)
+        Me.PopulateControlFromBOProperty(Me.step3_txtVisitDate, Me.State.ClaimBO.VisitDate)
+
         Me.SetSelectedItem(Me.step3_cboLawsuitId, Me.State.ClaimBO.IsLawsuitId)
         Me.PopulateControlFromBOProperty(Me.step3_TxtSpecialInstruction, Me.State.ClaimBO.SpecialInstruction)
 
@@ -2796,6 +2799,8 @@ Public Class ClaimWizardForm
         Me.ChangeEnabledProperty(Me.step3_TextboxLiabilityLimit, False)
         Me.ChangeEnabledProperty(Me.step3_TextboxDeductible_WRITE, True)
         Me.ChangeEnabledProperty(Me.step3_TextBoxDiscount, False)
+        Me.ChangeEnabledProperty(Me.step3_txtPickupDate, False)
+        Me.ChangeEnabledProperty(Me.step3_txtVisitDate, False)
 
         'Make Invisible for Service Warranty
         If Me.State.ClaimBO.ClaimActivityCode = Codes.CLAIM_ACTIVITY__REWORK Then
@@ -2958,6 +2963,9 @@ Public Class ClaimWizardForm
                 Me.BindBOPropertyToLabel(Me.State.ClaimBO.ClaimedEquipment, "SerialNumber", Me.lblClaimedSerialNumber)
                 Me.BindBOPropertyToLabel(Me.State.ClaimBO.EnrolledEquipment, "SKU", Me.lblEnrolledSKu)
                 Me.BindBOPropertyToLabel(Me.State.ClaimBO.ClaimedEquipment, "SKU", Me.lblClaimedSKu)
+                Me.BindBOPropertyToLabel(Me.State.ClaimBO, "PickUpDate", Me.step3_lblPickupDate)
+                Me.BindBOPropertyToLabel(Me.State.ClaimBO, "VisitDate", Me.step3_lblVisitDate)
+
 
             Case ClaimWizardSteps.Step5
                 Me.BindBOPropertyToLabel(Me.State.CommentBO, "CreatedDate", Me.step5_LabelDateTime)

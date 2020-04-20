@@ -96,13 +96,13 @@
                                                         </ItemTemplate>
                                                     </asp:TemplateColumn>
                                                     <asp:TemplateColumn HeaderText="EXTENDED_CLAIM_STATUS">
-                                                        <HeaderStyle HorizontalAlign="Center" ForeColor="#12135B" Width="47%"></HeaderStyle>
+                                                        <HeaderStyle HorizontalAlign="Center" ForeColor="#12135B" Width="30%"></HeaderStyle>
                                                         <ItemTemplate>
                                                             <asp:Label Width="100%" ID="lblExtendedClaimStatus" runat="server" Text='<%# Container.DataItem("extended_claim_status") %>'></asp:Label>
                                                         </ItemTemplate>
                                                     </asp:TemplateColumn>
                                                     <asp:TemplateColumn HeaderText="OWNER">
-                                                        <HeaderStyle HorizontalAlign="Center" ForeColor="#12135B" Width="20%"></HeaderStyle>
+                                                        <HeaderStyle HorizontalAlign="Center" ForeColor="#12135B" Width="15%"></HeaderStyle>
                                                         <ItemStyle HorizontalAlign="Center"></ItemStyle>
                                                         <ItemTemplate>
                                                             <asp:DropDownList ID="dropDownOwner" runat="server" Visible="True">
@@ -110,7 +110,7 @@
                                                         </ItemTemplate>
                                                     </asp:TemplateColumn>
                                                     <asp:TemplateColumn HeaderText="SKIPPING_ALLOWED">
-                                                        <HeaderStyle HorizontalAlign="Center" ForeColor="#12135B" Width="13%"></HeaderStyle>
+                                                        <HeaderStyle HorizontalAlign="Center" ForeColor="#12135B" Width="10%"></HeaderStyle>
                                                         <ItemStyle HorizontalAlign="Center"></ItemStyle>
                                                         <ItemTemplate>
                                                             <asp:DropDownList ID="dropDownSkippingAllowed" runat="server" Visible="True">
@@ -118,7 +118,7 @@
                                                         </ItemTemplate>
                                                     </asp:TemplateColumn>
                                                     <asp:TemplateColumn HeaderText="STATUS_ORDER">
-                                                        <HeaderStyle HorizontalAlign="Center" ForeColor="#12135B" Width="12%"></HeaderStyle>
+                                                        <HeaderStyle HorizontalAlign="Center" ForeColor="#12135B" Width="10%"></HeaderStyle>
                                                         <ItemStyle HorizontalAlign="Center"></ItemStyle>
                                                         <ItemTemplate>
                                                             <asp:TextBox Width="100%" ID="txtStatusOrder" runat="server" Text='<%# Container.DataItem("STATUS_ORDER") %>'
@@ -127,7 +127,7 @@
                                                         </ItemTemplate>
                                                     </asp:TemplateColumn>
                                                     <asp:TemplateColumn HeaderText="ACTIVE">
-                                                        <HeaderStyle HorizontalAlign="Center" ForeColor="#12135B" Width="8%"></HeaderStyle>
+                                                        <HeaderStyle HorizontalAlign="Center" ForeColor="#12135B" Width="10%"></HeaderStyle>
                                                         <ItemStyle HorizontalAlign="Center"></ItemStyle>
                                                         <ItemTemplate>
                                                             <asp:DropDownList ID="dropDownActive" runat="server" Visible="True">
@@ -135,7 +135,7 @@
                                                         </ItemTemplate>
                                                     </asp:TemplateColumn>
                                                     <asp:TemplateColumn HeaderText="GROUP_NUMBER">
-                                                        <HeaderStyle HorizontalAlign="Center" ForeColor="#12135B" Width="12%"></HeaderStyle>
+                                                        <HeaderStyle HorizontalAlign="Center" ForeColor="#12135B" Width="7%"></HeaderStyle>
                                                         <ItemStyle HorizontalAlign="Center"></ItemStyle>
                                                         <ItemTemplate>
                                                             <asp:TextBox Width="100%" ID="txtGroupNumber" runat="server" Text='<%# Container.DataItem("GROUP_NUMBER") %>'
@@ -147,6 +147,25 @@
                                                         <ItemTemplate>
                                                             <asp:Label ID="lblIsNew" runat="server" Visible="False" Text='<%# Container.DataItem("ISNEW") %>'>
                                                             </asp:Label>
+                                                        </ItemTemplate>
+                                                    </asp:TemplateColumn>
+                                                    <asp:TemplateColumn HeaderText="TURNAROUND_DAYS">
+                                                        <HeaderStyle HorizontalAlign="Center" ForeColor="#12135B" Width="8%"></HeaderStyle>
+                                                        <ItemStyle HorizontalAlign="Center"></ItemStyle>
+                                                        <ItemTemplate>
+                                                            <asp:TextBox Width="100%" ID="txtTurnaroundTimeDays" runat="server" Text='<%# Container.DataItem("TURNAROUND_TIME_DAYS") %>'
+                                                                         CssClass="FLATTEXTBOX">
+                                                            </asp:TextBox>
+                                                        </ItemTemplate>
+                                                    </asp:TemplateColumn>
+
+                                                    <asp:TemplateColumn HeaderText="TAT_REMINDER_HOURS">
+                                                        <HeaderStyle HorizontalAlign="Center" ForeColor="#12135B" Width="10%"></HeaderStyle>
+                                                        <ItemStyle HorizontalAlign="Center"></ItemStyle>
+                                                        <ItemTemplate>
+                                                            <asp:TextBox Width="100%" ID="txtTatReminderHours" runat="server" Text='<%# Container.DataItem("TAT_REMINDER_HOURS") %>'
+                                                                         CssClass="FLATTEXTBOX">
+                                                            </asp:TextBox>
                                                         </ItemTemplate>
                                                     </asp:TemplateColumn>
                                                 </Columns>
