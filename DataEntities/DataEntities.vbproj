@@ -255,6 +255,7 @@
       <Link>Equipment\EquipmentListDetail.vb</Link>
     </Compile>
     <Compile Include="Claims\Claim.Partial.vb" />
+    <Compile Include="Claims\DFEventPayLoad.vb" />
     <Compile Include="Claims\PriceListDetailRecord.vb" />
     <Compile Include="Common\ElitaListItem.vb" />
     <Compile Include="Common\LabelTranslation.vb" />

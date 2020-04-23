@@ -3756,10 +3756,13 @@ Namespace ClaimRecordingService
         
         <System.Runtime.Serialization.OptionalFieldAttribute()>  _
         Private QuestionsField() As Assurant.Elita.Questions.Contracts.Question
-        
-        <System.Runtime.Serialization.OptionalFieldAttribute()>  _
+
+        <System.Runtime.Serialization.OptionalFieldAttribute()>
         Private ParametersField() As Assurant.Elita.Questions.Contracts.QuestionSetParameter
-        
+
+        <System.Runtime.Serialization.OptionalFieldAttribute()>
+        Private ClaimKeyField As String
+
         <System.Runtime.Serialization.DataMemberAttribute()>  _
         Public Property QuestionSetCode() As String
             Get
@@ -3798,16 +3801,29 @@ Namespace ClaimRecordingService
                 End If
             End Set
         End Property
-        
-        <System.Runtime.Serialization.DataMemberAttribute(Order:=3)>  _
+
+        <System.Runtime.Serialization.DataMemberAttribute(Order:=3)>
         Public Property Parameters() As Assurant.Elita.Questions.Contracts.QuestionSetParameter()
             Get
                 Return Me.ParametersField
             End Get
             Set
-                If (Object.ReferenceEquals(Me.ParametersField, value) <> true) Then
+                If (Object.ReferenceEquals(Me.ParametersField, value) <> True) Then
                     Me.ParametersField = value
                     Me.RaisePropertyChanged("Parameters")
+                End If
+            End Set
+        End Property
+
+        <System.Runtime.Serialization.DataMemberAttribute(Order:=4)>
+        Public Property ClaimKey() As String
+            Get
+                Return Me.ClaimKeyField
+            End Get
+            Set
+                If (Object.ReferenceEquals(Me.ClaimKeyField, Value) <> True) Then
+                    Me.ClaimKeyField = Value
+                    Me.RaisePropertyChanged("ClaimKey")
                 End If
             End Set
         End Property

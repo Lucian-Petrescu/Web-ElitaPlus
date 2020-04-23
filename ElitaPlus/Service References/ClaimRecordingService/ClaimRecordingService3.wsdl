@@ -616,6 +616,7 @@
               <xs:element minOccurs="0" name="Version" type="xs:int" />
               <xs:element minOccurs="0" name="Questions" nillable="true" type="tns:ArrayOfQuestion" />
               <xs:element minOccurs="0" name="Parameters" nillable="true" type="tns:ArrayOfQuestionSetParameter" />
+              <xs:element minOccurs="0" name="ClaimKey" nillable="true" type="xs:string" />
             </xs:sequence>
           </xs:extension>
         </xs:complexContent>

@@ -7,11 +7,14 @@ Imports System.Threading
 Imports Assurant.Elita.ClientIntegration
 Imports Assurant.Elita.ClientIntegration.Headers
 Imports Assurant.Elita.CommonConfiguration
+Imports Assurant.Elita.ExternalKeyHandler.DynamicFulfillment
 Imports Assurant.Elita.ServiceIntegration.Validation
 Imports Assurant.ElitaPlus.ElitaPlusWebApp.Certificates
 Imports Assurant.ElitaPlus.ElitaPlusWebApp.ClaimFulfillmentWebAppGatewayService
 Imports Assurant.ElitaPlus.ElitaPlusWebApp.ClaimRecordingService
 Imports Microsoft.Practices.ObjectBuilder2
+Imports Newtonsoft.Json
+Imports ClientEventPayLoad = Assurant.ElitaPlus.DataEntities.DFEventPayLoad
 
 Public Class ClaimRecordingForm
     Inherits ElitaPlusSearchPage
@@ -1300,6 +1303,7 @@ Public Class ClaimRecordingForm
                 wsRequest.CompanyCode = questionSubmitObj.CompanyCode
                 wsRequest.InteractionNumber = questionSubmitObj.InteractionNumber
                 wsRequest.Questions = questionSubmitObj.Questions
+                wsRequest.ClaimKey = getClaimKey(questionSubmitObj.CompanyCode, State.SubmitWsBaseClaimRecordingResponse.ClaimNumber)
 
                 Try
                     Dim wsResponse = WcfClientHelper.Execute(Of ClaimRecordingServiceClient, IClaimRecordingService, BaseClaimRecordingResponse)(
@@ -1362,6 +1366,16 @@ Public Class ClaimRecordingForm
             HandleErrors(ex, MasterPage.MessageController)
         End Try
     End Sub
+
+    Private Function getClaimKey(ByVal companyCode As String, ByVal claimNumber As String) As String
+        Dim handler As New DynamicFulfillmentKeyHandler()
+        Dim keys As New Dictionary(Of String, String)
+        Dim tenant As String = $"{EnvironmentContext.Current.EnvironmentShortName}-{Assurant.Elita.Configuration.ElitaConfig.Current.General.Hub}"
+        keys.Add("Tenant", tenant)
+        keys.Add("CompanyCode", companyCode)
+        keys.Add("ClaimNumber", claimNumber)
+        Return handler.Encode(keys)
+    End Function
     Private Function getCustomerAddress(ByVal custAddress As BusinessObjectsNew.Address) As String
         Dim sbCustmerAddress As New StringBuilder
         If Not custAddress Is Nothing Then
@@ -2136,7 +2150,7 @@ Public Class ClaimRecordingForm
                 dfControl.SubscriptionKey = wsResponse.SubscriptionKey
                 dfControl.CssUri = wsResponse.CssUri
                 dfControl.ScriptUri = wsResponse.ScriptUri
-                dfControl.ClaimNumber = wsResponse.ClaimNumber
+                dfControl.ClaimNumber = getClaimKey(wsResponse.CompanyCode, wsResponse.ClaimNumber)
                 phDynamicFulfillmentUI.Controls.Add(dfControl)
             End If
         End If
@@ -2918,7 +2932,7 @@ Public Class ClaimRecordingForm
 
                 Dim moServiceCenterCtrl As UserControlServiceCenterSelection = CType(e.Row.FindControl(GridLoServiceCenterCtrl), UserControlServiceCenterSelection)
                 moServiceCenterCtrl.Visible = True
-                
+
 
                 ServiceCenterSelectionHandler(moServiceCenterCtrl)
 
@@ -3108,7 +3122,6 @@ Public Class ClaimRecordingForm
     Protected Sub btnLegacyContinue_Click(sender As Object, e As EventArgs) Handles btnLegacyContinue.Click
         Dim wsRequest As DynamicFulfillmentRequest = New DynamicFulfillmentRequest()
         Dim wsPreviousResponse As DynamicFulfillmentResponse
-        Dim wsQuestionRequest As QuestionRequest
 
         If State.SubmitWsBaseClaimRecordingResponse.GetType() Is GetType(DynamicFulfillmentResponse) Then
             wsPreviousResponse = DirectCast(State.SubmitWsBaseClaimRecordingResponse, DynamicFulfillmentResponse)
@@ -3116,7 +3129,9 @@ Public Class ClaimRecordingForm
             Exit Sub
         End If
 
-        wsRequest.OptionCode = "AX"
+        Dim payLoad As ClientEventPayLoad = JsonConvert.DeserializeObject(Of ClientEventPayLoad)(hdnData.Value)
+
+        wsRequest.OptionCode = $"DynamicFulfillment#{payLoad.FulfillmentOption}"
         wsRequest.CaseNumber = wsPreviousResponse.CaseNumber
         wsRequest.CompanyCode = wsPreviousResponse.CompanyCode
         wsRequest.InteractionNumber = wsPreviousResponse.InteractionNumber
