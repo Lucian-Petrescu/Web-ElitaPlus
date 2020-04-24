@@ -2037,6 +2037,87 @@ Public Class Contract
         End Set
     End Property
 
+    'US 489857
+    '<ValueMandatory("", Message:="CommissionsPercentSourceXCD is required.")>
+    Public Property CommissionsPercentSourceXCD() As String
+        Get
+            CheckDeleted()
+            If Row(ContractDAL.COL_NAME_COMMISSIONS_PERCENT_SOURCE_XCD) Is DBNull.Value Then
+                Return Nothing
+            Else
+                Return CType(Row(ContractDAL.COL_NAME_COMMISSIONS_PERCENT_SOURCE_XCD), String)
+            End If
+        End Get
+        Set(ByVal Value As String)
+            CheckDeleted()
+            Me.SetValue(ContractDAL.COL_NAME_COMMISSIONS_PERCENT_SOURCE_XCD, Value)
+        End Set
+    End Property
+
+    '<ValueMandatory("", Message:="MarketingPercentSourceXCD is required.")>
+    Public Property MarketingPercentSourceXCD() As String
+        Get
+            CheckDeleted()
+            If Row(ContractDAL.COL_NAME_MARKETING_PERCENT_SOURCE_XCD) Is DBNull.Value Then
+                Return Nothing
+            Else
+                Return CType(Row(ContractDAL.COL_NAME_MARKETING_PERCENT_SOURCE_XCD), String)
+            End If
+        End Get
+        Set(ByVal Value As String)
+            CheckDeleted()
+            Me.SetValue(ContractDAL.COL_NAME_MARKETING_PERCENT_SOURCE_XCD, Value)
+        End Set
+    End Property
+
+    '<ValueMandatory("", Message:="AdminExpenseSourceXCD is required.")>
+    Public Property AdminExpenseSourceXCD() As String
+        Get
+            CheckDeleted()
+            If Row(ContractDAL.COL_NAME_ADMIN_EXPENSE_SOURCE_XCD) Is DBNull.Value Then
+                Return Nothing
+            Else
+                Return CType(Row(ContractDAL.COL_NAME_ADMIN_EXPENSE_SOURCE_XCD), String)
+            End If
+        End Get
+        Set(ByVal Value As String)
+            CheckDeleted()
+            Me.SetValue(ContractDAL.COL_NAME_ADMIN_EXPENSE_SOURCE_XCD, Value)
+        End Set
+    End Property
+
+    '<ValueMandatory("", Message:="ProfitPercentSourceXCD is required.")>
+    Public Property ProfitPercentSourceXCD() As String
+        Get
+            CheckDeleted()
+            If Row(ContractDAL.COL_NAME_PROFIT_PERCENT_SOURCE_XCD) Is DBNull.Value Then
+                Return Nothing
+            Else
+                Return CType(Row(ContractDAL.COL_NAME_PROFIT_PERCENT_SOURCE_XCD), String)
+            End If
+        End Get
+        Set(ByVal Value As String)
+            CheckDeleted()
+            Me.SetValue(ContractDAL.COL_NAME_PROFIT_PERCENT_SOURCE_XCD, Value)
+        End Set
+    End Property
+
+    '<ValueMandatory("", Message:="LossCostPercentSourceXCD is required.")>
+    Public Property LossCostPercentSourceXCD() As String
+        Get
+            CheckDeleted()
+            If Row(ContractDAL.COL_NAME_LOSS_COST_PERCENT_SOURCE_XCD) Is DBNull.Value Then
+                Return Nothing
+            Else
+                Return CType(Row(ContractDAL.COL_NAME_LOSS_COST_PERCENT_SOURCE_XCD), String)
+            End If
+        End Get
+        Set(ByVal Value As String)
+            CheckDeleted()
+            Me.SetValue(ContractDAL.COL_NAME_LOSS_COST_PERCENT_SOURCE_XCD, Value)
+        End Set
+
+    End Property
 
 #End Region
 
