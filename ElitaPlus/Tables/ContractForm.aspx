@@ -1325,7 +1325,7 @@
     <input id="HiddenCertificateAuoNumGenConfirmation" type="hidden" runat="server" designtimedragdrop="261" />
 
     <script type="text/javascript" language="javascript">
-        
+
         function DisableLossTextForDiffSelect() {
             var dList = document.getElementById('<%=cboLossCostPercentSourceXcd.ClientID%>');
             var tBox = document.getElementById('<%=TextboxLossCostPercent.ClientID%>');

@@ -2038,8 +2038,8 @@ Public Class Contract
     End Property
 
     'US 489857
-    '<ValueMandatory("", Message:="CommissionsPercentSourceXCD is required.")>
-    Public Property CommissionsPercentSourceXCD() As String
+    <ValueMandatory("", Message:="CommissionsPercentSourceXcd is required."), ValidStringLength("", Max:=50, Message:="CommissionsPercentSourceXcd should be between 1 to 50 chars.")>
+    Public Property CommissionsPercentSourceXcd() As String
         Get
             CheckDeleted()
             If Row(ContractDAL.COL_NAME_COMMISSIONS_PERCENT_SOURCE_XCD) Is DBNull.Value Then
@@ -2054,8 +2054,8 @@ Public Class Contract
         End Set
     End Property
 
-    '<ValueMandatory("", Message:="MarketingPercentSourceXCD is required.")>
-    Public Property MarketingPercentSourceXCD() As String
+    <ValueMandatory("", Message:="MarketingPercentSourceXcd is required."), ValidStringLength("", Max:=50, Message:="MarketingPercentSourceXcd should be between 1 to 50 chars.")>
+    Public Property MarketingPercentSourceXcd() As String
         Get
             CheckDeleted()
             If Row(ContractDAL.COL_NAME_MARKETING_PERCENT_SOURCE_XCD) Is DBNull.Value Then
@@ -2069,9 +2069,8 @@ Public Class Contract
             Me.SetValue(ContractDAL.COL_NAME_MARKETING_PERCENT_SOURCE_XCD, Value)
         End Set
     End Property
-
-    '<ValueMandatory("", Message:="AdminExpenseSourceXCD is required.")>
-    Public Property AdminExpenseSourceXCD() As String
+    <ValueMandatory("", Message:="AdminExpenseSourceXcd is required."), ValidStringLength("", Max:=50, Message:="AdminExpenseSourceXcd should be between 1 to 50 chars.")>
+    Public Property AdminExpenseSourceXcd() As String
         Get
             CheckDeleted()
             If Row(ContractDAL.COL_NAME_ADMIN_EXPENSE_SOURCE_XCD) Is DBNull.Value Then
@@ -2085,9 +2084,8 @@ Public Class Contract
             Me.SetValue(ContractDAL.COL_NAME_ADMIN_EXPENSE_SOURCE_XCD, Value)
         End Set
     End Property
-
-    '<ValueMandatory("", Message:="ProfitPercentSourceXCD is required.")>
-    Public Property ProfitPercentSourceXCD() As String
+    <ValueMandatory("", Message:="ProfitPercentSourceXcd is required."), ValidStringLength("", Max:=50, Message:="ProfitPercentSourceXcd should be between 1 to 50 chars.")>
+    Public Property ProfitPercentSourceXcd() As String
         Get
             CheckDeleted()
             If Row(ContractDAL.COL_NAME_PROFIT_PERCENT_SOURCE_XCD) Is DBNull.Value Then
@@ -2101,9 +2099,8 @@ Public Class Contract
             Me.SetValue(ContractDAL.COL_NAME_PROFIT_PERCENT_SOURCE_XCD, Value)
         End Set
     End Property
-
-    '<ValueMandatory("", Message:="LossCostPercentSourceXCD is required.")>
-    Public Property LossCostPercentSourceXCD() As String
+    <ValueMandatory("", Message:="LossCostPercentSourceXcd is required."), ValidStringLength("", Max:=50, Message:="LossCostPercentSourceXcd should be between 1 to 50 chars.")>
+    Public Property LossCostPercentSourceXcd() As String
         Get
             CheckDeleted()
             If Row(ContractDAL.COL_NAME_LOSS_COST_PERCENT_SOURCE_XCD) Is DBNull.Value Then
