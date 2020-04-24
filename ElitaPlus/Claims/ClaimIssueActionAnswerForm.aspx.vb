@@ -43,6 +43,10 @@ Partial Class ClaimIssueActionAnswerForm
     Private Const AnswerCodeFiGetvendorskuok As String = "FI_GETVENDORSKUOK"
     Private Const AnswerCodeFiResendgcreqok As String = "FI_RESENDGCREQOK"
     Private Const AnswerCodeFiSwprobdescok As String = "FI_SWPROBDESCOK"
+    Private Const OrderType_Repair As String = "RE"
+    Private Const OrderType_Replacement As String = "EX"
+    Private Const CreationSource As String = "Elita CRM"
+
 #End Region
 #Region "Constants - Device Selection"
 
@@ -158,6 +162,8 @@ Partial Class ClaimIssueActionAnswerForm
         Public SelectedDeviceModel As String
         Public SelectedDeviceColor As String
         Public SelectedDeviceMemory As String
+        Public SelectedOrderType As String
+        Public SelectedCreationSource As String
         Public DeviceSelectionTable As DataTable
         Public AuthorizedAmountAllowed As Decimal = 0
         Public ClaimAuthfulfillmentTypeXcd As String = String.Empty
@@ -235,6 +241,7 @@ Partial Class ClaimIssueActionAnswerForm
                 State.ClaimBo = State.InputParameters.ClaimBo
                 State.ClaimAuthorizationId = State.InputParameters.ClaimAuthorizationId
                 State.WsSubmitIssueAnswerRequest = New SubmitIssueAnswerRequest()
+                State.BankInfoBo = New BusinessObjectsNew.BankInfo(State.ClaimIssueBo.Claim.Certificate.getCertInstalBankInfoID())
             End If
 
         Catch ex As Exception
@@ -611,7 +618,7 @@ Partial Class ClaimIssueActionAnswerForm
         Return client
     End Function
     Private Sub CallSubmitCustomerDecisionWs(ByVal answerCode As String)
-        Dim wsRequest As CustomerDecisionRequest = new CustomerDecisionRequest()
+        Dim wsRequest As CustomerDecisionRequest = New CustomerDecisionRequest()
         Dim wsResponse As CustomerDecisionResponse
         wsRequest.CompanyCode = State.ClaimBo.Company.Code
         wsRequest.AuthorizationNumber = State.ClaimBo.ClaimAuthorizationChildren.FirstOrDefault(Function(a) a.Id = State.ClaimAuthorizationId).AuthorizationNumber
@@ -709,7 +716,8 @@ Partial Class ClaimIssueActionAnswerForm
             State.SelectedDeviceModel = String.Empty
             State.SelectedDeviceColor = String.Empty
             State.SelectedDeviceMemory = String.Empty
-
+            State.SelectedCreationSource = String.Empty
+            State.SelectedOrderType = String.Empty
         Catch ex As Exception
             HandleErrors(ex, MasterPage.MessageController)
         End Try
@@ -743,11 +751,15 @@ Partial Class ClaimIssueActionAnswerForm
                     State.SelectedDeviceModel = State.ClaimBo.ClaimedEquipment.Model
                     State.SelectedDeviceColor = State.ClaimBo.ClaimedEquipment.Color
                     State.SelectedDeviceMemory = State.ClaimBo.ClaimedEquipment.Memory
+                    State.SelectedOrderType = OrderType_Repair
+                    State.SelectedCreationSource = CreationSource
                 Case IssueActionCode.LflDevSel
                     State.SelectedDeviceManufacture = State.ClaimBo.ClaimedEquipment.Manufacturer
                     State.SelectedDeviceModel = State.ClaimBo.ClaimedEquipment.Model
                     State.SelectedDeviceColor = State.ClaimBo.ClaimedEquipment.Color
                     State.SelectedDeviceMemory = State.ClaimBo.ClaimedEquipment.Memory
+                    State.SelectedOrderType = OrderType_Replacement
+                    State.SelectedCreationSource = CreationSource
                     GetAuthorizedAmount()
                 Case IssueActionCode.BrDevSel
                     GetAuthorizedAmount()
@@ -871,6 +883,8 @@ Partial Class ClaimIssueActionAnswerForm
         skuRequest.Model = State.SelectedDeviceModel
         skuRequest.Color = State.SelectedDeviceColor
         skuRequest.Memory = State.SelectedDeviceMemory
+        skuRequest.OrderType = State.SelectedOrderType
+        skuRequest.CreationSource = State.SelectedCreationSource
         skuRequest.SearchLimit = CType(SearchLimit, String)
 
         Dim skuResponse As SearchSKUResponse
@@ -1002,9 +1016,10 @@ Partial Class ClaimIssueActionAnswerForm
 
             If GridViewDeviceSelection.Visible AndAlso GridViewDeviceSelection.Rows.Count > 0 Then
                 ControlMgr.SetEnableControl(Me, btnSearchInventory, True)
-                If State.SelectedActionCode = IssueActionCode.GetDevSku Then
-                    ControlMgr.SetVisibleControl(Me, btnSearchInventory, False)
-                End If
+                Select Case State.SelectedActionCode
+                    Case IssueActionCode.GetDevSku, IssueActionCode.LflDevSel
+                        ControlMgr.SetVisibleControl(Me, btnSearchInventory, False)
+                End Select
             Else
                 ControlMgr.SetEnableControl(Me, btnSearchInventory, False)
             End If
@@ -1043,6 +1058,8 @@ Partial Class ClaimIssueActionAnswerForm
             GridViewDeviceSelection.Columns(GridColInventoryCheckIdx).Visible = False
             GridViewDeviceSelection.Columns(GridColReplacementCostIdx).Visible = False
             GridViewDeviceSelection.Columns(GridColNumberOfDeviceIdx).Visible = False
+        ElseIf State.SelectedActionCode = IssueActionCode.LflDevSel Then
+            GridViewDeviceSelection.Columns(GridColInventoryCheckIdx).Visible = False
         End If
     End Sub
     Private Sub GridViewDeviceSelection_PageIndexChanged(ByVal source As Object, ByVal e As EventArgs) Handles GridViewDeviceSelection.PageIndexChanged
@@ -1287,10 +1304,15 @@ Partial Class ClaimIssueActionAnswerForm
             If (ddlPaymentList.SelectedIndex > 0) Then
                 If GetSelectedItem(ddlPaymentList).Equals(LookupListNew.GetIdFromCode(LookupListCache.LK_PAYMENTMETHOD, Codes.PAYMENT_METHOD__BANK_TRANSFER)) Then
                     moBankInfoController.Visible = True
-                    State.BankInfoBo = New BusinessObjectsNew.BankInfo()
+
                     moBankInfoController.State.myBankInfoBo = State.BankInfoBo
-                    moBankInfoController.Bind(State.BankInfoBo)
+                    moBankInfoController.DisableAllFields()
                     moBankInfoController.State.myBankInfoBo.SepaEUBankTransfer = True
+                    moBankInfoController.Bind(State.BankInfoBo)
+                    moBankInfoController.setSwiftCode(State.BankInfoBo)
+                    moBankInfoController.setCustomerName(State.ClaimIssueBo.Claim.Certificate.CustomerName)
+                    moBankInfoController.SwitchToReadOnlyView()
+
                     moBankInfoController.SetCountryValue(State.ClaimIssueBo.Claim.Certificate.CountryPurchaseId)
 
                     moBankInfoController.EnableDisableRequiredControls()
@@ -1361,11 +1383,13 @@ Partial Class ClaimIssueActionAnswerForm
         End If
 
         oBankInfo.AccountNumber = moBankInfoController.State.myBankInfoBo.Account_Number
-        oBankInfo.AccountOwnerName = moBankInfoController.State.myBankInfoBo.Account_Name
+        'oBankInfo.AccountOwnerName = moBankInfoController.State.myBankInfoBo.Account_Name
+        oBankInfo.AccountOwnerName = State.ClaimIssueBo.Claim.Certificate.CustomerName
         oBankInfo.BankLookupCode = moBankInfoController.State.myBankInfoBo.BankLookupCode
         oBankInfo.BankName = moBankInfoController.State.myBankInfoBo.BankName
         oBankInfo.BankSortCode = moBankInfoController.State.myBankInfoBo.BankSortCode
         oBankInfo.BranchName = moBankInfoController.State.myBankInfoBo.BranchName
+        oBankInfo.IbanNumber = moBankInfoController.State.myBankInfoBo.IbanNumber
         If Not moBankInfoController.State.myBankInfoBo.BranchNumber Is Nothing Then
             oBankInfo.BranchNumber = CType(moBankInfoController.State.myBankInfoBo.BranchNumber.Value, Integer)
         End If

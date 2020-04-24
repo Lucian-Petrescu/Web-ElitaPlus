@@ -51,17 +51,20 @@ Public Class ClaimFileManagementSearchForm
     Public Const GRID_COL_FILENAME As String = "LogicalFileName"
     Public Const GRID_COL_RECEIVED As String = "ReceivedRecords"
     Public Const GRID_COL_COUNTED As String = "CountedRecords"
+    Public Const GRID_COL_BYPASSED As String = "BypassedRecords"
     Public Const GRID_COL_REJECTED As String = "RejectedRecords"
     Public Const GRID_COL_VALIDATED As String = "ValidatedRecords"
     Public Const GRID_COL_LOADED As String = "ProcessedRecords"
     Public Const GRID_COL_STATUS As String = "RecordState"
 
     Public Const GRID_LINK_BTN_SELECT As String = "SelectRecord"
+    Public Const GRID_LINK_BTN_BYPASSED As String = "BtnShowBypassed"
     Public Const GRID_LINK_BTN_REJECTED As String = "BtnShowRejected"
     Public Const GRID_LINK_BTN_VALIDATED As String = "BtnShowValidated"
     Public Const GRID_LINK_BTN_PROCESSED As String = "BtnShowProcessed"
     Public Const GRID_LINK_BTN_STATUS As String = "BtnShowStatus"
 
+    Public Const SHOW_COMMAND_BYPASSED As String = "ShowRecordBypassed"
     Public Const SHOW_COMMAND_REJECTED As String = "ShowRecordRejected"
     Public Const SHOW_COMMAND_VALIDATED As String = "ShowRecordValidated"
     Public Const SHOW_COMMAND_PROCESSED As String = "ShowRecordProcessed"
@@ -125,7 +128,7 @@ Public Class ClaimFileManagementSearchForm
 
 #Region "Page State"
     Class MyState
-        Public PagingInfo As PagingFilter
+        Public PagingInfo As PagingFilter = New PagingFilter With {.PageIndex = DEFAULT_PAGE_INDEX, .PageSize = DEFAULT_PAGE_SIZE}
         Public PageSort As String
         REM ---------------
         Public IsGridVisible As Boolean
@@ -187,6 +190,14 @@ Public Class ClaimFileManagementSearchForm
             End Get
         End Property
 
+        Public ReadOnly Property RecordsBypassed As Integer
+            Get
+                Dim oLinkButton As LinkButton = CType(SelectedGridRow.FindControl(GRID_LINK_BTN_BYPASSED), LinkButton)
+
+                Return CInt(oLinkButton.Text)
+            End Get
+        End Property
+
         Public ReadOnly Property RecordsRejected As Integer
             Get
                 Dim oLinkButton As LinkButton = CType(SelectedGridRow.FindControl(GRID_LINK_BTN_REJECTED), LinkButton)
@@ -205,7 +216,17 @@ Public Class ClaimFileManagementSearchForm
 
         Public ReadOnly Property RecordsProcessed As Integer
             Get
-                Return CInt(SelectedGridRow.Cells(GRID_COL_LOADED_IDX).Text)
+                Dim oLinkButton As LinkButton = CType(SelectedGridRow.FindControl(GRID_LINK_BTN_PROCESSED), LinkButton)
+
+                Return CInt(oLinkButton.Text)
+            End Get
+        End Property
+
+        Public ReadOnly Property FileStatus As FileStateType
+            Get
+                Dim Status As String = CType(SelectedGridRow.FindControl(GRID_LINK_BTN_STATUS), Label).Text
+
+                Return [Enum].Parse(GetType(FileStateType), DirectCast(Status, String), True)
             End Get
         End Property
 
@@ -219,7 +240,7 @@ Public Class ClaimFileManagementSearchForm
 
         Public ReadOnly Property FileReprocessingIsAvailable As Boolean
             Get
-                Return RecordsReceived > 0 And RecordsCounted > 0 And RecordsRejected > 0
+                Return RecordsReceived > 0 And RecordsCounted > 0 And RecordsRejected > 0 And FileStatus = FileStateType.Success
             End Get
         End Property
 
@@ -235,17 +256,17 @@ Public Class ClaimFileManagementSearchForm
             Select Case CommandName
 
                 Case SHOW_COMMAND_REJECTED
-                    FileInfoParams = New ClaimFileInfoParams(RecordStateType.Rejected, RecordsRejected)
+                    FileInfoParams = New ClaimFileInfoParams(RecordStateType.Rejected, LifeCycleRecordStateType.FrequentAccess, RecordsRejected)
 
                 Case SHOW_COMMAND_VALIDATED
-                    FileInfoParams = New ClaimFileInfoParams(RecordStateType.Validated, RecordsValidated)
+                    FileInfoParams = New ClaimFileInfoParams(RecordStateType.Validated, LifeCycleRecordStateType.FrequentAccess, RecordsValidated)
 
                 Case SHOW_COMMAND_PROCESSED
-                    FileInfoParams = New ClaimFileInfoParams(RecordStateType.Processed, RecordsProcessed)
+                    FileInfoParams = New ClaimFileInfoParams(RecordStateType.Processed, LifeCycleRecordStateType.InfrequentAccess, RecordsProcessed)
 
                 Case Else
                     ' default to the counted records.
-                    FileInfoParams = New ClaimFileInfoParams(RecordStateType.Initialized, RecordsCounted)
+                    FileInfoParams = New ClaimFileInfoParams(RecordStateType.Initialized, LifeCycleRecordStateType.FrequentAccess, RecordsCounted)
 
             End Select
 
@@ -280,7 +301,6 @@ Public Class ClaimFileManagementSearchForm
                 End If
 
                 SetGridItemStyleColor(DataGridView)
-                State.PagingInfo = New PagingFilter With {.PageIndex = DEFAULT_PAGE_INDEX, .PageSize = DEFAULT_PAGE_SIZE}
 
                 If IsReturningFromChild Then
                     PopulateGrid(True)
@@ -653,6 +673,10 @@ Public Class ClaimFileManagementSearchForm
                         ThePage.PopulateControlFromBOProperty(.Cells(GRID_COL_RECEIVED_IDX), fileInfo.ReceivedRecords)
                         ThePage.PopulateControlFromBOProperty(.Cells(GRID_COL_COUNTED_IDX), fileInfo.CountedRecords)
 
+                        oLinkButton = CType(.FindControl(GRID_LINK_BTN_BYPASSED), LinkButton)
+                        ThePage.PopulateControlFromBOProperty(oLinkButton, fileInfo.BypassedRecords)
+                        oLinkButton.Enabled = fileInfo.BypassedRecords > 0
+
                         oLinkButton = CType(.FindControl(GRID_LINK_BTN_REJECTED), LinkButton)
                         ThePage.PopulateControlFromBOProperty(oLinkButton, fileInfo.RejectedRecords)
                         oLinkButton.Enabled = fileInfo.RejectedRecords > 0
@@ -661,8 +685,9 @@ Public Class ClaimFileManagementSearchForm
                         ThePage.PopulateControlFromBOProperty(oLinkButton, fileInfo.ValidatedRecords)
                         oLinkButton.Enabled = fileInfo.ValidatedRecords > 0
 
-                        ThePage.PopulateControlFromBOProperty(.Cells(GRID_COL_QUEUED_IDX), fileInfo.QueuedRecords)
-                        ThePage.PopulateControlFromBOProperty(.Cells(GRID_COL_LOADED_IDX), fileInfo.ProcessedRecords) ' processed records are removed from service fabric; available in azure storage only.
+                        oLinkButton = CType(.FindControl(GRID_LINK_BTN_PROCESSED), LinkButton)
+                        ThePage.PopulateControlFromBOProperty(oLinkButton, fileInfo.ProcessedRecords)
+                        oLinkButton.Enabled = fileInfo.ProcessedRecords > 0
 
                         oStatusLabel = CType(.FindControl(GRID_LINK_BTN_STATUS), Label)
                         ThePage.PopulateControlFromBOProperty(oStatusLabel, System.Enum.GetName(GetType(FileStateType), fileInfo.FileState))

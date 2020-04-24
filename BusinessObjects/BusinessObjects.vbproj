@@ -290,10 +290,12 @@
     <Compile Include="Claims\PreInvoice.vb" />
     <Compile Include="Claims\PreInvoiceDetails.vb" />
     <Compile Include="Common\ClaimCloseRules.vb" />
+    <Compile Include="Common\DealerInflation.vb" />
     <Compile Include="Common\Instrumentation.vb" />
     <Compile Include="Common\IPriceListSearch.vb" />
     <Compile Include="Claims\DefaultClaimStatus.vb" />
     <Compile Include="Common\PaymentOrderInfo.vb" />
+    <Compile Include="Common\RiskTypeTolerance.vb" />
     <Compile Include="DataProtection\CertificateDataProtection.vb" />
     <Compile Include="DataProtection\ConsumerSearchRequest.vb" />
     <Compile Include="DataProtection\DataProtectionHistory.vb" />
@@ -423,6 +425,8 @@
     <Compile Include="Tables\PriceListSearchByServiceCenter.vb" />
     <Compile Include="Tables\ReppolicyClaimCount.vb" />
     <Compile Include="Tables\RolePermission.vb" />
+    <Compile Include="Tables\SvcPriceListRecon.vb" />
+    <Compile Include="Tables\SVCPLRecon.vb" />
     <Compile Include="Tables\UserPermission.vb" />
     <Compile Include="VSC\AcselXQuoteCancelCert.vb" />
     <Compile Include="VSC\AcselXQuoteCancelCertDs.vb" />

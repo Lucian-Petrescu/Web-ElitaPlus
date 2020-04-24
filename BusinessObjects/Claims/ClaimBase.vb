@@ -1690,6 +1690,21 @@ Public MustInherit Class ClaimBase
         End Set
     End Property
 
+    Protected Property VisitDate As DateType
+        Get
+            CheckDeleted()
+            If Row(ClaimDAL.COL_NAME_VISIT_DATE) Is DBNull.Value Then
+                Return Nothing
+            Else
+                Return New DateType(DateHelper.GetDateValue(Row(ClaimDAL.COL_NAME_VISIT_DATE).ToString()))
+            End If
+        End Get
+        Set
+            CheckDeleted()
+            SetValue(ClaimDAL.COL_NAME_VISIT_DATE, Value)
+        End Set
+    End Property
+
     Protected Property RepairDate() As DateType
         Get
             CheckDeleted()
@@ -3819,9 +3834,8 @@ Public MustInherit Class ClaimBase
         '' Check if Record is New
         If Not Me.Row.HasVersion(DataRowVersion.Original) Then
             '' New Claim Record is being Created
-            If Not Me.StatusCode.Equals(Codes.CLAIM_STATUS__PENDING) Then
-                triggerEvent = True
-            End If
+            '' PBI 494630 - Enabled for PENDING status 
+            triggerEvent = True
         Else
             If IsClaimStatusChanged() AndAlso (Me.StatusCode.Equals(Codes.CLAIM_STATUS__ACTIVE) Or Me.StatusCode.Equals(Codes.CLAIM_STATUS__DENIED)) Then
                 '' Existing Claim is being modifed and Claim Status Changed
@@ -3932,6 +3946,8 @@ Public MustInherit Class ClaimBase
                         eventTypeID = LookupListNew.GetIdFromCode(Codes.EVNT_TYP, Codes.EVNT_TYP__CLAIM_APPROVED)
                     ElseIf Me.StatusCode.Equals(Codes.CLAIM_STATUS__DENIED) Then
                         eventTypeID = LookupListNew.GetIdFromCode(Codes.EVNT_TYP, Codes.EVNT_TYP__CLAIM_DENIED)
+                    ElseIf Me.StatusCode.Equals(Codes.CLAIM_STATUS__PENDING) Then
+                        eventTypeID = LookupListNew.GetIdFromCode(Codes.EVNT_TYP, Codes.EVNT_TYP__CLAIM_REFERRED)
                     End If
 
                     PublishedTask.AddEvent(

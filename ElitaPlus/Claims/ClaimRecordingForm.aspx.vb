@@ -983,16 +983,16 @@ Public Class ClaimRecordingForm
 
                 If (callerinfo.GetType() Is GetType(PhoneCaller)) Then
                     If (String.IsNullOrEmpty(callerinfo.PhoneNumber) And String.IsNullOrEmpty(callerinfo.EmailAddress)) Then
-                        errMsg.Add(TranslationBase.TranslateLabelOrMessage(ElitaPlus.Common.ErrorCodes.GUI_CALLER_PHONE_OR_EMAIL_REQUIRED_ERR))
+                        errMsg.Add(ElitaPlus.Common.ErrorCodes.GUI_CALLER_PHONE_OR_EMAIL_REQUIRED_ERR)
                     End If
                 End If
 
                 If String.IsNullOrEmpty(callerinfo.FirstName) Then
-                    errMsg.Add(TranslationBase.TranslateLabelOrMessage(ElitaPlus.Common.ErrorCodes.GUI_CALLER_FIRST_NAME_REQUIRED_ERR))
+                    errMsg.Add(ElitaPlus.Common.ErrorCodes.GUI_CALLER_FIRST_NAME_REQUIRED_ERR)
                 End If
 
                 If String.IsNullOrEmpty(callerinfo.LastName) Then
-                    errMsg.Add(TranslationBase.TranslateLabelOrMessage(ElitaPlus.Common.ErrorCodes.GUI_CALLER_LAST_NAME_REQUIRED_ERR))
+                    errMsg.Add(ElitaPlus.Common.ErrorCodes.GUI_CALLER_LAST_NAME_REQUIRED_ERR)
                 End If
 
                 If errMsg.Count > 0 Then

@@ -5,6 +5,7 @@ Imports System.Xml
 Imports System.Xml.Linq
 Imports System.Text
 Imports System.IO
+Imports System.Text.RegularExpressions
 
 Public Class ExtendedStatusByUserRole
     ' Inherits System.Web.UI.Page
@@ -75,33 +76,33 @@ Public Class ExtendedStatusByUserRole
         Dim xEleCompany As XElement
 
         listItems = GetZAxisList("Company")
-        xEleCompany = New XElement("Companies", _
-                    From item In listItems _
-                    Select New XElement("Company", _
-                    New XElement("Id", item.Id), _
-                    New XElement("Code", item.Name), _
-                    New XElement("Description", item.Description), _
+        xEleCompany = New XElement("Companies",
+                    From item In listItems
+                    Select New XElement("Company",
+                    New XElement("Id", item.Id),
+                    New XElement("Code", item.Name),
+                    New XElement("Description", item.Description),
                     New XElement("Enabled", item.Enabled)))
 
 
 
         listItems = GetZAxisList("Role")
-        Dim xEleRlole = New XElement("Roles", _
-                    From item In listItems _
-                    Select New XElement("Role", _
-                    New XElement("Id", item.Id), _
-                    New XElement("Code", item.Name), _
-                    New XElement("Description", item.Description), _
+        Dim xEleRlole = New XElement("Roles",
+                    From item In listItems
+                    Select New XElement("Role",
+                    New XElement("Id", item.Id),
+                    New XElement("Code", item.Name),
+                    New XElement("Description", item.Description),
                     New XElement("Enabled", item.Enabled)))
 
 
         listItems = GetZAxisList("ExtendedStatus")
-        Dim xEleExtStatus = New XElement("ExtendedStatuses", _
-                    From item In listItems _
-                    Select New XElement("ExtendedStatus", _
-                    New XElement("Id", item.Id), _
-                    New XElement("Code", item.Name), _
-                    New XElement("Description", item.Description), _
+        Dim xEleExtStatus = New XElement("ExtendedStatuses",
+                    From item In listItems
+                    Select New XElement("ExtendedStatus",
+                    New XElement("Id", item.Id),
+                    New XElement("Code", item.Name),
+                    New XElement("Description", item.Description),
                     New XElement("Enabled", item.Enabled)))
 
         Dim dv As DataView = ClaimStatusByUserRole.GetData()
@@ -116,12 +117,12 @@ Public Class ExtendedStatusByUserRole
             grantItems.Add(New GrantItemDTO With {.CompanyId = companyId, .RoleId = roleId, .ExtendedStatusId = extendedStatusId, .Id = Id})
         Next
 
-        Dim xEleGrant = New XElement("Grants", _
-                    From item In grantItems _
-                    Select New XElement("Grant", _
-                    New XElement("CompanyId", item.CompanyId), _
-                    New XElement("RoleId", item.RoleId), _
-                    New XElement("ExtendedStatusId", item.ExtendedStatusId), _
+        Dim xEleGrant = New XElement("Grants",
+                    From item In grantItems
+                    Select New XElement("Grant",
+                    New XElement("CompanyId", item.CompanyId),
+                    New XElement("RoleId", item.RoleId),
+                    New XElement("ExtendedStatusId", item.ExtendedStatusId),
                     New XElement("Id", item.Id)))
 
 
@@ -165,12 +166,20 @@ Public Class ExtendedStatusByUserRole
     <ScriptMethod(ResponseFormat:=ResponseFormat.Json)>
     Public Shared Function SaveGrants(ByVal xAxisName As String, ByVal yAxisName As String, ByVal zAxisName As String, ByVal xyAxisValue As String, ByVal zAxisValue As String) As Object
         Try
+            Dim zAxisParseValueId, companyParseId, roleParseId, extendedStatusParseId As Guid
+            Dim grantsNode As XmlNodeList
+            Dim xAxisNode, yAxisNode, grantExist As XmlNode
+            Dim xAxisId, yAxisId As String
             Dim xmlDoc As XmlDocument = GetGrantData()
-            'Dim fileName As String = HttpContext.Current.Server.MapPath("Data.xml")
-            'Dim xmlDoc As New XmlDocument()
-            'xmlDoc.Load(fileName)
 
-            Dim grantsNode As XmlNodeList = xmlDoc.SelectNodes("RoleCompanyStatus/Grants/Grant[" & zAxisName & "Id = '" & zAxisValue & "']")
+            zAxisName = PreventInjection(zAxisName)
+
+            If Guid.TryParse(zAxisValue, zAxisParseValueId) And IsValidValue(zAxisName) Then
+                grantsNode = xmlDoc.SelectNodes("RoleCompanyStatus/Grants/Grant[" & zAxisName & "Id = '" & zAxisParseValueId.ToString() & "']")
+            Else
+                Throw New Exception()
+            End If
+
 
             Dim newGrants() As String = xyAxisValue.Split(New Char() {","})
             Dim newGrantList As New List(Of String)
@@ -181,13 +190,26 @@ Public Class ExtendedStatusByUserRole
 
                     Dim axisValues As New Dictionary(Of String, String)
                     Dim grantInfo() As String = grant.Split(New Char() {"-"})
+                    Dim grantInfo_xAxis As String = grantInfo(0)
+                    Dim grantInfo_yAxis As String = grantInfo(1)
 
-                    Dim xAxisNode As XmlNode = xmlDoc.SelectSingleNode(GetNodePath(xAxisName) & "[Code='" & grantInfo(0) & "']/Id")
-                    Dim xAxisId As String = xAxisNode.InnerText
-                    Dim yAxisNode As XmlNode = xmlDoc.SelectSingleNode(GetNodePath(yAxisName) & "[Code='" & grantInfo(1) & "']/Id")
-                    Dim yAxisId As String = yAxisNode.InnerText
-                    'Dim zAxisNode As XmlNode = xmlDoc.SelectSingleNode(GetNodePath(zAxisName) & "[Id='" & zAxisValue & "']/Id")
-                    'Dim zAxisId As String = zAxisNode.InnerText
+                    grantInfo_xAxis = PreventInjection(grantInfo_xAxis)
+                    grantInfo_yAxis = PreventInjection(grantInfo_yAxis)
+                    xAxisName = PreventInjection(xAxisName)
+                    yAxisName = PreventInjection(yAxisName)
+
+                    If IsValidValue(xAxisName) And IsValidValue(yAxisName) And IsValidValue(grantInfo_xAxis) And IsValidValue(grantInfo_yAxis) Then
+
+                        xAxisNode = xmlDoc.SelectSingleNode(GetNodePath(xAxisName) & "[Code='" & grantInfo_xAxis & "']/Id")
+                        xAxisId = xAxisNode.InnerText
+                        yAxisNode = xmlDoc.SelectSingleNode(GetNodePath(yAxisName) & "[Code='" & grantInfo_yAxis & "']/Id")
+                        yAxisId = yAxisNode.InnerText
+
+                    Else
+                        Throw New Exception()
+
+                    End If
+
                     Dim zAxisId As String = zAxisValue
 
                     axisValues.Add(xAxisName, xAxisId)
@@ -197,11 +219,16 @@ Public Class ExtendedStatusByUserRole
 
 
                     'check grant already exist
-                    Dim grantExist As XmlNode = xmlDoc.SelectSingleNode("RoleCompanyStatus/Grants/Grant[CompanyId = '" & axisValues.Item("Company") & "' and RoleId = '" &
-    axisValues.Item("Role") & "' and ExtendedStatusId = '" & axisValues.Item("ExtendedStatus") & "']")
+
+                    If Guid.TryParse(axisValues.Item("Company"), companyParseId) And Guid.TryParse(axisValues.Item("Role"), roleParseId) And Guid.TryParse(axisValues.Item("ExtendedStatus"), extendedStatusParseId) Then
+
+                        grantExist = xmlDoc.SelectSingleNode("RoleCompanyStatus/Grants/Grant[CompanyId = '" & companyParseId.ToString() & "' and RoleId = '" &
+                    roleParseId.ToString() & "' and ExtendedStatusId = '" & extendedStatusParseId.ToString() & "']")
+
+                    End If
+
                     'new grant
                     If grantExist Is Nothing Then
-           
 
                         Dim bo As New ClaimStatusByUserRole()
                         bo.CompanyId = New Guid(axisValues.Item("Company"))
@@ -215,24 +242,44 @@ Public Class ExtendedStatusByUserRole
 
 
             'Delete missing grants
-            For i As Integer = 0 To grantsNode.Count - 1
-                Dim grant As XmlNode = grantsNode.Item(i)
-                Dim grantText As String = grant.SelectSingleNode("CompanyId").InnerText & "-" & grant.SelectSingleNode("RoleId").InnerText & "-" & grant.SelectSingleNode("ExtendedStatusId").InnerText
-                If Not newGrantList.Contains(grantText) Then
-                    'grantsNode.RemoveChild(grant)
-                    Dim id As New Guid(grant.SelectSingleNode("Id").InnerText)
+            If grantsNode.Count > 0 Then
+                For i As Integer = 0 To grantsNode.Count - 1
+                    Dim grant As XmlNode = grantsNode.Item(i)
+                    Dim grantText As String = grant.SelectSingleNode("CompanyId").InnerText & "-" & grant.SelectSingleNode("RoleId").InnerText & "-" & grant.SelectSingleNode("ExtendedStatusId").InnerText
+                    If Not newGrantList.Contains(grantText) Then
+                        'grantsNode.RemoveChild(grant)
+                        Dim id As New Guid(grant.SelectSingleNode("Id").InnerText)
 
-                    Dim bo As New ClaimStatusByUserRole(id)
-                    bo.Delete()
-                    bo.Save()
-                End If
-            Next
+                        Dim bo As New ClaimStatusByUserRole(id)
+                        bo.Delete()
+                        bo.Save()
+                    End If
+                Next
+            End If
 
             xmlDoc = Nothing
             Return New With {.Status = Message.SAVE_RECORD_CONFIRMATION, .Message = TranslationBase.TranslateLabelOrMessage(Message.SAVE_RECORD_CONFIRMATION)}
         Catch ex As Exception
             Return New With {.Status = Message.MSG_RECORD_NOT_SAVED, .Message = TranslationBase.TranslateLabelOrMessage(Message.MSG_RECORD_NOT_SAVED)}
         End Try
+    End Function
+    Public Shared Function IsValidValue(ByRef grantValue As String) As Boolean
+        If Regex.IsMatch(grantValue, "^[a-zA-Z0-9]*$") Then
+            Return True
+        Else
+            Return False
+        End If
+    End Function
+    Public Shared Function PreventInjection(ByVal value As String) As String
+        If Not String.IsNullOrEmpty(value) Then
+            Dim safeText As StringBuilder = New StringBuilder(value)
+            safeText.Replace("&", "")
+            safeText.Replace("'", "")
+            safeText.Replace("<", "")
+            safeText.Replace(">", "")
+            safeText.Replace("=", "")
+            Return safeText.ToString()
+        End If
     End Function
 
     <System.Web.Services.WebMethod()>

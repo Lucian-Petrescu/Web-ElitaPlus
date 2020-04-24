@@ -57,7 +57,7 @@
         pre_invoice_id,
         auto_process_inv_file_xcd,
         withholding_rate
-			FROM elp_service_center 
+			FROM elp_service_center
 			WHERE
 				service_center_id = :service_center_id
 		]]>

@@ -79,6 +79,14 @@
                             <HeaderStyle Wrap="False" HorizontalAlign="Center" Width="1%"></HeaderStyle>
                             <ItemStyle HorizontalAlign="Center"></ItemStyle>
                         </asp:BoundField>
+                        <asp:TemplateField HeaderText="Bypassed">
+                            <HeaderStyle Wrap="False" Width="1%"></HeaderStyle>
+                            <ItemStyle HorizontalAlign="Center"></ItemStyle>
+                            <ItemTemplate>
+                                <asp:LinkButton ID="BtnShowBypassed" runat="server" CommandName="ShowRecordBypassed" 
+                                    CommandArgument="<%#Container.DisplayIndex %>" CausesValidation="false"></asp:LinkButton>
+                            </ItemTemplate>
+                        </asp:TemplateField>
                         <asp:TemplateField HeaderText="Rejected">
                             <HeaderStyle Wrap="False" Width="1%"></HeaderStyle>
                             <ItemStyle HorizontalAlign="Center"></ItemStyle>
@@ -86,8 +94,8 @@
                                 <asp:LinkButton ID="BtnShowRejected" runat="server" CommandName="ShowRecordRejected" 
                                     CommandArgument="<%#Container.DisplayIndex %>" CausesValidation="false"></asp:LinkButton>
                             </ItemTemplate>
-                        </asp:TemplateField>
-                       <asp:TemplateField HeaderText="Validated">
+                        </asp:TemplateField>                        
+                        <asp:TemplateField HeaderText="Validated">
                             <HeaderStyle Wrap="False" Width="1%"></HeaderStyle>
                             <ItemStyle HorizontalAlign="Center"></ItemStyle>
                             <ItemTemplate>
@@ -95,14 +103,14 @@
                                     CommandArgument="<%#Container.DisplayIndex %>" CausesValidation="false"></asp:LinkButton>
                             </ItemTemplate>
                         </asp:TemplateField>
-                        <asp:BoundField DataField="QueuedRecords" HeaderText="Requeued">
-                            <HeaderStyle Wrap="False" HorizontalAlign="Center" Width="1%"></HeaderStyle>
+                        <asp:TemplateField HeaderText="Processed">
+                            <HeaderStyle Wrap="False" Width="1%"></HeaderStyle>
                             <ItemStyle HorizontalAlign="Center"></ItemStyle>
-                        </asp:BoundField>
-                        <asp:BoundField DataField="ProcessedRecords" HeaderText="Processed">
-                            <HeaderStyle Wrap="False" HorizontalAlign="Center" Width="1%"></HeaderStyle>
-                            <ItemStyle HorizontalAlign="Center"></ItemStyle>
-                        </asp:BoundField>
+                            <ItemTemplate>
+                                <asp:LinkButton ID="BtnShowProcessed" runat="server" CommandName="ShowRecordProcessed" 
+                                    CommandArgument="<%#Container.DisplayIndex %>" CausesValidation="false"></asp:LinkButton>
+                            </ItemTemplate>
+                        </asp:TemplateField>
                         <asp:TemplateField HeaderText="Status">
                             <HeaderStyle Wrap="False" Width="1%" HorizontalAlign="Center"></HeaderStyle>
                             <ItemStyle HorizontalAlign="Center"></ItemStyle>

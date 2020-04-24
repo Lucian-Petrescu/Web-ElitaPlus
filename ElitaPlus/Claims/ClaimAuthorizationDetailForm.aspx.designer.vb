@@ -167,22 +167,31 @@ Partial Public Class ClaimAuthorizationDetailForm
     Protected WithEvents ScriptManagerMaster As Global.System.Web.UI.ScriptManager
     
     '''<summary>
-    '''lblModalTitle control.
+    '''HiddenFieldShowNewSC control.
     '''</summary>
     '''<remarks>
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents lblModalTitle As Global.System.Web.UI.WebControls.Label
+    Protected WithEvents HiddenFieldShowNewSC As Global.System.Web.UI.WebControls.HiddenField
     
     '''<summary>
-    '''Img1 control.
+    '''lblNewSCError control.
     '''</summary>
     '''<remarks>
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents Img1 As Global.System.Web.UI.HtmlControls.HtmlImage
+    Protected WithEvents lblNewSCError As Global.System.Web.UI.WebControls.Label
+    
+    '''<summary>
+    '''Label4 control.
+    '''</summary>
+    '''<remarks>
+    '''Auto-generated field.
+    '''To modify move field declaration from designer file to code-behind file.
+    '''</remarks>
+    Protected WithEvents Label4 As Global.System.Web.UI.WebControls.Label
     
     '''<summary>
     '''ucSelectServiceCenter control.
@@ -191,7 +200,43 @@ Partial Public Class ClaimAuthorizationDetailForm
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents ucSelectServiceCenter As Global.Assurant.ElitaPlus.ElitaPlusWebApp.UserControlSelectServiceCenter
+    Protected WithEvents ucSelectServiceCenter As Global.Assurant.ElitaPlus.ElitaPlusWebApp.UserControlServiceCenterSelection
+    
+    '''<summary>
+    '''lblNewSCAmt control.
+    '''</summary>
+    '''<remarks>
+    '''Auto-generated field.
+    '''To modify move field declaration from designer file to code-behind file.
+    '''</remarks>
+    Protected WithEvents lblNewSCAmt As Global.System.Web.UI.WebControls.Label
+    
+    '''<summary>
+    '''txtNewSCAmt control.
+    '''</summary>
+    '''<remarks>
+    '''Auto-generated field.
+    '''To modify move field declaration from designer file to code-behind file.
+    '''</remarks>
+    Protected WithEvents txtNewSCAmt As Global.System.Web.UI.WebControls.TextBox
+    
+    '''<summary>
+    '''btnNewSCCancel control.
+    '''</summary>
+    '''<remarks>
+    '''Auto-generated field.
+    '''To modify move field declaration from designer file to code-behind file.
+    '''</remarks>
+    Protected WithEvents btnNewSCCancel As Global.System.Web.UI.WebControls.Button
+    
+    '''<summary>
+    '''btnNewSCSave control.
+    '''</summary>
+    '''<remarks>
+    '''Auto-generated field.
+    '''To modify move field declaration from designer file to code-behind file.
+    '''</remarks>
+    Protected WithEvents btnNewSCSave As Global.System.Web.UI.WebControls.Button
     
     '''<summary>
     '''dvClaimAuthorizationDetails control.
@@ -822,6 +867,15 @@ Partial Public Class ClaimAuthorizationDetailForm
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
     Protected WithEvents btnRefundFee As Global.System.Web.UI.WebControls.Button
+    
+    '''<summary>
+    '''btnResendShippingLabel control.
+    '''</summary>
+    '''<remarks>
+    '''Auto-generated field.
+    '''To modify move field declaration from designer file to code-behind file.
+    '''</remarks>
+    Protected WithEvents btnResendShippingLabel As Global.System.Web.UI.WebControls.Button
     
     '''<summary>
     '''btnServiceCenterInfo control.

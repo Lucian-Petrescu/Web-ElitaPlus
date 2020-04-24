@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <xs:schema xmlns:tns="http://assurant.com/Elita/ClaimFulfillment/WebAppGateway" elementFormDefault="qualified" targetNamespace="http://assurant.com/Elita/ClaimFulfillment/WebAppGateway" xmlns:xs="http://www.w3.org/2001/XMLSchema">
-  <xs:import schemaLocation="http://l16mia0d8113qr8/ElitaClaimFulfillment/WebAppGateway/gateway?xsd=xsd2" namespace="http://assurant.com/Elita/ClaimFulfillment/WebAppGateway/Data" />
-  <xs:import schemaLocation="http://l16mia0d8113qr8/ElitaClaimFulfillment/WebAppGateway/gateway?xsd=xsd4" namespace="http://assurant.com/Elita/ClaimFulfillment/Data" />
+  <xs:import schemaLocation="http://l16mia0d8386gr7.cead.prd/ElitaClaimFulfillment/WebAppGateway/gateway?xsd=xsd2" namespace="http://assurant.com/Elita/ClaimFulfillment/WebAppGateway/Data" />
+  <xs:import schemaLocation="http://l16mia0d8386gr7.cead.prd/ElitaClaimFulfillment/WebAppGateway/gateway?xsd=xsd4" namespace="http://assurant.com/Elita/ClaimFulfillment/Data" />
   <xs:element name="GetDeliverySlots">
     <xs:complexType>
       <xs:sequence>
@@ -69,6 +69,20 @@
     <xs:complexType>
       <xs:sequence>
         <xs:element xmlns:q10="http://assurant.com/Elita/ClaimFulfillment/Data" minOccurs="0" name="SearchServiceCentersResult" nillable="true" type="q10:ArrayOfFulfillmentServicesCenter" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="ChangeServiceCenter">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element xmlns:q11="http://assurant.com/Elita/ClaimFulfillment/WebAppGateway/Data" minOccurs="0" name="request" nillable="true" type="q11:ChangeServiceCenterRequest" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="ChangeServiceCenterResponse">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element xmlns:q12="http://assurant.com/Elita/ClaimFulfillment/WebAppGateway/Data" minOccurs="0" name="ChangeServiceCenterResult" nillable="true" type="q12:ChangeServiceCenterResponse" />
       </xs:sequence>
     </xs:complexType>
   </xs:element>

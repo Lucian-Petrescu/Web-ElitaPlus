@@ -460,7 +460,14 @@ Public Class UserControlServiceCenterSelection
                 GridServiceCenter.PageSize = PageSize
                 GridServiceCenter.DataSource = wsResponse
                 '
-                HighLightSortColumnFunc.Invoke(GridServiceCenter, SortExpression)
+                Try
+                    if not string.IsNullOrWhiteSpace(SortExpression) then
+                        HighLightSortColumnFunc.Invoke(GridServiceCenter, SortExpression)
+                    End If
+                Catch ex As Exception
+                    'do nothing, ignore the sorting error
+                End Try
+                
                 '
                 GridServiceCenter.DataBind()
                 PageIndex = GridServiceCenter.PageIndex
@@ -503,7 +510,10 @@ Public Class UserControlServiceCenterSelection
 
                     SelectedServiceCenter = oServiceCenter
 
-                    ServiceCenterSelectedFunc.Invoke(selected)
+                    if not ServiceCenterSelectedFunc is Nothing Then
+                        ServiceCenterSelectedFunc.Invoke(selected)
+                    End If
+                    
                 End If
             End If
         Next
@@ -531,6 +541,7 @@ Public Class UserControlServiceCenterSelection
             Dim client = New WebAppGatewayClient("CustomBinding_WebAppGateway", oWebPassword.Url)
             client.ClientCredentials.UserName.UserName = oWebPassword.UserId
             client.ClientCredentials.UserName.Password = oWebPassword.Password
+
             Return client
         Catch ex As Exception
             Throw ex

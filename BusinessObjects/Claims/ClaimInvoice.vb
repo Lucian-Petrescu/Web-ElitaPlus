@@ -1022,6 +1022,7 @@ Public Class ClaimInvoice
             Me.DiagnosticsAmount = .DiagnosticsAmount
             Me.WithholdingAmount = .WithholdingAmount
             Me.TotalTaxAmount = .TotalTaxAmount
+            Me.RegionId = .RegionId
 
         End With
 
@@ -1233,7 +1234,7 @@ Public Class ClaimInvoice
     End Property
 
 
-    <ValidStringLength("", Max:=10)>
+    <ValidStringLength("", Max:=15)>
     Public Property BatchNumber() As String
         Get
             CheckDeleted()
