@@ -7,7 +7,6 @@ Imports System.Threading
 Imports Assurant.Elita.ClientIntegration
 Imports Assurant.Elita.ClientIntegration.Headers
 Imports Assurant.Elita.CommonConfiguration
-Imports Assurant.Elita.ExternalKeyHandler.DynamicFulfillment
 Imports Assurant.Elita.ServiceIntegration.Validation
 Imports Assurant.ElitaPlus.ElitaPlusWebApp.Certificates
 Imports Assurant.ElitaPlus.ElitaPlusWebApp.ClaimFulfillmentWebAppGatewayService
@@ -1303,7 +1302,6 @@ Public Class ClaimRecordingForm
                 wsRequest.CompanyCode = questionSubmitObj.CompanyCode
                 wsRequest.InteractionNumber = questionSubmitObj.InteractionNumber
                 wsRequest.Questions = questionSubmitObj.Questions
-                wsRequest.ClaimKey = getClaimKey(questionSubmitObj.CompanyCode, State.SubmitWsBaseClaimRecordingResponse.ClaimNumber)
 
                 Try
                     Dim wsResponse = WcfClientHelper.Execute(Of ClaimRecordingServiceClient, IClaimRecordingService, BaseClaimRecordingResponse)(
@@ -1366,16 +1364,6 @@ Public Class ClaimRecordingForm
             HandleErrors(ex, MasterPage.MessageController)
         End Try
     End Sub
-
-    Private Function getClaimKey(ByVal companyCode As String, ByVal claimNumber As String) As String
-        Dim handler As New DynamicFulfillmentKeyHandler()
-        Dim keys As New Dictionary(Of String, String)
-        Dim tenant As String = $"{EnvironmentContext.Current.EnvironmentShortName}-{Assurant.Elita.Configuration.ElitaConfig.Current.General.Hub}"
-        keys.Add("Tenant", tenant)
-        keys.Add("CompanyCode", companyCode)
-        keys.Add("ClaimNumber", claimNumber)
-        Return handler.Encode(keys)
-    End Function
     Private Function getCustomerAddress(ByVal custAddress As BusinessObjectsNew.Address) As String
         Dim sbCustmerAddress As New StringBuilder
         If Not custAddress Is Nothing Then
@@ -2150,7 +2138,7 @@ Public Class ClaimRecordingForm
                 dfControl.SubscriptionKey = wsResponse.SubscriptionKey
                 dfControl.CssUri = wsResponse.CssUri
                 dfControl.ScriptUri = wsResponse.ScriptUri
-                dfControl.ClaimNumber = getClaimKey(wsResponse.CompanyCode, wsResponse.ClaimNumber)
+                dfControl.ClaimNumber = wsResponse.ClaimKey
                 phDynamicFulfillmentUI.Controls.Add(dfControl)
             End If
         End If

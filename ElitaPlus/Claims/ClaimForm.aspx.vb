@@ -21,7 +21,7 @@ Imports System.Net.Http
 Imports System.Net.Http.Headers
 Imports Newtonsoft.Json.Linq
 Imports Assurant.Elita.ExternalKeyHandler.DynamicFulfillment
-Imports ClientEventPayLoad = Assurant.ElitaPlus.DataEntities.DFEventPayLoad
+Imports Assurant.Elita.Configuration
 
 Partial Class ClaimForm
     Inherits ElitaPlusSearchPage
@@ -4053,11 +4053,10 @@ Partial Class ClaimForm
 
         End Try
     End Sub
-
     Private Function getClaimKey(ByVal companyCode As String, ByVal claimNumber As String) As String
         Dim handler As New DynamicFulfillmentKeyHandler()
         Dim keys As New Dictionary(Of String, String)
-        Dim tenant As String = $"{EnvironmentContext.Current.EnvironmentShortName}-{Assurant.Elita.Configuration.ElitaConfig.Current.General.Hub}"
+        Dim tenant As String = $"{ElitaConfig.Current.General.Environment}-{ElitaConfig.Current.General.Hub}"
         keys.Add("Tenant", tenant)
         keys.Add("CompanyCode", companyCode)
         keys.Add("ClaimNumber", claimNumber)

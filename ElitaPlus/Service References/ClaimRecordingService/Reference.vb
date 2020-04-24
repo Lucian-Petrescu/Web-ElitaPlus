@@ -1224,9 +1224,11 @@ Namespace ClaimRecordingService
         Private CssUriField As String
         
         Private ScriptUriField As String
-        
+
         Private IsLoadErrorField As Boolean
-        
+
+        Private ClaimKeyField As String
+
         <System.Runtime.Serialization.DataMemberAttribute(IsRequired:=true)>  _
         Public Property FulfillmentProvider() As ClaimRecordingService.FulfillmentProviderType
             Get
@@ -1330,16 +1332,29 @@ Namespace ClaimRecordingService
                 End If
             End Set
         End Property
-        
-        <System.Runtime.Serialization.DataMemberAttribute(IsRequired:=true, Order:=8)>  _
+
+        <System.Runtime.Serialization.DataMemberAttribute(IsRequired:=True, Order:=8)>
         Public Property IsLoadError() As Boolean
             Get
                 Return Me.IsLoadErrorField
             End Get
             Set
-                If (Me.IsLoadErrorField.Equals(value) <> true) Then
+                If (Me.IsLoadErrorField.Equals(value) <> True) Then
                     Me.IsLoadErrorField = value
                     Me.RaisePropertyChanged("IsLoadError")
+                End If
+            End Set
+        End Property
+
+        <System.Runtime.Serialization.DataMemberAttribute(IsRequired:=True, Order:=9)>
+        Public Property ClaimKey() As String
+            Get
+                Return Me.ClaimKeyField
+            End Get
+            Set
+                If (Object.ReferenceEquals(Me.ClaimKeyField, Value) <> True) Then
+                    Me.ClaimKeyField = Value
+                    Me.RaisePropertyChanged("ClaimKey")
                 End If
             End Set
         End Property
@@ -3760,9 +3775,6 @@ Namespace ClaimRecordingService
         <System.Runtime.Serialization.OptionalFieldAttribute()>
         Private ParametersField() As Assurant.Elita.Questions.Contracts.QuestionSetParameter
 
-        <System.Runtime.Serialization.OptionalFieldAttribute()>
-        Private ClaimKeyField As String
-
         <System.Runtime.Serialization.DataMemberAttribute()>  _
         Public Property QuestionSetCode() As String
             Get
@@ -3811,19 +3823,6 @@ Namespace ClaimRecordingService
                 If (Object.ReferenceEquals(Me.ParametersField, value) <> True) Then
                     Me.ParametersField = value
                     Me.RaisePropertyChanged("Parameters")
-                End If
-            End Set
-        End Property
-
-        <System.Runtime.Serialization.DataMemberAttribute(Order:=4)>
-        Public Property ClaimKey() As String
-            Get
-                Return Me.ClaimKeyField
-            End Get
-            Set
-                If (Object.ReferenceEquals(Me.ClaimKeyField, Value) <> True) Then
-                    Me.ClaimKeyField = Value
-                    Me.RaisePropertyChanged("ClaimKey")
                 End If
             End Set
         End Property
