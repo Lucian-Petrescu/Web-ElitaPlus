@@ -11,8 +11,8 @@
 	</HEAD>
 	<body oncontextmenu="return false" onload="window.blur();" MS_POSITIONING="GridLayout">
 		<form id="Form1" method="post" runat="server">
-			<input id="nextPageURL" type="hidden" name="nextPageURL" runat="server"> 
-			<input id="sameWindow" type="hidden" name="sameWindow" runat="server">
+            <input id="nextPageURL" type="hidden" name="nextPageURL" runat="server"/> 
+            <input id="sameWindow" type="hidden" name="sameWindow" runat="server"/>
 		</form>
 		<script>
 		    var winHandle = null;

@@ -127,8 +127,9 @@
 									</TD>
 								</TR>
 							</TABLE>
-							<INPUT id="HiddenSaveChangesPromptResponse" type="hidden" name="HiddenSaveChangesPromptResponse"
-								runat="server" DESIGNTIMEDRAGDROP="261"> <INPUT id="HiddenUserAuthorization" type="hidden" name="HiddenUserAuthorization" runat="server">
+                        <INPUT id="HiddenSaveChangesPromptResponse" type="hidden" name="HiddenSaveChangesPromptResponse"
+                               runat="server" DESIGNTIMEDRAGDROP="261"/> 
+                        <INPUT id="HiddenUserAuthorization" type="hidden" name="HiddenUserAuthorization" runat="server"/>
 						</asp:panel></td>
 				</tr>
 			</TABLE>

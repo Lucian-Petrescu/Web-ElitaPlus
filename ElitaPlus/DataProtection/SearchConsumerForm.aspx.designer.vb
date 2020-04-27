@@ -11,9 +11,9 @@ Option Strict On
 Option Explicit On
 
 Namespace DataProtection
-    
+
     Partial Public Class SearchConsumerForm
-        
+
         '''<summary>
         '''ErrorCtrl control.
         '''</summary>
@@ -22,7 +22,7 @@ Namespace DataProtection
         '''To modify move field declaration from designer file to code-behind file.
         '''</remarks>
         Protected WithEvents ErrorCtrl As Global.Assurant.ElitaPlus.ElitaPlusWebApp.ErrorController
-        
+
         '''<summary>
         '''searchTable control.
         '''</summary>
@@ -31,7 +31,7 @@ Namespace DataProtection
         '''To modify move field declaration from designer file to code-behind file.
         '''</remarks>
         Protected WithEvents searchTable As Global.System.Web.UI.HtmlControls.HtmlTable
-        
+
         '''<summary>
         '''lblRequestId control.
         '''</summary>
@@ -40,7 +40,7 @@ Namespace DataProtection
         '''To modify move field declaration from designer file to code-behind file.
         '''</remarks>
         Protected WithEvents lblRequestId As Global.System.Web.UI.WebControls.Label
-        
+
         '''<summary>
         '''txtRequestID control.
         '''</summary>
@@ -49,7 +49,16 @@ Namespace DataProtection
         '''To modify move field declaration from designer file to code-behind file.
         '''</remarks>
         Protected WithEvents txtRequestID As Global.System.Web.UI.WebControls.TextBox
-        
+
+        '''<summary>
+        '''lblSearchCriteria control.
+        '''</summary>
+        '''<remarks>
+        '''Auto-generated field.
+        '''To modify move field declaration from designer file to code-behind file.
+        '''</remarks>
+        Protected WithEvents lblSearchCriteria As Global.System.Web.UI.WebControls.Label
+
         '''<summary>
         '''lblCustomerName control.
         '''</summary>
@@ -58,7 +67,7 @@ Namespace DataProtection
         '''To modify move field declaration from designer file to code-behind file.
         '''</remarks>
         Protected WithEvents lblCustomerName As Global.System.Web.UI.WebControls.Label
-        
+
         '''<summary>
         '''txtCustomerName control.
         '''</summary>
@@ -67,7 +76,7 @@ Namespace DataProtection
         '''To modify move field declaration from designer file to code-behind file.
         '''</remarks>
         Protected WithEvents txtCustomerName As Global.System.Web.UI.WebControls.TextBox
-        
+
         '''<summary>
         '''lblPhoneNumber control.
         '''</summary>
@@ -76,7 +85,7 @@ Namespace DataProtection
         '''To modify move field declaration from designer file to code-behind file.
         '''</remarks>
         Protected WithEvents lblPhoneNumber As Global.System.Web.UI.WebControls.Label
-        
+
         '''<summary>
         '''txtPhoneNumber control.
         '''</summary>
@@ -85,7 +94,7 @@ Namespace DataProtection
         '''To modify move field declaration from designer file to code-behind file.
         '''</remarks>
         Protected WithEvents txtPhoneNumber As Global.System.Web.UI.WebControls.TextBox
-        
+
         '''<summary>
         '''lblEmail control.
         '''</summary>
@@ -94,7 +103,7 @@ Namespace DataProtection
         '''To modify move field declaration from designer file to code-behind file.
         '''</remarks>
         Protected WithEvents lblEmail As Global.System.Web.UI.WebControls.Label
-        
+
         '''<summary>
         '''txtEmail control.
         '''</summary>
@@ -103,7 +112,7 @@ Namespace DataProtection
         '''To modify move field declaration from designer file to code-behind file.
         '''</remarks>
         Protected WithEvents txtEmail As Global.System.Web.UI.WebControls.TextBox
-        
+
         '''<summary>
         '''lblIDNumber control.
         '''</summary>
@@ -112,7 +121,7 @@ Namespace DataProtection
         '''To modify move field declaration from designer file to code-behind file.
         '''</remarks>
         Protected WithEvents lblIDNumber As Global.System.Web.UI.WebControls.Label
-        
+
         '''<summary>
         '''txtTaxIDNumber control.
         '''</summary>
@@ -121,7 +130,7 @@ Namespace DataProtection
         '''To modify move field declaration from designer file to code-behind file.
         '''</remarks>
         Protected WithEvents txtTaxIDNumber As Global.System.Web.UI.WebControls.TextBox
-        
+
         '''<summary>
         '''lblInvoice control.
         '''</summary>
@@ -130,7 +139,7 @@ Namespace DataProtection
         '''To modify move field declaration from designer file to code-behind file.
         '''</remarks>
         Protected WithEvents lblInvoice As Global.System.Web.UI.WebControls.Label
-        
+
         '''<summary>
         '''txtInvoice control.
         '''</summary>
@@ -139,7 +148,7 @@ Namespace DataProtection
         '''To modify move field declaration from designer file to code-behind file.
         '''</remarks>
         Protected WithEvents txtInvoice As Global.System.Web.UI.WebControls.TextBox
-        
+
         '''<summary>
         '''lblCertificate control.
         '''</summary>
@@ -148,7 +157,7 @@ Namespace DataProtection
         '''To modify move field declaration from designer file to code-behind file.
         '''</remarks>
         Protected WithEvents lblCertificate As Global.System.Web.UI.WebControls.Label
-        
+
         '''<summary>
         '''txtCertificate control.
         '''</summary>
@@ -157,7 +166,7 @@ Namespace DataProtection
         '''To modify move field declaration from designer file to code-behind file.
         '''</remarks>
         Protected WithEvents txtCertificate As Global.System.Web.UI.WebControls.TextBox
-        
+
         '''<summary>
         '''lblAccount control.
         '''</summary>
@@ -166,7 +175,7 @@ Namespace DataProtection
         '''To modify move field declaration from designer file to code-behind file.
         '''</remarks>
         Protected WithEvents lblAccount As Global.System.Web.UI.WebControls.Label
-        
+
         '''<summary>
         '''txtAccount control.
         '''</summary>
@@ -175,7 +184,7 @@ Namespace DataProtection
         '''To modify move field declaration from designer file to code-behind file.
         '''</remarks>
         Protected WithEvents txtAccount As Global.System.Web.UI.WebControls.TextBox
-        
+
         '''<summary>
         '''lblSerial control.
         '''</summary>
@@ -184,7 +193,7 @@ Namespace DataProtection
         '''To modify move field declaration from designer file to code-behind file.
         '''</remarks>
         Protected WithEvents lblSerial As Global.System.Web.UI.WebControls.Label
-        
+
         '''<summary>
         '''txtSerial control.
         '''</summary>
@@ -193,7 +202,25 @@ Namespace DataProtection
         '''To modify move field declaration from designer file to code-behind file.
         '''</remarks>
         Protected WithEvents txtSerial As Global.System.Web.UI.WebControls.TextBox
-        
+
+        '''<summary>
+        '''lblNote control.
+        '''</summary>
+        '''<remarks>
+        '''Auto-generated field.
+        '''To modify move field declaration from designer file to code-behind file.
+        '''</remarks>
+        Protected WithEvents lblNote As Global.System.Web.UI.WebControls.Label
+
+        '''<summary>
+        '''lblAddtional control.
+        '''</summary>
+        '''<remarks>
+        '''Auto-generated field.
+        '''To modify move field declaration from designer file to code-behind file.
+        '''</remarks>
+        Protected WithEvents lblAddtional As Global.System.Web.UI.WebControls.Label
+
         '''<summary>
         '''lblAddress control.
         '''</summary>
@@ -202,7 +229,7 @@ Namespace DataProtection
         '''To modify move field declaration from designer file to code-behind file.
         '''</remarks>
         Protected WithEvents lblAddress As Global.System.Web.UI.WebControls.Label
-        
+
         '''<summary>
         '''txtAddress control.
         '''</summary>
@@ -211,7 +238,7 @@ Namespace DataProtection
         '''To modify move field declaration from designer file to code-behind file.
         '''</remarks>
         Protected WithEvents txtAddress As Global.System.Web.UI.WebControls.TextBox
-        
+
         '''<summary>
         '''lblGender control.
         '''</summary>
@@ -220,7 +247,7 @@ Namespace DataProtection
         '''To modify move field declaration from designer file to code-behind file.
         '''</remarks>
         Protected WithEvents lblGender As Global.System.Web.UI.WebControls.Label
-        
+
         '''<summary>
         '''ddlGender control.
         '''</summary>
@@ -229,7 +256,7 @@ Namespace DataProtection
         '''To modify move field declaration from designer file to code-behind file.
         '''</remarks>
         Protected WithEvents ddlGender As Global.System.Web.UI.WebControls.DropDownList
-        
+
         '''<summary>
         '''lblDealer control.
         '''</summary>
@@ -238,7 +265,7 @@ Namespace DataProtection
         '''To modify move field declaration from designer file to code-behind file.
         '''</remarks>
         Protected WithEvents lblDealer As Global.System.Web.UI.WebControls.Label
-        
+
         '''<summary>
         '''ddlDealer control.
         '''</summary>
@@ -247,7 +274,7 @@ Namespace DataProtection
         '''To modify move field declaration from designer file to code-behind file.
         '''</remarks>
         Protected WithEvents ddlDealer As Global.System.Web.UI.WebControls.DropDownList
-        
+
         '''<summary>
         '''lblZip control.
         '''</summary>
@@ -256,7 +283,7 @@ Namespace DataProtection
         '''To modify move field declaration from designer file to code-behind file.
         '''</remarks>
         Protected WithEvents lblZip As Global.System.Web.UI.WebControls.Label
-        
+
         '''<summary>
         '''txtZip control.
         '''</summary>
@@ -265,7 +292,7 @@ Namespace DataProtection
         '''To modify move field declaration from designer file to code-behind file.
         '''</remarks>
         Protected WithEvents txtZip As Global.System.Web.UI.WebControls.TextBox
-        
+
         '''<summary>
         '''lblBirthDate control.
         '''</summary>
@@ -274,7 +301,7 @@ Namespace DataProtection
         '''To modify move field declaration from designer file to code-behind file.
         '''</remarks>
         Protected WithEvents lblBirthDate As Global.System.Web.UI.WebControls.Label
-        
+
         '''<summary>
         '''txtBirthDate control.
         '''</summary>
@@ -283,7 +310,7 @@ Namespace DataProtection
         '''To modify move field declaration from designer file to code-behind file.
         '''</remarks>
         Protected WithEvents txtBirthDate As Global.System.Web.UI.WebControls.TextBox
-        
+
         '''<summary>
         '''btntxtBirthDate control.
         '''</summary>
@@ -292,7 +319,7 @@ Namespace DataProtection
         '''To modify move field declaration from designer file to code-behind file.
         '''</remarks>
         Protected WithEvents btntxtBirthDate As Global.System.Web.UI.WebControls.ImageButton
-        
+
         '''<summary>
         '''lblIncludeRecon control.
         '''</summary>
@@ -301,7 +328,7 @@ Namespace DataProtection
         '''To modify move field declaration from designer file to code-behind file.
         '''</remarks>
         Protected WithEvents lblIncludeRecon As Global.System.Web.UI.WebControls.Label
-        
+
         '''<summary>
         '''chkIncludeRecon control.
         '''</summary>
@@ -310,7 +337,7 @@ Namespace DataProtection
         '''To modify move field declaration from designer file to code-behind file.
         '''</remarks>
         Protected WithEvents chkIncludeRecon As Global.System.Web.UI.WebControls.CheckBox
-        
+
         '''<summary>
         '''btnClearSearch control.
         '''</summary>
@@ -319,7 +346,7 @@ Namespace DataProtection
         '''To modify move field declaration from designer file to code-behind file.
         '''</remarks>
         Protected WithEvents btnClearSearch As Global.System.Web.UI.WebControls.Button
-        
+
         '''<summary>
         '''btnSearch control.
         '''</summary>

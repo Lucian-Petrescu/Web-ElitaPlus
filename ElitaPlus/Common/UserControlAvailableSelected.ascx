@@ -73,7 +73,7 @@
         </tr>
     </table>
 </div>
-<input id="moAvailableTexts" type="hidden" name="moAvailableTexts" runat="server">
-<input id="moAvailableValues" type="hidden" name="moAvailableValues" runat="server">
-<input id="moSelectedTexts" type="hidden" name="moSelectedTexts" runat="server">
-<input id="moSelectedValues" type="hidden" name="moSelectedValues" runat="server">
+<input id="moAvailableTexts" type="hidden" name="moAvailableTexts" runat="server"/>
+<input id="moAvailableValues" type="hidden" name="moAvailableValues" runat="server"/>
+<input id="moSelectedTexts" type="hidden" name="moSelectedTexts" runat="server"/>
+<input id="moSelectedValues" type="hidden" name="moSelectedValues" runat="server"/>

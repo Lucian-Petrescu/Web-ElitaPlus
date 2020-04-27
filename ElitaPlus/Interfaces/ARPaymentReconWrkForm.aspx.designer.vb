@@ -11,9 +11,9 @@ Option Strict On
 Option Explicit On
 
 Namespace Interfaces
-    
+
     Partial Public Class ARPaymentReconWrkForm
-        
+
         '''<summary>
         '''moDealerNameLabel control.
         '''</summary>
@@ -22,7 +22,7 @@ Namespace Interfaces
         '''To modify move field declaration from designer file to code-behind file.
         '''</remarks>
         Protected WithEvents moDealerNameLabel As Global.System.Web.UI.WebControls.Label
-        
+
         '''<summary>
         '''moDealerNameText control.
         '''</summary>
@@ -31,7 +31,7 @@ Namespace Interfaces
         '''To modify move field declaration from designer file to code-behind file.
         '''</remarks>
         Protected WithEvents moDealerNameText As Global.System.Web.UI.WebControls.TextBox
-        
+
         '''<summary>
         '''moFileNameLabel control.
         '''</summary>
@@ -40,7 +40,7 @@ Namespace Interfaces
         '''To modify move field declaration from designer file to code-behind file.
         '''</remarks>
         Protected WithEvents moFileNameLabel As Global.System.Web.UI.WebControls.Label
-        
+
         '''<summary>
         '''moFileNameText control.
         '''</summary>
@@ -49,7 +49,7 @@ Namespace Interfaces
         '''To modify move field declaration from designer file to code-behind file.
         '''</remarks>
         Protected WithEvents moFileNameText As Global.System.Web.UI.WebControls.TextBox
-        
+
         '''<summary>
         '''ScriptManager2 control.
         '''</summary>
@@ -58,7 +58,7 @@ Namespace Interfaces
         '''To modify move field declaration from designer file to code-behind file.
         '''</remarks>
         Protected WithEvents ScriptManager2 As Global.System.Web.UI.ScriptManager
-        
+
         '''<summary>
         '''moSearchResultsHeader control.
         '''</summary>
@@ -67,7 +67,7 @@ Namespace Interfaces
         '''To modify move field declaration from designer file to code-behind file.
         '''</remarks>
         Protected WithEvents moSearchResultsHeader As Global.System.Web.UI.WebControls.Label
-        
+
         '''<summary>
         '''tr1 control.
         '''</summary>
@@ -76,7 +76,7 @@ Namespace Interfaces
         '''To modify move field declaration from designer file to code-behind file.
         '''</remarks>
         Protected WithEvents tr1 As Global.System.Web.UI.HtmlControls.HtmlTableRow
-        
+
         '''<summary>
         '''Label1 control.
         '''</summary>
@@ -85,7 +85,7 @@ Namespace Interfaces
         '''To modify move field declaration from designer file to code-behind file.
         '''</remarks>
         Protected WithEvents Label1 As Global.System.Web.UI.WebControls.Label
-        
+
         '''<summary>
         '''cboPageSize control.
         '''</summary>
@@ -94,7 +94,7 @@ Namespace Interfaces
         '''To modify move field declaration from designer file to code-behind file.
         '''</remarks>
         Protected WithEvents cboPageSize As Global.System.Web.UI.WebControls.DropDownList
-        
+
         '''<summary>
         '''lblRecordCount control.
         '''</summary>
@@ -103,7 +103,7 @@ Namespace Interfaces
         '''To modify move field declaration from designer file to code-behind file.
         '''</remarks>
         Protected WithEvents lblRecordCount As Global.System.Web.UI.WebControls.Label
-        
+
         '''<summary>
         '''HiddenSavePagePromptResponse control.
         '''</summary>
@@ -112,7 +112,7 @@ Namespace Interfaces
         '''To modify move field declaration from designer file to code-behind file.
         '''</remarks>
         Protected WithEvents HiddenSavePagePromptResponse As Global.System.Web.UI.HtmlControls.HtmlInputHidden
-        
+
         '''<summary>
         '''HiddenIsPageDirty control.
         '''</summary>
@@ -121,7 +121,7 @@ Namespace Interfaces
         '''To modify move field declaration from designer file to code-behind file.
         '''</remarks>
         Protected WithEvents HiddenIsPageDirty As Global.System.Web.UI.HtmlControls.HtmlInputHidden
-        
+
         '''<summary>
         '''HiddenIfComingFromBundlesScreen control.
         '''</summary>
@@ -130,7 +130,7 @@ Namespace Interfaces
         '''To modify move field declaration from designer file to code-behind file.
         '''</remarks>
         Protected WithEvents HiddenIfComingFromBundlesScreen As Global.System.Web.UI.HtmlControls.HtmlInputHidden
-        
+
         '''<summary>
         '''HiddenIsBundlesPageDirty control.
         '''</summary>
@@ -139,7 +139,7 @@ Namespace Interfaces
         '''To modify move field declaration from designer file to code-behind file.
         '''</remarks>
         Protected WithEvents HiddenIsBundlesPageDirty As Global.System.Web.UI.HtmlControls.HtmlInputHidden
-        
+
         '''<summary>
         '''updatePanel1 control.
         '''</summary>
@@ -148,7 +148,7 @@ Namespace Interfaces
         '''To modify move field declaration from designer file to code-behind file.
         '''</remarks>
         Protected WithEvents updatePanel1 As Global.System.Web.UI.UpdatePanel
-        
+
         '''<summary>
         '''moDataGrid control.
         '''</summary>
@@ -157,7 +157,7 @@ Namespace Interfaces
         '''To modify move field declaration from designer file to code-behind file.
         '''</remarks>
         Protected WithEvents moDataGrid As Global.System.Web.UI.WebControls.GridView
-        
+
         '''<summary>
         '''btnSave_WRITE control.
         '''</summary>
@@ -166,7 +166,7 @@ Namespace Interfaces
         '''To modify move field declaration from designer file to code-behind file.
         '''</remarks>
         Protected WithEvents btnSave_WRITE As Global.System.Web.UI.WebControls.Button
-        
+
         '''<summary>
         '''btnUndo_WRITE control.
         '''</summary>
@@ -175,7 +175,7 @@ Namespace Interfaces
         '''To modify move field declaration from designer file to code-behind file.
         '''</remarks>
         Protected WithEvents btnUndo_WRITE As Global.System.Web.UI.WebControls.Button
-        
+
         '''<summary>
         '''btnBack control.
         '''</summary>

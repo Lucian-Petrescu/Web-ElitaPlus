@@ -44,8 +44,8 @@
                                                 <asp:ListItem Value="50">50</asp:ListItem>
                                             </asp:DropDownList>
                                             <input id="HiddenSavePagePromptResponse" type="hidden" name="HiddenSavePagePromptResponse"
-                                                runat="server">
-                                            <input id="HiddenIsPageDirty" type="hidden" name="HiddenIsPageDirty" runat="server">
+                                                   runat="server"/>
+                                            <input id="HiddenIsPageDirty" type="hidden" name="HiddenIsPageDirty" runat="server"/>
                                             <input id="HiddenIsPartsPageDirty" type="hidden" runat="server" />
                                         </td>
                                         <td align="right">

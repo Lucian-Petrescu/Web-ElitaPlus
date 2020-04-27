@@ -32,7 +32,7 @@
             <td colspan="4" style="padding-left: 18px">
 
                 <span style="z-index: -1; color: red">*</span>
-                <asp:Label ID="lblRequestId" runat="server">REQUEST_ID</asp:Label><br />
+                <asp:Label ID="lblRequestId" runat="server" Text="REQUEST_ID"></asp:Label><br />
                 <asp:TextBox ID="txtRequestID" runat="server" SkinID="MediumTextBox"></asp:TextBox>
             </td>
 
@@ -41,7 +41,7 @@
 
             <td>
                 <fieldset>
-                    <legend><asp:Label ID="lblSearchCriteria"  runat="server" >SEARCH_CRITERIA</asp:Label></legend>
+                    <legend><asp:Label ID="lblSearchCriteria"  runat="server"  Text="SEARCH_CRITERIA"></asp:Label></legend>
                     <table width="100%">
                         <tr>
                             <td width ="25%">
@@ -94,9 +94,6 @@
                             </td>
                         </tr>
 
-                        <tr>
-                            
-                        </tr>
                         <tr>
                             <td colspan="3" align="left">
                               <b> <p style="font-size:11px; font-family:Verdana,Arial, Helvetica, sans-serif; color:#0066cc"> <asp:Label ID="lblNote" runat="server">NOTE_SEARCH_CRITERIA_REQUIRED</asp:Label> </p></b>

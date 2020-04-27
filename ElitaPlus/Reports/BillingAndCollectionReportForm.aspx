@@ -137,7 +137,7 @@
                                                                                         &nbsp;
 																		            </td>
 																		            <td align='left' valign="baseline" nowrap="nowrap" >
-																			            <uc1:MultipleColumnDDLabelControl id="multipleDropControl"  runat="server"></uc1:MultipleColumnDDLabelControl>
+																			            <uc1:MultipleColumnDDLabelControl id="multipleDropControl" runat="server"></uc1:MultipleColumnDDLabelControl>
                                                                                     </td>
 																	            </tr>
 																            </table>

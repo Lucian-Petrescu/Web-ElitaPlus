@@ -115,10 +115,10 @@
                             </tr>
 							<TR>
 								<TD>
-									<INPUT id="HiddenSaveChangesPromptResponse" type="hidden" name="HiddenSaveChangesPromptResponse" runat="server">
+                                    <INPUT id="HiddenSaveChangesPromptResponse" type="hidden" name="HiddenSaveChangesPromptResponse" runat="server"/>
 								</TD>
 								<TD>
-									<INPUT id="isBtnBackClicked" type="hidden" value="N" name="isBtnBackClicked" runat="server">
+                                    <INPUT id="isBtnBackClicked" type="hidden" value="N" name="isBtnBackClicked" runat="server"/>
 								</TD>
 							</TR>
                             

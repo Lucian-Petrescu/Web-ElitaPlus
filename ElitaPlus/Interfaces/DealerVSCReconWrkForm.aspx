@@ -3,10 +3,11 @@
     Theme="Default" MasterPageFile="../Navigation/masters/ElitaBase.Master" %>
 <%@ Register Assembly="AjaxControlToolkit" Namespace="AjaxControlToolkit" TagPrefix="ajaxToolkit" %>
 <asp:Content ID="Content1" ContentPlaceHolderID="HeadPlaceHolder" runat="server">
-    <Script language="JavaScript" src="../Navigation/Scripts/GlobalHeader.js">        
-       function TABLE1_onclick() {
+    <script language="JavaScript" src="../Navigation/Scripts/GlobalHeader.js"/> 
+    <script type="text/javascript">
+        function TABLE1_onclick() {
         }
-    </Script>
+    </script>
 </asp:Content>
 
 <asp:Content ID="Content2" ContentPlaceHolderID="SummaryPlaceHolder" runat="server">

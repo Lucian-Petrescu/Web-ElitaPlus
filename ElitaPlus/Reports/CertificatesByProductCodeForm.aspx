@@ -1,207 +1,226 @@
-<%@ Page Language="vb" AutoEventWireup="false" Codebehind="CertificatesByProductCodeForm.aspx.vb" Inherits="Assurant.ElitaPlus.ElitaPlusWebApp.Reports.CertificatesByProductCodeForm" %>
+<%@ Page Language="vb" AutoEventWireup="false" CodeBehind="CertificatesByProductCodeForm.aspx.vb" Inherits="Assurant.ElitaPlus.ElitaPlusWebApp.Reports.CertificatesByProductCodeForm" %>
+
 <%@ Register TagPrefix="uc1" TagName="ReportCeInputControl" Src="ReportCeInputControl.ascx" %>
 <%@ Register TagPrefix="uc1" TagName="ErrorController" Src="../Common/ErrorController.ascx" %>
 <%@ Register TagPrefix="uc1" TagName="MultipleColumnDDLabelControl" Src="../Common/MultipleColumnDDLabelControl.ascx" %>
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
-<HTML>
-	<HEAD>
-		<title>Certificate By Product Code</title>
-		<meta content="Microsoft Visual Studio.NET 7.0" name="GENERATOR">
-		<meta content="Visual Basic 7.0" name="CODE_LANGUAGE">
-		<meta content="JavaScript" name="vs_defaultClientScript">
-		<meta content="http://schemas.microsoft.com/intellisense/ie5" name="vs_targetSchema">
-		<link href="../Styles.css" type="text/css" rel="STYLESHEET">
-		<SCRIPT language="JavaScript" src="../Navigation/Scripts/GlobalHeader.js"></SCRIPT>
-	</HEAD>
-	<body leftMargin="0" topMargin="0" onload="changeScrollbarColor();" MS_POSITIONING="GridLayout">
-		<form id="Form1" method="post" runat="server">
-			<!--Start Header--><input id="rptTitle" type="hidden" name="rptTitle"> <input id="rptSrc" type="hidden" name="rptSrc">
-			<TABLE style="BORDER-RIGHT: black 1px solid; BORDER-TOP: black 1px solid; MARGIN: 5px; BORDER-LEFT: black 1px solid; BORDER-BOTTOM: black 1px solid; HEIGHT: 22px"
-				cellSpacing="0" cellPadding="0" width="98%" bgColor="#d5d6e4" border="0">
-				<TR>
-					<TD vAlign="top">
-						<TABLE width="100%" border="0">
-							<TR>
-								<TD height="20"><asp:label id="LabelReports" runat="server" CssClass="TITLELABEL">Reports</asp:label>:
-									<asp:label id="Label7" runat="server" CssClass="TITLELABELTEXT">CERTIFICATES BY PRODUCT CODE REPORT CRITERIA</asp:label></TD>
-								<TD align="right" height="20">*&nbsp;
-									<asp:label id="moIndicatesLabel" runat="server"  EnableViewState="true">INDICATES_REQUIRED_FIELDS</asp:label></TD>
-							</TR>
-						</TABLE>
-					</TD>
-				</TR>
-			</TABLE>
-			<TABLE id="tblOuter2" style="BORDER-RIGHT: black 1px solid; BORDER-TOP: black 1px solid; MARGIN: 5px; BORDER-LEFT: black 1px solid; BORDER-BOTTOM: black 1px solid"
-				height="93%" cellSpacing="0" cellPadding="0" rules="none" width="98%" bgColor="#d5d6e4"
-				border="0"> <!--d5d6e4-->
-				<TR>
-					<TD>&nbsp;</TD>
-				</TR>
-				<TR>
-					<TD vAlign="top" align="center" height="100%"><asp:panel id="WorkingPanel" runat="server">
-							<TABLE id="tblMain1" style="BORDER-RIGHT: #999999 1px solid; BORDER-TOP: #999999 1px solid; BORDER-LEFT: #999999 1px solid; BORDER-BOTTOM: #999999 1px solid"
-								cellSpacing="0" cellPadding="6" rules="cols" width="98%" align="center" bgColor="#fef9ea"
-								border="0">
-								<TR>
-									<TD vAlign="top" height="1"></TD>
-								</TR>
-								<TR>
-									<TD>
-										<TABLE cellSpacing="0" cellPadding="0" width="100%" border="0">
-											<TR>
-												<TD colSpan="3">
-													<TABLE id="tblSearch" style="BORDER-RIGHT: #999999 1px solid; BORDER-TOP: #999999 1px solid; BORDER-LEFT: #999999 1px solid; WIDTH: 100%; BORDER-BOTTOM: #999999 1px solid; HEIGHT: 64px"
-														cellSpacing="2" cellPadding="8" rules="cols" width="100%" align="center" bgColor="#fef9ea"
-														border="0">
-														<TR>
-															<TD>
-																<TABLE cellSpacing="0" cellPadding="0" width="100%" border="0">
-																	<TR>
-																		<TD noWrap align="center"><uc1:errorcontroller id="ErrorCtrl" runat="server"></uc1:errorcontroller>&nbsp;
-																		</TD>
-																	</TR>
-																</TABLE>
-																<uc1:reportceinputcontrol id="moReportCeInputControl" runat="server"></uc1:reportceinputcontrol></TD>
-														</TR>
-													</TABLE>
-												</TD>
-											</TR>
-											<TR>
-												<TD colSpan="3"><IMG height="15" src="../Navigation/images/trans_spacer.gif"></TD>
-											</TR>
-											<TR>
-												<TD align="center" colSpan="3">
-													<TABLE cellSpacing="2" cellPadding="0" width="75%" border="0">
-														<TR>
-															<TD colSpan="3"></TD>
-														</TR>
-														<TR>
-															<TD vAlign="bottom" noWrap align="right">*
-																<asp:radiobutton id="rdealer" onclick="ToggleDualDropDownsSelection('multipleDropControl_moMultipleColumnDrop', 'multipleDropControl_moMultipleColumnDropDesc', 'rdealer', false, ''); document.all.item('multipleDropControl_lb_DropDown').style.color = '';"
-																	TextAlign="left" Text="SELECT_ALL_DEALERS" Runat="server" Checked="False" AutoPostBack="false"></asp:radiobutton>&nbsp;&nbsp;&nbsp;&nbsp;</TD>
-															<TD style="WIDTH: 20px; HEIGHT: 18px" width="20"></TD>
-															<TD noWrap align="left">
-																<uc1:multiplecolumnddlabelcontrol id="multipleDropControl" runat="server"></uc1:multiplecolumnddlabelcontrol></TD>
-														</TR>
-														<TR>
-															<TD style="HEIGHT: 18px" noWrap align="center" width="50%" colSpan="3">
-																<HR style="WIDTH: 95%; HEIGHT: 1px">
-																&nbsp;</TD>
-														</TR>
-														<TR>
-															<TD style="HEIGHT: 18px" noWrap align="center" width="50%" colSpan="3">
-																<TABLE id="Table3" cellSpacing="1" cellPadding="1" width="90%" border="0">
-																	<TR>
-																		<TD align="right">*
-																			<asp:radiobutton id="rbProduct" onclick="toggleAllProductsSelection(false); document.all.item('moProductLabel').style.color = '';"
-																				AutoPostBack="false" Checked="False" Runat="server" Text="SELECT_ALL_PRODUCT_CODES" TextAlign="left"></asp:radiobutton></TD>
-																		<TD style="WIDTH: 20px; HEIGHT: 18px"></TD>
-																		<TD>
-																			<asp:label id="moProductLabel" runat="server">OR A SINGLE PRODUCT CODE</asp:label>:
-																			<asp:dropdownlist id="cboProduct" runat="server" AutoPostBack="false" onchange="toggleAllProductsSelection(true); document.all.item('moProductLabel').style.color = '';"
-																				Width="212px"></asp:dropdownlist></TD>
-																	</TR>
-																</TABLE>
-															</TD>
-														</TR>
-														<TR>
-															<TD style="HEIGHT: 14px" colSpan="3">
-																<HR style="WIDTH: 95%; HEIGHT: 1px">
-															</TD>
-														</TR>
-		                                                <TR>
-															<TD style="HEIGHT: 18px" noWrap align="center" width="50%" colSpan="3">
-																<TABLE id="Table4" cellSpacing="1" cellPadding="1" width="90%" border="0">
-																	<TR>
-																		<TD align="right">*
-																			<asp:radiobutton id="rbCampaignNumber" onclick="toggleAllCampainNoSelection(false); document.all.item('moCampaignNumberLabel').style.color = '';"
-																				AutoPostBack="false" Checked="False" Runat="server" Text="SELECT_ALL_CAMPAIGN_NUMBERS" TextAlign="left"></asp:radiobutton></TD>
-																		<TD style="WIDTH: 20px; HEIGHT: 18px"></TD>
-																		<TD>
-																			<asp:label id="moCampaignNumberLabel" runat="server">OR A SINGLE CAMPAIGN NUMBER</asp:label>:
-																			<asp:dropdownlist id="cboCampaignNumber" runat="server" AutoPostBack="false" onchange="toggleAllCampainNoSelection(true); document.all.item('moCampaignNumberLabel').style.color = '';"
-																				Width="212px"></asp:dropdownlist></TD>
-																	</TR>
-																</TABLE>
-															</TD>
-														</TR>														
-														<TR>
-															<TD style="HEIGHT: 14px" colSpan="3">
-																<HR style="WIDTH: 95%; HEIGHT: 1px">
-															</TD>
-														</TR>
-														<TR>
-															<TD style="HEIGHT: 14px" colSpan="3">
-																<TABLE id="Table1" cellSpacing="1" cellPadding="1" width="90%" align="center" border="0">
-																	<TR>
-																		<TD vAlign="top">
-																			<TABLE cellSpacing="0" cellPadding="0" width="100%" border="0">
-																				<TBODY>
-																					<TR> <!--<TD style="WIDTH: 274px"><IMG height="7" src="../images/trans_spacer.gif" width="1"></TD>-->
-																						<TD><IMG height="7" src="../Navigation/images/trans_spacer.gif" width="1"></TD>
-																					</TR>
-																					<TR>
-																						<TD noWrap align="right"></TD>
-																						<TD noWrap align="right">*
-																							<asp:label id="Label5" runat="server">SELECT_REPORT_SORT_ORDER</asp:label>:</TD>
-																		</TD>
-																	</TR>
-																</TABLE>
-															</TD>
-															<TD>
-																<asp:radiobuttonlist id="rdReportSortOrder" runat="server" Width="224px" Height="40px" RepeatDirection="VERTICAL">
-																	<asp:ListItem Value="0" Selected="True">DEALER CODE</asp:ListItem>
-																	<asp:ListItem Value="1">PRODUCT CODE</asp:ListItem>
-																</asp:radiobuttonlist></TD>
-														</TR>
-													</TABLE>
-												</TD>
-											</TR>
-											<TR>
-												<TD vAlign="top" noWrap align="left">
-												</TD>
-												<TD style="WIDTH: 20px" vAlign="top"></TD>
-												<TD vAlign="top">
-											<TR>
-												<TD style="HEIGHT: 25px" colSpan="3">
-													<HR style="WIDTH: 95%; HEIGHT: 1px">
-												</TD>
-											</TR>
-											<TR>
-												<TD style="HEIGHT: 25px" align="center" colSpan="3">
-													<TABLE id="Table2" cellSpacing="1" cellPadding="1" width="50%" border="0">
-														<TR>
-															<TD>*
-																<asp:radiobutton id="RadiobuttonTotalsOnly" onclick="toggleDetailSelection(false);" AutoPostBack="false"
-																	Runat="server" Text="SHOW TOTALS ONLY" TextAlign="left"></asp:radiobutton></TD>
-															<TD><asp:radiobutton id="RadiobuttonDetail" onclick="toggleDetailSelection(true);" AutoPostBack="false"
-																	Runat="server" Text="OR SHOW DETAIL WITH TOTALS" TextAlign="left"></asp:radiobutton></TD>
-														</TR>
-													</TABLE>
-												</TD>
-											</TR>
-										</TABLE>
-									</TD>
-								</TR>
-							</TABLE></TD>
-				</TR>
-				<TR>
-					<TD style="HEIGHT: 24px"></TD>
-				</TR>
-				<TR>
-					<TD>
-						<HR style="HEIGHT: 1px">
-					</TD>
-				</TR>
-				<TR>
-					<TD align="left">&nbsp;
-						<asp:button id="btnGenRpt" style="BACKGROUND-IMAGE: url(../Navigation/images/viewIcon2.gif); CURSOR: hand; BACKGROUND-REPEAT: no-repeat"
-							runat="server"  Text="View" Width="100px" height="20px" CssClass="FLATBUTTON"></asp:button></TD>
-				</TR>
-			</TABLE>
-			</asp:panel></TD></TR></TBODY></TABLE></form>
-		<SCRIPT language="JavaScript" src="../Navigation/Scripts/ReportCeMainScripts.js"></SCRIPT>
+<html>
+<head>
+    <title>Certificate By Product Code</title>
+    <meta content="Microsoft Visual Studio.NET 7.0" name="GENERATOR">
+    <meta content="Visual Basic 7.0" name="CODE_LANGUAGE">
+    <meta content="JavaScript" name="vs_defaultClientScript">
+    <meta content="http://schemas.microsoft.com/intellisense/ie5" name="vs_targetSchema">
+    <link href="../Styles.css" type="text/css" rel="STYLESHEET">
+    <script language="JavaScript" src="../Navigation/Scripts/GlobalHeader.js"></script>
+</head>
+<body leftmargin="0" topmargin="0" onload="changeScrollbarColor();" ms_positioning="GridLayout">
+    <form id="Form1" method="post" runat="server">
+        <!--Start Header-->
+        <input id="rptTitle" type="hidden" name="rptTitle">
+        <input id="rptSrc" type="hidden" name="rptSrc">
+        <table style="border-right: black 1px solid; border-top: black 1px solid; margin: 5px; border-left: black 1px solid; border-bottom: black 1px solid; height: 22px"
+            cellspacing="0" cellpadding="0" width="98%" bgcolor="#d5d6e4" border="0">
+            <tr>
+                <td valign="top">
+                    <table width="100%" border="0">
+                        <tr>
+                            <td height="20">
+                                <asp:Label ID="LabelReports" runat="server" CssClass="TITLELABEL">Reports</asp:Label>:
+									<asp:Label ID="Label7" runat="server" CssClass="TITLELABELTEXT">CERTIFICATES BY PRODUCT CODE REPORT CRITERIA</asp:Label></td>
+                            <td align="right" height="20">*&nbsp;
+									<asp:Label ID="moIndicatesLabel" runat="server" EnableViewState="true">INDICATES_REQUIRED_FIELDS</asp:Label></td>
+                        </tr>
+                    </table>
+                </td>
+            </tr>
+        </table>
+        <table id="tblOuter2" style="border-right: black 1px solid; border-top: black 1px solid; margin: 5px; border-left: black 1px solid; border-bottom: black 1px solid"
+            height="93%" cellspacing="0" cellpadding="0" rules="none" width="98%" bgcolor="#d5d6e4"
+            border="0">
+            <!--d5d6e4-->
+            <tr>
+                <td>&nbsp;</td>
+            </tr>
+            <tr>
+                <td valign="top" align="center" height="100%">
+                    <asp:Panel ID="WorkingPanel" runat="server">
+                        <table id="tblMain1" style="border-right: #999999 1px solid; border-top: #999999 1px solid; border-left: #999999 1px solid; border-bottom: #999999 1px solid"
+                            cellspacing="0" cellpadding="6" rules="cols" width="98%" align="center" bgcolor="#fef9ea"
+                            border="0">
+                            <tr>
+                                <td valign="top" height="1"></td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <table cellspacing="0" cellpadding="0" width="100%" border="0">
+                                        <tr>
+                                            <td colspan="3">
+                                                <table id="tblSearch" style="border-right: #999999 1px solid; border-top: #999999 1px solid; border-left: #999999 1px solid; width: 100%; border-bottom: #999999 1px solid; height: 64px"
+                                                    cellspacing="2" cellpadding="8" rules="cols" width="100%" align="center" bgcolor="#fef9ea"
+                                                    border="0">
+                                                    <tr>
+                                                        <td>
+                                                            <table cellspacing="0" cellpadding="0" width="100%" border="0">
+                                                                <tr>
+                                                                    <td nowrap align="center">
+                                                                        <uc1:ErrorController ID="ErrorCtrl" runat="server"></uc1:ErrorController>
+                                                                        &nbsp;
+                                                                    </td>
+                                                                </tr>
+                                                            </table>
+                                                            <uc1:ReportCeInputControl ID="moReportCeInputControl" runat="server"></uc1:ReportCeInputControl>
+                                                        </td>
+                                                    </tr>
+                                                </table>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td colspan="3">
+                                                <img height="15" src="../Navigation/images/trans_spacer.gif"></td>
+                                        </tr>
+                                        <tr>
+                                            <td align="center" colspan="3">
+                                                <table cellspacing="2" cellpadding="0" width="75%" border="0">
+                                                    <tr>
+                                                        <td colspan="3"></td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td valign="bottom" nowrap align="right">*
+																<asp:RadioButton ID="rdealer" onclick="ToggleDualDropDownsSelection('multipleDropControl_moMultipleColumnDrop', 'multipleDropControl_moMultipleColumnDropDesc', 'rdealer', false, ''); document.all.item('multipleDropControl_lb_DropDown').style.color = '';"
+                                                                    TextAlign="left" Text="SELECT_ALL_DEALERS" runat="server" Checked="False" AutoPostBack="false"></asp:RadioButton>&nbsp;&nbsp;&nbsp;&nbsp;</td>
+                                                        <td style="width: 20px; height: 18px" width="20"></td>
+                                                        <td nowrap align="left">
+                                                            <uc1:MultipleColumnDDLabelControl ID="multipleDropControl" runat="server"></uc1:MultipleColumnDDLabelControl>
+                                                        </td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td style="height: 18px" nowrap align="center" width="50%" colspan="3">
+                                                            <hr style="width: 95%; height: 1px">
+                                                            &nbsp;</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td style="height: 18px" nowrap align="center" width="50%" colspan="3">
+                                                            <table id="Table3" cellspacing="1" cellpadding="1" width="90%" border="0">
+                                                                <tr>
+                                                                    <td align="right">*
+																			<asp:RadioButton ID="rbProduct" onclick="toggleAllProductsSelection(false); document.all.item('moProductLabel').style.color = '';"
+                                                                                AutoPostBack="false" Checked="False" runat="server" Text="SELECT_ALL_PRODUCT_CODES" TextAlign="left"></asp:RadioButton></td>
+                                                                    <td style="width: 20px; height: 18px"></td>
+                                                                    <td>
+                                                                        <asp:Label ID="moProductLabel" runat="server">OR A SINGLE PRODUCT CODE</asp:Label>:
+																			<asp:DropDownList ID="cboProduct" runat="server" AutoPostBack="false" onchange="toggleAllProductsSelection(true); document.all.item('moProductLabel').style.color = '';"
+                                                                                Width="212px">
+                                                                            </asp:DropDownList></td>
+                                                                </tr>
+                                                            </table>
+                                                        </td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td style="height: 14px" colspan="3">
+                                                            <hr style="width: 95%; height: 1px">
+                                                        </td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td style="height: 18px" nowrap align="center" width="50%" colspan="3">
+                                                            <table id="Table4" cellspacing="1" cellpadding="1" width="90%" border="0">
+                                                                <tr>
+                                                                    <td align="right">*
+																			<asp:RadioButton ID="rbCampaignNumber" onclick="toggleAllCampainNoSelection(false); document.all.item('moCampaignNumberLabel').style.color = '';"
+                                                                                AutoPostBack="false" Checked="False" runat="server" Text="SELECT_ALL_CAMPAIGN_NUMBERS" TextAlign="left"></asp:RadioButton></td>
+                                                                    <td style="width: 20px; height: 18px"></td>
+                                                                    <td>
+                                                                        <asp:Label ID="moCampaignNumberLabel" runat="server">OR A SINGLE CAMPAIGN NUMBER</asp:Label>:
+																			<asp:DropDownList ID="cboCampaignNumber" runat="server" AutoPostBack="false" onchange="toggleAllCampainNoSelection(true); document.all.item('moCampaignNumberLabel').style.color = '';"
+                                                                                Width="212px">
+                                                                            </asp:DropDownList></td>
+                                                                </tr>
+                                                            </table>
+                                                        </td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td style="height: 14px" colspan="3">
+                                                            <hr style="width: 95%; height: 1px">
+                                                        </td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td style="height: 14px" colspan="3">
+                                                            <table id="Table1" cellspacing="1" cellpadding="1" width="90%" align="center" border="0">
+                                                                <tr>
+                                                                    <td valign="top">
+                                                                        <table cellspacing="0" cellpadding="0" width="100%" border="0">
+                                                                            <tbody>
+                                                                                <tr>
+                                                                                    <!--<TD style="WIDTH: 274px"><IMG height="7" src="../images/trans_spacer.gif" width="1"></TD>-->
+                                                                                    <td>
+                                                                                        <img height="7" src="../Navigation/images/trans_spacer.gif" width="1"></td>
+                                                                                </tr>
+                                                                                <tr>
+                                                                                    <td nowrap align="right"></td>
+                                                                                    <td nowrap align="right">*
+																							<asp:Label ID="Label5" runat="server">SELECT_REPORT_SORT_ORDER</asp:Label>:</td>
+                                                                                </tr></table>
+                                                                    </td>
+                                                                </tr>
+                                                            </table>
+                                                        </td>
+                                                        <td>
+                                                            <asp:RadioButtonList ID="rdReportSortOrder" runat="server" Width="224px" Height="40px" RepeatDirection="VERTICAL">
+                                                                <asp:ListItem Value="0" Selected="True">DEALER CODE</asp:ListItem>
+                                                                <asp:ListItem Value="1">PRODUCT CODE</asp:ListItem>
+                                                            </asp:RadioButtonList></td>
+                                                    </tr>
+                                                </table>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td valign="top" nowrap align="left"></td>
+                                            <td style="width: 20px" valign="top"></td>
+                                            <td valign="top">
+                                            <tr>
+                                                <td style="height: 25px" colspan="3">
+                                                    <hr style="width: 95%; height: 1px">
+                                                </td>
+                                            </tr>
+                                        <tr>
+                                            <td style="height: 25px" align="center" colspan="3">
+                                                <table id="Table2" cellspacing="1" cellpadding="1" width="50%" border="0">
+                                                    <tr>
+                                                        <td>*
+																<asp:RadioButton ID="RadiobuttonTotalsOnly" onclick="toggleDetailSelection(false);" AutoPostBack="false"
+                                                                    runat="server" Text="SHOW TOTALS ONLY" TextAlign="left"></asp:RadioButton></td>
+                                                        <td>
+                                                            <asp:RadioButton ID="RadiobuttonDetail" onclick="toggleDetailSelection(true);" AutoPostBack="false"
+                                                                runat="server" Text="OR SHOW DETAIL WITH TOTALS" TextAlign="left"></asp:RadioButton></td>
+                                                    </tr>
+                                                </table>
+                                            </td>
+                                        </tr>
+                                    </table>
+                                </td>
+                            </tr>
+                        </table>
+                    </asp:panel>
+                </td>
+            </tr>
+            <tr>
+                <td style="height: 24px"></td>
+            </tr>
+            <tr>
+                <td>
+                    <hr style="height: 1px">
+                </td>
+            </tr>
+            <tr>
+                <td align="left">&nbsp;
+						<asp:Button ID="btnGenRpt" Style="background-image: url(../Navigation/images/viewIcon2.gif); cursor: hand; background-repeat: no-repeat"
+                            runat="server" Text="View" Width="100px" Height="20px" CssClass="FLATBUTTON"></asp:Button></td>
+            </tr>
+        </table>
+      
+    </form>
+    <script language="JavaScript" src="../Navigation/Scripts/ReportCeMainScripts.js"></script>
 
-	</body>
-</HTML>
+</body>
+</html>
 
