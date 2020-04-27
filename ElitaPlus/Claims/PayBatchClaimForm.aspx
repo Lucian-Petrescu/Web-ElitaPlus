@@ -6,8 +6,7 @@
 </asp:Content>
 <asp:Content ID="Content1" ContentPlaceHolderID="SummaryPlaceHolder" runat="server">
     <style type="text/css">
-        tr.HEADER th
-        {
+        tr.HEADER th {
             text-align: center;
         }
     </style>
@@ -19,7 +18,7 @@
             <td nowrap align="left" id="tdlblbatch" runat="server">
                 <asp:Label ID="LabelBatchNumber" runat="server">BATCH #</asp:Label>:
             </td>
-             <td nowrap align="left" id="td1" runat="server">
+            <td nowrap align="left" id="td1" runat="server">
                 <asp:Label ID="lblInvTyp" runat="server">INVOICE_TYPE:</asp:Label>
             </td>
             <td nowrap align="left">
@@ -119,8 +118,7 @@
 </asp:Content>
 <asp:Content ID="Body" ContentPlaceHolderID="BodyPlaceHolder" runat="server">
     <div class="dataContainer">
-        <h2 class="dataGridHeader">
-            Search results for Pay Invoice</h2>
+        <h2 class="dataGridHeader">Search results for Pay Invoice</h2>
         <div>
             <table width="100%" class="dataGrid">
                 <tr id="trPageSize" runat="server">
@@ -192,8 +190,7 @@
                         <ItemTemplate>
                             <asp:TextBox ID="textRepairDate" runat="server" Width="80px" Height="18px"></asp:TextBox>
                             <asp:ImageButton ID="ImageButtonRepairDate" runat="server" CausesValidation="False"
-                                Visible="True" ImageUrl="~/App_Themes/Default/Images/calendar.png" ImageAlign="AbsMiddle">
-                            </asp:ImageButton>
+                                Visible="True" ImageUrl="~/App_Themes/Default/Images/calendar.png" ImageAlign="AbsMiddle"></asp:ImageButton>
                         </ItemTemplate>
                     </asp:TemplateField>
                     <asp:TemplateField HeaderText="Pickup_Date" HeaderStyle-HorizontalAlign="Center">
@@ -201,8 +198,7 @@
                         <ItemTemplate>
                             <asp:TextBox ID="textPickupDate" runat="server" Width="80px" Height="18px"></asp:TextBox>
                             <asp:ImageButton ID="ImageButtonPickupDate" runat="server" CausesValidation="False"
-                                Visible="True" ImageUrl="~/App_Themes/Default/Images/calendar.png" ImageAlign="AbsMiddle">
-                            </asp:ImageButton>
+                                Visible="True" ImageUrl="~/App_Themes/Default/Images/calendar.png" ImageAlign="AbsMiddle"></asp:ImageButton>
                         </ItemTemplate>
                     </asp:TemplateField>
                     <asp:TemplateField HeaderText="Close" HeaderStyle-HorizontalAlign="Center">
@@ -227,27 +223,24 @@
             <table width="100%" class="searchGrid">
                 <tr id="tr1" runat="server">
                     <td valign="top" width="10%" align="right">
-                       <asp:Label ID="lblRejectReason" Visible="false" runat="server">PAYBATCHREJECTREASON:</asp:Label>
+                        <asp:Label ID="lblRejectReason" Visible="false" runat="server">PAYBATCHREJECTREASON:</asp:Label>
                     </td>
                     <td valign="top" width="50%" align="left">
-                        <asp:TextBox  id="txtareaRejectReason"  runat="server" AutoPostBack="False" TextMode="MultiLine" Visible="false">
+                        <asp:TextBox ID="txtareaRejectReason" runat="server" AutoPostBack="False" TextMode="MultiLine" Visible="false">
                         </asp:TextBox>
-                        
+
                     </td>
-                    <td valign="top" width="40%" align="left">
-                       &nbsp;&nbsp;
+                    <td valign="top" width="40%" align="left">&nbsp;&nbsp;
                     </td>
                 </tr>
                 <tr id="tr2" runat="server">
-                    <td valign="top" width="10%" align="right">
-                       &nbsp;&nbsp;
+                    <td valign="top" width="10%" align="right">&nbsp;&nbsp;
                     </td>
                     <td valign="top" width="50%" align="left">
-                        <asp:Button ID="btnRejectSave" runat="server" SkinID="AlternateLeftButton" Text="Save"  Visible="false"></asp:Button>
-                        <asp:Button ID="btnRejectCancel" runat="server" SkinID="AlternateLeftButton" Text="Cancel"  Visible="false"></asp:Button>
+                        <asp:Button ID="btnRejectSave" runat="server" SkinID="AlternateLeftButton" Text="Save" Visible="false"></asp:Button>
+                        <asp:Button ID="btnRejectCancel" runat="server" SkinID="AlternateLeftButton" Text="Cancel" Visible="false"></asp:Button>
                     </td>
-                    <td valign="top" width="40%" align="left">
-                       &nbsp;&nbsp;
+                    <td valign="top" width="40%" align="left">&nbsp;&nbsp;
                     </td>
                 </tr>
             </table>
@@ -262,24 +255,24 @@
                 Text="Pay"></asp:Button>
             <asp:Button ID="btnReject_WRITE" runat="server" SkinID="AlternateLeftButton"
                 Text="Reject"></asp:Button>
-            
-        </div>
-        
-        <script language="javascript" type="text/javascript">
 
-            // debugger;
-            var curAmt;
-            var curSep = '<%=System.Globalization.CultureInfo.CurrentCulture.NumberFormat.CurrencyDecimalSeparator%>';
-            var groupSep = '<%=System.Globalization.CultureInfo.CurrentCulture.NumberFormat.CurrencyGroupSeparator%>';
-            function chkamt(fld, t, type) {
-                var ctrl = document.getElementById(fld);
-                var f = parseFloat(setJsFormat(ctrl.value, curSep));
-                var t = t / 100;
-                if (f > t) {
-                    document.getElementById(fld).focus();
-                    document.getElementById(fld).innerText = convertNumberToCulture(t, curSep, groupSep);
-                    updTot(fld, t);
-                    alert('<%=Assurant.ElitaPlus.BusinessObjectsNew.TranslationBase.TranslateLabelOrMessage(Assurant.ElitaPlus.Common.ErrorCodes.INVALID_AMOUNT_ENTERED_ERR)%>');
+        </div>
+    </div>
+    <script language="javascript" type="text/javascript">
+
+        // debugger;
+        var curAmt;
+        var curSep = '<%=System.Globalization.CultureInfo.CurrentCulture.NumberFormat.CurrencyDecimalSeparator%>';
+        var groupSep = '<%=System.Globalization.CultureInfo.CurrentCulture.NumberFormat.CurrencyGroupSeparator%>';
+        function chkamt(fld, t, type) {
+            var ctrl = document.getElementById(fld);
+            var f = parseFloat(setJsFormat(ctrl.value, curSep));
+            var t = t / 100;
+            if (f > t) {
+                document.getElementById(fld).focus();
+                document.getElementById(fld).innerText = convertNumberToCulture(t, curSep, groupSep);
+                updTot(fld, t);
+                alert('<%=Assurant.ElitaPlus.BusinessObjectsNew.TranslationBase.TranslateLabelOrMessage(Assurant.ElitaPlus.Common.ErrorCodes.INVALID_AMOUNT_ENTERED_ERR)%>');
                     return false;
                 }
                 if (document.getElementById(fld) != document.getElementById(Tax1Amt) && document.getElementById(fld) != document.getElementById(Tax2Amt)) {
@@ -306,106 +299,106 @@
                         document.getElementById(fld).value = 0;
                         updTot(fld, 0);
                         alert('<%=Assurant.ElitaPlus.BusinessObjectsNew.TranslationBase.TranslateLabelOrMessage(Assurant.ElitaPlus.Common.ErrorCodes.INVALID_AMOUNT_ENTERED_ERR)%>');
-                        return false;
-                    }
-                    if (document.getElementById(fld).value == null || document.getElementById(fld).value == '') {
-                        updTot(fld, 0);
-                        return false;
-                    }
-                    if (parseFloat(document.getElementById(fld).value) < 0) {
-                        //document.getElementById(fld).value = 0;
-                        document.getElementById(fld).value = '0' + curSep + '00';
-                        updTot(fld, 0);
-                        return false;
-                    }
-                    if (document.getElementById(fld).value <= 0) {
-                        //document.getElementById(fld).value = 0;
-                        document.getElementById(fld).value = '0' + curSep + '00';
-                    }
+                    return false;
                 }
-                updTot(fld, f);
-                document.getElementById(fld).innerText = convertNumberToCulture(f, curSep, groupSep);
-                return true;
-            }
-
-            function updTot(ctrl, n) {
-
-                if (parseFloat(n) == parseFloat(curAmt)) { return }
-                var cur = document.getElementById(CurrentAmt);
-                var curvalue = 0;
-                if (document.getElementById(CurrentAmt).value.length > 0) {
-                    curvalue = parseFloat(setJsFormat(cur.value, curSep));
+                if (document.getElementById(fld).value == null || document.getElementById(fld).value == '') {
+                    updTot(fld, 0);
+                    return false;
                 }
-                var inv = document.getElementById(InvoiceAmt);
-                var invvalue = 0;
-                if (document.getElementById(InvoiceAmt).value.length > 0) {
-                    invvalue = parseFloat(setJsFormat(inv.value, curSep));
+                if (parseFloat(document.getElementById(fld).value) < 0) {
+                    //document.getElementById(fld).value = 0;
+                    document.getElementById(fld).value = '0' + curSep + '00';
+                    updTot(fld, 0);
+                    return false;
                 }
-                var tax1value = 0;
-                if (document.getElementById(Tax1Amt) != null) {
-                    var tax1 = document.getElementById(Tax1Amt);
-                    if (document.getElementById(Tax1Amt).value.length > 0) {
-                        tax1value = parseFloat(setJsFormat(tax1.value, curSep));
-                    }
-                }
-                var tax2value = 0;
-                if (document.getElementById(Tax2Amt) != null) {
-                    var tax2 = document.getElementById(Tax2Amt);
-                    if (document.getElementById(Tax2Amt).value.length > 0) {
-                        tax2value = parseFloat(setJsFormat(tax2.value, curSep));
-                    }
-                }
-                var dif;
-                var curnewvalue;
-
-                if (document.getElementById(ctrl) != document.getElementById(Tax1Amt) && document.getElementById(ctrl) != document.getElementById(Tax2Amt)) {
-                    curnewvalue = (parseFloat(curvalue) + parseFloat(n)) - parseFloat(curAmt);
-                    curnewvalue = Math.round(curnewvalue * 100) / 100;
-                    dif = parseFloat(invvalue) - parseFloat(tax1value) - parseFloat(tax2value) - parseFloat(curnewvalue);
-                    dif = Math.round(dif * 100) / 100;
-                }
-                else {
-                    curnewvalue = parseFloat(curvalue);
-                    curnewvalue = Math.round(curnewvalue * 100) / 100;
-                    dif = parseFloat(invvalue) - parseFloat(tax1value) - parseFloat(tax2value) - parseFloat(curnewvalue);
-                    dif = Math.round(dif * 100) / 100;
-                }
-
-                document.getElementById(CurrentAmt).innerText = convertNumberToCulture(curnewvalue, curSep, groupSep);
-                document.getElementById(inputCuurentAmt).innerText = convertNumberToCulture(curnewvalue, curSep, groupSep);
-                var formattedDiff;
-                if (dif >= 0) {
-                    formattedDiff = convertNumberToCulture(dif, curSep, groupSep);
-                } else {
-                    formattedDiff = "-" + convertNumberToCulture(dif * (-1), curSep, groupSep);
-                }
-                document.getElementById(Diffamt).innerText = formattedDiff;
-                document.getElementById(inputDifference).innerText = formattedDiff;
-                if (!dif == 0) {
-                    if (document.getElementById(btnpay) != null) {
-                        document.getElementById(btnpay).disabled = true;
-                    }
-                } else {
-                    if (document.getElementById(btnpay) != null) {
-                        document.getElementById(btnpay).disabled = false;
-                    }
+                if (document.getElementById(fld).value <= 0) {
+                    //document.getElementById(fld).value = 0;
+                    document.getElementById(fld).value = '0' + curSep + '00';
                 }
             }
-            function setCur(n) {
-                var ctrl = document.getElementById(n);
-                var f = parseFloat(setJsFormat(ctrl.value, curSep));
-                curAmt = f;
+            updTot(fld, f);
+            document.getElementById(fld).innerText = convertNumberToCulture(f, curSep, groupSep);
+            return true;
+        }
+
+        function updTot(ctrl, n) {
+
+            if (parseFloat(n) == parseFloat(curAmt)) { return }
+            var cur = document.getElementById(CurrentAmt);
+            var curvalue = 0;
+            if (document.getElementById(CurrentAmt).value.length > 0) {
+                curvalue = parseFloat(setJsFormat(cur.value, curSep));
             }
-            function calcAmountToBePaid(sID, aID, r, s) {
-                var ctrl1 = document.getElementById(sID);
-                var ctrl2 = document.getElementById(aID);
-                var newSal = parseFloat(setJsFormat(ctrl1.value, curSep));
-                var r = r / 100;
-                var s = s / 100;
+            var inv = document.getElementById(InvoiceAmt);
+            var invvalue = 0;
+            if (document.getElementById(InvoiceAmt).value.length > 0) {
+                invvalue = parseFloat(setJsFormat(inv.value, curSep));
+            }
+            var tax1value = 0;
+            if (document.getElementById(Tax1Amt) != null) {
+                var tax1 = document.getElementById(Tax1Amt);
+                if (document.getElementById(Tax1Amt).value.length > 0) {
+                    tax1value = parseFloat(setJsFormat(tax1.value, curSep));
+                }
+            }
+            var tax2value = 0;
+            if (document.getElementById(Tax2Amt) != null) {
+                var tax2 = document.getElementById(Tax2Amt);
+                if (document.getElementById(Tax2Amt).value.length > 0) {
+                    tax2value = parseFloat(setJsFormat(tax2.value, curSep));
+                }
+            }
+            var dif;
+            var curnewvalue;
+
+            if (document.getElementById(ctrl) != document.getElementById(Tax1Amt) && document.getElementById(ctrl) != document.getElementById(Tax2Amt)) {
+                curnewvalue = (parseFloat(curvalue) + parseFloat(n)) - parseFloat(curAmt);
+                curnewvalue = Math.round(curnewvalue * 100) / 100;
+                dif = parseFloat(invvalue) - parseFloat(tax1value) - parseFloat(tax2value) - parseFloat(curnewvalue);
+                dif = Math.round(dif * 100) / 100;
+            }
+            else {
+                curnewvalue = parseFloat(curvalue);
+                curnewvalue = Math.round(curnewvalue * 100) / 100;
+                dif = parseFloat(invvalue) - parseFloat(tax1value) - parseFloat(tax2value) - parseFloat(curnewvalue);
+                dif = Math.round(dif * 100) / 100;
+            }
+
+            document.getElementById(CurrentAmt).innerText = convertNumberToCulture(curnewvalue, curSep, groupSep);
+            document.getElementById(inputCuurentAmt).innerText = convertNumberToCulture(curnewvalue, curSep, groupSep);
+            var formattedDiff;
+            if (dif >= 0) {
+                formattedDiff = convertNumberToCulture(dif, curSep, groupSep);
+            } else {
+                formattedDiff = "-" + convertNumberToCulture(dif * (-1), curSep, groupSep);
+            }
+            document.getElementById(Diffamt).innerText = formattedDiff;
+            document.getElementById(inputDifference).innerText = formattedDiff;
+            if (!dif == 0) {
+                if (document.getElementById(btnpay) != null) {
+                    document.getElementById(btnpay).disabled = true;
+                }
+            } else {
+                if (document.getElementById(btnpay) != null) {
+                    document.getElementById(btnpay).disabled = false;
+                }
+            }
+        }
+        function setCur(n) {
+            var ctrl = document.getElementById(n);
+            var f = parseFloat(setJsFormat(ctrl.value, curSep));
+            curAmt = f;
+        }
+        function calcAmountToBePaid(sID, aID, r, s) {
+            var ctrl1 = document.getElementById(sID);
+            var ctrl2 = document.getElementById(aID);
+            var newSal = parseFloat(setJsFormat(ctrl1.value, curSep));
+            var r = r / 100;
+            var s = s / 100;
 
 
-                if (newSal > r) {
-                    alert('<%=Assurant.ElitaPlus.BusinessObjectsNew.TranslationBase.TranslateLabelOrMessage(Assurant.ElitaPlus.Common.ErrorCodes.INVALID_AMOUNT_ENTERED_ERR)%>');
+            if (newSal > r) {
+                alert('<%=Assurant.ElitaPlus.BusinessObjectsNew.TranslationBase.TranslateLabelOrMessage(Assurant.ElitaPlus.Common.ErrorCodes.INVALID_AMOUNT_ENTERED_ERR)%>');
                     document.getElementById(sID).innerText = convertNumberToCulture(s, curSep, groupSep);
                     if (r >= 0) {
                         calcAmountToBePaid(sID, aID, r * 100, s * 100);
@@ -416,16 +409,16 @@
                 }
                 if (isNaN(newSal) || document.getElementById(sID).value == null || document.getElementById(sID).value == '') {
                     alert('<%=Assurant.ElitaPlus.BusinessObjectsNew.TranslationBase.TranslateLabelOrMessage(Assurant.ElitaPlus.Common.ErrorCodes.INVALID_AMOUNT_ENTERED_ERR)%>');
-                    document.getElementById(sID).innerText = convertNumberToCulture(s, curSep, groupSep);
+                document.getElementById(sID).innerText = convertNumberToCulture(s, curSep, groupSep);
 
-                    if (r >= 0) {
-                        calcAmountToBePaid(sID, aID, r * 100, s * 100);
-                        chkamt(aID, r * 100);
-                    }
-                    return false;
+                if (r >= 0) {
+                    calcAmountToBePaid(sID, aID, r * 100, s * 100);
+                    chkamt(aID, r * 100);
                 }
-                document.getElementById(aID).innerText = convertNumberToCulture((r - newSal), curSep, groupSep);
-
+                return false;
             }
-        </script>
+            document.getElementById(aID).innerText = convertNumberToCulture((r - newSal), curSep, groupSep);
+
+        }
+    </script>
 </asp:Content>

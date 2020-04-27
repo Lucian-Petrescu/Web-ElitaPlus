@@ -432,7 +432,7 @@
 
                         <td valign="middle" align="right" width="10%">
                             <asp:TextBox ID="txtOtherDesc" TabIndex="107" runat="server" SkinID="SmallTextBox"
-                                Width="90%" Style="text-align: 'right';"></asp:TextBox>:
+                                Width="90%" Style="text-align:right;"></asp:TextBox>:
                         </td>
                         <td valign="middle" align="left" width="10%">&nbsp;<asp:TextBox ID="txtOtherAmt" SkinID="SmallTextBox" TabIndex="108" runat="server"></asp:TextBox>
                         </td>

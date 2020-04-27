@@ -112,9 +112,11 @@
                         <td align="right">
                             <a href="javascript:void(0)" onclick="hideModal('ModalReopenClaim');">
                                 <img id="Img3" src="~/App_Themes/Default/Images/icon_modalClose.png" runat="server"
-                                    width="16" height="18" align="absmiddle" /></a>
+                                    width="16" height="18" align="absmiddle" /></a> </td>
+                    </tr>
+                </table>
             </p>
-            </td></tr></table>
+           
             <table class="formGrid" cellspacing="0" cellpadding="0" border="0">
                 <tbody>
                     <tr>

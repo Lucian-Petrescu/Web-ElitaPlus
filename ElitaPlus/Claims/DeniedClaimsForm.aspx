@@ -52,7 +52,7 @@
             <td>
                 <table cellspacing="0" cellpadding="0" width="100%" border="0">
                     <tr>
-                        <td style="height: 10px" valign="top" align="left" ">
+                        <td style="height: 10px" valign="top" align="left">
                             <uc1:UserControlAvailableSelected ID="UserControlAvailableSelectedDeniedReasosns"
                                 runat="server"></uc1:UserControlAvailableSelected>
                         </td>

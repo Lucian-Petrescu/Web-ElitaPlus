@@ -162,9 +162,11 @@
                         <td align="right">
                             <a href="javascript:void(0)" onclick="hideModal('ModalMasterClaim');">
                                 <img id="Img6" src="~/App_Themes/Default/Images/icon_modalClose.png" runat="server"
-                                    width="16" height="18" align="top" /></a>
+                                    width="16" height="18" align="top" /></a>  </td>
+                    </tr>
+                </table>
             </p>
-            </td></tr></table>
+
             <div class="Page">
                 <asp:GridView ID="grdMasterClaim" runat="server" Width="100%" AutoGenerateColumns="False"
                     AllowPaging="True" SkinID="DetailPageGridView" AllowSorting="true">
@@ -870,24 +872,24 @@
                                             SkinID="MediumTextBox"></asp:TextBox>
                                     </td>
                                 </tr>
-                            <tr>
-                                <td nowrap="nowrap" align="right">
-                                    <asp:Label ID="step3_lblPickupDate" runat="server">PickUp_Date</asp:Label>
-                                </td>
-                                <td nowrap="nowrap">
-                                    <asp:TextBox ID="step3_txtPickupDate" TabIndex="76" runat="server" AutoPostBack="true"
-                                                 SkinID="MediumTextBox"></asp:TextBox>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td nowrap="nowrap" align="right">
-                                    <asp:Label ID="step3_lblVisitDate" runat="server">Visit_Date</asp:Label>
-                                </td>
-                                <td nowrap="nowrap">
-                                    <asp:TextBox ID="step3_txtVisitDate" TabIndex="88" runat="server" AutoPostBack="true"
-                                                 SkinID="MediumTextBox"></asp:TextBox>   
-                                </td>
-                            </tr>
+                                <tr>
+                                    <td nowrap="nowrap" align="right">
+                                        <asp:Label ID="step3_lblPickupDate" runat="server">PickUp_Date</asp:Label>
+                                    </td>
+                                    <td nowrap="nowrap">
+                                        <asp:TextBox ID="step3_txtPickupDate" TabIndex="76" runat="server" AutoPostBack="true"
+                                            SkinID="MediumTextBox"></asp:TextBox>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td nowrap="nowrap" align="right">
+                                        <asp:Label ID="step3_lblVisitDate" runat="server">Visit_Date</asp:Label>
+                                    </td>
+                                    <td nowrap="nowrap">
+                                        <asp:TextBox ID="step3_txtVisitDate" TabIndex="88" runat="server" AutoPostBack="true"
+                                            SkinID="MediumTextBox"></asp:TextBox>
+                                    </td>
+                                </tr>
                             </tbody>
                         </table>
                     </div>
@@ -919,7 +921,7 @@
                                 <li><a href="#tabsActionInfo">
                                     <asp:Label ID="ActionInfoLabel" runat="server" CssClass="tabHeaderText">CASE_ACTION</asp:Label></a></li>
                                 <li><a href="#tbClaimConsequentialDamage">
-                                    <asp:Label ID="Label5" runat="server" CssClass="tabHeaderText">CLAIM_CONSEQUENTIAL_DAMAGE</asp:Label></a></li>                        
+                                    <asp:Label ID="Label5" runat="server" CssClass="tabHeaderText">CLAIM_CONSEQUENTIAL_DAMAGE</asp:Label></a></li>
                             </ul>
 
                             <div id="tabClaimIssues">
@@ -1088,30 +1090,30 @@
                             <div id="tabDeviceInformation">
                                 <div class="Page">
                                     <div id="Device" style="width: 99.53%; height: 100%">
-                                    <table id="tblDeviceInfo" border="0" rules="cols" width="100%">
-                                        <tr>
-                                            <td align="center">
-                                                <asp:GridView ID="gridClaimCaseDeviceInfo" runat="server" Width="100%" AutoGenerateColumns="False" AllowPaging="false" SkinID="DetailPageGridView" AllowSorting="False" Visible="false">
-                                                    <SelectedRowStyle Wrap="True" />
-                                                    <EditRowStyle Wrap="True" />
-                                                    <AlternatingRowStyle Wrap="True" />
-                                                    <RowStyle Wrap="True" />
-                                                    <HeaderStyle />
-                                                    <Columns>
-                                                        <asp:BoundField DataField="Manufacturer" ReadOnly="true" HtmlEncode="false" HeaderText="MANUFACTURER_NAME" HeaderStyle-HorizontalAlign="Center" />
-                                                        <asp:BoundField DataField="Model" ReadOnly="true" HtmlEncode="false" HeaderText="MODEL" HeaderStyle-HorizontalAlign="Center" />
-                                                        <asp:BoundField DataField="DeviceType" ReadOnly="true" HtmlEncode="false" HeaderText="DEVICE_TYPE" HeaderStyle-HorizontalAlign="Center" />
-                                                        <asp:BoundField DataField="PurchasedDate" ReadOnly="true" HtmlEncode="false" HeaderText="purchased_date" HeaderStyle-HorizontalAlign="Center" />
-                                                        <asp:BoundField DataField="PurchasePrice" ReadOnly="true" HtmlEncode="false" HeaderText="purchase_price" HeaderStyle-HorizontalAlign="Center" />
-                                                        <asp:BoundField DataField="ImeiNumber" ReadOnly="true" HtmlEncode="false" HeaderText="IMEI_NUM" HeaderStyle-HorizontalAlign="Center" />
-                                                        <asp:BoundField DataField="SerialNumber" ReadOnly="true" HtmlEncode="false" HeaderText="SERIAL_NUM" HeaderStyle-HorizontalAlign="Center" />
-                                                        <asp:BoundField DataField="RegisteredItemName" ReadOnly="true" HtmlEncode="false" HeaderText="REGISTERED_ITEM" HeaderStyle-HorizontalAlign="Center" />
-                                                    </Columns>
-                                                </asp:GridView>
-                                            </td>
-                                        </tr>
-                                    </table>                    
-                                </div>
+                                        <table id="tblDeviceInfo" border="0" rules="cols" width="100%">
+                                            <tr>
+                                                <td align="center">
+                                                    <asp:GridView ID="gridClaimCaseDeviceInfo" runat="server" Width="100%" AutoGenerateColumns="False" AllowPaging="false" SkinID="DetailPageGridView" AllowSorting="False" Visible="false">
+                                                        <SelectedRowStyle Wrap="True" />
+                                                        <EditRowStyle Wrap="True" />
+                                                        <AlternatingRowStyle Wrap="True" />
+                                                        <RowStyle Wrap="True" />
+                                                        <HeaderStyle />
+                                                        <Columns>
+                                                            <asp:BoundField DataField="Manufacturer" ReadOnly="true" HtmlEncode="false" HeaderText="MANUFACTURER_NAME" HeaderStyle-HorizontalAlign="Center" />
+                                                            <asp:BoundField DataField="Model" ReadOnly="true" HtmlEncode="false" HeaderText="MODEL" HeaderStyle-HorizontalAlign="Center" />
+                                                            <asp:BoundField DataField="DeviceType" ReadOnly="true" HtmlEncode="false" HeaderText="DEVICE_TYPE" HeaderStyle-HorizontalAlign="Center" />
+                                                            <asp:BoundField DataField="PurchasedDate" ReadOnly="true" HtmlEncode="false" HeaderText="purchased_date" HeaderStyle-HorizontalAlign="Center" />
+                                                            <asp:BoundField DataField="PurchasePrice" ReadOnly="true" HtmlEncode="false" HeaderText="purchase_price" HeaderStyle-HorizontalAlign="Center" />
+                                                            <asp:BoundField DataField="ImeiNumber" ReadOnly="true" HtmlEncode="false" HeaderText="IMEI_NUM" HeaderStyle-HorizontalAlign="Center" />
+                                                            <asp:BoundField DataField="SerialNumber" ReadOnly="true" HtmlEncode="false" HeaderText="SERIAL_NUM" HeaderStyle-HorizontalAlign="Center" />
+                                                            <asp:BoundField DataField="RegisteredItemName" ReadOnly="true" HtmlEncode="false" HeaderText="REGISTERED_ITEM" HeaderStyle-HorizontalAlign="Center" />
+                                                        </Columns>
+                                                    </asp:GridView>
+                                                </td>
+                                            </tr>
+                                        </table>
+                                    </div>
                                     <div id="dvClaimEquipment" runat="server">
                                         <table class="formGrid">
                                             <tr>
@@ -1284,7 +1286,7 @@
                                     </div>
                                 </td>
                             </tr>
-                             <tr>
+                            <tr>
                                 <td>
                                     <h2 class="dataGridHeader">
                                         <asp:Label ID="step3_LabelSpecialInstruction" runat="server">Special_Instruction</asp:Label>
