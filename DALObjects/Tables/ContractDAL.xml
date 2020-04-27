@@ -124,7 +124,12 @@
         policy_type_id,
 				policy_generation_id,
 				line_of_business_id,
-        producer_id
+        producer_id,
+        commissions_percent_source_xcd,
+        marketing_percent_source_xcd,
+        admin_expense_source_xcd,
+        profit_percent_source_xcd,
+        loss_cost_percent_source_xcd 
 			FROM elp_contract 
 			WHERE
 				contract_id = :contract_id
@@ -269,7 +274,12 @@
         policy_type_id = :policy_type_id,
 				policy_generation_id = :policy_generation_id,
 				line_of_business_id = :line_of_business_id,
-        producer_id = :producer_id
+        producer_id = :producer_id,
+        commissions_percent_source_xcd = :commissions_percent_source_xcd,
+        marketing_percent_source_xcd = :marketing_percent_source_xcd,
+        admin_expense_source_xcd = :admin_expense_source_xcd,
+        profit_percent_source_xcd = :profit_percent_source_xcd,
+        loss_cost_percent_source_xcd = :loss_cost_percent_source_xcd 
  		  WHERE
 				contract_id = :contract_id
 			AND NVL(modified_date,created_date) = NVL(:modified_date,created_date)
@@ -390,10 +400,15 @@
         rdo_tax_id,
         rdo_percent,
         override_edit_mfg_term_xcd,
-       	policy_type_id, 
-				policy_generation_id, 
-				line_of_business_id,
-        producer_id
+        policy_type_id,
+        policy_generation_id,
+        line_of_business_id,
+        producer_id,
+        commissions_percent_source_xcd,
+        marketing_percent_source_xcd,
+        admin_expense_source_xcd,
+        profit_percent_source_xcd,
+        loss_cost_percent_source_xcd
         )
         VALUES
         (
@@ -510,10 +525,15 @@
         :rdo_tax_id,
         :rdo_percent,
         :override_edit_mfg_term_xcd,
-        :policy_type_id, 
-				:policy_generation_id, 
-				:line_of_business_id,
-        :producer_id
+        :policy_type_id,
+        :policy_generation_id,
+        :line_of_business_id,
+        :producer_id,
+        :commissions_percent_source_xcd,
+        :marketing_percent_source_xcd,
+        :admin_expense_source_xcd,
+        :profit_percent_source_xcd,
+        :loss_cost_percent_source_xcd
         )
       </INSERT>
   <DELETE>

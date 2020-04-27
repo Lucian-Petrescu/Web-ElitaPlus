@@ -23,6 +23,14 @@ Public Class ContractDAL
     Public Const COL_NAME_PROFIT_PERCENT As String = "profit_percent"
     Public Const COL_NAME_LOSS_COST_PERCENT As String = "loss_cost_percent"
     Public Const COL_NAME_CURRENCY_ID As String = "currency_id"
+
+    'US - 489857
+    Public Const COL_NAME_COMMISSIONS_PERCENT_SOURCE_XCD As String = "commissions_percent_source_xcd"
+    Public Const COL_NAME_MARKETING_PERCENT_SOURCE_XCD As String = "marketing_percent_source_xcd"
+    Public Const COL_NAME_ADMIN_EXPENSE_SOURCE_XCD As String = "admin_expense_source_xcd"
+    Public Const COL_NAME_PROFIT_PERCENT_SOURCE_XCD As String = "profit_percent_source_xcd"
+    Public Const COL_NAME_LOSS_COST_PERCENT_SOURCE_XCD As String = "loss_cost_percent_source_xcd"
+
     ' Public Const COL_NAME_LAST_RECON As String = "last_recon"
     Public Const COL_NAME_TYPE_OF_MARKETING_ID As String = "type_of_marketing_id"
     Public Const COL_NAME_TYPE_OF_EQUIPMENT_ID As String = "type_of_equipment_id"

@@ -286,6 +286,9 @@ Public Class DealerDAL
 
     Public Const COL_NAME_DISPLAY_DOB As String = "display_mask_dob_xcd"
     Public Const COL_NAME_ALLOW_CERT_CNL_WITH_CLAIM_XCD As String = "allow_cert_cnl_with_claim_xcd"
+
+    'US 489857
+    Public Const COL_NAME_ACCT_BUCKETS_WITH_SOURCE_XCD As String = "acct_buckets_with_source_xcd"
 #End Region
 
 #Region "Constructors"
