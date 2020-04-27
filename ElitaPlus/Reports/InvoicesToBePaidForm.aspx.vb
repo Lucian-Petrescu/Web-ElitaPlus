@@ -1,9 +1,7 @@
-Imports Assurant.ElitaPlus.ElitaPlusWebApp.Common
-Imports Assurant.ElitaPlus.DALObjects
-Imports System.Threading
 Imports Assurant.Elita.CommonConfiguration
-Imports Assurant.ElitaPlus.Security
 Imports Assurant.Elita.Web.Forms
+Imports Assurant.ElitaPlus.DALObjects
+Imports Assurant.ElitaPlus.ElitaPlusWebApp.Common
 Namespace Reports
     Partial Class InvoicesToBePaidForm
         Inherits ElitaPlusPage
@@ -27,6 +25,24 @@ Namespace Reports
             Public rptCurrency As String
         End Structure
 
+        Public Structure ReportExpParams
+            Public userId As String
+            Public payee As String
+            Public invoiceNumber As String
+            Public beginDate As String
+            Public endDate As String
+            Public reportType As String
+            Public SvcCode As String
+            Public taxtype As String
+            Public customerAddress As String
+            Public cultureCode As String
+            Public companyCode As String
+            Public dealerCode As String
+            Public dealerForCur As String
+            Public rptCurrency As String
+            Public infotype As String
+        End Structure
+
 #End Region
 
 #Region "Constants"
@@ -39,9 +55,11 @@ Namespace Reports
         Private Const PERIOD_ROW As String = "period"
         Private Const INVOICE_ROW As String = "invoice"
         Private Const PAYEE_ROW As String = "payee"
-        Private Const TOTAL_PARAMS As Integer = 27 ' 21 Elements
         Private Const TOTAL_EXP_PARAMS As Integer = 14 ' 6 Elements
         Private Const PARAMS_PER_REPORT As Integer = 15 ' 6 Elements
+        Private Const PARAMS_PER_EXT_REPORT As Integer = 16 ' 6 Elements
+        Private Const CLAIMS_INFORMATION As String = "CLAIMS"
+        Private Const INVOICE_INFORMATION As String = "INVOICES"
 
         Public Const CRYSTAL As String = "0"
         'Public Const PDF As String = "1"
@@ -128,6 +146,7 @@ Namespace Reports
             Me.BeginDateText.Text = GetDateFormattedString(t)
             Me.EndDateText.Text = GetDateFormattedString(Date.Now)
             Me.RadiobuttonByReportingPeriod.Checked = True
+            Me.RadiobuttonClaims.Checked = True
             Me.chkSvcCode.Checked = False
             PopulateCompaniesDropdown()
             PopulateDealerDropDown()
@@ -255,16 +274,6 @@ Namespace Reports
         End Sub
 
         Private Sub PopulateCurrencyDropdown()
-            'If Not UserCompanyMultipleDrop.SelectedGuid = Guid.Empty Then
-            '    Dim dv As DataView = LookupListNew.GetCurrenciesForCompanyandDealersInCompanyLookupList(UserCompanyMultipleDrop.SelectedGuid)
-            '    Me.BindListControlToDataView(Me.ddlCurrency, dv, , , True)
-            '    Me.BindListControlToDataView(Me.ddlDealerCurrency, dv, , , True)
-            'Else
-            '    Dim dv As DataView = LookupListNew.GetCurrenciesForCompanyandDealersInCompanyLookupList(UserCompanyMultipleDrop.SelectedGuid)
-            '    Me.BindListControlToDataView(Me.ddlCurrency, dv, , , True)
-            '    Me.BindListControlToDataView(Me.ddlDealerCurrency, dv, , , True)
-            'End If
-
 
             Dim populateOptions = New PopulateOptions() With
                                 {
@@ -306,9 +315,6 @@ Namespace Reports
                 If Not invoiceNumber Is Nothing AndAlso invoiceNumber.Trim.Length > 0 Then
                     Me.PayeeLabel.Visible = True
                     Me.cboPayee.Visible = True
-                    'Dim companyList As ArrayList = ElitaPlusIdentity.Current.ActiveUser.Companies
-                    'Dim dv As Disbursement.DisbursementSearchDV = Disbursement.GetList(invoiceNumber, companyList)
-                    'Me.BindListControlToDataView(Me.cboPayee, dv, "payee", "disbursement_id", False)
                     Dim PayeeList As New Collections.Generic.List(Of DataElements.ListItem)
                     For Each Company_id As Guid In ElitaPlusIdentity.Current.ActiveUser.Companies
                         Dim Payee As DataElements.ListItem() =
@@ -414,6 +420,29 @@ Namespace Reports
 
         End Sub
 
+        Sub SetReportExpParams(ByVal rptParams As ReportExpParams, ByVal repParams() As ReportCeBaseForm.RptParam,
+                            ByVal rptName As String, ByVal startIndex As Integer)
+            With rptParams
+                repParams(startIndex) = New ReportCeBaseForm.RptParam("PI_USER_KEY", .userId, rptName)
+                repParams(startIndex + 1) = New ReportCeBaseForm.RptParam("PI_REPORT_TYPE", .reportType, rptName)
+                repParams(startIndex + 2) = New ReportCeBaseForm.RptParam("PI_BEGIN_DATE", .beginDate, rptName)
+                repParams(startIndex + 3) = New ReportCeBaseForm.RptParam("PI_END_DATE", .endDate, rptName)
+                repParams(startIndex + 4) = New ReportCeBaseForm.RptParam("PI_PAYEE", .payee, rptName)
+                repParams(startIndex + 5) = New ReportCeBaseForm.RptParam("PI_SVC_CONTROL_NUMBER", .invoiceNumber, rptName)
+                repParams(startIndex + 6) = New ReportCeBaseForm.RptParam("PI_FREE_ZONE_FLAG", "ALL", rptName)
+                repParams(startIndex + 7) = New ReportCeBaseForm.RptParam("PI_INCLUDE_SVCCODE", .SvcCode, rptName)
+                repParams(startIndex + 8) = New ReportCeBaseForm.RptParam("PI_INCLUDE_CUSTOMER_ADDR", .customerAddress, rptName)
+                repParams(startIndex + 9) = New ReportCeBaseForm.RptParam("PI_COMPANY_CODE", .companyCode, rptName)
+                repParams(startIndex + 10) = New ReportCeBaseForm.RptParam("PI_DEALER_CODE", .dealerCode, rptName)
+                repParams(startIndex + 11) = New ReportCeBaseForm.RptParam("PI_DEALER_WITH_CUR", .dealerForCur, rptName)
+                repParams(startIndex + 12) = New ReportCeBaseForm.RptParam("PI_RPT_CUR", .rptCurrency, rptName)
+                repParams(startIndex + 13) = New ReportCeBaseForm.RptParam("PI_TAX_TYPE", .taxtype, rptName)
+                repParams(startIndex + 14) = New ReportCeBaseForm.RptParam("V_LANG_CULTURE_CODE", .cultureCode, rptName)
+                repParams(startIndex + 15) = New ReportCeBaseForm.RptParam("PI_INFO_TYPE", .infotype, rptName)
+            End With
+
+        End Sub
+
         Function SetParameters(ByVal userId As String, ByVal invoiceNumber As String, ByVal payee As String,
                                ByVal beginDate As String, ByVal endDate As String, ByVal selectionType As String,
                                ByVal svccode As String, ByVal taxtype As String, ByVal culturecode As String,
@@ -460,12 +489,13 @@ Namespace Reports
         Function SetExpParameters(ByVal userId As String, ByVal invoiceNumber As String, ByVal payee As String,
                                   ByVal beginDate As String, ByVal endDate As String, ByVal selectionType As String,
                                   ByVal svccode As String, ByVal taxtype As String, ByVal culturecode As String,
-                                  ByVal customerAddress As String, ByVal companyCode As String, dealerCode As String, dealerForCur As Guid, rptCurrency As Guid) As ReportCeBaseForm.Params
+                                  ByVal customerAddress As String, ByVal companyCode As String, dealerCode As String, dealerForCur As Guid,
+                                  rptCurrency As Guid, ByVal infoType As String) As ReportCeBaseForm.Params
 
             Dim reportName As String
             Dim params As New ReportCeBaseForm.Params
-            Dim repParams(TOTAL_EXP_PARAMS) As ReportCeBaseForm.RptParam
-            Dim rptParams As ReportParams
+            Dim repParams(PARAMS_PER_EXT_REPORT) As ReportCeBaseForm.RptParam
+            Dim rptParams As ReportExpParams
             Dim reportFormat As ReportCeBaseForm.RptFormat
 
             reportFormat = ReportCeBase.GetReportFormat(Me)
@@ -486,9 +516,10 @@ Namespace Reports
                 .dealerCode = dealerCode
                 .dealerForCur = DALBase.GuidToSQLString(dealerForCur)
                 .rptCurrency = DALBase.GuidToSQLString(rptCurrency)
+                .infotype = infoType
             End With
 
-            SetReportParams(rptParams, repParams, String.Empty, PARAMS_PER_REPORT * 0)     ' Main Report
+            SetReportExpParams(rptParams, repParams, String.Empty, PARAMS_PER_EXT_REPORT * 0)     ' Main Report
 
             With params
                 .msRptName = reportName
@@ -504,6 +535,7 @@ Namespace Reports
         Private Sub GenerateReport()
             Dim userId As String = GuidControl.GuidToHexString(ElitaPlusIdentity.Current.ActiveUser.Id)
             Dim selectionType As String
+            Dim infoType As String
             Dim params As ReportCeBaseForm.Params
             Dim endDate As String
             Dim beginDate As String
@@ -562,17 +594,21 @@ Namespace Reports
             End If
 
             reportFormat = ReportCeBase.GetReportFormat(Me)
-            If (reportFormat = ReportCeBase.RptFormat.TEXT_TAB OrElse _
+            If (reportFormat = ReportCeBase.RptFormat.TEXT_TAB OrElse
                 reportFormat = ReportCeBase.RptFormat.TEXT_CSV) Then
                 culturecode = TheReportCeInputControl.getCultureValue(True)
             End If
-
-            'Me.rptWindowTitle.InnerText = TheReportCeInputControl.getReportWindowTitle(RPT_FILENAME_WINDOW)
 
             If (Me.RadiobuttonByReportingPeriod.Checked) Then
                 selectionType = BY_REPORTING_PERIOD
             Else
                 selectionType = BY_INVOICE_NUMBER
+            End If
+
+            If (Me.RadiobuttonClaims.Checked) Then
+                infoType = CLAIMS_INFORMATION
+            Else
+                infoType = INVOICE_INFORMATION
             End If
 
             If (selectionType = BY_REPORTING_PERIOD) Then
@@ -617,11 +653,11 @@ Namespace Reports
             If (reportFormat = ReportCeBase.RptFormat.TEXT_TAB) OrElse (reportFormat = ReportCeBase.RptFormat.TEXT_CSV) Then
                 'Export Report
                 '   reportName = RPT_FILENAME_EXPORT
-                params = SetExpParameters(userId, invoiceNumber, payee, beginDate, endDate, selectionType, svccode, taxtype, culturecode, customerAddress, _
-                                          companyCode, dealerCode, dealerForCur, rptCurrency)
+                params = SetExpParameters(userId, invoiceNumber, payee, beginDate, endDate, selectionType, svccode, taxtype, culturecode, customerAddress,
+                                          companyCode, dealerCode, dealerForCur, rptCurrency, infoType)
             Else
                 'View Report
-                params = SetParameters(userId, invoiceNumber, payee, beginDate, endDate, selectionType, svccode, taxtype, culturecode, customerAddress, _
+                params = SetParameters(userId, invoiceNumber, payee, beginDate, endDate, selectionType, svccode, taxtype, culturecode, customerAddress,
                                        companyCode, dealerCode, dealerForCur, rptCurrency)
             End If
             'Dim params As ReportCeBaseForm.Params = SetParameters(compCode, invoiceNumber, payee, beginDate, endDate)
