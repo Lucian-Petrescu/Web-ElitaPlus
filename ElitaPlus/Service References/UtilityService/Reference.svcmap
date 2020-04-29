@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ReferenceGroup xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" ID="05059598-c7f8-4a57-8d3d-ec0539e2ec74" xmlns="urn:schemas-microsoft-com:xml-wcfservicemap">
+  <ClientOptions>
+    <GenerateAsynchronousMethods>false</GenerateAsynchronousMethods>
+    <GenerateTaskBasedAsynchronousMethod>true</GenerateTaskBasedAsynchronousMethod>
+    <EnableDataBinding>true</EnableDataBinding>
+    <ExcludedTypes />
+    <ImportXmlTypes>false</ImportXmlTypes>
+    <GenerateInternalTypes>false</GenerateInternalTypes>
+    <GenerateMessageContracts>false</GenerateMessageContracts>
+    <NamespaceMappings />
+    <CollectionMappings />
+    <GenerateSerializableTypes>true</GenerateSerializableTypes>
+    <Serializer>Auto</Serializer>
+    <UseSerializerForFaults>true</UseSerializerForFaults>
+    <ReferenceAllAssemblies>true</ReferenceAllAssemblies>
+    <ReferencedAssemblies />
+    <ReferencedDataContractTypes />
+    <ServiceContractMappings />
+  </ClientOptions>
+  <MetadataSources>
+    <MetadataSource Address="http://elitaplus-modl.a2.assurant.com/ElitaInternalWSA2/Utilities/UtilityWcf.svc" Protocol="http" SourceId="1" />
+  </MetadataSources>
+  <Metadata>
+    <MetadataFile FileName="UtilityWcf.wsdl" MetadataType="Wsdl" ID="900d5fa5-20b3-42f2-b7eb-e71840131149" SourceId="1" SourceUrl="http://elitaplus-modl.a2.assurant.com/ElitaInternalWSA2/Utilities/UtilityWcf.svc?wsdl" />
+    <MetadataFile FileName="UtilityWcf.xsd" MetadataType="Schema" ID="5e90c3a4-4cd6-48c2-a391-e84463ca7ac5" SourceId="1" SourceUrl="http://elitaplus-modl.a2.assurant.com/ElitaInternalWSA2/Utilities/UtilityWcf.svc?xsd=xsd0" />
+    <MetadataFile FileName="UtilityWcf1.wsdl" MetadataType="Wsdl" ID="e4df6112-2991-4d1a-ac63-b4db755bf78c" SourceId="1" SourceUrl="http://elitaplus-modl.a2.assurant.com/ElitaInternalWSA2/Utilities/UtilityWcf.svc?wsdl=wsdl0" />
+    <MetadataFile FileName="UtilityWcf.disco" MetadataType="Disco" ID="f6622289-cb58-47a6-a9f2-01a7fc9f4a76" SourceId="1" SourceUrl="http://elitaplus-modl.a2.assurant.com/ElitaInternalWSA2/Utilities/UtilityWcf.svc?disco" />
+    <MetadataFile FileName="UtilityWcf1.xsd" MetadataType="Schema" ID="c1c8d211-3038-4dfa-8020-2d4860c5ebbe" SourceId="1" SourceUrl="http://elitaplus-modl.a2.assurant.com/ElitaInternalWSA2/Utilities/UtilityWcf.svc?xsd=xsd1" />
+  </Metadata>
+  <Extensions>
+    <ExtensionFile FileName="configuration91.svcinfo" Name="configuration91.svcinfo" />
+    <ExtensionFile FileName="configuration.svcinfo" Name="configuration.svcinfo" />
+  </Extensions>
+</ReferenceGroup>

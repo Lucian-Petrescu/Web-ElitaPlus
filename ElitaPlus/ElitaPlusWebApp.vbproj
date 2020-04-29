@@ -1010,6 +1010,13 @@
       <DependentUpon>ARPaymentReconWrkForm.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
+    <Compile Include="Interfaces\ClaimDeviceInformationController.ascx.designer.vb">
+      <DependentUpon>ClaimDeviceInformationController.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="Interfaces\ClaimDeviceInformationController.ascx.vb">
+      <DependentUpon>ClaimDeviceInformationController.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
     <Compile Include="Interfaces\ClaimFileManagementDetailForm.aspx.designer.vb">
       <DependentUpon>ClaimFileManagementDetailForm.aspx</DependentUpon>
     </Compile>
@@ -1341,6 +1348,11 @@
       <DependentUpon>Reference.svcmap</DependentUpon>
     </Compile>
     <Compile Include="Service References\QuestionService\Reference.vb">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </Compile>
+    <Compile Include="Service References\UtilityService\Reference.vb">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>Reference.svcmap</DependentUpon>
@@ -5739,6 +5751,7 @@
     <Content Include="Interfaces\AppleGBIFileFormDetail.aspx" />
     <Content Include="Interfaces\ARInvoiceReconWrkForm.aspx" />
     <Content Include="Interfaces\ARPaymentReconWrkForm.aspx" />
+    <Content Include="Interfaces\ClaimDeviceInformationController.ascx" />
     <Content Include="Interfaces\ClaimFileManagementDetailForm.aspx" />
     <Content Include="Interfaces\ClaimFileManagementSearchForm.aspx" />
     <Content Include="Interfaces\ClaimFulfillmentMileStonesFileForm.aspx" />
@@ -6200,6 +6213,13 @@
     <None Include="Service References\QuestionService\configuration91.svcinfo" />
     <None Include="Service References\QuestionService\configuration.svcinfo" />
     <None Include="Service References\QuestionService\Reference.svcmap">
+      <Generator>WCF Proxy Generator</Generator>
+      <LastGenOutput>Reference.vb</LastGenOutput>
+    </None>
+    <None Include="Service References\UtilityService\UtilityWcf.disco" />
+    <None Include="Service References\UtilityService\configuration91.svcinfo" />
+    <None Include="Service References\UtilityService\configuration.svcinfo" />
+    <None Include="Service References\UtilityService\Reference.svcmap">
       <Generator>WCF Proxy Generator</Generator>
       <LastGenOutput>Reference.vb</LastGenOutput>
     </None>
@@ -7731,6 +7751,14 @@
     <None Include="Service References\TestWcfRef\WcfTest.xsd" />
     <None Include="Service References\TestWcfRef\WcfTest1.wsdl" />
     <None Include="Service References\TestWcfRef\WcfTest1.xsd" />
+    <None Include="Service References\UtilityService\UtilityWcf.wsdl" />
+    <None Include="Service References\UtilityService\UtilityWcf.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Service References\UtilityService\UtilityWcf1.wsdl" />
+    <None Include="Service References\UtilityService\UtilityWcf1.xsd">
+      <SubType>Designer</SubType>
+    </None>
     <None Include="Web References\OlitaWSRef\OlitaWS.disco" />
     <Content Include="VSC\VSCPlanRateForm.aspx" />
     <EmbeddedResource Include="businessobjects\MaintainQueueUser.aspx.resx">
@@ -8924,6 +8952,7 @@
     <WCFMetadataStorage Include="Service References\OlitaWcfRef\" />
     <WCFMetadataStorage Include="Service References\QuestionService\" />
     <WCFMetadataStorage Include="Service References\TestWcfRef\" />
+    <WCFMetadataStorage Include="Service References\UtilityService\" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Common\Editor\fckeditor\editor\filemanager\connectors\aspx\" />

@@ -4402,6 +4402,23 @@ Public MustInherit Class ClaimBase
 
 #Region "Equipment Management"
     Private _ClaimedEquipment As ClaimEquipment
+
+    Public ReadOnly Property ClaimedEnrolledEquipments As List(Of ClaimEquipment)
+        Get
+            Dim equipmentList As New List(Of ClaimEquipment)
+
+            If Not Me._ClaimedEquipment Is Nothing Then
+                equipmentList.Add(Me._ClaimedEquipment)
+            End If
+            If Not Me._EnrolledEquipment Is Nothing Then
+                equipmentList.Add(Me._EnrolledEquipment)
+            End If
+
+            Return equipmentList
+        End Get
+
+    End Property
+
     Public Property ClaimedEquipment As ClaimEquipment
         Get
             If Me._ClaimedEquipment Is Nothing Then

@@ -29,6 +29,13 @@ Public Class ClaimEquipmentDAL
     Public Const COL_NAME_DEVICE_TYPE_ID As String = "DEVICE_TYPE_ID"
     Public Const COL_NAME_CLAIM_AUTHORIZATION_ID As String = "CLAIM_AUTHORIZATION_ID"
     Public Const PO_CURSOR_Equipment = 0
+    Public Const COL_NAME_LANGUAGE_ID As String = "pi_language_id"
+    Public Const COL_NAME_DEVICE_TYPE As String = "Device_Type"
+    Public Const COL_NAME_EQUIPMENT_TYPE As String = "Equipment_Type"
+    Public Const COL_NAME_PURCHASED_DATE As String = "Purchased_Date"
+    Public Const COL_NAME_PURCHASE_PRICE As String = "Purchase_Price"
+    Public Const COL_NAME_REGISTERED_ITEM_NAME As String = "Registered_Item_Name"
+    'Public Const COL_NAME_CARRIER As String = "Carrier"
 
 #End Region
 
@@ -65,6 +72,23 @@ Public Class ClaimEquipmentDAL
         End Try
     End Sub
 
+    Public Sub LoadDevieInfoList(ByVal familyDS As DataSet, ByVal claimId As Guid, ByVal languageId As Guid)
+        Dim selectStmt As String = Me.Config("/SQL/LOAD_DEVICE_INFO_LIST")
+        Dim ds As DataSet = New DataSet
+        Dim outputParameter(0) As DBHelper.DBHelperParameter
+        Dim parameters() As DBHelper.DBHelperParameter = New DBHelper.DBHelperParameter() {New DBHelper.DBHelperParameter(Me.COL_NAME_CLAIM_ID, claimId.ToByteArray),
+                                                                                           New DBHelper.DBHelperParameter(Me.COL_NAME_LANGUAGE_ID, languageId)}
+        outputParameter(Me.PO_CURSOR_Equipment) = New DBHelper.DBHelperParameter("po_device_info_cursor", GetType(DataSet))
+
+        Try
+
+            DBHelper.FetchSp(selectStmt, parameters, outputParameter, familyDS, Me.TABLE_NAME)
+            'ds.Tables(0).TableName = Me.TABLE_NAME
+
+        Catch ex As Exception
+            Throw New DataBaseAccessException(DataBaseAccessException.DatabaseAccessErrorType.ReadErr, ex)
+        End Try
+    End Sub
 #End Region
 
 #Region "Overloaded Methods"
