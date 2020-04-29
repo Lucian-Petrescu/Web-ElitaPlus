@@ -12,6 +12,7 @@ Imports Assurant.ElitaPlus.ElitaPlusWebApp.Certificates
 Imports Assurant.ElitaPlus.ElitaPlusWebApp.ClaimFulfillmentWebAppGatewayService
 Imports Assurant.ElitaPlus.ElitaPlusWebApp.ClaimRecordingService
 Imports Microsoft.Practices.ObjectBuilder2
+Imports System.IO
 
 Public Class ClaimRecordingForm
     Inherits ElitaPlusSearchPage
@@ -43,6 +44,7 @@ Public Class ClaimRecordingForm
     Private Const Password = "CLAIM_RECSERVICE_PASSWORD"
     Private Const ServiceUrl = "CLAIM_SERVICE_URL"
     Private Const EndPointName = "CustomBinding_IClaimRecordingService"
+    Private Const UtiliutyEndPointName = "BasicHttpBinding_IUtilityWcf"
     Private Const FlagYes = "YESNO-Y"
 
     Dim _relationlist As ListItem()
@@ -563,10 +565,29 @@ Public Class ClaimRecordingForm
     ''' <returns>Instance of <see cref="ClaimRecordingServiceClient"/></returns>
     Private Shared Function GetClient() As ClaimRecordingServiceClient
         ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12
-        Dim client = New ClaimRecordingServiceClient(EndPointName, ConfigurationManager.AppSettings(ServiceUrl))
-        client.ClientCredentials.UserName.UserName = ConfigurationManager.AppSettings(UserName)
-        client.ClientCredentials.UserName.Password = ConfigurationManager.AppSettings(Password)
+        'Dim client = New ClaimRecordingServiceClient(EndPointName, ConfigurationManager.AppSettings(ServiceUrl))
+        'client.ClientCredentials.UserName.UserName = ConfigurationManager.AppSettings(UserName)
+        'client.ClientCredentials.UserName.Password = ConfigurationManager.AppSettings(Password)
+        Dim client = New ClaimRecordingServiceClient(EndPointName, "http://localhost/ElitaClaimService/ClaimRecordingService.svc")
+        client.ClientCredentials.UserName.UserName = "elita1"
+        client.ClientCredentials.UserName.Password = "elita1"
         Return client
+    End Function
+
+    Private Shared Function GetMakesAndModels(dealer As String) As Object
+        ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12
+        Dim oWebPasswd As WebPasswd = New WebPasswd(Guid.Empty, LookupListNew.GetIdFromCode(Codes.SERVICE_TYPE, Codes.SERVICE_TYPE__UTILTY_SERVICE), False)
+        Dim client = New UtilityService.UtilityWcfClient(UtiliutyEndPointName, oWebPasswd.Url)
+        Dim token = client.LoginBody(oWebPasswd.UserId, oWebPasswd.Password, Codes.SERVICE_TYPE_GROUP_NAME)
+
+        Dim makesAndModels As Object
+        If (Not String.IsNullOrEmpty(token)) Then
+            Dim requestXmlData = "<GetMakesAndModelsDs><GetMakesAndModels><DealerCode>" + dealer + "</DealerCode></GetMakesAndModels></GetMakesAndModelsDs>"
+            makesAndModels = client.ProcessRequest(token, "GetMakesAndModels", requestXmlData.ToString())
+        End If
+
+        Return makesAndModels
+
     End Function
 
     Private Sub DisplayNextView()
@@ -609,6 +630,8 @@ Public Class ClaimRecordingForm
                     Dim item As ItemSelectionResponse = DirectCast(State.SubmitWsBaseClaimRecordingResponse, ItemSelectionResponse)
                     GridItems.DataSource = item.RegisteredItems
                     GridItems.DataBind()
+
+                    ModifiedDeviceInfo()
                 Case GetType(ActionResponse)
                     MoveToNextPage()
                 Case GetType(DynamicFulfillmentResponse)
@@ -1089,6 +1112,104 @@ Public Class ClaimRecordingForm
         End If
     End Sub
 
+    Protected Sub BindModifiedDeviceInfo(activeRadio As RadioButton)
+        Try
+            Dim row As GridViewRow
+            Dim rdoSelect As RadioButton
+            For Each row In GridItems.Rows
+                rdoSelect = DirectCast(row.FindControl("rdoItems"), RadioButton)
+
+                If activeRadio IsNot Nothing Then
+                    If (rdoSelect IsNot activeRadio) Then
+                        rdoSelect.Checked = False
+                    Else
+                        rdoSelect.Checked = True
+                    End If
+                End If
+
+                If rdoSelect IsNot Nothing Then
+                    If rdoSelect.Checked Then
+                        ddlDvcMake.SelectedValue = DirectCast(row.FindControl("lblManufacturer"), Label).Text
+                        lblDvcMakeValue.Text = DirectCast(row.FindControl("lblManufacturer"), Label).Text
+                        lblDvcModelValue.Text = DirectCast(row.FindControl("lblModel"), Label).Text
+
+                        If ddlDvcMake.DataSource IsNot Nothing Then
+                            ddlDvcMake.SelectedValue = DirectCast(row.FindControl("lblManufacturer"), Label).Text
+                            txtDvcMake.Text = DirectCast(row.FindControl("lblManufacturer"), Label).Text
+                            txtDvcMake.Visible = False
+                        Else
+                            ddlDvcMake.Visible = False
+                            txtDvcMake.Visible = True
+                            txtDvcMake.Text = DirectCast(row.FindControl("lblManufacturer"), Label).Text
+                        End If
+
+                        If ddlDvcModel.DataSource IsNot Nothing Then
+                            ddlDvcModel.SelectedValue = DirectCast(row.FindControl("lblModel"), Label).Text
+                            txtDvcModel.Text = DirectCast(row.FindControl("lblModel"), Label).Text
+                            txtDvcModel.Visible = False
+                        Else
+                            ddlDvcModel.Visible = False
+                            txtDvcModel.Visible = True
+                            txtDvcModel.Text = DirectCast(row.FindControl("lblModel"), Label).Text
+                        End If
+
+                        'txtDvcColor.Text = DirectCast(row.FindControl("lblColor"), Label).Text
+                        'lblDvcColorValue.Text = DirectCast(row.FindControl("lblColor"), Label).Text
+                        'txtDvcCapacity.Text = DirectCast(row.FindControl("lblCapacity"), Label).Text
+                        'lblDvcCapacityValue.Text = DirectCast(row.FindControl("lblCapacity"), Label).Text
+                        'txtDvcCarrier.Text = DirectCast(row.FindControl("lblCarrier"), Label).Text
+                        'lblDvcCarrierValue.Text = DirectCast(row.FindControl("lblCarrier"), Label).Text
+                        txtDvcImei.Text = DirectCast(row.FindControl("lblImeiNo"), Label).Text
+                        lblDvcImeiValue.Text = DirectCast(row.FindControl("lblImeiNo"), Label).Text
+                        txtDvcSerialNumber.Text = DirectCast(row.FindControl("lblSerialNo"), Label).Text
+                        lblDvcSerialNumberValue.Text = DirectCast(row.FindControl("lblSerialNo"), Label).Text
+                    End If
+                End If
+
+            Next
+
+        Catch ex As Exception
+            Me.HandleErrors(ex, Me.MasterPage.MessageController)
+        End Try
+    End Sub
+
+    Private Sub ModifiedDeviceInfo()
+
+        Try
+            Dim oCertificate As Certificate = New Certificate(State.CertificateId)
+            Dim Dealer = oCertificate.Dealer.Dealer
+            Dim makesAndModels = GetMakesAndModels(Dealer)
+
+            If (makesAndModels IsNot Nothing) Then
+                    Dim ds As New DataSet()
+                    ds.ReadXml(New StringReader(makesAndModels))
+
+                    If (ds.Tables.Count > 1) Then
+
+                        If ds.Tables(0).Columns.Contains("Manufacturer") = True Then
+                            ddlDvcMake.DataSource = ds.Tables(0).DefaultView.ToTable(True, "Manufacturer")
+                            ddlDvcMake.DataTextField = "MANUFACTURER"
+                            ddlDvcMake.DataValueField = "MANUFACTURER"
+                            ddlDvcMake.DataBind()
+                        End If
+
+                        If ds.Tables(0).Columns.Contains("Model") = True Then
+                            ddlDvcModel.DataSource = ds.Tables(0).DefaultView.ToTable(True, "Model")
+                            ddlDvcModel.DataTextField = "MODEL"
+                            ddlDvcModel.DataValueField = "MODEL"
+                            ddlDvcModel.DataBind()
+                        End If
+                    End If
+                End If
+            'End If
+
+        Catch ex As Exception
+            HandleErrors(ex, MasterPage.MessageController)
+        End Try
+
+        BindModifiedDeviceInfo(Nothing)
+
+    End Sub
     Protected Sub GridItems_RowDataBound(sender As Object, e As GridViewRowEventArgs) Handles GridItems.RowDataBound
         Try
             If (e.Row.RowType = DataControlRowType.DataRow) Then
@@ -1105,6 +1226,12 @@ Public Class ClaimRecordingForm
             Me.HandleErrors(ex, Me.MasterPage.MessageController)
         End Try
     End Sub
+    Protected Sub rdoItemSelectChanged(sender As Object, e As EventArgs)
+        Dim rdoActive As RadioButton
+        rdoActive = DirectCast(sender, RadioButton)
+        BindModifiedDeviceInfo(rdoActive)
+    End Sub
+
 #End Region
 #Region "Device View - Button Click"
 
@@ -1117,26 +1244,47 @@ Public Class ClaimRecordingForm
             If State.SubmitWsBaseClaimRecordingResponse IsNot Nothing AndAlso State.SubmitWsBaseClaimRecordingResponse.GetType() Is GetType(ItemSelectionResponse) Then
                 deviceSubmitobj = DirectCast(State.SubmitWsBaseClaimRecordingResponse, ItemSelectionResponse)
                 Dim claimdevice As New DeviceInfo()
+                Dim enrolleddevice As New DeviceInfo()
                 Dim itemSelectionRequest As DeviceSelectionRequest = New DeviceSelectionRequest()
 
                 For Each row In GridItems.Rows
                     rdoSelect = DirectCast(row.FindControl("rdoItems"), RadioButton)
                     If rdoSelect IsNot Nothing Then
                         If rdoSelect.Checked Then
-                            claimdevice.Manufacturer = DirectCast(row.FindControl("lblManufacturer"), Label).Text
-                            claimdevice.Model = DirectCast(row.FindControl("lblModel"), Label).Text
-                            claimdevice.ImeiNumber = DirectCast(row.FindControl("lblImeiNo"), Label).Text
-                            claimdevice.SerialNumber = DirectCast(row.FindControl("lblSerialNo"), Label).Text
+
+                            If ddlDvcMake.DataSource IsNot Nothing Then
+                                claimdevice.Manufacturer = ddlDvcMake.SelectedItem.Text
+                            Else
+                                claimdevice.Manufacturer = txtDvcMake.Text
+                            End If
+
+                            If ddlDvcModel.DataSource IsNot Nothing Then
+                                claimdevice.Model = ddlDvcModel.SelectedItem.Text
+                            Else
+                                claimdevice.Model = txtDvcModel.Text
+                            End If
+
+                            claimdevice.ImeiNumber = txtDvcImei.Text
+                            claimdevice.SerialNumber = txtDvcSerialNumber.Text
                             claimdevice.RegisteredItemName = DirectCast(row.FindControl("lblRegisteredItem"), Label).Text
                             claimdevice.RiskTypeCode = DirectCast(row.FindControl("HiddenRiskType"), HiddenField).Value
+
+                            enrolleddevice.Manufacturer = DirectCast(row.FindControl("lblManufacturer"), Label).Text
+                            enrolleddevice.Model = DirectCast(row.FindControl("lblModel"), Label).Text
+                            enrolleddevice.ImeiNumber = DirectCast(row.FindControl("lblImeiNo"), Label).Text
+                            enrolleddevice.SerialNumber = DirectCast(row.FindControl("lblSerialNo"), Label).Text
+                            enrolleddevice.RegisteredItemName = DirectCast(row.FindControl("lblRegisteredItem"), Label).Text
+                            enrolleddevice.RiskTypeCode = DirectCast(row.FindControl("HiddenRiskType"), HiddenField).Value
 
                             If (String.IsNullOrWhiteSpace(claimdevice.Manufacturer)) Then
                                 MasterPage.MessageController.AddError(ElitaPlus.Common.ErrorCodes.GUI_MANUFACTURER_NAME_IS_MISSING_ERR, True)
                                 Exit Sub
                             End If
                             itemSelectionRequest.ClaimedDevice = claimdevice
+                            itemSelectionRequest.EnrolledDevice = enrolleddevice
                             Exit For
                         End If
+
                     End If
                 Next
 
@@ -1182,22 +1330,49 @@ Public Class ClaimRecordingForm
                 deviceSubmitobj = DirectCast(State.SubmitWsBaseClaimRecordingResponse, ItemSelectionResponse)
                 Dim itemSelectionRequest As DeviceSelectionRequest = New DeviceSelectionRequest()
                 Dim claimdevice As New DeviceInfo()
+                Dim enrolleddevice As New DeviceInfo()
 
                 For Each row In GridItems.Rows
                     rdoSelect = DirectCast(row.FindControl("rdoItems"), RadioButton)
                     If rdoSelect IsNot Nothing Then
                         If rdoSelect.Checked Then
 
-                            claimdevice.Manufacturer = DirectCast(row.FindControl("lblManufacturer"), Label).Text
-                            claimdevice.Model = DirectCast(row.FindControl("lblModel"), Label).Text
-                            claimdevice.ImeiNumber = DirectCast(row.FindControl("lblImeiNo"), Label).Text
-                            claimdevice.SerialNumber = DirectCast(row.FindControl("lblSerialNo"), Label).Text
+                            If ddlDvcMake.DataSource IsNot Nothing Then
+                                claimdevice.Manufacturer = ddlDvcMake.SelectedItem.Text
+                            Else
+                                claimdevice.Manufacturer = txtDvcMake.Text
+                            End If
+
+                            If ddlDvcModel.DataSource IsNot Nothing Then
+                                claimdevice.Model = ddlDvcModel.SelectedItem.Text
+                            Else
+                                claimdevice.Model = txtDvcModel.Text
+                            End If
+
+                            claimdevice.ImeiNumber = txtDvcImei.Text
+                            claimdevice.SerialNumber = txtDvcSerialNumber.Text
                             claimdevice.RegisteredItemName = DirectCast(row.FindControl("lblRegisteredItem"), Label).Text
+                            claimdevice.RiskTypeCode = DirectCast(row.FindControl("HiddenRiskType"), HiddenField).Value
+
+                            enrolleddevice.Manufacturer = DirectCast(row.FindControl("lblManufacturer"), Label).Text
+                            enrolleddevice.Model = DirectCast(row.FindControl("lblModel"), Label).Text
+                            enrolleddevice.ImeiNumber = DirectCast(row.FindControl("lblImeiNo"), Label).Text
+                            enrolleddevice.SerialNumber = DirectCast(row.FindControl("lblSerialNo"), Label).Text
+                            enrolleddevice.RegisteredItemName = DirectCast(row.FindControl("lblRegisteredItem"), Label).Text
+                            enrolleddevice.RiskTypeCode = DirectCast(row.FindControl("HiddenRiskType"), HiddenField).Value
+
                             itemSelectionRequest.ClaimedDevice = claimdevice
+                            itemSelectionRequest.EnrolledDevice = enrolleddevice
+
                             Exit For
                         End If
                     End If
                 Next
+
+                If (String.IsNullOrWhiteSpace(claimdevice.Manufacturer)) Then
+                    MasterPage.MessageController.AddError(ElitaPlus.Common.ErrorCodes.GUI_MANUFACTURER_NAME_IS_MISSING_ERR, True)
+                    Exit Sub
+                End If
 
                 If Not itemSelectionRequest.ClaimedDevice Is Nothing Then
                     itemSelectionRequest.CompanyCode = deviceSubmitobj.CompanyCode
