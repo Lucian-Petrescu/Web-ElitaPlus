@@ -146,7 +146,7 @@
                             </td>
                             <td align="right" nowrap="noWrap">
                                 <asp:Label runat="server" ID="moInvoiceAmount" />
-                            </td nowrap="noWrap">
+                            </td>
                             <td>
                                 <asp:Label runat="server" ID="moInvoiceStatus" />
                             </td>

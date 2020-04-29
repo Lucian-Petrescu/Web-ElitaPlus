@@ -130,7 +130,7 @@
 			</TABLE>
 		</form>
 		<SCRIPT language="JavaScript" src="../Navigation/Scripts/ReportCeMainScripts.js"></SCRIPT>
-	<script type="text/javascript"">
+	<script type="text/javascript">
 
             
 	    $(document).ready(function(){

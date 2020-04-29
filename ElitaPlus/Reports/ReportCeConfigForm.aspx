@@ -53,7 +53,7 @@
                 &nbsp;<asp:DropDownList ID="moLargeDrop" runat="server">
                 </asp:DropDownList>
                 <input id="HiddenSaveChangesPromptResponse" type="hidden" name="HiddenSaveChangesPromptResponse"
-                    runat="server">
+                       runat="server"/>
             </td>
             
         </tr>

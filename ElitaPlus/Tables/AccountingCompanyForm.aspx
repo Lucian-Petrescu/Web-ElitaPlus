@@ -108,7 +108,7 @@
             </td>
         </tr>
     </table>
-    <input id="HiddenDeletePromptResponse" type="hidden" runat="server" designtimedragdrop="261">
+    <input id="HiddenDeletePromptResponse" type="hidden" runat="server" designtimedragdrop="261"/>
     <script type="text/javascript">
         if (document.getElementById("tdGrid")) {
             document.getElementById("tdGrid").style.height = parent.document.getElementById("Navigation_Content").clientHeight - 350;

@@ -23,7 +23,7 @@
         <table cellspacing="0" cellpadding="0" width="65%" border="0" class="formGrid" style="padding-left: 0px;">
             <tr>
                 <td nowrap="nowrap" align="right">
-                    <asp:Label ID="lblSelect" runat="server">SELECT</asp:Label>&nbsp;
+                    <asp:Label ID="lblSelect" runat="server" Text="SELECT"></asp:Label>&nbsp;
                     <asp:Label ID="LabelPaymentType" runat="server">PAYMENT_INSTRUMENT</asp:Label>:
                 </td>
                 <td align="left">
