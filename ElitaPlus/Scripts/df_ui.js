@@ -21,10 +21,12 @@
 })();
 
 window.addEventListener('dynamicFulfillmentWorkCompletedEvent', function (e) {    
-    if (document.getElementById('ctl00$BodyPlaceHolder$btnLegacyContinue') === null || document.getElementById('ctl00$BodyPlaceHolder$btnContinue') === null) {
+    if (document.getElementsByName('ctl00$BodyPlaceHolder$btnLegacyContinue') === null || document.getElementsByName('ctl00$BodyPlaceHolder$btnContinue') === null) {
         __doPostBack('', '');
     }
-    if (e.detail.isLegacy) {        
+    if (e.detail.isLegacy) {  
+        var hdnInput = document.getElementById('hdnInput');
+        $("#" + hdnInput.value).val(JSON.stringify(e.detail));
         __doPostBack('ctl00$BodyPlaceHolder$btnLegacyContinue', 'OnClick');
     }
     else {        

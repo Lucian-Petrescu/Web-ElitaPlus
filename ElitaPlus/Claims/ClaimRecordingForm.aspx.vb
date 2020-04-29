@@ -12,6 +12,8 @@ Imports Assurant.ElitaPlus.ElitaPlusWebApp.Certificates
 Imports Assurant.ElitaPlus.ElitaPlusWebApp.ClaimFulfillmentWebAppGatewayService
 Imports Assurant.ElitaPlus.ElitaPlusWebApp.ClaimRecordingService
 Imports Microsoft.Practices.ObjectBuilder2
+Imports Newtonsoft.Json
+Imports ClientEventPayLoad = Assurant.ElitaPlus.DataEntities.DFEventPayLoad
 
 Public Class ClaimRecordingForm
     Inherits ElitaPlusSearchPage
@@ -2136,7 +2138,7 @@ Public Class ClaimRecordingForm
                 dfControl.SubscriptionKey = wsResponse.SubscriptionKey
                 dfControl.CssUri = wsResponse.CssUri
                 dfControl.ScriptUri = wsResponse.ScriptUri
-                dfControl.ClaimNumber = wsResponse.ClaimNumber
+                dfControl.ClaimNumber = wsResponse.ClaimKey
                 phDynamicFulfillmentUI.Controls.Add(dfControl)
             End If
         End If
@@ -2918,7 +2920,7 @@ Public Class ClaimRecordingForm
 
                 Dim moServiceCenterCtrl As UserControlServiceCenterSelection = CType(e.Row.FindControl(GridLoServiceCenterCtrl), UserControlServiceCenterSelection)
                 moServiceCenterCtrl.Visible = True
-                
+
 
                 ServiceCenterSelectionHandler(moServiceCenterCtrl)
 
@@ -3108,7 +3110,6 @@ Public Class ClaimRecordingForm
     Protected Sub btnLegacyContinue_Click(sender As Object, e As EventArgs) Handles btnLegacyContinue.Click
         Dim wsRequest As DynamicFulfillmentRequest = New DynamicFulfillmentRequest()
         Dim wsPreviousResponse As DynamicFulfillmentResponse
-        Dim wsQuestionRequest As QuestionRequest
 
         If State.SubmitWsBaseClaimRecordingResponse.GetType() Is GetType(DynamicFulfillmentResponse) Then
             wsPreviousResponse = DirectCast(State.SubmitWsBaseClaimRecordingResponse, DynamicFulfillmentResponse)
@@ -3116,7 +3117,9 @@ Public Class ClaimRecordingForm
             Exit Sub
         End If
 
-        wsRequest.OptionCode = "AX"
+        Dim payLoad As ClientEventPayLoad = JsonConvert.DeserializeObject(Of ClientEventPayLoad)(hdnData.Value)
+
+        wsRequest.OptionCode = $"DynamicFulfillment#{payLoad.FulfillmentOption}"
         wsRequest.CaseNumber = wsPreviousResponse.CaseNumber
         wsRequest.CompanyCode = wsPreviousResponse.CompanyCode
         wsRequest.InteractionNumber = wsPreviousResponse.InteractionNumber
