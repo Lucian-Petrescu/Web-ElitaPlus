@@ -670,7 +670,7 @@ Public Class Codes
     Public Const SERVICE_TYPE__FILE_MANAGEMENT_ADMIN_SERVICE As String = "FILE_MANAGEMENT_ADMIN_SERVICE"
     Public Const SERVICE_TYPE_DF_API_URL As String = "DF_UI_API"
     Public Const SERVICE_TYPE__UTILTY_SERVICE As String = "UTILITY_SERVICE"
-    Public Const SERVICE_TYPE_GROUP_NAME As String = "InternalUsers"
+    Public Const SERVICE_TYPE_GROUP_NAME As String = "Services"
 
 
     'REQ-6230
