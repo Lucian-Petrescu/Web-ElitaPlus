@@ -1,6 +1,9 @@
 Imports System.IO.Compression
-
-
+Imports System.Net
+Imports System.Web.Routing
+Imports Microsoft.Owin.Security
+'Imports Microsoft.Owin.Security.Cookies
+Imports Microsoft.Owin.Security.OpenIdConnect
 
 Public Class [Global]
     Inherits System.Web.HttpApplication
@@ -32,8 +35,17 @@ Public Class [Global]
 
 #End Region
 
+    Public Function RemoteCertificateValidationCallback(ByVal sender As Object, ByVal certificate As System.Security.Cryptography.X509Certificates.X509Certificate, ByVal chain As System.Security.Cryptography.X509Certificates.X509Chain, ByVal sslPolicyErrors As System.Net.Security.SslPolicyErrors) As Boolean
+        Return True
+    End Function
+
     Sub Application_Start(ByVal sender As Object, ByVal e As EventArgs)
-        ' Fires when the application is started
+        ' Fires when the application is started        
+
+#If DEBUG Then
+        ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls Or SecurityProtocolType.Tls11 Or SecurityProtocolType.Tls12
+        System.Net.ServicePointManager.ServerCertificateValidationCallback = New System.Net.Security.RemoteCertificateValidationCallback(AddressOf RemoteCertificateValidationCallback)
+#End If
         'Set TimeZone for Application
         Assurant.Elita.ApplicationDateTime.ApplicationTimeZoneFunc = AddressOf GetTimeZoneInfo
     End Sub
@@ -75,13 +87,13 @@ Public Class [Global]
 
 
     Sub Session_OnStart(ByVal sender As Object, ByVal e As EventArgs)
-        'Dim cookie As HttpCookie = Me.Request.Cookies.Item(ELPWebConstants.ELITA_PLUS_AUTHENTICATION_COOKIE)
+
         Dim cookie As HttpCookie = Me.Request.Cookies.Item(ELPWebConstants.ELITA_PLUS_AUTHENTICATION_COOKIE & "-" & Session.SessionID)
         Dim connCookie As HttpCookie
         '   Dim connType As String = ELPWebConstants.CONNECTION_TYPE_DEFAULT
 
         If cookie Is Nothing Then
-            'cookie = New HttpCookie(ELPWebConstants.ELITA_PLUS_AUTHENTICATION_COOKIE)
+
             cookie = New HttpCookie(ELPWebConstants.ELITA_PLUS_AUTHENTICATION_COOKIE & "-" & Session.SessionID)
             cookie.Expires = DateTime.Now.AddDays(1.0)
             cookie.Value = "0"
@@ -258,7 +270,7 @@ Public Class [Global]
 
     Private Sub Global_AcquireRequestState(ByVal sender As Object, ByVal e As System.EventArgs) Handles MyBase.AcquireRequestState
         'here we are not allowing ajax nor asmx(web service) to be processed by this code
-        If Me.Request.Url.AbsolutePath.ToLower().IndexOf(".axd") < 0 AndAlso _
+        If Me.Request.Url.AbsolutePath.ToLower().IndexOf(".axd") < 0 AndAlso
             Me.Request.Url.AbsolutePath.ToLower().IndexOf(".asmx") < 0 Then
             If Me.Request.Url.AbsolutePath.ToLower().IndexOf("errorform.aspx") >= 0 Then
                 Dim cookie As HttpCookie = Me.Request.Cookies.Item(ELPWebConstants.ELITA_PLUS_ERROR_COOKIE & "-" & Session.SessionID)
@@ -276,15 +288,14 @@ Public Class [Global]
             '    System.Threading.Thread.CurrentThread.CurrentCulture = New System.Globalization.CultureInfo(cultureName)
             'End If
             Authentication.SetCulture()
-            If Me.Request.Url.AbsolutePath.ToLower().IndexOf("default.aspx") < 0 AndAlso _
-               Me.Request.Url.AbsolutePath.ToLower().IndexOf("logoutform.aspx") < 0 AndAlso _
+            If Me.Request.Url.AbsolutePath.ToLower().IndexOf("default.aspx") < 0 AndAlso
+               Me.Request.Url.AbsolutePath.ToLower().IndexOf("logoutform.aspx") < 0 AndAlso
                Session("AppInitialized") Is Nothing Then
 
                 If Me.Request.Url.AbsolutePath.ToLower().IndexOf("downloadreportdata.aspx") > 0 Then
                     Session("RedirectUrl") = Me.Request.Url.AbsoluteUri
                 End If
 
-                'Dim cookie As HttpCookie = Me.Response.Cookies.Item(ELPWebConstants.ELITA_PLUS_AUTHENTICATION_COOKIE)
                 Dim cookie As HttpCookie = Me.Response.Cookies.Item(ELPWebConstants.ELITA_PLUS_AUTHENTICATION_COOKIE & "-" & Session.SessionID)
 
                 If Not cookie Is Nothing AndAlso cookie.Value = "1" Then
@@ -314,8 +325,18 @@ Public Class [Global]
         End If
         AppConfig.Log(CType(logEx, Exception))
         If Not CType(System.Threading.Thread.CurrentPrincipal, Object).GetType Is GetType(ElitaPlusPrincipal) Then
-            ' The Principal has not been created yet
-            sMessage = "CONFIG VALUES CAN NOT BE OBTAINED "
+            If (EnvironmentContext.Current.Environment <> Environments.Development) Then ' For Non Local
+                'HttpContext.Current.GetOwinContext().Authentication.Challenge(New AuthenticationProperties With {
+                '    .RedirectUri = ELPWebConstants.APPLICATION_PATH & "/Navigation/MainPage.aspx"
+                '}, OpenIdConnectAuthenticationDefaults.AuthenticationType)
+                Response.ClearContent()
+                Response.Write("<html><head></head><body><script>parent.href = '" + Server.MapPath("~/Default.aspx") + "';</script></body></html>")
+
+
+            Else
+                ' The Principal has not been created yet
+                sMessage = "CONFIG VALUES CAN NOT BE OBTAINED "
+            End If
         ElseIf ElitaPlusIdentity.Current.FtpHostname = String.Empty Then
             sMessage = "DATABASE IS DOWN OR ELP_SERVERS RECORD NOT FOUND "
         ElseIf ElitaPlusIdentity.Current.ActiveUser Is Nothing Then

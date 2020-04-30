@@ -338,31 +338,53 @@ Public Class Authentication
         If privacyLevel = AppConfig.DB_PRIVACY_ADV Then
             isInLdap = IsLdapUserInGroup(Assurant.Elita.Configuration.ElitaConfig.Current.Security.DataProtectionGroup, networkId)
             If isInLdap Then
-                _PrivacyUserType =  AppConfig.DataProtectionPrivacyLevel.Privacy_DataProtection
+                _PrivacyUserType = AppConfig.DataProtectionPrivacyLevel.Privacy_DataProtection
             Else
                 isInLdap = IsLdapUserInGroup(LDAP_EUROPE_GROUP, networkId)
                 If isInLdap Then
-                    _PrivacyUserType =  AppConfig.DataProtectionPrivacyLevel.Privacy_Basic
+                    _PrivacyUserType = AppConfig.DataProtectionPrivacyLevel.Privacy_Basic
                 Else
-                    _PrivacyUserType =  AppConfig.DataProtectionPrivacyLevel.Privacy_General
+                    _PrivacyUserType = AppConfig.DataProtectionPrivacyLevel.Privacy_General
                 End If
             End If
         ElseIf privacyLevel = AppConfig.DB_PRIVACY_BASIC Then
             ' Verify if the user belongs to Europe group in LDAP 
             isInLdap = IsLdapUserInGroup(LDAP_EUROPE_GROUP, networkId)
             If isInLdap Then
-                _PrivacyUserType =  AppConfig.DataProtectionPrivacyLevel.Privacy_Basic
+                _PrivacyUserType = AppConfig.DataProtectionPrivacyLevel.Privacy_Basic
             Else
-                _PrivacyUserType =  AppConfig.DataProtectionPrivacyLevel.Privacy_General
+                _PrivacyUserType = AppConfig.DataProtectionPrivacyLevel.Privacy_General
 
             End If
         Else
-            _PrivacyUserType =  AppConfig.DataProtectionPrivacyLevel.Privacy_General
+            _PrivacyUserType = AppConfig.DataProtectionPrivacyLevel.Privacy_General
         End If
     End Function
+
+    Private Function getDataProtectionPrivacyLevel(ByVal privacyLevel As String, ByVal userPrivacyGroups As List(Of String)) As AppConfig.DataProtectionPrivacyLevel
+        Dim isInDataProtectionGroup As Boolean = False
+        Dim isInSecureGroup As Boolean = False
+
+        isInSecureGroup = userPrivacyGroups.Contains(Elita.Configuration.ElitaConfig.Current.Security.SecureGroup)
+        isInDataProtectionGroup = userPrivacyGroups.Contains(Elita.Configuration.ElitaConfig.Current.Security.DataProtectionGroup)
+
+        If privacyLevel = AppConfig.DB_PRIVACY_ADV Then
+            If isInDataProtectionGroup Then
+                Return AppConfig.DataProtectionPrivacyLevel.Privacy_DataProtection
+            ElseIf isInSecureGroup Then
+                Return AppConfig.DataProtectionPrivacyLevel.Privacy_Basic
+            End If
+        ElseIf privacyLevel = AppConfig.DB_PRIVACY_BASIC And isInSecureGroup Then
+            Return AppConfig.DataProtectionPrivacyLevel.Privacy_Basic
+        End If
+
+        Return AppConfig.DataProtectionPrivacyLevel.Privacy_General
+    End Function
+
     Public Function CreateCorePrincipal(ByVal networkID As String, ByVal connType As String, ByVal machineDomain As String,
                                         Optional ByVal webServiceName As String = Nothing,
-                                        Optional ByVal webServiceFunctionName As String = Nothing) As ElitaPlusPrincipal
+                                        Optional ByVal webServiceFunctionName As String = Nothing,
+                                        Optional ByVal userPrivacyGroups As List(Of String) = Nothing) As ElitaPlusPrincipal
         Dim sHostname As String = ApplicationHost.ToUpper
         'Dim appUserSuffix As String = String.Empty
         Dim oServers As Servers
@@ -405,6 +427,31 @@ Public Class Authentication
         ' First Access to DB that is not for Log
         oServers = New Servers(connType, machineDomain, webServiceName, webServiceFunctionName)
 
+        ' Privacy groups
+        If Not userPrivacyGroups Is Nothing Then
+            ' We already have the user privacy groups
+            _PrivacyUserType = getDataProtectionPrivacyLevel(oServers.PrivacyLevelXCD, userPrivacyGroups) 'PrivacyLeveXCD property will be tri-state 
+            'Trace userprivacygroup issue
+            Dim logEntry As String
+            If (Not principal.ActiveUser Is Nothing) Then
+                logEntry = " Authentication Class: _privaceygroup is not nothing; UserID=" & principal.ActiveUser.NetworkId & "; PrivacyUserType=" & _PrivacyUserType & "; Time=" & Now.ToString
+            Else
+                logEntry = " Authentication Class: _privaceygroup is not nothing; UserID= & principal.ActiveUser is still nothing & ; PrivacyUserType=" & _PrivacyUserType & "; Time=" & Now.ToString
+            End If
+
+            AppConfig.DebugLog(logEntry)
+        Else
+            ' looking for the user privacy groups using LDAP
+            IsUserPrivacyGroup(networkID, oServers.PrivacyLevelXCD) 'PrivacyLeveXCD property will be tri-state 
+            'Trace userprivacygroup issue
+            Dim logEntry As String
+            If (Not principal.ActiveUser Is Nothing) Then
+                logEntry = " Authentication Class: _privaceygroup is nothing and calling LDAP; UserID=" & principal.ActiveUser.NetworkId & "; PrivacyUserType=" & _PrivacyUserType & "; Time=" & Now.ToString
+            Else
+                logEntry = " Authentication Class: _privaceygroup is nothing and calling LDAP; UserID= & principal.ActiveUser is still nothing & ; PrivacyUserType=" & _PrivacyUserType & "; Time=" & Now.ToString
+            End If
+            AppConfig.DebugLog(logEntry)
+        End If
 
         With identity
             .FtpHostname = oServers.FtpHostname
@@ -415,7 +462,6 @@ Public Class Authentication
             .CeDrViewer = AppConfig.CE_NO_DR
             .FelitaFtpHostname = oServers.FelitaFtpHostname
             .LdapIp = oServers.LdapIp
-            IsUserPrivacyGroup(networkID, oServers.PrivacyLevelXCD) 'PrivacyLeveXCD property will be tri-state 
             .AppIV = AppConfig.DataBase.AppIV()
             .AppUserId = AppConfig.DataBase.UserId(_PrivacyUserType)
             .AppPassword = AppConfig.DataBase.Password(_PrivacyUserType)
@@ -429,11 +475,19 @@ Public Class Authentication
             .DBPrivacyUserType = oServers.PrivacyLevelXCD
             .CreateUser(networkID)
         End With
-
+ 
         If bIsDebugLogin = True Then
+            Dim trace As String
+            If (Not userPrivacyGroups Is Nothing) Then
+                trace = String.Join(",", userPrivacyGroups.ToArray())
+            End If
+
             AppConfig.Debug("CompanyGroup=" & Authentication.CompanyGroupCode &
-               "@ Language =" & GuidControl.GuidToHexString(Authentication.LangId))
+               "@ Language =" & GuidControl.GuidToHexString(Authentication.LangId) &
+               "@Groups" & trace)
         End If
+
+
 
         principal.WebServiceOffLineMessage = oServers.WebServiceOffLineMessage
         principal.WebServiceFunctionOffLineMessage = oServers.WebServiceFunctionOffLineMessage
@@ -443,6 +497,7 @@ Public Class Authentication
 
 
     End Function
+
     Public Function CreatePrincipalForServices(ByVal networkID As String, ByVal connTypeNTSvc As String, ByVal machineDomainSvc As String) As ElitaPlusPrincipal
 
         Dim connType As String
@@ -495,6 +550,16 @@ Public Class Authentication
         End If
 
         Return CreateCorePrincipal(networkID, connType, machineDomain, webServiceName, webServiceFunctionName)
+    End Function
+
+    Public Function CreatePrincipalBasedOnExternalGroups(ByVal networkID As String,
+                                            ByVal userPrivacyGroups As List(Of String)) As ElitaPlusPrincipal
+        Dim sHostname As String = ApplicationHost.ToUpper
+
+        Dim connType As String = GetConnectionType()
+        Dim machineDomain As String = GetMachineDomain()
+
+        Return CreateCorePrincipal(networkID, connType, machineDomain, Nothing, Nothing, userPrivacyGroups)
     End Function
 
     Public Function GetHubRegion(ByVal hubRegion As String, Optional ByVal hostName As String = Nothing) As String

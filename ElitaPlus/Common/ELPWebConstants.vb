@@ -18,6 +18,7 @@ Public Class ELPWebConstants
     Public Const UI_MULTIPLE_USERS_SINGLE_NETWORKID_ERR_MSG As String = "UI_MULTIPLE_USERS_SINGLE_NETWORKID"
     Public Const UI_INVALID_LOGIN_ERR_MSG As String = "UI_INVALID_LOGIN"
     Public Const UI_MULTIPLE_USERS_SINGLE_MACHINE_ERR_MSG As String = "UI_MULTIPLE_USERS_SINGLE_MACHINE"
+    Public Const UI_INVALID_LOGIN_RIGHTS_ERR_MSG As String = "UI_INVALID_RIGHTS_LOGIN"
     Public Const OLDCOMPANYID As String = "OldCompanyId"
     Public Const NONAVMESSAGE As String = "NO_NAV_MESSAGE"
     Public Const MENUSTATE As String = "MenuState"
@@ -35,6 +36,7 @@ Public Class ELPWebConstants
     Public Const ELITA_PLUS_CONN_COOKIE As String = "ELITA_PLUS_CONN_COOKIE"
     Public Const ELITA_PLUS_ERROR_COOKIE As String = "ELITA_PLUS_ERROR_COOKIE"
     Public Const SETTING_SCHEMA_PATH As String = "../schemas/"
+    Public Const SESSION_LOGIN_ERROR_MESSAGE = "SESSION_LOGIN_ERROR_MESSAGE"
 
 #End Region
 

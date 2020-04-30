@@ -19,6 +19,7 @@ Public NotInheritable Class ElitaPlusPrincipal
     Private _unitCodesSurrogated As String()
     Private _webServiceOffLineMessage As String
     Private _webServiceFunctionOffLineMessage As String
+    Private _idToken As String
 
 
 #End Region
@@ -80,6 +81,14 @@ Public NotInheritable Class ElitaPlusPrincipal
         End Get
         Set(ByVal value As String)
             _webServiceFunctionOffLineMessage = value
+        End Set
+    End Property
+    Public Property IdToken() As String
+        Get
+            Return Me._idToken
+        End Get
+        Set(ByVal value As String)
+            _idToken = value
         End Set
     End Property
 
