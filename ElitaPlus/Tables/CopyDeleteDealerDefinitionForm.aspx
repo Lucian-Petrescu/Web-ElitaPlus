@@ -10,7 +10,7 @@
 		<meta content="JavaScript" name="vs_defaultClientScript">
 		<meta content="http://schemas.microsoft.com/intellisense/ie5" name="vs_targetSchema">
 		<LINK href="../Styles.css" type="text/css" rel="STYLESHEET">
-		<SCRIPT language="JavaScript" src="../Navigation/Scripts/GlobalHeader.js"></SCRIPT>
+		<script language="JavaScript" src="../Navigation/Scripts/GlobalHeader.js"></script>
 		<script language="javascript">
 	
 	function LoadMessage()
