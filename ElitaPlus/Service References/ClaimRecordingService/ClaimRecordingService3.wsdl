@@ -819,6 +819,7 @@
               <xs:element name="CssUri" nillable="true" type="xs:string" />
               <xs:element name="ScriptUri" nillable="true" type="xs:string" />
               <xs:element name="IsLoadError" type="xs:boolean" />
+              <xs:element name="ClaimKey" nillable="true" type="xs:string" />
             </xs:sequence>
           </xs:extension>
         </xs:complexContent>

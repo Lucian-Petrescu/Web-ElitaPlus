@@ -12,7 +12,7 @@ Option Explicit On
 
 
 Partial Public Class ContractForm
-    
+
     '''<summary>
     '''LabelStartDate control.
     '''</summary>
@@ -21,7 +21,7 @@ Partial Public Class ContractForm
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
     Protected WithEvents LabelStartDate As Global.System.Web.UI.WebControls.Label
-    
+
     '''<summary>
     '''TextboxStartDate_WRITE control.
     '''</summary>
@@ -30,7 +30,7 @@ Partial Public Class ContractForm
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
     Protected WithEvents TextboxStartDate_WRITE As Global.System.Web.UI.WebControls.TextBox
-    
+
     '''<summary>
     '''ImageButtonStartDate control.
     '''</summary>
@@ -39,7 +39,7 @@ Partial Public Class ContractForm
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
     Protected WithEvents ImageButtonStartDate As Global.System.Web.UI.WebControls.ImageButton
-    
+
     '''<summary>
     '''LabelEndDate control.
     '''</summary>
@@ -48,7 +48,7 @@ Partial Public Class ContractForm
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
     Protected WithEvents LabelEndDate As Global.System.Web.UI.WebControls.Label
-    
+
     '''<summary>
     '''TextboxEndDate_WRITE control.
     '''</summary>
@@ -57,7 +57,7 @@ Partial Public Class ContractForm
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
     Protected WithEvents TextboxEndDate_WRITE As Global.System.Web.UI.WebControls.TextBox
-    
+
     '''<summary>
     '''ImageButtonEndDate control.
     '''</summary>
@@ -66,7 +66,7 @@ Partial Public Class ContractForm
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
     Protected WithEvents ImageButtonEndDate As Global.System.Web.UI.WebControls.ImageButton
-    
+
     '''<summary>
     '''LabelContractType control.
     '''</summary>
@@ -75,7 +75,7 @@ Partial Public Class ContractForm
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
     Protected WithEvents LabelContractType As Global.System.Web.UI.WebControls.Label
-    
+
     '''<summary>
     '''cboContractType control.
     '''</summary>
@@ -84,7 +84,7 @@ Partial Public Class ContractForm
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
     Protected WithEvents cboContractType As Global.System.Web.UI.WebControls.DropDownList
-    
+
     '''<summary>
     '''LabelPolicyType control.
     '''</summary>
@@ -93,7 +93,7 @@ Partial Public Class ContractForm
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
     Protected WithEvents LabelPolicyType As Global.System.Web.UI.WebControls.Label
-    
+
     '''<summary>
     '''cboPolicyType control.
     '''</summary>
@@ -102,7 +102,7 @@ Partial Public Class ContractForm
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
     Protected WithEvents cboPolicyType As Global.System.Web.UI.WebControls.DropDownList
-    
+
     '''<summary>
     '''LabelCollectivePolicyGeneration control.
     '''</summary>
@@ -111,7 +111,7 @@ Partial Public Class ContractForm
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
     Protected WithEvents LabelCollectivePolicyGeneration As Global.System.Web.UI.WebControls.Label
-    
+
     '''<summary>
     '''cboCollectivePolicyGeneration control.
     '''</summary>
@@ -120,7 +120,7 @@ Partial Public Class ContractForm
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
     Protected WithEvents cboCollectivePolicyGeneration As Global.System.Web.UI.WebControls.DropDownList
-    
+
     '''<summary>
     '''LabelLineOfBusiness control.
     '''</summary>
@@ -129,7 +129,7 @@ Partial Public Class ContractForm
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
     Protected WithEvents LabelLineOfBusiness As Global.System.Web.UI.WebControls.Label
-    
+
     '''<summary>
     '''cboLineOfBusiness control.
     '''</summary>
@@ -138,7 +138,7 @@ Partial Public Class ContractForm
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
     Protected WithEvents cboLineOfBusiness As Global.System.Web.UI.WebControls.DropDownList
-    
+
     '''<summary>
     '''LabelREPLACEMENT_POLICY control.
     '''</summary>
@@ -147,7 +147,7 @@ Partial Public Class ContractForm
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
     Protected WithEvents LabelREPLACEMENT_POLICY As Global.System.Web.UI.WebControls.Label
-    
+
     '''<summary>
     '''cboReplacementPolicy control.
     '''</summary>
@@ -156,7 +156,7 @@ Partial Public Class ContractForm
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
     Protected WithEvents cboReplacementPolicy As Global.System.Web.UI.WebControls.DropDownList
-    
+
     '''<summary>
     '''LabelPolicy control.
     '''</summary>
@@ -165,7 +165,7 @@ Partial Public Class ContractForm
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
     Protected WithEvents LabelPolicy As Global.System.Web.UI.WebControls.Label
-    
+
     '''<summary>
     '''TextboxPolicyNumber control.
     '''</summary>
@@ -174,7 +174,7 @@ Partial Public Class ContractForm
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
     Protected WithEvents TextboxPolicyNumber As Global.System.Web.UI.WebControls.TextBox
-    
+
     '''<summary>
     '''lblReplacementPolicyClaimCount control.
     '''</summary>
@@ -183,7 +183,7 @@ Partial Public Class ContractForm
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
     Protected WithEvents lblReplacementPolicyClaimCount As Global.System.Web.UI.WebControls.Label
-    
+
     '''<summary>
     '''txtReplacementPolicyCliamCount control.
     '''</summary>
@@ -192,7 +192,7 @@ Partial Public Class ContractForm
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
     Protected WithEvents txtReplacementPolicyCliamCount As Global.System.Web.UI.WebControls.TextBox
-    
+
     '''<summary>
     '''LabelLayout control.
     '''</summary>
@@ -201,7 +201,7 @@ Partial Public Class ContractForm
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
     Protected WithEvents LabelLayout As Global.System.Web.UI.WebControls.Label
-    
+
     '''<summary>
     '''TextboxLayout control.
     '''</summary>
@@ -210,7 +210,7 @@ Partial Public Class ContractForm
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
     Protected WithEvents TextboxLayout As Global.System.Web.UI.WebControls.TextBox
-    
+
     '''<summary>
     '''LabelCancellationReason control.
     '''</summary>
@@ -219,7 +219,7 @@ Partial Public Class ContractForm
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
     Protected WithEvents LabelCancellationReason As Global.System.Web.UI.WebControls.Label
-    
+
     '''<summary>
     '''cboCancellationReason control.
     '''</summary>
@@ -228,7 +228,7 @@ Partial Public Class ContractForm
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
     Protected WithEvents cboCancellationReason As Global.System.Web.UI.WebControls.DropDownList
-    
+
     '''<summary>
     '''LabelFullRefundDays control.
     '''</summary>
@@ -237,7 +237,7 @@ Partial Public Class ContractForm
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
     Protected WithEvents LabelFullRefundDays As Global.System.Web.UI.WebControls.Label
-    
+
     '''<summary>
     '''TextboxFullRefundDays control.
     '''</summary>
@@ -246,7 +246,7 @@ Partial Public Class ContractForm
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
     Protected WithEvents TextboxFullRefundDays As Global.System.Web.UI.WebControls.TextBox
-    
+
     '''<summary>
     '''LabelAcctBusinessUnit control.
     '''</summary>
@@ -255,7 +255,7 @@ Partial Public Class ContractForm
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
     Protected WithEvents LabelAcctBusinessUnit As Global.System.Web.UI.WebControls.Label
-    
+
     '''<summary>
     '''cboAcctBusinessUnit control.
     '''</summary>
@@ -264,7 +264,7 @@ Partial Public Class ContractForm
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
     Protected WithEvents cboAcctBusinessUnit As Global.System.Web.UI.WebControls.DropDownList
-    
+
     '''<summary>
     '''lblAuthorizedAmountMaxUpdates control.
     '''</summary>
@@ -273,7 +273,7 @@ Partial Public Class ContractForm
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
     Protected WithEvents lblAuthorizedAmountMaxUpdates As Global.System.Web.UI.WebControls.Label
-    
+
     '''<summary>
     '''txtAuthorizedAmountMaxUpdates control.
     '''</summary>
@@ -282,7 +282,7 @@ Partial Public Class ContractForm
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
     Protected WithEvents txtAuthorizedAmountMaxUpdates As Global.System.Web.UI.WebControls.TextBox
-    
+
     '''<summary>
     '''lblDaysToReportClaim control.
     '''</summary>
@@ -291,7 +291,7 @@ Partial Public Class ContractForm
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
     Protected WithEvents lblDaysToReportClaim As Global.System.Web.UI.WebControls.Label
-    
+
     '''<summary>
     '''txtDaysToReportClaim control.
     '''</summary>
@@ -300,7 +300,7 @@ Partial Public Class ContractForm
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
     Protected WithEvents txtDaysToReportClaim As Global.System.Web.UI.WebControls.TextBox
-    
+
     '''<summary>
     '''LabelNumOfClaims control.
     '''</summary>
@@ -309,7 +309,7 @@ Partial Public Class ContractForm
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
     Protected WithEvents LabelNumOfClaims As Global.System.Web.UI.WebControls.Label
-    
+
     '''<summary>
     '''txtNumOfClaims control.
     '''</summary>
@@ -318,7 +318,7 @@ Partial Public Class ContractForm
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
     Protected WithEvents txtNumOfClaims As Global.System.Web.UI.WebControls.TextBox
-    
+
     '''<summary>
     '''LabelPenaltyPct control.
     '''</summary>
@@ -327,7 +327,7 @@ Partial Public Class ContractForm
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
     Protected WithEvents LabelPenaltyPct As Global.System.Web.UI.WebControls.Label
-    
+
     '''<summary>
     '''txtPenaltyPct control.
     '''</summary>
@@ -336,7 +336,7 @@ Partial Public Class ContractForm
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
     Protected WithEvents txtPenaltyPct As Global.System.Web.UI.WebControls.TextBox
-    
+
     '''<summary>
     '''LabelNumOfRepairClaims control.
     '''</summary>
@@ -345,7 +345,7 @@ Partial Public Class ContractForm
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
     Protected WithEvents LabelNumOfRepairClaims As Global.System.Web.UI.WebControls.Label
-    
+
     '''<summary>
     '''txtNumOfRepairClaims control.
     '''</summary>
@@ -354,7 +354,7 @@ Partial Public Class ContractForm
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
     Protected WithEvents txtNumOfRepairClaims As Global.System.Web.UI.WebControls.TextBox
-    
+
     '''<summary>
     '''lblDaysToReactivate control.
     '''</summary>
@@ -363,7 +363,7 @@ Partial Public Class ContractForm
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
     Protected WithEvents lblDaysToReactivate As Global.System.Web.UI.WebControls.Label
-    
+
     '''<summary>
     '''txtbxDaysToReactivate control.
     '''</summary>
@@ -372,7 +372,7 @@ Partial Public Class ContractForm
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
     Protected WithEvents txtbxDaysToReactivate As Global.System.Web.UI.WebControls.TextBox
-    
+
     '''<summary>
     '''LabelNumOfReplClaims control.
     '''</summary>
@@ -381,7 +381,7 @@ Partial Public Class ContractForm
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
     Protected WithEvents LabelNumOfReplClaims As Global.System.Web.UI.WebControls.Label
-    
+
     '''<summary>
     '''txtNumOfReplClaims control.
     '''</summary>
@@ -390,7 +390,7 @@ Partial Public Class ContractForm
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
     Protected WithEvents txtNumOfReplClaims As Global.System.Web.UI.WebControls.TextBox
-    
+
     '''<summary>
     '''LabelReplacementBasedOn control.
     '''</summary>
@@ -399,7 +399,7 @@ Partial Public Class ContractForm
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
     Protected WithEvents LabelReplacementBasedOn As Global.System.Web.UI.WebControls.Label
-    
+
     '''<summary>
     '''cboReplacementBasedOn control.
     '''</summary>
@@ -408,7 +408,7 @@ Partial Public Class ContractForm
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
     Protected WithEvents cboReplacementBasedOn As Global.System.Web.UI.WebControls.DropDownList
-    
+
     '''<summary>
     '''LabelCurrency control.
     '''</summary>
@@ -417,7 +417,7 @@ Partial Public Class ContractForm
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
     Protected WithEvents LabelCurrency As Global.System.Web.UI.WebControls.Label
-    
+
     '''<summary>
     '''cboCurrency control.
     '''</summary>
@@ -426,7 +426,7 @@ Partial Public Class ContractForm
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
     Protected WithEvents cboCurrency As Global.System.Web.UI.WebControls.DropDownList
-    
+
     '''<summary>
     '''LabelCovDeductible control.
     '''</summary>
@@ -435,7 +435,7 @@ Partial Public Class ContractForm
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
     Protected WithEvents LabelCovDeductible As Global.System.Web.UI.WebControls.Label
-    
+
     '''<summary>
     '''cboCovDeductible control.
     '''</summary>
@@ -444,7 +444,7 @@ Partial Public Class ContractForm
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
     Protected WithEvents cboCovDeductible As Global.System.Web.UI.WebControls.DropDownList
-    
+
     '''<summary>
     '''LabelRepairDiscountPct control.
     '''</summary>
@@ -453,7 +453,7 @@ Partial Public Class ContractForm
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
     Protected WithEvents LabelRepairDiscountPct As Global.System.Web.UI.WebControls.Label
-    
+
     '''<summary>
     '''TextboxRepairDiscountPct control.
     '''</summary>
@@ -462,7 +462,7 @@ Partial Public Class ContractForm
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
     Protected WithEvents TextboxRepairDiscountPct As Global.System.Web.UI.WebControls.TextBox
-    
+
     '''<summary>
     '''LabelDeductibleBasedOn control.
     '''</summary>
@@ -471,7 +471,7 @@ Partial Public Class ContractForm
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
     Protected WithEvents LabelDeductibleBasedOn As Global.System.Web.UI.WebControls.Label
-    
+
     '''<summary>
     '''cboDeductibleBasedOn control.
     '''</summary>
@@ -480,7 +480,7 @@ Partial Public Class ContractForm
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
     Protected WithEvents cboDeductibleBasedOn As Global.System.Web.UI.WebControls.DropDownList
-    
+
     '''<summary>
     '''LabelReplacementDiscountPrc control.
     '''</summary>
@@ -489,7 +489,7 @@ Partial Public Class ContractForm
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
     Protected WithEvents LabelReplacementDiscountPrc As Global.System.Web.UI.WebControls.Label
-    
+
     '''<summary>
     '''TextboxReplacementDiscountPct control.
     '''</summary>
@@ -498,7 +498,7 @@ Partial Public Class ContractForm
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
     Protected WithEvents TextboxReplacementDiscountPct As Global.System.Web.UI.WebControls.TextBox
-    
+
     '''<summary>
     '''LabelDeductible control.
     '''</summary>
@@ -507,7 +507,7 @@ Partial Public Class ContractForm
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
     Protected WithEvents LabelDeductible As Global.System.Web.UI.WebControls.Label
-    
+
     '''<summary>
     '''TextboxDeductible control.
     '''</summary>
@@ -516,7 +516,7 @@ Partial Public Class ContractForm
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
     Protected WithEvents TextboxDeductible As Global.System.Web.UI.WebControls.TextBox
-    
+
     '''<summary>
     '''LabelCURRENCY_OF_COVERAGES control.
     '''</summary>
@@ -525,7 +525,7 @@ Partial Public Class ContractForm
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
     Protected WithEvents LabelCURRENCY_OF_COVERAGES As Global.System.Web.UI.WebControls.Label
-    
+
     '''<summary>
     '''cboCURRENCY_OF_COVERAGES control.
     '''</summary>
@@ -534,7 +534,7 @@ Partial Public Class ContractForm
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
     Protected WithEvents cboCURRENCY_OF_COVERAGES As Global.System.Web.UI.WebControls.DropDownList
-    
+
     '''<summary>
     '''LabelDeductiblePercent control.
     '''</summary>
@@ -543,7 +543,7 @@ Partial Public Class ContractForm
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
     Protected WithEvents LabelDeductiblePercent As Global.System.Web.UI.WebControls.Label
-    
+
     '''<summary>
     '''TextboxDeductiblePercent control.
     '''</summary>
@@ -552,7 +552,7 @@ Partial Public Class ContractForm
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
     Protected WithEvents TextboxDeductiblePercent As Global.System.Web.UI.WebControls.TextBox
-    
+
     '''<summary>
     '''Label_CURRENCY_CONVERSION control.
     '''</summary>
@@ -561,7 +561,7 @@ Partial Public Class ContractForm
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
     Protected WithEvents Label_CURRENCY_CONVERSION As Global.System.Web.UI.WebControls.Label
-    
+
     '''<summary>
     '''cboCURRENCY_CONVERSION control.
     '''</summary>
@@ -570,7 +570,7 @@ Partial Public Class ContractForm
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
     Protected WithEvents cboCURRENCY_CONVERSION As Global.System.Web.UI.WebControls.DropDownList
-    
+
     '''<summary>
     '''LabelDeductibleByMfg control.
     '''</summary>
@@ -579,7 +579,7 @@ Partial Public Class ContractForm
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
     Protected WithEvents LabelDeductibleByMfg As Global.System.Web.UI.WebControls.Label
-    
+
     '''<summary>
     '''cboDeductible_By_Manufacturer control.
     '''</summary>
@@ -588,7 +588,7 @@ Partial Public Class ContractForm
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
     Protected WithEvents cboDeductible_By_Manufacturer As Global.System.Web.UI.WebControls.DropDownList
-    
+
     '''<summary>
     '''LabelEditModel control.
     '''</summary>
@@ -597,7 +597,7 @@ Partial Public Class ContractForm
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
     Protected WithEvents LabelEditModel As Global.System.Web.UI.WebControls.Label
-    
+
     '''<summary>
     '''cboEditModel control.
     '''</summary>
@@ -606,7 +606,7 @@ Partial Public Class ContractForm
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
     Protected WithEvents cboEditModel As Global.System.Web.UI.WebControls.DropDownList
-    
+
     '''<summary>
     '''LabelMinReplCost control.
     '''</summary>
@@ -615,7 +615,7 @@ Partial Public Class ContractForm
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
     Protected WithEvents LabelMinReplCost As Global.System.Web.UI.WebControls.Label
-    
+
     '''<summary>
     '''TextboxMinRepCost control.
     '''</summary>
@@ -624,7 +624,7 @@ Partial Public Class ContractForm
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
     Protected WithEvents TextboxMinRepCost As Global.System.Web.UI.WebControls.TextBox
-    
+
     '''<summary>
     '''LabelAutoMFG control.
     '''</summary>
@@ -633,7 +633,7 @@ Partial Public Class ContractForm
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
     Protected WithEvents LabelAutoMFG As Global.System.Web.UI.WebControls.Label
-    
+
     '''<summary>
     '''cboAutoMFG control.
     '''</summary>
@@ -642,7 +642,7 @@ Partial Public Class ContractForm
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
     Protected WithEvents cboAutoMFG As Global.System.Web.UI.WebControls.DropDownList
-    
+
     '''<summary>
     '''LabelWaitingPeriod control.
     '''</summary>
@@ -651,7 +651,7 @@ Partial Public Class ContractForm
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
     Protected WithEvents LabelWaitingPeriod As Global.System.Web.UI.WebControls.Label
-    
+
     '''<summary>
     '''TextboxWaitingPeriod control.
     '''</summary>
@@ -660,7 +660,7 @@ Partial Public Class ContractForm
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
     Protected WithEvents TextboxWaitingPeriod As Global.System.Web.UI.WebControls.TextBox
-    
+
     '''<summary>
     '''LabelFixedEscDurationFlag control.
     '''</summary>
@@ -669,7 +669,7 @@ Partial Public Class ContractForm
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
     Protected WithEvents LabelFixedEscDurationFlag As Global.System.Web.UI.WebControls.Label
-    
+
     '''<summary>
     '''cboFixedEscDurationFlag control.
     '''</summary>
@@ -678,7 +678,7 @@ Partial Public Class ContractForm
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
     Protected WithEvents cboFixedEscDurationFlag As Global.System.Web.UI.WebControls.DropDownList
-    
+
     '''<summary>
     '''LabelApplyWaitingPeriod control.
     '''</summary>
@@ -687,7 +687,7 @@ Partial Public Class ContractForm
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
     Protected WithEvents LabelApplyWaitingPeriod As Global.System.Web.UI.WebControls.Label
-    
+
     '''<summary>
     '''cboIgnoreWaitingPeriodWhen_WSD_Equal_PSD control.
     '''</summary>
@@ -696,7 +696,7 @@ Partial Public Class ContractForm
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
     Protected WithEvents cboIgnoreWaitingPeriodWhen_WSD_Equal_PSD As Global.System.Web.UI.WebControls.DropDownList
-    
+
     '''<summary>
     '''LabelWarrantyMaxDelay control.
     '''</summary>
@@ -705,7 +705,7 @@ Partial Public Class ContractForm
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
     Protected WithEvents LabelWarrantyMaxDelay As Global.System.Web.UI.WebControls.Label
-    
+
     '''<summary>
     '''TextboxWarrantyMaxDelay control.
     '''</summary>
@@ -714,7 +714,7 @@ Partial Public Class ContractForm
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
     Protected WithEvents TextboxWarrantyMaxDelay As Global.System.Web.UI.WebControls.TextBox
-    
+
     '''<summary>
     '''LabelDealerMarkup control.
     '''</summary>
@@ -723,7 +723,7 @@ Partial Public Class ContractForm
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
     Protected WithEvents LabelDealerMarkup As Global.System.Web.UI.WebControls.Label
-    
+
     '''<summary>
     '''cboDealerMarkup_WRITE control.
     '''</summary>
@@ -732,7 +732,7 @@ Partial Public Class ContractForm
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
     Protected WithEvents cboDealerMarkup_WRITE As Global.System.Web.UI.WebControls.DropDownList
-    
+
     '''<summary>
     '''LabelRemainingMFGDays control.
     '''</summary>
@@ -741,7 +741,7 @@ Partial Public Class ContractForm
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
     Protected WithEvents LabelRemainingMFGDays As Global.System.Web.UI.WebControls.Label
-    
+
     '''<summary>
     '''TextBoxRemainingMFGDays control.
     '''</summary>
@@ -750,7 +750,7 @@ Partial Public Class ContractForm
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
     Protected WithEvents TextBoxRemainingMFGDays As Global.System.Web.UI.WebControls.TextBox
-    
+
     '''<summary>
     '''LabelRestrictMarkup_WRITE control.
     '''</summary>
@@ -759,7 +759,7 @@ Partial Public Class ContractForm
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
     Protected WithEvents LabelRestrictMarkup_WRITE As Global.System.Web.UI.WebControls.Label
-    
+
     '''<summary>
     '''cboRestrictMarkup_WRITE control.
     '''</summary>
@@ -768,7 +768,7 @@ Partial Public Class ContractForm
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
     Protected WithEvents cboRestrictMarkup_WRITE As Global.System.Web.UI.WebControls.DropDownList
-    
+
     '''<summary>
     '''LabelFundingSource control.
     '''</summary>
@@ -777,7 +777,7 @@ Partial Public Class ContractForm
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
     Protected WithEvents LabelFundingSource As Global.System.Web.UI.WebControls.Label
-    
+
     '''<summary>
     '''cboFundingSource control.
     '''</summary>
@@ -786,7 +786,7 @@ Partial Public Class ContractForm
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
     Protected WithEvents cboFundingSource As Global.System.Web.UI.WebControls.DropDownList
-    
+
     '''<summary>
     '''lblAllowCoverageMarkupDistribution control.
     '''</summary>
@@ -795,7 +795,7 @@ Partial Public Class ContractForm
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
     Protected WithEvents lblAllowCoverageMarkupDistribution As Global.System.Web.UI.WebControls.Label
-    
+
     '''<summary>
     '''ddlAllowCoverageMarkupDistribution control.
     '''</summary>
@@ -804,7 +804,7 @@ Partial Public Class ContractForm
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
     Protected WithEvents ddlAllowCoverageMarkupDistribution As Global.System.Web.UI.WebControls.DropDownList
-    
+
     '''<summary>
     '''LabelClaimControl control.
     '''</summary>
@@ -813,7 +813,7 @@ Partial Public Class ContractForm
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
     Protected WithEvents LabelClaimControl As Global.System.Web.UI.WebControls.Label
-    
+
     '''<summary>
     '''cboClaimControlID control.
     '''</summary>
@@ -822,7 +822,7 @@ Partial Public Class ContractForm
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
     Protected WithEvents cboClaimControlID As Global.System.Web.UI.WebControls.DropDownList
-    
+
     '''<summary>
     '''LabelTypeOfIns control.
     '''</summary>
@@ -831,7 +831,7 @@ Partial Public Class ContractForm
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
     Protected WithEvents LabelTypeOfIns As Global.System.Web.UI.WebControls.Label
-    
+
     '''<summary>
     '''cboTypeOfIns control.
     '''</summary>
@@ -840,7 +840,7 @@ Partial Public Class ContractForm
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
     Protected WithEvents cboTypeOfIns As Global.System.Web.UI.WebControls.DropDownList
-    
+
     '''<summary>
     '''LabelRecurringPremium control.
     '''</summary>
@@ -849,7 +849,7 @@ Partial Public Class ContractForm
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
     Protected WithEvents LabelRecurringPremium As Global.System.Web.UI.WebControls.Label
-    
+
     '''<summary>
     '''cboRecurringPremium control.
     '''</summary>
@@ -858,7 +858,7 @@ Partial Public Class ContractForm
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
     Protected WithEvents cboRecurringPremium As Global.System.Web.UI.WebControls.DropDownList
-    
+
     '''<summary>
     '''LabelTypeOfMarketing control.
     '''</summary>
@@ -867,7 +867,7 @@ Partial Public Class ContractForm
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
     Protected WithEvents LabelTypeOfMarketing As Global.System.Web.UI.WebControls.Label
-    
+
     '''<summary>
     '''cboTypeOfMarketing control.
     '''</summary>
@@ -876,7 +876,7 @@ Partial Public Class ContractForm
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
     Protected WithEvents cboTypeOfMarketing As Global.System.Web.UI.WebControls.DropDownList
-    
+
     '''<summary>
     '''LabelIncludeFirstPmt control.
     '''</summary>
@@ -885,7 +885,7 @@ Partial Public Class ContractForm
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
     Protected WithEvents LabelIncludeFirstPmt As Global.System.Web.UI.WebControls.Label
-    
+
     '''<summary>
     '''cboIncludeFirstPmt control.
     '''</summary>
@@ -894,7 +894,7 @@ Partial Public Class ContractForm
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
     Protected WithEvents cboIncludeFirstPmt As Global.System.Web.UI.WebControls.DropDownList
-    
+
     '''<summary>
     '''LabelTypeOfEquipment control.
     '''</summary>
@@ -903,7 +903,7 @@ Partial Public Class ContractForm
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
     Protected WithEvents LabelTypeOfEquipment As Global.System.Web.UI.WebControls.Label
-    
+
     '''<summary>
     '''cboTypeOfEquipment control.
     '''</summary>
@@ -912,7 +912,7 @@ Partial Public Class ContractForm
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
     Protected WithEvents cboTypeOfEquipment As Global.System.Web.UI.WebControls.DropDownList
-    
+
     '''<summary>
     '''labelFirstPymtMonths control.
     '''</summary>
@@ -921,7 +921,7 @@ Partial Public Class ContractForm
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
     Protected WithEvents labelFirstPymtMonths As Global.System.Web.UI.WebControls.Label
-    
+
     '''<summary>
     '''txtFirstPaymentMonths control.
     '''</summary>
@@ -930,7 +930,7 @@ Partial Public Class ContractForm
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
     Protected WithEvents txtFirstPaymentMonths As Global.System.Web.UI.WebControls.TextBox
-    
+
     '''<summary>
     '''lblPeridiocBillingWarntyPeriod control.
     '''</summary>
@@ -939,7 +939,7 @@ Partial Public Class ContractForm
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
     Protected WithEvents lblPeridiocBillingWarntyPeriod As Global.System.Web.UI.WebControls.Label
-    
+
     '''<summary>
     '''txtPeridiocBillingWarntyPeriod control.
     '''</summary>
@@ -948,7 +948,7 @@ Partial Public Class ContractForm
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
     Protected WithEvents txtPeridiocBillingWarntyPeriod As Global.System.Web.UI.WebControls.TextBox
-    
+
     '''<summary>
     '''LabelDaysToSuspend control.
     '''</summary>
@@ -957,7 +957,7 @@ Partial Public Class ContractForm
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
     Protected WithEvents LabelDaysToSuspend As Global.System.Web.UI.WebControls.Label
-    
+
     '''<summary>
     '''TextboxDaysToSuspend control.
     '''</summary>
@@ -966,7 +966,7 @@ Partial Public Class ContractForm
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
     Protected WithEvents TextboxDaysToSuspend As Global.System.Web.UI.WebControls.TextBox
-    
+
     '''<summary>
     '''LabelNetTaxes control.
     '''</summary>
@@ -975,7 +975,7 @@ Partial Public Class ContractForm
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
     Protected WithEvents LabelNetTaxes As Global.System.Web.UI.WebControls.Label
-    
+
     '''<summary>
     '''cboNetTaxes control.
     '''</summary>
@@ -984,7 +984,7 @@ Partial Public Class ContractForm
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
     Protected WithEvents cboNetTaxes As Global.System.Web.UI.WebControls.DropDownList
-    
+
     '''<summary>
     '''LabelDaysToCancel control.
     '''</summary>
@@ -993,7 +993,7 @@ Partial Public Class ContractForm
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
     Protected WithEvents LabelDaysToCancel As Global.System.Web.UI.WebControls.Label
-    
+
     '''<summary>
     '''TextboxDaysToCancel control.
     '''</summary>
@@ -1002,7 +1002,7 @@ Partial Public Class ContractForm
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
     Protected WithEvents TextboxDaysToCancel As Global.System.Web.UI.WebControls.TextBox
-    
+
     '''<summary>
     '''LabelNetCommission control.
     '''</summary>
@@ -1011,7 +1011,7 @@ Partial Public Class ContractForm
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
     Protected WithEvents LabelNetCommission As Global.System.Web.UI.WebControls.Label
-    
+
     '''<summary>
     '''cboNetCommission control.
     '''</summary>
@@ -1020,7 +1020,7 @@ Partial Public Class ContractForm
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
     Protected WithEvents cboNetCommission As Global.System.Web.UI.WebControls.DropDownList
-    
+
     '''<summary>
     '''lblExtendCoverage control.
     '''</summary>
@@ -1029,7 +1029,7 @@ Partial Public Class ContractForm
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
     Protected WithEvents lblExtendCoverage As Global.System.Web.UI.WebControls.Label
-    
+
     '''<summary>
     '''cboExtendCoverage control.
     '''</summary>
@@ -1038,7 +1038,7 @@ Partial Public Class ContractForm
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
     Protected WithEvents cboExtendCoverage As Global.System.Web.UI.WebControls.DropDownList
-    
+
     '''<summary>
     '''LabelNetMarketing control.
     '''</summary>
@@ -1047,7 +1047,7 @@ Partial Public Class ContractForm
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
     Protected WithEvents LabelNetMarketing As Global.System.Web.UI.WebControls.Label
-    
+
     '''<summary>
     '''cboNetMarketing control.
     '''</summary>
@@ -1056,7 +1056,7 @@ Partial Public Class ContractForm
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
     Protected WithEvents cboNetMarketing As Global.System.Web.UI.WebControls.DropDownList
-    
+
     '''<summary>
     '''lblExtendCoverageBy control.
     '''</summary>
@@ -1065,7 +1065,7 @@ Partial Public Class ContractForm
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
     Protected WithEvents lblExtendCoverageBy As Global.System.Web.UI.WebControls.Label
-    
+
     '''<summary>
     '''txtExtendCoverageByExtraMonths control.
     '''</summary>
@@ -1074,7 +1074,7 @@ Partial Public Class ContractForm
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
     Protected WithEvents txtExtendCoverageByExtraMonths As Global.System.Web.UI.WebControls.TextBox
-    
+
     '''<summary>
     '''lblExtendCoverageByExtraMonths control.
     '''</summary>
@@ -1083,7 +1083,7 @@ Partial Public Class ContractForm
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
     Protected WithEvents lblExtendCoverageByExtraMonths As Global.System.Web.UI.WebControls.Label
-    
+
     '''<summary>
     '''txtExtendCoverageByExtraDays control.
     '''</summary>
@@ -1092,7 +1092,7 @@ Partial Public Class ContractForm
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
     Protected WithEvents txtExtendCoverageByExtraDays As Global.System.Web.UI.WebControls.TextBox
-    
+
     '''<summary>
     '''lblExtendCoverageByExtraDays control.
     '''</summary>
@@ -1101,7 +1101,7 @@ Partial Public Class ContractForm
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
     Protected WithEvents lblExtendCoverageByExtraDays As Global.System.Web.UI.WebControls.Label
-    
+
     '''<summary>
     '''LabelIsCommPCodeId control.
     '''</summary>
@@ -1110,7 +1110,7 @@ Partial Public Class ContractForm
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
     Protected WithEvents LabelIsCommPCodeId As Global.System.Web.UI.WebControls.Label
-    
+
     '''<summary>
     '''cboIsCommPCodeId control.
     '''</summary>
@@ -1119,7 +1119,7 @@ Partial Public Class ContractForm
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
     Protected WithEvents cboIsCommPCodeId As Global.System.Web.UI.WebControls.DropDownList
-    
+
     '''<summary>
     '''LabelPayOutstandingAmount control.
     '''</summary>
@@ -1128,7 +1128,7 @@ Partial Public Class ContractForm
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
     Protected WithEvents LabelPayOutstandingAmount As Global.System.Web.UI.WebControls.Label
-    
+
     '''<summary>
     '''lblAllowPymtSkipMonths control.
     '''</summary>
@@ -1137,7 +1137,7 @@ Partial Public Class ContractForm
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
     Protected WithEvents lblAllowPymtSkipMonths As Global.System.Web.UI.WebControls.Label
-    
+
     '''<summary>
     '''cboPayOutstandingAmount control.
     '''</summary>
@@ -1146,7 +1146,7 @@ Partial Public Class ContractForm
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
     Protected WithEvents cboPayOutstandingAmount As Global.System.Web.UI.WebControls.DropDownList
-    
+
     '''<summary>
     '''ddlAllowPymtSkipMonths control.
     '''</summary>
@@ -1155,7 +1155,7 @@ Partial Public Class ContractForm
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
     Protected WithEvents ddlAllowPymtSkipMonths As Global.System.Web.UI.WebControls.DropDownList
-    
+
     '''<summary>
     '''lblBillingCycleType control.
     '''</summary>
@@ -1164,7 +1164,7 @@ Partial Public Class ContractForm
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
     Protected WithEvents lblBillingCycleType As Global.System.Web.UI.WebControls.Label
-    
+
     '''<summary>
     '''ddlBillingCycleType control.
     '''</summary>
@@ -1173,7 +1173,7 @@ Partial Public Class ContractForm
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
     Protected WithEvents ddlBillingCycleType As Global.System.Web.UI.WebControls.DropDownList
-    
+
     '''<summary>
     '''LabelAutoSetLiability control.
     '''</summary>
@@ -1182,7 +1182,7 @@ Partial Public Class ContractForm
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
     Protected WithEvents LabelAutoSetLiability As Global.System.Web.UI.WebControls.Label
-    
+
     '''<summary>
     '''cboAutoSetLiability control.
     '''</summary>
@@ -1191,7 +1191,7 @@ Partial Public Class ContractForm
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
     Protected WithEvents cboAutoSetLiability As Global.System.Web.UI.WebControls.DropDownList
-    
+
     '''<summary>
     '''LabelID_VALIDATION control.
     '''</summary>
@@ -1200,7 +1200,7 @@ Partial Public Class ContractForm
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
     Protected WithEvents LabelID_VALIDATION As Global.System.Web.UI.WebControls.Label
-    
+
     '''<summary>
     '''cboID_VALIDATION control.
     '''</summary>
@@ -1209,7 +1209,7 @@ Partial Public Class ContractForm
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
     Protected WithEvents cboID_VALIDATION As Global.System.Web.UI.WebControls.DropDownList
-    
+
     '''<summary>
     '''LabelIgnorePremium control.
     '''</summary>
@@ -1218,7 +1218,7 @@ Partial Public Class ContractForm
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
     Protected WithEvents LabelIgnorePremium As Global.System.Web.UI.WebControls.Label
-    
+
     '''<summary>
     '''cboIgnorePremium control.
     '''</summary>
@@ -1227,7 +1227,7 @@ Partial Public Class ContractForm
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
     Protected WithEvents cboIgnorePremium As Global.System.Web.UI.WebControls.DropDownList
-    
+
     '''<summary>
     '''LabelAcselProdCode control.
     '''</summary>
@@ -1236,7 +1236,7 @@ Partial Public Class ContractForm
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
     Protected WithEvents LabelAcselProdCode As Global.System.Web.UI.WebControls.Label
-    
+
     '''<summary>
     '''cboAcselProdCode control.
     '''</summary>
@@ -1245,7 +1245,7 @@ Partial Public Class ContractForm
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
     Protected WithEvents cboAcselProdCode As Global.System.Web.UI.WebControls.DropDownList
-    
+
     '''<summary>
     '''LabelIgnoreCovAmt control.
     '''</summary>
@@ -1254,7 +1254,7 @@ Partial Public Class ContractForm
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
     Protected WithEvents LabelIgnoreCovAmt As Global.System.Web.UI.WebControls.Label
-    
+
     '''<summary>
     '''cboIgnoreCovAmt control.
     '''</summary>
@@ -1263,7 +1263,7 @@ Partial Public Class ContractForm
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
     Protected WithEvents cboIgnoreCovAmt As Global.System.Web.UI.WebControls.DropDownList
-    
+
     '''<summary>
     '''LabelBackEndClaimAllowed control.
     '''</summary>
@@ -1272,7 +1272,7 @@ Partial Public Class ContractForm
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
     Protected WithEvents LabelBackEndClaimAllowed As Global.System.Web.UI.WebControls.Label
-    
+
     '''<summary>
     '''cboBackEndClaimAllowed control.
     '''</summary>
@@ -1281,7 +1281,7 @@ Partial Public Class ContractForm
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
     Protected WithEvents cboBackEndClaimAllowed As Global.System.Web.UI.WebControls.DropDownList
-    
+
     '''<summary>
     '''labelAllowDifferentCoverage control.
     '''</summary>
@@ -1290,7 +1290,7 @@ Partial Public Class ContractForm
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
     Protected WithEvents labelAllowDifferentCoverage As Global.System.Web.UI.WebControls.Label
-    
+
     '''<summary>
     '''cboAllowDifferentCoverage control.
     '''</summary>
@@ -1299,7 +1299,7 @@ Partial Public Class ContractForm
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
     Protected WithEvents cboAllowDifferentCoverage As Global.System.Web.UI.WebControls.DropDownList
-    
+
     '''<summary>
     '''LabelInstallmentPayment control.
     '''</summary>
@@ -1308,7 +1308,7 @@ Partial Public Class ContractForm
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
     Protected WithEvents LabelInstallmentPayment As Global.System.Web.UI.WebControls.Label
-    
+
     '''<summary>
     '''cboInstallmentPayment control.
     '''</summary>
@@ -1317,7 +1317,7 @@ Partial Public Class ContractForm
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
     Protected WithEvents cboInstallmentPayment As Global.System.Web.UI.WebControls.DropDownList
-    
+
     '''<summary>
     '''LabelDaysOfFirstPymt control.
     '''</summary>
@@ -1326,7 +1326,7 @@ Partial Public Class ContractForm
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
     Protected WithEvents LabelDaysOfFirstPymt As Global.System.Web.UI.WebControls.Label
-    
+
     '''<summary>
     '''TextboxDaysOfFirstPymt control.
     '''</summary>
@@ -1335,7 +1335,7 @@ Partial Public Class ContractForm
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
     Protected WithEvents TextboxDaysOfFirstPymt As Global.System.Web.UI.WebControls.TextBox
-    
+
     '''<summary>
     '''moInstallmentBillingInformation0 control.
     '''</summary>
@@ -1344,7 +1344,7 @@ Partial Public Class ContractForm
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
     Protected WithEvents moInstallmentBillingInformation0 As Global.System.Web.UI.HtmlControls.HtmlTableRow
-    
+
     '''<summary>
     '''LabelDaysToSendLetter control.
     '''</summary>
@@ -1353,7 +1353,7 @@ Partial Public Class ContractForm
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
     Protected WithEvents LabelDaysToSendLetter As Global.System.Web.UI.WebControls.Label
-    
+
     '''<summary>
     '''TextboxDaysToSendLetter control.
     '''</summary>
@@ -1362,7 +1362,7 @@ Partial Public Class ContractForm
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
     Protected WithEvents TextboxDaysToSendLetter As Global.System.Web.UI.WebControls.TextBox
-    
+
     '''<summary>
     '''LabelDaysToCancelCert control.
     '''</summary>
@@ -1371,7 +1371,7 @@ Partial Public Class ContractForm
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
     Protected WithEvents LabelDaysToCancelCert As Global.System.Web.UI.WebControls.Label
-    
+
     '''<summary>
     '''TextboxDaysToCancelCert control.
     '''</summary>
@@ -1380,7 +1380,7 @@ Partial Public Class ContractForm
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
     Protected WithEvents TextboxDaysToCancelCert As Global.System.Web.UI.WebControls.TextBox
-    
+
     '''<summary>
     '''moInstallmentBillingInformation1 control.
     '''</summary>
@@ -1389,7 +1389,7 @@ Partial Public Class ContractForm
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
     Protected WithEvents moInstallmentBillingInformation1 As Global.System.Web.UI.HtmlControls.HtmlTableRow
-    
+
     '''<summary>
     '''LabelBaseInstallments control.
     '''</summary>
@@ -1398,7 +1398,7 @@ Partial Public Class ContractForm
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
     Protected WithEvents LabelBaseInstallments As Global.System.Web.UI.WebControls.Label
-    
+
     '''<summary>
     '''cboBaseInstallments control.
     '''</summary>
@@ -1407,7 +1407,7 @@ Partial Public Class ContractForm
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
     Protected WithEvents cboBaseInstallments As Global.System.Web.UI.WebControls.DropDownList
-    
+
     '''<summary>
     '''LabelMaxNumofInstallments control.
     '''</summary>
@@ -1416,7 +1416,7 @@ Partial Public Class ContractForm
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
     Protected WithEvents LabelMaxNumofInstallments As Global.System.Web.UI.WebControls.Label
-    
+
     '''<summary>
     '''TextboxMaxNumofInstallments control.
     '''</summary>
@@ -1425,7 +1425,7 @@ Partial Public Class ContractForm
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
     Protected WithEvents TextboxMaxNumofInstallments As Global.System.Web.UI.WebControls.TextBox
-    
+
     '''<summary>
     '''moInstallmentBillingInformation2 control.
     '''</summary>
@@ -1434,7 +1434,7 @@ Partial Public Class ContractForm
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
     Protected WithEvents moInstallmentBillingInformation2 As Global.System.Web.UI.HtmlControls.HtmlTableRow
-    
+
     '''<summary>
     '''LabelBillingCycleFrequency control.
     '''</summary>
@@ -1443,7 +1443,7 @@ Partial Public Class ContractForm
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
     Protected WithEvents LabelBillingCycleFrequency As Global.System.Web.UI.WebControls.Label
-    
+
     '''<summary>
     '''cboBillingCycleFrequency control.
     '''</summary>
@@ -1452,7 +1452,7 @@ Partial Public Class ContractForm
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
     Protected WithEvents cboBillingCycleFrequency As Global.System.Web.UI.WebControls.DropDownList
-    
+
     '''<summary>
     '''LabelInstallmentsBaseReducer control.
     '''</summary>
@@ -1461,7 +1461,7 @@ Partial Public Class ContractForm
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
     Protected WithEvents LabelInstallmentsBaseReducer As Global.System.Web.UI.WebControls.Label
-    
+
     '''<summary>
     '''TextboxInstallmentsBaseReducer control.
     '''</summary>
@@ -1470,7 +1470,7 @@ Partial Public Class ContractForm
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
     Protected WithEvents TextboxInstallmentsBaseReducer As Global.System.Web.UI.WebControls.TextBox
-    
+
     '''<summary>
     '''moInstallmentBillingInformation3 control.
     '''</summary>
@@ -1479,7 +1479,7 @@ Partial Public Class ContractForm
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
     Protected WithEvents moInstallmentBillingInformation3 As Global.System.Web.UI.HtmlControls.HtmlTableRow
-    
+
     '''<summary>
     '''LabelCollectionReAttempts control.
     '''</summary>
@@ -1488,7 +1488,7 @@ Partial Public Class ContractForm
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
     Protected WithEvents LabelCollectionReAttempts As Global.System.Web.UI.WebControls.Label
-    
+
     '''<summary>
     '''txtCollectionReAttempts control.
     '''</summary>
@@ -1497,7 +1497,7 @@ Partial Public Class ContractForm
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
     Protected WithEvents txtCollectionReAttempts As Global.System.Web.UI.WebControls.TextBox
-    
+
     '''<summary>
     '''lblPastDueMonthsAllowed control.
     '''</summary>
@@ -1506,7 +1506,7 @@ Partial Public Class ContractForm
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
     Protected WithEvents lblPastDueMonthsAllowed As Global.System.Web.UI.WebControls.Label
-    
+
     '''<summary>
     '''txtPastDueMonthsAllowed control.
     '''</summary>
@@ -1515,7 +1515,7 @@ Partial Public Class ContractForm
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
     Protected WithEvents txtPastDueMonthsAllowed As Global.System.Web.UI.WebControls.TextBox
-    
+
     '''<summary>
     '''moInstallmentBillingInformation4 control.
     '''</summary>
@@ -1524,7 +1524,7 @@ Partial Public Class ContractForm
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
     Protected WithEvents moInstallmentBillingInformation4 As Global.System.Web.UI.HtmlControls.HtmlTableRow
-    
+
     '''<summary>
     '''LabelCollectionCycleType control.
     '''</summary>
@@ -1533,7 +1533,7 @@ Partial Public Class ContractForm
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
     Protected WithEvents LabelCollectionCycleType As Global.System.Web.UI.WebControls.Label
-    
+
     '''<summary>
     '''cboCollectionCycleType control.
     '''</summary>
@@ -1542,7 +1542,7 @@ Partial Public Class ContractForm
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
     Protected WithEvents cboCollectionCycleType As Global.System.Web.UI.WebControls.DropDownList
-    
+
     '''<summary>
     '''LabelOffsetBeforeDueDate control.
     '''</summary>
@@ -1551,7 +1551,7 @@ Partial Public Class ContractForm
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
     Protected WithEvents LabelOffsetBeforeDueDate As Global.System.Web.UI.WebControls.Label
-    
+
     '''<summary>
     '''TextboxOffsetBeforeDueDate control.
     '''</summary>
@@ -1560,7 +1560,7 @@ Partial Public Class ContractForm
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
     Protected WithEvents TextboxOffsetBeforeDueDate As Global.System.Web.UI.WebControls.TextBox
-    
+
     '''<summary>
     '''moInstallmentBillingInformation5 control.
     '''</summary>
@@ -1569,7 +1569,7 @@ Partial Public Class ContractForm
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
     Protected WithEvents moInstallmentBillingInformation5 As Global.System.Web.UI.HtmlControls.HtmlTableRow
-    
+
     '''<summary>
     '''LabelCycleDay control.
     '''</summary>
@@ -1578,7 +1578,7 @@ Partial Public Class ContractForm
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
     Protected WithEvents LabelCycleDay As Global.System.Web.UI.WebControls.Label
-    
+
     '''<summary>
     '''TextboxCycleDay control.
     '''</summary>
@@ -1587,7 +1587,7 @@ Partial Public Class ContractForm
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
     Protected WithEvents TextboxCycleDay As Global.System.Web.UI.WebControls.TextBox
-    
+
     '''<summary>
     '''lblCLIPct control.
     '''</summary>
@@ -1596,7 +1596,7 @@ Partial Public Class ContractForm
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
     Protected WithEvents lblCLIPct As Global.System.Web.UI.WebControls.Label
-    
+
     '''<summary>
     '''txtCLIPPct control.
     '''</summary>
@@ -1605,7 +1605,7 @@ Partial Public Class ContractForm
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
     Protected WithEvents txtCLIPPct As Global.System.Web.UI.WebControls.TextBox
-    
+
     '''<summary>
     '''LabelEditMfgTerm control.
     '''</summary>
@@ -1614,7 +1614,7 @@ Partial Public Class ContractForm
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
     Protected WithEvents LabelEditMfgTerm As Global.System.Web.UI.WebControls.Label
-    
+
     '''<summary>
     '''cboEDIT_MFG_TERM control.
     '''</summary>
@@ -1623,7 +1623,7 @@ Partial Public Class ContractForm
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
     Protected WithEvents cboEDIT_MFG_TERM As Global.System.Web.UI.WebControls.DropDownList
-    
+
     '''<summary>
     '''lblInsPremFactor control.
     '''</summary>
@@ -1632,7 +1632,7 @@ Partial Public Class ContractForm
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
     Protected WithEvents lblInsPremFactor As Global.System.Web.UI.WebControls.Label
-    
+
     '''<summary>
     '''txtInsPremFactor control.
     '''</summary>
@@ -1641,7 +1641,7 @@ Partial Public Class ContractForm
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
     Protected WithEvents txtInsPremFactor As Global.System.Web.UI.WebControls.TextBox
-    
+
     '''<summary>
     '''LabelOverrideEditMfgTerm control.
     '''</summary>
@@ -1650,7 +1650,7 @@ Partial Public Class ContractForm
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
     Protected WithEvents LabelOverrideEditMfgTerm As Global.System.Web.UI.WebControls.Label
-    
+
     '''<summary>
     '''cboOverrideEditMfgTerm control.
     '''</summary>
@@ -1659,7 +1659,7 @@ Partial Public Class ContractForm
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
     Protected WithEvents cboOverrideEditMfgTerm As Global.System.Web.UI.WebControls.DropDownList
-    
+
     '''<summary>
     '''lblMarketingPromo control.
     '''</summary>
@@ -1668,7 +1668,7 @@ Partial Public Class ContractForm
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
     Protected WithEvents lblMarketingPromo As Global.System.Web.UI.WebControls.Label
-    
+
     '''<summary>
     '''cboMarketingPromo control.
     '''</summary>
@@ -1677,7 +1677,7 @@ Partial Public Class ContractForm
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
     Protected WithEvents cboMarketingPromo As Global.System.Web.UI.WebControls.DropDownList
-    
+
     '''<summary>
     '''lblAllowNoExtended control.
     '''</summary>
@@ -1686,7 +1686,7 @@ Partial Public Class ContractForm
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
     Protected WithEvents lblAllowNoExtended As Global.System.Web.UI.WebControls.Label
-    
+
     '''<summary>
     '''cboAllowNoExtended control.
     '''</summary>
@@ -1695,7 +1695,7 @@ Partial Public Class ContractForm
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
     Protected WithEvents cboAllowNoExtended As Global.System.Web.UI.WebControls.DropDownList
-    
+
     '''<summary>
     '''lblAllowMultipleRejections control.
     '''</summary>
@@ -1704,7 +1704,7 @@ Partial Public Class ContractForm
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
     Protected WithEvents lblAllowMultipleRejections As Global.System.Web.UI.WebControls.Label
-    
+
     '''<summary>
     '''cboAllowMultipleRejections control.
     '''</summary>
@@ -1713,7 +1713,7 @@ Partial Public Class ContractForm
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
     Protected WithEvents cboAllowMultipleRejections As Global.System.Web.UI.WebControls.DropDownList
-    
+
     '''<summary>
     '''LabelProRataMethodId control.
     '''</summary>
@@ -1722,7 +1722,7 @@ Partial Public Class ContractForm
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
     Protected WithEvents LabelProRataMethodId As Global.System.Web.UI.WebControls.Label
-    
+
     '''<summary>
     '''cboProRataMethodId control.
     '''</summary>
@@ -1731,7 +1731,7 @@ Partial Public Class ContractForm
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
     Protected WithEvents cboProRataMethodId As Global.System.Web.UI.WebControls.DropDownList
-    
+
     '''<summary>
     '''labelCustAddressRequired control.
     '''</summary>
@@ -1740,7 +1740,7 @@ Partial Public Class ContractForm
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
     Protected WithEvents labelCustAddressRequired As Global.System.Web.UI.WebControls.Label
-    
+
     '''<summary>
     '''cboCustAddressRequired control.
     '''</summary>
@@ -1749,7 +1749,7 @@ Partial Public Class ContractForm
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
     Protected WithEvents cboCustAddressRequired As Global.System.Web.UI.WebControls.DropDownList
-    
+
     '''<summary>
     '''lblDailyRateBasedOn control.
     '''</summary>
@@ -1758,7 +1758,7 @@ Partial Public Class ContractForm
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
     Protected WithEvents lblDailyRateBasedOn As Global.System.Web.UI.WebControls.Label
-    
+
     '''<summary>
     '''ddlDailyRateBasedOn control.
     '''</summary>
@@ -1767,7 +1767,7 @@ Partial Public Class ContractForm
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
     Protected WithEvents ddlDailyRateBasedOn As Global.System.Web.UI.WebControls.DropDownList
-    
+
     '''<summary>
     '''lblFutureDateAllowFor control.
     '''</summary>
@@ -1776,7 +1776,7 @@ Partial Public Class ContractForm
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
     Protected WithEvents lblFutureDateAllowFor As Global.System.Web.UI.WebControls.Label
-    
+
     '''<summary>
     '''cboFutureDateAllowFor control.
     '''</summary>
@@ -1785,7 +1785,7 @@ Partial Public Class ContractForm
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
     Protected WithEvents cboFutureDateAllowFor As Global.System.Web.UI.WebControls.DropDownList
-    
+
     '''<summary>
     '''lblAllowBillingAfterCancellation control.
     '''</summary>
@@ -1794,7 +1794,7 @@ Partial Public Class ContractForm
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
     Protected WithEvents lblAllowBillingAfterCancellation As Global.System.Web.UI.WebControls.Label
-    
+
     '''<summary>
     '''ddlAllowBillingAfterCancellation control.
     '''</summary>
@@ -1803,7 +1803,7 @@ Partial Public Class ContractForm
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
     Protected WithEvents ddlAllowBillingAfterCancellation As Global.System.Web.UI.WebControls.DropDownList
-    
+
     '''<summary>
     '''lblProducer control.
     '''</summary>
@@ -1812,7 +1812,7 @@ Partial Public Class ContractForm
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
     Protected WithEvents lblProducer As Global.System.Web.UI.WebControls.Label
-    
+
     '''<summary>
     '''ddlProducer control.
     '''</summary>
@@ -1821,7 +1821,7 @@ Partial Public Class ContractForm
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
     Protected WithEvents ddlProducer As Global.System.Web.UI.WebControls.DropDownList
-    
+
     '''<summary>
     '''lblAllowCollectionAfterCancellation control.
     '''</summary>
@@ -1830,7 +1830,7 @@ Partial Public Class ContractForm
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
     Protected WithEvents lblAllowCollectionAfterCancellation As Global.System.Web.UI.WebControls.Label
-    
+
     '''<summary>
     '''ddlAllowCollectionAfterCancellation control.
     '''</summary>
@@ -1839,7 +1839,7 @@ Partial Public Class ContractForm
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
     Protected WithEvents ddlAllowCollectionAfterCancellation As Global.System.Web.UI.WebControls.DropDownList
-    
+
     '''<summary>
     '''lblRdoName control.
     '''</summary>
@@ -1848,7 +1848,7 @@ Partial Public Class ContractForm
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
     Protected WithEvents lblRdoName As Global.System.Web.UI.WebControls.Label
-    
+
     '''<summary>
     '''txtRdoName control.
     '''</summary>
@@ -1857,7 +1857,7 @@ Partial Public Class ContractForm
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
     Protected WithEvents txtRdoName As Global.System.Web.UI.WebControls.TextBox
-    
+
     '''<summary>
     '''lblPaymentProcessingTypeId control.
     '''</summary>
@@ -1866,7 +1866,7 @@ Partial Public Class ContractForm
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
     Protected WithEvents lblPaymentProcessingTypeId As Global.System.Web.UI.WebControls.Label
-    
+
     '''<summary>
     '''ddlPaymentProcessingTypeId control.
     '''</summary>
@@ -1875,7 +1875,7 @@ Partial Public Class ContractForm
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
     Protected WithEvents ddlPaymentProcessingTypeId As Global.System.Web.UI.WebControls.DropDownList
-    
+
     '''<summary>
     '''lblRdoPercent control.
     '''</summary>
@@ -1884,7 +1884,7 @@ Partial Public Class ContractForm
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
     Protected WithEvents lblRdoPercent As Global.System.Web.UI.WebControls.Label
-    
+
     '''<summary>
     '''txtRdoPercent control.
     '''</summary>
@@ -1893,7 +1893,7 @@ Partial Public Class ContractForm
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
     Protected WithEvents txtRdoPercent As Global.System.Web.UI.WebControls.TextBox
-    
+
     '''<summary>
     '''lblThirdPartyName control.
     '''</summary>
@@ -1902,7 +1902,7 @@ Partial Public Class ContractForm
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
     Protected WithEvents lblThirdPartyName As Global.System.Web.UI.WebControls.Label
-    
+
     '''<summary>
     '''txtThirdPartyName control.
     '''</summary>
@@ -1911,7 +1911,7 @@ Partial Public Class ContractForm
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
     Protected WithEvents txtThirdPartyName As Global.System.Web.UI.WebControls.TextBox
-    
+
     '''<summary>
     '''lblRdoTaxId control.
     '''</summary>
@@ -1920,7 +1920,7 @@ Partial Public Class ContractForm
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
     Protected WithEvents lblRdoTaxId As Global.System.Web.UI.WebControls.Label
-    
+
     '''<summary>
     '''txtRdoTaxId control.
     '''</summary>
@@ -1929,7 +1929,7 @@ Partial Public Class ContractForm
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
     Protected WithEvents txtRdoTaxId As Global.System.Web.UI.WebControls.TextBox
-    
+
     '''<summary>
     '''lblThirdPartyTaxId control.
     '''</summary>
@@ -1938,7 +1938,7 @@ Partial Public Class ContractForm
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
     Protected WithEvents lblThirdPartyTaxId As Global.System.Web.UI.WebControls.Label
-    
+
     '''<summary>
     '''txtThirdPartyTaxId control.
     '''</summary>
@@ -1947,7 +1947,7 @@ Partial Public Class ContractForm
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
     Protected WithEvents txtThirdPartyTaxId As Global.System.Web.UI.WebControls.TextBox
-    
+
     '''<summary>
     '''LabelLossCostPercent control.
     '''</summary>
@@ -1956,7 +1956,7 @@ Partial Public Class ContractForm
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
     Protected WithEvents LabelLossCostPercent As Global.System.Web.UI.WebControls.Label
-    
+
     '''<summary>
     '''TextboxLossCostPercent control.
     '''</summary>
@@ -1965,7 +1965,16 @@ Partial Public Class ContractForm
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
     Protected WithEvents TextboxLossCostPercent As Global.System.Web.UI.WebControls.TextBox
-    
+
+    '''<summary>
+    '''cboLossCostPercentSourceXcd control.
+    '''</summary>
+    '''<remarks>
+    '''Auto-generated field.
+    '''To modify move field declaration from designer file to code-behind file.
+    '''</remarks>
+    Protected WithEvents cboLossCostPercentSourceXcd As Global.System.Web.UI.WebControls.DropDownList
+
     '''<summary>
     '''LabelProfitExpense control.
     '''</summary>
@@ -1974,7 +1983,7 @@ Partial Public Class ContractForm
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
     Protected WithEvents LabelProfitExpense As Global.System.Web.UI.WebControls.Label
-    
+
     '''<summary>
     '''TextboxProfitExpense control.
     '''</summary>
@@ -1983,7 +1992,16 @@ Partial Public Class ContractForm
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
     Protected WithEvents TextboxProfitExpense As Global.System.Web.UI.WebControls.TextBox
-    
+
+    '''<summary>
+    '''cboProfitExpenseSourceXcd control.
+    '''</summary>
+    '''<remarks>
+    '''Auto-generated field.
+    '''To modify move field declaration from designer file to code-behind file.
+    '''</remarks>
+    Protected WithEvents cboProfitExpenseSourceXcd As Global.System.Web.UI.WebControls.DropDownList
+
     '''<summary>
     '''LabelAdminExpense control.
     '''</summary>
@@ -1992,7 +2010,7 @@ Partial Public Class ContractForm
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
     Protected WithEvents LabelAdminExpense As Global.System.Web.UI.WebControls.Label
-    
+
     '''<summary>
     '''TextboxAdminExpense control.
     '''</summary>
@@ -2001,7 +2019,16 @@ Partial Public Class ContractForm
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
     Protected WithEvents TextboxAdminExpense As Global.System.Web.UI.WebControls.TextBox
-    
+
+    '''<summary>
+    '''cboAdminExpenseSourceXcd control.
+    '''</summary>
+    '''<remarks>
+    '''Auto-generated field.
+    '''To modify move field declaration from designer file to code-behind file.
+    '''</remarks>
+    Protected WithEvents cboAdminExpenseSourceXcd As Global.System.Web.UI.WebControls.DropDownList
+
     '''<summary>
     '''LabelMarketingExpense control.
     '''</summary>
@@ -2010,7 +2037,7 @@ Partial Public Class ContractForm
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
     Protected WithEvents LabelMarketingExpense As Global.System.Web.UI.WebControls.Label
-    
+
     '''<summary>
     '''TextboxMarketingExpense control.
     '''</summary>
@@ -2019,7 +2046,16 @@ Partial Public Class ContractForm
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
     Protected WithEvents TextboxMarketingExpense As Global.System.Web.UI.WebControls.TextBox
-    
+
+    '''<summary>
+    '''cboMarketingExpenseSourceXcd control.
+    '''</summary>
+    '''<remarks>
+    '''Auto-generated field.
+    '''To modify move field declaration from designer file to code-behind file.
+    '''</remarks>
+    Protected WithEvents cboMarketingExpenseSourceXcd As Global.System.Web.UI.WebControls.DropDownList
+
     '''<summary>
     '''LabelCommPercent control.
     '''</summary>
@@ -2028,7 +2064,7 @@ Partial Public Class ContractForm
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
     Protected WithEvents LabelCommPercent As Global.System.Web.UI.WebControls.Label
-    
+
     '''<summary>
     '''TextboxCommPercent control.
     '''</summary>
@@ -2037,7 +2073,16 @@ Partial Public Class ContractForm
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
     Protected WithEvents TextboxCommPercent As Global.System.Web.UI.WebControls.TextBox
-    
+
+    '''<summary>
+    '''cboCommPercentSourceXcd control.
+    '''</summary>
+    '''<remarks>
+    '''Auto-generated field.
+    '''To modify move field declaration from designer file to code-behind file.
+    '''</remarks>
+    Protected WithEvents cboCommPercentSourceXcd As Global.System.Web.UI.WebControls.DropDownList
+
     '''<summary>
     '''LabelRatingPlan control.
     '''</summary>
@@ -2046,7 +2091,7 @@ Partial Public Class ContractForm
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
     Protected WithEvents LabelRatingPlan As Global.System.Web.UI.WebControls.Label
-    
+
     '''<summary>
     '''TextboxRatingPlan control.
     '''</summary>
@@ -2055,7 +2100,7 @@ Partial Public Class ContractForm
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
     Protected WithEvents TextboxRatingPlan As Global.System.Web.UI.WebControls.TextBox
-    
+
     '''<summary>
     '''LabelCOINSURANCE control.
     '''</summary>
@@ -2064,7 +2109,7 @@ Partial Public Class ContractForm
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
     Protected WithEvents LabelCOINSURANCE As Global.System.Web.UI.WebControls.Label
-    
+
     '''<summary>
     '''cboCOINSURANCE control.
     '''</summary>
@@ -2073,7 +2118,7 @@ Partial Public Class ContractForm
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
     Protected WithEvents cboCOINSURANCE As Global.System.Web.UI.WebControls.DropDownList
-    
+
     '''<summary>
     '''LabelPARTICIPATION_PERCENT control.
     '''</summary>
@@ -2082,7 +2127,7 @@ Partial Public Class ContractForm
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
     Protected WithEvents LabelPARTICIPATION_PERCENT As Global.System.Web.UI.WebControls.Label
-    
+
     '''<summary>
     '''TextboxPARTICIPATION_PERCENT control.
     '''</summary>
@@ -2091,7 +2136,7 @@ Partial Public Class ContractForm
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
     Protected WithEvents TextboxPARTICIPATION_PERCENT As Global.System.Web.UI.WebControls.TextBox
-    
+
     '''<summary>
     '''cboCOINSURANCE_Code control.
     '''</summary>
@@ -2100,7 +2145,7 @@ Partial Public Class ContractForm
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
     Protected WithEvents cboCOINSURANCE_Code As Global.System.Web.UI.WebControls.DropDownList
-    
+
     '''<summary>
     '''hdnSelectedTab control.
     '''</summary>
@@ -2109,7 +2154,7 @@ Partial Public Class ContractForm
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
     Protected WithEvents hdnSelectedTab As Global.System.Web.UI.WebControls.HiddenField
-    
+
     '''<summary>
     '''Label4 control.
     '''</summary>
@@ -2118,7 +2163,7 @@ Partial Public Class ContractForm
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
     Protected WithEvents Label4 As Global.System.Web.UI.WebControls.Label
-    
+
     '''<summary>
     '''Label1 control.
     '''</summary>
@@ -2127,7 +2172,7 @@ Partial Public Class ContractForm
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
     Protected WithEvents Label1 As Global.System.Web.UI.WebControls.Label
-    
+
     '''<summary>
     '''moGridView control.
     '''</summary>
@@ -2136,7 +2181,7 @@ Partial Public Class ContractForm
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
     Protected WithEvents moGridView As Global.System.Web.UI.WebControls.GridView
-    
+
     '''<summary>
     '''BtnNewReplacementPolicy_WRITE control.
     '''</summary>
@@ -2145,7 +2190,7 @@ Partial Public Class ContractForm
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
     Protected WithEvents BtnNewReplacementPolicy_WRITE As Global.System.Web.UI.WebControls.Button
-    
+
     '''<summary>
     '''ErrorControllerDS control.
     '''</summary>
@@ -2154,7 +2199,7 @@ Partial Public Class ContractForm
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
     Protected WithEvents ErrorControllerDS As Global.Assurant.ElitaPlus.ElitaPlusWebApp.ErrorController
-    
+
     '''<summary>
     '''GridViewDepreciationSchedule control.
     '''</summary>
@@ -2163,7 +2208,7 @@ Partial Public Class ContractForm
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
     Protected WithEvents GridViewDepreciationSchedule As Global.System.Web.UI.WebControls.GridView
-    
+
     '''<summary>
     '''BtnNewDepreciationSchedule control.
     '''</summary>
@@ -2172,7 +2217,7 @@ Partial Public Class ContractForm
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
     Protected WithEvents BtnNewDepreciationSchedule As Global.System.Web.UI.WebControls.Button
-    
+
     '''<summary>
     '''btnSave_WRITE control.
     '''</summary>
@@ -2181,7 +2226,7 @@ Partial Public Class ContractForm
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
     Protected WithEvents btnSave_WRITE As Global.System.Web.UI.WebControls.Button
-    
+
     '''<summary>
     '''btnUndo_Write control.
     '''</summary>
@@ -2190,7 +2235,7 @@ Partial Public Class ContractForm
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
     Protected WithEvents btnUndo_Write As Global.System.Web.UI.WebControls.Button
-    
+
     '''<summary>
     '''btnBack control.
     '''</summary>
@@ -2199,7 +2244,7 @@ Partial Public Class ContractForm
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
     Protected WithEvents btnBack As Global.System.Web.UI.WebControls.Button
-    
+
     '''<summary>
     '''btnCopy_WRITE control.
     '''</summary>
@@ -2208,7 +2253,7 @@ Partial Public Class ContractForm
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
     Protected WithEvents btnCopy_WRITE As Global.System.Web.UI.WebControls.Button
-    
+
     '''<summary>
     '''btnNew_WRITE control.
     '''</summary>
@@ -2217,7 +2262,7 @@ Partial Public Class ContractForm
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
     Protected WithEvents btnNew_WRITE As Global.System.Web.UI.WebControls.Button
-    
+
     '''<summary>
     '''btnDelete_WRITE control.
     '''</summary>
@@ -2226,7 +2271,7 @@ Partial Public Class ContractForm
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
     Protected WithEvents btnDelete_WRITE As Global.System.Web.UI.WebControls.Button
-    
+
     '''<summary>
     '''btnTNC control.
     '''</summary>
@@ -2235,7 +2280,7 @@ Partial Public Class ContractForm
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
     Protected WithEvents btnTNC As Global.System.Web.UI.WebControls.Button
-    
+
     '''<summary>
     '''HiddenSaveChangesPromptResponse control.
     '''</summary>
@@ -2244,7 +2289,7 @@ Partial Public Class ContractForm
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
     Protected WithEvents HiddenSaveChangesPromptResponse As Global.System.Web.UI.HtmlControls.HtmlInputHidden
-    
+
     '''<summary>
     '''HiddenPARTICIPATION_PERCENTAG control.
     '''</summary>
@@ -2253,7 +2298,7 @@ Partial Public Class ContractForm
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
     Protected WithEvents HiddenPARTICIPATION_PERCENTAG As Global.System.Web.UI.HtmlControls.HtmlInputHidden
-    
+
     '''<summary>
     '''HiddenCertificateAuoNumGenConfirmation control.
     '''</summary>

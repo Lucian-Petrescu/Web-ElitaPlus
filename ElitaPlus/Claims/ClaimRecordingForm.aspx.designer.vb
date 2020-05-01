@@ -833,6 +833,15 @@ Partial Public Class ClaimRecordingForm
     Protected WithEvents btnLegacyContinue As Global.System.Web.UI.WebControls.Button
 
     '''<summary>
+    '''hdnData control.
+    '''</summary>
+    '''<remarks>
+    '''Auto-generated field.
+    '''To modify move field declaration from designer file to code-behind file.
+    '''</remarks>
+    Protected WithEvents hdnData As Global.System.Web.UI.WebControls.HiddenField
+
+    '''<summary>
     '''lnkCancel control.
     '''</summary>
     '''<remarks>
