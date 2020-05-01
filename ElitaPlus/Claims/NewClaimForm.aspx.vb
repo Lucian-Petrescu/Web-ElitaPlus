@@ -447,20 +447,20 @@ Partial Class NewClaimForm
                 Me.State.ClaimIssuesView = Me.State.MyBO.GetClaimIssuesView()
                 PopulateDropdowns()
                 PopulateServiceCenterSelected()
-
-                'Check if Dealer uses Equipment
-                With Me.ReplacementOption
-                    .ClaimBO = Me.State.MyBO
-                    .thisPage = Me
-                    If (Me.State.MyBO.Dealer.UseEquipmentId.Equals(Me.State.yesId)) Then
-                        .Visible = True
-                        Me.dvClaimEquipment.Visible = True
-                        PopulateClaimEquipment()
-                    Else
-                        .Visible = False
-                        Me.dvClaimEquipment.Visible = False
-                    End If
-                End With
+                PopulateClaimEquipment()
+                ''Check if Dealer uses Equipment
+                'With Me.ReplacementOption
+                '    .ClaimBO = Me.State.MyBO
+                '    .thisPage = Me
+                '    If (Me.State.MyBO.Dealer.UseEquipmentId.Equals(Me.State.yesId)) Then
+                '        .Visible = True
+                '        Me.dvClaimEquipment.Visible = True
+                '        PopulateClaimEquipment()
+                '    Else
+                '        .Visible = False
+                '        Me.dvClaimEquipment.Visible = False
+                '    End If
+                'End With
 
 
 
@@ -1872,6 +1872,7 @@ Partial Class NewClaimForm
 
     Sub PopulateClaimEquipment()
 
+        Me.dvClaimEquipment.Visible = True - 507
         With Me.ucClaimDeviceInfo
             .thisPage = Me
             .ClaimBO = CType(Me.State.MyBO, ClaimBase)
