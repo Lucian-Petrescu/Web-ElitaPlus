@@ -1,0 +1,15 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<SQL>
+  <LOAD_INVOICE_REGION_TAX>
+    elita.elp_tbl_inv_region_tax.load
+  </LOAD_INVOICE_REGION_TAX>
+  <UPDATE_INVOICE_REGION_TAX>
+    elita.elp_tbl_inv_region_tax.modify
+  </UPDATE_INVOICE_REGION_TAX>
+  <INSERT_INVOICE_REGION_TAX>
+    elita.elp_tbl_inv_region_tax.add
+  </INSERT_INVOICE_REGION_TAX>
+  <DELETE_INVOICE_REGION_TAX>
+    elita.elp_tbl_inv_region_tax.del
+  </DELETE_INVOICE_REGION_TAX>
+</SQL>
