@@ -107,6 +107,14 @@ Public NotInheritable Class Invoice
             End If
         End If
     End Function
+
+    Private Function getDecimalValue(ByVal decimalObj As DecimalType, Optional ByVal decimalDigit As Integer = 2) As Decimal
+        If decimalObj Is Nothing Then
+            Return 0D
+        Else
+            Return Math.Round(decimalObj.Value, decimalDigit, MidpointRounding.AwayFromZero)
+        End If
+    End Function
 #End Region
 
     Private _syncRoot As New Object
@@ -646,7 +654,7 @@ Public NotInheritable Class Invoice
                 ' Add Line Item to Authorization for Deductible
                 oDeductibleClaimAuthItem = oClaimAuthorization.GetNewAuthorizationItemChild()
                 With oDeductibleClaimAuthItem
-                    .Amount = oClaimAuthorization.Deductible * -1D
+                    .Amount = getDecimalValue(oClaimAuthorization.Deductible) * -1D
                     .ServiceClassId = deductibleServiceClassId
                     .ServiceTypeId = deductibleServiceTypeId
                     .VendorSku = Codes.VENDOR_SKU_DEDUCTIBLE
@@ -737,7 +745,7 @@ Public NotInheritable Class Invoice
                 If (oInvoiceItem.Amount.Value * -1D >= oClaimAuthItem.Amount.Value) Then
                     ' Add Reverse Entry to Authorization for Pay Deductible with Amount same as Pay Deductible Amount 
                     With oClaimAuthorization.GetNewAuthorizationItemChild()
-                        .Amount = oClaimAuthItem.Amount * -1D
+                        .Amount = getDecimalValue(oClaimAuthItem.Amount) * -1D
                         .ServiceClassId = oClaimAuthItem.ServiceClassId
                         .ServiceTypeId = oClaimAuthItem.ServiceTypeId
                         .VendorSku = Codes.VENDOR_SKU_PAY_DEDUCTIBLE

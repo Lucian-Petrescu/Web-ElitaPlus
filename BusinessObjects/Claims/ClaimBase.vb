@@ -1547,7 +1547,7 @@ Public MustInherit Class ClaimBase
             Dim liabLimit As Decimal = Me.LiabilityLimit.Value
 
             If Not Me.DiscountPercent Is Nothing Then
-                Me.DiscountAmount = AuthorizedAmount * (CType(Me.DiscountPercent, Decimal) / 100)
+                Me.DiscountAmount = GetDecimalValue(AuthorizedAmount) * (CType(Me.DiscountPercent, Decimal) / 100)
             End If
 
             If (liabLimit = 0D And CType(Me.Certificate.ProductLiabilityLimit.ToString, Decimal) = 0 And CType(Me.CertificateItemCoverage.CoverageLiabilityLimit, Decimal) = 0) Then
@@ -1557,7 +1557,7 @@ Public MustInherit Class ClaimBase
             Trace("AA_DEBUG", "Claim Detail", "Claim Id =" & GuidControl.GuidToHexString(Me.Id) &
                           "@Claim = " & Me.ClaimNumber)
 
-            If (Me.AuthorizedAmount > liabLimit) Then
+            If (GetDecimalValue(Me.AuthorizedAmount) > liabLimit) Then
                 assurPays = liabLimit - IIf(Me.Deductible Is Nothing, New Decimal(0D), Me.Deductible) - IIf(Me.SalvageAmount, New Decimal(0D), Me.SalvageAmount)
             Else
                 assurPays = Me.AuthorizedAmount.Value - IIf(Me.Deductible Is Nothing, New Decimal(0D), Me.Deductible) - IIf(Me.SalvageAmount Is Nothing, New Decimal(0D), Me.SalvageAmount)
@@ -3257,19 +3257,19 @@ Public MustInherit Class ClaimBase
                 Me.Deductible = oDeductible.Deductible
             Case Codes.DEDUCTIBLE_BASED_ON__PERCENT_OF_ITEM_RETAIL_PRICE
                 Me.DeductiblePercentID = LookupListNew.GetIdFromCode(LookupListNew.LK_YESNO, Codes.YESNO_N)
-                Me.Deductible = GetDecimalValue(moCertItem.ItemRetailPrice) * oDeductible.DeductiblePercentage / 100
+                Me.Deductible = GetDecimalValue(moCertItem.ItemRetailPrice) * (GetDecimalValue(oDeductible.DeductiblePercentage) / 100)
             Case Codes.DEDUCTIBLE_BASED_ON__PERCENT_OF_ORIGINAL_RETAIL_PRICE
                 Me.DeductiblePercentID = LookupListNew.GetIdFromCode(LookupListNew.LK_YESNO, Codes.YESNO_N)
-                Me.Deductible = GetDecimalValue(moCertItem.OriginalRetailPrice) * oDeductible.DeductiblePercentage / 100
+                Me.Deductible = GetDecimalValue(moCertItem.OriginalRetailPrice) * (GetDecimalValue(oDeductible.DeductiblePercentage) / 100)
             Case Codes.DEDUCTIBLE_BASED_ON__PERCENT_OF_SALES_PRICE
                 Me.DeductiblePercentID = LookupListNew.GetIdFromCode(LookupListNew.LK_YESNO, Codes.YESNO_N)
-                Me.Deductible = GetDecimalValue(moCert.SalesPrice) * oDeductible.DeductiblePercentage / 100
+                Me.Deductible = GetDecimalValue(moCert.SalesPrice) * (GetDecimalValue(oDeductible.DeductiblePercentage) / 100)
             Case Codes.DEDUCTIBLE_BASED_ON__PERCENT_OF_LIST_PRICE
                 Me.DeductiblePercentID = LookupListNew.GetIdFromCode(LookupListNew.LK_YESNO, Codes.YESNO_N)
                 If Not Me.LossDate Is Nothing Then
                     listPriceDeductible = ListPrice.GetListPrice(moCert.DealerId, If(Me.CertificateItem.IsEquipmentRequired, Me.ClaimedEquipment.SKU, moCertItem.SkuNumber), Me.LossDate.Value.ToString("yyyyMMdd"))
                     If (listPriceDeductible <> Nothing) Then
-                        Me.Deductible = listPriceDeductible.Value * oDeductible.DeductiblePercentage / 100
+                        Me.Deductible = listPriceDeductible.Value * (GetDecimalValue(oDeductible.DeductiblePercentage) / 100)
                     Else
                         Me.Deductible = New DecimalType(0D)
                     End If

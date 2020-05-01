@@ -1213,14 +1213,14 @@ Public NotInheritable Class ClaimAuthorization
             Dim liabLimit As Decimal = Me.LiabilityLimit.Value
 
             If Not Me.Claim.DiscountPercent Is Nothing Then
-                Me.DiscountAmount = AuthorizedAmount * (CType(Me.Claim.DiscountPercent, Decimal) / 100)
+                Me.DiscountAmount = GetDecimalValue(AuthorizedAmount) * (CType(Me.Claim.DiscountPercent, Decimal) / 100)
             End If
 
             If (liabLimit = 0D And CType(Me.Claim.Certificate.ProductLiabilityLimit.ToString, Decimal) = 0 And CType(Me.Claim.CertificateItemCoverage.CoverageLiabilityLimit, Decimal) = 0) Then
                 liabLimit = 999999999.99
             End If
 
-            If (Me.AuthorizedAmount > liabLimit) Then
+            If (GetDecimalValue(Me.AuthorizedAmount) > liabLimit) Then
                 If Me.ContainsDeductible Then
                     assurPays = liabLimit - IIf(Me.Deductible Is Nothing, New Decimal(0D), Me.Deductible) - IIf(Me.SalvageAmount, New Decimal(0D), Me.SalvageAmount)
                 Else
@@ -1611,6 +1611,14 @@ Public NotInheritable Class ClaimAuthorization
             If Not item Is Nothing Then item.IsDeleted = True
         End If
     End Sub
+
+    Private Function GetDecimalValue(ByVal decimalObj As DecimalType, Optional ByVal decimalDigit As Integer = 2) As Decimal
+        If decimalObj Is Nothing Then
+            Return 0D
+        Else
+            Return Math.Round(decimalObj.Value, decimalDigit, MidpointRounding.AwayFromZero)
+        End If
+    End Function
 #End Region
 
 #Region "DataView Retrieveing Methods"

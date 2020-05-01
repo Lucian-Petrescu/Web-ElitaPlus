@@ -64,7 +64,7 @@ Friend NotInheritable Class PRCalculateFinancialBalance
             noOfMonthsPassed = (DateTime.Now.Month - pCertificate.FinanceDate.Value.Month) + 12 * (DateTime.Now.Year - pCertificate.FinanceDate.Value.Year)
             Dim downPayment As DecimalType = IIf(IsDBNull(pCertificate.DownPayment), 0, pCertificate.DownPayment)
 
-            val = (originalRetailPrice - downPayment - pCertificate.AdvancePayment - (noOfMonthsPassed * pCertificate.Financed_installment_Amount.Value))
+            val = (originalRetailPrice - CType(downPayment, Decimal) - CType(pCertificate.AdvancePayment, Decimal) - (noOfMonthsPassed * pCertificate.Financed_installment_Amount.Value))
 
             If val < 0.0 Then
                 val = 0.0

@@ -110,6 +110,7 @@ Public Class CoverageConseqDamage
     'Initialization code for new objects
     Private Sub Initialize()
     End Sub
+
 #End Region
 
 
@@ -353,7 +354,7 @@ Public Class CoverageConseqDamage
 
             Dim obj As CoverageConseqDamage = CType(objectToValidate, CoverageConseqDamage)
             If Not String.IsNullOrEmpty(obj.LiabilityLimitBaseXcd) AndAlso Not obj.LiabilityLimitBaseXcd.Equals(Codes.COVERAGE_CONSEQ_DAMAGE_LIABILITY_LIMIT_BASED_ON_NOTAPPL) Then
-                If obj.LiabilityLimitCumulative Is Nothing Or obj.LiabilityLimitCumulative < 1.0 Then
+                If obj.LiabilityLimitCumulative Is Nothing Or CType(obj.LiabilityLimitCumulative, Decimal) < 1.0 Then
                     Return False
                 End If
             End If
