@@ -15,7 +15,7 @@
 		</HEAD>
 	<body leftMargin="0" topMargin="0" onload="changeScrollbarColor();" MS_POSITIONING="GridLayout">
 		<form id="Form1" method="post" runat="server">
-			<INPUT id="txtNextPageID" type="hidden" name="Hidden1" runat="server"> 
+            <INPUT id="txtNextPageID" type="hidden" name="Hidden1" runat="server"/> 
 			<!--Start Header-->
 			<TABLE style="BORDER-RIGHT: black 1px solid; BORDER-TOP: black 1px solid; MARGIN: 5px; BORDER-LEFT: black 1px solid; BORDER-BOTTOM: black 1px solid"
 				cellSpacing="0" cellPadding="0" width="98%" bgColor="#d5d6e4" border="0">

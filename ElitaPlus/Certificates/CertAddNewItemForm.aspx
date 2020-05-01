@@ -67,8 +67,7 @@
                                 <table id="TableFixed" cellspacing="0" cellpadding="0" width="100%" border="0">
                                     <tr>
                                         <td width="100%">
-                                            <uc1:UserControlCertificateInfo ID="moCertificateInfoController" runat="server">
-                                            </uc1:UserControlCertificateInfo>
+                                            <uc1:UserControlCertificateInfo ID="moCertificateInfoController" runat="server"></uc1:UserControlCertificateInfo>
                                         </td>
                                     </tr>
                                     <tr>
@@ -112,7 +111,7 @@
                                                     <td style="width: 50%" valign="middle" nowrap align="left">
                                                         &nbsp;
                                                         <asp:DropDownList ID="cboManufacturerId" TabIndex="11" runat="server">
-                                                        </asp:DropDownList></asp:TextBox>
+                                                        </asp:DropDownList>
                                                     </td></tr>
                                                     <tr>
                                                         <td>

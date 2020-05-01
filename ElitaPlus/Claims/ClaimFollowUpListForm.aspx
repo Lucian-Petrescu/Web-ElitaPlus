@@ -133,7 +133,7 @@
                   <td>
                   </td>
               </tr>
-            </tr>
+            
             <tr>
                   <td align="left">
                       <asp:dropdownlist id="cboNonOperatedClaims" runat="server" AutoPostBack="True" SkinID="MediumDropDown"></asp:dropdownlist>
