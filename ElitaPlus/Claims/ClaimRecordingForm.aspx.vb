@@ -1150,12 +1150,6 @@ Public Class ClaimRecordingForm
                             txtDvcModel.Text = DirectCast(row.FindControl("lblModel"), Label).Text
                         End If
 
-                        'txtDvcColor.Text = DirectCast(row.FindControl("lblColor"), Label).Text
-                        'lblDvcColorValue.Text = DirectCast(row.FindControl("lblColor"), Label).Text
-                        'txtDvcCapacity.Text = DirectCast(row.FindControl("lblCapacity"), Label).Text
-                        'lblDvcCapacityValue.Text = DirectCast(row.FindControl("lblCapacity"), Label).Text
-                        'txtDvcCarrier.Text = DirectCast(row.FindControl("lblCarrier"), Label).Text
-                        'lblDvcCarrierValue.Text = DirectCast(row.FindControl("lblCarrier"), Label).Text
                         txtDvcImei.Text = DirectCast(row.FindControl("lblImeiNo"), Label).Text
                         lblDvcImeiValue.Text = DirectCast(row.FindControl("lblImeiNo"), Label).Text
                         txtDvcSerialNumber.Text = DirectCast(row.FindControl("lblSerialNo"), Label).Text
@@ -1178,34 +1172,28 @@ Public Class ClaimRecordingForm
             Dim makesAndModels = GetMakesAndModels(Dealer)
 
             If (makesAndModels IsNot Nothing) Then
-                    Dim ds As New DataSet()
-                    ds.ReadXml(New StringReader(makesAndModels))
+                Dim ds As New DataSet()
+                ds.ReadXml(New StringReader(makesAndModels))
 
-                    If (ds.Tables.Count > 1) Then
-
-                        If ds.Tables(0).Columns.Contains("Manufacturer") = True Then
-                            ddlDvcMake.DataSource = ds.Tables(0).DefaultView.ToTable(True, "Manufacturer")
-                            ddlDvcMake.DataTextField = "MANUFACTURER"
-                            ddlDvcMake.DataValueField = "MANUFACTURER"
-                            ddlDvcMake.DataBind()
-                        End If
-
-                        If ds.Tables(0).Columns.Contains("Model") = True Then
-                            ddlDvcModel.DataSource = ds.Tables(0).DefaultView.ToTable(True, "Model")
-                            ddlDvcModel.DataTextField = "MODEL"
-                            ddlDvcModel.DataValueField = "MODEL"
-                            ddlDvcModel.DataBind()
-                        End If
+                If (ds.Tables.Count > 1) Then
+                    If ds.Tables(0).Columns.Contains("Manufacturer") = True Then
+                        ddlDvcMake.DataSource = ds.Tables(0).DefaultView.ToTable(True, "Manufacturer")
+                        ddlDvcMake.DataTextField = "MANUFACTURER"
+                        ddlDvcMake.DataValueField = "MANUFACTURER"
+                        ddlDvcMake.DataBind()
+                    End If
+                    If ds.Tables(0).Columns.Contains("Model") = True Then
+                        ddlDvcModel.DataSource = ds.Tables(0).DefaultView.ToTable(True, "Model")
+                        ddlDvcModel.DataTextField = "MODEL"
+                        ddlDvcModel.DataValueField = "MODEL"
+                        ddlDvcModel.DataBind()
                     End If
                 End If
-            'End If
-
+            End If
         Catch ex As Exception
             HandleErrors(ex, MasterPage.MessageController)
         End Try
-
-        BindModifiedDeviceInfo(Nothing)
-
+         BindModifiedDeviceInfo(Nothing)
     End Sub
     Protected Sub GridItems_RowDataBound(sender As Object, e As GridViewRowEventArgs) Handles GridItems.RowDataBound
         Try

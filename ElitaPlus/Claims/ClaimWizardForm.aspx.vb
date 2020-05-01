@@ -313,19 +313,9 @@ Public Class ClaimWizardForm
 
                 step2_ddlClaimedManuf.Attributes.Add("onchange", String.Format("LoadSKU('{0}','{1}','{2}','{3}');", step2_ddlClaimedManuf.ClientID, step2_txtClaimedModel.ClientID, step2_ddlClaimedSku.ClientID, hdnSelectedClaimedSku.ClientID))
                 step2_txtClaimedModel.Attributes.Add("onchange", String.Format("LoadSKU('{0}','{1}','{2}','{3}');", step2_ddlClaimedManuf.ClientID, step2_txtClaimedModel.ClientID, step2_ddlClaimedSku.ClientID, hdnSelectedClaimedSku.ClientID))
-                'step3_ddlEnrolledManuf.Attributes.Add("onchange", String.Format("LoadSKU('{0}','{1}','{2}','{3}');", step3_ddlEnrolledManuf.ClientID, txtEnrolledModel.ClientID, step3_ddlEnrolledSku.ClientID, hdnSelectedEnrolledSku.ClientID))
-                'txtEnrolledModel.Attributes.Add("onchange", String.Format("LoadSKU('{0}','{1}','{2}','{3}');", step3_ddlEnrolledManuf.ClientID, txtEnrolledModel.ClientID, step3_ddlEnrolledSku.ClientID, hdnSelectedEnrolledSku.ClientID))
-                'step3_ddlClaimedManuf.Attributes.Add("onchange", String.Format("LoadSKU('{0}','{1}','{2}','{3}');", step3_ddlClaimedManuf.ClientID, txtClaimedModel.ClientID, step3_ddlClaimedSku.ClientID, hdnSelectedClaimedSku.ClientID))
-                'txtClaimedModel.Attributes.Add("onchange", String.Format("LoadSKU('{0}','{1}','{2}','{3}');", step3_ddlClaimedManuf.ClientID, txtClaimedModel.ClientID, step3_ddlClaimedSku.ClientID, hdnSelectedClaimedSku.ClientID))
-
                 step2_ddlClaimedSku.Attributes.Add("onchange", String.Format("FillHiddenField('{0}','{1}');", step2_ddlClaimedSku.ClientID, hdnSelectedClaimedSku.ClientID))
 
-                'step3_ddlEnrolledSku.Attributes.Add("onchange", String.Format("FillHiddenField('{0}','{1}');", step3_ddlEnrolledSku.ClientID, hdnSelectedEnrolledSku.ClientID))
-                'step3_ddlClaimedSku.Attributes.Add("onchange", String.Format("FillHiddenField('{0}','{1}');", step3_ddlClaimedSku.ClientID, hdnSelectedClaimedSku.ClientID))
-
-
                 PopulateStepUIandData()
-
 
             End If
             BindBoPropertiesToLabels(Me.State.StepName)
@@ -1179,8 +1169,6 @@ Public Class ClaimWizardForm
                 TranslateGridHeader(Grid)
                 TranslateGridHeader(GridClaimImages)
                 TranslateGridHeader(GridClaimAuthorization)
-                'TranslateGridHeader(gridClaimCaseDeviceInfo)
-                'ucClaimDeviceInfo.Translate()
                 ucClaimConsequentialDamage.Translate()
                 EnableDisableWizardControls(wizardStep)
 
@@ -1779,36 +1767,6 @@ Public Class ClaimWizardForm
                                                    .AddBlankItem = True
                                                    })
             Case ClaimWizardSteps.Step3
-                'If Me.State.ClaimBO.CertificateItem.IsEquipmentRequired Then
-                '    If Not String.IsNullOrEmpty(Me.State.DealerBO.EquipmentListCode) Then
-                '        Dim listcontextForManufacturerByEquipmentCode As ListContext = New ListContext()
-                '        listcontextForManufacturerByEquipmentCode.EquipmentListCode = Me.State.DealerBO.EquipmentListCode
-                '        listcontextForManufacturerByEquipmentCode.EffectiveOnDate = Date.Now
-
-                '        Dim ManufacturerByEquipmentList As ListItem() = CommonConfigManager.Current.ListManager.GetList("ManufacturerByEquipment", Thread.CurrentPrincipal.GetLanguageCode(), listcontextForManufacturerByEquipmentCode)
-                '        'step3_ddlEnrolledManuf.Populate(ManufacturerByEquipmentList, New PopulateOptions() With
-                '        '{
-                '        '.AddBlankItem = True
-                '        '})
-                '    Else
-                '        Me.MasterPage.MessageController.AddWarning("EQUIPMENT_LIST_DOES_NOT_EXIST_FOR_DEALER")
-                '    End If
-                '    Dim listManufacturerByEquipment As New ListContext()
-                '    listManufacturerByEquipment.CompanyGroupId = ElitaPlusIdentity.Current.ActiveUser.CompanyGroup.Id
-                '    Dim cboList As DataElements.ListItem() = CommonConfigManager.Current.ListManager.GetList(listCode:="ManufacturerByCompanyGroup", context:=listManufacturerByEquipment)
-                '    'step3_ddlClaimedManuf.Populate(cboList, New PopulateOptions() With
-                '    '                                  {
-                '    '                                  .AddBlankItem = True
-                '    '                                  })
-                'Else
-                '    Dim listManufacturerByEquipment As New ListContext
-                '    listManufacturerByEquipment.CompanyGroupId = ElitaPlusIdentity.Current.ActiveUser.CompanyGroup.Id
-                '    Dim cboList As DataElements.ListItem() = CommonConfigManager.Current.ListManager.GetList(listCode:="ManufacturerByCompanyGroup", context:=listManufacturerByEquipment)
-                '    'step3_ddlEnrolledManuf.Populate(cboList, New PopulateOptions() With
-                '    '                                   {
-                '    '                                   .AddBlankItem = True
-                '    '                                   })
-                'End If
 
                 'Me.BindListControlToDataView(Me.step3_cboCauseOfLossId, LookupListNew.GetCauseOfLossByCoverageTypeAndSplSvcLookupList(ElitaPlusIdentity.Current.ActiveUser.CompanyGroup.Id, Me.State.ClaimBO.CoverageTypeId, Me.State.CertBO.DealerId, Authentication.LangId, Me.State.CertBO.ProductCode, , False))
 
@@ -2274,15 +2232,7 @@ Public Class ClaimWizardForm
         Me.State.ClaimBO.RecalculateDeductibleForChanges()
         Me.State.ClaimIssuesView = Me.State.ClaimBO.GetClaimIssuesView()
         Me.State.ClaimImagesView = Me.State.ClaimBO.GetClaimImagesView()
-        ' Check if Dealer uses Equipment
-
-        'If (Me.State.ClaimBO.Dealer.UseEquipmentId.Equals(Me.State.yesId)) Then
-        '    Me.dvClaimEquipment.Visible = True
-        '    PopulateClaimEquipmentForStep3()
-        'Else
-        '    Me.dvClaimEquipment.Visible = False
-        'End If
-
+       
         'populateClaimEquipment()
         PopulateClaimIssuesGrid()
         PopulateClaimImagesGrid()
@@ -2418,22 +2368,7 @@ Public Class ClaimWizardForm
         End If
 
         If Me.State.ClaimBO.CertificateItem.IsEquipmentRequired Then
-            'If Not Me.State.ClaimBO.EnrolledEquipment Is Nothing Then
-            '    With Me.State.ClaimBO.EnrolledEquipment
-            '        txtEnrolledSku.Text = .SKU
-            '        txtenrolledSerial.Text = .SerialNumber
-            '        txtEnrolledModel.Text = .Model
-            '        txtEnrolledMake.Text = .Manufacturer
-            '    End With
-            'End If
-            'If Not Me.State.ClaimBO.ClaimedEquipment Is Nothing Then
-            '    With Me.State.ClaimBO.ClaimedEquipment
-            '        txtClaimedSku.Text = .SKU
-            '        txtClaimedSerial.Text = .SerialNumber
-            '        txtClaimedModel.Text = .Model
-            '        txtClaimedMake.Text = .Manufacturer
-            '    End With
-            'End If
+
             'populate best replacement record
             With Me.step3_ReplacementOption
                 .thisPage = Me
@@ -2446,15 +2381,6 @@ Public Class ClaimWizardForm
             End With
         End If
 
-        'If State.ClaimCaseDeviceInfoDV Is Nothing Then 'get the device info if no cached yet
-        '    State.ClaimCaseDeviceInfoDV = ClaimBase.GetClaimCaseDeviceInfo(State.ClaimBO.Id)
-        'End If
-        'If State.ClaimCaseDeviceInfoDV.Count > 0 Then
-        '    Me.gridClaimCaseDeviceInfo.Visible = True
-        '    gridClaimCaseDeviceInfo.DataSource = State.ClaimCaseDeviceInfoDV
-        '    gridClaimCaseDeviceInfo.DataBind()
-        'End If
-
         With Me.State.ClaimBO
             If Not .EnrolledEquipment Is Nothing Or Not .ClaimedEquipment Is Nothing Then
                 With Me.ucClaimDeviceInfo
@@ -2465,22 +2391,6 @@ Public Class ClaimWizardForm
         End With
 
         If Me.State.ClaimBO.CertificateItem.IsEquipmentRequired Then
-            'If Not Me.State.ClaimBO.EnrolledEquipment Is Nothing Then
-            '    With Me.State.ClaimBO.EnrolledEquipment
-            '        txtEnrolledSku.Text = .SKU
-            '        txtenrolledSerial.Text = .SerialNumber
-            '        txtEnrolledModel.Text = .Model
-            '        txtEnrolledMake.Text = .Manufacturer
-            '    End With
-            'End If
-            'If Not Me.State.ClaimBO.ClaimedEquipment Is Nothing Then
-            '    With Me.State.ClaimBO.ClaimedEquipment
-            '        txtClaimedSku.Text = .SKU
-            '        txtClaimedSerial.Text = .SerialNumber
-            '        txtClaimedModel.Text = .Model
-            '        txtClaimedMake.Text = .Manufacturer
-            '    End With
-            'End If
             'populate best replacement record
             With Me.step3_ReplacementOption
                 .thisPage = Me
@@ -2584,104 +2494,6 @@ Public Class ClaimWizardForm
 
     'End Sub
 
-    Sub PopulateClaimEquipmentForStep3()
-        'With Me.State.ClaimBO
-        'enrolled equipment
-        'Dim flag As Boolean = False
-        'If ElitaPlusPrincipal.Current.IsInRole(Codes.USER_ROLE_EQUIPMENT_UPDATE) Then flag = True
-
-        'ControlMgr.SetVisibleControl(Me, Me.step3_ddlEnrolledManuf, flag)
-        'ControlMgr.SetVisibleControl(Me, Me.txtEnrolledMake, Not flag)
-        'ControlMgr.SetVisibleControl(Me, Me.step3_ddlEnrolledSku, flag)
-        'ControlMgr.SetVisibleControl(Me, Me.txtEnrolledSku, Not flag)
-
-        'Me.SetEnabledForControlFamily(Me.txtEnrolledMake, flag)
-        'Me.SetEnabledForControlFamily(Me.txtEnrolledModel, flag, True)
-        'Me.SetEnabledForControlFamily(Me.txtenrolledSerial, flag, True)
-        'Me.SetEnabledForControlFamily(Me.txtEnrolledSku, flag)
-
-        'If Not .EnrolledEquipment Is Nothing Then
-        '    Dim dvEnrolled As DataView = LookupListNew.GetManufacturerbyEquipmentList(Me.State.DealerBO.EquipmentListCode, Date.Now)
-        '    If Not dvEnrolled Is Nothing AndAlso Not BusinessObjectBase.FindRow(.EnrolledEquipment.ManufacturerId, LookupListNew.COL_ID_NAME, dvEnrolled.Table) Is Nothing Then
-        '        'Me.PopulateControlFromBOProperty(Me.step3_ddlEnrolledManuf, .EnrolledEquipment.ManufacturerId)
-        '    Else
-        '        Me.MasterPage.MessageController.AddError("MANUFACTURER_ON_CERT_ITEM_NOT_IN_EQUIPMENT_LIST")
-        '    End If
-
-        '    'Me.PopulateControlFromBOProperty(Me.step3_ddlEnrolledManuf, .EnrolledEquipment.ManufacturerId)
-        '    'Me.PopulateControlFromBOProperty(Me.txtEnrolledMake, .EnrolledEquipment.Manufacturer)
-        '    'Me.PopulateControlFromBOProperty(Me.txtEnrolledModel, .EnrolledEquipment.Model)
-        '    'Me.PopulateControlFromBOProperty(Me.txtenrolledSerial, .EnrolledEquipment.SerialNumber)
-        '    'Me.PopulateControlFromBOProperty(Me.txtEnrolledSku, .EnrolledEquipment.SKU)
-
-        '    '***********************Pre populate Enrolled SKU based on the Equipment and Model
-        '    If Not .EnrolledEquipment.EquipmentId.Equals(Guid.Empty) Then
-        '        Dim dv As DataView = Me.State.ClaimBO.CertificateItem.LoadSku(.EnrolledEquipment.EquipmentId, Me.State.ClaimBO.Dealer.Id)
-        '        If Not dv Is Nothing AndAlso dv.Table.Rows.Count > 0 Then
-        '            'Me.step3_ddlEnrolledSku.DataSource = dv
-        '            'Me.step3_ddlEnrolledSku.DataTextField = "SKU_NUMBER"
-        '            'Me.step3_ddlEnrolledSku.DataValueField = "SKU_NUMBER"
-        '            'Me.step3_ddlEnrolledSku.DataBind()
-
-
-        '            If Not dv Is Nothing AndAlso dv.FindRows(.EnrolledEquipment.SKU).Length > 0 Then
-        '                'Me.PopulateControlFromBOProperty(Me.txtEnrolledSku, .EnrolledEquipment.SKU)
-        '                'Me.step3_ddlEnrolledSku.SelectedValue = .EnrolledEquipment.SKU
-        '                hdnSelectedEnrolledSku.Value = .EnrolledEquipment.SKU
-        '            End If
-        '        End If
-        '    End If
-        'End If
-        '***********************
-        'claimed equipment
-        'ControlMgr.SetVisibleControl(Me, Me.step3_ddlClaimedManuf, flag)
-        'ControlMgr.SetVisibleControl(Me, Me.txtClaimedMake, Not flag)
-        'ControlMgr.SetVisibleControl(Me, Me.step3_ddlClaimedSku, flag)
-        'ControlMgr.SetVisibleControl(Me, Me.txtClaimedSku, Not flag)
-
-        'Me.SetEnabledForControlFamily(Me.txtClaimedMake, flag)
-        'Me.SetEnabledForControlFamily(Me.txtClaimedModel, flag, True)
-        'Me.SetEnabledForControlFamily(Me.txtClaimedSerial, flag, True)
-        'Me.SetEnabledForControlFamily(Me.txtClaimedSku, flag)
-
-        'If Not .ClaimedEquipment Is Nothing Then
-        '    'Me.PopulateControlFromBOProperty(Me.step3_ddlClaimedManuf, .ClaimedEquipment.ManufacturerId)
-        '    'Me.PopulateControlFromBOProperty(Me.txtClaimedMake, .ClaimedEquipment.Manufacturer)
-        '    'Me.PopulateControlFromBOProperty(Me.txtClaimedModel, .ClaimedEquipment.Model)
-        '    'Me.PopulateControlFromBOProperty(Me.txtClaimedSerial, .ClaimedEquipment.SerialNumber)
-        '    'Me.PopulateControlFromBOProperty(Me.txtClaimedSku, .ClaimedEquipment.SKU)
-
-        '    '***********************Pre populate Claimed SKU based on the Equipment and Model
-        '    If Not .ClaimedEquipment.EquipmentId.Equals(Guid.Empty) Then
-        '        Dim dv As DataView = Me.State.ClaimBO.CertificateItem.LoadSku(.ClaimedEquipment.EquipmentId, Me.State.ClaimBO.Dealer.Id)
-        '        If Not dv Is Nothing AndAlso dv.Table.Rows.Count > 0 Then
-        '            'Me.step3_ddlClaimedSku.DataSource = dv
-        '            'Me.step3_ddlClaimedSku.DataTextField = "SKU_NUMBER"
-        '            'Me.step3_ddlClaimedSku.DataValueField = "SKU_NUMBER"
-        '            'Me.step3_ddlClaimedSku.DataBind()
-
-        '            If Not dv Is Nothing AndAlso dv.FindRows(.ClaimedEquipment.SKU).Length > 0 Then
-        '                'Me.PopulateControlFromBOProperty(Me.txtClaimedSku, .ClaimedEquipment.SKU)
-        '                'Me.step3_ddlClaimedSku.SelectedItem.Value = .ClaimedEquipment.SKU
-        '                'hdnSelectedClaimedSku.Value = .ClaimedEquipment.SKU
-        '            End If
-        '        End If
-        '    End If
-        'End If
-        '***********************
-
-
-        'If Not .EnrolledEquipment Is Nothing Or Not .ClaimedEquipment Is Nothing Then
-        '        With Me.ucClaimDeviceInfo
-        '            .thisPage = Me
-        '            .ClaimBO = CType(Me.State.ClaimBO, ClaimBase)
-        '        End With
-        '    End If
-
-        'End With
-
-    End Sub
-
     Private Sub PopulateBOFromFormForStep3()
 
         Dim AssurantPays As Guid = LookupListNew.GetIdFromCode(LookupListNew.GetWhoPaysLookupList(Authentication.LangId), Codes.ASSURANT_PAYS)
@@ -2722,52 +2534,6 @@ Public Class ClaimWizardForm
                     Me.State.ClaimBO.ContactInfoId = Me.State.ClaimBO.ContactInfo.Id
                 End If
             End If
-            'If Me.State.ClaimBO.CertificateItem.IsEquipmentRequired Then
-            '    If (Me.step3_ddlEnrolledManuf.Items.Count > 0 AndAlso Not New Guid(Me.step3_ddlEnrolledManuf.SelectedItem.Value).Equals(Guid.Empty) AndAlso Not String.IsNullOrEmpty(txtEnrolledModel.Text)) Then
-            '        'Resolve the equipment based on make and model
-            '        If Me.State.ClaimBO.EnrolledEquipment Is Nothing Then Me.State.ClaimBO.EnrolledEquipment = CType(Me.State.ClaimBO.ClaimEquipmentChildren.GetNewChild(), ClaimEquipment)
-            '        Me.PopulateBOProperty(Me.State.ClaimBO.EnrolledEquipment, "ManufacturerId", Me.step3_ddlEnrolledManuf)
-            '        Me.PopulateBOProperty(Me.State.ClaimBO.EnrolledEquipment, "Model", Me.txtEnrolledModel)
-            '        Me.PopulateBOProperty(Me.State.ClaimBO.EnrolledEquipment, "SerialNumber", Me.txtenrolledSerial)
-            '        Me.PopulateBOProperty(Me.State.ClaimBO.EnrolledEquipment, "ClaimEquipmentTypeId", LookupListNew.GetIdFromCode(LookupListNew.LK_CLAIM_EQUIPMENT_TYPE, "E"))
-            '        Me.State.ClaimBO.EnrolledEquipment.SKU = hdnSelectedEnrolledSku.Value
-            '        If (Not Me.State.ClaimBO.EnrolledEquipment.ManufacturerId.Equals(Guid.Empty) AndAlso Not String.IsNullOrEmpty(Me.State.ClaimBO.EnrolledEquipment.Model)) Then
-            '            Me.State.ClaimBO.EnrolledEquipment.EquipmentId = Equipment.GetEquipmentIdByEquipmentList(Me.State.ClaimBO.Dealer.EquipmentListCode, DateTime.Today, Me.State.ClaimBO.EnrolledEquipment.ManufacturerId, Me.State.ClaimBO.EnrolledEquipment.Model)
-            '        End If
-            '    End If
-
-            '    Me.PopulateBOProperty(Me.State.ClaimBO.ClaimedEquipment, "ManufacturerId", Me.step3_ddlClaimedManuf)
-            '    Me.PopulateBOProperty(Me.State.ClaimBO.ClaimedEquipment, "Model", Me.txtClaimedModel)
-            '    Me.PopulateBOProperty(Me.State.ClaimBO.ClaimedEquipment, "SerialNumber", Me.txtClaimedSerial)
-            '    Me.PopulateBOProperty(Me.State.ClaimBO.ClaimedEquipment, "ClaimEquipmentTypeId", LookupListNew.GetIdFromCode(LookupListNew.LK_CLAIM_EQUIPMENT_TYPE, "C"))
-            '    Me.State.ClaimBO.ClaimedEquipment.SKU = hdnSelectedClaimedSku.Value
-            '    If (Not Me.State.ClaimBO.ClaimedEquipment.ManufacturerId.Equals(Guid.Empty) AndAlso Not String.IsNullOrEmpty(Me.State.ClaimBO.ClaimedEquipment.Model)) Then
-            '        Me.State.ClaimBO.ClaimedEquipment.EquipmentId = Equipment.GetEquipmentIdByEquipmentList(Me.State.ClaimBO.Dealer.EquipmentListCode, DateTime.Today, Me.State.ClaimBO.ClaimedEquipment.ManufacturerId, Me.State.ClaimBO.ClaimedEquipment.Model)
-            '    End If
-            'End If
-            'If Me.State.ClaimBO.CertificateItem.IsEquipmentRequired Then
-            '    If (Me.step3_ddlEnrolledManuf.Items.Count > 0 AndAlso Not New Guid(Me.step3_ddlEnrolledManuf.SelectedItem.Value).Equals(Guid.Empty) AndAlso Not String.IsNullOrEmpty(txtEnrolledModel.Text)) Then
-            '        'Resolve the equipment based on make and model
-            '        If Me.State.ClaimBO.EnrolledEquipment Is Nothing Then Me.State.ClaimBO.EnrolledEquipment = CType(Me.State.ClaimBO.ClaimEquipmentChildren.GetNewChild(), ClaimEquipment)
-            '        Me.PopulateBOProperty(Me.State.ClaimBO.EnrolledEquipment, "ManufacturerId", Me.step3_ddlEnrolledManuf)
-            '        Me.PopulateBOProperty(Me.State.ClaimBO.EnrolledEquipment, "Model", Me.txtEnrolledModel)
-            '        Me.PopulateBOProperty(Me.State.ClaimBO.EnrolledEquipment, "SerialNumber", Me.txtenrolledSerial)
-            '        Me.PopulateBOProperty(Me.State.ClaimBO.EnrolledEquipment, "ClaimEquipmentTypeId", LookupListNew.GetIdFromCode(LookupListNew.LK_CLAIM_EQUIPMENT_TYPE, "E"))
-            '        Me.State.ClaimBO.EnrolledEquipment.SKU = hdnSelectedEnrolledSku.Value
-            '        If (Not Me.State.ClaimBO.EnrolledEquipment.ManufacturerId.Equals(Guid.Empty) AndAlso Not String.IsNullOrEmpty(Me.State.ClaimBO.EnrolledEquipment.Model)) Then
-            '            Me.State.ClaimBO.EnrolledEquipment.EquipmentId = Equipment.GetEquipmentIdByEquipmentList(Me.State.ClaimBO.Dealer.EquipmentListCode, DateTime.Today, Me.State.ClaimBO.EnrolledEquipment.ManufacturerId, Me.State.ClaimBO.EnrolledEquipment.Model)
-            '        End If
-            '    End If
-
-            '    Me.PopulateBOProperty(Me.State.ClaimBO.ClaimedEquipment, "ManufacturerId", Me.step3_ddlClaimedManuf)
-            '    Me.PopulateBOProperty(Me.State.ClaimBO.ClaimedEquipment, "Model", Me.txtClaimedModel)
-            '    Me.PopulateBOProperty(Me.State.ClaimBO.ClaimedEquipment, "SerialNumber", Me.txtClaimedSerial)
-            '    Me.PopulateBOProperty(Me.State.ClaimBO.ClaimedEquipment, "ClaimEquipmentTypeId", LookupListNew.GetIdFromCode(LookupListNew.LK_CLAIM_EQUIPMENT_TYPE, "C"))
-            '    Me.State.ClaimBO.ClaimedEquipment.SKU = hdnSelectedClaimedSku.Value
-            '    If (Not Me.State.ClaimBO.ClaimedEquipment.ManufacturerId.Equals(Guid.Empty) AndAlso Not String.IsNullOrEmpty(Me.State.ClaimBO.ClaimedEquipment.Model)) Then
-            '        Me.State.ClaimBO.ClaimedEquipment.EquipmentId = Equipment.GetEquipmentIdByEquipmentList(Me.State.ClaimBO.Dealer.EquipmentListCode, DateTime.Today, Me.State.ClaimBO.ClaimedEquipment.ManufacturerId, Me.State.ClaimBO.ClaimedEquipment.Model)
-            '    End If
-            'End If
 
             If Me.State.IsClaimDenied Then
                 Me.PopulateBOProperty(Me.State.ClaimBO, "DeniedReasonId", Me.step3_cboDeniedReason)
@@ -2974,14 +2740,6 @@ Public Class ClaimWizardForm
                 Me.BindBOPropertyToLabel(Me.State.ClaimBO, "DeniedReasonId", Me.step3_lblDeniedReason)
                 Me.BindBOPropertyToLabel(Me.State.ClaimBO, "Fraudulent", Me.step3_lblPotFraudulent)
                 Me.BindBOPropertyToLabel(Me.State.ClaimBO, "Complaint", Me.step3_lblComplaint)
-                'Me.BindBOPropertyToLabel(Me.State.ClaimBO.EnrolledEquipment, "ManufacturerId", Me.LBLeNROLLEDmAKE)
-                'Me.BindBOPropertyToLabel(Me.State.ClaimBO.ClaimedEquipment, "ManufacturerId", Me.lblClaimedMake)
-                'Me.BindBOPropertyToLabel(Me.State.ClaimBO.EnrolledEquipment, "Model", Me.lblEnrolledModel)
-                'Me.BindBOPropertyToLabel(Me.State.ClaimBO.ClaimedEquipment, "Model", Me.lblClaimedModel)
-                'Me.BindBOPropertyToLabel(Me.State.ClaimBO.EnrolledEquipment, "SerialNumber", Me.lblEnrolledSerialNumber)
-                'Me.BindBOPropertyToLabel(Me.State.ClaimBO.ClaimedEquipment, "SerialNumber", Me.lblClaimedSerialNumber)
-                'Me.BindBOPropertyToLabel(Me.State.ClaimBO.EnrolledEquipment, "SKU", Me.lblEnrolledSKu)
-                'Me.BindBOPropertyToLabel(Me.State.ClaimBO.ClaimedEquipment, "SKU", Me.lblClaimedSKu)
                 Me.BindBOPropertyToLabel(Me.State.ClaimBO, "PickUpDate", Me.step3_lblPickupDate)
                 Me.BindBOPropertyToLabel(Me.State.ClaimBO, "VisitDate", Me.step3_lblVisitDate)
 
@@ -3705,24 +3463,7 @@ Public Class ClaimWizardForm
     End Sub
 
 #End Region
-#Region "DeviceInfoGrid"
-    'Private Sub gridClaimCaseDeviceInfo_RowDataBound(ByVal sender As Object, ByVal e As GridViewRowEventArgs) Handles gridClaimCaseDeviceInfo.RowDataBound
-    '    Try
-    '        If (e.Row.RowType = DataControlRowType.DataRow) _
-    '            OrElse (e.Row.RowType = DataControlRowType.Separator) Then
-    '            Dim strPurchasedDate As String = Convert.ToString(e.Row.Cells(gridClaimCaseDeviceInfoPurchasedDate).Text)
-    '            strPurchasedDate = strPurchasedDate.Replace("&nbsp;", "")
-    '            If String.IsNullOrWhiteSpace(strPurchasedDate) = False Then
-    '                Dim tempPurchasedDate = Convert.ToDateTime(e.Row.Cells(gridClaimCaseDeviceInfoPurchasedDate).Text.Trim())
-    '                Dim formattedPurchasedDate = GetDateFormattedString(tempPurchasedDate)
-    '                e.Row.Cells(gridClaimCaseDeviceInfoPurchasedDate).Text = Convert.ToString(formattedPurchasedDate)
-    '            End If
-    '        End If
-    '    Catch ex As Exception
-    '        HandleErrors(ex, MasterPage.MessageController)
-    '    End Try
-    'End Sub
-#End Region
+
 #Region "Claim Issues Grid related"
 
     Public Sub PopulateClaimIssuesGrid()
