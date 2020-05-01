@@ -150,6 +150,15 @@ Namespace Reports
         Protected WithEvents rdealer As Global.System.Web.UI.WebControls.RadioButton
 
         '''<summary>
+        '''multipleDropControl control.
+        '''</summary>
+        '''<remarks>
+        '''Auto-generated field.
+        '''To modify move field declaration from designer file to code-behind file.
+        '''</remarks>
+        Protected WithEvents multipleDropControl As Global.Assurant.ElitaPlus.ElitaPlusWebApp.Common.MultipleColumnDDLabelControl
+
+        '''<summary>
         '''btngenrpt control.
         '''</summary>
         '''<remarks>

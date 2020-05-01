@@ -15,12 +15,15 @@
     <meta content="http://schemas.microsoft.com/intellisense/ie5" name="vs_targetSchema"/>
     <link href="../Styles.css" type="text/css" rel="STYLESHEET"/>
 
-    <script language="JavaScript" src="../Navigation/Scripts/GlobalHeader.js">function TABLE1_onclick() {
+    <script language="JavaScript" src="../Navigation/Scripts/GlobalHeader.js">
+        
+    </script>
+    <script type="text/javascript">
+        function TABLE1_onclick() {
 
-}
+        }
 
     </script>
-
 </head>
 <body leftmargin="0" topmargin="0" onload="changeScrollbarColor();" border="0" ms_positioning="GridLayout">
     <form id="Form1" method="post" runat="server">

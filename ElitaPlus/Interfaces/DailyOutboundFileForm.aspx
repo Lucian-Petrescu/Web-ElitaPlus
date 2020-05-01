@@ -242,7 +242,7 @@
                                 OnCheckedChanged="chkbxHeader_checkChanged" AutoPostBack="true" />
                             <%--<input id="chkAll" onclick="SelectAllCheckboxes(this);" runat="server" type="checkbox" />--%>
                         </HeaderTemplate>
-                        <asp:ItemStyle HorizontalAlign="Center" Width="5%" />
+                        <ItemStyle HorizontalAlign="Center" Width="5%" />
                         <ItemTemplate>
                             <asp:CheckBox ID="SelectChkBx" runat="server" onclick="javascript:return selectUnchecked();" 
                             OnCheckedChanged="RememberOldValues" AutoPostBack="true"/>

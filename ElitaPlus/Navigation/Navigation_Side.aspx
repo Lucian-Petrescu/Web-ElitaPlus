@@ -15,12 +15,12 @@
 <body onresize="resizeForm(document.getElementById('scroller'));" bgcolor="#f0f2f5"
     leftmargin="0" topmargin="0" onload="changeScrollbarColor();">
     <form id="Form1" method="post" runat="server">
-    <input type="hidden" id="scrollCount" name="scrollCount" runat="server">
-    <input type="hidden" id="scrollPos" name="scrollPos" runat="server">
-    <input id="isHomeTab" type="hidden" name="isHomeTab" runat="server">
-    <input id="Hidden2" type="hidden" name="txtContentPage" runat="server">
-    <input id="isMinimized" type="hidden" name="isMinimized" runat="server">
-    <input id="txtContentPage" type="hidden" name="txtContentPage" runat="server">
+        <input type="hidden" id="scrollCount" name="scrollCount" runat="server"/>
+        <input type="hidden" id="scrollPos" name="scrollPos" runat="server"/>
+        <input id="isHomeTab" type="hidden" name="isHomeTab" runat="server"/>
+        <input id="Hidden2" type="hidden" name="txtContentPage" runat="server"/>
+        <input id="isMinimized" type="hidden" name="isMinimized" runat="server"/>
+        <input id="txtContentPage" type="hidden" name="txtContentPage" runat="server"/>
     <table height="100%" cellspacing="0" cellpadding="0" border="0">
         <tr>
             <td valign="top" height="5">

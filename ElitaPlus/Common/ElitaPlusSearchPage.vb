@@ -913,13 +913,13 @@ Public Class ElitaPlusSearchPage
         oRow = dt.NewRow
 
         For nIndex = 0 To oColumns.Count - 1
-            If (oColumns(nIndex).DataType() Is GetType(Byte()) = True) Then
+            If CBool((oColumns(nIndex).DataType() Is GetType(Byte())) = True) Then
                 oRow(nIndex) = id.ToByteArray
-            ElseIf (oColumns(nIndex).DataType() Is GetType(String) = True) Then
+            ElseIf CBool((oColumns(nIndex).DataType() Is GetType(String)) = True) Then
                 oRow(nIndex) = String.Empty
-            ElseIf (oColumns(nIndex).DataType() Is GetType(Date) = True) Then
+            ElseIf CBool((oColumns(nIndex).DataType() Is GetType(Date)) = True) Then
                 oRow(nIndex) = Date.MinValue
-            ElseIf (oColumns(nIndex).DataType() Is GetType(Decimal) = True) Then
+            ElseIf CBool((oColumns(nIndex).DataType() Is GetType(Decimal)) = True) Then
                 oRow(nIndex) = 0
             End If
         Next

@@ -114,7 +114,7 @@
             <tbody>
                 <tr>
                     <td class="bor">
-                        <asp:Label ID="lblPageSize" runat="server">Page_Size</asp:Label>
+                        <asp:Label ID="lblPageSize" runat="server" Text="Page_Size"></asp:Label>
                         <asp:DropDownList ID="cboPageSize" runat="server" SkinID="SmallDropDown" AutoPostBack="true">
                             <asp:ListItem Value="5">5</asp:ListItem>
                             <asp:ListItem Value="10">10</asp:ListItem>

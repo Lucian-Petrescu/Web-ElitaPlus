@@ -36,8 +36,8 @@
 <body oncontextmenu="return false;" style="background-repeat: repeat" leftmargin="0"
     topmargin="0" rightmargin="0">
     <form id="Form1" method="post" runat="server">
-    <input id="txtTabID" type="hidden" name="txtTabID" runat="server">
-    <input id="displayMode" type="hidden" name="displayMode" runat="server">
+        <input id="txtTabID" type="hidden" name="txtTabID" runat="server"/>
+        <input id="displayMode" type="hidden" name="displayMode" runat="server"/>
     <table class="HEADER_TABLE" cellspacing="0" cellpadding="0" width="100%" border="0">
         <tr valign="top">
             <td>

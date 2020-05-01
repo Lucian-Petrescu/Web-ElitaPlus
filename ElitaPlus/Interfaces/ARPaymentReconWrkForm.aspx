@@ -3,13 +3,15 @@
     Theme="Default" MasterPageFile="../Navigation/masters/ElitaBase.Master" %>
 <%@ Register Assembly="AjaxControlToolkit" Namespace="AjaxControlToolkit" TagPrefix="ajaxToolkit" %>
 <asp:Content ID="Content1" ContentPlaceHolderID="HeadPlaceHolder" runat="server">
-    
     <script language="javascript" type="text/javascript" src="../Navigation/scripts/jquery-1.6.1.min.js" />
-    <script language="JavaScript" type="text/javascript" src="../Navigation/scripts/GlobalHeader.js">
+<script language="JavaScript" type="text/javascript" src="../Navigation/scripts/GlobalHeader.js"/>
+      
+	
+	
+    <script type="text/javascript">
         function TABLE1_onclick() {
         }
     </script>
-
 </asp:Content>
 <asp:Content ID="Content2" ContentPlaceHolderID="SummaryPlaceHolder" runat="server">
     <table width="100%" border="0" align ="center" class="searchGrid">

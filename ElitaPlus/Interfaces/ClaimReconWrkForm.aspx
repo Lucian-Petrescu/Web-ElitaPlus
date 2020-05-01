@@ -115,10 +115,10 @@
 														<asp:ListItem Value="40">40</asp:ListItem>
 														<asp:ListItem Value="45">45</asp:ListItem>
 														<asp:ListItem Value="50">50</asp:ListItem>
-													</asp:dropdownlist><INPUT id="HiddenSavePagePromptResponse" style="WIDTH: 8px; HEIGHT: 18px" type="hidden"
-														size="1" name="HiddenSavePagePromptResponse" Runat="server">
+                                                    </asp:dropdownlist><INPUT id="HiddenSavePagePromptResponse" style="WIDTH: 8px; HEIGHT: 18px" type="hidden"
+                                                                              size="1" name="HiddenSavePagePromptResponse" Runat="server"/>
                                                     <INPUT id="HiddenIsPageDirty" style="WIDTH: 8px; HEIGHT: 18px" type="hidden" size="1" name="HiddenIsPageDirty"
-														Runat="server"></TD>
+                                                           Runat="server"/></TD>
 												<TD align="right">
 													<asp:label id="lblRecordCount" Runat="server"></asp:label></TD>
 											</TR>

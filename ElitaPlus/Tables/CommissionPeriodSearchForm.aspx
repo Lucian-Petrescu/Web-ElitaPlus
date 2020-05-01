@@ -154,5 +154,5 @@
        <div class="btnZone">
             <asp:Button ID="btnNew" runat="server" Text="New" SkinID="PrimaryLeftButton"></asp:Button>&nbsp;
  </div>
-   <input id="HiddenDeletePromptResponse" type="hidden" runat="server" designtimedragdrop="261">
+     <input id="HiddenDeletePromptResponse" type="hidden" runat="server" designtimedragdrop="261"/>
  </asp:Content>

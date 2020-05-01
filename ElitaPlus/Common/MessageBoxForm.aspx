@@ -45,7 +45,7 @@
 																	<TD valign="middle" align="center">
 																		<TABLE cellSpacing="4" cellPadding="4" width="100%" background="" border="0" height="105">
 																			<TR>
-																				<td valign="middle" align="center"><img runat="server" name="imgMsgIcon" id="imgMsgIcon" width="37" height="35"></td>
+                                                                                <td valign="middle" align="center"><img runat="server" name="imgMsgIcon" id="imgMsgIcon" width="37" height="35"/></td>
 																				<TD runat="server" valign="middle" id="tdBody" align="left" width="100%" height="105">
 																					<!--<asp:textbox id="txtErrorMessage" style="BORDER-RIGHT:0px; BORDER-TOP:0px; BORDER-LEFT:0px; BORDER-BOTTOM:0px"
 																							Height="100%" width="95%" ReadOnly="True" Runat="server" TextMode="MultiLine" 

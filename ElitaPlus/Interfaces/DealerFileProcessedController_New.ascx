@@ -202,7 +202,7 @@
                                 <asp:Label ID="moFilenameLabel" runat="server">Filename</asp:Label>:
                             </td>
                             <td nowrap align="left">
-                                <input id="dealerFileInput" type="file" name="dealerFileInput" runat="server"> &nbsp;                           
+                                <input id="dealerFileInput" type="file" name="dealerFileInput" runat="server"/> &nbsp;                           
                                 <asp:Button ID="btnCopyDealerFile_WRITE" SkinID="PrimaryLeftButton" runat="server"
                                     Text="COPY_DEALER_FILE"></asp:Button>
                             </td>

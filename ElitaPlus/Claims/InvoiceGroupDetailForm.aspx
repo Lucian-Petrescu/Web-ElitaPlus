@@ -20,7 +20,7 @@
     <div class="dataContainer">
         <table width="100%" border="0" class="formGrid" id="invgrpdetailtable" runat="server"
             cellspacing="0" cellpadding="0" style="padding-left: 0px;">
-            <tr style="margin-bottom: 1px auto;">
+            <tr style="margin-bottom: 1px;">
                 <td class="borderLeft">
                     <asp:Label ID="lblreceiptdate" runat="server">RECEIPT_DATE</asp:Label>
                 </td>

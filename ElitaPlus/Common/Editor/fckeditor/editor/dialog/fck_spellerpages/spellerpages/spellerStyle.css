@@ -2,7 +2,7 @@
 	font-family: courier new;
 	font-size: 10pt;
 	border: 0;
-	margin-bottom:-1;
+	margin-bottom:-1px;
 }
 .normalLabel {
 	font-size:8pt;
@@ -10,14 +10,14 @@
 .normalText {
 	font-family:arial, helvetica, sans-serif;
 	font-size:10pt;
-	color:000000;
-	background-color:FFFFFF;
+	color:#000000;
+	background-color:#FFFFFF;
 }
 .plainText {
 	font-family: courier new, courier, monospace;
 	font-size: 10pt;
-	color:000000;
-	background-color:FFFFFF;
+	color:#000000;
+	background-color:#FFFFFF;
 }
 .controlWindowBody {
 	font-family:arial, helvetica, sans-serif;
@@ -28,8 +28,8 @@
 	/* background-color:DADADA;		by FredCK */
 }
 .readonlyInput {
-	background-color:DADADA;
-	color:000000;
+	background-color:#DADADA;
+	color:#000000;
 	font-size:8pt;
 	width:392px;
 }
@@ -44,6 +44,6 @@
 }
 .suggSlct {
 	width:200px;
-	margin-top:2;
+	margin-top:2px;
 	font-size:8pt;
 }

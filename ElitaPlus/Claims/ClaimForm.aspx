@@ -78,7 +78,7 @@
                     <tr>
                         <td>&nbsp;
                         </td>
-                        <td id="tdBtnArea" nowrap="nowrap" runat="server" colspan="2">
+                        <td id="tdBtnArea" style="white-space:nowrap" runat="server" colspan="2">
                             <asp:Button ID="btnModalSelectServiceCenterYes" runat="server" Text="YES" SkinID="PrimaryRightButton" />
                             <asp:Button ID="btnModalSelectServiceCenterNo" runat="server" Text="NO" SkinID="AlternateRightButton" />
                         </td>
@@ -112,9 +112,11 @@
                         <td align="right">
                             <a href="javascript:void(0)" onclick="hideModal('ModalReopenClaim');">
                                 <img id="Img3" src="~/App_Themes/Default/Images/icon_modalClose.png" runat="server"
-                                    width="16" height="18" align="absmiddle" /></a>
+                                    width="16" height="18" align="absmiddle" /></a> </td>
+                    </tr>
+                </table>
             </p>
-            </td></tr></table>
+           
             <table class="formGrid" cellspacing="0" cellpadding="0" border="0">
                 <tbody>
                     <tr>
@@ -129,7 +131,7 @@
                     <tr>
                         <td>&nbsp;
                         </td>
-                        <td id="td2" nowrap="nowrap" runat="server" colspan="2">
+                        <td id="td2" style="white-space:nowrap" runat="server" colspan="2">
                             <input id="btnModalReopenClaimYes" class="primaryBtn floatR" runat="server" type="button"
                                 value="Yes" />
                             <input id="btnModalReopenClaimNo" class="popWindowAltbtn floatR" runat="server" type="button"

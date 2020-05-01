@@ -59,7 +59,7 @@ Inherits="Assurant.ElitaPlus.ElitaPlusWebApp.Reports.NewCertificatesByBranchWEPP
                 <asp:Panel ID="WorkingPanel" runat="server">
                     <table id="tblMain1" style="border-right: #999999 1px solid; border-top: #999999 1px solid;
                         border-left: #999999 1px solid;  border-bottom: #999999 1px solid";
-                        height="95% cellspacing="0" cellpadding="6" rules="cols" width="98%" align="center"
+                        height="95%" cellspacing="0" cellpadding="6" rules="cols" width="98%" align="center"
                         bgcolor="#fef9ea" border="0">
                         <tr>
                             <td height="1">

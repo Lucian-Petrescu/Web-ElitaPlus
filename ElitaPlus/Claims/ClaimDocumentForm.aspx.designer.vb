@@ -374,15 +374,6 @@ Partial Public Class ClaimDocumentForm
     Protected WithEvents CommentTextBox As Global.System.Web.UI.WebControls.TextBox
 
     '''<summary>
-    '''AddImageButton control.
-    '''</summary>
-    '''<remarks>
-    '''Auto-generated field.
-    '''To modify move field declaration from designer file to code-behind file.
-    '''</remarks>
-    Protected WithEvents AddImageButton As Global.System.Web.UI.WebControls.Button
-
-    '''<summary>
     '''ClearButton control.
     '''</summary>
     '''<remarks>
@@ -390,6 +381,15 @@ Partial Public Class ClaimDocumentForm
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
     Protected WithEvents ClearButton As Global.System.Web.UI.WebControls.LinkButton
+
+    '''<summary>
+    '''AddImageButton control.
+    '''</summary>
+    '''<remarks>
+    '''Auto-generated field.
+    '''To modify move field declaration from designer file to code-behind file.
+    '''</remarks>
+    Protected WithEvents AddImageButton As Global.System.Web.UI.WebControls.Button
 
     '''<summary>
     '''btnBack control.

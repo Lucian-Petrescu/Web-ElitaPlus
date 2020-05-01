@@ -44,7 +44,7 @@
 																	<TD valign="middle" align="center">
 																		<TABLE cellSpacing="4" cellPadding="4" width="100%" background="" border="0" height="105">
 																			<TR>
-																				<td valign="middle" align="center"><img runat="server" name="imgMsgIcon" id="imgMsgIcon" width="37" height="35" src="../Navigation/images/questionIcon.gif"></td>
+                                                                                <td valign="middle" align="center"><img runat="server" name="imgMsgIcon" id="imgMsgIcon" width="37" height="35" src="../Navigation/images/questionIcon.gif"/></td>
 																				<TD runat="server" valign="middle" align="left" width="100%" height="105">
 																					Do you want to create a accounting setting for?
 																				</TD>

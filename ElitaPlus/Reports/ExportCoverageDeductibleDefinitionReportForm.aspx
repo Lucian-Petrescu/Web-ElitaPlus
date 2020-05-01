@@ -197,7 +197,7 @@
     </form>
 
     <script language="JavaScript" src="../Navigation/Scripts/ReportCeMainScripts.js"></script>
-<script type="text/javascript"">
+<script type="text/javascript">
 
             
     $(document).ready(function(){

@@ -41,7 +41,7 @@
 	<body style="BACKGROUND-REPEAT: no-repeat" bgColor="white" leftMargin="0" topMargin="0"
 		MS_POSITIONING="GridLayout" onload="changeScrollbarColor();">
 		<form id="Form1" method="post" runat="server">
-			<input id="txtNextPageID" type="hidden" name="txtNextPageID" runat="server">
+            <input id="txtNextPageID" type="hidden" name="txtNextPageID" runat="server"/>
 			<table cellSpacing="0" cellPadding="0" width="100%" height="100%">
 				<tr>
 					<td width="209" nowrap valign="top" height="100%">

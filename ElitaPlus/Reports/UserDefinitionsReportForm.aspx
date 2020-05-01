@@ -3,7 +3,7 @@
      Codebehind="UserDefinitionsReportForm.aspx.vb" Inherits="Assurant.ElitaPlus.ElitaPlusWebApp.Reports.UserDefinitionsReportForm" %>     
  
 <asp:Content ID="Content1" ContentPlaceHolderID="ContentPanelMainContentBody" runat="server" >      
-            <table cellpadding="0" cellspacing="0" border="0" width="98%" align = "center"">
+            <table cellpadding="0" cellspacing="0" border="0" width="98%" align = "center">
                 <tr>
                     <td align="center" colspan="2" style="vertical-align: top;">
                         <table cellspacing="2" cellpadding="0" width="100%" border="0">

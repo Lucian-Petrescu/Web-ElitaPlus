@@ -74,8 +74,8 @@
         </tr>
         <tr>
             <td  colspan="4" style="height: 12px; width: 1%;">
-            <input id="HiddenSaveChangesPromptResponse" type="hidden" name="HiddenSaveChangesPromptResponse"
-                    runat="server">   
+                <input id="HiddenSaveChangesPromptResponse" type="hidden" name="HiddenSaveChangesPromptResponse"
+                       runat="server"/>   
             </td>  
         </tr>
         

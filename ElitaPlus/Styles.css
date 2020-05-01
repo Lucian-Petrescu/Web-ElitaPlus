@@ -441,7 +441,7 @@ select
 	/*position: absolute;*/
 	position: relative;
 	padding-bottom: 5px;
-	height: 25;
+	height: 25px;
 	bottom: 1px; /*bottom: 10px;*/ /*  top:90%; */
 }
 
@@ -603,7 +603,7 @@ select
 	border: buttonshadow;
 	border-width: 1px;
 	border-style: solid;
-	cursor: 'default';
+    cursor: default;
 	overflow: auto;
 	height: 200px;
 	text-align: left;

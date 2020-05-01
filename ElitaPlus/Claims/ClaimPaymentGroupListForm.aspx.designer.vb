@@ -68,15 +68,6 @@ Partial Public Class ClaimPaymentGroupListForm
     Protected WithEvents ddlSvcCenterDropDown As Global.System.Web.UI.WebControls.DropDownList
 
     '''<summary>
-    '''cboPageSize control.
-    '''</summary>
-    '''<remarks>
-    '''Auto-generated field.
-    '''To modify move field declaration from designer file to code-behind file.
-    '''</remarks>
-    Protected WithEvents cboPageSize As Global.System.Web.UI.WebControls.DropDownList
-
-    '''<summary>
     '''lblPaymentGroupNumber control.
     '''</summary>
     '''<remarks>
@@ -192,6 +183,33 @@ Partial Public Class ClaimPaymentGroupListForm
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
     Protected WithEvents lblSearchResults As Global.System.Web.UI.WebControls.Label
+
+    '''<summary>
+    '''lblPageSize control.
+    '''</summary>
+    '''<remarks>
+    '''Auto-generated field.
+    '''To modify move field declaration from designer file to code-behind file.
+    '''</remarks>
+    Protected WithEvents lblPageSize As Global.System.Web.UI.WebControls.Label
+
+    '''<summary>
+    '''cboPageSize control.
+    '''</summary>
+    '''<remarks>
+    '''Auto-generated field.
+    '''To modify move field declaration from designer file to code-behind file.
+    '''</remarks>
+    Protected WithEvents cboPageSize As Global.System.Web.UI.WebControls.DropDownList
+
+    '''<summary>
+    '''lblRecordCount control.
+    '''</summary>
+    '''<remarks>
+    '''Auto-generated field.
+    '''To modify move field declaration from designer file to code-behind file.
+    '''</remarks>
+    Protected WithEvents lblRecordCount As Global.System.Web.UI.WebControls.Label
 
     '''<summary>
     '''Grid control.

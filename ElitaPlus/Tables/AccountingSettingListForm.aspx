@@ -224,8 +224,8 @@
 						</asp:panel></td>
 				</tr>
 			</TABLE>
-			<INPUT id="HiddenASTypePromptResponse" type="hidden" name="HiddenASTypePromptResponse"
-				runat="server">
+        <INPUT id="HiddenASTypePromptResponse" type="hidden" name="HiddenASTypePromptResponse"
+               runat="server"/>
 		</form>
 	</body>
 </HTML>

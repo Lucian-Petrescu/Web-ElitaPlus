@@ -1,23 +1,24 @@
 ﻿<%@ Register TagPrefix="uc1" TagName="DealerFileProcessedController" Src="DealerFileProcessedController_New.ascx" %>
 <%@ Page Language="vb" AutoEventWireup="false" MasterPageFile="~/Navigation/masters/ElitaBase.Master" CodeBehind="DealerInvoiceFileForm.aspx.vb" Theme="Default" Inherits="Assurant.ElitaPlus.ElitaPlusWebApp.Interfaces.DealerInvoiceFileForm" %>
 <asp:Content ID="Content1" ContentPlaceHolderID="HeadPlaceHolder" runat="server">
-    <script language="JavaScript" src="../Navigation/Scripts/GlobalHeader.js">
-        function TABLE1_onclick() { }          
-		function SetDualDropDownsValue(ctlCodeDropDown, ctlDecDropDown, change_Dec_Or_Code)
-		{
-		var objCodeDropDown = document.getElementById(ctlCodeDropDown); // "By Code" DropDown control
-		var objDecDropDown = document.getElementById(ctlDecDropDown);   // "By Description" DropDown control 
+    <script language="JavaScript" type="text/javascript" src="../Navigation/Scripts/GlobalHeader.js"/>
+	<script type="text/javascript">
+    function TABLE1_onclick() { }          
+    function SetDualDropDownsValue(ctlCodeDropDown, ctlDecDropDown, change_Dec_Or_Code)
+    {
+        var objCodeDropDown = document.getElementById(ctlCodeDropDown); // "By Code" DropDown control
+        var objDecDropDown = document.getElementById(ctlDecDropDown);   // "By Description" DropDown control 
 				
-		//Select Code or Dec drop down
-		if (change_Dec_Or_Code=='C')
-		{
-			objCodeDropDown.value = objDecDropDown.options[objDecDropDown.selectedIndex].value;
-		}
-		else
-		{
-			objDecDropDown.value = objCodeDropDown.options[objCodeDropDown.selectedIndex].value;
-		}
-    </script>
+        //Select Code or Dec drop down
+        if (change_Dec_Or_Code=='C')
+        {
+            objCodeDropDown.value = objDecDropDown.options[objDecDropDown.selectedIndex].value;
+        }
+        else
+        {
+            objDecDropDown.value = objCodeDropDown.options[objCodeDropDown.selectedIndex].value;
+        }
+        </script>
 </asp:Content>
 <asp:Content ID="Content2" ContentPlaceHolderID="SummaryPlaceHolder" runat="server">
     <uc1:DealerFileProcessedController id="moDealerController" runat="server">

@@ -23,7 +23,7 @@
                     <asp:Label ID="lblClaimNumber"  runat="server" SkinID="SummaryLabel">CLAIM_#:</asp:Label>
                 </td>
                 <td align="left" nowrap="nowrap">
-                    <asp:Label ID="Label_ClaimNumber" runat="server" SkinID="SmallTextBox"></asp:Label>
+                    <asp:Label ID="Label_ClaimNumber" runat="server" SkinID="SummaryLabel"></asp:Label>
                 </td>
             </tr>
             <tr>
@@ -31,25 +31,25 @@
                     <asp:Label ID="lblIssueCode" runat="server" SkinID="SummaryLabel">ISSUE_CODE</asp:Label>
                 </td>
                 <td align="left" nowrap="nowrap" class="bor padRight">
-                    <asp:Label ID="Label_IssueCode" runat="server" SkinID="SmallTextBox"></asp:Label>
+                    <asp:Label ID="Label_IssueCode" runat="server" SkinID="SummaryLabel"></asp:Label>
                 </td>
                 <td align="right" nowrap="nowrap" class="padLeft" id="tdCreatedBy">
                     <asp:Label ID="lblCreatedBy" runat="server" SkinID="SummaryLabel">CREATED_BY</asp:Label>
                 </td>
                 <td align="left" nowrap="nowrap" class="bor padRight">
-                    <asp:Label ID="Label_CreatedBy" runat="server" SkinID="SmallTextBox"></asp:Label>
+                    <asp:Label ID="Label_CreatedBy" runat="server" SkinID="SummaryLabel"></asp:Label>
                 </td>
                 <td align="right" nowrap="nowrap" class="padLeft" id="tdProcessedBy">
                     <asp:Label ID="lblProcessedBy" runat="server" SkinID="SummaryLabel">PROCESSED_BY</asp:Label>
                 </td>
                 <td align="left" nowrap="nowrap" class="bor padRight">
-                    <asp:Label ID="Label_ProcessedBy" runat="server" SkinID="SmallTextBox"></asp:Label>
+                    <asp:Label ID="Label_ProcessedBy" runat="server" SkinID="SummaryLabel"></asp:Label>
                 </td>
-                <td align="right" runat="server" nowrap="nowrap" class="padLeft" id="tdIssueStatus">
+                <td align="right" runat="server" style="white-space:nowrap" class="padLeft" id="tdIssueStatus">
                     <asp:Label ID="lblIssueStatus" runat="server" SkinID="SummaryLabel">ISSUE_STATUS</asp:Label>
                 </td>
-                <td align="left" runat="server" nowrap="nowrap" class="padRight" id="tdLabelIssueStatus">
-                    <asp:Label ID="Label_IssueStatus" runat="server" SkinID="SmallTextBox"></asp:Label>
+                <td align="left" runat="server" style="white-space:nowrap" class="padRight" id="tdLabelIssueStatus">
+                    <asp:Label ID="Label_IssueStatus" runat="server" SkinID="SummaryLabel"></asp:Label>
                 </td>
             </tr>
             <tr>
@@ -57,19 +57,19 @@
                     <asp:Label ID="lblIssueDescription" runat="server" SkinID="SummaryLabel">ISSUE_DESCRIPTION</asp:Label>
                 </td>
                 <td align="left" nowrap="nowrap" class="bor padRight">
-                    <asp:Label ID="Label_IssueDescription" runat="server" SkinID="SmallTextBox"></asp:Label>
+                    <asp:Label ID="Label_IssueDescription" runat="server" SkinID="SummaryLabel"></asp:Label>
                 </td>
                 <td align="right" nowrap="nowrap" class="padLeft" id="tdCreatedDate">
                     <asp:Label ID="lblCreatedDate" runat="server" SkinID="SummaryLabel">CREATED_DATE</asp:Label>
                 </td>
                 <td align="left" nowrap="nowrap" class="bor padRight">
-                    <asp:Label ID="Label_CreatedDate" runat="server" SkinID="SmallTextBox"></asp:Label>
+                    <asp:Label ID="Label_CreatedDate" runat="server" SkinID="SummaryLabel"></asp:Label>
                 </td>
                 <td align="right" id="tdProcessedDate" nowrap="nowrap" class="padLeft">
                     <asp:Label ID="lblProcessedDate" runat="server" SkinID="SummaryLabel">PROCESSED_DATE</asp:Label>
                 </td>
                 <td align="left" nowrap="nowrap" class="bor padRight">
-                    <asp:Label ID="Label_ProcessedDate" runat="server" SkinID="SmallTextBox"></asp:Label>
+                    <asp:Label ID="Label_ProcessedDate" runat="server" SkinID="SummaryLabel"></asp:Label>
                 </td>
             </tr>
         </tbody>
@@ -172,7 +172,7 @@
                     <td>
                         &nbsp;
                     </td>
-                    <td id="tdBtnArea" nowrap="nowrap" runat="server" colspan="2">
+                    <td id="tdBtnArea" style="white-space:nowrap" runat="server" colspan="2">
                         <asp:Button ID="btnReopenContinue" runat="server" SkinID="PrimaryRightButton" Text="Continue" />
                         <input id='btnReopenCancel' runat="server" type="button" name="Cancel" value="Cancel" onclick="HideErrorAndModal('ModalReopenIssue');"
                             class='popWindowCancelbtn floatR' />
@@ -225,7 +225,7 @@
                     <td>
                         &nbsp;
                     </td>
-                    <td id="td1" nowrap="nowrap" runat="server" colspan="2">
+                    <td id="td1" style="white-space:nowrap" runat="server" colspan="2">
                         <asp:Button ID="btnWaiveContinue" runat="server" SkinID="PrimaryRightButton" Text="Continue"/>
                         <input id='btnWaiveCancel' runat="server" type="button" name="Cancel" value="Cancel" onclick="HideErrorAndModal('ModalWaiveIssue');"
                             class='popWindowCancelbtn floatR' />

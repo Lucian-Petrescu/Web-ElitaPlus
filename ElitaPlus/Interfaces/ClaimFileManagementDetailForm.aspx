@@ -629,4 +629,5 @@
             <asp:Button ID="SaveButton_WRITE" runat="server" Text="SAVE" CausesValidation="False"
                 SkinID="AlternateLeftButton"></asp:Button>&nbsp;
         </div>
+    </div>
 </asp:Content>

@@ -2,7 +2,7 @@
 <%@ Register Assembly="AjaxControlToolkit" Namespace="AjaxControlToolkit" TagPrefix="ajaxToolkit" %>
 <%@ Register TagPrefix="uc1" TagName="ErrorController" Src="../Common/ErrorController.ascx" %>
 <asp:Content ContentPlaceHolderID="ContentPanelMainContentBody" runat="server" ID="cntMain">
-    <table id="tblOuter2" style="margin: 5px; height="93%" cellspacing="0" cellpadding="0" rules="none" width="98%" bgcolor="#d5d6e4" border="0">
+    <table id="tblOuter2" style="margin: 5px;" height="93%" cellspacing="0" cellpadding="0" rules="none" width="98%" bgcolor="#d5d6e4" border="0">
         <tr>
             <td valign="top" align="center" height="100%">
                 <asp:Panel ID="WorkingPanel" runat="server" Width="100%" BorderStyle="None">
@@ -36,8 +36,8 @@
                                                 <asp:ListItem Value="45">45</asp:ListItem>
                                                 <asp:ListItem Value="50">50</asp:ListItem>
                                             </asp:DropDownList>
-                                            <INPUT id="HiddenSavePagePromptResponse" type="hidden" name="HiddenSavePagePromptResponse" Runat="server">
-                                            <INPUT id="HiddenIsPageDirty" type="hidden" name="HiddenIsPageDirty" Runat="server">
+                                            <INPUT id="HiddenSavePagePromptResponse" type="hidden" name="HiddenSavePagePromptResponse" Runat="server"/>
+                                            <INPUT id="HiddenIsPageDirty" type="hidden" name="HiddenIsPageDirty" Runat="server"/>
                                             <input id="HiddenIsPartsPageDirty"  type="hidden"  runat="server" />
                                         </td>
                                         <td align="right">
@@ -735,7 +735,7 @@
                 </ContentTemplate>
             </asp:UpdatePanel>
             <br />
-            <div style="background-color: "AliceBlue">
+            <div style="background-color:AliceBlue">
                 &nbsp;<asp:Button ID="btnClose" runat="server" Text="Back" Style="background-image: url(../Navigation/images/icons/back_icon.gif);
                     cursor: hand; background-repeat: no-repeat" runat="server" Font-Bold="false"
                     Width="90px" CssClass="FLATBUTTON" Height="20px" />&nbsp;&nbsp;&nbsp;<asp:Button

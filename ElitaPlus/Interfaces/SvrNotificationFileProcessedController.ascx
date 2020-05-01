@@ -142,8 +142,8 @@
 								<TR>
 									<TD style="WIDTH: 159px; HEIGHT: 22px" noWrap align="right">*
 										<asp:label id="moFilenameLabel" runat="server">Filename</asp:label>:</TD>
-									<TD style="HEIGHT: 10px" noWrap align="left"><INPUT id="notificationFileInput" style="WIDTH: 269px; HEIGHT: 19px" type="file" size="25" name="notificationFileInput"
-											runat="server"></TD>
+                                    <TD style="HEIGHT: 10px" noWrap align="left"><INPUT id="notificationFileInput" style="WIDTH: 269px; HEIGHT: 19px" type="file" size="25" name="notificationFileInput"
+                                                                                        runat="server"/></TD>
 									<TD>
 										<asp:button id="btnCopyDealerFile_WRITE" style="BACKGROUND-IMAGE: url(../Navigation/images/icons/add_icon.gif); CURSOR: hand; BACKGROUND-REPEAT: no-repeat"
 											Width="236px" runat="server" Text="COPY_CLAIM_INTERFACE_FILE" height="20px" CssClass="FLATBUTTON"

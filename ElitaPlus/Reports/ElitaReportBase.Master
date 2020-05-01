@@ -40,7 +40,7 @@
                     <%--<td>
                     &nbsp;
                     </td>--%>
-                    <td id="tdBtnArea" nowrap="nowrap" runat="server" colspan="4" align="right">
+                    <td id="tdBtnArea" style="white-space:nowrap" runat="server" colspan="4" align="right">
                     </td>
                 </tr>
             </tbody>

@@ -1,5 +1,6 @@
 <%@ Control Language="vb" AutoEventWireup="false" CodeBehind="UserControlBankInfo_New.ascx.vb"
-    Inherits="Assurant.ElitaPlus.ElitaPlusWebApp.UserControlBankInfo_New" TargetSchema="http://schemas.microsoft.com/intellisense/ie5" %>
+    Inherits="Assurant.ElitaPlus.ElitaPlusWebApp.UserControlBankInfo_New"
+TargetSchema="http://schemas.microsoft.com/intellisense/ie5" %>
 <%@ Register Assembly="AjaxControlToolkit" Namespace="AjaxControlToolkit" TagPrefix="cc1" %>
 <tr id="bankInfo_hr2">
     <td align="right" class="<%= HiddenClassName %>">

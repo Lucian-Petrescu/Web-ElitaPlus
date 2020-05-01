@@ -2,7 +2,8 @@
 <%@ Import Namespace="System.Data.Common" %>
 <%@ Register Assembly="AjaxControlToolkit" Namespace="AjaxControlToolkit" TagPrefix="asp" %>
 <%@ Register TagPrefix="uc1" TagName="ErrorController" Src="../Common/ErrorController.ascx" %>
-<%@ Page Language="vb" AutoEventWireup="false" Codebehind="ClaimAdjusterInboxForm.aspx.vb" Inherits="Assurant.ElitaPlus.ElitaPlusWebApp.ClaimAdjusterInboxForm" %>
+<%@ Page Language="vb" AutoEventWireup="false" Codebehind="ClaimAdjusterInboxForm.aspx.vb" Inherits="Assurant.ElitaPlus.ElitaPlusWebApp.ClaimAdjusterInboxForm" 
+Theme="Default" %>
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
 <HTML>
 	<HEAD>
@@ -209,11 +210,11 @@
                                                                     <tr>
                                                                         <td style="width:25%;">
                                                                             <asp:Label ID="lblClaimAdjuster" runat="server">CLAIM_ADJUSTER</asp:Label>:<br />                                                                            
-                                                                            <asp:TextBox ID="txtClaimAdjuster" runat="server" AutoPostBack="False" SkinID="FLATTEXTBOX_TAB"></asp:TextBox>
+                                                                            <asp:TextBox ID="txtClaimAdjuster" runat="server" AutoPostBack="False" CssClass="FLATTEXTBOX_TAB"></asp:TextBox>
                                                                         </td>
                                                                         <td style="width:25%;">
                                                                             <asp:Label ID="lblCreatedBy" runat="server">CREATED_BY</asp:Label>:<br />                                                                            
-                                                                            <asp:TextBox ID="txtCreatedBy" runat="server" AutoPostBack="False" SkinID="FLATTEXTBOX_TAB"></asp:TextBox>
+                                                                            <asp:TextBox ID="txtCreatedBy" runat="server" AutoPostBack="False" CssClass="FLATTEXTBOX_TAB"></asp:TextBox>
                                                                         </td>
                                                                         <td style="width:25%;">
                                                                         </td>

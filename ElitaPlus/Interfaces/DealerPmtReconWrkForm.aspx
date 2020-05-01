@@ -1,67 +1,72 @@
 <%@ Page ValidateRequest="false" Language="vb" AutoEventWireup="false" CodeBehind="DealerPmtReconWrkForm.aspx.vb"
-    Inherits="Assurant.ElitaPlus.ElitaPlusWebApp.Interfaces.DealerPmtReconWrkForm" 
+    Inherits="Assurant.ElitaPlus.ElitaPlusWebApp.Interfaces.DealerPmtReconWrkForm"
     Theme="Default" MasterPageFile="../Navigation/masters/ElitaBase.Master" %>
+
 <%@ Register Assembly="AjaxControlToolkit" Namespace="AjaxControlToolkit" TagPrefix="ajaxToolkit" %>
 <asp:Content ID="Content1" ContentPlaceHolderID="HeadPlaceHolder" runat="server">
-    
+
     <script language="javascript" type="text/javascript" src="../Navigation/scripts/jquery-1.6.1.min.js" />
-    <script language="JavaScript" type="text/javascript" src="../Navigation/scripts/GlobalHeader.js">
+    <script language="JavaScript" type="text/javascript" src="../Navigation/scripts/GlobalHeader.js" />
+
+
+    <script type="text/javascript">
         function TABLE1_onclick() {
         }
-    </script>
-
-</asp:Content>
-<asp:Content ID="Content2" ContentPlaceHolderID="SummaryPlaceHolder" runat="server">
-    <table width="100%" border="0" align ="center" class="searchGrid">
-     <tr>
-            <td align="right" width="10%">
-				<asp:Label id="moDealerNameLabel" runat="server" visible="True">DEALER_NAME</asp:Label>
-            </td>            
-            <td>
-				<asp:TextBox id="moDealerNameText" runat="server" Visible="True" ReadOnly="True" SkinID="MediumTextBox" Enabled="False"></asp:TextBox>
-           </td>            
-            <td align="right" width="10%">
-                <asp:Label ID="moFileNameLabel" runat="server" Visible="True">FILENAME:</asp:Label>
-            </td>            
-            <td>
-                <asp:TextBox ID="moFileNameText" runat="server" SkinID="MediumTextBox" Visible="True"
-                    ReadOnly="True" Enabled="False"></asp:TextBox>
-            </td>
-        </tr>
-   </table>
-   </asp:Content>
-   <asp:Content ID="Content4" ContentPlaceHolderID="MessagePlaceHolder" runat="server">
-   </asp:Content>
-   <asp:Content ID="Content3" ContentPlaceHolderID="BodyPlaceHolder" runat="server">
-       <!-- new layout start -->
-    <asp:ScriptManager ID="ScriptManager2" runat="server"> </asp:ScriptManager>
-
-     <script type="text/javascript">
-         function Test(obj) {
-
-         }
-
-         function setDirty() {
-             var inpId = document.getElementById('<%= HiddenIsPageDirty.ClientID %>')
-             inpId.value = "YES"
-         }
-
-         function setBundlesDirty() {
-             var inpId = document.getElementById('<%= HiddenIsBundlesPageDirty.ClientID %>')
-             inpId.value = "YES"
-         }
-
-         function UpdateDropDownCtr(obj, oField) {
-             document.getElementById(oField).value = obj.value
-         }
-
-         function UpdateCtr(oDropDown, oField) {
-             document.getElementById(oField).value = oDropDown.value
-             setDirty()
-         }
 
     </script>
-   <div class="dataContainer">
+    </asp:Content>
+    <asp:Content ID="Content2" ContentPlaceHolderID="SummaryPlaceHolder" runat="server">
+        <table width="100%" border="0" align="center" class="searchGrid">
+            <tr>
+                <td align="right" width="10%">
+                    <asp:Label id="moDealerNameLabel" runat="server" visible="True">DEALER_NAME</asp:Label>
+                </td>
+                <td>
+                    <asp:TextBox id="moDealerNameText" runat="server" Visible="True" ReadOnly="True" SkinID="MediumTextBox" Enabled="False"></asp:TextBox>
+                </td>
+                <td align="right" width="10%">
+                    <asp:Label ID="moFileNameLabel" runat="server" Visible="True">FILENAME:</asp:Label>
+                </td>
+                <td>
+                    <asp:TextBox ID="moFileNameText" runat="server" SkinID="MediumTextBox" Visible="True"
+                        ReadOnly="True" Enabled="False">
+                    </asp:TextBox>
+                </td>
+            </tr>
+        </table>
+    </asp:Content>
+    <asp:Content ID="Content4" ContentPlaceHolderID="MessagePlaceHolder" runat="server">
+    </asp:Content>
+    <asp:Content ID="Content3" ContentPlaceHolderID="BodyPlaceHolder" runat="server">
+        <!-- new layout start -->
+        <asp:ScriptManager ID="ScriptManager2" runat="server"></asp:ScriptManager>
+
+        <script type="text/javascript">
+            function Test(obj) {
+
+            }
+
+            function setDirty() {
+                var inpId = document.getElementById('<%= HiddenIsPageDirty.ClientID %>')
+                inpId.value = "YES"
+            }
+
+            function setBundlesDirty() {
+                var inpId = document.getElementById('<%= HiddenIsBundlesPageDirty.ClientID %>')
+                inpId.value = "YES"
+            }
+
+            function UpdateDropDownCtr(obj, oField) {
+                document.getElementById(oField).value = obj.value
+            }
+
+            function UpdateCtr(oDropDown, oField) {
+                document.getElementById(oField).value = oDropDown.value
+                setDirty()
+            }
+
+        </script>
+    <div class="dataContainer">
         <h2 class="dataGridHeader">
             <asp:Label runat="server" ID="moSearchResultsHeader">SEARCH_RESULTS_FOR_DEALER</asp:Label>
         </h2>
@@ -84,18 +89,18 @@
                         </asp:DropDownList>
                     </td>
                     <td class="bor" align="right">
-                    <asp:Label ID="lblRecordCount" runat="server"></asp:Label>
-                    <input id="HiddenSavePagePromptResponse" type="hidden" runat="server" />                     
-                    <input id="HiddenIsPageDirty" type="hidden" runat="server" />
-                    <input id="HiddenIfComingFromBundlesScreen" type="hidden" runat="server" />
-                    <input id="HiddenIsBundlesPageDirty" type="hidden" runat="server" />
+                        <asp:Label ID="lblRecordCount" runat="server"></asp:Label>
+                        <input id="HiddenSavePagePromptResponse" type="hidden" runat="server" />
+                        <input id="HiddenIsPageDirty" type="hidden" runat="server" />
+                        <input id="HiddenIfComingFromBundlesScreen" type="hidden" runat="server" />
+                        <input id="HiddenIsBundlesPageDirty" type="hidden" runat="server" />
                     </td>
                 </tr>
             </table>
         </div>
-		<div>
-              <asp:UpdatePanel ID="updatePanel1" runat="server">
-                  <ContentTemplate>
+        <div>
+            <asp:UpdatePanel ID="updatePanel1" runat="server">
+                <contenttemplate>
                     <div id="div-datagrid" style="overflow: auto; width:100%; height:500px;">
                       <asp:GridView ID="moDataGrid" runat="server"
                           OnRowCreated="ItemCreated"
@@ -278,16 +283,16 @@
                           <PagerStyle HorizontalAlign="left" CssClass="PAGER_LEFT"></PagerStyle>
                       </asp:GridView>
                     </div>
-                  </ContentTemplate>
-              </asp:UpdatePanel>              
+                  </contenttemplate>
+            </asp:UpdatePanel>
         </div>
-   </div>
-	 <div class="btnZone">       
+    </div>
+    <div class="btnZone">
         <asp:Button ID="btnSave_WRITE" runat="server" Text="Save" CausesValidation="False"
-             SkinID="AlternateLeftButton"></asp:Button>&nbsp;
+            SkinID="AlternateLeftButton"></asp:Button>&nbsp;
         <asp:Button ID="btnUndo_WRITE" runat="server" Text="Undo" CausesValidation="False"
-             SkinID="AlternateLeftButton"></asp:Button>&nbsp;
+            SkinID="AlternateLeftButton"></asp:Button>&nbsp;
         <asp:Button ID="btnBack" runat="server" Text="Back" CausesValidation="False"
-             SkinID="AlternateLeftButton"></asp:Button>&nbsp;
-    </div>  										
-	</asp:Content>	
+            SkinID="AlternateLeftButton"></asp:Button>&nbsp;
+    </div>
+</asp:Content>

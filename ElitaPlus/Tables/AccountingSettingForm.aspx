@@ -818,8 +818,8 @@
             </td>
         </tr>
     </table>
-    <input id="HiddenSaveChangesPromptResponse" type="hidden" name="HiddenSaveChangesPromptResponse"
-        runat="server">
+<input id="HiddenSaveChangesPromptResponse" type="hidden" name="HiddenSaveChangesPromptResponse"
+       runat="server"/>
     <script language="javascript">
 	    <asp:literal id="litScriptVars" runat="server"></asp:literal>
 		function EnableControl(value1,value2)

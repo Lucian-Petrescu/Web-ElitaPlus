@@ -157,7 +157,7 @@
                                     </td>
                                     <td style="height: 10px" nowrap align="left">
                                         <input id="FileInput" style="width: 269px; height: 19px" type="file" size="25"
-                                            name="FileInput" runat="server">
+                                               name="FileInput" runat="server"/>
                                     </td>
                                     <td>
                                         <asp:Button ID="btnCopyFile_WRITE" Style="background-image: url(../Navigation/images/icons/add_icon.gif);

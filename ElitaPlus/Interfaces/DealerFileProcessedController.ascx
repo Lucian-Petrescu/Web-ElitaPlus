@@ -136,8 +136,8 @@
 								<TR>
 									<TD style="WIDTH: 159px; HEIGHT: 22px" noWrap align="right">*
 										<asp:label id="moFilenameLabel" runat="server">Filename</asp:label>:</TD>
-									<TD style="HEIGHT: 10px" noWrap align="left"><INPUT id="dealerFileInput" style="WIDTH: 269px; HEIGHT: 19px" type="file" size="25" name="dealerFileInput"
-											runat="server"></TD>
+                                    <TD style="HEIGHT: 10px" noWrap align="left"><INPUT id="dealerFileInput" style="WIDTH: 269px; HEIGHT: 19px" type="file" size="25" name="dealerFileInput"
+                                                                                        runat="server"/></TD>
 									<TD>
 										<asp:button id="btnCopyDealerFile_WRITE" style="BACKGROUND-IMAGE: url(../Navigation/images/icons/add_icon.gif); CURSOR: hand; BACKGROUND-REPEAT: no-repeat"
 											Width="176px" runat="server" Font-Bold="false" CssClass="FLATBUTTON" height="20px" Text="COPY_DEALER_FILE"></asp:button></TD>

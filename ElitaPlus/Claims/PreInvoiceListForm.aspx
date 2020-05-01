@@ -29,7 +29,7 @@
             </td>
         </tr>
     </table>
-    <tabel style="width: 100%">
+    <table style="width: 100%">
         <tr id="trSeparator" runat="server">
             <td>
                 <hr />

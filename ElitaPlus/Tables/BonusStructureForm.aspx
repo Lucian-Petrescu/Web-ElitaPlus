@@ -4,10 +4,15 @@
     TagPrefix="uc1" %>
 <asp:Content ContentPlaceHolderID="HeadPlaceHolder" runat="server">
     <script language="JavaScript" src="../Navigation/Scripts/GlobalHeader.js">
-      function TABLE1_onclick() { }
+     
 
     </script>
-   
+    <script type="text/javascript">
+        function TABLE1_onclick() {
+
+        }
+
+    </script>
 </asp:Content>
 <asp:Content ID="Content1" ContentPlaceHolderID="MessagePlaceHolder" runat="server">
 
@@ -212,7 +217,7 @@
                 <asp:Button ID="btnNew_WRITE" runat="server" SkinID="PrimaryLeftButton" Text="NEW" />                   
             </div>
         </div>
-
+        </div>
    </asp:Content>
 <%--<!DOCTYPE html>
 

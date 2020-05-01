@@ -1186,7 +1186,7 @@ Partial Class PayClaimForm
                         .ShippingAmount = Me.State.ClaimAuthDetailBO.ShippingAmount
                         .DiagnosticsAmount = Me.State.ClaimAuthDetailBO.DiagnosticsAmount
                         .DispositionAmount = Me.State.ClaimAuthDetailBO.DispositionAmount
-                        .Amount = Me.GetAuthDetailTotal + Me.State.ClaimAuthDetailBO.TotalTaxAmount
+                        .Amount = CDbl(Me.GetAuthDetailTotal) + CDbl(Me.State.ClaimAuthDetailBO.TotalTaxAmount)
                     End With
                 End If
             End If

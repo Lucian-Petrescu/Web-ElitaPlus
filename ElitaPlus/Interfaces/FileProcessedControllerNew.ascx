@@ -188,7 +188,7 @@
                                         <asp:Label ID="moFilenameLabel" runat="server">Filename</asp:Label>:
                             </td>
                             <td nowrap align="left">
-                                <input id="FileInput" type="file" name="FileInput" runat="server">
+                                <input id="FileInput" type="file" name="FileInput" runat="server"/>
                                 &nbsp;  
                                 <asp:Button ID="btnCopyFile_WRITE" runat="server" Text="COPY" SkinID="PrimaryLeftButton"></asp:Button>
                             </td>

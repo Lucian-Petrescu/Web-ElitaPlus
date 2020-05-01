@@ -182,7 +182,7 @@
         <%--</td>--%>
         <%-- </tr>--%>
     </table>
-    <input id="HiddenDeletePromptResponse" type="hidden" runat="server" designtimedragdrop="261">
+    <input id="HiddenDeletePromptResponse" type="hidden" runat="server" designtimedragdrop="261"/>
 </asp:Content>
 <asp:Content ContentPlaceHolderID="ContentPanelButtons" runat="server" ID="cntButtons">
     <asp:Button ID="moBtnAdd_WRITE" Style="background-image: url(../Navigation/images/icons/add_icon.gif);

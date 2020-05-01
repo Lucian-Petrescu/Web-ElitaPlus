@@ -21,7 +21,7 @@
 			<iframe id="rptContainer" frameborder="0" name="ReportPDFFrame" width="100%" scrolling="auto" 
 				runat="server" height="100%" APPLICATION="yes">
 			</iframe>
-            <INPUT id="hiddenTitle" type="hidden" name="HiddenTitle" runat="server">
+            <INPUT id="hiddenTitle" type="hidden" name="HiddenTitle" runat="server"/>
 		</form>
 	</body>
 </HTML>

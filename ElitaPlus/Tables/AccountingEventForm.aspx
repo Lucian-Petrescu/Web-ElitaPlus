@@ -174,7 +174,7 @@
         <tr>
             <td colspan="4">
                 &nbsp;<input id="HiddenSaveChangesPromptResponse" type="hidden" name="HiddenSaveChangesPromptResponse"
-                    runat="server">
+                             runat="server"/>
             </td>
         </tr>
         <tr>

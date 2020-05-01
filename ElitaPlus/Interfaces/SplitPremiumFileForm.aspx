@@ -223,7 +223,7 @@
                                                                             <asp:Label ID="moFilenameLabel" runat="server">Filename</asp:Label>:</td>
                                                                         <td style="height: 10px" nowrap align="left">
                                                                             <input id="claimFileInput" style="width: 269px; height: 19px" type="file" size="25"
-                                                                                name="claimFileInput" runat="server"></td>
+                                                                                   name="claimFileInput" runat="server"/></td>
                                                                         <td>
                                                                             <asp:Button ID="btnCopyDealerFile_WRITE" Style="background-image: url(../Navigation/images/icons/add_icon.gif);
                                                                                 cursor: hand; background-repeat: no-repeat" runat="server" Font-Bold="false"
