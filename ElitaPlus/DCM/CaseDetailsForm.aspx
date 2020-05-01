@@ -75,7 +75,7 @@
                         <td align="right" nowrap="nowrap">
                             <asp:Label ID="LabelCaseStatus" runat="server">CASE_STATUS</asp:Label>:
                         </td>
-                        <td id="CaseStatusTD" runat="server" align="left" nowrap="nowrap" class="padRight">
+                        <td id="CaseStatusTD" runat="server" align="left" style="white-space:nowrap" class="padRight">
                             <asp:Label ID="LabelCaseStatusValue" runat="server"><%#NoData%></asp:Label>
                         </td>
                     </tr>

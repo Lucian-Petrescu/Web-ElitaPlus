@@ -69,13 +69,13 @@ Namespace Tables
         Protected WithEvents moDealerMultipleDrop As Global.Assurant.ElitaPlus.ElitaPlusWebApp.Common.MultipleColumnDDLabelControl
 
         '''<summary>
-        '''Label3 control.
+        '''Label1 control.
         '''</summary>
         '''<remarks>
         '''Auto-generated field.
         '''To modify move field declaration from designer file to code-behind file.
         '''</remarks>
-        Protected WithEvents Label3 As Global.System.Web.UI.WebControls.Label
+        Protected WithEvents Label1 As Global.System.Web.UI.WebControls.Label
 
         '''<summary>
         '''BillingPlanTextBox control.

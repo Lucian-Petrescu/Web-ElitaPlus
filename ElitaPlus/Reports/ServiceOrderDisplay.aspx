@@ -25,9 +25,9 @@
                     <TD>
                         <asp:button id="btnBack" style="BACKGROUND-IMAGE: url(../Navigation/images/icons/back_icon.gif); CURSOR: hand; BACKGROUND-REPEAT: no-repeat"
                             tabIndex="37" runat="server" Font-Bold="false" Width="90px" CssClass="FLATBUTTON" Text="Back"
-                            height="20px"></asp:button>&nbsp; <input type="button" id="btnPrint" runat="server" onclick="ReportFrame.focus();ReportFrame.print();"
-                            style="BACKGROUND-IMAGE: url(../Navigation/images/icons/printer_icon.gif); WIDTH: 90px; CURSOR: hand; BACKGROUND-REPEAT: no-repeat; HEIGHT: 20px;display:none;"
-                            tabIndex="38" Class="FLATBUTTON" value="Print" title="Print">
+                                    height="20px"></asp:button>&nbsp; <input type="button" id="btnPrint" runat="server" onclick="ReportFrame.focus();ReportFrame.print();"
+                                                                             style="BACKGROUND-IMAGE: url(../Navigation/images/icons/printer_icon.gif); WIDTH: 90px; CURSOR: hand; BACKGROUND-REPEAT: no-repeat; HEIGHT: 20px;display:none;"
+                                                                             tabIndex="38" Class="FLATBUTTON" value="Print" title="Print"/>
                     </TD>
                 </TR>
             </TABLE>

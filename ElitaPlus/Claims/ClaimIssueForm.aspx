@@ -16,7 +16,7 @@
         <td align="right" nowrap="nowrap" class="padLeft"><asp:Label ID="lblDealerName" runat="server" SkinID="SummaryLabel">DEALER_NAME</asp:Label>:</td>
         <td align="left" nowrap="nowrap" class="bor padRight"><asp:Label ID="lblDealerNameValue" runat="server" SkinID="SummaryLabel"><%#NO_DATA%></asp:Label></td>
         <td align="right" nowrap="nowrap" class="padLeft"><asp:Label ID="lblClaimStatus" runat="server" SkinID="SummaryLabel">CLAIM_STATUS</asp:Label>:</td>
-        <td id="ClaimStatusTD" runat="server" align="left" nowrap="nowrap" class="padRight"><asp:Label ID="lblClaimStatusValue" runat="server" SkinID="SummaryLabel"><%#NO_DATA%></asp:Label></td>
+        <td id="ClaimStatusTD" runat="server" align="left" style="white-space:nowrap" class="padRight"><asp:Label ID="lblClaimStatusValue" runat="server" SkinID="SummaryLabel"><%#NO_DATA%></asp:Label></td>
     </tr>
     <tr>
         <td align="right" nowrap="nowrap" ><asp:Label ID="lblWorkPhoneNumber" runat="server" SkinID="SummaryLabel">WORK_CELL_NUMBER</asp:Label>:</td>
@@ -24,7 +24,7 @@
         <td align="right" nowrap="nowrap" class="padLeft"><asp:Label ID="lblDealerGroup" runat="server" SkinID="SummaryLabel">DEALER_GROUP</asp:Label>:</td>
         <td align="left" nowrap="nowrap" class="bor padRight"><asp:Label ID="lblDealerGroupValue" runat="server" SkinID="SummaryLabel"><%#NO_DATA%></asp:Label></td> 
         <td align="right" nowrap="nowrap" class="padLeft"><asp:Label ID="lblSubscriberStatus" runat="server" SkinID="SummaryLabel">SUBSCRIBER_STATUS</asp:Label>:</td>
-        <td id="SubStatusTD" align="left" nowrap="nowrap" class="padRight"  runat="server"><asp:Label ID="lblSubscriberStatusValue" runat="server" SkinID="SummaryLabel"><%#NO_DATA%></asp:Label></td>       
+        <td id="SubStatusTD" align="left" style="white-space:nowrap" class="padRight"  runat="server"><asp:Label ID="lblSubscriberStatusValue" runat="server" SkinID="SummaryLabel"><%#NO_DATA%></asp:Label></td>       
        
     </tr>
     <tr>

@@ -4,7 +4,10 @@
 <%@ Register TagPrefix="uc1" TagName="MultipleColumnDDLabelControl" Src="../Common/MultipleColumnDDLabelControl_New.ascx" %>
 
 <asp:Content ID="HeaderContent" ContentPlaceHolderID="HeadPlaceHolder" runat="server">
-    <script language="JavaScript" src="../Navigation/Scripts/GlobalHeader.js">        function TABLE1_onclick() {
+    <script language="JavaScript" src="../Navigation/Scripts/GlobalHeader.js">      
+    </script>
+    <script type="text/javascript">
+        function TABLE1_onclick() {
 
         }
 

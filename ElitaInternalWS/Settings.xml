@@ -1,4 +1,5 @@
 <?xml version="1.0" encoding="utf-8" ?>
+
 <!--  
 
 This file is no longer in use.
@@ -6,3 +7,4 @@ This file is no longer in use.
 To manually overwrite the connection info, use the ElitaSecurity.Config file.
 
 -->
+<root/>

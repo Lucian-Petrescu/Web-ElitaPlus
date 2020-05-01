@@ -1,5 +1,5 @@
 ﻿<%@ Page Language="vb" AutoEventWireup="false" CodeBehind="CalendarWithtimeForm_New.aspx.vb"
-    Inherits="Assurant.ElitaPlus.ElitaPlusWebApp.CalendarWithtimeForm_New" %>
+    Inherits="Assurant.ElitaPlus.ElitaPlusWebApp.CalendarWithtimeForm_New" Theme="Default" %>
 
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
 <html>

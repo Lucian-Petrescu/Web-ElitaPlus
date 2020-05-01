@@ -356,5 +356,5 @@
             </ContentTemplate>
         </cc1:TabPanel>
     </cc1:TabContainer>
-    <input id="HiddenDeletePromptResponse" type="hidden" runat="server" designtimedragdrop="261">
+<input id="HiddenDeletePromptResponse" type="hidden" runat="server" designtimedragdrop="261"/>
 </asp:Content>

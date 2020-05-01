@@ -232,7 +232,7 @@
                                 <td>
                                     <asp:TextBox ID="txtNotificationType_Modal" runat="server" SkinID="MediumTextBox" ReadOnly="true"></asp:TextBox>
                                 </td>
-                            </tr
+                            </tr>
                             <tr>
                                 <td align="right" >
                                     <asp:Label ID="lblBegin_date_Modal" runat="server">NOTIFICATION_BEGIN_DATE:</asp:Label>

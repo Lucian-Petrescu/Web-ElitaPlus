@@ -7,9 +7,14 @@
     TagPrefix="uc1" %>
 
 <asp:Content ID="Content1" ContentPlaceHolderID="HeadPlaceHolder" runat="server">
-    <script language="JavaScript" src="../Navigation/Scripts/GlobalHeader.js">        
+    <script language="JavaScript" src="../Navigation/Scripts/GlobalHeader.js"> </script>
+
+
+    <script type="text/javascript">
         function TABLE1_onclick() {
+
         }
+
     </script>
 </asp:Content>
 <asp:Content ID="Content2" ContentPlaceHolderID="SummaryPlaceHolder" runat="server">

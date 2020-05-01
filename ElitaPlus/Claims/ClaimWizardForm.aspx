@@ -70,7 +70,7 @@
                     <tr>
                         <td>&nbsp;
                         </td>
-                        <td id="tdBtnArea" nowrap="nowrap" runat="server" colspan="2">
+                        <td id="tdBtnArea" style="white-space:nowrap" runat="server" colspan="2">
                             <input id="btnModalCancelYes" class="primaryBtn floatR" runat="server" type="button"
                                 value="Yes" />
                             <input id="btnModalCancelNo" class="popWindowAltbtn floatR" runat="server" type="button"
@@ -105,7 +105,7 @@
                     <tr>
                         <td>&nbsp;
                         </td>
-                        <td id="td4" nowrap="nowrap" runat="server" colspan="2">
+                        <td id="td4" style="white-space:nowrap" runat="server" colspan="2">
                             <asp:Button ID="btnModalServiceWarrantyYes" runat="server" SkinID="PrimaryRightButton" Text="Yes" />
                             <input id="btnModalServiceWarrantyNo" class="popWindowAltbtn floatR" runat="server" type="button"
                                 value="No" onclick="hideModal('ModalServiceWarranty');" />
@@ -139,7 +139,7 @@
                     <tr>
                         <td>&nbsp;
                         </td>
-                        <td id="td2" nowrap="nowrap" runat="server" colspan="2">
+                        <td id="td2" style="white-space:nowrap" runat="server" colspan="2">
                             <input id="btnModalCancelClaimYes" class="primaryBtn floatR" runat="server" type="button"
                                 value="Yes" />
                             <input id="btnModalClaimCancelNo" class="popWindowAltbtn floatR" runat="server" type="button"
@@ -1479,7 +1479,7 @@
                                     <td align="left" nowrap="nowrap">
                                         <asp:RadioButton ID="step4_RadioButtonNO_SVC_OPTION" runat="server" AutoPostBack="True" Text="NO_SVC_OPTION" GroupName="SEARCH_TYPE"></asp:RadioButton>
                                     </td>
-                                    <td class="padLeft60" nowrap="nowrap" runat="server" id="step4_tdCountryLabel">
+                                    <td class="padLeft60" style="white-space:nowrap" runat="server" id="step4_tdCountryLabel">
                                         <asp:Label runat="server" ID="moCountryLabel" Text="COUNTRY" />
                                         :
                                     </td>
@@ -1488,11 +1488,11 @@
                                             AutoPostBack="True">
                                         </asp:DropDownList>
                                     </td>
-                                    <td nowrap="nowrap" runat="server" id="step4_tdCityLabel">
+                                    <td style="white-space:nowrap" runat="server" id="step4_tdCityLabel">
                                         <asp:Label runat="server" ID="step4_moCityLabel" Text="CITY" />
                                         :
                                     </td>
-                                    <td nowrap="nowrap" runat="server" id="step4_tdCityTextBox">
+                                    <td style="white-space:nowrap" runat="server" id="step4_tdCityTextBox">
                                         <asp:TextBox ID="step4_TextboxCity" runat="server" SkinID="MediumTextBox"></asp:TextBox>
                                     </td>
 

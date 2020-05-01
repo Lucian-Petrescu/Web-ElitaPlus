@@ -3,9 +3,11 @@
     Theme="Default" %>
 
 <asp:Content ID="Content1" ContentPlaceHolderID="HeadPlaceHolder" runat="server">
-    <script language="JavaScript" src="../Navigation/Scripts/GlobalHeader.js">
-        function TABLE1_onclick() {
-        }
+    <script language="JavaScript" src="../Navigation/Scripts/GlobalHeader.js"> </script>
+        <script type="text/javascript">
+            function TABLE1_onclick() {
+
+            }
 
     </script>
 </asp:Content>

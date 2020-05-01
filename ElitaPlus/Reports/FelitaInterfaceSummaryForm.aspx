@@ -110,7 +110,7 @@
                                                     </td>
                                                 </tr>
                                                 <tr>
-                                                    <td style="width 100%" colspan=4>
+                                                    <td style="width:100%" colspan=4>
                                                         <hr style="height: 1PX" />
                                                     </td>
                                                 </tr>
@@ -145,7 +145,7 @@
                                                     </td>
                                                 </tr>
                                                 <tr>
-                                                    <td style="width 99.43%" colspan=4>
+                                                    <td style="width: 99.43%" colspan=4>
                                                         <hr style="height: 1px"/>
                                                     </td>
                                                 </tr>

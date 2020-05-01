@@ -49,7 +49,7 @@
           <div>
             <table width="100%" class="dataGrid">
                 <tr id="trPageSize" runat="server">
-                    <td valign="bor" align="left">
+                    <td valign="bottom" align="left">
                         <asp:Label ID="lblPageSize" runat="server">Page_Size</asp:Label><asp:Label ID="Label3"
                             runat="server">:</asp:Label>
                         &nbsp;

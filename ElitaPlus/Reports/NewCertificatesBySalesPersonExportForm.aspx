@@ -188,7 +188,7 @@
 									</TD>
 								</TR>
 								<TR>
-									<TD style="text-align:left; padding-bottom="10px">
+									<TD style="text-align:left; padding-bottom:10px">
 									<asp:Button ID="btnGenRpt" runat="server" CssClass="FLATBUTTON" height="20px" style="BACKGROUND-IMAGE: url(../Navigation/images/viewIcon2.gif); CURSOR: hand; BACKGROUND-REPEAT: no-repeat" Text="Generate Report Request" Width="200px" />
 								</TR>
 							</TABLE>
@@ -202,7 +202,7 @@
 	        var newHeight = document.documentElement.clientHeight - 80;
 	        document.getElementById("tblOuter2").style.height = String(newHeight) + "px";
         </script>
-	<script type="text/javascript"">
+	<script type="text/javascript">
 
             
 	    $(document).ready(function(){

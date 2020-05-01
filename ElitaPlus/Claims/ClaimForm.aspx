@@ -78,7 +78,7 @@
                     <tr>
                         <td>&nbsp;
                         </td>
-                        <td id="tdBtnArea" nowrap="nowrap" runat="server" colspan="2">
+                        <td id="tdBtnArea" style="white-space:nowrap" runat="server" colspan="2">
                             <asp:Button ID="btnModalSelectServiceCenterYes" runat="server" Text="YES" SkinID="PrimaryRightButton" />
                             <asp:Button ID="btnModalSelectServiceCenterNo" runat="server" Text="NO" SkinID="AlternateRightButton" />
                         </td>
@@ -131,7 +131,7 @@
                     <tr>
                         <td>&nbsp;
                         </td>
-                        <td id="td2" nowrap="nowrap" runat="server" colspan="2">
+                        <td id="td2" style="white-space:nowrap" runat="server" colspan="2">
                             <input id="btnModalReopenClaimYes" class="primaryBtn floatR" runat="server" type="button"
                                 value="Yes" />
                             <input id="btnModalReopenClaimNo" class="popWindowAltbtn floatR" runat="server" type="button"

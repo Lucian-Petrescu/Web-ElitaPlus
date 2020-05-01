@@ -74,7 +74,7 @@
             <tr>
                 <td colspan="4">
                     <asp:Label ID="lblEntityId" runat="server" Visible="False"></asp:Label><asp:Label ID="moIsNewEntityLabel" runat="server" Visible="False"></asp:Label><input id="HiddenSaveChangesPromptResponse" type="hidden" name="HiddenSaveChangesPromptResponse"
-                        runat="server">
+                                                                                                                                                                                runat="server"/>
                 </td>
             </tr>
         </table>

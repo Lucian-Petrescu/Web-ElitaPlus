@@ -133,7 +133,7 @@
             </td>
         </tr>
     </table>
-    <input id="HiddenDeletePromptResponse" type="hidden" runat="server" designtimedragdrop="261">
+    <input id="HiddenDeletePromptResponse" type="hidden" runat="server" designtimedragdrop="261"/>
 
     <script type="text/javascript">
         if (document.getElementById("tdGrid")) {

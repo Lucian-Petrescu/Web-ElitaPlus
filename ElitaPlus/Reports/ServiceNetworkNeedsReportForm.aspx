@@ -82,68 +82,72 @@
                                                         <td colspan="2">&nbsp;</td>
                                                     </tr>
                                                     <tr>
-                                                        <td nowrap align="right" width="25%" colspan="2">
+                                                        <td style="white-space: nowrap" align="right" width="25%" colspan="2">
                                                             <asp:RadioButton ID="OptSelectAllCities"
                                                                 onclick="toggleAllCitiesSelection(false);" Text="SELECT_ALL_CITIES"
                                                                 AutoPostBack="false" runat="server" TextAlign="left"></asp:RadioButton>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-																<asp:Label ID="moSelectACityLabel" runat="server">OR_A_SINGLE_CITY</asp:Label>:</td>
-                                            </td>
-                                            <td nowrap align="left" width="25%">&nbsp;
-																<asp:TextBox ID="moCityText" TabIndex="1" onclick="toggleAllCitiesSelection(true);" runat="server" CssClass="FLATTEXTBOX" Width="200px"></asp:TextBox></td>
-                                        </tr>
-                                        <tr>
-                                            <td colspan="3">&nbsp;</td>
-                                        </tr>
-                                        <tr>
-                                            <td colspan="3">&nbsp;</td>
-                                        </tr>
+																<asp:Label ID="moSelectACityLabel" runat="server">OR_A_SINGLE_CITY</asp:Label>:
 
-                                        <tr>
-                                            <td nowrap align="right" width="25%" colspan="2" valign="top">
-                                                <table cellspacing="0" cellpadding="0" width="100%" border="0">
-                                                    <tr>
-                                                        <td>
-                                                            <img height="7" src="../Navigation/images/trans_spacer.gif" width="1" /></td>
+                                                        </td>
+
+
+                                                        <td nowrap align="left" width="25%">&nbsp;
+																<asp:TextBox ID="moCityText" TabIndex="1" onclick="toggleAllCitiesSelection(true);" runat="server" CssClass="FLATTEXTBOX" Width="200px"></asp:TextBox></td>
                                                     </tr>
                                                     <tr>
-                                                        <td nowrap align="right">
-                                                            <asp:Label ID="Label2" runat="server">SELECT_REPORT_SORT_ORDER</asp:Label>:</td>
+                                                        <td colspan="3">&nbsp;</td>
                                                     </tr>
-                                                </table>
-                                            </td>
-                                            <td nowrap align="left" valign="top" width="25%">
-                                                <asp:RadioButtonList ID="rdReportSortOrder" runat="server">
-                                                    <asp:ListItem Value="1">#_of_Items</asp:ListItem>
-                                                    <asp:ListItem Value="2">City</asp:ListItem>
-                                                    <asp:ListItem Value="3">Zip_Code</asp:ListItem>
-                                                </asp:RadioButtonList></td>
-                                        </tr>
-                                        <tr>
-                                            <td colspan="3">&nbsp;</td>
-                                        </tr>
-                                        <tr>
-                                            <td colspan="3">
-                                                <hr style="height: 1px" />
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td colspan="3">&nbsp;</td>
-                                        </tr>
-                                        <tr>
-                                            <td nowrap align="right" width="25%" colspan="1">*
+                                                    <tr>
+                                                        <td colspan="3">&nbsp;</td>
+                                                    </tr>
+
+                                                    <tr>
+                                                        <td style="white-space: nowrap" align="right" width="25%" colspan="2" valign="top">
+                                                            <table cellspacing="0" cellpadding="0" width="100%" border="0">
+                                                                <tr>
+                                                                    <td>
+                                                                        <img height="7" src="../Navigation/images/trans_spacer.gif" width="1" /></td>
+                                                                </tr>
+                                                                <tr>
+                                                                    <td style="white-space: nowrap" align="right">
+                                                                        <asp:Label ID="Label2" runat="server">SELECT_REPORT_SORT_ORDER</asp:Label>:</td>
+                                                                </tr>
+                                                            </table>
+                                                        </td>
+                                                        <td style="white-space: nowrap" align="left" valign="top" width="25%">
+                                                            <asp:RadioButtonList ID="rdReportSortOrder" runat="server">
+                                                                <asp:ListItem Value="1">#_of_Items</asp:ListItem>
+                                                                <asp:ListItem Value="2">City</asp:ListItem>
+                                                                <asp:ListItem Value="3">Zip_Code</asp:ListItem>
+                                                            </asp:RadioButtonList></td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td colspan="3">&nbsp;</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td colspan="3">
+                                                            <hr style="height: 1px" />
+                                                        </td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td colspan="3">&nbsp;</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td style="white-space: nowrap" align="right" width="25%" colspan="1">*
 																<asp:RadioButton ID="RadiobuttonTotalsOnly" onclick="toggleDetailSelection(false);" Text="SHOW TOTALS ONLY"
                                                                     AutoPostBack="false" runat="server" TextAlign="left"></asp:RadioButton>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                                            </td>
-                                            <td valign="middle" nowrap align="right" width="5%" colspan="1"></td>
-                                            <td nowrap align="left" width="25%">&nbsp;
+                                                        </td>
+                                                        <td valign="middle" nowrap align="right" width="5%" colspan="1"></td>
+                                                        <td style="white-space: nowrap" align="left" width="25%">&nbsp;
 																<asp:RadioButton ID="RadiobuttonDetail" onclick="toggleDetailSelection(true);" Text="OR SHOW DETAIL WITH TOTALS"
                                                                     AutoPostBack="false" runat="server" TextAlign="left"></asp:RadioButton></td>
-                                        </tr>
-                                        <tr>
-                                            <td colspan="2">&nbsp;</td>
-                                        </tr>
-                                    </table>
-                                </td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td colspan="2">&nbsp;</td>
+                                                    </tr>
+                                                </table>
+
+                                            </td></tr></table>
                             </tr>
                             <tr>
                                 <td>&nbsp;

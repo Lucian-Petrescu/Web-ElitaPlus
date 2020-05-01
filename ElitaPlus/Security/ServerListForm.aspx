@@ -107,7 +107,7 @@
             </td>
         </tr>
     </table>
-    <input id="HiddenDeletePromptResponse" type="hidden" runat="server" designtimedragdrop="261">
+    <input id="HiddenDeletePromptResponse" type="hidden" runat="server" designtimedragdrop="261"/>
 </asp:Content>
 <asp:Content ID="Content2" ContentPlaceHolderID="ContentPanelButtons" runat="server">
     <asp:Button ID="btnNew" runat="server" CssClass="FLATBUTTON BUTTONSTYLE_NEW" Text="NEW">
