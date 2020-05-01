@@ -1016,10 +1016,9 @@ Partial Class ClaimIssueActionAnswerForm
 
             If GridViewDeviceSelection.Visible AndAlso GridViewDeviceSelection.Rows.Count > 0 Then
                 ControlMgr.SetEnableControl(Me, btnSearchInventory, True)
-                Select Case State.SelectedActionCode
-                    Case IssueActionCode.GetDevSku, IssueActionCode.LflDevSel
-                        ControlMgr.SetVisibleControl(Me, btnSearchInventory, False)
-                End Select
+                If State.SelectedActionCode = IssueActionCode.GetDevSku Then
+                    ControlMgr.SetVisibleControl(Me, btnSearchInventory, False)
+                End If
             Else
                 ControlMgr.SetEnableControl(Me, btnSearchInventory, False)
             End If
@@ -1059,7 +1058,7 @@ Partial Class ClaimIssueActionAnswerForm
             GridViewDeviceSelection.Columns(GridColReplacementCostIdx).Visible = False
             GridViewDeviceSelection.Columns(GridColNumberOfDeviceIdx).Visible = False
         ElseIf State.SelectedActionCode = IssueActionCode.LflDevSel Then
-            GridViewDeviceSelection.Columns(GridColInventoryCheckIdx).Visible = False
+            GridViewDeviceSelection.Columns(GridColInventoryCheckIdx).Visible = True
         End If
     End Sub
     Private Sub GridViewDeviceSelection_PageIndexChanged(ByVal source As Object, ByVal e As EventArgs) Handles GridViewDeviceSelection.PageIndexChanged
