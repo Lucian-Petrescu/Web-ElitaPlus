@@ -1706,7 +1706,7 @@ Partial Class NewClaimForm
 
             Me.PopulateControlFromBOProperty(Me.TextboxLossDate, .LossDate)
             Me.PopulateControlFromBOProperty(Me.TextboxReportDate, .ReportedDate)
-            Me.State.MyBO.RecalculateDeductibleForChanges()
+            Me.State.MyBO.RecalcDeductibleForExpOrAuthAmountPercent()
 
             Me.PopulatePrices()
 
