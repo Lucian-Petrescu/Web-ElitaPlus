@@ -450,6 +450,13 @@
       <DependentUpon>InvoiceXmlDownload.aspx</DependentUpon>
       <SubType>ASPXCodebehind</SubType>
     </Compile>
+    <Compile Include="AcctFinanceAutomation\AFAMaintainenceForm.aspx.designer.vb">
+      <DependentUpon>AFAMaintainenceForm.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="AcctFinanceAutomation\AFAMaintainenceForm.aspx.vb">
+      <DependentUpon>AFAMaintainenceForm.aspx</DependentUpon>
+      <SubType>ASPXCodebehind</SubType>
+    </Compile>
     <Compile Include="AcctFinanceAutomation\ReconciliationForm.aspx.designer.vb">
       <DependentUpon>ReconciliationForm.aspx</DependentUpon>
     </Compile>
@@ -5576,6 +5583,7 @@
     <Content Include="AcctFinanceAutomation\InvoiceTemplate_USCP_CSV.xslt" />
     <Content Include="AcctFinanceAutomation\InvoiceTemplate_XFIN.xslt" />
     <Content Include="AcctFinanceAutomation\InvoiceXmlDownload.aspx" />
+    <Content Include="AcctFinanceAutomation\AFAMaintainenceForm.aspx" />
     <Content Include="AcctFinanceAutomation\ReconciliationForm.aspx" />
     <Content Include="AcctFinanceAutomation\ReportingRatesForm.aspx" />
     <Content Include="Admin\CleanupCacheForm.aspx" />
