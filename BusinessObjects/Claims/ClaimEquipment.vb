@@ -434,6 +434,7 @@ Public Class ClaimEquipment
         End Set
     End Property
 
+    <ValidStringLength("", Max:=255)>
     Public Property DeviceType() As String
         Get
             CheckDeleted()
