@@ -11,9 +11,9 @@ Option Strict On
 Option Explicit On
 
 Namespace Reports
-    
+
     Partial Public Class RequestReportForm
-        
+
         '''<summary>
         '''trDates control.
         '''</summary>
@@ -22,7 +22,7 @@ Namespace Reports
         '''To modify move field declaration from designer file to code-behind file.
         '''</remarks>
         Protected WithEvents trDates As Global.System.Web.UI.HtmlControls.HtmlTableRow
-        
+
         '''<summary>
         '''lblBeginDate control.
         '''</summary>
@@ -31,7 +31,7 @@ Namespace Reports
         '''To modify move field declaration from designer file to code-behind file.
         '''</remarks>
         Protected WithEvents lblBeginDate As Global.System.Web.UI.WebControls.Label
-        
+
         '''<summary>
         '''txtBeginDate control.
         '''</summary>
@@ -40,7 +40,7 @@ Namespace Reports
         '''To modify move field declaration from designer file to code-behind file.
         '''</remarks>
         Protected WithEvents txtBeginDate As Global.System.Web.UI.WebControls.TextBox
-        
+
         '''<summary>
         '''btnBeginDate control.
         '''</summary>
@@ -49,7 +49,7 @@ Namespace Reports
         '''To modify move field declaration from designer file to code-behind file.
         '''</remarks>
         Protected WithEvents btnBeginDate As Global.System.Web.UI.WebControls.ImageButton
-        
+
         '''<summary>
         '''lblEndDate control.
         '''</summary>
@@ -58,7 +58,7 @@ Namespace Reports
         '''To modify move field declaration from designer file to code-behind file.
         '''</remarks>
         Protected WithEvents lblEndDate As Global.System.Web.UI.WebControls.Label
-        
+
         '''<summary>
         '''txtEndDate control.
         '''</summary>
@@ -67,7 +67,7 @@ Namespace Reports
         '''To modify move field declaration from designer file to code-behind file.
         '''</remarks>
         Protected WithEvents txtEndDate As Global.System.Web.UI.WebControls.TextBox
-        
+
         '''<summary>
         '''btnEndDate control.
         '''</summary>
@@ -76,7 +76,43 @@ Namespace Reports
         '''To modify move field declaration from designer file to code-behind file.
         '''</remarks>
         Protected WithEvents btnEndDate As Global.System.Web.UI.WebControls.ImageButton
-        
+
+        '''<summary>
+        '''trMonthandYear control.
+        '''</summary>
+        '''<remarks>
+        '''Auto-generated field.
+        '''To modify move field declaration from designer file to code-behind file.
+        '''</remarks>
+        Protected WithEvents trMonthandYear As Global.System.Web.UI.HtmlControls.HtmlTableRow
+
+        '''<summary>
+        '''lblAcctPeriod control.
+        '''</summary>
+        '''<remarks>
+        '''Auto-generated field.
+        '''To modify move field declaration from designer file to code-behind file.
+        '''</remarks>
+        Protected WithEvents lblAcctPeriod As Global.System.Web.UI.WebControls.Label
+
+        '''<summary>
+        '''ddlAcctPeriodYear control.
+        '''</summary>
+        '''<remarks>
+        '''Auto-generated field.
+        '''To modify move field declaration from designer file to code-behind file.
+        '''</remarks>
+        Protected WithEvents ddlAcctPeriodYear As Global.System.Web.UI.WebControls.DropDownList
+
+        '''<summary>
+        '''ddlAcctPeriodMonth control.
+        '''</summary>
+        '''<remarks>
+        '''Auto-generated field.
+        '''To modify move field declaration from designer file to code-behind file.
+        '''</remarks>
+        Protected WithEvents ddlAcctPeriodMonth As Global.System.Web.UI.WebControls.DropDownList
+
         '''<summary>
         '''trDates_space control.
         '''</summary>
@@ -85,7 +121,7 @@ Namespace Reports
         '''To modify move field declaration from designer file to code-behind file.
         '''</remarks>
         Protected WithEvents trDates_space As Global.System.Web.UI.HtmlControls.HtmlTableRow
-        
+
         '''<summary>
         '''trCompany control.
         '''</summary>
@@ -94,7 +130,7 @@ Namespace Reports
         '''To modify move field declaration from designer file to code-behind file.
         '''</remarks>
         Protected WithEvents trCompany As Global.System.Web.UI.HtmlControls.HtmlTableRow
-        
+
         '''<summary>
         '''pnlCompanyDropControl control.
         '''</summary>
@@ -103,7 +139,7 @@ Namespace Reports
         '''To modify move field declaration from designer file to code-behind file.
         '''</remarks>
         Protected WithEvents pnlCompanyDropControl As Global.System.Web.UI.WebControls.Panel
-        
+
         '''<summary>
         '''moCompanyMultipleDrop control.
         '''</summary>
@@ -112,7 +148,7 @@ Namespace Reports
         '''To modify move field declaration from designer file to code-behind file.
         '''</remarks>
         Protected WithEvents moCompanyMultipleDrop As Global.Assurant.ElitaPlus.ElitaPlusWebApp.Common.MultipleColumnDDLabelControl
-        
+
         '''<summary>
         '''trCompany_space control.
         '''</summary>
@@ -121,7 +157,7 @@ Namespace Reports
         '''To modify move field declaration from designer file to code-behind file.
         '''</remarks>
         Protected WithEvents trCompany_space As Global.System.Web.UI.HtmlControls.HtmlTableRow
-        
+
         '''<summary>
         '''trDealer control.
         '''</summary>
@@ -130,7 +166,7 @@ Namespace Reports
         '''To modify move field declaration from designer file to code-behind file.
         '''</remarks>
         Protected WithEvents trDealer As Global.System.Web.UI.HtmlControls.HtmlTableRow
-        
+
         '''<summary>
         '''lblDealer control.
         '''</summary>
@@ -139,7 +175,7 @@ Namespace Reports
         '''To modify move field declaration from designer file to code-behind file.
         '''</remarks>
         Protected WithEvents lblDealer As Global.System.Web.UI.WebControls.Label
-        
+
         '''<summary>
         '''moDealerOptionList control.
         '''</summary>
@@ -148,7 +184,7 @@ Namespace Reports
         '''To modify move field declaration from designer file to code-behind file.
         '''</remarks>
         Protected WithEvents moDealerOptionList As Global.System.Web.UI.WebControls.RadioButtonList
-        
+
         '''<summary>
         '''pnlDealerDropControl control.
         '''</summary>
@@ -157,7 +193,7 @@ Namespace Reports
         '''To modify move field declaration from designer file to code-behind file.
         '''</remarks>
         Protected WithEvents pnlDealerDropControl As Global.System.Web.UI.WebControls.Panel
-        
+
         '''<summary>
         '''moDealerMultipleDrop control.
         '''</summary>
@@ -166,7 +202,7 @@ Namespace Reports
         '''To modify move field declaration from designer file to code-behind file.
         '''</remarks>
         Protected WithEvents moDealerMultipleDrop As Global.Assurant.ElitaPlus.ElitaPlusWebApp.Common.MultipleColumnDDLabelControl_New
-        
+
         '''<summary>
         '''trDealer_space control.
         '''</summary>
@@ -175,7 +211,7 @@ Namespace Reports
         '''To modify move field declaration from designer file to code-behind file.
         '''</remarks>
         Protected WithEvents trDealer_space As Global.System.Web.UI.HtmlControls.HtmlTableRow
-        
+
         '''<summary>
         '''trExtStatus control.
         '''</summary>
@@ -184,7 +220,7 @@ Namespace Reports
         '''To modify move field declaration from designer file to code-behind file.
         '''</remarks>
         Protected WithEvents trExtStatus As Global.System.Web.UI.HtmlControls.HtmlTableRow
-        
+
         '''<summary>
         '''pnlExtStatusDropControl control.
         '''</summary>
@@ -193,7 +229,7 @@ Namespace Reports
         '''To modify move field declaration from designer file to code-behind file.
         '''</remarks>
         Protected WithEvents pnlExtStatusDropControl As Global.System.Web.UI.WebControls.Panel
-        
+
         '''<summary>
         '''moExtStatusMultipleDrop control.
         '''</summary>
@@ -202,7 +238,7 @@ Namespace Reports
         '''To modify move field declaration from designer file to code-behind file.
         '''</remarks>
         Protected WithEvents moExtStatusMultipleDrop As Global.Assurant.ElitaPlus.ElitaPlusWebApp.Common.MultipleColumnDDLabelControl_New
-        
+
         '''<summary>
         '''trExtStatus_space control.
         '''</summary>
@@ -211,7 +247,7 @@ Namespace Reports
         '''To modify move field declaration from designer file to code-behind file.
         '''</remarks>
         Protected WithEvents trExtStatus_space As Global.System.Web.UI.HtmlControls.HtmlTableRow
-        
+
         '''<summary>
         '''trbatchnumber control.
         '''</summary>
@@ -220,7 +256,7 @@ Namespace Reports
         '''To modify move field declaration from designer file to code-behind file.
         '''</remarks>
         Protected WithEvents trbatchnumber As Global.System.Web.UI.HtmlControls.HtmlTableRow
-        
+
         '''<summary>
         '''lblBatchNumber control.
         '''</summary>
@@ -229,7 +265,7 @@ Namespace Reports
         '''To modify move field declaration from designer file to code-behind file.
         '''</remarks>
         Protected WithEvents lblBatchNumber As Global.System.Web.UI.WebControls.Label
-        
+
         '''<summary>
         '''txtBatchNumber control.
         '''</summary>
@@ -238,7 +274,7 @@ Namespace Reports
         '''To modify move field declaration from designer file to code-behind file.
         '''</remarks>
         Protected WithEvents txtBatchNumber As Global.System.Web.UI.WebControls.TextBox
-        
+
         '''<summary>
         '''trbatchnumber_space control.
         '''</summary>
@@ -247,7 +283,7 @@ Namespace Reports
         '''To modify move field declaration from designer file to code-behind file.
         '''</remarks>
         Protected WithEvents trbatchnumber_space As Global.System.Web.UI.HtmlControls.HtmlTableRow
-        
+
         '''<summary>
         '''btnGenRpt control.
         '''</summary>

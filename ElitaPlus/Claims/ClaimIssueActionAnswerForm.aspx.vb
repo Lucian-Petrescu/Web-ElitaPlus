@@ -43,6 +43,10 @@ Partial Class ClaimIssueActionAnswerForm
     Private Const AnswerCodeFiGetvendorskuok As String = "FI_GETVENDORSKUOK"
     Private Const AnswerCodeFiResendgcreqok As String = "FI_RESENDGCREQOK"
     Private Const AnswerCodeFiSwprobdescok As String = "FI_SWPROBDESCOK"
+    Private Const OrderType_Repair As String = "RE"
+    Private Const OrderType_Replacement As String = "EX"
+    Private Const CreationSource As String = "Elita CRM"
+
 #End Region
 #Region "Constants - Device Selection"
 
@@ -158,6 +162,8 @@ Partial Class ClaimIssueActionAnswerForm
         Public SelectedDeviceModel As String
         Public SelectedDeviceColor As String
         Public SelectedDeviceMemory As String
+        Public SelectedOrderType As String
+        Public SelectedCreationSource As String
         Public DeviceSelectionTable As DataTable
         Public AuthorizedAmountAllowed As Decimal = 0
         Public ClaimAuthfulfillmentTypeXcd As String = String.Empty
@@ -710,7 +716,8 @@ Partial Class ClaimIssueActionAnswerForm
             State.SelectedDeviceModel = String.Empty
             State.SelectedDeviceColor = String.Empty
             State.SelectedDeviceMemory = String.Empty
-
+            State.SelectedCreationSource = String.Empty
+            State.SelectedOrderType = String.Empty
         Catch ex As Exception
             HandleErrors(ex, MasterPage.MessageController)
         End Try
@@ -744,11 +751,15 @@ Partial Class ClaimIssueActionAnswerForm
                     State.SelectedDeviceModel = State.ClaimBo.ClaimedEquipment.Model
                     State.SelectedDeviceColor = State.ClaimBo.ClaimedEquipment.Color
                     State.SelectedDeviceMemory = State.ClaimBo.ClaimedEquipment.Memory
+                    State.SelectedOrderType = OrderType_Repair
+                    State.SelectedCreationSource = CreationSource
                 Case IssueActionCode.LflDevSel
                     State.SelectedDeviceManufacture = State.ClaimBo.ClaimedEquipment.Manufacturer
                     State.SelectedDeviceModel = State.ClaimBo.ClaimedEquipment.Model
                     State.SelectedDeviceColor = State.ClaimBo.ClaimedEquipment.Color
                     State.SelectedDeviceMemory = State.ClaimBo.ClaimedEquipment.Memory
+                    State.SelectedOrderType = OrderType_Replacement
+                    State.SelectedCreationSource = CreationSource
                     GetAuthorizedAmount()
                 Case IssueActionCode.BrDevSel
                     GetAuthorizedAmount()
@@ -872,6 +883,8 @@ Partial Class ClaimIssueActionAnswerForm
         skuRequest.Model = State.SelectedDeviceModel
         skuRequest.Color = State.SelectedDeviceColor
         skuRequest.Memory = State.SelectedDeviceMemory
+        skuRequest.OrderType = State.SelectedOrderType
+        skuRequest.CreationSource = State.SelectedCreationSource
         skuRequest.SearchLimit = CType(SearchLimit, String)
 
         Dim skuResponse As SearchSKUResponse
@@ -1003,9 +1016,10 @@ Partial Class ClaimIssueActionAnswerForm
 
             If GridViewDeviceSelection.Visible AndAlso GridViewDeviceSelection.Rows.Count > 0 Then
                 ControlMgr.SetEnableControl(Me, btnSearchInventory, True)
-                If State.SelectedActionCode = IssueActionCode.GetDevSku Then
-                    ControlMgr.SetVisibleControl(Me, btnSearchInventory, False)
-                End If
+                Select Case State.SelectedActionCode
+                    Case IssueActionCode.GetDevSku, IssueActionCode.LflDevSel
+                        ControlMgr.SetVisibleControl(Me, btnSearchInventory, False)
+                End Select
             Else
                 ControlMgr.SetEnableControl(Me, btnSearchInventory, False)
             End If
@@ -1044,6 +1058,8 @@ Partial Class ClaimIssueActionAnswerForm
             GridViewDeviceSelection.Columns(GridColInventoryCheckIdx).Visible = False
             GridViewDeviceSelection.Columns(GridColReplacementCostIdx).Visible = False
             GridViewDeviceSelection.Columns(GridColNumberOfDeviceIdx).Visible = False
+        ElseIf State.SelectedActionCode = IssueActionCode.LflDevSel Then
+            GridViewDeviceSelection.Columns(GridColInventoryCheckIdx).Visible = False
         End If
     End Sub
     Private Sub GridViewDeviceSelection_PageIndexChanged(ByVal source As Object, ByVal e As EventArgs) Handles GridViewDeviceSelection.PageIndexChanged

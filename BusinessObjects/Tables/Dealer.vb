@@ -2598,6 +2598,23 @@ Public Class Dealer
             Me.SetValue(DealerDAL.COL_NAME_CLOSE_CASE_GRACE_PERIOD_DAYS, Value)
         End Set
     End Property
+
+    'US 489857
+    <ValueMandatory("")>
+    Public Property AcctBucketsWithSourceXcd() As String
+        Get
+            CheckDeleted()
+            If Row(DealerDAL.COL_NAME_ACCT_BUCKETS_WITH_SOURCE_XCD) Is DBNull.Value Then
+                Return Nothing
+            Else
+                Return CType(Row(DealerDAL.COL_NAME_ACCT_BUCKETS_WITH_SOURCE_XCD), String)
+            End If
+        End Get
+        Set(ByVal Value As String)
+            CheckDeleted()
+            Me.SetValue(DealerDAL.COL_NAME_ACCT_BUCKETS_WITH_SOURCE_XCD, Value)
+        End Set
+    End Property
 #End Region
 
 #Region "Public Members"

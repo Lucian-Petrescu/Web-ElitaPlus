@@ -516,16 +516,16 @@ Public Class CancelCertificate
 
                 If Not dsCert Is Nothing AndAlso dsCert.Tables.Count > 0 AndAlso dsCert.Tables(0).Rows.Count = 1 Then
                     If dsCert.Tables(0).Rows(0).Item(Me.DATA_COL_NAME_CERT_ID) Is DBNull.Value Then
-                        Throw New BOValidationException("CancelCertificate Error: ", Me.CERTIFICATE_NOT_FOUND)
+                        Throw New BOValidationException("CancelCertificate Error: ", CERTIFICATE_NOT_FOUND)
                     Else
                         _certId = New Guid(CType(dsCert.Tables(0).Rows(0).Item(Me.DATA_COL_NAME_CERT_ID), Byte()))
 
                         If _certId.Equals(Guid.Empty) Then
-                            Throw New BOValidationException("CancelCertificate Error: ", Me.CERTIFICATE_NOT_FOUND)
+                            Throw New BOValidationException("CancelCertificate Error: ", CERTIFICATE_NOT_FOUND)
                         End If
                     End If
                 Else
-                    Throw New BOValidationException("CancelCertificate Error: ", Me.CERTIFICATE_NOT_FOUND)
+                    Throw New BOValidationException("CancelCertificate Error: ", CERTIFICATE_NOT_FOUND)
                 End If
             End If
 
@@ -586,23 +586,23 @@ Public Class CancelCertificate
                     oCertsDataSet = Certificate.GetCertListByInvoiceNumber(Me.InvoiceNumber)
                     If Not oCertsDataSet Is Nothing AndAlso oCertsDataSet.Tables.Count > 0 AndAlso oCertsDataSet.Tables(0).Rows.Count > 0 Then
                         If oCertsDataSet.Tables(0).Rows(0).Item(Me.DATA_COL_NAME_CERT_ID) Is DBNull.Value Then
-                            Throw New BOValidationException("CancelCertificate Error: ", Me.CERTIFICATE_NOT_FOUND)
+                            Throw New BOValidationException("CancelCertificate Error: ", CERTIFICATE_NOT_FOUND)
                         Else
                             _certId = New Guid(CType(oCertsDataSet.Tables(0).Rows(0).Item(Me.DATA_COL_NAME_CERT_ID), Byte()))
                             If _certId.Equals(Guid.Empty) Then
-                                Throw New BOValidationException("CancelCertificate Error: ", Me.CERTIFICATE_NOT_FOUND)
+                                Throw New BOValidationException("CancelCertificate Error: ", CERTIFICATE_NOT_FOUND)
                             End If
                             oCert = New Certificate(_certId)
                         End If
                     Else
-                        Throw New BOValidationException("CancelCertificate Error: ", Me.CERTIFICATE_NOT_FOUND)
+                        Throw New BOValidationException("CancelCertificate Error: ", CERTIFICATE_NOT_FOUND)
                     End If
 
                 Else
                     'List of certificates BY Certificate number                    
                     oCert = New Certificate(Me.CertID)
                     If oCert.InvoiceNumber Is Nothing OrElse oCert.InvoiceNumber.Equals(String.Empty) Then
-                        Throw New BOValidationException("CancelCertificate Error: ", Me.CERTIFICATE_INVOICE_NUM_NOT_FOUND)
+                        Throw New BOValidationException("CancelCertificate Error: ", CERTIFICATE_INVOICE_NUM_NOT_FOUND)
                     End If
                 End If
             Else
@@ -613,24 +613,24 @@ Public Class CancelCertificate
             If Me.CancelAllByInvoice Is Nothing OrElse Me.CancelAllByInvoice.Equals("N") Then
                 ' Check if the certificate is already closed
                 If oCert.StatusCode = "C" Then
-                    Throw New BOValidationException("CancelCertificate Error: ", Me.CERTIFICATE_ALREADY_CLOSED)
+                    Throw New BOValidationException("CancelCertificate Error: ", CERTIFICATE_ALREADY_CLOSED)
                 End If
 
                 ' Check if there is any claims that are not closed
                 If (Dealer.IsSkipActiveClaim(Me.DealerId)) Then
                     ' check if there is any claim in A or P status and Loss Date > cancellation date 
                     If (oCert.ActiveClaimExist(Me.DealerId, oCert.CertNumber, Me.CancellationDate)) Then
-                        Throw New BOValidationException("CancelCertificate Error: ", Me.ACTIVE_CLAIMS_EXIST)
+                        Throw New BOValidationException("CancelCertificate Error: ", ACTIVE_CLAIMS_EXIST)
                     End If
                 Else
                     If oCert.TotalClaimsNotClosedForCert(Me.DealerId, oCert.CertNumber) Then
-                        Throw New BOValidationException("CancelCertificate Error: ", Me.ACTIVE_CLAIMS_EXIST)
+                        Throw New BOValidationException("CancelCertificate Error: ", ACTIVE_CLAIMS_EXIST)
                     End If
                 End If
             End If
 
             If oCert.IsChildCertificate Then
-                Throw New BOValidationException("CancelCertificate Error: ", Me.NO_CANCELLATION_ALLOWED)
+                Throw New BOValidationException("CancelCertificate Error: ", NO_CANCELLATION_ALLOWED)
             End If
 
             ' Get cancellation reason code from Contract record
@@ -677,7 +677,7 @@ Public Class CancelCertificate
             ' Check if the cancellation date is within the allowed period
             ' If Me.Source.Equals("OLITA") AndAlso Me.CancellationDate > oCert.WarrantySalesDate.Value.AddDays(oContract.FullRefundDays) Then
             If Me.CancellationDate > oCert.WarrantySalesDate.Value.AddDays(oContract.FullRefundDays) Then
-                Throw New BOValidationException("CancelCertificate Error: ", Me.MSG_INVALID_CANCELLATION_DATE)
+                Throw New BOValidationException("CancelCertificate Error: ", MSG_INVALID_CANCELLATION_DATE)
             End If
 
             If Me.Action = "Q" Then

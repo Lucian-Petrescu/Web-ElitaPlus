@@ -711,6 +711,8 @@
                 <div style="visibility:hidden">
                     <asp:Button ID="btnContinue" runat="server" SkinID="PrimaryRightButton" Text="Continue" />
                     <asp:Button ID="btnLegacyContinue" runat="server" SkinID="PrimaryRightButton" Text="Continue" />
+                    <input type="hidden" id="hdnInput" value="<%=hdnData.ClientID %>" />
+                    <asp:HiddenField ID="hdnData" runat="server" />
                 </div>                
                 <asp:LinkButton ID="lnkCancel" runat="server" SkinID="TabZoneAddButton" Text="Cancel"
                                 OnClientClick="return revealModal('ModalCancel');" />

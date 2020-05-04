@@ -184,6 +184,30 @@
                                     </td>
                                 </tr>
                                 <tr>
+                                    <td>
+                                        &nbsp;
+                                    </td>
+                                </tr>
+                                <tr id="InvoiceOrClaim" style="display:block;">
+                                    <td nowrap align="right">
+                                        <asp:RadioButton ID="RadiobuttonClaims" GroupName="InvoiceClaim"
+                                                         TextAlign="left" Text="Claims" runat="server" AutoPostBack="false">
+                                        </asp:RadioButton>
+                                    </td>
+                                    <td nowrap align="left">
+                                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                        <asp:RadioButton ID="RadiobuttonInvoices" GroupName="InvoiceClaim"
+                                                         TextAlign="left" Text="Invoices" runat="server" AutoPostBack="false">
+                                        </asp:RadioButton>
+                                    </td>
+                                 </tr>
+                                <tr>
+                                    <td>
+                                        &nbsp;
+                                    </td>
+                                </tr>
+
+                                <tr>
                                     <td width="50%">
                                         &nbsp;
                                     </td>
@@ -252,6 +276,22 @@
                 document.getElementById("DateRow").style.display = 'none';
                 document.getElementById("PayeeRow").style.display = 'none';
             }
+        }
+
+        function toggleReportFormatViewSelection(isView) {
+            //debugger;
+            if (isView) {
+                document.getElementById("InvoiceOrClaim").style.display = 'block';
+            }
+
+        }
+
+        function toggleReportFormatTXTSelection(isTXT) {
+            //debugger;
+            if (isTXT) {
+                document.getElementById("InvoiceOrClaim").style.display = 'none';
+            }
+
         }
 
         function ToggleDropdownsforCurrency() {
