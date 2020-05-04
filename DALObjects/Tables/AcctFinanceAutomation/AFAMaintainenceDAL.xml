@@ -1,0 +1,32 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+
+<!-- ********************** THIS FILE HAS BEEN GENERATED FROM TEMPLATE SQLObject.cst (1/8/2015)********************** -->
+
+<SQL>
+
+  <LOAD_PROCESS_STATUS>
+    select case when process_type_desc is not null then process_type_desc || ' (' || process_type_code || ')' else process_type_code end as process_type,
+           status,
+           comments,
+           start_date_time,
+           completion_date_time
+    from   ( select nvl(elita.getdescriptionfromcode('AFA_PROCESS_TYPE',s.process_type,:pi_language_id),s.process_type) as process_type_desc,
+                    s.process_type process_type_code,               
+                    s.status,
+                    s.comments,
+                    s.start_date_time,
+                    s.completion_date_time,
+                    row_number() over(partition by s.process_type order by s.start_date_time desc) rnm
+             from   elita.elp_afa_status_tracking s
+             where  s.dealer_id = :pi_dealer_id
+               and  trunc(s.invoice_date) between trunc(:pi_billingdtstart) and trunc(:pi_billingdtend))
+    where  rnm = 1
+    order  by start_date_time desc
+  </LOAD_PROCESS_STATUS>
+  <RERUN_RECONCILIATION>
+    elita.elp_afa_reconcile.ReRunReconciliation
+  </RERUN_RECONCILIATION>
+  <RERUN_INVOICE>
+    elita.ELP_AFA_GEN_INVOICE_DATA.ReRunInvoice
+  </RERUN_INVOICE>
+</SQL>
