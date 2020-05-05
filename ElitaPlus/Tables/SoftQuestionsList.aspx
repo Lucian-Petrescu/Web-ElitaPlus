@@ -16,8 +16,8 @@
 	<body leftMargin="0" topMargin="0" onload="changeScrollbarColor();" MS_POSITIONING="GridLayout">
 		<form id="Form1" method="post" runat="server">
 			<!--Start Header-->
-			<input id="isSoftQuestionFormVisible" type="hidden" name="isSoftQuestionFormVisible" runat="server">
-			<input id="NextAction" type="hidden" name="NextAction" runat="server">
+            <input id="isSoftQuestionFormVisible" type="hidden" name="isSoftQuestionFormVisible" runat="server"/>
+            <input id="NextAction" type="hidden" name="NextAction" runat="server"/>
 			<TABLE style="BORDER-RIGHT: black 1px solid; BORDER-TOP: black 1px solid; MARGIN: 5px; BORDER-LEFT: black 1px solid; BORDER-BOTTOM: black 1px solid"
 				cellSpacing="0" cellPadding="0" width="98%" bgColor="#d5d6e4" border="0">
 				<TR>
@@ -43,8 +43,8 @@
 								height="100%" cellSpacing="0" cellPadding="6" rules="cols" width="100%" align="center"
 								bgColor="#fef9ea" border="0">
 								<TR id="ErrorRow" runat="server">
-									<TD style="HEIGHT: 22px" vAlign="middle" align="center" colSpan="4"><INPUT id="HiddenSaveChangesPromptResponse" type="hidden" name="HiddenSaveChangesPromptResponse"
-											runat="server">
+                                    <TD style="HEIGHT: 22px" vAlign="middle" align="center" colSpan="4"><INPUT id="HiddenSaveChangesPromptResponse" type="hidden" name="HiddenSaveChangesPromptResponse"
+                                                                                                               runat="server"/>
 										<uc1:ErrorController id="ErrorCtrl" runat="server"></uc1:ErrorController></TD>
 								</TR>
 								<TR id="CertRow" runat="server">

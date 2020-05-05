@@ -42,7 +42,7 @@
 				</tr>
 				<tr>
 					<td style="vertical-align:top;text-align:center;"><asp:panel id="WorkingPanel" runat="server" Height="98%" Width="100%">
-							<TABLE id="tblMain1" style="BORDER: #999999 1px solid; height="98%" cellSpacing="0" cellPadding="6" rules="cols" width="98%" align="center"
+							<TABLE id="tblMain1" style="BORDER: #999999 1px solid; height:98%" cellSpacing="0" cellPadding="6" rules="cols" width="98%" align="center"
 								bgColor="#fef9ea" border="0">
 								<TR>
 									<TD style="HEIGHT: 34px;vertical-align:top;text-align:center" colSpan="4">
@@ -102,8 +102,8 @@
 									</TD>
 								</TR>
 							</TABLE>
-							<INPUT id="HiddenSaveChangesPromptResponse" type="hidden" name="HiddenSaveChangesPromptResponse"
-								runat="server">
+                        <INPUT id="HiddenSaveChangesPromptResponse" type="hidden" name="HiddenSaveChangesPromptResponse"
+                               runat="server"/>
 						</asp:panel></td>
 				</tr>
 			</TABLE>

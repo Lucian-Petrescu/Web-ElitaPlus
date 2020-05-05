@@ -297,7 +297,7 @@
                                                     <asp:TemplateField Visible="True"  HeaderText="CODE"> 
                                                         <ItemStyle HorizontalAlign="Left"></ItemStyle>
                                                         <ItemTemplate>
-                                                            <asp:Label ID="lblLineBusinessCode" runat="server" Text='<%# DataBinder.Eval(Container.DataItem, "code")%>' Visible="True" SkinID="SmallTextBox">
+                                                            <asp:Label ID="lblLineBusinessCode" runat="server" Text='<%# DataBinder.Eval(Container.DataItem, "code")%>' Visible="True" SkinID="SummaryLabel">
                                                             </asp:Label>
                                                         </ItemTemplate>
                                                         <EditItemTemplate>

@@ -168,8 +168,8 @@
 											height="20px"></asp:button></TD>
 								</TR>
 							</TABLE>
-							<INPUT id="HiddenSaveChangesPromptResponse" type="hidden" name="HiddenSaveChangesPromptResponse"
-								runat="server" DESIGNTIMEDRAGDROP="261">
+                        <INPUT id="HiddenSaveChangesPromptResponse" type="hidden" name="HiddenSaveChangesPromptResponse"
+                               runat="server" DESIGNTIMEDRAGDROP="261"/>
 						</asp:panel></td>
 				</tr>
 			</TABLE>

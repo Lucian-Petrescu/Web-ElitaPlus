@@ -64,7 +64,7 @@
 							<TR>
 								<TD colSpan="2">
 									<asp:label id="lblContractID" runat="server" Visible="False"></asp:label>
-									<INPUT id="HiddenSaveChangesPromptResponse" type="hidden" name="HiddenSaveChangesPromptResponse" runat="server">
+                                    <INPUT id="HiddenSaveChangesPromptResponse" type="hidden" name="HiddenSaveChangesPromptResponse" runat="server"/>
 								</TD>
 							</TR>
 							<TR>

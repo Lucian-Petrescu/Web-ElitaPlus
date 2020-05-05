@@ -49,7 +49,7 @@
                     </asp:DropDownList>
                     <asp:TextBox ID="cboCompanyTypeTextBox" runat="server" Enabled="False" ReadOnly="True" Visible="False" SkinID="SmallTextBox"></asp:TextBox>
                 </td>
-                <td id="tdWithholdingCheck" runat="server"  nowrap="nowrap" align="left" width="30%">
+                <td id="tdWithholdingCheck" runat="server" style="white-space: nowrap"  align="left" width="30%">
                         <asp:Label ID="lblWithholdingRate" runat="server">APPLY_WITHHOLDING</asp:Label>:
                         <asp:CheckBox ID="CheckBoxApplyWithholding" TabIndex="19" runat="server"></asp:CheckBox>
                 </td>

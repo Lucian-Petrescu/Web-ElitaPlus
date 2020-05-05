@@ -289,7 +289,7 @@
                                 </asp:Panel>
                             </td>
                         </tr>
-                        <input id="HiddenDeletePromptResponse" type="hidden" runat="server" designtimedragdrop="261">
+                    <input id="HiddenDeletePromptResponse" type="hidden" runat="server" designtimedragdrop="261"/>
                         <tr height="30px">
                             <td align="right" colspan="2">
                                 <hr style="height: 1px">

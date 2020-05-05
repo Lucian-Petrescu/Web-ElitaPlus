@@ -544,8 +544,8 @@
                                     </td>
                                 </tr>
                             </table>
-                            <input id="HiddenSaveChangesPromptResponse" type="hidden" name="HiddenSaveChangesPromptResponse"
-                                runat="server" designtimedragdrop="261">
+                        <input id="HiddenSaveChangesPromptResponse" type="hidden" name="HiddenSaveChangesPromptResponse"
+                               runat="server" designtimedragdrop="261"/>
                         </asp:Panel>
                     </td>
                 </tr>

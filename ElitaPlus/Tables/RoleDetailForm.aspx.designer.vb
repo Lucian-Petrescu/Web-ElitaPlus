@@ -12,7 +12,7 @@ Option Explicit On
 
 
 Partial Public Class RoleDetailForm
-    
+
     '''<summary>
     '''DeleteButtonId control.
     '''</summary>
@@ -21,7 +21,7 @@ Partial Public Class RoleDetailForm
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
     Protected WithEvents DeleteButtonId As Global.System.Web.UI.HtmlControls.HtmlInputHidden
-    
+
     '''<summary>
     '''DeleteButtonArgument control.
     '''</summary>
@@ -30,7 +30,7 @@ Partial Public Class RoleDetailForm
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
     Protected WithEvents DeleteButtonArgument As Global.System.Web.UI.HtmlControls.HtmlInputHidden
-    
+
     '''<summary>
     '''lblModalTitle control.
     '''</summary>
@@ -39,7 +39,7 @@ Partial Public Class RoleDetailForm
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
     Protected WithEvents lblModalTitle As Global.System.Web.UI.WebControls.Label
-    
+
     '''<summary>
     '''moModalCloseImage control.
     '''</summary>
@@ -48,7 +48,7 @@ Partial Public Class RoleDetailForm
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
     Protected WithEvents moModalCloseImage As Global.System.Web.UI.HtmlControls.HtmlImage
-    
+
     '''<summary>
     '''imgMsgIcon control.
     '''</summary>
@@ -57,7 +57,7 @@ Partial Public Class RoleDetailForm
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
     Protected WithEvents imgMsgIcon As Global.System.Web.UI.HtmlControls.HtmlImage
-    
+
     '''<summary>
     '''tdModalMessage control.
     '''</summary>
@@ -66,7 +66,7 @@ Partial Public Class RoleDetailForm
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
     Protected WithEvents tdModalMessage As Global.System.Web.UI.HtmlControls.HtmlTableCell
-    
+
     '''<summary>
     '''lblCancelMessage control.
     '''</summary>
@@ -75,7 +75,7 @@ Partial Public Class RoleDetailForm
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
     Protected WithEvents lblCancelMessage As Global.System.Web.UI.WebControls.Label
-    
+
     '''<summary>
     '''tdBtnArea control.
     '''</summary>
@@ -84,7 +84,7 @@ Partial Public Class RoleDetailForm
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
     Protected WithEvents tdBtnArea As Global.System.Web.UI.HtmlControls.HtmlTableCell
-    
+
     '''<summary>
     '''btnModalCancelYes control.
     '''</summary>
@@ -93,7 +93,7 @@ Partial Public Class RoleDetailForm
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
     Protected WithEvents btnModalCancelYes As Global.System.Web.UI.HtmlControls.HtmlInputButton
-    
+
     '''<summary>
     '''moRoleCodeLabel control.
     '''</summary>
@@ -102,7 +102,7 @@ Partial Public Class RoleDetailForm
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
     Protected WithEvents moRoleCodeLabel As Global.System.Web.UI.WebControls.Label
-    
+
     '''<summary>
     '''moRoleCode control.
     '''</summary>
@@ -111,7 +111,7 @@ Partial Public Class RoleDetailForm
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
     Protected WithEvents moRoleCode As Global.System.Web.UI.WebControls.TextBox
-    
+
     '''<summary>
     '''moRoleDescriptionLabel control.
     '''</summary>
@@ -120,7 +120,7 @@ Partial Public Class RoleDetailForm
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
     Protected WithEvents moRoleDescriptionLabel As Global.System.Web.UI.WebControls.Label
-    
+
     '''<summary>
     '''moRoleDescription control.
     '''</summary>
@@ -129,7 +129,7 @@ Partial Public Class RoleDetailForm
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
     Protected WithEvents moRoleDescription As Global.System.Web.UI.WebControls.TextBox
-    
+
     '''<summary>
     '''moIhqOnlyLabel control.
     '''</summary>
@@ -138,7 +138,7 @@ Partial Public Class RoleDetailForm
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
     Protected WithEvents moIhqOnlyLabel As Global.System.Web.UI.WebControls.Label
-    
+
     '''<summary>
     '''moIhqOnly control.
     '''</summary>
@@ -147,7 +147,7 @@ Partial Public Class RoleDetailForm
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
     Protected WithEvents moIhqOnly As Global.System.Web.UI.WebControls.DropDownList
-    
+
     '''<summary>
     '''moRoleProviderLabel control.
     '''</summary>
@@ -156,7 +156,7 @@ Partial Public Class RoleDetailForm
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
     Protected WithEvents moRoleProviderLabel As Global.System.Web.UI.WebControls.Label
-    
+
     '''<summary>
     '''moRoleProvider control.
     '''</summary>
@@ -165,7 +165,7 @@ Partial Public Class RoleDetailForm
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
     Protected WithEvents moRoleProvider As Global.System.Web.UI.WebControls.DropDownList
-    
+
     '''<summary>
     '''hdnSelectedTab control.
     '''</summary>
@@ -174,7 +174,7 @@ Partial Public Class RoleDetailForm
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
     Protected WithEvents hdnSelectedTab As Global.System.Web.UI.WebControls.HiddenField
-    
+
     '''<summary>
     '''Label4 control.
     '''</summary>
@@ -183,7 +183,7 @@ Partial Public Class RoleDetailForm
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
     Protected WithEvents Label4 As Global.System.Web.UI.WebControls.Label
-    
+
     '''<summary>
     '''moAvailableLabel control.
     '''</summary>
@@ -192,7 +192,7 @@ Partial Public Class RoleDetailForm
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
     Protected WithEvents moAvailableLabel As Global.System.Web.UI.WebControls.Label
-    
+
     '''<summary>
     '''moSelectedTable control.
     '''</summary>
@@ -201,7 +201,7 @@ Partial Public Class RoleDetailForm
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
     Protected WithEvents moSelectedTable As Global.System.Web.UI.WebControls.Label
-    
+
     '''<summary>
     '''lstAvailablePermission control.
     '''</summary>
@@ -210,7 +210,7 @@ Partial Public Class RoleDetailForm
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
     Protected WithEvents lstAvailablePermission As Global.System.Web.UI.WebControls.ListBox
-    
+
     '''<summary>
     '''btnAddPermissionToSelected control.
     '''</summary>
@@ -219,7 +219,7 @@ Partial Public Class RoleDetailForm
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
     Protected WithEvents btnAddPermissionToSelected As Global.System.Web.UI.WebControls.Button
-    
+
     '''<summary>
     '''btnRemovePermission control.
     '''</summary>
@@ -228,7 +228,7 @@ Partial Public Class RoleDetailForm
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
     Protected WithEvents btnRemovePermission As Global.System.Web.UI.WebControls.Button
-    
+
     '''<summary>
     '''lstSelectedPermission control.
     '''</summary>
@@ -237,7 +237,7 @@ Partial Public Class RoleDetailForm
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
     Protected WithEvents lstSelectedPermission As Global.System.Web.UI.WebControls.ListBox
-    
+
     '''<summary>
     '''btnSave_WRITE control.
     '''</summary>
@@ -246,7 +246,7 @@ Partial Public Class RoleDetailForm
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
     Protected WithEvents btnSave_WRITE As Global.System.Web.UI.WebControls.Button
-    
+
     '''<summary>
     '''btnNew_WRITE control.
     '''</summary>
@@ -255,7 +255,7 @@ Partial Public Class RoleDetailForm
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
     Protected WithEvents btnNew_WRITE As Global.System.Web.UI.WebControls.Button
-    
+
     '''<summary>
     '''btnUndo_Write control.
     '''</summary>
@@ -264,7 +264,7 @@ Partial Public Class RoleDetailForm
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
     Protected WithEvents btnUndo_Write As Global.System.Web.UI.WebControls.Button
-    
+
     '''<summary>
     '''btnDelete_WRITE control.
     '''</summary>
@@ -273,7 +273,7 @@ Partial Public Class RoleDetailForm
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
     Protected WithEvents btnDelete_WRITE As Global.System.Web.UI.WebControls.Button
-    
+
     '''<summary>
     '''btnBack control.
     '''</summary>
@@ -282,7 +282,7 @@ Partial Public Class RoleDetailForm
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
     Protected WithEvents btnBack As Global.System.Web.UI.WebControls.Button
-    
+
     '''<summary>
     '''HiddenSaveChangesPromptResponse control.
     '''</summary>

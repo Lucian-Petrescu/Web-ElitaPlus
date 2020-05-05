@@ -18,7 +18,7 @@
     height: 360px" bottommargin="0" leftmargin="0" background="../Common/images/back_spacer.jpg"
     topmargin="0" scroll="no" onload="changeScrollbarColor();" rightmargin="0" ms_positioning="GridLayout">
     <form id="Form1" method="post" runat="server">
-    <input id="imgURL" type="hidden" name="imgURL" runat="server">
+        <input id="imgURL" type="hidden" name="imgURL" runat="server"/>
     <asp:Panel ID="panelForm" runat="server" Width="704px" Height="504px">
         <table style="width: 699px; height: 468px" cellspacing="2" cellpadding="2" bgcolor="#f4f3f8"
             border="0">

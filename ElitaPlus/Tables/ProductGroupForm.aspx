@@ -139,7 +139,7 @@
                         </tr>
                     </table>
                     <input id="HiddenSaveChangesPromptResponse" type="hidden" name="HiddenSaveChangesPromptResponse"
-                        runat="server" designtimedragdrop="261">
+                           runat="server" designtimedragdrop="261"/>
                 </asp:Panel>
             </td>
         </tr>
@@ -179,9 +179,6 @@
 			}
     </script>
 
-    </TR></TABLE>
-    <div>
-    </div>
-    </TR></TABLE></TR></TABLE></FORM>
+ 
 </body>
 </html>

@@ -1228,7 +1228,7 @@
                                 <PagerSettings PageButtonCount="10" Mode="Numeric" Position="TopAndBottom" />
                                 </asp:GridView>
                                 </div>
-                            <div class="btnZone>
+                            <div class="btnZone">
                                 <table width="100%" cellpadding="0" cellspacing="0" class="tabBtnAreaZone">
                                     <tr>
                                         <td></td>
@@ -1245,7 +1245,7 @@
                     <!-- Tab end -->
                 </asp:Panel>
             </div>            
-                <input id="HiddenDeletePromptResponse" type="hidden" runat="server" designtimedragdrop="261">
+        <input id="HiddenDeletePromptResponse" type="hidden" runat="server" designtimedragdrop="261"/>
 
                 <script type="text/javascript">
                     if (document.getElementById("tdGrid")) {

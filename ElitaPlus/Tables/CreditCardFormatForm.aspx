@@ -34,8 +34,8 @@
 <body leftmargin="0" topmargin="0" onresize="resizeForm(document.getElementById('scroller'));"
     onload="changeScrollbarColor();" border="0" ms_positioning="GridLayout">
     <form id="Form1" method="post" runat="server">
-    <input id="isPostalCodeVisible" type="hidden" name="isPostalCodeVisible" runat="server">
-    <input id="TextboxSampleFormat" type="hidden" name="TextboxSampleFormat" runat="server">
+        <input id="isPostalCodeVisible" type="hidden" name="isPostalCodeVisible" runat="server"/>
+        <input id="TextboxSampleFormat" type="hidden" name="TextboxSampleFormat" runat="server"/>
     <!--Start Header-->
     <table style="border-right: black 1px solid; border-top: black 1px solid; margin: 5px;
         border-left: black 1px solid; border-bottom: black 1px solid; height: 39px" cellspacing="0"
@@ -150,10 +150,10 @@
                         </tr>
                     </table>
                     <input id="HiddenSaveChangesPromptResponse" type="hidden" name="HiddenSaveChangesPromptResponse"
-                        runat="server" designtimedragdrop="261">
+                           runat="server" designtimedragdrop="261"/>
                 </asp:Panel>
                 <iframe id="iframe1" style="left: 15px; visibility: hidden; overflow: hidden; width: 725px;
-                    padding-top: 0px; position: absolute; top: 70px; height: 470px; 
+                    padding-top: 0px; position: absolute; top: 70px; height: 470px;"
                     name="iframe1" marginwidth="0" src="" scrolling="no"></iframe>
             </td>
         </tr>

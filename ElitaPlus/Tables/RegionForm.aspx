@@ -257,7 +257,7 @@
                                 <hr style="height: 1px">
                             </td>
                         </tr>
-                        <input id="HiddenDeletePromptResponse" type="hidden" runat="server" designtimedragdrop="261">
+                    <input id="HiddenDeletePromptResponse" type="hidden" runat="server" designtimedragdrop="261"/>
                         <tr>
                             <td align="left">
                                 <asp:Button ID="NewButton_WRITE" Style="background-image: url(../Navigation/images/icons/add_icon.gif);

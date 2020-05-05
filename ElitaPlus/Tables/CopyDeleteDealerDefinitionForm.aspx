@@ -220,7 +220,7 @@
 											runat="server" Font-Bold="false" Width="90px" Text="Cancel" CssClass="FLATBUTTON" height="20px"></asp:button></TD>
 								</TR>
 							</TABLE>
-						</asp:panel><input id="txtMessageResponse" type="hidden" name="txtMessageResponse" runat="server"></td>
+                    </asp:panel><input id="txtMessageResponse" type="hidden" name="txtMessageResponse" runat="server"/></td>
 				</tr>
 			</TABLE>
 		</FORM>

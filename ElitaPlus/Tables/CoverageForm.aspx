@@ -7,7 +7,10 @@
     MasterPageFile="../Navigation/masters/ElitaBase.Master" %>
 
 <asp:Content ID="Content1" ContentPlaceHolderID="HeadPlaceHolder" runat="server">
-    <script language="JavaScript" src="../Navigation/Scripts/GlobalHeader.js">        function TABLE1_onclick() {
+    <script  type="text/javascript" language="JavaScript" src="../Navigation/Scripts/GlobalHeader.js"> </script>
+    
+    <script type="text/javascript">
+    function TABLE1_onclick() {
 
         }
 
@@ -184,8 +187,8 @@
                                         <asp:Label ID="moCoverageIdLabel" runat="server" Visible="False"></asp:Label>
                                         <asp:Label ID="moIsNewCoverageLabel" runat="server" Visible="False"></asp:Label>
                                         <asp:Label ID="moIsNewRateLabel" runat="server" Visible="False"></asp:Label><input
-                                            id="HiddenSaveChangesPromptResponse" type="hidden" name="HiddenSaveChangesPromptResponse"
-                                            runat="server">
+                                                                                                                        id="HiddenSaveChangesPromptResponse" type="hidden" name="HiddenSaveChangesPromptResponse"
+                                                                                                                        runat="server"/>
                                         <asp:Label ID="moCoverageRateIdLabel" runat="server" Visible="False"></asp:Label>
                                         <asp:Label ID="moIsNewCoverageConseqDamageLabel" runat="server" Visible="False"></asp:Label>
                                         <asp:Label ID="moCoverageConseqDamageIdLabel" runat="server" Visible="False"></asp:Label>
@@ -447,7 +450,7 @@
                                         <asp:Label ID="moRecoverDeciveLabel" runat="server" Font-Bold="false">RECOVER_DEVICE</asp:Label>&nbsp;
                                     </td>
                                     <td nowrap colspan="1" align="left">
-                                        <asp:DropDownList ID="moRecoverDeciveDrop" TabIndex="19" runat="server" SkinID="med">
+                                        <asp:DropDownList ID="moRecoverDeciveDrop" TabIndex="19" runat="server" SkinID="MediumDropDown">
                                         </asp:DropDownList>
                                     </td>
                                     <td style="height: 12px" align="right" colspan="1">&nbsp;

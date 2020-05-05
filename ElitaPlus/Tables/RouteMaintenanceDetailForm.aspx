@@ -94,5 +94,5 @@
         Width="81px" CssClass="FLATBUTTON" Text="New" Height="20px"></asp:Button>&nbsp;&nbsp;
     <asp:Button ID="btnDelete_WRITE" Style="background-image: url(../Navigation/images/icons/clear_icon.gif);
         cursor: hand; background-repeat: no-repeat" TabIndex="210" runat="server" Font-Bold="false"
-        Width="100px" CssClass="FLATBUTTON" Text="Delete" Height="20px"></asp:Button></TD>
+        Width="100px" CssClass="FLATBUTTON" Text="Delete" Height="20px"></asp:Button>
 </asp:Content>

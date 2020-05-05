@@ -269,7 +269,7 @@
                         </tr>
                     </table>
                     <input id="HiddenSaveChangesPromptResponse" type="hidden" name="HiddenSaveChangesPromptResponse"
-                        runat="server" designtimedragdrop="261">
+                           runat="server" designtimedragdrop="261"/>
                         <input id="hdFinAdjustByPct" type="hidden" name="hdFinAdjustByPct" runat="server" />
                         <input id="hdFinAdjustByAmt" type="hidden" name="hdFinAdjustByAmt" runat="server" /></asp:Panel>
             </td>

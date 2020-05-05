@@ -102,8 +102,8 @@
 									</TD>
 								</TR>
 							</TABLE>
-							<INPUT id="HiddenSaveChangesPromptResponse" type="hidden" name="HiddenSaveChangesPromptResponse"
-								runat="server">
+                        <INPUT id="HiddenSaveChangesPromptResponse" type="hidden" name="HiddenSaveChangesPromptResponse"
+                               runat="server"/>
 						</asp:panel></td>
 				</tr>
 			</TABLE>

@@ -76,8 +76,8 @@
 								</TD>
 							</TR>
 							<TR>
-								<TD colSpan="4"><asp:label id="lblPoliceStationID" runat="server" Visible="False"></asp:label><asp:label id="moIsNewPoliceStationLabel" runat="server" Visible="False"></asp:label><INPUT id="HiddenSaveChangesPromptResponse" type="hidden" name="HiddenSaveChangesPromptResponse"
-										runat="server">
+                                <TD colSpan="4"><asp:label id="lblPoliceStationID" runat="server" Visible="False"></asp:label><asp:label id="moIsNewPoliceStationLabel" runat="server" Visible="False"></asp:label><INPUT id="HiddenSaveChangesPromptResponse" type="hidden" name="HiddenSaveChangesPromptResponse"
+                                                                                                                                                                                                                          runat="server"/>
 								</TD>
 							</TR>
 							<TR>

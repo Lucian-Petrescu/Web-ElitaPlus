@@ -109,7 +109,7 @@
                                                                         <asp:Button ID="btnClearSearch" Style="background-image: url(../Navigation/images/icons/clear_icon.gif);
                                                                             cursor: hand; background-repeat: no-repeat" runat="server" Font-Bold="false"
                                                                             Width="90px" Text="Clear" Height="20px" CssClass="FLATBUTTON"></asp:Button>
-                                                                        <asp:Button ID="btnSearch" Style="background-image: url(../ Navigation/images/icons/search_icon.gif);
+                                                                        <asp:Button ID="btnSearch" Style="background-image: url(../Navigation/images/icons/search_icon.gif);
                                                                             cursor: hand; background-repeat: no-repeat" runat="server" Font-Bold="false"
                                                                             Width="90px" Text="Search" Height="20px" CssClass="FLATBUTTON"></asp:Button></td>
                                                                 </tr>                                                           

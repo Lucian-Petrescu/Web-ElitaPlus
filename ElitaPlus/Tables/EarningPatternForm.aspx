@@ -59,8 +59,8 @@
 														<TD colSpan="4" height="1">
 															<asp:label id="moEarningPatternIdLabel" runat="server" Visible="False"></asp:label>
 															<asp:Label id="moIsNewPatternLabel" runat="server" Visible="False"></asp:Label>
-															<asp:Label id="moIsNewPercentLabel" runat="server" Visible="False"></asp:Label><INPUT id="HiddenSaveChangesPromptResponse" type="hidden" name="HiddenSaveChangesPromptResponse"
-																runat="server">
+                                                            <asp:Label id="moIsNewPercentLabel" runat="server" Visible="False"></asp:Label><INPUT id="HiddenSaveChangesPromptResponse" type="hidden" name="HiddenSaveChangesPromptResponse"
+                                                                                                                                                  runat="server"/>
 															<asp:label id="moEarningPercentIDLabel" runat="server" Visible="False"></asp:label></TD>
 													</TR>
 													<TR>

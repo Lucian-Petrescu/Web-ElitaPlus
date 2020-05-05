@@ -114,8 +114,8 @@
 												<TR>
 													<TD colSpan="4">
 														<asp:Label id="lblCurrencyID" runat="server" Visible="False"></asp:Label>
-														<asp:Label id="moIsNewCurrencyLabel" runat="server" Visible="False"></asp:Label><INPUT id="HiddenSaveChangesPromptResponse" type="hidden" name="HiddenSaveChangesPromptResponse"
-															runat="server">
+                                                        <asp:Label id="moIsNewCurrencyLabel" runat="server" Visible="False"></asp:Label><INPUT id="HiddenSaveChangesPromptResponse" type="hidden" name="HiddenSaveChangesPromptResponse"
+                                                                                                                                               runat="server"/>
 													</TD>
 												</TR>
 												<TR>

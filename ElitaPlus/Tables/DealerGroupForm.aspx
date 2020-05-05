@@ -214,7 +214,7 @@
             </asp:GridView>
         </div>
         <div>
-            <input id="HiddenDeletePromptResponse" type="hidden" runat="server" designtimedragdrop="261">
+            <input id="HiddenDeletePromptResponse" type="hidden" runat="server" designtimedragdrop="261"/>
         </div>
         <div class="btnZone">
             <asp:Button ID="CancelButton" runat="server" Text="Back" SkinID="PrimaryLeftButton">
@@ -224,4 +224,5 @@
             <asp:Button ID="NewButton_WRITE" runat="server" Text="New" SkinID="AlternateLeftButton">
             </asp:Button>&nbsp;
         </div>
+    </div>
 </asp:Content>

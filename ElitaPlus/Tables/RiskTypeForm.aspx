@@ -222,7 +222,7 @@
                                         </td>
                                     </tr>
                                 </table>
-                                <input id="HiddenDeletePromptResponse" type="hidden" runat="server" designtimedragdrop="261">
+                                <input id="HiddenDeletePromptResponse" type="hidden" runat="server" designtimedragdrop="261"/>
                             </td>
                         </tr>
                         <tr>

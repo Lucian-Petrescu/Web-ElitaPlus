@@ -5,7 +5,10 @@
 <%@ Register Src="../Common/MultipleColumnDDLabelControl_new.ascx" TagName="MultipleColumnDDLabelControl"
     TagPrefix="uc2" %>
 <asp:Content ID="Content1" ContentPlaceHolderID="HeadPlaceHolder" runat="server">
-    <script language="JavaScript" src="../Navigation/Scripts/GlobalHeader.js">        function TABLE1_onclick() {
+    <script type="text/javascript" language="JavaScript" src="../Navigation/Scripts/GlobalHeader.js"></script>
+    
+    <script type="text/javascript">
+    function TABLE1_onclick() {
 
         }
 
@@ -14,7 +17,7 @@
 <asp:Content ID="Content2" ContentPlaceHolderID="SummaryPlaceHolder" runat="server">
     <table width="100%" border="0" class="searchGrid">
         <tr>
-            <td align="left" style="height: 40 px" width="30%" nowrap="nowrap">
+            <td align="left" style="height:40px" width="30%" nowrap="nowrap">
                 <table width="100%">
                     <uc2:MultipleColumnDDLabelControl ID="moDealerMultipleDrop" runat="server" />
                 </table>

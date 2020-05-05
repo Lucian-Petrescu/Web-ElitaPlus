@@ -78,7 +78,7 @@
                                                     </td>
                                                     <td colspan="1">
                                                         <input id="HiddenSaveChangesPromptResponse" type="hidden" name="HiddenSaveChangesPromptResponse"
-                                                            runat="server"></td>
+                                                               runat="server"/></td>
                                                 </tr>
                                                 <tr>
                                                     <td align="right" colspan="1">

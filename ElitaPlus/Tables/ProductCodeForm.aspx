@@ -263,10 +263,10 @@
                                     <asp:DropDownList ID="moSplitWarrantyDrop" runat="server" SkinID="MediumDropDown">
                                     </asp:DropDownList>
                                 </td>
-                                <td align="right" nowrap="nowrap" runat="server" id="lblAutoApprovePSP_TD" visible="false">
+                                <td align="right"  style="white-space:nowrap" runat="server" id="lblAutoApprovePSP_TD" visible="false">
                                     <asp:Label ID="lblAutoApprovePSP" runat="server">AUTO_APPROVE_PSP</asp:Label>
                                 </td>
-                                <td align="left" nowrap="nowrap" runat="server" id="txtAutoApprovePSP_TD" visible="false">
+                                <td align="left"  style="white-space:nowrap"  runat="server" id="txtAutoApprovePSP_TD" visible="false">
                                     <asp:TextBox ID="txtAutoApprovePSP" MaxLength="5" runat="server" Width="55px"></asp:TextBox>
                                 </td>
                             </tr>

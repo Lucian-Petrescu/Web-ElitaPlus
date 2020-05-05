@@ -82,7 +82,7 @@
                         <td>
                             &nbsp;
                         </td>
-                        <td id="tdBtnArea" nowrap="nowrap" runat="server" colspan="2">
+                        <td id="tdBtnArea" style="white-space: nowrap" runat="server" colspan="2">
                             <input id="btnModalCancelYes" class="primaryBtn floatR" runat="server" type="button"
                                 value="Yes" />
                             <input class="popWindowAltbtn floatR" runat="server" type="button" value="No"
@@ -165,10 +165,10 @@
                                         <br />
                                         <br />
                                         <asp:Button ID="btnAddPermissionToSelected" runat="server" Width="55px" Text=">>"
-                                            SkinID=""></asp:Button>
+                                            ></asp:Button>
                                         <br />
                                         <br />
-                                        <asp:Button ID="btnRemovePermission" runat="server" Text="<<" Width="55px" SkinID="">
+                                        <asp:Button ID="btnRemovePermission" runat="server" Text="<<" Width="55px" >
                                         </asp:Button>
                                     </td>
                                 </tr>
