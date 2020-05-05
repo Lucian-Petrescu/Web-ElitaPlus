@@ -11,7 +11,7 @@
     </style>
     <table cellspacing="3" cellpadding="2" width="100%" border="0">
         <input id="HiddenSaveChangesPromptResponse" style="width: 116px; height: 10px" type="hidden"
-            size="14" name="HiddenSaveChangesPromptResponse" runat="server">
+               size="14" name="HiddenSaveChangesPromptResponse" runat="server" />
         <tr>
             <td>
                 <div class="dataContainer" style="margin-left: 0%">

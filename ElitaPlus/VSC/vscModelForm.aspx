@@ -135,7 +135,7 @@
                 </td>
                 <td align="left" nowrap="nowrap">
                     <input id="HiddenSaveChangesPromptResponse" type="hidden" name="HiddenSaveChangesPromptResponse"
-                        runat="server">
+                           runat="server" />
                 </td>
                 <td align="right" nowrap="nowrap">
                 </td>

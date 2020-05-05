@@ -116,7 +116,7 @@
             </td>
         </tr>
         <asp:Literal runat="server" ID="spanFiller"></asp:Literal>
-        <input id="HiddenDeletePromptResponse" type="hidden" runat="server" designtimedragdrop="261">
+        <input id="HiddenDeletePromptResponse" type="hidden" runat="server" designtimedragdrop="261" />
     </table>
 </asp:Content>
 <asp:Content ID="Content2" ContentPlaceHolderID="ContentPanelButtons" runat="server">

@@ -37,7 +37,7 @@
                         <td>
                             &nbsp;
                         </td>
-                        <td id="tdBtnArea" nowrap="nowrap" runat="server" colspan="2">
+                        <td id="tdBtnArea" style="white-space:nowrap" runat="server" colspan="2">
                             <input id="btnModalCancelYes" class="primaryBtn floatR" runat="server" type="button"
                                 value="Yes" />
                             <input id="Button1" class="popWindowAltbtn floatR" runat="server" type="button" value="No"
@@ -89,7 +89,7 @@
                         <td align="left" nowrap="nowrap">
                              <asp:RadioButton ID="RadioButtonNO_SVC_OPTION" runat="server" AutoPostBack="True" Text="NO_SVC_OPTION" GroupName="SEARCH_TYPE"></asp:RadioButton>
                         </td>
-                        <td class="padLeft60" nowrap="nowrap" runat="server" id="tdCountryLabel">
+                        <td class="padLeft60" style="white-space:nowrap" runat="server" id="tdCountryLabel">
                             <asp:Label runat="server" ID="moCountryLabel" Text="COUNTRY" />
                             :
                         </td>
@@ -97,11 +97,11 @@
                             <asp:DropDownList ID="moCountryDrop" runat="server" SkinID="SmallDropDown" AutoPostBack="True">
                             </asp:DropDownList>
                         </td>
-                        <td nowrap="nowrap" runat="server" id="tdCityLabel">
+                        <td style="white-space:nowrap" runat="server" id="tdCityLabel">
                             <asp:Label runat="server" ID="moCityLabel" Text="CITY" />
                             :
                         </td>
-                        <td nowrap="nowrap" runat="server" id="tdCityTextBox">
+                        <td style="white-space:nowrap" runat="server" id="tdCityTextBox">
                             <asp:TextBox ID="TextboxCity" runat="server" SkinID="MediumTextBox"></asp:TextBox>
                         </td>
 

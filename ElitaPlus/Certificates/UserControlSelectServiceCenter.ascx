@@ -98,11 +98,11 @@
                         <asp:DropDownList ID="moCountryDrop" runat="server" SkinID="SmallDropDown" AutoPostBack="True">
                         </asp:DropDownList>
                     </td>
-                    <td nowrap="nowrap" runat="server" id="tdCityLabel">
+                    <td style="white-space:nowrap" runat="server" id="tdCityLabel">
                         <asp:Label runat="server" ID="moCityLabel" Text="CITY" />
                         :
                     </td>
-                    <td nowrap="nowrap" runat="server" id="tdCityTextBox">
+                    <td style="white-space:nowrap" runat="server" id="tdCityTextBox">
                         <asp:TextBox ID="TextboxCity" runat="server" SkinID="MediumTextBox"></asp:TextBox>
                     </td>
                 </tr>

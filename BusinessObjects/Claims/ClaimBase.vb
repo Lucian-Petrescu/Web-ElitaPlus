@@ -3281,7 +3281,7 @@ Public MustInherit Class ClaimBase
                 If Not Me.LossDate Is Nothing Then
                     listPriceDeductible = ListPrice.GetListPrice(moCert.DealerId, If(Me.CertificateItem.IsEquipmentRequired, Me.ClaimedEquipment.SKU, moCertItem.SkuNumber), moCert.WarrantySalesDate.Value.ToString("yyyyMMdd"))
                     If (listPriceDeductible <> Nothing) Then
-                        Me.Deductible = listPriceDeductible.Value * oDeductible.DeductiblePercentage / 100
+                        Me.Deductible = listPriceDeductible.Value * GetDecimalValue(oDeductible.DeductiblePercentage) / 100
                     Else
                         Me.Deductible = New DecimalType(0D)
                     End If
@@ -3452,7 +3452,7 @@ Public MustInherit Class ClaimBase
             For Each authDetail As ClaimAuthItem In auth.ClaimAuthorizationItemChildren
                 'Check if ServiceClassType contributes to Deductible
                 If ServiceCLassTypeList.Instance.IsDeductibleApplicable(authDetail.ServiceClassId, authDetail.ServiceTypeId) Then
-                    amt = amt + authDetail.Amount
+                    amt = amt + GetDecimalValue(authDetail.Amount)
                 End If
             Next
 

@@ -1515,8 +1515,8 @@ Public NotInheritable Class ClaimAuthorization
                 newclaimAuthItem.CopyFrom(oClaimAuthItem)                
                newclaimAuthItem.LineItemNumber = ctype(oClaimAuthItem.LineItemNumber,Integer) + 1
                 newclaimAuthItem.ClaimAuthorizationId = Me.Id
-                newclaimAuthItem.Amount = oClaimAuthItem.Amount * -1D
-                newclaimAuthItem.AdjustmentReasonId = me.RevAdjustmentReasonId
+            newclaimAuthItem.Amount = GetDecimalValue(oClaimAuthItem.Amount) * -1D
+            newclaimAuthItem.AdjustmentReasonId = me.RevAdjustmentReasonId
                 newclaimAuthItem.Save()
                 oClaimAuthItem.Amount = oClaimAuthItem.OrginalAmount
                 If (oClaimAuthItem.IsNew) Then

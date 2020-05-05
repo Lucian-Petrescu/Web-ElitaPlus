@@ -151,7 +151,7 @@
                                         <PagerStyle HorizontalAlign="Center" CssClass="PAGER"></PagerStyle>
 									</asp:GridView></TD>
 							</tr>
-	                        <input id="HiddenDeletePromptResponse" type="hidden" runat="server" designtimedragdrop="261">
+                            <input id="HiddenDeletePromptResponse" type="hidden" runat="server" designtimedragdrop="261" />
 							<tr valign="bottom">
 								<td colspan="2" align="left" width="1%">
 								<hr style="HEIGHT: 1px"/>

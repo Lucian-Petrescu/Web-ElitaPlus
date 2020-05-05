@@ -30,7 +30,7 @@
             <td align="right" nowrap="nowrap" class="padLeft">
                 <asp:Label ID="lblCertificateStatus" runat="server" SkinID="SummaryLabel">PROTECTION_STATUS</asp:Label>:
             </td>
-            <td id="CertStatusTD" runat="server" align="left" nowrap="nowrap" class="padRight">
+            <td id="CertStatusTD" runat="server" align="left" style="white-space:nowrap" class="padRight">
                 <asp:Label ID="lblCertificateStatusValue" runat="server" SkinID="SummaryLabel"><%#NO_DATA%></asp:Label>
             </td>
         </tr>
@@ -50,7 +50,7 @@
             <td align="right" nowrap="nowrap" class="padLeft">
                 <asp:Label ID="lblCompanyName" runat="server" SkinID="SummaryLabel">COMPANY NAME</asp:Label>:
             </td>
-            <td id="SubStatusTD" align="left" nowrap="nowrap" class="padRight" runat="server">
+            <td id="SubStatusTD" align="left" style="white-space:nowrap" class="padRight" runat="server">
                 <asp:Label ID="lblCompanyNameValue" runat="server" SkinID="SummaryLabel"><%#NO_DATA%></asp:Label>
             </td>
         </tr>

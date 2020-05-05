@@ -115,7 +115,7 @@
         </tr>
     </table>
     <input id="HiddenSavePagePromptResponse" style="width: 8px;" type="hidden" size="1"
-        name="HiddenSavePagePromptResponse" runat="server">
+           name="HiddenSavePagePromptResponse" runat="server" />
 </asp:Content>
 <asp:Content ContentPlaceHolderID="ContentPanelButtons" runat="server" ID="cntButtons">
     <span ></span>
