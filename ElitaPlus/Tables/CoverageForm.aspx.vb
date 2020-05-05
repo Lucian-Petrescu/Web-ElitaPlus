@@ -693,9 +693,7 @@ Namespace Tables
                         attributevalueBo.Save()
                         attributevalueBo = Nothing
                         AttributeValues.Visible = True
-                    Else
-                        DisabledTabsList.Add(Tab_ATTRIBUTES)
-                        AttributeValues.Visible = False
+
                     End If
                 End If
             Catch ex As Exception
@@ -2389,9 +2387,6 @@ Namespace Tables
                     BindSelectItem(TheCoverage.IsReInsuredId.ToString, moReInsuredDrop)
 
                     If TheCoverage.IsReInsuredId.Equals(Guid.Empty) Or LookupListNew.GetIdFromCode(LookupListNew.LK_YESNO, NO) = TheCoverage.IsReInsuredId Then
-                        DisabledTabsList.Add(Tab_ATTRIBUTES)
-                        AttributeValues.Visible = False
-                    Else
                         AttributeValues.Visible = True
                     End If
 
@@ -4029,8 +4024,6 @@ Namespace Tables
 
             If Me.State.IsCoverageNew = True Then
                 If GetSelectedItem(Me.moReInsuredDrop) = LookupListNew.GetIdFromCode(LookupListNew.LK_YESNO, NO) OrElse GetSelectedItem(Me.moReInsuredDrop).Equals(Guid.Empty) Then
-                    DisabledTabsList.Add(Tab_ATTRIBUTES)
-                    AttributeValues.Visible = False
                     If Not TheCoverage.AttributeValues.Value(Codes.ATTRIBUTE__DEFAULT_REINSURANCE_STATUS) Is Nothing Then
                         Dim attributevaluebo As AttributeValue = TheCoverage.AttributeValues.First
                         attributevaluebo.Delete()
@@ -4042,8 +4035,6 @@ Namespace Tables
                 End If
             Else
                 If GetSelectedItem(Me.moReInsuredDrop) = LookupListNew.GetIdFromCode(LookupListNew.LK_YESNO, NO) OrElse GetSelectedItem(Me.moReInsuredDrop).Equals(Guid.Empty) Then
-                    DisabledTabsList.Add(Tab_ATTRIBUTES)
-                    AttributeValues.Visible = False
 
                     If Not TheCoverage.AttributeValues.Value(Codes.ATTRIBUTE__DEFAULT_REINSURANCE_STATUS) Is Nothing Then
                         Dim attributevaluebo As AttributeValue = TheCoverage.AttributeValues.First
