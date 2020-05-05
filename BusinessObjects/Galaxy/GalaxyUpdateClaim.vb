@@ -117,7 +117,7 @@ Public Class GalaxyUpdateClaim
                 CauseOfLossId = LookupListNew.GetIdFromCode(LookupListNew.LK_CAUSES_OF_LOSS, Me.CauseOfLossCode)
 
                 If CauseOfLossId.Equals(Guid.Empty) Then
-                    Throw New BOValidationException("GalaxyUpdateClaim Error: ", Me.INVALID_CAUSE_OF_LOSS_CODE)
+                    Throw New BOValidationException("GalaxyUpdateClaim Error: ", INVALID_CAUSE_OF_LOSS_CODE)
                 End If
                 Me.LossDate = .LOSS_DATE
 
@@ -128,7 +128,7 @@ Public Class GalaxyUpdateClaim
                     If Not (Me.StatusCode.Equals(Codes.CLAIM_STATUS__PENDING) Or _
                         Me.StatusCode.Equals(Codes.CLAIM_STATUS__ACTIVE) Or _
                         Me.StatusCode.Equals(Codes.CLAIM_STATUS__CLOSED)) Then
-                        Throw New BOValidationException("GalaxyUpdateClaim Error: ", Me.INVALID_STATUS_CODE)
+                        Throw New BOValidationException("GalaxyUpdateClaim Error: ", INVALID_STATUS_CODE)
                     End If
                 End If
 
@@ -206,13 +206,13 @@ Public Class GalaxyUpdateClaim
                             companyId = New Guid(CType(dr(0)(CertItemCoverageDAL.COL_NAME_COMPANY_ID), Byte()))
                             certItemCoverageId = New Guid(CType(dr(0)(CertItemCoverageDAL.COL_NAME_CERT_ITEM_COVERAGE_ID), Byte()))
                             If certItemCoverageId.Equals(Guid.Empty) Then
-                                Throw New BOValidationException("GalaxyUpdateClaim Error: ", Me.CERTIFICATE_COVERAGES_NOT_FOUND)
+                                Throw New BOValidationException("GalaxyUpdateClaim Error: ", CERTIFICATE_COVERAGES_NOT_FOUND)
                             End If
                         Else
-                            Throw New BOValidationException("GalaxyUpdateClaim Error: ", Me.CERTIFICATE_COVERAGES_NOT_FOUND)
+                            Throw New BOValidationException("GalaxyUpdateClaim Error: ", CERTIFICATE_COVERAGES_NOT_FOUND)
                         End If
                     Else
-                        Throw New BOValidationException("GalaxyUpdateClaim Error: ", Me.CERTIFICATE_COVERAGES_NOT_FOUND)
+                        Throw New BOValidationException("GalaxyUpdateClaim Error: ", CERTIFICATE_COVERAGES_NOT_FOUND)
                     End If
 
                     Dim newRow As DataRow = dsCoverageInfo.Tables(TABLE_NAME_COVERAGE_INFO).NewRow()
@@ -284,7 +284,7 @@ Public Class GalaxyUpdateClaim
 
                         If (reasonClosedId.Equals(Guid.Empty)) Then
                             selfThrownException = True
-                            Throw New BOValidationException("GalaxyUpdateClaim Error: ", Me.ERR_REASON_CLOSED_CODE_NOT_FOUND)
+                            Throw New BOValidationException("GalaxyUpdateClaim Error: ", ERR_REASON_CLOSED_CODE_NOT_FOUND)
                         End If
 
                         If claimFamilyBO.Id.Equals(closeClaimID) Then
@@ -373,14 +373,14 @@ Public Class GalaxyUpdateClaim
                 If (IsServiceCenterCodeNull = False) Then
                     If Not claimBO.RepairDate Is Nothing Then
                         selfThrownException = True
-                        Throw New BOValidationException("GalaxyUpdateClaim Error: ", Me.ERR_SERVICE_CENTER_CODE_NOT_UPDATABLE)
+                        Throw New BOValidationException("GalaxyUpdateClaim Error: ", ERR_SERVICE_CENTER_CODE_NOT_UPDATABLE)
                     Else
                         Dim dvServiceCenter As DataView = LookupListNew.GetServiceCenterLookupList(ElitaPlusIdentity.Current.ActiveUser.Countries)
                         If Not dvServiceCenter Is Nothing AndAlso dvServiceCenter.Count > 0 Then
                             Dim ServiceCenterId As Guid = LookupListNew.GetIdFromCode(dvServiceCenter, Me.ServiceCenterCode)
                             If ServiceCenterId.Equals(Guid.Empty) Then
                                 selfThrownException = True
-                                Throw New BOValidationException("GalaxyUpdateClaim Error: ", Me.INVALID_SERVICE_CENTER_CODE)
+                                Throw New BOValidationException("GalaxyUpdateClaim Error: ", INVALID_SERVICE_CENTER_CODE)
                             End If
 
                             If Not (claimBO.ServiceCenterId.Equals(ServiceCenterId)) Then
@@ -388,7 +388,7 @@ Public Class GalaxyUpdateClaim
                             End If
                         Else
                             selfThrownException = True
-                            Throw New BOValidationException("GalaxyUpdateClaim Error: ", Me.INVALID_SERVICE_CENTER_CODE)
+                            Throw New BOValidationException("GalaxyUpdateClaim Error: ", INVALID_SERVICE_CENTER_CODE)
                         End If
                     End If
                 End If
@@ -397,19 +397,19 @@ Public Class GalaxyUpdateClaim
 
                 If (IsReasonClosedCodeNull = False) Then
                     If (Me.StatusCode Is Nothing OrElse Me.StatusCode <> Codes.CLAIM_STATUS__CLOSED) Then
-                        Throw New BOValidationException("GalaxyUpdateClaim Error: ", Me.ERR_STATUS_CODE_AND_REASON_CLOSED_CODE_CONFLICT)
+                        Throw New BOValidationException("GalaxyUpdateClaim Error: ", ERR_STATUS_CODE_AND_REASON_CLOSED_CODE_CONFLICT)
                     Else
                         Dim dv As DataView = LookupListNew.GetReasonClosedLookupList(ElitaPlusIdentity.Current.ActiveUser.LanguageId)
                         claimBO.ReasonClosedId = LookupListNew.GetIdFromCode(dv, Me.ReasonClosedCode)
                         If (claimBO.ReasonClosedId.Equals(Guid.Empty)) Then
                             selfThrownException = True
-                            Throw New BOValidationException("GalaxyUpdateClaim Error: ", Me.ERR_REASON_CLOSED_CODE_NOT_FOUND)
+                            Throw New BOValidationException("GalaxyUpdateClaim Error: ", ERR_REASON_CLOSED_CODE_NOT_FOUND)
                         End If
                     End If
                 Else
                     If (IsStatusCodeNull = False AndAlso Me.StatusCode = Codes.CLAIM_STATUS__CLOSED) Then
                         selfThrownException = True
-                        Throw New BOValidationException("GalaxyUpdateClaim Error: ", Me.ERR_REASON_CLOSED_CODE_REQUIRED)
+                        Throw New BOValidationException("GalaxyUpdateClaim Error: ", ERR_REASON_CLOSED_CODE_REQUIRED)
                     Else
                         If (IsStatusCodeNull = False AndAlso Me.StatusCode <> Codes.CLAIM_STATUS__CLOSED) Then
                             claimBO.ReasonClosedId = Nothing

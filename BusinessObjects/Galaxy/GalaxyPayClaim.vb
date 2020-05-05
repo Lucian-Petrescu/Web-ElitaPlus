@@ -200,13 +200,13 @@ Public Class GalaxyPayClaim
                             customerName = CType(dr(0)(CertItemCoverageDAL.COL_NAME_CUSTOMER_NAME), String)
                             companyId = New Guid(CType(dr(0)(CertItemCoverageDAL.COL_NAME_COMPANY_ID), Byte()))
                             If certItemCoverageId.Equals(Guid.Empty) Then
-                                Throw New BOValidationException("GalaxyPayClaim Error: ", Me.CERTIFICATE_COVERAGES_NOT_FOUND)
+                                Throw New BOValidationException("GalaxyPayClaim Error: ", CERTIFICATE_COVERAGES_NOT_FOUND)
                             End If
                         Else
-                            Throw New BOValidationException("GalaxyPayClaim Error: ", Me.CERTIFICATE_COVERAGES_NOT_FOUND)
+                            Throw New BOValidationException("GalaxyPayClaim Error: ", CERTIFICATE_COVERAGES_NOT_FOUND)
                         End If
                     Else
-                        Throw New BOValidationException("GalaxyPayClaim Error: ", Me.CERTIFICATE_COVERAGES_NOT_FOUND)
+                        Throw New BOValidationException("GalaxyPayClaim Error: ", CERTIFICATE_COVERAGES_NOT_FOUND)
                     End If
 
                     Dim newRow As DataRow = dsCoverageInfo.Tables(TABLE_NAME_COVERAGE_INFO).NewRow()

@@ -352,8 +352,7 @@ Public Class Comment
             Throw New DataBaseAccessException(DataBaseAccessException.DatabaseAccessErrorType.WriteErr, ex)
         End Try
     End Sub
-
-    Public Sub PopulateWithDefaultValues(ByVal certId As Guid, Optional ByVal claimId As Object = Nothing)
+   Public Sub PopulateWithDefaultValues(ByVal certId As Guid, Optional ByVal claimId As Object = Nothing)
         Dim cert As New Certificate(certId)
         Me.CertId = certId
         Me.CallerName = cert.CustomerName
@@ -410,6 +409,10 @@ Public Class Comment
             Next
 
         End If
+    End Sub
+    Public Sub AddClaimAuthComment()
+        Me._isDSCreator= true
+        Save()
     End Sub
 
 #End Region

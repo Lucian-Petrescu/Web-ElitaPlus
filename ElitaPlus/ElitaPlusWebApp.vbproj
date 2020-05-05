@@ -1453,6 +1453,20 @@
       <DependentUpon>ConsentActionListForm.aspx</DependentUpon>
       <SubType>ASPXCodebehind</SubType>
     </Compile>
+    <Compile Include="Tables\ConfigQuestionSetForm.aspx.designer.vb">
+      <DependentUpon>ConfigQuestionSetForm.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Tables\ConfigQuestionSetForm.aspx.vb">
+      <DependentUpon>ConfigQuestionSetForm.aspx</DependentUpon>
+      <SubType>ASPXCodebehind</SubType>
+    </Compile>
+    <Compile Include="Tables\ConfigQuestionSetListForm.aspx.designer.vb">
+      <DependentUpon>ConfigQuestionSetListForm.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Tables\ConfigQuestionSetListForm.aspx.vb">
+      <DependentUpon>ConfigQuestionSetListForm.aspx</DependentUpon>
+      <SubType>ASPXCodebehind</SubType>
+    </Compile>
     <Compile Include="Tables\TemplateForm.aspx.designer.vb">
       <DependentUpon>TemplateForm.aspx</DependentUpon>
     </Compile>
@@ -6207,6 +6221,8 @@
     <Content Include="Tables\OcMessageForm.aspx" />
     <Content Include="Tables\OcMessageSearchForm.aspx" />
     <Content Include="Tables\ConsentActionListForm.aspx" />
+    <Content Include="Tables\ConfigQuestionSetForm.aspx" />
+    <Content Include="Tables\ConfigQuestionSetListForm.aspx" />
     <Content Include="Tables\TemplateForm.aspx" />
     <Content Include="Tables\TemplateGroupForm.aspx" />
     <Content Include="Tables\BonusStructureDetailForm.aspx" />

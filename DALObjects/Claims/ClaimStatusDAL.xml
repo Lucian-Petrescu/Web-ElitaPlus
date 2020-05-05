@@ -349,7 +349,7 @@
   status_date,
   list_item_id,
   group_number,
-  ROW_NUMBER() OVER(PARTITION BY extended_claim_status ORDER BY r.role_ID) as RN,
+  ROW_NUMBER() OVER(PARTITION BY cs.claim_status_by_group_id ORDER BY r.role_ID) as RN,
   CASE (Select Count(*) comassigned from Elp_Claim_Status_By_User_Role where company_id in (select company_id from elp_claim where claim_id = :claim_id)) when 0 then 'Y'
   ELSE
   (case (select count(*) isassigned from Elp_Claim_Status_By_User_Role where role_id in (select role_id from elp_user_role where user_id = :user_id)
