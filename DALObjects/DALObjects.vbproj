@@ -265,6 +265,7 @@
     <Compile Include="Common\ContactInfoDAL.vb" />
     <Compile Include="Common\CreditCardInfoDAL.vb" />
     <Compile Include="Common\DealerInflationDAL.vb" />
+    <Compile Include="Common\InvoiceRegionTaxDAL.vb" />
     <Compile Include="Common\RiskTypeToleranceDAL.vb" />
     <Compile Include="Common\TranslateDropdownDAL.vb" />
     <Compile Include="Common\DSHelper.vb" />
@@ -437,6 +438,7 @@
     <Compile Include="Tables\AcctFinanceAutomation\AFAInvoiceRateDAL.vb" />
     <Compile Include="Tables\AcctFinanceAutomation\AFAProductDAL.vb" />
     <Compile Include="Tables\AcctFinanceAutomation\AFARepRateDAL.vb" />
+    <Compile Include="Tables\AcctFinanceAutomation\AFAMaintainenceDAL.vb" />
     <Compile Include="Tables\AcctFinanceAutomation\ReconciliationDAL.vb" />
     <Compile Include="Tables\ApsPublishingLogDAL.vb" />
     <Compile Include="Tables\BankMaintenanceDAL.vb" />
@@ -1360,6 +1362,7 @@
     <EmbeddedResource Include="DataProtection\CertForgotRequestDAL.xml" />
     <EmbeddedResource Include="Common\DealerInflationDAL.xml" />
     <EmbeddedResource Include="Common\RiskTypeToleranceDAL.xml" />
+    <EmbeddedResource Include="Common\InvoiceRegionTaxDAL.xml" />
     <Content Include="DataProtection\ConsumerSearchRequestsDAL.xml" />
     <EmbeddedResource Include="DataProtection\DataProtectionHistoryDAL.xml" />
     <EmbeddedResource Include="Interfaces\AppleGBIFileReconWrkDAL.xml">
@@ -1490,6 +1493,9 @@
     <EmbeddedResource Include="Tables\Accounting\AccountPayable\ApPaymentBatchDAL.xml" />
     <EmbeddedResource Include="Tables\Accounting\AccountPayable\PoAdjustmentDAL.xml" />
     <EmbeddedResource Include="Tables\ConfigQuestionSetDAL.xml">
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Tables\AcctFinanceAutomation\AFAMaintainenceDAL.xml">
       <SubType>Designer</SubType>
     </EmbeddedResource>
     <Content Include="Tables\CoverageMfgDAL.xml" />

@@ -434,6 +434,79 @@ Public Class ClaimEquipment
         End Set
     End Property
 
+    <ValidStringLength("", Max:=255)>
+    Public Property DeviceType() As String
+        Get
+            CheckDeleted()
+            If Row(ClaimEquipmentDAL.COL_NAME_DEVICE_TYPE) Is DBNull.Value Then
+                Return String.Empty
+            Else
+                Return Row(ClaimEquipmentDAL.COL_NAME_DEVICE_TYPE).ToString
+            End If
+        End Get
+        Set(ByVal Value As String)
+            CheckDeleted()
+            Me.SetValue(ClaimEquipmentDAL.COL_NAME_DEVICE_TYPE, Value)
+        End Set
+    End Property
+
+    Public Property EquipmentType() As String
+        Get
+            CheckDeleted()
+            If Row(ClaimEquipmentDAL.COL_NAME_EQUIPMENT_TYPE) Is DBNull.Value Then
+                Return String.Empty
+            Else
+                Return Row(ClaimEquipmentDAL.COL_NAME_EQUIPMENT_TYPE).ToString
+            End If
+        End Get
+        Set(ByVal Value As String)
+            CheckDeleted()
+            Me.SetValue(ClaimEquipmentDAL.COL_NAME_EQUIPMENT_TYPE, Value)
+        End Set
+    End Property
+    Public Property PurchasedDate() As DateType
+        Get
+            CheckDeleted()
+            If Row(ClaimEquipmentDAL.COL_NAME_PURCHASED_DATE) Is DBNull.Value Then
+                Return Nothing
+            Else
+                Return New DateType(CType(Row(ClaimEquipmentDAL.COL_NAME_PURCHASED_DATE), Date))
+            End If
+        End Get
+        Set(ByVal Value As DateType)
+            CheckDeleted()
+            Me.SetValue(ClaimEquipmentDAL.COL_NAME_PURCHASED_DATE, Value)
+        End Set
+    End Property
+    Public Property PurchasedPrice() As DecimalType
+        Get
+            CheckDeleted()
+            If Row(ClaimEquipmentDAL.COL_NAME_PURCHASE_PRICE) Is DBNull.Value Then
+                Return Nothing
+            Else
+                Return New DecimalType(CType(Row(ClaimEquipmentDAL.COL_NAME_PURCHASE_PRICE), Decimal))
+            End If
+        End Get
+        Set(ByVal Value As DecimalType)
+            CheckDeleted()
+            Me.SetValue(ClaimEquipmentDAL.COL_NAME_PURCHASE_PRICE, Value)
+        End Set
+    End Property
+    Public Property RegisteredItemName() As String
+        Get
+            CheckDeleted()
+            If Row(ClaimEquipmentDAL.COL_NAME_REGISTERED_ITEM_NAME) Is DBNull.Value Then
+                Return String.Empty
+            Else
+                Return Row(ClaimEquipmentDAL.COL_NAME_REGISTERED_ITEM_NAME).ToString
+            End If
+        End Get
+        Set(ByVal Value As String)
+            CheckDeleted()
+            Me.SetValue(ClaimEquipmentDAL.COL_NAME_REGISTERED_ITEM_NAME, Value)
+        End Set
+    End Property
+
 #End Region
 
 #Region "Public Members"
@@ -564,7 +637,7 @@ Public Class ClaimEquipment
             Try
                 'If Not parent.IsChildrenCollectionLoaded(GetType(ClaimEquipmentList)) Then
                 Dim dal As New ClaimEquipmentDAL
-                dal.LoadList(parent.Dataset, parent.Id)
+                dal.LoadDevieInfoList(parent.Dataset, parent.Id, ElitaPlusIdentity.Current.ActiveUser.LanguageId)
                 parent.AddChildrenCollection(GetType(ClaimEquipmentList))
                 'End If
                 Return parent.Dataset.Tables(ClaimEquipmentDAL.TABLE_NAME)
