@@ -62,6 +62,8 @@ Public Class Codes
     Public Const EVNT_COMM_CHANNEL As String = "COMM_CHANNEL"
     Public Const EVNT_COMM_CHAN_EMAIL As String = "EMAIL"
 
+    Public Const ERROR_FLAG As String = "100"
+    Public Const NO_HELP_COMTS_FOUND As String = "NO_HELP_COMTS_FOUND"
 
     ' Claim Issue Code
     Public Const ISSUE_CODE__TRBSHT = "TRBSHT"
@@ -204,6 +206,7 @@ Public Class Codes
     Public Const REASON_CLOSED_DENIED As String = "DENY"
     Public Const FLP_NO = "NO"
     Public Const REASON_CLOSED_LLE As String = "LLE"
+    Public Const REASON_CLOSED_CLAIM_VOID As String = "CVOID"
 
     'Coverage Type
     Public Const COVERAGE_TYPE__EXTENDED As String = "E"
@@ -935,6 +938,7 @@ Public Class Codes
     'Company Attributes
     Public Const COMP_ATTR__RPT_EXP_NOTIFY_EMAIL As String = "RPT_EXP_NOTIFY_EMAIL"
     Public Const COMP_ATTR__UPD_ZIP_LOCATOR As String = "UPDATE_ZIP_LOCATOR"
+    Public Const COMP_ATTR__TECH_DEBT_DEDUCTIBLE_RULE As String = "TECH_DEBT_DEDUCTIBLE_RULE"
 
     'Dealer Attributes
     Public Const DLR_ATTRBT__TRD_IN As String = "PRC_CLM_DRP_CHECK_TRADE_IN"
@@ -1129,5 +1133,9 @@ Public Class Codes
     'Company codes
     Public Const AUS_COMPANY_CODE As String = "AAU"
 
+    'US 489857
+    Public Const ACCT_BUCKETS_SOURCE_OPTION_PRICEMATRIX As String = "ACCTBUCKETSOURCE-PM"
+    Public Const ACCT_BUCKETS_SOURCE_OPTION_INCOMING As String = "ACCTBUCKETSOURCE-I"
+    Public Const ACCT_BUCKETS_SOURCE_OPTION_DIFFERENCE As String = "ACCTBUCKETSOURCE-D"
 
 End Class

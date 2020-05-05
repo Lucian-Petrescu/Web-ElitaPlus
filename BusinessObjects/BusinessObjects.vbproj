@@ -72,9 +72,8 @@
     <RemoveIntegerChecks>false</RemoveIntegerChecks>
     <TreatWarningsAsErrors>false</TreatWarningsAsErrors>
     <WarningLevel>0</WarningLevel>
-    <NoWarn>42016,42017,42018,42019,42032</NoWarn>
     <DebugType>full</DebugType>
-    <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
+    <CodeAnalysisRuleSet>CppCoreCheckRules.ruleset</CodeAnalysisRuleSet>
     <Prefer32Bit>false</Prefer32Bit>
     <UseVSHostingProcess>false</UseVSHostingProcess>
   </PropertyGroup>
@@ -94,7 +93,6 @@
     <RemoveIntegerChecks>false</RemoveIntegerChecks>
     <TreatWarningsAsErrors>false</TreatWarningsAsErrors>
     <WarningLevel>0</WarningLevel>
-    <NoWarn>42016,42017,42018,42019,42032</NoWarn>
     <DebugType>None</DebugType>
     <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
     <Prefer32Bit>false</Prefer32Bit>
@@ -408,6 +406,7 @@
     <Compile Include="Tables\ProductEquipment.vb" />
     <Compile Include="Tables\ProductRewards.vb" />
     <Compile Include="Tables\ConsentActions.vb" />
+    <Compile Include="Tables\ConfigQuestionSet.vb" />
     <Compile Include="Tables\SearchConfig.vb" />
     <Compile Include="Tables\SearchConfigAssignment.vb" />
     <Compile Include="Tables\SearchConfigCriteria.vb" />
