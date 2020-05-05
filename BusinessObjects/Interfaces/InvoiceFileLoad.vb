@@ -121,7 +121,7 @@ Public NotInheritable Class InvoiceFileLoad
             If (oClaimAuthorization Is Nothing OrElse oClaimAuthorization.ClaimAuthStatus = ClaimAuthorizationStatus.Fulfilled) Then
                 invoice.Source = Me.Header.Filename
                 invoiceItem = invoice.GetNewInvoiceItemChild
-                invoice.InvoiceAmount = invoice.InvoiceAmount + reconRecord.Amount.Value
+                invoice.InvoiceAmount = GetDecimalValue(invoice.InvoiceAmount) + reconRecord.Amount.Value
                 invoiceItem.Amount = reconRecord.Amount
                 invoiceItem.ClaimAuthorizationId = reconRecord.AuthorizationId
                 invoiceItem.LineItemNumber = reconRecord.LineItemNumber
@@ -166,5 +166,13 @@ Public NotInheritable Class InvoiceFileLoad
             reconRecord.RejectReason = "Rejected During Load process"
             Return ProcessResult.Rejected
         End Try
+    End Function
+
+    Private Function GetDecimalValue(ByVal decimalObj As DecimalType, Optional ByVal decimalDigit As Integer = 2) As Decimal
+        If decimalObj Is Nothing Then
+            Return 0D
+        Else
+            Return Math.Round(decimalObj.Value, decimalDigit, MidpointRounding.AwayFromZero)
+        End If
     End Function
 End Class

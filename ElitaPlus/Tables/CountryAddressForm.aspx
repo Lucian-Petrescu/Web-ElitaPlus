@@ -14,7 +14,7 @@
 		bottomMargin="0" leftMargin="0" background="../Common/images/back_spacer.jpg" topMargin="0"
 		scroll="no" onload="changeScrollbarColor();" rightMargin="0" MS_POSITIONING="GridLayout">
 		<form id="Form1" method="post" runat="server">
-            <input id="imgURL" type="hidden" name="imgURL" runat="server"/>
+            <input id="imgURL" type="hidden" name="imgURL" runat="server" />
 			<input type="hidden" id="hiddenAddrFormat" name="hiddenAddrFormat" value=""/>
 			<asp:panel id="panelForm" runat="server">
 <TABLE cellSpacing="0" cellPadding="0" width="100%" bgColor="#f4f3f8" border="0">

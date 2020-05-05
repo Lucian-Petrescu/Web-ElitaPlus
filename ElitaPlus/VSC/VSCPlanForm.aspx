@@ -99,8 +99,8 @@
 								</TD>
 							</TR>
 							<TR>
-								<TD colSpan="4"><asp:label id="lblEntityId" runat="server" Visible="False"></asp:label><asp:label id="moIsNewEntityLabel" runat="server" Visible="False"></asp:label><INPUT id="HiddenSaveChangesPromptResponse" type="hidden" name="HiddenSaveChangesPromptResponse"
-										runat="server">
+                                <TD colSpan="4"><asp:label id="lblEntityId" runat="server" Visible="False"></asp:label><asp:label id="moIsNewEntityLabel" runat="server" Visible="False"></asp:label><INPUT id="HiddenSaveChangesPromptResponse" type="hidden" name="HiddenSaveChangesPromptResponse"
+                                                                                                                                                                                                            runat="server" />
 								</TD>
 							</TR>
 							<TR>

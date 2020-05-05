@@ -12,13 +12,13 @@
                 <td align="right" nowrap="nowrap"><asp:Label ID="lblClaimNumber" runat="server" SkinID="SummaryLabel">NETWORK_ID</asp:Label>:</td>
                 <td align="left" nowrap="nowrap" class="bor padRight"><asp:Label ID="lblNewrokId" runat="server" SkinID="SummaryLabel"></asp:Label></td>
                 <td align="right" nowrap="nowrap" class="padLeft"><asp:Label ID="lblClaimStatus" runat="server" SkinID="SummaryLabel">LANGUAGE</asp:Label>:</td>
-                <td id="ClaimStatusTD" runat="server" align="left" nowrap="nowrap" class="padRight"><asp:Label ID="lblUserLanguage" runat="server" SkinID="SummaryLabel"></asp:Label></td>
+                <td id="ClaimStatusTD" runat="server" align="left" style="white-space:nowrap" class="padRight"><asp:Label ID="lblUserLanguage" runat="server" SkinID="SummaryLabel"></asp:Label></td>
             </tr>
             <tr>
                 <td align="right" nowrap="nowrap" ><asp:Label ID="lblWorkPhoneNumber" runat="server" SkinID="SummaryLabel">USER_NAME</asp:Label>:</td>
                 <td align="left" nowrap="nowrap" class="bor padRight" ><asp:Label ID="lblUsername" runat="server" SkinID="SummaryLabel"></asp:Label></td>
                 <td align="right" nowrap="nowrap" class="padLeft"><asp:Label ID="lblSubscriberStatus" runat="server" SkinID="SummaryLabel">STATUS</asp:Label>:</td>
-                <td id="SubStatusTD" align="left" nowrap="nowrap" class="padRight"  runat="server"><asp:Label ID="lblUserStatus" runat="server" SkinID="SummaryLabel"></asp:Label></td>       
+                <td id="SubStatusTD" align="left" style="white-space:nowrap" class="padRight"  runat="server"><asp:Label ID="lblUserStatus" runat="server" SkinID="SummaryLabel"></asp:Label></td>       
             </tr>
         </table>
     </div>

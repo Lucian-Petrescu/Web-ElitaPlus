@@ -27,7 +27,7 @@
                             <asp:Label ID="RegItemNameLabel" runat="server">REGISTERED_ITEM_NAME</asp:Label>
                         </td>
                         <td>
-                            <asp:TextBox ID="RegItemNameText"  runat="server" SkinID="MediumDropDown"></asp:TextBox>
+                            <asp:TextBox ID="RegItemNameText"  runat="server" SkinID="MediumTextBox"></asp:TextBox>
                         </td>
                         <td align="right">
                             <asp:Label ID="ItemDescLabel" runat="server">ITEM_DESCRIPTION</asp:Label>
@@ -41,13 +41,13 @@
                             <asp:Label ID="SerialNumberLabel" runat="server">SERIAL_NUMBER</asp:Label>
                         </td>
                         <td>
-                            <asp:TextBox ID="SerialNumberText" runat="server" SkinID="MediumDropDown"></asp:TextBox>
+                            <asp:TextBox ID="SerialNumberText" runat="server" SkinID="MediumTextBox"></asp:TextBox>
                         </td>
                         <td align="right">
                             <asp:Label ID="DeviceTypeLabel" runat="server">DEVICE_TYPE</asp:Label>
                         </td>
                         <td>
-                              <asp:TextBox ID="DeviceTypeText" runat="server"  SkinID="MediumDropDown"></asp:TextBox>
+                              <asp:TextBox ID="DeviceTypeText" runat="server"  SkinID="MediumTextBox"></asp:TextBox>
                         </td>
                     </tr>
                     <tr>

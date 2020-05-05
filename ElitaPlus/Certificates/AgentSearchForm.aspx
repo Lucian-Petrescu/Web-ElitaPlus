@@ -168,6 +168,7 @@ MasterPageFile="../Navigation/masters/ElitaBase.Master" Theme="Default" %>
                     <tr>
                         <td colspan="3"></td>
                     </tr>
+                    <tr>
                         <td align="left">
                             <asp:CheckBox runat="server" ID="checkboxAdditionalSearchCriteria" Text="SHOW_ADDITIONAL_SEARCH_FIELDS" Checked ="false" AutoPostBack="true" />
                         </td>

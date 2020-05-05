@@ -33,7 +33,7 @@
                         <td>
                             &nbsp;
                         </td>
-                        <td id="tdBtnArea" nowrap="nowrap" runat="server" colspan="2">
+                        <td id="tdBtnArea" style="white-space:nowrap" runat="server" colspan="2">
                             <input id="btnModalCancelYes" class="primaryBtn floatR" runat="server" type="button"
                                 value="Yes" />
                             <input id="Button1" class="popWindowAltbtn floatR" runat="server" type="button" value="No"

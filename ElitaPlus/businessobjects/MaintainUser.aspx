@@ -104,11 +104,11 @@
                                     <td>
                                         <br />
                                         <br />
-                                        <asp:Button ID="btnAddToSelected" runat="server" Width="55px" Text=">>" SkinID="">
+                                        <asp:Button ID="btnAddToSelected" runat="server" Width="55px" Text=">>" >
                                         </asp:Button>
                                         <br />
                                         <br />
-                                        <asp:Button ID="btnRemove" runat="server" Text="<<" Width="55px" SkinID=""></asp:Button>
+                                        <asp:Button ID="btnRemove" runat="server" Text="<<" Width="55px" ></asp:Button>
                                     </td>
                                 </tr>
                             </table>
@@ -131,7 +131,7 @@
                             <asp:DropDownList ID="cboCompanyAvailable" Width="300px" runat="server" SkinID="SmallDropDown">
                             </asp:DropDownList>
                             &nbsp;
-                            <asp:Button ID="btnAddCompany" runat="server" Width="41px" Text="Add" SkinID="">
+                            <asp:Button ID="btnAddCompany" runat="server" Width="41px" Text="Add" >
                             </asp:Button>
                         </td>
                     </tr>
@@ -230,10 +230,10 @@
                                     <td>
                                         <br />
                                         <br />
-                                        <asp:Button ID="btnAddPermissionToSelected" runat="server" Width="55px" Text=">>" SkinID=""></asp:Button>
+                                        <asp:Button ID="btnAddPermissionToSelected" runat="server" Width="55px" Text=">>" ></asp:Button>
                                         <br />
                                         <br />
-                                        <asp:Button ID="btnRemovePermission" runat="server" Text="<<" Width="55px" SkinID=""></asp:Button>
+                                        <asp:Button ID="btnRemovePermission" runat="server" Text="<<" Width="55px" ></asp:Button>
                                     </td>
                                 </tr>
                             </table>

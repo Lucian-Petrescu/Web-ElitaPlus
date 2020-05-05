@@ -116,10 +116,10 @@
 <asp:button id=btnBack style="BACKGROUND-IMAGE: url(../Navigation/images/icons/back_icon.gif); CURSOR: hand; BACKGROUND-REPEAT: no-repeat" tabIndex=185 runat="server" Font-Bold="false" Width="90px" height="20px" Text="Back" CssClass="FLATBUTTON"></asp:button>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
 <asp:button id=btnAccept_Write style="BACKGROUND-IMAGE: url(../Navigation/images/icons/clear_icon.gif); CURSOR: hand; BACKGROUND-REPEAT: no-repeat" tabIndex=210 runat="server" Font-Bold="false" Width="190px" height="20px" Text="ACCEPT_SERVICE_CENTER" CssClass="FLATBUTTON"></asp:button></TD></TR>
         <TR>
-          <TD height=5></TD></TR></TABLE><INPUT 
-      id=HiddenSaveChangesPromptResponse type=hidden 
-      name=HiddenSaveChangesPromptResponse runat="server" 
-      DESIGNTIMEDRAGDROP="261">
+                                <TD height=5></TD></TR></TABLE><INPUT 
+                                                                   id=HiddenSaveChangesPromptResponse type=hidden 
+                                                                   name=HiddenSaveChangesPromptResponse runat="server" 
+                                                                   DESIGNTIMEDRAGDROP="261" />
 						</asp:panel></td>
 				</tr>
 			</TABLE>

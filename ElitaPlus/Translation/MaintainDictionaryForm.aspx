@@ -116,8 +116,8 @@
                     <asp:ListItem Value="50">50</asp:ListItem>
                 </asp:DropDownList>
                 <input id="HiddenSavePagePromptResponse" style="width: 8px;" type="hidden" size="1"
-                    name="HiddenSavePagePromptResponse" runat="server"><input id="HiddenIsPageDirty"
-                        style="width: 8px;" type="hidden" size="1" name="HiddenIsPageDirty" runat="server">
+                       name="HiddenSavePagePromptResponse" runat="server"/><input id="HiddenIsPageDirty"
+                                                                                  style="width: 8px;" type="hidden" size="1" name="HiddenIsPageDirty" runat="server"/>
             </td>
             <td style="text-align: right">
                 <asp:Label ID="lblRecordCount" runat="server"  ></asp:Label>

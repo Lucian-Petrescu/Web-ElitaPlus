@@ -174,4 +174,11 @@ Public Class WSUtility
 
     End Function
 
+    Private Shared Function GetDecimalValue(ByVal decimalObj As DecimalType, Optional ByVal decimalDigit As Integer = 2) As Decimal
+        If decimalObj Is Nothing Then
+            Return 0D
+        Else
+            Return Math.Round(decimalObj.Value, decimalDigit, MidpointRounding.AwayFromZero)
+        End If
+    End Function
 End Class

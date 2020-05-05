@@ -231,7 +231,7 @@ Public NotInheritable Class MultiAuthClaim
     Private Function CalculateAuthAmount() As Decimal
         Dim amount As Decimal = New Decimal(0)
         For Each auth As ClaimAuthorization In Me.NonVoidClaimAuthorizationList
-            amount = amount + auth.AuthorizedAmount
+            amount = amount + GetDecimalValue(auth.AuthorizedAmount)
         Next
         Return amount
     End Function
@@ -558,6 +558,14 @@ Public NotInheritable Class MultiAuthClaim
 
         Next
     End Sub
+
+    Private Function GetDecimalValue(ByVal decimalObj As DecimalType, Optional ByVal decimalDigit As Integer = 2) As Decimal
+        If decimalObj Is Nothing Then
+            Return 0D
+        Else
+            Return Math.Round(decimalObj.Value, decimalDigit, MidpointRounding.AwayFromZero)
+        End If
+    End Function
 #End Region
 
 #Region "Validations"

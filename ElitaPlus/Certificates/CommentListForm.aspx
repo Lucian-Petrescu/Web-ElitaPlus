@@ -27,13 +27,16 @@
         <tr>
             <td valign="top">
                 <table width="100%" border="0">
-                    <tr>
+                    <tr><td>
                         &nbsp;&nbsp;
                         <asp:Label ID="Label7" runat="server" CssClass="TITLELABELTEXT">Comments</asp:Label>
+                     </td> 
+
+                    </tr> </table>
             </td>
         </tr>
     </table>
-    </TD> </TR> </TABLE>
+    
     <table id="tblOuter2" style="border-right: black 1px solid; border-top: black 1px solid;
         margin: 5px; border-left: black 1px solid; border-bottom: black 1px solid" height="93%"
         cellspacing="0" cellpadding="0" rules="none" width="98%" bgcolor="#d5d6e4" border="0">

@@ -190,8 +190,8 @@
         </tr>
     </table>
     <input id="HiddenSaveChangesPromptResponse" type="hidden" name="HiddenSaveChangesPromptResponse"
-        runat="server">
-    <input id="HiddenDeletePromptResponse" type="hidden" runat="server" designtimedragdrop="261">
+           runat="server" />
+    <input id="HiddenDeletePromptResponse" type="hidden" runat="server" designtimedragdrop="261" />
 </asp:Content>
 <asp:Content ID="Content2" ContentPlaceHolderID="ContentPanelButtons" runat="server">
     <asp:Button ID="btnBack" Style="background-image: url(../Navigation/images/icons/back_icon.gif);

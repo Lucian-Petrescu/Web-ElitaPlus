@@ -81,7 +81,7 @@
                     <td>
                         &nbsp;
                     </td>
-                    <td id="tdBtnArea" nowrap="nowrap" runat="server" colspan="2">
+                    <td id="tdBtnArea" style="white-space:nowrap" runat="server" colspan="2">
                         <asp:Button ID="btnRequeueContinue" runat="server" SkinID="PrimaryRightButton" Text="Continue" />
                         <input id='btnRequeueCancel' runat="server" type="button" name="Cancel" value="Cancel"
                             class='popWindowCancelbtn floatR' />
