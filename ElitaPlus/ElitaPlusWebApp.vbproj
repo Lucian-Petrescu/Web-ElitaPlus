@@ -979,6 +979,13 @@
       <DependentUpon>UserControlDeliverySlot.ascx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
+    <Compile Include="Common\UserControlInvoiceRegionTaxes.ascx.designer.vb">
+      <DependentUpon>UserControlInvoiceRegionTaxes.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="Common\UserControlInvoiceRegionTaxes.ascx.vb">
+      <DependentUpon>UserControlInvoiceRegionTaxes.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
     <Compile Include="Common\UserControlQuestion.ascx.designer.vb">
       <DependentUpon>UserControlQuestion.ascx</DependentUpon>
     </Compile>
@@ -5802,6 +5809,7 @@
     <Content Include="Common\UserControlCaseHeaderInfo.ascx" />
     <Content Include="Common\UserControlDealerInflation.ascx" />
     <Content Include="Common\UserControlDeliverySlot.ascx" />
+    <Content Include="Common\UserControlInvoiceRegionTaxes.ascx" />
     <Content Include="Common\UserControlQuestion.ascx" />
     <Content Include="Common\UserControlRiskTypeTolerance.ascx" />
     <Content Include="Common\UserControlServiceCenterSelection.ascx" />

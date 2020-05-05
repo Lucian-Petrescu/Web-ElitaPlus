@@ -941,6 +941,7 @@ Public Class Codes
     'Company Attributes
     Public Const COMP_ATTR__RPT_EXP_NOTIFY_EMAIL As String = "RPT_EXP_NOTIFY_EMAIL"
     Public Const COMP_ATTR__UPD_ZIP_LOCATOR As String = "UPDATE_ZIP_LOCATOR"
+    Public Const COMP_ATTR__TECH_DEBT_DEDUCTIBLE_RULE As String = "TECH_DEBT_DEDUCTIBLE_RULE"
 
     'Dealer Attributes
     Public Const DLR_ATTRBT__TRD_IN As String = "PRC_CLM_DRP_CHECK_TRADE_IN"
