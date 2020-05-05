@@ -73,10 +73,6 @@
       <Project>{54BB47A8-3DD9-41A7-B4A3-62869AF3FCF1}</Project>
       <Name>Common</Name>
     </ProjectReference>
-    <ProjectReference Include="..\ElitaInternalWS\ElitaInternalWS.vbproj">
-      <Project>{7985ABEF-1C5C-4EC5-B178-3D1D374A910B}</Project>
-      <Name>ElitaInternalWS</Name>
-    </ProjectReference>
     <ProjectReference Include="..\External.Interfaces\External.Interfaces.vbproj">
       <Project>{b4bc4b0c-f901-4558-8de1-58100e997036}</Project>
       <Name>External.Interfaces</Name>

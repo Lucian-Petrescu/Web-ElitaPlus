@@ -433,10 +433,6 @@
       <Project>{D327817B-902A-4113-9336-4B53C560D50E}</Project>
       <Name>DALObjects</Name>
     </ProjectReference>
-    <ProjectReference Include="..\ElitaInternalWS\ElitaInternalWS.vbproj">
-      <Project>{7985ABEF-1C5C-4EC5-B178-3D1D374A910B}</Project>
-      <Name>ElitaInternalWS</Name>
-    </ProjectReference>
     <ProjectReference Include="..\External.AppleCare\External.AppleCare.csproj">
       <Project>{8EA47869-D032-44F3-BA37-22D25A026563}</Project>
       <Name>External.AppleCare</Name>
