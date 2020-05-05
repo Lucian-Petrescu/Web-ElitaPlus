@@ -294,12 +294,10 @@ Partial Class ClaimStatusDetailForm
                     End If
                 End If
 
-                Dim drvStatusDate As Object
                 If Not drv(DALObjects.ClaimStatusDAL.COL_NAME_STATUS_DATE_1) Is DBNull.Value Then
-                    drvStatusDate = New DateTimeType(CType(drv(DALObjects.ClaimStatusDAL.COL_NAME_STATUS_DATE_1), Date))
+                    Me.PopulateControlFromBOProperty(e.Item.FindControl(GRID_CTL_STATUS_DATE), New DateTimeType(CType(drv(DALObjects.ClaimStatusDAL.COL_NAME_STATUS_DATE_1), Date)), DATE_TIME_FORMAT)
                 End If
 
-                Me.PopulateControlFromBOProperty(e.Item.FindControl(GRID_CTL_STATUS_DATE), drvStatusDate, DATE_TIME_FORMAT)
                 Me.AddCalendar(CType(e.Item.FindControl(GRID_CTL_IMG_STATUS_DATE), ImageButton), CType(e.Item.FindControl(GRID_CTL_STATUS_DATE), TextBox), "", "Y")
 
                 If Not drv(DALObjects.ClaimStatusDAL.COL_NAME_CLAIM_STATUS_ID) Is System.DBNull.Value Then
