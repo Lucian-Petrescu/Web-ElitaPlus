@@ -816,7 +816,7 @@ Partial Class PayBatchClaimListForm
 #Region "Invoice Region Taxes"
 
     Private Sub IIBBTaxes_RequestIIBBTaxes(ByVal sender As Object, ByRef e As UserControlInvoiceRegionTaxes.RequestDataEventArgs) Handles IIBBTaxes.RequestIIBBTaxesData
-        Dim iibbregion As New IIBBRegionTaxes
+        Dim iibbregion As New InvoiceRegionTax
         iibbregion.InvoiceRegionTaxId = Me.State.MyBO.Id
         e.Data = iibbregion.GetInvoiceRegionTax()
     End Sub

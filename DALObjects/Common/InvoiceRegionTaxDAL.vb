@@ -1,4 +1,4 @@
-﻿Public Class IIBBRegionTaxesDAL
+﻿Public Class InvoiceRegionTaxDAL
     Inherits DALBase
 
 #Region "Constants"
@@ -11,7 +11,7 @@
     Public Const COL_NAME_REGION As String = "REGION"
     Public Const COL_NAME_REGION_ID As String = "REGION_ID"
     Public Const COL_NAME_TAX_AMOUNT As String = "TAX_AMOUNT"
-    Public Const COL_NAME_TAX_TYPE As String = "TAX_TYPE_XCD"
+    Public Const COL_NAME_TAX_TYPE_XCD As String = "TAX_TYPE_XCD"
     Public Const COL_NAME_REGION_DESCRIPTION As String = "REGION_DESCRIPTION"
 
 
@@ -123,7 +123,7 @@
                        {New DBHelper.DBHelperParameter(Me.PAR_NAME_INVOICE_REGION_TAX_ID, row(Me.COL_NAME_INVOICE_REGION_TAX_ID)),
                         New DBHelper.DBHelperParameter(Me.PAR_NAME_INVOICE_TRANS_ID, row(Me.COL_NAME_INVOICE_TRANS_ID)),
                         New DBHelper.DBHelperParameter(Me.PAR_NAME_REGION_ID, row(Me.COL_NAME_REGION_ID)),
-                        New DBHelper.DBHelperParameter(Me.PAR_NAME_TAX_TYPE, row(Me.COL_NAME_TAX_TYPE)),
+                        New DBHelper.DBHelperParameter(Me.PAR_NAME_TAX_TYPE, row(Me.COL_NAME_TAX_TYPE_XCD)),
                         New DBHelper.DBHelperParameter(Me.PAR_NAME_TAX_AMOUNT, row(Me.COL_NAME_TAX_AMOUNT)),
                         New DBHelper.DBHelperParameter("pi_" & updatedby.ToLower(), row(updatedby))
                        }
@@ -133,7 +133,7 @@
                 Dim inParameters() As DBHelper.DBHelperParameter = New DBHelper.DBHelperParameter() _
                       {New DBHelper.DBHelperParameter(Me.PAR_NAME_INVOICE_REGION_TAX_ID, row(Me.COL_NAME_INVOICE_REGION_TAX_ID)),
                        New DBHelper.DBHelperParameter(Me.PAR_NAME_TAX_AMOUNT, row(Me.COL_NAME_TAX_AMOUNT)),
-                       New DBHelper.DBHelperParameter(Me.PAR_NAME_TAX_TYPE, row(Me.COL_NAME_TAX_TYPE)),
+                       New DBHelper.DBHelperParameter(Me.PAR_NAME_TAX_TYPE, row(Me.COL_NAME_TAX_TYPE_XCD)),
                        New DBHelper.DBHelperParameter("pi_" & updatedby.ToLower(), row(updatedby))
                       }
                 DBHelper.ExecuteSp(sqlstatement, inParameters, outputParameters)

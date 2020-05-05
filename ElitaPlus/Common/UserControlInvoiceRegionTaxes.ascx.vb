@@ -14,7 +14,7 @@ Partial Class UserControlInvoiceRegionTaxes
     Public Class RequestDataEventArgs
         Inherits EventArgs
 
-        Public Data As IIBBRegionTaxes.InvoiceRegionTaxDV
+        Public Data As InvoiceRegionTax.InvoiceRegionTaxDV
 
     End Class
 
@@ -29,8 +29,9 @@ Partial Class UserControlInvoiceRegionTaxes
     Private Const GRID_COL_INVOICE_REGION_TAX_ID As Integer = 0
     Private Const GRID_COL_INVOICE_TRANS_ID As Integer = 1
     Private Const GRID_COL_REGION As Integer = 2
-    Private Const GRID_COL_TAX_TYPE As Integer = 3
-    Private Const GRID_COL_TAX_AMOUNT As Integer = 4
+    Private Const GRID_COL_REGION_DESCRIPTION As Integer = 3
+    Private Const GRID_COL_TAX_TYPE As Integer = 4
+    Private Const GRID_COL_TAX_AMOUNT As Integer = 5
 
     Private Const GRID_CTRL_NAME_LABEL_REGION As String = "lblRegion"
     Private Const GRID_CTRL_NAME_LABEL_IIBB_TAX As String = "lblIIBBTax"
@@ -52,7 +53,7 @@ Partial Class UserControlInvoiceRegionTaxes
     Private Const SORT_COMMAND As String = "Sort"
 
     Private Const NO_ROW_SELECTED_INDEX As Integer = -1
-    Dim dtexistingvalues As DataTable
+    Dim dtexistingvalues As DataTable = New DataTable
 
 #End Region
 
@@ -68,18 +69,18 @@ Partial Class UserControlInvoiceRegionTaxes
 
 #Region "Page State"
     Class MyState
-        Public MyBO As IIBBRegionTaxes
+        Public MyBO As InvoiceRegionTax
         Public DefaultInvoiceTransID As Guid
         Public PageIndex As Integer = 0
         Public PageSize As Integer = 10
-        Public InvoiceRegionTaxDV As IIBBRegionTaxes.InvoiceRegionTaxDV = Nothing
+        Public InvoiceRegionTaxDV As InvoiceRegionTax.InvoiceRegionTaxDV = Nothing
         Public HasDataChanged As Boolean
         Public IsGridAddNew As Boolean = False
         Public IsEditMode As Boolean = False
         Public IsGridVisible As Boolean
         Public IsAfterSave As Boolean
         Public ActionInProgress As Integer = ElitaPlusPage.DetailPageCommand.Nothing_
-        Public SortExpression As String = IIBBRegionTaxes.InvoiceRegionTaxDV.COL_INVOICE_REGION_TAX_ID
+        Public SortExpression As String = InvoiceRegionTax.InvoiceRegionTaxDV.COL_INVOICE_REGION_TAX_ID
         Public bnoRow As Boolean = False
         Public companyId As Guid = Guid.Empty
         Public companyCode As String = String.Empty
@@ -121,7 +122,7 @@ Partial Class UserControlInvoiceRegionTaxes
             If Not ViewState("SortDirection") Is Nothing Then
                 Return ViewState("SortDirection").ToString
             Else
-                Return IIBBRegionTaxes.COL_NAME_REGION_DESCRIPTION
+                Return InvoiceRegionTax.COL_NAME_REGION_DESCRIPTION
             End If
 
         End Get
@@ -159,7 +160,7 @@ Partial Class UserControlInvoiceRegionTaxes
                     Me.HiddenDIDeletePromptResponse.Value = ""
                 End If
             Else
-                SortDirection = IIBBRegionTaxes.COL_NAME_REGION_DESCRIPTION
+                SortDirection = InvoiceRegionTax.COL_NAME_REGION_DESCRIPTION
             End If
             If GridIIBBTaxes.Rows.Count = 24 Then
                 NewButton_WRITE.Enabled = False
@@ -195,7 +196,7 @@ Partial Class UserControlInvoiceRegionTaxes
 
         Dim blnNewSearch As Boolean = False
         cboDiPageSize.SelectedValue = CType(Me.TheState.PageSize, String)
-        Dim objInvoiceRegionTaxes As New IIBBRegionTaxes
+        Dim objInvoiceRegionTaxes As New InvoiceRegionTax
 
         Try
             With TheState
@@ -221,7 +222,7 @@ Partial Class UserControlInvoiceRegionTaxes
                     Me.ThePage.SetPageAndSelectedIndexFromGuid(Me.TheState.InvoiceRegionTaxDV, Guid.Empty, Me.GridIIBBTaxes, Me.TheState.PageIndex)
                 End If
             End If
-            GridIIBBTaxes.Columns(GRID_COL_TAX_AMOUNT).SortExpression = IIBBRegionTaxes.COL_NAME_TAX_AMOUNT
+            GridIIBBTaxes.Columns(GRID_COL_REGION).SortExpression = InvoiceRegionTax.COL_NAME_REGION_DESCRIPTION
 
             If Not TheState.InvoiceRegionTaxDV Is Nothing AndAlso Me.TheState.InvoiceRegionTaxDV.Count = 0 Then
                 For Each gvRow As GridViewRow In GridIIBBTaxes.Rows
@@ -253,25 +254,25 @@ Partial Class UserControlInvoiceRegionTaxes
 
 
             If Not dvRow Is Nothing And Not Me.TheState.bnoRow Then
-                strID = Me.ThePage.GetGuidStringFromByteArray(CType(dvRow(IIBBRegionTaxes.InvoiceRegionTaxDV.COL_INVOICE_REGION_TAX_ID), Byte()))
+                strID = Me.ThePage.GetGuidStringFromByteArray(CType(dvRow(InvoiceRegionTax.InvoiceRegionTaxDV.COL_INVOICE_REGION_TAX_ID), Byte()))
 
                 If (Me.TheState.IsEditMode = True AndAlso Me.TheState.DefaultInvoiceTransID.ToString.Equals(strID)) Then
 
 
-                    Dim moRegionDropDown As DropDownList = CType(e.Row.Cells(Me.GRID_COL_REGION).FindControl(Me.GRID_CTRL_NAME_EDIT_REGION), DropDownList)
+                    Dim moRegionDropDown As DropDownList = CType(e.Row.Cells(GRID_COL_REGION_DESCRIPTION).FindControl(Me.GRID_CTRL_NAME_EDIT_REGION), DropDownList)
                     Dim oCountry As Country = ElitaPlusIdentity.Current.ActiveUser.Country(ElitaPlusIdentity.Current.ActiveUser.CompanyId)
                     Dim CountryID As Guid = ElitaPlusIdentity.Current.ActiveUser.Country(ElitaPlusIdentity.Current.ActiveUser.CompanyId).Id
                     Dim dv As DataView = LookupListNew.GetRegionLookupList(oCountry.Id)
                     Dim existingValues As List(Of String)
                     existingValues = (From r In dtexistingvalues.AsEnumerable() Select r.Field(Of String)("REGION_DESCRIPTION")).ToList()
                     If Me.TheState.MyBO.IsNew = False Then
-                        existingValues.Remove(GridIIBBTaxes.DataKeys(e.Row.RowIndex).Values(GRID_COL_REGION))
+                        existingValues.Remove(GridIIBBTaxes.DataKeys(e.Row.RowIndex).Values(GRID_COL_REGION_DESCRIPTION))
                     End If
                     Dim regionlist As EnumerableRowCollection(Of DataRow) = From d In dv.ToTable() Where Not existingValues.Contains(d.Field(Of String)("Description")) Select d
                     ElitaPlusPage.BindListControlToDataView(moRegionDropDown, regionlist.AsDataView(), "DESCRIPTION",, False)
-                    If (Not String.IsNullOrWhiteSpace(dvRow(IIBBRegionTaxes.InvoiceRegionTaxDV.COL_REGION).ToString())) Then
-                        Me.ThePage.SetSelectedItemByText(moRegionDropDown, GridIIBBTaxes.DataKeys(e.Row.RowIndex).Values(GRID_COL_REGION))
-                    End If
+                    'If (Not String.IsNullOrWhiteSpace(dvRow(IIBBRegionTaxes.InvoiceRegionTaxDV.COL_REGION_ID).ToString())) Then
+                    '    Me.ThePage.SetSelectedItemByText(moRegionDropDown, GridIIBBTaxes.DataKeys(e.Row.RowIndex).Values(3).ToString())
+                    'End If
                     Dim cboinvoicetype As DropDownList = CType(e.Row.Cells(Me.GRID_COL_TAX_TYPE).FindControl(Me.GRID_CTRL_NAME_EDIT_INVOICE_TYPE), DropDownList)
 
                     cboinvoicetype.Populate(CommonConfigManager.Current.ListManager.GetList("TTYP", Thread.CurrentPrincipal.GetLanguageCode()), New PopulateOptions() With
@@ -280,13 +281,13 @@ Partial Class UserControlInvoiceRegionTaxes
                     .TextFunc = AddressOf .GetDescription
                  })
 
-                    CType(e.Row.Cells(Me.GRID_COL_TAX_AMOUNT).FindControl(Me.GRID_CTRL_NAME_EDIT_IIBB_TAX), TextBox).Text = dvRow(IIBBRegionTaxes.InvoiceRegionTaxDV.COL_TAX_AMOUNT).ToString
+                    CType(e.Row.Cells(Me.GRID_COL_TAX_AMOUNT).FindControl(Me.GRID_CTRL_NAME_EDIT_IIBB_TAX), TextBox).Text = dvRow(InvoiceRegionTax.InvoiceRegionTaxDV.COL_TAX_AMOUNT).ToString
 
                 Else
 
                     Dim replTaxTypeLkl As ListItem() = CommonConfigManager.Current.ListManager.GetList("TTYP", Thread.CurrentPrincipal.GetLanguageCode())
                     Dim InvDes As String
-                    Dim code As String = dvRow(IIBBRegionTaxes.InvoiceRegionTaxDV.COL_INVOICE_TYPE).ToString
+                    Dim code As String = dvRow(InvoiceRegionTax.InvoiceRegionTaxDV.COL_INVOICE_TYPE).ToString
 
                     For Each s As ListItem In replTaxTypeLkl
                         If (s.ExtendedCode = code) Then
@@ -294,7 +295,7 @@ Partial Class UserControlInvoiceRegionTaxes
                             Exit For
                         End If
                     Next
-                    CType(e.Row.Cells(Me.GRID_COL_REGION).FindControl(Me.GRID_CTRL_NAME_LABEL_REGION), Label).Text = dvRow(IIBBRegionTaxes.InvoiceRegionTaxDV.COL_REGION_DESCRIPTION).ToString
+                    CType(e.Row.Cells(Me.GRID_COL_REGION).FindControl(Me.GRID_CTRL_NAME_LABEL_REGION), Label).Text = dvRow(InvoiceRegionTax.InvoiceRegionTaxDV.COL_REGION_DESCRIPTION).ToString
                     CType(e.Row.Cells(Me.GRID_COL_TAX_TYPE).FindControl(Me.GRID_CTRL_NAME_LABEL_INVOICE_TYPE), Label).Text = InvDes
                 End If
             End If
@@ -313,7 +314,7 @@ Partial Class UserControlInvoiceRegionTaxes
                 index = CInt(e.CommandArgument)
                 Me.TheState.IsEditMode = True
                 Me.TheState.DefaultInvoiceTransID = GuidControl.ByteArrayToGuid(GridIIBBTaxes.DataKeys(index).Values(0))
-                Me.TheState.MyBO = New IIBBRegionTaxes(New Guid(InvoiceTransactionId), Me.TheState.DefaultInvoiceTransID)
+                Me.TheState.MyBO = New InvoiceRegionTax(New Guid(InvoiceTransactionId), Me.TheState.DefaultInvoiceTransID)
                 Me.Populate()
                 Me.TheState.PageIndex = GridIIBBTaxes.PageIndex
                 Me.SetControlState()
@@ -328,7 +329,7 @@ Partial Class UserControlInvoiceRegionTaxes
                 Try
                     index = CInt(e.CommandArgument)
                     Me.TheState.DefaultInvoiceTransID = GuidControl.ByteArrayToGuid(GridIIBBTaxes.DataKeys(index).Values(0))
-                    Me.TheState.MyBO = New IIBBRegionTaxes(New Guid(InvoiceTransactionId), Me.TheState.DefaultInvoiceTransID)
+                    Me.TheState.MyBO = New InvoiceRegionTax(New Guid(InvoiceTransactionId), Me.TheState.DefaultInvoiceTransID)
                     Me.TheState.MyBO.Delete()
                     Me.TheState.ActionInProgress = ElitaPlusPage.DetailPageCommand.Delete
                     Me.TheState.MyBO.Save()
@@ -353,7 +354,7 @@ Partial Class UserControlInvoiceRegionTaxes
 
     Private Sub SortAndBindGrid(Optional ByVal blnShowErr As Boolean = True)
 
-        Dim objInvoiceRegionTaxes As New IIBBRegionTaxes
+        Dim objInvoiceRegionTaxes As New InvoiceRegionTax
         Me.TheState.PageIndex = Me.GridIIBBTaxes.PageIndex
 
         If (Not Me.TheState.InvoiceRegionTaxDV Is Nothing AndAlso Me.TheState.InvoiceRegionTaxDV.Count = 0) Then
@@ -363,8 +364,10 @@ Partial Class UserControlInvoiceRegionTaxes
                 objInvoiceRegionTaxes.GetEmptyList(dv)
             End If
             Me.TheState.InvoiceRegionTaxDV = Nothing
-            Me.TheState.MyBO = New IIBBRegionTaxes
-            TheState.MyBO.AddNewRowToSearchDV(Me.TheState.InvoiceRegionTaxDV, Me.TheState.MyBO)
+            Me.TheState.MyBO = New InvoiceRegionTax
+            If Me.TheState.MyBO.IsNew Then
+                TheState.MyBO.AddNewRowToSearchDV(Me.TheState.InvoiceRegionTaxDV, Me.TheState.MyBO)
+            End If
             Me.GridIIBBTaxes.DataSource = Me.TheState.InvoiceRegionTaxDV
             Me.ThePage.HighLightSortColumn(GridIIBBTaxes, Me.SortDirection, True)
             Me.GridIIBBTaxes.DataBind()
@@ -501,7 +504,7 @@ Partial Class UserControlInvoiceRegionTaxes
     Private Sub AddNew()
         dtexistingvalues = Me.TheState.InvoiceRegionTaxDV.Table.Copy()
         If TheState.MyBO Is Nothing OrElse Me.TheState.MyBO.IsNew = False Then
-            TheState.MyBO = New IIBBRegionTaxes
+            TheState.MyBO = New InvoiceRegionTax
             TheState.MyBO.AddNewRowToSearchDV(Me.TheState.InvoiceRegionTaxDV, Me.TheState.MyBO)
         End If
         TheState.DefaultInvoiceTransID = Me.TheState.MyBO.Id
@@ -523,6 +526,7 @@ Partial Class UserControlInvoiceRegionTaxes
     Private Function PopulateBOFromForm() As Boolean
         Dim objDropDownList As DropDownList
         Dim objTaxtypeList As DropDownList
+        Dim objRegionDescription As DropDownList
         Dim IIBBTaxAmount As TextBox
 
         With Me.TheState.MyBO
@@ -540,6 +544,8 @@ Partial Class UserControlInvoiceRegionTaxes
 
             objDropDownList = CType(GridIIBBTaxes.Rows((Me.GridIIBBTaxes.EditIndex)).Cells(GRID_COL_REGION).FindControl(GRID_CTRL_NAME_EDIT_REGION), DropDownList)
             Me.ThePage.PopulateBOProperty(TheState.MyBO, "RegionId", objDropDownList, True)
+            objRegionDescription = CType(GridIIBBTaxes.Rows((Me.GridIIBBTaxes.EditIndex)).Cells(GRID_COL_REGION_DESCRIPTION).FindControl(GRID_CTRL_NAME_EDIT_REGION), DropDownList)
+            Me.ThePage.PopulateBOProperty(TheState.MyBO, "RegionDescription", objRegionDescription, False, True)
             objTaxtypeList = CType(GridIIBBTaxes.Rows((Me.GridIIBBTaxes.EditIndex)).Cells(GRID_COL_TAX_TYPE).FindControl(GRID_CTRL_NAME_EDIT_INVOICE_TYPE), DropDownList)
             Me.ThePage.PopulateBOProperty(TheState.MyBO, "TaxType", objTaxtypeList, False, True)
             Me.ThePage.PopulateBOProperty(TheState.MyBO, "TaxAmount", IIBBTaxAmount)

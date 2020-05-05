@@ -30,7 +30,7 @@ Inherits="Assurant.ElitaPlus.ElitaPlusWebApp.UserControlInvoiceRegionTaxes" %>
             </table>
         </div>
     </div>
-<asp:GridView ID="GridIIBBTaxes" runat="server" Width="51%" DataKeyNames="INVOICE_REGION_TAX_ID,INVOICE_TRANS_ID,REGION_DESCRIPTION,REGION_ID,TAX_AMOUNT"
+<asp:GridView ID="GridIIBBTaxes" runat="server" Width="51%" DataKeyNames="INVOICE_REGION_TAX_ID,INVOICE_TRANS_ID,REGION_ID,REGION_DESCRIPTION,TAX_AMOUNT"
         AllowPaging="True" AllowSorting="true" AutoGenerateColumns="False" SkinID="DetailPageGridView" OnRowEditing="OnRowEditing">
         <SelectedRowStyle CssClass="SELECTED"></SelectedRowStyle>
         <EditRowStyle CssClass="EDITROW"></EditRowStyle>
@@ -94,19 +94,6 @@ Inherits="Assurant.ElitaPlus.ElitaPlusWebApp.UserControlInvoiceRegionTaxes" %>
         Height="20px" CssClass="FLATBUTTON"></asp:Button>
 </asp:Panel>
 <script type="text/javascript">
-    function chkForZeroForRiskTolerance(obj) {
-        var obj1 = obj.id.replace('txtTolerancePct', 'lblValidRiskPctMsg');
-
-        if (obj.value < 0 || obj.value > 9999.99) {
-            document.getElementById(obj1).innerText = "Please enter number between 0 and 9999.99";
-            document.getElementById(obj1).style.color = "Red";
-        }
-        else {
-            document.getElementById(obj1).innerText = "";
-        }
-        return true;
-    }
-
     function numericOnly(elementRef) {
         var keyCodeEntered = (event.which) ? event.which : (window.event.keyCode) ? window.event.keyCode : -1;
         if ((keyCodeEntered >= 48) && (keyCodeEntered <= 57)) {

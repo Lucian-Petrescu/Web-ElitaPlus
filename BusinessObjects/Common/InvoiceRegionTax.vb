@@ -1,4 +1,4 @@
-﻿Public Class IIBBRegionTaxes
+﻿Public Class InvoiceRegionTax
     Inherits BusinessObjectBase
 #Region "Constant"
     Public Const COL_NAME_INVOICE_REGION_TAX_ID As String = "INVOICE_REGION_TAX_ID"
@@ -15,10 +15,10 @@
 #Region "Properties"
     Public ReadOnly Property Id() As Guid
         Get
-            If Row(IIBBRegionTaxesDAL.TABLE_KEY_NAME) Is DBNull.Value Then
+            If Row(InvoiceRegionTaxDAL.TABLE_KEY_NAME) Is DBNull.Value Then
                 Return Nothing
             Else
-                Return New Guid(CType(Row(IIBBRegionTaxesDAL.COL_NAME_INVOICE_REGION_TAX_ID), Byte()))
+                Return New Guid(CType(Row(InvoiceRegionTaxDAL.COL_NAME_INVOICE_REGION_TAX_ID), Byte()))
             End If
         End Get
     End Property
@@ -26,74 +26,76 @@
     Public Property InvoiceRegionTaxId() As Guid
         Get
             CheckDeleted()
-            If Row(IIBBRegionTaxesDAL.COL_NAME_INVOICE_REGION_TAX_ID) Is DBNull.Value Then
+            If Row(InvoiceRegionTaxDAL.COL_NAME_INVOICE_REGION_TAX_ID) Is DBNull.Value Then
                 Return Nothing
             Else
-                Return New Guid(CType(Row(IIBBRegionTaxesDAL.COL_NAME_INVOICE_REGION_TAX_ID), Byte()))
+                Return New Guid(CType(Row(InvoiceRegionTaxDAL.COL_NAME_INVOICE_REGION_TAX_ID), Byte()))
             End If
         End Get
         Set(ByVal Value As Guid)
             CheckDeleted()
-            Me.SetValue(IIBBRegionTaxesDAL.COL_NAME_INVOICE_REGION_TAX_ID, Value)
+            Me.SetValue(InvoiceRegionTaxDAL.COL_NAME_INVOICE_REGION_TAX_ID, Value)
         End Set
     End Property
 
     Public Property InvoiceTransactionId() As Guid
         Get
             CheckDeleted()
-            If Row(IIBBRegionTaxesDAL.COL_NAME_INVOICE_TRANS_ID) Is DBNull.Value Then
+            If Row(InvoiceRegionTaxDAL.COL_NAME_INVOICE_TRANS_ID) Is DBNull.Value Then
                 Return Nothing
             Else
-                Return New Guid(CType(Row(IIBBRegionTaxesDAL.COL_NAME_INVOICE_TRANS_ID), Byte()))
+                Return New Guid(CType(Row(InvoiceRegionTaxDAL.COL_NAME_INVOICE_TRANS_ID), Byte()))
             End If
         End Get
         Set(ByVal Value As Guid)
             CheckDeleted()
-            Me.SetValue(IIBBRegionTaxesDAL.COL_NAME_INVOICE_TRANS_ID, Value)
+            Me.SetValue(InvoiceRegionTaxDAL.COL_NAME_INVOICE_TRANS_ID, Value)
         End Set
     End Property
 
     Public Property RegionId() As Guid
         Get
             CheckDeleted()
-            If Row(IIBBRegionTaxesDAL.COL_NAME_REGION_ID) Is DBNull.Value Then
+            If Row(InvoiceRegionTaxDAL.COL_NAME_REGION_ID) Is DBNull.Value Then
                 Return Nothing
             Else
-                Return New Guid(CType(Row(IIBBRegionTaxesDAL.COL_NAME_REGION_ID), Byte()))
+                Return New Guid(CType(Row(InvoiceRegionTaxDAL.COL_NAME_REGION_ID), Byte()))
             End If
         End Get
         Set(ByVal Value As Guid)
             CheckDeleted()
-            Me.SetValue(IIBBRegionTaxesDAL.COL_NAME_REGION_ID, Value)
+            Me.SetValue(InvoiceRegionTaxDAL.COL_NAME_REGION_ID, Value)
         End Set
     End Property
 
     Public Property TaxType() As String
         Get
             CheckDeleted()
-            If Row(IIBBRegionTaxesDAL.COL_NAME_TAX_TYPE) Is DBNull.Value Then
+            If Row(InvoiceRegionTaxDAL.COL_NAME_TAX_TYPE_XCD) Is DBNull.Value Then
                 Return Nothing
             Else
-                Return CType(Row(IIBBRegionTaxesDAL.COL_NAME_TAX_TYPE), String)
+                Return CType(Row(InvoiceRegionTaxDAL.COL_NAME_TAX_TYPE_XCD), String)
             End If
         End Get
         Set(ByVal Value As String)
             CheckDeleted()
-            Me.SetValue(IIBBRegionTaxesDAL.COL_NAME_TAX_TYPE, Value)
+            Me.SetValue(InvoiceRegionTaxDAL.COL_NAME_TAX_TYPE_XCD, Value)
         End Set
     End Property
+
+    <ValueMandatory(""), ValidStringLength("", Max:=400)>
     Public Property RegionDescription() As String
         Get
             CheckDeleted()
-            If Row(IIBBRegionTaxesDAL.COL_NAME_REGION_DESCRIPTION) Is DBNull.Value Then
+            If Row(InvoiceRegionTaxDAL.COL_NAME_REGION_DESCRIPTION) Is DBNull.Value Then
                 Return Nothing
             Else
-                Return CType(Row(IIBBRegionTaxesDAL.COL_NAME_REGION_DESCRIPTION), String)
+                Return CType(Row(InvoiceRegionTaxDAL.COL_NAME_REGION_DESCRIPTION), String)
             End If
         End Get
         Set(ByVal Value As String)
             CheckDeleted()
-            Me.SetValue(IIBBRegionTaxesDAL.COL_NAME_REGION_DESCRIPTION, Value)
+            Me.SetValue(InvoiceRegionTaxDAL.COL_NAME_REGION_DESCRIPTION, Value)
         End Set
     End Property
 
@@ -101,15 +103,15 @@
     Public Property TaxAmount() As DecimalType
         Get
             CheckDeleted()
-            If Row(IIBBRegionTaxesDAL.COL_NAME_TAX_AMOUNT) Is DBNull.Value Then
+            If Row(InvoiceRegionTaxDAL.COL_NAME_TAX_AMOUNT) Is DBNull.Value Then
                 Return Nothing
             Else
-                Return New DecimalType(CType(Row(IIBBRegionTaxesDAL.COL_NAME_TAX_AMOUNT), Decimal))
+                Return New DecimalType(CType(Row(InvoiceRegionTaxDAL.COL_NAME_TAX_AMOUNT), Decimal))
             End If
         End Get
         Set(ByVal Value As DecimalType)
             CheckDeleted()
-            Me.SetValue(IIBBRegionTaxesDAL.COL_NAME_TAX_AMOUNT, Value)
+            Me.SetValue(InvoiceRegionTaxDAL.COL_NAME_TAX_AMOUNT, Value)
         End Set
     End Property
 
@@ -137,7 +139,7 @@
 
     Protected Sub Load()
         Try
-            Dim dal As New IIBBRegionTaxesDAL
+            Dim dal As New InvoiceRegionTaxDAL
             If Me.Dataset.Tables.IndexOf(dal.TABLE_NAME) < 0 Then
                 dal.LoadSchema(Me.Dataset)
             End If
@@ -153,7 +155,7 @@
 
     Protected Sub Load(ByVal id As Guid)
         Try
-            Dim dal As New IIBBRegionTaxesDAL
+            Dim dal As New InvoiceRegionTaxDAL
             If Me._isDSCreator Then
                 If Not Me.Row Is Nothing Then
                     Me.Dataset.Tables(dal.TABLE_NAME).Rows.Remove(Me.Row)
@@ -176,7 +178,7 @@
     End Sub
     Protected Sub Load(ByVal searchid As Guid, ByVal key As Guid)
         Try
-            Dim dal As New IIBBRegionTaxesDAL
+            Dim dal As New InvoiceRegionTaxDAL
             If Me._isDSCreator Then
                 If Not Me.Row Is Nothing Then
                     Me.Dataset.Tables(dal.TABLE_NAME).Rows.Remove(Me.Row)
@@ -206,7 +208,7 @@
         Try
             MyBase.Save()
             If Me._isDSCreator AndAlso Me.IsDirty AndAlso Me.Row.RowState <> DataRowState.Detached Then
-                Dim dal As New IIBBRegionTaxesDAL
+                Dim dal As New InvoiceRegionTaxDAL
                 dal.SaveInvoiceRegionTax(Me.Row)
                 'Reload the Data from the DB
                 If Me.Row.RowState <> DataRowState.Detached Then
@@ -223,7 +225,7 @@
     End Sub
 
     Public Function GetInvoiceRegionTax() As InvoiceRegionTaxDV
-        Dim IIBBRegionTaxesDAL As New IIBBRegionTaxesDAL
+        Dim IIBBRegionTaxesDAL As New InvoiceRegionTaxDAL
 
         If Not (Me.InvoiceTransactionId.Equals(Guid.Empty)) Then
             Return New InvoiceRegionTaxDV(IIBBRegionTaxesDAL.LoadInvoiceRegionTax(Me.InvoiceTransactionId).Tables(0))
@@ -251,7 +253,7 @@
 
         Public Const COL_INVOICE_REGION_TAX_ID As String = "INVOICE_REGION_TAX_ID"
         Public Const COL_INVOICE_TRANS_ID As String = "INVOICE_TRANS_ID"
-        Public Const COL_REGION As String = "REGION"
+        'Public Const COL_REGION As String = "REGION"
         Public Const COL_REGION_ID As String = "REGION_ID"
         Public Const COL_TAX_AMOUNT As String = "TAX_AMOUNT"
         Public Const COL_REGION_DESCRIPTION As String = "REGION_DESCRIPTION"
@@ -288,25 +290,27 @@
         End Try
     End Function
 
-    Public Shared Sub AddNewRowToSearchDV(ByRef dv As InvoiceRegionTaxDV, ByVal NewBO As IIBBRegionTaxes)
+    Public Shared Sub AddNewRowToSearchDV(ByRef dv As InvoiceRegionTaxDV, ByVal NewBO As InvoiceRegionTax)
         Dim dt As DataTable, blnEmptyTbl As Boolean = False
 
-        If NewBO.IsNew Then
-            Dim row As DataRow
-            If dv Is Nothing Then
-                Dim guidTemp As New Guid
-                blnEmptyTbl = True
-                dt = New DataTable
-                dt.Columns.Add(InvoiceRegionTaxDV.COL_INVOICE_REGION_TAX_ID, guidTemp.ToByteArray.GetType)
-                dt.Columns.Add(InvoiceRegionTaxDV.COL_INVOICE_TRANS_ID, guidTemp.ToByteArray.GetType)
-                dt.Columns.Add(InvoiceRegionTaxDV.COL_REGION_ID, guidTemp.ToByteArray.GetType)
-                dt.Columns.Add(InvoiceRegionTaxDV.COL_REGION, GetType(String))
-                dt.Columns.Add(InvoiceRegionTaxDV.COL_TAX_AMOUNT, GetType(String))
-                dt.Columns.Add(InvoiceRegionTaxDV.COL_REGION_DESCRIPTION, GetType(String))
+        'If NewBO.IsNew Then
+        Dim row As DataRow
+        If dv Is Nothing Then
+            Dim guidTemp As New Guid
+            blnEmptyTbl = True
+            dt = New DataTable
+            dt.Columns.Add(InvoiceRegionTaxDV.COL_INVOICE_REGION_TAX_ID, guidTemp.ToByteArray.GetType)
+            dt.Columns.Add(InvoiceRegionTaxDV.COL_INVOICE_TRANS_ID, guidTemp.ToByteArray.GetType)
+            dt.Columns.Add(InvoiceRegionTaxDV.COL_REGION_ID, guidTemp.ToByteArray.GetType)
+            'dt.Columns.Add(InvoiceRegionTaxDV.COL_REGION, GetType(String))
+            dt.Columns.Add(InvoiceRegionTaxDV.COL_TAX_AMOUNT, GetType(String))
+            dt.Columns.Add(InvoiceRegionTaxDV.COL_INVOICE_TYPE, GetType(String))
+            dt.Columns.Add(InvoiceRegionTaxDV.COL_REGION_DESCRIPTION, GetType(String))
 
-            Else
-                dt = dv.Table
-            End If
+        Else
+            dt = dv.Table
+        End If
+        If NewBO.IsNew Then
             row = dt.NewRow
             row(InvoiceRegionTaxDV.COL_INVOICE_REGION_TAX_ID) = NewBO.Id.ToByteArray
             row(InvoiceRegionTaxDV.COL_REGION_ID) = NewBO.RegionId.ToByteArray
@@ -330,7 +334,7 @@
         End Sub
 
         Public Overrides Function IsValid(ByVal valueToCheck As Object, ByVal objectToValidate As Object) As Boolean
-            Dim obj As IIBBRegionTaxes = CType(objectToValidate, IIBBRegionTaxes)
+            Dim obj As InvoiceRegionTax = CType(objectToValidate, InvoiceRegionTax)
             If obj.IsNew AndAlso valueToCheck Is Nothing Then
                 Return False
             ElseIf valueToCheck.Equals(String.Empty) Then

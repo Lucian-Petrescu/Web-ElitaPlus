@@ -289,7 +289,7 @@
     <Compile Include="Claims\PreInvoiceDetails.vb" />
     <Compile Include="Common\ClaimCloseRules.vb" />
     <Compile Include="Common\DealerInflation.vb" />
-    <Compile Include="Common\IIBBRegionTaxes.vb" />
+    <Compile Include="Common\InvoiceRegionTax.vb" />
     <Compile Include="Common\Instrumentation.vb" />
     <Compile Include="Common\IPriceListSearch.vb" />
     <Compile Include="Claims\DefaultClaimStatus.vb" />
