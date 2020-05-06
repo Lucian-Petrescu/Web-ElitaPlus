@@ -267,10 +267,10 @@
                                         <tr>
                                             <td width="20%"></td>
                                             <td align="left">
-                                                <asp:Label ID="lblDvcSelected" runat="server" Text="Selected"></asp:Label>
+                                                <asp:Label ID="lblDvcSelected" runat="server" Text="CLAIM_DEVICE_ENROLLED"></asp:Label>
                                             </td>
                                             <td align="left">
-                                                <asp:Label ID="lblDvcCorrected" runat="server" Text="Corrected"></asp:Label>
+                                                <asp:Label ID="lblDvcCorrected" runat="server" Text="CLAIM_DEVICE_MODIFIED"></asp:Label>
                                             </td>
                                         </tr>
                                         <tr>
