@@ -46,7 +46,7 @@ Public Class ClaimRecordingForm
     Private Const Password = "CLAIM_RECSERVICE_PASSWORD"
     Private Const ServiceUrl = "CLAIM_SERVICE_URL"
     Private Const EndPointName = "CustomBinding_IClaimRecordingService"
-    Private Const UtiliutyEndPointName = "BasicHttpBinding_IUtilityWcf"
+    Private Const UtiliutyEndPointName = "CustomBinding_IUtilityWcf"
     Private Const FlagYes = "YESNO-Y"
 
     Dim _relationlist As ListItem()
