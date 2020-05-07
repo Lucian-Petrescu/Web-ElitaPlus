@@ -346,36 +346,36 @@ Namespace Tables
             Get
                 Dim isIgnorePremiumYesForContract As Boolean
                 isIgnorePremiumYesForContract = False
-                
-                If (Me.State.moCoverage.DealerId <> Guid.Empty) Then
-                    Dim oDealer As New Dealer(Me.State.moCoverage.DealerId)
-                    Dim oContract As Contract = New Contract
+                With Me.State.moCoverage
+                    If (.DealerId <> Guid.Empty) Then
+                        Dim oDealer As New Dealer(.DealerId)
+                        Dim oContract As Contract = New Contract
 
-                    If Not (Me.State.moCoverage.Effective Is Nothing And Me.State.moCoverage.Expiration Is Nothing) Then
-                        oContract = oContract.GetContract(Me.State.moCoverage.DealerId, Me.State.moCoverage.Effective.Value, Me.State.moCoverage.Expiration.Value)
-                    End If
+                        If Not (.Effective Is Nothing And .Expiration Is Nothing) Then
+                            oContract = oContract.GetContract(.DealerId, .Effective.Value, .Expiration.Value)
+                        End If
 
-                    If Not oContract Is Nothing Then
-                        If oContract.IgnoreIncomingPremiumID.ToString() <> Me.EMPTY_GUID Then
-                            Dim str As String
-                            str = LookupListNew.GetCodeFromId(LookupListNew.LK_YESNO, oContract.IgnoreIncomingPremiumID)
+                        If Not oContract Is Nothing Then
+                            If oContract.IgnoreIncomingPremiumID.ToString() <> Me.EMPTY_GUID Then
+                                Dim str As String
+                                str = LookupListNew.GetCodeFromId(LookupListNew.LK_YESNO, oContract.IgnoreIncomingPremiumID)
 
-                            If str.Equals(Codes.YESNO_Y) Then
-                                isIgnorePremiumYesForContract = True
+                                If str.Equals(Codes.YESNO_Y) Then
+                                    isIgnorePremiumYesForContract = True
+                                Else
+                                    isIgnorePremiumYesForContract = False
+                                End If
+
                             Else
                                 isIgnorePremiumYesForContract = False
                             End If
-
                         Else
                             isIgnorePremiumYesForContract = False
                         End If
                     Else
                         isIgnorePremiumYesForContract = False
                     End If
-                Else
-                    isIgnorePremiumYesForContract = False
-                End If
-
+                End With
                 Return isIgnorePremiumYesForContract
             End Get
         End Property
@@ -689,7 +689,7 @@ Namespace Tables
                 'US-521697
                 If Not Me.IsPostBack Then
                     Me.State.IsDealerConfiguredForSourceXcd = HasDealerConfigeredForSourceXcd()
-                    'Me.State.IsIgnorePremiumSetYesForContract = HasIgnorePremiumSetForContractForSIncomingSource()
+                    Me.State.IsIgnorePremiumSetYesForContract = HasIgnorePremiumSetForContractForSIncomingSource()
                 Else
                     SetGridSourceXcdTextboxFromBo()
                 End If
@@ -4503,22 +4503,20 @@ Namespace Tables
                     Me.PopulateBOProperty(TheCoverageRate, "MarketingPercentSourceXcd", mocboMarketingExpenseSourceXcd, False, True)
                 End If
 
-                'If cboIgnorePremium.Visible And cboIgnorePremium.Items.Count > 0 And Me.cboIgnorePremium.SelectedIndex > NO_ITEM_SELECTED_INDEX Then
-                '    If LookupListNew.GetCodeFromId(LookupListNew.LK_YESNO, GetSelectedItem(cboIgnorePremium)).Equals(Codes.YESNO_Y) Then
+                If Me.State.IsIgnorePremiumSetYesForContract Then
 
-                '        ValidateIncomingSourceXcd()
+                    ValidateIncomingSourceXcd()
 
-                '        If Me.State.IsBucketIncomingSelected Then
-                '            ElitaPlusPage.SetLabelError(Me.LabelIgnorePremium)
-                '            ElitaPlusPage.SetLabelError(Me.LabelLossCostPercent)
-                '            ElitaPlusPage.SetLabelError(Me.LabelProfitExpense)
-                '            ElitaPlusPage.SetLabelError(Me.LabelAdminExpense)
-                '            ElitaPlusPage.SetLabelError(Me.LabelMarketingExpense)
-                '            ElitaPlusPage.SetLabelError(Me.LabelCommPercent)
-                '            Throw New GUIException(Message.MSG_INCOMING_OPTION_NOT_ALLOWED, Assurant.ElitaPlus.Common.ErrorCodes.MSG_INCOMING_OPTION_NOT_ALLOWED_WHEN_IGNORE_PREMIUM_IS_YES)
-                '        End If
-                '    End If
-                'End If
+                    If Me.State.IsBucketIncomingSelected Then
+                        'ElitaPlusPage.SetLabelError(Me.LabelIgnorePremium)
+                        'ElitaPlusPage.SetLabelError(Me.LabelLossCostPercent)
+                        'ElitaPlusPage.SetLabelError(Me.LabelProfitExpense)
+                        'ElitaPlusPage.SetLabelError(Me.LabelAdminExpense)
+                        'ElitaPlusPage.SetLabelError(Me.LabelMarketingExpense)
+                        'ElitaPlusPage.SetLabelError(Me.LabelCommPercent)
+                        Throw New GUIException(Message.MSG_INCOMING_OPTION_NOT_ALLOWED, Assurant.ElitaPlus.Common.ErrorCodes.MSG_INCOMING_OPTION_NOT_ALLOWED_WHEN_IGNORE_PREMIUM_IS_YES)
+                    End If
+                End If
 
                 ValidateDifferenceSourceXcd()
 
@@ -4673,44 +4671,42 @@ Namespace Tables
             Dim moTextProfit_ExpenseText As TextBox = DirectCast(gRow.Cells(COMMISSIONS_PERCENT).FindControl("moProfit_ExpenseText"), TextBox)
             Dim moTextLoss_Cost_PercentText As TextBox = DirectCast(gRow.Cells(COMMISSIONS_PERCENT).FindControl("moLoss_Cost_PercentText"), TextBox)
 
-            With Me.State.moCoverage
-                If Me.State.IsDealerConfiguredForSourceXcd Then
-                    If mocboCommPercentSourceXcd.SelectedItem.Value.ToUpper.Equals(Codes.ACCT_BUCKETS_SOURCE_OPTION_DIFFERENCE) Then
-                        moTextCommission_PercentText.Text = "0.00"
-                        moTextCommission_PercentText.Enabled = False
-                    Else
-                        moTextCommission_PercentText.Enabled = True
-                    End If
-
-                    If mocboMarketingExpenseSourceXcd.SelectedItem.Value.ToUpper.Equals(Codes.ACCT_BUCKETS_SOURCE_OPTION_DIFFERENCE) Then
-                        moTextMarketing_PercentText.Text = "0.00"
-                        moTextMarketing_PercentText.Enabled = False
-                    Else
-                        moTextMarketing_PercentText.Enabled = True
-                    End If
-
-                    If mocboAdminExpenseSourceXcd.SelectedItem.Value.ToUpper.Equals(Codes.ACCT_BUCKETS_SOURCE_OPTION_DIFFERENCE) Then
-                        moTextAdmin_ExpenseText.Text = "0.00"
-                        moTextAdmin_ExpenseText.Enabled = False
-                    Else
-                        moTextAdmin_ExpenseText.Enabled = True
-                    End If
-
-                    If mocboProfitExpenseSourceXcd.SelectedItem.Value.ToUpper.Equals(Codes.ACCT_BUCKETS_SOURCE_OPTION_DIFFERENCE) Then
-                        moTextProfit_ExpenseText.Text = "0.00"
-                        moTextProfit_ExpenseText.Enabled = False
-                    Else
-                        moTextProfit_ExpenseText.Enabled = True
-                    End If
-
-                    If mocboLossCostPercentSourceXcd.SelectedItem.Value.ToUpper.Equals(Codes.ACCT_BUCKETS_SOURCE_OPTION_DIFFERENCE) Then
-                        moTextLoss_Cost_PercentText.Text = "0.00"
-                        moTextLoss_Cost_PercentText.Enabled = False
-                    Else
-                        moTextLoss_Cost_PercentText.Enabled = True
-                    End If
+            If Me.State.IsDealerConfiguredForSourceXcd Then
+                If mocboCommPercentSourceXcd.SelectedItem.Value.ToUpper.Equals(Codes.ACCT_BUCKETS_SOURCE_OPTION_DIFFERENCE) Then
+                    moTextCommission_PercentText.Text = "0.00"
+                    moTextCommission_PercentText.Enabled = False
+                Else
+                    moTextCommission_PercentText.Enabled = True
                 End If
-            End With
+
+                If mocboMarketingExpenseSourceXcd.SelectedItem.Value.ToUpper.Equals(Codes.ACCT_BUCKETS_SOURCE_OPTION_DIFFERENCE) Then
+                    moTextMarketing_PercentText.Text = "0.00"
+                    moTextMarketing_PercentText.Enabled = False
+                Else
+                    moTextMarketing_PercentText.Enabled = True
+                End If
+
+                If mocboAdminExpenseSourceXcd.SelectedItem.Value.ToUpper.Equals(Codes.ACCT_BUCKETS_SOURCE_OPTION_DIFFERENCE) Then
+                    moTextAdmin_ExpenseText.Text = "0.00"
+                    moTextAdmin_ExpenseText.Enabled = False
+                Else
+                    moTextAdmin_ExpenseText.Enabled = True
+                End If
+
+                If mocboProfitExpenseSourceXcd.SelectedItem.Value.ToUpper.Equals(Codes.ACCT_BUCKETS_SOURCE_OPTION_DIFFERENCE) Then
+                    moTextProfit_ExpenseText.Text = "0.00"
+                    moTextProfit_ExpenseText.Enabled = False
+                Else
+                    moTextProfit_ExpenseText.Enabled = True
+                End If
+
+                If mocboLossCostPercentSourceXcd.SelectedItem.Value.ToUpper.Equals(Codes.ACCT_BUCKETS_SOURCE_OPTION_DIFFERENCE) Then
+                    moTextLoss_Cost_PercentText.Text = "0.00"
+                    moTextLoss_Cost_PercentText.Enabled = False
+                Else
+                    moTextLoss_Cost_PercentText.Enabled = True
+                End If
+            End If
         End Sub
 
         Private Sub DisplaySourceXcdFields()
@@ -4792,27 +4788,25 @@ Namespace Tables
                 Dim mocboProfitExpenseSourceXcd As DropDownList = DirectCast(gRow.Cells(PROFIT_EXPENSE_XCD).FindControl("cboProfitExpenseSourceXcd"), DropDownList)
                 Dim mocboLossCostPercentSourceXcd As DropDownList = DirectCast(gRow.Cells(LOSS_COST_PERCENT_XCD).FindControl("cboLossCostPercentSourceXcd"), DropDownList)
 
-                With Me.State.moCoverage
-                    If Not mocboCommPercentSourceXcd Is Nothing Then
-                        PoupulateSourceOptionDropdownlist(mocboCommPercentSourceXcd)
-                    End If
+                If Not mocboCommPercentSourceXcd Is Nothing Then
+                    PoupulateSourceOptionDropdownlist(mocboCommPercentSourceXcd)
+                End If
 
-                    If Not mocboMarketingExpenseSourceXcd Is Nothing Then
-                        PoupulateSourceOptionDropdownlist(mocboMarketingExpenseSourceXcd)
-                    End If
+                If Not mocboMarketingExpenseSourceXcd Is Nothing Then
+                    PoupulateSourceOptionDropdownlist(mocboMarketingExpenseSourceXcd)
+                End If
 
-                    If Not mocboAdminExpenseSourceXcd Is Nothing Then
-                        PoupulateSourceOptionDropdownlist(mocboAdminExpenseSourceXcd)
-                    End If
+                If Not mocboAdminExpenseSourceXcd Is Nothing Then
+                    PoupulateSourceOptionDropdownlist(mocboAdminExpenseSourceXcd)
+                End If
 
-                    If Not mocboProfitExpenseSourceXcd Is Nothing Then
-                        PoupulateSourceOptionDropdownlist(mocboProfitExpenseSourceXcd)
-                    End If
+                If Not mocboProfitExpenseSourceXcd Is Nothing Then
+                    PoupulateSourceOptionDropdownlist(mocboProfitExpenseSourceXcd)
+                End If
 
-                    If Not mocboLossCostPercentSourceXcd Is Nothing Then
-                        PoupulateSourceOptionDropdownlist(mocboLossCostPercentSourceXcd)
-                    End If
-                End With
+                If Not mocboLossCostPercentSourceXcd Is Nothing Then
+                    PoupulateSourceOptionDropdownlist(mocboLossCostPercentSourceXcd)
+                End If
             End If
         End Sub
 
@@ -4870,7 +4864,6 @@ Namespace Tables
                                     End If
                                 End If
                             End If
-
                         End If
                     Next
                 Next
@@ -4879,94 +4872,91 @@ Namespace Tables
 
         Private Sub SetGridSourceXcdDropdownFromBo()
             If moGridView.EditIndex = -1 Then Exit Sub
-            With TheCoverageRate
-                If Me.State.IsDealerConfiguredForSourceXcd Then
-                    Dim gRow As GridViewRow = moGridView.Rows(moGridView.EditIndex)
-                    Dim mocboCommPercentSourceXcd As DropDownList = DirectCast(gRow.Cells(COMMISSIONS_PERCENT_XCD).FindControl("cboCommPercentSourceXcd"), DropDownList)
-                    Dim mocboMarketingExpenseSourceXcd As DropDownList = DirectCast(gRow.Cells(MARKETING_PERCENT_XCD).FindControl("cboMarketingExpenseSourceXcd"), DropDownList)
-                    Dim mocboAdminExpenseSourceXcd As DropDownList = DirectCast(gRow.Cells(ADMIN_EXPENSE_XCD).FindControl("cboAdminExpenseSourceXcd"), DropDownList)
-                    Dim mocboProfitExpenseSourceXcd As DropDownList = DirectCast(gRow.Cells(PROFIT_EXPENSE_XCD).FindControl("cboProfitExpenseSourceXcd"), DropDownList)
-                    Dim mocboLossCostPercentSourceXcd As DropDownList = DirectCast(gRow.Cells(LOSS_COST_PERCENT_XCD).FindControl("cboLossCostPercentSourceXcd"), DropDownList)
+            If Me.State.IsDealerConfiguredForSourceXcd Then
+                Dim gRow As GridViewRow = moGridView.Rows(moGridView.EditIndex)
+                Dim mocboCommPercentSourceXcd As DropDownList = DirectCast(gRow.Cells(COMMISSIONS_PERCENT_XCD).FindControl("cboCommPercentSourceXcd"), DropDownList)
+                Dim mocboMarketingExpenseSourceXcd As DropDownList = DirectCast(gRow.Cells(MARKETING_PERCENT_XCD).FindControl("cboMarketingExpenseSourceXcd"), DropDownList)
+                Dim mocboAdminExpenseSourceXcd As DropDownList = DirectCast(gRow.Cells(ADMIN_EXPENSE_XCD).FindControl("cboAdminExpenseSourceXcd"), DropDownList)
+                Dim mocboProfitExpenseSourceXcd As DropDownList = DirectCast(gRow.Cells(PROFIT_EXPENSE_XCD).FindControl("cboProfitExpenseSourceXcd"), DropDownList)
+                Dim mocboLossCostPercentSourceXcd As DropDownList = DirectCast(gRow.Cells(LOSS_COST_PERCENT_XCD).FindControl("cboLossCostPercentSourceXcd"), DropDownList)
 
-                    Dim moTextCommission_PercentText As TextBox = DirectCast(gRow.Cells(COMMISSIONS_PERCENT).FindControl("moCommission_PercentText"), TextBox)
-                    Dim moTextMarketing_PercentText As TextBox = DirectCast(gRow.Cells(MARKETING_PERCENT).FindControl("moMarketing_PercentText"), TextBox)
-                    Dim moTextAdmin_ExpenseText As TextBox = DirectCast(gRow.Cells(ADMIN_EXPENSE).FindControl("moAdmin_ExpenseText"), TextBox)
-                    Dim moTextProfit_ExpenseText As TextBox = DirectCast(gRow.Cells(PROFIT_EXPENSE).FindControl("moProfit_ExpenseText"), TextBox)
-                    Dim moTextLoss_Cost_PercentText As TextBox = DirectCast(gRow.Cells(LOSS_COST_PERCENT).FindControl("moLoss_Cost_PercentText"), TextBox)
-                    Dim diffValue As Decimal = 0.0000
+                Dim moTextCommission_PercentText As TextBox = DirectCast(gRow.Cells(COMMISSIONS_PERCENT).FindControl("moCommission_PercentText"), TextBox)
+                Dim moTextMarketing_PercentText As TextBox = DirectCast(gRow.Cells(MARKETING_PERCENT).FindControl("moMarketing_PercentText"), TextBox)
+                Dim moTextAdmin_ExpenseText As TextBox = DirectCast(gRow.Cells(ADMIN_EXPENSE).FindControl("moAdmin_ExpenseText"), TextBox)
+                Dim moTextProfit_ExpenseText As TextBox = DirectCast(gRow.Cells(PROFIT_EXPENSE).FindControl("moProfit_ExpenseText"), TextBox)
+                Dim moTextLoss_Cost_PercentText As TextBox = DirectCast(gRow.Cells(LOSS_COST_PERCENT).FindControl("moLoss_Cost_PercentText"), TextBox)
+                Dim diffValue As Decimal = 0.0000
 
-                    If Me.State.IsNewWithCopy = False Then
-                        With TheCoverageRate
+                If Me.State.IsNewWithCopy = False Then
+                    With TheCoverageRate
 
-                            If mocboLossCostPercentSourceXcd.Visible Then
-                                If Not .LossCostPercentSourceXcd Is Nothing And mocboLossCostPercentSourceXcd.Items.Count > 0 Then
-                                    Me.SetSelectedItem(mocboLossCostPercentSourceXcd, .LossCostPercentSourceXcd)
+                        If mocboLossCostPercentSourceXcd.Visible Then
+                            If Not .LossCostPercentSourceXcd Is Nothing And mocboLossCostPercentSourceXcd.Items.Count > 0 Then
+                                Me.SetSelectedItem(mocboLossCostPercentSourceXcd, .LossCostPercentSourceXcd)
 
-                                    If mocboLossCostPercentSourceXcd.SelectedItem.Value.ToUpper.Equals(Codes.ACCT_BUCKETS_SOURCE_OPTION_DIFFERENCE) Then
-                                        Me.PopulateControlFromBOProperty(moTextLoss_Cost_PercentText, diffValue, Me.PERCENT_FORMAT)
-                                        moTextLoss_Cost_PercentText.Enabled = False
-                                    Else
-                                        moTextLoss_Cost_PercentText.Enabled = True
-                                    End If
+                                If mocboLossCostPercentSourceXcd.SelectedItem.Value.ToUpper.Equals(Codes.ACCT_BUCKETS_SOURCE_OPTION_DIFFERENCE) Then
+                                    Me.PopulateControlFromBOProperty(moTextLoss_Cost_PercentText, diffValue, Me.PERCENT_FORMAT)
+                                    moTextLoss_Cost_PercentText.Enabled = False
+                                Else
+                                    moTextLoss_Cost_PercentText.Enabled = True
                                 End If
                             End If
+                        End If
 
-                            If mocboProfitExpenseSourceXcd.Visible Then
-                                If Not .ProfitPercentSourceXcd Is Nothing And mocboProfitExpenseSourceXcd.Items.Count > 0 Then
-                                    Me.SetSelectedItem(mocboProfitExpenseSourceXcd, .ProfitPercentSourceXcd)
+                        If mocboProfitExpenseSourceXcd.Visible Then
+                            If Not .ProfitPercentSourceXcd Is Nothing And mocboProfitExpenseSourceXcd.Items.Count > 0 Then
+                                Me.SetSelectedItem(mocboProfitExpenseSourceXcd, .ProfitPercentSourceXcd)
 
-                                    If mocboProfitExpenseSourceXcd.SelectedItem.Value.ToUpper.Equals(Codes.ACCT_BUCKETS_SOURCE_OPTION_DIFFERENCE) Then
-                                        Me.PopulateControlFromBOProperty(moTextProfit_ExpenseText, diffValue, Me.PERCENT_FORMAT)
-                                        moTextProfit_ExpenseText.Enabled = False
-                                    Else
-                                        moTextProfit_ExpenseText.Enabled = True
-                                    End If
+                                If mocboProfitExpenseSourceXcd.SelectedItem.Value.ToUpper.Equals(Codes.ACCT_BUCKETS_SOURCE_OPTION_DIFFERENCE) Then
+                                    Me.PopulateControlFromBOProperty(moTextProfit_ExpenseText, diffValue, Me.PERCENT_FORMAT)
+                                    moTextProfit_ExpenseText.Enabled = False
+                                Else
+                                    moTextProfit_ExpenseText.Enabled = True
                                 End If
                             End If
+                        End If
 
-                            If mocboMarketingExpenseSourceXcd.Visible Then
-                                If Not .MarketingPercentSourceXcd Is Nothing And mocboMarketingExpenseSourceXcd.Items.Count > 0 Then
-                                    Me.SetSelectedItem(mocboMarketingExpenseSourceXcd, .MarketingPercentSourceXcd)
+                        If mocboMarketingExpenseSourceXcd.Visible Then
+                            If Not .MarketingPercentSourceXcd Is Nothing And mocboMarketingExpenseSourceXcd.Items.Count > 0 Then
+                                Me.SetSelectedItem(mocboMarketingExpenseSourceXcd, .MarketingPercentSourceXcd)
 
-                                    If mocboMarketingExpenseSourceXcd.SelectedItem.Value.ToUpper.Equals(Codes.ACCT_BUCKETS_SOURCE_OPTION_DIFFERENCE) Then
-                                        Me.PopulateControlFromBOProperty(moTextMarketing_PercentText, diffValue, Me.PERCENT_FORMAT)
-                                        moTextMarketing_PercentText.Enabled = False
-                                    Else
-                                        moTextMarketing_PercentText.Enabled = True
-                                    End If
+                                If mocboMarketingExpenseSourceXcd.SelectedItem.Value.ToUpper.Equals(Codes.ACCT_BUCKETS_SOURCE_OPTION_DIFFERENCE) Then
+                                    Me.PopulateControlFromBOProperty(moTextMarketing_PercentText, diffValue, Me.PERCENT_FORMAT)
+                                    moTextMarketing_PercentText.Enabled = False
+                                Else
+                                    moTextMarketing_PercentText.Enabled = True
                                 End If
                             End If
+                        End If
 
-                            If mocboAdminExpenseSourceXcd.Visible Then
-                                If Not .AdminExpenseSourceXcd Is Nothing And mocboAdminExpenseSourceXcd.Items.Count > 0 Then
-                                    Me.SetSelectedItem(mocboAdminExpenseSourceXcd, .AdminExpenseSourceXcd)
+                        If mocboAdminExpenseSourceXcd.Visible Then
+                            If Not .AdminExpenseSourceXcd Is Nothing And mocboAdminExpenseSourceXcd.Items.Count > 0 Then
+                                Me.SetSelectedItem(mocboAdminExpenseSourceXcd, .AdminExpenseSourceXcd)
 
-                                    If mocboAdminExpenseSourceXcd.SelectedItem.Value.ToUpper.Equals(Codes.ACCT_BUCKETS_SOURCE_OPTION_DIFFERENCE) Then
-                                        Me.PopulateControlFromBOProperty(moTextAdmin_ExpenseText, diffValue, Me.PERCENT_FORMAT)
-                                        moTextAdmin_ExpenseText.Enabled = False
-                                    Else
-                                        moTextAdmin_ExpenseText.Enabled = True
-                                    End If
+                                If mocboAdminExpenseSourceXcd.SelectedItem.Value.ToUpper.Equals(Codes.ACCT_BUCKETS_SOURCE_OPTION_DIFFERENCE) Then
+                                    Me.PopulateControlFromBOProperty(moTextAdmin_ExpenseText, diffValue, Me.PERCENT_FORMAT)
+                                    moTextAdmin_ExpenseText.Enabled = False
+                                Else
+                                    moTextAdmin_ExpenseText.Enabled = True
                                 End If
                             End If
+                        End If
 
-                            If mocboCommPercentSourceXcd.Visible Then
-                                If Not .CommissionsPercentSourceXcd Is Nothing And mocboCommPercentSourceXcd.Items.Count > 0 Then
-                                    Me.SetSelectedItem(mocboCommPercentSourceXcd, .CommissionsPercentSourceXcd)
+                        If mocboCommPercentSourceXcd.Visible Then
+                            If Not .CommissionsPercentSourceXcd Is Nothing And mocboCommPercentSourceXcd.Items.Count > 0 Then
+                                Me.SetSelectedItem(mocboCommPercentSourceXcd, .CommissionsPercentSourceXcd)
 
-                                    If mocboCommPercentSourceXcd.SelectedItem.Value.ToUpper.Equals(Codes.ACCT_BUCKETS_SOURCE_OPTION_DIFFERENCE) Then
-                                        Me.PopulateControlFromBOProperty(moTextCommission_PercentText, diffValue, Me.PERCENT_FORMAT)
-                                        moTextCommission_PercentText.Enabled = False
-                                    Else
-                                        moTextCommission_PercentText.Enabled = True
-                                    End If
+                                If mocboCommPercentSourceXcd.SelectedItem.Value.ToUpper.Equals(Codes.ACCT_BUCKETS_SOURCE_OPTION_DIFFERENCE) Then
+                                    Me.PopulateControlFromBOProperty(moTextCommission_PercentText, diffValue, Me.PERCENT_FORMAT)
+                                    moTextCommission_PercentText.Enabled = False
+                                Else
+                                    moTextCommission_PercentText.Enabled = True
                                 End If
                             End If
-                        End With
-                    End If
+                        End If
+                    End With
                 End If
-            End With
-
+            End If
         End Sub
 
         Private Sub SetGridSourceXcdTextboxFromBo()
