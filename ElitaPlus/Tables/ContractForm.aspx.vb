@@ -3482,35 +3482,35 @@ Partial Class ContractForm
                             Me.PopulateControlFromBOProperty(Me.TextboxLossCostPercent, diffFixedValue, Me.PERCENT_FORMAT)
                             Me.TextboxLossCostPercent.Enabled = False
                         Else
-                            Me.PopulateControlFromBOProperty(Me.TextboxLossCostPercent, .LossCostPercent, Me.PERCENT_FORMAT)
+                            Me.TextboxLossCostPercent.Enabled = True
                         End If
 
                         If cboProfitExpenseSourceXcd.SelectedItem.Value.ToUpper.Equals(Codes.ACCT_BUCKETS_SOURCE_OPTION_DIFFERENCE) Then
                             Me.PopulateControlFromBOProperty(Me.TextboxProfitExpense, diffFixedValue, Me.PERCENT_FORMAT)
                             Me.TextboxProfitExpense.Enabled = False
                         Else
-                            Me.PopulateControlFromBOProperty(Me.TextboxProfitExpense, .ProfitPercent, Me.PERCENT_FORMAT)
+                            Me.TextboxProfitExpense.Enabled = True
                         End If
 
                         If cboMarketingExpenseSourceXcd.SelectedItem.Value.ToUpper.Equals(Codes.ACCT_BUCKETS_SOURCE_OPTION_DIFFERENCE) Then
                             Me.PopulateControlFromBOProperty(Me.TextboxMarketingExpense, diffFixedValue, Me.PERCENT_FORMAT)
                             Me.TextboxMarketingExpense.Enabled = False
                         Else
-                            Me.PopulateControlFromBOProperty(Me.TextboxMarketingExpense, .MarketingPercent, Me.PERCENT_FORMAT)
+                            Me.TextboxMarketingExpense.Enabled = True
                         End If
 
                         If cboAdminExpenseSourceXcd.SelectedItem.Value.ToUpper.Equals(Codes.ACCT_BUCKETS_SOURCE_OPTION_DIFFERENCE) Then
                             Me.PopulateControlFromBOProperty(Me.TextboxAdminExpense, diffFixedValue, Me.PERCENT_FORMAT)
                             Me.TextboxAdminExpense.Enabled = False
                         Else
-                            Me.PopulateControlFromBOProperty(Me.TextboxAdminExpense, .AdminExpense, Me.PERCENT_FORMAT)
+                            Me.TextboxAdminExpense.Enabled = True
                         End If
 
                         If cboCommPercentSourceXcd.SelectedItem.Value.ToUpper.Equals(Codes.ACCT_BUCKETS_SOURCE_OPTION_DIFFERENCE) Then
                             Me.PopulateControlFromBOProperty(Me.TextboxCommPercent, diffFixedValue, Me.PERCENT_FORMAT)
                             Me.TextboxCommPercent.Enabled = False
                         Else
-                            Me.PopulateControlFromBOProperty(Me.TextboxCommPercent, .CommissionsPercent, Me.PERCENT_FORMAT)
+                            Me.TextboxCommPercent.Enabled = True
                         End If
 
                     End If
