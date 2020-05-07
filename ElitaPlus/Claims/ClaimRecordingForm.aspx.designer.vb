@@ -284,6 +284,15 @@ Partial Public Class ClaimRecordingForm
     Protected WithEvents btnNewCertRegItem_WRITE As Global.System.Web.UI.WebControls.Button
 
     '''<summary>
+    '''headerDeviceInfo control.
+    '''</summary>
+    '''<remarks>
+    '''Auto-generated field.
+    '''To modify move field declaration from designer file to code-behind file.
+    '''</remarks>
+    Protected WithEvents headerDeviceInfo As Global.System.Web.UI.HtmlControls.HtmlGenericControl
+
+    '''<summary>
     '''lblDvcSelected control.
     '''</summary>
     '''<remarks>

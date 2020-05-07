@@ -257,7 +257,7 @@
                     </table>
                     <br />
                      <div class="dataContainer">
-                        <h2 class="dataGridHeader">MODIFY_DEVICE_INFORMATION</h2>
+                        <h2 class="dataGridHeader" runat="server" id="headerDeviceInfo">MODIFY_DEVICE_INFORMATION</h2>
                         <div class="stepformZone">
                     <table id="tblModifyDeviceInfo" style="width: 100%; height: 100%" class="formGrid">
                         <tr>
