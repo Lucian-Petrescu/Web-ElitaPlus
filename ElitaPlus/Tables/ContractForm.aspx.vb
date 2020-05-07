@@ -59,7 +59,8 @@ Partial Class ContractForm
     Private Const COLLECTION_CYCLE_TYPE_FIX As String = "FIX"
     Private Const ZERO_STRING As String = "0"
     Private Const ONE_STRING As String = "1"
-    Private Const VARIABLE_CYCLE_TYPE_CODE As String = "VAR"
+    Private Const VARIABLE_CYCLE_TYPE_CODE As String = "VAR"    
+    
 
 
 #End Region
@@ -1329,11 +1330,14 @@ Partial Class ContractForm
                 Dim oDealer As New Dealer(.DealerId)
                 If Not oDealer.AcctBucketsWithSourceXcd Is Nothing Then
                     If oDealer.AcctBucketsWithSourceXcd.Equals(Codes.EXT_YESNO_Y) Then
+                        Dim diffFixedValue as Decimal
+                        diffFixedValue = 0.0000
                         If cboLossCostPercentSourceXcd.Visible Then
                             If Not .LossCostPercentSourceXcd Is Nothing And Me.cboLossCostPercentSourceXcd.Items.Count > 0 Then
                                 Me.SetSelectedItem(Me.cboLossCostPercentSourceXcd, .LossCostPercentSourceXcd)
 
                                 If cboLossCostPercentSourceXcd.SelectedItem.Value.ToUpper.Equals(Codes.ACCT_BUCKETS_SOURCE_OPTION_DIFFERENCE) Then
+                                    Me.PopulateControlFromBOProperty(Me.TextboxLossCostPercent, diffFixedValue, Me.PERCENT_FORMAT)
                                     Me.TextboxLossCostPercent.Enabled = False
                                 Else
                                     Me.TextboxLossCostPercent.Enabled = True
@@ -1346,6 +1350,7 @@ Partial Class ContractForm
                                 Me.SetSelectedItem(Me.cboProfitExpenseSourceXcd, .ProfitPercentSourceXcd)
 
                                 If cboProfitExpenseSourceXcd.SelectedItem.Value.ToUpper.Equals(Codes.ACCT_BUCKETS_SOURCE_OPTION_DIFFERENCE) Then
+                                    Me.PopulateControlFromBOProperty(Me.TextboxProfitExpense, diffFixedValue, Me.PERCENT_FORMAT)
                                     Me.TextboxProfitExpense.Enabled = False
                                 Else
                                     Me.TextboxProfitExpense.Enabled = True
@@ -1358,6 +1363,7 @@ Partial Class ContractForm
                                 Me.SetSelectedItem(Me.cboMarketingExpenseSourceXcd, .MarketingPercentSourceXcd)
 
                                 If cboMarketingExpenseSourceXcd.SelectedItem.Value.ToUpper.Equals(Codes.ACCT_BUCKETS_SOURCE_OPTION_DIFFERENCE) Then
+                                    Me.PopulateControlFromBOProperty(Me.TextboxMarketingExpense, diffFixedValue, Me.PERCENT_FORMAT)
                                     Me.TextboxMarketingExpense.Enabled = False
                                 Else
                                     Me.TextboxMarketingExpense.Enabled = True
@@ -1370,6 +1376,7 @@ Partial Class ContractForm
                                 Me.SetSelectedItem(Me.cboAdminExpenseSourceXcd, .AdminExpenseSourceXcd)
 
                                 If cboAdminExpenseSourceXcd.SelectedItem.Value.ToUpper.Equals(Codes.ACCT_BUCKETS_SOURCE_OPTION_DIFFERENCE) Then
+                                    Me.PopulateControlFromBOProperty(Me.TextboxAdminExpense, diffFixedValue, Me.PERCENT_FORMAT)
                                     Me.TextboxAdminExpense.Enabled = False
                                 Else
                                     Me.TextboxAdminExpense.Enabled = True
@@ -1382,6 +1389,7 @@ Partial Class ContractForm
                                 Me.SetSelectedItem(Me.cboCommPercentSourceXcd, .CommissionsPercentSourceXcd)
 
                                 If cboCommPercentSourceXcd.SelectedItem.Value.ToUpper.Equals(Codes.ACCT_BUCKETS_SOURCE_OPTION_DIFFERENCE) Then
+                                    Me.PopulateControlFromBOProperty(Me.TextboxCommPercent, diffFixedValue, Me.PERCENT_FORMAT)
                                     Me.TextboxCommPercent.Enabled = False
                                 Else
                                     Me.TextboxCommPercent.Enabled = True
@@ -3468,11 +3476,43 @@ Partial Class ContractForm
                 Dim oDealer As New Dealer(.DealerId)
                 If Not oDealer.AcctBucketsWithSourceXcd Is Nothing Then
                     If oDealer.AcctBucketsWithSourceXcd.Equals(Codes.EXT_YESNO_Y) Then
-                        Me.PopulateControlFromBOProperty(Me.TextboxAdminExpense, .AdminExpense, Me.PERCENT_FORMAT)
-                        Me.PopulateControlFromBOProperty(Me.TextboxCommPercent, .CommissionsPercent, Me.PERCENT_FORMAT)
-                        Me.PopulateControlFromBOProperty(Me.TextboxLossCostPercent, .LossCostPercent, Me.PERCENT_FORMAT)
-                        Me.PopulateControlFromBOProperty(Me.TextboxMarketingExpense, .MarketingPercent, Me.PERCENT_FORMAT)
-                        Me.PopulateControlFromBOProperty(Me.TextboxProfitExpense, .ProfitPercent, Me.PERCENT_FORMAT)
+                        Dim diffFixedValue as Decimal
+                        diffFixedValue = 0.0000
+                        If cboLossCostPercentSourceXcd.SelectedItem.Value.ToUpper.Equals(Codes.ACCT_BUCKETS_SOURCE_OPTION_DIFFERENCE) Then
+                            Me.PopulateControlFromBOProperty(Me.TextboxLossCostPercent, diffFixedValue, Me.PERCENT_FORMAT)
+                            Me.TextboxLossCostPercent.Enabled = False
+                        Else
+                            Me.PopulateControlFromBOProperty(Me.TextboxLossCostPercent, .LossCostPercent, Me.PERCENT_FORMAT)
+                        End If
+
+                        If cboProfitExpenseSourceXcd.SelectedItem.Value.ToUpper.Equals(Codes.ACCT_BUCKETS_SOURCE_OPTION_DIFFERENCE) Then
+                            Me.PopulateControlFromBOProperty(Me.TextboxProfitExpense, diffFixedValue, Me.PERCENT_FORMAT)
+                            Me.TextboxProfitExpense.Enabled = False
+                        Else
+                            Me.PopulateControlFromBOProperty(Me.TextboxProfitExpense, .ProfitPercent, Me.PERCENT_FORMAT)
+                        End If
+
+                        If cboMarketingExpenseSourceXcd.SelectedItem.Value.ToUpper.Equals(Codes.ACCT_BUCKETS_SOURCE_OPTION_DIFFERENCE) Then
+                            Me.PopulateControlFromBOProperty(Me.TextboxMarketingExpense, diffFixedValue, Me.PERCENT_FORMAT)
+                            Me.TextboxMarketingExpense.Enabled = False
+                        Else
+                            Me.PopulateControlFromBOProperty(Me.TextboxMarketingExpense, .MarketingPercent, Me.PERCENT_FORMAT)
+                        End If
+
+                        If cboAdminExpenseSourceXcd.SelectedItem.Value.ToUpper.Equals(Codes.ACCT_BUCKETS_SOURCE_OPTION_DIFFERENCE) Then
+                            Me.PopulateControlFromBOProperty(Me.TextboxAdminExpense, diffFixedValue, Me.PERCENT_FORMAT)
+                            Me.TextboxAdminExpense.Enabled = False
+                        Else
+                            Me.PopulateControlFromBOProperty(Me.TextboxAdminExpense, .AdminExpense, Me.PERCENT_FORMAT)
+                        End If
+
+                        If cboCommPercentSourceXcd.SelectedItem.Value.ToUpper.Equals(Codes.ACCT_BUCKETS_SOURCE_OPTION_DIFFERENCE) Then
+                            Me.PopulateControlFromBOProperty(Me.TextboxCommPercent, diffFixedValue, Me.PERCENT_FORMAT)
+                            Me.TextboxCommPercent.Enabled = False
+                        Else
+                            Me.PopulateControlFromBOProperty(Me.TextboxCommPercent, .CommissionsPercent, Me.PERCENT_FORMAT)
+                        End If
+
                     End If
                 End If
             End If
@@ -3485,31 +3525,38 @@ Partial Class ContractForm
                 Dim oDealer As New Dealer(.DealerId)
                 If Not oDealer.AcctBucketsWithSourceXcd Is Nothing Then
                     If oDealer.AcctBucketsWithSourceXcd.Equals(Codes.EXT_YESNO_Y) Then
+                        Dim diffFixedValue as Decimal
+                        diffFixedValue = 0.0000
                         If cboLossCostPercentSourceXcd.SelectedItem.Value.ToUpper.Equals(Codes.ACCT_BUCKETS_SOURCE_OPTION_DIFFERENCE) Then
+                            Me.PopulateControlFromBOProperty(Me.TextboxLossCostPercent, diffFixedValue, Me.PERCENT_FORMAT)
                             Me.TextboxLossCostPercent.Enabled = False
                         Else
                             Me.TextboxLossCostPercent.Enabled = True
                         End If
 
                         If cboProfitExpenseSourceXcd.SelectedItem.Value.ToUpper.Equals(Codes.ACCT_BUCKETS_SOURCE_OPTION_DIFFERENCE) Then
+                            Me.PopulateControlFromBOProperty(Me.TextboxProfitExpense, diffFixedValue, Me.PERCENT_FORMAT)
                             Me.TextboxProfitExpense.Enabled = False
                         Else
                             Me.TextboxProfitExpense.Enabled = True
                         End If
 
                         If cboMarketingExpenseSourceXcd.SelectedItem.Value.ToUpper.Equals(Codes.ACCT_BUCKETS_SOURCE_OPTION_DIFFERENCE) Then
+                            Me.PopulateControlFromBOProperty(Me.TextboxMarketingExpense, diffFixedValue, Me.PERCENT_FORMAT)
                             Me.TextboxMarketingExpense.Enabled = False
                         Else
                             Me.TextboxMarketingExpense.Enabled = True
                         End If
 
                         If cboAdminExpenseSourceXcd.SelectedItem.Value.ToUpper.Equals(Codes.ACCT_BUCKETS_SOURCE_OPTION_DIFFERENCE) Then
+                            Me.PopulateControlFromBOProperty(Me.TextboxAdminExpense, diffFixedValue, Me.PERCENT_FORMAT)
                             Me.TextboxAdminExpense.Enabled = False
                         Else
                             Me.TextboxAdminExpense.Enabled = True
                         End If
 
                         If cboCommPercentSourceXcd.SelectedItem.Value.ToUpper.Equals(Codes.ACCT_BUCKETS_SOURCE_OPTION_DIFFERENCE) Then
+                            Me.PopulateControlFromBOProperty(Me.TextboxCommPercent, diffFixedValue, Me.PERCENT_FORMAT)
                             Me.TextboxCommPercent.Enabled = False
                         Else
                             Me.TextboxCommPercent.Enabled = True
