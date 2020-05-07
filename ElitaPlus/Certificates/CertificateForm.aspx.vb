@@ -832,6 +832,16 @@ Namespace Certificates
                 Return
             End If
 
+            Try
+                If (Not Me.NavController Is Nothing) AndAlso (Not Me.NavController.PrevNavState Is Nothing) AndAlso (Me.NavController.PrevNavState.Name = "SEND_SERVICE_ORDER") AndAlso
+                        (Not String.IsNullOrEmpty(Me.State.ClaimRecordingXcd)) AndAlso (Me.State.ClaimRecordingXcd.Equals(Codes.DEALER_CLAIM_RECORDING_DYNAMIC_QUESTIONS)) Then
+                    Navigator.RemovePageFromNavigation()
+                    Me.Navigator.SetCurrentPage(mobjPage, mobjState)
+                End If
+            Catch ex As Exception
+                Me.HandleErrors(ex, Me.MasterPage.MessageController)
+            End Try
+
             Me.MasterPage.UsePageTabTitleInBreadCrum = False
             Me.MasterPage.PageTab = TranslationBase.TranslateLabelOrMessage("Certificates")
 

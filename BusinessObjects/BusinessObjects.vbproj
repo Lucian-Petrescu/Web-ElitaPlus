@@ -289,6 +289,7 @@
     <Compile Include="Claims\PreInvoiceDetails.vb" />
     <Compile Include="Common\ClaimCloseRules.vb" />
     <Compile Include="Common\DealerInflation.vb" />
+    <Compile Include="Common\InvoiceRegionTax.vb" />
     <Compile Include="Common\Instrumentation.vb" />
     <Compile Include="Common\IPriceListSearch.vb" />
     <Compile Include="Claims\DefaultClaimStatus.vb" />
@@ -384,6 +385,7 @@
     <Compile Include="Tables\AcctFinanceAutomation\AFAInvoiceRate.vb" />
     <Compile Include="Tables\AcctFinanceAutomation\AFAProduct.vb" />
     <Compile Include="Tables\AcctFinanceAutomation\AFAReportingRates.vb" />
+    <Compile Include="Tables\AcctFinanceAutomation\AFAMaintainence.vb" />
     <Compile Include="Tables\AcctFinanceAutomation\Reconciliation.vb" />
     <Compile Include="Tables\BankNameBO.vb" />
     <Compile Include="Tables\APSPublishingLog.vb" />

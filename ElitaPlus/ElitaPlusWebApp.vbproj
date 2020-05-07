@@ -241,6 +241,9 @@
     <Reference Include="Assurant.Elita.ExternalKeyHandler, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\Assurant.Elita.ExternalKeyHandler.1.0.0\lib\netstandard2.0\Assurant.Elita.ExternalKeyHandler.dll</HintPath>
     </Reference>
+    <Reference Include="Assurant.Elita.ExternalKeyHandler, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Assurant.Elita.ExternalKeyHandler.1.0.0\lib\netstandard2.0\Assurant.Elita.ExternalKeyHandler.dll</HintPath>
+    </Reference>
     <Reference Include="Assurant.Elita.Logging.Interface">
       <HintPath>..\packages\Assurant.Elita.Logging.Interface.1.0.1\lib\netstandard2.0\Assurant.Elita.Logging.Interface.dll</HintPath>
     </Reference>
@@ -510,6 +513,13 @@
     </Compile>
     <Compile Include="AcctFinanceAutomation\InvoiceXmlDownload.aspx.vb">
       <DependentUpon>InvoiceXmlDownload.aspx</DependentUpon>
+      <SubType>ASPXCodebehind</SubType>
+    </Compile>
+    <Compile Include="AcctFinanceAutomation\AFAMaintainenceForm.aspx.designer.vb">
+      <DependentUpon>AFAMaintainenceForm.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="AcctFinanceAutomation\AFAMaintainenceForm.aspx.vb">
+      <DependentUpon>AFAMaintainenceForm.aspx</DependentUpon>
       <SubType>ASPXCodebehind</SubType>
     </Compile>
     <Compile Include="AcctFinanceAutomation\ReconciliationForm.aspx.designer.vb">
@@ -972,6 +982,13 @@
       <DependentUpon>UserControlDeliverySlot.ascx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
+    <Compile Include="Common\UserControlInvoiceRegionTaxes.ascx.designer.vb">
+      <DependentUpon>UserControlInvoiceRegionTaxes.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="Common\UserControlInvoiceRegionTaxes.ascx.vb">
+      <DependentUpon>UserControlInvoiceRegionTaxes.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
     <Compile Include="Common\UserControlQuestion.ascx.designer.vb">
       <DependentUpon>UserControlQuestion.ascx</DependentUpon>
     </Compile>
@@ -1070,6 +1087,13 @@
     </Compile>
     <Compile Include="Interfaces\ARPaymentReconWrkForm.aspx.vb">
       <DependentUpon>ARPaymentReconWrkForm.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Interfaces\ClaimDeviceInformationController.ascx.designer.vb">
+      <DependentUpon>ClaimDeviceInformationController.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="Interfaces\ClaimDeviceInformationController.ascx.vb">
+      <DependentUpon>ClaimDeviceInformationController.ascx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="Interfaces\ClaimFileManagementDetailForm.aspx.designer.vb">
@@ -1408,6 +1432,11 @@
       <DependentUpon>Reference.svcmap</DependentUpon>
     </Compile>
     <Compile Include="Startup.vb" />
+    <Compile Include="Service References\UtilityService\Reference.vb">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </Compile>
     <Compile Include="Tables\BenefitProductCodeForm.aspx.designer.vb">
       <DependentUpon>BenefitProductCodeForm.aspx</DependentUpon>
     </Compile>
@@ -5639,6 +5668,7 @@
     <Content Include="AcctFinanceAutomation\InvoiceTemplate_USCP_CSV.xslt" />
     <Content Include="AcctFinanceAutomation\InvoiceTemplate_XFIN.xslt" />
     <Content Include="AcctFinanceAutomation\InvoiceXmlDownload.aspx" />
+    <Content Include="AcctFinanceAutomation\AFAMaintainenceForm.aspx" />
     <Content Include="AcctFinanceAutomation\ReconciliationForm.aspx" />
     <Content Include="AcctFinanceAutomation\ReportingRatesForm.aspx" />
     <Content Include="Admin\CleanupCacheForm.aspx" />
@@ -5782,6 +5812,7 @@
     <Content Include="Common\UserControlCaseHeaderInfo.ascx" />
     <Content Include="Common\UserControlDealerInflation.ascx" />
     <Content Include="Common\UserControlDeliverySlot.ascx" />
+    <Content Include="Common\UserControlInvoiceRegionTaxes.ascx" />
     <Content Include="Common\UserControlQuestion.ascx" />
     <Content Include="Common\UserControlRiskTypeTolerance.ascx" />
     <Content Include="Common\UserControlServiceCenterSelection.ascx" />
@@ -5802,6 +5833,7 @@
     <Content Include="Interfaces\AppleGBIFileFormDetail.aspx" />
     <Content Include="Interfaces\ARInvoiceReconWrkForm.aspx" />
     <Content Include="Interfaces\ARPaymentReconWrkForm.aspx" />
+    <Content Include="Interfaces\ClaimDeviceInformationController.ascx" />
     <Content Include="Interfaces\ClaimFileManagementDetailForm.aspx" />
     <Content Include="Interfaces\ClaimFileManagementSearchForm.aspx" />
     <Content Include="Interfaces\ClaimFulfillmentMileStonesFileForm.aspx" />
@@ -6263,6 +6295,13 @@
     <None Include="Service References\QuestionService\configuration91.svcinfo" />
     <None Include="Service References\QuestionService\configuration.svcinfo" />
     <None Include="Service References\QuestionService\Reference.svcmap">
+      <Generator>WCF Proxy Generator</Generator>
+      <LastGenOutput>Reference.vb</LastGenOutput>
+    </None>
+    <None Include="Service References\UtilityService\UtilityWcf.disco" />
+    <None Include="Service References\UtilityService\configuration91.svcinfo" />
+    <None Include="Service References\UtilityService\configuration.svcinfo" />
+    <None Include="Service References\UtilityService\Reference.svcmap">
       <Generator>WCF Proxy Generator</Generator>
       <LastGenOutput>Reference.vb</LastGenOutput>
     </None>
@@ -7794,6 +7833,14 @@
     <None Include="Service References\TestWcfRef\WcfTest.xsd" />
     <None Include="Service References\TestWcfRef\WcfTest1.wsdl" />
     <None Include="Service References\TestWcfRef\WcfTest1.xsd" />
+    <None Include="Service References\UtilityService\UtilityWcf.wsdl" />
+    <None Include="Service References\UtilityService\UtilityWcf.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Service References\UtilityService\UtilityWcf1.wsdl" />
+    <None Include="Service References\UtilityService\UtilityWcf1.xsd">
+      <SubType>Designer</SubType>
+    </None>
     <None Include="Web References\OlitaWSRef\OlitaWS.disco" />
     <Content Include="VSC\VSCPlanRateForm.aspx" />
     <EmbeddedResource Include="businessobjects\MaintainQueueUser.aspx.resx">
@@ -8987,6 +9034,7 @@
     <WCFMetadataStorage Include="Service References\OlitaWcfRef\" />
     <WCFMetadataStorage Include="Service References\QuestionService\" />
     <WCFMetadataStorage Include="Service References\TestWcfRef\" />
+    <WCFMetadataStorage Include="Service References\UtilityService\" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Start\" />

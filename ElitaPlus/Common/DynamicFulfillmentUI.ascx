@@ -8,7 +8,8 @@
         claimNumber: '<%= ClaimNumber %>',
         sourceSystem: '<%= SourceSystem %>',
         accessToken: '<%= AccessToken %>',
-        subscriptionKey: '<%= SubscriptionKey %>'
+        subscriptionKey: '<%= SubscriptionKey %>',
+        preferredCultureCode: '<%= Culture %>'
     };
 </script>
 <script type="text/javascript">
