@@ -23,6 +23,13 @@ Public Class CoverageRateDAL
     Public Const COL_NAME_RENEWAL_NUMBER As String = "renewal_number"
     Public Const COL_NAME_REGION_ID As String = "region_id"
     Public Const COL_NAME_TAX_REGION As String = "tax_region"
+    
+    'US - 521697
+    Public Const COL_NAME_COMMISSIONS_PERCENT_SOURCE_XCD As String = "commissions_percent_source_xcd"
+    Public Const COL_NAME_MARKETING_PERCENT_SOURCE_XCD As String = "marketing_percent_source_xcd"
+    Public Const COL_NAME_ADMIN_EXPENSE_SOURCE_XCD As String = "admin_expense_source_xcd"
+    Public Const COL_NAME_PROFIT_PERCENT_SOURCE_XCD As String = "profit_percent_source_xcd"
+    Public Const COL_NAME_LOSS_COST_PERCENT_SOURCE_XCD As String = "loss_cost_percent_source_xcd"
 
     Public Const COL_NAME_PRODUCT_CODE_ID As String = "product_code_id"
     Public Const COL_NAME_WARRANTY_SALES_DATE As String = "warranty_sales_date"
