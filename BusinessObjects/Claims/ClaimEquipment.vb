@@ -434,7 +434,6 @@ Public Class ClaimEquipment
         End Set
     End Property
 
-    <ValidStringLength("", Max:=255)>
     Public Property DeviceType() As String
         Get
             CheckDeleted()
@@ -637,7 +636,7 @@ Public Class ClaimEquipment
             Try
                 'If Not parent.IsChildrenCollectionLoaded(GetType(ClaimEquipmentList)) Then
                 Dim dal As New ClaimEquipmentDAL
-                dal.LoadDevieInfoList(parent.Dataset, parent.Id, ElitaPlusIdentity.Current.ActiveUser.LanguageId)
+                dal.LoadDeviceInfoList(parent.Dataset, parent.Id, ElitaPlusIdentity.Current.ActiveUser.LanguageId)
                 parent.AddChildrenCollection(GetType(ClaimEquipmentList))
                 'End If
                 Return parent.Dataset.Tables(ClaimEquipmentDAL.TABLE_NAME)
