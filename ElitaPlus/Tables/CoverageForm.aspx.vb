@@ -67,6 +67,8 @@ Namespace Tables
             Public IsDiffNotSelectedOnce As Boolean
             Public IsBucketIncomingSelected As Boolean
             Public IsDealerConfiguredForSourceXcd As Boolean = False
+            Public IsIgnorePremiumSetYesForContract As Boolean = False
+
         End Class
 #End Region
 
@@ -178,7 +180,7 @@ Namespace Tables
 
         Public Const ConfigurationSuperUserRole As String = "CONSU"
         Public Const POS_TAX_TYPE_XCD As String = "TTYP-1"
-
+        Public Const EMPTY_GUID As String = "00000000-0000-0000-0000-000000000000"
 
 #End Region
 
@@ -323,6 +325,7 @@ Namespace Tables
                 isDealerConfiguredForSourceXcd = False
                 If (Me.State.moCoverage.DealerId <> Guid.Empty) Then
                     Dim oDealer As New Dealer(Me.State.moCoverage.DealerId)
+
                     If Not oDealer.AcctBucketsWithSourceXcd Is Nothing Then
                         If oDealer.AcctBucketsWithSourceXcd.Equals(Codes.EXT_YESNO_Y) Then
                             isDealerConfiguredForSourceXcd = True
@@ -336,6 +339,44 @@ Namespace Tables
                     isDealerConfiguredForSourceXcd = False
                 End If
                 Return isDealerConfiguredForSourceXcd
+            End Get
+        End Property
+
+        Private ReadOnly Property HasIgnorePremiumSetForContractForSIncomingSource() As Boolean
+            Get
+                Dim isIgnorePremiumYesForContract As Boolean
+                isIgnorePremiumYesForContract = False
+                
+                If (Me.State.moCoverage.DealerId <> Guid.Empty) Then
+                    Dim oDealer As New Dealer(Me.State.moCoverage.DealerId)
+                    Dim oContract As Contract = New Contract
+
+                    If Not (Me.State.moCoverage.Effective Is Nothing And Me.State.moCoverage.Expiration Is Nothing) Then
+                        oContract = oContract.GetContract(Me.State.moCoverage.DealerId, Me.State.moCoverage.Effective.Value, Me.State.moCoverage.Expiration.Value)
+                    End If
+
+                    If Not oContract Is Nothing Then
+                        If oContract.IgnoreIncomingPremiumID.ToString() <> Me.EMPTY_GUID Then
+                            Dim str As String
+                            str = LookupListNew.GetCodeFromId(LookupListNew.LK_YESNO, oContract.IgnoreIncomingPremiumID)
+
+                            If str.Equals(Codes.YESNO_Y) Then
+                                isIgnorePremiumYesForContract = True
+                            Else
+                                isIgnorePremiumYesForContract = False
+                            End If
+
+                        Else
+                            isIgnorePremiumYesForContract = False
+                        End If
+                    Else
+                        isIgnorePremiumYesForContract = False
+                    End If
+                Else
+                    isIgnorePremiumYesForContract = False
+                End If
+
+                Return isIgnorePremiumYesForContract
             End Get
         End Property
 
@@ -648,6 +689,7 @@ Namespace Tables
                 'US-521697
                 If Not Me.IsPostBack Then
                     Me.State.IsDealerConfiguredForSourceXcd = HasDealerConfigeredForSourceXcd()
+                    'Me.State.IsIgnorePremiumSetYesForContract = HasIgnorePremiumSetForContractForSIncomingSource()
                 Else
                     SetGridSourceXcdTextboxFromBo()
                 End If
@@ -1304,25 +1346,25 @@ Namespace Tables
                             Else
                                 Me.PopulateBOProperty(oCoverageRate(i), "CommissionsPercentSourceXcd", CType(moGridView.Rows(i).Cells(COMMISSIONS_PERCENT_XCD).Controls(1), DropDownList).SelectedValue)
                             End If
-                        
+
                             If moGridView.Rows(i).Cells(MARKETING_PERCENT_XCD).Controls(0).GetType().ToString = "System.Web.UI.WebControls.Label" Then
                                 Me.PopulateBOProperty(oCoverageRate(i), "MarketingPercentSourceXcd", CType(moGridView.Rows(i).Cells(MARKETING_PERCENT_XCD).Controls(0), Label).Text)
                             Else
                                 Me.PopulateBOProperty(oCoverageRate(i), "MarketingPercentSourceXcd", CType(moGridView.Rows(i).Cells(MARKETING_PERCENT_XCD).Controls(1), DropDownList).SelectedValue)
                             End If
-                            
+
                             If moGridView.Rows(i).Cells(ADMIN_EXPENSE_XCD).Controls(0).GetType().ToString = "System.Web.UI.WebControls.Label" Then
                                 Me.PopulateBOProperty(oCoverageRate(i), "AdminExpenseSourceXcd", CType(moGridView.Rows(i).Cells(ADMIN_EXPENSE_XCD).Controls(0), Label).Text)
                             Else
                                 Me.PopulateBOProperty(oCoverageRate(i), "AdminExpenseSourceXcd", CType(moGridView.Rows(i).Cells(ADMIN_EXPENSE_XCD).Controls(1), DropDownList).SelectedValue)
                             End If
-                            
+
                             If moGridView.Rows(i).Cells(PROFIT_EXPENSE_XCD).Controls(0).GetType().ToString = "System.Web.UI.WebControls.Label" Then
                                 Me.PopulateBOProperty(oCoverageRate(i), "ProfitPercentSourceXcd", CType(moGridView.Rows(i).Cells(PROFIT_EXPENSE_XCD).Controls(0), Label).Text)
                             Else
                                 Me.PopulateBOProperty(oCoverageRate(i), "ProfitPercentSourceXcd", CType(moGridView.Rows(i).Cells(PROFIT_EXPENSE_XCD).Controls(1), DropDownList).SelectedValue)
                             End If
-                            
+
                             If moGridView.Rows(i).Cells(LOSS_COST_PERCENT_XCD).Controls(0).GetType().ToString = "System.Web.UI.WebControls.Label" Then
                                 Me.PopulateBOProperty(oCoverageRate(i), "LossCostPercentSourceXcd", CType(moGridView.Rows(i).Cells(LOSS_COST_PERCENT_XCD).Controls(0), Label).Text)
                             Else
