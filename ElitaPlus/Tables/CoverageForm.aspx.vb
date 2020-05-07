@@ -1299,30 +1299,34 @@ Namespace Tables
 
                         'US-521697
                         If Me.State.IsDealerConfiguredForSourceXcd Then
-                            If moGridView.Rows(i).Cells(COMMISSIONS_PERCENT_XCD).Controls(1).GetType().ToString = "System.Web.UI.WebControls.Label" Then
-                                Me.PopulateBOProperty(oCoverageRate(i), "CommissionsPercentSourceXcd", CType(moGridView.Rows(i).Cells(COMMISSIONS_PERCENT_XCD).Controls(1), Label).Text)
+                            If moGridView.Rows(i).Cells(COMMISSIONS_PERCENT_XCD).Controls(0).GetType().ToString = "System.Web.UI.WebControls.Label" Then
+                                Me.PopulateBOProperty(oCoverageRate(i), "CommissionsPercentSourceXcd", CType(moGridView.Rows(i).Cells(COMMISSIONS_PERCENT_XCD).Controls(0), Label).Text)
                             Else
-                                Me.PopulateBOProperty(oCoverageRate(i), "CommissionsPercentSourceXcd", CType(moGridView.Rows(i).Cells(COMMISSIONS_PERCENT_XCD).Controls(1), TextBox).Text)
+                                Me.PopulateBOProperty(oCoverageRate(i), "CommissionsPercentSourceXcd", CType(moGridView.Rows(i).Cells(COMMISSIONS_PERCENT_XCD).Controls(1), DropDownList).SelectedValue)
                             End If
-                            If moGridView.Rows(i).Cells(MARKETING_PERCENT_XCD).Controls(1).GetType().ToString = "System.Web.UI.WebControls.Label" Then
-                                Me.PopulateBOProperty(oCoverageRate(i), "MarketingPercentSourceXcd", CType(moGridView.Rows(i).Cells(MARKETING_PERCENT_XCD).Controls(1), Label).Text)
+                        
+                            If moGridView.Rows(i).Cells(MARKETING_PERCENT_XCD).Controls(0).GetType().ToString = "System.Web.UI.WebControls.Label" Then
+                                Me.PopulateBOProperty(oCoverageRate(i), "MarketingPercentSourceXcd", CType(moGridView.Rows(i).Cells(MARKETING_PERCENT_XCD).Controls(0), Label).Text)
                             Else
-                                Me.PopulateBOProperty(oCoverageRate(i), "MarketingPercentSourceXcd", CType(moGridView.Rows(i).Cells(MARKETING_PERCENT_XCD).Controls(1), TextBox).Text)
+                                Me.PopulateBOProperty(oCoverageRate(i), "MarketingPercentSourceXcd", CType(moGridView.Rows(i).Cells(MARKETING_PERCENT_XCD).Controls(1), DropDownList).SelectedValue)
                             End If
-                            If moGridView.Rows(i).Cells(ADMIN_EXPENSE_XCD).Controls(1).GetType().ToString = "System.Web.UI.WebControls.Label" Then
-                                Me.PopulateBOProperty(oCoverageRate(i), "AdminExpenseSourceXcd", CType(moGridView.Rows(i).Cells(ADMIN_EXPENSE_XCD).Controls(1), Label).Text)
+                            
+                            If moGridView.Rows(i).Cells(ADMIN_EXPENSE_XCD).Controls(0).GetType().ToString = "System.Web.UI.WebControls.Label" Then
+                                Me.PopulateBOProperty(oCoverageRate(i), "AdminExpenseSourceXcd", CType(moGridView.Rows(i).Cells(ADMIN_EXPENSE_XCD).Controls(0), Label).Text)
                             Else
-                                Me.PopulateBOProperty(oCoverageRate(i), "AdminExpenseSourceXcd", CType(moGridView.Rows(i).Cells(ADMIN_EXPENSE_XCD).Controls(1), TextBox).Text)
+                                Me.PopulateBOProperty(oCoverageRate(i), "AdminExpenseSourceXcd", CType(moGridView.Rows(i).Cells(ADMIN_EXPENSE_XCD).Controls(1), DropDownList).SelectedValue)
                             End If
-                            If moGridView.Rows(i).Cells(PROFIT_EXPENSE_XCD).Controls(1).GetType().ToString = "System.Web.UI.WebControls.Label" Then
-                                Me.PopulateBOProperty(oCoverageRate(i), "ProfitPercentSourceXcd", CType(moGridView.Rows(i).Cells(PROFIT_EXPENSE_XCD).Controls(1), Label).Text)
+                            
+                            If moGridView.Rows(i).Cells(PROFIT_EXPENSE_XCD).Controls(0).GetType().ToString = "System.Web.UI.WebControls.Label" Then
+                                Me.PopulateBOProperty(oCoverageRate(i), "ProfitPercentSourceXcd", CType(moGridView.Rows(i).Cells(PROFIT_EXPENSE_XCD).Controls(0), Label).Text)
                             Else
-                                Me.PopulateBOProperty(oCoverageRate(i), "ProfitPercentSourceXcd", CType(moGridView.Rows(i).Cells(PROFIT_EXPENSE_XCD).Controls(1), TextBox).Text)
+                                Me.PopulateBOProperty(oCoverageRate(i), "ProfitPercentSourceXcd", CType(moGridView.Rows(i).Cells(PROFIT_EXPENSE_XCD).Controls(1), DropDownList).SelectedValue)
                             End If
-                            If moGridView.Rows(i).Cells(LOSS_COST_PERCENT_XCD).Controls(1).GetType().ToString = "System.Web.UI.WebControls.Label" Then
-                                Me.PopulateBOProperty(oCoverageRate(i), "LossCostPercentSourceXcd", CType(moGridView.Rows(i).Cells(LOSS_COST_PERCENT_XCD).Controls(1), Label).Text)
+                            
+                            If moGridView.Rows(i).Cells(LOSS_COST_PERCENT_XCD).Controls(0).GetType().ToString = "System.Web.UI.WebControls.Label" Then
+                                Me.PopulateBOProperty(oCoverageRate(i), "LossCostPercentSourceXcd", CType(moGridView.Rows(i).Cells(LOSS_COST_PERCENT_XCD).Controls(0), Label).Text)
                             Else
-                                Me.PopulateBOProperty(oCoverageRate(i), "LossCostPercentSourceXcd", CType(moGridView.Rows(i).Cells(LOSS_COST_PERCENT_XCD).Controls(1), TextBox).Text)
+                                Me.PopulateBOProperty(oCoverageRate(i), "LossCostPercentSourceXcd", CType(moGridView.Rows(i).Cells(LOSS_COST_PERCENT_XCD).Controls(1), DropDownList).SelectedValue)
                             End If
                         End If
                     End If
