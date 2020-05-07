@@ -810,6 +810,9 @@ Namespace Tables
             Me.BindBOPropertyToLabel(Me.State.MyBO, "CloseCaseGracePeriodDays", Me.lblClosecaseperiod)
             Me.BindBOPropertyToLabel(Me.State.MyBO, "AllowCertCancellationWithClaimXCd", Me.lblAllowCertCancellationWithClaim)
 
+            'US 489857
+            Me.BindBOPropertyToLabel(Me.State.MyBO, "AcctBucketsWithSourceXcd", Me.lblAcctBucketsWithSourceXcd)
+
             Me.ClearGridViewHeadersAndLabelsErrorSign()
         End Sub
 
@@ -821,8 +824,8 @@ Namespace Tables
             Dim oYesNoPayDeductList As DataElements.ListItem() = CommonConfigManager.Current.ListManager.GetList(listCode:="CLAIM_PAY_DEDUCTIBLE", languageCode:=Thread.CurrentPrincipal.GetLanguageCode())
             Dim oYesNoFraudMonitorList As DataElements.ListItem() = CommonConfigManager.Current.ListManager.GetList(listCode:="FRAUD_MONITOR_BY", languageCode:=Thread.CurrentPrincipal.GetLanguageCode())
             Dim textFun As Func(Of DataElements.ListItem, String) = Function(li As DataElements.ListItem)
-                Return li.Code + " - " + li.Translation
-                    End Function
+                                                                        Return li.Code + " - " + li.Translation
+                                                                    End Function
             Dim populateOptions As PopulateOptions = New PopulateOptions() With
                     {
                     .AddBlankItem = True
@@ -1043,7 +1046,7 @@ Namespace Tables
             Me.reshipmentAllowedDrop.Populate(oYesNoList, populateOptions2)
             Me.moValidateAddress.Populate(oYesNoList, populateOptions2)
             Me.moShowPrevCallerInfo.Populate(oYesNoList, populateOptions2)
-            Me.moUseTatNotification.Populate(oYesNoList,populateOptions2)
+            Me.moUseTatNotification.Populate(oYesNoList, populateOptions2)
             Me.ddlDealerNameFlag.Populate(oYesNoList, populateOptions3)
 
             Me.ddlAllowCertCancellationWithClaim.Populate(CommonConfigManager.Current.ListManager.GetList("ALLOW_CERT_CANCELLATION_WITH_CLAIM", Thread.CurrentPrincipal.GetLanguageCode()), populateOptions2)
@@ -1055,6 +1058,8 @@ Namespace Tables
             '                           .ValueFunc = AddressOf PopulateOptions.GetCode
             '                           })
 
+            '# US 489857
+            Me.cboAcctBucketsWithSourceXcd.Populate(oYesNoList, populateOptions2)
         End Sub
 
         Private Sub ClearAll()
@@ -1155,6 +1160,9 @@ Namespace Tables
             moUseTatNotification.ClearSelection()
             ddlDealerNameFlag.ClearSelection()
             ddlAllowCertCancellationWithClaim.ClearSelection()
+
+            'US 489857
+            cboAcctBucketsWithSourceXcd.ClearSelection()
         End Sub
 
         Private Sub SetAssurantIsObligor()
@@ -1471,6 +1479,9 @@ Namespace Tables
                 BindSelectItem(.CaseProfileCode, Me.ddlCaseProfile)
 
                 BindSelectItem(Me.State.MyBO.AllowCertCancellationWithClaimXCd, Me.ddlAllowCertCancellationWithClaim)
+
+                'US 489857
+                BindSelectItem(Me.State.MyBO.AcctBucketsWithSourceXcd, Me.cboAcctBucketsWithSourceXcd)
 
                 ControlMgr.SetVisibleControl(Me, trBenefitDlrTypeCtls4, True)
                 Me.PopulateControlFromBOProperty(Me.txtBenefitSoldToAccount, .BenefitSoldToAccount)
@@ -1794,6 +1805,9 @@ Namespace Tables
                 Me.PopulateBOProperty(Me.State.MyBO, "UseTurnaroundTimeNotification", Me.moUseTatNotification, False, True)
                 Me.PopulateBOProperty(Me.State.MyBO, "DisplayDobXcd", Me.ddlDealerNameFlag, False, True)
                 Me.PopulateBOProperty(Me.State.MyBO, "AllowCertCancellationWithClaimXCd", Me.ddlAllowCertCancellationWithClaim, False, True)
+
+                'US 489857
+                Me.PopulateBOProperty(Me.State.MyBO, "AcctBucketsWithSourceXcd", Me.cboAcctBucketsWithSourceXcd, False, True)
 
             End With
             If Me.ErrCollection.Count > 0 Then

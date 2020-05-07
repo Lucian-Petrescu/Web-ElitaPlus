@@ -159,16 +159,16 @@ Public Class CancellationQuery
 
                 If Not dsCert Is Nothing AndAlso dsCert.Tables.Count > 0 AndAlso dsCert.Tables(0).Rows.Count = 1 Then
                     If dsCert.Tables(0).Rows(0).Item(Me.DATA_COL_NAME_CERT_ID) Is DBNull.Value Then
-                        Throw New BOValidationException("CancellationQuery Error: ", Me.CERTIFICATE_NOT_FOUND)
+                        Throw New BOValidationException("CancellationQuery Error: ", CERTIFICATE_NOT_FOUND)
                     Else
                         _certId = New Guid(CType(dsCert.Tables(0).Rows(0).Item(Me.DATA_COL_NAME_CERT_ID), Byte()))
 
                         If _certId.Equals(Guid.Empty) Then
-                            Throw New BOValidationException("CancellationQuery Error: ", Me.CERTIFICATE_NOT_FOUND)
+                            Throw New BOValidationException("CancellationQuery Error: ", CERTIFICATE_NOT_FOUND)
                         End If
                     End If
                 Else
-                    Throw New BOValidationException("CancellationQuery Error: ", Me.CERTIFICATE_NOT_FOUND)
+                    Throw New BOValidationException("CancellationQuery Error: ", CERTIFICATE_NOT_FOUND)
                 End If
             End If
 
@@ -191,12 +191,12 @@ Public Class CancellationQuery
 
             ' Check if the certificate is already closed
             If oCert.StatusCode = "C" Then
-                Throw New BOValidationException("CancellationQuery Error: ", Me.CERTIFICATE_ALREADY_CLOSED)
+                Throw New BOValidationException("CancellationQuery Error: ", CERTIFICATE_ALREADY_CLOSED)
             End If
 
             ' Check if there is any claims that are not closed
             If oCert.TotalClaimsNotClosedForCert(Me.DealerId, oCert.CertNumber) Then
-                Throw New BOValidationException("CancellationQuery Error: ", Me.ACTIVE_CLAIMS_EXIST)
+                Throw New BOValidationException("CancellationQuery Error: ", ACTIVE_CLAIMS_EXIST)
             End If
 
             ' Get cancellation reason code from Contract record

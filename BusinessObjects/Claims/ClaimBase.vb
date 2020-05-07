@@ -3220,6 +3220,14 @@ Public MustInherit Class ClaimBase
         Me.LoadResponses()
 
     End Sub
+    <Obsolete("Tech Debt - to support deductible calculation for Argentina dealers when deductible is based on expression")>
+    Public Sub TechDebtCalculateDeductible()
+        If Me.MethodOfRepairCode <> MethodofRepairCodes.Replacement Then
+            Me.Deductible = Me.AuthorizedAmount.Value * m_NewClaimRepairDedPercent / 100
+        Else
+            Me.Deductible = Me.AuthorizedAmount.Value * m_NewClaimOrigReplDedPercent / 100
+        End If
+    End Sub
 
     Public Sub PrepopulateDeductible()
         Dim oDeductible As CertItemCoverage.DeductibleType
@@ -3298,10 +3306,43 @@ Public MustInherit Class ClaimBase
 
                 ''For New claims if deductible is based on expression then deductible is 30% for Repair and 50% REplacement of Auth amount
                 If IsNew Then
-                    If Me.MethodOfRepairCode <> MethodofRepairCodes.Replacement Then
-                        Me.Deductible = Me.AuthorizedAmount.Value * m_NewClaimRepairDedPercent / 100
+                    Dim attvalue As AttributeValue = Me.Company.AttributeValues.Where(Function(i) i.Attribute.UiProgCode = Codes.COMP_ATTR__TECH_DEBT_DEDUCTIBLE_RULE).FirstOrDefault
+                    If Not attvalue Is Nothing AndAlso attvalue.Value = Codes.YESNO_Y Then
+                        TechDebtCalculateDeductible()
                     Else
-                        Me.Deductible = Me.AuthorizedAmount.Value * m_NewClaimOrigReplDedPercent / 100
+                        Me.Deductible = SerializationExtensions.Serialize(Of BaseExpression)(
+                        manager.GetExpression(oDeductible.ExpressionId.Value).ExpressionXml).
+                        Evaluate(Function(variableName)
+                                     Select Case variableName.ToUpperInvariant()
+                                         Case "ListPrice".ToUpperInvariant()
+                                             If (Not listPrice.HasValue) Then
+                                                 listPrice = Me.GetListPrice()
+                                             End If
+                                             Return listPrice.Value
+                                         Case "SalesPrice".ToUpperInvariant()
+                                             Return Me.Certificate.SalesPrice
+                                         Case "OrigRetailPrice".ToUpperInvariant()
+                                             Return moCertItem.OriginalRetailPrice
+                                         Case "ItemRetailPrice".ToUpperInvariant()
+                                             Return moCertItem.ItemRetailPrice
+                                         Case "LossType".ToUpperInvariant()
+                                             Return String.Empty ''''Loss type is not passed from UI
+                                         Case "AuthorizedAmount".ToUpperInvariant()
+                                             Return Me.AuthorizedAmount
+                                         Case "DeductibleBasePrice".ToUpperInvariant()
+
+                                             Dim dvPrice As DataView = Me.GetPricesForServiceType(ServiceClassCodes.Deductible,
+                                                                                  ServiceTypeCodes.DeductibleBasePrice)
+                                             If Not dvPrice Is Nothing AndAlso dvPrice.Count > 0 Then
+                                                 Return CDec(dvPrice(0)("Price"))
+                                             Else
+                                                 Return 0
+                                             End If
+
+                                         Case Else
+                                             Return String.Empty
+                                     End Select
+                                 End Function)
                     End If
 
                 Else
@@ -3487,6 +3528,7 @@ Public MustInherit Class ClaimBase
         End If
     End Function
 
+    <Obsolete("TECH_DEBT_AUTH_AMT_PERCENT-to support deductible calculation when it is based on percentage of Auth Amount")>
     Public Sub RecalculateDeductibleForChanges()
         If Me.MethodOfRepairCode <> Codes.METHOD_OF_REPAIR__RECOVERY Then
             Dim al As ArrayList = Me.CalculateLiabilityLimit(Me.CertificateId, Me.Contract.Id, Me.CertItemCoverageId, Me.LossDate)
@@ -3526,6 +3568,80 @@ Public MustInherit Class ClaimBase
                 End If
             End If
         End If
+    End Sub
+    Public Sub RecalcDeductibleForExpOrAuthAmountPercent()
+        Dim oDeductible As CertItemCoverage.DeductibleType
+        Dim moCertItemCvg As CertItemCoverage
+        Dim moCertItem As CertItem
+        Dim moCert As Certificate
+        Dim listPriceDeductible As DecimalType
+
+        oDeductible = CertItemCoverage.GetDeductible(Me.CertItemCoverageId, Me.MethodOfRepairId)
+
+        If (oDeductible.DeductibleBasedOn <> Codes.DEDUCTIBLE_BASED_ON__PERCENT_OF_AUTHORIZED_AMOUNT And
+            oDeductible.DeductibleBasedOn <> Codes.DEDUCTIBLE_BASED_ON__FIXED) Then
+            moCertItemCvg = New CertItemCoverage(Me.CertItemCoverageId)
+            moCertItem = New CertItem(moCertItemCvg.CertItemId)
+            If (oDeductible.DeductibleBasedOn = Codes.DEDUCTIBLE_BASED_ON__PERCENT_OF_SALES_PRICE Or
+                oDeductible.DeductibleBasedOn = Codes.DEDUCTIBLE_BASED_ON__PERCENT_OF_LIST_PRICE Or
+                oDeductible.DeductibleBasedOn = Codes.DEDUCTIBLE_BASED_ON__PERCENT_OF_LIST_PRICE_WSD) Then
+                moCert = New Certificate(moCertItemCvg.CertId)
+            End If
+        End If
+
+        Dim al As ArrayList = Me.CalculateLiabilityLimit(Me.CertificateId, Me.Contract.Id, Me.CertItemCoverageId, Me.LossDate)
+
+        Select Case oDeductible.DeductibleBasedOn
+            Case Codes.DEDUCTIBLE_BASED_ON__EXPRESSION
+
+                If CType(al(1), Integer) = 0 Then
+                    Me.LiabilityLimit = CType(al(0), Decimal)
+                End If
+                If Not IsNew Then
+                    Dim cachefacade As New CacheFacade()
+
+                    Dim manager As New CommonManager(cachefacade)
+                    Dim listPrice As Nullable(Of Decimal) = Nothing
+                    Me.DeductiblePercentID = LookupListNew.GetIdFromCode(LookupListNew.LK_YESNO, Codes.YESNO_Y)
+                    Me.DeductiblePercent = New DecimalType(0D)
+                    Me.Deductible = SerializationExtensions.Serialize(Of BaseExpression)(
+                            manager.GetExpression(oDeductible.ExpressionId.Value).ExpressionXml).
+                            Evaluate(Function(variableName)
+                                         Select Case variableName.ToUpperInvariant()
+                                             Case "ListPrice".ToUpperInvariant()
+                                                 If (Not listPrice.HasValue) Then
+                                                     listPrice = Me.GetListPrice()
+                                                 End If
+                                                 Return listPrice.Value
+                                             Case "SalesPrice".ToUpperInvariant()
+                                                 Return Me.Certificate.SalesPrice
+                                             Case "OrigRetailPrice".ToUpperInvariant()
+                                                 Return moCertItem.OriginalRetailPrice
+                                             Case "ItemRetailPrice".ToUpperInvariant()
+                                                 Return moCertItem.ItemRetailPrice
+                                             Case "LossType".ToUpperInvariant()
+                                                 Return String.Empty ''''Loss type is not passed from UI
+                                             Case "AuthorizedAmount".ToUpperInvariant()
+                                                 Return Me.AuthorizedAmount
+                                             Case "DeductibleBasePrice".ToUpperInvariant()
+
+                                                 Dim dvPrice As DataView = Me.GetPricesForServiceType(ServiceClassCodes.Deductible,
+                                                                                      ServiceTypeCodes.DeductibleBasePrice)
+                                                 If Not dvPrice Is Nothing AndAlso dvPrice.Count > 0 Then
+                                                     Return CDec(dvPrice(0)("Price"))
+                                                 Else
+                                                     Return 0
+                                                 End If
+
+                                             Case Else
+                                                 Return String.Empty
+                                         End Select
+                                     End Function)
+                End If
+            Case Codes.DEDUCTIBLE_BASED_ON__PERCENT_OF_AUTHORIZED_AMOUNT
+                RecalculateDeductibleForChanges()
+            Case Else
+        End Select
     End Sub
 
     Public Function IsMaxReplacementExceeded(ByVal CertID As Guid, ByVal CurrentLossDate As Date, Optional ByVal blnExcludeSelf As Boolean = True) As Boolean
@@ -4402,6 +4518,23 @@ Public MustInherit Class ClaimBase
 
 #Region "Equipment Management"
     Private _ClaimedEquipment As ClaimEquipment
+
+    Public ReadOnly Property ClaimedEnrolledEquipments As List(Of ClaimEquipment)
+        Get
+            Dim equipmentList As New List(Of ClaimEquipment)
+
+            If Not Me._ClaimedEquipment Is Nothing Then
+                equipmentList.Add(Me._ClaimedEquipment)
+            End If
+            If Not Me._EnrolledEquipment Is Nothing Then
+                equipmentList.Add(Me._EnrolledEquipment)
+            End If
+
+            Return equipmentList
+        End Get
+
+    End Property
+
     Public Property ClaimedEquipment As ClaimEquipment
         Get
             If Me._ClaimedEquipment Is Nothing Then

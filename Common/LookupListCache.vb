@@ -651,6 +651,8 @@ Public Class LookupListCache
 
     Public Const LK_JOURNALLEVEL As String = "JOURNALLEVEL"
 
+    'US 489857
+    Public Const LK_ACCTBUCKETSSOURCEOPTION As String = "ACCTBUCKETSSOURCEOPTION"
 #End Region
 
 End Class

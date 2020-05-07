@@ -832,6 +832,16 @@ Namespace Certificates
                 Return
             End If
 
+            Try
+                If (Not Me.NavController Is Nothing) AndAlso (Not Me.NavController.PrevNavState Is Nothing) AndAlso (Me.NavController.PrevNavState.Name = "SEND_SERVICE_ORDER") AndAlso
+                        (Not String.IsNullOrEmpty(Me.State.ClaimRecordingXcd)) AndAlso (Me.State.ClaimRecordingXcd.Equals(Codes.DEALER_CLAIM_RECORDING_DYNAMIC_QUESTIONS)) Then
+                    Navigator.RemovePageFromNavigation()
+                    Me.Navigator.SetCurrentPage(mobjPage, mobjState)
+                End If
+            Catch ex As Exception
+                Me.HandleErrors(ex, Me.MasterPage.MessageController)
+            End Try
+
             Me.MasterPage.UsePageTabTitleInBreadCrum = False
             Me.MasterPage.PageTab = TranslationBase.TranslateLabelOrMessage("Certificates")
 
@@ -1182,6 +1192,18 @@ Namespace Certificates
 
                     Dim objPrincipal As ElitaPlusIdentity
                     objPrincipal = CType(System.Threading.Thread.CurrentPrincipal, ElitaPlusPrincipal).Identity
+
+                    'Trace GDPR-OKTA issue
+                    Try
+                        Dim logEntry As String = " Certificate_Screen; UserID=" & objPrincipal.ActiveUser.NetworkId & "; PrivacyUserType=" & objPrincipal.PrivacyUserType & "; Time=" & Now.ToString
+                        AppConfig.DebugLog(logEntry)
+                    Catch ex As Exception
+                        Dim logEntry As String = "UseNew Exception(logEntry)rID=" & objPrincipal.ActiveUser.NetworkId & "; PrivacyUserType=" & objPrincipal.PrivacyUserType & "; Time=" & Now.ToString
+                        AppConfig.DebugLog(logEntry)
+
+                    End Try
+
+
                     If objPrincipal.PrivacyUserType = AppConfig.DataProtectionPrivacyLevel.Privacy_DataProtection Then
                         EnableTab(CERT_DATA_PROTECTION_TAB, True)
 

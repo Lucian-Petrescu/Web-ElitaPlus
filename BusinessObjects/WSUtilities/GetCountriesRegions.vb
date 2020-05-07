@@ -152,7 +152,7 @@ Public Class GetCountriesRegions
                     End If
                 Next
                 If Not blnInTheList Then
-                    Throw New BOValidationException("GetCountriesRegions Error: ", Me.COUNTRY_NOT_ASSIGNED_TO_THIS_USER)
+                    Throw New BOValidationException("GetCountriesRegions Error: ", COUNTRY_NOT_ASSIGNED_TO_THIS_USER)
                 End If
             Next
         Else
@@ -169,7 +169,7 @@ Public Class GetCountriesRegions
         Try
             BuildCountriesIDs()
             If Me.UserCountriesIDs Is Nothing OrElse UserCountriesIDs.Count = 0 Then
-                Throw New BOValidationException("GetCountriesRegions Error: ", Me.COUNTRY_NOT_FOUND)
+                Throw New BOValidationException("GetCountriesRegions Error: ", COUNTRY_NOT_FOUND)
             Else
 
                 Dim i As Integer
@@ -185,7 +185,7 @@ Public Class GetCountriesRegions
                 'Next
 
                 If objCountriesRegionsDS Is Nothing OrElse objCountriesRegionsDS.Tables.Count = 0 Then
-                    Throw New BOValidationException("GetCountriesRegions Error: ", Me.ERROR_ACCESSING_DATABASE)
+                    Throw New BOValidationException("GetCountriesRegions Error: ", ERROR_ACCESSING_DATABASE)
                 ElseIf objCountriesRegionsDS.Tables.Count > 0 Then
 
                     objCountriesRegionsDS.DataSetName = Me.DATASET_NAME

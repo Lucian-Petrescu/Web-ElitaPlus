@@ -189,7 +189,7 @@ Public Class OlitaUpdateConsumerInfo
                         (Not _CertListDataSet.Tables(0).Rows(0).Item(Me.DATA_COL_NAME_CERT_ID) Is DBNull.Value) Then
                         oCert = New Certificate(New Guid(CType(_CertListDataSet.Tables(0).Rows(0).Item(Me.DATA_COL_NAME_CERT_ID), Byte())))
                     Else
-                        Throw New BOValidationException("OlitaUpdateConsumerInfo Error: ", Me.CERTIFICATE_NOT_FOUND)
+                        Throw New BOValidationException("OlitaUpdateConsumerInfo Error: ", CERTIFICATE_NOT_FOUND)
                     End If
                     If ((Not .Isproduct_sales_dateNull) AndAlso oCert.ProductSalesDate <> (New DateType(.product_sales_date))) Then isProdSalesDateDirty = True
                     If ((Not .Iswarranty_sales_dateNull) AndAlso oCert.WarrantySalesDate <> (New DateType(.warranty_sales_date))) Then isWarrantySalesDateDirty = True
@@ -659,9 +659,9 @@ Public Class OlitaUpdateConsumerInfo
             If Me._countryId.Equals(Guid.Empty) Then
                 Dim objCountryDV As DataView = Country.getList("", Me.CountryCode)
                 If objCountryDV Is Nothing Then
-                    Throw New BOValidationException("OlitaUpdateConsumerInfo Error: ", Me.ERROR_ACCESSING_DATABASE)
+                    Throw New BOValidationException("OlitaUpdateConsumerInfo Error: ", ERROR_ACCESSING_DATABASE)
                 ElseIf objCountryDV.Count <> 1 Then
-                    Throw New BOValidationException("OlitaUpdateConsumerInfo Error: ", Me.COUNTRY_NOT_FOUND)
+                    Throw New BOValidationException("OlitaUpdateConsumerInfo Error: ", COUNTRY_NOT_FOUND)
                 End If
                 Me._countryId = New Guid(CType(objCountryDV.Table.Rows(0).Item(Me.DATA_COL_NAME_COUNTRY_ID), Byte()))
                 objCountryDV = Nothing
@@ -677,9 +677,9 @@ Public Class OlitaUpdateConsumerInfo
                 'Dim alUserCompanies As ArrayList = ElitaPlusIdentity.Current.ActiveUser.Companies
                 Dim regionsDV As DataView = Region.LoadList("%", Me.ShortDescription, ElitaPlusIdentity.Current.ActiveUser.Companies)
                 If regionsDV Is Nothing Then
-                    Throw New BOValidationException("OlitaUpdateConsumerInfo Error: ", Me.ERROR_ACCESSING_DATABASE)
+                    Throw New BOValidationException("OlitaUpdateConsumerInfo Error: ", ERROR_ACCESSING_DATABASE)
                 ElseIf regionsDV.Count <> 1 Then
-                    Throw New BOValidationException("OlitaUpdateConsumerInfo Error: ", Me.REGION_NOT_FOUND)
+                    Throw New BOValidationException("OlitaUpdateConsumerInfo Error: ", REGION_NOT_FOUND)
                 End If
                 Me._regionId = New Guid(CType(regionsDV.Table.Rows(0).Item(Me.DATA_COL_NAME_REGION_ID), Byte()))
                 regionsDV = Nothing
@@ -693,7 +693,7 @@ Public Class OlitaUpdateConsumerInfo
     '        If Me._mailing_countryId.Equals(Guid.Empty) Then
     '            Dim objMailingCountryDV As DataView = Country.getList("", Me.CountryCode)
     '            If objMailingCountryDV Is Nothing Then
-    '                Throw New BOValidationException("OlitaUpdateConsumerInfo Error: ", Me.ERROR_ACCESSING_DATABASE)
+    '                Throw New BOValidationException("OlitaUpdateConsumerInfo Error: ", ERROR_ACCESSING_DATABASE)
     '            ElseIf objMailingCountryDV.Count <> 1 Then
     '                Throw New BOValidationException("OlitaUpdateConsumerInfo Error: ", Me.MAILING_COUNTRY_NOT_FOUND)
     '            End If
@@ -733,7 +733,7 @@ Public Class OlitaUpdateConsumerInfo
     '        If Me._mailing_regionId.Equals(Guid.Empty) Then
     '            Dim mailing_regionsDV As DataView = Region.LoadList("%", Me.MailingRegionShortDescription, Me.MailingCountryId)
     '            If mailing_regionsDV Is Nothing Then
-    '                Throw New BOValidationException("OlitaUpdateConsumerInfo Error: ", Me.ERROR_ACCESSING_DATABASE)
+    '                Throw New BOValidationException("OlitaUpdateConsumerInfo Error: ", ERROR_ACCESSING_DATABASE)
     '            ElseIf mailing_regionsDV.Count <> 1 Then
     '                Throw New BOValidationException("OlitaUpdateConsumerInfo Error: ", Me.MAILING_REGION_NOT_FOUND)
     '            End If
@@ -773,7 +773,7 @@ Public Class OlitaUpdateConsumerInfo
             Dim list As DataView = LookupListNew.GetManufacturerLookupList(Authentication.CompanyGroupId)
             _manufacturerId = LookupListNew.GetIdFromCode(list, description)
             If _manufacturerId.Equals(Guid.Empty) Then
-                Throw New BOValidationException("OlitaUpdateConsumerInfo Error: ", Me.MANUFACTURER_NOT_FOUND)
+                Throw New BOValidationException("OlitaUpdateConsumerInfo Error: ", MANUFACTURER_NOT_FOUND)
             End If
             '   _manufacturerId = LookupListNew.GetIdFromDescription(LookupListNew.LK_MANUFACTURERS, description)
 
@@ -797,7 +797,7 @@ Public Class OlitaUpdateConsumerInfo
             Dim list As DataView = LookupListNew.GetMembershipTypeLanguageLookupList(Authentication.LangId)
             _membershipTypeId = LookupListNew.GetIdFromCode(list, code)
             If _membershipTypeId.Equals(Guid.Empty) Then
-                Throw New BOValidationException("OlitaUpdateConsumerInfo Error: ", Me.MEMBERSHIP_TYPE_NOT_FOUND)
+                Throw New BOValidationException("OlitaUpdateConsumerInfo Error: ", MEMBERSHIP_TYPE_NOT_FOUND)
             End If
             '  _membershipTypeId = LookupListNew.GetIdFromCode(LookupListNew.LK_MEMBERSHIP_TYPE_LANGUAGE, code)
 
@@ -853,7 +853,7 @@ Public Class OlitaUpdateConsumerInfo
             Dim _CertListDataSet As DataSet = Certificate.GetCertificatesList(Me.CertNumber, "", "", "", "", Me.DealerCode).Table.DataSet
             If Not _CertListDataSet Is Nothing AndAlso _CertListDataSet.Tables.Count > 0 AndAlso _CertListDataSet.Tables(0).Rows.Count > 0 Then
                 If _CertListDataSet.Tables(0).Rows(0).Item(Me.DATA_COL_NAME_CERT_ID) Is DBNull.Value Then
-                    Throw New BOValidationException("OlitaUpdateConsumerInfo Error: ", Me.CERTIFICATE_NOT_FOUND)
+                    Throw New BOValidationException("OlitaUpdateConsumerInfo Error: ", CERTIFICATE_NOT_FOUND)
                 Else
                     'if there are serial numbers to be update, then the Master BO will be the Cert_item, cert will be the child.
                     If Me.Dataset.Tables(TABLE_NAME_PRODUCT_SERIAL_NUMBER).Rows.Count > 0 Then
@@ -865,10 +865,10 @@ Public Class OlitaUpdateConsumerInfo
                             Dim code As String
 
                             code = exV.Code
-                            If code = String.Empty Then code = Me.UPDATE_FAILED
+                            If code = String.Empty Then code = UPDATE_FAILED
                             Throw New BOValidationException("OlitaUpdateConsumerInfo Error: ", code)
                         Catch ex As Exception
-                            Throw New BOValidationException("OlitaUpdateConsumerInfo Error: ", Me.UPDATE_FAILED)
+                            Throw New BOValidationException("OlitaUpdateConsumerInfo Error: ", UPDATE_FAILED)
                         End Try
                     Else
                         Try
@@ -878,10 +878,10 @@ Public Class OlitaUpdateConsumerInfo
                             Dim code As String
 
                             code = exV.Code
-                            If code = String.Empty Then code = Me.UPDATE_FAILED
+                            If code = String.Empty Then code = UPDATE_FAILED
                             Throw New BOValidationException("OlitaUpdateConsumerInfo Error: ", code)
                         Catch ex As Exception
-                            Throw New BOValidationException("OlitaUpdateConsumerInfo Error: ", Me.UPDATE_FAILED)
+                            Throw New BOValidationException("OlitaUpdateConsumerInfo Error: ", UPDATE_FAILED)
                         End Try
                     End If
 
@@ -892,9 +892,9 @@ Public Class OlitaUpdateConsumerInfo
                 End If
 
             ElseIf _CertListDataSet Is Nothing Then
-                Throw New BOValidationException("OlitaUpdateConsumerInfo Error: ", Me.ERROR_ACCESSING_DATABASE)
+                Throw New BOValidationException("OlitaUpdateConsumerInfo Error: ", ERROR_ACCESSING_DATABASE)
             ElseIf Not _CertListDataSet Is Nothing AndAlso _CertListDataSet.Tables.Count > 0 AndAlso _CertListDataSet.Tables(0).Rows.Count = 0 Then
-                Throw New BOValidationException("OlitaUpdateConsumerInfo Error: ", Me.CERTIFICATE_NOT_FOUND)
+                Throw New BOValidationException("OlitaUpdateConsumerInfo Error: ", CERTIFICATE_NOT_FOUND)
             End If
 
         Catch ex As BOValidationException
@@ -1085,7 +1085,7 @@ Public Class OlitaUpdateConsumerInfo
                     objMailingAddress.PostalCode = Me.MailingPostalCode
                     objMailingAddress.CountryId = Me.MailingCountryId
                 Else
-                    Throw New BOValidationException("OlitaUpdateConsumerInfo Error: ", Me.MAILING_INCOMPLETE)
+                    Throw New BOValidationException("OlitaUpdateConsumerInfo Error: ", MAILING_INCOMPLETE)
                 End If
             ElseIf (Not certBO.MailingAddressId.Equals(Guid.Empty)) Then
                 ' Current Address Record

@@ -150,7 +150,8 @@
         show_prev_caller_info_xcd,
         use_tat_notification_xcd,
         display_mask_dob_xcd,
-        allow_cert_cnl_with_claim_xcd
+        allow_cert_cnl_with_claim_xcd,
+        acct_buckets_with_source_xcd
 			  FROM elp_dealer
 			  WHERE
 				dealer_id = :dealer_id
@@ -296,7 +297,8 @@
         show_prev_caller_info_xcd,
         use_tat_notification_xcd,
         display_mask_dob_xcd,
-        allow_cert_cnl_with_claim_xcd
+        allow_cert_cnl_with_claim_xcd,
+        acct_buckets_with_source_xcd
         FROM elp_dealer 
 			  WHERE
 				company_id= :company_id
@@ -495,7 +497,8 @@
         show_prev_caller_info_xcd = :show_prev_caller_info_xcd,
         use_tat_notification_xcd = :use_tat_notification_xcd,
         display_mask_dob_xcd = :display_mask_dob_xcd,
-        allow_cert_cnl_with_claim_xcd = :allow_cert_cnl_with_claim_xcd
+        allow_cert_cnl_with_claim_xcd = :allow_cert_cnl_with_claim_xcd,
+        acct_buckets_with_source_xcd = :acct_buckets_with_source_xcd
         WHERE
 				dealer_id = :dealer_id
 		]]>
@@ -642,7 +645,8 @@
     show_prev_caller_info_xcd,
     use_tat_notification_xcd,
     display_mask_dob_xcd,
-    allow_cert_cnl_with_claim_xcd
+    allow_cert_cnl_with_claim_xcd,
+    acct_buckets_with_source_xcd
     )
     VALUES
     (
@@ -785,7 +789,8 @@
     :show_prev_caller_info_xcd,
     :use_tat_notification_xcd,
     :display_mask_dob_xcd,
-    :allow_cert_cnl_with_claim_xcd
+    :allow_cert_cnl_with_claim_xcd,
+    :acct_buckets_with_source_xcd
     )
   </INSERT>
   <DELETE>
