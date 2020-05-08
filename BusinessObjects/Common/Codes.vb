@@ -1047,6 +1047,7 @@ Public Class Codes
     Public Const CASE_PURPOSE__CANCELLATION_REQUEST As String = "CERTCANCEL"
     Public Const CASE_PURPOSE__CONSEQUENTIAL_DAMAGE As String = "REPCONSEQDMG"
     Public Const CASE_PURPOSE__INQUIRY As String = "INQUIRY"
+    Public Const CasePurposeChangeFulfillment As String = "CHGFULFILLMENT"
 
     ' Depreciation Schedule Usage
     Public Const DEPRECIATION_SCHEDULE_USAGE__CASH_REIMBURSE As String = "DEP_SCH_USAGE-CASH_REIMBURSE"

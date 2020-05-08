@@ -132,8 +132,8 @@ Public Class ClaimRecordingForm
             If Not NavController Is Nothing _
                AndAlso Not NavController.CurrentNavState Is Nothing _
                AndAlso NavController.CurrentFlow.Name = "CREATE_NEW_CLAIM_FROM_EXISTING_CLAIM" _
-               AndAlso NavController.CurrentNavState.Name = "CLAIM_CONSEQUENTIAL_DAMAGE" Then
-                ' This is an scenario where Claim Recording is called from Claim form to Add Consequentail Damage
+               AndAlso (NavController.CurrentNavState.Name = "CLAIM_CONSEQUENTIAL_DAMAGE" OrElse NavController.CurrentNavState.Name = "CHANGE_FULFILLMENT") Then
+                ' This is an scenario where Claim Recording is called from Claim form to Add Consequentail Damage or change fulflllment
                 If NavController.State Is Nothing Then
                     NavController.State = New MyState
                     InitializeFromFlowSession()
@@ -331,18 +331,7 @@ Public Class ClaimRecordingForm
                 PopulateClaimHeaderDetails()
                 UpdateBreadCrum()
 
-                ShowCallerView()
-                Dim oDealer As Dealer
-                If (Not State.CertificateId.Equals(Guid.Empty)) Then
-                    oDealer = New Dealer(New Certificate(Me.State.CertificateId).Dealer.Id)
-                ElseIf (Not State.CaseId.Equals(Guid.Empty)) Then
-                    Dim oCase As CaseBase = New CaseBase(State.CaseId)
-                    oDealer = New Dealer(New Certificate(oCase.CertId).Dealer.Id)
-                End If
-
-                If oDealer.Show_Previous_Caller_Info = FlagYes AndAlso Not Session("PrevCallerFirstName") = String.Empty Then
-                    ShowPrevCallerView()
-                End If
+                DisplayInitView()
 
                 TranslateGridHeader(GridItems)
 
@@ -635,13 +624,15 @@ Public Class ClaimRecordingForm
                     MoveToNextPage()
                 Case GetType(DynamicFulfillmentResponse)
                     ShowDynamicFulfillmentView()
+                Case GetType(ProcessCompleteResponse)
+                    MoveToNextPage()
                 Case Else
                     ReturnBackToCallingPage()
             End Select
         End If
     End Sub
     Private Sub MoveToNextPage()
-        Dim wsResponse
+        Dim wsResponse As BaseClaimRecordingResponse
         Try
             If State.SubmitWsBaseClaimRecordingResponse IsNot Nothing AndAlso
                State.SubmitWsBaseClaimRecordingResponse.GetType() Is GetType(DecisionResponse) Then
@@ -649,6 +640,16 @@ Public Class ClaimRecordingForm
             ElseIf State.SubmitWsBaseClaimRecordingResponse IsNot Nothing AndAlso
                    State.SubmitWsBaseClaimRecordingResponse.GetType() Is GetType(ActionResponse) Then
                 wsResponse = DirectCast(State.SubmitWsBaseClaimRecordingResponse, ActionResponse)
+            ElseIf State.SubmitWsBaseClaimRecordingResponse IsNot Nothing AndAlso
+                   State.SubmitWsBaseClaimRecordingResponse.GetType() Is GetType(ProcessCompleteResponse) Then
+                Dim completeResponse As ProcessCompleteResponse = State.SubmitWsBaseClaimRecordingResponse
+                If completeResponse.ProcessResult = ProcessResults.Failure Then 'if failure, show the messages and stay the same page
+                    For Each msg As ClaimRecordingMessage In completeResponse.ClaimRecordingMessages
+                        MasterPage.MessageController.AddError(msg.MessageText, False)
+                    Next
+                    Exit Sub
+                End If
+                wsResponse = completeResponse
             Else
                 Exit Sub
             End If
@@ -758,6 +759,43 @@ Public Class ClaimRecordingForm
             ControlMgr.SetVisibleControl(Me, btnValidateAddress, True)
         Else
             ControlMgr.SetVisibleControl(Me, btnValidateAddress, False)
+        End If
+    End Sub
+
+    Private Sub DisplayInitView()
+        If State.IncomingCasePurpose = Codes.CasePurposeChangeFulfillment OrElse State.InputParameters.CasePurpose = Codes.CasePurposeChangeFulfillment Then
+            Try
+                'call change fulfillent operation which return FulfillmentOptionsResponse                
+                Dim wsResponse = WcfClientHelper.Execute(Of ClaimRecordingServiceClient, IClaimRecordingService, BaseClaimRecordingResponse)(
+                        GetClient(),
+                        New List(Of Object) From {New InteractiveUserHeader() With {.LanId = Authentication.CurrentUser.NetworkId}},
+                        Function(ByVal c As ClaimRecordingServiceClient)
+                            Return c.ChangeFulfillment(New ChangeFulfillmentRequest With {.CompanyCode = State.ClaimBo.Company.Code, .ClaimNumber = State.ClaimBo.ClaimNumber})
+                        End Function)
+
+                If wsResponse IsNot Nothing Then
+                    State.SubmitWsBaseClaimRecordingResponse = wsResponse
+                End If
+
+            Catch ex As FaultException
+                ThrowWsFaultExceptions(ex)
+                Exit Sub
+            End Try
+
+            DisplayNextView()
+        Else
+            ShowCallerView()
+            Dim oDealer As Dealer
+            If (Not State.CertificateId.Equals(Guid.Empty)) Then
+                oDealer = New Dealer(New Certificate(Me.State.CertificateId).Dealer.Id)
+            ElseIf (Not State.CaseId.Equals(Guid.Empty)) Then
+                Dim oCase As CaseBase = New CaseBase(State.CaseId)
+                oDealer = New Dealer(New Certificate(oCase.CertId).Dealer.Id)
+            End If
+
+            If oDealer.Show_Previous_Caller_Info = FlagYes AndAlso Not Session("PrevCallerFirstName") = String.Empty Then
+                ShowPrevCallerView()
+            End If
         End If
     End Sub
 

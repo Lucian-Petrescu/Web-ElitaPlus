@@ -1231,6 +1231,15 @@ Partial Class ClaimForm
             End If
         End If
 
+        'logic to enable the change fulfillment button
+        If String.IsNullOrWhiteSpace(State.MyBO.CertificateItemCoverage.FulfillmentProfileCode) = False AndAlso State.MyBO.Status = BasicClaimStatus.Active Then
+            btnChangeFulfillment.Enabled = True
+            ControlMgr.SetVisibleControl(Me, btnChangeFulfillment, True)
+            'disable the replace item button if change fulfillmen button is enabled
+            btnReplaceItem.Enabled = False
+            ControlMgr.SetVisibleControl(Me, btnReplaceItem, False)
+        End If
+
     End Sub
 
     Private Sub EnableDisableButtonsConditionally()
@@ -1377,6 +1386,9 @@ Partial Class ClaimForm
         ControlMgr.SetVisibleControl(Me, Me.btnAddConseqDamage, isFlag)
         btnPriceRetailSearch.Enabled = isFlag
         ControlMgr.SetVisibleControl(Me, Me.btnPriceRetailSearch, isFlag)
+
+        btnChangeFulfillment.Enabled = isFlag
+        ControlMgr.SetVisibleControl(Me, Me.btnChangeFulfillment, isFlag)
     End Sub
     Protected Sub DisableButtonsForClaimSystem()
         If Not Me.State.MyBO.CertificateId.Equals(Guid.Empty) Or Me.State.MyBO.IsClaimChild = Codes.YESNO_Y Then
@@ -3438,6 +3450,15 @@ Partial Class ClaimForm
         Catch ex As Threading.ThreadAbortException
         Catch ex As Exception
             Me.HandleErrors(ex, Me.MasterPage.MessageController)
+        End Try
+    End Sub
+
+    Private Sub btnChangeFulfillment_Click(sender As Object, e As EventArgs) Handles btnChangeFulfillment.Click
+        Try
+            NavController.Navigate(Me, FlowEvents.EventClaimRecordingChangeFulfillment, New ClaimRecordingForm.Parameters(State.MyBO.Certificate.Id, State.MyBO.Id, Nothing, Codes.CasePurposeChangeFulfillment, Me.State.IsCallerAuthenticated))
+        Catch ex As Threading.ThreadAbortException
+        Catch ex As Exception
+            HandleErrors(ex, MasterPage.MessageController)
         End Try
     End Sub
 
