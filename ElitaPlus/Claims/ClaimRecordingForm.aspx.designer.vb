@@ -293,6 +293,15 @@ Partial Public Class ClaimRecordingForm
     Protected WithEvents headerDeviceInfo As Global.System.Web.UI.HtmlControls.HtmlGenericControl
 
     '''<summary>
+    '''lblModifyDvcInfo control.
+    '''</summary>
+    '''<remarks>
+    '''Auto-generated field.
+    '''To modify move field declaration from designer file to code-behind file.
+    '''</remarks>
+    Protected WithEvents lblModifyDvcInfo As Global.System.Web.UI.WebControls.Label
+
+    '''<summary>
     '''lblDvcSelected control.
     '''</summary>
     '''<remarks>

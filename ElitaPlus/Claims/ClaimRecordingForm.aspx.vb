@@ -1169,7 +1169,6 @@ Public Class ClaimRecordingForm
     Private Sub ModifiedDeviceInfo()
 
         Try
-            Me.headerDeviceInfo.InnerText = TranslationBase.TranslateLabelOrMessage("MODIFY_DEVICE_INFORMATION")
             Dim oCertificate As Certificate = New Certificate(State.CertificateId)
             Dim Dealer = oCertificate.Dealer.Dealer
             Dim makesAndModels = GetMakesAndModels(Dealer)
