@@ -193,6 +193,10 @@ Public NotInheritable Class MultiAuthClaim
         MyBase.Save(Transaction)
 
     End Sub
+    Public Sub AdjustAuthorizationAmount(ByVal VoidAuthorizationAmount As Decimal)
+        MyBase.AuthorizedAmount -= VoidAuthorizationAmount
+    End Sub
+
 
     Public Function AddClaimAuthorization(ByVal serviceCenterId As Guid) As ClaimAuthorization
         Dim newClaimAuth As ClaimAuthorization
