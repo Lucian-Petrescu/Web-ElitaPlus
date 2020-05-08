@@ -350,6 +350,9 @@ Public Class Codes
     Public Const PAYMENT_METHOD__PAYMENT_ORDER As String = "PYO"
     Public Const PAYMENT_METHOD__DARTY_GIFT_CARD As String = "DGFT"
 
+    'CLAIM RESERVED OPTIONS
+    Public Const CLAIM_RESERVED__SALES_PRICE_XCD As String = "CLAIMRESERVED-SP"
+
     'LANGUAGES
     Public Const ENGLISH_LANG_CODE As String = "EN"
 

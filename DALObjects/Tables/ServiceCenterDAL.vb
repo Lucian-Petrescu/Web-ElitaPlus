@@ -86,6 +86,10 @@ Public Class ServiceCenterDAL
     Public Const COL_NAME_PRE_INVOICE_ID As String = "pre_invoice_id"
     Public Const COL_NAME_AUTO_PROCESS_INV_FILE_XCD As String = "auto_process_inv_file_xcd"
 
+    Public Const COL_NAME_CLAIM_RESERVED_BASED_ON_XCD As String = "Claim_Reserved_Based_On_Xcd"
+
+    Public Const COL_NAME_CLAIM_RESERVED_PERCENT As String = "claim_reserved_percent"
+
     'US 224101 
     Public Const PAR_OUT_NAME_RETURN_CODE As String = "po_return_code"
 
@@ -752,6 +756,8 @@ Public Class ServiceCenterDAL
         Return ds
     End Function
 End Class
+
+
 
 
 

@@ -987,6 +987,15 @@ Partial Class ServiceCenterForm
             PL_APPROVE_SEC.Visible = False
         End If
 
+        If Not IsNothing(Me.State.MyBO.ClaimReservedBasedOnXcd) then
+            ControlMgr.SetVisibleControl(Me, lblclaimreservedPercent, True)
+            ControlMgr.SetVisibleControl(Me, txtclaimreservedPercent, True)
+        else
+            txtclaimreservedPercent.text = string.empty
+            ControlMgr.SetVisibleControl(Me, lblclaimreservedPercent, False)
+            ControlMgr.SetVisibleControl(Me, txtclaimreservedPercent, False)
+        End If
+
         'disable the controls if user has view only permission for this form
         If Me.PagePermissionType = FormAuthorization.enumPermissionType.VIEWONLY Then
             SetEnabledForControlFamily(Me.EditPanel, False)
@@ -1040,6 +1049,8 @@ Partial Class ServiceCenterForm
         Me.BindBOPropertyToLabel(Me.State.myContactsChildBO, "Effective", Me.lblEffectiveDate)
         Me.BindBOPropertyToLabel(Me.State.myContactsChildBO, "Expiration", Me.lblExpirationDate)
         Me.BindBOPropertyToLabel(Me.State.MyBO, "PreInvoiceId", Me.lblPreInvoice)
+
+        Me.BindBOPropertyToLabel(Me.State.MyBO, "ClaimReservedPercent", Me.lblclaimreservedPercent)
     End Sub
 
     Private Sub PopulateCountry()
@@ -1187,6 +1198,14 @@ Partial Class ServiceCenterForm
                             .BlankItemValue = String.Empty,
                             .ValueFunc = AddressOf .GetExtendedCode
                         })
+
+            Me.ddlClaimReservedbasedon.Populate(CommonConfigManager.Current.ListManager.GetList(listCode:="CLAIMRESERVED", languageCode:=Thread.CurrentPrincipal.GetLanguageCode()),
+                                                    New PopulateOptions() With
+                                                       {
+                                                       .AddBlankItem = True,
+                                                       .BlankItemValue = String.Empty,
+                                                       .ValueFunc = AddressOf .GetExtendedCode
+                                                       })
         End With
     End Sub
 
@@ -1342,6 +1361,13 @@ Partial Class ServiceCenterForm
             Me.PopulateControlFromPropertyName(Me.State.MyBO, Me.ddlPreInvoice, "PreInvoiceId")
             ddlAutoProcessInventoryFile.ClearSelection()
             BindSelectItem(State.MyBO.AutoProcessInventoryFileXcd, ddlAutoProcessInventoryFile)
+
+            ddlClaimReservedbasedon.ClearSelection()
+            BindSelectItem(.ClaimReservedBasedOnXcd, ddlClaimReservedbasedon)
+            If Not .ClaimReservedPercent Is nothing
+                Me.PopulateControlFromBOProperty(txtclaimreservedPercent, GetAmountFormattedPercentString(.ClaimReservedPercent))
+            End If
+            
         End With
 
         Dim list As DataView = LookupListNew.GetPriceListLookupList(Me.State.MyBO.CountryId)
@@ -1545,6 +1571,9 @@ Partial Class ServiceCenterForm
             End If
 
             Me.PopulateBOProperty(Me.State.MyBO, "AutoProcessInventoryFileXcd", Me.ddlAutoProcessInventoryFile, False, True)
+
+            Me.PopulateBOProperty(Me.State.MyBO, "ClaimReservedBasedOnXcd", Me.ddlClaimReservedbasedon, False, True)
+            Me.PopulateBOProperty(Me.State.MyBO, "ClaimReservedPercent", Me.txtclaimreservedPercent)
 
         End With
 
@@ -3019,6 +3048,20 @@ Partial Class ServiceCenterForm
             moBankInfoController.Visible = False
         End If
     End Sub
+
+    Protected Sub ddlClaimReservedbasedon_SelectedIndexChanged(ByVal sender As Object, ByVal e As EventArgs) Handles ddlClaimReservedbasedon.SelectedIndexChanged
+        'Dim oClaimReservedSalespriceId As Guid = LookupListNew.GetIdFromCode(LookupListNew.LK_CLAIMRESERVED, Codes.CLAIM_RESERVED__SALES_PRICE)
+        if Not ddlClaimReservedbasedon.SelectedValue.Equals(string.Empty) then
+            ControlMgr.SetVisibleControl(Me, lblclaimreservedPercent, True)
+            ControlMgr.SetVisibleControl(Me, txtclaimreservedPercent, True)
+        else
+            txtclaimreservedPercent.text = string.empty
+            ControlMgr.SetVisibleControl(Me, lblclaimreservedPercent, False)
+            ControlMgr.SetVisibleControl(Me, txtclaimreservedPercent, False)
+
+        End If
+    End Sub
+
 
     Protected Sub CheckBoxShipping_CheckedChanged(ByVal sender As Object, ByVal e As EventArgs) Handles CheckBoxShipping.CheckedChanged
         If CheckBoxShipping.Checked Then
