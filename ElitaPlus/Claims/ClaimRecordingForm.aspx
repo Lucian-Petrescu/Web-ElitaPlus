@@ -257,8 +257,9 @@
                     </table>
                     <br />
                      <div class="dataContainer">
-                        <h2 class="dataGridHeader">MODIFY_DEVICE_INFORMATION</h2>
-                        <div class="stepformZone">
+                         <h2 class="dataGridHeader" runat="server" id="headerDeviceInfo">
+                            <asp:Label runat="server" ID="lblModifyDvcInfo" Text="MODIFY_DEVICE_INFORMATION"></asp:Label></h2>
+                    <div class="stepformZone">
                     <table id="tblModifyDeviceInfo" style="width: 100%; height: 100%" class="formGrid">
                         <tr>
                             <td width="70%" align="left">
