@@ -352,7 +352,7 @@ Public Class CoverageRate
     End Property
 
     'US 521697
-    '<ValueMandatory("", Message:="CommissionsPercentSourceXcd is required."), ValidStringLength("", Max:=50, Message:="CommissionsPercentSourceXcd should be between 1 to 50 chars.")>
+    <ValidStringLength("", Max:=50, Message:="CommissionsPercentSourceXcd should be between 1 to 50 chars.")>
     Public Property CommissionsPercentSourceXcd() As String
         Get
             CheckDeleted()
@@ -367,7 +367,8 @@ Public Class CoverageRate
             Me.SetValue(CoverageRateDAL.COL_NAME_COMMISSIONS_PERCENT_SOURCE_XCD, Value)
         End Set
     End Property
-    '<ValueMandatory("", Message:="MarketingPercentSourceXcd is required."), ValidStringLength("", Max:=50, Message:="MarketingPercentSourceXcd should be between 1 to 50 chars.")>
+    
+    <ValidStringLength("", Max:=50, Message:="MarketingPercentSourceXcd should be between 1 to 50 chars.")>
     Public Property MarketingPercentSourceXcd() As String
         Get
             CheckDeleted()
@@ -382,7 +383,8 @@ Public Class CoverageRate
             Me.SetValue(CoverageRateDAL.COL_NAME_MARKETING_PERCENT_SOURCE_XCD, Value)
         End Set
     End Property
-    '<ValueMandatory("", Message:="AdminExpenseSourceXcd is required."), ValidStringLength("", Max:=50, Message:="AdminExpenseSourceXcd should be between 1 to 50 chars.")>
+    
+    <ValidStringLength("", Max:=50, Message:="AdminExpenseSourceXcd should be between 1 to 50 chars.")>
     Public Property AdminExpenseSourceXcd() As String
         Get
             CheckDeleted()
@@ -397,7 +399,8 @@ Public Class CoverageRate
             Me.SetValue(CoverageRateDAL.COL_NAME_ADMIN_EXPENSE_SOURCE_XCD, Value)
         End Set
     End Property
-    '<ValueMandatory("", Message:="ProfitPercentSourceXcd is required."), ValidStringLength("", Max:=50, Message:="ProfitPercentSourceXcd should be between 1 to 50 chars.")>
+    
+    <ValidStringLength("", Max:=50, Message:="ProfitPercentSourceXcd should be between 1 to 50 chars.")>
     Public Property ProfitPercentSourceXcd() As String
         Get
             CheckDeleted()
@@ -412,7 +415,8 @@ Public Class CoverageRate
             Me.SetValue(CoverageRateDAL.COL_NAME_PROFIT_PERCENT_SOURCE_XCD, Value)
         End Set
     End Property
-    '<ValueMandatory("", Message:="LossCostPercentSourceXcd is required."), ValidStringLength("", Max:=50, Message:="LossCostPercentSourceXcd should be between 1 to 50 chars.")>
+    
+    <ValidStringLength("", Max:=50, Message:="LossCostPercentSourceXcd should be between 1 to 50 chars.")>
     Public Property LossCostPercentSourceXcd() As String
         Get
             CheckDeleted()
