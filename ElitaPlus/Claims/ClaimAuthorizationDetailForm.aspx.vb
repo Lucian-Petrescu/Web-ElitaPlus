@@ -1316,17 +1316,21 @@ Partial Class ClaimAuthorizationDetailForm
                 ControlMgr.SetVisibleControl(Me,btnVoidAuthSave,False)
                 ControlMgr.SetVisibleControl(Me,btnVoidAuthCancel,False)
                 ControlMgr.SetVisibleControl(Me,btnVoidAuthClose,True)
-               
-                
+
+
                 If CloseClaimAsPaid() Then
                     State.ClaimBO.ReasonClosedId = LookupListNew.GetIdFromCode(LookupListNew.LK_REASONS_CLOSED, Codes.REASON_CLOSED__TO_BE_PAID)
-                    CloseClaimWithCloseReason(State.MyBO.AuthorizedAmount)
-                ElseIf CloseClaimAsVoid()Then 
+                    HandleCloseClaimLogic()
+                ElseIf CloseClaimAsVoid() Then
                     State.ClaimBO.ReasonClosedId = LookupListNew.GetIdFromCode(LookupListNew.LK_REASONS_CLOSED, Codes.REASON_CLOSED_CLAIM_VOID)
-                    CloseClaimWithCloseReason(State.MyBO.AuthorizedAmount)
+                    HandleCloseClaimLogic()
                 End If
- 
-           Else
+
+                State.ClaimBO.AdjustAuthorizationAmount(State.MyBO.AuthorizedAmount)
+                State.ClaimBO.Save()
+                lblVoidAuthStatus.Text = TranslationBase.TranslateLabelOrMessage(Message.MSG_CLAIM_AUTH_VOIDED_AND_CLAIM_CLOSED)
+
+            Else
                 MasterPage.MessageController.AddInformation(Message.MSG_RECORD_NOT_SAVED)
             End If
         Catch ex As Exception
@@ -1338,14 +1342,6 @@ Partial Class ClaimAuthorizationDetailForm
         
     End Sub
 
-    Private Sub CloseClaimWithCloseReason(ByVal VoidAuthorizationAmount As Decimal)
-        If Not State.ClaimBO.ReasonClosedId = Guid.Empty Then
-            HandleCloseClaimLogic()
-            State.ClaimBO.AdjustAuthorizationAmount(VoidAuthorizationAmount)
-            State.ClaimBO.Save()
-            lblVoidAuthStatus.Text = TranslationBase.TranslateLabelOrMessage(Message.MSG_CLAIM_AUTH_VOIDED_AND_CLAIM_CLOSED)
-        End If
-    End Sub
 
     Private Function CloseClaimAsVoid() As Boolean
        If State.ClaimBO.NonVoidClaimAuthorizationList.Any(Function(i) i.AuthorizationNumber <> State.MyBO.AuthorizationNumber AndAlso i.ClaimAuthStatus <> ClaimAuthorizationStatus.Cancelled) Then
