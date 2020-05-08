@@ -352,7 +352,7 @@ Public Class CoverageRate
     End Property
 
     'US 521697
-    <ValidStringLength("", Max:=50, Message:="CommissionsPercentSourceXcd should be between 1 to 50 chars.")>
+    <ValidStringLength("", Max:=50, Message:="CommissionsPercentSourceXcd should be between 1 to 30 chars.")>
     Public Property CommissionsPercentSourceXcd() As String
         Get
             CheckDeleted()
@@ -368,7 +368,7 @@ Public Class CoverageRate
         End Set
     End Property
     
-    <ValidStringLength("", Max:=50, Message:="MarketingPercentSourceXcd should be between 1 to 50 chars.")>
+    <ValidStringLength("", Max:=50, Message:="MarketingPercentSourceXcd should be between 1 to 30 chars.")>
     Public Property MarketingPercentSourceXcd() As String
         Get
             CheckDeleted()
@@ -384,7 +384,7 @@ Public Class CoverageRate
         End Set
     End Property
     
-    <ValidStringLength("", Max:=50, Message:="AdminExpenseSourceXcd should be between 1 to 50 chars.")>
+    <ValidStringLength("", Max:=50, Message:="AdminExpenseSourceXcd should be between 1 to 30 chars.")>
     Public Property AdminExpenseSourceXcd() As String
         Get
             CheckDeleted()
@@ -400,7 +400,7 @@ Public Class CoverageRate
         End Set
     End Property
     
-    <ValidStringLength("", Max:=50, Message:="ProfitPercentSourceXcd should be between 1 to 50 chars.")>
+    <ValidStringLength("", Max:=50, Message:="ProfitPercentSourceXcd should be between 1 to 30 chars.")>
     Public Property ProfitPercentSourceXcd() As String
         Get
             CheckDeleted()
@@ -416,7 +416,7 @@ Public Class CoverageRate
         End Set
     End Property
     
-    <ValidStringLength("", Max:=50, Message:="LossCostPercentSourceXcd should be between 1 to 50 chars.")>
+    <ValidStringLength("", Max:=50, Message:="LossCostPercentSourceXcd should be between 1 to 30 chars.")>
     Public Property LossCostPercentSourceXcd() As String
         Get
             CheckDeleted()
