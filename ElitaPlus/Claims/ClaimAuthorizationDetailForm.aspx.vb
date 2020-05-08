@@ -1307,7 +1307,9 @@ Partial Class ClaimAuthorizationDetailForm
            If State.MyBO.IsFamilyDirty Then
                
                 lblVoidAuthStatus.Visible = True
+
                 State.MyBO.Void()
+                State.ClaimBO.Save()
                 AddCommentToClaim(txtAuthVoidComment.Text, State.ClaimBO)
 
                 lblVoidAuthStatus.Text = TranslationBase.TranslateLabelOrMessage(Message.MSG_CLAIM_AUTH_VOIDED)
@@ -1320,15 +1322,15 @@ Partial Class ClaimAuthorizationDetailForm
 
                 If CloseClaimAsPaid() Then
                     State.ClaimBO.ReasonClosedId = LookupListNew.GetIdFromCode(LookupListNew.LK_REASONS_CLOSED, Codes.REASON_CLOSED__TO_BE_PAID)
-                    HandleCloseClaimLogic()
                 ElseIf CloseClaimAsVoid() Then
                     State.ClaimBO.ReasonClosedId = LookupListNew.GetIdFromCode(LookupListNew.LK_REASONS_CLOSED, Codes.REASON_CLOSED_CLAIM_VOID)
-                    HandleCloseClaimLogic()
                 End If
 
-                State.ClaimBO.AdjustAuthorizationAmount(State.MyBO.AuthorizedAmount)
-                State.ClaimBO.Save()
-                lblVoidAuthStatus.Text = TranslationBase.TranslateLabelOrMessage(Message.MSG_CLAIM_AUTH_VOIDED_AND_CLAIM_CLOSED)
+                If Not State.ClaimBO.ReasonClosedId = Guid.Empty Then
+                    HandleCloseClaimLogic()
+                    State.ClaimBO.Save()
+                    lblVoidAuthStatus.Text = TranslationBase.TranslateLabelOrMessage(Message.MSG_CLAIM_AUTH_VOIDED_AND_CLAIM_CLOSED)
+                End If
 
             Else
                 MasterPage.MessageController.AddInformation(Message.MSG_RECORD_NOT_SAVED)

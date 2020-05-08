@@ -181,9 +181,8 @@ Public NotInheritable Class MultiAuthClaim
 
     Public Overrides Sub Save(Optional ByVal Transaction As IDbTransaction = Nothing)
         'Assigning it in case it is not loaded even one time
-        If MyBase.AuthorizedAmount = 0 Then
-            MyBase.AuthorizedAmount = CalculateAuthAmount()
-        End If
+
+        MyBase.AuthorizedAmount = CalculateAuthAmount()
         MyBase.RepairDate = GetRepairDate()
         MyBase.PickUpDate = GetPickUpDate()
 
@@ -193,11 +192,6 @@ Public NotInheritable Class MultiAuthClaim
         MyBase.Save(Transaction)
 
     End Sub
-    Public Sub AdjustAuthorizationAmount(ByVal VoidAuthorizationAmount As Decimal)
-        MyBase.AuthorizedAmount -= VoidAuthorizationAmount
-    End Sub
-
-
     Public Function AddClaimAuthorization(ByVal serviceCenterId As Guid) As ClaimAuthorization
         Dim newClaimAuth As ClaimAuthorization
         Try
