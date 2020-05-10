@@ -12,7 +12,7 @@
 		rightMargin="0" MS_POSITIONING="GridLayout">
 		<form id="Form1" method="post" runat="server">
 			<br>
-			</TR>
+			
 			<TABLE style="Z-INDEX: 102; LEFT: 3px; WIDTH: 643px; POSITION: absolute; TOP: 4px; HEIGHT: 455px">
 				<TR>
 					<TD style="HEIGHT: 390px" align="center">

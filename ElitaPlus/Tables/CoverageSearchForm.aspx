@@ -21,7 +21,7 @@
             <tr>
                 <td nowrap align="left" colspan="3">
                     &nbsp;&nbsp;
-                    <uc1:MultipleColumnDDLabelControl ID="multipleDropControl" runat="server" SkinID="SmallDropdown">
+                    <uc1:MultipleColumnDDLabelControl ID="multipleDropControl" runat="server">
                     </uc1:MultipleColumnDDLabelControl>
                 </td>
             </tr>

@@ -93,7 +93,7 @@
                                                 </tr>
                                         </asp:Panel>
                                         <tr>
-                                            <td align="left" width="100%" colspan="5">
+                                            <td align="left" width="100%">
                                                 <%--     changes for tab--%>
                                                 <div id="tabs" class="style-tabs-old">
                                                     <ul>
@@ -112,7 +112,7 @@
                                                                 </td>
                                                             </tr>
                                                             <tr>
-                                                                <td align="middle" colspan="2">
+                                                                <td style="vertical-align:middle" colspan="2">
                                                                     <div id="scroller" style="width: 98%" align="center">
                                                                         <asp:GridView ID="Grid" runat="server" Width="100%" OnRowCreated="RowCreated" OnRowCommand="RowCommand"
                                                                             AllowPaging="True" AllowSorting="True" CellPadding="1" AutoGenerateColumns="False"

@@ -33,7 +33,10 @@
         });
     </script>
     <style type="text/css">
-        .myPanelClass { height: 95%; overflow: auto;}
+        .myPanelClass {
+            height: 95%;
+            overflow: auto;
+        }
     </style>
 </head>
 <body leftmargin="0" topmargin="0" onload="changeScrollbarColor();" border="0" ms_positioning="GridLayout">
@@ -43,7 +46,7 @@
             cellspacing="0"
             cellpadding="0" width="98%" bgcolor="#d5d6e4" border="0">
             <tr>
-                <td style="vertical-align:top;">
+                <td style="vertical-align: top;">
                     <table width="100%" border="0">
                         <tr>
                             <td height="20">
@@ -68,7 +71,7 @@
                 </td>
             </tr>
             <tr>
-                <td style="vertical-align:top;text-align:center;" height="100%" >
+                <td style="vertical-align: top; text-align: center;" height="100%">
                     <asp:Panel ID="WorkingPanel" runat="server" CssClass="myPanelClass">
                         <table id="tblMain1" style="border: 1px solid #999999; height: 95%;" cellspacing="0"
                             cellpadding="6" rules="cols" width="98%" align="center" bgcolor="#fef9ea" border="0">
@@ -81,10 +84,10 @@
                                 </td>
                             </tr>
                             <tr>
-                                <td style="vertical-align:top;">
+                                <td style="vertical-align: top;">
                                     <table cellspacing="0" cellpadding="0" width="100%" border="0">
                                         <tr>
-                                            <td style="vertical-align:top;" colspan="2">
+                                            <td style="vertical-align: top;" colspan="2">
                                                 <table cellspacing="0" cellpadding="0" width="100%" border="0">
                                                     <tr>
                                                         <td style="width: 10%;"></td>
@@ -145,7 +148,6 @@
                                                             <td colspan="4">&nbsp;
                                                             </td>
                                                         </tr>
-                                                    </tr>
                                                 </table>
                                             </td>
                                         </tr>
@@ -155,14 +157,14 @@
                                             </td>
                                         </tr>
                                         <tr id="trPageSize" runat="server">
-                                            <td  style="vertical-align:top;text-align:left;" align="left">&nbsp;
+                                            <td style="vertical-align: top; text-align: left;" align="left">&nbsp;
                                             </td>
                                             <td align="right">&nbsp;
                                             </td>
                                         </tr>
                                         <tr>
                                             <asp:Panel ID="pnlRuleDealer" runat="server">
-                                                <td style="vertical-align:bottom;" align="left" colspan="2">
+                                                <td style="vertical-align: bottom;" align="left" colspan="2">
                                                     <asp:HiddenField ID="hdnSelectedTab" runat="server" Value="0" />
                                                     <div id="tabs" class="style-tabs-old style-tabs-oldBG" style="border: none;">
                                                         <ul>
@@ -177,7 +179,7 @@
                                                             <table id="tblCommentDetail" border="0" cellpadding="2" cellspacing="2"
                                                                 rules="cols" style="width: 97%; height: 100%">
                                                                 <tr>
-                                                                    <td align="left" style="vertical-align:top;" >
+                                                                    <td align="left" style="vertical-align: top;">
                                                                         <ur2:UserControlQuestionsAvailable ID="UC_AvaSel_Rule" runat="server"
                                                                             tabindex="12"></ur2:UserControlQuestionsAvailable>
                                                                     </td>
@@ -188,7 +190,7 @@
                                                             <table id="tblDealer" border="0" cellpadding="2" cellspacing="2" rules="cols"
                                                                 style="width: 97%; height: 100%">
                                                                 <tr>
-                                                                    <td align="left" style="vertical-align:top;">
+                                                                    <td align="left" style="vertical-align: top;">
                                                                         <url:UserControlDealerAvailable ID="UC_AvaSel_Dealer" runat="server" tabindex="12"></url:UserControlDealerAvailable>
                                                                     </td>
                                                             </table>
@@ -197,7 +199,7 @@
                                                             <table id="Table3" border="0" cellpadding="2" cellspacing="2" rules="cols"
                                                                 style="width: 97%; height: 100%">
                                                                 <tr>
-                                                                    <td align="left" style="vertical-align:top;">
+                                                                    <td align="left" style="vertical-align: top;">
                                                                         <ur1:UserControlCompanyAvailable ID="UC_AvaSel_Company" runat="server" tabindex="12"></ur1:UserControlCompanyAvailable>
                                                                     </td>
                                                             </table>
@@ -215,8 +217,8 @@
                                     <hr style="height: 1px" />
                                 </td>
                             </tr>
-                            <tr style="vertical-align:bottom;">
-                                <td style="vertical-align:bottom; white-space:nowrap;" nowrap align="left" height="20">
+                            <tr style="vertical-align: bottom;">
+                                <td style="vertical-align: bottom; white-space: nowrap;" nowrap align="left" height="20">
                                     <asp:Button ID="btnBack" Style="background-image: url(../Navigation/images/icons/back_icon.gif); cursor: hand; background-repeat: no-repeat"
                                         TabIndex="185" runat="server" Font-Bold="false"
                                         Width="90px" CssClass="FLATBUTTON" Height="20px" Text="Back"></asp:Button>&nbsp;

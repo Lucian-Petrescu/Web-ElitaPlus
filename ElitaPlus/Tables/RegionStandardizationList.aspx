@@ -175,6 +175,6 @@
 <asp:button id=moBtnCancel style="BACKGROUND-IMAGE: url(../Navigation/images/icons/cancel_icon.gif); CURSOR: hand; BACKGROUND-REPEAT: no-repeat" runat="server" Font-Bold="false" Width="90px" CssClass="FLATBUTTON" Text="Cancel" height="20px"></asp:button></TD></TR></TABLE>
 						</asp:panel></td>
 				</tr>
-			</TABLE></TD></TR></TABLE></form>
+			</TABLE></form>
 	</body>
 </HTML>

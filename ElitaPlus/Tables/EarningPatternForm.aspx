@@ -39,6 +39,7 @@
 			<TABLE id="moTableOuter" style="BORDER-RIGHT: black 1px solid; BORDER-TOP: black 1px solid; MARGIN: 5px; BORDER-LEFT: black 1px solid; BORDER-BOTTOM: black 1px solid"
 				height="93%" cellSpacing="0" cellPadding="0" rules="none" width="98%" bgColor="#d5d6e4"
 				border="0">
+			<tbody>
 				<TR>
 					<TD style="HEIGHT: 8px" vAlign="top" align="center"></TD>
 				</TR>
@@ -136,7 +137,7 @@
                                                                 </td>
                                                             </tr>
                                                             <tr>
-                                                                <td align="middle" colspan="2">
+                                                                <td style="vertical-align: middle;" colspan="2">
                                                                     <div id="scroller" style="width: 98%" align="center">
                                                                         <asp:GridView ID="moDataGrid" runat="server" Width="100%" OnRowCreated="ItemCreated" OnRowCommand="ItemCommand"
                                                                             AllowPaging="True" AllowSorting="True" CellPadding="1" AutoGenerateColumns="False" CssClass="DATAGRID">

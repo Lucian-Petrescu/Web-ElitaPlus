@@ -341,7 +341,7 @@
                         <td align="left" nowrap="nowrap">
                             <asp:TextBox ID="txtSMSTriggerId" runat="server" SkinID="MediumTextBox"></asp:TextBox>
                         </td>
-                        </td>
+                        
                     </tr>
                 </table>
             </div>

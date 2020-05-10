@@ -80,7 +80,7 @@
 									</TD>
 								</TR>
 								<TR>
-									<TD vAlign="bottom" noWrap align="left" height="20">
+									<TD vAlign="bottom" style="white-space: nowrap" align="left" height="20">
 										<asp:button id="btnBack" style="BACKGROUND-IMAGE: url(../Navigation/images/icons/back_icon.gif); CURSOR: hand; BACKGROUND-REPEAT: no-repeat"
 											tabIndex="185" runat="server" Font-Bold="false" Width="90px" CssClass="FLATBUTTON" Text="Back"
 											height="20px"></asp:button>&nbsp;
@@ -139,8 +139,6 @@
 				return newHeight;
 			}
 		</script>
-		</TR></TABLE>
-		<DIV></DIV>
-		</TR></TABLE></TR></TABLE></FORM>
+		
 	</body>
 </HTML>

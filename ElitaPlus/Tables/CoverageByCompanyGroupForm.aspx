@@ -16,11 +16,11 @@
 	<body leftMargin="0" topMargin="0" onload="changeScrollbarColor();" MS_POSITIONING="GridLayout">
 		<form id="Form1" method="post" runat="server">
 			<!--Start Header-->
-			<TABLE style="BORDER-RIGHT: black 1px solid; BORDER-TOP: black 1px solid; MARGIN: 5px; BORDER-LEFT: black 1px solid; BORDER-BOTTOM: black 1px solid"
+			<table style="BORDER-RIGHT: black 1px solid; BORDER-TOP: black 1px solid; MARGIN: 5px; BORDER-LEFT: black 1px solid; BORDER-BOTTOM: black 1px solid"
 				cellSpacing="0" cellPadding="0" width="98%" bgColor="#d5d6e4" border="0">
 				<TR>
 					<TD vAlign="top">
-						<TABLE width="100%" border="0">
+						<table width="100%" border="0">
 							<TR>
 								<TD height="20">
 									<P>&nbsp;
@@ -34,7 +34,7 @@
 					</TD>
 				</TR>
 			</TABLE>
-			<TABLE id="tblOuter2" style="BORDER-RIGHT: black 1px solid; BORDER-TOP: black 1px solid; MARGIN: 5px; BORDER-LEFT: black 1px solid; BORDER-BOTTOM: black 1px solid"
+			<table id="tblOuter2" style="BORDER-RIGHT: black 1px solid; BORDER-TOP: black 1px solid; MARGIN: 5px; BORDER-LEFT: black 1px solid; BORDER-BOTTOM: black 1px solid"
 				height="93%" cellSpacing="0" cellPadding="0" rules="none" width="98%" bgColor="#d5d6e4"
 				border="0"> <!--d5d6e4-->
 				<tr>
@@ -42,7 +42,7 @@
 				</tr>
 				<tr>
 					<td vAlign="top" align="center"><asp:panel id="WorkingPanel" runat="server" Height="98%" Width="100%">
-							<TABLE id="tblMain1" style="BORDER-RIGHT: #999999 1px solid; BORDER-TOP: #999999 1px solid; BORDER-LEFT: #999999 1px solid; BORDER-BOTTOM: #999999 1px solid"
+							<table id="tblMain1" style="BORDER-RIGHT: #999999 1px solid; BORDER-TOP: #999999 1px solid; BORDER-LEFT: #999999 1px solid; BORDER-BOTTOM: #999999 1px solid"
 								height="98%" cellSpacing="0" cellPadding="6" rules="cols" width="98%" align="center"
 								bgColor="#fef9ea" border="0">
 								<TR>
@@ -52,7 +52,7 @@
 								<TR>
 									<TD align="center" style="vertical-align:top;">
 										<asp:Panel id="EditPanel_WRITE" runat="server" Width="100%" Height="11.77%" Wrap="False">
-											<TABLE id="Table1" style="HEIGHT: 141px" cellSpacing="1" cellPadding="0" width="100%" border="0">
+											<table id="Table1" style="HEIGHT: 141px" cellSpacing="1" cellPadding="0" width="100%" border="0">
 												<TR>
 													<TD style="WIDTH: 162px; HEIGHT: 19px" align="right">
 														<asp:label id="LabelCompanyGroup" runat="server" Width="96px">COMPANY_GROUP</asp:label></TD>
@@ -98,8 +98,7 @@
 											height="20px"></asp:button>&nbsp;
 										<asp:button id="btnNew_WRITE" style="BACKGROUND-IMAGE: url(../Navigation/images/icons/add_icon.gif); CURSOR: hand; BACKGROUND-REPEAT: no-repeat"
 											tabIndex="200" runat="server" Font-Bold="false" Width="81px" CssClass="FLATBUTTON" Text="New"
-											height="20px"></asp:button>&nbsp;&nbsp;
-									</TD>
+											height="20px"></asp:button>&nbsp;&nbsp;</TD>
 								</TR>
 							</TABLE>
                         <INPUT id="HiddenSaveChangesPromptResponse" type="hidden" name="HiddenSaveChangesPromptResponse"
@@ -140,8 +139,8 @@
 				return newHeight;
 			}
 		</script>
-		</TR></TABLE>
+		
 		<DIV></DIV>
-		</TR></TABLE></TR></TABLE></FORM>
+		
 	</body>
 </HTML>

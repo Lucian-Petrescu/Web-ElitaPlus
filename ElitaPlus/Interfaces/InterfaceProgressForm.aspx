@@ -124,7 +124,7 @@
 				</TR>
 			</TABLE>
 			<IFRAME id="moInterfaceFrame" style="LEFT: 15px; VISIBILITY: hidden; OVERFLOW: hidden; WIDTH: 1px; PADDING-TOP: 0px; POSITION: absolute; TOP: 1px; HEIGHT: 1px"
-				name="iframe1" marginWidth="0" src="" frameBorder="no" scrolling="no"></IFRAME>
+				name="iframe1" marginWidth="0" src="" scrolling="no"></IFRAME>
 		</form>
 	</body>
 </HTML>

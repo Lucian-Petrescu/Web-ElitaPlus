@@ -132,7 +132,7 @@
 									</td>
 								</tr>
 								<tr>
-									<td valign="center">
+									<td style="vertical-align: center;">
 										<asp:button id="btnSave" style="BACKGROUND-IMAGE: url(../Navigation/images/icons/save_trans_icon.gif); CURSOR: hand; BACKGROUND-REPEAT: no-repeat"
 											runat="server" Font-Bold="false" Width="90px" Text="Save" height="20px" CssClass="FLATBUTTON"></asp:button>&nbsp;
 										<asp:button id="btnCancel" style="BACKGROUND-IMAGE: url(../Navigation/images/icons/cancel_icon.gif); CURSOR: hand; BACKGROUND-REPEAT: no-repeat"

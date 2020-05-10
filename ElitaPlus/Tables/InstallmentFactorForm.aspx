@@ -111,7 +111,7 @@
                                                                 </td>
                                                             </tr>
                                                             <tr>
-                                                                <td align="middle" colspan="2">
+                                                                <td style="vertical-align: middle;" colspan="2">
                                                                     <div id="scroller" style="width: 98%" align="center">
                                                                         <asp:DataGrid ID="moDataGrid" runat="server" Width="97%" OnItemCommand="ItemCommand"
                                                                             AutoGenerateColumns="False" BorderStyle="Solid" BorderWidth="1px" BackColor="#DEE3E7"

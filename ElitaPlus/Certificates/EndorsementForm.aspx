@@ -230,7 +230,7 @@
                                         border-left: #999999 1px solid; border-bottom: #999999 1px solid" cellspacing="2"
                                         cellpadding="2" rules="cols" width="100%" border="0">
                                         <tr>
-                                            <td align="middle" colspan="4">
+                                            <td style="vertical-align: middle" colspan="4">
                                                 <asp:GridView ID="grdCoverages" runat="server" Width="100%" AutoGenerateColumns="False"
                                                     OnRowCreated="RowCreated" OnRowCommand="RowCommand" AllowPaging="false" AllowSorting="false"
                                                     SkinID="DetailPageGridView">

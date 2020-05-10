@@ -142,6 +142,6 @@
 			resizeForm(document.getElementById("scroller"));
 			</script>
 		</form>
-		</TR></TBODY></TABLE>
+	
 	</body>
 </HTML>

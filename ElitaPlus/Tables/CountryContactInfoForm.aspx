@@ -20,7 +20,7 @@
 		bottomMargin="0" leftMargin="0" background="../Common/images/back_spacer.jpg" topMargin="0"
 		scroll="no" onload="changeScrollbarColor();" rightMargin="0" MS_POSITIONING="GridLayout">
 		<form id="Form1" method="post" runat="server">
-			<input id="imgURL" type="hidden" name="imgURL" runat="server">
+            <input id="imgURL" type="hidden" name="imgURL" runat="server"/>
 			<input type="hidden" id="hiddenContactInfoReqFields" name="hiddenContactInfoReqFields" value=""/>
 			<asp:panel id="panelForm" runat="server" Height="519px" Width="654px">
 <TABLE cellSpacing="0" cellPadding="0" width="100%" bgColor="#f4f3f8" border="0">
@@ -152,7 +152,7 @@
 							height="3"><IMG height="3" src="../Navigation/images/trans_spacer.gif" width="100%"></TD>
 						<TD width="2" height="3"><IMG height="3" src="../Navigation/images/body_bot_right.jpg" width="2"></TD>
 					</TR>
-				</TABLE></TD></TR></TABLE>
+				</TABLE>
 			</asp:panel>
 			<asp:Literal ID="literalJS" runat="server"></asp:Literal>
 		</form>

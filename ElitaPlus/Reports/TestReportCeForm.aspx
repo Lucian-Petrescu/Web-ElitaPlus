@@ -15,7 +15,7 @@
 			<asp:button id="Button1" style="Z-INDEX: 101; LEFT: 392px; POSITION: absolute; TOP: 128px" runat="server"
                         Text="Get Report"></asp:button><input id="isReportCeVisible" type="hidden" name="isReportCeVisible" runat="server"/>
 			<IFRAME id="moCeReportFrame" style="LEFT: 15px; VISIBILITY: hidden; OVERFLOW: hidden; WIDTH: 675px; PADDING-TOP: 0px; POSITION: absolute; TOP: 70px; HEIGHT: 450px"
-				name="iframe1" marginWidth="0" src="" frameBorder="no" scrolling="no"></IFRAME>
+				name="iframe1" marginWidth="0" src="" scrolling="no"></IFRAME>
 		</form>
 		<script>
 		//debugger;

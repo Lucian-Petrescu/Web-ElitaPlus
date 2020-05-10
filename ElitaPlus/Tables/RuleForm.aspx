@@ -98,14 +98,14 @@
                                                     </tr>
                                                     <tr>
                                                         <td></td>
-                                                        <td nowrap align="right">
+                                                        <td style="white-space: nowrap" align="right">
                                                             <asp:Label ID="moCodeLabel" runat="server">CODE</asp:Label>&nbsp;
                                                         </td>
                                                         <td>&nbsp;
                                                         <asp:TextBox ID="moCodeText" runat="server" Width="55%" CssClass="FLATTEXTBOX_TAB"
                                                             AutoPostBack="False"></asp:TextBox>
                                                         </td>
-                                                        <td nowrap align="right">&nbsp;<asp:Label ID="moRuleTypeLabel" runat="server">RULE_TYPE</asp:Label>
+                                                        <td style="white-space: nowrap" align="right">&nbsp;<asp:Label ID="moRuleTypeLabel" runat="server">RULE_TYPE</asp:Label>
                                                             &nbsp;</td>
                                                         <td>
                                                             <asp:DropDownList ID="ddlRuleType" runat="server" AutoPostBack="True"
@@ -170,7 +170,7 @@
                                                         </tr>
                                                         <tr>
                                                             <td></td>
-                                                            <td nowrap align="right">
+                                                            <td style="white-space: nowrap" align="right">
                                                                 <asp:Label ID="moRuleExecutionPointLabel" runat="server">RULE_EXECUTION_POINT</asp:Label>
                                                             </td>
                                                             <td>&nbsp;<asp:TextBox ID="moRuleExecutionPointText" runat="server"
@@ -181,7 +181,7 @@
                                                             <td>&nbsp;</td>
                                                             <td></td>
                                                         </tr>
-                                                    </tr>
+                                                    
                                                 </table>
                                             </td>
                                         </tr>

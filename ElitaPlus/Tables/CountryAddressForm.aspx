@@ -17,10 +17,10 @@
             <input id="imgURL" type="hidden" name="imgURL" runat="server" />
 			<input type="hidden" id="hiddenAddrFormat" name="hiddenAddrFormat" value=""/>
 			<asp:panel id="panelForm" runat="server">
-<TABLE cellSpacing="0" cellPadding="0" width="100%" bgColor="#f4f3f8" border="0">
+<table cellSpacing="0" cellPadding="0" width="100%" bgColor="#f4f3f8" border="0">
 					<TR>
 						<TD vAlign="top" width="100%" height="264">
-							<TABLE style="BACKGROUND-REPEAT: repeat" height="100%" cellSpacing="0" cellPadding="0"
+							<table style="BACKGROUND-REPEAT: repeat" height="100%" cellSpacing="0" cellPadding="0"
 								width="100%" border="0">
 								<TR>
 									<TD width="2" height="3"><IMG height="3" src="../Navigation/images/body_top_left.jpg" width="2"></TD>
@@ -30,20 +30,20 @@
 								<TR>
 									<TD width="2"><IMG height="100%" src="../Navigation/images/body_mid_left.jpg" width="2"></TD>
 									<TD vAlign="top" width="100%" background="../Navigation/images/body_mid_back.jpg" height="100%">
-										<TABLE style="BACKGROUND-REPEAT: repeat" cellSpacing="2" cellPadding="2" width="100%" background=""
+										<table style="BACKGROUND-REPEAT: repeat" cellSpacing="2" cellPadding="2" width="100%" background=""
 											border="0">
 											<TR>
 												<TD vAlign="top"><!--<div id="scroller" style="OVERFLOW: auto; WIDTH: 100%; HEIGHT: 368px">-->
-													<TABLE id="tblMain" style="BACKGROUND-REPEAT: repeat" cellSpacing="2" cellPadding="2" width="100%"
+													<table id="tblMain" style="BACKGROUND-REPEAT: repeat" cellSpacing="2" cellPadding="2" width="100%"
 														bgColor="#f4f3f8" border="0">
 														<TR>
 															<TD vAlign="top" colSpan="4" height="100%">
 																<DIV id="scroller4" style="OVERFLOW-Y: auto; WIDTH: 100%; HEIGHT: 488px">
-																	<TABLE style="BACKGROUND-REPEAT: repeat" height="100%" cellSpacing="2" cellPadding="2"
+																	<table style="BACKGROUND-REPEAT: repeat" height="100%" cellSpacing="2" cellPadding="2"
 																		width="100%" background="" border="0">
 																		<TR>
 																			<TD>
-																				<TABLE style="BACKGROUND-REPEAT: repeat" height="100%" cellSpacing="0" cellPadding="0"
+																				<table style="BACKGROUND-REPEAT: repeat" height="100%" cellSpacing="0" cellPadding="0"
 																					width="100%" background="" border="0">
 																					<TR>
 																						<TD colSpan="4">
@@ -161,7 +161,7 @@
 							height="3"><IMG height="3" src="../Navigation/images/trans_spacer.gif" width="100%"></TD>
 						<TD width="2" height="3"><IMG height="3" src="../Navigation/images/body_bot_right.jpg" width="2"></TD>
 					</TR>
-				</TABLE></TD></TR></TABLE>
+				</TABLE>
 			</asp:panel>
 			<asp:Literal ID="literalJS" runat="server"></asp:Literal>
 		</form>

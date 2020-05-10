@@ -9,8 +9,7 @@
     <table width="100%" border="0" cellpadding="0" cellspacing="0">
         <tr>
             <td>
-
-                <asp:Panel ID="EditPanel_WRITE" runat="server" Width="100%">
+            <asp:Panel ID="EditPanel_WRITE" runat="server" Width="100%">
                     <table style="vertical-align: middle" cellpadding="0" cellspacing="0" border="0"
                         width="100%">
                         <tr style="vertical-align: middle" valign="middle">
@@ -49,6 +48,7 @@
                                             <td colspan="6" height="10px"></td>
 
                                         </tr>
+                                   
                                    
                         </tr>
                         <tr>
