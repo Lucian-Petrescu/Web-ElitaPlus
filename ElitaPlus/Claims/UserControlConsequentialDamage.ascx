@@ -11,6 +11,7 @@
         $(this).closest("tr").next().remove();
     });
 </script>
+<link href="../App_Themes/Default/Default.css" rel="stylesheet" />
 <div>
     <table width="100%" class="dataGrid">
         <tr>
@@ -24,14 +25,14 @@
 </div>
 <div style="overflow: auto; height: 200px;">
     <asp:GridView ID="GridViewConsequentialDamage" runat="server" Width="100%" AutoGenerateColumns="False" AllowPaging="false"
-        SkinID="DetailPageGridView" AllowSorting="false" PageSize="50" DataKeyNames="case_conseq_damage_id">
+                  CssClass="dataGrid" AllowSorting="false" PageSize="50" DataKeyNames="case_conseq_damage_id">
         <Columns>
             <asp:TemplateField ItemStyle-Width="3%">
                 <ItemTemplate>
                     <img alt="" style="cursor: pointer" src="../App_Themes/Default/Images/plus.png" />
                     <asp:Panel ID="pnlConseqDamageIssue" runat="server" Style="display: none">
                         <asp:GridView ID="GridViewConseqDamageIssue" runat="server" Width="100%" AutoGenerateColumns="False" AllowPaging="false"
-                            SkinID="DetailPageGridView" AllowSorting="false" OnRowDataBound="GridViewConseqDamageIssue_RowDataBound"
+                                      CssClass="dataGrid" AllowSorting="false" OnRowDataBound="GridViewConseqDamageIssue_RowDataBound"
                             OnRowCommand ="GridViewConseqDamageIssue_RowCommand">
                             <Columns>
                                 <asp:TemplateField HeaderText="Issue" ItemStyle-Width="29%">

@@ -1,6 +1,7 @@
 ﻿<%@ Control Language="vb" AutoEventWireup="false" CodeBehind="UserControlCallerInfo.ascx.vb" Inherits="Assurant.ElitaPlus.ElitaPlusWebApp.UserControlCallerInfo" %>
+<link href="../App_Themes/Default/Default.css" rel="stylesheet" />
 <asp:GridView ID="GridViewCaller" runat="server" Width="100%" ShowHeaderWhenEmpty="true"
-    AllowPaging="False" AllowSorting="False" AutoGenerateColumns="False" SkinID="DetailPageGridView" CssClass="grid-view"
+    AllowPaging="False" AllowSorting="False" AutoGenerateColumns="False" CssClass="dataGrid"
     PageSize="30">
     <SelectedRowStyle Wrap="True"></SelectedRowStyle>
     <EditRowStyle Wrap="True"></EditRowStyle>
@@ -22,7 +23,7 @@
                 <asp:Label ID="lblFirstName" Text='<%#Eval("FIRST_NAME")%>' runat="server"></asp:Label>
             </ItemTemplate>
             <EditItemTemplate>
-                <asp:TextBox ID="TextboxFirstName" runat="server" SkinID="SmallTextBox" MaxLength="50" Width="90%"></asp:TextBox>
+                <asp:TextBox ID="TextboxFirstName" runat="server" CssClass="small" MaxLength="50" Width="90%"></asp:TextBox>
             </EditItemTemplate>
         </asp:TemplateField>
         <asp:TemplateField Visible="True" HeaderText="LAST_NAME">
@@ -32,7 +33,7 @@
                 <asp:Label ID="lblLastName" Text='<%#Eval("LAST_NAME")%>' runat="server"></asp:Label>
             </ItemTemplate>
             <EditItemTemplate>
-                <asp:TextBox ID="TextboxLastName" runat="server" SkinID="SmallTextBox" MaxLength="50" Width="90%"></asp:TextBox>
+                <asp:TextBox ID="TextboxLastName" runat="server" CssClass="small" MaxLength="50" Width="90%"></asp:TextBox>
             </EditItemTemplate>
         </asp:TemplateField>
         <asp:TemplateField Visible="True" HeaderText="WORK_PHONE">
@@ -42,7 +43,7 @@
                 <asp:Label ID="lblWorkPhone" Text='<%#Eval("WORK_PHONE")%>' runat="server"></asp:Label>
             </ItemTemplate>
             <EditItemTemplate>
-                <asp:TextBox ID="TextboxWorkPhone" runat="server" SkinID="SmallTextBox" MaxLength="50" Width="90%"></asp:TextBox>
+                <asp:TextBox ID="TextboxWorkPhone" runat="server" CssClass="small" MaxLength="50" Width="90%"></asp:TextBox>
             </EditItemTemplate>
         </asp:TemplateField>
         <asp:TemplateField Visible="True" HeaderText="EMAIL">
@@ -52,7 +53,7 @@
                 <asp:Label ID="lblEmail" Text='<%#Eval("EMAIL")%>' runat="server"></asp:Label>
             </ItemTemplate>
             <EditItemTemplate>
-                <asp:TextBox ID="TextboxEmail" runat="server" SkinID="SmallTextBox" MaxLength="50" Width="90%"></asp:TextBox>
+                <asp:TextBox ID="TextboxEmail" runat="server" CssClass="small" MaxLength="50" Width="90%"></asp:TextBox>
             </EditItemTemplate>
         </asp:TemplateField>
 
@@ -63,7 +64,7 @@
                 <asp:Label ID="lblRelationship" Text='<%#Eval("RELATIONSHIP")%>' runat="server"></asp:Label>
             </ItemTemplate>
             <EditItemTemplate>
-                <asp:DropDownList ID="ddlRelationship" runat="server" SkinID="SmallDropDown" Width="90%"></asp:DropDownList>
+                <asp:DropDownList ID="ddlRelationship" runat="server" CssClass="small" Width="90%"></asp:DropDownList>
             </EditItemTemplate>
         </asp:TemplateField>
     </Columns>

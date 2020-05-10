@@ -5,7 +5,7 @@
     EnableTheming="true" %>
 
 <%@ Register TagPrefix="Elita" TagName="MultipleColumnDDLabelControl" Src="~/Common/MultipleColumnDDLabelControl_New.ascx" %>
-
+<link href="../App_Themes/Default/Default.css" rel="stylesheet" />
 <div class="dataContainer">
 
     <h2 class="dataGridHeader" runat="server">
@@ -22,33 +22,33 @@
                     <td align="left" nowrap="nowrap">
                         <asp:DropDownList runat="server" ID="moSearchByDrop" AutoPostBack="True" />
                     </td>
-                    <td class="padLeft60" nowrap="nowrap" runat="server" id="tdCountryLabel">
+                    <td class="padLeft60" style="white-space: nowrap" runat="server" id="tdCountryLabel">
                         <asp:Label runat="server" ID="moCountryLabel" Text="COUNTRY" />
                         :
                     </td>
-                    <td nowrap="nowrap">
-                        <asp:DropDownList ID="moCountryDrop" runat="server" SkinID="SmallDropDown" AutoPostBack="True">
+                    <td style="white-space: nowrap">
+                        <asp:DropDownList ID="moCountryDrop" runat="server" CssClass="small" AutoPostBack="True">
                         </asp:DropDownList>
                     </td>
-                    <td nowrap="nowrap" runat="server" id="tdCityLabel">
+                    <td style="white-space: nowrap" runat="server" id="tdCityLabel">
                         <asp:Label runat="server" ID="moCityLabel" Text="CITY" />
                         :
                     </td>
-                    <td nowrap="nowrap" runat="server" id="tdCityTextBox">
-                        <asp:TextBox ID="moCityTextbox" runat="server" SkinID="MediumTextBox"></asp:TextBox>
+                    <td style="white-space: nowrap" runat="server" id="tdCityTextBox">
+                        <asp:TextBox ID="moCityTextbox" runat="server" CssClass="medium"></asp:TextBox>
                     </td>
-                    <td nowrap="nowrap" runat="server" id="tdPostalCodeLabel">
+                    <td style="white-space: nowrap" runat="server" id="tdPostalCodeLabel">
                         <asp:Label runat="server" ID="moPostalCodeLabel" Text="CUST_POSTAL_CODE" />
                         :
                     </td>
-                    <td nowrap="nowrap" runat="server" id="tdPostalCodeText">
-                        <asp:TextBox ID="moPostalCodeTextbox" runat="server" SkinID="MediumTextBox"></asp:TextBox>
+                    <td style="white-space: nowrap" runat="server" id="tdPostalCodeText">
+                        <asp:TextBox ID="moPostalCodeTextbox" runat="server" CssClass="medium"></asp:TextBox>
                     </td>
                     <td runat="server" id="tdClearButton">
-                        <asp:Button ID="btnClearSearch" runat="server" SkinID="AlternateLeftButton" Text="Clear"></asp:Button>
+                        <asp:Button ID="btnClearSearch" runat="server"  CssClass="altBtn" Text="Clear"></asp:Button>
                     </td>
                     <td runat="server" id="tdSearchButton">
-                        <asp:Button ID="btnSearch" runat="server" Text="Search" SkinID="SearchButton"></asp:Button>
+                        <asp:Button ID="btnSearch" runat="server" Text="Search" CssClass="searchBtn"></asp:Button>
                     </td>
                 </tr>
             </tbody>
@@ -60,7 +60,7 @@
                 <td class="bor" align="left">
                     <asp:Label ID="lblPageSize" runat="server">Page_Size</asp:Label><asp:Label ID="colonSepertor" runat="server">:</asp:Label>
                     &nbsp;
-                    <asp:DropDownList ID="cboPageSize" runat="server" Width="50px" AutoPostBack="true" SkinID="SmallDropDown">
+                    <asp:DropDownList ID="cboPageSize" runat="server" Width="50px" AutoPostBack="true" CssClass="small">
                         <asp:ListItem Value="5">5</asp:ListItem>
                         <asp:ListItem Value="10">10</asp:ListItem>
                         <asp:ListItem Value="15">15</asp:ListItem>
@@ -81,7 +81,7 @@
     </div>
     <div style="width: 100%">
 
-        <asp:GridView ID="GridServiceCenter" runat="server" Width="100%" AutoGenerateColumns="False" AllowPaging="True" SkinID="DetailPageGridView"
+        <asp:GridView ID="GridServiceCenter" runat="server" Width="100%" AutoGenerateColumns="False" AllowPaging="True"  CssClass="dataGrid"
             AllowSorting="True" EnableModelValidation="True">
             <SelectedRowStyle Wrap="True" />
             <EditRowStyle Wrap="True" />

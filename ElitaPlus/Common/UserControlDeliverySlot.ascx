@@ -1,10 +1,11 @@
 ﻿<%@ Control Language="vb" AutoEventWireup="false" CodeBehind="UserControlDeliverySlot.ascx.vb" Inherits="Assurant.ElitaPlus.ElitaPlusWebApp.UserControlDeliverySlot" %>
+<link href="../App_Themes/Default/Default.css" rel="stylesheet" />
 <tr runat="server" id="trCourierProduct">
     <td align="right" nowrap="nowrap">
         <asp:Label runat="server" ID="lblCourierProduct" Visible="false">COURIER_PRODUCT</asp:Label>
     </td>
     <td align="left" nowrap="nowrap">
-        <asp:DropDownList ID="ddlCourierProduct" runat="server" Visible="false" SkinID="MediumDropDown" AutoPostBack="true" OnSelectedIndexChanged="ddlCourierProduct_SelectedIndexChanged">
+        <asp:DropDownList ID="ddlCourierProduct" runat="server" Visible="false" CssClass="medium" AutoPostBack="true" OnSelectedIndexChanged="ddlCourierProduct_SelectedIndexChanged">
         </asp:DropDownList>
     </td>
 </tr>
@@ -37,7 +38,7 @@
         <asp:Label runat="server" ID="lblDeliverySlot">DESIRED_DELIVERY_TIME</asp:Label>:
     </td>
     <td align="left" nowrap="nowrap">
-        <asp:DropDownList ID="ddlDeliverySlots" runat="server" SkinID="SmallDropDown">
+        <asp:DropDownList ID="ddlDeliverySlots" runat="server" CssClass="small">
         </asp:DropDownList>
     </td>
 </tr>

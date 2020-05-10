@@ -1,7 +1,8 @@
 ﻿<%@ Control Language="vb" AutoEventWireup="false" CodeBehind="UserControlAttrtibutes.ascx.vb"
     Inherits="Assurant.ElitaPlus.ElitaPlusWebApp.UserControlAttrtibutes" %>
+<link href="../App_Themes/Default/Default.css" rel="stylesheet" />
 <asp:GridView ID="AttributeValueGridView" runat="server" Width="100%" AutoGenerateColumns="false"
-    AllowPaging="false" CellPadding="1" SkinID="DetailPageGridView">
+    AllowPaging="false" CellPadding="1" CssClass="dataGrid">
     <RowStyle HorizontalAlign="Left" />
     <Columns>
         <asp:TemplateField HeaderText="ATTRIBUTE NAME">
@@ -32,7 +33,7 @@
                 <asp:Label runat="server" ID="EffectiveDateLabel"></asp:Label>
             </ItemTemplate>
             <EditItemTemplate>
-                <asp:TextBox runat="server" ID="EffectiveDateTextBox" Visible="false" SkinID="SmallTextBox" />
+                <asp:TextBox runat="server" ID="EffectiveDateTextBox" Visible="false" CssClass="small" />
                 <asp:ImageButton ID="EffectiveDateImageButton" runat="server" Style="vertical-align: bottom"
                     ImageUrl="~/App_Themes/Default/Images/calendar.png" Visible="false" />
                 <asp:Label runat="server" ID="EffectiveDateLabel" Visible="false" />
@@ -44,7 +45,7 @@
                 <asp:Label runat="server" ID="ExpirationDateLabel"></asp:Label>
             </ItemTemplate>
             <EditItemTemplate>
-                <asp:TextBox runat="server" ID="ExpirationDateTextBox" Visible="false" SkinID="SmallTextBox" />
+                <asp:TextBox runat="server" ID="ExpirationDateTextBox" Visible="false" CssClass="small" />
                 <asp:ImageButton ID="ExpirationDateImageButton" runat="server" Style="vertical-align: bottom"
                     ImageUrl="~/App_Themes/Default/Images/calendar.png" Visible="false" />
                 <asp:Label runat="server" ID="ExpirationDateLabel" Visible="false" />
@@ -67,7 +68,7 @@
                        </td>
                      <td>              
                 <asp:Button ID="SaveButton" runat="server" CommandName="SaveRecord"
-                                           Text="Save" SkinID="PrimaryRightButton"></asp:Button>
+                                           Text="Save" CssClass="primaryBtn floatR"></asp:Button>
                      </td>
                    </tr>
                </table>
@@ -77,5 +78,5 @@
         </asp:TemplateField>
     </Columns>
 </asp:GridView>
-<asp:Button runat="server" ID="NewButton" SkinID="PrimaryLeftButton"
+<asp:Button runat="server" ID="NewButton" CssClass="primaryBtn"
     Text="ADD_NEW" />

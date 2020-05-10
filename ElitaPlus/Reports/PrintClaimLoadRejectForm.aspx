@@ -98,7 +98,7 @@
 								</TR>
 								<TR>
 									<TD>&nbsp;
-										<asp:button id="btnBack" style="BACKGROUND-IMAGE: url(../Navigation/images/icons/back_icon.gif); CURSOR: hand; BACKGROUND-REPEAT: no-repeat; align: left"
+										<asp:button id="btnBack" style="BACKGROUND-IMAGE: url(../Navigation/images/icons/back_icon.gif); CURSOR: hand; BACKGROUND-REPEAT: no-repeat; text-align: left;"
 											tabIndex="185" runat="server" Font-Bold="false" Width="96px" height="20px" Text="Back" CssClass="FLATBUTTON"></asp:button></TD>
 								</TR>
 							</TABLE>

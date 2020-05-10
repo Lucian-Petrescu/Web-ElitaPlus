@@ -1,5 +1,5 @@
 <%@ Page Language="vb" AutoEventWireup="false" Codebehind="ReportCeHistoryForm.aspx.vb"
-    Inherits="Assurant.ElitaPlus.ElitaPlusWebApp.Reports.ReportCeHistoryForm" %>
+    Inherits="Assurant.ElitaPlus.ElitaPlusWebApp.Reports.ReportCeHistoryForm" Theme="Default" %>
 
 <%@ Register TagPrefix="uc1" TagName="ReportCeInputControl" Src="ReportCeInputControl.ascx" %>
 <%@ Register TagPrefix="uc2" TagName="ErrorController" Src="../Common/ErrorController.ascx" %>

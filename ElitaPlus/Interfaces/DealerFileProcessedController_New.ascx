@@ -2,7 +2,7 @@
 <%@ Control Language="vb" AutoEventWireup="false" CodeBehind="DealerFileProcessedController_New.ascx.vb"
     Inherits="Assurant.ElitaPlus.ElitaPlusWebApp.Interfaces.DealerFileProcessedController_New" %>
 <%@ Register TagPrefix="Elita" TagName="MultipleColumnDDLabelControl" Src="../Common/MultipleColumnDDLabelControl_new.ascx" %>
-
+<link href="../App_Themes/Default/Default.css" rel="stylesheet" />
 <asp:ScriptManager ID="ScriptManager1" runat="server" EnablePageMethods="true" ScriptMode="Auto">
     </asp:ScriptManager>
 <div class="dataContainer" style="margin-left:0%; margin-top:0px" >
@@ -45,7 +45,7 @@
     </h2>
     <div class="Page" runat="server" id="moDataGrid_WRITE1" style="height: 100%; overflow: auto; width:100%;">
     <asp:GridView ID="moDataGrid" runat="server" Width="100%" AllowPaging="True" AllowSorting="True"
-        CellPadding="1" AutoGenerateColumns="False" SkinID="DetailPageGridView">
+        CellPadding="1" AutoGenerateColumns="False"  CssClass="dataGrid">
         <SelectedRowStyle Wrap="False"></SelectedRowStyle>
         <EditRowStyle Wrap="False"></EditRowStyle>
         <AlternatingRowStyle Wrap="False"></AlternatingRowStyle>
@@ -172,18 +172,18 @@
 <div class="btnZone">
     <asp:Panel ID="moButtonPanel" runat="server" Visible="False">
         <asp:Button ID="BtnValidate_WRITE" runat="server" Text="VALIDATE" CausesValidation="False"
-            Enabled="False" SkinID="AlternateLeftButton"></asp:Button>&nbsp;
-        <asp:Button ID="BtnLoadCertificate_WRITE" runat="server" SkinID="AlternateLeftButton"
+            Enabled="False" CssClass="altBtn"></asp:Button>&nbsp;
+        <asp:Button ID="BtnLoadCertificate_WRITE" runat="server"  CssClass="altBtn"
             Text="PROCESS_RECORDS" CausesValidation="False" Enabled="False"></asp:Button>&nbsp;
-        <asp:Button ID="BtnDeleteDealerFile_WRITE" runat="server" SkinID="AlternateLeftButton"
+        <asp:Button ID="BtnDeleteDealerFile_WRITE" runat="server"  CssClass="altBtn"
             Text="DELETE_DEALER_FILE" CausesValidation="False" Enabled="False"></asp:Button>&nbsp;
-        <asp:Button ID="BtnRejectReport" runat="server" SkinID="AlternateLeftButton" Text="REJECT_REPORT"
+        <asp:Button ID="BtnRejectReport" runat="server"  CssClass="altBtn" Text="REJECT_REPORT"
             CausesValidation="False" Enabled="False"></asp:Button>&nbsp;
-        <asp:Button ID="BtnErrorExport" runat="server" SkinID="AlternateLeftButton" Text="ERROR_EXPORT"
+        <asp:Button ID="BtnErrorExport" runat="server"  CssClass="altBtn" Text="ERROR_EXPORT"
             CausesValidation="False" Enabled="False"></asp:Button>&nbsp;
-        <asp:Button ID="BtnProcessedExport" runat="server" SkinID="AlternateLeftButton" Text="PROCESSED_EXPORT"
+        <asp:Button ID="BtnProcessedExport" runat="server"  CssClass="altBtn" Text="PROCESSED_EXPORT"
             CausesValidation="False" Enabled="False"></asp:Button>&nbsp;
-        <asp:Button ID="BtnGenerateResponse" runat="server" SkinID="AlternateLeftButton" Text="GENERATE_RESPONSE"
+        <asp:Button ID="BtnGenerateResponse" runat="server"  CssClass="altBtn" Text="GENERATE_RESPONSE"
             CausesValidation="False" Enabled="False"></asp:Button>
     </asp:Panel>
 </div>
@@ -203,7 +203,7 @@
                             </td>
                             <td nowrap align="left">
                                 <input id="dealerFileInput" type="file" name="dealerFileInput" runat="server"/> &nbsp;                           
-                                <asp:Button ID="btnCopyDealerFile_WRITE" SkinID="PrimaryLeftButton" runat="server"
+                                <asp:Button ID="btnCopyDealerFile_WRITE" CssClass="primaryBtn" runat="server"
                                     Text="COPY_DEALER_FILE"></asp:Button>
                             </td>
                         </tr>

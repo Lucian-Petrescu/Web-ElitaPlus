@@ -1,5 +1,6 @@
 ﻿<%@ Control Language="vb" AutoEventWireup="false" CodeBehind="UserControlClaimCloseRules.ascx.vb"
     Inherits="Assurant.ElitaPlus.ElitaPlusWebApp.UserControlClaimCloseRules" %>
+<link href="../App_Themes/Default/Default.css" rel="stylesheet" />
 <asp:Panel ID="moClaimCloseRulesTabPanel_WRITE" runat="server" Width="100%">
     <div class="dataContainer">
         <div>
@@ -10,7 +11,7 @@
                             runat="server">:</asp:Label>
                         &nbsp;
                         <asp:DropDownList ID="cboPageSize" runat="server" Width="50px" AutoPostBack="true"
-                            SkinID="SmallDropDown">
+                            CssClass="small">
                             <asp:ListItem Value="5">5</asp:ListItem>
                             <asp:ListItem Value="10">10</asp:ListItem>
                             <asp:ListItem Value="15">15</asp:ListItem>
@@ -31,7 +32,7 @@
         </div>
     </div>
     <asp:GridView ID="CloseRulesGrid" runat="server" Width="100%" DataKeyNames="claim_close_rule_id,company_id, dealer_id, claim_status_by_group_id, reason_closed_id, parent_claim_close_rule_id, claim_issue_id, close_rule_based_on_id"
-        AllowPaging="True" AllowSorting="False" AutoGenerateColumns="False" SkinID="DetailPageGridView" CssClass = "grid-view"
+        AllowPaging="True" AllowSorting="False" AutoGenerateColumns="False" CssClass="small" CssClass = "grid-view"
         PageSize="2">
         <SelectedRowStyle Wrap="True"></SelectedRowStyle>
         <EditRowStyle Wrap="True"></EditRowStyle>
@@ -55,7 +56,7 @@
                     <asp:Label ID="lblCloseRuleBasedOn" runat="server" Text='<%#Container.DataItem("close_rule_based_on")%>'></asp:Label>
                 </ItemTemplate>
                 <EditItemTemplate>
-                    <asp:DropDownList ID="cboRuleBasedOn" runat="server" Visible="True" SkinID="SmallDropDown" AutoPostBack="true" OnSelectedIndexChanged="cboRuleBasedOn_SelectedIndexChanged">
+                    <asp:DropDownList ID="cboRuleBasedOn" runat="server" Visible="True" CssClass="small" AutoPostBack="true" OnSelectedIndexChanged="cboRuleBasedOn_SelectedIndexChanged">
                     </asp:DropDownList>
                 </EditItemTemplate>
             </asp:TemplateField>
@@ -64,7 +65,7 @@
                     <asp:Label ID="lblClaimStatusByGroup" runat="server" Text='<%#Container.DataItem("claim_status_by_group")%>'></asp:Label>
                 </ItemTemplate>
                 <EditItemTemplate>
-                    <asp:DropDownList ID="cboClaimStatusByGroup" runat="server" Visible="True" SkinID="SmallDropDown">
+                    <asp:DropDownList ID="cboClaimStatusByGroup" runat="server" Visible="True" CssClass="small">
                     </asp:DropDownList>
                 </EditItemTemplate>
             </asp:TemplateField>
@@ -73,7 +74,7 @@
                     <asp:Label ID="lblClaimIssue" runat="server" Text='<%#Container.DataItem("claim_issue")%>'></asp:Label>
                 </ItemTemplate>
                 <EditItemTemplate>
-                    <asp:DropDownList ID="cboClaimIssue" runat="server" Visible="True" SkinID="SmallDropDown">
+                    <asp:DropDownList ID="cboClaimIssue" runat="server" Visible="True" CssClass="small">
                     </asp:DropDownList>
                 </EditItemTemplate>
             </asp:TemplateField>
@@ -82,7 +83,7 @@
                     <asp:Label ID="lblTimePeriod" runat="server" Text='<%#Container.DataItem("time_period")%>'></asp:Label>
                 </ItemTemplate>
                 <EditItemTemplate>
-                    <asp:TextBox ID="txtTimePeriod" runat="server" Visible="true" SkinID="exSmallTextBox"
+                    <asp:TextBox ID="txtTimePeriod" runat="server" Visible="true"  CssClass="exsmall"
                         onkeypress="return isNumber(event)" onblur="return chkForZero(this)"></asp:TextBox><br />
                     <asp:Label ID="lblTimePeriodMsg" runat="server"></asp:Label>
                 </EditItemTemplate>
@@ -92,13 +93,13 @@
                     <asp:Label ID="lblReasonClosed" runat="server" Text='<%#Container.DataItem("reason_closed")%>'></asp:Label>
                 </ItemTemplate>
                 <EditItemTemplate>
-                    <asp:DropDownList ID="cboReasonClosed" runat="server" Visible="True" SkinID="MediumDropDown">
+                    <asp:DropDownList ID="cboReasonClosed" runat="server" Visible="True" CssClass="medium">
                     </asp:DropDownList>
                 </EditItemTemplate>
             </asp:TemplateField>
             <asp:TemplateField Visible="False">
                 <ItemTemplate>
-                    <asp:TextBox ID="txtActiveFlag" runat="server" Visible="false" SkinID="SmallTextBox"
+                    <asp:TextBox ID="txtActiveFlag" runat="server" Visible="false" CssClass="small"
                         Text="Y"></asp:TextBox>
                 </ItemTemplate>
             </asp:TemplateField>
@@ -111,8 +112,8 @@
                 </ItemTemplate>
                 <EditItemTemplate>
                     <table><tr><td>
-                    <asp:Button ID="btnSave" runat="server" Text="Save" OnClick="btnSave_Click" SkinID="PrimaryRightButton"></asp:Button></td>
-                    <td><asp:LinkButton ID="btnCancel" runat="server" Text="Cancel" OnClick="btnCancel_Click" SkinID="AlternateRightButton"></asp:LinkButton>
+                    <asp:Button ID="btnSave" runat="server" Text="Save" OnClick="btnSave_Click" CssClass="primaryBtn floatR"></asp:Button></td>
+                    <td><asp:LinkButton ID="btnCancel" runat="server" Text="Cancel" OnClick="btnCancel_Click" CssClass="altBtn floatR"></asp:LinkButton>
                     </td></tr></table>
                 </EditItemTemplate>
             </asp:TemplateField>

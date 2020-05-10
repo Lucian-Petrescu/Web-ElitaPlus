@@ -161,7 +161,7 @@
         </table>
         <iframe id="moCeReportFrame" style="left: 15px; visibility: hidden; overflow: hidden;
             width: 1px; padding-top: 0px; position: absolute; top: 1px; height: 1px" name="iframe1"
-            marginwidth="0" src="" frameborder="no" scrolling="no"></iframe>      
+            marginwidth="0" src="" scrolling="no"></iframe>      
            <input id="moReportErrorButton" type="hidden" name="moReportErrorButton" runat="server"/>
            <input id="moReportStatus" type="hidden" name="moReportStatus" runat="server"/>
            <input id="moReportErrorMsg" type="hidden" name="moReportErrorMsg" runat="server"/>

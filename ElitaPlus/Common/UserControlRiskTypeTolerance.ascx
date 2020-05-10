@@ -1,5 +1,6 @@
 ﻿<%@ Control Language="vb" AutoEventWireup="false" CodeBehind="UserControlRiskTypeTolerance.ascx.vb" 
 Inherits="Assurant.ElitaPlus.ElitaPlusWebApp.UserControlRiskTypeTolerance" %>
+<link href="../App_Themes/Default/Default.css" rel="stylesheet" />
 <asp:Panel ID="moDealerInflationTabPanel" runat="server" Width="100%">
     <div class="dataContainer">
         <div>
@@ -10,7 +11,7 @@ Inherits="Assurant.ElitaPlus.ElitaPlusWebApp.UserControlRiskTypeTolerance" %>
                             runat="server">:</asp:Label>
                         &nbsp;
                         <asp:DropDownList ID="cboDiPageSize" runat="server" Width="50px" AutoPostBack="true"
-                            SkinID="SmallDropDown">
+                            CssClass="small">
                             <asp:ListItem Value="5">5</asp:ListItem>
                             <asp:ListItem Value="10">10</asp:ListItem>
                             <asp:ListItem Value="15">15</asp:ListItem>
@@ -31,7 +32,7 @@ Inherits="Assurant.ElitaPlus.ElitaPlusWebApp.UserControlRiskTypeTolerance" %>
         </div>
     </div>
     <asp:GridView ID="RiskTypeToleranceGrid" runat="server" Width="51%" DataKeyNames="DLR_RK_TYP_TOLERANCE_ID,DEALER_ID,DEALER,RISK_TYPE,TOLERANCE_PCT"
-        AllowPaging="True" AllowSorting="true" AutoGenerateColumns="False" SkinID="DetailPageGridView">
+        AllowPaging="True" AllowSorting="true" AutoGenerateColumns="False" CssClass="dataGrid">
         <SelectedRowStyle CssClass="SELECTED"></SelectedRowStyle>
         <EditRowStyle CssClass="EDITROW"></EditRowStyle>
         <AlternatingRowStyle Wrap="False" CssClass="ALTROW"></AlternatingRowStyle>
@@ -51,7 +52,7 @@ Inherits="Assurant.ElitaPlus.ElitaPlusWebApp.UserControlRiskTypeTolerance" %>
                     <asp:Label ID="lblRiskType" runat="server" Text='<%#Container.DataItem("RISK_TYPE")%>'></asp:Label>
                 </ItemTemplate>
                 <EditItemTemplate>
-                    <asp:DropDownList ID="cboRiskType" runat="server" Visible="True" SkinID="SmallDropDown">
+                    <asp:DropDownList ID="cboRiskType" runat="server" Visible="True" CssClass="small">
                     </asp:DropDownList>
                 </EditItemTemplate>
             </asp:TemplateField>
@@ -60,7 +61,7 @@ Inherits="Assurant.ElitaPlus.ElitaPlusWebApp.UserControlRiskTypeTolerance" %>
                     <asp:Label ID="lblTolerancePct" runat="server" Text='<%#Container.DataItem("TOLERANCE_PCT")%>'></asp:Label>
                 </ItemTemplate>
                 <EditItemTemplate>
-                    <asp:TextBox ID="txtTolerancePct" runat="server" Visible="true" SkinID="exSmallTextBox"
+                    <asp:TextBox ID="txtTolerancePct" runat="server" Visible="true" CssClass="exsmall"
                         onkeypress="return numericOnly(this)" onblur="return chkForZeroForRiskTolerance(this)"></asp:TextBox><br />
                     <asp:Label ID="lblValidRiskPctMsg" runat="server"></asp:Label>
                 </EditItemTemplate>
@@ -74,8 +75,8 @@ Inherits="Assurant.ElitaPlus.ElitaPlusWebApp.UserControlRiskTypeTolerance" %>
                 </ItemTemplate>
                 <EditItemTemplate>
                     <table><tr><td style=" align-items: end ">
-                    <asp:Button ID="btnSave" runat="server" Text="Save" OnClick="btnSave_Click" SkinID="PrimaryRightButton"></asp:Button></td>
-                    <td><asp:LinkButton ID="btnCancel" runat="server" Text="Cancel" OnClick="btnCancel_Click" SkinID="AlternateRightButton"></asp:LinkButton>
+                    <asp:Button ID="btnSave" runat="server" Text="Save" OnClick="btnSave_Click" CssClass="primaryBtn floatR"></asp:Button></td>
+                    <td><asp:LinkButton ID="btnCancel" runat="server" Text="Cancel" OnClick="btnCancel_Click"  CssClass="altBtn floatR" ></asp:LinkButton>
                     </td></tr></table>
                 </EditItemTemplate>
             </asp:TemplateField>

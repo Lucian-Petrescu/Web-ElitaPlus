@@ -1,8 +1,9 @@
 ﻿<%@ Control Language="vb" AutoEventWireup="false" CodeBehind="UserControlLogisticalInfo.ascx.vb" Inherits="Assurant.ElitaPlus.ElitaPlusWebApp.UserControlLogisticalInfo" %>
+<link href="../App_Themes/Default/Default.css" rel="stylesheet" />
 <asp:Panel ID="moClaimCloseRulesTabPanel_WRITE" runat="server" Width="100%">
 
     <asp:GridView ID="LogisticsGrid" runat="server" Width="100%" DataKeyNames="claim_shipping_id" ShowHeaderWhenEmpty="true"
-        AllowPaging="False" AllowSorting="False" AutoGenerateColumns="False" SkinID="DetailPageGridView" CssClass="grid-view"
+        AllowPaging="False" AllowSorting="False" AutoGenerateColumns="False"  CssClass="dataGrid"
         PageSize="30">
         <SelectedRowStyle Wrap="True"></SelectedRowStyle>
         <EditRowStyle Wrap="True"></EditRowStyle>
@@ -14,7 +15,7 @@
 
             <asp:TemplateField Visible="True" HeaderText="SHIPPING_DATE">
                 <ItemTemplate>
-                    <asp:TextBox ID="textboxShippingDate" runat="server" SkinID="SmallTextBox" ReadOnly="true"></asp:TextBox>
+                    <asp:TextBox ID="textboxShippingDate" runat="server" CssClass="small" ReadOnly="true"></asp:TextBox>
                 </ItemTemplate>
             </asp:TemplateField>
 
@@ -23,7 +24,7 @@
                     <asp:Label ID="lblTrackingNumber" runat="server" Text='<%#Container.DataItem("TRACKING_NUMBER")%>'></asp:Label>
                 </ItemTemplate>
                 <EditItemTemplate>
-                    <asp:TextBox ID="TextboxTrackingNumber" TabIndex="83" runat="server" SkinID="SmallTextBox"></asp:TextBox>
+                    <asp:TextBox ID="TextboxTrackingNumber" TabIndex="83" runat="server" CssClass="small"></asp:TextBox>
                 </EditItemTemplate>
             </asp:TemplateField>
             <asp:TemplateField Visible="True" HeaderText="RECEIVED_DATE">
@@ -31,7 +32,7 @@
                     <asp:Label ID="lblReceivedDate" runat="server" Text='<%#Container.DataItem("received_Date")%>'></asp:Label>
                 </ItemTemplate>
                 <EditItemTemplate>
-                    <asp:TextBox ID="TextboxReceivedDate" TabIndex="83" runat="server" SkinID="exSmallTextBox"></asp:TextBox>
+                    <asp:TextBox ID="TextboxReceivedDate" TabIndex="83" runat="server" CssClass="exsmall"></asp:TextBox>
                     <asp:ImageButton ID="ImageButtonRecdDate" TabIndex="84" runat="server" ImageUrl="../Common/Images/calendarIcon2.jpg"
                         ImageAlign="AbsMiddle"></asp:ImageButton>
                 </EditItemTemplate>
@@ -44,8 +45,8 @@
                         runat="server" CommandName="DeleteRecord" CommandArgument="<%#Container.DisplayIndex %>" />--%>
                 </ItemTemplate>
                 <EditItemTemplate>
-                    <asp:Button ID="btnSave" runat="server" Text="Save" OnClick="btnSave_Click" SkinID="PrimaryRightButton"></asp:Button>
-                    <asp:LinkButton ID="btnCancel" runat="server" Text="Cancel" OnClick="btnCancel_Click" SkinID="AlternateRightButton"></asp:LinkButton>
+                    <asp:Button ID="btnSave" runat="server" Text="Save" OnClick="btnSave_Click" CssClass="primaryBtn floatR"></asp:Button>
+                    <asp:LinkButton ID="btnCancel" runat="server" Text="Cancel" OnClick="btnCancel_Click" CssClass="altBtn floatR"></asp:LinkButton>
                 </EditItemTemplate>
             </asp:TemplateField>
         </Columns>

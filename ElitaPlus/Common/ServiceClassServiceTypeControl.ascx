@@ -1,6 +1,7 @@
 ﻿<%@ Control Language="vb" AutoEventWireup="false" CodeBehind="ServiceClassServiceTypeControl.ascx.vb"
     Inherits="Assurant.ElitaPlus.ElitaPlusWebApp.Common.ServiceClassServiceTypeControl"
     TargetSchema="http://schemas.microsoft.com/intellisense/ie5" %>
+<link href="../App_Themes/Default/Default.css" rel="stylesheet" />
 <div>
     <table border="0" cellpadding="0" cellspacing="0" style="position: relative; height: 10px; margin-bottom:0PX; padding-bottom:0px;">
         <tr>
@@ -10,7 +11,7 @@
         </tr>
         <tr>
             <td align="left">
-                <asp:DropDownList ID="cboServiceClass" runat="server" SkinID="SmallDropDown">
+                <asp:DropDownList ID="cboServiceClass" runat="server" CssClass="Small">
                 </asp:DropDownList>
             </td>
         </tr>
@@ -21,7 +22,7 @@
         </tr>
         <tr>
             <td align="left" colspan="2">
-                <asp:DropDownList ID="cboServiceType" TabIndex="1" runat="server" SkinID="smallDropDown">
+                <asp:DropDownList ID="cboServiceType" TabIndex="1" runat="server"  CssClass="Small">
                 </asp:DropDownList>
             </td>
         </tr>

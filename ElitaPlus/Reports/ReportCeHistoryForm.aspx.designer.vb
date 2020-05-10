@@ -11,9 +11,9 @@ Option Strict On
 Option Explicit On
 
 Namespace Reports
-    
+
     Partial Public Class ReportCeHistoryForm
-        
+
         '''<summary>
         '''Form1 control.
         '''</summary>
@@ -22,7 +22,7 @@ Namespace Reports
         '''To modify move field declaration from designer file to code-behind file.
         '''</remarks>
         Protected WithEvents Form1 As Global.System.Web.UI.HtmlControls.HtmlForm
-        
+
         '''<summary>
         '''LabelReports control.
         '''</summary>
@@ -31,7 +31,7 @@ Namespace Reports
         '''To modify move field declaration from designer file to code-behind file.
         '''</remarks>
         Protected WithEvents LabelReports As Global.System.Web.UI.WebControls.Label
-        
+
         '''<summary>
         '''Label7 control.
         '''</summary>
@@ -40,7 +40,7 @@ Namespace Reports
         '''To modify move field declaration from designer file to code-behind file.
         '''</remarks>
         Protected WithEvents Label7 As Global.System.Web.UI.WebControls.Label
-        
+
         '''<summary>
         '''moPanel control.
         '''</summary>
@@ -49,7 +49,25 @@ Namespace Reports
         '''To modify move field declaration from designer file to code-behind file.
         '''</remarks>
         Protected WithEvents moPanel As Global.System.Web.UI.WebControls.Panel
-        
+
+        '''<summary>
+        '''ErrorCtrl control.
+        '''</summary>
+        '''<remarks>
+        '''Auto-generated field.
+        '''To modify move field declaration from designer file to code-behind file.
+        '''</remarks>
+        Protected WithEvents ErrorCtrl As Global.Assurant.ElitaPlus.ElitaPlusWebApp.ErrorController
+
+        '''<summary>
+        '''moReportCeInputControl control.
+        '''</summary>
+        '''<remarks>
+        '''Auto-generated field.
+        '''To modify move field declaration from designer file to code-behind file.
+        '''</remarks>
+        Protected WithEvents moReportCeInputControl As Global.Assurant.ElitaPlus.ElitaPlusWebApp.Reports.ReportCeInputControl
+
         '''<summary>
         '''moGridPanel control.
         '''</summary>
@@ -58,7 +76,7 @@ Namespace Reports
         '''To modify move field declaration from designer file to code-behind file.
         '''</remarks>
         Protected WithEvents moGridPanel As Global.System.Web.UI.WebControls.Panel
-        
+
         '''<summary>
         '''moReportLabel control.
         '''</summary>
@@ -67,7 +85,7 @@ Namespace Reports
         '''To modify move field declaration from designer file to code-behind file.
         '''</remarks>
         Protected WithEvents moReportLabel As Global.System.Web.UI.WebControls.Label
-        
+
         '''<summary>
         '''moReportDrop control.
         '''</summary>
@@ -76,7 +94,7 @@ Namespace Reports
         '''To modify move field declaration from designer file to code-behind file.
         '''</remarks>
         Protected WithEvents moReportDrop As Global.System.Web.UI.WebControls.DropDownList
-        
+
         '''<summary>
         '''mpReportKey control.
         '''</summary>
@@ -85,7 +103,7 @@ Namespace Reports
         '''To modify move field declaration from designer file to code-behind file.
         '''</remarks>
         Protected WithEvents mpReportKey As Global.System.Web.UI.WebControls.Label
-        
+
         '''<summary>
         '''moReportSearchText control.
         '''</summary>
@@ -94,7 +112,7 @@ Namespace Reports
         '''To modify move field declaration from designer file to code-behind file.
         '''</remarks>
         Protected WithEvents moReportSearchText As Global.System.Web.UI.WebControls.TextBox
-        
+
         '''<summary>
         '''btnReportSearch control.
         '''</summary>
@@ -103,7 +121,7 @@ Namespace Reports
         '''To modify move field declaration from designer file to code-behind file.
         '''</remarks>
         Protected WithEvents btnReportSearch As Global.System.Web.UI.WebControls.Button
-        
+
         '''<summary>
         '''trPageSize control.
         '''</summary>
@@ -112,7 +130,7 @@ Namespace Reports
         '''To modify move field declaration from designer file to code-behind file.
         '''</remarks>
         Protected WithEvents trPageSize As Global.System.Web.UI.HtmlControls.HtmlTableRow
-        
+
         '''<summary>
         '''lblPageSize control.
         '''</summary>
@@ -121,7 +139,7 @@ Namespace Reports
         '''To modify move field declaration from designer file to code-behind file.
         '''</remarks>
         Protected WithEvents lblPageSize As Global.System.Web.UI.WebControls.Label
-        
+
         '''<summary>
         '''cboPageSize control.
         '''</summary>
@@ -130,7 +148,7 @@ Namespace Reports
         '''To modify move field declaration from designer file to code-behind file.
         '''</remarks>
         Protected WithEvents cboPageSize As Global.System.Web.UI.WebControls.DropDownList
-        
+
         '''<summary>
         '''lblRecordCount control.
         '''</summary>
@@ -139,7 +157,7 @@ Namespace Reports
         '''To modify move field declaration from designer file to code-behind file.
         '''</remarks>
         Protected WithEvents lblRecordCount As Global.System.Web.UI.WebControls.Label
-        
+
         '''<summary>
         '''moDataGrid control.
         '''</summary>

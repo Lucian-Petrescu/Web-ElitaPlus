@@ -9,7 +9,7 @@
             <td align="left" valign="bottom" style="vertical-align: bottom">
                 &nbsp;
                 <asp:Button ID="btnBack" Style="background-image: url(../Navigation/images/icons/back_icon.gif);
-                    cursor: hand; background-repeat: no-repeat;  align: left" TabIndex="185" runat="server"
+                    cursor: hand; background-repeat: no-repeat;  text-align: left;" TabIndex="185" runat="server"
                     CssClass="FLATBUTTON" Text="Back" Height="20px" Width="96px" ></asp:Button>
                 <asp:Button ID="btnGenRpt" Style="background-image: url(../Navigation/images/viewIcon2.gif);
                     cursor: hand; background-repeat: no-repeat" runat="server" Text="View" Width="100px"

@@ -1,12 +1,13 @@
 ﻿<%@ Control Language="vb" AutoEventWireup="false" CodeBehind="UserControlAuthorizationInfo.ascx.vb"
     Inherits="Assurant.ElitaPlus.ElitaPlusWebApp.UserControlAuthorizationInfo" %>
+<link href="../App_Themes/Default/Default.css" rel="stylesheet" />
 <h2 class="dataGridHeader">
     <asp:Label ID="AuthItems" runat="server">Claim Authorization Items</asp:Label>
     <asp:LinkButton ID="BtnNew_WRITE" runat="server" Text="ADD_NEW_AUTHORIZATION"></asp:LinkButton>
 </h2>
 <div style="overflow: auto; height: 200px;">
     <asp:GridView ID="AuthorizationGrid" runat="server" Width="100%" AllowPaging="false"
-        AllowSorting="false" SkinID="DetailPageGridView">
+        AllowSorting="false"  CssClass="dataGrid">
         <Columns>
             <asp:BoundField HeaderText="Authorization_Item_Id" Visible="false" ReadOnly="true" />
             <asp:BoundField HeaderText="LINE_ITEM_NUMBER" Visible="true" ReadOnly="true" />
@@ -77,7 +78,7 @@
                 </ItemTemplate>
                 <EditItemTemplate>
                     <asp:Button ID="btnSave" runat="server" CommandName="SaveRecord" CommandArgument="<%#Container.DisplayIndex %>"
-                        Text="Save" SkinID="PrimaryRightButton"></asp:Button>
+                        Text="Save" CssClass="primaryBtn floatR"></asp:Button>
                     <asp:LinkButton ID="btnCancel" runat="server" CommandName="CancelRecord" CommandArgument="<%#Container.DisplayIndex %>"
                         Text="Cancel"></asp:LinkButton>
                 </EditItemTemplate>

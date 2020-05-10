@@ -1,5 +1,5 @@
 ﻿<%@ Control Language="vb" AutoEventWireup="false" CodeBehind="UserControlQuestion.ascx.vb" Inherits="Assurant.ElitaPlus.ElitaPlusWebApp.UserControlQuestion" EnableTheming="true" %>
-
+<link href="../App_Themes/Default/Default.css" rel="stylesheet" />
 <div style="width: 100%">
     <div style="width: 100%">
         <h2 class="dataGridHeader" runat="server" id="QuestionSet">
@@ -10,7 +10,7 @@
                 <tr>
                     <td>
                         <asp:GridView ID="GridQuestions" runat="server" CssClass="formGrid" Width="100%" ShowHeader="false" GridLines="None" BorderStyle="None"
-                            BorderWidth="0" BorderColor="Transparent" AutoGenerateColumns="False" AllowPaging="false" SkinID="DetailPageGridView"
+                            BorderWidth="0" BorderColor="Transparent" AutoGenerateColumns="False" AllowPaging="false"  CssClass="dataGrid"
                             AllowSorting="False" EnableModelValidation="True">
                             <SelectedRowStyle Wrap="True" />
                             <EditRowStyle Wrap="True" />

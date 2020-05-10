@@ -1,6 +1,7 @@
 ﻿<%@ Control Language="vb" AutoEventWireup="false" CodeBehind="MultipleColumnDDLabelControl_New.ascx.vb" ClassName="MultipleColumnDDLabelControl"  
     Inherits="Assurant.ElitaPlus.ElitaPlusWebApp.Common.MultipleColumnDDLabelControl_New"
     TargetSchema="http://schemas.microsoft.com/intellisense/ie5" %>
+<link href="../App_Themes/Default/Default.css" rel="stylesheet" />
 <tr>
     <td nowrap="nowrap" align="right">
         &nbsp;
@@ -17,12 +18,12 @@
         <asp:Label ID="lb_DropDown" runat="server"></asp:Label>
     </td>
     <td nowrap="nowrap">
-        <asp:DropDownList ID="moMultipleColumnDrop" runat="server" SkinID="SmallDropDown" ></asp:DropDownList>
-        <asp:TextBox ID="moMultipleColumnTextBoxCode" runat="server" Enabled="False" ReadOnly="True" Visible="False" SkinID="SmallTextBox"></asp:TextBox>
+        <asp:DropDownList ID="moMultipleColumnDrop" runat="server"  CssClass="small" ></asp:DropDownList>
+        <asp:TextBox ID="moMultipleColumnTextBoxCode" runat="server" Enabled="False" ReadOnly="True" Visible="False"  CssClass="small" ></asp:TextBox>
     </td>
     <td nowrap="nowrap" align="left">
-        <asp:DropDownList ID="moMultipleColumnDropDesc" TabIndex="1" runat="server" SkinID="mediumDropDown">
+        <asp:DropDownList ID="moMultipleColumnDropDesc" TabIndex="1" runat="server" CssClass="medium">
         </asp:DropDownList>
-        <asp:TextBox ID="moMultipleColumnTextBoxDesc" runat="server" Enabled="False" ReadOnly="True" Visible="False" SkinID="SmallTextBox"></asp:TextBox>
+        <asp:TextBox ID="moMultipleColumnTextBoxDesc" runat="server" Enabled="False" ReadOnly="True" Visible="False"  CssClass="small"></asp:TextBox>
     </td>
 </tr>

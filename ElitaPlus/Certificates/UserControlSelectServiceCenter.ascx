@@ -69,6 +69,7 @@
         document.getElementById('pg2_1').setAttribute('class', 'selected_page');
     }
 </script>
+<link href="../App_Themes/Default/Default.css" rel="stylesheet" />
 <Elita:MessageController runat="server" ID="MessageController" Visible="false" />
 <div class="dataContainer">
     <div class="stepformZone">
@@ -94,8 +95,8 @@
                         <asp:Label runat="server" ID="moCountryLabel" Text="COUNTRY" />
                         :
                     </td>
-                    <td nowrap="nowrap">
-                        <asp:DropDownList ID="moCountryDrop" runat="server" SkinID="SmallDropDown" AutoPostBack="True">
+                    <td style="white-space: nowrap" >
+                        <asp:DropDownList ID="moCountryDrop" runat="server" CssClass="small" AutoPostBack="True">
                         </asp:DropDownList>
                     </td>
                     <td style="white-space:nowrap" runat="server" id="tdCityLabel">
@@ -103,7 +104,7 @@
                         :
                     </td>
                     <td style="white-space:nowrap" runat="server" id="tdCityTextBox">
-                        <asp:TextBox ID="TextboxCity" runat="server" SkinID="MediumTextBox"></asp:TextBox>
+                        <asp:TextBox ID="TextboxCity" runat="server" CssClass="medium"></asp:TextBox>
                     </td>
                 </tr>
             </tbody>
@@ -125,11 +126,11 @@
             <tbody>
                 <tr>
                     <td runat="server" id="tdClearButton">
-                        <asp:Button ID="btnClearSearch" runat="server" SkinID="AlternateLeftButton" Text="Clear">
+                        <asp:Button ID="btnClearSearch" runat="server" CssClass="altBtn" Text="Clear">
                         </asp:Button>
                     </td>
                     <td runat="server" id="tdSearchButton">
-                        <asp:Button ID="btnSearch" runat="server" Text="Search" SkinID="SearchButton"></asp:Button>
+                        <asp:Button ID="btnSearch" runat="server" Text="Search" CssClass="searchBtn"></asp:Button>
                     </td>
                 </tr>
             </tbody>
@@ -141,7 +142,7 @@
 </div>
 <div class="btnZone" style="margin-top: 2px">
     <div>
-        <asp:Button ID="btnSelectServiceCenter" TabIndex="5" runat="server" SkinID="PrimaryRightButton"
+        <asp:Button ID="btnSelectServiceCenter" TabIndex="5" runat="server" CssClass="primaryBtn floatR"
             Text="Select" />
     </div>
 </div>

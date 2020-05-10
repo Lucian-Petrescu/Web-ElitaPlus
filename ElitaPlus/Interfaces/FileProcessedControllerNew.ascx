@@ -2,6 +2,7 @@
     Inherits="Assurant.ElitaPlus.ElitaPlusWebApp.Interfaces.FileProcessedControllerNew" %>
 <%@ Register TagPrefix="uc1" TagName="MultipleColumnDDLabelControl" Src="../Common/MultipleColumnDDLabelControl_new.ascx" %>
 <%@ Register TagPrefix="uc2" TagName="InterfaceProgressControl" Src="InterfaceProgressControl.ascx" %>
+<link href="../App_Themes/Default/Default.css" rel="stylesheet" />
 <asp:ScriptManager ID="ScriptManager1" runat="server" EnablePageMethods="true" ScriptMode="Auto">
     </asp:ScriptManager>
 <div class="dataContainer" style="margin-left: 0%; margin-top: 0px">
@@ -47,7 +48,7 @@
     </h2>
     <div class="Page" runat="server" id="moDataGrid_WRITE1" style="height: 100%; overflow: auto; width: 100%;">
         <asp:GridView ID="moDataGrid" runat="server" Width="100%" AllowPaging="True" AllowSorting="True"
-            CellPadding="1" AutoGenerateColumns="False" SkinID="DetailPageGridView">
+            CellPadding="1" AutoGenerateColumns="False"   CssClass="dataGrid">
             <SelectedRowStyle Wrap="False"></SelectedRowStyle>
             <EditRowStyle Wrap="False"></EditRowStyle>
             <AlternatingRowStyle Wrap="False"></AlternatingRowStyle>
@@ -164,14 +165,14 @@
 <div class="btnZone">
     <asp:Panel ID="moButtonPanel" runat="server" Visible="False">
         <asp:Button ID="BtnValidate_WRITE" runat="server" Text="VALIDATE" CausesValidation="False"
-            Enabled="False" SkinID="AlternateLeftButton"></asp:Button>&nbsp;
-                <asp:Button ID="BtnLoad_WRITE" runat="server" SkinID="AlternateLeftButton"
+            Enabled="False"  CssClass="altBtn" ></asp:Button>&nbsp;
+                <asp:Button ID="BtnLoad_WRITE" runat="server"  CssClass="altBtn" 
                     Text="PROCESS_RECORDS" CausesValidation="False" Enabled="False"></asp:Button>&nbsp;
-                <asp:Button ID="BtnDeleteFile_WRITE" runat="server" SkinID="AlternateLeftButton"
+                <asp:Button ID="BtnDeleteFile_WRITE" runat="server"  CssClass="altBtn" 
                     Text="DELETE_DEALER_FILE" CausesValidation="False" Enabled="False"></asp:Button>&nbsp;
-                <asp:Button ID="BtnRejectReport" runat="server" SkinID="AlternateLeftButton" Text="REJECT_REPORT"
+                <asp:Button ID="BtnRejectReport" runat="server"  CssClass="altBtn" Text="REJECT_REPORT"
                     CausesValidation="False" Enabled="False"></asp:Button>&nbsp;
-                <asp:Button ID="BtnProcessedExport" runat="server" SkinID="AlternateLeftButton" Text="PROCESSED_EXPORT"
+                <asp:Button ID="BtnProcessedExport" runat="server" CssClass="altBtn" Text="PROCESSED_EXPORT"
                     CausesValidation="False" Enabled="False"></asp:Button>
     </asp:Panel>
 </div>
@@ -190,7 +191,7 @@
                             <td nowrap align="left">
                                 <input id="FileInput" type="file" name="FileInput" runat="server"/>
                                 &nbsp;  
-                                <asp:Button ID="btnCopyFile_WRITE" runat="server" Text="COPY" SkinID="PrimaryLeftButton"></asp:Button>
+                                <asp:Button ID="btnCopyFile_WRITE" runat="server" Text="COPY" CssClass="primaryBtn"></asp:Button>
                             </td>
                         </tr>
                         <tr>

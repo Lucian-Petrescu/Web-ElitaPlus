@@ -1,6 +1,7 @@
 <%@ Control Language="vb" AutoEventWireup="false" Codebehind="MultipleColumnDropControl.ascx.vb"
     Inherits="Assurant.ElitaPlus.ElitaPlusWebApp.Common.MultipleColumnDropControl"
     TargetSchema="http://schemas.microsoft.com/intellisense/ie5" %>
+<link href="../App_Themes/Default/Default.css" rel="stylesheet" />
 <table id="Table1" cellspacing="0" cellpadding="0" border="0" style="width: 0.01%;
     height: 44px" align="center">
     <tr>
@@ -20,7 +21,7 @@
             <asp:Label ID="lblDescription" runat="server" Width="83px" Height="8px">By_Description</asp:Label></td>
         <td align="left" style="width: 10%">
             &nbsp;<asp:DropDownList ID="moMultipleColumnDropDesc" Width="328px" runat="server"
-                AutoPostBack="true" Height="1000px"  SkinID="SmallDropDown">
+                AutoPostBack="true" Height="1000px"   CssClass="small">
             </asp:DropDownList></td>
     </tr>
 </table>

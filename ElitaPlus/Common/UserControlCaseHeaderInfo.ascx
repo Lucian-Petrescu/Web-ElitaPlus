@@ -3,15 +3,15 @@
 <table border="0" class="summaryGrid" cellpadding="0" cellspacing="0">
     <tr>
         <td align="right" nowrap="nowrap">
-            <asp:Label ID="LabelCustomerName" runat="server" SkinID="SummaryLabel">CUSTOMER_NAME</asp:Label>:</td>
+            <asp:Label ID="LabelCustomerName" runat="server" >CUSTOMER_NAME</asp:Label>:</td>
         <td align="left" nowrap="nowrap" colspan="5">
             <asp:Label ID="LabelCustomerNameValue" runat="server" Font-Bold="true"><%#NoData%></asp:Label></td>
     </tr>
     <tr>
         <td align="right" nowrap="nowrap">
-            <asp:Label ID="LabelCallerName" runat="server" SkinID="SummaryLabel">NAME_OF_CALLER</asp:Label>:</td>
+            <asp:Label ID="LabelCallerName" runat="server" >NAME_OF_CALLER</asp:Label>:</td>
         <td align="left" nowrap="nowrap" colspan="5">
-            <asp:Label ID="LabelCallerNameValue" runat="server" SkinID="SummaryLabel"><%#NoData%></asp:Label></td>
+            <asp:Label ID="LabelCallerNameValue" runat="server" ><%#NoData%></asp:Label></td>
     </tr>
     <tr>
         <td align="right" nowrap="nowrap">
@@ -52,7 +52,7 @@
         <td align="right" nowrap="nowrap">
             <asp:Label ID="LabelCaseStatus" runat="server">CASE_STATUS</asp:Label>:
         </td>
-        <td id="CaseStatusTD" runat="server" align="left" nowrap="nowrap" class="padRight">
+        <td id="CaseStatusTD" runat="server" align="left" style="white-space: nowrap"  class="padRight">
             <asp:Label ID="LabelCaseStatusValue" runat="server"><%#NoData%></asp:Label>
         </td>
     </tr>

@@ -16,7 +16,7 @@
                             <td style="vertical-align: middle" valign="middle">
                                 <table id="Table1" style="width: 100%;" cellspacing="1" cellpadding="0" width="100%"
                                     border="0">
-                                    <asp:Panel ID="moPCodePanel_WRITE" runat="server">
+                                <asp:Panel ID="moPCodePanel_WRITE" runat="server">
                                     <tr>
                                             <td valign="top" align="left" colspan="6">
                                                 <table cellspacing="0" cellpadding="0" border="0" width="85%">
@@ -46,9 +46,9 @@
                                         </tr>
                                         <tr>
                                             <td colspan="6" height="10px"></td>
-
                                         </tr>
-                                   
+                                   </asp:Panel>
+                                </table>
                                    
                         </tr>
                         <tr>
@@ -69,7 +69,10 @@
                                     ImageUrl="../Common/Images/calendarIcon2.jpg"></asp:ImageButton>&nbsp;&nbsp;&nbsp;&nbsp;
                             </td>
                         </tr>
+                    </table>
                 </asp:Panel>
+            </td>
+        </tr>
                 <tr>
                     <td height="10px" />
                     <td />
@@ -240,15 +243,7 @@
                     </td>
                 </tr>
     </table>
-    </td>
-                            </tr>
-                        </table>
-                    </asp:Panel>
-                    
-                
-            </td>
-        </tr>
-    </table>
+   
     
     <script type='text/jscript' language='JavaScript'>
         var decSep = '<%=System.Globalization.CultureInfo.CurrentCulture.NumberFormat.CurrencyDecimalSeparator%>';

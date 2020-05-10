@@ -1,5 +1,6 @@
 ﻿<%@ Control Language="vb" AutoEventWireup="false" CodeBehind="UserControlDealerInflation.ascx.vb" 
 Inherits="Assurant.ElitaPlus.ElitaPlusWebApp.UserControlDealerInflation" %>
+<link href="../App_Themes/Default/Default.css" rel="stylesheet" />
 <asp:Panel ID="moDealerInflationTabPanel" runat="server" Width="100%">
     <div class="dataContainer">
         <div>
@@ -10,7 +11,7 @@ Inherits="Assurant.ElitaPlus.ElitaPlusWebApp.UserControlDealerInflation" %>
                             runat="server">:</asp:Label>
                         &nbsp;
                         <asp:DropDownList ID="cboDiPageSize" runat="server" Width="50px" AutoPostBack="true"
-                            SkinID="SmallDropDown">
+                            CssClass="small">
                             <asp:ListItem Value="5">5</asp:ListItem>
                             <asp:ListItem Value="10">10</asp:ListItem>
                             <asp:ListItem Value="15">15</asp:ListItem>
@@ -31,7 +32,7 @@ Inherits="Assurant.ElitaPlus.ElitaPlusWebApp.UserControlDealerInflation" %>
         </div>
     </div>
     <asp:GridView ID="DealerInflationGrid" runat="server" Width="51%" DataKeyNames="DEALER_INFLATION_ID,DEALER_ID,DEALER,INFLATION_MONTH,INFLATION_YEAR,INFLATION_PCT"
-        AllowPaging="True" AllowSorting="true" AutoGenerateColumns="False" SkinID="DetailPageGridView">
+        AllowPaging="True" AllowSorting="true" AutoGenerateColumns="False" CssClass="dataGrid">
         <SelectedRowStyle CssClass="SELECTED"></SelectedRowStyle>
         <EditRowStyle CssClass="EDITROW"></EditRowStyle>
         <AlternatingRowStyle Wrap="False" CssClass="ALTROW"></AlternatingRowStyle>
@@ -51,7 +52,7 @@ Inherits="Assurant.ElitaPlus.ElitaPlusWebApp.UserControlDealerInflation" %>
                     <asp:Label ID="lblInflationMonth" runat="server" Text='<%#Container.DataItem("INFLATION_MONTH")%>'></asp:Label>
                 </ItemTemplate>
                 <EditItemTemplate>
-                    <asp:DropDownList ID="cboInflationMonth" runat="server" Visible="True" SkinID="SmallDropDown">
+                    <asp:DropDownList ID="cboInflationMonth" runat="server" Visible="True" CssClass="small">
                     </asp:DropDownList>
                 </EditItemTemplate>
             </asp:TemplateField>
@@ -60,7 +61,7 @@ Inherits="Assurant.ElitaPlus.ElitaPlusWebApp.UserControlDealerInflation" %>
                     <asp:Label ID="lblInflationYear" runat="server" Text='<%#Container.DataItem("INFLATION_YEAR")%>'></asp:Label>
                 </ItemTemplate>
                 <EditItemTemplate>
-                    <asp:DropDownList ID="cboInflationYear" runat="server" Visible="True" SkinID="SmallDropDown">
+                    <asp:DropDownList ID="cboInflationYear" runat="server" Visible="True" CssClass="small">
                     </asp:DropDownList>
                 </EditItemTemplate>
             </asp:TemplateField>
@@ -69,7 +70,7 @@ Inherits="Assurant.ElitaPlus.ElitaPlusWebApp.UserControlDealerInflation" %>
                     <asp:Label ID="lblInflationPct" runat="server" Text='<%#Container.DataItem("INFLATION_PCT")%>'></asp:Label>
                 </ItemTemplate>
                 <EditItemTemplate>
-                    <asp:TextBox ID="txtInflationPct" runat="server" Visible="true" SkinID="exSmallTextBox"
+                    <asp:TextBox ID="txtInflationPct" runat="server" Visible="true" CssClass="exsmall"
                         onkeypress="return numericOnly(this)" onblur="return chkForZeroInflation(this)"></asp:TextBox><br />
                     <asp:Label ID="lblValidInflationPctMsg" runat="server"></asp:Label>
                 </EditItemTemplate>
@@ -83,8 +84,8 @@ Inherits="Assurant.ElitaPlus.ElitaPlusWebApp.UserControlDealerInflation" %>
                 </ItemTemplate>
                 <EditItemTemplate>
                     <table><tr><td style=" align-items: end ">
-                    <asp:Button ID="btnSave" runat="server" Text="Save" OnClick="btnSave_Click" SkinID="PrimaryRightButton"></asp:Button></td>
-                    <td><asp:LinkButton ID="btnCancel" runat="server" Text="Cancel" OnClick="btnCancel_Click" SkinID="AlternateRightButton"></asp:LinkButton>
+                    <asp:Button ID="btnSave" runat="server" Text="Save" OnClick="btnSave_Click" CssClass="primaryBtn floatR"></asp:Button></td>
+                    <td><asp:LinkButton ID="btnCancel" runat="server" Text="Cancel" OnClick="btnCancel_Click" CssClass="altBtn floatR"></asp:LinkButton>
                     </td></tr></table>
                 </EditItemTemplate>
             </asp:TemplateField>
