@@ -2297,6 +2297,28 @@ Public Class ClaimRecordingForm
         'check the radiobutton which is checked
         Dim senderRb As RadioButton = sender
         senderRb.Checked = True
+
+        'display the question set associated with selected option
+        Dim wsResponse As FulfillmentOptionsResponse = DirectCast(State.SubmitWsBaseClaimRecordingResponse, FulfillmentOptionsResponse)
+        ShowFulfillmentOptionQuestionSet(wsResponse)
+
+    End Sub
+
+    Private Sub ShowFulfillmentOptionQuestionSet(response As FulfillmentOptionsResponse)
+
+        Dim optionCode As String = GetFulfillmentProfileCode() 'get selected option
+
+        If String.IsNullOrWhiteSpace(optionCode) = False Then
+            Dim qsCode = response.Options.Where(Function(o) o.Code = optionCode).Select(Function(o) o.QuestionSetCode)
+            If response.QuestionsByStage.ContainsKey(optionCode) Then
+                fulfillmentOptionQuestions.SetQuestionTitle(TranslationBase.TranslateLabelOrMessage("QUESTION_SET"))
+                fulfillmentOptionQuestions.QuestionDataSource = response.QuestionsByStage(optionCode)
+                fulfillmentOptionQuestions.QuestionDataBind()
+                ControlMgr.SetVisibleControl(Me, fulfillmentOptionQuestions, True)
+                Exit Sub
+            End If
+        End If
+        ControlMgr.SetVisibleControl(Me, fulfillmentOptionQuestions, False)
     End Sub
 
     Private Sub ShowFulfillmentOptionsView()
@@ -2308,17 +2330,8 @@ Public Class ClaimRecordingForm
                 End If
                 PopulateFulfillmentOptionsGrid()
 
-                'fulfillmentOptionQuestions.SetEnableSaveExitButton(False)
-
-                If wsResponse.QuestionsByStage IsNot Nothing And wsResponse.QuestionsByStage.Count > 0 Then
-                    fulfillmentOptionQuestions.SetQuestionTitle(TranslationBase.TranslateLabelOrMessage("QUESTION_SET"))
-
-                    fulfillmentOptionQuestions.QuestionDataSource = wsResponse.QuestionsByStage.FirstOrDefault().Value
-                    fulfillmentOptionQuestions.QuestionDataBind()
-                    ControlMgr.SetVisibleControl(Me, fulfillmentOptionQuestions, True)
-                Else
-                    ControlMgr.SetVisibleControl(Me, fulfillmentOptionQuestions, False)
-                End If
+                'show question set associated with the selected option
+                ShowFulfillmentOptionQuestionSet(wsResponse)
 
                 mvClaimsRecording.ActiveViewIndex = ClaimRecordingViewIndexFulfillmentOptions
             End If
@@ -2373,7 +2386,8 @@ Public Class ClaimRecordingForm
         Next
         Return fulfillmentProfileCode
     End Function
-    Private Sub SendReponseFulfillmentOptions(ByVal fulfillmentProfileCode As String)
+
+    Private Function SendReponseFulfillmentOptions(ByVal fulfillmentProfileCode As String) As Boolean
 
         Dim wsRequest As FulfillmentOptionsRequest = New FulfillmentOptionsRequest()
         Dim wsPreviousResponse As FulfillmentOptionsResponse
@@ -2381,23 +2395,37 @@ Public Class ClaimRecordingForm
         If State.SubmitWsBaseClaimRecordingResponse.GetType() Is GetType(FulfillmentOptionsResponse) Then
             wsPreviousResponse = DirectCast(State.SubmitWsBaseClaimRecordingResponse, FulfillmentOptionsResponse)
         Else
-            Exit Sub
+            Return False
         End If
 
         State.FulfillmentOption = wsPreviousResponse.Options.FirstOrDefault(Function(opt) opt.Code = fulfillmentProfileCode)
 
-        fulfillmentOptionQuestions.GetQuestionAnswer()
 
         wsRequest.CaseNumber = wsPreviousResponse.CaseNumber
         wsRequest.CompanyCode = wsPreviousResponse.CompanyCode
         wsRequest.InteractionNumber = wsPreviousResponse.InteractionNumber
         wsRequest.OptionCode = fulfillmentProfileCode
         ' for questions
+        If fulfillmentOptionQuestions.Visible = True Then
 
-        wsRequest.QuestionVersion = 1
-        wsRequest.QuestionSetCode = wsPreviousResponse.Options.FirstOrDefault().QuestionSetCode
-        If wsPreviousResponse.QuestionsByStage IsNot Nothing Then
-            wsRequest.Questions = wsPreviousResponse.QuestionsByStage.FirstOrDefault().Value
+            fulfillmentOptionQuestions.GetQuestionAnswer()
+            If (questionUserControl.ErrAnswerMandatory IsNot Nothing) Then
+                MasterPage.MessageController.AddError(ElitaPlus.Common.ErrorCodes.GUI_ANSWER_IS_REQUIRED_ERR, True)
+                Return False
+            ElseIf (questionUserControl.ErrorQuestionCodes IsNot Nothing) Then
+                MasterPage.MessageController.AddError(ElitaPlus.Common.ErrorCodes.GUI_ANSWER_TO_QUESTION_INVALID_ERR, True)
+                Return False
+            ElseIf (questionUserControl.ErrTextAnswerLength IsNot Nothing) Then
+                MasterPage.MessageController.AddError(ElitaPlus.Common.ErrorCodes.GUI_ANSWER_LENGTH_TO_QUESTION_TOO_LONG_ERR, True)
+                Return False
+            End If
+
+            wsRequest.QuestionVersion = 1
+            wsRequest.QuestionSetCode = wsPreviousResponse.Options.FirstOrDefault(Function(opt) opt.Code = fulfillmentProfileCode).QuestionSetCode
+            If wsPreviousResponse.QuestionsByStage IsNot Nothing Then
+                wsRequest.Questions = wsPreviousResponse.QuestionsByStage(fulfillmentProfileCode)
+            End If
+
         End If
 
         Try
@@ -2413,9 +2441,10 @@ Public Class ClaimRecordingForm
             End If
         Catch ex As FaultException
             ThrowWsFaultExceptions(ex)
-            Exit Sub
         End Try
-    End Sub
+
+        Return True
+    End Function
 #End Region
 #Region "Fulfillment Options - Button Click"
     Protected Sub btnFulfillmentOptionsContinue_Click(sender As Object, e As EventArgs) Handles btnFulfillmentOptionsContinue.Click
@@ -2427,10 +2456,14 @@ Public Class ClaimRecordingForm
                 MasterPage.MessageController.AddError(Message.MSG_ERR_SELECT_A_FULFILLMENT_OPTIONS, True)
                 Exit Sub
             End If
-            'Disable all button once response is stored, except back button
-            ControlMgr.SetEnableControl(Me, btnFulfillmentOptionsContinue, False)
-            SendReponseFulfillmentOptions(fulfillmentProfileCode)
-            DisplayNextView()
+
+            If SendReponseFulfillmentOptions(fulfillmentProfileCode) = True Then
+                'Disable all button once response is stored, except back button
+                ControlMgr.SetEnableControl(Me, btnFulfillmentOptionsContinue, False)
+                'display next view
+                DisplayNextView()
+            End If
+
         Catch ex As Exception
             HandleErrors(ex, MasterPage.MessageController)
         End Try
