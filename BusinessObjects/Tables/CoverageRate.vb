@@ -351,7 +351,86 @@ Public Class CoverageRate
         End Set
     End Property
 
-
+    'US 521697
+    <ValidStringLength("", Max:=50, Message:="CommissionsPercentSourceXcd should be between 1 to 30 chars.")>
+    Public Property CommissionsPercentSourceXcd() As String
+        Get
+            CheckDeleted()
+            If Row(CoverageRateDAL.COL_NAME_COMMISSIONS_PERCENT_SOURCE_XCD) Is DBNull.Value Then
+                Return Nothing
+            Else
+                Return CType(Row(CoverageRateDAL.COL_NAME_COMMISSIONS_PERCENT_SOURCE_XCD), String)
+            End If
+        End Get
+        Set(ByVal Value As String)
+            CheckDeleted()
+            Me.SetValue(CoverageRateDAL.COL_NAME_COMMISSIONS_PERCENT_SOURCE_XCD, Value)
+        End Set
+    End Property
+    
+    <ValidStringLength("", Max:=50, Message:="MarketingPercentSourceXcd should be between 1 to 30 chars.")>
+    Public Property MarketingPercentSourceXcd() As String
+        Get
+            CheckDeleted()
+            If Row(CoverageRateDAL.COL_NAME_MARKETING_PERCENT_SOURCE_XCD) Is DBNull.Value Then
+                Return Nothing
+            Else
+                Return CType(Row(CoverageRateDAL.COL_NAME_MARKETING_PERCENT_SOURCE_XCD), String)
+            End If
+        End Get
+        Set(ByVal Value As String)
+            CheckDeleted()
+            Me.SetValue(CoverageRateDAL.COL_NAME_MARKETING_PERCENT_SOURCE_XCD, Value)
+        End Set
+    End Property
+    
+    <ValidStringLength("", Max:=50, Message:="AdminExpenseSourceXcd should be between 1 to 30 chars.")>
+    Public Property AdminExpenseSourceXcd() As String
+        Get
+            CheckDeleted()
+            If Row(CoverageRateDAL.COL_NAME_ADMIN_EXPENSE_SOURCE_XCD) Is DBNull.Value Then
+                Return Nothing
+            Else
+                Return CType(Row(CoverageRateDAL.COL_NAME_ADMIN_EXPENSE_SOURCE_XCD), String)
+            End If
+        End Get
+        Set(ByVal Value As String)
+            CheckDeleted()
+            Me.SetValue(CoverageRateDAL.COL_NAME_ADMIN_EXPENSE_SOURCE_XCD, Value)
+        End Set
+    End Property
+    
+    <ValidStringLength("", Max:=50, Message:="ProfitPercentSourceXcd should be between 1 to 30 chars.")>
+    Public Property ProfitPercentSourceXcd() As String
+        Get
+            CheckDeleted()
+            If Row(CoverageRateDAL.COL_NAME_PROFIT_PERCENT_SOURCE_XCD) Is DBNull.Value Then
+                Return Nothing
+            Else
+                Return CType(Row(CoverageRateDAL.COL_NAME_PROFIT_PERCENT_SOURCE_XCD), String)
+            End If
+        End Get
+        Set(ByVal Value As String)
+            CheckDeleted()
+            Me.SetValue(CoverageRateDAL.COL_NAME_PROFIT_PERCENT_SOURCE_XCD, Value)
+        End Set
+    End Property
+    
+    <ValidStringLength("", Max:=50, Message:="LossCostPercentSourceXcd should be between 1 to 30 chars.")>
+    Public Property LossCostPercentSourceXcd() As String
+        Get
+            CheckDeleted()
+            If Row(CoverageRateDAL.COL_NAME_LOSS_COST_PERCENT_SOURCE_XCD) Is DBNull.Value Then
+                Return Nothing
+            Else
+                Return CType(Row(CoverageRateDAL.COL_NAME_LOSS_COST_PERCENT_SOURCE_XCD), String)
+            End If
+        End Get
+        Set(ByVal Value As String)
+            CheckDeleted()
+            Me.SetValue(CoverageRateDAL.COL_NAME_LOSS_COST_PERCENT_SOURCE_XCD, Value)
+        End Set
+    End Property
 
 #End Region
 
