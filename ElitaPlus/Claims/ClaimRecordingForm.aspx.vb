@@ -716,7 +716,7 @@ Public Class ClaimRecordingForm
             MasterPage.MessageController.AddError(errClaimRecordingWs & " - " & errorMessage, False)
         Else
             Log(fex)
-            MasterPage.MessageController.AddError(errClaimRecordingWs & " - " & fex.Message, False)
+            MasterPage.MessageController.AddError(errClaimRecordingWs & " - " & fex.Code.Name, False)
             'Throw New GUIException(TranslationBase.TranslateLabelOrMessage(ElitaPlus.Common.ErrorCodes.GUI_CLAIM_RECORDING_SERVICE_ERR) & " - " & fex.Message, ElitaPlus.Common.ErrorCodes.GUI_CLAIM_RECORDING_SERVICE_ERR, If(fex.InnerException, Nothing))
         End If
 
