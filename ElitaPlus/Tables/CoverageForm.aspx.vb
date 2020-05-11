@@ -194,29 +194,11 @@ Namespace Tables
 #End Region
 #Region "Coverage-Rate Constants"
 
-        ' DataGrid Elements
-        '    Private Const EDIT_BUTTON_NAME As String = "BtnEdit"
-        '  COVERAGE_RATE_ID, LOW_PRICE, HIGH_PRICE, GROSS_AMT, COMMISSIONS_PERCENT COMMISSION_PERCENT,
-        '				MARKETING_PERCENT, ADMIN_EXPENSE, PROFIT_EXPENSE, LOSS_COST_PERCENT
-
         Private Const COVERAGE_RATE_ID As Integer = 2
         Private Const LOW_PRICE As Integer = 3
         Private Const HIGH_PRICE As Integer = 4
         Private Const GROSS_AMT As Integer = 5
         Private Const COMMISSIONS_PERCENT As Integer = 6
-        'Private Const MARKETING_PERCENT As Integer = 7
-        'Private Const ADMIN_EXPENSE As Integer = 8
-        'Private Const PROFIT_EXPENSE As Integer = 9
-        'Private Const LOSS_COST_PERCENT As Integer = 10
-        'Private Const GROSS_AMOUNT_PERCENT As Integer = 11
-        'Private Const RENEWAL_NUMBER As Integer = 12
-        'Private Const REGION_ID As Integer = 13
-
-        'Private Const COMMISSIONS_PERCENT_XCD As Integer = 14
-        'Private Const MARKETING_PERCENT_XCD As Integer = 15
-        'Private Const ADMIN_EXPENSE_XCD As Integer = 16
-        'Private Const PROFIT_EXPENSE_XCD As Integer = 17
-        'Private Const LOSS_COST_PERCENT_XCD As Integer = 18
         Private Const COMMISSIONS_PERCENT_XCD As Integer = 7
         Private Const MARKETING_PERCENT As Integer = 8
         Private Const MARKETING_PERCENT_XCD As Integer = 9
@@ -226,7 +208,6 @@ Namespace Tables
         Private Const PROFIT_EXPENSE_XCD As Integer = 13
         Private Const LOSS_COST_PERCENT As Integer = 14
         Private Const LOSS_COST_PERCENT_XCD As Integer = 15
-
         Private Const GROSS_AMOUNT_PERCENT As Integer = 16
         Private Const RENEWAL_NUMBER As Integer = 17
         Private Const REGION_ID As Integer = 18
@@ -672,8 +653,6 @@ Namespace Tables
                     AttributeValues.ParentBusinessObject = CType(TheCoverage, IAttributable)
                     AttributeValues.TranslateHeaders()
 
-                    'US-521697
-                    'PopulateFormGridSourceXcdFromBo()
                 Else
                     AttributeValues.ParentBusinessObject = CType(TheCoverage, IAttributable)
                     GetDisabledTabs()
@@ -3855,20 +3834,6 @@ Namespace Tables
                 Me.PopulateBOProperty(TheCoverageRate, "RenewalNumber", CType(Me.GetSelectedGridControl(moGridView, RENEWAL_NUMBER), TextBox))
                 Me.PopulateBOProperty(TheCoverageRate, "RegionId", CType(Me.GetDropDownControlFromGrid(moGridView, REGION_ID), DropDownList))
 
-                'If (Me.State.moCoverage.DealerId <> Guid.Empty) Then
-                '    Dim oDealer As New Dealer(Me.State.moCoverage.DealerId)
-                '    If Not oDealer.AcctBucketsWithSourceXcd Is Nothing Then
-                '        If oDealer.AcctBucketsWithSourceXcd.Equals(Codes.EXT_YESNO_Y) Then
-                '            Me.PopulateBOProperty(TheCoverageRate, "CommissionsPercentSourceXcd", CType(Me.GetSelectedGridControl(moGridView, COMMISSIONS_PERCENT_XCD), DropDownList))
-                '            Me.PopulateBOProperty(TheCoverageRate, "MarketingPercentSourceXcd", CType(Me.GetSelectedGridControl(moGridView, MARKETING_PERCENT_XCD), DropDownList))
-                '            Me.PopulateBOProperty(TheCoverageRate, "AdminExpenseSourceXcd", CType(Me.GetSelectedGridControl(moGridView, ADMIN_EXPENSE_XCD), DropDownList))
-                '            Me.PopulateBOProperty(TheCoverageRate, "ProfitPercentSourceXcd", CType(Me.GetSelectedGridControl(moGridView, PROFIT_EXPENSE_XCD), DropDownList))
-                '            Me.PopulateBOProperty(TheCoverageRate, "LossCostPercentSourceXcd", CType(Me.GetSelectedGridControl(moGridView, LOSS_COST_PERCENT_XCD), DropDownList))
-                '        End If
-                '    End If
-                'End If
-
-                'PopulateFormGridSourceXcdFromBo()
                 CommonSourceOptionLogic()
             End With
 
@@ -4508,12 +4473,6 @@ Namespace Tables
                     ValidateIncomingSourceXcd()
 
                     If Me.State.IsBucketIncomingSelected Then
-                        'ElitaPlusPage.SetLabelError(Me.LabelIgnorePremium)
-                        'ElitaPlusPage.SetLabelError(Me.LabelLossCostPercent)
-                        'ElitaPlusPage.SetLabelError(Me.LabelProfitExpense)
-                        'ElitaPlusPage.SetLabelError(Me.LabelAdminExpense)
-                        'ElitaPlusPage.SetLabelError(Me.LabelMarketingExpense)
-                        'ElitaPlusPage.SetLabelError(Me.LabelCommPercent)
                         Throw New GUIException(Message.MSG_INCOMING_OPTION_NOT_ALLOWED, Assurant.ElitaPlus.Common.ErrorCodes.MSG_INCOMING_OPTION_NOT_ALLOWED_WHEN_IGNORE_PREMIUM_IS_YES)
                     End If
                 End If
@@ -4521,18 +4480,8 @@ Namespace Tables
                 ValidateDifferenceSourceXcd()
 
                 If Me.State.IsDiffSelectedTwice Then
-                    'ElitaPlusPage.SetLabelError(Me.LabelLossCostPercent)
-                    'ElitaPlusPage.SetLabelError(Me.LabelProfitExpense)
-                    'ElitaPlusPage.SetLabelError(Me.LabelAdminExpense)
-                    'ElitaPlusPage.SetLabelError(Me.LabelMarketingExpense)
-                    'ElitaPlusPage.SetLabelError(Me.LabelCommPercent)
                     Throw New GUIException(Message.MSG_DIFFERENCE_OPTION_ALLOWED_ONLY_ONCE, Assurant.ElitaPlus.Common.ErrorCodes.MSG_DIFFERENCE_SOURCE_ALLOWED_ONLY_FOR_ONE_BUCKET)
                 ElseIf Me.State.IsDiffNotSelectedOnce Then
-                    'ElitaPlusPage.SetLabelError(Me.LabelLossCostPercent)
-                    'ElitaPlusPage.SetLabelError(Me.LabelProfitExpense)
-                    'ElitaPlusPage.SetLabelError(Me.LabelAdminExpense)
-                    'ElitaPlusPage.SetLabelError(Me.LabelMarketingExpense)
-                    'ElitaPlusPage.SetLabelError(Me.LabelCommPercent)
                     Throw New GUIException(Message.MSG_DIFFERENCE_OPTION_ATLEAST_ONE, Assurant.ElitaPlus.Common.ErrorCodes.MSG_DIFFERENCE_OPTION_SHOULD_PRESENT_ATLEAST_FOR_ONE_BUCKET)
                 End If
             End If
