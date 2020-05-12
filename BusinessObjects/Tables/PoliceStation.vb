@@ -1,5 +1,5 @@
 '************* THIS CODE HAS BEEN GENERATED FROM TEMPLATE BusinessObject.cst (2/27/2007)  ********************
-
+Imports System.Web.UI.WebControls
 Public Class PoliceStation
     Inherits BusinessObjectBase
 
@@ -99,6 +99,8 @@ Public Class PoliceStation
     Public Const COL_POLICE_STATION_ID As String = "POLICE_STATION_ID"
     Public Const COL_POLICE_STATION_CODE As String = "POLICE_STATION_CODE"
     Public Const COL_POLICE_STATION_NAME As String = "POLICE_STATION_NAME"
+    Public Const COL_POLICE_STATION_DISTRICT_CODE As String = "POLICE_STATION_DISTRICT_CODE"
+    Public Const COL_POLICE_STATION_DISTRICT_NAME As String = "POLICE_STATION_DISTRICT_NAME"
     Public Const WILDCARD_CHAR As Char = "%"
     Public Const ASTERISK As Char = "*"
     Private Const DSNAME As String = "LIST"
@@ -156,7 +158,7 @@ Public Class PoliceStation
     End Property
 
 
-    <ValueMandatory(""), ValidStringLength("", Max:=200)> _
+    <ValueMandatory(""), ValidStringLength("", Max:=200)>
     Public Property PoliceStationName() As String
         Get
             CheckDeleted()
@@ -172,6 +174,38 @@ Public Class PoliceStation
         End Set
     End Property
 
+    <ValidStringLength("", Max:=15)>
+    Public Property PoliceStationDistrictCode() As String
+        Get
+            CheckDeleted()
+            If Row(PoliceStationDAL.COL_NAME_POLICE_STATION_DISTRICT_CODE) Is DBNull.Value Then
+                Return Nothing
+            Else
+                Return CType(Row(PoliceStationDAL.COL_NAME_POLICE_STATION_DISTRICT_CODE), String)
+            End If
+        End Get
+        Set(ByVal Value As String)
+            CheckDeleted()
+            Me.SetValue(PoliceStationDAL.COL_NAME_POLICE_STATION_DISTRICT_CODE, Value)
+        End Set
+    End Property
+
+
+    <ValidStringLength("", Max:=200)>
+    Public Property PoliceStationDistrictName() As String
+        Get
+            CheckDeleted()
+            If Row(PoliceStationDAL.COL_NAME_POLICE_STATION_DISTRICT_NAME) Is DBNull.Value Then
+                Return Nothing
+            Else
+                Return CType(Row(PoliceStationDAL.COL_NAME_POLICE_STATION_DISTRICT_NAME), String)
+            End If
+        End Get
+        Set(ByVal Value As String)
+            CheckDeleted()
+            Me.SetValue(PoliceStationDAL.COL_NAME_POLICE_STATION_DISTRICT_NAME, Value)
+        End Set
+    End Property
 
     <ValidStringLength("", Max:=200)> _
     Public Property Address1() As String
@@ -296,6 +330,39 @@ Public Class PoliceStation
         End Try
     End Sub
 
+    Public Sub DeleteAndSavePoliceStation()
+        Dim policeStationId As Guid
+        policeStationId = Me.Id
+
+        Me.CheckDeleted()
+        Me.BeginEdit()
+        Try
+            Me.Delete()
+            Me.SavePoliceStationData(policeStationId)
+        Catch ex As Exception
+            Me.cancelEdit()
+            Throw ex
+        End Try
+    End Sub
+
+    Public Sub SavePoliceStationData(ByVal policeStationId As Guid)
+        Try
+            MyBase.Save()
+            If Me._isDSCreator AndAlso Me.IsDirty AndAlso Me.Row.RowState <> DataRowState.Detached Then
+                Dim dal As New PoliceStationDAL
+                dal.SavePoliceStation(Me.Row, policeStationId)
+                'Reload the Data from the DB
+                If Me.Row.RowState <> DataRowState.Detached Then
+                    Dim objId As Guid = Me.Id
+                    Me.Dataset = New DataSet
+                    Me.Row = Nothing
+                    Me.Load(objId)
+                End If
+            End If
+        Catch ex As Assurant.ElitaPlus.DALObjects.DataBaseAccessException
+            Throw New DataBaseAccessException(DataBaseAccessException.DatabaseAccessErrorType.WriteErr, ex)
+        End Try
+    End Sub
     Public Overrides ReadOnly Property IsDirty() As Boolean
         Get
             Return MyBase.IsDirty
@@ -312,6 +379,21 @@ Public Class PoliceStation
             Me.cancelEdit()
             Throw ex
         End Try
+    End Sub
+    Public Sub DistrictValidation(lblCode As Label, lblName As Label)
+        Dim strDistCode As String = Row(PoliceStationDAL.COL_NAME_POLICE_STATION_DISTRICT_CODE).ToString()
+        Dim strDistName As String = Row(PoliceStationDAL.COL_NAME_POLICE_STATION_DISTRICT_NAME).ToString()
+
+        If (String.IsNullOrEmpty(strDistCode) AndAlso Not String.IsNullOrEmpty(strDistName)) Or (Not String.IsNullOrEmpty(strDistCode) AndAlso String.IsNullOrEmpty(strDistName)) Then
+            If (Row(PoliceStationDAL.COL_NAME_POLICE_STATION_DISTRICT_CODE).ToString() = String.Empty) Then
+                lblCode.ForeColor = System.Drawing.Color.Red
+                Throw New BOInvalidOperationException("Please enter District Code.")
+            ElseIf (Row(PoliceStationDAL.COL_NAME_POLICE_STATION_DISTRICT_NAME).ToString() = String.Empty) Then
+                lblName.ForeColor = System.Drawing.Color.Red
+                Throw New BOInvalidOperationException("Please enter District Name.")
+            End If
+        End If
+
     End Sub
 
     Public Sub Copy(ByVal original As PoliceStation)
@@ -338,6 +420,8 @@ Public Class PoliceStation
         Public Const COL_POLICE_STATION_ID As String = "police_station_id"
         Public Const COL_POLICE_STATION_CODE As String = "police_station_code"
         Public Const COL_POLICE_STATION_NAME As String = "police_station_name"
+        Public Const COL_POLICE_STATION_DISTRICT_CODE As String = "police_station_district_code"
+        Public Const COL_POLICE_STATION_DISTRICT_NAME As String = "police_station_district_name"
         Public Const COL_POLICE_STATION As String = "police_station"
         Public Const COL_COUNTRY_ID As String = "country_id"
 #End Region
