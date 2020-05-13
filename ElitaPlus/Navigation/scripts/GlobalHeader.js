@@ -758,7 +758,6 @@ function showMessage(msg, title, buttons, icon, ResultControlId) {
 }
 
 function revealModalAfterLoaded(divID) {
-    debugger;
     if (typeof jQuery == 'undefined') {
         revealModal(divID);
     } else {

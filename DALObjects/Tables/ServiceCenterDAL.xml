@@ -56,7 +56,9 @@
 				service_center_id,
         pre_invoice_id,
         auto_process_inv_file_xcd,
-        withholding_rate
+        withholding_rate,
+        claim_reserved_based_on_xcd,
+        claim_reserved_percent
 			FROM elp_service_center
 			WHERE
 				service_center_id = :service_center_id
@@ -137,7 +139,9 @@
 				net_days = :net_days,
         pre_invoice_id = :pre_invoice_id,
         auto_process_inv_file_xcd = :auto_process_inv_file_xcd,
-        withholding_rate = :withholding_rate
+        withholding_rate = :withholding_rate,
+        claim_reserved_based_on_xcd = :claim_reserved_based_on_xcd,
+        claim_reserved_percent = :claim_reserved_percent
 			WHERE
 				service_center_id = :service_center_id
 		]]>
@@ -191,7 +195,9 @@
     net_days,
     pre_invoice_id,
     auto_process_inv_file_xcd,
-    withholding_rate
+    withholding_rate,
+    claim_reserved_based_on_xcd,
+    claim_reserved_percent
     )
     VALUES
     (
@@ -241,7 +247,9 @@
     :net_days,
     :pre_invoice_id,
     :auto_process_inv_file_xcd,
-    :withholding_rate
+    :withholding_rate,
+    :claim_reserved_based_on_xcd,
+    :claim_reserved_percent
     )
   </INSERT>
   <DELETE>

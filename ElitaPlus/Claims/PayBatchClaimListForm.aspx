@@ -344,7 +344,7 @@
             </li>
             <li>
                 <a href="#tabsIIBBtaxes">
-                    <asp:Label ID="Label6" runat="server" CssClass="tabHeaderText">Region Taxes</asp:Label>
+                    <asp:Label ID="Label6" runat="server" CssClass="tabHeaderText">REGION_TAXES</asp:Label>
                 </a>
             </li>
         </ul>

@@ -491,6 +491,22 @@
                     <td align="left" nowrap="nowrap"></td>
                 </tr>
                 <tr>
+                    <td align="right" class="borderLeft" nowrap="nowrap">
+                        <asp:Label ID="lblClaimReservedbasedon" runat="server">CLAIM_RESERVED_BASED_ON</asp:Label>
+                    </td>
+                    <td align="left" nowrap="nowrap">
+                        <asp:DropDownList ID="ddlClaimReservedbasedon" TabIndex="39" runat="server" AutoPostBack="True" SkinID="MediumDropDown">
+                        </asp:DropDownList>
+                    </td>
+                    <td align="right" nowrap="nowrap">
+                        <asp:Label ID="lblclaimreservedPercent" runat="server">CLAIM_RESERVED_PERCENTAGE</asp:Label>
+                    </td>
+                    <td align="left" nowrap="nowrap">
+                        <asp:TextBox ID="txtclaimreservedPercent" TabIndex="37" runat="server" AutoPostBack="False"
+                                     SkinID="MediumTextBox"></asp:TextBox>
+                    </td>
+                 </tr>
+                <tr>
                     <td colspan="4" height="5"></td>
                 </tr>
             </table>

@@ -72,7 +72,7 @@ Public Class ClaimEquipmentDAL
         End Try
     End Sub
 
-    Public Sub LoadDevieInfoList(ByVal familyDS As DataSet, ByVal claimId As Guid, ByVal languageId As Guid)
+    Public Sub LoadDeviceInfoList(ByVal familyDS As DataSet, ByVal claimId As Guid, ByVal languageId As Guid)
         Dim selectStmt As String = Me.Config("/SQL/LOAD_DEVICE_INFO_LIST")
         Dim ds As DataSet = New DataSet
         Dim outputParameter(0) As DBHelper.DBHelperParameter

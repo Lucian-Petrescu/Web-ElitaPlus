@@ -46,7 +46,7 @@ Public Class ClaimRecordingForm
     Private Const Password = "CLAIM_RECSERVICE_PASSWORD"
     Private Const ServiceUrl = "CLAIM_SERVICE_URL"
     Private Const EndPointName = "CustomBinding_IClaimRecordingService"
-    Private Const UtiliutyEndPointName = "BasicHttpBinding_IUtilityWcf"
+    Private Const UtiliutyEndPointName = "CustomBinding_IUtilityWcf"
     Private Const FlagYes = "YESNO-Y"
 
     Dim _relationlist As ListItem()
@@ -736,7 +736,7 @@ Public Class ClaimRecordingForm
             MasterPage.MessageController.AddError(errClaimRecordingWs & " - " & errorMessage, False)
         Else
             Log(fex)
-            MasterPage.MessageController.AddError(errClaimRecordingWs & " - " & fex.Message, False)
+            MasterPage.MessageController.AddError(errClaimRecordingWs & " - " & fex.Code.Name, False)
             'Throw New GUIException(TranslationBase.TranslateLabelOrMessage(ElitaPlus.Common.ErrorCodes.GUI_CLAIM_RECORDING_SERVICE_ERR) & " - " & fex.Message, ElitaPlus.Common.ErrorCodes.GUI_CLAIM_RECORDING_SERVICE_ERR, If(fex.InnerException, Nothing))
         End If
 
