@@ -1305,8 +1305,12 @@ Partial Class ClaimAuthorizationDetailForm
             End If
             
            If State.MyBO.IsFamilyDirty Then
-               
+
                 lblVoidAuthStatus.Visible = True
+
+                If String.IsNullOrEmpty(State.ClaimBO.ProblemDescription) Then
+                    State.ClaimBO.ProblemDescription = "Problem Description Missing"
+                End If
 
                 State.MyBO.Void()
                 State.ClaimBO.Save()
@@ -1314,10 +1318,10 @@ Partial Class ClaimAuthorizationDetailForm
 
                 lblVoidAuthStatus.Text = TranslationBase.TranslateLabelOrMessage(Message.MSG_CLAIM_AUTH_VOIDED)
                 divVoidAuthStatus.Visible = True
-             
-                ControlMgr.SetVisibleControl(Me,btnVoidAuthSave,False)
-                ControlMgr.SetVisibleControl(Me,btnVoidAuthCancel,False)
-                ControlMgr.SetVisibleControl(Me,btnVoidAuthClose,True)
+
+                ControlMgr.SetVisibleControl(Me, btnVoidAuthSave, False)
+                ControlMgr.SetVisibleControl(Me, btnVoidAuthCancel, False)
+                ControlMgr.SetVisibleControl(Me, btnVoidAuthClose, True)
 
 
                 If CloseClaimAsPaid() Then
@@ -1333,7 +1337,7 @@ Partial Class ClaimAuthorizationDetailForm
                 End If
 
             Else
-                MasterPage.MessageController.AddInformation(Message.MSG_RECORD_NOT_SAVED)
+                    MasterPage.MessageController.AddInformation(Message.MSG_RECORD_NOT_SAVED)
             End If
         Catch ex As Exception
             lblvoidAuthError.Text = TranslationBase.TranslateLabelOrMessage(Message.MSG_CLAIM_AUTH_VOID_FAIED) & ex.Message
