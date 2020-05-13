@@ -923,6 +923,42 @@ Partial Public Class ServiceCenterForm
     Protected WithEvents ddlAutoProcessInventoryFile As Global.System.Web.UI.WebControls.DropDownList
 
     '''<summary>
+    '''lblClaimReservedbasedon control.
+    '''</summary>
+    '''<remarks>
+    '''Auto-generated field.
+    '''To modify move field declaration from designer file to code-behind file.
+    '''</remarks>
+    Protected WithEvents lblClaimReservedbasedon As Global.System.Web.UI.WebControls.Label
+
+    '''<summary>
+    '''ddlClaimReservedbasedon control.
+    '''</summary>
+    '''<remarks>
+    '''Auto-generated field.
+    '''To modify move field declaration from designer file to code-behind file.
+    '''</remarks>
+    Protected WithEvents ddlClaimReservedbasedon As Global.System.Web.UI.WebControls.DropDownList
+
+    '''<summary>
+    '''lblclaimreservedPercent control.
+    '''</summary>
+    '''<remarks>
+    '''Auto-generated field.
+    '''To modify move field declaration from designer file to code-behind file.
+    '''</remarks>
+    Protected WithEvents lblclaimreservedPercent As Global.System.Web.UI.WebControls.Label
+
+    '''<summary>
+    '''txtclaimreservedPercent control.
+    '''</summary>
+    '''<remarks>
+    '''Auto-generated field.
+    '''To modify move field declaration from designer file to code-behind file.
+    '''</remarks>
+    Protected WithEvents txtclaimreservedPercent As Global.System.Web.UI.WebControls.TextBox
+
+    '''<summary>
     '''hdnSelectedTab control.
     '''</summary>
     '''<remarks>

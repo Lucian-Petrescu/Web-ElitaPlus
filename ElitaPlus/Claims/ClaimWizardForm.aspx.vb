@@ -20,6 +20,7 @@ Imports Assurant.ElitaPlus.Security
 Imports Assurant.Elita.CommonConfiguration.DataElements
 Imports Assurant.Elita.Web.Forms
 Imports Assurant.ElitaPlus.ElitaPlusWebApp.ClaimService
+Imports System.ServiceModel
 
 Public Class ClaimWizardForm
     Inherits ElitaPlusSearchPage
@@ -525,26 +526,32 @@ Public Class ClaimWizardForm
                             End If
                         Next
                         If blnClaimInProgress Then
-                            ' re-validate the claim limit and claim count
-                            Dim wsRequest As NewClaimEntitledRequest = New NewClaimEntitledRequest()
+                            Try
+                                ' re-validate the claim limit and claim count
+                                Dim wsRequest As NewClaimEntitledRequest = New NewClaimEntitledRequest()
 
-                            wsRequest.DealerCode = State.ClaimBO.Dealer.Dealer
-                            wsRequest.CertificateNumber = State.ClaimBO.Certificate.CertNumber
-                            wsRequest.LossDate = State.ClaimBO.LossDate.Value
-                            wsRequest.CoverageTypeCode = State.ClaimBO.CoverageTypeCode
+                                wsRequest.DealerCode = State.ClaimBO.Dealer.Dealer
+                                wsRequest.CertificateNumber = State.ClaimBO.Certificate.CertNumber
+                                wsRequest.LossDate = State.ClaimBO.LossDate.Value
+                                wsRequest.CoverageTypeCode = State.ClaimBO.CoverageTypeCode
 
-                            Dim wsResponse As NewClaimEntitledResponse
-                            wsResponse = WcfClientHelper.Execute(Of ClaimServiceClient, IClaimService, NewClaimEntitledResponse)(
-                                GetClientClaimService(),
-                                New List(Of Object) From {New InteractiveUserHeader() With {.LanId = Authentication.CurrentUser.NetworkId}},
-                                Function(ByVal c As ClaimServiceClient)
-                                    Return c.NewClaimEntitled(wsRequest)
-                                End Function)
+                                Dim wsResponse As NewClaimEntitledResponse
+                                wsResponse = WcfClientHelper.Execute(Of ClaimServiceClient, IClaimService, NewClaimEntitledResponse)(
+                                    GetClientClaimService(),
+                                    New List(Of Object) From {New InteractiveUserHeader() With {.LanId = Authentication.CurrentUser.NetworkId}},
+                                    Function(ByVal c As ClaimServiceClient)
+                                        Return c.NewClaimEntitled(wsRequest)
+                                    End Function)
 
-                            If wsResponse.IsNewClaimEntitled = False Then 'deny the claim with the denial reason returned
-                                State.ClaimBO.Status = BasicClaimStatus.Denied
-                                Me.State.ClaimBO.DeniedReasonId = LookupListNew.GetIdFromCode(LookupListNew.LK_DENIED_REASON, wsResponse.DenialCodes(0))
-                            End If
+                                If wsResponse.IsNewClaimEntitled = False Then 'deny the claim with the denial reason returned
+                                    State.ClaimBO.Status = BasicClaimStatus.Denied
+                                    Me.State.ClaimBO.DeniedReasonId = LookupListNew.GetIdFromCode(LookupListNew.LK_DENIED_REASON, wsResponse.DenialCodes(0))
+                                End If
+                            Catch ex As FaultException
+                                Log(ex)
+                            Catch ex As Exception
+                                Log(ex)
+                            End Try
                         End If
                         'User Story 186561 Number of active claims allowed under one certificate -- end
 
@@ -588,11 +595,11 @@ Public Class ClaimWizardForm
 
         If Not lossType Is Nothing AndAlso lossType.Length > 0 Then
             If Not lossType(0)("field_value") Is Nothing AndAlso (lossType(0)("field_value").ToString().ToUpper() = "ADH1234" Or lossType(0)("field_value").ToString().ToUpper() = "ADH5") Then
-                caseFieldXcds = { "CASEFLD-HASBENEFIT", "CASEFLD-ADCOVERAGEREMAINING" }
-                caseFieldValues = { Boolean.TrueString.ToUpper(), Boolean.TrueString.ToUpper() }
-            Else If Not lossType(0)("field_value") Is Nothing AndAlso lossType(0)("field_value").ToString().ToUpper() = "THEFT/LOSS" Then
-                caseFieldXcds = { "CASEFLD-HASBENEFIT" }
-                caseFieldValues = { Boolean.TrueString.ToUpper() }
+                caseFieldXcds = {"CASEFLD-HASBENEFIT", "CASEFLD-ADCOVERAGEREMAINING"}
+                caseFieldValues = {Boolean.TrueString.ToUpper(), Boolean.TrueString.ToUpper()}
+            ElseIf Not lossType(0)("field_value") Is Nothing AndAlso lossType(0)("field_value").ToString().ToUpper() = "THEFT/LOSS" Then
+                caseFieldXcds = {"CASEFLD-HASBENEFIT"}
+                caseFieldValues = {Boolean.TrueString.ToUpper()}
             End If
         End If
 
@@ -624,7 +631,8 @@ Public Class ClaimWizardForm
                 Dim newClaimIssue As ClaimIssue = CType(Me.State.ClaimBO.ClaimIssuesList.GetNewChild, BusinessObjectsNew.ClaimIssue)
                 newClaimIssue.SaveNewIssue(Me.State.ClaimBO.Id, issueId, Me.State.ClaimBO.Certificate.Id, True)
             End If
-
+        Catch ex As FaultException
+            Log(ex)
         Catch ex As Exception
             Log(ex)
             Me.State.ClaimBO.Status = BasicClaimStatus.Pending
@@ -3913,8 +3921,10 @@ Public Class ClaimWizardForm
 
             End If
 
+        Catch ex As FaultException
+            Log(ex)
         Catch ex As Exception
-            Throw
+            Log(ex)
         End Try
         If wsResponseObject IsNot Nothing Then
             If wsResponseObject.GetType() Is GetType(BaseFulfillmentResponse) Then

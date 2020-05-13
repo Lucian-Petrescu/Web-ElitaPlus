@@ -1332,6 +1332,7 @@
             var selectedValue = dList.options[dList.selectedIndex].value;
 
             if (selectedValue == 'ACCTBUCKETSOURCE-D') {
+                tBox.value = '0.0000';
                 tBox.disabled = true;
             }
             else {
@@ -1345,6 +1346,7 @@
             var selectedValue = dList.options[dList.selectedIndex].value;
 
             if (selectedValue == 'ACCTBUCKETSOURCE-D') {
+                tBox.value = '0.0000';
                 tBox.disabled = true;
             }
             else {
@@ -1358,6 +1360,7 @@
             var selectedValue = dList.options[dList.selectedIndex].value;
 
             if (selectedValue == 'ACCTBUCKETSOURCE-D') {
+                tBox.value = '0.0000';
                 tBox.disabled = true;
             }
             else {
@@ -1371,6 +1374,7 @@
             var selectedValue = dList.options[dList.selectedIndex].value;
 
             if (selectedValue == 'ACCTBUCKETSOURCE-D') {
+                tBox.value = '0.0000';
                 tBox.disabled = true;
             }
             else {
@@ -1384,6 +1388,7 @@
             var selectedValue = dList.options[dList.selectedIndex].value;
 
             if (selectedValue == 'ACCTBUCKETSOURCE-D') {
+                tBox.value = '0.0000';
                 tBox.disabled = true;
             }
             else {

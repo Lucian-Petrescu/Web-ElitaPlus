@@ -1061,6 +1061,7 @@ Partial Class ClaimIssueActionAnswerForm
             GridViewDeviceSelection.Columns(GridColInventoryCheckIdx).Visible = True
         End If
     End Sub
+    
     Private Sub GridViewDeviceSelection_PageIndexChanged(ByVal source As Object, ByVal e As EventArgs) Handles GridViewDeviceSelection.PageIndexChanged
         Try
             PopulateGrid()
