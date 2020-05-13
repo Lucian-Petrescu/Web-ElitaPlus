@@ -1132,7 +1132,7 @@ Public Class ClaimRecordingForm
                         lblDvcMakeValue.Text = DirectCast(row.FindControl("lblManufacturer"), Label).Text
                         lblDvcModelValue.Text = DirectCast(row.FindControl("lblModel"), Label).Text
 
-                        If ddlDvcMake.DataSource IsNot Nothing Then
+                        If ddlDvcMake.Items.Count > 0 Then
                             ddlDvcMake.SelectedValue = DirectCast(row.FindControl("lblManufacturer"), Label).Text
                             txtDvcMake.Text = DirectCast(row.FindControl("lblManufacturer"), Label).Text
                             txtDvcMake.Visible = False
@@ -1142,7 +1142,7 @@ Public Class ClaimRecordingForm
                             txtDvcMake.Text = DirectCast(row.FindControl("lblManufacturer"), Label).Text
                         End If
 
-                        If ddlDvcModel.DataSource IsNot Nothing Then
+                        If ddlDvcModel.Items.Count > 0 Then
                             ddlDvcModel.SelectedValue = DirectCast(row.FindControl("lblModel"), Label).Text
                             txtDvcModel.Text = DirectCast(row.FindControl("lblModel"), Label).Text
                             txtDvcModel.Visible = False
@@ -1239,13 +1239,13 @@ Public Class ClaimRecordingForm
                     If rdoSelect IsNot Nothing Then
                         If rdoSelect.Checked Then
 
-                            If ddlDvcMake.DataSource IsNot Nothing Then
+                            If ddlDvcMake.Items.Count > 0 Then
                                 claimdevice.Manufacturer = ddlDvcMake.SelectedItem.Text
                             Else
                                 claimdevice.Manufacturer = txtDvcMake.Text
                             End If
 
-                            If ddlDvcModel.DataSource IsNot Nothing Then
+                            If ddlDvcModel.Items.Count > 0 Then
                                 claimdevice.Model = ddlDvcModel.SelectedItem.Text
                             Else
                                 claimdevice.Model = txtDvcModel.Text
@@ -1324,13 +1324,13 @@ Public Class ClaimRecordingForm
                     If rdoSelect IsNot Nothing Then
                         If rdoSelect.Checked Then
 
-                            If ddlDvcMake.DataSource IsNot Nothing Then
+                            If ddlDvcMake.Items.Count > 0 Then
                                 claimdevice.Manufacturer = ddlDvcMake.SelectedItem.Text
                             Else
                                 claimdevice.Manufacturer = txtDvcMake.Text
                             End If
 
-                            If ddlDvcModel.DataSource IsNot Nothing Then
+                            If ddlDvcModel.Items.Count > 0 Then
                                 claimdevice.Model = ddlDvcModel.SelectedItem.Text
                             Else
                                 claimdevice.Model = txtDvcModel.Text
