@@ -1143,9 +1143,16 @@ Public Class ClaimRecordingForm
                         End If
 
                         If ddlDvcModel.Items.Count > 0 Then
-                            ddlDvcModel.SelectedValue = DirectCast(row.FindControl("lblModel"), Label).Text
-                            txtDvcModel.Text = DirectCast(row.FindControl("lblModel"), Label).Text
-                            txtDvcModel.Visible = False
+                            If ddlDvcModel.Items.FindByText(DirectCast(row.FindControl("lblModel"), Label).Text) IsNot Nothing Then
+                                ddlDvcModel.SelectedValue = DirectCast(row.FindControl("lblModel"), Label).Text
+                                txtDvcModel.Text = DirectCast(row.FindControl("lblModel"), Label).Text
+                                txtDvcModel.Visible = False
+                            Else
+                                ddlDvcModel.Visible = False
+                                ddlDvcModel.Items.Clear()
+                                txtDvcModel.Visible = True
+                                txtDvcModel.Text = DirectCast(row.FindControl("lblModel"), Label).Text
+                            End If
                         Else
                             ddlDvcModel.Visible = False
                             txtDvcModel.Visible = True
