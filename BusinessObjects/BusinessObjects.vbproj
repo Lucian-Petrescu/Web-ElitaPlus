@@ -2145,9 +2145,6 @@
     <None Include="Service References\PolicyService\PolicyService1.disco" />
     <Compile Include="DataProtection\CertForgotRequest.vb" />
     <Compile Include="Claims\FulfillmentProviderType.vb" />
-    <Content Include="Settings.xml">
-      <SubType>Designer</SubType>
-    </Content>
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.VisualBasic.targets" />
   <PropertyGroup>

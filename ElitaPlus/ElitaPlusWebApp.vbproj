@@ -3754,6 +3754,7 @@
     </Compile>
     <Compile Include="Reports\ReportCeHistoryForm.aspx.vb">
       <DependentUpon>ReportCeHistoryForm.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="Reports\ReportCeInputControl.ascx.designer.vb">
       <DependentUpon>ReportCeInputControl.ascx</DependentUpon>
@@ -3774,6 +3775,7 @@
     </Compile>
     <Compile Include="Reports\ReportCeProgressForm.aspx.vb">
       <DependentUpon>ReportCeProgressForm.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="Reports\ReportCeScheduleForm.aspx.designer.vb">
       <DependentUpon>ReportCeScheduleForm.aspx</DependentUpon>
@@ -8950,7 +8952,7 @@
           <AutoAssignPort>True</AutoAssignPort>
           <DevelopmentServerPort>2550</DevelopmentServerPort>
           <DevelopmentServerVPath>/</DevelopmentServerVPath>
-          <IISUrl>http://localhost:90/PBI516645-ElitaPlus</IISUrl>
+          <IISUrl>http://localhost/ElitaPlus</IISUrl>
           <NTLMAuthentication>False</NTLMAuthentication>
           <UseCustomServer>False</UseCustomServer>
           <CustomServerUrl>
