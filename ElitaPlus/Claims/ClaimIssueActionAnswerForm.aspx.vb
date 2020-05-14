@@ -1018,6 +1018,8 @@ Partial Class ClaimIssueActionAnswerForm
                 ControlMgr.SetEnableControl(Me, btnSearchInventory, True)
                 If State.SelectedActionCode = IssueActionCode.GetDevSku Then
                     ControlMgr.SetVisibleControl(Me, btnSearchInventory, False)
+                ElseIf State.SelectedActionCode = IssueActionCode.LflDevSel Then
+                    ControlMgr.SetVisibleControl(Me, btnSearchInventory, True)
                 End If
             Else
                 ControlMgr.SetEnableControl(Me, btnSearchInventory, False)
