@@ -56,6 +56,8 @@ Partial Class UserControlInvoiceRegionTaxes
     Dim dtexistingvalues As DataTable = New DataTable
 
     Public Const INVOICE_STATUS_INPROGRESS As String = "IP"
+    Public Const INVOICE_STATUS_PAID As String = "P"
+    Public Const INVOICE_STATUS_REJECTED As String = "R"
     Private Const EDIT_BUTTON_NAME As String = "EditButton_WRITE"
     Private Const DELETE_BUTTON_NAME As String = "DeleteButton_WRITE"
     Private Const SAVE_BUTTON_NAME As String = "SaveButton"
@@ -485,12 +487,14 @@ Partial Class UserControlInvoiceRegionTaxes
             End If
 
         Else
-            If Not Me.InvoiceStatus Is Nothing Then
-                If Me.InvoiceStatus = INVOICE_STATUS_INPROGRESS Then
-                    ControlMgr.SetVisibleControl(Me.ThePage, NewButton_WRITE, True)
-                Else
+            If Not Me.InvoiceStatus Is Nothing And Me.InvoiceStatus <> String.Empty Then
+                If Me.InvoiceStatus = INVOICE_STATUS_PAID Or Me.InvoiceStatus = INVOICE_STATUS_REJECTED Then
                     ControlMgr.SetVisibleControl(Me.ThePage, NewButton_WRITE, False)
+                Else
+                    ControlMgr.SetVisibleControl(Me.ThePage, NewButton_WRITE, True)
                 End If
+            Else
+                ControlMgr.SetVisibleControl(Me.ThePage, NewButton_WRITE, True)
             End If
             If Not (Me.cboDiPageSize.Enabled) Then
                 ControlMgr.SetEnableControl(Me.ThePage, Me.cboDiPageSize, True)
@@ -525,7 +529,9 @@ Partial Class UserControlInvoiceRegionTaxes
     End Sub
 
     Private Sub AddNew()
-        dtexistingvalues = Me.TheState.InvoiceRegionTaxDV.Table.Copy()
+        If Not Me.TheState.InvoiceRegionTaxDV Is Nothing Then
+            dtexistingvalues = Me.TheState.InvoiceRegionTaxDV.Table.Copy()
+        End If
         If TheState.MyBO Is Nothing OrElse Me.TheState.MyBO.IsNew = False Then
             TheState.MyBO = New InvoiceRegionTax
             TheState.MyBO.AddNewRowToSearchDV(Me.TheState.InvoiceRegionTaxDV, Me.TheState.MyBO)
@@ -646,13 +652,15 @@ Partial Class UserControlInvoiceRegionTaxes
     End Sub
 
     Protected Sub GridIIBBTaxes_DataBound(sender As Object, e As EventArgs) Handles GridIIBBTaxes.DataBound
-        If Not Me.InvoiceStatus Is Nothing Then
-            If Me.InvoiceStatus = INVOICE_STATUS_INPROGRESS Then
-                Me.GridIIBBTaxes.Columns(6).Visible = True
+        If Not Me.InvoiceStatus Is Nothing And Me.InvoiceStatus <> String.Empty Then
+            If Me.InvoiceStatus = INVOICE_STATUS_PAID Or Me.InvoiceStatus = INVOICE_STATUS_REJECTED Then
+                Me.GridIIBBTaxes.Columns(6).Visible = False
 
             Else
-                Me.GridIIBBTaxes.Columns(6).Visible = False
+                Me.GridIIBBTaxes.Columns(6).Visible = True
             End If
+        Else
+            Me.GridIIBBTaxes.Columns(6).Visible = True
         End If
     End Sub
 #End Region
