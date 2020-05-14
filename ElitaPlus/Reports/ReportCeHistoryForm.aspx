@@ -79,7 +79,7 @@
                                                                         <td>
                                                                             <asp:Label ID="mpReportKey" runat="server">REPORT_KEY</asp:Label>:&nbsp;&nbsp;
                                                                              <asp:textbox id="moReportSearchText" tabindex="1" runat="server" SkinID="LargeTextBox" Width="300px"></asp:textbox>
-                                                                            <asp:Button ID="btnReportSearch" runat="server" CssClass="FLATBUTTON BUTTONSTYLE_SEARCH" height="20px" Text=" Report Search" OnClick="btnReportSearch_Click" Width="150px" />
+                                                                            <asp:Button ID="btnReportSearch" runat="server" CssClass="FLATBUTTON BUTTONSTYLE_SEARCH" height="20px" Text=" Report Search" Width="150px" />
                                                                         </td>
                                                                     </tr>
                                                                 </table>

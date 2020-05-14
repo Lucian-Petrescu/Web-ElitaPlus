@@ -1692,9 +1692,9 @@ Partial Class PayClaimForm
         End If
 
         If blnWithhodling Then
-            Me.State.ClaimInvoiceBO.WithholdingAmount += taxAmount
+            Me.State.ClaimInvoiceBO.WithholdingAmount = getDecimalValue(Me.State.ClaimInvoiceBO.WithholdingAmount) + taxAmount
         Else
-            Me.State.ClaimInvoiceBO.TotalTaxAmount += taxAmount
+            Me.State.ClaimInvoiceBO.TotalTaxAmount =  getDecimalValue(Me.State.ClaimInvoiceBO.TotalTaxAmount) +  taxAmount
         End If
 
 

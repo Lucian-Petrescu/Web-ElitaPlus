@@ -21,6 +21,8 @@ Imports System.Net.Http
 Imports System.Net.Http.Headers
 Imports Newtonsoft.Json.Linq
 
+imports System.Reflection
+
 Partial Class ClaimForm
     Inherits ElitaPlusSearchPage
 
@@ -3906,8 +3908,8 @@ Partial Class ClaimForm
     End Sub
 
     Private Function Sort(ByVal list As List(Of ClaimAuthorization), ByVal sortBy As String, ByVal sortDirection As WebControls.SortDirection) As List(Of ClaimAuthorization)
-        Dim propInfo As Reflection.PropertyInfo = list.GetType().GetGenericArguments()(0).GetProperty(sortBy)
-
+     '  Dim propInfo As Reflection.PropertyInfo = list.GetType().GetGenericArguments()(0).GetProperty(sortBy)
+        Dim propInfo As PropertyInfo = list.GetType().GetGenericArguments()(0).GetProperty(sortBy)
         If sortDirection = WebControls.SortDirection.Ascending Then
             Return list.OrderBy(Function(i) propInfo.GetValue(i, Nothing)).ToList()
         Else

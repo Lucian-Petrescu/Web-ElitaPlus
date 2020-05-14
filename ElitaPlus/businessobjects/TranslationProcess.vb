@@ -119,7 +119,7 @@ Public Class TranslationProcess
             Dim oType As Type = oSingleValueControl.ControlObject.GetType
             Dim oPropInfo As PropertyInfo = oType.GetProperty(TEXT)
 
-            If oPropInfo Is Nothing = False Then
+            If Not oPropInfo Is Nothing Then
 
                 'get the keyword from the object which holds the original text.
                 sUIProgCode = CType(oPropInfo.GetValue(oSingleValueControl.ControlObject, Nothing), String).ToUpper
@@ -147,7 +147,7 @@ Public Class TranslationProcess
 
     Public ReadOnly Property TranslationMissingCount() As Integer
         Get
-            If mTranslationMissingList Is Nothing = False Then
+            If Not mTranslationMissingList Is Nothing Then
                 Return mTranslationMissingList.Count
             Else
                 Return NONE
@@ -296,7 +296,7 @@ Public Class TranslationProcess
 
         Dim oPropTooTip As PropertyInfo = oType.GetProperty(TEXT)
 
-        If oPropTooTip Is Nothing = False Then
+        If Not oPropTooTip Is Nothing Then
 
             'get the keyword from the object which holds the original text.
             sText = CType(oPropTooTip.GetValue(oCurrentObject, Nothing), String)
@@ -514,7 +514,7 @@ Public Class TranslationProcess
         Dim oType As Type = oControl.GetType
         Dim oPropInfo As PropertyInfo = oType.GetProperty(sPropertyName)
 
-        If oPropInfo Is Nothing = False Then
+        If Not oPropInfo Is Nothing Then
 
             'get the keyword from the object which holds the original text.
             sText = CType(oPropInfo.GetValue(oControl, Nothing), String)
@@ -737,7 +737,7 @@ Public Class TranslationProcess
                     oCurrentControl = GetControlFromSingleCell(oGridRow.Cells(nCount))
 
                     'use this reference to retrieve the text, type and id.
-                    If oCurrentControl Is Nothing = False Then
+                    If Not oCurrentControl Is Nothing Then
 
                         .ControlType = oCurrentControl.GetType.ToString
 
@@ -806,7 +806,7 @@ Public Class TranslationProcess
                     oCurrentControl = GetControlFromSingleCell(oGridRow.Cells(nCount))
 
                     'use this reference to retrieve the text, type and id.
-                    If oCurrentControl Is Nothing = False Then
+                    If Not oCurrentControl Is Nothing Then
 
                         .ControlType = oCurrentControl.GetType.ToString
 
@@ -910,7 +910,7 @@ Public Class TranslationProcess
 
         aryList = GetGridButtonColumnText(oGrid)
 
-        If aryList Is Nothing = True Then
+        If aryList Is Nothing Then
 
             'nothing in the buttoncolumns to translate. no columns found.
             Exit Sub
@@ -948,7 +948,7 @@ Public Class TranslationProcess
 
         aryList = GetGridButtonColumnText(oGrid)
 
-        If aryList Is Nothing = True Then
+        If aryList Is Nothing Then
 
             'nothing in the buttoncolumns to translate. no columns found.
             Exit Sub
@@ -1086,7 +1086,7 @@ Public Class TranslationProcess
 
 
         aryList = GetGridHeaderText(oGrid)
-        If aryList Is Nothing = True Then
+        If aryList Is Nothing Then
             'nothing in the headers to translate. no columns found.
             Exit Function
         Else
@@ -1124,7 +1124,7 @@ Public Class TranslationProcess
 
 
         aryList = GetGridHeaderText(oGrid)
-        If aryList Is Nothing = True Then
+        If aryList Is Nothing Then
             'nothing in the headers to translate. no columns found.
             Exit Function
         Else

@@ -782,31 +782,31 @@ Namespace Tables
 
 
                     If (Not .ProcessDate Is Nothing) Then
-                        CType(Me.Grid.Rows(gridRowIdx).Cells(Me.GRID_COL_PROCESS_DATE_IDX).FindControl("ProcessDateTextBox"), TextBox).Text = CType(.ProcessDate, String)
+                        CType(Me.Grid.Rows(gridRowIdx).Cells(Me.GRID_COL_PROCESS_DATE_IDX).FindControl("ProcessDateTextBox"), TextBox).Text = .ProcessDate.ToString()
                     End If
                     If (Not .AdjustedPremium Is Nothing) Then
-                        CType(Me.Grid.Rows(gridRowIdx).Cells(Me.GRID_COL_ADJUSTED_PREMIUM_IDX).FindControl("AdjustedPremiumTextBox"), TextBox).Text = CType(.AdjustedPremium, String)
+                        CType(Me.Grid.Rows(gridRowIdx).Cells(Me.GRID_COL_ADJUSTED_PREMIUM_IDX).FindControl("AdjustedPremiumTextBox"), TextBox).Text = .AdjustedPremium.ToString()
                     End If
                     If (Not .AdjustedCommission Is Nothing) Then
-                        CType(Me.Grid.Rows(gridRowIdx).Cells(Me.GRID_COL_ADJUSTED_COMMISSION_IDX).FindControl("AdjustedCommissionTextBox"), TextBox).Text = CType(.AdjustedCommission, String)
+                        CType(Me.Grid.Rows(gridRowIdx).Cells(Me.GRID_COL_ADJUSTED_COMMISSION_IDX).FindControl("AdjustedCommissionTextBox"), TextBox).Text =.AdjustedCommission.ToString()
                     End If
                     If (Not .AdjustedPremiumTax1 Is Nothing) Then
-                        CType(Me.Grid.Rows(gridRowIdx).Cells(Me.GRID_COL_ADJUSTED_PREM_TAX1_IDX).FindControl("AdjustedPremTax1TextBox"), TextBox).Text = CType(.AdjustedPremiumTax1, String)
+                        CType(Me.Grid.Rows(gridRowIdx).Cells(Me.GRID_COL_ADJUSTED_PREM_TAX1_IDX).FindControl("AdjustedPremTax1TextBox"), TextBox).Text =.AdjustedPremiumTax1.ToString()
                     End If
                     If (Not .AdjustedPremiumTax2 Is Nothing) Then
-                        CType(Me.Grid.Rows(gridRowIdx).Cells(Me.GRID_COL_ADJUSTED_PREM_TAX2_IDX).FindControl("AdjustedPremTax2TextBox"), TextBox).Text = CType(.AdjustedPremiumTax2, String)
+                        CType(Me.Grid.Rows(gridRowIdx).Cells(Me.GRID_COL_ADJUSTED_PREM_TAX2_IDX).FindControl("AdjustedPremTax2TextBox"), TextBox).Text = .AdjustedPremiumTax2.ToString()
                     End If
                     If (Not .AdjustedPremiumTax3 Is Nothing) Then
-                        CType(Me.Grid.Rows(gridRowIdx).Cells(Me.GRID_COL_ADJUSTED_PREM_TAX3_IDX).FindControl("AdjustedPremTax3TextBox"), TextBox).Text = CType(.AdjustedPremiumTax3, String)
+                        CType(Me.Grid.Rows(gridRowIdx).Cells(Me.GRID_COL_ADJUSTED_PREM_TAX3_IDX).FindControl("AdjustedPremTax3TextBox"), TextBox).Text = .AdjustedPremiumTax3.ToString()
                     End If
                     If (Not .AdjustedPremiumTax4 Is Nothing) Then
-                        CType(Me.Grid.Rows(gridRowIdx).Cells(Me.GRID_COL_ADJUSTED_PREM_TAX4_IDX).FindControl("AdjustedPremTax4TextBox"), TextBox).Text = CType(.AdjustedPremiumTax4, String)
+                        CType(Me.Grid.Rows(gridRowIdx).Cells(Me.GRID_COL_ADJUSTED_PREM_TAX4_IDX).FindControl("AdjustedPremTax4TextBox"), TextBox).Text =.AdjustedPremiumTax4.ToString()
                     End If
                     If (Not .AdjustedPremiumTax5 Is Nothing) Then
-                        CType(Me.Grid.Rows(gridRowIdx).Cells(Me.GRID_COL_ADJUSTED_PREM_TAX5_IDX).FindControl("AdjustedPremTax5TextBox"), TextBox).Text = CType(.AdjustedPremiumTax5, String)
+                        CType(Me.Grid.Rows(gridRowIdx).Cells(Me.GRID_COL_ADJUSTED_PREM_TAX5_IDX).FindControl("AdjustedPremTax5TextBox"), TextBox).Text =.AdjustedPremiumTax5.ToString()
                     End If
                     If (Not .AdjustedPremiumTax6 Is Nothing) Then
-                        CType(Me.Grid.Rows(gridRowIdx).Cells(Me.GRID_COL_ADJUSTED_PREM_TAX6_IDX).FindControl("AdjustedPremTax6TextBox"), TextBox).Text = CType(.AdjustedPremiumTax6, String)
+                        CType(Me.Grid.Rows(gridRowIdx).Cells(Me.GRID_COL_ADJUSTED_PREM_TAX6_IDX).FindControl("AdjustedPremTax6TextBox"), TextBox).Text = .AdjustedPremiumTax6.ToString()
                     End If
 
                     Dim DealerList As DropDownList = CType(Me.Grid.Rows(gridRowIdx).Cells(Me.GRID_COL_DEALER_CODE_IDX).FindControl("DealerDropdown"), DropDownList)

@@ -798,35 +798,51 @@ Public Class ClaimInvoice
                     'apply each line detail tax rate as they have been assigned the default/super default value if none was found for the given line (this was done in Oracle pkg)
                     If Not Me.LaborAmt Is Nothing AndAlso Me.LaborAmt.Value > 0 AndAlso .taxRateClaimLabor > 0 Then
                         taxAmt += computeTaxAmtByComputeMethod(getDecimalValue(Me.LaborAmt), .taxRateClaimLabor, .computeMethodCodeClaimLabor)
-                        If .applyWithholdingFlagClaimLabor.Equals("Y") Then Me.WithholdingAmount += computeTaxAmtByComputeMethod(getDecimalValue(Me.LaborAmt), Me.ServiceCenterWithholdingRate, "N")
+                        If .applyWithholdingFlagClaimLabor.Equals("Y") Then
+                            Me.WithholdingAmount = computeTaxAmtByComputeMethod(getDecimalValue(Me.LaborAmt), Me.ServiceCenterWithholdingRate, "N") + getDecimalValue(WithholdingAmount)
+                        End If
                     End If
                     If Not Me.PartAmount Is Nothing AndAlso Me.PartAmount.Value > 0 AndAlso .taxRateClaimParts > 0 Then
                         taxAmt += computeTaxAmtByComputeMethod(getDecimalValue(Me.PartAmount), .taxRateClaimParts, .computeMethodCodeClaimParts)
-                        If .applyWithholdingFlagClaimParts.Equals("Y") Then Me.WithholdingAmount += computeTaxAmtByComputeMethod(getDecimalValue(Me.PartAmount), getDecimalValue(Me.ServiceCenterWithholdingRate), "N")
+                        If .applyWithholdingFlagClaimParts.Equals("Y") Then
+                            Me.WithholdingAmount = computeTaxAmtByComputeMethod(getDecimalValue(Me.PartAmount), getDecimalValue(Me.ServiceCenterWithholdingRate), "N") + getDecimalValue(WithholdingAmount)
+                        End If
                     End If
                     If Not Me.ServiceCharge Is Nothing AndAlso Me.ServiceCharge.Value > 0 AndAlso .taxRateClaimService > 0 Then
                         taxAmt += computeTaxAmtByComputeMethod(getDecimalValue(Me.ServiceCharge), .taxRateClaimService, .computeMethodCodeClaimService)
-                        If .applyWithholdingFlagClaimService.Equals("Y") Then Me.WithholdingAmount += computeTaxAmtByComputeMethod(getDecimalValue(Me.ServiceCharge), getDecimalValue(Me.ServiceCenterWithholdingRate), "N")
+                        If .applyWithholdingFlagClaimService.Equals("Y") Then
+                            Me.WithholdingAmount = computeTaxAmtByComputeMethod(getDecimalValue(Me.ServiceCharge), getDecimalValue(Me.ServiceCenterWithholdingRate), "N") + getDecimalValue(WithholdingAmount)
+                        End If
                     End If
                     If Not Me.TripAmount Is Nothing AndAlso Me.TripAmount.Value > 0 AndAlso .taxRateClaimTrip > 0 Then
                         taxAmt += computeTaxAmtByComputeMethod(getDecimalValue(Me.TripAmount), .taxRateClaimTrip, .computeMethodCodeClaimTrip)
-                        If .applyWithholdingFlagClaimTrip.Equals("Y") Then Me.WithholdingAmount += computeTaxAmtByComputeMethod(getDecimalValue(Me.TripAmount), getDecimalValue(Me.ServiceCenterWithholdingRate), "N")
+                        If .applyWithholdingFlagClaimTrip.Equals("Y") Then
+                            Me.WithholdingAmount = computeTaxAmtByComputeMethod(getDecimalValue(Me.TripAmount), getDecimalValue(Me.ServiceCenterWithholdingRate), "N")+ getDecimalValue(WithholdingAmount)
+                        End If
                     End If
                     If Not Me.ShippingAmount Is Nothing AndAlso Me.ShippingAmount.Value > 0 AndAlso .taxRateClaimShipping > 0 Then
                         taxAmt += computeTaxAmtByComputeMethod(getDecimalValue(Me.ShippingAmount), .taxRateClaimShipping, .computeMethodCodeClaimShipping)
-                        If .applyWithholdingFlagClaimShipping.Equals("Y") Then Me.WithholdingAmount += computeTaxAmtByComputeMethod(getDecimalValue(Me.ShippingAmount), getDecimalValue(Me.ServiceCenterWithholdingRate), "N")
+                        If .applyWithholdingFlagClaimShipping.Equals("Y") Then
+                            Me.WithholdingAmount = computeTaxAmtByComputeMethod(getDecimalValue(Me.ShippingAmount), getDecimalValue(Me.ServiceCenterWithholdingRate), "N") + getDecimalValue(WithholdingAmount)
+                        End If
                     End If
                     If Not Me.DispositionAmount Is Nothing AndAlso Me.DispositionAmount.Value > 0 AndAlso .taxRateClaimDisposition > 0 Then
                         taxAmt += computeTaxAmtByComputeMethod(getDecimalValue(Me.DispositionAmount), .taxRateClaimDisposition, .computeMethodCodeClaimDisposition)
-                        If .applyWithholdingFlagClaimDisposition.Equals("Y") Then Me.WithholdingAmount += computeTaxAmtByComputeMethod(getDecimalValue(Me.DispositionAmount), getDecimalValue(Me.ServiceCenterWithholdingRate), "N")
+                        If .applyWithholdingFlagClaimDisposition.Equals("Y") Then
+                            Me.WithholdingAmount = computeTaxAmtByComputeMethod(getDecimalValue(Me.DispositionAmount), getDecimalValue(Me.ServiceCenterWithholdingRate), "N")+ getDecimalValue(WithholdingAmount)
+                        End If
                     End If
                     If Not Me.DiagnosticsAmount Is Nothing AndAlso Me.DiagnosticsAmount.Value > 0 AndAlso .taxRateClaimDiagnostics > 0 Then
                         taxAmt += computeTaxAmtByComputeMethod(getDecimalValue(Me.DiagnosticsAmount), .taxRateClaimDiagnostics, .computeMethodCodeClaimDiagnostics)
-                        If .applyWithholdingFlagClaimDiagnostics.Equals("Y") Then Me.WithholdingAmount += computeTaxAmtByComputeMethod(getDecimalValue(Me.DiagnosticsAmount), getDecimalValue(Me.ServiceCenterWithholdingRate), "N")
+                        If .applyWithholdingFlagClaimDiagnostics.Equals("Y") Then
+                            Me.WithholdingAmount = computeTaxAmtByComputeMethod(getDecimalValue(Me.DiagnosticsAmount), getDecimalValue(Me.ServiceCenterWithholdingRate), "N") + getDecimalValue(WithholdingAmount)
+                        End If
                     End If
                     If Not Me.OtherAmount Is Nothing AndAlso Me.OtherAmount.Value > 0 AndAlso .taxRateClaimOther > 0 Then
                         taxAmt += computeTaxAmtByComputeMethod(getDecimalValue(Me.OtherAmount), .taxRateClaimOther, .computeMethodCodeClaimOther)
-                        If .applyWithholdingFlagClaimOther.Equals("Y") Then Me.WithholdingAmount += computeTaxAmtByComputeMethod(getDecimalValue(Me.OtherAmount), getDecimalValue(Me.ServiceCenterWithholdingRate), "N")
+                        If .applyWithholdingFlagClaimOther.Equals("Y") Then
+                            Me.WithholdingAmount = computeTaxAmtByComputeMethod(getDecimalValue(Me.OtherAmount), getDecimalValue(Me.ServiceCenterWithholdingRate), "N") + getDecimalValue(WithholdingAmount)
+                        End If
                     End If
 
                 ElseIf invMethodDesc = INVOICE_METHOD_TOTAL Then ' total entry

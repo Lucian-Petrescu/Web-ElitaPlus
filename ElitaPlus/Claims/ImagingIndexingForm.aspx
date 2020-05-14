@@ -92,7 +92,7 @@
     <div id="AddNewContainer" style="width: 80%;">
         <ajaxToolkit:ModalPopupExtender runat="server" ID="mdlPopup" TargetControlID="LinkButton1" 
            PopupControlID="pnlPopup" DropShadow="True" BackgroundCssClass="ModalBackground" 
-            CancelControlID="LinkButton1" BehaviorID="addNewModal" PopupDragHandleControlID="BodyPlaceHolder" Y="50" 
+            CancelControlID="LinkButton1" BehaviorID="addNewModal" PopupDragHandleControlID="pnlPopup" Y="50" 
             RepositionMode="None">
         </ajaxToolkit:ModalPopupExtender>
         <asp:Panel ID="pnlPopup" runat="server" CssClass="modalpopup" Style="display: none; width: 75%; ">

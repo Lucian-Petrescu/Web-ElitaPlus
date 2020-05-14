@@ -339,14 +339,15 @@ Partial Class TurnAroundTimeRangeForm
 
                 Dim minDaysString As String = CType(Me.Grid.Rows(Me.Grid.EditIndex).Cells(Me.MIN_DAYS_COL).FindControl(Me.MIN_DAYS_CONTROL_NAME), TextBox).Text
                 Try
-                    .MinDays = CType(minDaysString, LongType)
+                    .MinDays = CType(minDaysString, Long)
+                   
                 Catch ex As Exception
                     Throw New GUIException(Message.MSG_INVALID_MIN_MAX_VALUE, Assurant.ElitaPlus.Common.ErrorCodes.MIN_VALUE_MUST_BE_FROM_0_TO_9998)
                 End Try
 
                 Dim MaxDaysString As String = CType(Me.Grid.Rows(Me.Grid.EditIndex).Cells(Me.MAX_DAYS_COL).FindControl(Me.MAX_DAYS_CONTROL_NAME), TextBox).Text
                 Try
-                    .MaxDays = CType(MaxDaysString, LongType)
+                    .MaxDays = CType(MaxDaysString, Long)
                 Catch ex As Exception
                     Throw New GUIException(Message.MSG_INVALID_MIN_MAX_VALUE, Assurant.ElitaPlus.Common.ErrorCodes.MAX_VALUE_MUST_BE_FROM_1_TO_9999)
                 End Try
@@ -360,6 +361,7 @@ Partial Class TurnAroundTimeRangeForm
         End Try
 
     End Sub
+
 
     Private Sub PopulateFormFromBO()
 

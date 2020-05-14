@@ -148,7 +148,7 @@
         <div id="AddNewContainer" style="width: 80%;">
             <asp:ModalPopupExtender runat="server" ID="mdlPopup" TargetControlID="dummybutton"
                 PopupControlID="pnlPopup" DropShadow="True" BackgroundCssClass="ModalBackground"
-                CancelControlID="mdlClose" BehaviorID="addNewModal" PopupDragHandleControlID="BodyPlaceHolder"
+                CancelControlID="mdlClose" BehaviorID="addNewModal" PopupDragHandleControlID="pnlPopup"
                 RepositionMode="RepositionOnWindowResizeAndScroll" Y="50">
             </asp:ModalPopupExtender>
             <asp:Panel ID="pnlPopup" runat="server" DefaultButton="btnSearch" Style="display: none; width: 75%; overflow: auto">
@@ -288,7 +288,7 @@
         <div id="AddlineitemContainer" style="width: 80%;">
             <ajaxToolkit:ModalPopupExtender runat="server" ID="mdlLineItem" TargetControlID="Dummybtn"
                 PopupControlID="LineItempnlPopup" DropShadow="True" BackgroundCssClass="ModalBackground"
-                PopupDragHandleControlID="BodyPlaceHolder" BehaviorID="modalbehaviour" CancelControlID="modlClose"
+                PopupDragHandleControlID="LineItempnlPopup" BehaviorID="modalbehaviour" CancelControlID="modlClose"
                 RepositionMode="RepositionOnWindowResizeAndScroll">
             </ajaxToolkit:ModalPopupExtender>
             

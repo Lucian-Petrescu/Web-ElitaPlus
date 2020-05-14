@@ -2,10 +2,10 @@
 'Imports Assurant.ElitaPlus.ElitaPlusWebApp
 'Imports System.Collections.Generic
 
-'Namespace Reports
+Namespace Reports
 
-'    Partial Class ReportCeProgressForm
-'        Inherits System.Web.UI.Page
+    Partial Class ReportCeProgressForm
+       Inherits System.Web.UI.Page
 
 '#Region " Web Form Designer Generated Code "
 
@@ -157,6 +157,6 @@
 '            sJavaScript &= "</SCRIPT>" & Environment.NewLine
 '            Me.RegisterStartupScript("StartProgressBar", sJavaScript)
 '        End Sub
-'    End Class
+    End Class
 
-'End Namespace
+End Namespace

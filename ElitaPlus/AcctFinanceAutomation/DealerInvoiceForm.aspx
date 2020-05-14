@@ -36,7 +36,7 @@
                 </td>
                 <td align="left">
                     <input type="button" id="btnLoad" runat="server" onclick="LoadInvoiceTest();" class="FLATBUTTON" value="Load Invoice" style="width:120px;" />
-                    <input type="button" id="btnPrint" runat="server" onclick="printDivNewWindow('divInvoice');" class="FLATBUTTON" value="Printable Version" style="width:120px;" disabled="disabled" />    
+                    <input type="button" id="btnPrint" runat="server" onclick="printDivNewWindow('divInvoice');" class="FLATBUTTON" value="Printable Version" style="width:120px;"/>    
                     <input type="button" id="btnDownload" runat="server" onclick="downloadAttachment();" class="FLATBUTTON" value="Download XML" style="width:120px;" />  
                     <input type="hidden" id="xmlDownloadTestResponse" runat="server" />
                     <%--<asp:Button ID="btnDownLoadXML_WRITE" Style="cursor: hand; background-repeat: no-repeat" runat="server" Text="DOWNLOAD_XML" Width="120px" CssClass="FLATBUTTON" Height="20px" CausesValidation="False"></asp:Button>--%>

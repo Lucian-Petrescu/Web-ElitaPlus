@@ -302,7 +302,7 @@
         <asp:Button runat="server" ID="btnDelete_WRITE" Text="Delete" SkinID="CenterButton" />
     </div>
     <ajaxToolkit:ModalPopupExtender runat="server" ID="mdlPopup" DropShadow="true" BackgroundCssClass="ModalBackground"
-        BehaviorID="addNewInvoiceItem" PopupDragHandleControlID="BodyPlaceHolder" RepositionMode="None"
+        BehaviorID="addNewInvoiceItem" PopupDragHandleControlID="pnlPopup" RepositionMode="None"
         TargetControlID="btnClearSearch" CancelControlID="btnClearSearch" PopupControlID="pnlPopup">
     </ajaxToolkit:ModalPopupExtender>
     <asp:Panel ID="pnlPopup" runat="server">

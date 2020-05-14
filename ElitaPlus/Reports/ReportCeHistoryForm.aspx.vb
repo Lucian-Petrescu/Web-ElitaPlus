@@ -4,10 +4,10 @@
 'Imports Assurant.Common.Ftp
 'Imports Assurant.ElitaPlus.ElitaPlusWebApp.DownLoad
 
-'Namespace Reports
+Namespace Reports
 
-'    Partial Class ReportCeHistoryForm
-'        Inherits ElitaPlusSearchPage
+    Partial Class ReportCeHistoryForm
+        Inherits ElitaPlusSearchPage
 
 
 
@@ -627,6 +627,6 @@
 
 '        '            Return oDataView
 '        '        End Function
-'    End Class
+    End Class
 
-'End Namespace
+End Namespace

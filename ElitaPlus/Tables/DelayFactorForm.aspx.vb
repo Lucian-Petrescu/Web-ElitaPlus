@@ -496,13 +496,13 @@ Partial Class DelayFactorForm
         Try
             With Me.State.MyBO
                 If Not .LowNumberOfDays Is Nothing Then
-                    CType(Me.Grid.Rows(gridRowIdx).Cells(Me.LOW_DAY_COL).FindControl(Me.LOW_DAY_CONTROL_NAME), TextBox).Text = CType(.LowNumberOfDays, String)
+                    CType(Me.Grid.Rows(gridRowIdx).Cells(Me.LOW_DAY_COL).FindControl(Me.LOW_DAY_CONTROL_NAME), TextBox).Text = CType(CType(.LowNumberOfDays, Long), String)
                 End If
                 If Not .HighNumberOfDays Is Nothing Then
-                    CType(Me.Grid.Rows(gridRowIdx).Cells(Me.HIGH_DAY_COL).FindControl(Me.HIGH_DAY_CONTROL_NAME), TextBox).Text = CType(.HighNumberOfDays, String)
+                    CType(Me.Grid.Rows(gridRowIdx).Cells(Me.HIGH_DAY_COL).FindControl(Me.HIGH_DAY_CONTROL_NAME), TextBox).Text = CType(CType(.HighNumberOfDays, Long), String)
                 End If
                 If Not .Factor Is Nothing Then
-                    CType(Me.Grid.Rows(gridRowIdx).Cells(Me.FACTOR_COL).FindControl(Me.FACTOR_CONTROL_NAME), TextBox).Text = CType(.Factor, String)
+                    CType(Me.Grid.Rows(gridRowIdx).Cells(Me.FACTOR_COL).FindControl(Me.FACTOR_CONTROL_NAME), TextBox).Text = CType(CType(getDecimalValue(.Factor), Decimal), String)
                 End If
                 If Not .DealerId.Equals(Guid.Empty) Then
                     CType(Me.Grid.Rows(gridRowIdx).Cells(Me.DEALER_ID_COL).FindControl(Me.DEALER_CONTROL_NAME), Label).Text = GuidControl.GuidToHexString(.DealerId)
@@ -517,7 +517,13 @@ Partial Class DelayFactorForm
         End Try
 
     End Sub
-
+    Private Function getDecimalValue(ByVal decimalObj As DecimalType, Optional ByVal decimalDigit As Integer = 2) As Decimal
+        If decimalObj Is Nothing Then
+            Return 0D
+        Else
+            Return Math.Round(decimalObj.Value, decimalDigit, MidpointRounding.AwayFromZero)
+        End If
+    End Function
     Private Sub ReturnFromEditing()
 
         Grid.EditIndex = NO_ROW_SELECTED_INDEX
