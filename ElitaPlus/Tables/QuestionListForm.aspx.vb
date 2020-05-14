@@ -39,6 +39,21 @@ Namespace Tables
         Private Const GRID_COL_EXPIRATION_DATE_IDX As Integer = 6
 #End Region
 
+#Region "Page Return Type"
+        Public Class ReturnType
+            Public LastOperation As DetailPageCommand
+            Public EditingBo As EquipmentList
+            Public HasDataChanged As Boolean
+            Public Sub New(ByVal LastOp As DetailPageCommand, ByVal curEditingBo As EquipmentList, ByVal hasDataChanged As Boolean)
+                Me.LastOperation = LastOp
+                Me.EditingBo = curEditingBo
+                Me.HasDataChanged = hasDataChanged
+            End Sub
+        End Class
+#End Region
+
+
+
 #Region "Page State"
         Private IsReturningFromChild As Boolean = False
 
@@ -77,7 +92,7 @@ Namespace Tables
             Try
                 Me.MenuEnabled = True
                 Me.IsReturningFromChild = True
-                Dim retObj As QuestionForm.ReturnType = CType(ReturnPar, QuestionForm.ReturnType)
+                Dim retObj As QuestionListForm.ReturnType = CType(ReturnPar, QuestionListForm.ReturnType)
                 Me.State.HasDataChanged = retObj.HasDataChanged
                 Select Case retObj.LastOperation
                     Case ElitaPlusPage.DetailPageCommand.Back

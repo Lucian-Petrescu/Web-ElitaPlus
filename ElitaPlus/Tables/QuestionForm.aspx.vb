@@ -71,11 +71,11 @@ Partial Class Questionform
 #Region "Page Return Type"
     Public Class ReturnType
         'Public LastOperation As DetailPageCommand
-        Public ReadOnly Property LastOperation As DetailPageCommand
-        Public ReadOnly Property EditingBo As Question 
-        Public ReadOnly Property HasDataChanged As Boolean
-        Public Sub New(ByVal lastOp As DetailPageCommand, ByVal curEditingBo As Question, ByVal hasDataChanged As Boolean)
-            Me.LastOperation = lastOp
+        Public LastOperation As DetailPageCommand
+        Public EditingBo As Question 
+        Public HasDataChanged As Boolean
+        Public Sub New(ByVal LastOp As DetailPageCommand, ByVal curEditingBo As Question, ByVal hasDataChanged As Boolean)
+            Me.LastOperation = LastOp
             Me.EditingBo = curEditingBo
             Me.HasDataChanged = hasDataChanged
         End Sub
