@@ -1087,6 +1087,37 @@ Public Class ServiceCenter
         End Set
     End Property
 
+    <ValidStringLength("", Max:=30, Message:="ClaimReservedBasedOnXcd should be between 1 to 30 chars.")>
+    Public Property ClaimReservedBasedOnXcd() As String
+        Get
+            CheckDeleted()
+            If Row(ServiceCenterDAL.COL_NAME_CLAIM_RESERVED_BASED_ON_XCD) Is DBNull.Value Then
+                Return Nothing
+            Else
+                Return CType(Row(ServiceCenterDAL.COL_NAME_CLAIM_RESERVED_BASED_ON_XCD), String)
+            End If
+        End Get
+        Set(ByVal Value As String)
+            CheckDeleted()
+            Me.SetValue(ServiceCenterDAL.COL_NAME_CLAIM_RESERVED_BASED_ON_XCD, Value)
+        End Set
+    End Property
+    <ValidNumericRange("", Max:=100, Min:=0,MaxExclusive := False, MinExclusive := True), RequiredConditionally("")>
+    Public Property ClaimReservedPercent() As DecimalType
+        Get
+            CheckDeleted()
+            If Row(ServiceCenterDAL.COL_NAME_CLAIM_RESERVED_PERCENT) Is DBNull.Value Then
+                Return Nothing
+            Else
+                Return New DecimalType(CType(Row(ServiceCenterDAL.COL_NAME_CLAIM_RESERVED_PERCENT), Decimal))
+            End If
+        End Get
+        Set(ByVal Value As DecimalType)
+            CheckDeleted()
+            Me.SetValue(ServiceCenterDAL.COL_NAME_CLAIM_RESERVED_PERCENT, Value)
+        End Set
+    End Property
+
     <ValidNumericRange("", Max:=100, Min:=0)>
     Public Property WithholdingRate() As DecimalType
         Get
@@ -2417,6 +2448,25 @@ Public Class ServiceCenter
         End Function
     End Class
     'END    DEF-2818
+
+
+    <AttributeUsage(AttributeTargets.Property Or AttributeTargets.Field)>
+    Public NotInheritable Class RequiredConditionally
+        Inherits ValidBaseAttribute
+
+        Public Sub New(ByVal fieldDisplayName As String)
+            MyBase.New(fieldDisplayName, Common.ErrorCodes.GUI_VALUE_MANDATORY_ERR)
+        End Sub
+
+        Public Overrides Function IsValid(ByVal valueToCheck As Object, ByVal objectToValidate As Object) As Boolean
+            Dim obj As ServiceCenter = CType(objectToValidate, ServiceCenter)
+            
+            If Not obj.ClaimReservedBasedOnXcd.Equals(string.Empty) AndAlso obj.ClaimReservedPercent is Nothing then
+                Return False
+            End If
+            Return True
+        End Function
+    End Class
 
 #End Region
 

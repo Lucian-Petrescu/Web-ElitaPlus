@@ -654,8 +654,8 @@ Partial Class PayBatchClaimListForm
                 Dim _invoiceTrans As New InvoiceTrans
                 _invoiceTrans.SaveBatch(dsBCI, Me.State.selectedInvoiceTransId)
             End If
-            UserControlInvoiceRegionTaxes.InvoiceTransactionId = GuidControl.GuidToHexString(Me.State.selectedInvoiceTransId)
-            IIBBTaxes.PopulateGrid()
+            'UserControlInvoiceRegionTaxes.InvoiceTransactionId = GuidControl.GuidToHexString(Me.State.selectedInvoiceTransId)
+            'IIBBTaxes.PopulateGrid()
         Catch ex As Exception
             Me.HandleErrors(ex, Me.MasterPage.MessageController)
         End Try
@@ -761,10 +761,14 @@ Partial Class PayBatchClaimListForm
             Me.State.batchState = False
         End If
         FillClaims()
-        If LookupListNew.GetCodeFromId(LookupListNew.LK_INVSTAT, Me.State.MyBO.InvoiceStatusId) = INVOICE_STATUS_PAID Or LookupListNew.GetCodeFromId(LookupListNew.LK_INVSTAT, Me.State.MyBO.InvoiceStatusId) = INVOICE_STATUS_REJECTED Then
+        Dim statusId As String = LookupListNew.GetCodeFromId(LookupListNew.LK_INVSTAT, Me.State.MyBO.InvoiceStatusId)
+        If statusId = INVOICE_STATUS_PAID Or statusId = INVOICE_STATUS_REJECTED Then
             ControlMgr.SetEnableControl(Me, Me.btnSave_WRITE, False)
             ControlMgr.SetEnableControl(Me, Me.btnNEXT_WRITE, False)
         End If
+        Me.IIBBTaxes.InvoiceStatus = statusId
+        Me.IIBBTaxes.SetControlState()
+
     End Sub
 
     Private Sub ClearAll()
@@ -1421,7 +1425,8 @@ Partial Class PayBatchClaimListForm
                     Me.State.MyBO = New InvoiceTrans(invoiceId)
 
                     PopulateSelection()
-
+                    Me.IIBBTaxes.InvoicetransId = Me.State.selectedInvoiceTransId
+                    Me.IIBBTaxes.Populate()
                     'Case Me.GRID_INV_COM_EDIT 'On Edit, redirect to the pay invoice page to enable the user to edit the associsated claims
                     '    Me.callPage(PayBatchClaimForm.URL, e.Item.Cells(Me.GRID_INV_COL_INVOICE_TRANS_NUMBER_IDX).Text)
 
