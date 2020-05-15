@@ -20,6 +20,8 @@ Imports Newtonsoft.Json
 Imports System.Net.Http
 Imports System.Net.Http.Headers
 Imports Newtonsoft.Json.Linq
+Imports Assurant.Elita.ExternalKeyHandler.DynamicFulfillment
+Imports Assurant.Elita.Configuration
 
 imports System.Reflection
 
@@ -4045,7 +4047,7 @@ Partial Class ClaimForm
             dfControl.SubscriptionKey = oWebPasswd.Password
             dfControl.CssUri = userInterfaceSettings("resourceUris")("cssUri")
             dfControl.ScriptUri = userInterfaceSettings("resourceUris")("scriptUri")
-            dfControl.ClaimNumber = Me.State.MyBO.ClaimNumber
+            dfControl.ClaimNumber = getClaimKey(Me.State.MyBO.Company.Code, Me.State.MyBO.ClaimNumber)
             phDynamicFulfillmentUI.Controls.Add(dfControl)
             dvClaimFulfillmentDetails.Visible = False
 
@@ -4053,6 +4055,15 @@ Partial Class ClaimForm
 
         End Try
     End Sub
+    Private Function getClaimKey(ByVal companyCode As String, ByVal claimNumber As String) As String
+        Dim handler As New DynamicFulfillmentKeyHandler()
+        Dim keys As New Dictionary(Of String, String)
+        Dim tenant As String = $"{ElitaConfig.Current.General.Environment}-{ElitaConfig.Current.General.Hub}"
+        keys.Add("Tenant", tenant)
+        keys.Add("CompanyCode", companyCode)
+        keys.Add("ClaimNumber", claimNumber)
+        Return handler.Encode(keys)
+    End Function
 
     Private Shared Function GetClaimFulfillmentWebAppGatewayClient() As WebAppGatewayClient
         Dim oWebPasswd As WebPasswd = New WebPasswd(Guid.Empty, LookupListNew.GetIdFromCode(Codes.SERVICE_TYPE, Codes.SERVICE_TYPE__CLAIM_FULFILLMENT_WEB_APP_GATEWAY_SERVICE), False)
@@ -4097,8 +4108,6 @@ Partial Class ClaimForm
         End Try
 
     End Function
-
-
 #End Region
 End Class
 

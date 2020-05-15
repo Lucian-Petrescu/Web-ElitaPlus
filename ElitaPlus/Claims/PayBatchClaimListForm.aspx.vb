@@ -179,7 +179,7 @@ Partial Class PayBatchClaimListForm
             If Not Me.IsPostBack Then
                 Me.SetFormTitle(PAGETITLE)
                 Me.SetFormTab(PAGETAB)
-
+                'IIBBTaxes.Populate()
                 Me.AddCalendar(Me.ImageButtonInvoiceDate, Me.TextBoxSearchInvoiceDate)
                 Me.AddCalendar(Me.imgBtnInvRecDt, Me.txtboxInvRecDt)
                 PopulateServiceCenterDropDown()
@@ -392,6 +392,7 @@ Partial Class PayBatchClaimListForm
             Session("recCount") = Me.State.searchInvoiceDV.Count
 
             If Me.State.searchInvoiceDV.Count > 0 Then
+                Me.InvoiceTabs.Visible = False
 
                 If Me.GridInvoices.Visible Then
                     Me.lblRecordCount.Text = Me.State.searchInvoiceDV.Count & " " & TranslationBase.TranslateLabelOrMessage(Message.MSG_RECORDS_FOUND)
@@ -490,7 +491,7 @@ Partial Class PayBatchClaimListForm
         Dim boolClaimsExist As Boolean = True
 
         Try
-
+            Me.InvoiceTabs.Visible = True
             Me.State.searchClaimDV = Claim.getClaimsForBatchProcess(Me.State.MyBO.ServiceCenterId, Me.State.MyBO.BatchNumber, Me.State.MyBO.Id, ElitaPlusIdentity.Current.ActiveUser.LanguageId)
 
             ControlMgr.SetVisibleControl(Me, Me.GridClaims, True)
@@ -653,6 +654,8 @@ Partial Class PayBatchClaimListForm
                 Dim _invoiceTrans As New InvoiceTrans
                 _invoiceTrans.SaveBatch(dsBCI, Me.State.selectedInvoiceTransId)
             End If
+            'UserControlInvoiceRegionTaxes.InvoiceTransactionId = GuidControl.GuidToHexString(Me.State.selectedInvoiceTransId)
+            'IIBBTaxes.PopulateGrid()
         Catch ex As Exception
             Me.HandleErrors(ex, Me.MasterPage.MessageController)
         End Try
@@ -758,10 +761,14 @@ Partial Class PayBatchClaimListForm
             Me.State.batchState = False
         End If
         FillClaims()
-        If LookupListNew.GetCodeFromId(LookupListNew.LK_INVSTAT, Me.State.MyBO.InvoiceStatusId) = INVOICE_STATUS_PAID Or LookupListNew.GetCodeFromId(LookupListNew.LK_INVSTAT, Me.State.MyBO.InvoiceStatusId) = INVOICE_STATUS_REJECTED Then
+        Dim statusId As String = LookupListNew.GetCodeFromId(LookupListNew.LK_INVSTAT, Me.State.MyBO.InvoiceStatusId)
+        If statusId = INVOICE_STATUS_PAID Or statusId = INVOICE_STATUS_REJECTED Then
             ControlMgr.SetEnableControl(Me, Me.btnSave_WRITE, False)
             ControlMgr.SetEnableControl(Me, Me.btnNEXT_WRITE, False)
         End If
+        Me.IIBBTaxes.InvoiceStatus = statusId
+        Me.IIBBTaxes.SetControlState()
+
     End Sub
 
     Private Sub ClearAll()
@@ -806,6 +813,16 @@ Partial Class PayBatchClaimListForm
         ControlMgr.SetVisibleControl(Me, btnNEXT_WRITE, False)
         ControlMgr.SetVisibleControl(Me, btnSave_WRITE, False)
 
+    End Sub
+
+#End Region
+
+#Region "Invoice Region Taxes"
+
+    Private Sub IIBBTaxes_RequestIIBBTaxes(ByVal sender As Object, ByRef e As UserControlInvoiceRegionTaxes.RequestDataEventArgs) Handles IIBBTaxes.RequestIIBBTaxesData
+        Dim iibbregion As New InvoiceRegionTax
+        iibbregion.InvoiceRegionTaxId = Me.State.MyBO.Id
+        e.Data = iibbregion.GetInvoiceRegionTax()
     End Sub
 
 #End Region
@@ -1322,6 +1339,7 @@ Partial Class PayBatchClaimListForm
 
                     e.Row.Cells(Me.GRID_INV_COL_INVOICE_NUMBER_IDX).Text = dvRow(InvoiceTrans.InvoiceTransSearchDV.COL_SVC_CONTROL_NUMBER).ToString
                     e.Row.Cells(Me.GRID_INV_COL_INVOICE_TRANS_NUMBER_IDX).Text = GetGuidStringFromByteArray(CType(dvRow(InvoiceTrans.InvoiceTransSearchDV.COL_INVOICE_TRANS_ID), Byte()))
+                    '= GetGuidStringFromByteArray(CType(dvRow(InvoiceTrans.InvoiceTransSearchDV.COL_INVOICE_TRANS_ID), Byte()))
                     e.Row.Cells(Me.GRID_INV_COL_SERVICE_CENTER_IDX).Text = dvRow(InvoiceTrans.InvoiceTransSearchDV.COL_SERVICE_CENTER_NAME).ToString
                     e.Row.Cells(Me.GRID_INV_COL_SERVICE_CENTER_ID_IDX).Text = GetGuidStringFromByteArray(CType(dvRow(InvoiceTrans.InvoiceTransSearchDV.COL_SERVICE_CENTER_ID), Byte()))
                     If dvRow(InvoiceTrans.InvoiceTransSearchDV.COL_INVOICE_DATE) Is DBNull.Value Then
@@ -1400,13 +1418,15 @@ Partial Class PayBatchClaimListForm
                     RowInd = row.RowIndex
                     lblCtrl = CType(GridInvoices.Rows(RowInd).Cells(GRID_INV_COL_INVOICE_TRANS_NUMBER_IDX).FindControl("invoice_trans_id"), Label)
                     invoiceId = New Guid(Me.GridInvoices.Rows(RowInd).Cells(Me.GRID_INV_COL_INVOICE_TRANS_NUMBER_IDX).Text)
+
                     'index = CInt(e.CommandArgument)
                     'Me.State.MyBO = New InvoiceTrans(New Guid(Me.GridInvoices.Rows(index).Cells(Me.GRID_INV_COL_INVOICE_TRANS_NUMBER_IDX).Text))
                     'Me.State.MyBO = New InvoiceTrans(New Guid(e.row.Cells(Me.GRID_INV_COL_INVOICE_TRANS_NUMBER_IDX).Text))
                     Me.State.MyBO = New InvoiceTrans(invoiceId)
 
                     PopulateSelection()
-
+                    Me.IIBBTaxes.InvoicetransId = Me.State.selectedInvoiceTransId
+                    Me.IIBBTaxes.Populate()
                     'Case Me.GRID_INV_COM_EDIT 'On Edit, redirect to the pay invoice page to enable the user to edit the associsated claims
                     '    Me.callPage(PayBatchClaimForm.URL, e.Item.Cells(Me.GRID_INV_COL_INVOICE_TRANS_NUMBER_IDX).Text)
 

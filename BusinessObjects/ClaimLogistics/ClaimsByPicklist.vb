@@ -154,10 +154,10 @@ Public Class ClaimsByPicklist
                     Me._headerId = LookupListNew.GetIdFromCode(dvPicklist, Me.PickListNumber)
 
                     If Me._headerId.Equals(Guid.Empty) Then
-                        Throw New BOValidationException("ClaimsByPicklist Error: ", Me.INVALID_PICKLIST_NUMBER)
+                        Throw New BOValidationException("ClaimsByPicklist Error: ", INVALID_PICKLIST_NUMBER)
                     End If
                 Else
-                    Throw New BOValidationException("ClaimsByPicklist Error: ", Me.INVALID_PICKLIST_NUMBER)
+                    Throw New BOValidationException("ClaimsByPicklist Error: ", INVALID_PICKLIST_NUMBER)
                 End If
 
             End If
@@ -176,10 +176,10 @@ Public Class ClaimsByPicklist
                     Me._serviceCenterId = LookupListNew.GetIdFromCode(dvServiceCenter, Me.ServiceCenterCode)
 
                     If Me._serviceCenterId.Equals(Guid.Empty) Then
-                        Throw New BOValidationException("ClaimsByPicklist Error: ", Me.INVALID_SERVICE_CENTER_CODE)
+                        Throw New BOValidationException("ClaimsByPicklist Error: ", INVALID_SERVICE_CENTER_CODE)
                     End If
                 Else
-                    Throw New BOValidationException("ClaimsByPicklist Error: ", Me.INVALID_SERVICE_CENTER_CODE)
+                    Throw New BOValidationException("ClaimsByPicklist Error: ", INVALID_SERVICE_CENTER_CODE)
                 End If
 
             End If
@@ -198,10 +198,10 @@ Public Class ClaimsByPicklist
                     Me._storeServiceCenterId = LookupListNew.GetIdFromCode(dvStore, Me.StoreNumber)
 
                     If Me._storeServiceCenterId.Equals(Guid.Empty) Then
-                        Throw New BOValidationException("ClaimsByPicklist Error: ", Me.INVALID_STORE_NUMBER)
+                        Throw New BOValidationException("ClaimsByPicklist Error: ", INVALID_STORE_NUMBER)
                     End If
                 Else
-                    Throw New BOValidationException("ClaimsByPicklist Error: ", Me.INVALID_STORE_NUMBER)
+                    Throw New BOValidationException("ClaimsByPicklist Error: ", INVALID_STORE_NUMBER)
                 End If
 
             End If

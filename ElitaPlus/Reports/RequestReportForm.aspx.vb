@@ -1,5 +1,8 @@
-﻿Imports Assurant.ElitaPlus.ElitaPlusWebApp.Common
-Imports Assurant.ElitaPlus.BusinessObjectsNew
+﻿Imports System.Threading
+Imports Assurant.Elita.CommonConfiguration
+Imports Assurant.Elita.Web.Forms
+Imports Assurant.ElitaPlus.ElitaPlusWebApp.Common
+Imports Assurant.ElitaPlus.Security
 
 
 Namespace Reports
@@ -13,19 +16,13 @@ Namespace Reports
 #Region "Constants"
 
         Public Const ALL As String = "*"
-        Private Const YES As String = "D"
-        Private Const NO As String = "N"
         Private Const ONE_ITEM As Integer = 1
-        Private Const BRAZIL_CODE As String = "BR"
-        Private Const LABEL_SELECT_COMPANY As String = "SELECT_COMPANY"
-        Private Const LABEL_SELECT_EXTENDED_STATUS As String = "SELECT_EXTENDED_STATUS"
 
         Private Const LABEL_OR_A_SINGLE_DEALER As String = "OR A SINGLE DEALER"
         Public Const PAGETAB As String = "REPORTS"
 
         Private Const OPT_DEALER_ALL As String = "DEALER_ALL"
         Private Const OPT_DEALER_SINGLE As String = "DEALER_SINGLE"
-        Private Const OPT_DEALER_ALL_VALUE As String = "ALL"
 
         Private Const RPT_PARAM_BEGIN_DATE As String = "BEGIN_DATE"
         Private Const RPT_PARAM_END_DATE As String = "END_DATE"
@@ -38,6 +35,7 @@ Namespace Reports
         Private Const RPT_PARAM_FIELD_MANDATORY_XCD As String = "MANDATORY_XCD"
         Private Const RPT_PARAM_FIELD_LABEL_UI_PROG_CODE As String = "LABEL_UI_PROG_CODE"
         Private Const RPT_PARAM_FIELD_MAXIMUM_LENGTH As String = "MAXIMUM_LENGTH"
+        Private Const RPT_PARAM_SELECT_MONTH_AND_YEAR As String = "SELECT_MONTH_AND_YEAR"
 
         Private Const YESNO_YES_XCD As String = "YESNO-Y"
 
@@ -47,15 +45,6 @@ Namespace Reports
         Private Const RPT_DEF_REPORT_TYPE As String = "REPORT_TYPE"
         Private Const RPT_DEF_EXP_REPORT_PROC As String = "EXP_REPORT_PROC"
 
-#End Region
-
-#Region "variables"
-        Dim moReportFormat As ReportCeBaseForm.RptFormat
-        Dim LPeriod As String
-        Dim PGenerate As String
-        Dim Month As DictionaryEntry
-        Dim MonthName As Hashtable
-        Dim REPORT_TYPE As String
 #End Region
 
 #Region "Properties"
@@ -158,6 +147,35 @@ Namespace Reports
                             lblEndDate.Text = "* " & TranslationBase.TranslateLabelOrMessage(drDates(1)(RPT_PARAM_FIELD_LABEL_UI_PROG_CODE).ToString)
                         End If
                     End If
+
+                    Dim drSelectMonthAndYear() As DataRow = dt.Select(String.Format("{0} = '{1}'", RPT_PARAM_FIELD_LABEL_CODE, RPT_PARAM_SELECT_MONTH_AND_YEAR))
+                    If drSelectMonthAndYear.Length > 0 Then
+                        trMonthandYear.Visible = True
+                        trDealer_space.Visible = True
+                        trMonthandYear.Attributes.Add(ATTR_REQUIRED, drSelectMonthAndYear(0)(RPT_PARAM_FIELD_MANDATORY_XCD).ToString)
+
+                        If drSelectMonthAndYear(0)(RPT_PARAM_FIELD_MANDATORY_XCD).ToString = YESNO_YES_XCD Then
+                            lblAcctPeriod.Text = "* " & TranslationBase.TranslateLabelOrMessage(drSelectMonthAndYear(0)(RPT_PARAM_FIELD_LABEL_UI_PROG_CODE).ToString)
+                        End If
+
+                        Dim intYear As Integer = DateTime.Today.Year
+
+                        For i As Integer = (intYear - 7) To intYear
+                            ddlAcctPeriodYear.Items.Add(New System.Web.UI.WebControls.ListItem(i.ToString, i.ToString))
+                        Next
+                        ddlAcctPeriodYear.SelectedValue = intYear.ToString
+
+                        Dim monthLkl As DataElements.ListItem() = CommonConfigManager.Current.ListManager.GetList("MONTH", Thread.CurrentPrincipal.GetLanguageCode())
+                        Me.ddlAcctPeriodMonth.Populate(monthLkl, New PopulateOptions() With
+                                                           {
+                                                           .AddBlankItem = True
+                                                           })
+
+                        Dim strMonth As String = DateTime.Today.Month.ToString().PadLeft(2, CChar("0"))
+                        strMonth = strMonth.Substring(strMonth.Length - 2)
+                        SetSelectedItem(Me.ddlAcctPeriodMonth, LookupListNew.GetIdFromCode(LookupListNew.LK_MONTHS, strMonth))
+                    End If
+
 
                     Dim drCompany() As DataRow = dt.Select(String.Format("{0} = '{1}'", RPT_PARAM_FIELD_LABEL_CODE, RPT_PARAM_COMPANY))
                     If drCompany.Length > 0 Then
@@ -346,15 +364,7 @@ Namespace Reports
             Dim userId As String = GuidControl.GuidToHexString(ElitaPlusIdentity.Current.ActiveUser.Id)
             Dim langId As String = GuidControl.GuidToHexString(ElitaPlusIdentity.Current.ActiveUser.LanguageId)
 
-            Dim selectedDealerId As Guid = DealerMultipleDrop.SelectedGuid
-            Dim dvDealer As DataView
             Dim dealerCode As String
-
-            Dim selectedExtendedStatusId As Guid = ExtendedStatusMultipleDrop.SelectedGuid
-            Dim dvExtendedStatus As DataView = LookupListNew.GetExtendedStatusByGroupLookupList(ElitaPlusIdentity.Current.ActiveUser.CompanyGroup.Id, ElitaPlusIdentity.Current.ActiveUser.LanguageId)
-            Dim extendedStatusDescription As String = LookupListNew.GetDescriptionFromId(dvExtendedStatus, selectedExtendedStatusId)
-
-            Dim extendedStatusCode As String = LookupListNew.GetCodeFromId(dvExtendedStatus, selectedExtendedStatusId)
             Dim endDate As String
             Dim beginDate As String
             Dim SelectedReportBasedOn As String
@@ -386,9 +396,6 @@ Namespace Reports
                         ElitaPlusPage.SetLabelError(lblBeginDate)
                         ElitaPlusPage.SetLabelError(lblEndDate)
                         Throw New GUIException(Message.MSG_BEGIN_END_DATE, Assurant.ElitaPlus.Common.ErrorCodes.GUI_INVALID_SELECTION)
-                    Else
-                        endDate = ReportExtractBase.FormatDate(lblEndDate, Date.Now)
-                        beginDate = ReportExtractBase.FormatDate(lblBeginDate, Date.Now)
                     End If
                 ElseIf ((Not txtBeginDate.Text.Equals(String.Empty) And txtEndDate.Text.Equals(String.Empty)) Or (txtBeginDate.Text.Equals(String.Empty) And Not txtEndDate.Text.Equals(String.Empty))) Then
                     ElitaPlusPage.SetLabelError(lblBeginDate)
@@ -411,7 +418,6 @@ Namespace Reports
                 SelectedReportBasedOn = moDealerOptionList.SelectedValue
                 Dim selectedDealerOption As String = moDealerOptionList.SelectedValue
                 If selectedDealerOption = OPT_DEALER_ALL Then
-                    dealerCode = OPT_DEALER_ALL_VALUE
                     reportParams.AppendFormat("pi_dealer => '{0}',", "*")
                 ElseIf selectedDealerOption = OPT_DEALER_SINGLE Then
                     dealerCode = DealerMultipleDrop.SelectedCode
@@ -467,6 +473,22 @@ Namespace Reports
                 End If
             End If
 
+            If trMonthandYear.Visible = True Then
+                Dim selectedYear As String = GetSelectedDescription(Me.ddlAcctPeriodYear)
+                Dim selectedMonthId As Guid = GetSelectedItem(Me.ddlAcctPeriodMonth)
+                Dim selectedMonth As String = LookupListNew.GetCodeFromId(LookupListNew.LK_MONTHS, selectedMonthID)
+                Dim selectedYearMonth As String
+                selectedYearMonth = selectedYear & selectedMonth
+
+                If trMonthandYear.Attributes(ATTR_REQUIRED) = YESNO_YES_XCD AndAlso (selectedMonthId.Equals(Guid.Empty) OrElse selectedYear.Equals(String.Empty)) Then
+                    'Report Period should be valid
+                    Throw New GUIException(Message.MSG_BEGIN_END_DATE, Assurant.ElitaPlus.Common.ErrorCodes.GUI_YEARMONTH_MUST_BE_SELECTED_ERR)
+
+                Else
+                    reportParams.AppendFormat("pi_period => '{0}',", selectedYearMonth)
+                End If
+
+            End If
 
             Me.State.ForEdit = True
             Me.PopulateBOProperty(Me.State.MyBO, "ReportType", Me.State.ReportType)
@@ -488,9 +510,9 @@ Namespace Reports
                     Me.State.MyBO.CreateJob(scheduleDate)
 
                     If String.IsNullOrEmpty(ElitaPlusIdentity.Current.EmailAddress) Then
-                        Me.DisplayMessage(Message.MSG_Email_not_configured, "", Me.MSG_BTN_OK, Me.MSG_TYPE_ALERT, , True)
+                        Me.DisplayMessage(Message.MSG_Email_not_configured, "", MSG_BTN_OK, MSG_TYPE_ALERT, , True)
                     Else
-                        Me.DisplayMessage(Message.MSG_REPORT_REQUEST_IS_GENERATED, "", Me.MSG_BTN_OK, Me.MSG_TYPE_ALERT, , True)
+                        Me.DisplayMessage(Message.MSG_REPORT_REQUEST_IS_GENERATED, "", MSG_BTN_OK, MSG_TYPE_ALERT, , True)
                     End If
 
                     btnGenRpt.Enabled = False

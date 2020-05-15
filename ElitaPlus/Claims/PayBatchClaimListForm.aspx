@@ -1,12 +1,16 @@
 <%@ Register Assembly="AjaxControlToolkit" Namespace="AjaxControlToolkit" TagPrefix="asp" %>
-
 <%@ Page Language="vb" AutoEventWireup="false" MasterPageFile="../Navigation/masters/ElitaBase.Master"
     CodeBehind="PayBatchClaimListForm.aspx.vb" Inherits="Assurant.ElitaPlus.ElitaPlusWebApp.PayBatchClaimListForm"
     Theme="Default" %>
+<%@ Register tagPrefix="Elita" tagName="UserControlInvoiceRegionTaxes" src="../Common/UserControlInvoiceRegionTaxes.ascx" %>
 
 <asp:Content ID="MessageContent" ContentPlaceHolderID="MessagePlaceHolder" runat="server">
 </asp:Content>
 <asp:Content ID="SummaryContent" ContentPlaceHolderID="SummaryPlaceHolder" runat="server">
+     <link type="text/css" href="../Navigation/styles/jquery-ui.min.css" rel="stylesheet" />
+    <link type="text/css" href="../Navigation/styles/jquery-ui.elita.css" rel="stylesheet" />
+    <script language="javascript" type="text/javascript" src="../Navigation/scripts/jquery-1.12.4.min.js"> </script>
+    <script language="javascript" type="text/javascript" src="../Navigation/scripts/jquery-ui.min.js"> </script>
     <table cellspacing="0" cellpadding="0" width="100%" border="0" class="searchGrid">
         <tr>
             <td style="width: 10%">
@@ -205,7 +209,7 @@
     </table>
 </asp:Content>
 <asp:Content ID="Body" ContentPlaceHolderID="BodyPlaceHolder" runat="server">
-<script type="text/javascript">
+    <script type="text/javascript">
     $(document).ready(function () {                
         var chkAllClaims = $("[id$='chkAllClaims']");
         var chkExcludeDedAll = $("[id$='chkExcludeDedAll']");
@@ -270,32 +274,7 @@
     <div class="dataContainer">
         <h2 class="dataGridHeader">
             Search results for Pay Invoice</h2>
-        <div>
-            <asp:ToolkitScriptManager ID="ScriptManager1" runat="server" CombineScripts="false">
-            </asp:ToolkitScriptManager>
-            <table width="100%" class="dataGrid">
-                <tr id="trPageSize" runat="server" height="1px">
-                    <td valign="top" align="left">
-                        <asp:Label ID="lblPageSize" runat="server">Page_Size</asp:Label>: &nbsp;
-                        <asp:DropDownList ID="cboPageSize" runat="server" Width="50px" AutoPostBack="true">
-                            <asp:ListItem Value="5">5</asp:ListItem>
-                            <asp:ListItem Selected="True" Value="10">10</asp:ListItem>
-                            <asp:ListItem Value="15">15</asp:ListItem>
-                            <asp:ListItem Value="20">20</asp:ListItem>
-                            <asp:ListItem Value="25">25</asp:ListItem>
-                            <asp:ListItem Value="30">30</asp:ListItem>
-                            <asp:ListItem Value="35">35</asp:ListItem>
-                            <asp:ListItem Value="40">40</asp:ListItem>
-                            <asp:ListItem Value="45">45</asp:ListItem>
-                            <asp:ListItem Value="50">50</asp:ListItem>
-                        </asp:DropDownList>
-                    </td>
-                    <td style="text-align: right;">
-                        <asp:Label ID="lblRecordCount" runat="server"></asp:Label>
-                    </td>
-                </tr>
-            </table>
-        </div>
+        
         <div style="width: 100%">
             <asp:GridView ID="GridInvoices" runat="server" Width="100%" AllowPaging="True" CellPadding="1"
                 AutoGenerateColumns="False" SkinID="DetailPageGridView">
@@ -304,7 +283,7 @@
                 <AlternatingRowStyle Wrap="True" />
                 <RowStyle Wrap="True" />
                 <Columns>
-                    <asp:BoundField Visible="False" HeaderText="invoice_trans_id"></asp:BoundField>
+                    <asp:BoundField Visible="false" HeaderText="invoice_trans_id"></asp:BoundField>
                     <asp:BoundField SortExpression="Status" HeaderText="Status" Visible="False">
                         <ItemStyle HorizontalAlign="Center"></ItemStyle>
                     </asp:BoundField>
@@ -352,14 +331,60 @@
                 <PagerSettings PageButtonCount="30" Mode="Numeric" Position="TopAndBottom" />
                 <PagerStyle />
             </asp:GridView>
-            <asp:GridView ID="GridClaims" runat="server" Width="100%" AllowPaging="True" AllowSorting="False"
+            
+
+            <div class="dataContainer" id="InvoiceTabs" visible="false" runat="server" style="width: 100%;">
+    <asp:HiddenField ID="hdnSelectedTab" runat="server" Value="0" />
+    <div id="tabs" class="style-tabs">
+        <ul>
+            <li>
+                <a href="#tabsSearchInvoice">
+                    <asp:Label ID="lblsearchInvoice" runat="server" CssClass="tabHeaderText">Claim Details</asp:Label>
+                </a>
+            </li>
+            <li>
+                <a href="#tabsIIBBtaxes">
+                    <asp:Label ID="Label6" runat="server" CssClass="tabHeaderText">REGION_TAXES</asp:Label>
+                </a>
+            </li>
+        </ul>
+        <%--<div class="Pages">--%>
+            <div id="tabsSearchInvoice">
+                <div>
+            <asp:ToolkitScriptManager ID="ScriptManager1" runat="server" CombineScripts="false">
+            </asp:ToolkitScriptManager>
+            <table width="100%" class="dataGrid">
+                <tr id="trPageSize" runat="server" height="1px">
+                    <td valign="top" align="left">
+                        <asp:Label ID="lblPageSize" runat="server">Page_Size</asp:Label>: &nbsp;
+                        <asp:DropDownList ID="cboPageSize" runat="server" Width="50px" AutoPostBack="true">
+                            <asp:ListItem Value="5">5</asp:ListItem>
+                            <asp:ListItem Selected="True" Value="10">10</asp:ListItem>
+                            <asp:ListItem Value="15">15</asp:ListItem>
+                            <asp:ListItem Value="20">20</asp:ListItem>
+                            <asp:ListItem Value="25">25</asp:ListItem>
+                            <asp:ListItem Value="30">30</asp:ListItem>
+                            <asp:ListItem Value="35">35</asp:ListItem>
+                            <asp:ListItem Value="40">40</asp:ListItem>
+                            <asp:ListItem Value="45">45</asp:ListItem>
+                            <asp:ListItem Value="50">50</asp:ListItem>
+                        </asp:DropDownList>
+                    </td>
+                    <td style="text-align: right;">
+                        <asp:Label ID="lblRecordCount" runat="server"></asp:Label>
+                    </td>
+                </tr>
+            </table>
+        </div>
+                <div>
+                <asp:GridView ID="GridClaims" runat="server" Width="100%" AllowPaging="True" AllowSorting="False"
                 CellPadding="1" AutoGenerateColumns="False" SkinID="DetailPageGridView">
                 <SelectedRowStyle Wrap="True" />
                 <EditRowStyle Wrap="True" />
                 <AlternatingRowStyle Wrap="True" />
                 <RowStyle Wrap="True" />
                 <Columns>
-                    <asp:BoundField Visible="False" HeaderText="invoice_trans_id"></asp:BoundField>
+                    <asp:BoundField Visible="false" HeaderText="invoice_trans_id"></asp:BoundField>
                     <asp:TemplateField>
                         <ItemTemplate>
                             <asp:CheckBox ID="chkAddClaim" runat="server" Checked="False"></asp:CheckBox>
@@ -399,6 +424,18 @@
                 <PagerSettings PageButtonCount="30" Mode="Numeric" Position="TopAndBottom" />
                 <PagerStyle />
             </asp:GridView>
+                    </div>
+            </div>
+            <div id="tabsIIBBtaxes">
+                <%--<asp:DropDownList ID="DropDownList1" runat="server"></asp:DropDownList>--%>
+                <elita:UserControlInvoiceRegionTaxes runat="server" ID="IIBBTaxes" 
+                                                        RequestIIBBTaxesData="IIBBTaxes_RequestIIBBTaxes"></elita:UserControlInvoiceRegionTaxes>
+            </div>
+        <%--</div>--%>
+    </div>
+</div>
+
+
         </div>
         <asp:Panel ID="Panel1" runat="server">
         </asp:Panel>
@@ -414,4 +451,5 @@
                 Visible="false"></asp:Button>
         </div>
     </div>
+    
 </asp:Content>

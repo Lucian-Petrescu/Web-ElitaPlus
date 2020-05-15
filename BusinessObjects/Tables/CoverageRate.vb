@@ -48,7 +48,7 @@ Public Class CoverageRate
             Dim newRow As DataRow = Me.Dataset.Tables(dal.TABLE_NAME).NewRow
             Me.Dataset.Tables(dal.TABLE_NAME).Rows.Add(newRow)
             Me.Row = newRow
-            setvalue(dal.TABLE_KEY_NAME, Guid.NewGuid)
+            SetValue(dal.TABLE_KEY_NAME, Guid.NewGuid)
             Initialize()
         Catch ex As Assurant.ElitaPlus.DALObjects.DataBaseAccessException
             Throw New DataBaseAccessException(DataBaseAccessException.DatabaseAccessErrorType.ReadErr, ex)
@@ -139,7 +139,7 @@ Public Class CoverageRate
         End Get
     End Property
 
-    <ValueMandatory("")> _
+    <ValueMandatory("")>
     Public Property CoverageId() As Guid
         Get
             CheckDeleted()
@@ -156,7 +156,7 @@ Public Class CoverageRate
     End Property
 
 
-    <ValueMandatory(""), ValidNumericRange("LowPrice", MIN:=MIN_DOUBLE, Max:=NEW_COVERAGE_MAX_DOUBLE, Message:=COVERAGE_RATE_FORM001), ValidCoverageRates("")> _
+    <ValueMandatory(""), ValidNumericRange("LowPrice", Min:=MIN_DOUBLE, Max:=NEW_COVERAGE_MAX_DOUBLE, Message:=COVERAGE_RATE_FORM001), ValidCoverageRates("")>
     Public Property LowPrice() As DecimalType
         Get
             CheckDeleted()
@@ -173,7 +173,7 @@ Public Class CoverageRate
     End Property
 
 
-    <ValueMandatory(""), ValidNumericRange("", MIN:=MIN_DOUBLE, Max:=NEW_COVERAGE_MAX_DOUBLE, Message:=COVERAGE_RATE_FORM002)> _
+    <ValueMandatory(""), ValidNumericRange("", Min:=MIN_DOUBLE, Max:=NEW_COVERAGE_MAX_DOUBLE, Message:=COVERAGE_RATE_FORM002)>
     Public Property HighPrice() As DecimalType
         Get
             CheckDeleted()
@@ -207,7 +207,7 @@ Public Class CoverageRate
     End Property
 
 
-    <ValueMandatory(""), ValidNumericRange("", MIN:=MIN_DOUBLE, Max:=MAX_DOUBLE, Message:=COVERAGE_RATE_FORM004), ValidCoverageSum(""), ValidateDecimalNumber("", DecimalValue:=MIM_DECIMAL_NUMBERS, Message:=COVERAGE_RATE_FORM012)> _
+    <ValueMandatory(""), ValidNumericRange("", Min:=MIN_DOUBLE, Max:=MAX_DOUBLE, Message:=COVERAGE_RATE_FORM004), ValidCoverageSum(""), ValidateDecimalNumber("", DecimalValue:=MIM_DECIMAL_NUMBERS, Message:=COVERAGE_RATE_FORM012)>
     Public Property CommissionsPercent() As DecimalType
         Get
             CheckDeleted()
@@ -224,7 +224,7 @@ Public Class CoverageRate
     End Property
 
 
-    <ValueMandatory(""), ValidNumericRange("", MIN:=MIN_DOUBLE, Max:=MAX_DOUBLE, Message:=COVERAGE_RATE_FORM005), ValidateDecimalNumber("", DecimalValue:=MIM_DECIMAL_NUMBERS, Message:=COVERAGE_RATE_FORM012)> _
+    <ValueMandatory(""), ValidNumericRange("", Min:=MIN_DOUBLE, Max:=MAX_DOUBLE, Message:=COVERAGE_RATE_FORM005), ValidateDecimalNumber("", DecimalValue:=MIM_DECIMAL_NUMBERS, Message:=COVERAGE_RATE_FORM012)>
     Public Property MarketingPercent() As DecimalType
         Get
             CheckDeleted()
@@ -241,7 +241,7 @@ Public Class CoverageRate
     End Property
 
 
-    <ValueMandatory(""), ValidNumericRange("", MIN:=MIN_DOUBLE, Max:=NEW_COVERAGE_MAX_DOUBLE, Message:=COVERAGE_RATE_FORM006), ValidateDecimalNumber("", DecimalValue:=MIM_DECIMAL_NUMBERS, Message:=COVERAGE_RATE_FORM012)> _
+    <ValueMandatory(""), ValidNumericRange("", Min:=MIN_DOUBLE, Max:=NEW_COVERAGE_MAX_DOUBLE, Message:=COVERAGE_RATE_FORM006), ValidateDecimalNumber("", DecimalValue:=MIM_DECIMAL_NUMBERS, Message:=COVERAGE_RATE_FORM012)>
     Public Property AdminExpense() As DecimalType
         Get
             CheckDeleted()
@@ -258,7 +258,7 @@ Public Class CoverageRate
     End Property
 
 
-    <ValueMandatory(""), ValidNumericRange("", MIN:=MIN_DOUBLE, Max:=NEW_COVERAGE_MAX_DOUBLE, Message:=COVERAGE_RATE_FORM007), ValidateDecimalNumber("", DecimalValue:=MIM_DECIMAL_NUMBERS, Message:=COVERAGE_RATE_FORM012)> _
+    <ValueMandatory(""), ValidNumericRange("", Min:=MIN_DOUBLE, Max:=NEW_COVERAGE_MAX_DOUBLE, Message:=COVERAGE_RATE_FORM007), ValidateDecimalNumber("", DecimalValue:=MIM_DECIMAL_NUMBERS, Message:=COVERAGE_RATE_FORM012)>
     Public Property ProfitExpense() As DecimalType
         Get
             CheckDeleted()
@@ -351,7 +351,86 @@ Public Class CoverageRate
         End Set
     End Property
 
+    'US 521697
+    <ValidStringLength("", Max:=50, Message:="CommissionsPercentSourceXcd should be between 1 to 30 chars.")>
+    Public Property CommissionsPercentSourceXcd() As String
+        Get
+            CheckDeleted()
+            If Row(CoverageRateDAL.COL_NAME_COMMISSIONS_PERCENT_SOURCE_XCD) Is DBNull.Value Then
+                Return Nothing
+            Else
+                Return CType(Row(CoverageRateDAL.COL_NAME_COMMISSIONS_PERCENT_SOURCE_XCD), String)
+            End If
+        End Get
+        Set(ByVal Value As String)
+            CheckDeleted()
+            Me.SetValue(CoverageRateDAL.COL_NAME_COMMISSIONS_PERCENT_SOURCE_XCD, Value)
+        End Set
+    End Property
 
+    <ValidStringLength("", Max:=50, Message:="MarketingPercentSourceXcd should be between 1 to 30 chars.")>
+    Public Property MarketingPercentSourceXcd() As String
+        Get
+            CheckDeleted()
+            If Row(CoverageRateDAL.COL_NAME_MARKETING_PERCENT_SOURCE_XCD) Is DBNull.Value Then
+                Return Nothing
+            Else
+                Return CType(Row(CoverageRateDAL.COL_NAME_MARKETING_PERCENT_SOURCE_XCD), String)
+            End If
+        End Get
+        Set(ByVal Value As String)
+            CheckDeleted()
+            Me.SetValue(CoverageRateDAL.COL_NAME_MARKETING_PERCENT_SOURCE_XCD, Value)
+        End Set
+    End Property
+
+    <ValidStringLength("", Max:=50, Message:="AdminExpenseSourceXcd should be between 1 to 30 chars.")>
+    Public Property AdminExpenseSourceXcd() As String
+        Get
+            CheckDeleted()
+            If Row(CoverageRateDAL.COL_NAME_ADMIN_EXPENSE_SOURCE_XCD) Is DBNull.Value Then
+                Return Nothing
+            Else
+                Return CType(Row(CoverageRateDAL.COL_NAME_ADMIN_EXPENSE_SOURCE_XCD), String)
+            End If
+        End Get
+        Set(ByVal Value As String)
+            CheckDeleted()
+            Me.SetValue(CoverageRateDAL.COL_NAME_ADMIN_EXPENSE_SOURCE_XCD, Value)
+        End Set
+    End Property
+
+    <ValidStringLength("", Max:=50, Message:="ProfitPercentSourceXcd should be between 1 to 30 chars.")>
+    Public Property ProfitPercentSourceXcd() As String
+        Get
+            CheckDeleted()
+            If Row(CoverageRateDAL.COL_NAME_PROFIT_PERCENT_SOURCE_XCD) Is DBNull.Value Then
+                Return Nothing
+            Else
+                Return CType(Row(CoverageRateDAL.COL_NAME_PROFIT_PERCENT_SOURCE_XCD), String)
+            End If
+        End Get
+        Set(ByVal Value As String)
+            CheckDeleted()
+            Me.SetValue(CoverageRateDAL.COL_NAME_PROFIT_PERCENT_SOURCE_XCD, Value)
+        End Set
+    End Property
+
+    <ValidStringLength("", Max:=50, Message:="LossCostPercentSourceXcd should be between 1 to 30 chars.")>
+    Public Property LossCostPercentSourceXcd() As String
+        Get
+            CheckDeleted()
+            If Row(CoverageRateDAL.COL_NAME_LOSS_COST_PERCENT_SOURCE_XCD) Is DBNull.Value Then
+                Return Nothing
+            Else
+                Return CType(Row(CoverageRateDAL.COL_NAME_LOSS_COST_PERCENT_SOURCE_XCD), String)
+            End If
+        End Get
+        Set(ByVal Value As String)
+            CheckDeleted()
+            Me.SetValue(CoverageRateDAL.COL_NAME_LOSS_COST_PERCENT_SOURCE_XCD, Value)
+        End Set
+    End Property
 
 #End Region
 
@@ -365,7 +444,7 @@ Public Class CoverageRate
                 'Reload the Data from the DB
                 If Me.Row.RowState <> DataRowState.Detached Then
                     Dim objId As Guid = Me.Id
-                    Me.Dataset = New Dataset
+                    Me.Dataset = New DataSet
                     Me.Row = Nothing
                     Me.Load(objId)
                 End If
@@ -394,33 +473,33 @@ Public Class CoverageRate
 
 
         If oRows.Count = 0 Then
-                'only one record Exists
-                deleteOk = True
-            Else
-                For Each oRow In oRows
-                    oCoverageRateId = New Guid(CType(oRow(COVERAGE_RATE_ID), Byte()))
-                    oLow = Math.Round(Convert.ToDouble(oRow(LOW_PRICE)), 2)
-                    oHigh = Math.Round(Convert.ToDouble(oRow(HIGH_PRICE)), 2)
+            'only one record Exists
+            deleteOk = True
+        Else
+            For Each oRow In oRows
+                oCoverageRateId = New Guid(CType(oRow(COVERAGE_RATE_ID), Byte()))
+                oLow = Math.Round(Convert.ToDouble(oRow(LOW_PRICE)), 2)
+                oHigh = Math.Round(Convert.ToDouble(oRow(HIGH_PRICE)), 2)
 
-                    If (oLow = covRateLow And oHigh = covRateHigh) And Not (Id.Equals(oCoverageRateId)) Then
-                        oCount = oCount + 1
-                    End If
-                    If (oLow < oLowestVal) Then
-                        oLowestVal = oLow
-                    End If
-                    If (oHigh > oHighestVal) Then
-                        oHighestVal = oHigh
-                    End If
-                Next
-
-                If oCount > 0 And RenewalNumber.Value > 0 Then
-                    ' You can delete if more than one records exists for the target combination
-                    deleteOk = True
-                ElseIf (oCount = 0 And RenewalNumber.Value = 0 And (covRateLow = oLowestVal Or covRateHigh = oHighestVal)) Then
-                    ' You can delete only the first or last coverage rate to avoid gaps in case only one record exists for the target combination
-                    deleteOk = True
+                If (oLow = covRateLow And oHigh = covRateHigh) And Not (Id.Equals(oCoverageRateId)) Then
+                    oCount = oCount + 1
                 End If
+                If (oLow < oLowestVal) Then
+                    oLowestVal = oLow
+                End If
+                If (oHigh > oHighestVal) Then
+                    oHighestVal = oHigh
+                End If
+            Next
+
+            If oCount > 0 And RenewalNumber.Value > 0 Then
+                ' You can delete if more than one records exists for the target combination
+                deleteOk = True
+            ElseIf (oCount = 0 And RenewalNumber.Value = 0 And (covRateLow = oLowestVal Or covRateHigh = oHighestVal)) Then
+                ' You can delete only the first or last coverage rate to avoid gaps in case only one record exists for the target combination
+                deleteOk = True
             End If
+        End If
 
         If deleteOk Then
             MyBase.Delete()
@@ -449,8 +528,8 @@ Public Class CoverageRate
     End Function
 
 
-    Public Shared Function GetExpectedGWP(ByVal DealerId As Guid, ByVal ProductCode As String, ByVal certificate_duration As Integer, _
-                                          ByVal WarrSalesDate As Date, ByVal PurchasePrice As Double, ByVal CoverageDuration As Integer, _
+    Public Shared Function GetExpectedGWP(ByVal DealerId As Guid, ByVal ProductCode As String, ByVal certificate_duration As Integer,
+                                          ByVal WarrSalesDate As Date, ByVal PurchasePrice As Double, ByVal CoverageDuration As Integer,
                                            ByVal ProductPurchaseDate As Date) As Object
         Try
             Dim dal As New CoverageRateDAL
@@ -472,9 +551,67 @@ Public Class CoverageRate
     End Function
 #End Region
 
+    Public Function HasIgnorePremiumConfiguredForContract(ByVal coverageId As Guid) As Boolean
+
+        Dim pCoverage As New Coverage(coverageId)
+        Dim oDealer As New Dealer(pCoverage.DealerId)
+        Dim oContract As Contract = New Contract
+        Dim isIgnorePremiumYesForContract As Boolean = False
+
+        If HasDealerConfiguredForAcctBucket(coverageId) Then
+            With pCoverage
+                If Not (.Effective Is Nothing And .Expiration Is Nothing) Then
+                    oContract = oContract.GetContract(.DealerId, .Effective.Value, .Expiration.Value)
+                End If
+
+                If Not oContract Is Nothing Then
+                    If oContract.IgnoreIncomingPremiumID.ToString() <> "00000000-0000-0000-0000-000000000000" Then
+                        Dim str As String
+                        str = LookupListNew.GetCodeFromId(LookupListNew.LK_YESNO, oContract.IgnoreIncomingPremiumID)
+
+                        If str.Equals(Codes.YESNO_Y) Then
+                            isIgnorePremiumYesForContract = True
+                        Else
+                            isIgnorePremiumYesForContract = False
+                        End If
+
+                    Else
+                        isIgnorePremiumYesForContract = False
+                    End If
+                Else
+                    isIgnorePremiumYesForContract = False
+                End If
+
+            End With
+        Else
+            isIgnorePremiumYesForContract = False
+        End If
+
+        Return isIgnorePremiumYesForContract
+    End Function
+
+    Public Function HasDealerConfiguredForAcctBucket(ByVal coverageId As Guid) As Boolean
+
+        Dim pCoverage As New Coverage(coverageId)
+        Dim oDealer As New Dealer(pCoverage.DealerId)
+        Dim isDealerConfiguredForAcctBucket As Boolean = False
+
+        If (pCoverage.DealerId <> Guid.Empty) Then
+            If oDealer.AcctBucketsWithSourceXcd.Equals(Codes.EXT_YESNO_Y) Then
+                isDealerConfiguredForAcctBucket = True
+            Else
+                isDealerConfiguredForAcctBucket = False
+            End If
+        Else
+            isDealerConfiguredForAcctBucket = False
+        End If
+
+        Return isDealerConfiguredForAcctBucket
+    End Function
+
 #Region "Custom Validation"
 
-    <AttributeUsage(AttributeTargets.Property Or AttributeTargets.Field)> _
+    <AttributeUsage(AttributeTargets.Property Or AttributeTargets.Field)>
     Public NotInheritable Class ValidCoverageRates
         Inherits ValidBaseAttribute
 
@@ -570,16 +707,20 @@ Public Class CoverageRate
         Public Overrides Function IsValid(ByVal valueToCheck As Object, ByVal objectToValidate As Object) As Boolean
             Dim obj As CoverageRate = CType(objectToValidate, CoverageRate)
 
-            If Not obj.CommissionsPercent Is Nothing And Not obj.MarketingPercent Is Nothing And
-                    Not obj.AdminExpense Is Nothing And Not obj.ProfitExpense Is Nothing And
-                    Not obj.LossCostPercent Is Nothing Then
-                'If (Convert.ToSingle(obj.CommissionsPercent.Value) + Convert.ToSingle(obj.MarketingPercent.Value) + _
-                '        Convert.ToSingle(obj.AdminExpense.Value) + Convert.ToSingle(obj.ProfitExpense.Value) + _
-                '        Convert.ToSingle(obj.LossCostPercent.Value) > Convert.ToSingle(100)) Then
-                If ((obj.CommissionsPercent.Value) + (obj.MarketingPercent.Value) +
-                      (obj.AdminExpense.Value) + (obj.ProfitExpense.Value) +
-                      (obj.LossCostPercent.Value) > Convert.ToDecimal(100)) Then
-                    Return False
+            'US 521697 check if dealer is configured for Account Bucket, if not then only validate for > 100% calculation
+            If obj.HasDealerConfiguredForAcctBucket(obj.CoverageId) = False Then
+                If Not obj.CommissionsPercent Is Nothing And Not obj.MarketingPercent Is Nothing And
+                        Not obj.AdminExpense Is Nothing And Not obj.ProfitExpense Is Nothing And
+                        Not obj.LossCostPercent Is Nothing Then
+                    'If (Convert.ToSingle(obj.CommissionsPercent.Value) + Convert.ToSingle(obj.MarketingPercent.Value) + _
+                    '        Convert.ToSingle(obj.AdminExpense.Value) + Convert.ToSingle(obj.ProfitExpense.Value) + _
+                    '        Convert.ToSingle(obj.LossCostPercent.Value) > Convert.ToSingle(100)) Then
+
+                    If ((obj.CommissionsPercent.Value) + (obj.MarketingPercent.Value) +
+                          (obj.AdminExpense.Value) + (obj.ProfitExpense.Value) +
+                          (obj.LossCostPercent.Value) > Convert.ToDecimal(100)) Then
+                        Return False
+                    End If
                 End If
             End If
 

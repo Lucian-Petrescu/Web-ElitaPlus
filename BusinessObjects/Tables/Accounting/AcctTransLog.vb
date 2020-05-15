@@ -902,7 +902,7 @@ Public Class AcctTransLog
         End Try
     End Sub
 
-    Public Function GetAccountingInterfaceTables(ByVal oFelitaEngineData As FelitaEngine.FelitaEngineData) As DataSet()
+    Public Function GetAccountingInterfaceTables(ByVal oFelitaEngineData As FelitaEngine.FelitaEngineData, ByVal BatchNumber As String) As DataSet()
 
 
         Dim dal As New AcctTransLogDAL
@@ -947,7 +947,7 @@ Public Class AcctTransLog
                                 dsTemp = New DataSet(dal.DatasetName)
 
                                 dsTemp = dal.GetJournalEntries(oFelitaEngineData.CompanyId, GuidControl.ByteArrayToGuid(CType(dvItem(LookupListNew.COL_ID_NAME), Byte())),
-                                GuidControl.ByteArrayToGuid(CType(dvRow(BusinessUnitDV.COL_ACCT_BUSINESS_UNIT_ID), Byte())), dvItem(LookupListNew.COL_CODE_NAME), ElitaPlusIdentity.Current.ActiveUser.NetworkId, False)
+                                GuidControl.ByteArrayToGuid(CType(dvRow(BusinessUnitDV.COL_ACCT_BUSINESS_UNIT_ID), Byte())), dvItem(LookupListNew.COL_CODE_NAME), ElitaPlusIdentity.Current.ActiveUser.NetworkId, BatchNumber, False)
 
                                 'Check if items balance before adding to our dataset.
                                 isBalanced = MergeDataSets(oFelitaEngineData.CompanyId, _acctExtension, dvItem(LookupListNew.COL_CODE_NAME).ToString, ds, dsTemp, oFelitaEngineData.EventId)
@@ -1020,7 +1020,7 @@ Public Class AcctTransLog
 
                         dsTemp = New DataSet(dal.DatasetName)
                         dsTemp = dal.GetJournalEntries(oFelitaEngineData.CompanyId, oFelitaEngineData.EventId,
-                        GuidControl.ByteArrayToGuid(CType(dvRow(BusinessUnitDV.COL_ACCT_BUSINESS_UNIT_ID), Byte())), eventCode, ElitaPlusIdentity.Current.ActiveUser.NetworkId, False)
+                        GuidControl.ByteArrayToGuid(CType(dvRow(BusinessUnitDV.COL_ACCT_BUSINESS_UNIT_ID), Byte())), eventCode, ElitaPlusIdentity.Current.ActiveUser.NetworkId, BatchNumber, False)
 
                         'Check if items balance before adding to our dataset.
                         isBalanced = MergeDataSets(oFelitaEngineData.CompanyId, _acctExtension, LookupListNew.GetCodeFromId(LookupListNew.DropdownLookupList(LookupListNew.LK_ACCT_TRANS_TYPE, ElitaPlusIdentity.Current.ActiveUser.LanguageId, False), oFelitaEngineData.EventId), ds, dsTemp, oFelitaEngineData.EventId)
@@ -1153,6 +1153,7 @@ Public Class AcctTransLog
 
             If arrIDs.Count > 0 Then
                 dal.PurgeTransLog(arrIDs)
+                dal.PurgeTransLogStaging(arrIDs)
             End If
 
         Catch ex As Exception

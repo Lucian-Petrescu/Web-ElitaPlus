@@ -7,6 +7,7 @@
 <%@ Register TagPrefix="Elita" TagName="UserControlWizard" Src="~/Common/UserControlWizard.ascx" %>
 <%@ Register TagPrefix="Elita" TagName="BestReplacementOption" Src="~/Interfaces/ReplacementOptions.ascx" %>
 <%@ Register TagPrefix="Elita" TagName="UserControlLogisticalInfo" Src="~/Claims/UserControlLogisticalInfo.ascx" %>
+<%@ Register TagPrefix="Elita" TagName="UserControlClaimDeviceInfo" Src="~/Interfaces/ClaimDeviceInformationController.ascx" %>
 
 <%@ Page Language="vb" AutoEventWireup="false" CodeBehind="NewClaimForm.aspx.vb"
     Inherits="Assurant.ElitaPlus.ElitaPlusWebApp.NewClaimForm" Theme="Default" MasterPageFile="../Navigation/masters/ElitaBase.Master" %>
@@ -1148,88 +1149,17 @@
                   </div>
           
                   <div id="tabDeviceInformation">
-                    <div class="Page">
-                                <div id="dvClaimEquipment" runat="server">
-                                    <table class="formGrid">
-                                    <tr>
-                                        <td align="right">
-                                        </td>
-                                        <td align="left">
-                                            <asp:Label ID="lblEnrolledDevice" runat="server" Text="ENROLLED_DEVICE_INFO" Font-Bold="True"> </asp:Label>
-                                        </td>
-                                        <td align="right">
-                                        </td>
-                                        <td align="left">
-                                            <asp:Label ID="lblClaimedDevice" runat="server" Text="CLAIMED_DEVICE_INFO" Font-Bold="True"> </asp:Label>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td align="right">
-                                            <asp:Label ID="LBLeNROLLEDmAKE" runat="server" Text="MAKE"> </asp:Label>
-                                        </td>
-                                        <td align="left">
-                                            <asp:DropDownList ID="ddlEnrolledManuf" Visible="false" TabIndex="3" runat="server" SkinID="MediumDropDown">
-                                            </asp:DropDownList>
-                                            <asp:TextBox ID="txtEnrolledMake" runat="server" CssClass="FLATTEXTBOX" enabled="false" SkinID="MediumTextBox"></asp:TextBox>
-                                        </td>
-                                        <td align="right">
-                                            <asp:Label ID="lblClaimedMake" runat="server"  Text="MAKE"> </asp:Label>
-                                        </td>
-                                        <td align="left">
-                                            <asp:DropDownList ID="ddlClaimedManuf" Visible="false" TabIndex="3" runat="server" SkinID="MediumDropDown">
-                                            </asp:DropDownList>
-                                            <asp:TextBox ID="txtClaimedMake" runat="server" enabled="false" CssClass="FLATTEXTBOX" SkinID="MediumTextBox"></asp:TextBox>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td align="right">
-                                            <asp:Label ID="lblEnrolledModel" runat="server" Text="MODEL"> </asp:Label>
-                                        </td>
-                                        <td align="left">
-                                            <asp:TextBox ID="txtEnrolledModel" runat="server"  CssClass="FLATTEXTBOX" SkinID="MediumTextBox"></asp:TextBox>
-                                        </td>
-                                        <td align="right">
-                                            <asp:Label ID="lblClaimedModel" runat="server" Text="MODEL"> </asp:Label>
-                                        </td>
-                                        <td align="left">
-                                            <asp:TextBox ID="txtClaimedModel" runat="server"  SkinID="MediumTextBox"></asp:TextBox>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td align="right">
-                                            <asp:Label ID="lblEnrolledSerialNumber" runat="server" CssClass="FLATTEXTBOX" Text="SERIAL_NUMBER"> </asp:Label>
-                                        </td>
-                                        <td align="left">
-                                            <asp:TextBox ID="txtenrolledSerial" runat="server"  SkinID="MediumTextBox"></asp:TextBox>
-                                        </td>
-                                        <td align="right">
-                                            <asp:Label ID="lblClaimedSerialNumber" runat="server" CssClass="FLATTEXTBOX" Text="SERIAL_NUMBER"> </asp:Label>
-                                        </td>
-                                        <td align="left">
-                                            <asp:TextBox ID="txtClaimedSerial" runat="server"  SkinID="MediumTextBox"></asp:TextBox>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td align="right">
-                                            <asp:Label ID="lblEnrolledSKu" runat="server" Text="SKU_NUMBER"> </asp:Label>
-                                        </td>
-                                        <td align="left">
-                                             <asp:DropDownList ID="ddlEnrolledEquipSKU" Visible="false" TabIndex="3" runat="server" SkinID="MediumDropDown">
-                                            </asp:DropDownList>
-                                            <asp:TextBox ID="txtEnrolledSku" runat="server" enabled="false" CssClass="FLATTEXTBOX" SkinID="MediumTextBox"></asp:TextBox>
-                                        </td>
-                                        <td align="right">
-                                            <asp:Label ID="lblClaimedSKu" runat="server" Text="SKU_NUMBER"> </asp:Label>
-                                        </td>
-                                        <td align="left">
-                                             <asp:DropDownList ID="ddlClaimedEquipSKU" Visible="false" TabIndex="3" runat="server" SkinID="MediumDropDown">
-                                            </asp:DropDownList>
-                                            <asp:TextBox ID="txtClaimedSku" runat="server" enabled="false" CssClass="FLATTEXTBOX" SkinID="MediumTextBox"></asp:TextBox>
-                                        </td>
-                                    </tr>
-                                    </table>
-                                </div>
-                            </div>
+                      <div class="Page">
+                          <div id="dvClaimEquipment" runat="server">
+                          <table border="0" width="100%">
+                              <tr>
+                                  <td width="100%" align="left">
+                                      <Elita:UserControlClaimDeviceInfo ID="ucClaimDeviceInfo" runat="server"></Elita:UserControlClaimDeviceInfo>
+                                  </td>
+                              </tr>
+                          </table>
+                              </div>
+                      </div>
                   </div>
                     
                   <div id="tabServiceCenterInformation">

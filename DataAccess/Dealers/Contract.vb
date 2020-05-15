@@ -141,8 +141,13 @@ Partial Public Class Contract
     Public Property ThirdPartyTaxId As String
     Public Property LineOfBusinessId As Nullable(Of System.Guid)
     Public Property ProducerId As Nullable(Of System.Guid)
-
     Public Overridable Property Dealer As Dealer
 
+    'US - 489857
+    Public Property COMMISSIONS_PERCENT_SOURCE_XCD As String
+    Public Property MARKETING_PERCENT_SOURCE_XCD As String
+    Public Property ADMIN_EXPENSE_SOURCE_XCD As String
+    Public Property PROFIT_PERCENT_SOURCE_XCD As String
+    Public Property LOSS_COST_PERCENT_SOURCE_XCD As String
 End Class
 #End If

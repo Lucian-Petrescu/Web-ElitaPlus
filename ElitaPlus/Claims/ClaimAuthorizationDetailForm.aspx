@@ -7,6 +7,7 @@
 <%--<%@ Register TagPrefix="Elita" TagName="UserControlSelectServiceCenter" Src="~/Certificates/UserControlSelectServiceCenter.ascx" %>--%>
 <%@ Register TagPrefix="Elita" TagName="UserControlServiceCenterSelection" Src="../Common/UserControlServiceCenterSelection.ascx" %>
 
+
 <asp:Content ID="Content1" ContentPlaceHolderID="HeadPlaceHolder" runat="server">    
 </asp:Content>
 <asp:Content ID="Content2" ContentPlaceHolderID="SummaryPlaceHolder" runat="server">
@@ -67,10 +68,28 @@
 <asp:Content ID="Content4" ContentPlaceHolderID="BodyPlaceHolder" runat="server">
     <asp:ScriptManager ID="ScriptManagerMaster" runat="server" />
     <asp:HiddenField ID="HiddenFieldShowNewSC" runat="server" Value="N" />
+    <asp:HiddenField ID="HiddenFieldVoidAuth" runat="server" Value="N" />
     <script type="text/javascript">
         function SetShowNewSCValue(newValue) {
             $('#<% =HiddenFieldShowNewSC.ClientID%>').val(newValue); 
-        }        
+        }     
+
+        function SetShowVoidAuthValue(newValue) {
+            $('#<% =HiddenFieldVoidAuth.ClientID%>').val(newValue);
+        }    
+
+        function Count(text, length) {
+            var maxlength = length;
+            var object = document.getElementById(text.id);
+            if (object.value.length > maxlength) {
+
+                object.focus();
+                object.value = text.value.substring(0, maxlength);
+                object.scrollTop = object.scrollHeight;
+                return false;
+            }
+            return true;
+        }
     </script>
     <div id="ModalServiceCenter" class="overlay">
         <div id="light" class="overlay_message_content" style="left: 5%; right: 5%; top: 5%; max-height: 80%">
@@ -111,12 +130,61 @@
         </div>
     </div>
 
+    <div id="ModalVoidAuthorization" class="overlay">
+        <div id="light" class="overlay_message_content" style="left: 20%; top: 5%; width: 60%; max-height: 80%">
+          
+            <h2 class="dataGridHeader" runat="server">
+                <asp:Label runat="server" ID="moVoidClaimAuthorizationLabel" Text="VOID_AUTHORIZATION" />
+            </h2>
+            
+            <div ID="divVoidAuthStatus" class="successMsg" runat="server" style="width: 99.5%" Visible="False">
+                &nbsp;&nbsp;&nbsp; <asp:Label ID="lblVoidAuthStatus" runat="server"  ForeColor="Green"></asp:Label>
+            </div>
+            <div ID="divVoidAuthError" class="errorMsg" runat="server" style="width: 99.5%" Visible="False" >
+                &nbsp;&nbsp;&nbsp;<asp:Label ID="lblvoidAuthError" runat="server"  ForeColor="Red"></asp:Label>
+            </div>
+            <table width="95%" style="border:none;margin-bottom:10px;">
+                 
+                <tr>
+                    <td align="right" nowrap="nowrap" style=" width:20%">
+                        
+                        <asp:Label runat="server" ID="lblVoidComment" Text="Comment"  />&nbsp;:&nbsp;
+                    </td>   
+                    <td align="left" nowrap="nowrap" style=" width:80%">
+                        <asp:TextBox ID="txtAuthVoidComment" runat="server" Rows="2" onKeyUp="javascript:Count(this,500);" onChange="javascript:Count(this,500);"
+                                     ForeColor="black" SkinID="MediumTextBox" TextMode="MultiLine" style="width: 75%"  MaxLength="500" ></asp:TextBox>
+                        
+                    </td>
+                </tr>
+                <tr style="padding-bottom:20px;">
+                    <td align="right" colspan="2">
+                        <asp:Button ID="btnVoidAuthSave" runat="server" SkinID="SearchButton" Text="Save" /> &nbsp;
+                        <asp:Button ID="btnVoidAuthCancel" runat="server" SkinID="SearchButton" Text="Cancel"
+                                    OnClientClick="SetShowVoidAuthValue('N'); hideModal('ModalVoidAuthorization'); return false;"/> &nbsp;
+                        <asp:Button ID="btnVoidAuthClose" runat="server" Visible="False" SkinID="SearchButton" Text="Close" /> &nbsp;
+                                              
+                    </td>
+                </tr>                
+            </table>
+                
+        </div>
+        <div id="fade" class="black_overlay">
+        </div>
+    </div>
+
+
     <script type="text/javascript">
         //debugger;
         if ($('#<% =HiddenFieldShowNewSC.ClientID%>').val() == "Y") {
             revealModal("ModalServiceCenter");
         } else {
             hideModal('ModalServiceCenter');
+        };
+
+        if ($('#<% =HiddenFieldVoidAuth.ClientID%>').val() == "Y") {
+            revealModal("ModalVoidAuthorization");
+        } else {
+            hideModal('ModalVoidAuthorization');
         };
     </script>
 
@@ -488,6 +556,7 @@
                 PopupControlID="PanButtonsHidden" PopupPosition="top" PopDelay="25" HoverCssClass="popupBtnHover">
             </ajaxToolkit:HoverMenuExtender>
             <asp:Panel ID="PanButtonsHidden" runat="server" SkinID="PopUpMenuPanel">
+                <asp:Button ID="btnVoidAuthorization" runat="server" Text="VOID_AUTHORIZATION" SkinID="PopMenuButton" />
                 <asp:Button ID="btnRefundFee" runat="server" Text="Refund_Fee" SkinID="PopMenuButton" />
                 <asp:Button ID="btnResendShippingLabel" runat="server" Text="Resend_Shipping_Label" SkinID="PopMenuButton"/>
                 <asp:Button ID="btnServiceCenterInfo" runat="server" Text="Center_Info" SkinID="PopMenuButton" />
@@ -497,6 +566,7 @@
                 <asp:Button ID="btnPrint" runat="server" Text="SO_PRINT" SkinID="PopMenuButton" />
                 <asp:Button ID="btnReshipment" runat="server" Text="RESHIPMENT" SkinID="PopMenuButton" />
                 <asp:Button ID="btnPayCash" runat="server" Text="PAY_CASH" SkinID="PopMenuButton" />
+                
             </asp:Panel>
         </div>
     </div>

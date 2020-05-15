@@ -18,6 +18,62 @@
     <script type="text/javascript" src="https://code.jquery.com/jquery-1.11.3.js"></script>
 
     <script type="text/javascript">
+        $(function () {
+            $("[id*=cboCommPercentSourceXcd]").change(function () {
+                var row = $(this).closest("tr");
+                var value = $(this).val();
+                if (value == "ACCTBUCKETSOURCE-D") {
+                    row.find("[id*=moCommission_PercentText]").val("0.0000");
+                    row.find("[id*=moCommission_PercentText]").attr("disabled", "true");
+                } else {
+                    row.find("[id*=moCommission_PercentText]").removeAttr("disabled");
+                }
+            });
+
+            $("[id*=cboAdminExpenseSourceXcd]").change(function () {
+                var row = $(this).closest("tr");
+                var value = $(this).val();
+                if (value == "ACCTBUCKETSOURCE-D") {
+                    row.find("[id*=moAdmin_ExpenseText]").val("0.0000");
+                    row.find("[id*=moAdmin_ExpenseText]").attr("disabled", "true");
+                } else {
+                    row.find("[id*=moAdmin_ExpenseText]").removeAttr("disabled");
+                }
+            });
+
+            $("[id*=cboMarketingExpenseSourceXcd]").change(function () {
+                var row = $(this).closest("tr");
+                var value = $(this).val();
+                if (value == "ACCTBUCKETSOURCE-D") {
+                    row.find("[id*=moMarketing_PercentText]").val("0.0000");
+                    row.find("[id*=moMarketing_PercentText]").attr("disabled", "true");
+                } else {
+                    row.find("[id*=moMarketing_PercentText]").removeAttr("disabled");
+                }
+            });
+
+            $("[id*=cboProfitExpenseSourceXcd]").change(function () {
+                var row = $(this).closest("tr");
+                var value = $(this).val();
+                if (value == "ACCTBUCKETSOURCE-D") {
+                    row.find("[id*=moProfit_ExpenseText]").val("0.0000");
+                    row.find("[id*=moProfit_ExpenseText]").attr("disabled", "true");
+                } else {
+                    row.find("[id*=moProfit_ExpenseText]").removeAttr("disabled");
+                }
+            });
+
+            $("[id*=cboLossCostPercentSourceXcd]").change(function () {
+                var row = $(this).closest("tr");
+                var value = $(this).val();
+                if (value == "ACCTBUCKETSOURCE-D") {
+                    row.find("[id*=moLoss_Cost_PercentText]").val("0.0000");
+                    row.find("[id*=moLoss_Cost_PercentText]").attr("disabled", "true");
+                } else {
+                    row.find("[id*=moLoss_Cost_PercentText]").removeAttr("disabled");
+                }
+            });
+        });
 
         function GetData(obj, type) {
 
@@ -533,7 +589,6 @@
                     <asp:Label ID="Label8" runat="server" CssClass="tabHeaderText">ATTRIBUTES</asp:Label></a></li>
                 <li><a href="#tabsCoverageConseqDamage">
                     <asp:Label ID="Label2" runat="server" CssClass="tabHeaderText">Coverage_Conseq_Damage</asp:Label></a></li>
-
             </ul>
 
             <div id="tabsCoverageRate">
@@ -620,6 +675,13 @@
                                                 <asp:TextBox ID="moCommission_PercentText" runat="server" Visible="True" Width="75"></asp:TextBox>
                                             </EditItemTemplate>
                                         </asp:TemplateField>
+                                        <asp:TemplateField Visible ="true" HeaderText="COMMISSION_PERCENT_XCD">
+                                            <ItemStyle HorizontalAlign="Center"> </ItemStyle>
+                                            <ItemTemplate><asp:Label ID="lblCommPercentSourceXcd" Text='<%# Container.DataItem("commissions_percent_source_xcd")%>' runat="server"> </asp:Label>
+                                            </ItemTemplate>
+                                            <EditItemTemplate> <asp:DropDownList ID="cboCommPercentSourceXcd" runat="server" Visible="True" Width="100"></asp:DropDownList>
+                                            </EditItemTemplate>
+                                        </asp:TemplateField>
                                         <asp:TemplateField Visible="True" HeaderText="Marketing_Percent">
                                             <ItemStyle HorizontalAlign="center"></ItemStyle>
                                             <ItemTemplate>
@@ -629,6 +691,13 @@
                                             </ItemTemplate>
                                             <EditItemTemplate>
                                                 <asp:TextBox ID="moMarketing_PercentText" runat="server" Visible="True" Width="75"></asp:TextBox>
+                                            </EditItemTemplate>
+                                        </asp:TemplateField>
+                                        <asp:TemplateField Visible ="true" HeaderText="MARKETING_PERCENT_XCD">
+                                            <ItemStyle HorizontalAlign="Center"> </ItemStyle>
+                                            <ItemTemplate><asp:Label ID="lblMarketingExpenseSourceXcd" Text='<%# Container.DataItem("marketing_percent_source_xcd")%>' runat="server"> </asp:Label>
+                                            </ItemTemplate>
+                                            <EditItemTemplate><asp:DropDownList ID="cboMarketingExpenseSourceXcd" runat="server"  Visible="True" Width="100"></asp:DropDownList>
                                             </EditItemTemplate>
                                         </asp:TemplateField>
                                         <asp:TemplateField Visible="True" HeaderText="ADMINISTRATIVE_EXPENSE">
@@ -642,6 +711,13 @@
                                                 <asp:TextBox ID="moAdmin_ExpenseText" runat="server" Visible="True" Width="75"></asp:TextBox>
                                             </EditItemTemplate>
                                         </asp:TemplateField>
+                                        <asp:TemplateField Visible ="true" HeaderText="ADMIN_EXPENSE_XCD">
+                                            <ItemStyle HorizontalAlign="Center"> </ItemStyle>
+                                            <ItemTemplate><asp:Label ID="lblAdminExpenseSourceXcd" Text='<%# Container.DataItem("admin_expense_source_xcd")%>' runat="server"> </asp:Label>
+                                            </ItemTemplate>
+                                            <EditItemTemplate><asp:DropDownList ID="cboAdminExpenseSourceXcd" runat="server"  Visible="True" Width="100"></asp:DropDownList>
+                                            </EditItemTemplate>
+                                        </asp:TemplateField>
                                         <asp:TemplateField Visible="True" HeaderText="Profit_Percent">
                                             <ItemStyle HorizontalAlign="center"></ItemStyle>
                                             <ItemTemplate>
@@ -653,6 +729,13 @@
                                                 <asp:TextBox ID="moProfit_ExpenseText" runat="server" Visible="True" Width="75"></asp:TextBox>
                                             </EditItemTemplate>
                                         </asp:TemplateField>
+                                        <asp:TemplateField Visible ="true" HeaderText="PROFIT_EXPENSE_XCD">
+                                            <ItemStyle HorizontalAlign="Center"> </ItemStyle>
+                                            <ItemTemplate><asp:Label ID="lblProfitExpenseSourceXcd" Text='<%# Container.DataItem("profit_percent_source_xcd")%>' runat="server"> </asp:Label>
+                                            </ItemTemplate>
+                                            <EditItemTemplate><asp:DropDownList ID="cboProfitExpenseSourceXcd" runat="server"  Visible="True" Width="100"></asp:DropDownList>
+                                            </EditItemTemplate>
+                                        </asp:TemplateField>
                                         <asp:TemplateField Visible="True" HeaderText="Loss_Cost_Percent">
                                             <ItemStyle HorizontalAlign="center"></ItemStyle>
                                             <ItemTemplate>
@@ -662,6 +745,13 @@
                                             </ItemTemplate>
                                             <EditItemTemplate>
                                                 <asp:TextBox ID="moLoss_Cost_PercentText" runat="server" Visible="True" Width="75"></asp:TextBox>
+                                            </EditItemTemplate>
+                                        </asp:TemplateField>
+                                        <asp:TemplateField Visible ="true" HeaderText="LOSS_COST_PERCENT_XCD">
+                                            <ItemStyle HorizontalAlign="Center"> </ItemStyle>
+                                            <ItemTemplate><asp:Label ID="lblLossCostPercentSourceXcd" Text='<%# Container.DataItem("loss_cost_percent_source_xcd")%>' runat="server"> </asp:Label>
+                                            </ItemTemplate>
+                                            <EditItemTemplate><asp:DropDownList ID="cboLossCostPercentSourceXcd" runat="server"  Visible="True" Width="100"></asp:DropDownList>
                                             </EditItemTemplate>
                                         </asp:TemplateField>
                                         <asp:TemplateField Visible="True" HeaderText="GROSS_AMOUNT_PERCENTAGE">
@@ -973,8 +1063,6 @@
                     </tr>
                 </table>
             </div>
-
-
 
         </div>
     </div>

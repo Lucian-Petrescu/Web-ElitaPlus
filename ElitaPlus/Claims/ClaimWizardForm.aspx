@@ -13,6 +13,8 @@
 <%@ Register Assembly="AjaxControlToolkit" Namespace="AjaxControlToolkit" TagPrefix="ajaxToolkit" %>
 <%@ Register TagPrefix="Elita" TagName="BestReplacementOption" Src="~/Interfaces/ReplacementOptions.ascx" %>
 <%@ Register TagPrefix="Elita" TagName="UserControlConsequentialDamage" Src="UserControlConsequentialDamage.ascx" %>
+<%@ Register TagPrefix="Elita" TagName="UserControlClaimDeviceInfo" Src="~/Interfaces/ClaimDeviceInformationController.ascx" %>
+
 <asp:Content ID="Content1" ContentPlaceHolderID="HeadPlaceHolder" runat="server">
     <style type="text/css">
         .ModalBackground {
@@ -1086,7 +1088,6 @@
                                     </div>
                                 </div>
                             </div>
-
                             <div id="tabDeviceInformation">
                                 <div class="Page">
                                     <div id="Device" style="width: 99.53%; height: 100%">
@@ -1203,6 +1204,15 @@
                                 </div>
                             </div>
 
+                                    <table border="0" width="100%">
+                                        <tr>
+                                            <td width="100%" align="left">
+                                                <Elita:UserControlClaimDeviceInfo ID="ucClaimDeviceInfo" runat="server"></Elita:UserControlClaimDeviceInfo>
+                                            </td>
+                                        </tr>
+                                    </table>
+                                </div>
+                            </div>
                             <div id="tabsQuestionAnswerInfo">
                                 <table class="dataGrid" border="0" width="100%">
                                     <tr>
