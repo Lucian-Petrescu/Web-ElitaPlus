@@ -6087,17 +6087,7 @@
     </Content>
     <None Include="Service References\ClaimFulfillmentWebAppGatewayService\configuration91.svcinfo" />
     <None Include="Service References\ClaimFulfillmentWebAppGatewayService\configuration.svcinfo" />
-    <None Include="Service References\ClaimFulfillmentWebAppGatewayService\gateway1.wsdl" />
     <None Include="Service References\ClaimFulfillmentWebAppGatewayService\gateway11.wsdl" />
-    <None Include="Service References\ClaimFulfillmentWebAppGatewayService\gateway11.xsd">
-      <SubType>Designer</SubType>
-    </None>
-    <None Include="Service References\ClaimFulfillmentWebAppGatewayService\gateway12.xsd">
-      <SubType>Designer</SubType>
-    </None>
-    <None Include="Service References\ClaimFulfillmentWebAppGatewayService\gateway13.xsd">
-      <SubType>Designer</SubType>
-    </None>
     <None Include="Service References\ClaimFulfillmentWebAppGatewayService\gateway5.xsd">
       <SubType>Designer</SubType>
     </None>
@@ -6129,9 +6119,7 @@
     <Content Include="Service References\ClaimRecordingService\Assurant.ElitaPlus.ElitaPlusWebApp.ClaimRecordingService.PolicyInfo.datasource">
       <DependentUpon>Reference.svcmap</DependentUpon>
     </Content>
-    <None Include="Service References\ClaimFulfillmentWebAppGatewayService\WebAppGateway1.wsdl" />
     <None Include="Service References\ClaimFulfillmentWebAppGatewayService\WebAppGateway11.wsdl" />
-    <None Include="Service References\ClaimRecordingService\ClaimRecordingService1.wsdl" />
     <None Include="Service References\ClaimRecordingService\ClaimRecordingService3.wsdl" />
     <None Include="Service References\ClaimRecordingService\configuration91.svcinfo" />
     <None Include="Service References\ClaimRecordingService\configuration.svcinfo" />
