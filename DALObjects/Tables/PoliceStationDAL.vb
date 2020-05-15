@@ -1,8 +1,8 @@
-'************* THIS CODE HAS BEEN GENERATED FROM TEMPLATE DALObject.cst (2/27/2007)********************
+﻿'************* THIS CODE HAS BEEN GENERATED FROM TEMPLATE DALObject.cst (12/20/2012)********************
 
 
 Public Class PoliceStationDAL
-    Inherits DALBase
+    Inherits OracleDALBase
 
 
 #Region "Constants"
@@ -29,7 +29,7 @@ Public Class PoliceStationDAL
 
 #Region "Constructors"
     Public Sub New()
-        MyBase.new()
+        MyBase.New()
     End Sub
 
 #End Region
@@ -94,58 +94,57 @@ Public Class PoliceStationDAL
         bIsLikeClause = Me.IsLikeClause(descriptionMask) OrElse Me.IsLikeClause(codeMask)
         Return bIsLikeClause
     End Function
+
+    'Public Sub Load(ByVal familyDS As DataSet, ByVal id As Guid)
+    '    Dim selectStmt As String = Me.Config("/SQL/LOAD")
+    '    Dim cmd As OracleCommand = OracleDbHelper.CreateCommand(selectStmt, CommandType.StoredProcedure, OracleDbHelper.CreateConnection())
+
+    '    cmd.BindByName = True
+    '    cmd.AddParameter("pi_police_station_id", OracleDbType.Raw, id.ToByteArray())
+    '    cmd.AddParameter("po_resultcursor", OracleDbType.RefCursor, direction:=ParameterDirection.Output)
+
+    '    Try
+    '        OracleDbHelper.Fetch(cmd, Me.TABLE_NAME, familyDS)
+    '    Catch ex As Exception
+    '        Throw New DataBaseAccessException(DataBaseAccessException.DatabaseAccessErrorType.ReadErr, ex)
+    '    End Try
+    'End Sub
+
+    'Public Function LoadList(ByVal descriptionMask As String, ByVal codeMask As String, ByVal CountryMask As Guid) As DataSet
+
+    '    Dim selectStmt As String = Me.Config("/SQL/LOAD_LIST")
+    '    Dim ds As New DataSet
+    '    Dim cmd As OracleCommand = OracleDbHelper.CreateCommand(selectStmt, CommandType.StoredProcedure, OracleDbHelper.CreateConnection())
+
+    '    cmd.BindByName = True
+    '    'OracleDbHelper.AddParameter(cmd, "pi_language_id", OracleDbType.Raw, LanguageID.ToByteArray, ParameterDirection.Input)
+    '    'OracleDbHelper.AddParameter(cmd, "pi_network_id", OracleDbType.Varchar2, networkID.ToUpper(), ParameterDirection.Input)
+
+    '    'If codeMask <> String.Empty Then
+    '    '    cmd.AddParameter("pi_dealer_id", OracleDbType.Varchar2, codeMask)
+    '    'End If
+
+    '    'If descriptionMask <> String.Empty Then
+    '    '    cmd.AddParameter("pi_dealer_id", OracleDbType.Varchar2, descriptionMask)
+    '    'End If
+
+    '    If CountryMask <> Guid.Empty Then
+    '        cmd.AddParameter("pi_coverage_type_id", OracleDbType.Raw, CountryMask.ToByteArray())
+    '    End If
+
+    '    OracleDbHelper.AddParameter(cmd, "pi_police_station_code", OracleDbType.Varchar2, Me.GetFormattedSearchStringForSQL(codeMask), ParameterDirection.Input)
+    '    OracleDbHelper.AddParameter(cmd, "pi_police_station_name", OracleDbType.Varchar2, Me.GetFormattedSearchStringForSQL(descriptionMask), ParameterDirection.Input)
+
+    '    cmd.AddParameter("po_resultcursor", OracleDbType.RefCursor, direction:=ParameterDirection.Output)
+
+    '    Try
+    '        Return OracleDbHelper.Fetch(cmd, Me.TABLE_NAME, ds)
+    '    Catch ex As Exception
+    '        Throw New DataBaseAccessException(DataBaseAccessException.DatabaseAccessErrorType.ReadErr, ex)
+    '    End Try
+
+    'End Function
 #End Region
-    Public Sub SavePoliceStation(ByVal row As DataRow, ByVal policeStationId As Guid)
-        Dim selectStmt As String
-        Dim rowState As DataRowState = row.RowState
-        Dim inParameters As DBHelper.DBHelperParameter()
-        Dim outParameters As DBHelper.DBHelperParameter()
-
-        Select Case rowState
-            Case DataRowState.Added
-                selectStmt = Me.Config("/SQL/ADD_NEW_POLICE_STATION")
-            Case DataRowState.Deleted
-                selectStmt = Me.Config("/SQL/DELETE_POLICE_STATION")
-            Case DataRowState.Modified
-                selectStmt = Me.Config("/SQL/MODIFY_POLICE_STATION")
-        End Select
-
-        If row.RowState = DataRowState.Added Or row.RowState = DataRowState.Modified Then
-
-            inParameters = New DBHelper.DBHelperParameter() {New DBHelper.DBHelperParameter(Me.COL_NAME_COUNTRY_ID, New Guid(CType(row.Item(Me.COL_NAME_COUNTRY_ID), Byte())).ToByteArray()),
-                                                New DBHelper.DBHelperParameter(Me.COL_NAME_POLICE_STATION_CODE, row.Item(Me.COL_NAME_POLICE_STATION_CODE).ToString()),
-                                                New DBHelper.DBHelperParameter(Me.COL_NAME_POLICE_STATION_NAME, row.Item(Me.COL_NAME_POLICE_STATION_NAME).ToString()),
-                                                New DBHelper.DBHelperParameter(Me.COL_NAME_ADDRESS1, row.Item(Me.COL_NAME_ADDRESS1).ToString()),
-                                                New DBHelper.DBHelperParameter(Me.COL_NAME_ADDRESS2, row.Item(Me.COL_NAME_ADDRESS2).ToString()),
-                                                New DBHelper.DBHelperParameter(Me.COL_NAME_ADDRESS3, row.Item(Me.COL_NAME_ADDRESS3).ToString()),
-                                                New DBHelper.DBHelperParameter(Me.COL_NAME_CITY, row.Item(Me.COL_NAME_CITY).ToString()),
-                                                New DBHelper.DBHelperParameter(Me.COL_NAME_REGION_ID, If(IsDBNull(row.Item(Me.COL_NAME_REGION_ID)), row.Item(Me.COL_NAME_REGION_ID), New Guid(CType(row.Item(Me.COL_NAME_REGION_ID), Byte())).ToByteArray())),
-                                                New DBHelper.DBHelperParameter(Me.COL_NAME_POSTAL_CODE, row.Item(Me.COL_NAME_POSTAL_CODE).ToString()),
-                                                New DBHelper.DBHelperParameter(Me.COL_NAME_CREATED_BY, row.Item(Me.COL_NAME_CREATED_BY).ToString()),
-                                                New DBHelper.DBHelperParameter(Me.COL_NAME_POLICE_STATION_ID, New Guid(CType(row.Item(Me.COL_NAME_POLICE_STATION_ID), Byte())).ToByteArray()),
-                                                New DBHelper.DBHelperParameter(Me.COL_NAME_POLICE_STATION_DISTRICT_CODE, row.Item(Me.COL_NAME_POLICE_STATION_DISTRICT_CODE).ToString()),
-                                                New DBHelper.DBHelperParameter(Me.COL_NAME_POLICE_STATION_DISTRICT_NAME, row.Item(Me.COL_NAME_POLICE_STATION_DISTRICT_NAME).ToString())}
-            outParameters = New DBHelper.DBHelperParameter() {New DBHelper.DBHelperParameter(Me.PO_RETURN_MESSAGE, GetType(String))}
-
-        ElseIf row.RowState = DataRowState.Deleted Then
-            inParameters = New DBHelper.DBHelperParameter() {New DBHelper.DBHelperParameter(Me.COL_NAME_POLICE_STATION_ID, policeStationId.ToByteArray())}
-            outParameters = New DBHelper.DBHelperParameter() {New DBHelper.DBHelperParameter(Me.PO_RETURN_MESSAGE, GetType(String))}
-
-        End If
-
-        Dim ds As New DataSet
-        Dim tbl As String = Me.TABLE_NAME
-
-        ' Call DBHelper Store Procedure
-        DBHelper.FetchSp(selectStmt, inParameters, outParameters, ds, tbl)
-
-        If outParameters(0).Value <> "Success" Then
-            Throw New DataBaseAccessException(DataBaseAccessException.DatabaseAccessErrorType.ReadErr)
-        Else
-            row.AcceptChanges()
-        End If
-
-    End Sub
 
 #Region "Overloaded Methods"
     Public Overloads Sub Update(ByVal ds As DataSet, Optional ByVal Transaction As IDbTransaction = Nothing, Optional ByVal changesFilter As DataRowState = Nothing)
@@ -156,9 +155,55 @@ Public Class PoliceStationDAL
             MyBase.Update(ds.Tables(Me.TABLE_NAME), Transaction, changesFilter)
         End If
     End Sub
+
+    Protected Overrides Sub ConfigureUpdateCommand(ByRef command As OracleCommand, ByVal tableName As String)
+        With command
+            .BindByName = True
+            .AddParameter(parameterName:="pi_country_id", dbType:=OracleDbType.Raw, sourceColumn:=COL_NAME_COUNTRY_ID, direction:=ParameterDirection.Input)
+            .AddParameter(parameterName:="pi_police_station_code", dbType:=OracleDbType.Varchar2, sourceColumn:=COL_NAME_POLICE_STATION_CODE, direction:=ParameterDirection.Input)
+            .AddParameter(parameterName:="pi_police_station_name", dbType:=OracleDbType.Varchar2, sourceColumn:=COL_NAME_POLICE_STATION_NAME, direction:=ParameterDirection.Input)
+            .AddParameter(parameterName:="pi_address1", dbType:=OracleDbType.Varchar2, sourceColumn:=COL_NAME_ADDRESS1, direction:=ParameterDirection.Input)
+            .AddParameter(parameterName:="pi_address2", dbType:=OracleDbType.Varchar2, sourceColumn:=COL_NAME_ADDRESS2, direction:=ParameterDirection.Input)
+            .AddParameter(parameterName:="pi_address3", dbType:=OracleDbType.Varchar2, sourceColumn:=COL_NAME_ADDRESS3, direction:=ParameterDirection.Input)
+            .AddParameter(parameterName:="pi_city", dbType:=OracleDbType.Varchar2, sourceColumn:=COL_NAME_CITY, direction:=ParameterDirection.Input)
+            .AddParameter(parameterName:="pi_region_id", dbType:=OracleDbType.Raw, sourceColumn:=COL_NAME_REGION_ID, direction:=ParameterDirection.Input)
+            .AddParameter(parameterName:="pi_postal_code", dbType:=OracleDbType.Varchar2, sourceColumn:=COL_NAME_POSTAL_CODE, direction:=ParameterDirection.Input)
+            .AddParameter(parameterName:="pi_modified_by", dbType:=OracleDbType.Varchar2, sourceColumn:=COL_NAME_MODIFIED_BY, direction:=ParameterDirection.Input)
+            .AddParameter(parameterName:="pi_police_station_id", dbType:=OracleDbType.Raw, sourceColumn:=COL_NAME_POLICE_STATION_ID, direction:=ParameterDirection.Input)
+            .AddParameter(parameterName:="pi_police_station_Dist_code", dbType:=OracleDbType.Varchar2, sourceColumn:=COL_NAME_POLICE_STATION_DISTRICT_CODE, direction:=ParameterDirection.Input)
+            .AddParameter(parameterName:="pi_police_station_Dist_Name", dbType:=OracleDbType.Varchar2, sourceColumn:=COL_NAME_POLICE_STATION_DISTRICT_NAME, direction:=ParameterDirection.Input)
+            '.AddParameter(parameterName:="po_return_message", dbType:=OracleDbType.Varchar2, sourceColumn:=PO_RETURN_MESSAGE, direction:=ParameterDirection.Output)
+        End With
+    End Sub
+
+    Protected Overrides Sub ConfigureDeleteCommand(ByRef command As OracleCommand, ByVal tableName As String)
+        With command
+            .BindByName = True
+            .AddParameter(parameterName:="pi_police_station_id", dbType:=OracleDbType.Raw, sourceColumn:=COL_NAME_POLICE_STATION_ID, direction:=ParameterDirection.Input)
+            '.AddParameter(parameterName:="po_return_message", dbType:=OracleDbType.Varchar2, sourceColumn:=PO_RETURN_MESSAGE, direction:=ParameterDirection.Output)
+        End With
+    End Sub
+
+    Protected Overrides Sub ConfigureInsertCommand(ByRef command As OracleCommand, ByVal tableName As String)
+        With command
+            .BindByName = True
+            .AddParameter(parameterName:="pi_country_id", dbType:=OracleDbType.Raw, sourceColumn:=COL_NAME_COUNTRY_ID, direction:=ParameterDirection.Input)
+            .AddParameter(parameterName:="pi_police_station_code", dbType:=OracleDbType.Varchar2, sourceColumn:=COL_NAME_POLICE_STATION_CODE, direction:=ParameterDirection.Input)
+            .AddParameter(parameterName:="pi_police_station_name", dbType:=OracleDbType.Varchar2, sourceColumn:=COL_NAME_POLICE_STATION_NAME, direction:=ParameterDirection.Input)
+            .AddParameter(parameterName:="pi_address1", dbType:=OracleDbType.Varchar2, sourceColumn:=COL_NAME_ADDRESS1, direction:=ParameterDirection.Input)
+            .AddParameter(parameterName:="pi_address2", dbType:=OracleDbType.Varchar2, sourceColumn:=COL_NAME_ADDRESS2, direction:=ParameterDirection.Input)
+            .AddParameter(parameterName:="pi_address3", dbType:=OracleDbType.Varchar2, sourceColumn:=COL_NAME_ADDRESS3, direction:=ParameterDirection.Input)
+            .AddParameter(parameterName:="pi_city", dbType:=OracleDbType.Varchar2, sourceColumn:=COL_NAME_CITY, direction:=ParameterDirection.Input)
+            .AddParameter(parameterName:="pi_region_id", dbType:=OracleDbType.Raw, sourceColumn:=COL_NAME_REGION_ID, direction:=ParameterDirection.Input)
+            .AddParameter(parameterName:="pi_postal_code", dbType:=OracleDbType.Varchar2, sourceColumn:=COL_NAME_POSTAL_CODE, direction:=ParameterDirection.Input)
+            .AddParameter(parameterName:="pi_created_by", dbType:=OracleDbType.Varchar2, sourceColumn:=COL_NAME_CREATED_BY, direction:=ParameterDirection.Input)
+            .AddParameter(parameterName:="pi_police_station_id", dbType:=OracleDbType.Raw, sourceColumn:=COL_NAME_POLICE_STATION_ID, direction:=ParameterDirection.Input)
+            .AddParameter(parameterName:="pi_police_station_Dist_code", dbType:=OracleDbType.Varchar2, sourceColumn:=COL_NAME_POLICE_STATION_DISTRICT_CODE, direction:=ParameterDirection.Input)
+            .AddParameter(parameterName:="pi_police_station_Dist_Name", dbType:=OracleDbType.Varchar2, sourceColumn:=COL_NAME_POLICE_STATION_DISTRICT_NAME, direction:=ParameterDirection.Input)
+            '.AddParameter(parameterName:="po_return_message", dbType:=OracleDbType.Varchar2, sourceColumn:=PO_RETURN_MESSAGE, direction:=ParameterDirection.Output)
+        End With
+    End Sub
+
 #End Region
 
-
 End Class
-
-

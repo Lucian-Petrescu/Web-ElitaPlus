@@ -282,7 +282,7 @@ Partial Class PoliceStationForm
         Dim addressDeleted As Boolean
         Try
             'Delete the Address
-            Me.State.MyBO.DeleteAndSavePoliceStation()
+            Me.State.MyBO.DeleteAndSave()
             Me.State.HasDataChanged = True
             Me.ReturnToCallingPage(New ReturnType(ElitaPlusPage.DetailPageCommand.Delete, Me.State.MyBO, Me.State.HasDataChanged))
         Catch ex As Threading.ThreadAbortException
@@ -310,8 +310,7 @@ Partial Class PoliceStationForm
         Try
             Me.PopulateBOsFromForm()
             If Me.State.MyBO.IsDirty Then
-                Me.State.MyBO.DistrictValidation(lblPoliceStationDistrictCode, lblPoliceStationDistrictName)
-                Me.State.MyBO.SavePoliceStationData(Me.State.MyBO.Id)
+                Me.State.MyBO.Save()
                 Me.State.HasDataChanged = True
                 Me.PopulateFormFromBOs()
                 Me.EnableDisableFields()

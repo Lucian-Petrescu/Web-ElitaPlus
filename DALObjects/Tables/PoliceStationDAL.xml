@@ -30,8 +30,8 @@
 			WHERE police_station_id = :police_station_id
 		]]>
 	</LOAD>
-	<LOAD_LIST>		
-			<![CDATA[	
+	<LOAD_LIST>
+    <![CDATA[	
 			SELECT 
         ps.police_station_id,
         ps.police_station_code,
@@ -58,7 +58,7 @@
 			--dynamic_order_by_clause
 		]]>
 	</LOAD_LIST>	
-	<UPDATE>
+	<UPDATE2>
 		<![CDATA[	
 			UPDATE elp_police_station SET
 				country_id = :country_id,
@@ -74,8 +74,8 @@
 			WHERE
 				police_station_id = :police_station_id
 		]]>
-	</UPDATE>
-	<INSERT>
+	</UPDATE2>
+	<INSERT2>
     INSERT INTO elp_police_station
     (
     country_id,
@@ -104,7 +104,7 @@
     :created_by,
     :police_station_id
     )
-  </INSERT>
+  </INSERT2>
 	<DELETE>
 			DELETE FROM elp_police_station
 			WHERE
@@ -113,6 +113,16 @@
   <ADD_NEW_POLICE_STATION>
 			ELP_POLICE_STATIONS.AddPoliceStation
 	</ADD_NEW_POLICE_STATION>
+  <INSERT>
+    <![CDATA[
+      ELP_POLICE_STATIONS.AddPoliceStation
+		]]>
+  </INSERT>
+  <UPDATE>
+    <![CDATA[
+      ELP_POLICE_STATIONS.UpdatePoliceStation
+		]]>
+  </UPDATE>
   <MODIFY_POLICE_STATION>
 			ELP_POLICE_STATIONS.UpdatePoliceStation
 	</MODIFY_POLICE_STATION>

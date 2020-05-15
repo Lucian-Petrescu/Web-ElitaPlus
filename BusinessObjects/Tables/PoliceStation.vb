@@ -1,5 +1,4 @@
 '************* THIS CODE HAS BEEN GENERATED FROM TEMPLATE BusinessObject.cst (2/27/2007)  ********************
-Imports System.Web.UI.WebControls
 Public Class PoliceStation
     Inherits BusinessObjectBase
 
@@ -48,7 +47,7 @@ Public Class PoliceStation
             Dim newRow As DataRow = Me.Dataset.Tables(dal.TABLE_NAME).NewRow
             Me.Dataset.Tables(dal.TABLE_NAME).Rows.Add(newRow)
             Me.Row = newRow
-            setvalue(dal.TABLE_KEY_NAME, Guid.NewGuid)
+            SetValue(dal.TABLE_KEY_NAME, Guid.NewGuid)
             Initialize()
         Catch ex As Assurant.ElitaPlus.DALObjects.DataBaseAccessException
             Throw New DataBaseAccessException(DataBaseAccessException.DatabaseAccessErrorType.ReadErr, ex)
@@ -124,7 +123,7 @@ Public Class PoliceStation
         End Get
     End Property
 
-    <ValueMandatory("")> _
+    <ValueMandatory("")>
     Public Property CountryId() As Guid
         Get
             CheckDeleted()
@@ -141,7 +140,7 @@ Public Class PoliceStation
     End Property
 
 
-    <ValueMandatory(""), ValidStringLength("", Max:=15)> _
+    <ValueMandatory(""), ValidStringLength("", Max:=15)>
     Public Property PoliceStationCode() As String
         Get
             CheckDeleted()
@@ -174,7 +173,7 @@ Public Class PoliceStation
         End Set
     End Property
 
-    <ValidStringLength("", Max:=15)>
+    <ValidStringLength("", Max:=15), DistrictCodeValidation("")>
     Public Property PoliceStationDistrictCode() As String
         Get
             CheckDeleted()
@@ -191,7 +190,7 @@ Public Class PoliceStation
     End Property
 
 
-    <ValidStringLength("", Max:=200)>
+    <ValidStringLength("", Max:=200), DistrictNameValidation("")>
     Public Property PoliceStationDistrictName() As String
         Get
             CheckDeleted()
@@ -207,7 +206,7 @@ Public Class PoliceStation
         End Set
     End Property
 
-    <ValidStringLength("", Max:=200)> _
+    <ValidStringLength("", Max:=200)>
     Public Property Address1() As String
         Get
             CheckDeleted()
@@ -224,7 +223,7 @@ Public Class PoliceStation
     End Property
 
 
-    <ValidStringLength("", Max:=200)> _
+    <ValidStringLength("", Max:=200)>
     Public Property Address2() As String
         Get
             CheckDeleted()
@@ -241,7 +240,7 @@ Public Class PoliceStation
     End Property
 
     'Added for Def-1598
-    <ValidStringLength("", Max:=200)> _
+    <ValidStringLength("", Max:=200)>
     Public Property Address3() As String
         Get
             CheckDeleted()
@@ -257,7 +256,7 @@ Public Class PoliceStation
         End Set
     End Property
 
-    <ValidStringLength("", Max:=200)> _
+    <ValidStringLength("", Max:=200)>
     Public Property City() As String
         Get
             CheckDeleted()
@@ -289,7 +288,7 @@ Public Class PoliceStation
     End Property
 
 
-    <ValidStringLength("", Max:=40)> _
+    <ValidStringLength("", Max:=40)>
     Public Property PostalCode() As String
         Get
             CheckDeleted()
@@ -320,40 +319,6 @@ Public Class PoliceStation
                 'Reload the Data from the DB
                 If Me.Row.RowState <> DataRowState.Detached Then
                     Dim objId As Guid = Me.Id
-                    Me.Dataset = New Dataset
-                    Me.Row = Nothing
-                    Me.Load(objId)
-                End If
-            End If
-        Catch ex As Assurant.ElitaPlus.DALObjects.DataBaseAccessException
-            Throw New DataBaseAccessException(DataBaseAccessException.DatabaseAccessErrorType.WriteErr, ex)
-        End Try
-    End Sub
-
-    Public Sub DeleteAndSavePoliceStation()
-        Dim policeStationId As Guid
-        policeStationId = Me.Id
-
-        Me.CheckDeleted()
-        Me.BeginEdit()
-        Try
-            Me.Delete()
-            Me.SavePoliceStationData(policeStationId)
-        Catch ex As Exception
-            Me.cancelEdit()
-            Throw ex
-        End Try
-    End Sub
-
-    Public Sub SavePoliceStationData(ByVal policeStationId As Guid)
-        Try
-            MyBase.Save()
-            If Me._isDSCreator AndAlso Me.IsDirty AndAlso Me.Row.RowState <> DataRowState.Detached Then
-                Dim dal As New PoliceStationDAL
-                dal.SavePoliceStation(Me.Row, policeStationId)
-                'Reload the Data from the DB
-                If Me.Row.RowState <> DataRowState.Detached Then
-                    Dim objId As Guid = Me.Id
                     Me.Dataset = New DataSet
                     Me.Row = Nothing
                     Me.Load(objId)
@@ -363,6 +328,40 @@ Public Class PoliceStation
             Throw New DataBaseAccessException(DataBaseAccessException.DatabaseAccessErrorType.WriteErr, ex)
         End Try
     End Sub
+
+    'Public Sub DeleteAndSavePoliceStation()
+    '    Dim policeStationId As Guid
+    '    policeStationId = Me.Id
+
+    '    Me.CheckDeleted()
+    '    Me.BeginEdit()
+    '    Try
+    '        Me.Delete()
+    '        Me.SavePoliceStationData(policeStationId)
+    '    Catch ex As Exception
+    '        Me.cancelEdit()
+    '        Throw ex
+    '    End Try
+    'End Sub
+
+    'Public Sub SavePoliceStationData(ByVal policeStationId As Guid)
+    '    Try
+    '        MyBase.Save()
+    '        If Me._isDSCreator AndAlso Me.IsDirty AndAlso Me.Row.RowState <> DataRowState.Detached Then
+    '            Dim dal As New PoliceStationDAL
+    '            dal.SavePoliceStation(Me.Row, policeStationId)
+    '            'Reload the Data from the DB
+    '            If Me.Row.RowState <> DataRowState.Detached Then
+    '                Dim objId As Guid = Me.Id
+    '                Me.Dataset = New DataSet
+    '                Me.Row = Nothing
+    '                Me.Load(objId)
+    '            End If
+    '        End If
+    '    Catch ex As Assurant.ElitaPlus.DALObjects.DataBaseAccessException
+    '        Throw New DataBaseAccessException(DataBaseAccessException.DatabaseAccessErrorType.WriteErr, ex)
+    '    End Try
+    'End Sub
     Public Overrides ReadOnly Property IsDirty() As Boolean
         Get
             Return MyBase.IsDirty
@@ -379,21 +378,6 @@ Public Class PoliceStation
             Me.cancelEdit()
             Throw ex
         End Try
-    End Sub
-    Public Sub DistrictValidation(lblCode As Label, lblName As Label)
-        Dim strDistCode As String = Row(PoliceStationDAL.COL_NAME_POLICE_STATION_DISTRICT_CODE).ToString()
-        Dim strDistName As String = Row(PoliceStationDAL.COL_NAME_POLICE_STATION_DISTRICT_NAME).ToString()
-
-        If (String.IsNullOrEmpty(strDistCode) AndAlso Not String.IsNullOrEmpty(strDistName)) Or (Not String.IsNullOrEmpty(strDistCode) AndAlso String.IsNullOrEmpty(strDistName)) Then
-            If (Row(PoliceStationDAL.COL_NAME_POLICE_STATION_DISTRICT_CODE).ToString() = String.Empty) Then
-                lblCode.ForeColor = System.Drawing.Color.Red
-                Throw New BOInvalidOperationException("Please enter District Code.")
-            ElseIf (Row(PoliceStationDAL.COL_NAME_POLICE_STATION_DISTRICT_NAME).ToString() = String.Empty) Then
-                lblName.ForeColor = System.Drawing.Color.Red
-                Throw New BOInvalidOperationException("Please enter District Name.")
-            End If
-        End If
-
     End Sub
 
     Public Sub Copy(ByVal original As PoliceStation)
@@ -447,6 +431,49 @@ Public Class PoliceStation
         End Try
     End Function
 
+#End Region
+
+#Region "Custom Validation"
+    <AttributeUsage(AttributeTargets.Property Or AttributeTargets.Field)>
+    Public NotInheritable Class DistrictCodeValidation
+        Inherits ValidBaseAttribute
+
+        Public Sub New(ByVal fieldDisplayName As String)
+            MyBase.New(fieldDisplayName, Assurant.Common.Validation.Messages.VALUE_MANDATORY_ERR)
+        End Sub
+
+        Public Overrides Function IsValid(ByVal valueToCheck As Object, ByVal objectToValidate As Object) As Boolean
+            Dim obj As PoliceStation = CType(objectToValidate, PoliceStation)
+            If (String.IsNullOrEmpty(obj.PoliceStationDistrictCode) AndAlso Not String.IsNullOrEmpty(obj.PoliceStationDistrictName)) Or (Not String.IsNullOrEmpty(obj.PoliceStationDistrictCode) AndAlso String.IsNullOrEmpty(obj.PoliceStationDistrictName)) Then
+                If String.IsNullOrEmpty(obj.PoliceStationDistrictCode) Then
+                    MyBase.Message = "Please enter District Code."
+                    Return False
+                End If
+            End If
+            Return True
+
+        End Function
+    End Class
+
+    <AttributeUsage(AttributeTargets.Property Or AttributeTargets.Field)>
+    Public NotInheritable Class DistrictNameValidation
+        Inherits ValidBaseAttribute
+
+        Public Sub New(ByVal fieldDisplayName As String)
+            MyBase.New(fieldDisplayName, Assurant.Common.Validation.Messages.VALUE_MANDATORY_ERR)
+        End Sub
+
+        Public Overrides Function IsValid(ByVal valueToCheck As Object, ByVal objectToValidate As Object) As Boolean
+            Dim obj As PoliceStation = CType(objectToValidate, PoliceStation)
+            If (String.IsNullOrEmpty(obj.PoliceStationDistrictCode) AndAlso Not String.IsNullOrEmpty(obj.PoliceStationDistrictName)) Or (Not String.IsNullOrEmpty(obj.PoliceStationDistrictCode) AndAlso String.IsNullOrEmpty(obj.PoliceStationDistrictName)) Then
+                If String.IsNullOrEmpty(obj.PoliceStationDistrictName) Then
+                    MyBase.Message = "Please enter District Name."
+                    Return False
+                End If
+            End If
+            Return True
+        End Function
+    End Class
 #End Region
 End Class
 
