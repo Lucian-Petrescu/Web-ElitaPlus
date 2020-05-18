@@ -1,11 +1,11 @@
 ﻿<%@ Control Language="vb" AutoEventWireup="false" CodeBehind="ClaimDeviceInformationController.ascx.vb" Inherits="Assurant.ElitaPlus.ElitaPlusWebApp.ClaimDeviceInformationController" %>
-
+<link href="../App_Themes/Default/Default.css" rel="stylesheet" />
 <div id="dvClaimDeviceInformation" runat="server" class="dataContainer">
     <h2 class="dataGridHeader">
         <asp:Label runat="server" ID="lblClaimDeviceInformation">CLAIM_DEVICE_INFORMATION</asp:Label>
     </h2>
     <asp:GridView ID="GvClaimDeviceInformation" runat="server" Width="100%" AutoGenerateColumns="False"
-        CellPadding="1" AllowPaging="False" SkinID="DetailPageGridView" CssClass="grid-view"
+        CellPadding="1" AllowPaging="False" CssClass="dataGrid"
         AllowSorting="False">
         <SelectedRowStyle Wrap="True" />
         <EditRowStyle Wrap="True" />

@@ -1,5 +1,6 @@
 ﻿<%@ Control Language="vb" AutoEventWireup="false" CodeBehind="UserControlInvoiceRegionTaxes.ascx.vb" 
 Inherits="Assurant.ElitaPlus.ElitaPlusWebApp.UserControlInvoiceRegionTaxes" %>
+<link href="../App_Themes/Default/Default.css" rel="stylesheet" />
 <asp:Panel ID="moDealerInflationTabPanel" runat="server" Width="100%">
     <div class="dataContainer">
         <div>
@@ -10,7 +11,7 @@ Inherits="Assurant.ElitaPlus.ElitaPlusWebApp.UserControlInvoiceRegionTaxes" %>
                             runat="server">:</asp:Label>
                         &nbsp;
                         <asp:DropDownList ID="cboDiPageSize" runat="server" Width="50px" AutoPostBack="true"
-                            SkinID="SmallDropDown">
+                            CssClass="small">
                             <asp:ListItem Value="5">5</asp:ListItem>
                             <asp:ListItem Value="10">10</asp:ListItem>
                             <asp:ListItem Value="15">15</asp:ListItem>
@@ -31,7 +32,7 @@ Inherits="Assurant.ElitaPlus.ElitaPlusWebApp.UserControlInvoiceRegionTaxes" %>
         </div>
     </div>
 <asp:GridView ID="GridIIBBTaxes" runat="server" Width="51%" DataKeyNames="INVOICE_REGION_TAX_ID,INVOICE_TRANS_ID,REGION_ID,REGION_DESCRIPTION,TAX_AMOUNT"
-        AllowPaging="True" AllowSorting="true" AutoGenerateColumns="False" SkinID="DetailPageGridView" OnRowEditing="OnRowEditing">
+        AllowPaging="True" AllowSorting="true" AutoGenerateColumns="False" CssClass="dataGrid" OnRowEditing="OnRowEditing">
         <SelectedRowStyle CssClass="SELECTED"></SelectedRowStyle>
         <EditRowStyle CssClass="EDITROW"></EditRowStyle>
         <AlternatingRowStyle Wrap="False" CssClass="ALTROW"></AlternatingRowStyle>
@@ -47,7 +48,7 @@ Inherits="Assurant.ElitaPlus.ElitaPlusWebApp.UserControlInvoiceRegionTaxes" %>
                     <asp:Label ID="lblRegion" runat="server" Text='<%#Container.DataItem("REGION_ID")%>'></asp:Label>
                 </ItemTemplate>
                 <EditItemTemplate>
-                    <asp:DropDownList ID="cboRegion" runat="server" Visible="True" SkinID="SmallDropDown">
+                    <asp:DropDownList ID="cboRegion" runat="server" Visible="True" CssClass="small">
                     </asp:DropDownList>
                 </EditItemTemplate>
             </asp:TemplateField>
@@ -56,7 +57,7 @@ Inherits="Assurant.ElitaPlus.ElitaPlusWebApp.UserControlInvoiceRegionTaxes" %>
                     <asp:Label ID="lblinvoicetype" runat="server" Text='<%#Container.DataItem("TAX_TYPE_XCD")%>'></asp:Label>
                 </ItemTemplate>
                 <EditItemTemplate>
-                    <asp:DropDownList ID="cboinvoicetype" runat="server" Visible="True" SkinID="SmallDropDown">
+                    <asp:DropDownList ID="cboinvoicetype" runat="server" Visible="True" CssClass="small">
                     </asp:DropDownList>
                 </EditItemTemplate>
             </asp:TemplateField>
@@ -65,7 +66,7 @@ Inherits="Assurant.ElitaPlus.ElitaPlusWebApp.UserControlInvoiceRegionTaxes" %>
                     <asp:Label ID="lblIIBTax" runat="server" Text='<%#Container.DataItem("TAX_AMOUNT")%>'></asp:Label>
                 </ItemTemplate>
                 <EditItemTemplate>
-                    <asp:TextBox ID="txtIIBBTax" runat="server" Visible="true" SkinID="exSmallTextBox"
+                    <asp:TextBox ID="txtIIBBTax" runat="server" Visible="true" CssClass="exsmall"
                         onkeypress="return numericOnly(this)"></asp:TextBox><br />
                     <asp:Label ID="lblValidRiskPctMsg" runat="server"></asp:Label>
                 </EditItemTemplate>
@@ -79,8 +80,8 @@ Inherits="Assurant.ElitaPlus.ElitaPlusWebApp.UserControlInvoiceRegionTaxes" %>
                 </ItemTemplate>
                 <EditItemTemplate>
                     <table><tr><td style=" align-items: end ">
-                    <asp:Button ID="btnSave" runat="server" Text="Save" OnClick="btnSave_Click" SkinID="PrimaryRightButton"></asp:Button></td>
-                    <td><asp:LinkButton ID="btnCancel" runat="server" Text="Cancel" OnClick="btnCancel_Click" SkinID="AlternateRightButton"></asp:LinkButton>
+                    <asp:Button ID="btnSave" runat="server" Text="Save" OnClick="btnSave_Click" CssClass="primaryBtn floatR"></asp:Button></td>
+                    <td><asp:LinkButton ID="btnCancel" runat="server" Text="Cancel" OnClick="btnCancel_Click" CssClass="altBtn floatR"></asp:LinkButton>
                     </td></tr></table>
                 </EditItemTemplate>
             </asp:TemplateField>
