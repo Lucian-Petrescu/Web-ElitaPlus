@@ -659,11 +659,6 @@ Partial Class AccountingSettingForm
         With State.MyBO_R
             If (.IsNew AndAlso State.IsNewBORDirty) OrElse ((Not .IsNew) AndAlso .IsDirty) Then
                 .Validate()
-                Dim isUniqueCompanyCode As Boolean
-                isUniqueCompanyCode = ValidateIDXAcctSettingAndCode(.AcctCompanyId, .AccountCode)
-                If isUniqueCompanyCode Then
-                    Throw New GUIException(Message.ERR_SAVING_DATA, Assurant.ElitaPlus.Common.ErrorCodes.GUI_ACCOUNT_CODE_ALREADY_IN_USE_IN_ACCOUNT_RECEIVABLE_ERR)
-                End If
                 blnChanged_R = True
             End If
         End With
@@ -671,11 +666,6 @@ Partial Class AccountingSettingForm
         With State.MyBO_P
             If (.IsNew AndAlso State.IsNewBOPDirty) OrElse ((Not .IsNew) AndAlso .IsDirty) Then
                 .Validate()
-                Dim isUniqueCompanyCode As Boolean
-                isUniqueCompanyCode = ValidateIDXAcctSettingAndCode(.AcctCompanyId, .AccountCode)
-                If isUniqueCompanyCode Then
-                    Throw New GUIException(Message.ERR_SAVING_DATA, Assurant.ElitaPlus.Common.ErrorCodes.GUI_ACCOUNT_CODE_ALREADY_IN_USE_IN_ACCOUNT_PAYABLE_ERR)
-                End If
                 blnChanged_P = True
             End If
         End With
