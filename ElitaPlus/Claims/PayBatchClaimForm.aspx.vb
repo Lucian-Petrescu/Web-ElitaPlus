@@ -428,7 +428,11 @@ Partial Class PayBatchClaimForm
         dt = Me.State.searchInvoiceTransDetailDV.Table
 
         If dt.Rows.Count > 0 Then
-            Me.TextBoxPerceptionIIBB.Text = dt.Rows(0)("TOTAL_REGION_PERCEPTION_IIBB")
+            If Not dt.Rows(0)("TOTAL_REGION_PERCEPTION_IIBB") Is Nothing Then
+                If Not IsDBNull(dt.Rows(0)("TOTAL_REGION_PERCEPTION_IIBB")) Then
+                    Me.TextBoxPerceptionIIBB.Text = dt.Rows(0)("TOTAL_REGION_PERCEPTION_IIBB")
+                End If
+            End If
             total = CType(dt.Compute("sum(" + Me.State.searchInvoiceTransDetailDV.COL_Payment_Amount_Total + ")", ""), Decimal)
             'total = CType(dt.Compute("sum(" + Me.State.searchInvoiceTransDetailDV.COL_RESERVE_AMOUNT + ")-sum(" + Me.State.searchInvoiceTransDetailDV.COL_SALVAGE_AMOUNT + ")", ""), Decimal)
         End If

@@ -962,6 +962,10 @@ Partial Class PayBatchClaimListForm
                     Me.State.batchState = False
                 End If
                 FillClaims()
+                Me.IIBBTaxes.InvoicetransId = Me.State.selectedInvoiceTransId
+                Me.IIBBTaxes.IsEditable = False
+                Me.IIBBTaxes.Populate()
+                Me.IIBBTaxes.SetControlState()
             Catch ex As Exception
                 Me.MasterPage.MessageController.AddErrorAndShow(ex.Message, False)
             End Try
