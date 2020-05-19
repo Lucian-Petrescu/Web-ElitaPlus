@@ -241,6 +241,9 @@
     <Reference Include="Assurant.Elita.ExternalKeyHandler, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\Assurant.Elita.ExternalKeyHandler.1.0.0\lib\netstandard2.0\Assurant.Elita.ExternalKeyHandler.dll</HintPath>
     </Reference>
+    <Reference Include="Assurant.Elita.ExternalKeyHandler, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Assurant.Elita.ExternalKeyHandler.1.0.0\lib\netstandard2.0\Assurant.Elita.ExternalKeyHandler.dll</HintPath>
+    </Reference>
     <Reference Include="Assurant.Elita.Logging.Interface">
       <HintPath>..\packages\Assurant.Elita.Logging.Interface.1.0.1\lib\netstandard2.0\Assurant.Elita.Logging.Interface.dll</HintPath>
     </Reference>

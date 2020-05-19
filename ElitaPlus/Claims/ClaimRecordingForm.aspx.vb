@@ -46,7 +46,7 @@ Public Class ClaimRecordingForm
     Private Const Password = "CLAIM_RECSERVICE_PASSWORD"
     Private Const ServiceUrl = "CLAIM_SERVICE_URL"
     Private Const EndPointName = "CustomBinding_IClaimRecordingService"
-    Private Const UtiliutyEndPointName = "BasicHttpBinding_IUtilityWcf"
+    Private Const UtiliutyEndPointName = "CustomBinding_IUtilityWcf"
     Private Const FlagYes = "YESNO-Y"
 
     Dim _relationlist As ListItem()
@@ -736,7 +736,7 @@ Public Class ClaimRecordingForm
             MasterPage.MessageController.AddError(errClaimRecordingWs & " - " & errorMessage, False)
         Else
             Log(fex)
-            MasterPage.MessageController.AddError(errClaimRecordingWs & " - " & fex.Message, False)
+            MasterPage.MessageController.AddError(errClaimRecordingWs & " - " & fex.Code.Name, False)
             'Throw New GUIException(TranslationBase.TranslateLabelOrMessage(ElitaPlus.Common.ErrorCodes.GUI_CLAIM_RECORDING_SERVICE_ERR) & " - " & fex.Message, ElitaPlus.Common.ErrorCodes.GUI_CLAIM_RECORDING_SERVICE_ERR, If(fex.InnerException, Nothing))
         End If
 
@@ -1128,24 +1128,38 @@ Public Class ClaimRecordingForm
 
                 If rdoSelect IsNot Nothing Then
                     If rdoSelect.Checked Then
-                        ddlDvcMake.SelectedValue = DirectCast(row.FindControl("lblManufacturer"), Label).Text
+
                         lblDvcMakeValue.Text = DirectCast(row.FindControl("lblManufacturer"), Label).Text
                         lblDvcModelValue.Text = DirectCast(row.FindControl("lblModel"), Label).Text
 
-                        If ddlDvcMake.DataSource IsNot Nothing Then
-                            ddlDvcMake.SelectedValue = DirectCast(row.FindControl("lblManufacturer"), Label).Text
-                            txtDvcMake.Text = DirectCast(row.FindControl("lblManufacturer"), Label).Text
-                            txtDvcMake.Visible = False
+                        If ddlDvcMake.Items.Count > 0 Then
+                            If ddlDvcMake.Items.FindByText(DirectCast(row.FindControl("lblManufacturer"), Label).Text) IsNot Nothing Then
+                                ddlDvcMake.SelectedValue = DirectCast(row.FindControl("lblManufacturer"), Label).Text
+                                txtDvcMake.Text = DirectCast(row.FindControl("lblManufacturer"), Label).Text
+                                txtDvcMake.Visible = False
+                            Else
+                                ddlDvcModel.Items.Clear()
+                                ddlDvcMake.Visible = False
+                                txtDvcMake.Visible = True
+                                txtDvcMake.Text = DirectCast(row.FindControl("lblManufacturer"), Label).Text
+                            End If
                         Else
                             ddlDvcMake.Visible = False
                             txtDvcMake.Visible = True
                             txtDvcMake.Text = DirectCast(row.FindControl("lblManufacturer"), Label).Text
                         End If
 
-                        If ddlDvcModel.DataSource IsNot Nothing Then
-                            ddlDvcModel.SelectedValue = DirectCast(row.FindControl("lblModel"), Label).Text
-                            txtDvcModel.Text = DirectCast(row.FindControl("lblModel"), Label).Text
-                            txtDvcModel.Visible = False
+                        If ddlDvcModel.Items.Count > 0 Then
+                            If ddlDvcModel.Items.FindByText(DirectCast(row.FindControl("lblModel"), Label).Text) IsNot Nothing Then
+                                ddlDvcModel.SelectedValue = DirectCast(row.FindControl("lblModel"), Label).Text
+                                txtDvcModel.Text = DirectCast(row.FindControl("lblModel"), Label).Text
+                                txtDvcModel.Visible = False
+                            Else
+                                ddlDvcModel.Visible = False
+                                ddlDvcModel.Items.Clear()
+                                txtDvcModel.Visible = True
+                                txtDvcModel.Text = DirectCast(row.FindControl("lblModel"), Label).Text
+                            End If
                         Else
                             ddlDvcModel.Visible = False
                             txtDvcModel.Visible = True
@@ -1239,13 +1253,13 @@ Public Class ClaimRecordingForm
                     If rdoSelect IsNot Nothing Then
                         If rdoSelect.Checked Then
 
-                            If ddlDvcMake.DataSource IsNot Nothing Then
+                            If ddlDvcMake.Items.Count > 0 Then
                                 claimdevice.Manufacturer = ddlDvcMake.SelectedItem.Text
                             Else
                                 claimdevice.Manufacturer = txtDvcMake.Text
                             End If
 
-                            If ddlDvcModel.DataSource IsNot Nothing Then
+                            If ddlDvcModel.Items.Count > 0 Then
                                 claimdevice.Model = ddlDvcModel.SelectedItem.Text
                             Else
                                 claimdevice.Model = txtDvcModel.Text
@@ -1324,13 +1338,13 @@ Public Class ClaimRecordingForm
                     If rdoSelect IsNot Nothing Then
                         If rdoSelect.Checked Then
 
-                            If ddlDvcMake.DataSource IsNot Nothing Then
+                            If ddlDvcMake.Items.Count > 0 Then
                                 claimdevice.Manufacturer = ddlDvcMake.SelectedItem.Text
                             Else
                                 claimdevice.Manufacturer = txtDvcMake.Text
                             End If
 
-                            If ddlDvcModel.DataSource IsNot Nothing Then
+                            If ddlDvcModel.Items.Count > 0 Then
                                 claimdevice.Model = ddlDvcModel.SelectedItem.Text
                             Else
                                 claimdevice.Model = txtDvcModel.Text

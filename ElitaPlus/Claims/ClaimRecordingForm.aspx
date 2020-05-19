@@ -257,8 +257,9 @@
                     </table>
                     <br />
                      <div class="dataContainer">
-                        <h2 class="dataGridHeader">Modify Device Info?</h2>
-                        <div class="stepformZone">
+                         <h2 class="dataGridHeader" runat="server" id="headerDeviceInfo">
+                            <asp:Label runat="server" ID="lblModifyDvcInfo" Text="MODIFY_DEVICE_INFORMATION"></asp:Label></h2>
+                    <div class="stepformZone">
                     <table id="tblModifyDeviceInfo" style="width: 100%; height: 100%" class="formGrid">
                         <tr>
                             <td width="70%" align="left">
@@ -267,14 +268,14 @@
                                         <tr>
                                             <td width="20%"></td>
                                             <td align="left">
-                                                <asp:Label ID="lblDvcSelected" runat="server" Text="Selected"></asp:Label>
+                                                <asp:Label ID="lblDvcSelected" runat="server" Font-Bold="true" Text="CLAIM_DEVICE_ENROLLED"></asp:Label>
                                             </td>
                                             <td align="left">
-                                                <asp:Label ID="lblDvcCorrected" runat="server" Text="Corrected"></asp:Label>
+                                                <asp:Label ID="lblDvcCorrected" runat="server"  Font-Bold="true" Text="CLAIM_DEVICE_MODIFIED"></asp:Label>
                                             </td>
                                         </tr>
                                         <tr>
-                                            <td align="left" width="20%">
+                                            <td align="right" width="20%">
                                                 <asp:Label ID="lblDvcMake"  runat="server">Make</asp:Label>:
                                             </td>
                                             <td align="left">
@@ -286,7 +287,7 @@
                                             </td>
                                         </tr>
                                         <tr>
-                                            <td align="left" width="20%">
+                                            <td align="right" width="20%">
                                                 <asp:Label ID="lblDvcModel"  runat="server">Model</asp:Label>:
                                             </td>
                                             <td align="left">
@@ -298,7 +299,7 @@
                                             </td>
                                         </tr>
                                         <tr>
-                                            <td align="left" width="20%">
+                                            <td align="right" width="20%">
                                                 <asp:Label ID="lblDvcImei" runat="server">Imei</asp:Label>:
                                             </td>
                                             <td align="left">
@@ -309,7 +310,7 @@
                                             </td>
                                         </tr>
                                         <tr>
-                                            <td align="left" width="20%">
+                                            <td align="right" width="20%">
                                                 <asp:Label ID="lblDvcSerialNumber" runat="server">SERIAL_NUM</asp:Label>:
                                             </td>
                                             <td align="left">
