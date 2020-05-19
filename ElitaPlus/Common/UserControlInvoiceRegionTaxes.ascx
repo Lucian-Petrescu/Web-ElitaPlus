@@ -51,7 +51,7 @@ Inherits="Assurant.ElitaPlus.ElitaPlusWebApp.UserControlInvoiceRegionTaxes" %>
                     </asp:DropDownList>
                 </EditItemTemplate>
             </asp:TemplateField>
-            <asp:TemplateField Visible="True" HeaderText="TAX TYPE">
+            <asp:TemplateField Visible="True" HeaderText="TAX_TYPE">
                 <ItemTemplate>
                     <asp:Label ID="lblinvoicetype" runat="server" Text='<%#Container.DataItem("TAX_TYPE_XCD")%>'></asp:Label>
                 </ItemTemplate>
