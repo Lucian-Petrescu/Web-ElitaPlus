@@ -1218,7 +1218,7 @@ Partial Class PayBatchClaimForm
                 Me.IIBBTaxes.Populate()
                 Dim statusId As String = LookupListNew.GetCodeFromId(LookupListNew.LK_INVSTAT, Me.State.MyBO.InvoiceStatusId)
                 Me.IIBBTaxes.InvoiceStatus = statusId
-                Me.IIBBTaxes.IsEditable = True
+                Me.IIBBTaxes.IsGridEditable = True
                 Me.IIBBTaxes.SetControlState()
             End If
 

@@ -116,7 +116,7 @@ Partial Class UserControlInvoiceRegionTaxes
         Public deleteRowIndex As Integer = 0
         Public isNew As String = "N"
         Public InvoiceStatus As String = String.Empty
-
+        Public IsEditable As Boolean = True
     End Class
 
     Protected ReadOnly Property TheState() As MyState
@@ -145,17 +145,13 @@ Partial Class UserControlInvoiceRegionTaxes
         End Get
     End Property
 
-    Public Property IsEditable() As Boolean
-        Set(ByVal value As Boolean)
-            isControlEditable = value
-            ViewState("IsEditable") = value
-        End Set
+    Public Property IsGridEditable() As Boolean
         Get
-            If Not ViewState("IsEditable") Is Nothing Then
-                isControlEditable = ViewState("IsEditable").ToString
-            End If
-            Return isControlEditable
+            Return Me.TheState.IsEditable
         End Get
+        Set(ByVal value As Boolean)
+            Me.TheState.IsEditable = value
+        End Set
     End Property
 
     Public Property SortDirection() As String
@@ -522,7 +518,7 @@ Partial Class UserControlInvoiceRegionTaxes
             If Not TheState.InvoiceRegionTaxDV Is Nothing Then
                 recCount = TheState.InvoiceRegionTaxDV.Count
             End If
-            If Me.IsEditable Then
+            If Me.TheState.IsEditable Then
                 If Not Me.InvoiceStatus Is Nothing And Me.InvoiceStatus <> String.Empty Then
                     If Me.InvoiceStatus = INVOICE_STATUS_PAID Or Me.InvoiceStatus = INVOICE_STATUS_REJECTED Then
                         ControlMgr.SetVisibleControl(Me.ThePage, NewButton_WRITE, False)
@@ -699,7 +695,7 @@ Partial Class UserControlInvoiceRegionTaxes
     End Sub
 
     Protected Sub GridIIBBTaxes_DataBound(sender As Object, e As EventArgs) Handles GridIIBBTaxes.DataBound
-        If Me.IsEditable Then
+        If Me.TheState.IsEditable Then
             If Not Me.InvoiceStatus Is Nothing And Me.InvoiceStatus <> String.Empty Then
                 If Me.InvoiceStatus = INVOICE_STATUS_PAID Or Me.InvoiceStatus = INVOICE_STATUS_REJECTED Then
                     Me.GridIIBBTaxes.Columns(GRID_COL_EDIT).Visible = False
