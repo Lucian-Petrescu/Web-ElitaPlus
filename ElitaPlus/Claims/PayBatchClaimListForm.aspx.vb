@@ -767,7 +767,7 @@ Partial Class PayBatchClaimListForm
         End If
         Me.IIBBTaxes.InvoiceStatus = statusId
         Me.IIBBTaxes.InvoicetransId = Me.State.selectedInvoiceTransId
-        Me.IIBBTaxes.IsEditable = False
+        Me.IIBBTaxes.IsGridEditable = False
         Me.IIBBTaxes.Populate()
         Me.IIBBTaxes.SetControlState()
 
@@ -963,7 +963,7 @@ Partial Class PayBatchClaimListForm
                 End If
                 FillClaims()
                 Me.IIBBTaxes.InvoicetransId = Me.State.selectedInvoiceTransId
-                Me.IIBBTaxes.IsEditable = False
+                Me.IIBBTaxes.IsGridEditable = False
                 Me.IIBBTaxes.Populate()
                 Me.IIBBTaxes.SetControlState()
             Catch ex As Exception
