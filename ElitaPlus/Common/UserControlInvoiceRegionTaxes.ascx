@@ -9,7 +9,7 @@ Inherits="Assurant.ElitaPlus.ElitaPlusWebApp.UserControlInvoiceRegionTaxes" %>
                         <asp:Label ID="lblPageSize" runat="server">Page_Size</asp:Label><asp:Label ID="colonSepertor"
                             runat="server">:</asp:Label>
                         &nbsp;
-                        <asp:DropDownList ID="cboDiPageSize" runat="server" Width="50px" AutoPostBack="true"
+                        <asp:DropDownList ID="cboDiPageSize" runat="server" Width="50px" OnSelectedIndexChanged="cboDiPageSize_SelectedIndexChanged" AutoPostBack="true"
                             SkinID="SmallDropDown">
                             <asp:ListItem Value="5">5</asp:ListItem>
                             <asp:ListItem Value="10">10</asp:ListItem>
