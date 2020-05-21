@@ -3166,7 +3166,15 @@ Public Class ClaimRecordingForm
                 moServiceCenterCtrl.CountryCode = oCountry.Code
                 moServiceCenterCtrl.CompanyCode = oCertificate.Company.Code
                 moServiceCenterCtrl.Dealer = oCertificate.Dealer.Dealer
-                moServiceCenterCtrl.Make = State.ClaimedDevice.Manufacturer
+
+                If State.ClaimedDevice IsNot Nothing Then
+                    moServiceCenterCtrl.Make = State.ClaimedDevice.Manufacturer
+                ElseIf State.ClaimBo.ClaimedEquipment IsNot Nothing Then
+                    moServiceCenterCtrl.Make = State.ClaimBo.ClaimedEquipment.Manufacturer
+                Else
+                    moServiceCenterCtrl.Make = String.Empty
+                End If
+
                 moServiceCenterCtrl.RiskTypeEnglish = State.ClaimBo.RiskType
                 moServiceCenterCtrl.MethodOfRepairXcd = State.FulfillmentOption.StandardCode
                 moServiceCenterCtrl.HostMessageController = MasterPage.MessageController
