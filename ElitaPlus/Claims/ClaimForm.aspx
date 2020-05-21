@@ -1321,6 +1321,7 @@
                     <asp:Button ID="btnClaimCaseList" runat="server" Text="CLAIM_CASE_DETAILS" SkinID="PopMenuButton" />
                     <asp:Button ID="btnAddConseqDamage" Visible="false" runat="server" Text="CONSEQ_DAMAGE" SkinID="PopMenuButton" />
                     <asp:Button ID="btnPriceRetailSearch" Visible="false" runat="server" Text="RETAIL_PRICE_SEARCH" SkinID="PopMenuButton" />
+                    <asp:Button ID="btnChangeFulfillment" runat="server" Text="CHANGE_FULFILLMENT" SkinID="PopMenuButton" Enabled="false" Visible="false"/>
                 </asp:Panel>
             </div>
         </div>
