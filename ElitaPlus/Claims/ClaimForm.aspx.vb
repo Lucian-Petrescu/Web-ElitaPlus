@@ -692,7 +692,8 @@ Partial Class ClaimForm
         Me.SetEnabledForControlFamily(Me.txtShipToSC, Me.State.IsEditMode, True)
         Me.SetEnabledForControlFamily(Me.txtShipToCust, Me.State.IsEditMode, True)
 
-
+        ControlMgr.SetVisibleControl(Me, Me.LabelLoanerRequested, True)
+        ControlMgr.SetVisibleControl(Me, Me.TextboxLoanerRequested, True)
     End Sub
 
     Private Sub EnableDisableEditableFieldsForActiveClaims()
@@ -1461,6 +1462,7 @@ Partial Class ClaimForm
         Me.BindBOPropertyToLabel(Me.State.MyBO, "MethodOfRepairId", Me.LabelMethodOfRepair)
         Me.BindBOPropertyToLabel(Me.State.MyBO, "CoverageTypeDescription", Me.LabelCoverageType)
         Me.BindBOPropertyToLabel(Me.State.MyBO, "SpecialInstruction", Me.LabelSpecialInstruction)
+        Me.BindBOPropertyToLabel(Me.State.MyBO, "LoanerRquestedXcd", Me.LabelLoanerRequested)
         Me.BindBOPropertyToLabel(Me.State.MyBO, "AuthorizedAmount", Me.LabelAuthorizedAmount)
         Me.BindBOPropertyToLabel(Me.State.MyBO, "LiabilityLimit", Me.LabelLiabilityLimit)
         Me.BindBOPropertyToLabel(Me.State.MyBO, "Deductible", Me.LabelDeductible)
@@ -2145,15 +2147,20 @@ Partial Class ClaimForm
                 Me.LabelExpectedRepairDate.Text = TranslationBase.TranslateLabelOrMessage("EXPECTED_REPLACEMENT_DATE") + ":"
             End If
             Me.PopulateControlFromBOProperty(Me.TextboxAuthorizedAmount, claimBo.AuthorizedAmount)
+
+            If claimBo.LoanerRquestedXcd.Trim <> String.Empty Then
+                TextboxLoanerRequested.Text = LookupListNew.GetDescriptionFromExtCode(LookupListNew.LK_YESNO_EXT, ElitaPlusIdentity.Current.ActiveUser.LanguageId, claimBo.LoanerRquestedXcd)
+            End If
+
             'Me.PopulateControlFromBOProperty(Me.TextboxAuthorizedAmount, State.AuthorizedAmount)
             Dim objCountry As New Country(Me.State.MyBO.Company.CountryId)
-            If Not claimBo.ServiceCenterObject Is Nothing AndAlso claimBo.ServiceCenterObject.Id.Equals(objCountry.DefaultSCId) Then
-                Me.State.IsTEMP_SVC = True
+                If Not claimBo.ServiceCenterObject Is Nothing AndAlso claimBo.ServiceCenterObject.Id.Equals(objCountry.DefaultSCId) Then
+                    Me.State.IsTEMP_SVC = True
+                Else
+                    Me.State.IsTEMP_SVC = False
+                End If
             Else
-                Me.State.IsTEMP_SVC = False
-            End If
-        Else
-            Dim claim As MultiAuthClaim = CType(Me.State.MyBO, MultiAuthClaim)
+                Dim claim As MultiAuthClaim = CType(Me.State.MyBO, MultiAuthClaim)
             Me.PopulateControlFromBOProperty(Me.TextboxAuthorizedAmount, claim.AuthorizedAmount)
             'Me.PopulateControlFromBOProperty(Me.TextboxAuthorizedAmount, State.AuthorizedAmount)
             Me.State.claimAuthList = CType(Me.State.MyBO, MultiAuthClaim).ClaimAuthorizationChildren.OrderBy(Function(i) i.AuthorizationNumber).ToList
