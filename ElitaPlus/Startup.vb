@@ -93,10 +93,9 @@ Public Class Startup
 
                                 Return Task.CompletedTask
                             Catch ex As Exception '
-                                HttpContext.Current.Session(ELPWebConstants.SESSION_LOGIN_ERROR_MESSAGE) = "Authentication to Elita failed, please see with your administrator to get access through Elita." '
-                                context.Response.Redirect(ELPWebConstants.APPLICATION_PATH & "/Common/ErrorForm.aspx") '
+                                HttpContext.Current.Session(ELPWebConstants.Session_Elita_Authz_Exception) = "Authorization to Elita failed. User not configured correctly or not found. Please see with your administrator to get access through Elita." '
 
-                                Return Task.FromException(ex) 
+                                Return Task.CompletedTask
                             End Try '
 
                         End Function,
