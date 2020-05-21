@@ -32,6 +32,16 @@ Partial Class MainPage
     Private Sub Page_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
 
         Try
+
+            Dim loginError As String = HttpContext.Current.Session(ELPWebConstants.Session_Elita_Authz_Exception)
+            If Not String.IsNullOrEmpty(loginError) Then
+                HttpContext.Current.Session(ErrorForm.MESSAGE_KEY_NAME) = loginError
+                HttpContext.Current.Session(ELPWebConstants.Session_Elita_Authz_Exception) = Nothing
+
+                ' Release the session
+                context.Response.Redirect(ELPWebConstants.APPLICATION_PATH & "/Common/ErrorForm.aspx")
+            End If
+
             'Register jquery call for the drop down language menu image display
             If Not Page.ClientScript.IsClientScriptBlockRegistered("ddlLangMenu") Then
                 RegisterDDLScript()

@@ -37,6 +37,7 @@ Public Class ELPWebConstants
     Public Const ELITA_PLUS_ERROR_COOKIE As String = "ELITA_PLUS_ERROR_COOKIE"
     Public Const SETTING_SCHEMA_PATH As String = "../schemas/"
     Public Const SESSION_LOGIN_ERROR_MESSAGE = "SESSION_LOGIN_ERROR_MESSAGE"
+    Public Const Session_Elita_Authz_Exception = "SESSION_ELITA_AUTHZ_EXCEPTION"
 
 #End Region
 
