@@ -923,6 +923,16 @@
                         </tr>
                         <tr>
                             <td nowrap="nowrap" align="right">
+                                <asp:Label ID="lblLoanerRequested" runat="server" Font-Bold="false">Loaner_Requested</asp:Label>
+                            </td>
+                            <td nowrap="nowrap">
+                                <asp:CheckBox ID="chkLoanerRequested" runat="server" TabIndex="79"></asp:CheckBox>
+                            </td>
+                            <td nowrap="nowrap" align="right" colspan="2">
+                            </td>
+                        </tr>
+                        <tr>
+                            <td nowrap="nowrap" align="right">
                                 <asp:Label ID="LabelPolicyNumber" runat="server">Policy_Number</asp:Label>
                             </td>
                             <td nowrap="nowrap">

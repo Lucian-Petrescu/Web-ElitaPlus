@@ -277,6 +277,8 @@ Public Class ClaimDAL
 
     Public Const COL_NAME_FULFILLMENT_PROVIDER_TYP As String = "fulfillment_provider_xcd"
 
+    Public Const COL_NAME_LOANER_REQUESTED_XCD As String = "loaner_requested_xcd"
+
     'SP Parameter Names
     Public Const PAR_NAME_COMPANY As String = "p_company_id"
     Public Const PAR_NAME_CLAIM_NUMBER As String = "p_claim_number"
