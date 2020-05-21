@@ -49,4 +49,5 @@ Public Class FlowEvents
 
 
     Public Const EVENT_CLAIM_RECORDING_CONSEQUENTIAL_DAMAGE As String = "consequential_damage"
+    Public Const EventClaimRecordingChangeFulfillment As String = "change_fulfillment"
 End Class

@@ -498,6 +498,32 @@
         </xs:complexContent>
       </xs:complexType>
       <xs:element name="LogisticStagesResponse" nillable="true" type="tns:LogisticStagesResponse" />
+      <xs:complexType name="ProcessCompleteResponse">
+        <xs:complexContent mixed="false">
+          <xs:extension base="tns:BaseClaimRecordingResponse">
+            <xs:sequence>
+              <xs:element minOccurs="0" name="Message" nillable="true" type="xs:string" />
+              <xs:element minOccurs="0" name="ProcessType" type="tns:ProcessTypes" />
+              <xs:element minOccurs="0" name="ProcessResult" type="tns:ProcessResults" />
+              <xs:element minOccurs="0" name="ProcessReferenceNumber" nillable="true" type="xs:string" />
+            </xs:sequence>
+          </xs:extension>
+        </xs:complexContent>
+      </xs:complexType>
+      <xs:element name="ProcessCompleteResponse" nillable="true" type="tns:ProcessCompleteResponse" />
+      <xs:simpleType name="ProcessTypes">
+        <xs:restriction base="xs:string">
+          <xs:enumeration value="ChangeFulfillment" />
+        </xs:restriction>
+      </xs:simpleType>
+      <xs:element name="ProcessTypes" nillable="true" type="tns:ProcessTypes" />
+      <xs:simpleType name="ProcessResults">
+        <xs:restriction base="xs:string">
+          <xs:enumeration value="Success" />
+          <xs:enumeration value="Failure" />
+        </xs:restriction>
+      </xs:simpleType>
+      <xs:element name="ProcessResults" nillable="true" type="tns:ProcessResults" />
       <xs:complexType name="DateAnswer">
         <xs:complexContent mixed="false">
           <xs:extension base="tns:BaseAnswer">
@@ -757,6 +783,13 @@
         </xs:sequence>
       </xs:complexType>
       <xs:element name="GetDurationResponse" nillable="true" type="tns:GetDurationResponse" />
+      <xs:complexType name="ChangeFulfillmentRequest">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="CompanyCode" nillable="true" type="xs:string" />
+          <xs:element minOccurs="0" name="ClaimNumber" nillable="true" type="xs:string" />
+        </xs:sequence>
+      </xs:complexType>
+      <xs:element name="ChangeFulfillmentRequest" nillable="true" type="tns:ChangeFulfillmentRequest" />
     </xs:schema>
     <xs:schema xmlns:tns="http://elita.assurant.com/Elita/ClaimService" elementFormDefault="qualified" targetNamespace="http://elita.assurant.com/Elita/ClaimService" xmlns:xs="http://www.w3.org/2001/XMLSchema">
       <xs:import namespace="http://elita.assurant.com/Elita/Claim/RecordingService/DataContracts" />
@@ -1207,6 +1240,20 @@
         <xs:complexType>
           <xs:sequence>
             <xs:element xmlns:q16="http://elita.assurant.com/Elita/Claim/RecordingService/DataContracts" minOccurs="0" name="GetCourierDurationsResult" nillable="true" type="q16:ArrayOfGetDurationResponse" />
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="ChangeFulfillment">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element xmlns:q17="http://elita.assurant.com/Elita/Claim/RecordingService/DataContracts" minOccurs="0" name="request" nillable="true" type="q17:ChangeFulfillmentRequest" />
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="ChangeFulfillmentResponse">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element xmlns:q18="http://elita.assurant.com/Elita/Claim/RecordingService/DataContracts" minOccurs="0" name="ChangeFulfillmentResult" nillable="true" type="q18:BaseClaimRecordingResponse" />
           </xs:sequence>
         </xs:complexType>
       </xs:element>
@@ -1736,6 +1783,21 @@
   <wsdl:message name="IClaimRecordingService_GetCourierDurations_OutputMessage">
     <wsdl:part name="parameters" element="tns:GetCourierDurationsResponse" />
   </wsdl:message>
+  <wsdl:message name="IClaimRecordingService_ChangeFulfillment_InputMessage">
+    <wsdl:part name="parameters" element="tns:ChangeFulfillment" />
+  </wsdl:message>
+  <wsdl:message name="IClaimRecordingService_ChangeFulfillment_OutputMessage">
+    <wsdl:part name="parameters" element="tns:ChangeFulfillmentResponse" />
+  </wsdl:message>
+  <wsdl:message name="IClaimRecordingService_ChangeFulfillment_InvalidCompanyCodeFaultFault_FaultMessage">
+    <wsdl:part xmlns:q31="http://elita.assurant.com/Elita/ClaimService/Faults" name="detail" element="q31:InvalidCompanyCodeFault" />
+  </wsdl:message>
+  <wsdl:message name="IClaimRecordingService_ChangeFulfillment_InvalidClaimNumberFaultFault_FaultMessage">
+    <wsdl:part xmlns:q32="http://elita.assurant.com/Elita/ClaimService/Faults" name="detail" element="q32:InvalidClaimNumberFault" />
+  </wsdl:message>
+  <wsdl:message name="IClaimRecordingService_ChangeFulfillment_ValidationFaultFault_FaultMessage">
+    <wsdl:part xmlns:q33="http://assurant.com/Elita/ServiceIntegration/Faults" name="detail" element="q33:ValidationFault" />
+  </wsdl:message>
   <wsdl:portType name="IClaimRecordingService">
     <wsdl:operation name="BeginClaim">
       <wsdl:input wsaw:Action="http://elita.assurant.com/Elita/Claim/RecordingService/IClaimRecordingService/BeginClaim" message="tns:IClaimRecordingService_BeginClaim_InputMessage" />
@@ -1802,6 +1864,13 @@
     <wsdl:operation name="GetCourierDurations">
       <wsdl:input wsaw:Action="http://elita.assurant.com/Elita/Claim/RecordingService/IClaimRecordingService/GetCourierDurations" message="tns:IClaimRecordingService_GetCourierDurations_InputMessage" />
       <wsdl:output wsaw:Action="http://elita.assurant.com/Elita/Claim/RecordingService/IClaimRecordingService/GetCourierDurationsResponse" message="tns:IClaimRecordingService_GetCourierDurations_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="ChangeFulfillment">
+      <wsdl:input wsaw:Action="http://elita.assurant.com/Elita/Claim/RecordingService/IClaimRecordingService/ChangeFulfillment" message="tns:IClaimRecordingService_ChangeFulfillment_InputMessage" />
+      <wsdl:output wsaw:Action="http://elita.assurant.com/Elita/Claim/RecordingService/IClaimRecordingService/ChangeFulfillmentResponse" message="tns:IClaimRecordingService_ChangeFulfillment_OutputMessage" />
+      <wsdl:fault wsaw:Action="http://elita.assurant.com/Elita/Claim/RecordingService/IClaimRecordingService/ChangeFulfillmentInvalidCompanyCodeFaultFault" name="InvalidCompanyCodeFaultFault" message="tns:IClaimRecordingService_ChangeFulfillment_InvalidCompanyCodeFaultFault_FaultMessage" />
+      <wsdl:fault wsaw:Action="http://elita.assurant.com/Elita/Claim/RecordingService/IClaimRecordingService/ChangeFulfillmentInvalidClaimNumberFaultFault" name="InvalidClaimNumberFaultFault" message="tns:IClaimRecordingService_ChangeFulfillment_InvalidClaimNumberFaultFault_FaultMessage" />
+      <wsdl:fault wsaw:Action="http://elita.assurant.com/Elita/Claim/RecordingService/IClaimRecordingService/ChangeFulfillmentValidationFaultFault" name="ValidationFaultFault" message="tns:IClaimRecordingService_ChangeFulfillment_ValidationFaultFault_FaultMessage" />
     </wsdl:operation>
   </wsdl:portType>
   <wsdl:binding name="CustomBinding_IClaimRecordingService" type="tns:IClaimRecordingService">
@@ -2008,13 +2077,34 @@
         <soap:body use="literal" />
       </wsdl:output>
     </wsdl:operation>
+    <wsdl:operation name="ChangeFulfillment">
+      <soap:operation soapAction="http://elita.assurant.com/Elita/Claim/RecordingService/IClaimRecordingService/ChangeFulfillment" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+      <wsdl:fault name="InvalidCompanyCodeFaultFault">
+        <soap:fault use="literal" name="InvalidCompanyCodeFaultFault" namespace="" />
+        <soap:fault use="literal" name="InvalidCompanyCodeFaultFault" namespace="" />
+      </wsdl:fault>
+      <wsdl:fault name="InvalidClaimNumberFaultFault">
+        <soap:fault use="literal" name="InvalidClaimNumberFaultFault" namespace="" />
+        <soap:fault use="literal" name="InvalidClaimNumberFaultFault" namespace="" />
+      </wsdl:fault>
+      <wsdl:fault name="ValidationFaultFault">
+        <soap:fault use="literal" name="ValidationFaultFault" namespace="" />
+        <soap:fault use="literal" name="ValidationFaultFault" namespace="" />
+      </wsdl:fault>
+    </wsdl:operation>
   </wsdl:binding>
   <wsdl:service name="ClaimRecordingService">
     <wsdl:port name="CustomBinding_IClaimRecordingService" binding="tns:CustomBinding_IClaimRecordingService">
-      <soap:address location="http://localhost/ElitaClaimService/ClaimRecordingService.svc" />
+      <soap:address location="http://localhost:81/ElitaClaimService/ClaimRecordingService.svc" />
     </wsdl:port>
     <wsdl:port name="CustomBinding_IClaimRecordingService1" binding="tns:CustomBinding_IClaimRecordingService">
-      <soap:address location="http://localhost/ElitaClaimService/ClaimRecordingService.svc/Secure" />
+      <soap:address location="http://localhost:81/ElitaClaimService/ClaimRecordingService.svc/Secure" />
     </wsdl:port>
   </wsdl:service>
 </wsdl:definitions>

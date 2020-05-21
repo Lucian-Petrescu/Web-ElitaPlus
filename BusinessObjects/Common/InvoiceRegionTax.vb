@@ -99,7 +99,7 @@
         End Set
     End Property
 
-    <ValueMandatoryIIBBtaxAmount(""), ValidNumericRange("", Min:=0, Max:=9999.99)>
+    <ValueMandatoryIIBBtaxAmount(""), ValidNumericRange("", Min:=0, Max:=999999999.99)>
     Public Property TaxAmount() As DecimalType
         Get
             CheckDeleted()
