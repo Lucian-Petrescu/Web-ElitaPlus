@@ -24,6 +24,7 @@ Partial Class UserControlInvoiceRegionTaxes
     Public Event PropertyChanged As PropertyChangedEventHandler
     Dim moRegionDropDown As DropDownList
     Dim cboinvoicetype As DropDownList
+    Private isControlEditable As Boolean = True
 
 #Region "Constants"
     Private Const GRID_COL_INVOICE_REGION_TAX_ID As Integer = 0
@@ -32,6 +33,7 @@ Partial Class UserControlInvoiceRegionTaxes
     Private Const GRID_COL_REGION_DESCRIPTION As Integer = 3
     Private Const GRID_COL_TAX_TYPE As Integer = 4
     Private Const GRID_COL_TAX_AMOUNT As Integer = 5
+    Private Const GRID_COL_EDIT As Integer = 6
 
     Private Const GRID_CTRL_NAME_LABEL_REGION As String = "lblRegion"
     Private Const GRID_CTRL_NAME_LABEL_IIBB_TAX As String = "lblIIBBTax"
@@ -85,12 +87,19 @@ Partial Class UserControlInvoiceRegionTaxes
         End Set
     End Property
 
+    Private Shadows ReadOnly Property Page() As ElitaPlusPage
+        Get
+            Return CType(MyBase.Page, ElitaPlusPage)
+        End Get
+    End Property
+
 #Region "Page State"
     Class MyState
         Public MyBO As InvoiceRegionTax
         Public DefaultInvoiceTransID As Guid
         Public PageIndex As Integer = 0
         Public PageSize As Integer = 10
+        Public SelectedPageSize As Integer = 10
         Public InvoiceRegionTaxDV As InvoiceRegionTax.InvoiceRegionTaxDV = Nothing
         Public HasDataChanged As Boolean
         Public IsGridAddNew As Boolean = False
@@ -107,7 +116,7 @@ Partial Class UserControlInvoiceRegionTaxes
         Public deleteRowIndex As Integer = 0
         Public isNew As String = "N"
         Public InvoiceStatus As String = String.Empty
-
+        Public IsEditable As Boolean = True
     End Class
 
     Protected ReadOnly Property TheState() As MyState
@@ -136,6 +145,15 @@ Partial Class UserControlInvoiceRegionTaxes
         End Get
     End Property
 
+    Public Property IsGridEditable() As Boolean
+        Get
+            Return Me.TheState.IsEditable
+        End Get
+        Set(ByVal value As Boolean)
+            Me.TheState.IsEditable = value
+        End Set
+    End Property
+
     Public Property SortDirection() As String
         Get
             If Not ViewState("SortDirection") Is Nothing Then
@@ -157,7 +175,7 @@ Partial Class UserControlInvoiceRegionTaxes
 
     Protected Sub Page_Load(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Load
         Try
-            SetControlState()
+            'SetControlState()
             If Page.IsPostBack Then
                 Dim confResponse As String = Me.HiddenDIDeletePromptResponse.Value
                 Dim confResponseDel As String = Me.HiddenDIDeletePromptResponse.Value
@@ -170,7 +188,7 @@ Partial Class UserControlInvoiceRegionTaxes
                         Me.TheState.InvoiceRegionTaxDV = Nothing
                         Me.TheState.PageIndex = GridIIBBTaxes.PageIndex
                         Me.TheState.IsEditMode = False
-                        SetControlState()
+                        'SetControlState()
                         Me.TheState.ActionInProgress = ElitaPlusPage.DetailPageCommand.Nothing_
                         Me.HiddenDIDeletePromptResponse.Value = ""
                     End If
@@ -181,10 +199,7 @@ Partial Class UserControlInvoiceRegionTaxes
             Else
                 SortDirection = InvoiceRegionTax.COL_NAME_REGION_DESCRIPTION
             End If
-            'SetControlState()
-            If GridIIBBTaxes.Rows.Count = 24 Then
-                NewButton_WRITE.Enabled = False
-            End If
+            SetControlState()
 
         Catch ex As Exception
             Me.ThePage.HandleErrors(ex, Me.ThePage.MasterPage.MessageController)
@@ -260,6 +275,7 @@ Partial Class UserControlInvoiceRegionTaxes
             Me.GridIIBBTaxes.AutoGenerateColumns = False
             SortAndBindGrid(blnNewSearch)
 
+            Me.SetControlState()
         Catch ex As Exception
             Me.ThePage.HandleErrors(ex, Me.ThePage.MasterPage.MessageController)
         End Try
@@ -289,22 +305,33 @@ Partial Class UserControlInvoiceRegionTaxes
                     End If
                     Dim regionlist As EnumerableRowCollection(Of DataRow) = From d In dv.ToTable() Where Not existingValues.Contains(d.Field(Of String)("Description")) Select d
                     ElitaPlusPage.BindListControlToDataView(moRegionDropDown, regionlist.AsDataView(), "DESCRIPTION",, False)
-                    'If (Not String.IsNullOrWhiteSpace(dvRow(IIBBRegionTaxes.InvoiceRegionTaxDV.COL_REGION_ID).ToString())) Then
-                    '    Me.ThePage.SetSelectedItemByText(moRegionDropDown, GridIIBBTaxes.DataKeys(e.Row.RowIndex).Values(3).ToString())
-                    'End If
+                    'Dim regionId As String = dvRow(InvoiceRegionTax.InvoiceRegionTaxDV.COL_REGION_ID).ToString
+                    If Not Me.TheState.IsGridAddNew Then
+                        Dim regionId As String = Me.ThePage.GetGuidStringFromByteArray(CType(dvRow(InvoiceRegionTax.InvoiceRegionTaxDV.COL_REGION_ID), Byte()))
+                        SetSelectedItem(moRegionDropDown, regionId)
+                    End If
                     Dim cboinvoicetype As DropDownList = CType(e.Row.Cells(Me.GRID_COL_TAX_TYPE).FindControl(Me.GRID_CTRL_NAME_EDIT_INVOICE_TYPE), DropDownList)
 
-                    cboinvoicetype.Populate(CommonConfigManager.Current.ListManager.GetList("TTYP", Thread.CurrentPrincipal.GetLanguageCode()), New PopulateOptions() With
+                    Dim selectedIndex As Integer = cboinvoicetype.SelectedIndex
+                        cboinvoicetype.Populate(CommonConfigManager.Current.ListManager.GetList("TTYP", Thread.CurrentPrincipal.GetLanguageCode()), New PopulateOptions() With
                  {
                     .ValueFunc = AddressOf .GetExtendedCode,
                     .TextFunc = AddressOf .GetDescription
                  })
+                        Dim taxtypedv As DataView = LookupListNew.GetTaxTypeList(Thread.CurrentPrincipal.GetLanguageId())
+                        If Me.TheState.IsGridAddNew = True Then
+                        'cboinvoicetype.SelectedItem.Text = LookupListNew.GetDescriptionFromCode(taxtypedv, "PERCEPTION_IIBB")
+                        'cboinvoicetype.SelectedItem.Value = "TTYP-PERCEPTION_IIBB"
+                        SetSelectedItem(cboinvoicetype, "TTYP-PERCEPTION_IIBB")
+                    Else
+                            Dim code As String = dvRow(InvoiceRegionTax.InvoiceRegionTaxDV.COL_INVOICE_TYPE).ToString
+                        SetSelectedItem(cboinvoicetype, code)
+                    End If
+                        CType(e.Row.Cells(Me.GRID_COL_TAX_AMOUNT).FindControl(Me.GRID_CTRL_NAME_EDIT_IIBB_TAX), TextBox).Text = dvRow(InvoiceRegionTax.InvoiceRegionTaxDV.COL_TAX_AMOUNT).ToString
 
-                    CType(e.Row.Cells(Me.GRID_COL_TAX_AMOUNT).FindControl(Me.GRID_CTRL_NAME_EDIT_IIBB_TAX), TextBox).Text = dvRow(InvoiceRegionTax.InvoiceRegionTaxDV.COL_TAX_AMOUNT).ToString
+                    Else
 
-                Else
-
-                    Dim replTaxTypeLkl As ListItem() = CommonConfigManager.Current.ListManager.GetList("TTYP", Thread.CurrentPrincipal.GetLanguageCode())
+                        Dim replTaxTypeLkl As ListItem() = CommonConfigManager.Current.ListManager.GetList("TTYP", Thread.CurrentPrincipal.GetLanguageCode())
                     Dim InvDes As String
                     Dim code As String = dvRow(InvoiceRegionTax.InvoiceRegionTaxDV.COL_INVOICE_TYPE).ToString
 
@@ -480,6 +507,7 @@ Partial Class UserControlInvoiceRegionTaxes
 #Region "Helper functions"
 
     Public Sub SetControlState()
+        Dim recCount As Integer
         If (Me.TheState.IsEditMode) Then
             ControlMgr.SetVisibleControl(Me.ThePage, NewButton_WRITE, False)
             If (Me.cboDiPageSize.Enabled) Then
@@ -487,14 +515,29 @@ Partial Class UserControlInvoiceRegionTaxes
             End If
 
         Else
-            If Not Me.InvoiceStatus Is Nothing And Me.InvoiceStatus <> String.Empty Then
-                If Me.InvoiceStatus = INVOICE_STATUS_PAID Or Me.InvoiceStatus = INVOICE_STATUS_REJECTED Then
-                    ControlMgr.SetVisibleControl(Me.ThePage, NewButton_WRITE, False)
+            If Not TheState.InvoiceRegionTaxDV Is Nothing Then
+                recCount = TheState.InvoiceRegionTaxDV.Count
+            End If
+            If Me.TheState.IsEditable Then
+                If Not Me.InvoiceStatus Is Nothing And Me.InvoiceStatus <> String.Empty Then
+                    If Me.InvoiceStatus = INVOICE_STATUS_PAID Or Me.InvoiceStatus = INVOICE_STATUS_REJECTED Then
+                        ControlMgr.SetVisibleControl(Me.ThePage, NewButton_WRITE, False)
+                    Else
+                        If recCount <= 23 Then
+                            ControlMgr.SetVisibleControl(Me.ThePage, NewButton_WRITE, True)
+                        Else
+                            ControlMgr.SetVisibleControl(Me.ThePage, NewButton_WRITE, False)
+                        End If
+                    End If
                 Else
-                    ControlMgr.SetVisibleControl(Me.ThePage, NewButton_WRITE, True)
+                    If recCount <= 23 Then
+                        ControlMgr.SetVisibleControl(Me.ThePage, NewButton_WRITE, True)
+                    Else
+                        ControlMgr.SetVisibleControl(Me.ThePage, NewButton_WRITE, False)
+                    End If
                 End If
             Else
-                ControlMgr.SetVisibleControl(Me.ThePage, NewButton_WRITE, True)
+                ControlMgr.SetVisibleControl(Me.ThePage, NewButton_WRITE, False)
             End If
             If Not (Me.cboDiPageSize.Enabled) Then
                 ControlMgr.SetEnableControl(Me.ThePage, Me.cboDiPageSize, True)
@@ -652,16 +695,79 @@ Partial Class UserControlInvoiceRegionTaxes
     End Sub
 
     Protected Sub GridIIBBTaxes_DataBound(sender As Object, e As EventArgs) Handles GridIIBBTaxes.DataBound
-        If Not Me.InvoiceStatus Is Nothing And Me.InvoiceStatus <> String.Empty Then
-            If Me.InvoiceStatus = INVOICE_STATUS_PAID Or Me.InvoiceStatus = INVOICE_STATUS_REJECTED Then
-                Me.GridIIBBTaxes.Columns(6).Visible = False
+        If Me.TheState.IsEditable Then
+            If Not Me.InvoiceStatus Is Nothing And Me.InvoiceStatus <> String.Empty Then
+                If Me.InvoiceStatus = INVOICE_STATUS_PAID Or Me.InvoiceStatus = INVOICE_STATUS_REJECTED Then
+                    Me.GridIIBBTaxes.Columns(GRID_COL_EDIT).Visible = False
 
+                Else
+                    Me.GridIIBBTaxes.Columns(GRID_COL_EDIT).Visible = True
+                End If
             Else
-                Me.GridIIBBTaxes.Columns(6).Visible = True
+                Me.GridIIBBTaxes.Columns(GRID_COL_EDIT).Visible = True
             End If
         Else
-            Me.GridIIBBTaxes.Columns(6).Visible = True
+            Me.GridIIBBTaxes.Columns(GRID_COL_EDIT).Visible = False
         End If
+    End Sub
+
+    Protected Sub cboDiPageSize_SelectedIndexChanged(ByVal sender As Object, ByVal e As System.EventArgs) Handles cboDiPageSize.SelectedIndexChanged
+        Try
+            Me.TheState.PageSize = CType(cboDiPageSize.SelectedValue, Integer)
+            Me.TheState.SelectedPageSize = Me.TheState.PageSize
+            Me.TheState.PageIndex = NewCurrentPageIndex(GridIIBBTaxes, TheState.InvoiceRegionTaxDV.Count, TheState.PageSize)
+            Me.GridIIBBTaxes.PageIndex = Me.TheState.PageIndex
+            Me.TheState.IsEditMode = False
+            Me.PopulateGrid()
+        Catch ex As Exception
+            Me.Page.HandleErrors(ex, Me.Page.MasterPage.MessageController)
+        End Try
+    End Sub
+
+    Protected Function NewCurrentPageIndex(ByVal dg As GridView, ByVal intRecordCount As Integer, ByVal intNewPageSize As Integer) As Integer
+        Dim intOldPageSize As Integer    ' old page size    
+        Dim intFirstRecordIndex As Integer        ' top record index on current page
+        Dim intNewPageCount As Integer  ' new page count
+        Dim intNewCurrentPageIndex As Integer
+
+        intOldPageSize = dg.PageSize      ' is given from the DataGrid PageSize property
+        ' identifies the current page
+        intFirstRecordIndex = dg.PageIndex * intOldPageSize + 1
+
+        ' set the new page size for the Data grig
+        dg.PageSize = intNewPageSize
+
+        ' The actual page count of the DataGrid control
+        ' is the "old" page count.
+        ' The new page count of the DataGrid control will be set
+        ' automatically after we bind the Datagrid to the data source
+        ' with new page size set.
+        ' We we need the new page count arleady now to find out the new current page index,
+        ' so we must calculate it.        
+        intNewPageCount = CType(Math.Ceiling(intRecordCount / intNewPageSize), Integer)
+        ' get the new current page index
+        Dim i As Integer
+        For i = 1 To intNewPageCount
+            If intFirstRecordIndex >= (i - 1) * intNewPageSize + 1 And intFirstRecordIndex <= i * intNewPageSize Then
+                intNewCurrentPageIndex = i - 1
+                Exit For
+            End If
+        Next i
+
+        NewCurrentPageIndex = intNewCurrentPageIndex
+
+    End Function
+
+    Public Sub SetSelectedItem(ByVal lstControl As ListControl, ByVal SelectItem As String)
+        Dim item As System.Web.UI.WebControls.ListItem = lstControl.SelectedItem
+        If Not item Is Nothing Then item.Selected = False
+        Try
+            lstControl.Items.FindByValue(SelectItem.ToString).Selected = True
+            lstControl.Style.Remove("background")
+        Catch ex As Exception
+            lstControl.Style.Add("background", "red")
+            Throw New GUIException(Assurant.ElitaPlus.Common.ErrorCodes.GUI_INVALID_VALUE, TranslationBase.TranslateLabelOrMessage(Assurant.ElitaPlus.Common.ErrorCodes.GUI_INVALID_VALUE) & ": ControlID : " & lstControl.ClientID & " for value : " & SelectItem.ToString(), ex)
+        End Try
     End Sub
 #End Region
 

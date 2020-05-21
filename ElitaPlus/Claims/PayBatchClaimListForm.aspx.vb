@@ -179,7 +179,6 @@ Partial Class PayBatchClaimListForm
             If Not Me.IsPostBack Then
                 Me.SetFormTitle(PAGETITLE)
                 Me.SetFormTab(PAGETAB)
-                'IIBBTaxes.Populate()
                 Me.AddCalendar(Me.ImageButtonInvoiceDate, Me.TextBoxSearchInvoiceDate)
                 Me.AddCalendar(Me.imgBtnInvRecDt, Me.txtboxInvRecDt)
                 PopulateServiceCenterDropDown()
@@ -767,6 +766,9 @@ Partial Class PayBatchClaimListForm
             ControlMgr.SetEnableControl(Me, Me.btnNEXT_WRITE, False)
         End If
         Me.IIBBTaxes.InvoiceStatus = statusId
+        Me.IIBBTaxes.InvoicetransId = Me.State.selectedInvoiceTransId
+        Me.IIBBTaxes.IsGridEditable = False
+        Me.IIBBTaxes.Populate()
         Me.IIBBTaxes.SetControlState()
 
     End Sub
@@ -960,6 +962,10 @@ Partial Class PayBatchClaimListForm
                     Me.State.batchState = False
                 End If
                 FillClaims()
+                Me.IIBBTaxes.InvoicetransId = Me.State.selectedInvoiceTransId
+                Me.IIBBTaxes.IsGridEditable = False
+                Me.IIBBTaxes.Populate()
+                Me.IIBBTaxes.SetControlState()
             Catch ex As Exception
                 Me.MasterPage.MessageController.AddErrorAndShow(ex.Message, False)
             End Try
@@ -1425,8 +1431,6 @@ Partial Class PayBatchClaimListForm
                     Me.State.MyBO = New InvoiceTrans(invoiceId)
 
                     PopulateSelection()
-                    Me.IIBBTaxes.InvoicetransId = Me.State.selectedInvoiceTransId
-                    Me.IIBBTaxes.Populate()
                     'Case Me.GRID_INV_COM_EDIT 'On Edit, redirect to the pay invoice page to enable the user to edit the associsated claims
                     '    Me.callPage(PayBatchClaimForm.URL, e.Item.Cells(Me.GRID_INV_COL_INVOICE_TRANS_NUMBER_IDX).Text)
 

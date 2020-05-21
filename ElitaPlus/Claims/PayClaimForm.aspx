@@ -1131,14 +1131,14 @@
                             }
                         }
 
-                        if (!bUseIVATax) {
+                        
                             var txttotaltaxamt = document.getElementById("ctl00_SummaryPlaceHolder_txtTotalTaxAmount");
                             if (txttotaltaxamt != null) {
                                 document.getElementById("ctl00_SummaryPlaceHolder_txtTotalTaxAmount").innerText = convertNumberToCulture(FormatToDecimal(round_num(totalClaimTaxAmountAmtVal, 2).toString()), decSep, groupSep);
                                 hdTotalTaxAmt.value = convertNumberToCulture(FormatToDecimal(round_num(totalClaimTaxAmountAmtVal, 2).toString()), decSep, groupSep);
                             }
 
-                        };
+                       
                     };
 
                     WithholdingRateVal = parseFloat(setJsFormat(hdWithholdingRate.value, decSep));

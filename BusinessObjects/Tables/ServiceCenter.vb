@@ -32,7 +32,7 @@ Public Class ServiceCenter
     'Existing BO
     Public Sub New(ByVal id As Guid)
         MyBase.New()
-        Me.Dataset = New Dataset
+        Me.Dataset = New DataSet
         Me.Load(id)
     End Sub
 
@@ -45,19 +45,19 @@ Public Class ServiceCenter
     'New BO
     Public Sub New()
         MyBase.New()
-        Me.Dataset = New Dataset
+        Me.Dataset = New DataSet
         Me.Load()
     End Sub
 
     'Existing BO attaching to a BO family
-    Public Sub New(ByVal id As Guid, ByVal familyDS As Dataset)
+    Public Sub New(ByVal id As Guid, ByVal familyDS As DataSet)
         MyBase.New(False)
         Me.Dataset = familyDS
         Me.Load(id)
     End Sub
 
     'New BO attaching to a BO family
-    Public Sub New(ByVal familyDS As Dataset)
+    Public Sub New(ByVal familyDS As DataSet)
         MyBase.New(False)
         Me.Dataset = familyDS
         Me.Load()
@@ -79,7 +79,7 @@ Public Class ServiceCenter
             Dim newRow As DataRow = Me.Dataset.Tables(dal.TABLE_NAME).NewRow
             Me.Dataset.Tables(dal.TABLE_NAME).Rows.Add(newRow)
             Me.Row = newRow
-            setvalue(dal.TABLE_KEY_NAME, Guid.NewGuid)
+            SetValue(dal.TABLE_KEY_NAME, Guid.NewGuid)
             Initialize()
         Catch ex As Assurant.ElitaPlus.DALObjects.DataBaseAccessException
             Throw New DataBaseAccessException(DataBaseAccessException.DatabaseAccessErrorType.ReadErr, ex)
@@ -120,13 +120,13 @@ Public Class ServiceCenter
             End If
             Me.Row = Nothing
             If Me.Dataset.Tables.IndexOf(dal.TABLE_NAME) >= 0 Then
-                Me.Row = Me.FindRow(id, dal.TABLE_KEY_NAME, Me.Dataset.Tables(dal.TABLE_NAME))
+                Me.Row = Me.FindRow(Id, dal.TABLE_KEY_NAME, Me.Dataset.Tables(dal.TABLE_NAME))
             End If
             If Me.Row Is Nothing Then 'it is not in the dataset, so will bring it from the db
                 Dim oCountryIds As ArrayList = ElitaPlusIdentity.Current.ActiveUser.Countries
                 dal.Load(Me.Dataset, code, oCountryIds)
                 If Not Me.Dataset.Tables(dal.TABLE_NAME) Is Nothing AndAlso Me.Dataset.Tables(dal.TABLE_NAME).Rows.Count > 0 Then
-                    Me.Row = Me.FindRow(New Guid(CType(Me.Dataset.Tables(dal.TABLE_NAME).Rows(0)(dal.TABLE_KEY_NAME), Byte())), _
+                    Me.Row = Me.FindRow(New Guid(CType(Me.Dataset.Tables(dal.TABLE_NAME).Rows(0)(dal.TABLE_KEY_NAME), Byte())),
                                     dal.TABLE_KEY_NAME, Me.Dataset.Tables(dal.TABLE_NAME))
                 Else
                     Throw New StoredProcedureGeneratedException("Service Center Invalid Parameters Error", Common.ErrorCodes.INVALID_SERVICE_CENTER_CODE)
@@ -182,7 +182,7 @@ Public Class ServiceCenter
 
 #Region "Properties"
     Private _AttributeValueList As AttributeValueList(Of IAttributable)
-   
+
     Public ReadOnly Property AttributeValues As AttributeValueList(Of IAttributable) Implements IAttributable.AttributeValues
         Get
             If (_AttributeValueList Is Nothing) Then
@@ -224,7 +224,7 @@ Public Class ServiceCenter
         End Get
     End Property
 
-    <ValueMandatory("")> _
+    <ValueMandatory("")>
     Public Property CountryId() As Guid
         Get
             CheckDeleted()
@@ -240,7 +240,7 @@ Public Class ServiceCenter
         End Set
     End Property
 
-    <ValueMandatory("")> _
+    <ValueMandatory("")>
     Public Property AddressId() As Guid 'Implements Address.IAddressUser.AddressId
         Get
             CheckDeleted()
@@ -272,7 +272,7 @@ Public Class ServiceCenter
     '    End Set
     'End Property
 
-    <ValueMandatory("")> _
+    <ValueMandatory("")>
     Public Property ServiceGroupId() As Guid
         Get
             CheckDeleted()
@@ -288,8 +288,8 @@ Public Class ServiceCenter
         End Set
     End Property
 
-    <ValueMandatory("")> _
-        Public Property PaymentMethodId() As Guid
+    <ValueMandatory("")>
+    Public Property PaymentMethodId() As Guid
         Get
             CheckDeleted()
             If Row(ServiceCenterDAL.COL_NAME_PAYMENT_METHOD_ID) Is DBNull.Value Then
@@ -339,7 +339,7 @@ Public Class ServiceCenter
     End Property
 
 
-    <ValueMandatory(""), ValidStringLength("", Max:=10), ValueMethodOfRepair("")> _
+    <ValueMandatory(""), ValidStringLength("", Max:=10), ValueMethodOfRepair("")>
     Public Property Code() As String
         Get
             CheckDeleted()
@@ -356,7 +356,7 @@ Public Class ServiceCenter
     End Property
 
 
-    <ValueMandatory(""), ValidStringLength("", Max:=50), ValidateByteLength("", Max:=30)> _
+    <ValueMandatory(""), ValidStringLength("", Max:=50), ValidateByteLength("", Max:=30)>
     Public Property Description() As String
         Get
             CheckDeleted()
@@ -373,7 +373,7 @@ Public Class ServiceCenter
     End Property
 
 
-    <ValidStringLength("", Max:=1)> _
+    <ValidStringLength("", Max:=1)>
     Public Property RatingCode() As String
         Get
             CheckDeleted()
@@ -390,7 +390,7 @@ Public Class ServiceCenter
     End Property
 
 
-    <ValueMandatory(""), ValidStringLength("", Max:=50)> _
+    <ValueMandatory(""), ValidStringLength("", Max:=50)>
     Public Property ContactName() As String
         Get
             CheckDeleted()
@@ -407,7 +407,7 @@ Public Class ServiceCenter
     End Property
 
 
-    <ValueMandatory(""), ValidStringLength("", Max:=30)> _
+    <ValueMandatory(""), ValidStringLength("", Max:=30)>
     Public Property OwnerName() As String
         Get
             CheckDeleted()
@@ -424,7 +424,7 @@ Public Class ServiceCenter
     End Property
 
 
-    <ValueMandatory(""), ValidStringLength("", Max:=20)> _
+    <ValueMandatory(""), ValidStringLength("", Max:=20)>
     Public Property Phone1() As String
         Get
             CheckDeleted()
@@ -441,7 +441,7 @@ Public Class ServiceCenter
     End Property
 
 
-    <ValidStringLength("", Max:=20)> _
+    <ValidStringLength("", Max:=20)>
     Public Property Phone2() As String
         Get
             CheckDeleted()
@@ -458,7 +458,7 @@ Public Class ServiceCenter
     End Property
 
 
-    <ValueMandatory(""), ValidStringLength("", Max:=20)> _
+    <ValueMandatory(""), ValidStringLength("", Max:=20)>
     Public Property Fax() As String
         Get
             CheckDeleted()
@@ -474,7 +474,7 @@ Public Class ServiceCenter
         End Set
     End Property
 
-    <ValidStringLength("", Max:=50), ValidEmail(""), EmailAddress("")> _
+    <ValidStringLength("", Max:=50), ValidEmail(""), EmailAddress("")>
     Public Property Email() As String
         Get
             CheckDeleted()
@@ -491,7 +491,7 @@ Public Class ServiceCenter
     End Property
 
 
-    <ValidStringLength("", Max:=30)> _
+    <ValidStringLength("", Max:=30)>
     Public Property FtpAddress() As String
         Get
             CheckDeleted()
@@ -508,7 +508,7 @@ Public Class ServiceCenter
     End Property
 
 
-    <ValueMandatory(""), ValidStringLength("", Max:=20)> _
+    <ValueMandatory(""), ValidStringLength("", Max:=20)>
     Public Property TaxId() As String
         Get
             CheckDeleted()
@@ -525,7 +525,7 @@ Public Class ServiceCenter
     End Property
 
 
-    <ValueMandatory(""), ValidNumericRange("", Max:=365)> _
+    <ValueMandatory(""), ValidNumericRange("", Max:=365)>
     Public Property ServiceWarrantyDays() As LongType
         Get
             CheckDeleted()
@@ -542,7 +542,7 @@ Public Class ServiceCenter
     End Property
 
 
-    <ValueMandatory(""), ValidStringLength("", Max:=1)> _
+    <ValueMandatory(""), ValidStringLength("", Max:=1)>
     Public Property StatusCode() As String
         Get
             CheckDeleted()
@@ -559,7 +559,7 @@ Public Class ServiceCenter
     End Property
 
 
-    <ValidStringLength("", Max:=100)> _
+    <ValidStringLength("", Max:=100)>
     Public Property BusinessHours() As String
         Get
             CheckDeleted()
@@ -583,7 +583,7 @@ Public Class ServiceCenter
         End Set
     End Property
 
-    <ValueMandatory(""), ValidStringLength("", Max:=1)> _
+    <ValueMandatory(""), ValidStringLength("", Max:=1)>
     Public Property MasterFlag() As String
         Get
             CheckDeleted()
@@ -600,7 +600,7 @@ Public Class ServiceCenter
     End Property
 
 
-    <ValueMandatory(""), ValidStringLength("", Max:=1)> _
+    <ValueMandatory(""), ValidStringLength("", Max:=1)>
     Public Property LoanerFlag() As String
         Get
             CheckDeleted()
@@ -625,7 +625,7 @@ Public Class ServiceCenter
         End Set
     End Property
 
-    <ValueMandatory("")> _
+    <ValueMandatory("")>
     Public Property DefaultToEmailFlag() As Boolean
         Get
             CheckDeleted()
@@ -645,7 +645,7 @@ Public Class ServiceCenter
         End Set
     End Property
 
-    <ValueMandatory("")> _
+    <ValueMandatory("")>
     Public Property IvaResponsibleFlag() As Boolean
         Get
             CheckDeleted()
@@ -715,7 +715,7 @@ Public Class ServiceCenter
         End Get
     End Property
 
-    <ValidStringLength("", Max:=1000)> _
+    <ValidStringLength("", Max:=1000)>
     Public Property Comments() As String
         Get
             CheckDeleted()
@@ -747,7 +747,7 @@ Public Class ServiceCenter
         End Set
     End Property
 
-    <ValueMandatory("")> _
+    <ValueMandatory("")>
     Public Property Shipping() As Boolean
         Get
             CheckDeleted()
@@ -766,7 +766,7 @@ Public Class ServiceCenter
             End If
         End Set
     End Property
-    <ValueMandatoryConditionally(""), ValidAmount("")> _
+    <ValueMandatoryConditionally(""), ValidAmount("")>
     Public Property ProcessingFee() As DecimalType
         Get
             CheckDeleted()
@@ -793,7 +793,7 @@ Public Class ServiceCenter
         End Set
     End Property
 
-    <ValidStringLength("", Max:=50), CcEmailAddress("")> _
+    <ValidStringLength("", Max:=50), CcEmailAddress("")>
     Public Property CcEmail() As String
         Get
             CheckDeleted()
@@ -899,7 +899,7 @@ Public Class ServiceCenter
         End Set
     End Property
 
-    <ValueMandatory("")> _
+    <ValueMandatory("")>
     Public Property ReverseLogisticsId() As Guid
         Get
             CheckDeleted()
@@ -994,7 +994,7 @@ Public Class ServiceCenter
         End Set
     End Property
 
-    <ValidNumericRange("", MAX:=100, MIN:=0)> _
+    <ValidNumericRange("", Max:=100, Min:=0)>
     Public Property DiscountPct() As DecimalType
         Get
             CheckDeleted()
@@ -1011,7 +1011,7 @@ Public Class ServiceCenter
     End Property
 
 
-    <ValueIsAnInteger(""), ValidNumericRange("", MIN:=0)> _
+    <ValueIsAnInteger(""), ValidNumericRange("", Min:=0)>
     Public Property DiscountDays() As LongType
         Get
             CheckDeleted()
@@ -1028,7 +1028,7 @@ Public Class ServiceCenter
     End Property
 
 
-    <ValueIsAnInteger(""), ValidNumericRange("", MIN:=0)> _
+    <ValueIsAnInteger(""), ValidNumericRange("", Min:=0)>
     Public Property NetDays() As LongType
         Get
             CheckDeleted()
@@ -1102,7 +1102,7 @@ Public Class ServiceCenter
             Me.SetValue(ServiceCenterDAL.COL_NAME_CLAIM_RESERVED_BASED_ON_XCD, Value)
         End Set
     End Property
-    <ValidNumericRange("", Max:=100, Min:=0,MaxExclusive := False, MinExclusive := True), RequiredConditionally("")>
+    <ValidNumericRange("", Max:=100, Min:=0, MaxExclusive:=False, MinExclusive:=True), RequiredConditionally("")>
     Public Property ClaimReservedPercent() As DecimalType
         Get
             CheckDeleted()
@@ -1186,14 +1186,14 @@ Public Class ServiceCenter
         Get
             Dim bDirty As Boolean
 
-            bDirty = MyBase.IsDirty OrElse Me.IsChildrenDirty OrElse _
-            (Not Me.Address.IsNew And Me.Address.IsDirty) OrElse _
+            bDirty = MyBase.IsDirty OrElse Me.IsChildrenDirty OrElse
+            (Not Me.Address.IsNew And Me.Address.IsDirty) OrElse
             (Me.Address.IsNew And Not Me.Address.IsEmpty)
 
             If bDirty = False Then
                 If LookupListNew.GetCodeFromId(LookupListNew.LK_PAYMENTMETHOD, Me.PaymentMethodId) = Codes.PAYMENT_METHOD__BANK_TRANSFER Then
-                    bDirty = bDirty OrElse _
-                (Not Me.CurrentBankInfo Is Nothing AndAlso (Not Me.CurrentBankInfo.IsNew And Me.CurrentBankInfo.IsDirty)) OrElse _
+                    bDirty = bDirty OrElse
+                (Not Me.CurrentBankInfo Is Nothing AndAlso (Not Me.CurrentBankInfo.IsNew And Me.CurrentBankInfo.IsDirty)) OrElse
                 (Not Me.CurrentBankInfo Is Nothing AndAlso (Me.CurrentBankInfo.IsNew And Not Me.CurrentBankInfo.IsEmpty))
                 End If
             End If
@@ -1941,9 +1941,9 @@ Public Class ServiceCenter
 #Region "DataView Retrieveing Methods"
     'Manually added method
     'If code, description, address, city and zip are empty, it will return all ServiceCenters for the specified Company
-    Public Shared Function getList(ByVal code As String, ByVal description As String, _
-                                   ByVal address As String, ByVal city As String, _
-                                   ByVal zip As String, _
+    Public Shared Function getList(ByVal code As String, ByVal description As String,
+                                   ByVal address As String, ByVal city As String,
+                                   ByVal zip As String,
                                    ByVal oCountryId As Guid) As ServiceCenterSearchDV
         Try
             Dim dal As New ServiceCenterDAL
@@ -1958,13 +1958,13 @@ Public Class ServiceCenter
                 oCountryIds.Add(oCountryId)
             End If
 
-            If (code.Equals(String.Empty) AndAlso description.Equals(String.Empty) AndAlso _
-                address.Equals(String.Empty) AndAlso city.Equals(String.Empty) AndAlso _
+            If (code.Equals(String.Empty) AndAlso description.Equals(String.Empty) AndAlso
+                address.Equals(String.Empty) AndAlso city.Equals(String.Empty) AndAlso
                 zip.Equals(String.Empty)) Then
                 Throw New BOValidationException(errors, GetType(ServiceCenter).FullName)
             End If
 
-            Return New ServiceCenterSearchDV(dal.LoadList(oCountryIds, code, description, _
+            Return New ServiceCenterSearchDV(dal.LoadList(oCountryIds, code, description,
                                                           address, city, zip).Tables(0))
         Catch ex As Assurant.ElitaPlus.DALObjects.DataBaseAccessException
             Throw New DataBaseAccessException(ex.ErrorType, ex)
@@ -2048,19 +2048,19 @@ Public Class ServiceCenter
         Return ds
     End Function
 
-    Public Shared Function LocateServiceCenterByZip(ByVal dealerId As Guid, _
-                                                ByVal zipLocator As String, _
-                                                ByVal riskTypeId As Guid, _
-                                                ByVal manufacturerId As Guid, _
-                                                ByVal covTypeCode As String, _
-                                                ByVal oCountryIds As ArrayList, _
-                                                ByVal ServiceNetWrkID As Guid, _
-                                                ByVal isNetwork As Boolean, _
-                                                ByVal MethodOfRepairId As Guid, _
-                                                Optional ByVal UseZipDistrict As Boolean = True, _
-                                                Optional ByVal dealerType As String = "", _
-                                                Optional ByVal FlagMethodOfRepairRecovery As Boolean = False, _
-                                                Optional ByVal MethodOfRepairType As String = Nothing, _
+    Public Shared Function LocateServiceCenterByZip(ByVal dealerId As Guid,
+                                                ByVal zipLocator As String,
+                                                ByVal riskTypeId As Guid,
+                                                ByVal manufacturerId As Guid,
+                                                ByVal covTypeCode As String,
+                                                ByVal oCountryIds As ArrayList,
+                                                ByVal ServiceNetWrkID As Guid,
+                                                ByVal isNetwork As Boolean,
+                                                ByVal MethodOfRepairId As Guid,
+                                                Optional ByVal UseZipDistrict As Boolean = True,
+                                                Optional ByVal dealerType As String = "",
+                                                Optional ByVal FlagMethodOfRepairRecovery As Boolean = False,
+                                                Optional ByVal MethodOfRepairType As String = Nothing,
                                                 Optional ByVal blnCheckAcctSetting As Boolean = False) As LocateServiceCenterResultsDv
         Dim dal As New ServiceCenterDAL
         Dim ds As DataSet = dal.LocateServiceCenter(oCountryIds, dealerId, zipLocator, Nothing, riskTypeId, manufacturerId, ServiceNetWrkID, isNetwork, MethodOfRepairId, False, UseZipDistrict, dealerType, FlagMethodOfRepairRecovery, blnCheckAcctSetting)
@@ -2122,19 +2122,19 @@ Public Class ServiceCenter
         dv.Sort = GetLocateServiceCenterResultsSortExp()
         Return dv
     End Function
-    Public Shared Function LocateServiceCenterByCity(ByVal dealerId As Guid, _
-                                            ByVal zipLocator As String, _
-                                            ByVal city As String, _
-                                            ByVal riskTypeId As Guid, _
-                                            ByVal manufacturerId As Guid, _
-                                            ByVal covTypeCode As String, _
-                                            ByVal oCountryIds As ArrayList, _
-                                            ByVal ServiceNetWrkID As Guid, _
-                                            ByVal isNetwork As Boolean, _
-                                             ByVal MethodOfRepairId As Guid, _
-                                            Optional ByVal dealerType As String = "", _
-                                            Optional ByVal FlagMethodOfRepairRecovery As Boolean = False, _
-                                            Optional ByVal MethodOfRepairType As String = Nothing, _
+    Public Shared Function LocateServiceCenterByCity(ByVal dealerId As Guid,
+                                            ByVal zipLocator As String,
+                                            ByVal city As String,
+                                            ByVal riskTypeId As Guid,
+                                            ByVal manufacturerId As Guid,
+                                            ByVal covTypeCode As String,
+                                            ByVal oCountryIds As ArrayList,
+                                            ByVal ServiceNetWrkID As Guid,
+                                            ByVal isNetwork As Boolean,
+                                             ByVal MethodOfRepairId As Guid,
+                                            Optional ByVal dealerType As String = "",
+                                            Optional ByVal FlagMethodOfRepairRecovery As Boolean = False,
+                                            Optional ByVal MethodOfRepairType As String = Nothing,
                                             Optional ByVal blnCheckAcctSetting As Boolean = False) As LocateServiceCenterResultsDv
         Dim dal As New ServiceCenterDAL
         Dim dv As New DataView
@@ -2142,12 +2142,12 @@ Public Class ServiceCenter
         dv = FilterView(ds, covTypeCode, zipLocator, False, FlagMethodOfRepairRecovery, MethodOfRepairType)
         Return dv
     End Function
-    Public Shared Function GetAllServiceCenter(ByVal oCountryIds As ArrayList, ByVal MethodOfRepairId As Guid, _
+    Public Shared Function GetAllServiceCenter(ByVal oCountryIds As ArrayList, ByVal MethodOfRepairId As Guid,
                                                Optional ByVal blnCheckAcctSetting As Boolean = False) As DataView
         Dim MethodOfRepairType As String = LookupListNew.GetCodeFromId(LookupListNew.LK_METHODS_OF_REPAIR, MethodOfRepairId)
         Dim blnMethodOfRepairRLG As Boolean = False
-        If MethodOfRepairType = Codes.METHOD_OF_REPAIR__RECOVERY Or _
-               MethodOfRepairType = Codes.METHOD_OF_REPAIR__GENERAL Or _
+        If MethodOfRepairType = Codes.METHOD_OF_REPAIR__RECOVERY Or
+               MethodOfRepairType = Codes.METHOD_OF_REPAIR__GENERAL Or
                MethodOfRepairType = Codes.METHOD_OF_REPAIR__LEGAL Then
             blnMethodOfRepairRLG = True
         End If
@@ -2168,11 +2168,11 @@ Public Class ServiceCenter
 
     End Function
     Private Shared Function GetLocateServiceCenterResultsSortExp() As String
-        Return LocateServiceCenterResultsDv.COL_NAME_DEALERS_SVC_FLAG & " DESC, " & _
-                LocateServiceCenterResultsDv.COL_NAME_SAME_ZIP_FLAG & " DESC, " & _
-                LocateServiceCenterResultsDv.COL_NAME_RATING_CODE_SORT & ", " & _
-                LocateServiceCenterResultsDv.COL_NAME_ZIP_LOCATOR_SORT & ", " & _
-                LocateServiceCenterResultsDv.COL_NAME_DEALER_PREF_FLAG & " DESC, " & _
+        Return LocateServiceCenterResultsDv.COL_NAME_DEALERS_SVC_FLAG & " DESC, " &
+                LocateServiceCenterResultsDv.COL_NAME_SAME_ZIP_FLAG & " DESC, " &
+                LocateServiceCenterResultsDv.COL_NAME_RATING_CODE_SORT & ", " &
+                LocateServiceCenterResultsDv.COL_NAME_ZIP_LOCATOR_SORT & ", " &
+                LocateServiceCenterResultsDv.COL_NAME_DEALER_PREF_FLAG & " DESC, " &
                 LocateServiceCenterResultsDv.COL_NAME_MAN_AUTH_FLAG & " DESC"
     End Function
 
@@ -2304,7 +2304,7 @@ Public Class ServiceCenter
 
 #Region "Custom Validation"
 
-    <AttributeUsage(AttributeTargets.Property Or AttributeTargets.Field)> _
+    <AttributeUsage(AttributeTargets.Property Or AttributeTargets.Field)>
     Public NotInheritable Class ValidEmail
         Inherits ValidBaseAttribute
 
@@ -2324,7 +2324,7 @@ Public Class ServiceCenter
 
     End Class
 
-    <AttributeUsage(AttributeTargets.Property Or AttributeTargets.Field)> _
+    <AttributeUsage(AttributeTargets.Property Or AttributeTargets.Field)>
     Public NotInheritable Class EmailAddress
         Inherits ValidBaseAttribute
 
@@ -2345,7 +2345,7 @@ Public Class ServiceCenter
 
     End Class
 
-    <AttributeUsage(AttributeTargets.Property Or AttributeTargets.Field)> _
+    <AttributeUsage(AttributeTargets.Property Or AttributeTargets.Field)>
     Public NotInheritable Class CcEmailAddress
         Inherits ValidBaseAttribute
 
@@ -2365,7 +2365,7 @@ Public Class ServiceCenter
         End Function
 
     End Class
-    <AttributeUsage(AttributeTargets.Property Or AttributeTargets.Field)> _
+    <AttributeUsage(AttributeTargets.Property Or AttributeTargets.Field)>
     Public NotInheritable Class ValidAmount
         Inherits ValidBaseAttribute
 
@@ -2385,7 +2385,7 @@ Public Class ServiceCenter
         End Function
     End Class
 
-    <AttributeUsage(AttributeTargets.Property Or AttributeTargets.Field)> _
+    <AttributeUsage(AttributeTargets.Property Or AttributeTargets.Field)>
     Public NotInheritable Class ValueMandatoryConditionally
         Inherits ValidBaseAttribute
 
@@ -2404,7 +2404,7 @@ Public Class ServiceCenter
         End Function
     End Class
 
-    <AttributeUsage(AttributeTargets.Property Or AttributeTargets.Field)> _
+    <AttributeUsage(AttributeTargets.Property Or AttributeTargets.Field)>
     Public NotInheritable Class ValueMethodOfRepair
         Inherits ValidBaseAttribute
 
@@ -2424,7 +2424,7 @@ Public Class ServiceCenter
         End Function
     End Class
     'START  DEF-2818
-    <AttributeUsage(AttributeTargets.Property Or AttributeTargets.Field)> _
+    <AttributeUsage(AttributeTargets.Property Or AttributeTargets.Field)>
     Public NotInheritable Class ValidPriceListCode
         Inherits ValidBaseAttribute
 
@@ -2460,10 +2460,13 @@ Public Class ServiceCenter
 
         Public Overrides Function IsValid(ByVal valueToCheck As Object, ByVal objectToValidate As Object) As Boolean
             Dim obj As ServiceCenter = CType(objectToValidate, ServiceCenter)
-            
-            If Not obj.ClaimReservedBasedOnXcd.Equals(string.Empty) AndAlso obj.ClaimReservedPercent is Nothing then
-                Return False
+
+            If Not obj Is Nothing Then
+                If Not String.IsNullOrWhiteSpace(obj.ClaimReservedBasedOnXcd) AndAlso obj.ClaimReservedPercent Is Nothing Then
+                    Return False
+                End If
             End If
+
             Return True
         End Function
     End Class
@@ -3109,7 +3112,7 @@ Public Class ServiceCenter
 
 #Region "Custom Validations"
 
-    <AttributeUsage(AttributeTargets.Property Or AttributeTargets.Field)> _
+    <AttributeUsage(AttributeTargets.Property Or AttributeTargets.Field)>
     Public NotInheritable Class DiscountPercentInValidRange
         Inherits ValidBaseAttribute
         Private _fieldDisplayName As String
@@ -3130,7 +3133,7 @@ Public Class ServiceCenter
         End Function
     End Class
 
-    <AttributeUsage(AttributeTargets.Property Or AttributeTargets.Field)> _
+    <AttributeUsage(AttributeTargets.Property Or AttributeTargets.Field)>
     Public NotInheritable Class ValueIsAnInteger
         Inherits ValidBaseAttribute
         Private _fieldDisplayName As String
@@ -3155,7 +3158,7 @@ Public Class ServiceCenter
 #End Region
 
 
-    <AttributeUsage(AttributeTargets.Property Or AttributeTargets.Field)> _
+    <AttributeUsage(AttributeTargets.Property Or AttributeTargets.Field)>
     Public NotInheritable Class ValidateByteLengthAttribute
         Inherits ValidBaseAttribute
         Implements IValidatorAttribute
@@ -3230,7 +3233,7 @@ End Class
 
 
 #Region "Custom Validations"
-<AttributeUsage(AttributeTargets.Property Or AttributeTargets.Field)> _
+<AttributeUsage(AttributeTargets.Property Or AttributeTargets.Field)>
 Public NotInheritable Class ValidateByteLengthAttribute
     Inherits ValidBaseAttribute
     Implements IValidatorAttribute

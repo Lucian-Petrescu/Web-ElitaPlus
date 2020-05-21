@@ -1642,7 +1642,7 @@ Partial Class PayClaimForm
         Try
             Me.txtOtherAmt.Text = Me.hdOtherAmt.Value.ToString
             Me.txtOtherTax.Text = computeTaxAmtByComputeMethod(CType(Me.txtOtherAmt.Text, Decimal), CType(Me.hdTaxRateClaimOther.Value, Decimal), hdComputeMethodClaimOther.Value)
-            If Me.hdApplyWithholdingFlagClaimParts.Value.ToUpper.Equals("Y") Then
+            If Me.hdApplyWithholdingFlagClaimOther.Value.ToUpper.Equals("Y") Then
                 tmpAmtSubjectToWithHoding += CType(Me.hdOtherAmt.Value, Decimal)
                 If Me.State.ClaimInvoiceBO.ServiceCenterWithholdingRate.Value > 0 Then Me.CheckBoxOtherWithhodling.Checked = True
             End If
