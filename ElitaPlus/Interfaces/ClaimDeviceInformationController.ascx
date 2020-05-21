@@ -21,9 +21,9 @@
             <asp:BoundField HeaderText="IMEI_NUM" DataField="ImeiNumber" HtmlEncode="false" HeaderStyle-HorizontalAlign="Center" />
             <asp:BoundField HeaderText="SERIAL_NUM" DataField="SerialNumber" HtmlEncode="false" HeaderStyle-HorizontalAlign="Center" />
             <asp:BoundField HeaderText="REGISTERED_ITEM" DataField="RegisteredItemName" HtmlEncode="false" HeaderStyle-HorizontalAlign="Center" />
-            <%--<asp:BoundField HeaderText="COLOR" DataField="Color" HtmlEncode="false" HeaderStyle-HorizontalAlign="Center" />
+            <asp:BoundField HeaderText="COLOR" DataField="Color" HtmlEncode="false" HeaderStyle-HorizontalAlign="Center" />
             <asp:BoundField HeaderText="CAPACITY" DataField="Memory" HtmlEncode="false" HeaderStyle-HorizontalAlign="Center" />
-            <asp:BoundField HeaderText="CARRIER" DataField="Carrier" HtmlEncode="false" HeaderStyle-HorizontalAlign="Center" />--%>
+            <%--<asp:BoundField HeaderText="CARRIER" DataField="Carrier" HtmlEncode="false" HeaderStyle-HorizontalAlign="Center" />--%>
             <asp:BoundField HeaderText="EQUIPMENT_TYPE" DataField="EquipmentType" HtmlEncode="false" HeaderStyle-HorizontalAlign="Center" />
         </Columns>
     </asp:GridView>
