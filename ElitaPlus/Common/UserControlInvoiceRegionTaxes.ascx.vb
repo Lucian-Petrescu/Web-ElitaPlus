@@ -239,7 +239,7 @@ Partial Class UserControlInvoiceRegionTaxes
                     objInvoiceRegionTaxes.InvoiceTransactionId = InvoicetransId 'Me.TheState.invoicetransid
                     .InvoiceRegionTaxDV = objInvoiceRegionTaxes.GetInvoiceRegionTax()
                     dtexistingvalues = .InvoiceRegionTaxDV.Table.Copy()
-                    blnNewSearch = True
+                    'blnNewSearch = True
                 End If
             End With
 
@@ -273,7 +273,7 @@ Partial Class UserControlInvoiceRegionTaxes
                 colonSepertor.Visible = True
             End If
             Me.GridIIBBTaxes.AutoGenerateColumns = False
-            SortAndBindGrid(blnNewSearch)
+            SortAndBindGrid()
 
             Me.SetControlState()
         Catch ex As Exception
@@ -398,7 +398,7 @@ Partial Class UserControlInvoiceRegionTaxes
         GridIIBBTaxes.EditIndex = e.NewEditIndex
     End Sub
 
-    Private Sub SortAndBindGrid(Optional ByVal blnShowErr As Boolean = True)
+    Private Sub SortAndBindGrid()
 
         Dim objInvoiceRegionTaxes As New InvoiceRegionTax
         Me.TheState.PageIndex = Me.GridIIBBTaxes.PageIndex
@@ -422,9 +422,9 @@ Partial Class UserControlInvoiceRegionTaxes
             Me.TheState.IsGridAddNew = True
             'Me.TheState.IsGridVisible = False
             Me.lblRecordCount.Text = "0 " & TranslationBase.TranslateLabelOrMessage(Message.MSG_RECORDS_FOUND)
-            If blnShowErr Then
-                Me.ThePage.MasterPage.MessageController.AddInformation(ElitaPlus.ElitaPlusWebApp.Message.MSG_NO_RECORDS_FOUND, True)
-            End If
+            'If blnShowErr Then
+            '    Me.ThePage.MasterPage.MessageController.AddInformation(ElitaPlus.ElitaPlusWebApp.Message.MSG_NO_RECORDS_FOUND, True)
+            'End If
         Else
             Me.TheState.bnoRow = False
             Me.GridIIBBTaxes.Enabled = True
