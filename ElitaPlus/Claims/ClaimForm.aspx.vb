@@ -2160,19 +2160,19 @@ Partial Class ClaimForm
             End If
             Me.PopulateControlFromBOProperty(Me.TextboxAuthorizedAmount, claimBo.AuthorizedAmount)
 
-            If claimBo.LoanerRquestedXcd.Trim <> String.Empty Then
+            If Not String.IsNullOrEmpty(claimBo.LoanerRquestedXcd) Then
                 TextboxLoanerRequested.Text = LookupListNew.GetDescriptionFromExtCode(LookupListNew.LK_YESNO_EXT, ElitaPlusIdentity.Current.ActiveUser.LanguageId, claimBo.LoanerRquestedXcd)
             End If
 
             'Me.PopulateControlFromBOProperty(Me.TextboxAuthorizedAmount, State.AuthorizedAmount)
             Dim objCountry As New Country(Me.State.MyBO.Company.CountryId)
-                If Not claimBo.ServiceCenterObject Is Nothing AndAlso claimBo.ServiceCenterObject.Id.Equals(objCountry.DefaultSCId) Then
-                    Me.State.IsTEMP_SVC = True
-                Else
-                    Me.State.IsTEMP_SVC = False
-                End If
+            If Not claimBo.ServiceCenterObject Is Nothing AndAlso claimBo.ServiceCenterObject.Id.Equals(objCountry.DefaultSCId) Then
+                Me.State.IsTEMP_SVC = True
             Else
-                Dim claim As MultiAuthClaim = CType(Me.State.MyBO, MultiAuthClaim)
+                Me.State.IsTEMP_SVC = False
+            End If
+        Else
+            Dim claim As MultiAuthClaim = CType(Me.State.MyBO, MultiAuthClaim)
             Me.PopulateControlFromBOProperty(Me.TextboxAuthorizedAmount, claim.AuthorizedAmount)
             'Me.PopulateControlFromBOProperty(Me.TextboxAuthorizedAmount, State.AuthorizedAmount)
             Me.State.claimAuthList = CType(Me.State.MyBO, MultiAuthClaim).ClaimAuthorizationChildren.OrderBy(Function(i) i.AuthorizationNumber).ToList
