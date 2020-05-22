@@ -1465,6 +1465,7 @@ Partial Class NewClaimForm
         Me.BindBOPropertyToLabel(Me.State.MyBO, "PickUpDate", Me.LabelPickUpDate)
         Me.BindBOPropertyToLabel(Me.State.MyBO, "AuthorizationNumber", Me.LabelInvoiceNumber)
         Me.BindBOPropertyToLabel(Me.State.MyBO, "NewDeviceSKU", Me.lblNewDeviceSKU)
+        Me.BindBOPropertyToLabel(Me.State.MyBO, "LoanerRequestedXcd", Me.lblLoanerRequested)
         Me.ClearGridHeadersAndLabelsErrSign()
     End Sub
 
@@ -1740,6 +1741,12 @@ Partial Class NewClaimForm
             End If
 
             Me.CheckBoxLoanerTaken.Checked = Me.State.MyBO.LoanerTaken
+
+            If Me.State.MyBO.LoanerRquestedXcd = Codes.EXT_YESNO_Y Then
+                ChkLoanerRequested.Checked = True
+            Else
+                ChkLoanerRequested.Checked = False
+            End If
 
             Me.PopulateControlFromBOProperty(Me.TextboxCALLER_TAX_NUMBER, .CallerTaxNumber)
 
@@ -2036,6 +2043,13 @@ Partial Class NewClaimForm
             End If
 
             Me.State.MyBO.LoanerTaken = Me.CheckBoxLoanerTaken.Checked
+
+            If Me.ChkLoanerRequested.Checked Then
+                Me.PopulateBOProperty(Me.State.MyBO, "LoanerRquestedXcd", Codes.EXT_YESNO_Y)
+            Else
+                Me.PopulateBOProperty(Me.State.MyBO, "LoanerRquestedXcd", Codes.EXT_YESNO_N)
+            End If
+
             If Me.PanelPoliceReport.Visible = True Then
                 'Dim blnExcludePoliceReportSave As Boolean
                 'If Me.moUserControlPoliceReport.isempty Then

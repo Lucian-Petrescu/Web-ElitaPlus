@@ -1085,6 +1085,24 @@ Partial Public Class ClaimForm
     Protected WithEvents TextboxConsumerPays As Global.System.Web.UI.WebControls.TextBox
     
     '''<summary>
+    '''LabelLoanerRequested control.
+    '''</summary>
+    '''<remarks>
+    '''Auto-generated field.
+    '''To modify move field declaration from designer file to code-behind file.
+    '''</remarks>
+    Protected WithEvents LabelLoanerRequested As Global.System.Web.UI.WebControls.Label
+    
+    '''<summary>
+    '''TextboxLoanerRequested control.
+    '''</summary>
+    '''<remarks>
+    '''Auto-generated field.
+    '''To modify move field declaration from designer file to code-behind file.
+    '''</remarks>
+    Protected WithEvents TextboxLoanerRequested As Global.System.Web.UI.WebControls.TextBox
+    
+    '''<summary>
     '''LabelTotalPaid control.
     '''</summary>
     '''<remarks>

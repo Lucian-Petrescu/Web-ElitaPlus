@@ -511,6 +511,16 @@
                                 </td>
                             </tr>
                             <tr>
+                                <td nowrap="nowrap" align="right">&nbsp;
+                                    <asp:Label ID="LabelLoanerRequested" runat="server">Loaner_Requested</asp:Label>
+                                </td>
+                                <td nowrap="nowrap">
+                                    <asp:TextBox ID="TextboxLoanerRequested" TabIndex="-1" runat="server" SkinID="MediumTextBox" ReadOnly="True"></asp:TextBox>
+                                </td>
+                                <td nowrap="nowrap" align="right" colspan="2">
+                                </td>
+                            </tr>
+                            <tr>
                                 <td colspan="2"></td>
                                 <td nowrap="nowrap" align="right">
                                     <asp:Label ID="LabelTotalPaid" runat="server">Total_Paid</asp:Label>

@@ -337,6 +337,7 @@ Public Class LookupListCache
     Public Const LK_ACCTBO As String = "ACCTBO"
     Public Const LK_ALLOCMRK As String = "ALLOCMRK"
     Public Const LK_YESNO_NUM As String = "YESNO_NUM"
+    Public Const LK_YESNO_EXT As String = "YESNO"
     Public Const LK_POSTINGTYPE As String = "POSTTYPE"
     Public Const LK_ACCT_SYSTEM As String = "ACCTSYS"
     Public Const LK_ACCOUNTING_EVENT_TYPE As String = "ACCTTRANSTYP"
