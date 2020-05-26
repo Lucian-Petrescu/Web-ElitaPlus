@@ -266,6 +266,7 @@
                         </tbody>
                     </table>
                     <br />
+                    <div  runat="server" id="divDeviceInfoContainer">
                      <div class="dataContainer">
                          <h2 class="dataGridHeader" runat="server" id="headerDeviceInfo">
                             <asp:Label runat="server" ID="lblModifyDvcInfo" Text="MODIFY_DEVICE_INFORMATION"></asp:Label></h2>
@@ -359,6 +360,7 @@
                         </tr>
                     </table>
                       </div></div>
+                    </div> 
                        
                 </div>
             </div>
