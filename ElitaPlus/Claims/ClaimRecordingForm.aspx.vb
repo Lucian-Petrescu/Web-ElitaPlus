@@ -563,6 +563,7 @@ Public Class ClaimRecordingForm
     End Function
 
     Private Shared Function GetMakesAndModels(dealer As String) As Object
+
         ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12
         Dim oWebPasswd As WebPasswd = New WebPasswd(Guid.Empty, LookupListNew.GetIdFromCode(Codes.SERVICE_TYPE, Codes.SERVICE_TYPE__UTILTY_SERVICE), False)
         Dim client = New UtilityWcfClient(UtiliutyEndPointName, oWebPasswd.Url)
@@ -619,7 +620,7 @@ Public Class ClaimRecordingForm
                     GridItems.DataSource = item.RegisteredItems
                     GridItems.DataBind()
 
-                    ModifiedDeviceInfo()
+                    ShowHideModifyDeviceInfoControl()
                 Case GetType(ActionResponse)
                     MoveToNextPage()
                 Case GetType(DynamicFulfillmentResponse)
@@ -631,6 +632,25 @@ Public Class ClaimRecordingForm
             End Select
         End If
     End Sub
+
+    Private Sub ShowHideModifyDeviceInfoControl()
+
+        Dim oCertificate As Certificate = New Certificate(State.CertificateId)
+
+        If Not oCertificate.Dealer Is Nothing Then
+            Dim allowEnrolledDeviceUpdate As AttributeValue = oCertificate.Dealer.AttributeValues.FirstOrDefault(Function(attributeValue) attributeValue.Attribute.UiProgCode = Codes.DLR_ATTR_ALLOW_MODIFY_CLAIMED_DEVICE)
+
+            If Not allowEnrolledDeviceUpdate Is Nothing AndAlso allowEnrolledDeviceUpdate.Value = Codes.YESNO_Y Then
+                divDeviceInfoContainer.Attributes("style") = "display: block"
+                ModifiedDeviceInfo()
+            Else
+                divDeviceInfoContainer.Attributes("style") = "display: none"
+            End If
+
+        End If
+
+    End Sub
+
     Private Sub MoveToNextPage()
         Dim wsResponse As BaseClaimRecordingResponse
         Try
