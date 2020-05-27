@@ -8,6 +8,7 @@
 <%@ Register TagPrefix="Elita" TagName="UserControlConsequentialDamage" Src="UserControlConsequentialDamage.ascx" %>
 <%@ Register Assembly="Microsoft.Web.UI.WebControls" Namespace="Microsoft.Web.UI.WebControls" TagPrefix="iewc" %>
 <asp:Content ID="Content1" ContentPlaceHolderID="HeadPlaceHolder" runat="server">
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self' data: gap: https://*.core.windows.net/ 'unsafe-eval'; style-src 'self' https://*.core.windows.net/ 'unsafe-inline'; script-src 'self' https://*.core.windows.net/ 'unsafe-inline' 'unsafe-eval';  media-src *" />
     <style type="text/css">
         .style1 {
             height: 20px;
