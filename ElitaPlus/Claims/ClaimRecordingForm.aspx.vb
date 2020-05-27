@@ -543,7 +543,6 @@ Public Class ClaimRecordingForm
             moProtectionEvtDtl.ClaimNumber = State.ClaimBo.ClaimNumber
             moProtectionEvtDtl.ClaimStatus = LookupListNew.GetClaimStatusFromCode(Authentication.CurrentUser.LanguageId, State.ClaimBo.StatusCode)
             moProtectionEvtDtl.ClaimStatusCss = If(State.ClaimBo.Status = BasicClaimStatus.Active, "StatActive", "StatClosed")
-            moProtectionEvtDtl.ClaimStatus = State.ClaimBo.Status
             moProtectionEvtDtl.DateOfLoss = GetDateFormattedStringNullable(State.ClaimBo.LossDate.Value)
             moProtectionEvtDtl.TypeOfLoss = LookupListNew.GetDescriptionFromId(LookupListNew.LK_RISKTYPES, State.ClaimBo.CertificateItem.RiskTypeId)
         End If
