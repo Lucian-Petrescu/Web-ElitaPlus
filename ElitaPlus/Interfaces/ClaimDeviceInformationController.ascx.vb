@@ -75,43 +75,6 @@ Public Class ClaimDeviceInformationController
 
 #Region "GridView Events"
 
-    'Private Sub GvClaimDeviceInformation_RowCommand(sender As Object, e As GridViewCommandEventArgs) Handles GvClaimDeviceInformation.RowCommand
-    '    Try
-    '        'If e.CommandName = "" Then
-    '        '    Dim lblDealerCode As Label = CType(e.Row.FindControl(GRID_CTRL_NAME_LBL_DEALER_CODE), Label)
-    '        '    Dim ddlMake As DropDownList = CType(e.Row.FindControl(GRID_CTRL_NAME_DDL_MAKE), DropDownList)
-    '        '    Dim txtMake As TextBox = CType(e.Row.FindControl(GRID_CTRL_NAME_TXT_MAKE), TextBox)
-    '        '    Dim ddlModel As DropDownList = CType(e.Row.FindControl(GRID_CTRL_NAME_DDL_MODEL), DropDownList)
-    '        '    Dim txtModel As TextBox = CType(e.Row.FindControl(GRID_CTRL_NAME_TXT_MODEL), TextBox)
-
-    '        'End If
-
-    '        'GetGuidStringFromByteArray(CType(dvRow(Task.TaskSearchDV.COL_TASK_ID), Byte()))
-    '        Dim index As Integer
-    '        If (e.CommandName = GRID_CTRL_COMMAND_NAME_EDIT) Then
-    '            index = CInt(e.CommandArgument)
-
-    '            Me.GvClaimDeviceInformation.DataSource = Me.ClaimBO.ClaimedEnrolledEquipments()
-    '            Me.GvClaimDeviceInformation.DataBind()
-    '            'Do the Edit here
-
-    '            'Set the IsEditMode flag to TRUE
-    '            'Me.State.IsEditMode = True
-
-    '            'Me.State.TaskID = New Guid(CType(Me.Grid.Rows(index).Cells(Me.GRID_COL_TASK_ID_IDX).FindControl(Me.GRID_CTRL_NAME_LABLE_TASK_ID), Label).Text)
-    '            'Me.State.MyBO = New Task(Me.State.TaskID)
-
-    '            'Me.PopulateGrid()
-
-    '            'Me.State.PageIndex = Grid.PageIndex
-
-    '            'Me.SetControlState()
-
-    '        End If
-    '    Catch ex As Exception
-    '        'Me.HandleErrors(ex, Me.MasterPage.MessageController)
-    '    End Try
-    'End Sub
     Public Sub RowCommand(ByVal sender As System.Object, ByVal e As System.Web.UI.WebControls.GridViewCommandEventArgs)
         Try
 
@@ -234,37 +197,6 @@ Public Class ClaimDeviceInformationController
         Catch ex As Exception
             Me.Page.HandleErrors(ex, Me.Page.MasterPage.MessageController)
         End Try
-    End Sub
-
-    Protected Sub btnSave_Click(ByVal sender As Object, ByVal e As EventArgs)
-
-
-
-        'TextBox txtOrderID = (TextBox)GridView1.Rows[e.RowIndex].FindControl("txtOrderID");
-        'DropDownList cmbPart = (DropDownList)GridView1.Rows[e.RowIndex].FindControl("cmbPart");
-        'DropDownList cmbStage = (DropDownList)GridView1.Rows[e.RowIndex].FindControl("cmbStage");
-        'DropDownList cmbOperation = (DropDownList)GridView1.Rows[e.RowIndex].FindControl("cmbOperation");
-        'TextBox txtUpdateDate = (TextBox)GridView1.Rows[e.RowIndex].FindControl("txtUpdateDate");
-        'TextBox txtUpdater = (TextBox)GridView1.Rows[e.RowIndex].FindControl("txtUpdater");
-
-        'Try
-        '    PopulateBOFromForm()
-        '    If (Me.State.MyBO.IsDirty) Then
-        '        Me.State.MyBO.Save()
-        '        Me.State.IsAfterSave = True
-        '        Me.State.IsGridAddNew = False
-        '        Me.MasterPage.MessageController.AddSuccess(Me.MSG_RECORD_SAVED_OK, True)
-        '        Me.State.searchDV = Nothing
-        '        Me.State.MyBO = Nothing
-        '        Me.ReturnFromEditing()
-        '    Else
-        '        Me.MasterPage.MessageController.AddWarning(Me.MSG_RECORD_NOT_SAVED, True)
-        '        Me.ReturnFromEditing()
-        '    End If
-        'Catch ex As Exception
-        '    Me.HandleErrors(ex, Me.MasterPage.MessageController)
-        'End Try
-
     End Sub
 
 #End Region
