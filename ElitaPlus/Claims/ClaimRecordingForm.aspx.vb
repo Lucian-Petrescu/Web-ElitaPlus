@@ -556,17 +556,17 @@ Public Class ClaimRecordingForm
     ''' <returns>Instance of <see cref="ClaimRecordingServiceClient"/></returns>
     Private Shared Function GetClient() As ClaimRecordingServiceClient
         ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12
-        Dim client = New ClaimRecordingServiceClient(EndPointName, "http://localhost/ElitaClaimService/ClaimRecordingService.svc")
-        client.ClientCredentials.UserName.UserName = "elita1"
-        client.ClientCredentials.UserName.Password = "elita1"
+        Dim client = New ClaimRecordingServiceClient(EndPointName, ConfigurationManager.AppSettings(ServiceUrl))
+        client.ClientCredentials.UserName.UserName = ConfigurationManager.AppSettings(UserName)
+        client.ClientCredentials.UserName.Password = ConfigurationManager.AppSettings(Password)
         Return client
     End Function
 
     Private Shared Function GetMakesAndModels(dealer As String) As Object
         ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12
-        'Dim oWebPasswd As WebPasswd = New WebPasswd(Guid.Empty, LookupListNew.GetIdFromCode(Codes.SERVICE_TYPE, Codes.SERVICE_TYPE__UTILTY_SERVICE), False)
-        Dim client = New UtilityService.UtilityWcfClient(UtiliutyEndPointName, "http://elitaplus-modl.a2.assurant.com/ElitaInternalWSA2/Utilities/UtilityWcf.svc")
-        Dim token = client.LoginBody("ELP_WEB", "c2buiatqwdzgfly", Codes.SERVICE_TYPE_GROUP_NAME)
+        Dim oWebPasswd As WebPasswd = New WebPasswd(Guid.Empty, LookupListNew.GetIdFromCode(Codes.SERVICE_TYPE, Codes.SERVICE_TYPE__UTILTY_SERVICE), False)
+        Dim client = New UtilityWcfClient(UtiliutyEndPointName, oWebPasswd.Url)
+        Dim token = client.LoginBody(oWebPasswd.UserId, oWebPasswd.Password, Codes.SERVICE_TYPE_GROUP_NAME)
 
         Dim makesAndModels As Object
         If (Not String.IsNullOrEmpty(token)) Then

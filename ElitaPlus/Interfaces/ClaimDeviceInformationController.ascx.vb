@@ -1,6 +1,6 @@
 ﻿Imports System.Net
 Imports System.IO
-Imports Assurant.Elita.CommonConfiguration
+Imports Assurant.ElitaPlus.ElitaPlusWebApp.UtilityService
 
 Public Class ClaimDeviceInformationController
     Inherits System.Web.UI.UserControl
@@ -41,7 +41,7 @@ Public Class ClaimDeviceInformationController
 
 #Region "Constants"
 
-    Private Const BINDING_NAME_IUTILITYWCF = "CustomBinding_IUtilityWcf"
+    Private Const UtiliutyEndPointName = "CustomBinding_IUtilityWcf"
     Private Const DATA_TEXT_FIELD_NAME_MANUFACTURER = "MANUFACTURER"
     Private Const DATA_TEXT_FIELD_NAME_MODEL = "MODEL"
     Private Const GRID_CTRL_COMMAND_NAME_EDIT As String = "Edit"
@@ -117,7 +117,9 @@ Public Class ClaimDeviceInformationController
 
             If (e.CommandName = SAVE_COMMAND_NAME) Then
 
-                PopulateBOFromForm(CType(sender, GridView))
+                If Not PopulateBOFromGrid(CType(sender, GridView)) Then
+                    Exit Sub
+                End If
                 Me.ClaimBO.ClaimedEquipment.EndEdit()
                 Me.ClaimBO.ClaimedEquipment.SaveClaimDeviceInfo()
                 GvClaimDeviceInformation.EditIndex = -1
@@ -280,12 +282,10 @@ Public Class ClaimDeviceInformationController
     End Sub
 
     Private Shared Function GetMakesAndModels(dealer As String) As Object
-        Dim webPassword As Elita.Config.Common.IWebPassword = CommonConfigManager.Current.WebPasswordManager.GetWebPassword("UTILITY_SERVICE").Result()
-
         ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12
-        'Dim oWebPasswd As WebPasswd = New WebPasswd(Guid.Empty, LookupListNew.GetIdFromCode(Codes.SERVICE_TYPE, Codes.SERVICE_TYPE__UTILTY_SERVICE), False)
-        Dim client = New UtilityService.UtilityWcfClient(BINDING_NAME_IUTILITYWCF, "http://elitaplus-modl.a2.assurant.com/ElitaInternalWSA2/Utilities/UtilityWcf.svc")
-        Dim token = client.LoginBody("ELP_WEB", "c2buiatqwdzgfly", Codes.SERVICE_TYPE_GROUP_NAME)
+        Dim oWebPasswd As WebPasswd = New WebPasswd(Guid.Empty, LookupListNew.GetIdFromCode(Codes.SERVICE_TYPE, Codes.SERVICE_TYPE__UTILTY_SERVICE), False)
+        Dim client = New UtilityWcfClient(UtiliutyEndPointName, oWebPasswd.Url)
+        Dim token = client.LoginBody(oWebPasswd.UserId, oWebPasswd.Password, Codes.SERVICE_TYPE_GROUP_NAME)
 
         Dim makesAndModels As Object
         If (Not String.IsNullOrEmpty(token)) Then
@@ -297,21 +297,40 @@ Public Class ClaimDeviceInformationController
 
     End Function
 
-    Sub PopulateBOFromForm(ByVal pGridView As GridView)
+    Private Function PopulateBOFromGrid(ByVal pGridView As GridView) As Boolean
         Dim row As GridViewRow = pGridView.Rows(pGridView.EditIndex)
+        Dim blnUpdateSuccess As Boolean = True
         With Me.ClaimBO
-
             If Not .ClaimedEquipment Is Nothing Then
                 Dim lblId As Label = CType(row.FindControl(GRID_CTRL_NAME_LBL_ID), Label)
                 Dim _ClaimEquipment As ClaimEquipment = Me.ClaimBO.ClaimEquipmentChildren.GetChild(Guid.Parse(lblId.Text))
+                Dim ddlMake As DropDownList = CType(row.FindControl(GRID_CTRL_NAME_DDL_MAKE), DropDownList)
+                Dim txtMake As TextBox = CType(row.FindControl(GRID_CTRL_NAME_TXT_MAKE), TextBox)
                 Dim ddlModel As DropDownList = CType(row.FindControl(GRID_CTRL_NAME_DDL_MODEL), DropDownList)
                 Dim txtModel As TextBox = CType(row.FindControl(GRID_CTRL_NAME_TXT_MODEL), TextBox)
                 Dim txtImei As TextBox = CType(row.FindControl(GRID_CTRL_NAME_TXT_IMEI), TextBox)
                 Dim txtSerialNumber As TextBox = CType(row.FindControl(GRID_CTRL_NAME_TXT_SERIALNUM), TextBox)
                 Dim txtColor As TextBox = CType(row.FindControl(GRID_CTRL_NAME_TXT_COLOR), TextBox)
                 Dim txtCapacity As TextBox = CType(row.FindControl(GRID_CTRL_NAME_TXT_CAPACITY), TextBox)
+                Dim makeName As String
 
                 .ClaimedEquipment = _ClaimEquipment
+
+                If ddlMake.Items.Count > 0 Then
+                    makeName = ddlMake.SelectedItem.Text
+                Else
+                    makeName = txtMake.Text
+                End If
+
+                Dim makeId As Guid = LookupListNew.GetIdFromDescription(LookupListNew.GetManufacturerLookupList(Authentication.CompanyGroupId), makeName)
+                If makeId.Equals(Guid.Empty) Then
+                    Me.Page.MasterPage.MessageController.AddError(ElitaPlus.Common.ErrorCodes.BO_ERROR_NO_MANUFACTURER_FOUND, True)
+                    blnUpdateSuccess = False
+                    Return blnUpdateSuccess
+                Else
+                    Me.Page.MasterPage.MessageController.Clear()
+                    .ClaimedEquipment.ManufacturerId = makeId
+                End If
 
                 If ddlModel.Items.Count > 0 Then
                     .ClaimedEquipment.Model = ddlModel.SelectedItem.Text
@@ -324,10 +343,9 @@ Public Class ClaimDeviceInformationController
                 .ClaimedEquipment.Memory = txtCapacity.Text
 
             End If
-
         End With
-
-    End Sub
+        Return blnUpdateSuccess
+    End Function
 
 #End Region
 

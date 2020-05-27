@@ -283,7 +283,6 @@
     <Compile Include="Certificates\CheckPayment.vb" />
     <Compile Include="Claims\CaseConseqDamage.vb" />
     <Compile Include="Claims\ClaimAgingDetails.vb" />
-    <Compile Include="Claims\ClaimDeviceInfo.vb" />
     <Compile Include="Claims\ClaimShipping.vb" />
     <Compile Include="Claims\ClaimStatusByUserRole.vb" />
     <Compile Include="Claims\PreInvoice.vb" />

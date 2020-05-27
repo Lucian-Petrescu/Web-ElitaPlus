@@ -447,7 +447,6 @@ Partial Class NewClaimForm
                 Me.State.ClaimIssuesView = Me.State.MyBO.GetClaimIssuesView()
                 PopulateDropdowns()
                 PopulateServiceCenterSelected()
-                'PopulateClaimEquipment()
 
                 ddlIssueCode.Attributes.Add("onchange", String.Format("RefreshDropDownsAndSelect('{0}','{1}',true,'{2}');", ddlIssueCode.ClientID, ddlIssueDescription.ClientID, "D"))
                 ddlIssueDescription.Attributes.Add("onchange", String.Format("RefreshDropDownsAndSelect('{0}','{1}',true,'{2}');", ddlIssueCode.ClientID, ddlIssueDescription.ClientID, "C"))
@@ -522,7 +521,7 @@ Partial Class NewClaimForm
                 End If
             End If
 
-            PopulateClaimEquipment()
+            PopulateClaimedEnrolledDetails()
 
             BindBoPropertiesToLabels()
             If (Me.CheckIfComingFromCreateClaimConfirm()) Then
@@ -1816,7 +1815,7 @@ Partial Class NewClaimForm
         End With
     End Sub
 
-    Sub PopulateClaimEquipment()
+    Sub PopulateClaimedEnrolledDetails()
         With Me.State.MyBO
             If Not .EnrolledEquipment Is Nothing Or Not .ClaimedEquipment Is Nothing Then
                 With Me.ucClaimDeviceInfo

@@ -4,7 +4,6 @@
     <h2 class="dataGridHeader">
         <asp:Label runat="server" ID="lblClaimDeviceInformation">CLAIM_DEVICE_INFORMATION</asp:Label>
     </h2>
-
     <asp:GridView ID="GvClaimDeviceInformation" runat="server" Width="100%" AutoGenerateColumns="False"
         CellPadding="1" AllowPaging="False" SkinID="DetailPageGridView" CssClass="grid-view"  AllowSorting="False"
         DataKeyNames="Id" OnRowEditing="GvClaimDeviceInformation_RowEditing" OnRowCommand="RowCommand">
