@@ -1016,10 +1016,11 @@ Partial Class ClaimIssueActionAnswerForm
 
             If GridViewDeviceSelection.Visible AndAlso GridViewDeviceSelection.Rows.Count > 0 Then
                 ControlMgr.SetEnableControl(Me, btnSearchInventory, True)
-                Select Case State.SelectedActionCode
-                    Case IssueActionCode.GetDevSku, IssueActionCode.LflDevSel
-                        ControlMgr.SetVisibleControl(Me, btnSearchInventory, False)
-                End Select
+                If State.SelectedActionCode = IssueActionCode.GetDevSku Then
+                    ControlMgr.SetVisibleControl(Me, btnSearchInventory, False)
+                ElseIf State.SelectedActionCode = IssueActionCode.LflDevSel Then
+                    ControlMgr.SetVisibleControl(Me, btnSearchInventory, True)
+                End If
             Else
                 ControlMgr.SetEnableControl(Me, btnSearchInventory, False)
             End If

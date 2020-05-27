@@ -11,34 +11,31 @@ Imports System.Threading.Tasks
 
 <Assembly: OwinStartup(GetType(Startup))>
 Public Class Startup
-    Private ReadOnly clientId As String = ConfigurationManager.AppSettings("Okta.ClientId")
-    Private ReadOnly redirectUri As String = ConfigurationManager.AppSettings("Okta.RedirectUri")
-    Private ReadOnly authority As String = ConfigurationManager.AppSettings("Okta.OrgUri")
-    Private ReadOnly clientSecret As String = ConfigurationManager.AppSettings("Okta.ClientSecret")
-    Private ReadOnly postLogoutRedirectUri As String = ConfigurationManager.AppSettings("Okta.PostLogoutRedirectUri")
-    Private ReadOnly responseType As String = ConfigurationManager.AppSettings("Okta.ResponseType")
-    Private ReadOnly scope As String = ConfigurationManager.AppSettings("Okta.Scope")
+    Private ReadOnly _clientId As String = ConfigurationManager.AppSettings("Okta.ClientId")
+    Private ReadOnly _redirectUri As String = ConfigurationManager.AppSettings("Okta.RedirectUri")
+    Private ReadOnly _authority As String = ConfigurationManager.AppSettings("Okta.OrgUri")
+    Private ReadOnly _clientSecret As String = ConfigurationManager.AppSettings("Okta.ClientSecret")
+    Private ReadOnly _postLogoutRedirectUri As String = ConfigurationManager.AppSettings("Okta.PostLogoutRedirectUri")
+    Private ReadOnly _responseType As String = ConfigurationManager.AppSettings("Okta.ResponseType")
+    Private ReadOnly _scope As String = ConfigurationManager.AppSettings("Okta.Scope")
 
     Public Sub Configuration(ByVal app As IAppBuilder)
         app.SetDefaultSignInAsAuthenticationType(CookieAuthenticationDefaults.AuthenticationType)
         app.UseCookieAuthentication(New CookieAuthenticationOptions())
 
         Dim requireHttpsMetadata As Boolean = True
-        'If (EnvironmentContext.Current.Environment = Environments.Development) Then
-        '    requireHttpsMetadata = False
-        'End If
         If (EnvironmentContext.Current.Environment <> Environments.Development) Then 'For Non Local
 
 
             app.UseOpenIdConnectAuthentication(New OpenIdConnectAuthenticationOptions With {
                 .RequireHttpsMetadata = requireHttpsMetadata,
-                .ClientId = clientId,
-                .ClientSecret = clientSecret,
-                .Authority = authority,
-                .RedirectUri = redirectUri,
-                .ResponseType = responseType,
-                .Scope = scope,
-                .PostLogoutRedirectUri = postLogoutRedirectUri,
+                .ClientId = _clientId,
+                .ClientSecret = _clientSecret,
+                .Authority = _authority,
+                .RedirectUri = _redirectUri,
+                .ResponseType = _responseType,
+                .Scope = _scope,
+                .PostLogoutRedirectUri = _postLogoutRedirectUri,
                 .TokenValidationParameters = New TokenValidationParameters With {
                     .NameClaimType = "name",
                     .RoleClaimType = "groups",
@@ -59,8 +56,8 @@ Public Class Startup
 
                                 'Dim networkId As String = identity.Claims.FirstOrDefault(Function(claim) claim.Type = "preferred_username").Value.Substring(0, 6)
                                 Dim networkId As String = identity.Claims.FirstOrDefault(Function(claim) claim.Type = "preferred_username").Value
-                                If networkId.IndexOf("@") > 0 Then
-                                    networkId = networkId.Substring(0, networkId.IndexOf("@"))
+                                If networkId.IndexOf("@", StringComparison.Ordinal) > 0 Then
+                                    networkId = networkId.Substring(0, networkId.IndexOf("@", StringComparison.Ordinal))
                                 End If
 
                                 ' Get the OKTA groups for this user
@@ -72,8 +69,8 @@ Public Class Startup
 
                                 HttpContext.Current.Session(ElitaPlusPage.PRINCIPAL_SESSION_KEY) = principal
 
-                                System.Threading.Thread.CurrentPrincipal = DirectCast(HttpContext.Current.Session(ElitaPlusPage.PRINCIPAL_SESSION_KEY), ElitaPlusPrincipal)
-                                HttpContext.Current.User = System.Threading.Thread.CurrentPrincipal
+                                Threading.Thread.CurrentPrincipal = DirectCast(HttpContext.Current.Session(ElitaPlusPage.PRINCIPAL_SESSION_KEY), ElitaPlusPrincipal)
+                                HttpContext.Current.User = Threading.Thread.CurrentPrincipal
 
                                 'will have to test if the User is part of either 'RegularGroup' or 'SecureGroup' or 'DataProtectionGroup'
                                 If groups Is Nothing OrElse (Not groups.Contains(Elita.Configuration.ElitaConfig.Current.Security.RegularGroup) _
@@ -87,7 +84,7 @@ Public Class Startup
                                     Dim sLoginMessage As String = TranslationBase.TranslateLabelOrMessage(ELPWebConstants.UI_INVALID_LOGIN_RIGHTS_ERR_MSG, TranslationBase.Get_EnglishLanguageID)
                                     HttpContext.Current.Session(ELPWebConstants.SESSION_LOGIN_ERROR_MESSAGE) = sLoginMessage
 
-                                    ' at the end, clear okta authentification and rediret to the postLogoutRedirectUri url
+                                    ' at the end, clear okta authentication and redirect to the postLogoutRedirectUri url
                                     context.OwinContext.Authentication.SignOut(
                                         CookieAuthenticationDefaults.AuthenticationType,
                                         OpenIdConnectAuthenticationDefaults.AuthenticationType
@@ -96,8 +93,9 @@ Public Class Startup
 
                                 Return Task.CompletedTask
                             Catch ex As Exception '
-                                HttpContext.Current.Session(ELPWebConstants.SESSION_LOGIN_ERROR_MESSAGE) = "Authentication to Elita failed, please see with your administrator to get access through Elita." '
-                                context.Response.Redirect(ELPWebConstants.APPLICATION_PATH & "/Common/ErrorForm.aspx") '
+                                HttpContext.Current.Session(ELPWebConstants.Session_Elita_Authz_Exception) = "Authorization to Elita failed. User not configured correctly or not found. Please see with your administrator to get access through Elita." '
+
+                                Return Task.CompletedTask
                             End Try '
 
                         End Function,
@@ -110,7 +108,7 @@ Public Class Startup
                                 'This case should happen only if inside the Okta configuration (which is done by the Assurant Okta team), the user is not expected to be able to use the Elita application.
                                 'So even if the user is existing in Elita and has rights, it won't work unless this user has the right to use Elita from the Okta side.
                                 HttpContext.Current.Session(ELPWebConstants.SESSION_LOGIN_ERROR_MESSAGE) = "Authentication failed, please see with your administrator to get access through Okta."
-                                n.Response.Redirect(postLogoutRedirectUri)
+                                n.Response.Redirect(_postLogoutRedirectUri)
                             End If
 
                             Return Task.FromResult(Of Object)(Nothing)

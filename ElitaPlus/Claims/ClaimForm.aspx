@@ -512,6 +512,16 @@
                                 </td>
                             </tr>
                             <tr>
+                                <td nowrap="nowrap" align="right">&nbsp;
+                                    <asp:Label ID="LabelLoanerRequested" runat="server">Loaner_Requested</asp:Label>
+                                </td>
+                                <td nowrap="nowrap">
+                                    <asp:TextBox ID="TextboxLoanerRequested" TabIndex="-1" runat="server" SkinID="MediumTextBox" ReadOnly="True"></asp:TextBox>
+                                </td>
+                                <td nowrap="nowrap" align="right" colspan="2">
+                                </td>
+                            </tr>
+                            <tr>
                                 <td colspan="2"></td>
                                 <td nowrap="nowrap" align="right">
                                     <asp:Label ID="LabelTotalPaid" runat="server">Total_Paid</asp:Label>
@@ -1322,6 +1332,7 @@
                     <asp:Button ID="btnClaimCaseList" runat="server" Text="CLAIM_CASE_DETAILS" SkinID="PopMenuButton" />
                     <asp:Button ID="btnAddConseqDamage" Visible="false" runat="server" Text="CONSEQ_DAMAGE" SkinID="PopMenuButton" />
                     <asp:Button ID="btnPriceRetailSearch" Visible="false" runat="server" Text="RETAIL_PRICE_SEARCH" SkinID="PopMenuButton" />
+                    <asp:Button ID="btnChangeFulfillment" runat="server" Text="CHANGE_FULFILLMENT" SkinID="PopMenuButton" Enabled="false" Visible="false"/>
                 </asp:Panel>
             </div>
         </div>

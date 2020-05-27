@@ -692,7 +692,8 @@ Partial Class ClaimForm
         Me.SetEnabledForControlFamily(Me.txtShipToSC, Me.State.IsEditMode, True)
         Me.SetEnabledForControlFamily(Me.txtShipToCust, Me.State.IsEditMode, True)
 
-
+        ControlMgr.SetVisibleControl(Me, Me.LabelLoanerRequested, True)
+        ControlMgr.SetVisibleControl(Me, Me.TextboxLoanerRequested, True)
     End Sub
 
     Private Sub EnableDisableEditableFieldsForActiveClaims()
@@ -1231,6 +1232,15 @@ Partial Class ClaimForm
             End If
         End If
 
+        'logic to enable the change fulfillment button
+        If String.IsNullOrWhiteSpace(State.MyBO.CertificateItemCoverage.FulfillmentProfileCode) = False AndAlso State.MyBO.Status = BasicClaimStatus.Active Then
+            btnChangeFulfillment.Enabled = True
+            ControlMgr.SetVisibleControl(Me, btnChangeFulfillment, True)
+            'disable the replace item button if change fulfillmen button is enabled
+            btnReplaceItem.Enabled = False
+            ControlMgr.SetVisibleControl(Me, btnReplaceItem, False)
+        End If
+
     End Sub
 
     Private Sub EnableDisableButtonsConditionally()
@@ -1377,6 +1387,9 @@ Partial Class ClaimForm
         ControlMgr.SetVisibleControl(Me, Me.btnAddConseqDamage, isFlag)
         btnPriceRetailSearch.Enabled = isFlag
         ControlMgr.SetVisibleControl(Me, Me.btnPriceRetailSearch, isFlag)
+
+        btnChangeFulfillment.Enabled = isFlag
+        ControlMgr.SetVisibleControl(Me, Me.btnChangeFulfillment, isFlag)
     End Sub
     Protected Sub DisableButtonsForClaimSystem()
         If Not Me.State.MyBO.CertificateId.Equals(Guid.Empty) Or Me.State.MyBO.IsClaimChild = Codes.YESNO_Y Then
@@ -1461,6 +1474,7 @@ Partial Class ClaimForm
         Me.BindBOPropertyToLabel(Me.State.MyBO, "MethodOfRepairId", Me.LabelMethodOfRepair)
         Me.BindBOPropertyToLabel(Me.State.MyBO, "CoverageTypeDescription", Me.LabelCoverageType)
         Me.BindBOPropertyToLabel(Me.State.MyBO, "SpecialInstruction", Me.LabelSpecialInstruction)
+        Me.BindBOPropertyToLabel(Me.State.MyBO, "LoanerRquestedXcd", Me.LabelLoanerRequested)
         Me.BindBOPropertyToLabel(Me.State.MyBO, "AuthorizedAmount", Me.LabelAuthorizedAmount)
         Me.BindBOPropertyToLabel(Me.State.MyBO, "LiabilityLimit", Me.LabelLiabilityLimit)
         Me.BindBOPropertyToLabel(Me.State.MyBO, "Deductible", Me.LabelDeductible)
@@ -2145,6 +2159,11 @@ Partial Class ClaimForm
                 Me.LabelExpectedRepairDate.Text = TranslationBase.TranslateLabelOrMessage("EXPECTED_REPLACEMENT_DATE") + ":"
             End If
             Me.PopulateControlFromBOProperty(Me.TextboxAuthorizedAmount, claimBo.AuthorizedAmount)
+
+            If Not String.IsNullOrEmpty(claimBo.LoanerRquestedXcd) Then
+                TextboxLoanerRequested.Text = LookupListNew.GetDescriptionFromExtCode(LookupListNew.LK_YESNO_EXT, ElitaPlusIdentity.Current.ActiveUser.LanguageId, claimBo.LoanerRquestedXcd)
+            End If
+
             'Me.PopulateControlFromBOProperty(Me.TextboxAuthorizedAmount, State.AuthorizedAmount)
             Dim objCountry As New Country(Me.State.MyBO.Company.CountryId)
             If Not claimBo.ServiceCenterObject Is Nothing AndAlso claimBo.ServiceCenterObject.Id.Equals(objCountry.DefaultSCId) Then
@@ -3438,6 +3457,15 @@ Partial Class ClaimForm
         Catch ex As Threading.ThreadAbortException
         Catch ex As Exception
             Me.HandleErrors(ex, Me.MasterPage.MessageController)
+        End Try
+    End Sub
+
+    Private Sub btnChangeFulfillment_Click(sender As Object, e As EventArgs) Handles btnChangeFulfillment.Click
+        Try
+            NavController.Navigate(Me, FlowEvents.EventClaimRecordingChangeFulfillment, New ClaimRecordingForm.Parameters(State.MyBO.Certificate.Id, State.MyBO.Id, Nothing, Codes.CasePurposeChangeFulfillment, Me.State.IsCallerAuthenticated))
+        Catch ex As Threading.ThreadAbortException
+        Catch ex As Exception
+            HandleErrors(ex, MasterPage.MessageController)
         End Try
     End Sub
 
