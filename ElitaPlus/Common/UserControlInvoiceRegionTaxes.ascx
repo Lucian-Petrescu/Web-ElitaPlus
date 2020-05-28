@@ -57,11 +57,10 @@ Inherits="Assurant.ElitaPlus.ElitaPlusWebApp.UserControlInvoiceRegionTaxes" %>
             </asp:TemplateField>
            <asp:TemplateField Visible="True" HeaderText="AMOUNT">
                 <ItemTemplate>
-                    <asp:Label ID="lblIIBTax" runat="server" Text='<%#Container.DataItem("TAX_AMOUNT")%>'></asp:Label>
+                    <asp:Label ID="lblIIBBTax" runat="server" Text='<%#Container.DataItem("TAX_AMOUNT")%>'></asp:Label>
                 </ItemTemplate>
                 <EditItemTemplate>
-                    <asp:TextBox ID="txtIIBBTax" runat="server" Visible="true" SkinID="exSmallTextBox"
-                        onkeypress="return numericOnly(this)"></asp:TextBox><br />
+                    <asp:TextBox ID="txtIIBBTax" runat="server" Visible="true" SkinID="exSmallTextBox"></asp:TextBox><br />
                     <asp:Label ID="lblValidRiskPctMsg" runat="server"></asp:Label>
                 </EditItemTemplate>
             </asp:TemplateField>

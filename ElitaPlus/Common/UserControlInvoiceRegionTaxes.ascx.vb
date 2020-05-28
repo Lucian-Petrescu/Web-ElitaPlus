@@ -313,25 +313,29 @@ Partial Class UserControlInvoiceRegionTaxes
                     Dim cboinvoicetype As DropDownList = CType(e.Row.Cells(Me.GRID_COL_TAX_TYPE).FindControl(Me.GRID_CTRL_NAME_EDIT_INVOICE_TYPE), DropDownList)
 
                     Dim selectedIndex As Integer = cboinvoicetype.SelectedIndex
-                        cboinvoicetype.Populate(CommonConfigManager.Current.ListManager.GetList("TTYP", Thread.CurrentPrincipal.GetLanguageCode()), New PopulateOptions() With
-                 {
-                    .ValueFunc = AddressOf .GetExtendedCode,
-                    .TextFunc = AddressOf .GetDescription
-                 })
-                        Dim taxtypedv As DataView = LookupListNew.GetTaxTypeList(Thread.CurrentPrincipal.GetLanguageId())
-                        If Me.TheState.IsGridAddNew = True Then
+                    cboinvoicetype.Populate(CommonConfigManager.Current.ListManager.GetList("TTYP", Thread.CurrentPrincipal.GetLanguageCode()), New PopulateOptions() With
+             {
+                .ValueFunc = AddressOf .GetExtendedCode,
+                .TextFunc = AddressOf .GetDescription
+             })
+                    Dim taxtypedv As DataView = LookupListNew.GetTaxTypeList(Thread.CurrentPrincipal.GetLanguageId())
+                    If Me.TheState.IsGridAddNew = True Then
                         'cboinvoicetype.SelectedItem.Text = LookupListNew.GetDescriptionFromCode(taxtypedv, "PERCEPTION_IIBB")
                         'cboinvoicetype.SelectedItem.Value = "TTYP-PERCEPTION_IIBB"
                         SetSelectedItem(cboinvoicetype, "TTYP-PERCEPTION_IIBB")
                     Else
-                            Dim code As String = dvRow(InvoiceRegionTax.InvoiceRegionTaxDV.COL_INVOICE_TYPE).ToString
+                        Dim code As String = dvRow(InvoiceRegionTax.InvoiceRegionTaxDV.COL_INVOICE_TYPE).ToString
                         SetSelectedItem(cboinvoicetype, code)
                     End If
-                        CType(e.Row.Cells(Me.GRID_COL_TAX_AMOUNT).FindControl(Me.GRID_CTRL_NAME_EDIT_IIBB_TAX), TextBox).Text = dvRow(InvoiceRegionTax.InvoiceRegionTaxDV.COL_TAX_AMOUNT).ToString
+                    'CType(e.Row.Cells(Me.GRID_COL_TAX_AMOUNT).FindControl(Me.GRID_CTRL_NAME_EDIT_IIBB_TAX), TextBox).Text = dvRow(InvoiceRegionTax.InvoiceRegionTaxDV.COL_TAX_AMOUNT).ToString
 
-                    Else
+                    If Not dvRow.Row.IsNull(InvoiceRegionTax.InvoiceRegionTaxDV.COL_TAX_AMOUNT) Then
+                        CType(e.Row.Cells(Me.GRID_COL_TAX_AMOUNT).FindControl(Me.GRID_CTRL_NAME_EDIT_IIBB_TAX), TextBox).Text = Me.Page.GetAmountFormattedString(CType(dvRow(InvoiceRegionTax.InvoiceRegionTaxDV.COL_TAX_AMOUNT), Decimal))
+                    End If
 
-                        Dim replTaxTypeLkl As ListItem() = CommonConfigManager.Current.ListManager.GetList("TTYP", Thread.CurrentPrincipal.GetLanguageCode())
+                Else
+
+                    Dim replTaxTypeLkl As ListItem() = CommonConfigManager.Current.ListManager.GetList("TTYP", Thread.CurrentPrincipal.GetLanguageCode())
                     Dim InvDes As String
                     Dim code As String = dvRow(InvoiceRegionTax.InvoiceRegionTaxDV.COL_INVOICE_TYPE).ToString
 
@@ -343,6 +347,7 @@ Partial Class UserControlInvoiceRegionTaxes
                     Next
                     CType(e.Row.Cells(Me.GRID_COL_REGION).FindControl(Me.GRID_CTRL_NAME_LABEL_REGION), Label).Text = dvRow(InvoiceRegionTax.InvoiceRegionTaxDV.COL_REGION_DESCRIPTION).ToString
                     CType(e.Row.Cells(Me.GRID_COL_TAX_TYPE).FindControl(Me.GRID_CTRL_NAME_LABEL_INVOICE_TYPE), Label).Text = InvDes
+                    CType(e.Row.Cells(Me.GRID_COL_TAX_AMOUNT).FindControl(Me.GRID_CTRL_NAME_LABEL_IIBB_TAX), Label).Text = Me.Page.GetAmountFormattedString(CType(dvRow(InvoiceRegionTax.InvoiceRegionTaxDV.COL_TAX_AMOUNT), Decimal))
                 End If
             End If
 
@@ -604,7 +609,6 @@ Partial Class UserControlInvoiceRegionTaxes
         With Me.TheState.MyBO
 
             IIBBTaxAmount = CType(GridIIBBTaxes.Rows(Me.GridIIBBTaxes.EditIndex).Cells(GRID_COL_TAX_AMOUNT).FindControl(GRID_CTRL_NAME_EDIT_IIBB_TAX), TextBox)
-
             If (Me.TheState.IsEditMode = True AndAlso Me.TheState.IsGridAddNew = False) Then
 
                 Me.ThePage.PopulateBOProperty(TheState.MyBO, "InvoiceRegionTaxId", New Guid(CType(GridIIBBTaxes.DataKeys(GridIIBBTaxes.EditIndex).Values(GRID_COL_INVOICE_REGION_TAX_ID), Byte())))
