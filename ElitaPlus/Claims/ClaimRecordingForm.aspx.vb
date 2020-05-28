@@ -121,6 +121,7 @@ Public Class ClaimRecordingForm
         Public BestReplacementDeviceSelected As BestReplacementDeviceInfo = Nothing
         Public LogisticsStage As Integer = 0 ' 0 is first stage
         Public LogisticsOption As LogisticOption = Nothing
+        Public EnableModifyClaimedDevice As Boolean = False
     End Class
 
     Public Sub New()
@@ -642,9 +643,11 @@ Public Class ClaimRecordingForm
 
             If Not allowEnrolledDeviceUpdate Is Nothing AndAlso allowEnrolledDeviceUpdate.Value = Codes.YESNO_Y Then
                 divDeviceInfoContainer.Attributes("style") = "display: block"
+                State.EnableModifyClaimedDevice = True
                 ModifiedDeviceInfo()
             Else
                 divDeviceInfoContainer.Attributes("style") = "display: none"
+                State.EnableModifyClaimedDevice = False
             End If
 
         End If
@@ -1311,42 +1314,61 @@ Public Class ClaimRecordingForm
                     rdoSelect = DirectCast(row.FindControl("rdoItems"), RadioButton)
                     If rdoSelect IsNot Nothing Then
                         If rdoSelect.Checked Then
+                           
+                            If (Me.State.EnableModifyClaimedDevice) Then
 
-                            If ddlDvcMake.Items.Count > 0 Then
-                                claimdevice.Manufacturer = ddlDvcMake.SelectedItem.Text
-                            Else
-                                claimdevice.Manufacturer = txtDvcMake.Text
+                                If ddlDvcMake.Items.Count > 0 Then
+                                    claimdevice.Manufacturer = ddlDvcMake.SelectedItem.Text
+                                Else
+                                    claimdevice.Manufacturer = txtDvcMake.Text
+                                End If
+
+                                If ddlDvcModel.Items.Count > 0 Then
+                                    claimdevice.Model = ddlDvcModel.SelectedItem.Text
+                                Else
+                                    claimdevice.Model = txtDvcModel.Text
+                                End If
+
+                                claimdevice.ImeiNumber = txtDvcImei.Text
+                                claimdevice.SerialNumber = txtDvcSerialNumber.Text
+                                claimdevice.Color = txtDvcColor.Text
+                                claimdevice.Capacity = txtDvcCapacity.Text
+                                claimdevice.RegisteredItemName = DirectCast(row.FindControl("lblRegisteredItem"), Label).Text
+                                claimdevice.RiskTypeCode = DirectCast(row.FindControl("HiddenRiskType"), HiddenField).Value
+
+                                enrolleddevice.Manufacturer = DirectCast(row.FindControl("lblManufacturer"), Label).Text
+                                enrolleddevice.Model = DirectCast(row.FindControl("lblModel"), Label).Text
+                                enrolleddevice.ImeiNumber = DirectCast(row.FindControl("lblImeiNo"), Label).Text
+                                enrolleddevice.SerialNumber = DirectCast(row.FindControl("lblSerialNo"), Label).Text
+                                enrolleddevice.Color = DirectCast(row.FindControl("lblColor"), Label).Text
+                                enrolleddevice.Capacity = DirectCast(row.FindControl("lblCapacity"), Label).Text
+                                enrolleddevice.RegisteredItemName = DirectCast(row.FindControl("lblRegisteredItem"), Label).Text
+                                enrolleddevice.RiskTypeCode = DirectCast(row.FindControl("HiddenRiskType"), HiddenField).Value
+
+                                If (String.IsNullOrWhiteSpace(claimdevice.Manufacturer)) Then
+                                    MasterPage.MessageController.AddError(ElitaPlus.Common.ErrorCodes.GUI_MANUFACTURER_NAME_IS_MISSING_ERR, True)
+                                    Exit Sub
+                                End If
+                                itemSelectionRequest.ClaimedDevice = claimdevice
+                                itemSelectionRequest.EnrolledDevice = enrolleddevice
+                                Exit For
+                            else
+                                claimdevice.Manufacturer = DirectCast(row.FindControl("lblManufacturer"), Label).Text
+                                claimdevice.Model = DirectCast(row.FindControl("lblModel"), Label).Text
+                                claimdevice.ImeiNumber = DirectCast(row.FindControl("lblImeiNo"), Label).Text
+                                claimdevice.SerialNumber = DirectCast(row.FindControl("lblSerialNo"), Label).Text
+                                claimdevice.RegisteredItemName = DirectCast(row.FindControl("lblRegisteredItem"), Label).Text
+                                claimdevice.RiskTypeCode = DirectCast(row.FindControl("HiddenRiskType"), HiddenField).Value
+
+                                If (String.IsNullOrWhiteSpace(claimdevice.Manufacturer)) Then
+                                    MasterPage.MessageController.AddError(ElitaPlus.Common.ErrorCodes.GUI_MANUFACTURER_NAME_IS_MISSING_ERR, True)
+                                    Exit Sub
+                                End If
+                                itemSelectionRequest.ClaimedDevice = claimdevice
+                                itemSelectionRequest.EnrolledDevice = claimdevice
+                                Exit For
                             End If
 
-                            If ddlDvcModel.Items.Count > 0 Then
-                                claimdevice.Model = ddlDvcModel.SelectedItem.Text
-                            Else
-                                claimdevice.Model = txtDvcModel.Text
-                            End If
-
-                            claimdevice.ImeiNumber = txtDvcImei.Text
-                            claimdevice.SerialNumber = txtDvcSerialNumber.Text
-                            claimdevice.Color = txtDvcColor.Text
-                            claimdevice.Capacity = txtDvcCapacity.Text
-                            claimdevice.RegisteredItemName = DirectCast(row.FindControl("lblRegisteredItem"), Label).Text
-                            claimdevice.RiskTypeCode = DirectCast(row.FindControl("HiddenRiskType"), HiddenField).Value
-
-                            enrolleddevice.Manufacturer = DirectCast(row.FindControl("lblManufacturer"), Label).Text
-                            enrolleddevice.Model = DirectCast(row.FindControl("lblModel"), Label).Text
-                            enrolleddevice.ImeiNumber = DirectCast(row.FindControl("lblImeiNo"), Label).Text
-                            enrolleddevice.SerialNumber = DirectCast(row.FindControl("lblSerialNo"), Label).Text
-                            enrolleddevice.Color = DirectCast(row.FindControl("lblColor"), Label).Text
-                            enrolleddevice.Capacity = DirectCast(row.FindControl("lblCapacity"), Label).Text
-                            enrolleddevice.RegisteredItemName = DirectCast(row.FindControl("lblRegisteredItem"), Label).Text
-                            enrolleddevice.RiskTypeCode = DirectCast(row.FindControl("HiddenRiskType"), HiddenField).Value
-
-                            If (String.IsNullOrWhiteSpace(claimdevice.Manufacturer)) Then
-                                MasterPage.MessageController.AddError(ElitaPlus.Common.ErrorCodes.GUI_MANUFACTURER_NAME_IS_MISSING_ERR, True)
-                                Exit Sub
-                            End If
-                            itemSelectionRequest.ClaimedDevice = claimdevice
-                            itemSelectionRequest.EnrolledDevice = enrolleddevice
-                            Exit For
                         End If
 
                     End If
