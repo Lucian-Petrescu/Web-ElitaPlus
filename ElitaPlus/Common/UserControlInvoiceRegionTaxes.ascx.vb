@@ -609,12 +609,6 @@ Partial Class UserControlInvoiceRegionTaxes
         With Me.TheState.MyBO
 
             IIBBTaxAmount = CType(GridIIBBTaxes.Rows(Me.GridIIBBTaxes.EditIndex).Cells(GRID_COL_TAX_AMOUNT).FindControl(GRID_CTRL_NAME_EDIT_IIBB_TAX), TextBox)
-            'Validate Invoice Amount
-            If Not Microsoft.VisualBasic.IsNumeric(IIBBTaxAmount.Text) Then
-                Me.Page.MasterPage.MessageController.AddError(Assurant.ElitaPlus.Common.ErrorCodes.INVALID_AMOUNT_ENTERED_ERR, True)
-                Me.Page.MasterPage.MessageController.Show()
-                Return False
-            End If
             If (Me.TheState.IsEditMode = True AndAlso Me.TheState.IsGridAddNew = False) Then
 
                 Me.ThePage.PopulateBOProperty(TheState.MyBO, "InvoiceRegionTaxId", New Guid(CType(GridIIBBTaxes.DataKeys(GridIIBBTaxes.EditIndex).Values(GRID_COL_INVOICE_REGION_TAX_ID), Byte())))
