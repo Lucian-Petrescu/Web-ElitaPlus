@@ -1183,7 +1183,7 @@ Public Class Coverage
 
         Public Overrides Function IsValid(ByVal valueToCheck As Object, ByVal objectToValidate As Object) As Boolean
             Dim obj As Coverage = CType(objectToValidate, Coverage)
-            Dim SinglePremiumRenewable = "4"
+            Dim SinglePremiumRenewable As String = "4"
 
             Try
                 If Not obj.Effective Is Nothing And Not obj.Expiration Is Nothing Then
@@ -1195,7 +1195,7 @@ Public Class Coverage
 
                         If (Not obj.CertificateDuration Is Nothing) And (obj.CertificateDuration <> 0) Then
                             If (Not sVal Is Nothing) And (CType(sVal, Long) <> 0) Then
-                                If Not sVal = SinglePremiumRenewable And Not CType(obj.CertificateDuration, Long) = "3" Then
+                                If Not sVal = SinglePremiumRenewable Then
                                     If CType(obj.CertificateDuration, Long) Mod CType(sVal, Long) = 0 Then
                                         Return True
                                     Else
@@ -1228,7 +1228,7 @@ Public Class Coverage
 
         Public Overrides Function IsValid(ByVal valueToCheck As Object, ByVal objectToValidate As Object) As Boolean
             Dim obj As Coverage = CType(objectToValidate, Coverage)
-            Dim SinglePremiumRenewable = "4"
+            Dim SinglePremiumRenewable As String = "4"
 
             Try
                 If Not obj.Effective Is Nothing And Not obj.Expiration Is Nothing Then
@@ -1240,7 +1240,7 @@ Public Class Coverage
 
                         If (Not obj.CoverageDuration Is Nothing) And (obj.CoverageDuration <> 0) Then
                             If (Not sVal Is Nothing) And (CType(sVal, Long) <> 0) Then
-                                If Not sVal = SinglePremiumRenewable And Not CType(obj.CoverageDuration, Long) = "3" Then
+                                If Not sVal = SinglePremiumRenewable Then
                                     If CType(obj.CoverageDuration, Long) Mod CType(sVal, Long) = 0 Then
                                         Return True
                                     Else
