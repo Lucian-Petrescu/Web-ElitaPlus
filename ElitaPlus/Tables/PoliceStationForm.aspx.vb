@@ -211,9 +211,11 @@ Partial Class PoliceStationForm
 
     Protected Sub CheckIfComingFromSaveConfirm()
         Dim confResponse As String = Me.HiddenSaveChangesPromptResponse.Value
+        Dim actionInProgress As ElitaPlusPage.DetailPageCommand = Me.State.ActionInProgress
         If Not confResponse Is Nothing AndAlso confResponse = Me.CONFIRM_MESSAGE_OK Then
             If Me.State.ActionInProgress <> ElitaPlusPage.DetailPageCommand.BackOnErr Then
                 Me.State.MyBO.Save()
+                State.HasDataChanged = True
             End If
             Select Case Me.State.ActionInProgress
                 Case ElitaPlusPage.DetailPageCommand.Back
