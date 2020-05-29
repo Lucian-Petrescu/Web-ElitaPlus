@@ -6,99 +6,73 @@
 	<LOAD>
 		<![CDATA[	
 			SELECT 
-				country_id,
-				police_station_code,
-				police_station_name,
-				address1,
-				address2,
-        address3,
-				city,
-				region_id,
-				postal_code,
-				created_by,
-				created_date,
-				modified_by,
-				modified_date,
-				police_station_id
-			FROM elp_police_station 
-			WHERE
-				police_station_id = :police_station_id
+				ps.country_id,
+				ps.police_station_code,
+				ps.police_station_name,
+				ps.address1,
+				ps.address2,
+        ps.address3,
+				ps.city,
+				ps.region_id,
+				ps.postal_code,
+				ps.created_by,
+				ps.created_date,
+				ps.modified_by,
+				ps.modified_date,
+				ps.police_station_id,
+        REGEXP_SUBSTR(v.attribute_value, '[^-]+', 1, 2) as police_station_district_code,
+        REGEXP_SUBSTR(v.attribute_value, '[^-]+', 1, 1) as police_station_district_name
+      FROM elp_police_station ps
+      LEFT JOIN elp_attribute_value      v   on ps.police_station_id = v.reference_id
+      LEFT JOIN elp_attribute            a   on a.attribute_id = v.attribute_id
+                                            and a.table_name   = 'ELP_POLICE_STATION' 
+                                            and a.ui_prog_code = 'DISTRICT_CODE'
+			WHERE police_station_id = :police_station_id
 		]]>
 	</LOAD>
-	<LOAD_LIST>		
-			<![CDATA[	
+	<LOAD_LIST>
+    <![CDATA[	
 			SELECT 
-				police_station_id,
-				police_station_code,
-				police_station_name,
-				address1,
-				address2,
-        address3,
-				city,
-				region_id,
-				postal_code,
-				created_by,
-				created_date,
-				modified_by,
-				modified_date,
-				country_id
-			FROM elp_police_station 
+        ps.police_station_id,
+        ps.police_station_code,
+        ps.police_station_name,
+        ps.address1,
+        ps.address2,
+        ps.address3,
+        ps.city,
+        ps.region_id,
+        ps.postal_code,
+        ps.created_by,
+        ps.created_date,
+        ps.modified_by,
+        ps.modified_date,
+        ps.country_id,
+        REGEXP_SUBSTR(v.attribute_value, '[^-]+', 1, 2) as police_station_district_code,
+        REGEXP_SUBSTR(v.attribute_value, '[^-]+', 1, 1) as police_station_district_name
+      FROM elp_police_station ps
+      LEFT JOIN elp_attribute_value      v   on ps.police_station_id = v.reference_id
+      LEFT JOIN elp_attribute            a   on a.attribute_id = v.attribute_id
+                                            and a.table_name   = 'ELP_POLICE_STATION' 
+                                            and a.ui_prog_code = 'DISTRICT_CODE'  
 			--dynamic_where_clause
 			--dynamic_order_by_clause
 		]]>
 	</LOAD_LIST>	
-	<UPDATE>
-		<![CDATA[	
-			UPDATE elp_police_station SET
-				country_id = :country_id,
-				police_station_code = :police_station_code,
-				police_station_name = :police_station_name,
-				address1 = :address1,
-				address2 = :address2,
-        address3 = :address3,
-				city = :city,
-				region_id = :region_id,
-				postal_code = :postal_code,
-				modified_by = :modified_by
-			WHERE
-				police_station_id = :police_station_id
-		]]>
-	</UPDATE>
 	<INSERT>
-    INSERT INTO elp_police_station
-    (
-    country_id,
-    police_station_code,
-    police_station_name,
-    address1,
-    address2,
-    address3,
-    city,
-    region_id,
-    postal_code,
-    created_by,
-    police_station_id
-    )
-    VALUES
-    (
-    :country_id,
-    :police_station_code,
-    :police_station_name,
-    :address1,
-    :address2,
-    :address3,
-    :city,
-    :region_id,
-    :postal_code,
-    :created_by,
-    :police_station_id
-    )
+    <![CDATA[
+      ELP_TBL_POLICE_STATION.AddPoliceStation
+		]]>
   </INSERT>
-	<DELETE>
-			DELETE FROM elp_police_station
-			WHERE
-				police_station_id = :police_station_id
-	</DELETE>
+  <UPDATE>
+    <![CDATA[
+      ELP_TBL_POLICE_STATION.UpdatePoliceStation
+		]]>
+  </UPDATE>
+  <DELETE>
+    <![CDATA[
+      ELP_TBL_POLICE_STATION.DeletePoliceStation
+		]]>
+  </DELETE>
 </SQL> 
 
 

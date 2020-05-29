@@ -5,6 +5,8 @@ Partial Class PoliceStationForm
 
     Public Const POLICESTATIONCODE_PROPERTY As String = "PoliceStationCode"
     Public Const POLICESTATIONNAME_PROPERTY As String = "PoliceStationName"
+    Public Const POLICESTATIONDISTRICTCODE_PROPERTY As String = "PoliceStationDistrictCode"
+    Public Const POLICESTATIONDISTRICTNAME_PROPERTY As String = "PoliceStationDistrictName"
 #End Region
 
 
@@ -143,6 +145,8 @@ Partial Class PoliceStationForm
     Protected Sub BindBoPropertiesToLabels()
         Me.BindBOPropertyToLabel(Me.State.MyBO, POLICESTATIONCODE_PROPERTY, Me.lblPoliceStationCode)
         Me.BindBOPropertyToLabel(Me.State.MyBO, POLICESTATIONNAME_PROPERTY, Me.lblPoliceStationName)
+        Me.BindBOPropertyToLabel(Me.State.MyBO, POLICESTATIONDISTRICTCODE_PROPERTY, Me.lblPoliceStationDistrictCode)
+        Me.BindBOPropertyToLabel(Me.State.MyBO, POLICESTATIONDISTRICTNAME_PROPERTY, Me.lblPoliceStationDistrictName)
         Me.ClearGridHeadersAndLabelsErrSign()
     End Sub
 
@@ -151,6 +155,8 @@ Partial Class PoliceStationForm
 
             Me.PopulateControlFromBOProperty(Me.txtPoliceStationCode, .PoliceStationCode)
             Me.PopulateControlFromBOProperty(Me.txtPoliceStationName, .PoliceStationName)
+            Me.PopulateControlFromBOProperty(Me.txtPoliceStationDistrictCode, .PoliceStationDistrictCode)
+            Me.PopulateControlFromBOProperty(Me.txtPoliceStationDistrictName, .PoliceStationDistrictName)
 
             AddressCtr.Bind(Me.State.MyBO)
         End With
@@ -163,6 +169,8 @@ Partial Class PoliceStationForm
 
             Me.PopulateBOProperty(Me.State.MyBO, "PoliceStationCode", Me.txtPoliceStationCode)
             Me.PopulateBOProperty(Me.State.MyBO, "PoliceStationName", Me.txtPoliceStationName)
+            Me.PopulateBOProperty(Me.State.MyBO, "PoliceStationDistrictCode", Me.txtPoliceStationDistrictCode.Text())
+            Me.PopulateBOProperty(Me.State.MyBO, "PoliceStationDistrictName", Me.txtPoliceStationDistrictName.Text())
 
             Me.AddressCtr.PopulateBOFromControl(True)
 
@@ -190,6 +198,8 @@ Partial Class PoliceStationForm
         Me.State.MyBO = newObj
         Me.State.MyBO.PoliceStationCode = Nothing
         Me.State.MyBO.PoliceStationName = Nothing
+        Me.State.MyBO.PoliceStationDistrictCode = Nothing
+        Me.State.MyBO.PoliceStationDistrictName = Nothing
 
         Me.PopulateFormFromBOs()
         Me.EnableDisableFields()
