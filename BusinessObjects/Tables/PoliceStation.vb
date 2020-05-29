@@ -329,39 +329,6 @@ Public Class PoliceStation
         End Try
     End Sub
 
-    'Public Sub DeleteAndSavePoliceStation()
-    '    Dim policeStationId As Guid
-    '    policeStationId = Me.Id
-
-    '    Me.CheckDeleted()
-    '    Me.BeginEdit()
-    '    Try
-    '        Me.Delete()
-    '        Me.SavePoliceStationData(policeStationId)
-    '    Catch ex As Exception
-    '        Me.cancelEdit()
-    '        Throw ex
-    '    End Try
-    'End Sub
-
-    'Public Sub SavePoliceStationData(ByVal policeStationId As Guid)
-    '    Try
-    '        MyBase.Save()
-    '        If Me._isDSCreator AndAlso Me.IsDirty AndAlso Me.Row.RowState <> DataRowState.Detached Then
-    '            Dim dal As New PoliceStationDAL
-    '            dal.SavePoliceStation(Me.Row, policeStationId)
-    '            'Reload the Data from the DB
-    '            If Me.Row.RowState <> DataRowState.Detached Then
-    '                Dim objId As Guid = Me.Id
-    '                Me.Dataset = New DataSet
-    '                Me.Row = Nothing
-    '                Me.Load(objId)
-    '            End If
-    '        End If
-    '    Catch ex As Assurant.ElitaPlus.DALObjects.DataBaseAccessException
-    '        Throw New DataBaseAccessException(DataBaseAccessException.DatabaseAccessErrorType.WriteErr, ex)
-    '    End Try
-    'End Sub
     Public Overrides ReadOnly Property IsDirty() As Boolean
         Get
             Return MyBase.IsDirty
@@ -369,15 +336,21 @@ Public Class PoliceStation
     End Property
 
     Public Sub DeleteAndSave()
-        Me.CheckDeleted()
+        'Me.CheckDeleted()
         Me.BeginEdit()
         Try
             Me.Delete()
             Me.Save()
+        Catch ex As Assurant.ElitaPlus.DALObjects.DataBaseAccessException
+            Me.cancelEdit()
+            Throw New DataBaseAccessException(ex.ErrorType, ex)
+        Catch ex As RowNotInTableException
+            ex = Nothing
         Catch ex As Exception
             Me.cancelEdit()
             Throw ex
         End Try
+
     End Sub
 
     Public Sub Copy(ByVal original As PoliceStation)

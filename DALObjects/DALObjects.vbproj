@@ -722,9 +722,6 @@
     <Compile Include="Tables\PoliceReportDAL.vb">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Tables\PoliceStationDAL1.vb">
-      <SubType>Code</SubType>
-    </Compile>
     <Compile Include="Tables\PostalCodeFormatDAL.vb">
       <SubType>Code</SubType>
     </Compile>

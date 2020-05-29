@@ -8,7 +8,6 @@ Public Class PoliceStationDAL
 #Region "Constants"
     Public Const TABLE_NAME As String = "ELP_POLICE_STATION"
     Public Const TABLE_KEY_NAME As String = "police_station_id"
-
     Public Const COL_NAME_POLICE_STATION_ID As String = "police_station_id"
     Public Const COL_NAME_COUNTRY_ID As String = "country_id"
     Public Const COL_NAME_POLICE_STATION_CODE As String = "police_station_code"
@@ -19,11 +18,9 @@ Public Class PoliceStationDAL
     Public Const COL_NAME_ADDRESS2 As String = "address2"
     'Added for Def-1598
     Public Const COL_NAME_ADDRESS3 As String = "address3"
-
     Public Const COL_NAME_CITY As String = "city"
     Public Const COL_NAME_REGION_ID As String = "region_id"
     Public Const COL_NAME_POSTAL_CODE As String = "postal_code"
-    Public Const PO_RETURN_MESSAGE As String = "po_return_message"
 
 #End Region
 
@@ -95,55 +92,6 @@ Public Class PoliceStationDAL
         Return bIsLikeClause
     End Function
 
-    'Public Sub Load(ByVal familyDS As DataSet, ByVal id As Guid)
-    '    Dim selectStmt As String = Me.Config("/SQL/LOAD")
-    '    Dim cmd As OracleCommand = OracleDbHelper.CreateCommand(selectStmt, CommandType.StoredProcedure, OracleDbHelper.CreateConnection())
-
-    '    cmd.BindByName = True
-    '    cmd.AddParameter("pi_police_station_id", OracleDbType.Raw, id.ToByteArray())
-    '    cmd.AddParameter("po_resultcursor", OracleDbType.RefCursor, direction:=ParameterDirection.Output)
-
-    '    Try
-    '        OracleDbHelper.Fetch(cmd, Me.TABLE_NAME, familyDS)
-    '    Catch ex As Exception
-    '        Throw New DataBaseAccessException(DataBaseAccessException.DatabaseAccessErrorType.ReadErr, ex)
-    '    End Try
-    'End Sub
-
-    'Public Function LoadList(ByVal descriptionMask As String, ByVal codeMask As String, ByVal CountryMask As Guid) As DataSet
-
-    '    Dim selectStmt As String = Me.Config("/SQL/LOAD_LIST")
-    '    Dim ds As New DataSet
-    '    Dim cmd As OracleCommand = OracleDbHelper.CreateCommand(selectStmt, CommandType.StoredProcedure, OracleDbHelper.CreateConnection())
-
-    '    cmd.BindByName = True
-    '    'OracleDbHelper.AddParameter(cmd, "pi_language_id", OracleDbType.Raw, LanguageID.ToByteArray, ParameterDirection.Input)
-    '    'OracleDbHelper.AddParameter(cmd, "pi_network_id", OracleDbType.Varchar2, networkID.ToUpper(), ParameterDirection.Input)
-
-    '    'If codeMask <> String.Empty Then
-    '    '    cmd.AddParameter("pi_dealer_id", OracleDbType.Varchar2, codeMask)
-    '    'End If
-
-    '    'If descriptionMask <> String.Empty Then
-    '    '    cmd.AddParameter("pi_dealer_id", OracleDbType.Varchar2, descriptionMask)
-    '    'End If
-
-    '    If CountryMask <> Guid.Empty Then
-    '        cmd.AddParameter("pi_coverage_type_id", OracleDbType.Raw, CountryMask.ToByteArray())
-    '    End If
-
-    '    OracleDbHelper.AddParameter(cmd, "pi_police_station_code", OracleDbType.Varchar2, Me.GetFormattedSearchStringForSQL(codeMask), ParameterDirection.Input)
-    '    OracleDbHelper.AddParameter(cmd, "pi_police_station_name", OracleDbType.Varchar2, Me.GetFormattedSearchStringForSQL(descriptionMask), ParameterDirection.Input)
-
-    '    cmd.AddParameter("po_resultcursor", OracleDbType.RefCursor, direction:=ParameterDirection.Output)
-
-    '    Try
-    '        Return OracleDbHelper.Fetch(cmd, Me.TABLE_NAME, ds)
-    '    Catch ex As Exception
-    '        Throw New DataBaseAccessException(DataBaseAccessException.DatabaseAccessErrorType.ReadErr, ex)
-    '    End Try
-
-    'End Function
 #End Region
 
 #Region "Overloaded Methods"
@@ -172,7 +120,6 @@ Public Class PoliceStationDAL
             .AddParameter(parameterName:="pi_police_station_id", dbType:=OracleDbType.Raw, sourceColumn:=COL_NAME_POLICE_STATION_ID, direction:=ParameterDirection.Input)
             .AddParameter(parameterName:="pi_police_station_Dist_code", dbType:=OracleDbType.Varchar2, sourceColumn:=COL_NAME_POLICE_STATION_DISTRICT_CODE, direction:=ParameterDirection.Input)
             .AddParameter(parameterName:="pi_police_station_Dist_Name", dbType:=OracleDbType.Varchar2, sourceColumn:=COL_NAME_POLICE_STATION_DISTRICT_NAME, direction:=ParameterDirection.Input)
-            '.AddParameter(parameterName:="po_return_message", dbType:=OracleDbType.Varchar2, sourceColumn:=PO_RETURN_MESSAGE, direction:=ParameterDirection.Output)
         End With
     End Sub
 
@@ -180,7 +127,6 @@ Public Class PoliceStationDAL
         With command
             .BindByName = True
             .AddParameter(parameterName:="pi_police_station_id", dbType:=OracleDbType.Raw, sourceColumn:=COL_NAME_POLICE_STATION_ID, direction:=ParameterDirection.Input)
-            '.AddParameter(parameterName:="po_return_message", dbType:=OracleDbType.Varchar2, sourceColumn:=PO_RETURN_MESSAGE, direction:=ParameterDirection.Output)
         End With
     End Sub
 
@@ -200,7 +146,6 @@ Public Class PoliceStationDAL
             .AddParameter(parameterName:="pi_police_station_id", dbType:=OracleDbType.Raw, sourceColumn:=COL_NAME_POLICE_STATION_ID, direction:=ParameterDirection.Input)
             .AddParameter(parameterName:="pi_police_station_Dist_code", dbType:=OracleDbType.Varchar2, sourceColumn:=COL_NAME_POLICE_STATION_DISTRICT_CODE, direction:=ParameterDirection.Input)
             .AddParameter(parameterName:="pi_police_station_Dist_Name", dbType:=OracleDbType.Varchar2, sourceColumn:=COL_NAME_POLICE_STATION_DISTRICT_NAME, direction:=ParameterDirection.Input)
-            '.AddParameter(parameterName:="po_return_message", dbType:=OracleDbType.Varchar2, sourceColumn:=PO_RETURN_MESSAGE, direction:=ParameterDirection.Output)
         End With
     End Sub
 
