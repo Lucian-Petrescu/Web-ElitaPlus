@@ -12,6 +12,7 @@
 <%@ Register TagPrefix="Elita" TagName="UserControlServiceCenterSelection" Src="../Common/UserControlServiceCenterSelection.ascx" %>
 
 <asp:Content ID="Content1" ContentPlaceHolderID="HeadPlaceHolder" runat="server">
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self' data: gap: https://*.core.windows.net/ 'unsafe-eval'; style-src 'self' https://*.core.windows.net/ 'unsafe-inline'; script-src 'self' https://*.core.windows.net/ 'unsafe-inline' 'unsafe-eval';  media-src *" />
     <style type="text/css">
         .ModalBackground {
             background-color: Gray;
