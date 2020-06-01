@@ -336,7 +336,7 @@ Public Class PoliceStation
     End Property
 
     Public Sub DeleteAndSave()
-        'Me.CheckDeleted()
+        Me.CheckDeleted()
         Me.BeginEdit()
         Try
             Me.Delete()
