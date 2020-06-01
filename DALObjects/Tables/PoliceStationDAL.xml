@@ -20,15 +20,11 @@
 				ps.modified_by,
 				ps.modified_date,
 				ps.police_station_id,
-        REGEXP_SUBSTR(v.attribute_value, '[^-]+', 1, 2) as police_station_district_code,
-        REGEXP_SUBSTR(v.attribute_value, '[^-]+', 1, 1) as police_station_district_name
+        REGEXP_SUBSTR(elp_utl_attribute.GetAttributeValue('ELP_POLICE_STATION',ps.police_station_id,'POLICE_STATION_DISTRICT_CODE',''), '[^-]+', 1, 2) as police_station_district_code,
+        REGEXP_SUBSTR(elp_utl_attribute.GetAttributeValue('ELP_POLICE_STATION',ps.police_station_id,'POLICE_STATION_DISTRICT_CODE',''), '[^-]+', 1, 1) as police_station_district_name
       FROM elp_police_station ps
-      LEFT JOIN elp_attribute_value      v   on ps.police_station_id = v.reference_id
-      LEFT JOIN elp_attribute            a   on a.attribute_id = v.attribute_id
-                                            and a.table_name   = 'ELP_POLICE_STATION' 
-                                            and a.ui_prog_code = 'DISTRICT_CODE'
-			WHERE police_station_id = :police_station_id
-		]]>
+ 		  WHERE police_station_id = :police_station_id
+		]]> 
 	</LOAD>
 	<LOAD_LIST>
     <![CDATA[	
@@ -47,14 +43,10 @@
         ps.modified_by,
         ps.modified_date,
         ps.country_id,
-        REGEXP_SUBSTR(v.attribute_value, '[^-]+', 1, 2) as police_station_district_code,
-        REGEXP_SUBSTR(v.attribute_value, '[^-]+', 1, 1) as police_station_district_name
+        REGEXP_SUBSTR(elp_utl_attribute.GetAttributeValue('ELP_POLICE_STATION',ps.police_station_id,'POLICE_STATION_DISTRICT_CODE',''), '[^-]+', 1, 2) as police_station_district_code,
+        REGEXP_SUBSTR(elp_utl_attribute.GetAttributeValue('ELP_POLICE_STATION',ps.police_station_id,'POLICE_STATION_DISTRICT_CODE',''), '[^-]+', 1, 1) as police_station_district_name
       FROM elp_police_station ps
-      LEFT JOIN elp_attribute_value      v   on ps.police_station_id = v.reference_id
-      LEFT JOIN elp_attribute            a   on a.attribute_id = v.attribute_id
-                                            and a.table_name   = 'ELP_POLICE_STATION' 
-                                            and a.ui_prog_code = 'DISTRICT_CODE'  
-			--dynamic_where_clause
+ 			--dynamic_where_clause
 			--dynamic_order_by_clause
 		]]>
 	</LOAD_LIST>	
