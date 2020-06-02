@@ -449,10 +449,10 @@ Public Class ApInvoiceHeader
 #End Region
 
 #Region "DataView Retrieveing Methods"
-    Public Shared Function GetAPInvoices(ByVal vendorCode As String, ByVal invoiceNum As string,
+    Public Shared Function GetAPInvoices(ByVal vendorCode As String, ByVal invoiceNum As String,
                                          ByVal source As String, ByVal invoiceDate As Date?,
                                          ByVal dueDateFrom As Date?, ByVal dueDateTo As Date?,
-                                         ByVal rowCount As Integer   
+                                         ByVal rowCount As Integer
                                          ) As APInvoiceSearchDV
 
         Dim dal As New ApInvoiceHeaderDAL
@@ -466,10 +466,16 @@ Public Class ApInvoiceHeader
             languageId = .LanguageId
         End With
 
-        dal.SearchAPInvoices(vendorCode,invoiceNum, source, invoiceDate, dueDateFrom, dueDateTo, rowCount, userId,searchResults)
+        dal.SearchAPInvoices(vendorCode, invoiceNum, source, invoiceDate, dueDateFrom, dueDateTo, rowCount, userId, searchResults)
 
         Return New APInvoiceSearchDV(searchResults.Tables(0))
-        
+
+    End Function
+    Public Shared Function GetAPInvoice(ByVal vendorCode As String, ByVal invoiceNum As String) As APInvoiceSearchDV
+        Dim dal As New ApInvoiceHeaderDAL
+        Dim searchResults As New DataSet
+        dal.SearchAPInvoice(invoiceNum, searchResults)
+        Return New APInvoiceSearchDV(searchResults.Tables(0))
     End Function
 
     Public Function GetInvoiceExtendedInfo() As DataView

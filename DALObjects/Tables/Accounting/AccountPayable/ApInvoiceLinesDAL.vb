@@ -48,6 +48,7 @@ Public Class ApInvoiceLinesDAL
     Public Const PAR_I_NAME_BILLING_PERIOD_END_DATE As String = "pi_billing_period_end_date"
     Public Const PAR_I_NAME_REFERENCE_NUMBER As String = "pi_reference_number"
     Public Const PAR_I_NAME_VENDOR_TRANSACTION_TYPE As String = "pi_vendor_transaction_type"
+    Public Const PAR_O_AP_INVOICE_LINES_CUR As String = "po_invoice_lines"
 
 #End Region
 
@@ -75,18 +76,35 @@ Public Class ApInvoiceLinesDAL
             Throw New DataBaseAccessException(DataBaseAccessException.DatabaseAccessErrorType.ReadErr, ex)
         End Try
     End Sub
-
     Public Function LoadList() As DataSet
         Try
             Using cmd As OracleCommand = OracleDbHelper.CreateCommand(Me.Config("/SQL/LOAD_LIST"))
                 cmd.AddParameter(PAR_O_NAME_RESULTCURSOR, OracleDbType.RefCursor, direction:=ParameterDirection.Output)
                 Return OracleDbHelper.Fetch(cmd, Me.TABLE_NAME)
-            End Using        
+            End Using
         Catch ex As Exception
             Throw New DataBaseAccessException(DataBaseAccessException.DatabaseAccessErrorType.ReadErr, ex)
         End Try
-    End Function    
-    
+    End Function
+    Public Function LoadList(ByVal apInvoiceHeaderId As Guid) As DataSet
+        Try
+            Dim selectStmt As String = Me.Config("/SQL/LOAD_INVOICE_LINES")
+
+            Dim inparameters() As DBHelper.DBHelperParameter = New DBHelper.DBHelperParameter() {New DBHelper.DBHelperParameter(Me.PAR_I_NAME_AP_INVOICE_HEADER_ID, apInvoiceHeaderId.ToByteArray)}
+            Dim outParameters() As DBHelper.DBHelperParameter = New DBHelper.DBHelperParameter() {New DBHelper.DBHelperParameter(Me.PAR_O_AP_INVOICE_LINES_CUR, GetType(DataSet))}
+
+            Dim ds As New DataSet
+            Dim tbl As String = Me.TABLE_NAME
+
+            DBHelper.FetchSp(selectStmt, inparameters, outParameters, ds, tbl)
+            Return ds
+
+        Catch ex As Exception
+            Throw New DataBaseAccessException(DataBaseAccessException.DatabaseAccessErrorType.ReadErr, ex)
+        End Try
+
+    End Function
+
 
 #End Region
 

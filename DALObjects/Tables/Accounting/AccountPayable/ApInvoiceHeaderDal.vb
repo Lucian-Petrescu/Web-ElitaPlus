@@ -232,6 +232,27 @@ Public Class ApInvoiceHeaderDAL
 
     End Sub
 
+    Public Sub SearchAPInvoice(ByVal invoiceNum As String, ByRef searchResult As DataSet)
+
+        Dim selectStmt As String = Config("/SQL/SEARCH_AP_INVOICE")
+        Dim da As OracleDataAdapter
+
+        Try
+            Dim cmd As OracleCommand = DB_OracleCommand(selectStmt, CommandType.StoredProcedure)
+            cmd.BindByName = True
+            cmd.Parameters.Add("po_results", OracleDbType.RefCursor, ParameterDirection.Output)
+            cmd.Parameters.Add("pi_invoice_number", OracleDbType.Varchar2).Value = invoiceNum.Trim
+            da = New OracleDataAdapter(cmd)
+            da.Fill(searchResult, "SEARCH_RESULT")
+            searchResult.Locale = Globalization.CultureInfo.InvariantCulture
+
+        Catch ex As Exception
+            Throw New DataBaseAccessException(DataBaseAccessException.DatabaseAccessErrorType.ReadErr, ex)
+        End Try
+
+
+    End Sub
+
 
     Public Sub LoadAPInvoiceExtendedInfo(ByVal invoiceId As Guid, ByRef searchResult As DataSet)
 
