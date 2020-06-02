@@ -710,6 +710,11 @@ Partial Class APInvoiceListForm
         End Try
     End Sub
 
+    Protected Sub btnAdd_WRITE_Click(sender As Object, e As EventArgs) Handles btnAdd_WRITE.Click
+
+        Me.callPage("~/Claims/AddAPInvoiceForm.aspx", Nothing)
+    End Sub
+
 #End Region
 
 End Class

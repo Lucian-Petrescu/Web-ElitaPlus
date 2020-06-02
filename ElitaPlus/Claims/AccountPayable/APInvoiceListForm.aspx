@@ -193,5 +193,9 @@
             <asp:TextBox ID="txtBatchNum" runat="server" SkinID="LargeTextBox" AutoPostBack="False" style="width:300px;"></asp:TextBox>
             <asp:Button ID="btnCreatePaymentBatch_WRITE" runat="server" SkinID="AlternateLeftButton" Text="CREATE_PAYMENT"></asp:Button>            
         </div>
+        
+        <div id="divNewAPInvoice" class="btnZone" >
+            <asp:Button runat="server" ID="btnAdd_WRITE" Text="New" SkinID="AlternateLeftButton" />
+        </div>
     </div>    
 </asp:Content>
