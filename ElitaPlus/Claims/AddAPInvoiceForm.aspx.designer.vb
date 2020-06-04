@@ -105,6 +105,24 @@ Namespace Claims
         Protected WithEvents btnInvoiceDate As Global.System.Web.UI.WebControls.ImageButton
 
         '''<summary>
+        '''moDealerLabel control.
+        '''</summary>
+        '''<remarks>
+        '''Auto-generated field.
+        '''To modify move field declaration from designer file to code-behind file.
+        '''</remarks>
+        Protected WithEvents moDealerLabel As Global.System.Web.UI.WebControls.Label
+
+        '''<summary>
+        '''moDealer control.
+        '''</summary>
+        '''<remarks>
+        '''Auto-generated field.
+        '''To modify move field declaration from designer file to code-behind file.
+        '''</remarks>
+        Protected WithEvents moDealer As Global.System.Web.UI.WebControls.DropDownList
+
+        '''<summary>
         '''moTermLabel control.
         '''</summary>
         '''<remarks>

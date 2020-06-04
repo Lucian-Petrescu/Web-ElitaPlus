@@ -419,14 +419,14 @@ Public Class ApInvoiceLines
             Me.SetValue(ApInvoiceLinesDAL.COL_NAME_VENDOR_TRANSACTION_TYPE, Value)
         End Set
     End Property
-	
-	
-   
+
+
+
 
 #End Region
 
 #Region "Public Members"
-    Public Overrides Sub Save()         
+    Public Overrides Sub Save()
         Try
             MyBase.Save()
             If Me._isDSCreator AndAlso Me.IsDirty AndAlso Me.Row.RowState <> DataRowState.Detached Then
@@ -444,6 +444,7 @@ Public Class ApInvoiceLines
             Throw New DataBaseAccessException(DataBaseAccessException.DatabaseAccessErrorType.WriteErr, ex)
         End Try
     End Sub
+
 #End Region
 
 #Region "DataView Retrieveing Methods"
