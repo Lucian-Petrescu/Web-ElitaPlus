@@ -42,6 +42,42 @@ Namespace Claims
         Protected WithEvents moInvoiceNumber As Global.System.Web.UI.WebControls.TextBox
 
         '''<summary>
+        '''moInvoiceAmountLabel control.
+        '''</summary>
+        '''<remarks>
+        '''Auto-generated field.
+        '''To modify move field declaration from designer file to code-behind file.
+        '''</remarks>
+        Protected WithEvents moInvoiceAmountLabel As Global.System.Web.UI.WebControls.Label
+
+        '''<summary>
+        '''moInvoiceAmount control.
+        '''</summary>
+        '''<remarks>
+        '''Auto-generated field.
+        '''To modify move field declaration from designer file to code-behind file.
+        '''</remarks>
+        Protected WithEvents moInvoiceAmount As Global.System.Web.UI.WebControls.TextBox
+
+        '''<summary>
+        '''moServiceCenterLabel control.
+        '''</summary>
+        '''<remarks>
+        '''Auto-generated field.
+        '''To modify move field declaration from designer file to code-behind file.
+        '''</remarks>
+        Protected WithEvents moServiceCenterLabel As Global.System.Web.UI.WebControls.Label
+
+        '''<summary>
+        '''moVendorDropDown control.
+        '''</summary>
+        '''<remarks>
+        '''Auto-generated field.
+        '''To modify move field declaration from designer file to code-behind file.
+        '''</remarks>
+        Protected WithEvents moVendorDropDown As Global.System.Web.UI.WebControls.DropDownList
+
+        '''<summary>
         '''moInvoiceDateLabel control.
         '''</summary>
         '''<remarks>
@@ -69,42 +105,6 @@ Namespace Claims
         Protected WithEvents btnInvoiceDate As Global.System.Web.UI.WebControls.ImageButton
 
         '''<summary>
-        '''moServiceCenterLabel control.
-        '''</summary>
-        '''<remarks>
-        '''Auto-generated field.
-        '''To modify move field declaration from designer file to code-behind file.
-        '''</remarks>
-        Protected WithEvents moServiceCenterLabel As Global.System.Web.UI.WebControls.Label
-
-        '''<summary>
-        '''moVendorDropDown control.
-        '''</summary>
-        '''<remarks>
-        '''Auto-generated field.
-        '''To modify move field declaration from designer file to code-behind file.
-        '''</remarks>
-        Protected WithEvents moVendorDropDown As Global.System.Web.UI.WebControls.DropDownList
-
-        '''<summary>
-        '''moInvoiceAmountLabel control.
-        '''</summary>
-        '''<remarks>
-        '''Auto-generated field.
-        '''To modify move field declaration from designer file to code-behind file.
-        '''</remarks>
-        Protected WithEvents moInvoiceAmountLabel As Global.System.Web.UI.WebControls.Label
-
-        '''<summary>
-        '''moInvoiceAmount control.
-        '''</summary>
-        '''<remarks>
-        '''Auto-generated field.
-        '''To modify move field declaration from designer file to code-behind file.
-        '''</remarks>
-        Protected WithEvents moInvoiceAmount As Global.System.Web.UI.WebControls.TextBox
-
-        '''<summary>
         '''moTermLabel control.
         '''</summary>
         '''<remarks>
@@ -121,6 +121,60 @@ Namespace Claims
         '''To modify move field declaration from designer file to code-behind file.
         '''</remarks>
         Protected WithEvents moAPInvoiceTerm As Global.System.Web.UI.WebControls.DropDownList
+
+        '''<summary>
+        '''tr1 control.
+        '''</summary>
+        '''<remarks>
+        '''Auto-generated field.
+        '''To modify move field declaration from designer file to code-behind file.
+        '''</remarks>
+        Protected WithEvents tr1 As Global.System.Web.UI.HtmlControls.HtmlTableRow
+
+        '''<summary>
+        '''Label1 control.
+        '''</summary>
+        '''<remarks>
+        '''Auto-generated field.
+        '''To modify move field declaration from designer file to code-behind file.
+        '''</remarks>
+        Protected WithEvents Label1 As Global.System.Web.UI.WebControls.Label
+
+        '''<summary>
+        '''Label2 control.
+        '''</summary>
+        '''<remarks>
+        '''Auto-generated field.
+        '''To modify move field declaration from designer file to code-behind file.
+        '''</remarks>
+        Protected WithEvents Label2 As Global.System.Web.UI.WebControls.Label
+
+        '''<summary>
+        '''Label4 control.
+        '''</summary>
+        '''<remarks>
+        '''Auto-generated field.
+        '''To modify move field declaration from designer file to code-behind file.
+        '''</remarks>
+        Protected WithEvents Label4 As Global.System.Web.UI.WebControls.Label
+
+        '''<summary>
+        '''cboPageSize control.
+        '''</summary>
+        '''<remarks>
+        '''Auto-generated field.
+        '''To modify move field declaration from designer file to code-behind file.
+        '''</remarks>
+        Protected WithEvents cboPageSize As Global.System.Web.UI.WebControls.DropDownList
+
+        '''<summary>
+        '''lblRecordCount control.
+        '''</summary>
+        '''<remarks>
+        '''Auto-generated field.
+        '''To modify move field declaration from designer file to code-behind file.
+        '''</remarks>
+        Protected WithEvents lblRecordCount As Global.System.Web.UI.WebControls.Label
 
         '''<summary>
         '''PoGrid control.

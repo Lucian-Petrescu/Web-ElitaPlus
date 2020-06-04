@@ -447,19 +447,15 @@ Public Class ApInvoiceLines
 #End Region
 
 #Region "DataView Retrieveing Methods"
-    Public Function GetApInvoiceLines() As APInvoiceLinesDV
+    Public Function GetApInvoiceLines(ByVal apInvoiceHeaderId As Guid) As APInvoiceLinesDV
         Dim apInvoiceLinenDAL As New ApInvoiceLinesDAL
-
-        If Not (Me.ApInvoiceHeaderId.Equals(Guid.Empty)) Then
-            Return New APInvoiceLinesDV(apInvoiceLinenDAL.LoadList(Me.ApInvoiceHeaderId).Tables(0))
-        End If
-
+        Return New APInvoiceLinesDV(apInvoiceLinenDAL.LoadList(Me.ApInvoiceHeaderId).Tables(0))
     End Function
 
 #End Region
 
 #Region "Grid Data Related"
-    Public Shared Function GetEmptyList(ByVal dv As DataView) As System.Data.DataView
+    Public Function GetEmptyList(ByVal dv As DataView) As System.Data.DataView
         Try
 
             Dim dsv As DataSet
@@ -484,7 +480,7 @@ Public Class ApInvoiceLines
         End Try
     End Function
 
-    Public Shared Sub AddNewRowToSearchDV(ByRef dv As APInvoiceLinesDV, ByVal NewBO As ApInvoiceLines)
+    Public Sub AddNewRowToSearchDV(ByRef dv As APInvoiceLinesDV, ByVal NewBO As ApInvoiceLines)
         Dim dt As DataTable, blnEmptyTbl As Boolean = False
 
         If NewBO.IsNew Then
