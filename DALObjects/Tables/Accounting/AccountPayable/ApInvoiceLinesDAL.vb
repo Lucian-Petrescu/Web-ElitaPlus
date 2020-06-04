@@ -48,7 +48,7 @@ Public Class ApInvoiceLinesDAL
     Public Const PAR_I_NAME_BILLING_PERIOD_END_DATE As String = "pi_billing_period_end_date"
     Public Const PAR_I_NAME_REFERENCE_NUMBER As String = "pi_reference_number"
     Public Const PAR_I_NAME_VENDOR_TRANSACTION_TYPE As String = "pi_vendor_transaction_type"
-    Public Const PAR_O_AP_INVOICE_LINES_CUR As String = "po_invoice_lines"
+    Public Const PAR_O_AP_INVOICE_LINES_CUR As String = "po_ResultCursor"
 
 #End Region
 
@@ -88,7 +88,7 @@ Public Class ApInvoiceLinesDAL
     End Function
     Public Function LoadList(ByVal apInvoiceHeaderId As Guid) As DataSet
         Try
-            Dim selectStmt As String = Me.Config("/SQL/LOAD_INVOICE_LINES")
+            Dim selectStmt As String = Me.Config("/SQL/LOAD")
 
             Dim inparameters() As DBHelper.DBHelperParameter = New DBHelper.DBHelperParameter() {New DBHelper.DBHelperParameter(Me.PAR_I_NAME_AP_INVOICE_HEADER_ID, apInvoiceHeaderId.ToByteArray)}
             Dim outParameters() As DBHelper.DBHelperParameter = New DBHelper.DBHelperParameter() {New DBHelper.DBHelperParameter(Me.PAR_O_AP_INVOICE_LINES_CUR, GetType(DataSet))}

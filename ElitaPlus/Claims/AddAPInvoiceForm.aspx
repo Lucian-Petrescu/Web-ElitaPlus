@@ -1,9 +1,10 @@
-﻿<%@ Page Title="" 
+﻿<%@
 Language="vb" AutoEventWireup="false" 
-MasterPageFile="~/Navigation/masters/ElitaBase.Master" 
+MasterPageFile="../Navigation/masters/ElitaBase.Master"
 CodeBehind="AddAPInvoiceForm.aspx.vb" 
 EnableSessionState="True"
-Inherits="Assurant.ElitaPlus.ElitaPlusWebApp.Claims.AddApInvoiceForm" %>
+Inherits="Assurant.ElitaPlus.ElitaPlusWebApp.Claims.AddApInvoiceForm" 
+Theme="Default"  %>
 
 <%@ Register TagPrefix="asp" Namespace="AjaxControlToolkit" Assembly="AjaxControlToolkit" %>
 <asp:Content ID="Content1" ContentPlaceHolderID="HeadPlaceHolder" runat="server">
@@ -38,14 +39,14 @@ Inherits="Assurant.ElitaPlus.ElitaPlusWebApp.Claims.AddApInvoiceForm" %>
                         <td nowrap="noWrap">
                             <asp:TextBox runat="server" ID="moInvoiceNumber" SkinID="MediumTextBox" />
                         </td>
-                        <td align="right" nowrap="noWrap">
-                            <asp:Label runat="server" ID="moInvoiceDateLabel" Text="INVOICE_DATE" />
+
+                         <td align="right" nowrap="noWrap">
+                            <asp:Label runat="server" ID="moInvoiceAmountLabel" Text="INVOICE_AMOUNT" />
                         </td>
                         <td nowrap="noWrap">
-                            <asp:TextBox ID="moInvoiceDate" runat="server" SkinID="SmallTextBox"></asp:TextBox>
-                            <asp:ImageButton ID="btnInvoiceDate" runat="server" Style="vertical-align: bottom"
-                                ImageUrl="~/App_Themes/Default/Images/calendar.png" />
+                            <asp:TextBox runat="server" ID="moInvoiceAmount" SkinID="SmallTextBox"  />
                         </td>
+                        
                     </tr>
                     <tr>
                         <td align="right" nowrap="noWrap">
@@ -55,11 +56,13 @@ Inherits="Assurant.ElitaPlus.ElitaPlusWebApp.Claims.AddApInvoiceForm" %>
                              <asp:DropDownList runat="server" ID="moVendorDropDown" SkinID="MediumDropDown">
                             </asp:DropDownList>
                         </td>
-						 <td align="right" nowrap="noWrap">
-                            <asp:Label runat="server" ID="moInvoiceAmountLabel" Text="INVOICE_AMOUNT" />
+						<td align="right" nowrap="noWrap">
+                            <asp:Label runat="server" ID="moInvoiceDateLabel" Text="INVOICE_DATE" />
                         </td>
                         <td nowrap="noWrap">
-                            <asp:TextBox runat="server" ID="moInvoiceAmount" SkinID="SmallTextBox"  />
+                            <asp:TextBox ID="moInvoiceDate" runat="server" SkinID="SmallTextBox"></asp:TextBox>
+                            <asp:ImageButton ID="btnInvoiceDate" runat="server" Style="vertical-align: bottom"
+                                ImageUrl="~/App_Themes/Default/Images/calendar.png" />
                         </td>
                         
                     </tr>
@@ -87,9 +90,34 @@ Inherits="Assurant.ElitaPlus.ElitaPlusWebApp.Claims.AddApInvoiceForm" %>
 <div class="dataContainer">
 <h2 class="dataGridHeader">
     Line Items </h2>
-    
-<div id="tableLineItems">
-                <table id="tblLineItems" class="dataGrid" border="0" rules="cols" width="98%">
+<div>
+     <table width="100%" class="dataGrid">
+     <tr id="tr1" runat="server">
+        <td class="bor" style="text-align: left;">
+            <asp:Label ID="Label1" runat="server">Page_Size</asp:Label><asp:Label ID="Label2" runat="server">:</asp:Label>
+      
+            <asp:Label ID="Label4" runat="server"></asp:Label> &nbsp;
+            <asp:DropDownList ID="cboPageSize" runat="server" Width="50px" AutoPostBack="true">
+                <asp:ListItem Value="5">5</asp:ListItem>
+                <asp:ListItem Selected="True" Value="10">10</asp:ListItem>
+                <asp:ListItem Value="15">15</asp:ListItem>
+                <asp:ListItem Value="20">20</asp:ListItem>
+                <asp:ListItem Value="25">25</asp:ListItem>
+                <asp:ListItem Value="30">30</asp:ListItem>
+                <asp:ListItem Value="35">35</asp:ListItem>
+                <asp:ListItem Value="40">40</asp:ListItem>
+                <asp:ListItem Value="45">45</asp:ListItem>
+                <asp:ListItem Value="50">50</asp:ListItem>
+            </asp:DropDownList>
+
+        </td>
+        <td style="height: 22px; text-align: right;">
+            <asp:Label ID="lblRecordCount" runat="server"></asp:Label>
+        </td>
+    </tr>
+    </table>
+  <div id="tableLineItems">
+                <table id="tblLineItems" class="dataGrid" border="0" rules="cols" width="100%">
                     <tr>
                         <td align="Center" colspan="1">
                             <div id="scroller" style="overflow: auto; width: 100%; height: 125px" align="center">
@@ -104,15 +132,14 @@ Inherits="Assurant.ElitaPlus.ElitaPlusWebApp.Claims.AddApInvoiceForm" %>
                                     <Columns>
                                         <asp:TemplateField Visible="False">
                                             <ItemTemplate>
-                                                <asp:Label ID="moInvoiceLineId" Text='<%# GetGuidStringFromByteArray(Container.DataItem("po_invoice_lines_id"))%>'
-                                                    runat="server">
+                                                <asp:Label ID="moInvoiceLineId" visible="false"  runat="server">
                                                 </asp:Label>
                                             </ItemTemplate>
                                         </asp:TemplateField>
                                         <asp:TemplateField Visible="True" HeaderText="line_number">
                                             <ItemStyle HorizontalAlign="center" Width="5%"></ItemStyle>
                                             <ItemTemplate>
-                                                <asp:Label ID="moLineNumber" Text='<%# Container.DataItem("Line_Number")%>' runat="server"> </asp:Label>
+                                                <asp:Label ID="moLineNumber"  visible="true" runat="server"> </asp:Label>
                                             </ItemTemplate>
                                             <EditItemTemplate>
                                                 <asp:TextBox ID="moLineNumberText" runat="server" Visible="True" Width="100%"></asp:TextBox>
@@ -120,7 +147,7 @@ Inherits="Assurant.ElitaPlus.ElitaPlusWebApp.Claims.AddApInvoiceForm" %>
                                         </asp:TemplateField>
 										 <asp:TemplateField Visible ="true" HeaderText="line_type">
                                             <ItemStyle HorizontalAlign="Center" Width="10%"> </ItemStyle>
-                                            <ItemTemplate><asp:Label ID="moLineType" Text='<%#Container.DataItem("Line_Type")%>' runat="server"> </asp:Label>
+                                            <ItemTemplate><asp:Label ID="moLineType" visible="true" runat="server"> </asp:Label>
                                              </ItemTemplate>
                                             <EditItemTemplate><asp:DropDownList ID="ddlLineType" runat="server"  Visible="True" Width="100%"></asp:DropDownList>
                                             </EditItemTemplate>
@@ -128,8 +155,7 @@ Inherits="Assurant.ElitaPlus.ElitaPlusWebApp.Claims.AddApInvoiceForm" %>
 								        <asp:TemplateField Visible="True" HeaderText="item_code">
                                             <ItemStyle HorizontalAlign="center" Width="10%"></ItemStyle>
                                             <ItemTemplate>
-                                                <asp:Label ID="moItemCode" Text='<%# Container.DataItem("Vendor_Item_Code")%>'
-                                                    runat="server">
+                                                <asp:Label ID="moItemCode" visible="true" runat="server">
                                                 </asp:Label>
                                             </ItemTemplate>
                                             <EditItemTemplate>
@@ -139,8 +165,7 @@ Inherits="Assurant.ElitaPlus.ElitaPlusWebApp.Claims.AddApInvoiceForm" %>
 										 <asp:TemplateField Visible="True" HeaderText="description">
                                             <ItemStyle HorizontalAlign="center" Width="20%"></ItemStyle>
                                             <ItemTemplate>
-                                                <asp:Label ID="moItemDescriptionLabel" Text='<%# Container.DataItem("Vendor_Item_Description")%>'
-                                                    runat="server">
+                                                <asp:Label ID="moItemDescriptionLabel" visible="true" runat="server">
                                                 </asp:Label>
                                             </ItemTemplate>
                                             <EditItemTemplate>
@@ -150,8 +175,7 @@ Inherits="Assurant.ElitaPlus.ElitaPlusWebApp.Claims.AddApInvoiceForm" %>
 										<asp:TemplateField Visible="True" HeaderText="QUANTITY">
                                             <ItemStyle HorizontalAlign="center" Width="10%"></ItemStyle>
                                             <ItemTemplate>
-                                                <asp:Label ID="moQuantityLabel" Text='<%# Container.DataItem("quanitity")%>'
-                                                    runat="server">
+                                                <asp:Label ID="moQuantityLabel" visible="true" runat="server">
                                                 </asp:Label>
                                             </ItemTemplate>
                                             <EditItemTemplate>
@@ -161,8 +185,7 @@ Inherits="Assurant.ElitaPlus.ElitaPlusWebApp.Claims.AddApInvoiceForm" %>
 										<asp:TemplateField Visible="True" HeaderText="UNIT_PRICE">
                                             <ItemStyle HorizontalAlign="center" Width="10%"></ItemStyle>
                                             <ItemTemplate>
-                                                <asp:Label ID="moUnitPriceLabel" Text='<%# Container.DataItem("unit_price")%>'
-                                                    runat="server">
+                                                <asp:Label ID="moUnitPriceLabel" visible="true" runat="server">
                                                 </asp:Label>
                                             </ItemTemplate>
                                             <EditItemTemplate>
@@ -172,18 +195,17 @@ Inherits="Assurant.ElitaPlus.ElitaPlusWebApp.Claims.AddApInvoiceForm" %>
 										<asp:TemplateField Visible="True" HeaderText="total_price">
                                             <ItemStyle HorizontalAlign="center" Width="10%"></ItemStyle>
                                             <ItemTemplate>
-                                                <asp:Label ID="moTotalPriceLabel" Text='<%# Container.DataItem("total_price")%>'
-                                                    runat="server">
+                                                <asp:Label ID="moTotalPriceLabel" visible="true" runat="server">
                                                 </asp:Label>
                                             </ItemTemplate>
                                             <EditItemTemplate>
                                                 <asp:TextBox ID="moTotalPriceText" runat="server" Visible="True" Width="100%"></asp:TextBox>
                                             </EditItemTemplate>
                                         </asp:TemplateField>
-										 <asp:TemplateField Visible ="true" HeaderText="unit_measurement">
+										 <asp:TemplateField Visible ="true" HeaderText="unit_of_measurement">
                                             <ItemStyle HorizontalAlign="Center" Width="10%"> </ItemStyle>
                                             <ItemTemplate>
-                                                <asp:Label ID="moUnitOfMeasurement" Text='<%#Container.DataItem("uom_xcd")%>' runat="server"> </asp:Label>
+                                                <asp:Label ID="moUnitOfMeasurement" visible="true" runat="server"> </asp:Label>
                                              </ItemTemplate>
                                             <EditItemTemplate><asp:DropDownList ID="ddlUnitOfMeasurement" runat="server"  Visible="True" Width="100%"></asp:DropDownList>
                                             </EditItemTemplate>
@@ -191,8 +213,7 @@ Inherits="Assurant.ElitaPlus.ElitaPlusWebApp.Claims.AddApInvoiceForm" %>
 										<asp:TemplateField Visible="True" HeaderText="PO_Number">
                                             <ItemStyle HorizontalAlign="center"  Width="9%"></ItemStyle>
                                             <ItemTemplate>
-                                                <asp:Label ID="moPoNumber" Text='<%# Container.DataItem("po_number")%>'
-                                                    runat="server">
+                                                <asp:Label ID="moPoNumber" visible="true"  runat="server">
                                                 </asp:Label>
                                             </ItemTemplate>
                                             <EditItemTemplate>
@@ -215,12 +236,13 @@ Inherits="Assurant.ElitaPlus.ElitaPlusWebApp.Claims.AddApInvoiceForm" %>
                                         </asp:TemplateField>
                                     </Columns>
                                     <PagerStyle HorizontalAlign="Center" CssClass="PAGER"></PagerStyle>
+                                    <PagerSettings PageButtonCount="15" Mode="Numeric" />
                                 </asp:GridView>
                             </div>
                         </td>
                     </tr>
                     <tr>
-                        <td colspan="1" width="96%">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                        <td colspan="1" width="75%">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                             <asp:Button ID="BtnNewLine" runat="server" Visible="false" SkinID="AlternateLeftButton" Text="New"></asp:Button>&nbsp;
                             <asp:Button ID="BtnSaveLines" runat="server"  Visible="false" SkinID="PrimaryRightButton" Text="Save"></asp:Button>&nbsp;
                             <asp:Button ID="BtnCancelLine" runat="server"  Visible="false" SkinID="AlternateLeftButton" Text="Cancel"></asp:Button>
@@ -228,6 +250,8 @@ Inherits="Assurant.ElitaPlus.ElitaPlusWebApp.Claims.AddApInvoiceForm" %>
                         </td>
                     </tr>
 		</table>
+  </div>
+</div>
 </div>
 <br />
 <div class="btnZone" width="70%">

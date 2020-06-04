@@ -1,5 +1,9 @@
 ﻿Imports System.Diagnostics
+Imports System.Threading
+Imports Assurant.Elita.CommonConfiguration
+Imports Assurant.Elita.Web.Forms
 Imports Assurant.ElitaPlus.BusinessObjectsNew.Tables.Accounting.AccountPayable
+Imports Assurant.ElitaPlus.Security
 
 Namespace Claims
     Public Class AddApInvoiceForm
@@ -7,16 +11,16 @@ Namespace Claims
 
 #Region "Constants"
 
-        Private Const AP_INVOICE_LINE_ID_COL As Integer = 1
-        Private Const LINE_NO_COL As Integer = 2
-        Private Const LINE_TYPE_COL As Integer = 3
-        Private Const ITEM_CODE_COL As Integer = 4
-        Private Const DESCRIPTION_COL As Integer = 5
-        Private Const QUANTITY_COL As Integer = 6
-        Private Const UNIT_PRICE_COL As Integer = 7
-        Private Const TOTAL_PRICE_COL As Integer = 8
-        Private Const UNIT_OF_MEASUREMENT_COL As Integer = 9
-        Private Const PO_NUMBER_COL As Integer = 10
+        Private Const AP_INVOICE_LINE_ID_COL As Integer = 0
+        Private Const LINE_NO_COL As Integer = 1
+        Private Const LINE_TYPE_COL As Integer = 2
+        Private Const ITEM_CODE_COL As Integer = 3
+        Private Const DESCRIPTION_COL As Integer = 4
+        Private Const QUANTITY_COL As Integer = 5
+        Private Const UNIT_PRICE_COL As Integer = 6
+        Private Const TOTAL_PRICE_COL As Integer = 7
+        Private Const UNIT_OF_MEASUREMENT_COL As Integer = 8
+        Private Const PO_NUMBER_COL As Integer = 9
         Private Const MSG_RECORD_SAVED_OK As String = "MSG_RECORD_SAVED_OK"
         Private Const MSG_RECORD_NOT_SAVED As String = "MSG_RECORD_NOT_SAVED"
 
@@ -47,6 +51,14 @@ Namespace Claims
         Public Const PAGETITLE As String = "AP_INVOICE"
         Public Const PAGETAB As String = "CLAIM"
         Private Const NO_ROW_SELECTED_INDEX As Integer = -1
+        Private Const DBINVOICELINE_ID As Integer = 0
+
+        'Actions
+        Private Const ACTION_NONE As String = "ACTION_NONE"
+        Private Const ACTION_SAVE As String = "ACTION_SAVE"
+        Private Const ACTION_CANCEL_DELETE As String = "ACTION_CANCEL_DELETE"
+        Private Const ACTION_EDIT As String = "ACTION_EDIT"
+        Private Const ACTION_NEW As String = "ACTION_NEW"
 
 #End Region
 
@@ -57,32 +69,52 @@ Namespace Claims
 #Region "Form Events"
 
         Private Sub SetStateProperties()
-
             State.APInvoiceNumber = moInvoiceNumber.Text
             State.APInvoiceAmount = moInvoiceAmount.Text
-            State.APInvoiceDate = moInvoiceDate.Text
+            State.APInvoiceDate = If(String.IsNullOrEmpty(moInvoiceDate.Text), Date.MinValue, Convert.ToDateTime(moInvoiceDate.Text))
             State.Term = moAPInvoiceTerm.SelectedValue
             State.ServiceCenter = moVendorDropDown.SelectedValue
             State.CompanyId = ElitaPlusIdentity.Current.ActiveUser.FirstCompanyID
 
         End Sub
 
+        Private Sub AddApInvoiceForm_PageCall(CallFromUrl As String, CallingPar As Object) Handles MyBase.PageCall
+            Try
+                If CallingPar = Nothing Then
+                    State.IsNewInvoice = True
+                    State.APInvoiceHeaderBO = New ApInvoiceHeader
+                Else
+                    State.IsNewInvoice = False
+                    Dim tempGuid As Guid = CallingPar
+                    State.APInvoiceHeaderBO = New ApInvoiceHeader(tempGuid)
+                End If
+
+            Catch ex As Exception
+                Me.HandleErrors(ex, Me.MasterPage.MessageController)
+            End Try
+        End Sub
+
         Protected Sub Page_Load(ByVal sender As Object, ByVal e As EventArgs) Handles Me.Load
             Try
                 MasterPage.MessageController.Clear_Hide()
-                SetStateProperties()
+
                 If Not Page.IsPostBack Then
+                    Me.AddCalendar_New(btnInvoiceDate, moInvoiceDate)
                     SetFormTitle(PAGETITLE)
                     SetFormTab(PAGETAB)
                     SetDefaultButton(moInvoiceNumber, btnApply_WRITE)
-                    SetDefaultButton(moInvoiceAmount, btnApply_WRITE)
-                    SetDefaultButton(moInvoiceDate, btnApply_WRITE)
-                    SetDefaultButton(moAPInvoiceTerm, btnApply_WRITE)
-                    SetDefaultButton(moVendorDropDown, btnApply_WRITE)
-                    SetGridItemStyleColor(PoGrid)
-                    If State.APInvoiceHeaderBO Is Nothing Then
-                        State.APInvoiceHeaderBO = New ApInvoiceHeader
+
+                    If State.IsGridVisible Then
+                        If Not (State.SelectedPageSize = DEFAULT_PAGE_SIZE) Then
+                            cboPageSize.SelectedValue = CType(State.SelectedPageSize, String)
+                            PoGrid.PageSize = State.SelectedPageSize
+                        End If
+                        PopulatePoGrid()
                     End If
+
+                    SetGridItemStyleColor(PoGrid)
+                    PopulateDropDown()
+                    SetStateProperties()
                     SetButtonsState()
                     State.PageIndex = 0
                     TranslateGridControls(PoGrid)
@@ -127,6 +159,8 @@ Namespace Claims
             Public Term As String
             Public ServiceCenter As String
             Public CompanyId As Guid
+            Public IsNewInvoice As Boolean = False
+            Public IsNewInvoiceLine As Boolean = False
             Public IsAfterSave As Boolean
             Public IsEditMode As Boolean
             Public IsGridVisible As Boolean
@@ -158,16 +192,19 @@ Namespace Claims
 
         Private Sub SetGridButtonState(ByVal visible As Boolean)
             ControlMgr.SetVisibleControl(Me, BtnNewLine, visible)
-            ControlMgr.SetVisibleControl(Me, BtnCancelLine, visible)
-            ControlMgr.SetVisibleControl(Me, BtnSaveLines, visible)
+            ControlMgr.SetVisibleControl(Me, BtnCancelLine, Not visible)
+            ControlMgr.SetVisibleControl(Me, BtnSaveLines, Not visible)
         End Sub
 
         Protected Sub BindBoPropertiesToGridHeaders()
 
+            If State.APInvoiceLinesBO Is Nothing Then
+                State.APInvoiceLinesBO = New ApInvoiceLines
+            End If
+
             BindBOPropertyToGridHeader(State.APInvoiceLinesBO, "LineNumber", PoGrid.Columns(LINE_NO_COL))
             BindBOPropertyToGridHeader(State.APInvoiceLinesBO, "LineType", PoGrid.Columns(LINE_TYPE_COL))
             BindBOPropertyToGridHeader(State.APInvoiceLinesBO, "VendorItemCode", PoGrid.Columns(ITEM_CODE_COL))
-            BindBOPropertyToGridHeader(State.APInvoiceLinesBO, "ItemCode", PoGrid.Columns(ITEM_CODE_COL))
             BindBOPropertyToGridHeader(State.APInvoiceLinesBO, "Description", PoGrid.Columns(DESCRIPTION_COL))
             BindBOPropertyToGridHeader(State.APInvoiceLinesBO, "Quantity", PoGrid.Columns(QUANTITY_COL))
             BindBOPropertyToGridHeader(State.APInvoiceLinesBO, "UnitPrice", PoGrid.Columns(UNIT_PRICE_COL))
@@ -188,23 +225,98 @@ Namespace Claims
 #End Region
 
 #Region "Populate"
+        Private Sub PopulateDropDown()
 
-        Private Sub PopulatePoGrid()
+            Try
+
+                Dim ServiceCenterList As New Collections.Generic.List(Of DataElements.ListItem)
+
+                For Each Country_id As Guid In ElitaPlusIdentity.Current.ActiveUser.Countries
+                    Dim ServiceCenters As DataElements.ListItem() =
+                    CommonConfigManager.Current.ListManager.GetList(listCode:="ServiceCenterListByCountry",
+                                                                    context:=New ListContext() With
+                                                                    {
+                                                                      .CountryId = Country_id
+                                                                    })
+
+                    If ServiceCenters.Count > 0 Then
+                        If Not ServiceCenterList Is Nothing Then
+                            ServiceCenterList.AddRange(ServiceCenters)
+                        Else
+                            ServiceCenterList = ServiceCenters.Clone()
+                        End If
+                    End If
+                Next
+
+                Me.moVendorDropDown.Populate(ServiceCenterList.ToArray(),
+                                    New PopulateOptions() With
+                                    {
+                                        .AddBlankItem = True
+                                    })
+
+                Dim TermList As DataElements.ListItem() = CommonConfigManager.Current.ListManager.GetList("PMTTRM", Thread.CurrentPrincipal.GetLanguageCode())
+
+
+                moAPInvoiceTerm.Populate(CommonConfigManager.Current.ListManager.GetList("PMTTRM", Thread.CurrentPrincipal.GetLanguageCode()), New PopulateOptions() With
+                   {
+                       .AddBlankItem = True
+                   })
+
+                'Dim InvoiceType As DataElements.ListItem() = CommonConfigManager.Current.ListManager.GetList(listCode:="INVTYP",
+                'languageCode:=Thread.CurrentPrincipal.GetLanguageCode())
+                'Me.moAPInvoiceTerm.Populate(InvoiceType.ToArray(),
+                '                        New PopulateOptions() With
+                '                        {
+                '                            .AddBlankItem = True
+                '                        })
+
+                'Dim upgtermUnitOfMeasureLkl As ListItem() = CommonConfigManager.Current.ListManager.GetList("UNIT_OF_MEASURE", Thread.CurrentPrincipal.GetLanguageCode())
+                'moUpgTermUOMDrop.Populate(upgtermUnitOfMeasureLkl, New PopulateOptions() With
+                '                                      {
+                '                                        .AddBlankItem = True
+                '                                       })
+
+                'moAPInvoiceTerm.Populate(CommonConfigManager.Current.ListManager.GetList("INVOICE_REC_TYP", Thread.CurrentPrincipal.GetLanguageCode()), New PopulateOptions() With
+                '   {
+                '       .AddBlankItem = True
+                '   })
+            Catch ex As Exception
+                Me.HandleErrors(ex, Me.MasterPage.MessageController)
+            End Try
+
+        End Sub
+
+        Private Sub PopulatePoGrid(Optional ByVal oAction As String = ACTION_NONE)
 
             Try
 
                 If (State.SearchDv Is Nothing) Then
-                    State.SearchDv = GetDV()
+                    GetDV()
                 End If
                 State.SearchDv.Sort = SortDirection
-                If (State.IsAfterSave) Then
-                    State.IsAfterSave = False
-                    SetPageAndSelectedIndexFromGuid(State.SearchDv, State.APInvoiceLineId, PoGrid, State.PageIndex)
-                ElseIf (State.IsEditMode) Then
-                    SetPageAndSelectedIndexFromGuid(State.SearchDv, State.APInvoiceLineId, PoGrid, State.PageIndex, State.IsEditMode)
-                Else
-                    SetPageAndSelectedIndexFromGuid(State.SearchDv, Guid.Empty, PoGrid, State.PageIndex)
-                End If
+
+                Select Case oAction
+                    Case ACTION_NONE
+                        SetPageAndSelectedIndexFromGuid(State.SearchDv, Guid.Empty, PoGrid, 0)
+                        SetGridButtonState(True)
+                    Case ACTION_SAVE
+                        SetPageAndSelectedIndexFromGuid(State.SearchDv, State.APInvoiceLineId, PoGrid, PoGrid.PageIndex)
+                        SetGridButtonState(True)
+                    Case ACTION_CANCEL_DELETE
+                        Me.SetPageAndSelectedIndexFromGuid(State.SearchDv, Guid.Empty, PoGrid, PoGrid.PageIndex)
+                        SetGridButtonState(True)
+                    Case ACTION_EDIT
+                        SetPageAndSelectedIndexFromGuid(State.SearchDv, State.APInvoiceLineId, PoGrid, State.PageIndex, True)
+                        SetGridButtonState(False)
+                    Case ACTION_NEW
+                        If Me.State.IsNewInvoiceLine Then State.SearchDv.Table.DefaultView.Sort() = Nothing
+                        Dim oRow As DataRow = State.SearchDv.Table.NewRow
+                        oRow(DBINVOICELINE_ID) = State.APInvoiceHeaderId.ToByteArray
+                        State.SearchDv.Table.Rows.Add(oRow)
+                        Me.SetPageAndSelectedIndexFromGuid(State.SearchDv, State.APInvoiceLineId, PoGrid, PoGrid.PageIndex, True)
+                        SetGridButtonState(True)
+
+                End Select
 
                 PoGrid.AutoGenerateColumns = False
                 PoGrid.Columns(ITEM_CODE_COL).SortExpression = ApInvoiceLines.ITEM_CODE_COL
@@ -236,7 +348,7 @@ Namespace Claims
         Private Function GetPoGridDataView() As DataView
 
             With State
-                Return .APInvoiceLinesBO.GetApInvoiceLines()
+                Return .APInvoiceLinesBO.GetApInvoiceLines(State.APInvoiceHeaderId)
             End With
 
         End Function
@@ -268,7 +380,7 @@ Namespace Claims
                 Me.PopulateBOProperty(State.APInvoiceHeaderBO, "InvoiceAmount", moInvoiceAmount)
                 Me.PopulateBOProperty(State.APInvoiceHeaderBO, "InvoiceDate", moInvoiceDate)
                 Me.PopulateBOProperty(State.APInvoiceHeaderBO, "VendorId", moVendorDropDown)
-                Me.PopulateBOProperty(State.APInvoiceHeaderBO, "TermXcd", moAPInvoiceTerm)
+                ' Me.PopulateBOProperty(State.APInvoiceHeaderBO, "TermXcd", moAPInvoiceTerm)
 
             Catch ex As Exception
                 HandleErrors(ex, MasterPage.MessageController)
@@ -351,9 +463,19 @@ Namespace Claims
 
 #Region "Grid Events"
 
+        Private Sub Grid_PageSizeChanged(ByVal source As Object, ByVal e As EventArgs) Handles cboPageSize.SelectedIndexChanged
+            Try
+                PoGrid.PageIndex = NewCurrentPageIndex(PoGrid, CType(Session("recCount"), Int32), CType(cboPageSize.SelectedValue, Int32))
+                State.SelectedPageSize = CType(cboPageSize.SelectedValue, Integer)
+                PopulatePoGrid()
+            Catch ex As Exception
+                HandleErrors(ex, MasterPage.MessageController)
+            End Try
+        End Sub
+
         Public Property SortDirection() As String
             Get
-                Return ViewState("SortDirection").ToString
+                Return If(ViewState("SortDirection") = Nothing, String.Empty, ViewState("SortDirection").ToString())
             End Get
             Set(ByVal value As String)
                 ViewState("SortDirection") = value
@@ -410,7 +532,7 @@ Namespace Claims
                 HighLightSortColumn(PoGrid, SortDirection)
                 PoGrid.DataBind()
             End If
-            If Not PoGrid.BottomPagerRow.Visible Then PoGrid.BottomPagerRow.Visible = True
+            If Not PoGrid.BottomPagerRow Is Nothing AndAlso Not PoGrid.BottomPagerRow.Visible Then PoGrid.BottomPagerRow.Visible = True
             ControlMgr.SetVisibleControl(Me, PoGrid, State.IsGridVisible)
             Session("recCount") = State.SearchDv.Count
 
@@ -523,7 +645,6 @@ Namespace Claims
                 If (State.APInvoiceHeaderBO.IsDirty) Then
                     State.APInvoiceHeaderBO.Save()
                     State.IsAfterSave = True
-
                     Me.MasterPage.MessageController.AddSuccess(Message.SAVE_RECORD_CONFIRMATION)
                     State.SearchDv = Nothing
                     ReturnFromEditing()
@@ -531,7 +652,7 @@ Namespace Claims
                     Me.MasterPage.MessageController.AddInformation(Message.MSG_RECORD_NOT_SAVED)
                     ReturnFromEditing()
                 End If
-                ReturnFromEditing()
+
             Catch ex As Exception
                 HandleErrors(ex, MasterPage.MessageController)
             End Try
@@ -541,19 +662,19 @@ Namespace Claims
 
         End Sub
 
-        Private Sub ReturnFromEditing()
+        Private Sub ReturnFromEditing(Optional ByVal oAction As String = ACTION_NONE)
 
             PoGrid.EditIndex = NO_ROW_SELECTED_INDEX
 
-            If (PoGrid.PageCount = 0) Then
-                CreateHeaderForEmptyGrid(PoGrid, SortDirection)
-                ControlMgr.SetVisibleControl(Me, PoGrid, True)
-                SetGridButtonState(True)
-
+            State.IsEditMode = False
+            State.IsGridVisible = True
+            If State.IsNewInvoice Then
+                State.IsNewInvoiceLine = True
+                PopulatePoGrid(ACTION_NEW)
+            Else
+                PopulatePoGrid(ACTION_NONE)
             End If
 
-            State.IsEditMode = False
-            PopulatePoGrid()
             State.PageIndex = PoGrid.PageIndex
             SetButtonsState()
 
