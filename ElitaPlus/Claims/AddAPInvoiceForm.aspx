@@ -50,7 +50,7 @@ Theme="Default"  %>
                     </tr>
                     <tr>
                         <td align="right" nowrap="noWrap">
-                            <asp:Label runat="server" ID="moServiceCenterLabel" Text="SERVICE_CENTER" />
+                            <asp:Label runat="server" ID="moServiceCenterLabel" Text="VENDOR" />
                         </td>
                         <td nowrap="noWrap">
                              <asp:DropDownList runat="server" ID="moVendorDropDown" SkinID="MediumDropDown">
@@ -67,6 +67,14 @@ Theme="Default"  %>
                         
                     </tr>
                     <tr>
+                        
+                        <td align="right" nowrap="noWrap">
+                           <asp:Label runat="server" ID="moDealerLabel">DEALER</asp:Label>:
+                        </td>
+                        <td nowrap="noWrap">
+                           <asp:DropDownList ID="moDealer" runat="server" SkinID="MediumDropDown" >
+                           </asp:DropDownList>
+                        </td>
                         <td align="right" nowrap="noWrap">
                             <asp:Label runat="server" ID="moTermLabel" Text="TERM" />
                         </td>
@@ -74,12 +82,7 @@ Theme="Default"  %>
                             <asp:DropDownList runat="server" ID="moAPInvoiceTerm" SkinID="MediumDropDown">
                             </asp:DropDownList>
                         </td>
-                        <td align="right" nowrap="noWrap">
-                            
-                        </td>
-                        <td nowrap="noWrap">
-                           
-                        </td>
+                      
                     </tr>
         </table>
     </div>
@@ -89,7 +92,7 @@ Theme="Default"  %>
     <!-- new layout start -->
 <div class="dataContainer">
 <h2 class="dataGridHeader">
-    Line Items </h2>
+    Invoice Line Items </h2>
 <div>
      <table width="100%" class="dataGrid">
      <tr id="tr1" runat="server">
@@ -242,7 +245,7 @@ Theme="Default"  %>
                         </td>
                     </tr>
                     <tr>
-                        <td colspan="1" width="75%">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                        <td colspan="1" width="100%">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                             <asp:Button ID="BtnNewLine" runat="server" Visible="false" SkinID="AlternateLeftButton" Text="New"></asp:Button>&nbsp;
                             <asp:Button ID="BtnSaveLines" runat="server"  Visible="false" SkinID="PrimaryRightButton" Text="Save"></asp:Button>&nbsp;
                             <asp:Button ID="BtnCancelLine" runat="server"  Visible="false" SkinID="AlternateLeftButton" Text="Cancel"></asp:Button>
@@ -254,16 +257,15 @@ Theme="Default"  %>
 </div>
 </div>
 <br />
-<div class="btnZone" width="70%">
+<div class="btnZone" width="98%">
     <table width="100%">
         <tr>
-            <td width="60%">
+            <td width="50%">
                 <asp:Button ID="btnBack" runat="server" SkinID="AlternateLeftButton" Text="BACK"></asp:Button>
             </td>
-            <td width="30%" align="right">
+            <td width="50%" align="right">
                 <asp:Button ID="btnApply_WRITE" runat="server" SkinID="PrimaryLeftButton" Text="SAVE" />
             </td>
-            <td width="10%"></td>
         </tr>
     </table>
 </div>

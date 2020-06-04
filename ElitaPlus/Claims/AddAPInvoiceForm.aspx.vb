@@ -60,6 +60,19 @@ Namespace Claims
         Private Const ACTION_EDIT As String = "ACTION_EDIT"
         Private Const ACTION_NEW As String = "ACTION_NEW"
 
+        'Invoice Header Default value
+        Private Const SOURCE As String = "MANNUAL"
+        Private Const PAID_AMOUNT As Decimal = 0
+        Private Const PAYMENT_STATUS_XCD As String = "APINVPYMTSTATUS-NOPYMT"
+        Private Const CURRENCY_ISO_CODE As String = "USD"
+        Private Const EXCHANGE_RATE As Decimal = 1
+        Private Const APPROVED_XCD As String = "N"
+        Private Const ACCOUNTING_PERIOD As String = "N"
+        Private Const DISTRIBUTED As String = "N"
+        Private Const POSTED As String = "N"
+
+
+
 #End Region
 
         Public Sub New()
@@ -230,7 +243,6 @@ Namespace Claims
             Try
 
                 Dim ServiceCenterList As New Collections.Generic.List(Of DataElements.ListItem)
-
                 For Each Country_id As Guid In ElitaPlusIdentity.Current.ActiveUser.Countries
                     Dim ServiceCenters As DataElements.ListItem() =
                     CommonConfigManager.Current.ListManager.GetList(listCode:="ServiceCenterListByCountry",
@@ -255,12 +267,37 @@ Namespace Claims
                                     })
 
                 Dim TermList As DataElements.ListItem() = CommonConfigManager.Current.ListManager.GetList("PMTTRM", Thread.CurrentPrincipal.GetLanguageCode())
-
-
                 moAPInvoiceTerm.Populate(CommonConfigManager.Current.ListManager.GetList("PMTTRM", Thread.CurrentPrincipal.GetLanguageCode()), New PopulateOptions() With
-                   {
-                       .AddBlankItem = True
-                   })
+                               {
+                                   .AddBlankItem = True,
+                                   .BlankItemValue = String.Empty,
+                                   .TextFunc = AddressOf PopulateOptions.GetDescription,
+                                   .ValueFunc = AddressOf PopulateOptions.GetExtendedCode
+                               })
+
+                Dim DealerList As New Collections.Generic.List(Of DataElements.ListItem)
+                For Each CompanyId As Guid In ElitaPlusIdentity.Current.ActiveUser.Companies
+                    Dim Dealers As DataElements.ListItem() =
+                    CommonConfigManager.Current.ListManager.GetList(listCode:="DealerListByCompany",
+                                                        context:=New ListContext() With
+                                                        {
+                                                          .CompanyId = CompanyId
+                                                        })
+
+                    If Dealers.Count > 0 Then
+                        If Not DealerList Is Nothing Then
+                            DealerList.AddRange(Dealers)
+                        Else
+                            DealerList = Dealers.Clone()
+                        End If
+                    End If
+                Next
+
+                moDealer.Populate(DealerList.ToArray(),
+                        New PopulateOptions() With
+                        {
+                            .AddBlankItem = True
+                        })
 
                 'Dim InvoiceType As DataElements.ListItem() = CommonConfigManager.Current.ListManager.GetList(listCode:="INVTYP",
                 'languageCode:=Thread.CurrentPrincipal.GetLanguageCode())
@@ -376,11 +413,23 @@ Namespace Claims
         Private Sub PopulateBoFromForm()
             Try
 
-                Me.PopulateBOProperty(State.APInvoiceHeaderBO, "InvoiceNumber", moInvoiceNumber)
-                Me.PopulateBOProperty(State.APInvoiceHeaderBO, "InvoiceAmount", moInvoiceAmount)
-                Me.PopulateBOProperty(State.APInvoiceHeaderBO, "InvoiceDate", moInvoiceDate)
-                Me.PopulateBOProperty(State.APInvoiceHeaderBO, "VendorId", moVendorDropDown)
-                ' Me.PopulateBOProperty(State.APInvoiceHeaderBO, "TermXcd", moAPInvoiceTerm)
+                PopulateBOProperty(State.APInvoiceHeaderBO, "InvoiceNumber", moInvoiceNumber)
+                PopulateBOProperty(State.APInvoiceHeaderBO, "InvoiceAmount", moInvoiceAmount)
+                PopulateBOProperty(State.APInvoiceHeaderBO, "InvoiceDate", moInvoiceDate)
+                PopulateBOProperty(State.APInvoiceHeaderBO, "VendorId", moVendorDropDown)
+                PopulateBOProperty(State.APInvoiceHeaderBO, "VendorAddressId", moVendorDropDown)
+                PopulateBOProperty(State.APInvoiceHeaderBO, "DealerId", moDealer)
+                PopulateBOProperty(State.APInvoiceHeaderBO, "TermXcd", moAPInvoiceTerm, False, True)
+                State.APInvoiceHeaderBO.Source = SOURCE
+                State.APInvoiceHeaderBO.PaidAmount = PAID_AMOUNT
+                State.APInvoiceHeaderBO.PaymentStatusXcd = PAYMENT_STATUS_XCD
+                State.APInvoiceHeaderBO.CurrencyIsoCode = CURRENCY_ISO_CODE
+                State.APInvoiceHeaderBO.ExchangeRate = EXCHANGE_RATE
+                State.APInvoiceHeaderBO.ApprovedXcd = APPROVED_XCD
+                State.APInvoiceHeaderBO.AccountingPeriod = ACCOUNTING_PERIOD
+                State.APInvoiceHeaderBO.Distributed = DISTRIBUTED
+                State.APInvoiceHeaderBO.Posted = POSTED
+                State.APInvoiceHeaderBO.CompanyId = ElitaPlusIdentity.Current.ActiveUser.FirstCompanyID
 
             Catch ex As Exception
                 HandleErrors(ex, MasterPage.MessageController)
@@ -397,6 +446,7 @@ Namespace Claims
                 moInvoiceDate.Text = .InvoiceDate
                 moAPInvoiceTerm.SelectedValue = .TermXcd
                 moVendorDropDown.SelectedValue = .VendorId.ToString
+                moDealer.SelectedValue = .DealerId.ToString
 
             End With
 
@@ -643,7 +693,7 @@ Namespace Claims
             Try
                 PopulateBoFromForm()
                 If (State.APInvoiceHeaderBO.IsDirty) Then
-                    State.APInvoiceHeaderBO.Save()
+                    State.APInvoiceHeaderBO.SaveInvoiceHeader()
                     State.IsAfterSave = True
                     Me.MasterPage.MessageController.AddSuccess(Message.SAVE_RECORD_CONFIRMATION)
                     State.SearchDv = Nothing
@@ -657,11 +707,6 @@ Namespace Claims
                 HandleErrors(ex, MasterPage.MessageController)
             End Try
         End Sub
-        Private Sub ClearSearchCriteria()
-
-
-        End Sub
-
         Private Sub ReturnFromEditing(Optional ByVal oAction As String = ACTION_NONE)
 
             PoGrid.EditIndex = NO_ROW_SELECTED_INDEX

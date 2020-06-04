@@ -165,6 +165,43 @@ Public Class ApInvoiceHeaderDAL
 
 #End Region
 
+#Region "Public Methods"
+    Public Function SaveInvoiceHeader(ByVal row As DataRow)
+
+        Dim sqlstatement As String
+        Dim rowState As DataRowState = row.RowState
+        Dim updatedby As String
+        Try
+            Select Case rowState
+                Case DataRowState.Added
+                    'Insert
+                    sqlstatement = Me.Config("/SQL/INSERT")
+                    updatedby = COL_NAME_CREATED_BY
+                Case DataRowState.Modified
+                    'update
+                    sqlstatement = Me.Config("/SQL/UPDATE")
+                    updatedby = COL_NAME_MODIFIED_BY
+            End Select
+
+
+            Dim inParameters() As DBHelper.DBHelperParameter = New DBHelper.DBHelperParameter() _
+                       {New DBHelper.DBHelperParameter(PAR_I_NAME_AP_INVOICE_HEADER_ID, row(COL_NAME_AP_INVOICE_HEADER_ID)),
+                        New DBHelper.DBHelperParameter(PAR_I_NAME_INVOICE_NUMBER, row(Me.COL_NAME_INVOICE_NUMBER)),
+                        New DBHelper.DBHelperParameter(PAR_I_NAME_INVOICE_DATE, row(COL_NAME_INVOICE_DATE)),
+                        New DBHelper.DBHelperParameter(PAR_I_NAME_INVOICE_AMOUNT, row(COL_NAME_INVOICE_AMOUNT)),
+                        New DBHelper.DBHelperParameter(PAR_I_NAME_TERM_XCD, row(COL_NAME_TERM_XCD)),
+                        New DBHelper.DBHelperParameter(PAR_I_NAME_COMPANY_ID, row(COL_NAME_COMPANY_ID)),
+                        New DBHelper.DBHelperParameter(PAR_I_NAME_VENDOR_ID, row(COL_NAME_VENDOR_ID)),
+                        New DBHelper.DBHelperParameter("pi_" & updatedby.ToLower(), row(updatedby)),
+                        New DBHelper.DBHelperParameter(PAR_I_NAME_DEALER_ID, row(COL_NAME_DEALER_ID))
+                       }
+            DBHelper.ExecuteSp(sqlstatement, inParameters, Nothing)
+            row.AcceptChanges()
+        Catch ex As Exception
+            Throw New DataBaseAccessException(DataBaseAccessException.DatabaseAccessErrorType.ReadErr, ex)
+        End Try
+    End Function
+#End Region
 
 #Region "Data query methods"
     Private Function DB_OracleCommand(ByVal p_SqlStatement As String, ByVal p_CommandType As CommandType) As OracleCommand

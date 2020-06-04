@@ -404,19 +404,37 @@ Public Class ApInvoiceHeader
             Me.SetValue(ApInvoiceHeaderDAL.COL_NAME_COMPANY_ID, Value)
         End Set
     End Property
-	
-	
-   
+
+
+
 
 #End Region
 
 #Region "Public Members"
-    Public Overrides Sub Save()         
+    Public Overrides Sub Save()
         Try
             MyBase.Save()
             If Me._isDSCreator AndAlso Me.IsDirty AndAlso Me.Row.RowState <> DataRowState.Detached Then
                 Dim dal As New ApInvoiceHeaderDAL
                 dal.Update(Me.Row)
+                'Reload the Data from the DB
+                If Me.Row.RowState <> DataRowState.Detached Then
+                    Dim objId As Guid = Me.Id
+                    Me.Dataset = New DataSet
+                    Me.Row = Nothing
+                    Me.Load(objId)
+                End If
+            End If
+        Catch ex As Assurant.ElitaPlus.DALObjects.DataBaseAccessException
+            Throw New DataBaseAccessException(DataBaseAccessException.DatabaseAccessErrorType.WriteErr, ex)
+        End Try
+    End Sub
+    Public Sub SaveInvoiceHeader()
+        Try
+            MyBase.Save()
+            If Me._isDSCreator AndAlso Me.IsDirty AndAlso Me.Row.RowState <> DataRowState.Detached Then
+                Dim dal As New ApInvoiceHeaderDAL
+                dal.SaveInvoiceHeader(Me.Row)
                 'Reload the Data from the DB
                 If Me.Row.RowState <> DataRowState.Detached Then
                     Dim objId As Guid = Me.Id
