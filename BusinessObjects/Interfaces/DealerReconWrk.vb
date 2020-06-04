@@ -903,7 +903,7 @@ Public Class DealerReconWrk
     End Property
 
 
-    <ValidStringLength("", Max:=3)>
+    <ValidStringLength("", Max:=5)>
     Public Property CancellationCode() As String
         Get
             CheckDeleted()
