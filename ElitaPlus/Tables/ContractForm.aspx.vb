@@ -971,7 +971,7 @@ Partial Class ContractForm
                 })
 
         'US489857
-        PoupulateSourceOptionDropdownlist()
+        BindSourceOptionDropdownlist()
     End Sub
 
     Private Sub PopulateAccountBusinessUnit(ByVal dealerId As Guid)
@@ -1909,6 +1909,11 @@ Partial Class ContractForm
             Me.State.DealerBO = Nothing
             Me.State.DealerBO = Me.State.MyBO.AddDealer(Me.State.MyBO.DealerId)
             '-------------------------------
+            
+            'Rebind dropdown when dealer is changed
+            BindSourceOptionDropdownlist()            
+            PopulateSourcePercentageBucketValues()            
+            '--------------------------------------
 
             SetDefaultDates()
             PopulateAccountBusinessUnit(Me.State.MyBO.DealerId)
@@ -3426,7 +3431,7 @@ Partial Class ContractForm
 
     End Sub
 
-    Private Sub PoupulateSourceOptionDropdownlist()
+    Private Sub BindSourceOptionDropdownlist()
         If (Me.State.MyBO.DealerId <> Guid.Empty) Then
             Dim oDealer As New Dealer(Me.State.MyBO.DealerId)
 
@@ -3473,12 +3478,15 @@ Partial Class ContractForm
                                         })
                 Else
                     HideSourceScdFields()
+                    EnablePercentageTextBox()
                 End If
             Else
                 HideSourceScdFields()
+                EnablePercentageTextBox()
             End If
         Else
             HideSourceScdFields()
+            EnablePercentageTextBox()
         End If
     End Sub
 
@@ -3548,12 +3556,15 @@ Partial Class ContractForm
                         End If
                     Else
                         HideSourceScdFields()
+                        EnablePercentageTextBox()
                     End If
                 Else
                     HideSourceScdFields()
+                    EnablePercentageTextBox()
                 End If
             Else
                 HideSourceScdFields()
+                EnablePercentageTextBox()
             End If
         End With
     End Sub
@@ -3641,6 +3652,14 @@ Partial Class ContractForm
         cboAdminExpenseSourceXcd.Visible = False
         cboMarketingExpenseSourceXcd.Visible = False
         cboCommPercentSourceXcd.Visible = False
+    End Sub
+
+    Private Sub EnablePercentageTextBox()
+        Me.TextboxLossCostPercent.Enabled = True
+        Me.TextboxProfitExpense.Enabled = True
+        Me.TextboxMarketingExpense.Enabled = True
+        Me.TextboxAdminExpense.Enabled = True
+        Me.TextboxCommPercent.Enabled = True
     End Sub
 
 #End Region
