@@ -1306,7 +1306,6 @@ Partial Class ContractForm
             Me.SetSelectedItem(Me.ddlAllowBillingAfterCancellation, .AllowBillingAfterCancellation)
             Me.SetSelectedItem(Me.ddlAllowCollectionAfterCancellation, .AllowCollectionAfterCancellation)
 
-
             'REQ-1333
             Me.PopulateControlFromBOProperty(Me.txtReplacementPolicyCliamCount, .ReplacementPolicyClaimCount)
 
@@ -1326,79 +1325,7 @@ Partial Class ContractForm
             Me.SetSelectedItem(Me.ddlProducer, .ProducerId)
 
             ' US - 489857
-            If (.DealerId <> Guid.Empty) Then
-                Dim oDealer As New Dealer(.DealerId)
-                If Not oDealer.AcctBucketsWithSourceXcd Is Nothing Then
-                    If oDealer.AcctBucketsWithSourceXcd.Equals(Codes.EXT_YESNO_Y) Then
-                        Dim diffFixedValue As Decimal
-                        diffFixedValue = 0.0000
-                        If cboLossCostPercentSourceXcd.Visible Then
-                            If Not .LossCostPercentSourceXcd Is Nothing And Me.cboLossCostPercentSourceXcd.Items.Count > 0 Then
-                                Me.SetSelectedItem(Me.cboLossCostPercentSourceXcd, .LossCostPercentSourceXcd)
-
-                                If cboLossCostPercentSourceXcd.SelectedItem.Value.ToUpper.Equals(Codes.ACCT_BUCKETS_SOURCE_OPTION_DIFFERENCE) Then
-                                    Me.PopulateControlFromBOProperty(Me.TextboxLossCostPercent, diffFixedValue, Me.PERCENT_FORMAT)
-                                    Me.TextboxLossCostPercent.Enabled = False
-                                Else
-                                    Me.TextboxLossCostPercent.Enabled = True
-                                End If
-                            End If
-                        End If
-
-                        If cboProfitExpenseSourceXcd.Visible Then
-                            If Not .ProfitPercentSourceXcd Is Nothing And Me.cboProfitExpenseSourceXcd.Items.Count > 0 Then
-                                Me.SetSelectedItem(Me.cboProfitExpenseSourceXcd, .ProfitPercentSourceXcd)
-
-                                If cboProfitExpenseSourceXcd.SelectedItem.Value.ToUpper.Equals(Codes.ACCT_BUCKETS_SOURCE_OPTION_DIFFERENCE) Then
-                                    Me.PopulateControlFromBOProperty(Me.TextboxProfitExpense, diffFixedValue, Me.PERCENT_FORMAT)
-                                    Me.TextboxProfitExpense.Enabled = False
-                                Else
-                                    Me.TextboxProfitExpense.Enabled = True
-                                End If
-                            End If
-                        End If
-
-                        If cboMarketingExpenseSourceXcd.Visible Then
-                            If Not .MarketingPercentSourceXcd Is Nothing And Me.cboMarketingExpenseSourceXcd.Items.Count > 0 Then
-                                Me.SetSelectedItem(Me.cboMarketingExpenseSourceXcd, .MarketingPercentSourceXcd)
-
-                                If cboMarketingExpenseSourceXcd.SelectedItem.Value.ToUpper.Equals(Codes.ACCT_BUCKETS_SOURCE_OPTION_DIFFERENCE) Then
-                                    Me.PopulateControlFromBOProperty(Me.TextboxMarketingExpense, diffFixedValue, Me.PERCENT_FORMAT)
-                                    Me.TextboxMarketingExpense.Enabled = False
-                                Else
-                                    Me.TextboxMarketingExpense.Enabled = True
-                                End If
-                            End If
-                        End If
-
-                        If cboAdminExpenseSourceXcd.Visible Then
-                            If Not .AdminExpenseSourceXcd Is Nothing And Me.cboAdminExpenseSourceXcd.Items.Count > 0 Then
-                                Me.SetSelectedItem(Me.cboAdminExpenseSourceXcd, .AdminExpenseSourceXcd)
-
-                                If cboAdminExpenseSourceXcd.SelectedItem.Value.ToUpper.Equals(Codes.ACCT_BUCKETS_SOURCE_OPTION_DIFFERENCE) Then
-                                    Me.PopulateControlFromBOProperty(Me.TextboxAdminExpense, diffFixedValue, Me.PERCENT_FORMAT)
-                                    Me.TextboxAdminExpense.Enabled = False
-                                Else
-                                    Me.TextboxAdminExpense.Enabled = True
-                                End If
-                            End If
-                        End If
-
-                        If cboCommPercentSourceXcd.Visible Then
-                            If Not .CommissionsPercentSourceXcd Is Nothing And Me.cboCommPercentSourceXcd.Items.Count > 0 Then
-                                Me.SetSelectedItem(Me.cboCommPercentSourceXcd, .CommissionsPercentSourceXcd)
-
-                                If cboCommPercentSourceXcd.SelectedItem.Value.ToUpper.Equals(Codes.ACCT_BUCKETS_SOURCE_OPTION_DIFFERENCE) Then
-                                    Me.PopulateControlFromBOProperty(Me.TextboxCommPercent, diffFixedValue, Me.PERCENT_FORMAT)
-                                    Me.TextboxCommPercent.Enabled = False
-                                Else
-                                    Me.TextboxCommPercent.Enabled = True
-                                End If
-                            End If
-                        End If
-                    End If
-                End If
-            End If
+            PopulateSourceDropdownBucketFromBOs()
         End With
 
     End Sub
@@ -1583,6 +1510,7 @@ Partial Class ContractForm
                 Me.cboPayOutstandingAmount.SelectedIndex = Me.NO_ITEM_SELECTED_INDEX
         End Select
     End Sub
+
     Protected Sub PopulateBOsFormFrom()
         Dim sval As String
         Dim langId As Guid = ElitaPlusIdentity.Current.ActiveUser.LanguageId
@@ -1787,8 +1715,8 @@ Partial Class ContractForm
 
             Me.PopulateBOProperty(Me.State.MyBO, "OverrideEditMfgTerm", Me.cboOverrideEditMfgTerm, False, True)
 
-            '# US 489857
-            CommonSourceOptionLogic()
+            ''# US 489857
+            'PoupulateBOsFromSourceDropDownBucket()
 
         End With
         If Me.ErrCollection.Count > 0 Then
@@ -1843,6 +1771,8 @@ Partial Class ContractForm
 
         ClearReplacementPolicyState()
         Me.PopulateBOsFormFrom()
+        '# US 489857
+        PoupulateBOsFromSourceDropDownBucket()
         Me.cboID_VALIDATION.SelectedIndex = Me.NOTHING_SELECTED
         Me.cboAcselProdCode.SelectedIndex = Me.NOTHING_SELECTED
         SetID_Validation_DDandAcsel_Prod_Code()
@@ -2211,6 +2141,8 @@ Partial Class ContractForm
     Private Sub btnBack_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnBack.Click
         Try
             Me.PopulateBOsFormFrom()
+            '# US 489857
+            'PoupulateBOsFromSourceDropDownBucket()
             If Me.State.MyBO.IsDirty Then
                 Me.DisplayMessage(Message.SAVE_CHANGES_PROMPT, "", Me.MSG_BTN_YES_NO, Me.MSG_TYPE_CONFIRM, Me.HiddenSaveChangesPromptResponse)
                 'Me.AddConfirmMsg(Message.SAVE_CHANGES_PROMPT, Me.HiddenSaveChangesPromptResponse)
@@ -2281,7 +2213,8 @@ Partial Class ContractForm
             End If
 
             Me.PopulateBOsFormFrom()
-
+            '# US 489857
+            PoupulateBOsFromSourceDropDownBucket()
             Dim yesId As Guid = LookupListNew.GetIdFromCode(LookupListNew.LK_LANG_INDEPENDENT_YES_NO, Codes.YESNO_Y)
             If Me.State.MyBO.DealerMarkupId.Equals(yesId) Then
                 If Me.State.MyBO.IgnoreCoverageAmtId.Equals(yesId) Or Me.State.MyBO.IgnoreIncomingPremiumID.Equals(yesId) Then
@@ -2403,6 +2336,8 @@ Partial Class ContractForm
     Private Sub btnNew_WRITE_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnNew_WRITE.Click
         Try
             Me.PopulateBOsFormFrom()
+            '# US 489857
+            'PoupulateBOsFromSourceDropDownBucket()
             If Me.State.MyBO.IsDirty Then
                 Me.DisplayMessage(Message.SAVE_CHANGES_PROMPT, "", Me.MSG_BTN_YES_NO, Me.MSG_TYPE_CONFIRM, Me.HiddenSaveChangesPromptResponse)
                 'Me.AddConfirmMsg(Message.SAVE_CHANGES_PROMPT, Me.HiddenSaveChangesPromptResponse)
@@ -2419,6 +2354,8 @@ Partial Class ContractForm
         Try
             ' this should happen during post back before dialog message whether record is dirty or not.
             Me.PopulateBOsFormFrom()
+            '# US 489857
+            PoupulateBOsFromSourceDropDownBucket()
             TheDealerControl.NothingSelected = True
             populateDealer()
             TheDealerControl.SelectedGuid = Me.State.MyBO.DealerId
@@ -3293,8 +3230,7 @@ Partial Class ContractForm
 
 #Region "Acct Source Xcd Option Bucket Logic"
     ' US - 489857
-    Private Sub CommonSourceOptionLogic()
-
+    Private Sub PoupulateBOsFromSourceDropDownBucket()
         If (Me.State.MyBO.DealerId <> Guid.Empty) Then
             Dim oDealer As New Dealer(Me.State.MyBO.DealerId)
 
@@ -3360,6 +3296,84 @@ Partial Class ContractForm
         End If
     End Sub
 
+    Private Sub PopulateSourceDropdownBucketFromBOs()
+        With Me.State.MyBO
+            If (.DealerId <> Guid.Empty) Then
+                Dim oDealer As New Dealer(.DealerId)
+                If Not oDealer.AcctBucketsWithSourceXcd Is Nothing Then
+                    If oDealer.AcctBucketsWithSourceXcd.Equals(Codes.EXT_YESNO_Y) Then
+                        Dim diffFixedValue As Decimal
+                        diffFixedValue = 0.0000
+                        If cboLossCostPercentSourceXcd.Visible Then
+                            If Not .LossCostPercentSourceXcd Is Nothing And Me.cboLossCostPercentSourceXcd.Items.Count > 0 Then
+                                Me.SetSelectedItem(Me.cboLossCostPercentSourceXcd, .LossCostPercentSourceXcd)
+
+                                If cboLossCostPercentSourceXcd.SelectedItem.Value.ToUpper.Equals(Codes.ACCT_BUCKETS_SOURCE_OPTION_DIFFERENCE) Then
+                                    Me.PopulateControlFromBOProperty(Me.TextboxLossCostPercent, diffFixedValue, Me.PERCENT_FORMAT)
+                                    Me.TextboxLossCostPercent.Enabled = False
+                                Else
+                                    Me.TextboxLossCostPercent.Enabled = True
+                                End If
+                            End If
+                        End If
+
+                        If cboProfitExpenseSourceXcd.Visible Then
+                            If Not .ProfitPercentSourceXcd Is Nothing And Me.cboProfitExpenseSourceXcd.Items.Count > 0 Then
+                                Me.SetSelectedItem(Me.cboProfitExpenseSourceXcd, .ProfitPercentSourceXcd)
+
+                                If cboProfitExpenseSourceXcd.SelectedItem.Value.ToUpper.Equals(Codes.ACCT_BUCKETS_SOURCE_OPTION_DIFFERENCE) Then
+                                    Me.PopulateControlFromBOProperty(Me.TextboxProfitExpense, diffFixedValue, Me.PERCENT_FORMAT)
+                                    Me.TextboxProfitExpense.Enabled = False
+                                Else
+                                    Me.TextboxProfitExpense.Enabled = True
+                                End If
+                            End If
+                        End If
+
+                        If cboMarketingExpenseSourceXcd.Visible Then
+                            If Not .MarketingPercentSourceXcd Is Nothing And Me.cboMarketingExpenseSourceXcd.Items.Count > 0 Then
+                                Me.SetSelectedItem(Me.cboMarketingExpenseSourceXcd, .MarketingPercentSourceXcd)
+
+                                If cboMarketingExpenseSourceXcd.SelectedItem.Value.ToUpper.Equals(Codes.ACCT_BUCKETS_SOURCE_OPTION_DIFFERENCE) Then
+                                    Me.PopulateControlFromBOProperty(Me.TextboxMarketingExpense, diffFixedValue, Me.PERCENT_FORMAT)
+                                    Me.TextboxMarketingExpense.Enabled = False
+                                Else
+                                    Me.TextboxMarketingExpense.Enabled = True
+                                End If
+                            End If
+                        End If
+
+                        If cboAdminExpenseSourceXcd.Visible Then
+                            If Not .AdminExpenseSourceXcd Is Nothing And Me.cboAdminExpenseSourceXcd.Items.Count > 0 Then
+                                Me.SetSelectedItem(Me.cboAdminExpenseSourceXcd, .AdminExpenseSourceXcd)
+
+                                If cboAdminExpenseSourceXcd.SelectedItem.Value.ToUpper.Equals(Codes.ACCT_BUCKETS_SOURCE_OPTION_DIFFERENCE) Then
+                                    Me.PopulateControlFromBOProperty(Me.TextboxAdminExpense, diffFixedValue, Me.PERCENT_FORMAT)
+                                    Me.TextboxAdminExpense.Enabled = False
+                                Else
+                                    Me.TextboxAdminExpense.Enabled = True
+                                End If
+                            End If
+                        End If
+
+                        If cboCommPercentSourceXcd.Visible Then
+                            If Not .CommissionsPercentSourceXcd Is Nothing And Me.cboCommPercentSourceXcd.Items.Count > 0 Then
+                                Me.SetSelectedItem(Me.cboCommPercentSourceXcd, .CommissionsPercentSourceXcd)
+
+                                If cboCommPercentSourceXcd.SelectedItem.Value.ToUpper.Equals(Codes.ACCT_BUCKETS_SOURCE_OPTION_DIFFERENCE) Then
+                                    Me.PopulateControlFromBOProperty(Me.TextboxCommPercent, diffFixedValue, Me.PERCENT_FORMAT)
+                                    Me.TextboxCommPercent.Enabled = False
+                                Else
+                                    Me.TextboxCommPercent.Enabled = True
+                                End If
+                            End If
+                        End If
+                    End If
+                End If
+            End If
+        End With
+    End Sub
+
     Private Sub ValidateDifferenceSourceXcd()
 
         Me.State.IsDiffSelectedTwice = False
@@ -3413,7 +3427,6 @@ Partial Class ContractForm
     End Sub
 
     Private Sub PoupulateSourceOptionDropdownlist()
-
         If (Me.State.MyBO.DealerId <> Guid.Empty) Then
             Dim oDealer As New Dealer(Me.State.MyBO.DealerId)
 
@@ -3533,9 +3546,14 @@ Partial Class ContractForm
                                 End If
                             End If
                         End If
-
+                    Else
+                        HideSourceScdFields()
                     End If
+                Else
+                    HideSourceScdFields()
                 End If
+            Else
+                HideSourceScdFields()
             End If
         End With
     End Sub
