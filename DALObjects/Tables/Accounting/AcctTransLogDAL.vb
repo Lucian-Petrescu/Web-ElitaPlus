@@ -94,15 +94,6 @@ Public Class AcctTransLogDAL
     Private Const PARAM_ACCOUNTING_BUSINESS_UNIT_ID As String = "ACCT_BUSINESS_UNIT_ID"
     Private Const PARAM_NETWORK_ID As String = "NETWORK_ID"
 
-    Private Const PARAM_INPUT_BATCH_NUMBER As String = "pi_batch_number"
-    Private Const PARAM_INPUT_COMPANY_ID As String = "pi_company_id"
-    Private Const PARAM_INPUT_ACCOUNTING_EVENT_ID As String = "pi_accounting_event_type_id"
-    Private Const PARAM_INPUT_BUSINESS_UNIT_ID As String = "pi_business_unit_id"
-    Private Const PARAM_INPUT_NETWORK_ID As String = "pi_network_id"
-    Private Const PARAM_INPUT_EVENT_NAME As String = "pi_event_name"
-    Private Const PARAM_INPUT_INCLUDE_PROCESSED As String = "pi_include_processed"
-    Private Const PARAM_OUTPUT_JOURNAL_DATA As String = "po_journal_data"
-
     Public Enum VendorFile
         ACCOUNT
         ADDRESS
@@ -140,42 +131,35 @@ Public Class AcctTransLogDAL
         Return DBHelper.Fetch(selectStmt, Me.TABLE_NAME)
     End Function
 
-    Public Function GetJournalEntries(ByVal CompanyId As Guid,
-                                        ByVal AccountingEventId As Guid,
-                                        ByVal BusinessUnitId As Guid,
-                                        ByVal EventName As String,
-                                        ByVal NetworkId As String,
-                                        ByVal BatchNumber As String,
+    Public Function GetJournalEntries(ByVal CompanyId As Guid, _
+                                        ByVal AccountingEventId As Guid, _
+                                        ByVal BusinessUnitId As Guid, _
+                                        ByVal EventName As String, _
+                                        ByVal NetworkId As String, _
                                         Optional ByVal IncludeProcessed As Boolean = False) As DataSet
 
-        Dim selectStmt As String = Me.Config("/SQL/GET_JOURNAL_ENTRIES")
-        Dim IncludeProcessedStr As String
-        Dim inputParameters() As DBHelper.DBHelperParameter
-        Dim outputParameter() As DBHelper.DBHelperParameter
-        
-        if IncludeProcessed  then 
-            IncludeProcessedStr = "Y"
-        else
-            IncludeProcessedStr =  "N"
-        end if
+        Dim selectStmt As String = Me.Config("/SQL/JOURNAL_" + EventName)
+        Dim parameters(Microsoft.VisualBasic.Split(selectStmt, ":").Length - 2) As DBHelper.DBHelperParameter
 
 
-        inputParameters = New DBHelper.DBHelperParameter() { _
-            New DBHelper.DBHelperParameter(PARAM_INPUT_BATCH_NUMBER, BatchNumber),
-            New DBHelper.DBHelperParameter(PARAM_INPUT_COMPANY_ID, CompanyId.ToByteArray()),
-            New DBHelper.DBHelperParameter(PARAM_INPUT_ACCOUNTING_EVENT_ID, AccountingEventId.ToByteArray()),
-            New DBHelper.DBHelperParameter(PARAM_INPUT_BUSINESS_UNIT_ID, BusinessUnitId.ToByteArray()),
-            New DBHelper.DBHelperParameter(PARAM_INPUT_NETWORK_ID, NetworkId),
-            New DBHelper.DBHelperParameter(PARAM_INPUT_EVENT_NAME, EventName), 
-            New DBHelper.DBHelperParameter(PARAM_INPUT_INCLUDE_PROCESSED, IncludeProcessedStr)}
-
-        outputParameter = New DBHelper.DBHelperParameter() _
-        {New DBHelper.DBHelperParameter(PARAM_OUTPUT_JOURNAL_DATA, GetType(DataSet))}
+        For i As Integer = 0 To (parameters.Length / 4) - 1
+            parameters(i + (3 * i)) = New DBHelper.DBHelperParameter(PARAM_NETWORK_ID, NetworkId)
+            parameters(i + 1 + (3 * i)) = New DBHelper.DBHelperParameter(PARAM_ACCOUNTING_EVENT_ID, AccountingEventId.ToByteArray)
+            parameters(i + 2 + (3 * i)) = New DBHelper.DBHelperParameter(PARAM_ACCOUNTING_BUSINESS_UNIT_ID, BusinessUnitId.ToByteArray)
+            parameters(i + 3 + (3 * i)) = New DBHelper.DBHelperParameter(PARAM_COMPANY_ID, CompanyId.ToByteArray)
+        Next
 
         Dim ds As New DataSet(DatasetName)
 
+        'Add Dynamic Query parameter
+        If IncludeProcessed Or EventName = "INV" Then
+            selectStmt = selectStmt.Replace(Me.DYNAMIC_WHERE_CLAUSE_PLACE_HOLDER, "")
+        Else
+            selectStmt = selectStmt.Replace(Me.DYNAMIC_WHERE_CLAUSE_PLACE_HOLDER, " AND ELP_ACCT_TRANS_LOG.PROCESS_DATE Is  null")
+        End If
+
         Try
-            DBHelper.FetchSp(selectStmt, inputParameters, outputParameter, ds, Table_LINEITEM)
+            ds = (DBHelper.Fetch(ds, selectStmt, Table_LINEITEM, parameters))
             Return ds
         Catch ex As Exception
             Throw New DataBaseAccessException(DataBaseAccessException.DatabaseAccessErrorType.ReadErr, ex)
@@ -291,21 +275,6 @@ Public Class AcctTransLogDAL
     Public Sub PurgeTransLog(ByVal AcctTransLogIds As ArrayList)
 
         Dim selectStmt As String = Me.Config("/SQL/DELETE")
-
-        Dim parameters() As DBHelper.DBHelperParameter = New DBHelper.DBHelperParameter() _
-                            {New DBHelper.DBHelperParameter(COL_NAME_ACCT_TRANS_LOG_ID, AcctTransLogIds.ToArray(GetType(Byte())), GetType(Byte()))}
-
-        Try
-            DBHelper.ExecuteWithParam(selectStmt, parameters, , , AcctTransLogIds.Count)
-        Catch ex As Exception
-            Throw New DataBaseAccessException(DataBaseAccessException.DatabaseAccessErrorType.ReadErr, ex)
-        End Try
-
-    End Sub
-
-    Public Sub PurgeTransLogStaging(ByVal AcctTransLogIds As ArrayList)
-
-        Dim selectStmt As String = Me.Config("/SQL/DELETE_STAGING")
 
         Dim parameters() As DBHelper.DBHelperParameter = New DBHelper.DBHelperParameter() _
                             {New DBHelper.DBHelperParameter(COL_NAME_ACCT_TRANS_LOG_ID, AcctTransLogIds.ToArray(GetType(Byte())), GetType(Byte()))}
