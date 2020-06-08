@@ -228,7 +228,7 @@ Public Class FelitaEngine
             _acctExtension = LookupListNew.GetCodeFromId(LookupListNew.DropdownLookupList(LookupListNew.LK_ACCT_SYSTEM, ElitaPlusIdentity.Current.ActiveUser.LanguageId, False), _AcctCompany.AcctSystemId)
 
             'Retrieve an array of datasets (likely only 1 though).  We will have additional if we have multiple business units
-            dsSet = _AcctBO.GetAccountingInterfaceTables(oFelitaEngineData, TimeStamp.ToString)
+            dsSet = _AcctBO.GetAccountingInterfaceTables(oFelitaEngineData)
             AppConfig.DebugMessage.Trace("ACCOUNTING_ENGINE", "PROCESS REQUEST", "Step 2/6 Retrieved Data_ " + StartDate.Ticks.ToString)
 
             If dsSet.Length > 0 Then
