@@ -8,8 +8,9 @@ Public Class ApInvoiceLinesDAL
     Private Const supportChangesFilter As DataRowState = DataRowState.Added  Or DataRowState.Modified 
     Public Const TABLE_NAME As String = "ELP_AP_INVOICE_LINES"
     Public Const TABLE_KEY_NAME As String = COL_NAME_AP_INVOICE_LINES_ID
-	
+
     Public Const COL_NAME_AP_INVOICE_LINES_ID As String = "ap_invoice_lines_id"
+    Public Const COL_NAME_INVOICE_NUMBER As String = "invoice_number"
     Public Const COL_NAME_AP_INVOICE_HEADER_ID As String = "ap_invoice_header_id"
     Public Const COL_NAME_LINE_NUMBER As String = "line_number"
     Public Const COL_NAME_LINE_TYPE As String = "line_type"
@@ -32,6 +33,7 @@ Public Class ApInvoiceLinesDAL
     Public Const PAR_I_NAME_AP_INVOICE_LINES_ID As String = "pi_ap_invoice_lines_id"
     Public Const PAR_I_NAME_AP_INVOICE_HEADER_ID As String = "pi_ap_invoice_header_id"
     Public Const PAR_I_NAME_LINE_NUMBER As String = "pi_line_number"
+    Public Const PAR_I_NAME_INVOICE_NUMBER As String = "pi_invoice_number"
     Public Const PAR_I_NAME_LINE_TYPE As String = "pi_line_type"
     Public Const PAR_I_NAME_VENDOR_ITEM_CODE As String = "pi_vendor_item_code"
     Public Const PAR_I_NAME_DESCRIPTION As String = "pi_description"
@@ -105,12 +107,25 @@ Public Class ApInvoiceLinesDAL
 
     End Function
 
+    Public Function GetApInvoiceLines(ByVal familyDS As DataSet, ByVal apInvoiceNumber As String) As DataSet
+        Try
+            Using cmd As OracleCommand = OracleDbHelper.CreateCommand(Me.Config("/SQL/LOADLINES"))
+                cmd.AddParameter(PAR_I_NAME_INVOICE_NUMBER, OracleDbType.Varchar2, apInvoiceNumber)
+                cmd.AddParameter(PAR_O_NAME_RESULTCURSOR, OracleDbType.RefCursor, direction:=ParameterDirection.Output)
+                OracleDbHelper.Fetch(cmd, Me.TABLE_NAME, familyDS)
+                Return familyDS
+            End Using
+        Catch ex As Exception
+            Throw New DataBaseAccessException(DataBaseAccessException.DatabaseAccessErrorType.ReadErr, ex)
+        End Try
+    End Function
+
 
 #End Region
 
 #Region "Overloaded Methods"
     Public Overloads Sub Update(ByVal ds As DataSet, Optional ByVal Transaction As IDbTransaction = Nothing, Optional ByVal changesFilter As DataRowState = supportChangesFilter)
-		If ds Is Nothing Then
+        If ds Is Nothing Then
             Return
         End If
         If (changesFilter Or (supportChangesFilter)) <> (supportChangesFilter) Then
@@ -120,7 +135,70 @@ Public Class ApInvoiceLinesDAL
             MyBase.Update(ds.Tables(Me.TABLE_NAME), Transaction, changesFilter)
         End If
     End Sub
-    
+
+    Public Function SaveApInvoiceLine(ByVal row As DataRow) As String
+
+        Dim sqlstatement As String
+        Dim rowState As DataRowState = row.RowState
+        Dim updatedby As String
+        Dim updateDate As String
+        Try
+            Select Case rowState
+                Case DataRowState.Added
+                    'Insert
+                    sqlstatement = Me.Config("/SQL/INSERT")
+                    updatedby = COL_NAME_CREATED_BY
+                    updateDate = COL_NAME_CREATED_DATE
+                Case DataRowState.Deleted
+                    'delete
+                    sqlstatement = Me.Config("/SQL/DELETE")
+                Case DataRowState.Modified
+                    'update
+                    sqlstatement = Me.Config("/SQL/UPDATE")
+                    updatedby = COL_NAME_MODIFIED_BY
+                    updateDate = COL_NAME_MODIFIED_DATE
+            End Select
+
+            If rowState = DataRowState.Deleted Then
+                'Dim inParameter() As DBHelper.DBHelperParameter = New DBHelper.DBHelperParameter() _
+                '       {
+                '           New DBHelper.DBHelperParameter(Me.PAR_NAME_DLR_RK_TYP_TOLERANCE_ID.ToLower(), row(Me.COL_NAME_DLR_RK_TYP_TOLERANCE_ID, DataRowVersion.Original))
+                '       }
+                'DBHelper.ExecuteSp(sqlstatement, inParameter, outputParameters)
+                'row.AcceptChanges()
+            Else
+                Dim inParameters() As DBHelper.DBHelperParameter = New DBHelper.DBHelperParameter() _
+                       {New DBHelper.DBHelperParameter(PAR_I_NAME_AP_INVOICE_LINES_ID, row(COL_NAME_AP_INVOICE_LINES_ID)),
+                        New DBHelper.DBHelperParameter(PAR_I_NAME_AP_INVOICE_HEADER_ID, row(COL_NAME_AP_INVOICE_HEADER_ID)),
+                        New DBHelper.DBHelperParameter(PAR_I_NAME_LINE_NUMBER, row(COL_NAME_LINE_NUMBER)),
+                        New DBHelper.DBHelperParameter(PAR_I_NAME_LINE_TYPE, row(COL_NAME_LINE_TYPE)),
+                        New DBHelper.DBHelperParameter(PAR_I_NAME_VENDOR_ITEM_CODE, row(COL_NAME_VENDOR_ITEM_CODE)),
+                        New DBHelper.DBHelperParameter(PAR_I_NAME_DESCRIPTION, row(COL_NAME_DESCRIPTION)),
+                        New DBHelper.DBHelperParameter(PAR_I_NAME_QUANTITY, row(COL_NAME_QUANTITY)),
+                        New DBHelper.DBHelperParameter(PAR_I_NAME_UOM_XCD, row(COL_NAME_UOM_XCD)),
+                        New DBHelper.DBHelperParameter(PAR_I_NAME_MATCHED_QUANTITY, row(COL_NAME_MATCHED_QUANTITY)),
+                        New DBHelper.DBHelperParameter(PAR_I_NAME_PAID_QUANTITY, row(COL_NAME_PAID_QUANTITY)),
+                        New DBHelper.DBHelperParameter(PAR_I_NAME_UNIT_PRICE, row(COL_NAME_UNIT_PRICE)),
+                        New DBHelper.DBHelperParameter(PAR_I_NAME_TOTAL_PRICE, row(COL_NAME_TOTAL_PRICE)),
+                        New DBHelper.DBHelperParameter(PAR_I_NAME_PARENT_LINE_NUMBER, row(COL_NAME_PARENT_LINE_NUMBER)),
+                        New DBHelper.DBHelperParameter(PAR_I_NAME_PO_NUMBER, row(COL_NAME_PO_NUMBER)),
+                        New DBHelper.DBHelperParameter(PAR_I_NAME_PO_DATE, row(COL_NAME_PO_DATE)),
+                        New DBHelper.DBHelperParameter(PAR_I_NAME_BILLING_PERIOD_START_DATE, row(COL_NAME_BILLING_PERIOD_START_DATE)),
+                        New DBHelper.DBHelperParameter(PAR_I_NAME_BILLING_PERIOD_END_DATE, row(COL_NAME_BILLING_PERIOD_END_DATE)),
+                        New DBHelper.DBHelperParameter(PAR_I_NAME_REFERENCE_NUMBER, row(COL_NAME_REFERENCE_NUMBER)),
+                        New DBHelper.DBHelperParameter("pi_" & updatedby.ToLower(), row(updatedby)),
+                        New DBHelper.DBHelperParameter("pi_" & updateDate.ToLower(), row(updateDate)),
+                        New DBHelper.DBHelperParameter(PAR_I_NAME_VENDOR_TRANSACTION_TYPE, row(COL_NAME_VENDOR_TRANSACTION_TYPE))
+                       }
+                DBHelper.ExecuteSp(sqlstatement, inParameters, Nothing)
+                row.AcceptChanges()
+            End If
+
+        Catch ex As Exception
+            Throw New DataBaseAccessException(DataBaseAccessException.DatabaseAccessErrorType.ReadErr, ex)
+        End Try
+    End Function
+
     Protected Overrides Sub ConfigureDeleteCommand(ByRef command As OracleCommand, tableName As String)
         Throw New NotSupportedException() 
     End Sub

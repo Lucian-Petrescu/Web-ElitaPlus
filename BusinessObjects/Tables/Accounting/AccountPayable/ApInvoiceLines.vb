@@ -452,6 +452,18 @@ Public Class ApInvoiceLines
         Dim apInvoiceLinenDAL As New ApInvoiceLinesDAL
         Return New APInvoiceLinesDV(apInvoiceLinenDAL.LoadList(Me.ApInvoiceHeaderId).Tables(0))
     End Function
+    Public Function GetApInvoiceLines(ByVal apInvoiceNumber As String) As DataView
+        Try
+            Dim dal As New ApInvoiceLinesDAL
+            Dim ds As DataSet = New DataSet
+
+            ds = dal.GetApInvoiceLines(ds, apInvoiceNumber)
+            Return ds.Tables(ApInvoiceLinesDAL.TABLE_NAME).DefaultView
+
+        Catch ex As Assurant.ElitaPlus.DALObjects.DataBaseAccessException
+            Throw New DataBaseAccessException(ex.ErrorType, ex)
+        End Try
+    End Function
 
 #End Region
 
