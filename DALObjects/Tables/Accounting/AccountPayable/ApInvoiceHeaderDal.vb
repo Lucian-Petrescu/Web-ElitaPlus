@@ -77,6 +77,17 @@ Public Class ApInvoiceHeaderDAL
             Throw New DataBaseAccessException(DataBaseAccessException.DatabaseAccessErrorType.ReadErr, ex)
         End Try
     End Sub
+    Public Sub Load(ByVal familyDS As DataSet, ByVal invoice_Number As String)
+        Try
+            Using cmd As OracleCommand = OracleDbHelper.CreateCommand(Me.Config("/SQL/LOADLINES"))
+                cmd.AddParameter(PAR_I_NAME_INVOICE_NUMBER, OracleDbType.Varchar2, invoice_Number)
+                cmd.AddParameter(PAR_O_NAME_RESULTCURSOR, OracleDbType.RefCursor, direction:=ParameterDirection.Output)
+                OracleDbHelper.Fetch(cmd, Me.TABLE_NAME, familyDS)
+            End Using
+        Catch ex As Exception
+            Throw New DataBaseAccessException(DataBaseAccessException.DatabaseAccessErrorType.ReadErr, ex)
+        End Try
+    End Sub
 
     Public Function LoadList() As DataSet
         Try

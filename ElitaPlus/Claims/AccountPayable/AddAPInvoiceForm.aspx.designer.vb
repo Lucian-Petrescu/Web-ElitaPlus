@@ -10,7 +10,7 @@
 Option Strict On
 Option Explicit On
 
-Namespace Claims
+Namespace Claims.AccountPayable
 
     Partial Public Class AddApInvoiceForm
 
@@ -195,13 +195,13 @@ Namespace Claims
         Protected WithEvents lblRecordCount As Global.System.Web.UI.WebControls.Label
 
         '''<summary>
-        '''PoGrid control.
+        '''InvoiceLinesGrid control.
         '''</summary>
         '''<remarks>
         '''Auto-generated field.
         '''To modify move field declaration from designer file to code-behind file.
         '''</remarks>
-        Protected WithEvents PoGrid As Global.System.Web.UI.WebControls.GridView
+        Protected WithEvents InvoiceLinesGrid As Global.System.Web.UI.WebControls.GridView
 
         '''<summary>
         '''BtnNewLine control.

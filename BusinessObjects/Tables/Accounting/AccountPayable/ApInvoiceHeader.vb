@@ -11,6 +11,11 @@ Public Class ApInvoiceHeader
         Me.Dataset = New DataSet
         Me.Load(id)
     End Sub
+    Public Sub New(ByVal invoiceNumber As String)
+        MyBase.New()
+        Me.Dataset = New DataSet
+        Me.Load(invoiceNumber)
+    End Sub
 
     'New BO
     Public Sub New()
@@ -55,9 +60,9 @@ Public Class ApInvoiceHeader
         End Try
     End Sub
 
-    Protected Sub Load(ByVal id As Guid)               
+    Protected Sub Load(ByVal id As Guid)
         Try
-            Dim dal As New ApInvoiceHeaderDAL            
+            Dim dal As New ApInvoiceHeaderDAL
             If Me._isDSCreator Then
                 If Not Me.Row Is Nothing Then
                     Me.Dataset.Tables(dal.TABLE_NAME).Rows.Remove(Me.Row)
@@ -78,10 +83,33 @@ Public Class ApInvoiceHeader
             Throw New DataBaseAccessException(DataBaseAccessException.DatabaseAccessErrorType.ReadErr, ex)
         End Try
     End Sub
+    Protected Sub Load(ByVal invoice_Number As String)
+        Try
+            Dim dal As New ApInvoiceHeaderDAL
+            If Me._isDSCreator Then
+                If Not Me.Row Is Nothing Then
+                    Me.Dataset.Tables(dal.TABLE_NAME).Rows.Remove(Me.Row)
+                End If
+            End If
+            Me.Row = Nothing
+            If Me.Dataset.Tables.IndexOf(dal.TABLE_NAME) >= 0 Then
+                Me.Row = Me.FindRow(Id, dal.TABLE_KEY_NAME, Me.Dataset.Tables(dal.TABLE_NAME))
+            End If
+            If Me.Row Is Nothing Then 'it is not in the dataset, so will bring it from the db
+                dal.Load(Me.Dataset, invoice_Number)
+                Me.Row = Me.FindRow(Id, dal.TABLE_KEY_NAME, Me.Dataset.Tables(dal.TABLE_NAME))
+            End If
+            If Me.Row Is Nothing Then
+                Throw New DataNotFoundException
+            End If
+        Catch ex As Assurant.ElitaPlus.DALObjects.DataBaseAccessException
+            Throw New DataBaseAccessException(DataBaseAccessException.DatabaseAccessErrorType.ReadErr, ex)
+        End Try
+    End Sub
 #End Region
 
 #Region "Private Members"
-	'Initialization code for new objects
+    'Initialization code for new objects
     Private Sub Initialize()        
     End Sub
 #End Region

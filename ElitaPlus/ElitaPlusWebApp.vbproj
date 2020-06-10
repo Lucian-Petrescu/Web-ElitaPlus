@@ -877,10 +877,10 @@
       <DependentUpon>ChangeCompany.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
-    <Compile Include="Claims\AddAPInvoiceForm.aspx.designer.vb">
+    <Compile Include="Claims\AccountPayable\AddAPInvoiceForm.aspx.designer.vb">
       <DependentUpon>AddAPInvoiceForm.aspx</DependentUpon>
     </Compile>
-    <Compile Include="Claims\AddAPInvoiceForm.aspx.vb">
+    <Compile Include="Claims\AccountPayable\AddAPInvoiceForm.aspx.vb">
       <DependentUpon>AddAPInvoiceForm.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
@@ -5805,7 +5805,7 @@
     <Content Include="Certificates\UserControlServiceCenterInfo.ascx" />
     <Content Include="Certificates\VSCCertificateListForm.aspx" />
     <Content Include="Change_Company\ChangeCompany.aspx" />
-    <Content Include="Claims\AddAPInvoiceForm.aspx" />
+    <Content Include="Claims\AccountPayable\AddAPInvoiceForm.aspx" />
     <Content Include="Claims\AccountPayable\APInvoiceDetailForm.aspx" />
     <Content Include="Claims\AccountPayable\APInvoiceListForm.aspx" />
     <Content Include="Claims\PoAdjustmentForm.aspx" />
@@ -9071,7 +9071,7 @@
           <AutoAssignPort>True</AutoAssignPort>
           <DevelopmentServerPort>2550</DevelopmentServerPort>
           <DevelopmentServerVPath>/</DevelopmentServerVPath>
-          <IISUrl>http://localhost/ElitaPlus</IISUrl>
+          <IISUrl>http://localhost:81/ElitaPlus</IISUrl>
           <NTLMAuthentication>False</NTLMAuthentication>
           <UseCustomServer>False</UseCustomServer>
           <CustomServerUrl>
