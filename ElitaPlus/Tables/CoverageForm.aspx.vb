@@ -1,12 +1,12 @@
+Imports System.Collections.Generic
+Imports System.Globalization
 Imports System.Threading
 Imports Assurant.Elita.CommonConfiguration
-Imports Assurant.ElitaPlus.Security
 Imports Assurant.Elita.Web.Forms
-Imports Assurant.ElitaPlus.ElitaPlusWebApp.Common
 Imports Assurant.ElitaPlus.DALObjects
-Imports System.Globalization
+Imports Assurant.ElitaPlus.ElitaPlusWebApp.Common
+Imports Assurant.ElitaPlus.Security
 Imports Microsoft.VisualBasic
-Imports System.Collections.Generic
 
 Namespace Tables
 
@@ -19,48 +19,48 @@ Namespace Tables
 
         Class MyState
 
-            Public moCoverageId As Guid = Guid.Empty
+            Public CoverageId As Guid = Guid.Empty
             Public IsCoverageNew As Boolean = False
             Public IsNewWithCopy As Boolean = False
             Public IsUndo As Boolean = False
-            Public moCoverage As Coverage
-            Public moCoverageRateList() As CoverageRate
-            Public moCoverageDeductibleList() As CoverageDeductible
-            Public moCoverageConseqDamageList() As CoverageConseqDamage
-            Public selectedCoverageTypeId As Guid
-            Public selectedProductItemId As Guid
-            Public selectedItemId As Guid
-            Public selectedOptionalId As Guid
-            Public selectedIsClaimAllowedId As Guid
-            Public selectedUseCoverageStartDateId As Guid
-            Public selectedEffective As String
-            Public selectedExpiration As String
-            Public selectedLiability As String
-            Public selectedLiabilityLimitPercent As String
-            Public selectedCertificateDuration As String
-            Public selectedCoverageDuration As String
+            Public Coverage As Coverage
+            Public CoverageRateList() As CoverageRate
+            Public CoverageDeductibleList() As CoverageDeductible
+            Public CoverageConseqDamageList() As CoverageConseqDamage
+            Public SelectedCoverageTypeId As Guid
+            Public SelectedProductItemId As Guid
+            Public SelectedItemId As Guid
+            Public SelectedOptionalId As Guid
+            Public SelectedIsClaimAllowedId As Guid
+            Public SelectedUseCoverageStartDateId As Guid
+            Public SelectedEffective As String
+            Public SelectedExpiration As String
+            Public SelectedLiability As String
+            Public SelectedLiabilityLimitPercent As String
+            Public SelectedCertificateDuration As String
+            Public SelectedCoverageDuration As String
             '            Public selectedOffsetMethodId As Guid
-            Public selectedOffsetMethod As String
-            Public selectedMarkupDistnPercent As String
-            Public selectedOffset As String
-            Public selectedOffsetDays As String
-            Public selectedDeductible As String
-            Public selectedCovDeductible As String
-            Public selectedEarningCodeId As Guid
-            Public selectedDeductiblePercent As String
-            Public selectedRepairDiscountPct As String
-            Public selectedReplacementDiscountPct As String
-            Public selectedAgentCode As String
+            Public SelectedOffsetMethod As String
+            Public SelectedMarkupDistnPercent As String
+            Public SelectedOffset As String
+            Public SelectedOffsetDays As String
+            Public SelectedDeductible As String
+            Public SelectedCovDeductible As String
+            Public SelectedEarningCodeId As Guid
+            Public SelectedDeductiblePercent As String
+            Public SelectedRepairDiscountPct As String
+            Public SelectedReplacementDiscountPct As String
+            Public SelectedAgentCode As String
             Public ActionInProgress As DetailPageCommand = DetailPageCommand.Nothing_
-            Public boChanged As Boolean = False
+            Public StateChanged As Boolean = False
             Public LastErrMsg As String
             Public HasDataChanged As Boolean
-            Public selectedCoverageLiabilityLimit As String
-            Public selectedCoverageLiabilityLimitPercent As String
-            Public selectedRecoverDeviceId As Guid
-            Public selectedClaimLimitCount As String
-            Public selectedPerIncidentLiabilityLimitCap As String
-            Public selectedTaxTypeXCD As String
+            Public SelectedCoverageLiabilityLimit As String
+            Public SelectedCoverageLiabilityLimitPercent As String
+            Public SelectedRecoverDeviceId As Guid
+            Public SelectedClaimLimitCount As String
+            Public SelectedPerIncidentLiabilityLimitCap As String
+            Public SelectedTaxTypeXcd As String
 
             'US 521697
             Public IsDiffSelectedTwice As Boolean
@@ -83,162 +83,91 @@ Namespace Tables
         End Property
 
         Private Sub SetStateProperties()
-            Me.State.moCoverageId = CType(Me.CallingParameters, Guid)
-            If Me.State.moCoverageId.Equals(Guid.Empty) Then
-                Me.State.IsCoverageNew = True
+            State.CoverageId = CType(CallingParameters, Guid)
+            If State.CoverageId.Equals(Guid.Empty) Then
+                State.IsCoverageNew = True
                 BindBoPropertiesToLabels()
-                Me.AddLabelDecorations(TheCoverage)
+                AddLabelDecorations(TheCoverage)
                 ClearAll()
                 EnableCoverageButtons(False)
                 PopulateAll()
-                moLiabilityLimitPercentText.Text = "100"
-                moCoverageLiabilityLimitText.Text = "0"
-                moCoverageLiabilityLimitPercentText.Text = ""
-                moPerIncidentLiabilityLimitCapText.Text = "0"
+                moLiabilityLimitPercentText.Text = OneHundredNumber
+                moCoverageLiabilityLimitText.Text = ZeroNumber
+                moCoverageLiabilityLimitPercentText.Text = String.Empty
+                moPerIncidentLiabilityLimitCapText.Text = ZeroNumber
             Else
-                Me.State.IsCoverageNew = False
+                State.IsCoverageNew = False
                 BindBoPropertiesToLabels()
-                Me.AddLabelDecorations(TheCoverage)
+                AddLabelDecorations(TheCoverage)
                 EnableCoverageButtons(True)
                 PopulateAll()
             End If
-            Me.LoadCurrencyOfCoverage()
+            LoadCurrencyOfCoverage()
             CoverageMarkupDistribution()
         End Sub
 
 #End Region
 
 #Region "Constants"
-
-        Private Const UPDATE_COMMAND As String = "Update"
-        Private Const NEW_COMMAND As String = "New"
-        Private Const NO_COVERAGE_PRICING As String = "N"
-        Private Const FIRST_POS As Integer = 0
-        Private Const PRICE_MATRIX_ID As Integer = 0
-        Private Const PRICE_MATRIX_CODE As Integer = 1
-        Private Const COL_DESCRIPTION_NAME As String = "DESCRIPTION"
-        Private Const COL_CODE_NAME As String = "CODE"
-        Private Const COVERAGE_LIST As String = "CoverageSearchForm.aspx"
-        Public Const URL As String = "CoverageForm.aspx"
-        Private Const DEDUCTIBLE_BASED_ON_FIXED As String = "FIXED"
-        Private Const COVERAGE_FORM001 As String = "COVERAGE_FORM001" ' Coverage List Exception
-        Private Const COVERAGE_FORM002 As String = "COVERAGE_FORM002" ' Coverage Field Exception
-        Private Const COVERAGE_FORM003 As String = "COVERAGE_FORM003" ' Coverage Update Exception
-        Private Const COVERAGE_FORM004 As String = "COVERAGE_FORM004" ' Coverage-Rate List Exception
-        Private Const COVERAGE_FORM005 As String = "COVERAGE_FORM005" ' Coverage-Rate Update Exception
-        Private Const COVERAGE_FORM006 As String = "COVERAGE_FORM006" ' Coverage-Deductible Update Exception
-        Protected Const CONFIRM_MSG As String = "MGS_CONFIRM_PROMPT" '"Are you sure you want to delete the selected records?"
-        Private Const MSG_UNIQUE_VIOLATION As String = "MSG_DUPLICATE_KEY_CONSTRAINT_VIOLATED" '"Unique value is in use"
-        Private Const UNIQUE_VIOLATION As String = "unique constraint"
-        Public Const COVERAGE_TYPE_ID_PROPERTY As String = "CoverageTypeId"
-        Public Const DEALER_ID_PROPERTY As String = "DealerId"
-        Public Const OPTIONAL_ID_PROPERTY As String = "OptionalId"
-        Public Const CLAIM_ALLOWED_ID_PROPERTY As String = "IsClaimAllowedId"
-        Public Const PRODUCT_CODE_ID_PROPERTY As String = "ProductCodeId"
-        Public Const PRODUCT_ITEM_ID_PROPERTY As String = "ProductItemId"
-        Public Const RISK_TYPE_ID_PROPERTY As String = "RiskTypeId"
-        Public Const CERTIFICATE_DURATION_PROPERTY As String = "CertificateDuration"
-        Public Const COVERAGE_DURATION_PROPERTY As String = "CoverageDuration"
-        Public Const DEDUCTIBLE_PROPERTY As String = "Deductible"
-        Public Const EFECTIVE_PROPERTY As String = "Effective"
-        Public Const EXPIRATION_PROPERTY As String = "Expiration"
-        Public Const LIABILITY_LIMIT_PROPERTY As String = "LiabilityLimit"
-        Public Const MARKUP_DISTRIBUTION_PERCENT_PROPERTY As String = "MarkupDistributionPercent"
-        Public Const LIABILITY_LIMIT_PERCENT_PROPERTY As String = "LiabilityLimitPercent"
-        Public Const DEDUCTIBLE_PERCENT_PROPERTY As String = "DeductiblePercent"
-        Public Const OFFSET_TO_START_PROPERTY As String = "OffsetToStart"
-        Public Const COL_COVERAGE_RATE_ID As String = "COVERAGE_RATE_ID"
-        Public Const COL_LOW_PRICE As String = "LOW_PRICE"
-        Public Const COL_HIGH_PRICE As String = "HIGH_PRICE"
-        Public Const COL_GROSS_AMT As String = "GROSS_AMT"
-        Public Const COL_COMMISSION_PERCENT As String = "COMMISSION_PERCENT"
-        Public Const COL_MARKETING_PERCENT As String = "MARKETING_PERCENT"
-        Public Const COL_ADMIN_EXPENSE As String = "ADMIN_EXPENSE"
-        Public Const COL_PROFIT_EXPENSE As String = "PROFIT_EXPENSE"
-        Public Const COL_LOSS_COST_PERCENT As String = "LOSS_COST_PERCENT"
-        Public Const COL_GROSS_AMOUNT_PERCENT As String = "GROSS_AMOUNT_PERCENT"
-        Public Const COL_RENEWAL_NUMBER As String = "RENEWAL_NUMBER"
-        Public Const LABEL_SELECT_DEALERCODE As String = "Dealer"
-        Public Const LABEL_REPAIR_DISCOUNT_PCT As String = "RepairDiscountPct"
-        Public Const LABEL_REPLACEMENT_DISCOUNT_PCT As String = "ReplacementDiscountPct"
-        Public Const USE_COVERAGE_START_DATE As String = "UseCoverageStartDateId"
-        Public Const METHOD_OF_REPAIR_ID As String = "MethodOfRepairId"
-        Public Const FULFILLMENT_OPTION_CODE As String = "FulfillmentOptionCode"
-        Public Const DEDUCTIBLE_BASED_ON_ID As String = "DeductibleBasedOnId"
-        Public Const AGENT_CODE As String = "AgentCode"
-        Public Const NO As String = "N"
-        Public Const YES As String = "Y"
-        Public Const LABEL_COVERAGE As String = "COVERAGE"
-        Public Const LABEL_CVG_RATE As String = "COVERAGE RATE"
-        Public Const PROD_LIAB_BASED_ON_NOT_APP As String = "NOTAPPL"
-        Public Const COVERAGE_LIABILITY_LIMIT_PROPERTY As String = "CoverageLiabilityLimit"
-        Public Const COVERAGE_LIABILITY_LIMIT_PERCENT_PROPERTY As String = "CoverageLiabilityLimitPercent"
-        Public Const RECOVER_DEVICE_ID_PROPERTY As String = "RecoverDeviceId"
-        Private Const ATTRIBUTE_VALUE_DROPDOWN_NAME As String = "AttributeValueDropDown"
-        Private Const Is_REINSURED_PROPERTY As String = "IsReInsuredId"
-        Private Const CLAIM_LIMIT_COUNT_PROPERTY As String = "CoverageClaimLimit"
-
+        Const OneHundredNumber As String = "100"
+        Const ZeroNumber As String = "0"
+        Private Const NoCoveragePricing As String = "N"
+        Private Const FirstPos As Integer = 0
+        Private Const ColDescriptionName As String = "DESCRIPTION"
+        Private Const ColCodeName As String = "CODE"
+        Public Const CoverageFormUrl As String = "CoverageForm.aspx"
+        Private Const CoverageForm002 As String = "COVERAGE_FORM002" ' Coverage Field Exception
+        Private Const CoverageForm003 As String = "COVERAGE_FORM003" ' Coverage Update Exception
+        Private Const CoverageForm004 As String = "COVERAGE_FORM004" ' Coverage-Rate List Exception
+        Private Const CoverageForm005 As String = "COVERAGE_FORM005" ' Coverage-Rate Update Exception
+        Private Const CoverageForm006 As String = "COVERAGE_FORM006" ' Coverage-Deductible Update Exception
+        Protected Const ConfirmMsg As String = "MGS_CONFIRM_PROMPT" '"Are you sure you want to delete the selected records?"
+        Private Const LabelSelectDealerCode As String = "Dealer"
+        Private Const LookupNo As String = "N"
+        Private Const LookupYes As String = "Y"
+        Private Const LabelCoverage As String = "COVERAGE"
+        Private Const ProdLiabBasedOnNotApp As String = "NOTAPPL"
+        Private Const PosTaxTypeXcd As String = "TTYP-1"
         Public Const ConfigurationSuperUserRole As String = "CONSU"
-        Public Const POS_TAX_TYPE_XCD As String = "TTYP-1"
-        Public Const EMPTY_GUID As String = "00000000-0000-0000-0000-000000000000"
 
 #End Region
 
 #Region "Tabs"
-        Public Const Tab_CoverageRate As String = "0"
-        Public Const Tab_Deductible As String = "1"
-        Public Const Tab_ATTRIBUTES As String = "2"
-        Public Const Tab_CoverageConseqDamage As String = "3"
+        Public Const TabCoverageRate As String = "0"
+        Public Const TabDeductible As String = "1"
+        Public Const TabAttributes As String = "2"
+        Public Const TabCoverageConseqDamage As String = "3"
 
         Dim DisabledTabsList As New List(Of String)()
 #End Region
 #Region "Coverage-Rate Constants"
-
-        Private Const COVERAGE_RATE_ID As Integer = 2
-        Private Const LOW_PRICE As Integer = 3
-        Private Const HIGH_PRICE As Integer = 4
-        Private Const GROSS_AMT As Integer = 5
-        Private Const COMMISSIONS_PERCENT As Integer = 6
-        Private Const COMMISSIONS_PERCENT_XCD As Integer = 7
-        Private Const MARKETING_PERCENT As Integer = 8
-        Private Const MARKETING_PERCENT_XCD As Integer = 9
-        Private Const ADMIN_EXPENSE As Integer = 10
-        Private Const ADMIN_EXPENSE_XCD As Integer = 11
-        Private Const PROFIT_EXPENSE As Integer = 12
-        Private Const PROFIT_EXPENSE_XCD As Integer = 13
-        Private Const LOSS_COST_PERCENT As Integer = 14
-        Private Const LOSS_COST_PERCENT_XCD As Integer = 15
-        Private Const GROSS_AMOUNT_PERCENT As Integer = 16
-        Private Const RENEWAL_NUMBER As Integer = 17
-        Private Const REGION_ID As Integer = 18
+        Private Const ColIndexCoverageRateId As Integer = 2
+        Private Const ColIndexLowPrice As Integer = 3
+        Private Const ColIndexHighPrice As Integer = 4
+        Private Const ColIndexGrossAmt As Integer = 5
+        Private Const ColIndexCommissionsPercent As Integer = 6
+        Private Const ColIndexCommissionsPercentXcd As Integer = 7
+        Private Const ColIndexMarketingPercent As Integer = 8
+        Private Const ColIndexMarketingPercentXcd As Integer = 9
+        Private Const ColIndexAdminExpense As Integer = 10
+        Private Const ColIndexAdminExpenseXcd As Integer = 11
+        Private Const ColIndexProfitExpense As Integer = 12
+        Private Const ColIndexProfitExpenseXcd As Integer = 13
+        Private Const ColIndexLossCostPercent As Integer = 14
+        Private Const ColIndexLossCostPercentXcd As Integer = 15
+        Private Const ColIndexGrossAmountPercent As Integer = 16
+        Private Const ColIndexRenewalNumber As Integer = 17
+        Private Const ColIndexRegionId As Integer = 18
 
         ' DataView Elements
-        Private Const DBCOVERAGE_RATE_ID As Integer = 0
-
-        ' Property Name
-        Private Const LOW_PRICE_PROPERTY As String = "LowPrice"
-        Private Const HIGH_PRICE_PROPERTY As String = "HighPrice"
-        Private Const GROSS_AMT_PROPERTY As String = "GrossAmt"
-        Private Const COMMISSIONS_PERCENT_PROPERTY As String = "CommissionsPercent"
-        Private Const MARKETING_PERCENT_PROPERTY As String = "MarketingPercent"
-        Private Const ADMIN_EXPENSE_PROPERTY As String = "AdminExpense"
-        Private Const PROFIT_EXPENSE_PROPERTY As String = "ProfitExpense"
-        Private Const LOSS_COST_PERCENT_PROPERTY As String = "LossCostPercent"
-        Private Const GROSS_AMOUNT_PERCENT_PROPERTY As String = "GrossAmountPercent"
-        Private Const RENEWAL_NUMBER_PROPERTY As String = "RenewalNumber"
-        Private Const REGION_ID_PROPERTY As String = "RegionID"
-        Private Const COMMISSIONS_XCD_PERCENT_PROPERTY As String = "CommissionsPercentSourceXcd"
-        Private Const MARKETING_XCD_PERCENT_PROPERTY As String = "MarketingPercentSourceXcd"
-        Private Const ADMIN_EXPENSE_XCD_PROPERTY As String = "AdminExpenseSourceXcd"
-        Private Const PROFIT_EXPENSE_XCD_PROPERTY As String = "ProfitPercentSourceXcd"
-        Private Const LOSS_COST_XCD_PERCENT_PROPERTY As String = "LossCostPercentSourceXcd"
+        Private Const DbCoverageRateId As Integer = 0
 
         'Actions
-        Private Const ACTION_NONE As String = "ACTION_NONE"
-        Private Const ACTION_SAVE As String = "ACTION_SAVE"
-        Private Const ACTION_CANCEL_DELETE As String = "ACTION_CANCEL_DELETE"
-        Private Const ACTION_EDIT As String = "ACTION_EDIT"
-        Private Const ACTION_NEW As String = "ACTION_NEW"
+        Private Const ActionNone As String = "ACTION_NONE"
+        Private Const ActionSave As String = "ACTION_SAVE"
+        Private Const ActionCancelDelete As String = "ACTION_CANCEL_DELETE"
+        Private Const ActionEdit As String = "ACTION_EDIT"
+        Private Const ActionNew As String = "ACTION_NEW"
 
 #End Region
 
@@ -248,22 +177,19 @@ Namespace Tables
             Public LastOperation As DetailPageCommand
             Public EditingBo As Coverage
             Public HasDataChanged As Boolean
-            Public Sub New(ByVal LastOp As DetailPageCommand, ByVal curEditingBo As Coverage, ByVal hasDataChanged As Boolean)
-                Me.LastOperation = LastOp
-                Me.EditingBo = curEditingBo
-                Me.HasDataChanged = hasDataChanged
+            Public Sub New(ByVal lastOp As DetailPageCommand, ByVal curEditingBo As Coverage, ByVal dataChanged As Boolean)
+                LastOperation = lastOp
+                EditingBo = curEditingBo
+                HasDataChanged = dataChanged
             End Sub
         End Class
 
 #End Region
 
 #Region "Attributes"
-        Private msCommand As String
-        Private moCoverage As Coverage
-        Private moCoverageRate As CoverageRate
-        Private mbIsNewRate As Boolean
-        Private moCoverageDeductible As CoverageDeductible
-        Private moCoverageConseqDamage As CoverageConseqDamage
+        Private _moCoverageRate As CoverageRate
+        Private _moCoverageDeductible As CoverageDeductible
+        Private _moCoverageConseqDamage As CoverageConseqDamage
         Private _moDepreciationScdRelation As DepreciationScdRelation
 #End Region
 
@@ -272,29 +198,29 @@ Namespace Tables
         Private ReadOnly Property TheCoverage() As Coverage
             Get
 
-                If Me.State.moCoverage Is Nothing Then
-                    If Me.State.IsCoverageNew = True Then
+                If State.Coverage Is Nothing Then
+                    If State.IsCoverageNew = True Then
                         ' For creating, inserting
-                        Me.State.moCoverage = New Coverage
-                        Me.State.moCoverageId = Me.State.moCoverage.Id
+                        State.Coverage = New Coverage
+                        State.CoverageId = State.Coverage.Id
                     Else
                         ' For updating, deleting
-                        Me.State.moCoverage = New Coverage(Me.State.moCoverageId)
+                        State.Coverage = New Coverage(State.CoverageId)
                     End If
                 End If
 
-                Return Me.State.moCoverage
+                Return State.Coverage
             End Get
         End Property
 
         Private ReadOnly Property CoveragePricingCode() As String
             Get
                 Dim sCoveragePricingCode As String
-                Dim oLanguageId As Guid = ElitaPlusIdentity.Current.ActiveUser.LanguageId
+                Dim oLanguageId As Guid = GetLanguageId()
                 Dim oProductId As Guid = GetSelectedItem(moProductDrop)
                 Dim oPriceMatrixView As DataView = LookupListNew.GetPriceMatrixLookupList(oProductId, oLanguageId)
                 If oPriceMatrixView.Count > 0 Then
-                    sCoveragePricingCode = oPriceMatrixView.Item(FIRST_POS).Item(COL_CODE_NAME).ToString
+                    sCoveragePricingCode = oPriceMatrixView.Item(FirstPos).Item(ColCodeName).ToString
                 End If
                 Return sCoveragePricingCode
             End Get
@@ -303,9 +229,9 @@ Namespace Tables
         Private ReadOnly Property HasDealerConfigeredForSourceXcd() As Boolean
             Get
                 Dim isDealerConfiguredForSourceXcd As Boolean
-                isDealerConfiguredForSourceXcd = False
-                If (Me.State.moCoverage.DealerId <> Guid.Empty) Then
-                    Dim oDealer As New Dealer(Me.State.moCoverage.DealerId)
+
+                If (State.Coverage.DealerId <> Guid.Empty) Then
+                    Dim oDealer As New Dealer(State.Coverage.DealerId)
 
                     If Not oDealer.AcctBucketsWithSourceXcd Is Nothing Then
                         If oDealer.AcctBucketsWithSourceXcd.Equals(Codes.EXT_YESNO_Y) Then
@@ -326,18 +252,16 @@ Namespace Tables
         Private ReadOnly Property HasIgnorePremiumSetForContractForSIncomingSource() As Boolean
             Get
                 Dim isIgnorePremiumYesForContract As Boolean
-                isIgnorePremiumYesForContract = False
-                With Me.State.moCoverage
+                With State.Coverage
                     If (.DealerId <> Guid.Empty) Then
-                        Dim oDealer As New Dealer(.DealerId)
                         Dim oContract As Contract = New Contract
 
                         If Not (.Effective Is Nothing And .Expiration Is Nothing) Then
-                            oContract = oContract.GetContract(.DealerId, .Effective.Value, .Expiration.Value)
+                            oContract = Contract.GetContract(.DealerId, .Effective.Value, .Expiration.Value)
                         End If
 
                         If Not oContract Is Nothing Then
-                            If oContract.IgnoreIncomingPremiumID.ToString() <> Me.EMPTY_GUID Then
+                            If oContract.IgnoreIncomingPremiumID = Guid.Empty Then
                                 Dim str As String
                                 str = LookupListNew.GetCodeFromId(LookupListNew.LK_YESNO, oContract.IgnoreIncomingPremiumID)
 
@@ -384,21 +308,21 @@ Namespace Tables
         Private ReadOnly Property TheCoverageRate() As CoverageRate
             Get
 
-                If moCoverageRate Is Nothing Then
+                If _moCoverageRate Is Nothing Then
                     If IsNewRate = True Then
                         ' For creating, inserting
-                        moCoverageRate = New CoverageRate
-                        CoverageRateId = moCoverageRate.Id.ToString
+                        _moCoverageRate = New CoverageRate
+                        CoverageRateId = _moCoverageRate.Id.ToString
                     Else
                         ' For updating, deleting
                         If CoverageRateId = "" Then
                             CoverageRateId = Guid.Empty.ToString
                         End If
-                        moCoverageRate = New CoverageRate(GetGuidFromString(CoverageRateId))
+                        _moCoverageRate = New CoverageRate(GetGuidFromString(CoverageRateId))
                     End If
                 End If
 
-                Return moCoverageRate
+                Return _moCoverageRate
             End Get
 
         End Property
@@ -408,8 +332,8 @@ Namespace Tables
             Get
                 Return moCoverageRateIdLabel.Text
             End Get
-            Set(ByVal Value As String)
-                moCoverageRateIdLabel.Text = Value
+            Set(ByVal value As String)
+                moCoverageRateIdLabel.Text = value
             End Set
         End Property
 
@@ -417,8 +341,8 @@ Namespace Tables
             Get
                 Return Convert.ToBoolean(moIsNewRateLabel.Text)
             End Get
-            Set(ByVal Value As Boolean)
-                moIsNewRateLabel.Text = Value.ToString
+            Set(ByVal value As Boolean)
+                moIsNewRateLabel.Text = value.ToString
             End Set
         End Property
 
@@ -428,32 +352,27 @@ Namespace Tables
 #Region "Coverage Deductible Constants"
 
         'TABLE COLUMNS
-        Public Const TABLE_KEY_NAME As String = "coverage_ded_id"
-        Public Const COVERAGE_DED_ID_PROPERTY As String = "coverage_ded_id"
-        Public Const COVERAGE_ID_PROPERTY As String = "coverage_id"
-        Public Const METHOD_OF_REPAIR_ID_PROPERTY As String = "MethodOfRepairId"
-        Public Const DEDUCTIBLE_BASED_ON_ID_PROPERTY As String = "DeductibleBasedOnId"
-        Public Const cOV_DEDUCTIBLE_PROPERTY As String = "Deductible"
-        Public Const METHOD_REPAIR_DESC_PROPERTY As String = "METHOD_OF_REPAIR"
-        Public Const DEDUCTIBLE_BASED_ON_DESC_PROPERTY As String = "DEDUCTIBLE_BASED_ON"
+        Public Const TableKeyName As String = "coverage_ded_id"
+        Public Const CoverageDedIdProperty As String = "coverage_ded_id"
+        Public Const CoverageIdProperty As String = "coverage_id"
 
         'Grid columns sequence
-        Private Const COVERAGE_DED_ID As Integer = 2
-        Private Const COV_METHOD_OF_REPAIR_ID As Integer = 3
-        Private Const COV_DEDUCTIBLE_BASED_ON_id As Integer = 4
-        Private Const METHOD_OF_REPAIR_DESC As Integer = 5
-        Private Const DEDUCTIBLE_BASED_ON_DESC As Integer = 6
-        Private Const DEDUCTIBLE As Integer = 7
+        Private Const ColSeqCoverageDeductibleId As Integer = 2
+        Private Const ColSeqMethodOfRepairId As Integer = 3
+        Private Const ColSeqDeductibleBasedOnId As Integer = 4
+        Private Const ColSeqMethodOfRepairDescription As Integer = 5
+        Private Const ColSeqDeductibleBasedOnDesc As Integer = 6
+        Private Const ColSeqDeductible As Integer = 7
 
         ' DataView Elements
-        Private Const DBCOVERAGE_DED_ID As Integer = 0
-        Private Const DBMETHOD_OF_REPAIR_ID As Integer = 2
-        Private Const DBDEDUCTIBLE_BASED_ON As Integer = 3
+        Private Const DbCoverageDeductibleId As Integer = 0
+        Private Const DbMethodOfRepairId As Integer = 2
+        Private Const DbDeductibleBasedOn As Integer = 3
 
-        'name of dropdownlist
-        Private Const DDL_DEDUCTIBLE_BASED_ON As String = "moddl_DeductibleBasedOn"
-        Private Const DDL_METHOD_OF_REPAIR As String = "moddl_MethodOfRepair"
-        Private Const TEXT_DEDUCTIBLE As String = "motxt_Deductible"
+        'name of drop downlist
+        Private Const DeductibleBasedOnDropDownList As String = "moddl_DeductibleBasedOn"
+        Private Const MethodOfRepairDropDownList As String = "moddl_MethodOfRepair"
+        Private Const DeductibleText As String = "motxt_Deductible"
 
 #End Region
 
@@ -462,21 +381,21 @@ Namespace Tables
         Private ReadOnly Property TheCoverageDeductible() As CoverageDeductible
             Get
 
-                If moCoverageDeductible Is Nothing Then
+                If _moCoverageDeductible Is Nothing Then
                     If IsNewDeductible = True Then
                         ' For creating, inserting
-                        moCoverageDeductible = New CoverageDeductible
-                        CoverageDeductibleId = moCoverageDeductible.Id.ToString
+                        _moCoverageDeductible = New CoverageDeductible
+                        CoverageDeductibleId = _moCoverageDeductible.Id.ToString
                     Else
                         ' For updating, deleting
                         If CoverageDeductibleId = "" Then
                             CoverageDeductibleId = Guid.Empty.ToString
                         End If
-                        moCoverageDeductible = New CoverageDeductible(GetGuidFromString(CoverageDeductibleId))
+                        _moCoverageDeductible = New CoverageDeductible(GetGuidFromString(CoverageDeductibleId))
                     End If
                 End If
 
-                Return moCoverageDeductible
+                Return _moCoverageDeductible
             End Get
 
         End Property
@@ -485,8 +404,8 @@ Namespace Tables
             Get
                 Return moCoverageDeductibleIdLabel.Text
             End Get
-            Set(ByVal Value As String)
-                moCoverageDeductibleIdLabel.Text = Value
+            Set(ByVal value As String)
+                moCoverageDeductibleIdLabel.Text = value
             End Set
         End Property
 
@@ -494,46 +413,37 @@ Namespace Tables
             Get
                 Return Convert.ToBoolean(IsNewDeductibleLabel.Text)
             End Get
-            Set(ByVal Value As Boolean)
-                IsNewDeductibleLabel.Text = Value.ToString
+            Set(ByVal value As Boolean)
+                IsNewDeductibleLabel.Text = value.ToString
             End Set
         End Property
 #End Region
 #Region "Coverage Conseq Damage Constants"
 
-        'TABLE COLUMNS
-        Public Const CONSEQ_DAMAGE_TYPE_PROPERTY As String = "ConseqDamageTypeXcd"
-        Public Const LIABILILTY_LIMIT_BASED_ON_PROPERTY As String = "LiabilityLimitBaseXcd"
-        Public Const LIABILILTY_LIMIT_PER_INCIDENT_PROPERTY As String = "LiabilityLimitPerIncident"
-        Public Const LIABILILTY_LIMIT_CUMULATIVE_PROPERTY As String = "LiabilityLimitCumulative"
-        Public Const CONSEQ_DAMAGE_EFFECTIVE_DATE_PROPERTY As String = "Effective"
-        Public Const CONSEQ_DAMAGE_EXPIRATION_DATE_PROPERTY As String = "Expiration"
-        Public Const FULFILMENT_METHOD_PROPERTY As String = "FulfilmentMethodXcd"
-
 
         'Grid columns sequence
-        Private Const COVERAGE_CONSEQ_DAMAGE_ID As Integer = 2
-        Private Const CONSEQ_DAMAGE_TYPE As Integer = 3
-        Private Const LIABILITY_LIMIT_BASED_ON As Integer = 4
-        Private Const LIABLILITY_LIMIT_PER_INCIDENT As Integer = 5
-        Private Const LIABLILITY_LIMIT_CUMULATIVE As Integer = 6
-        Private Const CONSEQ_DAMAGE_EFFECTIVE_DATE As Integer = 7
-        Private Const CONSEQ_DAMAGE_EXPIRATION_DATE As Integer = 8
-        Private Const FULFILMENT_METHOD As Integer = 9
-        Private Const CONSEQ_DAMAGE_TYPE_Xcd As Integer = 10
-        Private Const LIABILITY_LIMIT_BASED_ON_Xcd As Integer = 11
-        Private Const FULFILMENT_METHOD_Xcd As Integer = 12
+        Private Const ColSeqCoverageConseqDamageId As Integer = 2
+        Private Const ColSeqConseqDamageType As Integer = 3
+        Private Const ColSeqLiabilityLimitBasedOn As Integer = 4
+        Private Const ColSeqLiabilityLimitPerIncident As Integer = 5
+        Private Const ColSeqLiabilityLimitCumulative As Integer = 6
+        Private Const ColSeqConseqDamageEffectiveDate As Integer = 7
+        Private Const ColSeqConseqDamageExpirationDate As Integer = 8
+        Private Const ColSeqFulfillmentMethod As Integer = 9
+        Private Const ColSeqConseqDamageTypeXcd As Integer = 10
+        Private Const ColSeqLiabilityLimitBasedOnXcd As Integer = 11
+        Private Const ColSeqFulfillmentMethodXcd As Integer = 12
 
         ' DataView Elements
-        Private Const DBCOVERAGE_CONSEQ_DAMAGE_ID As Integer = 0
-        Private Const DBCOVERAGE_ID As Integer = 1
-        Private Const DBLIABLILITY_LIMIT_PER_INCIDENT As Integer = 6
-        Private Const DBLIABLILITY_LIMIT_CUMULATIVE As Integer = 7
+        Private Const DbCoverageConseqDamageId As Integer = 0
+        Private Const DbCoverageId As Integer = 1
+        Private Const DbLiablilityLimitPerIncident As Integer = 6
+        Private Const DbLiablilityLimitCumulative As Integer = 7
 
-        Private Const P_EFFECTIVE_DATE_TEXTBOX_NAME As String = "moConseqDamageEffectiveDateText"
-        Private Const P_EFFECTIVE_DATE_IMAGEBUTTON_NAME As String = "btnConseqDamageEffectiveDate"
-        Private Const P_EXPIRATION_DATE_TEXTBOX_NAME As String = "moConseqDamageExpirationDateText"
-        Private Const P_EXPIRATION_DATE_IMAGEBUTTON_NAME As String = "btnConseqDamageExpirationDate"
+        Private Const ConseqDamageEffectiveDateText As String = "moConseqDamageEffectiveDateText"
+        Private Const ConseqDamageEffectiveDateButton As String = "btnConseqDamageEffectiveDate"
+        Private Const ConseqDamageExpirationDateText As String = "moConseqDamageExpirationDateText"
+        Private Const ConseqDamageExpirationDateButton As String = "btnConseqDamageExpirationDate"
 
 
 
@@ -545,21 +455,21 @@ Namespace Tables
         Private ReadOnly Property TheCoverageConseqDamage() As CoverageConseqDamage
             Get
 
-                If moCoverageConseqDamage Is Nothing Then
+                If _moCoverageConseqDamage Is Nothing Then
                     If IsNewConseqDamage = True Then
                         ' For creating, inserting
-                        moCoverageConseqDamage = New CoverageConseqDamage
-                        CoverageConseqDamageId = moCoverageConseqDamage.Id.ToString
+                        _moCoverageConseqDamage = New CoverageConseqDamage
+                        CoverageConseqDamageId = _moCoverageConseqDamage.Id.ToString
                     Else
                         ' For updating, deleting
                         If CoverageConseqDamageId = "" Then
                             CoverageConseqDamageId = Guid.Empty.ToString
                         End If
-                        moCoverageConseqDamage = New CoverageConseqDamage(GetGuidFromString(CoverageConseqDamageId))
+                        _moCoverageConseqDamage = New CoverageConseqDamage(GetGuidFromString(CoverageConseqDamageId))
                     End If
                 End If
 
-                Return moCoverageConseqDamage
+                Return _moCoverageConseqDamage
             End Get
 
         End Property
@@ -570,8 +480,8 @@ Namespace Tables
             Get
                 Return moCoverageConseqDamageIdLabel.Text
             End Get
-            Set(ByVal Value As String)
-                moCoverageConseqDamageIdLabel.Text = Value
+            Set(ByVal value As String)
+                moCoverageConseqDamageIdLabel.Text = value
             End Set
         End Property
 
@@ -579,8 +489,8 @@ Namespace Tables
             Get
                 Return Convert.ToBoolean(moIsNewCoverageConseqDamageLabel.Text)
             End Get
-            Set(ByVal Value As Boolean)
-                moIsNewCoverageConseqDamageLabel.Text = Value.ToString
+            Set(ByVal value As Boolean)
+                moIsNewCoverageConseqDamageLabel.Text = value.ToString
             End Set
         End Property
 #End Region
@@ -589,26 +499,22 @@ Namespace Tables
 
 #Region "Handlers-Init, page events"
 
-        'Protected WithEvents moErrorController As ErrorController
-        'Protected WithEvents moErrorControllerRate As ErrorController
-        'Protected WithEvents moErrorControllerConseqDamage As ErrorController
-
-        Protected WithEvents moPanel As System.Web.UI.WebControls.Panel
-        Protected WithEvents moRateLabel As System.Web.UI.WebControls.Label
-        Protected WithEvents BtnDeleteRate As System.Web.UI.WebControls.Button
-        Protected WithEvents EditPanel_WRITE As System.Web.UI.WebControls.Panel
-        Protected WithEvents Button1 As System.Web.UI.WebControls.Button
-        Protected WithEvents moCoverageEditPanel As System.Web.UI.WebControls.Panel
+        'Protected WithEvents moPanel As Panel
+        'Protected WithEvents moRateLabel As Label
+        'Protected WithEvents BtnDeleteRate As Button
+        'Protected WithEvents EditPanel_WRITE As Panel
+        'Protected WithEvents Button1 As Button
+        Protected WithEvents moCoverageEditPanel As Panel
         Protected WithEvents multipleDropControl As MultipleColumnDDLabelControl
 
 #Region " Web Form Designer Generated Code "
 
         'This call is required by the Web Form Designer.
-        <System.Diagnostics.DebuggerStepThrough()> Private Sub InitializeComponent()
+        <Diagnostics.DebuggerStepThrough()> Private Sub InitializeComponent()
 
         End Sub
 
-        Private Sub Page_Init(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Init
+        Private Sub Page_Init(ByVal sender As Object, ByVal e As EventArgs) Handles MyBase.Init
             'CODEGEN: This method call is required by the Web Form Designer
             'Do not modify it using the code editor.
             InitializeComponent()
@@ -616,40 +522,39 @@ Namespace Tables
 
 #End Region
 
-        Private Sub Page_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
+        Private Sub Page_Load(ByVal sender As Object, ByVal e As EventArgs) Handles MyBase.Load
             'Put user code to initialize the page here
             Try
 
-                'Preserve values during postbacks
-                Me.PreserveValues()
+                'Preserve values during Post Backs
+                PreserveValues()
                 moMsgControllerRate.Clear()
-                Me.MasterPage.MessageController.Clear_Hide()
+                MasterPage.MessageController.Clear_Hide()
                 moMsgControllerDeductible.Clear()
                 moMsgControllerConseqDamage.Clear()
 
-                Me.MasterPage.UsePageTabTitleInBreadCrum = False
-                Me.MasterPage.PageTitle = TranslationBase.TranslateLabelOrMessage(LABEL_COVERAGE)
-                Me.UpdateBreadCrum()
+                MasterPage.UsePageTabTitleInBreadCrum = False
+                MasterPage.PageTitle = TranslationBase.TranslateLabelOrMessage(LabelCoverage)
+                UpdateBreadCrum()
                 ClearLabelsErrSign()
                 ClearGridHeaders(moGridView)
                 ClearGridHeaders(dedGridView)
                 ClearGridHeaders(moGridViewConseqDamage)
 
                 If Not Page.IsPostBack Then
-                    Me.SetGridItemStyleColor(moGridView)
-                    Me.SetGridItemStyleColor(dedGridView)
-                    Me.SetGridItemStyleColor(moGridViewConseqDamage)
-                    Me.TranslateGridHeader(Me.moGridView)
-                    Me.TranslateGridHeader(Me.dedGridView)
-                    Me.TranslateGridHeader(Me.moGridViewConseqDamage)
-                    Me.TranslateGridControls(moGridView)
-                    Me.TranslateGridControls(dedGridView)
-                    Me.TranslateGridControls(moGridViewConseqDamage)
+                    SetGridItemStyleColor(moGridView)
+                    SetGridItemStyleColor(dedGridView)
+                    SetGridItemStyleColor(moGridViewConseqDamage)
+                    TranslateGridHeader(moGridView)
+                    TranslateGridHeader(dedGridView)
+                    TranslateGridHeader(moGridViewConseqDamage)
+                    TranslateGridControls(moGridView)
+                    TranslateGridControls(dedGridView)
+                    TranslateGridControls(moGridViewConseqDamage)
 
-                    Me.SetStateProperties()
-                    ' Me.AddControlMsg(Me.btnDelete_WRITE, Message.DELETE_RECORD_PROMPT, "", MSG_BTN_YES_NO, MSG_TYPE_CONFIRM, True)
-                    Me.AddCalendar(Me.BtnEffectiveDate, Me.moEffectiveText)
-                    Me.AddCalendar(Me.BtnExpirationDate, Me.moExpirationText)
+                    SetStateProperties()
+                    AddCalendar(BtnEffectiveDate, moEffectiveText)
+                    AddCalendar(BtnExpirationDate, moExpirationText)
                     AttributeValues.ParentBusinessObject = CType(TheCoverage, IAttributable)
                     AttributeValues.TranslateHeaders()
 
@@ -663,54 +568,54 @@ Namespace Tables
                 BindBoPropertiesToLabels()
                 'BindBoPropertiesToDeductibleGridHeader()
                 CheckIfComingFromConfirm()
-                Me.moUseCoverageStartDateLable.ForeColor = Me.moReplacementDiscountPrcLabel.ForeColor
+                moUseCoverageStartDateLable.ForeColor = moReplacementDiscountPrcLabel.ForeColor
 
                 'US-521697
-                If Not Me.IsPostBack Then
-                    Me.State.IsDealerConfiguredForSourceXcd = HasDealerConfigeredForSourceXcd()
-                    Me.State.IsIgnorePremiumSetYesForContract = HasIgnorePremiumSetForContractForSIncomingSource()
+                If Not IsPostBack Then
+                    State.IsDealerConfiguredForSourceXcd = HasDealerConfigeredForSourceXcd()
+                    State.IsIgnorePremiumSetYesForContract = HasIgnorePremiumSetForContractForSIncomingSource()
                 Else
-                    SetGridSourceXcdTextboxFromBo()
+                    SetGridSourceXcdTextBoxFromBo()
                 End If
 
                 DisplayHideSourceColumn()
                 SetGridSourceXcdLabelFromBo()
 
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.MasterPage.MessageController)
+                HandleErrors(ex, MasterPage.MessageController)
             End Try
-            Me.ShowMissingTranslations(Me.MasterPage.MessageController)
+            ShowMissingTranslations(MasterPage.MessageController)
         End Sub
 
         Private Sub GetDisabledTabs()
-            Dim DisabledTabs As Array = hdnDisabledTab.Value.Split(",")
-            If DisabledTabs.Length > 0 AndAlso DisabledTabs(0) IsNot String.Empty Then
-                DisabledTabsList.AddRange(DisabledTabs)
+            Dim disabledTabs As Array = hdnDisabledTab.Value.Split(",")
+            If disabledTabs.Length > 0 AndAlso disabledTabs(0) IsNot String.Empty Then
+                DisabledTabsList.AddRange(disabledTabs)
                 hdnDisabledTab.Value = String.Empty
             End If
         End Sub
         Private Sub UpdateBreadCrum()
-            If (Not Me.State Is Nothing) Then
-                Me.MasterPage.BreadCrum = TranslationBase.TranslateLabelOrMessage(LABEL_COVERAGE)
+            If (Not State Is Nothing) Then
+                MasterPage.BreadCrum = TranslationBase.TranslateLabelOrMessage(LabelCoverage)
             End If
         End Sub
 
         Private Sub CoverageForm_PreRender(sender As Object, e As EventArgs) Handles Me.PreRender
-            If Me.State.IsNewWithCopy Then
+            If State.IsNewWithCopy Then
                 hdnDisabledTab.Value = String.Join(",", DisabledTabsList)
                 Exit Sub
             End If
 
-            If State.moCoverage.Inuseflag = "Y" Then ' The coverage record is in use and should not allow changes except Configuration Super User Roles
+            If State.Coverage.Inuseflag = "Y" Then ' The coverage record is in use and should not allow changes except Configuration Super User Roles
                 'Display a warning of this record is in use when opening the page first time
                 If Not Page.IsPostBack Then
-                    Me.MasterPage.MessageController.AddWarning("RECORD_IN_USE")
+                    MasterPage.MessageController.AddWarning("RECORD_IN_USE")
                 End If
 
-                If ElitaPlusPrincipal.Current.IsInRole(CoverageForm.ConfigurationSuperUserRole) = False Then
+                If ElitaPlusPrincipal.Current.IsInRole(ConfigurationSuperUserRole) = False Then
                     'diable the save button to prevent any change to the coverage record
-                    Me.btnApply_WRITE.Enabled = False
-                    Me.btnDelete_WRITE.Enabled = False
+                    btnApply_WRITE.Enabled = False
+                    btnDelete_WRITE.Enabled = False
                 End If
             End If
             hdnDisabledTab.Value = String.Join(",", DisabledTabsList)
@@ -718,15 +623,15 @@ Namespace Tables
 #End Region
 
 #Region "Handlers-DropDown"
-        Private Sub cboDeductibleBasedOn_SelectedIndexChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cboDeductibleBasedOn.SelectedIndexChanged
+        Private Sub cboDeductibleBasedOn_SelectedIndexChanged(ByVal sender As Object, ByVal e As EventArgs) Handles cboDeductibleBasedOn.SelectedIndexChanged
             Try
-                EnableDisableDeductible(GetSelectedItem(Me.cboDeductibleBasedOn), True)
+                EnableDisableDeductible(GetSelectedItem(cboDeductibleBasedOn), True)
             Catch ex As Exception
-                HandleErrors(ex, Me.MasterPage.MessageController)
+                HandleErrors(ex, MasterPage.MessageController)
             End Try
         End Sub
 
-        Private Sub OnFromDrop_Changed(ByVal fromMultipleDrop As Assurant.ElitaPlus.ElitaPlusWebApp.Common.MultipleColumnDDLabelControl) _
+        Private Sub OnFromDrop_Changed(ByVal fromMultipleDrop As MultipleColumnDDLabelControl) _
          Handles multipleDropControl.SelectedDropChanged
             Try
                 ClearForDealer()
@@ -737,58 +642,53 @@ Namespace Tables
                     PopulateProductCode()
                 End If
             Catch ex As Exception
-                HandleErrors(ex, Me.MasterPage.MessageController)
+                HandleErrors(ex, MasterPage.MessageController)
             End Try
         End Sub
 
-        Private Sub moProductDrop_SelectedIndexChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles moProductDrop.SelectedIndexChanged
+        Private Sub moProductDrop_SelectedIndexChanged(ByVal sender As Object, ByVal e As EventArgs) Handles moProductDrop.SelectedIndexChanged
             Try
                 ClearForProduct()
                 If moProductDrop.SelectedIndex > NO_ITEM_SELECTED_INDEX Then
                     PopulateRiskType()
                     EnableDisableCoverageLiabilityLimits()
                 End If
-                If Me.State.IsCoverageNew = True Then
+                If State.IsCoverageNew = True Then
                     TheCoverage.ClearAttributeValues()
-                    Dim oLanguageId As Guid = ElitaPlusIdentity.Current.ActiveUser.LanguageId
-                    Dim ReInsStatusDataView As DataView = LookupListNew.GetReInsStatusesWithoutPartialStatuesLookupList(ElitaPlusIdentity.Current.ActiveUser.LanguageId, False)
+                    Dim reInsStatusDataView As DataView = LookupListNew.GetReInsStatusesWithoutPartialStatuesLookupList(GetLanguageId(), False)
                     'Dim oYesNoDataView As DataView = LookupListNew.GetYesNoLookupList(oLanguageId)
                     Dim oYesNoList As DataElements.ListItem() = CommonConfigManager.Current.ListManager.GetList(listCode:="YESNO", languageCode:=Thread.CurrentPrincipal.GetLanguageCode())
                     Dim oProductCode As New ProductCode(New Guid(moProductDrop.SelectedValue))
-                    If oProductCode.IsReInsuredId = LookupListNew.GetIdFromCode(LookupListNew.LK_YESNO, YES) Then
+                    If oProductCode.IsReInsuredId = LookupListNew.GetIdFromCode(LookupListNew.LK_YESNO, LookupYes) Then
                         'BindListControlToDataView(moReInsuredDrop, oYesNoDataView, , , True)
                         moReInsuredDrop.Populate(oYesNoList, New PopulateOptions() With
                                                    {
                                                     .AddBlankItem = True
                                                    })
-                        BindSelectItem(oProductCode.IsReInsuredId.ToString, Me.moReInsuredDrop)
-                        Dim cav As IEnumerable(Of AttributeValue) = TheCoverage.AttributeValues
-                        For Each av As AttributeValue In cav
-                        Next
+                        BindSelectItem(oProductCode.IsReInsuredId.ToString, moReInsuredDrop)
 
-                        Dim attributevalueBo As AttributeValue = TheCoverage.AttributeValues.GetNewAttributeChild()
-                        Dim productattributevalue As String = oProductCode.AttributeValues.Value(Codes.ATTRIBUTE__DEFAULT_REINSURANCE_STATUS)
+                        Dim attributeValueBo As AttributeValue = TheCoverage.AttributeValues.GetNewAttributeChild()
+                        Dim productAttributeValue As String = oProductCode.AttributeValues.Value(Codes.ATTRIBUTE__DEFAULT_REINSURANCE_STATUS)
 
-                        attributevalueBo.Value = LookupListNew.GetCodeFromId(ReInsStatusDataView, LookupListNew.GetIdFromCode(ReInsStatusDataView, productattributevalue))
-                        attributevalueBo.AttributeId = TheCoverage.AttributeValues.Attribues.Where(Function(a) a.UiProgCode = Codes.ATTRIBUTE__DEFAULT_REINSURANCE_STATUS).FirstOrDefault().Id
+                        attributeValueBo.Value = LookupListNew.GetCodeFromId(reInsStatusDataView, LookupListNew.GetIdFromCode(reInsStatusDataView, productAttributeValue))
+                        attributeValueBo.AttributeId = TheCoverage.AttributeValues.Attribues.FirstOrDefault(Function(a) a.UiProgCode = Codes.ATTRIBUTE__DEFAULT_REINSURANCE_STATUS).Id
                         Dim avl As New List(Of AttributeValue)
-                        avl.Add(attributevalueBo)
-                        Dim attrValues As IEnumerable(Of AttributeValue) = TheCoverage.AttributeValues
-                        attrValues = avl
+                        avl.Add(attributeValueBo)
+                        '
                         AttributeValues.PopulateAttributeValuesGrid(avl)
-                        attributevalueBo.EndEdit()
-                        attributevalueBo.Save()
-                        attributevalueBo = Nothing
+                        attributeValueBo.EndEdit()
+                        attributeValueBo.Save()
+                        attributeValueBo = Nothing
                         AttributeValues.Visible = True
 
                     End If
                 End If
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.MasterPage.MessageController)
+                HandleErrors(ex, MasterPage.MessageController)
             End Try
         End Sub
 
-        Private Sub moRiskDrop_SelectedIndexChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles moRiskDrop.SelectedIndexChanged
+        Private Sub moRiskDrop_SelectedIndexChanged(ByVal sender As Object, ByVal e As EventArgs) Handles moRiskDrop.SelectedIndexChanged
             Try
                 ClearForRisk()
                 If moRiskDrop.SelectedIndex > NO_ITEM_SELECTED_INDEX Then
@@ -796,50 +696,50 @@ Namespace Tables
                 End If
                 PopulateItemNumber()
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.MasterPage.MessageController)
+                HandleErrors(ex, MasterPage.MessageController)
             End Try
         End Sub
 
-        Private Sub moCoverageTypeDrop_SelectedIndexChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles moCoverageTypeDrop.SelectedIndexChanged
+        Private Sub moCoverageTypeDrop_SelectedIndexChanged(ByVal sender As Object, ByVal e As EventArgs) Handles moCoverageTypeDrop.SelectedIndexChanged
             Try
                 ClearForCoverageType()
-                If Me.moCoverageTypeDrop.SelectedIndex > NO_ITEM_SELECTED_INDEX Then
+                If moCoverageTypeDrop.SelectedIndex > NO_ITEM_SELECTED_INDEX Then
                     PopulateRestCoverage()
                 End If
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.MasterPage.MessageController)
+                HandleErrors(ex, MasterPage.MessageController)
             End Try
         End Sub
 
         Private Sub PreserveValues()
-            Me.State.selectedCoverageTypeId = GetSelectedItem(moCoverageTypeDrop)
-            Me.State.selectedProductItemId = GetSelectedItem(moProductItemDrop)
-            Me.State.selectedOptionalId = GetSelectedItem(moOptionalDrop)
-            Me.State.selectedIsClaimAllowedId = GetSelectedItem(moIsClaimAllowedDrop)
-            Me.State.selectedUseCoverageStartDateId = GetSelectedItem(UseCoverageStartDateId)
-            Me.State.selectedOffsetMethod = GetSelectedValue(moOffsetMethodDrop)
-            Me.State.selectedOffset = Me.moOffsetText.Text
-            Me.State.selectedMarkupDistnPercent = Me.txtMarkupDistPercent.Text
-            Me.State.selectedOffsetDays = Me.txtOffsetDays.Text
-            Me.State.selectedEffective = Me.moEffectiveText.Text
-            Me.State.selectedExpiration = Me.moExpirationText.Text
-            Me.State.selectedCertificateDuration = Me.moCertificateDurationText.Text
-            Me.State.selectedCoverageDuration = Me.moCoverageDurationText.Text
-            Me.State.selectedLiability = Me.moLiabilityText.Text
-            Me.State.selectedLiabilityLimitPercent = Me.moLiabilityLimitPercentText.Text
-            Me.State.selectedDeductible = Me.moDeductibleText.Text
-            Me.State.selectedDeductiblePercent = Me.moDeductiblePercentText.Text
-            Me.State.selectedEarningCodeId = GetSelectedItem(moEarningCodeDrop)
-            Me.State.selectedCovDeductible = Me.moCovDeductibleText.Text
-            Me.State.selectedRepairDiscountPct = Me.moRepairDiscountPctText.Text
-            Me.State.selectedReplacementDiscountPct = Me.moReplacementDiscountPctText.Text
-            Me.State.selectedAgentCode = Me.moAgentcodeText.Text
-            Me.State.selectedCoverageLiabilityLimit = Me.moCoverageLiabilityLimitText.Text
-            Me.State.selectedCoverageLiabilityLimitPercent = Me.moCoverageLiabilityLimitPercentText.Text
-            Me.State.selectedRecoverDeviceId = GetSelectedItem(moRecoverDeciveDrop)
-            Me.State.selectedClaimLimitCount = Me.moClaimLimitCountText.Text
-            Me.State.selectedPerIncidentLiabilityLimitCap = Me.moPerIncidentLiabilityLimitCapText.Text
-            Me.State.selectedTaxTypeXCD = GetSelectedValue(moTaxTypeDrop)
+            State.SelectedCoverageTypeId = GetSelectedItem(moCoverageTypeDrop)
+            State.SelectedProductItemId = GetSelectedItem(moProductItemDrop)
+            State.SelectedOptionalId = GetSelectedItem(moOptionalDrop)
+            State.SelectedIsClaimAllowedId = GetSelectedItem(moIsClaimAllowedDrop)
+            State.SelectedUseCoverageStartDateId = GetSelectedItem(UseCoverageStartDateId)
+            State.SelectedOffsetMethod = GetSelectedValue(moOffsetMethodDrop)
+            State.SelectedOffset = moOffsetText.Text
+            State.SelectedMarkupDistnPercent = txtMarkupDistPercent.Text
+            State.SelectedOffsetDays = txtOffsetDays.Text
+            State.SelectedEffective = moEffectiveText.Text
+            State.SelectedExpiration = moExpirationText.Text
+            State.SelectedCertificateDuration = moCertificateDurationText.Text
+            State.SelectedCoverageDuration = moCoverageDurationText.Text
+            State.SelectedLiability = moLiabilityText.Text
+            State.SelectedLiabilityLimitPercent = moLiabilityLimitPercentText.Text
+            State.SelectedDeductible = moDeductibleText.Text
+            State.SelectedDeductiblePercent = moDeductiblePercentText.Text
+            State.SelectedEarningCodeId = GetSelectedItem(moEarningCodeDrop)
+            State.SelectedCovDeductible = moCovDeductibleText.Text
+            State.SelectedRepairDiscountPct = moRepairDiscountPctText.Text
+            State.SelectedReplacementDiscountPct = moReplacementDiscountPctText.Text
+            State.SelectedAgentCode = moAgentcodeText.Text
+            State.SelectedCoverageLiabilityLimit = moCoverageLiabilityLimitText.Text
+            State.SelectedCoverageLiabilityLimitPercent = moCoverageLiabilityLimitPercentText.Text
+            State.SelectedRecoverDeviceId = GetSelectedItem(moRecoverDeciveDrop)
+            State.SelectedClaimLimitCount = moClaimLimitCountText.Text
+            State.SelectedPerIncidentLiabilityLimitCap = moPerIncidentLiabilityLimitCapText.Text
+            State.SelectedTaxTypeXcd = GetSelectedValue(moTaxTypeDrop)
 
         End Sub
 
@@ -848,47 +748,46 @@ Namespace Tables
 
 #Region "Handlers-TextBox"
 
-        Private Sub moEffectiveText_TextChanged(ByVal sender As Object, ByVal e As System.EventArgs) Handles moEffectiveText.TextChanged
-            EnableDisableDeductible(GetSelectedItem(Me.cboDeductibleBasedOn), True)
+        Private Sub moEffectiveText_TextChanged(ByVal sender As Object, ByVal e As EventArgs) Handles moEffectiveText.TextChanged
+            EnableDisableDeductible(GetSelectedItem(cboDeductibleBasedOn), True)
         End Sub
 
         Private Sub EnableDisableDeductible(ByVal pDeductibleBasedOnId As Guid, ByVal pClearValues As Boolean)
             Dim sCoverageDeductibleCode As String
-            Dim oLanguageId As Guid = ElitaPlusIdentity.Current.ActiveUser.LanguageId
             If (TheDealerControl.SelectedIndex > NO_ITEM_SELECTED_INDEX) And (Len(moEffectiveText.Text) > 0) Then
                 Dim oDealerId As Guid = TheDealerControl.SelectedGuid
                 Dim oEffectiveDate As String
-                Dim tempdate As Date
-                tempdate = DateHelper.GetDateValue(moEffectiveText.Text)
-                oEffectiveDate = tempdate.ToString("yyyyMMdd")
+                Dim tempDate As Date
+                tempDate = DateHelper.GetDateValue(moEffectiveText.Text)
+                oEffectiveDate = tempDate.ToString("yyyyMMdd")
                 Try
-                    Dim oCDView As DataView = TheCoverage.GetCoverageDeductable(oDealerId, oEffectiveDate, oLanguageId)
-                    If oCDView.Count > 0 Then
-                        moCovDeductibleText.Text = oCDView.Item(FIRST_POS).Item(COL_DESCRIPTION_NAME).ToString
+                    Dim oCoverageDeductibleView As DataView = Coverage.GetCoverageDeductable(oDealerId, oEffectiveDate, GetLanguageId())
+                    If oCoverageDeductibleView.Count > 0 Then
+                        moCovDeductibleText.Text = oCoverageDeductibleView.Item(FirstPos).Item(ColDescriptionName).ToString
                     Else
-                        moCovDeductibleText.Text = LookupListNew.GetDescriptionFromCode(LookupListNew.LK_YESNO, NO)
+                        moCovDeductibleText.Text = LookupListNew.GetDescriptionFromCode(LookupListNew.LK_YESNO, LookupNo)
                     End If
                     sCoverageDeductibleCode = moCovDeductibleText.Text
                 Catch ex As Exception
-                    Me.MasterPage.MessageController.AddError(TranslationBase.TranslateLabelOrMessage(COVERAGE_FORM002, ElitaPlusIdentity.Current.ActiveUser.LanguageId) & " " & ex.Message)
+                    MasterPage.MessageController.AddError(TranslationBase.TranslateLabelOrMessage(CoverageForm002, GetLanguageId()) & " " & ex.Message)
                 End Try
             Else
                 sCoverageDeductibleCode = Nothing
             End If
 
-            sCoverageDeductibleCode = LookupListNew.GetCodeFromDescription(LookupListNew.DropdownLookupList("YESNO", oLanguageId, True), sCoverageDeductibleCode)
+            sCoverageDeductibleCode = LookupListNew.GetCodeFromDescription(LookupListNew.DropdownLookupList("YESNO", GetLanguageId(), True), sCoverageDeductibleCode)
 
             Select Case sCoverageDeductibleCode
-                Case YES
-                    ControlMgr.SetEnableControl(Me, Me.cboDeductibleBasedOn, True)
+                Case LookupYes
+                    ControlMgr.SetEnableControl(Me, cboDeductibleBasedOn, True)
                     Dim sDeductibleBasedOnCode As String = LookupListNew.GetCodeFromId(LookupListNew.LK_DEDUCTIBLE_BASED_ON, pDeductibleBasedOnId)
 
                     If (sDeductibleBasedOnCode = Codes.DEDUCTIBLE_BASED_ON__FIXED) Then
                         ' OrElse  (String.IsNullOrWhiteSpace(sDeductibleBasedOnCode))) Then
-                        ControlMgr.SetEnableControl(Me, Me.moDeductibleText, True)
-                        ControlMgr.SetEnableControl(Me, Me.moDeductiblePercentText, False)
+                        ControlMgr.SetEnableControl(Me, moDeductibleText, True)
+                        ControlMgr.SetEnableControl(Me, moDeductiblePercentText, False)
                         If (pClearValues) Then
-                            Me.moDeductiblePercentText.Text = "0"
+                            moDeductiblePercentText.Text = ZeroNumber
                         End If
                     ElseIf ((sDeductibleBasedOnCode = Codes.DEDUCTIBLE_BASED_ON__PERCENT_OF_AUTHORIZED_AMOUNT) OrElse
                                            (sDeductibleBasedOnCode = Codes.DEDUCTIBLE_BASED_ON__PERCENT_OF_SALES_PRICE) OrElse
@@ -896,58 +795,33 @@ Namespace Tables
                                            (sDeductibleBasedOnCode = Codes.DEDUCTIBLE_BASED_ON__PERCENT_OF_LIST_PRICE) OrElse
                                            (sDeductibleBasedOnCode = Codes.DEDUCTIBLE_BASED_ON__PERCENT_OF_ITEM_RETAIL_PRICE) OrElse
                                            (sDeductibleBasedOnCode = Codes.DEDUCTIBLE_BASED_ON__PERCENT_OF_LIST_PRICE_WSD)) Then
-                        ControlMgr.SetEnableControl(Me, Me.moDeductibleText, False)
-                        ControlMgr.SetEnableControl(Me, Me.moDeductiblePercentText, True)
+                        ControlMgr.SetEnableControl(Me, moDeductibleText, False)
+                        ControlMgr.SetEnableControl(Me, moDeductiblePercentText, True)
                         If (pClearValues) Then
-                            Me.moDeductibleText.Text = "0"
+                            moDeductibleText.Text = ZeroNumber
                         End If
 
                     Else
-                        ControlMgr.SetEnableControl(Me, Me.moDeductibleText, False)
-                        ControlMgr.SetEnableControl(Me, Me.moDeductiblePercentText, False)
-                        ControlMgr.SetEnableControl(Me, Me.cboDeductibleBasedOn, True)
+                        ControlMgr.SetEnableControl(Me, moDeductibleText, False)
+                        ControlMgr.SetEnableControl(Me, moDeductiblePercentText, False)
+                        ControlMgr.SetEnableControl(Me, cboDeductibleBasedOn, True)
                         If (pClearValues) Then
-                            Me.moDeductibleText.Text = "0"
-                            Me.moDeductiblePercentText.Text = "0"
+                            moDeductibleText.Text = ZeroNumber
+                            moDeductiblePercentText.Text = ZeroNumber
                         End If
 
                     End If
                 Case Else
-                    ControlMgr.SetEnableControl(Me, Me.moDeductibleText, False)
-                    ControlMgr.SetEnableControl(Me, Me.moDeductiblePercentText, False)
-                    ControlMgr.SetEnableControl(Me, Me.cboDeductibleBasedOn, False)
+                    ControlMgr.SetEnableControl(Me, moDeductibleText, False)
+                    ControlMgr.SetEnableControl(Me, moDeductiblePercentText, False)
+                    ControlMgr.SetEnableControl(Me, cboDeductibleBasedOn, False)
                     If (pClearValues) Then
-                        Me.moDeductibleText.Text = "0"
-                        Me.moDeductiblePercentText.Text = "0"
-                        ElitaPlusPage.SetSelectedItem(cboDeductibleBasedOn, LookupListNew.GetIdFromCode(LookupListNew.LK_DEDUCTIBLE_BASED_ON, "FIXED"))
+                        moDeductibleText.Text = ZeroNumber
+                        moDeductiblePercentText.Text = ZeroNumber
+                        SetSelectedItem(cboDeductibleBasedOn, LookupListNew.GetIdFromCode(LookupListNew.LK_DEDUCTIBLE_BASED_ON, "FIXED"))
                     End If
             End Select
 
-
-            'If (sDeductibleBasedOnCode = DEDUCTIBLE_BASED_ON_FIXED) Then
-            '            ControlMgr.SetEnableControl(Me, Me.moDeductibleText, True)
-            '            ControlMgr.SetEnableControl(Me, Me.moDeductiblePercentText, False)
-            '            If (pClearValues) Then
-            '                Me.moDeductiblePercentText.Text = "0"
-            '            End If
-            '        Else
-            '            ControlMgr.SetEnableControl(Me, Me.moDeductibleText, False)
-            '            ControlMgr.SetEnableControl(Me, Me.moDeductiblePercentText, True)
-            '            If (pClearValues) Then
-            '                Me.moDeductibleText.Text = "0"
-            '            End If
-            '        End If
-            '    Case Else
-            '        ControlMgr.SetEnableControl(Me, Me.moDeductibleText, False)
-            '        ControlMgr.SetEnableControl(Me, Me.moDeductiblePercentText, False)
-            '        ControlMgr.SetEnableControl(Me, Me.cboDeductibleBasedOn, False)
-            '        'disable the deductible tab
-            '        DeductibleTab.Enabled = False
-
-            '        Me.moDeductibleText.Text = "0"
-            '        Me.moDeductiblePercentText.Text = "0"
-            '        SetSelectedItem(cboDeductibleBasedOn, LookupListNew.GetIdFromCode(LookupListNew.LK_DEDUCTIBLE_BASED_ON, "FIXED"))
-            'End Select
         End Sub
 #End Region
 
@@ -956,34 +830,34 @@ Namespace Tables
 
         Private Sub SaveChanges()
             If ApplyChanges() = True Then
-                Me.State.boChanged = True
+                State.StateChanged = True
                 ClearCoverageRate()
                 ClearCoverageDeductible()
                 ClearCoverageConseqDamage()
-                If Me.State.IsCoverageNew = True Then
-                    Me.State.IsCoverageNew = False
+                If State.IsCoverageNew = True Then
+                    State.IsCoverageNew = False
                 End If
-                If Me.State.IsNewWithCopy Then
-                    Me.State.IsNewWithCopy = False
+                If State.IsNewWithCopy Then
+                    State.IsNewWithCopy = False
                 End If
                 PopulateAll()
             End If
         End Sub
 
-        Private Sub btnApply_WRITE_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnApply_WRITE.Click
+        Private Sub btnApply_WRITE_Click(ByVal sender As Object, ByVal e As EventArgs) Handles btnApply_WRITE.Click
             Try
                 Dim sVal As String
-                Dim langId As Guid = ElitaPlusIdentity.Current.ActiveUser.LanguageId
+                Dim langId As Guid = GetLanguageId()
                 Dim yesNoLkL As DataView = LookupListNew.DropdownLookupList("YESNO", langId, True)
                 Dim selectedTaxType As String = GetSelectedValue(moTaxTypeDrop)
-                sVal = LookupListNew.GetCodeFromDescription(yesNoLkL, Me.moCovDeductibleText.Text)
-                If sVal = YES Then
+                sVal = LookupListNew.GetCodeFromDescription(yesNoLkL, moCovDeductibleText.Text)
+                If sVal = LookupYes Then
                     If IsNumeric(moDeductiblePercentText.Text) And IsNumeric(moDeductibleText.Text) Then
                         If CType(moDeductiblePercentText.Text, Decimal) > 0 And CType(moDeductibleText.Text, Decimal) > 0 Then
                             'display error
-                            ElitaPlusPage.SetLabelError(Me.moDeductiblePercentLabel)
-                            ElitaPlusPage.SetLabelError(Me.moDeductibleLabel)
-                            Throw New GUIException(Message.MSG_BEGIN_END_DATE, Assurant.ElitaPlus.Common.ErrorCodes.INVALID_DEDUCTIBLE_AMOUNT_ERR)
+                            SetLabelError(moDeductiblePercentLabel)
+                            SetLabelError(moDeductibleLabel)
+                            Throw New GUIException(Message.MSG_BEGIN_END_DATE, ElitaPlus.Common.ErrorCodes.INVALID_DEDUCTIBLE_AMOUNT_ERR)
                         End If
                     End If
                 End If
@@ -991,47 +865,47 @@ Namespace Tables
                 If (moCoverageLiabilityLimitText.Enabled And moCoverageLiabilityLimitPercentText.Enabled _
                     And moCoverageLiabilityLimitText.Visible And moCoverageLiabilityLimitPercentText.Visible) Then
                     If String.IsNullOrEmpty(moCoverageLiabilityLimitText.Text) And String.IsNullOrEmpty(moCoverageLiabilityLimitPercentText.Text) Then
-                        ElitaPlusPage.SetLabelError(Me.moCoverageLiabilityLimitLabel)
-                        ElitaPlusPage.SetLabelError(Me.moCoverageLiabilityLimitPercentLabel)
-                        Throw New GUIException(Message.MSG_INVALID_LIABILITY_LIMIT, Assurant.ElitaPlus.Common.ErrorCodes.INVALID_COVERAGE_LIABILITY_LIMIT_AND_PERCENT)
+                        SetLabelError(moCoverageLiabilityLimitLabel)
+                        SetLabelError(moCoverageLiabilityLimitPercentLabel)
+                        Throw New GUIException(Message.MSG_INVALID_LIABILITY_LIMIT, ElitaPlus.Common.ErrorCodes.INVALID_COVERAGE_LIABILITY_LIMIT_AND_PERCENT)
                     ElseIf Not String.IsNullOrEmpty(moCoverageLiabilityLimitText.Text) And String.IsNullOrEmpty(moCoverageLiabilityLimitPercentText.Text) Then
                         If Not IsNumeric(moCoverageLiabilityLimitText.Text) Then
-                            ElitaPlusPage.SetLabelError(Me.moCoverageLiabilityLimitLabel)
-                            Throw New GUIException(Message.MSG_INVALID_LIABILITY_LIMIT, Assurant.ElitaPlus.Common.ErrorCodes.INVALID_COVERAGE_LIABILITY_LIMIT)
+                            SetLabelError(moCoverageLiabilityLimitLabel)
+                            Throw New GUIException(Message.MSG_INVALID_LIABILITY_LIMIT, ElitaPlus.Common.ErrorCodes.INVALID_COVERAGE_LIABILITY_LIMIT)
                         ElseIf CType(moCoverageLiabilityLimitText.Text, Decimal) < 0 Then
-                            ElitaPlusPage.SetLabelError(Me.moCoverageLiabilityLimitLabel)
-                            Throw New GUIException(Message.MSG_INVALID_LIABILITY_LIMIT, Assurant.ElitaPlus.Common.ErrorCodes.INVALID_COVERAGE_LIABILITY_LIMIT)
+                            SetLabelError(moCoverageLiabilityLimitLabel)
+                            Throw New GUIException(Message.MSG_INVALID_LIABILITY_LIMIT, ElitaPlus.Common.ErrorCodes.INVALID_COVERAGE_LIABILITY_LIMIT)
                         End If
                     ElseIf String.IsNullOrEmpty(moCoverageLiabilityLimitText.Text) And Not String.IsNullOrEmpty(moCoverageLiabilityLimitPercentText.Text) Then
                         If Not IsNumeric(moCoverageLiabilityLimitPercentText.Text) Then
-                            ElitaPlusPage.SetLabelError(Me.moCoverageLiabilityLimitPercentLabel)
-                            Throw New GUIException(Message.MSG_INVALID_LIABILITY_LIMIT, Assurant.ElitaPlus.Common.ErrorCodes.INVALID_COVERAGE_LIABILITY_LIMIT_PERCENT)
+                            SetLabelError(moCoverageLiabilityLimitPercentLabel)
+                            Throw New GUIException(Message.MSG_INVALID_LIABILITY_LIMIT, ElitaPlus.Common.ErrorCodes.INVALID_COVERAGE_LIABILITY_LIMIT_PERCENT)
                         ElseIf CType(moCoverageLiabilityLimitPercentText.Text, Decimal) = 0 Or CType(moCoverageLiabilityLimitPercentText.Text, Decimal) < 0 Or
                                 CType(moCoverageLiabilityLimitPercentText.Text, Decimal) > 100 Then
-                            ElitaPlusPage.SetLabelError(Me.moCoverageLiabilityLimitPercentLabel)
-                            Throw New GUIException(Message.MSG_INVALID_LIABILITY_LIMIT, Assurant.ElitaPlus.Common.ErrorCodes.INVALID_COVERAGE_LIABILITY_LIMIT_PERCENT)
+                            SetLabelError(moCoverageLiabilityLimitPercentLabel)
+                            Throw New GUIException(Message.MSG_INVALID_LIABILITY_LIMIT, ElitaPlus.Common.ErrorCodes.INVALID_COVERAGE_LIABILITY_LIMIT_PERCENT)
                         End If
                     ElseIf Not String.IsNullOrEmpty(moCoverageLiabilityLimitText.Text) And Not String.IsNullOrEmpty(moCoverageLiabilityLimitPercentText.Text) Then
                         If Not IsNumeric(moCoverageLiabilityLimitText.Text) And Not IsNumeric(moCoverageLiabilityLimitPercentText.Text) Then
-                            ElitaPlusPage.SetLabelError(Me.moCoverageLiabilityLimitLabel)
-                            ElitaPlusPage.SetLabelError(Me.moCoverageLiabilityLimitPercentLabel)
-                            Throw New GUIException(Message.MSG_INVALID_LIABILITY_LIMIT, Assurant.ElitaPlus.Common.ErrorCodes.INVALID_COVERAGE_LIABILITY_LIMIT_AND_PERCENT)
+                            SetLabelError(moCoverageLiabilityLimitLabel)
+                            SetLabelError(moCoverageLiabilityLimitPercentLabel)
+                            Throw New GUIException(Message.MSG_INVALID_LIABILITY_LIMIT, ElitaPlus.Common.ErrorCodes.INVALID_COVERAGE_LIABILITY_LIMIT_AND_PERCENT)
                         ElseIf IsNumeric(moCoverageLiabilityLimitText.Text) And Not IsNumeric(moCoverageLiabilityLimitPercentText.Text) Then
-                            ElitaPlusPage.SetLabelError(Me.moCoverageLiabilityLimitLabel)
-                            ElitaPlusPage.SetLabelError(Me.moCoverageLiabilityLimitPercentLabel)
-                            Throw New GUIException(Message.MSG_INVALID_LIABILITY_LIMIT, Assurant.ElitaPlus.Common.ErrorCodes.INVALID_COVERAGE_LIABILITY_LIMIT_AND_PERCENT)
+                            SetLabelError(moCoverageLiabilityLimitLabel)
+                            SetLabelError(moCoverageLiabilityLimitPercentLabel)
+                            Throw New GUIException(Message.MSG_INVALID_LIABILITY_LIMIT, ElitaPlus.Common.ErrorCodes.INVALID_COVERAGE_LIABILITY_LIMIT_AND_PERCENT)
                         ElseIf Not IsNumeric(moCoverageLiabilityLimitText.Text) And IsNumeric(moCoverageLiabilityLimitPercentText.Text) Then
-                            ElitaPlusPage.SetLabelError(Me.moCoverageLiabilityLimitLabel)
-                            ElitaPlusPage.SetLabelError(Me.moCoverageLiabilityLimitPercentLabel)
-                            Throw New GUIException(Message.MSG_INVALID_LIABILITY_LIMIT, Assurant.ElitaPlus.Common.ErrorCodes.INVALID_COVERAGE_LIABILITY_LIMIT_AND_PERCENT)
+                            SetLabelError(moCoverageLiabilityLimitLabel)
+                            SetLabelError(moCoverageLiabilityLimitPercentLabel)
+                            Throw New GUIException(Message.MSG_INVALID_LIABILITY_LIMIT, ElitaPlus.Common.ErrorCodes.INVALID_COVERAGE_LIABILITY_LIMIT_AND_PERCENT)
                         ElseIf (CType(moCoverageLiabilityLimitPercentText.Text, Decimal) = 0 Or CType(moCoverageLiabilityLimitPercentText.Text, Decimal) < 0 Or CType(moCoverageLiabilityLimitPercentText.Text, Decimal) > 100) Then
-                            ElitaPlusPage.SetLabelError(Me.moCoverageLiabilityLimitLabel)
-                            ElitaPlusPage.SetLabelError(Me.moCoverageLiabilityLimitPercentLabel)
-                            Throw New GUIException(Message.MSG_INVALID_LIABILITY_LIMIT, Assurant.ElitaPlus.Common.ErrorCodes.INVALID_COVERAGE_LIABILITY_LIMIT_AND_PERCENT)
+                            SetLabelError(moCoverageLiabilityLimitLabel)
+                            SetLabelError(moCoverageLiabilityLimitPercentLabel)
+                            Throw New GUIException(Message.MSG_INVALID_LIABILITY_LIMIT, ElitaPlus.Common.ErrorCodes.INVALID_COVERAGE_LIABILITY_LIMIT_AND_PERCENT)
                         ElseIf CType(moCoverageLiabilityLimitText.Text, Decimal) > 0 And CType(moCoverageLiabilityLimitPercentText.Text, Decimal) > 0 Then
-                            ElitaPlusPage.SetLabelError(Me.moCoverageLiabilityLimitLabel)
-                            ElitaPlusPage.SetLabelError(Me.moCoverageLiabilityLimitPercentLabel)
-                            Throw New GUIException(Message.MSG_INVALID_LIABILITY_LIMIT, Assurant.ElitaPlus.Common.ErrorCodes.INVALID_COVERAGE_LIABILITY_LIMIT_AND_PERCENT)
+                            SetLabelError(moCoverageLiabilityLimitLabel)
+                            SetLabelError(moCoverageLiabilityLimitPercentLabel)
+                            Throw New GUIException(Message.MSG_INVALID_LIABILITY_LIMIT, ElitaPlus.Common.ErrorCodes.INVALID_COVERAGE_LIABILITY_LIMIT_AND_PERCENT)
                         End If
                     End If
                 End If
@@ -1039,50 +913,50 @@ Namespace Tables
                 'Per Incident Liability Limit
 
                 If String.IsNullOrEmpty(moPerIncidentLiabilityLimitCapText.Text) Then
-                    ElitaPlusPage.SetLabelError(Me.moPerIncidentLiabilityLimitCapLabel)
-                    Throw New GUIException(Message.MSG_INVALID_PER_INCIDENT_LIABILITY_LIMIT, Assurant.ElitaPlus.Common.ErrorCodes.INVALID_PER_INCIDENT_LIABILITY_LIMIT)
+                    SetLabelError(moPerIncidentLiabilityLimitCapLabel)
+                    Throw New GUIException(Message.MSG_INVALID_PER_INCIDENT_LIABILITY_LIMIT, ElitaPlus.Common.ErrorCodes.INVALID_PER_INCIDENT_LIABILITY_LIMIT)
                 ElseIf Not String.IsNullOrEmpty(moPerIncidentLiabilityLimitCapText.Text) Then
                     If Not IsNumeric(moPerIncidentLiabilityLimitCapText.Text) Then
-                        ElitaPlusPage.SetLabelError(Me.moPerIncidentLiabilityLimitCapLabel)
-                        Throw New GUIException(Message.MSG_INVALID_PER_INCIDENT_LIABILITY_LIMIT, Assurant.ElitaPlus.Common.ErrorCodes.INVALID_PER_INCIDENT_LIABILITY_LIMIT)
+                        SetLabelError(moPerIncidentLiabilityLimitCapLabel)
+                        Throw New GUIException(Message.MSG_INVALID_PER_INCIDENT_LIABILITY_LIMIT, ElitaPlus.Common.ErrorCodes.INVALID_PER_INCIDENT_LIABILITY_LIMIT)
                     ElseIf CType(moPerIncidentLiabilityLimitCapText.Text, Decimal) < 0 Then
-                        ElitaPlusPage.SetLabelError(Me.moPerIncidentLiabilityLimitCapLabel)
-                        Throw New GUIException(Message.MSG_INVALID_PER_INCIDENT_LIABILITY_LIMIT, Assurant.ElitaPlus.Common.ErrorCodes.INVALID_PER_INCIDENT_LIABILITY_LIMIT)
+                        SetLabelError(moPerIncidentLiabilityLimitCapLabel)
+                        Throw New GUIException(Message.MSG_INVALID_PER_INCIDENT_LIABILITY_LIMIT, ElitaPlus.Common.ErrorCodes.INVALID_PER_INCIDENT_LIABILITY_LIMIT)
                     End If
                 ElseIf (CType(moPerIncidentLiabilityLimitCapText.Text, Decimal) <= 0) Then
-                    ElitaPlusPage.SetLabelError(Me.moPerIncidentLiabilityLimitCapLabel)
-                    Throw New GUIException(Message.MSG_INVALID_PER_INCIDENT_LIABILITY_LIMIT, Assurant.ElitaPlus.Common.ErrorCodes.INVALID_PER_INCIDENT_LIABILITY_LIMIT)
+                    SetLabelError(moPerIncidentLiabilityLimitCapLabel)
+                    Throw New GUIException(Message.MSG_INVALID_PER_INCIDENT_LIABILITY_LIMIT, ElitaPlus.Common.ErrorCodes.INVALID_PER_INCIDENT_LIABILITY_LIMIT)
                 ElseIf CType(moPerIncidentLiabilityLimitCapText.Text, Decimal) > 0 Then
-                    ElitaPlusPage.SetLabelError(Me.moPerIncidentLiabilityLimitCapLabel)
-                    Throw New GUIException(Message.MSG_INVALID_PER_INCIDENT_LIABILITY_LIMIT, Assurant.ElitaPlus.Common.ErrorCodes.INVALID_PER_INCIDENT_LIABILITY_LIMIT)
+                    SetLabelError(moPerIncidentLiabilityLimitCapLabel)
+                    Throw New GUIException(Message.MSG_INVALID_PER_INCIDENT_LIABILITY_LIMIT, ElitaPlus.Common.ErrorCodes.INVALID_PER_INCIDENT_LIABILITY_LIMIT)
                 End If
 
-                If Not GetSelectedItem(Me.moReInsuredDrop).Equals(Guid.Empty) Then
+                If Not GetSelectedItem(moReInsuredDrop).Equals(Guid.Empty) Then
 
-                    If GetSelectedItem(Me.moReInsuredDrop) = LookupListNew.GetIdFromCode(LookupListNew.LK_YESNO, YES) Then
+                    If GetSelectedItem(moReInsuredDrop) = LookupListNew.GetIdFromCode(LookupListNew.LK_YESNO, LookupYes) Then
                         If TheCoverage.AttributeValues.Count = 0 Then
-                            Throw New GUIException(Message.ATTRIBUTE_VALUE_REQUIRED, Assurant.ElitaPlus.Common.ErrorCodes.ATTRIBUTE_VALUE_REQUIRED_WHEN_REINSURED_IS_SET_ERR)
+                            Throw New GUIException(Message.ATTRIBUTE_VALUE_REQUIRED, ElitaPlus.Common.ErrorCodes.ATTRIBUTE_VALUE_REQUIRED_WHEN_REINSURED_IS_SET_ERR)
                         End If
                         If TheCoverage.AttributeValues.Value(Codes.ATTRIBUTE__DEFAULT_REINSURANCE_STATUS) Is Nothing Then
-                            Throw New GUIException(Message.ATTRIBUTE_VALUE_REQUIRED, Assurant.ElitaPlus.Common.ErrorCodes.ATTRIBUTE_VALUE_SHOULD_BE_SAVED_ERR)
+                            Throw New GUIException(Message.ATTRIBUTE_VALUE_REQUIRED, ElitaPlus.Common.ErrorCodes.ATTRIBUTE_VALUE_SHOULD_BE_SAVED_ERR)
                         End If
                     End If
 
-                    If GetSelectedItem(Me.moReInsuredDrop) = LookupListNew.GetIdFromCode(LookupListNew.LK_YESNO, NO) Then
+                    If GetSelectedItem(moReInsuredDrop) = LookupListNew.GetIdFromCode(LookupListNew.LK_YESNO, LookupNo) Then
 
                         If TheCoverage.AttributeValues.Count > 0 Then
-                            Throw New GUIException(Message.INVALID_ATTRIBUTE, Assurant.ElitaPlus.Common.ErrorCodes.ATTRIBUTE_VALUE_CANNOT_BE_SET_WHEN_REINSURED_IS_SET_TO_NO_ERR)
+                            Throw New GUIException(Message.INVALID_ATTRIBUTE, ElitaPlus.Common.ErrorCodes.ATTRIBUTE_VALUE_CANNOT_BE_SET_WHEN_REINSURED_IS_SET_TO_NO_ERR)
                         End If
                     End If
                 Else
                     If TheCoverage.AttributeValues.Count > 0 Then
-                        Throw New GUIException(Message.INVALID_ATTRIBUTE, Assurant.ElitaPlus.Common.ErrorCodes.CANNOT_SET_ATTRIBUTE_WITHOUT_REINSURED_FLAG)
+                        Throw New GUIException(Message.INVALID_ATTRIBUTE, ElitaPlus.Common.ErrorCodes.CANNOT_SET_ATTRIBUTE_WITHOUT_REINSURED_FLAG)
                     End If
                 End If
 
-                If Not IsNothing(TheCoverage.DealerMarkupId) AndAlso TheCoverage.DealerMarkupId = LookupListNew.GetIdFromCode(LookupListNew.LK_YESNO, YES) Then
-                    If Not selectedTaxType.Equals(Guid.Empty.ToString) And Not selectedTaxType.Equals(POS_TAX_TYPE_XCD) Then
-                        Throw New GUIException(Message.MSG_ERR_WHEN_DEALER_MARKUP_ALLOWED_TAX_TYPE_SHOULD_BE_EMPTY_OR_POS, Assurant.ElitaPlus.Common.ErrorCodes.INVALID_TAX_TYPE_FOR_DEALER)
+                If Not IsNothing(TheCoverage.DealerMarkupId) AndAlso TheCoverage.DealerMarkupId = LookupListNew.GetIdFromCode(LookupListNew.LK_YESNO, LookupYes) Then
+                    If Not selectedTaxType.Equals(Guid.Empty.ToString) And Not selectedTaxType.Equals(PosTaxTypeXcd) Then
+                        Throw New GUIException(Message.MSG_ERR_WHEN_DEALER_MARKUP_ALLOWED_TAX_TYPE_SHOULD_BE_EMPTY_OR_POS, ElitaPlus.Common.ErrorCodes.INVALID_TAX_TYPE_FOR_DEALER)
                     End If
 
                 End If
@@ -1090,124 +964,123 @@ Namespace Tables
 
                 ValidateCoverage()
                 SaveChanges()
-                SetLabelColor(Me.moDeductiblePercentLabel)
-                SetLabelColor(Me.moDeductibleLabel)
-                SetLabelColor(Me.moIsClaimAllowedLabel)
-                SetLabelColor(Me.moAgentCodeLabel)
+                SetLabelColor(moDeductiblePercentLabel)
+                SetLabelColor(moDeductibleLabel)
+                SetLabelColor(moIsClaimAllowedLabel)
+                SetLabelColor(moAgentCodeLabel)
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.MasterPage.MessageController)
-                'Me.State.ActionInProgress = ElitaPlusPage.DetailPageCommand.BackOnErr
-                'Me.State.LastErrMsg = Me.moErrorController.Text
+                HandleErrors(ex, MasterPage.MessageController)
+                'State.ActionInProgress = ElitaPlusPage.DetailPageCommand.BackOnErr
+                'State.LastErrMsg = moErrorController.Text
             End Try
         End Sub
 
         Private Sub GoBack()
-            Dim retType As New CoverageSearchForm.ReturnType(ElitaPlusPage.DetailPageCommand.Back,
-                                                                                Me.State.moCoverageId, Me.State.boChanged)
-            Me.ReturnToCallingPage(retType)
+            Dim retType As New CoverageSearchForm.ReturnType(DetailPageCommand.Back, State.CoverageId, State.StateChanged)
+            ReturnToCallingPage(retType)
         End Sub
 
         Private Function IsEditAllowed() As Boolean
-            If State.moCoverage.Inuseflag = "Y" AndAlso ElitaPlusPrincipal.Current.IsInRole(CoverageForm.ConfigurationSuperUserRole) = False Then
+            If State.Coverage.Inuseflag = "Y" AndAlso ElitaPlusPrincipal.Current.IsInRole(ConfigurationSuperUserRole) = False Then
                 Return False
             Else
                 Return True
             End If
         End Function
-        Private Sub btnBack_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnBack.Click
+        Private Sub btnBack_Click(ByVal sender As Object, ByVal e As EventArgs) Handles btnBack.Click
             Try
-                If IsEditAllowed() AndAlso IsDirtyBO() = True Then
-                    Me.DisplayMessage(Message.SAVE_CHANGES_PROMPT, "", MSG_BTN_YES_NO, MSG_TYPE_CONFIRM,
-                                                Me.HiddenSaveChangesPromptResponse)
-                    Me.State.ActionInProgress = ElitaPlusPage.DetailPageCommand.Back
+                If IsEditAllowed() AndAlso IsDirtyBo() = True Then
+                    DisplayMessage(Message.SAVE_CHANGES_PROMPT, "", MSG_BTN_YES_NO, MSG_TYPE_CONFIRM,
+                                                HiddenSaveChangesPromptResponse)
+                    State.ActionInProgress = DetailPageCommand.Back
                 Else
                     GoBack()
                 End If
-            Catch ex As Threading.ThreadAbortException
+            Catch ex As ThreadAbortException
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.MasterPage.MessageController)
+                HandleErrors(ex, MasterPage.MessageController)
                 'Message.MSG_PROMPT_FOR_LEAVING_WHEN_ERROR
-                Me.DisplayMessage(Message.SAVE_CHANGES_PROMPT, "", MSG_BTN_YES_NO, MSG_TYPE_CONFIRM, Me.HiddenSaveChangesPromptResponse)
-                Me.State.ActionInProgress = ElitaPlusPage.DetailPageCommand.Back
-                Me.State.LastErrMsg = Me.MasterPage.MessageController.Text
+                DisplayMessage(Message.SAVE_CHANGES_PROMPT, "", MSG_BTN_YES_NO, MSG_TYPE_CONFIRM, HiddenSaveChangesPromptResponse)
+                State.ActionInProgress = DetailPageCommand.Back
+                State.LastErrMsg = MasterPage.MessageController.Text
             End Try
         End Sub
 
-        Private Sub btnUndo_WRITE_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnUndo_WRITE.Click
+        Private Sub btnUndo_WRITE_Click(ByVal sender As Object, ByVal e As EventArgs) Handles btnUndo_WRITE.Click
             Try
-                Me.State.IsUndo = True
-                If Not Me.State.IsCoverageNew Then
-                    Me.State.moCoverage = New Coverage(Me.State.moCoverageId)
+                State.IsUndo = True
+                If Not State.IsCoverageNew Then
+                    State.Coverage = New Coverage(State.CoverageId)
                 End If
                 AttributeValues.ParentBusinessObject = CType(TheCoverage, IAttributable)
                 PopulateAll()
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.MasterPage.MessageController)
+                HandleErrors(ex, MasterPage.MessageController)
             End Try
         End Sub
 
         Private Sub CreateNew()
             ClearForNew()
             ClearAll()
-            Me.EnableCoverageButtons(False)
-            Me.PopulateAll()
-            ControlMgr.SetVisibleControl(Me, Me.currLabelDiv, False)
-            ControlMgr.SetVisibleControl(Me, Me.currTextBoxDiv, False)
-            moLiabilityLimitPercentText.Text = "100"
-            moCoverageLiabilityLimitText.Text = "0"
-            moPerIncidentLiabilityLimitCapText.Text = "0"
+            EnableCoverageButtons(False)
+            PopulateAll()
+            ControlMgr.SetVisibleControl(Me, currLabelDiv, False)
+            ControlMgr.SetVisibleControl(Me, currTextBoxDiv, False)
+            moLiabilityLimitPercentText.Text = OneHundredNumber
+            moCoverageLiabilityLimitText.Text = ZeroNumber
+            moPerIncidentLiabilityLimitCapText.Text = ZeroNumber
 
         End Sub
 
         Private Sub ClearForNew()
-            Me.State.moCoverageId = Guid.Empty
-            Me.State.IsCoverageNew = True
-            Me.State.moCoverage = Nothing
-            Me.State.selectedCoverageTypeId = Guid.Empty
-            Me.State.selectedProductItemId = Guid.Empty
-            Me.State.selectedItemId = Guid.Empty
-            Me.State.selectedOptionalId = Guid.Empty
-            Me.State.selectedIsClaimAllowedId = Guid.Empty
-            Me.State.selectedUseCoverageStartDateId = Guid.Empty
-            'Me.State.selectedOffsetMethodId = Guid.Empty
-            Me.State.selectedOffsetMethod = Nothing
-            Me.State.selectedOffset = Nothing
-            Me.State.selectedMarkupDistnPercent = Nothing
-            Me.State.selectedOffsetDays = Nothing
-            Me.State.selectedEffective = Nothing
-            Me.State.selectedExpiration = Nothing
-            Me.State.selectedCertificateDuration = Nothing
-            Me.State.selectedCoverageDuration = Nothing
-            Me.State.selectedLiability = Nothing
-            Me.State.selectedLiabilityLimitPercent = Nothing
-            Me.State.selectedDeductible = Nothing
-            Me.State.selectedDeductiblePercent = Nothing
-            Me.State.selectedCovDeductible = Nothing
-            Me.State.selectedEarningCodeId = Guid.Empty
-            Me.State.selectedCoverageLiabilityLimit = Nothing
-            Me.State.selectedCoverageLiabilityLimitPercent = Nothing
-            Me.State.selectedRecoverDeviceId = Guid.Empty
-            Me.State.selectedClaimLimitCount = Nothing
-            Me.State.selectedTaxTypeXCD = Nothing
+            State.CoverageId = Guid.Empty
+            State.IsCoverageNew = True
+            State.Coverage = Nothing
+            State.SelectedCoverageTypeId = Guid.Empty
+            State.SelectedProductItemId = Guid.Empty
+            State.SelectedItemId = Guid.Empty
+            State.SelectedOptionalId = Guid.Empty
+            State.SelectedIsClaimAllowedId = Guid.Empty
+            State.SelectedUseCoverageStartDateId = Guid.Empty
+            'State.selectedOffsetMethodId = Guid.Empty
+            State.SelectedOffsetMethod = Nothing
+            State.SelectedOffset = Nothing
+            State.SelectedMarkupDistnPercent = Nothing
+            State.SelectedOffsetDays = Nothing
+            State.SelectedEffective = Nothing
+            State.SelectedExpiration = Nothing
+            State.SelectedCertificateDuration = Nothing
+            State.SelectedCoverageDuration = Nothing
+            State.SelectedLiability = Nothing
+            State.SelectedLiabilityLimitPercent = Nothing
+            State.SelectedDeductible = Nothing
+            State.SelectedDeductiblePercent = Nothing
+            State.SelectedCovDeductible = Nothing
+            State.SelectedEarningCodeId = Guid.Empty
+            State.SelectedCoverageLiabilityLimit = Nothing
+            State.SelectedCoverageLiabilityLimitPercent = Nothing
+            State.SelectedRecoverDeviceId = Guid.Empty
+            State.SelectedClaimLimitCount = Nothing
+            State.SelectedTaxTypeXcd = Nothing
         End Sub
 
-        Private Sub btnNew_WRITE_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnNew_WRITE.Click
+        Private Sub btnNew_WRITE_Click(ByVal sender As Object, ByVal e As EventArgs) Handles btnNew_WRITE.Click
             Try
-                If IsEditAllowed() AndAlso IsDirtyBO() = True Then
-                    Me.DisplayMessage(Message.SAVE_CHANGES_PROMPT, "", MSG_BTN_YES_NO, MSG_TYPE_CONFIRM, Me.HiddenSaveChangesPromptResponse)
-                    Me.State.ActionInProgress = ElitaPlusPage.DetailPageCommand.New_
+                If IsEditAllowed() AndAlso IsDirtyBo() = True Then
+                    DisplayMessage(Message.SAVE_CHANGES_PROMPT, "", MSG_BTN_YES_NO, MSG_TYPE_CONFIRM, HiddenSaveChangesPromptResponse)
+                    State.ActionInProgress = DetailPageCommand.New_
                 Else
                     If IsEditAllowed() = False Then 'enable the save and delete button disabled when open the page
-                        Me.btnApply_WRITE.Enabled = True
-                        Me.btnDelete_WRITE.Enabled = True
+                        btnApply_WRITE.Enabled = True
+                        btnDelete_WRITE.Enabled = True
                     End If
                     CreateNew()
                     EnableTabsCoverageConseqDamage()
                 End If
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.MasterPage.MessageController)
-                Me.DisplayMessage(Message.SAVE_CHANGES_PROMPT, "", MSG_BTN_YES_NO, MSG_TYPE_CONFIRM, Me.HiddenSaveChangesPromptResponse)
-                Me.State.ActionInProgress = ElitaPlusPage.DetailPageCommand.New_
+                HandleErrors(ex, MasterPage.MessageController)
+                DisplayMessage(Message.SAVE_CHANGES_PROMPT, "", MSG_BTN_YES_NO, MSG_TYPE_CONFIRM, HiddenSaveChangesPromptResponse)
+                State.ActionInProgress = DetailPageCommand.New_
             End Try
         End Sub
 
@@ -1216,25 +1089,23 @@ Namespace Tables
             'Clear Coverage BO
             Dim newObj As New Coverage
             Dim attrVals As New List(Of AttributeValue)
-            Dim attributeValues As IEnumerable(Of AttributeValue) = newObj.AttributeValues
-            If (attributeValues.Count() = 0 AndAlso Not String.IsNullOrEmpty(TheCoverage.AttributeValues.Value(Codes.ATTRIBUTE__DEFAULT_REINSURANCE_STATUS))) Then
+            If (newObj.AttributeValues.Count() = 0 AndAlso Not String.IsNullOrEmpty(TheCoverage.AttributeValues.Value(Codes.ATTRIBUTE__DEFAULT_REINSURANCE_STATUS))) Then
                 For Each attrVal As AttributeValue In TheCoverage.AttributeValues
-                    Dim attributevalueBo As AttributeValue = newObj.AttributeValues.GetNewAttributeChild()
-                    attributevalueBo.Value = attrVal.Value
-                    attributevalueBo.AttributeId = attrVal.AttributeId
-                    attrVals.Add(attributevalueBo)
-                    attributevalueBo.Save()
+                    Dim attributeValueBo As AttributeValue = newObj.AttributeValues.GetNewAttributeChild()
+                    attributeValueBo.Value = attrVal.Value
+                    attributeValueBo.AttributeId = attrVal.AttributeId
+                    attrVals.Add(attributeValueBo)
+                    attributeValueBo.Save()
                 Next
             End If
-            attributeValues = attributeValues
-            Me.State.moCoverageId = newObj.Id
-            Me.State.moCoverage = newObj
-            Me.State.IsCoverageNew = True
-            Me.State.moCoverage.Inuseflag = "N"
+            State.CoverageId = newObj.Id
+            State.Coverage = newObj
+            State.IsCoverageNew = True
+            State.Coverage.Inuseflag = "N"
             EnableUniqueFields()
 
             'ClearCoverageRate()
-            Me.State.IsNewWithCopy = True
+            State.IsNewWithCopy = True
             SetGridControls(moGridView, True)
 
             'REQ
@@ -1242,149 +1113,149 @@ Namespace Tables
 
 
 
-            Me.EnableCoverageButtons(False)
+            EnableCoverageButtons(False)
             TheDealerControl.ChangeEnabledControlProperty(True)
             'ControlMgr.SetEnableControl(Me, moDealerDrop, True)
             ControlMgr.SetEnableControl(Me, moProductDrop, True)
             ControlMgr.SetEnableControl(Me, moRiskDrop, True)
-            ControlMgr.SetVisibleControl(Me, Me.currLabelDiv, False)
-            ControlMgr.SetVisibleControl(Me, Me.currTextBoxDiv, False)
-            SetLabelColor(Me.moAgentCodeLabel)
+            ControlMgr.SetVisibleControl(Me, currLabelDiv, False)
+            ControlMgr.SetVisibleControl(Me, currTextBoxDiv, False)
+            SetLabelColor(moAgentCodeLabel)
         End Sub
 
         Private Sub LoadCoverageRateList()
 
             If moGridView.Rows.Count > 0 Then
-                Dim i As Integer = 0
+                Dim i As Integer
                 Dim oCoverageRate(moGridView.Rows.Count - 1) As CoverageRate
 
                 For i = 0 To moGridView.Rows.Count - 1
                     oCoverageRate(i) = New CoverageRate
                     oCoverageRate(i).CoverageId = TheCoverage.Id
-                    If moGridView.Rows(i).Cells(LOW_PRICE).Controls(1).GetType().ToString = "System.Web.UI.WebControls.Label" Then
-                        Me.PopulateBOProperty(oCoverageRate(i), "LowPrice", CType(moGridView.Rows(i).Cells(LOW_PRICE).Controls(1), Label).Text)
+                    If TypeOf moGridView.Rows(i).Cells(ColIndexLowPrice).Controls(1) Is Label Then
+                        PopulateBOProperty(oCoverageRate(i), nameof(CoverageRate.LowPrice), CType(moGridView.Rows(i).Cells(ColIndexLowPrice).Controls(1), Label).Text)
                     Else
-                        Me.PopulateBOProperty(oCoverageRate(i), "LowPrice", CType(moGridView.Rows(i).Cells(LOW_PRICE).Controls(1), TextBox).Text)
+                        PopulateBOProperty(oCoverageRate(i), nameof(CoverageRate.LowPrice), CType(moGridView.Rows(i).Cells(ColIndexLowPrice).Controls(1), TextBox).Text)
                     End If
-                    If moGridView.Rows(i).Cells(HIGH_PRICE).Controls(1).GetType().ToString = "System.Web.UI.WebControls.Label" Then
-                        Me.PopulateBOProperty(oCoverageRate(i), "HighPrice", CType(moGridView.Rows(i).Cells(HIGH_PRICE).Controls(1), Label).Text)
+                    If TypeOf moGridView.Rows(i).Cells(ColIndexHighPrice).Controls(1) Is Label Then
+                        PopulateBOProperty(oCoverageRate(i), nameof(CoverageRate.HighPrice), CType(moGridView.Rows(i).Cells(ColIndexHighPrice).Controls(1), Label).Text)
                     Else
-                        Me.PopulateBOProperty(oCoverageRate(i), "HighPrice", CType(moGridView.Rows(i).Cells(HIGH_PRICE).Controls(1), TextBox).Text)
+                        PopulateBOProperty(oCoverageRate(i), nameof(CoverageRate.HighPrice), CType(moGridView.Rows(i).Cells(ColIndexHighPrice).Controls(1), TextBox).Text)
                     End If
-                    If moGridView.Rows(i).Cells(GROSS_AMT).Controls(1).GetType().ToString = "System.Web.UI.WebControls.Label" Then
-                        Me.PopulateBOProperty(oCoverageRate(i), "GrossAmt", CType(moGridView.Rows(i).Cells(GROSS_AMT).Controls(1), Label).Text)
+                    If TypeOf moGridView.Rows(i).Cells(ColIndexGrossAmt).Controls(1) Is Label Then
+                        PopulateBOProperty(oCoverageRate(i), nameof(CoverageRate.GrossAmt), CType(moGridView.Rows(i).Cells(ColIndexGrossAmt).Controls(1), Label).Text)
                     Else
-                        Me.PopulateBOProperty(oCoverageRate(i), "GrossAmt", CType(moGridView.Rows(i).Cells(GROSS_AMT).Controls(1), TextBox).Text)
+                        PopulateBOProperty(oCoverageRate(i), nameof(CoverageRate.GrossAmt), CType(moGridView.Rows(i).Cells(ColIndexGrossAmt).Controls(1), TextBox).Text)
                     End If
 
-                    Me.PopulateBOProperty(oCoverageRate(i), "GrossAmountPercent", GetAmountFormattedDoubleString("0"))
-                    If moGridView.Rows(i).Cells(GROSS_AMOUNT_PERCENT).Controls(1).GetType().ToString = "System.Web.UI.WebControls.Label" Then
-                        Me.PopulateBOProperty(oCoverageRate(i), "GrossAmountPercent", CType(moGridView.Rows(i).Cells(GROSS_AMOUNT_PERCENT).Controls(1), Label).Text)
+                    PopulateBOProperty(oCoverageRate(i), nameof(CoverageRate.GrossAmountPercent), GetAmountFormattedDoubleString("0"))
+                    If TypeOf moGridView.Rows(i).Cells(ColIndexGrossAmountPercent).Controls(1) Is Label Then
+                        PopulateBOProperty(oCoverageRate(i), nameof(CoverageRate.GrossAmountPercent), CType(moGridView.Rows(i).Cells(ColIndexGrossAmountPercent).Controls(1), Label).Text)
                     Else
-                        Me.PopulateBOProperty(oCoverageRate(i), "GrossAmountPercent", CType(moGridView.Rows(i).Cells(GROSS_AMOUNT_PERCENT).Controls(1), TextBox).Text)
+                        PopulateBOProperty(oCoverageRate(i), nameof(CoverageRate.GrossAmountPercent), CType(moGridView.Rows(i).Cells(ColIndexGrossAmountPercent).Controls(1), TextBox).Text)
                     End If
-                    If CoveragePricingCode = NO_COVERAGE_PRICING Then
-                        Me.PopulateBOProperty(oCoverageRate(i), "CommissionsPercent", GetAmountFormattedDoubleString("0"))
-                        Me.PopulateBOProperty(oCoverageRate(i), "MarketingPercent", GetAmountFormattedDoubleString("0"))
-                        Me.PopulateBOProperty(oCoverageRate(i), "AdminExpense", GetAmountFormattedDoubleString("0"))
-                        Me.PopulateBOProperty(oCoverageRate(i), "ProfitExpense", GetAmountFormattedDoubleString("0"))
-                        Me.PopulateBOProperty(oCoverageRate(i), "LossCostPercent", GetAmountFormattedDoubleString("0"))
+                    If CoveragePricingCode = NoCoveragePricing Then
+                        PopulateBOProperty(oCoverageRate(i), nameof(CoverageRate.CommissionsPercent), GetAmountFormattedDoubleString("0"))
+                        PopulateBOProperty(oCoverageRate(i), nameof(CoverageRate.MarketingPercent), GetAmountFormattedDoubleString("0"))
+                        PopulateBOProperty(oCoverageRate(i), nameof(CoverageRate.AdminExpense), GetAmountFormattedDoubleString("0"))
+                        PopulateBOProperty(oCoverageRate(i), nameof(CoverageRate.ProfitExpense), GetAmountFormattedDoubleString("0"))
+                        PopulateBOProperty(oCoverageRate(i), nameof(CoverageRate.LossCostPercent), GetAmountFormattedDoubleString("0"))
                     Else
-                        If moGridView.Rows(i).Cells(COMMISSIONS_PERCENT).Controls(1).GetType().ToString = "System.Web.UI.WebControls.Label" Then
-                            Me.PopulateBOProperty(oCoverageRate(i), "CommissionsPercent", CType(moGridView.Rows(i).Cells(COMMISSIONS_PERCENT).Controls(1), Label).Text)
+                        If TypeOf moGridView.Rows(i).Cells(ColIndexCommissionsPercent).Controls(1) Is Label Then
+                            PopulateBOProperty(oCoverageRate(i), nameof(CoverageRate.CommissionsPercent), CType(moGridView.Rows(i).Cells(ColIndexCommissionsPercent).Controls(1), Label).Text)
                         Else
-                            Me.PopulateBOProperty(oCoverageRate(i), "CommissionsPercent", CType(moGridView.Rows(i).Cells(COMMISSIONS_PERCENT).Controls(1), TextBox).Text)
+                            PopulateBOProperty(oCoverageRate(i), nameof(CoverageRate.CommissionsPercent), CType(moGridView.Rows(i).Cells(ColIndexCommissionsPercent).Controls(1), TextBox).Text)
                         End If
-                        If moGridView.Rows(i).Cells(MARKETING_PERCENT).Controls(1).GetType().ToString = "System.Web.UI.WebControls.Label" Then
-                            Me.PopulateBOProperty(oCoverageRate(i), "MarketingPercent", CType(moGridView.Rows(i).Cells(MARKETING_PERCENT).Controls(1), Label).Text)
+                        If TypeOf moGridView.Rows(i).Cells(ColIndexMarketingPercent).Controls(1) Is Label Then
+                            PopulateBOProperty(oCoverageRate(i), nameof(CoverageRate.MarketingPercent), CType(moGridView.Rows(i).Cells(ColIndexMarketingPercent).Controls(1), Label).Text)
                         Else
-                            Me.PopulateBOProperty(oCoverageRate(i), "MarketingPercent", CType(moGridView.Rows(i).Cells(MARKETING_PERCENT).Controls(1), TextBox).Text)
+                            PopulateBOProperty(oCoverageRate(i), nameof(CoverageRate.MarketingPercent), CType(moGridView.Rows(i).Cells(ColIndexMarketingPercent).Controls(1), TextBox).Text)
                         End If
-                        If moGridView.Rows(i).Cells(ADMIN_EXPENSE).Controls(1).GetType().ToString = "System.Web.UI.WebControls.Label" Then
-                            Me.PopulateBOProperty(oCoverageRate(i), "AdminExpense", CType(moGridView.Rows(i).Cells(ADMIN_EXPENSE).Controls(1), Label).Text)
+                        If TypeOf moGridView.Rows(i).Cells(ColIndexAdminExpense).Controls(1) Is Label Then
+                            PopulateBOProperty(oCoverageRate(i), nameof(CoverageRate.AdminExpense), CType(moGridView.Rows(i).Cells(ColIndexAdminExpense).Controls(1), Label).Text)
                         Else
-                            Me.PopulateBOProperty(oCoverageRate(i), "AdminExpense", CType(moGridView.Rows(i).Cells(ADMIN_EXPENSE).Controls(1), TextBox).Text)
+                            PopulateBOProperty(oCoverageRate(i), nameof(CoverageRate.AdminExpense), CType(moGridView.Rows(i).Cells(ColIndexAdminExpense).Controls(1), TextBox).Text)
                         End If
-                        If moGridView.Rows(i).Cells(PROFIT_EXPENSE).Controls(1).GetType().ToString = "System.Web.UI.WebControls.Label" Then
-                            Me.PopulateBOProperty(oCoverageRate(i), "ProfitExpense", CType(moGridView.Rows(i).Cells(PROFIT_EXPENSE).Controls(1), Label).Text)
+                        If TypeOf moGridView.Rows(i).Cells(ColIndexProfitExpense).Controls(1) Is Label Then
+                            PopulateBOProperty(oCoverageRate(i), nameof(CoverageRate.ProfitExpense), CType(moGridView.Rows(i).Cells(ColIndexProfitExpense).Controls(1), Label).Text)
                         Else
-                            Me.PopulateBOProperty(oCoverageRate(i), "ProfitExpense", CType(moGridView.Rows(i).Cells(PROFIT_EXPENSE).Controls(1), TextBox).Text)
+                            PopulateBOProperty(oCoverageRate(i), nameof(CoverageRate.ProfitExpense), CType(moGridView.Rows(i).Cells(ColIndexProfitExpense).Controls(1), TextBox).Text)
                         End If
-                        If moGridView.Rows(i).Cells(LOSS_COST_PERCENT).Controls(1).GetType().ToString = "System.Web.UI.WebControls.Label" Then
-                            Me.PopulateBOProperty(oCoverageRate(i), "LossCostPercent", CType(moGridView.Rows(i).Cells(LOSS_COST_PERCENT).Controls(1), Label).Text)
+                        If TypeOf moGridView.Rows(i).Cells(ColIndexLossCostPercent).Controls(1) Is Label Then
+                            PopulateBOProperty(oCoverageRate(i), nameof(CoverageRate.LossCostPercent), CType(moGridView.Rows(i).Cells(ColIndexLossCostPercent).Controls(1), Label).Text)
                         Else
-                            Me.PopulateBOProperty(oCoverageRate(i), "LossCostPercent", CType(moGridView.Rows(i).Cells(LOSS_COST_PERCENT).Controls(1), TextBox).Text)
+                            PopulateBOProperty(oCoverageRate(i), nameof(CoverageRate.LossCostPercent), CType(moGridView.Rows(i).Cells(ColIndexLossCostPercent).Controls(1), TextBox).Text)
                         End If
 
                         'US-521697
-                        If Me.State.IsDealerConfiguredForSourceXcd Then
-                            If moGridView.Rows(i).Cells(COMMISSIONS_PERCENT_XCD).Controls(0).GetType().ToString = "System.Web.UI.WebControls.Label" Then
-                                Me.PopulateBOProperty(oCoverageRate(i), "CommissionsPercentSourceXcd", CType(moGridView.Rows(i).Cells(COMMISSIONS_PERCENT_XCD).Controls(0), Label).Text)
+                        If State.IsDealerConfiguredForSourceXcd Then
+                            If TypeOf moGridView.Rows(i).Cells(ColIndexCommissionsPercentXcd).Controls(0) Is Label Then
+                                PopulateBOProperty(oCoverageRate(i), nameof(CoverageRate.CommissionsPercentSourceXcd), CType(moGridView.Rows(i).Cells(ColIndexCommissionsPercentXcd).Controls(0), Label).Text)
                             Else
-                                Me.PopulateBOProperty(oCoverageRate(i), "CommissionsPercentSourceXcd", CType(moGridView.Rows(i).Cells(COMMISSIONS_PERCENT_XCD).Controls(1), DropDownList).SelectedValue)
+                                PopulateBOProperty(oCoverageRate(i), nameof(CoverageRate.CommissionsPercentSourceXcd), CType(moGridView.Rows(i).Cells(ColIndexCommissionsPercentXcd).Controls(1), DropDownList).SelectedValue)
                             End If
 
-                            If moGridView.Rows(i).Cells(MARKETING_PERCENT_XCD).Controls(0).GetType().ToString = "System.Web.UI.WebControls.Label" Then
-                                Me.PopulateBOProperty(oCoverageRate(i), "MarketingPercentSourceXcd", CType(moGridView.Rows(i).Cells(MARKETING_PERCENT_XCD).Controls(0), Label).Text)
+                            If TypeOf moGridView.Rows(i).Cells(ColIndexMarketingPercentXcd).Controls(0) Is Label Then
+                                PopulateBOProperty(oCoverageRate(i), nameof(CoverageRate.MarketingPercentSourceXcd), CType(moGridView.Rows(i).Cells(ColIndexMarketingPercentXcd).Controls(0), Label).Text)
                             Else
-                                Me.PopulateBOProperty(oCoverageRate(i), "MarketingPercentSourceXcd", CType(moGridView.Rows(i).Cells(MARKETING_PERCENT_XCD).Controls(1), DropDownList).SelectedValue)
+                                PopulateBOProperty(oCoverageRate(i), nameof(CoverageRate.MarketingPercentSourceXcd), CType(moGridView.Rows(i).Cells(ColIndexMarketingPercentXcd).Controls(1), DropDownList).SelectedValue)
                             End If
 
-                            If moGridView.Rows(i).Cells(ADMIN_EXPENSE_XCD).Controls(0).GetType().ToString = "System.Web.UI.WebControls.Label" Then
-                                Me.PopulateBOProperty(oCoverageRate(i), "AdminExpenseSourceXcd", CType(moGridView.Rows(i).Cells(ADMIN_EXPENSE_XCD).Controls(0), Label).Text)
+                            If TypeOf moGridView.Rows(i).Cells(ColIndexAdminExpenseXcd).Controls(0) Is Label Then
+                                PopulateBOProperty(oCoverageRate(i), nameof(CoverageRate.AdminExpenseSourceXcd), CType(moGridView.Rows(i).Cells(ColIndexAdminExpenseXcd).Controls(0), Label).Text)
                             Else
-                                Me.PopulateBOProperty(oCoverageRate(i), "AdminExpenseSourceXcd", CType(moGridView.Rows(i).Cells(ADMIN_EXPENSE_XCD).Controls(1), DropDownList).SelectedValue)
+                                PopulateBOProperty(oCoverageRate(i), nameof(CoverageRate.AdminExpenseSourceXcd), CType(moGridView.Rows(i).Cells(ColIndexAdminExpenseXcd).Controls(1), DropDownList).SelectedValue)
                             End If
 
-                            If moGridView.Rows(i).Cells(PROFIT_EXPENSE_XCD).Controls(0).GetType().ToString = "System.Web.UI.WebControls.Label" Then
-                                Me.PopulateBOProperty(oCoverageRate(i), "ProfitPercentSourceXcd", CType(moGridView.Rows(i).Cells(PROFIT_EXPENSE_XCD).Controls(0), Label).Text)
+                            If TypeOf moGridView.Rows(i).Cells(ColIndexProfitExpenseXcd).Controls(0) Is Label Then
+                                PopulateBOProperty(oCoverageRate(i), nameof(CoverageRate.ProfitPercentSourceXcd), CType(moGridView.Rows(i).Cells(ColIndexProfitExpenseXcd).Controls(0), Label).Text)
                             Else
-                                Me.PopulateBOProperty(oCoverageRate(i), "ProfitPercentSourceXcd", CType(moGridView.Rows(i).Cells(PROFIT_EXPENSE_XCD).Controls(1), DropDownList).SelectedValue)
+                                PopulateBOProperty(oCoverageRate(i), nameof(CoverageRate.ProfitPercentSourceXcd), CType(moGridView.Rows(i).Cells(ColIndexProfitExpenseXcd).Controls(1), DropDownList).SelectedValue)
                             End If
 
-                            If moGridView.Rows(i).Cells(LOSS_COST_PERCENT_XCD).Controls(0).GetType().ToString = "System.Web.UI.WebControls.Label" Then
-                                Me.PopulateBOProperty(oCoverageRate(i), "LossCostPercentSourceXcd", CType(moGridView.Rows(i).Cells(LOSS_COST_PERCENT_XCD).Controls(0), Label).Text)
+                            If TypeOf moGridView.Rows(i).Cells(ColIndexLossCostPercentXcd).Controls(0) Is Label Then
+                                PopulateBOProperty(oCoverageRate(i), nameof(CoverageRate.LossCostPercentSourceXcd), CType(moGridView.Rows(i).Cells(ColIndexLossCostPercentXcd).Controls(0), Label).Text)
                             Else
-                                Me.PopulateBOProperty(oCoverageRate(i), "LossCostPercentSourceXcd", CType(moGridView.Rows(i).Cells(LOSS_COST_PERCENT_XCD).Controls(1), DropDownList).SelectedValue)
+                                PopulateBOProperty(oCoverageRate(i), nameof(CoverageRate.LossCostPercentSourceXcd), CType(moGridView.Rows(i).Cells(ColIndexLossCostPercentXcd).Controls(1), DropDownList).SelectedValue)
                             End If
                         End If
                     End If
-                    If moGridView.Rows(i).Cells(RENEWAL_NUMBER).Controls(1).GetType().ToString = "System.Web.UI.WebControls.Label" Then
-                        Me.PopulateBOProperty(oCoverageRate(i), "RenewalNumber", CType(moGridView.Rows(i).Cells(RENEWAL_NUMBER).Controls(1), Label).Text)
+                    If TypeOf moGridView.Rows(i).Cells(ColIndexRenewalNumber).Controls(1) Is Label Then
+                        PopulateBOProperty(oCoverageRate(i), nameof(CoverageRate.RenewalNumber), CType(moGridView.Rows(i).Cells(ColIndexRenewalNumber).Controls(1), Label).Text)
                     Else
-                        Me.PopulateBOProperty(oCoverageRate(i), "RenewalNumber", CType(moGridView.Rows(i).Cells(RENEWAL_NUMBER).Controls(1), TextBox).Text)
+                        PopulateBOProperty(oCoverageRate(i), nameof(CoverageRate.RenewalNumber), CType(moGridView.Rows(i).Cells(ColIndexRenewalNumber).Controls(1), TextBox).Text)
                     End If
 
-                    If moGridView.Rows(i).Cells(REGION_ID).Controls(0).GetType().ToString = "System.Web.UI.WebControls.Label" Then
-                        Me.PopulateBOProperty(oCoverageRate(i), "TaxRegion", CType(moGridView.Rows(i).Cells(REGION_ID).Controls(0), Label).Text)
+                    If TypeOf moGridView.Rows(i).Cells(ColIndexRegionId).Controls(1) Is Label Then
+                        PopulateBOProperty(oCoverageRate(i), nameof(CoverageRate.TaxRegion), CType(moGridView.Rows(i).Cells(ColIndexRegionId).Controls(1), Label).Text)
                     Else
-                        Me.PopulateBOProperty(oCoverageRate(i), "TaxRegion", CType(moGridView.Rows(i).Cells(REGION_ID).Controls(1), DropDownList).SelectedValue)
+                        PopulateBOProperty(oCoverageRate(i), nameof(CoverageRate.TaxRegion), CType(moGridView.Rows(i).Cells(ColIndexRegionId).Controls(1), DropDownList).SelectedValue)
                     End If
 
                 Next
-                Me.State.moCoverageRateList = oCoverageRate
+                State.CoverageRateList = oCoverageRate
             End If
         End Sub
 
         Public Function SaveCoverageRateList() As Boolean
             Dim i As Integer = 0
             Try
-                If Me.State.IsNewWithCopy = True And Not Me.State.moCoverageRateList Is Nothing Then
+                If State.IsNewWithCopy = True And Not State.CoverageRateList Is Nothing Then
                     'Associate each detail record to the newly created coverage record
                     'and Save each detail (Coverage Rate) Record
-                    For i = 0 To Me.State.moCoverageRateList.Length - 1
-                        Me.State.moCoverageRateList(i).CoverageId = TheCoverage.Id
-                        Me.State.moCoverageRateList(i).Save()
+                    For i = 0 To State.CoverageRateList.Length - 1
+                        State.CoverageRateList(i).CoverageId = TheCoverage.Id
+                        State.CoverageRateList(i).Save()
                     Next
                 End If
             Catch ex As Exception
                 Dim j As Integer
                 'REPLACE THIS LOOP BY A DB ROLLBACK
                 For j = 0 To i - 1
-                    Me.State.moCoverageRateList(j).delete()
-                    Me.State.moCoverageRateList(j).Save()
+                    State.CoverageRateList(j).delete()
+                    State.CoverageRateList(j).Save()
                 Next
-                Me.HandleErrors(ex, moMsgControllerRate)
+                HandleErrors(ex, moMsgControllerRate)
                 Return False
             End Try
             Return True
@@ -1393,22 +1264,22 @@ Namespace Tables
         Public Function SaveCoverageDeductibleList() As Boolean
             Dim i As Integer = 0
             Try
-                If Me.State.IsNewWithCopy = True And Not Me.State.moCoverageDeductibleList Is Nothing Then
+                If State.IsNewWithCopy = True And Not State.CoverageDeductibleList Is Nothing Then
                     'Associate each detail record to the newly created coverage record
                     'and Save each detail (Coverage Rate) Record
-                    For i = 0 To Me.State.moCoverageDeductibleList.Length - 1
-                        Me.State.moCoverageDeductibleList(i).CoverageId = TheCoverage.Id
-                        Me.State.moCoverageDeductibleList(i).Save()
+                    For i = 0 To State.CoverageDeductibleList.Length - 1
+                        State.CoverageDeductibleList(i).CoverageId = TheCoverage.Id
+                        State.CoverageDeductibleList(i).Save()
                     Next
                 End If
             Catch ex As Exception
                 Dim j As Integer
                 'REPLACE THIS LOOP BY A DB ROLLBACK
                 For j = 0 To i - 1
-                    Me.State.moCoverageDeductibleList(j).Delete()
-                    Me.State.moCoverageDeductibleList(j).Save()
+                    State.CoverageDeductibleList(j).Delete()
+                    State.CoverageDeductibleList(j).Save()
                 Next
-                Me.HandleErrors(ex, Me.MasterPage.MessageController)
+                HandleErrors(ex, MasterPage.MessageController)
                 Return False
             End Try
             Return True
@@ -1416,58 +1287,58 @@ Namespace Tables
         Public Function SaveCoverageConseqDamageList() As Boolean
             Dim i As Integer = 0
             Try
-                If Me.State.IsNewWithCopy = True And Not Me.State.moCoverageConseqDamageList Is Nothing Then
+                If State.IsNewWithCopy = True And Not State.CoverageConseqDamageList Is Nothing Then
                     'Associate each detail record to the newly created coverage record
                     'and Save each detail (Coverage Rate) Record
-                    For i = 0 To Me.State.moCoverageConseqDamageList.Length - 1
-                        Me.State.moCoverageConseqDamageList(i).CoverageId = TheCoverage.Id
-                        Me.State.moCoverageConseqDamageList(i).Save()
+                    For i = 0 To State.CoverageConseqDamageList.Length - 1
+                        State.CoverageConseqDamageList(i).CoverageId = TheCoverage.Id
+                        State.CoverageConseqDamageList(i).Save()
                     Next
                 End If
             Catch ex As Exception
                 Dim j As Integer
                 'REPLACE THIS LOOP BY A DB ROLLBACK
                 For j = 0 To i - 1
-                    Me.State.moCoverageConseqDamageList(j).Delete()
-                    Me.State.moCoverageConseqDamageList(j).Save()
+                    State.CoverageConseqDamageList(j).Delete()
+                    State.CoverageConseqDamageList(j).Save()
                 Next
-                Me.HandleErrors(ex, Me.MasterPage.MessageController)
+                HandleErrors(ex, MasterPage.MessageController)
                 Return False
             End Try
             Return True
         End Function
 
-        Private Sub btnCopy_WRITE_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnCopy_WRITE.Click
+        Private Sub btnCopy_WRITE_Click(ByVal sender As Object, ByVal e As EventArgs) Handles btnCopy_WRITE.Click
             Try
-                If IsEditAllowed() AndAlso IsDirtyBO() = True Then
-                    Me.DisplayMessage(Message.SAVE_CHANGES_PROMPT, "", MSG_BTN_YES_NO, MSG_TYPE_CONFIRM, Me.HiddenSaveChangesPromptResponse)
-                    Me.State.ActionInProgress = ElitaPlusPage.DetailPageCommand.NewAndCopy
+                If IsEditAllowed() AndAlso IsDirtyBo() = True Then
+                    DisplayMessage(Message.SAVE_CHANGES_PROMPT, "", MSG_BTN_YES_NO, MSG_TYPE_CONFIRM, HiddenSaveChangesPromptResponse)
+                    State.ActionInProgress = DetailPageCommand.NewAndCopy
                 Else
                     If IsEditAllowed() = False Then 'enable the save and delete button disabled when open the page
-                        Me.btnApply_WRITE.Enabled = True
-                        Me.btnDelete_WRITE.Enabled = True
+                        btnApply_WRITE.Enabled = True
+                        btnDelete_WRITE.Enabled = True
                     End If
 
                     CreateNewCopy()
                 End If
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.MasterPage.MessageController)
-                Me.DisplayMessage(Message.SAVE_CHANGES_PROMPT, "", MSG_BTN_YES_NO, MSG_TYPE_CONFIRM, Me.HiddenSaveChangesPromptResponse)
-                Me.State.ActionInProgress = ElitaPlusPage.DetailPageCommand.NewAndCopy
+                HandleErrors(ex, MasterPage.MessageController)
+                DisplayMessage(Message.SAVE_CHANGES_PROMPT, "", MSG_BTN_YES_NO, MSG_TYPE_CONFIRM, HiddenSaveChangesPromptResponse)
+                State.ActionInProgress = DetailPageCommand.NewAndCopy
             End Try
         End Sub
 
-        Private Sub btnDelete_WRITE_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnDelete_WRITE.Click
+        Private Sub btnDelete_WRITE_Click(ByVal sender As Object, ByVal e As EventArgs) Handles btnDelete_WRITE.Click
             Try
-                Me.DisplayMessage(Message.DELETE_RECORD_PROMPT, "", MSG_BTN_YES_NO, MSG_TYPE_CONFIRM, Me.HiddenSaveChangesPromptResponse)
-                Dim retType As New CoverageSearchForm.ReturnType(ElitaPlusPage.DetailPageCommand.Delete, Me.State.moCoverageId)
+                DisplayMessage(Message.DELETE_RECORD_PROMPT, "", MSG_BTN_YES_NO, MSG_TYPE_CONFIRM, HiddenSaveChangesPromptResponse)
+                Dim retType As New CoverageSearchForm.ReturnType(DetailPageCommand.Delete, State.CoverageId)
                 If DeleteCoverage() = True Then
                     retType.BoChanged = True
-                    Me.ReturnToCallingPage(retType)
+                    ReturnToCallingPage(retType)
                 End If
-            Catch ex As Threading.ThreadAbortException
+            Catch ex As ThreadAbortException
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.MasterPage.MessageController)
+                HandleErrors(ex, MasterPage.MessageController)
             End Try
         End Sub
 
@@ -1476,42 +1347,43 @@ Namespace Tables
 #Region "Handlers-Labels"
 
         Private Sub BindBoPropertiesToLabels()
-            Me.BindBOPropertyToLabel(TheCoverage, COVERAGE_TYPE_ID_PROPERTY, moCoverageTypeLabel)
-            Me.BindBOPropertyToLabel(TheCoverage, DEALER_ID_PROPERTY, TheDealerControl.CaptionLabel)
-            Me.BindBOPropertyToLabel(TheCoverage, OPTIONAL_ID_PROPERTY, moOptionalLabel)
-            Me.BindBOPropertyToLabel(TheCoverage, PRODUCT_CODE_ID_PROPERTY, moProductLabel)
-            Me.BindBOPropertyToLabel(TheCoverage, PRODUCT_ITEM_ID_PROPERTY, moProductItemLabel)
-            Me.BindBOPropertyToLabel(TheCoverage, RISK_TYPE_ID_PROPERTY, moRiskLabel)
-            Me.BindBOPropertyToLabel(TheCoverage, CERTIFICATE_DURATION_PROPERTY, moCertificateDurationLabel)
-            Me.BindBOPropertyToLabel(TheCoverage, COVERAGE_DURATION_PROPERTY, moCoverageDurationLabel)
-            Me.BindBOPropertyToLabel(TheCoverage, DEDUCTIBLE_PROPERTY, moDeductibleLabel)
-            Me.BindBOPropertyToLabel(TheCoverage, EFECTIVE_PROPERTY, moEffectiveLabel)
-            Me.BindBOPropertyToLabel(TheCoverage, EXPIRATION_PROPERTY, moExpirationLabel)
-            Me.BindBOPropertyToLabel(TheCoverage, LIABILITY_LIMIT_PROPERTY, moLiabilityLabel)
-            Me.BindBOPropertyToLabel(TheCoverage, MARKUP_DISTRIBUTION_PERCENT_PROPERTY, lblMarkupDistPercent)
-            Me.BindBOPropertyToLabel(TheCoverage, LIABILITY_LIMIT_PERCENT_PROPERTY, moLiabilityLimitPercentLabel)
-            Me.BindBOPropertyToLabel(TheCoverage, OFFSET_TO_START_PROPERTY, moOffsetLabel)
-            Me.BindBOPropertyToLabel(TheCoverage, DEDUCTIBLE_PERCENT_PROPERTY, moDeductiblePercentLabel)
-            Me.BindBOPropertyToLabel(TheCoverage, LABEL_REPAIR_DISCOUNT_PCT, moRepairDiscountPctLabel)
-            Me.BindBOPropertyToLabel(TheCoverage, LABEL_REPLACEMENT_DISCOUNT_PCT, moReplacementDiscountPrcLabel)
-            Me.BindBOPropertyToLabel(TheCoverage, LABEL_REPLACEMENT_DISCOUNT_PCT, moReplacementDiscountPrcLabel)
-            Me.BindBOPropertyToLabel(TheCoverage, CLAIM_ALLOWED_ID_PROPERTY, moIsClaimAllowedLabel)
-            Me.BindBOPropertyToLabel(TheCoverage, USE_COVERAGE_START_DATE, moUseCoverageStartDateLable)
-            Me.BindBOPropertyToLabel(TheCoverage, METHOD_OF_REPAIR_ID, moMethodOfRepairLabel)
-            Me.BindBOPropertyToLabel(TheCoverage, FULFILLMENT_OPTION_CODE, moFulfillmentProfileLabel)
-            Me.BindBOPropertyToLabel(TheCoverage, DEDUCTIBLE_BASED_ON_ID, moDeductibleBasedOnLabel)
-            Me.BindBOPropertyToLabel(TheCoverage, Is_REINSURED_PROPERTY, moReInsuredLabel)
-            Me.BindBOPropertyToLabel(TheCoverage, CLAIM_LIMIT_COUNT_PROPERTY, moClaimLimitCountLabel)
+            BindBOPropertyToLabel(TheCoverage, NameOf(TheCoverage.CoverageTypeId), moCoverageTypeLabel)
+            BindBOPropertyToLabel(TheCoverage, NameOf(TheCoverage.DealerId), TheDealerControl.CaptionLabel)
+            BindBOPropertyToLabel(TheCoverage, NameOf(TheCoverage.OptionalId), moOptionalLabel)
+            BindBOPropertyToLabel(TheCoverage, NameOf(TheCoverage.ProductCodeId), moProductLabel)
+            BindBOPropertyToLabel(TheCoverage, NameOf(TheCoverage.ProductItemId), moProductItemLabel)
+            BindBOPropertyToLabel(TheCoverage, NameOf(TheCoverage.RiskTypeId), moRiskLabel)
+            BindBOPropertyToLabel(TheCoverage, NameOf(TheCoverage.CertificateDuration), moCertificateDurationLabel)
+            BindBOPropertyToLabel(TheCoverage, NameOf(TheCoverage.CoverageDuration), moCoverageDurationLabel)
+            BindBOPropertyToLabel(TheCoverage, NameOf(TheCoverage.Deductible), moDeductibleLabel)
+            BindBOPropertyToLabel(TheCoverage, NameOf(TheCoverage.Effective), moEffectiveLabel)
+            BindBOPropertyToLabel(TheCoverage, NameOf(TheCoverage.Expiration), moExpirationLabel)
+            BindBOPropertyToLabel(TheCoverage, NameOf(TheCoverage.LiabilityLimit), moLiabilityLabel)
+            BindBOPropertyToLabel(TheCoverage, NameOf(TheCoverage.MarkupDistributionPercent), lblMarkupDistPercent)
+            BindBOPropertyToLabel(TheCoverage, NameOf(TheCoverage.LiabilityLimitPercent), moLiabilityLimitPercentLabel)
+            BindBOPropertyToLabel(TheCoverage, NameOf(TheCoverage.OffsetToStart), moOffsetLabel)
+            BindBOPropertyToLabel(TheCoverage, NameOf(TheCoverage.DeductiblePercent), moDeductiblePercentLabel)
+            BindBOPropertyToLabel(TheCoverage, NameOf(TheCoverage.RepairDiscountPct), moRepairDiscountPctLabel)
+            BindBOPropertyToLabel(TheCoverage, NameOf(TheCoverage.ReplacementDiscountPct), moReplacementDiscountPrcLabel)
+            BindBOPropertyToLabel(TheCoverage, NameOf(TheCoverage.ReplacementDiscountPct), moReplacementDiscountPrcLabel)
+            BindBOPropertyToLabel(TheCoverage, NameOf(TheCoverage.IsClaimAllowedId), moIsClaimAllowedLabel)
+            BindBOPropertyToLabel(TheCoverage, NameOf(TheCoverage.UseCoverageStartDateId), moUseCoverageStartDateLable)
+            BindBOPropertyToLabel(TheCoverage, NameOf(TheCoverage.MethodOfRepairId), moMethodOfRepairLabel)
+            BindBOPropertyToLabel(TheCoverage, NameOf(TheCoverage.FulfillmentProfileCode), moFulfillmentProfileLabel)
+            BindBOPropertyToLabel(TheCoverage, NameOf(TheCoverage.FulfillmentProviderXcd), moFulfillmentProviderLabel)
+            BindBOPropertyToLabel(TheCoverage, NameOf(TheCoverage.DeductibleBasedOnId), moDeductibleBasedOnLabel)
+            BindBOPropertyToLabel(TheCoverage, NameOf(TheCoverage.IsReInsuredId), moReInsuredLabel)
+            BindBOPropertyToLabel(TheCoverage, NameOf(TheCoverage.CoverageClaimLimit), moClaimLimitCountLabel)
             'Def-26342: Added following condition to display mandatory notation for Agent code if RequiresAgentCodeId at company level is set to yes.
 
-            If Not TheDealerControl.SelectedGuid.Equals(System.Guid.Empty) Then
+            If Not TheDealerControl.SelectedGuid.Equals(Guid.Empty) Then
                 Dim objCompany = New Company()
                 Dim ds As DataSet = objCompany.GetCompanyAgentFlagForDealer(TheDealerControl.SelectedGuid)
 
                 If (Not ds Is Nothing AndAlso ds.Tables.Count > 0 AndAlso ds.Tables(0).Rows.Count > 0) Then
-                    Dim RequiresAgentCodeId As Guid = New Guid(CType(ds.Tables(0).Rows(0)(0), Byte()))
+                    Dim requiresAgentCodeId As Guid = New Guid(CType(ds.Tables(0).Rows(0)(0), Byte()))
                     Dim mandatory As String = "<span class=""mandatory"">*&nbsp;</span>"
-                    If (RequiresAgentCodeId = LookupListNew.GetIdFromCode(LookupListNew.LK_YESNO, Codes.YESNO_Y)) Then
+                    If (requiresAgentCodeId = LookupListNew.GetIdFromCode(LookupListNew.LK_YESNO, Codes.YESNO_Y)) Then
                         If Not moAgentCodeLabel.Text.Contains("*") Then
                             moAgentCodeLabel.Text = mandatory & moAgentCodeLabel.Text
                         End If
@@ -1525,78 +1397,78 @@ Namespace Tables
             End If
             'Def-26342 - End
 
-            Me.BindBOPropertyToLabel(TheCoverage, AGENT_CODE, moAgentCodeLabel)
-            Me.BindBOPropertyToLabel(TheCoverage, COVERAGE_LIABILITY_LIMIT_PROPERTY, moCoverageLiabilityLimitLabel)
-            Me.BindBOPropertyToLabel(TheCoverage, COVERAGE_LIABILITY_LIMIT_PERCENT_PROPERTY, moCoverageLiabilityLimitPercentLabel)
-            Me.BindBOPropertyToLabel(TheCoverage, RECOVER_DEVICE_ID_PROPERTY, moRecoverDeciveLabel)
-
-            Me.BindBOPropertyToLabel(TheCoverage, "OffsetToStartDays", moOffsetLabel)
-            Me.BindBOPropertyToLabel(TheCoverage, "OffsetMethodId", moOffsetMethodLabel)
+            BindBOPropertyToLabel(TheCoverage, NameOf(TheCoverage.AgentCode), moAgentCodeLabel)
+            BindBOPropertyToLabel(TheCoverage, NameOf(TheCoverage.CoverageLiabilityLimit), moCoverageLiabilityLimitLabel)
+            BindBOPropertyToLabel(TheCoverage, NameOf(TheCoverage.CoverageLiabilityLimitPercent), moCoverageLiabilityLimitPercentLabel)
+            BindBOPropertyToLabel(TheCoverage, NameOf(TheCoverage.RecoverDeviceId), moRecoverDeciveLabel)
+            BindBOPropertyToLabel(TheCoverage, NameOf(TheCoverage.OffsetToStartDays), moOffsetLabel)
+            BindBOPropertyToLabel(TheCoverage, NameOf(TheCoverage.OffsetMethodId), moOffsetMethodLabel)
         End Sub
 
         Private Sub ClearLabelsErrSign()
-            Me.ClearLabelErrSign(moCoverageTypeLabel)
-            Me.ClearLabelErrSign(TheDealerControl.CaptionLabel)
-            Me.ClearLabelErrSign(moOptionalLabel)
-            Me.ClearLabelErrSign(moProductLabel)
-            Me.ClearLabelErrSign(moProductItemLabel)
-            Me.ClearLabelErrSign(moRiskLabel)
-            Me.ClearLabelErrSign(moCertificateDurationLabel)
-            Me.ClearLabelErrSign(moCoverageDurationLabel)
-            Me.ClearLabelErrSign(moDeductibleLabel)
-            Me.ClearLabelErrSign(moEffectiveLabel)
-            Me.ClearLabelErrSign(moExpirationLabel)
-            Me.ClearLabelErrSign(moLiabilityLabel)
-            Me.ClearLabelErrSign(moLiabilityLimitPercentLabel)
-            Me.ClearLabelErrSign(moOffsetLabel)
-            Me.ClearLabelErrSign(moOffsetMethodLabel)
-            Me.ClearLabelErrSign(moMethodOfRepairLabel)
-            Me.ClearLabelErrSign(moFulfillmentProfileLabel)
-            Me.ClearLabelErrSign(moDeductibleBasedOnLabel)
-            Me.ClearLabelErrSign(moCoverageLiabilityLimitLabel)
-            Me.ClearLabelErrSign(moCoverageLiabilityLimitPercentLabel)
-            Me.ClearLabelErrSign(moRecoverDeciveLabel)
-            Me.ClearLabelErrSign(moAgentCodeLabel)
-            Me.ClearLabelErrSign(moClaimLimitCountLabel)
+            ClearLabelErrSign(moCoverageTypeLabel)
+            ClearLabelErrSign(TheDealerControl.CaptionLabel)
+            ClearLabelErrSign(moOptionalLabel)
+            ClearLabelErrSign(moProductLabel)
+            ClearLabelErrSign(moProductItemLabel)
+            ClearLabelErrSign(moRiskLabel)
+            ClearLabelErrSign(moCertificateDurationLabel)
+            ClearLabelErrSign(moCoverageDurationLabel)
+            ClearLabelErrSign(moDeductibleLabel)
+            ClearLabelErrSign(moEffectiveLabel)
+            ClearLabelErrSign(moExpirationLabel)
+            ClearLabelErrSign(moLiabilityLabel)
+            ClearLabelErrSign(moLiabilityLimitPercentLabel)
+            ClearLabelErrSign(moOffsetLabel)
+            ClearLabelErrSign(moOffsetMethodLabel)
+            ClearLabelErrSign(moMethodOfRepairLabel)
+            ClearLabelErrSign(moFulfillmentProfileLabel)
+            ClearLabelErrSign(moFulfillmentProviderLabel)
+            ClearLabelErrSign(moDeductibleBasedOnLabel)
+            ClearLabelErrSign(moCoverageLiabilityLimitLabel)
+            ClearLabelErrSign(moCoverageLiabilityLimitPercentLabel)
+            ClearLabelErrSign(moRecoverDeciveLabel)
+            ClearLabelErrSign(moAgentCodeLabel)
+            ClearLabelErrSign(moClaimLimitCountLabel)
 
         End Sub
 
         Private Sub BindBoPropertiesToGridHeader()
-            Me.BindBOPropertyToGridHeader(TheCoverageRate, LOW_PRICE_PROPERTY, moGridView.Columns(LOW_PRICE))
-            Me.BindBOPropertyToGridHeader(TheCoverageRate, HIGH_PRICE_PROPERTY, moGridView.Columns(HIGH_PRICE))
-            Me.BindBOPropertyToGridHeader(TheCoverageRate, GROSS_AMT_PROPERTY, moGridView.Columns(GROSS_AMT))
-            Me.BindBOPropertyToGridHeader(TheCoverageRate, COMMISSIONS_PERCENT_PROPERTY, moGridView.Columns(COMMISSIONS_PERCENT))
-            Me.BindBOPropertyToGridHeader(TheCoverageRate, MARKETING_PERCENT_PROPERTY, moGridView.Columns(MARKETING_PERCENT))
-            Me.BindBOPropertyToGridHeader(TheCoverageRate, ADMIN_EXPENSE_PROPERTY, moGridView.Columns(ADMIN_EXPENSE))
-            Me.BindBOPropertyToGridHeader(TheCoverageRate, PROFIT_EXPENSE_PROPERTY, moGridView.Columns(PROFIT_EXPENSE))
-            Me.BindBOPropertyToGridHeader(TheCoverageRate, LOSS_COST_PERCENT_PROPERTY, moGridView.Columns(LOSS_COST_PERCENT))
-            Me.BindBOPropertyToGridHeader(TheCoverageRate, GROSS_AMOUNT_PERCENT_PROPERTY, moGridView.Columns(GROSS_AMOUNT_PERCENT))
-            Me.BindBOPropertyToGridHeader(TheCoverageRate, RENEWAL_NUMBER_PROPERTY, moGridView.Columns(RENEWAL_NUMBER))
-            Me.BindBOPropertyToGridHeader(TheCoverageRate, REGION_ID_PROPERTY, moGridView.Columns(REGION_ID))
+            BindBOPropertyToGridHeader(TheCoverageRate, NameOf(TheCoverageRate.LowPrice), moGridView.Columns(ColIndexLowPrice))
+            BindBOPropertyToGridHeader(TheCoverageRate, NameOf(TheCoverageRate.HighPrice), moGridView.Columns(ColIndexHighPrice))
+            BindBOPropertyToGridHeader(TheCoverageRate, NameOf(TheCoverageRate.GrossAmt), moGridView.Columns(ColIndexGrossAmt))
+            BindBOPropertyToGridHeader(TheCoverageRate, NameOf(TheCoverageRate.CommissionsPercent), moGridView.Columns(ColIndexCommissionsPercent))
+            BindBOPropertyToGridHeader(TheCoverageRate, NameOf(TheCoverageRate.MarketingPercent), moGridView.Columns(ColIndexMarketingPercent))
+            BindBOPropertyToGridHeader(TheCoverageRate, NameOf(TheCoverageRate.AdminExpense), moGridView.Columns(ColIndexAdminExpense))
+            BindBOPropertyToGridHeader(TheCoverageRate, NameOf(TheCoverageRate.ProfitExpense), moGridView.Columns(ColIndexProfitExpense))
+            BindBOPropertyToGridHeader(TheCoverageRate, NameOf(TheCoverageRate.LossCostPercent), moGridView.Columns(ColIndexLossCostPercent))
+            BindBOPropertyToGridHeader(TheCoverageRate, NameOf(TheCoverageRate.GrossAmountPercent), moGridView.Columns(ColIndexGrossAmountPercent))
+            BindBOPropertyToGridHeader(TheCoverageRate, NameOf(TheCoverageRate.RenewalNumber), moGridView.Columns(ColIndexRenewalNumber))
+            BindBOPropertyToGridHeader(TheCoverageRate, NameOf(TheCoverageRate.RegionId), moGridView.Columns(ColIndexRegionId))
 
-            If Me.State.IsDealerConfiguredForSourceXcd Then
-                Me.BindBOPropertyToGridHeader(TheCoverageRate, COMMISSIONS_XCD_PERCENT_PROPERTY, moGridView.Columns(COMMISSIONS_PERCENT_XCD))
-                Me.BindBOPropertyToGridHeader(TheCoverageRate, MARKETING_XCD_PERCENT_PROPERTY, moGridView.Columns(MARKETING_PERCENT_XCD))
-                Me.BindBOPropertyToGridHeader(TheCoverageRate, ADMIN_EXPENSE_XCD_PROPERTY, moGridView.Columns(ADMIN_EXPENSE_XCD))
-                Me.BindBOPropertyToGridHeader(TheCoverageRate, PROFIT_EXPENSE_XCD_PROPERTY, moGridView.Columns(PROFIT_EXPENSE_XCD))
-                Me.BindBOPropertyToGridHeader(TheCoverageRate, LOSS_COST_XCD_PERCENT_PROPERTY, moGridView.Columns(LOSS_COST_PERCENT_XCD))
+            If State.IsDealerConfiguredForSourceXcd Then
+                BindBOPropertyToGridHeader(TheCoverageRate, NameOf(TheCoverageRate.CommissionsPercentSourceXcd), moGridView.Columns(ColIndexCommissionsPercentXcd))
+                BindBOPropertyToGridHeader(TheCoverageRate, NameOf(TheCoverageRate.MarketingPercentSourceXcd), moGridView.Columns(ColIndexMarketingPercentXcd))
+                BindBOPropertyToGridHeader(TheCoverageRate, NameOf(TheCoverageRate.AdminExpenseSourceXcd), moGridView.Columns(ColIndexAdminExpenseXcd))
+                BindBOPropertyToGridHeader(TheCoverageRate, NameOf(TheCoverageRate.ProfitPercentSourceXcd), moGridView.Columns(ColIndexProfitExpenseXcd))
+                BindBOPropertyToGridHeader(TheCoverageRate, NameOf(TheCoverageRate.LossCostPercentSourceXcd), moGridView.Columns(ColIndexLossCostPercentXcd))
             End If
         End Sub
         Private Sub BindBoPropertiesToDeductibleGridHeader()
-            Me.BindBOPropertyToGridHeader(TheCoverageDeductible, COVERAGE_DED_ID_PROPERTY, dedGridView.Columns(COVERAGE_DED_ID))
-            Me.BindBOPropertyToGridHeader(TheCoverageDeductible, METHOD_OF_REPAIR_ID_PROPERTY, dedGridView.Columns(METHOD_OF_REPAIR_DESC))
-            Me.BindBOPropertyToGridHeader(TheCoverageDeductible, DEDUCTIBLE_BASED_ON_ID_PROPERTY, dedGridView.Columns(DEDUCTIBLE_BASED_ON_DESC))
-            Me.BindBOPropertyToGridHeader(TheCoverageDeductible, cOV_DEDUCTIBLE_PROPERTY, dedGridView.Columns(DEDUCTIBLE))
+            BindBOPropertyToGridHeader(TheCoverageDeductible, CoverageDedIdProperty, dedGridView.Columns(ColSeqCoverageDeductibleId))
+            BindBOPropertyToGridHeader(TheCoverageDeductible, NameOf(TheCoverageDeductible.MethodOfRepairId), dedGridView.Columns(ColSeqMethodOfRepairDescription))
+            BindBOPropertyToGridHeader(TheCoverageDeductible, NameOf(TheCoverageDeductible.DeductibleBasedOnId), dedGridView.Columns(ColSeqDeductibleBasedOnDesc))
+            BindBOPropertyToGridHeader(TheCoverageDeductible, NameOf(TheCoverageDeductible.Deductible), dedGridView.Columns(ColSeqDeductible))
         End Sub
 
         Private Sub BindBoPropertiesToConseqDamageGridHeader()
-            Me.BindBOPropertyToGridHeader(TheCoverageConseqDamage, CONSEQ_DAMAGE_TYPE_PROPERTY, moGridViewConseqDamage.Columns(CONSEQ_DAMAGE_TYPE))
-            Me.BindBOPropertyToGridHeader(TheCoverageConseqDamage, LIABILILTY_LIMIT_BASED_ON_PROPERTY, moGridViewConseqDamage.Columns(LIABILITY_LIMIT_BASED_ON))
-            Me.BindBOPropertyToGridHeader(TheCoverageConseqDamage, LIABILILTY_LIMIT_PER_INCIDENT_PROPERTY, moGridViewConseqDamage.Columns(LIABLILITY_LIMIT_PER_INCIDENT))
-            Me.BindBOPropertyToGridHeader(TheCoverageConseqDamage, LIABILILTY_LIMIT_CUMULATIVE_PROPERTY, moGridViewConseqDamage.Columns(LIABLILITY_LIMIT_CUMULATIVE))
-            Me.BindBOPropertyToGridHeader(TheCoverageConseqDamage, CONSEQ_DAMAGE_EFFECTIVE_DATE_PROPERTY, moGridViewConseqDamage.Columns(CONSEQ_DAMAGE_EFFECTIVE_DATE))
-            Me.BindBOPropertyToGridHeader(TheCoverageConseqDamage, CONSEQ_DAMAGE_EXPIRATION_DATE_PROPERTY, moGridViewConseqDamage.Columns(CONSEQ_DAMAGE_EXPIRATION_DATE))
-            Me.BindBOPropertyToGridHeader(TheCoverageConseqDamage, FULFILMENT_METHOD_PROPERTY, moGridViewConseqDamage.Columns(FULFILMENT_METHOD))
+            BindBOPropertyToGridHeader(TheCoverageConseqDamage, NameOf(TheCoverageConseqDamage.ConseqDamageTypeXcd), moGridViewConseqDamage.Columns(ColSeqConseqDamageType))
+            BindBOPropertyToGridHeader(TheCoverageConseqDamage, NameOf(TheCoverageConseqDamage.LiabilityLimitBaseXcd), moGridViewConseqDamage.Columns(ColSeqLiabilityLimitBasedOn))
+            BindBOPropertyToGridHeader(TheCoverageConseqDamage, NameOf(TheCoverageConseqDamage.LiabilityLimitPerIncident), moGridViewConseqDamage.Columns(ColSeqLiabilityLimitPerIncident))
+            BindBOPropertyToGridHeader(TheCoverageConseqDamage, NameOf(TheCoverageConseqDamage.LiabilityLimitCumulative), moGridViewConseqDamage.Columns(ColSeqLiabilityLimitCumulative))
+            BindBOPropertyToGridHeader(TheCoverageConseqDamage, NameOf(TheCoverageConseqDamage.Effective), moGridViewConseqDamage.Columns(ColSeqConseqDamageEffectiveDate))
+            BindBOPropertyToGridHeader(TheCoverageConseqDamage, NameOf(TheCoverageConseqDamage.Expiration), moGridViewConseqDamage.Columns(ColSeqConseqDamageExpirationDate))
+            BindBOPropertyToGridHeader(TheCoverageConseqDamage, NameOf(TheCoverageConseqDamage.FulfilmentMethodXcd), moGridViewConseqDamage.Columns(ColSeqFulfillmentMethod))
         End Sub
         Public Shared Sub SetLabelColor(ByVal lbl As Label)
             lbl.ForeColor = Color.Black
@@ -1612,26 +1484,26 @@ Namespace Tables
 #Region "Handlers-CoverageRate-DataGrid"
 
         ' Coverage-Rate DataGrid
-        Public Sub ItemCreated(ByVal sender As System.Object, ByVal e As System.Web.UI.WebControls.GridViewRowEventArgs)
+        Public Sub ItemCreated(ByVal sender As Object, ByVal e As GridViewRowEventArgs)
             Try
                 BaseItemCreated(sender, e)
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.MasterPage.MessageController)
+                HandleErrors(ex, MasterPage.MessageController)
             End Try
         End Sub
 
-        Private Sub moGridView_PageIndexChanged(ByVal source As Object, ByVal e As System.Web.UI.WebControls.GridViewPageEventArgs) Handles moGridView.PageIndexChanging
+        Private Sub moGridView_PageIndexChanged(ByVal source As Object, ByVal e As GridViewPageEventArgs) Handles moGridView.PageIndexChanging
             Try
                 ResetIndexes()
                 moGridView.PageIndex = e.NewPageIndex
-                PopulateCoverageRateList(ACTION_CANCEL_DELETE)
+                PopulateCoverageRateList(ActionCancelDelete)
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.MasterPage.MessageController)
+                HandleErrors(ex, MasterPage.MessageController)
             End Try
         End Sub
 
         'The pencil was clicked
-        Protected Sub ItemCommand(ByVal source As Object, ByVal e As System.Web.UI.WebControls.GridViewCommandEventArgs) Handles moGridView.RowCommand
+        Protected Sub ItemCommand(ByVal source As Object, ByVal e As GridViewCommandEventArgs) Handles moGridView.RowCommand
             Dim nIndex As Integer = CInt(e.CommandArgument)
 
             Try
@@ -1641,29 +1513,29 @@ Namespace Tables
                     moGridView.EditIndex = nIndex
                     moGridView.SelectedIndex = nIndex
                     '      EnableForEditRateButtons(True)
-                    PopulateCoverageRateList(ACTION_EDIT)
-                    Me.FillDropdownList()
+                    PopulateCoverageRateList(ActionEdit)
+                    FillDropdownList()
                     PopulateCoverageRate()
 
                     'US-521697
-                    Me.FillSourceXcdDropdownList()
+                    FillSourceXcdDropdownList()
                     SetGridSourceXcdDropdownFromBo()
                     SetGridSourceXcdLabelFromBo()
 
                     SetGridControls(moGridView, False)
-                    Me.SetFocusInGrid(moGridView, nIndex, LOW_PRICE)
-                    EnableDisableControls(Me.moCoverageEditPanel, True)
-                    setbuttons(False)
+                    SetFocusInGrid(moGridView, nIndex, ColIndexLowPrice)
+                    EnableDisableControls(moCoverageEditPanel, True)
+                    Setbuttons(False)
                 ElseIf (e.CommandName = DELETE_COMMAND_NAME) Then
                     'nIndex = e.Item.ItemIndex
-                    CoverageRateId = Me.GetGridText(moGridView, nIndex, COVERAGE_RATE_ID)
+                    CoverageRateId = GetGridText(moGridView, nIndex, ColIndexCoverageRateId)
                     If DeleteSelectedCoverageRate(nIndex) = True Then
-                        PopulateCoverageRateList(ACTION_CANCEL_DELETE)
+                        PopulateCoverageRateList(ActionCancelDelete)
                     End If
 
                 End If
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.MasterPage.MessageController)
+                HandleErrors(ex, MasterPage.MessageController)
             End Try
         End Sub
 
@@ -1676,7 +1548,7 @@ Namespace Tables
 
 #Region "Handlers-CoverageRate-Buttons"
 
-        Private Sub setbuttons(ByVal enable As Boolean)
+        Private Sub Setbuttons(ByVal enable As Boolean)
             ControlMgr.SetEnableControl(Me, btnBack, enable)
             ControlMgr.SetEnableControl(Me, btnApply_WRITE, enable)
             ControlMgr.SetEnableControl(Me, btnDelete_WRITE, enable)
@@ -1691,13 +1563,13 @@ Namespace Tables
                 If IsNewRate = True Then
                     IsNewRate = False
                 End If
-                PopulateCoverageRateList(ACTION_SAVE)
-                EnableDisableControls(Me.moCoverageEditPanel, False)
-                setbuttons(True)
+                PopulateCoverageRateList(ActionSave)
+                EnableDisableControls(moCoverageEditPanel, False)
+                Setbuttons(True)
             End If
         End Sub
 
-        Private Sub BtnSaveRate_WRITE_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles BtnSaveRate_WRITE.Click
+        Private Sub BtnSaveRate_WRITE_Click(ByVal sender As Object, ByVal e As EventArgs) Handles BtnSaveRate_WRITE.Click
             Try
                 SaveRateChanges()
 
@@ -1708,45 +1580,45 @@ Namespace Tables
                 ControlMgr.SetEnableControl(Me, moProductDrop, False)
                 ControlMgr.SetEnableControl(Me, moRiskDrop, False)
             Catch ex As Exception
-                Me.HandleErrors(ex, moMsgControllerRate)
+                HandleErrors(ex, moMsgControllerRate)
             End Try
         End Sub
 
-        Private Sub BtnCancelRate_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles BtnCancelRate.Click
+        Private Sub BtnCancelRate_Click(ByVal sender As Object, ByVal e As EventArgs) Handles BtnCancelRate.Click
             'Pencil button in not in edit mode
             Try
                 IsNewRate = False
                 EnableForEditRateButtons(False)
-                PopulateCoverageRateList(ACTION_CANCEL_DELETE)
+                PopulateCoverageRateList(ActionCancelDelete)
                 'US-521697
                 SetGridSourceXcdLabelFromBo()
-                EnableDisableControls(Me.moCoverageEditPanel, False)
-                setbuttons(True)
+                EnableDisableControls(moCoverageEditPanel, False)
+                Setbuttons(True)
                 TheDealerControl.ChangeEnabledControlProperty(False)
                 ControlMgr.SetEnableControl(Me, moProductDrop, False)
                 ControlMgr.SetEnableControl(Me, moRiskDrop, False)
             Catch ex As Exception
-                Me.HandleErrors(ex, moMsgControllerRate)
+                HandleErrors(ex, moMsgControllerRate)
             End Try
         End Sub
 
-        Private Sub BtnNewRate_WRITE_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles BtnNewRate_WRITE.Click
+        Private Sub BtnNewRate_WRITE_Click(ByVal sender As Object, ByVal e As EventArgs) Handles BtnNewRate_WRITE.Click
             Try
                 IsNewRate = True
                 CoverageRateId = Guid.Empty.ToString
-                PopulateCoverageRateList(ACTION_NEW)
+                PopulateCoverageRateList(ActionNew)
                 FillDropdownList()
                 FillSourceXcdDropdownList()
                 SetGridControls(moGridView, False)
-                Me.SetFocusInGrid(moGridView, moGridView.SelectedIndex, LOW_PRICE)
+                SetFocusInGrid(moGridView, moGridView.SelectedIndex, ColIndexLowPrice)
                 'US-521697
                 SetGridSourceXcdLabelFromBo()
-                SetGridSourceXcdTextboxForNewCoverage()
+                SetGridSourceXcdTextBoxForNewCoverage()
 
-                EnableDisableControls(Me.moCoverageEditPanel, True)
-                setbuttons(False)
+                EnableDisableControls(moCoverageEditPanel, True)
+                Setbuttons(False)
             Catch ex As Exception
-                Me.HandleErrors(ex, moMsgControllerRate)
+                HandleErrors(ex, moMsgControllerRate)
             End Try
         End Sub
 
@@ -1758,20 +1630,20 @@ Namespace Tables
 
 #Region "Coverage Deductible Button management"
         Private Sub EnableCoverageDeductible(ByVal bIsReadWrite As Boolean)
-            dedGridView.Columns(METHOD_OF_REPAIR_DESC).Visible = bIsReadWrite
-            dedGridView.Columns(DEDUCTIBLE_BASED_ON_DESC).Visible = bIsReadWrite
-            dedGridView.Columns(DEDUCTIBLE).Visible = bIsReadWrite
+            dedGridView.Columns(ColSeqMethodOfRepairDescription).Visible = bIsReadWrite
+            dedGridView.Columns(ColSeqDeductibleBasedOnDesc).Visible = bIsReadWrite
+            dedGridView.Columns(ColSeqDeductible).Visible = bIsReadWrite
         End Sub
 
-        Private Sub manageDeductibleButtons(ByVal newButton As Boolean, ByVal SaveCancelButton As Boolean)
+        Private Sub ManageDeductibleButtons(ByVal newButton As Boolean, ByVal saveCancelButton As Boolean)
+
             btnnew_Deductible.Enabled = newButton
-
-            btnSave_Deductible.Enabled = SaveCancelButton
-            btnCancel_Deductible.Enabled = SaveCancelButton
+            btnSave_Deductible.Enabled = saveCancelButton
+            btnCancel_Deductible.Enabled = saveCancelButton
 
         End Sub
 
-        Private Sub BtnSave_Deductible_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnSave_Deductible.Click
+        Private Sub BtnSave_Deductible_Click(ByVal sender As Object, ByVal e As EventArgs) Handles btnSave_Deductible.Click
             Try
                 SaveDeductibleChanges()
                 TheDealerControl.ChangeEnabledControlProperty(False)
@@ -1779,38 +1651,38 @@ Namespace Tables
                 ControlMgr.SetEnableControl(Me, moRiskDrop, False)
 
             Catch ex As Exception
-                Me.HandleErrors(ex, moMsgControllerDeductible)
+                HandleErrors(ex, moMsgControllerDeductible)
             End Try
         End Sub
 
-        Private Sub BtnCancel_Deductible_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnCancel_Deductible.Click
+        Private Sub BtnCancel_Deductible_Click(ByVal sender As Object, ByVal e As EventArgs) Handles btnCancel_Deductible.Click
             'Pencil button in not in edit mode
             Try
                 IsNewDeductible = False
-                manageDeductibleButtons(True, False)
-                PopulateCoverageDeductibleList(ACTION_CANCEL_DELETE)
-                EnableDisableControls(Me.moCoverageEditPanel, False)
-                setbuttons(True)
+                ManageDeductibleButtons(True, False)
+                PopulateCoverageDeductibleList(ActionCancelDelete)
+                EnableDisableControls(moCoverageEditPanel, False)
+                Setbuttons(True)
                 TheDealerControl.ChangeEnabledControlProperty(False)
                 ControlMgr.SetEnableControl(Me, moProductDrop, False)
                 ControlMgr.SetEnableControl(Me, moRiskDrop, False)
             Catch ex As Exception
-                Me.HandleErrors(ex, moMsgControllerDeductible)
+                HandleErrors(ex, moMsgControllerDeductible)
             End Try
         End Sub
 
-        Private Sub BtnNew_Deductible_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnnew_Deductible.Click
+        Private Sub BtnNew_Deductible_Click(ByVal sender As Object, ByVal e As EventArgs) Handles btnnew_Deductible.Click
             Try
                 IsNewDeductible = True
                 CoverageDeductibleId = Guid.Empty.ToString
-                PopulateCoverageDeductibleList(ACTION_NEW)
+                PopulateCoverageDeductibleList(ActionNew)
                 SetGridControls(dedGridView, False)
-                EnableDisableControls(Me.moCoverageEditPanel, True)
+                EnableDisableControls(moCoverageEditPanel, True)
                 If btnnew_Deductible.Enabled = False Then
-                    setbuttons(False)
+                    Setbuttons(False)
                 End If
             Catch ex As Exception
-                Me.HandleErrors(ex, moMsgControllerDeductible)
+                HandleErrors(ex, moMsgControllerDeductible)
             End Try
         End Sub
 
@@ -1819,9 +1691,9 @@ Namespace Tables
                 If IsNewDeductible = True Then
                     IsNewDeductible = False
                 End If
-                PopulateCoverageDeductibleList(ACTION_SAVE)
-                EnableDisableControls(Me.moCoverageEditPanel, False)
-                setbuttons(True)
+                PopulateCoverageDeductibleList(ActionSave)
+                EnableDisableControls(moCoverageEditPanel, False)
+                Setbuttons(True)
             End If
         End Sub
 
@@ -1829,27 +1701,27 @@ Namespace Tables
             Dim bIsOk As Boolean = True
             Dim bIsDirty As Boolean
             If dedGridView.EditIndex < 0 Then Return False ' Coverage deductible is not in edit mode
-            If Me.State.IsNewWithCopy Then
-                Me.LoadCoverageDeductibleList()
-                Me.State.moCoverageDeductibleList(dedGridView.SelectedIndex).Validate()
+            If State.IsNewWithCopy Then
+                LoadCoverageDeductibleList()
+                State.CoverageDeductibleList(dedGridView.SelectedIndex).Validate()
                 Return bIsOk
             End If
             If IsNewDeductible = False Then
-                CoverageDeductibleId = Me.GetSelectedGridText(dedGridView, COVERAGE_DED_ID)
+                CoverageDeductibleId = GetSelectedGridText(dedGridView, ColSeqCoverageDeductibleId)
             End If
             BindBoPropertiesToDeductibleGridHeader()
             With TheCoverageDeductible
-                PopulateDeductibleBOFromForm()
+                PopulateDeductibleBoFromForm()
                 bIsDirty = .IsDirty
                 .Save()
-                manageDeductibleButtons(True, False)
+                ManageDeductibleButtons(True, False)
 
             End With
             If (bIsOk = True) Then
                 If bIsDirty = True Then
-                    Me.MasterPage.MessageController.AddSuccess(Message.SAVE_RECORD_CONFIRMATION, True)
+                    MasterPage.MessageController.AddSuccess(Message.SAVE_RECORD_CONFIRMATION, True)
                 Else
-                    Me.MasterPage.MessageController.AddSuccess(Message.MSG_RECORD_NOT_SAVED, True)
+                    MasterPage.MessageController.AddSuccess(Message.MSG_RECORD_NOT_SAVED, True)
                 End If
             End If
             Return bIsOk
@@ -1858,16 +1730,16 @@ Namespace Tables
 
 #Region "Coverage Deductible Grid"
         ' Coverage-Rate DataGrid
-        Public Sub DeductibleItemCreated(ByVal sender As System.Object, ByVal e As System.Web.UI.WebControls.GridViewRowEventArgs)
+        Public Sub DeductibleItemCreated(ByVal sender As Object, ByVal e As GridViewRowEventArgs)
             Try
                 BaseItemCreated(sender, e)
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.MasterPage.MessageController)
+                HandleErrors(ex, MasterPage.MessageController)
             End Try
         End Sub
 
         'The pencil was clicked
-        Protected Sub DeductibleItemCommand(ByVal source As Object, ByVal e As System.Web.UI.WebControls.GridViewCommandEventArgs)
+        Protected Sub DeductibleItemCommand(ByVal source As Object, ByVal e As GridViewCommandEventArgs)
             Dim nIndex As Integer = CInt(e.CommandArgument)
 
             Try
@@ -1876,97 +1748,96 @@ Namespace Tables
                     dedGridView.EditIndex = nIndex
                     dedGridView.SelectedIndex = nIndex
                     FillDropDownList(dedGridView.Rows(dedGridView.SelectedIndex))
-                    PopulateCoverageDeductibleList(ACTION_EDIT)
+                    PopulateCoverageDeductibleList(ActionEdit)
                     PopulateCoverageDeductible()
                     SetGridControls(dedGridView, False)
-                    EnableDisableControls(Me.moCoverageEditPanel, True)
-                    setbuttons(False)
+                    EnableDisableControls(moCoverageEditPanel, True)
+                    Setbuttons(False)
 
 
-                    Dim motxt_Deductible As TextBox = DirectCast(dedGridView.Rows()(nIndex).FindControl("motxt_Deductible"), TextBox)
-                    Dim dr As DataRow = DirectCast(dedGridView.DataSource, DataView).Table.Rows(nIndex)
-                    Dim moddl_DeductibleBasedOn As DropDownList = DirectCast(dedGridView.Rows()(nIndex).FindControl("moddl_DeductibleBasedOn"), DropDownList)
+                    Dim txtDeductible As TextBox = DirectCast(dedGridView.Rows()(nIndex).FindControl("motxt_Deductible"), TextBox)
+                    Dim ddlDeductibleBasedOn As DropDownList = DirectCast(dedGridView.Rows()(nIndex).FindControl("moddl_DeductibleBasedOn"), DropDownList)
 
-                    Dim dedid As Guid = GetSelectedItem((moddl_DeductibleBasedOn))
-                    Dim deductiblecode As String = LookupListNew.GetCodeFromId(LookupListNew.LK_DEDUCTIBLE_BASED_ON, dedid)
-
-
-                    If Not ((deductiblecode = Codes.DEDUCTIBLE_BASED_ON__PERCENT_OF_AUTHORIZED_AMOUNT) OrElse
-                                           (deductiblecode = Codes.DEDUCTIBLE_BASED_ON__PERCENT_OF_SALES_PRICE) OrElse
-                                           (deductiblecode = Codes.DEDUCTIBLE_BASED_ON__PERCENT_OF_ORIGINAL_RETAIL_PRICE) OrElse
-                                           (deductiblecode = Codes.DEDUCTIBLE_BASED_ON__PERCENT_OF_LIST_PRICE) OrElse
-                                           (deductiblecode = Codes.DEDUCTIBLE_BASED_ON__PERCENT_OF_ITEM_RETAIL_PRICE) OrElse
-                                            (deductiblecode = Codes.DEDUCTIBLE_BASED_ON__PERCENT_OF_LIST_PRICE_WSD) OrElse
-                                           (deductiblecode = Codes.DEDUCTIBLE_BASED_ON__FIXED)) Then
+                    Dim deductibleId As Guid = GetSelectedItem((ddlDeductibleBasedOn))
+                    Dim deductibleCode As String = LookupListNew.GetCodeFromId(LookupListNew.LK_DEDUCTIBLE_BASED_ON, deductibleId)
 
 
-                        motxt_Deductible.Text = "0"
-                        motxt_Deductible.Enabled = False
+                    If Not ((deductibleCode = Codes.DEDUCTIBLE_BASED_ON__PERCENT_OF_AUTHORIZED_AMOUNT) OrElse
+                                           (deductibleCode = Codes.DEDUCTIBLE_BASED_ON__PERCENT_OF_SALES_PRICE) OrElse
+                                           (deductibleCode = Codes.DEDUCTIBLE_BASED_ON__PERCENT_OF_ORIGINAL_RETAIL_PRICE) OrElse
+                                           (deductibleCode = Codes.DEDUCTIBLE_BASED_ON__PERCENT_OF_LIST_PRICE) OrElse
+                                           (deductibleCode = Codes.DEDUCTIBLE_BASED_ON__PERCENT_OF_ITEM_RETAIL_PRICE) OrElse
+                                            (deductibleCode = Codes.DEDUCTIBLE_BASED_ON__PERCENT_OF_LIST_PRICE_WSD) OrElse
+                                           (deductibleCode = Codes.DEDUCTIBLE_BASED_ON__FIXED)) Then
+
+
+                        txtDeductible.Text = ZeroNumber
+                        txtDeductible.Enabled = False
                     End If
 
 
                 ElseIf (e.CommandName = DELETE_COMMAND_NAME) Then
-                    CoverageDeductibleId = Me.GetGridText(dedGridView, nIndex, COVERAGE_DED_ID)
+                    CoverageDeductibleId = GetGridText(dedGridView, nIndex, ColSeqCoverageDeductibleId)
                     If DeleteSelectedCoverageDeductible(nIndex) = True Then
-                        PopulateCoverageDeductibleList(ACTION_CANCEL_DELETE)
+                        PopulateCoverageDeductibleList(ActionCancelDelete)
                     End If
 
                 End If
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.MasterPage.MessageController)
+                HandleErrors(ex, MasterPage.MessageController)
             End Try
         End Sub
 
         Private Sub LoadCoverageDeductibleList()
 
             If dedGridView.Rows.Count > 0 Then
-                Dim i As Integer = 0
-                Dim oCoveragedeductible(dedGridView.Rows.Count - 1) As CoverageDeductible
+                Dim i As Integer
+                Dim oCoverageDeductible(dedGridView.Rows.Count - 1) As CoverageDeductible
 
                 For i = 0 To dedGridView.Rows.Count - 1
-                    oCoveragedeductible(i) = New CoverageDeductible
-                    oCoveragedeductible(i).CoverageId = TheCoverage.Id
+                    oCoverageDeductible(i) = New CoverageDeductible
+                    oCoverageDeductible(i).CoverageId = TheCoverage.Id
                     With dedGridView.Rows(i)
-                        If dedGridView.Rows(i).Cells(DEDUCTIBLE).Controls(1).GetType().ToString = "System.Web.UI.WebControls.Label" Then
-                            Me.PopulateBOProperty(oCoveragedeductible(i), "Deductible", CType(dedGridView.Rows(i).Cells(DEDUCTIBLE).Controls(1), Label).Text)
+                        If TypeOf dedGridView.Rows(i).Cells(ColSeqDeductible).Controls(1) Is Label Then
+                            PopulateBOProperty(oCoverageDeductible(i), NameOf(CoverageDeductible.Deductible), CType(dedGridView.Rows(i).Cells(ColSeqDeductible).Controls(1), Label).Text)
                         Else
-                            Me.PopulateBOProperty(oCoveragedeductible(i), "Deductible", CType(dedGridView.Rows(i).Cells(DEDUCTIBLE).Controls(1), TextBox).Text)
+                            PopulateBOProperty(oCoverageDeductible(i), NameOf(CoverageDeductible.Deductible), CType(dedGridView.Rows(i).Cells(ColSeqDeductible).Controls(1), TextBox).Text)
                         End If
-                        PopulateBOProperty(oCoveragedeductible(i), "MethodOfRepairId", GetGuidFromString(CType(dedGridView.Rows(i).Cells(COV_METHOD_OF_REPAIR_ID).Controls(1), Label).Text))
-                        PopulateBOProperty(oCoveragedeductible(i), "DeductibleBasedOnId", GetGuidFromString(CType(dedGridView.Rows(i).Cells(COV_DEDUCTIBLE_BASED_ON_id).Controls(1), Label).Text))
+                        PopulateBOProperty(oCoverageDeductible(i), NameOf(CoverageDeductible.MethodOfRepairId), GetGuidFromString(CType(dedGridView.Rows(i).Cells(ColSeqMethodOfRepairId).Controls(1), Label).Text))
+                        PopulateBOProperty(oCoverageDeductible(i), NameOf(CoverageDeductible.DeductibleBasedOnId), GetGuidFromString(CType(dedGridView.Rows(i).Cells(ColSeqDeductibleBasedOnId).Controls(1), Label).Text))
                     End With
 
                 Next
-                Me.State.moCoverageDeductibleList = oCoveragedeductible
+                State.CoverageDeductibleList = oCoverageDeductible
             End If
         End Sub
-        Private Sub dedGridView_RowCreated(ByVal sender As Object, ByVal e As System.Web.UI.WebControls.GridViewRowEventArgs) Handles dedGridView.RowCreated
+        Private Sub dedGridView_RowCreated(ByVal sender As Object, ByVal e As GridViewRowEventArgs) Handles dedGridView.RowCreated
             Try
                 FillDropDownList(e.Row)
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.MasterPage.MessageController)
+                HandleErrors(ex, MasterPage.MessageController)
             End Try
         End Sub
 
         Private Sub FillDropDownList(ByVal dtRow As GridViewRow)
 
-            Dim ddlMethod_of_repair As DropDownList = DirectCast(dtRow.FindControl(DDL_METHOD_OF_REPAIR), DropDownList)
-            Dim ddldedBasedon As DropDownList = DirectCast(dtRow.FindControl(DDL_DEDUCTIBLE_BASED_ON), DropDownList)
-            'Dim oLanguageId As Guid = ElitaPlusIdentity.Current.ActiveUser.LanguageId
+            Dim ddlMethodOfRepair As DropDownList = DirectCast(dtRow.FindControl(MethodOfRepairDropDownList), DropDownList)
+            Dim ddlDeductibleBasedOn As DropDownList = DirectCast(dtRow.FindControl(DeductibleBasedOnDropDownList), DropDownList)
+            'Dim oLanguageId As Guid = GetLanguageId()
 
-            If Not ddlMethod_of_repair Is Nothing Then
+            If Not ddlMethodOfRepair Is Nothing Then
                 'BindListControlToDataView(ddlMethod_of_repair, LookupListNew.GetMethodOfRepairLookupList(oLanguageId), , , True)
-                ddlMethod_of_repair.Populate(CommonConfigManager.Current.ListManager.GetList("METHR", Thread.CurrentPrincipal.GetLanguageCode()), New PopulateOptions() With
+                ddlMethodOfRepair.Populate(CommonConfigManager.Current.ListManager.GetList("METHR", Thread.CurrentPrincipal.GetLanguageCode()), New PopulateOptions() With
                                                   {
                                                     .AddBlankItem = True
                                                   })
 
             End If
-            If Not ddldedBasedon Is Nothing Then
+            If Not ddlDeductibleBasedOn Is Nothing Then
                 'BindListControlToDataView(ddldedBasedon, LookupListNew.GetComputeDeductibleBasedOnAndExpressions(oLanguageId), , , True)
                 Dim listcontext As ListContext = New ListContext()
-                listcontext.LanguageId = ElitaPlusIdentity.Current.ActiveUser.LanguageId
-                ddldedBasedon.Populate(CommonConfigManager.Current.ListManager.GetList(listCode:="ComputeDeductibleBasedOnAndExpressions", languageCode:=Thread.CurrentPrincipal.GetLanguageCode(), context:=listcontext), New PopulateOptions() With
+                listcontext.LanguageId = GetLanguageId()
+                ddlDeductibleBasedOn.Populate(CommonConfigManager.Current.ListManager.GetList(listCode:="ComputeDeductibleBasedOnAndExpressions", languageCode:=Thread.CurrentPrincipal.GetLanguageCode(), context:=listcontext), New PopulateOptions() With
                                                   {
                                                     .AddBlankItem = True
                                                   })
@@ -1978,58 +1849,57 @@ Namespace Tables
 #Region "Populate Deductible"
         'Populate Deductible starts here
 
-        Private Sub PopulateCoverageDeductibleList(Optional ByVal oAction As String = ACTION_NONE)
-            Dim oCoverageDeductible As CoverageDeductible
+        Private Sub PopulateCoverageDeductibleList(Optional ByVal oAction As String = ActionNone)
             Dim oDataView As DataView
 
-            If Me.State.IsCoverageNew = True And Not Me.State.IsNewWithCopy Then Return ' We can not have CoverageRates if the coverage is new
+            If State.IsCoverageNew = True And Not State.IsNewWithCopy Then Return ' We can not have CoverageRates if the coverage is new
 
             Try
 
                 EnableCoverageDeductible(True)
 
-                If Me.State.IsNewWithCopy Then
-                    oDataView = oCoverageDeductible.GetList(Guid.Empty, ElitaPlusIdentity.Current.ActiveUser.LanguageId)
-                    If Not oAction = ACTION_CANCEL_DELETE Then Me.LoadCoverageDeductibleList()
-                    If Not Me.State.moCoverageRateList Is Nothing Then
-                        oDataView = getDVFromArray(Me.State.moCoverageDeductibleList, oDataView.Table)
+                If State.IsNewWithCopy Then
+                    oDataView = CoverageDeductible.GetList(Guid.Empty, GetLanguageId())
+                    If Not oAction = ActionCancelDelete Then LoadCoverageDeductibleList()
+                    If Not State.CoverageRateList Is Nothing Then
+                        oDataView = GetDataViewFromArray(State.CoverageDeductibleList, oDataView.Table)
                     End If
                 Else
-                    oDataView = oCoverageDeductible.GetList(TheCoverage.Id, ElitaPlusIdentity.Current.ActiveUser.LanguageId)
+                    oDataView = CoverageDeductible.GetList(TheCoverage.Id, GetLanguageId())
                 End If
 
                 Select Case oAction
-                    Case ACTION_NONE
-                        Me.SetPageAndSelectedIndexFromGuid(oDataView, Guid.Empty, dedGridView, 0)
-                        manageDeductibleButtons(True, False)
-                    Case ACTION_SAVE
-                        Me.SetPageAndSelectedIndexFromGuid(oDataView, GetGuidFromString(CoverageDeductibleId), dedGridView,
+                    Case ActionNone
+                        SetPageAndSelectedIndexFromGuid(oDataView, Guid.Empty, dedGridView, 0)
+                        ManageDeductibleButtons(True, False)
+                    Case ActionSave
+                        SetPageAndSelectedIndexFromGuid(oDataView, GetGuidFromString(CoverageDeductibleId), dedGridView,
                                     dedGridView.PageIndex)
-                        manageDeductibleButtons(True, False)
-                    Case ACTION_CANCEL_DELETE
-                        Me.SetPageAndSelectedIndexFromGuid(oDataView, Guid.Empty, dedGridView,
+                        ManageDeductibleButtons(True, False)
+                    Case ActionCancelDelete
+                        SetPageAndSelectedIndexFromGuid(oDataView, Guid.Empty, dedGridView,
                                     dedGridView.PageIndex)
-                        manageDeductibleButtons(True, False)
-                    Case ACTION_EDIT
-                        If Me.State.IsNewWithCopy Then
-                            CoverageDeductibleId = Me.State.moCoverageRateList(dedGridView.SelectedIndex).Id.ToString
+                        ManageDeductibleButtons(True, False)
+                    Case ActionEdit
+                        If State.IsNewWithCopy Then
+                            CoverageDeductibleId = State.CoverageRateList(dedGridView.SelectedIndex).Id.ToString
                         Else
-                            CoverageDeductibleId = Me.GetSelectedGridText(dedGridView, COVERAGE_DED_ID)
+                            CoverageDeductibleId = GetSelectedGridText(dedGridView, ColSeqCoverageDeductibleId)
                         End If
-                        Me.SetPageAndSelectedIndexFromGuid(oDataView, GetGuidFromString(CoverageDeductibleId), dedGridView,
+                        SetPageAndSelectedIndexFromGuid(oDataView, GetGuidFromString(CoverageDeductibleId), dedGridView,
                                     dedGridView.PageIndex, True)
-                        manageDeductibleButtons(False, True)
-                    Case ACTION_NEW
-                        If Me.State.IsNewWithCopy Then oDataView.Table.DefaultView.Sort() = Nothing ' Clear sort, so that the new line shows up at the bottom
+                        ManageDeductibleButtons(False, True)
+                    Case ActionNew
+                        If State.IsNewWithCopy Then oDataView.Table.DefaultView.Sort() = Nothing ' Clear sort, so that the new line shows up at the bottom
                         Dim oRow As DataRow = oDataView.Table.NewRow
-                        oRow(DBCOVERAGE_DED_ID) = TheCoverageDeductible.Id.ToByteArray
-                        oRow(DBMETHOD_OF_REPAIR_ID) = Guid.Empty.ToByteArray
-                        oRow(DBDEDUCTIBLE_BASED_ON) = Guid.Empty.ToByteArray
+                        oRow(DbCoverageDeductibleId) = TheCoverageDeductible.Id.ToByteArray
+                        oRow(DbMethodOfRepairId) = Guid.Empty.ToByteArray
+                        oRow(DbDeductibleBasedOn) = Guid.Empty.ToByteArray
                         oDataView.Table.Rows.Add(oRow)
-                        Me.SetPageAndSelectedIndexFromGuid(oDataView, GetGuidFromString(CoverageDeductibleId), dedGridView,
+                        SetPageAndSelectedIndexFromGuid(oDataView, GetGuidFromString(CoverageDeductibleId), dedGridView,
                                     dedGridView.PageIndex, True)
 
-                        manageDeductibleButtons(False, True)
+                        ManageDeductibleButtons(False, True)
 
                 End Select
 
@@ -2038,53 +1908,45 @@ Namespace Tables
                 ControlMgr.DisableEditDeleteGridIfNotEditAuth(Me, dedGridView)
 
             Catch ex As Exception
-                moMsgControllerDeductible.AddError(COVERAGE_FORM006)
+                moMsgControllerDeductible.AddError(CoverageForm006)
                 moMsgControllerDeductible.AddError(ex.Message, False)
                 'moMsgControllerDeductible.Show()
             End Try
         End Sub
 
-        Private Sub ModifyGridHeaderForDeductible()
-            dedGridView.Columns(METHOD_OF_REPAIR_DESC).HeaderText = dedGridView.Columns(METHOD_OF_REPAIR_DESC).HeaderText.Replace("%", "<br>%")
-            dedGridView.Columns(DEDUCTIBLE_BASED_ON_DESC).HeaderText = dedGridView.Columns(DEDUCTIBLE_BASED_ON_DESC).HeaderText.Replace("%", "<br>%")
-            dedGridView.Columns(DEDUCTIBLE).HeaderText = dedGridView.Columns(DEDUCTIBLE).HeaderText.Replace("%", "<br>%")
-        End Sub
-
         Private Sub PopulateCoverageDeductible()
             Dim sDeductibleBasedOnCode As String
 
-
-
-            If Me.State.IsNewWithCopy Then
-                With Me.State.moCoverageDeductibleList(moGridView.SelectedIndex)
-                    SetSelectedItem(CType(dedGridView.Rows(dedGridView.SelectedIndex).Cells(METHOD_OF_REPAIR_DESC).FindControl(DDL_METHOD_OF_REPAIR), DropDownList), .MethodOfRepairId)
+            If State.IsNewWithCopy Then
+                With State.CoverageDeductibleList(moGridView.SelectedIndex)
+                    SetSelectedItem(CType(dedGridView.Rows(dedGridView.SelectedIndex).Cells(ColSeqMethodOfRepairDescription).FindControl(MethodOfRepairDropDownList), DropDownList), .MethodOfRepairId)
 
                     sDeductibleBasedOnCode = LookupListNew.GetCodeFromId(LookupListNew.LK_DEDUCTIBLE_BASED_ON, .DeductibleBasedOnId)
 
                     If (sDeductibleBasedOnCode = Codes.DEDUCTIBLE_BASED_ON__EXPRESSION) Then
-                        SetSelectedItem(CType(dedGridView.Rows(dedGridView.SelectedIndex).Cells(DEDUCTIBLE_BASED_ON_DESC).FindControl(DDL_DEDUCTIBLE_BASED_ON), DropDownList), .DeductibleExpressionId)
-                        ControlMgr.SetEnableControl(Me, CType(dedGridView.Rows(dedGridView.SelectedIndex).Cells(DEDUCTIBLE_BASED_ON_DESC).FindControl(TEXT_DEDUCTIBLE), TextBox), False)
+                        SetSelectedItem(CType(dedGridView.Rows(dedGridView.SelectedIndex).Cells(ColSeqDeductibleBasedOnDesc).FindControl(DeductibleBasedOnDropDownList), DropDownList), .DeductibleExpressionId)
+                        ControlMgr.SetEnableControl(Me, CType(dedGridView.Rows(dedGridView.SelectedIndex).Cells(ColSeqDeductibleBasedOnDesc).FindControl(DeductibleText), TextBox), False)
                     Else
-                        SetSelectedItem(CType(dedGridView.Rows(dedGridView.SelectedIndex).Cells(DEDUCTIBLE_BASED_ON_DESC).FindControl(DDL_DEDUCTIBLE_BASED_ON), DropDownList), .DeductibleBasedOnId)
-                        Me.SetSelectedGridText(dedGridView, DEDUCTIBLE, .Deductible.ToString)
+                        SetSelectedItem(CType(dedGridView.Rows(dedGridView.SelectedIndex).Cells(ColSeqDeductibleBasedOnDesc).FindControl(DeductibleBasedOnDropDownList), DropDownList), .DeductibleBasedOnId)
+                        SetSelectedGridText(dedGridView, ColSeqDeductible, .Deductible.ToString)
                     End If
                 End With
             Else
                 With TheCoverageDeductible
 
-                    SetSelectedItem(CType(dedGridView.Rows(dedGridView.SelectedIndex).Cells(METHOD_OF_REPAIR_DESC).FindControl(DDL_METHOD_OF_REPAIR), DropDownList), .MethodOfRepairId)
+                    SetSelectedItem(CType(dedGridView.Rows(dedGridView.SelectedIndex).Cells(ColSeqMethodOfRepairDescription).FindControl(MethodOfRepairDropDownList), DropDownList), .MethodOfRepairId)
 
                     sDeductibleBasedOnCode = LookupListNew.GetCodeFromId(LookupListNew.LK_DEDUCTIBLE_BASED_ON, .DeductibleBasedOnId)
                     If (sDeductibleBasedOnCode = Codes.DEDUCTIBLE_BASED_ON__EXPRESSION) Then
-                        SetSelectedItem(CType(dedGridView.Rows(dedGridView.SelectedIndex).Cells(DEDUCTIBLE_BASED_ON_DESC).FindControl(DDL_DEDUCTIBLE_BASED_ON), DropDownList), .DeductibleExpressionId)
-                        ControlMgr.SetEnableControl(Me, CType(dedGridView.Rows(dedGridView.SelectedIndex).Cells(DEDUCTIBLE_BASED_ON_DESC).FindControl(TEXT_DEDUCTIBLE), TextBox), False)
+                        SetSelectedItem(CType(dedGridView.Rows(dedGridView.SelectedIndex).Cells(ColSeqDeductibleBasedOnDesc).FindControl(DeductibleBasedOnDropDownList), DropDownList), .DeductibleExpressionId)
+                        ControlMgr.SetEnableControl(Me, CType(dedGridView.Rows(dedGridView.SelectedIndex).Cells(ColSeqDeductibleBasedOnDesc).FindControl(DeductibleText), TextBox), False)
                     Else
-                        SetSelectedItem(CType(dedGridView.Rows(dedGridView.SelectedIndex).Cells(DEDUCTIBLE_BASED_ON_DESC).FindControl(DDL_DEDUCTIBLE_BASED_ON), DropDownList), .DeductibleBasedOnId)
-                        Me.SetSelectedGridText(dedGridView, DEDUCTIBLE, .Deductible.ToString)
+                        SetSelectedItem(CType(dedGridView.Rows(dedGridView.SelectedIndex).Cells(ColSeqDeductibleBasedOnDesc).FindControl(DeductibleBasedOnDropDownList), DropDownList), .DeductibleBasedOnId)
+                        SetSelectedGridText(dedGridView, ColSeqDeductible, .Deductible.ToString)
                     End If
 
                     'SetSelectedItem(CType(dedGridView.Rows(dedGridView.SelectedIndex).Cells(DEDUCTIBLE_BASED_ON_DESC).FindControl(DDL_DEDUCTIBLE_BASED_ON), DropDownList), deductiblegridBasedOnId)
-                    'Me.SetSelectedGridText(dedGridView, DEDUCTIBLE, .Deductible.ToString)
+                    'SetSelectedGridText(dedGridView, DEDUCTIBLE, .Deductible.ToString)
                 End With
             End If
 
@@ -2093,16 +1955,16 @@ Namespace Tables
 
 #Region "Coverage Conseq Damage Grid"
 
-        'Public Sub PerilItemCreated(ByVal sender As System.Object, ByVal e As System.Web.UI.WebControls.GridViewRowEventArgs)
+        'Public Sub PerilItemCreated(ByVal sender As Object, ByVal e As GridViewRowEventArgs)
         '    Try
         '        BaseItemCreated(sender, e)
         '    Catch ex As Exception
-        '        Me.HandleErrors(ex, Me.MasterPage.MessageController)
+        '        HandleErrors(ex, MasterPage.MessageController)
         '    End Try
         'End Sub
 
         'The pencil was clicked
-        Public Sub ConseqDamageRowCommand(ByVal source As Object, ByVal e As System.Web.UI.WebControls.GridViewCommandEventArgs)
+        Public Sub ConseqDamageRowCommand(ByVal source As Object, ByVal e As GridViewCommandEventArgs)
 
             Dim btnConseqDamageEffectiveDate As ImageButton
             Dim moConseqDamageEffectiveDateText As TextBox
@@ -2113,138 +1975,136 @@ Namespace Tables
             Try
                 If e.CommandName = EDIT_COMMAND_NAME Then
                     Dim nIndex As Integer = CInt(e.CommandArgument)
-                    nIndex = CInt(e.CommandArgument)
                     moGridViewConseqDamage.EditIndex = nIndex
                     moGridViewConseqDamage.SelectedIndex = nIndex
 
                     FillConseqDamageDropDownList(moGridViewConseqDamage.Rows(moGridViewConseqDamage.SelectedIndex))
-                    PopulateCoverageConseqDamageList(ACTION_EDIT)
+                    PopulateCoverageConseqDamageList(ActionEdit)
                     PopulateCoverageConseqDamage()
                     SetGridControls(moGridViewConseqDamage, False)
-                    EnableDisableControls(Me.moCoverageEditPanel, True)
-                    setbuttons(False)
+                    EnableDisableControls(moCoverageEditPanel, True)
+                    Setbuttons(False)
 
                     'Date Calendars
                     oGridViewrow = moGridViewConseqDamage.Rows(nIndex)
-                    btnConseqDamageEffectiveDate = CType(oGridViewrow.FindControl(P_EFFECTIVE_DATE_IMAGEBUTTON_NAME), ImageButton)
-                    moConseqDamageEffectiveDateText = CType(oGridViewrow.FindControl(P_EFFECTIVE_DATE_TEXTBOX_NAME), TextBox)
-                    Me.AddCalendar_New(btnConseqDamageEffectiveDate, moConseqDamageEffectiveDateText)
+                    btnConseqDamageEffectiveDate = CType(oGridViewrow.FindControl(ConseqDamageEffectiveDateButton), ImageButton)
+                    moConseqDamageEffectiveDateText = CType(oGridViewrow.FindControl(ConseqDamageEffectiveDateText), TextBox)
+                    AddCalendar_New(btnConseqDamageEffectiveDate, moConseqDamageEffectiveDateText)
 
-                    btnConseqDamageExpirationDate = CType(oGridViewrow.FindControl(P_EXPIRATION_DATE_IMAGEBUTTON_NAME), ImageButton)
-                    moConseqDamageExpirationDateText = CType(oGridViewrow.FindControl(P_EXPIRATION_DATE_TEXTBOX_NAME), TextBox)
-                    Me.AddCalendar_New(btnConseqDamageExpirationDate, moConseqDamageExpirationDateText)
+                    btnConseqDamageExpirationDate = CType(oGridViewrow.FindControl(ConseqDamageExpirationDateButton), ImageButton)
+                    moConseqDamageExpirationDateText = CType(oGridViewrow.FindControl(ConseqDamageExpirationDateText), TextBox)
+                    AddCalendar_New(btnConseqDamageExpirationDate, moConseqDamageExpirationDateText)
 
                 ElseIf (e.CommandName = DELETE_COMMAND_NAME) Then
                     Dim nIndex As Integer = CInt(e.CommandArgument)
-                    CoverageConseqDamageId = Me.GetGridText(moGridViewConseqDamage, nIndex, COVERAGE_CONSEQ_DAMAGE_ID)
+                    CoverageConseqDamageId = GetGridText(moGridViewConseqDamage, nIndex, ColSeqCoverageConseqDamageId)
                     If DeleteSelectedCoverageConseqDamage(nIndex) = True Then
-                        PopulateCoverageConseqDamageList(ACTION_CANCEL_DELETE)
+                        PopulateCoverageConseqDamageList(ActionCancelDelete)
                     End If
                 End If
 
 
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.MasterPage.MessageController)
+                HandleErrors(ex, MasterPage.MessageController)
             End Try
         End Sub
 
         Private Sub LoadCoverageConseqDamageList()
 
             If moGridViewConseqDamage.Rows.Count > 0 Then
-                Dim i As Integer = 0
+                Dim i As Integer
                 Dim oCoverageConseqDamage(moGridViewConseqDamage.Rows.Count - 1) As CoverageConseqDamage
 
                 For i = 0 To moGridViewConseqDamage.Rows.Count - 1
                     oCoverageConseqDamage(i) = New CoverageConseqDamage
                     oCoverageConseqDamage(i).CoverageId = TheCoverage.Id
                     With moGridViewConseqDamage.Rows(i)
-                        If moGridViewConseqDamage.Rows(i).Cells(LIABLILITY_LIMIT_PER_INCIDENT).Controls(1).GetType().ToString = "System.Web.UI.WebControls.Label" Then
-                            Me.PopulateBOProperty(oCoverageConseqDamage(i), LIABILILTY_LIMIT_PER_INCIDENT_PROPERTY, CType(moGridViewConseqDamage.Rows(i).Cells(LIABLILITY_LIMIT_PER_INCIDENT).Controls(1), Label).Text)
+                        If TypeOf moGridViewConseqDamage.Rows(i).Cells(ColSeqLiabilityLimitPerIncident).Controls(1) Is Label Then
+                            PopulateBOProperty(oCoverageConseqDamage(i), NameOf(CoverageConseqDamage.LiabilityLimitPerIncident), CType(moGridViewConseqDamage.Rows(i).Cells(ColSeqLiabilityLimitPerIncident).Controls(1), Label).Text)
                         Else
-                            Me.PopulateBOProperty(oCoverageConseqDamage(i), LIABILILTY_LIMIT_PER_INCIDENT_PROPERTY, CType(moGridViewConseqDamage.Rows(i).Cells(LIABLILITY_LIMIT_PER_INCIDENT).Controls(1), TextBox).Text)
+                            PopulateBOProperty(oCoverageConseqDamage(i), NameOf(CoverageConseqDamage.LiabilityLimitPerIncident), CType(moGridViewConseqDamage.Rows(i).Cells(ColSeqLiabilityLimitPerIncident).Controls(1), TextBox).Text)
                         End If
 
-                        If moGridViewConseqDamage.Rows(i).Cells(LIABLILITY_LIMIT_CUMULATIVE).Controls(1).GetType().ToString = "System.Web.UI.WebControls.Label" Then
-                            Me.PopulateBOProperty(oCoverageConseqDamage(i), LIABILILTY_LIMIT_CUMULATIVE_PROPERTY, CType(moGridViewConseqDamage.Rows(i).Cells(LIABLILITY_LIMIT_CUMULATIVE).Controls(1), Label).Text)
+                        If TypeOf moGridViewConseqDamage.Rows(i).Cells(ColSeqLiabilityLimitCumulative).Controls(1) Is Label Then
+                            PopulateBOProperty(oCoverageConseqDamage(i), NameOf(CoverageConseqDamage.LiabilityLimitCumulative), CType(moGridViewConseqDamage.Rows(i).Cells(ColSeqLiabilityLimitCumulative).Controls(1), Label).Text)
                         Else
-                            Me.PopulateBOProperty(oCoverageConseqDamage(i), LIABILILTY_LIMIT_CUMULATIVE_PROPERTY, CType(moGridViewConseqDamage.Rows(i).Cells(LIABLILITY_LIMIT_CUMULATIVE).Controls(1), TextBox).Text)
+                            PopulateBOProperty(oCoverageConseqDamage(i), NameOf(CoverageConseqDamage.LiabilityLimitCumulative), CType(moGridViewConseqDamage.Rows(i).Cells(ColSeqLiabilityLimitCumulative).Controls(1), TextBox).Text)
                         End If
 
-                        If moGridViewConseqDamage.Rows(i).Cells(CONSEQ_DAMAGE_EFFECTIVE_DATE).Controls(1).GetType().ToString = "System.Web.UI.WebControls.Label" Then
-                            Me.PopulateBOProperty(oCoverageConseqDamage(i), CONSEQ_DAMAGE_EFFECTIVE_DATE_PROPERTY, CType(moGridViewConseqDamage.Rows(i).Cells(CONSEQ_DAMAGE_EFFECTIVE_DATE).Controls(1), Label).Text)
+                        If TypeOf moGridViewConseqDamage.Rows(i).Cells(ColSeqConseqDamageEffectiveDate).Controls(1) Is Label Then
+                            PopulateBOProperty(oCoverageConseqDamage(i), NameOf(CoverageConseqDamage.Effective), CType(moGridViewConseqDamage.Rows(i).Cells(ColSeqConseqDamageEffectiveDate).Controls(1), Label).Text)
                         Else
-                            Me.PopulateBOProperty(oCoverageConseqDamage(i), CONSEQ_DAMAGE_EFFECTIVE_DATE_PROPERTY, CType(moGridViewConseqDamage.Rows(i).Cells(CONSEQ_DAMAGE_EFFECTIVE_DATE).Controls(1), TextBox).Text)
+                            PopulateBOProperty(oCoverageConseqDamage(i), NameOf(CoverageConseqDamage.Effective), CType(moGridViewConseqDamage.Rows(i).Cells(ColSeqConseqDamageEffectiveDate).Controls(1), TextBox).Text)
                         End If
 
-                        If moGridViewConseqDamage.Rows(i).Cells(CONSEQ_DAMAGE_EXPIRATION_DATE).Controls(1).GetType().ToString = "System.Web.UI.WebControls.Label" Then
-                            Me.PopulateBOProperty(oCoverageConseqDamage(i), CONSEQ_DAMAGE_EXPIRATION_DATE_PROPERTY, CType(moGridViewConseqDamage.Rows(i).Cells(CONSEQ_DAMAGE_EXPIRATION_DATE).Controls(1), Label).Text)
+                        If TypeOf moGridViewConseqDamage.Rows(i).Cells(ColSeqConseqDamageExpirationDate).Controls(1) Is Label Then
+                            PopulateBOProperty(oCoverageConseqDamage(i), NameOf(CoverageConseqDamage.Expiration), CType(moGridViewConseqDamage.Rows(i).Cells(ColSeqConseqDamageExpirationDate).Controls(1), Label).Text)
                         Else
-                            Me.PopulateBOProperty(oCoverageConseqDamage(i), CONSEQ_DAMAGE_EXPIRATION_DATE_PROPERTY, CType(moGridViewConseqDamage.Rows(i).Cells(CONSEQ_DAMAGE_EXPIRATION_DATE).Controls(1), TextBox).Text)
+                            PopulateBOProperty(oCoverageConseqDamage(i), NameOf(CoverageConseqDamage.Expiration), CType(moGridViewConseqDamage.Rows(i).Cells(ColSeqConseqDamageExpirationDate).Controls(1), TextBox).Text)
                         End If
 
-                        If moGridViewConseqDamage.Rows(i).Cells(CONSEQ_DAMAGE_TYPE).Controls(1).GetType().ToString = "System.Web.UI.WebControls.Label" Then
-                            Me.PopulateBOProperty(oCoverageConseqDamage(i), CONSEQ_DAMAGE_TYPE_PROPERTY, CType(moGridViewConseqDamage.Rows(i).Cells(CONSEQ_DAMAGE_TYPE_Xcd).Controls(1), Label).Text)
+                        If TypeOf moGridViewConseqDamage.Rows(i).Cells(ColSeqConseqDamageType).Controls(1) Is Label Then
+                            PopulateBOProperty(oCoverageConseqDamage(i), NameOf(CoverageConseqDamage.ConseqDamageTypeXcd), CType(moGridViewConseqDamage.Rows(i).Cells(ColSeqConseqDamageTypeXcd).Controls(1), Label).Text)
                         Else
-                            Me.PopulateBOProperty(oCoverageConseqDamage(i), CONSEQ_DAMAGE_TYPE_PROPERTY, CType(moGridViewConseqDamage.Rows(i).Cells(CONSEQ_DAMAGE_TYPE).Controls(1), DropDownList).SelectedValue)
+                            PopulateBOProperty(oCoverageConseqDamage(i), NameOf(CoverageConseqDamage.ConseqDamageTypeXcd), CType(moGridViewConseqDamage.Rows(i).Cells(ColSeqConseqDamageType).Controls(1), DropDownList).SelectedValue)
                         End If
 
-                        If moGridViewConseqDamage.Rows(i).Cells(LIABILITY_LIMIT_BASED_ON).Controls(1).GetType().ToString = "System.Web.UI.WebControls.Label" Then
-                            Me.PopulateBOProperty(oCoverageConseqDamage(i), LIABILILTY_LIMIT_BASED_ON_PROPERTY, CType(moGridViewConseqDamage.Rows(i).Cells(LIABILITY_LIMIT_BASED_ON_Xcd).Controls(1), Label).Text)
+                        If TypeOf moGridViewConseqDamage.Rows(i).Cells(ColSeqLiabilityLimitBasedOn).Controls(1) Is Label Then
+                            PopulateBOProperty(oCoverageConseqDamage(i), NameOf(CoverageConseqDamage.LiabilityLimitBaseXcd), CType(moGridViewConseqDamage.Rows(i).Cells(ColSeqLiabilityLimitBasedOnXcd).Controls(1), Label).Text)
                         Else
-                            Me.PopulateBOProperty(oCoverageConseqDamage(i), LIABILILTY_LIMIT_BASED_ON_PROPERTY, CType(moGridViewConseqDamage.Rows(i).Cells(LIABILITY_LIMIT_BASED_ON).Controls(1), DropDownList).SelectedValue)
+                            PopulateBOProperty(oCoverageConseqDamage(i), NameOf(CoverageConseqDamage.LiabilityLimitBaseXcd), CType(moGridViewConseqDamage.Rows(i).Cells(ColSeqLiabilityLimitBasedOn).Controls(1), DropDownList).SelectedValue)
                         End If
 
 
-                        If moGridViewConseqDamage.Rows(i).Cells(FULFILMENT_METHOD).Controls(1).GetType().ToString = "System.Web.UI.WebControls.Label" Then
-                            Me.PopulateBOProperty(oCoverageConseqDamage(i), FULFILMENT_METHOD_PROPERTY, CType(moGridViewConseqDamage.Rows(i).Cells(FULFILMENT_METHOD_Xcd).Controls(1), Label).Text)
+                        If TypeOf moGridViewConseqDamage.Rows(i).Cells(ColSeqFulfillmentMethod).Controls(1) Is Label Then
+                            PopulateBOProperty(oCoverageConseqDamage(i), NameOf(CoverageConseqDamage.FulfilmentMethodXcd), CType(moGridViewConseqDamage.Rows(i).Cells(ColSeqFulfillmentMethodXcd).Controls(1), Label).Text)
                         Else
-                            Me.PopulateBOProperty(oCoverageConseqDamage(i), FULFILMENT_METHOD_PROPERTY, CType(moGridViewConseqDamage.Rows(i).Cells(FULFILMENT_METHOD).Controls(1), DropDownList).SelectedValue)
+                            PopulateBOProperty(oCoverageConseqDamage(i), NameOf(CoverageConseqDamage.FulfilmentMethodXcd), CType(moGridViewConseqDamage.Rows(i).Cells(ColSeqFulfillmentMethod).Controls(1), DropDownList).SelectedValue)
                         End If
                     End With
 
                 Next
-                Me.State.moCoverageConseqDamageList = oCoverageConseqDamage
+                State.CoverageConseqDamageList = oCoverageConseqDamage
             End If
         End Sub
-        Private Sub ConseqDamageGridView_RowCreated(ByVal sender As Object, ByVal e As System.Web.UI.WebControls.GridViewRowEventArgs) Handles moGridViewConseqDamage.RowCreated
+        Private Sub ConseqDamageGridView_RowCreated(ByVal sender As Object, ByVal e As GridViewRowEventArgs) Handles moGridViewConseqDamage.RowCreated
             Try
                 FillConseqDamageDropDownList(e.Row)
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.MasterPage.MessageController)
+                HandleErrors(ex, MasterPage.MessageController)
             End Try
         End Sub
-        Private Sub ConseqDamageGridView_RowDataBound(ByVal sender As System.Object, ByVal e As System.Web.UI.WebControls.GridViewRowEventArgs) Handles moGridViewConseqDamage.RowDataBound
+        Private Sub ConseqDamageGridView_RowDataBound(ByVal sender As Object, ByVal e As GridViewRowEventArgs) Handles moGridViewConseqDamage.RowDataBound
             Try
-                Dim rowType As DataControlRowType = CType(e.Row.RowType, DataControlRowType)
                 If (e.Row.RowType = DataControlRowType.DataRow) Then
 
-                    Dim EditButton_WRITE As ImageButton = DirectCast(e.Row.FindControl("EditButton_WRITE"), ImageButton)
-                    Dim DeleteButton_WRITE As ImageButton = DirectCast(e.Row.FindControl("DeleteButton_WRITE"), ImageButton)
+                    Dim editButtonWrite As ImageButton = DirectCast(e.Row.FindControl("EditButton_WRITE"), ImageButton)
+                    Dim deleteButtonWrite As ImageButton = DirectCast(e.Row.FindControl("DeleteButton_WRITE"), ImageButton)
                     Dim moConseqDamageEffectiveDateLabel As Label = DirectCast(e.Row.FindControl("moConseqDamageEffectiveDateLabel"), Label)
 
                     If Not moConseqDamageEffectiveDateLabel Is Nothing Then
                         If Not String.IsNullOrEmpty(moConseqDamageEffectiveDateLabel.Text) Then
                             If (DateTime.Now >= Convert.ToDateTime(moConseqDamageEffectiveDateLabel.Text)) Then
-                                ControlMgr.SetVisibleControl(Me, EditButton_WRITE, False)
-                                ControlMgr.SetVisibleControl(Me, DeleteButton_WRITE, False)
+                                ControlMgr.SetVisibleControl(Me, editButtonWrite, False)
+                                ControlMgr.SetVisibleControl(Me, deleteButtonWrite, False)
                             End If
                         End If
                     End If
 
-                    Dim rowState As DataControlRowState = CType(e.Row.RowState, DataControlRowState)
+                    Dim rowState As DataControlRowState = e.Row.RowState
                     If (rowState And DataControlRowState.Edit) = DataControlRowState.Edit Then
 
-                        Dim effectiveDateTextBox As TextBox = CType(e.Row.FindControl(P_EFFECTIVE_DATE_TEXTBOX_NAME), TextBox)
-                        Dim effectiveDateImageButton As ImageButton = CType(e.Row.FindControl(P_EFFECTIVE_DATE_IMAGEBUTTON_NAME), ImageButton)
-                        Dim expirationDateTextBox As TextBox = CType(e.Row.FindControl(P_EXPIRATION_DATE_TEXTBOX_NAME), TextBox)
-                        Dim expirationDateImageButton As ImageButton = CType(e.Row.FindControl(P_EXPIRATION_DATE_IMAGEBUTTON_NAME), ImageButton)
+                        Dim effectiveDateTextBox As TextBox = CType(e.Row.FindControl(ConseqDamageEffectiveDateText), TextBox)
+                        Dim effectiveDateImageButton As ImageButton = CType(e.Row.FindControl(ConseqDamageEffectiveDateButton), ImageButton)
+                        Dim expirationDateTextBox As TextBox = CType(e.Row.FindControl(ConseqDamageExpirationDateText), TextBox)
+                        Dim expirationDateImageButton As ImageButton = CType(e.Row.FindControl(ConseqDamageExpirationDateButton), ImageButton)
 
-                        Me.AddCalendar_New(effectiveDateImageButton, effectiveDateTextBox)
-                        Me.AddCalendar_New(expirationDateImageButton, expirationDateTextBox)
+                        AddCalendar_New(effectiveDateImageButton, effectiveDateTextBox)
+                        AddCalendar_New(expirationDateImageButton, expirationDateTextBox)
                     End If
                 End If
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.MasterPage.MessageController)
+                HandleErrors(ex, MasterPage.MessageController)
             End Try
 
 
@@ -2257,36 +2117,36 @@ Namespace Tables
 
             If Not moConseqDamageTypeDropdown Is Nothing Then
                 'moConseqDamageTypeDropdown.PopulateOld("PERILTYP", ListValueType.Description, ListValueType.ExtendedCode, PopulateBehavior.AddBlankListItem, String.Empty, ListValueType.Description)
-                Dim DamageTypeList As DataElements.ListItem() = CommonConfigManager.Current.ListManager.GetList(listCode:="PERILTYP", languageCode:=Thread.CurrentPrincipal.GetLanguageCode(), context:=New ListContext())
-                moConseqDamageTypeDropdown.Populate(DamageTypeList, New PopulateOptions() With
+                Dim damageTypeList As DataElements.ListItem() = CommonConfigManager.Current.ListManager.GetList(listCode:="PERILTYP", languageCode:=Thread.CurrentPrincipal.GetLanguageCode(), context:=New ListContext())
+                moConseqDamageTypeDropdown.Populate(damageTypeList, New PopulateOptions() With
                     {
                         .AddBlankItem = True,
                         .BlankItemValue = String.Empty,
-                        .TextFunc = AddressOf .GetDescription,
-                        .ValueFunc = AddressOf .GetExtendedCode
+                        .TextFunc = AddressOf PopulateOptions.GetDescription,
+                        .ValueFunc = AddressOf PopulateOptions.GetExtendedCode
                     })
             End If
             If Not moLiabilityLimitBasedOnDropdown Is Nothing Then
                 'moLiabilityLimitBasedOnDropdown.PopulateOld("PRODLILIMBASEDON", ListValueType.Description, ListValueType.ExtendedCode, PopulateBehavior.AddBlankListItem, String.Empty, ListValueType.Description)
-                Dim LiabilityLimitList As DataElements.ListItem() = CommonConfigManager.Current.ListManager.GetList(listCode:="PRODLILIMBASEDON", languageCode:=Thread.CurrentPrincipal.GetLanguageCode())
-                moLiabilityLimitBasedOnDropdown.Populate(LiabilityLimitList, New PopulateOptions() With
+                Dim liabilityLimitList As DataElements.ListItem() = CommonConfigManager.Current.ListManager.GetList(listCode:="PRODLILIMBASEDON", languageCode:=Thread.CurrentPrincipal.GetLanguageCode())
+                moLiabilityLimitBasedOnDropdown.Populate(liabilityLimitList, New PopulateOptions() With
                     {
                         .AddBlankItem = True,
                         .BlankItemValue = String.Empty,
-                        .TextFunc = AddressOf .GetDescription,
-                        .ValueFunc = AddressOf .GetExtendedCode
+                        .TextFunc = AddressOf PopulateOptions.GetDescription,
+                        .ValueFunc = AddressOf PopulateOptions.GetExtendedCode
                     })
                 BindSelectItem(Codes.COVERAGE_CONSEQ_DAMAGE_LIABILITY_LIMIT_BASED_ON_NOTAPPL, moLiabilityLimitBasedOnDropdown)
             End If
             If Not moFulfilmentMethodDropdown Is Nothing Then
                 'moFulfilmentMethodDropdown.PopulateOld("FULFILMETH", ListValueType.Description, ListValueType.ExtendedCode, PopulateBehavior.AddBlankListItem, String.Empty, ListValueType.Description)
-                Dim FulfilmentMethodList As DataElements.ListItem() = CommonConfigManager.Current.ListManager.GetList(listCode:="FULFILMETH", languageCode:=Thread.CurrentPrincipal.GetLanguageCode())
-                moFulfilmentMethodDropdown.Populate(FulfilmentMethodList, New PopulateOptions() With
+                Dim fulfilmentMethodList As DataElements.ListItem() = CommonConfigManager.Current.ListManager.GetList(listCode:="FULFILMETH", languageCode:=Thread.CurrentPrincipal.GetLanguageCode())
+                moFulfilmentMethodDropdown.Populate(fulfilmentMethodList, New PopulateOptions() With
                     {
                         .AddBlankItem = True,
                         .BlankItemValue = String.Empty,
-                        .TextFunc = AddressOf .GetDescription,
-                        .ValueFunc = AddressOf .GetExtendedCode
+                        .TextFunc = AddressOf PopulateOptions.GetDescription,
+                        .ValueFunc = AddressOf PopulateOptions.GetExtendedCode
                     })
                 BindSelectItem(Codes.COVERAGE_CONSEQ_DAMAGE_FULFILMENT_METHOD_REIMB, moFulfilmentMethodDropdown)
             End If
@@ -2317,39 +2177,27 @@ Namespace Tables
             ControlMgr.SetEnableControl(Me, btnCopy_WRITE, bIsReadWrite)
         End Sub
 
-        Private Sub enableDisableFields()
-            If Me.State.IsCoverageNew Then
-                Me.moCertificateDurationText.Enabled = True
-                Me.moCoverageDurationText.Enabled = True
-                Me.moCoverageTypeDrop.Enabled = True
-            Else
-                Me.moCertificateDurationText.Enabled = False
-                Me.moCoverageDurationText.Enabled = False
-                Me.moCoverageTypeDrop.Enabled = False
-            End If
-        End Sub
-
 #End Region
 
 #Region "Clear"
 
         Private Sub ClearCoverageRate()
-            If Not Me.State.IsNewWithCopy Then
+            If Not State.IsNewWithCopy Then
                 EnableRateButtons(False)
                 moGridView.DataBind()
             End If
         End Sub
 
         Private Sub ClearCoverageDeductible()
-            If Not Me.State.IsNewWithCopy Then
-                manageDeductibleButtons(True, False)
+            If Not State.IsNewWithCopy Then
+                ManageDeductibleButtons(True, False)
 
                 dedGridView.DataBind()
             End If
         End Sub
 
         Private Sub ClearTexts()
-            If Not Me.State.IsNewWithCopy Then
+            If Not State.IsNewWithCopy Then
                 moCertificateDurationText.Text = Nothing
                 moCoverageDurationText.Text = Nothing
                 moLiabilityText.Text = Nothing
@@ -2396,6 +2244,7 @@ Namespace Tables
 
         Private Sub ClearForDealer()
             ClearList(moMethodOfRepairDrop)
+            ClearList(moFulfillmentProviderDrop)
             ClearList(moFulfillmentProfileDrop)
             ClearForProduct()
             ClearList(moProductDrop)
@@ -2406,7 +2255,7 @@ Namespace Tables
             TheDealerControl.ClearMultipleDrop()
             ClearList(UseCoverageStartDateId)
             EnableUniqueFields()
-            SetLabelColor(Me.moAgentCodeLabel)
+            SetLabelColor(moAgentCodeLabel)
         End Sub
 
 #End Region
@@ -2442,12 +2291,12 @@ Namespace Tables
         Private Sub PopulateDealer()
 
             Try
-                Dim oDealerview As DataView = LookupListNew.GetDealerLookupList(ElitaPlusIdentity.Current.ActiveUser.Companies)
+                Dim oDealerView As DataView = LookupListNew.GetDealerLookupList(CurrentUser().Companies)
                 TheDealerControl.SetControl(True,
-                                            TheDealerControl.MODES.NEW_MODE,
+                                            MultipleColumnDDLabelControl.MODES.NEW_MODE,
                                             True,
-                                            oDealerview,
-                                            "* " + TranslationBase.TranslateLabelOrMessage(LABEL_SELECT_DEALERCODE),
+                                            oDealerView,
+                                            "* " + TranslationBase.TranslateLabelOrMessage(LabelSelectDealerCode),
                                             True, True,
 ,
                                             "multipleDropControl_moMultipleColumnDrop",
@@ -2456,7 +2305,7 @@ Namespace Tables
                                             False,
                                             0)
 
-                If Me.State.IsCoverageNew = True Then
+                If State.IsCoverageNew = True Then
                     TheDealerControl.NothingSelected = True
                     TheDealerControl.ChangeEnabledControlProperty(True)
                 Else
@@ -2467,7 +2316,7 @@ Namespace Tables
 
 
             Catch ex As Exception
-                Me.MasterPage.MessageController.AddError(COVERAGE_FORM002 & " " & ex.Message, True)
+                MasterPage.MessageController.AddError(CoverageForm002 & " " & ex.Message, True)
             End Try
         End Sub
 
@@ -2488,51 +2337,45 @@ Namespace Tables
                 ddlDepSchCashReimbursement.Populate(filteredDepreciationScheduleListForCompany, New PopulateOptions() With
                                                       {
                                                         .AddBlankItem = True,
-                                                        .TextFunc = AddressOf .GetCode,
-                                                        .SortFunc = AddressOf .GetCode
+                                                        .TextFunc = AddressOf PopulateOptions.GetCode,
+                                                        .SortFunc = AddressOf PopulateOptions.GetCode
                                                        })
             End If
         End Sub
         Private Sub PopulateProductCode()
             If TheDealerControl.SelectedIndex = NO_ITEM_SELECTED_INDEX Then Return
-            Dim oDealerId As Guid = TheDealerControl.SelectedGuid 'Me.GetSelectedItem(moDealerDrop)
-            Dim oLanguageId As Guid = ElitaPlusIdentity.Current.ActiveUser.LanguageId
-            'Dim oYesNoDataView As DataView = LookupListNew.GetYesNoLookupList(oLanguageId)
+            Dim oDealerId As Guid = TheDealerControl.SelectedGuid 'GetSelectedItem(moDealerDrop)
             Dim oYesNoList As DataElements.ListItem() = CommonConfigManager.Current.ListManager.GetList(listCode:="YESNO", languageCode:=Thread.CurrentPrincipal.GetLanguageCode())
 
             Try
-                'BindListControlToDataView(moProductDrop, LookupListNew.GetProductCodeLookupList(oDealerId), "CODE")
                 Dim listcontext As ListContext = New ListContext()
                 listcontext.DealerId = oDealerId
                 moProductDrop.Populate(CommonConfigManager.Current.ListManager.GetList(listCode:="ProductCodeByDealer", languageCode:=Thread.CurrentPrincipal.GetLanguageCode(), context:=listcontext), New PopulateOptions() With
                                                   {
                                                     .AddBlankItem = True,
-                                                    .TextFunc = AddressOf .GetCode,
-                                                    .SortFunc = AddressOf .GetCode
+                                                    .TextFunc = AddressOf PopulateOptions.GetCode,
+                                                    .SortFunc = AddressOf PopulateOptions.GetCode
                                                   })
 
-                'BindListControlToDataView(moReInsuredDrop, oYesNoDataView, , , True)
                 moReInsuredDrop.Populate(oYesNoList, New PopulateOptions() With
                                                    {
                                                     .AddBlankItem = True
                                                    })
 
-                If Me.State.IsCoverageNew = True Then
+                If State.IsCoverageNew = True Then
                     BindSelectItem(Nothing, moProductDrop)
                     ControlMgr.SetEnableControl(Me, moProductDrop, True)
 
                     BindSelectItem(Nothing, moReInsuredDrop)
-                    DisabledTabsList.Add(Tab_ATTRIBUTES)
+                    DisabledTabsList.Add(TabAttributes)
                     AttributeValues.Visible = False
                 Else
                     BindSelectItem(TheCoverage.ProductCodeId.ToString, moProductDrop)
                     ControlMgr.SetEnableControl(Me, moProductDrop, False)
 
-                    Dim oProductCode As New ProductCode(TheCoverage.ProductCodeId)
-
                     BindSelectItem(TheCoverage.IsReInsuredId.ToString, moReInsuredDrop)
 
-                    If TheCoverage.IsReInsuredId.Equals(Guid.Empty) Or LookupListNew.GetIdFromCode(LookupListNew.LK_YESNO, NO) = TheCoverage.IsReInsuredId Then
+                    If TheCoverage.IsReInsuredId.Equals(Guid.Empty) Or LookupListNew.GetIdFromCode(LookupListNew.LK_YESNO, LookupNo) = TheCoverage.IsReInsuredId Then
                         AttributeValues.Visible = True
                     End If
 
@@ -2545,7 +2388,7 @@ Namespace Tables
                 AttributeValues.DataBind()
                 PopulateRiskType()
             Catch ex As Exception
-                Me.MasterPage.MessageController.AddError(COVERAGE_FORM002 & " " & ex.Message, True)
+                MasterPage.MessageController.AddError(CoverageForm002 & " " & ex.Message, True)
             End Try
         End Sub
 
@@ -2554,14 +2397,14 @@ Namespace Tables
             Dim oProductId As Guid = GetSelectedItem(moProductDrop)
             Try
                 'BindListControlToDataView(moRiskDrop, LookupListNew.GetRiskProductCodeLookupList(oProductId))
-                Dim listcontext As ListContext = New ListContext()
-                listcontext.ProductCodeId = oProductId
-                moRiskDrop.Populate(CommonConfigManager.Current.ListManager.GetList(listCode:="ItemRiskTypeByProduct", languageCode:=Thread.CurrentPrincipal.GetLanguageCode(), context:=listcontext), New PopulateOptions() With
+                Dim listContext As ListContext = New ListContext()
+                listContext.ProductCodeId = oProductId
+                moRiskDrop.Populate(CommonConfigManager.Current.ListManager.GetList(listCode:="ItemRiskTypeByProduct", languageCode:=Thread.CurrentPrincipal.GetLanguageCode(), context:=listContext), New PopulateOptions() With
                                                   {
                                                     .AddBlankItem = True
                                                   })
 
-                If Me.State.IsCoverageNew = True Then
+                If State.IsCoverageNew = True Then
                     BindSelectItem(Nothing, moRiskDrop)
                     ControlMgr.SetEnableControl(Me, moRiskDrop, True)
                 Else
@@ -2571,17 +2414,17 @@ Namespace Tables
                 PopulateCoverageType()
                 PopulateItemNumber()
             Catch ex As Exception
-                Me.MasterPage.MessageController.AddError(COVERAGE_FORM002 & " " & ex.Message, True)
+                MasterPage.MessageController.AddError(CoverageForm002 & " " & ex.Message, True)
             End Try
         End Sub
         Private Sub EnableDisableCoverageLiabilityLimits()
             If moProductDrop.SelectedIndex = NO_ITEM_SELECTED_INDEX Then Return
             Dim oProductId As Guid = GetSelectedItem(moProductDrop)
-            Dim oproductLiabilityLimitBaseId As Guid = TheCoverage.GetProductLiabilityLimitBase(oProductId)
+            Dim oProductLiabilityLimitBaseId As Guid = Coverage.GetProductLiabilityLimitBase(oProductId)
             Try
-                Dim notAppicableId = LookupListNew.GetIdFromCode(LookupListNew.LK_PROD_LIABILITY_LIMIT_BASED_ON_TYPES, PROD_LIAB_BASED_ON_NOT_APP)
-                If (oproductLiabilityLimitBaseId.Equals(Guid.Empty) Or
-                    oproductLiabilityLimitBaseId = notAppicableId) Then
+                Dim notAppicableId = LookupListNew.GetIdFromCode(LookupListNew.LK_PROD_LIABILITY_LIMIT_BASED_ON_TYPES, ProdLiabBasedOnNotApp)
+                If (oProductLiabilityLimitBaseId.Equals(Guid.Empty) Or
+                    oProductLiabilityLimitBaseId = notAppicableId) Then
                     ControlMgr.SetVisibleControl(Me, moCoverageLiabilityLimitLabel, False)
                     ControlMgr.SetVisibleControl(Me, moCoverageLiabilityLimitText, False)
                     ControlMgr.SetVisibleControl(Me, moCoverageLiabilityLimitPercentLabel, False)
@@ -2596,47 +2439,42 @@ Namespace Tables
                     ControlMgr.SetVisibleControl(Me, moClaimLimitCountText, True)
                 End If
             Catch ex As Exception
-                Me.MasterPage.MessageController.AddError(COVERAGE_FORM002 & " " & ex.Message, True)
+                MasterPage.MessageController.AddError(CoverageForm002 & " " & ex.Message, True)
             End Try
         End Sub
 
         Private Sub PopulateCoverageType()
             If moRiskDrop.SelectedIndex = NO_ITEM_SELECTED_INDEX Then Return
-            'Dim oProductId As Guid = GetSelectedItem(moProductDrop)
-            'Dim oLanguageId As Guid = ElitaPlusIdentity.Current.ActiveUser.LanguageId
             Try
-                'Dim oCoverageTypeView As DataView = LookupListNew.GetItemRiskTypeLookupList(oProductId)
-                'BindListControlToDataView(moCoverageTypeDrop, LookupListNew.GetCoverageTypeByCompanyGroupLookupList(oLanguageId, ElitaPlusIdentity.Current.ActiveUser.CompanyGroup.Id, False), , , True)
-
-                Dim listcontext As ListContext = New ListContext()
-                listcontext.CompanyGroupId = ElitaPlusIdentity.Current.ActiveUser.CompanyGroup.Id
-                moCoverageTypeDrop.Populate(CommonConfigManager.Current.ListManager.GetList(listCode:="CoverageTypeByCompanyGroup", languageCode:=Thread.CurrentPrincipal.GetLanguageCode(), context:=listcontext), New PopulateOptions() With
+                Dim listContext As ListContext = New ListContext()
+                listContext.CompanyGroupId = CurrentUser().CompanyGroup.Id
+                moCoverageTypeDrop.Populate(CommonConfigManager.Current.ListManager.GetList(listCode:="CoverageTypeByCompanyGroup", languageCode:=Thread.CurrentPrincipal.GetLanguageCode(), context:=listContext), New PopulateOptions() With
                                                   {
                                                     .AddBlankItem = True
                                                   })
 
-                If IsPostBack And Not Me.State.IsUndo Then
-                    BindSelectItem(Me.State.selectedCoverageTypeId.ToString, moCoverageTypeDrop)
-                    Me.State.IsUndo = False
+                If IsPostBack And Not State.IsUndo Then
+                    BindSelectItem(State.SelectedCoverageTypeId.ToString, moCoverageTypeDrop)
+                    State.IsUndo = False
                 Else
                     BindSelectItem(TheCoverage.CoverageTypeId.ToString, moCoverageTypeDrop)
                 End If
                 PopulateRestCoverage()
             Catch ex As Exception
-                Me.MasterPage.MessageController.AddError(COVERAGE_FORM002 & " " & ex.Message, True)
+                MasterPage.MessageController.AddError(CoverageForm002 & " " & ex.Message, True)
             End Try
         End Sub
 
         Private Sub PopulateItemNumber()
             Dim oCoverageTypeView As DataView
-            If Me.moProductDrop.SelectedIndex > NO_ITEM_SELECTED_INDEX Then
+            If moProductDrop.SelectedIndex > NO_ITEM_SELECTED_INDEX Then
                 oCoverageTypeView = LookupListNew.GetItemRiskTypeLookupList(GetSelectedItem(moProductDrop))
                 If oCoverageTypeView.Count > 0 Then
                     Dim i As Integer
                     For i = 0 To oCoverageTypeView.Count - 1
-                        If oCoverageTypeView.Item(i).Item(COL_DESCRIPTION_NAME).ToString = moRiskDrop.SelectedItem.Text Then
-                            moItemNumberText.Text = oCoverageTypeView.Item(i).Item(COL_CODE_NAME).ToString
-                            Me.State.selectedItemId = New Guid(CType(oCoverageTypeView.Item(i).Item("id"), Byte()))
+                        If oCoverageTypeView.Item(i).Item(ColDescriptionName).ToString = moRiskDrop.SelectedItem.Text Then
+                            moItemNumberText.Text = oCoverageTypeView.Item(i).Item(ColCodeName).ToString
+                            State.SelectedItemId = New Guid(CType(oCoverageTypeView.Item(i).Item("id"), Byte()))
                             Exit For
                         End If
                     Next
@@ -2648,28 +2486,25 @@ Namespace Tables
         End Sub
 
         Private Sub PopulateEarningCode()
-            Dim oCompanyGroup As Guid = ElitaPlusIdentity.Current.ActiveUser.CompanyGroup.Id
             Try
-                'BindListControlToDataView(moEarningCodeDrop, LookupListNew.GetEarningCodeLookupList(oCompanyGroup), "CODE", , True)
-
-                Dim listcontext As ListContext = New ListContext()
-                listcontext.CompanyGroupId = ElitaPlusIdentity.Current.ActiveUser.CompanyGroup.Id
-                moEarningCodeDrop.Populate(CommonConfigManager.Current.ListManager.GetList(listCode:="EarningCodesByCompanyGroup", languageCode:=Thread.CurrentPrincipal.GetLanguageCode(), context:=listcontext), New PopulateOptions() With
+                Dim listContext As ListContext = New ListContext()
+                listContext.CompanyGroupId = CurrentUser().CompanyGroup.Id
+                moEarningCodeDrop.Populate(CommonConfigManager.Current.ListManager.GetList(listCode:="EarningCodesByCompanyGroup", languageCode:=Thread.CurrentPrincipal.GetLanguageCode(), context:=listContext), New PopulateOptions() With
                                                   {
                                                     .AddBlankItem = True,
-                                                    .TextFunc = AddressOf .GetCode,
-                                                    .SortFunc = AddressOf .GetCode
+                                                    .TextFunc = AddressOf PopulateOptions.GetCode,
+                                                    .SortFunc = AddressOf PopulateOptions.GetCode
                                                   })
 
-                If IsPostBack And Not Me.State.IsUndo Then
+                If IsPostBack And Not State.IsUndo Then
                     ' JLR - Restore Presviously Selected Values
-                    BindSelectItem(Me.State.selectedEarningCodeId.ToString, moEarningCodeDrop)
-                    Me.State.IsUndo = False
+                    BindSelectItem(State.SelectedEarningCodeId.ToString, moEarningCodeDrop)
+                    State.IsUndo = False
                 Else
                     BindSelectItem(TheCoverage.EarningCodeId.ToString, moEarningCodeDrop)
                 End If
             Catch ex As Exception
-                Me.MasterPage.MessageController.AddError(COVERAGE_FORM002 & " " & ex.Message, True)
+                MasterPage.MessageController.AddError(CoverageForm002 & " " & ex.Message, True)
             End Try
         End Sub
 
@@ -2679,13 +2514,13 @@ Namespace Tables
                 moTaxTypeDrop.Populate(CommonConfigManager.Current.ListManager.GetList("TTYP", Thread.CurrentPrincipal.GetLanguageCode()), New PopulateOptions() With
                  {
                     .AddBlankItem = True,
-                    .ValueFunc = AddressOf .GetExtendedCode
+                    .ValueFunc = AddressOf PopulateOptions.GetExtendedCode
                 })
 
-                If IsPostBack And Not Me.State.IsUndo Then
-                    ' JLR - Restore Presviously Selected Values
-                    BindSelectItem(Me.State.selectedTaxTypeXCD.ToString, moTaxTypeDrop)
-                    Me.State.IsUndo = False
+                If IsPostBack And Not State.IsUndo Then
+                    ' JLR - Restore Previously Selected Values
+                    BindSelectItem(State.SelectedTaxTypeXcd.ToString, moTaxTypeDrop)
+                    State.IsUndo = False
                 Else
 
                     If TheCoverage.TaxTypeXCD Is Nothing Then
@@ -2697,12 +2532,11 @@ Namespace Tables
                 End If
 
             Catch ex As Exception
-                Me.MasterPage.MessageController.AddError(COVERAGE_FORM002 & " " & ex.Message, True)
+                MasterPage.MessageController.AddError(CoverageForm002 & " " & ex.Message, True)
             End Try
         End Sub
 
         Private Sub PopulateProductItem()
-            Dim oLanguageId As Guid = ElitaPlusIdentity.Current.ActiveUser.LanguageId
             Try
                 'BindListControlToDataView(moProductItemDrop, LookupListNew.GetProductItemLookupList(oLanguageId), , , True)
                 Dim oProductItemList As DataElements.ListItem() = CommonConfigManager.Current.ListManager.GetList(listCode:="PRODI", languageCode:=Thread.CurrentPrincipal.GetLanguageCode())
@@ -2711,46 +2545,46 @@ Namespace Tables
                                                     .AddBlankItem = True
                                                    })
 
-                If IsPostBack And Not Me.State.IsUndo Then
+                If IsPostBack And Not State.IsUndo Then
                     ' JLR - Restore Presviously Selected Values
-                    BindSelectItem(Me.State.selectedProductItemId.ToString, moProductItemDrop)
-                    Me.State.IsUndo = False
+                    BindSelectItem(State.SelectedProductItemId.ToString, moProductItemDrop)
+                    State.IsUndo = False
                 Else
                     BindSelectItem(TheCoverage.ProductItemId.ToString, moProductItemDrop)
                 End If
             Catch ex As Exception
-                Me.MasterPage.MessageController.AddError(TranslationBase.TranslateLabelOrMessage(COVERAGE_FORM002, ElitaPlusIdentity.Current.ActiveUser.LanguageId) & " " & ex.Message)
+                MasterPage.MessageController.AddError(TranslationBase.TranslateLabelOrMessage(CoverageForm002, GetLanguageId()) & " " & ex.Message)
             End Try
         End Sub
 
         Private Sub PopulateOffsetMethod()
-            'Dim oLanguageId As Guid = ElitaPlusIdentity.Current.ActiveUser.LanguageId
+            'Dim oLanguageId As Guid = GetLanguageId()
             Try
                 'BindListTextToDataView(moOffsetMethodDrop, LookupListNew.DropdownLookupList("COVERAGE_OFFSET_METHOD", oLanguageId), , "Code", True)
                 moOffsetMethodDrop.Populate(CommonConfigManager.Current.ListManager.GetList(listCode:="COVERAGE_OFFSET_METHOD", languageCode:=Thread.CurrentPrincipal.GetLanguageCode()), New PopulateOptions() With
                                                   {
                                                     .AddBlankItem = True,
                                                     .BlankItemValue = "0",
-                                                    .ValueFunc = AddressOf .GetCode
+                                                    .ValueFunc = AddressOf PopulateOptions.GetCode
                                                   })
 
-                If IsPostBack And Not Me.State.IsUndo Then
+                If IsPostBack And Not State.IsUndo Then
                     'Def-26342: Added condition to check null value for selectedOffsetMethod
-                    If Not Me.State.selectedOffsetMethod Is Nothing Then
-                        BindSelectItem(Me.State.selectedOffsetMethod.ToString, moOffsetMethodDrop)
-                        Me.State.IsUndo = False
+                    If Not State.SelectedOffsetMethod Is Nothing Then
+                        BindSelectItem(State.SelectedOffsetMethod.ToString, moOffsetMethodDrop)
+                        State.IsUndo = False
                     End If
 
                 Else
                     BindSelectItem(TheCoverage.OffsetMethod.ToString, moOffsetMethodDrop)
                 End If
             Catch ex As Exception
-                Me.MasterPage.MessageController.AddError(TranslationBase.TranslateLabelOrMessage(COVERAGE_FORM002, ElitaPlusIdentity.Current.ActiveUser.LanguageId) & " " & ex.Message)
+                MasterPage.MessageController.AddError(TranslationBase.TranslateLabelOrMessage(CoverageForm002, GetLanguageId()) & " " & ex.Message)
             End Try
         End Sub
 
         Private Sub PopulateOptional()
-            'Dim oLanguageId As Guid = ElitaPlusIdentity.Current.ActiveUser.LanguageId
+            'Dim oLanguageId As Guid = GetLanguageId()
             Try
                 'BindListControlToDataView(moOptionalDrop, LookupListNew.GetYesNoLookupList(oLanguageId), , , True)
                 Dim oYesNoList As DataElements.ListItem() = CommonConfigManager.Current.ListManager.GetList(listCode:="YESNO", languageCode:=Thread.CurrentPrincipal.GetLanguageCode())
@@ -2758,93 +2592,87 @@ Namespace Tables
                                                    {
                                                     .AddBlankItem = True
                                                    })
-                If IsPostBack And Not Me.State.IsUndo Then
+                If IsPostBack And Not State.IsUndo Then
                     ' JLR - Restore Presviously Selected Values
-                    BindSelectItem(Me.State.selectedOptionalId.ToString, moOptionalDrop)
-                    Me.State.IsUndo = False
+                    BindSelectItem(State.SelectedOptionalId.ToString, moOptionalDrop)
+                    State.IsUndo = False
                 Else
                     BindSelectItem(TheCoverage.OptionalId.ToString, moOptionalDrop)
                 End If
             Catch ex As Exception
-                Me.MasterPage.MessageController.AddError(TranslationBase.TranslateLabelOrMessage(COVERAGE_FORM002, ElitaPlusIdentity.Current.ActiveUser.LanguageId) & " " & ex.Message)
+                MasterPage.MessageController.AddError(TranslationBase.TranslateLabelOrMessage(CoverageForm002, GetLanguageId()) & " " & ex.Message)
             End Try
         End Sub
 
         Private Sub PopulateClaimAllowed()
-            Dim oLanguageId As Guid = ElitaPlusIdentity.Current.ActiveUser.LanguageId
             Try
-                'Dim i As Integer
-                Dim oYes_String As String
-                'Dim yesNoLkL As DataView = LookupListNew.DropdownLookupList("YESNO", oLanguageId, True)
+                Dim oYesString As String
                 Dim oYesNoList As DataElements.ListItem() = CommonConfigManager.Current.ListManager.GetList(listCode:="YESNO", languageCode:=Thread.CurrentPrincipal.GetLanguageCode())
 
-                'BindListControlToDataView(Me.moIsClaimAllowedDrop, yesNoLkL)
-                Me.moIsClaimAllowedDrop.Populate(oYesNoList, New PopulateOptions() With
+                moIsClaimAllowedDrop.Populate(oYesNoList, New PopulateOptions() With
                                                    {
                                                     .AddBlankItem = True
                                                    })
 
-                If Me.State.IsCoverageNew = True Then
-                    oYes_String = (From lst In oYesNoList
-                                   Where lst.Code = "Y"
-                                   Select lst.Translation).FirstOrDefault()
-                    'For i = 0 To yesNoLkL.Count - 1
-                    '    If CType(yesNoLkL(i)("Code"), String) = YES Then
-                    '        oYes_String = CType(yesNoLkL(i)("Description"), String)
-                    '        Exit For
-                    '    End If
-                    'Next
-
-                    Me.moIsClaimAllowedDrop.Items.FindByText(oYes_String).Selected = True
+                If State.IsCoverageNew = True Then
+                    oYesString = (From lst In oYesNoList
+                                  Where lst.Code = "Y"
+                                  Select lst.Translation).FirstOrDefault()
+                    moIsClaimAllowedDrop.Items.FindByText(oYesString).Selected = True
                 Else
-                    If IsPostBack And Not Me.State.IsUndo Then
-                        BindSelectItem(Me.State.selectedIsClaimAllowedId.ToString, moIsClaimAllowedDrop)
-                        Me.State.IsUndo = False
+                    If IsPostBack And Not State.IsUndo Then
+                        BindSelectItem(State.SelectedIsClaimAllowedId.ToString, moIsClaimAllowedDrop)
+                        State.IsUndo = False
                     Else
                         BindSelectItem(TheCoverage.IsClaimAllowedId.ToString, moIsClaimAllowedDrop)
                     End If
                 End If
             Catch ex As Exception
-                Me.MasterPage.MessageController.AddError(TranslationBase.TranslateLabelOrMessage(COVERAGE_FORM002, ElitaPlusIdentity.Current.ActiveUser.LanguageId) & " " & ex.Message)
+                MasterPage.MessageController.AddError(TranslationBase.TranslateLabelOrMessage(CoverageForm002, GetLanguageId()) & " " & ex.Message)
             End Try
         End Sub
 
         Private Sub PopulateDropdown()
-            Dim oLanguageId As Guid = ElitaPlusIdentity.Current.ActiveUser.LanguageId
-            'Dim noId As Guid = LookupListNew.GetIdFromCode(LookupListNew.GetYesNoLookupList(oLanguageId), "N")
-            'Dim yesNoLkL As DataView = LookupListNew.DropdownLookupList("YESNO", oLanguageId)
             Dim oYesNoList As DataElements.ListItem() = CommonConfigManager.Current.ListManager.GetList(listCode:="YESNO", languageCode:=Thread.CurrentPrincipal.GetLanguageCode())
             Dim noId As Guid = (From lst In oYesNoList
                                 Where lst.Code = "N"
                                 Select lst.ListItemId).FirstOrDefault()
-            'BindListControlToDataView(Me.UseCoverageStartDateId, yesNoLkL, , , False)
-            Me.UseCoverageStartDateId.Populate(oYesNoList, New PopulateOptions() With
+            UseCoverageStartDateId.Populate(oYesNoList, New PopulateOptions() With
                                                    {
                                                     .AddBlankItem = False
                                                    })
 
-            'BindListControlToDataView(Me.moRecoverDeciveDrop, yesNoLkL, , , False)
-            Me.moRecoverDeciveDrop.Populate(oYesNoList, New PopulateOptions() With
+            moRecoverDeciveDrop.Populate(oYesNoList, New PopulateOptions() With
                                                    {
                                                     .AddBlankItem = False
                                                    })
 
-            If Me.State.IsCoverageNew Then
-                SetSelectedItem(Me.UseCoverageStartDateId, noId)
-                SetSelectedItem(Me.moRecoverDeciveDrop, noId)
+            If State.IsCoverageNew Then
+                SetSelectedItem(UseCoverageStartDateId, noId)
+                SetSelectedItem(moRecoverDeciveDrop, noId)
             Else
-                SetSelectedItem(Me.UseCoverageStartDateId, TheCoverage.UseCoverageStartDateId)
-                SetSelectedItem(Me.moRecoverDeciveDrop, TheCoverage.RecoverDeviceId)
+                SetSelectedItem(UseCoverageStartDateId, TheCoverage.UseCoverageStartDateId)
+                SetSelectedItem(moRecoverDeciveDrop, TheCoverage.RecoverDeviceId)
             End If
             PopulateDepreciationScheduleDropdown()
-            'BindListControlToDataView(moMethodOfRepairDrop, LookupListNew.GetMethodOfRepairLookupList(oLanguageId), , , True)
             moMethodOfRepairDrop.Populate(CommonConfigManager.Current.ListManager.GetList("METHR", Thread.CurrentPrincipal.GetLanguageCode()), New PopulateOptions() With
                                                   {
                                                     .AddBlankItem = True
                                                   })
 
-            SetSelectedItem(Me.moMethodOfRepairDrop, TheCoverage.MethodOfRepairId)
+            SetSelectedItem(moMethodOfRepairDrop, TheCoverage.MethodOfRepairId)
 
+            '
+            Dim fulfillmentProviderList = CommonConfigManager.Current.ListManager.GetList("FULFILLMENT_PROVIDER", Thread.CurrentPrincipal.GetLanguageCode())
+
+
+            moFulfillmentProviderDrop.Populate(fulfillmentProviderList, New PopulateOptions() With
+                                                 {.AddBlankItem = True, .BlankItemValue = String.Empty, .ValueFunc = AddressOf PopulateOptions.GetExtendedCode, .SortFunc = AddressOf PopulateOptions.GetDescription})
+
+            ControlMgr.SetEnableControl(Me, moFulfillmentProviderDrop, True)
+            If Not String.IsNullOrEmpty(TheCoverage.FulfillmentProviderXcd) Then
+                SetSelectedItem(moFulfillmentProviderDrop, TheCoverage.FulfillmentProviderXcd)
+            End If
 
             '
             Dim fulfillmentProfileList = CommonConfigManager.Current.ListManager.GetList(ListCodes.FulfillmentProfile, Thread.CurrentPrincipal.GetLanguageCode())
@@ -2854,12 +2682,12 @@ Namespace Tables
 
             ControlMgr.SetEnableControl(Me, moFulfillmentProfileDrop, True)
             If Not String.IsNullOrEmpty(TheCoverage.FulfillmentProfileCode) Then
-                SetSelectedItem(Me.moFulfillmentProfileDrop, TheCoverage.FulfillmentProfileCode)
+                SetSelectedItem(moFulfillmentProfileDrop, TheCoverage.FulfillmentProfileCode)
             End If
 
             'BindListControlToDataView(cboDeductibleBasedOn, LookupListNew.GetComputeDeductibleBasedOnAndExpressions(oLanguageId), , , True)
             Dim listcontext As ListContext = New ListContext()
-            listcontext.LanguageId = ElitaPlusIdentity.Current.ActiveUser.LanguageId
+            listcontext.LanguageId = GetLanguageId()
             cboDeductibleBasedOn.Populate(CommonConfigManager.Current.ListManager.GetList(listCode:="ComputeDeductibleBasedOnAndExpressions", languageCode:=Thread.CurrentPrincipal.GetLanguageCode(), context:=listcontext), New PopulateOptions() With
                                                   {
                                                     .AddBlankItem = True
@@ -2867,26 +2695,26 @@ Namespace Tables
 
             Dim deductibleBasedOnCode As String = LookupListNew.GetCodeFromId(LookupListNew.LK_DEDUCTIBLE_BASED_ON, TheCoverage.DeductibleBasedOnId)
             If (String.IsNullOrWhiteSpace(deductibleBasedOnCode)) Then
-                SetSelectedItem(Me.cboDeductibleBasedOn, LookupListNew.GetIdFromCode(LookupListNew.LK_DEDUCTIBLE_BASED_ON, Codes.DEDUCTIBLE_BASED_ON__FIXED))
+                SetSelectedItem(cboDeductibleBasedOn, LookupListNew.GetIdFromCode(LookupListNew.LK_DEDUCTIBLE_BASED_ON, Codes.DEDUCTIBLE_BASED_ON__FIXED))
             ElseIf deductibleBasedOnCode = Codes.DEDUCTIBLE_BASED_ON__EXPRESSION Then
-                SetSelectedItem(Me.cboDeductibleBasedOn, TheCoverage.DeductibleExpressionId)
+                SetSelectedItem(cboDeductibleBasedOn, TheCoverage.DeductibleExpressionId)
             Else
-                SetSelectedItem(Me.cboDeductibleBasedOn, TheCoverage.DeductibleBasedOnId)
+                SetSelectedItem(cboDeductibleBasedOn, TheCoverage.DeductibleBasedOnId)
             End If
         End Sub
 
         Private Sub PopulateCoveragePricing()
-            Dim oLanguageId As Guid = ElitaPlusIdentity.Current.ActiveUser.LanguageId
+            Dim oLanguageId As Guid = GetLanguageId()
             If moProductDrop.SelectedIndex = -1 Then Return
             Dim oProductId As Guid = GetSelectedItem(moProductDrop)
             Try
                 Dim oPriceMatrixView As DataView = LookupListNew.GetPriceMatrixLookupList(oProductId, oLanguageId)
                 If oPriceMatrixView.Count > 0 Then
-                    moCoveragePricingText.Text = oPriceMatrixView.Item(FIRST_POS).Item(COL_DESCRIPTION_NAME).ToString
+                    moCoveragePricingText.Text = oPriceMatrixView.Item(FirstPos).Item(ColDescriptionName).ToString
                 End If
 
             Catch ex As Exception
-                Me.MasterPage.MessageController.AddError(TranslationBase.TranslateLabelOrMessage(COVERAGE_FORM002, ElitaPlusIdentity.Current.ActiveUser.LanguageId) & " " & ex.Message)
+                MasterPage.MessageController.AddError(TranslationBase.TranslateLabelOrMessage(CoverageForm002, GetLanguageId()) & " " & ex.Message)
             End Try
         End Sub
 
@@ -2896,52 +2724,52 @@ Namespace Tables
             Try
                 Dim oPercentOfRetailDataview As DataView = LookupListNew.GetPercentOfRetailLookup(oProductId)
                 If oPercentOfRetailDataview.Count > 0 Then
-                    If oPercentOfRetailDataview.Item(FIRST_POS).Item(COL_CODE_NAME) Is System.DBNull.Value Then
+                    If oPercentOfRetailDataview.Item(FirstPos).Item(ColCodeName) Is DBNull.Value Then
                         TheCoverage.PercentOfRetail = New DecimalType(0)
                     Else
-                        TheCoverage.PercentOfRetail = New DecimalType(CType(oPercentOfRetailDataview.Item(FIRST_POS).Item(COL_CODE_NAME), Decimal))
+                        TheCoverage.PercentOfRetail = New DecimalType(CType(oPercentOfRetailDataview.Item(FirstPos).Item(ColCodeName), Decimal))
                     End If
                     PopulateControlFromBOProperty(moRetailText, TheCoverage.PercentOfRetail)
 
                 End If
             Catch ex As Exception
-                Me.MasterPage.MessageController.AddError(TranslationBase.TranslateLabelOrMessage(COVERAGE_FORM002, ElitaPlusIdentity.Current.ActiveUser.LanguageId) & " " & ex.Message)
+                MasterPage.MessageController.AddError(TranslationBase.TranslateLabelOrMessage(CoverageForm002, GetLanguageId()) & " " & ex.Message)
 
             End Try
         End Sub
 
         Private Sub PopulateTexts()
             Try
-                If IsPostBack And Not Me.State.IsUndo Then
+                If IsPostBack And Not State.IsUndo Then
                     ' JLR - Restore Presviously Selected Values
-                    moOffsetText.Text = Me.State.selectedOffset
-                    txtMarkupDistPercent.Text = Me.State.selectedMarkupDistnPercent
-                    txtOffsetDays.Text = Me.State.selectedOffsetDays
-                    moEffectiveText.Text = Me.State.selectedEffective
-                    moExpirationText.Text = Me.State.selectedExpiration
-                    moCertificateDurationText.Text = Me.State.selectedCertificateDuration
-                    moCoverageDurationText.Text = Me.State.selectedCoverageDuration
-                    moLiabilityText.Text = Me.State.selectedLiability
-                    moLiabilityLimitPercentText.Text = Me.State.selectedLiabilityLimitPercent
-                    moDeductibleText.Text = Me.State.selectedDeductible
-                    moDeductiblePercentText.Text = Me.State.selectedDeductiblePercent
-                    moCovDeductibleText.Text = Me.State.selectedCovDeductible
-                    moRepairDiscountPctText.Text = Me.State.selectedRepairDiscountPct
-                    moReplacementDiscountPctText.Text = Me.State.selectedReplacementDiscountPct
-                    moAgentcodeText.Text = Me.State.selectedAgentCode
-                    moCoverageLiabilityLimitText.Text = Me.State.selectedCoverageLiabilityLimit
-                    moPerIncidentLiabilityLimitCapText.Text = Me.State.selectedPerIncidentLiabilityLimitCap
-                    moCoverageLiabilityLimitPercentText.Text = Me.State.selectedCoverageLiabilityLimitPercent
-                    moClaimLimitCountText.Text = Me.State.selectedClaimLimitCount
+                    moOffsetText.Text = State.SelectedOffset
+                    txtMarkupDistPercent.Text = State.SelectedMarkupDistnPercent
+                    txtOffsetDays.Text = State.SelectedOffsetDays
+                    moEffectiveText.Text = State.SelectedEffective
+                    moExpirationText.Text = State.SelectedExpiration
+                    moCertificateDurationText.Text = State.SelectedCertificateDuration
+                    moCoverageDurationText.Text = State.SelectedCoverageDuration
+                    moLiabilityText.Text = State.SelectedLiability
+                    moLiabilityLimitPercentText.Text = State.SelectedLiabilityLimitPercent
+                    moDeductibleText.Text = State.SelectedDeductible
+                    moDeductiblePercentText.Text = State.SelectedDeductiblePercent
+                    moCovDeductibleText.Text = State.SelectedCovDeductible
+                    moRepairDiscountPctText.Text = State.SelectedRepairDiscountPct
+                    moReplacementDiscountPctText.Text = State.SelectedReplacementDiscountPct
+                    moAgentcodeText.Text = State.SelectedAgentCode
+                    moCoverageLiabilityLimitText.Text = State.SelectedCoverageLiabilityLimit
+                    moPerIncidentLiabilityLimitCapText.Text = State.SelectedPerIncidentLiabilityLimitCap
+                    moCoverageLiabilityLimitPercentText.Text = State.SelectedCoverageLiabilityLimitPercent
+                    moClaimLimitCountText.Text = State.SelectedClaimLimitCount
                     If Not TheDepreciationSchedule.IsDeleted Then
                         BindSelectItem(TheDepreciationSchedule.DepreciationScheduleId.ToString, ddlDepSchCashReimbursement)
                     End If
-                    Me.State.IsUndo = False
+                    State.IsUndo = False
                 Else
                     ' JLR - Otherwise load values from BO unless it is new with copy
                     ' In that case, BO has been cleared but we want to preserve the values 
                     ' already in the screen
-                    If Not Me.State.IsNewWithCopy Then
+                    If Not State.IsNewWithCopy Then
                         PopulateControlFromBOProperty(moCertificateDurationText, TheCoverage.CertificateDuration)
                         PopulateControlFromBOProperty(moCoverageDurationText, TheCoverage.CoverageDuration)
                         PopulateControlFromBOProperty(moLiabilityText, TheCoverage.LiabilityLimit)
@@ -2970,7 +2798,7 @@ Namespace Tables
                         PopulateControlFromBOProperty(moCoverageLiabilityLimitPercentText, TheCoverage.CoverageLiabilityLimitPercent)
                         Dim oProductLiabilityLimitBaseId As Guid = TheCoverage.ProdLiabilityLimitBaseId
 
-                        If (oProductLiabilityLimitBaseId.Equals(Guid.Empty) Or oProductLiabilityLimitBaseId = LookupListNew.GetIdFromCode(LookupListNew.LK_PROD_LIABILITY_LIMIT_BASED_ON_TYPES, PROD_LIAB_BASED_ON_NOT_APP)) Then
+                        If (oProductLiabilityLimitBaseId.Equals(Guid.Empty) Or oProductLiabilityLimitBaseId = LookupListNew.GetIdFromCode(LookupListNew.LK_PROD_LIABILITY_LIMIT_BASED_ON_TYPES, ProdLiabBasedOnNotApp)) Then
                             ControlMgr.SetVisibleControl(Me, moCoverageLiabilityLimitLabel, False)
                             ControlMgr.SetVisibleControl(Me, moCoverageLiabilityLimitText, False)
                             ControlMgr.SetVisibleControl(Me, moCoverageLiabilityLimitPercentLabel, False)
@@ -3001,46 +2829,24 @@ Namespace Tables
                     End If
                 End If
             Catch ex As Exception
-                Me.MasterPage.MessageController.AddError(TranslationBase.TranslateLabelOrMessage(COVERAGE_FORM002, ElitaPlusIdentity.Current.ActiveUser.LanguageId) & " " & ex.Message)
+                MasterPage.MessageController.AddError(TranslationBase.TranslateLabelOrMessage(CoverageForm002, GetLanguageId()) & " " & ex.Message)
             End Try
         End Sub
 
         Private Sub LoadCurrencyOfCoverage()
-            If Not Me.State.IsCoverageNew Then
-                ControlMgr.SetEnableControl(Me, Me.TextBoxCurrencyOfCoverage, False)
-                Dim currencyOfCoveragedv As DataView = TheCoverage.GetCurrencyOfCoverage(TheCoverage.Id)
+            If Not State.IsCoverageNew Then
+                ControlMgr.SetEnableControl(Me, TextBoxCurrencyOfCoverage, False)
+                Dim currencyOfCoveragedv As DataView = Coverage.GetCurrencyOfCoverage(TheCoverage.Id)
                 If currencyOfCoveragedv.Count > 1 Or currencyOfCoveragedv.Count = 0 Then
-                    Throw New GUIException("", Assurant.ElitaPlus.Common.ErrorCodes.COVERAGE_NONE_OR_MORE_THAN_ONE_CONTRACT_IN_EFFECT_FOUND_ERR)
+                    Throw New GUIException("", ElitaPlus.Common.ErrorCodes.COVERAGE_NONE_OR_MORE_THAN_ONE_CONTRACT_IN_EFFECT_FOUND_ERR)
                 Else
-                    Me.PopulateControlFromBOProperty(Me.TextBoxCurrencyOfCoverage, currencyOfCoveragedv.Table.Rows(0).Item(0))
+                    PopulateControlFromBOProperty(TextBoxCurrencyOfCoverage, currencyOfCoveragedv.Table.Rows(0).Item(0))
                 End If
             Else
-                ControlMgr.SetVisibleControl(Me, Me.currLabelDiv, False)
-                ControlMgr.SetVisibleControl(Me, Me.currTextBoxDiv, False)
+                ControlMgr.SetVisibleControl(Me, currLabelDiv, False)
+                ControlMgr.SetVisibleControl(Me, currTextBoxDiv, False)
             End If
 
-        End Sub
-
-        Private Sub GetCoverageDeductible()
-            Dim oLanguageId As Guid = ElitaPlusIdentity.Current.ActiveUser.LanguageId
-            Dim oDealerId As Guid = TheDealerControl.SelectedGuid
-            Dim oEffectiveDate As String
-            Dim tempdate As Date
-            tempdate = DateHelper.GetDateValue(moEffectiveText.Text)
-            oEffectiveDate = tempdate.ToString("yyyyMMdd")
-            Try
-                Dim oCDView As DataView = TheCoverage.GetCoverageDeductable(oDealerId, oEffectiveDate, oLanguageId)
-                If oCDView.Count > 0 Then
-                    moCovDeductibleText.Text = oCDView.Item(FIRST_POS).Item(COL_DESCRIPTION_NAME).ToString
-                Else
-                    moCovDeductibleText.Text = Nothing
-                    moDeductiblePercentText.Enabled = False
-                    moDeductibleText.Enabled = False
-                End If
-
-            Catch ex As Exception
-                Me.MasterPage.MessageController.AddError(TranslationBase.TranslateLabelOrMessage(COVERAGE_FORM002, ElitaPlusIdentity.Current.ActiveUser.LanguageId) & " " & ex.Message)
-            End Try
         End Sub
 
         Private Sub CoverageMarkupDistribution()
@@ -3048,15 +2854,15 @@ Namespace Tables
             Try
                 oContract = Contract.GetMaxExpirationContract(TheCoverage.DealerId)
                 If Not oContract Is Nothing And oContract.AllowCoverageMarkupDistribution.Equals(LookupListNew.GetIdFromCode(LookupListNew.LK_YESNO, Codes.YESNO_Y)) Then
-                    ControlMgr.SetVisibleControl(Me, Me.lblMarkupDistPercent, True)
-                    ControlMgr.SetVisibleControl(Me, Me.txtMarkupDistPercent, True)
+                    ControlMgr.SetVisibleControl(Me, lblMarkupDistPercent, True)
+                    ControlMgr.SetVisibleControl(Me, txtMarkupDistPercent, True)
                 Else
-                    ControlMgr.SetVisibleControl(Me, Me.lblMarkupDistPercent, False)
-                    ControlMgr.SetVisibleControl(Me, Me.txtMarkupDistPercent, False)
+                    ControlMgr.SetVisibleControl(Me, lblMarkupDistPercent, False)
+                    ControlMgr.SetVisibleControl(Me, txtMarkupDistPercent, False)
                 End If
             Catch ex As Exception
-                ControlMgr.SetVisibleControl(Me, Me.lblMarkupDistPercent, False)
-                ControlMgr.SetVisibleControl(Me, Me.txtMarkupDistPercent, False)
+                ControlMgr.SetVisibleControl(Me, lblMarkupDistPercent, False)
+                ControlMgr.SetVisibleControl(Me, txtMarkupDistPercent, False)
             End Try
         End Sub
 #End Region
@@ -3066,82 +2872,88 @@ Namespace Tables
         Private Sub PopulateBOsFromForm()
             With TheCoverage
                 If TheDealerControl.SelectedIndex > NO_ITEM_SELECTED_INDEX Then PopulateBOProperty(TheCoverage, "DealerId", TheDealerControl.SelectedGuid)
-                If moProductDrop.SelectedIndex > NO_ITEM_SELECTED_INDEX Then Me.PopulateBOProperty(TheCoverage, "ProductCodeId", moProductDrop)
-                If moRiskDrop.SelectedIndex > NO_ITEM_SELECTED_INDEX Then Me.PopulateBOProperty(TheCoverage, "RiskTypeId", moRiskDrop)
-                If moCoverageTypeDrop.SelectedIndex > NO_ITEM_SELECTED_INDEX Then Me.PopulateBOProperty(TheCoverage, "CoverageTypeId", moCoverageTypeDrop)
-                If moProductItemDrop.SelectedIndex > NO_ITEM_SELECTED_INDEX Then Me.PopulateBOProperty(TheCoverage, "ProductItemId", moProductItemDrop)
-                If moOptionalDrop.SelectedIndex > NO_ITEM_SELECTED_INDEX Then Me.PopulateBOProperty(TheCoverage, "OptionalId", moOptionalDrop)
-                If moIsClaimAllowedDrop.SelectedIndex > NO_ITEM_SELECTED_INDEX Then Me.PopulateBOProperty(TheCoverage, "IsClaimAllowedId", moIsClaimAllowedDrop)
+                If moProductDrop.SelectedIndex > NO_ITEM_SELECTED_INDEX Then PopulateBOProperty(TheCoverage, "ProductCodeId", moProductDrop)
+                If moRiskDrop.SelectedIndex > NO_ITEM_SELECTED_INDEX Then PopulateBOProperty(TheCoverage, "RiskTypeId", moRiskDrop)
+                If moCoverageTypeDrop.SelectedIndex > NO_ITEM_SELECTED_INDEX Then PopulateBOProperty(TheCoverage, "CoverageTypeId", moCoverageTypeDrop)
+                If moProductItemDrop.SelectedIndex > NO_ITEM_SELECTED_INDEX Then PopulateBOProperty(TheCoverage, "ProductItemId", moProductItemDrop)
+                If moOptionalDrop.SelectedIndex > NO_ITEM_SELECTED_INDEX Then PopulateBOProperty(TheCoverage, "OptionalId", moOptionalDrop)
+                If moIsClaimAllowedDrop.SelectedIndex > NO_ITEM_SELECTED_INDEX Then PopulateBOProperty(TheCoverage, "IsClaimAllowedId", moIsClaimAllowedDrop)
 
                 'REQ-5358
                 TheCoverage.OffsetMethod = GetSelectedValue(moOffsetMethodDrop)
                 TheCoverage.OffsetMethodId = LookupListNew.GetIdFromCode("COVERAGE_OFFSET_METHOD", TheCoverage.OffsetMethod)
 
                 If TheCoverage.OffsetMethod = "FIXED" Then
-                    Me.PopulateBOProperty(TheCoverage, "OffsetToStart", moOffsetText)
-                    Me.PopulateBOProperty(TheCoverage, "OffsetToStartDays", txtOffsetDays)
+                    PopulateBOProperty(TheCoverage, "OffsetToStart", moOffsetText)
+                    PopulateBOProperty(TheCoverage, "OffsetToStartDays", txtOffsetDays)
                 Else
                     TheCoverage.OffsetToStart = 0
                     TheCoverage.OffsetToStartDays = 0
                 End If
 
                 If moMethodOfRepairDrop.SelectedIndex > NO_ITEM_SELECTED_INDEX Then
-                    Me.PopulateBOProperty(TheCoverage, "MethodOfRepairId", moMethodOfRepairDrop)
+                    PopulateBOProperty(TheCoverage, "MethodOfRepairId", moMethodOfRepairDrop)
                 Else
                     TheCoverage.MethodOfRepairId = Nothing
                 End If
 
+                If moFulfillmentProviderDrop.SelectedIndex > NO_ITEM_SELECTED_INDEX Then
+                    PopulateBOProperty(TheCoverage, NameOf(TheCoverage.FulfillmentProviderXcd), moFulfillmentProviderDrop, isGuidValue:=False, isStringValue:=True)
+                Else
+                    TheCoverage.FulfillmentProviderXcd = Nothing
+                End If
+
                 If moFulfillmentProfileDrop.SelectedIndex > NO_ITEM_SELECTED_INDEX Then
-                    Me.PopulateBOProperty(TheCoverage, "FulfillmentProfileCode", moFulfillmentProfileDrop, isGuidValue:=False, isStringValue:=True)
+                    PopulateBOProperty(TheCoverage, NameOf(TheCoverage.FulfillmentProfileCode), moFulfillmentProfileDrop, isGuidValue:=False, isStringValue:=True)
                 Else
                     TheCoverage.FulfillmentProfileCode = Nothing
                 End If
 
-                .ItemId = Me.State.selectedItemId
-                Me.PopulateBOProperty(TheCoverage, "CertificateDuration", moCertificateDurationText)
-                Me.PopulateBOProperty(TheCoverage, "CoverageDuration", moCoverageDurationText)
-                Me.PopulateBOProperty(TheCoverage, "LiabilityLimit", moLiabilityText)
-                Me.PopulateBOProperty(TheCoverage, "MarkupDistributionPercent", txtMarkupDistPercent)
-                Me.PopulateBOProperty(TheCoverage, "LiabilityLimitPercent", moLiabilityLimitPercentText)
-                Me.PopulateBOProperty(TheCoverage, "Deductible", moDeductibleText)
-                Me.PopulateBOProperty(TheCoverage, "DeductiblePercent", moDeductiblePercentText)
+                .ItemId = State.SelectedItemId
+                PopulateBOProperty(TheCoverage, "CertificateDuration", moCertificateDurationText)
+                PopulateBOProperty(TheCoverage, "CoverageDuration", moCoverageDurationText)
+                PopulateBOProperty(TheCoverage, "LiabilityLimit", moLiabilityText)
+                PopulateBOProperty(TheCoverage, "MarkupDistributionPercent", txtMarkupDistPercent)
+                PopulateBOProperty(TheCoverage, "LiabilityLimitPercent", moLiabilityLimitPercentText)
+                PopulateBOProperty(TheCoverage, "Deductible", moDeductibleText)
+                PopulateBOProperty(TheCoverage, "DeductiblePercent", moDeductiblePercentText)
 
                 'REG-6289
-                Me.PopulateBOProperty(TheCoverage, "CoverageClaimLimit", moClaimLimitCountText)
+                PopulateBOProperty(TheCoverage, "CoverageClaimLimit", moClaimLimitCountText)
 
-                Dim deductibleBasedOnId As Guid = GetSelectedItem(Me.cboDeductibleBasedOn)
+                Dim deductibleBasedOnId As Guid = GetSelectedItem(cboDeductibleBasedOn)
                 If (deductibleBasedOnId = Guid.Empty) Then
-                    Me.PopulateBOProperty(TheCoverage, "DeductibleBasedOnId", Me.cboDeductibleBasedOn)
-                    Me.PopulateBOProperty(TheCoverage, "DeductibleExpressionId", Guid.Empty)
+                    PopulateBOProperty(TheCoverage, "DeductibleBasedOnId", cboDeductibleBasedOn)
+                    PopulateBOProperty(TheCoverage, "DeductibleExpressionId", Guid.Empty)
                 Else
                     Dim deductibleBasedOnCode As String = LookupListNew.GetCodeFromId(LookupListNew.LK_DEDUCTIBLE_BASED_ON, deductibleBasedOnId)
                     If (String.IsNullOrWhiteSpace(deductibleBasedOnCode)) Then
-                        Me.PopulateBOProperty(TheCoverage, "DeductibleBasedOnId", LookupListNew.GetIdFromCode(LookupListNew.LK_DEDUCTIBLE_BASED_ON, Codes.DEDUCTIBLE_BASED_ON__EXPRESSION))
-                        Me.PopulateBOProperty(TheCoverage, "DeductibleExpressionId", deductibleBasedOnId)
+                        PopulateBOProperty(TheCoverage, "DeductibleBasedOnId", LookupListNew.GetIdFromCode(LookupListNew.LK_DEDUCTIBLE_BASED_ON, Codes.DEDUCTIBLE_BASED_ON__EXPRESSION))
+                        PopulateBOProperty(TheCoverage, "DeductibleExpressionId", deductibleBasedOnId)
                     Else
-                        Me.PopulateBOProperty(TheCoverage, "DeductibleBasedOnId", Me.cboDeductibleBasedOn)
-                        Me.PopulateBOProperty(TheCoverage, "DeductibleExpressionId", Guid.Empty)
+                        PopulateBOProperty(TheCoverage, "DeductibleBasedOnId", cboDeductibleBasedOn)
+                        PopulateBOProperty(TheCoverage, "DeductibleExpressionId", Guid.Empty)
                     End If
                 End If
 
-                'Me.PopulateBOProperty(TheCoverage, "DeductibleBasedOnId", cboDeductibleBasedOn)
-                Me.PopulateBOProperty(TheCoverage, "RepairDiscountPct", moRepairDiscountPctText)
-                Me.PopulateBOProperty(TheCoverage, "ReplacementDiscountPct", moReplacementDiscountPctText)
-                Me.PopulateBOProperty(TheCoverage, "UseCoverageStartDateId", UseCoverageStartDateId)
-                Me.PopulateBOProperty(TheCoverage, "AgentCode", moAgentcodeText)
-                Me.PopulateBOProperty(TheCoverage, "CoverageLiabilityLimit", moCoverageLiabilityLimitText)
-                Me.PopulateBOProperty(TheCoverage, "CoverageLiabilityLimitPercent", moCoverageLiabilityLimitPercentText)
+                'PopulateBOProperty(TheCoverage, "DeductibleBasedOnId", cboDeductibleBasedOn)
+                PopulateBOProperty(TheCoverage, "RepairDiscountPct", moRepairDiscountPctText)
+                PopulateBOProperty(TheCoverage, "ReplacementDiscountPct", moReplacementDiscountPctText)
+                PopulateBOProperty(TheCoverage, "UseCoverageStartDateId", UseCoverageStartDateId)
+                PopulateBOProperty(TheCoverage, "AgentCode", moAgentcodeText)
+                PopulateBOProperty(TheCoverage, "CoverageLiabilityLimit", moCoverageLiabilityLimitText)
+                PopulateBOProperty(TheCoverage, "CoverageLiabilityLimitPercent", moCoverageLiabilityLimitPercentText)
 
-                Me.PopulateBOProperty(TheCoverage, "IsReInsuredId", Me.moReInsuredDrop)
+                PopulateBOProperty(TheCoverage, "IsReInsuredId", moReInsuredDrop)
 
                 If Len(moEffectiveText.Text) > 0 Then
-                    Me.PopulateBOProperty(TheCoverage, "Effective", DateHelper.GetDateValue(moEffectiveText.Text).ToString)
+                    PopulateBOProperty(TheCoverage, "Effective", DateHelper.GetDateValue(moEffectiveText.Text).ToString)
                 Else
-                    Me.PopulateBOProperty(TheCoverage, "Effective", "")
+                    PopulateBOProperty(TheCoverage, "Effective", "")
                 End If
 
                 If Len(moExpirationText.Text) > 0 Then
-                    Me.PopulateBOProperty(TheCoverage, "Expiration", DateHelper.GetDateValue(moExpirationText.Text).ToString)
+                    PopulateBOProperty(TheCoverage, "Expiration", DateHelper.GetDateValue(moExpirationText.Text).ToString)
                 Else
                     PopulateBOProperty(TheCoverage, "Expiration", "")
                 End If
@@ -3151,30 +2963,30 @@ Namespace Tables
                     TheCoverage.AddCoverageDepreciationScdChild(TheDepreciationSchedule.DepreciationScheduleId)
                 End If
 
-                Me.PopulateBOProperty(TheCoverage, "PerIncidentLiabilityLimitCap", moPerIncidentLiabilityLimitCapText)
+                PopulateBOProperty(TheCoverage, "PerIncidentLiabilityLimitCap", moPerIncidentLiabilityLimitCapText)
 
-                If moEarningCodeDrop.SelectedIndex > NO_ITEM_SELECTED_INDEX Then Me.PopulateBOProperty(TheCoverage, "EarningCodeId", moEarningCodeDrop)
-                If moRecoverDeciveDrop.SelectedIndex > NO_ITEM_SELECTED_INDEX Then Me.PopulateBOProperty(TheCoverage, "RecoverDeviceId", moRecoverDeciveDrop)
-                Me.PopulateBOProperty(TheCoverage, "TaxTypeXCD", Me.moTaxTypeDrop, False, True)
+                If moEarningCodeDrop.SelectedIndex > NO_ITEM_SELECTED_INDEX Then PopulateBOProperty(TheCoverage, "EarningCodeId", moEarningCodeDrop)
+                If moRecoverDeciveDrop.SelectedIndex > NO_ITEM_SELECTED_INDEX Then PopulateBOProperty(TheCoverage, "RecoverDeviceId", moRecoverDeciveDrop)
+                PopulateBOProperty(TheCoverage, "TaxTypeXCD", moTaxTypeDrop, False, True)
 
                 'US-521697
                 CommonSourceOptionLogic()
             End With
 
-            If Me.ErrCollection.Count > 0 Then
+            If ErrCollection.Count > 0 Then
                 Throw New PopulateBOErrorException
             End If
 
         End Sub
 
-        Private Function IsDirtyBO() As Boolean
-            Dim bIsDirty As Boolean = True
+        Private Function IsDirtyBo() As Boolean
+            Dim bIsDirty As Boolean
             Try
-                TheCoverage.UniqueFieldsChanged = Me.UniqueFieldsChanged()
+                TheCoverage.UniqueFieldsChanged = UniqueFieldsChanged()
                 With TheCoverage
                     PopulateBOsFromForm()
                     bIsDirty = .IsDirty
-                    If bIsDirty = False Then bIsDirty = IsDirtyRateBO()
+                    If bIsDirty = False Then bIsDirty = IsDirtyRateBo()
                 End With
 
             Catch ex As Exception
@@ -3186,49 +2998,49 @@ Namespace Tables
         Private Function ApplyChanges() As Boolean
             Dim bIsOk As Boolean = True
             Dim bIsDirty As Boolean = False
-            Dim bisfamilydirty As Boolean = False
+            Dim isFamilyDirty As Boolean = False
 
             With TheCoverage
-                If Me.UniqueFieldsChanged() And .IsLastCoverage() = False And .IsFirstCoverage = False Then
-                    Me.MasterPage.MessageController.AddError(TranslationBase.TranslateLabelOrMessage(Assurant.ElitaPlus.Common.ErrorCodes.COVERAGEBO_019, ElitaPlusIdentity.Current.ActiveUser.LanguageId))
+                If UniqueFieldsChanged() And .IsLastCoverage() = False And .IsFirstCoverage = False Then
+                    MasterPage.MessageController.AddError(TranslationBase.TranslateLabelOrMessage(ElitaPlus.Common.ErrorCodes.COVERAGEBO_019, GetLanguageId()))
                     .cancelEdit()
                     bIsOk = False
                 Else
-                    bIsDirty = IsDirtyBO()
-                    bisfamilydirty = .IsFamilyDirty
+                    bIsDirty = IsDirtyBo()
+                    isFamilyDirty = .IsFamilyDirty
                     .Save()
                     EnableUniqueFields()
 
-                    Me.LoadCoverageRateList()
+                    LoadCoverageRateList()
                     If Not bIsDirty Then
-                        If Not Me.State.moCoverageRateList Is Nothing Then
-                            For Each _coveragerate As CoverageRate In Me.State.moCoverageRateList
-                                If _coveragerate.IsDirty Then
-                                    bIsDirty = _coveragerate.IsDirty
+                        If Not State.CoverageRateList Is Nothing Then
+                            For Each coverageRate As CoverageRate In State.CoverageRateList
+                                If coverageRate.IsDirty Then
+                                    bIsDirty = coverageRate.IsDirty
                                     Exit For
                                 End If
                             Next
                         End If
                     End If
 
-                    Me.LoadCoverageDeductibleList()
+                    LoadCoverageDeductibleList()
                     If Not bIsDirty Then
-                        If Not Me.State.moCoverageDeductibleList Is Nothing Then
-                            For Each _coveragedeductible As CoverageDeductible In Me.State.moCoverageDeductibleList
-                                If _coveragedeductible.IsDirty Then
-                                    bIsDirty = _coveragedeductible.IsDirty
+                        If Not State.CoverageDeductibleList Is Nothing Then
+                            For Each coverageDeductible As CoverageDeductible In State.CoverageDeductibleList
+                                If coverageDeductible.IsDirty Then
+                                    bIsDirty = coverageDeductible.IsDirty
                                     Exit For
                                 End If
                             Next
                         End If
                     End If
 
-                    Me.LoadCoverageConseqDamageList()
+                    LoadCoverageConseqDamageList()
                     If Not bIsDirty Then
-                        If Not Me.State.moCoverageConseqDamageList Is Nothing Then
-                            For Each _coverageconseqdamage As CoverageConseqDamage In Me.State.moCoverageConseqDamageList
-                                If _coverageconseqdamage.IsDirty Then
-                                    bIsDirty = _coverageconseqdamage.IsDirty
+                        If Not State.CoverageConseqDamageList Is Nothing Then
+                            For Each coverageConseqDamage As CoverageConseqDamage In State.CoverageConseqDamageList
+                                If coverageConseqDamage.IsDirty Then
+                                    bIsDirty = coverageConseqDamage.IsDirty
                                     Exit For
                                 End If
                             Next
@@ -3238,7 +3050,7 @@ Namespace Tables
                     If SaveCoverageRateList() Then
                         EnableCoverageButtons(True)
                         If SaveCoverageDeductibleList() Then
-                            manageDeductibleButtons(True, False)
+                            ManageDeductibleButtons(True, False)
                         End If
                         If SaveCoverageConseqDamageList() Then
                             'manageDeductibleButtons(True, False)
@@ -3253,10 +3065,10 @@ Namespace Tables
             End With
 
             If (bIsOk = True) Then
-                If bIsDirty = True OrElse bisfamilydirty = True Then
-                    Me.MasterPage.MessageController.AddSuccess(Message.SAVE_RECORD_CONFIRMATION, True)
+                If bIsDirty = True OrElse isFamilyDirty = True Then
+                    MasterPage.MessageController.AddSuccess(Message.SAVE_RECORD_CONFIRMATION, True)
                 Else
-                    Me.MasterPage.MessageController.AddError(Message.MSG_RECORD_NOT_SAVED, True)
+                    MasterPage.MessageController.AddError(Message.MSG_RECORD_NOT_SAVED, True)
                 End If
             End If
 
@@ -3270,12 +3082,12 @@ Namespace Tables
                 With TheCoverage
                     PopulateBOsFromForm()
                     'check if there are any certificates associated with the coverage
-                    If .GetAssociatedCertificateCount(.Id) > 0 Then
-                        Me.MasterPage.MessageController.AddError(TranslationBase.TranslateLabelOrMessage(Assurant.ElitaPlus.Common.ErrorCodes.DELETE_COVERAGE_WITH_CERT_PRESENT, ElitaPlusIdentity.Current.ActiveUser.LanguageId))
+                    If Coverage.GetAssociatedCertificateCount(.Id) > 0 Then
+                        MasterPage.MessageController.AddError(TranslationBase.TranslateLabelOrMessage(ElitaPlus.Common.ErrorCodes.DELETE_COVERAGE_WITH_CERT_PRESENT, GetLanguageId()))
                         .cancelEdit()
                         bIsOk = False
                     ElseIf .IsLastCoverage() = False And .IsFirstCoverage = False Then
-                        Me.MasterPage.MessageController.AddError(TranslationBase.TranslateLabelOrMessage(Assurant.ElitaPlus.Common.ErrorCodes.COVERAGEBO_017, ElitaPlusIdentity.Current.ActiveUser.LanguageId))
+                        MasterPage.MessageController.AddError(TranslationBase.TranslateLabelOrMessage(ElitaPlus.Common.ErrorCodes.COVERAGEBO_017, GetLanguageId()))
                         .cancelEdit()
                         bIsOk = False
                     ElseIf DeleteAllCoverageRate() = False Then
@@ -3293,7 +3105,7 @@ Namespace Tables
                     End If
                 End With
             Catch ex As Exception
-                Me.MasterPage.MessageController.AddError(TranslationBase.TranslateLabelOrMessage(COVERAGE_FORM003, ElitaPlusIdentity.Current.ActiveUser.LanguageId))
+                MasterPage.MessageController.AddError(TranslationBase.TranslateLabelOrMessage(CoverageForm003, GetLanguageId()))
                 bIsOk = False
             End Try
             Return bIsOk
@@ -3306,7 +3118,7 @@ Namespace Tables
             If Len(moExpirationText.Text) > 0 Then moExpirationDate = DateHelper.GetDateValue(moExpirationText.Text)
 
             With TheCoverage
-                If Me.State.IsCoverageNew Then
+                If State.IsCoverageNew Then
                     Return False
                 Else
                     If .CertificateDuration.ToString <> moCertificateDurationText.Text _
@@ -3348,98 +3160,97 @@ Namespace Tables
         End Sub
 
         Private Sub EnableCoveragePricing(ByVal bIsReadWrite As Boolean)
-            moGridView.Columns(COMMISSIONS_PERCENT).Visible = bIsReadWrite
-            moGridView.Columns(MARKETING_PERCENT).Visible = bIsReadWrite
-            moGridView.Columns(ADMIN_EXPENSE).Visible = bIsReadWrite
-            moGridView.Columns(PROFIT_EXPENSE).Visible = bIsReadWrite
-            moGridView.Columns(LOSS_COST_PERCENT).Visible = bIsReadWrite
+            moGridView.Columns(ColIndexCommissionsPercent).Visible = bIsReadWrite
+            moGridView.Columns(ColIndexMarketingPercent).Visible = bIsReadWrite
+            moGridView.Columns(ColIndexAdminExpense).Visible = bIsReadWrite
+            moGridView.Columns(ColIndexProfitExpense).Visible = bIsReadWrite
+            moGridView.Columns(ColIndexLossCostPercent).Visible = bIsReadWrite
 
             'US-521697
-            If Me.State.IsDealerConfiguredForSourceXcd Then
-                moGridView.Columns(COMMISSIONS_PERCENT_XCD).Visible = bIsReadWrite
-                moGridView.Columns(MARKETING_PERCENT_XCD).Visible = bIsReadWrite
-                moGridView.Columns(ADMIN_EXPENSE_XCD).Visible = bIsReadWrite
-                moGridView.Columns(PROFIT_EXPENSE_XCD).Visible = bIsReadWrite
-                moGridView.Columns(LOSS_COST_PERCENT_XCD).Visible = bIsReadWrite
+            If State.IsDealerConfiguredForSourceXcd Then
+                moGridView.Columns(ColIndexCommissionsPercentXcd).Visible = bIsReadWrite
+                moGridView.Columns(ColIndexMarketingPercentXcd).Visible = bIsReadWrite
+                moGridView.Columns(ColIndexAdminExpenseXcd).Visible = bIsReadWrite
+                moGridView.Columns(ColIndexProfitExpenseXcd).Visible = bIsReadWrite
+                moGridView.Columns(ColIndexLossCostPercentXcd).Visible = bIsReadWrite
             Else
-                moGridView.Columns(COMMISSIONS_PERCENT_XCD).Visible = False
-                moGridView.Columns(MARKETING_PERCENT_XCD).Visible = False
-                moGridView.Columns(ADMIN_EXPENSE_XCD).Visible = False
-                moGridView.Columns(PROFIT_EXPENSE_XCD).Visible = False
-                moGridView.Columns(LOSS_COST_PERCENT_XCD).Visible = False
+                moGridView.Columns(ColIndexCommissionsPercentXcd).Visible = False
+                moGridView.Columns(ColIndexMarketingPercentXcd).Visible = False
+                moGridView.Columns(ColIndexAdminExpenseXcd).Visible = False
+                moGridView.Columns(ColIndexProfitExpenseXcd).Visible = False
+                moGridView.Columns(ColIndexLossCostPercentXcd).Visible = False
             End If
         End Sub
         Private Sub DisplayHideSourceColumn()
             'US-521697
-            If Me.State.IsDealerConfiguredForSourceXcd Then
-                moGridView.Columns(COMMISSIONS_PERCENT_XCD).Visible = True
-                moGridView.Columns(MARKETING_PERCENT_XCD).Visible = True
-                moGridView.Columns(ADMIN_EXPENSE_XCD).Visible = True
-                moGridView.Columns(PROFIT_EXPENSE_XCD).Visible = True
-                moGridView.Columns(LOSS_COST_PERCENT_XCD).Visible = True
+            If State.IsDealerConfiguredForSourceXcd Then
+                moGridView.Columns(ColIndexCommissionsPercentXcd).Visible = True
+                moGridView.Columns(ColIndexMarketingPercentXcd).Visible = True
+                moGridView.Columns(ColIndexAdminExpenseXcd).Visible = True
+                moGridView.Columns(ColIndexProfitExpenseXcd).Visible = True
+                moGridView.Columns(ColIndexLossCostPercentXcd).Visible = True
             Else
-                moGridView.Columns(COMMISSIONS_PERCENT_XCD).Visible = False
-                moGridView.Columns(MARKETING_PERCENT_XCD).Visible = False
-                moGridView.Columns(ADMIN_EXPENSE_XCD).Visible = False
-                moGridView.Columns(PROFIT_EXPENSE_XCD).Visible = False
-                moGridView.Columns(LOSS_COST_PERCENT_XCD).Visible = False
+                moGridView.Columns(ColIndexCommissionsPercentXcd).Visible = False
+                moGridView.Columns(ColIndexMarketingPercentXcd).Visible = False
+                moGridView.Columns(ColIndexAdminExpenseXcd).Visible = False
+                moGridView.Columns(ColIndexProfitExpenseXcd).Visible = False
+                moGridView.Columns(ColIndexLossCostPercentXcd).Visible = False
             End If
         End Sub
 #End Region
 
 #Region "Populate"
 
-        Private Sub PopulateCoverageRateList(Optional ByVal oAction As String = ACTION_NONE)
-            Dim oCoverageRates As CoverageRate
+        Private Sub PopulateCoverageRateList(Optional ByVal oAction As String = ActionNone)
             Dim oDataView As DataView
 
-            If Me.State.IsCoverageNew = True And Not Me.State.IsNewWithCopy Then Return ' We can not have CoverageRates if the coverage is new
+            If State.IsCoverageNew = True And Not State.IsNewWithCopy Then Return ' We can not have CoverageRates if the coverage is new
 
             Try
 
-                If CoveragePricingCode = NO_COVERAGE_PRICING Then
+                If CoveragePricingCode = NoCoveragePricing Then
                     EnableCoveragePricing(False)
                 Else
                     EnableCoveragePricing(True)
                 End If
 
-                If Me.State.IsNewWithCopy Then
-                    oDataView = oCoverageRates.GetList(Guid.Empty)
-                    If Not oAction = ACTION_CANCEL_DELETE Then Me.LoadCoverageRateList()
-                    If Not Me.State.moCoverageRateList Is Nothing Then
-                        oDataView = getDVFromArray(Me.State.moCoverageRateList, oDataView.Table)
+                If State.IsNewWithCopy Then
+                    oDataView = CoverageRate.GetList(Guid.Empty)
+                    If Not oAction = ActionCancelDelete Then LoadCoverageRateList()
+                    If Not State.CoverageRateList Is Nothing Then
+                        oDataView = GetDataViewFromArray(State.CoverageRateList, oDataView.Table)
                     End If
                 Else
-                    oDataView = oCoverageRates.GetList(TheCoverage.Id)
+                    oDataView = CoverageRate.GetList(TheCoverage.Id)
                 End If
 
                 Select Case oAction
-                    Case ACTION_NONE
-                        Me.SetPageAndSelectedIndexFromGuid(oDataView, Guid.Empty, moGridView, 0)
+                    Case ActionNone
+                        SetPageAndSelectedIndexFromGuid(oDataView, Guid.Empty, moGridView, 0)
                         EnableForEditRateButtons(False)
-                    Case ACTION_SAVE
-                        Me.SetPageAndSelectedIndexFromGuid(oDataView, GetGuidFromString(CoverageRateId), moGridView,
+                    Case ActionSave
+                        SetPageAndSelectedIndexFromGuid(oDataView, GetGuidFromString(CoverageRateId), moGridView,
                                     moGridView.PageIndex)
                         EnableForEditRateButtons(False)
-                    Case ACTION_CANCEL_DELETE
-                        Me.SetPageAndSelectedIndexFromGuid(oDataView, Guid.Empty, moGridView,
+                    Case ActionCancelDelete
+                        SetPageAndSelectedIndexFromGuid(oDataView, Guid.Empty, moGridView,
                                     moGridView.PageIndex)
                         EnableForEditRateButtons(False)
-                    Case ACTION_EDIT
-                        If Me.State.IsNewWithCopy Then
-                            CoverageRateId = Me.State.moCoverageRateList(moGridView.SelectedIndex).Id.ToString
+                    Case ActionEdit
+                        If State.IsNewWithCopy Then
+                            CoverageRateId = State.CoverageRateList(moGridView.SelectedIndex).Id.ToString
                         Else
-                            CoverageRateId = Me.GetSelectedGridText(moGridView, COVERAGE_RATE_ID)
+                            CoverageRateId = GetSelectedGridText(moGridView, ColIndexCoverageRateId)
                         End If
-                        Me.SetPageAndSelectedIndexFromGuid(oDataView, GetGuidFromString(CoverageRateId), moGridView,
+                        SetPageAndSelectedIndexFromGuid(oDataView, GetGuidFromString(CoverageRateId), moGridView,
                                     moGridView.PageIndex, True)
                         EnableForEditRateButtons(True)
-                    Case ACTION_NEW
-                        If Me.State.IsNewWithCopy Then oDataView.Table.DefaultView.Sort() = Nothing ' Clear sort, so that the new line shows up at the bottom
+                    Case ActionNew
+                        If State.IsNewWithCopy Then oDataView.Table.DefaultView.Sort() = Nothing ' Clear sort, so that the new line shows up at the bottom
                         Dim oRow As DataRow = oDataView.Table.NewRow
-                        oRow(DBCOVERAGE_RATE_ID) = TheCoverageRate.Id.ToByteArray
+                        oRow(DbCoverageRateId) = TheCoverageRate.Id.ToByteArray
                         oDataView.Table.Rows.Add(oRow)
-                        Me.SetPageAndSelectedIndexFromGuid(oDataView, GetGuidFromString(CoverageRateId), moGridView,
+                        SetPageAndSelectedIndexFromGuid(oDataView, GetGuidFromString(CoverageRateId), moGridView,
                                     moGridView.PageIndex, True)
                         EnableForEditRateButtons(True)
 
@@ -3450,27 +3261,27 @@ Namespace Tables
                 ControlMgr.DisableEditDeleteGridIfNotEditAuth(Me, moGridView)
 
             Catch ex As Exception
-                moMsgControllerRate.AddError(COVERAGE_FORM004)
+                moMsgControllerRate.AddError(CoverageForm004)
                 moMsgControllerRate.AddError(ex.Message, False)
                 'moMsgControllerRate.Show()
             End Try
         End Sub
 
-        Private Function getDVFromArray(ByVal oArray() As CoverageDeductible, ByVal oDtable As DataTable) As DataView
+        Private Function GetDataViewFromArray(ByVal oArray() As CoverageDeductible, ByVal oDtable As DataTable) As DataView
             Dim oRow As DataRow
             Dim oCoverageDeductible As CoverageDeductible
-            Dim languageid As Guid = ElitaPlusIdentity.Current.ActiveUser.LanguageId
-            Dim dtvw As DataView = LookupListNew.GetMethodOfRepairLookupList(languageid)
-            Dim DeducBasedon As DataView = LookupListNew.GetComputeDeductibleBasedOnLookupList(languageid)
+            Dim languageId As Guid = GetLanguageId()
+            Dim dvMethodOfRepairList As DataView = LookupListNew.GetMethodOfRepairLookupList(languageId)
+            Dim deductibleBasedOn As DataView = LookupListNew.GetComputeDeductibleBasedOnLookupList(languageId)
             If Not oArray Is Nothing Then
                 For Each oCoverageDeductible In oArray
                     If Not oCoverageDeductible Is Nothing Then
                         oRow = oDtable.NewRow
                         oRow(CoverageDeductible.COL_NAME_COVERAGE_DED_ID) = oCoverageDeductible.Id.ToByteArray
                         oRow(CoverageDeductible.COL_NAME_METHOD_OF_REPAIR_ID) = oCoverageDeductible.MethodOfRepairId.ToByteArray
-                        oRow(CoverageDeductible.COL_NAME_METHOD_OF_REPAIR) = LookupListNew.GetDescriptionFromId(dtvw, oCoverageDeductible.MethodOfRepairId)
+                        oRow(CoverageDeductible.COL_NAME_METHOD_OF_REPAIR) = LookupListNew.GetDescriptionFromId(dvMethodOfRepairList, oCoverageDeductible.MethodOfRepairId)
                         oRow(CoverageDeductible.COL_NAME_DEDUCTIBLE_BASED_ON_ID) = oCoverageDeductible.DeductibleBasedOnId.ToByteArray
-                        oRow(CoverageDeductible.COL_NAME_DEDUCTIBLE_BASED_ON) = LookupListNew.GetDescriptionFromId(DeducBasedon, oCoverageDeductible.DeductibleBasedOnId)
+                        oRow(CoverageDeductible.COL_NAME_DEDUCTIBLE_BASED_ON) = LookupListNew.GetDescriptionFromId(deductibleBasedOn, oCoverageDeductible.DeductibleBasedOnId)
                         oRow(CoverageDeductible.COL_NAME_DEDUCTIBLE) = oCoverageDeductible.Deductible.Value
                         oDtable.Rows.Add(oRow)
                     End If
@@ -3479,30 +3290,29 @@ Namespace Tables
             Return oDtable.DefaultView
 
         End Function
-        Private Function getDVFromArray(ByVal oArray() As CoverageConseqDamage, ByVal oDtable As DataTable) As DataView
+        Private Function GetDataViewFromArray(ByVal oArray() As CoverageConseqDamage, ByVal oDtable As DataTable) As DataView
             Dim oRow As DataRow
             Dim oCoverageConseqDamage As CoverageConseqDamage
-            Dim languageid As Guid = ElitaPlusIdentity.Current.ActiveUser.LanguageId
 
             If Not oArray Is Nothing Then
                 For Each oCoverageConseqDamage In oArray
                     If Not oCoverageConseqDamage Is Nothing Then
                         oRow = oDtable.NewRow
-                        oRow(oCoverageConseqDamage.COL_NAME_COVERAGE_CONSEQ_DAMAGE_ID) = oCoverageConseqDamage.Id.ToByteArray
-                        oRow(oCoverageConseqDamage.COL_NAME_LIABILITY_LIMIT_PER_INCIDENT) = oCoverageConseqDamage.LiabilityLimitPerIncident.Value
-                        oRow(oCoverageConseqDamage.COL_NAME_CONSEQ_DAMAGE_TYPE) = oCoverageConseqDamage.ConseqDamageTypeXcd
-                        oRow(oCoverageConseqDamage.COL_NAME_LIABILITY_LIMIT_CUMULATIVE) = oCoverageConseqDamage.LiabilityLimitCumulative.Value
-                        oRow(oCoverageConseqDamage.COL_NAME_LIABILITY_LIMIT_BASED_ON) = oCoverageConseqDamage.LiabilityLimitBaseXcd
-                        oRow(oCoverageConseqDamage.COL_NAME_FULFILMENT_METHOD_XCD) = oCoverageConseqDamage.FulfilmentMethodXcd
+                        oRow(CoverageConseqDamage.COL_NAME_COVERAGE_CONSEQ_DAMAGE_ID) = oCoverageConseqDamage.Id.ToByteArray
+                        oRow(CoverageConseqDamage.COL_NAME_LIABILITY_LIMIT_PER_INCIDENT) = oCoverageConseqDamage.LiabilityLimitPerIncident.Value
+                        oRow(CoverageConseqDamage.COL_NAME_CONSEQ_DAMAGE_TYPE) = oCoverageConseqDamage.ConseqDamageTypeXcd
+                        oRow(CoverageConseqDamage.COL_NAME_LIABILITY_LIMIT_CUMULATIVE) = oCoverageConseqDamage.LiabilityLimitCumulative.Value
+                        oRow(CoverageConseqDamage.COL_NAME_LIABILITY_LIMIT_BASED_ON) = oCoverageConseqDamage.LiabilityLimitBaseXcd
+                        oRow(CoverageConseqDamage.COL_NAME_FULFILMENT_METHOD_XCD) = oCoverageConseqDamage.FulfilmentMethodXcd
                         If Not oCoverageConseqDamage.Effective Is Nothing Then
-                            oRow(oCoverageConseqDamage.COL_NAME_EFFECTIVE) = oCoverageConseqDamage.Effective.Value
+                            oRow(CoverageConseqDamage.COL_NAME_EFFECTIVE) = oCoverageConseqDamage.Effective.Value
                         End If
                         If Not oCoverageConseqDamage.Expiration Is Nothing Then
-                            oRow(oCoverageConseqDamage.COL_NAME_EXPIRATION) = oCoverageConseqDamage.Expiration.Value
+                            oRow(CoverageConseqDamage.COL_NAME_EXPIRATION) = oCoverageConseqDamage.Expiration.Value
                         End If
-                        oRow(oCoverageConseqDamage.COL_NAME_CONSEQ_DAMAGE_TYPE_DESC) = LookupListNew.GetDescrionFromListCode("PERILTYP", oCoverageConseqDamage.ConseqDamageTypeXcd.Replace("PERILTYP-", ""))
-                        oRow(oCoverageConseqDamage.COL_NAME_LIABILITY_LIMIT_BASED_ON_DESC) = LookupListNew.GetDescrionFromListCode("PRODLILIMBASEDON", oCoverageConseqDamage.LiabilityLimitBaseXcd.Replace("PRODLILIMBASEDON-", ""))
-                        oRow(oCoverageConseqDamage.COL_NAME_FULFILMENT_METHOD_DESC) = LookupListNew.GetDescrionFromListCode("FULFILMETH", oCoverageConseqDamage.FulfilmentMethodXcd.Replace("FULFILMETH-", ""))
+                        oRow(CoverageConseqDamage.COL_NAME_CONSEQ_DAMAGE_TYPE_DESC) = LookupListNew.GetDescrionFromListCode("PERILTYP", oCoverageConseqDamage.ConseqDamageTypeXcd.Replace("PERILTYP-", ""))
+                        oRow(CoverageConseqDamage.COL_NAME_LIABILITY_LIMIT_BASED_ON_DESC) = LookupListNew.GetDescrionFromListCode("PRODLILIMBASEDON", oCoverageConseqDamage.LiabilityLimitBaseXcd.Replace("PRODLILIMBASEDON-", ""))
+                        oRow(CoverageConseqDamage.COL_NAME_FULFILMENT_METHOD_DESC) = LookupListNew.GetDescrionFromListCode("FULFILMETH", oCoverageConseqDamage.FulfilmentMethodXcd.Replace("FULFILMETH-", ""))
 
                         oDtable.Rows.Add(oRow)
                     End If
@@ -3511,28 +3321,29 @@ Namespace Tables
             Return oDtable.DefaultView
 
         End Function
-        Private Function getDVFromArray(ByVal oArray() As CoverageRate, ByVal oDtable As DataTable) As DataView
+        Private Function GetDataViewFromArray(ByVal oArray() As CoverageRate, ByVal oDtable As DataTable) As DataView
             Dim oRow As DataRow
             Dim oCoverageRate As CoverageRate
             For Each oCoverageRate In oArray
                 If Not oCoverageRate Is Nothing Then
                     oRow = oDtable.NewRow
-                    oRow(COL_COVERAGE_RATE_ID) = oCoverageRate.Id.ToByteArray
-                    oRow(COL_LOW_PRICE) = oCoverageRate.LowPrice.Value
-                    oRow(COL_HIGH_PRICE) = oCoverageRate.HighPrice.Value
-                    oRow(COL_GROSS_AMT) = oCoverageRate.GrossAmt.Value
-                    oRow(COL_COMMISSION_PERCENT) = oCoverageRate.CommissionsPercent.Value
-                    oRow(COL_MARKETING_PERCENT) = oCoverageRate.MarketingPercent.Value
-                    oRow(COL_ADMIN_EXPENSE) = oCoverageRate.AdminExpense.Value
-                    oRow(COL_PROFIT_EXPENSE) = oCoverageRate.ProfitExpense.Value
-                    oRow(COL_LOSS_COST_PERCENT) = oCoverageRate.LossCostPercent.Value
-                    oRow(COL_GROSS_AMOUNT_PERCENT) = oCoverageRate.GrossAmountPercent.Value
-                    oRow(COL_RENEWAL_NUMBER) = oCoverageRate.RenewalNumber.Value
+
+                    oRow(CoverageRateDAL.COL_NAME_COVERAGE_RATE_ID) = oCoverageRate.Id.ToByteArray
+                    oRow(CoverageRateDAL.COL_NAME_LOW_PRICE) = oCoverageRate.LowPrice.Value
+                    oRow(CoverageRateDAL.COL_NAME_HIGH_PRICE) = oCoverageRate.HighPrice.Value
+                    oRow(CoverageRateDAL.COL_NAME_GROSS_AMT) = oCoverageRate.GrossAmt.Value
+                    oRow(CoverageRateDAL.COL_NAME_COMMISSIONS_PERCENT) = oCoverageRate.CommissionsPercent.Value
+                    oRow(CoverageRateDAL.COL_NAME_MARKETING_PERCENT) = oCoverageRate.MarketingPercent.Value
+                    oRow(CoverageRateDAL.COL_NAME_ADMIN_EXPENSE) = oCoverageRate.AdminExpense.Value
+                    oRow(CoverageRateDAL.COL_NAME_PROFIT_EXPENSE) = oCoverageRate.ProfitExpense.Value
+                    oRow(CoverageRateDAL.COL_NAME_LOSS_COST_PERCENT) = oCoverageRate.LossCostPercent.Value
+                    oRow(CoverageRateDAL.COL_NAME_GROSS_AMOUNT_PERCENT) = oCoverageRate.GrossAmountPercent.Value
+                    oRow(CoverageRateDAL.COL_NAME_RENEWAL_NUMBER) = oCoverageRate.RenewalNumber.Value
 
                     oDtable.Rows.Add(oRow)
                 End If
             Next
-            oDtable.DefaultView.Sort() = COL_LOW_PRICE
+            oDtable.DefaultView.Sort() = CoverageRateDAL.COL_NAME_LOW_PRICE
             Return oDtable.DefaultView
 
         End Function
@@ -3543,17 +3354,17 @@ Namespace Tables
             If yesId = GetSelectedItem(UseCoverageStartDateId) Then
                 Dim oCoverageRate As CoverageRate
                 LoadCoverageRateList()
-                If (Not State.moCoverageRateList Is Nothing) Then
-                    If Me.State.moCoverageRateList.Count > 1 Then
-                        Me.PopulateBOProperty(TheCoverage, "UseCoverageStartDateId", UseCoverageStartDateId)
-                        Me.moUseCoverageStartDateLable.ForeColor = Color.Red
-                        Throw New GUIException(Message.MSG_INVALID_COVERAGE, Assurant.ElitaPlus.Common.ErrorCodes.INVALID_MULTIPLE_COVERAGES_NOT_ALLOWED)
+                If (Not State.CoverageRateList Is Nothing) Then
+                    If State.CoverageRateList.Count > 1 Then
+                        PopulateBOProperty(TheCoverage, "UseCoverageStartDateId", UseCoverageStartDateId)
+                        moUseCoverageStartDateLable.ForeColor = Color.Red
+                        Throw New GUIException(Message.MSG_INVALID_COVERAGE, ElitaPlus.Common.ErrorCodes.INVALID_MULTIPLE_COVERAGES_NOT_ALLOWED)
                     Else
-                        For Each oCoverageRate In Me.State.moCoverageRateList
+                        For Each oCoverageRate In State.CoverageRateList
                             If Not oCoverageRate Is Nothing Then
                                 If oCoverageRate.GrossAmt.Value > 0 Then
-                                    Me.moUseCoverageStartDateLable.ForeColor = Color.Red
-                                    Throw New GUIException(Message.MSG_INVALID_COVERAGE, Assurant.ElitaPlus.Common.ErrorCodes.INVALID_COVERAGE_GROSS_AMT)
+                                    moUseCoverageStartDateLable.ForeColor = Color.Red
+                                    Throw New GUIException(Message.MSG_INVALID_COVERAGE, ElitaPlus.Common.ErrorCodes.INVALID_COVERAGE_GROSS_AMT)
                                 End If
                             End If
                         Next
@@ -3562,67 +3373,57 @@ Namespace Tables
             End If
         End Sub
 
-        Private Sub ModifyGridHeader()
-
-            moGridView.Columns(COMMISSIONS_PERCENT).HeaderText = moGridView.Columns(COMMISSIONS_PERCENT).HeaderText.Replace("%", "<br>%")
-            moGridView.Columns(MARKETING_PERCENT).HeaderText = moGridView.Columns(MARKETING_PERCENT).HeaderText.Replace("%", "<br>%")
-            moGridView.Columns(ADMIN_EXPENSE).HeaderText = moGridView.Columns(ADMIN_EXPENSE).HeaderText.Replace("%", "<br>%")
-            moGridView.Columns(PROFIT_EXPENSE).HeaderText = moGridView.Columns(PROFIT_EXPENSE).HeaderText.Replace("%", "<br>%")
-            moGridView.Columns(LOSS_COST_PERCENT).HeaderText = moGridView.Columns(LOSS_COST_PERCENT).HeaderText.Replace("%", "<br>%")
-
-        End Sub
-
         Private Sub PopulateCoverageRate()
-            If Me.State.IsNewWithCopy Then
-                With Me.State.moCoverageRateList(moGridView.SelectedIndex)
-                    Me.SetSelectedGridText(moGridView, LOW_PRICE, .LowPrice.ToString)
-                    Me.SetSelectedGridText(moGridView, HIGH_PRICE, .HighPrice.ToString)
-                    Me.SetSelectedGridText(moGridView, GROSS_AMT, .GrossAmt.ToString)
-                    Me.SetSelectedGridText(moGridView, COMMISSIONS_PERCENT, .CommissionsPercent.ToString)
-                    Me.SetSelectedGridText(moGridView, MARKETING_PERCENT, .MarketingPercent.ToString)
-                    Me.SetSelectedGridText(moGridView, ADMIN_EXPENSE, .AdminExpense.ToString)
-                    Me.SetSelectedGridText(moGridView, PROFIT_EXPENSE, .ProfitExpense.ToString)
-                    Me.SetSelectedGridText(moGridView, LOSS_COST_PERCENT, .LossCostPercent.ToString)
-                    Me.SetSelectedGridText(moGridView, LOW_PRICE, .LowPrice.ToString)
-                    Me.SetSelectedGridText(moGridView, GROSS_AMOUNT_PERCENT, .GrossAmountPercent.ToString)
-                    Me.SetSelectedGridText(moGridView, RENEWAL_NUMBER, .RenewalNumber.ToString)
+            If State.IsNewWithCopy Then
+                With State.CoverageRateList(moGridView.SelectedIndex)
+                    SetSelectedGridText(moGridView, ColIndexLowPrice, .LowPrice.ToString)
+                    SetSelectedGridText(moGridView, ColIndexHighPrice, .HighPrice.ToString)
+                    SetSelectedGridText(moGridView, ColIndexGrossAmt, .GrossAmt.ToString)
+                    SetSelectedGridText(moGridView, ColIndexCommissionsPercent, .CommissionsPercent.ToString)
+                    SetSelectedGridText(moGridView, ColIndexMarketingPercent, .MarketingPercent.ToString)
+                    SetSelectedGridText(moGridView, ColIndexAdminExpense, .AdminExpense.ToString)
+                    SetSelectedGridText(moGridView, ColIndexProfitExpense, .ProfitExpense.ToString)
+                    SetSelectedGridText(moGridView, ColIndexLossCostPercent, .LossCostPercent.ToString)
+                    SetSelectedGridText(moGridView, ColIndexLowPrice, .LowPrice.ToString)
+                    SetSelectedGridText(moGridView, ColIndexGrossAmountPercent, .GrossAmountPercent.ToString)
+                    SetSelectedGridText(moGridView, ColIndexRenewalNumber, .RenewalNumber.ToString)
 
                 End With
             Else
                 With TheCoverageRate
-                    Me.SetSelectedGridText(moGridView, LOW_PRICE, .LowPrice.ToString)
-                    Me.SetSelectedGridText(moGridView, HIGH_PRICE, .HighPrice.ToString)
-                    Me.SetSelectedGridText(moGridView, GROSS_AMT, .GrossAmt.ToString)
-                    Me.SetSelectedGridText(moGridView, COMMISSIONS_PERCENT, .CommissionsPercent.ToString)
-                    Me.SetSelectedGridText(moGridView, MARKETING_PERCENT, .MarketingPercent.ToString)
-                    Me.SetSelectedGridText(moGridView, ADMIN_EXPENSE, .AdminExpense.ToString)
-                    Me.SetSelectedGridText(moGridView, PROFIT_EXPENSE, .ProfitExpense.ToString)
-                    Me.SetSelectedGridText(moGridView, LOSS_COST_PERCENT, .LossCostPercent.ToString)
-                    Me.SetSelectedGridText(moGridView, LOW_PRICE, .LowPrice.ToString)
-                    Me.SetSelectedGridText(moGridView, GROSS_AMOUNT_PERCENT, .GrossAmountPercent.ToString)
-                    Me.SetSelectedGridText(moGridView, RENEWAL_NUMBER, .RenewalNumber.ToString)
+                    SetSelectedGridText(moGridView, ColIndexLowPrice, .LowPrice.ToString)
+                    SetSelectedGridText(moGridView, ColIndexHighPrice, .HighPrice.ToString)
+                    SetSelectedGridText(moGridView, ColIndexGrossAmt, .GrossAmt.ToString)
+                    SetSelectedGridText(moGridView, ColIndexCommissionsPercent, .CommissionsPercent.ToString)
+                    SetSelectedGridText(moGridView, ColIndexMarketingPercent, .MarketingPercent.ToString)
+                    SetSelectedGridText(moGridView, ColIndexAdminExpense, .AdminExpense.ToString)
+                    SetSelectedGridText(moGridView, ColIndexProfitExpense, .ProfitExpense.ToString)
+                    SetSelectedGridText(moGridView, ColIndexLossCostPercent, .LossCostPercent.ToString)
+                    SetSelectedGridText(moGridView, ColIndexLowPrice, .LowPrice.ToString)
+                    SetSelectedGridText(moGridView, ColIndexGrossAmountPercent, .GrossAmountPercent.ToString)
+                    SetSelectedGridText(moGridView, ColIndexRenewalNumber, .RenewalNumber.ToString)
 
                 End With
             End If
-            PopulateTaxRegionFromCoverageRateBO()
+            PopulateTaxRegionFromCoverageRateBo()
         End Sub
 
-        Private Sub PopulateTaxRegionFromCoverageRateBO()
+        Private Sub PopulateTaxRegionFromCoverageRateBo()
             'ensure that grid's edit index is set before this gets a call
             If moGridView.EditIndex = -1 Then Exit Sub
             Dim gRow As GridViewRow = moGridView.Rows(moGridView.EditIndex)
-            Dim ddltaxregion As DropDownList = CType(gRow.Cells(REGION_ID).FindControl("ddlTax_Region"), DropDownList)
+            Dim ddlTaxRegion As DropDownList = CType(gRow.Cells(ColIndexRegionId).FindControl("ddlTax_Region"), DropDownList)
 
-            If Me.State.IsNewWithCopy Then
-                With Me.State.moCoverageRateList(moGridView.SelectedIndex)
+            If State.IsNewWithCopy Then
+                With State.CoverageRateList(moGridView.SelectedIndex)
                     If Not .RegionId = Guid.Empty Then
-                        Me.PopulateControlFromBOProperty(ddltaxregion, .RegionId)
+                        PopulateControlFromBOProperty(ddlTaxRegion, .RegionId)
                     End If
                 End With
             Else
                 With TheCoverageRate
                     If Not .RegionId = Guid.Empty Then
-                        Me.PopulateControlFromBOProperty(ddltaxregion, .RegionId)
+                        PopulateControlFromBOProperty(ddlTaxRegion, .RegionId)
                     End If
                 End With
             End If
@@ -3633,9 +3434,9 @@ Namespace Tables
             'fill the drop downs
             If moGridView.EditIndex = -1 Then Exit Sub
             Dim gRow As GridViewRow = moGridView.Rows(moGridView.EditIndex)
-            Dim moIsCoveredDrop As DropDownList = DirectCast(gRow.Cells(REGION_ID).FindControl("ddlTax_Region"), DropDownList)
+            Dim moIsCoveredDrop As DropDownList = DirectCast(gRow.Cells(ColIndexRegionId).FindControl("ddlTax_Region"), DropDownList)
 
-            With Me.State.moCoverageRateList
+            With State.CoverageRateList
                 If Not moIsCoveredDrop Is Nothing Then
                     PopulateRegionDropdown(moIsCoveredDrop)
 
@@ -3645,26 +3446,26 @@ Namespace Tables
 
         Private Sub PopulateRegionDropdown(ByVal oDropDownList As DropDownList)
             Try
-                Dim RegionList As New Collections.Generic.List(Of DataElements.ListItem)
+                Dim regionList As New List(Of DataElements.ListItem)
 
-                For Each Country_id As Guid In ElitaPlusIdentity.Current.ActiveUser.Countries
-                    Dim Regions As DataElements.ListItem() =
+                For Each countryId As Guid In CurrentUser().Countries
+                    Dim regions As DataElements.ListItem() =
                             CommonConfigManager.Current.ListManager.GetList(listCode:=ListCodes.RegionsByCountry,
                                                                             context:=New ListContext() With
                                                                             {
-                                                                              .CountryId = Country_id
+                                                                              .CountryId = countryId
                                                                             })
 
-                    If Regions.Count > 0 Then
-                        If Not RegionList Is Nothing Then
-                            RegionList.AddRange(Regions)
+                    If regions.Count > 0 Then
+                        If Not regionList Is Nothing Then
+                            regionList.AddRange(regions)
                         Else
-                            RegionList = Regions.Clone()
+                            regionList = regions.Clone()
                         End If
                     End If
                 Next
 
-                oDropDownList.Populate(RegionList.ToArray(),
+                oDropDownList.Populate(regionList.ToArray(),
                                         New PopulateOptions() With
                                         {
                                             .AddBlankItem = True
@@ -3678,61 +3479,56 @@ Namespace Tables
 #End Region
 
 #Region "Populate Conseq Damage"
-        'Populate ConseqDamage starts here
 
-        Private Sub PopulateCoverageConseqDamageList(Optional ByVal oAction As String = ACTION_NONE)
-            Dim oCoverageConseqDamage As CoverageConseqDamage
+        Private Sub PopulateCoverageConseqDamageList(Optional ByVal oAction As String = ActionNone)
             Dim oDataView As DataView
 
-            If Me.State.IsCoverageNew = True And Not Me.State.IsNewWithCopy Then Return ' We can not have CoverageConseqDamages if the coverage is new
+            If State.IsCoverageNew = True And Not State.IsNewWithCopy Then Return ' We can not have CoverageConseqDamages if the coverage is new
 
             Try
 
-                'EnableCoverageConseqDamage(True)
+                If State.IsNewWithCopy Then
+                    oDataView = CoverageConseqDamage.GetList(Guid.Empty, GetLanguageId())
 
-                If Me.State.IsNewWithCopy Then
-                    oDataView = oCoverageConseqDamage.GetList(Guid.Empty, ElitaPlusIdentity.Current.ActiveUser.LanguageId)
+                    If Not oAction = ActionCancelDelete Then LoadCoverageConseqDamageList()
 
-                    If Not oAction = ACTION_CANCEL_DELETE Then Me.LoadCoverageConseqDamageList()
-
-                    If Not Me.State.moCoverageConseqDamageList Is Nothing Then
-                        oDataView = getDVFromArray(Me.State.moCoverageConseqDamageList, oDataView.Table)
+                    If Not State.CoverageConseqDamageList Is Nothing Then
+                        oDataView = GetDataViewFromArray(State.CoverageConseqDamageList, oDataView.Table)
                     End If
                 Else
-                    oDataView = oCoverageConseqDamage.GetList(TheCoverage.Id, ElitaPlusIdentity.Current.ActiveUser.LanguageId)
+                    oDataView = CoverageConseqDamage.GetList(TheCoverage.Id, GetLanguageId())
                 End If
 
-
                 Select Case oAction
-                    Case ACTION_NONE
-                        Me.SetPageAndSelectedIndexFromGuid(oDataView, Guid.Empty, moGridViewConseqDamage, 0)
+                    Case ActionNone
+                        SetPageAndSelectedIndexFromGuid(oDataView, Guid.Empty, moGridViewConseqDamage, 0)
                         EnableForEditConseqDamageButtons(False)
-                    Case ACTION_SAVE
-                        Me.SetPageAndSelectedIndexFromGuid(oDataView, GetGuidFromString(CoverageConseqDamageId), moGridViewConseqDamage,
+                    Case ActionSave
+                        SetPageAndSelectedIndexFromGuid(oDataView, GetGuidFromString(CoverageConseqDamageId), moGridViewConseqDamage,
                                     moGridViewConseqDamage.PageIndex)
                         EnableForEditConseqDamageButtons(False)
-                    Case ACTION_CANCEL_DELETE
-                        Me.SetPageAndSelectedIndexFromGuid(oDataView, Guid.Empty, moGridViewConseqDamage,
+                    Case ActionCancelDelete
+                        SetPageAndSelectedIndexFromGuid(oDataView, Guid.Empty, moGridViewConseqDamage,
                                     moGridViewConseqDamage.PageIndex)
                         EnableForEditConseqDamageButtons(False)
-                    Case ACTION_EDIT
-                        If Me.State.IsNewWithCopy Then
-                            CoverageConseqDamageId = Me.State.moCoverageConseqDamageList(moGridViewConseqDamage.SelectedIndex).Id.ToString
+                    Case ActionEdit
+                        If State.IsNewWithCopy Then
+                            CoverageConseqDamageId = State.CoverageConseqDamageList(moGridViewConseqDamage.SelectedIndex).Id.ToString
                         Else
-                            CoverageConseqDamageId = Me.GetSelectedGridText(moGridViewConseqDamage, COVERAGE_CONSEQ_DAMAGE_ID)
+                            CoverageConseqDamageId = GetSelectedGridText(moGridViewConseqDamage, ColSeqCoverageConseqDamageId)
                         End If
-                        Me.SetPageAndSelectedIndexFromGuid(oDataView, GetGuidFromString(CoverageConseqDamageId), moGridViewConseqDamage,
+                        SetPageAndSelectedIndexFromGuid(oDataView, GetGuidFromString(CoverageConseqDamageId), moGridViewConseqDamage,
                                     moGridViewConseqDamage.PageIndex, True)
                         EnableForEditConseqDamageButtons(True)
-                    Case ACTION_NEW
-                        If Me.State.IsNewWithCopy Then oDataView.Table.DefaultView.Sort() = Nothing
+                    Case ActionNew
+                        If State.IsNewWithCopy Then oDataView.Table.DefaultView.Sort() = Nothing
                         Dim oRow As DataRow = oDataView.Table.NewRow
-                        oRow(DBCOVERAGE_CONSEQ_DAMAGE_ID) = TheCoverageConseqDamage.Id.ToByteArray
-                        oRow(DBCOVERAGE_ID) = TheCoverage.Id.ToByteArray
-                        oRow(DBLIABLILITY_LIMIT_PER_INCIDENT) = "0"
-                        oRow(DBLIABLILITY_LIMIT_CUMULATIVE) = "0"
+                        oRow(DbCoverageConseqDamageId) = TheCoverageConseqDamage.Id.ToByteArray
+                        oRow(DbCoverageId) = TheCoverage.Id.ToByteArray
+                        oRow(DbLiablilityLimitPerIncident) = "0"
+                        oRow(DbLiablilityLimitCumulative) = "0"
                         oDataView.Table.Rows.Add(oRow)
-                        Me.SetPageAndSelectedIndexFromGuid(oDataView, GetGuidFromString(CoverageConseqDamageId), moGridViewConseqDamage,
+                        SetPageAndSelectedIndexFromGuid(oDataView, GetGuidFromString(CoverageConseqDamageId), moGridViewConseqDamage,
                                     moGridViewConseqDamage.PageIndex, True)
                         EnableForEditConseqDamageButtons(True)
                 End Select
@@ -3742,43 +3538,43 @@ Namespace Tables
                 ControlMgr.DisableEditDeleteGridIfNotEditAuth(Me, moGridViewConseqDamage)
 
             Catch ex As Exception
-                moMsgControllerConseqDamage.AddError(COVERAGE_FORM006)
+                moMsgControllerConseqDamage.AddError(CoverageForm006)
                 moMsgControllerConseqDamage.AddError(ex.Message, False)
                 'moMsgControllerConseqDamage.Show()
             End Try
         End Sub
 
         Private Sub PopulateCoverageConseqDamage()
-            If Me.State.IsNewWithCopy Then
-                With Me.State.moCoverageConseqDamageList(moGridViewConseqDamage.SelectedIndex)
-                    Me.SetSelectedGridText(moGridViewConseqDamage, LIABLILITY_LIMIT_PER_INCIDENT, .LiabilityLimitPerIncident.ToString)
-                    Me.SetSelectedGridText(moGridViewConseqDamage, LIABLILITY_LIMIT_CUMULATIVE, .LiabilityLimitCumulative.ToString)
+            If State.IsNewWithCopy Then
+                With State.CoverageConseqDamageList(moGridViewConseqDamage.SelectedIndex)
+                    SetSelectedGridText(moGridViewConseqDamage, ColSeqLiabilityLimitPerIncident, .LiabilityLimitPerIncident.ToString)
+                    SetSelectedGridText(moGridViewConseqDamage, ColSeqLiabilityLimitCumulative, .LiabilityLimitCumulative.ToString)
                     If Not .Effective Is Nothing Then
-                        Me.SetSelectedGridText(moGridViewConseqDamage, CONSEQ_DAMAGE_EFFECTIVE_DATE, .Effective.Value.ToString)
+                        SetSelectedGridText(moGridViewConseqDamage, ColSeqConseqDamageEffectiveDate, .Effective.Value.ToString)
                     End If
                     If Not .Expiration Is Nothing Then
-                        Me.SetSelectedGridText(moGridViewConseqDamage, CONSEQ_DAMAGE_EXPIRATION_DATE, .Expiration.Value.ToString)
+                        SetSelectedGridText(moGridViewConseqDamage, ColSeqConseqDamageExpirationDate, .Expiration.Value.ToString)
                     End If
                     If Not .ConseqDamageTypeXcd Is Nothing Then
-                        SetSelectedItem(CType(moGridViewConseqDamage.Rows(moGridViewConseqDamage.SelectedIndex).Cells(CONSEQ_DAMAGE_TYPE).FindControl("moConseqDamageTypeDropdown"), DropDownList), .ConseqDamageTypeXcd)
+                        SetSelectedItem(CType(moGridViewConseqDamage.Rows(moGridViewConseqDamage.SelectedIndex).Cells(ColSeqConseqDamageType).FindControl("moConseqDamageTypeDropdown"), DropDownList), .ConseqDamageTypeXcd)
                     End If
                     If Not .LiabilityLimitBaseXcd Is Nothing Then
-                        SetSelectedItem(CType(moGridViewConseqDamage.Rows(moGridViewConseqDamage.SelectedIndex).Cells(LIABILITY_LIMIT_BASED_ON).FindControl("moLiabilityLimitBasedOnDropdown"), DropDownList), .LiabilityLimitBaseXcd)
+                        SetSelectedItem(CType(moGridViewConseqDamage.Rows(moGridViewConseqDamage.SelectedIndex).Cells(ColSeqLiabilityLimitBasedOn).FindControl("moLiabilityLimitBasedOnDropdown"), DropDownList), .LiabilityLimitBaseXcd)
                     End If
                     If Not .FulfilmentMethodXcd Is Nothing Then
-                        SetSelectedItem(CType(moGridViewConseqDamage.Rows(moGridViewConseqDamage.SelectedIndex).Cells(FULFILMENT_METHOD).FindControl("moFulfilmentMethodDropdown"), DropDownList), .FulfilmentMethodXcd)
+                        SetSelectedItem(CType(moGridViewConseqDamage.Rows(moGridViewConseqDamage.SelectedIndex).Cells(ColSeqFulfillmentMethod).FindControl("moFulfilmentMethodDropdown"), DropDownList), .FulfilmentMethodXcd)
                     End If
 
                 End With
             Else
                 With TheCoverageConseqDamage
-                    Me.SetSelectedGridText(moGridViewConseqDamage, LIABLILITY_LIMIT_PER_INCIDENT, .LiabilityLimitPerIncident.ToString)
-                    Me.SetSelectedGridText(moGridViewConseqDamage, LIABLILITY_LIMIT_CUMULATIVE, .LiabilityLimitCumulative.ToString)
-                    Me.SetSelectedGridText(moGridViewConseqDamage, CONSEQ_DAMAGE_EFFECTIVE_DATE, .Effective.ToString)
-                    Me.SetSelectedGridText(moGridViewConseqDamage, CONSEQ_DAMAGE_EXPIRATION_DATE, .Expiration.ToString)
-                    SetSelectedItem(CType(moGridViewConseqDamage.Rows(moGridViewConseqDamage.SelectedIndex).Cells(CONSEQ_DAMAGE_TYPE).FindControl("moConseqDamageTypeDropdown"), DropDownList), .ConseqDamageTypeXcd)
-                    SetSelectedItem(CType(moGridViewConseqDamage.Rows(moGridViewConseqDamage.SelectedIndex).Cells(LIABILITY_LIMIT_BASED_ON).FindControl("moLiabilityLimitBasedOnDropdown"), DropDownList), .LiabilityLimitBaseXcd)
-                    SetSelectedItem(CType(moGridViewConseqDamage.Rows(moGridViewConseqDamage.SelectedIndex).Cells(FULFILMENT_METHOD).FindControl("moFulfilmentMethodDropdown"), DropDownList), .FulfilmentMethodXcd)
+                    SetSelectedGridText(moGridViewConseqDamage, ColSeqLiabilityLimitPerIncident, .LiabilityLimitPerIncident.ToString)
+                    SetSelectedGridText(moGridViewConseqDamage, ColSeqLiabilityLimitCumulative, .LiabilityLimitCumulative.ToString)
+                    SetSelectedGridText(moGridViewConseqDamage, ColSeqConseqDamageEffectiveDate, .Effective.ToString)
+                    SetSelectedGridText(moGridViewConseqDamage, ColSeqConseqDamageExpirationDate, .Expiration.ToString)
+                    SetSelectedItem(CType(moGridViewConseqDamage.Rows(moGridViewConseqDamage.SelectedIndex).Cells(ColSeqConseqDamageType).FindControl("moConseqDamageTypeDropdown"), DropDownList), .ConseqDamageTypeXcd)
+                    SetSelectedItem(CType(moGridViewConseqDamage.Rows(moGridViewConseqDamage.SelectedIndex).Cells(ColSeqLiabilityLimitBasedOn).FindControl("moLiabilityLimitBasedOnDropdown"), DropDownList), .LiabilityLimitBaseXcd)
+                    SetSelectedItem(CType(moGridViewConseqDamage.Rows(moGridViewConseqDamage.SelectedIndex).Cells(ColSeqFulfillmentMethod).FindControl("moFulfilmentMethodDropdown"), DropDownList), .FulfilmentMethodXcd)
                 End With
             End If
         End Sub
@@ -3786,75 +3582,67 @@ Namespace Tables
 #End Region
 
 #Region "Button Management ConseqDamage"
-        Private Sub EnableDisableConseqDamageButtons(ByVal newButton As Boolean, ByVal SaveCancelButton As Boolean)
-            btnNewConseqDamage_WRITE.Enabled = newButton
-
-            btnSaveConseqDamage_WRITE.Enabled = SaveCancelButton
-            btnCancelConseqDamage_WRITE.Enabled = SaveCancelButton
-
-        End Sub
 
 #End Region
 
 #Region "Business Part"
 
-        Private Sub PopulateRateBOFromForm()
+        Private Sub PopulateRateBoFromForm()
             With TheCoverageRate
                 .CoverageId = TheCoverage.Id
-                Me.PopulateBOProperty(TheCoverageRate, "LowPrice", CType(Me.GetSelectedGridControl(moGridView, LOW_PRICE), TextBox))
-                Me.PopulateBOProperty(TheCoverageRate, "HighPrice", CType(Me.GetSelectedGridControl(moGridView, HIGH_PRICE), TextBox))
+                PopulateBOProperty(TheCoverageRate, NameOf(CoverageRate.LowPrice), CType(GetSelectedGridControl(moGridView, ColIndexLowPrice), TextBox))
+                PopulateBOProperty(TheCoverageRate, NameOf(CoverageRate.HighPrice), CType(GetSelectedGridControl(moGridView, ColIndexHighPrice), TextBox))
                 ''Gross Amount Percent is set to 0
 
 
                 If hdnGrossAmtOrPercent.Value = "Percent" Then
-                    Me.PopulateBOProperty(TheCoverageRate, "GrossAmt", hdnGrossAmtOrPercentValue.Value)
-                    Me.PopulateBOProperty(TheCoverageRate, "GrossAmountPercent", "0.00")
+                    PopulateBOProperty(TheCoverageRate, NameOf(CoverageRate.GrossAmt), hdnGrossAmtOrPercentValue.Value)
+                    PopulateBOProperty(TheCoverageRate, NameOf(CoverageRate.GrossAmountPercent), "0.00")
                 ElseIf hdnGrossAmtOrPercent.Value = "Amount" Then
-                    Me.PopulateBOProperty(TheCoverageRate, "GrossAmountPercent", hdnGrossAmtOrPercentValue.Value)
-                    Me.PopulateBOProperty(TheCoverageRate, "GrossAmt", "0.00")
+                    PopulateBOProperty(TheCoverageRate, NameOf(CoverageRate.GrossAmountPercent), hdnGrossAmtOrPercentValue.Value)
+                    PopulateBOProperty(TheCoverageRate, NameOf(CoverageRate.GrossAmt), "0.00")
                 Else
-                    Me.PopulateBOProperty(TheCoverageRate, "GrossAmountPercent", CType(Me.GetSelectedGridControl(moGridView, GROSS_AMOUNT_PERCENT), TextBox))
-                    Me.PopulateBOProperty(TheCoverageRate, "GrossAmt", CType(Me.GetSelectedGridControl(moGridView, GROSS_AMT), TextBox))
+                    PopulateBOProperty(TheCoverageRate, NameOf(CoverageRate.GrossAmountPercent), CType(GetSelectedGridControl(moGridView, ColIndexGrossAmountPercent), TextBox))
+                    PopulateBOProperty(TheCoverageRate, NameOf(CoverageRate.GrossAmt), CType(GetSelectedGridControl(moGridView, ColIndexGrossAmt), TextBox))
                 End If
                 hdnGrossAmtOrPercent.Value = String.Empty
                 hdnGrossAmtOrPercentValue.Value = String.Empty
-                If CoveragePricingCode = NO_COVERAGE_PRICING Then
-                    Me.PopulateBOProperty(TheCoverageRate, "CommissionsPercent", GetAmountFormattedDoubleString("0"))
-                    Me.PopulateBOProperty(TheCoverageRate, "MarketingPercent", GetAmountFormattedDoubleString("0"))
-                    Me.PopulateBOProperty(TheCoverageRate, "AdminExpense", GetAmountFormattedDoubleString("0"))
-                    Me.PopulateBOProperty(TheCoverageRate, "ProfitExpense", GetAmountFormattedDoubleString("0"))
-                    Me.PopulateBOProperty(TheCoverageRate, "LossCostPercent", GetAmountFormattedDoubleString("0"))
+                If CoveragePricingCode = NoCoveragePricing Then
+                    PopulateBOProperty(TheCoverageRate, NameOf(CoverageRate.CommissionsPercent), GetAmountFormattedDoubleString("0"))
+                    PopulateBOProperty(TheCoverageRate, NameOf(CoverageRate.MarketingPercent), GetAmountFormattedDoubleString("0"))
+                    PopulateBOProperty(TheCoverageRate, NameOf(CoverageRate.AdminExpense), GetAmountFormattedDoubleString("0"))
+                    PopulateBOProperty(TheCoverageRate, NameOf(CoverageRate.ProfitExpense), GetAmountFormattedDoubleString("0"))
+                    PopulateBOProperty(TheCoverageRate, NameOf(CoverageRate.LossCostPercent), GetAmountFormattedDoubleString("0"))
                 Else
-                    Me.PopulateBOProperty(TheCoverageRate, "CommissionsPercent", CType(Me.GetSelectedGridControl(moGridView, COMMISSIONS_PERCENT), TextBox))
-                    Me.PopulateBOProperty(TheCoverageRate, "MarketingPercent", CType(Me.GetSelectedGridControl(moGridView, MARKETING_PERCENT), TextBox))
-                    Me.PopulateBOProperty(TheCoverageRate, "AdminExpense", CType(Me.GetSelectedGridControl(moGridView, ADMIN_EXPENSE), TextBox))
-                    Me.PopulateBOProperty(TheCoverageRate, "ProfitExpense", CType(Me.GetSelectedGridControl(moGridView, PROFIT_EXPENSE), TextBox))
-                    Me.PopulateBOProperty(TheCoverageRate, "LossCostPercent", CType(Me.GetSelectedGridControl(moGridView, LOSS_COST_PERCENT), TextBox))
+                    PopulateBOProperty(TheCoverageRate, NameOf(CoverageRate.CommissionsPercent), CType(GetSelectedGridControl(moGridView, ColIndexCommissionsPercent), TextBox))
+                    PopulateBOProperty(TheCoverageRate, NameOf(CoverageRate.MarketingPercent), CType(GetSelectedGridControl(moGridView, ColIndexMarketingPercent), TextBox))
+                    PopulateBOProperty(TheCoverageRate, NameOf(CoverageRate.AdminExpense), CType(GetSelectedGridControl(moGridView, ColIndexAdminExpense), TextBox))
+                    PopulateBOProperty(TheCoverageRate, NameOf(CoverageRate.ProfitExpense), CType(GetSelectedGridControl(moGridView, ColIndexProfitExpense), TextBox))
+                    PopulateBOProperty(TheCoverageRate, NameOf(CoverageRate.LossCostPercent), CType(GetSelectedGridControl(moGridView, ColIndexLossCostPercent), TextBox))
                 End If
-                Me.PopulateBOProperty(TheCoverageRate, "RenewalNumber", CType(Me.GetSelectedGridControl(moGridView, RENEWAL_NUMBER), TextBox))
-                Me.PopulateBOProperty(TheCoverageRate, "RegionId", CType(Me.GetDropDownControlFromGrid(moGridView, REGION_ID), DropDownList))
+                PopulateBOProperty(TheCoverageRate, NameOf(CoverageRate.RenewalNumber), CType(GetSelectedGridControl(moGridView, ColIndexRenewalNumber), TextBox))
+                PopulateBOProperty(TheCoverageRate, NameOf(CoverageRate.RegionId), CType(GetDropDownControlFromGrid(moGridView, ColIndexRegionId), DropDownList))
 
                 CommonSourceOptionLogic()
             End With
 
             ValidateCoverage()
 
-            If Me.ErrCollection.Count > 0 Then
+            If ErrCollection.Count > 0 Then
                 Throw New PopulateBOErrorException
             End If
         End Sub
 
-        Private Function IsDirtyRateBO() As Boolean
+        Private Function IsDirtyRateBo() As Boolean
             Dim bIsDirty As Boolean = True
             If moGridView.EditIndex = NO_ITEM_SELECTED_INDEX Then Return False ' Coverage Rate is not in edit mode
-            Dim sCoverageRateId As String = Me.GetSelectedGridText(moGridView, COVERAGE_RATE_ID)
             Try
                 With TheCoverageRate
-                    PopulateRateBOFromForm()
+                    PopulateRateBoFromForm()
                     bIsDirty = .IsDirty
                 End With
             Catch ex As Exception
-                moMsgControllerRate.AddError(COVERAGE_FORM004)
+                moMsgControllerRate.AddError(CoverageForm004)
                 moMsgControllerRate.AddError(ex.Message, False)
                 'moMsgControllerRate.Show()
             End Try
@@ -3865,26 +3653,26 @@ Namespace Tables
             Dim bIsOk As Boolean = True
             Dim bIsDirty As Boolean
             If moGridView.EditIndex < 0 Then Return False ' Coverage Rate is not in edit mode
-            If Me.State.IsNewWithCopy Then
-                Me.LoadCoverageRateList()
-                Me.State.moCoverageRateList(moGridView.SelectedIndex).Validate()
+            If State.IsNewWithCopy Then
+                LoadCoverageRateList()
+                State.CoverageRateList(moGridView.SelectedIndex).Validate()
                 Return bIsOk
             End If
             If IsNewRate = False Then
-                CoverageRateId = Me.GetSelectedGridText(moGridView, COVERAGE_RATE_ID)
+                CoverageRateId = GetSelectedGridText(moGridView, ColIndexCoverageRateId)
             End If
             BindBoPropertiesToGridHeader()
             With TheCoverageRate
-                PopulateRateBOFromForm()
+                PopulateRateBoFromForm()
                 bIsDirty = .IsDirty
                 .Save()
                 EnableForEditRateButtons(False)
             End With
             If (bIsOk = True) Then
                 If bIsDirty = True Then
-                    Me.MasterPage.MessageController.AddSuccess(Message.SAVE_RECORD_CONFIRMATION, True)
+                    MasterPage.MessageController.AddSuccess(Message.SAVE_RECORD_CONFIRMATION, True)
                 Else
-                    Me.MasterPage.MessageController.AddError(Message.MSG_RECORD_NOT_SAVED, True)
+                    MasterPage.MessageController.AddError(Message.MSG_RECORD_NOT_SAVED, True)
                 End If
             End If
             Return bIsOk
@@ -3894,9 +3682,9 @@ Namespace Tables
         Private Function DeleteSelectedCoverageRate(ByVal nIndex As Integer) As Boolean
             Dim bIsOk As Boolean = True
             Try
-                If Me.State.IsNewWithCopy Then
-                    If Me.State.moCoverageRateList Is Nothing Then Me.LoadCoverageRateList()
-                    Me.State.moCoverageRateList(nIndex) = Nothing
+                If State.IsNewWithCopy Then
+                    If State.CoverageRateList Is Nothing Then LoadCoverageRateList()
+                    State.CoverageRateList(nIndex) = Nothing
                 Else
                     With TheCoverageRate()
                         .delete()
@@ -3905,7 +3693,7 @@ Namespace Tables
                 End If
 
             Catch ex As Exception
-                moMsgControllerRate.AddError(COVERAGE_FORM005)
+                moMsgControllerRate.AddError(CoverageForm005)
                 moMsgControllerRate.AddError(ex.Message, False)
                 'moMsgControllerRate.Show()
                 bIsOk = False
@@ -3917,11 +3705,11 @@ Namespace Tables
         Private Function DeleteACoverageRate(ByVal oRow As DataRow) As Boolean
             Dim bIsOk As Boolean = True
             Try
-                Dim oCoverageRate As CoverageRate = New CoverageRate(New Guid(CType(oRow(DBCOVERAGE_RATE_ID), Byte())))
+                Dim oCoverageRate As CoverageRate = New CoverageRate(New Guid(CType(oRow(DbCoverageRateId), Byte())))
                 oCoverageRate.delete()
                 oCoverageRate.Save()
             Catch ex As Exception
-                moMsgControllerRate.AddError(TranslationBase.TranslateLabelOrMessage(COVERAGE_FORM005, ElitaPlusIdentity.Current.ActiveUser.LanguageId))
+                moMsgControllerRate.AddError(TranslationBase.TranslateLabelOrMessage(CoverageForm005, GetLanguageId()))
                 moMsgControllerRate.AddError(ex.Message)
                 'moMsgControllerRate.Show()
                 bIsOk = False
@@ -3935,12 +3723,12 @@ Namespace Tables
             Dim oRow As DataRow
 
             Try
-                oRows = TheCoverageRate.GetCovRateListForDelete(TheCoverage.Id).Table.Rows
+                oRows = CoverageRate.GetCovRateListForDelete(TheCoverage.Id).Table.Rows
                 For Each oRow In oRows
                     If DeleteACoverageRate(oRow) = False Then Return False
                 Next
             Catch ex As Exception
-                moMsgControllerRate.AddError(TranslationBase.TranslateLabelOrMessage(COVERAGE_FORM005, ElitaPlusIdentity.Current.ActiveUser.LanguageId))
+                moMsgControllerRate.AddError(TranslationBase.TranslateLabelOrMessage(CoverageForm005, GetLanguageId()))
                 moMsgControllerRate.AddError(ex.Message)
                 'moMsgControllerRate.Show()
                 bIsOk = False
@@ -3951,9 +3739,9 @@ Namespace Tables
         Private Function DeleteSelectedCoverageConseqDamage(ByVal nIndex As Integer) As Boolean
             Dim bIsOk As Boolean = True
             Try
-                If Me.State.IsNewWithCopy Then
-                    If Me.State.moCoverageConseqDamageList Is Nothing Then Me.LoadCoverageConseqDamageList()
-                    Me.State.moCoverageConseqDamageList(nIndex) = Nothing
+                If State.IsNewWithCopy Then
+                    If State.CoverageConseqDamageList Is Nothing Then LoadCoverageConseqDamageList()
+                    State.CoverageConseqDamageList(nIndex) = Nothing
                 Else
                     With TheCoverageConseqDamage()
                         .Delete()
@@ -3962,7 +3750,7 @@ Namespace Tables
                 End If
 
             Catch ex As Exception
-                moMsgControllerConseqDamage.AddError(COVERAGE_FORM006)
+                moMsgControllerConseqDamage.AddError(CoverageForm006)
                 moMsgControllerConseqDamage.AddError(ex.Message, False)
                 'moMsgControllerConseqDamage.Show()
                 bIsOk = False
@@ -3973,11 +3761,11 @@ Namespace Tables
         Private Function DeleteACoverageConseqDamage(ByVal oRow As DataRow) As Boolean
             Dim bIsOk As Boolean = True
             Try
-                Dim oCoverageConseqDamage As CoverageConseqDamage = New CoverageConseqDamage(New Guid(CType(oRow(DBCOVERAGE_CONSEQ_DAMAGE_ID), Byte())))
+                Dim oCoverageConseqDamage As CoverageConseqDamage = New CoverageConseqDamage(New Guid(CType(oRow(DbCoverageConseqDamageId), Byte())))
                 oCoverageConseqDamage.Delete()
                 oCoverageConseqDamage.Save()
             Catch ex As Exception
-                moMsgControllerRate.AddError(TranslationBase.TranslateLabelOrMessage(COVERAGE_FORM005, ElitaPlusIdentity.Current.ActiveUser.LanguageId))
+                moMsgControllerRate.AddError(TranslationBase.TranslateLabelOrMessage(CoverageForm005, GetLanguageId()))
                 moMsgControllerRate.AddError(ex.Message)
                 'moMsgControllerRate.Show()
                 bIsOk = False
@@ -3990,12 +3778,12 @@ Namespace Tables
             Dim oRow As DataRow
 
             Try
-                oRows = TheCoverageConseqDamage.GetList(TheCoverage.Id, ElitaPlusIdentity.Current.ActiveUser.LanguageId).Table.Rows
+                oRows = CoverageConseqDamage.GetList(TheCoverage.Id, GetLanguageId()).Table.Rows
                 For Each oRow In oRows
                     If DeleteACoverageConseqDamage(oRow) = False Then Return False
                 Next
             Catch ex As Exception
-                moMsgControllerRate.AddError(TranslationBase.TranslateLabelOrMessage(COVERAGE_FORM005, ElitaPlusIdentity.Current.ActiveUser.LanguageId))
+                moMsgControllerRate.AddError(TranslationBase.TranslateLabelOrMessage(CoverageForm005, GetLanguageId()))
                 moMsgControllerRate.AddError(ex.Message)
                 'moMsgControllerRate.Show()
                 bIsOk = False
@@ -4008,9 +3796,9 @@ Namespace Tables
         Private Function DeleteSelectedCoverageDeductible(ByVal nIndex As Integer) As Boolean
             Dim bIsOk As Boolean = True
             Try
-                If Me.State.IsNewWithCopy Then
-                    If Me.State.moCoverageDeductibleList Is Nothing Then Me.LoadCoverageDeductibleList()
-                    Me.State.moCoverageDeductibleList(nIndex) = Nothing
+                If State.IsNewWithCopy Then
+                    If State.CoverageDeductibleList Is Nothing Then LoadCoverageDeductibleList()
+                    State.CoverageDeductibleList(nIndex) = Nothing
                 Else
                     With TheCoverageDeductible()
                         .Delete()
@@ -4019,7 +3807,7 @@ Namespace Tables
                 End If
 
             Catch ex As Exception
-                moMsgControllerDeductible.AddError(COVERAGE_FORM006)
+                moMsgControllerDeductible.AddError(CoverageForm006)
                 moMsgControllerDeductible.AddError(ex.Message, False)
                 'moMsgControllerDeductible.Show()
                 bIsOk = False
@@ -4031,11 +3819,11 @@ Namespace Tables
         Private Function DeleteACoverageDeductible(ByVal oRow As DataRow) As Boolean
             Dim bIsOk As Boolean = True
             Try
-                Dim oCoverageDeductible As CoverageDeductible = New CoverageDeductible(New Guid(CType(oRow(DBCOVERAGE_DED_ID), Byte())))
+                Dim oCoverageDeductible As CoverageDeductible = New CoverageDeductible(New Guid(CType(oRow(DbCoverageDeductibleId), Byte())))
                 oCoverageDeductible.Delete()
                 oCoverageDeductible.Save()
             Catch ex As Exception
-                moMsgControllerDeductible.AddError(TranslationBase.TranslateLabelOrMessage(COVERAGE_FORM005, ElitaPlusIdentity.Current.ActiveUser.LanguageId))
+                moMsgControllerDeductible.AddError(TranslationBase.TranslateLabelOrMessage(CoverageForm005, GetLanguageId()))
                 moMsgControllerDeductible.AddError(ex.Message)
                 'moMsgControllerDeductible.Show()
                 bIsOk = False
@@ -4049,12 +3837,12 @@ Namespace Tables
             Dim oRow As DataRow
 
             Try
-                oRows = TheCoverageDeductible.GetList(TheCoverage.Id, ElitaPlusIdentity.Current.ActiveUser.LanguageId).Table.Rows
+                oRows = CoverageDeductible.GetList(TheCoverage.Id, GetLanguageId()).Table.Rows
                 For Each oRow In oRows
                     If DeleteACoverageDeductible(oRow) = False Then Return False
                 Next
             Catch ex As Exception
-                moMsgControllerDeductible.AddError(TranslationBase.TranslateLabelOrMessage(COVERAGE_FORM005, ElitaPlusIdentity.Current.ActiveUser.LanguageId))
+                moMsgControllerDeductible.AddError(TranslationBase.TranslateLabelOrMessage(CoverageForm005, GetLanguageId()))
                 moMsgControllerDeductible.AddError(ex.Message)
                 'moMsgControllerDeductible.Show()
                 bIsOk = False
@@ -4062,38 +3850,36 @@ Namespace Tables
             Return bIsOk
         End Function
 
-        Private Sub PopulateDeductibleBOFromForm()
+        Private Sub PopulateDeductibleBoFromForm()
             With TheCoverageDeductible
                 .CoverageId = TheCoverage.Id
-                Me.PopulateBOProperty(TheCoverageDeductible, "MethodOfRepairId", CType(Me.GetSelectedGridControl(dedGridView, METHOD_OF_REPAIR_DESC), DropDownList), True)
+                PopulateBOProperty(TheCoverageDeductible, NameOf(CoverageDeductible.MethodOfRepairId), CType(GetSelectedGridControl(dedGridView, ColSeqMethodOfRepairDescription), DropDownList), True)
 
-                Dim cboDeductibleBasedOn As DropDownList = CType(Me.GetSelectedGridControl(dedGridView, DEDUCTIBLE_BASED_ON_DESC), DropDownList)
+                Dim ddlDeductibleBasedOn As DropDownList = CType(GetSelectedGridControl(dedGridView, ColSeqDeductibleBasedOnDesc), DropDownList)
 
-                Dim deductibleBasedOnId As Guid = GetSelectedItem(cboDeductibleBasedOn)
+                Dim deductibleBasedOnId As Guid = GetSelectedItem(ddlDeductibleBasedOn)
                 If (deductibleBasedOnId = Guid.Empty) Then
-                    Me.PopulateBOProperty(TheCoverageDeductible, "DeductibleBasedOnId", cboDeductibleBasedOn)
-                    Me.PopulateBOProperty(TheCoverageDeductible, "DeductibleExpressionId", Guid.Empty)
+                    PopulateBOProperty(TheCoverageDeductible, NameOf(CoverageDeductible.DeductibleBasedOnId), ddlDeductibleBasedOn)
+                    PopulateBOProperty(TheCoverageDeductible, NameOf(CoverageDeductible.DeductibleExpressionId), Guid.Empty)
                 Else
                     Dim deductibleBasedOnCode As String = LookupListNew.GetCodeFromId(LookupListNew.LK_DEDUCTIBLE_BASED_ON, deductibleBasedOnId)
                     If (String.IsNullOrWhiteSpace(deductibleBasedOnCode)) Then
-                        Me.PopulateBOProperty(TheCoverageDeductible, "DeductibleBasedOnId", LookupListNew.GetIdFromCode(LookupListNew.LK_DEDUCTIBLE_BASED_ON, Codes.DEDUCTIBLE_BASED_ON__EXPRESSION))
-                        Me.PopulateBOProperty(TheCoverageDeductible, "DeductibleExpressionId", deductibleBasedOnId)
+                        PopulateBOProperty(TheCoverageDeductible, NameOf(CoverageDeductible.DeductibleBasedOnId), LookupListNew.GetIdFromCode(LookupListNew.LK_DEDUCTIBLE_BASED_ON, Codes.DEDUCTIBLE_BASED_ON__EXPRESSION))
+                        PopulateBOProperty(TheCoverageDeductible, NameOf(CoverageDeductible.DeductibleExpressionId), deductibleBasedOnId)
                     Else
-                        Me.PopulateBOProperty(TheCoverageDeductible, "DeductibleBasedOnId", cboDeductibleBasedOn)
-                        Me.PopulateBOProperty(TheCoverageDeductible, "DeductibleExpressionId", Guid.Empty)
+                        PopulateBOProperty(TheCoverageDeductible, NameOf(CoverageDeductible.DeductibleBasedOnId), ddlDeductibleBasedOn)
+                        PopulateBOProperty(TheCoverageDeductible, NameOf(CoverageDeductible.DeductibleExpressionId), Guid.Empty)
                     End If
                 End If
 
-                ' Me.PopulateBOProperty(TheCoverageDeductible, "DeductibleBasedOnId", CType(Me.GetSelectedGridControl(dedGridView, DEDUCTIBLE_BASED_ON_DESC), DropDownList), True)
-
                 Dim result As Decimal
-                If (Not (Decimal.TryParse(CType(Me.GetSelectedGridControl(dedGridView, DEDUCTIBLE), TextBox).Text, result))) Then
-                    Throw New GUIException(Assurant.ElitaPlus.Common.ErrorCodes.INVALID_DEDUCTIBLE_VALUE, Assurant.ElitaPlus.Common.ErrorCodes.INVALID_DEDUCTIBLE_VALUE)
+                If (Not (Decimal.TryParse(CType(GetSelectedGridControl(dedGridView, ColSeqDeductible), TextBox).Text, result))) Then
+                    Throw New GUIException(ElitaPlus.Common.ErrorCodes.INVALID_DEDUCTIBLE_VALUE, ElitaPlus.Common.ErrorCodes.INVALID_DEDUCTIBLE_VALUE)
                 End If
-                Me.PopulateBOProperty(TheCoverageDeductible, "Deductible", CType(Me.GetSelectedGridControl(dedGridView, DEDUCTIBLE), TextBox).Text)
+                PopulateBOProperty(TheCoverageDeductible, NameOf(CoverageDeductible.Deductible), CType(GetSelectedGridControl(dedGridView, ColSeqDeductible), TextBox).Text)
             End With
 
-            If Me.ErrCollection.Count > 0 Then
+            If ErrCollection.Count > 0 Then
                 Throw New PopulateBOErrorException
             End If
         End Sub
@@ -4118,82 +3904,80 @@ Namespace Tables
 #Region "State-Management"
 
         Protected Sub CheckIfComingFromSaveConfirm()
-            Dim confResponse As String = Me.HiddenSaveChangesPromptResponse.Value
-            Me.HiddenSaveChangesPromptResponse.Value = String.Empty
-            Dim retType As New CoverageSearchForm.ReturnType(ElitaPlusPage.DetailPageCommand.Back,
-                                                                                Me.State.moCoverageId, Me.State.boChanged)
+            Dim confResponse As String = HiddenSaveChangesPromptResponse.Value
+            HiddenSaveChangesPromptResponse.Value = String.Empty
+            Dim retType As New CoverageSearchForm.ReturnType(DetailPageCommand.Back, State.CoverageId, State.StateChanged)
             If Not confResponse Is Nothing AndAlso confResponse = MSG_VALUE_YES Then
 
-                If Me.State.ActionInProgress <> ElitaPlusPage.DetailPageCommand.BackOnErr Then
+                If State.ActionInProgress <> DetailPageCommand.BackOnErr Then
                     PopulateBOsFromForm()
                     TheCoverage.Save()
                 End If
-                Select Case Me.State.ActionInProgress
-                    Case ElitaPlusPage.DetailPageCommand.Delete
-                        Me.State.boChanged = True
-                        retType = New CoverageSearchForm.ReturnType(ElitaPlusPage.DetailPageCommand.Delete,
-                                        Me.State.moCoverageId)
+                Select Case State.ActionInProgress
+                    Case DetailPageCommand.Delete
+                        State.StateChanged = True
+                        retType = New CoverageSearchForm.ReturnType(DetailPageCommand.Delete, State.CoverageId)
                         retType.BoChanged = True
-                        Me.ReturnToCallingPage(retType)
-                    Case ElitaPlusPage.DetailPageCommand.Back
-                        Me.ReturnToCallingPage(retType)
-                    Case ElitaPlusPage.DetailPageCommand.New_
-                        'Me.AddInfoMsg(Message.SAVE_RECORD_CONFIRMATION)
-                        Me.MasterPage.MessageController.AddSuccess(Message.SAVE_RECORD_CONFIRMATION, True)
-                        Me.CreateNew()
-                    Case ElitaPlusPage.DetailPageCommand.NewAndCopy
-                        ' Me.AddInfoMsg(Message.SAVE_RECORD_CONFIRMATION)
-                        Me.MasterPage.MessageController.AddSuccess(Message.SAVE_RECORD_CONFIRMATION, True)
-                        Me.CreateNewCopy()
-                    Case ElitaPlusPage.DetailPageCommand.BackOnErr
-                        ' Me.moErrorController.AddErrorAndShow(Me.State.LastErrMsg)
-                        Me.MasterPage.MessageController.AddError(Me.State.LastErrMsg, True)
+                        ReturnToCallingPage(retType)
+                    Case DetailPageCommand.Back
+                        ReturnToCallingPage(retType)
+                    Case DetailPageCommand.New_
+                        'AddInfoMsg(Message.SAVE_RECORD_CONFIRMATION)
+                        MasterPage.MessageController.AddSuccess(Message.SAVE_RECORD_CONFIRMATION, True)
+                        CreateNew()
+                    Case DetailPageCommand.NewAndCopy
+                        ' AddInfoMsg(Message.SAVE_RECORD_CONFIRMATION)
+                        MasterPage.MessageController.AddSuccess(Message.SAVE_RECORD_CONFIRMATION, True)
+                        CreateNewCopy()
+                    Case DetailPageCommand.BackOnErr
+                        ' moErrorController.AddErrorAndShow(State.LastErrMsg)
+                        MasterPage.MessageController.AddError(State.LastErrMsg, True)
                 End Select
             ElseIf Not confResponse Is Nothing AndAlso confResponse = MSG_VALUE_NO Then
-                Select Case Me.State.ActionInProgress
-                    Case ElitaPlusPage.DetailPageCommand.Back
-                        Me.ReturnToCallingPage(retType)
-                    Case ElitaPlusPage.DetailPageCommand.New_
-                        Me.CreateNew()
-                    Case ElitaPlusPage.DetailPageCommand.NewAndCopy
-                        Me.CreateNewCopy()
-                    Case ElitaPlusPage.DetailPageCommand.BackOnErr
-                        Me.ReturnToCallingPage(retType)
+                Select Case State.ActionInProgress
+                    Case DetailPageCommand.Back
+                        ReturnToCallingPage(retType)
+                    Case DetailPageCommand.New_
+                        CreateNew()
+                    Case DetailPageCommand.NewAndCopy
+                        CreateNewCopy()
+                    Case DetailPageCommand.BackOnErr
+                        ReturnToCallingPage(retType)
                 End Select
             End If
             'Clean after consuming the action
-            Me.State.ActionInProgress = ElitaPlusPage.DetailPageCommand.Nothing_
-            Me.HiddenSaveChangesPromptResponse.Value = ""
+            State.ActionInProgress = DetailPageCommand.Nothing_
+            HiddenSaveChangesPromptResponse.Value = String.Empty
         End Sub
         Protected Sub CheckIfComingFromConfirm()
             ' ComingFromBack()
             CheckIfComingFromSaveConfirm()
             'Clean after consuming the action
-            Me.HiddenSaveChangesPromptResponse.Value = String.Empty
+            HiddenSaveChangesPromptResponse.Value = String.Empty
         End Sub
 
 
         Protected Sub moddl_DeductibleBasedOn_SelectedIndexChanged(sender As Object, e As EventArgs)
-            Dim moddl_DeductibleBasedOn As DropDownList = DirectCast(sender, DropDownList)
-            Dim dedid As Guid = GetSelectedItem((moddl_DeductibleBasedOn))
-            Dim deductiblecode As String = LookupListNew.GetCodeFromId(LookupListNew.LK_DEDUCTIBLE_BASED_ON, dedid)
+            Dim ddlDeductibleBasedOn As DropDownList = DirectCast(sender, DropDownList)
+            Dim deductibleId As Guid = GetSelectedItem((ddlDeductibleBasedOn))
+            Dim deductibleCode As String = LookupListNew.GetCodeFromId(LookupListNew.LK_DEDUCTIBLE_BASED_ON, deductibleId)
 
-            Dim row As System.Web.UI.WebControls.GridViewRow = DirectCast(moddl_DeductibleBasedOn.NamingContainer, System.Web.UI.WebControls.GridViewRow)
-            Dim motxt_Deductible As TextBox = DirectCast(dedGridView.Rows()(row.RowIndex).FindControl("motxt_Deductible"), TextBox)
-            If Not ((deductiblecode = Codes.DEDUCTIBLE_BASED_ON__PERCENT_OF_AUTHORIZED_AMOUNT) OrElse
-                                           (deductiblecode = Codes.DEDUCTIBLE_BASED_ON__PERCENT_OF_SALES_PRICE) OrElse
-                                           (deductiblecode = Codes.DEDUCTIBLE_BASED_ON__PERCENT_OF_ORIGINAL_RETAIL_PRICE) OrElse
-                                           (deductiblecode = Codes.DEDUCTIBLE_BASED_ON__PERCENT_OF_LIST_PRICE) OrElse
-                                           (deductiblecode = Codes.DEDUCTIBLE_BASED_ON__PERCENT_OF_ITEM_RETAIL_PRICE) OrElse
-                                           (deductiblecode = Codes.DEDUCTIBLE_BASED_ON__FIXED) OrElse
-                                           (deductiblecode = Codes.DEDUCTIBLE_BASED_ON__PERCENT_OF_LIST_PRICE_WSD)) Then
+            Dim row As GridViewRow = DirectCast(ddlDeductibleBasedOn.NamingContainer, GridViewRow)
+            Dim txtDeductible As TextBox = DirectCast(dedGridView.Rows()(row.RowIndex).FindControl("motxt_Deductible"), TextBox)
+            If Not ((deductibleCode = Codes.DEDUCTIBLE_BASED_ON__PERCENT_OF_AUTHORIZED_AMOUNT) OrElse
+                                           (deductibleCode = Codes.DEDUCTIBLE_BASED_ON__PERCENT_OF_SALES_PRICE) OrElse
+                                           (deductibleCode = Codes.DEDUCTIBLE_BASED_ON__PERCENT_OF_ORIGINAL_RETAIL_PRICE) OrElse
+                                           (deductibleCode = Codes.DEDUCTIBLE_BASED_ON__PERCENT_OF_LIST_PRICE) OrElse
+                                           (deductibleCode = Codes.DEDUCTIBLE_BASED_ON__PERCENT_OF_ITEM_RETAIL_PRICE) OrElse
+                                           (deductibleCode = Codes.DEDUCTIBLE_BASED_ON__FIXED) OrElse
+                                           (deductibleCode = Codes.DEDUCTIBLE_BASED_ON__PERCENT_OF_LIST_PRICE_WSD)) Then
 
-                motxt_Deductible.Text = "0"
-                motxt_Deductible.Enabled = False
-                motxt_Deductible.Style.Add("background", "#F0F0F0")
+                txtDeductible.Text = ZeroNumber
+                txtDeductible.Enabled = False
+                txtDeductible.Style.Add("background", "#F0F0F0")
 
             Else
-                motxt_Deductible.Enabled = True
+                txtDeductible.Enabled = True
 
             End If
 
@@ -4201,32 +3985,28 @@ Namespace Tables
 
         Private Sub moReInsuredDrop_SelectedIndexChanged(sender As Object, e As EventArgs) Handles moReInsuredDrop.SelectedIndexChanged
 
-            If Me.State.IsCoverageNew = True Then
-                If GetSelectedItem(Me.moReInsuredDrop) = LookupListNew.GetIdFromCode(LookupListNew.LK_YESNO, NO) OrElse GetSelectedItem(Me.moReInsuredDrop).Equals(Guid.Empty) Then
+            If State.IsCoverageNew = True Then
+                If GetSelectedItem(moReInsuredDrop) = LookupListNew.GetIdFromCode(LookupListNew.LK_YESNO, LookupNo) OrElse GetSelectedItem(moReInsuredDrop).Equals(Guid.Empty) Then
                     If Not TheCoverage.AttributeValues.Value(Codes.ATTRIBUTE__DEFAULT_REINSURANCE_STATUS) Is Nothing Then
-                        Dim attributevaluebo As AttributeValue = TheCoverage.AttributeValues.First
-                        attributevaluebo.Delete()
-                        attributevaluebo.Save()
-                        attributevaluebo = Nothing
+                        Dim attributeValueBo As AttributeValue = TheCoverage.AttributeValues.First
+                        attributeValueBo.Delete()
+                        attributeValueBo.Save()
                     End If
                 Else
                     AttributeValues.Visible = True
                 End If
             Else
-                If GetSelectedItem(Me.moReInsuredDrop) = LookupListNew.GetIdFromCode(LookupListNew.LK_YESNO, NO) OrElse GetSelectedItem(Me.moReInsuredDrop).Equals(Guid.Empty) Then
+                If GetSelectedItem(moReInsuredDrop) = LookupListNew.GetIdFromCode(LookupListNew.LK_YESNO, LookupNo) OrElse GetSelectedItem(moReInsuredDrop).Equals(Guid.Empty) Then
 
                     If Not TheCoverage.AttributeValues.Value(Codes.ATTRIBUTE__DEFAULT_REINSURANCE_STATUS) Is Nothing Then
-                        Dim attributevaluebo As AttributeValue = TheCoverage.AttributeValues.First
-                        attributevaluebo.Delete()
-                        attributevaluebo.Save()
-                        attributevaluebo = Nothing
+                        Dim attributeValueBo As AttributeValue = TheCoverage.AttributeValues.First
+                        attributeValueBo.Delete()
+                        attributeValueBo.Save()
                         AttributeValues.DataBind()
                     End If
-                ElseIf GetSelectedItem(Me.moReInsuredDrop) = LookupListNew.GetIdFromCode(LookupListNew.LK_YESNO, YES) Then
+                ElseIf GetSelectedItem(moReInsuredDrop) = LookupListNew.GetIdFromCode(LookupListNew.LK_YESNO, LookupYes) Then
                     TheCoverage.ClearAttributeValues()
-                    Dim cav As IEnumerable(Of AttributeValue) = TheCoverage.AttributeValues
-                    For Each av As AttributeValue In cav
-                    Next
+
                     AttributeValues.Visible = True
                     AttributeValues.DataBind()
                 End If
@@ -4245,51 +4025,51 @@ Namespace Tables
                 If IsNewConseqDamage = True Then
                     IsNewConseqDamage = False
                 End If
-                PopulateCoverageConseqDamageList(ACTION_SAVE)
-                EnableDisableControls(Me.moCoverageEditPanel, False)
-                setbuttons(True)
+                PopulateCoverageConseqDamageList(ActionSave)
+                EnableDisableControls(moCoverageEditPanel, False)
+                Setbuttons(True)
             End If
         End Sub
 
-        Private Sub btnSaveConseqDamage_WRITE_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnSaveConseqDamage_WRITE.Click
+        Private Sub btnSaveConseqDamage_WRITE_Click(ByVal sender As Object, ByVal e As EventArgs) Handles btnSaveConseqDamage_WRITE.Click
             Try
                 SaveConseqDamageChanges()
                 TheDealerControl.ChangeEnabledControlProperty(False)
                 ControlMgr.SetEnableControl(Me, moProductDrop, False)
                 ControlMgr.SetEnableControl(Me, moRiskDrop, False)
             Catch ex As Exception
-                Me.HandleErrors(ex, moMsgControllerConseqDamage)
+                HandleErrors(ex, moMsgControllerConseqDamage)
             End Try
         End Sub
 
-        Private Sub btnCancelConseqDamage_WRITE_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnCancelConseqDamage_WRITE.Click
+        Private Sub btnCancelConseqDamage_WRITE_Click(ByVal sender As Object, ByVal e As EventArgs) Handles btnCancelConseqDamage_WRITE.Click
             Try
                 IsNewConseqDamage = False
                 EnableForEditConseqDamageButtons(False)
-                PopulateCoverageConseqDamageList(ACTION_CANCEL_DELETE)
-                EnableDisableControls(Me.moCoverageEditPanel, False)
-                setbuttons(True)
+                PopulateCoverageConseqDamageList(ActionCancelDelete)
+                EnableDisableControls(moCoverageEditPanel, False)
+                Setbuttons(True)
                 TheDealerControl.ChangeEnabledControlProperty(False)
                 ControlMgr.SetEnableControl(Me, moProductDrop, False)
                 ControlMgr.SetEnableControl(Me, moRiskDrop, False)
             Catch ex As Exception
-                Me.HandleErrors(ex, moMsgControllerConseqDamage)
+                HandleErrors(ex, moMsgControllerConseqDamage)
             End Try
         End Sub
 
-        Private Sub btnNewConseqDamage_WRITE_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnNewConseqDamage_WRITE.Click
+        Private Sub btnNewConseqDamage_WRITE_Click(ByVal sender As Object, ByVal e As EventArgs) Handles btnNewConseqDamage_WRITE.Click
             Try
                 IsNewConseqDamage = True
                 CoverageConseqDamageId = Guid.Empty.ToString
-                PopulateCoverageConseqDamageList(ACTION_NEW)
+                PopulateCoverageConseqDamageList(ActionNew)
                 SetGridControls(moGridViewConseqDamage, False)
-                Me.SetFocusInGrid(moGridViewConseqDamage, moGridViewConseqDamage.SelectedIndex, LIABLILITY_LIMIT_PER_INCIDENT)
-                EnableDisableControls(Me.moCoverageEditPanel, True)
+                SetFocusInGrid(moGridViewConseqDamage, moGridViewConseqDamage.SelectedIndex, ColSeqLiabilityLimitPerIncident)
+                EnableDisableControls(moCoverageEditPanel, True)
                 If btnNewConseqDamage_WRITE.Enabled = False Then
-                    setbuttons(False)
+                    Setbuttons(False)
                 End If
             Catch ex As Exception
-                Me.HandleErrors(ex, moMsgControllerConseqDamage)
+                HandleErrors(ex, moMsgControllerConseqDamage)
             End Try
         End Sub
 #End Region
@@ -4315,14 +4095,6 @@ Namespace Tables
             EnableEditConseqDamageButtons(bIsReadWrite)
         End Sub
 
-        Private Sub EnableCoverageConseqDamage(ByVal bIsReadWrite As Boolean)
-            moGridViewConseqDamage.Columns(CONSEQ_DAMAGE_TYPE).Visible = bIsReadWrite
-            moGridViewConseqDamage.Columns(LIABILITY_LIMIT_BASED_ON).Visible = bIsReadWrite
-            moGridViewConseqDamage.Columns(LIABLILITY_LIMIT_PER_INCIDENT).Visible = bIsReadWrite
-            moGridViewConseqDamage.Columns(LIABLILITY_LIMIT_CUMULATIVE).Visible = bIsReadWrite
-            moGridViewConseqDamage.Columns(CONSEQ_DAMAGE_EFFECTIVE_DATE).Visible = bIsReadWrite
-            moGridViewConseqDamage.Columns(FULFILMENT_METHOD).Visible = bIsReadWrite
-        End Sub
 #End Region
 
 #Region "Business Part"
@@ -4331,54 +4103,55 @@ Namespace Tables
             Dim bIsOk As Boolean = True
             Dim bIsDirty As Boolean
             If moGridViewConseqDamage.EditIndex < 0 Then Return False ' Coverage Rate is not in edit mode
-            If Me.State.IsNewWithCopy Then
-                Me.LoadCoverageConseqDamageList()
-                Me.State.moCoverageConseqDamageList(moGridViewConseqDamage.SelectedIndex).Validate()
+            If State.IsNewWithCopy Then
+                LoadCoverageConseqDamageList()
+                State.CoverageConseqDamageList(moGridViewConseqDamage.SelectedIndex).Validate()
                 Return bIsOk
             End If
             If IsNewConseqDamage = False Then
-                CoverageConseqDamageId = Me.GetSelectedGridText(moGridViewConseqDamage, COVERAGE_CONSEQ_DAMAGE_ID)
+                CoverageConseqDamageId = GetSelectedGridText(moGridViewConseqDamage, ColSeqCoverageConseqDamageId)
             End If
             BindBoPropertiesToConseqDamageGridHeader()
             With TheCoverageConseqDamage
-                PopulateConseqDamageBOFromForm()
+                PopulateConseqDamageBoFromForm()
                 bIsDirty = .IsDirty
                 .Save()
                 EnableForEditConseqDamageButtons(False)
             End With
             If (bIsOk = True) Then
                 If bIsDirty = True Then
-                    Me.MasterPage.MessageController.AddSuccess(Message.SAVE_RECORD_CONFIRMATION, True)
+                    MasterPage.MessageController.AddSuccess(Message.SAVE_RECORD_CONFIRMATION, True)
                 Else
-                    Me.MasterPage.MessageController.AddError(Message.MSG_RECORD_NOT_SAVED, True)
+                    MasterPage.MessageController.AddError(Message.MSG_RECORD_NOT_SAVED, True)
                 End If
             End If
             Return bIsOk
         End Function
 
-        Private Sub PopulateConseqDamageBOFromForm()
+        Private Sub PopulateConseqDamageBoFromForm()
             With TheCoverageConseqDamage
                 .CoverageId = TheCoverage.Id
-                Me.PopulateBOProperty(TheCoverageConseqDamage, CONSEQ_DAMAGE_TYPE_PROPERTY, CType(Me.GetSelectedGridControl(moGridViewConseqDamage, CONSEQ_DAMAGE_TYPE), DropDownList), False, True)
-                Me.PopulateBOProperty(TheCoverageConseqDamage, LIABILILTY_LIMIT_BASED_ON_PROPERTY, CType(Me.GetSelectedGridControl(moGridViewConseqDamage, LIABILITY_LIMIT_BASED_ON), DropDownList), False, True)
-                Me.PopulateBOProperty(TheCoverageConseqDamage, FULFILMENT_METHOD_PROPERTY, CType(Me.GetSelectedGridControl(moGridViewConseqDamage, FULFILMENT_METHOD), DropDownList), False, True)
-                Me.PopulateBOProperty(TheCoverageConseqDamage, CONSEQ_DAMAGE_EFFECTIVE_DATE_PROPERTY, CType(Me.GetSelectedGridControl(moGridViewConseqDamage, CONSEQ_DAMAGE_EFFECTIVE_DATE), TextBox))
-                Me.PopulateBOProperty(TheCoverageConseqDamage, CONSEQ_DAMAGE_EXPIRATION_DATE_PROPERTY, CType(Me.GetSelectedGridControl(moGridViewConseqDamage, CONSEQ_DAMAGE_EXPIRATION_DATE), TextBox))
 
-                If Not String.IsNullOrEmpty(CType(Me.GetSelectedGridControl(moGridViewConseqDamage, LIABLILITY_LIMIT_CUMULATIVE), TextBox).Text) Then
-                    Me.PopulateBOProperty(TheCoverageConseqDamage, LIABILILTY_LIMIT_CUMULATIVE_PROPERTY, CType(Me.GetSelectedGridControl(moGridViewConseqDamage, LIABLILITY_LIMIT_CUMULATIVE), TextBox))
+                PopulateBOProperty(TheCoverageConseqDamage, NameOf(TheCoverageConseqDamage.ConseqDamageTypeXcd), CType(GetSelectedGridControl(moGridViewConseqDamage, ColSeqConseqDamageType), DropDownList), False, True)
+                PopulateBOProperty(TheCoverageConseqDamage, NameOf(TheCoverageConseqDamage.LiabilityLimitBaseXcd), CType(GetSelectedGridControl(moGridViewConseqDamage, ColSeqLiabilityLimitBasedOn), DropDownList), False, True)
+                PopulateBOProperty(TheCoverageConseqDamage, NameOf(TheCoverageConseqDamage.FulfilmentMethodXcd), CType(GetSelectedGridControl(moGridViewConseqDamage, ColSeqFulfillmentMethod), DropDownList), False, True)
+                PopulateBOProperty(TheCoverageConseqDamage, NameOf(TheCoverageConseqDamage.Effective), CType(GetSelectedGridControl(moGridViewConseqDamage, ColSeqConseqDamageEffectiveDate), TextBox))
+                PopulateBOProperty(TheCoverageConseqDamage, NameOf(TheCoverageConseqDamage.Expiration), CType(GetSelectedGridControl(moGridViewConseqDamage, ColSeqConseqDamageExpirationDate), TextBox))
+
+                If Not String.IsNullOrEmpty(CType(GetSelectedGridControl(moGridViewConseqDamage, ColSeqLiabilityLimitCumulative), TextBox).Text) Then
+                    PopulateBOProperty(TheCoverageConseqDamage, NameOf(TheCoverageConseqDamage.LiabilityLimitCumulative), CType(GetSelectedGridControl(moGridViewConseqDamage, ColSeqLiabilityLimitCumulative), TextBox))
                 Else
                     .LiabilityLimitCumulative = 0.00
                 End If
 
-                If Not String.IsNullOrEmpty(CType(Me.GetSelectedGridControl(moGridViewConseqDamage, LIABLILITY_LIMIT_PER_INCIDENT), TextBox).Text) Then
-                    Me.PopulateBOProperty(TheCoverageConseqDamage, LIABILILTY_LIMIT_PER_INCIDENT_PROPERTY, CType(Me.GetSelectedGridControl(moGridViewConseqDamage, LIABLILITY_LIMIT_PER_INCIDENT), TextBox))
+                If Not String.IsNullOrEmpty(CType(GetSelectedGridControl(moGridViewConseqDamage, ColSeqLiabilityLimitPerIncident), TextBox).Text) Then
+                    PopulateBOProperty(TheCoverageConseqDamage, NameOf(TheCoverageConseqDamage.LiabilityLimitPerIncident), CType(GetSelectedGridControl(moGridViewConseqDamage, ColSeqLiabilityLimitPerIncident), TextBox))
                 Else
                     .LiabilityLimitPerIncident = 0.00
                 End If
             End With
             'ValidateCoverage()
-            If Me.ErrCollection.Count > 0 Then
+            If ErrCollection.Count > 0 Then
                 Throw New PopulateBOErrorException
             End If
         End Sub
@@ -4389,42 +4162,42 @@ Namespace Tables
                     Dim oDealerId As Guid = TheDealerControl.SelectedGuid
                     If Not (oDealerId = Guid.Empty) Then
                         Dim oDealer As Dealer = New Dealer(oDealerId)
-                        Dim YesId As Guid = LookupListNew.GetIdFromCode(LookupListNew.LK_YESNO, Codes.YESNO_Y)
+                        Dim yesId As Guid = LookupListNew.GetIdFromCode(LookupListNew.LK_YESNO, Codes.YESNO_Y)
                         If oDealer IsNot Nothing AndAlso oDealer.ClaimRecordingXcd IsNot Nothing Then
-                            If (oDealer.UseClaimAuthorizationId.Equals(YesId) AndAlso
+                            If (oDealer.UseClaimAuthorizationId.Equals(yesId) AndAlso
                             (oDealer.ClaimRecordingXcd.Equals(Codes.DEALER_CLAIM_RECORDING_DYNAMIC_QUESTIONS) OrElse
                             oDealer.ClaimRecordingXcd.Equals(Codes.DEALER_CLAIM_RECORDING_BOTH))) Then
-                                DisabledTabsList.Remove(Tab_CoverageConseqDamage)
+                                DisabledTabsList.Remove(TabCoverageConseqDamage)
                             Else
-                                If Not (DisabledTabsList.Contains(Tab_CoverageConseqDamage)) Then
-                                    DisabledTabsList.Add(Tab_CoverageConseqDamage)
+                                If Not (DisabledTabsList.Contains(TabCoverageConseqDamage)) Then
+                                    DisabledTabsList.Add(TabCoverageConseqDamage)
                                 End If
                             End If
                         Else
-                            If Not (DisabledTabsList.Contains(Tab_CoverageConseqDamage)) Then
-                                DisabledTabsList.Add(Tab_CoverageConseqDamage)
+                            If Not (DisabledTabsList.Contains(TabCoverageConseqDamage)) Then
+                                DisabledTabsList.Add(TabCoverageConseqDamage)
                             End If
                         End If
                     Else
-                        If Not (DisabledTabsList.Contains(Tab_CoverageConseqDamage)) Then
-                            DisabledTabsList.Add(Tab_CoverageConseqDamage)
+                        If Not (DisabledTabsList.Contains(TabCoverageConseqDamage)) Then
+                            DisabledTabsList.Add(TabCoverageConseqDamage)
                         End If
                     End If
                 Else
-                    If Not (DisabledTabsList.Contains(Tab_CoverageConseqDamage)) Then
-                        DisabledTabsList.Add(Tab_CoverageConseqDamage)
+                    If Not (DisabledTabsList.Contains(TabCoverageConseqDamage)) Then
+                        DisabledTabsList.Add(TabCoverageConseqDamage)
                     End If
                 End If
 
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.MasterPage.MessageController)
+                HandleErrors(ex, MasterPage.MessageController)
             End Try
         End Sub
 #End Region
 
 #Region "Clear"
         Private Sub ClearCoverageConseqDamage()
-            If Not Me.State.IsNewWithCopy Then
+            If Not State.IsNewWithCopy Then
                 EnableConseqDamageButtons(False)
                 moGridViewConseqDamage.DataBind()
             End If
@@ -4440,49 +4213,49 @@ Namespace Tables
 
             If moGridView.EditIndex = -1 Then Exit Sub
             Dim gRow As GridViewRow = moGridView.Rows(moGridView.EditIndex)
-            Dim mocboCommPercentSourceXcd As DropDownList = DirectCast(gRow.Cells(COMMISSIONS_PERCENT_XCD).FindControl("cboCommPercentSourceXcd"), DropDownList)
-            Dim mocboMarketingExpenseSourceXcd As DropDownList = DirectCast(gRow.Cells(MARKETING_PERCENT_XCD).FindControl("cboMarketingExpenseSourceXcd"), DropDownList)
-            Dim mocboAdminExpenseSourceXcd As DropDownList = DirectCast(gRow.Cells(ADMIN_EXPENSE_XCD).FindControl("cboAdminExpenseSourceXcd"), DropDownList)
-            Dim mocboProfitExpenseSourceXcd As DropDownList = DirectCast(gRow.Cells(PROFIT_EXPENSE_XCD).FindControl("cboProfitExpenseSourceXcd"), DropDownList)
-            Dim mocboLossCostPercentSourceXcd As DropDownList = DirectCast(gRow.Cells(LOSS_COST_PERCENT_XCD).FindControl("cboLossCostPercentSourceXcd"), DropDownList)
+            Dim mocboCommPercentSourceXcd As DropDownList = DirectCast(gRow.Cells(ColIndexCommissionsPercentXcd).FindControl("cboCommPercentSourceXcd"), DropDownList)
+            Dim mocboMarketingExpenseSourceXcd As DropDownList = DirectCast(gRow.Cells(ColIndexMarketingPercentXcd).FindControl("cboMarketingExpenseSourceXcd"), DropDownList)
+            Dim mocboAdminExpenseSourceXcd As DropDownList = DirectCast(gRow.Cells(ColIndexAdminExpenseXcd).FindControl("cboAdminExpenseSourceXcd"), DropDownList)
+            Dim mocboProfitExpenseSourceXcd As DropDownList = DirectCast(gRow.Cells(ColIndexProfitExpenseXcd).FindControl("cboProfitExpenseSourceXcd"), DropDownList)
+            Dim mocboLossCostPercentSourceXcd As DropDownList = DirectCast(gRow.Cells(ColIndexLossCostPercentXcd).FindControl("cboLossCostPercentSourceXcd"), DropDownList)
 
-            If Me.State.IsDealerConfiguredForSourceXcd Then
+            If State.IsDealerConfiguredForSourceXcd Then
 
                 If mocboLossCostPercentSourceXcd.SelectedIndex > NO_ITEM_SELECTED_INDEX Then
-                    Me.PopulateBOProperty(TheCoverageRate, "LossCostPercentSourceXcd", mocboLossCostPercentSourceXcd, False, True)
+                    PopulateBOProperty(TheCoverageRate, "LossCostPercentSourceXcd", mocboLossCostPercentSourceXcd, False, True)
                 End If
 
                 If mocboAdminExpenseSourceXcd.SelectedIndex > NO_ITEM_SELECTED_INDEX Then
-                    Me.PopulateBOProperty(TheCoverageRate, "AdminExpenseSourceXcd", mocboAdminExpenseSourceXcd, False, True)
+                    PopulateBOProperty(TheCoverageRate, "AdminExpenseSourceXcd", mocboAdminExpenseSourceXcd, False, True)
                 End If
 
                 If mocboProfitExpenseSourceXcd.SelectedIndex > NO_ITEM_SELECTED_INDEX Then
-                    Me.PopulateBOProperty(TheCoverageRate, "ProfitPercentSourceXcd", mocboProfitExpenseSourceXcd, False, True)
+                    PopulateBOProperty(TheCoverageRate, "ProfitPercentSourceXcd", mocboProfitExpenseSourceXcd, False, True)
                 End If
 
                 If mocboCommPercentSourceXcd.SelectedIndex > NO_ITEM_SELECTED_INDEX Then
-                    Me.PopulateBOProperty(TheCoverageRate, "CommissionsPercentSourceXcd", mocboCommPercentSourceXcd, False, True)
+                    PopulateBOProperty(TheCoverageRate, "CommissionsPercentSourceXcd", mocboCommPercentSourceXcd, False, True)
                 End If
 
                 If mocboMarketingExpenseSourceXcd.SelectedIndex > NO_ITEM_SELECTED_INDEX Then
-                    Me.PopulateBOProperty(TheCoverageRate, "MarketingPercentSourceXcd", mocboMarketingExpenseSourceXcd, False, True)
+                    PopulateBOProperty(TheCoverageRate, "MarketingPercentSourceXcd", mocboMarketingExpenseSourceXcd, False, True)
                 End If
 
-                If Me.State.IsIgnorePremiumSetYesForContract Then
+                If State.IsIgnorePremiumSetYesForContract Then
 
                     ValidateIncomingSourceXcd()
 
-                    If Me.State.IsBucketIncomingSelected Then
-                        Throw New GUIException(Message.MSG_INCOMING_OPTION_NOT_ALLOWED, Assurant.ElitaPlus.Common.ErrorCodes.MSG_INCOMING_OPTION_NOT_ALLOWED_WHEN_IGNORE_PREMIUM_IS_YES)
+                    If State.IsBucketIncomingSelected Then
+                        Throw New GUIException(Message.MSG_INCOMING_OPTION_NOT_ALLOWED, ElitaPlus.Common.ErrorCodes.MSG_INCOMING_OPTION_NOT_ALLOWED_WHEN_IGNORE_PREMIUM_IS_YES)
                     End If
                 End If
 
                 ValidateDifferenceSourceXcd()
 
-                If Me.State.IsDiffSelectedTwice Then
-                    Throw New GUIException(Message.MSG_DIFFERENCE_OPTION_ALLOWED_ONLY_ONCE, Assurant.ElitaPlus.Common.ErrorCodes.MSG_DIFFERENCE_SOURCE_ALLOWED_ONLY_FOR_ONE_BUCKET)
-                ElseIf Me.State.IsDiffNotSelectedOnce Then
-                    Throw New GUIException(Message.MSG_DIFFERENCE_OPTION_ATLEAST_ONE, Assurant.ElitaPlus.Common.ErrorCodes.MSG_DIFFERENCE_OPTION_SHOULD_PRESENT_ATLEAST_FOR_ONE_BUCKET)
+                If State.IsDiffSelectedTwice Then
+                    Throw New GUIException(Message.MSG_DIFFERENCE_OPTION_ALLOWED_ONLY_ONCE, ElitaPlus.Common.ErrorCodes.MSG_DIFFERENCE_SOURCE_ALLOWED_ONLY_FOR_ONE_BUCKET)
+                ElseIf State.IsDiffNotSelectedOnce Then
+                    Throw New GUIException(Message.MSG_DIFFERENCE_OPTION_ATLEAST_ONE, ElitaPlus.Common.ErrorCodes.MSG_DIFFERENCE_OPTION_SHOULD_PRESENT_ATLEAST_FOR_ONE_BUCKET)
                 End If
             End If
         End Sub
@@ -4491,14 +4264,14 @@ Namespace Tables
 
             If moGridView.EditIndex = -1 Then Exit Sub
             Dim gRow As GridViewRow = moGridView.Rows(moGridView.EditIndex)
-            Dim mocboCommPercentSourceXcd As DropDownList = DirectCast(gRow.Cells(COMMISSIONS_PERCENT_XCD).FindControl("cboCommPercentSourceXcd"), DropDownList)
-            Dim mocboMarketingExpenseSourceXcd As DropDownList = DirectCast(gRow.Cells(MARKETING_PERCENT_XCD).FindControl("cboMarketingExpenseSourceXcd"), DropDownList)
-            Dim mocboAdminExpenseSourceXcd As DropDownList = DirectCast(gRow.Cells(ADMIN_EXPENSE_XCD).FindControl("cboAdminExpenseSourceXcd"), DropDownList)
-            Dim mocboProfitExpenseSourceXcd As DropDownList = DirectCast(gRow.Cells(PROFIT_EXPENSE_XCD).FindControl("cboProfitExpenseSourceXcd"), DropDownList)
-            Dim mocboLossCostPercentSourceXcd As DropDownList = DirectCast(gRow.Cells(LOSS_COST_PERCENT_XCD).FindControl("cboLossCostPercentSourceXcd"), DropDownList)
+            Dim mocboCommPercentSourceXcd As DropDownList = DirectCast(gRow.Cells(ColIndexCommissionsPercentXcd).FindControl("cboCommPercentSourceXcd"), DropDownList)
+            Dim mocboMarketingExpenseSourceXcd As DropDownList = DirectCast(gRow.Cells(ColIndexMarketingPercentXcd).FindControl("cboMarketingExpenseSourceXcd"), DropDownList)
+            Dim mocboAdminExpenseSourceXcd As DropDownList = DirectCast(gRow.Cells(ColIndexAdminExpenseXcd).FindControl("cboAdminExpenseSourceXcd"), DropDownList)
+            Dim mocboProfitExpenseSourceXcd As DropDownList = DirectCast(gRow.Cells(ColIndexProfitExpenseXcd).FindControl("cboProfitExpenseSourceXcd"), DropDownList)
+            Dim mocboLossCostPercentSourceXcd As DropDownList = DirectCast(gRow.Cells(ColIndexLossCostPercentXcd).FindControl("cboLossCostPercentSourceXcd"), DropDownList)
 
-            Me.State.IsDiffSelectedTwice = False
-            Me.State.IsDiffNotSelectedOnce = False
+            State.IsDiffSelectedTwice = False
+            State.IsDiffNotSelectedOnce = False
             Dim countDiff As Integer = 0
 
             If mocboCommPercentSourceXcd.SelectedItem.Value.ToUpper.Equals(Codes.ACCT_BUCKETS_SOURCE_OPTION_DIFFERENCE) Then
@@ -4522,9 +4295,9 @@ Namespace Tables
             End If
 
             If countDiff > 1 Then
-                Me.State.IsDiffSelectedTwice = True
+                State.IsDiffSelectedTwice = True
             ElseIf countDiff < 1 Then
-                Me.State.IsDiffNotSelectedOnce = True
+                State.IsDiffNotSelectedOnce = True
             End If
 
         End Sub
@@ -4533,38 +4306,38 @@ Namespace Tables
 
             If moGridView.EditIndex = -1 Then Exit Sub
             Dim gRow As GridViewRow = moGridView.Rows(moGridView.EditIndex)
-            Dim mocboCommPercentSourceXcd As DropDownList = DirectCast(gRow.Cells(COMMISSIONS_PERCENT_XCD).FindControl("cboCommPercentSourceXcd"), DropDownList)
-            Dim mocboMarketingExpenseSourceXcd As DropDownList = DirectCast(gRow.Cells(MARKETING_PERCENT_XCD).FindControl("cboMarketingExpenseSourceXcd"), DropDownList)
-            Dim mocboAdminExpenseSourceXcd As DropDownList = DirectCast(gRow.Cells(ADMIN_EXPENSE_XCD).FindControl("cboAdminExpenseSourceXcd"), DropDownList)
-            Dim mocboProfitExpenseSourceXcd As DropDownList = DirectCast(gRow.Cells(PROFIT_EXPENSE_XCD).FindControl("cboProfitExpenseSourceXcd"), DropDownList)
-            Dim mocboLossCostPercentSourceXcd As DropDownList = DirectCast(gRow.Cells(LOSS_COST_PERCENT_XCD).FindControl("cboLossCostPercentSourceXcd"), DropDownList)
+            Dim cboCommPercentSourceXcd As DropDownList = DirectCast(gRow.Cells(ColIndexCommissionsPercentXcd).FindControl("cboCommPercentSourceXcd"), DropDownList)
+            Dim cboMarketingExpenseSourceXcd As DropDownList = DirectCast(gRow.Cells(ColIndexMarketingPercentXcd).FindControl("cboMarketingExpenseSourceXcd"), DropDownList)
+            Dim cboAdminExpenseSourceXcd As DropDownList = DirectCast(gRow.Cells(ColIndexAdminExpenseXcd).FindControl("cboAdminExpenseSourceXcd"), DropDownList)
+            Dim cboProfitExpenseSourceXcd As DropDownList = DirectCast(gRow.Cells(ColIndexProfitExpenseXcd).FindControl("cboProfitExpenseSourceXcd"), DropDownList)
+            Dim cboLossCostPercentSourceXcd As DropDownList = DirectCast(gRow.Cells(ColIndexLossCostPercentXcd).FindControl("cboLossCostPercentSourceXcd"), DropDownList)
 
-            Me.State.IsBucketIncomingSelected = False
+            State.IsBucketIncomingSelected = False
 
-            If mocboCommPercentSourceXcd.SelectedItem.Value.Contains(Codes.ACCT_BUCKETS_SOURCE_OPTION_INCOMING) Then
-                Me.State.IsBucketIncomingSelected = True
-            ElseIf mocboMarketingExpenseSourceXcd.SelectedItem.Value.Contains(Codes.ACCT_BUCKETS_SOURCE_OPTION_INCOMING) Then
-                Me.State.IsBucketIncomingSelected = True
-            ElseIf mocboAdminExpenseSourceXcd.SelectedItem.Value.Contains(Codes.ACCT_BUCKETS_SOURCE_OPTION_INCOMING) Then
-                Me.State.IsBucketIncomingSelected = True
-            ElseIf mocboProfitExpenseSourceXcd.SelectedItem.Value.Contains(Codes.ACCT_BUCKETS_SOURCE_OPTION_INCOMING) Then
-                Me.State.IsBucketIncomingSelected = True
-            ElseIf mocboLossCostPercentSourceXcd.SelectedItem.Value.Contains(Codes.ACCT_BUCKETS_SOURCE_OPTION_INCOMING) Then
-                Me.State.IsBucketIncomingSelected = True
+            If cboCommPercentSourceXcd.SelectedItem.Value.Contains(Codes.ACCT_BUCKETS_SOURCE_OPTION_INCOMING) Then
+                State.IsBucketIncomingSelected = True
+            ElseIf cboMarketingExpenseSourceXcd.SelectedItem.Value.Contains(Codes.ACCT_BUCKETS_SOURCE_OPTION_INCOMING) Then
+                State.IsBucketIncomingSelected = True
+            ElseIf cboAdminExpenseSourceXcd.SelectedItem.Value.Contains(Codes.ACCT_BUCKETS_SOURCE_OPTION_INCOMING) Then
+                State.IsBucketIncomingSelected = True
+            ElseIf cboProfitExpenseSourceXcd.SelectedItem.Value.Contains(Codes.ACCT_BUCKETS_SOURCE_OPTION_INCOMING) Then
+                State.IsBucketIncomingSelected = True
+            ElseIf cboLossCostPercentSourceXcd.SelectedItem.Value.Contains(Codes.ACCT_BUCKETS_SOURCE_OPTION_INCOMING) Then
+                State.IsBucketIncomingSelected = True
             End If
 
         End Sub
 
-        Private Sub PoupulateSourceOptionDropdownlist(ByVal oDropDownList As DropDownList)
-            If (Me.State.moCoverage.DealerId <> Guid.Empty) Then
-                Dim oDealer As New Dealer(Me.State.moCoverage.DealerId)
+        Private Sub PopulateSourceOptionDropDownList(ByVal oDropDownList As DropDownList)
+            If (State.Coverage.DealerId <> Guid.Empty) Then
+                Dim oDealer As New Dealer(State.Coverage.DealerId)
 
                 If Not oDealer.AcctBucketsWithSourceXcd Is Nothing Then
                     If oDealer.AcctBucketsWithSourceXcd.Equals(Codes.EXT_YESNO_Y) Then
 
                         DisplaySourceXcdFields()
 
-                        Dim oAcctBucketsSourceOption As Assurant.Elita.CommonConfiguration.DataElements.ListItem() = CommonConfigManager.Current.ListManager.GetList(listCode:="ACCTBUCKETSOURCE")
+                        Dim oAcctBucketsSourceOption As DataElements.ListItem() = CommonConfigManager.Current.ListManager.GetList(listCode:="ACCTBUCKETSOURCE")
 
                         oDropDownList.Populate(oAcctBucketsSourceOption, New PopulateOptions() With
                                             {
@@ -4583,91 +4356,16 @@ Namespace Tables
             End If
         End Sub
 
-        Private Sub PopulateSourcePercentageBucketValues()
-            If moGridView.EditIndex = -1 Then Exit Sub
-            Dim gRow As GridViewRow = moGridView.Rows(moGridView.EditIndex)
-
-            Dim moTextCommission_PercentText As TextBox = DirectCast(gRow.Cells(COMMISSIONS_PERCENT).FindControl("moCommission_PercentText"), TextBox)
-            Dim moTextMarketing_PercentText As TextBox = DirectCast(gRow.Cells(MARKETING_PERCENT).FindControl("moMarketing_PercentText"), TextBox)
-            Dim moTextAdmin_ExpenseText As TextBox = DirectCast(gRow.Cells(ADMIN_EXPENSE).FindControl("moAdmin_ExpenseText"), TextBox)
-            Dim moTextProfit_ExpenseText As TextBox = DirectCast(gRow.Cells(PROFIT_EXPENSE).FindControl("moProfit_ExpenseText"), TextBox)
-            Dim moTextLoss_Cost_PercentText As TextBox = DirectCast(gRow.Cells(LOSS_COST_PERCENT).FindControl("moLoss_Cost_PercentText"), TextBox)
-
-            With TheCoverageRate
-                If Me.State.IsDealerConfiguredForSourceXcd Then
-                    Me.PopulateControlFromBOProperty(moTextAdmin_ExpenseText, .AdminExpense, Me.PERCENT_FORMAT)
-                    Me.PopulateControlFromBOProperty(moTextCommission_PercentText, .CommissionsPercent, Me.PERCENT_FORMAT)
-                    Me.PopulateControlFromBOProperty(moTextLoss_Cost_PercentText, .LossCostPercent, Me.PERCENT_FORMAT)
-                    Me.PopulateControlFromBOProperty(moTextMarketing_PercentText, .MarketingPercent, Me.PERCENT_FORMAT)
-                    Me.PopulateControlFromBOProperty(moTextProfit_ExpenseText, .ProfitExpense, Me.PERCENT_FORMAT)
-                End If
-            End With
-        End Sub
-
-        Private Sub SetSourceBucketValues()
-
-            If moGridView.EditIndex = -1 Then Exit Sub
-            Dim gRow As GridViewRow = moGridView.Rows(moGridView.EditIndex)
-            Dim mocboCommPercentSourceXcd As DropDownList = DirectCast(gRow.Cells(COMMISSIONS_PERCENT_XCD).FindControl("cboCommPercentSourceXcd"), DropDownList)
-            Dim mocboMarketingExpenseSourceXcd As DropDownList = DirectCast(gRow.Cells(MARKETING_PERCENT_XCD).FindControl("cboMarketingExpenseSourceXcd"), DropDownList)
-            Dim mocboAdminExpenseSourceXcd As DropDownList = DirectCast(gRow.Cells(ADMIN_EXPENSE_XCD).FindControl("cboAdminExpenseSourceXcd"), DropDownList)
-            Dim mocboProfitExpenseSourceXcd As DropDownList = DirectCast(gRow.Cells(PROFIT_EXPENSE_XCD).FindControl("cboProfitExpenseSourceXcd"), DropDownList)
-            Dim mocboLossCostPercentSourceXcd As DropDownList = DirectCast(gRow.Cells(LOSS_COST_PERCENT_XCD).FindControl("cboLossCostPercentSourceXcd"), DropDownList)
-
-            Dim moTextCommission_PercentText As TextBox = DirectCast(gRow.Cells(COMMISSIONS_PERCENT).FindControl("moCommission_PercentText"), TextBox)
-            Dim moTextMarketing_PercentText As TextBox = DirectCast(gRow.Cells(COMMISSIONS_PERCENT).FindControl("moMarketing_PercentText"), TextBox)
-            Dim moTextAdmin_ExpenseText As TextBox = DirectCast(gRow.Cells(COMMISSIONS_PERCENT).FindControl("moAdmin_ExpenseText"), TextBox)
-            Dim moTextProfit_ExpenseText As TextBox = DirectCast(gRow.Cells(COMMISSIONS_PERCENT).FindControl("moProfit_ExpenseText"), TextBox)
-            Dim moTextLoss_Cost_PercentText As TextBox = DirectCast(gRow.Cells(COMMISSIONS_PERCENT).FindControl("moLoss_Cost_PercentText"), TextBox)
-
-            If Me.State.IsDealerConfiguredForSourceXcd Then
-                If mocboCommPercentSourceXcd.SelectedItem.Value.ToUpper.Equals(Codes.ACCT_BUCKETS_SOURCE_OPTION_DIFFERENCE) Then
-                    moTextCommission_PercentText.Text = "0.00"
-                    moTextCommission_PercentText.Enabled = False
-                Else
-                    moTextCommission_PercentText.Enabled = True
-                End If
-
-                If mocboMarketingExpenseSourceXcd.SelectedItem.Value.ToUpper.Equals(Codes.ACCT_BUCKETS_SOURCE_OPTION_DIFFERENCE) Then
-                    moTextMarketing_PercentText.Text = "0.00"
-                    moTextMarketing_PercentText.Enabled = False
-                Else
-                    moTextMarketing_PercentText.Enabled = True
-                End If
-
-                If mocboAdminExpenseSourceXcd.SelectedItem.Value.ToUpper.Equals(Codes.ACCT_BUCKETS_SOURCE_OPTION_DIFFERENCE) Then
-                    moTextAdmin_ExpenseText.Text = "0.00"
-                    moTextAdmin_ExpenseText.Enabled = False
-                Else
-                    moTextAdmin_ExpenseText.Enabled = True
-                End If
-
-                If mocboProfitExpenseSourceXcd.SelectedItem.Value.ToUpper.Equals(Codes.ACCT_BUCKETS_SOURCE_OPTION_DIFFERENCE) Then
-                    moTextProfit_ExpenseText.Text = "0.00"
-                    moTextProfit_ExpenseText.Enabled = False
-                Else
-                    moTextProfit_ExpenseText.Enabled = True
-                End If
-
-                If mocboLossCostPercentSourceXcd.SelectedItem.Value.ToUpper.Equals(Codes.ACCT_BUCKETS_SOURCE_OPTION_DIFFERENCE) Then
-                    moTextLoss_Cost_PercentText.Text = "0.00"
-                    moTextLoss_Cost_PercentText.Enabled = False
-                Else
-                    moTextLoss_Cost_PercentText.Enabled = True
-                End If
-            End If
-        End Sub
-
         Private Sub DisplaySourceXcdFields()
             If moGridView.EditIndex = -1 Then Exit Sub
             Dim gRow As GridViewRow = moGridView.Rows(moGridView.EditIndex)
-            Dim mocboCommPercentSourceXcd As DropDownList = DirectCast(gRow.Cells(COMMISSIONS_PERCENT_XCD).FindControl("cboCommPercentSourceXcd"), DropDownList)
-            Dim mocboMarketingExpenseSourceXcd As DropDownList = DirectCast(gRow.Cells(MARKETING_PERCENT_XCD).FindControl("cboMarketingExpenseSourceXcd"), DropDownList)
-            Dim mocboAdminExpenseSourceXcd As DropDownList = DirectCast(gRow.Cells(ADMIN_EXPENSE_XCD).FindControl("cboAdminExpenseSourceXcd"), DropDownList)
-            Dim mocboProfitExpenseSourceXcd As DropDownList = DirectCast(gRow.Cells(PROFIT_EXPENSE_XCD).FindControl("cboProfitExpenseSourceXcd"), DropDownList)
-            Dim mocboLossCostPercentSourceXcd As DropDownList = DirectCast(gRow.Cells(LOSS_COST_PERCENT_XCD).FindControl("cboLossCostPercentSourceXcd"), DropDownList)
+            Dim mocboCommPercentSourceXcd As DropDownList = DirectCast(gRow.Cells(ColIndexCommissionsPercentXcd).FindControl("cboCommPercentSourceXcd"), DropDownList)
+            Dim mocboMarketingExpenseSourceXcd As DropDownList = DirectCast(gRow.Cells(ColIndexMarketingPercentXcd).FindControl("cboMarketingExpenseSourceXcd"), DropDownList)
+            Dim mocboAdminExpenseSourceXcd As DropDownList = DirectCast(gRow.Cells(ColIndexAdminExpenseXcd).FindControl("cboAdminExpenseSourceXcd"), DropDownList)
+            Dim mocboProfitExpenseSourceXcd As DropDownList = DirectCast(gRow.Cells(ColIndexProfitExpenseXcd).FindControl("cboProfitExpenseSourceXcd"), DropDownList)
+            Dim mocboLossCostPercentSourceXcd As DropDownList = DirectCast(gRow.Cells(ColIndexLossCostPercentXcd).FindControl("cboLossCostPercentSourceXcd"), DropDownList)
 
-            With Me.State.moCoverageRateList
+            With State.CoverageRateList
                 If Not mocboCommPercentSourceXcd Is Nothing Then
                     mocboCommPercentSourceXcd.Visible = True
                 End If
@@ -4693,13 +4391,13 @@ Namespace Tables
         Private Sub HideSourceScdFields()
             If moGridView.EditIndex = -1 Then Exit Sub
             Dim gRow As GridViewRow = moGridView.Rows(moGridView.EditIndex)
-            Dim mocboCommPercentSourceXcd As DropDownList = DirectCast(gRow.Cells(COMMISSIONS_PERCENT_XCD).FindControl("cboCommPercentSourceXcd"), DropDownList)
-            Dim mocboMarketingExpenseSourceXcd As DropDownList = DirectCast(gRow.Cells(MARKETING_PERCENT_XCD).FindControl("cboMarketingExpenseSourceXcd"), DropDownList)
-            Dim mocboAdminExpenseSourceXcd As DropDownList = DirectCast(gRow.Cells(ADMIN_EXPENSE_XCD).FindControl("cboAdminExpenseSourceXcd"), DropDownList)
-            Dim mocboProfitExpenseSourceXcd As DropDownList = DirectCast(gRow.Cells(PROFIT_EXPENSE_XCD).FindControl("cboProfitExpenseSourceXcd"), DropDownList)
-            Dim mocboLossCostPercentSourceXcd As DropDownList = DirectCast(gRow.Cells(LOSS_COST_PERCENT_XCD).FindControl("cboLossCostPercentSourceXcd"), DropDownList)
+            Dim mocboCommPercentSourceXcd As DropDownList = DirectCast(gRow.Cells(ColIndexCommissionsPercentXcd).FindControl("cboCommPercentSourceXcd"), DropDownList)
+            Dim mocboMarketingExpenseSourceXcd As DropDownList = DirectCast(gRow.Cells(ColIndexMarketingPercentXcd).FindControl("cboMarketingExpenseSourceXcd"), DropDownList)
+            Dim mocboAdminExpenseSourceXcd As DropDownList = DirectCast(gRow.Cells(ColIndexAdminExpenseXcd).FindControl("cboAdminExpenseSourceXcd"), DropDownList)
+            Dim mocboProfitExpenseSourceXcd As DropDownList = DirectCast(gRow.Cells(ColIndexProfitExpenseXcd).FindControl("cboProfitExpenseSourceXcd"), DropDownList)
+            Dim mocboLossCostPercentSourceXcd As DropDownList = DirectCast(gRow.Cells(ColIndexLossCostPercentXcd).FindControl("cboLossCostPercentSourceXcd"), DropDownList)
 
-            With Me.State.moCoverageRateList
+            With State.CoverageRateList
 
                 If Not mocboCommPercentSourceXcd Is Nothing Then
                     mocboCommPercentSourceXcd.Visible = False
@@ -4728,51 +4426,51 @@ Namespace Tables
 
             'fill the drop downs
             If moGridView.EditIndex = -1 Then Exit Sub
-            If Me.State.IsDealerConfiguredForSourceXcd Then
+            If State.IsDealerConfiguredForSourceXcd Then
 
                 Dim gRow As GridViewRow = moGridView.Rows(moGridView.EditIndex)
-                Dim mocboCommPercentSourceXcd As DropDownList = DirectCast(gRow.Cells(COMMISSIONS_PERCENT_XCD).FindControl("cboCommPercentSourceXcd"), DropDownList)
-                Dim mocboMarketingExpenseSourceXcd As DropDownList = DirectCast(gRow.Cells(MARKETING_PERCENT_XCD).FindControl("cboMarketingExpenseSourceXcd"), DropDownList)
-                Dim mocboAdminExpenseSourceXcd As DropDownList = DirectCast(gRow.Cells(ADMIN_EXPENSE_XCD).FindControl("cboAdminExpenseSourceXcd"), DropDownList)
-                Dim mocboProfitExpenseSourceXcd As DropDownList = DirectCast(gRow.Cells(PROFIT_EXPENSE_XCD).FindControl("cboProfitExpenseSourceXcd"), DropDownList)
-                Dim mocboLossCostPercentSourceXcd As DropDownList = DirectCast(gRow.Cells(LOSS_COST_PERCENT_XCD).FindControl("cboLossCostPercentSourceXcd"), DropDownList)
+                Dim mocboCommPercentSourceXcd As DropDownList = DirectCast(gRow.Cells(ColIndexCommissionsPercentXcd).FindControl("cboCommPercentSourceXcd"), DropDownList)
+                Dim mocboMarketingExpenseSourceXcd As DropDownList = DirectCast(gRow.Cells(ColIndexMarketingPercentXcd).FindControl("cboMarketingExpenseSourceXcd"), DropDownList)
+                Dim mocboAdminExpenseSourceXcd As DropDownList = DirectCast(gRow.Cells(ColIndexAdminExpenseXcd).FindControl("cboAdminExpenseSourceXcd"), DropDownList)
+                Dim mocboProfitExpenseSourceXcd As DropDownList = DirectCast(gRow.Cells(ColIndexProfitExpenseXcd).FindControl("cboProfitExpenseSourceXcd"), DropDownList)
+                Dim mocboLossCostPercentSourceXcd As DropDownList = DirectCast(gRow.Cells(ColIndexLossCostPercentXcd).FindControl("cboLossCostPercentSourceXcd"), DropDownList)
 
                 If Not mocboCommPercentSourceXcd Is Nothing Then
-                    PoupulateSourceOptionDropdownlist(mocboCommPercentSourceXcd)
+                    PopulateSourceOptionDropDownList(mocboCommPercentSourceXcd)
                 End If
 
                 If Not mocboMarketingExpenseSourceXcd Is Nothing Then
-                    PoupulateSourceOptionDropdownlist(mocboMarketingExpenseSourceXcd)
+                    PopulateSourceOptionDropDownList(mocboMarketingExpenseSourceXcd)
                 End If
 
                 If Not mocboAdminExpenseSourceXcd Is Nothing Then
-                    PoupulateSourceOptionDropdownlist(mocboAdminExpenseSourceXcd)
+                    PopulateSourceOptionDropDownList(mocboAdminExpenseSourceXcd)
                 End If
 
                 If Not mocboProfitExpenseSourceXcd Is Nothing Then
-                    PoupulateSourceOptionDropdownlist(mocboProfitExpenseSourceXcd)
+                    PopulateSourceOptionDropDownList(mocboProfitExpenseSourceXcd)
                 End If
 
                 If Not mocboLossCostPercentSourceXcd Is Nothing Then
-                    PoupulateSourceOptionDropdownlist(mocboLossCostPercentSourceXcd)
+                    PopulateSourceOptionDropDownList(mocboLossCostPercentSourceXcd)
                 End If
             End If
         End Sub
 
         Private Sub SetGridSourceXcdLabelFromBo()
             'If moGridView.EditIndex = -1 Then Exit Sub
-            If Me.State.IsDealerConfiguredForSourceXcd Then
-                For pageIndexk As Integer = 0 To Me.moGridView.PageCount - 1
-                    Me.moGridView.PageIndex = pageIndexk
-                    Dim rowNum As Integer = Me.moGridView.Rows.Count
+            If State.IsDealerConfiguredForSourceXcd Then
+                For pageIndexk As Integer = 0 To moGridView.PageCount - 1
+                    moGridView.PageIndex = pageIndexk
+                    Dim rowNum As Integer = moGridView.Rows.Count
                     For i As Integer = 0 To rowNum - 1
                         Dim gRow As GridViewRow = moGridView.Rows(i)
                         If gRow.RowType = DataControlRowType.DataRow Then
-                            Dim mollblCommPercentSourceXcd As Label = DirectCast(gRow.Cells(COMMISSIONS_PERCENT_XCD).FindControl("lblCommPercentSourceXcd"), Label)
-                            Dim mollblMarketingExpenseSourceXcd As Label = DirectCast(gRow.Cells(MARKETING_PERCENT_XCD).FindControl("lblMarketingExpenseSourceXcd"), Label)
-                            Dim molblAdminExpenseSourceXcd As Label = DirectCast(gRow.Cells(ADMIN_EXPENSE_XCD).FindControl("lblAdminExpenseSourceXcd"), Label)
-                            Dim molblProfitExpenseSourceXcd As Label = DirectCast(gRow.Cells(PROFIT_EXPENSE_XCD).FindControl("lblProfitExpenseSourceXcd"), Label)
-                            Dim molblLossCostPercentSourceXcd As Label = DirectCast(gRow.Cells(LOSS_COST_PERCENT_XCD).FindControl("lblLossCostPercentSourceXcd"), Label)
+                            Dim mollblCommPercentSourceXcd As Label = DirectCast(gRow.Cells(ColIndexCommissionsPercentXcd).FindControl("lblCommPercentSourceXcd"), Label)
+                            Dim mollblMarketingExpenseSourceXcd As Label = DirectCast(gRow.Cells(ColIndexMarketingPercentXcd).FindControl("lblMarketingExpenseSourceXcd"), Label)
+                            Dim molblAdminExpenseSourceXcd As Label = DirectCast(gRow.Cells(ColIndexAdminExpenseXcd).FindControl("lblAdminExpenseSourceXcd"), Label)
+                            Dim molblProfitExpenseSourceXcd As Label = DirectCast(gRow.Cells(ColIndexProfitExpenseXcd).FindControl("lblProfitExpenseSourceXcd"), Label)
+                            Dim molblLossCostPercentSourceXcd As Label = DirectCast(gRow.Cells(ColIndexLossCostPercentXcd).FindControl("lblLossCostPercentSourceXcd"), Label)
 
                             If Not mollblCommPercentSourceXcd Is Nothing Then
                                 If mollblCommPercentSourceXcd.Visible Then
@@ -4821,85 +4519,85 @@ Namespace Tables
 
         Private Sub SetGridSourceXcdDropdownFromBo()
             If moGridView.EditIndex = -1 Then Exit Sub
-            If Me.State.IsDealerConfiguredForSourceXcd Then
+            If State.IsDealerConfiguredForSourceXcd Then
                 Dim gRow As GridViewRow = moGridView.Rows(moGridView.EditIndex)
-                Dim mocboCommPercentSourceXcd As DropDownList = DirectCast(gRow.Cells(COMMISSIONS_PERCENT_XCD).FindControl("cboCommPercentSourceXcd"), DropDownList)
-                Dim mocboMarketingExpenseSourceXcd As DropDownList = DirectCast(gRow.Cells(MARKETING_PERCENT_XCD).FindControl("cboMarketingExpenseSourceXcd"), DropDownList)
-                Dim mocboAdminExpenseSourceXcd As DropDownList = DirectCast(gRow.Cells(ADMIN_EXPENSE_XCD).FindControl("cboAdminExpenseSourceXcd"), DropDownList)
-                Dim mocboProfitExpenseSourceXcd As DropDownList = DirectCast(gRow.Cells(PROFIT_EXPENSE_XCD).FindControl("cboProfitExpenseSourceXcd"), DropDownList)
-                Dim mocboLossCostPercentSourceXcd As DropDownList = DirectCast(gRow.Cells(LOSS_COST_PERCENT_XCD).FindControl("cboLossCostPercentSourceXcd"), DropDownList)
+                Dim cboCommPercentSourceXcd As DropDownList = DirectCast(gRow.Cells(ColIndexCommissionsPercentXcd).FindControl("cboCommPercentSourceXcd"), DropDownList)
+                Dim cboMarketingExpenseSourceXcd As DropDownList = DirectCast(gRow.Cells(ColIndexMarketingPercentXcd).FindControl("cboMarketingExpenseSourceXcd"), DropDownList)
+                Dim cboAdminExpenseSourceXcd As DropDownList = DirectCast(gRow.Cells(ColIndexAdminExpenseXcd).FindControl("cboAdminExpenseSourceXcd"), DropDownList)
+                Dim cboProfitExpenseSourceXcd As DropDownList = DirectCast(gRow.Cells(ColIndexProfitExpenseXcd).FindControl("cboProfitExpenseSourceXcd"), DropDownList)
+                Dim cboLossCostPercentSourceXcd As DropDownList = DirectCast(gRow.Cells(ColIndexLossCostPercentXcd).FindControl("cboLossCostPercentSourceXcd"), DropDownList)
 
-                Dim moTextCommission_PercentText As TextBox = DirectCast(gRow.Cells(COMMISSIONS_PERCENT).FindControl("moCommission_PercentText"), TextBox)
-                Dim moTextMarketing_PercentText As TextBox = DirectCast(gRow.Cells(MARKETING_PERCENT).FindControl("moMarketing_PercentText"), TextBox)
-                Dim moTextAdmin_ExpenseText As TextBox = DirectCast(gRow.Cells(ADMIN_EXPENSE).FindControl("moAdmin_ExpenseText"), TextBox)
-                Dim moTextProfit_ExpenseText As TextBox = DirectCast(gRow.Cells(PROFIT_EXPENSE).FindControl("moProfit_ExpenseText"), TextBox)
-                Dim moTextLoss_Cost_PercentText As TextBox = DirectCast(gRow.Cells(LOSS_COST_PERCENT).FindControl("moLoss_Cost_PercentText"), TextBox)
+                Dim txtCommissionPercent As TextBox = DirectCast(gRow.Cells(ColIndexCommissionsPercent).FindControl("moCommission_PercentText"), TextBox)
+                Dim txtMarketingPercent As TextBox = DirectCast(gRow.Cells(ColIndexMarketingPercent).FindControl("moMarketing_PercentText"), TextBox)
+                Dim txtAdminExpense As TextBox = DirectCast(gRow.Cells(ColIndexAdminExpense).FindControl("moAdmin_ExpenseText"), TextBox)
+                Dim txtProfitExpense As TextBox = DirectCast(gRow.Cells(ColIndexProfitExpense).FindControl("moProfit_ExpenseText"), TextBox)
+                Dim txtLossCostPercent As TextBox = DirectCast(gRow.Cells(ColIndexLossCostPercent).FindControl("moLoss_Cost_PercentText"), TextBox)
                 Dim diffValue As Decimal = 0.0000
 
-                If Me.State.IsNewWithCopy = False Then
+                If State.IsNewWithCopy = False Then
                     With TheCoverageRate
 
-                        If mocboLossCostPercentSourceXcd.Visible Then
-                            If Not .LossCostPercentSourceXcd Is Nothing And mocboLossCostPercentSourceXcd.Items.Count > 0 Then
-                                Me.SetSelectedItem(mocboLossCostPercentSourceXcd, .LossCostPercentSourceXcd)
+                        If cboLossCostPercentSourceXcd.Visible Then
+                            If Not .LossCostPercentSourceXcd Is Nothing And cboLossCostPercentSourceXcd.Items.Count > 0 Then
+                                SetSelectedItem(cboLossCostPercentSourceXcd, .LossCostPercentSourceXcd)
 
-                                If mocboLossCostPercentSourceXcd.SelectedItem.Value.ToUpper.Equals(Codes.ACCT_BUCKETS_SOURCE_OPTION_DIFFERENCE) Then
-                                    Me.PopulateControlFromBOProperty(moTextLoss_Cost_PercentText, diffValue, Me.PERCENT_FORMAT)
-                                    moTextLoss_Cost_PercentText.Enabled = False
+                                If cboLossCostPercentSourceXcd.SelectedItem.Value.ToUpper.Equals(Codes.ACCT_BUCKETS_SOURCE_OPTION_DIFFERENCE) Then
+                                    PopulateControlFromBOProperty(txtLossCostPercent, diffValue, PERCENT_FORMAT)
+                                    txtLossCostPercent.Enabled = False
                                 Else
-                                    moTextLoss_Cost_PercentText.Enabled = True
+                                    txtLossCostPercent.Enabled = True
                                 End If
                             End If
                         End If
 
-                        If mocboProfitExpenseSourceXcd.Visible Then
-                            If Not .ProfitPercentSourceXcd Is Nothing And mocboProfitExpenseSourceXcd.Items.Count > 0 Then
-                                Me.SetSelectedItem(mocboProfitExpenseSourceXcd, .ProfitPercentSourceXcd)
+                        If cboProfitExpenseSourceXcd.Visible Then
+                            If Not .ProfitPercentSourceXcd Is Nothing And cboProfitExpenseSourceXcd.Items.Count > 0 Then
+                                SetSelectedItem(cboProfitExpenseSourceXcd, .ProfitPercentSourceXcd)
 
-                                If mocboProfitExpenseSourceXcd.SelectedItem.Value.ToUpper.Equals(Codes.ACCT_BUCKETS_SOURCE_OPTION_DIFFERENCE) Then
-                                    Me.PopulateControlFromBOProperty(moTextProfit_ExpenseText, diffValue, Me.PERCENT_FORMAT)
-                                    moTextProfit_ExpenseText.Enabled = False
+                                If cboProfitExpenseSourceXcd.SelectedItem.Value.ToUpper.Equals(Codes.ACCT_BUCKETS_SOURCE_OPTION_DIFFERENCE) Then
+                                    PopulateControlFromBOProperty(txtProfitExpense, diffValue, PERCENT_FORMAT)
+                                    txtProfitExpense.Enabled = False
                                 Else
-                                    moTextProfit_ExpenseText.Enabled = True
+                                    txtProfitExpense.Enabled = True
                                 End If
                             End If
                         End If
 
-                        If mocboMarketingExpenseSourceXcd.Visible Then
-                            If Not .MarketingPercentSourceXcd Is Nothing And mocboMarketingExpenseSourceXcd.Items.Count > 0 Then
-                                Me.SetSelectedItem(mocboMarketingExpenseSourceXcd, .MarketingPercentSourceXcd)
+                        If cboMarketingExpenseSourceXcd.Visible Then
+                            If Not .MarketingPercentSourceXcd Is Nothing And cboMarketingExpenseSourceXcd.Items.Count > 0 Then
+                                SetSelectedItem(cboMarketingExpenseSourceXcd, .MarketingPercentSourceXcd)
 
-                                If mocboMarketingExpenseSourceXcd.SelectedItem.Value.ToUpper.Equals(Codes.ACCT_BUCKETS_SOURCE_OPTION_DIFFERENCE) Then
-                                    Me.PopulateControlFromBOProperty(moTextMarketing_PercentText, diffValue, Me.PERCENT_FORMAT)
-                                    moTextMarketing_PercentText.Enabled = False
+                                If cboMarketingExpenseSourceXcd.SelectedItem.Value.ToUpper.Equals(Codes.ACCT_BUCKETS_SOURCE_OPTION_DIFFERENCE) Then
+                                    PopulateControlFromBOProperty(txtMarketingPercent, diffValue, PERCENT_FORMAT)
+                                    txtMarketingPercent.Enabled = False
                                 Else
-                                    moTextMarketing_PercentText.Enabled = True
+                                    txtMarketingPercent.Enabled = True
                                 End If
                             End If
                         End If
 
-                        If mocboAdminExpenseSourceXcd.Visible Then
-                            If Not .AdminExpenseSourceXcd Is Nothing And mocboAdminExpenseSourceXcd.Items.Count > 0 Then
-                                Me.SetSelectedItem(mocboAdminExpenseSourceXcd, .AdminExpenseSourceXcd)
+                        If cboAdminExpenseSourceXcd.Visible Then
+                            If Not .AdminExpenseSourceXcd Is Nothing And cboAdminExpenseSourceXcd.Items.Count > 0 Then
+                                SetSelectedItem(cboAdminExpenseSourceXcd, .AdminExpenseSourceXcd)
 
-                                If mocboAdminExpenseSourceXcd.SelectedItem.Value.ToUpper.Equals(Codes.ACCT_BUCKETS_SOURCE_OPTION_DIFFERENCE) Then
-                                    Me.PopulateControlFromBOProperty(moTextAdmin_ExpenseText, diffValue, Me.PERCENT_FORMAT)
-                                    moTextAdmin_ExpenseText.Enabled = False
+                                If cboAdminExpenseSourceXcd.SelectedItem.Value.ToUpper.Equals(Codes.ACCT_BUCKETS_SOURCE_OPTION_DIFFERENCE) Then
+                                    PopulateControlFromBOProperty(txtAdminExpense, diffValue, PERCENT_FORMAT)
+                                    txtAdminExpense.Enabled = False
                                 Else
-                                    moTextAdmin_ExpenseText.Enabled = True
+                                    txtAdminExpense.Enabled = True
                                 End If
                             End If
                         End If
 
-                        If mocboCommPercentSourceXcd.Visible Then
-                            If Not .CommissionsPercentSourceXcd Is Nothing And mocboCommPercentSourceXcd.Items.Count > 0 Then
-                                Me.SetSelectedItem(mocboCommPercentSourceXcd, .CommissionsPercentSourceXcd)
+                        If cboCommPercentSourceXcd.Visible Then
+                            If Not .CommissionsPercentSourceXcd Is Nothing And cboCommPercentSourceXcd.Items.Count > 0 Then
+                                SetSelectedItem(cboCommPercentSourceXcd, .CommissionsPercentSourceXcd)
 
-                                If mocboCommPercentSourceXcd.SelectedItem.Value.ToUpper.Equals(Codes.ACCT_BUCKETS_SOURCE_OPTION_DIFFERENCE) Then
-                                    Me.PopulateControlFromBOProperty(moTextCommission_PercentText, diffValue, Me.PERCENT_FORMAT)
-                                    moTextCommission_PercentText.Enabled = False
+                                If cboCommPercentSourceXcd.SelectedItem.Value.ToUpper.Equals(Codes.ACCT_BUCKETS_SOURCE_OPTION_DIFFERENCE) Then
+                                    PopulateControlFromBOProperty(txtCommissionPercent, diffValue, PERCENT_FORMAT)
+                                    txtCommissionPercent.Enabled = False
                                 Else
-                                    moTextCommission_PercentText.Enabled = True
+                                    txtCommissionPercent.Enabled = True
                                 End If
                             End If
                         End If
@@ -4908,135 +4606,135 @@ Namespace Tables
             End If
         End Sub
 
-        Private Sub SetGridSourceXcdTextboxFromBo()
+        Private Sub SetGridSourceXcdTextBoxFromBo()
             If moGridView.EditIndex = -1 Then Exit Sub
             With TheCoverageRate
-                If Me.State.IsDealerConfiguredForSourceXcd Then
+                If State.IsDealerConfiguredForSourceXcd Then
                     Dim gRow As GridViewRow = moGridView.Rows(moGridView.EditIndex)
-                    Dim mocboCommPercentSourceXcd As DropDownList = DirectCast(gRow.Cells(COMMISSIONS_PERCENT_XCD).FindControl("cboCommPercentSourceXcd"), DropDownList)
-                    Dim mocboMarketingExpenseSourceXcd As DropDownList = DirectCast(gRow.Cells(MARKETING_PERCENT_XCD).FindControl("cboMarketingExpenseSourceXcd"), DropDownList)
-                    Dim mocboAdminExpenseSourceXcd As DropDownList = DirectCast(gRow.Cells(ADMIN_EXPENSE_XCD).FindControl("cboAdminExpenseSourceXcd"), DropDownList)
-                    Dim mocboProfitExpenseSourceXcd As DropDownList = DirectCast(gRow.Cells(PROFIT_EXPENSE_XCD).FindControl("cboProfitExpenseSourceXcd"), DropDownList)
-                    Dim mocboLossCostPercentSourceXcd As DropDownList = DirectCast(gRow.Cells(LOSS_COST_PERCENT_XCD).FindControl("cboLossCostPercentSourceXcd"), DropDownList)
+                    Dim cboCommPercentSourceXcd As DropDownList = DirectCast(gRow.Cells(ColIndexCommissionsPercentXcd).FindControl("cboCommPercentSourceXcd"), DropDownList)
+                    Dim cboMarketingExpenseSourceXcd As DropDownList = DirectCast(gRow.Cells(ColIndexMarketingPercentXcd).FindControl("cboMarketingExpenseSourceXcd"), DropDownList)
+                    Dim cboAdminExpenseSourceXcd As DropDownList = DirectCast(gRow.Cells(ColIndexAdminExpenseXcd).FindControl("cboAdminExpenseSourceXcd"), DropDownList)
+                    Dim cboProfitExpenseSourceXcd As DropDownList = DirectCast(gRow.Cells(ColIndexProfitExpenseXcd).FindControl("cboProfitExpenseSourceXcd"), DropDownList)
+                    Dim cboLossCostPercentSourceXcd As DropDownList = DirectCast(gRow.Cells(ColIndexLossCostPercentXcd).FindControl("cboLossCostPercentSourceXcd"), DropDownList)
 
-                    Dim moTextCommission_PercentText As TextBox = DirectCast(gRow.Cells(COMMISSIONS_PERCENT).FindControl("moCommission_PercentText"), TextBox)
-                    Dim moTextMarketing_PercentText As TextBox = DirectCast(gRow.Cells(MARKETING_PERCENT).FindControl("moMarketing_PercentText"), TextBox)
-                    Dim moTextAdmin_ExpenseText As TextBox = DirectCast(gRow.Cells(ADMIN_EXPENSE).FindControl("moAdmin_ExpenseText"), TextBox)
-                    Dim moTextProfit_ExpenseText As TextBox = DirectCast(gRow.Cells(PROFIT_EXPENSE).FindControl("moProfit_ExpenseText"), TextBox)
-                    Dim moTextLoss_Cost_PercentText As TextBox = DirectCast(gRow.Cells(LOSS_COST_PERCENT).FindControl("moLoss_Cost_PercentText"), TextBox)
+                    Dim txtCommissionPercent As TextBox = DirectCast(gRow.Cells(ColIndexCommissionsPercent).FindControl("moCommission_PercentText"), TextBox)
+                    Dim txtMarketingPercent As TextBox = DirectCast(gRow.Cells(ColIndexMarketingPercent).FindControl("moMarketing_PercentText"), TextBox)
+                    Dim txtAdminExpense As TextBox = DirectCast(gRow.Cells(ColIndexAdminExpense).FindControl("moAdmin_ExpenseText"), TextBox)
+                    Dim txtProfitExpense As TextBox = DirectCast(gRow.Cells(ColIndexProfitExpense).FindControl("moProfit_ExpenseText"), TextBox)
+                    Dim txtLossCostPercent As TextBox = DirectCast(gRow.Cells(ColIndexLossCostPercent).FindControl("moLoss_Cost_PercentText"), TextBox)
 
                     Dim diffValue As Decimal = 0.0000
 
-                    If Me.State.IsNewWithCopy Then
-                        With Me.State.moCoverageRateList(moGridView.SelectedIndex)
-                            If mocboLossCostPercentSourceXcd.Visible Then
-                                If Not .LossCostPercent Is Nothing And mocboLossCostPercentSourceXcd.Items.Count > 0 Then
-                                    If mocboLossCostPercentSourceXcd.SelectedItem.Value.ToUpper.Equals(Codes.ACCT_BUCKETS_SOURCE_OPTION_DIFFERENCE) Then
-                                        Me.PopulateControlFromBOProperty(moTextLoss_Cost_PercentText, diffValue, Me.PERCENT_FORMAT)
-                                        moTextLoss_Cost_PercentText.Enabled = False
-                                    ElseIf mocboLossCostPercentSourceXcd.SelectedItem.Value.ToUpper.Equals(Codes.ACCT_BUCKETS_SOURCE_OPTION_INCOMING) Then
-                                        Me.PopulateControlFromBOProperty(moTextLoss_Cost_PercentText, .LossCostPercent, Me.PERCENT_FORMAT)
+                    If State.IsNewWithCopy Then
+                        With State.CoverageRateList(moGridView.SelectedIndex)
+                            If cboLossCostPercentSourceXcd.Visible Then
+                                If Not .LossCostPercent Is Nothing And cboLossCostPercentSourceXcd.Items.Count > 0 Then
+                                    If cboLossCostPercentSourceXcd.SelectedItem.Value.ToUpper.Equals(Codes.ACCT_BUCKETS_SOURCE_OPTION_DIFFERENCE) Then
+                                        PopulateControlFromBOProperty(txtLossCostPercent, diffValue, PERCENT_FORMAT)
+                                        txtLossCostPercent.Enabled = False
+                                    ElseIf cboLossCostPercentSourceXcd.SelectedItem.Value.ToUpper.Equals(Codes.ACCT_BUCKETS_SOURCE_OPTION_INCOMING) Then
+                                        PopulateControlFromBOProperty(txtLossCostPercent, .LossCostPercent, PERCENT_FORMAT)
                                     End If
                                 End If
                             End If
 
-                            If mocboProfitExpenseSourceXcd.Visible Then
-                                If Not .ProfitExpense Is Nothing And mocboProfitExpenseSourceXcd.Items.Count > 0 Then
-                                    If mocboProfitExpenseSourceXcd.SelectedItem.Value.ToUpper.Equals(Codes.ACCT_BUCKETS_SOURCE_OPTION_DIFFERENCE) Then
-                                        Me.PopulateControlFromBOProperty(moTextProfit_ExpenseText, diffValue, Me.PERCENT_FORMAT)
-                                        moTextProfit_ExpenseText.Enabled = False
-                                    ElseIf mocboProfitExpenseSourceXcd.SelectedItem.Value.ToUpper.Equals(Codes.ACCT_BUCKETS_SOURCE_OPTION_INCOMING) Then
-                                        Me.PopulateControlFromBOProperty(moTextProfit_ExpenseText, .ProfitExpense, Me.PERCENT_FORMAT)
+                            If cboProfitExpenseSourceXcd.Visible Then
+                                If Not .ProfitExpense Is Nothing And cboProfitExpenseSourceXcd.Items.Count > 0 Then
+                                    If cboProfitExpenseSourceXcd.SelectedItem.Value.ToUpper.Equals(Codes.ACCT_BUCKETS_SOURCE_OPTION_DIFFERENCE) Then
+                                        PopulateControlFromBOProperty(txtProfitExpense, diffValue, PERCENT_FORMAT)
+                                        txtProfitExpense.Enabled = False
+                                    ElseIf cboProfitExpenseSourceXcd.SelectedItem.Value.ToUpper.Equals(Codes.ACCT_BUCKETS_SOURCE_OPTION_INCOMING) Then
+                                        PopulateControlFromBOProperty(txtProfitExpense, .ProfitExpense, PERCENT_FORMAT)
                                     End If
                                 End If
                             End If
 
-                            If mocboMarketingExpenseSourceXcd.Visible Then
-                                If Not .MarketingPercent Is Nothing And mocboMarketingExpenseSourceXcd.Items.Count > 0 Then
-                                    If mocboMarketingExpenseSourceXcd.SelectedItem.Value.ToUpper.Equals(Codes.ACCT_BUCKETS_SOURCE_OPTION_DIFFERENCE) Then
-                                        Me.PopulateControlFromBOProperty(moTextMarketing_PercentText, diffValue, Me.PERCENT_FORMAT)
-                                        moTextMarketing_PercentText.Enabled = False
-                                    ElseIf mocboMarketingExpenseSourceXcd.SelectedItem.Value.ToUpper.Equals(Codes.ACCT_BUCKETS_SOURCE_OPTION_INCOMING) Then
-                                        Me.PopulateControlFromBOProperty(moTextMarketing_PercentText, .MarketingPercent, Me.PERCENT_FORMAT)
+                            If cboMarketingExpenseSourceXcd.Visible Then
+                                If Not .MarketingPercent Is Nothing And cboMarketingExpenseSourceXcd.Items.Count > 0 Then
+                                    If cboMarketingExpenseSourceXcd.SelectedItem.Value.ToUpper.Equals(Codes.ACCT_BUCKETS_SOURCE_OPTION_DIFFERENCE) Then
+                                        PopulateControlFromBOProperty(txtMarketingPercent, diffValue, PERCENT_FORMAT)
+                                        txtMarketingPercent.Enabled = False
+                                    ElseIf cboMarketingExpenseSourceXcd.SelectedItem.Value.ToUpper.Equals(Codes.ACCT_BUCKETS_SOURCE_OPTION_INCOMING) Then
+                                        PopulateControlFromBOProperty(txtMarketingPercent, .MarketingPercent, PERCENT_FORMAT)
                                     End If
                                 End If
                             End If
 
-                            If mocboAdminExpenseSourceXcd.Visible Then
-                                If Not .AdminExpense Is Nothing And mocboAdminExpenseSourceXcd.Items.Count > 0 Then
-                                    If mocboAdminExpenseSourceXcd.SelectedItem.Value.ToUpper.Equals(Codes.ACCT_BUCKETS_SOURCE_OPTION_DIFFERENCE) Then
-                                        Me.PopulateControlFromBOProperty(moTextAdmin_ExpenseText, diffValue, Me.PERCENT_FORMAT)
-                                        moTextAdmin_ExpenseText.Enabled = False
-                                    ElseIf mocboAdminExpenseSourceXcd.SelectedItem.Value.ToUpper.Equals(Codes.ACCT_BUCKETS_SOURCE_OPTION_INCOMING) Then
-                                        Me.PopulateControlFromBOProperty(moTextAdmin_ExpenseText, .AdminExpense, Me.PERCENT_FORMAT)
+                            If cboAdminExpenseSourceXcd.Visible Then
+                                If Not .AdminExpense Is Nothing And cboAdminExpenseSourceXcd.Items.Count > 0 Then
+                                    If cboAdminExpenseSourceXcd.SelectedItem.Value.ToUpper.Equals(Codes.ACCT_BUCKETS_SOURCE_OPTION_DIFFERENCE) Then
+                                        PopulateControlFromBOProperty(txtAdminExpense, diffValue, PERCENT_FORMAT)
+                                        txtAdminExpense.Enabled = False
+                                    ElseIf cboAdminExpenseSourceXcd.SelectedItem.Value.ToUpper.Equals(Codes.ACCT_BUCKETS_SOURCE_OPTION_INCOMING) Then
+                                        PopulateControlFromBOProperty(txtAdminExpense, .AdminExpense, PERCENT_FORMAT)
                                     End If
                                 End If
                             End If
 
-                            If mocboCommPercentSourceXcd.Visible Then
-                                If Not .CommissionsPercent Is Nothing And mocboCommPercentSourceXcd.Items.Count > 0 Then
-                                    If mocboCommPercentSourceXcd.SelectedItem.Value.ToUpper.Equals(Codes.ACCT_BUCKETS_SOURCE_OPTION_DIFFERENCE) Then
-                                        Me.PopulateControlFromBOProperty(moTextCommission_PercentText, diffValue, Me.PERCENT_FORMAT)
-                                        moTextCommission_PercentText.Enabled = False
-                                    ElseIf mocboCommPercentSourceXcd.SelectedItem.Value.ToUpper.Equals(Codes.ACCT_BUCKETS_SOURCE_OPTION_INCOMING) Then
-                                        Me.PopulateControlFromBOProperty(moTextCommission_PercentText, .CommissionsPercent, Me.PERCENT_FORMAT)
+                            If cboCommPercentSourceXcd.Visible Then
+                                If Not .CommissionsPercent Is Nothing And cboCommPercentSourceXcd.Items.Count > 0 Then
+                                    If cboCommPercentSourceXcd.SelectedItem.Value.ToUpper.Equals(Codes.ACCT_BUCKETS_SOURCE_OPTION_DIFFERENCE) Then
+                                        PopulateControlFromBOProperty(txtCommissionPercent, diffValue, PERCENT_FORMAT)
+                                        txtCommissionPercent.Enabled = False
+                                    ElseIf cboCommPercentSourceXcd.SelectedItem.Value.ToUpper.Equals(Codes.ACCT_BUCKETS_SOURCE_OPTION_INCOMING) Then
+                                        PopulateControlFromBOProperty(txtCommissionPercent, .CommissionsPercent, PERCENT_FORMAT)
                                     End If
                                 End If
                             End If
                         End With
                     Else
                         With TheCoverageRate
-                            If mocboLossCostPercentSourceXcd.Visible Then
-                                If Not .LossCostPercent Is Nothing And mocboLossCostPercentSourceXcd.Items.Count > 0 Then
-                                    If mocboLossCostPercentSourceXcd.SelectedItem.Value.ToUpper.Equals(Codes.ACCT_BUCKETS_SOURCE_OPTION_DIFFERENCE) Then
-                                        Me.PopulateControlFromBOProperty(moTextLoss_Cost_PercentText, diffValue, Me.PERCENT_FORMAT)
-                                        moTextLoss_Cost_PercentText.Enabled = False
-                                    ElseIf mocboLossCostPercentSourceXcd.SelectedItem.Value.ToUpper.Equals(Codes.ACCT_BUCKETS_SOURCE_OPTION_INCOMING) Then
-                                        Me.PopulateControlFromBOProperty(moTextLoss_Cost_PercentText, .LossCostPercent, Me.PERCENT_FORMAT)
+                            If cboLossCostPercentSourceXcd.Visible Then
+                                If Not .LossCostPercent Is Nothing And cboLossCostPercentSourceXcd.Items.Count > 0 Then
+                                    If cboLossCostPercentSourceXcd.SelectedItem.Value.ToUpper.Equals(Codes.ACCT_BUCKETS_SOURCE_OPTION_DIFFERENCE) Then
+                                        PopulateControlFromBOProperty(txtLossCostPercent, diffValue, PERCENT_FORMAT)
+                                        txtLossCostPercent.Enabled = False
+                                    ElseIf cboLossCostPercentSourceXcd.SelectedItem.Value.ToUpper.Equals(Codes.ACCT_BUCKETS_SOURCE_OPTION_INCOMING) Then
+                                        PopulateControlFromBOProperty(txtLossCostPercent, .LossCostPercent, PERCENT_FORMAT)
                                     End If
                                 End If
                             End If
 
-                            If mocboProfitExpenseSourceXcd.Visible Then
-                                If Not .ProfitExpense Is Nothing And mocboProfitExpenseSourceXcd.Items.Count > 0 Then
-                                    If mocboProfitExpenseSourceXcd.SelectedItem.Value.ToUpper.Equals(Codes.ACCT_BUCKETS_SOURCE_OPTION_DIFFERENCE) Then
-                                        Me.PopulateControlFromBOProperty(moTextProfit_ExpenseText, diffValue, Me.PERCENT_FORMAT)
-                                        moTextProfit_ExpenseText.Enabled = False
-                                    ElseIf mocboProfitExpenseSourceXcd.SelectedItem.Value.ToUpper.Equals(Codes.ACCT_BUCKETS_SOURCE_OPTION_INCOMING) Then
-                                        Me.PopulateControlFromBOProperty(moTextProfit_ExpenseText, .ProfitExpense, Me.PERCENT_FORMAT)
+                            If cboProfitExpenseSourceXcd.Visible Then
+                                If Not .ProfitExpense Is Nothing And cboProfitExpenseSourceXcd.Items.Count > 0 Then
+                                    If cboProfitExpenseSourceXcd.SelectedItem.Value.ToUpper.Equals(Codes.ACCT_BUCKETS_SOURCE_OPTION_DIFFERENCE) Then
+                                        PopulateControlFromBOProperty(txtProfitExpense, diffValue, PERCENT_FORMAT)
+                                        txtProfitExpense.Enabled = False
+                                    ElseIf cboProfitExpenseSourceXcd.SelectedItem.Value.ToUpper.Equals(Codes.ACCT_BUCKETS_SOURCE_OPTION_INCOMING) Then
+                                        PopulateControlFromBOProperty(txtProfitExpense, .ProfitExpense, PERCENT_FORMAT)
                                     End If
                                 End If
                             End If
 
-                            If mocboMarketingExpenseSourceXcd.Visible Then
-                                If Not .MarketingPercent Is Nothing And mocboMarketingExpenseSourceXcd.Items.Count > 0 Then
-                                    If mocboMarketingExpenseSourceXcd.SelectedItem.Value.ToUpper.Equals(Codes.ACCT_BUCKETS_SOURCE_OPTION_DIFFERENCE) Then
-                                        Me.PopulateControlFromBOProperty(moTextMarketing_PercentText, diffValue, Me.PERCENT_FORMAT)
-                                        moTextMarketing_PercentText.Enabled = False
-                                    ElseIf mocboMarketingExpenseSourceXcd.SelectedItem.Value.ToUpper.Equals(Codes.ACCT_BUCKETS_SOURCE_OPTION_INCOMING) Then
-                                        Me.PopulateControlFromBOProperty(moTextMarketing_PercentText, .MarketingPercent, Me.PERCENT_FORMAT)
+                            If cboMarketingExpenseSourceXcd.Visible Then
+                                If Not .MarketingPercent Is Nothing And cboMarketingExpenseSourceXcd.Items.Count > 0 Then
+                                    If cboMarketingExpenseSourceXcd.SelectedItem.Value.ToUpper.Equals(Codes.ACCT_BUCKETS_SOURCE_OPTION_DIFFERENCE) Then
+                                        PopulateControlFromBOProperty(txtMarketingPercent, diffValue, PERCENT_FORMAT)
+                                        txtMarketingPercent.Enabled = False
+                                    ElseIf cboMarketingExpenseSourceXcd.SelectedItem.Value.ToUpper.Equals(Codes.ACCT_BUCKETS_SOURCE_OPTION_INCOMING) Then
+                                        PopulateControlFromBOProperty(txtMarketingPercent, .MarketingPercent, PERCENT_FORMAT)
                                     End If
                                 End If
                             End If
 
-                            If mocboAdminExpenseSourceXcd.Visible Then
-                                If Not .AdminExpense Is Nothing And mocboAdminExpenseSourceXcd.Items.Count > 0 Then
-                                    If mocboAdminExpenseSourceXcd.SelectedItem.Value.ToUpper.Equals(Codes.ACCT_BUCKETS_SOURCE_OPTION_DIFFERENCE) Then
-                                        Me.PopulateControlFromBOProperty(moTextAdmin_ExpenseText, diffValue, Me.PERCENT_FORMAT)
-                                        moTextAdmin_ExpenseText.Enabled = False
-                                    ElseIf mocboAdminExpenseSourceXcd.SelectedItem.Value.ToUpper.Equals(Codes.ACCT_BUCKETS_SOURCE_OPTION_INCOMING) Then
-                                        Me.PopulateControlFromBOProperty(moTextAdmin_ExpenseText, .AdminExpense, Me.PERCENT_FORMAT)
+                            If cboAdminExpenseSourceXcd.Visible Then
+                                If Not .AdminExpense Is Nothing And cboAdminExpenseSourceXcd.Items.Count > 0 Then
+                                    If cboAdminExpenseSourceXcd.SelectedItem.Value.ToUpper.Equals(Codes.ACCT_BUCKETS_SOURCE_OPTION_DIFFERENCE) Then
+                                        PopulateControlFromBOProperty(txtAdminExpense, diffValue, PERCENT_FORMAT)
+                                        txtAdminExpense.Enabled = False
+                                    ElseIf cboAdminExpenseSourceXcd.SelectedItem.Value.ToUpper.Equals(Codes.ACCT_BUCKETS_SOURCE_OPTION_INCOMING) Then
+                                        PopulateControlFromBOProperty(txtAdminExpense, .AdminExpense, PERCENT_FORMAT)
                                     End If
                                 End If
                             End If
 
-                            If mocboCommPercentSourceXcd.Visible Then
-                                If Not .CommissionsPercent Is Nothing And mocboCommPercentSourceXcd.Items.Count > 0 Then
-                                    If mocboCommPercentSourceXcd.SelectedItem.Value.ToUpper.Equals(Codes.ACCT_BUCKETS_SOURCE_OPTION_DIFFERENCE) Then
-                                        Me.PopulateControlFromBOProperty(moTextCommission_PercentText, diffValue, Me.PERCENT_FORMAT)
-                                        moTextCommission_PercentText.Enabled = False
-                                    ElseIf mocboCommPercentSourceXcd.SelectedItem.Value.ToUpper.Equals(Codes.ACCT_BUCKETS_SOURCE_OPTION_INCOMING) Then
-                                        Me.PopulateControlFromBOProperty(moTextCommission_PercentText, .CommissionsPercent, Me.PERCENT_FORMAT)
+                            If cboCommPercentSourceXcd.Visible Then
+                                If Not .CommissionsPercent Is Nothing And cboCommPercentSourceXcd.Items.Count > 0 Then
+                                    If cboCommPercentSourceXcd.SelectedItem.Value.ToUpper.Equals(Codes.ACCT_BUCKETS_SOURCE_OPTION_DIFFERENCE) Then
+                                        PopulateControlFromBOProperty(txtCommissionPercent, diffValue, PERCENT_FORMAT)
+                                        txtCommissionPercent.Enabled = False
+                                    ElseIf cboCommPercentSourceXcd.SelectedItem.Value.ToUpper.Equals(Codes.ACCT_BUCKETS_SOURCE_OPTION_INCOMING) Then
+                                        PopulateControlFromBOProperty(txtCommissionPercent, .CommissionsPercent, PERCENT_FORMAT)
                                     End If
                                 End If
                             End If
@@ -5047,66 +4745,66 @@ Namespace Tables
 
         End Sub
 
-        Private Sub SetGridSourceXcdTextboxForNewCoverage()
+        Private Sub SetGridSourceXcdTextBoxForNewCoverage()
             If moGridView.EditIndex = -1 Then Exit Sub
             With TheCoverageRate
-                If Me.State.IsDealerConfiguredForSourceXcd Then
+                If State.IsDealerConfiguredForSourceXcd Then
                     Dim gRow As GridViewRow = moGridView.Rows(moGridView.EditIndex)
-                    Dim mocboCommPercentSourceXcd As DropDownList = DirectCast(gRow.Cells(COMMISSIONS_PERCENT_XCD).FindControl("cboCommPercentSourceXcd"), DropDownList)
-                    Dim mocboMarketingExpenseSourceXcd As DropDownList = DirectCast(gRow.Cells(MARKETING_PERCENT_XCD).FindControl("cboMarketingExpenseSourceXcd"), DropDownList)
-                    Dim mocboAdminExpenseSourceXcd As DropDownList = DirectCast(gRow.Cells(ADMIN_EXPENSE_XCD).FindControl("cboAdminExpenseSourceXcd"), DropDownList)
-                    Dim mocboProfitExpenseSourceXcd As DropDownList = DirectCast(gRow.Cells(PROFIT_EXPENSE_XCD).FindControl("cboProfitExpenseSourceXcd"), DropDownList)
-                    Dim mocboLossCostPercentSourceXcd As DropDownList = DirectCast(gRow.Cells(LOSS_COST_PERCENT_XCD).FindControl("cboLossCostPercentSourceXcd"), DropDownList)
+                    Dim cboCommPercentSourceXcd As DropDownList = DirectCast(gRow.Cells(ColIndexCommissionsPercentXcd).FindControl("cboCommPercentSourceXcd"), DropDownList)
+                    Dim cboMarketingExpenseSourceXcd As DropDownList = DirectCast(gRow.Cells(ColIndexMarketingPercentXcd).FindControl("cboMarketingExpenseSourceXcd"), DropDownList)
+                    Dim cboAdminExpenseSourceXcd As DropDownList = DirectCast(gRow.Cells(ColIndexAdminExpenseXcd).FindControl("cboAdminExpenseSourceXcd"), DropDownList)
+                    Dim cboProfitExpenseSourceXcd As DropDownList = DirectCast(gRow.Cells(ColIndexProfitExpenseXcd).FindControl("cboProfitExpenseSourceXcd"), DropDownList)
+                    Dim cboLossCostPercentSourceXcd As DropDownList = DirectCast(gRow.Cells(ColIndexLossCostPercentXcd).FindControl("cboLossCostPercentSourceXcd"), DropDownList)
 
-                    Dim moTextCommission_PercentText As TextBox = DirectCast(gRow.Cells(COMMISSIONS_PERCENT).FindControl("moCommission_PercentText"), TextBox)
-                    Dim moTextMarketing_PercentText As TextBox = DirectCast(gRow.Cells(MARKETING_PERCENT).FindControl("moMarketing_PercentText"), TextBox)
-                    Dim moTextAdmin_ExpenseText As TextBox = DirectCast(gRow.Cells(ADMIN_EXPENSE).FindControl("moAdmin_ExpenseText"), TextBox)
-                    Dim moTextProfit_ExpenseText As TextBox = DirectCast(gRow.Cells(PROFIT_EXPENSE).FindControl("moProfit_ExpenseText"), TextBox)
-                    Dim moTextLoss_Cost_PercentText As TextBox = DirectCast(gRow.Cells(LOSS_COST_PERCENT).FindControl("moLoss_Cost_PercentText"), TextBox)
+                    Dim txtCommissionPercent As TextBox = DirectCast(gRow.Cells(ColIndexCommissionsPercent).FindControl("moCommission_PercentText"), TextBox)
+                    Dim txtMarketingPercent As TextBox = DirectCast(gRow.Cells(ColIndexMarketingPercent).FindControl("moMarketing_PercentText"), TextBox)
+                    Dim txtAdminExpense As TextBox = DirectCast(gRow.Cells(ColIndexAdminExpense).FindControl("moAdmin_ExpenseText"), TextBox)
+                    Dim txtProfitExpense As TextBox = DirectCast(gRow.Cells(ColIndexProfitExpense).FindControl("moProfit_ExpenseText"), TextBox)
+                    Dim txtLossCostPercent As TextBox = DirectCast(gRow.Cells(ColIndexLossCostPercent).FindControl("moLoss_Cost_PercentText"), TextBox)
 
                     Dim diffValue As Decimal = 0.0000
 
-                    If mocboLossCostPercentSourceXcd.Visible Then
-                        If mocboLossCostPercentSourceXcd.Items.Count > 0 Then
-                            If mocboLossCostPercentSourceXcd.SelectedItem.Value.ToUpper.Equals(Codes.ACCT_BUCKETS_SOURCE_OPTION_DIFFERENCE) Then
-                                Me.PopulateControlFromBOProperty(moTextLoss_Cost_PercentText, diffValue, Me.PERCENT_FORMAT)
-                                moTextLoss_Cost_PercentText.Enabled = False
+                    If cboLossCostPercentSourceXcd.Visible Then
+                        If cboLossCostPercentSourceXcd.Items.Count > 0 Then
+                            If cboLossCostPercentSourceXcd.SelectedItem.Value.ToUpper.Equals(Codes.ACCT_BUCKETS_SOURCE_OPTION_DIFFERENCE) Then
+                                PopulateControlFromBOProperty(txtLossCostPercent, diffValue, PERCENT_FORMAT)
+                                txtLossCostPercent.Enabled = False
                             End If
                         End If
                     End If
 
-                    If mocboProfitExpenseSourceXcd.Visible Then
-                        If mocboProfitExpenseSourceXcd.Items.Count > 0 Then
-                            If mocboProfitExpenseSourceXcd.SelectedItem.Value.ToUpper.Equals(Codes.ACCT_BUCKETS_SOURCE_OPTION_DIFFERENCE) Then
-                                Me.PopulateControlFromBOProperty(moTextProfit_ExpenseText, diffValue, Me.PERCENT_FORMAT)
-                                moTextProfit_ExpenseText.Enabled = False
+                    If cboProfitExpenseSourceXcd.Visible Then
+                        If cboProfitExpenseSourceXcd.Items.Count > 0 Then
+                            If cboProfitExpenseSourceXcd.SelectedItem.Value.ToUpper.Equals(Codes.ACCT_BUCKETS_SOURCE_OPTION_DIFFERENCE) Then
+                                PopulateControlFromBOProperty(txtProfitExpense, diffValue, PERCENT_FORMAT)
+                                txtProfitExpense.Enabled = False
                             End If
                         End If
                     End If
 
-                    If mocboMarketingExpenseSourceXcd.Visible Then
-                        If mocboMarketingExpenseSourceXcd.Items.Count > 0 Then
-                            If mocboMarketingExpenseSourceXcd.SelectedItem.Value.ToUpper.Equals(Codes.ACCT_BUCKETS_SOURCE_OPTION_DIFFERENCE) Then
-                                Me.PopulateControlFromBOProperty(moTextMarketing_PercentText, diffValue, Me.PERCENT_FORMAT)
-                                moTextMarketing_PercentText.Enabled = False
+                    If cboMarketingExpenseSourceXcd.Visible Then
+                        If cboMarketingExpenseSourceXcd.Items.Count > 0 Then
+                            If cboMarketingExpenseSourceXcd.SelectedItem.Value.ToUpper.Equals(Codes.ACCT_BUCKETS_SOURCE_OPTION_DIFFERENCE) Then
+                                PopulateControlFromBOProperty(txtMarketingPercent, diffValue, PERCENT_FORMAT)
+                                txtMarketingPercent.Enabled = False
                             End If
                         End If
                     End If
 
-                    If mocboAdminExpenseSourceXcd.Visible Then
-                        If mocboAdminExpenseSourceXcd.Items.Count > 0 Then
-                            If mocboAdminExpenseSourceXcd.SelectedItem.Value.ToUpper.Equals(Codes.ACCT_BUCKETS_SOURCE_OPTION_DIFFERENCE) Then
-                                Me.PopulateControlFromBOProperty(moTextAdmin_ExpenseText, diffValue, Me.PERCENT_FORMAT)
-                                moTextAdmin_ExpenseText.Enabled = False
+                    If cboAdminExpenseSourceXcd.Visible Then
+                        If cboAdminExpenseSourceXcd.Items.Count > 0 Then
+                            If cboAdminExpenseSourceXcd.SelectedItem.Value.ToUpper.Equals(Codes.ACCT_BUCKETS_SOURCE_OPTION_DIFFERENCE) Then
+                                PopulateControlFromBOProperty(txtAdminExpense, diffValue, PERCENT_FORMAT)
+                                txtAdminExpense.Enabled = False
                             End If
                         End If
                     End If
 
-                    If mocboCommPercentSourceXcd.Visible Then
-                        If mocboCommPercentSourceXcd.Items.Count > 0 Then
-                            If mocboCommPercentSourceXcd.SelectedItem.Value.ToUpper.Equals(Codes.ACCT_BUCKETS_SOURCE_OPTION_DIFFERENCE) Then
-                                Me.PopulateControlFromBOProperty(moTextCommission_PercentText, diffValue, Me.PERCENT_FORMAT)
-                                moTextCommission_PercentText.Enabled = False
+                    If cboCommPercentSourceXcd.Visible Then
+                        If cboCommPercentSourceXcd.Items.Count > 0 Then
+                            If cboCommPercentSourceXcd.SelectedItem.Value.ToUpper.Equals(Codes.ACCT_BUCKETS_SOURCE_OPTION_DIFFERENCE) Then
+                                PopulateControlFromBOProperty(txtCommissionPercent, diffValue, PERCENT_FORMAT)
+                                txtCommissionPercent.Enabled = False
                             End If
                         End If
                     End If
@@ -5121,15 +4819,23 @@ Namespace Tables
             Try
                 sGetCodeSourceOptionDesc = String.Empty
                 If Not desc Is Nothing And Not String.IsNullOrWhiteSpace(desc) Then
-                    sGetCodeSourceOptionDesc = LookupListNew.GetDescriptionFromExtCode("ACCTBUCKETSOURCE", ElitaPlusIdentity.Current.ActiveUser.LanguageId, desc)
+                    sGetCodeSourceOptionDesc = LookupListNew.GetDescriptionFromExtCode("ACCTBUCKETSOURCE", GetLanguageId(), desc)
                 End If
                 Return sGetCodeSourceOptionDesc
             Catch ex As Exception
-                Me.HandleErrors(ex, Me.MasterPage.MessageController)
+                HandleErrors(ex, MasterPage.MessageController)
             End Try
+
+            Return String.Empty
         End Function
 
 #End Region
+        Private Function CurrentUser() As User
+            Return ElitaPlusIdentity.Current.ActiveUser
+        End Function
 
+        Private Function GetLanguageId() As Guid
+            Return  ElitaPlusIdentity.Current.ActiveUser.LanguageId
+        End Function
     End Class
 End Namespace

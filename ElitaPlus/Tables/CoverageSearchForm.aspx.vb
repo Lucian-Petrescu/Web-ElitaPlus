@@ -469,7 +469,7 @@ Namespace Tables
                 'Response.Redirect(COVERAGE_DETAIL_PAGE)
                 Me.State.moCoverageId = Guid.Empty
                 SetSession()
-                Me.callPage(CoverageForm.URL, Me.State.moCoverageId)
+                Me.callPage(CoverageForm.CoverageFormUrl, Me.State.moCoverageId)
             Catch ex As Exception
                 Me.HandleErrors(ex, Me.MasterPage.MessageController)
             End Try
@@ -504,7 +504,7 @@ Namespace Tables
                     sCoverageId = CType(e.Item.FindControl("moCoverageId"), Label).Text
                     Me.State.moCoverageId = Me.GetGuidFromString(sCoverageId)
                     SetSession()
-                    Me.callPage(CoverageForm.URL, Me.State.moCoverageId)
+                    Me.callPage(CoverageForm.CoverageFormUrl, Me.State.moCoverageId)
                 Else
                     '  If e.CommandName = Me.SORT_COMMAND_NAME Then
                     '        moDataGrid.DataMember = e.CommandArgument.ToString
