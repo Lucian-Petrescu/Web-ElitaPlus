@@ -726,6 +726,24 @@ Namespace Tables
         Protected WithEvents moAgentcodeText As Global.System.Web.UI.WebControls.TextBox
 
         '''<summary>
+        '''moFulfillmentProviderLabel control.
+        '''</summary>
+        '''<remarks>
+        '''Auto-generated field.
+        '''To modify move field declaration from designer file to code-behind file.
+        '''</remarks>
+        Protected WithEvents moFulfillmentProviderLabel As Global.System.Web.UI.WebControls.Label
+
+        '''<summary>
+        '''moFulfillmentProviderDrop control.
+        '''</summary>
+        '''<remarks>
+        '''Auto-generated field.
+        '''To modify move field declaration from designer file to code-behind file.
+        '''</remarks>
+        Protected WithEvents moFulfillmentProviderDrop As Global.System.Web.UI.WebControls.DropDownList
+
+        '''<summary>
         '''moFulfillmentProfileLabel control.
         '''</summary>
         '''<remarks>
