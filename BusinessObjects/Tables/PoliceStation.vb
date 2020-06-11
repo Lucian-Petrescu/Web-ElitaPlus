@@ -341,11 +341,6 @@ Public Class PoliceStation
         Try
             Me.Delete()
             Me.Save()
-        Catch ex As Assurant.ElitaPlus.DALObjects.DataBaseAccessException
-            Me.cancelEdit()
-            Throw New DataBaseAccessException(ex.ErrorType, ex)
-        Catch ex As RowNotInTableException
-            ex = Nothing
         Catch ex As Exception
             Me.cancelEdit()
             Throw ex
