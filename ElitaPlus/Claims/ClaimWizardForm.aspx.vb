@@ -320,6 +320,7 @@ Public Class ClaimWizardForm
 
             End If
             BindBoPropertiesToLabels(Me.State.StepName)
+            PopulateClaimedEnrolledDetails()
         Catch ex As Threading.ThreadAbortException
         Catch ex As Exception
             Me.HandleErrors(ex, Me.MasterPage.MessageController)
@@ -2240,8 +2241,7 @@ Public Class ClaimWizardForm
         Me.State.ClaimBO.RecalculateDeductibleForChanges()
         Me.State.ClaimIssuesView = Me.State.ClaimBO.GetClaimIssuesView()
         Me.State.ClaimImagesView = Me.State.ClaimBO.GetClaimImagesView()
-       
-        'populateClaimEquipment()
+
         PopulateClaimIssuesGrid()
         PopulateClaimImagesGrid()
         PopulateClaimAuthorizationGrid()
@@ -2389,15 +2389,6 @@ Public Class ClaimWizardForm
             End With
         End If
 
-        With Me.State.ClaimBO
-            If Not .EnrolledEquipment Is Nothing Or Not .ClaimedEquipment Is Nothing Then
-                With Me.ucClaimDeviceInfo
-                    .thisPage = Me
-                    .ClaimBO = CType(Me.State.ClaimBO, ClaimBase)
-                End With
-            End If
-        End With
-
         If Me.State.ClaimBO.CertificateItem.IsEquipmentRequired Then
             'populate best replacement record
             With Me.step3_ReplacementOption
@@ -2501,6 +2492,17 @@ Public Class ClaimWizardForm
     '    End With
 
     'End Sub
+
+    Sub PopulateClaimedEnrolledDetails()
+        With Me.State.ClaimBO
+            If Not .EnrolledEquipment Is Nothing Or Not .ClaimedEquipment Is Nothing Then
+                With Me.ucClaimDeviceInfo
+                    .thisPage = Me
+                    .ClaimBO = CType(Me.State.ClaimBO, ClaimBase)
+                End With
+            End If
+        End With
+    End Sub
 
     Private Sub PopulateBOFromFormForStep3()
 
