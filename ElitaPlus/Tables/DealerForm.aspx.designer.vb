@@ -2643,6 +2643,24 @@ Namespace Tables
         Protected WithEvents ddlAllowCertCancellationWithClaim As Global.System.Web.UI.WebControls.DropDownList
 
         '''<summary>
+        '''lblAcctBucketsWithSourceXcd control.
+        '''</summary>
+        '''<remarks>
+        '''Auto-generated field.
+        '''To modify move field declaration from designer file to code-behind file.
+        '''</remarks>
+        Protected WithEvents lblAcctBucketsWithSourceXcd As Global.System.Web.UI.WebControls.Label
+
+        '''<summary>
+        '''cboAcctBucketsWithSourceXcd control.
+        '''</summary>
+        '''<remarks>
+        '''Auto-generated field.
+        '''To modify move field declaration from designer file to code-behind file.
+        '''</remarks>
+        Protected WithEvents cboAcctBucketsWithSourceXcd As Global.System.Web.UI.WebControls.DropDownList
+
+        '''<summary>
         '''EditPanel_WRITE control.
         '''</summary>
         '''<remarks>

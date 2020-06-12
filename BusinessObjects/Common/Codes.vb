@@ -206,6 +206,7 @@ Public Class Codes
     Public Const REASON_CLOSED_DENIED As String = "DENY"
     Public Const FLP_NO = "NO"
     Public Const REASON_CLOSED_LLE As String = "LLE"
+    Public Const REASON_CLOSED_CLAIM_VOID As String = "CVOID"
 
     'Coverage Type
     Public Const COVERAGE_TYPE__EXTENDED As String = "E"
@@ -348,6 +349,9 @@ Public Class Codes
     Public Const PAYMENT_METHOD__CHECK_TO_CONSUMER As String = "CHK"
     Public Const PAYMENT_METHOD__PAYMENT_ORDER As String = "PYO"
     Public Const PAYMENT_METHOD__DARTY_GIFT_CARD As String = "DGFT"
+
+    'CLAIM RESERVED OPTIONS
+    Public Const CLAIM_RESERVED__SALES_PRICE_XCD As String = "CLAIMRESERVED-SP"
 
     'LANGUAGES
     Public Const ENGLISH_LANG_CODE As String = "EN"
@@ -669,6 +673,9 @@ Public Class Codes
     Public Const SERVICE_TYPE__CASE_MANAGEMENT_WEB_APP_GATEWAY_SERVICE As String = "CASE_MANAGEMENT_WEB_APP_GATEWAY_SERVICE"
     Public Const SERVICE_TYPE__FILE_MANAGEMENT_ADMIN_SERVICE As String = "FILE_MANAGEMENT_ADMIN_SERVICE"
     Public Const SERVICE_TYPE_DF_API_URL As String = "DF_UI_API"
+    Public Const SERVICE_TYPE__UTILTY_SERVICE As String = "UTILITY_SERVICE"
+    Public Const SERVICE_TYPE_GROUP_NAME As String = "Services"
+
 
     'REQ-6230
     Public Const SERVICE_TYPE__CLAIMS_INDIX_SERVICE_PRODUCT_SEARCH As String = "INDIX_SERVICE_PRODUCT_SEARCH"
@@ -937,6 +944,7 @@ Public Class Codes
     'Company Attributes
     Public Const COMP_ATTR__RPT_EXP_NOTIFY_EMAIL As String = "RPT_EXP_NOTIFY_EMAIL"
     Public Const COMP_ATTR__UPD_ZIP_LOCATOR As String = "UPDATE_ZIP_LOCATOR"
+    Public Const COMP_ATTR__TECH_DEBT_DEDUCTIBLE_RULE As String = "TECH_DEBT_DEDUCTIBLE_RULE"
 
     'Dealer Attributes
     Public Const DLR_ATTRBT__TRD_IN As String = "PRC_CLM_DRP_CHECK_TRADE_IN"
@@ -1042,6 +1050,7 @@ Public Class Codes
     Public Const CASE_PURPOSE__CANCELLATION_REQUEST As String = "CERTCANCEL"
     Public Const CASE_PURPOSE__CONSEQUENTIAL_DAMAGE As String = "REPCONSEQDMG"
     Public Const CASE_PURPOSE__INQUIRY As String = "INQUIRY"
+    Public Const CasePurposeChangeFulfillment As String = "CHGFULFILLMENT"
 
     ' Depreciation Schedule Usage
     Public Const DEPRECIATION_SCHEDULE_USAGE__CASH_REIMBURSE As String = "DEP_SCH_USAGE-CASH_REIMBURSE"
@@ -1131,5 +1140,9 @@ Public Class Codes
     'Company codes
     Public Const AUS_COMPANY_CODE As String = "AAU"
 
+    'US 489857
+    Public Const ACCT_BUCKETS_SOURCE_OPTION_PRICEMATRIX As String = "ACCTBUCKETSOURCE-PM"
+    Public Const ACCT_BUCKETS_SOURCE_OPTION_INCOMING As String = "ACCTBUCKETSOURCE-I"
+    Public Const ACCT_BUCKETS_SOURCE_OPTION_DIFFERENCE As String = "ACCTBUCKETSOURCE-D"
 
 End Class

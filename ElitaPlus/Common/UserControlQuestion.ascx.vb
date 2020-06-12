@@ -322,7 +322,7 @@ Public Class UserControlQuestion
                     Dim question As ListOfValuesAnswer = DirectCast(DirectCast(e.Row.DataItem, Question).Answer, ListOfValuesAnswer)
                     Dim answer As AnswerValue
                     Dim listItems As List(Of ListItem) = New List(Of ListItem)()
-                    For Each answer In question.Answers.ToArray.OrderBy("SequenceNumber", LinqExtentions.SortDirection.Ascending)
+                    For Each answer In question.Answers.OrderBy(Function(s) s.SequenceNumber)
                         listItems.Add(New ListItem(answer.Text, answer.Code))
                     Next
                     If isReEvaulateOnChange Then
@@ -434,7 +434,7 @@ Public Class UserControlQuestion
                 code = CType(row.FindControl("lblCode"), Label).Text
 
                 If TypeOf questionSubmitobj Is QuestionResponse Then
-                    questionObject = DirectCast(questionSubmitobj, QuestionResponse).Questions.FirstOrDefault(Function(x) x.Code = code)
+                    questionObject = DirectCast(questionSubmitobj, QuestionResponse).Questions.FirstOrDefault(Function(x) x.Code = code AndAlso x.Applicable = True)
                 ElseIf TypeOf questionSubmitobj Is CallerAuthenticationResponse Then
                     questionObject = DirectCast(questionSubmitobj, CallerAuthenticationResponse).Questions.FirstOrDefault(Function(x) x.Code = code)
                 End If

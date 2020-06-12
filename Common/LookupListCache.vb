@@ -210,6 +210,8 @@ Public Class LookupListCache
     Public Const LK_SALUTATION_LANGUAGE As String = "SALUTATION_LANGUAGE"
     Public Const LK_MEMBERSHIP_TYPE_LANGUAGE As String = "MEMBERSHIP_TYPE_LANGUAGE"
     Public Const LK_PAYMENTMETHOD As String = "PAYMENT_METHOD"
+
+    Public Const LK_CLAIMRESERVED As String = "CLAIMRESERVED"
     Public Const LK_PAYMENTMETHOD_BY_ROLE As String = "PAYMENT_METHOD_BY_ROLE"
     Public Const LK_PAYMENTMETHOD_WITH_OUT_BANKTRANSFER As String = "LK_PAYMENTMETHOD_WITH_OUT_BANKTRANSFER"
     Public Const LK_PAYMENTREASON As String = "PAYMENT_REASON"
@@ -335,6 +337,7 @@ Public Class LookupListCache
     Public Const LK_ACCTBO As String = "ACCTBO"
     Public Const LK_ALLOCMRK As String = "ALLOCMRK"
     Public Const LK_YESNO_NUM As String = "YESNO_NUM"
+    Public Const LK_YESNO_EXT As String = "YESNO"
     Public Const LK_POSTINGTYPE As String = "POSTTYPE"
     Public Const LK_ACCT_SYSTEM As String = "ACCTSYS"
     Public Const LK_ACCOUNTING_EVENT_TYPE As String = "ACCTTRANSTYP"
@@ -651,6 +654,8 @@ Public Class LookupListCache
 
     Public Const LK_JOURNALLEVEL As String = "JOURNALLEVEL"
 
+    'US 489857
+    Public Const LK_ACCTBUCKETSSOURCEOPTION As String = "ACCTBUCKETSSOURCEOPTION"
 #End Region
 
 End Class

@@ -34,21 +34,19 @@
                                     <asp:ImageButton ID="btnEndDate" runat="server" ImageUrl="../Common/Images/calendarIcon2.jpg" ImageAlign="AbsMiddle"></asp:ImageButton>
                                 </td>
                             </tr>
+                            <tr id="trMonthandYear" runat="server" visible="false">
+                                <td align="left">
+                                    <asp:Label runat="server" ID="lblAcctPeriod">SELECT_MONTH_AND_YEAR</asp:Label>
+                                    <asp:DropDownList ID="ddlAcctPeriodYear" runat="server" SkinID="SmallDropDown"  AutoPostBack="true">
+                                    </asp:DropDownList>
+                                    <asp:DropDownList ID="ddlAcctPeriodMonth" runat="server" SkinID="SmallDropDown"  AutoPostBack="true">                    
+                                    </asp:DropDownList>
+                                </td>                    
+                            </tr>
 
                              <tr id ="trDates_space" runat="server" visible="false">
                                 <td colspan="4"></td>
                             </tr>
-
-                            <%--<tr id="Tr2" runat="server">
-                                <td align="right">*
-                                        <asp:Label ID="lblCompany" runat="server">SELECT_THE_COMPANY</asp:Label>
-                                </td>
-                                <td align="left" colspan="3">
-                                    <asp:Panel ID="pnlCompanyDropControl" runat="server" Visible="true">
-                                        <uc1:MultipleColumnDDLabelControl runat="server" ID="moCompanyMultipleDrop" />
-                                    </asp:Panel>
-                                </td>
-                            </tr>--%>
 
                             <tr id="trCompany" runat="server" visible="false">
                                 <td align="left" colspan="4">
@@ -89,17 +87,6 @@
                                 </td>
                             </tr>
 
-                          <%--  <tr id="Tr4" runat="server">
-                                <td align="right">*
-                                        <asp:Label ID="lblExtStatus" runat="server">SELECT_THE_EXTENDED_STATUS</asp:Label>
-                                </td>
-                                <td align="left" colspan="3">                                   
-                                    <asp:Panel ID="pnlExtStatusDropControl" runat="server" Visible="true">
-                                        <uc2:MultipleColumnDDLabelControl runat="server" ID="moExtStatusMultipleDrop" />
-                                    </asp:Panel>
-                                </td>
-                            </tr>--%>
-
                             <tr id="trExtStatus_space" runat="server" visible="false">
                                 <td colspan="4" ></td>
                             </tr>
@@ -116,117 +103,6 @@
                             <tr id="trbatchnumber_space" runat="server" visible="false">
                                 <td colspan="4"></td>
                             </tr>
-<%--
-
-                      <%--  <td colspan="2">
-                            <table class="formGrid">
-                                <tr id ="tr1Date" runat ="Server">
-                                    <td align="left" width="30%"></td>
-                                    <td align="left" colspan="2">
-                                        <asp:Label ID="lblBeginDate" runat="server">BEGIN_DATE</asp:Label>
-                                        <asp:TextBox ID="txtBeginDate" runat="server" SkinID="MediumTextBox"></asp:TextBox>
-                                        <asp:ImageButton ID="btnbeginDate" runat="server" ImageUrl="../Common/Images/calendarIcon2.jpg" ImageAlign="AbsMiddle"></asp:ImageButton>
-                                    </td>
-                                    <td align="left">
-                                        <table cellspacing="0" cellpadding="0" border="0">
-                                            <tr>
-                                                <td align="right">
-                                                    <asp:Label ID="lblEndDate" runat="server">END_DATE</asp:Label>
-                                                </td>
-                                                <td align="left">
-                                                    <asp:TextBox ID="txtEndDate" runat="server" SkinID="MediumTextBox"></asp:TextBox>
-                                                    <asp:ImageButton ID="btnEndDate" runat="server" ImageUrl="../Common/Images/calendarIcon2.jpg" ImageAlign="AbsMiddle"></asp:ImageButton>
-                                                </td>
-                                            </tr>
-                                        </table>
-                                    </td>
-                                </tr>
-                                <tr id ="tr1space" runat ="Server">
-                                    <td colspan="4">
-                                        <hr />
-                                    </td>
-                                </tr>
-                                <tr id ="tr2company" runat ="Server">
-                                    <td align="left" width="30%"></td>
-                                    <td style="width: 100%; height: 0.01%" valign="top" align="left" colspan="3" rowspan="1">
-                                        <uc1:MultipleColumnDDLabelControl id="moUserCompanyMultipleDrop" runat="server"></uc1:MultipleColumnDDLabelControl>
-                                    </td>
-                                </tr>
-                                <tr id ="tr2space" runat ="Server">
-                                    <td align="right" colspan="4">
-                                        <hr />
-                                    </td>
-                                </tr>
-                                <tr id ="tr3dealer" runat ="Server">
-                                    <td align="left" width="30%"></td>
-                                    <td style="white-space: nowrap;" valign="middle" align="left">*
-                                        <asp:RadioButton ID="rdealer" AutoPostBack="false" type="radio" Text="SELECT_ALL_DEALERS" TextAlign="left" runat="server" Checked="False"></asp:RadioButton>
-                                         <%--<asp:RadioButton ID="rdealer" onclick=" 
-                                             document.getElementById('ctl00_ContentPanelMainContentBody_moUserDealerMultipleDrop_moMultipleColumnDrop').selectedIndex = 0;
-                                             document.getElementById('ctl00_ContentPanelMainContentBody_moUserDealerMultipleDrop_moMultipleColumnDropDesc').selectedIndex = 0; 
-                                             ToggleExt(this, arrDealerCtr); "
-                                             AutoPostBack="false" type="radio" GroupName="Dealer" Text="SELECT_ALL_DEALERS"
-                                             TextAlign="left" runat="server" Checked="False"></asp:RadioButton>-
-                                    </td>
-                                    <td align="left" colspan="2">&nbsp;&nbsp;&nbsp;<uc2:MultipleColumnDDLabelControl id="moUserDealerMultipleDrop" runat="server"></uc2:MultipleColumnDDLabelControl>
-                                    </td>
-                                </tr>
-                                 <tr id ="tr3space" runat ="Server">
-                                    <td align="right" colspan="4">
-                                        <hr />
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td align="left" width="30%"></td>
-                                    <td align="left" nowrap>&nbsp;&nbsp;
-                                          <asp:RadioButton ID="rdealerGroup" Width="197px" AutoPostBack="false" type="radio"  Text="SELECT_ALL_GROUPS" TextAlign="left"
-                                              runat="server" Checked="False"></asp:RadioButton>
-                                     <%--  <asp:RadioButton ID="rdealerGroup" onclick="ToggleExt(this, arrDealerGroupCtr);"
-                                              Width="197px" AutoPostBack="false" type="radio"  Text="SELECT_ALL_GROUPS" TextAlign="left" runat="server" GroupName="Dealer" Checked="False">
-                                       </asp:RadioButton>
-                                    </td>
-                                    <td style="width: 100%;" valign="top" align="left" colspan="2" rowspan="1">
-                                        <asp:Label ID="lbldealergroup" runat="server">OR_A_SINGLE_GROUP</asp:Label>:
-                                        <asp:DropDownList ID="cboDealerGroup" runat="server" Width="190px" type="DropDown" AutoPostBack="false">
-                                        </asp:DropDownList>
-                                       <%-- <asp:DropDownList ID = "cboDealerGroup" runat="server" Width="190px" type="DropDown" AutoPostBack="false"
-                                                   onchange = "ToggleExt(this, arrDealerGroupCtr);
-                                                            document.getElementById('ctl00_ContentPanelMainContentBody_moUserDealerMultipleDrop_moMultipleColumnDrop').selectedIndex = 0;
-                                                            document.getElementById('ctl00_ContentPanelMainContentBody_moUserDealerMultipleDrop_moMultipleColumnDropDesc').selectedIndex = 0;" >
-                                        </asp:DropDownList>
-                                    </td>
-                                </tr>
-                                <tr id ="tr4space" runat ="Server">
-                                    <td align="right" colspan="4">
-                                        <hr />
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td align="left" width="30%"></td>
-                                    <td align="left">&nbsp;&nbsp;
-                                        <asp:Label ID="moExtendedLabel" runat="server">EXTENDED_STATUS</asp:Label>&nbsp;
-                                        <asp:DropDownList ID="cboExtendedStatus" runat="server"></asp:DropDownList>
-                                    </td>
-                                    <td colspan="2" rowspan="1">
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td align="right" colspan="4">
-                                        <hr />
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td align="left" width="30%"></td>
-                                    <td align="left" width="25%">&nbsp;&nbsp;
-                                        <asp:Label ID="lblBatchNumber" runat="server">BATCH_NUMBER</asp:Label>&nbsp;
-                                        <asp:TextBox ID="txtBatchNumber" runat="server" SkinID="MediumTextBox" AutoPostBack="false">
-                                        </asp:TextBox>
-                                    </td>
-                                    <td align="left" colspan="2"></td>
-                                </tr>
-                            </table>
-                        </td>
-                    </tr> --%>
                  </table>
                     </td>
                 </tr>

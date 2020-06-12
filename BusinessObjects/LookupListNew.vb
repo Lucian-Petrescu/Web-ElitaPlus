@@ -2692,6 +2692,13 @@ Public NotInheritable Class LookupListNew
         Return DropdownLookupList("YESNO", languageId, displayNothingSelected)
 
     End Function
+
+    Public Shared Function GetTaxTypeList(ByVal languageId As Guid, Optional ByVal displayNothingSelected As Boolean = False) As DataView
+
+        Return DropdownLookupList("TTYP", languageId, displayNothingSelected)
+
+    End Function
+
     Public Shared Function GetPostMigConditionLookupList(ByVal languageId As Guid, Optional ByVal displayNothingSelected As Boolean = True) As DataView
         Return DropdownLookupList(LK_POST_MIG_CONDITION, languageId, displayNothingSelected)
     End Function

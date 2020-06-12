@@ -341,6 +341,21 @@ Public NotInheritable Class Claim
         End Get
 
     End Property
+    <ValidStringLength("", Max:=30)>
+    Public Property LoanerRquestedXcd() As String
+        Get
+            CheckDeleted()
+            If Row(ClaimDAL.COL_NAME_LOANER_REQUESTED_XCD) Is DBNull.Value Then
+                Return Nothing
+            Else
+                Return CType(Row(ClaimDAL.COL_NAME_LOANER_REQUESTED_XCD), String)
+            End If
+        End Get
+        Set(ByVal Value As String)
+            CheckDeleted()
+            Me.SetValue(ClaimDAL.COL_NAME_LOANER_REQUESTED_XCD, Value)
+        End Set
+    End Property
 
     Public ReadOnly Property DefectReason() As String
         Get

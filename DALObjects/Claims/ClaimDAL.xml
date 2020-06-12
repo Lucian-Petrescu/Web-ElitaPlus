@@ -116,7 +116,8 @@
         ri.IndixId,
         cview.is_claim_readonly,
         cview.rem_auth_number,
-        cview.fulfillment_provider_xcd
+        cview.fulfillment_provider_xcd,
+        cview.loaner_requested_xcd
 			FROM elita.elp_claim_extended_v cview,
 				 elp_cert_item_coverage cicov,
 				 elp_risk_type rt,
@@ -307,7 +308,7 @@
 		]]>
   </LOAD_LIST_DYNAMIC>
   <GET_FRAUD_CLAIM_EXT>
-      ELITA.ELP_CLAIMS.GetFraudulentClaimExtensions
+    ELITA.ELP_CLAIMS.GetFraudulentClaimExtensions
   </GET_FRAUD_CLAIM_EXT>
   <GET_DEALER_DRP_TRADE_IN_QUOTE_FLAG>
     <![CDATA[
@@ -971,7 +972,7 @@
     WHERE cl.service_center_id = sc.service_center_id
     AND cl.claim_id = mv.claim_id
     AND cl.cert_item_coverage_id = :cert_item_coverage_id
-    AND cl.status_code = 'A' 
+    AND cl.status_code = 'A'
     ANd cl.repair_date is null
     ORDER BY master_claim_number, claim_number
   </LOAD_MASTER_CLAIMS_BY_ALLDATEOFLOSS>
@@ -1049,19 +1050,19 @@
          ]]>
   </REDO_CLAIMS_NUMBER>
   <IS_CLAIM_ACTIVE>
-        <![CDATA[
+    <![CDATA[
 	    Select  count(*)
     from elp_claim
     where claim_id = :claim_id
     and status_code in ('A','P')
          ]]>
-    </IS_CLAIM_ACTIVE>
-    <IS_CLAIM_AUTH_NUMBER_EXISTS>
-        <![CDATA[
+  </IS_CLAIM_ACTIVE>
+  <IS_CLAIM_AUTH_NUMBER_EXISTS>
+    <![CDATA[
     select count(*) from elp_claim where authorization_number = :authorization_number and company_id =
     (select company_id from elp_claim where claim_id = :claim_id)
          ]]>
-    </IS_CLAIM_AUTH_NUMBER_EXISTS>
+  </IS_CLAIM_AUTH_NUMBER_EXISTS>
   <UPDATE>
     <![CDATA[	
 			UPDATE elp_claim SET
@@ -1141,7 +1142,8 @@
 		    employee_number = :employee_number,
         fulfilment_method_xcd = :fulfilment_method_xcd,
         bank_info_id = :bank_info_id,
-        rem_auth_number = :rem_auth_number
+        rem_auth_number = :rem_auth_number,
+        loaner_requested_xcd = :loaner_requested_xcd
 			WHERE
 				claim_id = :claim_id
 				AND NVL(modified_date,created_date) = NVL(:modified_date,created_date)
@@ -1226,7 +1228,8 @@
     REG_ITEM_CURRENT_RETAIL_PRICE,
     device_activation_date,
     employee_number,
-    rem_auth_number
+    rem_auth_number,
+    loaner_requested_xcd
     )
     VALUES
     (
@@ -1306,7 +1309,8 @@
     :current_retail_price,
     :device_activation_date,
     :employee_number,
-    :rem_auth_number
+    :rem_auth_number,
+    :loaner_requested_xcd
     )
   </INSERT>
   <DELETE>
@@ -1682,7 +1686,7 @@
 		--dynamic_order_by_clause
   ]]>
   </CLAIM_LOGISTICS_ACTIVE_CLAIMS_FOR_SVC>
-  
+
   <NEW_GENERIC_CLAIM_LOGISTICS_ACTIVE_CLAIMS_FOR_SVC>
     <![CDATA[
 with
@@ -1769,8 +1773,8 @@ from mandatory_Q
 where number_of_row between :low_limit and :high_limit
       ]]>
   </NEW_GENERIC_CLAIM_LOGISTICS_ACTIVE_CLAIMS_FOR_SVC>
-    <GENERIC_CLAIM_LOGISTICS_ACTIVE_CLAIMS_BASED_ON_CERT_OR_CLAIM_NUMBER>
-        <![CDATA[
+  <GENERIC_CLAIM_LOGISTICS_ACTIVE_CLAIMS_BASED_ON_CERT_OR_CLAIM_NUMBER>
+    <![CDATA[
 with
 mandatory_Q as (
 select '' || (cmv.claim_id) || '' claim_id,
@@ -1848,7 +1852,7 @@ select mandatory_Q.claim_id,
 from mandatory_Q
 where number_of_row between :low_limit and :high_limit
       ]]>
-    </GENERIC_CLAIM_LOGISTICS_ACTIVE_CLAIMS_BASED_ON_CERT_OR_CLAIM_NUMBER>
+  </GENERIC_CLAIM_LOGISTICS_ACTIVE_CLAIMS_BASED_ON_CERT_OR_CLAIM_NUMBER>
   <GENERIC_CLAIM_LOGISTICS_ACTIVE_CLAIMS_FOR_SVC>
     <![CDATA[
 Select * from (
@@ -1916,7 +1920,7 @@ Select * from (
  where number_of_row > :low_limit AND number_of_row <= :high_limit        
   ]]>
   </GENERIC_CLAIM_LOGISTICS_ACTIVE_CLAIMS_FOR_SVC>
-  
+
   <GENERIC_CLAIM_LOGISTICS_ACTIVE_CLAIMS_FOR_SVC_ALL>
     <![CDATA[
 Select * from (
@@ -1990,7 +1994,7 @@ Select * from (
  where number_of_row > :low_limit AND number_of_row <= :high_limit        
   ]]>
   </GENERIC_CLAIM_LOGISTICS_ACTIVE_CLAIMS_FOR_SVC_ALL>
-  
+
   <GENERIC_CLAIM_LOGISTICS_ACTIVE_CLAIMS_FOR_SVC_COUNT>
     <![CDATA[
 SELECT COUNT (*) AS COUNT
@@ -2024,8 +2028,8 @@ SELECT COUNT (*) AS COUNT
          --dynamic_where_clause     
   ]]>
   </GENERIC_CLAIM_LOGISTICS_ACTIVE_CLAIMS_FOR_SVC_COUNT>
-  
-    <GENERIC_CLAIM_LOGISTICS_ACTIVE_CLAIMS_FOR_SVC_COUNT_ALL>
+
+  <GENERIC_CLAIM_LOGISTICS_ACTIVE_CLAIMS_FOR_SVC_COUNT_ALL>
     <![CDATA[
 SELECT COUNT (*) AS COUNT
   FROM elp_claim_extended_mv cmv,
@@ -2064,7 +2068,7 @@ SELECT COUNT (*) AS COUNT
        --dynamic_where_clause     
   ]]>
   </GENERIC_CLAIM_LOGISTICS_ACTIVE_CLAIMS_FOR_SVC_COUNT_ALL>
-  
+
   <CLAIM_LOSSDATES_COMPARE_TO_NEW_LOSSDATE_SPL_SVC>
     <![CDATA[  
     select count(*) claim_count
@@ -2288,21 +2292,21 @@ select claim.claim_number,
     and cl.status_code ='A'
   </WS_GetClaimIDWithCertAndDealer>
   <PROBLEM_DESCRIPTION>
-	  Select Problem_Description From ELP_CLAIM
-	  Where Claim_Id = :claim_id
+    Select Problem_Description From ELP_CLAIM
+    Where Claim_Id = :claim_id
   </PROBLEM_DESCRIPTION>
   <TECHNICAL_REPORT>
-	  Select Technical_Report From ELP_CLAIM
-	  Where Claim_Id = :claim_id
+    Select Technical_Report From ELP_CLAIM
+    Where Claim_Id = :claim_id
   </TECHNICAL_REPORT>
   <EXTENDED_STATUS_COMMENT>
-	  Select Comments From (Select Comments, Claim_Id,
-	  row_number() over (partition by  Claim_Id
-	  Order by Status_Date DESC) as rn
-	  From ELP_CLAIM_STATUS) CS,ELP_CLAIM C
-	  Where CS.CLAIM_ID = C.CLAIM_ID
-	  AND RN = 1
-	  AND C.Claim_Id = :claim_id
+    Select Comments From (Select Comments, Claim_Id,
+    row_number() over (partition by  Claim_Id
+    Order by Status_Date DESC) as rn
+    From ELP_CLAIM_STATUS) CS,ELP_CLAIM C
+    Where CS.CLAIM_ID = C.CLAIM_ID
+    AND RN = 1
+    AND C.Claim_Id = :claim_id
   </EXTENDED_STATUS_COMMENT>
   <TOTAL_CLAIM_PAYMENT>
     SELECT SUM(Elp_Disbursement.Payment_Amount + nvl(bonus, 0) + nvl(bonus_tax, 0))
@@ -2406,7 +2410,7 @@ select claim.claim_number,
     SELECT elita.elp_claims.getsvcwarrantyclaimscount(:cert_id,:dealer_id) from dual
   </GET_SVC_WARRANTY_COUNT_BY_CERTIFICATE>
   <WAIVE_EXISTING_ISSUES>
-    elita.elp_claims.waive_existing_issues 
+    elita.elp_claims.waive_existing_issues
   </WAIVE_EXISTING_ISSUES>
   <LOOKUP_UFI_LIST>
     <![CDATA[
@@ -2418,7 +2422,7 @@ select claim.claim_number,
 		]]>
   </LOOKUP_UFI_LIST>
   <GET_PAYMENTS_FOR_CERT>
-    Select count(*) 
+    Select count(*)
     from elp_cert_payment
     where cert_id = :cert_id
   </GET_PAYMENTS_FOR_CERT>
@@ -2441,7 +2445,7 @@ select claim.claim_number,
   <LOAD_LIST_BY_ISSUE>
     elita.elp_tbl_entity_issue.SearchClaimsByIssue
   </LOAD_LIST_BY_ISSUE>
-  
+
 
   <IS_CONSEQUENTIAL_DAMAGE_ALLOWED>
     <![CDATA[
@@ -2454,9 +2458,9 @@ select claim.claim_number,
          ]]>
   </IS_CONSEQUENTIAL_DAMAGE_ALLOWED>
   <GET_COUNTRY_CODE_OVERWRITE>
-      elita.elp_claims.GetCountryCodeOverwrite
+    elita.elp_claims.GetCountryCodeOverwrite
   </GET_COUNTRY_CODE_OVERWRITE>
-  
+
   <WS_SNMPORTAL_SA_CLAIMREPORT>
     elita.elp_ws_SNMPortalSA_ClaimReport.GetClaimCharterReport
   </WS_SNMPORTAL_SA_CLAIMREPORT>

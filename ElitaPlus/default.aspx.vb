@@ -1,4 +1,6 @@
 Imports System.Threading
+Imports Microsoft.Owin.Security
+Imports Microsoft.Owin.Security.OpenIdConnect
 
 Partial Class _default
     Inherits ElitaPlusPage
@@ -46,12 +48,19 @@ Partial Class _default
             Try
 
                 If Not CType(System.Threading.Thread.CurrentPrincipal, Object).GetType Is GetType(ElitaPlusPrincipal) Then
-                    If EnvironmentContext.Current.Environment <> Environments.Development Then
-                        Dim networkID As String = Assurant.Assurnet.Services.AuthenticationMgr.AuthenticatedUser(HttpContext.Current.Request)
-                        PopulateUserSession(networkID, Request.UserHostAddress)
-                        Response.Redirect(ELPWebConstants.APPLICATION_PATH & "/Navigation/MainPage.aspx", True)
-                    Else
+                    If EnvironmentContext.Current.Environment = Environments.Development Then
+                        '    Dim networkID As String = Assurant.Assurnet.Services.AuthenticationMgr.AuthenticatedUser(HttpContext.Current.Request)
+                        '    PopulateUserSession(networkID, Request.UserHostAddress)
+                        '    Response.Redirect(ELPWebConstants.APPLICATION_PATH & "/Navigation/MainPage.aspx", True)
+                        'Else
                         Response.Redirect(ELPWebConstants.APPLICATION_PATH & "/LoginForm.aspx", True)
+                    Else
+                        HttpContext.Current.GetOwinContext().Authentication.Challenge(
+                            New AuthenticationProperties With 
+                            {
+                                .RedirectUri = ELPWebConstants.APPLICATION_PATH & "/Navigation/MainPage.aspx"
+                            }, 
+                            OpenIdConnectAuthenticationDefaults.AuthenticationType)
                     End If
                 Else
                     Response.Redirect(ELPWebConstants.APPLICATION_PATH & "/Navigation/MainPage.aspx", True)
@@ -63,14 +72,14 @@ Partial Class _default
         End If
     End Sub
 
-    Sub LoginUser()
-        If EnvironmentContext.Current.Environment <> Environments.Development Then
-            Dim networkID As String = Assurant.Assurnet.Services.AuthenticationMgr.AuthenticatedUser(HttpContext.Current.Request)
-            PopulateUserSession(networkID, Request.UserHostAddress)
-            Me.nextPageURL.Value = ELPWebConstants.APPLICATION_PATH & "/Navigation/MainPage.aspx"
-        Else
-            Me.nextPageURL.Value = ELPWebConstants.APPLICATION_PATH & "/LoginForm.aspx"
-        End If
-    End Sub
+    'Sub LoginUser()
+    '    If EnvironmentContext.Current.Environment <> Environments.Development Then
+    '        Dim networkID As String = Assurant.Assurnet.Services.AuthenticationMgr.AuthenticatedUser(HttpContext.Current.Request)
+    '        PopulateUserSession(networkID, Request.UserHostAddress)
+    '        Me.nextPageURL.Value = ELPWebConstants.APPLICATION_PATH & "/Navigation/MainPage.aspx"
+    '    Else
+    '        Me.nextPageURL.Value = ELPWebConstants.APPLICATION_PATH & "/LoginForm.aspx"
+    '    End If
+    'End Sub
 
 End Class

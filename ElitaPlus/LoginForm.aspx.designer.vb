@@ -86,15 +86,6 @@ Partial Public Class LoginForm
     Protected WithEvents txtPassword As Global.System.Web.UI.WebControls.TextBox
     
     '''<summary>
-    '''ButtonOk control.
-    '''</summary>
-    '''<remarks>
-    '''Auto-generated field.
-    '''To modify move field declaration from designer file to code-behind file.
-    '''</remarks>
-    Protected WithEvents ButtonOk As Global.System.Web.UI.WebControls.ImageButton
-    
-    '''<summary>
     '''lblMessage control.
     '''</summary>
     '''<remarks>
@@ -102,4 +93,13 @@ Partial Public Class LoginForm
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
     Protected WithEvents lblMessage As Global.System.Web.UI.WebControls.Label
+    
+    '''<summary>
+    '''ButtonOk control.
+    '''</summary>
+    '''<remarks>
+    '''Auto-generated field.
+    '''To modify move field declaration from designer file to code-behind file.
+    '''</remarks>
+    Protected WithEvents ButtonOk As Global.System.Web.UI.WebControls.ImageButton
 End Class

@@ -20,6 +20,8 @@ Imports Newtonsoft.Json
 Imports System.Net.Http
 Imports System.Net.Http.Headers
 Imports Newtonsoft.Json.Linq
+Imports Assurant.Elita.ExternalKeyHandler.DynamicFulfillment
+Imports Assurant.Elita.Configuration
 
 Partial Class ClaimForm
     Inherits ElitaPlusSearchPage
@@ -690,7 +692,8 @@ Partial Class ClaimForm
         Me.SetEnabledForControlFamily(Me.txtShipToSC, Me.State.IsEditMode, True)
         Me.SetEnabledForControlFamily(Me.txtShipToCust, Me.State.IsEditMode, True)
 
-
+        ControlMgr.SetVisibleControl(Me, Me.LabelLoanerRequested, True)
+        ControlMgr.SetVisibleControl(Me, Me.TextboxLoanerRequested, True)
     End Sub
 
     Private Sub EnableDisableEditableFieldsForActiveClaims()
@@ -1229,6 +1232,15 @@ Partial Class ClaimForm
             End If
         End If
 
+        'logic to enable the change fulfillment button
+        If String.IsNullOrWhiteSpace(State.MyBO.CertificateItemCoverage.FulfillmentProfileCode) = False AndAlso State.MyBO.Status = BasicClaimStatus.Active Then
+            btnChangeFulfillment.Enabled = True
+            ControlMgr.SetVisibleControl(Me, btnChangeFulfillment, True)
+            'disable the replace item button if change fulfillmen button is enabled
+            btnReplaceItem.Enabled = False
+            ControlMgr.SetVisibleControl(Me, btnReplaceItem, False)
+        End If
+
     End Sub
 
     Private Sub EnableDisableButtonsConditionally()
@@ -1375,6 +1387,9 @@ Partial Class ClaimForm
         ControlMgr.SetVisibleControl(Me, Me.btnAddConseqDamage, isFlag)
         btnPriceRetailSearch.Enabled = isFlag
         ControlMgr.SetVisibleControl(Me, Me.btnPriceRetailSearch, isFlag)
+
+        btnChangeFulfillment.Enabled = isFlag
+        ControlMgr.SetVisibleControl(Me, Me.btnChangeFulfillment, isFlag)
     End Sub
     Protected Sub DisableButtonsForClaimSystem()
         If Not Me.State.MyBO.CertificateId.Equals(Guid.Empty) Or Me.State.MyBO.IsClaimChild = Codes.YESNO_Y Then
@@ -1459,6 +1474,7 @@ Partial Class ClaimForm
         Me.BindBOPropertyToLabel(Me.State.MyBO, "MethodOfRepairId", Me.LabelMethodOfRepair)
         Me.BindBOPropertyToLabel(Me.State.MyBO, "CoverageTypeDescription", Me.LabelCoverageType)
         Me.BindBOPropertyToLabel(Me.State.MyBO, "SpecialInstruction", Me.LabelSpecialInstruction)
+        Me.BindBOPropertyToLabel(Me.State.MyBO, "LoanerRquestedXcd", Me.LabelLoanerRequested)
         Me.BindBOPropertyToLabel(Me.State.MyBO, "AuthorizedAmount", Me.LabelAuthorizedAmount)
         Me.BindBOPropertyToLabel(Me.State.MyBO, "LiabilityLimit", Me.LabelLiabilityLimit)
         Me.BindBOPropertyToLabel(Me.State.MyBO, "Deductible", Me.LabelDeductible)
@@ -2143,6 +2159,11 @@ Partial Class ClaimForm
                 Me.LabelExpectedRepairDate.Text = TranslationBase.TranslateLabelOrMessage("EXPECTED_REPLACEMENT_DATE") + ":"
             End If
             Me.PopulateControlFromBOProperty(Me.TextboxAuthorizedAmount, claimBo.AuthorizedAmount)
+
+            If Not String.IsNullOrEmpty(claimBo.LoanerRquestedXcd) Then
+                TextboxLoanerRequested.Text = LookupListNew.GetDescriptionFromExtCode(LookupListNew.LK_YESNO_EXT, ElitaPlusIdentity.Current.ActiveUser.LanguageId, claimBo.LoanerRquestedXcd)
+            End If
+
             'Me.PopulateControlFromBOProperty(Me.TextboxAuthorizedAmount, State.AuthorizedAmount)
             Dim objCountry As New Country(Me.State.MyBO.Company.CountryId)
             If Not claimBo.ServiceCenterObject Is Nothing AndAlso claimBo.ServiceCenterObject.Id.Equals(objCountry.DefaultSCId) Then
@@ -3439,6 +3460,15 @@ Partial Class ClaimForm
         End Try
     End Sub
 
+    Private Sub btnChangeFulfillment_Click(sender As Object, e As EventArgs) Handles btnChangeFulfillment.Click
+        Try
+            NavController.Navigate(Me, FlowEvents.EventClaimRecordingChangeFulfillment, New ClaimRecordingForm.Parameters(State.MyBO.Certificate.Id, State.MyBO.Id, Nothing, Codes.CasePurposeChangeFulfillment, Me.State.IsCallerAuthenticated))
+        Catch ex As Threading.ThreadAbortException
+        Catch ex As Exception
+            HandleErrors(ex, MasterPage.MessageController)
+        End Try
+    End Sub
+
 #End Region
 
 #Region "Page Control Events"
@@ -4043,7 +4073,7 @@ Partial Class ClaimForm
             dfControl.SubscriptionKey = oWebPasswd.Password
             dfControl.CssUri = userInterfaceSettings("resourceUris")("cssUri")
             dfControl.ScriptUri = userInterfaceSettings("resourceUris")("scriptUri")
-            dfControl.ClaimNumber = Me.State.MyBO.ClaimNumber
+            dfControl.ClaimNumber = getClaimKey(Me.State.MyBO.Company.Code, Me.State.MyBO.ClaimNumber)
             phDynamicFulfillmentUI.Controls.Add(dfControl)
             dvClaimFulfillmentDetails.Visible = False
 
@@ -4051,6 +4081,15 @@ Partial Class ClaimForm
 
         End Try
     End Sub
+    Private Function getClaimKey(ByVal companyCode As String, ByVal claimNumber As String) As String
+        Dim handler As New DynamicFulfillmentKeyHandler()
+        Dim keys As New Dictionary(Of String, String)
+        Dim tenant As String = $"{ElitaConfig.Current.General.Environment}-{ElitaConfig.Current.General.Hub}"
+        keys.Add("Tenant", tenant)
+        keys.Add("CompanyCode", companyCode)
+        keys.Add("ClaimNumber", claimNumber)
+        Return handler.Encode(keys)
+    End Function
 
     Private Shared Function GetClaimFulfillmentWebAppGatewayClient() As WebAppGatewayClient
         Dim oWebPasswd As WebPasswd = New WebPasswd(Guid.Empty, LookupListNew.GetIdFromCode(Codes.SERVICE_TYPE, Codes.SERVICE_TYPE__CLAIM_FULFILLMENT_WEB_APP_GATEWAY_SERVICE), False)
@@ -4095,8 +4134,6 @@ Partial Class ClaimForm
         End Try
 
     End Function
-
-
 #End Region
 End Class
 

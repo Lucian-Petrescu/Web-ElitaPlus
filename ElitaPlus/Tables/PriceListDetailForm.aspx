@@ -377,6 +377,7 @@
                                           
 
                                       <td align="right" colspan="5">
+
                                           <asp:Label ID="lblPendingApprovalRecordCounts" runat="server"></asp:Label>
                                       </td>
                                   </tr>

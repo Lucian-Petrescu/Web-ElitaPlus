@@ -285,6 +285,24 @@ Namespace Reports
         Protected WithEvents cboPayee As Global.System.Web.UI.WebControls.DropDownList
 
         '''<summary>
+        '''RadiobuttonClaims control.
+        '''</summary>
+        '''<remarks>
+        '''Auto-generated field.
+        '''To modify move field declaration from designer file to code-behind file.
+        '''</remarks>
+        Protected WithEvents RadiobuttonClaims As Global.System.Web.UI.WebControls.RadioButton
+
+        '''<summary>
+        '''RadiobuttonInvoices control.
+        '''</summary>
+        '''<remarks>
+        '''Auto-generated field.
+        '''To modify move field declaration from designer file to code-behind file.
+        '''</remarks>
+        Protected WithEvents RadiobuttonInvoices As Global.System.Web.UI.WebControls.RadioButton
+
+        '''<summary>
         '''chkSvcCode control.
         '''</summary>
         '''<remarks>
