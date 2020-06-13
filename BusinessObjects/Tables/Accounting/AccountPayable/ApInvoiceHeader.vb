@@ -547,8 +547,9 @@ Public Class ApInvoiceHeader
         Return New ApInvoiceLines.APInvoiceLinesDV(dsResults.Tables(0))
 
     End Function
-    
+
 #End Region
+
 #Region "Invoice search view class"
 
     Public Class APInvoiceSearchDV

@@ -54,7 +54,7 @@ Theme="Default" %>
                             <asp:Label runat="server" ID="moServiceCenterLabel" Text="VENDOR" />
                         </td>
                         <td nowrap="noWrap">
-                             <asp:DropDownList runat="server" ID="moVendorDropDown" SkinID="SmallDropDown">
+                             <asp:DropDownList runat="server" ID="moVendorDropDown" SkinID="MediumDropDown">
                             </asp:DropDownList>
                         </td>
 						<td align="right" nowrap="noWrap">
@@ -80,7 +80,7 @@ Theme="Default" %>
                             <asp:Label runat="server" ID="moTermLabel" Text="TERM" />
                         </td>
                         <td nowrap="noWrap">
-                            <asp:DropDownList runat="server" ID="moAPInvoiceTerm" SkinID="MediumDropDown">
+                            <asp:DropDownList runat="server" ID="moAPInvoiceTerm" SkinID="SmallDropDown">
                             </asp:DropDownList>
                         </td>
                       
@@ -124,26 +124,26 @@ Theme="Default" %>
                 <table id="tblLineItems" class="dataGrid" border="0" rules="cols" width="100%">
                     <tr>
                         <td colspan="1">
-                            <div id="scroller" style="overflow: auto; width: 100%; height: 125px" align="center">
+                            <div id="scroller" style="overflow: auto; width: 100%; height: 200px" align="center">
                                 <asp:GridView ID="InvoiceLinesGrid" runat="server" OnRowCreated="ItemCreated" OnRowCommand="ItemCommand"
                                     AllowPaging="False" PageSize="50" AllowSorting="True" CellPadding="1" AutoGenerateColumns="False"
-                                    SkinID="DetailPageGridView" Width="1334px">
+                                    SkinID="DetailPageGridView" Width="100%">
                                     <SelectedRowStyle Wrap="False"></SelectedRowStyle>
                                     <EditRowStyle Wrap="False"></EditRowStyle>
                                     <AlternatingRowStyle Wrap="False"></AlternatingRowStyle>
                                     <RowStyle Wrap="False"></RowStyle>
-                                    <HeaderStyle Wrap="False"></HeaderStyle>
+                                    <HeaderStyle  Wrap="False"></HeaderStyle>
                                     <Columns>
                                         <asp:TemplateField Visible="False">
                                             <ItemTemplate>
-                                                <asp:Label ID="moInvoiceLineId" visible="false"  runat="server" Text='<%#Container.DataItem("ap_invoice_lines_id")%>'>
+                                                <asp:Label ID="moInvoiceLineId" visible="false"  runat="server" >
                                                 </asp:Label>
                                             </ItemTemplate>
                                         </asp:TemplateField>
                                         <asp:TemplateField Visible="True" HeaderText="line_number">
                                             <ItemStyle HorizontalAlign="center" Width="5%"></ItemStyle>
                                             <ItemTemplate>
-                                                <asp:Label ID="moLineNumber"  visible="true" runat="server" Text='<%#Container.DataItem("line_number")%>'> </asp:Label>
+                                                <asp:Label ID="moLineNumber"  visible="true" runat="server"> </asp:Label>
                                             </ItemTemplate>
                                             <EditItemTemplate> 
                                                 <asp:TextBox ID="moLineNumberText" runat="server" Visible="True" Width="100%" Enabled ="false" ></asp:TextBox>
@@ -151,7 +151,7 @@ Theme="Default" %>
                                         </asp:TemplateField>
 										 <asp:TemplateField Visible ="true" HeaderText="line_type">
                                             <ItemStyle HorizontalAlign="Center" Width="10%"> </ItemStyle>
-                                            <ItemTemplate><asp:Label ID="moLineType" visible="true" runat="server" Text='<%#Container.DataItem("line_type")%>'> </asp:Label>
+                                            <ItemTemplate><asp:Label ID="moLineType" visible="true" runat="server"> </asp:Label>
                                              </ItemTemplate>
                                             <EditItemTemplate><asp:DropDownList ID="ddlLineType" runat="server"  Visible="True" Width="100%">
                                                 <asp:ListItem Selected="True" Value="LINE">LINE</asp:ListItem>
@@ -162,7 +162,7 @@ Theme="Default" %>
 								        <asp:TemplateField Visible="True" HeaderText="item_code">
                                             <ItemStyle HorizontalAlign="center" Width="10%"></ItemStyle>
                                             <ItemTemplate>
-                                                <asp:Label ID="moItemCode" visible="true" runat="server" Text='<%#Container.DataItem("vendor_item_code")%>'>
+                                                <asp:Label ID="moItemCode" visible="true" runat="server">
                                                 </asp:Label>
                                             </ItemTemplate>
                                             <EditItemTemplate>
@@ -172,7 +172,7 @@ Theme="Default" %>
 										 <asp:TemplateField Visible="True" HeaderText="description">
                                             <ItemStyle HorizontalAlign="center" Width="20%"></ItemStyle>
                                             <ItemTemplate>
-                                                <asp:Label ID="moItemDescriptionLabel" visible="true" runat="server" Text='<%#Container.DataItem("description")%>'>
+                                                <asp:Label ID="moItemDescriptionLabel" visible="true" runat="server" >
                                                 </asp:Label>
                                             </ItemTemplate>
                                             <EditItemTemplate>
@@ -182,37 +182,37 @@ Theme="Default" %>
 										<asp:TemplateField Visible="True" HeaderText="QUANTITY">
                                             <ItemStyle HorizontalAlign="center" Width="10%"></ItemStyle>
                                             <ItemTemplate>
-                                                <asp:Label ID="moQuantityLabel" visible="true" runat="server" Text='<%#Container.DataItem("quantity")%>'>
+                                                <asp:Label ID="moQuantityLabel" visible="true" runat="server">
                                                 </asp:Label>
                                             </ItemTemplate>
                                             <EditItemTemplate>
-                                                <asp:TextBox ID="moQuanitityText" runat="server" Visible="True" Width="100%"></asp:TextBox>
+                                                <asp:TextBox ID="moQuanitityText" runat="server" Visible="True" Width="100%" onkeypress="return numericOnly(this)"></asp:TextBox>
                                             </EditItemTemplate>
                                         </asp:TemplateField>
 										<asp:TemplateField Visible="True" HeaderText="UNIT_PRICE">
                                             <ItemStyle HorizontalAlign="center" Width="10%"></ItemStyle>
                                             <ItemTemplate>
-                                                <asp:Label ID="moUnitPriceLabel" visible="true" runat="server" Text='<%#Container.DataItem("unit_price")%>'>
+                                                <asp:Label ID="moUnitPriceLabel" visible="true" runat="server">
                                                 </asp:Label>
                                             </ItemTemplate>
                                             <EditItemTemplate>
-                                                <asp:TextBox ID="moUnitPriceText" runat="server" Visible="True" Width="100%"></asp:TextBox>
+                                                <asp:TextBox ID="moUnitPriceText" runat="server" Visible="True" Width="100%" onkeypress="return numericOnly(this)"></asp:TextBox>
                                             </EditItemTemplate>
                                         </asp:TemplateField>
 										<asp:TemplateField Visible="True" HeaderText="total_price">
                                             <ItemStyle HorizontalAlign="center" Width="10%"></ItemStyle>
                                             <ItemTemplate>
-                                                <asp:Label ID="moTotalPriceLabel" visible="true" runat="server" Text='<%#Container.DataItem("total_price")%>'>
+                                                <asp:Label ID="moTotalPriceLabel" visible="true" runat="server">
                                                 </asp:Label>
                                             </ItemTemplate>
                                             <EditItemTemplate>
-                                                <asp:TextBox ID="moTotalPriceText" runat="server" Visible="True" Width="100%"></asp:TextBox>
+                                                <asp:TextBox ID="moTotalPriceText" runat="server" Visible="True" Width="100%" onkeypress="return numericOnly(this)" ></asp:TextBox>
                                             </EditItemTemplate>
                                         </asp:TemplateField>
 										 <asp:TemplateField Visible ="true" HeaderText="unit_of_measurement">
                                             <ItemStyle HorizontalAlign="Center" Width="10%"> </ItemStyle>
                                             <ItemTemplate>
-                                                <asp:Label ID="moUnitOfMeasurement" visible="true" runat="server" Text='<%#Container.DataItem("UOM_XCD")%>'> </asp:Label>
+                                                <asp:Label ID="moUnitOfMeasurement" visible="true" runat="server"> </asp:Label>
                                              </ItemTemplate>
                                             <EditItemTemplate><asp:DropDownList ID="ddlUnitOfMeasurement" runat="server"  Visible="True" Width="100%"></asp:DropDownList>
                                             </EditItemTemplate>
@@ -220,7 +220,7 @@ Theme="Default" %>
 										<asp:TemplateField Visible="True" HeaderText="PO_Number">
                                             <ItemStyle HorizontalAlign="center"  Width="9%"></ItemStyle>
                                             <ItemTemplate>
-                                                <asp:Label ID="moPoNumber" visible="true"  runat="server" Text='<%#Container.DataItem("po_number")%>'>
+                                                <asp:Label ID="moPoNumber" visible="true"  runat="server" >
                                                 </asp:Label>
                                             </ItemTemplate>
                                             <EditItemTemplate>
@@ -250,8 +250,8 @@ Theme="Default" %>
                     </tr>
                     <tr>
                         <td colspan="1" width="100%">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                            <asp:Button ID="BtnNewLine" runat="server" Visible="false" SkinID="AlternateLeftButton" Text="New"></asp:Button>&nbsp;
-                            <asp:Button ID="BtnSaveLines" runat="server"  Visible="false" SkinID="PrimaryRightButton" Text="Save"></asp:Button>&nbsp;
+                            <asp:Button ID="BtnNewLine" runat="server" Visible="false" SkinID="AlternateLeftButton" Text="New"></asp:Button>
+                            <asp:Button ID="BtnSaveLines" runat="server"  Visible="false" SkinID="PrimaryRightButton" Text="Save"></asp:Button>
                             <asp:Button ID="BtnCancelLine" runat="server"  Visible="false" SkinID="AlternateLeftButton" Text="Cancel"></asp:Button>
                            
                         </td>
@@ -268,10 +268,49 @@ Theme="Default" %>
                 <asp:Button ID="btnBack" runat="server" SkinID="AlternateLeftButton" Text="BACK"></asp:Button>
             </td>
             <td width="50%" align="right">
-                <asp:Button ID="btnApply_WRITE" runat="server" SkinID="PrimaryLeftButton" Text="SAVE" />
+                <asp:Button ID="btnApply_WRITE" runat="server" SkinID="PrimaryLeftButton" Text="SAVE"  />&nbsp;
             </td>
         </tr>
     </table>
 </div>
-  
+  <script type="text/javascript">
+      //function GetTotalPrice(obj) {
+         
+      //    var quantity = document.getElementById("ctl00_BodyPlaceHolder_InvoiceLinesGrid_ctl04_moQuanitityText");
+      //    var objTotal = document.getElementById("ctl00_BodyPlaceHolder_InvoiceLinesGrid_ctl04_moTotalPriceText");
+      //onblur = "return GetTotalPrice(this)"
+      //    var total = round_num(obj.value * parseFloat(setJsFormat(quantity.value, decSep)), 2);
+      //    objTotal.value = convertNumberToCulture(parseFloat(total), decSep, groupSep);
+      //    objTotal.innerText = total;
+         
+      //}
+
+      function numericOnly(elementRef) {
+          var keyCodeEntered = (event.which) ? event.which : (window.event.keyCode) ? window.event.keyCode : -1;
+          if ((keyCodeEntered >= 48) && (keyCodeEntered <= 57)) {
+              return true;
+          }
+          else if (keyCodeEntered == 43) {
+              if ((elementRef.value) && (elementRef.value.indexOf('+') >= 0))
+                  return false;
+              else
+                  return true;
+          }
+          else if (keyCodeEntered == 45) {
+              if ((elementRef.value) && (elementRef.value.indexOf('-') >= 0))
+                  return false;
+              else
+                  return true;
+          }
+          else if (keyCodeEntered == 46) {
+              if ((elementRef.value) && (elementRef.value.indexOf('.') >= 0))
+                  return false;
+              else
+                  return true;
+          }
+
+          return false;
+      }
+
+</script>
 </asp:Content>
