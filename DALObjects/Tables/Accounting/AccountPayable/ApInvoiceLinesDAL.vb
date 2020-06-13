@@ -107,10 +107,10 @@ Public Class ApInvoiceLinesDAL
 
     End Function
 
-    Public Function GetApInvoiceLines(ByVal familyDS As DataSet, ByVal apInvoiceNumber As String) As DataSet
+    Public Function GetApInvoiceLines(ByVal familyDS As DataSet, ByVal apInvoiceHeaderId As Guid) As DataSet
         Try
             Using cmd As OracleCommand = OracleDbHelper.CreateCommand(Me.Config("/SQL/LOADLINES"))
-                cmd.AddParameter(PAR_I_NAME_INVOICE_NUMBER, OracleDbType.Varchar2, apInvoiceNumber)
+                cmd.AddParameter(PAR_I_NAME_INVOICE_NUMBER, OracleDbType.Raw, apInvoiceHeaderId.ToByteArray())
                 cmd.AddParameter(PAR_O_NAME_RESULTCURSOR, OracleDbType.RefCursor, direction:=ParameterDirection.Output)
                 OracleDbHelper.Fetch(cmd, Me.TABLE_NAME, familyDS)
                 Return familyDS

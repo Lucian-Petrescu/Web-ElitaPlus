@@ -11,6 +11,8 @@ Namespace Claims.AccountPayable
 
 #Region "Constants"
 
+        Public Const URL As String = "~/Claims/AccountPayable/AddAPInvoiceForm.aspx"
+        Public Const INVOICE_SOURCE As String = "MANNUAL-ELITA"
         Private Const AP_INVOICE_LINE_ID_COL As Integer = 0
         Private Const LINE_NO_COL As Integer = 1
         Private Const LINE_TYPE_COL As Integer = 2
@@ -48,6 +50,7 @@ Namespace Claims.AccountPayable
 
 
         Private Const EDIT_COMMAND As String = "EditRecord"
+        Private Const DELETE_COMMAND As String = "DeleteRecord"
         Public Const PAGETITLE As String = "AP_INVOICE"
         Public Const PAGETAB As String = "CLAIM"
         Private Const NO_ROW_SELECTED_INDEX As Integer = -1
@@ -97,12 +100,15 @@ Namespace Claims.AccountPayable
                 If CallingPar = Nothing Then
                     State.IsNewInvoice = True
                     State.APInvoiceHeaderBO = New ApInvoiceHeader
+                    State.APInvoiceLinesBO = New ApInvoiceLines
                 Else
                     State.IsNewInvoice = False
                     Dim tempGuid As Guid = CallingPar
                     State.APInvoiceHeaderBO = New ApInvoiceHeader(tempGuid)
-                End If
+                    State.APInvoiceLinesBO = New ApInvoiceLines
 
+                End If
+                SetInvoiceHeaderControl()
             Catch ex As Exception
                 Me.HandleErrors(ex, Me.MasterPage.MessageController)
             End Try
@@ -118,24 +124,17 @@ Namespace Claims.AccountPayable
                     SetFormTab(PAGETAB)
                     SetDefaultButton(moInvoiceNumber, btnApply_WRITE)
 
-                    If State.IsGridVisible Then
-                        If Not (State.SelectedPageSize = DEFAULT_PAGE_SIZE) Then
-                            cboPageSize.SelectedValue = CType(State.SelectedPageSize, String)
-                            InvoiceLinesGrid.PageSize = State.SelectedPageSize
-                        End If
-                        PopulateApLinesGrid()
-                    End If
-
-                    SetGridItemStyleColor(InvoiceLinesGrid)
                     PopulateDropDown()
+                    PopulateFormFromBO()
+                    GetDV()
+                    PopulateApLinesGrid()
                     SetButtonsState()
-                    State.PageIndex = 0
-                    TranslateGridControls(InvoiceLinesGrid)
-                    TranslateGridHeader(InvoiceLinesGrid)
+                    SetGridPageSize()
+                    SetGridItemStyleColor(InvoiceLinesGrid)
+                    BindBoPropertiesToGridHeaders()
+                    'TranslateGridControls(InvoiceLinesGrid)
                 End If
                 SetStateProperties()
-                BindBoPropertiesToGridHeaders()
-
             Catch ex As Exception
                 HandleErrors(ex, MasterPage.MessageController)
             End Try
@@ -157,9 +156,11 @@ Namespace Claims.AccountPayable
         <DebuggerStepThrough()> Private Sub InitializeComponent()
 
         End Sub
+
         Private Sub Page_Init(ByVal sender As Object, ByVal e As EventArgs) Handles MyBase.Init
             InitializeComponent()
         End Sub
+
         Class MyState
             Public PageIndex As Integer = 0
             Public APInvoiceHeaderBO As ApInvoiceHeader
@@ -208,6 +209,27 @@ Namespace Claims.AccountPayable
             ControlMgr.SetVisibleControl(Me, BtnNewLine, visible)
             ControlMgr.SetVisibleControl(Me, BtnCancelLine, Not visible)
             ControlMgr.SetVisibleControl(Me, BtnSaveLines, Not visible)
+            ControlMgr.SetVisibleControl(Me, btnApply_WRITE, visible)
+        End Sub
+
+        Private Sub SetInvoiceHeaderControl()
+            ControlMgr.SetEnableControl(Me, moInvoiceNumber, State.IsNewInvoice)
+        End Sub
+
+        Private Sub SetGridPageSize()
+            If State.IsGridVisible Then
+                If Not (State.SelectedPageSize = DEFAULT_PAGE_SIZE) Then
+                    cboPageSize.SelectedValue = CType(State.SelectedPageSize, String)
+                    InvoiceLinesGrid.PageSize = State.SelectedPageSize
+                End If
+
+            End If
+
+            If State.IsNewInvoice Then
+                ControlMgr.SetVisibleControl(Me, BtnNewLine, False)
+                ControlMgr.SetVisibleControl(Me, BtnCancelLine, False)
+                ControlMgr.SetVisibleControl(Me, BtnSaveLines, False)
+            End If
         End Sub
 
         Protected Sub BindBoPropertiesToGridHeaders()
@@ -215,7 +237,7 @@ Namespace Claims.AccountPayable
             If State.APInvoiceLinesBO Is Nothing Then
                 State.APInvoiceLinesBO = New ApInvoiceLines
             End If
-
+            BindBOPropertyToGridHeader(State.APInvoiceLinesBO, "Id", InvoiceLinesGrid.Columns(AP_INVOICE_LINE_ID_COL))
             BindBOPropertyToGridHeader(State.APInvoiceLinesBO, "LineNumber", InvoiceLinesGrid.Columns(LINE_NO_COL))
             BindBOPropertyToGridHeader(State.APInvoiceLinesBO, "LineType", InvoiceLinesGrid.Columns(LINE_TYPE_COL))
             BindBOPropertyToGridHeader(State.APInvoiceLinesBO, "VendorItemCode", InvoiceLinesGrid.Columns(ITEM_CODE_COL))
@@ -305,6 +327,7 @@ Namespace Claims.AccountPayable
             End Try
 
         End Sub
+
         Private Sub FillDropdownList()
 
             If InvoiceLinesGrid.EditIndex = -1 Then Exit Sub
@@ -314,7 +337,9 @@ Namespace Claims.AccountPayable
                 Dim upgtermUnitOfMeasureLkl As DataElements.ListItem() = CommonConfigManager.Current.ListManager.GetList("UNIT_OF_MEASURE", Thread.CurrentPrincipal.GetLanguageCode())
                 moUnitOfMeasure.Populate(upgtermUnitOfMeasureLkl, New PopulateOptions() With
                                                  {
-                                                   .AddBlankItem = False
+                                                   .AddBlankItem = False,
+                                                   .TextFunc = AddressOf PopulateOptions.GetDescription,
+                                                   .ValueFunc = AddressOf PopulateOptions.GetExtendedCode
                                                   })
             End If
 
@@ -329,26 +354,35 @@ Namespace Claims.AccountPayable
                     GetDV()
                 End If
                 State.SearchDv.Sort = SortDirection
+                State.IsGridVisible = True
 
                 Select Case oAction
                     Case ACTION_NONE
+                        State.BnoRow = False
+                        State.APInvoiceLineId = Guid.Empty
                         SetPageAndSelectedIndexFromGuid(State.SearchDv, Guid.Empty, InvoiceLinesGrid, 0)
                         SetGridButtonState(True)
                     Case ACTION_SAVE
+                        State.BnoRow = False
+                        State.APInvoiceLineId = Guid.Empty
                         SetPageAndSelectedIndexFromGuid(State.SearchDv, State.APInvoiceLineId, InvoiceLinesGrid, InvoiceLinesGrid.PageIndex)
                         SetGridButtonState(True)
                     Case ACTION_CANCEL_DELETE
+                        State.BnoRow = False
+                        State.APInvoiceLineId = Guid.Empty
                         Me.SetPageAndSelectedIndexFromGuid(State.SearchDv, Guid.Empty, InvoiceLinesGrid, InvoiceLinesGrid.PageIndex)
                         SetGridButtonState(True)
                     Case ACTION_EDIT
                         State.BnoRow = False
                         SetPageAndSelectedIndexFromGuid(State.SearchDv, State.APInvoiceLineId, InvoiceLinesGrid, State.PageIndex, True)
-                        SetGridButtonState(True)
+                        SetGridButtonState(False)
                     Case ACTION_NEW
                         If Me.State.IsNewInvoiceLine Then State.SearchDv.Table.DefaultView.Sort() = Nothing
                         Dim oRow As DataRow = State.SearchDv.Table.NewRow
+                        State.APInvoiceLinesBO = New ApInvoiceLines
                         oRow(DBINVOICELINE_ID) = State.APInvoiceLinesBO.Id.ToByteArray
                         oRow(ApInvoiceLines.APInvoiceLinesDV.COL_LINE_NUMBER) = State.SearchDv.Count + 1
+                        State.APInvoiceLineId = State.APInvoiceLinesBO.Id
                         State.SearchDv.Table.Rows.Add(oRow)
                         Me.SetPageAndSelectedIndexFromGuid(State.SearchDv, State.APInvoiceLinesBO.Id, InvoiceLinesGrid, InvoiceLinesGrid.PageIndex, True)
                         SetGridButtonState(False)
@@ -375,7 +409,7 @@ Namespace Claims.AccountPayable
 
         Private Function GetDV() As DataView
 
-            State.SearchDv = GetPoGridDataView()
+            State.SearchDv = GetAPInvoiceLineGridDataView()
             State.SearchDv.Sort = InvoiceLinesGrid.DataMember()
             InvoiceLinesGrid.DataSource = State.SearchDv
 
@@ -383,7 +417,7 @@ Namespace Claims.AccountPayable
 
         End Function
 
-        Private Function GetPoGridDataView() As DataView
+        Private Function GetAPInvoiceLineGridDataView() As DataView
 
             With State
                 Return .APInvoiceLinesBO.GetApInvoiceLines(State.APInvoiceHeaderBO.Id)
@@ -396,16 +430,16 @@ Namespace Claims.AccountPayable
                 With State.APInvoiceLinesBO
 
                     .ApInvoiceHeaderId = State.APInvoiceHeaderBO.Id
-                    .PaidQuantity = 0
-                    .MatchedQuantity = 0
-                    PopulateBOProperty(State.APInvoiceLinesBO, "LineNumber", CType(Me.GetSelectedGridControl(InvoiceLinesGrid, LINE_NO_COL), TextBox))
-                    PopulateBOProperty(State.APInvoiceLinesBO, "LineType", CType(GetDropDownControlFromGrid(InvoiceLinesGrid, LINE_TYPE_COL), DropDownList))
+                    .PaidQuantity = If(.PaidQuantity, 0)
+                    .MatchedQuantity = If(.MatchedQuantity, 0)
+                    PopulateBOProperty(State.APInvoiceLinesBO, "LineNumber", CType(GetSelectedGridControl(InvoiceLinesGrid, LINE_NO_COL), TextBox))
+                    PopulateBOProperty(State.APInvoiceLinesBO, "LineType", CType(GetDropDownControlFromGrid(InvoiceLinesGrid, LINE_TYPE_COL), DropDownList), False, True)
                     PopulateBOProperty(State.APInvoiceLinesBO, "VendorItemCode", CType(Me.GetSelectedGridControl(InvoiceLinesGrid, ITEM_CODE_COL), TextBox))
                     PopulateBOProperty(State.APInvoiceLinesBO, "Description", CType(Me.GetSelectedGridControl(InvoiceLinesGrid, ITEM_CODE_COL), TextBox))
                     PopulateBOProperty(State.APInvoiceLinesBO, "Quantity", CType(Me.GetSelectedGridControl(InvoiceLinesGrid, QUANTITY_COL), TextBox))
                     PopulateBOProperty(State.APInvoiceLinesBO, "UnitPrice", CType(Me.GetSelectedGridControl(InvoiceLinesGrid, UNIT_PRICE_COL), TextBox))
                     PopulateBOProperty(State.APInvoiceLinesBO, "TotalPrice", CType(Me.GetSelectedGridControl(InvoiceLinesGrid, TOTAL_PRICE_COL), TextBox))
-                    PopulateBOProperty(State.APInvoiceLinesBO, "UomXcd", CType(GetDropDownControlFromGrid(InvoiceLinesGrid, UNIT_OF_MEASUREMENT_COL), DropDownList))
+                    PopulateBOProperty(State.APInvoiceLinesBO, "UomXcd", CType(GetDropDownControlFromGrid(InvoiceLinesGrid, UNIT_OF_MEASUREMENT_COL), DropDownList), False, True)
                     PopulateBOProperty(State.APInvoiceLinesBO, "PoNumber", CType(Me.GetSelectedGridControl(InvoiceLinesGrid, PO_NUMBER_COL), TextBox))
 
                 End With
@@ -414,6 +448,7 @@ Namespace Claims.AccountPayable
             End Try
 
         End Sub
+
         Private Function GetDropDownControlFromGrid(ByVal oDataGrid As GridView, ByVal cellPosition As Integer) As Control
             Dim oItem As GridViewRow = oDataGrid.Rows(oDataGrid.SelectedIndex)
             Dim oControl As Control
@@ -460,17 +495,18 @@ Namespace Claims.AccountPayable
 
         Private Sub PopulateFormFromBO()
 
-            With State.APInvoiceHeaderBO
+            If Not State.APInvoiceHeaderBO Is Nothing Then
 
-                moInvoiceNumber.Text = .InvoiceNumber
-                moInvoiceAmount.Text = .InvoiceAmount
-                moInvoiceDate.Text = .InvoiceDate
-                moAPInvoiceTerm.SelectedValue = .TermXcd
-                moVendorDropDown.SelectedValue = .VendorId.ToString
-                moDealer.SelectedValue = .DealerId.ToString
+                With State.APInvoiceHeaderBO
+                    PopulateControlFromBOProperty(moInvoiceNumber, .InvoiceNumber)
+                    PopulateControlFromBOProperty(moInvoiceAmount, .InvoiceAmount)
+                    PopulateControlFromBOProperty(moInvoiceDate, .InvoiceDate)
+                    SetSelectedItem(moAPInvoiceTerm, If(String.IsNullOrEmpty(.TermXcd), "PMTTRM-INV_0D", .TermXcd))
+                    SetSelectedItem(moVendorDropDown, .VendorId)
+                    SetSelectedItem(moDealer, .DealerId)
+                End With
 
-            End With
-
+            End If
         End Sub
 
         Private Sub PopulateLineFormFromBo()
@@ -533,7 +569,6 @@ Namespace Claims.AccountPayable
 #End Region
 
 #Region "Grid Events"
-
         Private Sub Grid_PageSizeChanged(ByVal source As Object, ByVal e As EventArgs) Handles cboPageSize.SelectedIndexChanged
             Try
                 InvoiceLinesGrid.PageIndex = NewCurrentPageIndex(InvoiceLinesGrid, CType(Session("recCount"), Int32), CType(cboPageSize.SelectedValue, Int32))
@@ -546,11 +581,17 @@ Namespace Claims.AccountPayable
 
         Public Property SortDirection() As String
             Get
-                Return If(ViewState("SortDirection") = Nothing, String.Empty, ViewState("SortDirection").ToString())
+                If Not ViewState("SortDirection") Is Nothing Then
+                    Return ViewState("SortDirection").ToString
+                Else
+                    Return ApInvoiceLines.APInvoiceLinesDV.COL_LINE_NUMBER
+                End If
+
             End Get
             Set(ByVal value As String)
                 ViewState("SortDirection") = value
             End Set
+
         End Property
 
         Protected Sub ItemCreated(ByVal sender As Object, ByVal e As GridViewRowEventArgs)
@@ -573,13 +614,34 @@ Namespace Claims.AccountPayable
                     State.APInvoiceLineId = New Guid(CType(InvoiceLinesGrid.Rows(index).Cells(AP_INVOICE_LINE_ID_COL).FindControl(AP_INVOICE_LINE_ID_CONTROL_LABEL), Label).Text)
                     State.APInvoiceLinesBO = New ApInvoiceLines(State.APInvoiceLineId)
 
-                    PopulateApLinesGrid()
+                    PopulateApLinesGrid(ACTION_EDIT)
                     State.PageIndex = InvoiceLinesGrid.PageIndex
                     SetGridControls(InvoiceLinesGrid, False)
-                    SetFocusOnEditableFieldInGrid(InvoiceLinesGrid, LINE_TYPE_COL, LINE_TYPE_CONTROL_NAME, index)
-                    PopulateLineFormFromBo()
+                    'SetFocusOnEditableFieldInGrid(InvoiceLinesGrid, ITEM_CODE_COL, ITEM_CODE_CONTROL_NAME, index)
                     SetGridControls(InvoiceLinesGrid, False)
                     SetButtonsState()
+                    Try
+                        InvoiceLinesGrid.Rows(index).Focus()
+                    Catch ex As Exception
+                        InvoiceLinesGrid.Focus()
+                    End Try
+
+                ElseIf (e.CommandName = DELETE_COMMAND) Then
+
+                    Try
+                        index = CInt(e.CommandArgument)
+                        State.APInvoiceLineId = New Guid(CType(InvoiceLinesGrid.Rows(index).Cells(AP_INVOICE_LINE_ID_COL).FindControl(AP_INVOICE_LINE_ID_CONTROL_LABEL), Label).Text)
+                        State.APInvoiceLinesBO = New ApInvoiceLines(State.APInvoiceLineId)
+                        State.APInvoiceLinesBO.Delete()
+                        State.ActionInProgress = ElitaPlusPage.DetailPageCommand.Delete
+                        State.APInvoiceLinesBO.Save()
+                        State.IsAfterSave = True
+                        PopulateApLinesGrid(ACTION_CANCEL_DELETE)
+                        MasterPage.MessageController.AddSuccess(Assurant.ElitaPlus.Common.ErrorCodes.MSG_RECORD_DELETED_OK, True)
+                    Catch ex As Exception
+                        State.APInvoiceLinesBO.RejectChanges()
+                        Throw ex
+                    End Try
 
                 End If
             Catch ex As Exception
@@ -589,8 +651,7 @@ Namespace Claims.AccountPayable
         End Sub
 
         Private Sub SortAndBindGrid()
-            TranslateGridControls(InvoiceLinesGrid)
-
+            TranslateGridHeader(InvoiceLinesGrid)
             If (State.SearchDv.Count = 0) Then
 
                 CreateHeaderForEmptyGrid(InvoiceLinesGrid, SortDirection)
@@ -629,20 +690,17 @@ Namespace Claims.AccountPayable
                 Dim itemType As ListItemType = CType(e.Row.RowType, ListItemType)
                 Dim dvRow As DataRowView = CType(e.Row.DataItem, DataRowView)
 
-                If Not dvRow Is Nothing And Not State.BnoRow Then
+                If Not dvRow Is Nothing AndAlso dvRow.Row.Table.Columns.Count > 0 Then
 
                     If itemType = ListItemType.Item Or itemType = ListItemType.AlternatingItem Or itemType = ListItemType.SelectedItem Then
 
                         CType(e.Row.Cells(AP_INVOICE_LINE_ID_COL).FindControl(AP_INVOICE_LINE_ID_CONTROL_LABEL), Label).Text = GetGuidStringFromByteArray(CType(dvRow(ApInvoiceLines.AP_LINE_ID), Byte()))
 
-                        If (State.IsEditMode = True _
-                                AndAlso State.APInvoiceLineId.ToString.Equals(GetGuidStringFromByteArray(CType(dvRow(ApInvoiceLines.AP_LINE_ID), Byte())))) Then
+                        If ((State.IsEditMode Or State.IsNewInvoiceLine) AndAlso State.APInvoiceLineId.ToString.Equals(GetGuidStringFromByteArray(CType(dvRow(ApInvoiceLines.AP_LINE_ID), Byte())))) Then
 
                             Dim moLineTypeDropDown As DropDownList = CType(e.Row.Cells(LINE_TYPE_COL).FindControl(LINE_TYPE_CONTROL_NAME), DropDownList)
-                            ElitaPlusPage.BindListControlToDataView(moLineTypeDropDown, LookupListNew.GetMonthsLookupList(ElitaPlusIdentity.Current.ActiveUser.LanguageId), "CODE",, False)
-                            SetSelectedItemByText(moLineTypeDropDown, dvRow(ApInvoiceLines.LINE_TYPE_COL).ToString)
+                            SetSelectedItemByText(moLineTypeDropDown, If(String.IsNullOrEmpty(dvRow(ApInvoiceLines.LINE_TYPE_COL).ToString), "LINE", dvRow(ApInvoiceLines.LINE_TYPE_COL).ToString))
 
-                            CType(e.Row.Cells(LINE_TYPE_COL).FindControl(LINE_TYPE_CONTROL_NAME), TextBox).Text = dvRow(ApInvoiceLines.LINE_TYPE_COL).ToString
                             CType(e.Row.Cells(LINE_NO_COL).FindControl(LINE_NO_CONTROL_NAME), TextBox).Text = dvRow(ApInvoiceLines.LINE_NUMBER_COL).ToString
                             CType(e.Row.Cells(ITEM_CODE_COL).FindControl(ITEM_CODE_CONTROL_NAME), TextBox).Text = dvRow(ApInvoiceLines.ITEM_CODE_COL).ToString
                             CType(e.Row.Cells(DESCRIPTION_COL).FindControl(ITEM_DESCRIPTION_CONTROL_NAME), TextBox).Text = dvRow(ApInvoiceLines.DESCRIPTION_COL).ToString
@@ -652,8 +710,14 @@ Namespace Claims.AccountPayable
                             CType(e.Row.Cells(PO_NUMBER_COL).FindControl(PO_NUMBER_CONTROL_NAME), TextBox).Text = dvRow(ApInvoiceLines.PO_NUMBER_COL).ToString
 
                             Dim moUomDropDown As DropDownList = CType(e.Row.Cells(UNIT_OF_MEASUREMENT_COL).FindControl(UNIT_OF_MEASUREMENT_CONTROL_NAME), DropDownList)
-                            ElitaPlusPage.BindListControlToDataView(moUomDropDown, LookupListNew.GetMonthsLookupList(ElitaPlusIdentity.Current.ActiveUser.LanguageId), "CODE",, False)
-                            SetSelectedItemByText(moUomDropDown, dvRow(ApInvoiceLines.UNIT_OF_MEASUREMENT_COL).ToString)
+                            Dim upgtermUnitOfMeasureLkl As DataElements.ListItem() = CommonConfigManager.Current.ListManager.GetList("UNIT_OF_MEASURE", Thread.CurrentPrincipal.GetLanguageCode())
+                            moUomDropDown.Populate(upgtermUnitOfMeasureLkl, New PopulateOptions() With
+                                                 {
+                                                   .AddBlankItem = False,
+                                                   .TextFunc = AddressOf PopulateOptions.GetDescription,
+                                                   .ValueFunc = AddressOf PopulateOptions.GetExtendedCode
+                                                  })
+                            SetSelectedItem(moUomDropDown, If(String.IsNullOrEmpty(dvRow(ApInvoiceLines.UNIT_OF_MEASUREMENT_COL).ToString), "UNIT_OF_MEASURE-EACH", dvRow(ApInvoiceLines.UNIT_OF_MEASUREMENT_COL).ToString))
                         Else
                             CType(e.Row.Cells(LINE_TYPE_COL).FindControl(LINE_TYPE_CONTROL_LABEL), Label).Text = dvRow(ApInvoiceLines.LINE_TYPE_COL).ToString
                             CType(e.Row.Cells(LINE_NO_COL).FindControl(LINE_NO_CONTROL_LABEL), Label).Text = dvRow(ApInvoiceLines.LINE_NUMBER_COL).ToString
@@ -715,6 +779,7 @@ Namespace Claims.AccountPayable
                 If (State.APInvoiceHeaderBO.IsDirty) Then
                     State.APInvoiceHeaderBO.SaveInvoiceHeader()
                     State.IsAfterSave = True
+                    State.IsNewInvoice = False
                     Me.MasterPage.MessageController.AddSuccess(Message.SAVE_RECORD_CONFIRMATION)
                     ReturnFromEditing()
                 Else
@@ -726,6 +791,7 @@ Namespace Claims.AccountPayable
                 HandleErrors(ex, MasterPage.MessageController)
             End Try
         End Sub
+
         Protected Sub AddInvoiceLines_Click(sender As Object, e As EventArgs) Handles BtnNewLine.Click
             Try
                 State.IsGridVisible = True
@@ -747,6 +813,8 @@ Namespace Claims.AccountPayable
             Try
                 If SaveApInvoiceLine() = True Then
                     State.IsNewInvoiceLine = False
+                    GetDV()
+                    State.IsNewInvoiceLine = False
                     PopulateApLinesGrid(ACTION_SAVE)
                     SetGridControls(InvoiceLinesGrid, True)
                 End If
@@ -755,20 +823,27 @@ Namespace Claims.AccountPayable
                 Me.HandleErrors(ex, MasterPage.MessageController)
             End Try
         End Sub
+
+        Private Sub BtnCancelRate_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles BtnCancelLine.Click
+
+            Try
+                State.IsNewInvoiceLine = False
+                GetDV()
+                PopulateApLinesGrid(ACTION_CANCEL_DELETE)
+                SetGridControls(InvoiceLinesGrid, True)
+
+            Catch ex As Exception
+                Me.HandleErrors(ex, MasterPage.MessageController)
+            End Try
+        End Sub
+
         Private Sub ReturnFromEditing(Optional ByVal oAction As String = ACTION_NONE)
 
             InvoiceLinesGrid.EditIndex = NO_ROW_SELECTED_INDEX
-
             State.IsEditMode = False
             State.IsGridVisible = True
-            'If State.IsNewInvoice Then
-            '    State.IsNewInvoiceLine = True
-            '    PopulateApLinesGrid(ACTION_NEW)
-            'Else
-            '    PopulateApLinesGrid(ACTION_NONE)
-            'End If
-
-            'State.PageIndex = InvoiceLinesGrid.PageIndex
+            SetInvoiceHeaderControl()
+            PopulateFormFromBO()
             SetGridButtonState(True)
             SetButtonsState()
 
@@ -777,7 +852,6 @@ Namespace Claims.AccountPayable
 #End Region
 
 #Region "Database alls"
-
         Private Function SaveApInvoiceLine() As Boolean
             Dim bIsOk As Boolean = True
             Dim bIsDirty As Boolean

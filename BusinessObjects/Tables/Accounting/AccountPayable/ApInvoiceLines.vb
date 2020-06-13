@@ -448,17 +448,15 @@ Public Class ApInvoiceLines
 #End Region
 
 #Region "DataView Retrieveing Methods"
-    Public Function GetApInvoiceLines(ByVal apInvoiceHeaderId As Guid) As APInvoiceLinesDV
-        Dim apInvoiceLinenDAL As New ApInvoiceLinesDAL
-        Return New APInvoiceLinesDV(apInvoiceLinenDAL.LoadList(Me.ApInvoiceHeaderId).Tables(0))
-    End Function
-    Public Function GetApInvoiceLines(ByVal apInvoiceNumber As String) As DataView
+    Public Function GetApInvoiceLines(ByVal apInvoiceHeaderId As Guid) As DataView
         Try
             Dim dal As New ApInvoiceLinesDAL
             Dim ds As DataSet = New DataSet
 
-            ds = dal.GetApInvoiceLines(ds, apInvoiceNumber)
+            ds = dal.GetApInvoiceLines(ds, apInvoiceHeaderId)
             Return ds.Tables(ApInvoiceLinesDAL.TABLE_NAME).DefaultView
+
+
 
         Catch ex As Assurant.ElitaPlus.DALObjects.DataBaseAccessException
             Throw New DataBaseAccessException(ex.ErrorType, ex)
