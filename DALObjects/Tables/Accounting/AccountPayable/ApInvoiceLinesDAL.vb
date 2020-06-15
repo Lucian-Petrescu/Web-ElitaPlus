@@ -198,6 +198,26 @@ Public Class ApInvoiceLinesDAL
             Throw New DataBaseAccessException(DataBaseAccessException.DatabaseAccessErrorType.ReadErr, ex)
         End Try
     End Function
+    Public Sub DeleteInvoiceLine(ByVal row As DataRow)
+
+        Dim sqlstatement As String
+        Dim rowState As DataRowState = row.RowState
+
+        Try
+            If rowState = DataRowState.Deleted Then
+
+                sqlstatement = Me.Config("/SQL/DELETE")
+                Dim inParameter() As DBHelper.DBHelperParameter = New DBHelper.DBHelperParameter() _
+                       {
+                           New DBHelper.DBHelperParameter(Me.PAR_I_NAME_AP_INVOICE_LINES_ID.ToLower(), row(Me.COL_NAME_AP_INVOICE_LINES_ID, DataRowVersion.Original))
+                       }
+                DBHelper.ExecuteSp(sqlstatement, inParameter, Nothing)
+                row.AcceptChanges()
+            End If
+        Catch ex As Exception
+            Throw New DataBaseAccessException(DataBaseAccessException.DatabaseAccessErrorType.ReadErr, ex)
+        End Try
+    End Sub
 
     Protected Overrides Sub ConfigureDeleteCommand(ByRef command As OracleCommand, tableName As String)
         Throw New NotSupportedException() 
