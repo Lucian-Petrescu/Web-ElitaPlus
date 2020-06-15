@@ -683,7 +683,7 @@ Partial Class APInvoiceListForm
 
                 invoiceHeaderId = Grid.Rows(rowIndex).Cells(GRID_COL_INVOICE_HEADER_ID_IDX).Text
                 Me.State.SelectedInvoiceId = New Guid(invoiceHeaderId)
-                If Grid.Rows(rowIndex).Cells(GRID_COL_SOURCE_IDX).Text = AddApInvoiceForm.INVOICE_SOURCE Then
+                If Grid.Rows(rowIndex).Cells(GRID_COL_SOURCE_IDX).Text = AddApInvoiceForm.InvoiceSource Then
                     callPage(AddApInvoiceForm.URL, Me.State.SelectedInvoiceId)
                 Else
                     'calling AP invoice detail pages

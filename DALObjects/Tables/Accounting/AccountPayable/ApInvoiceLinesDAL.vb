@@ -136,80 +136,19 @@ Public Class ApInvoiceLinesDAL
         End If
     End Sub
 
-    Public Function SaveApInvoiceLine(ByVal row As DataRow) As String
 
-        Dim sqlstatement As String
-        Dim rowState As DataRowState = row.RowState
-        Dim updatedby As String
-        Dim updateDate As String
-        Try
-            Select Case rowState
-                Case DataRowState.Added
-                    'Insert
-                    sqlstatement = Me.Config("/SQL/INSERT")
-                    updatedby = COL_NAME_CREATED_BY
-                    updateDate = COL_NAME_CREATED_DATE
-                Case DataRowState.Deleted
-                    'delete
-                    sqlstatement = Me.Config("/SQL/DELETE")
-                Case DataRowState.Modified
-                    'update
-                    sqlstatement = Me.Config("/SQL/UPDATE")
-                    updatedby = COL_NAME_MODIFIED_BY
-                    updateDate = COL_NAME_MODIFIED_DATE
-            End Select
-
-            If rowState = DataRowState.Deleted Then
-                'Dim inParameter() As DBHelper.DBHelperParameter = New DBHelper.DBHelperParameter() _
-                '       {
-                '           New DBHelper.DBHelperParameter(Me.PAR_NAME_DLR_RK_TYP_TOLERANCE_ID.ToLower(), row(Me.COL_NAME_DLR_RK_TYP_TOLERANCE_ID, DataRowVersion.Original))
-                '       }
-                'DBHelper.ExecuteSp(sqlstatement, inParameter, outputParameters)
-                'row.AcceptChanges()
-            Else
-                Dim inParameters() As DBHelper.DBHelperParameter = New DBHelper.DBHelperParameter() _
-                       {New DBHelper.DBHelperParameter(PAR_I_NAME_AP_INVOICE_LINES_ID, row(COL_NAME_AP_INVOICE_LINES_ID)),
-                        New DBHelper.DBHelperParameter(PAR_I_NAME_AP_INVOICE_HEADER_ID, row(COL_NAME_AP_INVOICE_HEADER_ID)),
-                        New DBHelper.DBHelperParameter(PAR_I_NAME_LINE_NUMBER, row(COL_NAME_LINE_NUMBER)),
-                        New DBHelper.DBHelperParameter(PAR_I_NAME_LINE_TYPE, row(COL_NAME_LINE_TYPE)),
-                        New DBHelper.DBHelperParameter(PAR_I_NAME_VENDOR_ITEM_CODE, row(COL_NAME_VENDOR_ITEM_CODE)),
-                        New DBHelper.DBHelperParameter(PAR_I_NAME_DESCRIPTION, row(COL_NAME_DESCRIPTION)),
-                        New DBHelper.DBHelperParameter(PAR_I_NAME_QUANTITY, row(COL_NAME_QUANTITY)),
-                        New DBHelper.DBHelperParameter(PAR_I_NAME_UOM_XCD, row(COL_NAME_UOM_XCD)),
-                        New DBHelper.DBHelperParameter(PAR_I_NAME_MATCHED_QUANTITY, row(COL_NAME_MATCHED_QUANTITY)),
-                        New DBHelper.DBHelperParameter(PAR_I_NAME_PAID_QUANTITY, row(COL_NAME_PAID_QUANTITY)),
-                        New DBHelper.DBHelperParameter(PAR_I_NAME_UNIT_PRICE, row(COL_NAME_UNIT_PRICE)),
-                        New DBHelper.DBHelperParameter(PAR_I_NAME_TOTAL_PRICE, row(COL_NAME_TOTAL_PRICE)),
-                        New DBHelper.DBHelperParameter(PAR_I_NAME_PARENT_LINE_NUMBER, row(COL_NAME_PARENT_LINE_NUMBER)),
-                        New DBHelper.DBHelperParameter(PAR_I_NAME_PO_NUMBER, row(COL_NAME_PO_NUMBER)),
-                        New DBHelper.DBHelperParameter(PAR_I_NAME_PO_DATE, row(COL_NAME_PO_DATE)),
-                        New DBHelper.DBHelperParameter(PAR_I_NAME_BILLING_PERIOD_START_DATE, row(COL_NAME_BILLING_PERIOD_START_DATE)),
-                        New DBHelper.DBHelperParameter(PAR_I_NAME_BILLING_PERIOD_END_DATE, row(COL_NAME_BILLING_PERIOD_END_DATE)),
-                        New DBHelper.DBHelperParameter(PAR_I_NAME_REFERENCE_NUMBER, row(COL_NAME_REFERENCE_NUMBER)),
-                        New DBHelper.DBHelperParameter("pi_" & updatedby.ToLower(), row(updatedby)),
-                        New DBHelper.DBHelperParameter("pi_" & updateDate.ToLower(), row(updateDate)),
-                        New DBHelper.DBHelperParameter(PAR_I_NAME_VENDOR_TRANSACTION_TYPE, row(COL_NAME_VENDOR_TRANSACTION_TYPE))
-                       }
-                DBHelper.ExecuteSp(sqlstatement, inParameters, Nothing)
-                row.AcceptChanges()
-            End If
-
-        Catch ex As Exception
-            Throw New DataBaseAccessException(DataBaseAccessException.DatabaseAccessErrorType.ReadErr, ex)
-        End Try
-    End Function
     Public Sub DeleteInvoiceLine(ByVal row As DataRow)
 
-        Dim sqlstatement As String
+        Dim sqlStatement As String
         Dim rowState As DataRowState = row.RowState
 
         Try
             If rowState = DataRowState.Deleted Then
 
-                sqlstatement = Me.Config("/SQL/DELETE")
+                sqlStatement = Me.Config("/SQL/DELETE")
                 Dim inParameter() As DBHelper.DBHelperParameter = New DBHelper.DBHelperParameter() _
                        {
-                           New DBHelper.DBHelperParameter(Me.PAR_I_NAME_AP_INVOICE_LINES_ID.ToLower(), row(Me.COL_NAME_AP_INVOICE_LINES_ID, DataRowVersion.Original))
+                           New DBHelper.DBHelperParameter(PAR_I_NAME_AP_INVOICE_LINES_ID.ToLower(), row(COL_NAME_AP_INVOICE_LINES_ID, DataRowVersion.Original))
                        }
                 DBHelper.ExecuteSp(sqlstatement, inParameter, Nothing)
                 row.AcceptChanges()
