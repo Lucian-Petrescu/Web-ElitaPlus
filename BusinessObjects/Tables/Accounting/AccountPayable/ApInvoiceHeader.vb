@@ -83,21 +83,21 @@ Public Class ApInvoiceHeader
             Throw New DataBaseAccessException(DataBaseAccessException.DatabaseAccessErrorType.ReadErr, ex)
         End Try
     End Sub
-    Protected Sub Load(ByVal invoice_Number As String)
+    Protected Sub Load(ByVal accountPayableInvoiceNumber As String)
         Try
             Dim dal As New ApInvoiceHeaderDAL
             If Me._isDSCreator Then
-                If Not Me.Row Is Nothing Then
-                    Me.Dataset.Tables(dal.TABLE_NAME).Rows.Remove(Me.Row)
+                If Not Row Is Nothing Then
+                    Dataset.Tables(ApInvoiceHeaderDAL.TABLE_NAME).Rows.Remove(Me.Row)
                 End If
             End If
             Me.Row = Nothing
-            If Me.Dataset.Tables.IndexOf(dal.TABLE_NAME) >= 0 Then
-                Me.Row = Me.FindRow(Id, dal.TABLE_KEY_NAME, Me.Dataset.Tables(dal.TABLE_NAME))
+            If Dataset.Tables.IndexOf(ApInvoiceHeaderDAL.TABLE_NAME) >= 0 Then
+                Me.Row = FindRow(Id, ApInvoiceHeaderDAL.TABLE_KEY_NAME, Me.Dataset.Tables(ApInvoiceHeaderDAL.TABLE_NAME))
             End If
-            If Me.Row Is Nothing Then 'it is not in the dataset, so will bring it from the db
-                dal.Load(Me.Dataset, invoice_Number)
-                Me.Row = Me.FindRow(Id, dal.TABLE_KEY_NAME, Me.Dataset.Tables(dal.TABLE_NAME))
+            If Me.Row Is Nothing Then
+                dal.Load(Me.Dataset, accountPayableInvoiceNumber)
+                Me.Row = FindRow(Id, ApInvoiceHeaderDAL.TABLE_KEY_NAME, Me.Dataset.Tables(ApInvoiceHeaderDAL.TABLE_NAME))
             End If
             If Me.Row Is Nothing Then
                 Throw New DataNotFoundException
@@ -460,15 +460,15 @@ Public Class ApInvoiceHeader
     Public Sub SaveInvoiceHeader()
         Try
             MyBase.Save()
-            If Me._isDSCreator AndAlso Me.IsDirty AndAlso Me.Row.RowState <> DataRowState.Detached Then
+            If _isDSCreator AndAlso Me.IsDirty AndAlso Row.RowState <> DataRowState.Detached Then
                 Dim dal As New ApInvoiceHeaderDAL
-                dal.SaveInvoiceHeader(Me.Row)
-                'Reload the Data from the DB
-                If Me.Row.RowState <> DataRowState.Detached Then
-                    Dim objId As Guid = Me.Id
-                    Me.Dataset = New DataSet
-                    Me.Row = Nothing
-                    Me.Load(objId)
+                dal.SaveInvoiceHeader(Row)
+
+                If Row.RowState <> DataRowState.Detached Then
+                    Dim objId As Guid = Id
+                    Dataset = New DataSet
+                    Row = Nothing
+                    Load(objId)
                 End If
             End If
         Catch ex As Assurant.ElitaPlus.DALObjects.DataBaseAccessException
@@ -517,13 +517,6 @@ Public Class ApInvoiceHeader
         Return New APInvoiceSearchDV(searchResults.Tables(0))
 
     End Function
-    Public Shared Function GetAPInvoice(ByVal vendorCode As String, ByVal invoiceNum As String) As APInvoiceSearchDV
-        Dim dal As New ApInvoiceHeaderDAL
-        Dim searchResults As New DataSet
-        dal.SearchAPInvoice(invoiceNum, searchResults)
-        Return New APInvoiceSearchDV(searchResults.Tables(0))
-    End Function
-
     Public Function GetInvoiceExtendedInfo() As DataView
 
         Dim dal As New ApInvoiceHeaderDAL
@@ -531,7 +524,7 @@ Public Class ApInvoiceHeader
 
         dal.LoadAPInvoiceExtendedInfo(Me.Id, dsResults)
 
-        Return dsResults.Tables(0).DefaultView        
+        Return dsResults.Tables(0).DefaultView
     End Function
 
     Public Function GetInvoiceLines(ByVal minLineNum  As Integer,

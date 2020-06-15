@@ -177,41 +177,41 @@ Public Class ApInvoiceHeaderDAL
 #End Region
 
 #Region "Public Methods"
-    Public Function SaveInvoiceHeader(ByVal row As DataRow)
+    Public Sub SaveInvoiceHeader(ByVal row As DataRow)
 
-        Dim sqlstatement As String
+        Dim sqlStatement As String
         Dim rowState As DataRowState = row.RowState
-        Dim updatedby As String
+        Dim updatedBy As String = String.Empty
         Try
             Select Case rowState
                 Case DataRowState.Added
                     'Insert
-                    sqlstatement = Me.Config("/SQL/INSERT")
-                    updatedby = COL_NAME_CREATED_BY
+                    sqlStatement = Me.Config("/SQL/INSERT")
+                    updatedBy = COL_NAME_CREATED_BY
                 Case DataRowState.Modified
                     'update
-                    sqlstatement = Me.Config("/SQL/UPDATE")
-                    updatedby = COL_NAME_MODIFIED_BY
+                    sqlStatement = Me.Config("/SQL/UPDATE")
+                    updatedBy = COL_NAME_MODIFIED_BY
             End Select
 
 
             Dim inParameters() As DBHelper.DBHelperParameter = New DBHelper.DBHelperParameter() _
                        {New DBHelper.DBHelperParameter(PAR_I_NAME_AP_INVOICE_HEADER_ID, row(COL_NAME_AP_INVOICE_HEADER_ID)),
-                        New DBHelper.DBHelperParameter(PAR_I_NAME_INVOICE_NUMBER, row(Me.COL_NAME_INVOICE_NUMBER)),
+                        New DBHelper.DBHelperParameter(PAR_I_NAME_INVOICE_NUMBER, row(COL_NAME_INVOICE_NUMBER)),
                         New DBHelper.DBHelperParameter(PAR_I_NAME_INVOICE_DATE, row(COL_NAME_INVOICE_DATE)),
                         New DBHelper.DBHelperParameter(PAR_I_NAME_INVOICE_AMOUNT, row(COL_NAME_INVOICE_AMOUNT)),
                         New DBHelper.DBHelperParameter(PAR_I_NAME_TERM_XCD, row(COL_NAME_TERM_XCD)),
                         New DBHelper.DBHelperParameter(PAR_I_NAME_COMPANY_ID, row(COL_NAME_COMPANY_ID)),
                         New DBHelper.DBHelperParameter(PAR_I_NAME_VENDOR_ID, row(COL_NAME_VENDOR_ID)),
-                        New DBHelper.DBHelperParameter("pi_" & updatedby.ToLower(), row(updatedby)),
+                        New DBHelper.DBHelperParameter("pi_" & updatedBy.ToLower(), row(updatedBy)),
                         New DBHelper.DBHelperParameter(PAR_I_NAME_DEALER_ID, row(COL_NAME_DEALER_ID))
                        }
-            DBHelper.ExecuteSp(sqlstatement, inParameters, Nothing)
+            DBHelper.ExecuteSp(sqlStatement, inParameters, Nothing)
             row.AcceptChanges()
         Catch ex As Exception
             Throw New DataBaseAccessException(DataBaseAccessException.DatabaseAccessErrorType.ReadErr, ex)
         End Try
-    End Function
+    End Sub
 #End Region
 
 #Region "Data query methods"
@@ -279,28 +279,6 @@ Public Class ApInvoiceHeaderDAL
 
 
     End Sub
-
-    Public Sub SearchAPInvoice(ByVal invoiceNum As String, ByRef searchResult As DataSet)
-
-        Dim selectStmt As String = Config("/SQL/SEARCH_AP_INVOICE")
-        Dim da As OracleDataAdapter
-
-        Try
-            Dim cmd As OracleCommand = DB_OracleCommand(selectStmt, CommandType.StoredProcedure)
-            cmd.BindByName = True
-            cmd.Parameters.Add("po_results", OracleDbType.RefCursor, ParameterDirection.Output)
-            cmd.Parameters.Add("pi_invoice_number", OracleDbType.Varchar2).Value = invoiceNum.Trim
-            da = New OracleDataAdapter(cmd)
-            da.Fill(searchResult, "SEARCH_RESULT")
-            searchResult.Locale = Globalization.CultureInfo.InvariantCulture
-
-        Catch ex As Exception
-            Throw New DataBaseAccessException(DataBaseAccessException.DatabaseAccessErrorType.ReadErr, ex)
-        End Try
-
-
-    End Sub
-
 
     Public Sub LoadAPInvoiceExtendedInfo(ByVal invoiceId As Guid, ByRef searchResult As DataSet)
 

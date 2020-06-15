@@ -6,7 +6,6 @@ EnableSessionState="True"
 Inherits="Assurant.ElitaPlus.ElitaPlusWebApp.Claims.AccountPayable.AddApInvoiceForm" 
 Theme="Default" %>
 
-<%@ Register TagPrefix="asp" Namespace="AjaxControlToolkit" Assembly="AjaxControlToolkit" %>
 <asp:Content ID="Content1" ContentPlaceHolderID="HeadPlaceHolder" runat="server">
     <script language="javascript" type="text/javascript" src="../../Navigation/scripts/jquery-1.12.4.min.js"> </script>  
     <script language="JavaScript" type="text/javascript">
@@ -35,19 +34,19 @@ Theme="Default" %>
             if ((keyCodeEntered >= 48) && (keyCodeEntered <= 57)) {
                 return true;
             }
-            else if (keyCodeEntered == 43) {
+            else if (keyCodeEntered === 43) {
                 if ((elementRef.value) && (elementRef.value.indexOf('+') >= 0))
                     return false;
                 else
                     return true;
             }
-            else if (keyCodeEntered == 45) {
+            else if (keyCodeEntered === 45) {
                 if ((elementRef.value) && (elementRef.value.indexOf('-') >= 0))
                     return false;
                 else
                     return true;
             }
-            else if (keyCodeEntered == 46) {
+            else if (keyCodeEntered === 46) {
                 if ((elementRef.value) && (elementRef.value.indexOf('.') >= 0))
                     return false;
                 else
@@ -299,7 +298,7 @@ Theme="Default" %>
 </div>
 </div>
 <br />
-<div class="btnZone" width="98%">
+<div class="btnZone">
     <table width="100%">
         <tr>
             <td width="50%">
