@@ -452,16 +452,14 @@ Public Class ApInvoiceLines
 #End Region
 
 #Region "DataView Retrieveing Methods"
-    Public Function GetApInvoiceLines(ByVal apInvoiceHeaderId As Guid) As DataView
+    Public Function GetApInvoiceLines(ByVal accountPayableInvoiceHeaderId As Guid) As DataView
         Try
             Dim dal As New ApInvoiceLinesDAL
             Dim ds As DataSet = New DataSet
 
-            ds = dal.GetApInvoiceLines(ds, apInvoiceHeaderId)
+            ds = dal.GetApInvoiceLines(ds, accountPayableInvoiceHeaderId)
             Return ds.Tables(ApInvoiceLinesDAL.TABLE_NAME).DefaultView
 
-
-
         Catch ex As Assurant.ElitaPlus.DALObjects.DataBaseAccessException
             Throw New DataBaseAccessException(ex.ErrorType, ex)
         End Try
@@ -469,64 +467,6 @@ Public Class ApInvoiceLines
 
 #End Region
 
-#Region "Grid Data Related"
-    Public Function GetEmptyList(ByVal dv As DataView) As System.Data.DataView
-        Try
-
-            Dim dsv As DataSet
-            dsv = dv.Table().DataSet
-
-            Dim row As DataRow = dsv.Tables(0).NewRow()
-            row.Item(APInvoiceLinesDV.COL_INVOICE_lines_ID) = Guid.NewGuid.ToByteArray
-            row.Item(APInvoiceLinesDV.COL_LINE_NUMBER) = String.Empty
-            row.Item(APInvoiceLinesDV.COL_LINE_TYPE) = String.Empty
-            row.Item(APInvoiceLinesDV.COL_VENDOR_ITEM_CODE) = String.Empty
-            row.Item(APInvoiceLinesDV.COL_DESCRIPTION) = String.Empty
-            row.Item(APInvoiceLinesDV.COL_UNIT_PRICE) = 0D
-            row.Item(APInvoiceLinesDV.COL_QUANTITY) = 0D
-            row.Item(APInvoiceLinesDV.COL_TOTAL_PRICE) = 0D
-            row.Item(APInvoiceLinesDV.COL_UNIT_OF_MEASUREMENT) = String.Empty
-            row.Item(APInvoiceLinesDV.COL_PO_NUMBER) = String.Empty
-            dsv.Tables(0).Rows.Add(row)
-
-            Return New System.Data.DataView(dsv.Tables(0))
-        Catch ex As Assurant.ElitaPlus.DALObjects.DataBaseAccessException
-            Throw New DataBaseAccessException(ex.ErrorType, ex)
-        End Try
-    End Function
-
-    Public Sub AddNewRowToSearchDV(ByRef dv As APInvoiceLinesDV, ByVal NewBO As ApInvoiceLines)
-        Dim dt As DataTable, blnEmptyTbl As Boolean = False
-
-        If NewBO.IsNew Then
-            Dim row As DataRow
-            If dv Is Nothing Then
-                Dim guidTemp As New Guid
-                blnEmptyTbl = True
-                dt = New DataTable
-                dt.Columns.Add(APInvoiceLinesDV.COL_INVOICE_lines_ID, guidTemp.ToByteArray.GetType)
-                dt.Columns.Add(APInvoiceLinesDV.COL_LINE_NUMBER, GetType(String))
-                dt.Columns.Add(APInvoiceLinesDV.COL_LINE_TYPE, GetType(String))
-                dt.Columns.Add(APInvoiceLinesDV.COL_VENDOR_ITEM_CODE, GetType(String))
-                dt.Columns.Add(APInvoiceLinesDV.COL_DESCRIPTION, GetType(String))
-                dt.Columns.Add(APInvoiceLinesDV.COL_QUANTITY, GetType(Decimal))
-                dt.Columns.Add(APInvoiceLinesDV.COL_TOTAL_PRICE, GetType(Decimal))
-                dt.Columns.Add(APInvoiceLinesDV.COL_UNIT_PRICE, GetType(Decimal))
-                dt.Columns.Add(APInvoiceLinesDV.COL_UNIT_OF_MEASUREMENT, GetType(String))
-                dt.Columns.Add(APInvoiceLinesDV.COL_PO_NUMBER, GetType(String))
-
-            Else
-                dt = dv.Table
-            End If
-            row = dt.NewRow
-            row(APInvoiceLinesDV.COL_INVOICE_lines_ID) = NewBO.Id.ToByteArray
-            dt.Rows.Add(row)
-            If blnEmptyTbl Then dv = New APInvoiceLinesDV(dt)
-            dv.Sort = LINE_NUMBER_COL & " DESC"
-        End If
-    End Sub
-
-#End Region
 
 #Region "APInvoiceLinesDV Dataview"
     Public Class APInvoiceLinesDV

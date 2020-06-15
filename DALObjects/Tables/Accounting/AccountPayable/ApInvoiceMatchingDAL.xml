@@ -4,7 +4,6 @@
 
 <SQL>
   <LOAD>elp_tbl_ap_invoice_matching.Load</LOAD>
-  <LOADLINES>elp_tbl_ap_invoice_matching.LoadLines</LOADLINES>
   <LOAD_LIST>elp_tbl_ap_invoice_matching.LoadList</LOAD_LIST>
   <INSERT>elp_tbl_ap_invoice_matching.Add</INSERT>
   <UPDATE>elp_tbl_ap_invoice_matching.Modify</UPDATE>
