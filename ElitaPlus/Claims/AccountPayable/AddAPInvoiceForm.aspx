@@ -20,7 +20,44 @@ Theme="Default" %>
                 return false;
             }
         }
-    </script>
+    
+        function GetTotalPrice(obj) {
+
+            var quantity = document.getElementById(obj.id.replace('moUnitPriceText', 'moQuanitityText'));
+            var objTotal = document.getElementById(obj.id.replace('moUnitPriceText', 'moTotalPriceText'));
+            var total = round_num(obj.value * quantity.value, 2);
+            objTotal.innerText = total;
+
+        }
+
+        function numericOnly(elementRef) {
+            var keyCodeEntered = (event.which) ? event.which : (window.event.keyCode) ? window.event.keyCode : -1;
+            if ((keyCodeEntered >= 48) && (keyCodeEntered <= 57)) {
+                return true;
+            }
+            else if (keyCodeEntered == 43) {
+                if ((elementRef.value) && (elementRef.value.indexOf('+') >= 0))
+                    return false;
+                else
+                    return true;
+            }
+            else if (keyCodeEntered == 45) {
+                if ((elementRef.value) && (elementRef.value.indexOf('-') >= 0))
+                    return false;
+                else
+                    return true;
+            }
+            else if (keyCodeEntered == 46) {
+                if ((elementRef.value) && (elementRef.value.indexOf('.') >= 0))
+                    return false;
+                else
+                    return true;
+            }
+
+            return false;
+        }
+
+</script>
 </asp:Content>
 <asp:Content ID="Content2" ContentPlaceHolderID="MessagePlaceHolder" runat="server">
 </asp:Content>
@@ -45,7 +82,7 @@ Theme="Default" %>
                             <asp:Label runat="server" ID="moInvoiceAmountLabel" Text="INVOICE_AMOUNT" />
                         </td>
                         <td nowrap="noWrap">
-                            <asp:TextBox runat="server" ID="moInvoiceAmount" SkinID="SmallTextBox"  />
+                            <asp:TextBox runat="server" ID="moInvoiceAmount" SkinID="SmallTextBox"  onkeypress="return numericOnly(this)" />
                         </td>
                         
                     </tr>
@@ -196,7 +233,8 @@ Theme="Default" %>
                                                 </asp:Label>
                                             </ItemTemplate>
                                             <EditItemTemplate>
-                                                <asp:TextBox ID="moUnitPriceText" runat="server" Visible="True" Width="100%" onkeypress="return numericOnly(this)"></asp:TextBox>
+                                                <asp:TextBox ID="moUnitPriceText" runat="server" Visible="True" Width="100%" onkeypress="return numericOnly(this)" 
+                                                 onblur="return GetTotalPrice(this)"></asp:TextBox>
                                             </EditItemTemplate>
                                         </asp:TemplateField>
 										<asp:TemplateField Visible="True" HeaderText="total_price">
@@ -206,7 +244,7 @@ Theme="Default" %>
                                                 </asp:Label>
                                             </ItemTemplate>
                                             <EditItemTemplate>
-                                                <asp:TextBox ID="moTotalPriceText" runat="server" Visible="True" Width="100%" onkeypress="return numericOnly(this)" ></asp:TextBox>
+                                                <asp:TextBox ID="moTotalPriceText" runat="server" Visible="True" Width="100%" onkeypress="return numericOnly(this)"></asp:TextBox>
                                             </EditItemTemplate>
                                         </asp:TemplateField>
 										 <asp:TemplateField Visible ="true" HeaderText="unit_of_measurement">
@@ -273,44 +311,5 @@ Theme="Default" %>
         </tr>
     </table>
 </div>
-  <script type="text/javascript">
-      //function GetTotalPrice(obj) {
-         
-      //    var quantity = document.getElementById("ctl00_BodyPlaceHolder_InvoiceLinesGrid_ctl04_moQuanitityText");
-      //    var objTotal = document.getElementById("ctl00_BodyPlaceHolder_InvoiceLinesGrid_ctl04_moTotalPriceText");
-      //onblur = "return GetTotalPrice(this)"
-      //    var total = round_num(obj.value * parseFloat(setJsFormat(quantity.value, decSep)), 2);
-      //    objTotal.value = convertNumberToCulture(parseFloat(total), decSep, groupSep);
-      //    objTotal.innerText = total;
-         
-      //}
-
-      function numericOnly(elementRef) {
-          var keyCodeEntered = (event.which) ? event.which : (window.event.keyCode) ? window.event.keyCode : -1;
-          if ((keyCodeEntered >= 48) && (keyCodeEntered <= 57)) {
-              return true;
-          }
-          else if (keyCodeEntered == 43) {
-              if ((elementRef.value) && (elementRef.value.indexOf('+') >= 0))
-                  return false;
-              else
-                  return true;
-          }
-          else if (keyCodeEntered == 45) {
-              if ((elementRef.value) && (elementRef.value.indexOf('-') >= 0))
-                  return false;
-              else
-                  return true;
-          }
-          else if (keyCodeEntered == 46) {
-              if ((elementRef.value) && (elementRef.value.indexOf('.') >= 0))
-                  return false;
-              else
-                  return true;
-          }
-
-          return false;
-      }
-
-</script>
+  
 </asp:Content>

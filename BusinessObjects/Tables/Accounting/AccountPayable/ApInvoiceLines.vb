@@ -444,6 +444,10 @@ Public Class ApInvoiceLines
             Throw New DataBaseAccessException(DataBaseAccessException.DatabaseAccessErrorType.WriteErr, ex)
         End Try
     End Sub
+    Public Sub DeleteInvoiceLine()
+        Dim dal As New ApInvoiceLinesDAL
+        dal.DeleteInvoiceLine(Me.Row)
+    End Sub
 
 #End Region
 

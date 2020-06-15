@@ -132,7 +132,7 @@ Namespace Claims.AccountPayable
                     SetGridPageSize()
                     SetGridItemStyleColor(InvoiceLinesGrid)
                     BindBoPropertiesToGridHeaders()
-                    'TranslateGridControls(InvoiceLinesGrid)
+
                 End If
                 SetStateProperties()
             Catch ex As Exception
@@ -617,9 +617,7 @@ Namespace Claims.AccountPayable
                     PopulateApLinesGrid(ACTION_EDIT)
                     State.PageIndex = InvoiceLinesGrid.PageIndex
                     SetGridControls(InvoiceLinesGrid, False)
-                    'SetFocusOnEditableFieldInGrid(InvoiceLinesGrid, ITEM_CODE_COL, ITEM_CODE_CONTROL_NAME, index)
-                    SetGridControls(InvoiceLinesGrid, False)
-                    SetButtonsState()
+
                     Try
                         InvoiceLinesGrid.Rows(index).Focus()
                     Catch ex As Exception
@@ -632,10 +630,11 @@ Namespace Claims.AccountPayable
                         index = CInt(e.CommandArgument)
                         State.APInvoiceLineId = New Guid(CType(InvoiceLinesGrid.Rows(index).Cells(AP_INVOICE_LINE_ID_COL).FindControl(AP_INVOICE_LINE_ID_CONTROL_LABEL), Label).Text)
                         State.APInvoiceLinesBO = New ApInvoiceLines(State.APInvoiceLineId)
-                        State.APInvoiceLinesBO.Delete()
+                        State.APInvoiceLinesBO.Delete() ' Mark row as deleted
+                        State.APInvoiceLinesBO.DeleteInvoiceLine()
                         State.ActionInProgress = ElitaPlusPage.DetailPageCommand.Delete
-                        State.APInvoiceLinesBO.Save()
                         State.IsAfterSave = True
+                        State.SearchDv = Nothing
                         PopulateApLinesGrid(ACTION_CANCEL_DELETE)
                         MasterPage.MessageController.AddSuccess(Assurant.ElitaPlus.Common.ErrorCodes.MSG_RECORD_DELETED_OK, True)
                     Catch ex As Exception
@@ -659,7 +658,6 @@ Namespace Claims.AccountPayable
             Else
                 InvoiceLinesGrid.Enabled = True
                 InvoiceLinesGrid.DataSource = State.SearchDv
-                HighLightSortColumn(InvoiceLinesGrid, SortDirection)
                 InvoiceLinesGrid.DataBind()
             End If
             If Not InvoiceLinesGrid.BottomPagerRow Is Nothing AndAlso Not InvoiceLinesGrid.BottomPagerRow.Visible Then InvoiceLinesGrid.BottomPagerRow.Visible = True
@@ -789,6 +787,14 @@ Namespace Claims.AccountPayable
 
             Catch ex As Exception
                 HandleErrors(ex, MasterPage.MessageController)
+            End Try
+        End Sub
+        Private Sub btnBack_Click(sender As Object, e As EventArgs) Handles btnBack.Click
+            Try
+                ReturnToCallingPage()
+            Catch ex As Threading.ThreadAbortException
+            Catch ex As Exception
+                Me.HandleErrors(ex, Me.MasterPage.MessageController)
             End Try
         End Sub
 
