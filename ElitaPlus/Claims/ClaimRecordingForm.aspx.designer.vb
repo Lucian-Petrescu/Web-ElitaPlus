@@ -446,6 +446,60 @@ Partial Public Class ClaimRecordingForm
     Protected WithEvents txtDvcSerialNumber As Global.System.Web.UI.WebControls.TextBox
 
     '''<summary>
+    '''lblDvcColor control.
+    '''</summary>
+    '''<remarks>
+    '''Auto-generated field.
+    '''To modify move field declaration from designer file to code-behind file.
+    '''</remarks>
+    Protected WithEvents lblDvcColor As Global.System.Web.UI.WebControls.Label
+
+    '''<summary>
+    '''lblDvcColorValue control.
+    '''</summary>
+    '''<remarks>
+    '''Auto-generated field.
+    '''To modify move field declaration from designer file to code-behind file.
+    '''</remarks>
+    Protected WithEvents lblDvcColorValue As Global.System.Web.UI.WebControls.Label
+
+    '''<summary>
+    '''txtDvcColor control.
+    '''</summary>
+    '''<remarks>
+    '''Auto-generated field.
+    '''To modify move field declaration from designer file to code-behind file.
+    '''</remarks>
+    Protected WithEvents txtDvcColor As Global.System.Web.UI.WebControls.TextBox
+
+    '''<summary>
+    '''lblDvcCapacity control.
+    '''</summary>
+    '''<remarks>
+    '''Auto-generated field.
+    '''To modify move field declaration from designer file to code-behind file.
+    '''</remarks>
+    Protected WithEvents lblDvcCapacity As Global.System.Web.UI.WebControls.Label
+
+    '''<summary>
+    '''lblDvcCapacityValue control.
+    '''</summary>
+    '''<remarks>
+    '''Auto-generated field.
+    '''To modify move field declaration from designer file to code-behind file.
+    '''</remarks>
+    Protected WithEvents lblDvcCapacityValue As Global.System.Web.UI.WebControls.Label
+
+    '''<summary>
+    '''txtDvcCapacity control.
+    '''</summary>
+    '''<remarks>
+    '''Auto-generated field.
+    '''To modify move field declaration from designer file to code-behind file.
+    '''</remarks>
+    Protected WithEvents txtDvcCapacity As Global.System.Web.UI.WebControls.TextBox
+
+    '''<summary>
     '''btn_Device_Cont control.
     '''</summary>
     '''<remarks>

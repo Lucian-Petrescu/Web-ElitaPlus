@@ -1204,6 +1204,10 @@ Public Class ClaimRecordingForm
                         lblDvcImeiValue.Text = DirectCast(row.FindControl("lblImeiNo"), Label).Text
                         txtDvcSerialNumber.Text = DirectCast(row.FindControl("lblSerialNo"), Label).Text
                         lblDvcSerialNumberValue.Text = DirectCast(row.FindControl("lblSerialNo"), Label).Text
+                        txtDvcColor.Text = DirectCast(row.FindControl("lblColor"), Label).Text
+                        lblDvcColorValue.Text = DirectCast(row.FindControl("lblColor"), Label).Text
+                        txtDvcCapacity.Text = DirectCast(row.FindControl("lblCapacity"), Label).Text
+                        lblDvcCapacityValue.Text = DirectCast(row.FindControl("lblCapacity"), Label).Text
                     End If
                 End If
 
@@ -1301,6 +1305,8 @@ Public Class ClaimRecordingForm
 
                             claimdevice.ImeiNumber = txtDvcImei.Text
                             claimdevice.SerialNumber = txtDvcSerialNumber.Text
+                            claimdevice.Color = txtDvcColor.Text
+                            claimdevice.Capacity = txtDvcCapacity.Text
                             claimdevice.RegisteredItemName = DirectCast(row.FindControl("lblRegisteredItem"), Label).Text
                             claimdevice.RiskTypeCode = DirectCast(row.FindControl("HiddenRiskType"), HiddenField).Value
 
@@ -1308,6 +1314,8 @@ Public Class ClaimRecordingForm
                             enrolleddevice.Model = DirectCast(row.FindControl("lblModel"), Label).Text
                             enrolleddevice.ImeiNumber = DirectCast(row.FindControl("lblImeiNo"), Label).Text
                             enrolleddevice.SerialNumber = DirectCast(row.FindControl("lblSerialNo"), Label).Text
+                            enrolleddevice.Color = DirectCast(row.FindControl("lblColor"), Label).Text
+                            enrolleddevice.Capacity = DirectCast(row.FindControl("lblCapacity"), Label).Text
                             enrolleddevice.RegisteredItemName = DirectCast(row.FindControl("lblRegisteredItem"), Label).Text
                             enrolleddevice.RiskTypeCode = DirectCast(row.FindControl("HiddenRiskType"), HiddenField).Value
 
@@ -1386,6 +1394,8 @@ Public Class ClaimRecordingForm
 
                             claimdevice.ImeiNumber = txtDvcImei.Text
                             claimdevice.SerialNumber = txtDvcSerialNumber.Text
+                            claimdevice.Color = txtDvcColor.Text
+                            claimdevice.Capacity = txtDvcCapacity.Text
                             claimdevice.RegisteredItemName = DirectCast(row.FindControl("lblRegisteredItem"), Label).Text
                             claimdevice.RiskTypeCode = DirectCast(row.FindControl("HiddenRiskType"), HiddenField).Value
 
@@ -1393,6 +1403,8 @@ Public Class ClaimRecordingForm
                             enrolleddevice.Model = DirectCast(row.FindControl("lblModel"), Label).Text
                             enrolleddevice.ImeiNumber = DirectCast(row.FindControl("lblImeiNo"), Label).Text
                             enrolleddevice.SerialNumber = DirectCast(row.FindControl("lblSerialNo"), Label).Text
+                            enrolleddevice.Color = DirectCast(row.FindControl("lblColor"), Label).Text
+                            enrolleddevice.Capacity = DirectCast(row.FindControl("lblCapacity"), Label).Text
                             enrolleddevice.RegisteredItemName = DirectCast(row.FindControl("lblRegisteredItem"), Label).Text
                             enrolleddevice.RiskTypeCode = DirectCast(row.FindControl("HiddenRiskType"), HiddenField).Value
 
