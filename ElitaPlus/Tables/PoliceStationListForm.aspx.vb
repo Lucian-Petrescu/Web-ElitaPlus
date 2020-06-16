@@ -31,9 +31,11 @@ Partial Class PoliceStationListForm
     Public Const GRID_COL_EDIT_IDX As Integer = 0
     Public Const GRID_COL_POLICE_STATION_CODE_IDX As Integer = 2
     Public Const GRID_COL_POLICE_STATION_NAME_IDX As Integer = 1
-    Public Const GRID_COL_POLICE_STATION_IDX As Integer = 3
+    Public Const GRID_COL_POLICE_STATION_DISTRICT_CODE_IDX As Integer = 4
+    Public Const GRID_COL_POLICE_STATION_DISTRICT_NAME_IDX As Integer = 3
+    Public Const GRID_COL_POLICE_STATION_IDX As Integer = 5
 
-    Public Const GRID_TOTAL_COLUMNS As Integer = 4
+    Public Const GRID_TOTAL_COLUMNS As Integer = 6
     Private Const NOTHING_SELECTED As String = "00000000-0000-0000-0000-000000000000"
     Private Const POLICESTATIONLISTFORM As String = "PoliceStationListForm.aspx"
 #End Region
@@ -190,6 +192,8 @@ Partial Class PoliceStationListForm
         Me.Grid.AutoGenerateColumns = False
         Me.Grid.Columns(Me.GRID_COL_POLICE_STATION_CODE_IDX).SortExpression = PoliceStation.PoliceStationSearchDV.COL_POLICE_STATION_CODE
         Me.Grid.Columns(Me.GRID_COL_POLICE_STATION_NAME_IDX).SortExpression = PoliceStation.PoliceStationSearchDV.COL_POLICE_STATION_NAME
+        Me.Grid.Columns(Me.GRID_COL_POLICE_STATION_DISTRICT_CODE_IDX).SortExpression = PoliceStation.PoliceStationSearchDV.COL_POLICE_STATION_DISTRICT_CODE
+        Me.Grid.Columns(Me.GRID_COL_POLICE_STATION_DISTRICT_NAME_IDX).SortExpression = PoliceStation.PoliceStationSearchDV.COL_POLICE_STATION_DISTRICT_NAME
 
         SetPageAndSelectedIndexFromGuid(Me.State.searchDV, Me.State.PoliceStationId, Me.Grid, Me.State.PageIndex)
         Me.SortAndBindGrid()
@@ -230,6 +234,8 @@ Partial Class PoliceStationListForm
         If itemType = ListItemType.Item Or itemType = ListItemType.AlternatingItem Or itemType = ListItemType.SelectedItem Then
             e.Item.Cells(Me.GRID_COL_POLICE_STATION_CODE_IDX).Text = dvRow(PoliceStation.PoliceStationSearchDV.COL_POLICE_STATION_CODE).ToString
             e.Item.Cells(Me.GRID_COL_POLICE_STATION_NAME_IDX).Text = dvRow(PoliceStation.PoliceStationSearchDV.COL_POLICE_STATION_NAME).ToString
+            e.Item.Cells(Me.GRID_COL_POLICE_STATION_DISTRICT_CODE_IDX).Text = dvRow(PoliceStation.PoliceStationSearchDV.COL_POLICE_STATION_DISTRICT_CODE).ToString
+            e.Item.Cells(Me.GRID_COL_POLICE_STATION_DISTRICT_NAME_IDX).Text = dvRow(PoliceStation.PoliceStationSearchDV.COL_POLICE_STATION_DISTRICT_NAME).ToString
             e.Item.Cells(Me.GRID_COL_POLICE_STATION_IDX).Text = GetGuidStringFromByteArray(CType(dvRow(PoliceStation.PoliceStationSearchDV.COL_POLICE_STATION_ID), Byte()))
         End If
     End Sub
