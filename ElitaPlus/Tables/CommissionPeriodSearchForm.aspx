@@ -148,7 +148,50 @@
                     </Columns>
                     <PagerSettings PageButtonCount="15" Mode="Numeric" />
                     <PagerStyle HorizontalAlign="Center" CssClass="PAGER"></PagerStyle>
-                </asp:GridView>                
+                </asp:GridView>
+             <asp:GridView ID="GridCommPlan" runat="server" Width="100%" AllowSorting="True" AllowPaging="True"
+                     CellPadding="1" AutoGenerateColumns="False" SkinID="DetailPageGridView" Visible="False">
+                <SelectedRowStyle Wrap="True"></SelectedRowStyle>
+                <EditRowStyle Wrap="True"></EditRowStyle>
+                <AlternatingRowStyle Wrap="True"></AlternatingRowStyle>
+                <RowStyle Wrap="True"></RowStyle>
+                    <Columns>
+                        <asp:TemplateField ShowHeader="false">
+                            <ItemStyle HorizontalAlign="Center" Width="5%" Height="15px" />
+                            <ItemTemplate>
+                                <asp:ImageButton ID="btnEdit" runat="server" CausesValidation="False" CommandName="SelectRecord"
+                                    ImageUrl="~/Navigation/images/icons/edit2.gif" CommandArgument="<%#Container.DisplayIndex %>" />
+                            </ItemTemplate>
+                        </asp:TemplateField>
+                        <asp:TemplateField Visible="False"></asp:TemplateField>
+                        <asp:TemplateField HeaderText="COMPANY_CODE">
+                            <HeaderStyle HorizontalAlign="Center" Width="15%"></HeaderStyle>
+                            <ItemStyle HorizontalAlign="Center"></ItemStyle>
+                        </asp:TemplateField>
+                        <asp:TemplateField SortExpression="DEALER_NAME" HeaderText="DEALER_NAME">
+                            <HeaderStyle HorizontalAlign="Center" Width="40%"></HeaderStyle>
+                            <ItemStyle HorizontalAlign="Center"></ItemStyle>
+                        </asp:TemplateField>
+                        <asp:TemplateField SortExpression="CODE" HeaderText="CODE">
+                            <HeaderStyle HorizontalAlign="Center" Width="10%"></HeaderStyle>
+                            <ItemStyle HorizontalAlign="Center"></ItemStyle>
+                        </asp:TemplateField>
+                        <asp:TemplateField SortExpression="DESCRIPTION" HeaderText="DESCRIPTION">
+                            <HeaderStyle HorizontalAlign="Center" Width="10%"></HeaderStyle>
+                            <ItemStyle HorizontalAlign="Center"></ItemStyle>
+                        </asp:TemplateField>
+                        <asp:TemplateField SortExpression="EFFECTIVE_DATE" HeaderText="EFFECTIVE_DATE">
+                            <HeaderStyle HorizontalAlign="Center" Width="20%"></HeaderStyle>
+                            <ItemStyle HorizontalAlign="Center"></ItemStyle>
+                        </asp:TemplateField>
+                        <asp:TemplateField SortExpression="EXPIRATION_DATE" HeaderText="EXPIRATION_DATE">
+                            <HeaderStyle HorizontalAlign="Center" Width="20%"></HeaderStyle>
+                            <ItemStyle HorizontalAlign="Center"></ItemStyle>
+                        </asp:TemplateField>
+                    </Columns>
+                    <PagerSettings PageButtonCount="15" Mode="Numeric" />
+                    <PagerStyle HorizontalAlign="Center" CssClass="PAGER"></PagerStyle>
+                </asp:GridView>
              </div>
    </div>                     
        <div class="btnZone">
