@@ -3,7 +3,7 @@ Imports Assurant.Elita.Web.Forms
 Imports Microsoft.VisualBasic
 
 Partial Class PayBatchClaimForm
-    Inherits ElitaPlusPage
+    Inherits ElitaPlusSearchPage
 
 #Region "Web Form Designer Generated Code"
 
@@ -83,6 +83,9 @@ Partial Class PayBatchClaimForm
     Public Const COL_TAX5_COMPUTE_METHOD As String = "tax5_compute_method"
     Public Const COL_TAX6_COMPUTE_METHOD As String = "tax6_compute_method"
     Public COMPUTE_TYPE_MANUALLY As String = "I"
+    Public Const INVOICE_STATUS_INPROGRESS As String = "IP"
+    Public Const INVOICE_STATUS_PAID As String = "P"
+    Public Const INVOICE_STATUS_REJECTED As String = "R"
 
     Public Const MAX_MANUALLY_ENTERED_TAXES As Integer = 2
 
@@ -414,7 +417,7 @@ Partial Class PayBatchClaimForm
 
     End Sub
 
-    Private Sub PopulateCalculatedFields()
+    Public Sub PopulateCalculatedFields()
 
         Dim dt As DataTable
         Dim dr() As DataRow
@@ -425,6 +428,12 @@ Partial Class PayBatchClaimForm
         dt = Me.State.searchInvoiceTransDetailDV.Table
 
         If dt.Rows.Count > 0 Then
+            If Not dt.Rows(0)("TOTAL_REGION_PERCEPTION_IIBB") Is Nothing Then
+                If Not IsDBNull(dt.Rows(0)("TOTAL_REGION_PERCEPTION_IIBB")) Then
+                    Me.TextBoxPerceptionIIBB.Text = Me.GetAmountFormattedString(CType(dt.Rows(0)("TOTAL_REGION_PERCEPTION_IIBB"), Decimal))
+
+                End If
+            End If
             total = CType(dt.Compute("sum(" + Me.State.searchInvoiceTransDetailDV.COL_Payment_Amount_Total + ")", ""), Decimal)
             'total = CType(dt.Compute("sum(" + Me.State.searchInvoiceTransDetailDV.COL_RESERVE_AMOUNT + ")-sum(" + Me.State.searchInvoiceTransDetailDV.COL_SALVAGE_AMOUNT + ")", ""), Decimal)
         End If
@@ -438,9 +447,9 @@ Partial Class PayBatchClaimForm
                 Me.TextBoxPerceptionIVA.Text = IIf(CType(TextBoxPerceptionIVA.Text, Decimal) = 0, "0.00", CType(TextBoxPerceptionIVA.Text, Decimal).ToString("0.00")).ToString
             End If
 
-            If Me.TextBoxPerceptionIIBB.Text <> String.Empty Then
-                Me.TextBoxPerceptionIIBB.Text = IIf(CType(TextBoxPerceptionIIBB.Text, Decimal) = 0, "0.00", CType(TextBoxPerceptionIIBB.Text, Decimal).ToString("0.00")).ToString
-            End If
+            'If Me.TextBoxPerceptionIIBB.Text <> String.Empty Then
+            '    Me.TextBoxPerceptionIIBB.Text = IIf(CType(TextBoxPerceptionIIBB.Text, Decimal) = 0, "0.00", CType(TextBoxPerceptionIIBB.Text, Decimal).ToString("0.00")).ToString
+            'End If
 
         Else
             ' total = CType(dt.Compute("sum(" + Me.State.searchInvoiceTransDetailDV.COL_PAYMENT_AMOUNT + ")", ""), Decimal)
@@ -1158,6 +1167,16 @@ Partial Class PayBatchClaimForm
     End Sub
 #End Region
 
+#Region "Invoice Region Taxes"
+
+    Private Sub IIBBTaxes_RequestIIBBTaxes(ByVal sender As Object, ByRef e As UserControlInvoiceRegionTaxes.RequestDataEventArgs) Handles IIBBTaxes.RequestIIBBTaxesData
+        Dim iibbregion As New InvoiceRegionTax
+        iibbregion.InvoiceRegionTaxId = Me.State.MyBO.Id
+        e.Data = iibbregion.GetInvoiceRegionTax()
+    End Sub
+
+#End Region
+
 #Region " Page Events "
     Private Sub cboPageSize_SelectedIndexChanged(ByVal sender As Object, ByVal e As System.EventArgs) Handles cboPageSize.SelectedIndexChanged
 
@@ -1173,7 +1192,7 @@ Partial Class PayBatchClaimForm
     End Sub
 
     Private Sub Page_Load(ByVal sender As Object, ByVal e As System.EventArgs) Handles MyBase.Load
-
+        Me.InvoiceTabs.Visible = True
         Me.MasterPage.MessageController.Clear()
 
         Try
@@ -1196,6 +1215,12 @@ Partial Class PayBatchClaimForm
                 CheckBatchNumberInPreInvoiceAndApproved()
                 PopulateCalculatedFields()
                 CheckGetBatchClosedClaims()
+                Me.IIBBTaxes.InvoicetransId = Me.State.MyBO.Id
+                Me.IIBBTaxes.Populate()
+                Dim statusId As String = LookupListNew.GetCodeFromId(LookupListNew.LK_INVSTAT, Me.State.MyBO.InvoiceStatusId)
+                Me.IIBBTaxes.InvoiceStatus = statusId
+                Me.IIBBTaxes.IsGridEditable = True
+                Me.IIBBTaxes.SetControlState()
             End If
 
         Catch ex As Exception
@@ -1216,6 +1241,10 @@ Partial Class PayBatchClaimForm
                 ImageButtonRepirDate.Enabled = False
                 btnAddRepairDate_WRITE.Enabled = False
             End If
+            Dim dv As InvoiceTrans.InvoiceTransDetailDV
+            dv = InvoiceTrans.GetInvoiceTransDetail(Me.State.MyBO.Id)
+            Me.State.searchInvoiceTransDetailDV = dv
+            Me.PopulateCalculatedFields()
         Catch ex As Exception
         End Try
     End Sub

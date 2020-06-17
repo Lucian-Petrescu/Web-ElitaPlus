@@ -174,7 +174,7 @@
           <tr>
             <td colspan="2" style="padding-top:15px;">
               <span class="authorityLimitText">
-                Repair Authority Limit: $<xsl:value-of select="a:ServiceOrderReport/a:ServiceOrder/a:AUTHORIZATION_AMOUNT" />&#160;(Excl GST)
+                Repair Authority Limit: $<xsl:value-of select="a:ServiceOrderReport/a:ServiceOrder/a:AUTHORIZATION_AMOUNT" />&#160;(Incl GST)
               </span>
             </td>
           </tr>

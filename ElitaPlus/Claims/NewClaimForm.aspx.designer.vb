@@ -590,6 +590,24 @@ Partial Public Class NewClaimForm
     Protected WithEvents TextboxConsumerPaysShadow As Global.System.Web.UI.WebControls.TextBox
     
     '''<summary>
+    '''lblLoanerRequested control.
+    '''</summary>
+    '''<remarks>
+    '''Auto-generated field.
+    '''To modify move field declaration from designer file to code-behind file.
+    '''</remarks>
+    Protected WithEvents lblLoanerRequested As Global.System.Web.UI.WebControls.Label
+    
+    '''<summary>
+    '''chkLoanerRequested control.
+    '''</summary>
+    '''<remarks>
+    '''Auto-generated field.
+    '''To modify move field declaration from designer file to code-behind file.
+    '''</remarks>
+    Protected WithEvents chkLoanerRequested As Global.System.Web.UI.WebControls.CheckBox
+    
+    '''<summary>
     '''LabelPolicyNumber control.
     '''</summary>
     '''<remarks>
@@ -1058,202 +1076,13 @@ Partial Public Class NewClaimForm
     Protected WithEvents dvClaimEquipment As Global.System.Web.UI.HtmlControls.HtmlGenericControl
     
     '''<summary>
-    '''lblEnrolledDevice control.
+    '''ucClaimDeviceInfo control.
     '''</summary>
     '''<remarks>
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents lblEnrolledDevice As Global.System.Web.UI.WebControls.Label
-    
-    '''<summary>
-    '''lblClaimedDevice control.
-    '''</summary>
-    '''<remarks>
-    '''Auto-generated field.
-    '''To modify move field declaration from designer file to code-behind file.
-    '''</remarks>
-    Protected WithEvents lblClaimedDevice As Global.System.Web.UI.WebControls.Label
-    
-    '''<summary>
-    '''LBLeNROLLEDmAKE control.
-    '''</summary>
-    '''<remarks>
-    '''Auto-generated field.
-    '''To modify move field declaration from designer file to code-behind file.
-    '''</remarks>
-    Protected WithEvents LBLeNROLLEDmAKE As Global.System.Web.UI.WebControls.Label
-    
-    '''<summary>
-    '''ddlEnrolledManuf control.
-    '''</summary>
-    '''<remarks>
-    '''Auto-generated field.
-    '''To modify move field declaration from designer file to code-behind file.
-    '''</remarks>
-    Protected WithEvents ddlEnrolledManuf As Global.System.Web.UI.WebControls.DropDownList
-    
-    '''<summary>
-    '''txtEnrolledMake control.
-    '''</summary>
-    '''<remarks>
-    '''Auto-generated field.
-    '''To modify move field declaration from designer file to code-behind file.
-    '''</remarks>
-    Protected WithEvents txtEnrolledMake As Global.System.Web.UI.WebControls.TextBox
-    
-    '''<summary>
-    '''lblClaimedMake control.
-    '''</summary>
-    '''<remarks>
-    '''Auto-generated field.
-    '''To modify move field declaration from designer file to code-behind file.
-    '''</remarks>
-    Protected WithEvents lblClaimedMake As Global.System.Web.UI.WebControls.Label
-    
-    '''<summary>
-    '''ddlClaimedManuf control.
-    '''</summary>
-    '''<remarks>
-    '''Auto-generated field.
-    '''To modify move field declaration from designer file to code-behind file.
-    '''</remarks>
-    Protected WithEvents ddlClaimedManuf As Global.System.Web.UI.WebControls.DropDownList
-    
-    '''<summary>
-    '''txtClaimedMake control.
-    '''</summary>
-    '''<remarks>
-    '''Auto-generated field.
-    '''To modify move field declaration from designer file to code-behind file.
-    '''</remarks>
-    Protected WithEvents txtClaimedMake As Global.System.Web.UI.WebControls.TextBox
-    
-    '''<summary>
-    '''lblEnrolledModel control.
-    '''</summary>
-    '''<remarks>
-    '''Auto-generated field.
-    '''To modify move field declaration from designer file to code-behind file.
-    '''</remarks>
-    Protected WithEvents lblEnrolledModel As Global.System.Web.UI.WebControls.Label
-    
-    '''<summary>
-    '''txtEnrolledModel control.
-    '''</summary>
-    '''<remarks>
-    '''Auto-generated field.
-    '''To modify move field declaration from designer file to code-behind file.
-    '''</remarks>
-    Protected WithEvents txtEnrolledModel As Global.System.Web.UI.WebControls.TextBox
-    
-    '''<summary>
-    '''lblClaimedModel control.
-    '''</summary>
-    '''<remarks>
-    '''Auto-generated field.
-    '''To modify move field declaration from designer file to code-behind file.
-    '''</remarks>
-    Protected WithEvents lblClaimedModel As Global.System.Web.UI.WebControls.Label
-    
-    '''<summary>
-    '''txtClaimedModel control.
-    '''</summary>
-    '''<remarks>
-    '''Auto-generated field.
-    '''To modify move field declaration from designer file to code-behind file.
-    '''</remarks>
-    Protected WithEvents txtClaimedModel As Global.System.Web.UI.WebControls.TextBox
-    
-    '''<summary>
-    '''lblEnrolledSerialNumber control.
-    '''</summary>
-    '''<remarks>
-    '''Auto-generated field.
-    '''To modify move field declaration from designer file to code-behind file.
-    '''</remarks>
-    Protected WithEvents lblEnrolledSerialNumber As Global.System.Web.UI.WebControls.Label
-    
-    '''<summary>
-    '''txtenrolledSerial control.
-    '''</summary>
-    '''<remarks>
-    '''Auto-generated field.
-    '''To modify move field declaration from designer file to code-behind file.
-    '''</remarks>
-    Protected WithEvents txtenrolledSerial As Global.System.Web.UI.WebControls.TextBox
-    
-    '''<summary>
-    '''lblClaimedSerialNumber control.
-    '''</summary>
-    '''<remarks>
-    '''Auto-generated field.
-    '''To modify move field declaration from designer file to code-behind file.
-    '''</remarks>
-    Protected WithEvents lblClaimedSerialNumber As Global.System.Web.UI.WebControls.Label
-    
-    '''<summary>
-    '''txtClaimedSerial control.
-    '''</summary>
-    '''<remarks>
-    '''Auto-generated field.
-    '''To modify move field declaration from designer file to code-behind file.
-    '''</remarks>
-    Protected WithEvents txtClaimedSerial As Global.System.Web.UI.WebControls.TextBox
-    
-    '''<summary>
-    '''lblEnrolledSKu control.
-    '''</summary>
-    '''<remarks>
-    '''Auto-generated field.
-    '''To modify move field declaration from designer file to code-behind file.
-    '''</remarks>
-    Protected WithEvents lblEnrolledSKu As Global.System.Web.UI.WebControls.Label
-    
-    '''<summary>
-    '''ddlEnrolledEquipSKU control.
-    '''</summary>
-    '''<remarks>
-    '''Auto-generated field.
-    '''To modify move field declaration from designer file to code-behind file.
-    '''</remarks>
-    Protected WithEvents ddlEnrolledEquipSKU As Global.System.Web.UI.WebControls.DropDownList
-    
-    '''<summary>
-    '''txtEnrolledSku control.
-    '''</summary>
-    '''<remarks>
-    '''Auto-generated field.
-    '''To modify move field declaration from designer file to code-behind file.
-    '''</remarks>
-    Protected WithEvents txtEnrolledSku As Global.System.Web.UI.WebControls.TextBox
-    
-    '''<summary>
-    '''lblClaimedSKu control.
-    '''</summary>
-    '''<remarks>
-    '''Auto-generated field.
-    '''To modify move field declaration from designer file to code-behind file.
-    '''</remarks>
-    Protected WithEvents lblClaimedSKu As Global.System.Web.UI.WebControls.Label
-    
-    '''<summary>
-    '''ddlClaimedEquipSKU control.
-    '''</summary>
-    '''<remarks>
-    '''Auto-generated field.
-    '''To modify move field declaration from designer file to code-behind file.
-    '''</remarks>
-    Protected WithEvents ddlClaimedEquipSKU As Global.System.Web.UI.WebControls.DropDownList
-    
-    '''<summary>
-    '''txtClaimedSku control.
-    '''</summary>
-    '''<remarks>
-    '''Auto-generated field.
-    '''To modify move field declaration from designer file to code-behind file.
-    '''</remarks>
-    Protected WithEvents txtClaimedSku As Global.System.Web.UI.WebControls.TextBox
+    Protected WithEvents ucClaimDeviceInfo As Global.Assurant.ElitaPlus.ElitaPlusWebApp.ClaimDeviceInformationController
     
     '''<summary>
     '''dvServiceCenter control.

@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
-<SavedWcfConfigurationInformation xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" Version="9.1" CheckSum="TDlnymDwcVRCmjhKUN4SqbqcvEs=">
+<SavedWcfConfigurationInformation xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" Version="9.1" CheckSum="ffUIp1Ww5mGyJaveo1xg75+piBI=">
   <bindingConfigurations>
-    <bindingConfiguration bindingType="customBinding" name="CustomBinding_IClaimRecordingService">
+    <bindingConfiguration bindingType="customBinding" name="CustomBinding_IClaimRecordingService1">
       <properties>
         <property path="/name" isComplexType="false" isExplicitlyDefined="true" clrType="System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
-          <serializedValue>CustomBinding_IClaimRecordingService</serializedValue>
+          <serializedValue>CustomBinding_IClaimRecordingService1</serializedValue>
         </property>
         <property path="/closeTimeout" isComplexType="false" isExplicitlyDefined="true" clrType="System.TimeSpan, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
           <serializedValue />
@@ -719,10 +719,10 @@
     </bindingConfiguration>
   </bindingConfigurations>
   <endpoints>
-    <endpoint name="CustomBinding_IClaimRecordingService" contract="ClaimRecordingService.IClaimRecordingService" bindingType="customBinding" address="http://localhost/ElitaClaimService/ClaimRecordingService.svc" bindingConfiguration="CustomBinding_IClaimRecordingService">
+    <endpoint name="CustomBinding_IClaimRecordingService2" contract="ClaimRecordingService.IClaimRecordingService" bindingType="customBinding" address="http://localhost:81/ElitaClaimService/ClaimRecordingService.svc" bindingConfiguration="CustomBinding_IClaimRecordingService1">
       <properties>
         <property path="/address" isComplexType="false" isExplicitlyDefined="true" clrType="System.Uri, System, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
-          <serializedValue>http://localhost/ElitaClaimService/ClaimRecordingService.svc</serializedValue>
+          <serializedValue>http://localhost:81/ElitaClaimService/ClaimRecordingService.svc</serializedValue>
         </property>
         <property path="/behaviorConfiguration" isComplexType="false" isExplicitlyDefined="false" clrType="System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
           <serializedValue />
@@ -731,7 +731,7 @@
           <serializedValue>customBinding</serializedValue>
         </property>
         <property path="/bindingConfiguration" isComplexType="false" isExplicitlyDefined="true" clrType="System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
-          <serializedValue>CustomBinding_IClaimRecordingService</serializedValue>
+          <serializedValue>CustomBinding_IClaimRecordingService1</serializedValue>
         </property>
         <property path="/contract" isComplexType="false" isExplicitlyDefined="true" clrType="System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
           <serializedValue>ClaimRecordingService.IClaimRecordingService</serializedValue>
@@ -794,7 +794,7 @@
           <serializedValue>False</serializedValue>
         </property>
         <property path="/name" isComplexType="false" isExplicitlyDefined="true" clrType="System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
-          <serializedValue>CustomBinding_IClaimRecordingService</serializedValue>
+          <serializedValue>CustomBinding_IClaimRecordingService2</serializedValue>
         </property>
         <property path="/kind" isComplexType="false" isExplicitlyDefined="false" clrType="System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
           <serializedValue />
@@ -804,10 +804,10 @@
         </property>
       </properties>
     </endpoint>
-    <endpoint name="CustomBinding_IClaimRecordingService1" contract="ClaimRecordingService.IClaimRecordingService" bindingType="customBinding" address="http://localhost/ElitaClaimService/ClaimRecordingService.svc/Secure" bindingConfiguration="CustomBinding_IClaimRecordingService">
+    <endpoint name="CustomBinding_IClaimRecordingService12" contract="ClaimRecordingService.IClaimRecordingService" bindingType="customBinding" address="http://localhost:81/ElitaClaimService/ClaimRecordingService.svc/Secure" bindingConfiguration="CustomBinding_IClaimRecordingService1">
       <properties>
         <property path="/address" isComplexType="false" isExplicitlyDefined="true" clrType="System.Uri, System, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
-          <serializedValue>http://localhost/ElitaClaimService/ClaimRecordingService.svc/Secure</serializedValue>
+          <serializedValue>http://localhost:81/ElitaClaimService/ClaimRecordingService.svc/Secure</serializedValue>
         </property>
         <property path="/behaviorConfiguration" isComplexType="false" isExplicitlyDefined="false" clrType="System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
           <serializedValue />
@@ -816,7 +816,7 @@
           <serializedValue>customBinding</serializedValue>
         </property>
         <property path="/bindingConfiguration" isComplexType="false" isExplicitlyDefined="true" clrType="System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
-          <serializedValue>CustomBinding_IClaimRecordingService</serializedValue>
+          <serializedValue>CustomBinding_IClaimRecordingService1</serializedValue>
         </property>
         <property path="/contract" isComplexType="false" isExplicitlyDefined="true" clrType="System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
           <serializedValue>ClaimRecordingService.IClaimRecordingService</serializedValue>
@@ -879,7 +879,7 @@
           <serializedValue>False</serializedValue>
         </property>
         <property path="/name" isComplexType="false" isExplicitlyDefined="true" clrType="System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
-          <serializedValue>CustomBinding_IClaimRecordingService1</serializedValue>
+          <serializedValue>CustomBinding_IClaimRecordingService12</serializedValue>
         </property>
         <property path="/kind" isComplexType="false" isExplicitlyDefined="false" clrType="System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
           <serializedValue />

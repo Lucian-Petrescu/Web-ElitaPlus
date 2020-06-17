@@ -1008,21 +1008,30 @@
             </td>
             <td style="height: 19px" width="16.66%">&nbsp;
                     <asp:TextBox ID="TextboxLossCostPercent" TabIndex="270" runat="server" Width="60px"
-                        SkinID="MediumTextBox"></asp:TextBox>
+                        SkinID="MediumTextBox"></asp:TextBox>&nbsp;
+                <asp:DropDownList ID="cboLossCostPercentSourceXcd" TabIndex="290" runat="server" Width="100px"
+                                  SkinID="SmallDropDown" Visible="False" onchange="javascript:DisableLossTextForDiffSelect();">
+                </asp:DropDownList>
             </td>
             <td style="height: 19px" align="right" width="16.66%">
                 <asp:Label ID="LabelProfitExpense" runat="server">PROFIT_PERCENT</asp:Label>
             </td>
             <td style="height: 19px" width="16.66%">&nbsp;
                     <asp:TextBox ID="TextboxProfitExpense" TabIndex="271" runat="server" Width="60px"
-                        SkinID="MediumTextBox"></asp:TextBox>
+                        SkinID="MediumTextBox"></asp:TextBox>&nbsp;
+                <asp:DropDownList ID="cboProfitExpenseSourceXcd" TabIndex="292" runat="server" Width="100px"
+                                  SkinID="SmallDropDown" Visible="False" onchange="javascript:DisableProfitTextForDiffSelect();">
+                </asp:DropDownList>
             </td>
             <td style="height: 19px" align="right" width="16.66%">
                 <asp:Label ID="LabelAdminExpense" runat="server">ADMINISTRATIVE_EXPENSE</asp:Label>
             </td>
             <td style="height: 19px" width="16.66%">&nbsp;
                     <asp:TextBox ID="TextboxAdminExpense" TabIndex="272" runat="server" Width="60px"
-                        SkinID="MediumTextBox"></asp:TextBox>
+                        SkinID="MediumTextBox"></asp:TextBox>&nbsp;
+                <asp:DropDownList ID="cboAdminExpenseSourceXcd" TabIndex="293" runat="server" Width="100px"
+                                  SkinID="SmallDropDown" Visible="False" onchange="javascript:DisableAdminTextForDiffSelect();">
+                </asp:DropDownList>
             </td>
         </tr>
         <tr>
@@ -1031,13 +1040,19 @@
             </td>
             <td>&nbsp;
                     <asp:TextBox ID="TextboxMarketingExpense" TabIndex="273" runat="server" Width="60px"
-                        SkinID="MediumTextBox"></asp:TextBox>
+                        SkinID="MediumTextBox"></asp:TextBox>&nbsp;
+                <asp:DropDownList ID="cboMarketingExpenseSourceXcd" TabIndex="294" runat="server" Width="100px"
+                                  SkinID="SmallDropDown" Visible="False" onchange="javascript:DisableMarketingTextForDiffSelect();">
+                </asp:DropDownList>
             </td>
             <td align="right">
                 <asp:Label ID="LabelCommPercent" runat="server">Comm. Percent</asp:Label>
             </td>
             <td>&nbsp;
-                    <asp:TextBox ID="TextboxCommPercent" TabIndex="274" runat="server" Width="60px" SkinID="MediumTextBox"></asp:TextBox>
+                    <asp:TextBox ID="TextboxCommPercent" TabIndex="274" runat="server" Width="60px" SkinID="MediumTextBox"></asp:TextBox>&nbsp;
+                <asp:DropDownList ID="cboCommPercentSourceXcd" TabIndex="291" runat="server" Width="100px"
+                                  SkinID="SmallDropDown" Visible="False" onchange="javascript:DisableCommTextForDiffSelect();">
+                </asp:DropDownList>
             </td>
             <td align="right"></td>
             <td></td>
@@ -1078,8 +1093,9 @@
             <td colspan="6" class="borderLeft"></td>
         </tr>
     </table>
-</asp:Content>
-<asp:Content ID="Content4" ContentPlaceHolderID="MessagePlaceHolder" runat="server">
+
+    </asp:Content>
+        <asp:Content ID="Content4" ContentPlaceHolderID="MessagePlaceHolder" runat="server">
 </asp:Content>
 <asp:Content ID="Content3" ContentPlaceHolderID="BodyPlaceHolder" runat="server">
 
@@ -1309,6 +1325,77 @@
     <input id="HiddenCertificateAuoNumGenConfirmation" type="hidden" runat="server" designtimedragdrop="261" />
 
     <script type="text/javascript" language="javascript">
+
+        function DisableLossTextForDiffSelect() {
+            var dList = document.getElementById('<%=cboLossCostPercentSourceXcd.ClientID%>');
+            var tBox = document.getElementById('<%=TextboxLossCostPercent.ClientID%>');
+            var selectedValue = dList.options[dList.selectedIndex].value;
+
+            if (selectedValue == 'ACCTBUCKETSOURCE-D') {
+                tBox.value = '0.0000';
+                tBox.disabled = true;
+            }
+            else {
+                tBox.disabled = false;
+            }
+        }
+
+        function DisableProfitTextForDiffSelect() {
+            var dList = document.getElementById('<%=cboProfitExpenseSourceXcd.ClientID%>');
+            var tBox = document.getElementById('<%=TextboxProfitExpense.ClientID%>');
+            var selectedValue = dList.options[dList.selectedIndex].value;
+
+            if (selectedValue == 'ACCTBUCKETSOURCE-D') {
+                tBox.value = '0.0000';
+                tBox.disabled = true;
+            }
+            else {
+                tBox.disabled = false;
+            }
+        }
+
+        function DisableAdminTextForDiffSelect() {
+            var dList = document.getElementById('<%=cboAdminExpenseSourceXcd.ClientID%>');
+            var tBox = document.getElementById('<%=TextboxAdminExpense.ClientID%>');
+            var selectedValue = dList.options[dList.selectedIndex].value;
+
+            if (selectedValue == 'ACCTBUCKETSOURCE-D') {
+                tBox.value = '0.0000';
+                tBox.disabled = true;
+            }
+            else {
+                tBox.disabled = false;
+            }
+        }
+
+        function DisableMarketingTextForDiffSelect() {
+            var dList = document.getElementById('<%=cboMarketingExpenseSourceXcd.ClientID%>');
+            var tBox = document.getElementById('<%=TextboxMarketingExpense.ClientID%>');
+            var selectedValue = dList.options[dList.selectedIndex].value;
+
+            if (selectedValue == 'ACCTBUCKETSOURCE-D') {
+                tBox.value = '0.0000';
+                tBox.disabled = true;
+            }
+            else {
+                tBox.disabled = false;
+            }
+        }
+
+        function DisableCommTextForDiffSelect() {
+            var dList = document.getElementById('<%=cboCommPercentSourceXcd.ClientID%>');
+            var tBox = document.getElementById('<%=TextboxCommPercent.ClientID%>');
+            var selectedValue = dList.options[dList.selectedIndex].value;
+
+            if (selectedValue == 'ACCTBUCKETSOURCE-D') {
+                tBox.value = '0.0000';
+                tBox.disabled = true;
+            }
+            else {
+                tBox.disabled = false;
+            }
+        }
+
         //Hide field
         if (document.getElementById('<%=cboCOINSURANCE_Code.ClientID%>')) {
             document.getElementById('<%=cboCOINSURANCE_Code.ClientID%>').style.display = 'none';
@@ -1358,7 +1445,7 @@
         function showProrateRateBasedOn() {
             var objcbo = document.getElementById('<%=cboProRataMethodId.ClientID%>');
             //GetListItemIDFromCode
-         if (objcbo.options[objcbo.selectedIndex].value == '<% =GetListItemIDFromCode("PRMETHOD", "NPR") %>' ||
+            if (objcbo.options[objcbo.selectedIndex].value == '<% =GetListItemIDFromCode("PRMETHOD", "NPR") %>' ||
                 objcbo.options[objcbo.selectedIndex].value == '<% =Guid.Empty %>') {
                 document.getElementById('<%=ddlDailyRateBasedOn.ClientID%>').style.display = "none";
                 document.getElementById('<%=lblDailyRateBasedOn.ClientID%>').style.display = "none";

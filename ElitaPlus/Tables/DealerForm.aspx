@@ -1169,7 +1169,21 @@ MasterPageFile="../Navigation/masters/ElitaBase.Master" %>
         <asp:DropDownList ID="ddlAllowCertCancellationWithClaim" runat="server" SkinID="MediumDropDown"></asp:DropDownList>
     </td>
     </tr>
-           
+    
+<tr>
+    <td align="right" nowrap="nowrap">
+    </td>
+    <td align="left" nowrap="nowrap">
+    </td>
+    <td align="right" nowrap="nowrap">
+        <asp:Label ID="lblAcctBucketsWithSourceXcd" runat="server">ALLOW_ACCT_BUCKETS_WITH_SOURCE_XCD</asp:Label>
+    </td>
+    <td align="left" nowrap="nowrap">
+        <asp:DropDownList ID="cboAcctBucketsWithSourceXcd" runat="server" SkinID="MediumDropDown"></asp:DropDownList>
+    </td>
+</tr>
+
+
 <tr> <td colspan="4" class="borderLeft"> 
     <div class="dataContainer">            
         <asp:Panel ID="EditPanel_WRITE" runat="server">

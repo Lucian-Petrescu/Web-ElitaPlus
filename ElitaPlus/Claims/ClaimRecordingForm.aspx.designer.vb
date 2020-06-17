@@ -284,6 +284,231 @@ Partial Public Class ClaimRecordingForm
     Protected WithEvents btnNewCertRegItem_WRITE As Global.System.Web.UI.WebControls.Button
 
     '''<summary>
+    '''divDeviceInfoContainer control.
+    '''</summary>
+    '''<remarks>
+    '''Auto-generated field.
+    '''To modify move field declaration from designer file to code-behind file.
+    '''</remarks>
+    Protected WithEvents divDeviceInfoContainer As Global.System.Web.UI.HtmlControls.HtmlGenericControl
+
+    '''<summary>
+    '''headerDeviceInfo control.
+    '''</summary>
+    '''<remarks>
+    '''Auto-generated field.
+    '''To modify move field declaration from designer file to code-behind file.
+    '''</remarks>
+    Protected WithEvents headerDeviceInfo As Global.System.Web.UI.HtmlControls.HtmlGenericControl
+
+    '''<summary>
+    '''lblModifyDvcInfo control.
+    '''</summary>
+    '''<remarks>
+    '''Auto-generated field.
+    '''To modify move field declaration from designer file to code-behind file.
+    '''</remarks>
+    Protected WithEvents lblModifyDvcInfo As Global.System.Web.UI.WebControls.Label
+
+    '''<summary>
+    '''lblDvcSelected control.
+    '''</summary>
+    '''<remarks>
+    '''Auto-generated field.
+    '''To modify move field declaration from designer file to code-behind file.
+    '''</remarks>
+    Protected WithEvents lblDvcSelected As Global.System.Web.UI.WebControls.Label
+
+    '''<summary>
+    '''lblDvcCorrected control.
+    '''</summary>
+    '''<remarks>
+    '''Auto-generated field.
+    '''To modify move field declaration from designer file to code-behind file.
+    '''</remarks>
+    Protected WithEvents lblDvcCorrected As Global.System.Web.UI.WebControls.Label
+
+    '''<summary>
+    '''lblDvcMake control.
+    '''</summary>
+    '''<remarks>
+    '''Auto-generated field.
+    '''To modify move field declaration from designer file to code-behind file.
+    '''</remarks>
+    Protected WithEvents lblDvcMake As Global.System.Web.UI.WebControls.Label
+
+    '''<summary>
+    '''lblDvcMakeValue control.
+    '''</summary>
+    '''<remarks>
+    '''Auto-generated field.
+    '''To modify move field declaration from designer file to code-behind file.
+    '''</remarks>
+    Protected WithEvents lblDvcMakeValue As Global.System.Web.UI.WebControls.Label
+
+    '''<summary>
+    '''ddlDvcMake control.
+    '''</summary>
+    '''<remarks>
+    '''Auto-generated field.
+    '''To modify move field declaration from designer file to code-behind file.
+    '''</remarks>
+    Protected WithEvents ddlDvcMake As Global.System.Web.UI.WebControls.DropDownList
+
+    '''<summary>
+    '''txtDvcMake control.
+    '''</summary>
+    '''<remarks>
+    '''Auto-generated field.
+    '''To modify move field declaration from designer file to code-behind file.
+    '''</remarks>
+    Protected WithEvents txtDvcMake As Global.System.Web.UI.WebControls.TextBox
+
+    '''<summary>
+    '''lblDvcModel control.
+    '''</summary>
+    '''<remarks>
+    '''Auto-generated field.
+    '''To modify move field declaration from designer file to code-behind file.
+    '''</remarks>
+    Protected WithEvents lblDvcModel As Global.System.Web.UI.WebControls.Label
+
+    '''<summary>
+    '''lblDvcModelValue control.
+    '''</summary>
+    '''<remarks>
+    '''Auto-generated field.
+    '''To modify move field declaration from designer file to code-behind file.
+    '''</remarks>
+    Protected WithEvents lblDvcModelValue As Global.System.Web.UI.WebControls.Label
+
+    '''<summary>
+    '''ddlDvcModel control.
+    '''</summary>
+    '''<remarks>
+    '''Auto-generated field.
+    '''To modify move field declaration from designer file to code-behind file.
+    '''</remarks>
+    Protected WithEvents ddlDvcModel As Global.System.Web.UI.WebControls.DropDownList
+
+    '''<summary>
+    '''txtDvcModel control.
+    '''</summary>
+    '''<remarks>
+    '''Auto-generated field.
+    '''To modify move field declaration from designer file to code-behind file.
+    '''</remarks>
+    Protected WithEvents txtDvcModel As Global.System.Web.UI.WebControls.TextBox
+
+    '''<summary>
+    '''lblDvcImei control.
+    '''</summary>
+    '''<remarks>
+    '''Auto-generated field.
+    '''To modify move field declaration from designer file to code-behind file.
+    '''</remarks>
+    Protected WithEvents lblDvcImei As Global.System.Web.UI.WebControls.Label
+
+    '''<summary>
+    '''lblDvcImeiValue control.
+    '''</summary>
+    '''<remarks>
+    '''Auto-generated field.
+    '''To modify move field declaration from designer file to code-behind file.
+    '''</remarks>
+    Protected WithEvents lblDvcImeiValue As Global.System.Web.UI.WebControls.Label
+
+    '''<summary>
+    '''txtDvcImei control.
+    '''</summary>
+    '''<remarks>
+    '''Auto-generated field.
+    '''To modify move field declaration from designer file to code-behind file.
+    '''</remarks>
+    Protected WithEvents txtDvcImei As Global.System.Web.UI.WebControls.TextBox
+
+    '''<summary>
+    '''lblDvcSerialNumber control.
+    '''</summary>
+    '''<remarks>
+    '''Auto-generated field.
+    '''To modify move field declaration from designer file to code-behind file.
+    '''</remarks>
+    Protected WithEvents lblDvcSerialNumber As Global.System.Web.UI.WebControls.Label
+
+    '''<summary>
+    '''lblDvcSerialNumberValue control.
+    '''</summary>
+    '''<remarks>
+    '''Auto-generated field.
+    '''To modify move field declaration from designer file to code-behind file.
+    '''</remarks>
+    Protected WithEvents lblDvcSerialNumberValue As Global.System.Web.UI.WebControls.Label
+
+    '''<summary>
+    '''txtDvcSerialNumber control.
+    '''</summary>
+    '''<remarks>
+    '''Auto-generated field.
+    '''To modify move field declaration from designer file to code-behind file.
+    '''</remarks>
+    Protected WithEvents txtDvcSerialNumber As Global.System.Web.UI.WebControls.TextBox
+
+    '''<summary>
+    '''lblDvcColor control.
+    '''</summary>
+    '''<remarks>
+    '''Auto-generated field.
+    '''To modify move field declaration from designer file to code-behind file.
+    '''</remarks>
+    Protected WithEvents lblDvcColor As Global.System.Web.UI.WebControls.Label
+
+    '''<summary>
+    '''lblDvcColorValue control.
+    '''</summary>
+    '''<remarks>
+    '''Auto-generated field.
+    '''To modify move field declaration from designer file to code-behind file.
+    '''</remarks>
+    Protected WithEvents lblDvcColorValue As Global.System.Web.UI.WebControls.Label
+
+    '''<summary>
+    '''txtDvcColor control.
+    '''</summary>
+    '''<remarks>
+    '''Auto-generated field.
+    '''To modify move field declaration from designer file to code-behind file.
+    '''</remarks>
+    Protected WithEvents txtDvcColor As Global.System.Web.UI.WebControls.TextBox
+
+    '''<summary>
+    '''lblDvcCapacity control.
+    '''</summary>
+    '''<remarks>
+    '''Auto-generated field.
+    '''To modify move field declaration from designer file to code-behind file.
+    '''</remarks>
+    Protected WithEvents lblDvcCapacity As Global.System.Web.UI.WebControls.Label
+
+    '''<summary>
+    '''lblDvcCapacityValue control.
+    '''</summary>
+    '''<remarks>
+    '''Auto-generated field.
+    '''To modify move field declaration from designer file to code-behind file.
+    '''</remarks>
+    Protected WithEvents lblDvcCapacityValue As Global.System.Web.UI.WebControls.Label
+
+    '''<summary>
+    '''txtDvcCapacity control.
+    '''</summary>
+    '''<remarks>
+    '''Auto-generated field.
+    '''To modify move field declaration from designer file to code-behind file.
+    '''</remarks>
+    Protected WithEvents txtDvcCapacity As Global.System.Web.UI.WebControls.TextBox
+
+    '''<summary>
     '''btn_Device_Cont control.
     '''</summary>
     '''<remarks>
@@ -831,6 +1056,15 @@ Partial Public Class ClaimRecordingForm
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
     Protected WithEvents btnLegacyContinue As Global.System.Web.UI.WebControls.Button
+
+    '''<summary>
+    '''hdnData control.
+    '''</summary>
+    '''<remarks>
+    '''Auto-generated field.
+    '''To modify move field declaration from designer file to code-behind file.
+    '''</remarks>
+    Protected WithEvents hdnData As Global.System.Web.UI.WebControls.HiddenField
 
     '''<summary>
     '''lnkCancel control.

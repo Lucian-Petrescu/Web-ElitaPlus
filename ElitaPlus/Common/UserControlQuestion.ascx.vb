@@ -322,7 +322,7 @@ Public Class UserControlQuestion
                     Dim question As ListOfValuesAnswer = DirectCast(DirectCast(e.Row.DataItem, Question).Answer, ListOfValuesAnswer)
                     Dim answer As AnswerValue
                     Dim listItems As List(Of ListItem) = New List(Of ListItem)()
-                    For Each answer In question.Answers.ToArray.OrderBy("SequenceNumber", LinqExtentions.SortDirection.Ascending)
+                    For Each answer In question.Answers.OrderBy(Function(s) s.SequenceNumber)
                         listItems.Add(New ListItem(answer.Text, answer.Code))
                     Next
                     If isReEvaulateOnChange Then

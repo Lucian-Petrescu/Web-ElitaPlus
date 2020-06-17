@@ -83,8 +83,11 @@
       <xs:element minOccurs="0" name="Memory" nillable="true" type="xs:string" />
       <xs:element minOccurs="0" name="Color" nillable="true" type="xs:string" />
       <xs:element minOccurs="0" name="SearchLimit" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="OrderType" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="CreationSource" nillable="true" type="xs:string" />
     </xs:sequence>
   </xs:complexType>
+  
   <xs:element name="SearchSKURequest" nillable="true" type="tns:SearchSKURequest" />
   <xs:complexType name="SearchSKUResponse">
     <xs:complexContent mixed="false">
