@@ -446,6 +446,8 @@
     <Compile Include="Tables\ClaimFulfillmentOrderDetailDAL.vb" />
     <Compile Include="Tables\ClaimBonusSettingsDAL.vb" />
     <Compile Include="Tables\ClaimStageDAL.vb" />
+    <Compile Include="Tables\CommPlanDAL.vb" />
+    <Compile Include="Tables\CommPlanDistributionDAL.vb" />
     <Compile Include="Tables\CommPlanExtractDAL.vb" />
     <Compile Include="Tables\CompanyRuleListDAL.vb" />
     <Compile Include="Tables\CompanyWorkQueueIssueDAL.vb" />
@@ -1498,6 +1500,8 @@
     <EmbeddedResource Include="Tables\AcctFinanceAutomation\AFAMaintainenceDAL.xml">
       <SubType>Designer</SubType>
     </EmbeddedResource>
+    <EmbeddedResource Include="Tables\CommPlanDAL.xml" />
+    <EmbeddedResource Include="Tables\CommPlanDistributionDAL.xml" />
     <Content Include="Tables\CoverageMfgDAL.xml" />
     <EmbeddedResource Include="Tables\ProductSpecialServiceDAL.xml" />
     <EmbeddedResource Include="Tables\SpecialServiceDAL.xml">
