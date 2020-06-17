@@ -54,7 +54,7 @@ Public Class CommPlan
 
     Protected Sub Load()
         Try
-            Dim dal As New CommissionPeriodDAL
+            Dim dal As New CommPlanDAL
             If Me.Dataset.Tables.IndexOf(dal.TABLE_NAME) < 0 Then
                 dal.LoadSchema(Me.Dataset)
             End If
@@ -70,7 +70,7 @@ Public Class CommPlan
 
     Protected Sub Load(ByVal id As Guid)
         Try
-            Dim dal As New CommissionPeriodDAL
+            Dim dal As New CommPlanDAL
             If Me._isDSCreator Then
                 If Not Me.Row Is Nothing Then
                     Me.Dataset.Tables(dal.TABLE_NAME).Rows.Remove(Me.Row)
@@ -299,15 +299,15 @@ Public Class CommPlan
             Dim oExpiration As Date
 
             '    If moRowExpiration Is Nothing Then
-            Dim oCommissionPeriodData As CommissionPeriodData = CType(oData, CommissionPeriodData)
-            Dim dal As New CommissionPeriodDAL
+            Dim oCommissionPeriodData As CommPlanData = CType(oData, CommPlanData)
+            Dim dal As New CommPlanDAL
             ds = dal.LoadExpiration(oCommissionPeriodData)
-            If ds.Tables(CommissionPeriodDAL.TABLE_NAME).Rows.Count = 0 Then
+            If ds.Tables(CommPlanDAL.TABLE_NAME).Rows.Count = 0 Then
                 ' oExpiration = CType(GenericConstants.INFINITE_DATE, Date)
                 oExpiration = GenericConstants.INFINITE_DATE
             Else
-                moRowExpiration = ds.Tables(CommissionPeriodDAL.TABLE_NAME).Rows(0)
-                oExpiration = CType(moRowExpiration(CommissionPeriodDAL.COL_NAME_MAX_EXPIRATION), Date)
+                moRowExpiration = ds.Tables(CommPlanDAL.TABLE_NAME).Rows(0)
+                oExpiration = CType(moRowExpiration(CommPlanDAL.COL_NAME_MAX_EXPIRATION), Date)
             End If
             '  Else
             '  oExpiration = CType(moRowExpiration(CommissionPeriodDAL.COL_NAME_MAX_EXPIRATION), Date)
@@ -323,14 +323,14 @@ Public Class CommPlan
             Dim nExpiration As Integer
 
             '   If moRowExpiration Is Nothing Then
-            Dim oCommissionPeriodData As CommissionPeriodData = CType(oData, CommissionPeriodData)
-            Dim dal As New CommissionPeriodDAL
+            Dim oCommissionPeriodData As CommPlanData = CType(oData, CommPlanData)
+            Dim dal As New CommPlanDAL
             ds = dal.LoadExpiration(oCommissionPeriodData)
-            If ds.Tables(CommissionPeriodDAL.TABLE_NAME).Rows.Count = 0 Then
+            If ds.Tables(CommPlanDAL.TABLE_NAME).Rows.Count = 0 Then
                 nExpiration = 0
             Else
-                moRowExpiration = ds.Tables(CommissionPeriodDAL.TABLE_NAME).Rows(0)
-                nExpiration = CType(moRowExpiration(CommissionPeriodDAL.COL_NAME_EXPIRATION_COUNT), Integer)
+                moRowExpiration = ds.Tables(CommPlanDAL.TABLE_NAME).Rows(0)
+                nExpiration = CType(moRowExpiration(CommPlanDAL.COL_NAME_EXPIRATION_COUNT), Integer)
             End If
             '  Else
             '   nExpiration = CType(moRowExpiration(CommissionPeriodDAL.COL_NAME_EXPIRATION_COUNT), Integer)
@@ -393,7 +393,7 @@ Public Class CommPlan
             MyBase.Save()
             'If Me._isDSCreator AndAlso Me.IsDirty AndAlso Me.Row.RowState <> DataRowState.Detached Then
             If Me._isDSCreator AndAlso Me.IsFamilyDirty AndAlso Me.Row.RowState <> DataRowState.Detached Then
-                Dim dal As New CommissionPeriodDAL
+                Dim dal As New CommPlanDAL
                 dal.UpdateFamily(Me.Dataset) 'New Code Added Manually
                 'Reload the Data from the DB
                 If Me.Row.RowState <> DataRowState.Detached Then
@@ -437,22 +437,22 @@ Public Class CommPlan
         End Try
     End Function
     
-    Public Shared Function GetRestrictMarkup(ByVal oCommPlanData As CommPlanData, ByVal Optional loggedinuserspecific As Boolean = True) As Boolean
-        Dim oContract As Contract
-        Dim oRestrictMarkupId, oYesRestrictMarkupId As Guid
+    'Public Shared Function GetRestrictMarkup(ByVal oCommPlanData As CommPlanData, ByVal Optional loggedinuserspecific As Boolean = True) As Boolean
+    '    Dim oContract As Contract
+    '    Dim oRestrictMarkupId, oYesRestrictMarkupId As Guid
 
-        With oCommPlanData
-            oContract = Contract.GetCurrentContract(.dealerId, loggedinuserspecific)
-        End With
-        If oContract Is Nothing Then
-            Dim errors() As ValidationError = {New ValidationError(COMMISSIONPERIODFORM_FORM001, GetType(CommissionPeriod), Nothing, Nothing, Nothing)}
-            Throw New BOValidationException(errors, GetType(CommissionPeriod).FullName)
-        End If
-        oRestrictMarkupId = oContract.RestrictMarkupId
-        oYesRestrictMarkupId = LookupListNew.GetIdFromCode(LookupListNew.LK_LANG_INDEPENDENT_YES_NO, "Y")
+    '    With oCommPlanData
+    '        oContract = Contract.GetCurrentContract(.dealerId, loggedinuserspecific)
+    '    End With
+    '    If oContract Is Nothing Then
+    '        Dim errors() As ValidationError = {New ValidationError(COMMISSIONPERIODFORM_FORM001, GetType(CommissionPeriod), Nothing, Nothing, Nothing)}
+    '        Throw New BOValidationException(errors, GetType(CommissionPeriod).FullName)
+    '    End If
+    '    oRestrictMarkupId = oContract.RestrictMarkupId
+    '    oYesRestrictMarkupId = LookupListNew.GetIdFromCode(LookupListNew.LK_LANG_INDEPENDENT_YES_NO, "Y")
 
-        Return oRestrictMarkupId.Equals(oYesRestrictMarkupId)
-    End Function
+    '    Return oRestrictMarkupId.Equals(oYesRestrictMarkupId)
+    'End Function
 
 #End Region
 

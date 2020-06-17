@@ -87,31 +87,40 @@ Namespace Tables
         Protected WithEvents BtnExpirationDate_WRITE As Global.System.Web.UI.WebControls.ImageButton
 
         '''<summary>
-        '''moRestrictDetailPanel2 control.
+        '''LabelCode control.
         '''</summary>
         '''<remarks>
         '''Auto-generated field.
         '''To modify move field declaration from designer file to code-behind file.
         '''</remarks>
-        Protected WithEvents moRestrictDetailPanel2 As Global.System.Web.UI.WebControls.Panel
+        Protected WithEvents LabelCode As Global.System.Web.UI.WebControls.Label
 
         '''<summary>
-        '''moComputeMethodLabel control.
+        '''TextBoxCode control.
         '''</summary>
         '''<remarks>
         '''Auto-generated field.
         '''To modify move field declaration from designer file to code-behind file.
         '''</remarks>
-        Protected WithEvents moComputeMethodLabel As Global.System.Web.UI.WebControls.Label
+        Protected WithEvents TextBoxCode As Global.System.Web.UI.WebControls.TextBox
 
         '''<summary>
-        '''moComputeMethodDropDown control.
+        '''LabelDescription control.
         '''</summary>
         '''<remarks>
         '''Auto-generated field.
         '''To modify move field declaration from designer file to code-behind file.
         '''</remarks>
-        Protected WithEvents moComputeMethodDropDown As Global.System.Web.UI.WebControls.DropDownList
+        Protected WithEvents LabelDescription As Global.System.Web.UI.WebControls.Label
+
+        '''<summary>
+        '''TextBoxDescription control.
+        '''</summary>
+        '''<remarks>
+        '''Auto-generated field.
+        '''To modify move field declaration from designer file to code-behind file.
+        '''</remarks>
+        Protected WithEvents TextBoxDescription As Global.System.Web.UI.WebControls.TextBox
 
         '''<summary>
         '''hdnSelectedTab control.

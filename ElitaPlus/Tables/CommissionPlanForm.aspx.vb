@@ -18,7 +18,7 @@ Namespace Tables
         Class MyState
             Public MyBo As CommPlan
             Public moCommTolerance As CommissionTolerance
-            Public moCommEntity As CommissionEntity
+            'Public moCommEntity As CommissionEntity
 
             Public moCommPlanDistList As CommPlanDistribution.AssocCommList
             Public moCommPlanDist As CommPlanDistribution
@@ -27,8 +27,8 @@ Namespace Tables
             'Public moCommPlanDistList As CommPlanDistribution.AssocCommList
             'Public moCommPlanDist As CommPlanDistribution
             Public moIsAssocCommDirty As Boolean = False
-            Public moCommPeriodEntity As CommissionPeriodEntity
-            Public moCommissionPeriodId As Guid = Guid.Empty
+            'Public moCommPeriodEntity As CommissionPeriodEntity
+            'Public moCommissionPeriodId As Guid = Guid.Empty
             Public moCommissionToleranceId As Guid = Guid.Empty
             Public moCommPlanId As Guid = Guid.Empty
             Public moCommPlanDistId As Guid = Guid.Empty
@@ -63,8 +63,10 @@ Namespace Tables
         End Property
 
         Private Sub SetStateProperties()
-            Me.State.moCommissionPeriodId = CType(Me.CallingParameters, Guid)
-            If Me.State.moCommissionPeriodId.Equals(Guid.Empty) Then
+            'Me.State.moCommissionPeriodId = CType(Me.CallingParameters, Guid)
+            Me.State.moCommPlanId = CType(Me.CallingParameters, Guid)
+            
+            If Me.State.moCommPlanId.Equals(Guid.Empty) Then
                 Me.State.IsPeriodNew = True
                 ClearPeriod()
                 SetPeriodButtonsState(True)
@@ -77,7 +79,7 @@ Namespace Tables
                 TheDealerControl.ChangeEnabledControlProperty(False)
             End If
             If Not TheDealerControl.SelectedGuid.Equals(Guid.Empty) Then
-                ControlMgr.SetVisibleControl(Me, moRestrictDetailPanel2, GetRestrictMarkup())
+                ' ControlMgr.SetVisibleControl(Me, moRestrictDetailPanel2, GetRestrictMarkup())
             End If
         End Sub
 
@@ -94,7 +96,9 @@ Namespace Tables
         Public Const DEALER_ID_PROPERTY As String = "DealerId"
         Public Const EFFECTIVE_DATE_PROPERTY As String = "EffectiveDate"
         Public Const EXPIRATION_DATE_PROPERTY As String = "ExpirationDate"
-        Public Const COMPUTE_METHOD_ID_PROPERTY As String = "ComputeMethodId"
+        'Public Const COMPUTE_METHOD_ID_PROPERTY As String = "ComputeMethodId"
+        Public Const CODE_PROPERTY As String = "Code"
+        Public Const DESCRIPTION_PROPERTY As String = "Description"
         Public Const PAGETITLE As String = "COMMISSION_BREAKDOWN"
         Public Const PAGETAB As String = "TABLES"
         Public Const Payee_Type_Dealer_Group As String = "1"
@@ -197,10 +201,12 @@ Namespace Tables
                     If Me.State.IsPeriodNew = True Then
                         ' For creating, inserting
                         Me.State.MyBo = New CommPlan
-                        Me.State.moCommissionPeriodId = Me.State.MyBo.Id
+                        'Me.State.moCommissionPeriodId = Me.State.MyBo.Id
+                        Me.State.moCommPlanId = Me.State.MyBo.Id                        
                     Else
                         ' For updating, deleting
-                        Me.State.MyBo = New CommPlan(Me.State.moCommissionPeriodId)
+                        'Me.State.MyBo = New CommPlan(Me.State.moCommissionPeriodId)
+                        Me.State.MyBo = New CommPlan(Me.State.moCommPlanId)
                     End If
                 End If
                 BindBoPropertiesToLabels(Me.State.MyBo)
@@ -356,8 +362,8 @@ Namespace Tables
 #Region "Handlers-Buttons"
 
         Private Sub GoBack()
-            Dim retType As New CommissionPeriodSearchForm.ReturnType(ElitaPlusPage.DetailPageCommand.Back,
-                                                                                Me.State.moCommissionPeriodId, Me.State.boChanged)
+            'Dim retType As New CommissionPeriodSearchForm.ReturnType(ElitaPlusPage.DetailPageCommand.Back, Me.State.moCommissionPeriodId, Me.State.boChanged)
+            Dim retType As New CommissionPeriodSearchForm.ReturnType(ElitaPlusPage.DetailPageCommand.Back, Me.State.moCommPlanId, Me.State.boChanged)
             Me.ReturnToCallingPage(retType)
         End Sub
 
@@ -441,13 +447,14 @@ Namespace Tables
 
         Private Sub CreateNew()
             Me.State.MyBo = Nothing
-            Me.State.moCommissionPeriodId = Guid.Empty
+            'Me.State.moCommissionPeriodId = Guid.Empty
+            Me.State.moCommPlanId = Guid.Empty
             Me.State.IsPeriodNew = True
             ClearPeriod()
             SetPeriodButtonsState(True)
             PopulatePeriod()
             TheDealerControl.ChangeEnabledControlProperty(True)
-            ControlMgr.SetVisibleControl(Me, moRestrictDetailPanel2, True)
+            'ControlMgr.SetVisibleControl(Me, moRestrictDetailPanel2, True)
             'TheDealerControl.ChangeEnabledControlProperty(True)
         End Sub
 
@@ -503,7 +510,7 @@ Namespace Tables
                 If Me.State.IsPeriodNew = True Then
                     PopulatePayeeType()
                 End If
-                ControlMgr.SetVisibleControl(Me, moRestrictDetailPanel2, GetRestrictMarkup())
+                'ControlMgr.SetVisibleControl(Me, moRestrictDetailPanel2, GetRestrictMarkup())
             Catch ex As Exception
                 Me.HandleErrors(ex, Me.MasterPage.MessageController)
             End Try
@@ -519,14 +526,18 @@ Namespace Tables
             Me.BindBOPropertyToLabel(oPeriod, DEALER_ID_PROPERTY, Me.TheDealerControl.CaptionLabel)
             Me.BindBOPropertyToLabel(oPeriod, EFFECTIVE_DATE_PROPERTY, moEffectiveLabel)
             Me.BindBOPropertyToLabel(oPeriod, EXPIRATION_DATE_PROPERTY, moExpirationLabel)
-            Me.BindBOPropertyToLabel(oPeriod, COMPUTE_METHOD_ID_PROPERTY, Me.moComputeMethodLabel)
+            'Me.BindBOPropertyToLabel(oPeriod, COMPUTE_METHOD_ID_PROPERTY, Me.moComputeMethodLabel)
+            Me.BindBOPropertyToLabel(oPeriod, CODE_PROPERTY, Me.LabelCode)
+            Me.BindBOPropertyToLabel(oPeriod, DESCRIPTION_PROPERTY, Me.LabelDescription)
         End Sub
 
         Public Sub ClearLabelsErrSign()
             Me.ClearLabelErrSign(Me.TheDealerControl.CaptionLabel)
             Me.ClearLabelErrSign(moEffectiveLabel)
             Me.ClearLabelErrSign(moExpirationLabel)
-            Me.ClearLabelErrSign(moComputeMethodLabel)
+            'Me.ClearLabelErrSign(moComputeMethodLabel)
+            Me.ClearLabelErrSign(LabelCode)
+            Me.ClearLabelErrSign(LabelDescription)
         End Sub
 #End Region
 
@@ -622,16 +633,17 @@ Namespace Tables
             'Dim dvComputeMethod As DataView = LookupListNew.DropdownLookupList(LookupListNew.LK_COMPUTE_METHOD_CODE, langId, True)
             'Me.BindListControlToDataView(Me.moComputeMethodDropDown, dvComputeMethod)
 
-            Dim ComputeMethodList As DataElements.ListItem() = CommonConfigManager.Current.ListManager.GetList(listCode:="MCM", languageCode:=Thread.CurrentPrincipal.GetLanguageCode())
-            Me.moComputeMethodDropDown.Populate(ComputeMethodList, New PopulateOptions() With
-            {
-                .AddBlankItem = True
-            })
+            'Dim ComputeMethodList As DataElements.ListItem() = CommonConfigManager.Current.ListManager.GetList(listCode:="MCM", languageCode:=Thread.CurrentPrincipal.GetLanguageCode())
+            'Me.moComputeMethodDropDown.Populate(ComputeMethodList, New PopulateOptions() With
+            '{
+            '    .AddBlankItem = True
+            '})
 
             'If Me.State.IsPeriodNew = True Then
             '    ThePeriod.p = LookupListNew.GetIdFromCode(LookupListNew.LK_COMPUTE_METHOD, COMPUTE_METHOD_COMPUTE_ON_NET)
             'End If
-            'Me.PopulateControlFromBOProperty(Me.moComputeMethodDropDown, ThePeriod.ComputeMethodId)
+            Me.PopulateControlFromBOProperty(Me.TextBoxCode, ThePeriod.Code)
+            Me.PopulateControlFromBOProperty(Me.TextBoxDescription, ThePeriod.Description)
         End Sub
 
         Private Sub PopulatePeriod()
@@ -700,14 +712,14 @@ Namespace Tables
             With oPeriod
                 ' DropDowns
                 .DealerId = TheDealerControl.SelectedGuid 'Me.GetSelectedItem(moDealerDrop_WRITE)
-                Me.PopulateBOProperty(oPeriod, COMPUTE_METHOD_ID_PROPERTY, Me.moComputeMethodDropDown)
-
+                'Me.PopulateBOProperty(oPeriod, COMPUTE_METHOD_ID_PROPERTY, Me.moComputeMethodDropDown)
+                Me.PopulateBOProperty(oPeriod, CODE_PROPERTY, Me.TextBoxCode)
+                Me.PopulateBOProperty(oPeriod, DESCRIPTION_PROPERTY, Me.TextBoxDescription)
                 ' Texts
                 Me.PopulateBOProperty(oPeriod, EFFECTIVE_DATE_PROPERTY, moEffectiveText_WRITE)
                 Me.PopulateBOProperty(oPeriod, EXPIRATION_DATE_PROPERTY, moExpirationText_WRITE)
 
             End With
-
 
             If Me.ErrCollection.Count > 0 Then
                 Throw New PopulateBOErrorException
@@ -883,7 +895,9 @@ Namespace Tables
                 EnableDisablePeriodEntity(True)
                 PopulatePeriodEntity()
                 TheDealerControl.ChangeEnabledControlProperty(False)
-                ControlMgr.SetEnableControl(Me, moComputeMethodDropDown, True)
+                'ControlMgr.SetEnableControl(Me, moComputeMethodDropDown, True)
+                ControlMgr.SetEnableControl(Me, TextBoxCode, True)
+                ControlMgr.SetEnableControl(Me, TextBoxDescription, True)
                 'Me.EnableDisableControls(moPeriodPanel_WRITE, False)
                 'SetGridSourceXcdLabelFromBo()
             End If
@@ -1027,7 +1041,7 @@ Namespace Tables
 
         Private Sub EnableRestrictMarkupDetail(ByVal bIsReadWrite As Boolean)
             ControlMgr.SetVisibleControl(Me, moRestrictDetailPanel, bIsReadWrite)
-            ControlMgr.SetVisibleControl(Me, moRestrictDetailPanel2, bIsReadWrite)
+            'ControlMgr.SetVisibleControl(Me, moRestrictDetailPanel2, bIsReadWrite)
             'moAllowedMarkupPctDetailLabel.Visible = bIsReadWrite
             'moAllowedMarkupPctDetailText.Visible = bIsReadWrite
             'moToleranceDetailLabel.Visible = bIsReadWrite

@@ -386,8 +386,7 @@
                     <td align="center" colspan="6"  class="borderLeft" width="30%">
                        <uc1:MultipleColumnDDLabelControl ID="multipleDropControl" runat="server"></uc1:MultipleColumnDDLabelControl>
                     </td>
-                </tr>
-                    
+                </tr>                    
                 <tr>
                     <td  align="right" class="borderLeft" width="10%">
                         *
@@ -408,18 +407,21 @@
                         <asp:ImageButton ID="BtnExpirationDate_WRITE" runat="server" ImageAlign="AbsMiddle"
                             ImageUrl="~/App_Themes/Default/Images/calendar.png"></asp:ImageButton>
                     </td>
-                    <td colspan ="2" width="40%">
-                    <asp:Panel ID="moRestrictDetailPanel2" runat="server">
-                    <table><tr>
-                           <td valign="middle" align="right">
-                                * <asp:Label ID="moComputeMethodLabel" runat="server" Font-Bold="False">COMPUTE_METHOD</asp:Label>:
-                           </td>
-                           <td>
-                                &nbsp;
-                                <asp:DropDownList ID="moComputeMethodDropDown" TabIndex="1" runat="server" Width="200px" AutoPostBack="True"></asp:DropDownList>
-                           </td>
-                    </tr></table>
-                    </asp:Panel>
+                    <td  align="right" class="borderLeft" width="10%">
+                        *
+                        <asp:Label ID="LabelCode" runat="server">Code</asp:Label>:&nbsp;
+                    </td>
+                   <td width="20%">&nbsp;
+                        <asp:TextBox ID="TextBoxCode" TabIndex="10" runat="server" MaxLength="20" SkinID="MediumTextBox" Width="150px"></asp:TextBox>                        
+                    </td>
+                    <td width="10%" align="right">
+                        *
+                        <asp:Label ID="LabelDescription" runat="server">Description</asp:Label>:&nbsp;
+                    </td>
+                    <td width="20%">
+                        &nbsp;
+                        <asp:TextBox ID="TextBoxDescription" TabIndex="10" runat="server" MaxLength="20" SkinID="MediumTextBox"
+                            Width="150px"></asp:TextBox>                        
                     </td>
                 </tr>
             </asp:Panel>
@@ -1000,37 +1002,8 @@
 				else
 				{
 				document.getElementById(cboName1).disabled=false;
-				}
-				
-		    }
-
-   /*    function resizeForm(item) {
-            var browseWidth, browseHeight;
-
-            if (document.layers) {
-                browseWidth = window.outerWidth;
-                browseHeight = window.outerHeight;
-            }
-            if (document.all) {
-                browseWidth = document.body.clientWidth;
-                browseHeight = document.body.clientHeight;
-            }
-
-            if (screen.width == "800" && screen.height == "600") {
-                newHeight = browseHeight - 380; //350
-            }
-            else {
-                newHeight = browseHeight - 410; //370;
-            }
-
-            item.style.height = String(newHeight) + "px";
-
-            item.style.width = String(browseWidth - 100) + "px";
-
-        }
-
-        resizeForm(document.getElementById("scroller"));
-        resizeForm(document.getElementById("scroller2"));	*/	
+				}				
+		    }   	
     </script>
 
  </asp:Content>
