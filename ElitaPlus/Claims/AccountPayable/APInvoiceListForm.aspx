@@ -181,7 +181,8 @@
                     <asp:BoundField DataField="paid_amount" HeaderText="PAID_AMOUNT" HtmlEncode="false"></asp:BoundField>
                     <asp:BoundField DataField="payment_date" HeaderText="PAYMENT_DATE" HtmlEncode="false"></asp:BoundField>
                     <asp:BoundField DataField="unmatched_line_count" HeaderText="UNMATCHED_LINES" HtmlEncode="false"></asp:BoundField>
-                    <asp:BoundField Visible="False" DataField="ap_invoice_header_id"></asp:BoundField>                    
+                    <asp:BoundField Visible="False" DataField="ap_invoice_header_id"></asp:BoundField> 
+                    <asp:BoundField Visible="False" DataField="payment_status_xcd"></asp:BoundField>   
                 </Columns>
                 <PagerSettings PageButtonCount="30" Mode="Numeric" Position="TopAndBottom" />
                 <PagerStyle />

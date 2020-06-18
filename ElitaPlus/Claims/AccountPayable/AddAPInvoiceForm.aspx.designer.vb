@@ -240,6 +240,15 @@ Namespace Claims.AccountPayable
         Protected WithEvents btnBack As Global.System.Web.UI.WebControls.Button
 
         '''<summary>
+        '''btnFinalize control.
+        '''</summary>
+        '''<remarks>
+        '''Auto-generated field.
+        '''To modify move field declaration from designer file to code-behind file.
+        '''</remarks>
+        Protected WithEvents btnFinalize As Global.System.Web.UI.WebControls.Button
+
+        '''<summary>
         '''btnApply_WRITE control.
         '''</summary>
         '''<remarks>

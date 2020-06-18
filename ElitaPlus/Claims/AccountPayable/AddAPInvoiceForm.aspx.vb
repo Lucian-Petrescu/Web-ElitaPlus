@@ -38,7 +38,7 @@ Namespace Claims.AccountPayable
         Private Const LineTypeControlName As String = "ddlLineType"
         Private Const ItemCodeControlName As String = "moVendorItemCodeText"
         Private Const ItemDescriptionControlName As String = "moVendorItemDescriptionText"
-        Private Const QuantityControlName As String = "moQuanitityText"
+        Private Const QuantityControlName As String = "moQuantityText"
         Private Const UnitPriceControlName As String = "moUnitPriceText"
         Private Const TotalControlName As String = "moTotalPriceText"
         Private Const UnitOfMeasurementControlName As String = "ddlUnitOfMeasurement"
@@ -63,7 +63,8 @@ Namespace Claims.AccountPayable
         'Invoice Header Default value
         Private Const Source As String = "MANNUAL"
         Private Const PaidAmount As Decimal = 0
-        Private Const PaymentStatusXcd As String = "APINVPYMTSTATUS-NOPYMT"
+        Public Const InvoiceStatusIncomplete As String = "APINVPYMTSTATUS-INCOMPLETE"
+        private Const InvoiceStatusComplete = "APINVPYMTSTATUS-NOPYMT"
         Private Const CurrencyIsoCode As String = "USD"
         Private Const ExchangeRate As Decimal = 1
         Private Const ApprovedXcd As String = "N"
@@ -96,6 +97,7 @@ Namespace Claims.AccountPayable
             Try
                 If callingPar = Nothing Then
                     State.IsNewInvoice = True
+                    ControlMgr.SetVisibleControl(Me, btnFinalize, False)
                     State.ApInvoiceHeaderBo = New ApInvoiceHeader
                     State.ApInvoiceLinesBo = New ApInvoiceLines
                 Else
@@ -103,9 +105,11 @@ Namespace Claims.AccountPayable
                     Dim tempGuid As Guid = callingPar
                     State.ApInvoiceHeaderBo = New ApInvoiceHeader(tempGuid)
                     State.ApInvoiceLinesBo = New ApInvoiceLines
-
+                    If Not State.ApInvoiceHeaderBo.PaymentStatusXcd = InvoiceStatusIncomplete Then
+                        SetFinalizedInvoiceControls()
+                    End If
                 End If
-                SetInvoiceHeaderControl()
+                    SetInvoiceHeaderControl()
             Catch ex As Exception
                 HandleErrors(ex, MasterPage.MessageController)
             End Try
@@ -198,6 +202,11 @@ Namespace Claims.AccountPayable
 
             ControlMgr.SetVisibleControl(Me, btnApply_WRITE, True)
             ControlMgr.SetVisibleControl(Me, btnBack, True)
+            If State.IsNewInvoice Then
+                ControlMgr.SetVisibleControl(Me, btnFinalize, False)
+            Else
+                ControlMgr.SetVisibleControl(Me, btnFinalize, True)
+            End If
 
         End Sub
 
@@ -206,10 +215,17 @@ Namespace Claims.AccountPayable
             ControlMgr.SetVisibleControl(Me, BtnCancelLine, Not isVisible)
             ControlMgr.SetVisibleControl(Me, BtnSaveLines, Not isVisible)
             ControlMgr.SetVisibleControl(Me, btnApply_WRITE, isVisible)
+            ControlMgr.SetVisibleControl(Me, btnFinalize, isVisible)
         End Sub
 
         Private Sub SetInvoiceHeaderControl()
             ControlMgr.SetEnableControl(Me, moInvoiceNumber, State.IsNewInvoice)
+        End Sub
+        Private Sub SetFinalizedInvoiceControls()
+            ControlMgr.SetVisibleControl(Me, btnFinalize, False)
+            ControlMgr.SetVisibleControl(Me, btnApply_WRITE, False)
+            ControlMgr.SetEnableControl(Me, InvoiceLinesGrid, False)
+            ControlMgr.SetVisibleControl(Me, BtnNewLine, False)
         End Sub
 
         Private Sub SetGridPageSize()
@@ -466,7 +482,7 @@ Namespace Claims.AccountPayable
                 PopulateBOProperty(State.ApInvoiceHeaderBo, "TermXcd", moAPInvoiceTerm, False, True)
                 State.ApInvoiceHeaderBo.Source = Source
                 State.ApInvoiceHeaderBo.PaidAmount = PaidAmount
-                State.ApInvoiceHeaderBo.PaymentStatusXcd = PaymentStatusXcd
+                State.ApInvoiceHeaderBo.PaymentStatusXcd = InvoiceStatusIncomplete
                 State.ApInvoiceHeaderBo.CurrencyIsoCode = CurrencyIsoCode
                 State.ApInvoiceHeaderBo.ExchangeRate = ExchangeRate
                 State.ApInvoiceHeaderBo.ApprovedXcd = ApprovedXcd
@@ -504,6 +520,9 @@ Namespace Claims.AccountPayable
                 InvoiceLinesGrid.PageIndex = NewCurrentPageIndex(InvoiceLinesGrid, CType(Session("recCount"), Int32), CType(cboPageSize.SelectedValue, Int32))
                 State.SelectedPageSize = CType(cboPageSize.SelectedValue, Integer)
                 PopulateApLinesGrid()
+                If Not State.ApInvoiceHeaderBo Is Nothing AndAlso Not State.ApInvoiceHeaderBo.PaymentStatusXcd = InvoiceStatusIncomplete Then
+                    SetFinalizedInvoiceControls()
+                End If
             Catch ex As Exception
                 HandleErrors(ex, MasterPage.MessageController)
             End Try
@@ -547,7 +566,7 @@ Namespace Claims.AccountPayable
                     PopulateApLinesGrid(ActionEdit)
                     State.PageIndex = InvoiceLinesGrid.PageIndex
                     SetGridControls(InvoiceLinesGrid, False)
-
+                    ControlMgr.SetVisibleControl(Me, btnFinalize, False)
                     Try
                         InvoiceLinesGrid.Rows(index).Focus()
                     Catch ex As Exception
@@ -703,17 +722,7 @@ Namespace Claims.AccountPayable
         Protected Sub SaveButton_WRITE_Click(sender As Object, e As EventArgs) Handles btnApply_WRITE.Click
             Try
                 PopulateBoFromForm()
-                If (State.ApInvoiceHeaderBo.IsDirty) Then
-                    State.ApInvoiceHeaderBo.SaveInvoiceHeader()
-                    State.IsAfterSave = True
-                    State.IsNewInvoice = False
-                    MasterPage.MessageController.AddSuccess(Message.SAVE_RECORD_CONFIRMATION)
-                    ReturnFromEditing()
-                Else
-                    MasterPage.MessageController.AddInformation(Message.MSG_RECORD_NOT_SAVED)
-                    ReturnFromEditing()
-                End If
-
+                SaveInvoiceHeader()
             Catch ex As Exception
                 HandleErrors(ex, MasterPage.MessageController)
             End Try
@@ -722,6 +731,22 @@ Namespace Claims.AccountPayable
             Try
                 ReturnToCallingPage()
             Catch ex As ThreadAbortException
+            Catch ex As Exception
+                HandleErrors(ex, MasterPage.MessageController)
+            End Try
+        End Sub
+        Private Sub btnFinalize_Click(sender As Object, e As EventArgs) Handles btnFinalize.Click
+            Try
+                If (MatchInvoice()) Then
+                    PopulateBoFromForm()
+                    State.ApInvoiceHeaderBo.PaymentStatusXcd = InvoiceStatusComplete
+                    SaveInvoiceHeader()
+                    SetFinalizedInvoiceControls()
+                    MasterPage.MessageController.AddSuccess(Message.MSG_ERR_INVOICE_AMOUNT_MATCHED_WITH_LINES)
+                Else
+                    MasterPage.MessageController.AddInformation(Message.MSG_ERR_INVOICE_AMOUNT_NOT_MATCHED_WITH_LINES)
+                End If
+
             Catch ex As Exception
                 HandleErrors(ex, MasterPage.MessageController)
             End Try
@@ -784,7 +809,52 @@ Namespace Claims.AccountPayable
 
 #End Region
 
-#Region "Database alls"
+#Region "Invoice Operation"
+        Private Function MatchInvoice() As Boolean
+            Dim invoiceLinesMatched As Boolean
+            Dim invoiceLineTotal As Decimal
+            Try
+                With State
+                    If Not .ApInvoiceLinesBo Is Nothing AndAlso Not .ApInvoiceHeaderBo.Id = Guid.Empty Then
+
+                        Dim invoiceLines = .ApInvoiceLinesBo.GetApInvoiceLines(.ApInvoiceHeaderBo.Id)
+
+                        For Each lineRow As DataRowView In invoiceLines
+                            invoiceLineTotal += Convert.ToDecimal(lineRow(ApInvoiceLines.TOTAL_PRICE_COL).ToString())
+                        Next
+
+                        If .ApInvoiceHeaderBo.InvoiceAmount = invoiceLineTotal Then
+                            invoiceLinesMatched = True
+                        End If
+
+                    End If
+                End With
+                Return invoiceLinesMatched
+            Catch ex As Exception
+                HandleErrors(ex, MasterPage.MessageController)
+            End Try
+
+        End Function
+
+        Private Sub SaveInvoiceHeader()
+            Try
+
+                If (State.ApInvoiceHeaderBo.IsDirty) Then
+                    State.ApInvoiceHeaderBo.SaveInvoiceHeader()
+                    State.IsAfterSave = True
+                    State.IsNewInvoice = False
+                    MasterPage.MessageController.AddSuccess(Message.SAVE_RECORD_CONFIRMATION)
+                    ReturnFromEditing()
+                Else
+                    MasterPage.MessageController.AddInformation(Message.MSG_RECORD_NOT_SAVED)
+                    ReturnFromEditing()
+                End If
+
+            Catch ex As Exception
+                HandleErrors(ex, MasterPage.MessageController)
+            End Try
+        End Sub
+
         Private Function SaveApInvoiceLine() As Boolean
             Dim bIsOk As Boolean = True
             Dim bIsDirty As Boolean
