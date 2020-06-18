@@ -96,6 +96,7 @@ Public Class ClaimWizardForm
     Public Const gridClaimCaseDeviceInfoPurchasedDate As Integer = 3
     Private Const LABEL_SERVICE_CENTER As String = "SERVICE_CENTER"
     Public Const SESSION_KEY_CLAIM_WIZARD_BACKUP_STATE As String = "SESSION_KEY_CLAIM_WIZARD_BACKUP_STATE"
+    Public Const ISSUE_CODE_CR_DEVICE_MIS As String = "CR_DEVICE_MIS"
 
 #End Region
 
@@ -2499,6 +2500,12 @@ Public Class ClaimWizardForm
                 With Me.ucClaimDeviceInfo
                     .thisPage = Me
                     .ClaimBO = CType(Me.State.ClaimBO, ClaimBase)
+                    For Each i As ClaimIssue In State.ClaimBO.ClaimIssuesList
+                        If i.IssueCode = ISSUE_CODE_CR_DEVICE_MIS And (i.StatusCode = Codes.CLAIMISSUE_STATUS__RESOLVED Or i.StatusCode = Codes.CLAIMISSUE_STATUS__REJECTED Or i.StatusCode = Codes.CLAIMISSUE_STATUS__WAIVED) Then
+                            .ShowDeviceEditImg = False
+                            Exit For
+                        End If
+                    Next
                 End With
             End If
         End With
