@@ -37,10 +37,19 @@ Public Class ClaimDeviceInformationController
         End Get
     End Property
 
+    Public Property ShowDeviceEditImg() As Boolean
+        Get
+            Return showGridEditImg
+        End Get
+        Set(ByVal Value As Boolean)
+            showGridEditImg = Value
+        End Set
+    End Property
+
 #End Region
 
 #Region "Constants"
-
+    Private showGridEditImg As Boolean = True
     Private Const UtiliutyEndPointName = "CustomBinding_IUtilityWcf"
     Private Const DATA_TEXT_FIELD_NAME_MANUFACTURER = "MANUFACTURER"
     Private Const DATA_TEXT_FIELD_NAME_MODEL = "MODEL"
@@ -101,7 +110,7 @@ Public Class ClaimDeviceInformationController
             If Not e.Row.DataItem Is Nothing And e.Row.RowType = DataControlRowType.DataRow Then
                 If CType(e.Row.FindControl(GRID_CTRL_NAME_LBL_EQUIPMENT_TYPE), Label).Text = GRID_DATA_EQUIPMENT_TYPE_VALUE Then
                     If Not e.Row.FindControl(GRID_CTRL_NAME_IMG_EDIT) Is Nothing Then
-                        CType(e.Row.FindControl(GRID_CTRL_NAME_IMG_EDIT), ImageButton).Visible = True
+                        CType(e.Row.FindControl(GRID_CTRL_NAME_IMG_EDIT), ImageButton).Visible = ShowDeviceEditImg
                     End If
                 End If
             End If
