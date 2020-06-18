@@ -204,7 +204,8 @@ Public Class ApInvoiceHeaderDAL
                         New DBHelper.DBHelperParameter(PAR_I_NAME_COMPANY_ID, row(COL_NAME_COMPANY_ID)),
                         New DBHelper.DBHelperParameter(PAR_I_NAME_VENDOR_ID, row(COL_NAME_VENDOR_ID)),
                         New DBHelper.DBHelperParameter("pi_" & updatedBy.ToLower(), row(updatedBy)),
-                        New DBHelper.DBHelperParameter(PAR_I_NAME_DEALER_ID, row(COL_NAME_DEALER_ID))
+                        New DBHelper.DBHelperParameter(PAR_I_NAME_DEALER_ID, row(COL_NAME_DEALER_ID)),
+                        New DBHelper.DBHelperParameter(PAR_I_NAME_PAYMENT_STATUS_XCD, row(COL_NAME_PAYMENT_STATUS_XCD))
                        }
             DBHelper.ExecuteSp(sqlStatement, inParameters, Nothing)
             row.AcceptChanges()

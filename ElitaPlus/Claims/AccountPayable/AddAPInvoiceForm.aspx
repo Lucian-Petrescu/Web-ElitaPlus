@@ -20,12 +20,24 @@ Theme="Default" %>
             }
         }
     
-        function GetTotalPrice(obj) {
+        function GetTotalPriceAfterUnitChange(obj) {
 
-            var quantity = document.getElementById(obj.id.replace('moUnitPriceText', 'moQuanitityText'));
+            var quantity = document.getElementById(obj.id.replace('moUnitPriceText', 'moQuantityText'));
             var objTotal = document.getElementById(obj.id.replace('moUnitPriceText', 'moTotalPriceText'));
             var total = round_num(obj.value * quantity.value, 2);
             objTotal.innerText = total;
+
+        }
+
+        function GetTotalPriceAfterQuantityChange(obj) {
+
+            var unit = document.getElementById(obj.id.replace('moQuantityText', 'moUnitPriceText'));
+            var objTotal = document.getElementById(obj.id.replace('moQuantityText', 'moTotalPriceText'));
+            if (unit.value !== "") {
+                var total = round_num(obj.value * unit.value, 2);
+                objTotal.innerText = total;
+            }
+            
 
         }
 
@@ -222,7 +234,8 @@ Theme="Default" %>
                                                 </asp:Label>
                                             </ItemTemplate>
                                             <EditItemTemplate>
-                                                <asp:TextBox ID="moQuanitityText" runat="server" Visible="True" Width="100%" onkeypress="return numericOnly(this)"></asp:TextBox>
+                                                <asp:TextBox ID="moQuantityText" runat="server" Visible="True" Width="100%" onkeypress="return numericOnly(this)" 
+                                                             onblur="return GetTotalPriceAfterQuantityChange(this)"></asp:TextBox>
                                             </EditItemTemplate>
                                         </asp:TemplateField>
 										<asp:TemplateField Visible="True" HeaderText="UNIT_PRICE">
@@ -233,7 +246,7 @@ Theme="Default" %>
                                             </ItemTemplate>
                                             <EditItemTemplate>
                                                 <asp:TextBox ID="moUnitPriceText" runat="server" Visible="True" Width="100%" onkeypress="return numericOnly(this)" 
-                                                 onblur="return GetTotalPrice(this)"></asp:TextBox>
+                                                 onblur="return GetTotalPriceAfterUnitChange(this)"></asp:TextBox>
                                             </EditItemTemplate>
                                         </asp:TemplateField>
 										<asp:TemplateField Visible="True" HeaderText="total_price">
@@ -301,10 +314,13 @@ Theme="Default" %>
 <div class="btnZone">
     <table width="100%">
         <tr>
-            <td width="50%">
+            <td width="30%">
                 <asp:Button ID="btnBack" runat="server" SkinID="AlternateLeftButton" Text="BACK"></asp:Button>
             </td>
-            <td width="50%" align="right">
+            <td width="40%" align="center">
+                <asp:Button ID="btnFinalize" runat="server" SkinID="PrimaryLeftButton" Text="FINALIZEINVOICE"></asp:Button>
+            </td>
+            <td width="30%" align="right">
                 <asp:Button ID="btnApply_WRITE" runat="server" SkinID="PrimaryLeftButton" Text="SAVE"  />&nbsp;
             </td>
         </tr>

@@ -27,6 +27,7 @@ Partial Class APInvoiceListForm
     Public Const GRID_COL_PYMT_DATE_IDX As Integer = 9
     Public Const GRID_COL_UNMATCHED_LINES_IDX As Integer = 10
     Public Const GRID_COL_INVOICE_HEADER_ID_IDX As Integer = 11
+    Public Const GRID_COL_PAYMENT_STATUS_XCD As Integer = 12
 
     Public Const MAX_LIMIT As Integer = 100
 
@@ -650,6 +651,7 @@ Partial Class APInvoiceListForm
 
                 'populate the id field
                 PopulateControlFromBOProperty(e.Row.Cells(GRID_COL_INVOICE_HEADER_ID_IDX), dvRow(ApInvoiceHeader.APInvoiceSearchDV.COL_INVOICE_HEADER_ID))
+                PopulateControlFromBOProperty(e.Row.Cells(GRID_COL_PAYMENT_STATUS_XCD), dvRow(ApInvoiceHeader.APInvoiceSearchDV.COL_PAYMENT_STATUS_XCD))
 
             End If
         Catch ex As Exception
@@ -683,8 +685,8 @@ Partial Class APInvoiceListForm
 
                 invoiceHeaderId = Grid.Rows(rowIndex).Cells(GRID_COL_INVOICE_HEADER_ID_IDX).Text
                 Me.State.SelectedInvoiceId = New Guid(invoiceHeaderId)
-                If Grid.Rows(rowIndex).Cells(GRID_COL_SOURCE_IDX).Text = AddApInvoiceForm.InvoiceSource Then
-                    callPage(AddApInvoiceForm.URL, Me.State.SelectedInvoiceId)
+                If Grid.Rows(rowIndex).Cells(GRID_COL_PAYMENT_STATUS_XCD).Text = AddApInvoiceForm.InvoiceStatusIncomplete Then
+                    callPage(AddApInvoiceForm.Url, Me.State.SelectedInvoiceId)
                 Else
                     'calling AP invoice detail pages
                     callPage(APInvoiceDetailForm.URL, Me.State.SelectedInvoiceId)

@@ -562,7 +562,7 @@ Public Class ApInvoiceHeader
         Public Const COL_VENDOR As String = "vendor"
         Public Const COL_VENDOR_ADDRESS As String = "vendor_address"
         Public Const COL_VENDOR_ID As String = "vendor_id"
-
+        Public Const COL_PAYMENT_STATUS_XCD As String = "payment_status_xcd"
         Public Const COL_TOTAL_COUNT As String = "total_count"
         Public Sub New(ByVal table As DataTable)
             MyBase.New(table)
