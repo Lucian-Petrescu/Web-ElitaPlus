@@ -20,12 +20,10 @@ Namespace Tables
             Public moCommTolerance As CommissionTolerance
             'Public moCommEntity As CommissionEntity
 
-            Public moCommPlanDistList As CommPlanDistribution.AssocCommList
+            Public moCommPlanDistList As CommPlanDistribution.CommPlanDistList
             Public moCommPlanDist As CommPlanDistribution
             'Public moAssocCommList As AssociateCommissions.AssocCommList
-            'Public moAssocComm As AssociateCommissions
-            'Public moCommPlanDistList As CommPlanDistribution.AssocCommList
-            'Public moCommPlanDist As CommPlanDistribution
+            'Public moAssocComm As AssociateCommissions            
             Public moIsAssocCommDirty As Boolean = False
             'Public moCommPeriodEntity As CommissionPeriodEntity
             'Public moCommissionPeriodId As Guid = Guid.Empty
@@ -622,25 +620,12 @@ Namespace Tables
 
         End Sub
 
-        Private Sub PopulateDates()
+        Private Sub PopulateDatesFromBO()
             Me.PopulateControlFromBOProperty(moEffectiveText_WRITE, ThePeriod.EffectiveDate)
             Me.PopulateControlFromBOProperty(moExpirationText_WRITE, ThePeriod.ExpirationDate)
         End Sub
 
-        Private Sub PupulateComputeMethod()
-            'Dim langId As Guid = ElitaPlusIdentity.Current.ActiveUser.LanguageId
-            'Dim dvComputeMethod As DataView = LookupListNew.DropdownLookupList(LookupListNew.LK_COMPUTE_METHOD_CODE, langId, True)
-            'Me.BindListControlToDataView(Me.moComputeMethodDropDown, dvComputeMethod)
-
-            'Dim ComputeMethodList As DataElements.ListItem() = CommonConfigManager.Current.ListManager.GetList(listCode:="MCM", languageCode:=Thread.CurrentPrincipal.GetLanguageCode())
-            'Me.moComputeMethodDropDown.Populate(ComputeMethodList, New PopulateOptions() With
-            '{
-            '    .AddBlankItem = True
-            '})
-
-            'If Me.State.IsPeriodNew = True Then
-            '    ThePeriod.p = LookupListNew.GetIdFromCode(LookupListNew.LK_COMPUTE_METHOD, COMPUTE_METHOD_COMPUTE_ON_NET)
-            'End If
+        Private Sub PupulateCodeDescFromBO()
             Me.PopulateControlFromBOProperty(Me.TextBoxCode, ThePeriod.Code)
             Me.PopulateControlFromBOProperty(Me.TextBoxDescription, ThePeriod.Description)
         End Sub
@@ -648,10 +633,10 @@ Namespace Tables
         Private Sub PopulatePeriod()
             Try
                 PopulateDealer()
-                PopulateDates()
+                PopulateDatesFromBO()
                 EnableDateFields()
                 PopulateTolerance()
-                PupulateComputeMethod()
+                PupulateCodeDescFromBO()
                 If Me.State.IsPeriodNew = False Then
                     PopulatePayeeType()
                 End If

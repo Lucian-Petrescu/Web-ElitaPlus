@@ -295,12 +295,12 @@ Public Class CommPlanDistribution
     Private Shared Function GetAssocCommList(ByVal parent As CommissionTolerance, ByVal id As Guid) As DataTable
 
         Try
-            If Not parent.IsChildrenCollectionLoaded(GetType(AssocCommList)) Then
+            If Not parent.IsChildrenCollectionLoaded(GetType(CommPlanDistList)) Then
                 Dim dal As New CommPlanDistributionDAL
                 dal.LoadList(id, parent.Dataset)
-                parent.AddChildrenCollection(GetType(AssocCommList))
+                parent.AddChildrenCollection(GetType(CommPlanDistList))
             End If
-            'Return New AssocCommList(parent)
+            'Return New CommPlanDistList(parent)
             Return parent.Dataset.Tables(CommPlanDistributionDAL.TABLE_NAME)
         Catch ex As Assurant.ElitaPlus.DALObjects.DataBaseAccessException
             Throw New DataBaseAccessException(DataBaseAccessException.DatabaseAccessErrorType.ReadErr, ex)
@@ -374,7 +374,7 @@ Public Class CommPlanDistribution
 
 #End Region
 #Region "List Methods"
-    Public Class AssocCommList
+    Public Class CommPlanDistList
         Inherits BusinessObjectListBase
         Public Sub New(ByVal parent As Object, ByVal id As Guid)
             MyBase.New(GetAssocCommList(parent, id), GetType(CommPlanDistribution), parent)
