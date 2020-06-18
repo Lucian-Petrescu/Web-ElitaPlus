@@ -331,18 +331,26 @@ Namespace Tables
         Private Sub btnNew_Click(ByVal sender As Object, ByVal e As System.EventArgs) Handles btnNew.Click
             Try
                 Me.State.moDealerId = moDealerMultipleDrop.SelectedGuid 'Me.GetSelectedItem(moDealerDrop)
-                If chkIsCommProdCode.Checked Then
-                    Me.State.moCommPCodeId = Guid.Empty
-                    Me.State.moChkIsCommProdCode = True
-                    Me.State.mnPageIndex = GridCommPrd.PageIndex
-                    Me.State.moProductCodeId = Me.GetSelectedItem(moProductDrop)
-                    Me.callPage(CommPCodeForm.URL, Me.State.moCommPCodeId)
+                If Not HasDealerConfigeredForSourceXcd Then
+                    If chkIsCommProdCode.Checked Then
+                        Me.State.moCommPCodeId = Guid.Empty
+                        Me.State.moChkIsCommProdCode = True
+                        Me.State.mnPageIndex = GridCommPrd.PageIndex
+                        Me.State.moProductCodeId = Me.GetSelectedItem(moProductDrop)
+                        Me.callPage(CommPCodeForm.URL, Me.State.moCommPCodeId)
+                    Else
+                        Me.State.moCommissionPeriodId = Guid.Empty
+                        Me.State.moChkIsCommProdCode = False
+                        Me.State.mnPageIndex = Grid.PageIndex
+                        Me.State.moProductCodeId = Guid.Empty
+                        Me.callPage(CommissionPeriodForm.URL, Me.State.moCommissionPeriodId)
+                    End If
                 Else
-                    Me.State.moCommissionPeriodId = Guid.Empty
+                    Me.State.moCommPlanId = Guid.Empty
                     Me.State.moChkIsCommProdCode = False
-                    Me.State.mnPageIndex = Grid.PageIndex
+                    Me.State.mnPageIndex = GridCommPlan.PageIndex
                     Me.State.moProductCodeId = Guid.Empty
-                    Me.callPage(CommissionPeriodForm.URL, Me.State.moCommissionPeriodId)
+                    Me.callPage(CommissionPlanForm.URL, Me.State.moCommPlanId)
                 End If
             Catch ex As Exception
                 Me.HandleErrors(ex, Me.MasterPage.MessageController)
@@ -512,7 +520,7 @@ Namespace Tables
         End Sub
 
 
-         Protected Sub GridCommPlan_RowCreated(sender As Object, e As GridViewRowEventArgs) Handles GridCommPlan.RowCreated
+        Protected Sub GridCommPlan_RowCreated(sender As Object, e As GridViewRowEventArgs) Handles GridCommPlan.RowCreated
             Try
                 BaseItemCreated(sender, e)
             Catch ex As Exception

@@ -1,6 +1,6 @@
 '************* THIS CODE HAS BEEN GENERATED FROM TEMPLATE DALObject.cst (11/18/2004)********************
 
-#Region "CommissionPeriodData"
+#Region "CommPlanData"
 
 Public Class CommPlanData
 
@@ -26,8 +26,7 @@ Public Class CommPlanDAL
     Public Const COL_NAME_CODE As String = "code"
     Public Const COL_NAME_DESCRIPTION As String = "description"
     Public Const COL_NAME_EFFECTIVE_DATE As String = "effective_date"
-    Public Const COL_NAME_EXPIRATION_DATE As String = "expiration_date"
-    Public Const COL_NAME_COMPUTE_METHOD_ID As String = "compute_method_id"
+    Public Const COL_NAME_EXPIRATION_DATE As String = "expiration_date"    
     Public Const COL_NAME_DEALER_NAME As String = "dealer_name"
     
 
@@ -78,12 +77,12 @@ Public Class CommPlanDAL
         End Try
     End Sub
 
-    Public Function LoadList(ByVal oCommissionPeriodData As CommPlanData, ByVal activeUserId As Guid) As DataSet
+    Public Function LoadList(ByVal oCommPlanData As CommPlanData, ByVal activeUserId As Guid) As DataSet
         Try
             Dim selectStmt As String = Me.Config("/SQL/LOAD_LIST")
             Dim inparameters() As DBHelper.DBHelperParameter
 
-            With oCommissionPeriodData
+            With oCommPlanData
 
                 If .dealerId.Equals(Guid.Empty) Then
                     inparameters = New DBHelper.DBHelperParameter() {New DBHelper.DBHelperParameter(COL_NAME_DEALER_ID, GenericConstants.WILDCARD), 
@@ -108,12 +107,12 @@ Public Class CommPlanDAL
         End Try
     End Function
 
-    Public Function LoadExpiration(ByVal oCommissionPeriodData As CommPlanData) As DataSet
+    Public Function LoadExpiration(ByVal oCommPlanData As CommPlanData) As DataSet
         Try
             Dim selectStmt As String = Me.Config("/SQL/MAX_EXPIRATION")
             Dim inparameters() As DBHelper.DBHelperParameter
 
-            With oCommissionPeriodData
+            With oCommPlanData
                 inparameters = New DBHelper.DBHelperParameter() {New DBHelper.DBHelperParameter(COL_NAME_DEALER_ID0, .dealerId.ToByteArray),
                                                                  New DBHelper.DBHelperParameter(COL_NAME_DEALER_ID1, .dealerId.ToByteArray)}
             End With
@@ -139,9 +138,10 @@ Public Class CommPlanDAL
     Public Overloads Sub UpdateFamily(ByVal familyDataset As DataSet, Optional ByVal Transaction As IDbTransaction = Nothing)
 
         'Dim addressDAL As New addressDAL
-        Dim commPeriodEntityDAL As New CommissionPeriodEntityDAL
-        Dim assocCommDAL As New AssociateCommissionsDAL
-        Dim commToleranceDAL As New CommissionToleranceDAL
+        'Dim commPeriodEntityDAL As New CommissionPeriodEntityDAL
+        'Dim assocCommDAL As New AssociateCommissionsDAL
+        'Dim commToleranceDAL As New CommissionToleranceDAL
+        'Dim commPlanDistDAL As New CommPlanDistributionDAL  
 
         Dim tr As IDbTransaction = Transaction
         If tr Is Nothing Then

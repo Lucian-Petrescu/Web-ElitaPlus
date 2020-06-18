@@ -96,7 +96,7 @@ Namespace Tables
         Public Const DEALER_ID_PROPERTY As String = "DealerId"
         Public Const EFFECTIVE_DATE_PROPERTY As String = "EffectiveDate"
         Public Const EXPIRATION_DATE_PROPERTY As String = "ExpirationDate"
-        'Public Const COMPUTE_METHOD_ID_PROPERTY As String = "ComputeMethodId"
+        Public Const REFERENCE_SOURCE_PROPERTY As String = "ReferenceSource"
         Public Const CODE_PROPERTY As String = "Code"
         Public Const DESCRIPTION_PROPERTY As String = "Description"
         Public Const PAGETITLE As String = "COMMISSION_BREAKDOWN"
@@ -526,7 +526,6 @@ Namespace Tables
             Me.BindBOPropertyToLabel(oPeriod, DEALER_ID_PROPERTY, Me.TheDealerControl.CaptionLabel)
             Me.BindBOPropertyToLabel(oPeriod, EFFECTIVE_DATE_PROPERTY, moEffectiveLabel)
             Me.BindBOPropertyToLabel(oPeriod, EXPIRATION_DATE_PROPERTY, moExpirationLabel)
-            'Me.BindBOPropertyToLabel(oPeriod, COMPUTE_METHOD_ID_PROPERTY, Me.moComputeMethodLabel)
             Me.BindBOPropertyToLabel(oPeriod, CODE_PROPERTY, Me.LabelCode)
             Me.BindBOPropertyToLabel(oPeriod, DESCRIPTION_PROPERTY, Me.LabelDescription)
         End Sub
@@ -712,7 +711,7 @@ Namespace Tables
             With oPeriod
                 ' DropDowns
                 .DealerId = TheDealerControl.SelectedGuid 'Me.GetSelectedItem(moDealerDrop_WRITE)
-                'Me.PopulateBOProperty(oPeriod, COMPUTE_METHOD_ID_PROPERTY, Me.moComputeMethodDropDown)
+                Me.PopulateBOProperty(oPeriod, REFERENCE_SOURCE_PROPERTY, "ELP_DEALER")
                 Me.PopulateBOProperty(oPeriod, CODE_PROPERTY, Me.TextBoxCode)
                 Me.PopulateBOProperty(oPeriod, DESCRIPTION_PROPERTY, Me.TextBoxDescription)
                 ' Texts

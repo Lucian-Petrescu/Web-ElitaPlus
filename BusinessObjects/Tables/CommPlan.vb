@@ -197,16 +197,16 @@ Public Class CommPlan
 
 
     <ValueMandatory("")> _
-    Public Property ReferenceSource() As Guid
+    Public Property ReferenceSource() As String
         Get
             CheckDeleted()
             If Row(CommPlanDAL.COL_NAME_RFERENCE_SOURCE) Is DBNull.Value Then
                 Return Nothing
             Else
-                Return New Guid(CType(Row(CommPlanDAL.COL_NAME_RFERENCE_SOURCE), Byte()))
+                Return CType(Row(CommPlanDAL.COL_NAME_RFERENCE_SOURCE), String)
             End If
         End Get
-        Set(ByVal Value As Guid)
+        Set(ByVal Value As String)
             CheckDeleted()
             Me.SetValue(CommPlanDAL.COL_NAME_RFERENCE_SOURCE, Value)
         End Set
@@ -299,9 +299,9 @@ Public Class CommPlan
             Dim oExpiration As Date
 
             '    If moRowExpiration Is Nothing Then
-            Dim oCommissionPeriodData As CommPlanData = CType(oData, CommPlanData)
+            Dim oCommPlanData As CommPlanData = CType(oData, CommPlanData)
             Dim dal As New CommPlanDAL
-            ds = dal.LoadExpiration(oCommissionPeriodData)
+            ds = dal.LoadExpiration(oCommPlanData)
             If ds.Tables(CommPlanDAL.TABLE_NAME).Rows.Count = 0 Then
                 ' oExpiration = CType(GenericConstants.INFINITE_DATE, Date)
                 oExpiration = GenericConstants.INFINITE_DATE
@@ -323,9 +323,9 @@ Public Class CommPlan
             Dim nExpiration As Integer
 
             '   If moRowExpiration Is Nothing Then
-            Dim oCommissionPeriodData As CommPlanData = CType(oData, CommPlanData)
+            Dim oCommPlanData As CommPlanData = CType(oData, CommPlanData)
             Dim dal As New CommPlanDAL
-            ds = dal.LoadExpiration(oCommissionPeriodData)
+            ds = dal.LoadExpiration(oCommPlanData)
             If ds.Tables(CommPlanDAL.TABLE_NAME).Rows.Count = 0 Then
                 nExpiration = 0
             Else
@@ -472,11 +472,11 @@ Public Class CommPlan
 
     ReadOnly Property IMaxExpiration() As DateType Implements IValidateIntervalDate.IMaxExpiration
         Get
-            Dim oCommissionPeriodData As New CommissionPeriodData
-            With oCommissionPeriodData
+            Dim oCommPlanData As New CommPlanData
+            With oCommPlanData
                 .dealerId = Me.DealerId
             End With
-            Return New DateType(MaxExpiration(oCommissionPeriodData))
+            Return New DateType(MaxExpiration(oCommPlanData))
         End Get
     End Property
 
