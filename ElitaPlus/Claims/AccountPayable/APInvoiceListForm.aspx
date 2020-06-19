@@ -132,17 +132,13 @@
                 <tr id="trPageSize" runat="server">
                     <td class="bor" align="left">
                         <asp:Label ID="lblPageSize" runat="server">Page_Size</asp:Label>:&nbsp;
-                        <asp:DropDownList ID="cboPageSize" runat="server" AutoPostBack="true" Width="50px" SkinID="SmallDropDown">
-                            <asp:ListItem Value="5">5</asp:ListItem>
-                            <asp:ListItem Value="10">10</asp:ListItem>
-                            <asp:ListItem Value="15">15</asp:ListItem>
-                            <asp:ListItem Value="20">20</asp:ListItem>
-                            <asp:ListItem Value="25" Selected="True">25</asp:ListItem>
-                            <asp:ListItem Value="30">30</asp:ListItem>
-                            <asp:ListItem Value="35">35</asp:ListItem>
-                            <asp:ListItem Value="40">40</asp:ListItem>
-                            <asp:ListItem Value="45">45</asp:ListItem>
-                            <asp:ListItem Value="50">50</asp:ListItem>
+                        <asp:DropDownList ID="cboPageSize" runat="server" AutoPostBack="true" Width="60px" SkinID="SmallDropDown">
+                            <asp:ListItem Value="50" Selected="True">50</asp:ListItem>
+                            <asp:ListItem Value="100">100</asp:ListItem>
+                            <asp:ListItem Value="200">200</asp:ListItem>
+                            <asp:ListItem Value="400">400</asp:ListItem>
+                            <asp:ListItem Value="500">500</asp:ListItem>
+                            <asp:ListItem Value="1000">1000</asp:ListItem>
                         </asp:DropDownList>
                     </td>
                     <td class="bor" align="right">
