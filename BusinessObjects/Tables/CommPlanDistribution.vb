@@ -181,7 +181,7 @@ Public Class CommPlanDistribution
 
     Dim _MarkupTotal As DecimalType
     '<ValidNumericRange("", Max:=100, Min:=100), ValidMarkup("")>
-    <ValidMarkup("")>
+    '<ValidMarkup("")>
     Public Property MarkupTotal() As DecimalType
         Get
             Return _MarkupTotal
@@ -193,7 +193,7 @@ Public Class CommPlanDistribution
 
     Dim _commTotal As DecimalType
     '<ValidNumericRange("", Max:=100, Min:=100), ValidComm("")>
-    <ValidComm("")>
+    '<ValidComm("")>
     Public Property CommTotal() As DecimalType
         Get
             Return _commTotal
@@ -241,8 +241,9 @@ Public Class CommPlanDistribution
         Try
             MyBase.Save()
             If Me._isDSCreator AndAlso Me.IsDirty AndAlso Me.Row.RowState <> DataRowState.Detached Then
-                Dim dal As New AssociateCommissionsDAL
-                dal.Update(Me.Row)
+                Dim dal As New CommPlanDistributionDAL
+                'dal.Update(Me.Row)
+                dal.UpdateFamily(Me.Dataset)
                 'Reload the Data from the DB
                 If Me.Row.RowState <> DataRowState.Detached Then
                     Dim objId As Guid = Me.Id
@@ -291,6 +292,16 @@ Public Class CommPlanDistribution
         End Try
     End Function
 
+    Public Shared Function getPlanList(ByVal commPlanId As Guid) As DataView
+        Try
+            Dim dal As New CommPlanDistributionDAL
+
+            Return New DataView(dal.LoadListPLan(commPlanId).Tables(0))
+        Catch ex As Assurant.ElitaPlus.DALObjects.DataBaseAccessException
+            Throw New DataBaseAccessException(ex.ErrorType, ex)
+        End Try
+    End Function
+
 
     Private Shared Function GetAssocCommList(ByVal parent As CommissionTolerance, ByVal id As Guid) As DataTable
 
@@ -314,38 +325,48 @@ Public Class CommPlanDistribution
         Inherits DataView
 
 #Region "Constants"
-        Public Const COL_NAME_ASSOCIATE_COMMISSIONS_ID As String = CommPlanDistributionDAL.COL_NAME_COMM_PLAN_DIST_ID
-        Public Const COL_NAME_COMMISSION_TOLERANCE_ID As String = CommPlanDistributionDAL.COL_NAME_COMM_PLAN_ID
-        Public Const COL_NAME_MARKUP_PERCENT As String = CommPlanDistributionDAL.COL_NAME_COMM_AMOUNT
+        Public Const COL_NAME_COMMISSION_PLAN_DIST_ID As String = CommPlanDistributionDAL.COL_NAME_COMM_PLAN_DIST_ID
+        Public Const COL_NAME_COMMISSION_PLAN_ID As String = CommPlanDistributionDAL.COL_NAME_COMM_PLAN_ID
+        Public Const COL_NAME_PAYEE_TYPE_XCD As String = CommPlanDistributionDAL.COL_NAME_PAYEE_TYPE_XCD
+        Public Const COL_NAME_COMM_ENTITY_ID As String = CommPlanDistributionDAL.COL_NAME_ENTITY_ID
+        Public Const COL_NAME_COMM_AMT As String = CommPlanDistributionDAL.COL_NAME_COMM_AMOUNT
         Public Const COL_NAME_COMMISSION_PERCENT As String = CommPlanDistributionDAL.COL_NAME_COMMISSION_PERCENT
+        Public Const COL_NAME_COMMISSION_SOURCE_XCD As String = CommPlanDistributionDAL.COL_NAME_COMMISSION_SOURCE_XCD
         Public Const COL_NAME_POSITION As String = CommPlanDistributionDAL.COL_NAME_POSITION
-        Public Const COL_NAME_COMM_ENTITY_NAME As String = CommPlanDistributionDAL.COL_NAME_ENTITY_NAME
-        Public Const COL_NAME_PAYEE_TYPE_ID As String = CommPlanDistributionDAL.COL_NAME_PAYEE_TYPE_XCD
-        Public Const COL_NAME_COMMISSION_PERCENT_SOURCE_XCD As String = CommPlanDistributionDAL.COL_NAME_COMMISSION_SOURCE_XCD
 #End Region
 
         Public Sub New(ByVal table As DataTable)
             MyBase.New(table)
         End Sub
 
-        Public Shared ReadOnly Property AssociateCommissionId(ByVal row) As Guid
+        Public Shared ReadOnly Property CommissionPLanDistId(ByVal row) As Guid
             Get
-                Return New Guid(CType(row(COL_NAME_ASSOCIATE_COMMISSIONS_ID), Byte()))
+                Return New Guid(CType(row(COL_NAME_COMMISSION_PLAN_DIST_ID), Byte()))
             End Get
         End Property
 
-        Public Shared ReadOnly Property CommissionToleranceId(ByVal row As DataRow) As Guid
+        Public Shared ReadOnly Property CommissionPlanId(ByVal row As DataRow) As Guid
             Get
-                Return New Guid(CType(row(COL_NAME_COMMISSION_TOLERANCE_ID), Byte()))
+                Return New Guid(CType(row(COL_NAME_COMMISSION_PLAN_ID), Byte()))
             End Get
         End Property
 
-        Public Shared ReadOnly Property MarkupPercent(ByVal row As DataRow) As LongType
+        Public Shared ReadOnly Property PayeeTypeXcd(ByVal row As DataRow) As String
             Get
-                Return CType(row(COL_NAME_MARKUP_PERCENT), LongType)
+                Return CType(row(COL_NAME_PAYEE_TYPE_XCD), String)
+            End Get
+        End Property
+        Public Shared ReadOnly Property EntityId(ByVal row) As Guid
+            Get
+                Return New Guid(CType(row(COL_NAME_COMM_ENTITY_ID), Byte()))
             End Get
         End Property
 
+        Public Shared ReadOnly Property CommissionAmount(ByVal row As DataRow) As LongType
+            Get
+                Return CType(row(COL_NAME_COMM_AMT), LongType)
+            End Get
+        End Property
 
         Public Shared ReadOnly Property CommissionPercent(ByVal row As DataRow) As LongType
             Get
@@ -353,23 +374,24 @@ Public Class CommPlanDistribution
             End Get
         End Property
 
-        'Public Shared ReadOnly Property Position(ByVal row As DataRow) As LongType
-        '    Get
-        '        Return CType(row(COL_NAME_POSITION), LongType)
-        '    End Get
+        Public Shared ReadOnly Property Comm_Source_Xcd(ByVal row As DataRow) As String
+            Get
+                Return CType(row(COL_NAME_COMMISSION_SOURCE_XCD), String)
+            End Get
+        End Property
+
+        Public Shared ReadOnly Property Position(ByVal row As DataRow) As LongType
+            Get
+                Return CType(row(COL_NAME_POSITION), LongType)
+            End Get
+        End Property
+
+
+        'Public ReadOnly Property AssociatedCommPeriodEntity() As CommPlanDistList
+        'Get
+        '    Return New CommPlanDistList(Me)
+        'End Get
         'End Property
-
-        Public Shared ReadOnly Property EntityName(ByVal row As DataRow) As String
-            Get
-                Return CType(row(COL_NAME_COMM_ENTITY_NAME), String)
-            End Get
-        End Property
-
-        Public Shared ReadOnly Property PayeeTypeId(ByVal row As DataRow) As Guid
-            Get
-                Return New Guid(CType(row(COL_NAME_PAYEE_TYPE_ID), Byte()))
-            End Get
-        End Property
     End Class
 
 #End Region
@@ -379,6 +401,10 @@ Public Class CommPlanDistribution
         Public Sub New(ByVal parent As Object, ByVal id As Guid)
             MyBase.New(GetAssocCommList(parent, id), GetType(CommPlanDistribution), parent)
         End Sub
+
+        'Public Sub New(ByVal parent As CommPlanDistribution)
+        '    MyBase.New(GetAssocCommList(parent, parent.Id), GetType(CommPlanDistribution), parent)
+        'End Sub
 
         Public Overrides Function Belong(ByVal bo As BusinessObjectBase) As Boolean
             Return True
@@ -492,7 +518,7 @@ Public Class CommPlanDistribution
 
         Public Overrides Function IsValid(ByVal valueToCheck As Object, ByVal objectToValidate As Object) As Boolean
             Dim bIsOk As Boolean = True
-            Dim oAssocComm As AssociateCommissions = CType(objectToValidate, AssociateCommissions)
+            Dim oAssocComm As CommPlanDistribution = CType(objectToValidate, CommPlanDistribution)
             'If oAssocComm.HasDealerConfiguredForAcctBucket(oAssocComm.CommissionToleranceId) = False Then
 
                 If (Me.DisplayName = "AllowedMarkupPct") AndAlso
@@ -508,9 +534,9 @@ Public Class CommPlanDistribution
 
         End Function
 
-        Private Function GetRestrictMarkup(ByVal oAssocComm As AssociateCommissions) As Boolean
+        Private Function GetRestrictMarkup(ByVal oAssocComm As CommPlanDistribution) As Boolean
             Dim oPeriodData As New CommissionPeriodData
-            Dim oTolerance As New CommissionTolerance(oAssocComm.CommissionToleranceId)
+            Dim oTolerance As New CommissionTolerance(oAssocComm.CommissionPlanId)
             Dim oPeriod As New CommissionPeriod(oTolerance.CommissionPeriodId)
 
             oPeriodData.dealerId = oPeriod.DealerId

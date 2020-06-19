@@ -123,6 +123,69 @@ Namespace Tables
         Protected WithEvents TextBoxDescription As Global.System.Web.UI.WebControls.TextBox
 
         '''<summary>
+        '''moCoverageIdLabel control.
+        '''</summary>
+        '''<remarks>
+        '''Auto-generated field.
+        '''To modify move field declaration from designer file to code-behind file.
+        '''</remarks>
+        Protected WithEvents moCoverageIdLabel As Global.System.Web.UI.WebControls.Label
+
+        '''<summary>
+        '''moIsNewCoverageLabel control.
+        '''</summary>
+        '''<remarks>
+        '''Auto-generated field.
+        '''To modify move field declaration from designer file to code-behind file.
+        '''</remarks>
+        Protected WithEvents moIsNewCoverageLabel As Global.System.Web.UI.WebControls.Label
+
+        '''<summary>
+        '''moIsNewRateLabel control.
+        '''</summary>
+        '''<remarks>
+        '''Auto-generated field.
+        '''To modify move field declaration from designer file to code-behind file.
+        '''</remarks>
+        Protected WithEvents moIsNewRateLabel As Global.System.Web.UI.WebControls.Label
+
+        '''<summary>
+        '''HiddenSaveChangesPromptResponse1 control.
+        '''</summary>
+        '''<remarks>
+        '''Auto-generated field.
+        '''To modify move field declaration from designer file to code-behind file.
+        '''</remarks>
+        Protected WithEvents HiddenSaveChangesPromptResponse1 As Global.System.Web.UI.HtmlControls.HtmlInputHidden
+
+        '''<summary>
+        '''moCoverageRateIdLabel control.
+        '''</summary>
+        '''<remarks>
+        '''Auto-generated field.
+        '''To modify move field declaration from designer file to code-behind file.
+        '''</remarks>
+        Protected WithEvents moCoverageRateIdLabel As Global.System.Web.UI.WebControls.Label
+
+        '''<summary>
+        '''moIsNewCoverageConseqDamageLabel control.
+        '''</summary>
+        '''<remarks>
+        '''Auto-generated field.
+        '''To modify move field declaration from designer file to code-behind file.
+        '''</remarks>
+        Protected WithEvents moIsNewCoverageConseqDamageLabel As Global.System.Web.UI.WebControls.Label
+
+        '''<summary>
+        '''moCoverageConseqDamageIdLabel control.
+        '''</summary>
+        '''<remarks>
+        '''Auto-generated field.
+        '''To modify move field declaration from designer file to code-behind file.
+        '''</remarks>
+        Protected WithEvents moCoverageConseqDamageIdLabel As Global.System.Web.UI.WebControls.Label
+
+        '''<summary>
         '''hdnSelectedTab control.
         '''</summary>
         '''<remarks>
@@ -148,6 +211,15 @@ Namespace Tables
         '''To modify move field declaration from designer file to code-behind file.
         '''</remarks>
         Protected WithEvents Label6 As Global.System.Web.UI.WebControls.Label
+
+        '''<summary>
+        '''Label2 control.
+        '''</summary>
+        '''<remarks>
+        '''Auto-generated field.
+        '''To modify move field declaration from designer file to code-behind file.
+        '''</remarks>
+        Protected WithEvents Label2 As Global.System.Web.UI.WebControls.Label
 
         '''<summary>
         '''moCommBreakPanel control.
@@ -231,6 +303,24 @@ Namespace Tables
         Protected WithEvents moToleranceDetailText As Global.System.Web.UI.WebControls.TextBox
 
         '''<summary>
+        '''Label26 control.
+        '''</summary>
+        '''<remarks>
+        '''Auto-generated field.
+        '''To modify move field declaration from designer file to code-behind file.
+        '''</remarks>
+        Protected WithEvents Label26 As Global.System.Web.UI.WebControls.Label
+
+        '''<summary>
+        '''LabelCommEntity control.
+        '''</summary>
+        '''<remarks>
+        '''Auto-generated field.
+        '''To modify move field declaration from designer file to code-behind file.
+        '''</remarks>
+        Protected WithEvents LabelCommEntity As Global.System.Web.UI.WebControls.Label
+
+        '''<summary>
         '''Label4 control.
         '''</summary>
         '''<remarks>
@@ -285,6 +375,24 @@ Namespace Tables
         Protected WithEvents lblAcctSourceBucket As Global.System.Web.UI.WebControls.Label
 
         '''<summary>
+        '''cboPayeeType1 control.
+        '''</summary>
+        '''<remarks>
+        '''Auto-generated field.
+        '''To modify move field declaration from designer file to code-behind file.
+        '''</remarks>
+        Protected WithEvents cboPayeeType1 As Global.System.Web.UI.WebControls.DropDownList
+
+        '''<summary>
+        '''cboPeriodEntity1 control.
+        '''</summary>
+        '''<remarks>
+        '''Auto-generated field.
+        '''To modify move field declaration from designer file to code-behind file.
+        '''</remarks>
+        Protected WithEvents cboPeriodEntity1 As Global.System.Web.UI.WebControls.DropDownList
+
+        '''<summary>
         '''txtBrokerMakupEntity control.
         '''</summary>
         '''<remarks>
@@ -328,6 +436,24 @@ Namespace Tables
         '''To modify move field declaration from designer file to code-behind file.
         '''</remarks>
         Protected WithEvents AsCommId1 As Global.System.Web.UI.WebControls.TextBox
+
+        '''<summary>
+        '''cboPayeeType2 control.
+        '''</summary>
+        '''<remarks>
+        '''Auto-generated field.
+        '''To modify move field declaration from designer file to code-behind file.
+        '''</remarks>
+        Protected WithEvents cboPayeeType2 As Global.System.Web.UI.WebControls.DropDownList
+
+        '''<summary>
+        '''cboPeriodEntity2 control.
+        '''</summary>
+        '''<remarks>
+        '''Auto-generated field.
+        '''To modify move field declaration from designer file to code-behind file.
+        '''</remarks>
+        Protected WithEvents cboPeriodEntity2 As Global.System.Web.UI.WebControls.DropDownList
 
         '''<summary>
         '''txtBrokerMakupEntity2 control.
@@ -375,6 +501,24 @@ Namespace Tables
         Protected WithEvents AsCommId2 As Global.System.Web.UI.WebControls.TextBox
 
         '''<summary>
+        '''cboPayeeType3 control.
+        '''</summary>
+        '''<remarks>
+        '''Auto-generated field.
+        '''To modify move field declaration from designer file to code-behind file.
+        '''</remarks>
+        Protected WithEvents cboPayeeType3 As Global.System.Web.UI.WebControls.DropDownList
+
+        '''<summary>
+        '''cboPeriodEntity3 control.
+        '''</summary>
+        '''<remarks>
+        '''Auto-generated field.
+        '''To modify move field declaration from designer file to code-behind file.
+        '''</remarks>
+        Protected WithEvents cboPeriodEntity3 As Global.System.Web.UI.WebControls.DropDownList
+
+        '''<summary>
         '''txtBrokerMakupEntity3 control.
         '''</summary>
         '''<remarks>
@@ -420,6 +564,24 @@ Namespace Tables
         Protected WithEvents AsCommId3 As Global.System.Web.UI.WebControls.TextBox
 
         '''<summary>
+        '''cboPayeeType4 control.
+        '''</summary>
+        '''<remarks>
+        '''Auto-generated field.
+        '''To modify move field declaration from designer file to code-behind file.
+        '''</remarks>
+        Protected WithEvents cboPayeeType4 As Global.System.Web.UI.WebControls.DropDownList
+
+        '''<summary>
+        '''cboPeriodEntity4 control.
+        '''</summary>
+        '''<remarks>
+        '''Auto-generated field.
+        '''To modify move field declaration from designer file to code-behind file.
+        '''</remarks>
+        Protected WithEvents cboPeriodEntity4 As Global.System.Web.UI.WebControls.DropDownList
+
+        '''<summary>
         '''txtBrokerMakupEntity4 control.
         '''</summary>
         '''<remarks>
@@ -463,6 +625,24 @@ Namespace Tables
         '''To modify move field declaration from designer file to code-behind file.
         '''</remarks>
         Protected WithEvents AsCommId4 As Global.System.Web.UI.WebControls.TextBox
+
+        '''<summary>
+        '''cboPayeeType5 control.
+        '''</summary>
+        '''<remarks>
+        '''Auto-generated field.
+        '''To modify move field declaration from designer file to code-behind file.
+        '''</remarks>
+        Protected WithEvents cboPayeeType5 As Global.System.Web.UI.WebControls.DropDownList
+
+        '''<summary>
+        '''cboPeriodEntity5 control.
+        '''</summary>
+        '''<remarks>
+        '''Auto-generated field.
+        '''To modify move field declaration from designer file to code-behind file.
+        '''</remarks>
+        Protected WithEvents cboPeriodEntity5 As Global.System.Web.UI.WebControls.DropDownList
 
         '''<summary>
         '''txtBrokerMakupEntity5 control.
@@ -546,6 +726,33 @@ Namespace Tables
         Protected WithEvents moDetailButtonPanel As Global.System.Web.UI.WebControls.Panel
 
         '''<summary>
+        '''btnEntityBack control.
+        '''</summary>
+        '''<remarks>
+        '''Auto-generated field.
+        '''To modify move field declaration from designer file to code-behind file.
+        '''</remarks>
+        Protected WithEvents btnEntityBack As Global.System.Web.UI.WebControls.Button
+
+        '''<summary>
+        '''btnEntitySave control.
+        '''</summary>
+        '''<remarks>
+        '''Auto-generated field.
+        '''To modify move field declaration from designer file to code-behind file.
+        '''</remarks>
+        Protected WithEvents btnEntitySave As Global.System.Web.UI.WebControls.Button
+
+        '''<summary>
+        '''btnEntityUndo control.
+        '''</summary>
+        '''<remarks>
+        '''Auto-generated field.
+        '''To modify move field declaration from designer file to code-behind file.
+        '''</remarks>
+        Protected WithEvents btnEntityUndo As Global.System.Web.UI.WebControls.Button
+
+        '''<summary>
         '''BtnCancelGrid control.
         '''</summary>
         '''<remarks>
@@ -591,148 +798,40 @@ Namespace Tables
         Protected WithEvents BtnDeleteGrid_WRITE As Global.System.Web.UI.WebControls.Button
 
         '''<summary>
-        '''moEntityTabPanel_WRITE control.
+        '''moGridView control.
         '''</summary>
         '''<remarks>
         '''Auto-generated field.
         '''To modify move field declaration from designer file to code-behind file.
         '''</remarks>
-        Protected WithEvents moEntityTabPanel_WRITE As Global.System.Web.UI.WebControls.Panel
+        Protected WithEvents moGridView As Global.System.Web.UI.WebControls.GridView
 
         '''<summary>
-        '''Label26 control.
+        '''BtnNewRate_WRITE control.
         '''</summary>
         '''<remarks>
         '''Auto-generated field.
         '''To modify move field declaration from designer file to code-behind file.
         '''</remarks>
-        Protected WithEvents Label26 As Global.System.Web.UI.WebControls.Label
+        Protected WithEvents BtnNewRate_WRITE As Global.System.Web.UI.WebControls.Button
 
         '''<summary>
-        '''LabelCommEntity control.
+        '''BtnSaveRate_WRITE control.
         '''</summary>
         '''<remarks>
         '''Auto-generated field.
         '''To modify move field declaration from designer file to code-behind file.
         '''</remarks>
-        Protected WithEvents LabelCommEntity As Global.System.Web.UI.WebControls.Label
+        Protected WithEvents BtnSaveRate_WRITE As Global.System.Web.UI.WebControls.Button
 
         '''<summary>
-        '''cboPayeeType1 control.
+        '''BtnCancelRate control.
         '''</summary>
         '''<remarks>
         '''Auto-generated field.
         '''To modify move field declaration from designer file to code-behind file.
         '''</remarks>
-        Protected WithEvents cboPayeeType1 As Global.System.Web.UI.WebControls.DropDownList
-
-        '''<summary>
-        '''cboPeriodEntity1 control.
-        '''</summary>
-        '''<remarks>
-        '''Auto-generated field.
-        '''To modify move field declaration from designer file to code-behind file.
-        '''</remarks>
-        Protected WithEvents cboPeriodEntity1 As Global.System.Web.UI.WebControls.DropDownList
-
-        '''<summary>
-        '''cboPayeeType2 control.
-        '''</summary>
-        '''<remarks>
-        '''Auto-generated field.
-        '''To modify move field declaration from designer file to code-behind file.
-        '''</remarks>
-        Protected WithEvents cboPayeeType2 As Global.System.Web.UI.WebControls.DropDownList
-
-        '''<summary>
-        '''cboPeriodEntity2 control.
-        '''</summary>
-        '''<remarks>
-        '''Auto-generated field.
-        '''To modify move field declaration from designer file to code-behind file.
-        '''</remarks>
-        Protected WithEvents cboPeriodEntity2 As Global.System.Web.UI.WebControls.DropDownList
-
-        '''<summary>
-        '''cboPayeeType3 control.
-        '''</summary>
-        '''<remarks>
-        '''Auto-generated field.
-        '''To modify move field declaration from designer file to code-behind file.
-        '''</remarks>
-        Protected WithEvents cboPayeeType3 As Global.System.Web.UI.WebControls.DropDownList
-
-        '''<summary>
-        '''cboPeriodEntity3 control.
-        '''</summary>
-        '''<remarks>
-        '''Auto-generated field.
-        '''To modify move field declaration from designer file to code-behind file.
-        '''</remarks>
-        Protected WithEvents cboPeriodEntity3 As Global.System.Web.UI.WebControls.DropDownList
-
-        '''<summary>
-        '''cboPayeeType4 control.
-        '''</summary>
-        '''<remarks>
-        '''Auto-generated field.
-        '''To modify move field declaration from designer file to code-behind file.
-        '''</remarks>
-        Protected WithEvents cboPayeeType4 As Global.System.Web.UI.WebControls.DropDownList
-
-        '''<summary>
-        '''cboPeriodEntity4 control.
-        '''</summary>
-        '''<remarks>
-        '''Auto-generated field.
-        '''To modify move field declaration from designer file to code-behind file.
-        '''</remarks>
-        Protected WithEvents cboPeriodEntity4 As Global.System.Web.UI.WebControls.DropDownList
-
-        '''<summary>
-        '''cboPayeeType5 control.
-        '''</summary>
-        '''<remarks>
-        '''Auto-generated field.
-        '''To modify move field declaration from designer file to code-behind file.
-        '''</remarks>
-        Protected WithEvents cboPayeeType5 As Global.System.Web.UI.WebControls.DropDownList
-
-        '''<summary>
-        '''cboPeriodEntity5 control.
-        '''</summary>
-        '''<remarks>
-        '''Auto-generated field.
-        '''To modify move field declaration from designer file to code-behind file.
-        '''</remarks>
-        Protected WithEvents cboPeriodEntity5 As Global.System.Web.UI.WebControls.DropDownList
-
-        '''<summary>
-        '''btnEntityBack control.
-        '''</summary>
-        '''<remarks>
-        '''Auto-generated field.
-        '''To modify move field declaration from designer file to code-behind file.
-        '''</remarks>
-        Protected WithEvents btnEntityBack As Global.System.Web.UI.WebControls.Button
-
-        '''<summary>
-        '''btnEntitySave control.
-        '''</summary>
-        '''<remarks>
-        '''Auto-generated field.
-        '''To modify move field declaration from designer file to code-behind file.
-        '''</remarks>
-        Protected WithEvents btnEntitySave As Global.System.Web.UI.WebControls.Button
-
-        '''<summary>
-        '''btnEntityUndo control.
-        '''</summary>
-        '''<remarks>
-        '''Auto-generated field.
-        '''To modify move field declaration from designer file to code-behind file.
-        '''</remarks>
-        Protected WithEvents btnEntityUndo As Global.System.Web.UI.WebControls.Button
+        Protected WithEvents BtnCancelRate As Global.System.Web.UI.WebControls.Button
 
         '''<summary>
         '''HiddenSaveChangesPromptResponse control.
@@ -805,14 +904,5 @@ Namespace Tables
         '''To modify move field declaration from designer file to code-behind file.
         '''</remarks>
         Protected WithEvents btnDelete_WRITE As Global.System.Web.UI.WebControls.Button
-
-        '''<summary>
-        '''litScriptVars control.
-        '''</summary>
-        '''<remarks>
-        '''Auto-generated field.
-        '''To modify move field declaration from designer file to code-behind file.
-        '''</remarks>
-        Protected WithEvents litScriptVars As Global.System.Web.UI.WebControls.Literal
     End Class
 End Namespace

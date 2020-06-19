@@ -5,6 +5,7 @@ Imports Assurant.Elita.Web.Forms
 Imports Assurant.ElitaPlus.ElitaPlusWebApp.Common
 Imports Assurant.ElitaPlus.DALObjects
 Imports System.Globalization
+Imports Assurant.ElitaPlus.Business
 
 Namespace Tables
 
@@ -17,11 +18,13 @@ Namespace Tables
 
         Class MyState
             Public MyBo As CommPlan
+            Public MyBoDist As CommPlanDistribution
             Public moCommTolerance As CommissionTolerance
             'Public moCommEntity As CommissionEntity
-
+            Public moCoverageRateList() As CommPlanDistribution
             Public moCommPlanDistList As CommPlanDistribution.CommPlanDistList
             Public moCommPlanDist As CommPlanDistribution
+            Public moAssocComm As CommPlanDistribution
             'Public moAssocCommList As AssociateCommissions.AssocCommList
             'Public moAssocComm As AssociateCommissions            
             Public moIsAssocCommDirty As Boolean = False
@@ -41,12 +44,15 @@ Namespace Tables
             Public moCommPlanDistSearch As CommPlanDistribution.SearchDV = Nothing
             Public searchDV As DataView = Nothing
 
-            'US 521672
             Public IsDiffSelectedTwice As Boolean
             Public IsDiffNotSelectedOnce As Boolean
             Public IsBucketIncomingSelected As Boolean
             Public IsDealerConfiguredForSourceXcd As Boolean = False
             Public IsIgnorePremiumSetYesForContract As Boolean = False
+
+            Public IsCoverageNew As Boolean = False
+            Public IsNewWithCopy As Boolean = False
+            Public IsUndo As Boolean = False
         End Class
 #End Region
 
@@ -63,17 +69,20 @@ Namespace Tables
         Private Sub SetStateProperties()
             'Me.State.moCommissionPeriodId = CType(Me.CallingParameters, Guid)
             Me.State.moCommPlanId = CType(Me.CallingParameters, Guid)
-            
+
             If Me.State.moCommPlanId.Equals(Guid.Empty) Then
                 Me.State.IsPeriodNew = True
                 ClearPeriod()
                 SetPeriodButtonsState(True)
                 PopulatePeriod()
+                PopulateCoverageRateList()
+                'PopulateCoverageRate()
                 TheDealerControl.ChangeEnabledControlProperty(True)
             Else
                 Me.State.IsPeriodNew = False
                 SetPeriodButtonsState(False)
                 PopulatePeriod()
+                PopulateCoverageRateList()
                 TheDealerControl.ChangeEnabledControlProperty(False)
             End If
             If Not TheDealerControl.SelectedGuid.Equals(Guid.Empty) Then
@@ -174,6 +183,29 @@ Namespace Tables
         Private Const BROKERMARKUPPCT4_LABEL_CONTROL_NAME As String = "moBrokerMarkupPctLabel4"
         Private Const BROKERMARKUPPCT5_CONTROL_NAME As String = "moBrokerMarkupPctText5"
         Private Const BROKERMARKUPPCT5_LABEL_CONTROL_NAME As String = "moBrokerMarkupPctLabel5"
+
+        Private Const COL_COMMISSION_PLAN_DIST_ID_IDX As Integer = 2
+        Private Const COL_COMMISSION_PLAN_ID_IDX As Integer = 3
+        Private Const COL_PAYEE_TYPE_XCD_IDX As Integer = 4
+        Private Const COL_ENTITY_ID_IDX As Integer = 5
+        Private Const COL_COMMISSION_AMOUNT_IDX As Integer = 6
+        Private Const COL_COMMISSION_PERCENTAGE_IDX As Integer = 7
+        Private Const COL_COMMISSIONS_SOURCE_XCD_IDX As Integer = 8
+        Private Const COL_POSITION_IDX As Integer = 9
+
+        Private Const PROPERTY_PAYEE_TYPE_XCD As String = "PayeeTypeXcd"
+        Private Const PROPERTY_ENTITY_ID As String = "EntityId"
+        Private Const PROPERTY_COMM_AMT As String = "CommissionAmount"
+        Private Const PROPERTY_COMM_PER As String = "CommissionPercent"
+        Private Const PROPERTY_COMMISSIONS_XCD As String = "CommissionsPercentSourceXcd"
+        Private Const PROPERTY_POSITION As String = "Position"
+
+        'Actions
+        Private Const ACTION_NONE As String = "ACTION_NONE"
+        Private Const ACTION_SAVE As String = "ACTION_SAVE"
+        Private Const ACTION_CANCEL_DELETE As String = "ACTION_CANCEL_DELETE"
+        Private Const ACTION_EDIT As String = "ACTION_EDIT"
+        Private Const ACTION_NEW As String = "ACTION_NEW"
 #End Region
 
 #End Region
@@ -182,6 +214,7 @@ Namespace Tables
 
         'Private moPeriod As CommissionPeriod
         Private moExpirationData As CommPlanData
+        Private moCoverageRate As CommPlanDistribution
 
 
 #Region "Variables-Tolerance"
@@ -193,14 +226,14 @@ Namespace Tables
 
 #Region "Properties"
 
-        Private ReadOnly Property ThePeriod() As CommPlan
+        Private ReadOnly Property TheCommPlan() As CommPlan
             Get
                 If Me.State.MyBo Is Nothing Then
                     If Me.State.IsPeriodNew = True Then
                         ' For creating, inserting
                         Me.State.MyBo = New CommPlan
                         'Me.State.moCommissionPeriodId = Me.State.MyBo.Id
-                        Me.State.moCommPlanId = Me.State.MyBo.Id                        
+                        Me.State.moCommPlanId = Me.State.MyBo.Id
                     Else
                         ' For updating, deleting
                         'Me.State.MyBo = New CommPlan(Me.State.moCommissionPeriodId)
@@ -212,13 +245,56 @@ Namespace Tables
             End Get
         End Property
 
+        Private ReadOnly Property TheCommPlanDist() As CommPlanDistribution
+            Get
+                If Me.State.MyBoDist Is Nothing Then
+                    If Me.State.IsPeriodNew = True Then
+                        ' For creating, inserting
+                        Me.State.MyBoDist = New CommPlanDistribution
+                        'Me.State.moCommissionPeriodId = Me.State.MyBo.Id
+                        Me.State.moCommPlanDistId = Me.State.MyBoDist.Id
+
+                    Else
+                        ' For updating, deleting
+                        'Me.State.MyBo = New CommPlan(Me.State.moCommissionPeriodId)
+                        Me.State.MyBoDist = New CommPlanDistribution(Me.State.moCommPlanDistId)
+                    End If
+                End If
+                BindBoPropertiesToLabels(Me.State.MyBoDist)
+                Return Me.State.MyBoDist
+            End Get
+        End Property
+
+        Private ReadOnly Property TheCoverageRate() As CommPlanDistribution
+            Get
+                If moCoverageRate Is Nothing Then
+                    'If IsNewRate = True Then
+                    ' For creating, inserting
+                    moCoverageRate = New CommPlanDistribution
+                    CoverageRateId = moCoverageRate.Id.ToString
+                Else
+                    ' For updating, deleting
+                    If CoverageRateId = "" Then
+                        CoverageRateId = Guid.Empty.ToString
+                    End If
+
+                    moCoverageRate = New CommPlanDistribution(Me.State.moCommPlanDistId)
+                    'moCoverageRate = New CommPlanDistribution(GetGuidFromString(CoverageRateId))
+                    'moCoverageRate = New CommPlanDistribution(Me.State.moCommPlanDistId)
+                End If
+
+                Return moCoverageRate
+            End Get
+
+        End Property
+
         Private ReadOnly Property ExpirationCount() As Integer
             Get
                 If moExpirationData Is Nothing Then
                     moExpirationData = New CommPlanData
                     moExpirationData.dealerId = TheDealerControl.SelectedGuid 'Me.GetSelectedItem(moDealerDrop_WRITE)
                 End If
-                Return ThePeriod.ExpirationCount(moExpirationData)
+                Return TheCommPlan.ExpirationCount(moExpirationData)
             End Get
         End Property
 
@@ -228,7 +304,7 @@ Namespace Tables
                     moExpirationData = New CommPlanData
                     moExpirationData.dealerId = TheDealerControl.SelectedGuid
                 End If
-                Return ThePeriod.MaxExpiration(moExpirationData)
+                Return TheCommPlan.MaxExpiration(moExpirationData)
             End Get
         End Property
 
@@ -267,6 +343,34 @@ Namespace Tables
                 Return isDealerConfiguredForSourceXcd
             End Get
         End Property
+
+        Private Property CoverageRateId1() As String
+            Get
+                Return GetGuidStringFromByteArray(Me.State.moCommPlanId.ToByteArray)
+            End Get
+            Set(ByVal Value As String)
+                Me.State.moCommPlanId = GetGuidFromString(Value)
+            End Set
+        End Property
+        Private Property CoverageRateId() As String
+            Get
+                Return moCoverageRateIdLabel.Text
+            End Get
+            Set(ByVal Value As String)
+                moCoverageRateIdLabel.Text = Value
+            End Set
+        End Property
+
+        Private Property IsNewRate() As Boolean
+            Get
+                Return Convert.ToBoolean(moIsNewRateLabel.Text)
+            End Get
+            Set(ByVal Value As Boolean)
+                moIsNewRateLabel.Text = Value.ToString
+            End Set
+        End Property
+
+
 
 #Region "Properties-Tolerance"
 
@@ -322,7 +426,7 @@ Namespace Tables
             Try
                 Me.MasterPage.MessageController.Clear_Hide()
                 ClearLabelsErrSign()
-
+                ClearGridHeaders(moGridView)
                 If Not Page.IsPostBack Then
                     Me.MasterPage.MessageController.Clear()
                     Me.MasterPage.UsePageTabTitleInBreadCrum = False
@@ -333,6 +437,9 @@ Namespace Tables
                     Me.TranslateGridHeader(Grid)
                     Me.TranslateGridControls(Grid)
                     Me.SetGridItemStyleColor(Me.Grid)
+                    Me.SetGridItemStyleColor(moGridView)
+                    Me.TranslateGridHeader(Me.moGridView)
+                    Me.TranslateGridControls(moGridView)
                     Me.SetStateProperties()
                     'US-521672
                     Me.State.IsDealerConfiguredForSourceXcd = HasDealerConfigeredForSourceXcd()
@@ -365,27 +472,27 @@ Namespace Tables
             Me.ReturnToCallingPage(retType)
         End Sub
 
-        Private Sub btnEntityBack_Click(ByVal sender As Object, ByVal e As System.EventArgs) Handles btnEntityBack.Click
-            Try
-                If IsDirtyPeriodBO() = True Then
-                    Me.DisplayMessage(Message.SAVE_CHANGES_PROMPT, "", Me.MSG_BTN_YES_NO, Me.MSG_TYPE_CONFIRM,
-                                            Me.HiddenSaveChangesPromptResponse)
-                    Me.State.ActionInProgress = ElitaPlusPage.DetailPageCommand.Back
-                Else
-                    Me.ClearGridHeaders(Me.Grid)
-                    Me.State.IsToleranceNew = False
-                    PopulateTolerance(Me.POPULATE_ACTION_NO_EDIT)
-                    ControlMgr.SetVisibleControl(Me, moPeriodButtonPanel, True)
-                    EnableDisablePeriodEntity(True)
-                    Me.EnableDisableControls(moPeriodPanel_WRITE, False)
-                    hdnSelectedTab.Value = 0
-                    ControlMgr.SetVisibleControl(Me, Me.btnEntityBack, False)
-                    TheDealerControl.ChangeEnabledControlProperty(False)
-                End If
-            Catch ex As Exception
-                Me.HandleErrors(ex, Me.MasterPage.MessageController)
-            End Try
-        End Sub
+        'Private Sub btnEntityBack_Click(ByVal sender As Object, ByVal e As System.EventArgs) Handles btnEntityBack.Click
+        '    Try
+        '        If IsDirtyPeriodBO() = True Then
+        '            Me.DisplayMessage(Message.SAVE_CHANGES_PROMPT, "", Me.MSG_BTN_YES_NO, Me.MSG_TYPE_CONFIRM,
+        '                                    Me.HiddenSaveChangesPromptResponse)
+        '            Me.State.ActionInProgress = ElitaPlusPage.DetailPageCommand.Back
+        '        Else
+        '            Me.ClearGridHeaders(Me.Grid)
+        '            Me.State.IsToleranceNew = False
+        '            PopulateTolerance(Me.POPULATE_ACTION_NO_EDIT)
+        '            ControlMgr.SetVisibleControl(Me, moPeriodButtonPanel, True)
+        '            EnableDisablePeriodEntity(True)
+        '            Me.EnableDisableControls(moPeriodPanel_WRITE, False)
+        '            hdnSelectedTab.Value = 0
+        '            ControlMgr.SetVisibleControl(Me, Me.btnEntityBack, False)
+        '            TheDealerControl.ChangeEnabledControlProperty(False)
+        '        End If
+        '    Catch ex As Exception
+        '        Me.HandleErrors(ex, Me.MasterPage.MessageController)
+        '    End Try
+        'End Sub
 
         Private Sub btnBack_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnBack.Click
             Try
@@ -472,8 +579,9 @@ Namespace Tables
         Private Sub CreateNewCopy()
             Dim newObj As New CommPlan
             'Me.State.moCommissionPeriodId = Guid.Empty
+            SetGridControls(moGridView, True)
             Me.State.MyBo = Nothing
-            newObj.Copy(ThePeriod)
+            newObj.Copy(TheCommPlan)
             Me.State.IsPeriodNew = True
             Me.State.MyBo = newObj
 
@@ -521,6 +629,14 @@ Namespace Tables
 #Region "Handlers-Labels"
 
         Protected Sub BindBoPropertiesToLabels(ByVal oPeriod As CommPlan)
+            Me.BindBOPropertyToLabel(oPeriod, DEALER_ID_PROPERTY, Me.TheDealerControl.CaptionLabel)
+            Me.BindBOPropertyToLabel(oPeriod, EFFECTIVE_DATE_PROPERTY, moEffectiveLabel)
+            Me.BindBOPropertyToLabel(oPeriod, EXPIRATION_DATE_PROPERTY, moExpirationLabel)
+            Me.BindBOPropertyToLabel(oPeriod, CODE_PROPERTY, Me.LabelCode)
+            Me.BindBOPropertyToLabel(oPeriod, DESCRIPTION_PROPERTY, Me.LabelDescription)
+        End Sub
+
+        Protected Sub BindBoPropertiesToLabels(ByVal oPeriod As CommPlanDistribution)
             Me.BindBOPropertyToLabel(oPeriod, DEALER_ID_PROPERTY, Me.TheDealerControl.CaptionLabel)
             Me.BindBOPropertyToLabel(oPeriod, EFFECTIVE_DATE_PROPERTY, moEffectiveLabel)
             Me.BindBOPropertyToLabel(oPeriod, EXPIRATION_DATE_PROPERTY, moExpirationLabel)
@@ -615,19 +731,19 @@ Namespace Tables
             If Me.State.IsPeriodNew = True Then
                 TheDealerControl.NothingSelected = True
             Else
-                TheDealerControl.SelectedGuid = ThePeriod.DealerId
+                TheDealerControl.SelectedGuid = TheCommPlan.DealerId
             End If
 
         End Sub
 
         Private Sub PopulateDatesFromBO()
-            Me.PopulateControlFromBOProperty(moEffectiveText_WRITE, ThePeriod.EffectiveDate)
-            Me.PopulateControlFromBOProperty(moExpirationText_WRITE, ThePeriod.ExpirationDate)
+            Me.PopulateControlFromBOProperty(moEffectiveText_WRITE, TheCommPlan.EffectiveDate)
+            Me.PopulateControlFromBOProperty(moExpirationText_WRITE, TheCommPlan.ExpirationDate)
         End Sub
 
         Private Sub PupulateCodeDescFromBO()
-            Me.PopulateControlFromBOProperty(Me.TextBoxCode, ThePeriod.Code)
-            Me.PopulateControlFromBOProperty(Me.TextBoxDescription, ThePeriod.Description)
+            Me.PopulateControlFromBOProperty(Me.TextBoxCode, TheCommPlan.Code)
+            Me.PopulateControlFromBOProperty(Me.TextBoxDescription, TheCommPlan.Description)
         End Sub
 
         Private Sub PopulatePeriod()
@@ -667,8 +783,8 @@ Namespace Tables
                 'moDealerDrop_WRITE.SelectedIndex = 0
                 TheDealerControl.SelectedIndex = 0
             Else
-                'Me.SetSelectedItem(moDealerDrop_WRITE, ThePeriod.DealerId)
-                TheDealerControl.SelectedGuid = ThePeriod.DealerId
+                'Me.SetSelectedItem(moDealerDrop_WRITE, TheCommPlan.DealerId)
+                TheDealerControl.SelectedGuid = TheCommPlan.DealerId
 
             End If
 
@@ -709,12 +825,28 @@ Namespace Tables
                 Throw New PopulateBOErrorException
             End If
         End Sub
+        Private Sub PopulatePeriodBOFromForm(ByVal oPeriod As CommPlanDistribution)
+            With oPeriod
+                ' DropDowns
+                '.DealerId = TheDealerControl.SelectedGuid 'Me.GetSelectedItem(moDealerDrop_WRITE)
+                Me.PopulateBOProperty(oPeriod, REFERENCE_SOURCE_PROPERTY, "ELP_DEALER")
+                Me.PopulateBOProperty(oPeriod, CODE_PROPERTY, Me.TextBoxCode)
+                Me.PopulateBOProperty(oPeriod, DESCRIPTION_PROPERTY, Me.TextBoxDescription)
+                ' Texts
+                Me.PopulateBOProperty(oPeriod, EFFECTIVE_DATE_PROPERTY, moEffectiveText_WRITE)
+                Me.PopulateBOProperty(oPeriod, EXPIRATION_DATE_PROPERTY, moExpirationText_WRITE)
 
+            End With
+
+            If Me.ErrCollection.Count > 0 Then
+                Throw New PopulateBOErrorException
+            End If
+        End Sub
         Private Function IsDirtyPeriodBO() As Boolean
             Dim bIsDirty As Boolean = True
             Dim oPeriod As CommPlan
 
-            oPeriod = ThePeriod
+            oPeriod = TheCommPlan
             With oPeriod
                 PopulatePeriodBOFromForm(Me.State.MyBo)
                 bIsDirty = .IsDirty
@@ -785,15 +917,16 @@ Namespace Tables
                 ValidatePayeeType()
                 SetLabelColor(Me.LabelCommEntity)
                 UpdateEntityTable()
+                'SaveDistributionChanges()
                 If IsDirtyPeriodBO() = True Then
                     If Not Me.State.moCommTolerance Is Nothing Then
                         PopulateToleranceBOFromForm()
                     End If
-                    oPeriod = ThePeriod
+                    oPeriod = TheCommPlan
                     'BindBoPropertiesToLabels(Me.State.MyBo)
                     oPeriod.Save()
                     'Me.State.MyBo = Nothing
-                    'oPeriod = ThePeriod
+                    'oPeriod = TheCommPlan
                     Me.DisplayMessage(Message.SAVE_RECORD_CONFIRMATION, "", Me.MSG_BTN_OK, Me.MSG_TYPE_INFO)
                 Else
                     Me.DisplayMessage(Message.MSG_RECORD_NOT_SAVED, "", Me.MSG_BTN_OK, Me.MSG_TYPE_INFO)
@@ -804,6 +937,7 @@ Namespace Tables
                 Me.HandleErrors(ex, Me.MasterPage.MessageController)
                 bIsOk = False
             End Try
+            SaveDistributionChanges()
             Return bIsOk
         End Function
 
@@ -812,7 +946,7 @@ Namespace Tables
             Dim oPeriod As CommPlan
 
             Try
-                oPeriod = ThePeriod
+                oPeriod = TheCommPlan
                 With oPeriod
                     .Delete()
                     .Save()
@@ -870,9 +1004,12 @@ Namespace Tables
             EditTolerance()
         End Sub
 
-        Private Sub SaveToleranceChanges()
+        Private Sub SaveDistributionChanges()
             If ApplyToleranceChanges() = True Then
+
                 Me.State.MyBo = New CommPlan(Me.State.MyBo.Id)
+                Me.State.MyBoDist = New CommPlanDistribution(Me.State.MyBoDist.Id)
+
                 PopulateFormFromPeriodEntityBO()
                 PopulateTolerance(Me.POPULATE_ACTION_SAVE)
                 ControlMgr.SetVisibleControl(Me, moPeriodButtonPanel, True)
@@ -889,7 +1026,7 @@ Namespace Tables
 
         Private Sub BtnSaveGrid_WRITE_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles BtnSaveGrid_WRITE.Click
             Try
-                SaveToleranceChanges()
+                SaveDistributionChanges()
             Catch ex As Exception
                 Me.HandleErrors(ex, Me.MasterPage.MessageController)
             End Try
@@ -1058,11 +1195,11 @@ Namespace Tables
             Me.ClearGridHeadersAndLabelsErrSign()
         End Sub
 
-        Protected Sub BindBoAssocCommToLabels(ByVal obj As AssociateCommissions)
-            Me.BindBOPropertyToLabel(obj, "MarkupPercent", Me.lblMarkup)
+        Protected Sub BindBoAssocCommToLabels(ByVal obj As CommPlanDistribution)
+            Me.BindBOPropertyToLabel(obj, "CommissionAmount", Me.lblMarkup)
             Me.BindBOPropertyToLabel(obj, "CommissionPercent", Me.lblComm)
-            Me.BindBOPropertyToLabel(obj, MARKUP_TOTAL, Me.lblTotal)
-            Me.BindBOPropertyToLabel(obj, COMMISSION_TOTAL, Me.lblTotal)
+            'Me.BindBOPropertyToLabel(obj, MARKUP_TOTAL, Me.lblTotal)
+            'Me.BindBOPropertyToLabel(obj, COMMISSION_TOTAL, Me.lblTotal)
             'Me.ClearGridHeadersAndLabelsErrSign()
         End Sub
 
@@ -1426,6 +1563,7 @@ Namespace Tables
             End With
 
             PopulateAssocCommBOFromForm()
+            PopulateCommPlanDistBOFromForm()
 
             If Me.ErrCollection.Count > 0 Then
                 Throw New PopulateBOErrorException
@@ -1546,9 +1684,9 @@ Namespace Tables
             '    Me.litScriptVars.Text += "var commEntity = '" + GuidControl.ByteArrayToGuid(dvPayeeType1.Item(0)(LookupListNew.COL_ID_NAME)).ToString + "';"
             'End If
 
-            If FilteredPayeeType1List.Count = 1 Then
-                Me.litScriptVars.Text += "var commEntity = '" + FilteredPayeeType1List.First().ListItemId.ToString + "';"
-            End If
+            'If FilteredPayeeType1List.Count = 1 Then
+            '    Me.litScriptVars.Text += "var commEntity = '" + FilteredPayeeType1List.First().ListItemId.ToString + "';"
+            'End If
 
             If Me.State.IsPeriodNew = True Then
                 Dim FirstPayeeType As String
@@ -2338,6 +2476,409 @@ Namespace Tables
             'ValidateDiffSourceLogic()
         End Sub
 
+        Private Sub PopulateCommPlanDistBOFromForm()
+            Dim oPeriodEntity As CommissionPeriodEntity
+            Dim oCommEntity As CommissionEntity
+            'Dim oAssocComm As AssociateCommissions
+            Dim oAssocComm As CommPlanDistribution
+            Dim nInitValue As New DecimalType(0)
+            Dim totalMarkup As Decimal = 0
+            Dim totalComm As Decimal = 0
+            Dim oCount As Integer = 0
+            Dim strPayeeType As String
+            'Me.BindBOPropertyToLabel(oAssocComm, "MarkupPercent", Me.lblMarkup)
+            Dim strPositionChecked As String = String.Empty
+
+            'For Each oPeriodEntity In Me.State.moCommPlanDistList 'Me.State.MyBo.AssociatedCommPeriodEntity
+            'For Each oAssocComm In Me.State.moCommPlanDist.CommPlanDistList 'Me.State.MyBo.AssociatedCommPeriodEntity
+            oCount = oCount + 1
+            'If (strPositionChecked.IndexOf(oPeriodEntity.Position.ToString) < 0) Then    
+            'If (strPositionChecked.IndexOf(oAssocComm.Position.ToString) < 0) Then
+            'Select Case oPeriodEntity.Position
+            '   Case 1
+            strPositionChecked = strPositionChecked & ",1"
+            If Me.State.IsToleranceNew Then
+                'If Not oPeriodEntity.EntityId.Equals(Guid.Empty) Then
+                '    oCommEntity = New CommissionEntity(oPeriodEntity.EntityId)
+                '    PopulateToleranceFormItem(Me.txtBrokerMakupEntity, oCommEntity.EntityName)
+                'Else
+                '    strPayeeType = LookupListNew.GetDescriptionFromId(LookupListNew.LK_PAYEE_TYPE, oPeriodEntity.PayeeTypeId)
+                '    PopulateToleranceFormItem(Me.txtBrokerMakupEntity, strPayeeType)
+                'End If
+                oAssocComm = Me.State.MyBo.AddAssocComm(Guid.Empty)
+                BindBoAssocCommToLabels(oAssocComm)
+                'oAssocComm.CommissionToleranceId = Me.State.moCommissionToleranceId
+                oAssocComm.CommissionPlanId = Me.State.moCommPlanId 'Me.State.moCommissionToleranceId 
+                Me.PopulateBOProperty(oAssocComm, "CommissionAmount", Me.txtBrokerMakupPct)
+                Me.PopulateBOProperty(oAssocComm, "CommissionPercent", Me.txtBrokerCommPct)
+                oAssocComm.Position = 1
+                If Me.txtBrokerMakupPct.Text <> "" Then
+                    totalMarkup += oAssocComm.CommissionAmount.Value
+                End If
+                If Me.txtBrokerCommPct.Text <> "" Then
+                    totalComm += oAssocComm.CommissionPercent.Value
+                End If
+                Me.PopulateBOProperty(oAssocComm, COMMISSION_TOTAL, totalComm.ToString)
+                Me.PopulateBOProperty(oAssocComm, MARKUP_TOTAL, totalMarkup.ToString)
+                'oAssocComm.Validate()
+                If Me.State.IsDealerConfiguredForSourceXcd Then
+                    Me.txtBrokerMakupPct.Text = "0.00"
+                    ControlMgr.SetEnableControl(Me, txtBrokerMakupPct, False)
+                    If Me.cboBrokerCommPctSourceXcd.SelectedIndex > NO_ITEM_SELECTED_INDEX Then
+                        Me.PopulateBOProperty(oAssocComm, "CommissionsPercentSourceXcd", Me.cboBrokerCommPctSourceXcd, False, True)
+                    End If
+                End If
+            Else
+                If Me.AsCommId1.Text <> "" Then
+                    oAssocComm = Me.State.MyBo.AddAssocComm(New Guid(Me.AsCommId1.Text))
+                    BindBoAssocCommToLabels(oAssocComm)
+                    Me.PopulateBOProperty(oAssocComm, "CommissionAmount", Me.txtBrokerMakupPct)
+
+                    If Me.State.IsDealerConfiguredForSourceXcd Then
+                        Me.txtBrokerMakupPct.Text = "0.00"
+                        ControlMgr.SetEnableControl(Me, txtBrokerMakupPct, False)
+
+                        If String.IsNullOrWhiteSpace(Me.txtBrokerCommPct.Text) Then
+                            Me.txtBrokerCommPct.Text = "0.00"
+                            'ScriptManager.RegisterStartupScript(Me, Me.GetType(), "onchange", "UpdateBroker();", False)
+                        End If
+
+                        Me.PopulateBOProperty(oAssocComm, "CommissionPercent", Me.txtBrokerCommPct)
+
+                        If Me.cboBrokerCommPctSourceXcd.SelectedIndex > NO_ITEM_SELECTED_INDEX Then
+                            If cboBrokerCommPctSourceXcd.SelectedItem.Value.ToUpper.Equals(Codes.ACCT_BUCKETS_SOURCE_COMMBRKDOWN_OPTION_DIFFERENCE) Then
+                                ControlMgr.SetEnableControl(Me, txtBrokerCommPct, False)
+                            Else
+                                ControlMgr.SetEnableControl(Me, txtBrokerCommPct, True)
+                            End If
+
+                            Me.PopulateBOProperty(oAssocComm, "CommissionsPercentSourceXcd", Me.cboBrokerCommPctSourceXcd, False, True)
+                        End If
+                    Else
+                        Me.PopulateBOProperty(oAssocComm, "CommissionPercent", Me.txtBrokerCommPct)
+                    End If
+
+                    totalMarkup += oAssocComm.CommissionAmount.Value
+                    totalComm += oAssocComm.CommissionPercent.Value
+                    Me.PopulateBOProperty(oAssocComm, COMMISSION_TOTAL, totalComm.ToString)
+                    Me.PopulateBOProperty(oAssocComm, MARKUP_TOTAL, totalMarkup.ToString)
+
+                    'oAssocComm.Validate()
+                Else
+                    Me.ChangeControlEnabledProperty(Me.txtBrokerMakupPct, False)
+                    Me.ChangeControlEnabledProperty(Me.txtBrokerCommPct, False)
+                End If
+            End If
+            '   Case 2
+            strPositionChecked = strPositionChecked & ",2"
+            If Me.State.IsToleranceNew Then
+                'If Not oPeriodEntity.EntityId.Equals(Guid.Empty) Then
+                '    oCommEntity = New CommissionEntity(oPeriodEntity.EntityId)
+                '    PopulateToleranceFormItem(Me.txtBrokerMakupEntity2, oCommEntity.EntityName)
+                'Else
+                '    strPayeeType = LookupListNew.GetDescriptionFromId(LookupListNew.LK_PAYEE_TYPE, oPeriodEntity.PayeeTypeId)
+                '    PopulateToleranceFormItem(Me.txtBrokerMakupEntity2, strPayeeType)
+                'End If
+                oAssocComm = Me.State.MyBo.AddAssocComm(Guid.Empty)
+                BindBoAssocCommToLabels(oAssocComm)
+                oAssocComm.CommissionPlanId = Me.State.moCommPlanId 'Me.State.moCommissionToleranceId
+                Me.PopulateBOProperty(oAssocComm, "CommissionAmount", Me.txtBrokerMakupPct2)
+                Me.PopulateBOProperty(oAssocComm, "CommissionPercent", Me.txtBrokerCommPct2)
+                oAssocComm.Position = 2
+                If Me.txtBrokerMakupPct2.Text <> "" Then
+                    totalMarkup += oAssocComm.CommissionAmount.Value
+                End If
+                If Me.txtBrokerCommPct2.Text <> "" Then
+                    totalComm += oAssocComm.CommissionPercent.Value
+                End If
+                Me.PopulateBOProperty(oAssocComm, COMMISSION_TOTAL, totalComm.ToString)
+                Me.PopulateBOProperty(oAssocComm, MARKUP_TOTAL, totalMarkup.ToString)
+                'oAssocComm.Validate()
+                If Me.State.IsDealerConfiguredForSourceXcd Then
+                    Me.txtBrokerMakupPct2.Text = "0.00"
+                    ControlMgr.SetEnableControl(Me, txtBrokerMakupPct2, False)
+
+                    If Me.cboBrokerCommPct2SourceXcd.SelectedIndex > NO_ITEM_SELECTED_INDEX Then
+                        Me.PopulateBOProperty(oAssocComm, "CommissionsPercentSourceXcd", Me.cboBrokerCommPct2SourceXcd, False, True)
+                    End If
+                End If
+            Else
+                If Me.AsCommId2.Text <> "" Then
+                    oAssocComm = Me.State.MyBo.AddAssocComm(New Guid(Me.AsCommId2.Text))
+                    BindBoAssocCommToLabels(oAssocComm)
+                    Me.PopulateBOProperty(oAssocComm, "CommissionAmount", Me.txtBrokerMakupPct2)
+
+                    If Me.State.IsDealerConfiguredForSourceXcd Then
+                        Me.txtBrokerMakupPct2.Text = "0.00"
+                        ControlMgr.SetEnableControl(Me, txtBrokerMakupPct2, False)
+
+                        If String.IsNullOrWhiteSpace(Me.txtBrokerCommPct2.Text) Then
+                            Me.txtBrokerCommPct2.Text = "0.0000"
+                        End If
+
+                        Me.PopulateBOProperty(oAssocComm, "CommissionPercent", Me.txtBrokerCommPct2)
+
+                        If Me.cboBrokerCommPct2SourceXcd.SelectedIndex > NO_ITEM_SELECTED_INDEX Then
+                            If cboBrokerCommPct2SourceXcd.SelectedItem.Value.ToUpper.Equals(Codes.ACCT_BUCKETS_SOURCE_COMMBRKDOWN_OPTION_DIFFERENCE) Then
+                                ControlMgr.SetEnableControl(Me, txtBrokerCommPct2, False)
+                            Else
+                                ControlMgr.SetEnableControl(Me, txtBrokerCommPct2, True)
+                            End If
+
+                            Me.PopulateBOProperty(oAssocComm, "CommissionsPercentSourceXcd", Me.cboBrokerCommPct2SourceXcd, False, True)
+                        End If
+                    Else
+                        Me.PopulateBOProperty(oAssocComm, "CommissionPercent", Me.txtBrokerCommPct2)
+                    End If
+
+                    totalMarkup += oAssocComm.CommissionAmount.Value
+                    totalComm += oAssocComm.CommissionPercent.Value
+                    Me.PopulateBOProperty(oAssocComm, COMMISSION_TOTAL, totalComm.ToString)
+                    Me.PopulateBOProperty(oAssocComm, MARKUP_TOTAL, totalMarkup.ToString)
+                    'oAssocComm.Validate()                                    
+                Else
+                    Me.ChangeControlEnabledProperty(Me.txtBrokerMakupPct2, False)
+                    Me.ChangeControlEnabledProperty(Me.txtBrokerCommPct2, False)
+                End If
+
+            End If
+            '   Case 3
+            strPositionChecked = strPositionChecked & ",3"
+            If Me.State.IsToleranceNew Then
+                'If Not oPeriodEntity.EntityId.Equals(Guid.Empty) Then
+                '    oCommEntity = New CommissionEntity(oPeriodEntity.EntityId)
+                '    PopulateToleranceFormItem(Me.txtBrokerMakupEntity3, oCommEntity.EntityName)
+                'Else
+                '    strPayeeType = LookupListNew.GetDescriptionFromId(LookupListNew.LK_PAYEE_TYPE, oPeriodEntity.PayeeTypeId)
+                '    PopulateToleranceFormItem(Me.txtBrokerMakupEntity3, strPayeeType)
+                'End If
+                oAssocComm = Me.State.MyBo.AddAssocComm(Guid.Empty)
+                BindBoAssocCommToLabels(oAssocComm)
+                oAssocComm.CommissionPlanId = Me.State.moCommPlanId 'Me.State.moCommissionToleranceId
+                Me.PopulateBOProperty(oAssocComm, "CommissionAmount", Me.txtBrokerMakupPct3)
+                Me.PopulateBOProperty(oAssocComm, "CommissionPercent", Me.txtBrokerCommPct3)
+                oAssocComm.Position = 3
+                If Me.txtBrokerMakupPct3.Text <> "" Then
+                    totalMarkup += oAssocComm.CommissionAmount.Value
+                End If
+                If Me.txtBrokerCommPct3.Text <> "" Then
+                    totalComm += oAssocComm.CommissionPercent.Value
+                End If
+                Me.PopulateBOProperty(oAssocComm, COMMISSION_TOTAL, totalComm.ToString)
+                Me.PopulateBOProperty(oAssocComm, MARKUP_TOTAL, totalMarkup.ToString)
+                'oAssocComm.Validate()
+                If Me.State.IsDealerConfiguredForSourceXcd Then
+                    Me.txtBrokerMakupPct3.Text = "0.00"
+                    ControlMgr.SetEnableControl(Me, txtBrokerMakupPct3, False)
+
+                    If Me.cboBrokerCommPct3SourceXcd.SelectedIndex > NO_ITEM_SELECTED_INDEX Then
+                        Me.PopulateBOProperty(oAssocComm, "CommissionsPercentSourceXcd", Me.cboBrokerCommPct3SourceXcd, False, True)
+                    End If
+                End If
+            Else
+                If Me.AsCommId3.Text <> "" Then
+                    oAssocComm = Me.State.MyBo.AddAssocComm(New Guid(Me.AsCommId3.Text))
+                    BindBoAssocCommToLabels(oAssocComm)
+                    Me.PopulateBOProperty(oAssocComm, "CommissionAmount", Me.txtBrokerMakupPct3)
+
+                    If Me.State.IsDealerConfiguredForSourceXcd Then
+                        Me.txtBrokerMakupPct3.Text = "0.00"
+                        ControlMgr.SetEnableControl(Me, txtBrokerMakupPct3, False)
+
+                        If String.IsNullOrWhiteSpace(Me.txtBrokerCommPct3.Text) Then
+                            Me.txtBrokerCommPct3.Text = "0.0000"
+                        End If
+
+                        Me.PopulateBOProperty(oAssocComm, "CommissionPercent", Me.txtBrokerCommPct3)
+
+                        If Me.cboBrokerCommPct3SourceXcd.SelectedIndex > NO_ITEM_SELECTED_INDEX Then
+                            If cboBrokerCommPct3SourceXcd.SelectedItem.Value.ToUpper.Equals(Codes.ACCT_BUCKETS_SOURCE_COMMBRKDOWN_OPTION_DIFFERENCE) Then
+                                ControlMgr.SetEnableControl(Me, txtBrokerCommPct3, False)
+                            Else
+                                ControlMgr.SetEnableControl(Me, txtBrokerCommPct3, True)
+                            End If
+
+                            Me.PopulateBOProperty(oAssocComm, "CommissionsPercentSourceXcd", Me.cboBrokerCommPct3SourceXcd, False, True)
+                        End If
+                    Else
+                        Me.PopulateBOProperty(oAssocComm, "CommissionPercent", Me.txtBrokerCommPct3)
+                    End If
+
+                    totalMarkup += oAssocComm.CommissionAmount.Value
+                    totalComm += oAssocComm.CommissionPercent.Value
+                    Me.PopulateBOProperty(oAssocComm, COMMISSION_TOTAL, totalComm.ToString)
+                    Me.PopulateBOProperty(oAssocComm, MARKUP_TOTAL, totalMarkup.ToString)
+                    'oAssocComm.Validate()
+                Else
+                    Me.ChangeControlEnabledProperty(Me.txtBrokerMakupPct3, False)
+                    Me.ChangeControlEnabledProperty(Me.txtBrokerCommPct3, False)
+                End If
+            End If
+            '   Case 4
+            strPositionChecked = strPositionChecked & ",4"
+            If Me.State.IsToleranceNew Then
+                'If Not oPeriodEntity.EntityId.Equals(Guid.Empty) Then
+                '    oCommEntity = New CommissionEntity(oPeriodEntity.EntityId)
+                '    PopulateToleranceFormItem(Me.txtBrokerMakupEntity4, oCommEntity.EntityName)
+                'Else
+                '    strPayeeType = LookupListNew.GetDescriptionFromId(LookupListNew.LK_PAYEE_TYPE, oPeriodEntity.PayeeTypeId)
+                '    PopulateToleranceFormItem(Me.txtBrokerMakupEntity4, strPayeeType)
+                'End If
+                oAssocComm = Me.State.MyBo.AddAssocComm(Guid.Empty)
+                BindBoAssocCommToLabels(oAssocComm)
+                oAssocComm.CommissionPlanId = Me.State.moCommPlanId 'Me.State.moCommissionToleranceId
+                Me.PopulateBOProperty(oAssocComm, "CommissionAmount", Me.txtBrokerMakupPct4)
+                Me.PopulateBOProperty(oAssocComm, "CommissionPercent", Me.txtBrokerCommPct4)
+                oAssocComm.Position = 4
+                If Me.txtBrokerMakupPct4.Text <> "" Then
+                    totalMarkup += oAssocComm.CommissionAmount.Value
+                End If
+                If Me.txtBrokerCommPct4.Text <> "" Then
+                    totalComm += oAssocComm.CommissionPercent.Value
+                End If
+                Me.PopulateBOProperty(oAssocComm, COMMISSION_TOTAL, totalComm.ToString)
+                Me.PopulateBOProperty(oAssocComm, MARKUP_TOTAL, totalMarkup.ToString)
+                'oAssocComm.Validate()
+                If Me.State.IsDealerConfiguredForSourceXcd Then
+                    Me.txtBrokerMakupPct4.Text = "0.00"
+                    ControlMgr.SetEnableControl(Me, txtBrokerMakupPct4, False)
+
+                    If Me.cboBrokerCommPct4SourceXcd.SelectedIndex > NO_ITEM_SELECTED_INDEX Then
+                        Me.PopulateBOProperty(oAssocComm, "CommissionsPercentSourceXcd", Me.cboBrokerCommPct4SourceXcd, False, True)
+                    End If
+                End If
+            Else
+                If Me.AsCommId4.Text <> "" Then
+                    oAssocComm = Me.State.MyBo.AddAssocComm(New Guid(Me.AsCommId4.Text))
+                    BindBoAssocCommToLabels(oAssocComm)
+                    Me.PopulateBOProperty(oAssocComm, "CommissionAmount", Me.txtBrokerMakupPct4)
+
+                    If Me.State.IsDealerConfiguredForSourceXcd Then
+                        Me.txtBrokerMakupPct4.Text = "0.00"
+                        ControlMgr.SetEnableControl(Me, txtBrokerMakupPct4, False)
+
+                        If String.IsNullOrWhiteSpace(Me.txtBrokerCommPct4.Text) Then
+                            Me.txtBrokerCommPct4.Text = "0.0000"
+                        End If
+
+                        Me.PopulateBOProperty(oAssocComm, "CommissionPercent", Me.txtBrokerCommPct4)
+
+                        If Me.cboBrokerCommPct4SourceXcd.SelectedIndex > NO_ITEM_SELECTED_INDEX Then
+                            If cboBrokerCommPct4SourceXcd.SelectedItem.Value.ToUpper.Equals(Codes.ACCT_BUCKETS_SOURCE_COMMBRKDOWN_OPTION_DIFFERENCE) Then
+                                ControlMgr.SetEnableControl(Me, txtBrokerCommPct4, False)
+                            Else
+                                ControlMgr.SetEnableControl(Me, txtBrokerCommPct4, True)
+                            End If
+
+                            Me.PopulateBOProperty(oAssocComm, "CommissionsPercentSourceXcd", Me.cboBrokerCommPct4SourceXcd, False, True)
+                        End If
+                    Else
+                        Me.PopulateBOProperty(oAssocComm, "CommissionPercent", Me.txtBrokerCommPct4)
+                    End If
+
+                    totalMarkup += oAssocComm.CommissionAmount.Value
+                    totalComm += oAssocComm.CommissionPercent.Value
+                    Me.PopulateBOProperty(oAssocComm, COMMISSION_TOTAL, totalComm.ToString)
+                    Me.PopulateBOProperty(oAssocComm, MARKUP_TOTAL, totalMarkup.ToString)
+                    'oAssocComm.Validate()                                    
+                Else
+                    Me.ChangeControlEnabledProperty(Me.txtBrokerMakupPct4, False)
+                    Me.ChangeControlEnabledProperty(Me.txtBrokerCommPct4, False)
+                End If
+            End If
+            '   Case 5
+            strPositionChecked = strPositionChecked & ",5"
+            If Me.State.IsToleranceNew Then
+                'If Not oPeriodEntity.EntityId.Equals(Guid.Empty) Then
+                '    oCommEntity = New CommissionEntity(oPeriodEntity.EntityId)
+                '    PopulateToleranceFormItem(Me.txtBrokerMakupEntity5, oCommEntity.EntityName)
+                'Else
+                '    strPayeeType = LookupListNew.GetDescriptionFromId(LookupListNew.LK_PAYEE_TYPE, oPeriodEntity.PayeeTypeId)
+                '    PopulateToleranceFormItem(Me.txtBrokerMakupEntity5, strPayeeType)
+                'End If
+                oAssocComm = Me.State.MyBo.AddAssocComm(Guid.Empty)
+                BindBoAssocCommToLabels(oAssocComm)
+                oAssocComm.CommissionPlanId = Me.State.moCommPlanId 'Me.State.moCommissionToleranceId
+                Me.PopulateBOProperty(oAssocComm, "CommissionAmount", Me.txtBrokerMakupPct5)
+                Me.PopulateBOProperty(oAssocComm, "CommissionPercent", Me.txtBrokerCommPct5)
+                oAssocComm.Position = 5
+                If Me.txtBrokerMakupPct5.Text <> "" Then
+                    totalMarkup += oAssocComm.CommissionAmount.Value
+                End If
+                If Me.txtBrokerCommPct5.Text <> "" Then
+                    totalComm += oAssocComm.CommissionPercent.Value
+                End If
+                Me.PopulateBOProperty(oAssocComm, COMMISSION_TOTAL, totalComm.ToString)
+                Me.PopulateBOProperty(oAssocComm, MARKUP_TOTAL, totalMarkup.ToString)
+                'oAssocComm.Validate()
+                If Me.State.IsDealerConfiguredForSourceXcd Then
+                    Me.txtBrokerMakupPct5.Text = "0.00"
+                    ControlMgr.SetEnableControl(Me, txtBrokerMakupPct5, False)
+
+                    If Me.cboBrokerCommPct5SourceXcd.SelectedIndex > NO_ITEM_SELECTED_INDEX Then
+                        Me.PopulateBOProperty(oAssocComm, "CommissionsPercentSourceXcd", Me.cboBrokerCommPct5SourceXcd, False, True)
+                    End If
+                End If
+            Else
+                If Me.AsCommId5.Text <> "" Then
+                    oAssocComm = Me.State.MyBo.AddAssocComm(New Guid(Me.AsCommId5.Text))
+                    BindBoAssocCommToLabels(oAssocComm)
+                    Me.PopulateBOProperty(oAssocComm, "CommissionAmount", Me.txtBrokerMakupPct5)
+
+                    If Me.State.IsDealerConfiguredForSourceXcd Then
+                        Me.txtBrokerMakupPct5.Text = "0.00"
+                        ControlMgr.SetEnableControl(Me, txtBrokerMakupPct5, False)
+
+                        If String.IsNullOrWhiteSpace(Me.txtBrokerCommPct5.Text) Then
+                            Me.txtBrokerCommPct5.Text = "0.0000"
+                        End If
+
+                        Me.PopulateBOProperty(oAssocComm, "CommissionPercent", Me.txtBrokerCommPct5)
+
+                        If Me.cboBrokerCommPct5SourceXcd.SelectedIndex > NO_ITEM_SELECTED_INDEX Then
+                            If cboBrokerCommPct5SourceXcd.SelectedItem.Value.ToUpper.Equals(Codes.ACCT_BUCKETS_SOURCE_COMMBRKDOWN_OPTION_DIFFERENCE) Then
+                                ControlMgr.SetEnableControl(Me, txtBrokerCommPct5, False)
+                            Else
+                                ControlMgr.SetEnableControl(Me, txtBrokerCommPct5, True)
+                            End If
+
+                            Me.PopulateBOProperty(oAssocComm, "CommissionsPercentSourceXcd", Me.cboBrokerCommPct5SourceXcd, False, True)
+                        End If
+                    Else
+                        Me.PopulateBOProperty(oAssocComm, "CommissionPercent", Me.txtBrokerCommPct5)
+                    End If
+
+                    totalMarkup += oAssocComm.CommissionAmount.Value
+                    totalComm += oAssocComm.CommissionPercent.Value
+                    Me.PopulateBOProperty(oAssocComm, COMMISSION_TOTAL, totalComm.ToString)
+                    Me.PopulateBOProperty(oAssocComm, MARKUP_TOTAL, totalMarkup.ToString)
+                    'oAssocComm.Validate()                                    
+                Else
+                    Me.ChangeControlEnabledProperty(Me.txtBrokerMakupPct5, False)
+                    Me.ChangeControlEnabledProperty(Me.txtBrokerCommPct5, False)
+                End If
+            End If
+            'End Select
+            'End If
+            If Me.ErrCollection.Count > 0 Then
+                Throw New PopulateBOErrorException
+            ElseIf oCount > 4 Then
+                PopulateToleranceFormItem(Me.txtCommPctTotal, totalComm)
+                PopulateToleranceFormItem(Me.txtBrokerPctTotal, totalMarkup)
+                If Not oAssocComm Is Nothing Then
+                    Me.State.moAssocComm = oAssocComm
+                    If Not Me.HasDealerConfigeredForSourceXcd Then
+                        oAssocComm.Validate()
+                    End If
+                End If
+            End If
+            If Not oAssocComm Is Nothing Then
+                Me.State.moIsAssocCommDirty = Me.State.moIsAssocCommDirty Or oAssocComm.IsDirty
+            End If
+            'Next
+            ValidateDiffSourceLogic()
+        End Sub
+
         Private Sub EnableDisablePeriodEntity(ByVal oEnable As Boolean)
 
             'ControlMgr.SetVisibleControl(Me, btnEntitySave, oEnable)
@@ -2485,62 +3026,60 @@ Namespace Tables
         End Sub
 
         Private Sub SetGridSourceXcdLabelFromBo()
-            If Me.State.IsDealerConfiguredForSourceXcd Then
-                For pageIndexk As Integer = 0 To Me.Grid.PageCount - 1
-                    Me.Grid.PageIndex = pageIndexk
-                    Dim rowNum As Integer = Me.Grid.Rows.Count
-                    For i As Integer = 0 To rowNum - 1
-                        Dim gRow As GridViewRow = Grid.Rows(i)
-                        If gRow.RowType = DataControlRowType.DataRow Then
-                            Dim molblCommPercent1SourceXcd As Label = DirectCast(gRow.Cells(COMMISSION_PERCENT1_SOURCE_COL).FindControl("moBrokerMarkupPct1SourceLabel"), Label)
-                            Dim molblCommPercent2SourceXcd As Label = DirectCast(gRow.Cells(COMMISSION_PERCENT2_SOURCE_COL).FindControl("moBrokerMarkupPct2SourceLabel"), Label)
-                            Dim molblCommPercent3SourceXcd As Label = DirectCast(gRow.Cells(COMMISSION_PERCENT3_SOURCE_COL).FindControl("moBrokerMarkupPct3SourceLabel"), Label)
-                            Dim molblCommPercent4SourceXcd As Label = DirectCast(gRow.Cells(COMMISSION_PERCENT4_SOURCE_COL).FindControl("moBrokerMarkupPct4SourceLabel"), Label)
-                            Dim molblCommPercent5SourceXcd As Label = DirectCast(gRow.Cells(COMMISSION_PERCENT5_SOURCE_COL).FindControl("moBrokerMarkupPct5SourceLabel"), Label)
+            For pageIndexk As Integer = 0 To Me.Grid.PageCount - 1
+                Me.Grid.PageIndex = pageIndexk
+                Dim rowNum As Integer = Me.Grid.Rows.Count
+                For i As Integer = 0 To rowNum - 1
+                    Dim gRow As GridViewRow = Grid.Rows(i)
+                    If gRow.RowType = DataControlRowType.DataRow Then
+                        Dim molblCommPercent1SourceXcd As Label = DirectCast(gRow.Cells(COMMISSION_PERCENT1_SOURCE_COL).FindControl("moBrokerMarkupPct1SourceLabel"), Label)
+                        Dim molblCommPercent2SourceXcd As Label = DirectCast(gRow.Cells(COMMISSION_PERCENT2_SOURCE_COL).FindControl("moBrokerMarkupPct2SourceLabel"), Label)
+                        Dim molblCommPercent3SourceXcd As Label = DirectCast(gRow.Cells(COMMISSION_PERCENT3_SOURCE_COL).FindControl("moBrokerMarkupPct3SourceLabel"), Label)
+                        Dim molblCommPercent4SourceXcd As Label = DirectCast(gRow.Cells(COMMISSION_PERCENT4_SOURCE_COL).FindControl("moBrokerMarkupPct4SourceLabel"), Label)
+                        Dim molblCommPercent5SourceXcd As Label = DirectCast(gRow.Cells(COMMISSION_PERCENT5_SOURCE_COL).FindControl("moBrokerMarkupPct5SourceLabel"), Label)
 
-                            If Not molblCommPercent1SourceXcd Is Nothing Then
-                                If molblCommPercent1SourceXcd.Visible Then
-                                    If (Not molblCommPercent1SourceXcd.Text Is Nothing And Not String.IsNullOrWhiteSpace(molblCommPercent1SourceXcd.Text)) Then
-                                        molblCommPercent1SourceXcd.Text = GetCodeAmtSourceOption(molblCommPercent1SourceXcd.Text)
-                                    End If
-                                End If
-                            End If
-
-                            If Not molblCommPercent2SourceXcd Is Nothing Then
-                                If molblCommPercent2SourceXcd.Visible Then
-                                    If (Not molblCommPercent2SourceXcd.Text Is Nothing And Not String.IsNullOrWhiteSpace(molblCommPercent2SourceXcd.Text)) Then
-                                        molblCommPercent2SourceXcd.Text = GetCodeAmtSourceOption(molblCommPercent2SourceXcd.Text)
-                                    End If
-                                End If
-                            End If
-
-                            If Not molblCommPercent3SourceXcd Is Nothing Then
-                                If molblCommPercent3SourceXcd.Visible Then
-                                    If (Not molblCommPercent3SourceXcd.Text Is Nothing And Not String.IsNullOrWhiteSpace(molblCommPercent3SourceXcd.Text)) Then
-                                        molblCommPercent3SourceXcd.Text = GetCodeAmtSourceOption(molblCommPercent3SourceXcd.Text)
-                                    End If
-                                End If
-                            End If
-
-                            If Not molblCommPercent4SourceXcd Is Nothing Then
-                                If molblCommPercent4SourceXcd.Visible Then
-                                    If (Not molblCommPercent4SourceXcd.Text Is Nothing And Not String.IsNullOrWhiteSpace(molblCommPercent4SourceXcd.Text)) Then
-                                        molblCommPercent4SourceXcd.Text = GetCodeAmtSourceOption(molblCommPercent4SourceXcd.Text)
-                                    End If
-                                End If
-                            End If
-
-                            If Not molblCommPercent5SourceXcd Is Nothing Then
-                                If molblCommPercent5SourceXcd.Visible Then
-                                    If (Not molblCommPercent5SourceXcd.Text Is Nothing And Not String.IsNullOrWhiteSpace(molblCommPercent5SourceXcd.Text)) Then
-                                        molblCommPercent5SourceXcd.Text = GetCodeAmtSourceOption(molblCommPercent5SourceXcd.Text)
-                                    End If
+                        If Not molblCommPercent1SourceXcd Is Nothing Then
+                            If molblCommPercent1SourceXcd.Visible Then
+                                If (Not molblCommPercent1SourceXcd.Text Is Nothing And Not String.IsNullOrWhiteSpace(molblCommPercent1SourceXcd.Text)) Then
+                                    molblCommPercent1SourceXcd.Text = GetCodeAmtSourceOption(molblCommPercent1SourceXcd.Text)
                                 End If
                             End If
                         End If
-                    Next
+
+                        If Not molblCommPercent2SourceXcd Is Nothing Then
+                            If molblCommPercent2SourceXcd.Visible Then
+                                If (Not molblCommPercent2SourceXcd.Text Is Nothing And Not String.IsNullOrWhiteSpace(molblCommPercent2SourceXcd.Text)) Then
+                                    molblCommPercent2SourceXcd.Text = GetCodeAmtSourceOption(molblCommPercent2SourceXcd.Text)
+                                End If
+                            End If
+                        End If
+
+                        If Not molblCommPercent3SourceXcd Is Nothing Then
+                            If molblCommPercent3SourceXcd.Visible Then
+                                If (Not molblCommPercent3SourceXcd.Text Is Nothing And Not String.IsNullOrWhiteSpace(molblCommPercent3SourceXcd.Text)) Then
+                                    molblCommPercent3SourceXcd.Text = GetCodeAmtSourceOption(molblCommPercent3SourceXcd.Text)
+                                End If
+                            End If
+                        End If
+
+                        If Not molblCommPercent4SourceXcd Is Nothing Then
+                            If molblCommPercent4SourceXcd.Visible Then
+                                If (Not molblCommPercent4SourceXcd.Text Is Nothing And Not String.IsNullOrWhiteSpace(molblCommPercent4SourceXcd.Text)) Then
+                                    molblCommPercent4SourceXcd.Text = GetCodeAmtSourceOption(molblCommPercent4SourceXcd.Text)
+                                End If
+                            End If
+                        End If
+
+                        If Not molblCommPercent5SourceXcd Is Nothing Then
+                            If molblCommPercent5SourceXcd.Visible Then
+                                If (Not molblCommPercent5SourceXcd.Text Is Nothing And Not String.IsNullOrWhiteSpace(molblCommPercent5SourceXcd.Text)) Then
+                                    molblCommPercent5SourceXcd.Text = GetCodeAmtSourceOption(molblCommPercent5SourceXcd.Text)
+                                End If
+                            End If
+                        End If
+                    End If
                 Next
-            End If
+            Next
         End Sub
 
         Private Sub SetSourceBucketValues()
@@ -2644,6 +3183,182 @@ Namespace Tables
 
         End Sub
 
+        Private Sub FillSourceXcdDropdownList()
+
+            'fill the drop downs
+            If moGridView.EditIndex = -1 Then Exit Sub
+
+            Dim gRow As GridViewRow = moGridView.Rows(moGridView.EditIndex)
+            Dim mocboCommPercentSourceXcd As DropDownList = DirectCast(gRow.Cells(COL_COMMISSIONS_SOURCE_XCD_IDX).FindControl("cboCommPercentSourceXcd"), DropDownList)
+
+            If Not mocboCommPercentSourceXcd Is Nothing Then
+                PoupulateSourceOptionDropdownlist(mocboCommPercentSourceXcd)
+            End If
+
+
+
+        End Sub
+        Private Sub FillEntityDropDownList()
+
+            Dim gRow As GridViewRow = moGridView.Rows(moGridView.EditIndex)
+            Dim mocboEntityType As DropDownList = DirectCast(gRow.Cells(COL_ENTITY_ID_IDX).FindControl("cboEntityType"), DropDownList)
+
+            Dim listcontext As ListContext = New ListContext()
+            listcontext.CompanyGroupId = ElitaPlusIdentity.Current.ActiveUser.CompanyGroup.Id
+            Dim CommEntityList As DataElements.ListItem() = CommonConfigManager.Current.ListManager.GetList(listCode:="CommEntityByCompanyGroup", languageCode:=Thread.CurrentPrincipal.GetLanguageCode(), context:=listcontext)
+
+            'Me.BindListControlToDataView(cboPeriodEntity1, oDataView, , , True)
+            mocboEntityType.Populate(CommEntityList, New PopulateOptions() With
+            {
+                .AddBlankItem = False
+            })
+        End Sub
+
+        Private Sub FillPayeeTypeDropDownList()
+
+            Dim gRow As GridViewRow = moGridView.Rows(moGridView.EditIndex)
+            Dim mocboPayeeType As DropDownList = DirectCast(gRow.Cells(COL_ENTITY_ID_IDX).FindControl("cboPayeeType"), DropDownList)
+
+            Dim PayeeTypeList As DataElements.ListItem() = CommonConfigManager.Current.ListManager.GetList(listCode:="PYTYPE", languageCode:=Thread.CurrentPrincipal.GetLanguageCode())
+            Dim FilteredPayeeTypeList As DataElements.ListItem()
+            Dim FilteredPayeeType1List As DataElements.ListItem()
+            Dim yesId As Guid = (From lst In CommonConfigManager.Current.ListManager.GetList(listCode:="YESNO", languageCode:=Thread.CurrentPrincipal.GetLanguageCode())
+                                 Where lst.Code = "Y"
+                                 Select lst.ListItemId).FirstOrDefault()
+
+            Dim dealerId As Guid = TheDealerControl.SelectedGuid
+            Dim oDealer As New Dealer(dealerId)
+
+            If Not oDealer.DealerGroupId.Equals(Guid.Empty) Then
+                Dim oDealerGrp As New DealerGroup(oDealer.DealerGroupId)
+                'Dim lkYesNo As DataView = LookupListNew.DropdownLookupList("YESNO", Authentication.LangId)
+                'lkYesNo.RowFilter += " and code='Y'"
+                'Dim yesId As Guid = New Guid(CType(lkYesNo.Item(0).Item("ID"), Byte()))
+                If oDealerGrp.AcctingByGroupId.Equals(yesId) Then
+                    'dvPayeeType.RowFilter += "and code <>'" & Payee_Type_Dealer & "'"
+                    FilteredPayeeTypeList = (From lst In PayeeTypeList
+                                             Where lst.Code <> Payee_Type_Dealer
+                                             Select lst).ToArray()
+                Else
+                    'dvPayeeType.RowFilter += "and code <>'" & Payee_Type_Dealer_Group & "'"
+                    FilteredPayeeTypeList = (From lst In PayeeTypeList
+                                             Where lst.Code <> Payee_Type_Dealer_Group
+                                             Select lst).ToArray()
+                End If
+            Else
+                'dvPayeeType.RowFilter += "and code <>'" & Payee_Type_Dealer_Group & "'"
+                FilteredPayeeTypeList = (From lst In PayeeTypeList
+                                         Where lst.Code <> Payee_Type_Dealer_Group
+                                         Select lst).ToArray()
+            End If
+
+            'Me.BindListControlToDataView(Me.cboPayeeType1, dvPayeeType, , , False)
+            mocboPayeeType.Populate(FilteredPayeeTypeList, New PopulateOptions() With
+            {
+                .AddBlankItem = False
+            })
+
+            FilteredPayeeType1List = (From lst In PayeeTypeList
+                                      Where lst.Code = Payee_Type_Comm_Entity
+                                      Select lst).ToArray()
+
+            'If dvPayeeType1.Count = 1 Then
+            '    Me.litScriptVars.Text += "var commEntity = '" + GuidControl.ByteArrayToGuid(dvPayeeType1.Item(0)(LookupListNew.COL_ID_NAME)).ToString + "';"
+            'End If
+
+            'If FilteredPayeeType1List.Count = 1 Then
+            '    Me.litScriptVars.Text += "var commEntity = '" + FilteredPayeeType1List.First().ListItemId.ToString + "';"
+            'End If
+
+            'If Me.State.IsPeriodNew = True Then
+            Dim FirstPayeeType As String
+            FirstPayeeType = FilteredPayeeType1List.First().ListItemId.ToString()
+            'BindSelectItem(GuidControl.ByteArrayToGuid(dvPayeeType1.Item(0)(LookupListNew.COL_ID_NAME)).ToString, cboPayeeType1)
+            'BindSelectItem(GuidControl.ByteArrayToGuid(dvPayeeType1.Item(0)(LookupListNew.COL_ID_NAME)).ToString, cboPayeeType2)
+            'BindSelectItem(GuidControl.ByteArrayToGuid(dvPayeeType1.Item(0)(LookupListNew.COL_ID_NAME)).ToString, cboPayeeType3)
+            'BindSelectItem(GuidControl.ByteArrayToGuid(dvPayeeType1.Item(0)(LookupListNew.COL_ID_NAME)).ToString, cboPayeeType4)
+            'BindSelectItem(GuidControl.ByteArrayToGuid(dvPayeeType1.Item(0)(LookupListNew.COL_ID_NAME)).ToString, cboPayeeType5)
+            BindSelectItem(FirstPayeeType, mocboPayeeType)
+            'BindSelectItem(FirstPayeeType, cboPayeeType2)
+            'BindSelectItem(FirstPayeeType, cboPayeeType3)
+            'BindSelectItem(FirstPayeeType, cboPayeeType4)
+            'BindSelectItem(FirstPayeeType, cboPayeeType5)
+            'End If
+
+        End Sub
+
+        Private Sub SetGridSourceXcdDropdownFromBo()
+            If moGridView.EditIndex = -1 Then Exit Sub
+            Dim gRow As GridViewRow = moGridView.Rows(moGridView.EditIndex)
+            Dim mocboCommPercentSourceXcd As DropDownList = DirectCast(gRow.Cells(COL_COMMISSIONS_SOURCE_XCD_IDX).FindControl("cboCommPercentSourceXcd"), DropDownList)
+
+            Dim mocboEntityType As DropDownList = DirectCast(gRow.Cells(COL_ENTITY_ID_IDX).FindControl("cboEntityType"), DropDownList)
+
+            Dim moTextCommission_PercentText As TextBox = DirectCast(gRow.Cells(COL_COMMISSION_PERCENTAGE_IDX).FindControl("moCommission_PercentText"), TextBox)
+            Dim diffValue As Decimal = 0.0000
+
+            If Me.State.IsNewWithCopy = False Then
+                With TheCoverageRate
+                    If mocboCommPercentSourceXcd.Visible Then
+                        If Not .CommissionsPercentSourceXcd Is Nothing And mocboCommPercentSourceXcd.Items.Count > 0 Then
+                            Me.SetSelectedItem(mocboCommPercentSourceXcd, .CommissionsPercentSourceXcd)
+
+                            If mocboCommPercentSourceXcd.SelectedItem.Value.ToUpper.Equals(Codes.ACCT_BUCKETS_SOURCE_COMMBRKDOWN_OPTION_DIFFERENCE) Then
+                                Me.PopulateControlFromBOProperty(moTextCommission_PercentText, diffValue, Me.PERCENT_FORMAT)
+                                moTextCommission_PercentText.Enabled = False
+                            Else
+                                moTextCommission_PercentText.Enabled = True
+                            End If
+                        End If
+                    End If
+
+                    If mocboEntityType.Visible Then
+                        If Not .CommissionsPercentSourceXcd Is Nothing And mocboEntityType.Items.Count > 0 Then
+                            Me.SetSelectedItem(mocboEntityType, .CommissionsPercentSourceXcd)
+                        End If
+                    End If
+
+                End With
+            End If
+        End Sub
+
+        Private Sub SetGridSourceXcdLabelFromBoforNew()
+            'If moGridView.EditIndex = -1 Then Exit Sub
+            For pageIndexk As Integer = 0 To Me.moGridView.PageCount - 1
+                Me.moGridView.PageIndex = pageIndexk
+                Dim rowNum As Integer = Me.moGridView.Rows.Count
+                For i As Integer = 0 To rowNum - 1
+                    Dim gRow As GridViewRow = moGridView.Rows(i)
+                    If gRow.RowType = DataControlRowType.DataRow Then
+                        Dim mollblCommPercentSourceXcd As Label = DirectCast(gRow.Cells(COL_COMMISSIONS_SOURCE_XCD_IDX).FindControl("lblCommPercentSourceXcd"), Label)
+
+                        If Not mollblCommPercentSourceXcd Is Nothing Then
+                            If mollblCommPercentSourceXcd.Visible Then
+                                If (Not mollblCommPercentSourceXcd.Text Is Nothing And Not String.IsNullOrWhiteSpace(mollblCommPercentSourceXcd.Text)) Then
+                                    mollblCommPercentSourceXcd.Text = GetCodeAmtSourceOption(mollblCommPercentSourceXcd.Text)
+                                End If
+                            End If
+                        End If
+
+                    End If
+                Next
+            Next
+        End Sub
+
+        Private Sub PoupulateSourceOptionDropdownlist(ByVal oDropDownList As DropDownList)
+            DisplaySourceXcdFields()
+
+            Dim oAcctBucketsSourceOption As Assurant.Elita.CommonConfiguration.DataElements.ListItem() = CommonConfigManager.Current.ListManager.GetList(listCode:="ACCTBUCKETSOURCE_COMMBRKDOWN")
+
+            oDropDownList.Populate(oAcctBucketsSourceOption, New PopulateOptions() With
+                                {
+                                .AddBlankItem = False,
+                                .TextFunc = AddressOf PopulateOptions.GetDescription,
+                                .ValueFunc = AddressOf PopulateOptions.GetExtendedCode
+                                })
+            HideSourceScdFields()
+        End Sub
+
         Private Sub DisplaySourceXcdFields()
             ControlMgr.SetVisibleControl(Me, cboBrokerCommPctSourceXcd, True)
             ControlMgr.SetVisibleControl(Me, cboBrokerCommPct2SourceXcd, True)
@@ -2715,6 +3430,523 @@ Namespace Tables
                 Me.HandleErrors(ex, Me.MasterPage.MessageController)
             End Try
         End Function
+
+        Private Sub LoadCoverageRateList()
+            If moGridView.Rows.Count > 0 Then
+                Dim i As Integer = 0
+                Dim oCoverageRate(moGridView.Rows.Count - 1) As CommPlanDistribution
+
+                For i = 0 To moGridView.Rows.Count - 1
+                    oCoverageRate(i) = New CommPlanDistribution
+                    'oCoverageRate(i).CommissionPlanId = TheCommPlanDist.CommissionPlanId
+                    oCoverageRate(i).CommissionPlanId = Me.State.moCommPlanId 'TheCommPlanDist.CommissionPlanId
+                    If moGridView.Rows(i).Cells(COL_PAYEE_TYPE_XCD_IDX).Controls(1).GetType().ToString = "System.Web.UI.WebControls.Label" Then
+                        Me.PopulateBOProperty(oCoverageRate(i), PROPERTY_PAYEE_TYPE_XCD, CType(moGridView.Rows(i).Cells(COL_PAYEE_TYPE_XCD_IDX).Controls(1), Label).Text)
+                    Else
+                        Me.PopulateBOProperty(oCoverageRate(i), PROPERTY_PAYEE_TYPE_XCD, CType(moGridView.Rows(i).Cells(COL_PAYEE_TYPE_XCD_IDX).Controls(1), DropDownList).Text)
+                    End If
+
+                    If moGridView.Rows(i).Cells(COL_ENTITY_ID_IDX).Controls(0).GetType().ToString = "System.Web.UI.WebControls.Label" Then
+                        Me.PopulateBOProperty(oCoverageRate(i), PROPERTY_ENTITY_ID, CType(moGridView.Rows(i).Cells(COL_ENTITY_ID_IDX).Controls(0), Label).Text)
+                    Else
+                        Me.PopulateBOProperty(oCoverageRate(i), PROPERTY_ENTITY_ID, CType(moGridView.Rows(i).Cells(COL_ENTITY_ID_IDX).Controls(1), DropDownList).SelectedValue)
+                    End If
+
+                    If moGridView.Rows(i).Cells(COL_COMMISSION_AMOUNT_IDX).Controls(1).GetType().ToString = "System.Web.UI.WebControls.Label" Then
+                        Me.PopulateBOProperty(oCoverageRate(i), PROPERTY_COMM_AMT, CType(moGridView.Rows(i).Cells(COL_COMMISSION_AMOUNT_IDX).Controls(1), Label).Text)
+                    Else
+                        Me.PopulateBOProperty(oCoverageRate(i), PROPERTY_COMM_AMT, CType(moGridView.Rows(i).Cells(COL_COMMISSION_AMOUNT_IDX).Controls(1), TextBox).Text)
+                    End If
+
+                    If moGridView.Rows(i).Cells(COL_COMMISSION_PERCENTAGE_IDX).Controls(1).GetType().ToString = "System.Web.UI.WebControls.Label" Then
+                        Me.PopulateBOProperty(oCoverageRate(i), PROPERTY_COMM_PER, CType(moGridView.Rows(i).Cells(COL_COMMISSION_PERCENTAGE_IDX).Controls(1), Label).Text)
+                    Else
+                        Me.PopulateBOProperty(oCoverageRate(i), PROPERTY_COMM_PER, CType(moGridView.Rows(i).Cells(COL_COMMISSION_PERCENTAGE_IDX).Controls(1), TextBox).Text)
+                    End If
+
+                    If moGridView.Rows(i).Cells(COL_COMMISSIONS_SOURCE_XCD_IDX).Controls(0).GetType().ToString = "System.Web.UI.WebControls.Label" Then
+                        Me.PopulateBOProperty(oCoverageRate(i), PROPERTY_COMMISSIONS_XCD, CType(moGridView.Rows(i).Cells(COL_COMMISSIONS_SOURCE_XCD_IDX).Controls(0), Label).Text)
+                    Else
+                        Me.PopulateBOProperty(oCoverageRate(i), PROPERTY_COMMISSIONS_XCD, CType(moGridView.Rows(i).Cells(COL_COMMISSIONS_SOURCE_XCD_IDX).Controls(1), DropDownList).SelectedValue)
+                    End If
+
+                    If moGridView.Rows(i).Cells(COL_POSITION_IDX).Controls(1).GetType().ToString = "System.Web.UI.WebControls.Label" Then
+                        Me.PopulateBOProperty(oCoverageRate(i), PROPERTY_POSITION, CType(moGridView.Rows(i).Cells(COL_POSITION_IDX).Controls(1), Label).Text)
+                    Else
+                        Me.PopulateBOProperty(oCoverageRate(i), PROPERTY_POSITION, CType(moGridView.Rows(i).Cells(COL_POSITION_IDX).Controls(1), TextBox).Text)
+                    End If
+                Next
+
+                Me.State.moCoverageRateList = oCoverageRate
+            End If
+        End Sub
+
+        Public Function SaveCoverageRateList() As Boolean
+            Dim i As Integer = 0
+            Try
+                'If Me.State.IsNewWithCopy = True And Not Me.State.moCoverageRateList Is Nothing Then
+                If Not Me.State.moCoverageRateList Is Nothing Then
+                    'Associate each detail record to the newly created coverage record
+                    'and Save each detail (Coverage Rate) Record
+                    For i = 0 To Me.State.moCoverageRateList.Length - 1
+                        Me.State.moCoverageRateList(i).CommissionPlanId = Me.State.moCommPlanId 'TheCommPlanDist.CommissionPlanId
+                        Me.State.moCoverageRateList(i).Save()
+                    Next
+                End If
+            Catch ex As Exception
+                Dim j As Integer
+                'REPLACE THIS LOOP BY A DB ROLLBACK
+                For j = 0 To i - 1
+                    Me.State.moCoverageRateList(j).Delete()
+                    Me.State.moCoverageRateList(j).Save()
+                Next
+                'Me.HandleErrors(ex, moMsgControllerRate)
+                Return False
+            End Try
+            Return True
+        End Function
+        Private Sub BindBoPropertiesToGridHeader()
+            Me.BindBOPropertyToGridHeader(TheCommPlanDist, PROPERTY_PAYEE_TYPE_XCD, moGridView.Columns(COL_PAYEE_TYPE_XCD_IDX))
+            Me.BindBOPropertyToGridHeader(TheCommPlanDist, PROPERTY_ENTITY_ID, moGridView.Columns(COL_ENTITY_ID_IDX))
+            Me.BindBOPropertyToGridHeader(TheCommPlanDist, PROPERTY_COMM_AMT, moGridView.Columns(COL_COMMISSION_AMOUNT_IDX))
+            Me.BindBOPropertyToGridHeader(TheCommPlanDist, PROPERTY_COMM_PER, moGridView.Columns(COL_COMMISSION_PERCENTAGE_IDX))
+            Me.BindBOPropertyToGridHeader(TheCommPlanDist, PROPERTY_COMMISSIONS_XCD, moGridView.Columns(COL_COMMISSIONS_SOURCE_XCD_IDX))
+            Me.BindBOPropertyToGridHeader(TheCommPlanDist, PROPERTY_POSITION, moGridView.Columns(COL_POSITION_IDX))
+        End Sub
+
+#Region "Handlers-CoverageRate-DataGrid"
+
+        ' Coverage-Rate DataGrid
+        Public Sub ItemCreated(ByVal sender As System.Object, ByVal e As System.Web.UI.WebControls.GridViewRowEventArgs)
+            Try
+                BaseItemCreated(sender, e)
+            Catch ex As Exception
+                Me.HandleErrors(ex, Me.MasterPage.MessageController)
+            End Try
+        End Sub
+
+        Private Sub moGridView_PageIndexChanged(ByVal source As Object, ByVal e As System.Web.UI.WebControls.GridViewPageEventArgs) Handles moGridView.PageIndexChanging
+            Try
+                ResetIndexes()
+                moGridView.PageIndex = e.NewPageIndex
+                PopulateCoverageRateList(ACTION_CANCEL_DELETE)
+            Catch ex As Exception
+                Me.HandleErrors(ex, Me.MasterPage.MessageController)
+            End Try
+        End Sub
+
+        'The pencil was clicked
+        Protected Sub ItemCommand(ByVal source As Object, ByVal e As System.Web.UI.WebControls.GridViewCommandEventArgs) Handles moGridView.RowCommand
+            Dim nIndex As Integer = CInt(e.CommandArgument)
+
+            Try
+                If e.CommandName = EDIT_COMMAND_NAME Then
+                    nIndex = CInt(e.CommandArgument)
+                    'nIndex = e.Item.ItemIndex
+                    moGridView.EditIndex = nIndex
+                    moGridView.SelectedIndex = nIndex
+                    '      EnableForEditRateButtons(True)
+                    PopulateCoverageRateList(ACTION_EDIT)
+                    'Me.FillDropdownList()
+                    'PopulateCoverageRate()
+
+                    Me.FillSourceXcdDropdownList()
+                    FillEntityDropDownList()
+                    FillPayeeTypeDropDownList()
+                    SetGridSourceXcdDropdownFromBo()
+                    SetGridSourceXcdLabelFromBoforNew()
+
+                    SetGridControls(moGridView, False)
+                    'Me.SetFocusInGrid(moGridView, nIndex, LOW_PRICE)
+                    'EnableDisableControls(Me.moCoverageEditPanel, True)
+                    'setbuttons(False)
+                ElseIf (e.CommandName = DELETE_COMMAND_NAME) Then
+                    'nIndex = e.Item.ItemIndex
+                    CoverageRateId = Me.GetGridText(moGridView, nIndex, COL_COMMISSION_PLAN_DIST_ID_IDX)
+                    If DeleteSelectedCoverageRate(nIndex) = True Then
+                        PopulateCoverageRateList(ACTION_CANCEL_DELETE)
+                    End If
+
+                End If
+            Catch ex As Exception
+                Me.HandleErrors(ex, Me.MasterPage.MessageController)
+            End Try
+        End Sub
+
+        Private Sub ResetIndexes()
+            moGridView.EditIndex = NO_ITEM_SELECTED_INDEX
+            moGridView.SelectedIndex = NO_ITEM_SELECTED_INDEX
+        End Sub
+
+        Private Sub BtnSaveRate_WRITE_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles BtnSaveRate_WRITE.Click
+            Try
+                SaveRateChanges()
+
+                'US-521697
+                SetGridSourceXcdLabelFromBo()
+
+                TheDealerControl.ChangeEnabledControlProperty(False)
+                'ControlMgr.SetEnableControl(Me, moProductDrop, False)
+                'ControlMgr.SetEnableControl(Me, moRiskDrop, False)
+            Catch ex As Exception
+                Me.HandleErrors(ex, Me.MasterPage.MessageController)
+            End Try
+        End Sub
+
+        Private Sub BtnCancelRate_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles BtnCancelRate.Click
+            'Pencil button in not in edit mode
+            Try
+                IsNewRate = False
+                EnableForEditRateButtons(False)
+                PopulateCoverageRateList(ACTION_CANCEL_DELETE)
+                'US-521697
+                SetGridSourceXcdLabelFromBo()
+                'EnableDisableControls(Me.moCoverageEditPanel, False)
+                'setbuttons(True)
+                TheDealerControl.ChangeEnabledControlProperty(False)
+                'ControlMgr.SetEnableControl(Me, moProductDrop, False)
+                'ControlMgr.SetEnableControl(Me, moRiskDrop, False)
+            Catch ex As Exception
+                Me.HandleErrors(ex, Me.MasterPage.MessageController)
+            End Try
+        End Sub
+
+        Private Sub BtnNewRate_WRITE_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles BtnNewRate_WRITE.Click
+            Try
+                IsNewRate = True
+                CoverageRateId = Guid.Empty.ToString
+                PopulateCoverageRateList(ACTION_NEW)
+                'FillDropdownList()
+                FillSourceXcdDropdownList()
+                SetGridControls(moGridView, False)
+                'Me.SetFocusInGrid(moGridView, moGridView.SelectedIndex, LOW_PRICE)
+                'US-521697
+                SetGridSourceXcdLabelFromBoforNew()
+                SetGridSourceXcdTextboxForNewCoverage()
+
+                'EnableDisableControls(Me.moCoverageEditPanel, True)
+                'setbuttons(False)
+            Catch ex As Exception
+                Me.HandleErrors(ex, Me.MasterPage.MessageController)
+            End Try
+        End Sub
+        Private Sub SaveRateChanges()
+            If ApplyRateChanges() = True Then
+                'If IsNewRate = True Then
+                '    IsNewRate = False
+                'End If
+                PopulateCoverageRateList(ACTION_SAVE)
+                'EnableDisableControls(Me.moCoverageEditPanel, False)
+                'setbuttons(True)
+            End If
+        End Sub
+        Private Function ApplyRateChanges() As Boolean
+            Dim bIsOk As Boolean = True
+            Dim bIsDirty As Boolean
+            If moGridView.EditIndex < 0 Then Return False ' Coverage Rate is not in edit mode
+            If Me.State.IsNewWithCopy Then
+                Me.LoadCoverageRateList()
+                Me.State.moCoverageRateList(moGridView.SelectedIndex).Validate()
+                Return bIsOk
+            End If
+            'If IsNewRate = False Then
+            CoverageRateId = Me.GetSelectedGridText(moGridView, COL_COMMISSION_PLAN_DIST_ID_IDX)
+            'End If
+            BindBoPropertiesToGridHeader()
+            'With TheCoverageRate
+            With TheCommPlanDist
+                PopulateRateBOFromForm()
+                bIsDirty = .IsDirty
+                .Save()
+                EnableForEditRateButtons(False)
+            End With
+            If (bIsOk = True) Then
+                If bIsDirty = True Then
+                    Me.MasterPage.MessageController.AddSuccess(Message.SAVE_RECORD_CONFIRMATION, True)
+                Else
+                    Me.MasterPage.MessageController.AddError(Message.MSG_RECORD_NOT_SAVED, True)
+                End If
+            End If
+            Return bIsOk
+        End Function
+        Private Sub ClearCoverageRate()
+            If Not Me.State.IsNewWithCopy Then
+                EnableRateButtons(False)
+                moGridView.DataBind()
+            End If
+        End Sub
+
+        Private Sub PopulateRateBOFromForm()
+            With TheCommPlanDist
+                .CommissionPlanId = Me.State.moCommPlanId 'TheCommPlanDist.CommissionPlanId
+                'Me.PopulateBOProperty(TheCoverageRate, PROPERTY_PAYEE_TYPE_XCD, CType(Me.GetDropDownControlFromGrid(moGridView, COL_PAYEE_TYPE_XCD_IDX), DropDownList))
+                'Me.PopulateBOProperty(TheCoverageRate, PROPERTY_ENTITY_ID, CType(Me.GetDropDownControlFromGrid(moGridView, COL_ENTITY_ID_IDX), DropDownList))                
+                'Me.PopulateBOProperty(TheCoverageRate, PROPERTY_COMM_AMT, CType(Me.GetSelectedGridControl(moGridView, COL_COMMISSION_AMOUNT_IDX), TextBox))
+                'Me.PopulateBOProperty(TheCoverageRate, PROPERTY_COMM_PER, CType(Me.GetSelectedGridControl(moGridView, COL_COMMISSION_PERCENTAGE_IDX), TextBox))
+                'Me.PopulateBOProperty(TheCoverageRate, PROPERTY_PAYEE_TYPE_XCD, CType(Me.GetDropDownControlFromGrid(moGridView, COL_COMMISSIONS_SOURCE_XCD_IDX), DropDownList))
+                'Me.PopulateBOProperty(TheCoverageRate, PROPERTY_POSITION, CType(Me.GetSelectedGridControl(moGridView, COL_POSITION_IDX), TextBox))
+
+                CommonSourceOptionLogic()
+            End With
+
+            'ValidateCoverage()
+
+            If Me.ErrCollection.Count > 0 Then
+                Throw New PopulateBOErrorException
+            End If
+        End Sub
+        Private Sub CommonSourceOptionLogic()
+
+            If moGridView.EditIndex = -1 Then Exit Sub
+            Dim gRow As GridViewRow = moGridView.Rows(moGridView.EditIndex)
+            Dim mocboPayeeType As DropDownList = DirectCast(gRow.Cells(COL_PAYEE_TYPE_XCD_IDX).FindControl("cboPayeeType"), DropDownList)
+            Dim mocboEntityType As DropDownList = DirectCast(gRow.Cells(COL_ENTITY_ID_IDX).FindControl("cboEntityType"), DropDownList)
+            Dim mocboCommPercentSourceXcd As DropDownList = DirectCast(gRow.Cells(COL_COMMISSIONS_SOURCE_XCD_IDX).FindControl("cboCommPercentSourceXcd"), DropDownList)
+
+            Dim moTextmoLowPriceText As TextBox = DirectCast(gRow.Cells(COL_COMMISSION_AMOUNT_IDX).FindControl("moLowPriceText"), TextBox)
+            Dim moTextmoCommission_PercentText As TextBox = DirectCast(gRow.Cells(COL_COMMISSION_PERCENTAGE_IDX).FindControl("moCommission_PercentText"), TextBox)
+            Dim moTextmoRenewal_NumberText As TextBox = DirectCast(gRow.Cells(COL_COMMISSIONS_SOURCE_XCD_IDX).FindControl("moRenewal_NumberText"), TextBox)
+
+            'If Me.State.IsDealerConfiguredForSourceXcd Then
+
+            Me.PopulateBOProperty(TheCommPlanDist, PROPERTY_COMM_AMT, moTextmoLowPriceText)
+            Me.PopulateBOProperty(TheCommPlanDist, PROPERTY_COMM_PER, moTextmoCommission_PercentText)
+            Me.PopulateBOProperty(TheCommPlanDist, PROPERTY_POSITION, moTextmoRenewal_NumberText)
+
+
+            If mocboEntityType.SelectedIndex > NO_ITEM_SELECTED_INDEX Then
+                Me.PopulateBOProperty(TheCommPlanDist, PROPERTY_ENTITY_ID, mocboEntityType, True, False)
+            End If
+
+            If mocboCommPercentSourceXcd.SelectedIndex > NO_ITEM_SELECTED_INDEX Then
+                Me.PopulateBOProperty(TheCommPlanDist, PROPERTY_COMMISSIONS_XCD, mocboCommPercentSourceXcd, False, True)
+            End If
+
+            If mocboPayeeType.SelectedIndex > NO_ITEM_SELECTED_INDEX Then
+                Dim PayeeTypeCode As String
+
+                'PayeeTypeCode = LookupListNew.GetCodeFromId(LookupListNew.LK_PAYEE_TYPE, Me.GetSelectedItem(mocboPayeeType))
+                PayeeTypeCode = LookupListNew.GetDescriptionFromId(LookupListNew.LK_PAYEE_TYPE, Me.GetSelectedItem(mocboPayeeType))
+                moTextmoRenewal_NumberText.Text = PayeeTypeCode
+                Me.PopulateBOProperty(TheCommPlanDist, PROPERTY_PAYEE_TYPE_XCD, moTextmoRenewal_NumberText)
+
+                'Me.PopulateBOProperty(TheCommPlanDist, PROPERTY_PAYEE_TYPE_XCD, mocboPayeeType, True, False)
+
+            End If
+
+            'If Me.State.IsIgnorePremiumSetYesForContract Then
+
+            '    ValidateIncomingSourceXcd()
+
+            '    If Me.State.IsBucketIncomingSelected Then
+            '        Throw New GUIException(Message.MSG_INCOMING_OPTION_NOT_ALLOWED, Assurant.ElitaPlus.Common.ErrorCodes.MSG_INCOMING_OPTION_NOT_ALLOWED_WHEN_IGNORE_PREMIUM_IS_YES)
+            '    End If
+            'End If
+
+            'ValidateDifferenceSourceXcd()
+
+            'If Me.State.IsDiffSelectedTwice Then
+            '    Throw New GUIException(Message.MSG_DIFFERENCE_OPTION_ALLOWED_ONLY_ONCE, Assurant.ElitaPlus.Common.ErrorCodes.MSG_DIFFERENCE_SOURCE_ALLOWED_ONLY_FOR_ONE_BUCKET)
+            'ElseIf Me.State.IsDiffNotSelectedOnce Then
+            '    Throw New GUIException(Message.MSG_DIFFERENCE_OPTION_ATLEAST_ONE, Assurant.ElitaPlus.Common.ErrorCodes.MSG_DIFFERENCE_OPTION_SHOULD_PRESENT_ATLEAST_FOR_ONE_BUCKET)
+            'End If
+            'End If
+        End Sub
+        Private Function GetDropDownControlFromGrid(ByVal oDataGrid As GridView, ByVal cellPosition As Integer) As Control
+            Dim oItem As GridViewRow = oDataGrid.Rows(oDataGrid.SelectedIndex)
+            Dim oControl As Control
+
+            For Each gridControl As Control In oItem.Cells(cellPosition).Controls
+
+                If gridControl.GetType().FullName.Equals("System.Web.UI.WebControls.DropDownList") Then
+                    oControl = gridControl
+                End If
+            Next
+
+            Return oControl
+        End Function
+        Private Sub SetGridSourceXcdTextboxForNewCoverage()
+            If moGridView.EditIndex = -1 Then Exit Sub
+            With TheCoverageRate
+                If Me.State.IsDealerConfiguredForSourceXcd Then
+                    Dim gRow As GridViewRow = moGridView.Rows(moGridView.EditIndex)
+                    Dim mocboCommPercentSourceXcd As DropDownList = DirectCast(gRow.Cells(COL_COMMISSIONS_SOURCE_XCD_IDX).FindControl("cboCommPercentSourceXcd"), DropDownList)
+
+                    Dim moTextCommission_PercentText As TextBox = DirectCast(gRow.Cells(COL_COMMISSION_PERCENTAGE_IDX).FindControl("moCommission_PercentText"), TextBox)
+
+                    Dim diffValue As Decimal = 0.0000
+
+                    If mocboCommPercentSourceXcd.Visible Then
+                        If mocboCommPercentSourceXcd.Items.Count > 0 Then
+                            If mocboCommPercentSourceXcd.SelectedItem.Value.ToUpper.Equals(Codes.ACCT_BUCKETS_SOURCE_COMMBRKDOWN_OPTION_DIFFERENCE) Then
+                                Me.PopulateControlFromBOProperty(moTextCommission_PercentText, diffValue, Me.PERCENT_FORMAT)
+                                moTextCommission_PercentText.Enabled = False
+                            End If
+                        End If
+                    End If
+
+                End If
+            End With
+
+        End Sub
+        Private Function DeleteSelectedCoverageRate(ByVal nIndex As Integer) As Boolean
+            Dim bIsOk As Boolean = True
+            Try
+                If Me.State.IsNewWithCopy Then
+                    If Me.State.moCoverageRateList Is Nothing Then Me.LoadCoverageRateList()
+                    Me.State.moCoverageRateList(nIndex) = Nothing
+                Else
+                    With TheCoverageRate()
+                        .Delete()
+                        .Save()
+                    End With
+                End If
+
+            Catch ex As Exception
+                'moMsgControllerRate.AddError(COVERAGE_FORM005)
+                'moMsgControllerRate.AddError(ex.Message, False)
+                'moMsgControllerRate.Show()
+                bIsOk = False
+            End Try
+            Return bIsOk
+        End Function
+
+        Private Sub PopulateCoverageRateList(Optional ByVal oAction As String = ACTION_NONE)
+            'Dim oCoverageRates As CoverageRate
+            Dim oCoverageRates As CommPlanDistribution
+            Dim oDataView As DataView
+
+            If Me.State.IsCoverageNew = True And Not Me.State.IsNewWithCopy Then
+                Return ' We can not have CoverageRates if the coverage is new
+            End If
+
+            Try
+                'If CoveragePricingCode = NO_COVERAGE_PRICING Then
+                '    EnableCoveragePricing(False)
+                'Else
+                '    EnableCoveragePricing(True)
+                'End If
+
+                If Me.State.IsNewWithCopy Then
+                    oDataView = oCoverageRates.getPlanList(Guid.Empty)
+                    If Not oAction = ACTION_CANCEL_DELETE Then
+                        Me.LoadCoverageRateList()
+                    End If
+                    If Not Me.State.moCoverageRateList Is Nothing Then
+                        oDataView = getDVFromArray(Me.State.moCoverageRateList, oDataView.Table)
+                    End If
+                Else
+                    oDataView = oCoverageRates.getPlanList(Me.State.moCommPlanId) 'TheCommPlanDist.Id)
+                End If
+
+                Select Case oAction
+                    Case ACTION_NONE
+                        Me.SetPageAndSelectedIndexFromGuid(oDataView, Guid.Empty, moGridView, 0)
+                        EnableForEditRateButtons(False)
+                    Case ACTION_SAVE
+                        Me.SetPageAndSelectedIndexFromGuid(oDataView, GetGuidFromString(CoverageRateId), moGridView,
+                                    moGridView.PageIndex)
+                        EnableForEditRateButtons(False)
+                    Case ACTION_CANCEL_DELETE
+                        Me.SetPageAndSelectedIndexFromGuid(oDataView, Guid.Empty, moGridView,
+                                    moGridView.PageIndex)
+                        EnableForEditRateButtons(False)
+                    Case ACTION_EDIT
+                        If Me.State.IsNewWithCopy Then
+                            CoverageRateId = Me.State.moCoverageRateList(moGridView.SelectedIndex).Id.ToString
+                            Me.State.moCommPlanDistId = Me.State.moCoverageRateList(moGridView.SelectedIndex).Id
+                        Else
+                            CoverageRateId = Me.GetSelectedGridText(moGridView, COL_COMMISSION_PLAN_DIST_ID_IDX)
+                            Me.State.moCommPlanDistId = GetGuidFromString(CoverageRateId) ' Me.State.moCoverageRateList(moGridView.SelectedIndex).Id
+                        End If
+                        Me.SetPageAndSelectedIndexFromGuid(oDataView, GetGuidFromString(CoverageRateId), moGridView,
+                                    moGridView.PageIndex, True)
+                        EnableForEditRateButtons(True)
+                    Case ACTION_NEW
+                        If Me.State.IsNewWithCopy Then oDataView.Table.DefaultView.Sort() = Nothing ' Clear sort, so that the new line shows up at the bottom
+                        Dim oRow As DataRow = oDataView.Table.NewRow
+                        oRow(0) = TheCommPlanDist.Id.ToByteArray
+                        oDataView.Table.Rows.Add(oRow)
+                        Me.SetPageAndSelectedIndexFromGuid(oDataView, GetGuidFromString(CoverageRateId), moGridView,
+                                    moGridView.PageIndex, True)
+                        EnableForEditRateButtons(True)
+
+                End Select
+
+                moGridView.DataSource = oDataView
+                moGridView.DataBind()
+                ControlMgr.DisableEditDeleteGridIfNotEditAuth(Me, moGridView)
+
+            Catch ex As Exception
+                'moMsgControllerRate.AddError(COVERAGE_FORM004)
+                'moMsgControllerRate.AddError(ex.Message, False)
+                'moMsgControllerRate.Show()
+            End Try
+        End Sub
+
+        Private Function getDVFromArray(ByVal oArray() As CommPlanDistribution, ByVal oDtable As DataTable) As DataView
+            Dim oRow As DataRow
+            Dim oCoverageRate As CommPlanDistribution
+            For Each oCoverageRate In oArray
+                If Not oCoverageRate Is Nothing Then
+                    oRow = oDtable.NewRow
+                    oRow("COMMISSION_PLAN_ID") = oCoverageRate.CommissionPlanId.ToByteArray
+                    oRow("PAYEE_TYPE_XCD") = oCoverageRate.PayeeTypeXcd
+                    oRow("ENTITY_ID") = oCoverageRate.EntityId.ToByteArray
+                    oRow("COMMISSION_AMOUNT") = oCoverageRate.CommissionAmount.Value
+                    oRow("COMMISSION_PERCENTAGE") = oCoverageRate.CommissionPercent.Value
+                    oRow("COMMISSIONS_SOURCE_XCD") = oCoverageRate.CommissionsPercentSourceXcd
+                    oRow("POSITION") = oCoverageRate.Position.Value
+
+                    oDtable.Rows.Add(oRow)
+                End If
+            Next
+            oDtable.DefaultView.Sort() = "POSITION"
+            Return oDtable.DefaultView
+
+        End Function
+
+        Private Sub EnableEditRateButtons(ByVal bIsReadWrite As Boolean)
+            ControlMgr.SetEnableControl(Me, BtnSaveRate_WRITE, bIsReadWrite)
+            ControlMgr.SetEnableControl(Me, BtnCancelRate, bIsReadWrite)
+        End Sub
+
+        Private Sub EnableNewRateButtons(ByVal bIsReadWrite As Boolean)
+            ControlMgr.SetEnableControl(Me, BtnNewRate_WRITE, bIsReadWrite)
+        End Sub
+
+        Private Sub EnableRateButtons(ByVal bIsReadWrite As Boolean)
+            EnableNewRateButtons(bIsReadWrite)
+            EnableEditRateButtons(bIsReadWrite)
+        End Sub
+
+        Private Sub EnableForEditRateButtons(ByVal bIsReadWrite As Boolean)
+            EnableNewRateButtons(Not bIsReadWrite)
+            EnableEditRateButtons(bIsReadWrite)
+        End Sub
+
+        Private Sub PopulateCoverageRate()
+            If Me.State.IsNewWithCopy Then
+                With Me.State.moCoverageRateList(moGridView.SelectedIndex)
+                    Me.SetSelectedGridText(moGridView, COL_PAYEE_TYPE_XCD_IDX, .PayeeTypeXcd.ToString)
+                    'Me.SetSelectedGridText(moGridView, COL_ENTITY_ID_IDX, .EntityId)
+                    Me.SetSelectedGridText(moGridView, COL_COMMISSION_AMOUNT_IDX, .CommissionAmount.ToString)
+                    Me.SetSelectedGridText(moGridView, COL_COMMISSION_PERCENTAGE_IDX, .CommissionPercent.ToString)
+                    Me.SetSelectedGridText(moGridView, COL_COMMISSIONS_SOURCE_XCD_IDX, .CommissionsPercentSourceXcd.ToString)
+                    Me.SetSelectedGridText(moGridView, COL_POSITION_IDX, .Position.ToString)
+                End With
+            Else
+                With TheCoverageRate
+                    Me.SetSelectedGridText(moGridView, COL_PAYEE_TYPE_XCD_IDX, .PayeeTypeXcd.ToString)
+                    'Me.SetSelectedGridText(moGridView, COL_ENTITY_ID_IDX, .EntityId)
+                    Me.SetSelectedGridText(moGridView, COL_COMMISSION_AMOUNT_IDX, .CommissionAmount.ToString)
+                    Me.SetSelectedGridText(moGridView, COL_COMMISSION_PERCENTAGE_IDX, .CommissionPercent.ToString)
+                    Me.SetSelectedGridText(moGridView, COL_COMMISSIONS_SOURCE_XCD_IDX, .CommissionsPercentSourceXcd.ToString)
+                    Me.SetSelectedGridText(moGridView, COL_POSITION_IDX, .Position.ToString)
+                End With
+            End If
+        End Sub
+#End Region
 #End Region
     End Class
 End Namespace

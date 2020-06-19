@@ -89,9 +89,27 @@ Public Class CommPlanDistributionDAL
         End Try
     End Function
 
-    Public Sub LoadList(ByVal commPlanDistId As Guid, ByVal familyDS As DataSet)
-        Dim selectStmt As String = Me.Config("/SQL/LOAD_LIST_COMM_PLAN_DIST_BY_DIST")
-        Dim parameters() As DBHelper.DBHelperParameter = New DBHelper.DBHelperParameter() {New DBHelper.DBHelperParameter("pi_comm_plan_dist_id", commPlanDistId.ToByteArray)}
+    Public Function LoadListPlan(ByVal commPlanId As Guid) As DataSet
+        Try
+            Dim selectStmt As String = Me.Config("/SQL/LOAD_LIST_COMM_PLAN_DIST_BY_PLAN_ID")
+
+            Dim inparameters() As DBHelper.DBHelperParameter = New DBHelper.DBHelperParameter() {New DBHelper.DBHelperParameter("pi_comm_plan_id", commPlanId.ToByteArray)}
+            Dim outParameters() As DBHelper.DBHelperParameter = New DBHelper.DBHelperParameter() {New DBHelper.DBHelperParameter("po_resultcursor", GetType(DataSet))}
+
+            Dim ds As New DataSet
+            Dim tbl As String = Me.TABLE_NAME
+
+            DBHelper.FetchSp(selectStmt, inparameters, outParameters, ds, tbl)
+            Return ds
+
+        Catch ex As Exception
+            Throw New DataBaseAccessException(DataBaseAccessException.DatabaseAccessErrorType.ReadErr, ex)
+        End Try
+    End Function
+
+    Public Sub LoadList(ByVal commPlanId As Guid, ByVal familyDS As DataSet)
+        Dim selectStmt As String = Me.Config("/SQL/LOAD_LIST_COMM_PLAN_DIST_BY_PLAN_ID")
+        Dim parameters() As DBHelper.DBHelperParameter = New DBHelper.DBHelperParameter() {New DBHelper.DBHelperParameter("pi_comm_plan_id", commPlanId.ToByteArray)}
         Dim outParameters() As DBHelper.DBHelperParameter = New DBHelper.DBHelperParameter() {New DBHelper.DBHelperParameter("po_resultcursor", GetType(DataSet))}
         Try
             DBHelper.FetchSp(selectStmt, parameters, outParameters, familyDS, Me.TABLE_NAME)
@@ -104,6 +122,52 @@ Public Class CommPlanDistributionDAL
 #End Region
 
 #Region "Overloaded Methods"
+    #Region "Overloaded Methods"
+    'This method was added manually to accommodate BO families Save
+    Public Overloads Sub UpdateFamily(ByVal familyDataset As DataSet, Optional ByVal Transaction As IDbTransaction = Nothing)
+
+        Dim commPlanDistDAL As New CommPlanDistributionDAL  
+        
+        Dim tr As IDbTransaction = Transaction
+        If tr Is Nothing Then
+            tr = DBHelper.GetNewTransaction
+        End If
+        Try
+            'First Pass updates Deletions
+            commPlanDistDAL.Update(familyDataset.GetChanges(DataRowState.Deleted), tr, DataRowState.Deleted)
+            MyBase.Update(familyDataset.Tables(Me.TABLE_NAME).GetChanges(DataRowState.Deleted), tr, DataRowState.Deleted)
+            UpdateFromSP(familyDataset.Tables(Me.TABLE_NAME), tr, DataRowState.Deleted)
+            'Second Pass updates additions and changes
+            'Update(familyDataset.Tables(Me.TABLE_NAME).GetChanges(DataRowState.Added Or DataRowState.Modified), tr, DataRowState.Added Or DataRowState.Modified)
+            UpdateFromSP(familyDataset.Tables(Me.TABLE_NAME), tr, DataRowState.Added Or DataRowState.Modified)
+            commPlanDistDAL.Update(familyDataset.GetChanges(DataRowState.Added Or DataRowState.Modified), tr, DataRowState.Added Or DataRowState.Modified)
+
+            'At the end delete the Address
+            'addressDAL.Update(familyDataset.GetChanges(DataRowState.Deleted), tr, DataRowState.Deleted)
+
+            If Transaction Is Nothing Then
+                'We are the creator of the transaction we shoul commit it  and close the connection
+                DBHelper.Commit(tr)
+                familyDataset.AcceptChanges()
+            End If
+        Catch ex As Exception
+            If Transaction Is Nothing Then
+                'We are the creator of the transaction we shoul commit it  and close the connection
+                DBHelper.RollBack(tr)
+            End If
+            Throw ex
+        End Try
+
+
+
+        'Public Overloads Sub Update(ByVal ds As DataSet, Optional ByVal Transaction As IDbTransaction = Nothing, Optional ByVal changesFilter As DataRowState = Nothing)
+        '    If Not ds.Tables(Me.TABLE_NAME) Is Nothing Then
+        '        MyBase.Update(ds.Tables(Me.TABLE_NAME), Transaction, changesFilter)
+        '    End If
+        'End Sub
+    End Sub
+#End Region
+
     Public Overloads Sub Update(ByVal ds As DataSet, Optional ByVal Transaction As IDbTransaction = Nothing, Optional ByVal changesFilter As DataRowState = Nothing)
         If ds Is Nothing Then
             Return
@@ -158,7 +222,6 @@ Public Class CommPlanDistributionDAL
             .AddParameter("pi_payee_type_xcd", OracleDbType.Varchar2, sourceColumn:=COL_NAME_PAYEE_TYPE_XCD)
             .AddParameter("pi_created_by", OracleDbType.Varchar2, sourceColumn:=COL_NAME_CREATED_BY)            
             .AddParameter("pi_comm_source_xcd", OracleDbType.Varchar2, sourceColumn:=COL_NAME_COMMISSION_SOURCE_XCD)
-            '.AddParameter("pi_comm_plan_extract_rate_id", OracleDbType.Raw, sourceColumn:=COL_NAME_COMM_PLAN_EXT_RATE_ID)
             '.AddParameter("pi_cb_commission_percentage", OracleDbType.Varchar2, sourceColumn:=COL_NAME_CB_COMM_PERCENT)
             '.AddParameter("pi_cb_commission_amount", OracleDbType.Varchar2, sourceColumn:=COL_NAME_CB_COMM_PERCENT)            
             .AddParameter("po_exec_status", OracleDbType.Int32, ParameterDirection.Output)           

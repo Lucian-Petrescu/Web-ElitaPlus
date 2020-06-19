@@ -137,33 +137,21 @@ Public Class CommPlanDAL
     'This method was added manually to accommodate BO families Save
     Public Overloads Sub UpdateFamily(ByVal familyDataset As DataSet, Optional ByVal Transaction As IDbTransaction = Nothing)
 
-        'Dim addressDAL As New addressDAL
-        'Dim commPeriodEntityDAL As New CommissionPeriodEntityDAL
-        'Dim assocCommDAL As New AssociateCommissionsDAL
-        'Dim commToleranceDAL As New CommissionToleranceDAL
-        'Dim commPlanDistDAL As New CommPlanDistributionDAL  
-
+        Dim commPlanDistDAL As New CommPlanDistributionDAL  
+        
         Dim tr As IDbTransaction = Transaction
         If tr Is Nothing Then
             tr = DBHelper.GetNewTransaction
         End If
         Try
             'First Pass updates Deletions
-            'commPeriodEntityDAL.Update(familyDataset.GetChanges(DataRowState.Deleted), tr, DataRowState.Deleted)
-            'assocCommDAL.Update(familyDataset.GetChanges(DataRowState.Deleted), tr, DataRowState.Deleted)
-            'commToleranceDAL.Update(familyDataset.GetChanges(DataRowState.Deleted), tr, DataRowState.Deleted)
-            'MyBase.Update(familyDataset.Tables(Me.TABLE_NAME).GetChanges(DataRowState.Deleted), tr, DataRowState.Deleted)
+            commPlanDistDAL.Update(familyDataset.GetChanges(DataRowState.Deleted), tr, DataRowState.Deleted)
+            MyBase.Update(familyDataset.Tables(Me.TABLE_NAME).GetChanges(DataRowState.Deleted), tr, DataRowState.Deleted)
             UpdateFromSP(familyDataset.Tables(Me.TABLE_NAME), tr, DataRowState.Deleted)
             'Second Pass updates additions and changes
-            'addressDAL.Update(familyDataset.GetChanges(DataRowState.Added Or DataRowState.Modified), tr, DataRowState.Added Or DataRowState.Modified)
             'Update(familyDataset.Tables(Me.TABLE_NAME).GetChanges(DataRowState.Added Or DataRowState.Modified), tr, DataRowState.Added Or DataRowState.Modified)
             UpdateFromSP(familyDataset.Tables(Me.TABLE_NAME), tr, DataRowState.Added Or DataRowState.Modified)
-            'commPeriodEntityDAL.Update(familyDataset.GetChanges(DataRowState.Added Or DataRowState.Modified), tr, DataRowState.Added Or DataRowState.Modified)
-            'commToleranceDAL.Update(familyDataset.GetChanges(DataRowState.Added Or DataRowState.Modified), tr, DataRowState.Added Or DataRowState.Modified)
-            'assocCommDAL.Update(familyDataset.GetChanges(DataRowState.Added Or DataRowState.Modified), tr, DataRowState.Added Or DataRowState.Modified)
-
-            'At the end delete the Address
-            'addressDAL.Update(familyDataset.GetChanges(DataRowState.Deleted), tr, DataRowState.Deleted)
+            commPlanDistDAL.Update(familyDataset.GetChanges(DataRowState.Added Or DataRowState.Modified), tr, DataRowState.Added Or DataRowState.Modified)
 
             If Transaction Is Nothing Then
                 'We are the creator of the transaction we shoul commit it  and close the connection
@@ -177,8 +165,6 @@ Public Class CommPlanDAL
             End If
             Throw ex
         End Try
-
-
 
         'Public Overloads Sub Update(ByVal ds As DataSet, Optional ByVal Transaction As IDbTransaction = Nothing, Optional ByVal changesFilter As DataRowState = Nothing)
         '    If Not ds.Tables(Me.TABLE_NAME) Is Nothing Then

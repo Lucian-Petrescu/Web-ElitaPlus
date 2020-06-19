@@ -275,12 +275,12 @@ Public Class CommPlan
         End If
     End Function
 
-    Public Function AddAssocComm(ByVal assCommID As Guid) As AssociateCommissions
+    Public Function AddAssocComm(ByVal assCommID As Guid) As CommPlanDistribution
         If assCommID.Equals(Guid.Empty) Then
-            Dim objAssocComm As New AssociateCommissions(Me.Dataset)
+            Dim objAssocComm As New CommPlanDistribution(Me.Dataset)
             Return objAssocComm
         Else
-            Dim objAssocComm As New AssociateCommissions(assCommID, Me.Dataset)
+            Dim objAssocComm As New CommPlanDistribution(assCommID, Me.Dataset)
             Return objAssocComm
         End If
     End Function
