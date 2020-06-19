@@ -181,7 +181,8 @@
                     <asp:BoundField DataField="paid_amount" HeaderText="PAID_AMOUNT" HtmlEncode="false"></asp:BoundField>
                     <asp:BoundField DataField="payment_date" HeaderText="PAYMENT_DATE" HtmlEncode="false"></asp:BoundField>
                     <asp:BoundField DataField="unmatched_line_count" HeaderText="UNMATCHED_LINES" HtmlEncode="false"></asp:BoundField>
-                    <asp:BoundField Visible="False" DataField="ap_invoice_header_id"></asp:BoundField>                    
+                    <asp:BoundField Visible="False" DataField="ap_invoice_header_id"></asp:BoundField> 
+                    <asp:BoundField Visible="False" DataField="payment_status_xcd"></asp:BoundField>   
                 </Columns>
                 <PagerSettings PageButtonCount="30" Mode="Numeric" Position="TopAndBottom" />
                 <PagerStyle />
@@ -192,6 +193,10 @@
             <asp:Label ID="lblBatchNum" runat="server" CssClass="formFont">BATCH_NUMBER:</asp:Label>
             <asp:TextBox ID="txtBatchNum" runat="server" SkinID="LargeTextBox" AutoPostBack="False" style="width:300px;"></asp:TextBox>
             <asp:Button ID="btnCreatePaymentBatch_WRITE" runat="server" SkinID="AlternateLeftButton" Text="CREATE_PAYMENT"></asp:Button>            
+        </div>
+        
+        <div id="divNewAPInvoice" class="btnZone" >
+            <asp:Button runat="server" ID="btnAdd_WRITE" Text="New" SkinID="AlternateLeftButton" />
         </div>
     </div>    
 </asp:Content>

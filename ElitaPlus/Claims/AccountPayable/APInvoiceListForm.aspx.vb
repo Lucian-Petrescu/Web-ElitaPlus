@@ -1,5 +1,6 @@
 ﻿Imports System.Globalization
 Imports System.Collections.Generic
+Imports Assurant.ElitaPlus.ElitaPlusWebApp.Claims.AccountPayable
 
 Partial Class APInvoiceListForm
     Inherits ElitaPlusSearchPage
@@ -26,6 +27,7 @@ Partial Class APInvoiceListForm
     Public Const GRID_COL_PYMT_DATE_IDX As Integer = 9
     Public Const GRID_COL_UNMATCHED_LINES_IDX As Integer = 10
     Public Const GRID_COL_INVOICE_HEADER_ID_IDX As Integer = 11
+    Public Const GRID_COL_PAYMENT_STATUS_XCD As Integer = 12
 
     Public Const MAX_LIMIT As Integer = 100
 
@@ -45,7 +47,7 @@ Partial Class APInvoiceListForm
 
         Private _DueDateFromString As String = String.Empty
         Private _DueDateFrom As Date?
-        
+
         Private _DueDateToString As String = String.Empty
         Private _DueDateTo As Date?
 
@@ -176,9 +178,9 @@ Partial Class APInvoiceListForm
             MenuEnabled = True
             IsReturningFromChild = True
             Dim retObj As APInvoiceDetailForm.ReturnType = CType(Me.ReturnedValues, APInvoiceDetailForm.ReturnType)
-            If Not retObj Is Nothing AndAlso retObj.DataChanged Then 
+            If Not retObj Is Nothing AndAlso retObj.DataChanged Then
                 'refresh the search since invoice data changed
-                Me.State.searchDV = Nothing
+                Me.State.SearchDv = Nothing
             End If
         Catch ex As Exception
             HandleErrors(ex, ErrControllerMaster)
@@ -187,7 +189,7 @@ Partial Class APInvoiceListForm
 
     Private Sub APInvoiceListForm_PreRender(sender As Object, e As EventArgs) Handles Me.PreRender
         'sysn buttons' visibility with the grid's visibility
-        If State.IsGridVisible = True AndAlso not State.SearchDv Is nothing andalso State.SearchDv.Count > 0 Then
+        If State.IsGridVisible = True AndAlso Not State.SearchDv Is Nothing AndAlso State.SearchDv.Count > 0 Then
             divButtons.Visible = True
 
             Dim chkbox As CheckBox
@@ -196,18 +198,18 @@ Partial Class APInvoiceListForm
                 chkbox.InputAttributes("class") = "checkboxHeader"
             End If
 
-            For each row As GridViewRow In Grid.Rows
+            For Each row As GridViewRow In Grid.Rows
                 If row.RowType = DataControlRowType.DataRow Then
                     chkbox = CType(row.Cells(GRID_COL_CHECKBOX_IDX).FindControl(GRID_COL_SELECT_CTRL), CheckBox)
                     If (Not chkbox Is Nothing) Then
                         chkbox.InputAttributes("class") = "checkboxLine"
-                    End If                    
-                End If                               
+                    End If
+                End If
             Next
         Else
             divButtons.Visible = False
         End If
-        
+
     End Sub
 #End Region
 
@@ -256,15 +258,15 @@ Partial Class APInvoiceListForm
 
             If State.SearchDv Is Nothing Then
 
-               State.SearchDv = ApInvoiceHeader.GetAPInvoices(
-                                         State.Criterias.VendorCode.Trim.ToUpper,
-                                         State.Criterias.InvoiceNumber.Trim.ToUpper,
-                                         State.Criterias.Source.Trim.ToUpper,
-                                         State.Criterias.InvoiceDate,
-                                         State.Criterias.DueDateFrom,
-                                         State.Criterias.DueDateTo,
-                                         MAX_LIMIT
-                                         )
+                State.SearchDv = ApInvoiceHeader.GetAPInvoices(
+                                          State.Criterias.VendorCode.Trim.ToUpper,
+                                          State.Criterias.InvoiceNumber.Trim.ToUpper,
+                                          State.Criterias.Source.Trim.ToUpper,
+                                          State.Criterias.InvoiceDate,
+                                          State.Criterias.DueDateFrom,
+                                          State.Criterias.DueDateTo,
+                                          MAX_LIMIT
+                                          )
             End If
 
             Grid.PageSize = State.selectedPageSize
@@ -294,21 +296,21 @@ Partial Class APInvoiceListForm
     End Sub
 
     Private Function PopulateStateFromSearchFields() As Boolean
-        Dim dt As Date, blnSuccess as boolean = True
+        Dim dt As Date, blnSuccess As Boolean = True
 
         Try
             State.Criterias = New SearchCriterias()
             State.Criterias.InvoiceNumber = txtInvoiceNumber.Text
             State.Criterias.VendorCode = txtVendorCode.Text
             State.Criterias.Source = txtInvoiceSource.Text
-            
+
             If String.IsNullOrWhiteSpace(txtInvoiceDate.Text) = False Then
-                if Date.TryParseExact(txtInvoiceDate.Text.Trim(), DATE_FORMAT, System.Threading.Thread.CurrentThread.CurrentCulture, DateTimeStyles.None, dt) Then
+                If Date.TryParseExact(txtInvoiceDate.Text.Trim(), DATE_FORMAT, System.Threading.Thread.CurrentThread.CurrentCulture, DateTimeStyles.None, dt) Then
                     If (dt <> Date.MinValue) Then
                         State.Criterias.InvoiceDateString = txtInvoiceDate.Text.Trim
                     End If
-                        
-                else
+
+                Else
                     blnSuccess = False
                     SetLabelError(lblInvoiceDate)
                     Throw New GUIException(Message.MSG_INVALID_DATE, Assurant.ElitaPlus.Common.ErrorCodes.INVALID_DATE_ERR)
@@ -316,7 +318,7 @@ Partial Class APInvoiceListForm
             End If
 
             If String.IsNullOrEmpty(txtInvoiceDueDateFrom.Text) = False Then
-                if Date.TryParseExact(txtInvoiceDueDateFrom.Text.Trim(), DATE_FORMAT, System.Threading.Thread.CurrentThread.CurrentCulture, DateTimeStyles.None, dt) Then
+                If Date.TryParseExact(txtInvoiceDueDateFrom.Text.Trim(), DATE_FORMAT, System.Threading.Thread.CurrentThread.CurrentCulture, DateTimeStyles.None, dt) Then
                     If (dt <> Date.MinValue) Then
                         State.Criterias.DueDateFromString = txtInvoiceDueDateFrom.Text.Trim
                     End If
@@ -333,25 +335,25 @@ Partial Class APInvoiceListForm
                         State.Criterias.DueDateToString = txtInvoiceDueDateTo.Text.Trim
                     End If
                 Else
-                    blnSuccess = False        
+                    blnSuccess = False
                     ElitaPlusPage.SetLabelError(lblInvoiceDueDateTo)
                     Throw New GUIException(Message.MSG_INVALID_DATE, Assurant.ElitaPlus.Common.ErrorCodes.INVALID_DATE_ERR)
                 End If
-            End If            
+            End If
 
-            if blnSuccess = True Then
+            If blnSuccess = True Then
                 Dim hasValue As Boolean = False
                 With State.Criterias
                     If .DueDateFrom.HasValue = True Then hasValue = True
                     If .DueDateTo.HasValue = True Then hasValue = True
                     If .InvoiceDate.HasValue = True Then hasValue = True
-                    If string.IsNullOrWhiteSpace(.VendorCode) = False Then hasValue = True
-                    If string.IsNullOrWhiteSpace(.InvoiceNumber) = False Then hasValue = True
-                    If string.IsNullOrWhiteSpace(.Source) = False Then hasValue = True
+                    If String.IsNullOrWhiteSpace(.VendorCode) = False Then hasValue = True
+                    If String.IsNullOrWhiteSpace(.InvoiceNumber) = False Then hasValue = True
+                    If String.IsNullOrWhiteSpace(.Source) = False Then hasValue = True
                 End With
                 If hasValue = False Then
                     blnSuccess = False
-                    MasterPage.MessageController.AddErrorAndShow("SEARCH_CRITERION_001", true)
+                    MasterPage.MessageController.AddErrorAndShow("SEARCH_CRITERION_001", True)
                 End If
             End If
         Catch ex As Exception
@@ -361,24 +363,24 @@ Partial Class APInvoiceListForm
 
         Return blnSuccess
     End Function
-    
-    Private function GetSelectedInvoices() as List(Of Guid)
+
+    Private Function GetSelectedInvoices() As List(Of Guid)
         Dim chkbox As CheckBox, invoiceHeaderIdstr As String
         Dim selectedInvoices As List(Of Guid) = New List(Of Guid)
 
-        For each row As GridViewRow In Grid.Rows
+        For Each row As GridViewRow In Grid.Rows
             If row.RowType = DataControlRowType.DataRow Then
                 chkbox = CType(row.Cells(GRID_COL_CHECKBOX_IDX).FindControl(GRID_COL_SELECT_CTRL), CheckBox)
                 If chkbox.Checked Then
-                   invoiceHeaderIdstr = row.Cells(GRID_COL_INVOICE_HEADER_ID_IDX).Text.Trim
-                   If String.IsNullOrEmpty(invoiceHeaderIdstr) = False Then
+                    invoiceHeaderIdstr = row.Cells(GRID_COL_INVOICE_HEADER_ID_IDX).Text.Trim
+                    If String.IsNullOrEmpty(invoiceHeaderIdstr) = False Then
                         selectedInvoices.Add(New Guid(invoiceHeaderIdstr))
-                   End If
+                    End If
                 End If
             End If
         Next
         Return selectedInvoices
-    End function
+    End Function
 
     Private Sub RefreshSearchGrid()
         State.PageIndex = 0
@@ -388,38 +390,38 @@ Partial Class APInvoiceListForm
         PopulateGrid()
     End Sub
 
-    Private function validInvoiceSelectionForDelete(ByVal invoiceList as List(Of Guid)) As Boolean
+    Private Function validInvoiceSelectionForDelete(ByVal invoiceList As List(Of Guid)) As Boolean
         Dim isSelectionValid As Boolean = True
         If invoiceList.Count > 0 Then
             Dim dv As DataView = State.SearchDv
             dv.Sort = ApInvoiceHeader.APInvoiceSearchDV.COL_INVOICE_HEADER_ID
-            
+
             Dim strInvoiceNum As String, index As Integer
-            For each guidtemp As Guid In invoiceList
+            For Each guidtemp As Guid In invoiceList
                 index = dv.Find(guidtemp.ToByteArray)
                 If index <> -1 Then 'found the record
                     strInvoiceNum = dv(index)(ApInvoiceHeader.APInvoiceSearchDV.COL_INVOICE_NUMBER)
 
-                    if dv(index)(ApInvoiceHeader.APInvoiceSearchDV.COL_PAID_AMOUNT) > 0 Then 'invoice paid already, can not be deleted
-                        MasterPage.MessageController.AddError(string.Format("{0} - {1}", strInvoiceNum, TranslationBase.TranslateLabelOrMessage("INVOICE PAID")), False)
+                    If dv(index)(ApInvoiceHeader.APInvoiceSearchDV.COL_PAID_AMOUNT) > 0 Then 'invoice paid already, can not be deleted
+                        MasterPage.MessageController.AddError(String.Format("{0} - {1}", strInvoiceNum, TranslationBase.TranslateLabelOrMessage("INVOICE PAID")), False)
                         isSelectionValid = False
                     End If
                 End If
-            Next                
+            Next
         Else
             'must select at least one invoice to delete
-            MasterPage.MessageController.AddError("MSG_NO_RECORD_SELECTED", true)
+            MasterPage.MessageController.AddError("MSG_NO_RECORD_SELECTED", True)
             isSelectionValid = False
         End If
 
         If isSelectionValid = False Then
-            MasterPage.MessageController.Show
+            MasterPage.MessageController.Show()
         End If
 
         Return isSelectionValid
-    End function
+    End Function
 
-    Private function validInvoiceSelectionForPayment(Byval strBatchNumber As String, ByVal invoiceList as List(Of Guid)) As Boolean
+    Private Function validInvoiceSelectionForPayment(ByVal strBatchNumber As String, ByVal invoiceList As List(Of Guid)) As Boolean
         Dim isSelectionValid As Boolean = True, blnVendorErr As Boolean = False
         Dim guidVendorId As Guid = Guid.Empty
 
@@ -427,16 +429,16 @@ Partial Class APInvoiceListForm
         If invoiceList.Count > 0 Then
             Dim dv As DataView = State.SearchDv
             dv.Sort = ApInvoiceHeader.APInvoiceSearchDV.COL_INVOICE_HEADER_ID
-            
-            Dim strInvoiceNum As String, index As Integer
-            dim guidVendorIdNext As Guid
 
-            For each guidtemp As Guid In invoiceList
+            Dim strInvoiceNum As String, index As Integer
+            Dim guidVendorIdNext As Guid
+
+            For Each guidtemp As Guid In invoiceList
                 index = dv.Find(guidtemp.ToByteArray)
                 If index <> -1 Then 'found the record
                     strInvoiceNum = dv(index)(ApInvoiceHeader.APInvoiceSearchDV.COL_INVOICE_NUMBER)
                     guidVendorIdNext = New Guid(CType(dv(index)(ApInvoiceHeader.APInvoiceSearchDV.COL_VENDOR_ID), Byte()))
-                    
+
                     If guidVendorId = Guid.Empty Then 'first value
                         guidVendorId = guidVendorIdNext
                     Else
@@ -446,29 +448,29 @@ Partial Class APInvoiceListForm
                         End If
                     End If
 
-                    if dv(index)(ApInvoiceHeader.APInvoiceSearchDV.COL_PAID_AMOUNT) > 0 Then 'invoice paid already, can not be paid again
-                        MasterPage.MessageController.AddError(string.Format("{0} - {1}", strInvoiceNum, TranslationBase.TranslateLabelOrMessage("INVOICE_ALREADY_PAID")), False)
+                    If dv(index)(ApInvoiceHeader.APInvoiceSearchDV.COL_PAID_AMOUNT) > 0 Then 'invoice paid already, can not be paid again
+                        MasterPage.MessageController.AddError(String.Format("{0} - {1}", strInvoiceNum, TranslationBase.TranslateLabelOrMessage("INVOICE_ALREADY_PAID")), False)
                         isSelectionValid = False
                     End If
 
-                    if dv(index)(ApInvoiceHeader.APInvoiceSearchDV.COL_UNMATCHED_LINES_COUNT) > 0 Then 'invoice has unmatched lines
-                        MasterPage.MessageController.AddError(string.Format("{0} - {1}", strInvoiceNum, TranslationBase.TranslateLabelOrMessage("INVOICE_HAS_UNMATCHED_LINES")), False)
+                    If dv(index)(ApInvoiceHeader.APInvoiceSearchDV.COL_UNMATCHED_LINES_COUNT) > 0 Then 'invoice has unmatched lines
+                        MasterPage.MessageController.AddError(String.Format("{0} - {1}", strInvoiceNum, TranslationBase.TranslateLabelOrMessage("INVOICE_HAS_UNMATCHED_LINES")), False)
                         isSelectionValid = False
                     End If
 
                 End If
-            Next          
-            
+            Next
+
             If blnVendorErr = True Then ' add the message after the loop
-                MasterPage.MessageController.AddError("INVOICES_NOT_FOR_SAME_VENDOR", True)                            
+                MasterPage.MessageController.AddError("INVOICES_NOT_FOR_SAME_VENDOR", True)
             End If
         Else
             'must select at least one invoice to delete
-            MasterPage.MessageController.AddError("MSG_NO_RECORD_SELECTED", true)
+            MasterPage.MessageController.AddError("MSG_NO_RECORD_SELECTED", True)
             isSelectionValid = False
         End If
 
-        
+
 
         'validate batch Number only if invoice selections are valid
         Dim blnValidBatchNum As Boolean = True
@@ -483,12 +485,12 @@ Partial Class APInvoiceListForm
                 ApPaymentBatch.ValidatePaymentBatch(guidVendorId, strBatchNumber, intErrCode, strErrMsg)
 
                 'batch number is valid if the number doesn't exist or exists but the payment batch is in open status
-                If intErrCode <> 0 AndAlso intErrCode <> 100 Then                     
+                If intErrCode <> 0 AndAlso intErrCode <> 100 Then
                     If intErrCode = 200 Then
                         'batch number exists but the payment batch is NOT in open status
-                        MasterPage.MessageController.AddError("DUPLICATE_BATCH_NUMBER", true)
+                        MasterPage.MessageController.AddError("DUPLICATE_BATCH_NUMBER", True)
                     Else 'unknown error, show error message returned from database
-                        MasterPage.MessageController.AddError(string.Format("Validate batch number error: {0} - {1}", intErrCode, strErrMsg), False)
+                        MasterPage.MessageController.AddError(String.Format("Validate batch number error: {0} - {1}", intErrCode, strErrMsg), False)
                     End If
                     isSelectionValid = False
                     blnValidBatchNum = False
@@ -498,14 +500,14 @@ Partial Class APInvoiceListForm
             If blnValidBatchNum = False Then
                 lblBatchNum.ForeColor = Color.Red
             End If
-            
+
             If isSelectionValid = False Then
-                MasterPage.MessageController.Show
+                MasterPage.MessageController.Show()
             End If
         End If
-        
+
         Return isSelectionValid
-    End function
+    End Function
 #End Region
 
 #Region "Button event handlers"
@@ -526,7 +528,7 @@ Partial Class APInvoiceListForm
             'hide search results
             ControlMgr.SetVisibleControl(Me, Grid, False)
             ControlMgr.SetVisibleControl(Me, trPageSize, False)
-            
+
             'clear batch number textbox
             txtBatchNum.Text = String.Empty
 
@@ -551,16 +553,17 @@ Partial Class APInvoiceListForm
         End Try
     End Sub
 
-    
+
     Private Sub btnDelete_WRITE_Click(sender As Object, e As EventArgs) Handles btnDelete_WRITE.Click
         Try
-            Dim invoiceToBeDeleted as List(Of Guid) = GetSelectedInvoices
+            Dim invoiceToBeDeleted As List(Of Guid) = GetSelectedInvoices()
+
             If validInvoiceSelectionForDelete(invoiceToBeDeleted) Then
                 'call delete invoice method for each invoices
                 ApInvoiceHeader.DeleteInvoices(invoiceToBeDeleted)
                 MasterPage.MessageController.AddSuccess("MSG_RECORD_DELETED_OK")
                 RefreshSearchGrid()
-            End If            
+            End If
         Catch ex As Exception
             HandleErrors(ex, MasterPage.MessageController)
         End Try
@@ -568,7 +571,7 @@ Partial Class APInvoiceListForm
 
     Private Sub btnCreatePaymentBatch_WRITE_Click(sender As Object, e As EventArgs) Handles btnCreatePaymentBatch_WRITE.Click
         Try
-            Dim invoiceToBePaid as List(Of Guid) = GetSelectedInvoices
+            Dim invoiceToBePaid As List(Of Guid) = GetSelectedInvoices()
             Dim strBatchNum As String = txtBatchNum.Text.Trim.ToUpper
             If validInvoiceSelectionForPayment(strBatchNum, invoiceToBePaid) Then
                 'call delete invoice method for each invoices
@@ -579,8 +582,8 @@ Partial Class APInvoiceListForm
                 Else
                     MasterPage.MessageController.AddSuccess("CREATE_PYMT_BATCH_SUCCESS", True)
                 End If
-                RefreshSearchGrid()            
-            End If            
+                RefreshSearchGrid()
+            End If
         Catch ex As Exception
             HandleErrors(ex, MasterPage.MessageController)
         End Try
@@ -621,9 +624,9 @@ Partial Class APInvoiceListForm
         Dim dvRow As DataRowView = CType(e.Row.DataItem, DataRowView)
         Dim btnEditItem As LinkButton
         Dim chkbox As CheckBox
-                    
+
         Try
-            
+
             'If e.Row.RowType = DataControlRowType.DataRow OrElse (e.Row.RowType = DataControlRowType.Separator) Then
             If e.Row.RowType = DataControlRowType.DataRow Then
                 If (Not e.Row.Cells(GRID_COL_INVOICE_NUMBER_IDX).FindControl(GRID_COL_INVOICE_NUMBER_CTRL) Is Nothing) Then
@@ -634,20 +637,21 @@ Partial Class APInvoiceListForm
                 End If
 
                 ' populate dates fields
-                If not dvRow(ApInvoiceHeader.APInvoiceSearchDV.COL_INVOICE_DATE) Is DBNull.Value Then
-                    PopulateControlFromBOProperty(e.Row.Cells(GRID_COL_INVOICE_DATE_IDX), GetLongDateFormattedString(CType(dvRow(ApInvoiceHeader.APInvoiceSearchDV.COL_INVOICE_DATE), Date)))                
+                If Not dvRow(ApInvoiceHeader.APInvoiceSearchDV.COL_INVOICE_DATE) Is DBNull.Value Then
+                    PopulateControlFromBOProperty(e.Row.Cells(GRID_COL_INVOICE_DATE_IDX), GetLongDateFormattedString(CType(dvRow(ApInvoiceHeader.APInvoiceSearchDV.COL_INVOICE_DATE), Date)))
                 End If
 
-                If not dvRow(ApInvoiceHeader.APInvoiceSearchDV.COL_DUE_DATE) Is DBNull.Value Then
+                If Not dvRow(ApInvoiceHeader.APInvoiceSearchDV.COL_DUE_DATE) Is DBNull.Value Then
                     PopulateControlFromBOProperty(e.Row.Cells(GRID_COL_DUE_DATE_IDX), GetLongDateFormattedString(CType(dvRow(ApInvoiceHeader.APInvoiceSearchDV.COL_DUE_DATE), Date)))
                 End If
-                
-                If not dvRow(ApInvoiceHeader.APInvoiceSearchDV.COL_PAYMENT_DATE) Is DBNull.Value Then
-                    PopulateControlFromBOProperty(e.Row.Cells(GRID_COL_PYMT_DATE_IDX), GetLongDateFormattedString(CType(dvRow(ApInvoiceHeader.APInvoiceSearchDV.COL_PAYMENT_DATE), Date)))                                
+
+                If Not dvRow(ApInvoiceHeader.APInvoiceSearchDV.COL_PAYMENT_DATE) Is DBNull.Value Then
+                    PopulateControlFromBOProperty(e.Row.Cells(GRID_COL_PYMT_DATE_IDX), GetLongDateFormattedString(CType(dvRow(ApInvoiceHeader.APInvoiceSearchDV.COL_PAYMENT_DATE), Date)))
                 End If
 
                 'populate the id field
                 PopulateControlFromBOProperty(e.Row.Cells(GRID_COL_INVOICE_HEADER_ID_IDX), dvRow(ApInvoiceHeader.APInvoiceSearchDV.COL_INVOICE_HEADER_ID))
+                PopulateControlFromBOProperty(e.Row.Cells(GRID_COL_PAYMENT_STATUS_XCD), dvRow(ApInvoiceHeader.APInvoiceSearchDV.COL_PAYMENT_STATUS_XCD))
 
             End If
         Catch ex As Exception
@@ -669,6 +673,7 @@ Partial Class APInvoiceListForm
     Public Sub Grid_RowCommand(ByVal source As System.Object, ByVal e As System.Web.UI.WebControls.GridViewCommandEventArgs) Handles Grid.RowCommand
         Dim rowIndex As Integer = 0
         Dim invoiceHeaderId As String = String.Empty
+
         Try
             If (Not e.CommandArgument.ToString().Equals(String.Empty)) And (e.CommandName = SELECT_COMMAND_NAME) Then
                 rowIndex = CInt(e.CommandArgument)
@@ -680,9 +685,13 @@ Partial Class APInvoiceListForm
 
                 invoiceHeaderId = Grid.Rows(rowIndex).Cells(GRID_COL_INVOICE_HEADER_ID_IDX).Text
                 Me.State.SelectedInvoiceId = New Guid(invoiceHeaderId)
+                If Grid.Rows(rowIndex).Cells(GRID_COL_PAYMENT_STATUS_XCD).Text = AddApInvoiceForm.InvoiceStatusIncomplete Then
+                    callPage(AddApInvoiceForm.Url, Me.State.SelectedInvoiceId)
+                Else
+                    'calling AP invoice detail pages
+                    callPage(APInvoiceDetailForm.URL, Me.State.SelectedInvoiceId)
+                End If
 
-                'calling AP invoice detail pages
-                callPage(APInvoiceDetailForm.URL, Me.State.SelectedInvoiceId)
 
             End If
         Catch ex As Threading.ThreadAbortException
@@ -708,6 +717,11 @@ Partial Class APInvoiceListForm
         Catch ex As Exception
             HandleErrors(ex, MasterPage.MessageController)
         End Try
+    End Sub
+
+    Protected Sub btnAdd_WRITE_Click(sender As Object, e As EventArgs) Handles btnAdd_WRITE.Click
+
+        Me.callPage(AddApInvoiceForm.URL, Nothing)
     End Sub
 
 #End Region

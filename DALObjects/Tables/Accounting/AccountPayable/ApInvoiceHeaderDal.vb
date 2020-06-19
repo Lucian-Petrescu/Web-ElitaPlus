@@ -77,6 +77,17 @@ Public Class ApInvoiceHeaderDAL
             Throw New DataBaseAccessException(DataBaseAccessException.DatabaseAccessErrorType.ReadErr, ex)
         End Try
     End Sub
+    Public Sub Load(ByVal familyDS As DataSet, ByVal invoice_Number As String)
+        Try
+            Using cmd As OracleCommand = OracleDbHelper.CreateCommand(Me.Config("/SQL/LOADLINES"))
+                cmd.AddParameter(PAR_I_NAME_INVOICE_NUMBER, OracleDbType.Varchar2, invoice_Number)
+                cmd.AddParameter(PAR_O_NAME_RESULTCURSOR, OracleDbType.RefCursor, direction:=ParameterDirection.Output)
+                OracleDbHelper.Fetch(cmd, Me.TABLE_NAME, familyDS)
+            End Using
+        Catch ex As Exception
+            Throw New DataBaseAccessException(DataBaseAccessException.DatabaseAccessErrorType.ReadErr, ex)
+        End Try
+    End Sub
 
     Public Function LoadList() As DataSet
         Try
@@ -165,6 +176,44 @@ Public Class ApInvoiceHeaderDAL
 
 #End Region
 
+#Region "Public Methods"
+    Public Sub SaveInvoiceHeader(ByVal row As DataRow)
+
+        Dim sqlStatement As String
+        Dim rowState As DataRowState = row.RowState
+        Dim updatedBy As String = String.Empty
+        Try
+            Select Case rowState
+                Case DataRowState.Added
+                    'Insert
+                    sqlStatement = Me.Config("/SQL/INSERT")
+                    updatedBy = COL_NAME_CREATED_BY
+                Case DataRowState.Modified
+                    'update
+                    sqlStatement = Me.Config("/SQL/UPDATE")
+                    updatedBy = COL_NAME_MODIFIED_BY
+            End Select
+
+
+            Dim inParameters() As DBHelper.DBHelperParameter = New DBHelper.DBHelperParameter() _
+                       {New DBHelper.DBHelperParameter(PAR_I_NAME_AP_INVOICE_HEADER_ID, row(COL_NAME_AP_INVOICE_HEADER_ID)),
+                        New DBHelper.DBHelperParameter(PAR_I_NAME_INVOICE_NUMBER, row(COL_NAME_INVOICE_NUMBER)),
+                        New DBHelper.DBHelperParameter(PAR_I_NAME_INVOICE_DATE, row(COL_NAME_INVOICE_DATE)),
+                        New DBHelper.DBHelperParameter(PAR_I_NAME_INVOICE_AMOUNT, row(COL_NAME_INVOICE_AMOUNT)),
+                        New DBHelper.DBHelperParameter(PAR_I_NAME_TERM_XCD, row(COL_NAME_TERM_XCD)),
+                        New DBHelper.DBHelperParameter(PAR_I_NAME_COMPANY_ID, row(COL_NAME_COMPANY_ID)),
+                        New DBHelper.DBHelperParameter(PAR_I_NAME_VENDOR_ID, row(COL_NAME_VENDOR_ID)),
+                        New DBHelper.DBHelperParameter("pi_" & updatedBy.ToLower(), row(updatedBy)),
+                        New DBHelper.DBHelperParameter(PAR_I_NAME_DEALER_ID, row(COL_NAME_DEALER_ID)),
+                        New DBHelper.DBHelperParameter(PAR_I_NAME_PAYMENT_STATUS_XCD, row(COL_NAME_PAYMENT_STATUS_XCD))
+                       }
+            DBHelper.ExecuteSp(sqlStatement, inParameters, Nothing)
+            row.AcceptChanges()
+        Catch ex As Exception
+            Throw New DataBaseAccessException(DataBaseAccessException.DatabaseAccessErrorType.ReadErr, ex)
+        End Try
+    End Sub
+#End Region
 
 #Region "Data query methods"
     Private Function DB_OracleCommand(ByVal p_SqlStatement As String, ByVal p_CommandType As CommandType) As OracleCommand
@@ -231,7 +280,6 @@ Public Class ApInvoiceHeaderDAL
 
 
     End Sub
-
 
     Public Sub LoadAPInvoiceExtendedInfo(ByVal invoiceId As Guid, ByRef searchResult As DataSet)
 

@@ -3,6 +3,21 @@
 Public Class ApInvoiceLines
     Inherits BusinessObjectBase
 
+#Region "Constant"
+    Public Const AP_LINE_ID As String = "ap_invoice_lines_id"
+    Public Const LINE_NUMBER_COL As String = "Line_Number"
+    Public Const LINE_TYPE_COL As String = "Line_type"
+    Public Const ITEM_CODE_COL As String = "Vendor_Item_Code"
+    Public Const DESCRIPTION_COL As String = "Description"
+    Public Const QUANTITY_COL As String = "Quantity"
+    Public Const UNIT_PRICE_COL As String = "Unit_Price"
+    Public Const TOTAL_PRICE_COL As String = "Total_Price"
+    Public Const UNIT_OF_MEASUREMENT_COL As String = "UOM_XCD"
+    Public Const PO_NUMBER_COL As String = "po_number"
+
+
+#End Region
+
 #Region "Constructors"
 
     'Exiting BO
@@ -404,14 +419,14 @@ Public Class ApInvoiceLines
             Me.SetValue(ApInvoiceLinesDAL.COL_NAME_VENDOR_TRANSACTION_TYPE, Value)
         End Set
     End Property
-	
-	
-   
+
+
+
 
 #End Region
 
 #Region "Public Members"
-    Public Overrides Sub Save()         
+    Public Overrides Sub Save()
         Try
             MyBase.Save()
             If Me._isDSCreator AndAlso Me.IsDirty AndAlso Me.Row.RowState <> DataRowState.Detached Then
@@ -429,11 +444,29 @@ Public Class ApInvoiceLines
             Throw New DataBaseAccessException(DataBaseAccessException.DatabaseAccessErrorType.WriteErr, ex)
         End Try
     End Sub
+    Public Sub DeleteInvoiceLine()
+        Dim dal As New ApInvoiceLinesDAL
+        dal.DeleteInvoiceLine(Me.Row)
+    End Sub
+
 #End Region
 
 #Region "DataView Retrieveing Methods"
-    
+    Public Function GetApInvoiceLines(ByVal accountPayableInvoiceHeaderId As Guid) As DataView
+        Try
+            Dim dal As New ApInvoiceLinesDAL
+            Dim ds As DataSet = New DataSet
+
+            ds = dal.GetApInvoiceLines(ds, accountPayableInvoiceHeaderId)
+            Return ds.Tables(ApInvoiceLinesDAL.TABLE_NAME).DefaultView
+
+        Catch ex As Assurant.ElitaPlus.DALObjects.DataBaseAccessException
+            Throw New DataBaseAccessException(ex.ErrorType, ex)
+        End Try
+    End Function
+
 #End Region
+
 
 #Region "APInvoiceLinesDV Dataview"
     Public Class APInvoiceLinesDV
@@ -454,6 +487,7 @@ Public Class ApInvoiceLines
         Public Const COL_PAYMENT_STATUS As String = "payment_status"
         Public Const COL_PAYMENT_SOURCE As String = "payment_source"
         Public Const COL_PAYMENT_DATE As String = "payment_date"
+        Public Const COL_UNIT_OF_MEASUREMENT As String = "UOM_XCD"
 
         Public Sub New(ByVal table As DataTable)
             MyBase.New(table)

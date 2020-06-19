@@ -8,8 +8,9 @@ Public Class ApInvoiceLinesDAL
     Private Const supportChangesFilter As DataRowState = DataRowState.Added  Or DataRowState.Modified 
     Public Const TABLE_NAME As String = "ELP_AP_INVOICE_LINES"
     Public Const TABLE_KEY_NAME As String = COL_NAME_AP_INVOICE_LINES_ID
-	
+
     Public Const COL_NAME_AP_INVOICE_LINES_ID As String = "ap_invoice_lines_id"
+    Public Const COL_NAME_INVOICE_NUMBER As String = "invoice_number"
     Public Const COL_NAME_AP_INVOICE_HEADER_ID As String = "ap_invoice_header_id"
     Public Const COL_NAME_LINE_NUMBER As String = "line_number"
     Public Const COL_NAME_LINE_TYPE As String = "line_type"
@@ -32,6 +33,7 @@ Public Class ApInvoiceLinesDAL
     Public Const PAR_I_NAME_AP_INVOICE_LINES_ID As String = "pi_ap_invoice_lines_id"
     Public Const PAR_I_NAME_AP_INVOICE_HEADER_ID As String = "pi_ap_invoice_header_id"
     Public Const PAR_I_NAME_LINE_NUMBER As String = "pi_line_number"
+    Public Const PAR_I_NAME_INVOICE_NUMBER As String = "pi_invoice_number"
     Public Const PAR_I_NAME_LINE_TYPE As String = "pi_line_type"
     Public Const PAR_I_NAME_VENDOR_ITEM_CODE As String = "pi_vendor_item_code"
     Public Const PAR_I_NAME_DESCRIPTION As String = "pi_description"
@@ -48,6 +50,7 @@ Public Class ApInvoiceLinesDAL
     Public Const PAR_I_NAME_BILLING_PERIOD_END_DATE As String = "pi_billing_period_end_date"
     Public Const PAR_I_NAME_REFERENCE_NUMBER As String = "pi_reference_number"
     Public Const PAR_I_NAME_VENDOR_TRANSACTION_TYPE As String = "pi_vendor_transaction_type"
+    Public Const PAR_O_AP_INVOICE_LINES_CUR As String = "po_ResultCursor"
 
 #End Region
 
@@ -75,24 +78,54 @@ Public Class ApInvoiceLinesDAL
             Throw New DataBaseAccessException(DataBaseAccessException.DatabaseAccessErrorType.ReadErr, ex)
         End Try
     End Sub
-
     Public Function LoadList() As DataSet
         Try
             Using cmd As OracleCommand = OracleDbHelper.CreateCommand(Me.Config("/SQL/LOAD_LIST"))
                 cmd.AddParameter(PAR_O_NAME_RESULTCURSOR, OracleDbType.RefCursor, direction:=ParameterDirection.Output)
                 Return OracleDbHelper.Fetch(cmd, Me.TABLE_NAME)
-            End Using        
+            End Using
         Catch ex As Exception
             Throw New DataBaseAccessException(DataBaseAccessException.DatabaseAccessErrorType.ReadErr, ex)
         End Try
-    End Function    
-    
+    End Function
+    Public Function LoadList(ByVal apInvoiceHeaderId As Guid) As DataSet
+        Try
+            Dim selectStmt As String = Me.Config("/SQL/LOAD")
+
+            Dim inparameters() As DBHelper.DBHelperParameter = New DBHelper.DBHelperParameter() {New DBHelper.DBHelperParameter(Me.PAR_I_NAME_AP_INVOICE_HEADER_ID, apInvoiceHeaderId.ToByteArray)}
+            Dim outParameters() As DBHelper.DBHelperParameter = New DBHelper.DBHelperParameter() {New DBHelper.DBHelperParameter(Me.PAR_O_AP_INVOICE_LINES_CUR, GetType(DataSet))}
+
+            Dim ds As New DataSet
+            Dim tbl As String = Me.TABLE_NAME
+
+            DBHelper.FetchSp(selectStmt, inparameters, outParameters, ds, tbl)
+            Return ds
+
+        Catch ex As Exception
+            Throw New DataBaseAccessException(DataBaseAccessException.DatabaseAccessErrorType.ReadErr, ex)
+        End Try
+
+    End Function
+
+    Public Function GetApInvoiceLines(ByVal familyDS As DataSet, ByVal apInvoiceHeaderId As Guid) As DataSet
+        Try
+            Using cmd As OracleCommand = OracleDbHelper.CreateCommand(Me.Config("/SQL/LOADLINES"))
+                cmd.AddParameter(PAR_I_NAME_INVOICE_NUMBER, OracleDbType.Raw, apInvoiceHeaderId.ToByteArray())
+                cmd.AddParameter(PAR_O_NAME_RESULTCURSOR, OracleDbType.RefCursor, direction:=ParameterDirection.Output)
+                OracleDbHelper.Fetch(cmd, Me.TABLE_NAME, familyDS)
+                Return familyDS
+            End Using
+        Catch ex As Exception
+            Throw New DataBaseAccessException(DataBaseAccessException.DatabaseAccessErrorType.ReadErr, ex)
+        End Try
+    End Function
+
 
 #End Region
 
 #Region "Overloaded Methods"
     Public Overloads Sub Update(ByVal ds As DataSet, Optional ByVal Transaction As IDbTransaction = Nothing, Optional ByVal changesFilter As DataRowState = supportChangesFilter)
-		If ds Is Nothing Then
+        If ds Is Nothing Then
             Return
         End If
         If (changesFilter Or (supportChangesFilter)) <> (supportChangesFilter) Then
@@ -102,7 +135,29 @@ Public Class ApInvoiceLinesDAL
             MyBase.Update(ds.Tables(Me.TABLE_NAME), Transaction, changesFilter)
         End If
     End Sub
-    
+
+
+    Public Sub DeleteInvoiceLine(ByVal row As DataRow)
+
+        Dim sqlStatement As String
+        Dim rowState As DataRowState = row.RowState
+
+        Try
+            If rowState = DataRowState.Deleted Then
+
+                sqlStatement = Me.Config("/SQL/DELETE")
+                Dim inParameter() As DBHelper.DBHelperParameter = New DBHelper.DBHelperParameter() _
+                       {
+                           New DBHelper.DBHelperParameter(PAR_I_NAME_AP_INVOICE_LINES_ID.ToLower(), row(COL_NAME_AP_INVOICE_LINES_ID, DataRowVersion.Original))
+                       }
+                DBHelper.ExecuteSp(sqlstatement, inParameter, Nothing)
+                row.AcceptChanges()
+            End If
+        Catch ex As Exception
+            Throw New DataBaseAccessException(DataBaseAccessException.DatabaseAccessErrorType.ReadErr, ex)
+        End Try
+    End Sub
+
     Protected Overrides Sub ConfigureDeleteCommand(ByRef command As OracleCommand, tableName As String)
         Throw New NotSupportedException() 
     End Sub
