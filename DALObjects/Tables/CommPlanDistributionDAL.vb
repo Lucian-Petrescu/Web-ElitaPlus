@@ -216,20 +216,19 @@ Public Class CommPlanDistributionDAL
             .AddParameter("pi_comm_plan_dist_id", OracleDbType.Raw, sourceColumn:=TABLE_KEY_NAME)
             .AddParameter("pi_comm_plan_id", OracleDbType.Raw, sourceColumn:=COL_NAME_COMM_PLAN_ID)
             .AddParameter("pi_commission_amount", OracleDbType.Varchar2, sourceColumn:=COL_NAME_COMM_AMOUNT)
-            .AddParameter("pi_commission_percent", OracleDbType.Raw, sourceColumn:=COL_NAME_COMMISSION_PERCENT)
+            .AddParameter("pi_commission_percent", OracleDbType.Varchar2, sourceColumn:=COL_NAME_COMMISSION_PERCENT)
             .AddParameter("pi_position", OracleDbType.Varchar2, sourceColumn:=COL_NAME_POSITION)
             .AddParameter("pi_entity_id", OracleDbType.Raw, sourceColumn:=COL_NAME_ENTITY_ID)
             .AddParameter("pi_payee_type_xcd", OracleDbType.Varchar2, sourceColumn:=COL_NAME_PAYEE_TYPE_XCD)
-            .AddParameter("pi_created_by", OracleDbType.Varchar2, sourceColumn:=COL_NAME_CREATED_BY)            
+            .AddParameter("pi_created_by", OracleDbType.Varchar2, sourceColumn:=COL_NAME_CREATED_BY)    
             .AddParameter("pi_comm_source_xcd", OracleDbType.Varchar2, sourceColumn:=COL_NAME_COMMISSION_SOURCE_XCD)
-            '.AddParameter("pi_cb_commission_percentage", OracleDbType.Varchar2, sourceColumn:=COL_NAME_CB_COMM_PERCENT)
-            '.AddParameter("pi_cb_commission_amount", OracleDbType.Varchar2, sourceColumn:=COL_NAME_CB_COMM_PERCENT)            
             .AddParameter("po_exec_status", OracleDbType.Int32, ParameterDirection.Output)           
         End With
     End Sub
 
     Protected Overrides Sub ConfigureUpdateCommand(ByRef command As OracleCommand, ByVal tableName As String)
         With command
+            .AddParameter("pi_comm_plan_dist_id", OracleDbType.Raw, sourceColumn:=TABLE_KEY_NAME)
             .AddParameter("pi_comm_plan_id", OracleDbType.Raw, sourceColumn:=COL_NAME_COMM_PLAN_ID)
             .AddParameter("pi_commission_amount", OracleDbType.Varchar2, sourceColumn:=COL_NAME_COMM_AMOUNT)
             .AddParameter("pi_commission_percent", OracleDbType.Varchar2, sourceColumn:=COL_NAME_COMMISSION_PERCENT)
@@ -237,8 +236,7 @@ Public Class CommPlanDistributionDAL
             .AddParameter("pi_entity_id", OracleDbType.Raw, sourceColumn:=COL_NAME_ENTITY_ID)
             .AddParameter("pi_payee_type_xcd", OracleDbType.Varchar2, sourceColumn:=COL_NAME_PAYEE_TYPE_XCD)
             .AddParameter("pi_modified_by", OracleDbType.Varchar2, sourceColumn:=COL_NAME_COMM_MODIFIED_BY)
-            .AddParameter("pi_comm_source_xcd", OracleDbType.Varchar2, sourceColumn:=COL_NAME_COMMISSION_SOURCE_XCD)
-            .AddParameter("pi_comm_plan_dist_id", OracleDbType.Raw, sourceColumn:=TABLE_KEY_NAME)
+            .AddParameter("pi_comm_source_xcd", OracleDbType.Varchar2, sourceColumn:=COL_NAME_COMMISSION_SOURCE_XCD)            
             .AddParameter("po_exec_status", OracleDbType.Int32, ParameterDirection.Output)
         End With
     End Sub
