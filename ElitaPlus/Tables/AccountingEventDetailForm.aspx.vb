@@ -217,14 +217,13 @@ Partial Class AccountingEventDetailForm
 
     Private Sub Page_LoadComplete(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.LoadComplete
         'enable the inclusion/exclusion configuration tab only for PREM, REFUNDS, UPR, IBNR, claim and claim reserve event types
+        'disabling for Vendor and Invoice
         If AcctEventType = String.Empty Then
             Dim AcctEventTypedv As DataView = LookupListNew.DropdownLookupList(LookupListNew.LK_ACCT_TRANS_TYPE, ElitaPlusIdentity.Current.ActiveUser.LanguageId, True)
             AcctEventType = LookupListNew.GetCodeFromId(AcctEventTypedv, Me.State.ParentBO.AcctEventTypeId)
         End If
 
-        If AcctEventType = "PREM" OrElse AcctEventType = "UPR" OrElse AcctEventType = "IBNR" OrElse AcctEventType = "REFUNDS" OrElse AcctEventType = "CLAIM" OrElse AcctEventType = "CLAIMRES" Then
-
-        Else
+        If AcctEventType = "VEND" OrElse AcctEventType = "INV" OrElse AcctEventType = "IBNR" OrElse AcctEventType = "REFUNDS" OrElse AcctEventType = "CLAIM" OrElse AcctEventType = "CLAIMRES" Then
             DisabledTabsList.Add(Tabs_InclusionExclisionConfig)
         End If
     End Sub
