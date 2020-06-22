@@ -223,7 +223,7 @@ Partial Class AccountingEventDetailForm
             AcctEventType = LookupListNew.GetCodeFromId(AcctEventTypedv, Me.State.ParentBO.AcctEventTypeId)
         End If
 
-        If AcctEventType = "VEND" OrElse AcctEventType = "INV" OrElse AcctEventType = "IBNR" OrElse AcctEventType = "REFUNDS" OrElse AcctEventType = "CLAIM" OrElse AcctEventType = "CLAIMRES" Then
+        If AcctEventType = "VEND" OrElse AcctEventType = "INV" Then
             DisabledTabsList.Add(Tabs_InclusionExclisionConfig)
         End If
     End Sub
