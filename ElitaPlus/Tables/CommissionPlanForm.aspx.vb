@@ -6,6 +6,7 @@ Imports Assurant.ElitaPlus.ElitaPlusWebApp.Common
 Imports Assurant.ElitaPlus.DALObjects
 Imports System.Globalization
 Imports Assurant.ElitaPlus.Business
+Imports Microsoft.Web.Services3.Referral
 
 Namespace Tables
 
@@ -3056,6 +3057,7 @@ Namespace Tables
                         Dim mollblCommPercentSourceXcd As Label = DirectCast(gRow.Cells(COL_COMMISSIONS_SOURCE_XCD_IDX).FindControl("lblCommPercentSourceXcd"), Label)
                         'Dim molblEntityType As Label = DirectCast(gRow.Cells(COL_ENTITY_ID_IDX).FindControl("lblEntityType"), Label)
                         Dim molblPayeeType As Label = DirectCast(gRow.Cells(COL_COMMISSIONS_SOURCE_XCD_IDX).FindControl("lblPayeeType"), Label)
+                        Dim molblEntityType As Label = DirectCast(gRow.Cells(COL_COMMISSIONS_SOURCE_XCD_IDX).FindControl("lblEntityType"), Label)
 
                         'If Not molblEntityType Is Nothing Then
                         '    If molblEntityType.Visible Then
@@ -3073,7 +3075,7 @@ Namespace Tables
                         '        End If
                         '    End If
                         'End If
-                        
+
                         If Not molblPayeeType Is Nothing Then
                             If molblPayeeType.Visible Then
                                 If (Not molblPayeeType.Text Is Nothing And Not String.IsNullOrWhiteSpace(molblPayeeType.Text)) Then
@@ -3086,6 +3088,14 @@ Namespace Tables
                             If mollblCommPercentSourceXcd.Visible Then
                                 If (Not mollblCommPercentSourceXcd.Text Is Nothing And Not String.IsNullOrWhiteSpace(mollblCommPercentSourceXcd.Text)) Then
                                     mollblCommPercentSourceXcd.Text = GetCodeAmtSourceOption(mollblCommPercentSourceXcd.Text)
+                                End If
+                            End If
+                        End If
+
+                        If Not molblEntityType Is Nothing Then
+                            If molblEntityType.Visible Then
+                                If (Not molblEntityType.Text Is Nothing And Not String.IsNullOrWhiteSpace(molblEntityType.Text)) Then
+                                    molblEntityType.Text = GetDescOfIDFromEntityTypeOption(molblEntityType.Text)
                                 End If
                             End If
                         End If
@@ -3402,6 +3412,7 @@ Namespace Tables
                     If gRow.RowType = DataControlRowType.DataRow Then
                         Dim molblCommPercentSourceXcd As Label = DirectCast(gRow.Cells(COL_COMMISSIONS_SOURCE_XCD_IDX).FindControl("lblCommPercentSourceXcd"), Label)
                         Dim molblPayeeType As Label = DirectCast(gRow.Cells(COL_COMMISSIONS_SOURCE_XCD_IDX).FindControl("lblPayeeType"), Label)
+                        Dim molblEntityType As Label = DirectCast(gRow.Cells(COL_COMMISSIONS_SOURCE_XCD_IDX).FindControl("lblEntityType"), Label)
 
                         If Not molblCommPercentSourceXcd Is Nothing Then
                             If molblCommPercentSourceXcd.Visible Then
@@ -3419,6 +3430,13 @@ Namespace Tables
                             End If
                         End If
 
+                        If Not molblEntityType Is Nothing Then
+                            If molblEntityType.Visible Then
+                                If (Not molblEntityType.Text Is Nothing And Not String.IsNullOrWhiteSpace(molblEntityType.Text)) Then
+                                    molblEntityType.Text = GetDescOfIDFromEntityTypeOption(molblEntityType.Text)
+                                End If
+                            End If
+                        End If
                     End If
                 Next
             Next
@@ -3522,7 +3540,28 @@ Namespace Tables
                 Me.HandleErrors(ex, Me.MasterPage.MessageController)
             End Try
         End Function
-        
+
+        Public Function GetDescOfIDFromEntityTypeOption(ByVal desc As String) As String
+            Dim sGetDescOfExtCodeFromPayeeTypeXcd As String
+            Try
+                sGetDescOfExtCodeFromPayeeTypeXcd = String.Empty
+                Dim listcontext As ListContext = New ListContext()
+                listcontext.CompanyGroupId = ElitaPlusIdentity.Current.ActiveUser.CompanyGroup.Id
+                Dim CommEntityList As DataElements.ListItem() = CommonConfigManager.Current.ListManager.GetList(listCode:="CommEntityByCompanyGroup", languageCode:=Thread.CurrentPrincipal.GetLanguageCode(), context:=listcontext)
+
+                If Not desc Is Nothing And Not String.IsNullOrWhiteSpace(desc) Then
+                    If (desc.Length > 16) Then
+                        sGetDescOfExtCodeFromPayeeTypeXcd = (From lst In CommEntityList
+                                                             Where lst.ListItemId = GetGuidFromString(desc)
+                                                             Select lst.Translation).FirstOrDefault
+                    End If
+                End If
+                Return sGetDescOfExtCodeFromPayeeTypeXcd
+            Catch ex As Exception
+                Me.HandleErrors(ex, Me.MasterPage.MessageController)
+            End Try
+        End Function
+
         Private Sub LoadCoverageRateList()
             If moGridView.Rows.Count > 0 Then
                 Dim i As Integer = 0
@@ -3828,7 +3867,7 @@ Namespace Tables
             End If
 
             If mocboPayeeType.SelectedIndex > NO_ITEM_SELECTED_INDEX Then
-                 'Dim PayeeTypeCode As String
+                'Dim PayeeTypeCode As String
 
                 'PayeeTypeCode = LookupListNew.GetCodeFromId(LookupListNew.LK_PAYEE_TYPE,  Me.GetSelectedItem(mocboPayeeType))
                 'PayeeTypeCode = LookupListNew.GetDescriptionFromId(LookupListNew.LK_PAYEE_TYPE, Me.GetSelectedItem(mocboPayeeType))
@@ -3967,7 +4006,7 @@ Namespace Tables
                             Me.State.moCommPlanDistId = GetGuidFromString(CoverageRateId) ' Me.State.moCoverageRateList(moGridView.SelectedIndex).Id
 
                             Me.State.MyBoDist = New CommPlanDistribution(Me.State.moCommPlanDistId)
-                            
+
                         End If
                         Me.SetPageAndSelectedIndexFromGuid(oDataView, GetGuidFromString(CoverageRateId), moGridView,
                                     moGridView.PageIndex, True)

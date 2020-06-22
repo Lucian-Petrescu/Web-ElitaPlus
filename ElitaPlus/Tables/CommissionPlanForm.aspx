@@ -1035,7 +1035,7 @@
                                                     <asp:TemplateField Visible="true" HeaderText="ENTITY_TYPE">
                                                         <ItemStyle HorizontalAlign="Center"></ItemStyle>
                                                         <ItemTemplate>
-                                                            <asp:Label ID="lblEntityType" Text='<%# Container.DataItem("ENTITY_ID")%>' runat="server"> </asp:Label>
+                                                            <asp:Label ID="lblEntityType" Text='<%# GetGuidStringFromByteArray(Container.DataItem("ENTITY_ID"))%>' runat="server"> </asp:Label>
                                                         </ItemTemplate>
                                                         <EditItemTemplate>
                                                             <asp:DropDownList ID="cboEntityType" runat="server" Width="100"></asp:DropDownList>
