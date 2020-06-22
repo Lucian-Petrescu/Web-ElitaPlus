@@ -222,6 +222,38 @@ Namespace Tables
                 Return isDealerConfiguredForSourceXcd
             End Get
         End Property
+
+        Public ReadOnly Property HasCompanyConfigeredForSourceXcd() As Boolean
+            Get
+                Dim isCompanyConfiguredForSourceXcd As Boolean
+                isCompanyConfiguredForSourceXcd = False
+                If Not Me.State Is Nothing Then
+                    If (Me.State.moDealerId <> Guid.Empty) Then
+                        Dim oDealer As New Dealer(Me.State.moDealerId)
+                        Dim oCompany As New Company(oDealer.CompanyId)
+                        If Not oCompany.AttributeValues Is Nothing Then
+                            If oCompany.AttributeValues.Contains("NEW_COMMISSION_MODULE_CONFIGURED") Then
+                                'If oCompany.AttributeValues.Value(Codes.NEW_COMMISSION_MODULE_CONFIGURED) = Codes.EXT_YESNO_Y Then
+                                If oCompany.AttributeValues.Value(Codes.NEW_COMMISSION_MODULE_CONFIGURED) = Codes.YESNO_Y Then                                
+                                    isCompanyConfiguredForSourceXcd = True
+                                Else
+                                    isCompanyConfiguredForSourceXcd = False
+                                End If
+                            Else
+                                isCompanyConfiguredForSourceXcd = False
+                            End If
+                        Else
+                            isCompanyConfiguredForSourceXcd = False
+                        End If
+                    Else
+                        isCompanyConfiguredForSourceXcd = False
+                    End If
+                Else
+                    isCompanyConfiguredForSourceXcd = False
+                End If
+                Return isCompanyConfiguredForSourceXcd
+            End Get
+        End Property
 #End Region
 
 #Region "Handlers"
@@ -331,7 +363,7 @@ Namespace Tables
         Private Sub btnNew_Click(ByVal sender As Object, ByVal e As System.EventArgs) Handles btnNew.Click
             Try
                 Me.State.moDealerId = moDealerMultipleDrop.SelectedGuid 'Me.GetSelectedItem(moDealerDrop)
-                If Not HasDealerConfigeredForSourceXcd Then
+                If Not HasCompanyConfigeredForSourceXcd Then
                     If chkIsCommProdCode.Checked Then
                         Me.State.moCommPCodeId = Guid.Empty
                         Me.State.moChkIsCommProdCode = True
@@ -684,7 +716,7 @@ Namespace Tables
         Private Sub PopulateGrid()
             Try
                 Me.State.moDealerId = moDealerMultipleDrop.SelectedGuid
-                If Not HasDealerConfigeredForSourceXcd Then
+                If Not HasCompanyConfigeredForSourceXcd Then
                     If chkIsCommProdCode.Checked Then
                         Me.State.moChkIsCommProdCode = True
                         Me.State.moProductCodeId = Me.GetSelectedItem(moProductDrop)

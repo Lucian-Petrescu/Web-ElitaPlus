@@ -452,15 +452,15 @@
 
                     <div id="tabs" class="style-tabs-old" style="border: none;">
                         <ul>
-                            <li style="background: #d5d6e4"><a href="#tabsCommissionBreakdown">
+                            <li style="background: #d5d6e4; display:none;"><a href="#tabsCommissionBreakdown">
                                 <asp:Label ID="Label1" runat="server" CssClass="tabHeaderTextOld">Commission_Breakdown</asp:Label></a></li>
-                            <li style="background: #d5d6e4"><a href="#tabmoEntityTabPanelWRITE">
+                            <li style="background: #d5d6e4; display:none;"><a href="#tabmoEntityTabPanelWRITE">
                                 <asp:Label ID="Label6" runat="server" CssClass="tabHeaderTextOld">Entities</asp:Label></a></li>
-                            <li style="background: #d5d6e4"><a href="#tabsCoverageRate">
-                                <asp:Label ID="Label2" runat="server" CssClass="tabHeaderText">Coverage Rate</asp:Label></a></li>
+                            <li style="background: #d5d6e4"><a href="#tabsCommPlanDist">
+                                <asp:Label ID="Label2" runat="server" CssClass="tabHeaderText">Commission_Distribution</asp:Label></a></li>
                         </ul>
 
-                        <div id="tabsCommissionBreakdown" style="border: 1px solid black;">
+                        <div id="tabsCommissionBreakdown" style="border: 1px solid black; display:none;">
                             <div class="Page" runat="server" id="moCommBreakPanel" style="display: block; height: 370px; overflow: auto">
 
                                 <asp:Panel ID="moGridPanel" runat="server" Width="100%">
@@ -1022,7 +1022,7 @@
                 </asp:Panel>
               </div>      --%>
 
-                        <div id="tabsCoverageRate">
+                        <div id="tabsCommPlanDist">
                             <table id="tblOpportunities" class="dataGrid" border="0" rules="cols" width="98%">
                                 <tr>
                                     <td colspan="2">
