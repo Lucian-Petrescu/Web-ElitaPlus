@@ -292,80 +292,34 @@
             return ReturnValue;
         }
 
-        function DisableBrokerCommPctTextForDiffSelect() {
-            var dList = document.getElementById('<%=cboBrokerCommPctSourceXcd.ClientID%>');
-            var tBox = document.getElementById('<%=txtBrokerCommPct.ClientID%>');
-            var selectedValue = dList.options[dList.selectedIndex].value;
+        $(function () {
+            $("[id*=cboCommPercentSourceXcd]").change(function () {
+                var row = $(this).closest("tr");
+                var value = $(this).val();
+                if (value == "ACCTBUCKETSOURCE_COMMBRKDOWN-D") {
+                    row.find("[id*=moCommission_PercentText]").val("0.0000");
+                    row.find("[id*=moCommission_PercentText]").attr("disabled", "true");
+                } else {
+                    row.find("[id*=moCommission_PercentText]").removeAttr("disabled");
+                }
+            });
 
-            if (selectedValue == 'ACCTBUCKETSOURCE_COMMBRKDOWN-D') {
-                tBox.value = '0.00';
-                UpdateBroker();
-                tBox.disabled = true;
-            }
-            else {
-                tBox.disabled = false;
-            }
-        }
+            $("[id*=moLowPriceText]").change(function () {
+                var row = $(this).closest("tr");
+                var value = $(this).val();
+                if (value > 0)  {
+                    row.find("[id*=moCommission_PercentText]").val("0.0000");                    
+                }
+            });
 
-        function DisableBrokerCommPct2TextForDiffSelect() {
-            var dList = document.getElementById('<%=cboBrokerCommPct2SourceXcd.ClientID%>');
-            var tBox = document.getElementById('<%=txtBrokerCommPct2.ClientID%>');
-            var selectedValue = dList.options[dList.selectedIndex].value;
-
-            if (selectedValue == 'ACCTBUCKETSOURCE_COMMBRKDOWN-D') {
-                tBox.value = '0.00';
-                UpdateBroker();
-                tBox.disabled = true;
-            }
-            else {
-                tBox.disabled = false;
-            }
-        }
-
-        function DisableBrokerCommPct3TextForDiffSelect() {
-            var dList = document.getElementById('<%=cboBrokerCommPct3SourceXcd.ClientID%>');
-            var tBox = document.getElementById('<%=txtBrokerCommPct3.ClientID%>');
-            var selectedValue = dList.options[dList.selectedIndex].value;
-
-            if (selectedValue == 'ACCTBUCKETSOURCE_COMMBRKDOWN-D') {
-                tBox.value = '0.00';
-                UpdateBroker();
-                tBox.disabled = true;
-            }
-            else {
-                tBox.disabled = false;
-            }
-        }
-
-        function DisableBrokerCommPct4TextForDiffSelect() {
-            var dList = document.getElementById('<%=cboBrokerCommPct4SourceXcd.ClientID%>');
-            var tBox = document.getElementById('<%=txtBrokerCommPct4.ClientID%>');
-            var selectedValue = dList.options[dList.selectedIndex].value;
-
-            if (selectedValue == 'ACCTBUCKETSOURCE_COMMBRKDOWN-D') {
-                tBox.value = '0.00';
-                UpdateBroker();
-                tBox.disabled = true;
-            }
-            else {
-                tBox.disabled = false;
-            }
-        }
-
-        function DisableBrokerCommPct5TextForDiffSelect() {
-            var dList = document.getElementById('<%=cboBrokerCommPct5SourceXcd.ClientID%>');
-            var tBox = document.getElementById('<%=txtBrokerCommPct5.ClientID%>');
-            var selectedValue = dList.options[dList.selectedIndex].value;
-
-            if (selectedValue == 'ACCTBUCKETSOURCE_COMMBRKDOWN-D') {
-                tBox.value = '0.00';
-                UpdateBroker();
-                tBox.disabled = true;
-            }
-            else {
-                tBox.disabled = false;
-            }
-        }
+            $("[id*=moCommission_PercentText]").change(function () {
+                var row = $(this).closest("tr");
+                var value = $(this).val();
+                if (value > 0) {
+                    row.find("[id*=moLowPriceText]").val("0.0000");
+                }
+            });
+        });
     </script>
     <style type="text/css">
         .style-tabs-old .ui-widget-header {
@@ -781,7 +735,7 @@
                                             </td>
                                             <td align="left" style="width: 10%; height: 13px">
                                                 <asp:DropDownList ID="cboBrokerCommPctSourceXcd" TabIndex="294" runat="server" Width="100px"
-                                                    SkinID="SmallDropDown" Visible="False" onchange="javascript:DisableBrokerCommPctTextForDiffSelect();">
+                                                    SkinID="SmallDropDown" Visible="False">
                                                 </asp:DropDownList>
                                             </td>
                                             <td align="left" style="width: 10%; height: 13px">&nbsp;<asp:TextBox ID="AsCommId1" Visible="false" runat="server" SkinID="SmallTextBox"
@@ -811,7 +765,7 @@
                                             </td>
                                             <td align="left" style="width: 10%; height: 13px">
                                                 <asp:DropDownList ID="cboBrokerCommPct2SourceXcd" TabIndex="294" runat="server" Width="100px"
-                                                    SkinID="SmallDropDown" Visible="False" onchange="javascript:DisableBrokerCommPct2TextForDiffSelect();">
+                                                    SkinID="SmallDropDown" Visible="False">
                                                 </asp:DropDownList>
                                             </td>
                                             <td align="left" style="width: 10%; height: 13px">&nbsp;<asp:TextBox ID="AsCommId2" Visible="false" runat="server" SkinID="SmallTextBox"
@@ -841,7 +795,7 @@
                                             </td>
                                             <td align="left" style="width: 10%; height: 13px">
                                                 <asp:DropDownList ID="cboBrokerCommPct3SourceXcd" TabIndex="294" runat="server" Width="100px"
-                                                    SkinID="SmallDropDown" Visible="False" onchange="javascript:DisableBrokerCommPct3TextForDiffSelect();">
+                                                    SkinID="SmallDropDown" Visible="False">
                                                 </asp:DropDownList>
                                             </td>
                                             <td align="left" style="width: 10%; height: 13px">&nbsp;<asp:TextBox ID="AsCommId3" Visible="false" runat="server" SkinID="SmallTextBox"
@@ -871,7 +825,7 @@
                                             </td>
                                             <td align="left" style="width: 10%; height: 13px">
                                                 <asp:DropDownList ID="cboBrokerCommPct4SourceXcd" TabIndex="294" runat="server" Width="100px"
-                                                    SkinID="SmallDropDown" Visible="False" onchange="javascript:DisableBrokerCommPct4TextForDiffSelect();">
+                                                    SkinID="SmallDropDown" Visible="False">
                                                 </asp:DropDownList>
                                             </td>
                                             <td align="left" style="width: 10%; height: 13px">&nbsp;<asp:TextBox ID="AsCommId4" Visible="false" runat="server" SkinID="SmallTextBox"
@@ -901,7 +855,7 @@
                                             </td>
                                             <td align="left" style="width: 10%; height: 13px">
                                                 <asp:DropDownList ID="cboBrokerCommPct5SourceXcd" TabIndex="294" runat="server" Width="100px"
-                                                    SkinID="SmallDropDown" Visible="False" onchange="javascript:DisableBrokerCommPct5TextForDiffSelect();">
+                                                    SkinID="SmallDropDown" Visible="False">
                                                 </asp:DropDownList>
                                             </td>
                                             <td align="left" style="width: 10%; height: 13px">&nbsp;<asp:TextBox ID="AsCommId5" Visible="false" runat="server" SkinID="SmallTextBox"
