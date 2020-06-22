@@ -3965,6 +3965,9 @@ Namespace Tables
                         Else
                             CoverageRateId = Me.GetSelectedGridText(moGridView, COL_COMMISSION_PLAN_DIST_ID_IDX)
                             Me.State.moCommPlanDistId = GetGuidFromString(CoverageRateId) ' Me.State.moCoverageRateList(moGridView.SelectedIndex).Id
+
+                            Me.State.MyBoDist = New CommPlanDistribution(Me.State.moCommPlanDistId)
+                            
                         End If
                         Me.SetPageAndSelectedIndexFromGuid(oDataView, GetGuidFromString(CoverageRateId), moGridView,
                                     moGridView.PageIndex, True)
