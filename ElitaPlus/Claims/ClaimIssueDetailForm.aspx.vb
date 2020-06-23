@@ -1298,8 +1298,7 @@ Partial Class ClaimIssueDetailForm
             Me.HandleErrors(ex, Me.MasterPage.MessageController)
         End Try
         PopulateFormFromBOs()
-        btnBack.Visible = False
-
+      
     End Sub
 
     Private Function IsValidDate(ByVal DateToCheck As DateTime, ByVal DateToCompare As DateTime, ByVal sOperation As String) As Boolean
